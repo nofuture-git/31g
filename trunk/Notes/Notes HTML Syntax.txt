@@ -1,0 +1,422 @@
+
+Notes HTML Syntax
+
+"Sams Teach Yourself HTML in 10 Minutes, Fourth Edition" 
+by Deidre Hayes 
+Publisher: Sams 
+Pub Date: May 15, 2006 
+Print ISBN-10: 0-672-32878-X 
+Print ISBN-13: 978-0-672-32878-7 
+Pages: 240 
+
+
+----
+Required Elements:
+<html>
+<head>
+<title>My Title Here</title>
+</head>
+<body>
+<p>My first line here.</p>
+</body>
+</html>
+----
+
+----
+DOCTYPE: 
+<!DOCTYPE html
+      PUBLIC "-//W3C//DTD XHTML 1.0 myDOCTYPEHere//EN"
+      "http://www.w3.org/TR/xhtml1/DTD/xhtml - myDOCTYPEHere.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+        xml:lang="en" lang="en">
+ - conformance with w3c's standards
+ - appears at top of source file
+ - Strict: for use with newer browsers
+ - Transitional:  when browser type is unknown
+ - Frameset:  for use with frames
+----
+
+----
+Paragraph:
+<p>here is text</p>
+ - add blank line and start new line
+
+<br />  
+ - append to text
+ - single tag
+ - creates a carriage return 
+----
+
+----
+Html text modifiers:
+<big> large text
+<b> bold
+<strong> strong
+<i> italics
+<em> emphasis
+<tt> teletype
+<small> small
+
+ - use CSS instead of these modifiers
+----
+
+----
+Headers:
+<h1> to <h3> 
+ - larger than standard text
+<h4> to <h6>
+ - smaller than standard text
+----
+
+----
+Special Characters: there are many more than these
+ampersand &amp;
+copyright &copy;
+subscript &sup2;
+percent &#37;
+pound &#35;
+----
+
+----
+Hyperlink:
+Website
+<a href="www.myHomePage.net"> Click Me </a>
+- href is an attribute
+- text after attribute encloser is clickable text
+
+Html File
+<a href="myPage.html"> Click Me </a>
+- same directory
+<a href="myDir/myPage.html"> Click Me </a>
+- another directory
+
+Binary File
+<a href="file:\\myServer\myFolder\myFile.txt"> Click Me </a>
+ - slash direction changed
+ - file is not part of webserver
+
+Email
+<a href="myPeople@mycompany.com"> Click Me </a>
+
+Inter-page
+<a href="mySection"> Click Me </a>
+<a name="mySection"> Here is the text I want linked </a>
+<a id="mySection"> Same as name </a>
+----
+
+----
+CSS Syntax:
+body {background:black;}
+ - associated html tag:  body
+ - datatype:  background
+ - value:  black
+ - enclosed in curly braces
+ - multiple html tags by comma seperator
+ - multiple datatype/value pairs by semi-colon seperator
+----
+
+----
+CSS Class:
+table.myTable {background:black}
+  - declare myTable css class within the <style> html tag
+  - table is html tag reference
+<table class="myTable" width="50%">
+  - instantiate myTable within the table html tag
+----
+
+----
+Style Sheets Types: 
+ - declared within the <head> tag
+ - precendence given to style declared closest to tag
+ 
+Linked: stored on a seperate file
+ - default type
+ - set in a seperate document
+ - CSS syntax is contained in seperate doc
+ <head>
+ <link rel="stylesheet" href="myStyleSheet.css" type="text/css">
+ </head>
+ 
+Embedded: set at top of the html source file
+ - override linked for single source file
+ <head>
+ <style type="text/css">
+ table.myTable {background:black;
+                text-align:center}
+ </style>
+ </head>
+ 
+Inline: set at each occurance within source file
+ - override linked or embedded for tag by tag basis
+ <table style="background:black; text-align:center">
+ 
+----
+
+----
+Text Styles:
+{background:blue}           - background color
+{color:"red"}               - color of text
+{font-family:"Arial"}       - text font
+{font-style:"Italics"}      - normal or italics
+{font-weight:"extra-light"} - bold out text 
+{text-align:"left"}         - also is right, center or justify
+{text-indent:"20"}          - percent or value
+{text-decoration:underline} - also overline, strikethrough and none
+----
+
+----
+Hyperlink Styles:
+
+Link Activity:
+a:link -unvisited links
+a:visited -visited links
+a:active -while active
+a:hover -while hover
+
+Link Styles
+background - color behind the link
+color - color of the link
+font-family - link's font
+text-decoration - underline, overline, strikethrough and none
+
+a:link {background:red;
+        color:yellow}
+----
+
+----
+Horizontal Line:
+<hr /> -line declaration, appear as line on sheet
+ hr.red {color:red; -set line styles
+          width:50%}
+----
+
+----
+Margins:
+body {margin: 100px 100px 50px} -set at once
+      margin-left: 100px        -set one-at-a-time
+      margin-right: 100px
+      margin-top: 50px
+----
+          
+----
+List:
+
+Bullet List: known as unordered list
+<ul>
+    <li> first bullet </li>  -adds solid cirlce at each 
+    <li> second bulluet </li>
+    <li> third bullet </li>
+</ul>    
+
+Number List: known as ordered list
+<ol>
+    <li> first number </li>
+    <li> second number </li>
+    <li> third number </li>
+    <li value="6"> the number six </li>
+</ol>
+
+ol.myVarName {list-style-type:lower-roman} -i, ii, iii 
+                             :upper-roman  -I, II, III
+                             :lower-alpha  -a, b, c
+                             :upper-alpha  -A, B, C
+                            
+Defination List:
+<dl>
+    <dt> Define Me </dt>
+    <dd> here is the defination </dd> -appear below and tabbed of "Define Me"
+</dl>
+----
+
+----
+Tables:
+<table>
+    <tr><th> My Table Header </th><th> My Other Table Header </th></tr>
+    <tr><td>  data 1,1 </td><td> data 1,2 </td></tr>
+    <tr><td>  data 2,1 </td><td> data 2,2 </td></tr>
+</table>
+----
+
+----
+Table Style:
+table {borders:1; 
+       width:50%; 
+       rules:all;         -also rows and cols
+       align:center}      -left, right and char
+       
+tr {valign:baseline}      -also top, bottom
+
+th, td {cellpadding:10    -pixels, between border/content
+        cellspacing:10    -pixels, space between cells
+        colspan:1         -merge columns across cell
+        rowspan:1         -merge rows across cell
+        valign:baseline   -vertical alignment
+        }
+----
+
+----
+Images:
+<img src="myImageLocation"          -image location 
+  alt="Flyby text of the image"     -flyby text 
+  height="50" width="50"            -in pixils, set with % also
+  align="center"/>                  -also: left, right, top and bottom
+
+<object data="myImageLocation" type="image/gif"> text 
+        image description </object>  -possiable replacement for img tag
+----
+
+----
+Image Map:
+<map name="MyImageMap" id="MyImgMapID"
+<area shape="rectange" coords="270, 90, 320, 130" -coordinates w/i the image
+      href="myLink.htm" alt="Click Me for myLink" />
+<area shape="circle" coords="120, 40, 270, 90"
+      href="myOtherLink" alt="Click Me for the other link" />
+</map>
+<img src="myImage.jpg" width="320" height="130"
+     alt="My Map Image" border="5" useMap="#MyImageMap" /> -pound-sign included
+----
+
+----
+Frameset Required Elements: another source file with "Required Elements"
+<!DOCTYPE html
+     PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<title> myFrameset </title>
+<style type="text/css">
+</style>
+</head>
+<framset rows="20%,*">
+<frame src="myTitle.html" name="anyName" id="aRef" />
+<frame scc="myOtherFrame.html" name="anyOtherName" id="anotherRef" />
+</frameset>
+</html>
+----
+
+----
+Frameset: set the orientation of the frame (vertical or horizontal) and size
+<frameset cols="20%, *"> -no backslash
+                         - cols for columns
+                         - column 1 is 20% of the frame
+                         - column 2 is the remaining percent
+<frameset rows="10%,10%,*"> - 3 rows 
+----
+
+----
+Frame reference: nest one inside the other to get even more
+<frame src="myHTMLfile.html" 
+       name="botton" 
+       id="bottom"
+       frameborder="0"  -removes the frame border between the two
+       marginwidth="20" -pixals between text and frame border
+       marginheight="30" -pixals between text and top of border
+       scrollbar="no"  -also yes and auto, sets a scrollbar next to the frame
+       noresize />  -this turns off the user's ability to size the frame
+
+<iframe src="myHTMLfile.html" name="inline" id="inline"></iframe>
+ - tag for seting a reference directly in the HTML source file
+ 
+ <a href="myHTMLfile.html" target="upperLeft">Click Me</a>
+  - to reference a frame within a html file
+----
+       
+----
+
+
+----
+Form: tags that enclose a html form
+<form method="get" action="myProcessingAgent.net" name="myForm" id="myForm" >
+</form>
+
+<form method="post" action="myProcessingAgent.net" name="myForm" id="myForm">
+</form>
+<!--Upon post the data will be like "Name=Data Value"-->
+----
+
+----
+Text Box
+<input="text" name="myName" id="myID" size="40" />
+<!-- text only-->
+
+<input="password"  name="myName" id="myID" size="40" />
+<!-- text but hidden with astricks-->
+
+<input="integer"  name="myName" id="myID" size="40" />
+<!-- whole numbers only-->
+
+<input="number"  name="myName" id="myID" size="40" />
+<!-- rational numbers allowed-->
+----
+
+----
+Tab Movement
+<input="text"  name="myName" id="myID" size="40" tabindex="1" />
+<input="number" name="myName" id="myID" size="40" tabindex="2"/>
+<!--pressing the tab key will move the focus from one to two-->
+<!--add it to any form field-->
+----
+
+----
+Text Area
+<textarea cols="30" rows="4" name="myTextBox" id="myTBID">
+Default text that may be overwritten, here</textarea>
+<!--rows and cols is in pixels-->
+<!--enclosed text will appear upon form's loading, may be overwritten-->
+---- 
+
+----
+Radio Buttons
+<input type="radio" value="Choice 1" name="myRadioGroup" checked />
+<input type="radio" value="Choice 2" name="myRadioGroup" />
+<!-- 'checked' is what this list defaults to upon being load-->
+<!-- name is used to group inputs together -->
+----
+
+----
+Check Boxes
+<input type="checkbox" name="myBoxGroup" id="myBox1" value="Choice 1" />
+<input type="checkbox" name="myBoxGroup" id="myBox2" value="Choice 2" />
+<-- without a value specified, page display default to yes/no-->
+----
+
+----
+Drop-Down Options
+<select name="myDropDown" id="myDropDown" size="1" >
+  <option value="Choice 1" selected> Choice 1 </option>
+  <option value="Choice 2" > Choice 2 </option>
+</select>
+<!--'selected' is the default value-->
+<!--add  multiple="multiple" to allow for select more than one value-->
+<!--set size="3" to allow for three choices to be displayed-->
+----
+
+----
+File Select
+<input type="file" enctype="multipart/form-data" name="myFile" id="myFile" />
+<!--will generate a textbox with a "Browse" button-->
+<!--may require further elements within the tag-->
+<!--needs a submit button to be usefule-->
+----
+
+----
+Submit Button
+<input type="submit" value="This is on the button" name="mySubmit" />
+<!--post form data to action address-->
+<!--action address is specified in form tag-->
+<!--data is collected into memory-->
+----
+
+----
+Reset Button
+<input type="reset" value="This is on the button" name="myReset" />
+<!--Clear collected data from memory-->
+<!--reset data back to default values-->
+----
+
+----
+Hidden Data
+<input type="hidden" name="myHidden" id="myHidden" value="dataHere" />
+<!--Use to post data not displayed-->
+----

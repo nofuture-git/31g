@@ -1,0 +1,83 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{FBA7203D-CD5C-4C26-BBE8-C09AB4DB9467}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>NoFuture.Timeline</RootNamespace>
+    <AssemblyName>NoFuture.Timeline</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Constants.cs" />
+    <Compile Include="Drawings.cs" />
+    <Compile Include="Occidental\04_BCE925to750.cs" />
+    <Compile Include="Occidental\00_BCE3000to2000.cs" />
+    <Compile Include="Occidental\01_BCE2000to1500.cs" />
+    <Compile Include="Occidental\02_BCE1600to1200.cs" />
+    <Compile Include="Occidental\03_BCE1250to900.cs" />
+    <Compile Include="Occidental\05_BCE780to500.cs" />
+    <Compile Include="Occidental\06_BCE500to325.cs" />
+    <Compile Include="Occidental\07_BCE325to27.cs" />
+    <Compile Include="Occidental\08_CE30to105.cs" />
+    <Compile Include="Occidental\09_CE105to325.cs" />
+    <Compile Include="Occidental\10_CE325_550.cs" />
+    <Compile Include="Occidental\11_CE550_825.cs" />
+    <Compile Include="Occidental\12_CE825_1075.cs" />
+    <Compile Include="Occidental\13_CE1075_1350.cs" />
+    <Compile Include="Occidental\14_CE1350_1500.cs" />
+    <Compile Include="Occidental\15_CE1500_1700.cs" />
+    <Compile Include="Occidental\16_CE1700_1800.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Shared\Shared.csproj">
+      <Project>{4b77029a-6f3e-48ae-b8e2-c4dd06dce627}</Project>
+      <Name>Shared</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Util\Util.csproj">
+      <Project>{d7f28538-ba6a-46b4-a080-65124e899317}</Project>
+      <Name>Util</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

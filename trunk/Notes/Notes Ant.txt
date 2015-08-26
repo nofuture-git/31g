@@ -1,0 +1,279 @@
+Notes Ant
+Ant Developer's Handbook 
+by Alan Williamson; Kirk Pepperdine; Joey Gibson; Andrew Wu 
+Publisher: Sams 
+Pub Date: October 22, 2002 
+Print ISBN-10: 0-672-32426-1 
+Print ISBN-13: 978-0-672-32426-0 
+Pages: 456 
+
+
+----
+Ant is a Java build tool 
+----
+
+----
+Install
+ - download from http://jakarta.apache.org/ant/index.html
+ - unpack contents to a specified directory
+ - Set environment variables
+  - set ANT_HOME to directory of unpacked Ant install
+  - set JAVA_HOME to directory of you JDK
+ - from cmd line enter  ant -version 
+  - will receive response text of version type
+ - to use enter from cmd line  ant
+ - instructions are w/i build.xml file
+ - differnet name other than build.xml may be set
+ - build is an xml file
+ - build file is made up of a series of target tags ea being an instruction set
+----
+
+----
+Terms
+ - Project:
+  - one or more targets
+  - only one project per build file
+  - attribute
+   - name: project name
+   - default: target to be run if none is specified in cmd line
+   - basedir: dir from which relative paths are assumed
+<project name="myProject" default="compile" basedir=".">
+
+ - Properties:
+  - build file variables
+  - defined in or out of the project file
+  - called by ${propertyName}
+  - may call Java system properties using full name ${file.separator}
+<property name="build" values="classes\"/>
+${build}
+
+ - Target:
+  - main function of Ant script
+  - per Ant session any single target is only ever called once
+  - Attributes:
+   - name: target's name
+   - depends: specify another target on which this target depends
+   - if:  true is the property called is defined
+   - unless:  true if the property called is not defined
+<target name="myTarget">
+</target>
+
+<!--depends calls another target-->
+<!--add other target depends by comma-seperation-->
+<target name="mySecond" depends="myTarget,myThird">
+</target>
+
+<!--if attr. needs a property name-->
+<!--'unless' is the same, needs a property name-->
+<target name="myThird" if="myProperty">
+</target>
+
+ - Task:
+  - actual call to something 
+  - javac is a task 
+----
+
+----
+Command line
+ - having set enviro variables, call ant from command line
+C:\src>ant
+ - specify a target name seperated by a space to call a specific target
+C:\src>ant clean
+ - specify command line properties with dash and ahead of target command
+C:\scr>ant -verbose clean
+
+ Command Line Properties
+ -help prints usage message
+ -version prints the version 
+ -projecthelp displays the names and descriptions of targets in build.xml
+ -quiet  suppresses most output messages
+ -verbose displays more info on what the build is doing
+ -debug  displays more info than you need
+ -emacs prints console output that emacs can parse
+ -logfile <filename>  sends all console output to the given filename
+ -logger <log class>  uses the specified class to log messages
+ -listener <listener class> uses the specified class to process build events
+ -buildfile <build filename> uses the specified build file instead of build.xml
+ -find [build filename] searches for the given build file
+ -Dkey=value  sets a Java property for Ant to use
+ -propertyfile <filename>  sets properties for every line in a specified file
+ -inputhandler <inputhandler cls>  uses specified cls to process interactive UI
+---- 
+
+----
+Practice
+ - have a target that performs all the property assignments
+<target name="init">
+ <property name="myprop" value="src"/>
+ <property name="myBld" value="${myprop}/build"/>
+</target>
+
+ - have a target who creates any needed directories
+<target name="setup" depends="init">
+  <mkdir dir="${classes.dir}"/>
+</target>
+
+ - have a target who removes all the old JAR and CLASS files
+<target name="clean" depends="init">
+  <delete dir="${build.dir}"/>
+</target>
+
+ - use javac to set the compilation instructions
+<target name="compile" depends="setup">
+  <javac srcdir="${src.dir}"
+         destdir="${classes.dir}"
+         debug="true"
+         deprecation="true"
+         optimize="false"/>
+</target>
+ - for boolean literals, use "true", "on" or "yes"; "false", "off" or "no"
+ 
+ - use the 'copy' command to move files about
+<target name="myCopy">
+ <copy file="${etc.dir}"
+       todir="${classes.dir}"
+       overwrite="true"/>
+</target>
+
+ - use the jar command to make jar files
+ - basedir attribute tells the jar builder where to start importing files
+  - jar builder will import all files and all files in sub-dir
+ - ommission of the manifest attribute, jar builder will use a generic one
+ <target name="jarfile" depends="init">
+   <jar destfile="${build}/${name}.jar"
+        basedir="${classes.dir}"
+        manifest="${etc.dir}/MANIFEST.MF"/>
+ </target>
+----
+        
+----
+Organize Source Files
+ - have .java files in seperated dir from .class files
+ - have .jar files in root of a build dir 
+ - have .class files in a sub-dir of a build dir
+  - the .jar file is considered the 'build'
+ - typically a single folder for whatever, called 'etc' below
+ - a folder for documentation
+ - a folder for support library's
+ - have javadoc in an api folder under doc parent folder
+ - have src folder structure match package (Namespace)
+  - allows for incremental build
+   - build in which only what has changed is re-compiled
+    
+<root of source code>
+    projectName\
+                src\
+                bin\
+                    cls\
+                doc\
+                    api\
+                lib\
+                etc\
+----
+
+----
+Standard Recurrent Targets
+
+ <target name=-"init">
+  <!--
+  - assigns all properties a value
+  - sets of property values to mimic the file/path structure for builds
+  - may use init-build and init-debug to seperate build types
+  -->
+ </target>
+
+<!--******************************--> 
+
+ <target name="prepare" depends="init">
+  <!--
+  - actually construct various directory/subdirectory
+  -->
+ </target>
+ 
+<!--******************************--> 
+ 
+ <target name="fetch" depends="prepare">
+  <!--
+  - get all Updates from the source-code repository
+  - not needed on every single build
+  -->
+  <cvspass cvsroot="${repo.root}" password="${repo.pass}"/>
+  <cvs cvsRoot="${repo.root}" command="update -P -d" failonerror="true"/>
+ </target>
+ 
+<!--******************************-->
+
+ <target name="compile" depends="prepare">
+  <javac srcdir="${src.dir}"
+         destdir="${bin.dir.cls}"
+         classpath="${classpath}"/>
+ </target>
+ 
+<!--******************************-->
+
+ <target name="test" depends="compile">
+  <!--
+  - automating JUnit test
+  -->
+  <junit failureproperty="testFailed">
+   <classpath>
+    <pathelement path="${classpath}"/>
+    <pathelement path="${bin.dir.cls}"/>
+   </classpath>
+   <formatter type="xml"/>
+   <test name="Unit Test Whatever"
+         todir="${doc.dir.test}"/>
+  </junit>
+ </target>
+ 
+<!--******************************--> 
+ 
+ <target name="jar" depends="test" unless="testFailed">
+  <!--
+  - build a Jar file from all the class files
+  -->
+  <jar destfile="${bin.dir}/${name}.jar"
+       basedir="${bin.dir}"
+       includes="**/*.class"/>
+ </target>
+ 
+<!--******************************--> 
+ 
+ <target name="docs" depends="test" unless="testFailied">
+  <!--
+  - write out all Javadocs
+  -->
+  <javadoc packagenames="com.mycompany.*" sourcepath="${src.dir}" 
+        classpath="${classpath}" destdir="${doc.api.dir}" 
+        author="true" version="true" use="true" 
+        windowtitle="MyProject Documentation"> 
+        <bottom><![CDATA[<em>Copyright &copy; 2009</em></div>]]></bottom> 
+        <link href="http://java.sun.com/products/jdk/1.6/docs/api"/> 
+    </javadoc> 
+ </target>
+ 
+<!--******************************--> 
+----
+
+----
+Ant Data Types
+ <description>Write up on this project</description>
+ - should be placed just under the main <project> node
+ 
+ <patternset id="classfiles">
+  <include name="**/*.class"/>
+ </patternset>
+ - ? matches a single character
+ - * matches zero or more characters
+ - ** matches zero or more directories recursively
+ - use with <include>, <includesfile>, <exclude> and <excludesfile>        
+
+ <dirset dir="${bin.dir}" includes="**/cls" excludes="**/*debug*"/>
+ - includes an implicit patterset tag
+ 
+ <fileset dir="${bin.dir}" includes="**/*.java" excludes="**/*Test*"/>
+ - same as dirset but just for files instead
+ 
+ <filelist id="myFiles" dir="${bin.dir}" files="mycode.class, more.class"/>
+ - used to specify specific files
+----

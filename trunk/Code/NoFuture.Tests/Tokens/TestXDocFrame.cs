@@ -1,0 +1,236 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NoFuture.Tokens;
+
+namespace NoFuture.Tests.Tokens
+{
+    [TestClass]
+    public class TestXDocFrame
+    {
+        [TestMethod]
+        public void TestSkipAndTakeWorksLikePs1()
+        {
+            var myList = new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 };
+            var lastIndex = myList.Count - 1;
+            var myI = 7;
+
+            var left = myList.Take(myI).ToList();
+            var printMySkipTakeList = string.Join(",", left);
+            System.Diagnostics.Debug.WriteLine(printMySkipTakeList);
+
+            var right = myList.Skip(myI+1).Take(lastIndex).ToList();
+            left.AddRange(right);
+
+            printMySkipTakeList = string.Join(",", left);
+            System.Diagnostics.Debug.WriteLine(printMySkipTakeList);
+            
+        }
+
+        [TestMethod]
+        public void TestFindAllCharTokens()
+        {
+            var testInput = @"open something named{ accessMod type name { someStatement; someOtherStatement; accessMod type name(someArg){someBody;} somefinalStatement; }}";
+            var testSubject = new NoFuture.Tokens.XDocFrame();
+            var testResults = testSubject.FindAllCharTokens(testInput, '{', '}');
+
+            System.Diagnostics.Debug.WriteLine(string.Join(",",testResults.Item1));
+            System.Diagnostics.Debug.WriteLine(string.Join(",",testResults.Item2));
+
+        }
+
+        [TestMethod]
+        public void TestFindTokenMatch()
+        {
+            var testArr0 = new List<int> {20, 42, 107};
+            var testArr1 = new List<int> {117, 139, 140};
+            var testSubject = new NoFuture.Tokens.XDocFrame();
+            var testResults = testSubject.FindTokenMatch(testArr0[0], testArr0, testArr1);
+
+            Assert.IsNotNull(testResults);
+            Assert.AreNotEqual(0,testResults);
+
+        }
+
+        [TestMethod]
+        public void TestFindEnclosingTokens_Char()
+        {
+            var testInput = @"open something named{ accessMod type name { someStatement; someOtherStatement; accessMod type name(someArg){someBody;} somefinalStatement; }}";
+            var testSubject = new NoFuture.Tokens.XDocFrame();
+            var testResults = testSubject.FindEnclosingTokens(testInput, '{', '}');
+
+            Assert.IsNotNull(testResults);
+            Assert.AreNotEqual(0, testResults.Count);
+            Assert.AreEqual(3, testResults.Count);
+
+            foreach (var t in testResults)
+            {
+                System.Diagnostics.Debug.WriteLine(string.Format("{0},{1}",t.Start, t.End));
+            }
+        }
+
+        [TestMethod]
+        public void TestFindEnclosingTokens_Word()
+        {
+            var testWordStart = "begin";
+            var testWordEnd = "end";
+            var testInput =
+                @"some statement; begin somekindOfEnclosure begin firstStatement; secondStatement; end anotherStatement; end more stuff";
+
+            var testSubject = new NoFuture.Tokens.XDocFrame();
+            var testResults = testSubject.FindEnclosingTokens(testInput, testWordStart, testWordEnd);
+
+            Assert.IsNotNull(testResults);
+            Assert.AreNotEqual(0,testResults.Count);
+
+
+            foreach (var t in testResults)
+            {
+                System.Diagnostics.Debug.WriteLine(string.Format("{0},{1}", t.Start, t.End));
+                System.Diagnostics.Debug.WriteLine(testInput.Substring(t.Start, testWordStart.Length));
+                System.Diagnostics.Debug.WriteLine(testInput.Substring(t.End - testWordEnd.Length, testWordEnd.Length));
+
+            }
+        }
+
+        [TestMethod]
+        public void TestAppendHeadToken()
+        {
+            var testTokens = new List<NoFuture.Tokens.Token>
+            {
+                new TokenPair(20, 141),
+                new TokenPair(42, 140),
+                new TokenPair(107, 118)
+            };
+            var testInput =
+                @"open something named{ accessMod type name { someStatement; someOtherStatement; accessMod type name(someArg){someBody;} somefinalStatement; }}";
+            var testSubject = new NoFuture.Tokens.XDocFrame();
+            var testResults = testSubject.AppendHeadToken(testTokens, testInput);
+            Assert.IsNotNull(testResults);
+            Assert.AreNotEqual(0,testResults.Count);
+            Assert.AreNotEqual(3, testResults.Count);
+
+            foreach (var t in testResults)
+            {
+                System.Diagnostics.Debug.WriteLine(string.Format("{0},{1}", t.Start, t.End));
+
+            }
+        }
+
+        [TestMethod]
+        public void TestInterlaceTokens()
+        {
+            var testTokens = new List<NoFuture.Tokens.Token>
+            {
+                new TokenPair(0,142),
+                new TokenPair(20, 141),
+                new TokenPair(42, 140),
+                new TokenPair(107, 119)
+            };
+            var testSubject = new NoFuture.Tokens.XDocFrame();
+            var testResults = testSubject.InterlaceTokens(testTokens);
+
+            Assert.IsNotNull(testResults);
+            foreach (var t in testResults)
+            {
+                System.Diagnostics.Debug.WriteLine(string.Format("{0},{1},{2},{3}", t.Start, t.End, t.Register, t.ChildTo));
+
+            }
+
+        }
+
+        [TestMethod]
+        public void TestSetTabCount()
+        {
+            var testTokens = new List<Token>
+            {
+                new TokenPair(0, 143) {Register = 0, ChildTo = 0},
+                new TokenPair(20, 142) {Register = 1, ChildTo = 0},
+                new TokenPair(42, 141) {Register = 2, ChildTo = 1},
+                new TokenPair(107, 120) {Register = 3, ChildTo = 2}
+            };
+
+            var testSubject = new NoFuture.Tokens.XDocFrame();
+            var testResults = testSubject.SetTabCount(testTokens);
+            Assert.IsNotNull(testResults);
+            foreach (var t in testResults)
+            {
+                System.Diagnostics.Debug.WriteLine(string.Format("{0},{1},{2},{3},{4}", t.Start, t.End, t.Register, t.ChildTo, t.Tab));
+
+            }
+        }
+
+        [TestMethod]
+        public void TestGetGaps()
+        {
+            var testInput =
+                @"open something named{ accessMod type name { someStatement; someOtherStatement; accessMod type name(someArg){someBody;} somefinalStatement; }}";
+            var testSubject = new XDocFrame('{', '}');
+
+            //technically this is no a valid unit test...
+            var contrivedTestInput = testSubject.GetTokens(testInput);
+
+            var testResults = testSubject.GetGaps(contrivedTestInput);
+            Assert.IsNotNull(testResults);
+            Assert.AreNotEqual(0, testResults);
+
+            foreach (var t in testResults)
+            {
+                System.Diagnostics.Debug.WriteLine(string.Format("{0}, {1}, {2}, {3}", t.Start, t.End, t.Span, t.ChildTo));
+            }
+
+
+        }
+
+        [TestMethod]
+        public void TestGetTokens()
+        {
+            var testInput =
+                @"open something named{ accessMod type name { someStatement; someOtherStatement; accessMod type name(someArg){someBody;} somefinalStatement; }}";
+
+            var testSubject = new XDocFrame('{', '}');
+            var testResults = testSubject.GetTokens(testInput);
+
+            Assert.IsNotNull(testResults);
+            Assert.AreNotEqual(0, testResults.Count);
+
+            Assert.AreEqual(4,testResults.Count);
+            Assert.AreEqual("0, 142, 142, 0, 0", string.Format("{0}, {1}, {2}, {3}, {4}", testResults[0].Start, testResults[0].End, testResults[0].Span, testResults[0].Register, testResults[0].Tab));
+            Assert.AreEqual("20, 141, 121, 1, 0", string.Format("{0}, {1}, {2}, {3}, {4}", testResults[1].Start, testResults[1].End, testResults[1].Span, testResults[1].Register, testResults[1].Tab));
+            Assert.AreEqual("42, 140, 98, 2, 1", string.Format("{0}, {1}, {2}, {3}, {4}", testResults[2].Start, testResults[2].End, testResults[2].Span, testResults[2].Register, testResults[2].Tab));
+            Assert.AreEqual("107, 118, 11, 3, 2", string.Format("{0}, {1}, {2}, {3}, {4}", testResults[3].Start, testResults[3].End, testResults[3].Span, testResults[3].Register, testResults[3].Tab));
+
+            foreach (var t in testResults)
+            {
+                System.Diagnostics.Debug.WriteLine(string.Format("{0}, {1}, {2}, {3}, {4}", t.Start, t.End, t.Span, t.Register, t.Tab));
+            }
+
+        }
+
+        [TestMethod]
+        public void TestGetXDocFrame()
+        {
+            var testInput =
+                System.IO.File.ReadAllText(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\Tokens\TokensTestFile.txt");
+            var testSubject = new XDocFrame('{', '}') {MinTokenSpan = 1};
+            var testResults = testSubject.GetXDocFrame(testInput);
+            var testResultsXml = testResults.ToString();
+            System.IO.File.WriteAllBytes(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\Tokens\GetXDocFrameResults.xml", System.Text.Encoding.UTF8.GetBytes(testResultsXml));
+
+        }
+
+        [TestMethod]
+        public void TestApplyXDocFrame()
+        {
+            var testInput =
+                System.IO.File.ReadAllText(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\Tokens\TokensTestFile.txt");
+            var testSubject = new XDocFrame('{', '}') { MinTokenSpan = 1 };
+            var testResults = testSubject.GetXDocFrame(testInput);
+            testSubject.ApplyXDocFrame(testResults, testInput);
+            var testResultsXml = testResults.ToString();
+            System.IO.File.WriteAllBytes(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\Tokens\ApplyXDocFrameResults.xml", System.Text.Encoding.UTF8.GetBytes(testResultsXml));
+            
+        }
+    }
+}

@@ -1,0 +1,18 @@
+Notes Business XML
+----
+ ASC X12C/TG3/2002-xxx
+ ANSI ASC X12C Communications and Controls Subcommittee Technical Report Type II
+ ASC X12 REFERENCE MODEL FOR XML DESIGN
+ July 2002
+----
+
+----
+Contain the info
+ - Who: which parties participate in the business transaction 
+        and the actors involved in the exchange.
+ - What: the primary subject or purpose of the message
+ - When: answers event/timing details.
+ - Where: answers location detials.
+ - Why: typically answered by the message type itself along with
+		accompanying reference inforamtion.
+----

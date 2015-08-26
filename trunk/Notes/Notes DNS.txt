@@ -1,0 +1,88 @@
+Notes Domain Name Server
+RFC 1034
+RFC 1035
+----
+
+----
+General
+ - names are limited to 256 characters
+ - on Windows use 'nsLookup'
+ - on Linux use 'dig'
+ - on Apple use 'iAMA2ool'
+ - uses UDP on port 53
+----
+
+----
+EBNF Domain Name (ANTLR style) (page 10)
+
+dnsDomain : dnsSubDomain
+          | DOT
+		  ;
+
+dnsSubDomain : label (DOT label)*? ;
+
+dnsLabel : LETTER
+         | ( (dnsString)? LETTER_DIGIT)? 
+		 ;
+
+dnsString : LETTER_DIGIT_HYPHEN* ;
+
+LETTER_DIGIT_HYPHEN : ( LETTER | DIGIT | '-' )+ ;
+
+LETTER_DIGIT : ( LETTER | DIGIT )+ ;
+
+DOT : '.' ;
+
+fragment LETTER : [a-zA-Z] ;
+fragment DIGIT: [0-9] ;
+----
+
+----
+Zone Files 
+ - are files used to resolve names
+ - entries typically span one line and
+   terminate with the \u000A (LF)
+ - may span more then one line "using parentheses" [page 13]
+ - root zone file found at http://www.internic.net/zones/root.zone
+ - is TAB delimited
+ - roughly, schema is:
+ 
+  dnsDomain '\t' timeToLiveInDays '\t' resourceClass '\t' resourceType
+  
+  timeToLiveInDays : [DIGIT]+ ;
+  
+  resourceClass : 'IN' //Internet
+                | 'CH' //Chaosnet 
+				;
+  resourceType  : 'A' '\t' ipv4Type
+            | 'AAAA' '\t' ipv6Type
+			| 'CNAME' '\t' cNameType
+			| 'DNSKEY' '\t' dnsKeyType
+			| 'DS' '\t' dsType
+			| 'NS' '\t' nsType
+			| 'NSEC' '\t' nsSecType
+			| 'SOA' '\t' soaType
+			;
+
+  ipv4Type      : "an IP address (127.0.0.1)" ;
+  ipv6Type      : "an IP address v6 (fe80::7489:cf52:9124:59ad)" ;
+  cNameType     : " this domain name is really a pointer (ByRef) to another line" ;
+  dnsKeyType    : ['256' | '257' ] ' 3 8 ' base64String ;
+  dsType        : [1-9][0-9]{2,4} ' ' ('10'|'5'|'7'|'8') ' ' ('1'|'2') largeHexValue ;
+  nsType        : dnsDomain ;
+  nsSecType     : [a-z]* '. NS' ('DS'|'RRSIG'|'SOA') ' ' ('NSEC','RRSIG') ;
+  soaType       : "identifies the start of a zone of authority" [page 11]
+  
+ - using parentheses, starts with '(' and means despite the 
+   number of LF's present there is only one entry up until the ')' 
+----
+
+----
+DNS Queries
+ 
+ - composed of three name-value hash 
+ QNAME=www.google.com, QTYPE=A, QCLASS=IN
+ 
+ - list all ipv4 domains by nslookup 
+ ls -t A myDomain.com
+----

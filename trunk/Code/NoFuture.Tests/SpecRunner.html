@@ -1,0 +1,69 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+  "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <title>Jasmine Spec Runner</title>
+
+    <link rel="stylesheet" type="text/css" href="jasmine-1.3.0/jasmine.css" />
+    <script type="text/javascript" src="jasmine-1.3.0/jasmine.js"></script>
+    <script type="text/javascript" src="jasmine-1.3.0/jasmine-html.js"></script>
+
+  
+    <!--
+        ls -Path C:\Projects\31g\trunk\Code\NoFuture.Tests\jsSrc | ? {$_.Extension -eq ".js"} | % {ri -Path $_.FullName -Force}
+        ls -Path C:\Projects\31g\trunk\Code\NoFuture -Include *.js -Recurse | % {
+        cp -Path $_.FullName -Destination C:\Projects\31g\trunk\Code\NoFuture.Tests\jsSrc -Force}
+        $globalContent =  ([System.IO.File]::ReadAllText("C:\Projects\31g\trunk\Code\NoFuture.Tests\jsSrc\Global.js"))
+        $globalContent = $globalContent.Replace('$host', '"http://localhost/"')
+        [System.IO.File]::WriteAllText("C:\Projects\31g\trunk\Code\NoFuture.Tests\jsSrc\Global.js",$globalContent)
+        -->
+
+
+    <!--
+        (ls -Path C:\Projects\31g\trunk\Code\NoFuture.Tests\jsSrc) | Sort-Object -Property @{Expression="Name"} | % {
+        "    <script type=`"text/javascript`" src=`"jsSrc/{0}`"></script>" -f $_.Name}
+        -->
+        
+    <!--
+        -->
+
+    <!-- include source files here... -->
+    <script type="text/javascript" src="jsSrc/sjcl.js"></script>
+
+    <!-- include spec files here... -->
+    <script type="text/javascript" src="Encryption/EncryptionTests.js"></script>
+
+  <script type="text/javascript">
+    (function() {
+      var jasmineEnv = jasmine.getEnv();
+      jasmineEnv.updateInterval = 1000;
+
+      var htmlReporter = new jasmine.HtmlReporter();
+
+      jasmineEnv.addReporter(htmlReporter);
+
+      jasmineEnv.specFilter = function(spec) {
+        return htmlReporter.specFilter(spec);
+      };
+
+      var currentWindowOnload = window.onload;
+
+      window.onload = function() {
+        if (currentWindowOnload) {
+          currentWindowOnload();
+        }
+        execJasmine();
+      };
+
+      function execJasmine() {
+        jasmineEnv.execute();
+      }
+
+    })();
+  </script>
+
+</head>
+
+<body>
+</body>
+</html>

@@ -1,0 +1,231 @@
+S60 5th Edition C++ Developer's Library v2.1 > S60 C++ API reference > C++ API Reference > S60 Platform Services > XML Services > XML Engine DOM API
+XML Engine DOM API: Using the XML Engine DOM API
+
+    * XML Engine DOM API: Using the XML Engine DOM API
+          o Initializing the subsystem
+          o Parsing XML data
+          o Modifying DOM tree
+                + Creating new document
+                + Adding new nodes to tree
+                + Removing nodes from tree
+                + Editing existing nodes
+          o Saving document
+          o Error handling
+          o Memory overhead
+          o Extensions to the API
+
+To use a library client needs to initialize it first. After that all API functionality might be used.
+
+To process XML data in a DOM tree it needs to be created. A user is able to create his own tree structure, using methods provided by API to add new nodes to a document. It is also possible to use a parser. It will process XML data and build a DOM tree. When the tree is created a user can modify it using methods for adding, changing properties or removing nodes. Having finished working with the document, a can serialize it using methods, that allow saving data to a file or to the buffer.
+
+When the work with a component has been finished it should be closed. All data are cleaned.
+Initializing the subsystem
+
+Before using DOM API library user need to initialize it. Global data (states) will be filled and a component might be used. Global data are stored in thread local storage (TLS). DOM API will have one word entity that exists per thread. It should be initialized in client thread and than closed. If client use XML Engine DOM component in many threads it should be initialized and closed in all of them.
+
+The class responsible for initialization of the component is RXmlEngDOMImplementation. Client should call OpenL method implemented in it. During the initialization the client is able to decide if the component should use the user threat heap. If not, he decides what the size of the heap should be allocated for the XML Engine DOM API. It will store all XML data on it.
+
+Having finished working with the component the user should cleanup all global data. He should use the Close method.
+
+RXmlEngDOMImplementation domImpl;
+
+domImpl.OpenL();    // opening DOM implementation object
+
+
+
+// working with XML Engine DOM API
+
+
+
+domImpl.Close();
+
+
+Cleanup of libxml2 data used by XML Engine DOM API is finalized by a call to the CloseSTDLIB() function. It is a side-effect, which can interfere with client application's code. Client applications that use POSIX implementation provided in Symbian and need to cleanup STDLIB resources should be modified not to invoke CloseSTDLIB() explicitly and to postpone release of XML Engine's TLS data (via RXmlEngDOMImplementation::Close() method) until the termination of the current thread.
+Parsing XML data
+
+A client is able to create a DOM tree using the DOM parser. The parser reads XML data provided by the user, builds document structure and returns the document. To parse data user should use RXmlEngDOMParser. This class might be configured as a chunk parser (XML data provided in chunks) or parse all data at once.
+
+RXmlEngDOMParser parser;
+
+parser.Open(domImpl);   // opening parser object,
+
+                        // domImpl is open RXmlEngDOMImplementation object
+
+// parsing fileName file
+
+RXmlEngDocument doc = chunkparser.ParseFileL(srcFileName,aChunkSize);
+
+// ...
+
+// work with document
+
+// ...
+
+// closing all opened objects
+
+doc.Close();
+
+parser.Close();
+
+
+Modifying DOM tree
+
+XML Engine DOM API gives possibility to modify the DOM tree or create a new one using component methods.
+Creating new document
+
+A client can use API to create a new document not having some XML data (file) to parse. He should use methods from the RXmlEngDocument class that allows creating new nodes. Than he is able to set all properties of newly created nodes, such as name, namespace, value and other.
+
+// creation of document object
+
+RXmlEngDocument doc;
+
+// domImpl is open RXmlEngDOMImplementation object
+
+doc.OpenL(domImpl);
+
+
+
+// creating root element, name is name of the element
+
+doc.CreateDocumentElementL(name);
+
+
+
+// setting version of element, ver is string with version (e.g. "1.0")
+
+doc.SetXmlVersionL(ver);
+
+// ...
+
+// work with document
+
+// ...
+
+doc.Close();  // closing document
+
+Adding new nodes to tree
+
+A client is able to create new nodes and add them to the current tree structure. To create new nodes a user should use methods from the RXmlEngDocument class and than add them to the document tree using methods from TXmlEngNode. After adding new nodes to the document structure they are a part of the tree and will be removed when the document is freed.
+
+// Creating new element
+
+// name - the name that should be used for element
+
+// doc - DOM tree document
+
+TXmlEngElement el = doc.CreateElementL(name);
+
+// creating attribute
+
+// attrName is name of attribute and value will be set as value
+
+//     of the attribute
+
+TXmlEngAttr atNode = iDoc.CreateAttributeL(attrName,value);
+
+// adding attribute to the element
+
+el.AppendChildL(atNode);
+
+// adding element to tree
+
+// docEl is some node that is in document structure
+
+docEl.AppendChildL(el);
+
+
+There is also possible to add nodes using multiple methods from other classes. Client can create new elements or attributes using AddNewElementL and AddNewAttributeL implemented in TXmlEngElement class. To add new namespace definitions AddNamespaceDeclarationL or FindOrCreateNsDeclL methods might be used.
+
+// getting some element from tree
+
+TXmlEngElement el = iDoc.DocumentElement().FirstChild().AsElement();
+
+// adding new element
+
+// name is name of the element
+
+el.AddNewElementL(name);
+
+// adding new attribute
+
+// attrName and attrValue are strings with attribute name and value
+
+el.AddNewAttributeL(attrName,attrValue);
+
+
+Removing nodes from tree
+
+It is possible to remove existing nodes from the current document structure. If nodes contain any other nodes they will be also removed.
+
+// node is some node in document tree.
+
+// nodeR is first child of the node
+
+TXmlEngNode nodeR = node.FirstChild();
+
+// Removing nodeR from document structure
+
+// nodeR and its children (if any) are removed
+
+nodeR.Remove();
+
+Editing existing nodes
+
+XML Engine DOM API allows editing existing nodes. To change its properties a user should use methods from the TXmlEngNode class. There are also some specific methods for different node types. They are provided by a class representing these types (element node - TXmlEngElement).
+
+// Setting element text content
+
+// el is some element in document structure
+
+// str is new content
+
+el.SetTextL(str);
+
+// removing all attributes
+
+el.RemoveAttributes();
+
+// adding new attribute
+
+el.AddNewAttributeL(attrName,attrValue);
+
+Saving document
+
+Having finished working with the tree a user might serialize it to XML data. Such a functionality is available in the RXmlEngDocument class (SaveL methods). A client can decide where he would like to store it. The tree might be stored in the buffer, a file or it might be saved to a stream. This stream is provided by the client, it is the implementation of the MXmlEngOutputStream class. During serialization, there is a possibility to decide what nodes should be saved (the user implements the MXmlEngNodeFilter interface). To decide how the output should be formatted the user should use the TXmlEngSerializationOptions class and set the chosen options.
+
+// serialization options creation
+
+TXmlEngSerializationOptions opt(TXmlEngSerializationOptions::KOptionIndent);
+
+TXmlEngNode node;  // creation of null node
+
+// doc is RXmlEngDocument object
+
+// fileName - name of file where to serialize document
+
+// node - node from witch start to serialize tree, if it is null
+
+//            whole document is serialized 
+
+doc.SaveL(fileName,node,opt); // document is serialized to file
+
+Error handling
+
+The leave mechanism of the Symbian OS environment is used to handle exceptions and errors that occur while processing of data. There are two types of errors with which XML Engine DOM API methods might leave:
+
+   1. Standard Symbian OS error codes used to report situation not specific for XML data processing, but that can also occur in other components. Most probably errors are problem with I/O system (file does not exist, is used by someone else) or problems with memory allocation (KErrNoMemory).
+   2. Wrapper-defined error codes. These errors codes are specific for processing XML data.
+
+The Reaction to these errors depends on the error type. To correct the Symbian OS errors a user must fallow instruction how to handle such a situation. When wrapper errors occur a user needs to correct data that he wants to process (XML data or arguments that he provides to functions). Than he can try to call actions once more.
+Memory overhead
+
+As a subsystem is running in the client thread all data are stored in the memory provided by the thread. The memory used depends on the XML data size that needs to be processed. The subsystem will use all memory available in the thread heap to build the tree.
+
+Additionally the memory used by the wrapper depends on the type of data in XML. Two documents of the same size might need different memory. If one contains only few nodes with some big text data and the other has many nodes inside, the one which contains text data only will be smaller in the memory.
+
+The client might decide if the wrapper should work on the thread heap, so it will use memory available for the thread, or work on its own heap. If he decides to use the second solution the wrapper will create a memory heap and all XML data will be stored on it. The client might decide on the size of it.
+Extensions to the API
+
+None.
+Copyright © Nokia Corporation 2001-2008
+Back to top

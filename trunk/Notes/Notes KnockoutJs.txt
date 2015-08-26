@@ -1,0 +1,481 @@
+----
+Notes Knockout Js
+http://learn.knockoutjs.com/#/?tutorial=intro
+----
+
+----
+A VS extension to generate knockout.js models from .NET MVC models.
+https://visualstudiogallery.msdn.microsoft.com/32c15a80-1c54-4e96-a83f-7cd57573a5d2
+----
+
+----
+Basics
+ (1) some HTML 
+ <html>
+ <head>
+	<script type="text/javascript" src="knockout.js" ></script>
+ </head>
+ <body>
+ <!-- simplest where data in a js object has its value bound to a DOM's text -->
+ <!-- NOTE: the space between 'text:' and 'firstName' is NOT required-->
+ <p>First Name: <strong data-bind="text: firstName">TODO<!-- when the page renders this will be "Fname" --></strong></p> 
+ <p>Last Name: <strong data-bind="text: lastName">TODO</strong></p>
+ 
+  <!-- 
+   w/o 'ko.observable' attached to the value of the property in the js object changes aren't 
+   propogated back to the DOM, but the the value in the js object does, in fact, change 
+   -->
+  <p>First Name: <input data-bind="value: firstName" /></p>
+  <p>Last Name: <input data-bind="value: lastName" /></p>
+  
+  <button data-bind="click: doSomethingToObservables">Make Uppercase</button>
+  </body>
+ </html>
+ 
+ (2) some javascript
+ //this is a viewmodel
+ function MyViewModel() {
+	
+	/*'
+	 'ko.observable' is the duplex binding, w/o it when the value of the 'input' tag was changed 
+	 only the string property of this object was updated, the text in the 'strong' tag remained the
+	 same; however, having added 'ko.observable' changes to the js property are, in turn, propogated back
+	 up to the 'strong' tag's text.
+	*/
+	
+	this.firstName = ko.observable("Fname"); 
+	this.lastName = ko.observable("Lname");
+	
+	/*
+	 'ko.computed' is a compound of observable.  Rather than just binding data in duplex (DOM-to-js), 
+     it adds computation to the observation.  The computation takes the form of a javascript callback 
+     function which is passed in, as an arg, to the 'ko.computed'	 
+	*/
+	
+	/*
+     since this is a compound of observable, if you move this declaration above the 'firstName' & 
+	 'lastName' the behaviour falls apart.
+	*/
+	this.fullName = ko.computed(function() {
+		return this.firstName() + " " + this.lastName();//note: these are Java style properties (having '()', not C# style)
+	}, this);
+	
+	this.doSomethingToObservables = function(){
+		var cVal = this.lastName();
+		
+		//whenever we are performing R\W to observables, we use a function
+		//notice this is VB6 style where we aren't assigning the property to modify it
+		this.lastName(cVal.toUpperCase());
+	};
+ }
+ 
+ (3) activate ko
+ ko.applyBindings(new MyViewModel());
+ 
+  - having a 'data-bind' attribute is what aligns the DOM node to the
+    js data model.
+  - adding 'ko.observable' is what make the previous alignment duplex in 
+    nature.
+  - notice the scope of data-bind was never specified to 'MyViewModel' - this is
+    because the 'ko.applyBindings' made it implicit
+----
+
+----
+Grid Views
+ - again starts with some javascript representation of the data
+ - and some html (DOM) rendering thereof
+  (1) some HTML 
+ <html>
+ <head>
+ </head>
+ <body>
+ <h2>Your seat reservation</h2>
+ <table>
+	<thead><tr>
+		<th>Passenger name</th><th>Meal</th><th>Surcharge</th><th></th>
+	</tr></thead>
+	
+	/*
+		- the data-bind's property name is 'foreach' since 
+		  we used 'ko.obervableArray' on a property whose 
+		  type was an array
+		- 'foreach' is named "control flow binding" of which 'if' 
+		   'ifnot' & 'with' are also in addition.  These operate 
+		   in a different capicity to similier binding of data-to-tag 
+		   in that they control portions of the UI itself.
+		  
+		- we have observable inner-scope, we made '.seats'
+		  as an observable array and w/i this array is the 
+		  'SeatReservation' type whose 'meal' property was 
+		  also declared with 'ko.observable' - as such we invoke
+		  this inner scope as a function 'meal().price'
+	*/
+	<tbody data-bind="foreach: seats">
+		<tr>
+			<td data-bind="text: name"></td>
+			<td data-bind="text: meal().mealName"></td>
+			<td data-bind="text: meal().price"></td>
+		</tr>
+	</tbody>
+ </table>
+ <table>
+	<thead><tr>
+		<th>Passenger name</th><th>Meal</th><th>Surcharge</th><th></th>
+	</tr></thead>	
+	
+	/*
+		adding a std drop-down using the regular 'select' html control, 
+		however, the '$root' is a implicit scope variable which moves the 
+		scope back up to the owning object of the 'seats' array - in this case
+		the 'ReservationsViewModel' itself.  In typically OO a duplex parent-child rel.
+		would require the child to have some kind of 'Parent' property which would 
+		be assigned - w/ knockoutjs, this is implicit by '$root'
+		
+		- 'options: $root.availableMeals' est. what array represents the list of options 
+		- 'value: meal' is a property on 'SeatReservation' meaning that whatever option value 
+		  ends up being select - it should be assigned to this 'SeatReservation's 'meal' property
+		- 'optionsText: 'mealName'' was only needed because we set the 'options' to an array of
+		 objects, so we need to specify which property therein should be used to resolve the 
+		 displayable text.
+		 
+		- notice for the select box outside of the 'table' tag we only specified the 'options: '
+		 binding because there was no inner\outer scope, no observable property to bind 
+		 back to and no property within the array on which to choose as the displayable text.
+		
+	*/
+	
+ 	<tbody data-bind="foreach: seats">
+		<td><input data-bind="value: name" /></td>
+		<td><select data-bind="options: $root.availableMeals, value: meal, optionsText: 'mealName'"></select></td>
+		<!-- 
+		 notice here the computed property is on the object-of-iteration so no '$root' scope id is required  
+		 but we still needed to use 'self.meal().price' even in the js function itself since the 'meal' property 
+		 is observable
+		 -->
+		<td data-bind="text: formattedPrice"></td>
+		<td><a href="#" data-bind="click: $root.removeSeat">Remove</a></td>
+	</tbody>
+ </table>
+ 
+  <!-- 
+   - 'visible' must be considered a control flow binding since it is controlling 
+      if this entire tag is even visible or not.
+   - if 'totalSurcharge' had not been assigned to a function wrapped in 'ko.computed'
+     then its value would have to be manually wired into every change of every row's 
+	 'meal' drop-down; however, since the 'meal' property of 'SeatReservation' was 
+	 assigned to a 'ko.observable' AND the array property 'seats' was assigned to 
+	 an 'ko.obervableArray' we can simply assign it to a 'ko.computed' and all the events
+	 are propogated.
+   - Note, within the body of 'totalSurcharge's callback function we must invoke each
+     property which was assigned to any form of ko.observable by using the method
+	 invocation (i.e. '.seats()', '.meal()') because they are actually assigned to a function
+	 and not a value-type property.
+	 
+   - last, we could have written data-bind="text: totalSurcharge().toFixed(2)" instead 
+     which means we are allowed to invoke std js inline 
+   -->
+ <h3 data-bind="visible: totalSurcharge() > 0">
+	Total Surcharge (in dollars): <span data-bind="text: totalSurcharge"></span>
+ </h3>
+ <select data-bind="options: simpleStrings"></select>
+  
+ <!-- having it as "click: addSeat()" is the samething -->
+ <button data-bind="click: addSeat">Reserve another seat</button>
+ </body>
+ </html>
+ 
+  (2) some javascript
+  function SeatReservation(name, initialMeal){
+	var self = this;
+	self.name = name;
+	self.meal = ko.observable(initialMeal);
+	
+	self.formattedPrice = ko.computed(function () {
+		var price = self.meal().price;
+		return price ? "$" + price.toFixed(2) : "None";
+	});
+  }
+  
+  function ReservationsViewModel() {
+   var self = this;
+   
+   self.simpleStrings = ["one","two","three"];
+   
+   self.availableMeals = [
+	{mealName : "Standard (sandwich)", price: 0},
+	{mealName : "Premium (lobster)", price: 34.95},
+	{mealName : "Ultimate (whole zebra)", price: 290},
+   ];
+   
+   //notice this is something new 'ko.obervableArray'
+  self.seats = ko.observableArray([
+	new SeatReservation("Steve", self.availableMeals[0]),
+	new SeatReservation("Bert", self.availableMeals[0])
+  ]);
+  
+  /*
+	when we add an item to the array an new <tr> is added 
+	to its counterpart UI automatically
+  */
+  self.addSeat = function(){
+	self.seats.push(new SeatReservation("",self.availableMeals[0]));
+  }
+  
+  /*
+	this is a new complexity, in that an obervableArray is having 
+	items removed.  Notice in the html it was specified as 
+	"click: $root.removeSeat" - we had to scope out to the object
+	who owns the array with '$root' but we did NOT have to scope 
+	in on the 'seat' entry that is passed to the function; meaning, it 
+	is, therefore, implicit
+  */
+  self.removeSeat = function(seat){
+	self.seats.remove(seat);
+  }
+  
+  
+  self.totalSurcharge = ko.computed(function() {
+	var total = 0;
+	for(var i = 0; i < self.seats().length; i++)
+		total += self.seats()[i].meal().price;
+	return total.toFixed(2);
+  });
+}
+
+ (3) activate ko  
+  ko.applyBindings(new ReservationsViewModel());
+----
+ 
+----
+Misc.
+<--
+	this introduces a new implicit variable which appears to scope to each item's toString()
+-->
+<ul data-bind="foreach: myArray">
+	<li data-bind="text: $data"></li>
+</ul>
+
+function MyModel() {
+	var self = this;
+	
+	//we don't have a property on each item to data-bind to so the implicit '$data' provides it
+	self.myArray = ["One", "Two", "Three"]; //this renders as expected
+	
+	/*
+	however if we has specified something like
+	self.myArray = ["One", "Two", {name:"Three"}];
+	
+	we get 
+	One
+	Two
+	[object Object]
+	
+	because the last item's toString() returns this text
+	*/
+}
+
+ko.applyBindings(new MyModel());
+----
+
+----
+Observable on items that will exist only at runtime.
+ 
+ <!-- 
+	we know we are going to have many line items and we know each one 
+	supports an onclick event, so how do we make each line item observable. 
+	Meaning when a user clicks the third line-item how, via knockoutjs, do we 
+	know its the third one and not one of the others?
+	
+	the solution appears to be, we don't want to observe every line item 
+	we only want to attach the observation behavior to the one the user clicked
+ -->
+ <ul data-bind="foreach: myArray">
+	<li data-bind="text: $data, click: $root.useAnonymous"></li>
+ </ul>
+ 
+ <!--
+	we have told the click event of each line-item to call the 'useAnonymous' function
+	and within this function we are, in affect, assigned the observable 'anonymousObserved'
+	to this line item.  As such, since 'anonymousObserved' is being observed the value within
+	this 'span' gets updated on each click and upon first load its just empty.
+ -->
+ <p><span data-bind="text: anonymousObserved"></span></p>
+ 
+function MyModel() {
+	var self = this;
+	
+	self.myArray = ["One","Two","Three"];
+	
+	//we are assigning some property directly to whatever is returned by a call to ko.observable() with no callback
+	self.anonymousObserved = ko.observable();
+	
+	self.useAnonymous = function(something){self.anonymousObserved(something);};
+	
+};
+----
+
+----
+Array's whose items are empty upon 'docuement.ready'
+ - need some array assigned to a 'ko.obervableArray([]);'
+ - since this uses a table, something is need to databind each 
+   table-data too
+ - this implies a kind-of stack where the last item pushed
+   is the ONLY item being observed, so if the 'td' contained
+   some changable value it wouldn't be observed.
+ 
+ <table>
+    <thead><tr>
+        <td>Column A</td><td>Column B</td>
+    </tr></thead>
+    <tbody data-bind="foreach: myArray">
+        <tr>
+            <td data-bind="text: propA"></td><td data-bind="text: propB"></td>
+        </tr>
+    </tbody>
+ </table>
+ <button data-bind="click: addThis">Click Me</button>
+ 
+function MyModel(){
+    var self = this;
+    //an is declared and wrapped in an observable, but its empty
+    self.myArray = ko.observableArray([]);
+    
+    self.mustHaveSomething = ko.observable();
+    
+    self.addThis = function(){
+        var hereIsSomething = {propA : "one", propB : "two"};
+		
+		/*
+		 if we comment this out it still works but NONE of the 
+		 items in the array are being observed; however, the
+		 array itself is being observed.
+		*/
+        self.mustHaveSomething(hereIsSomething);
+		
+		/*
+		notice we don't invoke this as 'self.myArray()'
+		which would be invoking the 'ko.obervableArray' 
+		(I assume) and it doesn't have a method named 'push' 
+		or, at least, it doesn't work if you add the '()' back in.
+		*/
+        self.myArray.push(hereIsSomething);
+    }
+ };
+ 
+ ko.applyBindings(new MyModel());
+----
+
+----
+Get data from the server
+ - to get data from the server, use the jQuery '.getJSON'
+ 
+ //here is some data type which the model's 'myArray' is an array of.
+ function MyJsType(data) {
+	this.MyFirstProp = ko.observable(data.PropA);
+	this.SecondProp = ko.observable(data.PropB);
+ }
+ 
+ //typical model for the view and such
+ function MyViewModel() {
+	var self = this;
+	
+	self.myArray = ko.obervableArray([]);//empty upon load
+	
+	//a call to the server to get the data to put into 'myArray'
+	$getJSON("/myPartialUrl", function (myDataFromServer){
+		var mapDataToTypes = $.map(myDataFromServer, function (item) { return new MyJsType(data) } );
+		self.myArray(mapDataToTypes);
+	});
+}
+
+//still only do this once, when data comes back from the server 
+//we do NOT have to call this again
+ko.applyBindings(new MyViewModel());
+----
+
+----
+Send data to the Server
+ - still use the knockoutjs 'data-bind' mapping the POST payload directly to some data in our model
+ 
+ (1) posting JSON data using webform's postback method
+ <form action="/tasks/saveform" method="post">
+    <!-- 
+	 this presumes the url '/tasks/saveform' is expecting 'application/json' and 
+	 not the usual  'application/x-www-form-urlencoded' form post data...
+	 
+	 there doesn't appear to be any thing like 'ko.toWwwFormUrlEncoded(myHashtable)'
+	 -->
+	<textarea name="tasks"  data-bind="value: ko.toJSON(myArray)"></textarea>
+	<button type="submit">Save</button>
+ </form>
+ 
+ (2) posting JSON data using AJAX
+ // this is pretty much the same thing only it uses jQuery's '.ajax' 
+ 
+ //pretend this is inside a View Model js object
+	self.save = function(){
+		$.ajax("/tasks",{
+			data: ko.toJSON({tasks: self.myArray}),
+			type: "post", 
+			contentType: "application/json",
+			success: function(result) {
+				//do something
+			}
+		});
+	}
+----
+
+----
+Tracking removal of array items
+ - this is a helper kind of method so that when some data 
+   get pushed back to the server, the server does not have 
+   to infer whats been removed.
+   
+ - instead of sending up the remainder of items, all the 
+   items go back up to the server, the ones intended 
+   for removal will have a property by the name of 
+   '_destroy' whose value is 'true'
+ - you plug in this kind of behavior by using the 
+   'self.myArray.destory(item)'  instead of the 
+   'self.myArray.remove(item)'
+ - its important to note that any 'ko.computed' which 
+   was using 'myArray.length' will need to be modified 
+   to inspect for the '_destroy' flag
+----
+
+----
+Adding custom bindings beyond knockout's 'value: ', 'text: ', 'foreach: ', etc.
+
+- additional binding are added using the global 'ko.'s 'bindingHandlers'
+
+ ko.bindingHandlers.myCustomBinding = {
+	/*
+	- there are two properties which may be implemented 
+	  (1) update & 
+	  (2) init 
+	  both having the same parameters
+	- what comes on the right of the 'myCustomBinding' depends on 
+	  what the implementation returns 
+	- the parameter 'viewModel' is listed as deprecated as of knockout v3+
+	
+	*/
+	update: function(element, valueAccessor, allBindings, viewModel, bindingContext){
+		var myElementBinding = element;
+		
+		//this is a function which is part of the knockout implementation, it appears...
+		var myModelsProperty = valueAccessor();
+		
+		//when we don't know if we have some regular .js object or one that is wrapped in ko.observable; we use this
+		var noWorries = ko.unwrap(myModelsProperty);
+		
+		//we may need data with is present on some other binding, we use this to bring it into scope
+		var someOtherModelsBinding = allBindings.get('myArray');
+		
+		//we can gain scope of the knockout implied variables like '$root', '$data', '$parent' using this variable
+		var myRoot = bindingContext.$root;
+	},
+	init: function(element, valueAccessor, allBindings, viewModel, bindingContext){
+		//this is called once for each DOM element whose data-bind="myCustomBinding: blah"
+	}
+ };
+----

@@ -1,0 +1,438 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<noFuture>
+  <rand>
+    <data>
+      <source>
+        <area-codes>
+          <state name="Massachusetts" abbreviation="MA" >
+            <area-code>339</area-code>
+            <area-code>351</area-code>
+            <area-code>413</area-code>
+            <area-code>508</area-code>
+            <area-code>617</area-code>
+            <area-code>774</area-code>
+            <area-code>781</area-code>
+            <area-code>857</area-code>
+            <area-code>978</area-code>
+          </state>
+          <state name="Louisiana" abbreviation="LA" >
+            <area-code>225</area-code>
+            <area-code>318</area-code>
+            <area-code>337</area-code>
+            <area-code>504</area-code>
+            <area-code>985</area-code>
+          </state>
+          <state name="New Mexico" abbreviation="NM" >
+            <area-code>505</area-code>
+            <area-code>575</area-code>
+          </state>
+          <state name="Texas" abbreviation="TX" >
+            <area-code>210</area-code>
+            <area-code>214</area-code>
+            <area-code>254</area-code>
+            <area-code>281</area-code>
+            <area-code>325</area-code>
+            <area-code>346</area-code>
+            <area-code>361</area-code>
+            <area-code>409</area-code>
+            <area-code>430</area-code>
+            <area-code>432</area-code>
+            <area-code>469</area-code>
+            <area-code>512</area-code>
+            <area-code>682</area-code>
+            <area-code>713</area-code>
+            <area-code>737</area-code>
+            <area-code>806</area-code>
+            <area-code>817</area-code>
+            <area-code>830</area-code>
+            <area-code>832</area-code>
+            <area-code>903</area-code>
+            <area-code>915</area-code>
+            <area-code>936</area-code>
+            <area-code>940</area-code>
+            <area-code>956</area-code>
+            <area-code>972</area-code>
+            <area-code>979</area-code>
+          </state>
+          <state name="New Jersey" abbreviation="NJ" >
+            <area-code>201</area-code>
+            <area-code>551</area-code>
+            <area-code>609</area-code>
+            <area-code>732</area-code>
+            <area-code>848</area-code>
+            <area-code>856</area-code>
+            <area-code>862</area-code>
+            <area-code>908</area-code>
+            <area-code>973</area-code>
+          </state>
+          <state name="Washington" abbreviation="WA" >
+            <area-code>206</area-code>
+            <area-code>253</area-code>
+            <area-code>360</area-code>
+            <area-code>425</area-code>
+            <area-code>509</area-code>
+            <area-code>564</area-code>
+          </state>
+          <state name="Kentucky" abbreviation="KY" >
+            <area-code>270</area-code>
+            <area-code>364</area-code>
+            <area-code>502</area-code>
+            <area-code>606</area-code>
+            <area-code>859</area-code>
+          </state>
+          <state name="Oklahoma" abbreviation="OK" >
+            <area-code>405</area-code>
+            <area-code>539</area-code>
+            <area-code>580</area-code>
+            <area-code>918</area-code>
+          </state>
+          <state name="Wyoming" abbreviation="WY" >
+            <area-code>307</area-code>
+          </state>
+          <state name="Idaho" abbreviation="ID" >
+            <area-code>208</area-code>
+          </state>
+          <state name="District of Columbia" abbreviation="DC" >
+            <area-code>202</area-code>
+          </state>
+          <state name="Alaska" abbreviation="AK" >
+            <area-code>250</area-code>
+            <area-code>907</area-code>
+          </state>
+          <state name="Iowa" abbreviation="IA" >
+            <area-code>319</area-code>
+            <area-code>515</area-code>
+            <area-code>563</area-code>
+            <area-code>641</area-code>
+            <area-code>712</area-code>
+          </state>
+          <state name="South Carolina" abbreviation="SC" >
+            <area-code>803</area-code>
+            <area-code>843</area-code>
+            <area-code>864</area-code>
+          </state>
+          <state name="Hawaii" abbreviation="HI" >
+            <area-code>808</area-code>
+          </state>
+          <state name="Maryland" abbreviation="MD" >
+            <area-code>227</area-code>
+            <area-code>240</area-code>
+            <area-code>301</area-code>
+            <area-code>410</area-code>
+            <area-code>443</area-code>
+            <area-code>667</area-code>
+          </state>
+          <state name="New Hampshire" abbreviation="NH" >
+            <area-code>603</area-code>
+          </state>
+          <state name="Arkansas" abbreviation="AR" >
+            <area-code>327</area-code>
+            <area-code>479</area-code>
+            <area-code>501</area-code>
+            <area-code>870</area-code>
+          </state>
+          <state name="Colorado" abbreviation="CO" >
+            <area-code>303</area-code>
+            <area-code>719</area-code>
+            <area-code>720</area-code>
+            <area-code>970</area-code>
+          </state>
+          <state name="Alabama" abbreviation="AL" >
+            <area-code>205</area-code>
+            <area-code>251</area-code>
+            <area-code>256</area-code>
+            <area-code>334</area-code>
+            <area-code>659</area-code>
+            <area-code>938</area-code>
+          </state>
+          <state name="Nevada" abbreviation="NV" >
+            <area-code>702</area-code>
+            <area-code>725</area-code>
+            <area-code>775</area-code>
+          </state>
+          <state name="Minnesota" abbreviation="MN" >
+            <area-code>218</area-code>
+            <area-code>320</area-code>
+            <area-code>507</area-code>
+            <area-code>612</area-code>
+            <area-code>651</area-code>
+            <area-code>763</area-code>
+            <area-code>952</area-code>
+          </state>
+          <state name="Virginia" abbreviation="VA" >
+            <area-code>276</area-code>
+            <area-code>434</area-code>
+            <area-code>540</area-code>
+            <area-code>571</area-code>
+            <area-code>703</area-code>
+            <area-code>757</area-code>
+            <area-code>804</area-code>
+          </state>
+          <state name="North Dakota" abbreviation="ND" >
+            <area-code>701</area-code>
+          </state>
+          <state name="Connecticut" abbreviation="CT" >
+            <area-code>203</area-code>
+            <area-code>475</area-code>
+            <area-code>860</area-code>
+            <area-code>959</area-code>
+          </state>
+          <state name="Oregon" abbreviation="OR" >
+            <area-code>458</area-code>
+            <area-code>503</area-code>
+            <area-code>541</area-code>
+            <area-code>971</area-code>
+          </state>
+          <state name="Utah" abbreviation="UT" >
+            <area-code>385</area-code>
+            <area-code>435</area-code>
+            <area-code>801</area-code>
+          </state>
+          <state name="Wisconsin" abbreviation="WI" >
+            <area-code>262</area-code>
+            <area-code>274</area-code>
+            <area-code>414</area-code>
+            <area-code>534</area-code>
+            <area-code>608</area-code>
+            <area-code>715</area-code>
+            <area-code>920</area-code>
+          </state>
+          <state name="Missouri" abbreviation="MO" >
+            <area-code>314</area-code>
+            <area-code>417</area-code>
+            <area-code>557</area-code>
+            <area-code>573</area-code>
+            <area-code>636</area-code>
+            <area-code>660</area-code>
+            <area-code>816</area-code>
+            <area-code>975</area-code>
+          </state>
+          <state name="Georgia" abbreviation="GA" >
+            <area-code>229</area-code>
+            <area-code>404</area-code>
+            <area-code>470</area-code>
+            <area-code>478</area-code>
+            <area-code>678</area-code>
+            <area-code>706</area-code>
+            <area-code>762</area-code>
+            <area-code>770</area-code>
+            <area-code>912</area-code>
+          </state>
+          <state name="Arizona" abbreviation="AZ" >
+            <area-code>480</area-code>
+            <area-code>520</area-code>
+            <area-code>602</area-code>
+            <area-code>623</area-code>
+            <area-code>928</area-code>
+          </state>
+          <state name="Michigan" abbreviation="MI" >
+            <area-code>231</area-code>
+            <area-code>248</area-code>
+            <area-code>269</area-code>
+            <area-code>278</area-code>
+            <area-code>313</area-code>
+            <area-code>517</area-code>
+            <area-code>586</area-code>
+            <area-code>616</area-code>
+            <area-code>679</area-code>
+            <area-code>734</area-code>
+            <area-code>810</area-code>
+            <area-code>906</area-code>
+            <area-code>947</area-code>
+            <area-code>989</area-code>
+          </state>
+          <state name="Pennsylvania" abbreviation="PA" >
+            <area-code>215</area-code>
+            <area-code>267</area-code>
+            <area-code>272</area-code>
+            <area-code>412</area-code>
+            <area-code>484</area-code>
+            <area-code>570</area-code>
+            <area-code>582</area-code>
+            <area-code>610</area-code>
+            <area-code>717</area-code>
+            <area-code>724</area-code>
+            <area-code>814</area-code>
+            <area-code>878</area-code>
+          </state>
+          <state name="Maine" abbreviation="ME" >
+            <area-code>207</area-code>
+          </state>
+          <state name="Ohio" abbreviation="OH" >
+            <area-code>216</area-code>
+            <area-code>234</area-code>
+            <area-code>283</area-code>
+            <area-code>330</area-code>
+            <area-code>380</area-code>
+            <area-code>419</area-code>
+            <area-code>440</area-code>
+            <area-code>513</area-code>
+            <area-code>567</area-code>
+            <area-code>614</area-code>
+            <area-code>740</area-code>
+            <area-code>937</area-code>
+          </state>
+          <state name="Indiana" abbreviation="IN" >
+            <area-code>219</area-code>
+            <area-code>260</area-code>
+            <area-code>317</area-code>
+            <area-code>574</area-code>
+            <area-code>765</area-code>
+            <area-code>812</area-code>
+            <area-code>930</area-code>
+          </state>
+          <state name="Mississippi" abbreviation="MS" >
+            <area-code>228</area-code>
+            <area-code>601</area-code>
+            <area-code>662</area-code>
+            <area-code>769</area-code>
+          </state>
+          <state name="Montana" abbreviation="MT" >
+            <area-code>406</area-code>
+          </state>
+          <state name="Nebraska" abbreviation="NE" >
+            <area-code>308</area-code>
+            <area-code>402</area-code>
+            <area-code>531</area-code>
+          </state>
+          <state name="Vermont" abbreviation="VT" >
+            <area-code>802</area-code>
+          </state>
+          <state name="Delaware" abbreviation="DE" >
+            <area-code>302</area-code>
+          </state>
+          <state name="Tennessee" abbreviation="TN" >
+            <area-code>423</area-code>
+            <area-code>615</area-code>
+            <area-code>629</area-code>
+            <area-code>731</area-code>
+            <area-code>865</area-code>
+            <area-code>901</area-code>
+            <area-code>931</area-code>
+          </state>
+          <state name="North Carolina" abbreviation="NC" >
+            <area-code>252</area-code>
+            <area-code>336</area-code>
+            <area-code>704</area-code>
+            <area-code>828</area-code>
+            <area-code>910</area-code>
+            <area-code>919</area-code>
+            <area-code>980</area-code>
+            <area-code>984</area-code>
+          </state>
+          <state name="New York" abbreviation="NY" >
+            <area-code>212</area-code>
+            <area-code>315</area-code>
+            <area-code>347</area-code>
+            <area-code>516</area-code>
+            <area-code>518</area-code>
+            <area-code>585</area-code>
+            <area-code>607</area-code>
+            <area-code>631</area-code>
+            <area-code>646</area-code>
+            <area-code>716</area-code>
+            <area-code>718</area-code>
+            <area-code>845</area-code>
+            <area-code>914</area-code>
+            <area-code>917</area-code>
+            <area-code>929</area-code>
+          </state>
+          <state name="California" abbreviation="CA" >
+            <area-code>209</area-code>
+            <area-code>213</area-code>
+            <area-code>310</area-code>
+            <area-code>323</area-code>
+            <area-code>341</area-code>
+            <area-code>369</area-code>
+            <area-code>408</area-code>
+            <area-code>415</area-code>
+            <area-code>424</area-code>
+            <area-code>442</area-code>
+            <area-code>510</area-code>
+            <area-code>530</area-code>
+            <area-code>559</area-code>
+            <area-code>562</area-code>
+            <area-code>619</area-code>
+            <area-code>626</area-code>
+            <area-code>627</area-code>
+            <area-code>628</area-code>
+            <area-code>650</area-code>
+            <area-code>657</area-code>
+            <area-code>661</area-code>
+            <area-code>669</area-code>
+            <area-code>707</area-code>
+            <area-code>714</area-code>
+            <area-code>747</area-code>
+            <area-code>760</area-code>
+            <area-code>764</area-code>
+            <area-code>805</area-code>
+            <area-code>818</area-code>
+            <area-code>831</area-code>
+            <area-code>858</area-code>
+            <area-code>909</area-code>
+            <area-code>916</area-code>
+            <area-code>925</area-code>
+            <area-code>935</area-code>
+            <area-code>949</area-code>
+            <area-code>951</area-code>
+          </state>
+          <state name="Illinois" abbreviation="IL" >
+            <area-code>217</area-code>
+            <area-code>224</area-code>
+            <area-code>309</area-code>
+            <area-code>312</area-code>
+            <area-code>331</area-code>
+            <area-code>447</area-code>
+            <area-code>464</area-code>
+            <area-code>618</area-code>
+            <area-code>630</area-code>
+            <area-code>708</area-code>
+            <area-code>730</area-code>
+            <area-code>773</area-code>
+            <area-code>779</area-code>
+            <area-code>815</area-code>
+            <area-code>847</area-code>
+            <area-code>872</area-code>
+          </state>
+          <state name="Florida" abbreviation="FL" >
+            <area-code>239</area-code>
+            <area-code>305</area-code>
+            <area-code>321</area-code>
+            <area-code>352</area-code>
+            <area-code>386</area-code>
+            <area-code>407</area-code>
+            <area-code>561</area-code>
+            <area-code>689</area-code>
+            <area-code>727</area-code>
+            <area-code>754</area-code>
+            <area-code>772</area-code>
+            <area-code>786</area-code>
+            <area-code>813</area-code>
+            <area-code>850</area-code>
+            <area-code>863</area-code>
+            <area-code>904</area-code>
+            <area-code>927</area-code>
+            <area-code>941</area-code>
+            <area-code>954</area-code>
+          </state>
+          <state name="Kansas" abbreviation="KS" >
+            <area-code>316</area-code>
+            <area-code>620</area-code>
+            <area-code>785</area-code>
+            <area-code>913</area-code>
+          </state>
+          <state name="West Virginia" abbreviation="WV" >
+            <area-code>304</area-code>
+            <area-code>681</area-code>
+          </state>
+          <state name="Rhode Island" abbreviation="RI" >
+            <area-code>401</area-code>
+          </state>
+          <state name="South Dakota" abbreviation="SD" >
+            <area-code>605</area-code>
+          </state>
+        </area-codes>
+      </source>
+    </data>
+  </rand>
+</noFuture>

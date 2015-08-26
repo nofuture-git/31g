@@ -1,0 +1,89 @@
+Notes JSON
+----
+
+----
+//blank type may be defined and then properties added after-the-fact
+var myType00 = {};
+myType00.property = "hello";
+console.log(myType00.property);
+
+//this is a flat type which will HAS-A three properties
+var myType01 = {"property1":"hello", "property2":"goodbye","property3":1};
+console.log(myType.property1);
+
+//this is also a compound type which HAS-A property which is an int array
+var myType02 = { "complexProperty" : { "innerProperty" : "hello from inside"}};
+console.log(myType02.complextProperty.innerProperty);
+
+//another compound type which HAS-A list of the inner type
+var myType03 = {"listProperty" : [ {"innerProperty": "hello from inside 1", "innerCount" : 0},{"innerProperty": "hello from inside 1", "innerCount" : 0} ]};
+console.log(myType03.listProperty[0].innerProperty);
+
+//a compound type whose list has each item created and added inline after the declaration of the type
+var myType04 = {"listProperty" : {"numOfItems" : 5, "items" : []}};
+for(var i =0;i<myType04.listProperty.numOfItems;i++){myType04.listProperty.items[i] = {"innerProperty":"hello from inside","itemIndex" : i}}
+myType04.listProperty.items.forEach(function(e){console.log(e.innerProperty + " number " + e.itemIndex);});
+
+//an example of JSON matching patterns found in a web.config
+var webConfig = {
+	"configuration" : {
+		"configSections" : [
+			{
+				"name" : "log4net",
+				"type" : "log4net.Config.Log4NetConfigurationSectionHandler,log4net"
+			},
+			{
+				"name" : "dotless",
+				"type" : "dotless.Core.configuration.DotlessConfigurationSectionHandler, dotless.Core"
+			}
+		]
+	},
+	"appSettings" : [
+		{"ValidationFilePath" : "Validation.config"},
+		{"MaxSearchResults" : 500},
+		{"SessionIdleMinutes" : 28}
+	],
+	"log4net" : {
+		"appender" : [
+			{
+				"name" : "MyFileErrorLog",
+				"type" : "log4net.Appender.RollingFileAppender",
+				"file" : 'C:\EIP\Logs\EIP_Client_ExceptionLog.txt',
+				"appendToFile" : true,
+				"rollingStyle" : "Composite",
+				"maxSizeRollBackups" : -1,
+				"maximumFileSize" : "1MB",
+				"layout" : {
+					"type" : "log4net.Layout.PatternLayout",
+					"conversionPattern" : '%date - %-5level - %property{username} %newlineMessage: %message%newline'
+				}
+			},
+			{
+				"name" : "MyEmailErrorLog",
+				"type" : "log4net.Appender.SmtpPickupDirAppender",
+				"to" : "errorLog@myDomain.com",
+				"from" : "noreply@myDomain.com",
+				"subject" : "Error Email Event",
+				"pickupDirectory" : 'C:\\Logs\\MyEmailErrors\\',
+				"priority" : "High",
+				"bufferSize" : 2,
+				"lossy" : true,
+				"evaluator" : {
+					"type" : "log4net.Core.LevelEvaluator",
+					"threshold" : 'ERROR'
+				},
+				"layout" : {
+					"type" : "log4net.Layout.PatternLayout",
+					"conversionPattern" : '%newline%date [%thread] %-5level %logger [%property{NDC}] - %message%newline%newline'
+				}
+			}
+		],//end appender
+		"root" : {
+			"level" : "DEBUG",
+			"appender-ref" : [
+				"MyFileErrorLog",
+				"MyEmailErrorLog"
+			]
+		}//end root
+	}//end log4Net
+};

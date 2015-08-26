@@ -1,0 +1,150 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{B48811E5-CCB2-4AAE-B4E8-A711FA018460}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>NoFuture.Hbm</RootNamespace>
+    <AssemblyName>NoFuture.Hbm</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Iesi.Collections, Version=4.0.0.0, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Iesi.Collections.4.0.1.4000\lib\net40\Iesi.Collections.dll</HintPath>
+    </Reference>
+    <Reference Include="NHibernate, Version=4.0.0.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\NHibernate.4.0.3.4000\lib\net40\NHibernate.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Compose.cs" />
+    <Compile Include="SortingContainers\HbmFileContent.cs" />
+    <Compile Include="Templates\Ef6xFluentMapping.cs" />
+    <Compile Include="Templates\Ef6xPoco.cs" />
+    <Compile Include="Templates\HbmCommand.cs" />
+    <Compile Include="Templates\HbmCompKeyCsClass.cs" />
+    <Compile Include="Templates\HbmCsClass.cs" />
+    <Compile Include="XeFactory.cs" />
+    <Compile Include="EqualityComparison.cs" />
+    <Compile Include="Globals.cs" />
+    <Compile Include="InvokeStoredProcManager.cs" />
+    <Compile Include="SortingContainers\ColumnMetadata.cs" />
+    <Compile Include="DbQryContainers\MetadataDump\HbmAllColumns.cs" />
+    <Compile Include="DbQryContainers\MetadataDump\HbmAllIndex.cs" />
+    <Compile Include="DbQryContainers\MetadataDump\HbmAllKeys.cs" />
+    <Compile Include="DbQryContainers\MetadataDump\HbmAutoIncrement.cs" />
+    <Compile Include="DbQryContainers\MetadataDump\HbmBase.cs" />
+    <Compile Include="DbQryContainers\MetadataDump\HbmContraints.cs" />
+    <Compile Include="DbQryContainers\MetadataDump\HbmFlatData.cs" />
+    <Compile Include="DbQryContainers\MetadataDump\HbmPrimaryKeys.cs" />
+    <Compile Include="DbQryContainers\SortedBaseFile.cs" />
+    <Compile Include="DbQryContainers\SortedOneToMany.cs" />
+    <Compile Include="DbQryContainers\SortedBags.cs" />
+    <Compile Include="DbQryContainers\SortedKeys.cs" />
+    <Compile Include="DbQryContainers\MetadataDump\HbmUniqueClusteredIdxNotPks.cs" />
+    <Compile Include="DbQryContainers\MetadataDump\HbmStoredProcsAndParams.cs" />
+    <Compile Include="SortingContainers\StoredProcParamItem.cs" />
+    <Compile Include="SortingContainers\StoredProcMetadata.cs" />
+    <Compile Include="InvalidHbmNameException.cs" />
+    <Compile Include="Mapping.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Settings.cs" />
+    <Compile Include="Sorting.cs" />
+    <Compile Include="SortingContainers\FkItem.cs" />
+    <Compile Include="SortingContainers\PkItem.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Gen\Gen.csproj">
+      <Project>{96eb903d-a8b1-4a4a-8e68-1e64cd8467ec}</Project>
+      <Name>Gen</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Shared\Shared.csproj">
+      <Project>{4b77029a-6f3e-48ae-b8e2-c4dd06dce627}</Project>
+      <Name>Shared</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Util\Util.csproj">
+      <Project>{D7F28538-BA6A-46B4-A080-65124E899317}</Project>
+      <Name>Util</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="MsSql\AllColumns.sql" />
+    <EmbeddedResource Include="MsSql\AllColumns2K.sql" />
+    <EmbeddedResource Include="MsSql\AllIndex.sql" />
+    <EmbeddedResource Include="MsSql\AllIndex2K.sql" />
+    <EmbeddedResource Include="MsSql\AllKeys.sql" />
+    <EmbeddedResource Include="MsSql\AutoIncrement.sql" />
+    <EmbeddedResource Include="MsSql\AutoIncrement2K.sql" />
+    <EmbeddedResource Include="MsSql\Constraints.sql" />
+    <EmbeddedResource Include="MsSql\FlatData.sql" />
+    <EmbeddedResource Include="MsSql\FlatData2K.sql" />
+    <EmbeddedResource Include="MsSql\PrimaryKeys.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+    <None Include="Templates\HbmCompKeyCsClass.tt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Templates\Ef6xFluentMapping.tt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Templates\Ef6xPoco.tt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Templates\HbmCommand.tt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Templates\HbmCsClass.tt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="MsSql\UniqueClusteredIdxNotPks.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="MsSql\StoredProcsAndParams.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

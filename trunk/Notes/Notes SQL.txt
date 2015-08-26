@@ -1,0 +1,477 @@
+Basic SQL Notes
+
+"Sams Teach Yourself SQL™ in 10 Minutes, Third Edition" 
+by Ben Forta 
+Publisher: Sams 
+Pub Date: March 31, 2004 
+Print ISBN-10: 0-672-32567-5 
+Print ISBN-13: 978-0-672-32567-0 
+Pages: 256 
+
+----
+Select Query
+--Retrieve one column
+SELECT myColumn
+FROM myTable
+WHERE myID = 1
+
+--Retrieve multiple columns
+SELECT myColumn, myOtherColumn
+FROM myTable
+WHERE myID = 1
+
+--Retrieve all columns
+SELECT *
+FROM myTable
+WHERE myID = 1
+----
+
+----
+Sorting
+--Sort a column
+SELECT myColumn
+FROM myTable
+WHERE myID = 1
+ORDER BY myColumn
+
+--Sort multiple columns
+SELECT myColumn, myOtherColumn
+FROM myTable
+WHERE myID = 1
+ORDER BY myColumn, myOtherColumn
+
+--Sort by relative position
+SELECT myColumn, myOtherColumn
+FROM myTable
+WHERE myID = 1
+ORDER BY 1, 2 --order will be by myColumn and then myOtherColumn
+
+--Sort direction
+SELECT myColumn, myOtherColumn
+FROM myTable
+WHERE myID = 1
+ORDER BY myColumn, myOtherColumn DESC --or ASC
+----
+
+----
+WHERE statement operators
+=       equal
+<>      not equal
+!=      not equal
+<       less than
+<=      less than or equal to
+!<      not less than
+>       greater than
+>=      greater than or equal to 
+!>      not greater than
+BETWEEN between
+IS NULL a null value 
+IS NOT NULL
+EXISTS
+----
+
+----
+Combine Operators
+AND     both conditions must be true
+OR      one or both conditions must be true
+IN      any matching explict list
+        ex. WHERE myID IN ('1', '2') 
+NOT     condition must be untrue
+----
+
+----
+Regular Expressions
+SOUNDEX value sounds like 
+LIKE    true when item matchs expression
+%       same to * in Microsoft
+----
+
+----
+String Operators
+||      Concat operator
+TRIM    remove spaces around a string
+RTRIM   remove spaces on the right
+LTRIM   remove spaces on the left
+UPPER   change string to upper case
+LOWER   change string to lower case
+----
+
+----
+AS      set calculated field name as an alias
+----
+
+----
+Math Operators
+*       multiplier
+/       divider
++       addition
+-       subtraction
+ABS     absolute value
+COS     cosign
+EXP     exponent
+PI()    value of Pi
+SIN     sine
+SQRT    square root
+TAN     tangent
+----
+
+----
+Date/Time Functions
+TO_DATE(' ') --Oracle
+DATEPART('yy', myColumn) --General
+YEAR(' ') --yet another
+----
+
+----
+Aggregate functions
+AVG       average
+COUNT     count
+MAX       maximum
+MIN       min
+SUM       sum
+DISTINCT  combine with other aggregate to get only unique values
+          ex. need average but column list values multiple times  
+----
+
+----
+Grouping Statements
+SELECT myColumn, COUNT(*)
+FROM myTable
+GROUP BY myColumn --groups the data per myColumn record value
+
+SELECT CORP.NAME AS CORP_NAME
+	  ,DIVISION.NAME AS DIVISION_NAME
+	  ,GROUP.NAME AS GROUP_NAME
+FROM CORP
+INNER JOIN DIVISION
+	ON CORP.ID = DIVISION.CORP_ID
+INNER JOIN GROUP
+	ON DIVISION.ID = GROUP.DIVISION_ID
+GROUP BY CORP_NAME, DIVISION_NAME, GROUP_NAME
+
+/* GROUP BY typical results
+CORP_NAME    DIVISION_NAME   GROUP_NAME
+AAA			 BBB			 CCC
+*/
+
+/* Add the WITH CUBE and results look like
+CORP_NAME    DIVISION_NAME   GROUP_NAME
+AAA			 BBB			 CCC
+null		 BBB			 CCC
+null		 null			 CCC
+null		 null			 null
+AAA			 null			 CCC
+AAA			 null			 null
+AAA			 BBB			 null
+null		 BBB			 null
+
+(i+1)*(j+1)*(k+1) 
+*/
+
+/* Add the WITH ROLLUP and the results look like
+CORP_NAME    DIVISION_NAME   GROUP_NAME
+null		 null			 null
+AAA			 null			 null
+AAA			 BBB			 null
+AAA 		 BBB			 CCC 
+
+(i*j*k)+(i*j)+(i*k)+1
+*/
+
+--NULL is its own group
+----
+
+----
+Filter Groups
+SELECT myColumn, COUNT(*)
+FROM myTable
+WHERE myOtherColumn <> 0 --eliminate rows
+GROUP BY myColumn --now, group the remaining rows by this
+HAVING COUNT(*) >2 --now, remove these from the groups
+----
+
+----
+Sub-Query
+SELECT myTopColumn, myTopColumnData
+FROM myTopTable
+WHERE myTopColumn IN (
+                      SELECT myInnerColumn --get what you need and plugin 
+                      FROM myOtherTable
+                      WHERE myInnerColumn = 3
+                      )
+
+SELECT myColumn1, myColumn2 --use this for multi-values in where statement
+FROM myTable
+WHERE (myColumn3, myColumn4) IN
+      (SELECT myOtherColumn3, myOtherColumn4
+       FROM myOtherTable
+       WHERE myOhterColumn3 = 2)
+	   
+SELECT a.myColumn
+	  ,(SELECT DISTINCT(cq.mycolumn)
+	    FROM MyOtherTable as cq
+		WHERE cq.otherColumn = a.myColumn) AS CorreleatedSubquery
+FROM myTable AS a
+
+SELECT a.myColumn
+FROM myTable AS a
+WHERE NOT EXIST (SELECT *
+				 FROM myOtherTable AS b
+				 WHERE a.myId = b.myId);
+
+----
+
+----
+Table Expressions
+
+SELECT a.myColumn, b.myTableColumn
+FROM myTable AS a
+JOIN (SELECT myOtherColumn AS myTableColumn --column alias is required
+	  FROM myOtherTable ) AS b
+
+WITH b
+AS
+	(SELECT myOtherColumn AS myTableColumn --column alias is required
+	  FROM myOtherTable)
+	
+	SELECT a.myColumn, b.myTableColumn
+	FROM myTable AS a
+	JOIN b
+
+
+----
+Joins
+
+Cross-Join (old SQL-89 standard)
+SELECT a.myColumn, a.myOtherColumn
+FROM myTable AS a, myTable AS b  --same table two aliases
+WHERE a.myColumn = b.myColumn
+AND b.myColumn = 'aSpecificValue' --may be accomplished with sub-query
+                                  --use this with same table - faster
+								  
+Inner Join
+SELECT a.myColumn, b.myOtherColumn
+FROM myTable a
+INNER JOIN myotherTable b 
+	ON a.myColumn = b.myColumn
+
+Outer Joins
+SELECT a.myColumn, b.myOtherColumn
+FROM myTable AS a 
+LEFT OUTER JOIN myOtherTable AS b
+	ON a.myID = b.myID
+
+SELECT 	a.myColumn, b.myOtherColumn
+FROM myTable AS a 
+RIGHT OUTER JOIN myOtherTable AS b
+	ON a.myID = b.myID
+
+SELECT 	a.myColumn, b.myOtherColumn
+FROM myTable AS a 
+FULL OUTER JOIN myOtherTable AS b
+	ON a.myID = b.myID
+
+
+Old non-standard Left-Join syntax
+--SQL Server
+SELECT a.myColumn, b.myOtherColumn
+FROM myTable AS a, myOtherTable AS b
+WHERE a.myID =* b.myID --include all records from table (a)
+                       --reverse these to get all records from (b)
+--Oracle syntax
+SELECT a.myColumn, b.myOtherColumn
+FROM myTable AS a, myOtherTable AS b
+WHERE a.myID (+) = b.myID --include all records from table (a)
+                          --place the (+) on the other side to get opposite
+----
+
+----
+Union statement
+
+SELECT myColumn, myOtherColumn --must have the same columns in the SELECT
+FROM myTable
+WHERE myID >= 10    --could have used a more complex WHERE to get this result
+UNION               --this brings the two queries together
+SELECT myColumn, myOtherColumn
+FROM myTable
+WHERE myColumn > 10 --UNION query will automaticly remove duplicate records
+                    --use UNION ALL to halt auto removal of dup.'s
+                    --add ORDER BY to very bottom, will order result set 
+----
+                    
+----
+Insert statement
+
+Complete Row
+INSERT INTO myTable
+VALUES(1,'myName', null) --must have something for every column
+                         --must be in the same order as the columns
+
+Partial Row
+INSERT INTO myTable (myID,myString) --specify columns here
+VALUES (1, 'myName')                --and thier values here
+                                    --columns ommitted must allow null value
+
+Retrieved values
+INSERT INTO myTable(
+myID,
+myString,
+myNumber)
+SELECT              --pipe these results straight into 'myTable'
+myOtherID
+myOtherString
+myOtherNumber
+FROM myOtherTable                                           
+----
+
+----
+Update statement
+UPDATE myTable
+SET myID = 2,                 --only one SET command, multiple values
+    myString = 'myMiddleName'
+WHERE myID = 1                --without this, the whole table is changed
+
+--update with a join ANSI SQL standard
+UPDATE myTable
+ SET MyValue = 
+  (
+	SELECT AValue
+	FROM AnotherTable AT
+	WHERE AT.MatchOnId = myTable.ID
+  )
+ WHERE EXISTS
+  (
+	SELECT *
+	FROM AnotherTable AT
+	WHERE AT.MatchOnId = myTable.ID
+  )
+----
+
+----
+Delete statement
+DELETE FROM myTable
+WHERE myID = 1        --may only delete an entire record
+----
+
+----
+Merge statement
+MERGE INTO MyTable 
+USING table_Alias 
+	ON (table_Alias.MyColumn = 'Smith')
+WHEN MATCHED THEN
+	UPDATE SET 	MyColumn = 'Revolver'
+WHEN NOT MATCHED THEN
+	INSERT (MyColumn) VALUES ('Revolver')
+----
+
+----
+Create table
+CREATE TABLE myTable
+(
+  myID      INTEGER(10)   NOT NULL, --column name, datatype, null possiablity
+  myString  VARCHAR(50)   NULL,
+  myNumber  DECIMAL(10,2) NULL      DEFAULT 0 
+)
+
+CREATE TABLE myTable
+(
+  myID      INTEGER(10)   NOT NULL PRIMARY KEY, --also set keys here
+  myString  VARCHAR(50)   NULL,
+  myNumber  DECIMAL(10,2) NULL REFERENCES myOtherTable(myOtherID)
+)  --also may set foreign key
+----
+
+----
+Alter table
+ALTER TABLE myTable
+ADD myOtherNumber DECIMAL(6,1)
+
+ALTER TABLE myTable
+DROP COLUMN myOtherNumber
+
+ALTER TABLE myTable
+ADD CONSTRAINT
+FOREIGN KEY (myNumber) REFERENCES myOtherTable(myOtherID)
+----
+
+----
+Delete table
+DROP TABLE myTable
+----
+
+----
+Views
+CREATE VIEW myView AS  --stored in memory as this query, not as result set
+SELECT myID, myString  --may be ref'ed like a table
+FROM myTable
+WHERE myID = 1
+----
+
+----
+Procedures: actual module level-type code 
+CREATE PROCEDURE myProcedure
+(myParameter OUT INTEGER) --wild varity of declartion
+IS
+BEGIN
+    SELECT myID
+    FROM myTable
+    WHERE myID = 1
+    myParameter :=SQL%OUTPUT; --wild varity of var. assignment
+END;
+
+EXCUTE myProcedure --this is going to return something
+----
+
+----
+Transactions
+BEGIN TRANSACTION --SQL Server
+--...... stuff here
+END TRANSACTION   --some variation of this 
+
+
+ROLLBACK; --obvious
+COMMIT; --likewise
+
+SAVEPOINT mySavePoint; --set within procedure (Oracle) 
+SAVE TRANSACTION mySavePoint; --Sybase, SQL Server
+
+ROLLBACK TO mySavePoint; --Oracle
+ROLLBACK TRANSACTION mySavePoint --SQL Server
+----
+
+----
+Cursors
+DECLARE CURSOR myCursor 
+IS --also use FOR
+SELECT *
+FROM myTable
+WHERE myID = 1 
+
+--have to use FETCH
+DECLARE TYPE myCursor IS REF CURSOR 
+RETURN myTable%ROWTYPE;         
+DECLARE myVariable myTable%ROWTYPE    --variable declaration
+BEGIN
+    OPEN myCursor
+    FETCH custCursor INTO myVariable --cursor value into variable
+    CLOSE myCursor
+END;    
+----
+
+----
+Index
+CREATE INDEX myUniqueIndex --must be unique across entire db
+ON myTable (myID);
+----
+
+----
+Triggers
+CREATE TRIGGER myTrigger
+AFTER INSERT OR DELETE --INSERT scope is new data
+FOR EACH ROW           --UPDATE scope is new and old data 
+BEGIN                  --DELETE scope is data being deleted
+UPDATE myTable
+SET myNumber = myNumber/1
+WHERE myID > 1
+END;
+----    

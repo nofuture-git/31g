@@ -1,0 +1,58 @@
+Java XML notes
+
+----
+Read XML
+
+import javax.xml.parsers.*;
+import org.w3c.dom.*;
+
+DocumentBuilderFactory docBFactory = new DocumentBuilderFactory();
+DocumentBuilder docB = docBFactory.newDocumentBuilder();
+Document doc = docB.parse("myXML.xml"); //in-memory rep. of entire xmlfile
+Element elem = doc.getDocumentElement(); //xml file's root node
+NodeList lst = elem.getElementsByTagName("xmlNode"); //node's name, no <>
+for(int i =0; i< lst.getLength(); i++){
+    System.out.println(lst.item(i).getChildNodes().item(0).getNodeValue());
+    //this is used to get an attribute value
+    Element elem = (Element)lst.item(i);
+    System.out.println(elem.getAttribute("attribute-name").toString);
+}//the text w/i a node is infact a node itself!!!
+----
+
+----
+Write XML (DOM)
+
+import org.jdom.input.DOMBuilder;
+import org.jdom.output.XMLOutputter;
+
+throws java.io.IOException, org.jdom.JDOMException
+
+org.jdom.Element elm = new org.jdom.Element("myRoot");
+org.jdom.Document doc = new org.jdom.Document(elm);
+org.jdom.output.DOMOutputter ptr = new org.jdom.output.DOMOutputter();
+org.w3c.dom.Document w3cDoc;
+
+w3cDoc = ptr.output(doc); //handle/declare org.jdom.JDOMException
+// used easy construction from JDOM then converted it back to a w3c Document
+
+org.jdom.input.DOMBuilder bld = new org.jdom.input.DOMBuilder();
+org.jdom.Document docJ;
+docJ = bld.build(w3cDoc);
+//this reverses it back to the easy JDOM document
+org.jdom.output.XMLOutputter out = new org.jdom.output.XMLOutputter();
+out.setFormat(org.jdom.output.Format.getPrettyFormat());
+out.output(docJ, new FileWriter("myXML.xml"));  
+//now its a xml file - yeah...  
+----
+
+----
+Navigate XML
+
+org.w3c.dom.Element rootElement = w3cDoc.getDocumentElement(); //gets root
+org.w3c.dom.Element anyElement = w3cDoc.createElement("anyElement");
+anyElement.setAttribute("attributeName", "attributeValue");
+org.w3c.dom.Text txt = w3c.createText("regular text with spaces...");
+
+anyElement.appendChild(txt);//string markup together
+rootElement.appendChild(anyElement);
+----

@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<configuration>
+<system.serviceModel>
+    <behaviors>
+      <endpointBehaviors>
+        <behavior name="DefaultBehavior">
+          <dataContractSerializer maxItemsInObjectGraph="2147483647" />
+        </behavior>
+      </endpointBehaviors>
+    </behaviors>
+    <bindings>
+      <wsHttpBinding>
+        <binding name="CholemBinding" closeTimeout="00:05:00" openTimeout="00:05:00" receiveTimeout="00:10:00" sendTimeout="00:10:00" allowCookies="false" bypassProxyOnLocal="true" hostNameComparisonMode="StrongWildcard" maxBufferPoolSize="5000000" maxReceivedMessageSize="500000000" messageEncoding="Text" textEncoding="utf-8" useDefaultWebProxy="true">
+          <readerQuotas maxDepth="32" maxStringContentLength="8192" maxArrayLength="500000000" maxBytesPerRead="4096" maxNameTableCharCount="16384" />
+          <security mode="None" />
+        </binding>
+        <binding name="KamatzBinding" closeTimeout="00:05:00" openTimeout="00:05:00" receiveTimeout="00:10:00" sendTimeout="00:10:00" allowCookies="false" bypassProxyOnLocal="true" hostNameComparisonMode="StrongWildcard" maxBufferPoolSize="5000000" maxReceivedMessageSize="500000000" messageEncoding="Text" textEncoding="utf-8" useDefaultWebProxy="true">
+          <readerQuotas maxDepth="32" maxStringContentLength="8192" maxArrayLength="500000000" maxBytesPerRead="4096" maxNameTableCharCount="16384" />
+          <security mode="Transport">
+            <transport clientCredentialType="None" />
+          </security>
+        </binding>
+        <binding name="PatachService" closeTimeout="00:01:00" openTimeout="00:01:00" receiveTimeout="00:10:00" sendTimeout="00:01:00" bypassProxyOnLocal="false" transactionFlow="false" hostNameComparisonMode="StrongWildcard" maxBufferPoolSize="524288" maxReceivedMessageSize="65536" messageEncoding="Text" textEncoding="utf-8" useDefaultWebProxy="true" allowCookies="false">
+          <readerQuotas maxDepth="32" maxStringContentLength="8192" maxArrayLength="16384" maxBytesPerRead="4096" maxNameTableCharCount="16384" />
+          <reliableSession ordered="true" inactivityTimeout="00:10:00" enabled="false" />
+          <security mode="None" />
+        </binding>
+        <binding name="TsereService" closeTimeout="00:01:00" openTimeout="00:01:00" receiveTimeout="00:10:00" sendTimeout="00:01:00" bypassProxyOnLocal="false" transactionFlow="false" hostNameComparisonMode="StrongWildcard" maxBufferPoolSize="524288" maxReceivedMessageSize="65536" messageEncoding="Text" textEncoding="utf-8" useDefaultWebProxy="true" allowCookies="false">
+          <readerQuotas maxDepth="32" maxStringContentLength="8192" maxArrayLength="16384" maxBytesPerRead="4096" maxNameTableCharCount="16384" />
+          <reliableSession ordered="true" inactivityTimeout="00:10:00" enabled="false" />
+          <security mode="Transport">
+            <transport clientCredentialType="None" proxyCredentialType="None" realm="" />
+          </security>
+        </binding>
+      </wsHttpBinding>
+    </bindings>
+    <client>
+      <endpoint address="http://localhost:8081/AlephService.svc" binding="wsHttpBinding" bindingConfiguration="CholemBinding" contract="NoFuture.VVN.Web.ServiceProxy.App.IAlephService" name="WSHttpBinding_IAlephService" behaviorConfiguration="DefaultBehavior" />
+      <endpoint address="http://localhost:8081/BetService.svc" binding="wsHttpBinding" bindingConfiguration="CholemBinding" contract="NoFuture.VVN.Web.ServiceProxy.App.IBetService" name="WSHttpBinding_IBetService" behaviorConfiguration="DefaultBehavior" />
+      <endpoint address="http://localhost:8081/VetService.svc" binding="wsHttpBinding" bindingConfiguration="CholemBinding" contract="NoFuture.VVN.Web.ServiceProxy.App.IVetService" name="WSHttpBinding_IVetService" behaviorConfiguration="DefaultBehavior" />
+      <endpoint address="http://localhost:8081/GimmelService.svc" binding="wsHttpBinding" bindingConfiguration="CholemBinding" contract="NoFuture.VVN.Web.ServiceProxy.App.IGimmelService" name="WSHttpBinding_IGimmelService" behaviorConfiguration="DefaultBehavior" />
+      <endpoint address="http://localhost:8081/DaletService.svc" binding="wsHttpBinding" bindingConfiguration="CholemBinding" contract="NoFuture.VVN.Web.ServiceProxy.App.IDaletService" name="WSHttpBinding_IDaletService" behaviorConfiguration="DefaultBehavior" />
+      <endpoint address="http://localhost:8081/HeiService.svc" binding="wsHttpBinding" bindingConfiguration="CholemBinding" contract="NoFuture.VVN.Web.ServiceProxy.App.IHeiService" name="WSHttpBinding_IHeiService" behaviorConfiguration="DefaultBehavior" />
+      <endpoint address="http://localhost:8081/VavService.svc" binding="wsHttpBinding" bindingConfiguration="CholemBinding" contract="NoFuture.VVN.Web.ServiceProxy.App.IVavService" name="WSHttpBinding_IVavService" behaviorConfiguration="DefaultBehavior" />
+      <endpoint address="http://localhost:8081/ZayinService.svc" binding="wsHttpBinding" bindingConfiguration="CholemBinding" contract="NoFuture.VVN.Web.ServiceProxy.App.IZayinService" name="WSHttpBinding_IZayinService" behaviorConfiguration="DefaultBehavior" />
+      <endpoint address="http://localhost:8081/ChetService.svc" binding="wsHttpBinding" bindingConfiguration="CholemBinding" contract="NoFuture.VVN.Web.ServiceProxy.App.IChetService" name="WSHttpBinding_IChetService" behaviorConfiguration="DefaultBehavior" />
+      <endpoint address="http://localhost:8081/TetService.svc" binding="wsHttpBinding" bindingConfiguration="CholemBinding" contract="NoFuture.VVN.Web.ServiceProxy.App.ITetService" name="WSHttpBinding_ITetService" behaviorConfiguration="DefaultBehavior" />
+      <endpoint address="http://localhost:8081/YodService.svc" binding="wsHttpBinding" bindingConfiguration="CholemBinding" contract="NoFuture.VVN.Web.ServiceProxy.App.IYodService" name="WSHttpBinding_IYodService" behaviorConfiguration="DefaultBehavior" />
+      <endpoint address="http://localhost:8084/WcfServices/KronosService.svc" binding="wsHttpBinding" bindingConfiguration="PatachService" contract="NoFuture.ScheduleNow.InternalServices.IKronosService" name="WSHttpBinding_IKronosService" />
+    </client>
+  </system.serviceModel>
+</configuration>

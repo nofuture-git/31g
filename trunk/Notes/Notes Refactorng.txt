@@ -1,0 +1,780 @@
+Refactoring
+
+Refactoring: Improving the Design of Existing Code 
+by Martin Fowler; Kent Beck; John Brant; William Opdyke; Don Roberts 
+Publisher: Addison Wesley Professional 
+Pub Date: June 28, 1999 
+Print ISBN-10: 0-201-48567-2 
+Print ISBN-13: 978-0-201-48567-7 
+Pages: 464 
+
+----
+Principles
+ - refactoring: change in the internal structure that makes code easy to read
+ - is a technique not just random clean-up
+ - internal changes that don't improve readability is not refactoring
+ - cannot change observalble behavior
+ - you do not add tests while refactoring
+ - eliminate duplicate code is a major component of refactoring
+ - consider succeding programers as users of your code
+----
+
+----
+Source Difficulty
+ - confusing code
+ - duplicate logic
+ - function addition requires existing code to change
+ - complex branching logic
+ - performance slow-downs happen in small chuncks of code
+----
+
+----
+Tips
+ - Break code into chuncks by syntax construct (eg Switch, Loop, If..Then)
+ - Look for comments - they display a semantic distance
+ - Upon code chunck removal pay special attention to local variables
+ - good Objects need to know very little about thier overall system
+ - Never hesitate to change variable names
+ - Write code that is as easy to read as a paragraph
+ - methods should be on the object whose data it uses
+ - upon method move: 
+  - leave the old one in place until further testing
+  - have old method just call new method to maintain public interface
+ - replace local variables with instance lvl properties
+ - wrap many parameters into stack-residing objects
+ - name a method for what it does not how it does it
+ - a local variable is only set once? - declare it Final and attempt compile
+ - use the language's Assert.IsTrue for assumptions while debugging 
+ - attempt to hide as many methods as possiable
+----
+
+----
+Refactor Signpost
+ - Duplicate Code
+  - same code construct in mutiple methods, same class
+  - same method in sibling classes
+ 
+ - Long Method 
+  - too many comments
+  - to long
+  - name reads like a sentence
+  
+ - Large Class
+  - too many instance variables
+  - to many lines
+ 
+ - Long Parameter List
+   
+ - Divergent Change
+  - is changed often for small requirement creep
+  
+ - Shotgun Surgery
+  - small class change requires many little changes in other classes
+
+ - Feature Envy
+  - method uses alot of data of another class
+  
+ - Data Clumps
+  - data values tend to be passed around together (eg intHeight, intLength)
+
+ - Primitive Obsession 
+  - use of clusters of primitives instead of hand-crafted object (eg SS# as obj)
+  
+ - Switch Statement
+  - often imply need for polymorphic reference
+  
+ - Parallel Inheritance
+  - adding subclasses in pairs from different parents
+  
+ - Lazy Class
+  - independent class not being used
+  
+ - Speculative Generality
+  - added features for the sake of, "maybe someday.."
+  - only used by unit tests
+
+ - Temporary Instance Variables
+  - variables are set only in certian conditions
+
+ - Message Chains
+  - obj calls obj which calls another obj
+
+ - Middle Man
+  - query obj and obj is constantly asking another obj 
+  
+ - Inappropriate Intimacy
+  - two classes are highly coupled
+  
+ - Incomplete Libary Class
+  - use of libary that doesn't have all desired features
+   
+ - Data Class
+  - encaps'ed data that is being used by many obj
+  - logic in user obj could be moved to data obj itself
+  
+ - Unused Parent Methods
+  - child class use only some of parent methods
+  - push unused methods to child class that uses it
+  
+ - Comments
+  - comments that cover bad code
+----
+
+----
+Extract Method
+ - take portion of method out and place into its own method
+ - extracted method's name should be simple and small just like the method
+ - higher level methods will read like a series of comments
+ - extracted method can be used by others
+ - added utility is depend on good names
+ Public Sub PrintOwning(ByVal amount As Double)
+    PrintBanner()
+    'print the details
+    Console.WriteLine("Name: " & strName)
+    Console.WriteLine("Amount: " & amount)
+ End Sub
+ 
+ --Into This--
+ 
+ Public Sub PrintOwning(ByVal amount As Double)
+    PrintBanner()
+    PrintDetails(amount)
+ End Sub
+ 
+ Public Sub PrintDetails(ByVal amount As Double)
+    Console.WriteLine("Name: " & strName)
+    Console.WriteLine("Amount: " & amount)
+ End Sub
+----
+
+----
+Inline Method
+ - opposite of Extract Method
+ - for use when method body says more than method name
+ Public Function GetRating() As Integer
+    If MoreThanFive() Then 
+      Return 2 
+    Else
+      Return 1
+    End If 
+ End Function
+ 
+ Public Function MoreThanFive() As Boolean
+    Return strLate > 5
+ End Function  
+ 
+ --Into This--
+ Public Function GetRating() As Integer
+    If strLate > 5 Then Return 2
+    Return 1
+ End Function
+----
+
+----
+Inline Temporary Variable
+ - remove local variable that is not needed
+ 
+ ....
+ Dim strLevel As String = objControl.Level
+ Return strLevel = "Four"
+ 
+ --Into This
+ 
+ Return objControl.Level ="Four"
+----
+
+----
+Relace Temp with Query
+ - replace local variable with a method
+ - instance level scope helps clean up the class
+ - vital to effective Extract Method
+ ....
+ Dim basePrice As Double = intQuantity * dblPrice
+ If basePrice > 1000 Then
+  Return basePrice * .98
+ Else
+  Return basePrice * .95
+ End If
+ 
+ --Into This--
+ 
+ If Me.BasePrice() > 1000 Then
+  Return Me.BasePrice * .98
+ Else 
+  Return Me.BasePrice * .95
+ End If
+----
+
+----
+Split Temporary Variable
+ - local variable being set mutliple times
+ - not block level loop variables
+ - local variables set more than once indicate method does more than one thing
+ - not collecting local variables (eg strFind &= " some more.")
+
+ ....
+ Dim temp As String
+ temp = " A Header"
+ Console.WriteLine(temp)
+ temp = " A Footer"
+ Console.WriteLine(temp)
+ 
+ --Into This
+ 
+ Const header As String = " A Header "
+ Const footer As String = " A Footer "
+ Console.WriteLine(header)
+ Console.WriteLine(footer)
+----
+
+----
+Remove Assignments of Parameters
+ - parameters should not have thier values set to something else in the method
+ - source of confusion intailed by pass by value semantics
+ 
+ Public Sub MySub(ByVal input As Integer)
+  If input > 5 Then Return input - 2
+ End Sub
+ 
+ --Into This--
+ 
+ Public Sub MySub(ByVal input As Integer)
+  Dim result As Integer = input
+  If input > 5 Then Return result - 2
+ End Sub
+----
+
+----
+Replace Method with Class
+ - for complex methods with many local variables
+ - when Replace Temp with Query is not enough
+----
+
+----
+Move Method to Other Class
+ - single class w/ too much behavior
+ - classes are to coupled
+ - target by method using other class more than its own
+ - move methods sometimes in clusters that call each other exclusively
+ - cannot perform on overridden methods
+ - if moved method calls its old source then pass source into parameters w/ move
+ - may wish to leave org. method as simple delegate
+----
+
+----
+Move a Field
+ - when the other class uses the field more than the source
+ - moving or extracting a method may require this as a preliminary
+----
+ 
+----
+Extract Class
+ - single class needs to be split into mutiples
+ - many methods, lots of data
+ - to split look for cluster of methods / data
+  - look for data that changes together
+  - methods that call each other
+  - look for features based on child classes
+  - reduce interface after move
+----
+
+----
+Inline Class
+ - opposite of Extract Class
+ - collapse a class by moving features into another class
+ - best to start absorbtion by declaring interface with stubs
+----
+
+----
+Hide Delegate
+ - don't use references to call method on another reference
+ ...
+ Dim str As String = myRef.itsRef.aString
+ 
+ --Into This--
+ 
+ Public Function getStr()
+    Return myRef.itsRef.aString
+ End Function
+----
+
+----
+Remove Middle Man
+ - called class is doing nothing but delegation
+ - with the addition of a new feature on delegate need new accessor on server
+ - changes incurred over change in system
+----
+
+----
+Introduce Foreign Method
+ - collapse various methods of a libary into a single method
+ - desire for a method on a libary that does not exist
+ 
+ Dim dt As Date 
+ Dim nextDate As Date = New Date(dt.Month, dt.Day + 1, dt.Year)
+ 
+ --Into This--
+ 
+ Dim nextDate As Date = NextDate(dt)
+ 
+ Private Shared Function NextDate(ByVal dt As Date) As Date
+    Return New Date(dt.Month, dt.Day + 1, dt.Year)
+ End Function
+----
+
+----
+Introduce Subclass Extension
+ - to many Introduce Foreign Methods needed 
+ - similar purpose to Introduce Foreign Method
+ - subclass that which you wish to add Foreign Methods too
+ - use subclass before wrapper
+ 
+ Class MFDate 
+   Inherits Date
+    Public Sub New(ByVal orginalRef As Date)
+        'body
+    End Sub
+   
+    Public Function NextDate() As Date
+        'body
+    End Function
+ End Class
+----
+
+----
+Introduce Wrapper Extension
+ - to many Introduce Foreign Methods needed 
+ - same as Introduce Subclass Extension except it HAS A ref instead of IS A ref
+----
+ 
+----
+Self Encapsulate Field
+ - debate between:
+  - direct variable access: use instance variables w/i declaring class
+  - indirect variable access: use properties to access same instance variables
+ - indirect advantage: allows subclass to override
+ - direct advantage: easier to read
+ - use this when overriding variable in child class
+----
+
+----
+Replace Data-Value w/ Object
+ - what was a field(s) on an object becomes its own object
+ - object may be a stack-residing value-obj only or an actual ref'ed obj
+ 
+ Public Class Order
+    Private _customer As String
+    Public Sub New(ByVal customerName As String)
+      _customer = customer
+    End Sub
+    Public Property Customer() As String
+      Get
+        Return _customer
+      End Get
+      Set(ByVal value As String)
+        _customer = value
+      End Set
+    End Property
+ End Class
+ 
+ --Into This--
+ 
+ '--this was just the string "Customer" in the orginal class
+ Public Class Customer 
+  Private _customer As String
+  Public Sub New(ByVal customerName As String)
+    _customer = customerName
+  End Sub
+  Public Property CustomerName() As String
+      Get
+        Return _customer
+      End Get
+      Set(ByVal value As String)
+        _customer = value
+      End Set
+  End Property
+  
+ Public Class Order
+    Private _customer As Customer
+    Public Sub New(ByVal customerName As String)
+      _customer = New Customer(customerName)
+    End Sub
+    Public Property Customer() As Customer
+      Get
+        Return _customer
+      End Get
+      Set(ByVal value As Customer)
+        _customer = value
+      End Set
+    End Property
+ End Class
+----
+
+----
+Replace Array with Object
+ - use an obj instead of an array so that values are return from properties
+ ...
+ Dim rows(1) As String
+ rows(0) = "Name"
+ rows(1) = "value"
+ 
+ --Into This--
+ Public Class Rows 
+  Private _name As String
+  Private _value As String
+  
+  '[...Properties here]
+ End Class
+ 
+ ...
+ Dim _row As New Rows()
+ _row.Name = "Name"
+ _row.Value = "Value"
+----  
+
+----
+Replace Magic Number with Symbolic Constant
+ - use a constant for a static final primitive literal
+ 
+ ...
+ Dim circleArea As Double = 2 * 3.14 * radius
+ 
+ --Into This--
+ Const PI As Double = 3.14
+ Dim circleArea As Double = 2 * PI * radius
+----
+
+----
+Encapsulate Collection
+ - remove Setter for the collection 
+ - only expose the Getter method
+ - expose the collections add() and remove() methods
+ - return a copy of the collection if it is not 'Unmodifiable'
+----
+
+----
+Replace DataRecord (DataRow) with Stack-Residing Class
+ - each column will be a property
+----
+ 
+----
+Replace Type Code with State/Strategy
+ - replace Enum with an Abstract Class 
+ - inherit class for each type
+ - declare abstract method getType on abstract class
+ - on each inherited class override getType to return original Enum value
+----
+
+----
+Decompose Conditional 
+ - seperate branching from execution w/i branch
+ 
+ If ((date < ACONSTANT) OrElse (date > ANOTHERCONSTANT)) Then
+    return = quanttity * (rate + extraCharge)
+ Else
+    return = quantity * otherRate
+ End If
+ 
+ --Into This--
+ 
+ If notInRange(date) Then 
+    return = normalRate(quantity)
+ Else
+    return = extraRate(quantity)
+ End If
+----
+
+----
+Consolidate Conditional Expression
+ - those conditions that return the same value should be consolidated
+ 
+ Public Function ReturnAmount() As Double
+    If (_old < 2) Return 0
+    If (_young > 1 ) Return 0
+    If (_fat= True) Return 0
+    'other code 
+ End Function
+ 
+ --Into This--
+ 
+ Public Function ReturnAmount() As Double
+    If Not(MeetsAllConditions) Then Return 0
+    'other Code
+ End Function
+----
+
+----
+Remove Control Flag
+ - control flag needed to maintain one-exit-point rule
+ - make use of multiple Return statements, Continue and Exit as well
+ 
+  For Each i As Integer in _Integers
+    If i = 1 Then 
+      returnValue = 1
+    ElseIf i = 2 Then
+      returnValue = 2
+    Else
+      returnValue = 0
+    End If
+  Next
+  Return returnValue
+  
+  --Into This--
+  For Each i As Integer In _Integers
+    If i = 1 Then Return 1
+    If i = 2 Then Return 2
+    Return 0
+  Next
+----
+
+----
+Replace Conditional with Polymorphism
+ - replace Select Case statements with this
+ - Method possessing a Select case is instead inherited by each child
+ - ref IS-A parent class but actual run-time is child class
+ - call of Method will run on the child class (no need to distinguish type)
+ 
+ Public Class Record
+  Public Function ReturnValue(ByVal caseType As TYPE)
+    Select Case
+      Case TYPEA
+        Return 0
+      Case TYPEB
+        Return 1
+      Case Else
+        Return 2
+    End Select
+  End Function
+ End Class
+ 
+ --Into This--
+ 
+ Public Class Record
+  Public Overridable Function ReturnValue()
+    Return 2
+  End Function
+ End Class
+ 
+ Public Class RecordTYPEA
+   Inherits Record
+    Public Overrides Function ReturnValue()
+      Return 0
+    End Function
+ End Class
+
+ Public Class RecordTYPEB
+  Inherits Record
+    Public Overrides Function ReturnValue()
+      Return 1
+    End Function
+ End Class
+----
+
+----
+Introduce Null Object
+ - remove need to test object existance
+ - localize null behavior to single class
+ - Null Object is inherited from object being protected against Null values
+ - Null Object will handle situation of "when its nothing" 
+ 
+ Public Class AClass
+  Private _stuff As Stuff
+  
+  Public Function StuffData() As String
+    If IsNothing(_stuff) Then 
+      Return "0"
+    Else
+      Return _stuff.Data
+    End If
+  End Function
+ End Class
+ 
+ --Into This--
+ 
+ Public Class AClass
+   Private _stuff As Stuff
+   
+   Public Function StuffData() As String
+     Return Me.Stuff.Data 'will return NullStuff's Data if _stuff is Nothing
+   End Function
+   
+   Public Property Stuff() As Stuff
+    Get
+      If IsNothing(_stuff) Then 
+        Return new NullStuff()
+      Else
+        Return _stuff
+      End If
+    End Get
+    Set(ByVal valus As Stuff)
+      _stuff = value
+    End Set
+   End Property
+ End Class
+----
+
+----
+Rename Method
+ - being that refactoring will make many little methods - name them well
+ - what would be used as descriptive comment - use as name instead
+ - good naming makes refactoring work - less constantly calling calls...
+----
+
+----
+Seperate Query from Modifier
+ - method should return a value or modify an exposed instance variable, not both
+ - may induce onto further refactoring
+ 
+ Public Class MyClass
+    Public Function FindSpecificNames(ByVal names As String()) As String
+      For Each name As String In Names
+        If name = "Jim" Then 
+          Me.PerfomTheAction()
+          Return "Jim"
+        ElseIf name = "Bo" Then 
+          Me.PerformTheAction()
+          Return "Bo"
+        End If 
+      Next
+    End Function
+    Public Sub HandleTheNames(ByVal names As String())
+      Dim locatedName As String
+      locatedName = Me.FindSpecificNames(names)
+      Me.FurtherAction(locatedName)
+    End Sub
+ End Class
+ 
+ --Into This--
+ 
+ Public Class MyClass
+    Public Sub LocateAction(ByVal names As String())
+      For Each name As String In Names
+        If name = "Jim" Then 
+          Me.PerfomTheAction()
+        ElseIf name = "Bo" Then 
+          Me.PerformTheAction()
+        End If 
+      Next
+    End Function
+    Public Function LocateName(ByVal names As String()) As String
+      For Each name As String In Names
+        If name = "Jim" Then 
+          Return "Jim"
+        ElseIf name = "Bo" Then 
+          Return "Bo"
+        End If 
+      Next
+    End Function
+    Public Sub HandleTheNames(ByVal names As String())
+      Me.LocateAction
+      Me.FurtherAction(Me.LocateName(names))
+    End Function
+ End Class
+----
+
+----
+Replace Parameter with Explict Method
+ - typically, parameters passed in determine some action
+ - different action for different parameter values
+ 
+ Public Sub SetValue(ByVal iType As String, ByVal value As Integer)
+    If iType = "Height" Then _value = value
+    If iType = "Width" Then _value = value
+ End Sub
+ 
+ --Into This--
+ Public Sub SetValueAsWidth(ByVal value As Integer)
+    _value = value
+ End Sub
+ Public Sub SetValueAsHeight(ByVal value As Integer)
+    _value = value
+ End Sub
+----
+
+----
+Replace Parameters with Parameter Object
+ - methods taking the same list of ref's should receive an object w/ ref's 
+----
+
+----
+Form Template Method
+ - subclass methods perform similar but not the same
+ - remove sequence to parent class and polymorphism will handle specifics
+ 
+ Public Class Sun
+    Public Function GetBill(ByVal i As Integer) As Double
+      Dim returnValue As Integer
+      If TYPECONSTANT = i Then 
+        returnValue = (i * AVERAGE_SUN_RATE)
+      Else
+        returnValue = (i * MAX_SUN_RATE)
+      End If
+      returnValue *= 1.057
+      Return returnValue
+    End Function
+  End Class
+ 
+  Public Class Moon
+    Public Function GetBill(ByVal i As Integer) As Double
+      Dim returnValue As Integer
+      If TYPECONSTANT = i Then
+        returnValue = (i * AVERAGE_MOON_RATE)
+      Else
+        returnValue = (i * MAX_MOON_RATE)
+      End If
+      returnValue *= 1.042
+      Return returnValue
+    End Function
+  End Class
+  
+  --Into This--
+ 
+  Public Class DayNight
+    Public Function GetBill(ByVal i As Integer) As Integer
+      Return (Me.GetRate(i) * Me.GetTax(i))
+    End Function 
+    Protected MustOverride Function GetRate(ByVal i As Integer) As Integer
+    Protected MustOverride Function GetTax(ByVal i As Integer) As Double
+  End Class
+  
+  Public Class Sun
+    Inherits DayNight
+    Protected Overrides Function GetRate(ByVal i As Integer) As Integer
+      Dim returnValue As Integer
+      If TYPECONSTANT = i Then 
+        Return (i * AVERAGE_SUN_RATE)
+      Else
+        Return (i * MAX_SUN_RATE)
+      End If
+    End Function
+    Protected Overrides Function GetTax(ByVal i As Integer) As Double
+      Return i * 1.057
+    End Function
+  End Class
+  
+  Public Class Moon
+    Inherits DayNight
+    Protected Overrides Function GetRate(ByVal i As Integer) As Integer
+      If TYPECONSTANT = i Then
+        Return (i * AVERAGE_MOON_RATE)
+      Else
+        Return (i * MAX_MOON_RATE)
+      End If
+    End Function
+    Protected Overrides Function GetTax(ByVal i As Integer) As Double
+      Return i * 1.042
+    End Function
+  End Class
+----
+
+----
+The Mythical Man Month; Fred Brooks
+[
+All repairs tend to destroy the structure, to increase the entropy
+and disorder of the system.  Less and less effort is spent on fixing
+original design flaws; more and more is spent on fixing flaws
+introduced by earlier fixes.  As time passes, the system becomes 
+less and less well-ordered.  Sooner or later the fixing ceases to gain any
+ground.  Each forward step is matched by a backward one.  Although in 
+principle usable forever, the system has worn out as a base for progress.
+]

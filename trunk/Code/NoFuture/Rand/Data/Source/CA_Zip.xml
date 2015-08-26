@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<noFuture>
+  <rand>
+    <data>
+      <source>
+        <zip-codes>
+          <!-- Newfoundland NL -->
+          <zip-code>
+            <prefix>A1A</prefix>
+            <state-abbreviation>NL</state-abbreviation>
+            <state-name>Newfoundland</state-name>
+            <municipality>St. John's</municipality>
+          </zip-code>
+          <!-- Alberta AB -->
+          <zip-code>
+            <prefix>T2A</prefix>
+            <state-abbreviation>AB</state-abbreviation>
+            <state-name>Alberta</state-name>
+            <municipality>Calgary</municipality>
+          </zip-code>
+          <zip-code>
+            <prefix>T5A</prefix>
+            <state-abbreviation>AB</state-abbreviation>
+            <state-name>Alberta</state-name>
+            <municipality>Edmonton</municipality>
+          </zip-code>
+          <!-- British Columbia BC-->
+          <zip-code>
+            <prefix>V6C</prefix>
+            <state-abbreviation>BC</state-abbreviation>
+            <state-name>British Columbia</state-name>
+            <municipality>Vancouver</municipality>
+          </zip-code>
+          <!-- Manitoba MB -->
+          <zip-code>
+            <prefix>R3T</prefix>
+            <state-abbreviation>MB</state-abbreviation>
+            <state-name>Manitoba</state-name>
+            <municipality>Winnipeg</municipality>
+          </zip-code>
+          <!-- New Brunswick NB -->
+          <zip-code>
+            <prefix>E3B</prefix>
+            <state-abbreviation>NB</state-abbreviation>
+            <state-name>New Brunswick</state-name>
+            <municipality>Fredericton</municipality>
+          </zip-code>
+          <!-- Northwest Territories NT -->
+          <zip-code>
+            <prefix>XA0</prefix>
+            <state-abbreviation>NT</state-abbreviation>
+            <state-name>Northwest Territories</state-name>
+            <municipality>Arctic Bay</municipality>
+          </zip-code>
+          <!-- Nova Scotia NS -->
+          <zip-code>
+            <prefix>B2Z</prefix>
+            <state-abbreviation>NS</state-abbreviation>
+            <state-name>Nova Scotia</state-name>
+            <municipality>Dartmouth</municipality>
+          </zip-code>
+          <!-- Nunavut NU -->
+          <zip-code>
+            <prefix>X0G</prefix>
+            <state-abbreviation>NU</state-abbreviation>
+            <state-name>Nunavut</state-name>
+            <municipality>Fort Liard</municipality>
+          </zip-code>
+          <!-- Ontario ON-->
+          <zip-code>
+            <prefix>K2A</prefix>
+            <state-abbreviation>ON</state-abbreviation>
+            <state-name>Ontario</state-name>
+            <municipality>Ottawa</municipality>
+          </zip-code>
+          <zip-code>
+            <prefix>L5M</prefix>
+            <state-abbreviation>ON</state-abbreviation>
+            <state-name>Ontario</state-name>
+            <municipality>Mississuaga</municipality>
+          </zip-code>
+          <zip-code>
+            <prefix>M5A</prefix>
+            <state-abbreviation>ON</state-abbreviation>
+            <state-name>Ontario</state-name>
+            <municipality>Toronto</municipality>
+          </zip-code>
+          <zip-code>
+            <prefix>N9A</prefix>
+            <state-abbreviation>ON</state-abbreviation>
+            <state-name>Ontario</state-name>
+            <municipality>Windsor</municipality>
+          </zip-code>
+          <zip-code>
+            <prefix>P7A</prefix>
+            <state-abbreviation>ON</state-abbreviation>
+            <state-name>Ontario</state-name>
+            <municipality>Thunder Bay</municipality>
+          </zip-code>
+          <!-- Prince Edward Island PE -->
+          <zip-code>
+            <prefix>C1A</prefix>
+            <state-abbreviation>PE</state-abbreviation>
+            <state-name>Prince Edward Island</state-name>
+            <municipality>Charlottetown</municipality>
+          </zip-code>
+          <!-- Quebec QC -->
+          <zip-code>
+            <prefix>G1P</prefix>
+            <state-abbreviation>QC</state-abbreviation>
+            <state-name>Quebec</state-name>
+            <municipality>Quebec City</municipality>
+          </zip-code>
+          <zip-code>
+            <prefix>H3A</prefix>
+            <state-abbreviation>QC</state-abbreviation>
+            <state-name>Quebec</state-name>
+            <municipality>Montreal</municipality>
+          </zip-code>
+          <zip-code>
+            <prefix>J1H</prefix>
+            <state-abbreviation>QC</state-abbreviation>
+            <state-name>Quebec</state-name>
+            <municipality>Sherbrooke</municipality>
+          </zip-code>
+          <!-- Saskatchewan SK -->
+          <zip-code>
+            <prefix>S7L</prefix>
+            <state-abbreviation>SK</state-abbreviation>
+            <state-name>Saskatchewan</state-name>
+            <municipality>Saskatoon</municipality>
+          </zip-code>
+          <!-- Yukon YT -->
+          <zip-code>
+            <prefix>Y1A</prefix>
+            <state-abbreviation>YT</state-abbreviation>
+            <state-name>Yukon</state-name>
+            <municipality>Whitehorse</municipality>
+          </zip-code>
+        </zip-codes>
+      </source>
+    </data>
+  </rand>
+</noFuture>

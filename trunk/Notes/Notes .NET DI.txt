@@ -1,0 +1,577 @@
+Notes Dependency Injection
+----
+Mark Seemann (2012). "Dependency Injection in .NET". Shelter Island NY:
+	Manning Publications Co.
+ISBN 13: 978-1-935182-50-4
+
+My copy's MD5 checksum: 6b362bb0368fc522ed865f8989643cbc
+----
+
+----
+Useful
+ - 'program to an interface, not an implementation.'
+ - Liskov Substitution Principle: should be able to 
+	replace one implementation of an interface with
+	another without breaking either client or
+	implementation.
+ - outside-in technique is starting a project from 
+   the UI not the data layer
+ - classes should not be instantiating other classes
+   instead have the calling assembly supply them in 
+   a method or constructor
+----
+
+----
+Design Pattern Review
+ - Null Object Patter : one that handle null reference w/o exception
+ - Decorator: intercepting one implementation with another of the
+	same interface.
+ - Composite: aggregate several implementations into one
+ - Adapter: relates two seperate but similar interfaces to each other
+ - Repository: interface which produces enumerable list of a type
+	along with methods to find, modify,etc these said objects
+----
+
+----
+Windsor Container Example: Single Interface with Multiple Implementations
+
+ - add the Windsor assemblies to the project
+	Castle.Core.dll
+	Castle.Windsor.dll
+
+    //1. create the type which is to be extended by the various concrete types registered with the container
+    public interface IMyType
+    {
+        //has some method that all the various types are going to implement
+        int DoSomething(object arg);
+    }
+
+    //2. implement the type a couple of times
+    public class MyTypeA : IMyType
+    {
+        public int DoSomething(object arg)
+        {
+            System.Console.WriteLine("doing something from MyTypeA");
+            return 0;
+        }
+    }
+
+    public class MyTypeB : IMyType
+    {
+        public int DoSomething(object arg)
+        {
+            System.Console.WriteLine("doing something from MyTypeB");
+            return 1;
+        }
+    }
+
+    //3. create a factory interface for use of branching types based on type names
+    public interface IMyTypeFactory
+    {
+        IMyType GetMyType(string branchOnThis);
+    }
+
+    //4. extend the Container's type used to perform branching
+    public class MyTypeSelector : Castle.Facilities.TypedFactory.DefaultTypedFactoryComponentSelector
+    {
+        protected override string GetComponentName(MethodInfo method, object[] args)
+        {
+            if (args.Length == 1 && args[0] is string)
+            {
+                return (string)args[0];
+            }
+            return base.GetComponentName(method, args);
+        }
+    }
+
+    //5. implement the container's installer with logic for performing a branch on type-name
+    public class MyTypeInstaller : Castle.MicroKernel.Registration.IWindsorInstaller
+    {
+        public void Install(Castle.Windsor.IWindsorContainer container, Castle.MicroKernel.SubSystems.Configuration.IConfigurationStore store)
+        {
+            container.Register(
+                //this expression requires a using statement of 'using Castle.Facilities.TypedFactory;'
+                Castle.MicroKernel.Registration.Component.For<IMyTypeFactory>().AsFactory(factory => factory.SelectedWith(new MyTypeSelector()))
+                );
+            container.Register(
+                Castle.MicroKernel.Registration.Component.For<IMyType>().ImplementedBy<MyTypeA>().Named("MyTypeA"));
+
+            container.Register(
+                Castle.MicroKernel.Registration.Component.For<IMyType>().ImplementedBy<MyTypeB>().Named("MyTypeB"));
+        }
+    }
+
+    //6. inject the factory for the type into the constructor of whomever wants one
+    public class NeedRefToMyType
+    {
+        private readonly IMyTypeFactory _myTypeFactory;
+
+        public NeedRefToMyType(IMyTypeFactory myTypeFactory)
+        {
+            _myTypeFactory = myTypeFactory;
+        }
+
+        public void UseMyType(string argToBranchOn)
+        {
+            var myType = _myTypeFactory.GetMyType(argToBranchOn);
+            var something = myType.DoSomething(new object());
+        }
+    }
+
+    //7. perform the installations at some first-upon-VM-load method (like Main() or Application_Start() of Global.asax)
+    public class Program
+    {
+        //create the container in some top-level singleton
+        public static Castle.Windsor.WindsorContainer container = new Castle.Windsor.WindsorContainer();
+
+        public static void Main(string[] args)
+        {
+            try
+            {
+                //linchpen - this little statement is required for the whole thing to work...
+                container.AddFacility<TypedFactoryFacility>();
+				
+                container.Install(Castle.Windsor.Installer.FromAssembly.This());
+                var thisIsNeeded = container.Resolve<IMyTypeFactory>();
+                var target = new NeedRefToMyType(thisIsNeeded);
+                target.UseMyType("MyTypeA");
+                target.UseMyType("MyTypeB");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                Console.WriteLine(ex.StackTrace);
+            }
+
+            Console.ReadKey();
+        }
+    }
+----
+
+----
+Windsor Container Example: Single Interface with Concrete Base being Extended
+
+- add the Windsor assemblies to the project
+	Castle.Core.dll
+	Castle.Windsor.dll
+using System;
+using System.Reflection;
+using Castle.Facilities.TypedFactory;
+using Castle.MicroKernel.Registration;
+
+namespace MyCastleExample
+{
+    //optional - have some constants to perform as means of branching
+    public class TheTypes
+    {
+        public const string MY_TYPE_A = "A";
+        public const string MY_TYPE_B = "B";
+    }
+
+    //1. create two interfaces to be implemented
+    public interface IMyType
+    {
+        //has some method that all the various types are going to implement
+        int DoSomething(object arg);
+    }
+
+    public interface IMyOtherType
+    {
+        int DoSomethingElse(object arg);
+    }
+
+    //2. implement each interface once in concrete base classes
+    public class MyBaseType : IMyType
+    {
+        public virtual int DoSomething(object arg)
+        {
+            System.Console.WriteLine("doing something from MyBaseType");
+            return 0;
+        }
+    }
+
+    public class MyOtherBaseType : IMyOtherType
+    {
+        public virtual int DoSomethingElse(object arg)
+        {
+            System.Console.WriteLine("doing something else from MyOtherBaseType");
+            return -1;
+        }
+    }
+
+    //3. extend each base a couple of times
+    public class MyTypeA : MyBaseType
+    {
+        public override int DoSomething(object arg)
+        {
+            System.Console.WriteLine("doing something from MyTypeA");
+            return 1;
+        }
+    }
+
+    public class MyTypeB : MyBaseType
+    {
+        public override int DoSomething(object arg)
+        {
+            System.Console.WriteLine("doing something from MyTypeB");
+            return 2;
+        }
+    }
+
+    public class MyOtherTypeA : MyOtherBaseType
+    {
+        public override int DoSomethingElse(object arg)
+        {
+            System.Console.WriteLine("doing something else in MyOtherTypeA");
+            return -2;
+        }
+    }
+
+    public class MyOtherTypeB : MyOtherBaseType
+    {
+        public override int DoSomethingElse(object arg)
+        {
+            System.Console.WriteLine("doing something else in MyOtherTypeB");
+            return -3;
+        }
+    }
+
+    //4. create two factory interfaces for use of branching types based on string constants
+    public interface IMyTypeFactory
+    {
+        //NOTE: if a calling assembly passes in 'null' for 'branchOnThis' Castle will 
+        //      look for a name of 'MyType' - in other words, the method name less the 'Get'
+        IMyType GetMyType(string branchOnThis);
+    }
+
+    public interface IMyOtherTypeFactory
+    {
+        //NOTE CON'T: therefore this must be different from the previous 
+        IMyOtherType GetMyOtherType(string branchOnThis);
+    }
+
+
+    //5. extend the Container's Default Type Factory twice, one for each interface
+    public class MyTypeSelector : Castle.Facilities.TypedFactory.DefaultTypedFactoryComponentSelector
+    {
+        protected override string GetComponentName(MethodInfo method, object[] args)
+        {
+            if (args.Length == 1 && args[0] is string)
+            {
+                var branchOn = (string) args[0];
+                switch (branchOn)
+                {
+                        //this string is passed down to Castle's pipe and resolved
+                    case TheTypes.MY_TYPE_A:
+                        return typeof (MyTypeA).FullName;
+                    case TheTypes.MY_TYPE_B:
+                        return typeof (MyTypeB).FullName;
+                    default:
+                        return typeof (MyBaseType).FullName;
+                }
+            }
+            return base.GetComponentName(method, args);
+        }
+    }
+
+    public class MyOtherTypeSelector : Castle.Facilities.TypedFactory.DefaultTypedFactoryComponentSelector
+    {
+        protected override string GetComponentName(MethodInfo method, object[] args)
+        {
+            if (args.Length == 1 && args[0] is string)
+            {
+                var branchOn = (string) args[0];
+                switch (branchOn)
+                {
+                    case TheTypes.MY_TYPE_A:
+                        return typeof (MyOtherTypeA).FullName;
+                    case TheTypes.MY_TYPE_B:
+                        return typeof (MyOtherTypeB).FullName;
+                    default:
+                        return typeof (MyOtherBaseType).FullName;
+                }
+            }
+            return base.GetComponentName(method, args);
+        }
+    }
+
+    //6. implement the container's installer, we want to resolve the type on the string constants, but cannot use them explicitly as 
+    //     for the .Named because they would not be unique across the whole container
+    public class MyTypeInstaller : Castle.MicroKernel.Registration.IWindsorInstaller
+    {
+        public void Install(Castle.Windsor.IWindsorContainer container,
+            Castle.MicroKernel.SubSystems.Configuration.IConfigurationStore store)
+        {
+            container.Register(Classes.FromAssemblyContaining<IMyType>()
+                .BasedOn<IMyType>()
+                .WithService.FromInterface()
+                .LifestyleSingleton()
+                );
+            container.Register(Classes.FromAssemblyContaining<IMyOtherType>()
+                .BasedOn<IMyOtherType>()
+                .WithService.FromInterface()
+                .LifestyleSingleton()
+                );
+
+            container.Register(
+                               //this expression requires a using statement of 'using Castle.Facilities.TypedFactory;'
+                               Castle.MicroKernel.Registration.Component.For<IMyTypeFactory>().AsFactory(
+                                                                                                         factory =>
+                                                                                                             factory
+                                                                                                                 .SelectedWith
+                                                                                                                 (new MyTypeSelector
+                                                                                                                     ()))
+                );
+
+            container.Register(
+                               Castle.MicroKernel.Registration.Component.For<IMyOtherTypeFactory>().AsFactory(
+                                                                                                              factory =>
+                                                                                                                  factory
+                                                                                                                      .SelectedWith
+                                                                                                                      (new MyOtherTypeSelector
+                                                                                                                          ()))
+                );
+
+            //these registrations handle the case where 'branchOnThis' string is 'null' - you get the concrete base class.
+            // NOTE: the string is the method name from IMyTypeFactory's 'GetMyType' less the 'Get'
+            container.Register(Castle.MicroKernel.Registration.Component.For<IMyType>().
+                ImplementedBy<MyBaseType>().Named("MyType")); // this name must be unique across the entire container
+            container.Register(Castle.MicroKernel.Registration.Component.For<IMyOtherType>().
+                ImplementedBy<MyOtherBaseType>().Named("MyOtherType"));
+                // this name must be unique across the entire container		
+
+            //DON'T set registration for the using .Named(MY_TYPE_A) nor .Named(MY_TYPE_B) since we want to re-use these 
+            //    in factory's across the assembly...
+
+        }
+    }
+
+    //7. inject the factory for the type into the constructor of whomever wants one
+    public class NeedRefToMyType
+    {
+        private readonly IMyTypeFactory _myTypeFactory;
+        private readonly IMyOtherTypeFactory _myOtherTypeFactory;
+
+        public NeedRefToMyType(IMyTypeFactory myTypeFactory, IMyOtherTypeFactory myOtherTypeFactory)
+        {
+            _myTypeFactory = myTypeFactory;
+            _myOtherTypeFactory = myOtherTypeFactory;
+        }
+
+        public void UseMyTypes(string argToBranchOn)
+        {
+            var myType = _myTypeFactory.GetMyType(argToBranchOn);
+            var something = myType.DoSomething(new object());
+
+            var myOtherType = _myOtherTypeFactory.GetMyOtherType(argToBranchOn);
+            var somethingElse = myOtherType.DoSomethingElse(new object());
+        }
+    }
+
+    //8. perform the installations at some first-upon-VM-load method (like Main() or Application_Start() of Global.asax)
+    public class Program
+    {
+        //create the container in some top-level singleton
+        public static Castle.Windsor.WindsorContainer container = new Castle.Windsor.WindsorContainer();
+
+        public static void Main(string[] args)
+        {
+            try
+            {
+                //linchpen - this little statement is required for the whole thing to work...
+                container.AddFacility<TypedFactoryFacility>();
+
+                container.Install(Castle.Windsor.Installer.FromAssembly.This());
+                var thisIsNeeded = container.Resolve<IMyTypeFactory>();
+                var andSoIsThis = container.Resolve<IMyOtherTypeFactory>();
+                var target = new NeedRefToMyType(thisIsNeeded, andSoIsThis);
+				
+                //this uses MyTypeA & MyOtherTypeA
+                target.UseMyTypes(TheTypes.MY_TYPE_A);
+
+                //this uses MyTypeB & MyOtherTypeB
+                target.UseMyTypes(TheTypes.MY_TYPE_B);
+
+                //this uses MyBaseType and MyOtherBaseType
+                target.UseMyTypes(null);
+
+                //this alsow uses MyBaseType and MyOtherBaseType
+                target.UseMyTypes("HAS_NO_MATCH");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                Console.WriteLine(ex.StackTrace);
+            }
+
+            Console.ReadKey();
+        }
+    }
+}
+----
+
+----
+Windsor Container Example:  Constructor Injection
+
+ - add the Windsor assemblies to the project
+	Castle.Core.dll
+	Castle.Windsor.dll
+	Castle.Facilities.WcfIntegration.dll
+
+ //1. create some empty base interface upon which other interface will extend
+ public interface IMyType
+ {
+	//has some method that all the various types are going to implement
+	int DoSomething(object arg);
+ }
+ 
+ //2. have empty base type extended into types which lie just above the concrete types
+ public interface IMyTypeA : IMyType
+ {
+	string SomethingToDo();
+ }
+ public interface IMyTypeB: IMyType
+ {
+	string SomethingElseToDo();
+ }
+ public interface IMyTypeC: IMyType
+ {
+	string YetMoreToDo();
+ }
+ 
+ //3. implement each of the types which begin with extension of the empty base
+ public class MyTypeA : IMyTypeA
+ {
+	public string SomethingToDo()
+	{
+		return "I did something";
+	}
+ }
+ public class MyTypeB : IMyTypeB
+ {
+	public string SomethingElseToDo()
+	{
+		return "I did something else";
+	}
+ }
+ public class MyTypeC : IMyTypeC
+ {
+	public string YetMoreToDo()
+	{
+		return "I did yet more";
+	}
+ }
+ 
+ //4. extend an installer for the base type 
+ public class MyTypeInstaller : Castle.MicroKernel.Registration.IWindsorInstaller
+ {
+	public void Install(Castle.Windsor.IWindsorContainer container, 
+	                    Castle.MicroKernel.SubSystems.Configuration.IConfigurationStore configStore)
+	{
+		//this is a one-time-for-all, all interface extensions of IMyType are registered with the container
+		//static registration by various means
+		container.Register(Castle.MicroKernel.Registration.Classes.FromAssemblyContaining<IMyType>()
+							.BasedOn<IMyType>() //Castle.MicroKernel.Registration.FromDescriptor
+							.WithService() //Castle.MicroKernel.Registration.BasedOnDescriptor
+							.FromInterface() //Castle.MicroKernel.Registration.ServiceDescriptor
+							.LifestyleTransient(); //Castle.MicroKernel.Registration.BasedOnDescriptor
+							
+	}
+ }
+
+ //5. perform the installations at some first-upon-VM-load method (like Main() or Application_Start() of Global.asax)
+ public class MyProgram
+ {
+	//create the container in some top-level singleton
+	public static Castle.Windsor.WindsorContainer container = new Castle.Windsor.WindsorContainer();
+ 
+	public static void Main(string[] args)
+	{
+		container.Install(Castle.Windsor.Installer.FromAssembly.This());
+		var usesMyTypes = new UsesTheMyTypes(container.Resolve<IMyTypeA>,
+		                                     container.Resolve<IMyTypeB>,
+											 container.Resolve<IMyTypeC>);
+											 
+		var allTheWork = usesMyType.DoAllTheWork();
+	}
+ }
+
+ //6. those that need to use the logic of any IMyType will get a reference from the container at construction time
+ public class UsesTheMyTypes
+ {
+	public UsesTheMyTypes(IMyTypeA myTypeA, IMyTypeB myTypeB, IMyTypeC myTypeC)
+	{
+		//this is the crux, we now have concrete types based solely on interfaces
+		MyTypeA = myTypeA;
+		MyTypeB = myTypeB;
+		MyTypeC = myTypeC;
+	}
+	
+	public IMyTypeA MyTypeA {get; set;}
+	public IMyTypeB MyTypeB {get; set;}
+	public IMyTypeC MyTypeC {get; set;}
+	
+	public string DoAllTheWork()
+	{
+		var allTheWork = new System.Text.StringBuilder();
+		allTheWork.AppendLine(MyTypeA.SomethingToDo());
+		allTheWork.AppendLine(MyTypeB.SomethingElseToDo());
+		allTheWork.AppendLine(MyTypeC.YetMoreToDo());
+		return allTheWork.ToString();
+	}
+ }
+----
+
+----
+Windsor Castle Example : Property Injection
+ - is supported natively by this container
+ 
+  //1. have an interface for the property injected type
+  public interface IMyPropertyType
+  {
+	string DoSomething();
+  }
+  
+  //2. have the type which HAS-A reference to the above type
+  public interface IMyType
+  {
+	IMyPropertyType MyProperty { get; set; }
+  }
+  
+  //3. implement the types 
+  public class MyPropertyType : IMyPropertyType
+  {
+	public string DoSomething()
+	{
+		return "From MyPropertyType";
+	}
+  }
+  public class MyType : IMyType
+  { 
+	public IMyPropertyType MyProperty { get; set; }
+  }
+ 
+ //4. have some registration for each at VM-load-time
+ public class MyProgram
+ {
+	public static Castle.Windsor.WindsorContainer container = new Castle.Windsor.WindsorContainer();
+	public static void Main(string[] args)
+	{
+		Container.Register(Castle.MicroKernel.Registration.Component.For<IMyPropertyType>()
+						   .ImplementedBy<MyPropertyType>());
+		Container.Register(Castle.MicroKernel.Registration.Component.For<IMyType>()
+						   .ImplementedBy<MyType>());
+						   
+		System.Diagnostics.Debug.WriteLine(NativeSupport());
+	}
+	
+ //5. just call the property and the concrete type happens
+	public string NativeSupport()
+	{
+		var myType = container.Resolve<IMyType>();
+		var nativeSupport = myType.MyProperty.DoSomething();
+		
+		return nativeSupport;
+	}
+ }
+----

@@ -1,0 +1,942 @@
+<html>
+<head>
+<style type="text/css">
+	pre
+	{
+		font-family:Consolas;
+		text-align:left;
+	}
+    .vb 
+    {
+    	color:Blue;
+    }
+    .cs
+    {
+    	color:Lime;
+    }
+    .cpp
+    {
+    	color:Olive;
+    }
+    .c
+    {
+    	color:Gray;
+    }
+    .java
+    {
+    	color:Red;
+    }
+    .js
+    { 
+    	color:Maroon;
+    }	
+    .comment
+    {
+    	color:Green;
+    }
+    .string 
+    {
+    	color:Orange;
+    }
+    .linux
+    {
+      color:Lime;
+      
+    }
+    .unix
+    {
+    	color:Navy;
+    }
+
+	.syntaxheader
+	{
+		border:1px dotted black;
+		text-align:center;
+		width:inherit;
+	}
+	div.cmdheader
+	{
+		text-align:center;
+		border:1px dotted black;
+		width:inherit;
+		font-weight:bold;
+	}
+		
+	.cmdheader pre
+	{
+		background-color:Black;
+		color:White;
+		font-weight:100;
+		font-family:Terminal;
+	}
+	div.winheader
+	{
+		text-align:center;
+		border:1px dotted black;
+		width:inherit;
+		font-weight:bold;
+	}
+		
+	.winheader pre
+	{
+		background-color:rgb(1,36,86);
+		color:rgb(238,237,240);
+		font-weight:100;
+		font-family:"Lucida Console";
+	}
+
+</style>
+</head>
+<body>
+<div class="syntaxheader">Java<pre><span class="java">package</span> MyPackage;</pre></div><br />
+<div class="syntaxheader">VB.NET<pre><span class="vb">Namespace</span> MyNamespace
+              
+<span class="vb">End Namespace</span></pre></div><br />
+<div class="syntaxheader">C&#35;<pre><span class="cs">namespace</span> MyNamespace{ }</pre></div><br />
+<div class="syntaxheader">C<pre><span class="comment">//NA</span></pre></div><br />
+<div class="syntaxheader">C++<pre><span class="cpp">namespace</span> MyNamespace{ }</pre></div><br />
+<div class="syntaxheader">Javascript<pre><span class="comment">//NA</span></pre></div>
+<hr />
+<div class="syntaxheader">Java<pre><span class="java">public class</span> MyClass<span class="java"> extends</span> MyBase <span class="java">implements </span>MyInterface, MyOtherInterface { }</pre></div><br />
+<div class="syntaxheader">VB.NET<pre><span class="vb">Public Class</span> MyClass
+    <span class="vb"> Inherits</span> MyBase 
+    <span class="vb"> Implements </span> IMyInterface, IMyOtherInterface 
+
+<span class="vb">End Class</span>
+
+<span class="vb">Public Module</span> MyModule
+    <span class="comment">'public static class-type</span>
+<span class="vb">End Module</span></pre></div><br />
+<div class="syntaxheader">C&#35;<pre><span class="cs">public class</span> MyClass : MyBase, IMyInterface, IMyOtherInterface { }</pre></div><br />
+<div class="syntaxheader">C<pre><span class="comment">//NA</span></pre></div><br />
+<div class="syntaxheader">C++<pre><span class="cpp">public class</span> MyClass : <span class="cpp">public</span> MyBase, <span class="cpp">public</span> MyOtherBase { 
+    <span class="comment">//'public' on parent for scope to continue to further children</span> 
+}</pre></div><br />
+<div class="syntaxheader">Javascript<pre><span class="js">function</span> MyBase(baseParam1, baseParam2){
+    <span class="js">this.</span>MyProperty1 = baseParam1;
+    <span class="js">this.</span>MyProperty2 = baseParam2;
+};
+<span class="js">function</span> MyFunction(param1, param2){ 
+    <span class="js">this</span>.MyBase_notAKeyword = MyBase; <span class="comment">//property to would-be parent</span>
+    <span class="js">this</span>.MyBase_notAKeyword(param1, param2);  <span class="comment">//called constructor-like</span>
+};
+MyFunction.<span class="js">prototype</span> = <span class="js">new</span> MyBase;<span class="comment">//tied back</span></pre></div>
+<hr />
+<div class="syntaxheader">Java<pre><span class="java">public final static String</span> MY_CONSTANT = <span class="string">"a value"</span>;</pre></div><br />
+<div class="syntaxheader">VB.NET<pre><span class="vb">Public Const</span> MY_CONSTANT <span class="vb">As String</span> = <span class="string">"a value"</span></pre></div><br />
+<div class="syntaxheader">C&#35;<pre><span class="cs">public const Int32</span> MY_CONSTANT = 14;</pre></div><br />
+<div class="syntaxheader">C<pre><span class="c">#define</span> MY_CONSTANT 2;
+<span class="c">const int</span> MY_OTHER_CONSTANT = 12;</pre></div><br />
+<div class="syntaxheader">C++<pre><span class="comment">//same as 'C'</span></pre></div><br />
+<div class="syntaxheader">Javascript<pre><span class="comment">//NA</span></pre></div>
+<hr />
+<div class="syntaxheader">Java<pre><span class="java">enum</span> MyEnum {
+    BLUE(<span class="string">"blue"</span>), 
+    RED(<span class="string">"red"</span>) {
+        @Override
+        <span class="java">public String</span> toString() { <span class="java">return</span> "a constant-specific body";}
+        },
+    GREEN(<span class="string">"green"</span>);
+
+    <span class="java">String</span> myVar;
+    MyEnum(<span class="java">String</span> val){
+        <span class="java">this</span>.myVar = val;
+    }
+}</pre></div><br />
+<div class="syntaxheader">VB.NET<pre><span class="vb">Public Enum</span> MyEnum
+ RED = 1
+ BLUE = 2
+<span class="vb">End Enum</span></pre></div><br />
+<div class="syntaxheader">C&#35;<pre><span class="cs">public enum</span> MyEnum { RED, BLUE, GREEN}</pre></div><br />
+<div class="syntaxheader">C<pre><span class="c">enum</span> MyEnum {RED, BLUE, GREEN};</pre></div><br />
+<div class="syntaxheader">C++<pre><span class="cpp">enum</span> MyEnum {RED, BLUE, GREEN};</pre></div><br />
+<div class="syntaxheader">Javascript<pre>myEnum = {RED:1, BLUE:2, GREEN:3};</pre></div>
+<hr />
+<div class="syntaxheader">Java<pre><span class="java">import</span> java.util.*;</pre></div><br />
+<div class="syntaxheader">VB.NET<pre><span class="vb">Imports</span> System.Text</pre></div><br />
+<div class="syntaxheader">C&#35;<pre><span class="cs">using</span> System.Text;</pre></div><br />
+<div class="syntaxheader">C<pre><span class="c">&#35;include</span> &#60;iostream&#62;;</pre></div><br />
+<div class="syntaxheader">C++<pre><span class="cpp">&#35;import</span> &#60;iostream&#62;;</pre></div><br />
+<div class="syntaxheader">Javascript<pre><span class="js">&#60;script</span> <span class="vb">type&#61;</span>&#34;text&#92;javascript&#34; <span class="vb">src&#61;</span>&#34;http://o.aolcdn.com/dojo/1.5/dojo/dojo.xd.js&#34;&#62;</pre></div>
+<hr />
+<div class="syntaxheader">Java<pre><span class="java">public interface</span> MyInterface<span class="java"> extends</span> YourInterface, YourOtherInterface {
+    <span class="java">boolean</span> MyIFunction();
+}</pre></div><br />
+<div class="syntaxheader">VB.NET<pre><span class="vb">Public Interface</span> IMyInterface 
+    <span class="vb"> Inherits</span> IYourInterface, IYourOtherInterface
+        <span class="vb">Function</span> MyIFunction()<span class="vb">As Boolean</span>
+
+<span class="vb">End Interface</span></pre></div><br />
+<div class="syntaxheader">C&#35;<pre><span class="cs">public interface</span> IMyInterface : IYourInterface, IYourOtherInterface {
+    <span class="cs">Boolean</span> MyIFunction();
+}</pre></div><br />
+<div class="syntaxheader">C<pre><span class="c">&#35;ifndef</span> MYHEADER_H 
+<span class="c">&#35;define</span> MYHEADER_H
+<span class="c">bool</span> MyIFunction();
+<span class="c">&#35;endif</span></pre></div><br />
+<div class="syntaxheader">C++<pre><span class="cpp">&#35;ifndef</span> MYHEADER_H 
+<span class="cpp">&#35;define</span> MYHEADER_H 
+<span class="cpp">public class </span>MyHeader {
+    <span class="cpp">public</span>:
+        <span class="cpp">bool</span> MyInterfaceFunction();
+     }
+<span class="cpp">&#35;endif </span></pre></div><br />
+<div class="syntaxheader">Javascript<pre><span class="comment">//NA</span></pre></div>
+<hr />
+<div class="syntaxheader">Java<pre><span class="comment">/* 'assert' is the closest thing to
+preprocessor in Java - maybe toggled at runtime (not compile time) as parameter
+$ java -ea
+$ java -enableassertions
+$ java -da
+$ java -disableassertions */</span>
+<span class="java">assert</span>(x == <span class="java">true</span>); <span class="comment">//item placed in code, ignored by JVM if '-da'</span>
+
+<span class="comment">/* will throw 'AssertionError' if false and
+'my custom string message' will appear in stacktrace*/</span>
+<span class="java">assert</span>(y == <span class="java">false</span>) : "my custom string message"; 
+</pre></div><br />
+<div class="syntaxheader">VB.NET<pre>
+<span class="vb">#Const</span> MY_CONSTANT = 2 <span class="comment">'specific to this src file</span>
+<span class="vb">#Region</span> <span class="string">"MyRegion"</span>
+<span class="vb">#If</span> DEBUG <span class="vb">Then</span>
+
+<span class="vb">#ElseIf</span> TRACE <span class="vb">Then</span>
+
+<span class="vb">#Else</span>
+
+<span class="vb">#End If</span>
+<span class="vb">#End Region</span></pre></div><br />
+<div class="syntaxheader">C&#35;<pre>
+<span class="cs">#define</span> MY_CONSTANT <span class="comment">//must appear a tip-top of src file</span>
+<span class="cs">#region</span> My_Region
+<span class="cs">#if</span> DEBUG
+
+<span class="cs">#elif</span> TRACE
+
+<span class="cs">#else</span>
+
+<span class="cs">#endif</span>
+<span class="cs">#endregion</span></pre></div><br />
+<div class="syntaxheader">C><pre>
+<span class="c">#define</span> MY_CONSTANT 138
+<span class="comment">//continue to next line with '\' char</span>
+<span class="c">#define</span> MY_OTHER_CONSTANT \
+    116
+<span class="comment">//constant defined on sum of other constants</span>
+<span class="c">#define</span> MY_SUM_CONSTANT MY_CONSTANT + MY_OTHER_CONSTANT
+
+<span class="comment">/*a macro, given (2) for (X) preprocessor makes (2 + 2)
+ not the sum thereoff but literally (2 + 2)*/</span>
+<span class="c">#define</span> MY_MACRO(X) (X + X)
+
+<span class="comment">/*pound-sign has preprocessor enclose 'ARG' literal
+in double-quotes; MY_MACRO_STRING(2) gets "2" not 2*/</span>
+<span class="c">#define</span> MY_MACRO_STRING(ARG) #ARG
+
+<span class="comment">/*double-pound used to concat,
+ MY_CMD(myio) would make {"myio", myio_MY_SUFFIX} */</span>
+<span class="c">#define</span> MY_CMD(VAL) {#VAL, VAL##_MY_SUFFIX}
+
+<span class="comment">/*Variadic Macros may have variable args,
+ the ... and __VA_ARGS__ are keywords */</span>
+<span class="c">#define</span> MY_VARARG(...) myFunction(__VA_ARGS__)
+<span class="comment">/*MY_VARARG(int arg1, std::string arg2)
+would make myFunction(int arg1, std::string arg2)*/</span></pre></div><br />
+<div class="syntaxheader">C++<pre><span class="comment">/*
+same as 'C'
+*/</span></pre></div><br />
+<div class="syntaxheader">Javascript<pre><span class="comment">//NA Javascript is interpreted not compiled</span></pre></div>
+<hr />
+<div class="syntaxheader">Java<pre><span class="comment">//no stack-residing data structures</span></pre></div><br />
+<div class="syntaxheader">VB.NET<pre><span class="vb">Structure</span> MyStructure
+    myStructInt <span class="vb">As Integer</span>
+    myStructString <span class="vb">As String</span>
+    <span class="vb">Public Sub New</span>(<span class="vb">ByVal</span> param1 <span class="vb">As Integer</span>, <span class="vb">ByVal</span> param2 <span class="vb">As String</span>)
+        <span class="comment">'struct variables must be init in construtor</span>
+        <span class="comment">'struct constructor cannot be a no-arg constructor</span>
+        myStructInt = param1
+        myStructString = param2
+    <span class="vb">End Sub</span></pre></div><br />
+<div class="syntaxheader">C&#35;<pre><span class="cs">struct</span> MyStructure {
+    <span class="cs">Int32</span> myStructInt;
+    MyStructure(<span class="cs">Int32</span> param1) { myStructInt = param1; }
+}</pre></div><br />
+<div class="syntaxheader">C<pre><span class="c">struct</span> MyStructure
+{
+    <span class="c">int</span> myInt;
+    <span class="c">char</span> myChar;
+};
+<span class="c">struct</span> MySecondStruct
+{
+    <span class="c">int</span> x, y;
+} myStructVarOne, myStructVarTwo; <span class="comment">//two variables of 'MySecondStruct' type</span>
+<span class="c">struct</span> MyThirdStruct
+{
+    <span class="c">int</span> i, j;
+} myStrctVarThree = { 19, 79 }; <span class="comment">//variable of 'MyThirdStruct' type with values 'i, j' init</span>
+<span class="c">struct</span> MyThirdStruct myStructVarFour = { 19, 77 }; <span class="comment">//struct of 'MyThirdStruct' type declared after definition and init inline</span>
+</pre></div><br />
+<div class="syntaxheader">C++<pre><span class="comment">/*same as 'C', NOTE structures in C++ are the exact same thing
+as a 'class' except that its memebers are implicitly 'public' and cannot be otherwise*/</span></pre></div><br />
+<div class="syntaxheader">Javascript<pre><span class="comment">//NA</span></pre></div>
+<hr />
+<div class="syntaxheader">Java<pre><span class="java">if</span>(i == 1){
+} <span class="java">else if</span>(i == 2) {
+} <span class="java">else</span>{
+}
+
+<span class="comment">//single statement</span>
+<span class="java">if</span>(i == 1) <span class="java">return true</span>;</pre></div><br />
+<div class="syntaxheader">VB.NET<pre>
+<span class="vb">If</span> i = 1 <span class="vb">Then</span>
+
+<span class="vb">ElseIf</span> i = 2 <span class="vb">Then</span>
+
+<span class="vb">Else</span>
+
+<span class="vb">End If</span>
+
+<span class="comment">'single statement</span>
+<span class="vb">If</span> i = 1 <span class="vb">Then Return True</span></pre></div><br />
+<div class="syntaxheader">C&#35;<pre>
+<span class="cs">if</span>(i == 1){
+} <span class="cs">else if</span>(i == 2) {
+} <span class="cs">else</span>{
+}
+
+<span class="comment">//single statement</span>
+<span class="cs">if</span>(i == 1) <span class="cs">return true</span>;</pre></div><br />
+<div class="syntaxheader">C<pre>
+<span class="c">if</span>(i == 1){
+} <span class="c">else if</span>(i == 2) {
+} <span class="c">else</span>{
+}
+
+<span class="comment">//single statement</span>
+<span class="c">if</span>(i == 1) <span class="c">return true</span>;</pre></div><br />
+<div class="syntaxheader">C++<pre>
+<span class="cpp">if</span>(i == 1){
+} <span class="cpp">else if</span>(i == 2) {
+} <span class="cpp">else</span>{
+}
+
+<span class="comment">//single statement</span>
+<span class="cpp">if</span>(i == 1) <span class="cpp">return true</span>;</pre></div><br />
+<div class="syntaxheader">Javascript<pre>
+<span class="js">if</span>(i == 1){
+} <span class="js">else if</span>(i == 2) {
+} <span class="js">else</span>{
+}
+
+<span class="comment">//single statement</span>
+<span class="js">if</span>(i == 1) <span class="js">return true</span>;</pre></div>
+<hr />
+<div class="syntaxheader">Java<pre>(<span class="java">int</span>)myNonInt;
+(MyChildClass)myInstance;</pre></div><br />
+<div class="syntaxheader">VB.NET<pre><span class="vb">CObj</span>(myVariable) <span class="comment">'anything can go here</span>
+<span class="vb">CType</span>(var, <span class="vb">System.ARealType</span>) <span class="comment"> 'if fit w/o lose of precision</span>
+<span class="vb">DirectCast</span>(var, <span class="vb">System.ARealType</span>) <span class="comment">'runtime obj match exactly!</span>
+              </pre></div><br />
+<div class="syntaxheader">C&#35;<pre>(<span class="cs">Int32</span>)myNonInt;
+(MyChildClass)myInstance;</pre></div><br />
+<div class="syntaxheader">C<pre>int a = (<span class="c">int</span>)myShort;
+PtrOne *myExistingPointer;
+PtrTwo *myCastPointer;
+myCastPointer = (PtrOne*) &amp;myExistingPointer;</pre></div><br />
+<div class="syntaxheader">C++<pre><span class="comment">//cast child to parent</span>
+pointerAsParentType = <span class="cpp">dynamic_cast</span>&#60;ParentClassType&#62;(&amp;pointerAsChildType);
+<span class="comment">//either up or down inherit tree</span>
+pointerAsChildType = <span class="cpp">static_cast</span>&#60;ParentClassType*&#62;(pointerAsParentType);
+<span class="comment">//whatever goes</span>
+ptr1 = <span class="cpp">reinterpret_cast</span>&#60;ClassType*&#62;(myPointer);</pre></div><br />
+<div class="syntaxheader">Javascript<pre><span class="comment">//loosely typed</span></pre></div>
+<hr />
+<div class="syntaxheader">Java<pre><span class="java">for</span>(MyObject myref : myObjectCol){
+}</pre></div><br />
+<div class="syntaxheader">VB.NET<pre><span class="vb">For Each</span> myRef <span class="vb">As</span> MyObject <span class="vb">In</span> myObjectCol
+
+<span class="vb">Next</span></pre></div><br />
+<div class="syntaxheader">C&#35;<pre><span class="cs">foreach</span>(MyObject myref <span class="cs">in</span> myObjectCol){
+}</pre></div><br />
+<div class="syntaxheader">C<pre><span class="comment">//NA</span></pre></div><br />
+<div class="syntaxheader">C++<pre><span class="comment">//C++ templates have a 'iterator' object used in for...each</span>
+<span class="cpp">for</span> (vector&#60;MyObject&#62;::iterator myIter = myObjectCol.begin();
+        myIter != myObjectCol.end();
+        ++myIter){
+}</pre></div><br />
+<div class="syntaxheader">Javascript<pre>
+<span class="comment">//array callback functions</span>
+[1,2,3,4,5].forEach(<span class="js">function</span> (element){
+    element += 1;
+    <span class="js">return true</span>;});
+<span class="js">var</span> myArray = [1,2,3,4,5].filter(<span class="js">function</span> (element){
+    <span class="js">if</span>(element == 4) <span class="js">return true</span>;});
+<span class="js">var</span> myBoolean = [1,2,3,4,5].every(<span class="js">function</span> (element){
+    <span class="js">if</span>(element < 10) <span class="js">return true</span>;});</pre></div>
+<hr />
+<div class="syntaxheader">Java<pre><span class="java">for</span>(<span class="java">int</span> i = 0; i <= 5; i++){
+    }</pre></div><br />
+<div class="syntaxheader">VB.NET<pre><span class="vb">For</span> i <span class="vb">As Integer </span>= 0 <span class="vb">To </span>10 <span class="vb">Step</span> 2
+    <span class="comment">'Step is optional if increment equal to one</span>
+<span class="vb">Next</span></pre></div><br />
+<div class="syntaxheader">C&#35;<pre><span class="cs">for</span>(<span class="cs">Int32</span> i = 0; i <= 5; i++){
+    }</pre></div><br />
+<div class="syntaxheader">C<pre><span class="c">for</span>(<span class="c">int</span> i = 0; i <= 5; i++){
+    }</pre></div><br />
+<div class="syntaxheader">C++<pre><span class="cpp">for</span>(<span class="cpp">int</span> i = 0; i <= 5; i++){
+    }</pre></div><br />
+<div class="syntaxheader">Javascript<pre><span class="js">for</span>(<span class="js">var </span>i = 0; i <= 5; i++){
+    }</pre></div>
+<hr />
+<div class="syntaxheader">Java<pre>&amp;&amp;
+||
+!
+==
+!=
+=
+? :
+++i
+i++
+. <span class="comment">//package and class member resolution</span></pre></div><br />
+<div class="syntaxheader">VB.NET<pre><span class="vb">And</span><span class="comment"> 'not short-circuit</span>
+<span class="vb">Or</span><span class="comment"> 'not short-circuit</span>
+<span class="vb">AndAlso</span>
+<span class="vb">OrElse</span>
+<span class="vb">Xor</span>
+<span class="vb">Not</span>
+<span class="vb">IIf</span>(myTest,isTrue,isFalse)<span class="comment">'ternary operator</span>
+= <span class="comment">'equality</span>
+= <span class="comment">'assignment</span>
+. <span class="comment">'resolve namespace and class scope</span></pre></div><br />
+<div class="syntaxheader">C&#35;<pre>&amp;&amp;<span class="comment"> //short-circuit AND</span>
+||<span class="comment"> //short-circuit OR</span>
+!<span class="comment"> //negate</span>
+== <span class="comment">//equality</span>
+!= <span class="comment">//inequality</span>
+= <span class="comment">//assignment</span>
+? : <span class="comment">//ternary operator</span>
+++i <span class="comment">//increment then return i</span>
+i++ <span class="comment">//return i then increment</span>
+. <span class="comment">//resolve namespace and class scope</span></pre></div><br />
+<div class="syntaxheader">C<pre>&amp;&amp;
+||
+!
+==
+!=
+=
+? :
+++i
+i++
+. <span class="comment">//resolve member on deref'ed ptr</span>
+-> <span class="comment">//resolve member on ptr w/o 1st deref'ing</span></pre></div><br />
+<div class="syntaxheader">C++<pre>&amp;&amp;
+||
+!
+==
+!=
+=
+? :
+++i
+i++
+. <span class="comment">//resolve member on deref'ed ptr</span>
+-> <span class="comment">//resolve member on ptr w/o 1st deref'ing</span>
+:: <span class="comment">//resolve namespace member</span></pre></div><br />
+<div class="syntaxheader">Javascript<pre>&amp;&amp;
+||
+!
+==
+=== <span class="comment">//equality of value and type</span>
+!=
+!== <span class="comment">//inequality of value and type</span>
+=
+++i
+i++</pre></div>
+<hr />
+<div class="syntaxheader">Java<pre> <span class="comment">//fall-through behavior</span>
+ <span class="java">switch</span>(myInt){ <span class="comment">//resolve to primitive
+     type</span>
+  <span class="java">case</span> 1:
+    i += 1;
+    <span class="java">break</span>;
+  <span class="java">case</span> 2:
+    i += 2;
+    <span class="java">break</span>;
+  <span class="java">default</span>:
+    i += 0;
+    <span class="java">break</span>;
+
+ }</pre></div><br />
+<div class="syntaxheader">VB.NET<pre>
+<span class="comment">'NO fall through behavior</span>
+<span class="vb">Select Case</span> myInt<span class="comment"> 'eval to primitive type</span>
+    <span class="vb">Case</span> 1 <span class="vb">To</span> 5
+
+    <span class="vb">Case</span> 6, 7, 8
+
+    <span class="vb">Case</span> 9 <span class="vb">To</span> 10
+
+    <span class="vb">Case Is</span>  >= MAX_CONSTANT <span class="comment">'special use of 'Is'</span>
+
+    <span class="vb">Case Else</span>
+
+<span class="vb">End Select</span></pre></div><br />
+<div class="syntaxheader">C&#35;<pre>
+ <span class="comment">//fall-through behavior</span>
+ <span class="cs">switch</span>(myInt){ <span class="comment">//resolve to primitive type</span>
+  <span class="cs">case</span> 1:
+    i += 1;
+    <span class="cs">break</span>;
+  <span class="cs">case</span> 2:
+    i += 2;
+    <span class="cs">break</span>;
+  <span class="cs">default</span>:
+    i += 0;
+    <span class="cs">break</span>;
+
+ }</pre></div><br />
+<div class="syntaxheader">C<pre>
+ <span class="comment">//fall-through behavior</span>
+ <span class="c">switch</span>(myInt){ <span class="comment">//resolve to primitive type</span>
+  <span class="c">case</span> 1:
+    i += 1;
+    <span class="c">break</span>;
+  <span class="c">case</span> 2:
+    i += 2;
+    <span class="c">break</span>;
+  <span class="c">default</span>:
+    i += 0;
+    <span class="c">break</span>;
+    <span class="comment">//default statement must have some type of body</span>
+ }</pre></div><br />
+<div class="syntaxheader">C++<pre>
+ <span class="comment">//fall-through behavior</span>
+ <span class="cpp">switch</span>(myInt){ <span class="comment">//resolve to primitive type</span>
+  <span class="cpp">case</span> 1:
+    i += 1;
+    <span class="cpp">break</span>;
+  <span class="cpp">case</span> 2:
+    i += 2;
+    <span class="cpp">break</span>;
+  <span class="cpp">default</span>:
+    i += 0;
+    <span class="cpp">break</span>;
+ }</pre></div><br />
+<div class="syntaxheader">Javascript<pre>
+ <span class="comment">//fall-through behavior</span>
+ <span class="js">switch</span>(myString){ <span class="comment">//switch on strings ok in javascript</span>
+  <span class="js">case</span> "aString":
+    i += 1;
+    <span class="js">break</span>;
+  <span class="js">case</span> "aString": <span class="comment">//duplicate case is ok in javascript </span>
+    i += 2;
+    <span class="js">break</span>;
+  <span class="js">case</span> 3: <span class="comment">//different types ok in javascript </span>
+    i += 2;
+    <span class="js">break</span>;
+  <span class="js">default</span>:
+    i += 0;
+    <span class="js">break</span>;
+
+ }</pre></div>
+<hr />
+<div class="syntaxheader">Java<pre><span class="java">while</span> (myBool != <span class="java">true</span>){
+    }
+
+<span class="java">do</span> {
+    } <span class="java">while</span> (myBool != <span class="java">true</span>);</pre></div><br />
+<div class="syntaxheader">VB.NET<pre>
+<span class="vb">Do While </span>myBool &#60;&#62; <span class="vb">True</span>
+
+<span class="vb">Loop</span>
+
+<span class="vb">Do</span>
+
+<span class="vb">Loop While </span> myBool &#60;&#62; <span class="vb">True</span></pre></div><br />
+<div class="syntaxheader">C&#35;<pre><span class="cs">while</span> (myBool != <span class="cs">true</span>){
+    }
+
+<span class="cs">do</span> {
+    } <span class="cs">while</span> (myBool != <span class="cs">true</span>);</pre></div><br />
+<div class="syntaxheader">C<pre><span class="c">while</span> (myBool != <span class="c">true</span>){
+    }
+
+<span class="c">do</span> {
+    } <span class="c">while</span> (myBool != <span class="c">true</span>);</pre></div><br />
+<div class="syntaxheader">C++<pre>
+<span class="cpp">while</span> (myBool != <span class="cpp">true</span>){
+    }
+
+<span class="cpp">do</span> {
+    } <span class="cpp">while</span> (myBool != <span class="cpp">true</span>);</pre></div><br />
+<div class="syntaxheader">Javascript<pre>
+<span class="js">while</span> (myBool != <span class="js">true</span>){
+    }
+<span class="js">do</span> {
+    } <span class="js">while</span> (myBool != <span class="js">true</span>);</pre></div>
+<hr />
+<div class="syntaxheader">Java<pre><span class="java">int</span>[] a = <span class="java">new int</span>[5]; <span
+                    class="comment">//has default values</span>
+<span class="java">int</span>[] b = {1,2,3};
+<span class="java">int</span>[][] c = {{1,2},{3,4}};
+<span class="java">int</span>[][] d = {<span class="java">new int</span>[] {1,2,3,4},
+<span class="java">new int</span>[] {1,2}};<span class="comment">//jagged array</span>
+<span class="java">int</span>[] e;
+e = <span class="java">new int</span>[4];</pre></div><br />
+<div class="syntaxheader">VB.NET<pre><span class="vb">Dim</span> a(4) <span class="vb">As Integer</span> <span class="comment">'has default values</span>
+<span class="vb">Dim</span> b(4,9,14) <span class="vb">As Integer</span>
+<span class="vb">Dim</span> c() <span class="vb">As Integer</span> = {1,2,3}
+<span class="vb">Dim</span> d(,) <span class="vb">As Integer</span> = {{1,2},{3,4}}
+<span class="vb">Dim</span> e()() <span class="vb">As Integer</span> = {({1,2,3,4}),({1,2})}<span class="comment">'jagged array</span>
+<span class="vb">Dim</span> f() <span class="vb">As Integer</span>
+    f = <span class="vb">New Integer</span>(3) {1,2,3,4}
+<span class="vb">Dim</span> g() <span class="vb">As Integer</span>
+    g = <span class="vb">New Integer</span>(3) {}</pre></div><br />
+<div class="syntaxheader">C&#35;<pre><span class="cs">Int32</span>[] a = <span class="cs">new Int32</span>[5]; <span class="comment">//no default values</span>
+<span class="cs">Int32</span>[,,] b = <span class="cs">new Int32</span>[5,10,15];
+<span class="cs">Int32</span>[] c = {1,2,3};
+<span class="cs">Int32</span>[,] d = {{1,2},{3,4}};
+<span class="cs">Int32</span>[][] e = {<span class="cs">new Int32</span>[] {1,2,3,4},<span class="cs">new Int32</span>[] {1,2}};<span class="comment">//jagged array</span>
+<span class="cs">Int32</span>[] f;
+    f = <span class="cs">new Int32</span>[4] {1,2,3,4};
+<span class="cs">Int32</span>[] g;
+    g = <span class="cs">new Int32</span>[3];</pre></div><br />
+<div class="syntaxheader">C<pre><span class="c">int</span> a[4];
+<span class="c">int</span> c[] = {1,2,3};<span class="comment"> //unique</span>
+<span class="c">int</span> d[2][2] = {{1,2},{3,4}};<span class="comment">//explict depth</span>
+<span class="c">int</span> f[4] = {1,2,3,4};</pre></div><br />
+<div class="syntaxheader">C++<pre><span class="comment">//same as 'C'</span></pre></div><br />
+<div class="syntaxheader">Javascript<pre><span class="js">var</span> a = [];
+<span class="js">var</span> b = [a <span class="comment">/*an array itself*/</span>, ["astring",<span class="js">true</span>, 1]];
+<span class="js">var</span> c = new Array('c', "astring", <span class="js">true</span>, 2);
+<span class="js">var</span> d = new Array();</pre></div>
+<hr />
+<div class="syntaxheader">Java <pre>myBool = MyInstance.MyMethod(myArg1, <span class="java">new</span> MyInterface() {
+    <span class="java">public void</span> ANamedMethod(Object o, ArgsObj e) {
+        e.Property = <span class="java">true</span>;}
+    });</pre></div><br />
+<div class="syntaxheader">VB.NET<pre>myBool = MyInstance.MyMethod(myArg1, (<span class="vb">Sub</span>(o <span class="vb">As Object</span>, e As <span class="vb">System.EventArgs</span>) <span class="vb"></span>e.Value = <span class="vb">True</span>))</pre></div><br />
+<div class="syntaxheader">C&#35;<pre>myBool = MyInstance.MyMethod(myArg1, (o, e) => { e.Value = <span class="cs">true</span>; });</pre></div><br />
+<div class="syntaxheader">C<pre><span class="comment">//NA</span></pre></div><br />
+<div class="syntaxheader">C++<pre><span class="comment">//NA</span></pre></div><br />
+<div class="syntaxheader">Javascript<pre><span class="js">var</span> myBool = <span class="js">function</span>(o, e){e.Property = true;}</pre></div>
+<hr />
+<div class="syntaxheader">Java<pre><span class="java">public </span> MyClass(){}</pre></div><br />
+<div class="syntaxheader">VB.NET<pre><span class="vb">Public Sub New</span>()
+              
+<span class="vb">End Sub</span></pre></div><br />
+<div class="syntaxheader">C&#35;<pre><span class="cs">public</span> MyClass(){ }</pre></div><br />
+<div class="syntaxheader">C<pre><span class="comment">//NA</span></pre></div><br />
+<div class="syntaxheader">C++<pre><span class="cpp">public:</span>
+    MyClass():_myInstanceInt(34){ <span class="comment">//unique to C++</span>
+        _myInstanceString = <span class="string">"a string literal"</span>;
+    }
+    ~MyClass(){ }<span class="comment">//C++ destructor</span></pre></div><br />
+<div class="syntaxheader">Javascript<pre><span class="comment">//NA</span></pre></div>
+<hr />
+<div class="syntaxheader">Java<pre>@MyAttribute(param1 = <span class="string">"astringliteral"</span>)
+<span class="java">public boolean</span> MyFunction(<span class="java">int</span> param1, <span
+    class="java">int</span> param2) <span class="java">throws</span> system.exception { }
+    
+<span class="java">public boolean</span> MyInterfaceFunction(){ <span class="comment">/*implicit interface implementation*/</span> }</pre></div><br />
+<div class="syntaxheader">VB.NET<pre>&#60;MyAttribute()&#62; 
+<span class="vb">Public Overridable Function</span> MyFunction(<span class="vb">ByVal</span> param1<span class="vb"> As Integer</span>, <span class="vb">ByRef</span> param2<span class="vb"> As Integer</span>) <span class="vb">As Boolean </span>
+
+<span class="vb">End Function</span>
+<span class="vb">Public Sub</span> MyVoidReturnType() 
+              
+<span class="vb">End Function</span>
+
+<span class="vb">Public Function</span> MyIFunction() <span class="vb">As Boolean Implements</span> IMyInterface.IMethod 
+    <span class="comment">'explict interface implementation</span>              
+<span class="vb">End Function</span></pre></div><br />
+<div class="syntaxheader">C&#35;<pre>[MyAttribute]
+<span class="cs">public virtual Boolean </span> MyFunction(<span class="cs">Integer</span> param1, <span class="cs">ref Int32 </span> param2){ }
+
+<span class="cs">public Boolean </span> IMyInterface.MyInterfaceMethod(){ <span class="comment">/*explict interface implementation*/</span> }</pre></div><br />
+<div class="syntaxheader">C<pre><span class="c">bool</span> MyFunction(<span class="c">int</span> param1, <span class="c">int&amp;</span> param2){ } <span class="comment">//ANSI standard</span>
+
+<span class="c">double</span> MyKRFunction() <span class="comment">//K&amp;R function definition, no parameters</span>
+<span class="c">double</span> MyKRFunction(param1) <span class="comment">//function declaration K&amp;R style</span>
+<span class="c">char</span> *param1; <span class="comment">//parameter type on another line</span>
+{ <span class="comment">/*function body here*/ </span>}</pre></div><br />
+<div class="syntaxheader">C++<pre><span class="cpp">public:</span>
+    <span class="cpp">bool</span> MyFunction(<span class="cpp">int</span> param1, <span class="cpp">int&amp;</span> param2){ }</pre></div><br />
+<div class="syntaxheader">Javascript<pre>
+<span class="js">function</span> MyFunction(){ 
+    <span class="js">this</span>.AMethodLike = MyMethodFunction;
+};
+<span class="js">function</span> MyMethodFunction(param1, param2){
+    <span class="js">return</span> param1 + param2;
+};</pre></div>
+<hr />
+<div class="syntaxheader">Java<pre><span class="java">interface</span> JavaHasNoFunctionPointer {
+    <span class="java">boolean</span> MyFunctionBeingPointedTo(<span class="java">String</span> arg1); }
+
+JavaHasNoFunctionPointer MyDelegate = <span class="java">new</span> JavaHasNoFunctionPointer() {
+    <span class="java">public boolean</span> MyFunctionBeingPointedTo(<span style="color: Orange;">"aStringLiteral"</span>){
+        <span class="java">return true</span>;}
+  };</pre></div><br />
+<div class="syntaxheader">VB.NET<pre>
+<span class="vb">Delegate Function </span>MyFunctionPointer(<span class="vb">ByVal </span>Arg1 <span class="vb">As String</span>)<span class="vb"> As Boolean</span>
+<span class="vb">Dim </span>myDelegate <span class="vb">As New</span> MyFunctionPointer(<span class="vb">AddressOf</span> FunctionBeingPointedTo)
+<span class="vb">Dim </span>myBool <span class="vb">As Boolean</span> = myDelegate.<span class="vb">Invoke</span>(<span class="string">"myStringLiteral"</span>)
+
+<span class="vb">Dim</span> myFunc <span class="vb">As </span>Func(<span class="vb">Of String</span>, <span class="vb">Boolean</span>) = <span class="vb">AddressOf</span> FunctionBeingPointedTo
+myBool = myFunc(<span class="string">"myStringLiteral"</span>)
+
+myBool = (<span class="vb">Function</span>() (FunctionBeingPointedTo(<span class="string">"myStringLiteral"</span>)))()</pre></div><br />
+<div class="syntaxheader">C&#35;<pre>
+<span class="cs">delegate Boolean</span> MyFunctionPointer(<span class="cs">String </span> Arg1);
+MyFunctionPointer myDelegate = FunctionBeingPointedTo;
+<span class="cs">Boolean </span>myBool = myDelegate(<span class="string">"myStringLiteral"</span>);
+
+<span class="cs">Func</span>&#60;<span class="cs">String</span>, <span class="cs">Boolean</span>&#62; myFunc = FunctionBeingPointedTo;
+myBool = myFunc(<span class="string">"myStringLiteral"</span>);
+</pre></div><br />
+<div class="syntaxheader">C<pre>
+<span class="c">bool</span> (*MyDelegate)(*<span class="c">char</span>);
+MyDelegate = MyFunctionBeingPointedTo;
+myBool = (*MyDelegate)(<span class="string">"aStringLiteral"</span>);
+
+<span class="c">typedef bool </span>(*MyDelegateType)(<span class="c">char</span> *aString);
+MyDelegateType myDelegate;
+myDelegate = FunctionBeingPointedTo;
+myBool = myDelegate(<span class="string">"aStringLiteral"</span>);</pre></div><br />
+<div class="syntaxheader">C++<pre><span class="comment">//same as 'C'</span></pre></div><br />
+<div class="syntaxheader">Javascript<pre><span class="comment">//NA</span></pre></div>
+<hr />
+<div class="syntaxheader">Java<pre><span class="java">public interface</span> MyElement&#60;T&#62;{
+    T getData();
+    <span class="java">void</span> setData(T value);
+    MyElement&#60;T&#62; getNext();
+    <span class="java">void</span> setNext(MyElement&#60;T&#62; value);
+    <span class="java">int</span> Compare(T a1);
+}</pre></div><br />
+<div class="syntaxheader">VB.NET<pre><span class="vb">Public Interface</span> IListElement(<span class="vb">Of</span> T)
+    <span class="vb">Property</span> Data <span class="vb">As</span> T <span class="comment">'the data</span>
+    <span class="vb">Property</span> Link <span class="vb">As</span> IListElement(<span class="vb">Of</span> T) <span class="comment">'the link</span>
+    <span class="vb">Function</span> Compare(<span class="vb">ByVal</span> i <span class="vb">As</span> T) <span class="vb">As Integer</span> <span class="comment">'Sort</span>
+<span class="vb">End Interface</span></pre></div><br />
+<div class="syntaxheader">C&#35;<pre><span class="cs">public interface</span> IAddrEntry&#60;T&#62;
+{
+    T Data {<span class="cs">get</span>; <span class="cs">set</span>;}
+    IAddrEntry&#60;T&#62; Next {<span class="cs">get</span>; <span class="cs">set</span>;}
+    int Compare(T a1);
+}</pre></div><br />
+<div class="syntaxheader">C<pre><span class="comment">//NA</span></pre></div><br />
+<div class="syntaxheader">C++<pre><span class="cpp">template</span>&#60;<span class="cpp">class</span> T&#62;
+<span class="cpp">class</span> MyElement {
+    <span class="cpp">public</span>:
+        T datum;
+        MyElement *next;
+        <span class="cpp">int</span> Compare(T a1, T a2);
+};
+<span class="cpp">template</span>&#60;<span class="cpp">class</span> T&#62;
+<span class="cpp">int</span> MyElement&#60;T&#62;::Compare(T a1, T a2) {<span class="cpp">return</span> 0;}</pre></div><br />
+<div class="syntaxheader">Javascript<pre><span class="comment">//NA</span></pre></div>
+<hr />
+<div class="syntaxheader">Java<pre><span class="java">public String</span> getMyProperty() {
+    <span class="java">return </span>_myProperty;
+    }
+<span class="java">public void</span> setMyProperty(<span class="java">String</span> value){
+    _myProperty = value;
+    }</pre></div><br />
+<div class="syntaxheader">VB.NET<pre><span class="vb">Public Property</span> MyProperty() <span class="vb">As String</span>
+    <span class="vb">Get</span>
+        <span class="vb">Return</span> _myProperty
+    <span class="vb">End Get</span>
+    <span class="vb">Set</span>(<span class="vb">ByVal </span>value <span class="vb">As String</span>)
+        _myProperty = value
+    <span class="vb">End Set</span>
+<span class="vb">End Property</span>
+
+<span class="vb">Public Property</span> MyProperty() <span class="vb">As String</span> <span class="comment">'.NET 4 and up only (no-arg, R&amp;W)</span></pre></div><br />
+<div class="syntaxheader">C&#35;<pre><span class="cs">public string</span> MyProperty {
+    <span class="cs">get</span> {
+         <span class="cs">return</span> _myProperty;
+        }
+    <span class="cs">set</span> {
+         _myProperty = value;
+        }
+    }
+
+<span class="cs">public string</span> MyProperty { <span class="cs">get</span>; <span class="cs">set</span>; }</pre></div><br />
+<div class="syntaxheader">C<pre><span class="comment">//NA</span></pre></div><br />
+<div class="syntaxheader">C++<pre><span class="cpp">public:</span>
+    std::<span class="cpp">string </span> getMyProperty()
+    <span class="cpp">void</span> setMyProperty(std::<span class="cpp">string</span> value);</pre></div><br />
+<div class="syntaxheader">Javascript<pre><span class="js">this</span>.getMyProperty = <span class="js">function</span>() {
+    <span class="js">return </span>_myProperty;
+    };
+<span class="js">this</span>.setMyProperty = <span class="js">function</span>(value) {
+    _myProperty = value;
+    };</pre></div>
+<hr />
+<div class="winheader">PowerShell<pre>
+PS C:\&#62; <span class="cs">#Reference http://technet.microsoft.com/en-us/library/ee332526.aspx </span>
+PS C:\&#62; cat my_text_file.txt <span class="cs"># print contents to console</span>
+PS C:\&#62; pwd <span class="cs"># print working dir</span>
+PS C:\&#62; ls <span class="cs"># list dir contents</span>
+PS C:\&#62; cd My_Docs <span class="cs"># change dir</span>
+PS C:\&#62;
+PS C:\&#62; rm My_Old_Dir -recurse <span class="cs"># delete dir</span>
+PS C:\&#62; mkdir My_New_Dir <span class="cs"># make dir</span>
+PS C:\&#62;
+PS C:\&#62; cp my_file.txt my_copy.txt <span class="cs"># copy file</span>
+PS C:\&#62; ni my_new_file.txt <span class="cs"># create file</span>
+PS C:\&#62; rm my_old_file.txt <span class="cs"># delete file</span>
+PS C:\&#62; rni my_old_name.txt my_new_name.txt <span class="cs"># rename file</span>
+PS C:\&#62; ac my_text_doc.txt "appended content" <span class="cs"># append content to file</span>
+PS C:\&#62; sc my_text_doc.txt "overwrite content" <span class="cs"># overwrite content to file</span>
+PS C:\&#62; clc my_empty_doc.txt <span class="cs"># clear file contents</span>
+PS C:\&#62;
+PS C:\&#62; ls My_Dir | Out-File my_dir_file.txt <span class="cs"># print to file</span>
+PS C:\&#62; ls My_Dir | Export-Clixml my_dir_file.xml <span class="cs"># print to xml</span>
+PS C:\&#62; ls MyDirectory | ConvertTo-Html | Set-Content my_dir_file.htm <span class="cs"># output to html</span>
+PS C:\&#62; ls MyDirectory | Export-Csv my_dir_file.csv <span class="cs"># output to csv</span>
+PS C:\&#62;
+PS C:\&#62; ls -exclude "*.*" <span class="cs"># print dirs</span>
+PS C:\&#62; ls -name "*.txt" <span class="cs"># print by extension</span>
+PS C:\&#62; ls | ? {$_.length -ge 250} <span class="cs"># print by size</span>
+PS C:\&#62; ls | ? {$_.lastwritetime -ge $(Get-Date).AddHours(-4)}<span class="cs"># print by last-write-time</span>
+PS C:\&#62;
+PS C:\&#62; Get-Command -name "*Sort*" -CommandType CmdLet<span class="cs"># search cmdlet by name</span>
+PS C:\&#62; Get-Help ls <span class="cs"># get documentation</span>
+PS C:\&#62; Get-Command | ? {$_.Definition -like "*remove*"} <span class="cs"># search cmdlet by keyword</span>
+PS C:\&#62; ls | Get-Member <span class="cs"># get options</span>
+</pre></div><br />
+<div class="cmdheader">Bash<pre>
+<span class="linux">me@mypc$ </span><span class="string">#Refernce http://www.gnu.org/software/bash/manual/bashref.html </span>
+<span class="linux">me@mypc$ </span>cat my_text_file.txt<span class="string"># print contents to console</span>
+<span class="linux">me@mypc$ </span>pwd <span class="string"># print working dir</span>
+<span class="linux">me@mypc$ </span>ls <span class="string"># list dir contents</span>
+<span class="linux">me@mypc$ </span>cd /home<span class="string"># change dir</span>
+<span class="linux">me@mypc$ </span>
+<span class="linux">me@mypc$ </span>rm -r My_Old_Dir <span class="string"># delete dir</span>
+<span class="linux">me@mypc$ </span>mkdir My_New_Dir <span class="string"># make dir</span>
+<span class="linux">me@mypc$ </span>
+<span class="linux">me@mypc$ </span>cp my_file.txt my_copy.txt <span class="string">#copy file</span>
+<span class="linux">me@mypc$ </span>echo \ > my_new_file.txt <span class="string"># create file</span>
+<span class="linux">me@mypc$ </span>rm my_old_file.txt <span class="string"># delete file</span>
+<span class="linux">me@mypc$ </span>mv my_old_name.txt my_new_name.txt<span class="string">#move file (will rename upon exist, create otherwise)</span>
+<span class="linux">me@mypc$ </span>echo appended content >> my_text_doc.txt <span class="string"># append content to file</span>
+<span class="linux">me@mypc$ </span>echo overwrite content > my_text_doc.txt <span class="string"># overwrite content to file</span>
+<span class="linux">me@mypc$ </span>
+<span class="linux">me@mypc$ </span>ls -l | awk '{print $1,$8}' | grep '^d.*' | awk '{print $2}'<span class="string"># print dirs</span>
+<span class="linux">me@mypc$ </span>find . -iname '*.txt' <span class="string"># print by extension</span>
+<span class="linux">me@mypc$ </span>find /home/* -type f -size +250b -print <span class="string"># print by size</span>
+<span class="linux">me@mypc$ </span>find /home/* -type f -mmin -240 -print <span class="string"># print by last-write-time</span>
+<span class="linux">me@mypc$ </span>
+<span class="linux">me@mypc$ </span>info | grep -e "coreutils" -e "diff" -e "grep" | tr '*' ' ' | sort | uniq <span class="string"># print all commands</span>
+<span class="linux">me@mypc$ </span>man ls <span class="string"># get documentation</span>
+<span class="linux">me@mypc$ </span>info | grep -e "coreutils" | grep -e "remove" <span class="string"># search command by keyword</span>
+<span class="linux">me@mypc$ </span>man find | grep -e "-mmin" -A 4 <span class="string"># search command for option</span>
+</pre></div><br />
+<hr />
+<div class="cmdheader">Alias<pre>
+<span class="linux">me@mypc$ </span><span class="string"># ~/.bash_rc for profile settings</span>
+<span class="linux">me@mypc$ </span>alias myCmd='ls -l'</pre></div></br />
+<div class="cmdheader">Function<pre>
+<span class="linux">me@mypc$ </span>function MyFunction() {
+&#62; echo "Today is: "
+&#62; date
+&#62; return
+&#62; }
+&#62;
+<span class="linux">me@mypc$ </span>MyFunction</pre></div><br />
+
+<div class="cmdheader">Here Script<pre>
+<span class="linux">me@mypc$ </span>function Printhtml() {
+&#62; cat &#60;&#62;_token
+&#62; &#60;html&#62;
+&#62; &#60;/html&#62;
+&#62; _token
+&#62;
+&#62;}
+&#62;
+<span class="linux">me@mypc$ </span>Printhtml
+</pre></div><br />
+
+<div class="cmdheader">Variable Assignment<pre>
+<span class="linux">me@mypc$ </span>myVariable="My String literal"
+<span class="linux">me@mypc$ </span>echo &#36;myVariable
+</pre></div><br />
+
+<div class="cmdheader">User Input<pre>
+<span class="linux">me@mypc$ </span>read myvar -p "Enter text: "
+Enter text: the value of myvar
+<span class="linux">me@mypc$ </span>echo $myvar
+the value of myvar
+</pre></div><br />
+
+<div class="cmdheader">If Statement<pre>
+<span class="linux">me@mypc$ </span><span class="string"># spaces around '[' and ']' and '=' are required</span>
+<span class="linux">me@mypc$ </span><span class="string"># Integer (-eq ==); (-ge &#62;=); (-gt &#62;); (-le &#60;=); (-lt &#60;); (-ne !=)</span>
+<span class="linux">me@mypc$ </span><span class="string"># File (-nt newer than); (-ot older than); unary ops (-e exist); (-d dir exist); </span>
+<span class="linux">me@mypc$ </span>myvar="string literal value"
+<span class="linux">me@mypc$ </span>if [ myvar = "string literal value" ]; then echo correct; fi
+correct
+<span class="linux">me@mypc$ </span>if [ myvar = "wrong literal" ] || [myvar = "string literal value" ]; then echo correct; else echo incorrect; fi
+incorrect
+<span class="linux">me@mypc$ </span>if [ myvar = "wrong literal" ]; then echo correct; elif [myvar = "string literal value" ]; then echo correct2; else echo incorrect; fi
+correct2
+</pre></div><br />
+<div class="cmdheader">Loop <pre>
+<span class="linux">me@mypc$ </span>for v in ./*; do echo $v; done
+</pre></div><br />
+<hr />
+<div class="winheader">Alias<pre>
+PS C:\&#62; <span class="cs"># session specific, use 'notepad $profile' to set reusable</span>
+PS C:\&#62; Set-Alias vs2010 "C:\Program Files\Microsoft Visual Studio 10.0\Common7\IDE\devenv.exe"</pre></div></br />
+<div class="winheader">Function<pre>
+PS C:\&#62; function MyFunction() {
+&#62;&#62;    echo "Today is: "
+&#62;&#62;    Get-Date
+&#62;&#62;    return
+&#62;&#62;}
+&#62;&#62;
+PS C:\&#62; echo $(MyFunction)</pre></div><br />
+<div class="winheader">Here Script<pre>
+PS C:\&#62; $x = @' 
+&#62;&#62;printing my comments
+&#62;&#62;on multiple lines
+&#62;&#62;with no escape chars!
+&#62;&#62;'@
+&#62;&#62;
+PS C:\&#62; $x
+</pre></div><br />
+<div class="winheader">Variable Assignment<pre>
+PS C:\&#62; $myVariable = "My String literal"
+PS C:\&#62; $myVariable
+</pre></div><br />
+<div class="winheader">User Input<pre>
+PS C:\&#62; $myvar = Read-Host "This is a prompt"
+This is a prompt : a user entered value
+PS C:\&#62; $myvar
+a user entered value
+</pre></div><br />
+
+<div class="winheader">If Statement<pre>
+PS C:\&#62; <span class="cs"># (-eq ==); (-ne !=); (-gt &#62;); (-ge &#62;=); (-le &#60;); (-le &#60;=)</span>
+PS C:\&#62; <span class="cs"># '-like' &amp; '-notlike' for standard wildcards; '-match' &amp; '-notmatch' for regex</span>
+PS C:\&#62; <span class="cs"># '-contains' &amp; '-notcontains' for substr, returns bool only;</span>
+PS C:\&#62; <span class="cs"># conditional op-codes work inline on all types</span>
+PS C:\&#62; <span class="cs"># will operate on array return all that pass test</span>
+PS C:\&#62; 6,7,8,9,10 -ge 8
+8
+9
+10
+PS C:\&#62; $myvar = "white"
+PS C:\&#62; if ($a -eq "white") {"the color white"} else {"not white"}
+the color white
+PS C:\&#62; 
+</pre></div><br />
+
+<div class="winheader">Loop<pre>
+PS C:\&#62; ls | foreach -begin { "Print only once" } -process { "print everytime - " + $_.Length }
+</pre></div><br />
+
+
+
+</body>
+</html>

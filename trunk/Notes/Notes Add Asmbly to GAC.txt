@@ -1,0 +1,11 @@
+Notes 20071001 Adding an assembly to the Global Assembly Cache
+
+1. Open to the command window
+2. Create the key:  
+        sn.exe -k <filename>.snk
+3. Create a module of the assembly from the source code 
+        vbc /t:module <anySourceFile>.vb
+4. Sign the Assembly with the key:  
+        al.exe /out:<assembly name>.dll <anySourceFile>.netmodule /keyfile:<filename>.snk
+5. Add the assembly to the Global Assembly Cache
+        gacutil.exe /i  <assmebly name>.dll         

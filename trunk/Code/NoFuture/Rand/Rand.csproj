@@ -1,0 +1,184 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{71628E18-D27B-4F4E-B034-4B2AD4479E13}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>NoFuture.Rand</RootNamespace>
+    <AssemblyName>NoFuture.Rand</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Address.cs" />
+    <Compile Include="Com\Firm.cs" />
+    <Compile Include="CityArea.cs" />
+    <Compile Include="Com\FinancialFirm.cs" />
+    <Compile Include="Data\Types\JsonTypes.cs" />
+    <Compile Include="Data\Types\NorthAmericanIndustryClassification.cs" />
+    <Compile Include="Com\PublicCorporation.cs" />
+    <Compile Include="Data\Types\StandardIndustryClassification.cs" />
+    <Compile Include="Com\TickerSymbol.cs" />
+    <Compile Include="Data\ListData.cs" />
+    <Compile Include="Data\TreeData.cs" />
+    <Compile Include="Data\Types\AddressData.cs" />
+    <Compile Include="Data\Types\FinancialData.cs" />
+    <Compile Include="Domus\IPerson.cs" />
+    <Compile Include="Domus\NorthAmerican.cs" />
+    <Compile Include="Domus\Pneuma\Personality.cs" />
+    <Compile Include="Domus\Sp\Asset.cs" />
+    <Compile Include="Domus\Sp\Income.cs" />
+    <Compile Include="Domus\Sp\Loan.cs" />
+    <Compile Include="Domus\Sp\TradeLine.cs" />
+    <Compile Include="Edu\AmericanHighSchool.cs" />
+    <Compile Include="Edu\AmericanUniversity.cs" />
+    <Compile Include="Etx.cs" />
+    <Compile Include="Gov\Bea\BeaDataset.cs" />
+    <Compile Include="Gov\Bea\IBeaData.cs" />
+    <Compile Include="Gov\Bea\Globals.cs" />
+    <Compile Include="Gov\Bea\Links.cs" />
+    <Compile Include="Gov\Bea\Parameters\GDPbyIndustry\Industry.cs" />
+    <Compile Include="Gov\Bea\Parameters\GDPbyIndustry\TableID.cs" />
+    <Compile Include="Gov\Bea\Parameters\Iip\Component.cs" />
+    <Compile Include="Gov\Bea\Parameters\Iip\TypeOfInvestment.cs" />
+    <Compile Include="Gov\Bea\Parameters\Ita\AreaOrCountry.cs" />
+    <Compile Include="Gov\Bea\Parameters\Ita\Indicator.cs" />
+    <Compile Include="Gov\Bea\Parameters\Nipa\TableID.cs" />
+    <Compile Include="Gov\Bea\Parameters\NIUnderlyingDetail\TableID.cs" />
+    <Compile Include="Gov\Bea\Parameters\RegionalData\GeoFips.cs" />
+    <Compile Include="Gov\Bea\Parameters\RegionalData\KeyCode.cs" />
+    <Compile Include="Gov\Bls\Codes\CuArea.cs" />
+    <Compile Include="Gov\Bls\Codes\CuItem.cs" />
+    <Compile Include="Gov\Bls\Codes\EcCompensation.cs" />
+    <Compile Include="Gov\Bls\Codes\EcGroup.cs" />
+    <Compile Include="Gov\Bls\Codes\EcOwnership.cs" />
+    <Compile Include="Gov\Bls\Codes\EcPeriod.cs" />
+    <Compile Include="Gov\Bls\Codes\IpDuration.cs" />
+    <Compile Include="Gov\Bls\Codes\IpIndustry.cs" />
+    <Compile Include="Gov\Bls\Codes\IpMeasure.cs" />
+    <Compile Include="Gov\Bls\Codes\IpSector.cs" />
+    <Compile Include="Gov\Bls\Codes\WpGroup.cs" />
+    <Compile Include="Gov\Bls\Codes\WpItem.cs" />
+    <Compile Include="Gov\Bls\Globals.cs" />
+    <Compile Include="Gov\Bls\ISeries.cs" />
+    <Compile Include="Gov\Bls\Series.cs" />
+    <Compile Include="Gov\Census\Links.cs" />
+    <Compile Include="Gov\DriversLicense.cs" />
+    <Compile Include="Gov\Fed\Identifier.cs" />
+    <Compile Include="Gov\Fed\LargeCommercialBanks.cs" />
+    <Compile Include="Gov\Identifier.cs" />
+    <Compile Include="Gov\Irs\Identifier.cs" />
+    <Compile Include="Gov\Irs\Soi.cs" />
+    <Compile Include="Gov\Sec\Edgar.cs" />
+    <Compile Include="Gov\Sec\Iapd.cs" />
+    <Compile Include="Gov\Sec\Identifier.cs" />
+    <Compile Include="Gov\SocialSecurityNumber.cs" />
+    <Compile Include="Gov\Statute.cs" />
+    <Compile Include="Gov\UsState.cs" />
+    <Compile Include="Identifier.cs" />
+    <Compile Include="Org\Naic.cs" />
+    <Compile Include="Domus\Person.cs" />
+    <Compile Include="Phone.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Rchar.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Data\Source\CA_AreaCode.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\Source\CA_Zip.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Data\Source\lrg_bnk_lst.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\Source\US_AreaCode.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\Source\US_City.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\Source\US_EconSectors.xml">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\Source\US_FirstNames.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\Source\US_HighSchools.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\Source\US_InsCompanyNames.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\Source\US_LastNames.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\Source\US_Universities.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Data\Source\US_Zip.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Data\Source\US_Zip_ProbTable.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Shared\Shared.csproj">
+      <Project>{4B77029A-6F3E-48AE-B8E2-C4DD06DCE627}</Project>
+      <Name>Shared</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Util\Util.csproj">
+      <Project>{d7f28538-ba6a-46b4-a080-65124e899317}</Project>
+      <Name>Util</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Com\Scripts\Get-UsInsuranceCompanyNames.ps1" />
+    <None Include="Gov\Bea\bea_web_service_api_user_guide.pdf" />
+    <None Include="Gov\Bea\Get-BeaGovParameters.ps1" />
+    <None Include="Gov\Bls\Get-BlsGovCodes.ps1" />
+    <None Include="Gov\Fed\Get-FedLrgBnkListData.ps1" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

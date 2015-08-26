@@ -1,0 +1,275 @@
+﻿using System;
+using System.Collections.Generic;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NoFuture.Rand;
+using NoFuture.Util;
+
+namespace NoFuture.Tests.Util
+{
+    [TestClass]
+    public class EtcTests
+    {
+        [TestMethod]
+        public void TestDistillSpaces()
+        {
+            var testInput = @"    He has refused his Assent to Laws, the most wholesome and necessary for the public good.
+    He has forbidden his Governors to pass Laws of immediate and pressing importance, ";
+            var testResult = NoFuture.Util.Etc.DistillString(testInput);
+
+            System.Diagnostics.Debug.WriteLine(testResult);
+        }
+
+        [TestMethod]
+        public void TestCapitalizeFirstLetterOfWholeWords()
+        {
+            const string typicalTypeName = "noFuture.util.etc";
+            var testResult = NoFuture.Util.Etc.CapitalizeFirstLetterOfWholeWords(typicalTypeName, '.');
+            System.Diagnostics.Debug.WriteLine(testResult);
+            Assert.AreEqual("NoFuture.Util.Etc", testResult);
+
+            const string allCaps = "KEYCODE";
+            testResult = NoFuture.Util.Etc.CapitalizeFirstLetterOfWholeWords(allCaps, '.');
+            System.Diagnostics.Debug.WriteLine(testResult);
+            Assert.AreEqual("Keycode", testResult);
+
+            const string capsLockOn = "nOFUTURE.uTIL.eTC";
+            testResult = NoFuture.Util.Etc.CapitalizeFirstLetterOfWholeWords(capsLockOn, '.');
+            System.Diagnostics.Debug.WriteLine(testResult);
+            Assert.AreEqual("Nofuture.Util.Etc",testResult);
+
+            testResult = NoFuture.Util.Etc.CapitalizeFirstLetterOfWholeWords("notes", null);
+            System.Diagnostics.Debug.WriteLine(testResult);
+        }
+
+        [TestMethod]
+        public void TestEscapeString()
+        {
+            const string DEC_EXPECT = "&#73;&#32;&#97;&#109;&#32;&#100;&#101;&#99;&#105;&#109;&#97;&#108;";
+            var dec = NoFuture.Util.Etc.EscapeString("I am decimal", EscapeStringType.DECIMAL);
+
+            const string UNI_EXPECT = @"\u00C0\u00C8\u00CC\u00D2\u00D9\u00E0\u00E8\u00EC\u00F2\u00F9\u00C1\u00C9\u00CD\u00D3\u00DA\u00DD\u00E1\u00E9\u00ED\u00F3\u00FA\u00FD\u00C2\u00CA\u00CE\u00D4\u00DB\u00E2\u00EA\u00EE\u00F4\u00FB\u00C3\u00D1\u00D5\u00E3\u00F1\u00F5\u00C4\u00CB\u00CF\u00D6\u00DC\u00E4\u00EB\u00EF\u00F6\u00FC\u00E7\u00C7\u00DF\u00D8\u00F8\u00C5\u00E5\u00C6\u00E6\u00DE\u00FE\u00D0\u00F0\u0152\u0153\u0178\u00FF\u0160\u0161";
+            var uni = NoFuture.Util.Etc.EscapeString("ÀÈÌÒÙàèìòùÁÉÍÓÚÝáéíóúýÂÊÎÔÛâêîôûÃÑÕãñõÄËÏÖÜäëïöüçÇßØøÅåÆæÞþÐðŒœŸÿŠš", EscapeStringType.UNICODE);
+
+            const string REGEX_EXPECT = @"\x5b\x72\x65\x67\x65\x78\x5d";
+            var regex = NoFuture.Util.Etc.EscapeString("[regex]", EscapeStringType.REGEX);
+
+            const string HTML_EXPECT = "&nbsp;&pound;&iexcl;&yen;&sect;";
+            var html = NoFuture.Util.Etc.EscapeString(" £¡¥§", EscapeStringType.HTML);
+
+            Assert.AreEqual(DEC_EXPECT,dec);
+            Assert.AreEqual(UNI_EXPECT,uni);
+            Assert.AreEqual(REGEX_EXPECT,regex);
+            Assert.AreEqual(HTML_EXPECT,html);
+
+        }
+
+        [TestMethod]
+        public void TestPrintInCenter()
+        {
+            var textInput = "Judea";
+            var printBlock = 26;
+
+            var testResult = Etc.PrintInCenter(printBlock, textInput);
+
+            Assert.IsNotNull(testResult);
+
+            System.Diagnostics.Debug.WriteLine(string.Format("|{0}|", testResult));
+        }
+
+        [TestMethod]
+        public void TestMergeString()
+        {
+            var testPrimaryInput = "   <~~~Some~Name";
+            var testSecondaryInput = "                   ";
+
+            var testResult = Etc.MergeString(testPrimaryInput, testSecondaryInput);
+
+            Assert.IsNotNull(testResult);
+
+            System.Diagnostics.Debug.WriteLine(testResult);
+        }
+
+        [TestMethod]
+        public void TestBinaryMergeString()
+        {
+            var firstString = " a typical string ";
+            var secondString = "--+|---------------";
+
+            var testResult = Etc.BinaryMergeString(firstString, secondString);
+
+            Assert.IsNotNull(testResult);
+
+            System.Diagnostics.Debug.WriteLine(testResult);
+        }
+
+        [TestMethod]
+        public void TestCalcLuhnCheckDigit()
+        {
+            var testInput = "7992739871";
+            var testResult = Etc.CalcLuhnCheckDigit(testInput);
+
+            System.Diagnostics.Debug.WriteLine(testResult);
+
+        }
+
+        [TestMethod]
+        public void TestSafeFilename()
+        {
+            var testInput = "\"A name in quotes\"";
+            var testResult = Etc.SafeFilename(testInput);
+
+            Assert.AreEqual("A name in quotes", testResult);
+        }
+
+        [TestMethod]
+        public void TestDistillTabs()
+        {
+            var testInput =
+                new string(new[]
+                {
+                    (char) 0x09, (char) 0x09, 'a', (char) 0x20, 'b', 'c', 'd', (char) 0x09, (char) 0x09, (char) 0x09,
+                    (char) 0x09, 'e', 'f', (char) 0x20
+                });
+
+            var testResult = Etc.DistillTabs(testInput);
+            Assert.AreEqual(" a bcd ef ",testResult);
+
+        }
+
+        [TestMethod]
+        public void TestTransformScreamingCapsToCamelCase()
+        {
+            var testResult = NoFuture.Util.Etc.TransformScreamingCapsToCamelCase("dbo.DELETED_LookupDetails");
+            Assert.IsNotNull(testResult);
+            System.Diagnostics.Debug.WriteLine(testResult);
+            Assert.AreEqual("dboDeletedLookupDetails",testResult);
+
+            testResult = NoFuture.Util.Etc.TransformScreamingCapsToCamelCase("dbo.DELETED_LookupDetails", true);
+            Assert.IsNotNull(testResult);
+            System.Diagnostics.Debug.WriteLine(testResult);
+            Assert.AreEqual("dbo.deletedLookupDetails",testResult);
+        }
+
+        [TestMethod]
+        public void TestFindCountOfCharNotInQuotes()
+        {
+            var testInput = "Intangible assets (amortizable)..	\"4,827,472,371\"	\"3,923,959\"	\"77,931,345\"	\"66,159,637\"	\"23,333,208\"	\"1,707,006,308\"	\"497,845,683\"	\"311,360,015\"	\"186,485,668\"	\"73,174,724\"	\"901,501,338\"	\"415,461,943\"	\"71,073,527\"	\"260,860,340\"	\"384,047,374\"	\"106,072,424\"	\"14,123,668\"	\"98,147,343\"	\"18,055,586\"	\"85,134,982\"	\"23,618,983\"		";
+            var testResult = Etc.FindCountOfCharNotInQuotes(testInput, (char) 0x09);
+
+            Assert.AreNotEqual(0, testResult);
+            Assert.AreEqual(23, testResult);
+            System.Diagnostics.Debug.WriteLine(testResult);
+        }
+
+        [TestMethod]
+        public void TestDistillToWholeWords()
+        {
+            var testResult =
+                NoFuture.Util.Etc.DistillToWholeWords(
+                    "ProgramMaster-AccountDetail-ClientDetails-SiteDetails-ClinicMasters-IsFluVoucher");
+            Assert.IsNotNull(testResult);
+            System.Diagnostics.Debug.WriteLine(string.Join("", testResult));
+
+            testResult =
+                NoFuture.Util.Etc.DistillToWholeWords("Id");
+
+            Assert.IsNotNull(testResult);
+            System.Diagnostics.Debug.WriteLine(string.Join("",testResult));
+
+            testResult = NoFuture.Util.Etc.DistillToWholeWords("RTDC IR Questions");
+            Assert.IsNotNull(testResult);
+            System.Diagnostics.Debug.WriteLine(string.Join("", testResult));
+        }
+
+        [TestMethod]
+        public void TestFormatCsvHeaders()
+        {
+            var testInput = new string[]
+            {
+                "S. No:","Screen / Sub Tab","Field Name","Section","Functionality","Type","Functionality","Type","WE Mapping","Required ?","Comments"
+            };
+            var testResult = NoFuture.Util.Etc.FormatCsvHeaders(testInput);
+            Assert.IsNotNull(testResult);
+            Assert.AreNotEqual(0, testResult.Length);
+            foreach(var tr in testResult)
+                System.Diagnostics.Debug.WriteLine(tr);
+        }
+
+        [TestMethod]
+        public void TestReplaceOriginalContent()
+        {
+            var inputString = new String[]
+            {
+                "    public SomeCtor(string anArg)",
+                "    {",
+                "        try",
+                "        { ",
+                "            ddlSecurityQuestion.DataSource = dsGetSecurityQuestions;",
+                "            ddlSecurityQuestion.DataTextField = \"ItemName\";",
+                "            ddlSecurityQuestion.DataValueField = \"ItemAbbreviation\";",
+                "            ddlSecurityQuestion.DataBind();",
+                "            ddlSecurityQuestion.Items.Insert(0, string.Format(\" '{0}'\",\"------------------- Select a question -------------------\");",
+                "        }",
+                "        catch (Exception ex)",
+                "        {",
+                "            MyNamespace.CRM.Common.Utitility.CommonMethods.LogException(\"\",ex);",
+                "            throw ex;",
+                "        }",
+                "    }",
+                "",
+                "    protected internal string SomeProperty {get; set;}",
+                "",
+                "    //comments here ",
+                "    // about our shitty code",
+                "",
+                "    public string SomeMethod(int arg1, string arg2)",
+                "    {",
+                "        try",
+                "        {",
+                "            DataSet dsGetSecurityQuestions = objZuluUIController.GetZuluSecurityQuestions(DropdownConstants.ZuluSECURITYQUESTIONS);",
+                "            ddlSecurityQuestion.DataSource = dsGetSecurityQuestions;",
+                "            ddlSecurityQuestion.DataTextField = \"ItemName\";",
+                "            ddlSecurityQuestion.DataValueField = \"ItemAbbreviation\";",
+                "            ddlSecurityQuestion.DataBind();",
+                "            ddlSecurityQuestion.Items.Insert(0, string.Format(\" '{0}'\",\"------------------- Select a question -------------------\");",
+                "        }",
+                "        catch (Exception ex)",
+                "        {",
+                "            MyNamespace.CRM.Common.Utitility.CommonMethods.LogException(\"\",ex);",
+                "            throw ex;",
+                "        }",
+                "    }",
+                ""
+            };
+
+            var testInput00 = new Dictionary<Tuple<int, int>, string[]>();
+            testInput00.Add(new Tuple<int, int>(2, 2), null);
+            testInput00.Add(new Tuple<int, int>(9, 6), new[] { "new line B", "new line C", "new line B" });
+            testInput00.Add(new Tuple<int, int>(26, 0), new[] { "new line D", "new line E" });
+            var testResult = NoFuture.Util.Etc.ReplaceOriginalContent(testInput00, inputString);
+            //foreach (var t in testResult)
+            //    System.Diagnostics.Debug.WriteLine(t);
+
+            testInput00 = new Dictionary<Tuple<int, int>, string[]>();
+            testInput00.Add(new Tuple<int, int>(2, 0), new[] { "const MY_STRING00 = \"string\";", "const MY_STRING01 = \"string\";", "const MY_STRING02 = \"string\";" });
+            testInput00.Add(new Tuple<int, int>(4, 1), new[] { "ddlSecurityQuestion.DataTextField = MY_STRING01;" });
+            testInput00.Add(new Tuple<int, int>(5, 1), new[] { "ddlSecurityQuestion.DataValueField = MY_STRING00;" });
+            testInput00.Add(new Tuple<int, int>(26, 0), new[] { "new line D", "new line E" });
+            testResult = NoFuture.Util.Etc.ReplaceOriginalContent(testInput00, inputString);
+            foreach (var t in testResult)
+                System.Diagnostics.Debug.WriteLine(t);
+
+        }
+
+        [TestMethod]
+        public void TestToRegexExpression()
+        {
+            var testInput = "Dependent (18 yrs +)";
+            var testResult = NoFuture.Util.Etc.ToRegexExpression(testInput);
+
+            Assert.IsNotNull(testResult);
+            System.Text.RegularExpressions.Regex.IsMatch("Dependents", testResult);
+            System.Diagnostics.Debug.WriteLine(testResult);
+        }
+    }
+}

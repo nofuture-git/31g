@@ -1,0 +1,114 @@
+Notes XPath
+
+----
+Examples
+
+//machines/server[@DMZ='true'] 
+//*[contains(@name,'State')]
+//run-line[contains(text(),'Billing')]
+
+ - this uses namespaces, finds the CompanyAssociation node 
+   whose direct-childnode of ID has text of '1' then goes back up 
+   to this particular CompanyAssociation node 
+   and then finds descendents nodes of AgencyAgentSummary
+//c:CompanyAssociation/c:ID[text()=6]/..//c:AgencyAgentSummary   
+----
+
+----
+Template Match Examples
+ - patterns can be combo'ed using the pipe (|) operator
+ - actual piping uses the "/" 
+
+ /  
+	matches root
+	
+ /doc[@format='simple']  
+	match root element being named 'doc' 
+	and having attribute 'format' with a value of 'simple'
+	
+ myNode 
+	match any element 'myNode'
+	
+ myParent/myChild
+	match any 'myChild' element having 'myParent' as parent-node
+
+ id('myId')/myNode
+	match any 'myNode' element 
+	having a parent-node with 'id' attribute equal to 'myId'
+	
+ myAncestor//myNode
+   match any 'myNode' element 
+   that is a descendent of a 'myAncestor' element
+   
+ @myAttribute
+	match any attribute named 'myAttribute'
+
+ @*
+	match any attribute
+
+ node( )
+	match any child node
+
+ text( )
+	match any text node
+
+ * 
+	match any element
+
+ myNamespace:*
+	match any element in 'myNamespace'
+
+ *[not(self::myNamespace:*]
+	match any element not in the namespace 'myNamespace'
+	
+ myNode[2]
+	match any 'myNode' element that is the second child of its parent
+
+ myNode[last( )]
+	match any 'myNode' element that is the last one on its parent
+----
+
+----
+Match Syntax
+  Axis     Node Test        Predicate
+  __|__   _____|_____  _________|_________
+ |     | |          | |                   |
+ child::myChildNodes[string-length(.)>100]
+  - Axis: id's the top-node as reference, is a key-word
+  - Node-Test: select upon child nodes therein the Axis
+  - Predicate: apply a test upon the Node-Test results
+  - each "theAxis::myNodes[myPredicate]" is a step
+   - combining a step with another using "/" 
+   - pipe steps with "/" having a steps output be next steps input
+  
+ Axis List
+  child:: direct children of context
+  descendant:: direct child nodes and thier child-nodes as well
+  parent:: 
+  ancestor:: 
+  following-sibling::
+  preceding-sibling::
+  following::
+  preceding::
+  attribute::
+  namespace::
+  self::
+  descendant-or-self::
+  ancestor-or-self::
+ 
+ Node Test
+  * 								[star for any name]
+  myNamespace:* 					[for namespace qualifier]
+  myNode [or] myNamespace:myNode 	[for specific names]
+  node( ) 							[test-type for any node]
+  text( ) [or] comment() [or] processing-instruction( )
+  processing-instructions('myFoo') 	[for specific PI target]
+ 
+ Abbreviations
+  .      [for] self::node( )
+  ..     [for] parent::node( )
+  @      [for] attribute::
+  //     [for] /descendant-or-self::node( )/
+  foo    [for] child::foo
+  foo[3] [for] foo[position( )=3]
+----

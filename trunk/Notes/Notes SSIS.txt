@@ -1,0 +1,793 @@
+Notes MSSQL SSIS
+Professional SQL Server® 2008 Integration Services
+By: Brian Knight; Erik Veerman; Grant Dickinson; Douglas Hinson; Darren Herbold
+Publisher: Wrox
+Pub. Date: October 06, 2008
+Print ISBN: 978-0-470-24795-2
+Web ISBN: 0-470229-04-7
+Pages in Print Edition: 1005
+
+Programming Microsoft® SQL Server™ 2005
+By: Andrew J Brust; Stephen Forte
+Publisher: Microsoft Press
+Pub. Date: June 21, 2006
+Print ISBN-10: 0-7356-1923-9
+Print ISBN-13: 978-0-7356-1923-4
+Pages in Print Edition: 928
+
+http://technet.microsoft.com/en-us/library/ms135946.aspx
+http://www.codeproject.com/Articles/612473/SSIS-By-coding-Part-2
+http://technet.microsoft.com/en-us/library/dd795225%28v=sql.100%29.aspx
+http://technet.microsoft.com/en-us/library/ms345164.aspx 
+----
+
+----
+Overview
+ - SSIS is replaces DTS 
+ - SSIS is written in sicon of VS
+  - SQL Server Business Intel. Dev Studio
+  - comes with MSSQL install
+ - consist of four main components
+  1. SSIS Service
+  2. SSIS runtime engine and runtime exe's
+  3. SSIS data flow engine and components
+  4. SSIS clients
+  
+  - in addition the the Dev. Studio a 
+    Windows Service is installed named
+	'SQL Server Integration Services '
+  - SSIS runtime engine performs the 
+    major tasks like logging, connections 
+	and transactions.
+	
+ - The actual execution is invoked by 
+     'DTExec.exe' 
+   which is present within the Binn folder
+   of the SQL Server installations; in addition,
+   this Binn folder is already included in the 
+   PATH variable upon installation.
+   http://technet.microsoft.com/en-us/library/ms162810%28v=sql.105%29.aspx
+   
+ - Example for invoking a .dtsx from command line
+   'DTExec.exe /F Package.dtsx'
+
+ - while SSIS has Tasks that do a variety of things
+   its real purpose is ETL which is the Data Flow 
+----
+
+----
+Packages
+ - essentially an exe
+ - source code is XML 
+ - composed of nodes 
+ DTS:Executable
+ DTS:Property
+ DTS:ConnectionManager
+ DTS:PackageVariable
+ DTS:Configuration
+ DTS:Variable
+ DTS:LoggingOptions
+ DTS:PrecedenceConstraint
+ DTS:EventHandler
+----
+
+----
+Tasks (of interest)
+ - Bulk Insert
+ - Data Flow : loads and transforms to OLE DB or ADO.NET dest.
+ - Execute Package: exec a package from w\i a package
+ - Execute Process: exec a remote executable
+ - Execute SQL: exec SQL statement (including EXEC PROC)
+ - File System: handles directory\file operations.
+ - FTP: use file transfer protocol
+ - Message Queue: handle MSMQ sending and receiving
+ - Script: .NET-based scripting 
+ - Send Mail: simple mail transfer protocol
+ - Web Service: interface with web services
+ - WMI Data Reader: a task to run WQL queries
+ - WMI Event Watcher: task that plugs SSIS into WMI events
+ - XML: parse\process XML files.
+ 
+ - other DBA specific tasks for backup, moves, compression etc
+ 
+ - every task must return an execution result of either
+    Cancelled, Failure or Success
+----
+
+----
+Basic Parts
+ - Connections
+  - a connection may be made to any OLE DB compliant source
+  - others include ADO.NET, Outlook etc,
+  - may be stored in the registry of the machine
+  - also may be set externally in a configuration file
+  
+ - Data Source Views
+  - operate as indirection from actual underlying table
+  - this includes which columns, what thier names are 
+    and relations that may not exists
+	
+ - Precedence Constraints
+  - may be thought of as operators while tasks are operands
+  - are typically boolean in nature
+  
+ - Containers
+  - operate as a sub-grouping within a package
+  - have scope for variables 
+  - allow for event handlers
+  - are of only four kinds
+   1. Task Host Container, think default global 
+   2. Sequence Container, think pipe or queue
+   3. For Loop Container, iteration by time or counter
+   4. Foreach Loop Container, iterates each record of a set
+  
+ - Variables
+  - have scope, but operate more like a configuration 
+    files entries instead of standard location of memory
+  
+ - Data Flow Elements
+  - from the GUI these are the nodes upon which the sense of
+    flow hangs
+  - are roughly divided into the basics of the ELT concept itself
+   1. Source
+   2. Destination
+   3. Transformation
+
+ - Error Handling
+  - may be scoped 
+  - are event driven
+  - allow for choice among specific actions
+    such as Abort, Redirect or Ignore
+----
+
+----
+Basics of Business Integration Dev Studio
+ - BIDS for short
+ - operates by clicks and drags
+ 
+ - Control Flow tab:
+   this coordinates the execution of tasks and
+   manages the engine threads that perform said tasks.
+   When a Execute SQL Task is run it sends and parks the
+   command to the database and therefor performance is a
+   measure external to this component.
+   
+ - Data Flow:
+   this handles the data pipeline and is specific to
+   Data Flow Tasks.  This is where performance is optimized.
+   The data flow operates on as a stream process performing 
+   work as data moves from source to destination.
+   
+ 
+ - Tasks are added to Control Flow by drag and drop from toolbox 
+   in a similar way to old VB6 
+ - Dbl-click on task opens a standard dialog 
+----
+
+----
+Types of Transformations
+ 1. Row Transformations: are 1:1 where one row in
+    produces one row out.
+	Output is the same buffer as the input and is 
+	the highest performer.
+	
+ 2. Partially Blocking Transformations: will take 
+    multiple data inputs and result in more, equal or
+	less record outputs (Merge, Merge Join, Union All).
+	The output will require a new buffer.
+	
+ 3. Blocking Transformations:  these must read and process
+    all input recordds before any output may be 
+	created (Aggregate & Sort).
+	The output requires a new buffer and a new thread.
+----
+
+----
+Performance Considerations 
+ - for data transform, as much logic as possiable should be 
+   performed via a stored proc on the Data Source including 
+   CAST \ CONVERT
+   
+ - typically the Data Transforms are only needed when 
+   there is more than one data source in play - otherwise
+   all the logic\joins\cast may happen in a stored proc
+   on the Data Source.
+   
+ - SSIS Data-Flow task is only a good idea when there 
+   is more than one connection, if the data is being 
+   moved around on the same database then a simple 
+   script should be used.
+   
+ - typically the performance goal is:
+   pass as many records as possiable through a single buffer
+   while setting configurable values to optimize buffer size.
+   Further performance by typical concepts (divide-and-conquer)
+
+ - Estimated Row Size is a derived value from the type info 
+   from the datasource.  For example, if a column is defined
+   as NVARCHAR(MAX) but it never actually approaches NVARCHAR(256)
+   then set this as such explictly.
+   
+ - DefaultMaxBufferRows: is configurable and defaults to 10K. 
+   By getting the product of this value to the Estimated Row Size
+   a sense for the overall dataset size is derived.
+   
+ - DefaultMaxBufferSize: is configurable and defaults to 10MB.
+   This is limited by the MaxBufferSize (which is 100MB and 
+   not configurable). 
+   
+ - MinBufferSize: is not configurable and is based on the 
+   OS virtual memory.  Typically its 65536 bytes (1KB).
+   
+ - Non-clustered index should be dropped on the 
+   destination, Clusted index should not be drop.
+----  
+
+----
+Synchronous Row Transformations
+ - Character Map Transform: string expression
+ - Copy Column Transform
+ - Data Conversion Transform: type conversion
+ - Derived Column Transform: one or more expressions
+ - Export \ Import Column Transform - IO to files
+ - Script Component
+ - OLE DB Command Transform - slow foreach
+----
+
+----
+SSIS Programmatic Approach
+http://technet.microsoft.com/en-us/library/ms135946.aspx
+ - Package and Application are the only objects which are 
+   instantiated using 'new', everything else comes from 
+   factory methods on collections or casting.
+ - 'Name' properties are sometimes specific to some object name
+   or sometimes just a descriptive variable that can be used 
+   to x-ref in a collection - if its not required or of no 
+   use, don't set the Name property.
+ - some times the use of 'var' as declaration type will cause
+   problems if the type has to be one of the IDTS[...] interface
+   wrappers.
+ 
+ //top level object, other SSIS objects are added to it
+ var myPkg = new Microsoft.SqlServer.Dts.Runtime.Package();
+ 
+ //loading from a file requires the Application object
+ var myApp = new Microsoft.SqlServer.Dts.Runtime.Application();
+ var myPkg = app.LoadPackage("C:\Packages\MyPackage.dtsx", null);
+----
+
+----
+Connection Manager
+ - the string must match one of the valid choices 
+ - see http://technet.microsoft.com/en-us/library/ms136093.aspx
+ - the actual connection string will must match the given type
+
+Microsoft.SqlServer.Dts.Runtime.ConnectionManager cm = myPackage.Connections.Add("OLEDB");//not case-sensitive
+cm.Name = "My Name for This Connection";
+cm.ConnectionString = "Provider=SQLOLEDB.1; Integrated Security=SSPI;Initial Catalog=AdventureWorks; Data Source=(local);";
+cm.Description = "My Connections Description";
+
+Microsoft.SqlServer.Dts.Runtime.ConnectionManager cmfile = myPackage.Connections.Add("FILE");
+cmfile.ConnectionString = @"C:\MyDirectory\MyFile.xml";
+cmfile.Name = "My File Connection";
+cmFile.Description = "A connection to my xml file";
+----
+
+----
+ Control-Flow tasks (as viewed in BIDS toolbox)
+ - are not instantiated outright
+ - gain a reference by calling Executables.Add("...");
+  - then cast return variable as a specific Task
+ 
+ //using SSIS 'STOCK:' in string name
+ var myExecutable = myPackage.Executables.Add("STOCK:SQLTask");
+ 
+ //using .NET fully qualified names
+ var myNextExec = myPackage.Executables.Add(
+ "Microsoft.SqlServer.Dts.Tasks.ExecuteSQLTask.ExecuteSQLTask" +
+ "Microsoft.SqlServer.SQLTask, Version=10.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91");
+ 
+ //using typeof
+ var myOtherExec = myPackage.Executables.Add(
+  typeof(Microsoft.SqlServer.Dts.Tasks.ExecuteSQLTask.ExecuteSQLTask).AssemblyQualifiedName);
+ 
+ //TaskHost is a container whose .InnerObject property is the Task itself
+ var myTaskHost = myExecutable as Microsoft.SqlServer.Dts.TaskHost;
+ var mySqlTask = myTaskHost.InnerObject 
+                     as Microsoft.SqlServer.Dts.Tasks.ExecuteSQLTask.ExecuteSQLTask;
+
+ //precedence contraint determines the order in which executables are performed w\i a package
+ var constraint = myPackage.PrecedenceConstraints.Add(myExecutable, myNextExec);
+ //set condition between them on the object returned from thier addition
+ constraint.Value = Microsoft.SqlServer.Dts.Runtime.DTSExecResult.Completion;
+ //may set expression between them likewise
+ constraint.Expression = "some SSMS string expression here";
+ //when both are set an Expression may be related to the Value by the LogicalAnd property
+ constraint.LogicalAnd = true; //means both Value and Expression must be true
+ constraint.LogicalAnd = false; //either may be true
+----
+
+----
+ Data-Flow Task
+ - is technically just another task
+ - is contained in a TaskHost like the others
+ - data-flow components appear to be underlying COM 
+   objects and require discovery per machine
+ - many of these will require explict declarations because 'var' will
+   not resolve the type.
+ 
+ var myDataFlow = myPackage.Executables.Add("STOCK:PipelineTask");
+ var myDfTaskHost = myDataFlow as Microsoft.SqlServer.Dts.Runtime.TaskHost;
+ myDfTaskHost.Name = "My Pipeline Task Host";
+ myDfTaskHost.FailPackageOnFailure = false;
+ myDfTaskHost.FailParentOnFailure = false;
+ myDfTaskHost.DelayValidation = true;
+ myDfTaskHost.Description = "This is My Pipeline Task Host";
+ var myMainPipe = myDfTaskHost.InnerObject as Microsoft.SqlServer.Dts.Pipeline.Wrapper.MainPipe;
+----
+ 
+----
+/*
+  Components and Componenent Metadata
+  ----
+  - There is no component collection instead there is a component's metadata collection
+  - A componenets metadata contains all the info describing the component.  
+  - Its from this metadata component one gains an instance of the actual component.
+  - The actual componenet, created from the metadata's Instantiate contains
+   - IDTSDesigntimeComponent100: contains the methods for design like setting
+	 properties and adding columns.
+   - IDTSRuntimeComponent100: contains the methods for running the component
+	 in data-flow execution.
+	 
+  - A call to "Instantiate()" is only to begin the component, a subsequent call to
+	"ProvideComponentProperties()" actual sets up the properties specific to the 
+	given componenet.
+	- the property "AccessMode" is declared in 
+	  C:\Program Files (x86)\Microsoft SQL Server\100\DTS\PipelineComponents\Oledbsrc.dll
+*/
+
+/*
+  Components and Connection Managers
+  ----
+  - Components describe thier association to a connection manager using their 
+	components metadata's RuntimeConnectionCollection.
+  - A componenet requires as many connections as the Count of their RuntimeConnectionCollection
+	after calling the components ProvideComponentProperties.
+  - The runtime connection is associated to the connection manager by the connection 
+	manager's ID.
+  - In addition to the ID the a reference to the connection manager is assigned to the 
+	runtime connection via its ConnectionManager property.
+   - The call to "DtsConvert" converts the Connection Manager's type to IDTSConnectionManager100
+   
+  - Having the connection setup the component may setup its columns. 
+   - A call to ReinitializeMetaData modifys the components metadata for the columns derived from the 
+	 given property (SQLCommand, OpenRowset).
+	- Reinitiali~ metadata modifications includes the addition of the output columns to the 
+	  component's metadata
+	- Another modification is the addition of external metadata columns which describe metadata 
+	  external to the component.
+	- At this point both output and external metadata columns are the same; however, the output
+	  columns may be modified, but the external metadata columns may not.
+	- External metadata columns remain intact, as-is, to continue to have a snapshot of the columns
+	  returned from the database itself.
+	- Note, a call to ReinitializeMetaData is different for each component, for the source adapter
+	  both external metadata and output columns come to life.  However, for destination adapter
+	  only the external metadata is created and the code must create the input columns subsequently.
+*/
+
+/*
+  Connecting Data Flow Components
+  ----
+  - Requires a 'path' from the MainPipe's PathCollection
+  - Using the 'path' object the mapping is set between OutputCollection\InputCollection 
+	properties of the component's metadata object 
+	via the AttachPathAndPropagateNotifications method.
+   - Having connected the IO the destination has a sense for all the possiable input
+	 columns it could receive from its upstream component - this is the purpose of GetVirtualInput().
+   - The same references passed into the path objects AttachPath~ method are the objects
+	 objects from which specific IO columns are mapped to one another.
+	 
+  - A specific column in the output collection is mapped to a specific virtual input column 
+	via the output columns LineageID.
+   - The virtual input columns still requires that each of them have thier Usage Type property
+	 set.  This tells how the columns are used in the data buffer.
+   - The SetUsageType will find the specific virtual input column using the output columns 
+	 LineageID, this same method then creates an input column on the destination component,
+	 sets its usage type and maps that input column to the upstream output column.
+	 
+  - Having the input column mapped to an upstream output column the final step is to map this
+	input column to the external metadata column - a column which represents the actual landing
+	column on some database table.
+   - This means that prior to looping each output column a reference is needed to 
+	(1) the metadata output component's output collection's output column collection
+	(2) the metadata input component's input collection's external metadata column collection
+	(3) and last, the metadata input component's input collection's virtual input
+   - Then you get the input column by setting the usage type passing in the virtual input
+	 and the output column's linage id.
+   - Next, you get the input's external metadata column you want to map this input column to.
+   - Last, you connect the input column to the input's external metadata column on the 
+	 runtime component using the MapInputColumn method.
+*/
+
+//create package
+var mypackage = new Package();
+
+//data flow task
+var taskhost = mypackage.Executables.Add("DTS.Pipeline") as TaskHost;
+var pipeline = taskhost.InnerObject as MainPipe;
+
+//access components metadata collection
+var componentMetadataCollection = pipeline.ComponentMetaDataCollection;
+
+//add new component metadata object to the data flow
+var oledbSourceMetadata = componentMetadataCollection.New();
+
+//assoc. new component metadata object with the COM OLEDB Source Adapter
+oledbSourceMetadata.ComponentClassID = "DTSAdapter.OLEDBSource"; 
+
+//instantiate the component as an OLE DB Source
+var oledbSourceComponent = oledbSourceMetadata.Instantiate();
+
+//have the component set up its component metadata collection
+oledbSourceComponent.ProvideComponentProperties();
+
+//add an OLEDB connection manager
+var connectionManagerSource = mypackage.Connections.Add("OLEDB");
+
+//set connection string
+connectionManagerSource.ConnectionString = "Provider=SQLOLEDB.1; Integrated Security=SSPI;Initial Catalog=AdventureWorks; Data Source=(local);";
+
+//set the connection manager as the OLE DB the source adapter's runtime connection
+var runtimeConnectionSource = oledbSourceMetadata.RuntimeConnectionCollection["OleDbConnection"];//this name would have been added here by the call to ProvideComp~
+runtimeConnectionSource.ConnectionManagerID = connectionManagerSource.ID;
+
+//tell the OLE DB Source adapter to use the SQL Data Access mode
+oledbSourceComponent.SetComponentProperty("AccessMode", 2);
+
+//setup the SQL Command 
+oledbSourceComponent.SetComponentProperty("SqlCommand", "select EmployeeID from suchAndSuch");
+
+//setup connection manager object
+runtimeConnectionSource.ConnectionManager = DtsConvert.GetExtendedInterface(connectionManagerSource);
+
+//establish the database connection
+oledbSourceComponent.AcquireConnections(null);
+
+//setup the column metadata
+oledbSourceComponent.ReinitializeMetaData();
+
+//release the database connection
+oledbSourceComponent.ReleaseConnections();
+
+//release the connection manager
+runtimeConnectionSource.ReleaseConnectionManager();
+
+//add another new component metadata object to the data flow
+var oledbDestinationMetadata = componentMetadataCollection.New();
+
+//assoc. the component metadata object with the COM OLE DB Destination adpater
+oledbDestinationMetadata.ComponentClassID = "DTSAdapter.OLEDBDestination";
+
+//instantiate the ole db destination adapter
+var oledbDestinationComponent = oledbDestinationMetadata.Instantiate();
+
+//ask the component to setup its component metadata object
+oledbDestinationComponent.ProvideComponentProperties();
+
+//add the ole db connection manager
+var connectionManagerDestination = mypackage.Connections.Add("OLEDB");
+
+//setup destination connection string
+connectionManagerDestination.ConnectionString = "Provider=SQLOLEDB.1; Integrated Security=SSPI;Initial Catalog=CopyOfAdventureWorks; Data Source=(local);";
+
+//set the connection manager as OLE DB Destination adapter's runtime connection
+var runtimeConnectionDestination = oledbDestinationMetadata.RuntimeConnectionCollection["OleDbConnection"];
+runtimeConnectionDestination.ConnectionManagerID = connectionManagerDestination.ID;
+
+//tell the ole db destination adapter to use the SQL Access Mode
+oledbDestinationComponent.SetComponentProperty("AccessMode", 2);
+
+//setup the SQL Command
+oledbDestinationComponent.SetComponentProperty("SQLCommand", "select * from suchAndSuch");
+
+//setup the destination connection manager  object
+runtimeConnectionDestination.ConnectionManager =
+	DtsConvert.GetExtendedInterface(connectionManagerDestination);
+
+//est. connection to the database 
+oledbDestinationComponent.AcquireConnections(null);
+
+//setup the external metadata column
+oledbDestinationComponent.ReinitializeMetaData();
+
+//release connections 
+oledbDestinationComponent.ReleaseConnections();
+
+//release connection manager
+runtimeConnectionDestination.ReleaseConnectionManager();
+
+//get the standard output of the ole db source 
+var oledbSourceOutput = oledbSourceMetadata.OutputCollection["OLE DB Source Output"];
+
+//get the input of the destination
+var oledbDestinationInput = oledbDestinationMetadata.InputCollection["OLE DB Destination Input"];
+
+//create new path object to connect source to dest
+var path = pipeline.PathCollection.New();
+
+//connect source and destination via the path
+path.AttachPathAndPropagateNotifications(oledbSourceOutput, oledbDestinationInput);
+
+//get the output column collection for ole db Source adapter
+var oledbSourceOutputColumns = oledbSourceOutput.OutputColumnCollection;
+
+//get external metadata column collection for the ole db destination adapter 
+var externalMetadataColumns = oledbDestinationInput.ExternalMetadataColumnCollection;
+
+//get the virtual input for the ole db destination adapter
+var virtualInput = oledbDestinationInput.GetVirtualInput();
+
+foreach(IDTSOutputColumn100 outputColumn in oledbSourceOutputColumns)
+{
+	//add a new column 
+	var inputColumn = oledbDestinationComponent.SetUsageType(oledbDestinationInput.ID,
+															 virtualInput,
+															 outputColumn.LineageID,
+															 DTSUsageType.UT_READONLY);
+	//get external metadata column from the ole db destination using the column name
+	var externalMetadataColumn = externalMetadataColumns[outputColumn.Name];
+
+	//map new input column to its corresponding external metadata column
+	oledbDestinationComponent.MapInputColumn(oledbDestinationInput.ID,
+											 inputColumn.ID,
+											 externalMetadataColumn.ID);
+	
+}
+----
+
+----
+SSIS Programmatic Output
+ - having finished programming a Microsoft.SqlServer.Dts.Runtime.Package
+ - requires a instance of Application
+ 
+ myApp.SaveToXml("C:\Packages\MyNewSsis.dtsx", myPackage, null);
+----
+
+----
+Data Flow Transformation
+ - is simply another component 
+ - programmatic approach would start the same, 
+  - first requiring a source with a connection to get 
+    the metadata - more than likely a "DTSAdapter.OLEDBSource"
+	having a SQLCommand set to some kind of select.
+  - next would be a transform COM component whose input would
+    be connected to the source's output.
+  - then, based on the kind of transformation, calls to the 
+    'SetComponentProperty' would give the transformation 
+	its since and use.
+  - last would be another component like "DTSAdapter.OLEDBDestination"
+    who would have is input connected to the transformers
+	output.
+  - for something like "DTSTransform.ConditionalSplit" two destinations
+    would be needed - presumably.
+ 
+ - printed COM from powershell these where listed and would vary by machine.
+
+	DTSTransform.Aggregate                                                                                                                                                                                                          
+	DTSTransform.BestMatch                                                                                                                                                                                                          
+	DTSTransform.Cache                                                                                                                                                                                                              
+	DTSTransform.CharacterMap                                                                                                                                                                                                       
+	DTSTransform.ConditionalSplit                                                                                                                                                                                                   
+	DTSTransform.CopyMap                                                                                                                                                                                                            
+	DTSTransform.DataConvert                                                                                                                                                                                                        
+	DTSTransform.DerivedColumn                                                                                                                                                                                                      
+	DTSTransform.GroupDups                                                                                                                                                                                                          
+	DTSTransform.Lineage                                                                                                                                                                                                            
+	DTSTransform.Lookup                                                                                                                                                                                                             
+	DTSTransform.Merge                                                                                                                                                                                                              
+	DTSTransform.MergeJoin                                                                                                                                                                                                          
+	DTSTransform.Multicast                                                                                                                                                                                                          
+	DTSTransform.OLEDBCommand                                                                                                                                                                                                       
+	DTSTransform.PctSampling                                                                                                                                                                                                        
+	DTSTransform.Pivot                                                                                                                                                                                                              
+	DTSTransform.RowCount                                                                                                                                                                                                           
+	DTSTransform.RowSampling                                                                                                                                                                                                        
+	DTSTransform.SCD                                                                                                                                                                                                                
+	DTSTransform.Sort                                                                                                                                                                                                               
+	DTSTransform.TermExtraction                                                                                                                                                                                                     
+	DTSTransform.TermLookup                                                                                                                                                                                                         
+	DTSTransform.UnionAll                                                                                                                                                                                                           
+	DTSTransform.UnPivot 
+
+ - furthermore these would sit between src\dest
+   which printed from COM are:
+   
+	DTSAdapter.ExcelDestination                                                                                                                                                                                                     
+	DTSAdapter.ExcelSource                                                                                                                                                                                                          
+	DTSAdapter.FlatFileDestination                                                                                                                                                                                                  
+	DTSAdapter.FlatFileSource                                                                                                                                                                                                       
+	DTSAdapter.OLEDBDestination                                                                                                                                                                                                     
+	DTSAdapter.OLEDBSource                                                                                                                                                                                                          
+	DTSAdapter.RawDestination                                                                                                                                                                                                       
+	DTSAdapter.RawSource                                                                                                                                                                                                            
+	DTSAdapter.RecordsetDestination                                                                                                                                                                                                 
+	DTSAdapter.SQLServerDestination  
+----
+
+----
+SSIS Variables
+ - are scoped to the particular container in which they are declared
+ - scope is top-down where a container has access to its parent container's
+   variables
+ - Tasks will have thier variables scoped to themselves only  
+ - there are two namespaces for variables: System, User
+  - most developer declared variables are in User
+ 
+ 
+ //both Package and Task have a Variables property
+ var pkgVariables = myPackage.Variables;
+ var myDtSrcVars = myDfTaskHost.Variables;
+ 
+ //take four args for setting
+ var isReadOnly = false;
+ var varNs = "User";
+ myPkgVariables.Add("myVariableName",isReadOnly,varNs,"myVariablesValue");
+----
+
+----
+SSIS Data Types
+ - differ from T-SQL, ANSI SQL and .NET
+ - some SSIS datatypes are converted in the Data-Flow tasks
+ 
+ -String types
+ DT_WSTR -> nchar, nvarchar
+ DT_STR -> varchar, char (converted to DT_WSTR by DF)
+ DT_TEXT -> text (converted to DT_WSTR by DF)
+ DT_NTEXT -> ntext, sql_variant, xml (convert to DT_WSTR by DF)
+ 
+ -Binary types
+ DT_BYTES -> binary, varbinary
+ DT_IMAGE -> timestamp, image (converted to DT_BYTES by DF)
+ 
+ - Time\Date types
+ DT_DBTIMESTAMP -> smalldatetime, datetime
+ DT_DBTIMESTAMP2 -> datetime (converted to DT_DBTIMESTAMP by DF)
+ DT_DBDATE -> date (converted to DT_DBTIMESTAMP by DF)
+ DT_DATE -> date (converted to DT_DBTIMESTAMP by DF)
+ DT_FILETIME -> date (converted to DT_DBTIMESTAMP by DF)
+ DT_DBDATETIMESTAMPOFFSET -> datetimeoffset
+ DT_TIME2 -> time
+ DT_TIME -> time (converted to DT_TIME2 by DF)
+ 
+ - Numeric types
+ DT_NUMERIC -> numeric
+ DT_DECIMAL -> decimal (converted to DT_NUMERIC by DF)
+ DT_CY -> numeric, decimal (converted to DT_NUMERIC by DF)
+ DT_GUID -> uniqueidentifier
+ DT_I1, has no SQL counterpart but is a SByte
+ DT_I2 -> smallint
+ DT_I4 -> int
+ DT_I8 -> bigint
+ DT_BOOL -> bit (converted to DT_I4 by DF)
+ DT_R4 -> real
+ DT_R8 -> float
+ DT_U1, no SQL counterpart but is Byte
+ DT_U2, same but is a UInt16
+ DT_U4, UInt32
+ DT_U8, UInt64
+----
+
+----
+SSIS Casting
+ - Casting may take multiple forms
+ - Simpliest is like any C-based lang
+ 
+ (DT_I4)32
+ 
+ - when precision lengths are need casting 
+   will contain additional args 
+ (DT_STR,1,1252)5  -> length, code-page
+ (DT_WSTR,3)"Dog" -> length
+ (DT_DECIMAL,2)500 -> scale
+ (DT_NUMERIC,7,3)4000 -> precision, scale
+ (DT_BYTES,256)0x00 -> length
+ (DT_TEXT,1252)80 -> code-page
+----
+
+----
+SSIS Expressions
+
+ Boolean Operators
+  - string are binary comparisions so 
+    thier encoding cannot be taken for granted
+ ----
+ ||, &&, ==, !=, ? :
+ 'True', 'False', 'true', 'false'
+ 
+ 
+ String Concat
+ - C-based, backslash is for escape-sequence
+ ----
+ "Hello " + "World"
+ "C:\\" + @myFolder + "\\output.txt" 
+ 
+ Literals
+ ----
+ L for DT_I8 or DT_R8
+ U for DT_UI8
+ F for DT_R4
+ E for scientific notation DT_R8
+ 
+ Variable Names
+ - no sqr-braces when the variable is not 
+  repeated across namespaces and contains no 
+  spaces
+ ----
+ @[namespace::variableName]
+ @variableName
+
+ NULL Functions, SSIS doesn't have just a single NULL, but a NULL for each type
+  - get a null singleton by a function call
+ ----
+ ISNULL(expr) -> no optional param on this one
+ NULL(DT_I1)
+ NULL(DT_I2)
+ NULL(DT_I4)
+ NULL(DT_I8)
+ NULL(DT_STR, length, codepage)
+ NULL(DT_WSTR, length)
+ NULL(DT_DATE)
+ NULL(DT_BOOL)
+ NULL(DT_NUMERIC, precision, scale)
+ NULL(DT_CY)
+ NULL(DT_GUID)
+ NULL(DT_BYTES, lenght)
+ NULL(DT_DBDATE)
+ NULL(DT_DBTIME2, scale)
+ NULL(DT_DBTIMESTAMP)
+ NULL(DT_DBTIMESTAMP2, scale)
+ NULL(DT_DBTIMESTAMPOFFSET, scale)
+ NULL(DT_TEXT, codePage)
+ NULL(DT_NTEXT)
+ 
+ Numeric Functions
+ ----
+ ABS(expr)
+ CEILING(expr)
+ EXP(expr)
+ LN(expr)
+ LOG(expr)
+ POWER(expr,power)
+ ROUND(expr, length)
+ SIGN(expr)
+ SQUARE(expr)
+ SQRT(expr) 
+ 
+ String Functions
+ ----
+ CODEPOINT(strExpr)
+ FINDSTRING(strExpr, string, occurrence)
+ HEX(intExpr)
+ LEN(strExpr)
+ LOWER(strExpr)
+ LTRIM(strExpr)
+ REPLACE(strExpr,searchExpr,replaceExpr)
+ REPLICATE(strExpr, numberOfTimes)
+ REVERSE(strExp)
+ RIGHT(strExpr)
+ RTRIM(strExpr)
+ SUBSTRING(strExpr,startAt,length)
+ TRIM(strExpr)
+ UPPER(strExpr)
+
+ DateTime Functions
+ ----
+ DATEADD(datePart, number, date)
+ DATEDIFF(datePart, startDate, endDate)
+ DATEPART(datePart, date)
+ DAY(date)
+ GETDATE()
+ GETUTCDATE()
+ MONTH(date)
+ YEAR(date)
+----

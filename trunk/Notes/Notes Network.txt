@@ -1,0 +1,320 @@
+Network Warrior, 1st Edition 
+by Gary A. Donahue 
+Publisher: O'Reilly 
+Pub Date: June 21, 2007 
+Print ISBN-10: 0-596-10151-1 
+Print ISBN-13: 978-0-596-10151-0 
+Pages: 598 
+
+----
+Basics
+ - computer network is two or more computers that may share information
+ - involves addressing - not just a flash drive in the usb
+----
+
+----
+HUB
+ - also known as repeaters
+ - singular point to which all ethernet cables terminate
+ - like hub of wheel
+ - repeats the signal over many cables
+ - receive electric singal - repeat out to all those connected
+ - at hub layer (layer-2) signal is a 'frame' (a wrapped TCP packet)
+ - purely electric devices
+ - collision is when two nodes send signals to hub (to be repeated) at same time
+ - broadcast domain is region-limit of signal propagation
+ - broadcast stroms signal repeated out to hub who repeats it back again (loop)
+----
+
+----
+Switches
+ - aware of what device is on what port
+ - fowards frames only to intended device
+ - collisions only happen at a port level
+ - switch makes a dedicated path from port to port for duration of frame trans.
+ - switch opens frame and views MAC source/dest address
+ - maps source MAC address to port in an internal table
+ - fowards frame onto dest. address (already mapped to a port)
+ - if dest. address is not mapped then frame is sent to all ports
+----
+
+----
+Auto-Negotiation
+ - allowing two ports to determine thier own speed and duplex mode
+ - speed is ref'ed as Mbps 
+ - Half-duplex mode is sending is exclusive of listening
+  - eg is a CB radio in which while speaking one cannot be listening
+ - Full-duplex mode is sending and listening at the same time
+  - eg a telephone conversation
+----
+
+----
+Auto-Negotiation setup
+ - both ports must be set to allow auto-negotiation
+ - if one is not auto-negoation then it does not happen
+ - upon both being auto-negoation - speed and duplex is deceided together
+ - speed determined as level that both can handle
+  - eg port 1 is 100Mbps and port 2 is 1000Mbps then negotiated speed is 100
+ - if full-duplex is enabled on both ends then it is always preferred
+ - rule: set both sides to the same 
+----
+
+----
+VLAN
+ - virtual seperation of ports on a single switch
+ - each seperation is a virtual LAN 
+ - appears as many switches but is only one switch
+ - a router must be used to move frames between VLAN's
+  - router is physically hooked to same switch on both sides
+ - layer-3 switch has router built-in
+----
+  
+----
+Trunking
+ - extend a VLAN out to another physical switch
+ - portion of VLAN is on one switch, other portion on another
+ - truck allows two sides of same VLAN to communicate
+ - communication across trunk requires special 'tagging' protocal
+  - IEEE 802.1Q 
+  - Inter-Switch Link (ISL): Cisco proprietary protocol
+----
+
+----
+Spanning Tree
+ - used to eliminate the Boardcast Storms
+ - a bridge may be a switch or hub - in practice is always a switch
+ - tree determined by passing of Bridge Protocal Data Units
+ - each bride is assigned a bridge ID
+ - ID is combo of MAC Address and assigned bridge priority
+ - MAC address is a unique id assigned by the manufactor
+ - tree constructed of bridges froming into a 'tree' based on bridge priority
+ - not a routing protocal, used to eliminate loops in data passing
+----
+
+----
+SubNet Mask
+ - Subnet mask is series of consecutive 1's followed by 0's
+ 11111111.11111111.11111111.00000000 (ie 255.255.255.0)
+ - used via bitwise AND operator to reveal what portion of IP is Host Address
+ 10100000.11010011.10110000.00010000 --IP
+ 11111111.11111111.11111111.00000000 --Subnet Mask
+ 10100000.11010011.10110000.00000000 --Network Portion
+ 00000000.00000000.00000000.00010000 --Host Portion
+ 
+ - convention of 10.0.0.0/8 means subnet mask is 255.0.0.0 
+----
+
+----
+Routers
+ - router that moves data out of its origin network
+ - there are many protocals
+ - packets received are fowarded on if a route is listed in device's table
+ - if no route then fowarded on to gateway router
+ - if no gateway then packet is dropped
+ - routers communicate to each other through specific protocals
+  - used to determine state facts of bandwitdth
+  - upon competion of protocals - each protocal is ranked lowest wins
+  - protocal ranking is known as Administrative Distance
+   - OSPF is above RIP
+   - IGRP is above OSPF 
+   - etc
+----
+
+----
+Network Terms
+ - Classful makes no notification of an networks subnet mask
+ - Classful routing protocal is no longer used
+ - Classless routing protocal is one that notifies other routers of subnet mask
+ - Poision Reverse: router alerting others that a network is no longer available
+ - Convergence: state in which all routers have all updates about network
+ - Internal Gateway Protocals 
+  - protocals that control an autonomous system
+  - autonomous system as a single entry point
+  - RIP, EIGRP and OSPF are all Internal Gateway Protocals
+ - External Gateway Protocals
+  - only concerned with the least # of hops across IGP's
+  - EGP is a connection of many IGP's
+ - Redistribution is act of translating route table from one protocal to another
+  - redistribution is not done automatically
+ - Static Route: route entered manually, not learned via protocal
+ - Broadcast: packet sent to all connected nodes
+ - Multicast: packet sent to many connected nodes, but done selectively
+ - Unicast: packet sent along singular path
+----
+
+----
+Tunnels
+ - have a local device communicate with a remote device as if both were local
+ - GRE: allow remote networks to appear to be locally connected
+  - Generic Routing Encapsulation
+  - hides IP packets inside IP packets
+  - offers no encryption
+  - allows for Mutlicast and Broadcast
+ - VPN: 
+  - encrypts all inner packets
+  - GRE are built w/i VPN
+  - not multicast or boradcast
+  - two flavors
+   - point-to-point: router to router
+   - remote-access: single user to router, firewall or special VPN device 
+----
+
+----
+Multilayer Switch
+ - complex switch that contains many VLANs and connectes them with a router
+ - called multilayer since it interacts above normal switch layer 2 of OSI
+ - can do most everything
+----
+
+----
+Teleco terms
+ - Analog Signal: signal that is continous
+  - same amplitude and time
+ - Digital Signal: single with discrete values over time
+  - incurr a lose of percision when converting analog to digital
+  - difference is same as statistic's discrete vs. continous
+ - Bandwidth:
+  - originaly an analog only term
+  - refers to a lenght in hertz between two discrete frequencies
+  - FM Radio is 87.9 to 107.9 having a bandwidth of 20MHz
+  - digital bandwidth refers to throughput
+  - measure of number of possiable state changes in a second's time
+  - measure is known as bits-per-second
+ - DEMARC
+  - term that refers to the point were telco providers responsibilities end
+  - point where your (admin) responsibilities begin
+ - Latency: deley in both time for signal to travel and time signal processing
+  - Propagation delay: is travel part
+   - two links have same speed, one is geographiclly further
+  - Processing delay: is processing part
+   - two links at same geo-distance but link1 is slower because use of old equip
+ - Multiplexing:
+  - adding signals and sharing on one signal
+  - T1 takes 24 64-Kbps channels into one
+ - PBX: Private Branch Exchange
+ - POTS: Plain Old Telephone Service
+----
+
+----
+T1
+ - all T1s are digital
+  - there is such thing as analog signaling for voice  
+  - also digital signaling for data
+  - analog channel must be converted to digit before transmission
+ - Channelized T1: 
+  - voice circuit 
+  - 24 voice channels
+  - each channel has its own signaling info
+  - like actual tones upon btn press - they are in the voice channel
+ - Primary Rate Interface (PRI)
+  - 23 voice channels
+  - 1 signal channel
+  - known as out-of-band signaling
+  - signal channel sets up the call
+  - one of 23 voice is used to carry the voice
+---- 
+
+----
+T1 Encoding
+ - Alternate Mark Inversion (AMI)
+  - for voice 
+  - 1-value bits are signaled as +5V or -5V alternating after each other
+  - 0-value bits are signaled as space 0V
+Digital 0  0  1  0  0  1  0  1  1  1  0  0  1
+Voltage 0  0 +5  0  0 -5  0 +5 -5 +5  0  0 -5
+  - many zeros will cause receipent to loss track
+  - w/ many 0 in a row cannot tell where signal ends/begins
+  - to hold signal every 8th bit is always set to 1
+   - not noticeable in voice
+   - critical fail for data
+   
+ - Binary Eight Zero Substitution
+  - for voice or data
+  - same as AMI
+  - upon eight 0 bits, flat line is converted from sender to specific pattern
+Digital 0  1  0  0  0  0  0  0  0  0  0  1  1  0
+Voltage 0 +5  0 -5 -5  0  0 +5 +5  0  0 -5 +5  0
+             ^----              ----^         
+            (this area is the pattern)
+  - allows for continued sync
+----
+
+----
+Framing
+ - single sample is converted to one byte
+ - 8000 samples per minute is 8kHz
+ - In-Band Signaling
+  - every eighth bit is used for signaling
+ - Out-of-Band Signaling
+  - entire channel for signaling
+  - all eight bits for data
+ -D4 Superframe is organized in a repeating pattern
+  - one sample is 8 bits, bit eight being the signal
+  - each channel of T1 is sampled one-at-a-time
+   - after 24 samples all 24 channels have been passed through
+  - 24 samples make 192bits, another signal bit is added to make a Frame
+  - Superframe is 12 Frames (2316 bits)
+ - Extended Superframe (ESF)
+  - D4 not suitable for data
+  - is 24 frames
+  - frames are used for patterning, data, error checking
+----
+
+----
+DS3
+ - multiplex of T1s
+ - Channelized DS3 is aggregate of 28 DS1s (T1s)
+ - Clear-Channel DS3 has no channels and is all data
+----
+
+----
+Firewalls
+ - designed to prohibt all in and out traffic
+  - packet-filtering firewall: allows a packet to 
+    pass or drops a packet based on its origin address,
+	dest. address and port number
+  - Circuit-level gateway: is a man-in-the-middle where 
+    the bytes from the origin are copied and sent to the 
+	dest.
+  - application-level gateway: only allows traffic for
+    certian apps - examples are email, http\s, ftp and dns
+ - DMZ is a "3rd" part of the network
+  - is niether in or out of the network
+  - is connected to the outside through the firewall 
+  - is where you place Web, Email and DNS Servers
+  - idea is that it may be accessed from outside with rules
+  - prohibit DMZ devices from connecting to inside network devices
+  - inside may connect to DMZ
+  - outside may or may not connect to DMZ, depending on setting
+  - typical DMZ allowance
+   - TCP port 110 (Email POP)
+   - TCP port 143 (Email IMAP)
+   - TCP port 25 (Email SMTP)
+   - TCP port 80 (Web HTTP)
+   - TCP port 443 (Web HTTPS)
+   - UDP port 53 (DNS)
+   - TCP port 53 (DNS) (sometimes)
+----
+
+----
+Load Balancing
+ - single machine sit between Firewall and server farm
+ 
+ - DNS Load Balancing
+  - round-robin
+  - single name resolves to many servers
+  - not able to react to in-balance on a single server
+ - Bridged Load Balancing
+  - use virtual IP to resolve to many servers (IPs)
+  - performed at lower network layer
+ - Routed Load Balancing
+  - similar to bridged in that resolved to single virtual IP
+  - virtual IP is on a network different from servers themselves
+  - is limitless in expandiablity
+
+ Virtual Server: IP address used to access services running on real servers
+ Server Farm: logical grouping of servers 
+ Real Server: physical server that is bound to a virtual server
+----
+ 
+

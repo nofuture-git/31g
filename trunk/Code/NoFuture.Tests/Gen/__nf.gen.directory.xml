@@ -1,0 +1,278 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<noFuture>
+  <gen>
+    <cgTypeFileIndex>
+      <originalSrcCodeFile>c:\Projects\Summit\APEX\SummitHealth.CRM.UI.Design\ProgramManagement\ClinicSetup\CreateClinic.aspx.cs</originalSrcCodeFile>
+      <assemblyQualifiedTypeName>ProgramManagement_ClinicSetup_CreateClinic, SummitHealth.CRM.UI.Design, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</assemblyQualifiedTypeName>
+      <pdbFilesHash>
+        <entry id="2d31343636393335313937">
+          <pdbTargetLine indexId="18510" startAt="172" endAt="451"><![CDATA[Page_Load]]></pdbTargetLine>
+        </entry>
+        <entry id="2d31323534303431383539">
+          <pdbTargetLine indexId="18511" startAt="455" endAt="474"><![CDATA[Page_PreRender]]></pdbTargetLine>
+        </entry>
+        <entry id="333431303332353639">
+          <pdbTargetLine indexId="18512" startAt="483" endAt="487"><![CDATA[ddlScreeningLocation_SelectedIndexChanged]]></pdbTargetLine>
+        </entry>
+        <entry id="3532303539393737">
+          <pdbTargetLine indexId="18513" startAt="491" endAt="575"><![CDATA[ddlSiteName_SelectedIndexChanged]]></pdbTargetLine>
+        </entry>
+        <entry id="333532313739313737">
+          <pdbTargetLine indexId="18514" startAt="579" endAt="718"><![CDATA[btnback_Click]]></pdbTargetLine>
+        </entry>
+        <entry id="353339373636353330">
+          <pdbTargetLine indexId="18515" startAt="722" endAt="904"><![CDATA[btnTopPaneReset_Click]]></pdbTargetLine>
+        </entry>
+        <entry id="2d31323234353339363637">
+          <pdbTargetLine indexId="18516" startAt="908" endAt="953"><![CDATA[ddlStates_SelectedIndexChanged]]></pdbTargetLine>
+        </entry>
+        <entry id="2d32303133383737313536">
+          <pdbTargetLine indexId="18517" startAt="957" endAt="981"><![CDATA[ddlCity_SelectedIndexChanged]]></pdbTargetLine>
+        </entry>
+        <entry id="313036343532333234">
+          <pdbTargetLine indexId="18518" startAt="985" endAt="986"><![CDATA[sample_click]]></pdbTargetLine>
+        </entry>
+        <entry id="363536303734363638">
+          <pdbTargetLine indexId="18519" startAt="990" endAt="1188"><![CDATA[btnCreateClinic_Click]]></pdbTargetLine>
+        </entry>
+        <entry id="31383331323136353933">
+          <pdbTargetLine indexId="18520" startAt="1192" endAt="1193"><![CDATA[lnkbtnClinicOtherDetails_Click]]></pdbTargetLine>
+        </entry>
+        <entry id="353239343539383032">
+          <pdbTargetLine indexId="18521" startAt="1197" endAt="1215"><![CDATA[chkScreeningOption_CheckedChanged]]></pdbTargetLine>
+        </entry>
+        <entry id="31313536333534393935">
+          <pdbTargetLine indexId="18522" startAt="1219" endAt="1237"><![CDATA[chkITApplication_CheckedChanged]]></pdbTargetLine>
+        </entry>
+        <entry id="2d353834393032353936">
+          <pdbTargetLine indexId="18523" startAt="1241" endAt="1259"><![CDATA[chkBilling_CheckedChanged]]></pdbTargetLine>
+        </entry>
+        <entry id="31363338313931373933">
+          <pdbTargetLine indexId="18524" startAt="1263" endAt="1292"><![CDATA[chkBlastRolloutPref_CheckedChanged]]></pdbTargetLine>
+        </entry>
+        <entry id="2d31383332313332303133">
+          <pdbTargetLine indexId="18525" startAt="1297" endAt="1322"><![CDATA[btnTest_Click]]></pdbTargetLine>
+        </entry>
+        <entry id="2d383439323633383931">
+          <pdbTargetLine indexId="18526" startAt="1331" endAt="1349"><![CDATA[chkSelectAll_CheckedChanged]]></pdbTargetLine>
+        </entry>
+        <entry id="363838333939343231">
+          <pdbTargetLine indexId="18527" startAt="1353" endAt="1404"><![CDATA[btnTemp_Click]]></pdbTargetLine>
+        </entry>
+        <entry id="373935343530313236">
+          <pdbTargetLine indexId="18528" startAt="1413" endAt="1481"><![CDATA[ddlFasting_SelectedIndexChanged]]></pdbTargetLine>
+        </entry>
+        <entry id="2d31313733333533343831">
+          <pdbTargetLine indexId="18529" startAt="1490" endAt="1496"><![CDATA[lnkbtnRediect_Click]]></pdbTargetLine>
+        </entry>
+        <entry id="2d31363634333036303130">
+          <pdbTargetLine indexId="18530" startAt="1505" endAt="1548"><![CDATA[btnCancel_Click]]></pdbTargetLine>
+        </entry>
+        <entry id="31373136303131333933">
+          <pdbTargetLine indexId="18531" startAt="1558" endAt="1956"><![CDATA[btnSave_Click]]></pdbTargetLine>
+        </entry>
+        <entry id="32303637393432373438">
+          <pdbTargetLine indexId="18532" startAt="1960" endAt="2033"><![CDATA[grdvScreeningLocationInformation_Sorting]]></pdbTargetLine>
+        </entry>
+        <entry id="323932313539383535">
+          <pdbTargetLine indexId="18533" startAt="2037" endAt="2110"><![CDATA[grdvScreeningLocationInformation_PageIndexChanging]]></pdbTargetLine>
+        </entry>
+        <entry id="31333931303633333430">
+          <pdbTargetLine indexId="18534" startAt="2120" endAt="2172"><![CDATA[CalculateClinicDuration_ClinicHours]]></pdbTargetLine>
+        </entry>
+        <entry id="2d31323138313936393339">
+          <pdbTargetLine indexId="18535" startAt="2177" endAt="2180"><![CDATA[lnkContinue_Click]]></pdbTargetLine>
+        </entry>
+        <entry id="393733373431313735">
+          <pdbTargetLine indexId="18536" startAt="2189" endAt="2233"><![CDATA[grdvFileList_RowCommand]]></pdbTargetLine>
+        </entry>
+        <entry id="31363836303931323834">
+          <pdbTargetLine indexId="18537" startAt="2242" endAt="2267"><![CDATA[grdvFileList_PageIndexChanging]]></pdbTargetLine>
+        </entry>
+        <entry id="31313037333635373139">
+          <pdbTargetLine indexId="18538" startAt="2276" endAt="2288"><![CDATA[grdvFileList_PreRender]]></pdbTargetLine>
+        </entry>
+        <entry id="31353432323439333934">
+          <pdbTargetLine indexId="18539" startAt="2297" endAt="2326"><![CDATA[grdvFileList_Sorting]]></pdbTargetLine>
+        </entry>
+        <entry id="383835333532393934">
+          <pdbTargetLine indexId="18540" startAt="2330" endAt="2400"><![CDATA[chkSelect_CheckedChanged]]></pdbTargetLine>
+        </entry>
+        <entry id="393933333631343434">
+          <pdbTargetLine indexId="18541" startAt="2409" endAt="2449"><![CDATA[grdvBrochureList_RowCommand]]></pdbTargetLine>
+        </entry>
+        <entry id="2d31393534393830303537">
+          <pdbTargetLine indexId="18542" startAt="2458" endAt="2483"><![CDATA[grdvBrochureList_PageIndexChanging]]></pdbTargetLine>
+        </entry>
+        <entry id="31313636363439383830">
+          <pdbTargetLine indexId="18543" startAt="2492" endAt="2504"><![CDATA[grdvBrochureList_PreRender]]></pdbTargetLine>
+        </entry>
+        <entry id="383734343735313136">
+          <pdbTargetLine indexId="18544" startAt="2513" endAt="2537"><![CDATA[grdvBrochureList_Sorting]]></pdbTargetLine>
+        </entry>
+        <entry id="383437393238333736">
+          <pdbTargetLine indexId="18545" startAt="2541" endAt="2614"><![CDATA[chkSelectBrochure_CheckedChanged]]></pdbTargetLine>
+        </entry>
+        <entry id="2d31303131303736363335">
+          <pdbTargetLine indexId="18578" startAt="2623" endAt="2987"><![CDATA[FillTopFields]]></pdbTargetLine>
+        </entry>
+        <entry id="2d32303831303538323234">
+          <pdbTargetLine indexId="18579" startAt="2991" endAt="3009"><![CDATA[SetDropdownValues]]></pdbTargetLine>
+        </entry>
+        <entry id="333435323832383530">
+          <pdbTargetLine indexId="18580" startAt="3013" endAt="3062"><![CDATA[GetClinicTypes]]></pdbTargetLine>
+        </entry>
+        <entry id="31343635333731393039">
+          <pdbTargetLine indexId="18581" startAt="3066" endAt="3247"><![CDATA[GetScreeningLocationInformation]]></pdbTargetLine>
+        </entry>
+        <entry id="2d31353836303437393235">
+          <pdbTargetLine indexId="18582" startAt="3251" endAt="3285"><![CDATA[ClearValues]]></pdbTargetLine>
+        </entry>
+        <entry id="2d31313137393736323834">
+          <pdbTargetLine indexId="18583" startAt="3294" endAt="3306"><![CDATA[MakeLangListBoxItemsSelectedandBiLingDropdown]]></pdbTargetLine>
+        </entry>
+        <entry id="31353235313434383830">
+          <pdbTargetLine indexId="18584" startAt="3310" endAt="3324"><![CDATA[ConcateListItems1]]></pdbTargetLine>
+        </entry>
+        <entry id="2d31333332373737393230">
+          <pdbTargetLine indexId="18585" startAt="3328" endAt="3370"><![CDATA[SetSiteNameCity]]></pdbTargetLine>
+        </entry>
+        <entry id="2d31313732353634393138">
+          <pdbTargetLine indexId="18586" startAt="3374" endAt="3378"><![CDATA[ToNullOrValue]]></pdbTargetLine>
+        </entry>
+        <entry id="393635373434323930">
+          <pdbTargetLine indexId="18587" startAt="3382" endAt="3639"><![CDATA[CreateclinicList]]></pdbTargetLine>
+        </entry>
+        <entry id="31353530393030383431">
+          <pdbTargetLine indexId="18588" startAt="3643" endAt="3659"><![CDATA[CalculateTimeforPM]]></pdbTargetLine>
+        </entry>
+        <entry id="2d31373231363535363637">
+          <pdbTargetLine indexId="18589" startAt="3663" endAt="3711"><![CDATA[CalculateClinicDuration]]></pdbTargetLine>
+        </entry>
+        <entry id="313931363032363138">
+          <pdbTargetLine indexId="18590" startAt="3715" endAt="3720"><![CDATA[ConvertTimeFormat]]></pdbTargetLine>
+        </entry>
+        <entry id="2d31323130303034333338">
+          <pdbTargetLine indexId="18591" startAt="3724" endAt="4141"><![CDATA[DisplayClinicDetails]]></pdbTargetLine>
+        </entry>
+        <entry id="2d31373331363830383233">
+          <pdbTargetLine indexId="18592" startAt="4145" endAt="4168"><![CDATA[LoadAppointmentSlots]]></pdbTargetLine>
+        </entry>
+        <entry id="2d313532373432353838">
+          <pdbTargetLine indexId="18593" startAt="4172" endAt="4177"><![CDATA[SetAMPMDropDownvaluesFromDB]]></pdbTargetLine>
+        </entry>
+        <entry id="2d393434313738373439">
+          <pdbTargetLine indexId="18594" startAt="4182" endAt="4184"><![CDATA[RetrievalId]]></pdbTargetLine>
+        </entry>
+        <entry id="353935383738333131">
+          <pdbTargetLine indexId="18595" startAt="4188" endAt="4213"><![CDATA[SetDefaultInfo]]></pdbTargetLine>
+        </entry>
+        <entry id="31363937393233383435">
+          <pdbTargetLine indexId="18596" startAt="4217" endAt="4223"><![CDATA[DisableFastingFields]]></pdbTargetLine>
+        </entry>
+        <entry id="2d313335303736303037">
+          <pdbTargetLine indexId="18597" startAt="4227" endAt="4321"><![CDATA[EnableFields]]></pdbTargetLine>
+        </entry>
+        <entry id="2d313631373835393132">
+          <pdbTargetLine indexId="18598" startAt="4325" endAt="4408"><![CDATA[DisableFields]]></pdbTargetLine>
+        </entry>
+        <entry id="31393539383232353732">
+          <pdbTargetLine indexId="18599" startAt="4411" endAt="4435"><![CDATA[GetPacketNotReturnedValue]]></pdbTargetLine>
+        </entry>
+        <entry id="31383939393838323736">
+          <pdbTargetLine indexId="18600" startAt="4439" endAt="4466"><![CDATA[UpdatePacketNotToBeReturned]]></pdbTargetLine>
+        </entry>
+        <entry id="31383030363938343735">
+          <pdbTargetLine indexId="18601" startAt="4473" endAt="4756"><![CDATA[InsertNewClinicData]]></pdbTargetLine>
+        </entry>
+        <entry id="2d313536393736323034">
+          <pdbTargetLine indexId="18620" startAt="4760" endAt="5753"><![CDATA[UpdateClinicData]]></pdbTargetLine>
+        </entry>
+        <entry id="2d31343331313030393438">
+          <pdbTargetLine indexId="18621" startAt="5757" endAt="5768"><![CDATA[SetControlToolTip]]></pdbTargetLine>
+        </entry>
+        <entry id="2d31313234393131303236">
+          <pdbTargetLine indexId="18622" startAt="5772" endAt="5787"><![CDATA[NumberOfStaffRequired]]></pdbTargetLine>
+        </entry>
+        <entry id="2d31333739343138323032">
+          <pdbTargetLine indexId="18623" startAt="5795" endAt="5827"><![CDATA[SetTabStatus]]></pdbTargetLine>
+        </entry>
+        <entry id="31343033303633323235">
+          <pdbTargetLine indexId="18625" startAt="5835" endAt="5837"><![CDATA[CheckEmailValidity]]></pdbTargetLine>
+        </entry>
+        <entry id="3435333837383636">
+          <pdbTargetLine indexId="18627" startAt="5846" endAt="5849"><![CDATA[CheckValidity]]></pdbTargetLine>
+        </entry>
+        <entry id="31373936313231393438">
+          <pdbTargetLine indexId="18628" startAt="5853" endAt="5915"><![CDATA[GetSelectedClinicTypes]]></pdbTargetLine>
+        </entry>
+        <entry id="313939353830393639">
+          <pdbTargetLine indexId="18629" startAt="5923" endAt="6413"><![CDATA[GetDetails]]></pdbTargetLine>
+        </entry>
+        <entry id="2d31353230303432383439">
+          <pdbTargetLine indexId="18630" startAt="6417" endAt="6451"><![CDATA[GetMailMessageLpm]]></pdbTargetLine>
+        </entry>
+        <entry id="2d31323238303632343439">
+          <pdbTargetLine indexId="18635" startAt="6461" endAt="6480"><![CDATA[IsImmunizationSelected]]></pdbTargetLine>
+        </entry>
+        <entry id="383532313936363032">
+          <pdbTargetLine indexId="18636" startAt="6491" endAt="6658"><![CDATA[GetStaffingRules]]></pdbTargetLine>
+        </entry>
+        <entry id="2d353439333934373530">
+          <pdbTargetLine indexId="18637" startAt="6663" endAt="6692"><![CDATA[UpdateAppointmentSlotInformation]]></pdbTargetLine>
+        </entry>
+        <entry id="343733373639343331">
+          <pdbTargetLine indexId="18638" startAt="6702" endAt="6738"><![CDATA[FormatTheTextIntoGridCell]]></pdbTargetLine>
+        </entry>
+        <entry id="2d353230373137313835">
+          <pdbTargetLine indexId="18639" startAt="6743" endAt="6834"><![CDATA[ShowAllFiles]]></pdbTargetLine>
+        </entry>
+        <entry id="393234303439383339">
+          <pdbTargetLine indexId="18640" startAt="6838" endAt="6848"><![CDATA[InsertOrUpdatePdfDocuments]]></pdbTargetLine>
+        </entry>
+        <entry id="31333735363238363732">
+          <pdbTargetLine indexId="18641" startAt="6857" endAt="6871"><![CDATA[ValidatePath]]></pdbTargetLine>
+        </entry>
+        <entry id="31393232333630363131">
+          <pdbTargetLine indexId="18642" startAt="6880" endAt="6922"><![CDATA[Findcon]]></pdbTargetLine>
+        </entry>
+        <entry id="323134323038353938">
+          <pdbTargetLine indexId="18643" startAt="6931" endAt="6975"><![CDATA[AppointmentSlotdetails]]></pdbTargetLine>
+        </entry>
+        <entry id="2d31303832353334303536">
+          <pdbTargetLine indexId="18644" startAt="6982" endAt="7006"><![CDATA[LoadLsttimeslot]]></pdbTargetLine>
+        </entry>
+        <entry id="31363732393134383130">
+          <pdbTargetLine indexId="18645" startAt="7010" endAt="7079"><![CDATA[GetImmunization]]></pdbTargetLine>
+        </entry>
+        <entry id="31383130353030303137">
+          <pdbTargetLine indexId="18646" startAt="7083" endAt="7141"><![CDATA[SendConfirmation]]></pdbTargetLine>
+        </entry>
+        <entry id="32303935353637313835">
+          <pdbTargetLine indexId="18647" startAt="7148" endAt="7232"><![CDATA[ShowMappedDocuments]]></pdbTargetLine>
+        </entry>
+        <entry id="2d343830333932353038">
+          <pdbTargetLine indexId="18648" startAt="7242" endAt="7243"><![CDATA[get_FileSavePath]]></pdbTargetLine>
+        </entry>
+        <entry id="31363730353531383635">
+          <pdbTargetLine indexId="18649" startAt="7246" endAt="7247"><![CDATA[set_FileSavePath]]></pdbTargetLine>
+        </entry>
+        <entry id="2d343639343831333731">
+          <pdbTargetLine indexId="18650" startAt="7258" endAt="7284"><![CDATA[CreateProgramUrlForServicePortal]]></pdbTargetLine>
+        </entry>
+        <entry id="2d31353531353939353731">
+          <pdbTargetLine indexId="18651" startAt="7295" endAt="7354"><![CDATA[SendEmailToPMLBPM]]></pdbTargetLine>
+        </entry>
+        <entry id="3839313433303932">
+          <pdbTargetLine indexId="18652" startAt="7364" endAt="7415"><![CDATA[SetEditableTAT]]></pdbTargetLine>
+        </entry>
+        <entry id="2d383437363436333933">
+          <pdbTargetLine indexId="18653" startAt="7419" endAt="7430"><![CDATA[SetCheckboxValues]]></pdbTargetLine>
+        </entry>
+        <entry id="2d31333634383036353037">
+          <pdbTargetLine indexId="18508" startAt="71" endAt="164"><![CDATA[.ctor]]></pdbTargetLine>
+        </entry>
+      </pdbFilesHash>
+    </cgTypeFileIndex>
+  </gen>
+</noFuture>

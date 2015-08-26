@@ -1,0 +1,267 @@
+﻿Random notes
+Assign an IP
+ncpa.cpl
+
+Assign Proxy Server
+inetcpl.cpl
+----
+net use 
+
+net use [address] /delete
+--
+
+----
+Indexed Database fields:  speeds up lookups in the same way that we locate a phone number in the phone book.  If searching for I.P. Freely we start on the "Fre - Frg."  The db does the same.
+----
+
+---
+Bytes are calculated using 2^n where n is the size.  When n = 10 its KB; n = 20 its MB and n = 30 its GB and so forth and so on.  You reverse it with 2^1/n.
+----
+
+---
+System.Nullable is still pass-by-value semantics
+
+        public void Something(short? myARg)
+        {
+            myARg = (short)(myARg + 1);
+        }
+
+        [TestMethod]
+        public void TestAssertPropertiesAreEquivalent()
+        {
+            var foo = new YearlyRecurringAppointmentInfo();
+            foo.DayOfMonth = new short();
+            foo.DayOfMonth = 18;
+            Something(foo.DayOfMonth);
+
+	    //this passes
+            Assert.AreEqual((short)18,foo.DayOfMonth);
+
+        }
+--
+
+
+----
+occultandum_codex
+imprimis_codex
+hereditarius_codex
+adjuvatus_codex
+destituo_codex
+----
+
+----
+SQLServer
+CAST('2009-03-04 12:00:00', shortdatetime)
+----
+
+----
+System.IO.Path.Combine(folder, filename);
+string folder = GetFolderPath() + Path.DirectorySeparatorChar;
+string fileName = Path.GetFileName(fullPath);
+a = Split("my Text | Seperate me", "|", 2)
+enumName = [Enum].GetName(GetType(myNamespace.myEnum),myEnum.value)
+str = Right("000" & str, 4) 'pad leading zeros
+System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly.Location)
+System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)
+----
+
+----
+Start > Programs > Accessories > System Tools > ScanDisk > Thorough > Automatically fix errors
+Start > Programs > Accessories > System Tools > Disk Defragmenter
+My Computer > C: > right click > Properties > Tools tab > Error Checking
+----
+
+----
+runas /user:admin program.exe  --this cmd line to run an app aa admin
+----
+
+----
+dll hell:  issue with activeX dll's, new software would come with a new version of an existing dll, replacing the older one on which current software depends.  Current software would fail due to change in what seemed to be the same dll.
+----
+
+----
+HKCU\Control Panel\Sound - disable computer beep
+HKLM\Software\Microsoft\Windows\CurrentVersion\Run - remove icon from task bar
+HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\<the exe entery>
+  - (Default) add the string data - full path of exe
+  - Path - new string key entry that is just the path 
+Start > Run > msconfig
+----
+
+----
+ISAM Indexed Sequential Access Method: a database having index tables
+----
+
+----
+Best Practice Class Summary
+  -Begin summary with verb like
+    Indentifies, Provides, Verifies, Specifies, Controls, Represents, Manages
+  -Follow by most relevant noun
+    file, file system, status code, IP address
+  -If class is more robust - follow entry verb with another verb
+    creating, searching, manipulating, sorting
+  -Last, when class is robust use conclusion word to wrap-up
+    thereby, therefore, hence, in such
+----
+
+----
+Various programming practices
+ - when taking notes limit statements to 90 characters - forces concise
+ - when taking notes break concepts into single-line statements
+ - avoid using date calls like Now(), Today(), TimeOfDay() 
+   - instead replace these with access variables and property assignment
+   - allows for testing accros timespans without actual change in system clock
+ - for db layer, have straight qry's output a complete string first
+  - pass the complete string into a connection/reader object
+  - keep the actual connection object to a singularity 
+ - avoid File.Delete and instead have expection thrown and caught
+  - better to be emailed then delete something critical
+---- 
+
+----
+Notes Windows Menus
+
+"Sams Teach Yourself Visual Basic 6 in 21 Days" 
+by Greg Perry 
+Publisher: Sams 
+Pub Date: August 13, 1998 
+Print ISBN-10: 0-672-31310-3 
+Print ISBN-13: 978-0-672-31310-3 
+Pages: 880
+Creating Menus > Learning About Menus
+
+
+Terms:
+ - Menu Bar:  row beneath title bar
+ - Menu: option listing available upon Menu Bar caption selection (eg File)
+ - Enabled Option:  option in back font
+ - Disabled Option: option in grey font
+ - Selected Option:  inverse font/background colored row - move with arrow
+ - Caption:  text displayed in row on Menu
+ - Dialog Box:  produces upon select option caption ending in '...'
+ - Seperator:  Thin convex line between menu captions
+ - SubMenu:  result menu upon select caption row ending in small triangle
+ - Checked Option:  caption with check-mark next to it
+----
+
+----
+"Designing Enterprise Applications with Microsoft Visual Basic .NET" 
+by Robert Ian Oliver 
+Publisher: Microsoft Press 
+Pub Date: November 16, 2002 
+Print ISBN-10: 0-7356-1721-X 
+Print ISBN-13: 978-0-7356-1721-6 
+Pages: 512 
+Chapter 11
+
+----
+ w/i .NET:  C# and VB are same speed
+----
+  
+----
+ use StringBuilder instead of concat
+    Dim myString As String
+    Dim myBuilder As StringBuilder
+    myBuilder.Append("Just a little bit")
+    myBuilder.Append("a little more")
+    myString = myBuilder.ToString
+----
+
+----   
+ avoid late-binding:  obj type is eval'ed at runtime
+   Dim myObj As Object
+   Dim myExcact As Exact
+   myObj = new Exact() 'avoid
+   myExact = new Exact() 'OK
+----
+ 
+----  
+ use AndAlso and OrElse short-circuit operators
+   'if simpleProperty is False, intenseDBQuery still runs!
+   If simpleProperty() = True And intenseDBQuery = True Then True
+   'if simpleProperty is False, intenseDBQuery does not run
+   If simpleProperty() = True AndAlso intenseDBQuery = True Then True
+----
+
+----
+ use ByVal as much as possiable
+----
+
+----
+ make use of Structures instead of classes when able - they're on the stack
+---- 
+   
+----
+ only throw exceptions for truly exceptional circumstances
+----
+ 
+---- 
+ never catch an exception to just throw it again
+----
+ 
+----
+ always use the same string for db connection
+ - ensure that conn is taken from pool, not new
+---- 
+  
+---- 
+ open connections as late as possiable - close as soon as possiable
+----
+
+----
+ always call Close() or Dispose() on conn obj
+---- 
+ 
+----
+ include Close() or Dispose() in the Finally statment
+----
+ 
+----
+ make use of Stored Procedures on the db server
+----
+
+----
+ use DataReader object for the fastest read with little overhead
+----
+ 
+----
+ lookup column with ordinal, not column name
+  'make use of GetOrdinal if data reader is looping through records
+  Dim columnName1 As Integer = myDataReader.GetOrdinal("ColumnName1")
+----
+----
+Per http://ecis.seattleu.edu/courses/ecis464spring04/Articles/JVMvsCLR.pdf section 4 the JVM and the CLR have almost identical performance for similar programs
+----
+
+----
+Procedures: generic name for either a subroutine or a function (Print ISBN-13: 978-0-672-32234-1 "Visual Basic® .NET Unleashed" - Understanding Delegates, Defining Delegates).
+
+Component Object Model (COM): per ISBN-13: 978-0-672-31241-0 "Visual C++ 6 Unleashed" was the underlying architecture of Object Linking and Embedding 2.0 and was released by Microsoft in 1993.  Namely it was "an entire architecture of object-based services that could be extended, customized, and enhanced."
+
+  Furthermore, per ISBN-13: 978-0-672-31598-5 "Pure Visual Basic" Quick Reference , A COM Primer..., The Benefits of COM, one of the benefits of COM is the ease of access to the component.  At the physical layer a COM component is a "binary standard [...] layout." this allows a client to envoke members of the component with simple pointers.  Almost as if they are already existing objects in memory.  Furthermore the physical place of the component may be across a network.  This indexing is handled by the COM Libary which is "a set of system services that track the location and identities of all COM objects."  This allows the programmer to simply use the "CreateObject" or "New" keyword to instantiate a new object, the COM libary is responsiable for locating the needed info in memory.
+
+Active X technologies:  per ISBN-13: 978-0-672-31241-0 "Visual C++ 6 Unleashed" this new technology was released by Microsoft in 1996 and namely imporved performance over the Internet and corporate intranets and was an "optimization to COM and OLE."  Per ISBN-13: 978-0-672-31310-3 "Sams Teach Yourself Visual Basic 6 in 21 Days" "Day 17.ActiveX Controls" ActiveX controls was community forced effort of Microsoft.  It started with VBX controls; namely, simple controls that were only usuable in VB.  These controls were popular so Microsoft made Active X controls which were usable across the platform.  ActiveX controls appear to be alot like the Sun Java Beans component technology.  Furthermore, per ISBN-13: 978-0-672-31598-5 "Pure Visual Basic" Chp 23 ActiveX and COM are related namely in name.  This text states that orginally ActiveX was the name for the "internet specific features of COM" the term "eventually expanded to encompass the entire range of COM services." This fact was evidenced in VB 5 and 6 by the usage of ActiveX DLL and ActiveX EXE.  Furthermore, this text states that the name change happened in 1996.
+
+Data Access Objects (DOA): per ISBN-13: 978-0-201-74568-9 "Pragmatic ADO.NET: Data Access for the Internet World" Section 1.1 DOA was a rename for a new type of "VT Objects" - VT Objects were a simple wrapper object for VB which allowed access to the ODBC API.  This was Microsoft's first effort to allow easy access to desktop databases
+
+OLE for Databases (OLE DB): per ISBN-13: 978-0-201-74568-9 "Pragmatic ADO.NET: Data Access for the Internet World" Section 1.1 this was the second effort of Microsoft to provide universial access to data (server db, desktop db and even spreadsheets).  This effort failed due to its reliance on C++ programing, and was therefore not launguage independent.
+
+ActiveX Data Objects (ADO): per ISBN-13: 978-0-201-74568-9 "Pragmatic ADO.NET: Data Access for the Internet World" Section 1.1 was the next thing to follow OLE DB.  ADO is "a COM wrapper around OLE DB."  ADO fit nicely into the new worldwide desire to have web sites being database driven.  ADO became the "lingua franca" of internet web applications. Per Section 1.2 ADO continued to work well when the internet was young but as the number of hits-per-day to sites increased 100 fold the problem arose.  Namely since HTTP is stateless the server could not know when the user is finished and had to rely on time-outs for connections.  This caused the database to slow-down or break-down.
+
+Dynamic Link Library (DLL):  per ISBN-13: 978-0-672-32115-3 "Borland® Delphi™ 6 Developer's Guide" Chp 6, these are "program modules" that contain code that may be shared by many different Windows applications.  "One of the primary uses of DLLs is to enable applications to load code to execute at runtime instead of linking that code to the application at compile time. Therefore, multiple applications can simultaneously use the same code provided by the DLL."  Furthermore, the Windows environment places and maps only one copy of the DLL into memory.  As multiple process require the same DLL each process is given its own image of the DLL.  Lastly, this does not mean that as multiple processes call the same DLL that each one recieves a copy in its physical memory; rather, each process gets a image mapping to the global heap.  Similarly to an object reference being on the stack and the object being on the heap. 
+
+Machine Code: per ISBN: 0-596-00755-8 "Designing Embedded Hardware" 2.2 writes, "everything a processor deals with is expressed as numbers in memory"  Each numerical instruction of machine code is called an opcode.  Compilers actually turn source files into opcode.  Also not when processors are mentioned as 32bit or 64 bit - this is the size of the registries on the processor.  Machine code is processor specific - Intel's machine code is totally different from Motorola's.  Machine code typically is something like this 
+CE 10 02
+and in decimal this is 
+206 16 2
+Note, the CE is the opcode, or instuction while the 10 and 02 are the bytes that the instuction works upon.  Also, from what I can tell in Secion 2.4 the names stack and heap refer to the registry and RAM respectivly.
+
+Assembly Language: is just the use of mapping of opcode and the bytes it works upon in a litte more easy to read way.  
+CE 10 02 
+becomes 
+movlw 0x10 
+Programmers in the old days wrote programs in Assembly Language and then translated it by hand into machine language.  Later assemblers came into use which translated the Assembly Language into Machine code, via a computer.  COBAL, FORTRAN and PASCAL are higher level languages with very specific uses.  COBAL is for numbers crunching, FORTRAN for business reports and PASCAL is for students.  C was written specificlly for the design of operating systems (ISBN: 1-56592-306-5 Practical "C Programming, 3rd Edition" by Steve Oualline, Chapter 1).
+
+
+Two's Complement notation:  you invert the bits and add one.  0010 becomes 1101 then onto 1110 with 0001 being added.
+----

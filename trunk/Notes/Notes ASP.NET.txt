@@ -1,0 +1,1402 @@
+Notes ASP.NET 
+Programming Microsoft® ASP.NET 3.5 
+by Dino Esposito 
+Publisher: Microsoft Press 
+Pub Date: February 23, 2008 
+Print ISBN-10: 0-7356-2527-1 
+Print ISBN-13: 978-0-7356-2527-3 
+&
+ASP.NET 2.0 Illustrated 
+by Alex Homer; Dave Sussman 
+Publisher: Addison-Wesley Professional 
+Pub Date: June 06, 2006 
+Print ISBN-10: 0-321-41834-4 
+Print ISBN-13: 978-0-321-41834-0 
+
+----
+Core ASP.NET Concepts
+ - HTTP Runtime
+ - Security
+ - Caching
+ - State Management
+ - Pages
+ - Controls
+ - Data Binding
+ - Data Access
+----
+
+----
+Historic Web Applications Technologies
+ - ASP/ASP.NET
+ - JSP/Servlet
+ - L.A.M.P.
+  - Linux 
+  - Apache
+  - MySql
+  - Perl, PHP or Python
+----
+
+----
+ASP.NET Fits In 
+ - Runs atop of Internet Server Application Programming Interface
+ - uses the .NET Framework
+ - works via the HTTP
+ - emulates typical Desktop development
+ - is 'forms' based like VB.NET
+ - is event-driven like VB.NET 
+ - http is stateless - session state 'remembers' previous page states in time
+ - id'ing state data is done by hidden markup w/i page 
+ - each html element has a ASP.NET server-side counterpart 
+ - Controls are complexities of html elements, combo thereof
+----
+
+----
+HTTP review
+ - typically POST and GET commands used
+ - only when markup tag <form> is used does data get passed back to server
+ - Stateless example
+  - client sends GET command for server resource /images/home.aspx
+  - server response includes http header followed by body
+  - body of server response is html and rendered by the browser
+  - no connection remains - server responded - transaction complete
+----
+
+----
+HTML Form Post
+<!--first is the form itself-->
+ <form method="post" action="home.aspx">
+   <!--now there is the input to be had-->
+   <input="text" name="zipCode" id="myId"/>
+   <!--now the button to make the data get posted-->
+   <input type="submit" value="Text On the Button" />
+ </form>
+ <!--now say the user enters in 66061--> 
+ 
+ POST /home.aspx HTTP/1.1
+ Host:www.myHome.org
+ Content-Type: application/x-www-form-urlencoded
+ Content-Length:13
+ 
+ zipCode=66061
+ 
+ - the above is the actual Http post to the server
+ - ISAPI abstracts the response, parsing out the value from the variable name
+----
+
+----
+ASP.NET Page Layout
+ - Directives: header style markup 
+  - contained in html comment element
+  - specifies language type and other meta-data type values
+ - Code Section: actual code
+ - Layout: this is the markup 
+ 
+<%@ Page language="c#" %>
+<%@ Import namespace="System" %>
+<%@ Import namespace="System.Collections" %>
+<%@ Import namespace="System.ComponentModel" %>
+<%@ Import namespace="System.Data" %>
+<%@ Import namespace="System.Drawing" %>
+<%@ Import namespace="System.Web" %>
+<%@ Import namespace="System.Web.SessionState" %>
+<%@ Import namespace="System.Web.UI" %>
+<%@ Import namespace="System.Web.UI.WebControls" %>
+<%@ Import namespace="System.Web.UI.HtmlControls" %>
+
+<script runat=server>
+		override protected void OnInit(EventArgs e)
+		{
+			InitializeComponent();
+			base.OnInit(e);
+		}
+</script>
+<script runat="server">
+		private void InitializeComponent()
+		{    
+			this.Load += new System.EventHandler(this.Page_Load);
+		}
+</script>
+<script runat="server">
+		private void Page_Load(object sender, System.EventArgs e)
+		{
+			// Put user code to initialize the page here
+		}
+</script>
+<script runat="server">
+		private void Rem(Object sender, EventArgs e)
+		{
+			var str = InputId.Value;
+			OutputId.InnerHtml = str.Replace(" ", "");
+		}
+</script>
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" > 
+
+<html>
+  <head>
+    <title>WebForm1</title>
+  </head>
+  <body MS_POSITIONING="GridLayout">
+	
+    <form id="Form1" method="post" runat="server">
+		<input runat="server" id="InputId" type="text"/>
+		<input runat="server" id="Btn" type="submit" value="Click Here" OnServerClick="Rem"/>
+		<p>Here is the response <span runat="server" id="OutputId"/> of it</p>
+    </form>
+	
+  </body>
+</html>
+----
+
+----
+ASP Component Model
+ - runat attribute is fundemental to ASP.NET components
+  - determines if markup is to be rendered as-is 
+  - runat means instansiate a class and have it render the html
+  - runat="server" id="objectRef" is standard couple
+   - objectRef is how the server-side language access the runat object
+ - most all html elements have a sister ASP.NET object
+  - some html elements have no sister object and are mapped to a generic 
+  - custom elements are mapped to an developer's assembly 
+   - mapping custom elements to a assemply is done with @Registar in Directives
+----
+
+----
+Web Server Controls -vs- HTML Server Controls
+ - HTML Server Controls are in System.Web.UI.HtmlControls
+ - Web Server Controls are in System.Web.UI.WebControls
+ - Html Controls are the .NET object representation of an Html element
+ - Html Control's properties are that of the element's attributes
+ - Html Controls syntax as:
+  <input runat="server" id="FirstName" type="text" value="Brian"/>
+  
+ - Web Controls are abstractions of an aggregate of Html Controls
+ - Web Controls properties match those of a typical .NET object
+ - Web Controls syntax as:
+ <asp:textbox runat="server" id="FirstName" text="Brian"/>
+  
+ - note in examples that 'value' is used in Html and 'text' is used in .NET
+ - both control types perform the same function - use is preference
+----
+
+----
+Strategy Pattern
+ - want a single class to call a single function 
+ - single function will return value from any number of algorithms 
+ - configure which strategy is used
+ - may change strategy at runtime
+ 
+ - start with a context object that HAS A ref to object as Interface
+ - have Interface with abstract API
+ - have each algorithm impement interface in its own behavior
+ - now may call Interface object on context object for all algorithms
+ 
+ - Provider Model is MS implementation of Strategy Pattern
+----
+
+----
+Provider Model
+ - common task (eg user auth.) call a common, global function
+ - global function ref's config, loads mapped assembly
+ - mapped assembly impements global function in unique way
+  
+ - Provider Model is arch'ed as:
+  - provider class: this is what implements the global function's interface
+  - configuration: this mapps the assembly(provider class) to the global f(x)
+  - stoarage: this is the storage layer (oracle, sql Server,...)
+ - MS named it 'Provider Model' because Stategy Pattern uses Interfaces
+  - Provider Model uses abstract classes 
+  - the assembly must inherit from the MS parent provider class
+  
+ - ASP.NET base provider classes
+  - MembershipProvider
+  - PersonalizationProvider
+  - ProfileProvider
+  - ProtectedConfigurationProvider
+  - RoleProvider
+  - SessionStateStoreProviderBase
+  - SiteMapProvider
+  - WebEventProvider
+----  
+
+----
+VS 2008 
+ - debugger now runs in a puesdo-webserver attached
+  - IIS is not strickly required
+  - solutions that already use IIS will continue to use IIS
+ - able to copy website up to another machine through IDE
+  - Overwrite Source to Target
+  - Target to Source
+  - Sync Source to Target
+ - 2008 has intellisense on single files (not just projects)
+ - 'Master Pages' are templates used across all the site 
+  - master pages may be nested, one calling yet another
+ - now able to export your personal settings of the IDE and port to another
+ - controls may be drag/drop into source as well as design
+ - VS 08 will auto add the needed webconfig file to the root
+  - a webconfig file is needed for debugging
+  - may override a webconfig file settings in another webconfig file
+   - the latter must be in a child directory of the former
+   - webconfig in the root overrides the machineconfig file
+   - not all machine config file settings are overridable
+----
+
+----
+VS 08 Protected Directories
+ - Bin:  precompiled assemblys needed for app
+ - App_Browser
+ - App_Code: contains vb cs source files
+  - ASP.NET ISAPI always blocks HTTP request to this directory
+  - should only contain source code files
+  - may not mix cs w/ vb files in same directory
+ - App_Data: xml, .mdb files
+ - App_GlobalResources:  global values in a .resx file
+ - App_LocalResources: local values in a .resx file for a specific page
+ - App_Themes:  contains themes 
+ - App_WebReferences: contains .wdsl files linking web services to app
+----
+
+----
+Deployment
+ - same as desktop app
+  - may FTP files to target machine
+  - may use the VS Setup proj tool to create an .msi
+  - VS 08 has new feature 'Copy Web Site'
+ - deployment choice often determined by hosting scenario
+ - gotachas
+  - hosting through an ISP means you may not have access to machine.config
+  - debugging happens with your user who is probably an admin on the box
+----
+ 
+----
+Page Life Cycle
+ - begins with parsing of the HTTP payload
+ - instantiate the needed class
+ - compile the class
+ - place compilation in an ASP.NET temp folder
+ - compilation remains untill underlying class is altered
+  - change to web.config, global.asax, or any .dll in bin will force recompile
+ - IIS will diretly resolve any request for static resources (html, img, ...)
+ - .aspx resource request is passed by IIS to aspnet_isapi.dll (ISAPI)
+----
+
+----
+IIS 5.0 Runtime Model
+ - aspnet_isapi.dll doesn't process request but hands off to worker process
+ - aspnet_isapi.dll gathers up the needed data, hands off to aspnet_wp.exe
+ - single load aspnet_wp.exe for all web applications
+ - w/i assembly each app is distinguished by its virtual directory
+ - http request maps to a virtual dir - which maps to a AppDomain 
+  - AppDomain is w/i the worker process
+  - there is a single app to a single virtual directory to a single AppDomain
+ - request for resource is mapped to exiting AppDomain to be handled
+----
+
+----
+IIS 6.0 Runtime Model
+ - request is picked up by a low-lvl system driver called http.sys
+ - multiple worker process exist - named w3wp.exe
+ - all apps associated w/ distinct worker process are call application pool
+  - achieves higher isolation then the 5.0 model
+ - opposite happens in that worker process loads the aspnet_isapi.dll
+ - http.sys is a kernel module 
+  - listens for request
+  - post them to the correct application pool
+  - Web Administration Service (WAS) handles mapping apps to app pools for .sys
+   - pools and mapping is stored in a 'metabase'
+   - metabase is admin'ed from IIS console
+ - w3wp.exe is a copy of IIS exe (called inetinfo.exe)
+ - worker process sends response straight back to .sys skipping IIS on return 
+  - allows IIS to manage itself
+  - speeds up response time
+----
+ 
+----
+ASP.NET HTTP Runtime
+ - ASP.NET 2.0 and later makes extensive use of Partial Class declarations
+ - code-behind the classes are partial 
+  - the missing memebers are added at runtime
+ - resource request is mapped to existing compiled class
+  - if existing compiled class is not present then class is compiled
+ - runtime enviro invokes the ProcessRequest method
+  - ProcessRequest is always present
+  - ProcessRequest is derived from Page (the parent class)
+  - ProcessRequest is a member of the IHttpHandler interface
+  - Page implements IHttpHandler
+ - invoke of PageRequest starts the Page Life Cycle
+ - ASP.NET worker process hand HTTP request to so-called HTTP pipeline
+  - pipeline is a Design Pattern 
+  - stack of objects in which each output is the next input
+  - may have a buffer present between each
+   
+ HttpRuntime
+  - 1st object in pipe
+  - worker process instantiates
+  - worker process calls HttpRuntime.ProcessRequest 
+   - has nothing to do with IHttpHandler.ProcessRequest
+   
+ HttpContext
+  - 2nd object in pipe 
+  - instantiated by HttpRuntime
+  - is the context for which Html markup will be written
+  - HAS A special text writer for the html markup
+  - holds the specifics about the HTTP request
+  
+ HttpApplicationFactory
+  - 3rd object in pipe
+  - uses the virtual directory to determine the WebApp needed
+  - creates or selects the needed WebApp
+  - responsiable for returning object capable of handling request
+  - returns object HttpApplication
+  
+ HttpApplication
+  - 4th object in pipe
+  - represents the ASP.NET application itself
+  - Factory maintains a queue of HttpApplication objects
+  - Factory serves one for incoming request
+  - creates yet another of queue is full
+  - if 1st of all request to virual directory then class is compiled by Factory
+   - think difference between compiling assembly and instantiating a class
+  - one of these for every request (multiple objects for multiple request)
+  - developer defines class by the global.asax
+   - if no .asax present then base HttpApplication is used
+   - the global.asax object reps. the web app itself
+  - determines the type of object needed for request
+   - ASP.NET page
+   - Web Service
+   - user control
+
+ IHttpHandlerFactory
+  - objects with factory methods to return the correct IHttpHandler obj
+  - objects implementing IHttpHandler have ProcessRequest method
+  - ASP.NET runtime calls IHttpHandler's ProcessRequest method
+  - HttpApplication chooses factory based on <httpHandlers> element in config
+   - .rem, .soap use HttpRemotinHandlerFactory 
+   - .aspx use PageHandlerFactory
+   - .ashx use SimpleHandlerFactory
+   - .asmx use WebServiceHandlerFactory
+  - handler factory capable of compilying source code
+   - only compile assembly upon change in source code
+  - creates instance of object representing http request
+   - calling ProcessRequest on this instance gen's markup and runs code
+----   
+ 
+http://www.codeproject.com/KB/aspnet/datastorage.aspx
+
+----
+ASP.NET Five Objects for Storage
+(1) Application
+(2) Session
+(3) Context
+(4) Cache
+(5) ViewState
+
+ - scope [entire app | page request]
+ - visibility [entire app | specific user]
+ - are string hash 
+----
+
+----
+Setting
+Application.Add("smtpServer", "127.0.0.1");
+
+Cache.Insert("myCacheKey",new MyObject(), 
+				null, DateTime.Now.AddHours(6), TimeSpan.Zero);
+				
+ViewState.Add("myViewStateKey",new MyObject() );
+
+Context.Items.Add("culture", new CultureInfo("en-CA"));
+
+Session.Add("userId", 3);
+----
+
+----
+Getting
+string smtpServer = (string)Application["smtpServer"];
+
+MyObject mo = Cache["myCacheKey"]; 
+	if(MyObject != null){/*verify it exist...*/}
+MyObject mo2 = (MyObject)ViewState["myCacheKey"];
+
+CultureInfo c = (CultureInfo)Context.Items["culture"];
+
+int userId = (int)Session["userId"];
+----
+
+----
+Additional Mediums
+(1) Cookies
+(2) Query String
+(3) URL Rewriting
+(4) System.Threading.Thread.CurrentPrincipal
+(5) System.AppDomain
+(6) System.Web.Security.FormsAuthentication
+----
+
+----
+Application
+ - set in Global.asax's Application_Start or HttpModule's BeginRequest
+ - available to all users, all request
+----
+
+----
+Cache
+ - time sensitive
+ - 3rd param may be a file dependency
+ - 'TimeSpan.Zero' is the length of time after the last access to expire 
+  - the 4th Param is the absolute expiration time
+ - items within may have been removed so check for null first
+ - is callable as "Cache[...]" on Page object; otherwise, HttpRuntime.Cache[..]
+----
+
+----
+Session
+ - control where its saved using the web.config's <sessionState mode="InProc"/>
+  - values may be "InProc", "Off", "StateServer" or "SQLServer"
+  - "InProc" as the memory added within the asp worker process
+  - "StateServer" is the normal ASP.NET Session service 
+   - session state is slower than in proc 
+   - all objects placed within it must have the [Serializable()] attribute
+   - most framework objects are auto-serializable
+   - using session state needs more attributes 
+   <sessionState mode="StateServer"
+        stateConnectionString="tcpip=127.0.0.1:42424;Trusted_Connection=yes"
+        cookieless="false" 
+        timeout="20" />
+     - only the 'mode' and the URL are required
+   - 'SQLServer' has the standard SQLServer conn string 
+----
+
+----
+ViewState
+ - similar to simple <input type="hidden".../> fields
+ - intended for single-user page-to-page communications
+ - exist for the request-to-postback span only
+----
+
+----
+HttpContext
+ - exist only for the span of a single request
+ - logically, it should be set toward the beginning of the life-cycle
+ - good for passing info from Page to UserControls and such
+----
+
+----
+Various Static Locations
+
+System.Web.UI.Control.ViewState
+System.Web.HttpContext.Current.Session
+System.Web.HttpContext.Current.Items
+System.Web.HttpContext.Current.Application 
+System.Web.HttpContext.Current.Cache
+
+System.Web.HttpContext.Current.User
+System.Web.HttpContext.Current.Profile
+System.Threading.Thread.CurrentThread.SetData()
+System.AppDomain.CurrentDomain.SetData()
+System.AppDomain.CurrentDomain.Evidence.AddHost()
+System.AppDomain.CurrentDomain.Evidence.ActivationArguments
+System.Web.Securtiy.FormsAuthentication.SetAuthCookie()
+---- 
+ 
+----
+Page Directives
+ - configure runtime enviornment
+ - may locate anywhere in page
+ - case-insensitive
+ 
+ @Assembly -  links assembly to page
+ @Control -  compile-time control specifics
+ @Implements -  indicate interface being implemented by page/control
+ @Import -  import a namespace
+ @Master -  identify page as a Master Page type
+ @MasterType -  strong-type ref to app master page
+ @Output -  control output cache
+ @Page -  control page-parser, compiler - is most used Directive
+ @PreviousPageType -  strong-type ref to previous page 
+ @Reference -  link page to current page
+ @Register -  create custom tag for page
+ 
+ - Page directive is for page object, .aspx files only
+ - Control directive is for control object, .ascx files only
+  - Page, Control are mutaully exclusive
+
+ <%@ Directive_Name attribute="value" [attribute="value"...] %>
+ 
+ - no spaces on either side of the (=) equal sign
+ - must have a space between each attribute, value pair
+ - attributes typed to directive incorrectly result in compiler error
+ - attribute value mismatch result in compiler error
+ - attribute values should match to a .NET type
+ - attributes must match the directive's schema
+ - implicit cast of attribute values
+----
+
+----
+Page Class
+ - contained in System.Web.UI namespace
+ - inherits from abstract class TemplateControl
+  - TemplateControl itself inherits from Control
+  - Control class has properties, events and methods shared by all ASP.NET
+  - TemplateControl implements INamingContainer
+  - naming container is used for naming of components on the page
+   - each component needs a unique name for processing on server-side
+   - Naming Container has no methods its just a divider...
+ - ASP.NET only one html <form runat="server"> per page
+  - ASP.NET pages always posts to itself
+  - recall in html form tag 'action' attr allows for post to any resource
+  - form tag may be used w/o runat="server" and post to any resource
+   - all session-state data lost by ASP.NET runtime though...
+----
+
+----
+Page Lifecycle
+ - Begins with HTTP runtime calling ProcessRequest
+ - all components w/i a page have thier on life cycle, nested w/i page's
+ - stages w/i cycle may or may not be w/i developer control
+ - Page lifecycle is all between runtime request & unload of full rendered html
+ - more or less in this order:
+  - determine type of request (vis. normal request, postback, etc)
+  - class instance configured according to request type
+  - PreInit event for changing Masterpage and Theme
+  - Init event: child controls init, controls are given thier unique id
+  - InitComplete event: ViewState tracking is setup 
+   - its here that the page restores the view-state of itself and contorls
+   - restoration of view-state is for postback only of course
+   - view-state literals are in pairs and amp. seperated
+   Name1=value1&Name2=value2&Name3=value3
+  
+  - PreLoad event: present to do stuff before Load event, is for Page cls only
+  - Load event: 
+   - cascades recursively to all page's controls
+   - controls are set to match previous state and any change since
+   - controls properties and view-state are in scope
+   - any view-state literals not yet matched are re-attempted on dynamic ctrls
+   - call to ctrls 'LoadPostData' here
+    - upon postdata load ctrl will raise event to signal that ctrl data changed
+    - no such event of no change
+   - Ctrl that caused postback is determined
+    - RaisePostBackEvent method called on responsiable ctrl
+    - only button's submit or same effect through script can cause postback
+    - is a question of 'which button'
+  - LoadComplete event: page level only event, no ctrls receive, next is render
+  - PreRender event: last chance to change ctrls
+   - before raised all ctrls are confirmed present
+  - PreRenderComplete event: developer can't know if PreRender is done w/o this
+  - SaveStateComplete event: save up the view-state for next time
+   - cascade call to ctrls SaveViewState methods
+   - also is the ControlState for ctrl's behavior, not just appearence
+    - saved here too same as view-state
+   - view-state exist in markup w/i a hidden field
+   - there is yet another way - saving state to server-side database
+   - it is here that the markup is written to a buffer 
+   - each control is responsiable for gen'ing its own markup
+  - Unload event: used for db conn closed, file close, etc...
+----
+
+----
+System.Web.UI.Control
+ - base class for all controls to inherit
+ - implements many interfaces, most of which are for internal use
+ - properties include high level control featurs
+  - IDs, is visable, parent control, view state enabled
+ - ID property may be set by developer
+ - ID will be set by runtime if left unspecified
+  - typically in form of _ctl1, _ctl2, etc.. (underscore-C-T-L-incremented #)
+ - UniqueID is the true server-side identifier for each ASP.NET control
+ - UniqueID value set as namimgContainer + ID
+  - if control is the namingContainer itself then UniqueID = ID
+ - ASP.NET 2.0 and higher concats control ids with NamingContainer$Control
+  - that is naming container + dollar sign + control's id
+  - ASP.NET 1.1 uses a colon instead of dollar sign
+ - rendering is handled by the ControlAdapter class 
+  - this is configurable
+  - browser types - %WINDOWS%\Microsoft.NET\Framework\[version]\CONFIG\Browsers
+ - specficity to a browser is possiable in tag declaration
+ <asp:Button ID="myButton" runat="server" Text="Default Button"
+      opera:Text="Opera Button"
+      ie:Text="IE Button"
+      mozilla:Text="Firefox Button" />
+----      
+      
+----
+HTML Controls
+ - emulate that of html elements
+ - every element may runat server
+ - most all elements have a .NET framework class
+ - System.Web.UI.HtmlControls namespace is their location
+ - those w/o a direct class counterpart run as HtmlGenericControl
+ - Disabled ctrl is still rendered, just passed back as 'disabled="true"'
+  - only applies to input elements
+ - if visable="false" then no instance is created
+ 
+ <input runat="server" id="name" type="text"/>
+ <!--the runat="server" gives it an instance on the server-->
+ <!--the id="name" means the variable name is "name"-->
+ 
+ Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Page_Load
+    name.Value = "Starrett"
+ End Sub
+ 'this will render an imput tag with this value displayed
+ 
+ <input name="name" id="name" type="text" value="Starrett"/>
+ <!--name and id present for browser compatibility-->
+ 
+ - bind .js to ctrl using the instace var.'s Attributes collection
+  <script type="text/javascript">
+  //<![CDATA[
+    function Init(){
+      alert("Hello");
+    }
+  //]]>
+  </script>
+  <script runat=server language="VB">
+  Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Page_Load
+    theBody.Attributes("onload") = "Init()"
+  End Sub
+  </script>
+ <html>
+   <body runat="server" id="theBody">
+   </body> 
+ </html>    
+----
+
+----
+Html Controls Arch
+ - WebControls are the OO version of Html controls
+  - same functionality, just done differently
+  <!--declare WebConrols with 'asp:className' tag
+      Note that attributes are capital letters now-->
+  <asp:CheckBox ID="myChk" runat="server" Text="Stuff"/>
+  
+ - divided between HtmlInputControl, HtmlContainerControl and other
+ - Input Ctrl is for all the variations of <input> tag
+  - inherit from HtmlInputControl
+  - add Name, Type and Value properties
+   - Name has get/set, but set values are ignored, get is UniqueID
+   - Type is read-only and is the type-attribute of html tag
+    <input type="checkbox".../>
+   - Value is r/w 
+  HtmlInputButton
+  HtmlInputCheckBox
+  HtmlInputFile
+  HtmlInputHidden
+  HtmlInputImage
+  HtmlInputPassword
+  HtmlInputRadioButton
+  HtmlInputReset
+  HtmlInputSubmit
+  HtmlInputText
+   
+ - Container Ctrl is for html elements that have a closing tag
+  - also included is anchor tag
+  - containers have the InnerHtml and InnerText
+   - work on literals only, runat server's tags are not availabe from these
+  HtmlAnchor
+  HtmlButton
+  HtmlForm
+  HtmlGenericControl
+  HtmlHead
+  HtmlSelect
+  HtmlTable
+  HtmlTableCell
+  HtmlTableRow
+  HtmlTextArea
+----
+
+----
+Save Uploaded File
+ - handling <input type="file".../>
+ 
+ <%@ Page language="VB" %>
+ 
+ <script runat="server">
+  Public Sub Load_Click(sender As Object, e As EventArgs)
+    Dim _save As String = "c:\temp\pictures\"
+    'specify full path and ensure ASP.NET account has permissions
+    If Not IO.Directory.Exist(_save) Then
+      Dim _rsp As String = "<h1>Path Not Found</h1>"
+      Response.Write(_rsp)
+      Response.End
+    End If
+    If Not(FileId Is Nothing)
+      'FileId is a ref' to the HttpPostedFile object 
+      'HttpPostedFile is where the upload is being held
+      Dim _file As String = IO.Path.GetFilename(FileId.Value)
+      _save &= _file
+      FileId.PostedFile.SaveAs(_save)
+      LblResponse.InnerText = "File Saved!"
+    Else
+      LblResponse.InnerText = "No File Specified"
+    End If
+  End Sub
+ </script>
+ <html>
+ <head runat="server">
+  <title>File Upload Example</title>
+ </head>
+ <body>
+  <form runtat="server">
+   <h3>Upload A Picture!</h3>
+   <hr/>
+   <p>Choosen Picture</p>
+   <br/>
+   <input type="file" id="FileId" runat="server"/>
+   <br/>
+   <input type="submit" id="Load" runat="server" value="Upload"
+          onserverclick="Load_Click"/>
+   <hr/>
+   <span runat="server" id="LblResponse"/>
+  </form>
+ </body>
+ </html>
+----
+
+----
+Input Validation
+ - performed by seperate controls
+ - these controls inherit from BaseValidator 
+ - all ref's are held in Validators col in Page cls
+ - call Validate on page ref to validate it all
+  - may call Validate on each validate control in the col
+ - check the IsValid property on page ref or indiv. validate control for value
+ - validate control maps to some input controls
+  - multiple validators to a single input control is ok
+  - map an input to a validator using validators ControlToValidate
+ CompareValidator
+ CustomValidator
+ RangeValidator
+ RegularExpressionValidator
+ RequiredFieldValidator
+----
+
+----
+Validation Example
+<%@ Page Language="VB" %>
+<script runat="server">
+Public Sub ValidateMe_Click(sender As Object, e As EventArgs)
+  If Page.IsValid Then
+    'do stuff for valid data
+    'else is not relevant since the response is specified in the Validator
+  End If
+End Sub
+</script>
+<html>
+  <head>Required Field Example</head>
+  <body>
+    <form runat="server">
+      <input type="text" id="TextBox1" runat="server"/>
+      <asp:RequiredFieldValidator id="Rfv_TextBox1"
+            Runat="server"
+            ControlToValidate="TextBox1"
+            <!--Display must have [Dyanamic,Static,none]
+                Dynamic-error msg only on fail
+                Static-error msg always
+                none-no error msg--> 
+            Display="Dynamic"
+            <!--Enable Client Script must have a boolean
+                True-js will be run before server's validation-->
+            EnableClientScript="True">
+            <!--Range style needs
+              MaximumValue="18" value 18 is ok, 17 is not
+              MinimumValue="99"
+              Type="Integer"-->
+            <!--Compare style needs
+              first, this type must always be coupled with an Rfv
+              ControlToCompare="txtPswd"-->
+            <!--RegEx Style
+              ValidationExpression="\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*"
+        This is the inner-text of the Rfv and is the error msg itself
+      </asp:RequiredFieldValidator>
+      <!--pressing the submit calls the Sub above, 
+           the sub above then calls the Page's IsValid method 
+           this caused the Rfv above to run and respond-->
+      <input type="submit" id="ValidateMe" runat="server" value="Is This Valid"
+             onserverclick="ValidateMe_Click"/> 
+    </form>
+  </body>
+</html>
+----
+
+----
+ASP.NET Form Generals
+ - typical single <form runat="server"> enclosed entire page
+ - page post back to same URL (aka reentrant)
+ - <form runat="server"> tag may be contained w/i container ctrl
+  <div>
+  <table>
+  <body>
+ - form tag contained w/i non-container class will throw HttpException
+ - multiple form tag w/o runat="server" is ok
+  - may have multiple runat="server" forms when only 1 form is declared visable
+  - .NET 2.0 and 3.5 have MultiView class to dynamicly set forms visable T/F
+ - 2.0, 3.5 allow for cross-page posting 
+----
+
+----
+Cross-Page Posting
+ - able to post to another page using a specific ASP control property
+ - use property PostTargetUrl on any implementor of IButtonControl
+ - best used for when posting page is unknown
+ 
+ <%@ Page Language="VB"%>
+ <html>
+ <head></head>
+ <body>
+  <form runat="server" id="myForm">
+    <asp:textbox runat="server" id="myText"/>
+    <asp:button runat="server" id="cPost" 
+              Text="Click"
+              PostTargetUrl="anotherPage.aspx"/>
+              <!--ASP.NET runtime binds ctrl to .js function 
+                  that is created on the fly
+                onclick="javascript:WebForm_DoPostBackWithOptions(
+                      new WebForm_DoPostBackWithOptions("buttonPost, "",
+                        false, "", "anotherPage.aspx",false,false))"-->              
+ </form>
+ </body>
+ </html>
+ 
+ - PreviousPage property is Nothing if page post to itself
+ 
+ <%@ Language="VB"%>
+ <!-- 
+    using the <@% PreviousPageType VirtualPath="~/myPage.aspx"%>
+    - allows for strong-type of binding to PreviousPage property
+    - may instead specify TypeName
+    - still need to open protected variables up w/i a property
+    - last is Server.Transfer("myPage.aspx") - staight-up hard transfer
+  -->
+ <script runat="server">
+ Public Sub Page_Load(sender As Object, e As EventArgs)
+  Dim _valueFromPostingPage As String
+  'view-state is stored in hidden __PREVIOUSPAGE element
+  'access values therein with PreviousPage property
+  _valueFromPostingPage = PreviousPage.FindControl("cPost").Text
+ End Sub
+ </script>
+ <html>
+ <head></head>
+ <body>
+  <!--something here-->
+ </body>
+ </html>
+----
+
+----
+Basic Error Handling
+ - config errors
+ - parser errors 
+ - compilation errors
+ - runtime errors
+ - implement the handler for Error event
+ Protected Sub Page_Error(sender As Object, e As EventArgs)
+    'get a ref to the error using the Server object's GetLastError property
+    Dim _theEx As Exception = Server.GetLastError()
+    'Handle however
+    If Request.UserHostAddress = "200.226.0.1" Then
+      'handy way to check if its a user or developer getting the error
+    End If
+    'then clear it out
+    Server.ClearError()
+    'this is error handling per page
+    'to handle errors at app level use error event handler in global.asax file
+    'signature of error handler is Application_Error(...) 
+    'if both page and app error handlers - app wins
+ End Sub     
+
+ - Specify the redirect to error-page to override ASP.NET generic error page
+ - w/i web.config, key changes to customErrors element
+ - upon error redirect the exception object is lost
+  - to hold the exception have page error handler store exception
+ - straight web errors (eg 404) do not route through ASP.NET 
+  - handled directly by web server
+ <customErrors defaultRedirect="~/myErrorPage.htm"
+               mode=RemoteOnly/>
+  <!-- choices are RemoteOnly, On or Off
+       RemoteOnly means locals don't see myErrorPage
+  -->
+  
+  <customErrors defaultRedirect="~/myGeneralError.htm"
+                mode="RemoteOnly">
+      <!-- specifiy error page for html error type-->
+      <error statusCode="404" redirect="~/err/my404Error.htm"/>
+      <error statusCode="500" redirect="~/err/my500Error.htm"/>
+  </customErrors>
+----
+                
+----
+ASP.NET Tracing
+ - may be toggled on/off from web.config or on <%@Page...%>
+ - each Page class also has a ref to a TraceContext object
+  - property named 'Trace'
+  - in in scope to all child components on page
+ - out-of-scope objs use System.Web.HttpContext.Current.Trace.Write(ctgy, msg)
+ - trace.axd in app root is top-lvl console for trace info
+  - must be enabled in web.config 
+  <configuration>
+    <system.web>
+      <trace enabled="true" />
+    </system.web>
+  </configuration>
+----
+
+----
+Master Pages
+ - derived-type of html markup
+ - requires @Master directive
+ - used for banner, nav-bar, footer, etc
+ - indivdual page content rendered in asp control 'contentplaceholder'
+ 
+ <%@Master Language="VB"% class="SimpleMaster">
+ <!-- other attributes include
+      - ClassName is for the underlying name of the gen'ed user control
+      - CodeFile is the partial class file w/ event handlers
+      - Inherits parent class that inherits from Master Page
+      - MasterPageFile is for nesting master pages
+ -->
+ <html>
+ <head></head>
+ <body>
+  <form id="masterPgExample" runat="server">
+    <asp:Panel id="Banner" runat="server" BackGroungImage="myBanner.gif"
+               Width="100%">
+      <label id="BannerLabel" runat="server" value="My Master Page"/> 
+    </asp:Panel>
+    <!--the derived pages will use this id to give it content-->
+    <asp:contentplaceholder id="pageBody" runat="server">
+      <!--this is a regular element with a closing-->
+    </asp:contentplaceholder>
+  </form>
+ </body>
+ </html>
+----
+
+----
+ASPX Reference Master Page
+<%@ Page Language="VB" MasterPageFile="~/MyMasterPage.master" %>
+<!--the ContentPlaceHolderID is the ref' to the Master Pages' content declar'-->
+<asp:Content ID="myContent" ContentPlaceHolderID="myContentPlaceHolder"
+             Runat="Server"> 
+    <!--actual content declaration goes here-->
+    <!--NOTE: there is no head or body html tags in here-->
+</asp:Content>
+----
+
+----
+Nested Master Pages 
+ - have base master page with contentPlaceHolder
+ - have child master page reference base master in @Page directive
+ - have child master page implement base master page's contentPlaceHolder
+ - have child master page declare new contentPlaceHolder 
+ - have content .aspx pages implement child master's contentPlaceHolder
+----
+ 
+----
+Themes
+ - Themes compliment CSS, not supplement
+ - Skin a specific L&F for a specific server control
+ - Theme is aggregate of skins
+ - set per control, page or appDomain
+ - Theme is a collection of files in a single root dir
+ - Global Theme is for every web app on the server
+ - Local Theme is only for the web app it declared for
+  - Global Themes are in the Framework folder under ASP.NetClientFiles  
+  - Locals reside in App_Themes folder of the web app's root
+ - Style Sheet Themes are same source files as Custom Themes
+ - style sheet themes are for setting default appearance
+  - inline appearance defination will override style sheet themes
+  - custom theme will override both
+  - local theme overrides global
+----
+
+----
+Setting Theme
+ - define a controls style in a .skin file 
+ - store the skin files in App_Themes dir
+ - use CSS as a resource of the skin files
+ - skins are applied during the Pre-Init event
+ - ctrl declareation in skin appear same as aspx file, only focus upon L&F
+  - to apply siin to a custom ctrl, use the <% @Register ...%> directive
+ - multiple L&F for single ctrl in single skin file by using SkinID attribute
+  - upon multiple skin for single ctrl, one w/o a SkinID is considered default
+  - may call SkinID from <asp:...> ctrl w/i page
+ - set EnableTheming property to property to force removal of theming
+  - upon setting, all child controls will also have theming disabled
+  - will only disable skins, not CSS settings
+ - for entire app use element in web.config 
+ <system.web>
+  <pages theme="myTopTheme" styleSheetTheme="myDefaultTheme"/>
+ </system.web>
+ 
+ - for page specific use the page directive
+ <!-- the theme name needs to match the folder name in App_Themes -->
+ <!-- or it must match the name in ASP.NetClientFiles -->
+ <!-- use StyleSheetTheme="myDefaultTheme" for style sheet -->
+ <% @Page Language="VB"  Theme="myTopTheme %>
+----
+
+----
+Wizard Control
+ - composite control, contains the Next, Back buttons
+ - state is maintained irrespective of user moving back and forth
+ - all pages must be declared w/i Wizard object
+ - constructed from four parts
+  - header
+  - sidebar: displays current step in bold, other steps above, below
+  - view: where the data is entered
+  - navigation: contains the 'Next', 'Back' and 'Finish' style buttons
+  
+  <asp:wizard runat="server" DisplaySideBar="true"
+              DisplayCancelButton="true"
+              HeaderText="Specify a header or nothing appears"
+              OnFinishButtonClick="OnLast">
+    <wizardsteps> <!--part of wizard obj, not its own-->
+      <asp:wizardstep runat="server" steptype="start" id="step1">
+        Here is inner-text of step1
+      </asp:wizardstep>
+      <asp:wizardstep runat="server" steptype="step" id="step2">
+        Likewise, inner-text of step2
+      </asp:wizardstep>
+      <asp:wizardstep runat="server" steptype="Finish" id="step3"
+                      AllowReturn="This can appear for any button">
+        On this step user will see 'Finish' button on nav. bar
+      </asp:wizardstep>
+      <asp:wizardstep runat="server" steptype="Complete" id="step4">
+        The nav. bar has no buttons now cause the wizard is done
+      </asp:wizardstep>
+      <!--may use steptype="auto" and just have the runtime figure it out-->
+      <!--enabled side-bar means users may jump to any step-->
+      <!--specific events happen upon each step and also upon going previous-->
+      <!--use the events for server-side validation-->
+      <!--everything in a wizard may be styled--> 
+      <!--enclose each step in a div tag to set equal height--> 
+    </wizardsteps>
+  
+  </asp:wizard>
+----
+
+----
+Using Db Provider Factories
+ <%@ Page Language="VB"%>
+ <script runat="server">
+ Public Sub Run(sender As Object, e As EventArgs)
+    Dim _provider As String = myProvider.Value
+    Dim _connStr As String = myConn.Value
+    Dim _sql As String = mySql.Value
+    
+    Dim _maker As DbProviderFactory
+    Dim _conn As DbConnection
+    Dim _adp As DbDataAdapter
+    Dim _tbl As New DataTable
+    
+    'get the provider
+    'use the client namespace like System.Data.SqlClient or [...].OracleClient
+     _maker = DbProviderFactories.GetFactory(_provider)
+    'the rest is the usual
+    _conn = _maker.CreateConnection()
+    _conn.ConnectionString = _connStr
+    _adp = _maker.CreateDataAdapter()
+    _adp.SelectCommand = _conn.CreateCommand()
+    _adp.SelectCommand.CommandText = _sql
+    _adp.Fill(table)
+    
+    'now do the needfull
+ End Sub
+ </script>
+ <html>
+ <head></head>
+ <body>
+  <form runat="server">
+    <input runat="server" type="text" id="myProvider" />
+    <input runat="server" type="text" id="myConn" />
+    <input runat="server" type="text" id="mySql" />
+    <input runat="server" type="submit" value="Ok" onserverclick="Run" />
+  </form>
+ </body>
+ </html>
+----
+
+----
+Data Binding
+ - any class implementing IEnumerable may be a bindable data source
+  - ICollection, IList may also be used
+  - ADO.NET DataSet, DataTable and DataView
+  - Data Readers
+  - Custom collections and arrays
+ - Typlically, only one DataTable to one data bind at a time  
+ 
+ Repeater: for fast read-only table (lightest)
+ DataList: for applying a Template (light)
+ DataGrid: for best customization
+  - every element therein is a server-side control
+ GridView: for ease of use
+  - same as DataGrid, has all server-side controls
+----
+
+----
+DataGrid Basics
+<%@ Page Language="VB" %> 
+<script runat="server">
+  Public Sub Load_Data(ByVal o As Object, ByVal e As EventArgs)Handles Me.Load
+    'the regular load up a table
+    myGrid.DataSource = _tbl
+    myGrid.DataBind()
+  End Sub
+</script>
+<html>
+<head></head>
+<body>
+  <asp:GridView runat="server" id="myGrid" AutoGenerateColumns="true">
+  <!--AutoGenerateColumns will have a column for each field in Select-->
+  <!--will also use the same name of fields as appear in database-->
+  </asp:GridView>
+</body>
+</html>
+----
+
+----
+Fully Functional Example
+<%@ Page language="c#" Debug="true" %>
+<%@ Import namespace="System" %>
+<%@ Import namespace="System.Text" %>
+<%@ Import namespace="System.Collections" %>
+<%@ Import namespace="System.Web" %>
+<%@ Import namespace="System.Web.SessionState" %>
+<%@ Import namespace="System.Web.UI" %>
+<%@ Import namespace="System.Web.UI.WebControls" %>
+<%@ Import namespace="System.Web.UI.HtmlControls" %>
+
+<html>
+<head>
+	<!--SERVER SIDE-->
+	<script runat="server">
+		override protected void OnInit(EventArgs e)
+		{
+			InitializeComponent();
+			base.OnInit(e);
+		}
+	</script>
+	<script runat="server">
+		private void InitializeComponent()
+		{    
+			this.Load += new System.EventHandler(this.Page_Load);
+		}
+	</script>
+	<script runat="server">
+		private void Page_Load(object sender, System.EventArgs e)
+		{
+			
+			lblAvailItems.Text = "Available Items";
+			lblExcludedItems.Text = "Excluded Items";
+			anchorSave.Text = "Save Changes";
+			System.Collections.SortedList[] leftAndRight = GetLeftAndRight(GetMasterList(),GetRightSide());
+			AssignSelectBoxOptions(leftAndRight[0],leftAndRight[1],"leftList","rightList");
+			
+		}
+	</script>
+	<script runat="server">
+		public string GetRightSide()
+		{
+			return Request.Form["ExcludedItems"];
+		}
+	</script>
+	<script runat="server">
+		public System.Collections.SortedList GetMasterList()
+		{
+			System.Collections.SortedList allItems = new System.Collections.SortedList();
+			//DEBUG
+			allItems.Add("Choice8","F0F62A24-B662-4738-A646-0309AD210C10");
+			allItems.Add("Choice1","0CD64AD5-0223-4E37-A8FF-0611C6038C43");
+			allItems.Add("Choice2","FAF8F962-B12A-4FF2-AFAE-51B0A1FA714B");
+			allItems.Add("Choice3","A8BD51CA-626A-43FC-B2B7-73C58B285177");
+			allItems.Add("Choice4","05DF62E8-BE5C-4B93-8CB4-76323DB055E1");
+			allItems.Add("Choice5","B0ED454D-154E-4BD9-8487-94471B146948");
+			allItems.Add("Choice6","A212493E-497F-44D2-81E7-86C85A34AD6C");
+			allItems.Add("Choice7","2FF6921E-0FEF-4794-BA17-AB5F95D37597");
+			//END DEBUG
+			return allItems;
+		}
+	</script>
+	<script runat="server">
+		public System.Collections.SortedList[] GetLeftAndRight(System.Collections.SortedList masterList, string userPushedRight)
+		{
+			if(userPushedRight == null)
+				userPushedRight = string.Empty;
+	
+			System.Collections.SortedList left = new System.Collections.SortedList();
+			System.Collections.SortedList right = new System.Collections.SortedList();
+			string pattern = ("(" + userPushedRight.Trim().Replace(",",")|(").Replace("-","\\x2d") + ")");
+			
+			foreach(object key in masterList.Keys)
+			{
+				if(userPushedRight != string.Empty && System.Text.RegularExpressions.Regex.IsMatch(masterList[key].ToString(),pattern))
+				{
+					right.Add(key,masterList[key]);
+				}
+				else
+				{
+					left.Add(key,masterList[key]);
+				}
+			}
+			return new System.Collections.SortedList[] {left,right};
+		}
+	</script>
+	<script runat="server">
+		public void AssignSelectBoxOptions(System.Collections.SortedList leftItems, System.Collections.SortedList rightItems, string jsLeftItemsId, string jsRightItemsId)
+		{
+
+			System.Text.StringBuilder js = new System.Text.StringBuilder();
+			js.Append("<script type='text/javascript'>\n");
+			js.Append("function InitSelectValues(){\n");
+			js.Append(string.Format("{0} = [];\n",jsLeftItemsId));
+			js.Append(string.Format("{0} = [];\n",jsRightItemsId));
+			foreach(string key in leftItems.Keys)
+			{
+				string jsSyntax = string.Format("text:'{0}', value:'{1}'",key.ToString(),leftItems[key].ToString());
+				jsSyntax = "push({" + jsSyntax + "});\n";
+				jsSyntax = jsLeftItemsId + "." + jsSyntax;
+				js.Append(jsSyntax);
+			}
+			foreach(string key in rightItems.Keys)
+			{
+				string jsSyntax = string.Format("text:'{0}', value:'{1}'",key.ToString(),rightItems[key].ToString());
+				jsSyntax = "push({" + jsSyntax + "});\n";
+				jsSyntax = jsRightItemsId + "." + jsSyntax;
+				js.Append(jsSyntax);
+			}
+
+			js.Append("Sn.Select.Init();\n");
+			js.Append("}</");
+			js.Append("script>");
+
+			this.RegisterStartupScript("InitSelectValues", js.ToString());
+			
+		}
+	</script>
+	<!--END SERVER SIDE-->
+	
+	<!--CLIENT SIDE-->
+	<script type="text/javascript">
+		var Sn = {
+			Select : {
+				Identifiers: {
+					LEFT_SELECT: "AvailItems",
+					RIGHT_SELECT: "ExcludedItems",
+					MOVE_LEFT_BUTTON: "PushRight",
+					MOVE_RIGHT_BUTTON: "PushLeft",
+					FORM: "selectForm",
+					QUERY_STRING_FLAG: "services"
+				},
+				MoveRight: function(){
+					Sn.Util.Move(Sn.Select.Identifiers.LEFT_SELECT,Sn.Select.Identifiers.RIGHT_SELECT);
+				},
+				MoveLeft: function(){
+					Sn.Util.Move(Sn.Select.Identifiers.RIGHT_SELECT,Sn.Select.Identifiers.LEFT_SELECT);
+				},
+				Init: function(){
+					for(var item in leftList){
+						if(item != undefined)
+							Sn.Util.Append(leftList[item],Sn.Select.Identifiers.LEFT_SELECT);
+					}
+					for(var item in rightList){
+						if(item != undefined)
+							Sn.Util.Append(rightList[item],Sn.Select.Identifiers.RIGHT_SELECT);
+					}
+					document.getElementById(Sn.Select.Identifiers.FORM).setAttribute('action',document.location + "?" + Sn.Select.Identifiers.QUERY_STRING_FLAG);
+				},
+				Save: function(){
+					document.getElementById(Sn.Select.Identifiers.FORM).submit();
+				}
+			},
+			Util: {
+				Move: function(fromIdentifier,toIdentifier){
+					var numOfOptions = document.getElementById(fromIdentifier).options.length;
+					var toBeMoved = [];
+					for(var i = 0;i<numOfOptions;i++)
+					{
+						var moveMe = document.getElementById(fromIdentifier).options[i];
+						if(moveMe != undefined && (moveMe.selected || false))
+						{
+							toBeMoved.push(document.getElementById(fromIdentifier).options[i]);
+						}
+					}
+					
+					for(var j=0; j<toBeMoved.length;j++)
+					{
+						document.getElementById(fromIdentifier).remove(toBeMoved[j].index);
+						document.getElementById(toIdentifier).add(toBeMoved[j]);
+					}
+				},
+				Append: function(option, selectIdentifier){
+					document.getElementById(selectIdentifier).add(new Option(option.text,option.value));
+				}
+			}
+		};
+	</script>
+	
+	<style>
+	select.sn
+	{
+		width:36%;
+	}
+	table.sn
+	{
+		table-layout: fixed;
+		margin-top: 25px;
+		padding: 10px;
+		border-style:inset;
+		border-width: 2px
+	}
+	a.sn {
+		display:block; 
+		width:6em;
+		padding:0.2em; 
+		line-height:1.4;
+        background-color: #94B8E9; 
+		border: 1px solid black; 
+		color:#000;
+        text-decoration:none; 
+		text-align:center;
+	}
+    a.sn:hover 
+	{
+		background-color:#369; 
+		color:#fff;
+	}
+	</style>
+</head>
+<body id="main" onload='javascript:InitSelectValues();'>
+	<form id="selectForm" runat="server" method="post">
+	<table>
+		<tr>
+            <td colspan="2">
+                <table border="0" cellspacing="0" cellpadding="0" class="sn">
+                    <col width="270" /><col width="60" /><col width="270" />
+                    <tr valign="top">
+                        <td><asp:Label id="lblAvailItems" runat="server" /><br />
+                            <select runat="server" id="AvailItems" multiple="true" size="10" class="sn">
+							</select>
+                        </td>
+                        <td style="vertical-align: middle;" align="center">
+                            <input type="button" ID="PushRight" value='&gt;&gt;'  onclick='javascript:Sn.Select.MoveRight();'/>
+                            <br /><br />
+                            <input type="button" ID="PushLeft" value='&lt;&lt;' onclick='javascript:Sn.Select.MoveLeft();' />
+                        </td>
+                        <td><asp:Label id="lblExcludedItems" runat="server" /><br />
+                            <select runat="server" id="ExcludedItems" multiple="true" size="10" class="sn">
+							</select>
+                        </td>
+						<td>
+							<a href='javascript:Sn.Select.Save()' class="sn"><asp:Label id="anchorSave" runat="server" /></a>
+						</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+	</table>
+	</form>
+</body>
+</html>
+<!--END CLIENT SIDE-->
+----

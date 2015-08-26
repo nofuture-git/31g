@@ -1,0 +1,89 @@
+﻿"cpl" : {
+	"appwiz.cpl" : "Add-Remove Programs",
+	"inetcpl.cpl" : "Internet Options",
+	"main.cpl" : "Mouse Options",
+	"sysdm.cpl" : "My Computer",
+	"ncpa.cpl" : "IP Config",
+	"mmsys.cpl" : "Sound and Recording",
+	"timedate.cpl" : "Clock",
+	"igfxcpl.cpl" : "Intel Graphics Controls",
+	"wscui.cpl" : "Windows Action Center",
+	"powercfg.cpl" : "Power Options",
+	"intl.cpl" : "Region and Language",
+	"hdwwiz.cpl" : "Device Manager",
+	"desk.cpl" : "Screen Resolution",
+	"bthprops.cpl" : "Blue Tooth Devices"
+},
+"msc" : {
+	"certmgr.msc" : "Certificate Store",
+	"comexp.msc" : "Component Services",
+	"compmgmt.msc" : "Computer Management",
+	"devmgmt.msc" : "Device Manager",
+	"diskmgmt.msc" : "Disk Management",
+	"eventvwr.msc" : "Event Viewer",
+	"fsmgmt.msc" : "Shared Folders",
+	"gpedit.msc" : "Local Group Policy Editor",
+	"lusrmgr.msc" : "Local Users and Groups",
+	"NAPCLCFG.MSC" : "NAP Client Configuration",
+	"perfmon.msc" : "Performance Monitor",
+	"printmanagement.msc" : "Print Management",
+	"secpol.msc" : "Local Security Policy",
+	"services.msc" : "Windows Services",
+	"taskschd.msc" : "Task Scheduler",
+	"tpm.msc" : "Trusted Platform Monitor",
+	"wf.msc" : "Windows Firewall",
+	"wmimgmt.msc" : "WMI Management"
+},
+"other" : {
+	"msconfig" : "System Configuration",
+	"explorer" : "Windows Explorer",
+	"mstsc" : "Remote Desktop",
+	"msinfo32" : "Windows Info"
+}
+"windowsKey" : {
+	"win + [left|right] arrow" : "move window over",
+	"win + m" : "minimize all",
+	"win + tab" : "pretty",
+	"win + l" : "lock computer",
+	"win + b" : "goto task tray",
+	"win + r" : "Run",
+	"win + e" : "Windows explorer",
+	"win + t" : "task bar",
+	"win + p" : "projector display",
+	"win + d" : "instant minimize all",
+	"win + f" : "find",
+	"win + x" : "Windows Mobility Center"
+}
+"nav" : {
+	"ctrl + tab" : "open programs",
+	"alt + space" : "window controls"
+	"alt + f4" : "close app",
+	"alt, ctrl + tab" : "go to toolbars",
+	"shift + f10" : "right-click",'
+},
+"windows explorer" : {
+	"alt + left-arrow" : "go back",
+	"alt + up-arrow" : "go up",
+	"alt + d" : "go to address bar",
+	"f6" : "toggle address bar, toolbar, navigation pane, file list, column heading",
+	"alt + enter" : "display file properties"
+},
+"visual studio" : {
+	"ctrl + alt + L" : "go to solution explorer",
+	"ctrl + f2" : "go to file member dropdowns",
+	"ctrl + -" : "go back",
+	"ctrl + ]" : "go to enclosing token",
+	"ctrl + shift + f12" : "go to next error",
+	"ctrl + K, ctrl + u" : "comment selection",
+	"ctrl + K, ctrl + k" : "uncomment selection",
+	"ctrl +m, m" : "toggle expansion",
+	"ctrl + m, ctrl + u" : "fold all expansions",
+	"ctrl + shift + b" : "build all"
+}
+"ssms" : {
+	"f8" : "go to object browser",
+	"alt + f1" : "get metadata",
+	"ctrl + r" : "toggle results grid",
+	"f6" : "toggle between results and text editor",
+	"ctrl + tab" : "go to text editor"
+}

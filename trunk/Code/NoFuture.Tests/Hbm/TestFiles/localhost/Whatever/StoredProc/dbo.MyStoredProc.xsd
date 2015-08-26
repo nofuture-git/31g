@@ -1,0 +1,29 @@
+<?xml version="1.0" standalone="yes"?>
+<xs:schema id="dbo.MyStoredProc" xmlns="" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+  <xs:element name="dbo.MyStoredProc" msdata:IsDataSet="true" msdata:UseCurrentLocale="true">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="Results">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="ID" type="xs:int" minOccurs="0" />
+              <xs:element name="ServerName" type="xs:string" minOccurs="0" />
+              <xs:element name="W3SVC" type="xs:int" minOccurs="0" />
+              <xs:element name="requestDateTime" msdata:DataType="System.DateTimeOffset" type="xs:anyType" minOccurs="0" />
+              <xs:element name="s_ip" type="xs:string" minOccurs="0" />
+              <xs:element name="cs_method" type="xs:string" minOccurs="0" />
+              <xs:element name="cs_uri_stem" type="xs:string" minOccurs="0" />
+              <xs:element name="s_port" type="xs:int" minOccurs="0" />
+              <xs:element name="cs_username" type="xs:string" minOccurs="0" />
+              <xs:element name="c_ip" type="xs:string" minOccurs="0" />
+              <xs:element name="sc_status" type="xs:int" minOccurs="0" />
+              <xs:element name="sc_substatus" type="xs:int" minOccurs="0" />
+              <xs:element name="sc_win32_status" type="xs:int" minOccurs="0" />
+              <xs:element name="time_taken" type="xs:int" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

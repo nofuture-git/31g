@@ -1,0 +1,173 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{F5D2874B-B6AB-4FB9-ABF4-0F8B613907D4}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>AdventureWorks2012</RootNamespace>
+    <AssemblyName>AdventureWorks2012</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Iesi.Collections">
+      <HintPath>.\Iesi.Collections.dll</HintPath>
+    </Reference>
+    <Reference Include="NHibernate">
+      <HintPath>.\NHibernate.dll</HintPath>
+    </Reference>
+    <Reference Include="NoFuture.Hbm.Sid">
+      <HintPath>.\NoFuture.Hbm.Sid.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Dbo.AWBuildVersion.cs" />
+    <Compile Include="Dbo.DatabaseLog.cs" />
+    <Compile Include="Dbo.ErrorLog.cs" />
+    <Compile Include="HumanResources\HumanResources.Department.cs" />
+    <Compile Include="HumanResources\HumanResources.Employee.cs" />
+    <Compile Include="HumanResources\HumanResources.EmployeeDepartmentHistory.cs" />
+    <Compile Include="HumanResources\HumanResources.EmployeeDepartmentHistoryCompositeId.cs" />
+    <Compile Include="HumanResources\HumanResources.EmployeePayHistory.cs" />
+    <Compile Include="HumanResources\HumanResources.EmployeePayHistoryCompositeId.cs" />
+    <Compile Include="HumanResources\HumanResources.JobCandidate.cs" />
+    <Compile Include="HumanResources\HumanResources.Shift.cs" />
+    <Compile Include="Person\Person.Address.cs" />
+    <Compile Include="Person\Person.AddressType.cs" />
+    <Compile Include="Person\Person.BusinessEntity.cs" />
+    <Compile Include="Person\Person.BusinessEntityAddress.cs" />
+    <Compile Include="Person\Person.BusinessEntityAddressCompositeId.cs" />
+    <Compile Include="Person\Person.BusinessEntityContact.cs" />
+    <Compile Include="Person\Person.BusinessEntityContactCompositeId.cs" />
+    <Compile Include="Person\Person.ContactType.cs" />
+    <Compile Include="Person\Person.CountryRegion.cs" />
+    <Compile Include="Person\Person.EmailAddress.cs" />
+    <Compile Include="Person\Person.EmailAddressCompositeId.cs" />
+    <Compile Include="Person\Person.Password.cs" />
+    <Compile Include="Person\Person.Person.cs" />
+    <Compile Include="Person\Person.PersonPhone.cs" />
+    <Compile Include="Person\Person.PersonPhoneCompositeId.cs" />
+    <Compile Include="Person\Person.PhoneNumberType.cs" />
+    <Compile Include="Person\Person.StateProvince.cs" />
+    <Compile Include="Production\Production.BillOfMaterials.cs" />
+    <Compile Include="Production\Production.Culture.cs" />
+    <Compile Include="Production\Production.Document.cs" />
+    <Compile Include="Production\Production.Illustration.cs" />
+    <Compile Include="Production\Production.Location.cs" />
+    <Compile Include="Production\Production.Product.cs" />
+    <Compile Include="Production\Production.ProductCategory.cs" />
+    <Compile Include="Production\Production.ProductCostHistory.cs" />
+    <Compile Include="Production\Production.ProductCostHistoryCompositeId.cs" />
+    <Compile Include="Production\Production.ProductDescription.cs" />
+    <Compile Include="Production\Production.ProductDocument.cs" />
+    <Compile Include="Production\Production.ProductDocumentCompositeId.cs" />
+    <Compile Include="Production\Production.ProductInventory.cs" />
+    <Compile Include="Production\Production.ProductInventoryCompositeId.cs" />
+    <Compile Include="Production\Production.ProductListPriceHistory.cs" />
+    <Compile Include="Production\Production.ProductListPriceHistoryCompositeId.cs" />
+    <Compile Include="Production\Production.ProductModel.cs" />
+    <Compile Include="Production\Production.ProductModelIllustration.cs" />
+    <Compile Include="Production\Production.ProductModelIllustrationCompositeId.cs" />
+    <Compile Include="Production\Production.ProductModelProductDescriptionCulture.cs" />
+    <Compile Include="Production\Production.ProductModelProductDescriptionCultureCompositeId.cs" />
+    <Compile Include="Production\Production.ProductPhoto.cs" />
+    <Compile Include="Production\Production.ProductProductPhoto.cs" />
+    <Compile Include="Production\Production.ProductProductPhotoCompositeId.cs" />
+    <Compile Include="Production\Production.ProductReview.cs" />
+    <Compile Include="Production\Production.ProductSubcategory.cs" />
+    <Compile Include="Production\Production.ScrapReason.cs" />
+    <Compile Include="Production\Production.TransactionHistory.cs" />
+    <Compile Include="Production\Production.TransactionHistoryArchive.cs" />
+    <Compile Include="Production\Production.UnitMeasure.cs" />
+    <Compile Include="Production\Production.WorkOrder.cs" />
+    <Compile Include="Production\Production.WorkOrderRouting.cs" />
+    <Compile Include="Production\Production.WorkOrderRoutingCompositeId.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Purchasing\Purchasing.ProductVendor.cs" />
+    <Compile Include="Purchasing\Purchasing.ProductVendorCompositeId.cs" />
+    <Compile Include="Purchasing\Purchasing.PurchaseOrderDetail.cs" />
+    <Compile Include="Purchasing\Purchasing.PurchaseOrderDetailCompositeId.cs" />
+    <Compile Include="Purchasing\Purchasing.PurchaseOrderHeader.cs" />
+    <Compile Include="Purchasing\Purchasing.ShipMethod.cs" />
+    <Compile Include="Purchasing\Purchasing.Vendor.cs" />
+    <Compile Include="Sales\Sales.CountryRegionCurrency.cs" />
+    <Compile Include="Sales\Sales.CountryRegionCurrencyCompositeId.cs" />
+    <Compile Include="Sales\Sales.CreditCard.cs" />
+    <Compile Include="Sales\Sales.Currency.cs" />
+    <Compile Include="Sales\Sales.CurrencyRate.cs" />
+    <Compile Include="Sales\Sales.Customer.cs" />
+    <Compile Include="Sales\Sales.PersonCreditCard.cs" />
+    <Compile Include="Sales\Sales.PersonCreditCardCompositeId.cs" />
+    <Compile Include="Sales\Sales.SalesOrderDetail.cs" />
+    <Compile Include="Sales\Sales.SalesOrderDetailCompositeId.cs" />
+    <Compile Include="Sales\Sales.SalesOrderHeader.cs" />
+    <Compile Include="Sales\Sales.SalesOrderHeaderSalesReason.cs" />
+    <Compile Include="Sales\Sales.SalesOrderHeaderSalesReasonCompositeId.cs" />
+    <Compile Include="Sales\Sales.SalesPerson.cs" />
+    <Compile Include="Sales\Sales.SalesPersonQuotaHistory.cs" />
+    <Compile Include="Sales\Sales.SalesPersonQuotaHistoryCompositeId.cs" />
+    <Compile Include="Sales\Sales.SalesReason.cs" />
+    <Compile Include="Sales\Sales.SalesTaxRate.cs" />
+    <Compile Include="Sales\Sales.SalesTerritory.cs" />
+    <Compile Include="Sales\Sales.SalesTerritoryHistory.cs" />
+    <Compile Include="Sales\Sales.SalesTerritoryHistoryCompositeId.cs" />
+    <Compile Include="Sales\Sales.ShoppingCartItem.cs" />
+    <Compile Include="Sales\Sales.SpecialOffer.cs" />
+    <Compile Include="Sales\Sales.SpecialOfferProduct.cs" />
+    <Compile Include="Sales\Sales.SpecialOfferProductCompositeId.cs" />
+    <Compile Include="Sales\Sales.Store.cs" />
+    <Compile Include="VeryBadCode\LotsOfGenerics.cs" />
+    <Compile Include="VeryBadCode\Wank.cs" />
+    <Compile Include="VeryBadCode\ViewWankathon.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SomeSecondDll\SomeSecondDll.csproj">
+      <Project>{f2aab25a-c5a1-4851-bdde-4515cbb18d4d}</Project>
+      <Name>SomeSecondDll</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SomethingShared\SomethingShared.csproj">
+      <Project>{f4a51f9c-008b-4187-b2ed-4e585ace5014}</Project>
+      <Name>SomethingShared</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ThirdDll\ThirdDll.csproj">
+      <Project>{826e5e0e-00b0-4561-b05d-32857fed2aff}</Project>
+      <Name>ThirdDll</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

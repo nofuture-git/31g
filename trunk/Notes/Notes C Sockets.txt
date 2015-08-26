@@ -1,0 +1,441 @@
+TCP/IP Sockets in C: Practical Guide for Programmers, Second Edition
+By: Michael Donahoo; Kenneth Calvert
+Publisher: Morgan Kaufmann
+Pub. Date: March 17, 2009
+Print ISBN-10: 0-12-374540-3
+Print ISBN-13: 978-0-12-374540-8
+eISBN-10: 0-08-092321-6
+eISBN-13: 978-0-08-092321-5
+
+----
+Activity Diagram
+
+                                                                              
+    server         needs AddressFamily             client                     
+      |            / SocketType & Protocol Type       |                       
+   .------.       /                                .------.                   
+   |      |---.  /                                 |      |---.               
+   |      |   |instantiate                         |      |   |instantiate    
+   |      |   | socket                             |      |   | socket        
+   |      |<--.        IP & Port                   |      |<--.               
+   |      |            /                           |      |                   
+   |      |---.       /                            |      |---.               
+   |      |   |instantiate                         |      |   |instantiate    
+   |      |   | endpoint                           |      |   | endpoint      
+   |      |<--.                                    |      |<--.               
+   |      |                                        |      |                   
+   |      |---.                                    |      |                   
+   |      |   |Bind                                |      |                   
+   |      |<--.                                    |      |                   
+   |      |---.                                    |      |                   
+   |      |   |Listen                              |      |                   
+   |      |<--.                                    |      |                   
+   |      |     thread parks                       |      |                   
+.->|   ..>|---.  /                                 |      |                   
+|  |   .  |   | /     server has two socket        |      |                   
+|  |   .  |   |Accept  / objects (server & client) |      |                   
+|  |   ...|<--.       /                            |      |                   
+|  |      |          /                             |      |                   
+|  |      |<---------------------------------------|      |                   
+|  |      |         Connect                        |      |                   
+|  |   ..>|---.                                    |      |                   
+|  |   .  |   |Receive                             |      |                   
+|  |   .  |   |  \                                 |      |                   
+|  |   ...|<--.   \thread parks                    |      |                   
+|  |      |                                        |      |                   
+|  |      |<---------------------------------------|      |                   
+|  |      | \       Send                           |   ..>|---.               
+|  |      |  \                                     |   .  |   |Receive        
+|  |      |   \first block is an explict\          |   .  |   | \             
+|  |      |     sized array              \         |   ...|<--.  \thread parks
+|  |   ..>|---.                           \        |      |                   
+|  |   .  |   |while Available > 0         \       |      |                   
+|  |   ...|<--.                             \      |      |                   
+|  |      |--------------------------------------->|      |                   
+|  |      |                           Send         |   ..>|---.               
+|  |      |---.                                    |   .  |   |while          
+|  |      |   |Close client socket                 |   ...|<--. Available > 0 
+|  |      |<--.                                    |      |                   
+.--|      |                                        |      |---.               
+   |      |                                        |      |   |Close          
+   |      |---.                                    |      |<--.               
+   |      |   |Close server socket                 |      |                   
+   |      |<--.                                    |      |                   
+   .------.                                        .------.                   
+      |                                               |                       
+      |                                               |                       
+      -                                               -                       
+     /*\                                             /*\                      
+      -                                               -                       
+----
+
+
+http://www.gnu.org/s/libc/manual/html_node/index.html
+----
+Basics
+ - IPv4 uses the 32bit addressing pattern handled in dotted-quad notation
+  - the binary is converted to Dec and rendered as (eg) 255.255.255.255
+ - IPv6 used 128bit addtessing pattern having two Hex values colon seperated
+  - rendered as (eg) 2000:fdb8:0000:0000:0001:853c:39a1
+ - during transition period, locations have dual address (IPv4 & IPv6)
+ - special address 
+  - loop-back address (think echo command)
+   127.0.0.1 & 0:0:0:0:0:0:0:1
+  - internal only (IPv6 doesn't have any equivelent)
+   10.<anything>
+   192.168.<anything>
+   172.16.<anything> to 172.31.<anything>
+  - link-local, for host to host internal use only
+   - routers will not foward these address
+   169.254.<anything>
+   fe80:<anything>
+   fe90:<anything>
+   fea0:<anything>
+   feb0:<anything>
+  - multicast, may refer to an unlimited number of destinations
+   224.<anything> to 239.<anything>
+   FF00:<anything> to FFFF:<anything>
+  -  http://www.iana.org/assignments/port-numbers is listing of ports 
+----
+
+----
+Socket Concepts
+ - used for interprocess communication (IPC)
+ - are *the* method of communicating across machines
+ - creating a socket involves 
+  - style of communication
+  - protocol to implement it
+  - a namespace, aka Domain
+ - created using the 'socket()' in <sys/socket.h> 
+----
+
+----
+Socket Abstract Components
+ - Communiction Style
+  - determines data-structue (streams, packets, etc)
+  - handle of lost data
+  - number of peers
+ - Namespace
+  - determines how to name a socket
+  - address has meaning in namespace choosen
+ - Protocal
+  - defined in <sys/socket.h> file 
+   AF_ is for 'Address Family'
+   PF_ is for 'Protocol Family' 
+  - manner on which communication is carried out
+  - low-level data passing
+  - must be the same on both sockets of the peers
+  - protocal is specific to an ordered pair of Style and Namespace
+   - cannot be mismatched
+   - each combination of Sytle and Namespace has a default protocol
+----
+
+----
+Communication Style <bits/socket.h>
+ SOCK_STREAM reliable data transmission as a stream for connections
+ SOCK_DGRAM unreliable data packets, each having an address 
+ SOCK_RAW for low-level access, not used much
+----
+
+----
+Socket Namespace/Address
+ - name and address are interchangable
+ - using <sys/socket.h>'socket()' uncommunicable until its bound to an address
+ - binding is performed by <sys/socket.h>'bind()'
+ - <bits/socket.h>'struct sockaddr *' is the lower-lvl that sys/socket.h uses  
+ - is the data-structure passed to bind(), getsockname(), connect(), etc
+ - is used to cast actual datastruct in which values are held (eg sockaddr_in) 
+ (struct sockaddr *) &myAddr
+ 
+ - sockaddr contains the following members
+  (1)'family' being the address format
+   - prefixed with 'AF_'
+   - are all corresponded to a respective 'PF_' (protocol family) 
+   - AF_LOCAL for local namespace
+   - AF_INET for Internet namespace
+   - AF_INET6 for Internet namespace for IPv6
+  (2) data[] is the format-dependent actual address for the socket
+----
+
+----
+TCP/IP Socket Client/Server
+(1)socket: factory method [16.8.1] 
+  int socket(int Namespace, int style, int protocol)
+(2)bind: binds an address to a socket [16.3.2]
+  int bind (int socket, struct sockaddr *addr, socklen_t length)
+(3)connect: link to another socket to communicate back and forth [16.9.1]
+  int connect (int socket, struct sockaddr *addr, socklen_t length)
+   - this is specific to the client/server design pattern
+   - sockets overall is intended for various forms of IPC 
+(4)send: for sending on an open connection [16.9.5.1]
+  int send (int socket, void *buffer, size_t size, int flags)
+   - SIGPIPE signal for connection lost conditions
+   - same as 'write' (13.2) without the flags
+(5)recv: returns the number of bytes received [16.9.5.2]
+  int recv (int socket, void *buffer, size_t size, int flags)
+   - reads up to 'size' storing results in 'buffer' from 'socket'
+   - same as 'read' (13.2) without the flags
+(6)htons: interger conversion of port number to binary [16.6.5]
+  uint16_t htons(uint16_t hostshort)
+   - since machines vary in big and little endian a single order is needed 
+   - network byte order is that single standard
+   - these function perform the needed conversions
+   - they should be applied to sin_port, sin_addr and integer literals
+(7)inet_pton: text conversion of an IP address to binary [16.6.2.3]
+  int inet_pton(int [AF_INET | AF_INET6], const char *cp, void *buf)
+   - converst to network byte order on an IP address literal (eg 204.112.154.26)
+   - pton is for Printable TO Numeric 
+    - there is also inet_ntop for Numeric TO Printable 
+   - cp is the pointer to an input string
+   - buf is a pointer to the results
+(8)atoi: converts a string representation of an int to an actual int [20.11.1]
+  int atoi(char *string)
+   - this would be used to convert user-entry Port number to an actual number
+(9)listen: enable connection request on the socket [16.9.2]
+  int listen(int socket, int n)
+   - the 'n' is the queue length
+(10)accept: creates a new socket participating in the connection [16.9.3]
+  int accept(int socket, struct sockaddr *addr, socklen_t *length_ptr)
+   - the listen socket is not part of this connection 
+   - accept makes a new socket and listen continues doing the same
+   - thread exe. stops at this and waits...
+   - 'addr' and 'length_ptr' contains the info about the requesting client
+   - 'socket' is the descriptor placed in the listen()
+   - the returned int is the new socket
+   - the returned socket is what is used in the recv()
+(11)in_addr: internet address of host machine and is a struct itself 
+  struct in_addr { uint32_t s_addr; }
+(12)sockaddr_in: is the struct used to hold socket address data [16.6.1]
+  struct sockaddr_in {
+    sa_family_t sin_family;   //protocol (AF_INET)
+    in_port_t sin_port;       //address port (16 bits)
+    struct in_addr sin_addr;  //IPv4 address (32 bits)
+    } 
+----
+
+----
+/*=================================*/
+#ifndef PRACTICAL_H_
+#define PRACTICAL_H_
+
+#include <stdbool.h>
+#include <stdio.h>
+#include <sys/socket.h>
+
+// Handle error with user msg
+void DieWithUserMessage(const char *msg, const char *detail);
+// Handle error with sys msg
+void DieWithSystemMessage(const char *msg);
+// Print socket address
+void PrintSocketAddress(const struct sockaddr *address, FILE *stream);
+// Test socket address equality
+bool SockAddrsEqual(const struct sockaddr *addr1, const struct sockaddr *addr2);
+// Create, bind, and listen a new TCP server socket
+int SetupTCPServerSocket(const char *service);
+// Accept a new TCP connection on a server socket
+int AcceptTCPConnection(int servSock);
+// Handle new TCP client
+void HandleTCPClient(int clntSocket);
+// Create and connect a new TCP client socket
+int SetupTCPClientSocket(const char *server, const char *service);
+
+enum sizeConstants {
+  MAXSTRINGLENGTH = 128,
+  BUFSIZE = 512,
+};
+
+#endif // PRACTICAL_H_
+
+/*=================================*/
+    
+#include <stdio.h>
+#include <stdlib.h>
+
+void DieWithUserMessage(const char *msg, const char *detail) {
+  fputs(msg, stderr);
+  fputs(": ", stderr);
+  fputs(detail, stderr);
+  fputc('\n', stderr);
+  exit(1);
+}
+
+void DieWithSystemMessage(const char *msg) {
+  perror(msg);
+  exit(1);
+}
+
+/*=================================*/
+
+ 1  #include <stdio.h>
+ 2  #include <stdlib.h>
+ 3  #include <string.h>
+ 4  #include <unistd.h>
+ 5  #include <sys/types.h>
+ 6  #include <sys/socket.h>
+ 7  #include <netinet/in.h>
+ 8  #include <arpa/inet.h>
+ 9  #include "Practical.h"
+10
+11  int main(int argc, char *argv[]) {
+12
+13    if (argc < 3 ||  argc > 4) // Test for correct number of arguments
+14      DieWithUserMessage("Parameter(s)",
+15          "<Server Address> <Echo Word> [<Server Port>]");
+16
+17    char *servIP = argv[1];     // First arg: server IP address (dotted quad)
+18    char *echoString = argv[2]; // Second arg: string to echo
+19
+20    // Third arg (optional): server port (numeric).  7 is well-known echo port
+21    in_port_t servPort = (argc == 4) ? atoi(argv[3]) : 7;
+22
+23    // Create a reliable, stream socket using TCP
+24    int sock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+25    if (sock < 0)
+26      DieWithSystemMessage("socket() failed");
+27
+28    // Construct the server address structure
+29    struct sockaddr_in servAddr;            // Server address
+30    memset(&servAddr, 0, sizeof(servAddr)); // Zero out structure
+31    servAddr.sin_family = AF_INET;          // IPv4 address family
+32    // Convert address
+33    int rtnVal = inet_pton(AF_INET, servIP, &servAddr.sin_addr.s_addr);
+34    if (rtnVal == 0)
+35      DieWithUserMessage("inet_pton() failed", "invalid address string");
+36    else if (rtnVal < 0)
+37      DieWithSystemMessage("inet_pton() failed");
+38    servAddr.sin_port = htons(servPort);    // Server port
+39
+40    // Establish the connection to the echo server
+41    if (connect(sock, (struct sockaddr *) &servAddr, sizeof(servAddr)) < 0)
+42      DieWithSystemMessage("connect() failed");
+43
+44    size_t echoStringLen = strlen(echoString); // Determine input length
+45
+46    // Send the string to the server
+47    ssize_t numBytes = send(sock, echoString, echoStringLen, 0);
+48    if (numBytes < 0)
+49      DieWithSystemMessage("send() failed");
+50    else if (numBytes != echoStringLen)
+51      DieWithUserMessage("send()", "sent unexpected number of bytes");
+52
+53    // Receive the same string back from the server
+54    unsigned int totalBytesRcvd = 0; // Count of total bytes received
+55    fputs("Received: ", stdout);     // Setup to print the echoed string
+56    while (totalBytesRcvd < echoStringLen) {
+57      char buffer[BUFSIZE]; // I/O buffer
+58      /* Receive up to the buffer size (minus 1 to leave space for
+59       a null terminator) bytes from the sender */
+60      numBytes = recv(sock, buffer, BUFSIZE - 1, 0);
+61      if (numBytes < 0)
+62        DieWithSystemMessage("recv() failed");
+63      else if (numBytes == 0)
+64        DieWithUserMessage("recv()", "connection closed prematurely");
+65      totalBytesRcvd += numBytes; // Keep tally of total bytes
+66      buffer[numBytes] = '\0';    // Terminate the string!
+67      fputs(buffer, stdout);      // Print the echo buffer
+68    }
+69
+70    fputc('\n', stdout); // Print a final linefeed
+71
+72    close(sock);
+73    exit(0);
+74  }
+
+/*=================================*/
+
+ 1  #include <stdio.h>
+ 2  #include <stdlib.h>
+ 3  #include <string.h>
+ 4  #include <sys/types.h>
+ 5  #include <sys/socket.h>
+ 6  #include <netinet/in.h>
+ 7  #include <arpa/inet.h>
+ 8  #include "Practical.h"
+ 9
+10  static const int MAXPENDING = 5; // Maximum outstanding connection requests
+11
+12  int main(int argc, char *argv[]) {
+13
+14  if (argc != 2) // Test for correct number of arguments
+15    DieWithUserMessage("Parameter(s)", "<Server Port>");
+16
+17  in_port_t servPort = atoi(argv[1]); // First arg:   local port
+18
+19  // Create socket for incoming connections
+20  int servSock; // Socket descriptor for server
+21  if ((servSock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP)) < 0)
+22    DieWithSystemMessage("socket() failed");
+23
+24  // Construct local address structure
+25  struct sockaddr_in servAddr;                  // Local address
+26  memset(&servAddr, 0, sizeof(servAddr));       // Zero out structure
+27  servAddr.sin_family = AF_INET;                // IPv4 address family
+28  servAddr.sin_addr.s_addr = htonl(INADDR_ANY); // Any incoming interface
+29  servAddr.sin_port = htons(servPort);          // Local port
+30
+31  // Bind to the local address
+32  if (bind(servSock, (struct sockaddr*) &servAddr, sizeof(servAddr)) < 0)
+33    DieWithSystemMessage("bind() failed");
+34
+35  // Mark the socket so it will listen for incoming connections
+36  if (listen(servSock, MAXPENDING) < 0)
+37    DieWithSystemMessage("listen() failed");
+38
+39  for (;;) { // Run forever
+40    struct sockaddr_in clntAddr; // Client address
+41    // Set length of client address structure (in-out parameter)
+42    socklen_t clntAddrLen = sizeof(clntAddr);
+43
+44    // Wait for a client to connect
+45    int clntSock = accept(servSock, (struct sockaddr *) &clntAddr, &clntAddrLen);
+46    if (clntSock < 0)
+47      DieWithSystemMessage("accept() failed");
+48
+49    // clntSock is connected to a client!
+50
+51    char clntName[INET_ADDRSTRLEN]; // String to contain client address
+52    if (inet_ntop(AF_INET, &clntAddr.sin_addr.s_addr, clntName,
+53        sizeof(clntName)) != NULL)
+54      printf("Handling client %s/%d\n", clntName, ntohs(clntAddr.sin_port));
+55    else
+56      puts("Unable to get client address");
+57
+58      HandleTCPClient(clntSock);
+59    }
+60    // NOT REACHED
+61  }
+
+/*=================================*/
+
+ 1  void HandleTCPClient(int clntSocket) {
+ 2    char buffer[BUFSIZE]; // Buffer for echo string
+ 3
+ 4    // Receive message from client
+ 5    ssize_t numBytesRcvd = recv(clntSocket, buffer, BUFSIZE, 0);
+ 6    if (numBytesRcvd < 0)
+ 7      DieWithSystemMessage("recv() failed");
+ 8
+ 9      // Send received string and receive again until end of stream
+10      while (numBytesRcvd > 0) { // 0 indicates end of stream
+11        // Echo message back to client
+12       ssize_t numBytesSent = send(clntSocket, buffer, numBytesRcvd, 0);
+13       if (numBytesSent < 0)
+14         DieWithSystemMessage("send() failed");
+15       else if (numBytesSent != numBytesRcvd)
+16         DieWithUserMessage("send()", "sent unexpected number of bytes");
+17
+18       // See if there is more data to receive
+19       numBytesRcvd = recv(clntSocket, buffer, BUFSIZE, 0);
+20       if (numBytesRcvd < 0)
+21         DieWithSystemMessage("recv() failed");
+22    }
+23
+24    close(clntSocket); // Close client socket
+25  }
+----
+
+
+----
+Organize Later
+ 12.20.3 BUFSIZ is system specific int to set a buffer's size...
+ 

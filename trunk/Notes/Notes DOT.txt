@@ -1,0 +1,445 @@
+Notes DOT
+http://www.graphviz.org/Documentation/dotguide.pdf
+----
+
+----
+Basics
+ - the language defines three kinds of objects
+ 1. graphs
+ 2. nodes
+ 3. edges
+ 
+ - to create graphs from source code use the command
+   line utility "dot.exe"
+   
+   dot.exe -Tgif C:\MyGraphs\MyGraphSource.gv -o C:\MyPics\MyGraph.gif
+ 
+ - many kinds of image formats are available
+ - the image format is specified by "-T<format>"
+  - valid formats (ver. 2.34) 
+	
+	bmp canon cmap cmapx cmapx_np dot emf 
+	emfplus eps fig gd gd2 gif gv imap imap_np 
+	ismap jpe jpeg jpg metafile pdf pic plain 
+	plain-ext png pov ps ps2 svg svgz tif tiff 
+	tk vml vmlz vrml wbmp xdot xdot1.2 xdot1.4
+
+digraph:  for directed graph
+graph:  for an undirected graph
+subgraph:  defines a subset of nodes and edges
+
+ - a nodes is created when its name first appears
+   in the file.
+ - an edge is created when nodes are joined by the
+    ->
+   operator for a directed graph.
+ - an edge is created for nodes in an undirected graph
+   (i.e. 'graph') 
+   --
+   operator.
+----
+
+----
+Attributes
+ - are name-value pairs
+ - are enclosed in sqr-braces 
+ - are separated by a comma
+
+NODE ATTRIBUTES
+Name 			Default 			Values
+----			-------				------
+color 			black 				node shape color
+comment 							any string (format-dependent)
+distortion 		0.0 				node distortion for shape=polygon
+fillcolor 		lightgrey/black 	node fill color
+fixedsize 		false 				label text has no affect on node size
+fontcolor 		black 				type face color
+fontname 		Times-Roman 		font family
+fontsize 		14 					point size of label
+group 								name of node’s group
+height 			.5 					height in inches
+label 			node 				name any string
+layer 			overlay range 		all, id or id:id
+orientation 	0.0 				node rotation angle
+peripheries 	shape-dependent 	number of node boundaries
+regular 		false 				force polygon to be regular
+shape 			ellipse 			plaintext (no outline), box, pologon, ellipse, 
+									point, egg, triangle,
+									diamond, trapezium, parallelogram, hexagon,
+									octagon, doublecircle, tripleoctagon, invtriangle,
+									invtrapezium, record, Mrecord
+shapefile 		external 			EPSF or SVG custom shape file
+sides 			4 					number of sides for shape=polygon
+skew 			0.0 				skewing of node for shape=polygon
+style 			graphics 			options, e.g. bold, dotted,
+									filled; cf. Section 2.3
+URL 			URL 				associated with node (format-dependent)
+width 			.75 				width in inches
+z 				0.0 				z coordinate for VRML output
+
+EDGE ATTRIBUTES
+Name 				Default 		Values
+----				-------			------
+arrowhead 			normal 			style of arrowhead at head end
+                                    box, crow, curve, icurve, diamond,
+									dot, inv, none, normal, tee, vee
+arrowsize 			1.0 			scaling factor for arrowheads
+arrowtail 			normal 			style of arrowhead at tail end
+color 				black 			edge stroke color
+comment 							any string (format-dependent)
+constraint 			true 			use edge to affect node ranking
+decorate 							if set, draws a line connecting labels with their edges
+dir 				forward 		forward, back, both, or none
+fontcolor 			black 			type face color
+fontname 			Times-Roman 	font family
+fontsize 			14 				point size of label
+headlabel 							label placed near head of edge
+headport 							n,ne,e,se,s,sw,w,nw
+headURL 							URL attached to head label if output format is ismap
+label					 			edge label
+labelangle 			-25.0 			angle in degrees which head or tail label is rotated off edge
+labeldistance 		1.0 			scaling factor for distance of head or tail label from node
+labelfloat 			false 			lessen constraints on edge label placement
+labelfontcolor 		black 			type face color for head and tail labels
+labelfontname 		Times-Roman 	font family for head and tail labels
+labelfontsize 		14 				point size for head and tail labels
+layer 				overlay range 	all, id or id:id
+lhead 								name of cluster to use as head of edge
+ltail 								name of cluster to use as tail of edge
+minlen 				1 				minimum rank distance between head and tail
+samehead 							tag for head node; edge heads with the same tag are
+									merged onto the same port
+sametail 							tag for tail node; edge tails with the same tag are merged
+									onto the same port
+style 								graphics options, e.g. bold, dotted, filled; cf.
+									Section 2.3
+taillabel 							label placed near tail of edge
+tailport 							n,ne,e,se,s,sw,w,nw
+tailURL 							URL attached to tail label if output format is ismap
+weight 				1 				integer cost of stretching an edge
+
+GRAPH ATTRIBUTES
+Name 				Default 			Values
+----				-------				------
+bgcolor 								background color for drawing, plus initial fill color
+center 				false 				center drawing on page
+clusterrank 		local 				may be global or none
+color 				black 				for clusters, outline color, and fill color if fillcolor not defined
+comment 								any string (format-dependent)
+compound 			false 				allow edges between clusters
+concentrate 		false 				enables edge concentrators
+fillcolor 			black 				cluster fill color
+fontcolor 			black 				type face color
+fontname 			Times-Roman 		font family
+fontpath 								list of directories to search for fonts
+fontsize 			14 					point size of label
+label 									any string
+labeljust 			centered 			”l” and ”r” for left- and right-justified cluster labels, respectively
+labelloc 			top 				”t” and ”b” for top- and bottom-justified cluster labels, respectively
+layers 									id:id:id...
+margin 				.5 					margin included in page, inches
+mclimit 			1.0 				scale factor for mincross iterations
+nodesep 			.25 				separation between nodes, in inches.
+nslimit 								if set to f, bounds network simplex iterations by (f)(number of nodes)
+										when setting x-coordinates
+nslimit1 								if set to f, bounds network simplex iterations by (f)(number of nodes)
+										when ranking nodes
+ordering 								if out out edge order is preserved
+orientation 		portrait 			if rotate is not used and the value is landscape, use landscape
+										orientation
+page 									unit of pagination, e.g. "8.5,11"
+pagedir 			BL 					traversal order of pages
+quantum 								if quantum ¿ 0.0, node label dimensions will be rounded to integral
+										multiples of quantum
+rank 									same, min, max, source or sink
+rankdir 			TB 					LR (left to right) or TB (top to bottom)
+ranksep 			.75 				separation between ranks, in inches.
+ratio 									approximate aspect ratio desired, fill or auto
+remincross 								if true and there are multiple clusters, re-run crossing minimization
+rotate 									If 90, set orientation to landscape
+samplepoints 		8 					number of points used to represent ellipses and circles on output (cf.
+										Appendix C
+searchsize 			30 					maximum edges with negative cut values to check when looking for a
+										minimum one during network simplex
+size 									maximum drawing size, in inches
+style									graphics options, e.g. filled for clusters
+URL 									URL associated with graph (format-dependent)
+----
+
+----
+Attribute Specifics
+ - plaintext renders with no outline
+ - point will reduce to smallest size given the text
+ - set fixedsize=true will cause width & height will be
+   enforced even if its to small for the text
+ - peripheries sets the number of outlines around a polygon
+ - orientation specifies the clock-wise rotation of a polygon
+ - the shape specified as 'polygon' allows for custom shapes and
+   exposes additional parameters
+   - sides: number of side that make up the polygon
+   - skew: between -1.0 and 1.0 distors the shape by slanting 
+     from top-to-bottom, positive moves top the the right
+   - distortion: shrinks the polygon from top-to-bottom, negative
+     values causing bottom to be larger than the top
+
+ - record and Mrecord represent recursive lists of fields
+ 
+ - Labels are used to separate a nodes reference name and its displayed
+   text which is useful if distinct nodes have the same text.
+   
+ - an Edge label may be applied to each side of the line
+   using headlabel and taillabel
+   
+ - color may be specified by specific name, comma-separated floating-pt numbers
+   or classic triple hex value with '#' '#FFFFFF'
+   
+ - nodesep: specifies the min. distance, in inches, of adjacent nodes 
+ - ranksep:  min. vertical space from nodes by incrementing rank
+----
+
+----
+Examples 
+ - shape 'record' and 'Mrecord' will be rendered in a box by default
+ - 'Mrecord' is the same except that its corners are rounded
+ - a record my be subdivided into cells using special syntax in the label
+  - to delimit a cell the '|' character is used
+ 
+ digraph myRecords {
+	node [shape=record];
+	
+	node0 [label=" | | "]; //this will be a block of three empty cells
+	node1 [label="some\stext | 138 | "]; //this will render three cells 
+	node2 [label="more\stext | 420 | "]; //to get a space you must escape it
+	
+	node0 -> node1;
+	node0 -> node2;
+}
+
+ - a reference to individual cells is possiable using specific syntax
+   also within the label
+
+digraph myRecordsWithPorts {
+    graph [rankdir="LR"]; //the arrow head must appear to the right of its tail
+	node [shape=record];
+	
+	//each cell may be referenced 
+	node0 [label="<f0> |<f1> |<f2> "];
+	
+	//only the first and last cells may be referenced
+	node1 [label="{<n> some\stext | 138 |<p>}"];
+	//having the curly-braces causes the record to render left to right
+	
+	//edge will go specificly from one cell to another
+	node0:f0 -> node1:n;
+	node0:f2 -> node1:p;
+}
+
+ - a ranking system may be used to have nodes fall in line with one another
+digraph myRanks {
+	//this is my rank definitions
+	{
+		node [shape=plaintext];
+		"225 BC to 175 BC" -> "175 BC to 75 BC" -> "75 BC to 27 BC";
+	}
+	
+	//this is my nodes being grouped into ranks
+	node [shape=box];
+	{rank = same; "225 BC to 175 BC"; 
+					"Second Punic War"; 
+					"First Macendonian War"; 
+					"Battle of Zama"; 
+					"Second Macendonian War"; 
+					"Third Macendonian War"; }
+	{rank = same; "175 BC to 75 BC"; 
+					"Third Punic War"; 
+					"City of Carthage Destroyed";}
+	{rank = same; "75 BC to 27 BC"; 
+					"Slave revolt led by Spartacus"; 
+					"First Triumvirate"; 
+					"Ceaser Assassinated";
+					"Second Triumvirate"; 
+					"Collapse of Roman Republic"; }
+
+	
+	//arrows will move side-to-side in the same rank, or up-and-down when nodes move in rank
+	"Second Punic War" -> "Battle of Zama" -> "Third Punic War" -> "City of Carthage Destroyed";
+	"First Macendonian War" -> "Second Macendonian War" -> "Third Macendonian War";
+	"First Triumvirate" -> "Ceaser Assassinated" -> "Second Triumvirate" -> "Collapse of Roman Republic";
+} 
+
+ - cluster is a special kind of subgraph which will appear with a header label
+   and an outline to contain all its nodes
+ - the id must begin with the string 'cluster'
+digraph earlyChurch {
+
+	//the id must begin with the string 'cluster'
+	subgraph cluster_0 {
+	
+		//from there normal rules apply
+		node [shape=plaintext];
+		pius [label="Antoninus Pius"];
+		ma [label="Marcus Aurelius"];
+		Tragan -> Hadrian -> pius -> ma
+		label="Roman Empire";
+		color=lightgrey;
+	}
+	subgraph cluster_1 {
+		node [shape=plaintext];
+		jm [label="Justin Martyr"];
+		jm -> Tertullian
+		label="Latin West";
+		color=lightgrey;
+	}
+	subgraph cluster_2 {
+		node [shape=plaintext];
+		clement [label="Clement of Alexandria"];
+		Polycarp -> clement
+		label="Greek East";
+		color=lightgrey;
+	}
+} 
+
+ - the html syntax for tables may be embedded into a label 
+ - and what is rendered will mostly match the same as a browser would
+ - the label is enclosed in a gt \ lt character not the normal double-quotes
+ - has more styleablity but does not have the ability to refenece by port
+digraph myTable{
+// the label is enclosed in gt & lt characters, not double-quotes as normal
+ firstTable [shape=record, label=<<table bgcolor="white">
+        <th>
+            <td bgcolor="black" align="center">
+                <font color="white">My Table</font>
+            </td>
+        </th>
+        <tr>
+            <td>
+                This is being rendered
+            </td>
+        </tr>
+        <tr>
+            <td>
+                in a typical hypertext table
+            </td>
+        </tr>
+        <tr>
+            <td>
+                in actual markup literal
+            </td>
+        </tr>
+        <tr>
+            <td>
+                written within the label
+            </td>
+        </tr>
+    </table>> ];
+
+ secondTable [shape=record, label=<<table bgcolor="white">
+        <th>
+            <td bgcolor="black" align="center">
+                <font color="white">My Second Table</font>
+            </td>
+        </th>
+        <tr>
+            <td>
+                here is another table
+            </td>
+        </tr>
+    </table>>];
+
+  firstTable -> secondTable;	
+}
+
+ - a label could also be used to have a node with no text
+ - to have a small-cirle pointing to something
+digraph myarrows {
+	ptr01 [label="", shape=circle, height=0.12, width=0.12, fontsize=1];
+	ptr02 [label="", shape=circle, height=0.12, width=0.12, fontsize=1];
+	ptr03 [label="", shape=circle, height=0.12, width=0.12, fontsize=1];
+	
+	objOfInterest [label="Being Pointed To"];
+	
+	ptr01 -> objOfInterest;
+	ptr02 -> objOfInterest;
+	ptr03 -> objOfInterest;
+	
+}
+
+ - a picture may be embedded into a node using the 'image' attribute
+graph myImages {
+
+	//the image is as-is, so if its very large, the resultant graph will be even larger
+	aNodeWithImage [shape=circle, label="num num", image="C:\Projects\31g\trunk\temp\Space Invader.jpg",labelloc=b];
+	ptr01 [label="", shape=circle, height=0.12, width=0.12, fontsize=1];
+
+	//with 'graph' the edge connector is '--' instead of '->'
+	ptr01 -- aNodeWithImage;
+} 
+
+ - a label may be added to an edge by setting the properties after the last edge operand
+digraph {
+	
+	"Hello" -> "World" [label="the genreal label", taillabel="appears at the origin", headlabel="appears at the arrowhead"];
+}
+
+ - an example of a classic flow chart using dot
+ digraph AgentAgencyMatching {
+  node [fontname=Consolas, fontsize=14];
+  edge [fontname=Consolas, fontsize=14];
+  tf00 [shape=diamond, label=""];
+  tf10 [shape=diamond, label=""];
+  tf20 [shape=diamond, label=""];
+  tf30 [shape=diamond, label=""];
+  tf40 [shape=diamond, label=""];
+  tf50 [shape=diamond, label=""];  
+  tf60 [shape=diamond, label=""];
+  
+  start [shape=circle]
+  end [shape=circle]
+  
+  noAgt [shape=box, label="Agent on Order"]
+  noAgtCode [shape=box, label="Agent Code present"]
+  noComID [shape=box, label="CompanyID is known"]
+  searchBy00 [shape=box, label="Search Assoc. by CompanyID, AgentCode, First Name, Last Name & null Agency"]
+  searchBy10 [shape=box, label="Search Agent by First Name, Last Name, Phone, Email and SSN"]
+  addAgt [shape=parallelogram, label="Add new Agent"]
+  noAgy [shape=box, label="Agency on Order"]
+  searchBy18 [shape=box, label="Search Assoc. by CompanyID, AgencyID & AgentID"]
+  searchBy20 [shape=box, label="Search Assoc. by CompanyID, AgentID & null Agency"]
+  addAssoc [shape=parallelogram, label="Add new Assoc."]
+  updAssoc [shape=parallelogram, label="Update Code to this"];
+  
+  start -> noAgt
+  
+  noAgt -> tf00
+  tf00 -> end [label="false"]
+  tf00 -> noAgtCode [label="true"]
+  
+  noAgtCode -> tf50
+  tf50 -> end [label="false"]
+  tf50 -> noComID [label="true"]
+  
+  noComID -> tf10
+  tf10 -> end [label="false"]
+  tf10 -> searchBy00 [label="true"]
+  
+  searchBy00 -> tf20
+  tf20 -> end [label="at least 1"]
+  tf20 -> searchBy10 [label="none"]
+  
+  searchBy10 -> tf30
+  tf30 -> addAgt [label="false"]
+  tf30 -> noAgy [label="true"]
+  addAgt -> noAgy
+  
+  noAgy -> tf60
+  tf60 -> searchBy18 [label="true"]
+  tf60 -> searchBy20 [label="false"]
+  
+  searchBy18 -> tf40
+  searchBy20 -> tf40
+  tf40 -> addAssoc [label="false"]
+  addAssoc -> end
+  tf40 -> updAssoc [label="true"]
+  updAssoc -> end
+}
+----

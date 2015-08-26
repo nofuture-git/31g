@@ -1,0 +1,59 @@
+Notes Reload Grub2 on Ubuntu Linux
+ - issue delimited as one where the Windows menu entry is missing 
+ - or when the Windows entry is present but selecting it only returns to Grub
+ 
+ (1)Add Windows entry to GRUB menu 
+  (a)locate with partion Windows is on
+    #sudo fdisk -l
+  (b)add a new file to the /etc/grub.d/ directory
+   #sudo nano /etc/grub.d/11_Windows
+  (c)add the windows entry
+    #! /bin/sh -e
+    echo “Adding Windows” >&2
+    cat << EOF
+    menuentry “Windows Vista (on /dev/sda3)″ {
+    set root=(hd0,3)
+    chainloader +1
+    }
+    EOF
+  (d) save and close the file
+  (e) open permissions to the new file
+   #sudo chmod a+x /etc/grub.d/11_Windows
+  (f) update grup
+   #sudo update-grub
+  (g) reboot the box
+   #sudo reboot
+ 
+ - upon addition of menu option, selecting it only results in a return to Grub
+ (2) Rebuild the Boot Configuration Data (BCD) store 
+  http://support.microsoft.com/kb/927392
+  (a) Insert the Windows OS Recovery disk
+  (b) Boot into recovery environment 
+  (c) Don't run the install, click on the 'Repair your computer' link
+  (d) Select the Command Line option
+    bcdedit /export C:\BCD_Backup
+    c:
+    cd boot
+    attrib bcd -s -h -r
+    ren c:\boot\bcd bcd.old
+    bootrec /RebuildBcd
+  (e) Exit command line 
+    exit
+  (f) Shutdown the box.
+ (3)Reinstall GRUB2 from the Ubuntu Iso dvd
+  http://ubuntuforums.org/showthread.php?t=1195275 section 13
+  (a) insert the Ubuntu install disk and boot the box
+  (b) Select the option to run Ubuntu from disk
+  (c) go to Applications > Accesories > Terminal
+  (d) discern the partion that Ubuntu is installed on 
+   # sudo fdisk -l
+  (e) mount the Ubuntu Linux partition 
+   #sudo mount /dev/sda6 /mnt
+  (f) reinstall GRUB2
+   #sudo grub-install --root-directory=/mnt /dev/sda
+  (g) unmount the partition
+   #sudo umount /mnt
+  (h) reboot
+   #sudo reboot
+   
+DONE   

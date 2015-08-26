@@ -1,0 +1,335 @@
+﻿Notes Digital Certs
+----
+Digital Certificates : applied Internet security
+Jalal Feghhi, Jalil Feghhi, Peter Williams
+Addison Wesley 1999
+ISBN: 0-201-30980-7
+----
+
+----
+general terms
+ end-to-end
+  - from the source all the way to the dest
+ 
+ link-by-link
+  - from one node to the very next 
+  - many of these would make up on end-to-end
+
+ protocol family
+  - is the stack of communication protocols used
+    to transmit across a network
+
+ security service 
+  - a quality of a system present to satisfy a security policy
+  - identifies <i>what</i> is needed
+  
+ security mechanism
+  - a concrete procedure used to actually implement such a quality
+  - describes <i>how</i> to acheive it
+
+ SSL: secured sockets layer  
+ 
+ computationally secure
+  - means, in theory, with enough processing power and storage space
+    as system could eventually be broken 
+  - the eventual may be many times the age of the universe.
+
+ unconditionally secure
+  - means no amount of processing could ever crack the 
+    cipher text
+  
+ brute-force attack
+  - try every possiable combination of a key to get 
+    the cipher-text
+
+ dictionary attack
+  - when the secert key is derived from words in 
+    the common language 
+  - there is a lot less combinations of these
+ 
+ known-plaintext attack
+  - the key is unknown but the input (plaintext)
+    and output (ciphertext) are known
+	
+ chosen-plaintext attack
+  - the key is unknown, the input (plaintext) is 
+    choosen under some reasonable conditions and 
+	the output (ciphertext) is known.
+----
+
+----
+authentication
+ - assurance for the claimed identity of a user
+ - you are who you say your 
+ 
+ claimant
+  - a person, program or device whose identity
+    is being verified
+ 
+ principal
+  - the actual owner of an identity
+
+ credentials 
+  - the evidence a claimant presents to est. 
+    its identity   
+
+ entity authentication
+  - user claims to be a legitimate principal of a system
+ 
+ data origin authentication
+  - provide evidence that data originated from a principal
+  
+ unilateral entity authentication
+  - only one party involved authenticates itself
+  
+ mutual entity authentication
+  - both parties authenticate themselves to each other
+  - this is like the police asking for id and you asking 
+     to see a badge.
+	  
+ something-you-know
+  - claimant presents knowledge
+  
+ something-you-have
+  - claimant demonstrates possession of something-you-have
+  
+ something-you-are
+  - some immutable verifiable trait of a claimant
+  
+ passwords & pins
+  - most common form of authentication, is a 
+    something-you-know
+  - to be easily memorized have a vowel at 
+    every three letters
+	
+ challenge-response authentication protocol
+  - authentication system presents some random value
+  - claiment must hash this value with a secert-key
+  - claiment presents this hashed value
+  
+ transformed password protocol
+  - claiment must hash thier password first and send
+    the hash to the authentication system
+	
+ one-time password protocol
+  - guards against replay attacks
+  - starts with a shared, small, secert number (n)
+  - claiment hashes password (n) times and presents it
+  - with successful authentication (n = n-1)
+  - upon reaching zero the password an (n) are reset
+  
+ digital certificate protocol
+  - a variation of challenge-response
+----
+
+----
+authorization
+ - establishes what a user is allowed to do
+ - refers to an access-control service
+  - access is read, write, execute and device
+ - confidentiality: protects against communications
+   monitering 
+ - integrity: protects against modifications of data
+ - nonreudiation: prevents a party involved in communications 
+   from later falsely denying having participated.
+ - availability: provides the resources are present
+----
+
+----
+cryptography
+ 
+ message-digest algorithms
+  - map variable-length plain text 
+    to fixed length cipher text 
+  - cannot be turned back to plain text
+  - is commonly known as hashing
+  
+ secret key cryptography
+  - is symmetric cryptography 
+  - is like a decoder ring where the same one used
+    to encrypt a message is, in turn, used to decrypt it
+  - the following are all kinds of secert keys:
+     session key
+     content-encryption key
+     bulk-encryption key
+
+
+ cipher: the cryptographic algorithm
+  - two kinds of symmetric ciphers
+   
+   block cipher: operate on discrete blocks of bits (e.g. 64 bits)
+   
+   stream cipher: operate on one bit at a time
+    - having the plain text as the first stream
+	- there is a second stream of random bits of the same length
+	  known as one-time pad or just pad
+	- by index, each of the two are XOR
+  
+  substitution : substitutes one char for another
+	monoalphabetic cipher : the classic decoder ring
+	 is a substitution cipher
+  
+  permutation : is a kind of substitution, where each 
+    bit is placed in some other position within a block.
+
+  encryption scheme : this is the manner which some message 
+    is encrypted.  
+	
+	electronic code book: a kind of encryption scheme where 
+	  some message is broken into blocks to fit the block 
+	  cipher (e.g. 64 bits) where the last one is padded, 
+	  considered weak
+	  
+	cipher block chaining : XOR the current plain text block 
+	  with the cipher text of the previous block.
+	   
+	   initialization vector(IV) : the "cipher text" used 
+	    for the first block in a cipher block chaining
+	
+	output feedback mode : takes a session key, uses it 
+	  to generate the second stream in a stream cipher
+
+	   
+ public key cryptography : 
+  - invented by W.Diffie and M.Hellman in 1975.
+  - is asymectric cryptography
+   
+   public key : used to take plain text to cipher text
+   private key : used to take cipher text back to plain
+	
+ man-in-the-middle attack : if the sender is dupped into
+   using an imposters public key then they may, in turn,
+   decrypt the message then re-encrypt it with the intended
+   recepiant's public key and foward it on.  Neither side
+   is aware of the imposter...
+   
+  hybrid cryptosystems : uses the asymmetric to negotiate 
+    a secert-key (symmetric), this is because asymmetric is 
+	hundreds of times slower then symmetric.
+ 
+  
+ public-key certificate
+ - a binding between an entity's public key and one 
+   or more attributes or properties related to its identity.
+ - asserts that the public key belongs to the entity and 
+   that said entity has the corresponding private key
+
+ digital certificate, digital ID, certificate
+  - loose synonyms for public-key certificate
+ 
+ certificate subject
+  - this is the term for the entity referred\associated
+    to the certificate.
+  - when the entity is a legal person the 'subject' may
+    be referred to as 'subscriber'
+	
+ RSA - stands for the creators names of Rivest, Shamir and 
+       Adleman
+ DSA - stands for Digital Signature Algorithm
+ 
+ PKCS - stands for Public-Key Cryptography Standards
+
+ ASN - stands for Abstract Syntax Notation
+ 
+ Digital Signature
+  - data item that vouches for the origin and integrity 
+    of a message
+  - the hash of a message is calc'ed 
+  - the private key then encrypts the hash
+    - notice that the private key is being 
+	  used for encryption in this case
+  - the encrypted hash is the digital signature
+  - the public key is used to decrypt the signature
+  - this produces the supposed hash 
+  - the message itself is separately hashed and the
+    two should be an exact match
+----
+
+----
+Digital Certificates
+ - a cert operates similar to a person's ID (DL, Passport)
+  - DL would be useless if everyone could just make thier 
+    own.
+  - the DL has authority since it was issued by the 
+    government
+  - just like minors trying to get a case of beer - DL's
+    (and certs) must be detectable as forgeries
+   - unlike a DL, which is not easy to create, a cert
+     is only a chunk of binary data and can be created 
+	 very easily.
+  - a Certificate Authority is the equivalent of a DMV
+ 
+ X.509 
+ - is a standard for of digital certificates
+ - contains many parts
+ Version 
+ Certificate Serial Number
+ Signature Algorithm Identifier
+  - this would include both the hashing algo 
+    and the encryption algo
+ Issuer name
+  - the CA who issued this certificate
+ Validity period
+  - a from and to date-time
+ Subject
+  - the entity the CA issued the 
+    cert to
+ Public key
+  - the digital content of the key
+  - also the algorithm
+ Thumbprint
+  - a hexdecimal value which is 
+    more precise than a name.
+ extension fields
+  - is a dictionary of key value
+    pairs 
+  - intended for customization
+ 
+ Distinguished Name (DN)
+  - a set of name-value pairs
+  - a pair is by various chars (CR, LF, ;)
+  - the name-value assignment is 
+    separated by the '=' sign 
+  - common subfields of DN
+   C : Country of Origin
+   O : Company or organization name
+   OU : Organizational unit
+   CN : Common name of the user
+   L : Locality (often the city's name)
+   S : State or province
+   T : Titile of person or organization
+   GN : given name
+   I : a set of initials
+   E : email address
+   DC : domain component
+----
+
+----
+Digital Signature
+
+   Originator                      Recipient
+.-------------.                 .--------------.
+|   Message   |---------------->|    Message   |
+`------.------`                 `-------.------`
+       |                                |
+       V                                V
+.-------------.                .---------------.
+|hash function|                | hash function |
+`------.------`                `--------.-------`
+       |                                |
+       V                                |
+  .---------.                           |
+  | digest  |                           |
+  `----.----`          public key       |
+       |  private key       \           | 
+       V   /                 \          |
+.---------.--.           .----.-----.   |
+| encryption |    .----->|decryption|   |
+`------.-----`    |      `----.-----`   |
+       |          |           |         |
+       V          |           V         V
+.-------------.   |    .-----------. .-------.
+|  signature  |---`    |  expected | | actual|
+`-------------`        |   digest  | | digest|
+                       `-----------` `-------`
+----

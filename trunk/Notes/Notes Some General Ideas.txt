@@ -1,0 +1,29 @@
+----
+Noticed the following with regards to database fields
+1. Facts: purely exogenous values without respect to time.
+	I found that these are often found having 'id', 'name',
+	'note', 'word', 'code', 'number', 'date' and 'time' within
+	thier field name or the name would simply be a noun like
+	'address' or 'email' for example.
+2. Subject-Predicate: where the name will have some noun-verb pair
+	or just a verb having the tablename as the implied subject.
+	I found that these have names like 'modified', 'created',
+	'holder' or ending with 'able' and so forth.  Where 
+	 the field name contains a verb with tense or is a participle.
+3. Propositions: these are only distinguished from the 
+	subject-predicate pairs in that they resolve to a truth-value.
+	I found these pretty easy by the field name having 'is' in it.
+----
+
+----
+Another idea
+A. a data store should only be constituted by facts
+B. facts are functions resolving to a value given a time value
+C. value is defined along a time axis with discrete entries
+D. a program is a catalog of propositions concerning the facts
+E. a proposition against the data store is in the form of 'P(x) -> truth_value'
+F. a proposition for the user takes the form of 'truth_value -> P(x)'
+G. a proposition always takes a single argument
+H. an arguement may be itself a proposition ('currying')
+
+ - how are facts related to each other?

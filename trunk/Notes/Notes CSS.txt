@@ -1,0 +1,1205 @@
+"CSS: The Definitive Guide, 3rd Edition" 
+by Eric Meyer 
+Publisher: O'Reilly 
+Pub Date: November 2006 
+Print ISBN-10: 0-596-52733-0 
+Print ISBN-13: 978-0-59-652733-4 
+Pages: 536
+
+----
+CSS Overview
+ - HTML was intended as a Markup language, not a presentation language
+ - CSS is intended as the complement presentation language
+ - Think internal structure versus visual structure
+----
+
+----
+Elements
+ - consider each element generating a 'Box' in which contents are contained
+ - Replaced: element's content is exogeneous source (eg <img src="my.gif" />)
+ - Nonreplaced: element content is w/i element tags
+ - Block: elements wrapped by linebreaks above / below
+ - Inline:  box is gen'ed w/i a line of text
+----
+
+----
+Style Sheets Types: 
+ - declared within the <head> tag
+ - precendence given to style declared closest to tag
+ 
+Linked: stored on a seperate file
+ - default type
+ - set in a seperate document
+ - CSS syntax is contained in seperate doc
+ <head>
+ <link rel="stylesheet" href="myStyleSheet.css" type="text/css">
+ </head>
+ 
+Embedded: set at top of the html source file
+ - override linked for single source file
+ <head>
+ <style type="text/css">
+ table.myTable {background:black;
+                text-align:center}
+ </style>
+ </head>
+ 
+Inline: set at each occurance within source file
+ - override linked or embedded for tag by tag basis
+ <table style="background:black; text-align:center">
+ 
+----
+
+
+----
+Link Tag
+ <link rel="stylesheet" type="text/css" href="sheet.css" media="all" />
+  - must be placed w/i the <head> </head> element
+  - more than one <link /> element is ok - will be combined
+  - link: associate other documents to this document
+  - rel: relationship
+  - type: MIME typename
+  - href: absolute || relative path to css sourcefile
+  - media: to specify which (or all) media types (eg brail, tty, tv, handheld)
+  - alternative: <style text="text\css">@import url(mycss.css) </style>
+    - @import must first statement 
+    - must appear within the style element
+    - 1 to many @import statements OK 
+----
+
+----
+Comments
+ - /* ...*/ type only 
+ - may exceed single line
+----
+
+----
+CSS Syntax:
+body {background:black;}
+ - associated html tag:  body
+ - datatype:  background
+ - value:  black
+ - enclosed in curly braces
+ - multiple html tags by comma seperator
+ - multiple datatype/value pairs by semi-colon seperator
+ - mutiple values seperated by a space (eg h1 {text: medium Arial;} )
+ - mutiple tags seperated by comma (eg h1, body {text:Arial;} )
+----
+
+----
+CSS Class:
+table.myTable {background:black;}
+  - declare myTable css class within the <style> html tag
+  - table is html tag reference
+
+<table class="myTable" width="50%">
+  - instantiate myTable within the table html tag
+
+.myClass {font-style: bold;}
+table.myClass {font-style: italic;}
+ - any element using 'myClass' will have bold font style
+ - table elements using 'myClass' will have both bold and italic font styles
+
+.myClass {font-style: bold;}
+.myOtherClass {font-style: italic;}
+.myClass.myOtherClass {background: red;}
+<p class="myClass myOtherClass">Text here </p>
+  - calls to "myClass myOtherClass" will get all three values
+  - calls must have space seperator between class names
+----
+
+----
+CSS ID
+#my-id {background: blue;}
+<p id="my-id">A blue background here </p>
+ - similar effect as CSS Classes
+ - may only be called once per HTML doc
+ - classes may be called many times per HTML doc
+ - cannot be combined like classes
+----
+
+----
+Attribute Selectors
+p[censorme] {foreground: black;}
+<p censorme="freedom">Freedom</p>
+<p censorme="of-speech">Of Speech</p>
+ - any paragraph that has a 'censorme' attribute will get a black foreground
+ - useful for XML where attibutes are custom
+ - what the attribute is assigned to does not matter
+  
+p[denyme] [censorme] {foreground: black;}
+ - may have more than one attribute attached
+ 
+p[censorme="top-secret"]
+ - may specify attribute having value
+ - attibute value must match exactly (eg top-secret vs top secret)
+ 
+p[censorme~="secret"]
+ - may match using wildcard string, inclued tilde before equal sign
+
+p[censorme^="secret"] /*must begin with "secret"*/
+p[censorme$="secret"] /*must end with "secret"*/
+p[censorme|="secret"] /*match "secret" and "secret-" */
+----
+
+----
+Decendent Selectors
+h1 em {color: gray;}
+ - will color only em elements found within h1 elements
+ - spacing between h1 and em is considered "found within"
+ 
+ul ol ul {color: gray;}
+ - specific to and only to nodes in this order
+ 
+ul ol, h1 em {color: gray;}
+ - combine selectors into one statement
+ 
+h1 > em {color: gray;}
+ - only em nodes that are children of h1 
+ - affective upon h1 direct child nodes, not em's child nodes
+ 
+h1 + p {color: gray;}
+ - given h1 and p having same parent node, affect p element that follows h1
+ - h1 and p are siblings
+ - p element must follow h1 sibling immediately
+ - such order is known as "source order" as in source-code order
+ 
+* { margin:0; padding0;}
+ - override the entire sheet
+----
+ 
+----
+Event-Driven selectors 
+ - selectors for state of page during user visit in time
+a:visited {color: purple;}
+ - colon character specifies apply style upon event
+   
+a:link -unvisited links
+a:visited -visited links
+a:active -while active
+a:hover -while hover
+a:focus - with focus
+
+input:focus {color: gray;}
+ - for use in other elements
+ - will change upon event 
+
+h1:first-letter {color: red;}
+ - first letter of any h1 will be red
+p:first-line {color: gray;}
+ - first line is always gray 
+h2:before {content: "[";}
+h2:after {content:"]";}
+----
+
+---- 
+Specificity
+ - resolves element with more than one selector
+ - valued by ordered four-set (n4,n3,n2,n1)
+ - determined left to right (eg 0,1,0,0 still greater than 0,0,0,9)
+ - highest value is what is selected by browser
+ - inline declaration adds one to {n4}
+ - CSS-ID adds 1 to {n3}
+ - CSS Classes, Attribute Selectors each add 1 to {n2}
+ - each element in the selector adds 1 to {n1}
+ - the universial selector (* {something: here;}) adds nothing to any
+ - trump all by adding !important right before the closing semicolon
+ - resolve specificity equality by appearance in sheet - lowest entry wins 
+
+ h1#a-specific-id {background: black;} /*0,1,0,1*/
+ h1.myClass {background: black;} /*0,0,1,1*/
+ h1[myAttribute] {background: black;} /*0,0,1,1*/
+ h1 em body {background: black;} /*0,0,0,3*/
+----
+ 
+----
+Inheritance
+ - elements inherit style settings from parent element (eg <ul> to <li>)
+ - certain styling elements do not inherit, like borders, padding, etc
+ - inherited style add nothing to elements specificity
+----
+
+----
+Cascade determination
+ - !important marked elements win out, even over in-line style entries
+ - author origin wins out over reader origin w/o !important involved
+ - reader origin wins out over author origin w/ !important declared on both
+ - specificity comes into play after origin and !important
+ - last determination is location in sheet - lowest wins
+----
+
+----
+Literals
+ - signed integers (eg 5)
+ - signed rationals (eg 32.007)
+ - percent of another value (eg 95%) 
+----
+
+----
+Colors
+ - 17 standard colors supported in CSS2.1
+ - 140 colors supported in CSS3.0
+ - rgb(100%, 100%, 100%) is white
+ - rgb(0%, 0%, 0%) is black
+ - rgb([red],[green],[blue]) is the order, hence 'rgb'
+ - to get grey's set each percent to the same value
+ - may use integer values instead of percents, range from 0 to 255
+ - may use hex notation in literal as #RRGGBB (eg #FFFFFF is black)
+ - recommended percent values are divisable by 20
+ - background-color may be set to a picture itself
+----
+
+----
+Units
+ - preceed the unit by a numerical value
+ - absolute (in, cm, mm, pt, pc)
+   - pf is 'point' there are 72 points to an inch
+   - pc is 'picas' equals 12 points
+   - absolutes are for use in printed documents
+ - em really a variable holding the value of the font size
+ - ex is a varaible holding the vertical hieght of a lower case 'x'
+ - px is pixels - number is determined by resolution of rendering monitor
+----
+
+----
+URIs
+ - relative URI is w/ respect to CSS doc, not HTML doc
+ - url(protocol://server/pathname) /*absolute*/
+ - url(pathname) /*relative*/
+----
+
+----
+Fonts
+ - font family is term to describe many similar varied fonts
+   - example: times font has timesItalic, timesBold... each is unique
+ - font face is term for singular unique font 
+   - example: timesItalic
+ - syntax data-type is font-family
+   body {font-family: sans-serif;}
+ - include generic font-family as second value per chance font is not installed
+   body {font-family: Chicago, sans-serif;}
+ - set order of values as order of preference
+ - enclose font value in single-quotes if value is string 
+   eg 'New Century Schoolbook'
+ - use the 'font' element to adjust weight, size and style written in any order
+----
+
+----
+Font-Weight
+ - specified using relative string values {normal, bold, bolder, lighter}
+   - relative strings map to numerical values
+ - specified using numerical values of 100
+ - 100 is lightest font weight, 900 is heavist
+ - 400 is normal weight
+ - if 500 is unassigned then 500's font weight equals 400's
+ - if 300 is unassigned then 300's weight is next light to 400's
+   - same is true of 200 and 100
+ - if 600 is unassigned then 600's weight is one heavier than 400
+   - same is true of 700, 800 and 900
+----
+ 
+----
+Font-Size
+ - specified using relative string values 
+   {xx-small, x-small, small, medium, large, x-large, xx-large}
+ - also specify with relative string values in relation to parent value
+   {smaller, larger}
+ - also specify using exact pixel values
+   {14px}
+ - specify using percentage value in relation to parent value
+   {135%}
+----
+
+----
+Font-Style
+ - specify using keyword {italic, normal, oblique}
+ - italic has slant and slight texture change 
+ - oblique is simply normal with a slant
+ - italic may substituted for oblique
+ - oblique may not be substituted for italic
+ - use font-variant to specify small-caps 
+   - simply an all caps setting where implied capital letter are just larger
+----
+
+----
+Horizontal Text Elements
+ - text is contect, font is rendering thereof
+ - text-indent to indent text
+   - {text-indent: -4em} /*to create a opposite indent*/
+   - use padding to avoid opposite indent being cropped of page
+   - use any unit in text-indent
+ - text-align is the alignment of the text block
+   - values are standard {right, left, center, justify}
+----
+
+----
+Vertical Text Elements
+ - text-height is total area in which text is rendered
+ - 'leading' is the difference between the line-height and the font-size
+ - upon box containing multiple font-size, leading value is added to largest
+ - leading is divided by 2 with one-half at top and the other at bottom
+ - vertical-algin is placement of text around baseline
+   - assume baseline ______ then normal text rest upon
+   - subscript text will hang upon 
+   - superscript text will rest atop baseline text
+   - bottom will align text upon bottom of element box
+----
+
+----
+Spacing
+ - word-spacing uses integer value as additive to normal word spacing
+ - a 'word' is string without whitespace character
+ - letter-spacing also uses an integer, same as word-spacing
+ - text-align will affect spacing
+----
+ 
+----
+Transform text
+ - for use in converting text to all-caps / lower from the style sheet
+ - default display is 'as is' within source html
+ - useful in quick change of elements
+----
+
+----
+Text lining
+ - {text-decoration: underline} /*example*/
+ - underline, overline and line-through supported 
+ - may also specify none to undo any existent lining
+ - specify 'underline overline' to enclose text in lines
+ - the decoration is not inherited
+----
+ 
+----
+Element rendering
+ - Each element has a content pane shapped as a rectangle
+ - the rectangle is layered
+ - at the center is the block level element contained within
+ - block level element is wrapped in a padding 
+ - the padding is offset by a border
+ - a margin wraps around the border
+    ______________________
+    |margin
+    |  ___________________
+    |  |border
+    |  |  ________________
+    |  |  |padding
+    |  |  | ______________
+    |  |  | |block content
+    
+ - width/height affects the block content only
+ - height value exceeding parent block content - browser will add scrollbars
+ - the element box is the size of the parent element's block content
+ - margin and block content are auto-set
+ - padding, border are default
+ - should set valus be overconstrained - margin loses to become auto
+ - margins may be negative
+ - values may be set with percentages - except for borders
+ - values may be set per side 
+   h1{margin: 10px 20px 5px 15px;} 
+   /*order is always Top, Right, Bottom, Left (aka clockwise)*/
+   /*upon left missing - use right*/
+   /*upon bottom missing - use top*/
+   /*upon right missing - use top*/
+ - values set explicitly with "margin-left" datatype
+ - vertical margins adjacent - small is collapsed to zero
+   li{margin-top 5px; margin-bottom 10px;}
+   /*distance between each row is 10, not 15*/
+ - percentage value will calculate off parent width only (not height)
+----
+
+----
+Inline-Text rendering
+ - font-size: height of single charcter boxes in which characters of text reside
+ - line-height: 
+  - greater-than font-size  
+  - (line-height - font-size)/2 is area above/below character box
+----
+
+----
+Borders
+ - always present - set to as 'none' value
+ - has width, style and color
+  - border-width
+  - border-style
+  - border-color
+ - extends to edge of background color (aka padding's edge)
+  - margin area does not have contents background color
+ - lay atop the padding so dotted line style have background's color between
+ - styles: solid; dotted; dashed; double; groove; ridge; inset; outset
+  - inset, outset look like border's on buttons
+ - different borders may be set per side
+----
+
+----
+Padding
+ - will expand background color
+  p {padding: 10px;}
+ - paddings do not collapse (unlike margins)
+ - calculate on width only (like margins)
+ - may be set on a per-side basis
+ - inline padding may extend over adjacent lines
+----
+
+----
+Layout management
+ - floating places element in content forcing content to flow around it
+  p img{float: left;}
+ - floating element's margins do not collapse
+ - a floated element is contained w/i its parent's content block
+ - position places element in content with respect to its parent content block
+ p img{position:relative; top: 50%; bottom: 0; left: 50%; right: 0;}
+ - offset is position with respect to left side / top side
+----
+
+----
+Position Types
+ - static: default, same as none at all
+ - relative: content acts like default except an off-set is now set 
+ - absolute: content is specific in its size 
+  - box is not sized in relation to its parent content area
+  - box is positioned in relation to its parent content area
+  - box is positioned in relation to the containing block (probably window)
+  - is removed from the document flow
+ - fixed: content is viewport
+ - elements may be positioned outside thier content area
+ - limit with min-width; min-height; max-width; max-height
+----
+
+----
+Overflow
+ - used to allow content to exceed its content box
+ p {overflow: visable;} /*will let the content just 'go out' of the box */
+ p {overflow: scroll;} /*to set content into a scrollpane */
+ p {overflow: hidden;} /*exceeding content is simple truncated */
+----
+
+----
+Clip Area
+ clip: rect(10px, 10px, 0, 0);
+ - for setting the area of renderering w/o changing the content block size
+ - only excepts absolute values or the keyword 'auto'
+----
+
+----
+Visibility
+ - for setting a block to invisiable 
+ - while not begin seen, the content block and padding still affect the layout
+ p.myClass {visibility: hidden;}
+ /*will remove content text, borders, colors, etc */
+----
+ 
+----
+CSS Practice
+ - have html element's id's named un-presentational
+ - use the <div> tag in the html to make divisions/sub-division of content
+ - use <div id="myBanner"> to assert a format for a section
+  - id is used for singular portions of page
+  - use class for repeating styles
+ - use pretty-printing of the CSS syntax as such
+ 
+ #myID {
+    margin-bottom: 0px;
+	  position: absolute;
+	  top: 75px;
+	  left: 5px;
+ }
+ 
+ - organize CSS-sheet typical
+  /**************
+  HTML TAGS  
+  **************/
+  body {
+    font-size: 8px
+    /* - would specify other 'overall' styles*/
+  }
+  #main-content p {
+    /* - relative basic html tags contained w/i a div also here*/
+  }
+  
+  /******************
+  LAYOUT DIVS
+  ******************/
+  #top-horizontial{
+    /* - height, width, margins/padding, borders, background, float
+       - these are specific to just layout 
+       - style of elements contained within defined elsewhere
+       - these are almost always applied to div tags
+    */
+  }
+  #side-vertical{
+  }
+  #main-content{
+  }
+  #footer{
+  }
+  /******************
+  LINKS
+  ******************/
+  /* - links need to be style in this order top to bottom*/
+  a:link{
+    /* - color, text decoration(think underline)*/
+  }
+  a:visited{
+  }
+  a:hover{
+  }
+  a:active{
+  }
+  #main-content a:link{
+    /* - would also use this area to style links within div contents*/
+  }
+  /******************
+  HEADINGS
+  ******************/
+  h1{
+    /* - font-size and margins, that about it...*/
+  }
+  h2{
+  }
+  h3{
+  }
+  h4{
+  }
+  h5{
+  }
+  h6{
+  }
+  #main-content h3{
+    /* - likewise, style div specific headers here too*/
+  }
+  /*************
+   FORM STYLES  
+  **************/
+  #main-contnet form {
+    /* - padding and margins at the top here 
+       - typically these are always specific to a layout div tag
+    */
+  }
+  #main-content fieldset{
+    /* - margins, padding and also borders */
+  }
+  #main-content legend {
+    /* padding/margins, font and color, prehaps other text attributes */ 
+  }
+  #main-content label{
+    /* display type, padding/margins and text again */
+  }
+  /******************
+  LISTS
+  ******************/
+  #side-vertical ul.myList {
+    /*  - this defines a specific class used within this specific div */
+  }
+  #side-vertical ul.list li {
+    /* - very specific to the style of this div's classes' list item */
+  }
+  
+  #main-content ul {
+    /* - style specific to a menu/list */
+  }
+  #main-content li {
+    /* - list-style, margin/padding and background are typical */
+  }
+  /******************
+  TABLE STYLES
+  ******************/
+  table {
+    /* - width (not height, that is for the items), border and background */
+  }
+  thead th {
+    /* - style the table's headers */
+  }
+  tfoot { 
+  }
+  .myTable-specific-style td {
+    /* - use a direct class to take total control of line-items style */
+  }
+  /******************
+  CLASSES 
+  ******************/
+  .none{
+    /* - pretty standard utility class in the style sheet */
+    display:none;
+  }
+  .clear{
+    clear:both;
+  }
+  img.my-image-style{
+    /* - float, border and margin/paddings
+       - specific, one-time images are typically styled here
+    */
+  }
+----
+  
+ 
+CSS Mastery: Advanced Web Standards Solutions 
+by Andy Budd; Cameron Moll; Simon Collison 
+Publisher: Apress 
+Pub Date: February 2006 
+Print ISBN: 978-1-59059-614-2 
+Web ISBN: 1-59059-614-5 
+Pages: 280 
+
+
+----
+Basics
+ - use id(s) names for persistent structural elements (eg navBar, contentArea) 
+ - use id(s) for one-time elements as well
+ - class(s) are used for types of content (eg date, formLabel)
+ - both id and class names need to be as un-presentational as possiable
+  - use 'error' instead of 'red'
+  - use 'secondContent' instead of 'leftContent'
+ - don't over-use class(s)
+ <h3 class="h3-news">A Fancy Header</h3>
+ <p class="p-news">A listing of news</p>
+ <p class="p-news">More details</p>
+ <!--INSTEAD USE THIS-->
+ <div class="news">
+ <h3>A Fancy Header</h3>
+ <p>A listing of news</p>
+ <p>More details</p>
+ </div>
+ /* having the CSS look as Such*/
+ div.news {
+  font-size:8px;
+ }
+ div.news h3{
+  font-color:red;
+ }
+ div.news p{
+  font-color:grey;
+ }
+ 
+ - don't overuse the <div> markup either 
+  - use div when there is no other element that does the job
+  - eg: don't wrap a list in a div if you can just give the list an Id
+----
+
+----
+Positioning
+ - blocks move naturally from top to bottom
+  <div style="border-style:groove;
+             border-width:thin;">
+    <p>Here is box one
+  </div>
+  <div style="border-style:groove;
+             border-width:thin;">
+    <p>Here is box two - its just below box 1
+  </div>
+ 
+ -use the 'float' keyword to change the top-to-bottom flow
+  <div style="border-style:groove;
+             border-width:thin;
+             float:right;">
+    <p>Here is box one and its on the right now
+  </div>
+  <div style="border-style:groove;
+              border-width:thin;">
+    <p>Here is box two an it moved 'up' - taking box 1's old space
+       Notice that Box one is actually w/i box two because assigning a float
+       caused the box one to move 'outside' the normal top-to-bottom flow
+  </div>
+
+  <div style="border-style:groove;
+             border-width:thin;
+             float:left;">
+    <p>Here is box one and its on top of box two!
+  </div>
+  <div style="border-style:groove;
+             border-width:thin;">
+    <p>---Notice that text 'butts' up against Box 1.  Even though Box 1 is atop
+       Box 2 the text moves around the obstruction.
+  </div>
+ 
+  <div style="border-style:groove;
+             border-width:thin;
+             float:left;">
+    <p>Here is box one.
+  </div>
+  <div style="border-style:groove;
+             border-width:thin;
+             float:left;">
+    <p>Here is box 2. We now have a horizontal look.  This is the opposite of 
+       what we get by specifing no float.
+  </div>
+ 
+  <div style="border-style:groove;
+             border-width:thin;
+             float:left;
+             width:800px;">
+    <p>Here is box one.
+  </div>
+  <div style="border-style:groove;
+             border-width:thin;
+             float:left;">
+    <p>Box 2 has moved back below Box 1 because there isn't enough width 
+       to have a horizontal appearence.
+  </div>
+  
+  <div style="border-style:groove;
+             border-width:thin;
+             float:left;
+             width:200px;
+             height:200px">
+    <p>Imagine this is an image.
+  </div>
+  <div style="border-style:groove;
+             border-width:thin;">
+    <p>Like expected the text appears butted up against the image.
+  </div>
+  <div style="border-style:groove;
+              border-width:thin;
+              clear:left;">
+    <p>using the 'clear' attribute we force the text to appear down here
+  </div>              
+----
+ 
+----
+Force Float Elements Into a Div
+ - start with the wrapper div
+ - enclose the regular floated elements
+ - add another invisiable div with the clear attribute set to both
+ - the invisiable div needs to be enclosed in the wrapper div
+ <div style="border-style:groove;
+             border-width:thin;">
+  <p style="border-style:groove;
+            border-width:thin;
+            float:left">This is floated to the left.</p>
+  <p style="border-style:groove;
+            border-width:thin;
+            float:right;">This is floated to the right</p>
+  <div style="clear:both;"></div>
+ </div>
+----
+
+----
+Add Image as Background
+ - basic background
+ <body style="background:url(myBackground.pdf);"></body>
+ 
+ - use background image via a div hook
+ <div style="background-image:url(myBackgroun.gif);
+             background-repeat:no-repeat;
+             height=200px;
+             width=700px;">
+ </div>
+ 
+ - background images may be set as a bullet point as well
+ - padding-left is what places space between image and text content
+ - w/o position image would appear in center 
+ - w/o repeat image would tile
+ <h1 style="padding-left:30px;
+            background-image:url(myBullet.gif);
+            background-repeat:no-repeat;
+            background-position:center left;">
+   My Header One Here
+ </h1>
+
+ - create rounded corners 
+ - have a box and place atop it a horizontal rectangle
+  - rectangle atop has top-left corner rounded
+  - rectangle atop also has top-right corner rounded 
+ - have a box image and place it abottom the horizontal rectangle
+  - rectangle abottom has bottom-left and corner 
+  - same for the bottom-right corner
+ <div style="width:418px;
+             background-color:#effce7;
+             background-image:url(bottom.gif);
+             background-repeat:no-repeat;
+             background-position:bottom left;
+             ">
+    <h2 style="background-image:url(top.gif);
+               background-repeat:no-repeat;
+               background-position:top left;
+               padding: 10px 20px 0 20px;">
+        So here is the H1 text and it has the div's background color.
+    </h2>
+    <p style="padding: 0 20px 10px 20px;"> 
+    now a little more text here and it receives the div's bottom pattern</p>
+ </div>
+ 
+ - add further complexity by having rounded edges based on 4 images
+ - have the main div with bottom left curve and main box itself
+ - have the bottom right curve as a div wrapped in the main box
+ - have the top left curve applied to another inner div
+ - have the header with the top right curve
+   <div style="width:20em;
+               background-color:#effce7;
+               background-image:url(bottom-left.gif);
+               background-repeat:no-repeat;
+               background-position: bottom left;">
+    <div style="background-image:url(bottom-right.gif);
+                background-repeat:no-repeat;
+                background-position:right bottom;
+                padding-bottom:5%;">
+      <div style="background-image:url(top-left.gif);
+                  background-repeat:no-repeat;
+                  background-position: top left;">
+        <h2 style="background-image:url(top-right.gif);
+                   background-repeat:no-repeat;
+                   background-position: top right;
+                   padding-top:5%;
+                   padding-left:5%;
+                   padding-right5%;">
+             Here is my header two. </h2>
+          <p style="padding-left:5%;
+                    padding-right:5%">
+            Here is the contents of the p tag.
+          </p>
+      </div>
+    </div>
+   </div>
+----
+
+----
+Add Shadow to Image
+ - start with pre-existing shadow graphic
+ - graphic acts as background for a <div>
+ - the <div> will wrap around the image
+ - the shadow graphic is reveled by having negative margins on the image
+ - recipe will not function on IE 5.x or Mac
+ - this is written for IE7
+ <div style="background-image:url(shadow.gif);
+             background-repeat:no-repeat;
+             background-position: bottom right;
+             clear:right;
+             float:left;">
+    <img style="margin: -5px 5px 5px -5px;
+                border:1px solid #a9a9a9;
+                padding:4px;
+                background-color: #fff;
+                display: block;
+                position: relative;"
+         src="Space Invader_SprayPaint.jpg"
+         width="300"
+         height="300"
+         alt="Space Invader"/>
+  </div>
+----
+
+----
+Have Link Underline Upon Selection
+ - the order these are listed is critical
+ - if reversed then the functionality fails
+<html>
+  <head>
+  <title></title>
+  <style type="text/css">
+    a:link, a:visited {text-decoration:none;}
+    a:hover, a:active {text-decoration:underline;}
+  </style>
+  </head>
+  <body>
+  <p>This is just text </p>
+  <a href="www.google.com">Click Me</a>
+  </body>
+</html>
+<!--
+  apply these links in the order of link, visited, hover, active
+  remember with acroynm of LoVe:HAte
+ -->
+ 
+Use a Border Instead of Underline
+  <style type="text/css">
+    a:link, a:visited {text-decoration:none;
+                      border-bottom: 1px dotted #000;}
+    a:hover, a:active {border-bottom-style: solid;}
+  </style>
+ 
+Use a Image Instead of Underline
+  <style type="text/css">
+    a:link, a:visited {color:#666;text-decoration:none;
+                       background: url(underline1.gif) repeat-x left bottom;}
+    a:hover,a:active {background:url(underline1-hover.gif);}
+  </style>
+----
+
+----
+Add Small Icon To Link
+ - use a link icon for external links
+ - use a different icon for email and im links
+ - use yet another for downloadable documents
+<html>
+ <head>
+  <style type="text/css">
+    .external{background:url(externalLink.gif) no-repeat right top;
+              padding-right:10px;}
+  </style>
+  <title>External Link Example</title>
+ </head>
+ <body>
+  <a class-"external" href="www.google.com">External Link</a>
+ </body>
+</html> 
+----
+
+----
+Have Link Appear As A Button
+<html>
+ <head>
+  <style type="text/css">
+    a {display:block; width:6em;padding:0.2em; line-height:1.4;
+       background-color: #94B8E9; border: 1px solid black; color:#000;
+       text-decoration:none; text-align:center;}
+    /* - setting the display to 'block' is the real work here 
+       - need to apply 'width' or the "button" will fill the width of the parent
+       - using line-height is a trick to force the text to be centered
+    */
+    a:hover {background-color:#369; color:#fff;}
+  </style>
+  <title>Example of Button-Style Link</title>
+ </head>
+ <body>
+  <a href="www.google.com">Click Me!</a>
+ </body>
+</html>
+
+<style type="text/css">
+  a {display:block;width:200px;height:40px;line-height:40px;color:#000;
+     text-decoration:none;
+     background: #94B8E9 url(button.gif) no-repeat left top;
+     text-indent:50px;}
+  a:hover{background:#396 url(button-over.gif) no-repeat left top;
+          color:#fff;}
+  /* - uses an image instead of a colored background
+     - upon hover event server has to fetch other image
+  */
+</style>
+
+<style type="text/css">
+  a {display:block;width:200px;height:40px;line-height:40px;color:#000;
+     text-decoration:none;
+     background: #94B8E9 url(pixy-rollover.gif) no-repeat left top;
+     text-indent:50px;}}
+  a:hover{background-color:#369; background-position:right top;
+          color:#fff;}
+  /* - instead of using a seperate image use single image
+     - left of image is simple display
+     - right of image is hover display 
+     - no need for reload
+     - for IE have the parent of anchor's background equal the rollover state
+       - eg p{background: #94B8E9 url(pixy-rollover.gif) no-repeat right top;}
+  */
+</style>
+----
+
+----
+Simple List With Custom Bullet
+<html>
+ <head>
+  <style type="text/css">
+  ul{margin:0; padding:0; list-style-type:none;}
+  /* - list are indented by default
+     - IE and Opera use the margin 
+     - Firefox and Safari use the padding
+     - need to reduce both to zero to have no indentation
+  */
+  li{background: url(bullet.gif) no-repeat 0 50%; 
+     padding-left: 30px;
+     padding-bottom:5px;}
+  </style>
+  <title>Simple List With Custom Bullet Image</title>
+ </head>
+ <body>
+  <ul>
+  <li>Choice 1</li>
+  <li>Choice 2</li>
+  <li>Choice 3</li>
+  <li>Choice 4</li>
+  </ul>
+ </body>
+</html>
+----
+
+----
+Create Vertical Nav Bar
+<html>
+ <head>
+  <style type="text/css">
+  /* - remove the default bullets and indentation */
+  ul{margin:0;padding:0;list-style-type:none;}
+  /* - need to style the anchors(links) not the list items
+     - each anchor needs block display to allow hover over entire block
+     - use the Pixy image tech to style with background
+     - each image has same border so stacking will have border x2 between each
+      - trick: set the block 1px less than image
+               set background as left bottom
+  */
+  ul a{display:block;width:200px;height:39px;line-height:39px
+       color:#000;text-decoration:none;
+       background:#94B8E9 url(pixy-rollover.gif) no-repeat left middle;
+       text-indent:50px}
+  /* - no top li needs to have its top black border back
+      - trick: set the create li class for anchor and assign it to 1st li
+  */
+  li.first a {height:40px;line-height:40px;}
+  /* - last is to add the hover effect to the li's*/
+  a:hover {background-position:right bottom; color #fff;}
+  /* - IE adds space above and below list items - fix with this!!*/
+  li {display:inline;}
+  </style>
+  <title>Nav Bar!</title>
+ </head>
+ <body>
+  <ul>
+  <li class="first"><a href="www.google.com">Choice 1</a></li>
+  <li><a href="www.google.com">Choice 2</a></li>
+  <li><a href="www.google.com">Choice 3</a></li>
+  <li><a href="www.google.com">Choice 4</a></li>
+  </ul>
+ </body>
+</html>
+----
+
+----
+Simple Horizontial Nav Bar
+<html>
+ <head>
+  <style type="text/css">
+     /* having li of ul as 'inline' means no LfCr after each items*/
+    .simpleNav li {display:inline;}
+  
+  </style>
+ </head>
+ <body>
+  <ul class="simpleNav">
+    <li>Item 1</li>
+    <li>Item 2</li>
+    <li>Item 3</li>
+  </ul>
+ </body>
+</html>
+----
+
+----
+Horizontial Block Nav Bar
+<html>
+ <head>
+  <style type="text/css">
+  /* - remove the padding, margins and bullet points
+     - specify the length in px 
+     - float the parent element
+      - recall that float means its out of the document's flow
+      - you will need to add the <div style="clear:both;"></div> somewhere
+  */
+  ul {margin:0;padding:0;list-style:none;width:720px;
+      background: #FAA819 url(mainNavBg.gif) repeat-x;
+      float:left;text-transform:uppercase;}
+  /* - get the list horizontial using 'float:left;'*/
+  ul li {float:left;}
+  /* - get the links to behave like buttons using 'block' 
+     - remove the underlines using text-dec.. none
+     - you can set relative width by adding padding
+     - add a divider using the background attribute
+  */
+  ul a {display:block;padding:0 2em;line-height:2.1em;
+        text-decoration:none;color:#fff;
+        background:url(mainNavBorder.gif) repeat-y left top;}
+  /* - the far left item will have the divider
+     - again using a 'first' class, remove it
+  */
+  ul .first a{background:none;}
+  /* - setup the hover property */
+  ul a:hover{color:#333;}
+  /* - set the font to fit into the new menu */
+  body {font:76%/1.8 "Lucida Grande", Verdana, Arial, Helvetica, sans-serif;
+        background-color: #fff;}
+  </style>
+  <title>Horizontal Nav Bar</title>
+ </head>
+ <body>
+  <ul>
+    <li class="first"><a href="#">Home</a></li>
+    <li><a href="#">About</a></li>
+    <li><a href="#">News</a></li>
+    <li><a href="#">Products</a></li>
+    <li><a href="#">Services</a></li>
+    <li><a href="#">Clients</a></li>
+    <li><a href="#">Case Study</a></li>
+   </ul>
+ </body>
+</html>
+----
+         
+----
+IE to Firefox - unique rendering
+ - IE 7 <ul><li>.. will have block size of ul auto-expand to fit all <li>
+ - Firefox <ul><li>.. will just let <li> move outside of <ul> content box
+ - Firefox will auto add about 20px margin-top
+  - explict set margin-top:0; to override
+ - Firefox <ul> will auto-add left padding
+----
+
+----
+Fixed Center Page Display
+<html>
+<head>
+  <style type="text/css">
+    body {
+          width:760px;
+          /*grey will be the color of the left and right margins*/
+          background-color:grey;
+          /*these are what make the main div always appear in the middle*/
+          margin-right:auto;
+          margin-left:auto;
+         }
+  </style>
+</head>
+<body>
+  <p>My paragraph appears in the middle of the page</p>
+</body>
+</html>
+----
+
+----
+Stretch Page Display
+<html>
+<head>
+  <style type="text/css">
+    body {
+          /*
+            - typicaly use a div wrapper instead of body
+            - body may have a background and main div a width > 100%
+          */
+          width:100%;
+          padding:10px;
+          }
+  </style>
+</head>
+<body>
+  <p>This will stretch to the length of the page.</p>
+</body>          
+</html>
+----
+
+----
+Have content in area with scroll bar
+<html>
+<head>
+  <style type="text/css">
+    div {
+          height:50px;
+          width:300px;
+		  display:block;
+		  overflow-y:auto;		  
+	}
+  </style>
+</head>
+<body>
+<div>
+<span> header div </div>
+</div>
+<div>
+<table>
+<tr><td><span>This is content must squeeze </span></td></tr>
+<tr><td><span>into an area to small for it</span></td></tr>
+<tr><td><span>The browser is adding a scroll bar</span></td></tr>
+<tr><td><span>automatically</span></td></tr>
+</table>
+</div>
+<div>
+<span> footer div </span>
+</div>
+</body>
+</html>
+----

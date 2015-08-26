@@ -1,0 +1,82 @@
+<!--
+Notes Xsd
+----
+
+----
+Root Node
+-->
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="myXsdName"
+    targetNamespace="http://tempuri.org/myXsdName.xsd"
+    elementFormDefault="qualified"
+    xmlns="http://tempuri.org/myXsdName.xsd"
+    xmlns:mstns="http://tempuri.org/myXsdName.xsd"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+
+ <!-- 
+  since the whole sheet is being defined using my custom
+  types, only the root element is needed to define the 
+  contents of the sheet
+ -->	
+ <xs:element name="my-root-node" type="Code-Base" />
+
+<!--
+to relate this xsd to an xml file, add this 
+attribute to the root node of the xml
+
+ xmlns='http://tempuri.org/myXsdName.xsd'
+-->
+
+<!-- 
+Define Values assignable to an Attribute's value
+-->
+  <xs:simpleType name="Framework-Types">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="VC++ 98" />
+      <xs:enumeration value="VB6" />
+      <xs:enumeration value="VBScript" />
+      <xs:enumeration value=".NET 1.1" />
+      <xs:enumeration value=".NET 2.0" />
+      <xs:enumeration value=".NET 3.5" />
+      <xs:enumeration value=".NET 4.0" />
+      <xs:enumeration value=".NET 4.5" />
+      <xs:enumeration value="T/SQL" />
+      <xs:enumeration value="JAVA 4" />
+      <xs:enumeration value="JAVA 5" />
+      <xs:enumeration value="JAVA 6" />
+    </xs:restriction>
+  </xs:simpleType>
+  
+<!--
+now for the attribute's type set it to 
+type="Framework-Types"  
+instead of type="xs:string"
+-->
+
+<!-- 
+Define an Element
+-->
+  <!--this name is now a type -->
+  <xs:complexType name="Code-Base"> 
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" name="group" type="Group" />
+    </xs:sequence>
+    <xs:attribute name="name" type="xs:string" use="required" />
+  </xs:complexType>
+  
+  <!-- this type is being referenced above -->
+  <xs:complexType name="Group" mixed="true"> 
+	<!-- use 'sequence' to have an ordered list of child elements -->
+    <xs:sequence maxOccurs="unbounded">
+	  <!-- use choice to have an elememnt repeated -->
+      <xs:choice>
+		<!-- the type may even reference itself -->
+        <xs:element maxOccurs="unbounded" name="app" type="xs:string"/>
+      </xs:choice>
+    </xs:sequence>
+    <xs:attribute name="name" type="xs:string" use="required" />
+	<!-- the value of this attribute is constrained to the list defined above -->
+	<xs:attribute name="framework" type="Framework-Types" use="optional" />
+  </xs:complexType>
+</xs:schema>

@@ -1,0 +1,61 @@
+﻿using System;
+using System.Linq;
+
+namespace NoFuture.Rand.Edu
+{
+    public class AmericanUniversity
+    {
+        public Gov.UsState State { get; set; }
+        public string Name { get; set; }
+        public string CampusName { get; set; }
+        public float? PercentOfStateStudents { get; set; }
+        public float? CrimeRate { get; set; }
+        public Uri Website { get; set; }
+
+        public static bool TryParseXml(System.Xml.XmlElement node, out AmericanUniversity univ)
+        {
+            try
+            {
+                univ = null;
+                if (node == null)
+                    return false;
+                if (node.LocalName != "college-univ")
+                    return false;
+
+                univ = new AmericanUniversity();
+                var attr = node.Attributes["name"];
+                univ.Name = attr == null ? string.Empty : attr.Value;
+
+                attr = node.Attributes["campus"];
+                univ.CampusName = attr == null ? string.Empty : attr.Value;
+
+                attr = node.Attributes["percent-of-state-students"];
+
+                if (attr != null)
+                {
+                    float percentStudents;
+                    if (float.TryParse(attr.Value, out percentStudents))
+                        univ.PercentOfStateStudents = percentStudents;
+                }
+
+                attr = node.Attributes["crime-rate"];
+                if (attr != null)
+                {
+                    float crimeRate;
+                    if (float.TryParse(attr.Value, out crimeRate))
+                        univ.CrimeRate = crimeRate;
+                }
+
+                return true;
+            }
+            catch
+            {
+                univ = null;
+                return false;
+            }
+        }
+    }
+
+    public class PublicAmericanUniversity : AmericanUniversity { }
+    public class PrivateAmericanUniversity : AmericanUniversity { }
+}

@@ -1,0 +1,635 @@
+Notes WCF Services
+Programming WCF Services, Third Edition
+By: Juval Lowy
+Publisher: O'Reilly Media, Inc.
+Pub. Date: August 23, 2010
+Print ISBN-13: 978-0-596-80548-7
+Pages in Print Edition: 912
+
+----
+General 
+ - a service is a unit of functionality exposed to the world
+ - evolution of CS having been from Functions, Objects, Components to Services
+ - WCF is not limited to HTTP
+ - like Remoting WCF may communicate across machines, processes, appdomains,
+   contexts or within the same process.
+ - also like Remoting the client communicates with a proxy to the service 
+   and not the service itself.
+ - with Remoting, a proxy was used to communicate while local objects just 
+   had a reference
+ - with WCF, everything uses a proxy so thier is not difference between local
+   and remote.
+----
+
+----
+WCF Address
+ - every service has a unique address
+  - address has a location
+  - address has a protocol
+ - supported protocols
+  - HTTP/HTTPS
+  - TCP : handles breaking a single byte array into Internet Octet Packets
+     and depends on Berkley Sockets API  
+  - IPC Pipes 
+  - Microsoft Message Queuing (MSMQ): messages targeted to disconnected machines are 
+     placed in a queue awaiting the machine's revial.
+  - Service Bus: related to Windows Azure and dependents on HTTP
+
+ - address format is always
+   base address/[optional URI] 
+   
+ - base address is formatted as 
+   transport://[machine | domain][:port]
+ 
+ - examples
+ http://localhost:8001
+ http://localhost:8001/MyWcf
+ net.tcp://localhost:8002/MyService
+ net.pipe://localhost/MyPipe
+ net.msmq://localhost/private/MyQueue
+ sb://MyNamespace.servicebus.windows.net/
+----
+
+----
+WCF Contracts
+ - platform neutral declarations
+ - of four types
+  - Service contracts
+   - what functionality is available
+  - Data contracts
+   - value-types implicit in an exchange
+  - Fault contracts
+   - what errors the services raises and 
+     how these errors propogate
+  - Message contracts
+   - a kind of extensiable contract typically
+     used in an adapter design pattern
+
+ - a contract *should* be defined on an Interface but doesn't have to be.
+ - any member not decorated with a System.ServiceModel
+   attribute will not be part of the WCF Service
+ - OperationContract is only valid on methods and not
+   on properties, indices or events
+ - concrete implementations may have properties and indices but the
+   service consumer will not ever be able to use them
+ - constructors are not included since they are not applicable to 
+   and interface
+   - however, WCF must instantiate something and so when it 
+     does make the object it only every uses the default, no-arg constructor
+ - implementation may be explicit or implicit
+ - since and interface allows for multi-inheritance, one class 
+   may implement many Service contracts
+ - if the namespace value is unspecified in the ServiceContract attribute
+   then it will default to 'http://tempuri.org'
+ 
+  [System.ServiceModel.ServiceContract]
+  interface IMyService
+  {
+	[System.ServiceModel.OperationContract]
+	string MyMember(string arg);
+  }
+  
+  [System.ServiceModel.ServiceContract(Namespace="MyServices", Name="MyServiceName")]
+  interface IMyService
+  {
+	[System.ServiceModel.OperationContract(Name="MyMethod")]
+	string AMethod(string arg);
+  }
+----
+
+----
+Contract Gotachas
+ - unlike typical OO, method-overloading is not allowed, each OperationContract
+   must have a unique name
+ - ServiceContract attributes are not inherited; therefore the attribute must 
+   be present on each extended class thereof
+ - on the client Is-A is not present meaning if IMySvc extends IMyParentSvc 
+   the client having a proxy instance of IMySvc Is-Not a, likewise, instance of
+   IMyParentSvc
+ - When a method returns or excepts some custom class that class must 
+   be decorated with the [Serializable] attribute to be capable of moving across 
+   the wire
+ - However, with a struct, WCF will infer the datacontract based on public members
+   therein insofar as the struct having no decorating attributes whatsoever.
+ - a [DataContract] must be decorated on the class and [DataMember] on each
+   serializable member therein.
+ - a [DataMember] attribute may be decorated on a contract in which the returning
+   type of that member is itself decorated with [DataContract]
+ - a ServiceContract must, in similar respect, decorate its callable methods 
+   with [OperationContract]
+ - Visual Studio 2010 will import DataContract's as defined, SvcUtil will import
+   as-published
+ - getting an 'InvalidDataContractException' indicates that one of the members
+   decorated with [DataMember] attribute is missing the 'get' or the 'set'
+----
+
+----
+WCF IIS Hosting
+ - the service must exist in some hosting context
+  - IIS, Windows Activation Service, Azure AppFabric or In-proc
+ - when using IIS the WCF is leveraged off the ASP.NET 
+  - however, the protocol is restricted to HTTP
+ - like ASP.NET a WCF service requires a file on the virtual directory 
+  - unlike ASP.NET the service file's extension is .svc and not .asmx
+  - the .svc file contains the directive for ServiceHost
+  - non-IIS hosting must extend this class by hand
+ - the address of the service is the path on the virtual directory
+ - IIS 7+ uses the newer Windos Activation Service (WAS) 
+  - in IIS 7+ a WCF service is still a .svc file
+  - however a WAS is a system service 
+  - offers advantages over Custome Hosting by including
+   - applicaiton pooling
+   - recycling
+   - idle time management
+   - identity management
+   - isolation
+ - an entry is required in the web.config for services that are to be 
+   published off the root 'configuration' node
+   
+   <!-- IIS web.config settings -->
+   <system.serviceModel>
+	<serviceHostingEnvironment>
+		<serviceActivations>
+			<add relativeAddress = 'MyService.svc' service='MyFullyQualified.ServiceName.MyService' />
+		</serviceActivations>
+	</serviceHostingEnvironment>
+	<services>
+		<service name = 'MyFullyQualified.ServiceName.MyService' />
+	</services>
+   </system.serviceModel>
+----
+   
+----
+WCF Custom Hosting
+ - the hosting application will still require entries in the app.config file
+ - service types get registered at runtime.
+ - hosting is done by implementing an extension of the System.ServiceModel.ServiceHost class
+  - this class extends from ICommunictionObject <|-- CommunicationObject <|-- ServiceHostBase
+ - each service will require an extension of the ServiceHost class
+ - to programaticly configue a host you must do so prior to calling Open()
+ 
+   <!-- app.config settings -->
+   <service.serviceModel>
+	<services>
+		<service name = 'MyFullyQualified.ServiceName.MyService' />
+	</services>
+   </service.serviceModel>
+  
+ - implementation is easy
+  //given Service Contract interface
+  [System.ServiceModel.ServiceContract]
+  interface IMySvc {}
+  
+  //you implement it 
+  class MySvc : IMySvc {}
+  class MyOtherSvc : IMySvc {}
+  
+  //then, given the runtime entry, you set it in motion
+  static void Main()
+  {
+	//this is 'in-proc' so the address was omitted 
+	// (rather than given a null value, this produces and exception)
+	var myHost = new System.ServiceModel.ServiceHost(typeof(MySvc));
+	
+	//this one depends on an address 
+	Uri myTcp = new Uri("net.tcp://localhost:8080/");
+	Uri myHttp = new Uri("http://localhost:8081/");
+	
+	//may register multiple address to a single service
+	var myOhterHost = new Service.ServiceModel.ServiceHost(typeof(MyOtherSvc),
+		myTcp, myHttp);
+	
+	// this handles 
+	myHost.Open();
+	/*
+	 - loading the WCF runtime
+	 - worker thread to monitor for incoming request
+	  - who, in turn, launch other worker threads 
+	   - these others belonging to the IO's completion thread pool
+	*/
+	
+	//whatever code is a client of MySvc gets its threads going here
+	
+	myHost.Close();
+  }
+  
+  //in addition the ServiceHost class my be extended
+  public class MyServiceHost<T> : System.ServiceModel.ServiceHost
+  {
+	public MyServiceHost() : base(typeof(T)) {}
+	
+	public MyServiceHost(params string[] addr) : base(typeof(T)),
+						 addr.Select(a=>new Uri(a)).ToArray()) {}
+
+	public MyServiceHost(params Uri[] addr) : base(typeof(T),addr) {}
+  }
+----
+
+----
+WCF Binding Concept
+ - summary review so far
+  - many communication patterns
+  - messages may be 
+   - synchronous request-reply
+   - asynchronous fire-and-forget
+   - single direction or duplex
+   - immediate or queued
+   - durable or volatile queues
+    - durable meaning messages get saved to disk
+	- volatile means they only exist in memory
+  - message protocols 
+   - TCP
+   - HTTP/HTTPS
+   - ICP Pipes
+   - MSMQ
+  - multiple message encodings
+   - plain-text
+   - binary
+   - Message Transport Oprimization Mechanism (large payloads)
+  - multiple security 
+  - none
+  - transport-level only
+  - message-level privacy
+ - given the number of possiable difference WCF uses 'bindings'
+  - a binding provides canned options for
+   - transport protocol
+   - message encoding
+   - communication pattern
+   - reliability
+   - security
+   - transaction propagation
+   - interopability
+----   
+   
+----
+Common WCF Bindings
+ - System.ServiceModel.BasicHttpBinding 
+ - System.ServiceModel.NetTcpBinding  
+ - System.ServiceModel.NetNamedPipeBinding
+ - System.ServiceModel.WSHttpBinding
+ - System.ServiceModel.NetMsmqBinding
+ 
+ Binding Name             Transport         Encoding           Interop
+ ------------             ---------         --------           -------
+ BasicHttpBinding         Http/Https        Text -or- MTOM     WCF-to-Any
+ NetTcpBinding            TCP               Binary             WCF-to-WCF
+ NetNamedPipeBinding      Pipe              Binary             WCF-to-WCF
+ WSHttpBinding            Http/Https        Text -or- MTOM     WCF-to-Any
+ NetMsmqBinding           MSMQ              Binary             WCF-to-WCF
+ 
+ - System.ServiceModel.BasicHttpContextBinding, WSHttpContextBinding 
+   and NetTcpContextBinding all allow for calls on the context locations
+   (e.g. [System.Threading.Thread]::CurrentThread)
+----
+
+----
+WCF Endpoints
+ - triumvirate of Address, Contact, Binding
+ - every endpoint must have clarified all three
+ - wherever there is an endpoint (config file or code) expect
+  - address, or a URL 
+  - binding, or the name of the System.ServiceModel class
+  - contract, the full name of the interface
+ - the service host may define the address so it 
+   could be omitted from the endpoint config 
+ - beyond defining the binding's type, one must define the 
+   properties of the binding class itself
+ - the definition follows a node-tag pattern of the 
+   namespace itself
+ - giving a name to a tag at system.serviceModel.netTcpBinding.binding
+   makes it such that it may be referenced in the 'endpoint' config
+   section
+ - add endpoints in-code using the System.ServiceModel.ServiceHost
+ 
+ //address is a string
+ //contract is a Type
+ //binding is any childclass of "Binding"
+ ServiceHost host = new ServiceHost(typeof(MyService));
+ Binding wsBinding = new WSHttpBinding();
+ //still may use the config file, scope of file is never really stated...(?)
+ Binding tcpBinding = new NetTcpBinding("TheNameAtServiceModel_bindings_netTcpBinding_binding"); 
+ //assign the binding properties here, same as config
+ host.AddServiceEndpoint(typeof(IMyContract),wsBinding,"http://localhost/MyService");
+ host.Open();
+----
+
+----
+WCF Metadata Http-Get
+ - publish of metadata controled from code
+ - using System.ServiceModel.Description.ServiceMetadatBehavior
+ 
+ ServiceHost host = new ServiceHost(typeof(MyService));
+ ServiceMetadataBehavior myBehavior;
+ //check for behavior already defined and added
+ myBehavior = host.Description.Behaviors.Find<ServiceMetadataBehavior>();
+ if(myBehavior == null)
+ {
+	myBehavior = new ServiceMetadataBehavior();
+	myBehavior.HttpGetEnabled = true;
+	host.Description.Behaviors.Add(myBehavior);
+ }
+
+ - or config
+ <system.serviceModel>
+	<behaviors>
+		<serviceBehaviors>
+		<behavior name="DefaultBehavior">
+			<serviceMetadata httpGetEnabled="true" httpsGetEnabled="false" />
+		</behavior>
+		</serviceBehaviors>
+	</behaviors>
+</system.serviceModel>
+----
+
+----
+WCF Metadata Exchange Endpoint (WS-MEX)
+ - looks almost the same as the Http-Get 
+ - 1. have a Behavior with a ServiceMetadata tag within it
+ - 2. tie the service to the behavior using the 
+   behaviorConfiguration attribute
+ - 3. have an endpoint defined on the service whose 
+   binding attribute is 
+   - mexTcpBinding
+   - mexNamedPipeBinding
+   - mexHttpBinding
+ <system.serviceModel>
+	<services>
+		<!--2.-->
+		<service name="MyService" behaviorConfiguration="DefaultBehavior">
+			<!--3.-->
+			<endpoint address="http://localhost/mex"
+					  binding="mexHttpBinding"
+					  contract="IMetadataExchange" />
+		</service>
+	</services>
+	<behaviors>
+		<serviceBehaviors>
+			<!--1.-->
+			<behavior name="DefaultBehavior">
+				<serviceMetadata httpGetEnabled="true" httpsGetEnabled="false" />
+			</behavior>
+		</serviceBehaviors>
+	</behaviors>
+</system.serviceModel>
+ 
+ServiceHost h = new ServiceHost(typeof(MyService),new Uri("http://localhost/"));
+//1.
+ServiceMetadataBehavior mb;
+mb = h.Description.Behaviors.Find<ServiceMetadataBehavior>();
+if (mb == null)
+{
+	mb = new ServiceMetaBehavior();
+	h.Description.Behaviors.Add(mb);
+}
+//3.
+Binding b = System.ServiceModel.Description.MetadataExchangeBindings.CreateMexHttpBinding();
+//2.
+h.AddServiceEndpoint(typeof(IMetadataExchange),b,"MEX");
+----
+
+----
+WCF Create Client
+ - run SDK's svcutil.exe on the Url of the service
+ - Powershell example - get the output.config values in code 
+ 
+#found syntax by disassembling the WcfTestClient application
+function Get-ServiceModelSectionGroup
+{
+    [CmdletBinding()]
+    Param
+    (
+        [Parameter(Mandatory=$true,position=0)]
+        [String] $ConfigFile
+    )
+    Process
+    {
+        $exeConfigFileMap = New-Object System.Configuration.ExeConfigurationFileMap
+        $machineConfig = [System.Configuration.ConfigurationManager]::OpenMachineConfiguration()
+        $exeConfigFileMap.MachineConfigFilename = $machineConfig.FilePath
+        $exeConfigFileMap.ExeConfigFilename = $ConfigFile
+        $svcConfig = [System.Configuration.ConfigurationManager]::OpenMappedExeConfiguration(
+		               [System.Configuration.ExeConfigurationFileMap]$exeConfigFileMap,
+					   [System.Configuration.ConfigurationUserLevel]::None)
+        return  [System.ServiceModel.Configuration.ServiceModelSectionGroup]::GetSectionGroup($svcConfig)
+    }
+}
+ 
+----
+
+----
+WCF Architecture
+ 
+      +------------------+
+      |                  |
+      |    Client        |                                          0 MEX endpoint
+	  |------------------+                                          |
+	  v                                                            +-------------+
+	  0 interface                                                  |             |
+      |                                                          0-|             |
+      +------------------+                                         |   Service   |
+      |                  |                                       0-|             |
+      |   Proxy          |                                       ^ |             |
+	  +------------------+                                       | +-------------+
+	          |
+	          V                                                  |
+      +------------------+           +------------------+     +------------------+
+      |                  |           |                  |     |                  |
+      |  Channel         |           |  Channel         | --> |  Dispatcher      |
+	  +------------------+           +------------------+     +------------------+
+	          |                              ^
+              V                              |
+      +------------------+           +------------------+
+      |                  |           |                  |
+      |  Channel         |           |  Channel         |
+	  +------------------+           +------------------+
+             |	                             ^
+             V                               |
+      +------------------+           +------------------+
+      |                  | message   |                  |
+      |  Transport       |~~~~~~~~~~>| Transport        |
+	  |  Channel         |           | Channel          |
+	  +------------------+           +------------------+
+----
+
+----
+Inheritance and WCF DataContracts
+ - decorate a data contract with the 'System.Runtime.Serialization.KnownTypeAttribute'
+   to alert the DataContractSerializer of object extension
+   
+   //a MyChildDataContract is castable to MyParentDataContract
+   //  upon deserialization
+   
+   [DataContract]
+   [KnownType(typeof(MyParentDataContract)]
+   public class MyChildDataContract : MyParentDataContract
+   {
+		[DataMember]
+		public string MyChildProperty { get; set; }
+   }
+   
+   [DataContract]
+   public class MyParentDataContract
+   {
+		[DataMember]
+		public int MyParentProperty { get; set; }
+   }
+   
+   //on the counterpart Service Contract, allow the method
+   //  to accept the inherited type
+   [ServiceContract]
+   public interface IMyServiceContract
+   {
+		[OperationContract]
+		[ServiceKnownType(typeof(MyChildDataContract))]
+		void DoSomething(MyParentDataContract arg);
+   }
+----
+   
+----
+Working Minimum 
+ - the following basic example will load without 
+   use of IIS
+
+1. Folder Structure
+ /domain
+ /domain/bin
+ /domain/App_Code
+ 
+2. Files
+ /domain/Web.config
+ /domain/MyService.svc
+ /domain/App_Code/IMyService.cs
+ /domain/App_Code/MyService.cs
+ 
+3. Web Configuration (/domain/Web.config)
+<!-- straight copy-paste from one generated from VS 2010-->
+<?xml version="1.0"?>
+<configuration>
+  <system.web>
+	<compilation debug="false" targetFramework="4.0" />
+  </system.web>
+  <system.serviceModel>
+    <behaviors>
+      <serviceBehaviors>
+        <behavior>
+          <!-- To avoid disclosing metadata information, set the value below to false and remove the metadata endpoint above before deployment -->
+          <serviceMetadata httpGetEnabled="true"/>
+          <!-- To receive exception details in faults for debugging purposes, set the value below to true.  Set to false before deployment to avoid disclosing exception information -->
+          <serviceDebug includeExceptionDetailInFaults="false"/>
+        </behavior>
+      </serviceBehaviors>
+    </behaviors>
+    <serviceHostingEnvironment multipleSiteBindingsEnabled="true" />
+  </system.serviceModel>
+  <system.webServer>
+    <modules runAllManagedModulesForAllRequests="true"/>
+  </system.webServer>
+</configuration>
+
+4. The SVC file (/domain/MyService.svc) 
+ - this is like any ASP.NET page with a single page directive
+ <%@ ServiceHost Service="MyService" 
+				 Language="C#" 
+				 Debug="true" 
+				 Factory="System.ServiceModel.Activation.ServiceHostFactory" 
+				 CodeBehind="~/App_Code/MyService.cs" %>
+				 
+5. Implmentation of Code 
+ - (/domain/IMyService.cs)
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.Serialization;
+using System.ServiceModel;
+using System.ServiceModel.Web;
+using System.Text;
+
+[ServiceContract]
+public interface IMyService
+{
+	[OperationContract]
+	string DoWork();
+}
+
+ - (/domain/MyService.cs)
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.Serialization;
+using System.ServiceModel;
+using System.ServiceModel.Web;
+using System.Text;
+
+
+public class MyService : IMyService
+{
+	public string DoWork()
+	{
+		return "Done!";
+	}
+} 
+----
+
+----
+Example, run a net.tcp WCF service from a Console app
+ 
+//svcutil net.tcp://localhost/MyServiceHost/mex /out:C:\Projects\Temp\MyWcf.cs
+
+[System.ServiceModel.ServiceContract]
+public interface IMyWcf
+{
+    [System.ServiceModel.OperationContract]
+    void DoWork(string printMe);
+}
+
+public class MyWcf : IMyWcf
+{
+    public void DoWork(string printMe)
+    {
+        System.Console.WriteLine(printMe);
+    }
+}
+
+internal static class Program 
+{
+    internal static System.ServiceModel.ServiceHost myServiceHost = null; 
+
+    public static void Main()
+    {
+        try
+        {
+            if (myServiceHost != null)
+                myServiceHost.Close();
+
+            myServiceHost = new System.ServiceModel.ServiceHost(typeof (MyWcf),
+                new[] { new System.Uri("net.tcp://localhost/MyServiceHost/") });
+
+            var myTcpBinding = new System.ServiceModel.NetTcpBinding();
+            myServiceHost.AddServiceEndpoint(typeof(IMyWcf), myTcpBinding, "MyWcf");
+
+            var myBehavior = new System.ServiceModel.Description.ServiceMetadataBehavior();
+            myServiceHost.Description.Behaviors.Add(myBehavior);
+
+            var mexBinding = System.ServiceModel.Description.MetadataExchangeBindings.CreateMexTcpBinding();
+            myServiceHost.AddServiceEndpoint(typeof (System.ServiceModel.Description.IMetadataExchange), mexBinding,
+                "mex");
+
+            myServiceHost.Open();
+            System.Console.WriteLine("press any key to exit...");
+            var n = System.Console.ReadKey();
+
+            if (myServiceHost != null)
+                myServiceHost.Close();
+        }
+        catch (System.Exception ex)
+        {
+            System.Console.WriteLine(ex.Message);
+            System.Console.WriteLine(ex.StackTrace);
+            if (myServiceHost != null)
+                myServiceHost.Abort();
+        }
+        myServiceHost = null;
+        var dlk = System.Console.ReadKey();
+    }
+}
+----

@@ -1,0 +1,593 @@
+Notes VB 6 
+
+"Sams Teach Yourself Visual Basic 6 in 21 Days" 
+by Greg Perry 
+Publisher: Sams 
+Pub Date: August 13, 1998 
+Print ISBN-10: 0-672-31310-3 
+Print ISBN-13: 978-0-672-31310-3 
+Pages: 880
+
+----
+Primitive Types:
+Byte    'unsigned 8 bits whole number type 
+Integer   'signed 16 bits integer number type
+Long    'signed 32 bits integer number type
+Single    'signed 32 bits rational number type
+Double    'signed 64 bits rational number type
+Currency    'signed 64 bits rational number type
+Decimal   'signed 128 bits rational number type
+String    'adjustable bits
+Date    '64 bits range 1/1/100 - 12/31/9999
+Boolean   '16 bits
+----
+
+----
+Other types:
+Object    '32 bits - assume reference 
+Variant   '128 bits 
+----
+
+----
+Numeric Literals:
+ - Default
+    - Interger for integer value
+    - Single for rational value
+ - Scientific Notation:  literals may be written in notation form
+    - E placed between value and exponent (3.14E+8)
+    - D placed between value and exponent for double precision
+ - & suffix for Long
+ - ! suffix for Single
+ - # suffix for Double
+ - @ suffix for Currency
+----
+
+----
+Other Literals:
+ - # # enclose for Date
+ - " " enclose for String
+ - True | False for Boolean
+----
+
+----
+Misc from observation
+
+ - components are added in visual editor
+ - components reference variable is set in 'Properties' window 'name'
+ - L&F of components sized in visual editor
+ - Programmer only give implementation to components event handlers
+ - .frm source file contains componets hidden at file's top
+ - components have methods available for call beyond event handlers
+ - Screen is an object - use for display issues
+ - Specify startup object from Project Properties
+    - myForm
+    - Main() 'use this to run code prior to form display
+----
+
+----
+VB 6 Source File Layout (an example)
+ - |name| is hidden from view within the IDE
+
+ |Version Number|
+ |Hex Object ID|
+ |Form Layout|
+ |Attributes|
+ Constants
+ Instance Variables
+ Properties() (encap'ed instance variables)
+ DisplayForm()
+ DisplayData()
+ User Defined Methods()
+ Component.EventHandler()
+----
+
+
+----
+Basics
+ - Windows and controls are the basis of interface
+ - Twip: a subdivision of a pixel, ratio dependent on resolution (1/1440 inch)
+----
+
+----
+Event Driven Programming
+ - Events pass through the Windows OS
+ - Windows passes event to application
+ - Each control is already registared to events
+ - Controls Properties distinguish one control from another
+ - Control only responds to implemented event-handlers
+----
+
+----
+Controls
+ - Toolbox: where all controls reside
+ - Controls are only added from ToolBox to Form
+ - Intrinsic Controls: always available
+ - ActiveX Controls: external end with .ocx
+ - Insertable Controls: controls of other applications (eg MS Word)
+----
+
+----
+Control Properties:
+ - Controls properties recieve default value
+ - Code-only properties, not visable in properties windows
+ 
+ Base Control Properties
+   - Name: reference to the control
+   
+   - Alignment: text on the control, Left, Right or Justify
+   - BorderStyle:  set border around a control
+   - Caption:  list the text displayed in a control
+   - Font:  set font's size and style
+
+   - BackColor:  control's back ground color
+   - ForeColor:  control's foreground color
+
+   - Enabled: boolean, toggeles during app exe
+   - Visable: boolean, toggels form from view
+
+   - Height: twips of controls height
+   - Left: control's starting twip from the left edge of the form
+   - Top: control's starting twip from the top edge of the form
+   - Width: specifies the number of twips wide
+   
+   - MousePointer: shape of mouse point over the control at runtime
+   - ToolTipText:  text that appears upon mouse hover at runtime
+----
+
+----
+Form Properties:
+ - Dimension properties relative to screen size
+ 
+ Base Control Properties
+ - Border Style:  enum for user ability to resize form
+   - None:  without edge or titlebar
+   - Fixed Single:  non-sizable
+   - Sizable:  default value
+ - Control Box:  boolean determine control menu available (Alt + Spacebar)
+ - Icon:  filename, graphic appear in taskbar next to form name
+ - MaxButton:  determine form has Maximize button in title bar
+ - MinButton:  determine form has Minimize button in title bar
+ - Movable:  determine if form can be moved
+ - ShowInTaskBar:  boolean, determine if form appear in task bar
+ - StartUpPosition:  enum, where form starts at, best is CenterScreen
+ ----
+ 
+ ----
+ Label Control:
+  - text appearing on form
+  - user cannot change
+  - may be changed at runtime programmaticlly
+  
+  Base Control Properties
+    - Caption:  text to display in label
+    - AutoSize:  width property is dynamic made-to-fit horizontally
+    - WordWrap:  hight property is dynamic made-to-fit vertically
+----
+
+----
+Text Box Control: 
+  - user input's a string value
+  - no intended for boolean values
+  - needs a label to inform user of inteded use
+  - Focus will change cursor to text-cursor (vertical line)
+  
+  Base Control Properties
+    - Text: box's default value.
+    - Alignment: text w/i box, alignment
+    - Locked: user may not change value 
+        - unlocked programmatically @ runtime
+    - MaxLength:  number of characters allowed in string, 0 is for indefinate
+    - Multiline:  boolean, True for carragie return, scroll-bar @ runtime
+    - PasswordChars:  designate character to hide string value
+    - ScrollBars:  enum, 0-none, 1-horizontal, 2-vertical, 3-both
+        - requires Multiline = True
+----
+
+----
+Command Button Control:
+ - use as 'execute'
+ - may be attached to short-cut key using 'Alt'
+ - may be executed with 'Enter' key if control has focus
+ 
+ Base Control Properties
+    - Cancel:  boolean, set control to exe on Esc key press
+        - only one control on the form may have this property as true
+        - VB 6 will set all to false but highest in the focus order
+    - Caption:  specify text that appears on button
+        - Add '&' to set character as short-cut (eg E&xit - Alt+x will exe)
+        - short-cut key will be underlined in caption
+        - if short-cut key conflict then all are False but highest Focus order 
+    - Default:  booelan, set control to exe on Enter key press
+        - only one control per form may have Default value = True
+    - Picture:  path, graphic image appear on control instead of text
+    - Style:  enum, 1-Graphical, 0-Standard
+----     
+
+----
+Message Box: returns a integer
+ - intResponse = MsgBox(strMessage, intBoxStyle, strBoxTitle)
+   - strMessage is required - reason for invoking MsgBox
+   - intBoxStyle is an enum 
+      - specify which command buttons appear
+      - default to vbOKOnly
+      - is optional
+   - strBoxTitle - what appears in the Title
+      - is optional
+      - defalut to the project's name
+ 
+ - MsgBox Styles:
+  - 0 vbOKOnly
+  - 1 vbOKCancel
+  - 2 vbAbortRetryIgnore
+  - 3 vbYesNoCancel
+  - 4 vbYesNo
+  - 5 vbRetryCancel
+  
+ - Integer Responses:
+  - 1 vbOK
+  - 2 vbCancel
+  - 3 vbAbort
+  - 4 vbRetry
+  - 5 vbIgnore
+  - 6 vbYes
+  - 7 vbNo
+  
+ - Change Command Button Focus: 
+ - intResponse=MsgBox("Cancel", vbOKCancel + vbDefaultButton2 )'focus on Cancel  
+    - default is always button one (left to right)
+    - 0 vbDefaultButton1
+    - 256 vbDefaultButton2
+    - 512 vbDrfaultButton3
+
+- Change Message Box Icon:
+- intResponse=MsgBox("Text", vbOKCancel + vbCritical)
+  - default is no icon
+  - 16 vbCritical
+  - 32 vbQuestion
+  - 48 vbExclamation
+  - 64 vbInformation
+----
+
+----
+Input Box:
+ - strAnswer = InputBox(strPrompt, strBoxTitle, strDefault, intX, intY)
+  - strPrompt 
+    - is required
+    - should be in the form of a question
+    - may be 1024 characters long
+  - strBoxTitle: same as MsgBox
+  - strDefault
+    - is optional
+    - may be modified, erased or excepted as is
+  - intX, intY:  twips of text box's coordinates
+----
+
+----
+Check Box Control:
+ - Caption Property what is displayed to the right
+ - Value Property, 0 for unchecked, 1 for checked
+ - advised for multiple combo selection
+----
+
+----
+Option Buttons Contorl (aka Radio Buttons):
+ - advised for mutually-exclusive choices
+ - at start run-time no option selected
+ - upon select one option - at least one will remain selected during runtime
+ - Caption property is text appearance to right
+ - Seperate Option Buttons by placing control within another Frame
+----
+
+----
+Common Dialog Box Control:
+ - must add the Control to the Toolbar 
+ - control is added to Form in Visual Editor
+ - control will display to screen center via runtime - no code needed
+ - name control via properties eg myCtrlBox
+ - control does no work - only displays and sets properties
+ - upon user select Cancel - thread GoTo OnError label
+ - control dialog box is abstract control - instantiate to any:
+    myCtrlBox.ShowColor ' show common color dialog box
+    myCtrlBox.ShowFont ' show common font box
+    myCtrlBox.ShowHelp
+    myCtrlBox.ShowOpen
+    myCtrlBox.ShowPrinter
+    myCtrlBox.ShowSave
+ - Set multiple Flags Properties using + operator
+    myContolDialog.Flags = aFlag + anotherFlag + aThirdFlag 
+----
+
+----
+Common Color Dialog Box Control:
+ - Instantiate Common Dialog Box Control to .ShowColor
+ - Specify Color Box options with Flags Property
+    - myColorDialogBox.Flags = cdlCCFullOpen
+----
+ 
+----
+Font Dialog Box Control:
+  - must set myFontDialogBox.Flags to one of three or no display 
+      - cdlCFScreenFonts 
+      - cdlCFPrinter Fonts
+      - cdlCFBoth 
+  - other flags available
+  - assign properties across controls
+    myControl.Font.Bold = myFontDialogBox.Bold
+----    
+
+----
+Open File and Save File Dialog Box Control:
+ - has many Flags avaialable
+ - myFileDialogBox.Filter = "my FileType Description | *.myf"
+    - will set the filter portion of the File Open dialog box to default filter
+----
+
+----
+Printer Dialog Box Control:
+ - standard format
+ - assign integer variables to controls FromPage, ToPage and Copies
+----
+
+----
+List Box Control:
+ - Must intialize contained values at runtime
+ - contained values ought be added in the Form_Load 
+ - contained value appear in order of thier addition
+ 
+ myListBox.AddItem("My First List Box Item")
+ myListBox.Sorted = True 'contained values in acending order
+ myListBox.Text 'user select item - may hold only one value
+ 'values of list box are 0 based index
+ myListBox.Remove(2) 
+ 'list length is 1 based 
+ myListBox.ListCount 'will be one higher than last index item
+ myListBox.Clear 'will clear all items  
+ Private Sub myListBox_Click()
+    'thrown event upon list selection
+ End Sub
+----
+
+----
+Combo Box Control:
+ - 3 styles
+ 
+ 0 - Dropdown Combo:  appear a one line list box
+    - classic L&F
+    - default Style
+ 1 - Simple Combo:  
+    - appear as list box with attached text box
+    - box area always the same size
+    - values exceed box area, runtime add scrollbar
+ 
+ - ensure that Text Property will default to control name
+----
+
+----
+Print method:  
+ - print text straight to the form
+ 
+ frmMyForm.Print("Print this please")
+ frmMyForm.Print("start";) 'add semicolon to continue line
+ 'semicolon makes Print command like System.Out.Print 
+ 'instead of System.Out.PrintLn
+ frmMyForm.Print("a string"; Spc(5); "seperated by 5 spaces")
+ frmMyForm.Print("a string"; Tab(5); "continured") 'print in tab columns
+----
+ 
+
+----
+Mouse Events:
+ - are order by Windows as
+  MouseDown
+  MouseUp
+  Click
+  DoubleClick
+  MouseUp
+ - a mouse click will fire MouseDown, MouseUp and Click events, in that order
+ - a mouse dbl click will file MouseUp, Click, DoubleClick, MouseUp events
+----
+
+---- 
+ MouseDown, MouseUp and MoveMouse Event Parameters
+  myControl_MouseDown(intButton As Integer, intShift As Interger, _ 
+                      sngX As Single, sngY As Single) 
+  - intButton:  1 for left button, 2 for right button and 4 for both
+  - intShift: bitwise and operator for Alt, Shft or Ctrl key state upon click
+  - sngX  horizontal twips
+  - sngY  vertical twips
+----
+
+----
+Drag-Drop Events:
+
+Automatic:
+ - Set Form Control DragDrop to 1 - Automatic
+ Private Sub frmMyForm_DragDrop(srcCtrl As Control, x As Single, y As Single)
+    srcCtrl.Move(x,y)
+ End Sub 'that is it! - this handler gets a ref to the srcCtrl
+ 
+Manual
+ - Set Control DragDrop to 0 - Manual
+ Private Sub myCtrl_MouseDown(btn As Integer, shft As Integer, _ 
+                              x As Single, y As Single)
+      'record you x and y to variables
+      myCtrl.Drag 'invoke controls Drag event
+ End Sub
+----
+
+----
+Drag-Over Event:
+ - use to keep DragDrop to occur over-a-top other control
+ Private Sub myCtrl_DragOver(src As Control, x As Single, _ 
+                             y As Single, st As Integer)
+    'st is enum 0 drag entry over, 1 drag exit over, 2 drag through 
+    'upon event - handle by chnging mouse pointer
+ End Sub 
+----
+
+----
+Focus:
+ - Is the selected control
+ - Only controls for user interaction may gain focus
+ - TabIndex:  determine order of focus movement
+    - by default is the order inwhich controls were added to form
+    - all controls have TabIndex property 
+    - controls that may not recieve focus pass to next in line 
+    - Add short-cut key to label to pass focus to its tandem text box
+ - Focus upon load, set to control Default=True
+----
+
+----
+Events:
+ - Passed from Windows OS to the VB App
+ - passed with generating control
+ - both forms and controls may recieve events
+ 
+ Form Events:
+  - Activate:  event handler for when form recieves focus
+  - Click:  handle click (right and left), will trigger Activate and Click event
+  - DblClick: 
+  - Deactivate: handler for form's lose of focus
+  - Initialize: event for form into memory 
+  - Load: event for active thread access member of form
+  - Paint: for re-draw because of return to focus
+  - Resize: handle form being resized
+  - Unload: event for active thread exit of form member
+      - App close will trigger Unload for all forms
+
+ Control Events (Basic):
+  - Change: active upon user or programmatic change
+  - Click: 
+  - DblClick:
+----
+
+----
+Event Handlers:
+ - Syntacticly handler signature always 'controlName_eventName()'
+ - signature may take parameters
+ - underscore seperator is required
+ - always null return type (Subroutine)
+ - Private access modifier by default
+---- 
+
+----
+Keyboard Event Handlers:
+ - ASCII key value for capital letter to lower counterpart is 32
+
+Private Sub Control_KeyPress(intAsciiValue As Integer)
+  If intAsciiValue = 65 Then 'is Ascii value for 'A'
+    Console.WriteLine("You pressed the A key") 
+  End If
+End Sub
+ ' VB 6, use constants for Ascii key value (eg vbKeyBack)
+
+Private Sub Control_KeyDown(KeyCode As Integer, Shift As Integer)
+  ' KeyCode is ALL CAPS, always
+  ' Shift is the state of the Alt, Shift, Ctrl keys (in any combo)
+  Dim bitwiseShiftState As Integer
+  bitwiseShiftState = Shift And 7 'bitwise operation
+  ' 7 as binary 0000 0000 0000 0000 0000 0000 0000 0111
+  ' And bitwise operation with 7 is how this is always handled
+  ' And operator is overloaded - compiler must know which to use
+  Select Case bitwiseShiftState
+    Case 1
+      'Shift  
+    Case 2
+      'Ctrl 
+    Case 3
+      'Alt 
+    Case 4
+      'Shift + Control
+    Case 5
+      'Shift + Alt
+    Case 6
+      'Ctrl + Alt
+    Case 7 
+      'Shift + Ctrl + Alt 
+  End Select
+  'last 4 bits 0111 - 0001 is shift, 0010 is Ctrl, 0100 is Alt
+End Sub
+
+SendKeys myKeyStrokes [blnKeyStrokeActive]
+ ' myKeyStrokes is a string literal
+ ' ()+^% must be escaped within { } curly braces
+ ' blnKeyStrokeActive = True, keystroke event listeners are active 
+ ' Home, End, etc key must be escaped in curly braces
+ 
+KeyPress Property:  set to true to override focus upon a keypress
+----
+
+----
+Hungarian Notation:
+ - bln Boolean
+ - byt Byte
+ - cur Currancy
+ - dte Date
+ - dbl Double
+ - int Integer
+ - lng Long
+ - obj Object
+ - sng Single
+ - str String
+ - vnt Variant
+----
+
+----
+Variable Declaration:
+Dim myVariable As <type> 'prefix myVariable with proper notation
+ 
+ - should begin with Hungarian Notation
+ - must begin with a letter
+ - may contain numbers after 1st char
+ - variable name is limited to 255 characters in length
+ - no special characters except underscore (_)
+----
+
+----
+String Declaration:
+
+Dim strVar As String ' declaration for variable-length string
+Dim strFixed As String * 10 
+  'string may not exceed 10 characters in length
+  'VB 6 will truncate string (from left) to fit
+----
+
+----
+Variable Assignment
+ variableName = literal
+ variableName = function result
+ variableName = property result
+ variableName = operation result (eg 4+4)
+ 
+ 'VB6 supports older assignment syntax
+ Let variableName = value
+----
+
+----
+Object Instantiation
+ - Set myObj = New Object()
+---- 
+
+----
+Forms Collection
+ - collection of all forms within project
+ - Single Document Interface: form app, only one form load at a time
+ - Multiple Document Interface:  form app with parent and child forms  
+ 
+ Forms![frmMyForm] 'call by reference
+ Forms!("frmMyForm") 'call by string name
+ Forms!frmMyForm(0) 'call control index 0 on form
+ Forms(0).frmMethod 'call method on form contained at index 0
+ Forms.Count 'method specific to a collection
+----
+
+----
+On Error:
+Private Sub myLittleSub()
+  OnError GoTo myLittlSubErrorHandler
+  'some code here
+  myLittleSubErrorHandler:
+    'handle error here
+End Sub
+----
+

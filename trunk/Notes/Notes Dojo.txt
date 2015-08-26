@@ -1,0 +1,1627 @@
+/*NAMESPACE STATEMENT
+VB.NET "Namespace net.bstarrett.dojo" 
+C# "namespace net.bstarrett.dojo" 
+Java "package net.bstarrett.dojo"*/
+dojo.provide("net.bstarrett.dojo"); //namespace statment in dojo
+
+/*IMPORT STATEMENT
+VB.NET "Imports net.bstarrett.dojo.MyParentClass"
+C# and Java "import net.bstarrett.dojo.MyParentClass"*/
+dojo.require("net.bstarrett.dojo.MyParentClass");
+
+/*SCOPE DECLARATION STATEMENT
+VB.NET "Public Class MyClass End Class"
+C# and Java "public class MyClass { }"*/
+dojo.declare("net.bstarrett.dojo.MyClass", net.bstarrett.net.MyParentClass, {
+//1st param is the object to be created
+//2nd is the parent class
+//3rd is the actual body of the object    
+});
+
+//dojo Quick Object Resolution
+dojo.setObject("net.bstarrett.dojo.MyClass", true);
+console.log(net.bstarrett.dojo.MyClass); //"true"
+/*1st param is the fully qualified object name
+  2nd param is the value being set to it*/
+
+//may also pass in a context namespace (otherwise its global)
+var myContext = {};
+dojo.setObject("net.bstarrett.dojo.MyClass", true, myContext);
+console.log(myContext.net.bstarrett.dojo.MyClass); //call to MyClass from root namespace of "MyContext"
+
+
+
+
+<html>
+<head>
+    <title>Dojo Query</title>
+        <!--dojo stylesheet-->
+        <link rel="Stylesheet" type="text/css" href="http://o.aolcdn.com/dojo/1.5/dojo/resources/dojo.css" />
+        <!--dojo base-->
+        <script type="text/javascript" src="http://o.aolcdn.com/dojo/1.5/dojo/dojo.xd.js"></script>
+
+        <script type="text/javascript">
+            dojo.require("dojo.behavior");
+        </script>
+        
+        <script type="text/javascript">
+            var MyDojoCssSelectorNotes = function () {
+                //query without condition
+                var selectEverything = dojo.query("*");
+                console.log(selectEverything.length);
+
+                //query by element
+                var byElement = dojo.query("h1");
+                console.log(byElement);
+
+                //query by class
+                var byClass = dojo.query(".my-class");
+                console.log(byClass);
+
+                //query by element.class
+                var byElementClass = dojo.query("h1.header-class");
+                console.log(byElementClass);
+
+                //query by id
+                var byId = dojo.query("#unique-id");
+                console.log(byId);
+
+                //query by element id
+                var byElementId = dojo.query("span#my-span-id");
+                console.log(byElementId);
+
+                //query by attribute
+                var byAttribute = dojo.query("[custom-attr]");
+                console.log(byAttribute);
+
+                //query by element attribute
+                var byElementAttribute = dojo.query("div[another-attr]");
+                console.log(byElementAttribute);
+
+                //query by element attribute value
+                var byElementAttrValue = dojo.query("[custom-attr='myCustomValue']");
+                console.log(byElementAttrValue);
+
+                //query by existent child
+                var byExistentChild = dojo.query("h2 > em");
+                console.log(byExistentChild);
+
+                //query with boolean OR
+                var byBooleanOr = dojo.query("h6, h1");
+                console.log(byBooleanOr);
+
+                /*
+                Others include
+                E[A~='V'] element E having multiple attr A one of which equals value "V"
+                E[A^='V'] element E having attr A whose value begins with "V"
+                E[A$='V'] element E having attr A whose value ends with "V"
+                E[A*='V'] element E having attr A whose value contains substring "V"
+                */
+
+                //implement an event handler on the resolved selector ref 
+                var useEventOnSelector = dojo.query("h1").onmouseover(function (evt) { console.log(evt); });
+                /*
+                DOM Node Events
+                - onmouseover
+                - onmouseenter
+                - onmousedown
+                - onmouseup
+                - onmouseleave
+                - onmousemove
+                - onfocus
+                - onclick
+                - onkeydown
+                - onkeyup
+                - onkeypress
+                - onblur
+                */
+
+
+            }  //end MyDojoCssSelectorNotes
+
+            var MyNodeListNotes = function () {
+                //unique 'dot' syntax - NOTE the placement of the semi-colon
+                var myNodelist = dojo.query("p");//resolved using an identifier
+                myNodelist
+                .forEach(function (x) { console.log(x); })
+                .addClass("node-list-class")
+                .forEach("console.log(item)"); //'item' having keyword value as a print-specifer
+
+
+                dojo.query("div")//this returned a NodeList object 
+                .forEach(function (x) { console.log(x); })
+                .addClass("my-class")
+                .forEach(function (x) { console.log(x); });
+
+
+            }    //end MyNodeListNotes
+
+            var MyBehaviorNotes = function () {
+                /*
+                Two step process, (1) of adding behavior and (2) of applying it
+                requires dojo.behavior
+                */
+                //simplist .add - after selector, a function is implimented with 'node' as a parameter
+                dojo.behavior.add({ "h1": function (node) { console.log("simple Function behavior"); } }); //JSON style, selector is a string, behavior is what follows
+                //dojo.behavior.apply();
+
+                //events and 'found' - more robust since 'found' is the same as adding the function above
+                dojo.behavior.add({ "h2 > em": { onmouseover: function (evt) { console.log("onmouseover event happened"); },
+                    onmouseout: function (evt) { console.log("mouseout event happened"); },
+                    found: function (node) { console.log(node.innerHTML); } 
+                }//end behavior
+                }//end selector
+                                 ); //end add
+                dojo.behavior.apply();
+
+                //have selector print a string, this string becomes a 'topic' literal that may be subscribed to
+                dojo.behavior.add({ "#my-span-id": { onmouseover: "behavior_topic"} });//'behavior_topic' literal is used to subscribe to this behavior
+
+            }     //end MyBehaviorNotes
+
+            dojo.addOnLoad(function () {
+                //var mycall = new MyDojoCssSelectorNotes;
+                var myothercall = new MyNodeListNotes;
+                var mylatercall = new MyBehaviorNotes;
+                dojo.subscribe("behavior_topic", function (evt) { console.log("subscribe behavior"); });
+
+
+            });
+        </script>
+
+        <style type="text/css">
+            #unique-id {background : black; color: Red;}
+            .my-class {background : red; color: Black;}
+            h1.header-class {background: Gray; color: Lime;}
+            h2 em {background: Blue; color: Green;}
+            .node-list-class {background : White; color : Maroon;}
+        </style>
+        
+</head>
+<body >
+    <h1 class="header-class">Header Class - gray on lime</h1>
+    <p custom-attr="myCustomValue">Paragraph with custom-attr set value of myCustomeValue attribute.
+        <span id="unique-id">span with unique id</span> the paragraph node continued.
+    </p>
+    <p class="my-class">Paragraph with class as my class.</p>
+    <h2>Header 2 with not attributes<em>but having an emphsis child node contained on which a css selector exist</em></h2>
+    <p>Something<span id="my-span-id">this has an id</span></p>
+    <div another-attr="my-other-value" yet-another-attr="yet-another-value" and-another-attr="and-another-value">value in the div<p>something eles</p></div>
+</body>
+</html>
+
+
+<html>
+<head>
+    <title>Dojo Utilities</title>
+        <!--dojo stylesheet-->
+        <link rel="Stylesheet" type="text/css" href="http://o.aolcdn.com/dojo/1.5/dojo/resources/dojo.css" />
+        <style type="text/css">
+            .myClass {color: Red;}
+        </style>
+          
+        <!--dojo base-->
+        <script type="text/javascript" src="http://o.aolcdn.com/dojo/1.5/dojo/dojo.xd.js" 
+                                        >
+                                        //attribute to be added in actual web server - does not function locally
+            //djConfig="dojoIframeHistoryUrl:'iframe_history.html',isDebug:true" 
+        </script>
+        
+        <script type="text/javascript" >
+            dojo.require("dojo.string");
+            dojo.require("dojo.cookie");
+        </script>
+        
+        <script type="text/javascript">
+            dojo.require("dojo.string");
+            var myDojoNotes = function () {
+                /*BYID EXAMPLE*/
+                console.log("---by ID---");
+                var foo = dojo.byId("foo"); //get the node by the id
+                if (foo) {
+                    console.log("element by id found.");
+                    dojo.byId(foo).innerHTML = "new inner html value."; //reassign innerhtml property 
+                    foo.innerHTML = "reassign by a reference."; //do the same from the reference
+                } else {
+                    console.log("element by id NOT found.");
+                }
+
+                /*TYPE CHECKING*/
+                console.log("---Type Checking---");
+                var numbertype = 10;
+                var stringtype = "my string literal";
+                var arraytype = new Array();
+                if (dojo.isArray(arraytype)) { console.log("dojo isArray working as intended."); } else { console.log("dojo isArray not functioning."); }
+                if (dojo.isString(stringtype)) { console.log("dojo isString working as intended."); } else { console.log("dojo isString not functioning."); }
+                if (dojo.isFunction(function () { return "somthing"; })) { console.log("dojo isFunction working as intended."); } else { console.log("dojo isFunction not functioning."); }
+
+                /*STRING UTILITIES*/
+                console.log("---String Utilities---");
+                console.log(dojo.trim("  my string      ")); //"my string"
+                console.log(dojo.string.pad("", 5)); //"00000"
+                console.log(dojo.string.pad("", 5, " ")); //"     "
+                console.log(dojo.string.pad("0", 5, "1")); //"11110"
+                console.log(dojo.string.pad("0", 5, "1", true)); //"01111"
+                console.log(dojo.string.substitute("${0} and ${1} went up a hill.", ["Jack", "Jill"])); //Jack and Jill went up a hill.
+                console.log(dojo.string.substitute("${person1} and ${person2} went up a hill.", { person1: "Jack", person2: "Jill" })); //Jack and Jill went up a hill.
+                console.log(dojo.string.substitute("${0} and ${1} went up a hill.", ["Jack", "Jill"], function (x) { return "*" + x + "*"; })); //*Jack* and *Jill* went up a hill.
+
+                /*ARRAY UTILITIES*/
+                var myArray = ["A", 2, true, 'ZZ'];
+                var myArray2 = ["A", "A", "A", "B"];
+                //array index 
+                console.log(dojo.indexOf(myArray, "ZZ")); //"3"
+                console.log(dojo.indexOf(myArray, "A")); //"0"
+                console.log(dojo.lastIndexOf(myArray2, "A")); //"2" since the last occurance of "A" is at index pos. 2
+                //array element testing (inline)
+                console.log(dojo.every([2, 4, 6], function (x) { return x % 2 == 0 })); //"true", every array element is an even number
+                console.log(dojo.some([1, 5, 8], function (x) { return x % 2 == 0 })); //"true", at least one array element is an even number
+
+                /*DOJO INLINE LOOPING CONSTRUCTS*/
+                dojo.forEach(["A", "inline", "loop"], function (x) { console.log(x); }); //prints each value in tandem
+                var inputArray = [1, 2, 3];
+                var outputArray = dojo.map(inputArray, function (x) { return x + 1 });
+                var filteredArray = dojo.filter(inputArray, function (x) { return x % 2 == 0 });
+                dojo.forEach(inputArray, function (x) { console.log(x); }); //"1", "2" and "3"
+                dojo.forEach(outputArray, function (x) { console.log(x); }); //"2", "3" and "4" with input array unchanged
+                dojo.forEach(filteredArray, function (x) { console.log(x); }); //"2", where the fx body was a test condition and an array is returned
+
+                /*AGGREGATE PROPERTIES*/
+                // on an instance
+                function AddMe() { this.x = 10; }
+                function AddMeToo() { this.y = 20; }
+                var addMe = new AddMe;
+                var addMeToo = new AddMeToo;
+                function Mixed() { }
+                var mixed = new Mixed;
+                dojo.mixin(mixed, addMe, addMeToo); //note- these are instance thereof, not definitions
+                console.log(mixed.x);
+                console.log(mixed.y);
+
+                //aggregate properties on the definition
+                function ToBe() { this.n = 10; }
+                function OrNotToBe() { this.v = 15; }
+                function Extended() { }
+                var tobe = new ToBe;
+                var ornottobe = new OrNotToBe;
+                dojo.extend(Extended, tobe, ornottobe);
+                var extended = new Extended; //this function def now has ToBe and OrNotToBe's properties 
+                console.log(extended.n);
+                console.log(extended.v);
+
+                //deep copies of object hierarchies
+                function NeedEasyCopy() { this.aValue = 10; this.anotherValue = 11; }
+                var easycopy = new NeedEasyCopy;
+                easycopy.aValue = 12;
+                easycopy.anotherValue = 13;
+                //usefull when object has many property assignments, all of which are needed, but 
+                //don't want to share a reference with the original
+                var mycopy = dojo.clone(easycopy);
+                easycopy.aValue = 14;
+                console.log(mycopy.aValue);
+                console.log(easycopy.aValue); //assignment achieved without another reference
+
+                //partial copies of object properties
+                function AddInLevels(Level1, Level2, Level3) { console.log(Level1 + Level2 + Level3); }
+                f = dojo.partial(AddInLevels, 1, 2);
+                f = dojo.partial(f, 3);
+                f(); //calling function w/o params' (they were previously assigned)
+
+
+                /*DOM*/
+                //navigation
+                var isChildNode = dojo.isDescendant("bottom", "top"); //arg1 is the childnode, arg2 is the possiable parent node
+                console.log(isChildNode);
+
+                dojo.setSelectable("bottom", false); //user's cursor cannot select said node
+                //quick inline styling
+                dojo.style("bottom", { height: "20px", width: "40px", border: "1px green" });
+                //test for node having a given class
+                console.log(dojo.hasClass("bin", "myClass"));
+                //add/remove css class
+                dojo.addClass("vin", "myClass");
+                dojo.removeClass("zin", "myClass");
+                dojo.toggleClass("rin", "myClass");
+                //add/remove attributes
+                dojo.attr("zin", "title", "title attribute added Added");
+                dojo.removeAttr("rin", "title");
+                //test for attribute
+                console.log(dojo.hasAttr("zin", "title"));
+                //add a node, arg3 being "befor", "after", "first" and "last"
+                dojo.place(dojo.create("p", { innerHTML: "a node created and added from script" }), "zin", "after");
+
+                /*CSS MARGIN, BORDER, PADDING, CONTENT CONTROL*/
+                console.log("box mode", dojo.boxModel); //returns which model is active (default is "content-box")
+                console.log("content box", dojo.contentBox("Div1")); //gets the coords for the content relative to margin
+                console.log("margin box", dojo.marginBox("Div1")); //gets the coords of the margins relative to parent node
+
+                /*Dojo sets content using JSON { l : v1, t : v2, w : v3, h : v4}
+                **WITH ContentBox**
+                - v1 and v2 for a coordinate point *within* the parent's content box
+                - v3 is then the zero-based width, in pixels, from that coordinate of which forms the border box
+                - v4 is the zero-based height from that coordinate forming the border box
+                **WITH MarginBox**
+                - v1 and v2 are still a coordinate but is calculated *with reference* to the parent's margin box 
+                - v3 is the zero-based width for the parent's margin box
+                - v4 is likewise referenced from the parent's margin box
+                */
+
+                /*COOKIE MANAGEMENT*/
+                //determine if cookies are supported
+                console.log(dojo.cookie.isSupported());
+                //set a cookie with a value, arg3 being an expiration date in the form of a number, Date or String
+                dojo.cookie("myCookie", "138", 0);
+                //single arg resolves to the getter method 
+                console.log(dojo.cookie("myCookie"));
+
+                /*COLOR MANAGEMENT*/
+                var myBlue = new dojo.Color("#0000ff");
+                var myRed = new dojo.Color([255, 0, 0]);
+                var myViolet = dojo.blendColors(myBlue, myRed, 0.5/*by half*/);
+
+                dojo.style("tin", "background", myViolet.toCss());
+                //require 'dojo.colors' to get a list of CSS3 and SVG 1.0 named colors
+
+            }
+            dojo.addOnLoad(function () {
+            //back, foward button state management
+                initialState = { back: function () { console.log("Back to initial state"); } };
+                state1 = { back: function () { console.log("Back to state 1"); },
+                    foward: function () { console.log("Foward to state 1"); },
+                    changeUrl: true
+                };
+                state2 = { back: function () { console.log("Back to state 2"); },
+                    foward: function () { console.log("Foward to state 2"); },
+                    changeUrl: true
+                };
+                //does not function locally
+                //dojo.back.setInitialState(initialState);
+                //dojo.back.addToHistory(state1);
+                //dojo.back.addToHistory(state2);
+                var myNotes = new myDojoNotes;
+
+
+            });
+        </script>
+        
+</head>
+<body style="margin:3px">
+    <!--byId example -->
+    <div id="foo">Original inner html value.</div>
+    <!--check type examples-->
+    <div id="val">Value</div>
+    <div id="top"><p id="bottom">Cannot select this text</p></div>
+    <br /><br />
+    <div id="tin">
+    <p class="myClass" id="bin">Red Content here from css class</p>
+    <p id="vin">Style set in script</p>
+    <p id="zin" class="myClass">Red content removed in script (hover me!)</p>
+    <p id="rin" title="gonna get removed">Style tested, not present so its added</p>
+    </div>
+    <div id="Div1" style="width:4px; height:4px; border:solid 1px;"></div>
+    <!-- this is specific to //back, foward button state management it is added for IE support
+    <script type="text/javascript" src="http://o.aolcdn.com/dojo/1.5/dojo/back.js"></script>
+    <script type="text/javascript">        dojo.back.init();</script>
+    -->
+
+</body>
+</html>
+
+<html>
+<head>
+    <title>Dojo Animation</title>
+        <!--dojo stylesheet-->
+        <link rel="Stylesheet" type="text/css" href="http://o.aolcdn.com/dojo/1.5/dojo/resources/dojo.css" />
+        <!--dojo base-->
+        <script type="text/javascript" src="http://o.aolcdn.com/dojo/1.5/dojo/dojo.xd.js"></script>
+
+        <script type="text/javascript">
+            //require statments
+        </script>
+        
+        <style type="text/css">
+            /*example styles*/
+        </style>
+        <script type="text/javascript">
+            /*CLASSIC JAVASCRIPT EXTENSION & INHERITANCE*/
+            function MyBase() { }
+            var abase = new MyBase();//at least one instance is required to use 'prototype'
+            MyBase.prototype.extendedMethod = function () { console.log("call to extensionMethod"); }
+
+            function MyInherit() {
+                this.base = MyBase;//instance of 'MyInherit' will also have 'extendedMethod' available
+                this.myInheritProperty = "my Method";
+            } //end MyInherit
+            MyInherit.prototype = new MyBase(); //at least one instance is required to use 'prototype'
+
+            /*DOJO INHERITANCE*/
+            dojo.declare("MyDojoBase", null, 
+                { prop1 : 1, prop2 : "my base prop 2", constructor: (prop1, prop2)
+                    {
+                     this.prop1 = prop1;
+                     this.prop2 = prop2;
+                    }
+                }
+            );
+
+
+
+
+            dojo.addOnLoad(function () {
+                /*Classic Javascript extension & inheritance*/
+                var myExtension = new MyBase();
+                myExtension.extendedMethod();
+
+                var aInherit = new MyInherit();
+                aInherit.extendedMethod();
+                console.log(aInherit.myInheritProperty);
+
+            });
+        </script>
+
+        
+</head>
+<body >
+
+</body>
+</html>
+
+<html>
+<head>
+    <title>Dojo Animation</title>
+        <!--dojo stylesheet-->
+        <link rel="Stylesheet" type="text/css" href="http://o.aolcdn.com/dojo/1.5/dojo/resources/dojo.css" />
+        <!--dojo base-->
+        <script type="text/javascript" src="http://o.aolcdn.com/dojo/1.5/dojo/dojo.xd.js"></script>
+
+        <script type="text/javascript">
+            dojo.require("dojo.data.ItemFileReadStore");
+            dojo.require("dojo.data.ItemFileWriteStore");
+        </script>
+        
+        <style type="text/css">
+
+        </style>
+        <script type="text/javascript">
+            dojo.addOnLoad(function () {
+                /* Four interfaces of dojo.data
+                (1) dojo.data.api.Read - basic retrevial 
+                (2) dojo.data.api.Write - contains save, delete, new items creation
+                (3) dojo.data.api.Identity - for id'ing an item
+                (4) dojo.data.api.Notification - source for event upon 'delete', 'new' and 'set'
+                */
+
+                /*JSON  - child items are implanted with the parent */
+                var myJson = { identifier: "id", //this is not arbitrary - the string must match the property in the item
+                    items: [
+                                  {
+                                      id: 1, name: "myItem1", childern: [
+                                            { id: 2, name: "myItem2" },
+                                            { id: 3, name: "myItem3" }
+                                    ]//end myItem1.children array
+                                  }//end myItem1 
+                               ]//end items array
+                }; //end myJson
+
+                /*JSON WITH REFERENCE - child nodes are declared independent to parent, */
+                var myJsonref = { identifier: "id",
+                    items: [
+                                     {
+                                         id: 10, name: "myref1", children: [
+                                              { _reference: 20 },
+                                              { _reference: 30 }
+                                        ]
+                                     },
+                                     { id: 20, name: "myref2" },
+                                     { id: 30, name: "myref3" },
+                                     { id: 40, name: "myref4", children: [
+                                             { _reference: 20}//'myref2' is a child of both 'myref1' and 'myref4'
+                                       ]
+                                     }
+                                 ]//end items
+                }; //end myJsonref
+
+                /*READ*/
+                coffeeStore = new dojo.data.ItemFileReadStore({ url: "coffee.json" });
+
+                //soecific to concrete ItemFileReadStore
+                coffeeStore.fetchItemByIdentity({
+                    identity: "Spanish", //this is mapping to the value of an item's identity property (identifier: "name" => name : "Spanish")
+                    onItem: function (item, request) {
+                        var spanishCoffeeItem = item;
+
+                        console.log(coffeeStore.getValue(spanishCoffeeItem, "description"));
+
+                        console.log(coffeeStore.getValue(spanishCoffeeItem, "name"));
+
+                        console.log(coffeeStore.getLabel(spanishCoffeeItem));
+                    },
+                    onComplete: function (items, request) { },
+                    onerror: function (item, request) { }
+                });
+
+                //'fetch' is part of the general Read API
+                coffeeStore.fetch({ query: { description: "*brown*" }, queryOptions: { ignoreCase: true }, //using qry style syntax 
+                    onItem: function (item, request) {//this is running once for every matching item
+                        console.log(coffeeStore.getValue(item, "name"));
+                    } //end onItem
+                }); //end fetch
+
+                //more complex file using JSON with Reference
+                coffeeStore2 = new dojo.data.ItemFileReadStore({ url: "coffee2.json" });
+
+                coffeeStore2.fetch({ query: { name: "Dark Roasts" },
+                    onItem: function (item, request) {//have ref to parent item 
+                        dojo.forEach(coffeeStore2.getValues(item, "children"), function (childItem) { //then iterate through each
+                            console.log(coffeeStore2.getValue(childItem, "name"));
+                        }); //end forEach
+                    } //end onItem
+                }); //end fetch
+
+                /*WRITE*/
+                coffeeWrite = new dojo.data.ItemFileWriteStore({ url: "coffee.json" });
+
+                //handle the actual logic of the postback by implementing this function 
+                coffeeWrite._saveCustom = function () { console.log("sending save data to the server.") }
+
+
+                coffeeWrite.fetch({ query: { name: "Full City" }, queryOptions: { ignoreCase: true },
+                    onItem: function (item, request) {
+                        coffeeWrite.setValue(item, "description", "a new description");
+                        console.log(coffeeWrite.isDirty(item));
+                    }, //end onItem
+                    onComplete: function (item, request) {
+                        coffeeWrite.save();//this calls '_saveCustom'
+                        console.log(coffeeWrite.isDirty(item));//upon call to save all 'isDirty' flags are cleared
+                    } //end onComplete
+                });
+
+
+
+            });
+        </script>
+
+        
+</head>
+<body >
+
+</body>
+</html>
+
+<html>
+<head>
+    <title>Dojo Animation</title>
+        <!--dojo stylesheet-->
+        <link rel="Stylesheet" type="text/css" href="http://o.aolcdn.com/dojo/1.5/dojo/resources/dojo.css" />
+        <!--dojo base-->
+        <script type="text/javascript" src="http://o.aolcdn.com/dojo/1.5/dojo/dojo.xd.js"></script>
+
+        <script type="text/javascript">
+            dojo.require("dojo.fx");
+        </script>
+        
+        <style type="text/css">
+            .box 
+            {
+            	width : 200px;
+            	height: 200px;
+            	margin: 5px;
+            	text-align: center;
+            }
+            .blueBox  
+            {
+            	background : blue;
+            	float : left;
+            }
+            .redBox
+            {
+            	background: red;
+            	float: left;
+            }
+            .greenBox 
+            {
+            	background : green;
+            	clear : left;
+            }
+        </style>
+        <script type="text/javascript">
+            dojo.addOnLoad(function () {
+                //Fade
+                var myBox = dojo.byId("myBox");
+                dojo.connect(myBox, "onclick", function (evt) {
+                    var anim = dojo.fadeOut({/*this JSON object is 'animateProperty'*/
+                        node: myBox,
+                        duration: 3000,
+                        easing: function (x) { return Math.pow(Math.sin(4 * x), 2); }, //set the fade graph for the L&F
+                        properties: {//each css property is given a start, end and unit value - the unit value default is 'px'
+                            width: { start: "200", end: "400" },
+                            height: { start: "200", end: "400" }
+                        }/*additional parameters are 
+                             'rate' value in milliseconds to wait before advancing the frame
+                             'repeat' how many times to repeat, default is 0
+                             */
+                    });
+
+                    anim.play();
+                });
+
+                //Slide
+                var slideBox = dojo.byId("box2");
+                dojo.connect(slideBox, "onclick", function (evt) {
+                    var slideanim = dojo.fx.slideTo({
+                        node: slideBox,
+                        top: "400",
+                        left: "400"
+                    }); //end slideanim
+
+                    slideanim.play();
+                }); //end dojo.connect
+
+                var wipeBox = dojo.byId("box3");
+                dojo.connect(wipeBox, "onclick", function (evt) {
+                    var wipeanim = dojo.fx.wipeOut({ node: wipeBox });
+                    wipeanim.play();
+                }); //end dojo.connect
+
+                var chainanim1 = dojo.fx.wipeOut({ node: myBox });
+                var chainanim2 = dojo.fx.wipeOut({ node: slideBox });
+                var chainanim3 = dojo.fx.wipeOut({ node: wipeBox });
+
+                var thechain = dojo.fx.chain([chainanim1, chainanim2, chainanim3]);
+                //use dojo.fx.combine to have all anim's run parallel
+                dojo.connect(dojo.byId("mychain"), "onclick", function (evt) { thechain.play(); }); //end chain 
+
+
+            });
+        </script>
+
+        
+</head>
+<body >
+    <div id="mychain" style="clear:both">Click to watch all anim</div>
+    <div id="myBox" class="box blueBox">Fade on this</div>
+    <div id="box2" class="box redBox">Slide left</div>
+    <div id="box3" class="box greenBox">Wipe Me</div>
+</body>
+</html>
+<html>
+<head>
+    <title>Dojo Ajax</title>
+        <!--dojo stylesheet-->
+        <link rel="Stylesheet" type="text/css" href="http://o.aolcdn.com/dojo/1.5/dojo/resources/dojo.css" />
+        <!--dojo base-->
+        <script type="text/javascript" src="http://o.aolcdn.com/dojo/1.5/dojo/dojo.xd.js"></script>
+
+        <script type="text/javascript">
+            dojo.require("dojo.io.script");
+            dojo.require("dojo.io.iframe");
+            dojo.require("dojo.io.JsonService");
+        </script>
+        
+        <script type="text/javascript">
+            var myAjaxNotes = function () {
+                /*
+                JSON - JavaScript Object Notation
+                - defacto conversion of JavaScript objects to a string literal 
+                - used in AJAX
+                - an object as {string:value}
+                - an array as [value, value,...]
+                - value being one of {[string] [number] [object] [array] true false null}
+                - a string is in double-quotes and has all special char's escaped \", \\, \/, \b, \f, \n, \r, \t, \u010A
+                - a number like 0, 5, -0.1, 9.1, -9.12323e+10
+                */
+
+                /*
+                Simple Method Description
+                - JSON type description of an object 
+                - the object will be instantiated on the server 
+                - the description uses keyword string-literals as types and signatures
+                - keywords include 'serviceType', 'serviceURL', 'methods', more...
+                 - 'methods' is a JSON object type with values being arrays
+                 eg - 'methods', 'name' and 'parameters' being keywords and 'sum', 'dif' and 'myList' being the values mapping to the server obj
+                    "methods" : [
+                                 {"name" : "sum", "parameters" : [{"name" : "myList"}]},
+                                 {"name" : "dif", "parameters" : [{"name" : "myList"}]}
+                                ]
+                */
+
+                /*
+                XmlHttpRequest is the standard AJAX object
+                - http://api.dojotoolkit.org/jsdoc/HEAD/dojo.xhr
+                - dojo wraps this signaled by 'xhr' notation
+                - its used with standard html 'Representational State Transfer' (REST)
+                - GET, PUT, POST, and DELETE
+                - dojo.xhrGet, dojo.xhrPut, dojo.xhrPost, dojo.xhrDelete, along with, dojo.rawXhrPost and dojo.rawXhrPut
+                - each take inline object (notated as 'arg') with at least the 'url', 'load' and 'error'
+                - in addition are 'content', 'timeout', 'form', 'preventCache', 'handleAs', 'handle', 'sysc', 'headers', 'postData' and 'putData'
+                */
+                var myArgs = {//this is using JSON notation and is a ref to a structure 
+                    url: "myRelativePage.html",
+                    load: function (response, ioArgs) {
+                        console.log("response ", response);
+                        /*
+                        ioArgs contains properties: 
+                        .args{object}, 
+                        .xhr{XMLHttpRequest} (this is base AJAX http://www.w3schools.com/dom/dom_http.asp), 
+                        .url{string},
+                        .query{string},
+                        .handleAs{string}
+                        */
+                        console.log("ioArgs.args ", ioArgs.args);
+                        return response;
+                    }, //end load
+
+                    error: function (response, ioArgs) {
+                        console.log("response ", response);
+                        console.log("ioArgs ", ioArgs);
+                        return response;
+                    },
+
+                    handleAs: "json", //constant type parameter, other possiabilities 'text', 'javascript' and 'xml'
+                    timeout: 5000, //milliseconds
+                    content: { myNode: 'myValue'} //hash table, part of url query string for a GET and hidden form fields for a POST
+                } //end myArgs
+
+                dojo.xhrGet(myArgs); //the key-value pairs used in myArgs structure are the typical properties passed to an xhr function
+                dojo.xhr("GET", myArgs); //same as above just more general purpose 
+
+                /*
+                dojo.xhr functions return an object called 'Deferred'
+                - contains handlers that are called after xhr Arg's 'load' and 'error' functions
+                - callback are called in the order they were added
+                - there is not a limit (as it appears) to the number of callbacks
+                - http://dojotoolkit.org/api/dojo/Deferred.html
+                */
+                var d = dojo.xhrGet(myArgs);
+                //the value of 'result' that is passed in is the return value of 'load' or 'error' function in myArgs object
+                d.addCallback(function (result) { console.log(result); });
+                d.addErrback(function (result) { console.log(result); });
+
+                //deferred errback and callback chains may be injected into the JSON args structure as well
+                var myDeferred = new dojo.Deferred;
+
+                //gotta have the 'return' statements to get this to work in a chain
+                myDeferred.addCallback(function (result) { console.log("first in callback chain", result); return result; });
+                myDeferred.addCallback(function (result) { console.log("second in callback chain", result); return result; });
+                dojo.xhrGet({
+                    url: "http://localhost:8080",
+                    timeout: 5000,
+                    load: function (response, ioArgs) {
+                        console.log("JSON Args structure load");
+                        myDeferred.callback(response); //this will launch both callback function's 
+                    },
+                    error: function (response, ioArgs) {
+                        console.log("JSON Args structure error");
+                    }
+                });
+
+            }
+            var myFormUtilNotes = function () {
+                //base quick api to convert form data object
+                var myFormToObject = dojo.formToObject(dojo.byId("myForm"));
+                console.log(myFormToObject); // object having 'first', 'last' and 'mySelect' as properties with values as appear in form
+                //to qry-as-http-post-string
+                var myFormToQry = dojo.formToQuery(dojo.byId("myForm"));
+                console.log(myFormToQry); //first=myFirst&last=myLast&mySelect=
+                //to JSON
+                var myFormToJson = dojo.formToJson(dojo.byId("myForm"));
+                console.log(myFormToJson); //{"first":"myFirst","last":"myLast","mySelect":""}
+            }
+            var MyJsonpNotes = function () {
+                //renders a script dynamically  
+                dojo.io.script.get({
+                    callbackParamName: "jsoncallback",
+                    url: "http://www.flickr.com/services/feeds/photos_public.gne",
+                    load: function (response, ioArgs) {
+                        console.log(response);
+                        return response;
+                    },
+                    error: function (response, ioArgs) {
+                        console.log("Error");
+                        console.log(response);
+                        return response;
+                    }
+                });
+            }
+
+            //xhr objects don't work for form-submission and file upload/download
+            //use dojo.io.iframe instead
+            var MyIframeNotes = function () {
+                //signature like xhr call
+                dojo.io.iframe.send({
+                    form : "myForm", //posting the form without a page refresh
+                    url: "http://localhost:80/download",
+                    handleAs: "html", //taking keywords, 'html', 'text', 'javascript' and 'json'
+                    load: function (response, ioArgs) {
+                        console.log(response);
+                        return response;
+                    },
+                    error: function (response, ioArgs) {
+                        console.log(response);
+                        return response;
+                    }
+                }); //end dojo.io.iframe.send
+            }
+
+            var MyRpcNotes = function () {
+                //another way to centeralize callback code
+                //first set a SMD for a server-side object
+                var mySmd = {
+                    "serviceType": "JSON-RPC",
+                    "serviceURL": "/",
+                    "methods": [
+                        {
+                            "name": "myFunction",
+                            "parameters": [{ "name": "myArg"}]
+                        },
+                        {
+                            "name": "myOtherFunction",
+                            "parameters": [{ "name": "myArg"}]
+                        }
+                    ]
+                }; //end mySmd
+                //second, get a ref to the obj returned by dojo.rpc.JsonService
+                var myRpc = new dojo.rpc.JsonService(mySmd);
+                //now the return from JsonService possess the functions defined in the SMD
+                var myDeferred = myRpc.myFunction("a", "b");
+                //last use this object as the source for registering callbacks
+                myDeferred.addCallback(function (response) { console.log(response); });
+
+            }//end MyRpcNotes
+
+            dojo.addOnLoad(function () {
+                var formutil = new myFormUtilNotes;
+                var myjosop = new MyJsonpNotes;
+            });
+        </script>
+        
+</head>
+<body >
+    <form id="myForm">
+        <input type="text" name="first" value="myFirst" />
+        <input type="text" name="last" value="myLast" />
+        <select name="mySelect" size="5">
+            <option value="red">red</option>
+            <option value="green">green</option>
+            <option value="blue">blue</option>
+        </select>
+    </form>
+</body>
+</html>
+
+<html>
+<head>
+    <title>Dijit Intro</title>
+        <!--dojo stylesheet-->
+        <link rel="Stylesheet" type="text/css" href="http://o.aolcdn.com/dojo/1.5/dojo/resources/dojo.css" />
+        <link rel="Stylesheet" type="text/css" href="http://o.aolcdn.com/dojo/1.5/dijit/themes/tundra/tundra.css" />
+        <!--dojo base-->
+        <script type="text/javascript" djConfig="parseOnLoad:true" src="http://o.aolcdn.com/dojo/1.5/dojo/dojo.xd.js" ></script>
+
+        <script type="text/javascript">
+            dojo.require("dojo.parser");
+            dojo.require("dijit.form.Button");
+            dojo.require("dijit.form.NumberSpinner");
+            dojo.require("dijit.form.Slider");
+        </script>
+        
+        <style type="text/css">
+            /*example styles*/
+        </style>
+        <script type="text/javascript">
+            /*
+            Dijits all inherit from dijit._Widget
+            - '_Widget' implements standard lifecycle time based events (similar to ASP.NET)
+            - before the dijit appears ('constructor',  'postMixInProperties')
+            - immediately after dijit becomes visible ('postCreate', 'startup')
+            - right before dijit is gc'ed ('destroy')
+
+            Dijits are place on file-structure as
+            - structure seperates the JavaScript, HTML and CSS from each other on seperate files/folders
+            module/
+            |_ mydijit.js
+            |_ tempates/
+            |_ mydijit.html
+            |_ themes/
+            |_ global_themes/
+            |_ mydijit_theme.css
+            
+            */
+
+            dojo.addOnLoad(function () {
+                //having included 'dojo.parser' the elements with 'dojoType' attr. are in scope
+                console.log("something");
+                var myNode = dojo.byId("myDijitButton");
+                var mydijit = dijit.byId("myDijitButton");
+                console.log(myNode); //returns the node markup
+                console.log(mydijit); //returns the whole of the object (node, js, css)
+
+                //create dijit programatically
+                var td = new dijit.form.HorizontalSlider(/*JSON obj containing constructor param's*/{minimum: 0, maximum: 100, value: 50 }, 
+                                                         /*'id' reference of which dijit will -=replace=-*/"programatic");
+
+
+            });
+      </script>
+
+        
+</head>
+<body class="tundra"><!--this is needed to give the button and widgets the right L&F-->
+    <form>
+       <button id="myDijitButton" dojoType="dijit.form.Button">Click Me</button>
+
+
+       <!--
+        'dojoType' is the fully qualified class name; object properties are set as attributes
+        'jsId' sets a javascript global variable name to be referenced elsewhere
+        'dojo/method' is special syntax within inner html, calls to 'this' reference the dijit therein
+        'div' node-type is required since an 'input' node-type does not allow inner html
+        -->
+       <div jsId="mySpinner" dojoType="dijit.form.NumberSpinner" constraints="{min: 0, max: 10000}" value="1000" >
+            <script type="dojo/method">
+                dojo.mixin(this, 
+                           {reset : function() {
+                                 this.setValue(0);
+                           }
+                         });
+                      
+           </script>
+       </div>
+
+       <!--this is a place holder in which the 'id' is required, it will be replace by a dijit programmatically-->
+       <input id="programatic" />
+
+    </form>
+    <button id="mySpinnerReset" dojoType="dijit.form.Button" onClick="mySpinner.reset()">Reset Spinner</button>
+
+</body>
+</html>
+
+<html>
+    <head>
+        <title>Fun with Button Clicking!</title>
+
+
+        <link rel="stylesheet" type="text/css"
+          href="http://o.aolcdn.com/dojo/1.5/dojo/resources/dojo.css" />
+        <link rel="stylesheet" type="text/css"
+          href="http://o.aolcdn.com/dojo/1.5/dijit/themes/tundra/tundra.css" />
+
+        <script
+            djConfig="parseOnLoad:true"
+            type="text/javascript"
+            src="http://o.aolcdn.com/dojo/1.5/dojo/dojo.xd.js"
+        ></script>
+
+        <script type="text/javascript">
+            dojo.require("dojo.parser");
+            dojo.require("dijit.form.Button");
+            dojo.addOnLoad(function () {
+                dojo.connect(dojo.byId("foo"), "onclick", function (evt) {
+                    console.log("connect fired for DOM Node onclick");
+                });
+
+                dojo.connect(dijit.byId("foo"), "onclick", function (evt) {
+                    console.log("connect fired for dijit onclick");    //never!
+                });
+
+                dojo.connect(dijit.byId("foo"), "onClick", function (evt) {
+                    console.log("connect fired for dijit onClick");
+                });
+            });
+        </script>
+    </head>
+    <body class="tundra">
+        <button id="foo" dojoType="dijit.form.Button" onclick="foo">click me
+            <script type="dojo/method" event="onClick" args="evt">
+                console.log("Button fired onClick");
+            </script>
+        </button>
+    </body>
+</html>
+
+<html>
+<head>
+    <title>Dijit Forms</title>
+        <!--dojo stylesheet-->
+        <link rel="Stylesheet" type="text/css" href="http://o.aolcdn.com/dojo/1.5/dojo/resources/dojo.css" />
+        <link rel="Stylesheet" type="text/css" href="http://o.aolcdn.com/dojo/1.5/dijit/themes/tundra/tundra.css" />
+        <!--dojo base-->
+        <script type="text/javascript" djConfig="parseOnLoad:true" src="http://o.aolcdn.com/dojo/1.5/dojo/dojo.xd.js" ></script>
+
+        <script type="text/javascript">
+            dojo.require("dojo.parser");
+            dojo.require("dijit.layout.ContentPane");
+            dojo.require("dijit.layout.BorderContainer");
+            dojo.require("dijit.layout.StackContainer");
+            dojo.require("dijit.layout.TabContainer");
+            dojo.require("dijit.layout.AccordionContainer");
+            dojo.require("dijit.layout.AccordionPane");
+            dojo.require("dijit.form.Button");
+        </script>
+        
+        <style type="text/css">
+           .buttonImg 
+           {
+           	background-image:url('buttonImg.gif');
+           	background-repeat:no-repeat;
+           	height:20px;
+           	width:20px;
+           }
+        </style>
+        <script type="text/javascript">
+
+            dojo.addOnLoad(function () {
+
+            });
+      </script>
+
+        
+</head>
+<body class="tundra">
+<!--Border Container-->
+<div dojoType="dijit.layout.BorderContainer" design="headline" style="height:500px; width:500px; border: solid 3px;">
+    <div dojoType="dijit.layout.ContentPane" region="top" style="background-color:Blue;height:100px; splitter="true" minSize="10" maxSize="100">
+        Nothin' happenin'
+    </div>
+    <div dojoType="dijit.layout.ContentPane" region="center">in the middle</div>
+    <div dojoType="dijit.layout.ContentPane" region="bottom" style="background-color:Red;height:100px;" splitter="true">Bottom</div>
+    <div dojoType="dijit.layout.ContentPane" region="left" style="background-color:Yellow;width:100px;" splitter="true">Left</div>
+    <div dojoType="dijit.layout.ContentPane" region="right" style="background-color:Green;width:100px;" splitter="true">Right</div>
+</div>
+<br />
+<br />
+<!--
+    Stack Container slide-show like in that each content pane is toggled through
+    Tab Container inherits from STack Container, difference being is that it has header tabs
+ -->
+<div id="stack" dojoType="dijit.layout.TabContainer" style="width:400px; height:400px; margin:5px; border:solid 1px;">
+    <div dojoType="dijit.layout.ContentPane" title="One Fish"><img src="oneFish.png" height="200px" width="200px" /></div>
+    <div dojoType="dijit.layout.ContentPane" title="Two Fish"><img src="twoFish.png" height="200px" width="200px" /></div>
+    <div dojoType="dijit.layout.ContentPane" title="Red Fish"><img src="redFish.png" height="200px" width="200px" /></div>
+    <div dojoType="dijit.layout.ContentPane" title="Blue Fish"><img src="blueFish.png" height="200px" width="200px" /></div>
+</div>
+<button dojoType="dijit.form.Button" iconClass="buttonImg">&lt;
+    <script type="dojo/method" event="onClick" args="evt">
+        dijit.byId("stack").back();
+    </script>
+</button>
+<button dojoType="dijit.form.Button" iconClass="buttonImg">&gt;
+    <script type="dojo/method" event="onClick" args="evt">
+        dijit.byId("stack").forward();
+    </script>
+</button>
+<br />
+<br />
+<!--
+    Accordion Container inherits from Stack Container as well
+     - requires the child content pane be of class 'AccordionPane' 
+     - comes with an anim effect on tab change
+-->
+<div dojoType="dijit.layout.AccordionContainer" style="width:400px; height:400px; margin:5px;" duration="250">
+    <div dojoType="dijit.layout.AccordionPane" title="One Fish"><img src="oneFish.png" height="200px" width="200px" /></div>
+    <div dojoType="dijit.layout.AccordionPane" title="Two Fish"><img src="twoFish.png" height="200px" width="200px" /></div>
+    <div dojoType="dijit.layout.AccordionPane" title="Red Fish"><img src="redFish.png" height="200px" width="200px" /></div>
+    <div dojoType="dijit.layout.AccordionPane" title="Blue Fish"><img src="blueFish.png" height="200px" width="200px" /></div>
+</div>
+</body>
+</html>
+
+<html>
+<head>
+    <title>Dijit Forms</title>
+        <!--dojo stylesheet-->
+        <link rel="Stylesheet" type="text/css" href="http://o.aolcdn.com/dojo/1.5/dojo/resources/dojo.css" />
+        <link rel="Stylesheet" type="text/css" href="http://o.aolcdn.com/dojo/1.5/dijit/themes/tundra/tundra.css" />
+        <!--dojo base-->
+        <script type="text/javascript" djConfig="parseOnLoad:true" src="http://o.aolcdn.com/dojo/1.5/dojo/dojo.xd.js" ></script>
+
+        <script type="text/javascript">
+            dojo.require("dojo.parser");
+            dojo.require("dijit.form.TextBox");
+            dojo.require("dijit.form.ValidationTextBox");
+            dojo.require("dijit.form.DateTextBox");
+            dojo.require("dijit.form.TimeTextBox");
+            dojo.require("dijit.form.NumberTextBox");
+            dojo.require("dijit.form.NumberSpinner");
+            dojo.require("dijit.form.CurrencyTextBox");
+            dojo.require("dojo.data.ItemFileReadStore");//the combo box example is populated off a item store on disk
+            dojo.require("dijit.form.ComboBox");
+            dojo.require("dijit.form.MultiSelect");
+            dojo.require("dijit.form.Textarea");
+            dojo.require("dijit.form.Button");
+            dojo.require("dijit.form.ToggleButton");
+            dojo.require("dijit.form.CheckBox");
+            dojo.require("dijit.Menu"); //menuItem and Menu are part of DropDownButton and ComboButton examples
+            dojo.require("dijit.MenuItem"); 
+            dojo.require("dijit.form.DropDownButton");
+            dojo.require("dijit.form.ComboButton");
+            dojo.require("dijit.form.Slider");
+        </script>
+        
+        <style type="text/css">
+           .buttonImg 
+           {
+           	background-image:url('buttonImg.gif');
+           	background-repeat:no-repeat;
+           	height:20px;
+           	width:20px;
+           }
+        </style>
+        <script type="text/javascript">
+            /*
+            Form dijits all inherit from dijit._FormWidget
+
+            'dijit._Widget' common API
+             .registry() and is a complete list of dijits on the page
+             .byNode(node) gets the dijit object mapped to the 'node'
+             .getEnclosingWidget(DomNode)  and gets the DOM tree containing the dijit
+             .getViewport() which gets the dim's of the viewable browser window
+             .byId(id) like dojo.byId but get the digit object, not just a node
+
+             dijit._FormWidget common API & Properties (attributes)
+             .focus() 
+             .isFocusable()
+             .onChange(val) which is the major API point to override in handling the form dijit
+             'value' same as standard html value attribute
+             'name' likewise, same as html, used on server side to get form values
+             'type' same, html for button type="submit"
+             'intermediateChanges' new, boolean, default false and is used to specify having 'onChange' event called for each value change.
+
+            */
+
+            function myFunction() { }//for examples sake
+
+            dojo.addOnLoad(function () {
+
+            });
+      </script>
+
+        
+</head>
+<body class="tundra"><!--this is needed to give the button and widgets the right L&F-->
+    <form id="formdijit" method="post" onsubmit="javascript:return myFunction()" action="about:tabs">
+        My First Textbox 
+        <!--
+        dijit.from.TextBox
+         - use 'format="myFunction" to override the formatting (note, no par'enths)
+         - 'propercase', 'trim' are custom attributes of the form dijit
+        -->
+        <input dojoType="dijit.form.TextBox" propercase="true" trim="true" name="myFirstTextbox"/>
+        <br />
+        <!--
+        dijit.form.ValidationTextBox  
+         - 'required'
+         - 'promptMessage'
+         - 'invalidMessage'
+         - 'constraints', 'regExp' and 'regExpGen' are for custom validation using regex, 
+               constraints is the collection, regExp is singular, and regExpGen is for runtime gen'ed validation
+         - 'tooltipPosition' 
+         - .isValid()  calls the validator(..)
+         - .validator(value, constraints)
+         - .displayMessage(msg) used for custom validation errors, pretty cool...
+        in addition is 'dijit.form.MappedTextBox' for serializing data using a custom .toString() methos
+        and 'dijit.form.RangeBoundTextBox' for numericals only with a 'min' and 'max' attributes
+        -->
+        Email Address
+        <input dojoType="dijit.form.ValidationTextBox" promptMessage="Will be added to spam list" regExp="[a-z0-9._%+-]+@[a-z0-9-]+\.[a-z]{2,4}" required="true" name="email"/>
+        <br />
+        <input dojoType="dijit.form.DateTextBox" constraints="{datePattern: 'yyyy-MM-dd'}"/>
+        <br />
+        <input dojoType="dijit.form.TimeTextBox" constraints="{timePattern: 'hh:mm:ss'}" />
+        <br />
+        <input dojoType="dijit.form.NumberTextBox" constraints="{pattern: '#.##%'}" promptMessage="enter value as #.##%" min="0" max="10" />
+        <br />
+        <input dojoType="dijit.form.NumberSpinner" smallDelta="2" largeDelta="4" constraints="{min:100, max:120}" value="100" />
+        <br />
+        <input dojoType="dijit.form.CurrencyTextBox" currency="USD" /> <!--'currency' value as three char's according to ISO 4217-->
+        <br />
+        <!--example of combo box linked to an existing item store
+            see 'dijit_Intro.htm' for use of special 'dojo/method'
+            see 'dojo_Data.htm' for use of 'ItemFileReadStore'
+        -->
+        <div dojoType="dojo.data.ItemFileReadStore" jsId="coffee" url="./coffee.json"></div>
+        <select dojoType="dijit.form.ComboBox" store="coffee" searchAttr="name">
+            <script type="dojo/method" event="onChange" args="newValue">
+                coffee.fetchItemByIdentity(
+                    {identity: newValue}
+                );
+                 
+            </script>
+        </select>
+        <br />
+        <select multiple="true" name="myMulti" dojoType="dijit.form.MultiSelect" style="height: 100px; width:100px; border:3px solid black;">
+            <option value="TN">Tennessee</option>
+            <option value="VA">Virginia</option>
+            <option value="MO">Missouri</option>
+        </select>
+        <br />
+        <textarea dojoType="dijit.form.Textarea" style="width:300px;">
+            Default Text here.
+        </textarea>
+        <br />
+        <!--'iconClass' value is a CSS class, further the image is not adjusted to fit so its size needs to match that specified in the class--> 
+        <button id="gonowhere" dojoType="dijit.form.Button" iconClass="buttonImg" type="submit">Go no where</button>
+        <br />
+        <!--operates like a radio button or a check box having on two distinct states-->
+        <button dojoType="dijit.form.ToggleButton"> Turn this on an off
+            <script type="dojo/method" event="onChange" args="newValue">
+                console.log(newValue);
+            </script>
+        </button>
+        <br />
+        <div name="mydijitCheckbox" dojoType="dijit.form.CheckBox">
+            <script type="dojo/method" event="onClick" args="evt">
+                if (this.checked)
+                    dijit.byId("gonowhere").setAttribute('disabled', false);
+                else
+                    dijit.byId("gonowhere").setAttribute('disabled', true);
+            </script>
+        </div>I understand this will be used against me.
+        <br />
+        <!--'dijit.form.CheckBox' has a 'checked' dijit property and the standard 'value' html4.01 property
+              'value' as from HTML 4.01 can be any string value and is passed back as a 'name=value' as in 'checkboxname=iwantthis'
+              'checked' from dijit is a true boolean and may only be 'true' or 'false'
+              calls to '.setAttribute('value', 'notforme');' will circumvent the coupling of 'value' and 'checked' and the 'onChange' event will not fire
+         -->
+        <input id="inputTypeCheckbox" name="checkboxname" dojoType="dijit.form.CheckBox" type="checkbox" value="iwantthis"/> I wanna rock
+        <br />
+        <!--'dijit.form.RadioButton' does NOT require another 'dojo.require' statement since its actually 'dijit.form.CheckBox' that makes it available-->
+        <input name="radiolist" value="1" dojoType="dijit.form.RadioButton" />only once
+        <input name="radiolist" value="2" dojoType="dijit.form.RadioButton" /> twice
+        <input name="radiolist" value="3" dojoType="dijit.form.RadioButton" /> three times
+        <br />
+        <!--'dijit.form.DropDownButton' uses 'dijit.Menu' and 'dijit.MenuItem'
+             - note that there is a 'span' directly afterwords, this ensures that something is present before the click event
+        -->
+        <button dojoType="dijit.form.DropDownButton">
+            <span>Save...</span>
+            <div dojoType="dijit.Menu">
+                <div dojoType="dijit.MenuItem" label="Save"></div>
+                <div dojoType="dijit.MenuItem" label="Save As.."></div>
+                <div dojoType="dijit.MenuItem" label="FTP"></div>
+            </div>
+        </button>
+        <!--'dijit.form.ComboButton' inherits from 'DropDownButton' 
+              - it has a subtle difference in that it has an option to just click the button or click the drop-down for more options
+              - 'DropDownButton' always produces the latter.
+         -->
+        <button dojoType="dijit.form.ComboButton">
+            <span>Do Exactly This</span>
+            <div dojoType="dijit.Menu">
+                <div dojoType="dijit.MenuItem" label="Do This"></div>
+                <div dojoType="dijit.MenuItem" label="Do That"></div>
+            </div>
+        </button>
+        <br />
+        <!--'dijit.form.Slider' provides both 'HorizontalSlider' and 'VerticalSlider'
+              - the 'name' attribute is important here since it will be passed back to the server on a form submit, coupled with the value
+        -->
+        <div dojoType="dijit.form.HorizontalSlider" name="hSlider" value="100" maximum="200" minimum="30" style="margin:5px; width:300px; height:20px;"></div>
+        <br />
+        <!--a slider with decorations and ticks
+             - the 'topDecoration' and 'bottomDecoration' is a keyword matching back to an enum in the dijit lib
+             - for a vertical slider the keywords are 'leftDecoration' and 'rightDecoration'
+             - 'dijit.form.HorizontalRuleLabels' are the printed values above each of the tick marks
+             - 'dijit.form.HorizontalRule' are the tick marks themselves
+             - important properties
+              - 'showButtons' is a boolean to include the arrows on each side of the slider
+              - 'minimum' and 'maximum' default to 0 and 100 respectivaly
+              - 'discreteValues' set greater than one will move the slider up in said stages
+              - 'pageIncrement' takes an int and is used to handle the 'Page Up' keystroke
+              - for the rule there is 
+               - 'ruleStyle' a CSS class for style
+               - 'count' is the number of hash marks (defaults to 3)
+               - the enum of 'left..' 'right..' etc
+              - for the labels there is 
+               - 'labelStyle' the CSS class
+               - 'labels' is an array of text labels and in this example it is the html order-list node
+
+        -->
+        <div dojoType="dijit.form.HorizontalSlider" name="fancyhSlider" value="100" maximum="200" minimum="30" showButtons="false" style="margin:5px; width:300px; height:20px;">
+            <ol dojoType="dijit.form.HorizontalRuleLabels" container="topDecoration" style="height:10px; font-size:75%; color:Gray;" count="6"></ol>
+            <div dojoType="dijit.form.HorizontalRule" container="topDecoration" count="6" style="height:5px;"></div>
+            <div dojoType="dijit.form.HorizontalRule" container="bottomDecoration" count="5" style="height:5px;"></div>
+            <ol dojoType="dijit.form.HorizontalRuleLabels" container="bottomDecoration" style="height:10px; font-size:75%; color:Gray;">
+                <li>green<br />tea</li>
+                <li>coffee</li>
+                <li>expresso</li>
+            </ol>
+        </div>
+        <br />
+    </form>
+</body>
+</html>
+
+<html>
+<head>
+    <title>Dijit Application Widgets</title>
+        <!--dojo stylesheet-->
+        <link rel="Stylesheet" type="text/css" href="http://o.aolcdn.com/dojo/1.5/dojo/resources/dojo.css" />
+        <link rel="Stylesheet" type="text/css" href="http://o.aolcdn.com/dojo/1.5/dijit/themes/tundra/tundra.css" />
+        <!--dojo base-->
+        <script type="text/javascript" djConfig="parseOnLoad:true" src="http://o.aolcdn.com/dojo/1.5/dojo/dojo.xd.js"></script>
+
+        <script type="text/javascript">
+            //require statments
+            dojo.require("dojo.parser");
+
+            dojo.require("dijit.Tooltip");
+            dojo.require("dijit.Dialog");
+            dojo.require("dijit.ProgressBar");
+            dojo.require("dijit.ColorPalette");
+            dojo.require("dijit.Toolbar");
+            dojo.require("dijit.ToolbarSeparator");
+            dojo.require("dijit.Menu");
+            dojo.require("dijit.TitlePane");
+            dojo.require("dijit.InlineEditBox");
+            dojo.require("dijit.Tree");
+            dojo.require("dijit.Editor");
+
+            //used for the examples
+            dojo.require("dijit.form.Button");
+            dojo.require("dijit.form.TextBox");
+            dojo.require("dijit.form.DropDownButton");
+            dojo.require("dojo.data.ItemFileReadStore");
+        </script>
+        
+        <style type="text/css">
+        .oneFish 
+        {
+        	background-image: url("greenArrow.jpg");
+        	background-repeat: no-repeat;
+        	width: 120px;
+        	height: 120px;
+        }
+        </style>
+        <script type="text/javascript">
+            dojo.addOnLoad(function () {
+                //dialog is like javascript's 'alert' but is contained and belongs to the given page
+                //upon dialog 'show()' the area behind the box is 'cut-off' from user input
+                var md = new dijit.Dialog();
+                //dialog comes with its own 'X' title-bar button for closing, this is hiding that button
+                dojo.style(md.closeButtonNode, "visibility", "hidden");
+
+                //create a button to place w/i the dialog object
+                var b = new dijit.form.Button({ label: "press the button" });
+                //connect the button's click event with removal of the dialog
+                var handle = dojo.connect(b, "onClick", function () {
+                    md.hide();
+                    dojo.disconnect(handle);
+                });
+                //have to add the button 
+                md.setContent(b.domNode);
+                //now show the dialog
+                md.show();
+
+                //Toolbar - connecting buttons to an event
+
+                //the events to be connected
+                var myBold = function () { console.log("bold"); }
+                var myItalic = function () { console.log("italic"); }
+                var myUnderline = function () { console.log("underline"); }
+                var mySuperscript = function () { console.log("superscript"); }
+                var mySubscript = function () { console.log("subscript"); }
+
+                //call the query to get the array/collection of nodes having this CSS class
+                dojo.query(".dijitEditorIcon").forEach(function (x) {
+                    if (dojo.hasClass(x, "dijitEditorIconBold")) dojo.connect(x.parentNode, "onclick", myBold);
+                    else if (dojo.hasClass(x, "dijitEditorIconItalic")) dojo.connect(x.parentNode, "onclick", myItalic);
+                    else if (dojo.hasClass(x, "dijitEditorIconUnderline")) dojo.connect(x.parentNode, "onclick", myUnderline);
+                    else if (dojo.hasClass(x, "dijitEditorIconSuperscript")) dojo.connect(x.parentNode, "onclick", mySuperscript);
+                    else if (dojo.hasClass(x, "dijitEditorIconSubscript")) dojo.connect(x.parentNode, "onclick", mySubscript);
+                });
+
+
+            });
+        </script>
+
+        
+</head>
+<body class="tundra">
+    <!--
+    dijit.TitlePane is used to contain an area with a collapsable title, 
+     - the body may be expanded as required
+    -->
+    <div dojoType="dijit.TitlePane" title="My Title Pane:" style="width:400px">
+        <ul>
+            <li>Title Item 1</li>
+            <li>Title Item 2</li>
+            <li>Title Item 3</li>
+        </ul>
+    </div>
+    <br />
+    <span id="tt">Hover over for a tooltip</span>
+    <!--
+    dijit.Tooltip is attached to a node as a seperate, hidden node
+    -->
+    <div dojoType="dijit.Tooltip" connectId="tt">
+        Tool tip text and pic
+    </div>
+    <br />
+    <!--
+    dijit.TooltipDialog objects cannot be created from code
+     - must be nested in a Combo or Dropdown box
+     - require statement is 'dijit.Dialog'
+    -->
+    <button dojoType="dijit.form.DropDownButton" iconClass="oneFish" showLabel="false">
+        <div dojoType="dijit.TooltipDialog">
+            <span>A bit of text</span>
+            <div dojoType="dijit.form.TextBox"></div>
+        </div>
+    </button>
+    <br />
+    <!--
+    dijit.ProgressBar use the 'update([JSON Obj])' to change the value
+     - dijit.byId("myProgressBar").update({progress : "50%"});
+    -->
+    <div dojoType="dijit.ProgressBar" indeterminate="true" style="width:300px;"></div>
+    <br />
+    <!--
+    dijit.ColorPalette 
+    -->
+    <div dojoType="dijit.ColorPalette">
+        <script type="dojo/method" event="onChange" args="selectedColor">
+            console.log(selectedColor);
+        </script>
+    </div>
+    <br />
+    <!--
+    dijit.Toolbar
+    - buttons plugged into a tool bar object
+    - events are wired up to x.parentNode because of how dojo.form.Button is implmented
+    -->
+    <div dojoType="dijit.Toolbar" style="width:220px">
+        <button dojoType="dijit.form.Button" iconClass="dijitEditorIcon dijitEditorIconBold"></button>
+        <button dojoType="dijit.form.Button" iconClass="dijitEditorIcon dijitEditorIconItalic"></button>
+        <button dojoType="dijit.form.Button" iconClass="dijitEditorIcon dijitEditorIconUnderline"></button>
+        <span dojoType="dijit.ToolbarSeparator"></span>
+        <button dojoType="dijit.form.Button" iconClass="dijitEditorIcon dijitEditorIconSubscript"></button>
+        <button dojoType="dijit.form.Button" iconClass="dijitEditorIcon dijitEditorIconSuperscript"></button>
+    </div>
+    <br />
+    <!--
+    dijit.Menu
+     - dijit.MenuItem and PopupMenuItem are included in the dojo.require("dijit.Menu"); request
+    -->
+    <div id="contextMenu" style="background:#eee; height:300px; width:300px;">
+        Right-click within this box to display the context menu
+    </div>
+
+    <div dojoType="dijit.Menu" targetNodeIds="contextMenu" style="display:none">
+        <div dojoType="dijit.MenuItem">My Item
+            <script type="dojo/method" event="onClick" args="evt">
+                console.log("My Item Clicked!");
+            </script>
+        </div>
+        <div dojoType="dijit.MenuItem">My Other Item
+            <script type="dojo/method" event="onClick" args="evt">
+                console.log("My Other Item Clicked!");
+            </script>
+        </div>
+        <div dojoType="dijit.MenuItem">My Last Item
+            <script type="dojo/method" event="onClick" args="evt">
+                console.log("My Last Item Clicked!");
+            </script>
+        </div>
+    </div>
+    <br />
+    <!--
+    to set the context menu for the entire window the attribute 'contextMenuForWindow' is set to 'true'
+     - for the PopupMenuItem to work it needs a concrete node (here it is a 'span')
+    -->
+    <div id="myWindowContextMenu" dojoType="dijit.Menu" style="display:none;" contextMenuForWindow="true">
+        <div dojoType="dijit.MenuItem">Context Item 1</div>
+        <div dojoType="dijit.MenuItem">Context Item 2</div>
+        <div dojoType="dijit.PopupMenuItem"> 
+            <span>Popup Menu</span>
+            <div dojoType="dijit.Menu">
+                <div dojoType="dijit.MenuItem">Popup Item 1</div>
+                <div dojoType="dijit.MenuItem">Popup Item 2</div>
+                <div dojoType="dijit.MenuItem">Popup Item 3</div>
+            </div>
+        </div>
+    </div>
+    <br />
+    <!--
+    dijit.InlineEditBox used to enclose a textbox having it appear as content until its clicked
+     - 'onChange' is an applicable extension point
+    -->
+    Dear <span id="vc" dojoType="dijit.InlineEditBox" autoSave="false" editor="dijit.form.TextBox">Valued Customer
+        <script type="dojo/method" event="onChange" args="evt">
+            console.log(evt);
+        </script>
+    </span>
+
+    <div>We are 138.</div>
+
+    <div>Sincerely,</div>
+    <span dojoType="dijit.InlineEditBox" autoSave="false" editor="dijit.form.TextBox">Customer Service</span>
+    <br />
+    <!--
+    dijit.Tree requires a 'model' which is a dijit.tree.TreeStoreModel
+    dijit.tree.TreeStoreModel requires an dojo.data.ItemFileReadStore
+    dijit.tree.ForestStoreModel is the same except layout of datastore is without a root node
+    '.query("{top-level-node:'namevalue'"}; determines the values displayed in the tree
+    '.childrenAttr' gets an array of the child-nodes as a string
+    -->
+    <div dojoType="dojo.data.ItemFileReadStore" jsId="myStore" url="./coffee.json"></div>
+    <div dojoType="dijit.tree.TreeStoreModel" jsId="myModel" store="myStore" query="{name:'*'}"></div>
+    <div id="myTree" dojoType="dijit.Tree" model="myModel"></div>
+    <br />
+
+    <div dojoType="dojo.data.ItemFileReadStore" jsId="mySecondStore" url="./coffee3.json"></div>
+    <div dojoType="dijit.tree.ForestStoreModel" jsId="mySecondModel" store="mySecondStore" query="{type:'category'}"></div>
+    <div dojoType="dijit.Tree" showRoot="false" model="mySecondModel">
+        <script type="dojo/method" event="onClick" args="evt">
+            console.log(evt);//onClick extension point 
+        </script>
+    </div>
+    <br />
+
+    <!--
+    dijit.Editor 
+    -->
+    <div style="margin:5px; background:#eee; height:400px; width:525px">
+        <div id="myEditor" height="375px" dojoType="dijit.Editor">
+            Contents of the editor
+        </div>
+    </div>
+    <button dojoType="dijit.form.Button">Save
+        <script type="dojo/method" event="onClick" args="evt">
+            console.log(dijit.byId("myEditor").getValue());
+        </script>
+    </button>
+    <button dojoType="dijit.form.Button">Clear
+        <script type="dojo/method" event="onClick" args="evt">
+            dijit.byId("myEditor").replaceValue("");
+        </script>
+    </button>
+
+    <!--
+    dijitEditorIcon are spliced parts from a single large image conatining them all
+     - this classic CSS approach reduces the number of HTTP gets needed
+     - this is a list of all other images available for the dijit editor
+     dijitEditorIconSep
+     dijitEditorIconBackColor
+     dijitEditorIconBold
+     dijitEditorIconCancel
+     dijitEditorIconCopy
+     dijitEditorIconCreateLink
+     dijitEditorIconCut
+     dijitEditorIconDelete
+     dijitEditorIconForeColor
+     dijitEditorIconHiliteColor
+     dijitEditorIconIndent
+     dijitEditorIconInsertHorizontalRule
+     dijitEditorIconInsertImage
+     dijitEditorIconInsertOrderedList
+     dijitEditorIconInsertTable
+     dijitEditorIconInsertUnorderedList
+     dijitEditorIconItalic
+     dijitEditorIconJustifyCenter
+     dijitEditorIconJustifyFull
+     dijitEditorIconJustifyLeft
+     dijitEditorIconJustifyRight
+     dijitEditorIconLeftToRight
+     dijitEditorIconListBulletIndent
+     dijitEditorIconListBulletOutdent
+     dijitEditorIconListNumIndent
+     dijitEditorIconListNumOutdent
+     dijitEditorIconOutdent
+     dijitEditorIconPaste
+     dijitEditorIconRedo
+     dijitEditorIconRemoveFormat
+     dijitEditorIconRightToLeft
+     dijitEditorIconSave
+     dijitEditorIconSpace
+     dijitEditorIconStrikethrough
+     dijitEditorIconSubscript
+     dijitEditorIconSuperscript
+     dijitEditorIconUnderline
+     dijitEditorIconUndo
+     dijitEditorIconWikiword
+     dijitEditorIconToggleDir
+    -->
+</body>
+</html>

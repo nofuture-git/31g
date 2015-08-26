@@ -1,0 +1,92 @@
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Text;
+using System.Linq;
+using System.Data;
+using System.Data.Linq;
+
+namespace MyNamespace
+{
+   public class MyType
+    {
+        SqlConnection sqcConnection = null;
+        SqlCommand sqCommand = null;
+        SqlDataAdapter sqAdapter = null;
+
+        SqlConnection connection = null;
+        SqlCommand command = null;
+        SqlCommand MyCommand = null;
+        ArrayList queryParam = new ArrayList();
+        SqlDataAdapter adapter = null;
+
+       public string GetProgramStatus(int programstatusid)
+       {
+           string Programstatus = string.Empty;
+           try
+           {
+               connection = new SqlConnection("Server=MyServer;Database=MyDatabase;Trusted_Connection=True;");
+               connection.Open();
+               command = new SqlCommand();
+               command.Connection = connection;
+               command.CommandType = CommandType.StoredProcedure;
+               command.CommandText = "myStoredProc";
+               command.CommandTimeout = 800;
+               command.Prepare();
+               command.Parameters.Add(new SqlParameter("@FieldID", programstatusid));
+
+               Programstatus = (string)command.ExecuteScalar();
+               return Programstatus;
+           }
+           catch (Exception ex)
+           {
+               return null;
+           }
+           finally
+           {
+               if (connection != null)
+               {
+                   if (connection.State != ConnectionState.Closed)
+                       connection.Close();
+               }
+           }
+       }
+
+       public int GetPassCodeAvailablity(string Passcodeavalability)
+       {
+           int PassCodeAvailable;
+
+           try
+           {
+               
+               connection = new SqlConnection("Server=MyServer;Database=MyDatabase;Trusted_Connection=True;");
+               connection.Open();
+               command = new SqlCommand();
+               command.Connection = connection;
+               command.CommandType = CommandType.StoredProcedure;
+               command.CommandText = "myOtherStoredProc";
+               command.CommandTimeout = 800;
+               command.Prepare();
+               command.Parameters.Add(new SqlParameter("@chkpasscode", Passcodeavalability));
+
+               PassCodeAvailable = (int)command.ExecuteScalar();
+               
+               return PassCodeAvailable;
+           }
+
+           catch (Exception ex)
+           {
+
+               return 0;
+           }
+           finally
+           {
+               if (connection != null)
+               {
+                   if (connection.State != ConnectionState.Closed)
+                       connection.Close();
+               }
+           }
+       }
+    }
+}

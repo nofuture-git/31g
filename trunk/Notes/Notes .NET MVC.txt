@@ -1,0 +1,259 @@
+Notes MVC
+----
+ASP.NET MVC in Action with MvcContrib, NHibernate, and More
+By: Jeffrey Palermo; Ben Scheirman; Jimmy Bogard
+Publisher: Manning Publications
+Pub. Date: September 28, 2009
+Print ISBN-10: 1-933988-62-2
+Print ISBN-13: 978-1-933988-62-7
+Pages in Print Edition: 392
+
+Programming Razor
+By: Jess Chadwick
+Publisher: O'Reilly Media, Inc.
+Pub. Date: September 15, 2011
+Print ISBN-13: 978-1-4493-0676-2
+Pages in Print Edition: 120
+----
+
+----
+General Notes
+- Mvc is under namespace System.Web.Mvc
+- new binary at 'C:\Program Files\Microsoft ASP.NET\ASP.NET MVC 2\Assemblies\System.Web.Mvc.dll'
+ - not sure why this isn't in the standard %windir%\Microsoft .NET\Framwork\...
+- found another namespace named System.Web.Routing
+ - this namespace contains a general interface named IRouteHandler
+ - the System.Web.Mvc.MvcRouteHandler implements this interface
+ - this has a binary at
+  C:\Program Files\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Web.Routing.dll
+----
+ 
+----
+Differences in lifecycle from asp.net
+- IIS is still used
+- request pass through IIS and are handed to HttpRuntime
+- since new Routing flows through an HttpModule it follows that
+ - the Runtime still creates the HttpContext
+ - who, in turn, creates HttpApplication
+ - from him the modules are given control to modify the rqst
+ - UrlRoutingModule matchs the URL to an IHttpHandler
+ - the implementation is most often the MvcRouteHandler
+- from here things differ
+- the MvcRouteHandler constructs a MvcHandler
+ - per the VS'10 object browser the MvcRouteHandler does not implement the 
+   IHttpHandlerFactory...
+ - in ASP.NET the HttpApplication was mapped in the httpHandlers node of the web.config 
+   to map a request's extension to an IHttpHandlerFactory implementation having
+   .aspx use PageHandlerFactory, etc.
+- MvcHandler implements the IHttpHandler as well
+- like normal the ProcessRequest method is called
+- the MvcHandler uses the an implementation of the IControllerFactory to 
+  get an instance of the concrete implementation of the IController mapped
+  to the given {controller} portion of the request
+  - found that System.Web.Mvc.DefaultControllerFactory is a 
+    concrete implementation of the IControllerFactory
+- a controller implements the IController interface which has only one
+  method called 'Execute' which takes the ever-present 'System.Web.Routing.RequestContext' 
+  object.
+  - the 'RequestContext' has a property resolving to a System.Web.Routing.RouteData 
+    and I presume this somehow contains the mapping to a view
+- the second part of the URL is respective to an 'action' or more specifically 
+  a 'System.Web.Mvc.ActionResult' 
+- with this the url action is actually like an execution path 
+  MyController/MyAction -> MyController.MyAction()
+- the action adds a hash value to a property found on its parent
+  System.Web.Mvc.Controller.VeiwData which is itself an instance of
+  System.Web.Mvc.ViewDataDictionary which implments all the classics 
+  of the System.Collection namespace
+- this instance returns the View() method, inherited from Controller 
+  as well, which returns a System.Web.Mvc.ViewResult type which extends 
+  System.Web.Mvc.ViewResultBase which, in turn, extends 
+  System.Web.Mvc.ActionResult
+  - there are other, more complex, extentions of ActionResult including
+   - ContentResult
+   - EmptyResult
+   - FileResult
+   - JavaScriptResult and JsonResult
+   - more still...
+- now there appears to be an implicit mapping between an action on a
+  controller and a view aspx page.  The connection is implicit in the name
+  only.
+- the view aspx has implicit reference to the contents of the 
+  System.Web.Mvc.ViewDataDictionary found on the controller instance.
+  - the link appears to be related to the ViewDataDictionary's 
+    'Model' property.  Its a read/write property taking and returning
+	simply an object.
+  - the text states the view and the controller  are linked by this 
+    property on the ViewDataDictionary
+  - the View method on the Controller type is overloaded and one 
+    signature takes a simple object with the arg named 'model'...
+- this text states that the view (an aspx page with no code behind) is
+  an extension of the System.Web.Mvc.ViewPage type and this is confirmed
+  by the page directive atop of it. 
+- the ViewPage type executes the ProcessRequest method implicitly and then
+  the example ends.
+----
+
+----
+Routing
+ - Inbound routing: map URL to a controller/action with params
+ - Outbound routing: construct URLS which match URL for controller/action
+Inbound routing
+ Http Request --> Routing ---->Controller
+							|---->Action
+Outbound
+ View---->{controller:foo;   ---->Routing ---->http://some/url
+				action:bar}
+----
+
+----
+General MVC File-layout
+ <Project?
+  |- /Content
+  |   |- /CSS
+  |   |- /Images
+  |   |- /Scripts
+  |
+  |- /Views
+  |   |- /Shared
+  |   |    |- _Layout.cshtml
+  |   |- _ViewStart.cshtml
+  |- /Models
+  |- /Controllers
+
+ - Controller generates 1..* Models
+ - Model HAS-A View (1..1)
+ - Controller's ActionResult returns a View/Model pair
+ - the framework will expect to find _ViewStart and _Layout
+    in the given folders.
+----
+
+----
+General Development in MVC
+
+//a straight POCO
+public class MyModel
+{
+	public int Prop1 {get; set;}
+	public string Prop2 {get; set;}
+}
+
+//extends Controller
+public class MyController : System.Web.Mvc.Controller
+{
+	public System.Web.Mvc.ActionResult MyFirstAction()
+	{
+		//get a model
+		var myModel = new MyModel();
+		myModel.Prop1 = 2;
+		myModel.Prop2 = "string";
+		
+		return View("MyFirstView",myModel)
+	}
+	public System.Web.Mvc.ActionResult MySecondAction(int arg1)
+	{
+		var myModel = new Model();
+		myModel.Prop1 = 3;
+		myModel.Prop2 = "another string";
+		
+		return PartialView("_MySecondView",myModel);
+	}
+}
+
+@*uses ASP.NET MVC 3 Razor syntax*@
+@*http://msdn.microsoft.com/en-us/vs2010trainingcourse_aspnetmvc3razor.aspx*@
+@using MyProjects.MyNamespace
+@model MyModel
+<html>
+	<head>
+	</head>
+	<body>
+		<div>
+			@*single code line values*@
+			<p>The value of MyModel's first property is: @Model.Prop1</p>
+			<p>The value of MyModel's second property is: @Model.Prop2</p>
+			
+			@*set, explicitly, the start and end of code nugget*@
+			<img src="/img/(@ImageName).jpg" />
+			
+			@*code block*@
+			@{
+				var myblockVar = 22;
+			}
+			
+			@*plain-text generated within code block*@
+			<p>
+			@{
+				for(var i=0;i<3;i++){
+					@:Lorem ipsum dolor sit amet consectetuer adipiscing sagittis non quis feugiat.
+				}
+				//use the text, like an html node, to mark a here-string within a code block
+				for(var i=0;i<3;i++){
+					<text>
+					Lorem ipsum dolor sit amet consectetuer adipiscing sagittis non quis feugiat.
+					</text>
+				}
+			}
+			</p>
+			
+			@*if is a block on its own*@
+			@if(Model.Prop1 == 2){
+				<p>Nibh leo Sed Morbi hendrerit Sed et euismod Nulla quis condimentum.</p>
+			}
+			else{
+				<p>Tincidunt amet est odio feugiat tellus at dui semper Cum Fusce.</p>
+			}
+			
+			@*foreach is a block on its own*@
+			@foreach(var val in Model.Prop2.Split(" ")){
+				<p>Eget Vestibulum Phasellus mauris fames quis consequat wisi nec lorem Fusce.</p>
+			}
+			
+			@foreach(var item in Model.Prop3.Split(",")){
+				var itemName = ( GetItemName<string>(item) );
+				<div>@itemName</div>
+			}
+			
+			@*conversion helpers*@
+			@{
+                var myAsInt = "string".AsInt(10);
+                var myAsBool = "string".AsBool(false);
+                var myAsDate = "3/20/2013 11:53 AM".AsDateTime(DateTime.Now);
+                var myAsDecimal = "23.16".AsDecimal(0.0m);
+                var myAsFloat = "66.33".AsFloat(0.0f);
+
+                var myIsInt = Request["id"].IsInt();
+                var myIsBool = "false".IsBool();
+                var myIsDate = "3-11-2013".IsDateTime();
+                var myIsDecimal = "99.99".IsDecimal();
+                var myIsFloat = "88.88".IsFloat();
+			}
+			
+			@*section delimits some area that may be reproduced using RenderSection*@
+			@section ReuseableForRender {
+				<p>Lorem ipsum dolor sit amet consectetuer adipiscing sagittis non quis feugiat.</p>
+			}
+			
+			@*this will render the same thing as above once again*@
+			@RenderSection("ReuseableForRender")
+			
+			@*may also test for a section being defined prior to attempting to render it*@
+			@if(IsSectionDefined("ReuseableForRender"){
+				<div class="myClass">
+					@RenderSection("ReuseableForRender")
+				</div>
+			}
+			
+			@*this may be used to render some partial view based on the file structure*@
+			@*the second arg is an anonymous type which the given partial view will access like*@
+			@*	var myValue = Page.MyValue;*@
+			@{ Html.RenderPartial("MyViews/_MyPartialView.cshtml", new {MyValue = "a value"}); }
+			
+			@*when not based on implicit path of current view, use full path off root of project*@
+			@{ Html.RenderPartial("~/Views/MyViews/_MyOtherPartialView.cshtml"); }
+			
+		</div>
+	</body>
+</html>
+----
+  

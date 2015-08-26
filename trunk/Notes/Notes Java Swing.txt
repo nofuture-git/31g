@@ -1,0 +1,1080 @@
+Notes Java Swing
+
+Java Swing, 2nd Edition 
+by Brian Cole; Robert Eckstein; James Elliott; Marc Loy; Dave Wood 
+Publisher: O'Reilly 
+Pub Date: November 2002 
+ISBN: 0-596-00408-7 
+Pages: 1278 
+
+----
+Java Foundation Classes
+ - Abstract Window Toolkit (AWT)
+    - Basic windowing toolkit 
+    - Swing build on component facilities
+ - Accessibility: for use with handicap users
+    - Accessibility API shipped with Swing
+    - Accessibility Utilities API seperate
+ - 2D API : for use of complex painting style
+ - Drag and Drop:
+----
+
+----
+Swing and AWT
+ - Swing depends on AWT event-handlers
+ - both adhere to Java Beans specification
+----
+
+----
+Look and Feel (L&F)
+ - Java emulates the L&F of different OS
+ - change L&F at runtime
+ - Basic L&F is base of L&F extensions
+ - developer my extend Basic L&F to make custom L&F
+----
+
+----
+Lightweight Componet
+ - rendered using drawing primitives
+ - are drawn atop of heavyweight, native dependent, component
+----
+
+----
+Swing Packages
+ - javax.accessibility:  assistive technology
+ - javax.swing:  core swing package
+ - javax.swing.border
+    - abstract border class
+    - 8 predefined border types
+    - not componets
+    - instantiate upon component properties
+ - javax.swing.colorchooser: JColorChooser component
+ - javax.swing.event: for asynchronous comm between classes 
+    - listeners
+    - events
+ - javax.swing.filechooser:  JFileChooser
+ - javax.swing.plaf:  for rendering L&F of individual components
+ - javax.swing.table: 
+    - render table/spreadsheet layout of info
+    - change viewing of table
+    - change manner of cell selection
+ - javax.swing.text:  text-based classes
+ - javax.swing.text.html:  reading and formatting html text
+ - javax.swing.text.html.parser:  for parsing html
+ - javax.swing.text.rtf:  reading formatting rtf text
+ - javax.swing.tree:  models, views of tree-type data view
+ - javax.swing.undo:  needed for having 'undo'
+----
+ 
+----
+Model-View-Controller Arch: abstraction of component into three parts
+ - Model:  value properties and state data
+    - data state needed by the View to draw
+ - View:  how the control looks on the screen
+    - determine which events are passed to the controller
+ - Controller:  event handlers
+    - alter data state within Model
+
+ - Java combines View and Controller into UI-Delegate
+ - race-conditions one thread chng view while other thread chng model
+ - z-order: depth order of windows draw atop ea. other on screen
+ - lightweight & heavyweight issue
+    - heavyweight are z-ordered
+    - lightweight are drawn atop heavyweight
+    - placing subordinate heavyweight next to lightweight on single heavyweight
+        - z-order of base heavyweight may differ from sub-heavyweight by many
+        - screen will render window atop base but not atop sub-heavyweight
+----
+
+----
+Java Event Handling
+  - instantiated component adds as listeners cls that implement ActionListener
+  - implementing cls provides concrete body to actionPerformed(ActionEvent e)
+  - upon button press ActionEvent obj instantiated - passed to all listeners
+  - listeners actionPerformed executes
+  - ActionEvent is an object so it contains info on its type
+----
+
+----
+ActionListener Interface: 
+  - class declared implements ActionListener
+  - class involved in processing event
+  - class provides implementation to the actionPerformed(ActionEvent e)
+  - instantiated class is added to component with addActionListener
+  - create anonomyous w/i addActionListener method:
+    - bt.addActionListener(new ActionListener()
+        {public void actionPerformed(ActionEvent ev){
+          System.out.println("an action has been performed");}
+        });
+----
+
+----
+Action Interface 
+ - Swing containers add() method return specific components
+   JMenu myMenu = new JMenu();
+   JMenuItem myMenuItem= myMenu.add(myAction) 
+   /*
+     menu item instantiated with add
+     myAction implements Action interface
+     select myMenuItem and myAction.actionPerformed will execute
+     container registers action listener with Action
+   */ 
+ - javax.swing.Action.Action may be accessed by several components
+ - interface contains constants for descriptions, icon and enabled
+ - disable the action object and all registered components chng display
+----
+ 
+----
+ Action Interface Methods
+  - public abstract Object getValue(String key) //use to get property values
+  - public abstract void putValue(String key, Object value)
+      //assign properties a value
+      //properties are indexed by string (key) value
+  - public abstract actionPerformed(ActionEvent e)
+      //implements ActionListener interface, crux of Action object
+  - public abstract void addPropertyChangeListener(PropertyChangeListener l)
+      //components need to be alerted to property changes
+  - public abstract void removePropertyChangeListener(PropertyChangeListener l)
+      //remove componets
+----
+
+----
+AbstractAction class
+ - provides implementation to all methods but actionPerformed(ActionEvent e)
+ - has a no arg and arg constructors
+ - is enabled upon extension/instantiation
+ - good short-cut to implementing Action interface
+ - may be passed directly into the constructor of some components
+----
+
+----
+Graphics Environment
+ - system.awt.GraphicsEnvironment //array of GraphicsDevice
+ - GraphicsDevice //contain mulitple GraphicsConfiguration for a given device
+ - DisplayMode //width, height, color depth and refresh rate of monitor
+ - HeadlessException //is unchecked - graphics without monitor (ie servlet)
+----
+
+----
+ChangeEvent class
+ - simple event class
+ - not for JavaBean spec
+ - has only constructor 
+ 	public ChangeEvent(Object source)
+ - recieving class implement javax.swing.event.ChangeListener interface
+ 	public abstract void stateChanged(ChangeEvent e)
+----
+
+----
+JComponent
+ - extents java.awt.Container
+ - abstract - almost all components extent
+ - components are added to containers
+ - has many properties for controlling Model
+ - add and remove methods other components
+ - paint and repaint
+ - screen position
+ - borders
+ - fly-by-text
+ - drawing debug options
+ - focus
+ - keyboard events
+----
+
+----
+JComponet Properties (of interest)
+  - background //what is base color upon being painted
+  - colorMode //model used translate color to pixel
+  - component //array of added components
+  - layout //which manager is handling the layout
+  - location //x,y of component in container
+  - locationOnScreen //x,y of componet on screen
+  - parent //componts parent container, null if base container
+  - visable //capable of being drawn
+  - showing //actually drawn
+----
+
+----
+JComponent Methods (of interest)
+  - public void add(Component comp, Object contraints, int index)
+  - public void remove(int index)
+  - public void removeall()
+  - public void pack() //resize window to preferred size
+  - public void validate()
+  - public void invalidate() 
+      /*flag component as in need of re-render
+       *runtime engine calls on many property chngs
+       *call upon chng to appearance at runtime
+       *call validate when child component in invalidated
+       */
+----                     
+
+----
+JComponent UI Delegate
+  - extend javax.swing.plaf.ComponentUI
+  - render lightweight components are always same for all components
+  - model for each component is different 
+  - JComponent setUI() for pointing to another UIDelegate
+  - re-render upon updateUI()
+----
+  
+----
+JComponent Repaint
+  - handled by a RepaintManager
+  - JComponent has reference 
+  - repaint() paints only what is needed to be repainted
+  - paint() paints whole component
+----
+
+----
+JComponent Position
+ - location:  is start Point of rectangle from upper left corner screen
+ - size:  is Dimension of height and witdth
+ - getBounds(Rectangle r) gets size and location
+ - setBounds(Rectangle r) sets size and location
+    - Layout manager may ignore if component is invalidated
+ - minimumSize:  smallest a component may be in parent
+ - preferredSize:  layout manager ought to use
+ - maximumSize:  largest component my be in parent
+----
+
+----
+JComponent Borders
+ - implement javax.swing.border.Border
+ - JLabel myLabel = new JLabel("my text");
+   myLabel.setBorder(BorderFactory.createEtchedBorder());
+----
+
+----
+JComponet DebugGraphics class
+ - DebugGraphics.FLASH_OPTION //enumerate graphics primitive
+ - DebugGraphics.LOG_OPTION //print text onscreen graphics primitive
+ - DebugGraphics.BUFFERED_OPTION //shows drawing w/i window
+ - DebugGraphics.NONE_OPTION //none
+ - combine using bitwise operators
+----
+
+----
+Focus 
+ - active component which handles mouse/keyboard events
+ - transverse:  name for movement through tab order
+ - focus cycle:  tab-order as a circle
+ - isFocusCycleRoot(true) //use to set container as owner of focus cycle
+ - FocusTransversalPolicy class:  manage focus w/ single class
+---- 
+
+----
+JComponet Keystroke Binding
+ - keystroke is converted to KeyStroke object
+ - KeyStroke obj is mapped against component's InputMap
+ - index entry in InputMap 
+ - return of InputMap used as index in ActionMap
+ - ActionMap returns Action obj
+ 
+ - two-layer in use for L&F advantage
+ - InputMap may specify three conditions
+    - WHEN_FOCUSED input upon component have focus
+    - WHEN_IN_FOCUSED_WINDOW input upon component w/i container
+    - WHEN_ANCESTOR_OF_FOCUSED_COMPONENT further layer up container
+ 
+  myButton.getActionMap().put("actionRef", myActionObj);
+  myButton.getInputMap().put(KeyStroke.getKeyStroke("F4"), "actionRef");
+  //must obtain keystorke though static factory class KeyStroke
+  //actionRef - string allows for more descriptive layer
+  //use parent property to call parent component input map
+  //use parent for action map also
+----
+
+----
+JLabel
+ - extends JComponent
+ - implements SwingConstants
+ - hot-key mnemonic
+ - icons 
+ - label text position
+
+JLabel Properties
+ - icon: default icon 
+ - disabledIcon:  display upon disable
+    - convert icon to grey-scale if not specified
+ - displayedMnemonic:  underline single character
+ - displayedMnemonicIndex:  choose underline charcater - not 1st occr.
+    - param is int because value ought be KeyEvent.VK_<constant>
+ - labelFor: component get focus when Alt+mnemonic is pressed
+
+ JTextField myTextBox = New JTextField(10);
+ JLabel myLabel = New JLabel("My Label Text");
+ myLabel.displayedMnemonic("L"); //will turn this into VK constan
+ myLabel.setLabelFor(myTextBox);
+ //focus goes to myTextBox when Alt+L is pressed
+----
+
+----
+JTextArea, JTextField
+ - for use of standard text output 
+----
+
+----
+Images
+ - extend javax.swing.Icon interface
+ - ImageIcon class is g2g
+ - Set label object with image
+ - have img go grey upon disable
+ - may have new img upon disable
+ - may have img and text
+
+ verticalTextAlignment:  position of text/img relative to label border
+ horizontalTextAlignment: same as vertical
+ verticalTextPositon:  text position relative to img
+ horizontalTextPosition: same 
+  
+ ImageIcon myIcon = new ImageIcon("images/myImage.jpg");
+ JLabel myLabel = new JLabel(myIcon);
+ 
+ - Icon interface: specify getHeight, getWidth and paintIcon
+ - Icon display may be changed at runtime
+----
+
+----
+ButtonModel Interface
+ - reference from the AbstractButton cls
+ - state of the Swing button
+ - for containing properties
+ - for adding / removing event listeners
+----
+
+----
+ButtonModel Properties
+ - actionCommand:
+   - sent w/i ActionEvent upon press
+   - is a string
+   - used by event handler to recognize unique button
+   - sent button text as command if left default
+ - group: ButtonGroup contained withing
+ - mnemonic: VK_key + Alt that will press button
+ - armed: boolean fire event upon release and cursor remain overtop button 
+ - enabled: boolean indicate button currently enabled
+ - pressed: indicate button currently pressed
+ - rollover:  indicate mouse is currently over button
+ - selected:  indicate button is select JToggleButton only
+---- 
+ 
+----
+ButtonModel Events
+ - ActionEvent:  fire when button is pressed
+ - ChangeEvent:  fire when property chng
+ - ItemEvent:  fire when button toggled off / on
+
+ - public void addActionListener(ActionListener l)
+    - replace Action with Item or Change for others
+----
+
+----
+DefaultButtonModel Class
+ - implementation of ButtonModel interface
+ - contains methods that return all events registered 
+   - public ActionListener[] getActionListeners()
+     - replace Action with Change or Item for the others
+----     
+
+----
+AbstractButton 
+ - is an abstract class
+ - extends JComponent class
+ - contains a reference to ButtonModel interface
+ - all other buttons extend
+ - for interaction between ButtonModel and concrete cls's
+ - display text, icon or both
+ - chng property and PropertyChangeEvent recieves constanst of the such
+   - eg MNEMONIC_CHANGED_PROPERTY
+----
+
+----
+AbstractButton Properties 
+ - action property recieve all events from button itself
+ - icon/text display
+   - Alignment: text/icon from button border
+   - TextPosition: text relative to icon
+   - TextGap: space between icon and text
+ - icon displayed 7 different ways upon state
+   - icon: default
+   - disabledIcon: upon disable
+   - selectedIcon: upon selected
+   - disabledSelectedIcon: upon select and is disabled
+   - pressedIcon: upon press
+   - rolloverIcon: upon mouse move over unselected
+   - rolloverSelectedIcon: mouse move over selected
+ - multiClickThreshhold: millisecond distance many clicks are just one
+ - contentAreaFilled: false for 'just icon' look (no button rectangle)
+----
+
+----
+AbstractButton Methods
+ - public void doClick(int pressTime) //same as click
+ - public void setMnemonic(char mnemonic) //set hot-key by char, not VK const
+---- 
+
+----
+JButton
+ - extends AbstractButton
+ - act as classic button
+ - button may be set as root pane default
+ - construct with Action implementing object
+   - click will cause actionPerformed(ActionEvent ev) to perform
+ - construct with icon, text or nothing
+----
+
+----
+JToggleButton
+ - extends AbstractButton
+ - parent of JRadioButton and JCheckBox
+ - may be instantiated
+ - act as classic button that gets stuck in-pressed
+ - model is innerclass: ToggleButtonModel extends DefaultButtonModel
+----
+
+----
+JCheckBox
+ - extends JToggleButton
+ - best for multiple selection
+ - instantiate one box per object
+----
+
+----
+JRadioButton
+ - extends JToggleButton
+ - multi-choice only one may be selected
+ - manage in groups using ButtonGroup
+ - one radio button per object
+----
+
+----
+ButtonGroup class
+ - for logical grouping of buttons
+ - manage 'only one selected at a time' rule
+ - upon select one - at least one always remains - never 'none' again
+ - take any extending AbstractButton cls
+ - property needs to include 'selected' for additon to make sense
+ - interact with ButtonModel and AbstractButton properties
+----
+
+----
+Bounded Range 
+ - specify value or range within bounds
+ - limit by constraint minimum <= value <=value+extent <= maximum
+ - bounds, value and range are integers
+ - javax.swing.BoundedRangeModel 
+   - get, set
+     - value
+     - extent
+     - minimum
+     - maximum
+ - implementor must file ChangeEvent upon range value
+ 
+ - javax.swing.DefaultBoundedRangeModel
+   - implementing class 
+   - will adjust value to meet constraint
+----
+
+----
+JScrollBar
+ - extends JComponent
+ - HAS A ref to BoundedRangeModel
+ - orientated vertical or horizontal only
+ - slider is called 'Thumb'
+ - arrow is called 'Unit Increment / Decrement'
+ - value is far left end of Thumb
+ - total range is called 'Paging Area'
+ - length of Thumb is called 'Extent'
+ - blockIncrement distance travel on Unit Increment
+ - JScrollBar converts ChangeEvent(s) into AdjustmentEvent
+----
+
+----
+JSlider
+ - for minor and major ticks
+----
+
+----
+JProgressBar
+ - horizontal or vertical
+ - simply graphical fill based on model value
+ - use setValue | get value
+----
+
+----
+ProgressMonitor
+ - more robust class for monitor of progress
+ - title-bar message set at constructor time - cannot change
+ - other parameters set at constructor time
+ - check isCanceled to see if progress is finished
+ - does not fire any events - check isCanceled
+----
+
+----
+JList
+ - for simple or complex list
+ - elements may be any class capable of being rendered
+ - must be added to Scroll Pane for scrolling as option
+ - 'anchor' selection start entry 
+ - 'lead' selection end entry
+ - 'range' selection
+ - specify the data model at construction time
+ - HAS A:
+   - ListModel: contains list data in a vector
+   - ListSelectionModel: contains selection choice
+   - ListCellRenderer:  define cell display (pics, strings, etc)
+----   
+
+----
+JComboBox
+ - for single text choice - think html form drop-down
+ - the text component my be editable (or not)
+ - HAS A:
+   - DefaultComboBoxModel: data model
+   - ComboBoxEditor: for handling selection/entry
+   - ListCellRenderer: same as JList
+ - items may be removed/added to list
+ - implment and assign JComboBox.KeySelectionManager to open box upon key press
+ - speed up load by assigning box width w/ prototypeDisplayValue
+ - specify values or box model at construction time
+----
+
+----
+JSpinner
+ - single text box with side arrows for spinning choices up/down
+ - HAS A:
+   - SpinnerModel: data model
+   - JFormattedTextField: renderer / editor
+ - may specify Spinner Model at construction time
+ - SpinnerListModel IS A SpinnerModel
+   - instantiate for string spinner
+ - SpinnerDateModel for date spinners
+ - SpinnerNumberModel for numbers
+ - HAS A inner class
+   - DateEditor
+   - ListEditor
+   - NumberEditor
+----
+ 
+----
+JPanel
+ - for nesting components
+ - simplist of all containers
+----
+
+----
+JRootPane 
+ - contained in heavy-weight components
+ - only contained componet in the heavy weight container
+ - base of classic window look with menu bar
+ - HAS A 
+   - JMenuBar
+   - awt.Container as base of window content
+ - myFrame.getContentPane.add(myButton); //to add a component
+ - myFrame.setJMenuBar(myBar);  //to set the menu
+----
+
+----
+JRootPane Design
+ - is two layered pane atop each other
+ - top pane is called 'glass pane'
+ - botton pane is called 'layered pane'
+ - layered pane contains menu bar
+ - layered pane also containes base content pane
+ - glass pane is to allow for total cover of layered pane
+   - ideal use to block all UI to layered pane
+ - myFrame.setGlassPane(myJPanel); //access top-lvl glass pane
+----
+
+----
+RootPaneContainer
+ - interface implemented by top-lvl containers
+ - bridge container calls directly to JRootPane
+ - for simplification of JRootPane calls 
+----
+
+----
+JLayeredPane
+ - contained in the JRootPane
+ - HAS A DesktopManager to control placement and movement of frames
+ - allows for components to be drawn atop each other 
+ - myLayeredPane.add(myButton, 1);  //SDK 1.5 will auto-box the int
+   myLayeredPane.add(myOtherButton, 2); //is atop myButton
+   - higher the number > higher the layer
+   - Constants available
+ - w/i container
+   - highest position is painted first 
+   - lowest position is painted last, atop all other components
+ - w/ layers 
+   - highest number is painted atop all else
+   - lowest number is painted first (and will be painted over)
+----
+
+----
+WindowConstants Interface
+ - Implemented by Swing contatiners
+ - only has four constants w/i no methods
+ - DISPOSE_ON_CLOSE //disposes window when closed
+ - DO_NOTHING_ON_CLOSE //does nothing when closed
+ - EXIT_ON_CLOSE // exits VM upon close
+ - HIDE_ON_CLOSE //simply hides the window when closed
+----
+
+----
+JFrame
+ - like awt.Frame
+ - getContentPane().add() //have to use this instead of 'add'
+ - awt.Frame is child class of awt.Container (parent cls of JComponent)
+ - defaultCloseOperation is set to HIDE_ON_CLOSE
+ - properties allow access to JRootPane-content, glass and layered
+----
+
+----
+JWindow
+ - extends awt.Window - parent class of JFrame
+ - like JFrame w/o ui ability to move 
+ - like JFrame w/o title bar
+ - use for splash screen
+----
+
+----
+JApplet
+ - extends java.applet.Applet
+ - applet is intended to be embedded w/i another application
+ - embed in html - specific syntax 
+ - init() used to inform applet browser has loaded it
+ - use init() to chng componets w/i
+ - start() brower called, begin execution
+---- 
+ 
+----
+JInternalFrame
+ - exist only w/i another JContainer
+ - implements RootPaneContainer and WindowConstants
+ - HAS A JDeskTopPane for managing internal frame layers
+ - HAS A JDeskTopIcon for turning internal frame into icon\
+   - JDeskTopIcon is an internal class of JInternalFrame
+ - notifies InternalFrameListener
+ - upon focus loss glasspane set visiable 
+ - regain focus 1st click remove glasspane
+ - fires unique InternalFrameEvent 
+----
+
+----
+JDesktopPane
+ - extends JLayeredPane
+ - has no layout manager 
+ - internal frames are moveable by the user
+----
+
+----
+DesktopManager
+ - for management of internal frames
+ - reference ing JDesktopPane
+ - implmented in DefaultDesktopManager
+ - methods for maximize, minimize, iconify etc
+----
+
+----
+JDialog
+ - extends awt.Dialog
+ - general purpose dialog box - think pop-up  
+ - implements RootPaneContainer and WindowConstants
+ - by RootPaneContatiner HAS A JRootPane
+ - model true means domination of focus until close
+----
+
+----
+JOptionPane
+ - extents JComponent
+ - easy pop-ups
+ - all dialogs are modal
+ - HAS A JDialog or JInternalFrame to do the work
+ - may instantiate and call createDialog() instead of using Static methods
+ - four flavors
+   - showConfirmDialog
+   - showInputDialog
+   - showMessageDialog
+   - showOptionDialog: combo of the above
+ - eight possiable parameters per flavor
+   - parentComponent
+   - message: use array to display vertical message
+   - messageType: takes a constant - defines dialog style
+   - optionType: takes a constant - choose various canned buttons
+   - options: create your own buttons
+   - icon: override message icon for custom one
+   - title: what appears in the title bar
+   - intialValue:  for input style only
+ - interact w/ user choice by listen for PropertyChangeEvent
+ - event fired on set of bound properties
+ - input dialog returns string or object for array
+ - confirm dialog returns int as constant
+ - msg dialog returns void
+ - use of static methods is recommended
+----
+ 
+----
+JSplitPane
+ - split pane between two and only two componets
+ - property control over location of split
+----
+
+----
+JScrollPane
+ - extends JComponent
+ - HAS A two JScrollBar references
+ - HAS A ScrollPaneLayout for its layout manager
+ - provide scrollable view of a component
+ - scrolled content is the Viewport
+ - viewport is viewable portion of wrapped compentent
+ - divided into nine areas
+   - column header: top horizontial
+   - 4 corners: visable based on scrollbars being needed
+   - row header: left vertical
+   - horizontial scrollbar
+   - vertical scrollbar
+   - veiwport contained there-in
+----
+
+----
+JViewport
+ - inset visable square of component
+ - extend to make magnify view
+ - manage w/ ViewportLayout
+----
+
+----
+JTabbedPane
+ - extends JComponent
+ - use add() method to add new tab
+ - tabs may wrap mutilple lines
+ - spinner used to maintain single tab line (left/right)
+ - selectedComponent:  currently selected tab
+----
+
+----
+Box
+ - easy layout manager
+ - glue methods used for filler
+   - used to fill blank space
+   - componets maintain size
+   - glue stretches to fill 
+   - vertical or horizontail glue
+ - strut methods used for rigid spacing
+   - force gaps between
+   - vertical or horizontail 
+ - glue/struts use inner Box.Filler class
+----
+
+----
+BoxLayout
+ - extends directly from Object
+ - components on vertical or horizontial
+ - only constructor requires container and axis
+ - componets will not warp
+----
+
+----
+OverlayLayout
+ - for managing components atop each other
+ - control overlay w/ alginment points
+ - alginment point visualized as sides of components
+   - horizontail left side 0.0, right side 1.0
+   - vertical top side 0.0, bottom side 1.0
+   - values determine placement of cross-hairs on component
+   - components share alignment point
+   - text under icon would be 
+     - text v:0.0 h:0.5 - croshairs middle, above
+     - icon v:1.0 h:0.5 - crosshairs middle, below
+----
+
+----
+JFileChooser
+ - complete ui for save/open file dialog
+ - showDialog() return int value for Cancel or OK
+ - accessory property allows for extra component to be attached to dialog
+ - specify:
+   - file filter
+   - enable change file filter
+   - show hidden files
+   - show files, directory, both
+   - multiple selections
+----
+
+----
+FileFilter
+ - parnter class to file chooser
+ - used to limit choice of files therein
+ - limit by:
+   - extension
+   - creator (Mac OS)
+   - user (unix)
+----
+
+----
+JColorChooser
+ - standard color palatte
+ - uses ColorSelectionModel interface to store choosen color
+ - ColorSelectionModel is implemented by DefaultColorSelectionModel
+----
+
+----
+Borders
+ - place on any extension of JComponent
+ - border insets: area around component in which border is painted
+ - use BorderFactory to gen borders from static methods  
+ //call set border on component 
+ myComponent.setBorder(new EtchedBorder(EtchedBorder.LOWERED));
+ BorderFactory.createLineBoder(Color.grey); //fastest border making
+----
+
+----
+Border Types
+ - BevelBorder.RAISED
+ - BevelBorder.LOWERED
+ - EtchedBorder.LOWERED //looks like a cut groove
+ - EtchedBorder.RAISED
+ - LineBorder //set thickness with property
+              //has two Static methods for quick creation
+ - MatteBorder //custom img border
+               //set the insets or the border inset = img size
+ - TitleBorder //six postions (eg right, left)
+               //six justifications (eg above, below)    
+ - CompoundBordet //combine two
+----
+
+----
+JMenuItem
+ - inheirts form AbstractButton
+ - JMenu actually extends JMenuItem
+   - JMenu contains its title item which is a JMenuItem
+   - Menu appears upon selecting its title JMenuItem 
+ - have many features like a button - hence the extension
+ - implement MenuElement interface
+ - JMenuItem is, underneath, a button that makes a JPopupMenu upon select
+ - is selected upon mouse hover-over
+ - menu item short-cut keys work anytime app is running
+ - fires unique MenuDragMouseEvent and has addListener thereof
+ - fires MenuKeyEvent likewise
+ - extended JCheckBoxMenuItem for check box on menu
+ - extended JRadioButtonMenuItem for radio button on menu 
+----
+
+----
+SingleSelectionModel Interface
+ - is Data Model for Menu Bars and Menus in swing
+ - menu selection - only one item at a time
+ - hold int of index value of current selection
+ - allow only one choice at a time
+ - fire ChangeEvent upon index value change
+ - DefaultSingleSelectionModel as base implementation 
+----
+
+----
+MenuDragMouseEvent
+ - implement MenuDragMouseListener
+ - has methods for
+   - dragged w/i menu item
+   - released w/i menu item
+   - drag into menu item
+   - drag exit menu item
+----
+
+----
+MenuKeyEvent
+ - responsive while popup visable, active
+ - implement MenuKeyListener
+ - has methods for 
+   - typed (pressed & released)
+   - pressed 
+   - released
+----
+
+----
+JMenuBar
+ - extends from JComponent
+ - is horizontal
+ - has a DefaultSingleSelectionModel as data model
+ - order of add() JMenu determine index value
+ - may add to JFrame, JDialog, JApplet and JInternalFrame
+ - extend JComponent, may be placed like any component
+ myJFrame.setJMenuBar(myJMenuBar) //add it to a frame
+ myMenuBar.add(myJMenuItem) //add menu item to the bar
+----
+
+----
+JPopupMenu
+ - free floating menus
+ - invoker is underlying component
+ - show( ) //typical method call to display popup
+   - will set location upon call
+   - likewise for properties
+ - close upon selection of item w/i
+ - will close upon adjust size of invoker window
+ - fire PopMenuEvent upon visiable, invisiable and canel
+---- 
+
+----
+JMenu
+ - think menu item and popup menu
+ - menu item is button, popup menu is result
+ - attach to a menu bar or menu item
+----
+
+----
+JToolBar
+ - may be placed on menu bar or moved freely in window
+ - contains components
+ - reattach to specific 'hotspots' on the frame
+ - may disable floating ability
+ - grab by click-hold @ area that is not a button
+----
+
+----
+JTable
+ - default construction only requires 2-D array of data and 1-D array of headers
+ - individual unit is a column
+ - each column has data-type and component 
+   - determine the way the column looks (eg checkbox for boolean)
+ - selection may be cell, row or column 
+ - cell selection diables row and column selection
+ - cell selection allows for a range 
+ - event are routed through data and column models
+----
+
+----
+TableColumn
+ - specify componets and determine what is used to draw the column
+ - may specify unique column-object name or just leave it as the header
+----
+
+----
+TableColumnModel Interface
+ - the form of a collection of TableColumn objects
+ - vs. TableModel which handles cell and contents
+ - handles column specific: margins, spacing etc
+ - implementor must handle ColumnModelEvent
+   - event fire upon column sizing 
+ - DefaultTableColumnModel is the basic implementation of the interface
+----
+
+----
+TableModel
+ - for handling data w/i the cells
+ - is an Interface
+ - AbstractTableModel is implementor
+ - DefaultTableModel is concrete 
+ - useful getValueAt(int rowIndex, int columnIndex)
+ - and setValueAt(Object aValue, int rowIndex, int columnIndex)
+ - extend AbstractTableModel to customize, not default
+ - DefaultTableModel uses Vector objects to work the table data
+ - TableModelEvent fire upon chngs to the data
+   - will specify cell, column or row
+   - constants used to specify type of chng (eg delete, insert, etc)
+ - TableModelListener implemented by custom tables
+   - register listener with model itself
+   - to keep model-view up-to-date w/ data model
+ - JTableHeader is a component class for table headers
+----
+
+----
+TableCellRenderer 
+ - single method for returning component that will draw cell
+ - DefaultTableCellRenderer is base implementation
+   - returns a JLabel from this method
+ - cascade renderers by passing one into another's constructor
+   - override as necessary
+----
+
+----
+CellEditor
+ - typical process
+   - user select cell
+   - cell component is replaced with editor
+   - new value
+   - user completes selection
+   - editor fires event
+   - component hears event changes its value to new value
+ - DefaultCellEditor is base implementation
+----
+ 
+----
+Java Swing Practice
+ - add components to panels and add panels to frames
+ - JFrame frm = new JFrame("myFrame"); //how it starts
+ - typically these are always
+    myFrame.setDefaultClose(JFrame.EXIT_ON_CLOSE);
+    myFrame.pack();
+    myFrame.setVisible(true);
+ - Use AbstractAction class to concentrate action response in a single class
+ - make quick implemntation of the action listener
+    myButton.addActionListener(new ActionListener(){
+      public void actionPreformed(ActionEvent e){
+        myTextField.setText("ACTION!");}
+      }
+    );
+ - delegate logic from event using the following:
+    myButton.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(java.awt.event.ActionEvent evt){
+        HandleMyButtonAction(evt); //simply delegate the action handling!
+        }
+      }
+    );    
+    
+ - set borders quickly with BorderFactory class 
+    myLabel.setBorder(BorderFactory.createEtchedBorder());
+ - w/ JTextArea use the 'append' method and attach a "\n" to get a carriage rtrn
+ - add JEditorPane to display text as html
+   JEditorPane pane = new JEditorPane();
+   //use local URL 'file://' syntax for local files
+   //will load CSS as stated in <head>
+   java.net.URL htm = new java.net.URL("file:///C:/myhtml.html");
+   pane.setPage(htm);
+ - add JMenuItem to JMenu; add JMenu to JMenuBar; call JFrame.setJMenuBar() 
+  - implement actionListener on the JMenuItems for results
+  - use JMenu.addSeperator(); to get a little line seperator
+- add Java source files to project's src folder
+ - this is the relative path root for the import statements
+- import statements follow file structure as such
+ import org.myCompany.myProject.myClass;
+ src\org\myCompany\myProject\myClass.java
+ 
+-to set the size of a component call setSize(int, int); 
+  - DO NOT call the Pack method afterwords or it gets reset      
+ 
+- tricky combinations for control on layout manager
+    public static void main(String[] args) {
+        JFrame myFrm = new JFrame("me");
+        
+        JPanel pnl = new JPanel();
+        JPanel pnl2 = new JPanel();
+        JPanel pnl3 = new JPanel();
+        
+        BorderLayout lay = new BorderLayout();
+        
+        myFrm.setLayout(lay);
+        pnl.setLayout(new GridLayout(1,2));
+        pnl2.setLayout(new GridLayout(1,2));
+        
+        
+        JButton btn = new JButton("OK");
+        JButton btn2 = new JButton("NOT OK");
+        JButton btn3 = new JButton("MESSED UP"); 
+        JButton btn4 = new JButton("GONE");
+        
+        pnl.add(btn);
+        pnl.add(btn2);
+        pnl2.add(btn3);
+        pnl2.add(btn4);
+
+        myFrm.add(pnl,BorderLayout.EAST);
+        myFrm.add(pnl2,BorderLayout.WEST);
+        lay.setHgap(100);
+        
+        myFrm.setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE);
+        myFrm.pack();
+        myFrm.setVisible(true);
+    }
+  
+

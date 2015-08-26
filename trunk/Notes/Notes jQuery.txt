@@ -1,0 +1,648 @@
+<html>
+    <title>jQuery Query</title>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
+
+	<!--FAST REFERENCe -->
+    <script type="text/javascript">
+	
+	//by ID
+	$("#my-id")
+	
+	//by class
+	$(".my-class")
+	
+	//by type and class 
+	$("input.my-class-on-inputs")
+	
+	//common getters setters 
+	$(".my-selector").hide();//sets display to none
+	$(".my-selector").show();
+	$("input.my-text-box").val() //to get a textbox's text
+	$("input.my-text-box").val('This is written to the text box'); //to set a textbox
+	$(".my-selector").addClass("my-css-class");   //add remove css class
+	$(".my-selector").removeClass("my-css-class");
+	$(".my-selector").toggleClass("my-css-class");
+	$(".my-selector").attr("my-attr-name"); //gets\sets any attribute
+	$(".my-selector").attr("name","value"); //also adds an attribute
+	$(".my-selector").removeAttr("name");
+	$(".my-selector").css("css-name", "css-value");
+	$(".my-selector").html("<span> html text literal </span>"); //set html directly
+	$(".my-selector").focus(); //only works for input and anchor with href
+	
+	//dom navigation
+	$(".my-selector").parent();
+	$(".my-selector").children();
+	$(".my-selector").parents();//will get all parents where zero-index is closest
+	$(".my-selector").siblings();
+	
+	//contextual query
+	$(".my-selector").find(".my-other-selector"); //finds all decendents which match, not just direct children
+	$(".my-selector").each(function (index, element){ /*do something on each*/});
+	$(".my-selector").filter(".my-other-selector"); //contextual selection 
+
+	
+	//add functions to jquery
+	$.fn.myFunction = function (){
+		//use $(this) to reference whatever was selected on
+		$(this).keypress(function (e) { console.log(e.keyCode); });
+	};
+	    //and then this is valid
+	$("my-selector").myFunction();
+	
+	//server calls
+	$(".my-form-selector").submit();
+	$.ajax({
+		type: "GET",
+		url: "http://mySubdomain.myDomain/myPath/myResource",
+		data: {myProperty00  = "some value", myProperty01 = "some other value"},
+		beforeSend: function (){
+			//toggle some kind of spinner on
+		},
+		complete: function (){
+			//toggle spinner off
+		},
+		success: function (results){
+			//do something with data (aka results) from server
+		}
+	});
+	
+	//events
+	$(".my-selector").unbind("click").bind("click", function () { 
+		//do something about click event
+	});
+	</script>
+</html>
+
+<html>
+<head>
+    <title>jQuery Query</title>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
+
+    <script type="text/javascript">
+        //the '$' symbol is simple alias for 'jquery'
+        $(function () { //onLoad-esque
+            $('#myButton').click(function () {
+                console.log("button click");
+                $("<p>an hypertext literal added from code</p>").insertAfter("#myDiv");
+                //may set selector to specific context 
+                $("li" /*select 'li' elements*/, "div#myDiv" /*within a 'div' id'ed as 'myDiv'*/).each(function (i, x) { console.log(x.innerHTML); });
+
+                //CSS selectors
+                $("*");                            //everything
+                $("li");                           //byElement
+                $(".myClass");                     //byClass
+                $("p.myClass");                    //by a Class on an Element
+                $("#myDiv");                       //by id
+                $("div#myDiv");                    //by element with id
+                $("body div");                     //by any descendant
+                $("div > li");                     //by direct child
+                $("div+p");                        //by immediate preceding sibling 
+                $("div~p");                        //by any preceding sibling
+                $("[custom-attr]");                //by having attribute
+                $("span[custom-attr='myValue']");  //by element attribure having this value
+                $("span[custom-attr^='myValue']"); //by element attribute having this starting value
+                $("span[custom-attr$='myValue']"); //by element attribute having this ending value
+                $("span[custom-attr!='myValue']"); //by element attribute not being present or being present without this value
+                $("span[custom-attr*='myValue']"); //by element attribute containing this value at any substring of attribute value
+                $("span[custom-attr|='myValue']"); //by element attribute having this value followed by a hypen char
+                $("span[custom-attr~='myValue']"); //by element attribute having this value delimited by space chars
+
+                //jQuery Position Selectors
+                $("span:first");                   //by first in context
+                $("span:last");                    //by last in context
+                $("span:odd");                     //by all odd in context
+                $("span:even");                    //by all event in context
+                $("p span:last-child");            //by last child in context
+                $("p span:first-child");           //by first child in context
+                $(":only-child");                  //by element having no siblings
+                $("ul:nth-child(3)");              //by index ordinal
+                $("ul:nth-child(1n+1)");           //by index ordinal offset
+                $(":eq(12)");                      //by index ordinal on total context
+                $("li:gt(2)");                     //that after excluded index ordinal 
+                $("li:lt(2)");                     //that before excluded index ordinal
+                $(":parent");                      //elements that are not empty elements                           
+                $(":header");                      //elements 'h1' to 'h6'
+
+                //Current State selectors
+                $(":checked");                     //'radio', 'checkbox' in checked state
+                $(":animated");                    //element in state of being animated
+                $(":contains(my)");                //element containing this text (text is not enclosed in single-quotes)
+                $(":enabled"); 
+                $(":disabled");
+                $(":hidden"); 
+                $(":visable");
+                $(":selected");                    //'option' elements selected
+
+                //Type selectors
+                $(":button");
+                $(":checkbox");
+                $(":file");
+                $(":image");
+                $(":input");
+                $(":password");
+                $(":submit");
+                $(":text");
+
+                //Compound selectors
+                $(":has(span[custom-attr*='myValue']"); //inner selector is part of string literal
+                $(":not(span[custom-attr*='myValue']"); 
+
+
+            });
+        });
+    </script>
+    <style type="text/css">
+            .my-class {background : red; color: Black;}
+        </style>
+        
+</head>
+<body>
+    <button type="button" id="myButton">Click Here</button>
+    <div id="myDiv">
+        <ul>
+            <li>my first item</li>
+            <li>my second item</li>
+            <li>my third item</li>
+        </ul>
+    </div>
+    <p>paragraph between two divs</p>
+    <div id="secondDiv">
+        <ul>
+            <li>my latter item</li>
+            <li>my aux item</li>
+        </ul>
+    </div>
+    <div id="myThirdDiv">
+        <ol>
+            <li>my ordered item</li>
+            <li>my other order item</li>
+        </ol>
+
+        <ol>
+            <li>My other order item</li>
+            <li>my last ordered itme</li>
+        </ol>
+    </div>
+    <p>paragraph after two divs</p>
+    <p>
+        <span custom-attr="myValue">span with a custome attr</span>
+        <span custom-attr="myValueplus">span with same custome attr but different value</span>
+        <span custom-attr="lessmyValue">span with same custom attr but yet another different value</span>
+        <span custom-attr="myValue-plus">span with custom attr having value with hyphen in it</span>
+        <span custom-attr=" myValue plus">span with custome attr having value with empty space on both sides</span>
+    </p>
+</body>
+</html>
+<!--
+
+UTILITIES
+
+-->
+<html>
+<head>
+    <title>jQuery Utilities</title>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
+
+    <script type="text/javascript">
+        $(function () { //onLoad-esque
+            $('#myButton').click(function () {
+                //selector used to create node
+                $("<div>A new div added from code</div><br />").appendTo("body");
+
+                //using JSON as second param to set attributes
+                $("<img>", { src: "images/greenArrow.jpg", title: "Green Arrow" }).appendTo("body");
+                $("<br />").appendTo("body");
+
+                //call 'css' method on selector, handing it a JSON, to set style 
+                $("<div>Style applied with calls to css and given JSON object</div>").css({ background: "Blue", color: "Red" }).appendTo("body");
+                $("<br />").appendTo("body");
+
+                //get metadata of the selected array
+                console.log("'length' property" + $("div").length);                     //length :: property for length of selector
+                console.log("'size' method " + $("div").size());                        //size() :: method for length of selector
+
+                //get selector element by index
+                console.log("array index '[]'" + $("div")[0]);
+                console.log("'get' method " + $("div").get(0));                         //get(i) :: get dom element at index i
+
+                //get single element wrapped in a selector
+                console.log("'eq' method " + $("div").eq(0));                           //eq(i) :: get the element at index as a jQuery selector
+                console.log("'first' method " + $("div").first());                      //first() :: get first element in selector as a selector
+                console.log("'last' mehtod " + $("div").last());                        //last() :: get last element in selector as a selector
+                var myClassicDomArray = $("div").toArray();                             //toArray() :: get selector as a DOM array
+                myClassicDomArray.forEach(function (element) {
+                    console.log("classic forEach js array " + element);
+                    return true;
+                });
+                console.log("'index' method" + $('img').index($('img#redfish')[0]));    /*index(dom-elem) :: get the ordinal value 
+                                                                                                            of the given element with 
+                                                                                                            the selector*/
+                var mySel = $('div#htmlDiv');
+                console.log("'add' method " + mySel.add($("img[alt='red fish']")));     /*add(sel) ::  append further selector 
+                                                                                                       parameters to an existent 
+                                                                                                       selector - creates new object*/
+                console.log("'not' method " + $("img").not("img[alt='red fish']"));     /*not(x) :: x being a selector, 
+                                                                                                    function or dom element, 
+                                                                                                    enhanced over ':not(sel)' */
+                console.log("'is' method " + $("img").is("img#redfish"));
+
+                console.log("'filter' method " + $('img').filter("[alt]"));             /*filter(x) :: x being a function, selector, 
+                                                                                                        dom element or array*/
+                console.log("'slice' method " + $("img").slice(1, 2));                  /*slice(i, j) :: i being zero-based start and j, 
+                                                                                                         optional being zero-based end*/
+                console.log("'has' method " + $("div").has("img[alt]"));                /*has(x) :: x being selector or dom element, 
+                                                                                                      returns a selector not a boolean*/
+
+                var myMap = $("img").map(function (i, e) {                              //map(fx) :: function run on each element and returns
+                    console.log("running 'map' at index " + i);                                      //a new selector thereof
+                });
+
+                $("img").each(function (i, e) {                                         //each(fx) :: function run on each element 
+                    console.log("running 'each' at index " + i);                                      //does not return anything       
+                });
+
+                $("img").not("[alt]").hide().end().addClass('my-class');                 /*end() :: special method that sets scope back to 
+                                                                                                   previous selector*/
+
+            });
+        });
+    </script>
+        <style type="text/css">
+            .my-class {background : red; color: Black; border:1px dotted black;}
+        </style>
+        
+</head>
+<body>
+    <button type="button" id="myButton">Click Here</button>
+    <div id="htmlDiv">
+        <img id="onefish" src="images/oneFish.png" alt="one fish" title="One Fish" />
+        <br />
+        <img id="twofish" src="images/twoFish.png" alt="two fish" title="Two Fish" />
+        <br />
+        <img id="redfish" src="images/redFish.png" alt="red fish" title="Red Fish" />
+        <br />
+        <img id="bluefish" src="images/blueFish.png" alt="blue fish" title="Blue Fish" />
+        <br />
+
+    </div>
+</body>
+</html>
+
+<!--
+
+OPERATIONS
+
+-->
+<html>
+<head>
+    <title>jQuery Operations</title>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
+
+    <script type="text/javascript">
+        $(function () { //onLoad-esque
+            $('#myButton').click(function () {
+                //set attribute value 
+                $("div").attr("data-myAttr", "myhtmldiv");                      /*attr(name, value) :: set an attribute value for 
+                                                                                                       all elements in selector*/
+                $("li").attr({ title: "an Item" });                             /*attr(JSON) :: set attributes as JSON*/
+                $("li:eq(0)").removeAttr("title");                              /*removeAttr(attrName) :: remove attribute*/
+                console.log($("li:eq(0)").data("data-myData", "myValue"));      /*data(name, value) :: add custom property to 
+                                                                                                       selector and value*/
+                console.log($("li:eq(0)").data("data-myData"));                 /*data(name) :: get custom data value from selector*/
+                console.log($("li:eq(2)").removeData("data-myData"));           /*removeData(name) :: remove custom data value from 
+                                                                                                      selector object*/
+                $("span").addClass("my-class");                                 /*addClass(name) :: adds the ref'ed class the 
+                                                                                                    selector's set*/
+                $("div#htmlDiv").removeClass("my-class");                       /*removeClass(name) :: removes class from 
+                                                                                                       selector set*/
+                $("p#p1").toggleClass("my-class");                              /*toggleClass(name) :: adds class if not present; 
+                                                                                                       removes class if present*/
+                $("p#p2").toggleClass("my-class", true);                        /*toggleClass(name, boolean) :: adds/removes class 
+                                                                                                                based on boolean value*/
+                console.log($("p#p2").hasClass("my-class"));                    /*hasClass(name) :: returns boolean*/
+                $("div#forthDiv").css(
+                        {
+                            border: "1px dotted black",
+                            color: "red"
+                        });                                                     /*css(JSON) :: override stylesheet and 
+                                                                                               add style directly on selector's set*/
+                console.log($("div#forthDiv").css("color"));            /*css(name) :: returns string value of 
+                                                                                               'name' style attr*/
+                $("span#span2").width("100%");                          /*width(value) :: most common css properties 
+                                                                                                  is availabe*/
+                $("div#forthDiv").height("60px");                       /*height(value) :: same*/
+                console.log($("div#forthDiv").width());                 /*width() :: get width value in pixels*/
+                console.log($("div#forthDiv").height());                /*height() :: get height value in pixels*/
+                console.log($("p#p1").offset());                        /*offset() :: gets 'left' and 'top' 
+                                                                                              relative to the Document*/
+                console.log($("p#p1").position());                      /*position() :: gets 'left' and 'top' 
+                                                                                                relative to parent node*/
+                console.log($("li:eq(0)").html());                      /*html() :: gets the inner html of selector's set*/
+                $("li").html(function (i, e) {
+                    return "<span> additonal content added from code " + i + ".</span "
+                });                                                             /*html(frag) :: override inner html on selector's set*/
+                console.log($("li").text());                                    /*text() :: returns string concat of inner 
+                                                                                            html contents of all selector's set*/
+                $("div#forthDiv").append("<p id='p3'>paragraph 3 added</p>");   /*append(value) :: append string, 
+                                                                                                 fucntion, selector or 
+                                                                                                 dom element to selector's set*/
+
+                //append node already present actually performs a 'move' to the end
+                $("div#thirdDiv").append($("p#p1"));
+                $("li:eq(0)").prepend("<li>item 1 'prepend'.</li>");            /*prepend(content) :: adds content to top 
+                                                                                                      of selector's set*/
+                $("ul#firstul").before("<p>this p added as 'before'</p>");      /*before(content) :: adds content above each 
+                                                                                                     of selector's set*/
+                $("ul#firstul").after("<p>this p added as 'after'</p>");        /*after(content) :: adds content below each 
+                                                                                                    of selectors's set*/
+                $("<span> - this added to targets</span>").appendTo($("p"));    /*appendTo(selector) :: adds given selector to 
+                                                                                                        each of selector items in target*/
+                $("<span> - more yet</span>").prependTo($("p#p4"));             /*prependTo(selector) :: same*/
+                $("<span> - and yet</span>").insertBefore($("div#forthDiv"));   /*insertBefore(selector) :: same*/
+                $("<span> - more</span>").insertAfter($("div#forthDiv"));       /*insertAfter(selector) :: same*/
+                $("p#p1").wrap("<div id='newDiv'></div>");                      /*wrapper(content) :: place open/close nodes 
+                                                                                                      around each in selector*/
+                $("div").wrapAll("<div id='masterDiv'></div>");                 /*wrapAll(content) :: wrap the selector as a whole unit*/
+                $("li:eq(2)").wrapInner("<span></span>");                       /*wrapInner(content) :: wrap the contents thereof, 
+                                                                                                        not the node itself*/
+                $("span#span2").unwrap();                                       /*unwrap() :: remove the enclosing parent node */
+                $("ol#ol1").remove();                                           /*remove() :: removes all elements in selector from DOM*/
+                var myButton = $("#myButton").detach();                         /*detach() :: removes elements from DOM 
+                                                                                              but retains then in memory*/
+                $("div#secondDiv").before(myButton);
+                /*empty() :: clears the DOM*/
+                var copyOfMyButton = $("#myButton").clone(true);                /*clone(boolean) :: clone selectors set with events*/
+
+                //Form operations
+                console.log($("input#mytextbox").val());                        /*val() :: returns value of first element in selector, 
+                                                                                           empty string if selector is empty.  For 
+                                                                                           checkbox and radiobutton, method only returns 
+                                                                                           assignment of 'value' property, not if it is 
+                                                                                           checked or not.*/
+                console.log($("input#chk1:checked").val());
+
+                $("input#mytextbox2").val("value set from code");               /*val(aValue) :: sets the value of the first 
+                                                                                                 element in the selector*/
+
+            });
+        });
+    </script>
+        <style type="text/css">
+            .my-class {background : red; color: Black; border:1px dotted black;}
+        </style>
+        
+</head>
+<body>
+    <button type="button" id="myButton">Click Here</button>
+    <div id="htmlDiv" class="my-class">
+        First div, id'ed at 'htmlDiv' and has the 'my-class' assigned in markup
+    </div>
+    <div id="secondDiv">
+        <ul id="firstul">
+            <li>item 1</li>
+            <li>item 2</li>
+            <li>item 3</li>
+        </ul>
+    </div>
+    <div id="thirdDiv">
+        <p id="p1">this is the contents of paragraph node id'ed by value 'p1'</p>
+        <span id="span1">this is a span node, sibling of 'p1' and is id'ed by 'span1'</span>
+        <p id="p2">this is the contents of paragraph node id'ed by value 'p2'.  It is a sibling of paragraph p1</p>
+    </div>
+    <div id="forthDiv">
+        Content of the forth Div id'ed as such.
+        <p id="p5">
+            <span id="span2">contents of span 2, being a child node of forthDiv</span>
+        </p>
+    </div>
+    <ol id="ol1">
+        <li>will be removed</li>
+        <li>will also be removed</li>
+    </ol>
+    <form id="myForm" method="post" action="" name="myForm" >
+        <input id="mytextbox" type="text" name="mytextbox" size="40" />
+        <input id="chk1" name="mycheckbox" type="checkbox" value="chk1" />
+        <select id="mydropdown" name="mydropdown" size="1">
+            <option value="item1" selected="selected">Choice 1</option>
+            <option value="item2">Choice 2</option>
+        </select>
+        <input id="mytextbox2" type="text" name="myothertextbox" size="40" />
+    </form>
+</body>
+</html>
+<!--
+
+EVENTS
+
+-->
+<html>
+<head>
+    <title>jQuery Events</title>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
+    <script type="text/javascript">
+		//very handy key capture function
+		function AllowOnlyNumber() {
+			var v = $(this).val();
+			var no_nonnumerals = v.replace(/[^0-9\x2F]/g, '');
+			$(this).val(no_nonnumerals);
+		}
+        $(function () { //onLoad-esque
+			//very handy key captrue 
+			$("#myImg4").keyup
+
+            $("#myImg")[0].onmouseover = function (evt) {                                   /*DOM 0 Event handling*/
+                console.log("myImg :: DOM 0 onmouseover event");
+            };
+            $("#myDiv")[0].onmouseover = function (evt) {
+                console.log("myDiv :: DOM 0 onmouseover event");
+            };
+
+            var myElement = $("#myImg2")[0];                                                /*DOM 2 Event handling*/
+            myElement.addEventListener('click', function (evt) {
+                console.log("myImg2 :: DOM 2 click event 1 of 3");
+            }, false);
+            myElement.addEventListener('click', function (evt) {
+                console.log("myImg2 :: DOM 2 click event 2 of 3");
+            }, false);
+            myElement.addEventListener('click', function (evt) {
+                console.log("myImg2 :: DOM 2 click event 3 of 3");
+            }, true);
+
+
+            $("#myImg3").bind('click',                                                      /*BIND - standard method of event listeners*/
+                function (evt) {
+                    console.log("myImg3 :: jQuery click event 1 of 2");
+                });
+            //inline with attached namespace for later grouping
+            $("#myImg3").bind('click.eventNamespace',
+                function (evt) {
+                    console.log("myImg3 :: jQuery click event 2 of 2");
+                });
+            //multiple binding 
+            $("#myImg4").bind({
+                click: function (evt) { console.log("myImg4 :: jQuery click event"); },
+                mouseover: function (evt) { console.log("myImg4 :: jQuery click event"); }
+            });
+
+            $("#myImg4").one('click',                                                       /*ONE - run a handler only once*/
+            function (evt) {
+                console.log("myImg4 :: jQuery one-time event handler");
+            });
+			
+            $("#myDiv99").live('click.onLive',                                              /*LIVE - event handling for nodes that will be*/
+            function (evt) { //NOTE these events are handled at the DOM tree's top, no propagation
+                console.log("myDiv99 :: jQuery live event handler");
+            });
+
+            $("div").toggle(                                                                /*TOGGLE - click events only
+                                                                                                       each function is called in tandem
+                                                                                                       upon each click event - has rollover
+                                                                                                       type behaviour */
+                function (evt) { console.log("on div :: toggle event handler 1 of 3"); },
+                function (evt) { console.log("on div :: toggle event handler 2 of 3"); },
+                function (evt) { console.log("on div :: toggle event handler 3 of 3"); }
+                );
+
+            $("#myDiv5").hover(function (evt) {                                             /*HOVER - fire event on mouseenter, 
+                                                                                                      mouseleave for this node 
+                                                                                                      and all child-nodes therein*/
+                console.log("div5 :: jQuery hover event"); 
+                });
+
+            $('#myButton').click(function () {
+
+                $("#myImg3").unbind(".eventNamespace");                                     /*UNBIND- unbind event using 
+                                                                                                      trailing namespace value*/
+                $("#myImg4").bind('click', function (evt) {
+
+                    //
+                    console.log(evt.altKey);                                                /*jQuery.Event Properties, 
+                                                                                                     all normal DOM event properties 
+                                                                                                     are also accessable on this object*/
+                    console.log(evt.ctrlKey); console.log(evt.shiftKey); console.log(evt.metaKey);
+                    console.log(evt.target); console.log(evt.currentTarget); console.log(evt.relatedTarget);
+                    console.log(evt.data); console.log(evt.result); console.log(evt.timestamp);
+                    console.log(evt.type); console.log(evt.which);
+                    /*
+                    evt.preventDefault();                                                      jQuery.Event Methods
+                    evt.stopPropagation(); evt.stopImmediatePropagation()
+                    evt.isDefaultPrevented(); evt.isPropagationStopped();
+                    evt.isImmediatePropagationStopped();
+                    */
+
+                }); //end myImg4.click
+
+
+                $("#myDiv99").die(".onLive");                                                   /*DIE - remove 'live' event handlers 
+                                                                                                        with this method*/
+
+                $('*').trigger(".eventNamespace");                                              /*TRIGGER - call events from code - 
+                                                                                                            propagation happens with .trigger*/
+
+                $('*').triggerHandler(".eventNamespace");                                       /*TRIGGERHANDLER no propagation with .triggerHandler*/
+            });
+        });
+    </script>
+        <style type="text/css">
+            .my-class {background : red; color: Black; border:1px dotted black;}
+        </style>
+        
+</head>
+<body>
+    <button type="button" id="myButton">Click Here</button>
+    <div id="myDiv">
+        <h3>DOM 0 Examples</h3>
+        <img id="myImg" src="Images/greenArrow.jpg" onclick="console.log('DOM 0 onclick event');" alt="some text" />
+    </div>
+    <div id="myDiv2">
+        <h3>DOM 2 Example</h3>
+        <img id="myImg2" src="Images/greenArrow.jpg" alt="some other text" />
+    </div>
+    <div id="myDiv3">
+        <h3>jQuery Examples</h3>
+        <img id="myImg3" src="Images/greenArrow.jpg" alt="even more text" />
+        <br />
+        <img id="myImg4" src="Images/redFish.png" alt="different text" />
+    </div>
+    <div id="myDiv4">
+        <h3>Further jQuery Examples</h3>
+        <img id="myImg5" src="Images/blueFish.png" alt="a lil'text" />
+    </div>
+    <div id="myDiv5" style="height:400px; width:400px; border:1px dotted black;">outer div
+        <div id="innerDiv" style="height:200px; width:200px; border:1px dotted black; position:relative; top:20%; left:20%;">inner div</div>
+    </div>
+</body>
+</html>
+<!--
+
+ANIMATION
+
+-->
+<html>
+<head>
+    <title>jQuery Animation</title>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
+
+    <script type="text/javascript">
+        $(function () {
+            $('#myButton').click(function () {                                  /*TOGGLE - toggle 'display' on and off*/
+                $("#myDiv1").toggle(500, function () {
+                    console.log("myDiv1 now toggled");
+                });
+            });
+            $("#myButton2").click(function () {                                 /*HIDE - toggle 'display' off*/
+                $("#myDiv2").hide(500, function () {
+                    console.log("myDiv2 now hidden");
+                });
+            });
+            $("#myButton3").click(function () {                                 /*SHOW - toggle display on */
+                $("#myDiv3").show(500, function () {
+                    console.log("myDiv3 now showing");
+                });
+            });
+            $("#myButton4").click(function () {
+                $("<div>", {
+                    id: "myDiv4",
+                    style: "height:200px; width:inherit; border:1px dotted black; background-color:Gray;"
+                }).fadeIn('slow', function () {                                 /*FADEIN - turn opacity back to 100%*/
+                    console.log("myDiv4 created and faded in");
+                }).appendTo($("#mainContainer"));
+                $("#myButton4").hide(500);
+                $("#myButton5").show(500);
+            });
+            $("#myButton5").click(function () {
+                $("#myDiv4").fadeOut(500, function () {
+                    console.log("myDiv4 now faded out");
+                });
+            });
+
+        });
+    </script>
+    <style type="text/css">
+            .my-class {background : red; color: Black;}
+        </style>
+        
+</head>
+<body>
+<div id="mainContainer">
+    <div id="myDiv1" style="height:200px; width:inherit; border:1px dotted black;">
+        Div 1 contents
+    </div>
+    <button type="button" id="myButton">Toggle Me</button>
+    <br />
+    <div id="myDiv2" style="height:200px; width:inherit; border:1px dotted black;">
+        Div 2 contents
+    </div>
+    <button type="button" id="myButton2">Hide Me</button>
+    <br />
+    <div id="myDiv3" style="height:200px; width:inherit; border:1px dotted black; display:none;">
+        Div 3 contents
+    </div>
+    <button type="button" id="myButton3">Show Me</button>
+    <br />
+    <button type="button" id="myButton4">Fade Me</button><button type="button" id="myButton5" style="display:none;">Fade Out</button>
+</div>
+</body>
+</html>
+
+

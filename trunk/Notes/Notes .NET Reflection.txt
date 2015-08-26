@@ -1,0 +1,588 @@
+
+Notes .NET Reflection
+
+----
+Various forms
+ - Serializable attribute
+  - an attribute used to decorate the class declaration
+  - has .NET perform serialization
+
+ - ISerializable
+  - an interface to implement that makes the type serializable
+  - typically these declaration still have the [Serializable] attribute
+  - only one method in the interface name GetObjectData
+  - a protected special constructor is also required
+  
+ - ISerializableSurrogate
+  - to be used on the types the developer is not in control (e.g. HttpRequest)
+  - allows for defining a manner of serializing a non-serializable type
+  - implementor has GetObjectData and SetObjectData
+  - requires that the surrogate be registered to a SurrogateSelector
+  - selector, in turn, is assigned to the formatter
+----
+
+----
+Serializing System.Data.DataTable to file
+using System;
+using System.IO;
+using System.Data;
+using System.Data.SqlClient;
+
+public class SaveDataTableToFile
+{
+	public static void ToDisk(string path)
+	{
+		DataTable testOutput;
+
+		using (
+			var connection =
+				new SqlConnection("Server=localhost;Database=AdventureWorks2012;Trusted_Connection=True;"))
+		{
+			var qryText = new StringBuilder();
+			qryText.AppendLine("SELECT TOP 32 * FROM [AdventureWorks2012].[Person].[Person]");
+			testOutput = new DataTable();
+			using (var command = connection.CreateCommand())
+			{
+				command.Connection.Open();
+				command.CommandType = CommandType.Text;
+				command.CommandText = qryText.ToString();
+
+				using (var da = new SqlDataAdapter { SelectCommand = command })
+					da.Fill(testOutput);
+					
+				command.Connection.Close();
+			}
+		}
+
+		var binSer = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
+
+		using (var ms = new MemoryStream())
+		{
+			binSer.Serialize(ms, testOutput);
+			using (var binWtr = new BinaryWriter(File.Open(path, FileMode.Create)))
+				binWtr.Write(ms.GetBuffer());
+		}
+	}
+}
+----
+
+----
+Serializing from code
+
+//required objects
+ System.IO.MemoryStream s = new System.IO.MemoryStream();
+ System.Runtime.Serialization.Formatters.Soap.SoapFormatter fm = 
+  new System.Runtime.Serialization.Formatters.Soap.SoapFormatter();
+ 
+ //actual action
+ fm.Serialize(s,new MyClass());
+ System.IO.StreamReader r = new System.IO.StreamReader(s);
+ s.Position = 0;
+ Console.WriteLine(r.ReadToEnd());
+ s.Position = 0;
+ 
+ //back again
+ MyClass mine = (MyClass)fm.Deserialize(s);
+----
+
+----
+Implementing ISerializable
+
+[Serializable]
+public class MyISerializable : ISerializable
+{
+    public int _public = 5000;
+    private int _private = 5001;
+
+    public void GetObjectData( SerializationInfo info,
+                               StreamingContext context)
+    {
+        // Add a datetime value to the serialization info.
+        info.AddValue( "TimeStamp", DateTime.Now );
+
+        // Serialize object members - both show up in the SOAP envelope
+        info.AddValue( "m1", _public );
+        info.AddValue( "m2", _private );
+    }
+
+    // Special deserialization ctor
+    protected MyISerializable( SerializationInfo info,
+                          StreamingContext context)
+    {
+        // Retrieve object members from
+        // the SerializationInfo instance.
+        _public = info.GetInt32("m1");
+        _private = info.GetInt32("m2");
+
+        // Retrieve time stamp.
+        DateTime ts = info.GetDateTime("TimeStamp");
+    }
+}
+----
+
+----
+ISerializableSurrogate on type that IS NOT serializable
+
+using System;
+using System.IO
+using System.Collections;
+using System.Collections.Specialized;
+using System.Collections.Generic;
+using System.Text;
+using System.Reflection;
+using System.Runtime;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters;
+
+public class Launch
+{
+  public static void Main()
+  {
+    //create a surrogate selector
+    SurrogateSelector ss = new SurrogateSelector();
+    //now map non-serializable types to thier surrogates
+    StreamingContext sc = new StreamingContext();
+    ss.AddSurrogate(typeof(MyNotSerializable), sc, new TestSurrogates());
+    ss.AddSurrogate(typeof(MyNotSerializableHasA),sc,new TestInnerSurrogate());
+
+    MemoryStream ms = new MemoryStream();
+    Soap.SoapFormatter sf = new Soap.SoapFormatter();
+    
+    //attache the surrogate selector to the formatter
+    sf.SurrogateSelector = ss;
+
+    sf.Serialize(ms,new MyNotSerializable());
+    StreamReader rdr = new StreamReader(ms);
+    ms.Position = 0;
+    Console.WriteLine(rdr.ReadToEnd());
+    ms.Position = 0;
+
+    MyNotSerializable itsBack = (MyNotSerializable)sf.Deserialize(ms);
+  }
+}
+public class TestSurrogates : ISerializationSurrogate
+{
+    #region ISerializationSurrogate Members
+    public void GetObjectData(object obj, 
+                              SerializationInfo info, 
+                              StreamingContext context)
+    {
+
+        //obj is the type defined in SurrogateSelector
+        MyNotSerializable myObj = (MyNotSerializable)obj;
+
+        //do it the hard way
+        info.AddValue("DataTypeString", myObj.DataTypeString);
+        info.AddValue("DataTypeInt", myObj.DataTypeInt);
+        
+        /*
+          the type returned by 'Inner' IS-A MyNotSerializableHasA
+          since a surrogate was defined for it as well and added to the
+          surrogate selector the framework does the heavy lifting
+        */
+        info.AddValue("Inner", myObj.Inner);
+
+    }
+
+    public object SetObjectData(object obj, 
+                                SerializationInfo info, 
+                                StreamingContext context, 
+                                ISurrogateSelector selector)
+    {
+        //works for all surrogates where added key is same as member name 
+        ObjectManager om = new ObjectManager(selector, context);
+        om.RegisterObject(obj, 1, info);
+        om.DoFixups();
+        obj = om.GetObject(1);
+
+        return obj;
+    }
+
+    #endregion
+}
+//this works fine without the Serializable attribute
+public class MyNotSerializableHasA : ISerializationSurrogate
+{
+    #region ISerializationSurrogate Members
+    public void GetObjectData(object obj, 
+                              SerializationInfo info, 
+                              StreamingContext context)
+    {
+        MyNotSerializableHasA myInner = (MyNotSerializableHasA)obj;
+
+        info.AddValue("DataTypeString", myInner.DataTypeString);
+        info.AddValue("DataTypeInt", myInner.DataTypeInt);
+    }
+
+    public object SetObjectData(object obj, 
+                                SerializationInfo info, 
+                                StreamingContext context, 
+                                ISurrogateSelector selector)
+    {
+        //exact same implementation as the previous
+        ObjectManager om = new ObjectManager(selector, context);
+        om.RegisterObject(obj, 1, info);
+        om.DoFixups();
+        obj = om.GetObject(1);
+
+        return obj;
+    }
+    #endregion
+}
+----
+
+----
+ISerializableSurrogate on type that IS serializable
+
+public class MySerializabeTypeSurrogate : ISerializationSurrogate
+{
+    public void GetObjectData ( object obj, 
+                                SerializationInfo info, 
+                                StreamingContext context )
+    {
+        // Serialize the object.
+        if ( obj is ISerializable )
+        {
+            //use normal means if obj is serializable
+            ((ISerializable)obj).GetObjectData(info, context);
+        }
+        else
+        {
+            //else use the formatter service
+            MemberInfo[]  mi  = 
+             FormatterServices.GetSerializableMembers(obj.GetType());
+
+            object[] od  = FormatterServices.GetObjectData( obj,mi );
+
+            for( int i = 0; i < mi.Length; ++i)
+            {
+                info.AddValue( mi[i].Name, od[i] );
+            }
+        }
+    }
+
+    public System.Object SetObjectData ( object obj, 
+                                        SerializationInfo info, 
+                                        StreamingContext context, 
+                                        ISurrogateSelector selector )
+    {
+
+        if ( obj is ISerializable )
+        {
+            ObjectManager om = new ObjectManager(selector, context);
+            om.RegisterObject(obj,1,info);
+            om.DoFixups();
+            obj = om.GetObject(1);
+        }
+        else
+        {
+            MemberInfo[]  mi  = 
+             FormatterServices.GetSerializableMembers(obj.GetType());
+ 
+            object[] od  = FormatterServices.GetObjectData( obj,mi );
+
+            int i = 0;
+            SerializationInfoEnumerator ie = info.GetEnumerator();
+            while(ie.MoveNext())
+            {
+                if ( mi[i].Name == ie.Name )
+                {
+                    od[i] = Convert.ChangeType( ie.Value, 
+                                       ((FieldInfo)mi[i]).FieldType);
+                    ++i;
+                }
+            }
+        
+            FormatterServices.PopulateObjectMembers( obj, mi, od );
+        }
+        return obj;
+    }
+}
+----
+
+----
+Getting type information
+ //easiest is to call the GetType() on an instance 
+ PropertyInfo[] pi = this.GetType().GetProperties(BindingFlags.Instance | 
+                                                  BindingFlags.Public | 
+                                                  BindingFlags.NonPublic);
+
+ //assign values using the memberinfo itself 
+ pi[0].SetValue(this, info.GetValue(pi[0].Name, pi[0].PropertyType), null);
+ 
+ //assign value - the longer way by constructing a type
+ pi[0].SetValue(this, Activator.CreateInstance(typeof(MyClass), 
+                                               new object[] { info, context }), 
+                                               null);
+
+//this example is performed on a class whose type is unknown to this appDomain
+ Assembly myAsm = Assembly.Load(IO.File.ReadAllBytes("C:\MyAsm.dll"));
+ 
+ var myDynamicInstance = myAsm.CreateInstance("TopNameSpace.MyClass");
+ 
+ Type myClassType = myAsm.GetType("TopNameSpace.MyClass")
+ 
+ myClassType.InvokeMember("MyProp",
+						  BindingFlags.SetProperty,
+						  null,
+						  myDynamicInstance,
+						  "the new value of the property");
+----
+
+----
+/*
+ * Create code from data
+ */
+using System;
+using System.Threading; 
+using System.Reflection; 
+using System.Reflection.Emit; 
+using System.Runtime.CompilerServices;  
+
+public class MyTypeFactory
+{
+    public static Type MakeMyType(String[][] members, String typeName, String asmName)
+    {
+        //need a domain, assembly, module and type 
+        AppDomain myDomain = Thread.GetDomain();
+        AssemblyName myAsmName = new AssemblyName(asmName);
+        AssemblyBuilder myAsmBuilder = myDomain.DefineDynamicAssembly(myAsmName, 
+                                                                      AssemblyBuilderAccess.Run);
+        ModuleBuilder myModBuilder = myAsmBuilder.DefineDynamicModule(myAsmName.Name);
+        TypeBuilder myTypeBuilder = myModBuilder.DefineType(typeName, TypeAttributes.Public);
+
+        //take the data and turn it into code
+        foreach (String[] prop in members)
+        {
+            //strings to be used in construction of this type
+            String myInstanceVarName = String.Format("_{0}", prop[0]);
+            String myPropertyName = prop[0];
+            String myGetMethodName = String.Format("get_{0}", prop[0]);
+            String mySetMethodName = String.Format("set_{0}", prop[0]);
+            Type myInstanceType = System.Type.GetType(prop[1]);
+
+            //define an instance variable on the type
+            FieldBuilder myProp = myTypeBuilder.DefineField(myInstanceVarName, 
+                                                            myInstanceType, 
+                                                            FieldAttributes.Private);
+
+            //define the public accessor (property)
+            PropertyBuilder myPropBuilder = myTypeBuilder.DefineProperty(myPropertyName, 
+                                                                         PropertyAttributes.HasDefault, 
+                                                                         myInstanceType, 
+                                                                         null); 
+
+            //define the getter 
+            MethodAttributes propAttr = MethodAttributes.Public | 
+                                        MethodAttributes.SpecialName | 
+                                        MethodAttributes.HideBySig;
+
+            MethodBuilder getPropertyBuilder = myTypeBuilder.DefineMethod(myGetMethodName, 
+                                                                          propAttr, 
+                                                                          myInstanceType, 
+                                                                          Type.EmptyTypes);
+            ILGenerator getPropertyIl = getPropertyBuilder.GetILGenerator();
+            getPropertyIl.Emit(OpCodes.Ldarg_0);
+            getPropertyIl.Emit(OpCodes.Ldfld, myProp);
+            getPropertyIl.Emit(OpCodes.Ret);
+
+            //define the setter
+            MethodBuilder setPropertyBuilder = myTypeBuilder.DefineMethod(mySetMethodName, 
+                                                                          propAttr, 
+                                                                          null, 
+                                                                          new Type[] { myInstanceType });
+            ILGenerator setPropertyIl = setPropertyBuilder.GetILGenerator();
+            setPropertyIl.Emit(OpCodes.Ldarg_0);
+            setPropertyIl.Emit(OpCodes.Ldarg_1);
+            setPropertyIl.Emit(OpCodes.Stfld, myProp);
+            setPropertyIl.Emit(OpCodes.Ret);
+
+            //map the getter and setter to the property
+            myPropBuilder.SetGetMethod(getPropertyBuilder);
+            myPropBuilder.SetSetMethod(setPropertyBuilder);
+
+        }
+
+        //get the dynamic type and return it 
+        Type myDynamicType = myTypeBuilder.CreateType();
+
+        return myDynamicType;
+    }
+}
+public class DynamicTypeExample
+{
+    public static void Main(string[] args)
+    {
+        /*
+         * ---------------------------------------------------------------------
+         * this would be defined in something other than code - for example only
+         * ---------------------------------------------------------------------
+         */
+        String theNameOfMyAsm = "MyDynamicAsm";
+        String theTypeName = "MyType";
+        String[][] myMembers = new String[][]
+        {
+	        new String[] {"myProp1", "System.String"},
+	        new String[] {"myProp2", "System.Int32"},
+	        new String[] {"myProp3", "System.String"},
+        };
+        /*
+         * ---------------------------------------------------------------------
+         */
+
+        try
+        {
+            //get the newly crafted type
+            Type myNewType = MyTypeFactory.MakeMyType(myMembers, 
+                                                      theTypeName, 
+                                                      theNameOfMyAsm);
+
+            //get an instance thereof
+            var myNewObject = Activator.CreateInstance(myNewType);
+
+            //assign the new type's properties 
+            myNewType.InvokeMember(myMembers[0][0], 
+                                   BindingFlags.SetProperty, 
+                                   null, 
+                                   myNewObject, 
+                                   new object[] { "a value" });
+            myNewType.InvokeMember(myMembers[1][0], 
+                                   BindingFlags.SetProperty, 
+                                   null, 
+                                   myNewObject, 
+                                   new object[] { 32 });
+            myNewType.InvokeMember(myMembers[2][0], 
+                                   BindingFlags.SetProperty, 
+                                   null, 
+                                   myNewObject, 
+                                   new object[] { "another value" });
+
+            //print it all to console
+            PropertyInfo[] pi_s = myNewObject.GetType().GetProperties();
+
+            foreach (PropertyInfo pi in pi_s)
+            {
+                Console.WriteLine(String.Format("{0,-16}{1}", 
+                                                pi.Name, 
+                                                pi.GetValue(myNewObject, null)));
+            }
+
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+            Console.WriteLine(ex.StackTrace);
+        }
+        Console.ReadKey();
+
+    }
+}
+
+----
+----
+FormatterServices
+ - provides way of discovering what members are serializable, then getting and
+   setting the values thereof
+   
+   //getting serializable members - requires that MyClass is serializable
+   MyClass myObj = new MyClass();
+   MemberInfo[] mi = 
+    FormatterServices.GetSerializableMembers(myObj.GetType());
+
+  //getting the values thereof
+  object[] vals = FormatterServices.GetObjectData(myObj,mi);
+  
+  //setting without constructors
+  MyClass myOtherObj = (MyClass)FormatterServices.GetUnintializedObject(typeof
+    (MyClass));
+    
+  FormatterServices.PopulateObjectMembers(myOtherObj,mi,vals);
+----
+
+----
+Serialize a WCF DataContract
+ - requires a special serializer
+ 
+ var myDataContract = new MyDataContract(); //extends the interface
+ var myWcfSerializer = new System.Runtime.Serialization.DataContractSerializer(typeof(MyDataContract));
+ using (Stream myStream = new MemoryStream())
+ {
+	myWcfSerializer.WriteObject(myStream,myDataContract);                //in
+	stream.Position = 0;                                                 //and 
+	var backAgain = (MyDataContract)myWcfSerializer.ReadObject(myStream);//out, no type safety
+ }
+----
+
+----
+Serialization Scheduling 
+ - .NET Framework when transversing an object tree handles obj references as:
+  - Use the ObjectIDGenerator to get an ID for a given instance
+  - Serialize the reference to the instance using this identifier
+  - Schedule the actual instance for later serialization
+
+ - Object instance ID's are generated as such
+ MyClass myObj = new MyClass();
+ ObjectIDGenerator idgen = new ObjectIDGenerator();
+ bool firstTimeIn = false;
+ long myObjId;
+ 
+ //returns 0 having 'firstTimeIn' set to true therein
+ myObjId = idgen.HasId(myObj,out firstTimeIn);
+ //myObjId is assigned a non-zero value; firstTimeIn is true
+ myObjId = idgen.GetId(myObj,out firstTimeIn);
+ //now firstTimeIn is set to false and myObjId is unchanged
+ myObjId = idgen.HasId(myObj,out firstTimeIn);
+ //myObjId is still unchanged and firstTimeIn remains false
+ myObjId = idgen.GetId(myObj,out firstTimeIn);
+----
+
+----
+Constructing a custom Object Graph
+ - object graph being an object having reference to objects and so on.
+ - when using surrogates, so long as they are all registered to the selector
+   then the implementor doesn't need to construct the map.
+ - the class used to perform this is ObjectManager
+  1. register object instance and instanceId with the ObjectManager
+    ObjectManager.RegisterObject
+  2. record the interlace of objects 
+    ObjectManager.RecordFixup, RecordArrayElementFixup, RecordDelayedFixup
+  3. Have the object manager finalize the interlace of objects
+    ObjectManager.DoFixups
+  4. Query the object manager for the root object 
+    ObjectManager.GetObject
+
+ObjectManager om = new ObjectManager(new SurrogateSelector(), 
+                                 new StreamingContext(StreamContextStates.All));
+
+object myRoot = 
+  FormatterServices.GetUninitializedObject(typeof(MyRoot));
+  
+//register myRoot as the first object in the map
+om.RegisterObject(myRoot,1);
+
+//get root objects serializable members
+MemberInfo[] mi = FormatterServices.GetSerializableMembers(typeof(MyRoot));
+
+//record object 1's memberinfo being a reference to object 2 
+om.RecordFixup(1,mi[0],2) 
+
+//initialize second member of myRoot using FormatterServices
+FormatterServices.PopulateObjectMembers(myRoot,new MemberInfo[]{mi[1]}, 
+                                         new object[]{2212});
+
+SerializationInfo myChldInfo = new SerializationInfo( typeof(MyChild), 
+                                                new FormatterConverter());
+myChildInfo.AddValue("m1",8000);
+myChildInfo.AddValue("m2",8001);
+
+//register child object with associated info
+object myChild = FormatterServices.GetUninitializedObject(typeof(MyChild));
+om.RegisterObject(myChild,2,myChildInfo);
+
+//finalize interlace of objects within map
+om.DoFixups();
+
+//get the object from the manager
+MyRoot newRoot = (MyRoot)om.GetObject(1);
+----
+

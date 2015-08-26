@@ -1,0 +1,4592 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<noFuture>
+  <rand>
+    <data>
+      <source>
+        <cities>
+          <state name="Alaska">
+            <city name="Anchorage">
+              <zip-code prefix="995" />
+              <zip-code prefix="996" />
+            </city>
+            <city name="Fairbanks">
+              <zip-code prefix="997" />
+            </city>
+            <city name="Juneau">
+              <zip-code prefix="998" />
+            </city>
+            <city name="Ketchikan">
+              <zip-code prefix="999" />
+            </city>
+            <city name="Kodiak">
+              <zip-code prefix="995" />
+              <zip-code prefix="996" />
+            </city>
+          </state>
+          <state name="Alabama">
+            <city name="Albertville">
+              <zip-code prefix="350" />
+              <zip-code prefix="351" />
+              <zip-code prefix="357" />
+              <zip-code prefix="359" />
+            </city>
+            <city name="Alexander City">
+              <zip-code prefix="350" />
+              <zip-code prefix="351" />
+              <zip-code prefix="360" />
+              <zip-code prefix="362" />
+              <zip-code prefix="368" />
+            </city>
+            <city name="Anniston">
+              <zip-code prefix="362" />
+            </city>
+            <city name="Birmingham">
+              <zip-code prefix="350" />
+              <zip-code prefix="351" />
+              <zip-code prefix="352" />
+              <zip-code prefix="355" />
+              <zip-code prefix="359" />
+            </city>
+            <city name="Cullman">
+              <zip-code prefix="350" />
+              <zip-code prefix="351" />
+              <zip-code prefix="355" />
+              <zip-code prefix="356" />
+              <zip-code prefix="359" />
+            </city>
+            <city name="Decatur">
+              <zip-code prefix="350" />
+              <zip-code prefix="351" />
+              <zip-code prefix="355" />
+              <zip-code prefix="356" />
+              <zip-code prefix="357" />
+            </city>
+            <city name="Dothan">
+              <zip-code prefix="360" />
+              <zip-code prefix="363" />
+              <zip-code prefix="364" />
+            </city>
+            <city name="Evergreen">
+              <zip-code prefix="364" />
+            </city>
+            <city name="Fort Payne">
+              <zip-code prefix="357" />
+              <zip-code prefix="359" />
+            </city>
+            <city name="Gadsden">
+              <zip-code prefix="351" />
+              <zip-code prefix="359" />
+              <zip-code prefix="362" />
+            </city>
+            <city name="Huntsville">
+              <zip-code prefix="356" />
+              <zip-code prefix="357" />
+              <zip-code prefix="358" />
+            </city>
+            <city name="Mobile">
+              <zip-code prefix="365" />
+              <zip-code prefix="366" />
+            </city>
+            <city name="Montgomery">
+              <zip-code prefix="350" />
+              <zip-code prefix="360" />
+              <zip-code prefix="361" />
+              <zip-code prefix="367" />
+              <zip-code prefix="368" />
+            </city>
+            <city name="Scottsboro">
+              <zip-code prefix="357" />
+              <zip-code prefix="359" />
+            </city>
+            <city name="Selma">
+              <zip-code prefix="351" />
+              <zip-code prefix="354" />
+              <zip-code prefix="367" />
+            </city>
+            <city name="Troy">
+              <zip-code prefix="360" />
+            </city>
+            <city name="Tuscaloosa">
+              <zip-code prefix="350" />
+              <zip-code prefix="351" />
+              <zip-code prefix="354" />
+              <zip-code prefix="355" />
+              <zip-code prefix="367" />
+            </city>
+            <city name="Tuskegee">
+              <zip-code prefix="360" />
+              <zip-code prefix="368" />
+            </city>
+            <city name="Valley">
+              <zip-code prefix="362" />
+              <zip-code prefix="368" />
+            </city>
+          </state>
+          <state name="Arkansas">
+            <city name="Arkadelphia">
+              <zip-code prefix="717" />
+              <zip-code prefix="719" />
+            </city>
+            <city name="Batesville">
+              <zip-code prefix="720" />
+              <zip-code prefix="721" />
+              <zip-code prefix="725" />
+            </city>
+            <city name="Blytheville">
+              <zip-code prefix="723" />
+              <zip-code prefix="724" />
+            </city>
+            <city name="Camden">
+              <zip-code prefix="717" />
+            </city>
+            <city name="El Dorado">
+              <zip-code prefix="717" />
+            </city>
+            <city name="Fayetteville">
+              <zip-code prefix="727" />
+            </city>
+            <city name="Forrest City">
+              <zip-code prefix="720" />
+              <zip-code prefix="723" />
+            </city>
+            <city name="Fort Smith">
+              <zip-code prefix="729" />
+            </city>
+            <city name="Harrison">
+              <zip-code prefix="726" />
+              <zip-code prefix="727" />
+              <zip-code prefix="728" />
+            </city>
+            <city name="Hope">
+              <zip-code prefix="717" />
+              <zip-code prefix="718" />
+            </city>
+            <city name="Hot Springs">
+              <zip-code prefix="719" />
+              <zip-code prefix="720" />
+              <zip-code prefix="721" />
+            </city>
+            <city name="Jonesboro">
+              <zip-code prefix="723" />
+              <zip-code prefix="724" />
+            </city>
+            <city name="Little Rock">
+              <zip-code prefix="720" />
+              <zip-code prefix="721" />
+              <zip-code prefix="722" />
+            </city>
+            <city name="Magnolia">
+              <zip-code prefix="717" />
+              <zip-code prefix="718" />
+            </city>
+            <city name="Memphis">
+              <zip-code prefix="723" />
+            </city>
+            <city name="Mountain Home">
+              <zip-code prefix="725" />
+              <zip-code prefix="726" />
+            </city>
+            <city name="Paragould">
+              <zip-code prefix="724" />
+            </city>
+            <city name="Pine Bluff">
+              <zip-code prefix="716" />
+              <zip-code prefix="717" />
+              <zip-code prefix="720" />
+              <zip-code prefix="721" />
+            </city>
+            <city name="Russellville">
+              <zip-code prefix="720" />
+              <zip-code prefix="726" />
+              <zip-code prefix="728" />
+              <zip-code prefix="729" />
+            </city>
+            <city name="Searcy">
+              <zip-code prefix="720" />
+              <zip-code prefix="721" />
+              <zip-code prefix="725" />
+            </city>
+            <city name="Texarkana">
+              <zip-code prefix="718" />
+            </city>
+            <city name="West Helena">
+              <zip-code prefix="720" />
+              <zip-code prefix="723" />
+            </city>
+          </state>
+          <state name="Arizona">
+            <city name="Flagstaff">
+              <zip-code prefix="859" />
+              <zip-code prefix="860" />
+              <zip-code prefix="863" />
+              <zip-code prefix="864" />
+            </city>
+            <city name="Gallup">
+              <zip-code prefix="865" />
+            </city>
+            <city name="Globe">
+              <zip-code prefix="855" />
+            </city>
+            <city name="Kingman">
+              <zip-code prefix="864" />
+            </city>
+            <city name="Nogales">
+              <zip-code prefix="856" />
+            </city>
+            <city name="Payson">
+              <zip-code prefix="852" />
+              <zip-code prefix="855" />
+            </city>
+            <city name="Phoenix">
+              <zip-code prefix="850" />
+              <zip-code prefix="851" />
+              <zip-code prefix="852" />
+              <zip-code prefix="853" />
+            </city>
+            <city name="Prescott">
+              <zip-code prefix="853" />
+              <zip-code prefix="863" />
+            </city>
+            <city name="Safford">
+              <zip-code prefix="855" />
+              <zip-code prefix="856" />
+              <zip-code prefix="859" />
+            </city>
+            <city name="Show Low">
+              <zip-code prefix="859" />
+            </city>
+            <city name="Tucson">
+              <zip-code prefix="853" />
+              <zip-code prefix="856" />
+              <zip-code prefix="857" />
+            </city>
+            <city name="Yuma">
+              <zip-code prefix="853" />
+            </city>
+          </state>
+          <state name="California">
+            <city name="Anaheim">
+              <zip-code prefix="928" />
+            </city>
+            <city name="Bakersfield">
+              <zip-code prefix="932" />
+              <zip-code prefix="933" />
+              <zip-code prefix="935" />
+            </city>
+            <city name="Berkeley">
+              <zip-code prefix="947" />
+            </city>
+            <city name="Bishop">
+              <zip-code prefix="890" />
+              <zip-code prefix="923" />
+              <zip-code prefix="935" />
+            </city>
+            <city name="Burbank">
+              <zip-code prefix="915" />
+            </city>
+            <city name="Chico">
+              <zip-code prefix="959" />
+            </city>
+            <city name="Clearlake">
+              <zip-code prefix="954" />
+            </city>
+            <city name="Crescent City">
+              <zip-code prefix="955" />
+            </city>
+            <city name="El Centro">
+              <zip-code prefix="920" />
+              <zip-code prefix="922" />
+            </city>
+            <city name="Eureka">
+              <zip-code prefix="955" />
+            </city>
+            <city name="Fresno">
+              <zip-code prefix="932" />
+              <zip-code prefix="936" />
+              <zip-code prefix="937" />
+              <zip-code prefix="938" />
+            </city>
+            <city name="Glendale">
+              <zip-code prefix="912" />
+            </city>
+            <city name="Industry">
+              <zip-code prefix="917" />
+              <zip-code prefix="918" />
+            </city>
+            <city name="Inglewood">
+              <zip-code prefix="902" />
+              <zip-code prefix="903" />
+            </city>
+            <city name="Long Beach">
+              <zip-code prefix="906" />
+              <zip-code prefix="907" />
+              <zip-code prefix="908" />
+            </city>
+            <city name="Los Angeles">
+              <zip-code prefix="900" />
+            </city>
+            <city name="Madera">
+              <zip-code prefix="936" />
+              <zip-code prefix="937" />
+            </city>
+            <city name="Marysville">
+              <zip-code prefix="959" />
+            </city>
+            <city name="Merced">
+              <zip-code prefix="936" />
+              <zip-code prefix="953" />
+            </city>
+            <city name="Modesto">
+              <zip-code prefix="945" />
+              <zip-code prefix="952" />
+              <zip-code prefix="953" />
+            </city>
+            <city name="Mojave">
+              <zip-code prefix="935" />
+            </city>
+            <city name="Napa">
+              <zip-code prefix="945" />
+              <zip-code prefix="954" />
+            </city>
+            <city name="North Bay">
+              <zip-code prefix="949" />
+              <zip-code prefix="954" />
+            </city>
+            <city name="North Hollywood">
+              <zip-code prefix="916" />
+            </city>
+            <city name="Oakland">
+              <zip-code prefix="945" />
+              <zip-code prefix="946" />
+            </city>
+            <city name="Oxnard">
+              <zip-code prefix="930" />
+            </city>
+            <city name="Palm Springs">
+              <zip-code prefix="922" />
+            </city>
+            <city name="Palo Alto">
+              <zip-code prefix="943" />
+            </city>
+            <city name="Pasadena">
+              <zip-code prefix="910" />
+              <zip-code prefix="911" />
+            </city>
+            <city name="Red Bluff">
+              <zip-code prefix="959" />
+              <zip-code prefix="960" />
+            </city>
+            <city name="Redding">
+              <zip-code prefix="960" />
+            </city>
+            <city name="Reno">
+              <zip-code prefix="961" />
+            </city>
+            <city name="Richmond">
+              <zip-code prefix="948" />
+            </city>
+            <city name="Riverside">
+              <zip-code prefix="925" />
+            </city>
+            <city name="Sacramento">
+              <zip-code prefix="956" />
+              <zip-code prefix="957" />
+              <zip-code prefix="958" />
+            </city>
+            <city name="Salinas">
+              <zip-code prefix="934" />
+              <zip-code prefix="939" />
+              <zip-code prefix="950" />
+            </city>
+            <city name="San Bernardino">
+              <zip-code prefix="923" />
+              <zip-code prefix="924" />
+            </city>
+            <city name="San Diego">
+              <zip-code prefix="919" />
+              <zip-code prefix="920" />
+              <zip-code prefix="921" />
+            </city>
+            <city name="San Francisco">
+              <zip-code prefix="940" />
+              <zip-code prefix="941" />
+            </city>
+            <city name="San Jose">
+              <zip-code prefix="950" />
+              <zip-code prefix="951" />
+            </city>
+            <city name="San Mateo">
+              <zip-code prefix="944" />
+            </city>
+            <city name="Santa Ana">
+              <zip-code prefix="926" />
+              <zip-code prefix="927" />
+            </city>
+            <city name="Santa Barbara">
+              <zip-code prefix="931" />
+              <zip-code prefix="934" />
+            </city>
+            <city name="Santa Monica">
+              <zip-code prefix="904" />
+            </city>
+            <city name="Stockton">
+              <zip-code prefix="945" />
+              <zip-code prefix="952" />
+              <zip-code prefix="953" />
+              <zip-code prefix="956" />
+            </city>
+            <city name="Susanville">
+              <zip-code prefix="960" />
+              <zip-code prefix="961" />
+            </city>
+            <city name="Torrance">
+              <zip-code prefix="905" />
+            </city>
+            <city name="Ukiah">
+              <zip-code prefix="954" />
+              <zip-code prefix="955" />
+            </city>
+            <city name="Van Nuys">
+              <zip-code prefix="913" />
+              <zip-code prefix="914" />
+            </city>
+            <city name="Yuba City">
+              <zip-code prefix="956" />
+              <zip-code prefix="958" />
+              <zip-code prefix="959" />
+            </city>
+          </state>
+          <state name="Colorado">
+            <city name="Alamosa">
+              <zip-code prefix="811" />
+            </city>
+            <city name="Boulder">
+              <zip-code prefix="800" />
+              <zip-code prefix="803" />
+              <zip-code prefix="804" />
+              <zip-code prefix="805" />
+            </city>
+            <city name="Brighton">
+              <zip-code prefix="806" />
+              <zip-code prefix="807" />
+            </city>
+            <city name="Canon City">
+              <zip-code prefix="809" />
+              <zip-code prefix="812" />
+            </city>
+            <city name="Colorado Springs">
+              <zip-code prefix="801" />
+              <zip-code prefix="808" />
+              <zip-code prefix="809" />
+              <zip-code prefix="810" />
+            </city>
+            <city name="Denver">
+              <zip-code prefix="800" />
+              <zip-code prefix="801" />
+              <zip-code prefix="802" />
+              <zip-code prefix="804" />
+            </city>
+            <city name="Durango">
+              <zip-code prefix="811" />
+              <zip-code prefix="813" />
+            </city>
+            <city name="Edwards">
+              <zip-code prefix="804" />
+              <zip-code prefix="812" />
+              <zip-code prefix="816" />
+            </city>
+            <city name="Fort Morgan">
+              <zip-code prefix="806" />
+              <zip-code prefix="807" />
+            </city>
+            <city name="Glenwood Springs">
+              <zip-code prefix="816" />
+            </city>
+            <city name="Grand Junction">
+              <zip-code prefix="814" />
+              <zip-code prefix="815" />
+              <zip-code prefix="816" />
+            </city>
+            <city name="Greeley">
+              <zip-code prefix="691" />
+              <zip-code prefix="800" />
+              <zip-code prefix="805" />
+              <zip-code prefix="806" />
+              <zip-code prefix="807" />
+              <zip-code prefix="820" />
+            </city>
+            <city name="Longmont">
+              <zip-code prefix="805" />
+            </city>
+            <city name="Montrose">
+              <zip-code prefix="812" />
+              <zip-code prefix="814" />
+            </city>
+            <city name="Pueblo">
+              <zip-code prefix="810" />
+              <zip-code prefix="812" />
+            </city>
+            <city name="Salida">
+              <zip-code prefix="812" />
+            </city>
+            <city name="Silverthorne">
+              <zip-code prefix="804" />
+            </city>
+            <city name="Sterling">
+              <zip-code prefix="807" />
+            </city>
+          </state>
+          <state name="Connecticut">
+            <city name="Bridgeport">
+              <zip-code prefix="066" />
+            </city>
+            <city name="Hartford">
+              <zip-code prefix="060" />
+              <zip-code prefix="061" />
+              <zip-code prefix="062" />
+            </city>
+            <city name="New Haven">
+              <zip-code prefix="065" />
+            </city>
+            <city name="Southern">
+              <zip-code prefix="063" />
+              <zip-code prefix="064" />
+            </city>
+            <city name="Stamford">
+              <zip-code prefix="068" />
+              <zip-code prefix="069" />
+            </city>
+            <city name="Torrington">
+              <zip-code prefix="060" />
+              <zip-code prefix="067" />
+            </city>
+            <city name="Waterbury">
+              <zip-code prefix="067" />
+            </city>
+            <city name="Willimantic">
+              <zip-code prefix="060" />
+              <zip-code prefix="062" />
+              <zip-code prefix="063" />
+            </city>
+          </state>
+          <state name="WashingtonDC">
+            <city name="Washington">
+              <zip-code prefix="200" />
+              <zip-code prefix="202" />
+              <zip-code prefix="203" />
+              <zip-code prefix="204" />
+              <zip-code prefix="205" />
+            </city>
+          </state>
+          <state name="Delaware">
+            <city name="Dover">
+              <zip-code prefix="199" />
+            </city>
+            <city name="Seaford">
+              <zip-code prefix="199" />
+              <zip-code prefix="218" />
+            </city>
+            <city name="Wilmington">
+              <zip-code prefix="197" />
+              <zip-code prefix="198" />
+              <zip-code prefix="199" />
+            </city>
+          </state>
+          <state name="Florida">
+            <city name="Arcadia">
+              <zip-code prefix="338" />
+              <zip-code prefix="342" />
+            </city>
+            <city name="Clewiston">
+              <zip-code prefix="334" />
+              <zip-code prefix="339" />
+              <zip-code prefix="341" />
+            </city>
+            <city name="Daytona Beach">
+              <zip-code prefix="321" />
+            </city>
+            <city name="Fort Lauderdale">
+              <zip-code prefix="333" />
+            </city>
+            <city name="Fort Myers">
+              <zip-code prefix="339" />
+              <zip-code prefix="341" />
+            </city>
+            <city name="Gainesville">
+              <zip-code prefix="320" />
+              <zip-code prefix="323" />
+              <zip-code prefix="326" />
+              <zip-code prefix="344" />
+            </city>
+            <city name="Homosassa Springs">
+              <zip-code prefix="344" />
+              <zip-code prefix="346" />
+            </city>
+            <city name="Jacksonville">
+              <zip-code prefix="320" />
+              <zip-code prefix="321" />
+              <zip-code prefix="322" />
+              <zip-code prefix="326" />
+            </city>
+            <city name="Key West">
+              <zip-code prefix="330" />
+              <zip-code prefix="341" />
+            </city>
+            <city name="Lake City">
+              <zip-code prefix="320" />
+              <zip-code prefix="326" />
+            </city>
+            <city name="Lakeland">
+              <zip-code prefix="335" />
+              <zip-code prefix="338" />
+              <zip-code prefix="347" />
+            </city>
+            <city name="Manasota">
+              <zip-code prefix="342" />
+            </city>
+            <city name="Miami">
+              <zip-code prefix="331" />
+            </city>
+            <city name="Mid-State">
+              <zip-code prefix="327" />
+            </city>
+            <city name="Ocala">
+              <zip-code prefix="321" />
+              <zip-code prefix="326" />
+              <zip-code prefix="327" />
+              <zip-code prefix="344" />
+            </city>
+            <city name="Okeechobee">
+              <zip-code prefix="349" />
+            </city>
+            <city name="Orlando">
+              <zip-code prefix="328" />
+              <zip-code prefix="329" />
+              <zip-code prefix="347" />
+            </city>
+            <city name="Palatka">
+              <zip-code prefix="320" />
+              <zip-code prefix="321" />
+              <zip-code prefix="326" />
+            </city>
+            <city name="Palm Coast">
+              <zip-code prefix="320" />
+              <zip-code prefix="321" />
+            </city>
+            <city name="Panama City">
+              <zip-code prefix="324" />
+            </city>
+            <city name="Pensacola">
+              <zip-code prefix="325" />
+            </city>
+            <city name="Port St. Lucie">
+              <zip-code prefix="334" />
+              <zip-code prefix="349" />
+            </city>
+            <city name="Punta Gorda">
+              <zip-code prefix="339" />
+              <zip-code prefix="342" />
+            </city>
+            <city name="Sebring">
+              <zip-code prefix="338" />
+              <zip-code prefix="339" />
+              <zip-code prefix="349" />
+            </city>
+            <city name="Southern">
+              <zip-code prefix="330" />
+            </city>
+            <city name="St. Petersburg">
+              <zip-code prefix="337" />
+            </city>
+            <city name="Tallahassee">
+              <zip-code prefix="323" />
+              <zip-code prefix="324" />
+            </city>
+            <city name="Tampa">
+              <zip-code prefix="335" />
+              <zip-code prefix="336" />
+              <zip-code prefix="346" />
+            </city>
+            <city name="The Villages">
+              <zip-code prefix="321" />
+              <zip-code prefix="335" />
+              <zip-code prefix="344" />
+              <zip-code prefix="347" />
+            </city>
+            <city name="W. Palm Beach">
+              <zip-code prefix="334" />
+              <zip-code prefix="349" />
+            </city>
+            <city name="Wauchula">
+              <zip-code prefix="338" />
+            </city>
+          </state>
+          <state name="Georgia">
+            <city name="Albany">
+              <zip-code prefix="317" />
+              <zip-code prefix="398" />
+            </city>
+            <city name="Americus">
+              <zip-code prefix="310" />
+              <zip-code prefix="317" />
+              <zip-code prefix="318" />
+            </city>
+            <city name="Athens">
+              <zip-code prefix="306" />
+            </city>
+            <city name="Atlanta">
+              <zip-code prefix="300" />
+              <zip-code prefix="301" />
+              <zip-code prefix="302" />
+              <zip-code prefix="303" />
+            </city>
+            <city name="Augusta">
+              <zip-code prefix="308" />
+              <zip-code prefix="309" />
+            </city>
+            <city name="Bainbridge">
+              <zip-code prefix="317" />
+              <zip-code prefix="398" />
+            </city>
+            <city name="Brunswick">
+              <zip-code prefix="313" />
+              <zip-code prefix="315" />
+            </city>
+            <city name="Calhoun">
+              <zip-code prefix="301" />
+              <zip-code prefix="307" />
+            </city>
+            <city name="Cedartown">
+              <zip-code prefix="301" />
+            </city>
+            <city name="Chattanoga">
+              <zip-code prefix="307" />
+            </city>
+            <city name="Columbus">
+              <zip-code prefix="310" />
+              <zip-code prefix="318" />
+              <zip-code prefix="319" />
+            </city>
+            <city name="Cordele">
+              <zip-code prefix="310" />
+              <zip-code prefix="317" />
+            </city>
+            <city name="Cornelia">
+              <zip-code prefix="305" />
+            </city>
+            <city name="Dalton">
+              <zip-code prefix="305" />
+              <zip-code prefix="307" />
+            </city>
+            <city name="Douglas">
+              <zip-code prefix="315" />
+              <zip-code prefix="316" />
+              <zip-code prefix="317" />
+            </city>
+            <city name="Dublin">
+              <zip-code prefix="304" />
+              <zip-code prefix="310" />
+            </city>
+            <city name="Fitzgerald">
+              <zip-code prefix="310" />
+              <zip-code prefix="316" />
+              <zip-code prefix="317" />
+            </city>
+            <city name="Fort Valley">
+              <zip-code prefix="310" />
+            </city>
+            <city name="Gainesville">
+              <zip-code prefix="305" />
+              <zip-code prefix="306" />
+            </city>
+            <city name="Jesup">
+              <zip-code prefix="315" />
+            </city>
+            <city name="LaGrange">
+              <zip-code prefix="302" />
+              <zip-code prefix="318" />
+              <zip-code prefix="368" />
+            </city>
+            <city name="Macon">
+              <zip-code prefix="302" />
+              <zip-code prefix="310" />
+              <zip-code prefix="312" />
+            </city>
+            <city name="Milledgeville">
+              <zip-code prefix="306" />
+              <zip-code prefix="308" />
+              <zip-code prefix="310" />
+            </city>
+            <city name="Moultrie">
+              <zip-code prefix="316" />
+              <zip-code prefix="317" />
+            </city>
+            <city name="Rome">
+              <zip-code prefix="301" />
+              <zip-code prefix="307" />
+            </city>
+            <city name="Savannah">
+              <zip-code prefix="304" />
+              <zip-code prefix="313" />
+              <zip-code prefix="314" />
+            </city>
+            <city name="St. Marys">
+              <zip-code prefix="315" />
+            </city>
+            <city name="Statesboro">
+              <zip-code prefix="304" />
+              <zip-code prefix="313" />
+            </city>
+            <city name="Summerville">
+              <zip-code prefix="301" />
+              <zip-code prefix="307" />
+            </city>
+            <city name="Swainsboro">
+              <zip-code prefix="304" />
+            </city>
+            <city name="Thomaston">
+              <zip-code prefix="302" />
+              <zip-code prefix="310" />
+            </city>
+            <city name="Thomasville">
+              <zip-code prefix="316" />
+              <zip-code prefix="317" />
+            </city>
+            <city name="Tifton">
+              <zip-code prefix="316" />
+              <zip-code prefix="317" />
+            </city>
+            <city name="Toccoa">
+              <zip-code prefix="305" />
+            </city>
+            <city name="Valdosta">
+              <zip-code prefix="316" />
+              <zip-code prefix="317" />
+            </city>
+            <city name="Vidalia">
+              <zip-code prefix="304" />
+            </city>
+            <city name="Warner Robins">
+              <zip-code prefix="310" />
+            </city>
+            <city name="Waycross">
+              <zip-code prefix="315" />
+              <zip-code prefix="316" />
+            </city>
+          </state>
+          <state name="Hawaii">
+            <city name="Hilo">
+              <zip-code prefix="967" />
+            </city>
+            <city name="Honolulu">
+              <zip-code prefix="967" />
+              <zip-code prefix="968" />
+            </city>
+            <city name="Kapaa">
+              <zip-code prefix="967" />
+            </city>
+          </state>
+          <state name="Iowa">
+            <city name="Ames">
+              <zip-code prefix="500" />
+              <zip-code prefix="501" />
+              <zip-code prefix="502" />
+            </city>
+            <city name="Boone">
+              <zip-code prefix="500" />
+              <zip-code prefix="501" />
+              <zip-code prefix="502" />
+              <zip-code prefix="505" />
+            </city>
+            <city name="Burlington">
+              <zip-code prefix="526" />
+            </city>
+            <city name="Cedar Rapids">
+              <zip-code prefix="506" />
+              <zip-code prefix="520" />
+              <zip-code prefix="522" />
+              <zip-code prefix="523" />
+              <zip-code prefix="524" />
+              <zip-code prefix="525" />
+              <zip-code prefix="527" />
+            </city>
+            <city name="Clinton">
+              <zip-code prefix="520" />
+              <zip-code prefix="522" />
+              <zip-code prefix="523" />
+              <zip-code prefix="527" />
+            </city>
+            <city name="Davenport">
+              <zip-code prefix="528" />
+            </city>
+            <city name="Des Moines">
+              <zip-code prefix="500" />
+              <zip-code prefix="501" />
+              <zip-code prefix="502" />
+              <zip-code prefix="503" />
+            </city>
+            <city name="Dubuque">
+              <zip-code prefix="520" />
+              <zip-code prefix="522" />
+            </city>
+            <city name="Fort Dodge">
+              <zip-code prefix="502" />
+              <zip-code prefix="505" />
+            </city>
+            <city name="Iowa City">
+              <zip-code prefix="522" />
+              <zip-code prefix="523" />
+              <zip-code prefix="524" />
+              <zip-code prefix="525" />
+              <zip-code prefix="526" />
+              <zip-code prefix="527" />
+            </city>
+            <city name="Marshalltown">
+              <zip-code prefix="500" />
+              <zip-code prefix="501" />
+              <zip-code prefix="502" />
+              <zip-code prefix="506" />
+            </city>
+            <city name="Mason City">
+              <zip-code prefix="504" />
+            </city>
+            <city name="Muscatine">
+              <zip-code prefix="522" />
+              <zip-code prefix="523" />
+              <zip-code prefix="526" />
+              <zip-code prefix="527" />
+            </city>
+            <city name="Newton">
+              <zip-code prefix="500" />
+              <zip-code prefix="501" />
+              <zip-code prefix="502" />
+            </city>
+            <city name="Omaha">
+              <zip-code prefix="515" />
+            </city>
+            <city name="Oskaloosa">
+              <zip-code prefix="500" />
+              <zip-code prefix="501" />
+              <zip-code prefix="502" />
+              <zip-code prefix="525" />
+            </city>
+            <city name="Ottumwa">
+              <zip-code prefix="525" />
+            </city>
+            <city name="Pella">
+              <zip-code prefix="500" />
+              <zip-code prefix="501" />
+              <zip-code prefix="502" />
+            </city>
+            <city name="Rock Island">
+              <zip-code prefix="527" />
+            </city>
+            <city name="Shenandoah">
+              <zip-code prefix="516" />
+            </city>
+            <city name="Sioux City">
+              <zip-code prefix="510" />
+              <zip-code prefix="511" />
+            </city>
+            <city name="Spencer">
+              <zip-code prefix="505" />
+              <zip-code prefix="510" />
+              <zip-code prefix="513" />
+            </city>
+            <city name="Spirit Lake">
+              <zip-code prefix="513" />
+            </city>
+            <city name="Storm Lake">
+              <zip-code prefix="505" />
+              <zip-code prefix="510" />
+              <zip-code prefix="513" />
+            </city>
+            <city name="Waterloo">
+              <zip-code prefix="506" />
+              <zip-code prefix="507" />
+            </city>
+          </state>
+          <state name="Idaho">
+            <city name="Blackfoot">
+              <zip-code prefix="832" />
+              <zip-code prefix="834" />
+            </city>
+            <city name="Boise">
+              <zip-code prefix="836" />
+              <zip-code prefix="837" />
+            </city>
+            <city name="Burley">
+              <zip-code prefix="832" />
+              <zip-code prefix="833" />
+            </city>
+            <city name="Idaho Falls">
+              <zip-code prefix="831" />
+              <zip-code prefix="832" />
+              <zip-code prefix="834" />
+            </city>
+            <city name="Lewiston">
+              <zip-code prefix="835" />
+            </city>
+            <city name="Moscow">
+              <zip-code prefix="835" />
+              <zip-code prefix="838" />
+              <zip-code prefix="991" />
+            </city>
+            <city name="Mountain Home">
+              <zip-code prefix="836" />
+              <zip-code prefix="837" />
+            </city>
+            <city name="Pocatello">
+              <zip-code prefix="832" />
+              <zip-code prefix="834" />
+            </city>
+            <city name="Rexburg">
+              <zip-code prefix="834" />
+            </city>
+            <city name="Spokane">
+              <zip-code prefix="838" />
+            </city>
+            <city name="Twin Falls">
+              <zip-code prefix="833" />
+            </city>
+          </state>
+          <state name="Illinois">
+            <city name="Bloomington">
+              <zip-code prefix="617" />
+            </city>
+            <city name="Canton">
+              <zip-code prefix="614" />
+              <zip-code prefix="615" />
+              <zip-code prefix="626" />
+            </city>
+            <city name="Carbondale">
+              <zip-code prefix="622" />
+              <zip-code prefix="628" />
+              <zip-code prefix="629" />
+            </city>
+            <city name="Carol Stream">
+              <zip-code prefix="601" />
+            </city>
+            <city name="Centralia">
+              <zip-code prefix="628" />
+            </city>
+            <city name="Champaign">
+              <zip-code prefix="618" />
+              <zip-code prefix="619" />
+            </city>
+            <city name="Chicago">
+              <zip-code prefix="604" />
+              <zip-code prefix="606" />
+              <zip-code prefix="607" />
+              <zip-code prefix="608" />
+            </city>
+            <city name="Danville">
+              <zip-code prefix="609" />
+              <zip-code prefix="618" />
+            </city>
+            <city name="Decatur">
+              <zip-code prefix="617" />
+              <zip-code prefix="618" />
+              <zip-code prefix="619" />
+              <zip-code prefix="625" />
+            </city>
+            <city name="Dixon">
+              <zip-code prefix="605" />
+              <zip-code prefix="610" />
+              <zip-code prefix="612" />
+              <zip-code prefix="613" />
+            </city>
+            <city name="Effingham">
+              <zip-code prefix="624" />
+              <zip-code prefix="628" />
+            </city>
+            <city name="Evanston">
+              <zip-code prefix="602" />
+            </city>
+            <city name="Fox Valley">
+              <zip-code prefix="605" />
+            </city>
+            <city name="Freeport">
+              <zip-code prefix="610" />
+            </city>
+            <city name="Galesburg">
+              <zip-code prefix="614" />
+              <zip-code prefix="615" />
+            </city>
+            <city name="Harrisburg">
+              <zip-code prefix="628" />
+              <zip-code prefix="629" />
+            </city>
+            <city name="Jacksonville">
+              <zip-code prefix="620" />
+              <zip-code prefix="626" />
+            </city>
+            <city name="Kankakee">
+              <zip-code prefix="609" />
+            </city>
+            <city name="La Salle">
+              <zip-code prefix="613" />
+            </city>
+            <city name="Lincoln">
+              <zip-code prefix="617" />
+              <zip-code prefix="625" />
+              <zip-code prefix="626" />
+            </city>
+            <city name="Macomb">
+              <zip-code prefix="614" />
+              <zip-code prefix="623" />
+            </city>
+            <city name="Mount Vernon">
+              <zip-code prefix="628" />
+              <zip-code prefix="629" />
+            </city>
+            <city name="Oak Park">
+              <zip-code prefix="603" />
+            </city>
+            <city name="Palatine">
+              <zip-code prefix="600" />
+            </city>
+            <city name="Peoria">
+              <zip-code prefix="613" />
+              <zip-code prefix="614" />
+              <zip-code prefix="615" />
+              <zip-code prefix="616" />
+              <zip-code prefix="617" />
+              <zip-code prefix="626" />
+            </city>
+            <city name="Pontiac">
+              <zip-code prefix="604" />
+              <zip-code prefix="609" />
+              <zip-code prefix="613" />
+              <zip-code prefix="617" />
+            </city>
+            <city name="Quincy">
+              <zip-code prefix="623" />
+            </city>
+            <city name="Rochelle">
+              <zip-code prefix="601" />
+              <zip-code prefix="605" />
+              <zip-code prefix="610" />
+              <zip-code prefix="611" />
+            </city>
+            <city name="Rock Island">
+              <zip-code prefix="612" />
+            </city>
+            <city name="Rockford">
+              <zip-code prefix="600" />
+              <zip-code prefix="601" />
+              <zip-code prefix="610" />
+              <zip-code prefix="611" />
+            </city>
+            <city name="Springfield">
+              <zip-code prefix="625" />
+              <zip-code prefix="626" />
+              <zip-code prefix="627" />
+            </city>
+            <city name="St. Louis">
+              <zip-code prefix="620" />
+              <zip-code prefix="622" />
+            </city>
+            <city name="Sterling">
+              <zip-code prefix="610" />
+              <zip-code prefix="612" />
+            </city>
+            <city name="Taylorville">
+              <zip-code prefix="620" />
+              <zip-code prefix="625" />
+            </city>
+          </state>
+          <state name="Indiana">
+            <city name="Anderson">
+              <zip-code prefix="460" />
+              <zip-code prefix="469" />
+              <zip-code prefix="473" />
+            </city>
+            <city name="Angola">
+              <zip-code prefix="467" />
+            </city>
+            <city name="Auburn">
+              <zip-code prefix="467" />
+            </city>
+            <city name="Bedford">
+              <zip-code prefix="471" />
+              <zip-code prefix="472" />
+              <zip-code prefix="474" />
+            </city>
+            <city name="Bloomington">
+              <zip-code prefix="461" />
+              <zip-code prefix="472" />
+              <zip-code prefix="474" />
+              <zip-code prefix="475" />
+              <zip-code prefix="478" />
+            </city>
+            <city name="Cincinnati">
+              <zip-code prefix="470" />
+            </city>
+            <city name="Columbus">
+              <zip-code prefix="461" />
+              <zip-code prefix="472" />
+              <zip-code prefix="474" />
+            </city>
+            <city name="Connersville">
+              <zip-code prefix="461" />
+              <zip-code prefix="473" />
+            </city>
+            <city name="Crawfordsville">
+              <zip-code prefix="460" />
+              <zip-code prefix="461" />
+              <zip-code prefix="479" />
+            </city>
+            <city name="Decatur">
+              <zip-code prefix="467" />
+              <zip-code prefix="473" />
+            </city>
+            <city name="Evansville">
+              <zip-code prefix="476" />
+              <zip-code prefix="477" />
+            </city>
+            <city name="Fort Wayne">
+              <zip-code prefix="465" />
+              <zip-code prefix="467" />
+              <zip-code prefix="468" />
+              <zip-code prefix="469" />
+              <zip-code prefix="473" />
+            </city>
+            <city name="Frankfort">
+              <zip-code prefix="460" />
+              <zip-code prefix="469" />
+              <zip-code prefix="479" />
+            </city>
+            <city name="Gary">
+              <zip-code prefix="463" />
+              <zip-code prefix="464" />
+            </city>
+            <city name="Greensburg">
+              <zip-code prefix="461" />
+              <zip-code prefix="470" />
+              <zip-code prefix="472" />
+            </city>
+            <city name="Huntington">
+              <zip-code prefix="467" />
+              <zip-code prefix="469" />
+            </city>
+            <city name="Indianapolis">
+              <zip-code prefix="460" />
+              <zip-code prefix="461" />
+              <zip-code prefix="462" />
+            </city>
+            <city name="Jasper">
+              <zip-code prefix="474" />
+              <zip-code prefix="475" />
+              <zip-code prefix="476" />
+            </city>
+            <city name="Kendallville">
+              <zip-code prefix="465" />
+              <zip-code prefix="467" />
+            </city>
+            <city name="Kokomo">
+              <zip-code prefix="460" />
+              <zip-code prefix="469" />
+            </city>
+            <city name="Lafayette">
+              <zip-code prefix="460" />
+              <zip-code prefix="469" />
+              <zip-code prefix="479" />
+            </city>
+            <city name="Logansport">
+              <zip-code prefix="469" />
+              <zip-code prefix="479" />
+            </city>
+            <city name="Louisville">
+              <zip-code prefix="471" />
+            </city>
+            <city name="Madison">
+              <zip-code prefix="470" />
+              <zip-code prefix="471" />
+              <zip-code prefix="472" />
+            </city>
+            <city name="Marion">
+              <zip-code prefix="460" />
+              <zip-code prefix="469" />
+              <zip-code prefix="473" />
+            </city>
+            <city name="Muncie">
+              <zip-code prefix="460" />
+              <zip-code prefix="469" />
+              <zip-code prefix="473" />
+            </city>
+            <city name="New Castle">
+              <zip-code prefix="460" />
+              <zip-code prefix="461" />
+              <zip-code prefix="473" />
+            </city>
+            <city name="North Vernon">
+              <zip-code prefix="470" />
+              <zip-code prefix="472" />
+            </city>
+            <city name="Peru">
+              <zip-code prefix="469" />
+            </city>
+            <city name="Plymouth">
+              <zip-code prefix="465" />
+              <zip-code prefix="469" />
+            </city>
+            <city name="Richmond">
+              <zip-code prefix="473" />
+            </city>
+            <city name="Scottsburg">
+              <zip-code prefix="471" />
+              <zip-code prefix="472" />
+            </city>
+            <city name="Seymour">
+              <zip-code prefix="471" />
+              <zip-code prefix="472" />
+            </city>
+            <city name="South Bend">
+              <zip-code prefix="465" />
+              <zip-code prefix="466" />
+            </city>
+            <city name="Terre Haute">
+              <zip-code prefix="474" />
+              <zip-code prefix="475" />
+              <zip-code prefix="478" />
+              <zip-code prefix="479" />
+            </city>
+            <city name="Vincennes">
+              <zip-code prefix="475" />
+              <zip-code prefix="478" />
+            </city>
+            <city name="Wabash">
+              <zip-code prefix="467" />
+              <zip-code prefix="469" />
+            </city>
+            <city name="Warsaw">
+              <zip-code prefix="465" />
+              <zip-code prefix="467" />
+              <zip-code prefix="469" />
+            </city>
+            <city name="Washington">
+              <zip-code prefix="474" />
+              <zip-code prefix="475" />
+            </city>
+          </state>
+          <state name="Kansas">
+            <city name="Atchison">
+              <zip-code prefix="660" />
+              <zip-code prefix="664" />
+              <zip-code prefix="665" />
+            </city>
+            <city name="Coffeyville">
+              <zip-code prefix="667" />
+              <zip-code prefix="673" />
+            </city>
+            <city name="Dodge City">
+              <zip-code prefix="675" />
+              <zip-code prefix="678" />
+            </city>
+            <city name="Emporia">
+              <zip-code prefix="664" />
+              <zip-code prefix="665" />
+              <zip-code prefix="668" />
+            </city>
+            <city name="Fort Scott">
+              <zip-code prefix="667" />
+            </city>
+            <city name="Garden City">
+              <zip-code prefix="678" />
+            </city>
+            <city name="Great Bend">
+              <zip-code prefix="674" />
+              <zip-code prefix="675" />
+              <zip-code prefix="676" />
+              <zip-code prefix="679" />
+            </city>
+            <city name="Hays">
+              <zip-code prefix="675" />
+              <zip-code prefix="676" />
+            </city>
+            <city name="Hutchinson">
+              <zip-code prefix="670" />
+              <zip-code prefix="671" />
+              <zip-code prefix="675" />
+            </city>
+            <city name="Independence">
+              <zip-code prefix="673" />
+            </city>
+            <city name="Kansas City">
+              <zip-code prefix="660" />
+              <zip-code prefix="661" />
+              <zip-code prefix="662" />
+              <zip-code prefix="665" />
+              <zip-code prefix="667" />
+            </city>
+            <city name="Lawrence">
+              <zip-code prefix="660" />
+              <zip-code prefix="664" />
+              <zip-code prefix="665" />
+            </city>
+            <city name="Liberal">
+              <zip-code prefix="678" />
+              <zip-code prefix="679" />
+            </city>
+            <city name="Manhattan">
+              <zip-code prefix="664" />
+              <zip-code prefix="665" />
+              <zip-code prefix="668" />
+              <zip-code prefix="669" />
+              <zip-code prefix="674" />
+            </city>
+            <city name="McPherson">
+              <zip-code prefix="670" />
+              <zip-code prefix="671" />
+              <zip-code prefix="674" />
+              <zip-code prefix="675" />
+            </city>
+            <city name="Parsons">
+              <zip-code prefix="667" />
+              <zip-code prefix="673" />
+            </city>
+            <city name="Pittsburg">
+              <zip-code prefix="667" />
+            </city>
+            <city name="Salina">
+              <zip-code prefix="669" />
+              <zip-code prefix="674" />
+            </city>
+            <city name="Shawnee Mission">
+              <zip-code prefix="662" />
+            </city>
+            <city name="Topeka">
+              <zip-code prefix="660" />
+              <zip-code prefix="664" />
+              <zip-code prefix="665" />
+              <zip-code prefix="666" />
+              <zip-code prefix="668" />
+            </city>
+            <city name="Wichita">
+              <zip-code prefix="668" />
+              <zip-code prefix="670" />
+              <zip-code prefix="671" />
+              <zip-code prefix="672" />
+              <zip-code prefix="675" />
+            </city>
+            <city name="Winfield">
+              <zip-code prefix="670" />
+              <zip-code prefix="671" />
+            </city>
+          </state>
+          <state name="Kentucky">
+            <city name="Ashland">
+              <zip-code prefix="411" />
+            </city>
+            <city name="Bowling Green">
+              <zip-code prefix="421" />
+              <zip-code prefix="422" />
+              <zip-code prefix="427" />
+            </city>
+            <city name="Campbellsville">
+              <zip-code prefix="400" />
+              <zip-code prefix="425" />
+              <zip-code prefix="427" />
+            </city>
+            <city name="Central City">
+              <zip-code prefix="422" />
+              <zip-code prefix="423" />
+              <zip-code prefix="424" />
+            </city>
+            <city name="Cincinnati">
+              <zip-code prefix="410" />
+            </city>
+            <city name="Corbin">
+              <zip-code prefix="407" />
+              <zip-code prefix="409" />
+            </city>
+            <city name="Danville">
+              <zip-code prefix="403" />
+              <zip-code prefix="404" />
+              <zip-code prefix="425" />
+            </city>
+            <city name="Elizabethtown">
+              <zip-code prefix="400" />
+              <zip-code prefix="401" />
+              <zip-code prefix="427" />
+            </city>
+            <city name="Evansville">
+              <zip-code prefix="424" />
+            </city>
+            <city name="Frankfort">
+              <zip-code prefix="400" />
+              <zip-code prefix="403" />
+              <zip-code prefix="406" />
+            </city>
+            <city name="Glasgow">
+              <zip-code prefix="421" />
+              <zip-code prefix="422" />
+              <zip-code prefix="427" />
+            </city>
+            <city name="Lexington">
+              <zip-code prefix="403" />
+              <zip-code prefix="404" />
+              <zip-code prefix="405" />
+            </city>
+            <city name="London">
+              <zip-code prefix="407" />
+              <zip-code prefix="408" />
+              <zip-code prefix="409" />
+              <zip-code prefix="425" />
+            </city>
+            <city name="Louisville">
+              <zip-code prefix="400" />
+              <zip-code prefix="401" />
+              <zip-code prefix="402" />
+            </city>
+            <city name="Madisonville">
+              <zip-code prefix="424" />
+            </city>
+            <city name="Mayfield">
+              <zip-code prefix="420" />
+            </city>
+            <city name="Maysville">
+              <zip-code prefix="410" />
+              <zip-code prefix="411" />
+            </city>
+            <city name="Middlesborough">
+              <zip-code prefix="407" />
+              <zip-code prefix="408" />
+              <zip-code prefix="409" />
+            </city>
+            <city name="Mount Sterling">
+              <zip-code prefix="403" />
+            </city>
+            <city name="Murray">
+              <zip-code prefix="420" />
+            </city>
+            <city name="Owensboro">
+              <zip-code prefix="423" />
+            </city>
+            <city name="Paducah">
+              <zip-code prefix="420" />
+            </city>
+            <city name="Somerset">
+              <zip-code prefix="404" />
+              <zip-code prefix="425" />
+              <zip-code prefix="426" />
+            </city>
+          </state>
+          <state name="Louisiana">
+            <city name="Abbeville">
+              <zip-code prefix="705" />
+            </city>
+            <city name="Alexandria">
+              <zip-code prefix="706" />
+              <zip-code prefix="713" />
+              <zip-code prefix="714" />
+            </city>
+            <city name="Bastrop">
+              <zip-code prefix="712" />
+            </city>
+            <city name="Baton Rouge">
+              <zip-code prefix="703" />
+              <zip-code prefix="704" />
+              <zip-code prefix="707" />
+              <zip-code prefix="708" />
+            </city>
+            <city name="Bogalusa">
+              <zip-code prefix="704" />
+            </city>
+            <city name="Crowley">
+              <zip-code prefix="705" />
+            </city>
+            <city name="De Ridder">
+              <zip-code prefix="706" />
+            </city>
+            <city name="Fort Polk South">
+              <zip-code prefix="706" />
+              <zip-code prefix="714" />
+            </city>
+            <city name="Hammond">
+              <zip-code prefix="704" />
+            </city>
+            <city name="Houma">
+              <zip-code prefix="703" />
+            </city>
+            <city name="Jennings">
+              <zip-code prefix="705" />
+              <zip-code prefix="706" />
+            </city>
+            <city name="Lafayette">
+              <zip-code prefix="703" />
+              <zip-code prefix="705" />
+            </city>
+            <city name="Lake Charles">
+              <zip-code prefix="705" />
+              <zip-code prefix="706" />
+            </city>
+            <city name="Mandeville">
+              <zip-code prefix="704" />
+            </city>
+            <city name="Metairie">
+              <zip-code prefix="700" />
+            </city>
+            <city name="Minden">
+              <zip-code prefix="710" />
+            </city>
+            <city name="Monroe">
+              <zip-code prefix="712" />
+              <zip-code prefix="714" />
+              <zip-code prefix="717" />
+            </city>
+            <city name="Morgan City">
+              <zip-code prefix="703" />
+              <zip-code prefix="705" />
+            </city>
+            <city name="Natchitoches">
+              <zip-code prefix="710" />
+              <zip-code prefix="714" />
+            </city>
+            <city name="New Iberia">
+              <zip-code prefix="705" />
+            </city>
+            <city name="New Orleans">
+              <zip-code prefix="701" />
+            </city>
+            <city name="Pierre Part">
+              <zip-code prefix="703" />
+            </city>
+            <city name="Ruston">
+              <zip-code prefix="710" />
+              <zip-code prefix="712" />
+              <zip-code prefix="714" />
+            </city>
+            <city name="Shreveport">
+              <zip-code prefix="710" />
+              <zip-code prefix="711" />
+            </city>
+            <city name="Tallulah">
+              <zip-code prefix="712" />
+            </city>
+          </state>
+          <state name="Massachusetts">
+            <city name="Barnstable Town">
+              <zip-code prefix="025" />
+              <zip-code prefix="026" />
+            </city>
+            <city name="Boston">
+              <zip-code prefix="021" />
+              <zip-code prefix="022" />
+              <zip-code prefix="024" />
+            </city>
+            <city name="Brockton">
+              <zip-code prefix="020" />
+              <zip-code prefix="023" />
+            </city>
+            <city name="Cape Cod">
+              <zip-code prefix="025" />
+              <zip-code prefix="026" />
+            </city>
+            <city name="Middlsex-Essex">
+              <zip-code prefix="018" />
+              <zip-code prefix="019" />
+            </city>
+            <city name="New Bedford">
+              <zip-code prefix="027" />
+            </city>
+            <city name="Pittsfield">
+              <zip-code prefix="010" />
+              <zip-code prefix="012" />
+              <zip-code prefix="013" />
+            </city>
+            <city name="Springfield">
+              <zip-code prefix="010" />
+              <zip-code prefix="011" />
+              <zip-code prefix="012" />
+              <zip-code prefix="013" />
+              <zip-code prefix="015" />
+            </city>
+            <city name="Worcester">
+              <zip-code prefix="010" />
+              <zip-code prefix="013" />
+              <zip-code prefix="014" />
+              <zip-code prefix="015" />
+              <zip-code prefix="016" />
+              <zip-code prefix="017" />
+            </city>
+          </state>
+          <state name="Maryland">
+            <city name="Annapolis">
+              <zip-code prefix="214" />
+            </city>
+            <city name="Baltimore">
+              <zip-code prefix="212" />
+              <zip-code prefix="219" />
+            </city>
+            <city name="Cambridge">
+              <zip-code prefix="199" />
+              <zip-code prefix="216" />
+              <zip-code prefix="218" />
+            </city>
+            <city name="Cumberland">
+              <zip-code prefix="215" />
+            </city>
+            <city name="Eastern">
+              <zip-code prefix="216" />
+            </city>
+            <city name="Easton">
+              <zip-code prefix="216" />
+            </city>
+            <city name="Frederick">
+              <zip-code prefix="217" />
+            </city>
+            <city name="Lexington Park">
+              <zip-code prefix="206" />
+            </city>
+            <city name="Linthicum">
+              <zip-code prefix="210" />
+              <zip-code prefix="211" />
+            </city>
+            <city name="Ocean Pines">
+              <zip-code prefix="218" />
+            </city>
+            <city name="Salisbury">
+              <zip-code prefix="218" />
+            </city>
+            <city name="Silver Spring">
+              <zip-code prefix="209" />
+            </city>
+            <city name="Southern">
+              <zip-code prefix="206" />
+              <zip-code prefix="207" />
+            </city>
+            <city name="Suburban">
+              <zip-code prefix="208" />
+            </city>
+          </state>
+          <state name="Maine">
+            <city name="Bangor">
+              <zip-code prefix="044" />
+              <zip-code prefix="046" />
+              <zip-code prefix="047" />
+              <zip-code prefix="049" />
+            </city>
+            <city name="Portland">
+              <zip-code prefix="040" />
+              <zip-code prefix="041" />
+              <zip-code prefix="042" />
+              <zip-code prefix="043" />
+              <zip-code prefix="045" />
+              <zip-code prefix="048" />
+            </city>
+            <city name="Portsmith">
+              <zip-code prefix="039" />
+            </city>
+            <city name="Rockland">
+              <zip-code prefix="045" />
+              <zip-code prefix="046" />
+              <zip-code prefix="048" />
+            </city>
+          </state>
+          <state name="Michigan">
+            <city name="Adrian">
+              <zip-code prefix="481" />
+              <zip-code prefix="492" />
+            </city>
+            <city name="Allegan">
+              <zip-code prefix="490" />
+              <zip-code prefix="493" />
+              <zip-code prefix="494" />
+            </city>
+            <city name="Alma">
+              <zip-code prefix="486" />
+              <zip-code prefix="488" />
+            </city>
+            <city name="Alpena">
+              <zip-code prefix="487" />
+              <zip-code prefix="497" />
+            </city>
+            <city name="Ann Arbor">
+              <zip-code prefix="481" />
+              <zip-code prefix="492" />
+            </city>
+            <city name="Battle Creek">
+              <zip-code prefix="488" />
+              <zip-code prefix="490" />
+              <zip-code prefix="492" />
+            </city>
+            <city name="Bay City">
+              <zip-code prefix="486" />
+              <zip-code prefix="487" />
+            </city>
+            <city name="Big Rapids">
+              <zip-code prefix="486" />
+              <zip-code prefix="488" />
+              <zip-code prefix="493" />
+              <zip-code prefix="496" />
+            </city>
+            <city name="Cadillac">
+              <zip-code prefix="496" />
+            </city>
+            <city name="Coldwater">
+              <zip-code prefix="490" />
+              <zip-code prefix="492" />
+            </city>
+            <city name="Detroit">
+              <zip-code prefix="481" />
+              <zip-code prefix="482" />
+            </city>
+            <city name="Escanaba">
+              <zip-code prefix="498" />
+            </city>
+            <city name="Flint">
+              <zip-code prefix="484" />
+              <zip-code prefix="485" />
+              <zip-code prefix="487" />
+            </city>
+            <city name="Gaylord">
+              <zip-code prefix="497" />
+            </city>
+            <city name="Grand Rapids">
+              <zip-code prefix="493" />
+              <zip-code prefix="494" />
+              <zip-code prefix="495" />
+            </city>
+            <city name="Houghton">
+              <zip-code prefix="498" />
+              <zip-code prefix="499" />
+            </city>
+            <city name="Iron Mountain">
+              <zip-code prefix="498" />
+              <zip-code prefix="499" />
+            </city>
+            <city name="Jackson">
+              <zip-code prefix="481" />
+              <zip-code prefix="488" />
+              <zip-code prefix="492" />
+            </city>
+            <city name="Kalamazoo">
+              <zip-code prefix="490" />
+              <zip-code prefix="491" />
+            </city>
+            <city name="Lansing">
+              <zip-code prefix="488" />
+              <zip-code prefix="489" />
+            </city>
+            <city name="Marquette">
+              <zip-code prefix="498" />
+            </city>
+            <city name="Midland">
+              <zip-code prefix="486" />
+              <zip-code prefix="488" />
+            </city>
+            <city name="Monroe">
+              <zip-code prefix="481" />
+              <zip-code prefix="492" />
+            </city>
+            <city name="Mount Pleasant">
+              <zip-code prefix="486" />
+              <zip-code prefix="488" />
+              <zip-code prefix="493" />
+            </city>
+            <city name="Owosso">
+              <zip-code prefix="484" />
+              <zip-code prefix="486" />
+              <zip-code prefix="488" />
+            </city>
+            <city name="Royal Oak">
+              <zip-code prefix="480" />
+              <zip-code prefix="483" />
+            </city>
+            <city name="Saginaw">
+              <zip-code prefix="486" />
+              <zip-code prefix="487" />
+            </city>
+            <city name="Sault Ste. Marie">
+              <zip-code prefix="497" />
+            </city>
+            <city name="Sturgis">
+              <zip-code prefix="490" />
+            </city>
+            <city name="Traverse City">
+              <zip-code prefix="496" />
+              <zip-code prefix="497" />
+            </city>
+          </state>
+          <state name="Minnesota">
+            <city name="Albert Lea">
+              <zip-code prefix="559" />
+              <zip-code prefix="560" />
+            </city>
+            <city name="Alexandria">
+              <zip-code prefix="563" />
+              <zip-code prefix="564" />
+            </city>
+            <city name="Arrowhead region">
+              <zip-code prefix="557" />
+            </city>
+            <city name="Austin">
+              <zip-code prefix="559" />
+            </city>
+            <city name="Bemidji">
+              <zip-code prefix="566" />
+              <zip-code prefix="567" />
+            </city>
+            <city name="Brainerd">
+              <zip-code prefix="557" />
+              <zip-code prefix="563" />
+              <zip-code prefix="564" />
+              <zip-code prefix="566" />
+            </city>
+            <city name="Detroit Lakes">
+              <zip-code prefix="565" />
+            </city>
+            <city name="Duluth">
+              <zip-code prefix="558" />
+            </city>
+            <city name="Fairmont">
+              <zip-code prefix="560" />
+              <zip-code prefix="561" />
+            </city>
+            <city name="Fergus Falls">
+              <zip-code prefix="563" />
+              <zip-code prefix="564" />
+              <zip-code prefix="565" />
+            </city>
+            <city name="Hutchinson">
+              <zip-code prefix="553" />
+            </city>
+            <city name="Mankato">
+              <zip-code prefix="560" />
+            </city>
+            <city name="Marshall">
+              <zip-code prefix="561" />
+              <zip-code prefix="562" />
+            </city>
+            <city name="Minneapolis">
+              <zip-code prefix="553" />
+              <zip-code prefix="554" />
+            </city>
+            <city name="New Ulm">
+              <zip-code prefix="553" />
+              <zip-code prefix="560" />
+              <zip-code prefix="562" />
+            </city>
+            <city name="North Shore">
+              <zip-code prefix="556" />
+            </city>
+            <city name="Owatonna">
+              <zip-code prefix="550" />
+              <zip-code prefix="559" />
+              <zip-code prefix="560" />
+            </city>
+            <city name="Red Wing">
+              <zip-code prefix="550" />
+              <zip-code prefix="559" />
+            </city>
+            <city name="Rochester">
+              <zip-code prefix="550" />
+              <zip-code prefix="559" />
+            </city>
+            <city name="Saint Cloud">
+              <zip-code prefix="563" />
+            </city>
+            <city name="Saint Paul">
+              <zip-code prefix="550" />
+              <zip-code prefix="551" />
+            </city>
+            <city name="St. Cloud">
+              <zip-code prefix="553" />
+              <zip-code prefix="563" />
+            </city>
+            <city name="Thief River Falls">
+              <zip-code prefix="567" />
+            </city>
+            <city name="Willmar">
+              <zip-code prefix="553" />
+              <zip-code prefix="562" />
+              <zip-code prefix="563" />
+            </city>
+            <city name="Windom">
+              <zip-code prefix="561" />
+            </city>
+            <city name="Winona">
+              <zip-code prefix="559" />
+            </city>
+            <city name="Worthington">
+              <zip-code prefix="561" />
+            </city>
+          </state>
+          <state name="Missouri">
+            <city name="Branson">
+              <zip-code prefix="656" />
+              <zip-code prefix="657" />
+              <zip-code prefix="726" />
+            </city>
+            <city name="Cape Girardeau">
+              <zip-code prefix="636" />
+              <zip-code prefix="637" />
+              <zip-code prefix="638" />
+              <zip-code prefix="639" />
+            </city>
+            <city name="Chillicothe">
+              <zip-code prefix="646" />
+            </city>
+            <city name="Columbia">
+              <zip-code prefix="650" />
+              <zip-code prefix="651" />
+              <zip-code prefix="652" />
+              <zip-code prefix="653" />
+            </city>
+            <city name="Farmington">
+              <zip-code prefix="630" />
+              <zip-code prefix="636" />
+            </city>
+            <city name="Fort Leonard Wood">
+              <zip-code prefix="654" />
+              <zip-code prefix="655" />
+            </city>
+            <city name="Hannibal">
+              <zip-code prefix="633" />
+              <zip-code prefix="634" />
+            </city>
+            <city name="Harrisonville">
+              <zip-code prefix="647" />
+            </city>
+            <city name="Jefferson City">
+              <zip-code prefix="633" />
+              <zip-code prefix="650" />
+              <zip-code prefix="651" />
+              <zip-code prefix="652" />
+            </city>
+            <city name="Joplin">
+              <zip-code prefix="647" />
+              <zip-code prefix="648" />
+              <zip-code prefix="656" />
+              <zip-code prefix="657" />
+            </city>
+            <city name="Kansas City">
+              <zip-code prefix="640" />
+              <zip-code prefix="641" />
+              <zip-code prefix="644" />
+              <zip-code prefix="646" />
+              <zip-code prefix="647" />
+              <zip-code prefix="649" />
+              <zip-code prefix="653" />
+            </city>
+            <city name="Kennett">
+              <zip-code prefix="638" />
+              <zip-code prefix="639" />
+            </city>
+            <city name="Kirksville">
+              <zip-code prefix="525" />
+              <zip-code prefix="635" />
+            </city>
+            <city name="Lebanon">
+              <zip-code prefix="650" />
+              <zip-code prefix="654" />
+              <zip-code prefix="655" />
+              <zip-code prefix="656" />
+              <zip-code prefix="657" />
+            </city>
+            <city name="Marshall">
+              <zip-code prefix="640" />
+              <zip-code prefix="653" />
+            </city>
+            <city name="Maryville">
+              <zip-code prefix="516" />
+              <zip-code prefix="644" />
+            </city>
+            <city name="Mexico">
+              <zip-code prefix="633" />
+              <zip-code prefix="652" />
+            </city>
+            <city name="Moberly">
+              <zip-code prefix="635" />
+              <zip-code prefix="652" />
+            </city>
+            <city name="Poplar Bluff">
+              <zip-code prefix="639" />
+            </city>
+            <city name="Quincy">
+              <zip-code prefix="634" />
+              <zip-code prefix="635" />
+            </city>
+            <city name="Rolla">
+              <zip-code prefix="654" />
+              <zip-code prefix="655" />
+            </city>
+            <city name="Saint Joseph">
+              <zip-code prefix="644" />
+              <zip-code prefix="645" />
+            </city>
+            <city name="Saint Louis">
+              <zip-code prefix="630" />
+              <zip-code prefix="631" />
+              <zip-code prefix="633" />
+            </city>
+            <city name="Sedalia">
+              <zip-code prefix="650" />
+              <zip-code prefix="653" />
+            </city>
+            <city name="Sikeston">
+              <zip-code prefix="637" />
+              <zip-code prefix="638" />
+            </city>
+            <city name="Springfield">
+              <zip-code prefix="648" />
+              <zip-code prefix="654" />
+              <zip-code prefix="655" />
+              <zip-code prefix="656" />
+              <zip-code prefix="657" />
+              <zip-code prefix="658" />
+            </city>
+            <city name="St. Louis">
+              <zip-code prefix="630" />
+              <zip-code prefix="631" />
+              <zip-code prefix="633" />
+              <zip-code prefix="636" />
+              <zip-code prefix="650" />
+              <zip-code prefix="654" />
+              <zip-code prefix="655" />
+            </city>
+            <city name="Warrensburg">
+              <zip-code prefix="640" />
+              <zip-code prefix="647" />
+              <zip-code prefix="653" />
+            </city>
+            <city name="West Plains">
+              <zip-code prefix="655" />
+              <zip-code prefix="656" />
+              <zip-code prefix="657" />
+            </city>
+          </state>
+          <state name="Mississippi">
+            <city name="Brookhaven">
+              <zip-code prefix="390" />
+              <zip-code prefix="391" />
+              <zip-code prefix="396" />
+            </city>
+            <city name="Clarksdale">
+              <zip-code prefix="386" />
+              <zip-code prefix="387" />
+              <zip-code prefix="389" />
+            </city>
+            <city name="Cleveland">
+              <zip-code prefix="386" />
+              <zip-code prefix="387" />
+            </city>
+            <city name="Columbus">
+              <zip-code prefix="397" />
+            </city>
+            <city name="Corinth">
+              <zip-code prefix="383" />
+              <zip-code prefix="386" />
+              <zip-code prefix="388" />
+            </city>
+            <city name="Greenville">
+              <zip-code prefix="387" />
+            </city>
+            <city name="Greenwood">
+              <zip-code prefix="387" />
+              <zip-code prefix="389" />
+              <zip-code prefix="390" />
+              <zip-code prefix="391" />
+            </city>
+            <city name="Grenada">
+              <zip-code prefix="389" />
+            </city>
+            <city name="Gulfport">
+              <zip-code prefix="395" />
+            </city>
+            <city name="Hattiesburg">
+              <zip-code prefix="394" />
+              <zip-code prefix="395" />
+            </city>
+            <city name="Indianola">
+              <zip-code prefix="387" />
+              <zip-code prefix="389" />
+              <zip-code prefix="390" />
+            </city>
+            <city name="Jackson">
+              <zip-code prefix="390" />
+              <zip-code prefix="391" />
+              <zip-code prefix="392" />
+              <zip-code prefix="396" />
+            </city>
+            <city name="Laurel">
+              <zip-code prefix="391" />
+              <zip-code prefix="393" />
+              <zip-code prefix="394" />
+            </city>
+            <city name="McComb">
+              <zip-code prefix="396" />
+            </city>
+            <city name="Memphis">
+              <zip-code prefix="386" />
+            </city>
+            <city name="Meridian">
+              <zip-code prefix="393" />
+              <zip-code prefix="394" />
+            </city>
+            <city name="Oxford">
+              <zip-code prefix="386" />
+              <zip-code prefix="388" />
+              <zip-code prefix="389" />
+            </city>
+            <city name="Pascagoula">
+              <zip-code prefix="394" />
+              <zip-code prefix="395" />
+            </city>
+            <city name="Picayune">
+              <zip-code prefix="394" />
+              <zip-code prefix="395" />
+            </city>
+            <city name="Starkville">
+              <zip-code prefix="397" />
+            </city>
+            <city name="Tupelo">
+              <zip-code prefix="386" />
+              <zip-code prefix="388" />
+            </city>
+            <city name="Vicksburg">
+              <zip-code prefix="391" />
+            </city>
+            <city name="West Point">
+              <zip-code prefix="388" />
+              <zip-code prefix="397" />
+            </city>
+            <city name="Yazoo City">
+              <zip-code prefix="390" />
+              <zip-code prefix="391" />
+            </city>
+          </state>
+          <state name="Montana">
+            <city name="Billings">
+              <zip-code prefix="590" />
+              <zip-code prefix="591" />
+            </city>
+            <city name="Bozeman">
+              <zip-code prefix="590" />
+              <zip-code prefix="597" />
+            </city>
+            <city name="Butte">
+              <zip-code prefix="597" />
+            </city>
+            <city name="Great Falls">
+              <zip-code prefix="594" />
+            </city>
+            <city name="Havre">
+              <zip-code prefix="595" />
+            </city>
+            <city name="Helena">
+              <zip-code prefix="594" />
+              <zip-code prefix="596" />
+              <zip-code prefix="597" />
+            </city>
+            <city name="Kalispell">
+              <zip-code prefix="598" />
+              <zip-code prefix="599" />
+            </city>
+            <city name="Missoula">
+              <zip-code prefix="598" />
+            </city>
+          </state>
+          <state name="NorthCarolina">
+            <city name="Albemarle">
+              <zip-code prefix="280" />
+              <zip-code prefix="281" />
+            </city>
+            <city name="Asheville">
+              <zip-code prefix="287" />
+              <zip-code prefix="288" />
+              <zip-code prefix="378" />
+            </city>
+            <city name="Boone">
+              <zip-code prefix="286" />
+            </city>
+            <city name="Brevard">
+              <zip-code prefix="287" />
+            </city>
+            <city name="Burlington">
+              <zip-code prefix="270" />
+              <zip-code prefix="272" />
+              <zip-code prefix="273" />
+            </city>
+            <city name="Charlotte">
+              <zip-code prefix="280" />
+              <zip-code prefix="281" />
+              <zip-code prefix="282" />
+            </city>
+            <city name="Dunn">
+              <zip-code prefix="273" />
+              <zip-code prefix="275" />
+              <zip-code prefix="283" />
+            </city>
+            <city name="Durham">
+              <zip-code prefix="272" />
+              <zip-code prefix="273" />
+              <zip-code prefix="275" />
+              <zip-code prefix="276" />
+              <zip-code prefix="277" />
+            </city>
+            <city name="Elizabeth City">
+              <zip-code prefix="279" />
+            </city>
+            <city name="Fayetteville">
+              <zip-code prefix="283" />
+              <zip-code prefix="284" />
+            </city>
+            <city name="Forest City">
+              <zip-code prefix="280" />
+              <zip-code prefix="281" />
+              <zip-code prefix="287" />
+            </city>
+            <city name="Goldsboro">
+              <zip-code prefix="275" />
+              <zip-code prefix="278" />
+              <zip-code prefix="283" />
+              <zip-code prefix="285" />
+            </city>
+            <city name="Greensboro">
+              <zip-code prefix="270" />
+              <zip-code prefix="272" />
+              <zip-code prefix="273" />
+              <zip-code prefix="274" />
+            </city>
+            <city name="Greenville">
+              <zip-code prefix="278" />
+              <zip-code prefix="285" />
+            </city>
+            <city name="Henderson">
+              <zip-code prefix="275" />
+            </city>
+            <city name="Hickory">
+              <zip-code prefix="286" />
+            </city>
+            <city name="Jacksonville">
+              <zip-code prefix="284" />
+              <zip-code prefix="285" />
+            </city>
+            <city name="Kill Devil Hills">
+              <zip-code prefix="279" />
+            </city>
+            <city name="Kinston">
+              <zip-code prefix="285" />
+            </city>
+            <city name="Laurinburg">
+              <zip-code prefix="283" />
+            </city>
+            <city name="Lincolnton">
+              <zip-code prefix="280" />
+              <zip-code prefix="281" />
+              <zip-code prefix="286" />
+            </city>
+            <city name="Lumberton">
+              <zip-code prefix="283" />
+            </city>
+            <city name="Morehead City">
+              <zip-code prefix="285" />
+            </city>
+            <city name="Mount Airy">
+              <zip-code prefix="270" />
+              <zip-code prefix="286" />
+            </city>
+            <city name="New Bern">
+              <zip-code prefix="285" />
+            </city>
+            <city name="North Wilkesboro">
+              <zip-code prefix="270" />
+              <zip-code prefix="286" />
+            </city>
+            <city name="Raleigh">
+              <zip-code prefix="275" />
+              <zip-code prefix="276" />
+            </city>
+            <city name="Roanoke Rapids">
+              <zip-code prefix="278" />
+            </city>
+            <city name="Rockingham">
+              <zip-code prefix="272" />
+              <zip-code prefix="273" />
+              <zip-code prefix="283" />
+            </city>
+            <city name="Rocky Mount">
+              <zip-code prefix="275" />
+              <zip-code prefix="278" />
+              <zip-code prefix="279" />
+            </city>
+            <city name="Salisbury">
+              <zip-code prefix="270" />
+              <zip-code prefix="280" />
+              <zip-code prefix="281" />
+            </city>
+            <city name="Sanford">
+              <zip-code prefix="272" />
+              <zip-code prefix="273" />
+              <zip-code prefix="275" />
+              <zip-code prefix="283" />
+            </city>
+            <city name="Shelby">
+              <zip-code prefix="280" />
+              <zip-code prefix="281" />
+            </city>
+            <city name="Washington">
+              <zip-code prefix="278" />
+              <zip-code prefix="285" />
+            </city>
+            <city name="Wilmington">
+              <zip-code prefix="284" />
+            </city>
+            <city name="Wilson">
+              <zip-code prefix="275" />
+              <zip-code prefix="278" />
+            </city>
+            <city name="Winston-Salem">
+              <zip-code prefix="271" />
+            </city>
+          </state>
+          <state name="NorthDakota">
+            <city name="Bismarck">
+              <zip-code prefix="584" />
+              <zip-code prefix="585" />
+              <zip-code prefix="586" />
+            </city>
+            <city name="Devils Lake">
+              <zip-code prefix="583" />
+            </city>
+            <city name="Dickinson">
+              <zip-code prefix="586" />
+            </city>
+            <city name="Fargo">
+              <zip-code prefix="580" />
+              <zip-code prefix="581" />
+            </city>
+            <city name="Grand Forks">
+              <zip-code prefix="582" />
+            </city>
+            <city name="Jamestown">
+              <zip-code prefix="584" />
+            </city>
+            <city name="Minot">
+              <zip-code prefix="583" />
+              <zip-code prefix="587" />
+            </city>
+            <city name="Wahpeton">
+              <zip-code prefix="572" />
+              <zip-code prefix="580" />
+            </city>
+            <city name="Williston">
+              <zip-code prefix="587" />
+              <zip-code prefix="588" />
+            </city>
+          </state>
+          <state name="Nebraska">
+            <city name="Alliance">
+              <zip-code prefix="693" />
+            </city>
+            <city name="Beatrice">
+              <zip-code prefix="665" />
+              <zip-code prefix="683" />
+              <zip-code prefix="684" />
+            </city>
+            <city name="Columbus">
+              <zip-code prefix="686" />
+              <zip-code prefix="687" />
+            </city>
+            <city name="Fremont">
+              <zip-code prefix="680" />
+              <zip-code prefix="686" />
+              <zip-code prefix="687" />
+            </city>
+            <city name="Grand Island">
+              <zip-code prefix="686" />
+              <zip-code prefix="688" />
+              <zip-code prefix="689" />
+            </city>
+            <city name="Hastings">
+              <zip-code prefix="683" />
+              <zip-code prefix="684" />
+              <zip-code prefix="688" />
+              <zip-code prefix="689" />
+            </city>
+            <city name="Kearney">
+              <zip-code prefix="688" />
+              <zip-code prefix="689" />
+            </city>
+            <city name="Lexington">
+              <zip-code prefix="688" />
+              <zip-code prefix="689" />
+              <zip-code prefix="690" />
+              <zip-code prefix="691" />
+            </city>
+            <city name="Lincoln">
+              <zip-code prefix="680" />
+              <zip-code prefix="683" />
+              <zip-code prefix="684" />
+              <zip-code prefix="685" />
+              <zip-code prefix="686" />
+            </city>
+            <city name="McCook">
+              <zip-code prefix="690" />
+            </city>
+            <city name="Norfolk">
+              <zip-code prefix="686" />
+              <zip-code prefix="687" />
+            </city>
+            <city name="North Platte">
+              <zip-code prefix="688" />
+              <zip-code prefix="690" />
+              <zip-code prefix="691" />
+            </city>
+            <city name="Omaha">
+              <zip-code prefix="680" />
+              <zip-code prefix="681" />
+            </city>
+            <city name="Scottsbluff">
+              <zip-code prefix="691" />
+              <zip-code prefix="693" />
+              <zip-code prefix="820" />
+            </city>
+          </state>
+          <state name="NewHampshire">
+            <city name="Claremont">
+              <zip-code prefix="032" />
+              <zip-code prefix="034" />
+              <zip-code prefix="036" />
+              <zip-code prefix="037" />
+            </city>
+            <city name="Concord">
+              <zip-code prefix="030" />
+              <zip-code prefix="031" />
+              <zip-code prefix="032" />
+              <zip-code prefix="033" />
+            </city>
+            <city name="Keene">
+              <zip-code prefix="034" />
+              <zip-code prefix="036" />
+            </city>
+            <city name="Laconia">
+              <zip-code prefix="032" />
+              <zip-code prefix="038" />
+            </city>
+            <city name="Lebanon">
+              <zip-code prefix="032" />
+              <zip-code prefix="035" />
+              <zip-code prefix="037" />
+            </city>
+            <city name="Manchester">
+              <zip-code prefix="030" />
+              <zip-code prefix="031" />
+              <zip-code prefix="032" />
+              <zip-code prefix="034" />
+            </city>
+            <city name="Portsmouth">
+              <zip-code prefix="038" />
+            </city>
+            <city name="W.R. Jctn.">
+              <zip-code prefix="037" />
+            </city>
+            <city name="White River Junction">
+              <zip-code prefix="035" />
+              <zip-code prefix="036" />
+            </city>
+          </state>
+          <state name="NewJersey">
+            <city name="Atlantic City">
+              <zip-code prefix="080" />
+              <zip-code prefix="082" />
+              <zip-code prefix="083" />
+              <zip-code prefix="084" />
+            </city>
+            <city name="Camden">
+              <zip-code prefix="081" />
+            </city>
+            <city name="Elizabeth">
+              <zip-code prefix="072" />
+            </city>
+            <city name="Hackensack">
+              <zip-code prefix="076" />
+            </city>
+            <city name="Jersey City">
+              <zip-code prefix="073" />
+            </city>
+            <city name="Kilmer">
+              <zip-code prefix="088" />
+            </city>
+            <city name="Monmouth">
+              <zip-code prefix="077" />
+              <zip-code prefix="087" />
+            </city>
+            <city name="New Brunswick">
+              <zip-code prefix="089" />
+            </city>
+            <city name="Newark">
+              <zip-code prefix="070" />
+              <zip-code prefix="071" />
+            </city>
+            <city name="Ocean City">
+              <zip-code prefix="082" />
+              <zip-code prefix="083" />
+            </city>
+            <city name="Paterson">
+              <zip-code prefix="074" />
+              <zip-code prefix="075" />
+            </city>
+            <city name="Southern">
+              <zip-code prefix="080" />
+              <zip-code prefix="082" />
+              <zip-code prefix="083" />
+            </city>
+            <city name="Trenton">
+              <zip-code prefix="085" />
+              <zip-code prefix="086" />
+            </city>
+            <city name="Western">
+              <zip-code prefix="078" />
+              <zip-code prefix="079" />
+            </city>
+          </state>
+          <state name="NewMexico">
+            <city name="Alamogordo">
+              <zip-code prefix="880" />
+              <zip-code prefix="883" />
+            </city>
+            <city name="Albuquerque">
+              <zip-code prefix="870" />
+              <zip-code prefix="871" />
+              <zip-code prefix="872" />
+              <zip-code prefix="875" />
+              <zip-code prefix="883" />
+            </city>
+            <city name="Carrizozo">
+              <zip-code prefix="883" />
+            </city>
+            <city name="Clovis">
+              <zip-code prefix="881" />
+            </city>
+            <city name="Deming">
+              <zip-code prefix="880" />
+            </city>
+            <city name="Espanola">
+              <zip-code prefix="870" />
+              <zip-code prefix="874" />
+              <zip-code prefix="875" />
+            </city>
+            <city name="Farmington">
+              <zip-code prefix="811" />
+              <zip-code prefix="870" />
+              <zip-code prefix="873" />
+              <zip-code prefix="874" />
+            </city>
+            <city name="Gallup">
+              <zip-code prefix="870" />
+              <zip-code prefix="873" />
+            </city>
+            <city name="Grants">
+              <zip-code prefix="870" />
+              <zip-code prefix="873" />
+            </city>
+            <city name="Hobbs">
+              <zip-code prefix="881" />
+              <zip-code prefix="882" />
+            </city>
+            <city name="Las Cruces">
+              <zip-code prefix="798" />
+              <zip-code prefix="799" />
+              <zip-code prefix="879" />
+              <zip-code prefix="880" />
+            </city>
+            <city name="Las Vegas">
+              <zip-code prefix="875" />
+              <zip-code prefix="877" />
+              <zip-code prefix="884" />
+            </city>
+            <city name="Los Alamos">
+              <zip-code prefix="875" />
+            </city>
+            <city name="Portales">
+              <zip-code prefix="881" />
+            </city>
+            <city name="Roswell">
+              <zip-code prefix="881" />
+              <zip-code prefix="882" />
+              <zip-code prefix="883" />
+            </city>
+            <city name="Ruidoso">
+              <zip-code prefix="883" />
+            </city>
+            <city name="Santa Fe">
+              <zip-code prefix="870" />
+              <zip-code prefix="875" />
+            </city>
+            <city name="Silver City">
+              <zip-code prefix="880" />
+            </city>
+            <city name="Socorro">
+              <zip-code prefix="878" />
+            </city>
+            <city name="Taos">
+              <zip-code prefix="875" />
+            </city>
+            <city name="Truth or Consequences">
+              <zip-code prefix="879" />
+            </city>
+            <city name="Tucumcari">
+              <zip-code prefix="884" />
+            </city>
+          </state>
+          <state name="Nevada">
+            <city name="Carson City">
+              <zip-code prefix="897" />
+            </city>
+            <city name="Elko">
+              <zip-code prefix="893" />
+              <zip-code prefix="898" />
+            </city>
+            <city name="Ely">
+              <zip-code prefix="893" />
+            </city>
+            <city name="Fallon">
+              <zip-code prefix="894" />
+            </city>
+            <city name="Fernley">
+              <zip-code prefix="894" />
+              <zip-code prefix="897" />
+            </city>
+            <city name="Gardnerville Ranchos">
+              <zip-code prefix="894" />
+              <zip-code prefix="897" />
+            </city>
+            <city name="Las Vegas">
+              <zip-code prefix="890" />
+              <zip-code prefix="891" />
+            </city>
+            <city name="Pahrump">
+              <zip-code prefix="890" />
+              <zip-code prefix="891" />
+              <zip-code prefix="894" />
+            </city>
+            <city name="Reno">
+              <zip-code prefix="894" />
+              <zip-code prefix="895" />
+            </city>
+          </state>
+          <state name="NewYork">
+            <city name="Albany">
+              <zip-code prefix="120" />
+              <zip-code prefix="121" />
+              <zip-code prefix="122" />
+            </city>
+            <city name="Amsterdam">
+              <zip-code prefix="120" />
+              <zip-code prefix="121" />
+              <zip-code prefix="133" />
+              <zip-code prefix="134" />
+            </city>
+            <city name="Auburn">
+              <zip-code prefix="130" />
+              <zip-code prefix="131" />
+              <zip-code prefix="148" />
+            </city>
+            <city name="Batavia">
+              <zip-code prefix="140" />
+              <zip-code prefix="141" />
+              <zip-code prefix="142" />
+              <zip-code prefix="144" />
+              <zip-code prefix="145" />
+            </city>
+            <city name="Binghamton">
+              <zip-code prefix="137" />
+              <zip-code prefix="138" />
+              <zip-code prefix="139" />
+              <zip-code prefix="148" />
+            </city>
+            <city name="Brooklyn">
+              <zip-code prefix="112" />
+            </city>
+            <city name="Buffalo">
+              <zip-code prefix="140" />
+              <zip-code prefix="141" />
+              <zip-code prefix="142" />
+            </city>
+            <city name="Corning">
+              <zip-code prefix="144" />
+              <zip-code prefix="145" />
+              <zip-code prefix="148" />
+            </city>
+            <city name="Cortland">
+              <zip-code prefix="130" />
+              <zip-code prefix="131" />
+              <zip-code prefix="137" />
+              <zip-code prefix="138" />
+            </city>
+            <city name="Elmira">
+              <zip-code prefix="148" />
+              <zip-code prefix="149" />
+            </city>
+            <city name="Far Rockaway">
+              <zip-code prefix="116" />
+            </city>
+            <city name="Flushing">
+              <zip-code prefix="113" />
+            </city>
+            <city name="Glens Falls">
+              <zip-code prefix="120" />
+              <zip-code prefix="121" />
+              <zip-code prefix="128" />
+            </city>
+            <city name="Gloversville">
+              <zip-code prefix="120" />
+              <zip-code prefix="121" />
+              <zip-code prefix="133" />
+              <zip-code prefix="134" />
+            </city>
+            <city name="Hicksville">
+              <zip-code prefix="118" />
+            </city>
+            <city name="Hudson">
+              <zip-code prefix="120" />
+              <zip-code prefix="121" />
+              <zip-code prefix="125" />
+            </city>
+            <city name="Ithaca">
+              <zip-code prefix="130" />
+              <zip-code prefix="131" />
+              <zip-code prefix="137" />
+              <zip-code prefix="138" />
+              <zip-code prefix="148" />
+            </city>
+            <city name="Jamaica">
+              <zip-code prefix="114" />
+            </city>
+            <city name="Jamestown">
+              <zip-code prefix="147" />
+            </city>
+            <city name="Kingston">
+              <zip-code prefix="124" />
+              <zip-code prefix="125" />
+              <zip-code prefix="127" />
+            </city>
+            <city name="Long Island City">
+              <zip-code prefix="111" />
+            </city>
+            <city name="Malone">
+              <zip-code prefix="129" />
+              <zip-code prefix="136" />
+            </city>
+            <city name="Mid-Hudson">
+              <zip-code prefix="124" />
+              <zip-code prefix="125" />
+              <zip-code prefix="127" />
+            </city>
+            <city name="Mid-Island">
+              <zip-code prefix="117" />
+              <zip-code prefix="119" />
+            </city>
+            <city name="New Rochelle">
+              <zip-code prefix="108" />
+            </city>
+            <city name="New York City">
+              <zip-code prefix="100" />
+              <zip-code prefix="101" />
+              <zip-code prefix="102" />
+            </city>
+            <city name="Niagara Falls">
+              <zip-code prefix="143" />
+            </city>
+            <city name="Olean">
+              <zip-code prefix="140" />
+              <zip-code prefix="141" />
+              <zip-code prefix="147" />
+            </city>
+            <city name="Oneonta">
+              <zip-code prefix="120" />
+              <zip-code prefix="121" />
+              <zip-code prefix="133" />
+              <zip-code prefix="134" />
+              <zip-code prefix="137" />
+              <zip-code prefix="138" />
+            </city>
+            <city name="Plattsburgh">
+              <zip-code prefix="129" />
+            </city>
+            <city name="Poughkeepsie">
+              <zip-code prefix="126" />
+            </city>
+            <city name="Queens">
+              <zip-code prefix="110" />
+            </city>
+            <city name="Rochester">
+              <zip-code prefix="131" />
+              <zip-code prefix="134" />
+              <zip-code prefix="140" />
+              <zip-code prefix="141" />
+              <zip-code prefix="144" />
+              <zip-code prefix="145" />
+              <zip-code prefix="146" />
+              <zip-code prefix="148" />
+            </city>
+            <city name="Rockland">
+              <zip-code prefix="109" />
+            </city>
+            <city name="Schenectady">
+              <zip-code prefix="123" />
+            </city>
+            <city name="Seneca Falls">
+              <zip-code prefix="130" />
+              <zip-code prefix="131" />
+              <zip-code prefix="144" />
+              <zip-code prefix="145" />
+              <zip-code prefix="148" />
+            </city>
+            <city name="Staten Island">
+              <zip-code prefix="103" />
+            </city>
+            <city name="Syracuse">
+              <zip-code prefix="109" />
+              <zip-code prefix="130" />
+              <zip-code prefix="131" />
+              <zip-code prefix="132" />
+              <zip-code prefix="133" />
+              <zip-code prefix="134" />
+              <zip-code prefix="136" />
+            </city>
+            <city name="The Bronx">
+              <zip-code prefix="104" />
+            </city>
+            <city name="Utica">
+              <zip-code prefix="133" />
+              <zip-code prefix="134" />
+              <zip-code prefix="135" />
+            </city>
+            <city name="Watertown">
+              <zip-code prefix="136" />
+            </city>
+            <city name="West Nassau">
+              <zip-code prefix="115" />
+            </city>
+            <city name="Westchester">
+              <zip-code prefix="105" />
+            </city>
+            <city name="White Plains">
+              <zip-code prefix="106" />
+            </city>
+            <city name="Yonkers">
+              <zip-code prefix="107" />
+            </city>
+          </state>
+          <state name="Ohio">
+            <city name="Akron">
+              <zip-code prefix="440" />
+              <zip-code prefix="441" />
+              <zip-code prefix="442" />
+              <zip-code prefix="443" />
+              <zip-code prefix="444" />
+              <zip-code prefix="446" />
+              <zip-code prefix="447" />
+            </city>
+            <city name="Ashland">
+              <zip-code prefix="430" />
+              <zip-code prefix="442" />
+              <zip-code prefix="446" />
+              <zip-code prefix="448" />
+              <zip-code prefix="449" />
+            </city>
+            <city name="Ashtabula">
+              <zip-code prefix="440" />
+              <zip-code prefix="444" />
+            </city>
+            <city name="Athens">
+              <zip-code prefix="437" />
+              <zip-code prefix="457" />
+            </city>
+            <city name="Bellefontaine">
+              <zip-code prefix="430" />
+              <zip-code prefix="433" />
+              <zip-code prefix="453" />
+              <zip-code prefix="458" />
+            </city>
+            <city name="Bucyrus">
+              <zip-code prefix="433" />
+              <zip-code prefix="448" />
+            </city>
+            <city name="Cambridge">
+              <zip-code prefix="437" />
+              <zip-code prefix="438" />
+              <zip-code prefix="439" />
+              <zip-code prefix="446" />
+            </city>
+            <city name="Canton">
+              <zip-code prefix="446" />
+              <zip-code prefix="447" />
+            </city>
+            <city name="Celina">
+              <zip-code prefix="453" />
+              <zip-code prefix="458" />
+            </city>
+            <city name="Chillicothe">
+              <zip-code prefix="431" />
+              <zip-code prefix="451" />
+              <zip-code prefix="456" />
+            </city>
+            <city name="Cincinnati">
+              <zip-code prefix="450" />
+              <zip-code prefix="451" />
+              <zip-code prefix="452" />
+            </city>
+            <city name="Cleveland">
+              <zip-code prefix="440" />
+              <zip-code prefix="441" />
+            </city>
+            <city name="Columbus">
+              <zip-code prefix="430" />
+              <zip-code prefix="431" />
+              <zip-code prefix="432" />
+              <zip-code prefix="433" />
+              <zip-code prefix="437" />
+              <zip-code prefix="438" />
+              <zip-code prefix="448" />
+              <zip-code prefix="449" />
+              <zip-code prefix="453" />
+              <zip-code prefix="456" />
+            </city>
+            <city name="Coshocton">
+              <zip-code prefix="430" />
+              <zip-code prefix="437" />
+              <zip-code prefix="438" />
+              <zip-code prefix="446" />
+            </city>
+            <city name="Dayton">
+              <zip-code prefix="431" />
+              <zip-code prefix="450" />
+              <zip-code prefix="451" />
+              <zip-code prefix="453" />
+              <zip-code prefix="454" />
+            </city>
+            <city name="Defiance">
+              <zip-code prefix="435" />
+              <zip-code prefix="458" />
+            </city>
+            <city name="Findlay">
+              <zip-code prefix="433" />
+              <zip-code prefix="435" />
+              <zip-code prefix="448" />
+              <zip-code prefix="458" />
+            </city>
+            <city name="Fremont">
+              <zip-code prefix="434" />
+              <zip-code prefix="448" />
+            </city>
+            <city name="Greenville">
+              <zip-code prefix="440" />
+              <zip-code prefix="453" />
+              <zip-code prefix="458" />
+            </city>
+            <city name="Lima">
+              <zip-code prefix="458" />
+            </city>
+            <city name="Mansfield">
+              <zip-code prefix="430" />
+              <zip-code prefix="448" />
+              <zip-code prefix="449" />
+            </city>
+            <city name="Marion">
+              <zip-code prefix="433" />
+              <zip-code prefix="448" />
+              <zip-code prefix="458" />
+            </city>
+            <city name="Mount Vernon">
+              <zip-code prefix="430" />
+              <zip-code prefix="438" />
+              <zip-code prefix="446" />
+              <zip-code prefix="448" />
+            </city>
+            <city name="Norwalk">
+              <zip-code prefix="448" />
+            </city>
+            <city name="Portsmouth">
+              <zip-code prefix="456" />
+            </city>
+            <city name="Sandusky">
+              <zip-code prefix="434" />
+              <zip-code prefix="440" />
+              <zip-code prefix="448" />
+            </city>
+            <city name="Sidney">
+              <zip-code prefix="433" />
+              <zip-code prefix="453" />
+              <zip-code prefix="458" />
+            </city>
+            <city name="Springfield">
+              <zip-code prefix="430" />
+              <zip-code prefix="431" />
+              <zip-code prefix="453" />
+              <zip-code prefix="455" />
+            </city>
+            <city name="Steubenville">
+              <zip-code prefix="439" />
+            </city>
+            <city name="Tiffin">
+              <zip-code prefix="433" />
+              <zip-code prefix="434" />
+              <zip-code prefix="448" />
+            </city>
+            <city name="Toledo">
+              <zip-code prefix="434" />
+              <zip-code prefix="435" />
+              <zip-code prefix="436" />
+              <zip-code prefix="448" />
+              <zip-code prefix="458" />
+            </city>
+            <city name="Urbana">
+              <zip-code prefix="430" />
+              <zip-code prefix="433" />
+              <zip-code prefix="453" />
+              <zip-code prefix="455" />
+            </city>
+            <city name="Van Wert">
+              <zip-code prefix="458" />
+            </city>
+            <city name="Wapakoneta">
+              <zip-code prefix="433" />
+              <zip-code prefix="453" />
+              <zip-code prefix="458" />
+            </city>
+            <city name="Washington">
+              <zip-code prefix="431" />
+              <zip-code prefix="451" />
+              <zip-code prefix="453" />
+            </city>
+            <city name="Wilmington">
+              <zip-code prefix="450" />
+              <zip-code prefix="451" />
+              <zip-code prefix="453" />
+            </city>
+            <city name="Wooster">
+              <zip-code prefix="442" />
+              <zip-code prefix="446" />
+              <zip-code prefix="448" />
+            </city>
+            <city name="Youngstown">
+              <zip-code prefix="444" />
+              <zip-code prefix="445" />
+            </city>
+            <city name="Zanesville">
+              <zip-code prefix="430" />
+              <zip-code prefix="437" />
+              <zip-code prefix="438" />
+            </city>
+          </state>
+          <state name="Oklahoma">
+            <city name="Ada">
+              <zip-code prefix="748" />
+            </city>
+            <city name="Altus">
+              <zip-code prefix="735" />
+            </city>
+            <city name="Ardmore">
+              <zip-code prefix="734" />
+            </city>
+            <city name="Bartlesville">
+              <zip-code prefix="740" />
+            </city>
+            <city name="Clinton">
+              <zip-code prefix="736" />
+            </city>
+            <city name="Duncan">
+              <zip-code prefix="730" />
+              <zip-code prefix="734" />
+              <zip-code prefix="735" />
+            </city>
+            <city name="Durant">
+              <zip-code prefix="734" />
+              <zip-code prefix="747" />
+            </city>
+            <city name="Elk City">
+              <zip-code prefix="736" />
+            </city>
+            <city name="Enid">
+              <zip-code prefix="730" />
+              <zip-code prefix="737" />
+              <zip-code prefix="746" />
+            </city>
+            <city name="Guymon">
+              <zip-code prefix="739" />
+            </city>
+            <city name="Lawton">
+              <zip-code prefix="730" />
+              <zip-code prefix="735" />
+            </city>
+            <city name="Liberal">
+              <zip-code prefix="739" />
+            </city>
+            <city name="McAlester">
+              <zip-code prefix="744" />
+              <zip-code prefix="745" />
+            </city>
+            <city name="Miami">
+              <zip-code prefix="743" />
+            </city>
+            <city name="Muskogee">
+              <zip-code prefix="744" />
+            </city>
+            <city name="Oklahoma City">
+              <zip-code prefix="730" />
+              <zip-code prefix="731" />
+              <zip-code prefix="737" />
+              <zip-code prefix="740" />
+              <zip-code prefix="748" />
+            </city>
+            <city name="Ponca City">
+              <zip-code prefix="746" />
+            </city>
+            <city name="Poteau">
+              <zip-code prefix="749" />
+            </city>
+            <city name="Shawnee">
+              <zip-code prefix="730" />
+              <zip-code prefix="748" />
+            </city>
+            <city name="Stillwater">
+              <zip-code prefix="730" />
+              <zip-code prefix="740" />
+              <zip-code prefix="748" />
+            </city>
+            <city name="Tahlequah">
+              <zip-code prefix="743" />
+              <zip-code prefix="744" />
+              <zip-code prefix="749" />
+            </city>
+            <city name="Tulsa">
+              <zip-code prefix="740" />
+              <zip-code prefix="741" />
+              <zip-code prefix="743" />
+              <zip-code prefix="744" />
+              <zip-code prefix="746" />
+              <zip-code prefix="748" />
+            </city>
+            <city name="Woodward">
+              <zip-code prefix="738" />
+            </city>
+          </state>
+          <state name="Oregon">
+            <city name="Astoria">
+              <zip-code prefix="970" />
+              <zip-code prefix="971" />
+            </city>
+            <city name="Bend">
+              <zip-code prefix="977" />
+            </city>
+            <city name="Boise">
+              <zip-code prefix="979" />
+            </city>
+            <city name="Brookings">
+              <zip-code prefix="974" />
+            </city>
+            <city name="City of The Dalles">
+              <zip-code prefix="970" />
+            </city>
+            <city name="Coos Bay">
+              <zip-code prefix="974" />
+            </city>
+            <city name="Corvallis">
+              <zip-code prefix="973" />
+              <zip-code prefix="974" />
+            </city>
+            <city name="Eugene">
+              <zip-code prefix="974" />
+            </city>
+            <city name="Grants Pass">
+              <zip-code prefix="974" />
+              <zip-code prefix="975" />
+            </city>
+            <city name="Hood River">
+              <zip-code prefix="970" />
+            </city>
+            <city name="Klamath Falls">
+              <zip-code prefix="974" />
+              <zip-code prefix="975" />
+              <zip-code prefix="976" />
+              <zip-code prefix="977" />
+            </city>
+            <city name="La Grande">
+              <zip-code prefix="978" />
+            </city>
+            <city name="Medford">
+              <zip-code prefix="960" />
+              <zip-code prefix="974" />
+              <zip-code prefix="975" />
+            </city>
+            <city name="Pendleton">
+              <zip-code prefix="978" />
+            </city>
+            <city name="Portland">
+              <zip-code prefix="970" />
+              <zip-code prefix="971" />
+              <zip-code prefix="972" />
+            </city>
+            <city name="Prineville">
+              <zip-code prefix="977" />
+            </city>
+            <city name="Roseburg">
+              <zip-code prefix="974" />
+              <zip-code prefix="977" />
+            </city>
+            <city name="Salem">
+              <zip-code prefix="970" />
+              <zip-code prefix="971" />
+              <zip-code prefix="973" />
+            </city>
+          </state>
+          <state name="Pennsylvania">
+            <city name="Allentown">
+              <zip-code prefix="181" />
+            </city>
+            <city name="Altoona">
+              <zip-code prefix="159" />
+              <zip-code prefix="166" />
+              <zip-code prefix="168" />
+            </city>
+            <city name="Bradford">
+              <zip-code prefix="158" />
+              <zip-code prefix="163" />
+              <zip-code prefix="167" />
+            </city>
+            <city name="Chambersburg">
+              <zip-code prefix="170" />
+              <zip-code prefix="172" />
+            </city>
+            <city name="Du Bois">
+              <zip-code prefix="158" />
+            </city>
+            <city name="DuBois">
+              <zip-code prefix="157" />
+              <zip-code prefix="158" />
+              <zip-code prefix="166" />
+              <zip-code prefix="168" />
+            </city>
+            <city name="East Stroudsburg">
+              <zip-code prefix="180" />
+              <zip-code prefix="182" />
+              <zip-code prefix="183" />
+              <zip-code prefix="184" />
+              <zip-code prefix="186" />
+            </city>
+            <city name="Erie">
+              <zip-code prefix="164" />
+              <zip-code prefix="165" />
+            </city>
+            <city name="Gettysburg">
+              <zip-code prefix="170" />
+              <zip-code prefix="172" />
+              <zip-code prefix="173" />
+            </city>
+            <city name="Greensburg">
+              <zip-code prefix="156" />
+            </city>
+            <city name="Harrisburg">
+              <zip-code prefix="170" />
+              <zip-code prefix="171" />
+              <zip-code prefix="172" />
+              <zip-code prefix="178" />
+            </city>
+            <city name="Huntingdon">
+              <zip-code prefix="166" />
+              <zip-code prefix="168" />
+              <zip-code prefix="170" />
+              <zip-code prefix="172" />
+            </city>
+            <city name="Indiana">
+              <zip-code prefix="156" />
+              <zip-code prefix="157" />
+              <zip-code prefix="159" />
+              <zip-code prefix="162" />
+            </city>
+            <city name="Johnstown">
+              <zip-code prefix="155" />
+              <zip-code prefix="157" />
+              <zip-code prefix="159" />
+              <zip-code prefix="166" />
+            </city>
+            <city name="Lancaster">
+              <zip-code prefix="170" />
+              <zip-code prefix="173" />
+              <zip-code prefix="175" />
+              <zip-code prefix="176" />
+              <zip-code prefix="193" />
+              <zip-code prefix="195" />
+            </city>
+            <city name="Lebanon">
+              <zip-code prefix="170" />
+              <zip-code prefix="175" />
+              <zip-code prefix="195" />
+            </city>
+            <city name="Lehigh Valley">
+              <zip-code prefix="180" />
+              <zip-code prefix="183" />
+            </city>
+            <city name="Lewisburg">
+              <zip-code prefix="178" />
+            </city>
+            <city name="Lewistown">
+              <zip-code prefix="170" />
+              <zip-code prefix="178" />
+            </city>
+            <city name="Lock Haven">
+              <zip-code prefix="168" />
+              <zip-code prefix="177" />
+            </city>
+            <city name="Meadville">
+              <zip-code prefix="161" />
+              <zip-code prefix="163" />
+              <zip-code prefix="164" />
+            </city>
+            <city name="New Castle">
+              <zip-code prefix="160" />
+              <zip-code prefix="161" />
+              <zip-code prefix="162" />
+            </city>
+            <city name="Oil City">
+              <zip-code prefix="160" />
+              <zip-code prefix="161" />
+              <zip-code prefix="162" />
+              <zip-code prefix="163" />
+            </city>
+            <city name="Philadelphia">
+              <zip-code prefix="190" />
+              <zip-code prefix="191" />
+            </city>
+            <city name="Pittsburgh">
+              <zip-code prefix="150" />
+              <zip-code prefix="151" />
+              <zip-code prefix="152" />
+              <zip-code prefix="153" />
+              <zip-code prefix="154" />
+              <zip-code prefix="155" />
+              <zip-code prefix="156" />
+              <zip-code prefix="157" />
+              <zip-code prefix="159" />
+              <zip-code prefix="160" />
+              <zip-code prefix="161" />
+              <zip-code prefix="162" />
+              <zip-code prefix="163" />
+            </city>
+            <city name="Pottsville">
+              <zip-code prefix="178" />
+              <zip-code prefix="179" />
+              <zip-code prefix="182" />
+              <zip-code prefix="195" />
+            </city>
+            <city name="Reading">
+              <zip-code prefix="170" />
+              <zip-code prefix="175" />
+              <zip-code prefix="179" />
+              <zip-code prefix="180" />
+              <zip-code prefix="194" />
+              <zip-code prefix="195" />
+              <zip-code prefix="196" />
+            </city>
+            <city name="Sayre">
+              <zip-code prefix="169" />
+              <zip-code prefix="177" />
+              <zip-code prefix="186" />
+              <zip-code prefix="188" />
+            </city>
+            <city name="Scranton">
+              <zip-code prefix="184" />
+              <zip-code prefix="185" />
+              <zip-code prefix="188" />
+            </city>
+            <city name="Selinsgrove">
+              <zip-code prefix="170" />
+              <zip-code prefix="178" />
+            </city>
+            <city name="Somerset">
+              <zip-code prefix="154" />
+              <zip-code prefix="155" />
+              <zip-code prefix="156" />
+              <zip-code prefix="159" />
+            </city>
+            <city name="Southeast Area">
+              <zip-code prefix="189" />
+              <zip-code prefix="193" />
+              <zip-code prefix="194" />
+            </city>
+            <city name="St. Marys">
+              <zip-code prefix="158" />
+              <zip-code prefix="167" />
+            </city>
+            <city name="State College">
+              <zip-code prefix="166" />
+              <zip-code prefix="168" />
+            </city>
+            <city name="Sunbury">
+              <zip-code prefix="170" />
+              <zip-code prefix="177" />
+              <zip-code prefix="178" />
+              <zip-code prefix="179" />
+            </city>
+            <city name="Warren">
+              <zip-code prefix="163" />
+              <zip-code prefix="164" />
+              <zip-code prefix="167" />
+            </city>
+            <city name="Wilkes-Barre">
+              <zip-code prefix="182" />
+              <zip-code prefix="186" />
+              <zip-code prefix="187" />
+            </city>
+            <city name="Williamsport">
+              <zip-code prefix="169" />
+              <zip-code prefix="177" />
+              <zip-code prefix="178" />
+              <zip-code prefix="186" />
+            </city>
+            <city name="York">
+              <zip-code prefix="174" />
+            </city>
+          </state>
+          <state name="Pennsylvania">
+            <city name="Adjuntas">
+              <zip-code prefix="006" />
+            </city>
+            <city name="Coamo">
+              <zip-code prefix="007" />
+            </city>
+            <city name="Fajardo">
+              <zip-code prefix="007" />
+            </city>
+            <city name="Guayama">
+              <zip-code prefix="007" />
+            </city>
+            <city name="Jayuya">
+              <zip-code prefix="006" />
+            </city>
+            <city name="Mayagïez">
+              <zip-code prefix="006" />
+            </city>
+            <city name="Ponce">
+              <zip-code prefix="007" />
+            </city>
+            <city name="Santa Isabel">
+              <zip-code prefix="007" />
+            </city>
+            <city name="Utuado">
+              <zip-code prefix="006" />
+            </city>
+            <city name="Yauco">
+              <zip-code prefix="006" />
+              <zip-code prefix="007" />
+            </city>
+          </state>
+          <state name="RhodeIsland">
+            <city name="Providence">
+              <zip-code prefix="028" />
+              <zip-code prefix="029" />
+            </city>
+          </state>
+          <state name="SouthCarolina">
+            <city name="Anderson">
+              <zip-code prefix="296" />
+            </city>
+            <city name="Augusta">
+              <zip-code prefix="298" />
+            </city>
+            <city name="Bennettsville">
+              <zip-code prefix="295" />
+            </city>
+            <city name="Charleston">
+              <zip-code prefix="294" />
+            </city>
+            <city name="Charlotte">
+              <zip-code prefix="297" />
+            </city>
+            <city name="Chester">
+              <zip-code prefix="290" />
+              <zip-code prefix="297" />
+            </city>
+            <city name="Columbia">
+              <zip-code prefix="290" />
+              <zip-code prefix="291" />
+              <zip-code prefix="292" />
+              <zip-code prefix="296" />
+              <zip-code prefix="297" />
+              <zip-code prefix="298" />
+            </city>
+            <city name="Dillon">
+              <zip-code prefix="295" />
+            </city>
+            <city name="Florence">
+              <zip-code prefix="290" />
+              <zip-code prefix="291" />
+              <zip-code prefix="295" />
+            </city>
+            <city name="Gaffney">
+              <zip-code prefix="293" />
+              <zip-code prefix="297" />
+            </city>
+            <city name="Georgetown">
+              <zip-code prefix="294" />
+              <zip-code prefix="295" />
+            </city>
+            <city name="Greenville">
+              <zip-code prefix="296" />
+            </city>
+            <city name="Greenwood">
+              <zip-code prefix="291" />
+              <zip-code prefix="296" />
+              <zip-code prefix="298" />
+            </city>
+            <city name="Lancaster">
+              <zip-code prefix="290" />
+              <zip-code prefix="297" />
+            </city>
+            <city name="Newberry">
+              <zip-code prefix="290" />
+              <zip-code prefix="291" />
+              <zip-code prefix="293" />
+            </city>
+            <city name="Orangeburg">
+              <zip-code prefix="290" />
+              <zip-code prefix="291" />
+              <zip-code prefix="294" />
+            </city>
+            <city name="Savannah">
+              <zip-code prefix="299" />
+            </city>
+            <city name="Seneca">
+              <zip-code prefix="296" />
+            </city>
+            <city name="Spartanburg">
+              <zip-code prefix="293" />
+              <zip-code prefix="296" />
+            </city>
+            <city name="Sumter">
+              <zip-code prefix="290" />
+              <zip-code prefix="291" />
+            </city>
+            <city name="Union">
+              <zip-code prefix="290" />
+              <zip-code prefix="291" />
+              <zip-code prefix="293" />
+            </city>
+            <city name="Walterboro">
+              <zip-code prefix="290" />
+              <zip-code prefix="294" />
+              <zip-code prefix="299" />
+            </city>
+          </state>
+          <state name="SouthDakota">
+            <city name="Aberdeen">
+              <zip-code prefix="574" />
+              <zip-code prefix="584" />
+            </city>
+            <city name="Brookings">
+              <zip-code prefix="561" />
+              <zip-code prefix="570" />
+              <zip-code prefix="572" />
+            </city>
+            <city name="Huron">
+              <zip-code prefix="573" />
+            </city>
+            <city name="Mitchell">
+              <zip-code prefix="573" />
+            </city>
+            <city name="Mobridge">
+              <zip-code prefix="576" />
+            </city>
+            <city name="Pierre">
+              <zip-code prefix="575" />
+            </city>
+            <city name="Rapid City">
+              <zip-code prefix="576" />
+              <zip-code prefix="577" />
+              <zip-code prefix="827" />
+            </city>
+            <city name="Sioux Falls">
+              <zip-code prefix="561" />
+              <zip-code prefix="570" />
+              <zip-code prefix="571" />
+              <zip-code prefix="573" />
+            </city>
+            <city name="Spearfish">
+              <zip-code prefix="577" />
+            </city>
+            <city name="Vermillion">
+              <zip-code prefix="570" />
+            </city>
+            <city name="Watertown">
+              <zip-code prefix="572" />
+            </city>
+            <city name="Yankton">
+              <zip-code prefix="570" />
+            </city>
+          </state>
+          <state name="Tennessee">
+            <city name="Athens">
+              <zip-code prefix="373" />
+              <zip-code prefix="378" />
+            </city>
+            <city name="Brownsville">
+              <zip-code prefix="380" />
+            </city>
+            <city name="Chattanooga">
+              <zip-code prefix="373" />
+              <zip-code prefix="374" />
+            </city>
+            <city name="Cleveland">
+              <zip-code prefix="305" />
+              <zip-code prefix="373" />
+            </city>
+            <city name="Columbia">
+              <zip-code prefix="370" />
+              <zip-code prefix="371" />
+              <zip-code prefix="384" />
+            </city>
+            <city name="Cookeville">
+              <zip-code prefix="370" />
+              <zip-code prefix="371" />
+              <zip-code prefix="385" />
+            </city>
+            <city name="Crossville">
+              <zip-code prefix="373" />
+              <zip-code prefix="377" />
+              <zip-code prefix="378" />
+              <zip-code prefix="385" />
+            </city>
+            <city name="Dyersburg">
+              <zip-code prefix="380" />
+              <zip-code prefix="382" />
+            </city>
+            <city name="Greeneville">
+              <zip-code prefix="376" />
+              <zip-code prefix="377" />
+              <zip-code prefix="378" />
+            </city>
+            <city name="Harriman">
+              <zip-code prefix="377" />
+              <zip-code prefix="378" />
+            </city>
+            <city name="Humboldt">
+              <zip-code prefix="380" />
+              <zip-code prefix="382" />
+              <zip-code prefix="383" />
+            </city>
+            <city name="Jackson">
+              <zip-code prefix="380" />
+              <zip-code prefix="383" />
+            </city>
+            <city name="Johnson City">
+              <zip-code prefix="376" />
+            </city>
+            <city name="Knoxville">
+              <zip-code prefix="377" />
+              <zip-code prefix="378" />
+              <zip-code prefix="379" />
+            </city>
+            <city name="La Follette">
+              <zip-code prefix="377" />
+              <zip-code prefix="378" />
+            </city>
+            <city name="Lawrenceburg">
+              <zip-code prefix="384" />
+            </city>
+            <city name="Lewisburg">
+              <zip-code prefix="370" />
+              <zip-code prefix="371" />
+              <zip-code prefix="384" />
+            </city>
+            <city name="Martin">
+              <zip-code prefix="382" />
+            </city>
+            <city name="McKenzie">
+              <zip-code prefix="382" />
+            </city>
+            <city name="McMinnville">
+              <zip-code prefix="371" />
+              <zip-code prefix="373" />
+              <zip-code prefix="385" />
+            </city>
+            <city name="Memphis">
+              <zip-code prefix="380" />
+              <zip-code prefix="381" />
+            </city>
+            <city name="Morristown">
+              <zip-code prefix="377" />
+              <zip-code prefix="378" />
+            </city>
+            <city name="Nashville">
+              <zip-code prefix="370" />
+              <zip-code prefix="371" />
+              <zip-code prefix="372" />
+            </city>
+            <city name="Newport">
+              <zip-code prefix="373" />
+              <zip-code prefix="377" />
+              <zip-code prefix="378" />
+            </city>
+            <city name="Paris">
+              <zip-code prefix="382" />
+            </city>
+            <city name="Sevierville">
+              <zip-code prefix="377" />
+              <zip-code prefix="378" />
+              <zip-code prefix="379" />
+            </city>
+            <city name="Shelbyville">
+              <zip-code prefix="370" />
+              <zip-code prefix="371" />
+              <zip-code prefix="373" />
+            </city>
+            <city name="Tullahoma">
+              <zip-code prefix="370" />
+              <zip-code prefix="371" />
+              <zip-code prefix="373" />
+            </city>
+            <city name="Union City">
+              <zip-code prefix="380" />
+              <zip-code prefix="382" />
+            </city>
+          </state>
+          <state name="Texas">
+            <city name="Abilene">
+              <zip-code prefix="764" />
+              <zip-code prefix="768" />
+              <zip-code prefix="795" />
+              <zip-code prefix="796" />
+            </city>
+            <city name="Alice">
+              <zip-code prefix="783" />
+            </city>
+            <city name="Amarillo">
+              <zip-code prefix="790" />
+              <zip-code prefix="791" />
+              <zip-code prefix="792" />
+            </city>
+            <city name="Andrews">
+              <zip-code prefix="797" />
+            </city>
+            <city name="Athens">
+              <zip-code prefix="751" />
+              <zip-code prefix="757" />
+              <zip-code prefix="758" />
+            </city>
+            <city name="Austin">
+              <zip-code prefix="786" />
+              <zip-code prefix="787" />
+              <zip-code prefix="789" />
+            </city>
+            <city name="Bay City">
+              <zip-code prefix="774" />
+            </city>
+            <city name="Beaumont">
+              <zip-code prefix="776" />
+              <zip-code prefix="777" />
+            </city>
+            <city name="Beeville">
+              <zip-code prefix="781" />
+              <zip-code prefix="783" />
+            </city>
+            <city name="Big Spring">
+              <zip-code prefix="795" />
+              <zip-code prefix="797" />
+            </city>
+            <city name="Bonham">
+              <zip-code prefix="754" />
+            </city>
+            <city name="Borger">
+              <zip-code prefix="790" />
+            </city>
+            <city name="Brenham">
+              <zip-code prefix="774" />
+              <zip-code prefix="778" />
+              <zip-code prefix="789" />
+            </city>
+            <city name="Brownwood">
+              <zip-code prefix="764" />
+              <zip-code prefix="768" />
+            </city>
+            <city name="Bryan">
+              <zip-code prefix="778" />
+            </city>
+            <city name="Childress">
+              <zip-code prefix="792" />
+            </city>
+            <city name="Corpus Christi">
+              <zip-code prefix="783" />
+              <zip-code prefix="784" />
+            </city>
+            <city name="Corsicana">
+              <zip-code prefix="751" />
+              <zip-code prefix="758" />
+              <zip-code prefix="766" />
+            </city>
+            <city name="Dallas">
+              <zip-code prefix="751" />
+              <zip-code prefix="752" />
+              <zip-code prefix="753" />
+            </city>
+            <city name="Del Rio">
+              <zip-code prefix="769" />
+              <zip-code prefix="788" />
+            </city>
+            <city name="Dumas">
+              <zip-code prefix="790" />
+            </city>
+            <city name="Eagle Pass">
+              <zip-code prefix="788" />
+            </city>
+            <city name="El Campo">
+              <zip-code prefix="774" />
+            </city>
+            <city name="El Paso">
+              <zip-code prefix="798" />
+              <zip-code prefix="799" />
+              <zip-code prefix="885" />
+            </city>
+            <city name="Fort Worth">
+              <zip-code prefix="760" />
+              <zip-code prefix="761" />
+              <zip-code prefix="762" />
+              <zip-code prefix="764" />
+            </city>
+            <city name="Fredericksburg">
+              <zip-code prefix="768" />
+              <zip-code prefix="780" />
+              <zip-code prefix="786" />
+            </city>
+            <city name="Gainesville">
+              <zip-code prefix="762" />
+            </city>
+            <city name="Granbury">
+              <zip-code prefix="760" />
+              <zip-code prefix="764" />
+              <zip-code prefix="766" />
+            </city>
+            <city name="Greenville">
+              <zip-code prefix="754" />
+            </city>
+            <city name="Hereford">
+              <zip-code prefix="790" />
+            </city>
+            <city name="Houston">
+              <zip-code prefix="770" />
+              <zip-code prefix="772" />
+            </city>
+            <city name="Huntsville">
+              <zip-code prefix="758" />
+              <zip-code prefix="773" />
+              <zip-code prefix="778" />
+            </city>
+            <city name="Jacksonville">
+              <zip-code prefix="756" />
+              <zip-code prefix="757" />
+              <zip-code prefix="759" />
+            </city>
+            <city name="Katy">
+              <zip-code prefix="774" />
+            </city>
+            <city name="Kerrville">
+              <zip-code prefix="780" />
+              <zip-code prefix="786" />
+            </city>
+            <city name="Kingsville">
+              <zip-code prefix="783" />
+            </city>
+            <city name="Lamesa">
+              <zip-code prefix="793" />
+              <zip-code prefix="797" />
+            </city>
+            <city name="Laredo">
+              <zip-code prefix="780" />
+              <zip-code prefix="782" />
+              <zip-code prefix="783" />
+            </city>
+            <city name="Levelland">
+              <zip-code prefix="793" />
+              <zip-code prefix="794" />
+            </city>
+            <city name="Longview">
+              <zip-code prefix="754" />
+              <zip-code prefix="756" />
+              <zip-code prefix="757" />
+              <zip-code prefix="759" />
+            </city>
+            <city name="Lubbock">
+              <zip-code prefix="792" />
+              <zip-code prefix="793" />
+              <zip-code prefix="794" />
+            </city>
+            <city name="Lufkin">
+              <zip-code prefix="759" />
+            </city>
+            <city name="Marshall">
+              <zip-code prefix="756" />
+            </city>
+            <city name="McAllen">
+              <zip-code prefix="785" />
+            </city>
+            <city name="Midland">
+              <zip-code prefix="769" />
+              <zip-code prefix="797" />
+            </city>
+            <city name="Mineral Wells">
+              <zip-code prefix="760" />
+              <zip-code prefix="764" />
+            </city>
+            <city name="Mount Pleasant">
+              <zip-code prefix="754" />
+              <zip-code prefix="755" />
+              <zip-code prefix="756" />
+            </city>
+            <city name="Nacogdoches">
+              <zip-code prefix="757" />
+              <zip-code prefix="759" />
+            </city>
+            <city name="North Area">
+              <zip-code prefix="750" />
+            </city>
+            <city name="North Houston">
+              <zip-code prefix="773" />
+              <zip-code prefix="775" />
+            </city>
+            <city name="Odessa">
+              <zip-code prefix="797" />
+            </city>
+            <city name="Palestine">
+              <zip-code prefix="751" />
+              <zip-code prefix="756" />
+              <zip-code prefix="757" />
+              <zip-code prefix="758" />
+              <zip-code prefix="759" />
+              <zip-code prefix="778" />
+              <zip-code prefix="783" />
+              <zip-code prefix="793" />
+            </city>
+            <city name="Pampa">
+              <zip-code prefix="790" />
+            </city>
+            <city name="Paris">
+              <zip-code prefix="754" />
+            </city>
+            <city name="Pecos">
+              <zip-code prefix="797" />
+            </city>
+            <city name="Plainview">
+              <zip-code prefix="790" />
+              <zip-code prefix="792" />
+              <zip-code prefix="793" />
+            </city>
+            <city name="Raymondville">
+              <zip-code prefix="785" />
+            </city>
+            <city name="San Angelo">
+              <zip-code prefix="768" />
+              <zip-code prefix="769" />
+            </city>
+            <city name="San Antonio">
+              <zip-code prefix="780" />
+              <zip-code prefix="781" />
+              <zip-code prefix="782" />
+              <zip-code prefix="786" />
+              <zip-code prefix="788" />
+            </city>
+            <city name="Snyder">
+              <zip-code prefix="795" />
+            </city>
+            <city name="Stephenville">
+              <zip-code prefix="764" />
+              <zip-code prefix="766" />
+            </city>
+            <city name="Sulphur Springs">
+              <zip-code prefix="754" />
+            </city>
+            <city name="Sweetwater">
+              <zip-code prefix="795" />
+            </city>
+            <city name="Texarkana">
+              <zip-code prefix="755" />
+            </city>
+            <city name="Tyler">
+              <zip-code prefix="751" />
+              <zip-code prefix="756" />
+              <zip-code prefix="757" />
+            </city>
+            <city name="Uvalde">
+              <zip-code prefix="788" />
+            </city>
+            <city name="Vernon">
+              <zip-code prefix="763" />
+              <zip-code prefix="792" />
+            </city>
+            <city name="Victoria">
+              <zip-code prefix="774" />
+              <zip-code prefix="779" />
+              <zip-code prefix="781" />
+              <zip-code prefix="783" />
+            </city>
+            <city name="Waco">
+              <zip-code prefix="765" />
+              <zip-code prefix="766" />
+              <zip-code prefix="767" />
+            </city>
+            <city name="Wichita Falls">
+              <zip-code prefix="762" />
+              <zip-code prefix="763" />
+            </city>
+          </state>
+          <state name="Utah">
+            <city name="Brigham City">
+              <zip-code prefix="833" />
+              <zip-code prefix="843" />
+            </city>
+            <city name="Cedar City">
+              <zip-code prefix="847" />
+            </city>
+            <city name="Heber">
+              <zip-code prefix="840" />
+              <zip-code prefix="846" />
+            </city>
+            <city name="Ogden">
+              <zip-code prefix="844" />
+            </city>
+            <city name="Price">
+              <zip-code prefix="845" />
+            </city>
+            <city name="Provo">
+              <zip-code prefix="845" />
+              <zip-code prefix="846" />
+              <zip-code prefix="847" />
+            </city>
+            <city name="Salt Lake City">
+              <zip-code prefix="829" />
+              <zip-code prefix="840" />
+              <zip-code prefix="841" />
+              <zip-code prefix="843" />
+            </city>
+            <city name="St. George">
+              <zip-code prefix="847" />
+            </city>
+            <city name="Vernal">
+              <zip-code prefix="840" />
+            </city>
+          </state>
+          <state name="Virginia">
+            <city name="Alexandria">
+              <zip-code prefix="223" />
+            </city>
+            <city name="Arlington">
+              <zip-code prefix="222" />
+            </city>
+            <city name="Bluefield">
+              <zip-code prefix="246" />
+            </city>
+            <city name="Bristol">
+              <zip-code prefix="242" />
+            </city>
+            <city name="Charlottesville">
+              <zip-code prefix="228" />
+              <zip-code prefix="229" />
+              <zip-code prefix="230" />
+              <zip-code prefix="244" />
+              <zip-code prefix="245" />
+            </city>
+            <city name="Culpeper">
+              <zip-code prefix="201" />
+              <zip-code prefix="224" />
+              <zip-code prefix="227" />
+            </city>
+            <city name="Danville">
+              <zip-code prefix="240" />
+              <zip-code prefix="241" />
+              <zip-code prefix="245" />
+            </city>
+            <city name="Dulles">
+              <zip-code prefix="201" />
+            </city>
+            <city name="Farmville">
+              <zip-code prefix="239" />
+            </city>
+            <city name="Fredericksburg">
+              <zip-code prefix="224" />
+              <zip-code prefix="225" />
+            </city>
+            <city name="Harrisonburg">
+              <zip-code prefix="228" />
+              <zip-code prefix="244" />
+            </city>
+            <city name="Lynchburg">
+              <zip-code prefix="229" />
+              <zip-code prefix="239" />
+              <zip-code prefix="240" />
+              <zip-code prefix="241" />
+              <zip-code prefix="244" />
+              <zip-code prefix="245" />
+            </city>
+            <city name="Martinsville">
+              <zip-code prefix="240" />
+              <zip-code prefix="241" />
+              <zip-code prefix="245" />
+            </city>
+            <city name="Norfolk">
+              <zip-code prefix="233" />
+              <zip-code prefix="234" />
+              <zip-code prefix="235" />
+              <zip-code prefix="236" />
+            </city>
+            <city name="Northern">
+              <zip-code prefix="220" />
+              <zip-code prefix="221" />
+            </city>
+            <city name="Portsmouth">
+              <zip-code prefix="237" />
+            </city>
+            <city name="Richmond">
+              <zip-code prefix="224" />
+              <zip-code prefix="225" />
+              <zip-code prefix="229" />
+              <zip-code prefix="230" />
+              <zip-code prefix="231" />
+              <zip-code prefix="232" />
+              <zip-code prefix="238" />
+              <zip-code prefix="239" />
+            </city>
+            <city name="Roanoke">
+              <zip-code prefix="240" />
+              <zip-code prefix="241" />
+              <zip-code prefix="243" />
+              <zip-code prefix="244" />
+              <zip-code prefix="245" />
+            </city>
+            <city name="Winchester">
+              <zip-code prefix="226" />
+            </city>
+          </state>
+          <state name="Vermont">
+            <city name="Barre">
+              <zip-code prefix="050" />
+              <zip-code prefix="056" />
+              <zip-code prefix="058" />
+            </city>
+            <city name="Bennington">
+              <zip-code prefix="051" />
+              <zip-code prefix="052" />
+              <zip-code prefix="053" />
+              <zip-code prefix="057" />
+              <zip-code prefix="128" />
+            </city>
+            <city name="Burlington">
+              <zip-code prefix="054" />
+              <zip-code prefix="056" />
+            </city>
+            <city name="Rutland">
+              <zip-code prefix="052" />
+              <zip-code prefix="057" />
+            </city>
+            <city name="W.R. Junction">
+              <zip-code prefix="050" />
+              <zip-code prefix="051" />
+              <zip-code prefix="052" />
+              <zip-code prefix="053" />
+              <zip-code prefix="057" />
+              <zip-code prefix="058" />
+              <zip-code prefix="059" />
+            </city>
+          </state>
+          <state name="Washington">
+            <city name="Aberdeen">
+              <zip-code prefix="985" />
+            </city>
+            <city name="Bellingham">
+              <zip-code prefix="982" />
+            </city>
+            <city name="Centralia">
+              <zip-code prefix="983" />
+              <zip-code prefix="985" />
+            </city>
+            <city name="Ellensburg">
+              <zip-code prefix="980" />
+              <zip-code prefix="989" />
+            </city>
+            <city name="Everett">
+              <zip-code prefix="982" />
+            </city>
+            <city name="Lewiston">
+              <zip-code prefix="994" />
+            </city>
+            <city name="Longview">
+              <zip-code prefix="985" />
+              <zip-code prefix="986" />
+            </city>
+            <city name="Moses Lake">
+              <zip-code prefix="988" />
+              <zip-code prefix="991" />
+              <zip-code prefix="993" />
+            </city>
+            <city name="Oak Harbor">
+              <zip-code prefix="982" />
+            </city>
+            <city name="Olympia">
+              <zip-code prefix="985" />
+            </city>
+            <city name="Pasco">
+              <zip-code prefix="993" />
+            </city>
+            <city name="Port Angeles">
+              <zip-code prefix="983" />
+            </city>
+            <city name="Portland">
+              <zip-code prefix="986" />
+            </city>
+            <city name="Pullman">
+              <zip-code prefix="990" />
+              <zip-code prefix="991" />
+              <zip-code prefix="993" />
+            </city>
+            <city name="Seattle">
+              <zip-code prefix="980" />
+              <zip-code prefix="981" />
+            </city>
+            <city name="Shelton">
+              <zip-code prefix="983" />
+              <zip-code prefix="985" />
+            </city>
+            <city name="Spokane">
+              <zip-code prefix="990" />
+              <zip-code prefix="991" />
+              <zip-code prefix="992" />
+            </city>
+            <city name="Tacoma">
+              <zip-code prefix="983" />
+              <zip-code prefix="984" />
+            </city>
+            <city name="Walla Walla">
+              <zip-code prefix="993" />
+            </city>
+            <city name="Wenatchee">
+              <zip-code prefix="988" />
+              <zip-code prefix="991" />
+            </city>
+            <city name="Yakima">
+              <zip-code prefix="989" />
+              <zip-code prefix="993" />
+            </city>
+          </state>
+          <state name="Wisconsin">
+            <city name="Appleton">
+              <zip-code prefix="530" />
+              <zip-code prefix="541" />
+              <zip-code prefix="543" />
+              <zip-code prefix="549" />
+            </city>
+            <city name="Baraboo">
+              <zip-code prefix="535" />
+              <zip-code prefix="539" />
+            </city>
+            <city name="Beaver Dam">
+              <zip-code prefix="530" />
+              <zip-code prefix="535" />
+              <zip-code prefix="539" />
+            </city>
+            <city name="Eau Claire">
+              <zip-code prefix="544" />
+              <zip-code prefix="547" />
+            </city>
+            <city name="Fond du Lac">
+              <zip-code prefix="530" />
+              <zip-code prefix="539" />
+              <zip-code prefix="549" />
+            </city>
+            <city name="Green Bay">
+              <zip-code prefix="541" />
+              <zip-code prefix="542" />
+              <zip-code prefix="543" />
+              <zip-code prefix="544" />
+            </city>
+            <city name="Janesville">
+              <zip-code prefix="531" />
+              <zip-code prefix="535" />
+            </city>
+            <city name="La Crosse">
+              <zip-code prefix="546" />
+            </city>
+            <city name="Madison">
+              <zip-code prefix="535" />
+              <zip-code prefix="537" />
+              <zip-code prefix="538" />
+              <zip-code prefix="539" />
+            </city>
+            <city name="Manitowoc">
+              <zip-code prefix="530" />
+              <zip-code prefix="541" />
+              <zip-code prefix="542" />
+            </city>
+            <city name="Menomonie">
+              <zip-code prefix="540" />
+              <zip-code prefix="547" />
+            </city>
+            <city name="Merrill">
+              <zip-code prefix="544" />
+              <zip-code prefix="545" />
+            </city>
+            <city name="Milwaukee">
+              <zip-code prefix="530" />
+              <zip-code prefix="531" />
+              <zip-code prefix="532" />
+            </city>
+            <city name="Monroe">
+              <zip-code prefix="535" />
+            </city>
+            <city name="Oshkosh">
+              <zip-code prefix="549" />
+            </city>
+            <city name="Platteville">
+              <zip-code prefix="535" />
+              <zip-code prefix="538" />
+            </city>
+            <city name="Portage">
+              <zip-code prefix="539" />
+            </city>
+            <city name="Racine">
+              <zip-code prefix="531" />
+              <zip-code prefix="534" />
+            </city>
+            <city name="Rhinelander">
+              <zip-code prefix="545" />
+            </city>
+            <city name="Saint Paul">
+              <zip-code prefix="540" />
+            </city>
+            <city name="Sheboygan">
+              <zip-code prefix="530" />
+            </city>
+            <city name="Spooner">
+              <zip-code prefix="548" />
+            </city>
+            <city name="Stevens Point">
+              <zip-code prefix="544" />
+              <zip-code prefix="549" />
+            </city>
+            <city name="Wausau">
+              <zip-code prefix="544" />
+            </city>
+            <city name="Whitewater">
+              <zip-code prefix="531" />
+              <zip-code prefix="535" />
+            </city>
+          </state>
+          <state name="WestVirginia">
+            <city name="Beckley">
+              <zip-code prefix="250" />
+              <zip-code prefix="251" />
+              <zip-code prefix="252" />
+              <zip-code prefix="258" />
+              <zip-code prefix="259" />
+            </city>
+            <city name="Bluefield">
+              <zip-code prefix="247" />
+            </city>
+            <city name="Charleston">
+              <zip-code prefix="201" />
+              <zip-code prefix="250" />
+              <zip-code prefix="251" />
+              <zip-code prefix="252" />
+              <zip-code prefix="253" />
+              <zip-code prefix="255" />
+              <zip-code prefix="256" />
+              <zip-code prefix="266" />
+            </city>
+            <city name="Clarksburg">
+              <zip-code prefix="262" />
+              <zip-code prefix="263" />
+              <zip-code prefix="264" />
+              <zip-code prefix="265" />
+            </city>
+            <city name="Cumberland">
+              <zip-code prefix="267" />
+            </city>
+            <city name="Fairmont">
+              <zip-code prefix="264" />
+              <zip-code prefix="265" />
+            </city>
+            <city name="Gassaway">
+              <zip-code prefix="266" />
+            </city>
+            <city name="Huntington">
+              <zip-code prefix="255" />
+              <zip-code prefix="256" />
+              <zip-code prefix="257" />
+            </city>
+            <city name="Martinsburg">
+              <zip-code prefix="254" />
+            </city>
+            <city name="Morgantown">
+              <zip-code prefix="262" />
+              <zip-code prefix="263" />
+              <zip-code prefix="264" />
+              <zip-code prefix="265" />
+              <zip-code prefix="267" />
+            </city>
+            <city name="Oak Hill">
+              <zip-code prefix="250" />
+              <zip-code prefix="251" />
+              <zip-code prefix="258" />
+              <zip-code prefix="259" />
+              <zip-code prefix="266" />
+            </city>
+            <city name="Parkersburg">
+              <zip-code prefix="261" />
+            </city>
+            <city name="Petersburg">
+              <zip-code prefix="268" />
+            </city>
+            <city name="Wheeling">
+              <zip-code prefix="260" />
+            </city>
+          </state>
+          <state name="Wyoming">
+            <city name="Casper">
+              <zip-code prefix="826" />
+            </city>
+            <city name="Cheyenne">
+              <zip-code prefix="820" />
+              <zip-code prefix="822" />
+            </city>
+            <city name="Evanston">
+              <zip-code prefix="829" />
+            </city>
+            <city name="Gillette">
+              <zip-code prefix="827" />
+              <zip-code prefix="828" />
+            </city>
+            <city name="Laramie">
+              <zip-code prefix="820" />
+              <zip-code prefix="822" />
+              <zip-code prefix="823" />
+            </city>
+            <city name="Rawlins">
+              <zip-code prefix="823" />
+            </city>
+            <city name="Riverton">
+              <zip-code prefix="823" />
+              <zip-code prefix="825" />
+              <zip-code prefix="826" />
+            </city>
+            <city name="Rock Springs">
+              <zip-code prefix="823" />
+              <zip-code prefix="829" />
+              <zip-code prefix="830" />
+            </city>
+            <city name="Sheridan">
+              <zip-code prefix="828" />
+            </city>
+            <city name="Wheatland">
+              <zip-code prefix="822" />
+            </city>
+            <city name="Yellowstone N.P.">
+              <zip-code prefix="821" />
+            </city>
+          </state>
+        </cities>
+      </source>
+    </data>
+  </rand>
+</noFuture>

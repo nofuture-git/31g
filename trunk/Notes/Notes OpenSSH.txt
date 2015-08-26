@@ -1,0 +1,423 @@
+Notes OpenSSH
+----
+SSH, The Secure Shell: The Definitive Guide, Second Edition
+By: Daniel J. Barrett; Richard E. Silverman; Robert G. Byrnes
+Publisher: O'Reilly Media, Inc.
+Pub. Date: May 10, 2005
+Print ISBN-13: 978-0-596-00895-6
+----
+
+----
+OpenSSH Overview
+ - OpenSSH is open-source version of SSH 
+ - performs functions using encryption 
+ - username/password cannot be viewed by packet sniffers
+ - ftp is for remote transfers
+ - telenet for remote logins
+ - rsh for remote commands (aka remote shell)
+ - ssh does all three securely
+ - is a client/server arch.
+ - is a protocol for conduct of end-to-end secure communication
+----
+
+
+----
+Terms
+ - SSH is for the protocol
+ - SSH-1 is the original protocol
+ - SSH-2 is current protocol defined by IETF 
+ - SSH1 refers to the original product
+ - SSH2 refers to another product
+ - ssh refers to the actual command
+ - OpenSSH is the product created by OpenBSD project openssh.com
+ - Tectia refers to the commercial product
+ - Local Computer - the machine you are logged into
+ - Remote Computer - the other machine
+ - Local User - user on the local machine
+ - Remote User - user on the other machine
+ - Client - ssh client
+ - Client Machine - the computer running the ssh client
+ - ~ [tilde] - same $HOME environment var.
+----
+
+
+----
+Keys - Basics
+ - generate key-pair using ssh-keygen, deposited in ~/.ssh/
+     ssh-keygen -t [dsa|rsa]
+  - further id'ing through entry of 'passphrase' at key-gen time
+ - from Server Machine place public-key in each remote client computer
+      ssh-copy-id -i <key_file> <[username@]remote_machine>
+  - must have an account on the remote_machine
+  - will be prompted to auth. prior to id being copied
+ - on Server Machine start program from term named 'ssh-agent'
+ - load keys into ssh agent using program from term named 'ssh-add'
+      ssh-add <my_key_file>
+	  ssh-add -l #to list all the current keys
+	  ssh-add -d <my_key_file> #to delete a key
+	  ssh-add -D #to delete all keys
+----
+
+----
+Basic Commands
+ - ssh - used to est. connection to Remote Computer
+ ssh -l myRemoteUserName myRemoteComputer
+ ssh -l myRemoteUserName@myRemoteComputer
+ #command to login to remote computer named 'myRemoteComputer' 
+ #as user on the remote computer named 'myRemoteUserName'
+ #expect to be prompted for 'myRemoteUserName's password
+
+ - scp - used to copy file 
+ scp myRemoteUserName@myRemoteComputer:myRemoteFile.txt myLocalCopy.txt
+ #NOTE this command does not happen prior to ssh command 
+ #but is itself its own, exclusive, command
+ #command to get the file named 'myRemoteFile.txt' on 
+ #the computer named 'myRemoteComputer' as user named 'myRemoteUserName'
+ #and copy it down to the Local Computer naming it 'myLocalCopy.txt'
+ #the first arg is the source file on the remote machine
+ # the second arg is the local file which will be the copy thereof
+----
+
+----
+Encryption Overview
+ - cipher - the Algorithm which takes a key and plain text data
+ - plain text - the encryption candidate
+ - ciphertext - the encryption output
+ - key - a string used as the locking value of the ciphertext
+ - secert key - aka symetric, the same key toggles plain-text to ciphertext
+ - public key - aka asymetric, one key encrypts [public] the other decrypts
+ - the public key method is much slower then secert-key
+ - using both, first generate a random secert-key to do the bulk of payload
+  - then use a public-key to encrypt the random secert-key 
+ - hash function - mapping of larger data-value to some smaller equivelent
+  - used to send a message with the messages' hash value in-tow
+  - performing the hash again at the destination receiver knows if data 
+    message has been tampered with.
+----
+
+----
+Basic Encryption Activity
+   client                                         server
+      |                                              |
+   .-----.                                        .-----.
+   |     |--------------------------------------->|     |
+   |     |          request new session           |     |---.
+   |     |                                        |     |   |auth. machine
+   |     |                                        |     |<--.
+   |     |                                        |     |---.
+   |     |          respond ready to              |     |   |add session to
+   |     |         recieve session token          |     |<--.  memory
+   |     |<---------------------------------------|     |
+   |     |---.                                    |     |
+   |     |   |load hash salt                      |     |
+   |     |<--.                                    |     |
+   |     |---.                                    |     |
+   |     |   |load public key                     |     |
+   |     |<--.                                    |     |
+   |     |---.                                    |     |
+   |     |   |generate random session token       |     |
+   |     |<--.                                    |     |
+   |     |---.                                    |     |
+   |     |   |encrypt session token               |     |
+   |     |   | with public key                    |     |
+   |     |<--.                                    |     |
+   |     |---.                                    |     |
+   |     |   |sign session token to itself        |     |
+   |     |<--.                                    |     |
+   |     |--------------------------------------->|     |
+   |     |       POST set session token           |     |---.
+   |     |                                        |     |   |auth machine &
+   |     |                                        |     |<--.  session
+   |     |                                        |     |---.
+   |     |                                        |     |   |load private key
+   |     |                                        |     |<--.        
+   |     |                                        |     |---.
+   |     |                                        |     |   |load hash salt
+   |     |                                        |     |<--.
+   |     |                                        |     |---.
+   |     |                                        |     |   |decrypt session
+   |     |                                        |     |<--.   token
+   |     |                                        |     |---.
+   |     |                                        |     |   |confirm hash
+   |     |                                        |     |<--.
+   |     |                                        |     |---.
+   |     |       respond ready to receive         |     |   |update session
+   |     |          bulk cipher key               |     |<--.
+   |     |<---------------------------------------|     |
+   |     |---.                                    |     |
+   |     |   |generate random bulk cipher key     |     |
+   |     |<--.                                    |     |
+   |     |---.                                    |     |
+   |     |   |sign with session token             |     |
+   |     |<--.                                    |     |
+   |     |---.                                    |     |
+   |     |   |encrypt with public key             |     |
+   |     |<--.                                    |     |
+   |     |--------------------------------------->|     |
+   |     |          POST set bulk cipher          |     |---.
+   |     |              key                       |     |   |auth machine
+   |     |                                        |     |<--.
+   |     |                                        |     |---.
+   |     |                                        |     |   |decrypt bulk 
+   |     |                                        |     |<--.  cipher key
+   |     |                                        |     |---.
+   |     |                                        |     |   |compare hash
+   |     |                                        |     |<--.
+   |     |                                        |     |---.
+   |     |       respond ready to receive         |     |   |update session
+   |     |           username\password            |     |<--.
+   |     |<---------------------------------------|     |   
+   |     |---.                                    |     |
+   |     |   |prompt user for creds               |     |   
+   |     |<--.                                    |     |
+   |     |       0                                |     |   
+   |     |<---  -|- user enters creds             |     |
+   |     |      / \                               |     |   
+   |     |---.                                    |     |
+   |     |   |sign password with session          |     |
+   |     |<--.         token                      |     |
+   |     |---.                                    |     |
+   |     |   |encrypt creds with bulk cipher key  |     |
+   |     |<--.                                    |     |
+   |     |---.                                    |     |
+   |     |   |encrypt hash with bulk cipher key   |     |
+   |     |<--.                                    |     |
+   |     |--------------------------------------->|     |
+   |     |        POST creds                      |     |---.
+   |     |                                        |     |   |auth machine &
+   |     |                                        |     |<--.   session
+   |     |                                        |     |---.
+   |     |                                        |     |   |decrypt creds &
+   |     |                                        |     |<--.    hash
+   |     |                                        |     |---.
+   |     |                                        |     |   |compare hash
+   |     |                                        |     |<--.
+   |     |                                        |     |---.
+   |     |                                        |     |   |auth user
+   |     |                                        |     |<--.
+   |     |                                        |     |---.
+   |     |                                        |     |   |update session
+   |     |                                        |     |<--.
+   |     |<---------------------------------------|     |
+   |     |          respond connected             |     |   
+   .-----.                                        .-----.
+      |                                              |
+      |                                              |
+      *                                              *
+----
+
+----
+SSH Arch. Overview
+ - built from 
+   server : the program named 'sshd' and is the one listening on port 22
+   client : the program's named ssh, scp, sftp or pssh and pscp on windows
+   session : the span of time between connection and exit
+   keys :
+	User key : is persistent, user created and asymetric 
+			   is used to identify a user to a server
+	Host key : is persistent, admin crated and asymetric
+	           is used to identify the server/box itself
+	Session key : is a one-time, client created, secert key
+	              that last the session only.  It is shared by server and 
+				  client to communicate in secert.
+   key generator : program used to create persistent keys for SSH
+   known hosts database : a client file containing host keys as known
+	- stored in a file at ~/.ssh/known_hosts
+	- another file is ~/.ssh/authorized_keys
+   agent : convenience program that stores in-session keys 
+		   named ssh-agent and ssh-add
+   signer : a program that signs host-based authentication packets
+   random seed - pool of data fro SSH compentents to use for random numbers
+ - ssh client will print a warning upon the first connection to a remote host
+----
+
+----
+SSH-2 Protocol
+ SSH Authentication Protocol (SSH-AUTH)
+ SSH Connection Protocol (SSH-CONN)
+ SSH File Transfer Protocol (SSH-SFTP)
+ SSH Transport Layer Protocol (SSH-TRANS)
+ .____________________.
+ |  application-layer |
+ |--------------------|
+ |         | SSH-SFTP |
+ |         |----------|
+ |SSH-AUTH | SSH-CONN |
+ |--------------------|
+ |     SSH-TRANS      |
+ |--------------------|
+ |       TCP          | 
+ |____________________|
+----
+
+----
+SSH-2 Protocol Sequence
+1. SSH-TRANS est. connection resulting in single, secure full-duplex byte stream
+2. SSH-AUTH over byte stream auth. itself to the server
+3. SSH-CONN after auth. provides the pertinent connection services
+4. SSH-SFTP resides atop SSH-CONN
+----
+
+----
+SSH-TRANS
+ <preliminary>
+ 1. try to connect to the server with just telenet on the given host/port
+       telenet server_machine 22
+   - results in a fail with a print of the required SSH version needed 
+     to connect in the form of 'SSH-<protocol version>-<comment>'
+   - may be performed ad hoc with command 
+       telnet 10.0.0.1 22
+	   SSH-2.0-OpenSSH_5.3p1 Debian-3ubuntu3
+ 2. try to connect to the server with the ssh command 
+       ssh -l myUser@server_machine #port is implicit
+    - protocol switch to binary
+ 3. decide on a key-exchange algorithm
+ 4. decide on host key (dsa or rsa)
+ 5. decide on bulk data encryption cipher
+    - the session key and bulk-data cipher key are protected
+	  by the slower RSA or DSA asymetric keys
+ 6. decide on a packet-integrity algorithm
+ 7. decide on compression algorithm
+	
+ <actual key exchange>
+ 1. client receives server's public key along with a signature of this public key
+    - in itself, meaningless, the client must verify this is the public 
+	  key it was expecting
+	- in detail each client-server session has a unique identifier
+	  - if a man-in-the-middle attempts to spoof that said MITM will
+	    have two session keys, client->MITM and MITM->server
+	  - this very key is expected to be signed by the known server key
+	    and the MITM simply can't do that
+ 2. both independently generate bulk-data and integrity keys and SSH-TRANS completes
+----
+
+----
+SSH-AUTH
+ <client authentication/authorization request>
+ 1. means of authorization 
+    - password, public key, etc
+ 2. authorization via agreed means
+ 
+ <server response>
+ 1. results in SUCCESS or FAILURE, quite simply
+----
+
+----
+SSH-CONN
+ <multiplex channels>
+ 1. given the duplex byte-array from SSH-TRANS, SSH-CONN
+    may split it into any number of 'channels' id'ed by
+	numbers and pretaining to a type, which is its use.
+	- session channel for terminal, file-transfer and 
+	  program execution
+	- forwarded-tcpip, or connections received on the 
+	  server and then fowarded onto the client
+	- direct-tcpip, or where client listens on a port 
+	  and the server receives a connection externally an
+	  mates a channel to the client
+ 
+ <global request>
+ 1. or commands that affect all channels 
+	- there are a handful of these
+----
+
+----
+Installing OpenSSH
+ - see http://www.openssh.org for latest instructions
+ - comes builtin to most Unix based systems
+ - for Ubuntu (https://help.ubuntu.com/12.04/serverguide/openssh-server.html)
+   - get the client using
+     sudo apt-get install openssh-client
+   - get the server using 
+     sudo apt-get install openssh-server
+   - backup server config 
+     sudo cp /etc/ssh/sshd_config /etc/ssh/sshd_config.original
+     sudo chmod a-w /etc/ssh/sshd_config.original
+   - modify configuration as needed
+     man sshd_config
+   - generate the keys
+     ssh-keygen -t dsa
+	  - default saved to ~/.ssh/id_dsa.pub
+	                     ~/.ssh/id_dsa
+   - copy the public key to the remote machine
+     ssh-copy-id myUsername@remoteMachine
+	  - copies it to the remote host
+	    and appends it to the ~/.ssh/authorized_keys file
+   - verify permissions on critical 'authorized_keys'
+   - start the server with the command
+     sshd   
+   - start the ssh agent
+     ssh-agent
+   - add key files to the agent
+     ssh-add ~/.ssh/id_dsa.pub
+   - close backdoors
+     - remove or empty out /etc/hosts.equiv
+     - disable rshd, rlogind and rexecd by removing or commenting 
+	   them out of inetd or xinetd configuration files
+	 - don't create any .rhosts files
+   - configure sshd_config file
+     - disable SSH-1 in the sshd_config file
+        # OpenSSH
+        Protocol 2
+     - insure key files are not on a NFS-mounted partition
+        # OpenSSH
+        HostKey /etc/ssh/ssh_host_key
+        PidFile /var/run/sshd.pid
+     - turn strict mode on
+        # OpenSSH
+        StrictModes yes
+	 - set the TCP/IP parameters
+	    # OpenSSH
+		Port 22
+		ListenAddress 0.0.0.0
+		TcpKeepAlive yes
+	 - disable use of DNS
+	    # OpenSSH
+		UseDNS no
+	 - set wait for logins to 30 seconds
+	    # OpenSSH
+		LoginGraceTime 30
+	 - disable other non-used parts of SSH
+	    # OpenSSH
+		PubkeyAuthentication yes
+		PasswordAuthentication yes
+		PermitEmptyPasswords no
+		RSAAuthentication no
+		RhostsRSAAuthentication no
+		HostbasedAuthentication no
+		KerberosAuthentication no
+		ChallengeResponseAuthentication no
+		GSSAPIAuthentication no
+	 - double-down on .rhosts being disabled
+	    # OpenSSH
+		IgnoreRhosts yes
+		IgnoreRootRhosts yes
+	 - allow ssh access by account group
+	    # OpenSSH
+		AllowGroups sshGroup
+		 -and then add users to the group
+		 sudo usermod -G sshgroup myUser
+		 
+   - add to the top of client ssh config files
+     # OpenSSH
+     Host *
+      GatewayPorts no
+      StrictHostKeyChecking ask
+      ForwardX11Trusted no
+----
+
+----
+OpenSSH on Windows
+ - install cygwin from http://www.cygwin.com
+  - include these packages 
+     openssh
+     cygrunsrv
+  - insure the C:\cygwin\bin is added to PATH envrionment variable
+  - open cygwin and enter 
+     ssh-host-config
+  - answer yes to all questions
+    - for the CYGWIN daemon, entered 
+	   ntsec tty
+  	
+  
+----

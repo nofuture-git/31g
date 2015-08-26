@@ -1,0 +1,148 @@
+<html>
+<head>
+<style type="text/css">
+          body
+          {
+          font-family: Consolas;
+          text-align: left;
+          }
+          h2
+          {
+          text-align:center;
+          }
+          table
+          {
+          width:100%;
+          border:solid 1px black;
+          margin-bottom:5px;
+          margin-left:5px;
+          margin-right:5px;
+          font-size:12px;
+          }
+          tr
+          {
+          vertical-align:baseline;
+          }
+          th, td
+          {
+          padding:2px 2px 2px 2px;
+          vertical-align:baseline;
+          border:solid 1px black;
+          }
+</style>
+</head>
+<body>
+<h2>String Formatting</h2>
+<table>
+<tr><th>Java</th><th>.NET</th></tr>
+<tr>
+<td> <a href="http://docs.oracle.com/javase/6/docs/api/java/util/Formatter.html#detail">Java Reference</a> </td>
+<td> <a href="http://msdn.microsoft.com/en-us/library/system.string.format.aspx">.NET Reference</a> </td>
+</tr>
+<tr>
+	<td>
+	<code>
+	java.lang.String.format("%4$2s %3$2s %2$2s %1$2s", "a", "b", "c", "d");
+	</code>
+	</td>
+	<td>
+	<code>
+	System.String.Format("{3,-2} {2,-2} {1,-2} {0,-2}", "a", "b", "c", "d");
+	</code>
+	</td>
+</tr>
+<tr>
+	<td>
+	<code>
+	java.util.Date myDate = new java.util.Date();
+	<br />
+	java.lang.String.format("%1$tY%1$tm%1$td %1$tH%1$tM",myDate);
+	</code>
+	</td>
+	<td>
+	<code>
+	var myDate = System.DateTime.Now();
+	<br />
+	System.String.Format("{0:yyyyMMdd HHmmss}",myDate);
+	</code>
+	</td>
+</tr>
+<tr>
+	<td>
+	<code>
+	java.lang.Byte[] myBytes = new java.lang.Byte[4];
+	<br />
+	myBytes[0] = 30;
+	<br />
+	java.lang.String.format("%1$#X",myBytes[0]);
+	</code>
+	</td>
+	<td>
+	<code>
+	var myBytes = new System.Byte[4];
+	<br />
+	myBytes[0] = 30;
+	<br />
+	System.String.Format("0X{0}",myBytes[0].ToString("X2"));
+	<br />
+	System.String.Format("0X{0:X}",myBytes[0]);
+	</code>
+	</td>
+</tr>
+</table>
+<h2>File IO Related</h2>
+<table>
+<tr><th>Java</th><th>.NET</th></tr>
+<tr>
+	<td>
+	<pre>
+System.out.println("standard output");
+System.err.println("standard error output");
+	</pre>
+	</td>
+	<td>
+	<pre>
+System.Console.WriteLine("standard output");
+System.Console.Error.WriteLine("standard error output");
+	</pre>
+	</td>
+</tr>
+<tr>
+	<td>
+	<pre>
+//'US-ASCII' | 'ISO-8859-1' | 'UTF-16BE' | 'UTF-16LE' | 'UTF-16'
+java.nio.charset.Charset utf8CharSet = java.nio.charset.Charset.forName("UTF-8"); 
+java.nio.ByteBuffer encodedString = utf8CharSet.encode("string to encode");
+java.nio.CharBuffer charBack = utf8CharSet.decode(encodedString);
+String originalString = charBack.toString();
+	</pre>
+	</td>
+	<td>
+	<pre>
+var encodedString = System.Text.Encoding.UTF8.GetBytes("string to encode");
+var originalString = System.Text.Encoding.UTF8.GetString(encodedString);
+	</pre>
+	</td>
+</tr>
+<tr>
+	<td>
+	<pre>
+String myString = "add to file";
+java.nio.file.Path myFilePath = java.nio.file.Paths.get("C:\\Temp\\MyFile.txt");
+java.nio.charset.Charset utf8 = java.nio.charset.Charset.forName("UTF-8");
+try(java.io.BufferedWriter writer = java.nio.file.Files.newBufferedWriter(myFilePath, utf8)){
+	writer.write(myString, 0, myString.length());
+} catch (java.io.IOException x) {
+	System.err.format("IOException %s%n", x);
+}
+	</pre>
+	</td>
+	<td>
+	<pre>
+ System.IO.File.AppendAllText(@"C:\Temp\MyFile.txt","add to file", System.Text.Encoding.UTF8);
+	</pre>
+	</td>
+</tr>
+</table>
+</body>
+</html>

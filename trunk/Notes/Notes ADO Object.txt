@@ -1,0 +1,88 @@
+Notes ADO Syntax
+
+"Programming Microsoft® ADO.NET 2.0 Core Reference" 
+by David Sceppa 
+Publisher: Microsoft Press 
+Pub Date: May 17, 2006 
+Print ISBN-10: 0-7356-2206-X 
+Print ISBN-13: 978-0-7356-2206-7 
+Pages: 800 
+
+------------
+Private Sub DisplayRow(ByVal row As DataRow)
+    For Each col As DataColumn In row.Table.Columns
+        Console.WriteLine("  {0}: {1}", col.ColumnName, row(col))
+    Next col
+End Sub
+(Sceppa Working with DataSet Objects > Using DataSet Objects > Examining the Data Stored in a DataRow)
+------------
+------------
+This code snipit is used to set 'row' equal to the first row in the dataset.
+  Dim row As DataRow = ds.Tables("Orders").Rows(0)
+
+Now, in order to retrieve a specific 'cell' within the row you would use the syntax
+  row("columnName") 
+(Sceppa Working with DataSet Objects > Using DataSet Objects > DataRow Objects)
+------------
+
+------------
+Here is a good example, note that you have to instantiate a table from the dataset, also 'da' is the data connection.  The real utility is the "IndexOf" method that you can call on a DataRow object.
+Dim ds As New DataSet()
+da.Fill(ds, "Orders")
+
+Dim tbl As DataTable = ds.Tables("Orders")
+For Each row As DataRow In tbl.Rows
+    Console.WriteLine("Contents of row #{0}", _
+                      tbl.Rows.IndexOf(row))
+    DisplayRow(row)
+Next row
+(Sceppa Working with DataSet Objects > Using DataSet Objects > Examining the DataRow Objects in a DataTable)
+------------
+
+------------
+Here is the answer to the question of how do you iterate through the child rows per each parent row:
+Dim rowCustomer, rowOrder As DataRow
+For Each rowCustomer In ds.Tables("Customers").Rows
+    Console.WriteLine("{0} - {1}", rowCustomer("CustomerID"), _
+                      rowCustomer("CompanyName"))
+    'Loop through the related orders.
+    For Each rowOrder In rowCustomer.GetChildRows(rel)
+        Console.WriteLine(" {0} {1:MM/dd/yyyy}", rowOrder("OrderID"), _
+                          rowOrder("OrderDate"))
+    Next rowOrder
+    Console.WriteLine()
+Next rowCustomer
+(Sceppa Working with DataRelation Objects in Code > Locating Related Data > The DataRow Class's GetChildRows Method)
+------------
+
+------------
+Example of ADO object creation
+
+Dim myDataSet As New DataSet()
+Dim myParentColumn As DataColumn 'will be related to each to from constraint
+Dim myChildColumn As DataColumn 
+Dim myDataRelation As DataRelation
+
+Try
+    'assume Data Connection already set
+    Dim myCommand As OleDb.OleDbCommand = myConnection.CreateCommand
+    
+    myCommand.CommandText = "SELECT * FROM myParentTable"
+    
+    Dim myDataAdapter As New OleDb.OleDataAdapter(myCommand)
+    myDataAdapter.Fill(myDataSet, "myParentTableName")
+    
+    myCommand.CommandText = "SELECT * FROM myChildTable"
+    myDataAdapter = New OleDb.OleDbDataAdapter(myCommand)
+    myDataAdapter.Fill(myDataSet, "myChildTableName")
+    
+    myParentColumn = myDataSet.Tables("myParentTableName").Columns("primaryKey")
+    myChildColumn = myDataSet.Tables("myChildTableName").Columns("primaryKey")
+    
+    'myDR is a very important string - needed for looping
+    myDataRelation = New DataRelation("myDR",myParentColumn, myChildColumn)
+    myDataSet.Relations.Add(myDataRelation)
+Catch ex As Exception
+
+End Try
+-------------

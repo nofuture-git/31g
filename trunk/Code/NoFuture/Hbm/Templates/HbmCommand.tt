@@ -1,0 +1,66 @@
+﻿<#@ template hostspecific="true" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ assembly name="C:\Projects\31g\trunk\Code\NoFuture\bin\NoFuture.Shared.dll"#>
+<#@ assembly name="C:\Projects\31g\trunk\Code\NoFuture\bin\NoFuture.Util.dll"#>
+<#@ assembly name="C:\Projects\31g\trunk\Code\NoFuture\bin\NoFuture.Hbm.dll"#>
+<#@ assembly name="C:\Projects\31g\trunk\Code\NoFuture\bin\NoFuture.Gen.dll"#>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#
+    var typeFullName = this.Host.ResolveParameterValue("","",NoFuture.Hbm.Templates.HbmCommand.ParamNames.TypeFullName);
+    var idTypeFullName = this.Host.ResolveParameterValue("","",NoFuture.Hbm.Templates.HbmCommand.ParamNames.IdTypeFullName);
+    var hbmCmd = new NoFuture.Hbm.Templates.HbmCommand(typeFullName, idTypeFullName);
+#>
+using System.Security.Principal;
+using NHibernate.Criterion;
+using NoFuture.Hbm.Command.Cmd;
+using NoFuture.Hbm.Command.Receivers;
+
+namespace <#= hbmCmd.OuputNamespace #>
+{
+    public class <#=hbmCmd.ClassName #>Receiver : ReceiverBase<<#= hbmCmd.TypeFullName #>, <#= hbmCmd.IdTypeFullName #>>
+    {
+        public override bool IsIdAssigned
+        {
+            get { return Data != null && <#= hbmCmd.IdTypeTest #>; }
+        }
+
+        public override <#= hbmCmd.IdTypeFullName #> DataId
+        {
+            get { return Data == null ? null : Data.Id; }
+        }
+        public override ICriterion CustomSearch()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override <#= hbmCmd.TypeFullName #> Data { get; set; }
+    }
+    public class Get<#=hbmCmd.ClassName #>Command : GetCommandBase<<#= hbmCmd.TypeFullName #>, <#= hbmCmd.IdTypeFullName #>>
+    {
+        public Get<#=hbmCmd.ClassName #>Command(IReceiver<<#= hbmCmd.TypeFullName #>, <#= hbmCmd.IdTypeFullName #>> receiver) : base(receiver) { }
+        public override bool AllowExecute(IPrincipal user)
+        {
+            throw new System.NotImplementedException();
+        }
+    }
+
+    public class Set<#=hbmCmd.ClassName #>Command : SetCommandBase<<#= hbmCmd.TypeFullName #>, <#= hbmCmd.IdTypeFullName #>>
+    {
+        public Set<#=hbmCmd.ClassName #>Command(IReceiver<<#= hbmCmd.TypeFullName #>, <#= hbmCmd.IdTypeFullName #>> receiver) : base(receiver) { }
+        public override bool AllowExecute(IPrincipal user)
+        {
+            throw new System.NotImplementedException();
+        }
+    }
+
+    public class Remove<#=hbmCmd.ClassName #>Command : RemoveCommandBase<<#= hbmCmd.TypeFullName #>, <#= hbmCmd.IdTypeFullName #>>
+    {
+        public Remove<#=hbmCmd.ClassName #>Command(IReceiver<<#= hbmCmd.TypeFullName #>, <#= hbmCmd.IdTypeFullName #>> receiver) : base(receiver) { }
+        public override bool AllowExecute(IPrincipal user)
+        {
+            throw new System.NotImplementedException();
+        }
+    }
+}

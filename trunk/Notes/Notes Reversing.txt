@@ -1,0 +1,741 @@
+Reversing: Secrets of Reverse Engineering
+By: Eldad Eilam
+Publisher: John Wiley & Sons
+Pub. Date: April 15, 2005
+Print ISBN: 978-0-764-57481-8
+Web ISBN: 0-764574-81-7
+Pages in Print Edition: 624
+
+Http://www.wiley.com/go/eeilam
+
+Intel® 64 and IA-32 Architectures Software Developer’s Manual, Volume 1:
+Basic Architecture
+
+----
+Applications
+ - Malicious Software
+ - Cryptography
+  - Restricted Algorithms: where the algorithm itself is the secret
+  - Key-Based Algorithms: algorithm is known but needs a key to be applied
+   - not really crackable save:
+   - get the key
+   - try all combinations
+   - look for a flaw in the algorithm
+ - Digital Rights Management
+ - Explore proprietary software
+ - Develop competing software
+ - Evaluate quality of a software solution
+----
+
+----
+Assembly Language
+ - the lingua franca of reversing
+ - each command is a number - meaning a number is an operation code
+ - this is the 'opcode'
+ - the assembler turns text assemly code into binary
+ - disassembler turns binary back into text assembly code
+ - this is straigh foward because the binary maps exactly to a text
+----
+
+----
+IA-32 Arch
+ - IA-32 is complex in that single opcodes are broken down inside the CPU
+  - the CPU's core is still primitive 
+  - the surrounding arch. is what makes this possiable
+  - the chip may have multiple cores each having multiple ALUs
+  - since one core may depend on the others output
+   - processor arch attempts to fill a pipe type design 
+   - in which output is the next input all in a single clock cycle
+   - issues arise with branching so the processor attempt to predicate it
+----
+
+----
+Source-code to machine code back to assembly 
+ - the developer makes the source file and compilies it into machine code
+ - the disassembler then turns the machine code into assembly text code
+  - since the source code is compiler made it is difficult to read
+  - the difficulty is from compiler optimizations
+ - reversing bytecode (.NET's IL and Java's bytecode) is easier
+ - the OS plays a role in reversing since its the gate-keeper of all resources
+----
+
+----
+Reversing Process
+ - System Reversing: a top-level view of the program's layout
+  - requires knowledge of the OS to note
+   - obtain info
+   - inspect exe's
+   - track IO
+   - threads 
+   - etc
+ - Code Reversing: reverse specific chunk of code  
+  - the art itself in seeing design in binary
+  - requires knowledge of:
+   - assembly
+   - compiler tricks
+   - assembly constructs
+----
+
+----
+Tools 
+ - System Monitors: 
+  - standard IO, memory usage network access
+  - use of OS mutexes, pipes, dameons and such
+ - Disassemblers: takes exe as binary and returns the assembly version of it
+ - Debugger: general idea of watching the program run
+  - reversers use debuggers on the disassembly
+ - Decompilers: takes binary to disassembly then disassembly to source code
+----
+
+----
+Low-Level Concepts
+ - low-level complexity happens as a result of low-level data management
+ - calling RAM is too slow for the CPU
+ 
+ Registers
+ - IA-32 typically only have 8 32-bit generic registers
+ - registers are not managed by the CPU
+ - compilers store frequent and local variables to the registers
+  - frequents are noticed by being transfered to instructions over and over 
+  - locals are noticed by being overwritten over and over
+ 
+ Stack
+ - the compiler decides to store a value in register or on stack
+ - used mostly for
+  - temporary storage of register values
+  - local variables
+  - function arguments and return address
+  
+ Heap
+ - dynamic memory accessed through pointers
+ - reversers note alloc and dealloc of heap to understand overall structure
+ 
+ Exe Data Section
+ - area that holds the global variables
+ - compilers may place statics in a special area and ref them by address
+ - reversers spot these by the hard-coded memory address being used 
+
+ Control Flow 
+ - high-level branching and looping are primitive looking in assembly
+ - simple 'if' statements are not at all simple in assembly
+ - reverser notices pattern of commands that make a high-level control structure
+----
+
+----
+IA-32 
+
+Registers
+EAX - Accumulator for operands and results data
+  31______________16 15______AX_______0
+   |________________|___AH___|___AL___|
+                                      
+EBX - Pointer to data in the DS segment
+  31______________16 15______BX_______0
+   |________________|___BH___|___BL___|
+                                       
+ECX - length of string or number of times to copy
+  31______________16 15______CX_______0          
+   |________________|___CH___|___CL___|          
+
+EDX - I/O pointer                       
+  31______________16 15______DX_______0 
+   |________________|___DH___|___DL___| 
+                                        
+EBP - Pointer to data on the stack (in the SS segment)
+  31______________16 15______BP_______0
+   |________________|_________________| 
+                                       
+ESI - source pointer for string operations
+    - address contained w/i is assumed on the DS
+  31______________16 15______SI_______0    
+   |________________|_________________|    
+                                           
+EDI - desination pointer for string operations
+    - address contained w/i is assumed on ES
+  31______________16 15______DI_______0
+   |________________|_________________|
+
+ESP - Stack pointer (in the SS segment)
+  31______________16 15______SP_______0
+   |________________|_________________|
+
+Flags    
+CF - overflow flag for unsigned operands
+PF - parity flag, set upon number of set bits in low-order byte is even
+   - if low-order byte is 11110100 its cleared since there are 5 set bits
+   - if low-order byte is 11110011 its set
+AF - auxiliary carry flag, used for small 4-bit DEC based instructions
+ZF - the zero-flag, is set to zero when two operands are not equal
+SF - signed flag receives the most significant bit of the result (the sign)
+TF - trap flag, for device driver programmers
+DF - direction flag, particular to string instructions
+   - determine direction that activity moves (up-memory or down-memory)
+   - being set means string instructions move from high mem. to low mem.
+OF - overflow flag for signed operands
+IF - interrupt flag, 
+   - set using STI and CLI opcodes
+   - when set interrupts are handled, when cleared they are ignored
+
+Segments
+CS - code segment
+SS - stack segment
+DS - data segment for current module
+ES - data segmetn for exported data from higher module
+FS - data segment for dynamic created data structs
+GS - data segment shared with other processes
+
+Datatypes
+BYTE -    8 bit 
+WORD -    16 bits
+DWORD -   32 bits
+QWORD -   64 bits
+DQWORD -  128 bits
+
+DWORD PTR [something] - not address of 'something'
+                      - but the address 'something' is pointing to   
+----
+
+----
+Instructions
+ - formed by one opcode and zero, one or two argurments
+ - operands come in three types
+  - Register Name  : the EAX, EBX etc
+  - Immediate      : a constant 
+  - Memory Address : a address in memory, only one per opcode
+ 
+ Opcode Desintation_Operand, Source_Operand
+ 
+ - MOV, ADD and SUB store the results in Operand1
+ - MUL, DIV, IMUL and IDIV's results are stored in EDX:EAX
+ - CMP actually substracts the operands setting ZF true if result is 0
+  - for checking inequality using CMP, check the ZF has been set
+  - EDX:EAX is a 64bit value are stored across two registers
+  - IA-32 is little-endian so EDX:EAX, EDX holds the higher number
+  EXAMPLE: DEC 30,516 is HEX 7734 is BIN 0111 0111 0011 0100
+           EDX will hold 0111 0111 (DEC 30,464)
+           EAX will hold 0011 0100 (DEC 52)
+   
+ MOV Operand1, Operand2 
+ ADD Operand1, Operand2
+ SUB Operand1, Operand2
+ MUL Operand1 (multiply unsigned Operand1 by value of EAX)
+ DIV Operand1 (divide unsigned Operand1 by value of EAX)
+ IMUL Operand1 (multiply signed Operand1 by value of EAX)
+ IDIV Operand1 (divide signed Operand1 by value of EAX)
+ CMP Operand1, Operand2 (logical equality - set ZF if equal)
+ JE Address (jump if equal - exe moves to 'Address' upon CMP equality)
+ CALL address (pushes current instruct pointer to stack and goesto 'address')
+ RET (returns back popping instruct pointer back off stack)
+ 
+ EXAMPLE 1
+ 
+ CMP EBX, 0xf020 
+ JNZ 10026509
+ - compare EBX register to the constant value 61,472
+ - if they don't equal then jump to address 10026509 (JNZ is Jump-not-zero)
+ 
+ EXAMPLE 2
+ 
+ MOV EDI, [ECX]
+ - square braces are a type of assembly 'dereference'
+ - means copy into EDI data at mem. addr. of ECX not value of ECX register 
+ - only one operand may be a memory address 
+ - typically a segment selector is required for memory address operand
+ - the chip will make assumptions based on operand type so it may be missing
+ - app mem. space is not a big chunk but is logically segement 
+  - the stack will be on one segement and data on another
+  - so a deref'ed register has to be qualified to the segement 
+
+ MOV EDI, [EDI+8]
+ - same as before with the DS segement register implied
+ - the sum of EDI+8 is performed and the data at that address is copied 
+----
+
+----
+Parameter Passing
+1. stack is empty              2.parameters are passed in
+   ESP is at the bottom          ESP moves up
+ -----------------              -----------------        
+ |               |              |               |        
+ |               |              |               |        
+ |               |              |               |        
+ |               |              |               |        
+ |               |              |               |        
+ |               |              |               |        
+ |               |              |...............|....>ESP
+ |               |              | Parameters    |        
+ ----------------- ...>ESP      -----------------        
+ 
+3. return address is pushed    4.EBP is stored (EBP is pointer to stack data)
+   ESP moves up                  EBP is then assigned the value of ESP
+                                 ESP moves up
+ -----------------              -----------------         
+ |               |              |               |         
+ |               |              |               |         
+ |               |              |...............|....>ESP 
+ |               |              | Old EBP       |         
+ |...............|....>ESP      |...............|         
+ |Return Address |              |Return Address |         
+ |...............|              |...............|             
+ | Parameters    |              | Parameters    |         
+ -----------------              -----------------         
+
+5. Local variables are pushed to the stack                               
+   Any register values will be pushed to stack above local variables                            
+ -----------------             
+ |Registers      |             
+ |...............|....>ESP     
+ |Local Variables|             
+ |...............|....>New EBP         
+ | Old EBP       |             
+ |...............|             
+ |Return Address |             
+ |...............|             
+ | Parameters    |             
+ -----------------             
+----
+
+----
+Compilers
+ - all code will have been generated by a compiler 
+ (1) preprocessor
+ (2) front-end syntax and semantic analysis
+ (3) back-end code generator
+ (4) optimizer
+ (5) assembler
+ (6) link-loader
+ - the back-end and optimizer are the focus of reversers
+ - the back-end may produce code resembling high-level or lean to low-level
+  - back-end may target the platform making the code confusing
+ - optimizers is what confuses the reverser the most
+  - attempt to enhance performance 
+  - attempt to reduce binary size
+----
+
+----
+Back-end and Optimizer Issues
+ - Instruction Selection
+  - back-end decides which assembly opcode to use for given task
+  
+ - Register Allocation
+  - back-end must decide which variables to place on registers vs. stack 
+ 
+ - Instruction Scheduling
+  - multi-threaded means compiler has to decide instruction operation
+  - compiler may re-order instructions
+   
+ - Unrolled Loops
+  - effect of simply copy/paste the loop the number of times
+   - increases binary size but is more efficent then jumps and counters
+
+ - Partial Loop Unroll
+  - reduce the number of iteration
+  - where each assembly iteration contains multiple of src code iterations
+
+ - Switch Blocks
+  - may be made into direct tables
+  - also may be made into a tree type structure
+ 
+ - Loop Rearrange
+  - pretest loops have the conditional for entry of single iteration
+  - pretest then have a unconditional jump at loops end back to pretest
+  - optimizers will transform said loops into posttest types
+  
+ - Function-Level Working-Set Tuning
+  - compiler will attempt to keep 'popular' code in memory to not be paged out
+  - the address of a function compared to the entry point is an indicator
+  - compiler may break functions themselves apart
+   - no perfect way to find this is the condition
+   - unconditional JMP back to parent is an indicator
+   - broken peice may just RET and remain isolated
+  
+----
+
+----
+Reversing Methodologies
+ - Offline Code Analysis (Dead-Listing)
+  - expected approach of disassembly and manual read
+  - complete restructure not the goal but rather "funtions of interest"
+  - tends to more advance reversing
+  - lacks fluid analysis of data-structure
+ 
+ - Live Code Analysis
+  - code is disassemblied and run in a debugger
+  - provides for flow of code
+  - gives view to values of variables at run-time
+----
+
+----
+Disassembler Tools
+ - platform specific machine code to assembly code
+ - difficulty may arrise as address data read as opcode
+  - disassembler should check that given address is reachable by code 
+  - being unreachable places certianty that value is opcode
+   
+  EXAMPLE
+  Opcode    MOD/RM   DISPLACEMENT
+    8B        79         04
+  10001011 01 111 001 00000100
+    |      |   |   |     |   
+   \|/    \|/ \|/ \|/   \|/    
+    v      v   v   v     v     
+   MOV     F   O   O     4
+           o   p   p
+           r   e   e
+           m   r   r
+           a   a   a
+           t   n   n
+               d   d
+           o
+           f   1   2
+           
+           A  EDI ECX
+           d
+           d
+           r
+           e
+           s
+           s
+       DWORD PTR
+  
+ MOV EDI, DWORD PTR ECX +4
+ 
+ - Interactive Disassembler by DataRescue (http://www.hex-rays.com/idapro/)
+ - ILDasm .NET disassembler
+ - OllyDbg is user-mode single process debugger
+  - free, well rated, great disassembler
+ - WinDbg is debugger provided by Microsoft
+  - free, intergates very well with MS OS (of course)
+  - allows for breaks before main() in dll linking
+  - may be run in Kernal Mode 
+   - /DEBUG switch set in boot.ini
+   - debugger is actually seperate system
+   - seperate system linked with FireWire connection
+ - SoftICE
+  - Window kernal-mode driver
+  - using hotkey entire system will break when struck
+  - is hooked to system keyboard driver
+  - detecting keystroke (Ctrl+D is default) system is paused and it takes over
+  - draws a window over screen and is completely out of Windows itself
+----
+
+----
+Debugger Tools
+ - essential features
+ (1) Disassembler
+    - clear view of code
+    - cross-ref that display where branch leases
+    - manual control of data/code recognition 
+ (2) Software & Hardware Breakpoints
+   - software being instruction breaks 
+   - hardware being CPU feature of pausing at specific memory address
+    - this is critical to decipher of data-structure
+    - place break on data-structure of interest to cause break upon r/w
+    - step out to view instruction making r/w
+ (3) View of Register and Memory
+   - view of relevent CPU registers at runtime
+   - view system memory 
+   - view of stack in real-time
+ (4) Process View
+   - list loaded exectuables in existence now
+   - capable of stack and register dump on each thread
+
+ - types
+ (1) User-mode Debugger
+   - for normal application
+   - run in user-mode
+   - only view single process
+   - only view code within given process
+   - may only begin at Main entry w/o show of kernal dll linking
+   
+ (2) Kernal-mode Debugger
+   - more powerful 
+   - should be performed from another machine with a target machine
+    - alternative is using a virtual machine for kernal debugging
+    - may support nonpersistent drives 
+     - discards anything written to hard-drive at shutdown
+     - great for debugging malicious software
+     - VMWare is one brand of VM's and runs on Linux
+     - Virtual PC is the other from Microsoft
+   - full view of entire targeted system
+   - only needed for interprocess communication and device communication
+   - set breaks below OS API calls, rather inside them
+   - runs side-by-side with OS and destablizes it 
+   - is overkill for most needs
+----
+
+----
+System Monitors 
+ - best being already known - Process Explorer by Sysinternals.com
+ - in addition are:
+  FileMon: monitors all file-system traffic
+  TCPView: monitors all active TCP/UDP network connection 
+   - only list open connection
+   - attached process
+   - connection type
+   - port number
+   - address of peer
+  TDIMon: monitors every level of Sockets API
+   - info at the socket level
+  RegMon: monitors the registry activity 
+  PortMon: monitors physical ports, all serial and parallel
+  WinObj: presents hierarchical view of named objects in the system
+----
+
+----
+Other Tools
+ Patching Tools: patching is injecting binary right into the assembly
+ Executable-Dumping Tools: output is difficult to understand
+  - requires an understanding of PE Headers
+  - DUMPBIN by Microsoft is one of possiable tools
+  - PEView
+  - PEBrowse Pro
+----
+
+----
+Calling Conventions
+ - knowing convention helps delimit the data struct
+ - parameters are often accessed via a neg. offset off EBP
+ - compilers attempt to place local variables into a register
+ 
+ cdecl
+  - the calling function is responsiable to unwind its parameters off the stack
+  - function calls that take parametes and just call RET without a number
+
+ fastcall
+  - invented by Microsoft so its common
+  - first two parameters are passed directly to ECX and EDX
+  - any remaining parameters are pushed to the stack
+  
+ stdcall
+  - most common convention
+  - function is responsiable to clear its stack frame
+  - RET with an int value typically indicates the stdcall convention
+  
+ C++ convention
+  - id'ed by valid pointer loaded into ECX and nothing loaded to EDX
+  - the contents of ECX is the class pointer and can be used to get instace vars
+  - the function will use ECX w/ offset alot
+  - volatile: value onto the stack because others processes may write to it
+  - register: may be ignored cause compiler knows best 
+   - intended to have the compiler load the value into a register
+----
+   
+----
+String Copy Examples
+ 
+ REP STOWS ;repeat STOre Word as String
+           ;DF is set to 0 (from lower to higher memory address)
+           ;ES:EDI is where the copy is going to
+           ;ECX is loaded with the number of times to perform the copy
+           ;EAX is loaded with the value to be stored into the string
+ - step-by-step
+  - EAX is copied to ES:EDI (handled by STOWS)
+  - ES:EDI is incremented by 2 (new offset of one word, handled by STOWS)
+  - ECX is decremented by one (handled by REP exclusively) 
+  - REPeats
+0034F67 STOWS            ;copy EAX into ES:EDI
+        MOV EAX, [ESP+8] ;change value of EAX
+        MOV ESP, [ESP+8] ;change value of ESP to what ever is 'next'
+        DEC ECX          ;count ECX down manually (not REP here)
+                         ; if DEC ECX puts it to zero then ZF gets set   
+        JNZ 0034F67      ;Jump back to this address if ECX > 0 (ZF = 1)
+----
+
+----
+Branching Examples
+
+;If
+0462568 MOV EAX, [ESP+2] ;move into EAX the value of ESP+2
+0462569 TEST EAX, EAX    ;the conditional was testing for boolean 
+                         ;this will set ZF if EAX is zero
+046256A JNZ 046256C      ;will skip the 'CALL' if TEST cleared ZF 
+046256B CALL 012FFFC     ;this is what was inside the body of the conditional
+046256C RET 4            ;the is the exit
+
+;If...Else
+046256D CMP EAX, 7       ;if EAX is not 7 then ZF is cleared
+046256E JNE 0462571      ;0462571 is what was in the 'else{}' of the orig. code
+        
+046256F CALL 012FFD0     ;if exe is here then ZF was set and EAX == 7
+0462570 JMP  0462572     ;the line below this one is the else so skip it
+0462571 CALL 012FFFD
+0462572 RET 8            ;leave
+
+;If..ElseIf...Else
+0462573 CMP EAX, 10     ;if EAX is equals 10 the ZF is set
+                        ;if EAX is less than 10 then SF is set 
+0462574 JAE 0462577     ;Jump if Above or Equal
+                        ;if equal then ZF is set 
+                        ;if above then SF is cleared
+0462575 CALL 012FF1     ;program comes here because ZF is set of SF is cleared
+0462576 JMP 046257A     ;this seperates the various blocks of the conditional
+0462577 CMP EAX, 21     ;the JAE on 0462574 happened so your here 
+0462578 JNE 046257A     ;if EAX == 21 then ZF was set 
+0462579 CALL 012FF4     ;being here means ZF was set
+046257A RET 8           ;leave
+----
+
+----
+Logical Operators
+ - give-away is having Jumps pointing to the same block/call
+ 
+;Short-circuit AND operator
+046257B  CMP EAX, 20    ;compare EAX to 20
+046257C  JA  0462580    ;if EAX is above 20 the exe goes to the RET
+046257D  CMP EAX, 10;
+046257E  JB  0462580    ;now if EAX is below 10 the exe, again, goes to RET
+046257F  CALL 012FF4    ;if your here then 10 <= EAX >= 20 
+0462580  RET 4
+
+;Short-circuit OR operator
+0462581  CMP EAX, 10    ;EAX == 10 then ZF is set
+0462582  JE 0462586     ;ZF being set send exe right to the CALL
+0462583  CMP EAX, 20    ;this would be skipped if EAX == 10
+0462584  JE 0462586     ;the same thing happens as when EAX == 10, it jumps
+0462585  JMP 0462587    ;exe can't get to the CALL without jumping to it
+0462586  CALL 012FF8
+0462587  RET 4
+----
+
+----
+Switch Statement Examples
+ - compiler will make a function table and ref. it 
+ - default case will not be apart of the table since it has no condition
+ - break; will be implement with unconditional JMP to end of switch block
+
+0462588  MOVZX EAX, BYTE PTR [ESP+4]
+0462589  ADD EAX, -1
+046258A  CMP ECX, 4
+046258B  JA 0014A1E
+046258C  JMP DWORD PTR [014A12+ECX*4]
+046258D  RET 4
+
+0014A12  CALL 012FF8    ;switch statement is a function table
+0014A13  NOP            ;the address will be dynamically generated
+0014A14  NOP
+0014A15  NOP
+0014A16  CALL 012FF9    ;each one of these is one of the case statements
+0014A17  NOP      
+0014A18  NOP      
+0014A19  NOP      
+0014A1A  CALL 012FFA
+0014A1B  JMP 046258D    ;the unconditional jump is a break; statment  
+0014A1C  NOP      
+0014A1D  NOP      
+0014A1E  CALL 012FFB
+0014A1F  JMP 046258D
+
+ - for large and complex switch statements the compiler makes a binary tree
+ - the idea is to not have to compare the given value to ea. case at runtime
+ - the method is to divide the cases in half, then subdivide until each case
+          
+0462587 CMP EAX, 2200  ;binary tree starts
+0462588 JG 046260A     ;first spilt either go to 046260A or 001445A
+0462589 CALL 001445A   ; it apperas that this will be called eveytime
+                       ; but the branch onto 046260A will never jump back here 
+046258A RET 6          ; instead it jumps back to here skipping the above CALL
+
+046260A CMP EAX, 3400  ;same pattern repeated
+046260B JG 0014A12     ;check with CMP and jump to another node based on result
+046260C CALL 015982    ;this just moves exe to the opposite node of the above... 
+046260D JMP 046258A    ;the section returns to the end of the switch
+----       
+
+----
+Loop Examples
+ - compiler always wants to put test for loop iteration at the end
+ - this is a performance enhancement that removes a unconditonal JMP to the end
+ - partial unrolls will be signaled by ADD EAX, 3 or some value > 1
+ 
+0462588 MOV EAX, DWORD PTR [c]         ;sets up the counter
+0462589 MOV ECX, DWORD PTR [array]     ;sets a ptr to the start of some array
+046258A CMP EAX, 1000                  ;a pretest to see if to enter loop 
+046258B JGE 0462590                    
+046258C MOV DWORD PTR [ECX+EAX*4], EAX ;start of the loop
+046258D ADD EAX, 1                     ;increments the counter
+046258E CMP EAX, 1000                  ;does, what was, the pretest again 
+046258F JL 046258C                     ;not unconditional jump, which it likes   
+0462590 RET 1  
+----  
+ 
+----
+Branchless Logic
+ - compilers will make tricky logical test using the behaviour of NEG & SBB
+ - when NEG is called on the single operand the resulting sign is placed in CF
+ - SBB takes the right operand and subtracts the sum of left operand & CF
+ - SETcc sets EAX based on without branching using Jcc
+ 0462588                           XOR EAX, EAX
+ 0462588  CMP [ESP+1], 0           CMP [ESP+1], 0
+ 0462589  JNE 046258C              SETNE AL
+ 046258A  MOV EAX, 0       --OR--  RET
+ 046258B  RET
+ 046258C  MOV EAX, 1
+ 046258D  JMP 046258B
+  - the XOR EAX, EAX clear the whole register because SETNE AL only sets AL part
+  - this basically skips the ZF and works the result right into the register
+----
+
+----
+Generic Table API of NTDLL.dll 
+(1) Setting a Target 
+ - NTDLL.dll contains many APIs
+ - target set by prefix name of 'RTL'
+  - rtl is for "run-time library"
+  - is mostly tool-kit style functions
+ - use DUMPBIN to get lists of possiablities
+  - visual inspection for 'RTL' and 'GenericTable' keywords
+ - sub-list reveals that API works on linked-list or something
+(2) Examine Data Structure
+ - given exercise targets base API call of RtlInitializeGenericTable
+ - simply based on name having keyword of "Initialize"
+ - disassembly generated by OllyDbg
+7C921A39    MOV EDI, EDI
+7C921A3B    PUSH EBP
+7C921A3C    MOV EBP, ESP
+7C921A3E    MOV EAX, DWORD PTR SS: [EBP+8]
+7C921A41    XOR EDX, EDX
+7C921A43    LEA ECX, DWORD PTR DS: [EAX+4]
+7C921A46    MOV DWORD PTR DS: [EAX] , EDX
+7C921A48    MOV DWORD PTR DS: [ECX+4] , ECX
+7C921A4B    MOV DWORD PTR DS: [ECX] , ECX
+7C921A4D    MOV DWORD PTR DS: [EAX+C] , ECX
+7C921A50    MOV ECX, DWORD PTR SS: [EBP+C]
+7C921A53    MOV DWORD PTR DS: [EAX+18] , ECX
+7C921A56    MOV ECX, DWORD PTR SS: [EBP+10]
+7C921A59    MOV DWORD PTR DS: [EAX+1C] , ECX
+7C921A5C    MOV ECX, DWORD PTR SS: [EBP+14]
+7C921A5F    MOV DWORD PTR DS: [EAX+20] , ECX
+7C921A62    MOV ECX, DWORD PTR SS: [EBP+18]
+7C921A65    MOV DWORD PTR DS: [EAX+14] , EDX
+7C921A68    MOV DWORD PTR DS: [EAX+10] , EDX
+7C921A6B    MOV DWORD PTR DS: [EAX+24] , ECX
+7C921A6E    POP EBP
+7C921A6F    RET 14
+ - determine function entry and exit
+ - entry illustrates function's 'calling convention'
+  - is the layout used for arguement passing
+  - also defines who cleans up stack upon exit
+ - entry defines number of parameters involved
+ 
+(3) Determine Calling Convention & Parameter Count
+7C921A6F    RET 14
+ - is of interest in that its the exit point
+ - the '14' is a stack-unwind of bytes
+ - caller unwinding its own stack means its not 'cdecl' function type
+  - 'cdecl' means caller is responsiable for unwinding the stack  
+ - no registers are being taken from the caller
+  - all registers used are init'ed from the function itself
+ - '_fastcall' isn't being used because it recieves parameters on ECX and EDX
+ - C++ member functions are qualified and the function is not defined as such
+  - C++ function would have the class name and parameter type in definition
+ - process of elimination demo's that its a 'stdcall' calling convention
+ - OllyDbg outputs in hex, where '14' is '20' in dec
+  - being 32-bit alignment system having 4-byte chunks
+  - it would take '5' to make 4-byte chunks equal to 20
+  - therefore the function takes 5 parameters
+7C921A3B    PUSH EBP
+7C921A3C    MOV EBP, ESP
+ - EBP is pushed to the stack and then takes the value of the stack pointer
+  - now the parameters are accessable via offset of the stack pointer 
+---- 

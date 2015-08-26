@@ -1,0 +1,85 @@
+http://tools.ietf.org/html/rfc5849
+
+OAuth summary:
+
+	Some user is on their browser viewing their content from some-site.  While on this some-site the user clicks on something 
+about getting their content from some totally separate-site.  The browser sends this click event request back to 
+some-site which just tells the browser, "hey, you gotta go get permission from separate-site to do this - 
+here go request this location and tell'em some-site sent ya...wait, your gonna need these." and  some-site 
+hands its creds with separate-site to browser.
+	So the browser, being embarrassed, doesn't yet return anything to the user but instead immediately 
+makes another request to the location some-site told it about.  Sure enough, this location, out on separate-site, 
+is about getting the required permission regarding the original, and embarrassing, click-event.  
+Browser tells separate-site, "Uh, Hi, I am trying to get such-and-such stuff for this user on behalf of some-site, I have these
+creds from some-site."  Separate-site looks at the creds, "yeah some-site, I know this guy, Ok have user log in with 
+us and verify its cool for some-site to get thier stuff."
+	The browser then returns this content from separate-site to the user with a, "hey, you gotta tell 
+these guys its 'OK' for some-site to access this stuff."  So the user does by logging into separate-site 
+and then clicking on some kind of," yeah its cool for some-site to view my stuff."  Separate-site then 
+tells the browser, "here is a token, be sure and have some-site send it up whenever they want to get 
+this stuff."  So browser calls back to some-site with a, "OK, I got permission from separate-site to get this stuff, they 
+said you need to use this token here whenever you request it."  
+	Now, some-site is on the spot and has to think, "K, the original click event was for such-and-such on separate-site, I've got this token
+now so lets see if its any good."  Meanwhile, user has left cause this is taking so long, browser is thinking, "what a good 
+boy am I,"  and some-site is busy sending a request off to separate-site with this token in tow.  So now some-site is talking
+to separate-site, "hey separate-site, its some-site, can you get this users stuff please?"  and separate-site is like, "you gotta token?"
+Some-site then responds, "oh yeah, ahh here" handing separte-site the token browser told it would work. 
+Separate-site then goes behind his desk and some-site is sure he is about to be arrested and then - " looks good, here is 
+this user's stuff".  Some-site is like, "shew, well it worked lemme give this junk to browser."  Some-site sends the content 
+back to browser who, in turn, sends it to user with a, "OK, I got that stuff from separate-site, here it is,... hello... you there..?"
+
+Setting up Google OAuth with ASP.NET MVC
+
+ - the click event hits a controller's ActionResult 
+ - this controller method returns an implementation of System.Web.Mvc.HttpUnauthorizedResult (a child type of ActionResult)
+   - whose parent class is System.Web.Mvc.HttpStatusCodeResult
+   - which has an virtual named ExecuteResult 
+   - which is at some point called by the framework prior to returning to the browser.
+     - the ExecuteResult is a void return type which is strange because:
+	   (1) it received a ref to System.Web.Mvc.ControllerContext from whatever part of the framework called the ExecuteResult
+	   (2) the real work is performed by calling the ControllerContext's method chain of 
+	       context.HttpContext.GetOwinContext().Authentication.Challenge(AuthenticationProperties, string)
+		   - the second arg is a keyword is just "Google" which must be a key to some name-Uri hash somewhere 
+		     else in the framework.
+		   - the AuthenticationProperties contians the URL of where to callback to on some-site 
+		     when the work at separate-site is completed.
+	   (3) the framework basically just sent a 302 back to the browser and did all the hard-work of constructing
+           a massive URL both targeting separate-site and setting in the query string
+           - what is not mentioned here is the prelimiary step of setting up the part from the dialog above 
+		     "[...]tell'em some-site sent ya...wait, your gonna need these."  This was accomplished by
+			 by going to https://console.developers.google.com/project (because the example is with Google)
+			 of setting up the relationship between some-site and separate-site.  This involved telling
+			 separate-site some-site's url and, in turn, receiving two tokens from separate-site (Google).
+			 (1) a Client ID and (2) a ClientSecert.
+
+- this part is strange, the root of the web-site has a .cs file named Startup.cs whose type name is the same 
+ - there is an attribute appearing as [assembly: Microsoft.Owin.OwinStartupAttribute(typeof(< this is Startup.cs's namespace qual. type name.>))]
+   at the class level of Startup.cs.
+   - this implies that Startup.cs could have been named anything as long as that type name is the same as the one passed into this 
+     OwinStartupAttribute.
+   - furthermore, is is implied that, although the name may be anything, said "anything" must have an implementation of a method by the 
+     signature of 'public void Configuration(IAppBuilder app)' because it is within this method that the (1) Client ID and (2) ClientSecert 
+	 are assigned to Owin.IAppBuilder.UseGoogleAuthentication which receives these two literals wrapped in a type at 
+     Microsoft.Owin.Security.Google.GoogleOAuth2AuthenticationOptions
+   - what is disconcerting is that no where is this 'Configuration(IAppBuilder app)' ever directly called.
+	 
+- part of what went into the redirect to Google (the 302 returned from the original click event) was the callback Url, this 
+  was arbitrary in that it was constructed within the original ActionResult handler (recall that the click event did come back 
+  to some-site which simply returned the 302 along with the big'ol Url).
+
+- this callback Url is where separate-site will send its own 302 upon which we are again active in some-site.  
+  - first is the property on the controller itself named HttpContext
+  - on HttpContext the .GetOwinContext() method is called which returns a Microsoft.Owin.IOwinContext
+  - the Authentication property on the IOwinContext is invoked returning a Microsoft.Owin.Security.IAuthenticationManager
+- the first call in our targeted callback is to the AuthenticationManager's GetExternalLoginInfoAsync 
+  - here I see the appearance of the new 'await' C# keyword.
+  - its effort returns an instance of Microsoft.AspNet.Identity.Owin.ExternalLoginInfo
+    - this is really bad because this thing is obviously doing something but its a total black-box.
+	- based on the IDE gen'ed code this GetExternalLoginInfoAsync isn't something that throws and exception but just returns null 
+	  meaning, "it didn't work." - which is even worse since now we not only don't know what this does but also don't know why it 
+	  didn't do this whatever it does.
+  - if the mysterious GetExternalLoginInfoAsync worked then its returned ExternalLoginInfo is passed to another object which is an 
+    extension of Microsoft.AspNet.Owin.SignInManager<T,R>'s method named "ExternalSignInAsync" which returns a enum of 
+	Microsoft.AspNet.Identity.Owin.SignInStatus  - this is also a black-box
+   
+- most of the real work appears to be driven by the GetOwinContext() resulting type of Microsoft.Owin.IOwinContext

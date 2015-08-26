@@ -1,0 +1,201 @@
+Notes XSLT
+
+XSLT 1.0 Pocket Reference
+By: Evan Lenz
+Publisher: O'Reilly Media, Inc.
+Pub. Date: August 12, 2005
+Print ISBN-13: 978-0-596-10008-7
+Pages in Print Edition: 176
+
+----
+Node Types
+ root
+ text
+ element
+ attribute
+ processing instruction
+ namespace
+ comment
+----
+
+----
+Basic Example
+<xsl:transform version="1.0"
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+
+  <!-- Define, Declare happen here at the "Top-Level" -->
+  <xsl:import href="http://www.somedomain.org/someotherXslt.xslt"/>
+  <xsl:param name="myParam"/><!--"param" is top-level only-->
+  <xsl:variable name="var"><!--"variable" is declarable anywhere-->
+   <myNode>text</mynode>
+   <myOther />
+  </xsl:variable>
+  <xsl:template match="myNode">
+	<myToWrite> 
+		SomeInnerText <xsl:value-of select="myAttribute"/>
+	</myToWrite>
+	<xsl:for-each select="myInnerNode">
+		<myInnerWrite>
+			More Text <xsl:value-of select="id"/>
+		</myInnerWrite>
+	</xsl:for-each>
+	<xsl:value-of select="myFinal"/>
+ </xsl:template>
+
+ <!-- Go -->
+ <xsl:apply-templates />
+
+</xsl:transform>
+----
+
+----
+Define Template
+- defining a template
+ <xsl:template match="myNode">
+	<myOtherStuff andsomething="aValue" />
+	<xsl:apply-templates />
+ </xsl:template>
+ 
+ - add a 'mode' attribute to limit scope 
+ <xsl:template match="myNode" mode="myMode">
+	<myTransposedNode>
+		<xsl:value-of select="." />
+	</myTransposedNode>	
+ </xsl:template>
+ 
+ <xsl:apply-templates mode="myMode">
+----
+
+----
+Template Here-Strings & Formatted Strings
+<xsl:template match="myNode">
+	<someNode aAttribute='randome-value'>
+		Some literal text here
+	</someNode>
+</xsl:template>
+
+<xsl:template match="mySecondNode">
+	<someOtherNode someAttr="{$replaceable}-445">
+		More Text here
+	</someOtherNode>
+</xsl:template>
+----
+
+----
+Iteration Constructs
+ - any point of execution contains a 
+  - 'current node' is the point of that iteration
+  - 'current node list' that upon which is being worked, 
+   - the 'current node' is not included in the 'current node list'
+   
+ - two looping mechanisms for iterating
+  (1) <xsl:apply-templates select="myNode" />
+         - select is optional
+        <xsl:apply-templates />
+  (2) <xsl:for-each select="myNode" />
+
+ <!--EXAMPLE-->
+<xsl:template match="myNode">
+	<!--scope'ed to 'myNode' right now-->
+	<myToWrite> 
+		SomeInnerText <xsl:value-of select="myAttribute"/>
+	</myToWrite>
+</xsl:template>
+
+ <!--EXAMPLE2-->
+<?xml version="1.0" ?>
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+  <xsl:template match="/"><!--start at the root-->
+    <zip-codes>
+      <xsl:for-each select="html/body/table/tr/td"><!--move down to this node-->
+        <zip-code>
+          
+          <prefix>
+            <xsl:value-of select="b"/><!--from html/body/table/tr/td-->
+          </prefix>
+
+          <state-abbreviation>
+            <xsl:value-of select="b/a"/>
+          </state-abbreviation>
+          
+          <state-name>
+            <xsl:value-of select="b/a/@title"/>
+          </state-name>
+
+          <municipality>
+            <xsl:value-of select="font"/>
+          </municipality>
+          
+        </zip-code>
+      </xsl:for-each>
+    </zip-codes>
+  </xsl:template>
+</xsl:stylesheet>
+----
+
+----
+REFERENCE
+[ creation ]                  [ copy ]               [ iteration ]      
+ xsl:element                   xsl:copy-of            xsl:for-each      
+ xsl:attribute                 xsl:copy                                 
+ xsl:text                                                               
+ xsl:comment                  [ import ]             [ resolution ]     
+ xsl:processing-instruction    xsl:import             xsl:value-of      
+                               xsl:include            xsl:call-template 
+                                                      xsl:apply-template
+[ sorting ]                   [ branching ]           xsl:apply-imports 
+ xsl:sort                      xsl:choose                               
+                               xsl:if                                   
+                                                                        
+[ declaration ]               [ formating ]          [ debugging ]      
+ xsl:variable                  xsl:number             xsl:message       
+ xsl:param                     xsl:decimal-format                       
+ xsl:template                  xsl:output                               
+ xsl:key                       xsl:strip-space                          
+                               xsl:preserve-space                       
+
+[ node-set ]               
+ last( )                           ::returns the sizeof the current-node-list                   
+ position( )                       ::returns number of current iteration
+ count(nodeSet)                    ::returns the length of the nodeSet arg
+ id('thisID')                      ::returns a node-set having id='thisId'
+                           
+[ strings ]          
+  string(2)                        ::cast as string
+  concat(string1,string2,stringN ) ::is vararg, 
+  starts-with("Assembly","Ass")    ::would return true 
+  contains(str1,str2)              ::returns truth-value of str2 in str1         
+  substring-before("as if","if")   ::would return "as "
+  substring-after("as if","as")    ::would return " if" 
+  substring("my string",0,4)       ::would return "my s" 
+  string-length("abc")             ::would return 3
+  normalize-space("   my string ") ::would return "my string", trim()
+  translate("Hello","He","`E")     ::would return "`Ello"
+
+[ logical ]     
+  boolean(anyArg)                  ::cast as bool
+  not(true())                      ::would return false
+  true( )       
+  false( )      
+  lang('en-US')                    ::returns truth-value of current-node lang match
+
+[ numbers ] 
+  number("mystring")               ::cast to a number
+  sum(nodeSet)                     ::return the sum of nodeSet  
+  floor(anyNumber)                 ::round down to whole number 
+  ceiling(anyNumber)               ::rounds up to whole number
+  round( )                         ::normal mathematical rounding (to whole number)
+
+[ other ]
+  format-number(44.6,'$##0.00')    ::would return $44.60
+  current( )                       ::returns current node, node current-node-list item
+----
+
+----
+Operators
+ - no string escape characters
+ - no boolean literals, use functions true( ) and false( )
+ - common logical operators, operate only on binary
+  - logical-equals is single = sign, not double
+  - logical-not-equals is != sign, not <>
+----

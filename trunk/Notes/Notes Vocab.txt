@@ -1,0 +1,414 @@
+accelerator
+acetate
+actuation - moved to action
+aperture - opening, hole or gap
+arc
+aspirate
+assist
+axle - the rod that intersects at the center of a wheel
+	apex,vertex - the highest point
+	crest - being the top arc over some area, not a single point
+	zenith - highest point reached by a celestial object
+baffle
+ballistic
+baluster
+band
+barrage
+barrel
+batten
+batter
+bay
+bead
+beam
+bearing
+belt
+bevel
+blade
+block
+blower
+boost
+booster
+booth
+bouy
+bow
+bracket
+brake
+bridge
+brush
+bulb
+cab
+cabin
+cabinet
+cage
+cake
+caliber
+calk
+cam - e.g. having an egg-shaped plate rotating on a center axis as the longer side
+      moves to the bottom-dead center the distince between the place and a fixed 
+	  surface underneath it would shrink - a cam is a vertical rod upon which this motion
+	  is recieved from the egg-shaped plate.
+camber - slight sideways inclination of a road or horizontal surface
+canister - round metal container
+canopy
+cantilever
+cap
+capstan -revolving cylinder on v-axis used for winding a rope
+capsule - small case or container, esp. a round cylindrical one
+cargo
+carriage
+casting
+catch
+chamber
+chamfer - cut away (a right-angled edge or corner) to make symmetrical slopeing
+channel
+chase
+chip
+chisel
+choke
+clamp
+cleat
+cluster
+clutch - grasp or sieze
+coaming - a raised border around the cockpit or hatch of a yacht or other boat to keep out water.
+coat
+coil
+collar
+compartment
+compound
+con
+contact
+contour
+corbel - junction protruding from a wall holding support above it
+core
+cornice - an ornamental molding around the wall of a room just below the ceiling.
+coupler
+cove
+cover
+crack
+crane
+crank
+crown
+curtain
+cutout
+cylinder
+dado
+damper
+damping
+dash
+dead
+deck
+delay
+deposit
+diaphragm
+disc
+draft
+drag
+drain
+drift
+drive
+drum
+duct
+dwell
+emission
+enclosure
+etcher
+expander
+fade
+fader
+fairing
+fascia
+fibre
+filament
+fill
+film
+fin
+fitting
+flap
+flat
+flux
+fork
+fouling
+frame
+freight
+frigerant
+gain
+gangway
+gantry - bridgelike overhead structure with a platform to support equipment
+gap
+gasket
+gate
+gauge
+gear
+gland
+grade
+grip
+guage
+guard
+hair
+harness
+hat
+hatch
+heel
+hook
+hopper
+housing
+hub
+ignitor
+inlet
+intake
+interchange
+interlock
+jacket
+jaw
+jet
+joint
+journal
+keel
+kerf
+lacquer
+ladder
+laden
+lading
+lag
+lambda
+laminating
+lamp
+landing
+lap
+latch
+lathe
+lathe
+lead
+leak
+lens
+link
+lobe
+log
+loom
+lot
+machinary
+mallet
+manifold
+mark
+marker
+mast
+mastic - an aromatic gum or resin
+mat
+mate
+mill
+miter
+molding
+mooring
+mortise
+nail
+nave
+nozzle
+nut
+orifice
+oxide
+pace
+pack
+pad
+paige
+pallet
+palm
+pan
+parapet - A low, protective wall along the edge of a roof, bridge, or balcony.
+parison - A spherical mass of glass, rolled immediately after being taken out of the furnace.
+particulate - Of, relating to, or in the form of minute separate particles.
+passage
+patch
+pawl - a pivoted curved bar or lever whose free end engages with the teeth of a cogwheel or ratchet so that the wheel or ratchet can only turn or move one way.
+pedal
+pellet
+pendulum
+petal
+piller
+pin
+pinion
+piston
+pitch
+plaque
+plate
+plating
+play
+plier
+plug
+ply
+point
+pole
+primer
+prop
+pully
+pump
+punch
+quarter-space
+rabbet
+race
+rack
+radial
+raft
+rafter
+rail
+raising
+rake
+ram
+ramp
+rasp
+ratchet
+ray
+reamer
+reciprocate
+relief
+resistor
+retainer
+rim
+rocker
+room
+rotor
+runner
+saddle
+sandwich
+scratch
+seal
+servo - short for servomechanism
+shaft
+shank
+sheet
+shifter
+shim
+skid
+slab
+slag
+slate
+slot
+snip
+solenoid
+spanner
+spectrum
+spool
+spring
+sprocket
+stand
+stator - the stationary portion of an electric generator or motor, especially of an induction motor.
+stem
+stringer
+strip
+strut
+stud
+swirl
+tack
+tang
+taper
+tappet - e.g. an egg shaped plate which rotates on a center axis
+         that comes in contact with a cam.
+tar
+tenon
+thinner
+throttle
+tone
+tong
+torch
+track
+tractor
+transducer - a device that converts variations in a physical quantity, such as pressure or brightness, into an electrical signal, or vice versa.
+trim
+trip
+trough
+tub
+turbine
+valve
+vane
+vapor
+veneer
+vent
+venturi - a short piece of narrow tube between wider sections for measuring flow rate or exerting suction.
+visor
+wafer
+wallbanger
+warp
+wash
+wear
+weathering
+weld
+well
+wheel
+winch
+winding
+wipe
+yaw
+
+deduction & induction - Deduction works from the general to the more specific, where induction moves from the specific to the general.
+
+abscond
+acquiesced
+ad nauseam
+adjudicator - a person who studies and settles conflicts
+amalgamate - to unite into one whole
+ compose - specific to drafting a written phrase
+ameliorations - to make better
+aphoristic - tersely pharsed statement
+asymptotes - lines that continually approach but never meet 
+cognate
+coterminous - having the same boundaries
+credulity - a tendency to be too ready to believe in something
+desultory - lacking plan, purpose or enthusiasm
+doxology
+egregious - outstandingly bad 
+filioque - "and the son"
+fissures
+fortiori - with greater, stronger or more certian reason
+forthright
+goad
+leitmotif - recurrent theme throughout music or litature
+logomachy
+magnate - wealthy and influential person
+meritorious - deserving reward or praise
+Panem et Circenses
+paragon - a person or thing regarded as perfect
+Polemical
+pia fraus - a pious fraud
+plenary - unqualified and absolute
+plenitude
+praetorium - tent of a roman general
+profligacy - extravagance
+raison d etre
+recalcitrant - trait of being unmanagable
+refulgence - being bright sending out rays of light
+regal
+semblance
+succinctly
+symphonic - relating to or having the form of a symphony
+terseness
+nepotism
+edifice
+charlatan
+prevenient - preceeding in time or order
+protean
+multifarious - many and various types
+obtrude - become noticable in an unwelcome or intrusive way
+modicum - small quality of a particular thing, esp. something desirable
+nominalist
+realism
+idealism
+penchant - a strong, habitual liking for something
+elucidation
+impassive
+paradigmatic - of the nature of a paradigm or model.
+ex nihilo
+praxis
+rubric
+argot - The jargon or slang of a particular group or class
+draconian
+immanent - existing or operating within 
+Senatus Populusque Romanus (SPQR)
+ideologue
+vexillum - roman military banner
+benediction - utterance or bestowing of a blessing, esp. at the end of a religious service
+lupine - Of, like, or relating to a wolf or wolves.
+sanguine - adj. Cheerfully optimistic.  N. A blood-red color.
+antecedent - a thing or event that existed before or logically precedes another
+phonemes - smallest units of sound in a language (pig compared to big)
+morphemes - minimal units of speech that convey a specific meaning (-s, -ed, -ly)
+obviate - to remove a need or difficulty
+repudiation - rejection of a proposal or idea.

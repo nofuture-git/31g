@@ -1,0 +1,953 @@
+Visual Basic Syntax Notes
+
+Programming Visual Basic .NET 
+by Dave Grundgeiger 
+Publisher: O'Reilly 
+Pub Date: December 2001 
+ISBN: 0-596-00093-6 
+Pages: 464 
+
+Source Files:
+-------- 
+ > end in .vb
+ > if VB code is embedded in an ASP then .aspx
+ > no longer like VB6 where .frm is form and .cls is class
+ 
+ Identifiers:
+ --------
+ > belong to a namspace
+ > begin with _ or letter
+ > [] to reuse keyword as identifier
+ 
+ Literals:
+ --------
+ Numeric:
+ > w/o explict declaration
+    - integer is Integer
+    - float is Double
+ > D suffix for Decimal
+ > S suffix for Short
+ > L suffix for Long
+ > F suffix for Single
+ > Byte is not representable but is implicitly cast
+ String:
+ > "" double quotes to enclose
+ > may NOT span multiple lines
+ > key double-quote key twice to have it appear in string
+ Character:
+ > enclosed in double-quotes
+ > append 'c' to end of literal (e.g. "a"c)
+ Date:
+ > #date here# to enclose
+ > must be m/d/yyyy format
+ Boolean
+ > True or False
+ Nothing:
+ > may be passed to any parameter
+ > w/ Object its a null reference
+ > w/ primitive its the default value
+ ----
+ 
+ ----
+ Primitive Types:
+ > Boolean (System.Boolean)
+ > Byte (System.Byte)
+    - range 0-255
+    - 8 bits
+ > Char (System.Char)
+    - unicode type
+    - 16 bit, unsigned
+ > Date (System.DateTime)
+    - range 10000 years
+ > Decimal (System.Decimal)
+    - 28 points of precision
+ > Double (System.Double)
+    - 64 bits
+    - IEEE 754
+ > Integer (System.Int32)
+    - 32 bits
+ > Long (System.Int64)
+    - 64 bits
+ > Object (System.Object)
+    - all objects extend  
+ > Short (System.Int16)
+    - Integer type
+    - 16 bits
+ > Single (System.Single)
+    - 32 bits
+    - IEEE 754
+    - floating point
+ > String (System.String)
+    - object of unicode 
+----
+
+----
+Casting: 
+CBool 'Boolean
+CByte 'Byte
+CChar 'Char (.NET)
+Ccur 'Currency (VB6)
+CDate 'Date
+CDbl 'Double
+CInt 'Integer
+CLng 'Long
+CObj 'Object (.NET)
+CSng 'Single
+CStr 'String
+Cvar 'Variant (VB6)
+CVErr  'Error (VB6)
+
+CBool(0) 'False
+CBool(<>0) 'True
+CBool("false") 'False
+CBool("true") 'True
+
+CInt(True) '(-1)
+CInt(False) '(0)
+
+CObj(myVariable)'anything can go here
+
+CType(var, SomeType) 'will work as long as var IS A 'Some Type 
+                     'or if the primitive will fit w/o lose of precision
+                     
+DirectCast(var, SomeType) 'the runtime obj of var must match exactly to Type!                       
+----
+
+---- 
+Arrays: obvious
+Dim a(4) As Integer 'recieves default values
+Dim a(5,10,15) As Integer
+Dim a() As Integer = {1,2,3}
+Dim a(,) As Integer ={{1,2},{3,4}}
+Dim a()() As Integer = {({1, 2, 3, 4}), ({1, 2})}'jagged array 
+Dim a() As Integer
+    a = new Integer(3) {1,2,3,4}
+Dim a() As Integer
+    a = new Integer(3) {}
+a(1) to access index
+----
+
+----
+Collections: Any type that implements the ICollection interface.
+
+myCollection.Add("someStringHere")
+myCollection.Add("my String", <key>, <before>, <after>)
+----
+
+----
+Namespaces: this is part of the fully qualified name.  Multiple namespace's in a single source file is allowed. You set rootNameSpace in Properties of Project inside Solution Explorer.
+
+Namespace CompanyName.TechnologyName
+'...
+End Namespace
+
+rootNameSpace.CompanyName.TechnologyName.class 'fully qualified name
+
+Imports System.someNameSpace 'gets a name space
+Imports System.otherNameSpace
+----
+
+----
+Constants:
+Public Const aVariableName As <Type> = <Value>
+----
+
+----
+Variables: obvious
+Dim is short for dimension.
+
+Dim myVariable As <Type>
+
+Type Characters:
+@ Decimal
+# Double
+% Integer
+& Long
+! Single
+$ String
+
+Dim myInteger%
+----
+
+----
+Scope
+(1) Module
+(2) Instance
+(3) Method
+(4) Block
+
+Cannot shawdow method variable name in block.
+Block variable lives as long as Method (not block).
+----
+
+----
+Access Modifiers: same as Java
+Friend: assembly only
+Private: class only
+Protected: class and extended class only
+Protected Friend: assembly and extended class only
+Public: universial
+----
+
+----
+Unary Operators: only one operand
+"-" unary minus: numerical only, makes operand negative
+"Not" logical negation: reverse boolean value
+"AddressOf" 
+  (1) w/i parameter list - pointer to the method
+  (2) all else - return delegate object
+----
+
+----
+Arithmetic Operators: same as basic math
+"*" multiplication
+"/" normal division - foward slash
+"\" integer division - back slash 
+    (1) Byte, Short, Integer, Long only
+    (2) Remainder is rounded off
+"Mod" modulo
+    (1) Byte, Short, Integer, Long only
+    (2) returns remainder
+"^" eponentiation
+"+" addition
+"-" subtraction
+----
+
+----
+Relational Operators: return a boolean only
+"=" equality
+    (1) Primitives - true if value equal
+    (2) Objects - true if reference equal
+"<>" inequality
+    (1) Primitives - true if value not equal
+    (2) String - true if text equal
+    (3) Object - true if reference equal
+"<", "<", ">=", "<=" - numeric types only
+TypeOf <object> Is <dataType> 
+    (1) true - is an instance of <dataType>
+    (2) true - is an instance of subclass of <dataType>
+    (3) true - implements <dataType> interface
+<objectRef> Is <otherObjectRef>
+    (1) true if both Ref's refer to the same object
+<stringRef> Like <pattern>
+    (1) true if stringRef matches pattern
+    (2) "?" match single character
+    (3) "*" match zero to many characters
+    (4) "#" match single digit
+    (5) "[]" match any character contained therein
+----
+
+----
+Concatination Operators: put strings together.
+"+" "&" string concatenation
+----
+
+----
+Bitwise Operators: used on individual bits of a value.
+"and" true - if and only if both bits are 1
+"andAlso" true - same as 'and' except short-circuit
+"Or" true - if either or both bits are 1
+"OrElse" true - same as 'or' except short-circuit
+"Xor" true - if and only if one bit is 1
+"Not" unary, reverse the bit's value
+----
+
+----
+Logical Operators: 
+"And" if and only if both operands are true.
+"Or" if one or both operands are true.
+"AndAlso" short-circuit and operator
+"OrElse" short-circuit or operator
+"Xor" if and only if one of the operands is true, not both
+"Not" unary, reverse boolean value.
+----
+
+----
+Order of Operation: when multiple operators are in the same group - eval left to right
+(1) exponentiation
+(2) negation
+(3) multiplication & float division
+(4) interger division
+(5) modulus
+(6) addition, subtraction, "+" string concat
+(7) "&" string concat
+(8) equality, inequality, <, >, <=, >=, Is, TypeOf, Like
+(9) Not
+(10) And, AndAlso
+(11) Or, OrElse, Xor
+----
+
+----
+Statements
+"_ " underscore-space: use to continue a line 
+":" colon: use to seperate multiple statements on a single line
+----
+
+----
+Option Statements
+Option Compare: <Binary> <Text> 
+    (1) binary:  compare text at binary level (case-sensitive)
+    (2) text: compare text by character value
+Option Explicit <On> <Off>
+    (1) on:  all variables must be declared
+    (2) off: variables use is an implict declaration
+Option Strict <On> <Off>
+    (1) on:  loss of percision casting is NOT allowed
+    (2) off:  loss of percision casting is allowed
+
+Exit Statement: 
+Exit Do ' exits the whole loop (not single iteration)
+Exit For 'same
+Eixt Function
+Exit Property
+Exit Sub
+Exit Try ' Finally clause is still executed
+----
+
+----
+Branching Statements
+Call myMethod():  same as myMethod()
+Exit Do, For, Function, Property, Sub, Try:  exits statement
+Goto myLabel:  transfer execution to myLabel
+If <booleanResultingExpression> Then
+    <body>
+ElseIf <booleanResultingExpression> Then
+    <body>
+Else
+    <body>
+End If
+----
+
+----
+RaiseEvent myEvent()'broadcast event to all listeners, continue in next following statment.
+----
+
+----
+Return myReturnValue:  specify what a function returns
+----
+
+----
+Select Case <that which is to be matched>
+    Case <firstCase>
+      <body>
+    Case <secondCase>
+      <body>
+    Case Else
+      <body>
+End Select
+    (1) Select Case may include multiple values 
+    (2) Select Case may include a range
+    (3) Case Is > (greaterThan) <something>
+----
+
+----
+Iterations:
+
+Do: exectutes until a condition becomes true or while it remains true
+Do While i < 10
+    <body>
+Loop
+
+Do
+    <body>
+Loop While i < 10
+--
+For 'execute a specified number of times.
+For i=0 To 10
+    <body>
+Next 'this one counts up
+
+For i=10 To 0 Step -1
+    <body>
+Next 'this one counts down
+--
+For Each: execute for all elements of the array/collection.
+For Each myString In myArrayOfStrings
+    <body>
+Next
+----
+
+----
+Object Instantiation:
+
+Dim o As Object
+o = New Object()
+
+Dim o As Object = New Object()
+
+Dim o As New Object()
+----
+
+----
+Constructors: uses keyword New instead of the class name.
+
+Sub New()
+End Sub
+
+Sub New()
+  MyClass.New(New Object())'to call an overloaded constructor-MyClass is keyword
+EndSub
+----
+
+----
+Instance Variables: are known as "Fields" and "data members"
+
+Dim <variableName> As <dataType>
+
+ReadOnly: instance variable modifier, only set by constructor
+
+Public ReadOnly myVariable As Object
+
+Public Sub New(ByVal a As String)
+  myVariable = New Object()
+End Sub
+----
+
+----
+Handling Events: only declarable at instance level (not local or block)
+
+Dim WithEvents myEvent As <eventDataType> ' prefix variable with WithEvents 
+
+Public Sub mySub() Handles myEvent ' append sub or function with Handles keyword
+----
+
+----
+Inheirtance: OO
+Public Class myClass 
+      Inherits myParentClass
+
+End Class
+----
+
+----
+Abstract class:  uses the MustInherit modifier and the methods MAY have a body. The MustOverride modifier of an abstract classes' method means the child class must give implementation to the method.  Last the NotInheritable modifier may be used on a class - like Final in Java.
+
+Public MustInherit Class myClass
+  Public Function myFunction(ByVal a As String)
+    a = "This string has a value in an abstract class"
+  End Function
+  
+  Public Sub mustOverrideMe() ' no "End Sub" here
+  
+End Class
+
+Public myChildClass Inherits myClass
+  Public Overrides Sub mustOverrideMe()
+  
+  End Sub
+End Class
+----
+
+----
+Methods: have two kinds, Sub which do not return values and Function which does have a return value.
+
+Subroutines:
+[ attribute_list ] [ method_modifiers ] Sub _
+   method_name ( [ parameter_list ] ) [ handles_or_implements ]
+[ method_body ]
+End Sub
+
+Functions:
+[ attribute_list ] [ method_modifiers ] Function  _
+   method_name ( [ parameter_list ] ) [ As type_name ] _
+   [ handles_or_implements ]
+[ method_body ]
+End Function
+
+[ attribute_list ]: static metadata attached to an element (viz. class, method, interface, etc).
+
+
+[method_modifiers] 
+  (1) Access modifiers: default is Public!
+  (2) Override modifiers
+      (a) Overrides
+      (b) MustOverride
+      (c) Overridable
+      (d) NotOverridable
+  (3) Overloads ' this is the keyword for overloading a method
+  (4) Shared ' this is the keyword - behavior is that of Static in Java
+
+[ handles _or_implements]:  w/ handles, list of events.  w/ implements, list of methords derived from interface.
+----
+
+----
+Parameters:
+[ Optional ] [ ParamArray ] [ ByRef | ByVal ] [ attribute_list ] _
+   parameter_name [ As type_name ] [ = constant_expression ]
+   
+   [ Optional ] the keyword - parameter is optional
+   [ ParamArray ] Keyword, attach to parameter to make it a var-arg (must come last, same as Java).  When using this the syntax is 
+   [ ByRef | ByVal ] 
+      ByRef will create a pointer to another pointer
+      ByVal will create a new pointer to the object itself 
+   Sub myMethod(ParamArray localArrayParameter( ) As Integer)
+ ----
+ 
+ ----
+ Main() method:  same as java 
+Public Class MyApp ' add 'Shared' modifier in a class
+  Public Shared Sub Main()
+  End Sub
+End Class
+   
+Module MyApp
+  Public Sub Main()
+  End Sub
+End Module
+----
+
+----
+Implementing Interface Methods: 
+
+Public Class myClass Implements myInterface
+
+  Public Function myFunction() As Integer Implements myInterface.interfaceMethod
+  End Function
+  
+End Class
+----
+
+----
+Overriding:
+
+Class myParentClass
+  Public Overridable Sub myMethod()
+    '...
+  End Sub
+End Class
+
+Class myDerivedClass Inherits myParentClass
+  Public Overrides Sub myMethod()
+    '...
+  End Sub
+End Class
+
+Class myOtherParent
+  Public NotOverridable Sub mySub()
+    '...
+  End Sub
+End Class
+----
+
+----
+Overloading: uses not keyword to id method as overloaded.  Like Java methods must differ in signature and may differ in return types.
+
+Class myclass 
+  Public Function mySub(ByVal int As Integer) As Long
+    '...
+  End Sub
+  
+  Public Function mySub(ByVal lng As Long) As Double
+    '...
+  End Sub
+End Class
+----
+
+----
+Overloading Inherited methods: does require a keyword in the overloaded method.
+
+Public Class myParent
+  Publid Sub myMethod() 'no keyword used here
+    '...
+  End Sub
+End Class
+
+Public Class myChild Inherits myParent
+  Public Overloads Sub myMethod(ByVal i As Int32)
+    '...
+  End Sub
+End Class
+----
+
+----
+Overloading Operators
+ - are always given Shared access modifier
+ - signature of overload needs to have key word 'operator'
+ - closing bracket is call to 'End Operator'
+ - order of arguments irrelevent with implementation
+ 
+Public Class MyClass
+  Public Shared Operator +(ByVal a1 As MyClass, ByVal a2 As MyClass) As MyClass
+    'some type of logic here
+  End Operator
+End Class
+----
+
+----
+Overriding Overloaded methods
+Public Class myParent
+  Public Overridable Sub myMethod() 'parent class overloads it own method 
+    '...
+  End Sub
+  
+  Public Overridable Sub myMethod(ByVal i As Int32)
+    '...
+  End Sub
+
+Public Class myChild Inherits myParent
+  Public Overloads Overrides Sub() 'declares overload since it has two of these
+    '...
+  End Sub
+End Class
+----
+
+----
+Shadowing: unique to VB, allows a method to be redefined while cutting off access to the parent class methods of the same name.
+
+Public Class parentClass
+  Public Overridable Sub myMethod()
+    '...
+  End Sub
+  
+  Public Overridable Sub myMethod(ByVal int As Int32)
+    '...
+  End Sub
+End Class
+
+Public Class childClass Inherits parentClass
+  Public Shadows Sub myMethod() 'the only 'myMethod' avail to childClass ref
+    '....
+  End Sub
+End Class
+----
+
+----
+Properties: mostly just encapsulated instance variables.  However, a property can also be a calculated field.
+
+[property modifiers] Property [attributes] myProperty ([parameter list]) _
+  As [ Type Name ] [implements list]
+  [getter]
+  [setter]
+End Property
+
+(1)[property modifiers]:  this is the standard access modifiers and the overload/override.  
+(a)Default.  
+Class MyClass
+  'ReadOnly | WriteOnly also may be any Access Modifier 
+  Property myProperty As Object 'I can call this using the classes' name
+    Get
+      Return myRef
+    End Get
+    Set  (ByVal theValueHere As Type Name )
+        myRef = theValueHere
+    End Set
+  End Property
+End Class
+----
+
+----
+MyClass and Me keywords:  used in the same way most of the time.  Invoking them inside a method is a call to the instance level.
+
+Me.myMethod 'this calls the current instance object's implementation of myMethod
+
+MyClass.myMethod
+'this will call this classes' implementation - even if its overriden
+----
+
+----
+MyBase: used to call the parent's classes' method implementation
+
+Public Overrides Sub myMethod ()
+  MyBase.myMethod 'calls the parent classes's version of the method
+End Sub 
+----
+
+----
+Nested Classes: a class within a class
+
+Public Class outerClass
+  Public Class innerClass
+    '...
+  End Class
+End Class
+
+outerClass.innerClass() ' here is how you call the innerClass
+----
+
+----
+Interfaces:  same in use as in Java, and interface my extend another interface; an interface never has implementation; an interface is Public by default; and an implementing class must give concrete implementation to all the interface's methods.
+
+Declaration -
+Public Interface myInterface
+  Sub myISub() 'like java, methods have no implementation
+  Function myIFunction(ByVal x As Integer) As Integer
+End Interface
+ 
+Implementation -  
+Public myClass Implements myInterface
+  Sub myISub() Implements myInterface.myISub
+    '...
+  End Sub
+  Function myIFunction (ByVal x As Integer) As Integer _ 
+      Implements myInterface.myIFunction
+    '...
+  End Function
+  
+Instantiation-
+Dim myIVariable As myInterface = New myClass()
+----
+
+----
+Structures: user-defined value types.  A type of lightweight class.  
+Rules-
+Cannot extend or be extended.  
+Variables within cannot be initialized - they must be set by the constructor.
+Cannot declare a custom default constructor - New()
+Default constructor sets all values to default
+Reside on the stack 
+Are passed by value
+
+Public Structure myStructure
+  Public myVariable As Int32
+  Public myOtherVariable As Int32
+  
+  Public New (ByVal x As Int32, ByVal y As Int32)
+    myVariable = x
+    myOtherVariable = y
+  End New
+End Structure
+----
+
+----
+Enumerations:  same as Java except no constant class bodies 
+Rules-
+Enums are assigned integer values by default starting at zero
+User may override interger assignment.
+Therefore Enums are both ordered (0,1,2...n) and indexed.
+Comparasion operaters may be applied.
+Enums may be looped
+
+Public Enum myEnum
+  Summer = 2 'override int values
+  Winter = 4
+  Autumn = 8
+  Spring = 16
+End Enum
+
+Public Class myLittleClass
+  
+  Dim a As myEnum 'declare as enum name
+  Dim b As myEnum
+  
+  a = myEnum.Summer ' assign by calling enum name dot value
+  b = myEnum.Winter
+  If a < b Then 'this is true 4 is greater than 2
+    '...
+  End If
+  
+  For a To myEnum.Spring 'this is also legal
+    '...
+  Next
+End Class
+----
+
+----
+Exceptions: same as Java
+
+Try
+  'risky code here
+Catch ex As Exception
+  'recovery code here
+Finally
+  'must execute code here
+End Try
+
+'Guaranteed to release all unmanaged resources
+Using resource As New UnmanagedResource()
+  'unmanaged resouce calls here
+End Using  
+
+Public Class myClass
+  Try 
+    Throw New Exception() 'syntax for throwing an exception
+  Catch ex As Exception
+    ex.message
+  End Try
+End Class
+----
+
+----
+Delegates: allows for a method to be called from another class.  Central to event handling - has alot of overhead.    
+
+Public Class myServerClass
+  Public Delegate Sub myDelegate(ByVal m As String) ' abstract style method
+  
+  Private delegateBucket As myDelegate = Nothing 'holds all delegates 
+  
+  Public Sub myRegistar(ByVal p As myDelegate)
+    Dim myDelegateJoiner As System.Delegate =  _ 
+            System.Delegate.Combine(delegateBucket, p)'add p to the bucket
+    delegateBucket = CType(myDelegateJoiner, myDelegate)'cast it back
+  EndSub
+  
+  Public Sub myUnregistar(ByVal q As myDelegate)
+    Dim myDelegateRemover As System.Delegate _ 
+            System.Delegate.Remove(delegateBucket,q)'remove q from the bucket
+    delegateBucket = CType(myDelegateUnregistar, myDelegate)'cast it
+  End Sub
+  
+  Public Sub somethingGetsDone( )
+    delegateBucket.Invoke("This is getting passed around the bucket")
+  End Sub
+  
+End Class
+
+Public Class myClientClass
+
+  Public Sub printSomething(ByVal t As String)
+    Console.WriteLine(t)
+  End Sub
+  
+  Public Sub itWorks
+    Dim aConnector As myServerClass 'connects, assigns and invokes
+    
+    Dim aClientDelegate As myServerClass.myDelegate _ 'an intance Delegate
+        = AddressOf printSomething 'here is the meaningful connection
+    
+    aConnector.myRegistar(aClientDelegate)'instance is added to the bucket
+    
+    aConnector.somethingGetsDone( )'now the message happens
+    
+  End Sub
+End Class
+----    
+         
+----
+Events:  a callback, Events are actually a delegate type (Public Event myEvent() As myDelegate)
+
+Public Class myEventRaisingClass
+  
+  Public Event myEvent()' to be raised
+  
+  Public Sub raiseMyEvent () 'raise my event 
+    RaiseEvent myEvent() 
+  End Sub
+End Class
+
+Public Class myEventRecievingClass
+
+  Public WithEvents eventClass As myEventRaisingClass
+
+  eventClass = New myEventRaisingClass()'need an instance to handle
+  
+  Public Sub handlingMyEvent( ) Handles eventClass.myEvent 'handle it here
+    '...
+  End Sub
+  
+End Class
+
+~~~~
+
+Public Class delegateStyle
+  
+  Public Delegate Sub myDelegate()
+  
+  Public Event myEvent() As myDelegate 'more entries, thats all
+  
+  Public Sub raiseMyEvent ()
+    Raise myEvent
+  End Sub
+End Class
+
+Public Class delegateStyleReciever
+  
+  Private del As delegateStyle
+  
+  del = New delegateStyle( )
+  
+  'key method 
+  AddHandler(del.myEvent, New delegateStyle.myDelegate(AddressOf mySub))
+  
+  Public Sub mySub ()
+    '...
+  End Sub
+End Class 
+----
+
+----
+Standard Modules:  similar to Java's Static Class.  Presumes that this class is loaded only once with the start of the VM.    The members cannot be inheirited. 
+Public Module myModule
+  Dim a As Int32 'shared 
+End Module
+----
+
+----
+Attributes: used to modify the declartion.
+
+<myAttribute( )> Public Class myClass 'applied in front of access modifier
+  
+  <myAttribute( ), myOtherOne( )> Dim a As Int32 'can use multiple
+  
+  <myThirdAttribue(n As Int32)> Dim b As Int32 'can take arguements
+  
+  <myAttribute( )> Public Sub mySub ' enclosed in angle brackets
+    '...
+  End Sub
+
+End Class
+
+<AttributeUsage(AttributeTargets.Class Or _ 
+  AttributeTargets.Constructor), _
+  AllowMultiple:=True)> _ 
+  Public Class MyCustomAttribute
+      Inherits System.Attribute (
+      
+      'two types of parameters
+      '  1. Positional 
+      '  2. Named --set using ':=' 
+      Private strPositionalParameter As String 
+      Private strNamedParameter As String
+      
+      Public Sub New(ByVal comment As String)(
+          strPositionalParameter = comment 'positional = in constructor
+      )
+      
+      Public ReadOnly Property NamedParameter() As String
+        Get 
+          Return strNamedParameter 'named = in property
+        End Get
+      End Property
+          
+)
+  
+                
+----
+
+----
+Conditional Compilation: used to wrap code for debugging.  Can be actived from the command line.
+
+Imports System.Thread
+
+Public Class myClass
+
+#Const DEBUG = True ' declare a constant and set it to True
+
+#If DEBUG Then 'only runs when the constant is true
+  Console.WriteLine("an Important String")
+#End If
+
+<System.Diagnostics.ConditionalAttribute("DEBUG")>
+'add this to a method signature
+' will only be callable when DEBUG is defined 
+
+'...
+
+End Class
+
+Solution Explorer > Solution > Properties > Debug tab > Command line arguements
+
+/define:DEBUG=True
+----
+
+----
+XML comments (Visual Studio 2005 or higher): used like javadoc in java
+
+'''<summary>
+'''Here is a summary
+'''</summary>
+'''<param name="myParameter">detail about myParameter here</param>
+'''<remarks>A longer exlaination here</remarks>
+Public Sub mySub(ByVal myParameter As String)
+'...
+End Sub
+----

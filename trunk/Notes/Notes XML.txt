@@ -1,0 +1,306 @@
+  Notes XML
+
+"XML in a Nutshell, 3rd Edition" 
+by Elliotte Rusty Harold; W. Scott Means 
+Publisher: O'Reilly 
+Pub Date: September 2004 
+ISBN: 0-596-00764-7 
+Pages: 712 
+
+----
+Base Concepts
+ - node: everything in xml is a node (eg document, element, PCDATA, etc)
+ - element:  is the markup tag
+ - metamarkup language:
+    - elements are defined
+    - no definate elements exist
+ - well-formed:
+    - XML syntax
+    - is well-formed or not well-formed - no somewhat
+ - XML Application - agreed set of elements
+ - schema:  like class to object 
+ - valid: XML instance matches its schema
+ - Document Type Defination (DTD): one of many schema syntax types
+ - unsuited for binary files (e.g. photographs, music, video)
+ - XML Namespaces:  solution, use different XML App. in same XML document
+ - XSL:  solution, transform XML plain text to XML html (read in browser)
+ - XSLT: extend XSL, transform XML anyForm to XML anyOtherForm
+ - XSL-FO: solution, describe doc as html and plain text
+ - XML Document:  just the tagged text
+ - XML File:  my be any extension - just has XML within it
+ ----
+ 
+ ----
+ Elements:
+ <a-tag>text here</a-tag>
+ - a-tag is the start tag
+ - /a-tag is the end tag
+ - the pair makes a element
+ 
+ <an-empty-element />
+ - has not closing tag
+ - must end with />
+
+ <a-person>this is not</a-person>
+ <A-PERSON>as this</A-PERSON>
+ - tags are case-sensitive
+ ----
+ 
+ ----
+ XML Tree:
+ <the-root>
+    <parent-element>
+        <child-element>text here</child-element>
+        <child-element>more than one possiable</child-element>
+    </parent-element>
+ </the-root>
+
+- only one root per document
+- also child to child is called siblings
+----
+
+----
+Mixed Content:
+<the-root>
+  <parent>has a little text of its own
+      <child>here is the child's text</child>
+  </parent>
+</the-root>
+
+- parent element contains some child elements and some text
+----
+
+----
+Attributes: 
+<myRoot>
+    <myAttribute aName="aValue" anotherName="someValue">
+     here is the text between the tags
+    </myAttribute>
+</myRoot>
+ - attribute order is not important
+ - allow whitespace before/after equal sign
+ - no seperating character between attribute
+ - is data about the element
+ - is not the data itself
+ - unique names per attribute
+ ----
+ 
+ ----
+ XML Names:
+ - must begin with a letter
+ - may contain A-Z, a-z, 0-9
+ - hyphen, underscore, period and colo are the only allowed characters
+ - whitespace is not allowed
+ ----
+ 
+ ----
+ Escape Characters:
+ &lt;       less-than
+ &amp;      ampersand
+ &gt;       greater-than
+ &quot;     double-quote
+ &apos;     single-quote
+ <![CDATA[ any character in here, its all ignored...]]>
+ <!-- this is for comments -->
+ ----
+ 
+ ----
+ Processing Instructions:
+ <?java
+    int a
+    a = 32
+    if (a > 32){
+      System.out.println("its big")
+    }
+  ?>
+  - the XML parser will pass instructions to parsing app
+  - target is after <%
+  - target may be any name
+ ----
+ 
+ ----
+ XML Declaration:
+ <?xml version="1.0" encoding="ASCII" standalone="yes" ?>
+ - must be the VERY first line in the file, above comments and everything
+ 
+ Version
+  - always 1.0
+  - may be 1.1 if you speak Cambodian
+  
+ Encoding
+  - UTF-8         :default
+  - ISO-8859-1    :Latin
+  - ASCII         :ascii
+  
+  Stand Alone
+   - either yes or no
+   - yes: compare to schema
+   - no: no schema
+
+ <?xml-stylesheet type="text/css" href="myStyleSheet.css"?>
+  - may reference a style sheet in XML as well
+ ----
+ 
+----
+DTD:
+  - not permitted is forbidden
+  - may be stored as seperate file
+  - may be written into XML document itself
+  
+Basic DTD
+<!ELEMENT elementName (subElmnt1, subElmnt2, subElmnt3)>
+<!ELEMENT subElmnt1 (#PCDATA)>
+<!ELEMENT subElmnt2 (#PCDATA)>
+<!ELEMENT subElmnt3 (#PCDATA)>
+
+<!-- elementName contains three sub-elements -->
+<!-- order of elements not important-->
+<!-- #PCDATA is Parsed Character Data -->
+<!-- #CDATA is Character Data-->
+<!-- ANY is any content-->
+<!-- EMPTY is for empty-->
+<!-- MIXED element content with simple text data-->
+
+<elementName>
+  <subElmnt1>myElementContent</subElmnt1>
+  <subElmnt2>anotherElementContent</subElmnt2>
+  <subElmnt3>theLastContent</subElmnt3>
+</elementName>
+----
+
+----
+DTD Cardinality:
+ nothing once and only once
+ ?  once or not at all
+ +  once to any number
+ *  zero to any number
+
+<!ELEMENT myElmnt (#PCDATA)+>
+<!--myElmnt will appear once to many times -->
+----
+
+----
+Complex Content Model Types:
+<!ELEMENT myElmnt (sub1, sub2, sub3)>
+<!-- myElmnt will have all three of these sub-elements-->
+
+<!ELEMENT myOtherElmnt (sub1 | sub2 | sub3)>
+<!--myOtherElmnt will have one and only one sub-element-->
+
+<!ELEMENT myMixedElmnt (#PCDATA | myElement)*>
+<!--myMixedElmnt may contain data itself or any number of myElement children-->
+<!--Mixed Content must be written as such-->
+----
+
+----
+DTD Attributes:
+<!ATTLIST myAttrit AttributeType DefaultDeclaration >
+
+<!ELEMENT myElmnt (this | that)>
+<!ATTLIST myElmnt
+    noChoice CDATA #REQUIRED
+    choice CDATA #IMPLIED
+    absolute CDATA #FIXED "alwaysThis"
+    keyedIn CDATA "data" >
+    
+<!-- here is the instance of this-->
+<myElmnt noChoice="Ichoose" choice="you" absolute="alwaysThis" >
+  <this>ok</this>
+</myElmnt>
+<!--keyedIn is used to specify the default value-->
+<!--absolute has the same value, specified or not-->
+----
+
+----
+External DTD: appears at the top of an XML file, not a DTD
+
+<!DOCTYPE myDocType SYSTEM "myDTD.dtd">
+----
+
+----
+Internal DTD:
+<?xml version="1.0"?>
+<!DOCTYPE myRoot [
+  <!ELEMENT parent (child*)>
+  <!ELEMENT child (#PCDATA)> 
+  ]>
+  <myRoot>
+      <parent>
+        <child>some text</child>
+        <child>more text</child>
+      </parent>
+  </myRoot>
+----
+
+----
+Mixed DTD:
+<?xml version="1.0"?>
+<!DOCTYPE myRoot SYSTEM "myRoot.dtd" [
+    <!ELEMENT myAddition (#PCDATA)>
+    <!ELEMENT anotherAddition (#PCDATA)>
+]>
+ - myRoot is External DTD
+ - myAddition, anotherAddition is Internal DTD
+ - neither overrides the other 
+ - must not conflict
+----
+
+----
+Attribute Types:
+CDATA           :basic text
+NMTOKEN         :similar to XML name 
+                  - may begin with any allowed character 
+                  - may not have any white-space
+                  - colon character is allowed (:) in addition
+NMTOKENS        :same rules as NMTOKEN 
+                  - each entry seperated by one space
+ID              :unique id 
+                  - must be well-formed XML name
+                  - unique to each instance element in doc.
+IDREF           :reference an ID
+                  - set the attribute equal to a instance ID value
+IDREFS          :same as IDREF seperate each by single white space
+ENTITY          :name of an entity declared in the DTD
+ENTITIES        :mutliple ENTITY seperated by single white space
+----
+
+----
+General Entity Definition:
+<!ENTITY var-arg "variable list of arguements" >
+
+<my-root>
+    <parent>
+        <child> use of &var-arg; is permitted in Java 5 </child>
+    </parent>
+</my-root>
+----
+
+----
+Parameter Entity Definition:
+<!ENTITY % a-parameter "Astro-Zombies, Hybrid Moments">
+<!ENTITY % dtd-subset SYSTEM "/relativeUrl.dtd">
+
+<!ELEMENT rock-songs (%a-parametr;)>
+%dtd-subset;
+
+ - useable on in External DTDs
+ - works on attribute types and element names
+ - may be redifined inside the Internal DTD
+ - when internal conflicts with external, internal wins
+ - dtd-subset call will insert the contents of the DTD at this spot
+----
+
+----
+Namespace Declaration:
+<myNmSpc:MyScope xmlns:myNmSpc="http://www.myNameSpace.net/myDtd.dtd">
+    <myNmSpc:myElement>
+        <myOtherElement> text here </myOtherElement>
+    </myNmSpc:myElement>
+</myNmSpc:MyScope>
+
+<!--the xmlns: attribute make the connection-->
+<!--myNmSpc:myElement is now a fully qualified name-->
+<!--myOtherElement falls into the scope of myNmSpc namespace-->
+<!--URI is id, url may point to 404 page-->
+<!--ELEMENT declaration must include namespace prefix (<!ELEMENT dc:ny #PCDATA)
+----

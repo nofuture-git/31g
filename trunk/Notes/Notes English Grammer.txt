@@ -1,0 +1,341 @@
+Notes English Grammer
+An English Grammer 
+by Josiah Swett, Lindley Murray
+1844 (Public Domain)
+
+----
+Sounds 
+Vowels - produced by exhaling air from the lungs.
+Diphthong - two vowels combined into one sound.
+Constants - sounds made by interfering with the flow of air from the lungs.
+ - Manner of articulation
+   - Mutes (aka Stops) - complete interruption of air flow
+   - Fricatives (aka Continuants) - partial interruption of the air flow.
+ - Place of Articulation
+   - Bilabials - sound at the lips
+   - Alveolars - sound at teeth or just behind them.
+   - Velum - produced at the palate (like 'K').
+Aspirates - constants combined with 'h' ('th' 'ph')
+----
+
+----
+Etymology
+ - Enumerated into eight parts
+ 1 Nouns (aka Substantive)
+  - person, place or thing
+ 2 Adjective
+  - used to modify or describe a noun
+  - id by placing infront of 'thing' upon making sense is probably a adjective
+ 3 Pronoun
+  - used instead of a noun to avoid repetitive words
+ 4 Verb
+  - expression of action, existence or state
+ 5 Adverb
+  - used with verb, adjective, or another adverb
+  - express a quality or circumstance
+ 6 Preposition
+  - connect words with one another
+  - condition or state of affiars between things
+ 7 Conjunction
+  - used to connect sentences into one
+ 8 Interjection
+  - between parts of sentences to express passion or emotions
+----
+
+----
+Nouns
+ - divided into two parts
+ 1 Proper
+  - specific names to specific instances thereof
+ 2 Common 
+  - divided into three parts
+  1 Collective
+   - names of collections of individuals
+  2 Abstract
+   - cannot see, hear, touch, taste nor smell
+   - quality of the abstraction from its substance
+   - often end in
+     -tion
+	 -ism
+	 -ity
+	 -ment
+	 -ness
+	 -age
+	 -ance
+	 -ence
+	 -ship
+	 -ability
+	 -acy
+   - may be formed from 
+    - adjectives (honesty from honest)
+	- verbs (usage from use)
+	- nouns (childhood from child)
+  3 Participal
+   - verb used as a noun (ie beginning)
+---- 
+
+----
+Articles, Definitive
+ - apply to Collective Nouns to distinguish part thereof
+ - are themselves adjectives, pronouns, or adjective pronouns
+ - take on this classification upon depending on a noun
+ - have two parts 
+ 1 Direct(Definitive) Article
+  - the, this, that, these, those
+  - applied to make a definitive name
+  - applied rhetorically to denote the entire species
+ 2 Indirect(Indefinite) Article
+  - a, an
+  - applied to collective noun to make a singular there of
+----
+
+----
+Noun Modification
+ - used to express properties, attributes thereof
+ - nouns are modifed into four parts
+ 1 Gender
+  - subdived into the two genders
+  - ascribe Masculine to strong, efficacious nature
+  - ascribe Feminine to containing, producing or amiable
+  - distinguished by three parts
+  1 word pair (ie man, woman)
+  2 word terminator (ie actor, actress)
+  3 noun, pronoun, adjective prefixed to that of its substance (ie male child)
+ 2 Number
+  - subdivided into two parts (Plural, Singular)
+  - some are by nature always singlular (ie wheat)
+  - some are by nature always plural (ie pants)
+  - plural formed by 
+   - adding 's' or 'es'
+   - 'l' & 'ft' into 'ves' (ie loaf -> loaves)
+   - 'y' into 'ies' (sometimes)
+   - change vowel 'a' to 'e' (ie man -> men)
+   - change diphthong 'oo' to 'ee'
+ 3 Person
+  - distinguish speaker, hearer or target of the speech
+  - subdivided into three persons
+  1 First Person: person speaking
+  2 Second Person: person being spoken too
+  3 Third Person: person being spoken of 
+ 4 Case
+  - set the relation of the noun to the joining words
+  - subdivided into three parts
+  1 Nominative: name of the thing or the subject of the verb
+  2 Possessive: denote relation of property (my mother's friend)
+   - distinguished by use of an apostrophe
+  3 Objective: the object of an action or relation
+----
+
+----
+Adjectives 
+ - describe or modify a nouns meaning
+ - subdivided into four parts
+ 1 Proper: derived from a proper noun
+ 2 Participial: appearence as both verb and adjective
+  - append '-able' suffix to a verb makes it an adjective.
+  - mostly interchangable with the suffix '-ible'.
+   - the prefix 'un-' is added to negate the adjective 'unbreakable'
+ 3 Compound: two or more words connected by a hyphen
+ 4 Numeral: express a definate number
+  - subdivided into two parts
+  1 Cardinal: as in counting (one, two, three)
+  2 Ordinal: as in rank (first, second, third)
+----
+
+----
+Variation of Adjectives 
+ - are degrees of comparison
+ - subdivided into three parts
+ 1 Positive Degree: quality of object without any other object (ie wise)
+ 2 Comparative Degree: quality in higher/lower terms (ie wiser)
+  - expressed also with 'rather', 'very', 'more'
+ 3 Superlative Degree: quality of highest/lowest term (wisest)
+  - expressed also with 'most', 'least'
+----
+
+----
+Pronouns
+ - used instead of a noun
+ - Antecedent: its referent  
+ - also used to represent a sentence part, whole sentence or series of sentences
+  - (P), which (P_2) where 'which' represents P in the structure of P_2
+  - (P), it (P_2) likewise for 'it' 
+ - subdivided into three parts
+ 1 Personal Pronoun: form demonstrates its referent (ie I, you, we)
+  - antecedent to the one of the three Personal Nouns
+  - plural or singular
+  - viz I, You, He/She/It - We, You, They
+  - Compound Personal Pronouns: that with 'self' or 'selves' added (ie Myself)
+ 2 Relative Pronoun: relation to an antecedent word or phrase 
+  - of only three kinds
+  1 who: applied to persons
+  2 which: applied to all other nouns
+  3 that: used to keep repeating who and which
+ 3 Adjective Pronoun: properties of an adjective and pronoun
+  - subdivided into three parts
+  1 Distributive: person or things that make up a number
+   - each: two or more taken separately 
+   - every: two or more all taken separately  
+   - either: two or more taken separately, one or the other  
+   - neither: import of 'not either'
+  2 Demostrative: signify precisely to the subject
+   - this and that: 'this' refers to nearest, 'that' to furtherest
+   - these and those: likewise only plural
+  3 Indefinite: express subject in general manner 
+   - some, other, any, one, all, such, many, none, etc
+   - use of 'one' is a peculiar indefinite possessive pronoun
+----
+
+----
+Verbs 
+ - express action, being or state
+ 
+ Kinds
+ 1 Action Verbs: express action
+ - subdivided into two parts
+  1 Active: express action performed by the subject
+  2 Passive: express action performed upon the subject
+  - both active and passive are subdivided further into two parts
+   1 Transitive: having object or person as target of subject performance
+   2 Intransitive: no object of subject performance
+ 2 InActive Verbs: signify state, existence or condition
+----
+
+----
+Verb Participles
+ - verb as partaking or participating therein
+ - having properties of both verb and adjective
+ - participle must express some idea of time, less it be an adjective only
+ - convey rank by use of 'more', 'most', 'less' & 'least'
+ - express in time as either 
+  1 Present
+   - made with concatination of 'ing' to verb (go + ing)
+  2 Perfect (Past)
+   - of two types
+   1 Regular: made w/ concatation of 'ed' or 'd' to its participle (need + ed)
+   2 Irregular: are of a unique kind (to do, done) 
+   - addition of 'ly' to past participle makes it an adverb (pointed + ly)
+----
+
+----
+Verb Modifications
+ - verbs are modifed into four parts
+ 1 Number & Persons
+  - subdivided into two parts (Plural, Singular)
+  - stricly verbs cannot be of number, used to denote agreement with subject
+  - plural 1st, 2nd & 3rd person has no variation
+  - all plural forms are the same as 1st person singular
+ 3 Modes
+  - of five types
+  1 Indicative Mode: simply indicate or declares
+  2 Subjunctive Mode: a thing under a condition, motive, wish, supposition
+   - are preceeded by a conjunction, and attended by another verb
+   - mostly conjunctions 'if', 'though', 'unless' & 'whether' 
+  3 Potential Mode: implies possibility, will or power thereof
+   - by auxiliaries 
+    -'may', 'can', 'must', 'will', 'shall', 'might', 'would', 'should', 'could'
+  4 Infinitive Mode: express in general unlimited manner
+   - w/o respect to number or person
+   - preceeded by 'to'
+   - consider the verb root
+  5 Imperative Mode: used for commanding, exhorting, entreating or permitting
+ 4 Tense
+  - distinguish time
+  1 Present: action passing at time of mention
+  2 Past: action completed, finished or unfinished
+   - past tense implies its utter completion, enclosed in time past
+   - without any remainder action of present 
+   - ie dinosaurs walked the earth (not: dinosaurs have walked the earth)
+  3 Perfect: conveys both past and present
+   - past and perfect denote and action pasted
+   - perfect alone denotes that there is still some remaining part to slide away
+   - ie men have dreamed through all the ages
+  4 Prior Past: completion upon in past and prior to another past action
+   - I had dreamed before I awoke.
+  5 Future: action yet to come
+  6 Prior Future: completed in the future upon another future action completion
+   - I will dream again when I sleep tonight.
+----
+
+----
+Adverbs
+ - used with a verb, adjective or another adverb
+ - express quality or circumstance respecting
+ - are at times interchangable with adjectives
+ 
+ Uses:
+ - Number: 'once', 'twice', 'thrice'
+ - Order: 'first', 'secondly', 'thirdly'
+ - Place: 'here', 'there', 'where', 'elsewhere', 'upward', 'downward', etc
+ - Time: 'now', 'today', 'already', 'before', {indefinite} 'often', 'seldom'
+ - Quantity: 'much', 'little', 'enough'
+ - Quality: 'wisely', 'quickly', {adding 'ly' to participle}
+ - Doubt: 'prehaps', 'possibly'
+ - Affirmation: 'truly', 'certainly'
+ - Negation: 'no', 'not'
+ - Interrogation: 'why', 'wherefore'
+ - Comparison: 'more', 'most', 'better', 'worst'
+----
+
+----
+Prepositions
+ - used to connect words together
+ - placed mostly before before nouns or pronouns
+ - mostly to show the condition of things
+ - preposition determined by want of connection
+  - ie 'he writes the pen' as 'he writes with the pen'
+ - use of location type is figurative (ie 'I am above this skillset')
+----
+
+----
+Conjunctions
+ - used to connect sentences
+ 
+ Coordinating:
+ for, and, nor, but, or, yet, so
+  - place a comma before these
+  
+ Correlative:
+ both...and, not only...but also, either...or, neither...nor, whether...or
+ - always used in pairs
+ 
+ Subordinating:
+ - are adverbs placed infront of the subordinating clause
+ - are mostly single word
+ - place a comma at end of adverb phase upon it preceeding the main clause
+ - main clause + conjunction + subordinating clause
+ - conjunction + subordinating clause + comma + main clause
+----
+
+----
+Syntax
+ - is the regard of words into sentences
+ - enumerated into four main parts
+ 1 Government: power that one part of speech has over another
+ 2 Agreement: conformity or correspondence of one word to another
+ 3 Relation: dependence or connection in sense
+ 4 Construction: arrangement and position w/i sentence
+----
+
+----
+Sentence
+ - assemblage of words that have complete sense
+ - contain one or more propositions
+ - are either simple or compound 
+ 
+ Subject: noun or variously thereof upon which the sense hangs
+ Predicate: verb or logical thereof upon which action exercised on subject
+ Clause: contains a subject-predicate relationship
+ Phrase: does not contain subject-predicate relationship
+ Adjunct: one or more words added to exemplify force of other words
+----
+
+----
+Subject (Clause) Types
+ Independent Clause: has sense w/o any other clause needed
+  - may be considered a complete sentence
+ Dependent Clause: in-need of another clause to have sense
+  - joined with subordinating conjunction
+ Restrictive Clause: propostion must remain to have any sense
+ Nonrestrictive Clause: proposition's removal allows for sense to remain
+----

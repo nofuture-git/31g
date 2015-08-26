@@ -1,0 +1,374 @@
+Test-Driven Development By Example 
+by Kent Beck 
+Publisher: Addison Wesley Professional 
+Pub Date: November 08, 2002 
+Print ISBN-10: 0-321-14653-0 
+Print ISBN-13: 978-0-321-14653-3 
+Pages: 240 
+
+Unit Test Frameworks  
+by Paul Hamill 
+Publisher: O'Reilly 
+Pub Date: November 2004 
+ISBN: 0-596-00689-6 
+Pages: 212 
+
+----
+Basics
+ - Test should be independent of the application they test 
+ - Should be independent of other conditions
+ - Should perform a distinct action and check for a definate result
+ - TDD is for Test Driven Development
+ - TDD steps 
+  1. code a test - will fail since nothing is there to support it
+  2. write code used in test doing so as simple as possiable
+  3. have test succed - refactor
+ - refactoring is "improveing" the code w/o changing functionality
+ - it is important to do nothing in step two that is not needed
+ - test driven programming starts with, "it works"
+ - rhythm is red/green/refactor - go faster when obvious but be prepared to slow
+ - architecture driven programming starts, "its clean"(no dups, no hard-code)
+ - anything to pass a test - even returning constants
+  - then refactor, replace constant with variable
+ - other testing - seperate from Unit Testing 
+  - Stress Testing
+  - Performance Testing
+  - Usability Testing
+ - make heavy use of written test over suspect reasoning
+ - make use of metaphors to communicate requirements
+----
+
+----
+Requirements / Task List construction
+ - requires an amount of brainstorming
+ - think of as Use-case diagrams
+ - manifest as a simple list on paper
+ - cross out each upon complete 
+ - on all crossed out, effort is done
+ - list is not static but changes throughout
+ - list should be kept simple
+ - 1st test ought to be the essence of the requirements
+ - 1st test may be the simiplist
+ - use simiplist test when requirements is too complex
+ - use simiplist test when new to TDD
+ - divide list between "do now" and "do later"
+----
+ 
+----
+Unit Testing Framework
+ - Starts with two basic classes
+  - abstract Test Unit class
+    - has an abstract RunTest() method
+    - has a concrete AssertTrue() method
+    - some also have AssertFalse, AssertNull, AssertNotNull and AssertEqual
+
+    Public MustInherit Class UnitTest
+        Protected Shared num_test_success As Integer = 0
+        Public MustOverride Sub runTest()
+
+        Protected Sub assertTrue(ByVal condition As Boolean, ByVal msg As String)
+            If Not (condition) Then
+                Throw New Exception(msg)
+            End If
+            num_test_success += 1
+        End Sub
+    End Class
+
+    
+ - concrete Run A Test class
+  - contains the Main()
+  - constructor runs the test
+  - constructor has the Try/Catch
+ - Instantiate inherited test in Run A Test's constructor
+ - call inherited test RunTest w/i the Run A Test's constructor
+ - Main() simply instantiates a Run A Test class -whose constructor runs test
+ - add new test as new instances in Run A Test's constructor (don't replace)
+ 
+     Public Class TestRunner
+        Public Sub New()
+            Try
+                Dim test As UnitTest = New BookTest
+                test.runTest()
+                Console.WriteLine("SUCCESS!")
+            Catch ex As Exception
+                Console.WriteLine("FAILURE!")
+                Console.WriteLine(ex.StackTrace)
+            End Try
+        End Sub
+        Shared Sub Main()
+            Dim tester As New TestRunner()
+            System.Threading.Thread.Sleep(10000)
+        End Sub
+    End Class
+
+ 
+ - Inherit base Test Unit class 
+  - implement RunTest()
+  - w/i RunTest call AssertTrue
+
+    Public Class BookTest
+        Inherits UnitTestingPractice.UnitTestPractice.UnitTest
+
+        Public Overrides Sub runTest()
+            Dim objBook As New Book("Dune")
+            Me.assertTrue(objBook.title = "Dune", "checking title")
+        End Sub
+    End Class
+    
+    Public Class Book
+        Public title As String = "" 
+        Public Sub New(ByVal BookTitle As String)
+            Me.title = BookTitle
+
+        End Sub
+    End Class
+----
+
+----
+Test Construction Points
+ - test should appear as assertions of truth not sequence of commands
+ - make use of Value Object pattern (instance var. set in constructor only)
+ - return constants or literals to pass a test
+ - wrapping variables in getter/setter is a refactoring effort 
+ - way-of-thought paramount, "Just pass the test - remove dup's afterwords."
+ - write test for what you wish not just what you have
+ - write test for objects as if they already exist when they do not
+ - test fully by assertTrue complimented w/ assertFalse
+ - write custom static assert's using an aggregate of assertTrue methods
+ - custom asserts should test a single requirement
+ - write child test of failing test by which it is only the failing part
+  - upon getting child test to work, integrate back to parent test
+ - simple getter, setter (properties) should not be tested
+ - upon interuption in coding leave a test broken
+  - force thinking back in-line as it was upon interruption
+ - when testing operations upon collection write test for single first  
+----
+
+----
+Refactor Points
+ - extend class w/ an empty parent class, move instance variables up and retest
+ - w/ not enough test refactoring will eventually return a false-positive
+ - introduce new design upon better motivation than "maybe sometime..."
+ - upon digression - do only those that are brief
+ - never follow into a digression from another digression
+ - take large steps - upon failure roll-back and take smaller steps
+ - need to be *able* to take smallest steps possiable 
+----
+
+----
+Testing Error handling
+ - test that an error is handled as expected
+ - is in addition to 'normal' requirements
+ - typical success is when an exception is thrown and caught
+  - failure may be both no exception thrown or not caught
+ - further, failure may be that an exception was thrown at all
+ 
+Crash-Test Dummy
+ - for use in testing error handling
+ - extend object for which test is written
+ - override method of test having extended class throw needed exception
+ - w/i test instantiate object cast as that which is being test 
+----
+
+----
+Organizing Source Files 
+ - set source code in seperate dir and test code in seperate dir
+ - have both source dir and test dir in the same parent dir
+ - have both test code and source code in the same package / Namespace
+ - w/i src and test dir's mirror all sub dir's exactly
+ - root dir of source and test may need to have package name
+ - use default / Friend access modifiers to allow test
+----  
+
+----
+Mock Objects 
+ - same behavior from the client prespective
+ - begin with declared interface like the real object
+ - implement the interface with a Mock object
+ - make use of booleans to represent various states of the object
+ - use contants to represent response
+ - attempt to keep the actual class uncoupled from the Mock object
+  - eg if a class requires a Mock object force its ref in the constructor
+ - complex mock objs: 
+  - will record parameters
+  - order in which methods are called
+  - string, ints on method's state
+----
+
+----
+Testing Abstract Objects and Interfaces
+ - child obj should pass each parent's test
+ - Abstract Test Design Pattern used to handle TDD for abstract classes
+ ---------------                ---------------
+ |AbstractClass| <--[extends]---|ConcreteClass|
+ ---------------                ---------------
+ 
+ ---------------------------------              -------------------------------
+ |       AbstractClassTest       |              |      ConcreteClassTest      |
+ | ----------------------------- |<--[extends]--|   ------------------------  |
+ |+factoryMethod():AbstractClass |              |+factoryMethod:AbstractClass{|
+ ---------------------------------              |   return new ConcreteClass;}|
+                                                -------------------------------
+ - all method test in ConcreteClassTest will use factoryMethod to gain a ref.
+ - concrete test are w/i AbstractClassTest
+ - AbstractClassTest cannot instantiate AbstractClass
+ - AbstractClassTest uses factory method to gain a ref to AbstractClass
+ - ref via factory method is used w/i concrete test in all class desendent
+----
+
+----
+Log String
+ - AssertTrue("setUp; TestMethod; tearDown", Test.log)
+ - the log is a string receiving string-appends through method's movement
+----
+
+----
+GUI Testing
+ - seperate all logic from all display
+ - view catches the events - delegates to smart object 
+ - smart object represents all the behavior of the view
+ - view gets a ref to the smart object at construction time
+ - position and layout of components are not tested
+ - logic class is constructed first
+ - test the view's textual display
+ - use a Mock view to make your test against the smart class
+ - test those things that require computation
+ - view simply delegates off to the smart object
+  1. create an interface that represents the GUI view
+  2. implement the interface on a Mock view object
+  3. write test against the Mock View
+  4. create a smart class that has a ref to the view
+  5. red/green/refactor on the smart class (test on the Mock View)
+  6. an actual view is a simple wedge that delegate off to the smart object
+  
+ - java example of event delegation
+ myButton.addActionListener(new java.awt.event.ActionListener{
+    actionPerformed(java.awt.event.Action evt){
+      MyGuiLogicClass.Handle.GUIButton(evt);}
+      }
+  );  
+----
+
+----
+TDD Pattern Points
+ - Test is a noun: a procedure leading to acceptance or rejection
+ - Tests should be isolated whole - able to run in any batch, any order
+ - Changes should never be more than one green-bar away
+ - Always test-first
+ - Start system @ stories you want to tell about the finished system.
+ - Start functionality @ test you want to pass with finished code
+ - Start test @ asserts that will pass when it is done
+ - Test data should be succinct, never more or less than needed
+ - a test should have independent data values, don't reuse same value twice
+ - upon test make data's value-source evident (eg '(7^2)-1' and not just '48')
+----
+
+----
+Getting Started
+ - 1st test should be the simplist possiable 
+ - 1st test should have input/output that is trivially easy
+ - pick starter test that is easy and teachs something about the system
+ - write test for 3rd party software too, confirms your understanding of the API
+ - upon bug write smallest test that will run green upon repair
+----
+                                           
+                                                
+----
+xUnit Test Frameworks
+ - JUnit: Java
+ - CppUnit: C++
+ - NUnit: .NET (C#, VB.NET and J#)
+ - PyUnit: Python
+ - SUnit: SmallTalk
+ - vbUnit: VB6
+ - utPLSQL: Oracle's PL/SQL
+ - MinUnit: C
+ - XMLUnit: extension of JUnit and NUnit
+ - Catus: JUnit extension for Servlets and JSP
+ - JFCUnit: Java Swing
+ - NUnitForms: NUnit extension for .NET Windows Forms
+ - HTMLUnit: JUnit extension for HTML
+ - Jester, Nester, Pester: auto finds code not coverd by unit tests
+ 
+ - frameworks use a GUI that loads an app and runs specified test
+ - xUnit simplify running/construction the framework
+ - override Setup() to create object state - state which will be reused 
+ - override TearDown() to release object state outside the test method
+ - xUnit Fail() can be used to force a test failure
+----
+
+----
+NUnit syntax (VB.NET)
+<TestFixture()> Public Class myTest
+
+  <SetUp()> Public Sub mySetUp()
+    'as needed
+  End Sub
+  
+  <TearDown()> Public Sub myTearDown()
+    ' as needed
+  End Sub
+  
+  <Test()> Public Sub myTest()
+    Assert.AreSame(toBeTest.method(arg1, arg2, _ACONSTANT_VALUE)
+  End Sub
+End Class
+----
+
+----
+JUnit syntax
+
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import static org.junit.Assert.*;
+
+public class myTest {
+  @BeforeClass
+  public static void setUpClass() throws Exception {
+    //as needed
+  }
+  
+  @AfterClass
+  public static void tearDownClass() throws Exception {
+  }
+  
+  @Before
+  public void setup() {
+  }
+  
+  @After
+  public void tearDown() {
+  }
+  
+  @Test
+  public void myTest() {
+    assertEquals(arg1, arg2);
+    assertTrue(arg1 == arg2);
+  }
+}
+----
+My Method
+1. get big marker and printer paper
+2. sketch a Use-Case diagram
+3. sketch a Class-diagram with just the class names
+4. sketch a Activity-diagram 
+5. revisit and re-sketch the class diagram 
+6. revisit and re-sketch the activity diagram
+7. get fine pencil and some note cards
+8. write up the number of classes, one for each class
+9. also write up any form/window class
+10. and also write up any Mock objects needed
+11. sketch out the methods (to delimit class functionality only)
+12. sketch out needed instance variables (not confirmed just sketch)
+13. revisit a methods and variables
+14. set up file arch. w/o methods
+  a. application file
+  b. test files
+  c. mock objects
+  d. humble dialog forms
+15. Start beginning Task List (remember: as simple as possiable)
+16. Begin UnitTesting (red/green/refactor)
+---- 

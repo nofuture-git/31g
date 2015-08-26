@@ -1,0 +1,68 @@
+Notes TortoiseSVN 
+
+----
+ - Each commit will make a new copy of the entire file structure
+ - a Source file may be in any of the following four states
+ 
+                  unchanged       locally Changed
+               -------------------------------------------   
+     current   |   nothing     |        commit           |
+               |-----------------------------------------|
+ out-of-date   |   update      |    update then commit   |
+               |               |     resolve conflict    | 
+               -------------------------------------------
+ - consider files as 2-D x-axis being a particular revision, y-axis the filepath                
+ - Subversion branches are pointer copies to the original 
+  - upon change only the changed file is actually created
+  - unchanged files appear a independent files in the file explorer
+  - unchanged files are actually just pointers to the original
+  
+ - Subversion logs will show the history of your working copy
+  - upon file branched/locally changed your history is different to a point
+  - your history is the same as other going back further the point of branching
+  
+ - consider the 'merge' command as 'diff-and-apply'
+ - merging only results in local modifications
+ - merging works by comparing a left from right and applying chngs to a third
+ - check 'ignore ancestry' to have Merge behave like Diff
+ 
+ - apply chngs to truck 
+  - perform merge command
+  - left side is original copy w/i your branch (stop-on-copy)
+  - right side is the last copy w/i your branch (branch HEAD)
+  - target is the file on the trunck
+  
+ - apply chngs to trunk after already applying changes
+  - again merge command
+  - left side is the copy that was the HEAD at the last merge
+  - right is the most current copy (current branch HEAD)
+  - target is again the trunk file
+  
+ - Branch is just a copy to subversion 
+  - copy will share 'ancestry' or whom it was copied of
+----
+
+----
+Branch
+ - select the solutions root folder
+ - from SVN context-menu select Branch/Tag
+ - in 'To URL:' specify the path of the new copy
+ - select "Switch working copy..." if project is expecting same path/filename
+----
+
+----
+Merge Branch into the Trunk
+ - select the root of the solution
+ - set your working copy to the trunk
+ - check > Properties > Subversion > URL: make sure its the trunk
+  - Switch if its not
+ - SVN select Merge
+ - select 'Reintegrate a branch'
+ - In the cryptic 'From URL' select the branch from the repo
+ - Perform Test Merge
+ - Merge 
+ - Your working copy is now reflecting the changes found in 
+   the branch.
+ - Perform a Commit of your working copy to finalize the 
+   changes of the branch into the trunk.
+----

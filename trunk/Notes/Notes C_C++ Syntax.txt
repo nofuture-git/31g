@@ -1,0 +1,1877 @@
+Notes C++ Syntax
+
+C++ Primer, Fourth Edition
+by Stanley B. Lippman; Josée Lajoie; Barbara E. Moo
+Publisher: Addison-Wesley Professional
+Pub Date: February 14, 2005
+Print ISBN-10: 0-201-72148-1
+Print ISBN-13: 978-0-201-72148-5
+Pages: 912
+
+The C Primer, Second Ed.
+by Les Hancock, Morris Krieger
+McGraw-Hill Book Company
+1986
+ISBN 0-07-025995-X
+
+Expert C Programming: Deep C Secrets
+By: Peter van der Linden
+Publisher: Prentice Hall
+Pub. Date: June 14, 1994
+Print ISBN-10: 0-13-177429-8
+Print ISBN-13: 978-0-13-177429-2
+
+
+----
+Getting Started
+ - to use printf("something\n"); in C++ have the #include <cstdio>
+  - don't forget the '\n' in the string literal when using printf
+ - to use cout << "something" << endl; have #include <iostream>
+ - in old C style declare the function inside the main
+ - in C++ style declare the function above the main statement
+ - in C++ the main statement must return an int
+ - use this to have the console pause w/o breakpoint
+   char[1] rtrn; cin.getline(n,1);   
+ - the main statement actually has two signatures
+   main() // no arguments
+   main(int argc, char *argv[])
+   - where argc is the count of arguments
+   - argv is the value of the arguments
+   - argv[0] is the exe and is not used w/i the function
+   % MyCExe 10.8.0.1 "my string input!"
+   argv[1] gets the '10.8.0.1' 
+   argv[2] gets '"my string input!"'
+----
+  
+----
+String Escape Characters
+ \n  newline
+ \v vertical tab
+ \r carriage return
+ \a alert
+ \? question mark
+ \" double qoute
+ \t horizontal tab
+ \b backspace
+ \f formfeed
+ \\ backslash
+ \' single qoute
+ 
+printf specifiers
+ %c character
+ %d decimal
+ %f float
+ %o octal
+ %u unsigned int
+ %x hexadecimal
+ %p pointer address
+ %s char array (string)
+----
+
+----
+Declarator and Declaration
+ - the Declaration is the type, the Declarator(s) and a semi-colon 
+
+ - each Declarator has these three parts, absence meaning its implied 
+  (1) zero to many pointers, taking the form of 
+     * const volatile
+       * volatile
+           * 
+       * const
+     * volatile const            
+  (2) exactly one direct-declarator, taking the form of
+     myIdentifier
+     myIdentifier[some size here]
+     myIdentifier(zero or more args here)
+     (a nested Declarator containing parts 1 2 and 3 here)
+   
+  (3)zero or one initializer, taking the form of 
+     = intial value here
+     
+ - the Declaration, in turn, has these four parts
+ 
+ (1) one type specifier which is itself of three parts
+      - not all combinations are valid!     
+   (1.1) the type specifier literal, formed as 
+      void
+      char
+      short
+      int
+      long
+      signed int (or just 'signed')
+      unsigned int (or just 'unsigned')
+      struct
+      enum
+      union
+      class
+   (1.2) the storage type
+      extern
+      static
+      register
+      auto
+      typedef
+   (1.3) the type qualifier
+      const
+      volatile
+ (2) exactly one Declarator being of the form listed above
+ (3) zero or many more Declarators each being comma-seperated
+ (4) exactly one semi-colon
+---- 
+
+----
+Declaration Precedence
+ (1) Start at the name then read in this order
+ (2) from highest to lowest
+  (2.1) parentheses grouping together parts of the declaration
+  (2.2) the postfix operators being: () for function and [] for array
+  (2.3) the prefix operator (typically an asterisk as 'pointer to')
+ (3) const and volatile 
+  (3.1) applies to type specifier literal if next to it
+  (3.2) otherwise applies to the pointer asterisk on its immediate left
+----
+
+----
+Declaration Precedence Methodology
+ - are read in an alternating pattern of right-to-left, left-to-right
+ (1) start with the first direct-declarator found starting on the left
+              "identifier is"
+ (2) look to the end of the next token to right
+    []        "array of"
+    ()        "function returning"
+ (3) from here go back to the far left of the direct-declarator and
+     keep reading these on the left until its not any of these
+    (         "ahhhhh" already did this one because its on the left
+    const     "read-only"
+    volatile  "volatile"
+    *         "pointer to"
+ (4) read the type specifier literal that is to the right of (3)
+  
+  EXAMPLE 1
+  char* const *(*myFoo)();
+  (1) "myFoo is"
+  (2) TRICKY, neither () or [] are to the right, its just ) so go to step 3
+  (3) "a pointer to"
+  (4) there isn't any int, char, etc. to the right of *myFoo 
+  (1) "myFoo is a pointer to"
+  (2) "a function returning"
+  (3) "a pointer to a read-only pointer to"
+  (4) "a char"
+  "'myFoo' is a pointer to a function returning a pointer 
+   to a read-only pointer to a char."
+  EXAMPLE 2
+  char *(*chi[10])(int **pi);
+  (1) "chi is an"
+  (2) "array of"
+  (3) "pointers to"
+  (4) nothing here
+  (1) "chi is an array of pointers to"
+  (2) "a function returning" did say the parameters...
+  (3) "a pointer to "
+  (4) "a char"
+  
+----
+
+----
+Type Defination (alias/synonym)
+ typedef int myInt;
+ myInt a,b,c; //a b and c are really just int a,b,c;
+ //int myInt; says "myInt refers to a variable of an int type"
+ //typedef int myInt; "myInt is a synonym for the int type"
+ 
+ - typedef may be placed infront of any complex declaration 
+  - the direct-declarator then becomes the synonym for the entire declaration
+  - its tricky because direct-declarator now means the entire declaration itself
+  - complication compounds by then using synonym as args and return types...
+  
+ typedef char* const *(*myFoo)();
+ /*it now reads as "'myFoo' is a synonym for a pointer to a 
+    function returning a pointer to a read-only pointer to a char."*/
+ //EXAMPLE
+ void (*signal(int sig, void (*func)(int)) )(int);
+ //"'signal' is a function returning a pointer to a function returning null"
+ typedef void (*aDelegate)(int);
+ /*now, "'aDelegate' is a synonym for a function returning a pointer to 
+          a function returning null."*/
+ //and then you get this
+ aDelegate signal(int, aDelegate);
+ 
+ - #define and typedef are not the same
+ #define macro_int_ptr int *;
+ typedef type_int_ptr int *;
+ 
+ //macro is dumb with just straight replacement
+ macro_int_ptr myInt1, myInt2
+ //disolves to...
+ int *myInt1, myInt2//myInt2 is not an int pointer!!
+ type_int_ptr myInt1, myInt2;
+ //changes to...
+ int *myInt1, *myInt2;
+----
+
+----
+Definition versus Declaration
+ - a thing may only have one definition but many declarations
+ - a thing may be defined externally and declared anywhere
+ - Linkage is the concept of importing something across source files
+ - the keyword 'extern' is used to make links across files
+  - in old-school C any 'entity' was either in or outside of a function
+  - a function could never contain another function
+  - outside is called 'external' and inside called 'internal'
+  - to be moved across files the entity had to be external
+----
+
+----
+Primitives
+ - bool (Boolean)
+  - 0 (zero) is equal to false
+  - anything other than '0' is true, including negative numbers
+    bool myBool = false; 
+    bool myBool(false);
+    bool myBool = 0; //false
+    bool myBool(1); //true
+    bool myBool = -256;//true!
+  - if (myVal) {/*...*/}; //if myVal is primitive and != 0 then this is true!
+  
+ - char (Character) 
+  - 8 bits
+    char myChar = 'n';
+    char myChar('n');
+    char myChar = 97; //this will print as 'a'
+    char myChar = -159 //this will print 'a' too (256 - 159 = 97)!
+    char myChar = 97; ++myChar; //myChar is now 'b'
+  
+ - wchar_t (Wide Characters UNICODE)
+  - for non-english characters
+  - 16 bits
+  - literals will translate back to integers w/o certian definitions
+  
+ - short (Integer 2 bytes) 
+  - 16 bits
+  short myShort = 138;
+  short myShort(138);
+  short myShort = 1.23 \\tuncated to just be '1', but it does run!
+   
+ - int (Integer 4 bytes) 
+  - 32 bits
+  int myInt = 12345;
+  int myInt(1235);
+  int myInt = -12.3656455; \\tuncated to just 12
+  
+ - long (Integer 4 or 8 bytes) 
+  - 32 or 64 bits
+  - in VS C++ is the same as int, which is the same as long int
+  - true 64 bits is made by using 'long long' (same as 'long long int')
+  long myLong = 125; int myInt = sizeof(myLong); //myInt is 2
+  long myLong(125);
+  long int myLong = 125; //same as just 'long myLong'
+  long long myLong = 125; int myInt = sizeof(myLong); //myInt is 4
+  
+ - float (Rational 4 bytes) 
+  - 32 bits
+  - percision of 6 significant digits (eg 1.23456)
+  float myFloat = 1.23; int myInt = sizeof(myFloat); //myInt is 4
+  float myFloat(1.23);
+  long float myFloat = 1.99; int myInt = sizeof(myFloat); //myInt is 8 
+  float myFloat = 1.55689544; //myFloat will return 1.55683 (6 digits total)
+  float myFloat = 1.99999999999; //myFloat will return 2 
+  
+ - double (Rational 8 bytes)
+  - 64 bits
+  - percision of 10 significant digits (eg 1.234567891)
+  double myDouble = 1.23; int myInt = sizeof(myDouble); //myInt is 8
+  double myDouble(1.23);
+  long double myDouble = 1.23; //still on 8 bytes
+  //long long double myDouble = 123.12; does not compile
+
+ - int types declared as 'unsigned' to allow for greater positive percision
+ - no arithmatic overflow errors
+  - values will be assigned as attempted assignment MOD upper limit
+  - eg 336 MOD 256 = 80 where 336 is attempted assignment of a byte primitive
+  - the same is true of negative numbers assigned to unsigned ints
+----
+
+----
+Literals
+ - Boolean:  false true (case-sensitive)
+ - Character:  enclosed in single quotes
+ - Floats:  literal is followed by a 'F'
+ - Longs:  literal followed by a 'L'
+ - Wide Characters:  preceeded by a 'L' (eg L'h')
+ - Strings:  enclosed in double qoutes
+  - have a default constructor and are initialized upon declaration to ""
+----
+
+----
+Arrays
+ int main() {
+  int myRa[2];
+  int myArray[4] = {0, 1, 2, 3};
+  int myUn[] = {0,1,2,3};//don't need a dim for explict declaration
+  //primitive elements initialization outside a function get default values
+  //primitive elements w/i a function get no default value
+  //class elements get default constructor both in and out of a function
+  //cannot assign an array ref to another array
+  //cannot initialize and array with another array
+  //use defined type called 'size_t' to get the array size
+  int mySec[] = {1,2,3,4};
+  for (size_t i = 0; i != 10; i++) true;
+  return 0;
+ }
+---- 
+
+----
+Pointers
+ - most languages do not distinguish between the pointer and what is pointed to
+  x = y;
+  - x means the address that x represents 
+   - termed the 'l-value' (as in L not the numeral one)
+   - l-value is known at compile-time
+   - 'modifiable l-value' is a C term, augmented as such for array's sake
+   - the l-value is also called 'the locator'
+  - y means the contents of the address y represents
+   - termed the 'r-value'
+   - r-value is not known until runtime
+   - r-value needed at compile time, the compiler gen's code to fetch it  - stack-level that hold the address 
+ - points to a address space
+ - a pointer may exist w/o a pointee
+  - in managed code a reference type is not the same as a pointer
+  - a reference cannot exist w/o something to reference
+  - a pointer may exist independent of a pointee
+ - use the * to "dereference" the point
+  - this 'gets' the value contained in the referernce mem space
+  - when a type is followed by a * it means its a pointer type
+  - after decalration the * is used as a dereference 
+ - *variableName at declaration means its going to be a pointer
+ - &variableName means you want the mem-address of the pointer
+ -  variableName will just give you a address-value that its pointing to
+----
+
+----
+Pointers EXAMPLE  
+  int val_1 = 456;
+  int val_2 = 123;
+  int *p_1 = &val_1;(or like int *p_1; p_1 = &val_1;)
+  int *p_2 = &val_2; (or like int*p_2; p_2 = &val_2;)
+  int *p_3 = p_1; (or like int *p_3; p_3 = p_1; \\sep. declare and init.)
+  int *p_4 = &p_1; (or like int *p_4; p_4 = &p_1;)
+  int **p_5 = &p_3; (or like int **p_5; p_5 = &p_3; \\tricky)
+      
+        ADDRESS  VALUE
+ -------------- -------------------------------
+   &val_1  0xA |  456      val_1, *p_1, *p_3, **p_5  |
+ -------------- -------------------------------
+   &val_2  0xB |  123      val_2, *p_2        |
+ -------------- -------------------------------
+   &p_1    0xC |  0xA      p_1 *p_4           |
+ -------------- -------------------------------
+   &p_2    0xD |  0xB      p_2                |
+ -------------- -------------------------------
+   &p_3    0xE |  0xA      p_3, *p_5          |
+ -------------- -------------------------------
+   &p_4    0xF |  0xC      p_4,               |
+ -------------- -------------------------------
+   &p_5    0x0 |  0xE      p_5                |
+ -------------- -------------------------------
+ 
+ - *val_1 and *val_2 will cause an error and not compile
+ - &variable will always return an address
+ - assign a pointer to a pointer w/o using the deref. or Addressof operator
+  - this assumes that the declaration has already happened
+ - *variable may return a value or address 
+  - *variable will return an address if is assigned via '&' of a pointer... 
+ 
+ int azzay[5] = {1, 2, 3, 4, 5};
+ int i;
+ int *ptr;//declare a pointer
+ i=0;
+ ptr = &azzay;//could have written prt = azzay; just as well
+ while(i<5)
+  {
+    printf("array name alone is its base address %u.\n", azzay);
+    printf("...which is also the same as %u.\n", &azzay);
+    printf("...add 1 to the base to iterate the array %d.\n",azzay+i);
+    printf("...or do the same with a pointer %d.\n", *ptr);
+    ++ptr;//simply increment the pointer to iterate the array
+    ++i;
+  }
+ 
+ #include<string>
+ #include<cstdlib>//this has ref to the NULL varaible name
+ using std::string;
+ int main() {
+  string myStr = "my string";
+  string *mypointer = &myStr;
+  //* operator sets the declaration as a pointer
+  //& amper. says 'address of'
+  *mypointer = "new string"; //now myStr = "new string"
+  //there is no way to know if a pointer is actually pointing to something
+  //* operator used in declaration to say 'I am a pointer'
+  //* operator used again as the 'dereference' symbol
+  
+  void* myVoidPointer; //special pointer to point to different types
+ }
+----
+
+----
+Pointers & Arrays
+ - are not the same thing!
+ - the subscript operator a[i] is simply *(a+i)
+  - this operator is actually commutative, a[6] same as 6[a]
+  - this is because '+' operator is commutative - the subscript is built upon
+ - the compiler handles 'scaling'
+  - a[2], the 2 meaning two address blocks or 4 bytes each
+ - an array as a formal function parameter will be converted to a pointer
+  - this is to avoid passing a whole array into a function call 
+ int a[10], *p, i=2;
+ //all get 'a[i]'
+ p=a;   p[i];
+ p=a;   *(p+i);
+ p=a+i; *p; 
+ 
+  
+ char myArray[6] = "qwerty";  
+ /*calling the subscript acts as:
+  (1) get the address of 'myArray' and add 1
+  (2) get the contents of myArray address +1
+ */
+ char myLValue = myArray[1];//returns 'w'
+ 
+ /*says myPtr is address whose contents are an address, however, by going to 
+   this contained address a char type will be found within it
+ */ 
+ char *myPtr; //for clarity, say myPtr is 4624 (of course myPtr is not *myPtr!)
+ /*dereferencing a pointer acts as:
+  (1) get contents of at mem. space 4624, say '5081'
+  (2) get the contents from address 5081
+ */
+ char myLChar = *myPtr; //the '*' here is for 'de-reference'
+                            
+ - the lesson being that getting contents from an array is easy since you 
+   know at compile time where to look for them.
+ - with the pointer, however, you don't know what address your going to find 
+   there and so don't know at compile time where to fetch the deref'ed value
+ - these being termed Direct Memory Access, Indirect Memory Access respectivily  
+ 
+ char *p = "qwerty";
+ /*telling the compiler we have a pointer - it will perform the latter above
+  (1) get the contents of p, say '5081'
+  (2) take 2 and add it to 5081
+  (3) get the contents of 5081 + 2 
+ */
+ char myCharValue = p[2];//returns 'e'
+
+ - here is the complexity 
+ char p[6] = "qwerty"; //we <em>define</em> this in another source file
+ 
+ extern char *p; //then, using linkage, <em>declare</em> it in a different file
+ /*by declaring it as a pointer - it all goes wrong
+   (1) get the contents at p - which will return 'q'
+   (2) take 'q' and add 2
+   (3) get the contents of 'q' + 2 - which is nonsense
+ */
+ char myNonSense = p[2];
+ //but this would work
+ char myConfusingSolution = &p[2]; //this will get p's address, not 'q'
+----
+
+----
+Basic Functions
+ - defined like in Java, functions are know by having ()
+  - having function w/o () after call means you want the address of the function
+ - there is always a return type, void for VB.NET like Sub-routines
+ 
+ - never a function like 
+  - Foo()(); //function returning a function
+  - Foo()[]; //function returning an array
+  - Foo[](); //an array returning a function
+ - may, however, have a function like
+  - int (*Foo())(); //function returning a pointer to a function
+  - int (*Foo())[]; //function returning a pointer to an array
+  - int (*Foo[])(); //an array holding pointers to functions
+  
+ - no ref arguements are copied, ref'ed arguements are referenced
+ 
+ - all functions may call 'return' to terminate
+  - void type functions just call 'return;'
+  - void type functions don't have to call return at all 
+ - the return value from the main is given to the OS
+  - zero is typically 'success'
+  
+ - defining the function in the header, parameters may be given a default value
+  - parameters w/ default values may be ommitted from the function call
+ - add 'static' operator to local variable to have it remain after function call
+ - 'inline' operator on a function declaration 
+  - compiler will replace function signature with function body
+  - used to speed things up
+  
+ - add 'const' at the end of a class's method sig. 
+   - only relevent to class methods
+   - insures that method body does not change instance variables
+   int myFc(int& a) const {}
+   //const char* - cannot change the value that is returned
+   //const GetSomething - cannot change what is being pointed too
+  - const char* const GetSomething() {}
+ 
+ - old school C all functions must have a definition
+  - only functions that return an int did not need a definition
+  - this is the very old 'K&R C' definition and declaration types
+  //(1) Definition in K&R C 
+  double myFunction(); //no arguements, just the function and return type
+  //(2) Declaration in K&R C
+  double myFunction(myParam)
+  char myParam; //this is the parameter type here...
+  { /* function body */ }
+
+  - ANSI C is the more contemporary look of 
+  //(1) Definition in ANSI C
+  double myAnsiFx(int a, char b)
+  //(2) Declaration in ANSI C
+  double myAnsiFx(int a, char b){ /* function body */ } 
+----
+
+----
+Function Pointer 
+  - the parenth's around the pointer function are needed
+   - w/o the () around the f(x) pointer it would appear as a f(x) declaration
+   - int *myF_ptr(); says its a function that returns an int pointer!
+   - if the f(x) pointed to returns a pointer then the syntax is as such
+    - char *(*myF_ptrAsPtr)();
+ main(){
+  int myF();
+  int (*myF_ptr)();
+  myF_ptr = myF;//no () so we want the address of, assign it to the pointer
+  myF(); //will print "myF was called!"
+  (*myF_ptr)(); //will print the same!
+ }//end main
+ myF()
+ {
+  printf("myF was called!\n");
+ }
+ 
+ - avoid cumbersome syntax by using typedef for f(x) pointer!
+#include <iostream>
+using namespace std;
+
+void myFunc(){
+    cout << "something" << endl;  
+ }
+int main() {
+  typedef void (*MyCstyleDelegate)(); 
+  MyCstyleDelegate del;
+  del = myFunc;
+  del(); //something
+  return 0;
+ }//end main
+----
+
+----
+Argument Passing
+ - there are three types of passing
+  - by Value (int a)
+  - by Address (int *a) or (int* a)
+  - by Reference (int &a) or (int& a)
+   - void myFoo(int a[]) is really, void myFoo(int *a)
+  #include <iostream>
+  #include <cstdio>
+  void FunctionByRef(int &a){
+    a++;
+  }
+  void FunctionByAddress(int *a)
+  {
+    a++;
+  }
+  void FunctionByValue(int a)
+  {
+    a++;
+  }
+  void FunctionByAddressRef(int *&a)
+  {
+    a++;
+  }
+  /*void FunctionByRefAddress(int &*a){} does not compile*/
+  int main()
+  {
+    using namespace std;
+    
+    int myInt = 32;
+    int *myPtr = &myInt;
+    /*----
+    By Reference example
+    ----*/
+    FunctionByRef(myInt); //myInt is now 33!
+    //FunctionByRef(&myInt); will not compile
+    //FunctionByRef(myPtr); will not compile
+    FunctionByRef(*myPtr); //*myPtr/myInt is now 33!
+    //FunctionByRef(&myPtr); will not compile
+    
+    /*----
+    By Address example
+    ----*/
+    //FunctionByAddress(myInt); will not compile
+    FunctionByAddress(&myInt);//myInt is still 32
+    FunctionByAddress(myPtr); //myInt is still 32
+    //FunctionByAddress(*myPtr); will not compile
+    //FunctionByAddress(&myPtr); will not compile
+    
+    /*----
+    By Value example
+    ----*/
+    FunctionByValue(myInt); //myInt is still 32
+    //FunctionByValue(&myInt); will not compile
+    //FunctionByValue(myPtr); will not compile
+    FunctionByValue(*myPtr); //*myPtr/myInt is still 32
+    //FunctionByValue(&myPtr); will not compile
+    
+    /*----
+    By Address Reference example
+    ----*/
+    //FunctionByAddressRef(myInt); will not compile
+    //FunctionByAddressRef(&myInt); will not compile
+    FunctionByAddressRef(myPtr); //*myPtr/myInt is still 32
+    //FunctionByAddressRef(*myPtr); will not compile
+    //FunctionByAddressRef(&myPtr); will not compile
+  }
+----
+
+----
+Identifiers
+ - start with underscore character or a letter
+ - may contain a number after the first character
+ - is strong-typed whereby each identifier must be declared a type
+ - only instance level primitives have a default value
+  - local primitives are void
+----
+
+----
+Structures
+ - aggregate of primitives or other structures
+ - original C manifestation for quicker arguement passing
+ - in C++ struct and class are exactly the same except for access modifiers
+  - struct - all memebers are public no matter what
+  - class - programmer determines what modifer to assign to what
+ 
+ struct myStructure //structure tag
+ {
+  int myInt;
+  char myChar;
+  int myOtherInt;
+ };//NOTE the declaration ends in a semi-colon
+ 
+ struct MyOtherStruct{
+    int MyOtherInt;
+    float MyOtherFloat;
+    //override the no-arg constructor to init the member variables
+    MyOtherStruct():MyOtherInt(12), MyOtherFloat(1.2){}
+ }MyInstanceOfMyOtherStruct, //this is actually an instance thereof, its global 
+  AnotherInstanceOfMyOtherStruct; //this too is an instance thereof
+ 
+ //may also declare without a tag inside a function
+ void myFunction()
+ {
+   struct
+   {
+    int myInt;
+    char myChar;
+   } myFunctionStruct; //this struct instance is scoped to the f(x) only!
+                       //since it is annonymous cannot init variables
+ }
+
+// structures allow for bit fields - specifying the size of a field in bits
+ struct DISK_REGISTER {
+  unsigned ready:1; //the fields are converted to interger type for computation
+  unsigned error_occured:1;
+  unsigned disk_spinning:1;
+  unsigned write_protected:1;
+  unsigned head_loaded:1;
+  unsigned error_code:8;
+  unsigned track:9;
+  unsigned sector:5;
+  unsigned command:5;
+  //the sum of the bits should be >= the int word size (eg 32-bits on x86) 
+ };
+ 
+ //use a struct to allow functions to return an array
+ struct anArrayAsReturn {int a[100]};
+ //declare a function as
+ anArrayAsReturn myFunction(){ return anArrayAsReturn myReturn;}
+----
+
+----
+Unions
+ - same declarative syntax as Structure
+ - is a type of varient in which it may hold any one of its declared members
+ - the compiler makes enough memory for the largest member
+ - the value of the union during run-time may change in type too  
+----
+
+----
+Enum
+ enum myEnum {up, down, left, right};
+ // here up = 0, down = 1, etc..
+ enum mySecond {bottom = 10, top}
+ //start the enum at a value other than zero
+ enum myThird {in = 10, out = 10, left}
+ //dup's are OK since these are independent constants
+ //left will be equal to 11
+ 
+ enum MyEnum {alpha, beta};
+ MyEnum aDeclOfAnEnum = alpha; //may declare a member as an enum type and assign
+----
+
+----
+Block Statements
+ - area enclosed by open/close curly braces
+ - there are block level variables 
+ - no semicolon follows the end of a block statement
+ - empty blocks are ok (eg {})
+----
+
+----
+Scope Resolution
+ - C++ has global, instance, local and block level scope
+ - reuse of identifiers possiable with local scope overriding global
+ - constants are in scope to the source file inwhich they are declared
+ - :: scope operator
+  std::string = "my string"; // std is the namespace
+ - using keyword is same as 'import' in VB.NET
+ - declare namespace with simple
+ namespace MyNameSpace { /*...*/}
+
+ - declaration may happen on global, namespace, class, local or block level
+ #import <iostream>
+ int MyGlobalInt = 11;//global in scope
+ namespace MyNamespace{
+  int MyNamespaceInt = 12;//MyNamespace::MyNamespaceInt
+  class MyClass{
+    public:
+      const static int MyStaticClassInt = 13;
+      int MyClassInt;// cannot init these in a class upon declaration
+      MyClass():MyClassInt(14){//have to init instance variable here...
+        {
+          int MyBlockInt = 15;//gone on made...
+        }
+      }
+  };
+ }
+----
+
+----
+Preprocessor Controls
+ - old C souce files ran through a preprocessor to replace constants
+ - offical called preprocessor control lines
+  - are offset by the '#' symbol
+ - is dumb in that it always just replace a string for string
+ - is done by preprocessor so no ending semicolon needed
+ - doesn't have to be declared at sourcefile's top, but its good practice
+ - the all-caps is just style, not required by the preprocessor
+  #define MY_ALWAYS_STRING 3.14
+
+  - continue of a C Macro to another line below with backslash
+  #define MY_CONT_PI \
+          3.14 
+
+  - macro def. with other macros is ok upon being below 
+  #define MY_VALUE 2
+  #define MY_OTHER_VALUE MY_VALUE + MY_VALUE
+
+  - a macro can take arguements
+  #define MY_MACRO_FUNCTION(X) (X + X)
+  //calling MY_MACRO_FUNCTION(2) will be turned to (2 + 2) by preprocessor
+  
+  - may have preprocessor add double-quotes to a arguement to with another '#'
+  #define MY_MCR_WITH_STRING(ARG)  #ARG 
+  //calling MY_MCR_WITH_STRING(2) will be turned to "2" not 2
+ 
+  - may concat macro tokens with '##'
+  #define MY_CMD(MY_VAL) {#MY_VAL, MY_VAL##_asuffix}
+  //calling MY_CMD(874) will be turned to {"874", 874_asuffix}
+  
+  - may have a macro with var-arg w/ special syntax (Variadic Macros)
+  #define MY_VARARG(...) myFunction(__VA_ARGS__)
+  //the ... and __VA_ARGS__ are required exactly
+  //MY_VARARG(int arg1, char *arg2) turned to myFunction(int arg1, char *arg2)
+  
+  -be aware that there are many common macros with standard lib's
+   - Standard Predefined Macros include:
+  __FILE__  __LINE__  __FUNCTION__  __DATE__  __TIME__ and others. 
+   - Common Predefined Macros:
+  __COUNTER__  __BASE_FILE__ and others.
+----  
+
+----
+Header File Basics
+ - header files are only needed when the program spans more than one souce file
+ - header files are handled by the 'preprocessor'
+  - before compile time
+  - called via the #include <headerfile>
+   - also call via #include "headerfile.h" if the file is in the current root 
+  - the include statement is replaced by the preprocessor by the h file itself
+  - 'header guard'
+   - preprocessor item
+   - used to guard against a header file being included multiple times
+ #ifndef HEADERFILE_H
+ /* 
+   - this is unique to the entire assembly
+   - test that 'HEADERFILE_H' is not already defined
+   - enclosed with closing #endif
+   - there is no semi-colon at the end...
+ */
+ #define HEADERFILE_H
+ /* 
+   - here is the actual interface defination
+   - HEADERFILE_H is just a naming convention, anything will work be it unique
+   - with this guard #include "headerfile.h" can appear many times w/o error
+ */
+ #endif
+ 
+ - use 'Foward Declarations' to have a class defined before including the header
+ //foward declaration is just telling compiler, "set such-&-such name aside"
+ class ToBeUsed;
+ //class declaration so assume were in a header file
+ class MyClass {
+    
+    private:
+     //w/o the forward declaration this wouldn't compile
+     // the compiler doesn't know the ToBeUsed symbol yet...
+     ToBeUsed* iMyUse;
+ }
+ - use foward declaration when you just need a ref to the class
+ - have to have #include if you are calling methods thereof
+----
+
+----
+/*Basic Class Declaration*/
+#include <iostream>
+
+class MyClass {
+public:
+  //API of the class
+  int GetAnInt(){return 1;}
+  int GetAnotherInt();
+private:
+  //instance variables - everything is 'private' by default  
+  // IMPORTANT: may only declare instance variable, not initialize w/ values
+    // you initialize instance variables in the constructor or otherwise  
+}; //don't forget the semi-colon here!
+/*ok to implement it outside of the class body!*/
+int MyClass::GetAnotherInt(){
+  return 2;
+}
+/*Basic Inheritance (this has a GOTCHA!)*/
+class MyOtherClass: MyClass{ //most basic inheritance
+  //all members of MyClass are in-scope w/i MyOtherClass
+  //the inherited members are now private to any instance of MyOtherClass
+};
+/*Inheritance As Expected*/
+class MyBetterOtherClass: public MyClass{
+  //this class's API and MyClass API are in-scope to any instance
+};
+
+/*Friend Modifier*/
+class MyHasAFriendClass {
+    int a,b;
+  public:
+    MyHasAFriendClass():a(2), b(3){}
+    friend int MyIndependentFriend();  
+};
+int MyIndependentFriend(){
+  MyHasAFriendClass aFriend;
+  return aFriend.a + aFriend.b; //independent f(x) has access to private members 
+}
+int main(){
+  MyOtherClass* eg = new MyOtherClass();
+  //you cannot call eg->GetAnInt() cause its private w/i MyOtherClass!!!
+  MyBetterOtherClass * anEg = new MyBetterOtherClass();
+  // parent class inherited with 'public' access modifier so this is ok
+  cout<<anEg->GetAnInt()<<endl;//prints '1'  
+  cout<<MyIndependentFriend()<<endl;//prints '5'
+  delete eg; //you alloc'ed heap space so you gotta do this too
+  delete anEg;
+  return 0;
+}
+----
+
+----
+Arithmetic Operators
+ + unary:  always just returns the operand
+ - urary: negates the value
+ * multiplication
+ / division
+ % remainder
+ + addition
+ - subtraction
+----
+
+----
+Logical Operators
+ ! not
+ < less than
+ <= less than equal to
+ > greater than
+ >= greater than equal to
+ == equality
+ != inequality
+ && logical and, is short-circuit operator
+ || logical or, is short-circuit operator
+ ? : ternary operator (cond ? true : false)
+ 
+ - relational operators cannot be chained
+  - must be joined by logical OR / AND
+----
+
+----
+Bitwise Operator
+ ~ Not
+ << shift left
+ >> shift right
+ & bitwise And
+ ^ bitwise Xor
+ | bitwise Or
+----
+
+----
+Assignment Operator 
+ = assignment operator
+ int myVal = 3.14; //myVal will be 3, auto-trunc. no cast exception
+ 
+ int i;
+ while ((i = get_value();) != 10) {
+  //this is cool, have the value incremented in the loop condition!
+ }
+ 
+Compound Assignment Operators 
+ += -= *= /= %= aritmatic compound operators
+ <<= >>= &= ^= |= bitwise compound operators
+----
+
+----
+Prefix & Postfix Operators
+ - are compound in that they both retrun and set a value
+ ++i return i + 1 and sets i = i + 1
+ i++ returns i and sets i = i + 1
+----
+
+----
+Arrow Operator
+ -> is used to call members on the value to which a pointer is referenced
+ myCustomObject *myPointer = &myInstanceOfCustomObject;
+ //to call a memeber on myCustomObject from the pointer we must 1st deref' it
+ (*myPointer).myCustomMember();
+ //wrapping pointer in () deref's it first then calls memeber on value
+ mypointer->myCustomMember();
+ 
+ struct myStruct
+ {
+  int myStructInt;
+  char myStructChar;
+ }
+ main()
+ {
+  struct myStruct s[2], *myStruct_ptr;
+  s[0].myStructInt = 1;
+  s[0].myStructChar = 'c';
+  s[1].myStructInt = 2;
+  s[1].myStructChar = 'd';
+  printf("%d  %c\n",myStruct_ptr->myStructInt 
+                       ,myStruct_ptr->myStructChar);
+  myStruct_ptr++;                       
+  printf("%d  %c\n",myStruct_ptr->myStructInt 
+                       ,myStruct_ptr->myStructChar);
+ }
+----
+ 
+----
+sizeof Operator
+ - for returning bit-size of the operand
+ MyCustomObj myInstance, *mypointer;
+ sizeof(MyCustomeObj); //amount of mem needed to hold this
+ sizeof(myInstance); //also the size of the instance's type (same as above)
+ sizeof(*mypointer); //same thing again
+----
+
+----
+String Operators
+ - strings are never null
+ - strings use pass-by-value semantics
+  string myString (myOtherString); //both point to independent address space
+ - string literals contain an additonal terminating null char (/0)
+ str.empty //returns true or false if the string value is ""
+ str.size //returns the string's length
+  - returned type is always unsigned
+  - it may be an int or a double, whatever is needed to make it fit
+ str[n] //returns the character at index n
+ str + snd //concat's str to snd
+ str = snd //assigns snd's value to str
+ str == snd //returns boolean for equality test
+ str >= snd 
+  - will return true if they have the same value
+  - will retrun true if they start with the same value and str has additionals
+   eg str = "hello world" snd = "hello"
+  - greater than, less than start at point of characters difference
+  - typically CAPS letters are greater than lowercase
+ 
+ #include <string>
+ #include <iostream>
+ using namespace std;
+ int main(){
+  /*Basic*/
+  string myFirstString = "one";
+  
+  /* Declare & Init */
+  string mySecondString (myFirstString);//init and declare in one
+  string myThirdString;
+  myThirdString = myFirstString;//declare then init
+  string myForthString = myThirdString;//ok too
+  string myFifthString (myString, 1,2);//is substring, prints 'ne'
+
+  /*Concat Strings*/
+  myThirdString + " and two";//like Java/.NET the string abandoned...
+  myThirdString += " and three";//this works because compound assignment
+  //cout<<string.empty()<<endl; error, this is for value testing only
+  
+  /*Loop Strings*/
+  string myLoopExample = "1234";
+  //For Loop
+  int i;
+  for (i= 0; i < myLoopExample.length(); i++) 
+  {
+    cout<<myLoopExample[i];
+  }
+  
+  //For Each Loop - see C++ Templates below...
+  string::iterator myItr;
+  for (myItr = myLoopExample.begin(); myItr!=myLoopExample.end(), myItr++)
+  {
+    
+    cout<<*myItr<<endl;
+  }
+  
+  /*Transform Strings*/
+  #include <cctype>
+  #include <algorithm>
+  string myStart = "start";
+  string myEnd = myStart;//w/o init, then you have to specify the length
+  //turns myEnd from 'start' to 'START'
+  transform(myStart.begin(),myStart.end(),myEnd.begin(),::toupper);
+  tolower(myEnd[0]);//this doesn't assign so myEnd is still 'START'
+  myEnd[0] = tolower(myEnd[0]);//this works
+  
+  return 0;
+ }
+----
+
+----
+If Statement
+ //no semi-colon in condition statement
+ if (true) return 0 //single statements do not require a block
+ if (true) {/*more than one statement here*/} 
+ if (int i = 1) {
+    i is a block variable
+ }
+ if (false) {} //empty block
+ else {/*else statements here */}
+ 
+ if (false) {}
+ else if (false) {}
+ else {}
+----
+
+----
+Switch Statement
+ //case and condition must ints
+ //fall-through happens (same as Java) so 'break' statement is expected
+ switch(myInt){
+  case 1:
+    i += 1;
+    break;
+  case 2:
+    i += 2;
+    break;
+  default:
+    i += 0;
+    break;
+    //default statement must have some type of body
+ }
+ 
+ //case labels may appear on the same line
+ switch(myInt){
+  case 1: case 2: case 3: 
+    i += 1;
+ }
+----
+
+----
+Loops
+
+ While Loop
+ while (condition){
+    //statements here
+    //omit block if only a single statement is needed
+ }
+ 
+ For Loop
+ for (initializerr; condition; expression;) {
+    //for loop body
+    //expression may have multiple things happening ea. seperated by a comma
+    //multiple things may happen in the initializer as well (comma-seperated)
+    //to have a null in one of the three just have a semi-colon
+ }
+ 
+ Do While Loop
+ do {
+    //statements
+ } while (condition);//don't forget the semi-colon here
+ //any variable initialized in 'condition' is out-of-scope for do block
+----
+    
+----
+Break/Continue Statement
+ - 'break' apply to any block to exit that block
+ - 'continue' goes to next iteration w/i a loop
+----
+
+----
+Try / Catch Block Statements
+
+  try {
+    //risky code here
+  } catch (runtime_error err) {
+    err.what(); //like 'message' in other languages, 
+    //handle exception heremyF
+  }
+  
+ Standard Exceptions
+  - located in stdexcept libary
+  - exception: standard base class
+  - runtime_error
+  - range_error
+  - overflow_error
+  - underflow_error
+  - logic_error
+  - domain_error
+  - invalid_arguement
+  - length_error
+  - out_of_range
+
+ - try/catch is built upon setjmp/longjmp
+ - this is all that is available in old school C
+#include <setjmp.h> //part of C's standard library
+jmp_buf buf;
+#include <setjmp.h>
+myFoo(){
+  longjmp(buf, 1);//go back to were ever setjmp was -returning '1' (one)
+}
+main(){
+  /*(1)setjmp returns 0, by default, like all C functions
+    (2)myFoo() added onto stack frame and calls longjmp
+    (3)returning right back to 'setjmp(buf)'
+  */
+  int r = 0;
+  r = setjmp(buf);//'buf' used to "remember" were control is right now
+  if(r = 0) myFoo();
+}
+----
+
+----
+Defining Templates (Generics)
+ - generic functions are used when arguement's type is unknown
+  - internal operation is the same across types
+  //compare may be called with string types, int types, whatever
+  //compiler figures it out by the arguments used
+  template<typedef T>
+   int compare(const T &a1, const T &a2)
+   {
+    if (a1 > a2) return -1;
+    if (a1 < a2) return 1;
+    return 0;
+   }
+   
+ - may also be used for classes
+ template<class T> class MyTemplateClass {
+  public:
+    T myFunction(); //function def inside class def
+ }
+ //here is myFunction implementation
+ template<class T> //this is required because its a template class
+ T MyTemplateClass<T>::myFunction(){
+  //the 'T MyTemplat..' specifies the return type
+  // the 'MyTemplateClass<T>::myFu..' tells that the function template parameter
+  // - is the same as the class's template parameter
+  return T;
+ }
+----
+
+----
+Standard Template Library
+ - library of container templates
+ - all template classes are in the std namespace
+ - which container to use depends on needs and performance thereof
+ - declare using container_name<type> variable_name (eg vector<int> MyVector;)
+ - use of 'begin' and 'end' to gain ref' to the iterator object 
+ - use 'front' and 'back' to get value therein
+ - every container has .size() and .empty() 
+ 
+ Vector
+  - #include <vector>
+  - vector<MyClassType> MyVector;
+  - is the same as list but you may define size upon declaration
+  - declaration may include default value as well
+  
+    begin___ ___ ___end    
+        |0  |1  |2  |  <--[] or .at()
+        |&T |&T |&T |  <-- push_back
+        |___|___|___|__ -->pop_back
+          |       |
+        front    back
+        
+ Double-ended Queue
+  - #include <deque>
+  - deque<MyClassType> MyDeque;
+  - may add/remove elements from either end
+  
+              begin___ ___ ___end
+                  |0  |1  |2  |  <--[] or .at()
+  push_front -->  |&T |&T |&T |  <-- push_back
+   pop_front <--__|___|___|___|__ -->pop_back
+                    |       |
+                  front    back
+                       
+ Linked-List
+  - #include <list>
+  - list<MyClassType> MyList;
+  - called 'linked-list' becaus may be thought of as a chain, link by link
+  - does not have [] or the .at() accessors
+  
+    begin___ ___ ___end 
+        |   |   |   |  
+        |&T |&T |&T |  <-- push_back
+        |___|___|___|__ -->pop_back
+          |       |
+        front    back
+ 
+ Map 
+ - #include <map>
+ - map<MyKeyType, MyClassType> MyMap;
+ - true hash-table
+ 
+  begin________ ________ ________ ________ ________end 
+      | key_i  | key_j  | key_k  | key_l  | key_m  |<--[key] to get T&
+      |   T&   |   T&   |   T&   |   T&   |   T&   |
+      |________|________|________|________|________|
+                   |
+            find(key_j) to get iterator 
+            
+ Stack
+ - #include <stack>
+ - stack<MyClassType> MyStack;
+ - is Last-In-Last-Out
+ 
+  push    pop
+     |    ^
+    |v    || 
+    |______|
+    |  T&  |-->top to get T& 
+    |______|
+    |  T&  |
+    |______|
+    |  T&  |
+    |______|
+      
+ Queue
+ - #include <queue>
+ - queue<MyClassType> MyQueue;
+ - is First-In-First-Out
+         __ ___ ___ ___ __
+           |0  |1  |2  |  
+  push-->  |&T |&T |&T |  -->pop
+         __|___|___|___|__
+             |       |
+           front    back     
+----
+
+----
+Iterator Object
+ - is an object declared on a vector object
+ - begin() called on the vector, returns the iterator at the start
+ - end() called on vector, returns an iterator at the off-the-end position
+ - * operator to get current element on which iterator is positioned
+ - ++ operator to move iterator to the next element
+ - equality test may be performed an refer to the element/position
+ - arithmatic operators may be used to get specific index values
+ - allows for looping to be like classic for...each
+  - like a for...each this is save to call on empty vectors
+ 
+ #include<vector>
+ #include<string>
+ using std::string, std::vector;
+ int main() {
+  vector<string> myVec(3, "str");
+  //we get a ref to the iterator by calling .begin() on the vector
+  //loop limit is set to the end of the vector through call to .end()
+  //call the ++ operator to have the iteration happen
+  //may call vector<string>::const_iterator for read-only looping
+  for (vector<string>::iterator myiter = myVec.begin(); 
+                                myiter != myVec.end();
+                                ++myiter)
+        *myiter = "sta"; //each string will be assigned this instead
+  return 0;                                                
+ };
+----
+
+----
+Basics of a Linked-List
+ - the linked-list is the concept of which the Standard Template Lib is derived
+ // the type declaration, my_node being the Declarator
+ struct my_node {int datum;
+                 struct my_node *next; 
+                 };
+ //further declarations
+ struct my_node a, b;
+ //the link
+ a.next = &b;
+ a.next->next=NULL
+----
+
+----
+Casting
+ //simple casting
+ short myshrt = 2000;
+ int myint;
+ MyClass *myPointer;
+ MyOtherClass *mySecondPointer;
+ myint = (int) myshrt;
+ //straight cast one pointer to another
+ mySecondPointer = (MyClass*) &myPointer; //may result in runtime error
+ 
+ Dynamic Cast
+  ParentClass *p_prnt;
+  ChildClass chld; 
+ 
+  //dereferenced class type
+  //dynamic_cast is a keyword
+  //specific to casting derived class back to a parent class
+  p_prnt = dynamic_cast<ParentClass*>(&chld)
+ 
+ Static Cast
+ //for casting up and down the parent/child tree
+ ParentClass *myStatic = new ParentClass;
+ ChildClass *myStaticChild = static_cast<ParentClass*>(myStatic);
+
+Reinterpret Cast
+
+ //cast anything to anything else
+ MyAnyClass *myp1 = new MyAnyClass;
+ MyAnyOtherClass *myp2 = reinterpret_cast<MyAnyOtherClass*>(myp1); 
+----
+
+----
+Constructors & Destructors
+ - 'new' is not required - its only for gaining/releasing memory
+ - this is a MAJOR difference from .NET and Java!!!
+ #include <iostream>
+ class MyClass{
+   protected:
+    int a,b,c;
+   public: 
+    MyClass():a(10),b(11),c(12){}
+    int ReturnInstanceValuesWithoutNew(){return a + b + c;};
+ }//end MyClass
+ 
+ int main(){
+  MyClass aNonReference;//this memory is here and here to stay...
+  //this prints, np, everything works, your just locked into the memory
+  cout<<aNonReference.ReturnInstanceValuesWithoutNew()<<endl;
+  MyClass* aRef = new MyClass();
+  cout<<aRef->ReturnInstanceValuesWithoutNew()<<endl;
+  delete aRef;//got the mem., used it, and let it go...only difference
+  return 0;
+ }
+ 
+ - must use pointers to use the new/delete dynamic mem. allocation
+ - the new operator 
+  - must be followed by the object type
+  - returns a pointer that points to the 1st block of mem. for the new object
+ - constuctors are defined with Class Name less any return type (same as Java)
+ - destructors are defined with Class Name preceeded by a '~' operator
+ - may set instance variable init values in unique constructor syntax
+  \\MyClass is th constructor because its the class's name
+  \\the values following the ':' are initializers
+  \\empty curly braces are the body of the constructor
+  MyClass():myInt(0), myOtherInt(0) {}
+ 
+ new Keyword for constructors
+ delete Keyword for destructors
+ 
+ int myInt(1024); //initialized int to value of 1024
+ int *myPt1 = new int(1024); //myPt1 ref's the int with value 1024
+ int *myPt2 = new int; //points to an unintialized int
+ int *myPt3 = new int(); //parenth's say, "initialize to default value"
+ 
+ int *myPt4 = new int(1024);
+ delete myPt4; //pointer is not dereferenced!
+               //may only call 'delete' on reference init. by the 'new' keyword
+               //mem. clear happens to value myPt4 pointed 
+----
+
+----
+Constructor Overloading
+ class MyParentClass {
+  public:
+    int a,b,c;
+    MyParentClass():a(1),b(2),c(3){}
+ 
+ };
+ class MyChildClass:public MyClass{
+  public:
+    //cannot override init of parent class members with ':a(20),b(21)..' syntax 
+    MyChildClass(){
+      a = 20;
+      b = 21;
+      c = 22;
+    }
+ };
+ class MyNoDefaultClass{
+  public:
+    int a,b,c;
+    MyNoDefaultClass(int arg1, int arg2, int arg3){
+      a = arg1;
+      b = arg2;
+      c = arg3;
+    }
+ };
+ class MyChildNoDefaultClass: public MyNoDefaultClass {
+  public:
+    int d,e;
+    /*
+     - C++ has multi-inheritance so there is no 'MyBase' or 'super'
+     - using ':MySuperCls(args,..)' is only way to init a *-arg parent class
+     - syntax must be present since compiler no longer makes no-arg constructor
+     - constructor args maybe:
+      - the result of a static function
+      - the child class's constructor args
+      - anything in scope that resolves to the needed type 
+    */
+    MyChildNoDefaultClass():MyNoDefaultClass(1,2,3){
+      d = 4;
+      e = 5;
+    }
+ };
+----
+
+----
+Member Access Modifiers
+ - use 'this' keyword to get access to class members in the class itself
+class myClass{
+  public:
+    bool myFunction{}
+  private:
+    bool myInstanceVariable;
+};
+----
+
+----
+malloc and free
+ - used to reserve a block of memory
+ - signature as such
+ - return type is char because is the smallest of types 
+  - char return type isn't important, its the start of the mem-block of int size
+ char *malloc(int size)
+ 
+ void free(char *ptr)
+----
+
+----
+The Compiler
+ - is actually a batch of smaller programs
+ - is systematic in approach - forming a 'pipe' style design pattern
+ - typical form as
+ (1) preprocessor
+ (2) front-end syntax and semantic analysis
+ (3) back-end code generator
+ (4) optimizer
+ (5) assembler
+ (6) link-loader
+
+ - the link-loader is the one that:
+  - finds the main() statement
+  - binds symbols to memory address
+  - unites all the object files and lib's
+  - builds an exe. 
+ - after compile you just have a .out file (like in Java .obj)
+ - older versions bound the lib binary in with the exe
+ - newer dll use is familar
+ 
+ - typical Virual Address Layout in old C
+ - the stack is needed for recursion (having multiple instance of a local var.)
+ - used also for procedure activation records (who gets returned to...)
+ highest address ------------------------- ---> ------------------- procedure
+                 |        stack          |\    | local variables  | activation
+ just like in    |                       | \   |------------------| record
+ in the stl  --->|----------|------------|  \  | parameters       |
+ lifo queue      |         \|/           |   \ |------------------|
+                 |          v            |    \|ptr to prev. frame|
+                 |                       |     | & return address |
+  stack limit -->-------------------------     --------------------
+                 |        linker         |     - 'static link' does not 
+                 -------------------------     exist in old-school C
+                 |                       |     since functions cannot
+                 |        hole           |     be nested. 
+                 -------------------------     - In other languages this	
+                 |  lib_b data           |     points back to the 
+                 |                       |     function that called 
+                 -------------------------     this function.
+                 |  lib_b instructions   |     - Ptr to prev. frame is 
+                 -------------------------     pointing to calling frame's
+                 |        hole           |     return address.
+                 -------------------------     - Multithreading is simply
+                 |  lib_a data           |     a matter of each thread 
+                 |                       |     w/ its own stack.
+                 -------------------------
+                 |  lib_a instructions   |
+                 -------------------------
+                 |                       |
+                 |         hole          |<-- this is the heap! only access
+                 |                       |    objects here with a pointer
+                 -------------------------
+                 |  my exe's             |
+                 |  data                 |
+                 |                       |
+                 -------------------------
+                 |  my exe.'s            |
+                 |  instructions         |
+                 -------------------------
+                 |  left empty on purpose|
+  lowest address -------------------------
+----
+
+----
+Examples
+#include <cstdio>
+#include <string.h>
+#include <malloc.h>
+#include <stdlib.h>
+#include <stddef.h>
+
+void MyFunction();
+void DkFunction();
+struct SvcDetails;
+void MyStructFunction(SvcDetails* myStruct);
+void MyPassingStruct();
+void DoSomethingWithIntPtr();
+int GetPointerAsInt();
+void Practicetoken();
+void MyParseAttempt();
+void FurtherPractice();
+
+void main()
+{
+   FurtherPractice();
+
+}
+void DkFunction() 
+{ 
+        char* bigGuy = (char *) malloc(524288000); //500MB 
+
+        if(bigGuy != NULL) 
+        { 
+                free(bigGuy); 
+                bigGuy = NULL; 
+        } 
+} 
+struct SvcDetails
+{
+	//SRnn
+	char* SvcCodeSource; //SF01
+	char* SvcRequested;
+	char* SvcDescription;
+	char* CompletedDate;
+	char* CompletedTime;
+	char* StatusCode;
+    char* StatusCodeSource;
+	char* Barcode;
+
+	void Empty(){	
+	    SvcCodeSource = "\0";
+		SvcRequested = "\0";
+		SvcDescription = "\0";
+		CompletedDate = "\0";
+		CompletedTime = "\0";
+		StatusCode = "\0";
+		StatusCodeSource = "\0";
+		Barcode = "\0";
+	}	
+};
+void MyPassingStruct(){
+    SvcDetails myStruct;
+    SvcDetails* myPtrStruct = &myStruct;
+    MyStructFunction(myPtrStruct);
+    
+}
+void DoSomethingWithIntPtr()
+{
+    int myPtr;
+    myPtr = GetPointerAsInt();
+    char* myString;
+    myString = (char*)myPtr;
+    printf("here is the result %s\n",myString);
+}
+
+int GetPointerAsInt()
+{
+    char* myString = "here is my string";
+    return (int)myString;
+}
+
+
+void MyStructFunction(SvcDetails* myStruct)
+{
+    myStruct->Empty();
+    myStruct->StatusCode = "42";
+    printf("My StatusCode = %s",myStruct->StatusCode);
+    
+}
+void Practicetoken()
+{
+
+    char myCmdLine[] = "test arg1 arg2 arg3";
+    char* token;
+    token = strtok(myCmdLine," ");
+    char* wif = strtok(NULL,"");
+    char* arg1 = strtok(NULL," ");
+    char* arg2 = strtok(NULL," ");
+    char* arg3 = strtok(NULL," ");
+    char* arg4 = strtok(NULL," ");
+    if(arg4 == NULL)
+        printf("found the end");
+
+}
+
+struct MyHolder
+{
+    char* code;
+    int id;
+};
+
+void FurtherPractice()
+{
+    char myComplexString[] = "574-103 3-107 573-161 25-204";
+    char* token;
+    char* remainder;
+    token = strtok(myComplexString," ");
+    int count = 0;
+    do
+    {
+        char* something = strstr(token,"");
+        char* somethingelse = strpbrk(token,"-");
+
+        token = strtok(NULL," ");
+        count++;
+    }while(token != NULL);
+    
+}
+
+void MyParseAttempt()
+{
+    char myComplexString[] = "574-103 3-107 573-161 25-204";
+    char* token;
+    char* remainder;
+    token = strtok(myComplexString," ");
+    int count = 0;
+    MyHolder vals[4];
+}
+
+
+void MyFunction()
+{
+    char* myStr = "corvette";
+
+    const char* myStr2;
+    myStr2 = myStr;//two pointers to the same string
+
+    char* myStr3;
+    myStr3 = (char*) malloc(strlen(myStr)+1);
+    strcpy(myStr3,myStr);//two pointers to two strings whose contents happen to equal
+
+    char* myStr4;    
+    myStr4 = (char*) malloc(strlen(myStr)+1);//allocate a block
+    myStr4[strlen(myStr)] = '\0';//set the string terminator
+    myStr4 = (char*) memcpy(myStr4,myStr,strlen(myStr));//copy contents into the allocated block 
+    memset(myStr4,'+',4);//replace value of chars at index 0 to 3 with '+' char
+    
+    //OUTPUT
+    printf("%s\t%x\n", "strlen(myStr) = ",strlen(myStr));//this is the length of the string
+    printf("%s\t%x\n", "sizeof(myStr) = ",sizeof(myStr));//this is the sizeof the ptr which is 4
+    printf("\n");
+    printf("%s\t%s\t%s\t%s\n","Var","Addr","Value","DeRef");
+    printf("%s\t%s\t%s\t%s\n","---","----","-----","-----");
+    printf("char* myStr=\"%s\";\n",myStr);
+    for(int i=0;i<strlen(myStr);i++)
+    {
+        printf("%x\t%x\t%x\t%c\n",i,&myStr+i,myStr+i,*(myStr+i));//*(myStr+2) is the same as myStr[2]
+    }
+    printf("\n");
+    printf("char* myStr2; myStr2 = myStr;\n");
+    for(int i=0;i<strlen(myStr2);i++)
+    {
+        printf("%x\t%x\t%x\t%c\n",i,&myStr2+i,myStr2+i,*(myStr2+i));
+    }
+    printf("\n");
+    printf("myStr3 = (char*) malloc(strlen(myStr)+1); strcpy(myStr3,myStr);\n");
+    for(int i=0;i<strlen(myStr3);i++)
+    {
+        printf("%x\t%x\t%x\t%c\n",i,&myStr3+i,myStr3+i,*(myStr3+i));
+    }
+    printf("\n");
+    printf("myStr4 = (char*) malloc(10);\n");
+    for(int i=0;i<strlen(myStr4);i++)
+    {
+        printf("%x\t%x\t%x\t%c\n",i,&myStr4+i,myStr4+i,*(myStr4+i));
+    }
+    free(myStr3);
+    free(myStr4);
+
+}
+----
+
+----
+11.1.2
+ file position: keep track of where next char will be read from
+ - number of bytes from beginning of the file
+ - 'fseek' used to change file position
+ - each 'open' called produces one file position pointer
+ - append always go at the end of the file
+11.2.1
+ directory IS A file
+ - used to associate to other files with names
+ - 'file name component' is the name of a file contained in a directory
+ - 'file name resolution' determine what file a filename refers to
+ myfile  : this name refers to a file named 'myfile' in the current working dir
+ /myfile : this name is a file named 'myfile' off the root dir
+ /mydir/myfile : obvious
+ ./myfile : same as first in list (in working dir)
+ ../myfile : contained one-up from current working dir
+----
+
+----
+12.1
+ data type 'FILE' is defined in "stdio.h" 
+ - is the datatype used to represent streams
+ - holds all internal state information about connection to associated file
+  - contains the file position and buffer
+  - contains file error and end-of-file status indicator
+   - test these with 'feof' and 'ferror'
+ - actual program should always only deal with FILE* (a pointer to FILE)
+----
+
+----
+12.3,4
+ FILE * fopen (const char *filename, const char *opentype)
+ fopen("myfile", "r+") //vals 'r', 'w' and 'a' for 'read', 'write' and 'append'
+                       //the '+' indicates that read with write 
+ int fclose(FILE *stream)
+ void flockfile(FILE *stream) acquires internal locking obj on the stream
+ int ftrylockfile (FILE *stream) test for someone else having the lock
+ 
+ int fwide (FILE *stream, int mode)
+ - use mode = 1 for wide
+ - use mode =-1 for narrow
+ - use mode = 0 to query what it is currently
+ - wide streams are declared in "wchar.h"
+ 
+ int fputs (const char *s, FILE *stream)
+ 
+          fputs ("Are ", stdout);
+          fputs ("you ", stdout);
+          fputs ("hungry?\n", stdout);
+
+ int fputws (const wchar_t *ws, FILE *stream)
+ - for wide streams
+ 
+ int fgetc (FILE *stream)
+ - gets next value as 'unsigned char' returned as an int
+  
+ wint_t fgetwc (FILE *stream)
+ - for wide streams
+ 
+ int c, answer;
+ FILE * MyStream;
+ c = tolower (fgetc (MyStream));
+ 
+ int ungetc (int c, FILE *stream)
+ - used for 'peeking' ahead one char
+ 
+      #include <stdio.h>
+     #include <ctype.h>
+     
+     void
+     skip_whitespace (FILE *stream)
+     {
+       int c;
+       do
+         /* No need to check for EOF because it is not
+            isspace, and ungetc ignores EOF.  */
+         c = getc (stream);
+       while (isspace (c));
+       ungetc (c, stream);
+     }
+ size_t fread (void *data, size_t size, size_t count, FILE *stream)
+ size_t fwrite (const void *data, size_t size, size_t count, FILE *stream)
+
+#include <stdio.h>
+const char FILE_NAME[] = "MyTextFile.txt";
+#include <stdlib.h> 
+
+int main()
+{
+    int             count = 0;  /* number of characters seen */
+    FILE           *in_file;    /* input file */
+
+    /* character or EOF flag from input */
+    int             ch;
+
+    in_file = fopen(FILE_NAME, "r");
+    if (in_file == NULL) {
+        printf("Cannot open %s\n", FILE_NAME);
+        exit(8);
+    }
+
+    while (1) {
+        ch = fgetc(in_file);
+        if (ch == EOF)
+            break;
+        ++count;
+    }
+    printf("Number of characters in %s is %d\n",
+                  FILE_NAME, count);
+
+    fclose(in_file);
+    return (0);
+}
+----
+
+----
+//Visual C++ 6.0 IO
+CString MyFileName;
+CString MyLine;
+CString MyPartOfLine;
+CStdioFile MyFile;
+char *MyFilePath = "C:\mydir\myfile.txt";
+
+
+MyFileName = CString(MyFilePath);
+if(MyFile.Open(MyFileName, 
+               CFile::modeRead|CFile::shareDenyNone|CFile::typeText) == TRUE)
+{
+  MyFile.ReadString(MyLine);
+  //unread
+  MyFile.Seek(0,CFile::begin);
+  while(MyFile.ReadString(MyLine))
+  {
+    SetLength(MyLine,80);
+    MyPartOfLine = MyLine.Mid(0,4)
+  }
+  MyFile.Close();
+}
+----
+ 
+

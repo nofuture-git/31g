@@ -1,0 +1,361 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{798FE4C9-8323-4370-BE74-68681C4A2041}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>NoFuture.Tests</RootNamespace>
+    <AssemblyName>NoFuture.Tests</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>NoFuture.Tests.Program</StartupObject>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AdventureWorks">
+      <HintPath>ExampleDlls\AdventureWorks.dll</HintPath>
+    </Reference>
+    <Reference Include="Antlr4.Runtime.net40, Version=4.3.0.0, Culture=neutral, PublicKeyToken=eb42632606e9261f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Antlr4.Runtime.4.3.0\lib\net40-client\Antlr4.Runtime.net40.dll</HintPath>
+    </Reference>
+    <Reference Include="AutoMapper">
+      <HintPath>..\packages\AutoMapper.3.3.1\lib\net40\AutoMapper.dll</HintPath>
+    </Reference>
+    <Reference Include="AutoMapper.Net4">
+      <HintPath>..\packages\AutoMapper.3.3.1\lib\net40\AutoMapper.Net4.dll</HintPath>
+    </Reference>
+    <Reference Include="IKVM.AWT.WinForms">
+      <HintPath>..\packages\IKVM.8.0.5449.1\lib\IKVM.AWT.WinForms.dll</HintPath>
+    </Reference>
+    <Reference Include="IKVM.OpenJDK.Beans">
+      <HintPath>..\packages\IKVM.8.0.5449.1\lib\IKVM.OpenJDK.Beans.dll</HintPath>
+    </Reference>
+    <Reference Include="IKVM.OpenJDK.Charsets">
+      <HintPath>..\packages\IKVM.8.0.5449.1\lib\IKVM.OpenJDK.Charsets.dll</HintPath>
+    </Reference>
+    <Reference Include="IKVM.OpenJDK.Cldrdata">
+      <HintPath>..\packages\IKVM.8.0.5449.1\lib\IKVM.OpenJDK.Cldrdata.dll</HintPath>
+    </Reference>
+    <Reference Include="IKVM.OpenJDK.Corba">
+      <HintPath>..\packages\IKVM.8.0.5449.1\lib\IKVM.OpenJDK.Corba.dll</HintPath>
+    </Reference>
+    <Reference Include="IKVM.OpenJDK.Core">
+      <HintPath>..\packages\IKVM.8.0.5449.1\lib\IKVM.OpenJDK.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="IKVM.OpenJDK.Jdbc">
+      <HintPath>..\packages\IKVM.8.0.5449.1\lib\IKVM.OpenJDK.Jdbc.dll</HintPath>
+    </Reference>
+    <Reference Include="IKVM.OpenJDK.Localedata">
+      <HintPath>..\packages\IKVM.8.0.5449.1\lib\IKVM.OpenJDK.Localedata.dll</HintPath>
+    </Reference>
+    <Reference Include="IKVM.OpenJDK.Management">
+      <HintPath>..\packages\IKVM.8.0.5449.1\lib\IKVM.OpenJDK.Management.dll</HintPath>
+    </Reference>
+    <Reference Include="IKVM.OpenJDK.Media">
+      <HintPath>..\packages\IKVM.8.0.5449.1\lib\IKVM.OpenJDK.Media.dll</HintPath>
+    </Reference>
+    <Reference Include="IKVM.OpenJDK.Misc">
+      <HintPath>..\packages\IKVM.8.0.5449.1\lib\IKVM.OpenJDK.Misc.dll</HintPath>
+    </Reference>
+    <Reference Include="IKVM.OpenJDK.Naming">
+      <HintPath>..\packages\IKVM.8.0.5449.1\lib\IKVM.OpenJDK.Naming.dll</HintPath>
+    </Reference>
+    <Reference Include="IKVM.OpenJDK.Nashorn">
+      <HintPath>..\packages\IKVM.8.0.5449.1\lib\IKVM.OpenJDK.Nashorn.dll</HintPath>
+    </Reference>
+    <Reference Include="IKVM.OpenJDK.Remoting">
+      <HintPath>..\packages\IKVM.8.0.5449.1\lib\IKVM.OpenJDK.Remoting.dll</HintPath>
+    </Reference>
+    <Reference Include="IKVM.OpenJDK.Security">
+      <HintPath>..\packages\IKVM.8.0.5449.1\lib\IKVM.OpenJDK.Security.dll</HintPath>
+    </Reference>
+    <Reference Include="IKVM.OpenJDK.SwingAWT">
+      <HintPath>..\packages\IKVM.8.0.5449.1\lib\IKVM.OpenJDK.SwingAWT.dll</HintPath>
+    </Reference>
+    <Reference Include="IKVM.OpenJDK.Text">
+      <HintPath>..\packages\IKVM.8.0.5449.1\lib\IKVM.OpenJDK.Text.dll</HintPath>
+    </Reference>
+    <Reference Include="IKVM.OpenJDK.Tools">
+      <HintPath>..\packages\IKVM.8.0.5449.1\lib\IKVM.OpenJDK.Tools.dll</HintPath>
+    </Reference>
+    <Reference Include="IKVM.OpenJDK.Util">
+      <HintPath>..\packages\IKVM.8.0.5449.1\lib\IKVM.OpenJDK.Util.dll</HintPath>
+    </Reference>
+    <Reference Include="IKVM.OpenJDK.XML.API">
+      <HintPath>..\packages\IKVM.8.0.5449.1\lib\IKVM.OpenJDK.XML.API.dll</HintPath>
+    </Reference>
+    <Reference Include="IKVM.OpenJDK.XML.Bind">
+      <HintPath>..\packages\IKVM.8.0.5449.1\lib\IKVM.OpenJDK.XML.Bind.dll</HintPath>
+    </Reference>
+    <Reference Include="IKVM.OpenJDK.XML.Crypto">
+      <HintPath>..\packages\IKVM.8.0.5449.1\lib\IKVM.OpenJDK.XML.Crypto.dll</HintPath>
+    </Reference>
+    <Reference Include="IKVM.OpenJDK.XML.Parse">
+      <HintPath>..\packages\IKVM.8.0.5449.1\lib\IKVM.OpenJDK.XML.Parse.dll</HintPath>
+    </Reference>
+    <Reference Include="IKVM.OpenJDK.XML.Transform">
+      <HintPath>..\packages\IKVM.8.0.5449.1\lib\IKVM.OpenJDK.XML.Transform.dll</HintPath>
+    </Reference>
+    <Reference Include="IKVM.OpenJDK.XML.WebServices">
+      <HintPath>..\packages\IKVM.8.0.5449.1\lib\IKVM.OpenJDK.XML.WebServices.dll</HintPath>
+    </Reference>
+    <Reference Include="IKVM.OpenJDK.XML.XPath">
+      <HintPath>..\packages\IKVM.8.0.5449.1\lib\IKVM.OpenJDK.XML.XPath.dll</HintPath>
+    </Reference>
+    <Reference Include="IKVM.Runtime">
+      <HintPath>..\packages\IKVM.8.0.5449.1\lib\IKVM.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="IKVM.Runtime.JNI">
+      <HintPath>..\packages\IKVM.8.0.5449.1\lib\IKVM.Runtime.JNI.dll</HintPath>
+    </Reference>
+    <Reference Include="Jurassic, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Jurassic.2.2.0\lib\Jurassic.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="NoFuture.Antlr, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\NoFuture\bin\NoFuture.Antlr.dll</HintPath>
+    </Reference>
+    <Reference Include="stanford-postagger-3.5.1">
+      <HintPath>..\packages\Stanford.NLP.POSTagger.3.5.1\lib\stanford-postagger-3.5.1.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.XML" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <CodeAnalysisDependentAssemblyPaths Condition=" '$(VS100COMNTOOLS)' != '' " Include="$(VS100COMNTOOLS)..\IDE\PrivateAssemblies">
+      <Visible>False</Visible>
+    </CodeAnalysisDependentAssemblyPaths>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Domain\AspTappetTests.cs" />
+    <Compile Include="Encryption\BulkKeyTests.cs" />
+    <Compile Include="Encryption\CipherTextTests.cs" />
+    <Compile Include="Encryption\PublicKeyTests.cs" />
+    <Compile Include="Encryption\ResourceTests.cs" />
+    <Compile Include="Encryption\HashTests.cs" />
+    <Compile Include="Gen\EtcTests.cs" />
+    <Compile Include="Gen\LangRulesTests.cs" />
+    <Compile Include="Gen\TestSortPdb.cs" />
+    <Compile Include="Gen\TestPdbTargetLine.cs" />
+    <Compile Include="Gen\TestInvokeDia2Dump.cs" />
+    <Compile Include="Gen\TestCgTypeFiles.cs" />
+    <Compile Include="Gen\TestCgTypeFileIndex.cs" />
+    <Compile Include="Gen\TestCgMember.cs" />
+    <Compile Include="Gen\TestCgType.cs" />
+    <Compile Include="Gen\TestCgTypeCsSrcCode.cs" />
+    <Compile Include="Hbm\TestDbQryContainers\TestAllContainers.cs" />
+    <Compile Include="Hbm\TestDbQryContainers\TestSortedKeys.cs" />
+    <Compile Include="Hbm\TestSorting.cs" />
+    <Compile Include="Hbm\TestMapping.cs" />
+    <Compile Include="Hbm\TestStoredProcParams.cs" />
+    <Compile Include="Hbm\TestEqualityComparison.cs" />
+    <Compile Include="Hbm\TestInvokeStoredProcManager.cs" />
+    <Compile Include="Hbm\TestCompose.cs" />
+    <Compile Include="Hbm\TestStoredProcMetadata.cs" />
+    <Compile Include="Hbm\TestConfigFile.cs" />
+    <Compile Include="Hbm\TestHbmFileContent.cs" />
+    <Compile Include="Rand\AddressTests.cs" />
+    <Compile Include="Rand\CityAreaTests.cs" />
+    <Compile Include="Rand\EtxTests.cs" />
+    <Compile Include="Rand\PersonTests.cs" />
+    <Compile Include="Rand\PhoneTests.cs" />
+    <Compile Include="Rand\PneumaTests\PesonalityTests.cs" />
+    <Compile Include="Rand\SecTests.cs" />
+    <Compile Include="Rand\FedTests.cs" />
+    <Compile Include="Rand\IdentityTests.cs" />
+    <Compile Include="Rand\BeaTests.cs" />
+    <Compile Include="Rand\FinancialFirmTests.cs" />
+    <Compile Include="Rand\PublicCorporationTests.cs" />
+    <Compile Include="Rand\DataTypesTests.cs" />
+    <Compile Include="Rand\UsStateTests.cs" />
+    <Compile Include="Shared\TestBindings.cs" />
+    <Compile Include="Sql\TestExportTo.cs" />
+    <Compile Include="Sql\TestPsTypeInfo.cs" />
+    <Compile Include="Sql\TestPsMetadata.cs" />
+    <Compile Include="Sql\TestEtc.cs" />
+    <Compile Include="Timeline\TestDrawings.cs" />
+    <Compile Include="Tokens\TestXDocFrame.cs" />
+    <Compile Include="Tokens\TestAspNetParseTree.cs" />
+    <Compile Include="Util\Gia\FlattenTests.cs" />
+    <Compile Include="Util\Gia\AssemblyAnalysisTests.cs" />
+    <Compile Include="Util\Pos\PennTreebankTagsetTests.cs" />
+    <Compile Include="Util\EtcTests.cs" />
+    <Compile Include="Host.Encryption\ProgramTests.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Util\GsmTests.cs" />
+    <Compile Include="Util\EtymologicalTest.cs" />
+    <Compile Include="Util\BinaryTests.cs" />
+    <Compile Include="Util\Pos\StanfordTaggerTests.cs" />
+    <Compile Include="Util\Pos\TestMtAdapter.cs" />
+    <Compile Include="Util\TestFxPointers.cs" />
+    <Compile Include="Util\NetTests.cs" />
+    <Compile Include="Util\TypeNameTests.cs" />
+    <Compile Include="Util\MathTests.cs" />
+    <Compile Include="Util\TestConsoleCmd.cs" />
+    <Compile Include="Util\TestVs.cs" />
+    <Compile Include="Util\AsmTests.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NoFuture\Domain\Engine\Domain.Engine.csproj">
+      <Project>{9DAC506B-CC22-43D2-9E72-A463E0015A03}</Project>
+      <Name>Domain.Engine</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NoFuture\Encryption\Encryption.csproj">
+      <Project>{E7AD99CE-F93A-4844-92D1-1D544D83364F}</Project>
+      <Name>Encryption</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NoFuture\Gen\Gen.csproj">
+      <Project>{96eb903d-a8b1-4a4a-8e68-1e64cd8467ec}</Project>
+      <Name>Gen</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NoFuture\Gen\Gen.InvokeDia2Dump\Gen.InvokeDia2Dump.csproj">
+      <Project>{b10c4d03-5f40-4362-b43a-ada8e1f690d5}</Project>
+      <Name>Gen.InvokeDia2Dump</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NoFuture\Hbm\Hbm.csproj">
+      <Project>{b48811e5-ccb2-4aae-b4e8-a711fa018460}</Project>
+      <Name>Hbm</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NoFuture\Hbm\InvokeStoredProc\Hbm.InvokeStoredProc.csproj">
+      <Project>{cc26246e-1809-4bc4-8ad7-0237e76f8968}</Project>
+      <Name>Hbm.InvokeStoredProc</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NoFuture\Hbm\Sid\Hbm.Sid.csproj">
+      <Project>{b543f5f2-cf3c-411e-96e6-486d9c790355}</Project>
+      <Name>Hbm.Sid</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NoFuture\Host\Encryption\Host.Encryption.csproj">
+      <Project>{CA799F4D-800A-48B9-92A4-69C728135EB5}</Project>
+      <Name>Host.Encryption</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NoFuture\Rand\Rand.csproj">
+      <Project>{71628E18-D27B-4F4E-B034-4B2AD4479E13}</Project>
+      <Name>Rand</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NoFuture\Read\Ini\Read.csproj">
+      <Project>{335212c4-7f96-4647-8d9b-f1a4e61b735b}</Project>
+      <Name>Read</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NoFuture\Shared\Shared.csproj">
+      <Project>{4B77029A-6F3E-48AE-B8E2-C4DD06DCE627}</Project>
+      <Name>Shared</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NoFuture\Shared\Shared.WcfClient\Shared.WcfClient.csproj">
+      <Project>{60950656-8311-44ea-a075-4dd70d3d00ff}</Project>
+      <Name>Shared.WcfClient</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NoFuture\Sql\Sql.csproj">
+      <Project>{4bf4d796-d9b0-4bfc-9eba-5369f45bc498}</Project>
+      <Name>Sql</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NoFuture\Timeline\Timeline.csproj">
+      <Project>{fba7203d-cd5c-4c26-bbe8-c09ab4db9467}</Project>
+      <Name>Timeline</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NoFuture\Tokens\Tokens.csproj">
+      <Project>{4e81340f-409b-4ada-b038-bf3f76ffa81e}</Project>
+      <Name>Tokens</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NoFuture\Util\Util.csproj">
+      <Project>{D7F28538-BA6A-46B4-A080-65124E899317}</Project>
+      <Name>Util</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NoFuture\Util\Util.Pos\Util.Pos.csproj">
+      <Project>{39627590-0d97-4de2-b598-172b04587550}</Project>
+      <Name>Util.Pos</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Encryption\EncryptionTests.js" />
+    <None Include="Gen\ATestableCsFileContent.txt" />
+    <Content Include="Gen\SourceFlatMembersDataData.txt" />
+    <Content Include="Gen\TargetFlatMembersData.txt" />
+    <Content Include="jasmine-1.3.0\jasmine-html.js" />
+    <Content Include="jasmine-1.3.0\jasmine.css" />
+    <Content Include="jasmine-1.3.0\jasmine.js" />
+    <Content Include="Rand\lrg_bnk_lst.txt" />
+    <Content Include="Rand\SecByCIK.xml" />
+    <Content Include="Rand\SecBySIC.xml" />
+    <Content Include="SpecRunner.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Hbm\PrettyPrint-Json.ps1" />
+    <None Include="Hbm\TestFiles\localhost\Whatever\localhost.Whatever.allIndex.json" />
+    <None Include="Hbm\TestFiles\localhost\Whatever\localhost.Whatever.allkeys.json" />
+    <None Include="Hbm\TestFiles\localhost\Whatever\localhost.Whatever.autoId.json" />
+    <None Include="Hbm\TestFiles\localhost\Whatever\localhost.Whatever.bags.hbm.json" />
+    <None Include="Hbm\TestFiles\localhost\Whatever\localhost.Whatever.cols.json" />
+    <None Include="Hbm\TestFiles\localhost\Whatever\localhost.Whatever.constraints.json" />
+    <None Include="Hbm\TestFiles\localhost\Whatever\localhost.Whatever.fk.hbm.json" />
+    <None Include="Hbm\TestFiles\localhost\Whatever\localhost.Whatever.flatData.json" />
+    <None Include="Hbm\TestFiles\localhost\Whatever\localhost.Whatever.pk.hbm.json" />
+    <None Include="Hbm\TestFiles\localhost\Whatever\localhost.Whatever.pk.json" />
+    <None Include="Hbm\TestFiles\localhost\Whatever\localhost.Whatever.sp.json" />
+    <None Include="Hbm\TestFiles\localhost\Whatever\localhost.Whatever.uqIdx.json" />
+    <None Include="Hbm\TestFiles\localhost\Whatever\StoredProc\dbo.MyProcUsingMyUdtTable.xsd">
+      <LastGenOutput>dbo.MyProcUsingMyUdtTable.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Hbm\TestFiles\localhost\Whatever\StoredProc\dbo.MyStoredProc.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="jasmine-1.3.0\MIT.LICENSE" />
+    <None Include="packages.config" />
+    <EmbeddedResource Include="Sql\DataTable.Person.bin" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Hbm\TestCommand\" />
+    <Folder Include="jsSrc\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\packages\AutoMapper.3.3.1\tools\AutoMapper.targets" Condition="Exists('..\packages\AutoMapper.3.3.1\tools\AutoMapper.targets')" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

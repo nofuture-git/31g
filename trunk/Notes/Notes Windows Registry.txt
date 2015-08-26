@@ -1,0 +1,223 @@
+Notes:  Windows Registry
+
+"Microsoft® Windows® Registry Guide, Second Edition" 
+by Jerry Honeycutt 
+Publisher: Microsoft Press 
+Pub Date: July 20, 2005 
+Print ISBN-10: 0-7356-2218-3 
+Print ISBN-13: 978-0-7356-2218-0 
+Pages: 608 
+
+----
+Security Identifiers
+security principles: encompassing name for accounts (user, groups)
+
+Security Identifiers(SID): unique ID for a security principle
+ > SIDs are never reused - even upon deletion
+ > Always begin with "S"
+ 
+Local Security Authority(LSA): generates SID for local security
+ > SID stored in local db
+
+Domain Security Authority(DSA): generates SID for domain security
+ > SID stored in Active Directory
+
+Well Known SIDs:  those within all windows computers
+S-1-1-0             Everyone
+S-1-5-18            LocalSystem
+S-1-5-19            LocalService
+S-1-5-20            NetworkService
+S-1-5-domain-500    Administrator
+S-1-5-domain-501    Guest
+S-1-5-32-544        Administrators 
+S-1-5-32-545        Users 
+S-1-5-32-546        Guests 
+S-1-5-32-547        Power Users
+S-1-5-32-555        Remote Desktop Users  
+----
+
+----
+Globally Unique Identifiers(GUIDs): unique ID for objects (eg computer, device)
+ > Hexadecimal numbers in groups of 8, 4, 4, 12 characters
+ > Enclosed in curly braces
+----
+ 
+----
+Root Keys: 5 subdivisions
+ 
+HKEY_CLASSES_ROOT     HKCR
+HKEY_CURRENT_USER     HKCU
+HKEY_LOCAL_MACHINE    HKLM
+KKEY_USERS            HKU
+HKEY_CURRENT_CONFIG   HKCC
+----
+
+----
+Linked Keys: a key may be a reference to another key, the later key being the actual key.  The example is HKLM\SYSTEM\CurrentControlSet\Hardware Profiles
+
+Where ...\0000 is the actual key
+and   ...\Current is a reference to 0000
+and   HKCC is a reference to ...\Current 
+----
+
+----
+Key's Values: that which is contained within a key (think files)
+Name: 
+ > 256 unicode character limit
+ > must not begin with \ * ?
+ > no duplicate names within key
+ > duplicate names allowed across keys
+ > duplicate names does not mean duplicate objects
+ > begin with . is reserved for windows
+Type:
+ > similar to primitive types 
+Data:
+ > value limit to 32767 bytes
+ > pratical limit 2000 bytes
+ > are value-type variables
+ > only one type is reference-type
+----
+
+----
+Key Value Types: actual data representatives of the key values primitive types
+REG_BINARY: binary data represented in hex notation - one of three most used 
+REG_DWORD: 32 bit - two of three most used
+ > used as boolean values
+ > store time-value in milliseconds
+ > intel based is little-endian
+REG_SZ: fixed-length text - three of three most used
+ > string ends with 'null' character (0x00)
+ > enviornment variables not expandable
+REG_EXPAND_SZ: variable length text
+ > may include environment variables
+ > calling program expands environment variable
+ > example:  %USERPROFILE%\Favorites becomes C:\Document\userName\Favorites
+REG_LINK: a link value type
+ > may not be created by regedit
+REG_MULTI_SZ: binary data that is an array of strings
+ > null character (0x00) seperates array elements
+ > double null character ends array
+[There are others not listed]
+
+Note: application may store there own value types in REG_BINARY, also app's may use REG_BINARY when REG_DWORD or REG_SZ is more applicable.
+
+Note: key value types are enumerated
+0   REG_NONE
+1   REG_SZ
+2   REG_EXPAND_SZ
+3   REG_BINARY
+4   REG_DWORD
+4   REG_DWORD_LITTLE_ENDIAN
+5   REG_DWORD_BIG_ENDIAN
+6   REG_LINK
+7   REG_MULTI_SZ
+8   REG_RESOURCE_LIST
+----
+
+----
+HKEY_LOCAL_MACHINE, HKEY_USERS: are the only root keys stored on disk by the Windows OS.  
+HKCU linked HKU
+HKCR and HKCC linked to HKLM
+----
+
+----
+HKEY-USER:  minimum three sub-keys
+ > .DEFAULT:  generic settings used before user specifies otherwise
+ > Console User SID:  Per User settings and linked to HKCU
+ > SID_Classes:  per user class and file association
+    - merge HKLM\SOFTWARE\Classes and HKU\Classes into HKCU
+
+S-1-5-18: SID for LocalSystem account
+S-1-5-19: SID for LocalService account
+S-1-5-20: SID for NetworkService account
+----    
+
+----
+HKEY_CURRENT_USER: 
+ > per user settings
+ > root is link to HKU\<SID>
+ 
+ Subkeys
+  > AppEvents: maps sounds to events
+  > Console: data for console subsystem
+  > Control Panel: same as interface with a few additions
+  > Environment: user-set enviro variables
+  > Indentities: Outlook Express related
+  > Keyboard Layout: obvious
+  > Network: mapped drives
+  > Printers: 
+  > Software: per-user app settings, schema of HKCU\Vendor\Program\Version
+  > Volatile Environment: 
+----
+
+----
+ HKEY_LOCAL_MACHINE
+  > Machine settings
+  > HKCU\Software linked to HKLM\SOFTWARE
+  
+Subkeys
+ > HARDWARE: per restart creation, info on device, drivers and device reasources
+ > SAM: Security Accounts Manager, security database, linked HKLM\SECURITY\SAM
+ > SECURITY: security settings, contains SAM, not viewable
+ > SOFTWARE: machine app settings, Windows settings
+ > SYSTEM: control settings, one is current linked via HKLM\SYSTEM\Select
+ ---- 
+ 
+ ----
+ HKEY_CLASSES_ROOT
+  > Is a merge of HKLM\SOFTWARE\Classes and HKCU\Software\Classes
+  > Contains file-type associations
+  > Contains COM registrations
+----
+
+----
+HKEY_CURRENT_CONFIG
+ > linked to HKLM\SYSTEM\CurrentControlSet\Hardware Profiles\Current
+----
+
+----
+Hive Files: registry files on physical disk
+ > Hive files are binary in type
+ > HKLM & HKU are only keys on disk
+ > HKLM:  C:\WINDOWS\System32\Config (hive file location)
+    - HKLM\HARDWARE:  this is built each time Windows loads
+    - HKLM\SAM:  C:\WINDOWS\system32\config\SAM
+    - HKLM\SECURITY:  C:\WINDOWS\system32\config\SECURITY
+    - HKLM\SOFTWARE:  C:\WINDOWS\system32\config\Software
+    - HKLM\SYSTEM:  C:\WINDOWS\system32\config\System
+ > HKU: 
+    - HKU\.DEFAULT:  C:\WINDOWS\System32\Config\default
+    - HKU\<sid>:  C:\Documents and Settings\bstarrett\NTUSER.DAT
+    - HKU\<sid>_Classes:  C:\Documents and Settings\bstarrett\Local Settings\Application Data\Microsoft\Windows\UsrClass.dat
+----    
+
+----
+Save Registry File types
+File > Export
+
+.REG
+ > Unicode characters (2 bytes)
+ > text file type
+ > file can be edited in text editor
+ > merged into registy
+
+Win9x/NT .REG
+ > ANSI characters (1 byte) 
+ > text file type
+ > file can be edited in text editor
+ 
+Hive 
+ > Binary type
+ > Same as physical hive on disk
+ > Import, replace registy keys
+ > Load, new hive - view in regedit
+ 
+.TXT 
+ > More readable then .reg
+----
+
+----
+Load Hive File: 
+ > will create a new branch
+ > will not replace or overlap any existing branch
+---- 

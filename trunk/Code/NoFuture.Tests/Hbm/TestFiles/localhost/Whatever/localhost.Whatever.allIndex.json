@@ -1,0 +1,28 @@
+[
+    {
+        "column_ordinal":  4,
+        "table_name":  "iisLog.Summit",
+        "column_name":  "iisLog.Summit.requestDateTime",
+        "schema_name":  "iisLog",
+        "constraint_name":  "iisLog.IDX_iisLog_Summit_rqstDate",
+        "data_type":  null,
+        "string_length":  null,
+        "unique_constraint_schema":  null,
+        "unique_constraint_name":  null,
+        "is_auto_increment":  null,
+        "is_nullable":  null
+    },
+    {
+        "column_ordinal":  17,
+        "table_name":  "iisLog.Summit",
+        "column_name":  "iisLog.Summit.time_taken",
+        "schema_name":  "iisLog",
+        "constraint_name":  "iisLog.IDX_iisLog_Summit_timeTaken",
+        "data_type":  null,
+        "string_length":  null,
+        "unique_constraint_schema":  null,
+        "unique_constraint_name":  null,
+        "is_auto_increment":  null,
+        "is_nullable":  null
+    }
+]

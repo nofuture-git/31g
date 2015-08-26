@@ -1,0 +1,934 @@
+"The Definitive ANTLR 4 Reference"
+by Terence Parr
+Publisher: The Pragmatic Bookshelf
+Pub Date: 2012
+ISBN 978-1-93435-699-9
+Pages 278
+
+----
+Designing Grammers
+ - there are expected patterns of word-order dependency
+ - four main patterns of consideration
+  - Sequence (e.g. 1,2,3,4 or "John","Jane")
+  - Choice (e.g. public protected internal private)
+  - Token Dependency (e.g. { ( [] ) }) 
+    - where something like {(}) would be invalid
+  - Nested Statements (e.g. (2+3) * 4)
+----
+
+----
+CS Basics involved:
+ - expression: contain values, identifiers, literals, operators
+   includes arithmetic, boolean operations, function calls 
+   and subscript ops []
+   - an expression's resolution is bound to some rules
+     of precedence (order-of-operations)
+
+ - statement: are a 'whole line' (as in C-style 
+   ';' line terminator)
+	
+ - value: an expression which cannot be evaluated any
+   futher (resolved).
+   
+ - variable: concerns the storage of or storage location
+   (location of the data)
+----
+
+----
+Backus-Naur-Format & Extended Backus-Naur-Format
+ - considers rules only as 
+  - alternatives
+  - token references
+  - rule references
+  - enclosed grammer fragments thereof (Extended BNF)
+  
+  - specifics of ANTLR
+  Syntax						Description
+	x 							Match token, rule reference, or subrule x.
+	x y ... z 					Match a sequence of rule elements.
+	(... | ... | ...) 			Subrule with multiple alternatives.
+	x? 							Match x or skip it.
+	x* 							Match x zero or more times.
+	x+ 							Match x one or more times.
+	r : ... ; 					Define rule r.
+	r : ... | ... | ... ; 		Define rule r with multiple alternatives.
+----
+
+----
+Basics of Grammer file
+ - is a file 
+ - has single header
+ - has multiple rules that may reference each other
+ 
+ grammer MyGrammer;
+ rule1 : <<stuff>> ;
+ rule2 : <<other stuff>> ;
+ 
+ - the name of the file must matche the header and have .g4 extension
+ - definition begins at the coarsest level and work down to atomic level
+ - when working from english descriptions, the effort will focus on nouns
+  - "comma-sparated-value file is a sequence of rows terminated by newlines"
+  
+  file : <<sequence of rows that are terminated by newlines>> ;
+  - where the nouns on the right are yet-to-be defined tokens or rules themselves
+  
+  file  : <<sequence of rows that are terminated by newlines>> ;
+  row   : <<sequence fo fields separated by commas>> ;
+  field : <<number or string>> ;
+  - having run out of nouns in need of definition, a rough draft is drawn
+ 
+ - using pseudo-code is a typical practice when drawing up a grammer
+  - allows what would otherwise be over-detailed to be more generic
+----
+
+----
+Grammer file separated Lexer\Parser
+ - requires specific naming format for header and file name
+  <GrammerName>Parser.g4
+  <GrammerName>Lexer.g4
+  
+ - unique headers for the Paser and Lexer also apply
+ 
+  lexer grammar  <GrammerName>Lexer;
+  parser grammar <GrammerName>Parser;
+  
+ - invoke Antlr first on the <GrammerName>Lexer.g4
+ - assuming output .tokens file is in same directory
+ - then invoke Antlr on <GrammerName>Paser.g4
+  - if .tokens is in another directory the -lib switch must be 
+    used to specifiy a path when invoking Antlr
+ - the final grammer name is neither <GrammerName>Paser
+   nor <GrammerName>Lexer; rather, it is just <GrammerName>
+   - this is important to remember when subsequent calls to 'grun'
+     since gurn args are as "<GrammerName> <someRule> -gui <someFilePath>"
+   - if you invoke grun with something like "<GrammerName>Paser [...]" 
+     the the JRE throw an unhelpful Class Cast exception...
+----
+
+----
+The Sequence Pattern
+ - typical of a command 
+ - here a Hayes Serial Port Command
+ AT+MDBL=1
+
+ mdbl : 'AT+MDBL=' INT '\n' ;
+ 
+ - for vararg the regex symbols are used
+  INT+  for one to many
+  INT*  for zero to many
+  ('=' expr)?  for optional sequence match
+  
+ - Sequence with terminator & Sequence with separator
+ file  : (row '\n') ;
+ row   : field (',' field)* ;
+ field : INT ;
+ 
+ - in a C-style language statements are as
+ stats : (stat ';')* ;
+----
+
+----
+The Choice Pattern
+ - represent more than one other rule to match on
+ field : INT | STRING ; 
+ 
+ - idea of, "such-and-such structure may be represented
+    as this or that."
+----
+
+----
+Token Dependency Pattern
+ - where any 'opening' token must, eventually, be followed
+   by its 'closing' counterpart
+   
+   expr: expr '(' exprList? ')'
+       | expr '[' expr ']'
+	   ;
+	   
+ - for example, an overloaded function where certian args
+   may be omitted but when present they must have a certain
+   order
+   
+   //ignoring case-insesitive, just a partial example
+   vbDateDiff :  'DateDiff' '(' ('"d"' | '"h"') ',' expr ',' expr (',' ('vbMonday' | 'vbFriday' | INT) (',' ('vbUseSystem' | 'vbFirstJan1' | INT))? )? ')' ;
+   
+   - in the above example only the first three args are 
+     required; however, there is a total of five possiable.
+	 If the fourth arg is present is must take a certian form 
+	 and conforming to its form the fifth arg may manifest.
+	 
+  - the general pattern is 
+   '(' arg ',' arg (',' arg (',' arg)? )? ')'
+                                 ^
+								 |
+				      this arg is context bound
+					  the the one to its left 
+					  which is itself optional
+----
+
+----
+Nested Phrase Pattern
+ - a self-semblance language structure whose subphrases 
+   conform to the same structure.
+ 
+ stat : 'while' '(' expr ')' stat
+      | '{' stat '}'
+	 ...
+	  ;
+ - here the far right 'stat' could match
+   to the definition on the next line
+   
+ stat : 'while' '(' expr ')' stat
+      | block
+	 ...
+	  ;
+	  
+ block: '{' stat '}' ;
+ - in the former example 'stat' is directly recursive
+   because it refers to itself in the first and second 
+   statements
+ - the the latter example 'stat' and 'block' are indirectly
+   recursive because the refer to each other
+   
+ - this is as-if then entire grammer may be nested 
+   within some specific statement 
+   - with function calls the number of parameters could 
+     be zero-to-many so the grammer, as indirectly recursive,
+	 appears as:
+   
+   ID '(' exprList? ')'        ; // this is the function call
+   exprList : expr (',' expr)* ; // this is the actual arg list
+   
+   - with, for example, VBScript and nested If statements,
+     the entire grammer is allowable within the if-block 
+	 including more if statements and thier if-blocks
+   - however, the Nest-Phrase Pattern is still applicable as:
+   
+   //ignoring the fact the VBScript is case-insensitive
+   expr : 'dim' ID
+        | cond
+	   ...	
+		;
+		
+   //would work as both in-line and as a block
+   cond : 'if' expr 'then' NL? exprBlck NL? 'end if' ;
+   exprBlck : expr (NL expr)* ; //the block is one-to-many expression
+   
+ - In both examples the idea is the same:
+  - some high-level grammer rule encompasses the whole 
+  - some sequence pattern is followed by a zero\one-to-many of 
+    the high-level rule.
+----
+
+----
+General Symbol Semblance
+ - Optional paramaters enclosed in sqr-braces
+    ORIGINAL SPEC
+	-------------
+    [ schema_name ]  
+   
+	ANTLR
+	-----
+    SCHEMA_NAME?
+	
+ - Choices are almost always delimited by bar
+   but may just be implied by the layout (from ECMA 262)
+    ORIGINAL SPEC
+	-------------
+    ObjectLiteral :
+				{ } 
+				{ PropertyNameAndValueList } 
+				{ PropertyNameAndValueList , }
+	ANTLR
+	-----
+	objectLiteral 
+	            : '{' propertyNameValueList '}' 
+				;
+	propertyNameValueList : ( propertyNameValue ','? )* ;
+  
+ - Sequence typically has some reserverd word 
+   and is often in bold, all-caps or in a 
+   terminal-style font (from ECMA)
+    ORIGINAL SPEC
+	-------------
+	   VariableStatement :
+			var VariableDeclarationList ;
+
+	ANTLR
+	-----
+	variableStatement : 'var' variableDeclarationList ';' ;
+	
+ - Case insensitive is the keyword per character
+  - with case-insensitivity Graph, gRAph, GRAPH are all equal
+	ANTLR
+	-----
+	GRAPH : [Gg][Rr][Aa][Pp][Hh] ;
+    
+ - Identifiers are variable length start with 
+   only letters or underscore but may then contain 
+   letters, numbers or underscore.  Identifiers only one 
+   character long are fine 
+	ANTLR
+	-----
+    ID        :   LETTER (LETTER|DIGIT)* ;
+	fragment
+	LETTER    :   [a-zA-Z\u0080-\u00FF_] ; 
+	
+ - Number literals being rational, cardinal or whole
+	ANTLR
+	-----
+	NUMBER    :   '-'? ('.' DIGIT+ | DIGIT+ ('.' DIGIT*)? ) ;
+	fragment
+	DIGIT     :   [0-9];
+	
+ - Classic HTML string
+    - where we want to this '>' with the most recent
+	  '<' and not the first '<'.  Which a similar pattern
+	  need for curly-braces in C-style code blocks.
+	- we don't want to match sequences such as 
+	   <<foo>
+	   <<i<foo>>>
+ 	ANTLR
+	-----
+	HTML_STRING :   '<' (TAG|~[<>])* '>' ;
+	fragment
+	TAG         :   '<' .*? '>' ;
+
+ - C-style Preprocessor commands
+ 	ANTLR
+	-----
+	PREPROC     ':'  '#' .*? '\n' -> skip ;
+	
+ - match both UNIX and Windows newlines
+    ANTLR
+	-----
+	NL : '\r'? '\n' ;
+	
+ - when a new-line is the statement terminator
+  - line comments cannot be skipped since they
+    are followed by the statment-terminator.
+  - in such a case the comment and thier terminator
+    become equivalent to just NL using the type(...)
+	ANTLR syntax.
+  ANTLR
+  -----
+  COMMENT : '\'' .*? '\r'? '\n' -> type(NL)  ;
+  NL : '\r'? '\n' ;
+ 
+----
+
+----
+Order of Operation
+ - when more then one match is possiable on a single statement
+   ANTLR uses the first one defined in the rule as the default
+   
+   expr : expr '*' expr
+        | expr '+' expr
+		| INT
+		;
+  - for the expression 1+2*3 and the rule given above ANTLR 
+    breaks it down to 
+	   expr
+	   /|\
+	  / * 3 
+	expr
+	/|\
+   1 + 2
+    since the "expr '*' expr" was defined first   
+	
+ - for left-order-of-operations ANTLR has a special construct
+  expr : expr '^'<assoc=right> expr
+       | expr '*' expr
+	   | expr '+' expr
+	   ;
+  - with this "<assoc=right>", the expression 2^3^4 would parse as
+     expr
+	 /|\
+	1 ^ \
+	   expr
+	   /|\
+	  2 ^ 3 
+----
+
+----
+Lexical Rules
+ - parsers recognize grammatical structures in a token stream
+	- parsers differ from compilers & interpreters because they
+	  only consider the 'form' and not the 'meaning' of the symbols
+ - lexers recognize grammatical structures in a character stream
+ - grammer rules must be in lowercase
+ - lexer rules must be in uppercase
+ - while order-of-precendence (top-down) matters, lexer rules
+   are always considered subordinate to grammer rules
+   
+   grammer OrderOfPrecedence;
+   FOR   : 'for' ;
+   ID    : [a-zA-Z]+ ;
+   
+   enumDef : 'enum' '{' ... '}' ;
+   - although the regex for ID will match to the word 'enum'
+     ANTLR will consider occurances of 'enum' prior to attempting
+	 base regex matches.
+	 
+   - whole numbers are simply sequences of digits
+   INT : [0-9]+ ;
+   
+   - floating point numbers are more complex
+    - need to match the digit-sequence-period-digit-sequence
+	  where the right-of-period digits is zero-to-many
+	  as well as period-digit-sequence where the right-of-period
+	  digits must be one-to-many because a simple period is not 
+	  valid
+	- ANTLR uses a sepecial lexer keyword to assist this complexity
+   FLOAT :   DIGIT+ '.' DIGIT*
+         |          '.' DIGIT+
+         ;
+		 
+   fragment
+   DIGIT :   [0-9] ;
+   - the 'fragment' keyword lets ANTLR know this lexer rule is 
+     to be used by other lexer rules.
+	 
+   - string literals make use of non-greedy regex rules
+    - the sequence dot-star-question mark is such a non-greedy rule
+	
+   STRING : '"' .*? '"' ;
+   - the regex will consume characters up-until it finds a double-quote
+   - sepecifically, match the least amount of characters up-to a double-quote   
+	 
+   - to deal with string-terminator characters within string-literals themselves
+     a manner of escape-sequence is needed, same as in the code-file itself
+   STRING  : '" (ESC|.)*? '"' ;
+   fragment
+   ESC : '\\"' | '\\\\' ;
+   - again use of 'fragment' (lexer rule used by lexer rule) that
+     allows strings to have the \" and \\ chars as contained w/i 
+	 the string literal.
+	 
+   - tokens may be specified as 'omit from parser' using the 'skip' cmd
+   LINE_COMMENT : '//' .*? '\r'? '\n' -> skip ;
+   COMMENT      : '/*' .*? '*/'       -> skip ;
+   - there are other command in addition to 'skip'
+   
+   - whitespace may be omitted with the lexer command like
+   WS : (' '|'\t'|'\r'|'\n')+ -> skip ;
+----
+
+----
+Abstraction of Parser-to-Lexer
+ - since both ANTLR's Parser and Lexer are recursive - the lexer is 
+   as capable as the parser
+ - as such, basic guidelines are needed to distinguish one from the 
+   next
+    - match and discard anything in the lexer that the parser doesn't need
+	  to see.
+	- match common tokens such as identifiers, keywords, strings, numbers in 
+	  the lexer
+	- group lexer structures that the parser need not distinguish (e.g. float's 
+	  double's, int's, etc. are all just NUMBER)
+	- the parser is the lexer's audience so what tokens that are sent should be
+	  useful to whatever the parser is tasked to do (e.g. break apart an IP, the
+	  lexer ought to send the parser each discrete part (intergers and periods))
+----
+
+----
+Simple Text Document
+ -simplest possiable example
+ 
+grammar SimpleDoc ;
+
+doc : line+ ;
+
+line : word (' '+ word)* ' '? '\r'? '\n' ;
+
+word : TEXT ;
+
+TEXT : ~[ \n\r]+ ;
+
+ - a word is anything but space, and newline
+ - a line is one or more words separated by a 
+   space with a newline at the end
+ - a doc is simply one or more lines.
+
+----
+
+----
+Web Server Log Example
+ - a web server prints each request recieved to a log
+ - the manner of the print is as:
+ 
+ 192.168.209.85 "GET /download/foo.html HTTP/1.0" 200
+ 
+ - lexer would break down as
+ IP      : INT '.' INT '.' INT '.' INT ;
+ INT     : [0-9]+ ;
+ STRING  : '"' .*? '"' ;
+ NL      : '\n' ;
+ WS      : ' ' -> skip ;
+ 
+ - the parser rules would be 
+ file  : row+ ;
+ row   : IP STRING INT NL ;
+ 
+ - as further illustration, needing the ip in its
+   discrete integer values, the IP rule gets moved
+   to the parser
+ INT     : [0-9]+ ;
+ STRING  : '"' .*? '"' ;
+ NL      : '\n' ;
+ WS      : ' ' -> skip ;
+ 
+ - the parser rules would be 
+ file  : row+ ;
+ row   : IP STRING INT NL ;
+ ip    : INT '.' INT '.' INT '.' INT ;
+ 
+ - where either may do the job but 
+   its really more about, "who needs what".
+----
+
+----
+CSV Example
+ - the example will have a header row, allow null and empty columns
+
+Details,Month,Amount
+Mid Bonus,June,"$2,000"
+,January,"""zippo"""
+Total Bonuses,"","$5,000"
+
+ -starts out as 
+ grammer CSV:
+ 
+ file : hdr row+ ;
+ hdr  : row ;
+ - while the header is just another row its significant 
+   and therefore is distinguished in the grammer
+   
+ row : field (',' field)* '\r'? '\n' ;
+ - defines row by it line-terminator, but begs the question 
+   concerning 'field'
+   
+ field
+     :   TEXT
+	 |   STRING
+	 |   
+	 ;
+	 
+ TEXT : ~[,\n\r"]+ ;
+ STRING : '"' ('""'|~'"')* '"' ;
+ - for STRING, simply ('""'|.)*? won't work because is could 
+   match values like "x""y" in which the third double-quote is 
+   not an intended escape sequence
+----
+
+----
+JSON Example
+ - has an actual technical specification from which to draw grammer
+ 
+ JSON Object
+ - from the spec - wording is as such:
+   [
+    An object is an unordered set of name-value pairs. An object begins with a left
+	brace ({) and ends with a right brace (}). Each name is followed by a colon (:), and
+	the name-value pairs are separated by a comma (,). 
+   ]
+   
+ - analysis begins by mapping noun-phrases to one of the four patterns
+  - "An object [...]" indicates a grammer rule named 'object'
+  - "unordered set of name-value pairs" is a sequence of pairs
+    - "unordered set [...]" refers to the semantics, or meaning of the names
+	   and that thier order is not relevant
+  - the second sentence is a form of 'token dependency'
+  - final sentence is refinedment of sequence of pairs being comma-separated.
+
+  object
+		: '{' pair (',' pair)* '}'
+		| '{' '}' //empty object
+		;
+   pair : STRING ':' value ;
+   
+  JSON Array
+  - from the spec - wording as such:
+    [
+	 An array is an ordered collection of values. An array begins with a left bracket ([)
+	 and ends with a right bracket (]). Values are separated by a comma (,).
+	]
+  
+  - again finding comma-seperated sequence and sqr-brace token dependency
+  
+  array
+      : '[' value (',' value)* ']'
+	  | '[' ']'
+	  ;
+  
+  JSON Value
+  - again from the spec:
+    [
+	 A value can be a string in double quotes or a number or true or false or null or an
+	 object or an array. These structures can be nested.	
+    ]
+	
+  - having the word, "nested" in the spec obviously follows nested phrase pattern
+  - the 'value' rule is indirectly recursive since calls to 'object' or 'array' will
+    eventually end back up at 'value'.
+  
+  value
+      :  STRING
+	  |  NUMBER
+	  |  object
+	  |  array
+	  |  'true'
+	  |  'false'
+	  |  'null'
+	  ;
+
+  JSON String
+  - spec as:
+    [
+	 A string is a sequence of zero or more Unicode characters, wrapped in double
+	 quotes, using backslash escapes. A character is represented as a single character
+	 string. A string is very much like a C or Java string.	
+	]
+	
+ STRING : '"' (ESC | ~["\\])* '"' ;
+ 
+ fragment ESC : '\\' (["\\/bfnrt] | UNICODE) ;
+ fragment UNICODE : 'u' HEX HEX HEX HEX ;
+ fragment HEX : [0-9a-fA-F] ;
+ 
+ - complex pattern where ESC fragment's "(["\\/bfnrt] " 
+   is matching against predefined escape sequence (escape 
+   the escape sequence)
+ - STRING include "~["\\]" as, "not double-quotes and not double 
+   backslashes" - because the double backslashes are captured in the 
+   ESC fragment
+ 
+  JSON Number
+  - spec as 
+    [
+	 A number is very much like a C or Java number, except that the octal and hexadecimal
+	 formats are not used.	
+	]
+	
+  NUMBER
+       : '-'? INT '.' INT EXP?
+	   | '-'? INT EXP
+	   | '-'? INT
+	   ;
+ fragment INT : '0' | [1-9] [0-9]* ; //no leading zero, doesn't work in .NET
+ fragment EXP : [Ee] [+\-]? INT ; //have the escape '-' since it the range specifier
+ 
+ JSON Whitespace
+ - from the spec:
+   [
+    Whitespace can be inserted between any pair of tokens.
+   ]
+   
+  WS : [ \t\n\r]+ -> skip ; //notice the space after the '['
+----
+
+----
+VBScript Example
+ - the terminator for a statement is a new-line
+  - just as in a C-style lang. a semi-colon is a stand-alone
+    statement in itself, so must a newline be a stand-alone statement
+  - however, is should be the last possiable match for any possiable
+    statement
+ stmt :
+	 ...
+	  | NEWLINE
+	  ;
+  
+ - VBScript is a case insensitive lang. so every keyword would have to 
+   be escaped like
+   
+   VB_FOR  :  [Ff][Oo][Rr]     ;
+   VB_EACH :  [Ee][Aa][Cc][Hh] ;
+   VB_DIM  :  [Dd][Ii][Mm]     ;
+   
+ - blocks have unique token dependency unlike C-styles curly-braces
+ 
+ vbIfThen : VB_IF expression VB_THEN statement* (VB_ELSEIF expression VB_THEN statement* )* (VB_ELSE statement*)? VB_ENDIF
+----
+
+----
+Using ANTLR Generated Listener
+ - having a valid grammer defined
+ - general pattern is 
+ File Stream -> ANTLR Stream -> Lexer -> Token Stream -> Parser -> Tree -> Walker -> my implementation
+ - given some input file upon which the grammer is to work
+ 
+ - invoke antlr jar on a valid grammer (.g4) file
+  - implement the <grammerName>BaseListener
+  - each grammer rule will have generated an 
+   
+   enter<ruleName>([...]) & exit<ruleName>([...])
+  - implementation should write to instance level 
+    variables since these are event-handlers and 
+    are async
+
+  - the general pattern:
+   1. implement the 'enter', 'exit' as needed
+   2. create a file stream 
+   java.io.InputStream is = new java.io.FileInputStream("C:\\somePath\\somefile.dat");
+   
+   3. Proceed from input stream to ANTLR stream, lexer, tokens, parser...
+   
+   org.antlr.v4.runtime.ANTLRInputStream input = new ANTLRInputStream(is);
+   <grammerName>Lexer lexer = new <grammerName>Lexer(input);
+   org.antlr.v4.runtime.CommonTokenStream tokens = new CommonTokenStream(lexer);
+   <grammerName>Parser parser = new <grammerName>Parser(tokens);
+
+   org.antlr.v4.runtime.tree.ParseTree tree = parser.<grammerRule>();
+   
+   org.antlr.v4.runtime.tree.ParseTreeWalker walker = new ParseTreeWalker();
+   <implementationForEnterExit> loader = new <implementationForEnterExit>();
+   
+   //the connection is made...
+   walker.walk(loader, tree);
+   <implementationForEnterExit>.<someInstanceVariable>; //here are the results
+----
+
+----
+Using ANTLR Generated Visitor
+ - same as above, valid gammer and input file
+ - uses generics and has them as return types
+   of each 'visit<ruleName>' which allows for more 
+   specific application code, listeners 'enter' & 'exit'
+   all have void return types.
+ 
+ - invoke antlr jar and include the '-visitor' switch
+ - extend the <grammerName>BaseVisitor.java 
+  - implement the 'visit<grammerRuleName>([...])' abstract method
+  - complile your <extensionOfBaseVisitor>.java 
+  - and invoke it as 'java <extensionOfBaseVisitor> "C:\\somePath\\someFile.dat" '
+  
+ - the code-sequence pattern is mostly identical of
+   File Stream -> ANTLR Stream -> Lexer -> Token Stream -> Parser -> Tree -> my implementation
+   	
+   java.io.InputStream is = new java.io.FileInputStream("C:\\somePath\\somefile.dat");
+   org.antlr.v4.runtime.ANTLRInputStream input = new ANTLRInputStream(is);
+   <grammerName>Lexer lexer = new <grammerName>Lexer(input);
+   org.antlr.v4.runtime.CommonTokenStream tokens = new CommonTokenStream(lexer);
+   <grammerName>Parser parser = new <grammerName>Parser(tokens);
+
+   org.antlr.v4.runtime.tree.ParseTree tree = parser.<grammerRule>();
+   
+   //the implementation will extend with the generic <T> to some concrete type
+   <implementationForVisit> loader = new <implementationForVisit>();
+   
+   //whatever concrete type used as the generic <T> may be returned here
+   <theTypeUsedInImplementation> myType = loader.visit(tree); //here, we get a return type
+   
+----
+
+----
+Specificity For Rule Matches
+ - one rule generates one 'enter' and one 'exit' 
+   listener, and only one 'visit'
+ - add a Pre-processor style comment to the 
+   grammer (.g4) for the various parts of a rule
+   to have ANTLR generate 'enter' & 'exit' events
+   for each kind of match
+   
+ e : e MULT e        # Mult
+   | e ADD e         # Add
+   | INT             # Int
+   ;
+----
+
+----
+Using ANTLR Generated Listeners Args
+ 
+ public void enter<ruleName>(<grammerName>Parser.<ruleName>Context ctx)
+ 
+ - for example say ruleName was 'file' and grammerName was 'MyGrammer'
+ public void enterFile(MyGrammerParser.FileContext ctx)
+ 
+ - using the Specificity For Rule Matches, the 'kind' of Lexer rule
+   matched will become its own function like the one above
+
+grammer MyGrammer ;
+   
+file : line* ;
+
+line : STRING  #string
+     | TEXT    #text
+	 | ID      #id
+	 ;
+	 
+ - using this will generate :
+
+ public void enterFile(MyGrammerParser.FileContext ctx)
+ public void exitFile(MyGrammerParser.FileContext ctx)
+ 
+ public void enterString(MyGrammerParser.StringContext ctx)
+ public void exitString(MyGrammerParser.StringContext ctx)
+ 
+ public void enterText(MyGrammerParser.TextContext ctx)
+ public void exitText(MyGrammerParser.TextContext ctx)
+ 
+ public void enterId(MyGrammerParser.IdContext ctx)
+ public void exitId(MyGrammerParser.IdContext ctx)
+ 
+ - enterLine, exitLine will NOT be generated
+ - ctx.getText() will return the text that matched the rule
+ 
+ - Specificity may have multiple possiable matches
+ 
+ value
+    :   STRING		# String
+    |   NUMBER		# Atom
+    |   object  	# ObjectValue
+    |   array  		# ArrayValue
+    |   'true'		# Atom
+    |   'false'		# Atom
+    |   'null'		# Atom
+    ;
+
+  - its all or nothing, either every option has a label or non may.	
+  - in this example the 'enterAtom' and 'exitAtom' would 
+    be called for matches to NUMBER, 'true','false' & 'null'
+   - by calling 'ctx.getText()' you may get the matched text
+     w/o concern for which.
+  - 'enterString'\'exitString' was set apart to handle strings
+     uniquely (strip off quotes)
+----
+ 
+----
+ANTLR Context Args and thier Properties
+ - each visitor is given its assoc. rule context object
+ - the rule context object has methods for each of the elements 
+   mentioned in the rule.
+   
+ grammer MyGrammer ;
+   
+ value : STRING
+       | ID
+	   ;
+  - there would be a handler named 'exitValue'
+  - it would receive an arg of type 'MyGrammerParser.ValueContext'
+  - the type 'MyGrammerParser.ValueContext' will have properties named
+    'STRING()' & 'ID()'
+  - since STRING and ID are token matches they inherit from 'TerminalNode'
+  - 'TerminalNode' has the method named 'getText()' which returns the text
+    that it matched too.
+----
+
+----
+ANTLR's Helper Class ParseTreeProperty<T>
+ - ParseTreeProperty<T> where T is whatever you want to assoc.
+ - it has two methods named 'put' & 'get'
+ - 'put' takes two args of 'ParseTree' and T
+ 
+   ParseTreeProperty<String> myTreeProperty = new ParseTreeProperty<String>();
+   myTreeProperty.put(myNode,"myValue"); //"myValue" is now assoc. to myNode
+   String myValue = myTreeProperty.get(myNode); 
+   
+ - why is this needed: for the given rule 
+  
+	e : e MULT e   # Mult
+	  | e ADD e    # Add
+	  | INT        # Int
+	  ;
+ 
+ - there will be three 'exit' handlers (viz. exitMult, exitAdd and exitInt)
+ - only the context object of 'exitInt' has a value because its a terminal node
+   
+   String myIntValue = ctx.INT().getText();
+   myTreeProperty.put(ctx, Integer.valueOf(myIntValue)); //this is going to be needed
+                                                         // by the 'exitAdd' & 'exitMult'
+ 
+ - within the 'exitAdd' handler its context object will have two ParseTree nodes 
+   
+   int left = myTreeProperty.get(ctx.e(0));
+   int right = myTreeProperty.get(ctx.e(1));
+   myTreeProperty.put(ctx, left + right);
+ 
+ - therefore given the expression '1 + 2 + 3' the graph would appear as 
+		     Add   exitAdd (2)
+		    / | \ 
+           /  |  \
+         '1' '+' Add   exitAdd(1)
+				/ | \ 
+			   /  |  \
+			 '2' '+' '3'
+ - the parser is left-recursive so you reach 'exitAdd(1)' before
+   reaching 'exitAdd(2)' - in other words you aren't dealing with
+   the '1' + Add' at exitAdd(2) because the '2 + 3' was resolved
+   at exitAdd(1), so exitAdd(2) is only dealing with '1 + 5'
+ - because of the left recursion you will reach exitInt for 1, then
+   2 and then 3 and only then proceed to exitAdd(1)
+ - so when at exitAdd(2) and you call 'myTreeProperty(ctx.e(1))' 
+   you get the results of exitAdd(1)
+----
+
+----
+Whitelist Example 
+ - has to have some representation for every char
+   in the file.
+ - will match almost any text file
+ - still skips meaningless white-space
+	 
+grammar testGrammar ;
+
+page       : sentence* ; 
+
+sentence   : expr NL 
+           | expr EOF
+           | NL
+		   ;
+
+expr  : WORD+ ;
+
+WORD   :   ( LETTER | INT | SYMBOLCHAR )+ ; 
+
+INT        : DIGIT+ ;
+SYMBOLCHAR : [\u0021-\u002F]
+           | [\u003A-\u0040]
+		   | [\u005B-\u0060]
+           | [\u007B-\u007E]
+           ;
+
+NL : '\r'? '\n' ; 
+
+DIGIT  :  [0-9] ;
+
+fragment LETTER  : [a-zA-Z] ;
+
+WS :   [ \t]+ -> skip ;
+
+----
+
+----
+Blacklist Example
+ - allows for everything except for some 
+   targeted chars (in this case the VBScript
+   escape sequence of '<% ... %>').
+
+grammar testGrammar ;
+
+file : content* ;
+
+content 
+	: vbsBlock
+	| vbsLine
+	| textData
+	;
+
+vbsBlock : '<%' .*? '%>' ;
+vbsLine  : '<%=' .*? '%>' ;
+
+textData 
+    : TEXT 
+	| NL
+	| TAG
+	;
+			
+
+TAG   : '<' ~[%] .*? ~[%] '>' ;
+WS   : (' '|'\t') -> skip;
+NL   : '\r'? '\n' ;
+TEXT : ~[<%]+ ;   //this says, "every character but '<' and '%'"
+----
+   

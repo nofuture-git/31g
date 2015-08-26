@@ -1,0 +1,251 @@
+﻿<#@ template hostspecific="true" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ assembly name="C:\Projects\31g\trunk\Code\NoFuture\bin\NoFuture.Shared.dll"#>
+<#@ assembly name="C:\Projects\31g\trunk\Code\NoFuture\bin\NoFuture.Util.dll"#>
+<#@ assembly name="C:\Projects\31g\trunk\Code\NoFuture\bin\NoFuture.Hbm.dll"#>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#
+
+    var paramName= NoFuture.Hbm.SortingContainers.HbmFileContent.T4_PARAM_NAME;
+    var hbmFilePath = this.Host.ResolveParameterValue("","",paramName);
+    var hbmXmlContent = new NoFuture.Hbm.Templates.HbmCsClass(hbmFilePath);
+
+    var hbmNamespace = hbmXmlContent.Namespace;
+    var hbmIdName = hbmXmlContent.IdName;
+    var hbmIdType = hbmXmlContent.IdType;
+    var hbmFlatProperties = hbmXmlContent.SimpleProperties;
+    var hbmFkProperties = hbmXmlContent.FkProperties;
+    var hbmListProperties = hbmXmlContent.ListProperties;
+    var hbmSpConstNames = hbmXmlContent.SpConstNames;
+    var hbmClassName = hbmXmlContent.Classname;
+    var hbmSchema = hbmXmlContent.DbSchema;
+    
+#>
+using System;
+using System.Collections.Generic;
+
+namespace <#= hbmNamespace #>
+{
+    [Serializable]
+    public class <#= hbmClassName #>
+    {
+        #region Id
+        public virtual <#= hbmIdType #> <#= hbmIdName #> { get; set; }
+        #endregion
+
+        #region RequiredOverrides
+
+<#
+    if(hbmIdType == "string"){
+#>
+		public virtual bool Equals(<#=            hbmClassName #> other)
+        {
+            if (System.Object.ReferenceEquals(null, other)) return false;
+            if (System.Object.ReferenceEquals(this, other)) return true;
+			if (System.String.IsNullOrEmpty(<#=            hbmIdName #>) || System.String.IsNullOrEmpty(other.<#=            hbmIdName #>)) return false;			
+			return other.<#=            hbmIdName #> == <#=            hbmIdName #>;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (System.Object.ReferenceEquals(null, obj)) return false;
+            if (System.Object.ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != typeof (<#=            hbmClassName #>)) return false;
+            return this.Equals((<#=            hbmClassName #>) obj);
+        }
+        
+        public override int GetHashCode()
+        {
+            var newRandom = new System.Random();
+			return System.String.IsNullOrEmpty(<#=hbmIdName #>) ? newRandom.Next() : <#=hbmIdName #>.GetHashCode();			
+		}
+<#
+    }
+	else if(hbmIdType.EndsWith(NoFuture.Hbm.Globals.COMP_KEY_ID_SUFFIX) 
+		    || (hbmIdType == "NoFuture.Hbm.Sid.BinaryId") 
+			|| (hbmIdType.EndsWith("Guid")))
+    {
+#>
+		public virtual bool Equals(<#=            hbmClassName #> other)
+        {
+            if (System.Object.ReferenceEquals(null, other)) return false;
+			return System.Object.ReferenceEquals(this, other) || <#=hbmIdName #>.Equals(other.<#=            hbmIdName #>);
+        }
+		
+		public override bool Equals(object obj)
+        {
+            if (System.Object.ReferenceEquals(null, obj)) return false;
+            if (System.Object.ReferenceEquals(this, obj)) return true;
+			return obj.GetType() == typeof (<#=            hbmClassName #>) && Equals((<#=            hbmClassName #>) obj);
+        }
+		
+		public override int GetHashCode()
+        {
+            var newRandom = new System.Random();
+			return <#=hbmIdName #> == null ? newRandom.Next() : <#=hbmIdName #>.GetHashCode();
+		}
+
+<#
+    }
+    else{
+        if(hbmIdType.EndsWith("?")){
+#>
+		public virtual bool Equals(<#=                hbmClassName #> other)
+        {
+            if (System.Object.ReferenceEquals(null, other)) return false;
+            if (System.Object.ReferenceEquals(this, other)) return true;
+			if (<#=                hbmIdName #> == null || other.<#=                hbmIdName #> == null) return false;			
+			return other.<#=                hbmIdName #> == <#=                hbmIdName #>;
+        }
+
+        public override int GetHashCode()
+        {
+            var newRandom = new System.Random();
+			return <#=                hbmIdName #> == null ? newRandom.Next() : <#=                hbmIdName #>.GetHashCode();			
+		}
+
+<#
+        }
+        else{
+#>
+		public virtual bool Equals(<#=                hbmClassName #> other)
+        {
+            if (System.Object.ReferenceEquals(null, other)) return false;
+            if (System.Object.ReferenceEquals(this, other)) return true;
+			if (<#=                hbmIdName #> == 0 || other.<#=                hbmIdName #> == 0) return false;			
+			return other.<#=                hbmIdName #> == <#=                hbmIdName #>;
+        }
+
+        public override int GetHashCode()
+        {
+            var newRandom = new System.Random();
+			return <#=                hbmIdName #> == 0 ? newRandom.Next() : <#=                hbmIdName #>.GetHashCode();			
+		}
+
+<#
+
+        }
+#>
+
+        public override bool Equals(object obj)
+        {
+            if (System.Object.ReferenceEquals(null, obj)) return false;
+            if (System.Object.ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != typeof (<#=            hbmClassName #>)) return false;
+            return this.Equals((<#=            hbmClassName #>) obj);
+        }
+        
+<#
+    }
+#>
+
+        #endregion
+
+        #region ValueTypes
+
+<#
+    foreach(var k in hbmFlatProperties.Keys){
+        var flatPropertyType = hbmFlatProperties[k];
+        var flatPropertyName =  k;
+            
+#>
+       public virtual <#=            flatPropertyType #> <#=            flatPropertyName #> { get; set; }
+
+<#
+       
+    }//end foreach hbmFlatProperties
+
+#>
+       #endregion
+
+       #region ForeignKeys
+
+<#
+    foreach(var k in hbmFkProperties.Keys){
+        var fkTnName =  hbmFkProperties[k];
+        var nfFkPropertyType = new NoFuture.Util.TypeName(fkTnName);
+        var fkPropertyType = nfFkPropertyType.FullName;
+        var fkPropertyName = k;
+#>
+        public virtual <#=            fkPropertyType #> <#=            fkPropertyName #> { get; set; }
+
+<#
+    }//end foreach hbmFkProperties
+
+#>
+       #endregion
+
+       #region Lists
+
+<#
+    foreach(var k in hbmListProperties.Keys){
+        var bagTnName =  hbmListProperties[k];
+        var nfBagPropertyType = new NoFuture.Util.TypeName(bagTnName);
+        var bagPropertyType = nfBagPropertyType.FullName;
+        var bagPropertyName = k;
+#>
+        public virtual IList<<#=            bagPropertyType #>> <#=            bagPropertyName #> { get; set; }
+
+<#       
+    }//end foreach hbmListProperties
+
+    if(hbmSpConstNames.Count <= 0){
+#>
+       #endregion
+
+<#
+    }//end no sp data
+    else
+    {
+
+#>
+       #endregion
+
+       #region SpNames
+
+<#
+        var hbmSpConst = hbmSpConstNames.First();
+        var hbmSpCallableName = hbmSpConst.CallableName;
+        var hbmSpDbName = hbmSpConst.DbName;
+        var hbmSpDbParams = hbmSpConst.ParamNames;
+
+#>
+       public static class SpNames
+        {
+            public static string HbmCallableName = "<#=            hbmSpCallableName #>";
+            public static string DbProcName = "<#=            hbmSpDbName #>";
+
+<#       
+        if(hbmSpDbParams != null){
+#>
+           public static string[] HbmParamNames = new [] 
+            {
+<#       
+            for(var j=0; j < hbmSpDbParams.Length; j++){
+                var spParamName = hbmSpDbParams[j];
+#>
+
+                "<#=                    spParamName #>",
+<#       
+            }//foreach sp Param name
+#>
+
+            };//end HbmParamNames
+
+<#       
+        }//end if sp has param names
+#>
+       }
+        #endregion
+
+<#
+
+    }//end has sp data
+#>
+
+    }//end <#=hbmClassName #>
+}//end <#=hbmNamespace #>
+
+
