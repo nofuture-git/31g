@@ -57,8 +57,8 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds
                             names.Add(Program.ResolutionCache[cid]);
                             continue;
                         }
-                        var tokenName = new MetadataTokenName() {Id = cid};
-                        var resolved = ResolveSingleToken(tokenName);
+                        MetadataTokenName tokenName;
+                        var resolved = Program.ResolveSingleToken(cid, out tokenName);
 
                         if (!resolved)
                         {
@@ -66,11 +66,11 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds
                                 Program.DisolutionCache.Add(cid);
                             continue;
                         }
+                        names.Add(tokenName);
 
                         if (!Program.ResolutionCache.ContainsKey(cid))
                         {
                             Program.ResolutionCache.Add(cid, tokenName);
-                            names.Add(tokenName);
                         }
                     }
                     catch

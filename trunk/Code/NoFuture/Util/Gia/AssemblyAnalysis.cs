@@ -27,19 +27,18 @@ namespace NoFuture.Util.Gia
         public const string GET_TOKEN_IDS_PORT_CMD_SWITCH = "nfDumpAsmTokensPort";
         public const string GET_TOKEN_NAMES_PORT_CMD_SWITCH = "nfResolveTokensPort";
         public const string GET_ASM_INDICES_PORT_CMD_SWITCH = "nfGetAsmIndicies";
+        public const string RESOLVE_GAC_ASM_SWITCH = "nfResolveGacAsm";
         public const int DF_START_PORT = 5059;
         #endregion
 
         #region fields
-        private readonly Process _myProcess;
         private readonly InvokeDumpMetadataKey _myProcessPorts;
         private readonly AsmIndicies _asmIndices;
         #endregion
 
         #region inner types
         /// <summary>
-        /// this is an private class used to hide implementation details
-        /// from the calling assembly regarding invocation of InvokeDumpMetadataTokens
+        /// Data concerning the launch of <see cref="StartNewDumpMetadaTokenProcess"/>
         /// </summary>
         public class InvokeDumpMetadataKey
         {
@@ -53,6 +52,7 @@ namespace NoFuture.Util.Gia
             public int GetAsmIndiciesPort { get; set; }
             public int GetTokenIdsPort { get; set; }
             public int GetTokenNamesPort { get; set; }
+            public int Pid { get { return _pid; } }
 
             public bool PortsAreValid
             {
@@ -70,7 +70,7 @@ namespace NoFuture.Util.Gia
                     if (_pid == 0)
                         return false;
                     var proc = Process.GetProcessById(_pid);
-                    return proc.HasExited;
+                    return !proc.HasExited;
                 }
             }
             
@@ -78,22 +78,25 @@ namespace NoFuture.Util.Gia
         #endregion
 
         #region properties
+        /// <summary>
+        /// A mapping of index ids to assembly names.
+        /// </summary>
         public AsmIndicies AsmIndicies { get { return _asmIndices; } }
         #endregion
 
         #region ctors
         /// <summary>
-        /// Launches the NoFuture.Util.Asm.InvokeDumpMetadataTokens.exe and calls 
-        /// DumpAllTokensCmd.
+        /// Launches the NoFuture.Util.Gia.InvokeAssemblyAnalysis.exe and calls 
+        /// GetAsmIndicies command.
         /// </summary>
         /// <param name="assemblyPath"></param>
         /// <param name="ports"></param>
+        /// <param name="resolveGacAsmNames"></param>
         /// <returns></returns>
         /// <remarks>
-        /// The ports used are first defaulted to 5059 and 5060 and then 
-        /// are incremented by one for each new assembly path.  
+        /// The ports used are defaulted to <see cref="DF_START_PORT"/>.
         /// </remarks>
-        public AssemblyAnalysis(string assemblyPath, params int[] ports)
+        public AssemblyAnalysis(string assemblyPath, bool resolveGacAsmNames, params int[] ports)
         {
             if (String.IsNullOrWhiteSpace(assemblyPath) || !File.Exists(assemblyPath))
                 throw new ItsDeadJim("This isn't a valid assembly path");
@@ -102,13 +105,13 @@ namespace NoFuture.Util.Gia
                 throw new ItsDeadJim("Don't know where to locate the InvokeDumpMetadataTokens.exe, assign " +
                                      "the global variable at NoFuture.CustomTools.InvokeDumpMetadataTokens.");
 
-            var invoke = StartNewDumpMetadaTokenProcess(assemblyPath, ports);
-            _myProcess = invoke.Item2;
+            var invoke = StartNewDumpMetadaTokenProcess(assemblyPath, resolveGacAsmNames, ports);
+            var myProcess = invoke.Item2;
             _myProcessPorts = invoke.Item1;
 
             if (_myProcessPorts == null || !_myProcessPorts.PortsAreValid)
                 throw new ItsDeadJim(
-                    String.Format("Could resolve the ports to used for connecting to process by pid [{0}]", _myProcess.Id));
+                    String.Format("Could resolve the ports to used for connecting to process by pid [{0}]", myProcess.Id));
 
             //connect to the process on a socket 
             var asmIndicesBuffer = CallInvokeDumpMetadataToken(Encoding.UTF8.GetBytes(assemblyPath),
@@ -118,10 +121,21 @@ namespace NoFuture.Util.Gia
         }
         #endregion
 
+        #region instance methods
+        /// <summary>
+        /// Gets the manifold of Metadata Token Ids for the assembly at <see cref="asmIdx"/>
+        /// </summary>
+        /// <param name="asmIdx"></param>
+        /// <returns></returns>
+        /// <remarks>
+        /// Use the <see cref="AsmIndicies"/> property to get the index.
+        /// </remarks>
         public TokenIds GetTokenIds(int asmIdx)
         {
             if (_asmIndices.Asms.All(x => x.IndexId != asmIdx))
                 throw new RahRowRagee(string.Format("No matching index found for {0}", asmIdx));
+            if(!_myProcessPorts.ProcessIsRunning)
+                throw new RahRowRagee(string.Format("The process by id [{0}] has exited", _myProcessPorts.Pid));
             var asmName = _asmIndices.Asms.First(x => x.IndexId == asmIdx).AssemblyName;
 
             var bufferIn = Encoding.UTF8.GetBytes(asmName);
@@ -130,20 +144,35 @@ namespace NoFuture.Util.Gia
             return JsonConvert.DeserializeObject<TokenIds>(Encoding.UTF8.GetString(bufferOut));
         }
 
+        /// <summary>
+        /// Resolves the given Metadata Token Ids to thier names & types.
+        /// </summary>
+        /// <param name="metadataTokenIds"></param>
+        /// <returns></returns>
         public TokenNames ResolveTokenNames(int[] metadataTokenIds)
         {
             if (metadataTokenIds == null)
                 throw new ArgumentNullException("metadataTokenIds");
+            if (!_myProcessPorts.ProcessIsRunning)
+                throw new RahRowRagee(string.Format("The process by id [{0}] has exited", _myProcessPorts.Pid));
 
             var bufferIn = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(metadataTokenIds));
 
-            var bufferOut = CallInvokeDumpMetadataToken(bufferIn, _myProcessPorts.GetTokenIdsPort);
+            var bufferOut = CallInvokeDumpMetadataToken(bufferIn, _myProcessPorts.GetTokenNamesPort);
 
             return JsonConvert.DeserializeObject<TokenNames>(Encoding.UTF8.GetString(bufferOut));
         }
+        #endregion
 
         #region metadata token statics
-        public static Tuple<InvokeDumpMetadataKey, Process> StartNewDumpMetadaTokenProcess(string assemblyPath, params int[] ports)
+        /// <summary>
+        /// Starts the NoFuture.Util.Gia.InvokeAssemblyAnalysis.exe process.
+        /// </summary>
+        /// <param name="assemblyPath"></param>
+        /// <param name="ports"></param>
+        /// <param name="resolveGacAsmNames"></param>
+        /// <returns></returns>
+        public static Tuple<InvokeDumpMetadataKey, Process> StartNewDumpMetadaTokenProcess(string assemblyPath, bool resolveGacAsmNames, params int[] ports)
         {
 
             var port00 = ports != null && ports.Length >= 1 ? ports[0] : DF_START_PORT;
@@ -156,6 +185,7 @@ namespace NoFuture.Util.Gia
                         ConsoleCmd.ConstructCmdLineArgs(GET_ASM_INDICES_PORT_CMD_SWITCH, port00.ToString(CultureInfo.InvariantCulture)),
                         ConsoleCmd.ConstructCmdLineArgs(GET_TOKEN_IDS_PORT_CMD_SWITCH, port01.ToString(CultureInfo.InvariantCulture)),
                         ConsoleCmd.ConstructCmdLineArgs(GET_TOKEN_NAMES_PORT_CMD_SWITCH, port02.ToString(CultureInfo.InvariantCulture)),
+                        ConsoleCmd.ConstructCmdLineArgs(RESOLVE_GAC_ASM_SWITCH, resolveGacAsmNames.ToString())
                     });
 
             var proc = new Process

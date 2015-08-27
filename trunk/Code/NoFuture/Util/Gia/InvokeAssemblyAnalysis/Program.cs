@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -31,7 +32,8 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
         private static int? _getTokenNamesCmdPort;
         private static int? _getTokenIdsCmdPort;
         private static int? _getasmIndicesCmdPort;
-
+        private static bool? _resolveGacAsms;
+        private static string[] _gacAsmNames;
         private static readonly Dictionary<int, MetadataTokenName> _resolutionCache =
             new Dictionary<int, MetadataTokenName>();
         private static readonly List<int> _disolutionCache = new List<int>();
@@ -112,7 +114,7 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
             get
             {
                 var logDir = ConfigurationManager.AppSettings["NoFuture.TempDirectories.Debug"];
-                if (string.IsNullOrWhiteSpace(logDir))
+                if (String.IsNullOrWhiteSpace(logDir))
                     logDir = TempDirectories.AppData;
                 if (!Directory.Exists(logDir))
                     Directory.CreateDirectory(logDir);
@@ -124,10 +126,10 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
         {
             get
             {
-                if (!string.IsNullOrWhiteSpace(_logName))
+                if (!String.IsNullOrWhiteSpace(_logName))
                     return _logName;
                 var name = Assembly.GetExecutingAssembly().GetName().Name;
-                _logName = Path.Combine(LogDirectory, string.Format("{0}.log", name));
+                _logName = Path.Combine(LogDirectory, String.Format("{0}.log", name));
                 return _logName;
             }
         }
@@ -143,28 +145,42 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
         internal static int? ResolveInt(string cval)
         {
             int valOut;
-            if (!string.IsNullOrWhiteSpace(cval) && int.TryParse(cval, out valOut))
+            if (!String.IsNullOrWhiteSpace(cval) && Int32.TryParse(cval, out valOut))
+                return valOut;
+            return null;
+        }
+
+        internal static bool? ResolveBool(string cval)
+        {
+            bool valOut;
+            if (!String.IsNullOrWhiteSpace(cval) && Boolean.TryParse(cval, out valOut))
                 return valOut;
             return null;
         }
 
         internal static void SetReflectionOnly()
         {
-            bool useReflectionOnly;
-            var p = ConfigurationManager.AppSettings["NoFuture.Shared.Constants.UseReflectionOnlyLoad"];
-            if (!string.IsNullOrWhiteSpace(p) && bool.TryParse(p, out useReflectionOnly))
+            var useReflectionOnly =
+                ResolveBool(ConfigurationManager.AppSettings["NoFuture.Shared.Constants.UseReflectionOnlyLoad"]);
+            Constants.UseReflectionOnlyLoad = useReflectionOnly != null && useReflectionOnly.Value;
+        }
+
+        internal static bool ResolveGacAssemblies
+        {
+            get
             {
-                Constants.UseReflectionOnlyLoad = useReflectionOnly;
-            }
-            else
-            {
-                Constants.UseReflectionOnlyLoad = false;
+                if (_resolveGacAsms != null)
+                    return _resolveGacAsms.Value;
+
+                _resolveGacAsms = ResolveBool(ConfigurationManager.AppSettings["ResolveGacAssemblies"]);
+
+                return _resolveGacAsms != null && _resolveGacAsms.Value;
             }
         }
 
         public static void Main(string[] args)
         {
-            var ut = string.Empty;
+            var ut = String.Empty;
             try
             {
                 //test if there are any args, if not just leave with no message
@@ -173,13 +189,12 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
                     Console.WriteLine(Help());
                     return;
                 }
+                PrintToConsole("New console started!");
 
+                //set app domain cfg
                 ConsoleCmd.SetConsoleAsTransparent();
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.Title = Assembly.GetExecutingAssembly().GetName().Name;
-
-                PrintToConsole("New console started!");
-
                 SetReflectionOnly();
                 FxPointers.AddResolveAsmEventHandlerToDomain();
 
@@ -197,44 +212,196 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
                 {
                     _getasmIndicesCmdPort = ResolveInt(argHash[AssemblyAnalysis.GET_ASM_INDICES_PORT_CMD_SWITCH].ToString());
                 }
-
-                PrintToConsole(string.Format("GetAsmIndicesCmdPort listening on port [{0}]", GetAsmIndicesCmdPort));
-                PrintToConsole(string.Format("GetTokenIdsCmdPort listening on port [{0}]", GetTokenIdsCmdPort));
-                PrintToConsole(string.Format("GetTokenNamesCmdPort listening on port [{0}]", GetTokenNamesCmdPort));
-                PrintToConsole("type 'exit' to quit", false);
-                LaunchListeners();
-
-                for (;;) //ever
+                if (argHash.ContainsKey(AssemblyAnalysis.RESOLVE_GAC_ASM_SWITCH))
                 {
-                    ut = Console.ReadLine();//console app thread parks
-                    if (!string.IsNullOrWhiteSpace(ut) &&
-                        string.Equals(ut.Trim(), "exit", StringComparison.OrdinalIgnoreCase))
-                        break;
+                    _resolveGacAsms = ResolveBool(argHash[AssemblyAnalysis.RESOLVE_GAC_ASM_SWITCH].ToString());
                 }
 
+                //print settings
+                PrintToConsole(String.Format("GetAsmIndicesCmdPort listening on port [{0}]", GetAsmIndicesCmdPort));
+                PrintToConsole(String.Format("GetTokenIdsCmdPort listening on port [{0}]", GetTokenIdsCmdPort));
+                PrintToConsole(String.Format("GetTokenNamesCmdPort listening on port [{0}]", GetTokenNamesCmdPort));
+                PrintToConsole(String.Format("Resolve GAC Assembly names is [{0}]", ResolveGacAssemblies));
+                PrintToConsole("type 'exit' to quit", false);
+
+                //open ports
+                LaunchListeners();
+
+                //park main
+                for (;;) //ever
+                {
+                    ut = Console.ReadLine();
+                    if (string.IsNullOrWhiteSpace(ut))
+                        continue;
+                    if (String.Equals(ut.Trim(), "exit", StringComparison.OrdinalIgnoreCase))
+                        break;
+                    if (string.Equals(ut.Trim(), "help", StringComparison.OrdinalIgnoreCase))
+                    {
+                        Console.WriteLine(Help());
+                        continue;
+                    }
+                    
+                    if (!AsmInited)
+                        continue;
+
+                    //allow user to get token id by type name
+                    if (System.Text.RegularExpressions.Regex.IsMatch(ut, TypeName.NAMESPACE_CLASS_NAME_REGEX))
+                    {
+                        var aType = ManifestModule.GetType(ut.Trim(), true);
+                        if (aType == null)
+                            continue;
+                        PrintToConsole(string.Format("{0,-20}0x{1}","MetadataToken Id", aType.MetadataToken.ToString("X4")));
+                    }
+
+                    //allow user to get type name by token id
+                    int utTokenId = 0;
+                    if (ut.StartsWith("0x") &&
+                        !Int32.TryParse(ut.Substring(2), NumberStyles.HexNumber, CultureInfo.InvariantCulture,
+                            out utTokenId))
+                        continue;
+                    if (utTokenId == 0 && !Int32.TryParse(ut, out utTokenId)) 
+                        continue;
+
+                    if (utTokenId > 0)
+                    {
+                        MetadataTokenName tokenNameOut;
+                        if (!ResolveSingleToken(utTokenId, out tokenNameOut))
+                            continue;
+                        var asmName = AsmIndicies.Asms.FirstOrDefault(x => x.IndexId == tokenNameOut.AsmIndexId);
+
+                        PrintToConsole(string.Format("{0,-20}{1}", "Name", tokenNameOut.Name));
+                        PrintToConsole(string.Format("{0,-20}{1}", "Assembly",
+                            asmName == null ? string.Empty : asmName.AssemblyName));
+                        PrintToConsole(string.Format("{0,-20}{1}", "Label", tokenNameOut.Label));
+                    }
+                }
             }
             catch (Exception ex)
             {
                 PrintToConsole(ex);
             }
 
-            if (string.IsNullOrWhiteSpace(ut) || !ut.StartsWith("exit"))
+            if (String.IsNullOrWhiteSpace(ut) || !ut.StartsWith("exit"))
             {
                 Console.ReadKey();
             }
         }
 
+        internal static bool PrintTypeNameByTokenId(string ut)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal static bool PrintTokenIdByTypeName(string ut)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal static bool ResolveSingleToken(int tokenId, out MetadataTokenName metadataToken)
+        {
+            metadataToken = new MetadataTokenName { Id = tokenId };
+            if (tokenId == 0)
+            {
+                return false;
+            }
+            var cid = metadataToken.Id;
+
+            MemberInfo mi;
+            try
+            {
+                mi = ManifestModule.ResolveMember(cid);
+            }
+            catch (ArgumentException)//does not resolve the token
+            {
+                return false;
+            }
+
+            if (mi == null)
+            {
+                return false;
+            }
+
+            metadataToken.Id = metadataToken.Id;
+            metadataToken.Name = mi.Name;
+            metadataToken.Label = mi.GetType().Name;
+
+            string asmName;
+
+            var type = mi as Type;
+
+            if (type != null)
+            {
+                //do not sent back GAC assemblies - too big
+                asmName = type.Assembly.GetName().FullName;
+                if (!ResolveGacAssemblies && IsIgnore(asmName))
+                    return false;
+
+                var t =
+                    AsmIndicies.Asms.FirstOrDefault(
+                        x =>
+                            String.Equals(x.AssemblyName, type.Assembly.GetName().FullName,
+                                StringComparison.OrdinalIgnoreCase));
+
+                metadataToken.Label = type.Name;
+                metadataToken.AsmIndexId = t != null ? t.IndexId : 0;
+                return true;
+            }
+            if (mi.DeclaringType == null) return true;
+
+            asmName = mi.DeclaringType.Assembly.GetName().FullName;
+            if (!ResolveGacAssemblies && IsIgnore(asmName))
+                return false;
+
+            var f =
+                AsmIndicies.Asms.FirstOrDefault(
+                    x =>
+                        String.Equals(x.AssemblyName, mi.DeclaringType.Assembly.GetName().FullName,
+                            StringComparison.OrdinalIgnoreCase));
+
+            metadataToken.Label = mi.DeclaringType.Name;
+            metadataToken.AsmIndexId = f != null ? f.IndexId : 0;
+
+            return true;
+        }
+
+        internal static string[] GacAssemblyNames
+        {
+            get
+            {
+                if (_gacAsmNames != null)
+                    return _gacAsmNames;
+
+                _gacAsmNames = Constants.UseReflectionOnlyLoad
+                    ? AppDomain.CurrentDomain.ReflectionOnlyGetAssemblies()
+                        .Where(x => x.GlobalAssemblyCache)
+                        .Select(x => x.FullName)
+                        .ToArray()
+                    : AppDomain.CurrentDomain.GetAssemblies()
+                        .Where(x => x.GlobalAssemblyCache)
+                        .Select(x => x.FullName)
+                        .ToArray();
+
+                return _gacAsmNames;
+            }
+        }
+        internal static bool IsIgnore(string asmQualName)
+        {
+            if (string.IsNullOrWhiteSpace(asmQualName))
+                return true;
+            var gacAsms = GacAssemblyNames;
+            return gacAsms != null && gacAsms.Any(asmQualName.EndsWith);
+        }
         internal static void LaunchListeners()
         {
             if (!Net.IsValidPortNumber(GetTokenIdsCmdPort) || !Net.IsValidPortNumber(GetTokenNamesCmdPort) ||
                 !Net.IsValidPortNumber(GetAsmIndicesCmdPort))
                 throw new RahRowRagee("the command's ports are either null or invalid " +
-                                      string.Format(" GetAsmIndicesCmdPort is port [{0}]", GetAsmIndicesCmdPort) +
-                                      string.Format(" GetTokenIdsCmdPort is port [{0}]", GetTokenIdsCmdPort) +
-                                      string.Format(" GetTokenNamesCmdPort is port [{0}]", GetTokenNamesCmdPort));
+                                      String.Format(" GetAsmIndicesCmdPort is port [{0}]", GetAsmIndicesCmdPort) +
+                                      String.Format(" GetTokenIdsCmdPort is port [{0}]", GetTokenIdsCmdPort) +
+                                      String.Format(" GetTokenNamesCmdPort is port [{0}]", GetTokenNamesCmdPort));
 
             _taskFactory = new TaskFactory();
-            _taskFactory.StartNew(() => HostCmd(new GetTokenIds(), GetAsmIndicesCmdPort.Value));
+            _taskFactory.StartNew(() => HostCmd(new GetAsmIndices(), GetAsmIndicesCmdPort.Value));
             _taskFactory.StartNew(() => HostCmd(new GetTokenIds(), GetTokenIdsCmdPort.Value));
             _taskFactory.StartNew(() => HostCmd(new GetTokenNames(), GetTokenNamesCmdPort.Value));
         }
@@ -255,7 +422,7 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
                         var buffer = new List<byte>();
 
                         var client = socket.Accept();
-                        PrintToConsole(string.Format("Connect from port {0}", cmdPort));
+                        PrintToConsole(String.Format("Connect from port {0}", cmdPort));
                         var data = new byte[Constants.DEFAULT_BLOCK_SIZE];
 
                         //park for first data received
@@ -293,11 +460,11 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
         {
             lock (_printLock)
             {
-                File.AppendAllText(LogFile, string.Format("{0:yyyy-MM-dd HH:mm:ss.fffff} {1}\n", DateTime.Now, someString));
+                File.AppendAllText(LogFile, String.Format("{0:yyyy-MM-dd HH:mm:ss.fff} {1}\n", DateTime.Now, someString));
                 if (trunc && someString.Length >= 54)
-                    someString = string.Format("{0}[...]", someString.Substring(0, 48));
+                    someString = String.Format("{0}[...]", someString.Substring(0, 48));
                 
-                Console.WriteLine(string.Format("{0:yyyy-MM-dd HH:mm:ss.fffff} {1}", DateTime.Now, someString));
+                Console.WriteLine(String.Format("{0:yyyy-MM-dd HH:mm:ss.fff} {1}", DateTime.Now, someString));
             }
         }
 
@@ -305,12 +472,12 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
         {
             lock (_printLock)
             {
-                var msg = string.Format("{0:yyyy-MM-dd HH:mm:ss.fffff} {1}", DateTime.Now, ex.Message);
-                File.AppendAllText(LogFile, string.Format("{0}\n", msg));
+                var msg = String.Format("{0:yyyy-MM-dd HH:mm:ss.fff} {1}", DateTime.Now, ex.Message);
+                File.AppendAllText(LogFile, String.Format("{0}\n", msg));
                 Console.WriteLine(msg);
 
-                msg = string.Format("{0:yyyy-MM-dd HH:mm:ss.fffff} {1}", DateTime.Now, ex.StackTrace);
-                File.AppendAllText(LogFile, string.Format("{0}\n", msg));
+                msg = String.Format("{0:yyyy-MM-dd HH:mm:ss.fff} {1}", DateTime.Now, ex.StackTrace);
+                File.AppendAllText(LogFile, String.Format("{0}\n", msg));
                 Console.WriteLine(msg);
             }
         }
@@ -319,7 +486,7 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
         {
             var help = new StringBuilder();
             help.AppendLine(" ----");
-            help.AppendLine(string.Format(" [{0}] ", Assembly.GetExecutingAssembly().GetName().Name));
+            help.AppendLine(String.Format(" [{0}] ", Assembly.GetExecutingAssembly().GetName().Name));
             help.AppendLine("");
             help.AppendLine(" ");
             help.AppendLine(" This exe will open a socket listeners on the ");
@@ -330,15 +497,26 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
             help.AppendLine(" Options:");
             help.AppendLine(" -h | -help             Will print this help.");
             help.AppendLine("");
-            help.AppendLine(string.Format(" {0}{1}{2}[INT]      Optional, cmd line port for the ",
+            help.AppendLine(String.Format(" {0}{1}{2}[INT]      Optional, cmd line port for the ",
+                Constants.CMD_LINE_ARG_SWITCH, AssemblyAnalysis.GET_ASM_INDICES_PORT_CMD_SWITCH,
+                Constants.CMD_LINE_ARG_ASSIGN));
+            help.AppendLine("                                 the GetAsmIndices, defaults to app.config.");
+            help.AppendLine("");
+            help.AppendLine(String.Format(" {0}{1}{2}[INT]      Optional, cmd line port for the ",
                 Constants.CMD_LINE_ARG_SWITCH, AssemblyAnalysis.GET_TOKEN_IDS_PORT_CMD_SWITCH,
                 Constants.CMD_LINE_ARG_ASSIGN));
-            help.AppendLine("                                 the DumpAllTokensCmd, defaults to app.config.");
+            help.AppendLine("                                 the GetTokenIds, defaults to app.config.");
             help.AppendLine("");
-            help.AppendLine(string.Format(" {0}{1}{2}[INT]      Optional, cmd line port for the ",
+            help.AppendLine(String.Format(" {0}{1}{2}[INT]      Optional, cmd line port for the ",
                 Constants.CMD_LINE_ARG_SWITCH, AssemblyAnalysis.GET_TOKEN_NAMES_PORT_CMD_SWITCH,
                 Constants.CMD_LINE_ARG_ASSIGN));
-            help.AppendLine("                                 the ResolveTokensCmd, defaults to app.config.");
+            help.AppendLine("                                 the GetTokenNames, defaults to app.config.");
+            help.AppendLine("");
+            help.AppendLine(String.Format(" {0}{1}{2}[BOOL]     Optional, cmd line switch for the ",
+                Constants.CMD_LINE_ARG_SWITCH, AssemblyAnalysis.RESOLVE_GAC_ASM_SWITCH,
+                Constants.CMD_LINE_ARG_ASSIGN));
+            help.AppendLine("                                 the GetTokenNames return names from ");
+            help.AppendLine("                                 assemblies in GAC, defaults to app.config.");
             help.AppendLine("");
 
             return help.ToString();

@@ -62,9 +62,9 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds
 
                 var refedAsms = asm.GetReferencedAssemblies();
                 tempList.Add(new MetadataTokenAsm {AssemblyName = asm.GetName().FullName, IndexId = 0});
-                for (var i = 1; i < refedAsms.Length; i++)
+                for (var i = 0; i < refedAsms.Length; i++)
                 {
-                    tempList.Add(new MetadataTokenAsm {AssemblyName = refedAsms[i].FullName, IndexId = i});
+                    tempList.Add(new MetadataTokenAsm {AssemblyName = refedAsms[i].FullName, IndexId = i + 1});
                 }
 
                 Program.AsmIndicies.Asms = tempList.ToArray();

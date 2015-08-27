@@ -20,7 +20,7 @@ namespace NoFuture.Tests.Util
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0, testResult.Length);
 
-            foreach(var t in testResult)
+            foreach (var t in testResult)
                 System.Diagnostics.Debug.WriteLine(t.ToString("X4"));
         }
 
@@ -50,7 +50,7 @@ namespace NoFuture.Tests.Util
                     System.IO.File.ReadAllBytes(
                         @"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\ThirdDll.dll"));
             var myTestType = myAsm.GetType("AdventureWorks.VeryBadCode.Program");
-            var testResult = NoFuture.Util.Binary.Asm.GetMetadataToken(myTestType);
+            var testResult = NoFuture.Util.Gia.AssemblyAnalysis.GetMetadataToken(myTestType);
             Assert.IsNotNull(testResult);
             Assert.IsNotNull(testResult.Items);
             Assert.AreNotEqual(0, testResult.Items.Length);

@@ -14,6 +14,7 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds
             Program.PrintToConsole("GetTokenIds invoked");
             try
             {
+                Assembly asm;
                 if (Program.AsmInited != true)
                 {
                     Program.PrintToConsole("no assemblies are loaded - call GetAsmIndices");
@@ -27,48 +28,33 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds
                 }
                 if (arg == null || arg.Length <= 0)
                 {
-                    Program.PrintToConsole("the arg for GetTokenIds is null or empty");
-                    return EncodedResponse(
-                            new TokenIds
-                            {
-                                Msg = "the arg for GetTokenIds is null or empty",
-                                St = MetadataTokenStatus.Error
-                            });
-                } 
-                
-                var asmName =
-                    JsonConvert.DeserializeObject<string>(Encoding.UTF8.GetString(arg));
-
-                if (string.IsNullOrWhiteSpace(asmName))
-                {
-                    Program.PrintToConsole("could not deserialize the byte array");
-                    return EncodedResponse(
-                        new TokenIds
-                        {
-                            Msg = "could not deserialize the byte array",
-                            St = MetadataTokenStatus.Error
-                        });
-
-                }
-
-                Assembly asm;
-                if (
-                    Program.AsmIndicies.Asms.All(
-                        x =>
-                            string.Equals(x.AssemblyName, asmName,
-                                StringComparison.OrdinalIgnoreCase)))
-                {
                     asm = Program.Assembly;
                 }
                 else
                 {
-                    asm = AppDomain.CurrentDomain.GetAssemblies()
-                        .FirstOrDefault(
-                            x =>
-                                string.Equals(x.GetName().FullName, asmName,
-                                    StringComparison.OrdinalIgnoreCase));
-                }
+                    var asmName = Encoding.UTF8.GetString(arg);
 
+                    if (string.IsNullOrWhiteSpace(asmName))
+                    {
+                        Program.PrintToConsole("could not deserialize the byte array");
+                        return EncodedResponse(
+                            new TokenIds
+                            {
+                                Msg = "could not deserialize the byte array",
+                                St = MetadataTokenStatus.Error
+                            });
+
+                    }
+
+                    var allAsms = Constants.UseReflectionOnlyLoad
+                        ? AppDomain.CurrentDomain.ReflectionOnlyGetAssemblies()
+                        : AppDomain.CurrentDomain.GetAssemblies();
+
+                    asm =
+                        allAsms.FirstOrDefault(
+                            x => string.Equals(x.GetName().FullName, asmName, StringComparison.OrdinalIgnoreCase));
+                }
+                
                 if (asm == null)
                 {
                     Program.PrintToConsole("could not locate a matching assembly");
@@ -81,7 +67,7 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds
                 }
 
                 var asmTypes = asm.GetTypes();
-                var tokens = asmTypes.Select(Gia.AssemblyAnalysis.GetMetadataToken).ToList();
+                var tokens = asmTypes.Select(AssemblyAnalysis.GetMetadataToken).ToList();
 
                 return EncodedResponse(
                     new TokenIds
