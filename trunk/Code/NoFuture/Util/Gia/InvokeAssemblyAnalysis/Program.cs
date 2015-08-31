@@ -11,6 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using NoFuture.Exceptions;
 using NoFuture.Shared;
+using NoFuture.Util.Binary;
 using NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds;
 
 namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
@@ -321,19 +322,20 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
                 return false;
             }
 
-            metadataToken.Id = metadataToken.Id;
             metadataToken.Name = mi.Name;
             metadataToken.Label = mi.GetType().Name;
 
+            string asmQualName;
             string asmName;
+            string expandedName;
 
             var type = mi as Type;
 
             if (type != null)
             {
-                //do not sent back GAC assemblies - too big
-                asmName = type.Assembly.GetName().FullName;
-                if (!ResolveGacAssemblies && IsIgnore(asmName))
+                asmQualName = type.Assembly.GetName().FullName;
+                //do not send back GAC asm's unless asked
+                if (!ResolveGacAssemblies && IsIgnore(asmQualName))
                     return false;
 
                 var t =
@@ -342,14 +344,21 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
                             String.Equals(x.AssemblyName, type.Assembly.GetName().FullName,
                                 StringComparison.OrdinalIgnoreCase));
 
-                metadataToken.Label = type.Name;
+                asmName = type.Assembly.GetName().Name;
+                expandedName = !string.IsNullOrEmpty(asmName)
+                    ? type.FullName.Replace(string.Format("{0}.", asmName), string.Empty)
+                    : type.Name;
+                if (!string.Equals(expandedName, metadataToken.Name, StringComparison.OrdinalIgnoreCase))
+                    metadataToken.Name = expandedName;
+
                 metadataToken.AsmIndexId = t != null ? t.IndexId : 0;
                 return true;
             }
             if (mi.DeclaringType == null) return true;
 
-            asmName = mi.DeclaringType.Assembly.GetName().FullName;
-            if (!ResolveGacAssemblies && IsIgnore(asmName))
+            asmQualName = mi.DeclaringType.Assembly.GetName().FullName;
+            //do not send back GAC asm's unless asked
+            if (!ResolveGacAssemblies && IsIgnore(asmQualName))
                 return false;
 
             var f =
@@ -358,8 +367,28 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
                         String.Equals(x.AssemblyName, mi.DeclaringType.Assembly.GetName().FullName,
                             StringComparison.OrdinalIgnoreCase));
 
-            metadataToken.Label = mi.DeclaringType.Name;
+            asmName = mi.DeclaringType.Assembly.GetName().Name;
+            expandedName = !string.IsNullOrEmpty(asmName)
+                ? mi.DeclaringType.FullName.Replace(string.Format("{0}.", asmName), string.Empty)
+                : mi.DeclaringType.Name;
+            if (!string.Equals(expandedName, metadataToken.Name, StringComparison.OrdinalIgnoreCase))
+                metadataToken.Name = string.Format("{0}::{1}", expandedName, metadataToken.Name);
+
             metadataToken.AsmIndexId = f != null ? f.IndexId : 0;
+
+            var mti = mi as MethodInfo;
+            if (mti == null)
+                return true;
+
+            var mtiParams = mti.GetParameters();
+            if (mtiParams.Length <= 0)
+            {
+                metadataToken.Name = string.Format("{0}()", metadataToken.Name);
+                return true;
+            }
+
+            metadataToken.Name = string.Format("{0}({1})", metadataToken.Name,
+                string.Join(",", mtiParams.Select(x => x.ParameterType.Name)));
 
             return true;
         }

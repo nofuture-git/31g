@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Newtonsoft.Json;
 using NoFuture.Shared;
@@ -49,7 +50,7 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds
                     {
                         var cid = tokens[i];
                         
-                        if (Program.DisolutionCache.Contains(cid))
+                        if (Program.DisolutionCache.Contains(cid) || names.Any(x => x.Id == cid))
                             continue;
 
                         if (Program.ResolutionCache.ContainsKey(cid))
@@ -78,8 +79,8 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds
                         continue;
                     }
                 }
-                
-                return EncodedResponse(new TokenNames(){Names = names.ToArray()});
+
+                return EncodedResponse(new TokenNames {Names = names.ToArray()});
             }
             catch (Exception ex)
             {

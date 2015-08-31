@@ -32,7 +32,7 @@ namespace NoFuture.Util.Gia
         #endregion
 
         #region fields
-        private readonly InvokeDumpMetadataKey _myProcessPorts;
+        private readonly InvokeAssemblyAnalysisId _myProcessPorts;
         private readonly AsmIndicies _asmIndices;
         #endregion
 
@@ -40,10 +40,10 @@ namespace NoFuture.Util.Gia
         /// <summary>
         /// Data concerning the launch of <see cref="StartNewDumpMetadaTokenProcess"/>
         /// </summary>
-        public class InvokeDumpMetadataKey
+        public class InvokeAssemblyAnalysisId
         {
             private readonly int _pid;
-            public InvokeDumpMetadataKey(int pid)
+            public InvokeAssemblyAnalysisId(int pid)
             {
                 _pid = pid;
             }
@@ -82,6 +82,7 @@ namespace NoFuture.Util.Gia
         /// A mapping of index ids to assembly names.
         /// </summary>
         public AsmIndicies AsmIndicies { get { return _asmIndices; } }
+        public InvokeAssemblyAnalysisId Id { get { return _myProcessPorts; } }
         #endregion
 
         #region ctors
@@ -172,7 +173,7 @@ namespace NoFuture.Util.Gia
         /// <param name="ports"></param>
         /// <param name="resolveGacAsmNames"></param>
         /// <returns></returns>
-        public static Tuple<InvokeDumpMetadataKey, Process> StartNewDumpMetadaTokenProcess(string assemblyPath, bool resolveGacAsmNames, params int[] ports)
+        public static Tuple<InvokeAssemblyAnalysisId, Process> StartNewDumpMetadaTokenProcess(string assemblyPath, bool resolveGacAsmNames, params int[] ports)
         {
 
             var port00 = ports != null && ports.Length >= 1 ? ports[0] : DF_START_PORT;
@@ -202,7 +203,7 @@ namespace NoFuture.Util.Gia
 
             proc.Start();
             Thread.Sleep(Constants.ThreadSleepTime);
-            var key = new InvokeDumpMetadataKey(proc.Id)
+            var key = new InvokeAssemblyAnalysisId(proc.Id)
             {
                 AssemblyPath = assemblyPath,
                 GetAsmIndiciesPort = port00,
@@ -210,7 +211,7 @@ namespace NoFuture.Util.Gia
                 GetTokenNamesPort = port02
             };
 
-            return new Tuple<InvokeDumpMetadataKey, Process>(key, proc);
+            return new Tuple<InvokeAssemblyAnalysisId, Process>(key, proc);
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
