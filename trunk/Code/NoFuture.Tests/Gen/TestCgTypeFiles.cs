@@ -133,5 +133,49 @@ namespace NoFuture.Tests.Gen
             
         }
 
+        [TestMethod]
+        public void TestFilterNamespaceImportStmts()
+        {
+            var testOriginals = new[]
+            {
+                "using System;",
+                "using System.Configuration;",
+                "using System.Data;",
+                "using System.Data.SqlClient;",
+                "using System.Globalization;",
+                "using System.Net;",
+                "using System.Net.Mail;",
+                "using System.Web.UI;",
+                "using System.Xml.XPath;",
+                "using Resources;",
+                "using Wankie.BBT.Common.Constants;",
+                "using Wankie.BBT.Common.U_tity;",
+                "using Wankie.BBT.DTO.Properties;"
+            };
+
+            var testIncludes = new[] {"System*", "Wankie.BBT.Common.*"};
+
+            var testExcludes = new[] {"System.Net*"};
+
+            var testResult = NoFuture.Gen.CgTypeFiles.FilterNamespaceImportStmts(testOriginals, testIncludes,
+                testExcludes);
+
+            Assert.IsNotNull(testResult);
+            Assert.AreNotEqual(0, testResult.Length);
+            foreach(var rslt in testResult)
+                System.Diagnostics.Debug.WriteLine(rslt);
+
+            System.Diagnostics.Debug.WriteLine("-----");
+
+            testIncludes = new[] {"*"};
+            testResult = NoFuture.Gen.CgTypeFiles.FilterNamespaceImportStmts(testOriginals, testIncludes,
+                testExcludes);
+
+            Assert.IsNotNull(testResult);
+            Assert.AreNotEqual(0, testResult.Length);
+            foreach (var rslt in testResult)
+                System.Diagnostics.Debug.WriteLine(rslt);
+        }
+
     }
 }

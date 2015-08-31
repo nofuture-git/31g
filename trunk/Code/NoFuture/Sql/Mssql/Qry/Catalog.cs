@@ -235,8 +235,8 @@ SELECT  ( CASE WHEN ( @IsId = 0 ) THEN 'false'
           END ) AS " + IS_IDENTITY;
 
         public const string ProcsAndParams = @"
-SELECT  [PROCS].[name] AS [PROC_NAME] AS " + PROC_NAME + @",
-        [PARAMS].[name] AS [PARAM_NAME] AS " + PARAM_NAME + @"
+SELECT  [PROCS].[name] AS " + PROC_NAME + @",
+        [PARAMS].[name] AS " + PARAM_NAME + @"
 FROM    sys.procedures AS [PROCS]
         JOIN sys.all_parameters AS [PARAMS] ON [PROCS].[object_id] = [PARAMS].[object_id]
 ORDER BY [PROCS].[name] ,

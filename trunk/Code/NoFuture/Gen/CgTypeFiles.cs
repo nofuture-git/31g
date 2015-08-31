@@ -278,8 +278,10 @@ namespace NoFuture.Gen
         /// <param name="newVariableName"></param>
         /// <param name="outFilePath"></param>
         /// <param name="outFileNamespaceAndTypeName"></param>
+        /// <param name="includeUsingStmts">Optional filter for namespace imports statements to INCLUDE.</param>
+        /// <param name="excludeUsingStmts">Optional filter for namespace imports statements to EXCLUDE.</param>
         public void RefactorMethods(List<CgMember> moveMembers, string newVariableName, string outFilePath,
-            Tuple<string, string> outFileNamespaceAndTypeName)
+            Tuple<string, string> outFileNamespaceAndTypeName, string[] includeUsingStmts = null, string[] excludeUsingStmts = null)
         {
             if (moveMembers == null || moveMembers.Count < 0)
                 return;
@@ -303,12 +305,12 @@ namespace NoFuture.Gen
             var newNs = outFileNamespaceAndTypeName == null ||
                         string.IsNullOrWhiteSpace(outFileNamespaceAndTypeName.Item1)
                 ? cgtype.Namespace
-                : outFileNamespaceAndTypeName.Item1;
+                : TypeName.SafeDotNetTypeName(outFileNamespaceAndTypeName.Item1);
 
             var newTn = outFileNamespaceAndTypeName == null ||
                         string.IsNullOrWhiteSpace(outFileNamespaceAndTypeName.Item2)
                 ? cgtype.Name
-                : outFileNamespaceAndTypeName.Item2;
+                : TypeName.SafeDotNetTypeName(outFileNamespaceAndTypeName.Item2);
 
             var idxRefactor = new Dictionary<Tuple<int, int>, string[]>();
             var newCgType = new CgType { Namespace = newNs, Name = newTn };
@@ -328,7 +330,9 @@ namespace NoFuture.Gen
 
             if (!string.IsNullOrWhiteSpace(UsingStatementFile) && File.Exists(UsingStatementFile))
             {
-                File.WriteAllLines(outFilePath, File.ReadAllLines(UsingStatementFile));
+                File.WriteAllLines(outFilePath,
+                    FilterNamespaceImportStmts(File.ReadAllLines(UsingStatementFile), includeUsingStmts,
+                        excludeUsingStmts));
             }
             else
             {
@@ -529,6 +533,65 @@ namespace NoFuture.Gen
                     .Take(endAtLen + Settings.PdbLinesEndAtAddition)
                     .ToArray();
             
+        }
+
+        internal static string[] FilterNamespaceImportStmts(string[] originalUsingStatements, string[] include, string[] exclude)
+        {
+            if (originalUsingStatements == null || originalUsingStatements.Length == 0)
+                return new[] { string.Empty };
+
+            if (include == null && exclude == null)
+                return originalUsingStatements;
+
+            var filteredStmts = new List<string>();
+
+            if (include != null && include.Length == 1 && include[0].Trim() == "*")
+                include = null;
+
+            //add in matches
+            if (include != null)
+            {
+                foreach (var originStmt in originalUsingStatements)
+                {
+                    if (filteredStmts.Contains(originStmt))
+                        continue;
+                    foreach (var filter in include)
+                    {
+                        if (filter.Trim().EndsWith("*") && originStmt.Contains(filter.Trim().Replace("*", string.Empty)))
+                        {
+                            filteredStmts.Add(originStmt);
+                            continue;
+                        }
+
+                        if (originStmt.Replace(";", string.Empty).EndsWith(filter))
+                            filteredStmts.Add(originStmt);
+                    }
+                }
+            }
+            else
+            {
+                filteredStmts.AddRange(originalUsingStatements);
+            }
+            if (exclude == null)
+                return filteredStmts.ToArray();
+
+            //remove exclusions
+            foreach (var filtered in filteredStmts.ToArray())
+            {
+                foreach (var filter in exclude)
+                {
+                    if (filter.Trim().EndsWith("*") && filtered.Contains(filter.Trim().Replace("*", string.Empty)) && filteredStmts.Contains(filtered))
+                    {
+                        filteredStmts.Remove(filtered);
+                        continue;
+                    }
+
+                    if (filtered.Replace(";", string.Empty).EndsWith(filter) && filteredStmts.Contains(filtered))
+                        filteredStmts.Remove(filtered);
+                }
+            }
+
+            return filteredStmts.ToArray();
         }
 
         private bool ReadAllLinesOfOriginalSource()
