@@ -170,14 +170,18 @@ namespace NoFuture.Gen.LangRules
             }
             else
             {
-                regexPattern.Append("(");
-                regexPattern.Append(@"this\x2e");
                 if (varNames.Length > 0)
                 {
-                    regexPattern.Append(string.Join(@"\x2e|", varNames.Select(x => Util.Etc.EscapeString(x, EscapeStringType.REGEX))));
+                    regexPattern.Append("(");
+                    regexPattern.Append(string.Join(@"\x2e|",
+                        varNames.Select(x => Util.Etc.EscapeString(x, EscapeStringType.REGEX))));
                     regexPattern.Append(@"\x2e");
+                    regexPattern.Append(")");
                 }
-                regexPattern.Append(")?");
+                else
+                {
+                    regexPattern.Append(@"((this\x2e)|(?<!\.))");
+                }
                 
             }
 
@@ -197,6 +201,8 @@ namespace NoFuture.Gen.LangRules
             }
             else if (cgMem.Args.Count > 0)
                 regexPattern.AppendFormat(@"\s*?\({0}\)", string.Join(@"\,", cgMem.Args.Select(x => x.AsInvokeRegexPattern)));
+            else if (cgMem.IsMethod)
+                regexPattern.Append(@"\(\s*?\)");
 
             return regexPattern.ToString();
         }
@@ -520,7 +526,9 @@ namespace NoFuture.Gen.LangRules
             var curlyCount = EnclosureCharsCount(codeBlockLines);
 
             if (curlyCount == 0)
-                return codeBlockLines.Where(ln => !String.IsNullOrWhiteSpace(ln)).ToArray();
+                return
+                    CleanupPdbLinesCodeBlockAddTryKeyword(
+                        codeBlockLines.Where(ln => !String.IsNullOrWhiteSpace(ln)).ToArray());
 
             //get last line which must contain non-whitespace
             var lastLine = codeBlockLines[(codeBlockLines.Length - 1)];
@@ -546,7 +554,7 @@ namespace NoFuture.Gen.LangRules
 
                 }
 
-                return codeBlockLines;
+                return CleanupPdbLinesCodeBlockAddTryKeyword(codeBlockLines);
             }
 
             //this is the case when there are extra openning curly's at the beginning
@@ -554,11 +562,29 @@ namespace NoFuture.Gen.LangRules
             newLastLine.Append(lastLine);
             for (var m = 0; m < curlyCount; m++)
             {
-                newLastLine.Append('}');
+                newLastLine.Append(C_CLOSE_CURLY);
             }
             codeBlockLines[(codeBlockLines.Length - 1)] = newLastLine.ToString();
 
-            return codeBlockLines.Where(ln => !String.IsNullOrWhiteSpace(ln)).ToArray();
+            return CleanupPdbLinesCodeBlockAddTryKeyword(codeBlockLines.Where(ln => !String.IsNullOrWhiteSpace(ln)).ToArray());
+        }
+
+        //HACK - PDB will drop a line having only the keyword 'try' when its the very first line in the body...
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        internal static string[] CleanupPdbLinesCodeBlockAddTryKeyword(string[] codeBlockLines)
+        {
+            var cbl = codeBlockLines.Where(ln => !String.IsNullOrWhiteSpace(ln)).ToArray();
+            if (cbl[0].Trim().ToCharArray()[0] == C_OPEN_CURLY)
+            {
+                var dd = new StringBuilder();
+                var dk = cbl[0].IndexOf(C_OPEN_CURLY);
+                dd.Append(cbl[0].Substring(0, dk));
+                dd.Append("try");
+                dd.Append(cbl[0].Substring(dk));
+                cbl[0] = dd.ToString();
+            }
+
+            return cbl;
         }
 
         public string TransformClrTypeSyntax(string typeToString)
@@ -725,9 +751,6 @@ namespace NoFuture.Gen.LangRules
                     continue;
                 firstLine += 1;
             }
-            //add one more
-            if (firstLine > 1)
-                firstLine += 1;
 
             return firstLine > 1;
         }

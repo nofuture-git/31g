@@ -69,7 +69,7 @@ namespace NoFuture.Gen.LangRules
         /// Renders the invocation of <see cref="cgMem"/> as a regex pattern.
         /// </summary>
         /// <param name="cgMem"></param>
-        /// <param name="varNames"></param>
+        /// <param name="varNames">The variables which may preceed the member invocation (e.g. myVariable.MyMethod)</param>
         /// <returns></returns>
         string ToInvokeRegex(CgMember cgMem, params string[] varNames);
 

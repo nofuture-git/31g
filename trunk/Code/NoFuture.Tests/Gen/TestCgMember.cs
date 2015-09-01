@@ -130,5 +130,27 @@ namespace NoFuture.Tests.Gen
             System.Diagnostics.Debug.WriteLine(testResult);
 
         }
+
+        [TestMethod]
+        public void TestAsInvokeRegexPattern02()
+        {
+            var testSubject = new CgMember()
+            {
+                Name = "ToString",
+                TypeName = "System.String",
+                IsMethod = true
+            };
+
+            var testResult = testSubject.AsInvokeRegexPattern();
+
+            var testCompare =
+                "command.Parameters.Add(new SqlParameter(\"@createUser\", Convert.ToString(Session[SessionContants.LoggedInEntityId])));";
+            Assert.IsFalse(System.Text.RegularExpressions.Regex.IsMatch(testCompare, testResult));
+            System.Diagnostics.Debug.WriteLine(testResult);
+
+            testCompare = "somethingElse.InvokeMe(4,true,\"sd\");var mysomething=ToString()";
+            Assert.IsTrue(System.Text.RegularExpressions.Regex.IsMatch(testCompare, testResult));
+
+        }
     }
 }

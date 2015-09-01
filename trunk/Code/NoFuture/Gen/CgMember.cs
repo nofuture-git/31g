@@ -260,15 +260,32 @@ namespace NoFuture.Gen
 
             var instanceMembers =
                 _myCgType.Fields.Where(f => Regex.IsMatch(flattenCode, f.AsInvokeRegexPattern())).ToList();
-            dependencyArgs.AddRange(instanceMembers.Select(ic => Settings.LangStyle.ToParam(ic,false)));
+
+            //apply filters since arg names and types may be duplicated with instance variables.
+            dependencyArgs.AddRange(
+                instanceMembers.Select(ic => Settings.LangStyle.ToParam(ic, false))
+                    .Where(x => Args.All(myArg => !myArg.Equals(x) && dependencyArgs.All(nArg => !nArg.Equals(x)))));
 
             instanceMembers =
                 _myCgType.Properties.Where(p => Regex.IsMatch(flattenCode, p.AsInvokeRegexPattern())).ToList();
-            dependencyArgs.AddRange(instanceMembers.Select(ic => Settings.LangStyle.ToParam(ic, false)));
+            dependencyArgs.AddRange(
+                instanceMembers.Select(ic => Settings.LangStyle.ToParam(ic, false))
+                    .Where(x => Args.All(myArg => !myArg.Equals(x) && dependencyArgs.All(nArg => !nArg.Equals(x)))));
 
             instanceMembers =
-                _myCgType.Methods.Where(m => Regex.IsMatch(flattenCode, m.AsInvokeRegexPattern())).ToList();
-            dependencyArgs.AddRange(instanceMembers.Select(ic => Settings.LangStyle.ToParam(ic, true)));
+                _myCgType.Methods.Where(
+                    m => Regex.IsMatch(flattenCode, m.AsInvokeRegexPattern())).ToList();
+            dependencyArgs.AddRange(
+                instanceMembers.Select(ic => Settings.LangStyle.ToParam(ic, true))
+                    .Where(x => Args.All(myArg => !myArg.Equals(x) && dependencyArgs.All(nArg => !nArg.Equals(x)))));
+
+            //arg names common to obj methods will cause confusion
+            var objMethods = typeof (object).GetMethods().Select(x => x.Name).ToArray();
+            foreach (var dpArg in dependencyArgs)
+            {
+                if (objMethods.Contains(dpArg.ArgName))
+                    dpArg.ArgName = string.Format("{0}{1}", Util.TypeName.DEFAULT_NAME_PREFIX, dpArg.ArgName);
+            }
 
             return dependencyArgs;
         }

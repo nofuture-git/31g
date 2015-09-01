@@ -189,7 +189,8 @@ namespace NoFuture.Gen
             if (!ReadAllLinesOfOriginalSource())
                 return;
 
-            File.WriteAllLines(UsingStatementFile, Settings.LangStyle.ExtractNamespaceImportStatements(_srcFileContent));
+            File.WriteAllLines(UsingStatementFile, Settings.LangStyle.ExtractNamespaceImportStatements(_srcFileContent),
+                Encoding.UTF8);
         }
 
         /// <summary>
@@ -310,7 +311,7 @@ namespace NoFuture.Gen
             var newTn = outFileNamespaceAndTypeName == null ||
                         string.IsNullOrWhiteSpace(outFileNamespaceAndTypeName.Item2)
                 ? cgtype.Name
-                : TypeName.SafeDotNetTypeName(outFileNamespaceAndTypeName.Item2);
+                : TypeName.SafeDotNetIdentifier(outFileNamespaceAndTypeName.Item2);
 
             var idxRefactor = new Dictionary<Tuple<int, int>, string[]>();
             var newCgType = new CgType { Namespace = newNs, Name = newTn };
@@ -332,15 +333,15 @@ namespace NoFuture.Gen
             {
                 File.WriteAllLines(outFilePath,
                     FilterNamespaceImportStmts(File.ReadAllLines(UsingStatementFile), includeUsingStmts,
-                        excludeUsingStmts));
+                        excludeUsingStmts), Encoding.UTF8);
             }
             else
             {
-                File.WriteAllText(outFilePath, string.Empty);
+                File.WriteAllText(outFilePath, string.Empty, Encoding.UTF8);
             }
 
             File.AppendAllText(outFilePath,
-                Settings.LangStyle.ToClass(newCgType, CgAccessModifier.Public, CgClassModifier.AsIs));
+                Settings.LangStyle.ToClass(newCgType, CgAccessModifier.Public, CgClassModifier.AsIs), Encoding.UTF8);
 
             //now must modify existing file
             var src = OriginalSourceFileContent;
@@ -379,7 +380,7 @@ namespace NoFuture.Gen
             src = g.ToArray();
 
             //write the new content out to the file
-            File.WriteAllLines(OriginalSource, src);
+            File.WriteAllLines(OriginalSource, src, Encoding.UTF8);
         }
         #endregion
 

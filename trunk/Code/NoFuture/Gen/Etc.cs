@@ -322,7 +322,7 @@ namespace NoFuture.Gen
             //have events go first since they tend to be speard across fields and properties
             foreach (
                 var evtInfo in
-                    asmType.GetEvents(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.NonPublic |
+                    asmType.GetEvents(BindingFlags.Static | BindingFlags.Instance | BindingFlags.NonPublic |
                                       BindingFlags.Public))
             {
                 var evtHandlerType = evtInfo.NfEventHandlerType().ToString();
@@ -337,7 +337,7 @@ namespace NoFuture.Gen
             }
 
             var asmMembers =
-                asmType.GetMembers(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.NonPublic |
+                asmType.GetMembers(BindingFlags.Static | BindingFlags.Instance | BindingFlags.NonPublic |
                                    BindingFlags.Public);
 
             foreach (var mi in asmMembers)
