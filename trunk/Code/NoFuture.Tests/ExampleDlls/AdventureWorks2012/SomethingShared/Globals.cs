@@ -10,6 +10,15 @@ namespace SomethingShared
     {
         public const string SomeGlobal = "I AM GLOBAL";
 
+        public const long AnotherGlobal = 145214L;
+
+        public static int SomeStaticMethod(Entity00 e)
+        {
+            e.Id = e.Id + 1;
+            e.LastName = SomeGlobal;
+
+            return e.Id;
+        }
     }
 
     public class ArgsObject
@@ -26,5 +35,10 @@ namespace SomethingShared
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public int Id { get; set; }
+
+        public bool MyValidationMethod()
+        {
+            return Id > 0;
+        }
     }
 }

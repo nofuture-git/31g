@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using System.Text;
 using NoFuture.Shared;
 
@@ -53,22 +54,8 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds
                         });
                 }
 
-                Program.ManifestModule = asm.ManifestModule;
-                Program.Assembly = asm;
-                Program.ResolutionCache.Clear();
-                Program.DisolutionCache.Clear();
-                Program.DisolutionCache.Add(0);
-                var tempList = new List<MetadataTokenAsm>();
-
-                var refedAsms = asm.GetReferencedAssemblies();
-                tempList.Add(new MetadataTokenAsm {AssemblyName = asm.GetName().FullName, IndexId = 0});
-                for (var i = 0; i < refedAsms.Length; i++)
-                {
-                    tempList.Add(new MetadataTokenAsm {AssemblyName = refedAsms[i].FullName, IndexId = i + 1});
-                }
-
-                Program.AsmIndicies.Asms = tempList.ToArray();
-                Program.AsmIndicies.St = MetadataTokenStatus.Ok;
+                Init(asm);
+                AssignAsmIndicies(asm);
 
                 return EncodedResponse(Program.AsmIndicies);
             }
@@ -82,6 +69,30 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds
                         St = MetadataTokenStatus.Error
                     });
             }
+        }
+
+        internal static void Init(Assembly asm)
+        {
+            Program.ManifestModule = asm.ManifestModule;
+            Program.RootAssembly = asm;
+            Program.TokenId2NameCache.Clear();
+            Program.DisolutionCache.Clear();
+            Program.DisolutionCache.Add(new MetadataTokenId());//empty token Id
+        }
+
+        internal static void AssignAsmIndicies(Assembly asm)
+        {
+            var tempList = new List<MetadataTokenAsm>();
+
+            var refedAsms = asm.GetReferencedAssemblies();
+            tempList.Add(new MetadataTokenAsm { AssemblyName = asm.GetName().FullName, IndexId = 0 });
+            for (var i = 0; i < refedAsms.Length; i++)
+            {
+                tempList.Add(new MetadataTokenAsm { AssemblyName = refedAsms[i].FullName, IndexId = i + 1 });
+            }
+
+            Program.AsmIndicies.Asms = tempList.ToArray();
+            Program.AsmIndicies.St = MetadataTokenStatus.Ok;            
         }
     }
 }

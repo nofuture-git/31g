@@ -1207,6 +1207,147 @@ namespace using_LINQ_with_generics
 
             Console.ReadKey();
         }
-
     }
+    public class SetOps
+    {
+        #region dependent on GetHashCode
+        public static List<object> Intersect(List<object> leftList,
+            List<object> rightList)
+        {
+            Func<object, int> identity = x => x.GetHashCode();
+            return Intersect(leftList, rightList, identity);
+        }
+
+        public static List<object> Union(List<object> leftList,
+            List<object> rightList)
+        {
+            Func<object, int> identity = x => x.GetHashCode();
+            return Union(leftList, rightList, identity);
+        }
+
+        public static List<object> LeftSetDiff(List<object> leftList,
+            List<object> rightList)
+        {
+            Func<object, int> identity = x => x.GetHashCode();
+            return LeftSetDiff(leftList, rightList, identity);
+        }
+
+        public static List<object> RightSetDiff(List<object> leftList,
+            List<object> rightList)
+        {
+            Func<object, int> identity = x => x.GetHashCode();
+            return RightSetDiff(leftList, rightList, identity);
+        }
+
+        public static List<object> SymetricDiff(List<object> leftList, List<object> rightList)
+        {
+            Func<object, int> identity = x => x.GetHashCode();
+            return SymetricDiff(leftList, rightList, identity);
+        }
+
+        #endregion
+
+        #region calling assembly specify identity resolution
+        public static List<T> Intersect<T>(List<T> leftList,
+            List<T> rightList, Func<T, int> identity)
+        {
+            if (leftList == null || rightList == null || identity == null)
+                return new List<T>();
+
+            var setOperation = leftList.Select(identity).Intersect(rightList.Select(identity));
+            return ConsolidateFromHashCode(setOperation, leftList, rightList, identity);
+        }
+
+        public static List<T> Union<T>(List<T> leftList,
+            List<T> rightList, Func<T, int> identity)
+        {
+            if (identity == null)
+                return new List<T>();
+            if (leftList == null && rightList == null)
+                return new List<T>();
+            if (rightList == null)
+                return leftList;
+            if (leftList == null)
+                return rightList;
+
+            var setOperation = leftList.Select(identity).Union(rightList.Select(identity));
+            return ConsolidateFromHashCode(setOperation, leftList, rightList, identity);
+        }
+
+        public static List<T> LeftSetDiff<T>(List<T> leftList,
+            List<T> rightList, Func<T, int> identity)
+        {
+            if (identity == null)
+                return new List<T>();
+            if (leftList == null && rightList == null)
+                return new List<T>();
+            if (rightList == null)
+                return leftList;
+            if (leftList == null)
+                return new List<T>();
+
+            var setOperation = leftList.Select(identity).Except(rightList.Select(identity));
+            return ConsolidateFromHashCode(setOperation, leftList, rightList, identity);
+        }
+
+        public static List<T> RightSetDiff<T>(List<T> leftList,
+            List<T> rightList, Func<T, int> identity)
+        {
+            if (identity == null)
+                return new List<T>();
+            if (leftList == null && rightList == null)
+                return new List<T>();
+            if (rightList == null)
+                return new List<T>();
+            if (leftList == null || leftList.Count <= 0)
+                return rightList;
+
+            var setOperation = rightList.Select(identity).Except(leftList.Select(identity));
+            return ConsolidateFromHashCode(setOperation, leftList, rightList, identity);
+        }
+
+        public static List<T> SymetricDiff<T>(List<T> leftList, List<T> rightList, Func<T, int> identity)
+        {
+            if (identity == null)
+                return new List<T>();
+            if (leftList == null && rightList == null)
+                return new List<T>();
+            if (rightList == null)
+                return leftList;
+            if (leftList == null)
+                return rightList;
+
+            var setOperation =
+                leftList.Select(identity)
+                    .Except(rightList.Select(identity))
+                    .Union(rightList.Select(identity).Except(leftList.Select(identity)));
+            return ConsolidateFromHashCode(setOperation, leftList, rightList, identity);
+        }
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        private static List<T> ConsolidateFromHashCode<T>(IEnumerable<int> setOperation,
+            List<T> leftList, List<T> rightList, Func<T, int> identity )
+        {
+            if (setOperation == null)
+                return new List<T>();
+            if (leftList == null && rightList == null)
+                return new List<T>();
+            if (rightList == null)
+                return leftList;
+            if (leftList == null)
+                return rightList;
+
+            var listOut = new List<T>();
+            foreach (var hc in setOperation)
+            {
+                var l = leftList.FirstOrDefault(x => identity(x) == hc);
+                if(Equals(l, null))
+                    l = rightList.First(x => identity(x) == hc);
+
+                listOut.Add(l);
+            }
+            return listOut;
+        }
+        #endregion
+    }	
 }

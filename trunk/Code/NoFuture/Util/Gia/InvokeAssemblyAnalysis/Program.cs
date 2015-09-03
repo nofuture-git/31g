@@ -34,13 +34,15 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
         private static int? _getTokenIdsCmdPort;
         private static int? _getasmIndicesCmdPort;
         private static bool? _resolveGacAsms;
-        private static string[] _gacAsmNames;
-        private static readonly Dictionary<int, MetadataTokenName> _resolutionCache =
-            new Dictionary<int, MetadataTokenName>();
-        private static readonly List<int> _disolutionCache = new List<int>();
+        private static readonly Dictionary<MetadataTokenId, MetadataTokenName> _tokenId2NameCache =
+            new Dictionary<MetadataTokenId, MetadataTokenName>();
+        private static readonly HashSet<MetadataTokenId> _disolutionCache = new HashSet<MetadataTokenId>();
+        private static readonly List<MetadataTokenId> _resolutionCache = new List<MetadataTokenId>();
         private static TaskFactory _taskFactory;
         private static string _logName;
         private static readonly AsmIndicies _asmIndices = new AsmIndicies();
+        private static int _maxRecursionDepth;
+        private readonly static Stack<int> _asmIdxStack = new Stack<int>();
         #endregion
 
         #region properties
@@ -49,22 +51,28 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
         {
             get
             {
-                return Assembly != null &&
+                return RootAssembly != null &&
                        ManifestModule != null &&
                        AsmIndicies.Asms != null &&
                        AsmIndicies.Asms.Length > 0;
             }
         }
 
-        internal static Assembly Assembly { get; set; }
+        internal static Assembly RootAssembly { get; set; }
         internal static Module ManifestModule { get; set; }
+        internal static string AssemblyNameRegexPattern { get; set; }
 
-        internal static Dictionary<int, MetadataTokenName> ResolutionCache
+        internal static Dictionary<MetadataTokenId, MetadataTokenName> TokenId2NameCache
+        {
+            get { return _tokenId2NameCache; }
+        }
+
+        internal static List<MetadataTokenId> ResolutionCache
         {
             get { return _resolutionCache; }
         }
 
-        internal static List<int> DisolutionCache
+        internal static HashSet<MetadataTokenId> DisolutionCache
         {
             get { return _disolutionCache; }
         }
@@ -81,7 +89,7 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
                 if (Net.IsValidPortNumber(_getTokenNamesCmdPort))
                     return _getTokenNamesCmdPort;
 
-                _getTokenNamesCmdPort = ResolvePort("GetTokenNamesCmdPort");
+                _getTokenNamesCmdPort = UtilityMethods.ResolvePort("GetTokenNamesCmdPort");
                 return _getTokenNamesCmdPort;
             }
         }
@@ -93,7 +101,7 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
                 if (Net.IsValidPortNumber(_getTokenIdsCmdPort))
                     return _getTokenIdsCmdPort;
 
-                _getTokenIdsCmdPort = ResolvePort("GetTokenIdsCmdPort");
+                _getTokenIdsCmdPort = UtilityMethods.ResolvePort("GetTokenIdsCmdPort");
                 return _getTokenIdsCmdPort;
             }
         }
@@ -105,7 +113,7 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
                 if (Net.IsValidPortNumber(_getasmIndicesCmdPort))
                     return _getasmIndicesCmdPort;
 
-                _getasmIndicesCmdPort = ResolvePort("GetAsmIndicesCmdPort");
+                _getasmIndicesCmdPort = UtilityMethods.ResolvePort("GetAsmIndicesCmdPort");
                 return _getasmIndicesCmdPort;
             }
         }
@@ -134,35 +142,29 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
                 return _logName;
             }
         }
+
+        internal static int MaxRecursionDepth
+        {
+            get
+            {
+                if (_maxRecursionDepth > 0)
+                    return _maxRecursionDepth;
+                var t = UtilityMethods.ResolveInt(ConfigurationManager.AppSettings["MaxRecursionDepth"]);
+                if (t == null)
+                    return 0;
+                _maxRecursionDepth = t.Value;
+                return _maxRecursionDepth;
+            }
+        }
         #endregion
 
         #region methods
-        internal static int? ResolvePort(string appKey)
-        {
-            var cval = ConfigurationManager.AppSettings[appKey];
-            return ResolveInt(cval);
-        }
 
-        internal static int? ResolveInt(string cval)
-        {
-            int valOut;
-            if (!String.IsNullOrWhiteSpace(cval) && Int32.TryParse(cval, out valOut))
-                return valOut;
-            return null;
-        }
-
-        internal static bool? ResolveBool(string cval)
-        {
-            bool valOut;
-            if (!String.IsNullOrWhiteSpace(cval) && Boolean.TryParse(cval, out valOut))
-                return valOut;
-            return null;
-        }
 
         internal static void SetReflectionOnly()
         {
             var useReflectionOnly =
-                ResolveBool(ConfigurationManager.AppSettings["NoFuture.Shared.Constants.UseReflectionOnlyLoad"]);
+                UtilityMethods.ResolveBool(ConfigurationManager.AppSettings["NoFuture.Shared.Constants.UseReflectionOnlyLoad"]);
             Constants.UseReflectionOnlyLoad = useReflectionOnly != null && useReflectionOnly.Value;
         }
 
@@ -173,7 +175,7 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
                 if (_resolveGacAsms != null)
                     return _resolveGacAsms.Value;
 
-                _resolveGacAsms = ResolveBool(ConfigurationManager.AppSettings["ResolveGacAssemblies"]);
+                _resolveGacAsms = UtilityMethods.ResolveBool(ConfigurationManager.AppSettings["ResolveGacAssemblies"]);
 
                 return _resolveGacAsms != null && _resolveGacAsms.Value;
             }
@@ -203,19 +205,19 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
                 var argHash = ConsoleCmd.ArgHash(args);
                 if (argHash.ContainsKey(AssemblyAnalysis.GET_TOKEN_IDS_PORT_CMD_SWITCH))
                 {
-                    _getTokenIdsCmdPort = ResolveInt(argHash[AssemblyAnalysis.GET_TOKEN_IDS_PORT_CMD_SWITCH].ToString());
+                    _getTokenIdsCmdPort = UtilityMethods.ResolveInt(argHash[AssemblyAnalysis.GET_TOKEN_IDS_PORT_CMD_SWITCH].ToString());
                 }
                 if (argHash.ContainsKey(AssemblyAnalysis.GET_TOKEN_NAMES_PORT_CMD_SWITCH))
                 {
-                    _getTokenNamesCmdPort = ResolveInt(argHash[AssemblyAnalysis.GET_TOKEN_NAMES_PORT_CMD_SWITCH].ToString());
+                    _getTokenNamesCmdPort = UtilityMethods.ResolveInt(argHash[AssemblyAnalysis.GET_TOKEN_NAMES_PORT_CMD_SWITCH].ToString());
                 }
                 if (argHash.ContainsKey(AssemblyAnalysis.GET_ASM_INDICES_PORT_CMD_SWITCH))
                 {
-                    _getasmIndicesCmdPort = ResolveInt(argHash[AssemblyAnalysis.GET_ASM_INDICES_PORT_CMD_SWITCH].ToString());
+                    _getasmIndicesCmdPort = UtilityMethods.ResolveInt(argHash[AssemblyAnalysis.GET_ASM_INDICES_PORT_CMD_SWITCH].ToString());
                 }
                 if (argHash.ContainsKey(AssemblyAnalysis.RESOLVE_GAC_ASM_SWITCH))
                 {
-                    _resolveGacAsms = ResolveBool(argHash[AssemblyAnalysis.RESOLVE_GAC_ASM_SWITCH].ToString());
+                    _resolveGacAsms = UtilityMethods.ResolveBool(argHash[AssemblyAnalysis.RESOLVE_GAC_ASM_SWITCH].ToString());
                 }
 
                 //print settings
@@ -266,9 +268,9 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
                     if (utTokenId > 0)
                     {
                         MetadataTokenName tokenNameOut;
-                        if (!ResolveSingleToken(utTokenId, out tokenNameOut))
+                        if (!UtilityMethods.ResolveSingleTokenName(new MetadataTokenId() {Id = utTokenId}, out tokenNameOut))
                             continue;
-                        var asmName = AsmIndicies.Asms.FirstOrDefault(x => x.IndexId == tokenNameOut.AsmIndexId);
+                        var asmName = AsmIndicies.Asms.FirstOrDefault(x => x.IndexId == tokenNameOut.ObyAsmIdx);
 
                         PrintToConsole(string.Format("{0,-20}{1}", "Name", tokenNameOut.Name));
                         PrintToConsole(string.Format("{0,-20}{1}", "Assembly",
@@ -288,138 +290,6 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
             }
         }
 
-        internal static bool PrintTypeNameByTokenId(string ut)
-        {
-            throw new NotImplementedException();
-        }
-
-        internal static bool PrintTokenIdByTypeName(string ut)
-        {
-            throw new NotImplementedException();
-        }
-
-        internal static bool ResolveSingleToken(int tokenId, out MetadataTokenName metadataToken)
-        {
-            metadataToken = new MetadataTokenName { Id = tokenId };
-            if (tokenId == 0)
-            {
-                return false;
-            }
-            var cid = metadataToken.Id;
-
-            MemberInfo mi;
-            try
-            {
-                mi = ManifestModule.ResolveMember(cid);
-            }
-            catch (ArgumentException)//does not resolve the token
-            {
-                return false;
-            }
-
-            if (mi == null)
-            {
-                return false;
-            }
-
-            metadataToken.Name = mi.Name;
-            metadataToken.Label = mi.GetType().Name;
-
-            string asmQualName;
-            string asmName;
-            string expandedName;
-
-            var type = mi as Type;
-
-            if (type != null)
-            {
-                asmQualName = type.Assembly.GetName().FullName;
-                //do not send back GAC asm's unless asked
-                if (!ResolveGacAssemblies && IsIgnore(asmQualName))
-                    return false;
-
-                var t =
-                    AsmIndicies.Asms.FirstOrDefault(
-                        x =>
-                            String.Equals(x.AssemblyName, type.Assembly.GetName().FullName,
-                                StringComparison.OrdinalIgnoreCase));
-
-                asmName = type.Assembly.GetName().Name;
-                expandedName = !string.IsNullOrEmpty(asmName)
-                    ? type.FullName.Replace(string.Format("{0}.", asmName), string.Empty)
-                    : type.Name;
-                if (!string.Equals(expandedName, metadataToken.Name, StringComparison.OrdinalIgnoreCase))
-                    metadataToken.Name = expandedName;
-
-                metadataToken.AsmIndexId = t != null ? t.IndexId : 0;
-                return true;
-            }
-            if (mi.DeclaringType == null) return true;
-
-            asmQualName = mi.DeclaringType.Assembly.GetName().FullName;
-            //do not send back GAC asm's unless asked
-            if (!ResolveGacAssemblies && IsIgnore(asmQualName))
-                return false;
-
-            var f =
-                AsmIndicies.Asms.FirstOrDefault(
-                    x =>
-                        String.Equals(x.AssemblyName, mi.DeclaringType.Assembly.GetName().FullName,
-                            StringComparison.OrdinalIgnoreCase));
-
-            asmName = mi.DeclaringType.Assembly.GetName().Name;
-            expandedName = !string.IsNullOrEmpty(asmName)
-                ? mi.DeclaringType.FullName.Replace(string.Format("{0}.", asmName), string.Empty)
-                : mi.DeclaringType.Name;
-            if (!string.Equals(expandedName, metadataToken.Name, StringComparison.OrdinalIgnoreCase))
-                metadataToken.Name = string.Format("{0}::{1}", expandedName, metadataToken.Name);
-
-            metadataToken.AsmIndexId = f != null ? f.IndexId : 0;
-
-            var mti = mi as MethodInfo;
-            if (mti == null)
-                return true;
-
-            var mtiParams = mti.GetParameters();
-            if (mtiParams.Length <= 0)
-            {
-                metadataToken.Name = string.Format("{0}()", metadataToken.Name);
-                return true;
-            }
-
-            metadataToken.Name = string.Format("{0}({1})", metadataToken.Name,
-                string.Join(",", mtiParams.Select(x => x.ParameterType.Name)));
-
-            return true;
-        }
-
-        internal static string[] GacAssemblyNames
-        {
-            get
-            {
-                if (_gacAsmNames != null)
-                    return _gacAsmNames;
-
-                _gacAsmNames = Constants.UseReflectionOnlyLoad
-                    ? AppDomain.CurrentDomain.ReflectionOnlyGetAssemblies()
-                        .Where(x => x.GlobalAssemblyCache)
-                        .Select(x => x.FullName)
-                        .ToArray()
-                    : AppDomain.CurrentDomain.GetAssemblies()
-                        .Where(x => x.GlobalAssemblyCache)
-                        .Select(x => x.FullName)
-                        .ToArray();
-
-                return _gacAsmNames;
-            }
-        }
-        internal static bool IsIgnore(string asmQualName)
-        {
-            if (string.IsNullOrWhiteSpace(asmQualName))
-                return true;
-            var gacAsms = GacAssemblyNames;
-            return gacAsms != null && gacAsms.Any(asmQualName.EndsWith);
-        }
         internal static void LaunchListeners()
         {
             if (!Net.IsValidPortNumber(GetTokenIdsCmdPort) || !Net.IsValidPortNumber(GetTokenNamesCmdPort) ||
@@ -433,6 +303,29 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
             _taskFactory.StartNew(() => HostCmd(new GetAsmIndices(), GetAsmIndicesCmdPort.Value));
             _taskFactory.StartNew(() => HostCmd(new GetTokenIds(), GetTokenIdsCmdPort.Value));
             _taskFactory.StartNew(() => HostCmd(new GetTokenNames(), GetTokenNamesCmdPort.Value));
+        }
+
+
+        internal static void PushManifestModuleByIdxId(int asmIdx)
+        {
+            var asm = AsmIndicies.GetAssemblyByIndex(asmIdx);
+            ManifestModule = asm.ManifestModule;
+            _asmIdxStack.Push(asmIdx);
+        }
+
+        internal static int GetCurrentManifestModuleIdxId()
+        {
+            return _asmIdxStack.Peek();
+        }
+
+        internal static void PopManifestModuleByIdxId()
+        {
+            _asmIdxStack.Pop();
+            if (_asmIdxStack.ToArray().Length <= 0)
+                return;
+            var prevAsmIdx = _asmIdxStack.Peek();
+            var asm = AsmIndicies.GetAssemblyByIndex(prevAsmIdx);
+            ManifestModule = asm.ManifestModule;
         }
 
         internal static void HostCmd(ICmd cmd, int cmdPort)

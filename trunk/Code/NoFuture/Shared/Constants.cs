@@ -197,6 +197,8 @@ namespace NoFuture.Shared
 
         public const double TROPICAL_YEAR = 365.24255;
 
+        public const string TypeMethodNameSplitOn = "::";
+
         [EditorBrowsable(EditorBrowsableState.Never)]
         public const string ENUM = "System.Enum";
 

@@ -40,5 +40,20 @@ namespace ThirdDll
 
             return string.Format("{0} {1} {2:0000}", args.Property00, args.Property01, args.Property04);
         }
+
+        public int SaveEntityData(SomethingShared.Entity00 someEntity)
+        {
+            if (!someEntity.MyValidationMethod())
+            {
+                someEntity.Id = (int) SomethingShared.Globals.AnotherGlobal;
+            }
+
+            return ActualSave(someEntity);
+        }
+
+        internal int ActualSave(SomethingShared.Entity00 a)
+        {
+            return SomethingShared.Globals.SomeStaticMethod(a);
+        }
     }
 }

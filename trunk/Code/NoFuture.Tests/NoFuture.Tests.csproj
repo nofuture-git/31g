@@ -218,6 +218,7 @@
     <Compile Include="Tokens\TestAspNetParseTree.cs" />
     <Compile Include="Util\Gia\FlattenTests.cs" />
     <Compile Include="Util\Gia\AssemblyAnalysisTests.cs" />
+    <Compile Include="Util\InvokeAsmTests\GetTokenIdsTests.cs" />
     <Compile Include="Util\Pos\PennTreebankTagsetTests.cs" />
     <Compile Include="Util\EtcTests.cs" />
     <Compile Include="Host.Encryption\ProgramTests.cs" />
@@ -296,6 +297,10 @@
     <ProjectReference Include="..\NoFuture\Tokens\Tokens.csproj">
       <Project>{4e81340f-409b-4ada-b038-bf3f76ffa81e}</Project>
       <Name>Tokens</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NoFuture\Util\Gia\InvokeAssemblyAnalysis\Util.Gia.InvokeAssemblyAnalysis.csproj">
+      <Project>{f2b8ca61-2257-44f4-b921-ff35b5f10146}</Project>
+      <Name>Util.Gia.InvokeAssemblyAnalysis</Name>
     </ProjectReference>
     <ProjectReference Include="..\NoFuture\Util\Util.csproj">
       <Project>{D7F28538-BA6A-46B4-A080-65124E899317}</Project>

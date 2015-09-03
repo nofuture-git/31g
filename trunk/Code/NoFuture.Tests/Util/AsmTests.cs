@@ -27,6 +27,9 @@ namespace NoFuture.Tests.Util
         [TestMethod]
         public void TestGetMetadataToken()
         {
+            NoFuture.Shared.Constants.AssemblySearchPath = @"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\";
+            NoFuture.Shared.Constants.UseReflectionOnlyLoad = false;
+            NoFuture.Util.FxPointers.AddResolveAsmEventHandlerToDomain();
             var myAsm =
                 System.Reflection.Assembly.Load(
                     System.IO.File.ReadAllBytes(

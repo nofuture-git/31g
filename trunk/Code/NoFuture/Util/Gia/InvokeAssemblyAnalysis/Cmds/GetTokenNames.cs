@@ -26,7 +26,7 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds
 
                 }
 
-                var tokens = JsonConvert.DeserializeObject<int[]>(Encoding.UTF8.GetString(arg));
+                var tokens = JsonConvert.DeserializeObject<MetadataTokenId[]>(Encoding.UTF8.GetString(arg));
 
                 if (tokens == null || tokens.Length <= 0)
                 {
@@ -50,16 +50,16 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds
                     {
                         var cid = tokens[i];
                         
-                        if (Program.DisolutionCache.Contains(cid) || names.Any(x => x.Id == cid))
+                        if (Program.DisolutionCache.Contains(cid) || names.Any(x => x.Id == cid.Id))
                             continue;
 
-                        if (Program.ResolutionCache.ContainsKey(cid))
+                        if (Program.TokenId2NameCache.ContainsKey(cid))
                         {
-                            names.Add(Program.ResolutionCache[cid]);
+                            names.Add(Program.TokenId2NameCache[cid]);
                             continue;
                         }
                         MetadataTokenName tokenName;
-                        var resolved = Program.ResolveSingleToken(cid, out tokenName);
+                        var resolved = UtilityMethods.ResolveSingleTokenName(cid, out tokenName);
 
                         if (!resolved)
                         {
@@ -69,9 +69,9 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds
                         }
                         names.Add(tokenName);
 
-                        if (!Program.ResolutionCache.ContainsKey(cid))
+                        if (!Program.TokenId2NameCache.ContainsKey(cid))
                         {
-                            Program.ResolutionCache.Add(cid, tokenName);
+                            Program.TokenId2NameCache.Add(cid, tokenName);
                         }
                     }
                     catch

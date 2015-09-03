@@ -20,5 +20,10 @@ namespace SomeSecondDll
         {
             return _myDbLikeThing.GetEntityData(args);
         }
+
+        public int SaveSomething(SomethingShared.Entity00 entity00)
+        {
+            return _myDbLikeThing.SaveEntityData(entity00);
+        }
     }
 }

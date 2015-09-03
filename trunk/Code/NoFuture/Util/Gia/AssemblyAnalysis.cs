@@ -34,6 +34,8 @@ namespace NoFuture.Util.Gia
         #region fields
         private readonly InvokeAssemblyAnalysisId _myProcessPorts;
         private readonly AsmIndicies _asmIndices;
+        private static BindingFlags _defalutFlags = BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.NonPublic |
+                                             BindingFlags.Public | BindingFlags.Static;
         #endregion
 
         #region inner types
@@ -83,6 +85,12 @@ namespace NoFuture.Util.Gia
         /// </summary>
         public AsmIndicies AsmIndicies { get { return _asmIndices; } }
         public InvokeAssemblyAnalysisId Id { get { return _myProcessPorts; } }
+
+        public static BindingFlags DefaultFlags
+        {
+            get { return _defalutFlags; }
+            set { _defalutFlags = value; }
+        }
         #endregion
 
         #region ctors
@@ -127,11 +135,16 @@ namespace NoFuture.Util.Gia
         /// Gets the manifold of Metadata Token Ids for the assembly at <see cref="asmIdx"/>
         /// </summary>
         /// <param name="asmIdx"></param>
+        /// <param name="recurseAnyAsmNamedLike">
+        /// A regex pattern, on which tokens of tokens will 
+        /// continue to be resolved so long as the containing assembly's name does not match
+        /// this.
+        /// </param>
         /// <returns></returns>
         /// <remarks>
         /// Use the <see cref="AsmIndicies"/> property to get the index.
         /// </remarks>
-        public TokenIds GetTokenIds(int asmIdx)
+        public TokenIds GetTokenIds(int asmIdx, string recurseAnyAsmNamedLike)
         {
             if (_asmIndices.Asms.All(x => x.IndexId != asmIdx))
                 throw new RahRowRagee(string.Format("No matching index found for {0}", asmIdx));
@@ -139,7 +152,9 @@ namespace NoFuture.Util.Gia
                 throw new RahRowRagee(string.Format("The process by id [{0}] has exited", _myProcessPorts.Pid));
             var asmName = _asmIndices.Asms.First(x => x.IndexId == asmIdx).AssemblyName;
 
-            var bufferIn = Encoding.UTF8.GetBytes(asmName);
+            var crit = new GetTokenIdsCriteria {AsmName = asmName, ResolveAllNamedLike = recurseAnyAsmNamedLike};
+
+            var bufferIn = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(crit));
             var bufferOut = CallInvokeDumpMetadataToken(bufferIn, _myProcessPorts.GetTokenIdsPort);
 
             return JsonConvert.DeserializeObject<TokenIds>(Encoding.UTF8.GetString(bufferOut));
@@ -150,7 +165,7 @@ namespace NoFuture.Util.Gia
         /// </summary>
         /// <param name="metadataTokenIds"></param>
         /// <returns></returns>
-        public TokenNames ResolveTokenNames(int[] metadataTokenIds)
+        public TokenNames ResolveTokenNames(MetadataTokenId[] metadataTokenIds)
         {
             if (metadataTokenIds == null)
                 throw new ArgumentNullException("metadataTokenIds");
@@ -163,6 +178,7 @@ namespace NoFuture.Util.Gia
 
             return JsonConvert.DeserializeObject<TokenNames>(Encoding.UTF8.GetString(bufferOut));
         }
+
         #endregion
 
         #region metadata token statics
@@ -170,8 +186,8 @@ namespace NoFuture.Util.Gia
         /// Starts the NoFuture.Util.Gia.InvokeAssemblyAnalysis.exe process.
         /// </summary>
         /// <param name="assemblyPath"></param>
-        /// <param name="ports"></param>
         /// <param name="resolveGacAsmNames"></param>
+        /// <param name="ports"></param>
         /// <returns></returns>
         public static Tuple<InvokeAssemblyAnalysisId, Process> StartNewDumpMetadaTokenProcess(string assemblyPath, bool resolveGacAsmNames, params int[] ports)
         {
@@ -253,16 +269,16 @@ namespace NoFuture.Util.Gia
         /// and for all its members.
         /// </summary>
         /// <param name="asmType"></param>
+        /// <param name="asmIdx"></param>
         /// <returns></returns>
-        public static MetadataTokenId GetMetadataToken(Type asmType)
+        public static MetadataTokenId GetMetadataToken(Type asmType, int asmIdx = 0)
         {
             if (asmType == null)
                 return new MetadataTokenId() { Items = new MetadataTokenId[0] };
 
-            var token = new MetadataTokenId { Id = asmType.MetadataToken };
+            var token = new MetadataTokenId { Id = asmType.MetadataToken, RswAsmIdx = asmIdx};
             var manifold =
-                asmType.GetMembers(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.NonPublic |
-                                   BindingFlags.Public | BindingFlags.Static).Select(x => GetMetadataToken(x, true)).ToList();
+                asmType.GetMembers(DefaultFlags).Select(x => GetMetadataToken(x, true, asmIdx)).ToList();
             token.Items = manifold.ToArray();
             return token;
         }
@@ -274,18 +290,19 @@ namespace NoFuture.Util.Gia
         /// <param name="resolveManifold">True will cast the <see cref="mi"/> to 
         /// a <see cref="MethodBase"/> and find the tokens used within the 
         /// method's body. </param>
+        /// <param name="asmIdx"></param>
         /// <returns></returns>
-        public static MetadataTokenId GetMetadataToken(MemberInfo mi, bool resolveManifold)
+        public static MetadataTokenId GetMetadataToken(MemberInfo mi, bool resolveManifold, int asmIdx = 0)
         {
             if (mi == null)
                 return new MetadataTokenId();
-            var token = new MetadataTokenId { Id = mi.MetadataToken, Items = new MetadataTokenId[0] };
+            var token = new MetadataTokenId { Id = mi.MetadataToken, RswAsmIdx = asmIdx, Items = new MetadataTokenId[0] };
             var mti = mi as MethodBase;
             if (mti == null)
                 return token;
 
             token.Items = resolveManifold
-                ? Binary.Asm.GetCallsMetadataTokens(mti).Select(t => new MetadataTokenId { Id = t }).ToArray()
+                ? Binary.Asm.GetCallsMetadataTokens(mti).Select(t => new MetadataTokenId { Id = t, RswAsmIdx = asmIdx}).ToArray()
                 : new MetadataTokenId[0];
 
             return token;
