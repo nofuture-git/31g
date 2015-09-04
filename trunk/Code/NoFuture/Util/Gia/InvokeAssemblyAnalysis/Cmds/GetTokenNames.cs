@@ -43,42 +43,7 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds
                         Msg = "the Manifest Module is null",
                         St = MetadataTokenStatus.Error
                     });
-                var names = new List<MetadataTokenName>();
-                for (var i = 0; i < tokens.Length; i++)
-                {
-                    try
-                    {
-                        var cid = tokens[i];
-                        
-                        if (Program.DisolutionCache.Contains(cid) || names.Any(x => x.Id == cid.Id))
-                            continue;
-
-                        if (Program.TokenId2NameCache.ContainsKey(cid))
-                        {
-                            names.Add(Program.TokenId2NameCache[cid]);
-                            continue;
-                        }
-                        MetadataTokenName tokenName;
-                        var resolved = UtilityMethods.ResolveSingleTokenName(cid, out tokenName);
-
-                        if (!resolved)
-                        {
-                            if(!Program.DisolutionCache.Contains(cid))
-                                Program.DisolutionCache.Add(cid);
-                            continue;
-                        }
-                        names.Add(tokenName);
-
-                        if (!Program.TokenId2NameCache.ContainsKey(cid))
-                        {
-                            Program.TokenId2NameCache.Add(cid, tokenName);
-                        }
-                    }
-                    catch
-                    {
-                        continue;
-                    }
-                }
+                var names = UtilityMethods.ResolveAllTokenNames(tokens);
 
                 return EncodedResponse(new TokenNames {Names = names.ToArray()});
             }

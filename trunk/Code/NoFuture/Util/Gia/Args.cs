@@ -5,6 +5,10 @@ using System.Text;
 
 namespace NoFuture.Util.Gia.Args
 {
+    /// <summary>
+    /// Arg type used by <see cref="AssemblyAnalysis"/> to discover word
+    /// usage of a flattened type
+    /// </summary>
     public class AssemblyLeftRightArgs
     {
         public string TargetWord { get; set; }
@@ -17,6 +21,9 @@ namespace NoFuture.Util.Gia.Args
         public bool UseTypeNames { get; set; }
     }
 
+    /// <summary>
+    /// Command arg for <see cref="NoFuture.Util.Gia.Flatten"/>
+    /// </summary>
     public class FlattenTypeArgs
     {
         public const int MAX_DEPTH = 16;

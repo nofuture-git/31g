@@ -5,6 +5,9 @@ using System.Text;
 
 namespace NoFuture.Util.Gia
 {
+    /// <summary>
+    /// Represents a single fully expanded and flattened property of <see cref="FlattenedType"/>
+    /// </summary>
     public class FlattenedLine
     {
         public FlattenedLine(List<FlattenedItem> items)

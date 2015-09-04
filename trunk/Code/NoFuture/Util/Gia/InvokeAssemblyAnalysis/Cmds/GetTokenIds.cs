@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -11,6 +12,8 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds
 {
     public class GetTokenIds : CmdBase<TokenIds>
     {
+        private readonly static Stack<int> _asmIdxStack = new Stack<int>();
+
         public override byte[] Execute(byte[] arg)
         {
             Program.PrintToConsole("GetTokenIds invoked");
@@ -72,26 +75,52 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds
                 }
 
                 var asmTypes = asm.GetTypes();
-                var tokens = asmTypes.Select(x => AssemblyAnalysis.GetMetadataToken(x,0)).ToArray();
+                var tokens = new List<MetadataTokenId>();
+                var counter = 0;
+                var total = asmTypes.Length;
+                foreach (var asmType in asmTypes)
+                {
+                    counter += 1;
+                    Program.ReportProgress(new ProgressMessage
+                    {
+                        Activity = asmType.FullName,
+                        ProcName = System.Diagnostics.Process.GetCurrentProcess().ProcessName,
+                        ProgressCounter = Etc.CalcProgressCounter(counter, total),
+                        Status = "Getting top-level types"
+                    });
+                    tokens.Add(AssemblyAnalysis.GetMetadataToken(asmType,0));
+
+                }
 
                 if (string.IsNullOrWhiteSpace(Program.AssemblyNameRegexPattern))
                 {
                     return EncodedResponse(
                         new TokenIds
                         {
-                            Tokens = tokens
+                            Tokens = tokens.ToArray()
                         });
                 }
 
-                int countDepth = 0;
-                foreach (var iToken in tokens.SelectMany(x => x.Items.SelectMany(y => y.Items)))
+                var countDepth = 0;
+                var callTokens = tokens.SelectMany(x => x.Items.SelectMany(y => y.Items)).ToArray();
+                counter = 0;
+                total = callTokens.Length;
+                foreach (var iToken in callTokens)
                 {
+                    counter += 1;
+                    Program.ReportProgress(new ProgressMessage
+                    {
+                        Activity = string.Format("{0}.{1}", iToken.RslvAsmIdx, iToken.Id),
+                        ProcName = System.Diagnostics.Process.GetCurrentProcess().ProcessName,
+                        ProgressCounter = Etc.CalcProgressCounter(counter, total),
+                        Status = "Getting call-of-calls"
+                    });
                     ResolveCallOfCall(iToken, ref countDepth);
                 }
                 return EncodedResponse(
                     new TokenIds
                     {
-                        Tokens = tokens
+                        Tokens = tokens.ToArray()
                     });
             }
             catch (Exception ex)
@@ -167,7 +196,7 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds
             }
 
             //match is on Asm Name, not type nor member name
-            var owningAsmName = Program.AsmIndicies.Asms.FirstOrDefault(x => x.IndexId == tokenName.ObyAsmIdx);
+            var owningAsmName = Program.AsmIndicies.Asms.FirstOrDefault(x => x.IndexId == tokenName.OwnAsmIdx);
             if (owningAsmName == null)
             {
                 Program.DisolutionCache.Add(token);
@@ -194,7 +223,7 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds
             }
 
             //get this types implementation calls
-            var r = AssemblyAnalysis.GetMetadataToken(mi, true, tokenName.ObyAsmIdx);
+            var r = AssemblyAnalysis.GetMetadataToken(mi, true, tokenName.OwnAsmIdx);
             if (r.Items == null || r.Items.Length <= 0)
             {
                 depth -= 1;
@@ -205,7 +234,7 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds
             token.Items = r.Items;
 
             //push this types assembly's manifest module to the top
-            Program.PushManifestModuleByIdxId(owningAsmName.IndexId);
+            PushManifestModuleByIdxId(owningAsmName.IndexId);
 
             //recurse each of these calls-of-calls[...]-of-calls
             foreach (var iToken in token.Items)
@@ -214,10 +243,27 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds
             }
 
             //pop the manifest module back to what it was upon entry
-            Program.PopManifestModuleByIdxId();
+            PopManifestModuleByIdxId();
 
             Program.ResolutionCache.Add(token);
             depth -= 1;
+        }
+
+        private static void PushManifestModuleByIdxId(int asmIdx)
+        {
+            var asm = Program.AsmIndicies.GetAssemblyByIndex(asmIdx);
+            Program.ManifestModule = asm.ManifestModule;
+            _asmIdxStack.Push(asmIdx);
+        }
+
+        private static void PopManifestModuleByIdxId()
+        {
+            _asmIdxStack.Pop();
+            if (_asmIdxStack.ToArray().Length <= 0)
+                return;
+            var prevAsmIdx = _asmIdxStack.Peek();
+            var asm = Program.AsmIndicies.GetAssemblyByIndex(prevAsmIdx);
+            Program.ManifestModule = asm.ManifestModule;
         }
     }
 }

@@ -10,6 +10,7 @@ using System.Net.Sockets;
 using System.Reflection;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using NoFuture.Exceptions;
 using NoFuture.Shared;
 using NoFuture.Util.Binary;
@@ -23,15 +24,26 @@ namespace NoFuture.Util.Gia
     /// </summary>
     public class AssemblyAnalysis
     {
+        #region events
+        /// <summary>
+        /// Having passed a port value for progress reporting, subscribers of this event will 
+        /// receive messages back from the remote process.  This is usefule for analysis of 
+        /// very large assemblies.
+        /// </summary>
+        public event ProgressReportEvent ProgressReporter;
+        #endregion
+
         #region constants
         public const string GET_TOKEN_IDS_PORT_CMD_SWITCH = "nfDumpAsmTokensPort";
         public const string GET_TOKEN_NAMES_PORT_CMD_SWITCH = "nfResolveTokensPort";
         public const string GET_ASM_INDICES_PORT_CMD_SWITCH = "nfGetAsmIndicies";
         public const string RESOLVE_GAC_ASM_SWITCH = "nfResolveGacAsm";
+        public const string PROCESS_PROGRESS_PORT_CMD_SWITCH = "nfProgressPort";
         public const int DF_START_PORT = 5059;
         #endregion
 
         #region fields
+        private readonly TaskFactory _taskFactory;
         private readonly InvokeAssemblyAnalysisId _myProcessPorts;
         private readonly AsmIndicies _asmIndices;
         private static BindingFlags _defalutFlags = BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.NonPublic |
@@ -40,7 +52,7 @@ namespace NoFuture.Util.Gia
 
         #region inner types
         /// <summary>
-        /// Data concerning the launch of <see cref="StartNewDumpMetadaTokenProcess"/>
+        /// Data concerning the launch of <see cref="AssemblyAnalysis.StartRemoteProcess"/>
         /// </summary>
         public class InvokeAssemblyAnalysisId
         {
@@ -54,6 +66,7 @@ namespace NoFuture.Util.Gia
             public int GetAsmIndiciesPort { get; set; }
             public int GetTokenIdsPort { get; set; }
             public int GetTokenNamesPort { get; set; }
+            public int ProcessProgressPort { get; set; }
             public int Pid { get { return _pid; } }
 
             public bool PortsAreValid
@@ -84,8 +97,16 @@ namespace NoFuture.Util.Gia
         /// A mapping of index ids to assembly names.
         /// </summary>
         public AsmIndicies AsmIndicies { get { return _asmIndices; } }
+
+        /// <summary>
+        /// Identifier for tying a the running InvokeAssemblyAnalysis to this 
+        /// runtime type
+        /// </summary>
         public InvokeAssemblyAnalysisId Id { get { return _myProcessPorts; } }
 
+        /// <summary>
+        /// Default flags used to get a type's members.
+        /// </summary>
         public static BindingFlags DefaultFlags
         {
             get { return _defalutFlags; }
@@ -114,7 +135,7 @@ namespace NoFuture.Util.Gia
                 throw new ItsDeadJim("Don't know where to locate the InvokeDumpMetadataTokens.exe, assign " +
                                      "the global variable at NoFuture.CustomTools.InvokeDumpMetadataTokens.");
 
-            var invoke = StartNewDumpMetadaTokenProcess(assemblyPath, resolveGacAsmNames, ports);
+            var invoke = StartRemoteProcess(assemblyPath, resolveGacAsmNames, ports);
             var myProcess = invoke.Item2;
             _myProcessPorts = invoke.Item1;
 
@@ -122,11 +143,17 @@ namespace NoFuture.Util.Gia
                 throw new ItsDeadJim(
                     String.Format("Could resolve the ports to used for connecting to process by pid [{0}]", myProcess.Id));
 
+
             //connect to the process on a socket 
-            var asmIndicesBuffer = CallInvokeDumpMetadataToken(Encoding.UTF8.GetBytes(assemblyPath),
+            var asmIndicesBuffer = SendToRemoteProcess(Encoding.UTF8.GetBytes(assemblyPath),
                 _myProcessPorts.GetAsmIndiciesPort);
             _asmIndices =
                 JsonConvert.DeserializeObject<AsmIndicies>(Encoding.UTF8.GetString(asmIndicesBuffer));
+
+            //listen for progress from the remote process since getting tokens may take some time
+            _taskFactory = new TaskFactory();
+            if (Net.IsValidPortNumber(_myProcessPorts.ProcessProgressPort))
+                _taskFactory.StartNew(ReceiveFromRemoteProcess);
         }
         #endregion
 
@@ -155,7 +182,7 @@ namespace NoFuture.Util.Gia
             var crit = new GetTokenIdsCriteria {AsmName = asmName, ResolveAllNamedLike = recurseAnyAsmNamedLike};
 
             var bufferIn = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(crit));
-            var bufferOut = CallInvokeDumpMetadataToken(bufferIn, _myProcessPorts.GetTokenIdsPort);
+            var bufferOut = SendToRemoteProcess(bufferIn, _myProcessPorts.GetTokenIdsPort);
 
             return JsonConvert.DeserializeObject<TokenIds>(Encoding.UTF8.GetString(bufferOut));
         }
@@ -174,14 +201,14 @@ namespace NoFuture.Util.Gia
 
             var bufferIn = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(metadataTokenIds));
 
-            var bufferOut = CallInvokeDumpMetadataToken(bufferIn, _myProcessPorts.GetTokenNamesPort);
+            var bufferOut = SendToRemoteProcess(bufferIn, _myProcessPorts.GetTokenNamesPort);
 
             return JsonConvert.DeserializeObject<TokenNames>(Encoding.UTF8.GetString(bufferOut));
         }
 
         #endregion
 
-        #region metadata token statics
+        #region remote process
         /// <summary>
         /// Starts the NoFuture.Util.Gia.InvokeAssemblyAnalysis.exe process.
         /// </summary>
@@ -189,12 +216,13 @@ namespace NoFuture.Util.Gia
         /// <param name="resolveGacAsmNames"></param>
         /// <param name="ports"></param>
         /// <returns></returns>
-        public static Tuple<InvokeAssemblyAnalysisId, Process> StartNewDumpMetadaTokenProcess(string assemblyPath, bool resolveGacAsmNames, params int[] ports)
+        public static Tuple<InvokeAssemblyAnalysisId, Process> StartRemoteProcess(string assemblyPath, bool resolveGacAsmNames, params int[] ports)
         {
 
             var port00 = ports != null && ports.Length >= 1 ? ports[0] : DF_START_PORT;
             var port01 = ports != null && ports.Length >= 2 ? ports[1] : DF_START_PORT + 1;
             var port02 = ports != null && ports.Length >= 3 ? ports[2] : DF_START_PORT + 2;
+            var port03 = ports != null && ports.Length >= 4 ? ports[3] : DF_START_PORT + 3;
 
             var args = String.Join(" ",
                 new[]
@@ -202,7 +230,8 @@ namespace NoFuture.Util.Gia
                         ConsoleCmd.ConstructCmdLineArgs(GET_ASM_INDICES_PORT_CMD_SWITCH, port00.ToString(CultureInfo.InvariantCulture)),
                         ConsoleCmd.ConstructCmdLineArgs(GET_TOKEN_IDS_PORT_CMD_SWITCH, port01.ToString(CultureInfo.InvariantCulture)),
                         ConsoleCmd.ConstructCmdLineArgs(GET_TOKEN_NAMES_PORT_CMD_SWITCH, port02.ToString(CultureInfo.InvariantCulture)),
-                        ConsoleCmd.ConstructCmdLineArgs(RESOLVE_GAC_ASM_SWITCH, resolveGacAsmNames.ToString())
+                        ConsoleCmd.ConstructCmdLineArgs(RESOLVE_GAC_ASM_SWITCH, resolveGacAsmNames.ToString()),
+                        ConsoleCmd.ConstructCmdLineArgs(PROCESS_PROGRESS_PORT_CMD_SWITCH, port03.ToString(CultureInfo.InvariantCulture))
                     });
 
             var proc = new Process
@@ -224,14 +253,15 @@ namespace NoFuture.Util.Gia
                 AssemblyPath = assemblyPath,
                 GetAsmIndiciesPort = port00,
                 GetTokenIdsPort = port01,
-                GetTokenNamesPort = port02
+                GetTokenNamesPort = port02,
+                ProcessProgressPort = port03
             };
 
             return new Tuple<InvokeAssemblyAnalysisId, Process>(key, proc);
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        private static byte[] CallInvokeDumpMetadataToken(byte[] mdt, int port)
+        private static byte[] SendToRemoteProcess(byte[] mdt, int port)
         {
             var buffer = new List<byte>();
             using (var server = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.IP))
@@ -264,6 +294,63 @@ namespace NoFuture.Util.Gia
             }
             return buffer.ToArray();
         }
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        private void ReceiveFromRemoteProcess()
+        {
+            using (var socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp))
+            {
+                //this should NOT be reachable from any other machine
+                var endPt = new IPEndPoint(IPAddress.Loopback, Id.ProcessProgressPort);
+                socket.Bind(endPt);
+                socket.Listen(1);
+
+                for (; ; )//ever
+                {
+                    try
+                    {
+                        var buffer = new List<byte>();
+
+                        var client = socket.Accept();
+                        var data = new byte[Constants.DEFAULT_BLOCK_SIZE];
+
+                        //park for first data received
+                        client.Receive(data, 0, data.Length, SocketFlags.None);
+                        buffer.AddRange(data.Where(b => b != (byte)'\0'));
+                        while (client.Available > 0)
+                        {
+                            if (client.Available < Constants.DEFAULT_BLOCK_SIZE)
+                            {
+                                data = new byte[client.Available];
+                                client.Receive(data, 0, client.Available, SocketFlags.None);
+                            }
+                            else
+                            {
+                                data = new byte[Constants.DEFAULT_BLOCK_SIZE];
+                                client.Receive(data, 0, (int)Constants.DEFAULT_BLOCK_SIZE, SocketFlags.None);
+                            }
+                            buffer.AddRange(data.Where(b => b != (byte)'\0'));
+                        }
+
+                        var progress = JsonConvert.DeserializeObject<ProgressMessage>(Encoding.UTF8.GetString(buffer.ToArray()));
+
+                        var subscribers = ProgressReporter.GetInvocationList();
+                        var enumerable = subscribers.GetEnumerator();
+                        while (enumerable.MoveNext())
+                        {
+                            var handler = enumerable.Current as ProgressReportEvent;
+                            if (handler == null)
+                                continue;
+                            handler.Invoke(progress);
+                        }
+                    }
+                    catch { }
+                }
+            }
+        }
+        #endregion
+
+        #region static analysis
         /// <summary>
         /// Get the <see cref="System.Reflection.MetadataToken"/> for the <see cref="asmType"/>
         /// and for all its members.
@@ -276,7 +363,7 @@ namespace NoFuture.Util.Gia
             if (asmType == null)
                 return new MetadataTokenId() { Items = new MetadataTokenId[0] };
 
-            var token = new MetadataTokenId { Id = asmType.MetadataToken, RswAsmIdx = asmIdx};
+            var token = new MetadataTokenId { Id = asmType.MetadataToken, RslvAsmIdx = asmIdx};
             var manifold =
                 asmType.GetMembers(DefaultFlags).Select(x => GetMetadataToken(x, true, asmIdx)).ToList();
             token.Items = manifold.ToArray();
@@ -296,20 +383,18 @@ namespace NoFuture.Util.Gia
         {
             if (mi == null)
                 return new MetadataTokenId();
-            var token = new MetadataTokenId { Id = mi.MetadataToken, RswAsmIdx = asmIdx, Items = new MetadataTokenId[0] };
+            var token = new MetadataTokenId { Id = mi.MetadataToken, RslvAsmIdx = asmIdx, Items = new MetadataTokenId[0] };
             var mti = mi as MethodBase;
             if (mti == null)
                 return token;
 
             token.Items = resolveManifold
-                ? Binary.Asm.GetCallsMetadataTokens(mti).Select(t => new MetadataTokenId { Id = t, RswAsmIdx = asmIdx}).ToArray()
+                ? Binary.Asm.GetCallsMetadataTokens(mti).Select(t => new MetadataTokenId { Id = t, RslvAsmIdx = asmIdx}).ToArray()
                 : new MetadataTokenId[0];
 
             return token;
         }
-        #endregion
 
-        #region static analysis
         /// <summary>
         /// Flattens a type and breaks each word on Pascel or camel-case
         /// then gets a count of that word.
@@ -318,6 +403,9 @@ namespace NoFuture.Util.Gia
         /// <param name="typeFullName"></param>
         /// <param name="flattenMaxDepth"></param>
         /// <returns></returns>
+        /// <remarks>
+        /// This is useful for discovering the nomenclature specific to an assembly.
+        /// </remarks>
         public static Dictionary<string, int> GetAllPropertyWholeWordsByCount(Assembly assembly, string typeFullName, int flattenMaxDepth)
         {
             var flattenTypeArg = new FlattenTypeArgs()

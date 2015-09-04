@@ -50,7 +50,6 @@ namespace NoFuture.Tests.Util.InvokeAsmTests
 
             var dee = testTokens.FirstOrDefault();
             Assert.IsNotNull(dee);
-            System.Diagnostics.Debug.WriteLine(string.Format("{0}.{1}", dee.RswAsmIdx, dee.Id.ToString("X4")));
 
             var testDepth = 0;
             foreach (var iToken in testTokens)
@@ -64,47 +63,27 @@ namespace NoFuture.Tests.Util.InvokeAsmTests
                 }
                 
             }
-            System.Diagnostics.Debug.WriteLine(string.Format("{0}.{1}", dee.RswAsmIdx, dee.Id.ToString("X4")));
             Assert.IsNotNull(testTokens);
 
-            //got these from ildasm
+            //got this from ildasm
             var targetTokenType = 0x2000060;
-            var targetTokenMethod = 0x60005CB;
 
             Assert.IsTrue(testTokens.Any(x => x.Id == targetTokenType));
             var testTokenRslt = testTokens.First(x => x.Id == targetTokenType);
+            var tokenPrint = MetadataTokenId.Print(testTokenRslt);
+            System.Diagnostics.Debug.WriteLine(tokenPrint);
 
-            System.Diagnostics.Debug.WriteLine(string.Format("{0}.{1}", testTokenRslt.RswAsmIdx, testTokenRslt.Id.ToString("X4")));
+            var testFlattenedRslt = MetadataTokenId.FlattenToDistinct(testTokenRslt);
+            Assert.IsTrue(tokenPrint.Split('\n').Length >= testFlattenedRslt.Length);
 
-            Assert.IsNotNull(testTokenRslt.Items);
-            Assert.IsTrue(testTokenRslt.Items.Any(x => x.Id == targetTokenMethod));
-            var testTokenMethod = testTokenRslt.Items.First(x => x.Id == targetTokenMethod);
+            var testTokenNames =
+                NoFuture.Util.Gia.InvokeAssemblyAnalysis.UtilityMethods.ResolveAllTokenNames(testFlattenedRslt);
+            Assert.IsNotNull(testTokenNames);
+            Assert.AreNotEqual(0, testTokenNames.Count);
 
-            System.Diagnostics.Debug.WriteLine(string.Format("{0}.{1}",testTokenMethod.RswAsmIdx,testTokenMethod.Id.ToString("X4")));
-
-            System.Diagnostics.Debug.WriteLine("----");
-
-            Assert.IsNotNull(testTokenMethod.Items);
-            foreach (var cvToken in testTokenMethod.Items)
+            foreach (var tname in testTokenNames)
             {
-                System.Diagnostics.Debug.WriteLine(string.Format("{0}.{1}", cvToken.RswAsmIdx,cvToken.Id.ToString("X4")));
-
-                if (cvToken.Items != null && cvToken.Items.Length > 0)
-                {
-                    foreach (var ccToken in cvToken.Items)
-                    {
-                        System.Diagnostics.Debug.WriteLine(string.Format("\t{0}.{1}", ccToken.RswAsmIdx, ccToken.Id.ToString("X4")));
-
-                        if (ccToken.Items != null && ccToken.Items.Length > 0)
-                        {
-                            foreach (var cdToken in ccToken.Items)
-                            {
-                                System.Diagnostics.Debug.WriteLine(string.Format("\t\t{0}.{1}", cdToken.RswAsmIdx, cdToken.Id.ToString("X4")));    
-                            }
-                            
-                        }
-                    }
-                }
+                System.Diagnostics.Debug.WriteLine(string.Format("{0}.{1} ({2})", tname.RslvAsmIdx,tname.Id.ToString("X4"), tname.Name));
             }
         }
     }

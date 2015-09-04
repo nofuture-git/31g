@@ -58,6 +58,7 @@
     <Compile Include="Cmds\GetTokenIds.cs" />
     <Compile Include="Cmds\GetTokenNames.cs" />
     <Compile Include="Cmds\ICmd.cs" />
+    <Compile Include="Cmds\ProcessProgress.cs" />
     <Compile Include="UtilityMethods.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

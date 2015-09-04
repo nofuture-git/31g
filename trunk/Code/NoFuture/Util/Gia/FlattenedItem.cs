@@ -5,6 +5,9 @@ using NoFuture.Util.Gia.GraphViz;
 
 namespace NoFuture.Util.Gia
 {
+    /// <summary>
+    /// Represents the individual entries of a <see cref="FlattenedLine"/>
+    /// </summary>
     public class FlattenedItem
     {
         private static List<string> _ffVTypes;
@@ -40,6 +43,11 @@ namespace NoFuture.Util.Gia
                    string.Equals(item.FlName, FlName, StringComparison.OrdinalIgnoreCase);
         }
 
+        /// <summary>
+        /// Specific to graph-viz (ver. 2.38+)
+        /// see [http://www.graphviz.org/]
+        /// </summary>
+        /// <returns></returns>
         public string ToGraphVizString()
         {
             if (IsTerminalNode)

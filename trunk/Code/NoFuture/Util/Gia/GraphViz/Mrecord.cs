@@ -5,6 +5,11 @@ using System.Text;
 
 namespace NoFuture.Util.Gia.GraphViz
 {
+    /// <summary>
+    /// Specific to graph-viz (ver. 2.38+)
+    /// see [http://www.graphviz.org/]
+    /// </summary>
+    /// <returns></returns>
     public class Mrecord
     {
         public const string NAME_PORT = "nm";
@@ -51,6 +56,11 @@ namespace NoFuture.Util.Gia.GraphViz
         }
     }
 
+    /// <summary>
+    /// Specific to graph-viz (ver. 2.38+)
+    /// see [http://www.graphviz.org/]
+    /// </summary>
+    /// <returns></returns>
     public class MrecordEdge
     {
         public FlattenedItem Left { get; private set; }

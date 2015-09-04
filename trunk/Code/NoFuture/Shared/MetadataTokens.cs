@@ -1,14 +1,24 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 
 namespace NoFuture.Shared
 {
+    /// <summary>
+    /// Defines the identity of a single metadata token.
+    /// </summary>
     [Serializable]
     public class MetadataTokenId
     {
-        public int RswAsmIdx;
+        /// <summary>
+        /// The index of the <see cref="Assembly"/>  with 
+        /// whose <see cref="Assembly.ManifestModule"/>
+        /// should be used to resolve the <see cref="Id"/>.
+        /// </summary>
+        public int RslvAsmIdx;
         public int Id;
         public MetadataTokenId[] Items;
 
@@ -19,15 +29,80 @@ namespace NoFuture.Shared
             var objMdti = obj as MetadataTokenId;
             if (objMdti == null)
                 return false;
-            return objMdti.Id == Id && objMdti.RswAsmIdx == RswAsmIdx;
+            return objMdti.Id == Id && objMdti.RslvAsmIdx == RslvAsmIdx;
         }
 
         public override int GetHashCode()
         {
-            return RswAsmIdx.GetHashCode() + Id.GetHashCode();
+            return RslvAsmIdx.GetHashCode() + Id.GetHashCode();
+        }
+
+        /// <summary>
+        /// Prints to token ids with <see cref="MetadataTokenId.RslvAsmIdx"/> prefixed to the front.
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        public static string Print(MetadataTokenId token)
+        {
+            var depth = 0;
+            return Print(token, ref depth);
+        }
+
+        /// <summary>
+        /// Returns a list of distinct <see cref="MetadataTokenId"/> having only thier
+        /// <see cref="RslvAsmIdx"/> and <see cref="Id"/> assigned.
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        public static MetadataTokenId[] FlattenToDistinct(MetadataTokenId token)
+        {
+            var list = new HashSet<MetadataTokenId>();
+
+            if (token == null)
+                return list.ToArray();
+
+            FlattenToDistinct(token, list);
+            return list.ToArray();
+        }
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        private static void FlattenToDistinct(MetadataTokenId token, HashSet<MetadataTokenId> list)
+        {
+            if (token == null)
+                return;
+
+            list.Add(new MetadataTokenId { Id = token.Id, RslvAsmIdx = token.RslvAsmIdx });
+            if (token.Items == null)
+                return;
+
+            foreach (var iToken in token.Items)
+            {
+                FlattenToDistinct(iToken, list);
+            }
+        }
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        private static string Print(MetadataTokenId token, ref int currentDepth)
+        {
+            if (token == null)
+                return string.Empty;
+            var strBldr = new StringBuilder();
+            var tabs = currentDepth <= 0 ? string.Empty : new string('\t', currentDepth);
+            strBldr.AppendFormat("{0}{1}.{2}\n", tabs, token.RslvAsmIdx, token.Id.ToString("X4"));
+            if (token.Items == null || token.Items.Length <= 0)
+                return strBldr.ToString();
+
+            foreach (var tToken in token.Items)
+            {
+                currentDepth += 1;
+                strBldr.Append(Print(tToken, ref currentDepth));
+                currentDepth -= 1;
+            }
+            return strBldr.ToString();
         }
     }
 
+    /// <summary>
+    /// Bundler type for <see cref="MetadataTokenId"/>
+    /// </summary>
     [Serializable]
     public class TokenIds
     {
@@ -36,20 +111,50 @@ namespace NoFuture.Shared
         public MetadataTokenStatus St;
     }
 
+    /// <summary>
+    /// The resolved name of a single metadata token
+    /// </summary>
     [Serializable]
     public class MetadataTokenName
     {
         public int Id;
         public string Name;
-        public int ObyAsmIdx;
+        /// <summary>
+        /// The index of the <see cref="Assembly"/> which contains 
+        /// the type's definition.
+        /// </summary>
+        public int OwnAsmIdx;
+        /// <summary>
+        /// The index of the <see cref="Assembly"/>  with 
+        /// whose <see cref="Assembly.ManifestModule"/>
+        /// the <see cref="Id"/> was resolved.
+        /// </summary>
+        public int RslvAsmIdx;
         public string Label;
 
         public bool IsMethodName()
         {
             return !string.IsNullOrWhiteSpace(Name) && Name.Contains(Constants.TypeMethodNameSplitOn);
         }
+
+        public override bool Equals(object obj)
+        {
+            var mtnObj = obj as MetadataTokenName;
+            if (mtnObj == null)
+                return false;
+
+            return mtnObj.Id == Id && string.Equals(Name, mtnObj.Name) && mtnObj.OwnAsmIdx == OwnAsmIdx;
+        }
+
+        public override int GetHashCode()
+        {
+            return Id.GetHashCode() + (Name == null ? 0 : Name.GetHashCode()) + OwnAsmIdx.GetHashCode();
+        }
     }
 
+    /// <summary>
+    /// Bundler type for <see cref="MetadataTokenName"/>
+    /// </summary>
     [Serializable]
     public class TokenNames
     {
@@ -58,6 +163,9 @@ namespace NoFuture.Shared
         public MetadataTokenName[] Names;
     }
 
+    /// <summary>
+    /// A dictionary for assembly names.
+    /// </summary>
     [Serializable]
     public class MetadataTokenAsm
     {
@@ -65,6 +173,9 @@ namespace NoFuture.Shared
         public int IndexId;
     }
 
+    /// <summary>
+    /// Bundler type for <see cref="MetadataTokenAsm"/>
+    /// </summary>
     [Serializable]
     public class AsmIndicies
     {
@@ -87,15 +198,18 @@ namespace NoFuture.Shared
         }
     }
 
+    /// <summary>
+    /// A criteria type to send across the wire to a listening socket.
+    /// </summary>
     [Serializable]
     public class GetTokenIdsCriteria
     {
-        private string _ranlB64;//persist this a base64 since regex can be difficult to encode\decode
+        private string _ranlB64;//persist this as a base64 since regex can be difficult to encode\decode
         public string AsmName;
 
         /// <summary>
-        /// A regex pattern on which to any assembly's name is a match 
-        /// tokens-of-tokens (Call, Callvirt) will be resolved.
+        /// A regex pattern on which <see cref="MetadataTokenId"/> should be resolved. 
+        /// The default is to resolve only the top-level assembly.
         /// </summary>
         public string ResolveAllNamedLike
         {
@@ -110,6 +224,9 @@ namespace NoFuture.Shared
         }
     }
 
+    /// <summary>
+    /// Bundler type's status
+    /// </summary>
     [Serializable]
     public enum MetadataTokenStatus
     {

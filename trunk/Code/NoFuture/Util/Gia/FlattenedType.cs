@@ -6,6 +6,9 @@ using NoFuture.Util.Gia.GraphViz;
 
 namespace NoFuture.Util.Gia
 {
+    /// <summary>
+    /// Represents the targeted type of <see cref="Flatten"/>
+    /// </summary>
     public class FlattenedType
     {
         public string Separator { get; set; }
@@ -41,6 +44,11 @@ namespace NoFuture.Util.Gia
             }
         }
 
+        /// <summary>
+        /// Specific to graph-viz (ver. 2.38+)
+        /// see [http://www.graphviz.org/]
+        /// </summary>
+        /// <returns></returns>
         public List<Mrecord> GetGraphVizMrecords
         {
             get
@@ -74,6 +82,11 @@ namespace NoFuture.Util.Gia
             }
         }
 
+        /// <summary>
+        /// Specific to graph-viz (ver. 2.38+)
+        /// see [http://www.graphviz.org/]
+        /// </summary>
+        /// <returns></returns>
         public List<MrecordEdge> GetGraphVizEdges
         {
             get
@@ -98,6 +111,11 @@ namespace NoFuture.Util.Gia
             }
         }
 
+        /// <summary>
+        /// Specific to graph-viz (ver. 2.38+)
+        /// see [http://www.graphviz.org/]
+        /// </summary>
+        /// <returns></returns>
         public string ToGraphVizString()
         {
             var gviz = new StringBuilder();
