@@ -1,17 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Net;
-using System.Net.Sockets;
 using System.Reflection;
 using System.Text;
 using System.Reflection.Emit;
 using NoFuture.Exceptions;
 using NoFuture.Shared;
-using NoFuture.Util.Gia;
 
 namespace NoFuture.Util.Binary
 {
@@ -54,16 +50,23 @@ namespace NoFuture.Util.Binary
         /// Optional parameter for more detail about which type we were attempting to resolve at the time of exception.
         /// </param>
         /// <param name="ex">The exception being caught</param>
-        public static void AddLoaderExceptionToLog(Tuple<Type, MemberInfo> attemptedResolveType, Exception ex)
+        /// <param name="logFile">optional override of the default log file at <see cref="ResolveAsmLog"/> </param>
+        public static void AddLoaderExceptionToLog(Tuple<Type, MemberInfo> attemptedResolveType, Exception ex, string logFile = "")
         {
             if (ex == null)
                 return;
+            var logFilePath = string.IsNullOrWhiteSpace(logFile) ||
+                              string.IsNullOrWhiteSpace(Path.GetDirectoryName(logFile)) ||
+                              !Directory.Exists(Path.GetDirectoryName(logFile))
+                ? ResolveAsmLog
+                : logFile;
+
             lock (_resolveAsmLogLock)
             {
                 try
                 {
                     var logEntry = GetExceptionStrBldr(attemptedResolveType, ex);
-                    File.AppendAllText(ResolveAsmLog,
+                    File.AppendAllText(logFilePath,
                         String.Format("[{0:yyyy-MM-dd HH:mm:ss.fffff}] {1}\n", DateTime.Now, logEntry));
 
                     var fnfe = ex as FileNotFoundException;
@@ -80,7 +83,7 @@ namespace NoFuture.Util.Binary
                             var loaderText = GetExceptionStrBldr(null, rftl.LoaderExceptions[i]);
                             logEntry.Append(String.Format("({0}) {1}", i, loaderText));
                         }
-                        File.AppendAllText(ResolveAsmLog,
+                        File.AppendAllText(logFilePath,
                             String.Format("[{0:yyyy-MM-dd HH:mm:ss.fffff}] {1}\n", DateTime.Now, logEntry));
 
                         return;
@@ -92,7 +95,7 @@ namespace NoFuture.Util.Binary
                         logEntry.AppendLine();
                         logEntry.AppendFormat("FileName:{0}", fnfe.FileName);
 
-                        File.AppendAllText(ResolveAsmLog,
+                        File.AppendAllText(logFilePath,
                             String.Format("[{0:yyyy-MM-dd HH:mm:ss.fffff}] {1}\n", DateTime.Now, logEntry));
 
                         return;
@@ -101,7 +104,7 @@ namespace NoFuture.Util.Binary
                     if (tle != null)
                     {
                         logEntry.AppendFormat("TypeLoaderException causing type: '{0}'", tle.TypeName);
-                        File.AppendAllText(ResolveAsmLog,
+                        File.AppendAllText(logFilePath,
                             String.Format("[{0:yyyy-MM-dd HH:mm:ss.fffff}] {1}\n", DateTime.Now, logEntry));
 
                         return;
@@ -113,7 +116,7 @@ namespace NoFuture.Util.Binary
                         logEntry.AppendLine();
                         logEntry.AppendFormat("FileName:{0}", fle.FileName);
 
-                        File.AppendAllText(ResolveAsmLog,
+                        File.AppendAllText(logFilePath,
                             String.Format("[{0:yyyy-MM-dd HH:mm:ss.fffff}] {1}\n", DateTime.Now, logEntry));
 
                         return;
@@ -124,6 +127,9 @@ namespace NoFuture.Util.Binary
                     logEntry.AppendFormat("FusionLog:{0}", bife.FusionLog);
                     logEntry.AppendLine();
                     logEntry.AppendFormat("FileName:{0}", bife.FileName);
+
+                    File.AppendAllText(logFilePath,
+                        String.Format("[{0:yyyy-MM-dd HH:mm:ss.fffff}] {1}\n", DateTime.Now, logEntry));
 
                 }
                 catch(Exception e)
@@ -643,11 +649,15 @@ namespace NoFuture.Util.Binary
 
         /// <summary>
         /// Simply wraps the call to <see cref="Assembly.GetTypes"/> with a try-catch
-        /// that adds logging - the exception is still thrown.
+        /// that adds logging.
         /// </summary>
         /// <param name="assembly"></param>
+        /// <param name="rethrow">
+        /// optional ability to suppress the exception form being rethrown - default is true.
+        /// </param>
+        /// <param name="logFile">optional override of the default log file at <see cref="ResolveAsmLog"/> </param>
         /// <returns></returns>
-        public static Type[] NfGetTypes(this Assembly assembly)
+        public static Type[] NfGetTypes(this Assembly assembly, bool rethrow = true, string logFile = "")
         {
             if (assembly == null)
                 return null;
@@ -657,39 +667,49 @@ namespace NoFuture.Util.Binary
             }
             catch (ReflectionTypeLoadException rtle)
             {
-                AddLoaderExceptionToLog(null, rtle);
-                throw;
+                AddLoaderExceptionToLog(null, rtle, logFile);
+                if (rethrow)
+                    throw;
             }
             catch (FileNotFoundException fnfe)
             {
-                AddLoaderExceptionToLog(null, fnfe);
-                throw;
+                AddLoaderExceptionToLog(null, fnfe, logFile);
+                if (rethrow)
+                    throw;
             }
             catch (TypeLoadException tle)
             {
-                AddLoaderExceptionToLog(null, tle);
-                throw;
+                AddLoaderExceptionToLog(null, tle, logFile);
+                if (rethrow)
+                    throw;
             }
             catch (FileLoadException fle)
             {
-                AddLoaderExceptionToLog(null, fle);
-                throw;
+                AddLoaderExceptionToLog(null, fle, logFile);
+                if (rethrow)
+                    throw;
             }
             catch (BadImageFormatException bife)
             {
-                AddLoaderExceptionToLog(null, bife);
-                throw;
+                AddLoaderExceptionToLog(null, bife, logFile);
+                if (rethrow)
+                    throw;
             }
+            return null;
         }
 
         /// <summary>
         /// Wraps the call to <see cref="Assembly.GetType(string)"/> adding logging 
-        /// of typical loader exceptions - the exception is still thrown.
+        /// of typical loader exceptions.
         /// </summary>
         /// <param name="assembly"></param>
         /// <param name="typeFullName"></param>
+        /// <param name="rethrow">
+        /// optional ability to suppress the exception form being rethrown - default is true.
+        /// </param>
+        /// <param name="logFile">optional override of the default log file at <see cref="ResolveAsmLog"/> </param>
         /// <returns></returns>
-        public static Type NfGetType(this Assembly assembly, string typeFullName)
+        public static Type NfGetType(this Assembly assembly, string typeFullName, bool rethrow = true, string logFile = "")
         {
             if (assembly == null || String.IsNullOrWhiteSpace(typeFullName))
                 return null;
@@ -699,29 +719,197 @@ namespace NoFuture.Util.Binary
             }
             catch (ReflectionTypeLoadException rtle)
             {
-                AddLoaderExceptionToLog(null, rtle);
-                throw;
+                AddLoaderExceptionToLog(null, rtle, logFile);
+                if(rethrow)
+                    throw;
             }
             catch (FileNotFoundException fnfe)
             {
-                AddLoaderExceptionToLog(null, fnfe);
-                throw;
+                AddLoaderExceptionToLog(null, fnfe, logFile);
+                if (rethrow)
+                    throw;
             }
             catch (TypeLoadException tle)
             {
-                AddLoaderExceptionToLog(null, tle);
-                throw;
+                AddLoaderExceptionToLog(null, tle, logFile);
+                if (rethrow)
+                    throw;
             }
             catch (FileLoadException fle)
             {
-                AddLoaderExceptionToLog(null, fle);
-                throw;
+                AddLoaderExceptionToLog(null, fle, logFile);
+                if (rethrow)
+                    throw;
             }
             catch (BadImageFormatException bife)
             {
-                AddLoaderExceptionToLog(null, bife);
-                throw;
+                AddLoaderExceptionToLog(null, bife, logFile);
+                if (rethrow)
+                    throw;
             }
+            return null;
+        }
+
+        /// <summary>
+        /// Wraps the call to <see cref="Type.GetMethod(System.String)"/> adding logging 
+        /// of typical loader exceptions - the exception is still thrown.
+        /// </summary>
+        /// <param name="t"></param>
+        /// <param name="name"></param>
+        /// <param name="rethrow">
+        /// optional ability to suppress the exception form being rethrown - default is true.
+        /// </param>
+        /// <param name="logFile">optional override of the default log file at <see cref="ResolveAsmLog"/> </param>
+        /// <returns></returns>
+        public static MethodInfo NfGetMethod(this Type t, string name, bool rethrow = true, string logFile = "")
+        {
+            if (t == null)
+                return null;
+            try
+            {
+                return t.GetMethod(name);
+            }
+            catch (ReflectionTypeLoadException rtle)
+            {
+                AddLoaderExceptionToLog(new Tuple<Type, MemberInfo>(t, null), rtle, logFile);
+                if (rethrow)
+                    throw;
+            }
+            catch (FileNotFoundException fnfe)
+            {
+                AddLoaderExceptionToLog(new Tuple<Type, MemberInfo>(t, null), fnfe, logFile);
+                if (rethrow)
+                    throw;
+            }
+            catch (TypeLoadException tle)
+            {
+                AddLoaderExceptionToLog(new Tuple<Type, MemberInfo>(t, null), tle, logFile);
+                if (rethrow)
+                    throw;
+            }
+            catch (FileLoadException fle)
+            {
+                AddLoaderExceptionToLog(new Tuple<Type, MemberInfo>(t, null), fle, logFile);
+                if (rethrow)
+                    throw;
+            }
+            catch (BadImageFormatException bife)
+            {
+                AddLoaderExceptionToLog(new Tuple<Type, MemberInfo>(t, null), bife, logFile);
+                if (rethrow)
+                    throw;
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Wraps the call to <see cref="Type.GetMethod(System.String, BindingFlags)"/> adding logging 
+        /// of typical loader exceptions - the exception is still thrown.
+        /// </summary>
+        /// <param name="t"></param>
+        /// <param name="name"></param>
+        /// <param name="bindingAttr"></param>
+        /// <param name="rethrow">
+        /// optional ability to suppress the exception form being rethrown - default is true.
+        /// </param>
+        /// <param name="logFile">optional override of the default log file at <see cref="ResolveAsmLog"/> </param>
+        /// <returns></returns>
+        public static MethodInfo NfGetMethod(this Type t, string name, BindingFlags bindingAttr, bool rethrow = true, string logFile = "")
+        {
+            if (t == null)
+                return null;
+            try
+            {
+                return t.GetMethod(name, bindingAttr);
+            }
+            catch (ReflectionTypeLoadException rtle)
+            {
+                AddLoaderExceptionToLog(new Tuple<Type, MemberInfo>(t, null), rtle, logFile);
+                if (rethrow)
+                    throw;
+            }
+            catch (FileNotFoundException fnfe)
+            {
+                AddLoaderExceptionToLog(new Tuple<Type, MemberInfo>(t, null), fnfe, logFile);
+                if (rethrow)
+                    throw;
+            }
+            catch (TypeLoadException tle)
+            {
+                AddLoaderExceptionToLog(new Tuple<Type, MemberInfo>(t, null), tle, logFile);
+                if (rethrow)
+                    throw;
+            }
+            catch (FileLoadException fle)
+            {
+                AddLoaderExceptionToLog(new Tuple<Type, MemberInfo>(t, null), fle, logFile);
+                if (rethrow)
+                    throw;
+            }
+            catch (BadImageFormatException bife)
+            {
+                AddLoaderExceptionToLog(new Tuple<Type, MemberInfo>(t, null), bife, logFile);
+                if (rethrow)
+                    throw;
+            }
+
+            return null;            
+        }
+
+        /// <summary>
+        /// Wraps the call to <see cref="Type.GetMethod(System.String, Type[])"/> adding logging 
+        /// of typical loader exceptions - the exception is still thrown.
+        /// </summary>
+        /// <param name="t"></param>
+        /// <param name="name"></param>
+        /// <param name="types"></param>
+        /// <param name="rethrow">
+        /// optional ability to suppress the exception form being rethrown - default is true.
+        /// </param>
+        /// <param name="logFile">optional override of the default log file at <see cref="ResolveAsmLog"/> </param>
+        /// <returns></returns>
+        public static MethodInfo NfGetMethod(this Type t, string name, Type[] types, bool rethrow = true,
+            string logFile = "")
+        {
+            if (t == null)
+                return null;
+            try
+            {
+                return t.GetMethod(name, types);
+            }
+            catch (ReflectionTypeLoadException rtle)
+            {
+                AddLoaderExceptionToLog(new Tuple<Type, MemberInfo>(t, null), rtle, logFile);
+                if (rethrow)
+                    throw;
+            }
+            catch (FileNotFoundException fnfe)
+            {
+                AddLoaderExceptionToLog(new Tuple<Type, MemberInfo>(t, null), fnfe, logFile);
+                if (rethrow)
+                    throw;
+            }
+            catch (TypeLoadException tle)
+            {
+                AddLoaderExceptionToLog(new Tuple<Type, MemberInfo>(t, null), tle, logFile);
+                if (rethrow)
+                    throw;
+            }
+            catch (FileLoadException fle)
+            {
+                AddLoaderExceptionToLog(new Tuple<Type, MemberInfo>(t, null), fle, logFile);
+                if (rethrow)
+                    throw;
+            }
+            catch (BadImageFormatException bife)
+            {
+                AddLoaderExceptionToLog(new Tuple<Type, MemberInfo>(t, null), bife, logFile);
+                if (rethrow)
+                    throw;
+            }
+
+            return null;             
         }
 
         /// <summary>
@@ -729,8 +917,12 @@ namespace NoFuture.Util.Binary
         /// of typical loader exceptions - the exception is still thrown.
         /// </summary>
         /// <param name="pi"></param>
+        /// <param name="rethrow">
+        /// optional ability to suppress the exception form being rethrown - default is true.
+        /// </param>
+        /// <param name="logFile">optional override of the default log file at <see cref="ResolveAsmLog"/> </param>
         /// <returns></returns>
-        public static Type NfPropertyType(this PropertyInfo pi)
+        public static Type NfPropertyType(this PropertyInfo pi, bool rethrow = true, string logFile = "")
         {
             if (pi == null)
                 return null;
@@ -740,29 +932,36 @@ namespace NoFuture.Util.Binary
             }
             catch (ReflectionTypeLoadException rtle)
             {
-                AddLoaderExceptionToLog(new Tuple<Type, MemberInfo>(null, pi), rtle);
-                throw;
+                AddLoaderExceptionToLog(new Tuple<Type, MemberInfo>(null, pi), rtle, logFile);
+                if (rethrow)
+                    throw;
             }
             catch (FileNotFoundException fnfe)
             {
-                AddLoaderExceptionToLog(new Tuple<Type, MemberInfo>(null, pi), fnfe);
-                throw;
+                AddLoaderExceptionToLog(new Tuple<Type, MemberInfo>(null, pi), fnfe, logFile);
+                if (rethrow)
+                    throw;
             }
             catch (TypeLoadException tle)
             {
-                AddLoaderExceptionToLog(new Tuple<Type, MemberInfo>(null, pi), tle);
-                throw;
+                AddLoaderExceptionToLog(new Tuple<Type, MemberInfo>(null, pi), tle, logFile);
+                if (rethrow)
+                    throw;
             }
             catch (FileLoadException fle)
             {
-                AddLoaderExceptionToLog(new Tuple<Type, MemberInfo>(null, pi), fle);
-                throw;
+                AddLoaderExceptionToLog(new Tuple<Type, MemberInfo>(null, pi), fle, logFile);
+                if (rethrow)
+                    throw;
             }
             catch (BadImageFormatException bife)
             {
-                AddLoaderExceptionToLog(new Tuple<Type, MemberInfo>(null, pi), bife);
-                throw;
+                AddLoaderExceptionToLog(new Tuple<Type, MemberInfo>(null, pi), bife, logFile);
+                if (rethrow)
+                    throw;
             }
+
+            return null;
         }
 
         /// <summary>
@@ -770,8 +969,12 @@ namespace NoFuture.Util.Binary
         /// of typical loader exceptions - the exception is still thrown.
         /// </summary>
         /// <param name="fi"></param>
+        /// <param name="rethrow">
+        /// optional ability to suppress the exception form being rethrown - default is true.
+        /// </param>
+        /// <param name="logFile">optional override of the default log file at <see cref="ResolveAsmLog"/> </param>
         /// <returns></returns>
-        public static Type NfFieldType(this FieldInfo fi)
+        public static Type NfFieldType(this FieldInfo fi, bool rethrow = true, string logFile = "")
         {
             if (fi == null)
                 return null;
@@ -782,29 +985,36 @@ namespace NoFuture.Util.Binary
             }
             catch (ReflectionTypeLoadException rtle)
             {
-                AddLoaderExceptionToLog(new Tuple<Type, MemberInfo>(null, fi), rtle);
-                throw;
+                AddLoaderExceptionToLog(new Tuple<Type, MemberInfo>(null, fi), rtle, logFile);
+                if (rethrow)
+                    throw;
             }
             catch (FileNotFoundException fnfe)
             {
-                AddLoaderExceptionToLog(new Tuple<Type, MemberInfo>(null, fi), fnfe);
-                throw;
+                AddLoaderExceptionToLog(new Tuple<Type, MemberInfo>(null, fi), fnfe, logFile);
+                if (rethrow)
+                    throw;
             }
             catch (TypeLoadException tle)
             {
-                AddLoaderExceptionToLog(new Tuple<Type, MemberInfo>(null, fi), tle);
-                throw;
+                AddLoaderExceptionToLog(new Tuple<Type, MemberInfo>(null, fi), tle, logFile);
+                if (rethrow)
+                    throw;
             }
             catch (FileLoadException fle)
             {
-                AddLoaderExceptionToLog(new Tuple<Type, MemberInfo>(null, fi), fle);
-                throw;
+                AddLoaderExceptionToLog(new Tuple<Type, MemberInfo>(null, fi), fle, logFile);
+                if (rethrow)
+                    throw;
             }
             catch (BadImageFormatException bife)
             {
-                AddLoaderExceptionToLog(new Tuple<Type, MemberInfo>(null, fi), bife);
-                throw;
+                AddLoaderExceptionToLog(new Tuple<Type, MemberInfo>(null, fi), bife, logFile);
+                if (rethrow)
+                    throw;
             }
+
+            return null;
         }
 
         /// <summary>
@@ -812,8 +1022,12 @@ namespace NoFuture.Util.Binary
         /// of typical loader exceptions - the exception is still thrown.
         /// </summary>
         /// <param name="mi"></param>
+        /// <param name="rethrow">
+        /// optional ability to suppress the exception form being rethrown - default is true.
+        /// </param>
+        /// <param name="logFile">optional override of the default log file at <see cref="ResolveAsmLog"/> </param>
         /// <returns></returns>
-        public static Type NfReturnType(this MethodInfo mi)
+        public static Type NfReturnType(this MethodInfo mi, bool rethrow = true, string logFile = "")
         {
             if (mi == null)
                 return null;
@@ -823,38 +1037,49 @@ namespace NoFuture.Util.Binary
             }
             catch (ReflectionTypeLoadException rtle)
             {
-                AddLoaderExceptionToLog(new Tuple<Type, MemberInfo>(null, mi), rtle);
-                throw;
+                AddLoaderExceptionToLog(new Tuple<Type, MemberInfo>(null, mi), rtle, logFile);
+                if (rethrow)
+                    throw;
             }
             catch (FileNotFoundException fnfe)
             {
-                AddLoaderExceptionToLog(new Tuple<Type, MemberInfo>(null, mi), fnfe);
-                throw;
+                AddLoaderExceptionToLog(new Tuple<Type, MemberInfo>(null, mi), fnfe, logFile);
+                if (rethrow)
+                    throw;
             }
             catch (TypeLoadException tle)
             {
-                AddLoaderExceptionToLog(new Tuple<Type, MemberInfo>(null, mi), tle);
-                throw;
+                AddLoaderExceptionToLog(new Tuple<Type, MemberInfo>(null, mi), tle, logFile);
+                if (rethrow)
+                    throw;
             }
             catch (FileLoadException fle)
             {
-                AddLoaderExceptionToLog(new Tuple<Type, MemberInfo>(null, mi), fle);
-                throw;
+                AddLoaderExceptionToLog(new Tuple<Type, MemberInfo>(null, mi), fle, logFile);
+                if (rethrow)
+                    throw;
             }
             catch (BadImageFormatException bife)
             {
-                AddLoaderExceptionToLog(new Tuple<Type, MemberInfo>(null, mi), bife);
-                throw;
+                AddLoaderExceptionToLog(new Tuple<Type, MemberInfo>(null, mi), bife, logFile);
+                if (rethrow)
+                    throw;
             }
+
+            return null;
         }
 
         /// <summary>
         /// Wraps the call to <see cref="ParameterInfo.ParameterType"/> adding logging 
-        /// of typical loader exceptions - the exception is still thrown.
+        /// of typical loader exceptions.
         /// </summary>
         /// <param name="pi"></param>
+        /// <param name="rethrow">
+        /// optional ability to suppress the exception form being rethrown - default is true.
+        /// </param>
+        /// <param name="logFile">optional override of the default log file at <see cref="ResolveAsmLog"/> </param>
         /// <returns></returns>
-        public static Type NfParameterType(this ParameterInfo pi)
+        public static Type NfParameterType(this ParameterInfo pi, bool rethrow = true, string logFile = "")
         {
             if (pi == null)
                 return null;
@@ -865,38 +1090,49 @@ namespace NoFuture.Util.Binary
             }
             catch (ReflectionTypeLoadException rtle)
             {
-                AddLoaderExceptionToLog(null, rtle);
-                throw;
+                AddLoaderExceptionToLog(null, rtle, logFile);
+                if (rethrow)
+                    throw;
             }
             catch (FileNotFoundException fnfe)
             {
-                AddLoaderExceptionToLog(null, fnfe);
-                throw;
+                AddLoaderExceptionToLog(null, fnfe, logFile);
+                if (rethrow)
+                    throw;
             }
             catch (TypeLoadException tle)
             {
-                AddLoaderExceptionToLog(null, tle);
-                throw;
+                AddLoaderExceptionToLog(null, tle, logFile);
+                if (rethrow)
+                    throw;
             }
             catch (FileLoadException fle)
             {
-                AddLoaderExceptionToLog(null, fle);
-                throw;
+                AddLoaderExceptionToLog(null, fle, logFile);
+                if (rethrow)
+                    throw;
             }
             catch (BadImageFormatException bife)
             {
-                AddLoaderExceptionToLog(null, bife);
-                throw;
+                AddLoaderExceptionToLog(null, bife, logFile);
+                if (rethrow)
+                    throw;
             }
+
+            return null;
         }
 
         /// <summary>
         /// Wraps the call to <see cref="EventInfo.EventHandlerType"/> adding logging 
-        /// of typical loader exceptions - the exception is still thrown.
+        /// of typical loader exceptions.
         /// </summary>
         /// <param name="ei"></param>
+        /// <param name="rethrow">
+        /// optional ability to suppress the exception form being rethrown - default is true.
+        /// </param>
+        /// <param name="logFile">optional override of the default log file at <see cref="ResolveAsmLog"/> </param>
         /// <returns></returns>
-        public static Type NfEventHandlerType(this EventInfo ei)
+        public static Type NfEventHandlerType(this EventInfo ei, bool rethrow = true, string logFile = "")
         {
             if (ei == null)
                 return null;
@@ -907,39 +1143,50 @@ namespace NoFuture.Util.Binary
             }
             catch (ReflectionTypeLoadException rtle)
             {
-                AddLoaderExceptionToLog(new Tuple<Type, MemberInfo>(null, ei), rtle);
-                throw;
+                AddLoaderExceptionToLog(new Tuple<Type, MemberInfo>(null, ei), rtle, logFile);
+                if (rethrow)
+                    throw;
             }
             catch (FileNotFoundException fnfe)
             {
-                AddLoaderExceptionToLog(new Tuple<Type, MemberInfo>(null, ei), fnfe);
-                throw;
+                AddLoaderExceptionToLog(new Tuple<Type, MemberInfo>(null, ei), fnfe, logFile);
+                if (rethrow)
+                    throw;
             }
             catch (TypeLoadException tle)
             {
-                AddLoaderExceptionToLog(new Tuple<Type, MemberInfo>(null, ei), tle);
-                throw;
+                AddLoaderExceptionToLog(new Tuple<Type, MemberInfo>(null, ei), tle, logFile);
+                if (rethrow)
+                    throw;
             }
             catch (FileLoadException fle)
             {
-                AddLoaderExceptionToLog(new Tuple<Type, MemberInfo>(null, ei), fle);
-                throw;
+                AddLoaderExceptionToLog(new Tuple<Type, MemberInfo>(null, ei), fle, logFile);
+                if (rethrow)
+                    throw;
             }
             catch (BadImageFormatException bife)
             {
-                AddLoaderExceptionToLog(new Tuple<Type, MemberInfo>(null, ei), bife);
-                throw;
+                AddLoaderExceptionToLog(new Tuple<Type, MemberInfo>(null, ei), bife, logFile);
+                if (rethrow)
+                    throw;
             }
+
+            return null;
         }
 
 
         /// <summary>
         /// Wraps the call to <see cref="Type.BaseType"/> adding logging 
-        /// of typical loader exceptions - the exception is still thrown.
+        /// of typical loader exceptions.
         /// </summary>
         /// <param name="t"></param>
+        /// <param name="rethrow">
+        /// optional ability to suppress the exception form being rethrown - default is true.
+        /// </param>
+        /// <param name="logFile">optional override of the default log file at <see cref="ResolveAsmLog"/> </param>
         /// <returns></returns>
-        public static Type NfBaseType(this Type t)
+        public static Type NfBaseType(this Type t, bool rethrow = true, string logFile = "")
         {
             if (t == null)
                 return null;
@@ -950,32 +1197,49 @@ namespace NoFuture.Util.Binary
             }
             catch (ReflectionTypeLoadException rtle)
             {
-                AddLoaderExceptionToLog(new Tuple<Type, MemberInfo>(t, null), rtle);
-                throw;
+                AddLoaderExceptionToLog(new Tuple<Type, MemberInfo>(t, null), rtle, logFile);
+                if (rethrow)
+                    throw;
             }
             catch (FileNotFoundException fnfe)
             {
-                AddLoaderExceptionToLog(new Tuple<Type, MemberInfo>(t, null), fnfe);
-                throw;
+                AddLoaderExceptionToLog(new Tuple<Type, MemberInfo>(t, null), fnfe, logFile);
+                if (rethrow)
+                    throw;
             }
             catch (TypeLoadException tle)
             {
-                AddLoaderExceptionToLog(new Tuple<Type, MemberInfo>(t, null), tle);
-                throw;
+                AddLoaderExceptionToLog(new Tuple<Type, MemberInfo>(t, null), tle, logFile);
+                if (rethrow)
+                    throw;
             }
             catch (FileLoadException fle)
             {
-                AddLoaderExceptionToLog(new Tuple<Type, MemberInfo>(t, null), fle);
-                throw;
+                AddLoaderExceptionToLog(new Tuple<Type, MemberInfo>(t, null), fle, logFile);
+                if (rethrow)
+                    throw;
             }
             catch (BadImageFormatException bife)
             {
-                AddLoaderExceptionToLog(new Tuple<Type, MemberInfo>(t, null), bife);
-                throw;
+                AddLoaderExceptionToLog(new Tuple<Type, MemberInfo>(t, null), bife, logFile);
+                if (rethrow)
+                    throw;
             }
+
+            return null;
         }
 
-        public static MethodInfo NfGetGetMethod(this PropertyInfo pi)
+        /// <summary>
+        /// Wraps the call to <see cref="PropertyInfo.GetGetMethod()"/> adding logging 
+        /// of typical loader exceptions.
+        /// </summary>
+        /// <param name="pi"></param>
+        /// <param name="rethrow">
+        /// optional ability to suppress the exception form being rethrown - default is true.
+        /// </param>
+        /// <param name="logFile">optional override of the default log file at <see cref="ResolveAsmLog"/> </param>
+        /// <returns></returns>
+        public static MethodInfo NfGetGetMethod(this PropertyInfo pi, bool rethrow = true, string logFile = "")
         {
             if (pi == null)
                 return null;
@@ -986,32 +1250,49 @@ namespace NoFuture.Util.Binary
             }
             catch (ReflectionTypeLoadException rtle)
             {
-                AddLoaderExceptionToLog(new Tuple<Type, MemberInfo>(null, pi), rtle);
-                throw;
+                AddLoaderExceptionToLog(new Tuple<Type, MemberInfo>(null, pi), rtle, logFile);
+                if (rethrow)
+                    throw;
             }
             catch (FileNotFoundException fnfe)
             {
-                AddLoaderExceptionToLog(new Tuple<Type, MemberInfo>(null, pi), fnfe);
-                throw;
+                AddLoaderExceptionToLog(new Tuple<Type, MemberInfo>(null, pi), fnfe, logFile);
+                if (rethrow)
+                    throw;
             }
             catch (TypeLoadException tle)
             {
-                AddLoaderExceptionToLog(new Tuple<Type, MemberInfo>(null, pi), tle);
-                throw;
+                AddLoaderExceptionToLog(new Tuple<Type, MemberInfo>(null, pi), tle, logFile);
+                if (rethrow)
+                    throw;
             }
             catch (FileLoadException fle)
             {
-                AddLoaderExceptionToLog(new Tuple<Type, MemberInfo>(null, pi), fle);
-                throw;
+                AddLoaderExceptionToLog(new Tuple<Type, MemberInfo>(null, pi), fle, logFile);
+                if (rethrow)
+                    throw;
             }
             catch (BadImageFormatException bife)
             {
-                AddLoaderExceptionToLog(new Tuple<Type, MemberInfo>(null, pi), bife);
-                throw;
+                AddLoaderExceptionToLog(new Tuple<Type, MemberInfo>(null, pi), bife, logFile);
+                if (rethrow)
+                    throw;
             }
+
+            return null;
         }
 
-        public static MethodInfo NfGetSetMethod(this PropertyInfo pi)
+        /// <summary>
+        /// Wraps the call to <see cref="PropertyInfo.GetSetMethod()"/> adding logging 
+        /// of typical loader exceptions.
+        /// </summary>
+        /// <param name="pi"></param>
+        /// <param name="rethrow">
+        /// optional ability to suppress the exception form being rethrown - default is true.
+        /// </param>
+        /// <param name="logFile">optional override of the default log file at <see cref="ResolveAsmLog"/> </param>
+        /// <returns></returns>
+        public static MethodInfo NfGetSetMethod(this PropertyInfo pi, bool rethrow = true, string logFile = "")
         {
             if (pi == null)
                 return null;
@@ -1022,32 +1303,48 @@ namespace NoFuture.Util.Binary
             }
             catch (ReflectionTypeLoadException rtle)
             {
-                AddLoaderExceptionToLog(new Tuple<Type, MemberInfo>(null, pi), rtle);
-                throw;
+                AddLoaderExceptionToLog(new Tuple<Type, MemberInfo>(null, pi), rtle, logFile);
+                if (rethrow)
+                    throw;
             }
             catch (FileNotFoundException fnfe)
             {
-                AddLoaderExceptionToLog(new Tuple<Type, MemberInfo>(null, pi), fnfe);
-                throw;
+                AddLoaderExceptionToLog(new Tuple<Type, MemberInfo>(null, pi), fnfe, logFile);
+                if (rethrow)
+                    throw;
             }
             catch (TypeLoadException tle)
             {
-                AddLoaderExceptionToLog(new Tuple<Type, MemberInfo>(null, pi), tle);
-                throw;
+                AddLoaderExceptionToLog(new Tuple<Type, MemberInfo>(null, pi), tle, logFile);
+                if (rethrow)
+                    throw;
             }
             catch (FileLoadException fle)
             {
-                AddLoaderExceptionToLog(new Tuple<Type, MemberInfo>(null, pi), fle);
-                throw;
+                AddLoaderExceptionToLog(new Tuple<Type, MemberInfo>(null, pi), fle, logFile);
+                if (rethrow)
+                    throw;
             }
             catch (BadImageFormatException bife)
             {
-                AddLoaderExceptionToLog(new Tuple<Type, MemberInfo>(null, pi), bife);
-                throw;
+                AddLoaderExceptionToLog(new Tuple<Type, MemberInfo>(null, pi), bife, logFile);
+                if (rethrow)
+                    throw;
             }
+
+            return null;
         }
 
-        public static FieldInfo[] NfGetFields(this Type t)
+
+        /// <summary>
+        /// Wraps the call to <see cref="Type.GetFields()"/> adding logging 
+        /// of typical loader exceptions.
+        /// </summary>
+        /// <param name="t"></param>
+        /// <param name="rethrow"></param>
+        /// <param name="logFile"></param>
+        /// <returns></returns>
+        public static FieldInfo[] NfGetFields(this Type t, bool rethrow = true, string logFile = "")
         {
             if (t == null)
                 return null;
@@ -1058,30 +1355,37 @@ namespace NoFuture.Util.Binary
             }
             catch (ReflectionTypeLoadException rtle)
             {
-                AddLoaderExceptionToLog(new Tuple<Type, MemberInfo>(t, null), rtle);
-                throw;
+                AddLoaderExceptionToLog(new Tuple<Type, MemberInfo>(t, null), rtle, logFile);
+                if (rethrow)
+                    throw;
             }
             catch (FileNotFoundException fnfe)
             {
-                AddLoaderExceptionToLog(new Tuple<Type, MemberInfo>(t, null), fnfe);
-                throw;
+                AddLoaderExceptionToLog(new Tuple<Type, MemberInfo>(t, null), fnfe, logFile);
+                if (rethrow)
+                    throw;
             }
             catch (TypeLoadException tle)
             {
-                AddLoaderExceptionToLog(new Tuple<Type, MemberInfo>(t, null), tle);
-                throw;
+                AddLoaderExceptionToLog(new Tuple<Type, MemberInfo>(t, null), tle, logFile);
+                if (rethrow)
+                    throw;
             }
             catch (FileLoadException fle)
             {
                 AddLoaderExceptionToLog(new Tuple<Type, MemberInfo>(t, null), fle);
-                throw;
+                if (rethrow)
+                    throw;
             }
             catch (BadImageFormatException bife)
             {
-                AddLoaderExceptionToLog(new Tuple<Type, MemberInfo>(t, null), bife);
-                throw;
+                AddLoaderExceptionToLog(new Tuple<Type, MemberInfo>(t, null), bife, logFile);
+                if (rethrow)
+                    throw;
             }
-    
+
+            return null;
+
         }
         #endregion
 

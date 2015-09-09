@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Configuration;
 using NoFuture.Shared;
+using NoFuture.Util.Binary;
 
 namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
 {
@@ -256,9 +257,8 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
         /// </summary>
         /// <param name="tokenId"></param>
         /// <param name="tokenName"></param>
-        /// <param name="useTokensRslvAsmIdx">Default to <see cref="Program.ManifestModule"/> for token resolution.</param>
         /// <returns></returns>
-        internal static bool ResolveSingleTokenName(MetadataTokenId tokenId, out MetadataTokenName tokenName, bool useTokensRslvAsmIdx = false)
+        internal static bool ResolveSingleTokenName(MetadataTokenId tokenId, out MetadataTokenName tokenName)
         {
             tokenName = null;
             if (tokenId.Id == 0)
@@ -272,15 +272,8 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
             }
             MemberInfo mi;
             var rtMiRslt = false;
-            if (!useTokensRslvAsmIdx || (Program.AsmIndicies.Asms.All(x => x.IndexId != tokenId.RslvAsmIdx)))
-            {
-                rtMiRslt = TryResolveRtMemberInfo(tokenId, out mi);
-            }
-            else
-            {
-                var manifestAsm = Program.AsmIndicies.GetAssemblyByIndex(tokenId.RslvAsmIdx);
-                rtMiRslt = TryResolveRtMemberInfo(manifestAsm.ManifestModule, tokenId, out mi);
-            }
+            var manifestAsm = Program.AsmIndicies.GetAssemblyByIndex(tokenId.RslvAsmIdx);
+            rtMiRslt = TryResolveRtMemberInfo(manifestAsm.ManifestModule, tokenId, out mi);
             if (!rtMiRslt)
                 return false;
             if (mi == null)
@@ -295,18 +288,6 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
             tokenName.Id = tokenId.Id;
             tokenName.RslvAsmIdx = tokenId.RslvAsmIdx;
             return true;
-        }
-
-        /// <summary>
-        /// Resolves the <see cref="tokenId"/>to a <see cref="MemberInfo"/> using
-        /// the current manifest module assigned to <see cref="Program.ManifestModule"/>
-        /// </summary>
-        /// <param name="tokenId"></param>
-        /// <param name="mi"></param>
-        /// <returns></returns>
-        internal static bool TryResolveRtMemberInfo(MetadataTokenId tokenId, out MemberInfo mi)
-        {
-            return TryResolveRtMemberInfo(Program.ManifestModule, tokenId, out mi);
         }
 
         /// <summary>
@@ -361,8 +342,16 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
 
             if (String.IsNullOrWhiteSpace(typeName))
                 return false;
-
-            var asmType = owningAsm.GetType(typeName);
+            Type asmType = null;
+            try
+            {
+                //framework throwing null-ref ex despite null checks
+                asmType = owningAsm.NfGetType(typeName, false, Program.LogFile);
+            }
+            catch
+            {
+                return false;
+            }
             if (asmType == null)
                 return false;
 
@@ -375,14 +364,14 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
             {
                 if (!withArgs)
                 {
-                    methodInfo = asmType.GetMethod(methodName, AssemblyAnalysis.DefaultFlags);
+                    methodInfo = asmType.NfGetMethod(methodName, AssemblyAnalysis.DefaultFlags, false, Program.LogFile);
                 }
                 else
                 {
                     var argTypes = GetMethodArgTypes(tokenName);
                     if (argTypes == null)
                         return false;
-                    methodInfo = asmType.GetMethod(methodName, argTypes);
+                    methodInfo = asmType.NfGetMethod(methodName, argTypes,false, Program.LogFile);
                 }
             }
             catch (AmbiguousMatchException)
@@ -431,7 +420,7 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
                         continue;
                     }
                     MetadataTokenName tokenName;
-                    var resolved = UtilityMethods.ResolveSingleTokenName(cid, out tokenName, true);
+                    var resolved = UtilityMethods.ResolveSingleTokenName(cid, out tokenName);
 
                     if (!resolved)
                     {

@@ -10,9 +10,11 @@ namespace SomeSecondDll
     public class MyFirstMiddleClass
     {
         private ThirdDll.DbLike _myDbLikeThing;
+        private SecondMiddleClass _forRecursiveCalls;
         public MyFirstMiddleClass()
         {
             _myDbLikeThing = new DbLike();
+            _forRecursiveCalls = new SecondMiddleClass();
         }
 
         private string _myField;
@@ -25,6 +27,14 @@ namespace SomeSecondDll
         public SomethingShared.Entity00 GetMyEntity(SomethingShared.ArgsObject args)
         {
             return _myDbLikeThing.GetEntityByArgs(args);
+        }
+
+        public void RecurseCall(ref int someIntIn)
+        {
+            someIntIn += 1;
+            if (someIntIn > 99)
+                return;
+            _forRecursiveCalls.ForRecursiveCalls(ref someIntIn);
         }
     }
 }

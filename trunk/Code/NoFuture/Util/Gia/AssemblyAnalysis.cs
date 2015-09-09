@@ -16,6 +16,7 @@ using NoFuture.Shared;
 using NoFuture.Util.Binary;
 using NoFuture.Util.Gia.Args;
 using Newtonsoft.Json;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace NoFuture.Util.Gia
 {
@@ -147,8 +148,7 @@ namespace NoFuture.Util.Gia
             //connect to the process on a socket 
             var asmIndicesBuffer = SendToRemoteProcess(Encoding.UTF8.GetBytes(assemblyPath),
                 _myProcessPorts.GetAsmIndiciesPort);
-            _asmIndices =
-                JsonConvert.DeserializeObject<AsmIndicies>(Encoding.UTF8.GetString(asmIndicesBuffer));
+            _asmIndices = JsonConvert.DeserializeObject<AsmIndicies>(Encoding.UTF8.GetString(asmIndicesBuffer));
 
             //listen for progress from the remote process since getting tokens may take some time
             _taskFactory = new TaskFactory();
@@ -182,7 +182,13 @@ namespace NoFuture.Util.Gia
             var crit = new GetTokenIdsCriteria {AsmName = asmName, ResolveAllNamedLike = recurseAnyAsmNamedLike};
 
             var bufferIn = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(crit));
+
             var bufferOut = SendToRemoteProcess(bufferIn, _myProcessPorts.GetTokenIdsPort);
+
+            if (bufferOut == null || bufferOut.Length <= 0)
+                throw new ItsDeadJim(
+                    string.Format("The remote process by id [{0}] did not return anything on port [{1}]",
+                        _myProcessPorts.Pid, _myProcessPorts.GetTokenIdsPort));
 
             return JsonConvert.DeserializeObject<TokenIds>(Encoding.UTF8.GetString(bufferOut));
         }
@@ -192,7 +198,7 @@ namespace NoFuture.Util.Gia
         /// </summary>
         /// <param name="metadataTokenIds"></param>
         /// <returns></returns>
-        public TokenNames ResolveTokenNames(MetadataTokenId[] metadataTokenIds)
+        public TokenNames GetTokenNames(MetadataTokenId[] metadataTokenIds)
         {
             if (metadataTokenIds == null)
                 throw new ArgumentNullException("metadataTokenIds");
@@ -202,6 +208,11 @@ namespace NoFuture.Util.Gia
             var bufferIn = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(metadataTokenIds));
 
             var bufferOut = SendToRemoteProcess(bufferIn, _myProcessPorts.GetTokenNamesPort);
+
+            if (bufferOut == null || bufferOut.Length <= 0)
+                throw new ItsDeadJim(
+                    string.Format("The remote process by id [{0}] did not return anything on port [{1}]",
+                        _myProcessPorts.Pid, _myProcessPorts.GetTokenNamesPort));
 
             return JsonConvert.DeserializeObject<TokenNames>(Encoding.UTF8.GetString(bufferOut));
         }
@@ -222,7 +233,6 @@ namespace NoFuture.Util.Gia
             var port00 = ports != null && ports.Length >= 1 ? ports[0] : DF_START_PORT;
             var port01 = ports != null && ports.Length >= 2 ? ports[1] : DF_START_PORT + 1;
             var port02 = ports != null && ports.Length >= 3 ? ports[2] : DF_START_PORT + 2;
-            var port03 = ports != null && ports.Length >= 4 ? ports[3] : DF_START_PORT + 3;
 
             var args = String.Join(" ",
                 new[]
@@ -231,7 +241,6 @@ namespace NoFuture.Util.Gia
                         ConsoleCmd.ConstructCmdLineArgs(GET_TOKEN_IDS_PORT_CMD_SWITCH, port01.ToString(CultureInfo.InvariantCulture)),
                         ConsoleCmd.ConstructCmdLineArgs(GET_TOKEN_NAMES_PORT_CMD_SWITCH, port02.ToString(CultureInfo.InvariantCulture)),
                         ConsoleCmd.ConstructCmdLineArgs(RESOLVE_GAC_ASM_SWITCH, resolveGacAsmNames.ToString()),
-                        ConsoleCmd.ConstructCmdLineArgs(PROCESS_PROGRESS_PORT_CMD_SWITCH, port03.ToString(CultureInfo.InvariantCulture))
                     });
 
             var proc = new Process
@@ -254,7 +263,7 @@ namespace NoFuture.Util.Gia
                 GetAsmIndiciesPort = port00,
                 GetTokenIdsPort = port01,
                 GetTokenNamesPort = port02,
-                ProcessProgressPort = port03
+                ProcessProgressPort = -1
             };
 
             return new Tuple<InvokeAssemblyAnalysisId, Process>(key, proc);
@@ -332,7 +341,11 @@ namespace NoFuture.Util.Gia
                             buffer.AddRange(data.Where(b => b != (byte)'\0'));
                         }
 
-                        var progress = JsonConvert.DeserializeObject<ProgressMessage>(Encoding.UTF8.GetString(buffer.ToArray()));
+                        var progress =
+                            JsonConvert.DeserializeObject<ProgressMessage>(Encoding.UTF8.GetString(buffer.ToArray()));
+
+                        if (progress == null)
+                            return;
 
                         var subscribers = ProgressReporter.GetInvocationList();
                         var enumerable = subscribers.GetEnumerator();
@@ -364,9 +377,8 @@ namespace NoFuture.Util.Gia
                 return new MetadataTokenId() { Items = new MetadataTokenId[0] };
 
             var token = new MetadataTokenId { Id = asmType.MetadataToken, RslvAsmIdx = asmIdx};
-            var manifold =
-                asmType.GetMembers(DefaultFlags).Select(x => GetMetadataToken(x, true, asmIdx)).ToList();
-            token.Items = manifold.ToArray();
+            token.Items =
+                asmType.GetMembers(DefaultFlags).Select(x => GetMetadataToken(x, true, asmIdx)).Distinct().ToArray();
             return token;
         }
 
@@ -389,7 +401,10 @@ namespace NoFuture.Util.Gia
                 return token;
 
             token.Items = resolveManifold
-                ? Binary.Asm.GetCallsMetadataTokens(mti).Select(t => new MetadataTokenId { Id = t, RslvAsmIdx = asmIdx}).ToArray()
+                ? Asm.GetCallsMetadataTokens(mti)
+                    .Where(t => t != mi.MetadataToken)
+                    .Select(t => new MetadataTokenId {Id = t, RslvAsmIdx = asmIdx})
+                    .ToArray()
                 : new MetadataTokenId[0];
 
             return token;

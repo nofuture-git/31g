@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -37,7 +36,6 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
         private static readonly Dictionary<MetadataTokenId, MetadataTokenName> _tokenId2NameCache =
             new Dictionary<MetadataTokenId, MetadataTokenName>();
         private static readonly HashSet<MetadataTokenId> _disolutionCache = new HashSet<MetadataTokenId>();
-        private static readonly List<MetadataTokenId> _resolutionCache = new List<MetadataTokenId>();
         private static TaskFactory _taskFactory;
         private static string _logName;
         private static readonly AsmIndicies _asmIndices = new AsmIndicies();
@@ -56,21 +54,20 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
             get
             {
                 return RootAssembly != null &&
-                       ManifestModule != null &&
                        AsmIndicies.Asms != null &&
                        AsmIndicies.Asms.Length > 0;
             }
         }
 
         /// <summary>
+        /// Message state specific to printing progress with <see cref="ProgressMessage"/>
+        /// </summary>
+        internal static Tuple<int, string> ProgressMessageState { get; set; }
+
+        /// <summary>
         /// The original assembly that the <see cref="AssemblyAnalysis"/> was spawned from.
         /// </summary>
         internal static Assembly RootAssembly { get; set; }
-
-        /// <summary>
-        /// A module for used in resolving metadata token id's to <see cref="MemberInfo"/>
-        /// </summary>
-        internal static Module ManifestModule { get; set; }
 
         /// <summary>
         /// A memory store for the regex pattern passed into various <see cref="Cmds.ICmd"/>
@@ -84,15 +81,6 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
         internal static Dictionary<MetadataTokenId, MetadataTokenName> TokenId2NameCache
         {
             get { return _tokenId2NameCache; }
-        }
-
-        /// <summary>
-        /// Internal memory for tokens who have had thier entire 
-        /// call-stack resolved.  
-        /// </summary>
-        internal static List<MetadataTokenId> ResolutionCache
-        {
-            get { return _resolutionCache; }
         }
 
         /// <summary>
@@ -251,12 +239,12 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
         }
 
         /// <summary>
-        /// Sends a the <see cref="msg"/> back on the <see cref="ProcessProgressCmdPort"/>
-        /// to any listeners.
+        /// Reports progress to the console and any calling assembly (if so configured).
         /// </summary>
         /// <param name="msg"></param>
         internal static void ReportProgress(Shared.ProgressMessage msg)
         {
+            PrintToConsole(msg);
             if (!Net.IsValidPortNumber(ProcessProgressCmdPort) || _processProgress == null)
                 return;
             _processProgress.ReportIn(msg);
@@ -271,6 +259,14 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
             var ut = String.Empty;
             try
             {
+                //set app domain cfg
+                Console.WindowWidth = 100;
+                ConsoleCmd.SetConsoleAsTransparent();
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.Title = Assembly.GetExecutingAssembly().GetName().Name;
+                SetReflectionOnly();
+                FxPointers.AddResolveAsmEventHandlerToDomain();
+
                 //test if there are any args, if not just leave with no message
                 if (args.Length > 0 && (args[0] == "-h" || args[0] == "-help" || args[0] == "/?" || args[0] == "--help"))
                 {
@@ -278,13 +274,6 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
                     return;
                 }
                 PrintToConsole("New console started!");
-
-                //set app domain cfg
-                ConsoleCmd.SetConsoleAsTransparent();
-                Console.ForegroundColor = ConsoleColor.Green;
-                Console.Title = Assembly.GetExecutingAssembly().GetName().Name;
-                SetReflectionOnly();
-                FxPointers.AddResolveAsmEventHandlerToDomain();
 
                 //get and test the cmd line arg key\values
                 var argHash = ConsoleCmd.ArgHash(args);
@@ -333,40 +322,6 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
                     {
                         Console.WriteLine(Help());
                         continue;
-                    }
-                    
-                    if (!AsmInited)
-                        continue;
-
-                    //allow user to get token id by type name
-                    if (System.Text.RegularExpressions.Regex.IsMatch(ut, TypeName.NAMESPACE_CLASS_NAME_REGEX))
-                    {
-                        var aType = ManifestModule.GetType(ut.Trim(), true);
-                        if (aType == null)
-                            continue;
-                        PrintToConsole(string.Format("{0,-20}0x{1}","MetadataToken Id", aType.MetadataToken.ToString("X4")));
-                    }
-
-                    //allow user to get type name by token id
-                    int utTokenId = 0;
-                    if (ut.StartsWith("0x") &&
-                        !Int32.TryParse(ut.Substring(2), NumberStyles.HexNumber, CultureInfo.InvariantCulture,
-                            out utTokenId))
-                        continue;
-                    if (utTokenId == 0 && !Int32.TryParse(ut, out utTokenId)) 
-                        continue;
-
-                    if (utTokenId > 0)
-                    {
-                        MetadataTokenName tokenNameOut;
-                        if (!UtilityMethods.ResolveSingleTokenName(new MetadataTokenId() {Id = utTokenId}, out tokenNameOut))
-                            continue;
-                        var asmName = AsmIndicies.Asms.FirstOrDefault(x => x.IndexId == tokenNameOut.OwnAsmIdx);
-
-                        PrintToConsole(string.Format("{0,-20}{1}", "Name", tokenNameOut.Name));
-                        PrintToConsole(string.Format("{0,-20}{1}", "Assembly",
-                            asmName == null ? string.Empty : asmName.AssemblyName));
-                        PrintToConsole(string.Format("{0,-20}{1}", "Label", tokenNameOut.Label));
                     }
                 }
             }
@@ -484,6 +439,7 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
         {
             lock (_printLock)
             {
+                Console.WriteLine();
                 var msg = String.Format("{0:yyyy-MM-dd HH:mm:ss.fff} {1}", DateTime.Now, ex.Message);
                 File.AppendAllText(LogFile, String.Format("{0}\n", msg));
                 Console.WriteLine(msg);
@@ -495,7 +451,36 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
         }
 
         /// <summary>
-        /// Standard help for a console app - does NOT get send to <see cref="LogFile"/>
+        /// Prints a header then a kind of console progress bar.
+        /// Does NOT write to <see cref="LogFile"/>.
+        /// </summary>
+        /// <param name="pMsg"></param>
+        internal static void PrintToConsole(ProgressMessage pMsg)
+        {
+            var _currentState = new Tuple<int, string>(pMsg.ProgressCounter, pMsg.Status);
+
+            if (ProgressMessageState == null)
+            {
+                Console.WriteLine(_currentState.Item2);
+                ProgressMessageState = _currentState;
+                return;
+            }
+            if (_currentState.Item2 != ProgressMessageState.Item2)
+            {
+                Console.WriteLine();
+                Console.WriteLine(_currentState.Item2);
+                ProgressMessageState = _currentState;
+                return;
+            }
+            if (_currentState.Item1 > ProgressMessageState.Item1)
+            {
+                Console.Write('.');
+                ProgressMessageState = _currentState;
+            }
+        }
+
+        /// <summary>
+        /// Standard help for a console app - does NOT write to <see cref="LogFile"/>
         /// </summary>
         /// <returns></returns>
         internal static String Help()

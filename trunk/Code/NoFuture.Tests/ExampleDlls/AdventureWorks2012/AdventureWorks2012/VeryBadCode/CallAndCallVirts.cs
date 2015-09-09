@@ -37,5 +37,23 @@ namespace AdventureWorks2012.VeryBadCode
                 SomeId = _smc.SaveSomething(localEntity);
             }
         }
+
+        public void RecursiveCallToSelf(string junk, ref int aCounter)
+        {
+            while (aCounter < 32)
+            {
+                junk = junk ?? string.Empty;
+                junk = string.Format("{0}{1}", junk, _myRand.Next(1, 999));
+                aCounter += 1;
+                RecursiveCallToSelf(junk, ref aCounter);
+            }
+        }
+
+        public int RecursiveCallToOthers()
+        {
+            var someCounter = 0;
+            _mfmc.RecurseCall(ref someCounter);
+            return someCounter;
+        }
     }
 }

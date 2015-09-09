@@ -39,7 +39,6 @@ namespace NoFuture.Tests.Util.InvokeAsmTests
                     System.IO.File.ReadAllBytes(
                         @"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\ThirdDll.dll"));
             TestProgram.RootAssembly = testAsm;
-            TestProgram.ManifestModule = testAsm.ManifestModule;
             TestProgram.AssemblyNameRegexPattern = "(Some|ThirdDll)";
             NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds.GetAsmIndices.Init(testAsm);
             NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds.GetAsmIndices.AssignAsmIndicies(testAsm);
@@ -58,7 +57,7 @@ namespace NoFuture.Tests.Util.InvokeAsmTests
                 {
                     foreach (var vToken in tToken.Items)
                     {
-                        NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds.GetTokenIds.ResolveCallOfCall(vToken, ref testDepth);        
+                        NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds.GetTokenIds.ResolveCallOfCall(vToken, ref testDepth, new Stack<MetadataTokenId>());        
                     }
                 }
                 

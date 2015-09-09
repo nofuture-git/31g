@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Linq;
-using System.Reflection;
+using System.IO;
 using System.Text;
-using NoFuture.Shared;
+using Newtonsoft.Json;
 
 namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds
 {
@@ -14,16 +13,14 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds
         {
             try
             {
-                return Encoding.UTF8.GetBytes(
-                                    Newtonsoft.Json.JsonConvert.SerializeObject(rspn));
+                return Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(rspn));
             }
             catch (Exception ex)
             {
                 Program.PrintToConsole(ex);
-                return new[] {(byte) '\0'};
+                return EmptyBytes;
             }
         }
-
         public abstract byte[] Execute(byte[] arg);
     }
 }

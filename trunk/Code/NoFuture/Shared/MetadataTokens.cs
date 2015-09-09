@@ -64,8 +64,9 @@ namespace NoFuture.Shared
             FlattenToDistinct(token, list);
             return list.ToArray();
         }
+
         [EditorBrowsable(EditorBrowsableState.Never)]
-        private static void FlattenToDistinct(MetadataTokenId token, HashSet<MetadataTokenId> list)
+        internal static void FlattenToDistinct(MetadataTokenId token, HashSet<MetadataTokenId> list)
         {
             if (token == null)
                 return;
@@ -109,6 +110,22 @@ namespace NoFuture.Shared
         public string Msg;
         public MetadataTokenId[] Tokens;
         public MetadataTokenStatus St;
+
+        /// <summary>
+        /// Helper method to get all distinct token ids from the current instance.
+        /// </summary>
+        /// <returns></returns>
+        public MetadataTokenId[] FlattenToDistinct()
+        {
+            if (St == MetadataTokenStatus.Error || Tokens == null ||  Tokens.Length <= 0)
+                return null;
+            var tokenHashset = new HashSet<MetadataTokenId>();
+            foreach (var t in Tokens)
+            {
+                MetadataTokenId.FlattenToDistinct(t, tokenHashset);
+            }
+            return tokenHashset.ToArray();
+        }
     }
 
     /// <summary>
@@ -130,8 +147,22 @@ namespace NoFuture.Shared
         /// the <see cref="Id"/> was resolved.
         /// </summary>
         public int RslvAsmIdx;
+
+        /// <summary>
+        /// A grouping label.
+        /// </summary>
         public string Label;
 
+        /// <summary>
+        /// For the calling assembly to construct the full mapping.
+        /// </summary>
+        [NonSerialized]
+        public MetadataTokenName[] Items;
+
+        /// <summary>
+        /// Determines, by naming pattern, if the current name was derived from <see cref="MethodInfo"/>
+        /// </summary>
+        /// <returns></returns>
         public bool IsMethodName()
         {
             return !string.IsNullOrWhiteSpace(Name) && Name.Contains(Constants.TypeMethodNameSplitOn);
@@ -161,6 +192,53 @@ namespace NoFuture.Shared
         public string Msg;
         public MetadataTokenStatus St;
         public MetadataTokenName[] Names;
+
+        /// <summary>
+        /// Final analysis to merge the token Ids to thier names in a hierarchy.
+        /// </summary>
+        /// <param name="tokenIds"></param>
+        /// <returns></returns>
+        public MetadataTokenName[] ApplyMapping(MetadataTokenId[] tokenIds)
+        {
+            if (St == MetadataTokenStatus.Error || Names == null || Names.Length <= 0)
+                return null;
+            
+            var nameMapping = new List<MetadataTokenName>();
+            foreach(var tokenId in tokenIds)
+                nameMapping.Add(GetNameMapping(tokenId));
+            return nameMapping.ToArray();
+        }
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        internal MetadataTokenName GetNameMapping(MetadataTokenId tokenId)
+        {
+            if (tokenId == null || Names == null)
+                return null;
+            var nm = new MetadataTokenName {Id = tokenId.Id, RslvAsmIdx = tokenId.RslvAsmIdx};
+            var frmNm = Names.FirstOrDefault(x => x.Id == tokenId.Id && x.RslvAsmIdx == tokenId.RslvAsmIdx);
+            if (frmNm == null)
+                return nm;
+
+            nm.OwnAsmIdx = frmNm.OwnAsmIdx;
+            nm.Label = frmNm.Label;
+            nm.Name = frmNm.Name;
+
+            if (tokenId.Items == null || tokenId.Items.Length <= 0)
+                return nm;
+
+            var hs = new List<MetadataTokenName>();
+            foreach (var tToken in tokenId.Items)
+            {
+                var nmTokens = GetNameMapping(tToken);
+                if (nmTokens == null)
+                    continue;
+                hs.Add(nmTokens);
+            }
+
+            nm.Items = hs.ToArray();
+
+            return nm;
+        }
     }
 
     /// <summary>
@@ -232,5 +310,12 @@ namespace NoFuture.Shared
     {
         Ok,
         Error
+    }
+
+    [Serializable]
+    public enum MetadataTokenSerialize
+    {
+        Binary,
+        Json
     }
 }

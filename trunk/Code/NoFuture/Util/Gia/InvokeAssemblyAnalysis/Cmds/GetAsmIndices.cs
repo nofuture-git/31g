@@ -73,7 +73,6 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds
 
         internal static void Init(Assembly asm)
         {
-            Program.ManifestModule = asm.ManifestModule;
             Program.RootAssembly = asm;
             Program.TokenId2NameCache.Clear();
             Program.DisolutionCache.Clear();

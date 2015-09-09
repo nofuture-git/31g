@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using Newtonsoft.Json;
 using NoFuture.Shared;
@@ -12,6 +12,7 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds
         public override byte[] Execute(byte[] arg)
         {
             Program.PrintToConsole("GetTokenNames invoked");
+            Program.ProgressMessageState = null;
             try
             {
                 if (Program.AsmInited != true)
@@ -27,7 +28,7 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds
                 }
 
                 var tokens = JsonConvert.DeserializeObject<MetadataTokenId[]>(Encoding.UTF8.GetString(arg));
-
+    
                 if (tokens == null || tokens.Length <= 0)
                 {
                     return EncodedResponse(new TokenNames
@@ -37,13 +38,8 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds
                     });
                 }
 
-                if (Program.ManifestModule == null)
-                    return EncodedResponse(new TokenNames
-                    {
-                        Msg = "the Manifest Module is null",
-                        St = MetadataTokenStatus.Error
-                    });
                 var names = UtilityMethods.ResolveAllTokenNames(tokens);
+                Console.Write('\n');
 
                 return EncodedResponse(new TokenNames {Names = names.ToArray()});
             }
