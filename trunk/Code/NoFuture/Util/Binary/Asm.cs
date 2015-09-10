@@ -752,7 +752,7 @@ namespace NoFuture.Util.Binary
 
         /// <summary>
         /// Wraps the call to <see cref="Type.GetMethod(System.String)"/> adding logging 
-        /// of typical loader exceptions - the exception is still thrown.
+        /// of typical loader exceptions.
         /// </summary>
         /// <param name="t"></param>
         /// <param name="name"></param>
@@ -805,7 +805,7 @@ namespace NoFuture.Util.Binary
 
         /// <summary>
         /// Wraps the call to <see cref="Type.GetMethod(System.String, BindingFlags)"/> adding logging 
-        /// of typical loader exceptions - the exception is still thrown.
+        /// of typical loader exceptions.
         /// </summary>
         /// <param name="t"></param>
         /// <param name="name"></param>
@@ -859,7 +859,7 @@ namespace NoFuture.Util.Binary
 
         /// <summary>
         /// Wraps the call to <see cref="Type.GetMethod(System.String, Type[])"/> adding logging 
-        /// of typical loader exceptions - the exception is still thrown.
+        /// of typical loader exceptions.
         /// </summary>
         /// <param name="t"></param>
         /// <param name="name"></param>
@@ -877,6 +877,60 @@ namespace NoFuture.Util.Binary
             try
             {
                 return t.GetMethod(name, types);
+            }
+            catch (ReflectionTypeLoadException rtle)
+            {
+                AddLoaderExceptionToLog(new Tuple<Type, MemberInfo>(t, null), rtle, logFile);
+                if (rethrow)
+                    throw;
+            }
+            catch (FileNotFoundException fnfe)
+            {
+                AddLoaderExceptionToLog(new Tuple<Type, MemberInfo>(t, null), fnfe, logFile);
+                if (rethrow)
+                    throw;
+            }
+            catch (TypeLoadException tle)
+            {
+                AddLoaderExceptionToLog(new Tuple<Type, MemberInfo>(t, null), tle, logFile);
+                if (rethrow)
+                    throw;
+            }
+            catch (FileLoadException fle)
+            {
+                AddLoaderExceptionToLog(new Tuple<Type, MemberInfo>(t, null), fle, logFile);
+                if (rethrow)
+                    throw;
+            }
+            catch (BadImageFormatException bife)
+            {
+                AddLoaderExceptionToLog(new Tuple<Type, MemberInfo>(t, null), bife, logFile);
+                if (rethrow)
+                    throw;
+            }
+
+            return null;             
+        }
+
+        /// <summary>
+        /// Wraps the call to <see cref="Type.GetMethods(BindingFlags)"/> adding logging 
+        /// of typical loader exceptions.
+        /// </summary>
+        /// <param name="t"></param>
+        /// <param name="bindingAttr"></param>
+        /// <param name="rethrow">
+        /// optional ability to suppress the exception form being rethrown - default is true.
+        /// </param>
+        /// <param name="logFile">optional override of the default log file at <see cref="ResolveAsmLog"/> </param>
+        /// <returns></returns>
+        public static MethodInfo[] NfGetMethods(this Type t, BindingFlags bindingAttr, bool rethrow = true,
+            string logFile = "")
+        {
+            if (t == null)
+                return null;
+            try
+            {
+                return t.GetMethods(bindingAttr);
             }
             catch (ReflectionTypeLoadException rtle)
             {

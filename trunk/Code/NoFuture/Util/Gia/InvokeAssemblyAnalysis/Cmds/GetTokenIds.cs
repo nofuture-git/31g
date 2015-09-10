@@ -29,6 +29,7 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds
                 var tokens = new List<MetadataTokenId>();
                 var counter = 0;
                 var total = asmTypes.Length;
+                Program.PrintToConsole(string.Format("There are {0} types in the assembly", total));
                 foreach (var asmType in asmTypes)
                 {
                     counter += 1;
@@ -45,6 +46,7 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds
 
                 if (string.IsNullOrWhiteSpace(Program.AssemblyNameRegexPattern))
                 {
+                    Console.Write('\n');
                     return EncodedResponse(
                         new TokenIds
                         {
@@ -56,6 +58,7 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds
                 var callTokens = tokens.SelectMany(x => x.Items.SelectMany(y => y.Items)).ToArray();
                 counter = 0;
                 total = callTokens.Length;
+                Program.PrintToConsole(string.Format("There are {0} call-of-call tokens", total));
                 foreach (var iToken in callTokens)
                 {
                     counter += 1;
@@ -67,7 +70,7 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds
                         Status = "Getting call-of-calls"
                     });
                     var stackTrc = new Stack<MetadataTokenId>();
-                    ResolveCallOfCall(iToken, ref countDepth, stackTrc);
+                    ResolveCallOfCall(iToken, ref countDepth, stackTrc, null);
                 }
                 Console.Write('\n');
                 return EncodedResponse(
@@ -78,6 +81,7 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds
             }
             catch (Exception ex)
             {
+                Console.Write('\n');
                 Program.PrintToConsole(ex);
                 return EncodedResponse(
                     new TokenIds
@@ -94,15 +98,24 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds
         /// <param name="token"></param>
         /// <param name="depth"></param>
         /// <param name="stackTrc">For detecting recursive call patterns</param>
-        internal static void ResolveCallOfCall(MetadataTokenId token, ref int depth, Stack<MetadataTokenId> stackTrc)
+        /// <param name="msgOut">For getting details on recursion.</param>
+        internal static void ResolveCallOfCall(MetadataTokenId token, ref int depth, Stack<MetadataTokenId> stackTrc, StringBuilder msgOut)
         {
-            //when no pattern on which to match - no call-of-call to resolve
-            if (string.IsNullOrWhiteSpace(Program.AssemblyNameRegexPattern))
-                return;
+            if (msgOut != null)
+            {
+                if(depth > 0)
+                    msgOut.Append(new string(' ', depth));
 
+                msgOut.AppendFormat("Depth:{0}", depth);
+                msgOut.AppendFormat(", Token:{0}.0x{1}", token.RslvAsmIdx, token.Id.ToString("X4"));
+            }
             //detect if we are in a recursive call
             if (stackTrc.Any(x => x.Equals(token)))
+            {
+                if (msgOut != null)
+                    msgOut.AppendLine(", Message:'present in stack trace'");
                 return;
+            }
 
             stackTrc.Push(new MetadataTokenId {Id = token.Id, RslvAsmIdx = token.RslvAsmIdx});
 
@@ -115,6 +128,8 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds
                 depth -= 1;
                 Program.PrintToConsole(
                     String.Format("Max Recursion Depth @ {0}.{1}\n", token.RslvAsmIdx, token.Id));
+                if(msgOut != null)
+                    msgOut.AppendLine(", Message:'max recursion depth'");
                 return;
             }
 
@@ -122,6 +137,8 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds
             if (token.Items != null && token.Items.Length > 0)
             {
                 depth -= 1;
+                if (msgOut != null)
+                    msgOut.AppendLine(", Message:'Items already present'");
                 return;
             }
 
@@ -129,6 +146,8 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds
             if (Program.DisolutionCache.Contains(token))
             {
                 depth -= 1;
+                if (msgOut != null)
+                    msgOut.AppendLine(", Message:'token in DisolutionCache'");
                 return;
             }
 
@@ -141,11 +160,13 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds
             else
             {
                 // the token must be resolvable with the its manifest module
-                var resolveRslt = UtilityMethods.ResolveSingleTokenName(token, out tokenName);
+                var resolveRslt = UtilityMethods.ResolveSingleTokenName(token, out tokenName, msgOut);
                 if (!resolveRslt || tokenName == null)
                 {
                     Program.DisolutionCache.Add(token);
                     depth -= 1;
+                    if (msgOut != null)
+                        msgOut.AppendLine(", Message:'ResolveSingleTokenName failed'");
                     return;
                 }
                 Program.TokenId2NameCache.Add(token, tokenName);
@@ -155,6 +176,8 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds
             if (!tokenName.IsMethodName())
             {
                 depth -= 1;
+                if (msgOut != null)
+                    msgOut.AppendLine(", Message:'token is not a method'");
                 return;
             }
 
@@ -164,6 +187,8 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds
             {
                 Program.DisolutionCache.Add(token);
                 depth -= 1;
+                if (msgOut != null)
+                    msgOut.AppendLine(string.Format(", Message:'owning assembly idx {0} has no match'",tokenName.OwnAsmIdx));
                 return;
             }
 
@@ -171,6 +196,10 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds
             if (!Regex.IsMatch(owningAsmName.AssemblyName, Program.AssemblyNameRegexPattern))
             {
                 Program.DisolutionCache.Add(token);
+                if (msgOut != null)
+                    msgOut.AppendLine(string.Format(", Message:'assembly name [{1}] does not match regex [{0}]'",
+                        Program.AssemblyNameRegexPattern, owningAsmName.AssemblyName));
+
                 depth -= 1;
                 return;
             }
@@ -179,7 +208,7 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds
             MemberInfo mi;
             var rtMiRslt =
                 UtilityMethods.TryResolveRtMemberInfo(Program.AsmIndicies.GetAssemblyByIndex(owningAsmName.IndexId),
-                    tokenName.Name, out mi);
+                    tokenName.Name, out mi, msgOut);
             if (!rtMiRslt)
             {
                 Program.DisolutionCache.Add(token);
@@ -192,6 +221,9 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds
             if (stackTrc.Any(x => x.Equals(r)))
             {
                 depth -= 1;
+                if (msgOut != null)
+                    msgOut.AppendLine(string.Format(", Message:'name resolved token id {0}.{1} found in stack trace'",
+                        r.RslvAsmIdx, r.Id.ToString("X4")));
                 return;
             }
             
@@ -202,6 +234,10 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds
             if (r.Items == null || r.Items.Length <= 0)
             {
                 depth -= 1;
+                if (msgOut != null)
+                    msgOut.AppendLine(string.Format(", Message:'name resolved token id {0}.{1} is a terminal node'",
+                        r.RslvAsmIdx, r.Id.ToString("X4")));
+
                 return;
             }
 
@@ -211,7 +247,7 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds
             //recurse each of these calls-of-calls[...]-of-calls
             foreach (var iToken in token.Items)
             {
-                ResolveCallOfCall(iToken, ref depth, stackTrc);
+                ResolveCallOfCall(iToken, ref depth, stackTrc, msgOut);
             }
 
             depth -= 1;

@@ -168,18 +168,28 @@ namespace NoFuture.Shared
             return !string.IsNullOrWhiteSpace(Name) && Name.Contains(Constants.TypeMethodNameSplitOn);
         }
 
+        public bool IsPartialName()
+        {
+            return !string.IsNullOrWhiteSpace(Name) && Name.StartsWith(".");
+        }
+
         public override bool Equals(object obj)
         {
             var mtnObj = obj as MetadataTokenName;
             if (mtnObj == null)
                 return false;
 
-            return mtnObj.Id == Id && string.Equals(Name, mtnObj.Name) && mtnObj.OwnAsmIdx == OwnAsmIdx;
+            return GetHashCode() == mtnObj.GetHashCode();
         }
 
         public override int GetHashCode()
         {
-            return Id.GetHashCode() + (Name == null ? 0 : Name.GetHashCode()) + OwnAsmIdx.GetHashCode();
+            return Id.GetHashCode() + GetNameHashCode() + OwnAsmIdx.GetHashCode();
+        }
+
+        public int GetNameHashCode()
+        {
+            return Name == null ? 0 : Name.GetHashCode();
         }
     }
 
@@ -207,6 +217,31 @@ namespace NoFuture.Shared
             foreach(var tokenId in tokenIds)
                 nameMapping.Add(GetNameMapping(tokenId));
             return nameMapping.ToArray();
+        }
+
+        /// <summary>
+        /// Given the <see cref="asmIndicies"/> each <see cref="MetadataTokenName.Name"/>
+        /// is reassigned to the assembly name matched on the <see cref="MetadataTokenName.OwnAsmIdx"/>.
+        /// </summary>
+        /// <param name="asmIndicies"></param>
+        public void ApplyFullName(AsmIndicies asmIndicies)
+        {
+            if (asmIndicies == null)
+                return;
+            if (St == MetadataTokenStatus.Error)
+                return;
+            if (Names == null || Names.Length <= 0)
+                return;
+            foreach (var t in Names)
+            {
+                if (!t.IsPartialName())
+                    continue;
+                var asm = asmIndicies.Asms.FirstOrDefault(x => x.IndexId == t.OwnAsmIdx);
+                if (asm == null)
+                    continue;
+                var asmName = new AssemblyName(asm.AssemblyName);
+                t.Name = asmName.Name + t.Name;
+            }
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]

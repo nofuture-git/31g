@@ -57,7 +57,7 @@ namespace NoFuture.Tests.Util.InvokeAsmTests
                 {
                     foreach (var vToken in tToken.Items)
                     {
-                        NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds.GetTokenIds.ResolveCallOfCall(vToken, ref testDepth, new Stack<MetadataTokenId>());        
+                        NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds.GetTokenIds.ResolveCallOfCall(vToken, ref testDepth, new Stack<MetadataTokenId>(), null);        
                     }
                 }
                 

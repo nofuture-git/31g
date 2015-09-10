@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Configuration;
+using System.Text;
 using NoFuture.Shared;
 using NoFuture.Util.Binary;
 
@@ -253,29 +254,59 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
         }
 
         /// <summary>
-        /// Attempts to resolve <see cref="tokenId"/> to a <see cref="MetadataTokenName"/>
+        /// Helper method which resolves the assembly using the <see cref="tokenId"/> RslvAsmIdx.
         /// </summary>
         /// <param name="tokenId"></param>
         /// <param name="tokenName"></param>
+        /// <param name="msgOut">Inteneded for debug trace from the Console.</param>
         /// <returns></returns>
-        internal static bool ResolveSingleTokenName(MetadataTokenId tokenId, out MetadataTokenName tokenName)
+        internal static bool ResolveSingleTokenName(MetadataTokenId tokenId, out MetadataTokenName tokenName, StringBuilder msgOut = null)
+        {
+            var manifestAsm = Program.AsmIndicies.GetAssemblyByIndex(tokenId.RslvAsmIdx);
+            return ResolveSingleTokenName(manifestAsm, tokenId, out tokenName, msgOut);
+        }
+
+        /// <summary>
+        /// Attempts to resolve <see cref="tokenId"/> to a <see cref="MetadataTokenName"/>
+        /// </summary>
+        /// <param name="resolvesWith"></param>
+        /// <param name="tokenId"></param>
+        /// <param name="tokenName"></param>
+        /// <param name="msgOut">Inteneded for debug trace from the Console.</param>
+        /// <returns></returns>
+        internal static bool ResolveSingleTokenName(Assembly resolvesWith, MetadataTokenId tokenId,
+            out MetadataTokenName tokenName, StringBuilder msgOut = null)
         {
             tokenName = null;
             if (tokenId.Id == 0)
             {
+                if (msgOut != null)
+                    msgOut.Append(", Message:'the token id is zero'");
                 return false;
             }
             if (Program.TokenId2NameCache.ContainsKey(tokenId))
             {
                 tokenName = Program.TokenId2NameCache[tokenId];
+                if (msgOut != null)
+                    msgOut.Append(", Message:'token previously resolved'");
+
                 return true;
             }
+            if (resolvesWith == null)
+            {
+                if (msgOut != null)
+                    msgOut.Append(string.Format(", Message:'resolve assembly idx {0} has no match'", tokenId.RslvAsmIdx));
+
+                return false;
+            }
+
             MemberInfo mi;
             var rtMiRslt = false;
-            var manifestAsm = Program.AsmIndicies.GetAssemblyByIndex(tokenId.RslvAsmIdx);
-            rtMiRslt = TryResolveRtMemberInfo(manifestAsm.ManifestModule, tokenId, out mi);
+            rtMiRslt = TryResolveRtMemberInfo(resolvesWith.ManifestModule, tokenId, out mi, msgOut);
             if (!rtMiRslt)
+            {
                 return false;
+            }
             if (mi == null)
             {
                 return false;
@@ -284,10 +315,15 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
             tokenName = mi.ToMetadataTokenName();
 
             if (tokenName == null)
+            {
+                if (msgOut != null)
+                    msgOut.Append(", Message:'could not construct a token name'");
+                
                 return false;
+            }
             tokenName.Id = tokenId.Id;
             tokenName.RslvAsmIdx = tokenId.RslvAsmIdx;
-            return true;
+            return true;            
         }
 
         /// <summary>
@@ -297,8 +333,9 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
         /// <param name="manifestModule"></param>
         /// <param name="tokenId"></param>
         /// <param name="mi"></param>
+        /// <param name="msgOut">Inteneded for debug trace from the Console.</param>
         /// <returns></returns>
-        internal static bool TryResolveRtMemberInfo(Module manifestModule, MetadataTokenId tokenId, out MemberInfo mi)
+        internal static bool TryResolveRtMemberInfo(Module manifestModule, MetadataTokenId tokenId, out MemberInfo mi, StringBuilder msgOut)
         {
             mi = null;
 
@@ -310,6 +347,8 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
             }
             catch (ArgumentException)//does not resolve the token
             {
+                if (msgOut != null)
+                    msgOut.Append(", Message: 'manifest module could not resolve id'");
                 return false;
             }
             return mi != null;
@@ -321,27 +360,43 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
         /// <param name="owningAsm"></param>
         /// <param name="tokenName">The name as drafted from <see cref="ToMetadataTokenName"/></param>
         /// <param name="mi"></param>
-        /// <param name="withArgs">
-        /// Switch to have the a method resolved using the method signature args.
-        /// Intended for resolving methods with overloads.
-        /// </param>
+        /// <param name="msgOut">Inteneded for debug trace from the Console.</param>
         /// <returns></returns>
-        internal static bool TryResolveRtMemberInfo(Assembly owningAsm, string tokenName, out MemberInfo mi, bool withArgs = false)
+        internal static bool TryResolveRtMemberInfo(Assembly owningAsm, string tokenName, out MemberInfo mi, StringBuilder msgOut = null)
         {
             //default the out variable
             mi = null;
 
             //expect token name to match naming given herein
-            if (String.IsNullOrWhiteSpace(tokenName) || !tokenName.Contains(Constants.TypeMethodNameSplitOn))
+            if (String.IsNullOrWhiteSpace(tokenName))
+            {
+                if (msgOut != null)
+                    msgOut.Append(", Message:'the token name is null'");
                 return false;
+            }
+            if (!tokenName.Contains(Constants.TypeMethodNameSplitOn))
+            {
+                if (msgOut != null)
+                    msgOut.AppendFormat(", Message:'[{0}] does not contain {1}'", tokenName,
+                        Constants.TypeMethodNameSplitOn);
+            }
 
             if (owningAsm == null)
+            {
+                if (msgOut != null)
+                    msgOut.Append(", Message:'the owning assembly is null'");
                 return false;
+            }
 
-            var typeName = ParseTypeNameFromTokenName(tokenName, owningAsm.GetName().Name);
+            var assemblyName = owningAsm.GetName().Name;
+            var typeName = ParseTypeNameFromTokenName(tokenName, assemblyName);
 
             if (String.IsNullOrWhiteSpace(typeName))
+            {
+                if (msgOut != null)
+                    msgOut.Append(", Message:'could not parse type name'");
                 return false;
+            }
             Type asmType = null;
             try
             {
@@ -350,38 +405,63 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
             }
             catch
             {
+                if (msgOut != null)
+                    msgOut.Append(", Message:'Assembly.GetType threw exception'");
                 return false;
             }
             if (asmType == null)
+            {
+                if (msgOut != null)
+                    msgOut.AppendFormat(", Message:'assembly {0} could not resolve {1}'", assemblyName,
+                        typeName);
                 return false;
+            }
 
             var methodName = ParseMethodNameFromTokenName(tokenName);
             if (String.IsNullOrWhiteSpace(methodName))
+            {
+                if (msgOut != null)
+                    msgOut.Append(", Message:'could not parse method name'");
                 return false;
+            }
 
             MethodInfo methodInfo = null;
-            try
+
+            var methodInfos = asmType.NfGetMethods(AssemblyAnalysis.DefaultFlags, false, Program.LogFile);
+            if (methodInfos.Length <= 0)
             {
-                if (!withArgs)
+                if (msgOut != null)
                 {
-                    methodInfo = asmType.NfGetMethod(methodName, AssemblyAnalysis.DefaultFlags, false, Program.LogFile);
+                    msgOut.AppendFormat(", Assembly:'{0}'\n", assemblyName);
+                    msgOut.AppendFormat(", Type:'{0}'\n", typeName);
+                    msgOut.Append(", Message:'does not have any methods'");
                 }
-                else
-                {
-                    var argTypes = GetMethodArgTypes(tokenName);
-                    if (argTypes == null)
-                        return false;
-                    methodInfo = asmType.NfGetMethod(methodName, argTypes,false, Program.LogFile);
-                }
+                return false;
             }
-            catch (AmbiguousMatchException)
+
+            foreach (var info in methodInfos)
             {
-                if (!withArgs)
-                    return TryResolveRtMemberInfo(owningAsm, tokenName, out mi, true);
+                var asTokenName = info.ToMetadataTokenName();
+                if (asTokenName == null || string.IsNullOrWhiteSpace(asTokenName.Name))
+                    continue;
+                if (string.Equals(asTokenName.Name, tokenName))
+                {
+                    methodInfo = info;
+                    break;
+                }
             }
 
             if (methodInfo == null)
+            {
+                if (msgOut != null)
+                {
+                    msgOut.AppendFormat(", Assembly:'{0}'\n", assemblyName);
+                    msgOut.AppendFormat(", Type:'{0}'\n", typeName);
+                    msgOut.AppendFormat(", Method:'{0}'\n", methodName);
+                    msgOut.Append(", Message:'was not found'");
+                }
                 return false;
+            }
 
             mi = methodInfo;
             return true;

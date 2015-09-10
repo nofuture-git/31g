@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Reflection;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using NoFuture.Exceptions;
 using NoFuture.Shared;
@@ -24,6 +26,8 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
     {
         #region constants
         public const int LISTEN_NUM_REQUEST = 5;
+        public const string ASSIGN_REGEX_PATTERN_RT_CMD = "AssignRegex";
+        public const string RESOLVE_TOKEN_ID_CMD = "ResolveToken";
         #endregion
 
         #region fields
@@ -41,6 +45,7 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
         private static readonly AsmIndicies _asmIndices = new AsmIndicies();
         private static int _maxRecursionDepth;
         private static ProcessProgress _processProgress;
+        private static DateTime _startTime;
         #endregion
 
         #region properties
@@ -184,8 +189,8 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
             {
                 if (!String.IsNullOrWhiteSpace(_logName))
                     return _logName;
-                var name = Assembly.GetExecutingAssembly().GetName().Name;
-                _logName = Path.Combine(LogDirectory, String.Format("{0}.log", name));
+                _logName = Path.Combine(LogDirectory,
+                    String.Format("{0}{1:yyyy-MM-dd_hhmmss}.log", "InvokeAssemblyAnalysis", _startTime));
                 return _logName;
             }
         }
@@ -242,7 +247,7 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
         /// Reports progress to the console and any calling assembly (if so configured).
         /// </summary>
         /// <param name="msg"></param>
-        internal static void ReportProgress(Shared.ProgressMessage msg)
+        internal static void ReportProgress(ProgressMessage msg)
         {
             PrintToConsole(msg);
             if (!Net.IsValidPortNumber(ProcessProgressCmdPort) || _processProgress == null)
@@ -260,6 +265,7 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
             try
             {
                 //set app domain cfg
+                _startTime = DateTime.Now;
                 Console.WindowWidth = 100;
                 ConsoleCmd.SetConsoleAsTransparent();
                 Console.ForegroundColor = ConsoleColor.Green;
@@ -316,13 +322,16 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
                     ut = Console.ReadLine();
                     if (string.IsNullOrWhiteSpace(ut))
                         continue;
-                    if (String.Equals(ut.Trim(), "exit", StringComparison.OrdinalIgnoreCase))
+                    ut = ut.Trim();
+                    if (String.Equals(ut, "exit", StringComparison.OrdinalIgnoreCase))
                         break;
-                    if (string.Equals(ut.Trim(), "help", StringComparison.OrdinalIgnoreCase))
+                    if (string.Equals(ut, "-help", StringComparison.OrdinalIgnoreCase) || string.Equals(ut, "-h", StringComparison.OrdinalIgnoreCase))
                     {
-                        Console.WriteLine(Help());
-                        continue;
+                        Console.WriteLine(RuntimeHelp());
                     }
+
+                    //handle command from the console.
+                    RtCommands(ut);
                 }
             }
             catch (Exception ex)
@@ -334,6 +343,93 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
             {
                 Console.ReadKey();
             }
+        }
+
+        /// <summary>
+        /// Handles a specific set of formatted runtime commands as printed in <see cref="RuntimeHelp"/>
+        /// </summary>
+        /// <param name="ut">User entered text</param>
+        internal static void RtCommands(string ut)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(ut))
+                    return;
+                if (!ut.StartsWith(Constants.CMD_LINE_ARG_SWITCH))
+                    return;
+
+                var cmds = ut.Split(' ');
+                var rtArgHash = ConsoleCmd.ArgHash(cmds);
+
+                if (rtArgHash.ContainsKey(ASSIGN_REGEX_PATTERN_RT_CMD))
+                {
+                    var regexPattern = rtArgHash[ASSIGN_REGEX_PATTERN_RT_CMD];
+                    if (regexPattern == null)
+                        return;
+                    if (string.IsNullOrWhiteSpace(regexPattern.ToString()))
+                        return;
+                    AssemblyNameRegexPattern = regexPattern.ToString().Trim();
+                    PrintToConsole(string.Format("AssemblyNameRegexPattern = {0}",AssemblyNameRegexPattern));
+                }
+                if (rtArgHash.ContainsKey(RESOLVE_TOKEN_ID_CMD))
+                {
+                    var tokenCmd = rtArgHash[RESOLVE_TOKEN_ID_CMD];
+                    if (tokenCmd == null)
+                        return;
+                    if (string.IsNullOrWhiteSpace(tokenCmd.ToString()))
+                        return;
+                    var tokenCmdStr = tokenCmd.ToString().Trim();
+                    if (!Regex.IsMatch(tokenCmdStr, @"^[0-9]\.([0-9]+|0x[0-9a-fA-F]+)$")) return;
+                    var asmIdxStr = tokenCmdStr.Split('.')[0];
+                    var tokenIdStr = tokenCmdStr.Split('.')[1];
+
+                    int tokenId;
+                    int asmIdx;
+                    if (!int.TryParse(asmIdxStr, out asmIdx))
+                        return;
+                    if (Regex.IsMatch(tokenIdStr, "0x[0-9a-fA-F]+"))
+                    {
+                        tokenIdStr = tokenIdStr.Substring(2);
+                        if (!int.TryParse(tokenIdStr, NumberStyles.HexNumber, CultureInfo.InvariantCulture, out tokenId))
+                            return;
+                    }
+                    else
+                    {
+                        if (!int.TryParse(tokenIdStr, out tokenId))
+                            return;
+                    }
+
+                    var mdt = new MetadataTokenId { Id = tokenId, RslvAsmIdx = asmIdx };
+                    MetadataTokenName tokenName;
+                    if (!UtilityMethods.ResolveSingleTokenName(mdt, out tokenName))
+                    {
+                        PrintToConsole(string.Format("could not resolve name {0}", ut));
+                        return;
+                    }
+                    PrintToConsole(tokenName.Name);
+
+                    if (!tokenName.IsMethodName())
+                        return;
+                    var resolveDepth = 0;
+                    var st = new Stack<MetadataTokenId>();
+                    var msg = new StringBuilder();
+                    GetTokenIds.ResolveCallOfCall(mdt, ref resolveDepth, st, msg);
+                    if (mdt.Items == null || mdt.Items.Length <= 0)
+                    {
+                        PrintToConsole("ResolveCallOfCall returned nothing");
+                        PrintToConsole(msg.ToString(), false);
+                        return;
+                    }
+                    Console.WriteLine();
+                    PrintToConsole(MetadataTokenId.Print(mdt), false);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                PrintToConsole("console entry error");
+                PrintToConsole(ex);
+            }            
         }
 
         /// <summary>
@@ -424,8 +520,8 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
             lock (_printLock)
             {
                 File.AppendAllText(LogFile, String.Format("{0:yyyy-MM-dd HH:mm:ss.fff} {1}\n", DateTime.Now, someString));
-                if (trunc && someString.Length >= 54)
-                    someString = String.Format("{0}[...]", someString.Substring(0, 48));
+                if (trunc && someString.Length >= 74)
+                    someString = String.Format("{0}[...]", someString.Substring(0, 68));
                 
                 Console.WriteLine(String.Format("{0:yyyy-MM-dd HH:mm:ss.fff} {1}", DateTime.Now, someString));
             }
@@ -527,6 +623,33 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
             help.AppendLine("");
 
             return help.ToString();
+        }
+
+        internal static string RuntimeHelp()
+        {
+            var help = new StringBuilder();
+            help.AppendLine(" ----");
+            help.AppendLine(String.Format(" [{0}] ", Assembly.GetExecutingAssembly().GetName().Name));
+            help.AppendLine(" ");
+            help.AppendLine(" This console offers a small set of commands at runtime.");
+            help.AppendLine(" These commands must be entered in the format shown.");
+            help.AppendLine(" Multiple commands in a single line are space-separated");
+            help.AppendLine(" (same as a command line invocation).");
+            help.AppendLine(" ");
+            help.AppendLine(" -h | -help                Will print this help.");
+            help.AppendLine("");
+            help.AppendLine(String.Format(" {0}{1}{2}[STRING]     Assign a regex pattern for recursive calls.",
+                Constants.CMD_LINE_ARG_SWITCH, ASSIGN_REGEX_PATTERN_RT_CMD,
+                Constants.CMD_LINE_ARG_ASSIGN));
+            help.AppendLine("                           This will override any value passed through a socket.");
+            help.AppendLine("");
+            help.AppendLine(String.Format(" {0}{1}{2}[INT].[INT]  Resolve a token name by its id.",
+                Constants.CMD_LINE_ARG_SWITCH, RESOLVE_TOKEN_ID_CMD,
+                Constants.CMD_LINE_ARG_ASSIGN));
+            help.AppendLine("");
+            help.AppendLine(" ----");
+
+            return help.ToString();            
         }
 
         #endregion

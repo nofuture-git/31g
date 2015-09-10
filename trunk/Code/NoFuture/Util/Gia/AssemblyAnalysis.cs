@@ -23,7 +23,7 @@ namespace NoFuture.Util.Gia
     /// <summary>
     /// Acts a a wrapper around the independet process of similar name.
     /// </summary>
-    public class AssemblyAnalysis
+    public class AssemblyAnalysis : IDisposable
     {
         #region events
         /// <summary>
@@ -49,6 +49,12 @@ namespace NoFuture.Util.Gia
         private readonly AsmIndicies _asmIndices;
         private static BindingFlags _defalutFlags = BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.NonPublic |
                                              BindingFlags.Public | BindingFlags.Static;
+        private readonly string _appDataPath;
+        private readonly JsonSerializerSettings _jsonSerializerSettings = new JsonSerializerSettings
+        {
+            ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+        };
+        private static readonly List<int> _allInUsePorts = new List<int>();
         #endregion
 
         #region inner types
@@ -79,6 +85,23 @@ namespace NoFuture.Util.Gia
                 }
             }
 
+            public int[] MyPorts
+            {
+                get
+                {
+                    var ports = new List<int>();
+                    if(Net.IsValidPortNumber(GetAsmIndiciesPort))
+                        ports.Add(GetAsmIndiciesPort);
+                    if(Net.IsValidPortNumber(GetTokenIdsPort))
+                        ports.Add(GetTokenIdsPort);
+                    if(Net.IsValidPortNumber(GetTokenNamesPort))
+                        ports.Add(GetTokenNamesPort);
+                    if(Net.IsValidPortNumber(ProcessProgressPort))
+                        ports.Add(ProcessProgressPort);
+                    return ports.ToArray();
+                }
+            }
+
             public bool ProcessIsRunning
             {
                 get
@@ -86,6 +109,7 @@ namespace NoFuture.Util.Gia
                     if (_pid == 0)
                         return false;
                     var proc = Process.GetProcessById(_pid);
+                    proc.Refresh();
                     return !proc.HasExited;
                 }
             }
@@ -112,6 +136,18 @@ namespace NoFuture.Util.Gia
         {
             get { return _defalutFlags; }
             set { _defalutFlags = value; }
+        }
+
+        /// <summary>
+        /// List all ports in use by all instances of <see cref="AssemblyAnalysis"/>
+        /// within the current AppDomain
+        /// </summary>
+        public static int[] AllInUsePorts
+        {
+            get
+            {
+                return _allInUsePorts.ToArray();
+            }
         }
         #endregion
 
@@ -144,11 +180,24 @@ namespace NoFuture.Util.Gia
                 throw new ItsDeadJim(
                     String.Format("Could resolve the ports to used for connecting to process by pid [{0}]", myProcess.Id));
 
+            _appDataPath = Path.Combine(TempDirectories.AppData, (Path.GetFileNameWithoutExtension(assemblyPath)));
+
+            if (!Directory.Exists(_appDataPath))
+                Directory.CreateDirectory(_appDataPath);
 
             //connect to the process on a socket 
             var asmIndicesBuffer = SendToRemoteProcess(Encoding.UTF8.GetBytes(assemblyPath),
                 _myProcessPorts.GetAsmIndiciesPort);
-            _asmIndices = JsonConvert.DeserializeObject<AsmIndicies>(Encoding.UTF8.GetString(asmIndicesBuffer));
+
+            //dump the result to file before attempting any decoding.
+            File.WriteAllBytes(Path.Combine(_appDataPath, "AsmIndicies.json"), asmIndicesBuffer);
+
+            var decoder = Encoding.UTF8.GetDecoder();
+            var jsonString = new StringBuilder();
+            var jsonChars = new char[decoder.GetCharCount(asmIndicesBuffer, 0, asmIndicesBuffer.Length)];
+            decoder.GetChars(asmIndicesBuffer, 0, asmIndicesBuffer.Length, jsonChars, 0);
+            jsonString.Append(jsonChars);
+            _asmIndices = JsonConvert.DeserializeObject<AsmIndicies>(jsonString.ToString(), _jsonSerializerSettings);
 
             //listen for progress from the remote process since getting tokens may take some time
             _taskFactory = new TaskFactory();
@@ -190,7 +239,18 @@ namespace NoFuture.Util.Gia
                     string.Format("The remote process by id [{0}] did not return anything on port [{1}]",
                         _myProcessPorts.Pid, _myProcessPorts.GetTokenIdsPort));
 
-            return JsonConvert.DeserializeObject<TokenIds>(Encoding.UTF8.GetString(bufferOut));
+            //record the full stream to file prior to any attempt to decode
+            File.WriteAllBytes(Path.Combine(_appDataPath, "TokenIds.json"), bufferOut);
+
+            var decoder = Encoding.UTF8.GetDecoder();
+            var jsonString = new StringBuilder();
+
+            var jsonChars = new char[decoder.GetCharCount(bufferOut, 0, bufferOut.Length)];
+            decoder.GetChars(bufferOut, 0, bufferOut.Length, jsonChars, 0);
+
+            jsonString.Append(jsonChars);
+
+            return JsonConvert.DeserializeObject<TokenIds>(jsonString.ToString(), _jsonSerializerSettings);
         }
 
         /// <summary>
@@ -214,9 +274,38 @@ namespace NoFuture.Util.Gia
                     string.Format("The remote process by id [{0}] did not return anything on port [{1}]",
                         _myProcessPorts.Pid, _myProcessPorts.GetTokenNamesPort));
 
-            return JsonConvert.DeserializeObject<TokenNames>(Encoding.UTF8.GetString(bufferOut));
+            //record the full stream to file prior to any attempt to decode
+            File.WriteAllBytes(Path.Combine(_appDataPath, "TokenNames.json"), bufferOut);
+
+            var decoder = Encoding.UTF8.GetDecoder();
+            var jsonString = new StringBuilder();
+
+            var jsonChars = new char[decoder.GetCharCount(bufferOut, 0, bufferOut.Length)];
+            decoder.GetChars(bufferOut, 0, bufferOut.Length, jsonChars, 0);
+            jsonString.Append(jsonChars);
+
+            return JsonConvert.DeserializeObject<TokenNames>(jsonString.ToString(), _jsonSerializerSettings);
         }
 
+        /// <summary>
+        /// Closes the associated <see cref="Process"/> if its still running.
+        /// </summary>
+        public void Dispose()
+        {
+            if (!_myProcessPorts.ProcessIsRunning)
+                return;
+
+            var proc = Process.GetProcessById(_myProcessPorts.Pid);
+            proc.CloseMainWindow();
+            proc.Close();
+
+            foreach (var p in _myProcessPorts.MyPorts)
+            {
+                if (!_allInUsePorts.Contains(p))
+                    continue;
+                _allInUsePorts.Remove(p);
+            }
+        }
         #endregion
 
         #region remote process
@@ -229,17 +318,19 @@ namespace NoFuture.Util.Gia
         /// <returns></returns>
         public static Tuple<InvokeAssemblyAnalysisId, Process> StartRemoteProcess(string assemblyPath, bool resolveGacAsmNames, params int[] ports)
         {
-
-            var port00 = ports != null && ports.Length >= 1 ? ports[0] : DF_START_PORT;
-            var port01 = ports != null && ports.Length >= 2 ? ports[1] : DF_START_PORT + 1;
-            var port02 = ports != null && ports.Length >= 3 ? ports[2] : DF_START_PORT + 2;
-
+            var np = _allInUsePorts.Count <= 0 ? DF_START_PORT : _allInUsePorts.Max() + 1 ;
+            var usePorts = new int[3];
+            for (var i = 0; i < usePorts.Length; i++)
+            {
+                usePorts[i] = ports != null && ports.Length >= i + 1 ? ports[i] : np + i;
+            }
+            _allInUsePorts.AddRange(usePorts);
             var args = String.Join(" ",
                 new[]
                     {
-                        ConsoleCmd.ConstructCmdLineArgs(GET_ASM_INDICES_PORT_CMD_SWITCH, port00.ToString(CultureInfo.InvariantCulture)),
-                        ConsoleCmd.ConstructCmdLineArgs(GET_TOKEN_IDS_PORT_CMD_SWITCH, port01.ToString(CultureInfo.InvariantCulture)),
-                        ConsoleCmd.ConstructCmdLineArgs(GET_TOKEN_NAMES_PORT_CMD_SWITCH, port02.ToString(CultureInfo.InvariantCulture)),
+                        ConsoleCmd.ConstructCmdLineArgs(GET_ASM_INDICES_PORT_CMD_SWITCH, usePorts[0].ToString(CultureInfo.InvariantCulture)),
+                        ConsoleCmd.ConstructCmdLineArgs(GET_TOKEN_IDS_PORT_CMD_SWITCH, usePorts[1].ToString(CultureInfo.InvariantCulture)),
+                        ConsoleCmd.ConstructCmdLineArgs(GET_TOKEN_NAMES_PORT_CMD_SWITCH, usePorts[2].ToString(CultureInfo.InvariantCulture)),
                         ConsoleCmd.ConstructCmdLineArgs(RESOLVE_GAC_ASM_SWITCH, resolveGacAsmNames.ToString()),
                     });
 
@@ -260,9 +351,9 @@ namespace NoFuture.Util.Gia
             var key = new InvokeAssemblyAnalysisId(proc.Id)
             {
                 AssemblyPath = assemblyPath,
-                GetAsmIndiciesPort = port00,
-                GetTokenIdsPort = port01,
-                GetTokenNamesPort = port02,
+                GetAsmIndiciesPort = usePorts[0],
+                GetTokenIdsPort = usePorts[1],
+                GetTokenNamesPort = usePorts[2],
                 ProcessProgressPort = -1
             };
 
@@ -285,8 +376,7 @@ namespace NoFuture.Util.Gia
                 buffer.AddRange(data.Where(b => b != (byte)'\0'));
                 while (server.Available > 0)
                 {
-
-                    if (server.Available < Constants.DEFAULT_BLOCK_SIZE)
+                    if (server.Available < Constants.DEFAULT_BLOCK_SIZE) 
                     {
                         data = new byte[server.Available];
                         server.Receive(data, 0, server.Available, SocketFlags.None);
@@ -294,10 +384,13 @@ namespace NoFuture.Util.Gia
                     else
                     {
                         data = new byte[Constants.DEFAULT_BLOCK_SIZE];
-                        server.Receive(data, 0, (int)Constants.DEFAULT_BLOCK_SIZE, SocketFlags.None);
+                        server.Receive(data, 0, data.Length, SocketFlags.None);
                     }
 
                     buffer.AddRange(data.Where(b => b != (byte)'\0'));
+
+                    if(server.Available == 0)
+                        Thread.Sleep(2000);//give it a couple seconds
                 }
                 server.Close();
             }
@@ -364,6 +457,49 @@ namespace NoFuture.Util.Gia
         #endregion
 
         #region static analysis
+        /// <summary>
+        /// Set operation for comparision of two <see cref="TokenNames"/> with
+        /// thier respective <see cref="AsmIndicies"/>
+        /// </summary>
+        /// <param name="leftList"></param>
+        /// <param name="rightList"></param>
+        /// <param name="rightListTopLvlOnly">
+        /// Set to true to have <see cref="rightListTopLvlOnly"/> 
+        /// only those in <see cref="rightList"/> whose <see cref="MetadataTokenName.OwnAsmIdx"/> is '0'.
+        /// 
+        /// </param>
+        /// <returns></returns>
+        public static MetadataTokenName[] RightSetDiff(Tuple<AsmIndicies, TokenNames> leftList, Tuple<AsmIndicies, TokenNames> rightList, bool rightListTopLvlOnly = false)
+        {
+            Func<MetadataTokenName, int> hashCode = x => x.GetNameHashCode();
+
+            if (leftList == null || rightList == null)
+                return new List<MetadataTokenName>().ToArray();
+            if(rightList.Item1 == null || leftList.Item1 == null)
+                return new List<MetadataTokenName>().ToArray();
+            if (rightList.Item2 == null || rightList.Item2.Names == null || rightList.Item2.Names.Length <= 0)
+                return new List<MetadataTokenName>().ToArray();
+            if (leftList.Item2 == null || leftList.Item2.Names == null || leftList.Item2.Names.Length <= 0)
+                return rightList.Item2.Names;
+
+            //expand to full names
+            leftList.Item2.ApplyFullName(leftList.Item1);
+            rightList.Item2.ApplyFullName(rightList.Item1);
+
+            var setOp = rightList.Item2.Names.Select(hashCode).Except(leftList.Item2.Names.Select(hashCode));
+
+            var listOut = new List<MetadataTokenName>();
+            foreach (var j in setOp)
+            {
+                var k = rightList.Item2.Names.FirstOrDefault(x => hashCode(x) == j);
+                if (k == null || (rightListTopLvlOnly && k.OwnAsmIdx != 0))
+                    continue;
+                listOut.Add(k);
+            }
+
+            return listOut.ToArray();
+        }
+
         /// <summary>
         /// Get the <see cref="System.Reflection.MetadataToken"/> for the <see cref="asmType"/>
         /// and for all its members.

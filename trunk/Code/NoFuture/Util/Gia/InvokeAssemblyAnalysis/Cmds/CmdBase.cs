@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using System.Text;
 using Newtonsoft.Json;
 
@@ -13,7 +12,15 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds
         {
             try
             {
-                return Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(rspn));
+                var objOut = JsonConvert.SerializeObject(rspn, Formatting.None,
+                    new JsonSerializerSettings {ReferenceLoopHandling = ReferenceLoopHandling.Ignore});
+
+                var jsonChars = objOut.ToCharArray();
+                var encoder = Encoding.UTF8.GetEncoder();
+                var bufferOut = new byte[encoder.GetByteCount(jsonChars, 0, jsonChars.Length, false)];
+                encoder.GetBytes(jsonChars, 0, jsonChars.Length, bufferOut, 0, false);
+
+                return bufferOut;
             }
             catch (Exception ex)
             {
