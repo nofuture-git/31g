@@ -41,6 +41,19 @@ namespace AdventureWorks.VeryBadCode
         Three
     }
 
+    public class BasicGenerics
+    {
+        public string TakesGenericArg(List<SomeSecondDll.MyFirstMiddleClass> myGenericArg)
+        {
+            return "nothing happened";
+        }
+
+        public int TakesThisAsmGenericArg(List<Order> myGenericArg)
+        {
+            return -1;
+        }
+    }
+
     public class Registry<TEntity, TData> where TEntity : new()
     {
         private readonly TEntity _entity;

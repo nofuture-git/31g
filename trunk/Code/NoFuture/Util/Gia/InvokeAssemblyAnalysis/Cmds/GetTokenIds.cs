@@ -44,9 +44,9 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds
 
                 }
 
+                Console.Write('\n');
                 if (string.IsNullOrWhiteSpace(Program.AssemblyNameRegexPattern))
                 {
-                    Console.Write('\n');
                     return EncodedResponse(
                         new TokenIds
                         {

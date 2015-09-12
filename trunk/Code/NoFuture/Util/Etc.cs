@@ -436,7 +436,7 @@ namespace NoFuture.Util
             name = name.Trim();
 
             if (separator == null)
-                separator = TypeName.DEFAULT_TYPE_SEPARATOR;
+                separator = Constants.DefaultTypeSeparator;
 
             var nameArray = name.Split(separator.Value);
             var nameFormatted = new StringBuilder();
@@ -545,7 +545,7 @@ namespace NoFuture.Util
                 return String.Empty;
 
             if (separator == null)
-                separator = TypeName.DEFAULT_TYPE_SEPARATOR;
+                separator = Constants.DefaultTypeSeparator;
 
             if (!name.Contains(separator.ToString()))
                 return name;

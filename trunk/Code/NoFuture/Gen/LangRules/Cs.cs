@@ -20,7 +20,9 @@ namespace NoFuture.Gen.LangRules
         public const string CS_GET = "get;";
         public const string CS_SET = "set;";
         public const string CONST = "const";
+        public const string STMT_TERM = ";";
 
+        public string LineComment { get { return LINE_COMMENT_CHAR_SEQ; } }
         public string DeclareConstant { get { return CONST; } }
         public Dictionary<string, string> ValueTypeToLangAlias { get { return Lexicon.ValueType2Cs; } }
 
@@ -272,7 +274,7 @@ namespace NoFuture.Gen.LangRules
         public string[] RemoveLineComments(string[] fileMembers, string lineCommentSequence)
         {
             if (String.IsNullOrEmpty(lineCommentSequence))
-                lineCommentSequence = LINE_COMMENT_CHAR_SEQ;
+                lineCommentSequence = LineComment;
             if (fileMembers == null)
                 return null;
 
@@ -629,7 +631,7 @@ namespace NoFuture.Gen.LangRules
             }
 
             typeToString = Lexicon.ValueType2Cs.ContainsKey(typeToString)
-                ? Lexicon.ValueType2Cs[typeToString].ToString()
+                ? Lexicon.ValueType2Cs[typeToString]
                 : typeToString;
 
             //use ref instead of out since out requires init before unwind call stack
@@ -791,6 +793,71 @@ namespace NoFuture.Gen.LangRules
                 lastLine -= 1;
 
             return lastLine < srcFile.Length;
+        }
+
+        public bool TryFindNextStatementLine(int fromIdx, Tuple<string[], bool> srcFile, string[] stmtTerminators,
+            SearchDirection direction, out Tuple<int, int> nextLineAndIndex)
+        {
+            nextLineAndIndex = new Tuple<int, int>(int.MinValue, 0);
+            if (srcFile == null)
+                return false;
+            if (srcFile.Item1 == null || srcFile.Item1.Length <= 0)
+                return false;
+
+            if (stmtTerminators == null || stmtTerminators.Length <= 0)
+                return false;
+
+            var termRegex =
+                stmtTerminators.Select(x => new Tuple<string, string>(x, @"(^|\W)" + Util.Etc.EscapeString(x, EscapeStringType.REGEX) + @"(\W|$)")).ToArray();
+
+            var lines = srcFile.Item1;
+
+            if (!srcFile.Item2)
+            {
+                lines = RemoveLineComments(lines, null);
+                lines = RemoveBlockComments(lines);
+                lines = RemovePreprocessorCmds(lines);
+                for (var i = 0; i < lines.Length; i++)
+                {
+                    lines[i] = EncodeAllStringLiterals(lines[i]);
+                }
+            }
+            if (lines.Length <= fromIdx)
+                return false;
+
+            if (direction == SearchDirection.Up)
+            {
+                for (var i = fromIdx - 1; i > 0; i--)
+                {
+                    var lni = lines[i];
+                    if (string.IsNullOrWhiteSpace(lni))
+                        continue;
+
+                    foreach (var p in termRegex)
+                    {
+                        if (!Regex.IsMatch(lni, p.Item2))
+                            continue;
+                        nextLineAndIndex = new Tuple<int, int>(i, lni.LastIndexOf(p.Item1) + p.Item1.Length);
+                        return true;
+                    }
+                }
+            }
+
+            for (var i = fromIdx + 1; i < lines.Length; i++)
+            {
+                var lni = lines[i];
+                if (string.IsNullOrWhiteSpace(lni))
+                    continue;
+
+                foreach (var p in termRegex)
+                {
+                    if (!Regex.IsMatch(lni, p.Item2))
+                        continue;
+                    nextLineAndIndex = new Tuple<int, int>(i, lni.IndexOf(p.Item1) + p.Item1.Length);
+                    return true;
+                }                
+            }
+            return false;
         }
 
         public string BlockMarker { get { return BLOCK_MARKER; } }

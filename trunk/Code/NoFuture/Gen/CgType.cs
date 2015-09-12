@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using NoFuture.Shared;
 using NoFuture.Util;
+using NoFuture.Util.Gia;
 using NfTypeName = NoFuture.Util.TypeName;
 
 namespace NoFuture.Gen
@@ -179,9 +181,63 @@ namespace NoFuture.Gen
             return false;
         }
 
+        /// <summary>
+        /// Locates the <see cref="CgMember"/> in <see cref="Methods"/> who owns this line number.
+        /// </summary>
+        /// <param name="lnNum"></param>
+        /// <returns></returns>
+        /// <remarks>
+        /// Depends on parsed PDB data.
+        /// </remarks>
         public CgMember FindCgMethodByLineNumber(int lnNum)
         {
             return TypeFiles == null ? null : Methods.FirstOrDefault(x => x.IsOneOfMyLines(lnNum));
+        }
+
+        /// <summary>
+        /// Locates the <see cref="CgMember"/> in <see cref="Methods"/> who matches <see cref="tokenName"/>.
+        /// </summary>
+        /// <param name="tokenName"></param>
+        /// <returns></returns>
+        public CgMember FindCgMethodByTokenName(MetadataTokenName tokenName)
+        {
+            if (tokenName == null)
+                return null;
+            if (string.IsNullOrWhiteSpace(tokenName.Name))
+                return null;
+            if (!tokenName.IsMethodName())
+                return null;
+            var methodName = AssemblyAnalysis.ParseMethodNameFromTokenName(tokenName.Name);
+            if (string.IsNullOrWhiteSpace(methodName))
+                return null;
+
+            var matches = Methods.Where(x => string.Equals(x.Name, methodName)).ToArray();
+            if (matches.Length <= 0)
+                return null;
+            if (matches.Length == 1)
+                return matches.First();
+
+            //attempt to match on arg count first
+            var argNames = AssemblyAnalysis.ParseArgsFromTokenName(tokenName.Name);
+            var argCount = argNames == null ? 0 : argNames.Length;
+
+            matches = Methods.Where(x => x.Args.Count == argCount).ToArray();
+            if (matches.Length <= 0)
+                return null;
+            if (matches.Length == 1)
+                return matches.First();
+            if (argNames == null)
+                return null;
+
+            //attempt to match by args names
+            var argNamesLikeThese = argNames.Select(x => Settings.LangStyle.TransformClrTypeSyntax(x));
+
+            foreach (var match in matches)
+            {
+                if (match.Args.All(nfArg => argNamesLikeThese.Any(token => string.Equals(nfArg.ArgType, token))))
+                    return match;
+            }
+            return null;
         }
 
         /// <summary>

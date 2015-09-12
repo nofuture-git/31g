@@ -52,8 +52,12 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
         /// <returns></returns>
         internal static bool IsIgnore(string asmQualName)
         {
+            if (!Program.AreGacAssembliesResolved)
+                return false;
+
             if (String.IsNullOrWhiteSpace(asmQualName))
                 return true;
+
             var gacAsms = GacAssemblyNames;
             return gacAsms != null && gacAsms.Any(asmQualName.EndsWith);
         }
@@ -84,173 +88,6 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
             if (!String.IsNullOrWhiteSpace(cval) && Boolean.TryParse(cval, out valOut))
                 return valOut;
             return null;
-        }
-
-        /// <summary>
-        /// Transforms a <see cref="MemberInfo"/> into a <see cref="MetadataTokenName"/>
-        /// getting as much info as possiable depending on which 
-        /// child-type the <see cref="mi"/> resolves to.
-        /// </summary>
-        /// <param name="mi"></param>
-        /// <returns></returns>
-        internal static MetadataTokenName ToMetadataTokenName(this MemberInfo mi)
-        {
-            if (mi == null)
-                return null;
-
-            var tokenName = new MetadataTokenName { Name = mi.Name, Label = mi.GetType().Name };
-
-            string asmQualName;
-            string asmName;
-            string expandedName;
-
-            var type = mi as Type;
-
-            if (type != null)
-            {
-                asmQualName = type.Assembly.GetName().FullName;
-                //do not send back GAC asm's unless asked
-                if (!Program.AreGacAssembliesResolved && IsIgnore(asmQualName))
-                    return null;
-
-                var t =
-                    Program.AsmIndicies.Asms.FirstOrDefault(
-                        x =>
-                            String.Equals(x.AssemblyName, type.Assembly.GetName().FullName,
-                                StringComparison.OrdinalIgnoreCase));
-
-                asmName = type.Assembly.GetName().Name;
-                expandedName = !String.IsNullOrEmpty(asmName)
-                    ? type.FullName.Replace(String.Format("{0}", asmName), String.Empty)
-                    : type.FullName;
-                if (!String.Equals(expandedName, tokenName.Name, StringComparison.OrdinalIgnoreCase))
-                    tokenName.Name = expandedName;
-
-                tokenName.OwnAsmIdx = t != null ? t.IndexId : 0;
-                return tokenName;
-            }
-            if (mi.DeclaringType == null) return tokenName;
-
-            asmQualName = mi.DeclaringType.Assembly.GetName().FullName;
-            //do not send back GAC asm's unless asked
-            if (!Program.AreGacAssembliesResolved && IsIgnore(asmQualName))
-                return null;
-
-            var f =
-                Program.AsmIndicies.Asms.FirstOrDefault(
-                    x =>
-                        String.Equals(x.AssemblyName, mi.DeclaringType.Assembly.GetName().FullName,
-                            StringComparison.OrdinalIgnoreCase));
-
-            asmName = mi.DeclaringType.Assembly.GetName().Name;
-            expandedName = !String.IsNullOrEmpty(asmName)
-                ? mi.DeclaringType.FullName.Replace(String.Format("{0}", asmName), String.Empty)
-                : mi.DeclaringType.FullName;
-            if (!String.Equals(expandedName, tokenName.Name, StringComparison.OrdinalIgnoreCase))
-                tokenName.Name = String.Format("{0}{1}{2}", expandedName, Constants.TypeMethodNameSplitOn, tokenName.Name);
-
-            tokenName.OwnAsmIdx = f != null ? f.IndexId : 0;
-
-            var mti = mi as MethodInfo;
-            if (mti == null)
-                return tokenName;
-
-            var mtiParams = mti.GetParameters();
-            if (mtiParams.Length <= 0)
-            {
-                tokenName.Name = String.Format("{0}()", tokenName.Name);
-                return tokenName;
-            }
-            tokenName.Name = String.Format("{0}({1})", tokenName.Name,
-                String.Join(",", mtiParams.Select(x => x.ParameterType.FullName)));
-
-            return tokenName;
-        }
-
-        /// <summary>
-        /// Coupled with the <see cref="ToMetadataTokenName"/>, where the
-        /// <see cref="MetadataTokenName.Name"/> is parsed for method arg types.
-        /// </summary>
-        /// <param name="tokenName"></param>
-        /// <returns></returns>
-        /// <remarks>
-        /// Presumes the <see cref="MemberInfo"/> was successfully cast as <see cref="MethodInfo"/>
-        /// </remarks>
-        internal static Type[] GetMethodArgTypes(string tokenName)
-        {
-            if (String.IsNullOrWhiteSpace(tokenName))
-                return null;
-            tokenName = tokenName.Trim();
-            var idxSplt = tokenName.IndexOf('(');
-            if (idxSplt < 0)
-                return null;
-            var argTypes = new List<Type>();
-
-            var argNames = tokenName.Substring(tokenName.IndexOf('('));
-            argNames = argNames.Replace(")", "");
-
-            if (String.IsNullOrWhiteSpace(argNames))
-                return Type.EmptyTypes;
-
-            try
-            {
-                foreach (var argName in argNames.Split(',').Where(x => !String.IsNullOrWhiteSpace(x)))
-                {
-                    var pType = Type.GetType(argName);
-                    if (pType != null)
-                        argTypes.Add(pType);
-                }
-            }
-            catch
-            {
-                return null;
-            }
-            return argTypes.ToArray();
-        }
-
-        /// <summary>
-        /// Coupled with the <see cref="ToMetadataTokenName"/>, where the
-        /// <see cref="MetadataTokenName.Name"/> is parsed namespace-qual type.
-        /// </summary>
-        /// <param name="tokenName"></param>
-        /// <param name="owningAsmName"></param>
-        /// <returns></returns>
-        internal static string ParseTypeNameFromTokenName(string tokenName, string owningAsmName)
-        {
-            if (String.IsNullOrWhiteSpace(tokenName))
-                return null;
-
-            var idxSplt = tokenName.IndexOf(Constants.TypeMethodNameSplitOn, StringComparison.Ordinal);
-
-            //assembly name and namespace being equal will have equal portion removed, add it back
-            var typeName = tokenName.Substring(0, idxSplt);
-            if (typeName.StartsWith("."))
-                typeName = String.Format("{0}{1}", owningAsmName, typeName);
-            return typeName.Trim();
-        }
-
-        /// <summary>
-        /// Coupled with the <see cref="ToMetadataTokenName"/>, where the
-        /// <see cref="MetadataTokenName.Name"/> is parsed for just the method name (no args)
-        /// </summary>
-        /// <param name="tokenName"></param>
-        /// <returns></returns>
-        internal static string ParseMethodNameFromTokenName(string tokenName)
-        {
-            var idxSplt = tokenName.IndexOf(Constants.TypeMethodNameSplitOn, StringComparison.Ordinal);
-
-            idxSplt = idxSplt + (Constants.TypeMethodNameSplitOn).Length;
-            if (idxSplt > tokenName.Length || idxSplt < 0)
-                return null;
-
-            var methodName = tokenName.Substring(idxSplt, tokenName.Length - idxSplt);
-
-            idxSplt = methodName.IndexOf('(');
-            if (idxSplt < 0)
-                return methodName;
-
-            methodName = methodName.Substring(0, methodName.IndexOf('(')).Trim();
-            return methodName;
         }
 
         /// <summary>
@@ -312,7 +149,7 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
                 return false;
             }
 
-            tokenName = mi.ToMetadataTokenName();
+            tokenName = AssemblyAnalysis.ConvertToMetadataTokenName(mi, Program.AsmIndicies, IsIgnore);
 
             if (tokenName == null)
             {
@@ -358,7 +195,7 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
         /// Intended for resolving method calls of types defined in another assembly.
         /// </summary>
         /// <param name="owningAsm"></param>
-        /// <param name="tokenName">The name as drafted from <see cref="ToMetadataTokenName"/></param>
+        /// <param name="tokenName">The name as drafted from <see cref="AssemblyAnalysis.ConvertToMetadataTokenName"/></param>
         /// <param name="mi"></param>
         /// <param name="msgOut">Inteneded for debug trace from the Console.</param>
         /// <returns></returns>
@@ -389,7 +226,7 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
             }
 
             var assemblyName = owningAsm.GetName().Name;
-            var typeName = ParseTypeNameFromTokenName(tokenName, assemblyName);
+            var typeName = AssemblyAnalysis.ParseTypeNameFromTokenName(tokenName, assemblyName);
 
             if (String.IsNullOrWhiteSpace(typeName))
             {
@@ -417,7 +254,7 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
                 return false;
             }
 
-            var methodName = ParseMethodNameFromTokenName(tokenName);
+            var methodName = AssemblyAnalysis.ParseMethodNameFromTokenName(tokenName);
             if (String.IsNullOrWhiteSpace(methodName))
             {
                 if (msgOut != null)
@@ -427,27 +264,49 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
 
             MethodInfo methodInfo = null;
 
-            var methodInfos = asmType.NfGetMethods(AssemblyAnalysis.DefaultFlags, false, Program.LogFile);
-            if (methodInfos.Length <= 0)
+            //try easiest first
+            try
             {
-                if (msgOut != null)
-                {
-                    msgOut.AppendFormat(", Assembly:'{0}'\n", assemblyName);
-                    msgOut.AppendFormat(", Type:'{0}'\n", typeName);
-                    msgOut.Append(", Message:'does not have any methods'");
-                }
-                return false;
+                methodInfo = asmType.GetMethod(methodName, AssemblyAnalysis.DefaultFlags);
+            }
+            catch (AmbiguousMatchException) { }//is overloaded 
+
+            //try it the formal way
+            if (methodInfo == null)
+            {
+                var args = AssemblyAnalysis.ParseArgsFromTokenName(tokenName);
+                var argTypes = args == null || args.Length <= 0
+                    ? Type.EmptyTypes
+                    : args.Select(Type.GetType).ToArray();
+
+                //https://msdn.microsoft.com/en-us/library/5fed8f59(v=vs.110).aspx
+                methodInfo = asmType.GetMethod(methodName, AssemblyAnalysis.DefaultFlags, null, argTypes, null);
             }
 
-            foreach (var info in methodInfos)
+            //try it the very slow but certian way
+            if (methodInfo == null)
             {
-                var asTokenName = info.ToMetadataTokenName();
-                if (asTokenName == null || string.IsNullOrWhiteSpace(asTokenName.Name))
-                    continue;
-                if (string.Equals(asTokenName.Name, tokenName))
+                var methodInfos = asmType.NfGetMethods(AssemblyAnalysis.DefaultFlags, false, Program.LogFile);
+                if (methodInfos.Length <= 0)
                 {
-                    methodInfo = info;
-                    break;
+                    if (msgOut != null)
+                    {
+                        msgOut.AppendFormat(", Assembly:'{0}'\n", assemblyName);
+                        msgOut.AppendFormat(", Type:'{0}'\n", typeName);
+                        msgOut.Append(", Message:'does not have any methods'");
+                    }
+                    return false;
+                }
+                foreach (var info in methodInfos)
+                {
+                    var asTokenName = AssemblyAnalysis.ConvertToMetadataTokenName(info, Program.AsmIndicies, IsIgnore);
+                    if (asTokenName == null || string.IsNullOrWhiteSpace(asTokenName.Name))
+                        continue;
+                    if (string.Equals(asTokenName.Name, tokenName))
+                    {
+                        methodInfo = info;
+                        break;
+                    }
                 }
             }
 

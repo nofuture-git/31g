@@ -164,7 +164,39 @@ namespace NoFuture.Tests.Util
             testResult = NoFuture.Util.TypeName.GetTypeNameWithoutNamespace("My_SillyName_NoNamespace_Pos_Class");
             System.Diagnostics.Debug.WriteLine(testResult);
             Assert.AreEqual("My_SillyName_NoNamespace_Pos_Class", testResult);
-            
+
+            testResult =
+                NoFuture.Util.TypeName.GetNamespaceWithoutTypeName(
+                    "Wanker.DCF.UI.Controller.Operator.OperatorUIController::set_OperatorContacts(Wanker.DCF.DTO.WankerContact)");
+
+            System.Diagnostics.Debug.WriteLine(testResult);
+            Assert.AreEqual(testResult, "OperatorUIController");
+        }
+
+        [TestMethod]
+        public void TestGetNamespaceWithoutTypeName()
+        {
+            var testResult = NoFuture.Util.TypeName.GetNamespaceWithoutTypeName("NoFuture.Asm.Fii.MyType");
+            System.Diagnostics.Debug.WriteLine(testResult);
+            Assert.AreEqual("NoFuture.Asm.Fii", testResult);
+
+            testResult = NoFuture.Util.TypeName.GetNamespaceWithoutTypeName("My_SillyName_NoNamespace_Pos_Class");
+            System.Diagnostics.Debug.WriteLine(testResult);
+            Assert.IsNull(testResult);
+
+            testResult =
+                NoFuture.Util.TypeName.GetNamespaceWithoutTypeName(
+                    "Wanker.DCF.UI.Controller.Operator.OperatorUIController::set_OperatorContacts(Wanker.DCF.DTO.WankerContact)");
+
+            System.Diagnostics.Debug.WriteLine(testResult);
+            Assert.AreEqual(testResult, "Wanker.DCF.UI.Controller.Operator");
+
+            testResult =
+                NoFuture.Util.TypeName.GetNamespaceWithoutTypeName(
+                    ".Controller.Operator.OperatorUIController::set_OperatorContacts(Wanker.DCF.DTO.WankerContact)");
+
+            System.Diagnostics.Debug.WriteLine(testResult);
+            Assert.AreEqual(testResult, "Controller.Operator");
         }
 
         [TestMethod]
@@ -201,6 +233,7 @@ namespace NoFuture.Tests.Util
             Assert.IsFalse(testResult);
             Assert.IsNull(testOutput);
         }
+
     }
 
     public class HasEnumtype

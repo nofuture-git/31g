@@ -29,4 +29,11 @@ namespace NoFuture.Gen
         Fs
     }
 
+    [Serializable]
+    public enum SearchDirection
+    {
+        Up,
+        Down
+    }
+
 }

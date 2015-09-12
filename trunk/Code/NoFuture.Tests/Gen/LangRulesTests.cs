@@ -1739,5 +1739,14 @@ namespace NoFuture.Tests.Gen
             System.Diagnostics.Debug.WriteLine(testResult);
             Assert.IsTrue(testResult.ToString().StartsWith("Func<"));
         }
+
+        [TestMethod]
+        public void TestTransformClrTypeSyntax()
+        {
+            var testInput = "System.Collections.Generic.List`1[SomeSecondDll.MyFirstMiddleClass]";
+            var testResult = Settings.LangStyle.TransformClrTypeSyntax(testInput);
+            Assert.IsNotNull(testResult);
+            System.Diagnostics.Debug.WriteLine(testResult);
+        }
     }
 }

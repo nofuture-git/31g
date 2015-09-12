@@ -197,6 +197,7 @@ namespace NoFuture.Shared
 
         public const double TROPICAL_YEAR = 365.24255;
 
+        public const char DefaultTypeSeparator = '.';
         public const string TypeMethodNameSplitOn = "::";
 
         [EditorBrowsable(EditorBrowsableState.Never)]

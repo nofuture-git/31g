@@ -26,6 +26,7 @@ namespace NoFuture.Gen
         private readonly List<string> _pdbFilesUsed = new List<string>();
         private string _srcRefFileFullName;
         private int _originalFirstLine;
+        private string[] _modifiedSrcFileContent;
         #endregion
 
         #region properties
@@ -58,6 +59,28 @@ namespace NoFuture.Gen
                     _originalFirstLine = lnNumOut;
                 }
                 return _originalFirstLine;
+            }
+        }
+
+        public string[] ModifiedSourceFileContent
+        {
+            get
+            {
+                if (_modifiedSrcFileContent != null)
+                    return _modifiedSrcFileContent;
+                _modifiedSrcFileContent = OriginalSourceFileContent;
+                if (_modifiedSrcFileContent == null || _modifiedSrcFileContent.Length <= 0)
+                    return null;
+
+                _modifiedSrcFileContent = Settings.LangStyle.RemoveLineComments(_modifiedSrcFileContent, null);
+                _modifiedSrcFileContent = Settings.LangStyle.RemoveBlockComments(_modifiedSrcFileContent);
+                _modifiedSrcFileContent = Settings.LangStyle.RemovePreprocessorCmds(_modifiedSrcFileContent);
+                for (var i = 0; i < _modifiedSrcFileContent.Length; i++)
+                {
+                    _modifiedSrcFileContent[i] = Settings.LangStyle.EncodeAllStringLiterals(_modifiedSrcFileContent[i]);
+                }
+
+                return _modifiedSrcFileContent;
             }
         }
 
@@ -381,6 +404,17 @@ namespace NoFuture.Gen
 
             //write the new content out to the file
             File.WriteAllLines(OriginalSource, src, Encoding.UTF8);
+        }
+
+        public void RemoveMethods(List<CgMember> moveMembers)
+        {
+            var src = ModifiedSourceFileContent;
+            if (src == null)
+                return;
+
+
+            //TODO finish this using TryFindNextStatementLine and Util.Etc.ReplaceOriginalContent.
+            throw new NotImplementedException();
         }
         #endregion
 

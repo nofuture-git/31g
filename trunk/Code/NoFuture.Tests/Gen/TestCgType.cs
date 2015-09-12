@@ -79,5 +79,52 @@ namespace NoFuture.Tests.Gen
                 System.Diagnostics.Debug.WriteLine(string.Format("{0} {1} {2}", opCodeCall.DeclaringTypeAsmName, opCodeCall.Name, opCodeCall.TypeName));
             }
         }
+
+        [TestMethod]
+        public void TestFindCgMethodByTokenName()
+        {
+            NoFuture.Shared.Constants.AssemblySearchPath = @"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\";
+            NoFuture.Shared.Constants.UseReflectionOnlyLoad = false;
+            NoFuture.Util.FxPointers.AddResolveAsmEventHandlerToDomain();
+            var testAsm =
+                System.Reflection.Assembly.Load(
+                    System.IO.File.ReadAllBytes(
+                        @"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\AdventureWorks2012.dll"));
+            System.Reflection.Assembly.Load(
+                    System.IO.File.ReadAllBytes(
+                        @"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\Iesi.Collections.dll"));
+            System.Reflection.Assembly.Load(
+                    System.IO.File.ReadAllBytes(
+                        @"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\NHibernate.dll"));
+            System.Reflection.Assembly.Load(
+                    System.IO.File.ReadAllBytes(
+                        @"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\NoFuture.Hbm.Sid.dll"));
+            System.Reflection.Assembly.Load(
+                    System.IO.File.ReadAllBytes(
+                        @"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\SomeSecondDll.dll"));
+            System.Reflection.Assembly.Load(
+                    System.IO.File.ReadAllBytes(
+                        @"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\SomethingShared.dll"));
+            System.Reflection.Assembly.Load(
+                    System.IO.File.ReadAllBytes(
+                        @"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\ThirdDll.dll"));
+
+            const string testTypeName = "AdventureWorks.VeryBadCode.BasicGenerics";
+
+            var testType = testAsm.GetType(testTypeName);
+            Assert.IsNotNull(testType);
+
+            var testMethod = testType.GetMember("TakesGenericArg").FirstOrDefault();
+            Assert.IsNotNull(testMethod);
+
+            var testTokenName = NoFuture.Util.Gia.AssemblyAnalysis.ConvertToMetadataTokenName(testMethod, null, null);
+            Assert.IsNotNull(testTokenName);
+
+            var testCgType = NoFuture.Gen.Etc.GetCgOfType(testAsm, testTypeName, false);
+            Assert.IsNotNull(testCgType);
+
+            var testResult = testCgType.FindCgMethodByTokenName(testTokenName);
+            Assert.IsNotNull(testResult);
+        }
     }
 }

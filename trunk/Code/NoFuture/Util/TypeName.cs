@@ -42,12 +42,12 @@ namespace NoFuture.Util
         public const string ASSEMBLY_QUALIFIED_CLASS_NAME_REGEX = @"([a-z0-9_\.]*?)\,\s*" + FULL_ASSEMBLY_NAME_REGEX;
         public const string NAMESPACE_CLASS_NAME_REGEX = @"\W[a-zA-Z_][a-zA-Z0-9_\x3D\x2E\x20\x3A]+";
         public const string ID_REGEX = @"[_a-z][a-z0-9_]+?";
-        public const char DEFAULT_TYPE_SEPARATOR = '.';
         public const string ASM_VERSION_REGEX = @"\,\s*Version\=[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+";
         public const string ASM_CULTURE_REGEX = @"\,\s*Culture\=[a-z_\-]+";
         public const string ASM_PRIV_TOKEN_REGEX = @"\,\s*PublicKeyToken\=(null|[a-f0-9]*)";
         public const string ASM_PROC_ARCH_REGEX = @"\,\s*ProcessorArchitecture\=(MSIL|Arm|Amd64|IA64|None|X86)";
         public const string DEFAULT_NAME_PREFIX = "_u0000";
+
         #endregion
 
         #region ReadOnly Properties
@@ -301,8 +301,8 @@ namespace NoFuture.Util
         }
 
         /// <summary>
-        /// Returns everything except the last entry after <see cref="DEFAULT_TYPE_SEPARATOR"/>
-        /// or in the case where <see cref="DEFAULT_TYPE_SEPARATOR"/> isn't present -
+        /// Returns everything except the last entry after <see cref="Constants.DefaultTypeSeparator"/>
+        /// or in the case where <see cref="Constants.DefaultTypeSeparator"/> isn't present -
         /// just returns <see cref="name"/>
         /// </summary>
         /// <param name="name"></param>
@@ -312,10 +312,15 @@ namespace NoFuture.Util
             if(String.IsNullOrWhiteSpace(name))
                 return null;
 
-            if(!name.Contains(DEFAULT_TYPE_SEPARATOR))
+            if(!name.Contains(Constants.DefaultTypeSeparator))
                 return null;
 
-            var nameArray = name.Split(DEFAULT_TYPE_SEPARATOR);
+            if (name.Contains(Constants.TypeMethodNameSplitOn))
+            {
+                name = name.Substring(0, name.IndexOf(Constants.TypeMethodNameSplitOn, StringComparison.Ordinal));
+            }
+
+            var nameArray = name.Split(Constants.DefaultTypeSeparator);
             var nsLength = nameArray.Length - 1;
             if (nsLength < 0)
                 return name;
@@ -329,7 +334,7 @@ namespace NoFuture.Util
                 ns.Append(s);
                 //as long as its not the last entry
                 if (i < nsLength - 1)
-                    ns.Append(DEFAULT_TYPE_SEPARATOR);
+                    ns.Append(Constants.DefaultTypeSeparator);
             }
             return ns.ToString();
         }
@@ -344,10 +349,16 @@ namespace NoFuture.Util
             if (String.IsNullOrWhiteSpace(simplePropType))
                 return null;
 
-            if (!simplePropType.Contains(DEFAULT_TYPE_SEPARATOR))
+            if (!simplePropType.Contains(Constants.DefaultTypeSeparator))
                 return simplePropType;
 
-            return Etc.ExtractLastWholeWord(simplePropType, DEFAULT_TYPE_SEPARATOR);
+            if (simplePropType.Contains(Constants.TypeMethodNameSplitOn))
+            {
+                simplePropType = simplePropType.Substring(0,
+                    simplePropType.IndexOf(Constants.TypeMethodNameSplitOn, StringComparison.Ordinal));
+            }
+
+            return Etc.ExtractLastWholeWord(simplePropType, Constants.DefaultTypeSeparator);
         }
 
         /// <summary>

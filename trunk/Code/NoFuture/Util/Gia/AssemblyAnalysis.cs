@@ -16,7 +16,6 @@ using NoFuture.Shared;
 using NoFuture.Util.Binary;
 using NoFuture.Util.Gia.Args;
 using Newtonsoft.Json;
-using System.Runtime.Serialization.Formatters.Binary;
 
 namespace NoFuture.Util.Gia
 {
@@ -50,7 +49,7 @@ namespace NoFuture.Util.Gia
         private static BindingFlags _defalutFlags = BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.NonPublic |
                                              BindingFlags.Public | BindingFlags.Static;
         private readonly string _appDataPath;
-        private readonly JsonSerializerSettings _jsonSerializerSettings = new JsonSerializerSettings
+        private static readonly JsonSerializerSettings _jsonSerializerSettings = new JsonSerializerSettings
         {
             ReferenceLoopHandling = ReferenceLoopHandling.Ignore
         };
@@ -192,12 +191,8 @@ namespace NoFuture.Util.Gia
             //dump the result to file before attempting any decoding.
             File.WriteAllBytes(Path.Combine(_appDataPath, "AsmIndicies.json"), asmIndicesBuffer);
 
-            var decoder = Encoding.UTF8.GetDecoder();
-            var jsonString = new StringBuilder();
-            var jsonChars = new char[decoder.GetCharCount(asmIndicesBuffer, 0, asmIndicesBuffer.Length)];
-            decoder.GetChars(asmIndicesBuffer, 0, asmIndicesBuffer.Length, jsonChars, 0);
-            jsonString.Append(jsonChars);
-            _asmIndices = JsonConvert.DeserializeObject<AsmIndicies>(jsonString.ToString(), _jsonSerializerSettings);
+            _asmIndices = JsonConvert.DeserializeObject<AsmIndicies>(ConvertJsonFromBuffer(asmIndicesBuffer),
+                _jsonSerializerSettings);
 
             //listen for progress from the remote process since getting tokens may take some time
             _taskFactory = new TaskFactory();
@@ -223,9 +218,9 @@ namespace NoFuture.Util.Gia
         public TokenIds GetTokenIds(int asmIdx, string recurseAnyAsmNamedLike)
         {
             if (_asmIndices.Asms.All(x => x.IndexId != asmIdx))
-                throw new RahRowRagee(string.Format("No matching index found for {0}", asmIdx));
+                throw new RahRowRagee(String.Format("No matching index found for {0}", asmIdx));
             if(!_myProcessPorts.ProcessIsRunning)
-                throw new RahRowRagee(string.Format("The process by id [{0}] has exited", _myProcessPorts.Pid));
+                throw new RahRowRagee(String.Format("The process by id [{0}] has exited", _myProcessPorts.Pid));
             var asmName = _asmIndices.Asms.First(x => x.IndexId == asmIdx).AssemblyName;
 
             var crit = new GetTokenIdsCriteria {AsmName = asmName, ResolveAllNamedLike = recurseAnyAsmNamedLike};
@@ -236,21 +231,13 @@ namespace NoFuture.Util.Gia
 
             if (bufferOut == null || bufferOut.Length <= 0)
                 throw new ItsDeadJim(
-                    string.Format("The remote process by id [{0}] did not return anything on port [{1}]",
+                    String.Format("The remote process by id [{0}] did not return anything on port [{1}]",
                         _myProcessPorts.Pid, _myProcessPorts.GetTokenIdsPort));
 
             //record the full stream to file prior to any attempt to decode
             File.WriteAllBytes(Path.Combine(_appDataPath, "TokenIds.json"), bufferOut);
 
-            var decoder = Encoding.UTF8.GetDecoder();
-            var jsonString = new StringBuilder();
-
-            var jsonChars = new char[decoder.GetCharCount(bufferOut, 0, bufferOut.Length)];
-            decoder.GetChars(bufferOut, 0, bufferOut.Length, jsonChars, 0);
-
-            jsonString.Append(jsonChars);
-
-            return JsonConvert.DeserializeObject<TokenIds>(jsonString.ToString(), _jsonSerializerSettings);
+            return JsonConvert.DeserializeObject<TokenIds>(ConvertJsonFromBuffer(bufferOut), _jsonSerializerSettings);
         }
 
         /// <summary>
@@ -263,7 +250,7 @@ namespace NoFuture.Util.Gia
             if (metadataTokenIds == null)
                 throw new ArgumentNullException("metadataTokenIds");
             if (!_myProcessPorts.ProcessIsRunning)
-                throw new RahRowRagee(string.Format("The process by id [{0}] has exited", _myProcessPorts.Pid));
+                throw new RahRowRagee(String.Format("The process by id [{0}] has exited", _myProcessPorts.Pid));
 
             var bufferIn = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(metadataTokenIds));
 
@@ -271,20 +258,13 @@ namespace NoFuture.Util.Gia
 
             if (bufferOut == null || bufferOut.Length <= 0)
                 throw new ItsDeadJim(
-                    string.Format("The remote process by id [{0}] did not return anything on port [{1}]",
+                    String.Format("The remote process by id [{0}] did not return anything on port [{1}]",
                         _myProcessPorts.Pid, _myProcessPorts.GetTokenNamesPort));
 
             //record the full stream to file prior to any attempt to decode
             File.WriteAllBytes(Path.Combine(_appDataPath, "TokenNames.json"), bufferOut);
 
-            var decoder = Encoding.UTF8.GetDecoder();
-            var jsonString = new StringBuilder();
-
-            var jsonChars = new char[decoder.GetCharCount(bufferOut, 0, bufferOut.Length)];
-            decoder.GetChars(bufferOut, 0, bufferOut.Length, jsonChars, 0);
-            jsonString.Append(jsonChars);
-
-            return JsonConvert.DeserializeObject<TokenNames>(jsonString.ToString(), _jsonSerializerSettings);
+            return JsonConvert.DeserializeObject<TokenNames>(ConvertJsonFromBuffer(bufferOut), _jsonSerializerSettings);
         }
 
         /// <summary>
@@ -305,6 +285,67 @@ namespace NoFuture.Util.Gia
                     continue;
                 _allInUsePorts.Remove(p);
             }
+        }
+        #endregion
+
+        #region io methods
+        /// <summary>
+        /// Utility method to load <see cref="AsmIndicies"/> from a file
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <returns></returns>
+        public static AsmIndicies LoadAsmIndicies(string filePath)
+        {
+            if (String.IsNullOrWhiteSpace(filePath))
+                return null;
+            if (!File.Exists(filePath))
+                return null;
+            var buffer = File.ReadAllBytes(filePath);
+            return JsonConvert.DeserializeObject<AsmIndicies>(ConvertJsonFromBuffer(buffer), _jsonSerializerSettings);
+        }
+
+        /// <summary>
+        /// Utility method to load <see cref="TokenIds"/> from a file
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <returns></returns>
+        public static TokenIds LoadTokenIds(string filePath)
+        {
+            if (String.IsNullOrWhiteSpace(filePath))
+                return null;
+            if (!File.Exists(filePath))
+                return null;
+            var buffer = File.ReadAllBytes(filePath);
+            return JsonConvert.DeserializeObject<TokenIds>(ConvertJsonFromBuffer(buffer), _jsonSerializerSettings);
+        }
+
+        /// <summary>
+        /// Utility method to load <see cref="TokenNames"/> from a file
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <returns></returns>
+        public static TokenNames LoadTokenNames(string filePath)
+        {
+            if (String.IsNullOrWhiteSpace(filePath))
+                return null;
+            if (!File.Exists(filePath))
+                return null;
+            var buffer = File.ReadAllBytes(filePath);
+            return JsonConvert.DeserializeObject<TokenNames>(ConvertJsonFromBuffer(buffer), _jsonSerializerSettings);
+        }
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        internal static string ConvertJsonFromBuffer(byte[] buffer)
+        {
+            var decoder = Encoding.UTF8.GetDecoder();
+
+            var jsonChars = new char[decoder.GetCharCount(buffer, 0, buffer.Length)];
+            decoder.GetChars(buffer, 0, buffer.Length, jsonChars, 0);
+
+            var jsonStringBldr = new StringBuilder();
+            jsonStringBldr.Append(jsonChars);
+
+            return jsonStringBldr.ToString();
         }
         #endregion
 
@@ -456,7 +497,203 @@ namespace NoFuture.Util.Gia
         }
         #endregion
 
+        #region token name parsers
+
+        /// <summary>
+        /// Transforms a <see cref="MemberInfo"/> into a <see cref="MetadataTokenName"/>
+        /// getting as much info as possiable depending on which 
+        /// child-type the <see cref="mi"/> resolves to.
+        /// </summary>
+        /// <param name="mi"></param>
+        /// <param name="indicies">
+        /// optional parameter, used to abbreviate the name removing the redundant part shared 
+        /// by both assembly and namespace.
+        /// </param>
+        /// <param name="isIgnore">optional f(x) pointer for calling assembly to specify some additional rules by token name</param>
+        /// <returns></returns>
+        public static MetadataTokenName ConvertToMetadataTokenName(MemberInfo mi, AsmIndicies indicies, Func<string, bool> isIgnore)
+        {
+            if (mi == null)
+                return null;
+
+            var localIsIgnore = isIgnore ?? (s => false);
+            var localIndicies = indicies ?? new AsmIndicies { Asms = new MetadataTokenAsm[0] };
+
+            var tokenName = new MetadataTokenName { Name = mi.Name, Label = mi.GetType().Name };
+
+            string asmQualName;
+            string asmName;
+            string expandedName;
+
+            var type = mi as Type;
+
+            if (type != null)
+            {
+                asmQualName = type.Assembly.GetName().FullName;
+                //do not send back GAC asm's unless asked
+                if (localIsIgnore(asmQualName))
+                    return null;
+
+                var t =
+                    localIndicies.Asms.FirstOrDefault(
+                        x =>
+                            String.Equals(x.AssemblyName, type.Assembly.GetName().FullName,
+                                StringComparison.OrdinalIgnoreCase));
+
+                asmName = type.Assembly.GetName().Name;
+                expandedName = !String.IsNullOrEmpty(asmName)
+                    ? type.FullName.Replace(String.Format("{0}", asmName), String.Empty)
+                    : type.FullName;
+                if (!String.Equals(expandedName, tokenName.Name, StringComparison.OrdinalIgnoreCase))
+                    tokenName.Name = expandedName;
+
+                tokenName.OwnAsmIdx = t != null ? t.IndexId : 0;
+                return tokenName;
+            }
+            if (mi.DeclaringType == null) return tokenName;
+
+            asmQualName = mi.DeclaringType.Assembly.GetName().FullName;
+            //do not send back GAC asm's unless asked
+            if (localIsIgnore(asmQualName))
+                return null;
+
+            var f =
+                localIndicies.Asms.FirstOrDefault(
+                    x =>
+                        String.Equals(x.AssemblyName, mi.DeclaringType.Assembly.GetName().FullName,
+                            StringComparison.OrdinalIgnoreCase));
+
+            asmName = mi.DeclaringType.Assembly.GetName().Name;
+            expandedName = !String.IsNullOrEmpty(asmName)
+                ? mi.DeclaringType.FullName.Replace(String.Format("{0}", asmName), String.Empty)
+                : mi.DeclaringType.FullName;
+            if (!String.Equals(expandedName, tokenName.Name, StringComparison.OrdinalIgnoreCase))
+                tokenName.Name = String.Format("{0}{1}{2}", expandedName, Constants.TypeMethodNameSplitOn, tokenName.Name);
+
+            tokenName.OwnAsmIdx = f != null ? f.IndexId : 0;
+
+            var mti = mi as MethodInfo;
+            if (mti == null)
+                return tokenName;
+
+            var mtiParams = mti.GetParameters();
+            if (mtiParams.Length <= 0)
+            {
+                tokenName.Name = String.Format("{0}()", tokenName.Name);
+                return tokenName;
+            }
+
+            var paramNames = new List<string>();
+
+            foreach (var param in mtiParams)
+            {
+                var workingName = param.ParameterType.FullName;
+                if (!param.ParameterType.IsGenericType)
+                {
+                    paramNames.Add(workingName);
+                    continue;
+                }
+
+                var paramsGen = param.ParameterType.GetGenericArguments();
+                foreach (var genParam in paramsGen)
+                {
+                    var asmGenParamName = genParam.AssemblyQualifiedName;
+                    if (string.IsNullOrWhiteSpace(asmGenParamName))
+                        continue;
+                    workingName = workingName.Replace("[" + asmGenParamName + "]", genParam.FullName);
+
+                }
+                paramNames.Add(workingName);
+            }
+
+            tokenName.Name = String.Format("{0}({1})", tokenName.Name,
+                String.Join(",", paramNames));
+
+            return tokenName;
+        }
+
+        /// <summary>
+        /// Gets the method parameter type-names from the token name.
+        /// </summary>
+        /// <param name="tokenName"></param>
+        /// <returns></returns>
+        public static string[] ParseArgsFromTokenName(string tokenName)
+        {
+            if (String.IsNullOrWhiteSpace(tokenName))
+                return null;
+
+            if (!tokenName.Contains("(") || !tokenName.Contains(")"))
+                return null;
+
+            tokenName = tokenName.Trim();
+            var idxSplt = tokenName.IndexOf('(');
+            if (idxSplt < 0)
+                return null;
+
+            var argNames = tokenName.Substring(tokenName.IndexOf('('));
+            argNames = argNames.Replace(")", string.Empty);
+
+            if (argNames.Length <= 0)
+                return null;
+
+            return argNames.Split(',').Where(x => !String.IsNullOrWhiteSpace(x)).ToArray();
+        }
+
+        /// <summary>
+        /// Gets the full name (namespace plus type-name) part of the <see cref="MetadataTokenName.Name"/>
+        /// </summary>
+        /// <param name="tokenName"></param>
+        /// <param name="owningAsmName"></param>
+        /// <returns></returns>
+        public static string ParseTypeNameFromTokenName(string tokenName, string owningAsmName)
+        {
+            if (String.IsNullOrWhiteSpace(tokenName))
+                return null;
+
+            var sep = Constants.DefaultTypeSeparator.ToString(CultureInfo.InvariantCulture);
+
+            //assembly name and namespace being equal will have equal portion removed, add it back
+            if (!string.IsNullOrWhiteSpace(owningAsmName) && tokenName.StartsWith(sep))
+            {
+                tokenName = String.Format("{0}{1}", owningAsmName, tokenName);
+            }
+
+            var ns = Util.TypeName.GetNamespaceWithoutTypeName(tokenName);
+            var tn = Util.TypeName.GetTypeNameWithoutNamespace(tokenName);
+
+            return String.Format("{0}{1}{2}", ns, sep, tn);
+        }
+
+        /// <summary>
+        /// Gets just the method name of the <see cref="MetadataTokenName.Name"/>
+        /// </summary>
+        /// <param name="tokenName"></param>
+        /// <returns></returns>
+        public static string ParseMethodNameFromTokenName(string tokenName)
+        {
+            if (string.IsNullOrWhiteSpace(tokenName))
+                return null;
+
+            var idxSplt = tokenName.IndexOf(Constants.TypeMethodNameSplitOn, StringComparison.Ordinal);
+
+            idxSplt = idxSplt + (Constants.TypeMethodNameSplitOn).Length;
+            if (idxSplt > tokenName.Length || idxSplt < 0)
+                return null;
+
+            var methodName = tokenName.Substring(idxSplt, tokenName.Length - idxSplt);
+
+            idxSplt = methodName.IndexOf('(');
+            if (idxSplt < 0)
+                return methodName;
+
+            methodName = methodName.Substring(0, methodName.IndexOf('(')).Trim();
+            return methodName;
+        }
+
+        #endregion
+
         #region static analysis
+
         /// <summary>
         /// Set operation for comparision of two <see cref="TokenNames"/> with
         /// thier respective <see cref="AsmIndicies"/>
@@ -466,16 +703,16 @@ namespace NoFuture.Util.Gia
         /// <param name="rightListTopLvlOnly">
         /// Set to true to have <see cref="rightListTopLvlOnly"/> 
         /// only those in <see cref="rightList"/> whose <see cref="MetadataTokenName.OwnAsmIdx"/> is '0'.
-        /// 
         /// </param>
         /// <returns></returns>
-        public static MetadataTokenName[] RightSetDiff(Tuple<AsmIndicies, TokenNames> leftList, Tuple<AsmIndicies, TokenNames> rightList, bool rightListTopLvlOnly = false)
+        public static MetadataTokenName[] RightSetDiff(Tuple<AsmIndicies, TokenNames> leftList,
+            Tuple<AsmIndicies, TokenNames> rightList, bool rightListTopLvlOnly = false)
         {
             Func<MetadataTokenName, int> hashCode = x => x.GetNameHashCode();
 
             if (leftList == null || rightList == null)
                 return new List<MetadataTokenName>().ToArray();
-            if(rightList.Item1 == null || leftList.Item1 == null)
+            if (rightList.Item1 == null || leftList.Item1 == null)
                 return new List<MetadataTokenName>().ToArray();
             if (rightList.Item2 == null || rightList.Item2.Names == null || rightList.Item2.Names.Length <= 0)
                 return new List<MetadataTokenName>().ToArray();
@@ -492,7 +729,7 @@ namespace NoFuture.Util.Gia
             foreach (var j in setOp)
             {
                 var k = rightList.Item2.Names.FirstOrDefault(x => hashCode(x) == j);
-                if (k == null || (rightListTopLvlOnly && k.OwnAsmIdx != 0))
+                if (k == null || (rightListTopLvlOnly && k.OwnAsmIdx != 0) || !k.IsMethodName())
                     continue;
                 listOut.Add(k);
             }

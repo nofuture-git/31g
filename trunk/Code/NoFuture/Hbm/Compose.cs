@@ -2,6 +2,7 @@
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using NoFuture.Shared;
 using NoFuture.Util;
 
 namespace NoFuture.Hbm
@@ -21,24 +22,24 @@ namespace NoFuture.Hbm
         {
             var asmQualifiedName = new StringBuilder();
 
-            if (name.Split(TypeName.DEFAULT_TYPE_SEPARATOR).Length > 1)
+            if (name.Split(Constants.DefaultTypeSeparator).Length > 1)
             {
-                var nameParts = name.Split(TypeName.DEFAULT_TYPE_SEPARATOR);
+                var nameParts = name.Split(Constants.DefaultTypeSeparator);
                 var actualClassName = nameParts[(nameParts.Length - 1)].Replace(" ",Globals.REPLACE_SPACE_WITH_SEQUENCE);
                 nameParts[(nameParts.Length - 1)] = TypeName.SafeDotNetTypeName(actualClassName);
-                name = string.Join(TypeName.DEFAULT_TYPE_SEPARATOR.ToString(CultureInfo.InvariantCulture), nameParts);
+                name = string.Join(Constants.DefaultTypeSeparator.ToString(CultureInfo.InvariantCulture), nameParts);
             }
 
             //remove any chars not allowed in C# ids
             name = TypeName.SafeDotNetTypeName(name);
 
             //capitalize first letter of whole word to avoid conflict with C# reserved words
-            name = Etc.CapitalizeFirstLetterOfWholeWords(name, TypeName.DEFAULT_TYPE_SEPARATOR);
+            name = Etc.CapitalizeFirstLetterOfWholeWords(name, Constants.DefaultTypeSeparator);
 
             if (!String.IsNullOrWhiteSpace(outputNamespace))
             {
-                outputNamespace = Etc.CapitalizeFirstLetterOfWholeWords(outputNamespace, TypeName.DEFAULT_TYPE_SEPARATOR);
-                asmQualifiedName.AppendFormat("{0}{1}", outputNamespace,TypeName.DEFAULT_TYPE_SEPARATOR);
+                outputNamespace = Etc.CapitalizeFirstLetterOfWholeWords(outputNamespace, Constants.DefaultTypeSeparator);
+                asmQualifiedName.AppendFormat("{0}{1}", outputNamespace,Constants.DefaultTypeSeparator);
             }
 
             asmQualifiedName.Append(name);
@@ -55,7 +56,7 @@ namespace NoFuture.Hbm
         }
         public static string PropertyName(string name, bool replaceInvalidsWithHexEsc = false)
         {
-            name = Etc.ExtractLastWholeWord(name,TypeName.DEFAULT_TYPE_SEPARATOR);
+            name = Etc.ExtractLastWholeWord(name,Constants.DefaultTypeSeparator);
             name = Etc.CapitalizeFirstLetterOfWholeWords(name, null);
             return TypeName.SafeDotNetIdentifier(name,replaceInvalidsWithHexEsc);
         }
@@ -65,13 +66,13 @@ namespace NoFuture.Hbm
             {
                 return;
             }
-            var nameArray = name.Split(TypeName.DEFAULT_TYPE_SEPARATOR);
+            var nameArray = name.Split(Constants.DefaultTypeSeparator);
             if (nameArray.Length < expectedLength)
             {
                 throw new InvalidHbmNameException(
                     String.Format("The string '{0}' was expected to split on '{1}' into '{2}' but was actually '{3}'.",
                                   name,
-                                  TypeName.DEFAULT_TYPE_SEPARATOR,
+                                  Constants.DefaultTypeSeparator,
                                   expectedLength,
                                   nameArray.Length));
             }

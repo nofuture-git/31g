@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using NoFuture.Shared;
 using NoFuture.Util;
 using NoFuture.Util.Etymological;
 using NoFuture.Util.Etymological.Biz;
@@ -19,7 +20,7 @@ namespace NoFuture.Gen
             if (String.IsNullOrWhiteSpace(flattenedMember))
                 return null;
 
-            var separator = Util.TypeName.DEFAULT_TYPE_SEPARATOR;
+            var separator = Constants.DefaultTypeSeparator;
             var sp = Convert.ToChar(" ");
 
             if (!String.IsNullOrWhiteSpace(strSeparator))
@@ -31,8 +32,8 @@ namespace NoFuture.Gen
             if (!flattenedMember.Contains(separator))
                 return string.Format(".{0}", flattenedMember);
 
-            var srcName = flattenedMember.Replace(separator, Util.TypeName.DEFAULT_TYPE_SEPARATOR);
-            var startAt = srcName.IndexOf(Util.TypeName.DEFAULT_TYPE_SEPARATOR);
+            var srcName = flattenedMember.Replace(separator, Constants.DefaultTypeSeparator);
+            var startAt = srcName.IndexOf(Constants.DefaultTypeSeparator);
 
             var lengthOf = srcName.Length - startAt;
 
@@ -67,7 +68,7 @@ namespace NoFuture.Gen
         }
         public static bool AutoMapperMatchingRules(string searchFor, string searchIn, string strSeparator, List<INomenclature> nomenclatures)
         {
-            var separator = TypeName.DEFAULT_TYPE_SEPARATOR;
+            var separator = Constants.DefaultTypeSeparator;
             if (!String.IsNullOrWhiteSpace(strSeparator))
                 separator = Convert.ToChar(strSeparator.Substring(0, 1));
 

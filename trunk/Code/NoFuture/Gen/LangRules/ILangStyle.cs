@@ -6,6 +6,7 @@ namespace NoFuture.Gen.LangRules
 {
     public interface ILangStyle
     {
+        string LineComment { get; }
         string GetEnclosureOpenToken(CgMember cgMem);
         string GetEnclosureCloseToken(CgMember cgMem);
 
@@ -261,6 +262,23 @@ namespace NoFuture.Gen.LangRules
         /// </param>
         /// <returns></returns>
         bool TryFindLastLineInClass(string typename, string[] srcFile, out int lastLine);
+
+        /// <summary>
+        /// Finds the line number and index therein in whichever <see cref="direction"/>
+        /// starting from <see cref="fromIdx"/> line.
+        /// </summary>
+        /// <param name="fromIdx">
+        /// Line index in <see cref="srcFile"/> where to start search. This line itself is not searched.
+        /// </param>
+        /// <param name="srcFile">
+        /// The content of the src code file and boolean indicating if the content has already been cleaned of comments, etc.
+        /// </param>
+        /// <param name="stmtTerminators">An array of terminators to match on.</param>
+        /// <param name="direction"></param>
+        /// <param name="nextLineAndIndex">Item1 is the line number, Item2 is the index therein.</param>
+        /// <returns></returns>
+        bool TryFindNextStatementLine(int fromIdx, Tuple<string[], bool> srcFile, string[] stmtTerminators,
+            SearchDirection direction, out Tuple<int, int> nextLineAndIndex);
 
         /// <summary>
         /// Intended to be added to code blocks whose enclosure is out of balance at some unknown level.
