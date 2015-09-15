@@ -179,6 +179,19 @@ namespace NoFuture
 namespace NoFuture.Shared
 {
     /// <summary>
+    /// For encoding strings
+    /// </summary>
+    public enum EscapeStringType
+    {
+        DECIMAL,
+        DECIMAL_LONG,
+        HEXDECIMAL,
+        UNICODE,
+        REGEX,
+        HTML,
+        BLANK
+    }
+    /// <summary>
     /// Misc. constant values used throughout.
     /// </summary>
     public class Constants

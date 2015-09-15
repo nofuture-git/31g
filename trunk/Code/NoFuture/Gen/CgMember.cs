@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
+using NoFuture.Shared;
 using NfTypeName = NoFuture.Util.TypeName;
 
 namespace NoFuture.Gen
@@ -16,12 +17,18 @@ namespace NoFuture.Gen
     public class CgMember
     {
         #region fields
-        private PdbTargetLine _myPdbTargetLine;
+        protected internal readonly List<int> opCodeCallsAndCallvirtsMetadatTokens;
+
+        internal PdbTargetLine _myPdbTargetLine;
+        internal string[] _myOriginalLines;
+
         private string[] _myImplementation;
         private CgType _myCgType;
         private Dictionary<Tuple<int, int>, string[]> _myRefactor;
         private readonly List<CgMember> _opCodeCallAndCallvirts;
-        protected internal readonly List<int> opCodeCallsAndCallvirtsMetadatTokens;
+        private Tuple<int, int> _myStartEnclosure;
+        private Tuple<int, int> _myEndEnclosure;
+        private int? _myEnclosureBalance;
         #endregion
 
         #region ctors
@@ -89,6 +96,7 @@ namespace NoFuture.Gen
                 return new Tuple<int?, int?>(sa,ea);
             }
         }
+
         #endregion
 
         #region public api
@@ -121,7 +129,7 @@ namespace NoFuture.Gen
         }
 
         /// <summary>
-        /// Returns a regex pattern which will match on <see cref="Name"/> and, if applicable, number of parameters.
+        /// Renders the invocation of this <see cref="CgMember"/> as a regex pattern.
         /// </summary>
         public string AsInvokeRegexPattern(params string[] varNames)
         {
@@ -129,6 +137,17 @@ namespace NoFuture.Gen
                 return ".";
 
             return Settings.LangStyle.ToInvokeRegex(this, varNames);
+        }
+
+        /// <summary>
+        /// Renders the signature of this <see cref="CgMember"/> as a regex pattern
+        /// </summary>
+        /// <returns></returns>
+        public string AsSignatureRegexPattern()
+        {
+            if (string.IsNullOrWhiteSpace(Name))
+                return ".";
+            return Settings.LangStyle.ToSignatureRegex(this);
         }
 
         /// <summary>
@@ -172,12 +191,36 @@ namespace NoFuture.Gen
         /// <summary>
         /// Returns the lines, sourced from the PDB, exactly as-is from the original source (null otherwise).
         /// </summary>
+        /// <param name="buffer">optional buffer to have the lines in both directions extended by</param>
         /// <returns></returns>
-        public string[] MyOriginalLines()
+        public string[] MyOriginalLines(int buffer = 0)
         {
+            if (_myOriginalLines != null)
+                return _myOriginalLines;
+
             if (_myCgType == null || _myCgType.TypeFiles == null || MyPdbTargetLine == null)
                 return null;
-            return _myCgType.TypeFiles.ReadLinesFromOriginalSrc(MyPdbTargetLine);
+
+            //make a copy so the instance field is untouched
+            var dPdlLine = new PdbTargetLine
+            {
+                EndAt = MyPdbTargetLine.EndAt,
+                SrcFile = MyPdbTargetLine.SrcFile,
+                IndexId = MyPdbTargetLine.IndexId,
+                MemberName = MyPdbTargetLine.MemberName,
+                OwningTypeFullName = MyPdbTargetLine.OwningTypeFullName,
+                StartAt = MyPdbTargetLine.StartAt,
+                SymbolFolder = MyPdbTargetLine.SymbolFolder
+            };
+
+            if (buffer > 0)
+            {
+                dPdlLine.StartAt = dPdlLine.StartAt - buffer;
+                dPdlLine.EndAt = dPdlLine.EndAt + buffer;
+            }
+
+            _myOriginalLines = _myCgType.TypeFiles.ReadLinesFromOriginalSrc(dPdlLine);
+            return _myOriginalLines;
         }
 
         /// <summary>
@@ -256,7 +299,7 @@ namespace NoFuture.Gen
             var dependencyArgs = new List<CgArg>();
 
             var flattenCode = new string(Settings.LangStyle.FlattenCodeToCharStream(srcCode).ToArray());
-            flattenCode = Settings.LangStyle.EncodeAllStringLiterals(flattenCode);
+            flattenCode = Settings.LangStyle.EncodeAllStringLiterals(flattenCode, EscapeStringType.UNICODE);
 
             var instanceMembers =
                 _myCgType.Fields.Where(f => Regex.IsMatch(flattenCode, f.AsInvokeRegexPattern())).ToList();
@@ -307,7 +350,7 @@ namespace NoFuture.Gen
         /// This logic works if the overloaded signatures are ordered by
         /// the number of parameters having highest go first.
         /// </remarks>
-        public int CodeBlockUseMyLocals(string[] codeBlockLines)
+        public int CodeBlockUsesMyArgs(string[] codeBlockLines)
         {
             if (Args.Count == 0)
                 return 0;
@@ -358,6 +401,29 @@ namespace NoFuture.Gen
             return pdbOut.Equals(MyPdbTargetLine);
         }
 
+        internal int MyEnclosureBalance
+        {
+            get
+            {
+                if (_myEnclosureBalance != null)
+                    return _myEnclosureBalance.Value;
+
+                var codeBlockLines = MyOriginalLines(0);
+                if (codeBlockLines == null || codeBlockLines.Length == 0)
+                    return 0;
+                codeBlockLines = Settings.LangStyle.RemovePreprocessorCmds(codeBlockLines);
+                codeBlockLines = Settings.LangStyle.RemoveLineComments(codeBlockLines, Settings.LangStyle.LineComment);
+                codeBlockLines = Settings.LangStyle.RemoveBlockComments(codeBlockLines);
+                codeBlockLines = codeBlockLines.Where(ln => !String.IsNullOrWhiteSpace(ln)).ToArray();
+
+                if (codeBlockLines.Length == 0)
+                    return 0;
+
+                _myEnclosureBalance = Settings.LangStyle.EnclosuresCount(codeBlockLines);
+                return _myEnclosureBalance.Value;
+            }
+        }
+
         internal PdbTargetLine MyPdbTargetLine
         {
             get
@@ -374,6 +440,69 @@ namespace NoFuture.Gen
                 return _myPdbTargetLine;
             }
         }
+
+        internal Tuple<int, int> GetMyStartEnclosure(string[] srcFile)
+        {
+            if (_myStartEnclosure != null) return _myStartEnclosure;
+
+            if (srcFile == null || srcFile.Length <= 0)
+                return null;
+
+            var sigRegex = new Regex("(" + AsSignatureRegexPattern() + ")",
+                RegexOptions.IgnoreCase);
+
+            srcFile = Settings.LangStyle.RemoveBlockComments(srcFile);
+            srcFile = Settings.LangStyle.RemoveLineComments(srcFile, Settings.LangStyle.LineComment);
+
+            var fileSig = new Tuple<int, string>(0, string.Empty);
+            for (var i = MyPdbTargetLine.StartAt; i >= 0; i--)
+            {
+                var encodedLine = Settings.LangStyle.EncodeAllStringLiterals(srcFile[i], EscapeStringType.BLANK);
+                if (!sigRegex.IsMatch(encodedLine))
+                    continue;
+                var groups = sigRegex.Matches(encodedLine)[0];
+
+                if (!groups.Groups[0].Success)
+                    continue;
+                
+                fileSig = new Tuple<int, string>(i, groups.Groups[0].Value.Trim());
+
+                break;
+            }
+
+            if (string.IsNullOrWhiteSpace(fileSig.Item2))
+                return null;
+
+            var idx = srcFile[fileSig.Item1].IndexOf(fileSig.Item2, StringComparison.Ordinal);
+            if (idx < 0)
+                idx = 0;
+
+            _myStartEnclosure = new Tuple<int, int>(fileSig.Item1, idx);
+            return _myStartEnclosure;
+        }
+
+        internal Tuple<int, int> GetMyEndEnclosure(string[] srcFile)
+        {
+            if (_myEndEnclosure != null) return _myEndEnclosure;
+
+            if (srcFile == null || srcFile.Length <= 0)
+                return null;
+
+            for (var i = MyPdbTargetLine.EndAt; i > 0; i--)
+            {
+                var encodedLine = Settings.LangStyle.EncodeAllStringLiterals(srcFile[i], EscapeStringType.BLANK);
+                if (!encodedLine.Contains(Settings.LangStyle.GetEnclosureCloseToken(this)))
+                    continue;
+                var idx = encodedLine.LastIndexOf(Settings.LangStyle.GetEnclosureCloseToken(this),
+                    StringComparison.Ordinal);
+                _myEndEnclosure = new Tuple<int, int>(i, idx);
+                return _myEndEnclosure;
+
+            }
+
+            return null;
+        }
+
         #endregion
 
         public virtual bool Equals(CgMember obj)

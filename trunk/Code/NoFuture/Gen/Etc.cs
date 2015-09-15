@@ -768,6 +768,16 @@ namespace NoFuture.Gen
                 IsMethod = true,
                 MetadataToken = mti.MetadataToken
             };
+            if(mti.IsAssembly)
+                cgMem.AccessModifier = CgAccessModifier.Assembly;
+            if(mti.IsFamily)
+                cgMem.AccessModifier = CgAccessModifier.Family;
+            if(mti.IsFamilyAndAssembly)
+                cgMem.AccessModifier = CgAccessModifier.FamilyAssembly;
+            if(mti.IsPrivate)
+                cgMem.AccessModifier = CgAccessModifier.Private;
+            if(mti.IsPublic)
+                cgMem.AccessModifier = CgAccessModifier.Public;
 
             foreach (var parameterInfo in mti.GetParameters())
             {
@@ -784,41 +794,6 @@ namespace NoFuture.Gen
 
             cgMem.opCodeCallsAndCallvirtsMetadatTokens.AddRange(Asm.GetCallsMetadataTokens(mti));
             return cgMem;
-        }
-
-        public static string GetOutputFileName(string outputPath, CgType cgCgType, string prefix)
-        {
-            if (String.IsNullOrWhiteSpace(outputPath) || cgCgType == null || !Directory.Exists(outputPath))
-                return null;
-
-            //clean output path up
-            outputPath = TypeName.RemoveInvalidPathChars(outputPath);
-
-            //turn namespace, if present, into sub-dir from outputPath 
-            if(!String.IsNullOrWhiteSpace(cgCgType.Namespace))
-            {
-                var nsDirectory = cgCgType.Namespace.Replace('.', Path.DirectorySeparatorChar);
-                nsDirectory = TypeName.RemoveInvalidPathChars(nsDirectory);
-                outputPath = Path.Combine(outputPath, nsDirectory);
-            }
-
-            //draft a file name based on type name
-            var outputFile = TypeName.RemoveInvalidPathChars(string.Format("{0}{1}.cs", prefix, cgCgType.Name));
-
-            //draft a full name
-            outputFile = Path.Combine(outputPath, outputFile);
-            var outputDirectory = Path.GetDirectoryName(outputFile);
-
-            //create a directory if its not already existent
-            if (outputDirectory != Path.DirectorySeparatorChar.ToString(CultureInfo.InvariantCulture)
-                && !String.IsNullOrWhiteSpace(outputDirectory)
-                && !Directory.Exists(outputDirectory))
-            {
-                Directory.CreateDirectory(outputDirectory);
-            }
-
-            return outputFile;
-
         }
     }
 }

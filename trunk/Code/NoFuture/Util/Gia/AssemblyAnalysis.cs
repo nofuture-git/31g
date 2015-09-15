@@ -554,7 +554,7 @@ namespace NoFuture.Util.Gia
 
             asmQualName = mi.DeclaringType.Assembly.GetName().FullName;
             //do not send back GAC asm's unless asked
-            if (localIsIgnore(asmQualName))
+            if (localIsIgnore(asmQualName) || localIsIgnore(mi.DeclaringType.FullName))
                 return null;
 
             var f =

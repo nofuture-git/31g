@@ -91,7 +91,7 @@ namespace NoFuture.Tests.Gen
         }
 
         [TestMethod]
-        public void TestRefactorMethods()
+        public void TestMoveMethods()
         {
             NoFuture.Util.FxPointers.AddResolveAsmEventHandlerToDomain();
             var testtypeName = "AdventureWorks.VeryBadCode.ViewWankathon";
@@ -108,9 +108,36 @@ namespace NoFuture.Tests.Gen
             Assert.IsNotNull(testMethod00);
             var testMethod01 = testSubject.CgType.Methods.FirstOrDefault(x => x.Name == testMethodNames[1]);
             Assert.IsNotNull(testMethod01);
-            testSubject.CgType.TypeFiles.RefactorMethods(new List<CgMember>() {testMethod00, testMethod01}, "roeiu",
+            testSubject.CgType.TypeFiles.MoveMethods(new List<CgMember>() {testMethod00, testMethod01}, "roeiu",
                 testOutputfile,
                 new Tuple<string, string>("AdventureWorks.VeryBadCode", "RefactoredType"));
+
+        }
+
+        [TestMethod]
+        public void TestBlankOutMethods()
+        {
+            NoFuture.Util.FxPointers.AddResolveAsmEventHandlerToDomain();
+            var testtypeName = "AdventureWorks.VeryBadCode.ViewWankathon";
+            var testAsm = @"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\AdventureWorks2012.dll";
+            var testMethodNames = new List<string> { "UsesLocalAndInstanceStuff", "Page_Load" };
+
+
+            var testSubject = new NoFuture.Gen.CgTypeCsSrcCode(testAsm, testtypeName);
+            Assert.IsNotNull(testSubject);
+            Assert.IsNotNull(testSubject.CgType);
+            Assert.IsNotNull(testSubject.CgType.TypeFiles);
+            var testMethod00 = testSubject.CgType.Methods.FirstOrDefault(x => x.Name == testMethodNames[0]);
+            Assert.IsNotNull(testMethod00);
+            System.Diagnostics.Debug.WriteLine(testMethod00.MyPdbTargetLine.StartAt);
+            System.Diagnostics.Debug.WriteLine(testMethod00.MyPdbTargetLine.EndAt);
+            var testMethod01 = testSubject.CgType.Methods.FirstOrDefault(x => x.Name == testMethodNames[1]);
+            Assert.IsNotNull(testMethod01);
+            System.Diagnostics.Debug.WriteLine(testMethod01.MyPdbTargetLine.StartAt);
+            System.Diagnostics.Debug.WriteLine(testMethod01.MyPdbTargetLine.EndAt);
+            var enEnd = testMethod01.GetMyEndEnclosure(testSubject.CgType.TypeFiles.OriginalSourceFileContent);
+            System.Diagnostics.Debug.WriteLine(string.Format("{0},{1}",enEnd.Item1, enEnd.Item2));
+            testSubject.CgType.TypeFiles.BlankOutMethods(new List<CgMember>() { testMethod00, testMethod01 }, @"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\AdventureWorks2012\AdventureWorks2012\VeryBadCode\TestBlankOutMethods.cs");
 
         }
     }

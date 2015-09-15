@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Text;
 using NoFuture.Exceptions;
 using NoFuture.Gen.LangRules;
+using NoFuture.Shared;
 using NoFuture.Util;
 using NoFuture.Util.Binary;
 
@@ -59,28 +60,6 @@ namespace NoFuture.Gen
                     _originalFirstLine = lnNumOut;
                 }
                 return _originalFirstLine;
-            }
-        }
-
-        public string[] ModifiedSourceFileContent
-        {
-            get
-            {
-                if (_modifiedSrcFileContent != null)
-                    return _modifiedSrcFileContent;
-                _modifiedSrcFileContent = OriginalSourceFileContent;
-                if (_modifiedSrcFileContent == null || _modifiedSrcFileContent.Length <= 0)
-                    return null;
-
-                _modifiedSrcFileContent = Settings.LangStyle.RemoveLineComments(_modifiedSrcFileContent, null);
-                _modifiedSrcFileContent = Settings.LangStyle.RemoveBlockComments(_modifiedSrcFileContent);
-                _modifiedSrcFileContent = Settings.LangStyle.RemovePreprocessorCmds(_modifiedSrcFileContent);
-                for (var i = 0; i < _modifiedSrcFileContent.Length; i++)
-                {
-                    _modifiedSrcFileContent[i] = Settings.LangStyle.EncodeAllStringLiterals(_modifiedSrcFileContent[i]);
-                }
-
-                return _modifiedSrcFileContent;
             }
         }
 
@@ -293,6 +272,65 @@ namespace NoFuture.Gen
         #endregion
 
         #region refactor api
+
+        /// <summary>
+        /// Blanks out each method leaving the total file line count unchanged.
+        /// </summary>
+        /// <param name="blankOutCgMems"></param>
+        /// <param name="outputFileName"></param>
+        public void BlankOutMethods(List<CgMember> blankOutCgMems, string outputFileName)
+        {
+            if (blankOutCgMems == null || blankOutCgMems.Count <= 0)
+                return;
+
+            var srcLines = OriginalSourceFileContent;
+            if (srcLines == null || srcLines.Length <= 0)
+                return;
+
+            const string blankLine = " ";
+
+            if (string.IsNullOrWhiteSpace(outputFileName))
+                outputFileName = OriginalSource;
+
+            var d = new SortedList<int, int>();
+            foreach (var cgMem in blankOutCgMems)
+            {
+                var startLnIdx = cgMem.GetMyStartEnclosure(srcLines);
+                if(startLnIdx != null && !d.ContainsKey(startLnIdx.Item1))
+                    d.Add(startLnIdx.Item1, startLnIdx.Item2);
+                var endLnIdx = cgMem.GetMyEndEnclosure(srcLines);
+                if(endLnIdx != null && !d.ContainsKey(endLnIdx.Item1))
+                    d.Add(endLnIdx.Item1, endLnIdx.Item2);
+            }
+
+            var lineOn = true;
+            var srcLinesOut = new List<string>();
+            for (var i = 0; i < srcLines.Length; i++)
+            {
+                if (d.ContainsKey(i))
+                {
+                    if (lineOn)
+                    {
+                        srcLinesOut.Add(srcLines[i].Substring(0, d[i]));
+                    }
+                    else
+                    {
+                        var idx = d[i];
+                        if (idx < 0)
+                            idx = srcLines[i].Length;
+                        if(idx + 1 >= srcLines[i].Length)
+                            srcLinesOut.Add(blankLine);
+                        else
+                            srcLinesOut.Add(srcLines[i].Substring(d[i] + 1));
+                    }
+                    lineOn = !lineOn;
+                    continue;
+                }
+                srcLinesOut.Add(lineOn ? srcLines[i] : blankLine);
+            }
+            File.WriteAllLines(outputFileName, srcLinesOut, Encoding.UTF8);
+        }
+
         /// <summary>
         /// Performs dual operation of, one, moving <see cref="moveMembers"/> out of <see cref="OriginalSource"/> and into the new 
         /// <see cref="outFilePath"/> (adjusting thier signatures as needed to accommodate dependencies), and, two,
@@ -304,7 +342,7 @@ namespace NoFuture.Gen
         /// <param name="outFileNamespaceAndTypeName"></param>
         /// <param name="includeUsingStmts">Optional filter for namespace imports statements to INCLUDE.</param>
         /// <param name="excludeUsingStmts">Optional filter for namespace imports statements to EXCLUDE.</param>
-        public void RefactorMethods(List<CgMember> moveMembers, string newVariableName, string outFilePath,
+        public void MoveMethods(List<CgMember> moveMembers, string newVariableName, string outFilePath,
             Tuple<string, string> outFileNamespaceAndTypeName, string[] includeUsingStmts = null, string[] excludeUsingStmts = null)
         {
             if (moveMembers == null || moveMembers.Count < 0)
@@ -405,24 +443,13 @@ namespace NoFuture.Gen
             //write the new content out to the file
             File.WriteAllLines(OriginalSource, src, Encoding.UTF8);
         }
-
-        public void RemoveMethods(List<CgMember> moveMembers)
-        {
-            var src = ModifiedSourceFileContent;
-            if (src == null)
-                return;
-
-
-            //TODO finish this using TryFindNextStatementLine and Util.Etc.ReplaceOriginalContent.
-            throw new NotImplementedException();
-        }
         #endregion
 
         #region read api
         /// <summary>
         /// Will attempt to locate the best match for <see cref="member"/> within
         /// the current <see cref="SymbolFolder"/>. Based first on file name then
-        /// on the scores from <see cref="CgMember.CodeBlockUseMyLocals"/>
+        /// on the scores from <see cref="CgMember.CodeBlockUsesMyArgs"/>
         /// </summary>
         /// <param name="member"></param>
         /// <param name="pdbTargetOut"></param>
@@ -474,7 +501,7 @@ namespace NoFuture.Gen
                     continue;
 
                 var pdbFileLines = File.ReadAllLines(fiPath);
-                var matchedScore = member.CodeBlockUseMyLocals(pdbFileLines);
+                var matchedScore = member.CodeBlockUsesMyArgs(pdbFileLines);
                 matchScoreBoard.Add(fi, matchedScore);
             }
 

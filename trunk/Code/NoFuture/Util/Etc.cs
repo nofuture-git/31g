@@ -10,19 +10,6 @@ using NoFuture.Shared;
 namespace NoFuture.Util
 {
     /// <summary>
-    /// For use in calls to <see cref="NoFuture.Util.Etc.EscapeString"/>
-    /// </summary>
-    public enum EscapeStringType
-    {
-        DECIMAL,
-        DECIMAL_LONG,
-        HEXDECIMAL,
-        UNICODE,
-        REGEX,
-        HTML
-    }
-
-    /// <summary>
     /// This is your basic tool box of mildly useful functions.
     /// </summary>
     public class Etc
@@ -189,6 +176,8 @@ namespace NoFuture.Util
                             dataOut.AppendFormat("&#{0};", dex);
                     }
                     break;
+                case EscapeStringType.BLANK:
+                    return new string(' ', data.Length);
             }
             return dataOut.ToString();
         }
@@ -983,7 +972,7 @@ namespace NoFuture.Util
             var leftPaddingByIdx = new Dictionary<Tuple<int, int>, string>();
             foreach (var nk in dido.Keys)
             {
-                if (srcFile.Length < nk.Item1)
+                if (srcFile.Length <= nk.Item1 || nk.Item1 < 0)
                     continue;
                 var targetedLine = srcFile[nk.Item1];
                 var firstNonWsChar = targetedLine.ToCharArray().FirstOrDefault(x => !char.IsWhiteSpace(x));

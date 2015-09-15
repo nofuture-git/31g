@@ -9,11 +9,13 @@ namespace NoFuture.Gen.LangRules
         string LineComment { get; }
         string GetEnclosureOpenToken(CgMember cgMem);
         string GetEnclosureCloseToken(CgMember cgMem);
+        string GetStatementTerminator();
+        string GetDecoratorRegex();
 
         /// <summary>
         /// The <see cref="ILangStyle"/> keyword used when declaring a compile-time constant.
         /// </summary>
-        string DeclareConstant { get; }
+        string DeclareConstantKeyword { get; }
 
         /// <summary>
         /// A dictionary of .NET primitive types to thier lang-specific alias.
@@ -75,6 +77,13 @@ namespace NoFuture.Gen.LangRules
         string ToInvokeRegex(CgMember cgMem, params string[] varNames);
 
         /// <summary>
+        /// Renders the signature of <see cref="cgMem"/> as a regex pattern
+        /// </summary>
+        /// <param name="cgMem"></param>
+        /// <returns></returns>
+        string ToSignatureRegex(CgMember cgMem);
+
+        /// <summary>
         /// The default string to use as the body of a code generated method.
         /// </summary>
         string NoImplementationDefault { get; }
@@ -115,12 +124,12 @@ namespace NoFuture.Gen.LangRules
         string[] RemoveLineComments(string[] fileMembers, string lineCommentSequence);
 
         /// <summary>
-        /// Encodes all string literals to a unicode format
-        /// as "u0000"(per char) - everything else remains as is.
+        /// Encodes all string literals to <see cref="replacement"/>
         /// </summary>
         /// <param name="lineIn"></param>
+        /// <param name="replacement">The kind of esc sequence used</param>
         /// <returns></returns>
-        string EncodeAllStringLiterals(string lineIn);
+        string EncodeAllStringLiterals(string lineIn, Shared.EscapeStringType replacement);
 
         /// <summary>
         /// The dictionary key is the index of the double-quote while its
@@ -264,23 +273,6 @@ namespace NoFuture.Gen.LangRules
         bool TryFindLastLineInClass(string typename, string[] srcFile, out int lastLine);
 
         /// <summary>
-        /// Finds the line number and index therein in whichever <see cref="direction"/>
-        /// starting from <see cref="fromIdx"/> line.
-        /// </summary>
-        /// <param name="fromIdx">
-        /// Line index in <see cref="srcFile"/> where to start search. This line itself is not searched.
-        /// </param>
-        /// <param name="srcFile">
-        /// The content of the src code file and boolean indicating if the content has already been cleaned of comments, etc.
-        /// </param>
-        /// <param name="stmtTerminators">An array of terminators to match on.</param>
-        /// <param name="direction"></param>
-        /// <param name="nextLineAndIndex">Item1 is the line number, Item2 is the index therein.</param>
-        /// <returns></returns>
-        bool TryFindNextStatementLine(int fromIdx, Tuple<string[], bool> srcFile, string[] stmtTerminators,
-            SearchDirection direction, out Tuple<int, int> nextLineAndIndex);
-
-        /// <summary>
         /// Intended to be added to code blocks whose enclosure is out of balance at some unknown level.
         /// </summary>
         string BlockMarker { get; }
@@ -291,7 +283,7 @@ namespace NoFuture.Gen.LangRules
         /// </summary>
         /// <param name="codeBlockLines"></param>
         /// <returns></returns>
-        bool IsOddNumberEnclosureChars(string[] codeBlockLines);
+        bool IsOddNumberEnclosures(string[] codeBlockLines);
 
         /// <summary>
         /// Returns a integer whose value represents the  balance of enclosures
@@ -305,6 +297,6 @@ namespace NoFuture.Gen.LangRules
         /// Appearances behind block comments, line comments, preprocessors and string literals
         /// are not included.
         /// </remarks>
-        int EnclosureCharsCount(string[] codeBlockLines);
+        int EnclosuresCount(string[] codeBlockLines);
     }
 }

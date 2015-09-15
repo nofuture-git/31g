@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using NoFuture.Shared;
 using NoFuture.Tokens;
 using NoFuture.Util;
 
@@ -23,7 +25,7 @@ namespace NoFuture.Gen.LangRules
         public const string STMT_TERM = ";";
 
         public string LineComment { get { return LINE_COMMENT_CHAR_SEQ; } }
-        public string DeclareConstant { get { return CONST; } }
+        public string DeclareConstantKeyword { get { return CONST; } }
         public Dictionary<string, string> ValueTypeToLangAlias { get { return Lexicon.ValueType2Cs; } }
 
         public string GetEnclosureOpenToken(CgMember cgMem)
@@ -34,6 +36,16 @@ namespace NoFuture.Gen.LangRules
         public string GetEnclosureCloseToken(CgMember cgMem)
         {
             return C_CLOSE_CURLY.ToString();
+        }
+
+        public string GetStatementTerminator()
+        {
+            return STMT_TERM;
+        }
+
+        public string GetDecoratorRegex()
+        {
+            return @"\[.*\]";
         }
 
         public string ToDecl(CgMember cgMem, bool includesAccessModifier = false)
@@ -209,6 +221,43 @@ namespace NoFuture.Gen.LangRules
             return regexPattern.ToString();
         }
 
+        public string ToSignatureRegex(CgMember cgMem)
+        {
+            var regexPattern = new StringBuilder();
+
+            regexPattern.Append(@"(\b" + TransposeCgAccessModToString(cgMem.AccessModifier) + @"\b)");
+
+            if (cgMem.AccessModifier == CgAccessModifier.Assembly)
+                regexPattern.Append("?");
+
+            regexPattern.Append(@"([^\x2c\x3b\x7d\x7b]+?)");
+
+            regexPattern.AppendFormat(@"\b{0}\b", cgMem.Name);
+            if (cgMem.IsGeneric)
+            {
+                //needs to handle crazy shit like 'global::System.Tuple<int, Func<Mynamespace.MyType, global::System.Int64>>'
+                regexPattern.Append(@"\x3c.*?\x3e");
+            }
+
+            if (!cgMem.IsMethod)
+                return regexPattern.ToString();
+
+            if (cgMem.Args.Count <= 0)
+            {
+                regexPattern.Append(@"\(\s*?\)");
+                return regexPattern.ToString();
+            }
+
+            var simpleArgTypes =
+                cgMem.Args.Select(
+                    x =>
+                        @"\s*\b" +
+                        TypeName.GetTypeNameWithoutNamespace(x.ArgType) + @"\b\s*([^\,]+?)").ToList();
+            regexPattern.AppendFormat(@"\s*\({0}\)", string.Join(@"\,", simpleArgTypes));
+
+            return regexPattern.ToString();
+        }
+
         public string NoImplementationDefault
         {
             get { return "//could not parse method body \nthrow new NotImplementedException();"; }
@@ -305,7 +354,7 @@ namespace NoFuture.Gen.LangRules
             return fileMembers;
         }
 
-        public string EncodeAllStringLiterals(string lineIn)
+        public string EncodeAllStringLiterals(string lineIn, Shared.EscapeStringType replacement)
         {
             var encodedList = new StringBuilder();
             var inDoubleQuotes = false;
@@ -324,7 +373,7 @@ namespace NoFuture.Gen.LangRules
                 }
 
                 if (inDoubleQuotes)
-                    encodedList.AppendFormat(@"\u{0:X4}", Convert.ToUInt16(buffer[j]));
+                    encodedList.Append(Util.Etc.EscapeString(buffer[j].ToString(CultureInfo.InvariantCulture), replacement));
                 else
                     encodedList.Append(buffer[j]);
 
@@ -525,7 +574,7 @@ namespace NoFuture.Gen.LangRules
             if (codeBlockLines.Length == 0)
                 return new[] { String.Empty };
 
-            var curlyCount = EnclosureCharsCount(codeBlockLines);
+            var curlyCount = EnclosuresCount(codeBlockLines);
 
             if (curlyCount == 0)
                 return
@@ -795,112 +844,9 @@ namespace NoFuture.Gen.LangRules
             return lastLine < srcFile.Length;
         }
 
-        public bool TryFindNextStatementLine(int fromIdx, Tuple<string[], bool> srcFile, string[] stmtTerminators,
-            SearchDirection direction, out Tuple<int, int> nextLineAndIndex)
-        {
-            nextLineAndIndex = new Tuple<int, int>(int.MinValue, 0);
-            if (srcFile == null)
-                return false;
-            if (srcFile.Item1 == null || srcFile.Item1.Length <= 0)
-                return false;
-
-            if (stmtTerminators == null || stmtTerminators.Length <= 0)
-                return false;
-
-            var termRegex =
-                stmtTerminators.Select(x => new Tuple<string, string>(x, @"(^|\W)" + Util.Etc.EscapeString(x, EscapeStringType.REGEX) + @"(\W|$)")).ToArray();
-
-            var lines = srcFile.Item1;
-
-            if (!srcFile.Item2)
-            {
-                lines = RemoveLineComments(lines, null);
-                lines = RemoveBlockComments(lines);
-                lines = RemovePreprocessorCmds(lines);
-                for (var i = 0; i < lines.Length; i++)
-                {
-                    lines[i] = EncodeAllStringLiterals(lines[i]);
-                }
-            }
-            if (lines.Length <= fromIdx)
-                return false;
-
-            if (direction == SearchDirection.Up)
-            {
-                for (var i = fromIdx - 1; i > 0; i--)
-                {
-                    var lni = lines[i];
-                    if (string.IsNullOrWhiteSpace(lni))
-                        continue;
-
-                    foreach (var p in termRegex)
-                    {
-                        if (!Regex.IsMatch(lni, p.Item2))
-                            continue;
-                        nextLineAndIndex = new Tuple<int, int>(i, lni.LastIndexOf(p.Item1) + p.Item1.Length);
-                        return true;
-                    }
-                }
-            }
-
-            for (var i = fromIdx + 1; i < lines.Length; i++)
-            {
-                var lni = lines[i];
-                if (string.IsNullOrWhiteSpace(lni))
-                    continue;
-
-                foreach (var p in termRegex)
-                {
-                    if (!Regex.IsMatch(lni, p.Item2))
-                        continue;
-                    nextLineAndIndex = new Tuple<int, int>(i, lni.IndexOf(p.Item1) + p.Item1.Length);
-                    return true;
-                }                
-            }
-            return false;
-        }
-
         public string BlockMarker { get { return BLOCK_MARKER; } }
 
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        internal int GetIndexOfCurlyByLastOccuranceOfWord(List<char> buffer, string keyword, bool toLeft = true)
-        {
-            var markIdx = 0;
-            string keyWordSearch;
-            if (toLeft)
-                keyWordSearch = C_OPEN_CURLY + keyword;
-            else
-                keyWordSearch = keyword + C_CLOSE_CURLY;
-
-            var enclosedInQuotes = false;
-            //back the buffer up to the index just to the left of the first occurance of catch
-            for (var k = buffer.Count - 1; k >= 0; k--)
-            {
-                //can we read the required len at pos. k
-                if (k - keyWordSearch.Length < 0)
-                    break;
-                if (buffer[k] == '"' && k - 1 > 0 && buffer[k - 1] != '\\')
-                    enclosedInQuotes = !enclosedInQuotes;
-
-                if (enclosedInQuotes)
-                    continue;
-
-                //at position k are the chars directly to the left equal to the keyword
-                var strBuffer = new StringBuilder();
-                for (var m = k - keyWordSearch.Length; m < k; m++)
-                {
-                    strBuffer.Append(buffer[m]);
-                }
-
-                if (strBuffer.ToString() == keyWordSearch)
-                {
-                    markIdx = toLeft ? k - keyWordSearch.Length + 1 : k;
-                    break;
-                }
-            }
-            return markIdx;
-        }
-        public bool IsOddNumberEnclosureChars(string[] codeBlockLines)
+        public bool IsOddNumberEnclosures(string[] codeBlockLines)
         {
             //start at the first line, count +1 for '{' and -1 for '}'
             var buffer = FlattenCodeToCharStream(codeBlockLines);
@@ -925,7 +871,7 @@ namespace NoFuture.Gen.LangRules
         /// Appearances behind block comments, line comments, preprocessors and string literals
         /// are not included.
         /// </remarks>
-        public int EnclosureCharsCount(string[] codeBlockLines)
+        public int EnclosuresCount(string[] codeBlockLines)
         {
             var buffer = FlattenCodeToCharStream(codeBlockLines);
             return CurlyBraceCount(buffer);
@@ -951,7 +897,6 @@ namespace NoFuture.Gen.LangRules
                     tokenCount -= 1;
             }
             return tokenCount;
-
         }
     }
 }

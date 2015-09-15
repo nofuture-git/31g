@@ -176,6 +176,5 @@ namespace NoFuture.Tests.Gen
             foreach (var rslt in testResult)
                 System.Diagnostics.Debug.WriteLine(rslt);
         }
-
     }
 }

@@ -616,16 +616,16 @@ namespace NoFuture.Tests.Gen
                 Name = "MyCgType"
             };
 
-            Assert.AreEqual(2, testSubject.CodeBlockUseMyLocals(inputString));
+            Assert.AreEqual(2, testSubject.CodeBlockUsesMyArgs(inputString));
 
             testSubject.Args = args2;
 
             //if it can't find all three , it check for first two, then just one
-            Assert.AreEqual(2, testSubject.CodeBlockUseMyLocals(inputString));
+            Assert.AreEqual(2, testSubject.CodeBlockUsesMyArgs(inputString));
 
             testSubject.Args = args3;
 
-            Assert.AreEqual(0, testSubject.CodeBlockUseMyLocals(inputString));
+            Assert.AreEqual(0, testSubject.CodeBlockUsesMyArgs(inputString));
         }
 
         [TestMethod]

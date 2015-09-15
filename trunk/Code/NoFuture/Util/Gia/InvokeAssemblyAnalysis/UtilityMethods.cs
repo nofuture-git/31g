@@ -58,6 +58,9 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
             if (String.IsNullOrWhiteSpace(asmQualName))
                 return true;
 
+            if (asmQualName.StartsWith("System."))
+                return true;
+
             var gacAsms = GacAssemblyNames;
             return gacAsms != null && gacAsms.Any(asmQualName.EndsWith);
         }
@@ -267,20 +270,22 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
             //try easiest first
             try
             {
-                methodInfo = asmType.GetMethod(methodName, AssemblyAnalysis.DefaultFlags);
+                methodInfo = asmType.NfGetMethod(methodName, AssemblyAnalysis.DefaultFlags);
             }
             catch (AmbiguousMatchException) { }//is overloaded 
 
             //try it the formal way
             if (methodInfo == null)
             {
-                var args = AssemblyAnalysis.ParseArgsFromTokenName(tokenName);
-                var argTypes = args == null || args.Length <= 0
+                var args = AssemblyAnalysis.ParseArgsFromTokenName(tokenName).ToArray();
+                var argTypes = args.Length <= 0
                     ? Type.EmptyTypes
-                    : args.Select(Type.GetType).ToArray();
+                    : args.Select(Type.GetType).Where(x => x != null).ToArray();
 
-                //https://msdn.microsoft.com/en-us/library/5fed8f59(v=vs.110).aspx
-                methodInfo = asmType.GetMethod(methodName, AssemblyAnalysis.DefaultFlags, null, argTypes, null);
+                //there must be a one-for-one match of string names to first-class types
+                if (args.Length == argTypes.Length)
+                    methodInfo = asmType.NfGetMethod(methodName, AssemblyAnalysis.DefaultFlags, null, argTypes, null,
+                        false, Program.LogFile);
             }
 
             //try it the very slow but certian way

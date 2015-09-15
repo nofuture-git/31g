@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NoFuture.Rand;
+using NoFuture.Shared;
 using NoFuture.Util;
 
 namespace NoFuture.Tests.Util
@@ -242,6 +243,11 @@ namespace NoFuture.Tests.Util
                 ""
             };
 
+            //foreach (var i in inputString)
+            //{
+            //    System.Diagnostics.Debug.WriteLine(i);
+            //}
+
             var testInput00 = new Dictionary<Tuple<int, int>, string[]>();
             testInput00.Add(new Tuple<int, int>(2, 2), null);
             testInput00.Add(new Tuple<int, int>(9, 6), new[] { "new line B", "new line C", "new line B" });
@@ -255,6 +261,19 @@ namespace NoFuture.Tests.Util
             testInput00.Add(new Tuple<int, int>(4, 1), new[] { "ddlSecurityQuestion.DataTextField = MY_STRING01;" });
             testInput00.Add(new Tuple<int, int>(5, 1), new[] { "ddlSecurityQuestion.DataValueField = MY_STRING00;" });
             testInput00.Add(new Tuple<int, int>(26, 0), new[] { "new line D", "new line E" });
+            testResult = NoFuture.Util.Etc.ReplaceOriginalContent(testInput00, inputString);
+
+
+            testInput00 = new Dictionary<Tuple<int, int>, string[]>();
+            testInput00.Add(new Tuple<int, int>(2, 1), null);
+            testInput00.Add(new Tuple<int, int>(4, 1), null);
+            testInput00.Add(new Tuple<int, int>(5, 1), null);
+            testInput00.Add(new Tuple<int, int>(6, 1), null);
+            testInput00.Add(new Tuple<int, int>(7, 1), null);
+            testInput00.Add(new Tuple<int, int>(8, 1), null);
+            testInput00.Add(new Tuple<int, int>(9, 1), null);
+            testInput00.Add(new Tuple<int, int>(10, 1), null);
+            testInput00.Add(new Tuple<int, int>(11, 1), null);
             testResult = NoFuture.Util.Etc.ReplaceOriginalContent(testInput00, inputString);
             foreach (var t in testResult)
                 System.Diagnostics.Debug.WriteLine(t);
