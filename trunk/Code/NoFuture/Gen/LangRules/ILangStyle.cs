@@ -128,8 +128,11 @@ namespace NoFuture.Gen.LangRules
         /// </summary>
         /// <param name="lineIn"></param>
         /// <param name="replacement">The kind of esc sequence used</param>
+        /// <param name="endedIrregular">
+        /// out variable for detecting that the string is part of a verbatim string
+        /// </param>
         /// <returns></returns>
-        string EncodeAllStringLiterals(string lineIn, Shared.EscapeStringType replacement);
+        string EscStringLiterals(string lineIn, Shared.EscapeStringType replacement, ref bool endedIrregular);
 
         /// <summary>
         /// The dictionary key is the index of the double-quote while its

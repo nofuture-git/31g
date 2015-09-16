@@ -106,7 +106,7 @@ namespace NoFuture.Gen.LangRules
             }
             if (hasNs)
             {
-                splitFileContent.AppendFormat("namespace {0}\n", cgType.Namespace);
+                splitFileContent.AppendFormat("namespace {0}{1}", cgType.Namespace, Environment.NewLine);
                 splitFileContent.AppendLine(C_OPEN_CURLY.ToString());
 
             }
@@ -118,11 +118,11 @@ namespace NoFuture.Gen.LangRules
                 Settings.LangStyle.TransposeCgAccessModToString(cgClsAccess), otherModifer, cgType.Name));
             splitFileContent.AppendLine("    " + C_OPEN_CURLY);
             foreach (var cg in cgType.Fields)
-                splitFileContent.AppendLine(string.Join("\n", cg.MyCgLines(false)));
+                splitFileContent.AppendLine(string.Join(Environment.NewLine, cg.MyCgLines(false)));
             foreach (var cg in cgType.Properties)
-                splitFileContent.AppendLine(string.Join("\n", cg.MyCgLines(false)));
+                splitFileContent.AppendLine(string.Join(Environment.NewLine, cg.MyCgLines(false)));
             foreach (var cg in cgType.Methods)
-                splitFileContent.AppendLine(string.Join("\n", cg.MyCgLines(false)));
+                splitFileContent.AppendLine(string.Join(Environment.NewLine, cg.MyCgLines(false)));
             splitFileContent.AppendLine("    " + C_CLOSE_CURLY);
 
             if (hasNs)
@@ -281,6 +281,7 @@ namespace NoFuture.Gen.LangRules
 
         public string[] RemoveBlockComments(string[] fileMembers, Tuple<char, char> openningBlockChars, Tuple<char, char> closingBlockChars)
         {
+            const char blankChar = ' ';
             var inBlock = false;
             var newLines = new List<string>();
             foreach (var ln in fileMembers)
@@ -304,8 +305,14 @@ namespace NoFuture.Gen.LangRules
                     if (atBlockEnd)
                         inBlock = false;
                     if (currentChar != null && (inBlock || atBlockEnd))
-                        continue;
-                    newLine.Append(currentChar);
+                    {
+                        newLine.Append(blankChar);
+                    }
+                    else
+                    {
+                        newLine.Append(currentChar);    
+                    }
+                    
 
                 }
 
@@ -326,15 +333,21 @@ namespace NoFuture.Gen.LangRules
                 lineCommentSequence = LineComment;
             if (fileMembers == null)
                 return null;
-
+            const char blankChar = ' ';
             for (var j = 0; j < fileMembers.Length; j++)
             {
                 if (!fileMembers[j].Contains(lineCommentSequence))
                     continue;
                 var newLine = new StringBuilder();
                 var fileLine = fileMembers[j].ToCharArray();
+                var inCommentSection = false;
                 for (var i = 0; i < fileLine.Length; i++)
                 {
+                    if (inCommentSection)
+                    {
+                        newLine.Append(blankChar);
+                        continue;
+                    }
                     if (fileLine[i] != lineCommentSequence[0])
                     {
                         newLine.Append(fileLine[i]);
@@ -345,7 +358,10 @@ namespace NoFuture.Gen.LangRules
 
                     //at this point we know that the char at 'i' matches and we have more chars ahead...
                     if (new String(fileLine.Skip(i).Take(lineCommentSequence.Length).ToArray()) == lineCommentSequence)
-                        break;
+                    {
+                        inCommentSection = true;
+                        newLine.Append(blankChar);
+                    }
                 }
                 fileMembers[j] = newLine.ToString();
 
@@ -354,10 +370,10 @@ namespace NoFuture.Gen.LangRules
             return fileMembers;
         }
 
-        public string EncodeAllStringLiterals(string lineIn, Shared.EscapeStringType replacement)
+        public string EscStringLiterals(string lineIn, Shared.EscapeStringType replacement, ref bool endedIrregular)
         {
             var encodedList = new StringBuilder();
-            var inDoubleQuotes = false;
+            var inDoubleQuotes = endedIrregular;
             var buffer = lineIn.ToCharArray();
             for (var j = 0; j < buffer.Length; j++)
             {
@@ -378,6 +394,7 @@ namespace NoFuture.Gen.LangRules
                     encodedList.Append(buffer[j]);
 
             }
+            endedIrregular = inDoubleQuotes;
             return encodedList.ToString();
         }
 

@@ -6,7 +6,7 @@ using System.Reflection;
 using System.Text;
 using NoFuture.Exceptions;
 using NoFuture.Gen.LangRules;
-using NoFuture.Shared;
+using NoFuture.Tokens;
 using NoFuture.Util;
 using NoFuture.Util.Binary;
 
@@ -238,7 +238,7 @@ namespace NoFuture.Gen
                 consumedRange.Add(new Tuple<int, int>(pdb.StartAt, pdb.EndAt));
 
                 var pdbLineLoc = pdb.GetPdbLinesFileLocation();
-                File.WriteAllBytes(pdbLineLoc, Encoding.UTF8.GetBytes(string.Join("\n", pdbFileContent)));
+                File.WriteAllBytes(pdbLineLoc, Encoding.UTF8.GetBytes(string.Join(Environment.NewLine, pdbFileContent)));
                 _fileIndex.PdbFilesHash.Add(pdb.GetHashCodeAsString(), pdb);
             }
 
@@ -261,7 +261,7 @@ namespace NoFuture.Gen
                 }
 
                 var irPdbLineLoc = irregular.GetPdbLinesFileLocation();
-                File.WriteAllBytes(irPdbLineLoc, Encoding.UTF8.GetBytes(string.Join("\n", content)));
+                File.WriteAllBytes(irPdbLineLoc, Encoding.UTF8.GetBytes(string.Join(Environment.NewLine, content)));
                 _fileIndex.PdbFilesHash.Add(irregular.GetHashCodeAsString(), irregular);
             }
 

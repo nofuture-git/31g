@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using NoFuture.Shared;
+using NoFuture.Tokens;
 using NfTypeName = NoFuture.Util.TypeName;
 
 namespace NoFuture.Gen
@@ -299,7 +300,8 @@ namespace NoFuture.Gen
             var dependencyArgs = new List<CgArg>();
 
             var flattenCode = new string(Settings.LangStyle.FlattenCodeToCharStream(srcCode).ToArray());
-            flattenCode = Settings.LangStyle.EncodeAllStringLiterals(flattenCode, EscapeStringType.UNICODE);
+            bool irregular = false;
+            flattenCode = Settings.LangStyle.EscStringLiterals(flattenCode, EscapeStringType.UNICODE, ref irregular);
 
             var instanceMembers =
                 _myCgType.Fields.Where(f => Regex.IsMatch(flattenCode, f.AsInvokeRegexPattern())).ToList();
@@ -455,9 +457,10 @@ namespace NoFuture.Gen
             srcFile = Settings.LangStyle.RemoveLineComments(srcFile, Settings.LangStyle.LineComment);
 
             var fileSig = new Tuple<int, string>(0, string.Empty);
+            var irregular = false;
             for (var i = MyPdbTargetLine.StartAt; i >= 0; i--)
             {
-                var encodedLine = Settings.LangStyle.EncodeAllStringLiterals(srcFile[i], EscapeStringType.BLANK);
+                var encodedLine = Settings.LangStyle.EscStringLiterals(srcFile[i], EscapeStringType.BLANK, ref irregular);
                 if (!sigRegex.IsMatch(encodedLine))
                     continue;
                 var groups = sigRegex.Matches(encodedLine)[0];
@@ -488,13 +491,69 @@ namespace NoFuture.Gen
             if (srcFile == null || srcFile.Length <= 0)
                 return null;
 
+            //set source to pristine for tokens to operate on
+            srcFile = Settings.LangStyle.RemoveBlockComments(srcFile);
+            srcFile = Settings.LangStyle.RemoveLineComments(srcFile, Settings.LangStyle.LineComment);
+            var irregular = false;
+            for (var m = 0; m < srcFile.Length; m++)
+            {
+                srcFile[m] = Settings.LangStyle.EscStringLiterals(srcFile[m], EscapeStringType.BLANK, ref irregular);
+            }
+
+            //get the original file as an array of tokens
+            var openToken = Settings.LangStyle.GetEnclosureOpenToken(this);
+            var closeToken = Settings.LangStyle.GetEnclosureCloseToken(this);
+
+            XDocFrame myFilesFrame;
+            if (openToken.Length == 1 && closeToken.Length == 1)
+            {
+                myFilesFrame = new XDocFrame(openToken.ToCharArray()[0], closeToken.ToCharArray()[0]);
+            }
+            else
+            {
+                myFilesFrame = new XDocFrame(openToken, closeToken);
+            }
+
+            //turn the original file into a single string
+            var srcFileStr = string.Join(Environment.NewLine, srcFile);
+            var myTokens = myFilesFrame.FindEnclosingTokens(srcFileStr);
+
+            myTokens = myTokens.OrderByDescending(x => x.Start).ToList();
+            
+            //turn the pdb start line into an array index value
+            var charCount = 0;
+            for (var j = 0; j < MyPdbTargetLine.StartAt; j++)
+            {
+                charCount += srcFile[j].Length + Environment.NewLine.Length;
+            }
+            //we want the last token whose start is less-than-equal-to the array position of the Pdb Start line
+            var myToken = myTokens.FirstOrDefault(x => x.Start < charCount);
+
+            if (myToken != null)
+            {
+                //need to reverse the Token's End back into a line number
+                charCount = 0;
+                for (var k = 0; k < srcFile.Length; k++)
+                {
+                    //if we go to the next line will be blow past the token's end
+                    if (charCount + srcFile[k].Length + Environment.NewLine.Length < myToken.End)
+                    {
+                        charCount += srcFile[k].Length + Environment.NewLine.Length;
+                        continue;
+                    }
+                    //this should be the index in line k
+                    var sl = myToken.End - charCount;
+                    _myEndEnclosure = new Tuple<int, int>(k, sl);
+                    return _myEndEnclosure;
+                }
+            }
+
+            //default to look up from pdb line.
             for (var i = MyPdbTargetLine.EndAt; i > 0; i--)
             {
-                var encodedLine = Settings.LangStyle.EncodeAllStringLiterals(srcFile[i], EscapeStringType.BLANK);
-                if (!encodedLine.Contains(Settings.LangStyle.GetEnclosureCloseToken(this)))
+                if (!srcFile[i].Contains(closeToken))
                     continue;
-                var idx = encodedLine.LastIndexOf(Settings.LangStyle.GetEnclosureCloseToken(this),
-                    StringComparison.Ordinal);
+                var idx = srcFile[i].LastIndexOf(closeToken, StringComparison.Ordinal);
                 _myEndEnclosure = new Tuple<int, int>(i, idx);
                 return _myEndEnclosure;
 

@@ -503,7 +503,7 @@ namespace NoFuture.Tests.Gen
             Assert.AreEqual(testInput.Length, testResults.Length);
             foreach (var line in testResults)
             {
-                System.Diagnostics.Debug.WriteLine(line);
+                System.Diagnostics.Debug.WriteLine(string.Format("[{0}]", line));
             }
 
         }
@@ -540,10 +540,11 @@ namespace NoFuture.Tests.Gen
         {
             var testInput = new[] { " int myInt; /*block comments*/" };
             var testOutput = NoFuture.Gen.Settings.LangStyle.RemoveBlockComments(testInput);
-            Assert.AreEqual(" int myInt; ", testOutput[0]);
+            System.Diagnostics.Debug.WriteLine(string.Format("[{0}]", testOutput));
+            Assert.AreEqual(" int myInt;                   ", testOutput[0]);
             testInput = new[] { " int myInt; /*block comments*/ foreach(var s in t){;}" };
             testOutput = NoFuture.Gen.Settings.LangStyle.RemoveBlockComments(testInput);
-            Assert.AreEqual(" int myInt;  foreach(var s in t){;}", testOutput[0]);
+            Assert.AreEqual(" int myInt;                    foreach(var s in t){;}", testOutput[0]);
 
             testInput = new[]
             {
@@ -561,6 +562,9 @@ namespace NoFuture.Tests.Gen
             };
             testOutput = NoFuture.Gen.Settings.LangStyle.RemoveBlockComments(testInput);
             Assert.AreEqual(3, testOutput.Length);
+            Assert.AreEqual(" int myInt;   ", testOutput[0]);
+            Assert.AreEqual("                 ", testOutput[1]);
+            Assert.AreEqual(" int thirdInt;", testOutput[2]);
 
             testInput = new[]
             {
@@ -1378,10 +1382,11 @@ namespace NoFuture.Tests.Gen
         }
 
         [TestMethod]
-        public void TestEncodeAllStringLiterals()
+        public void TestEscStringLiterals()
         {
+            var irregular = false;
             var input = "        revRoom.ValidationExpression = \"^[a-zA-Z0-9''\" + Convert.ToString(ConfigurationManager.AppSettings[\"PreyNameAllowedCharecters\"]) + \"]+$\";";
-            var testResult = NoFuture.Gen.Settings.LangStyle.EncodeAllStringLiterals(input, EscapeStringType.UNICODE);
+            var testResult = NoFuture.Gen.Settings.LangStyle.EscStringLiterals(input, EscapeStringType.UNICODE, ref irregular);
             System.Diagnostics.Debug.WriteLine(testResult);
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(string.Empty, testResult);
@@ -1537,16 +1542,61 @@ namespace NoFuture.Tests.Gen
             testInput.Append((char)0x5c);
             testInput.Append('"');
             testInput.Append(';');
-            testResult = NoFuture.Gen.Settings.LangStyle.EncodeAllStringLiterals(testInput.ToString(), EscapeStringType.UNICODE);
+            testResult = NoFuture.Gen.Settings.LangStyle.EscStringLiterals(testInput.ToString(), EscapeStringType.UNICODE, ref irregular);
             System.Diagnostics.Debug.WriteLine(testResult);
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(string.Empty, testResult);
 
-            testResult = NoFuture.Gen.Settings.LangStyle.EncodeAllStringLiterals(testInput.ToString(),
-                EscapeStringType.BLANK);
+            testResult = NoFuture.Gen.Settings.LangStyle.EscStringLiterals(testInput.ToString(),
+                EscapeStringType.BLANK, ref irregular);
             System.Diagnostics.Debug.WriteLine(testResult);
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(string.Empty, testResult);
+
+        }
+
+        [TestMethod]
+        public void TestEscStringLiteralsHereString()
+        {
+            var testInput = "var myJsScript = @\"";
+            var testIrregular = false;
+            var testOutput = NoFuture.Gen.Settings.LangStyle.EscStringLiterals(testInput.ToString(),
+                EscapeStringType.BLANK, ref testIrregular);
+            Assert.IsTrue(testIrregular);
+            testInput = " }\");";
+            testIrregular = true;
+            testOutput = NoFuture.Gen.Settings.LangStyle.EscStringLiterals(testInput.ToString(),
+                EscapeStringType.BLANK, ref testIrregular);
+
+            Assert.IsFalse(testIrregular);
+
+            var testExampleHereString = new[]
+            {
+                "                ddlTabtlLocation.Attributes.Add(\"onclick\", @\"",
+                "    if (selectedtext == 'No Matching Cities') {",
+                "        if ($get(zipTextboxId)) {",
+                "            $get(zipTextboxId).value = source._currentPrefix;",
+                "            if ($get(validHiddenId)) {",
+                "                $get(validHiddenId).value = '0';",
+                "            }",
+                "        }",
+                "        return;",
+                "    }\");"
+            };
+
+            testIrregular = false;
+            var testExampleOut = new List<string>();
+            foreach (var ln in testExampleHereString)
+            {
+                testExampleOut.Add(Settings.LangStyle.EscStringLiterals(ln,
+                EscapeStringType.BLANK, ref testIrregular));
+            }
+
+            for (var i = 0; i < testExampleHereString.Length; i++)
+            {
+                System.Diagnostics.Debug.WriteLine(string.Format("'{0}'",testExampleOut[i]));
+                Assert.AreEqual(testExampleHereString[i].Length, testExampleOut[i].Length);
+            }
 
         }
 
