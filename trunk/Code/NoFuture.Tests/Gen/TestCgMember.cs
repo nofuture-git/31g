@@ -626,7 +626,7 @@ namespace NoFuture.Tests.Gen
             {
                 Name = "GetYoMommaTypes",
                 IsMethod = true,
-                _myPdbTargetLine = new PdbTargetLine {StartAt = 365, EndAt = 445},
+                _myPdbTargetLine = new []{ new PdbTargetLine {StartAt = 365, EndAt = 445}},
                 AccessModifier = CgAccessModifier.Family
             };
 
@@ -646,7 +646,7 @@ namespace NoFuture.Tests.Gen
                         new CgArg {ArgName = "e", ArgType = "EventArgs"}
                     },
                 IsMethod = true,
-                _myPdbTargetLine = new PdbTargetLine {StartAt = 453, EndAt = 458},
+                _myPdbTargetLine = new []{ new PdbTargetLine {StartAt = 453, EndAt = 458}},
                 AccessModifier = CgAccessModifier.Family
             };
             testResult = testCgMem.GetMyStartEnclosure(testFileContent);
@@ -663,7 +663,7 @@ namespace NoFuture.Tests.Gen
             {
                 Name = "GetYoMommaTypes",
                 IsMethod = true,
-                _myPdbTargetLine = new PdbTargetLine { StartAt = 364, EndAt = 446 },
+                _myPdbTargetLine = new [] {new PdbTargetLine { StartAt = 364, EndAt = 446 }},
                 AccessModifier = CgAccessModifier.Family
             };
             testCgMem._myOriginalLines = new[]

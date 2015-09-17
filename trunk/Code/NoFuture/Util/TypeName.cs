@@ -48,6 +48,14 @@ namespace NoFuture.Util
         public const string ASM_PROC_ARCH_REGEX = @"\,\s*ProcessorArchitecture\=(MSIL|Arm|Amd64|IA64|None|X86)";
         public const string DEFAULT_NAME_PREFIX = "_u0000";
 
+        public static class PropertyNamePrefix
+        {
+            public const string GET_PREFIX = "get_";
+            public const string SET_PREFIX = "set_";
+            public const string ADD_PREFIX = "add_";
+            public const string REMOVE_PREFIX = "remove_";
+        }
+
         #endregion
 
         #region ReadOnly Properties
@@ -653,10 +661,10 @@ namespace NoFuture.Util
             matchedOnOut = null;
             if (String.IsNullOrWhiteSpace(memberName))
                 return false;
-            const string GET_REGEX = "^get_([a-zA-Z_][a-zA-Z0-9_]*)";
-            const string SET_REGEX = "^set_([a-zA-Z_][a-zA-Z0-9_]*)";
-            const string ADD_REGEX = "^add_([a-zA-Z_][a-zA-Z0-9_]*)";
-            const string REMOVE_REGEX = "^remove_([a-zA-Z_][a-zA-Z0-9_]*)";
+            const string GET_REGEX = "^"+ PropertyNamePrefix.GET_PREFIX + "([a-zA-Z_][a-zA-Z0-9_]*)";
+            const string SET_REGEX = "^" + PropertyNamePrefix.SET_PREFIX + "([a-zA-Z_][a-zA-Z0-9_]*)";
+            const string ADD_REGEX = "^" + PropertyNamePrefix.ADD_PREFIX + "([a-zA-Z_][a-zA-Z0-9_]*)";
+            const string REMOVE_REGEX = "^" + PropertyNamePrefix.REMOVE_PREFIX + "([a-zA-Z_][a-zA-Z0-9_]*)";
 
             var isMatch = Regex.IsMatch(memberName, GET_REGEX) ||
                    Regex.IsMatch(memberName, SET_REGEX) ||
@@ -709,16 +717,15 @@ namespace NoFuture.Util
         /// <param name="pi"></param>
         /// <param name="ty"></param>
         /// <returns></returns>
-        public static MethodInfo GetMethodsForProperty(PropertyInfo pi, Type ty)
+        public static MethodInfo[] GetMethodsForProperty(PropertyInfo pi, Type ty)
         {
             if (pi == null || ty == null)
                 return null;
 
             //get a MethodInfo by probable property name
-            var allMethods = ty.GetMethods((BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.NonPublic |
-                                            BindingFlags.Public));
+            var allMethods = ty.GetMethods((Constants.DefaultFlags));
 
-            var propName2Mi = new Dictionary<string, MethodInfo>();
+            var propName2Mi = new Dictionary<string, List<MethodInfo>>();
 
             foreach (var mi in allMethods)
             {
@@ -727,18 +734,18 @@ namespace NoFuture.Util
 
                 if (propName2Mi.ContainsKey(derivedPropName))
                 {
-                    propName2Mi[derivedPropName] = mi;
+                    propName2Mi[derivedPropName].Add(mi);
                 }
                 else
                 {
-                    propName2Mi.Add(derivedPropName, mi);
+                    propName2Mi.Add(derivedPropName, new List<MethodInfo> {mi});
                 }
             }
 
             if (propName2Mi.Count <= 0 || !propName2Mi.ContainsKey(pi.Name))
                 return null;
 
-            return propName2Mi[pi.Name];
+            return propName2Mi[pi.Name].Where(x => x != null).ToArray();
         }
 
         public static bool IsEnumType(Type type)

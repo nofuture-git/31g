@@ -210,6 +210,14 @@ namespace NoFuture.Gen
             var methodName = AssemblyAnalysis.ParseMethodNameFromTokenName(tokenName.Name);
             if (string.IsNullOrWhiteSpace(methodName))
                 return null;
+            string isPropName;
+            if (TypeName.IsClrMethodForProperty(tokenName.Name, out isPropName))
+            {
+                methodName = isPropName;
+                var propMatches = Properties.Where(p => string.Equals(p.Name, methodName)).ToArray();
+                if (propMatches.Length >= 1)
+                    return propMatches.First();
+            }
 
             var matches = Methods.Where(x => string.Equals(x.Name, methodName)).ToArray();
             if (matches.Length <= 0)

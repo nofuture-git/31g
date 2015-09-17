@@ -272,7 +272,7 @@ namespace NoFuture.Gen.LangRules
             {
                 if (fileMembers[j].Contains("#") && (Regex.IsMatch(fileMembers[j], @"^\s*\#.*\n") || Regex.IsMatch(fileMembers[j], @"^\s*\#.*$")))
                 {
-                    fileMembers[j] = String.Empty;
+                    fileMembers[j] = new string(' ', fileMembers[j].Length);
                 }
             }
 
@@ -642,6 +642,8 @@ namespace NoFuture.Gen.LangRules
         internal static string[] CleanupPdbLinesCodeBlockAddTryKeyword(string[] codeBlockLines)
         {
             var cbl = codeBlockLines.Where(ln => !String.IsNullOrWhiteSpace(ln)).ToArray();
+            if (cbl.Length <= 0)
+                return codeBlockLines;
             if (cbl[0].Trim().ToCharArray()[0] == C_OPEN_CURLY)
             {
                 var dd = new StringBuilder();

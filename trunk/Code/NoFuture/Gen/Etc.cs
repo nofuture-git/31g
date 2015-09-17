@@ -357,9 +357,9 @@ namespace NoFuture.Gen
                         if (resolveDependencies)
                         {
                             var propMi = TypeName.GetMethodsForProperty(pi, asmType);
-                            if (propMi != null)
+                            foreach(var pim in propMi)
                             {
-                                cgm.opCodeCallsAndCallvirtsMetadatTokens.AddRange(Asm.GetCallsMetadataTokens(propMi));
+                                cgm.opCodeCallsAndCallvirtsMetadatTokens.AddRange(Asm.GetCallsMetadataTokens(pim));
                             }
                         }
                         cgType.Properties.Add(cgm);

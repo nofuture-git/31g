@@ -373,7 +373,7 @@ namespace NoFuture.Tokens
                 return new Tuple<int, int>(ot,arr1[0]);
 
             //assuming $ot equals $arr[0] at the top of the call-stack
-            if(arr1[0] > arr0[0] && arr1[0] < arr0[1])
+            if (arr1[0] > arr0[0] && (arr0.Count == 1 || arr1[0] < arr0[1]))
                 return new Tuple<int, int>(ot, arr1[0]);
 
             //recurse self, eliminating stack thereof

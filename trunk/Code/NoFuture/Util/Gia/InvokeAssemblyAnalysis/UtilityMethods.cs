@@ -270,7 +270,7 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
             //try easiest first
             try
             {
-                methodInfo = asmType.NfGetMethod(methodName, AssemblyAnalysis.DefaultFlags);
+                methodInfo = asmType.NfGetMethod(methodName, Constants.DefaultFlags);
             }
             catch (AmbiguousMatchException) { }//is overloaded 
 
@@ -284,14 +284,14 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
 
                 //there must be a one-for-one match of string names to first-class types
                 if (args.Length == argTypes.Length)
-                    methodInfo = asmType.NfGetMethod(methodName, AssemblyAnalysis.DefaultFlags, null, argTypes, null,
+                    methodInfo = asmType.NfGetMethod(methodName, Constants.DefaultFlags, null, argTypes, null,
                         false, Program.LogFile);
             }
 
             //try it the very slow but certian way
             if (methodInfo == null)
             {
-                var methodInfos = asmType.NfGetMethods(AssemblyAnalysis.DefaultFlags, false, Program.LogFile);
+                var methodInfos = asmType.NfGetMethods(Constants.DefaultFlags, false, Program.LogFile);
                 if (methodInfos.Length <= 0)
                 {
                     if (msgOut != null)

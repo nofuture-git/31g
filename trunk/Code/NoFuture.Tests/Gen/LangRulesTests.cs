@@ -1818,7 +1818,6 @@ namespace NoFuture.Tests.Gen
 
             var testInput = Settings.LangStyle.ToSignatureRegex(testCgMember);
             Assert.IsNotNull(testInput);
-            System.Diagnostics.Debug.WriteLine(testInput);
 
             Assert.IsTrue(Regex.IsMatch("        public void PopulateDdlForSomething(DropDownList ddl, string strAccountId)", testInput, RegexOptions.IgnoreCase));
 
@@ -1828,9 +1827,20 @@ namespace NoFuture.Tests.Gen
 
             testInput = Settings.LangStyle.ToSignatureRegex(testCgMember);
             Assert.IsNotNull(testInput);
-            System.Diagnostics.Debug.WriteLine(testInput);
 
             Assert.IsTrue(Regex.IsMatch("        public List<KeeperMaster> GetKeeperMasterDetailsForBizIDsForEmail(string strClinicIDs)", testInput, RegexOptions.IgnoreCase));
+
+            testCgMember = new CgMember() { Name = "AProperty" };
+            testCgMember.IsMethod = false;
+            testCgMember.HasGetter = true;
+            testCgMember.HasGetter = true;
+            testCgMember.AccessModifier  = CgAccessModifier.Family;
+
+            testInput = Settings.LangStyle.ToSignatureRegex(testCgMember);
+            Assert.IsNotNull(testInput);
+            System.Diagnostics.Debug.WriteLine(testInput);
+
+            Assert.IsTrue(Regex.IsMatch("             protected string AProperty",testInput));
         }
 
         [TestMethod]

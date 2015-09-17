@@ -46,14 +46,13 @@ namespace NoFuture.Util.Gia
         private readonly TaskFactory _taskFactory;
         private readonly InvokeAssemblyAnalysisId _myProcessPorts;
         private readonly AsmIndicies _asmIndices;
-        private static BindingFlags _defalutFlags = BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.NonPublic |
-                                             BindingFlags.Public | BindingFlags.Static;
         private readonly string _appDataPath;
         private static readonly JsonSerializerSettings _jsonSerializerSettings = new JsonSerializerSettings
         {
             ReferenceLoopHandling = ReferenceLoopHandling.Ignore
         };
         private static readonly List<int> _allInUsePorts = new List<int>();
+
         #endregion
 
         #region inner types
@@ -129,15 +128,6 @@ namespace NoFuture.Util.Gia
         public InvokeAssemblyAnalysisId Id { get { return _myProcessPorts; } }
 
         /// <summary>
-        /// Default flags used to get a type's members.
-        /// </summary>
-        public static BindingFlags DefaultFlags
-        {
-            get { return _defalutFlags; }
-            set { _defalutFlags = value; }
-        }
-
-        /// <summary>
         /// List all ports in use by all instances of <see cref="AssemblyAnalysis"/>
         /// within the current AppDomain
         /// </summary>
@@ -148,6 +138,7 @@ namespace NoFuture.Util.Gia
                 return _allInUsePorts.ToArray();
             }
         }
+
         #endregion
 
         #region ctors
@@ -751,7 +742,7 @@ namespace NoFuture.Util.Gia
 
             var token = new MetadataTokenId { Id = asmType.MetadataToken, RslvAsmIdx = asmIdx};
             token.Items =
-                asmType.GetMembers(DefaultFlags).Select(x => GetMetadataToken(x, true, asmIdx)).Distinct().ToArray();
+                asmType.GetMembers(Constants.DefaultFlags).Select(x => GetMetadataToken(x, true, asmIdx)).Distinct().ToArray();
             return token;
         }
 

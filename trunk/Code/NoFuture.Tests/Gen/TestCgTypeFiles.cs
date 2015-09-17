@@ -111,12 +111,13 @@ namespace NoFuture.Tests.Gen
                 TypeName = "string"
             };
 
-            PdbTargetLine testOutput;
+            PdbTargetLine[] testOutput;
             var testResult = _testSubject.TryFindPdbTargetLine(testCgMember, out testOutput);
             Assert.IsTrue(testResult);
-
-            System.Diagnostics.Debug.WriteLine(testOutput.StartAt);
-            System.Diagnostics.Debug.WriteLine(testOutput.EndAt);
+            Assert.IsNotNull(testOutput);
+            Assert.AreNotEqual(0, testOutput.Length);
+            System.Diagnostics.Debug.WriteLine(testOutput.First().StartAt);
+            System.Diagnostics.Debug.WriteLine(testOutput.First().EndAt);
 
         }
 

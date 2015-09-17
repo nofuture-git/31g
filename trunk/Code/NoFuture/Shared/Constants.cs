@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
+using System.Reflection;
 
 namespace NoFuture
 {
@@ -247,6 +248,19 @@ namespace NoFuture.Shared
             get { return _useReflectionOnlyLoad; }
             set { _useReflectionOnlyLoad = value; }
         }
+
+        private static BindingFlags _defalutFlags = BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.NonPublic |
+                                                    BindingFlags.Public | BindingFlags.Static;
+
+        /// <summary>
+        /// Default flags used to get a type's members.
+        /// </summary>
+        public static BindingFlags DefaultFlags
+        {
+            get { return _defalutFlags; }
+            set { _defalutFlags = value; }
+        }
+
 
         /// <summary>
         /// Shared location to assign thread sleep in milliseconds

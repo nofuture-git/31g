@@ -288,19 +288,37 @@ namespace NoFuture.Gen
                 return;
 
             const string blankLine = " ";
+            const char blankChar = ' ';
 
             if (string.IsNullOrWhiteSpace(outputFileName))
                 outputFileName = OriginalSource;
 
-            var d = new SortedList<int, int>();
-            foreach (var cgMem in blankOutCgMems)
+            var d = new SortedList<int, List<int>>();
+            foreach (var cgMem in blankOutCgMems.Where(x => x!= null))
             {
                 var startLnIdx = cgMem.GetMyStartEnclosure(srcLines);
-                if(startLnIdx != null && !d.ContainsKey(startLnIdx.Item1))
-                    d.Add(startLnIdx.Item1, startLnIdx.Item2);
+                if (startLnIdx != null)
+                {
+                    if (!d.ContainsKey(startLnIdx.Item1))
+                    {
+                        d.Add(startLnIdx.Item1, new List<int> { startLnIdx.Item2 } );
+                    }
+                    else
+                    {
+                        d[startLnIdx.Item1].Add(startLnIdx.Item2);
+                    }
+                }
                 var endLnIdx = cgMem.GetMyEndEnclosure(srcLines);
-                if(endLnIdx != null && !d.ContainsKey(endLnIdx.Item1))
-                    d.Add(endLnIdx.Item1, endLnIdx.Item2);
+                if (endLnIdx == null) continue;
+
+                if (!d.ContainsKey(endLnIdx.Item1))
+                {
+                    d.Add(endLnIdx.Item1, new List<int> { endLnIdx.Item2 });
+                }
+                else
+                {
+                    d[endLnIdx.Item1].Add(endLnIdx.Item2);
+                }
             }
 
             var lineOn = true;
@@ -309,24 +327,23 @@ namespace NoFuture.Gen
             {
                 if (d.ContainsKey(i))
                 {
-                    if (lineOn)
+                    var dil = d[i].OrderBy(x => x).Distinct().ToList();
+                    var srcLn = srcLines[i];
+                    var newLn = new StringBuilder();
+                    for (var k = 0; k < srcLines[i].Length; k++)
                     {
-                        srcLinesOut.Add(srcLines[i].Substring(0, d[i]));
+                        System.Diagnostics.Debug.WriteLine(string.Format("{0} {1} '{2}' [{3}] - ({4})", i, k, srcLn[k], lineOn, string.Join(",",d[i])));
+
+                        newLn.Append(lineOn && dil.Contains(k) ? srcLn[k] : blankChar);
+                        if (dil.Contains(k))
+                        {
+                            lineOn = !lineOn;
+                        }
                     }
-                    else
-                    {
-                        var idx = d[i];
-                        if (idx < 0)
-                            idx = srcLines[i].Length;
-                        if(idx + 1 >= srcLines[i].Length)
-                            srcLinesOut.Add(blankLine);
-                        else
-                            srcLinesOut.Add(srcLines[i].Substring(d[i] + 1));
-                    }
-                    lineOn = !lineOn;
+                    srcLinesOut.Add(newLn.ToString());
                     continue;
                 }
-                srcLinesOut.Add(lineOn ? srcLines[i] : blankLine);
+                srcLinesOut.Add(lineOn ? srcLines[i] : new string(blankChar, srcLines[i].Length));
             }
             File.WriteAllLines(outputFileName, srcLinesOut, Encoding.UTF8);
         }
@@ -454,7 +471,7 @@ namespace NoFuture.Gen
         /// <param name="member"></param>
         /// <param name="pdbTargetOut"></param>
         /// <returns></returns>
-        public bool TryFindPdbTargetLine(CgMember member, out PdbTargetLine pdbTargetOut)
+        public bool TryFindPdbTargetLine(CgMember member, out PdbTargetLine[] pdbTargetOut)
         {
             pdbTargetOut = null;
 
@@ -479,6 +496,39 @@ namespace NoFuture.Gen
                             "The CgTypeFileIndex at '{0}' has a differnet type name.\nName at ctor time was '{1}'.\nName in this file is '{2}'.",
                             _srcRefFileFullName, _typeName.RawString, _fileIndex.AssemblyQualifiedTypeName));
             }
+
+            //only expecting multi pdb line files for properties
+            if (member.HasGetter || member.HasSetter)
+            {
+                var propertyFiles = new List<PdbTargetLine>();
+                if (member.HasGetter)
+                {
+                    var getterMatch =
+                        _fileIndex.PdbFilesHash.Where(
+                            x =>
+                                x.Value.MemberName ==
+                                string.Format("{0}{1}", TypeName.PropertyNamePrefix.GET_PREFIX, member.Name))
+                            .Select(x => x.Value)
+                            .FirstOrDefault();
+                    if(getterMatch != null)
+                        propertyFiles.Add(getterMatch);
+                }
+                if (member.HasSetter)
+                {
+                    var setterMatch =
+                        _fileIndex.PdbFilesHash.Where(
+                            x =>
+                                x.Value.MemberName ==
+                                string.Format("{0}{1}", TypeName.PropertyNamePrefix.SET_PREFIX, member.Name))
+                            .Select(x => x.Value)
+                            .FirstOrDefault();
+                    if (setterMatch != null)
+                        propertyFiles.Add(setterMatch);
+                }
+                pdbTargetOut = propertyFiles.ToArray();
+                return propertyFiles.Count > 0;
+            }
+
             //find all the entry keys whose pdbTargetLine's memberName matches this one.
             var matchedPdbTargets = _fileIndex.PdbFilesHash.Where(x => x.Value.MemberName == member.Name).Select(x => x.Value).ToList();
 
@@ -486,9 +536,9 @@ namespace NoFuture.Gen
                 return false;
             if (matchedPdbTargets.Count == 1)
             {
-                pdbTargetOut = matchedPdbTargets.First();
+                pdbTargetOut = new[]{matchedPdbTargets.First()};
                 //record that this file has been claimed at least once for the life of this instance
-                _pdbFilesUsed.Add(pdbTargetOut.GetPdbLinesFileLocation());
+                _pdbFilesUsed.Add(pdbTargetOut.First().GetPdbLinesFileLocation());
                 return true;
             }
 
@@ -510,7 +560,7 @@ namespace NoFuture.Gen
             var bestMatchScore = matchScoreBoard.Max(x => x.Value);
             var bestMatch = matchScoreBoard.First(x => x.Value == bestMatchScore).Key;
 
-            pdbTargetOut = bestMatch;
+            pdbTargetOut = new []{bestMatch};
 
             //this lets the owning CgMember know that the match is uncertian
             if (matchScoreBoard.Count(x => x.Value == bestMatchScore) > 1)
@@ -518,7 +568,7 @@ namespace NoFuture.Gen
             if (bestMatchScore < member.Args.Count)
                 member.LessThanPerfectFileMatch = true;
 
-            _pdbFilesUsed.Add(pdbTargetOut.GetPdbLinesFileLocation());
+            _pdbFilesUsed.Add(pdbTargetOut.First().GetPdbLinesFileLocation());
             return true;
         }
         

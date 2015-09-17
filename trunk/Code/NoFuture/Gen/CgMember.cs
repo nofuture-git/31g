@@ -20,7 +20,7 @@ namespace NoFuture.Gen
         #region fields
         protected internal readonly List<int> opCodeCallsAndCallvirtsMetadatTokens;
 
-        internal PdbTargetLine _myPdbTargetLine;
+        internal PdbTargetLine[] _myPdbTargetLine;
         internal string[] _myOriginalLines;
 
         private string[] _myImplementation;
@@ -29,7 +29,6 @@ namespace NoFuture.Gen
         private readonly List<CgMember> _opCodeCallAndCallvirts;
         private Tuple<int, int> _myStartEnclosure;
         private Tuple<int, int> _myEndEnclosure;
-        private int? _myEnclosureBalance;
         #endregion
 
         #region ctors
@@ -90,10 +89,10 @@ namespace NoFuture.Gen
         {
             get
             {
-                if(MyPdbTargetLine == null)
+                if(MyPdbLines == null || MyPdbLines.Length <= 0)
                     return new Tuple<int?, int?>(null, null);
-                var sa = new int?(MyPdbTargetLine.StartAt);
-                var ea = new int?(MyPdbTargetLine.EndAt);
+                var sa = new int?(MyPdbLines.First().StartAt);
+                var ea = new int?(MyPdbLines.First().EndAt);
                 return new Tuple<int?, int?>(sa,ea);
             }
         }
@@ -173,13 +172,17 @@ namespace NoFuture.Gen
                 myImplementation.Add(string.Format("        {0}", Settings.LangStyle.GetEnclosureOpenToken(this)));
                 
             }
-            if (_myCgType == null || _myCgType.TypeFiles == null || MyPdbTargetLine == null)
+            if (_myCgType == null || _myCgType.TypeFiles == null || MyPdbLines == null || MyPdbLines.Length <= 0)
             {
                 myImplementation.Add(Settings.NoImplementationDefault);
             }
             else
             {
-                myImplementation.AddRange(MyPdbTargetLine.GetMyPdbTargetLines(_myCgType.TypeFiles.SymbolFolder, null));
+                foreach (var pdbFile in MyPdbLines)
+                {
+                    myImplementation.AddRange(pdbFile.GetMyPdbTargetLines(_myCgType.TypeFiles.SymbolFolder, null));    
+                }
+                
             }
             if (!justBody)
             {
@@ -199,28 +202,18 @@ namespace NoFuture.Gen
             if (_myOriginalLines != null)
                 return _myOriginalLines;
 
-            if (_myCgType == null || _myCgType.TypeFiles == null || MyPdbTargetLine == null)
+            if (_myCgType == null || _myCgType.TypeFiles == null || MyPdbLines == null || MyPdbLines.Length <= 0)
                 return null;
-
-            //make a copy so the instance field is untouched
-            var dPdlLine = new PdbTargetLine
-            {
-                EndAt = MyPdbTargetLine.EndAt,
-                SrcFile = MyPdbTargetLine.SrcFile,
-                IndexId = MyPdbTargetLine.IndexId,
-                MemberName = MyPdbTargetLine.MemberName,
-                OwningTypeFullName = MyPdbTargetLine.OwningTypeFullName,
-                StartAt = MyPdbTargetLine.StartAt,
-                SymbolFolder = MyPdbTargetLine.SymbolFolder
-            };
+            var maxEndAt = MaxEndAt;
+            var minStartAt = MinStartAt;
 
             if (buffer > 0)
             {
-                dPdlLine.StartAt = dPdlLine.StartAt - buffer;
-                dPdlLine.EndAt = dPdlLine.EndAt + buffer;
+                minStartAt = minStartAt - buffer;
+                maxEndAt = maxEndAt + buffer;
             }
 
-            _myOriginalLines = _myCgType.TypeFiles.ReadLinesFromOriginalSrc(dPdlLine);
+            _myOriginalLines = _myCgType.TypeFiles.ReadLinesFromOriginalSrc(minStartAt, maxEndAt);
             return _myOriginalLines;
         }
 
@@ -246,7 +239,7 @@ namespace NoFuture.Gen
         {
             if (_myRefactor != null)
                 return _myRefactor;
-            if (_myCgType == null || _myCgType.TypeFiles == null || MyPdbTargetLine == null)
+            if (_myCgType == null || _myCgType.TypeFiles == null || MyPdbLines == null || MyPdbLines.Length <= 0)
                 return null;
             if (string.IsNullOrWhiteSpace(newVariableName))
                 newVariableName = Path.GetRandomFileName().Replace(".", string.Empty);
@@ -269,8 +262,8 @@ namespace NoFuture.Gen
                     CgAccessModifier.Private);
                 dido.Add(new Tuple<int, int>(ofl, 1), new[] {oldFilesInstanceToNew});
             }
-            var nKey = new Tuple<int, int>(_myPdbTargetLine.StartAt,
-                _myPdbTargetLine.EndAt - _myPdbTargetLine.StartAt - 1);
+            var nKey = new Tuple<int, int>(MinStartAt,
+                MaxEndAt - MinStartAt - 1);
 
             dido.Add(nKey, new[] {Settings.LangStyle.ToStmt(this, null, newVariableName)});
             _myRefactor = dido;
@@ -287,19 +280,20 @@ namespace NoFuture.Gen
         /// </remarks>
         public List<CgArg> GetAllRefactorDependencies()
         {
-            var pdbTlines = MyPdbTargetLine;
-            if (pdbTlines == null)
-                return null;
-            if (_myCgType == null || _myCgType.TypeFiles == null)
+            if (_myCgType == null || _myCgType.TypeFiles == null || MyPdbLines == null)
                 return null;
 
-            var srcCode = MyPdbTargetLine.GetMyPdbTargetLines(_myCgType.TypeFiles.SymbolFolder, null);
-            if (srcCode == null || srcCode.Length <= 0)
+            var ssrcCode = new List<string>();
+            foreach (var pdb in MyPdbLines)
+            {
+                ssrcCode.AddRange(pdb.GetMyPdbTargetLines(_myCgType.TypeFiles.SymbolFolder, null));
+            }
+            if (ssrcCode.Count <= 0)
                 return null;
 
             var dependencyArgs = new List<CgArg>();
 
-            var flattenCode = new string(Settings.LangStyle.FlattenCodeToCharStream(srcCode).ToArray());
+            var flattenCode = new string(Settings.LangStyle.FlattenCodeToCharStream(ssrcCode.ToArray()).ToArray());
             bool irregular = false;
             flattenCode = Settings.LangStyle.EscStringLiterals(flattenCode, EscapeStringType.UNICODE, ref irregular);
 
@@ -391,7 +385,7 @@ namespace NoFuture.Gen
         {
             if (lnNum < 0)
                 return false;
-            if (MyPdbTargetLine == null)
+            if (MyPdbLines == null || MyPdbLines.Length <= 0)
                 return false;
             if (_myCgType.TypeFiles.FileIndex == null)
                 return false;
@@ -400,33 +394,10 @@ namespace NoFuture.Gen
             if (!_myCgType.TypeFiles.FileIndex.TryFindPdbTargetLine(lnNum, out pdbOut))
                 return false;
 
-            return pdbOut.Equals(MyPdbTargetLine);
+            return pdbOut.Equals(MyPdbLines.First());
         }
 
-        internal int MyEnclosureBalance
-        {
-            get
-            {
-                if (_myEnclosureBalance != null)
-                    return _myEnclosureBalance.Value;
-
-                var codeBlockLines = MyOriginalLines(0);
-                if (codeBlockLines == null || codeBlockLines.Length == 0)
-                    return 0;
-                codeBlockLines = Settings.LangStyle.RemovePreprocessorCmds(codeBlockLines);
-                codeBlockLines = Settings.LangStyle.RemoveLineComments(codeBlockLines, Settings.LangStyle.LineComment);
-                codeBlockLines = Settings.LangStyle.RemoveBlockComments(codeBlockLines);
-                codeBlockLines = codeBlockLines.Where(ln => !String.IsNullOrWhiteSpace(ln)).ToArray();
-
-                if (codeBlockLines.Length == 0)
-                    return 0;
-
-                _myEnclosureBalance = Settings.LangStyle.EnclosuresCount(codeBlockLines);
-                return _myEnclosureBalance.Value;
-            }
-        }
-
-        internal PdbTargetLine MyPdbTargetLine
+        internal PdbTargetLine[] MyPdbLines
         {
             get
             {
@@ -435,7 +406,7 @@ namespace NoFuture.Gen
                 if (_myCgType == null || _myCgType.TypeFiles == null)
                     return null;
 
-                PdbTargetLine pdbTout;
+                PdbTargetLine[] pdbTout;
                 if (!_myCgType.TypeFiles.TryFindPdbTargetLine(this, out pdbTout))
                     return null;
                 _myPdbTargetLine = pdbTout;
@@ -443,24 +414,53 @@ namespace NoFuture.Gen
             }
         }
 
-        internal Tuple<int, int> GetMyStartEnclosure(string[] srcFile)
+        /// <summary>
+        /// Gets the exact start of the member signature as a line index and 
+        /// the char index therein.
+        /// </summary>
+        /// <param name="srcFile"></param>
+        /// <param name="isClean">
+        /// optional parameter to not have the <see cref="srcFile"/>
+        /// cleaned of comments, preprocs and string literals.
+        /// </param>
+        /// <returns></returns>
+        /// <remarks>
+        /// Does not capture the decorators (aka Attributes)
+        /// </remarks>
+        internal Tuple<int, int> GetMyStartEnclosure(string[] srcFile, bool isClean = false)
         {
             if (_myStartEnclosure != null) return _myStartEnclosure;
 
             if (srcFile == null || srcFile.Length <= 0)
                 return null;
 
+            var minStartAt = MinStartAt;
+            
+            //expecting auto-properties to not be represented in pdb data.
+            if (minStartAt < 0 && (HasSetter || HasGetter))
+            {
+                minStartAt = srcFile.Length - 1;//so we search the whole file
+            }
+
             var sigRegex = new Regex("(" + AsSignatureRegexPattern() + ")",
                 RegexOptions.IgnoreCase);
 
-            srcFile = Settings.LangStyle.RemoveBlockComments(srcFile);
-            srcFile = Settings.LangStyle.RemoveLineComments(srcFile, Settings.LangStyle.LineComment);
+            if (!isClean)
+            {
+                srcFile = Settings.LangStyle.RemoveBlockComments(srcFile);
+                srcFile = Settings.LangStyle.RemoveLineComments(srcFile, Settings.LangStyle.LineComment);
+                srcFile = Settings.LangStyle.RemovePreprocessorCmds(srcFile);
+                var irregular = false;
+                for (var m = 0; m < srcFile.Length; m++)
+                {
+                    srcFile[m] = Settings.LangStyle.EscStringLiterals(srcFile[m], EscapeStringType.BLANK, ref irregular);
+                }
+            }
 
             var fileSig = new Tuple<int, string>(0, string.Empty);
-            var irregular = false;
-            for (var i = MyPdbTargetLine.StartAt; i >= 0; i--)
+            for (var i = minStartAt; i >= 0; i--)
             {
-                var encodedLine = Settings.LangStyle.EscStringLiterals(srcFile[i], EscapeStringType.BLANK, ref irregular);
+                var encodedLine = srcFile[i];
                 if (!sigRegex.IsMatch(encodedLine))
                     continue;
                 var groups = sigRegex.Matches(encodedLine)[0];
@@ -476,7 +476,7 @@ namespace NoFuture.Gen
             if (string.IsNullOrWhiteSpace(fileSig.Item2))
                 return null;
 
-            var idx = srcFile[fileSig.Item1].IndexOf(fileSig.Item2, StringComparison.Ordinal);
+            var idx = srcFile[fileSig.Item1].IndexOf(fileSig.Item2, StringComparison.Ordinal)-1;
             if (idx < 0)
                 idx = 0;
 
@@ -484,26 +484,84 @@ namespace NoFuture.Gen
             return _myStartEnclosure;
         }
 
-        internal Tuple<int, int> GetMyEndEnclosure(string[] srcFile)
+        /// <summary>
+        /// Gets the exact end of the method body as a line index and
+        /// char index therein.
+        /// </summary>
+        /// <param name="srcFile"></param>
+        /// <param name="isClean">
+        /// optional parameter to not have the <see cref="srcFile"/>
+        /// cleaned of comments, preprocs and string literals.
+        /// </param>
+        /// <returns></returns>
+        internal Tuple<int, int> GetMyEndEnclosure(string[] srcFile, bool isClean = false)
         {
             if (_myEndEnclosure != null) return _myEndEnclosure;
 
             if (srcFile == null || srcFile.Length <= 0)
                 return null;
 
+            var minStartAt = MinStartAt;
+
+            //check if this is auto-property before cleaning all this content
+            if (minStartAt < 0 && !HasSetter && !HasGetter)
+                return null;
+
             //set source to pristine for tokens to operate on
-            srcFile = Settings.LangStyle.RemoveBlockComments(srcFile);
-            srcFile = Settings.LangStyle.RemoveLineComments(srcFile, Settings.LangStyle.LineComment);
-            var irregular = false;
-            for (var m = 0; m < srcFile.Length; m++)
+            if (!isClean)
             {
-                srcFile[m] = Settings.LangStyle.EscStringLiterals(srcFile[m], EscapeStringType.BLANK, ref irregular);
+                srcFile = Settings.LangStyle.RemoveBlockComments(srcFile);
+                srcFile = Settings.LangStyle.RemoveLineComments(srcFile, Settings.LangStyle.LineComment);
+                srcFile = Settings.LangStyle.RemovePreprocessorCmds(srcFile);
+                var irregular = false;
+                for (var m = 0; m < srcFile.Length; m++)
+                {
+                    srcFile[m] = Settings.LangStyle.EscStringLiterals(srcFile[m], EscapeStringType.BLANK, ref irregular);
+                }
             }
 
-            //get the original file as an array of tokens
             var openToken = Settings.LangStyle.GetEnclosureOpenToken(this);
             var closeToken = Settings.LangStyle.GetEnclosureCloseToken(this);
 
+            //handle finding auto-properties
+            if (minStartAt < 0 && (HasGetter || HasSetter))
+            {
+                var autoPropSigAt = GetMyStartEnclosure(srcFile, true);
+                if (autoPropSigAt == null || autoPropSigAt.Item1 < 0 || autoPropSigAt.Item1 >= srcFile.Length)
+                    return null;
+
+                //get this line
+                var autoPropLine = srcFile[autoPropSigAt.Item1];
+                var idxInLine = autoPropSigAt.Item2 < 0 || autoPropSigAt.Item2 >= autoPropLine.Length
+                    ? 0
+                    : autoPropSigAt.Item2;
+
+                //reduce the line to where we know the auto-prop starts
+                autoPropLine = autoPropLine.Substring(idxInLine);
+
+                //now find the very first occurance of the open-token
+                idxInLine = autoPropLine.IndexOf(openToken, StringComparison.Ordinal);
+
+                //if we can move one index past this then that is our min
+                if (idxInLine <= 0 || idxInLine + 1 > autoPropLine.Length)
+                    return null;
+                minStartAt = idxInLine + 1;
+
+                //if there is a close token already on this line it must be our ending
+                autoPropLine = autoPropLine.Substring(minStartAt);
+                if (autoPropLine.Contains(closeToken))
+                {
+                    idxInLine = autoPropLine.IndexOf(closeToken, StringComparison.Ordinal);
+                    idxInLine -= 1;
+                    idxInLine = (srcFile[autoPropSigAt.Item1].Length - autoPropLine.Length) + idxInLine;
+                    _myEndEnclosure = new Tuple<int, int>(autoPropSigAt.Item1, idxInLine);
+                    
+                    System.Diagnostics.Debug.WriteLine(_myEndEnclosure);
+                    return _myEndEnclosure;
+                }
+            }
+
+            //get the original file as an array of tokens
             XDocFrame myFilesFrame;
             if (openToken.Length == 1 && closeToken.Length == 1)
             {
@@ -519,10 +577,10 @@ namespace NoFuture.Gen
             var myTokens = myFilesFrame.FindEnclosingTokens(srcFileStr);
 
             myTokens = myTokens.OrderByDescending(x => x.Start).ToList();
-            
+
             //turn the pdb start line into an array index value
             var charCount = 0;
-            for (var j = 0; j < MyPdbTargetLine.StartAt; j++)
+            for (var j = 0; j < minStartAt; j++)
             {
                 charCount += srcFile[j].Length + Environment.NewLine.Length;
             }
@@ -542,14 +600,14 @@ namespace NoFuture.Gen
                         continue;
                     }
                     //this should be the index in line k
-                    var sl = myToken.End - charCount;
+                    var sl = myToken.End - charCount - 1;
                     _myEndEnclosure = new Tuple<int, int>(k, sl);
                     return _myEndEnclosure;
                 }
             }
 
             //default to look up from pdb line.
-            for (var i = MyPdbTargetLine.EndAt; i > 0; i--)
+            for (var i = MaxEndAt; i > 0; i--)
             {
                 if (!srcFile[i].Contains(closeToken))
                     continue;
@@ -560,6 +618,34 @@ namespace NoFuture.Gen
             }
 
             return null;
+        }
+
+        internal int MaxEndAt
+        {
+            get
+            {
+                if (MyPdbLines == null || MyPdbLines.Length <= 0)
+                {
+                    return -1;
+                }
+                return MyPdbLines.Length == 1
+                    ? MyPdbLines.First().EndAt
+                    : MyPdbLines.Select(x => x.EndAt).Where(x => x > 0).Max();
+            }
+        }
+
+        internal int MinStartAt
+        {
+            get
+            {
+                if (MyPdbLines == null || MyPdbLines.Length <= 0)
+                {
+                    return -1;
+                }
+                return MyPdbLines.Length == 1
+                    ? MyPdbLines.First().StartAt
+                    : MyPdbLines.Select(x => x.StartAt).Where(x => x > 0 && x < MaxEndAt).Min();
+            }
         }
 
         #endregion
