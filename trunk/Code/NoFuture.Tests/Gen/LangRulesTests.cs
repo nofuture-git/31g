@@ -1846,9 +1846,9 @@ namespace NoFuture.Tests.Gen
         [TestMethod]
         public void TestGetDecoratorRegex()
         {
-            var testCsRegex00 =
-                "[System.Web.Services.Protocols.SoapDocumentMethodAttribute(\"http://tempuri.org/1stMethod\", RequestElementName = \"1stMethod\", RequestNamespace = \"http://tempuri.org/\", ResponseElementName = \"1stMethodResponse\", ResponseNamespace = \"http://tempuri.org/\", Use = System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle = System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]";
-            var testCsRegex01 = "[return: System.Xml.Serialization.XmlElementAttribute(\"1stMethodResult\")]";
+            //var testCsRegex00 =
+            //    "[System.Web.Services.Protocols.SoapDocumentMethodAttribute(\"http://tempuri.org/1stMethod\", RequestElementName = \"1stMethod\", RequestNamespace = \"http://tempuri.org/\", ResponseElementName = \"1stMethodResponse\", ResponseNamespace = \"http://tempuri.org/\", Use = System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle = System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]";
+            //var testCsRegex01 = "[return: System.Xml.Serialization.XmlElementAttribute(\"1stMethodResult\")]";
             /*
                    [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://tempuri.org/1stMethod", RequestElementName = "1stMethod", RequestNamespace = "http://tempuri.org/", ResponseElementName = "1stMethodResponse", ResponseNamespace = "http://tempuri.org/", Use = System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle = System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
       [return: System.Xml.Serialization.XmlElementAttribute(\"1stMethodResult\")]

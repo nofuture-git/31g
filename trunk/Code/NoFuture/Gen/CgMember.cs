@@ -366,53 +366,6 @@ namespace NoFuture.Gen
 
             return 0;
         }
-        #endregion
-
-        #region internal helpers
-
-        /// <summary>
-        /// Specific to the use of <see cref="CgTypeFiles.TryFindPdbTargetLine"/>
-        /// </summary>
-        internal bool TiedForBestFileMatch { get; set; }
-        /// <summary>
-        /// Specific to the use of <see cref="CgTypeFiles.TryFindPdbTargetLine"/>
-        /// </summary>
-        internal bool LessThanPerfectFileMatch { get; set; }
-
-        internal CgType MyCgType { get { return _myCgType; } set { _myCgType = value; } }
-
-        internal bool IsOneOfMyLines(int lnNum)
-        {
-            if (lnNum < 0)
-                return false;
-            if (MyPdbLines == null || MyPdbLines.Length <= 0)
-                return false;
-            if (_myCgType.TypeFiles.FileIndex == null)
-                return false;
-
-            PdbTargetLine pdbOut;
-            if (!_myCgType.TypeFiles.FileIndex.TryFindPdbTargetLine(lnNum, out pdbOut))
-                return false;
-
-            return pdbOut.Equals(MyPdbLines.First());
-        }
-
-        internal PdbTargetLine[] MyPdbLines
-        {
-            get
-            {
-                if (_myPdbTargetLine != null)
-                    return _myPdbTargetLine;
-                if (_myCgType == null || _myCgType.TypeFiles == null)
-                    return null;
-
-                PdbTargetLine[] pdbTout;
-                if (!_myCgType.TypeFiles.TryFindPdbTargetLine(this, out pdbTout))
-                    return null;
-                _myPdbTargetLine = pdbTout;
-                return _myPdbTargetLine;
-            }
-        }
 
         /// <summary>
         /// Gets the exact start of the member signature as a line index and 
@@ -427,7 +380,7 @@ namespace NoFuture.Gen
         /// <remarks>
         /// Does not capture the decorators (aka Attributes)
         /// </remarks>
-        internal Tuple<int, int> GetMyStartEnclosure(string[] srcFile, bool isClean = false)
+        public Tuple<int, int> GetMyStartEnclosure(string[] srcFile, bool isClean = false)
         {
             if (_myStartEnclosure != null) return _myStartEnclosure;
 
@@ -435,15 +388,25 @@ namespace NoFuture.Gen
                 return null;
 
             var minStartAt = MinStartAt;
-            
+
             //expecting auto-properties to not be represented in pdb data.
             if (minStartAt < 0 && (HasSetter || HasGetter))
             {
                 minStartAt = srcFile.Length - 1;//so we search the whole file
             }
 
-            var sigRegex = new Regex("(" + AsSignatureRegexPattern() + ")",
+            var sigRegexPattern = AsSignatureRegexPattern();
+
+            //HACK - to get just the method name like its a property
+            var reserveValue = IsMethod;
+            IsMethod = false;
+            var asNameOnlyRegexPattern = AsSignatureRegexPattern();
+            IsMethod = reserveValue;
+
+            var sigRegex = new Regex("(" + sigRegexPattern + ")",
                 RegexOptions.IgnoreCase);
+
+            var justNameRegex = new Regex("(" + asNameOnlyRegexPattern + ")");
 
             if (!isClean)
             {
@@ -461,13 +424,25 @@ namespace NoFuture.Gen
             for (var i = minStartAt; i >= 0; i--)
             {
                 var encodedLine = srcFile[i];
-                if (!sigRegex.IsMatch(encodedLine))
+                Regex posRegex;
+                //try for exact match first
+                if (sigRegex.IsMatch(encodedLine))
+                {
+                    posRegex = sigRegex;
+                }
+                else if (justNameRegex.IsMatch(encodedLine))
+                {
+                    posRegex = justNameRegex;
+                }
+                else
+                {
                     continue;
-                var groups = sigRegex.Matches(encodedLine)[0];
+                }
+                var groups = posRegex.Matches(encodedLine)[0];
 
                 if (!groups.Groups[0].Success)
                     continue;
-                
+
                 fileSig = new Tuple<int, string>(i, groups.Groups[0].Value.Trim());
 
                 break;
@@ -476,7 +451,7 @@ namespace NoFuture.Gen
             if (string.IsNullOrWhiteSpace(fileSig.Item2))
                 return null;
 
-            var idx = srcFile[fileSig.Item1].IndexOf(fileSig.Item2, StringComparison.Ordinal)-1;
+            var idx = srcFile[fileSig.Item1].IndexOf(fileSig.Item2, StringComparison.Ordinal) - 1;
             if (idx < 0)
                 idx = 0;
 
@@ -494,7 +469,7 @@ namespace NoFuture.Gen
         /// cleaned of comments, preprocs and string literals.
         /// </param>
         /// <returns></returns>
-        internal Tuple<int, int> GetMyEndEnclosure(string[] srcFile, bool isClean = false)
+        public Tuple<int, int> GetMyEndEnclosure(string[] srcFile, bool isClean = false)
         {
             if (_myEndEnclosure != null) return _myEndEnclosure;
 
@@ -555,7 +530,7 @@ namespace NoFuture.Gen
                     idxInLine -= 1;
                     idxInLine = (srcFile[autoPropSigAt.Item1].Length - autoPropLine.Length) + idxInLine;
                     _myEndEnclosure = new Tuple<int, int>(autoPropSigAt.Item1, idxInLine);
-                    
+
                     System.Diagnostics.Debug.WriteLine(_myEndEnclosure);
                     return _myEndEnclosure;
                 }
@@ -618,6 +593,53 @@ namespace NoFuture.Gen
             }
 
             return null;
+        }
+        #endregion
+
+        #region internal helpers
+
+        /// <summary>
+        /// Specific to the use of <see cref="CgTypeFiles.TryFindPdbTargetLine"/>
+        /// </summary>
+        internal bool TiedForBestFileMatch { get; set; }
+        /// <summary>
+        /// Specific to the use of <see cref="CgTypeFiles.TryFindPdbTargetLine"/>
+        /// </summary>
+        internal bool LessThanPerfectFileMatch { get; set; }
+
+        internal CgType MyCgType { get { return _myCgType; } set { _myCgType = value; } }
+
+        internal bool IsOneOfMyLines(int lnNum)
+        {
+            if (lnNum < 0)
+                return false;
+            if (MyPdbLines == null || MyPdbLines.Length <= 0)
+                return false;
+            if (_myCgType.TypeFiles.FileIndex == null)
+                return false;
+
+            PdbTargetLine pdbOut;
+            if (!_myCgType.TypeFiles.FileIndex.TryFindPdbTargetLine(lnNum, out pdbOut))
+                return false;
+
+            return pdbOut.Equals(MyPdbLines.First());
+        }
+
+        internal PdbTargetLine[] MyPdbLines
+        {
+            get
+            {
+                if (_myPdbTargetLine != null)
+                    return _myPdbTargetLine;
+                if (_myCgType == null || _myCgType.TypeFiles == null)
+                    return null;
+
+                PdbTargetLine[] pdbTout;
+                if (!_myCgType.TypeFiles.TryFindPdbTargetLine(this, out pdbTout))
+                    return null;
+                _myPdbTargetLine = pdbTout;
+                return _myPdbTargetLine;
+            }
         }
 
         internal int MaxEndAt

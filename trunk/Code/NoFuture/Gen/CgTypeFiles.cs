@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Text;
 using NoFuture.Exceptions;
 using NoFuture.Gen.LangRules;
+using NoFuture.Shared;
 using NoFuture.Tokens;
 using NoFuture.Util;
 using NoFuture.Util.Binary;
@@ -27,7 +28,6 @@ namespace NoFuture.Gen
         private readonly List<string> _pdbFilesUsed = new List<string>();
         private string _srcRefFileFullName;
         private int _originalFirstLine;
-        private string[] _modifiedSrcFileContent;
         #endregion
 
         #region properties
@@ -249,6 +249,8 @@ namespace NoFuture.Gen
                     continue;
 
                 var irregularRanges = PdbTargetLine.SpliceIrregularRanges(regulars, irregular);
+                if (irregularRanges == null)
+                    continue;
                 var content = new List<string>();
                 foreach (var r in irregularRanges)
                 {
@@ -287,7 +289,15 @@ namespace NoFuture.Gen
             if (srcLines == null || srcLines.Length <= 0)
                 return;
 
-            const string blankLine = " ";
+            srcLines = Settings.LangStyle.RemoveBlockComments(srcLines);
+            srcLines = Settings.LangStyle.RemoveLineComments(srcLines, Settings.LangStyle.LineComment);
+            srcLines = Settings.LangStyle.RemovePreprocessorCmds(srcLines);
+            var irregular = false;
+            for (var m = 0; m < srcLines.Length; m++)
+            {
+                srcLines[m] = Settings.LangStyle.EscStringLiterals(srcLines[m], EscapeStringType.BLANK, ref irregular);
+            }
+
             const char blankChar = ' ';
 
             if (string.IsNullOrWhiteSpace(outputFileName))
@@ -296,20 +306,21 @@ namespace NoFuture.Gen
             var d = new SortedList<int, List<int>>();
             foreach (var cgMem in blankOutCgMems.Where(x => x!= null))
             {
-                var startLnIdx = cgMem.GetMyStartEnclosure(srcLines);
-                if (startLnIdx != null)
+                var startLnIdx = cgMem.GetMyStartEnclosure(srcLines,true);
+                var endLnIdx = cgMem.GetMyEndEnclosure(srcLines,true);
+
+                //only add them if there  is a pair
+                if (startLnIdx == null || endLnIdx == null)
+                    continue;
+
+                if (!d.ContainsKey(startLnIdx.Item1))
                 {
-                    if (!d.ContainsKey(startLnIdx.Item1))
-                    {
-                        d.Add(startLnIdx.Item1, new List<int> { startLnIdx.Item2 } );
-                    }
-                    else
-                    {
-                        d[startLnIdx.Item1].Add(startLnIdx.Item2);
-                    }
+                    d.Add(startLnIdx.Item1, new List<int> { startLnIdx.Item2 });
                 }
-                var endLnIdx = cgMem.GetMyEndEnclosure(srcLines);
-                if (endLnIdx == null) continue;
+                else
+                {
+                    d[startLnIdx.Item1].Add(startLnIdx.Item2);
+                }
 
                 if (!d.ContainsKey(endLnIdx.Item1))
                 {
@@ -323,17 +334,16 @@ namespace NoFuture.Gen
 
             var lineOn = true;
             var srcLinesOut = new List<string>();
-            for (var i = 0; i < srcLines.Length; i++)
+            var originalSrc = OriginalSourceFileContent;
+            for (var i = 0; i < originalSrc.Length; i++)
             {
                 if (d.ContainsKey(i))
                 {
                     var dil = d[i].OrderBy(x => x).Distinct().ToList();
-                    var srcLn = srcLines[i];
+                    var srcLn = originalSrc[i];
                     var newLn = new StringBuilder();
-                    for (var k = 0; k < srcLines[i].Length; k++)
+                    for (var k = 0; k < originalSrc[i].Length; k++)
                     {
-                        System.Diagnostics.Debug.WriteLine(string.Format("{0} {1} '{2}' [{3}] - ({4})", i, k, srcLn[k], lineOn, string.Join(",",d[i])));
-
                         newLn.Append(lineOn && dil.Contains(k) ? srcLn[k] : blankChar);
                         if (dil.Contains(k))
                         {
@@ -343,7 +353,7 @@ namespace NoFuture.Gen
                     srcLinesOut.Add(newLn.ToString());
                     continue;
                 }
-                srcLinesOut.Add(lineOn ? srcLines[i] : new string(blankChar, srcLines[i].Length));
+                srcLinesOut.Add(lineOn ? originalSrc[i] : new string(blankChar, originalSrc[i].Length));
             }
             File.WriteAllLines(outputFileName, srcLinesOut, Encoding.UTF8);
         }
