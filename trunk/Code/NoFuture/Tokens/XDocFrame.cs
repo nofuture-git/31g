@@ -560,6 +560,13 @@ namespace NoFuture.Tokens
         public int Tab { get; set; }
         public int ChildTo { get; set; }
         public abstract XElement ToXElement();
+
+        public bool Equals(Token obj)
+        {
+            if (obj == null)
+                return false;
+            return obj.Start == Start && obj.End == End && obj.Span == Span;
+        }
     }
 
     public class TokenPair : Token

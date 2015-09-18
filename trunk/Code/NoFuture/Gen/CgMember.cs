@@ -477,6 +477,7 @@ namespace NoFuture.Gen
                 return null;
 
             var minStartAt = MinStartAt;
+            var maxEndAt = MaxEndAt;
 
             //check if this is auto-property before cleaning all this content
             if (minStartAt < 0 && !HasSetter && !HasGetter)
@@ -560,22 +561,42 @@ namespace NoFuture.Gen
                 charCount += srcFile[j].Length + Environment.NewLine.Length;
             }
             //we want the last token whose start is less-than-equal-to the array position of the Pdb Start line
-            var myToken = myTokens.FirstOrDefault(x => x.Start < charCount);
+            var myTokenFromMin = myTokens.FirstOrDefault(x => x.Start < charCount);
 
-            if (myToken != null)
+            //need to validate our token on both ends
+            charCount = 0;
+            for (var j = 0; j < maxEndAt; j++)
             {
+                charCount += srcFile[j].Length + Environment.NewLine.Length;
+            }
+            var myTokenFromMax = myTokens.FirstOrDefault(x => x.Start < charCount) ?? myTokenFromMin;
+
+            if (myTokenFromMin != null)
+            {
+                //being lopsided indicates the very first char of the method body is another open token
+                if (!myTokenFromMin.Equals(myTokenFromMax))
+                {
+                    charCount = 0;
+                    //go up one line and try again
+                    for (var j = 0; j < minStartAt - 1; j++)
+                    {
+                        charCount += srcFile[j].Length + Environment.NewLine.Length;
+                    }
+                    myTokenFromMin = myTokens.FirstOrDefault(x => x.Start < charCount) ?? myTokenFromMin;
+                }
+
                 //need to reverse the Token's End back into a line number
                 charCount = 0;
                 for (var k = 0; k < srcFile.Length; k++)
                 {
                     //if we go to the next line will be blow past the token's end
-                    if (charCount + srcFile[k].Length + Environment.NewLine.Length < myToken.End)
+                    if (charCount + srcFile[k].Length + Environment.NewLine.Length < myTokenFromMin.End)
                     {
                         charCount += srcFile[k].Length + Environment.NewLine.Length;
                         continue;
                     }
                     //this should be the index in line k
-                    var sl = myToken.End - charCount - 1;
+                    var sl = myTokenFromMin.End - charCount - 1;
                     _myEndEnclosure = new Tuple<int, int>(k, sl);
                     return _myEndEnclosure;
                 }
