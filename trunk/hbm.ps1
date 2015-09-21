@@ -583,6 +583,61 @@ function Get-EfFluentCs
 
 <#
     .SYNOPSIS
+    This cmdlet may be used to generate an EF 3.5 .cs file from an hbm.xml file
+   
+    .DESCRIPTION
+    EF 3.5 is the original and oldest Entity Framework.
+
+    .PARAMETER HbmXmlPath
+    The hbm.xml file to be used to generate a EF 3.5 .cs entity.
+
+    .PARAMETER OutputDir
+    The directory where the generated code file will be deposited.
+    
+    .OUTPUTS
+    null
+#>
+function Get-Ef35Cs
+{
+    [CmdletBinding()]
+    Param
+    (
+        [Parameter(Mandatory=$true,position=0)]
+        [string] $HbmXmlPath,
+        [Parameter(Mandatory=$true,position=1)]
+        [string] $OutputDir
+    )
+    Process
+    {
+        if(-not(Test-Path $HbmXmlPath)){
+            Write-Host "no such file at '$HbmXmlPath'" -ForegroundColor Yellow
+            break;
+        }
+        
+        if(-not(Test-Path $OutputDir)){
+            Write-Host "no such directory '$OutputDir'" -ForegroundColor Yellow
+            break;
+        }
+
+        $mappingTemplate = Join-Path ([NoFuture.BinDirectories]::T4Templates) "Ef35Mapping.tt"
+        if(-not (Test-Path $mappingTemplate)){
+            Write-Host "couldn't find the T4 template at '$mappingTemplate'" -ForegroundColor Yellow
+            break;
+        }
+
+        $fileName = ([System.IO.Path]::GetFileNameWithoutExtension($HbmXmlPath)).Replace(".hbm",[string]::Empty)
+
+        $mappingCsFile = Join-Path $OutputDir ("{0}.cs" -f $fileName)
+
+        $t4ParamName = [NoFuture.Hbm.SortingContainers.HbmFileContent]::T4_PARAM_NAME
+
+        Get-T4TextTemplate -InputFile $mappingTemplate -OutputFile $mappingCsFile -ParamNameValues @{$t4ParamName=$HbmXmlPath}
+        
+    }
+}#end Get-EfFluentCs
+
+<#
+    .SYNOPSIS
     Constructs a code file which extends specific types
     in NoFuture.Hbm.Command
    

@@ -1,0 +1,101 @@
+﻿<#@ template hostspecific="true" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ assembly name="C:\Projects\31g\trunk\Code\NoFuture\bin\NoFuture.Shared.dll"#>
+<#@ assembly name="C:\Projects\31g\trunk\Code\NoFuture\bin\NoFuture.Util.dll"#>
+<#@ assembly name="C:\Projects\31g\trunk\Code\NoFuture\bin\NoFuture.Hbm.dll"#>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#
+    var paramName= NoFuture.Hbm.SortingContainers.HbmFileContent.T4_PARAM_NAME;
+    var hbmFilePath = this.Host.ResolveParameterValue("","",paramName);
+    var efStruct= new NoFuture.Hbm.Templates.Ef35Mapping(hbmFilePath);
+#>
+using System;
+using System.ComponentModel;
+using System.Data.Linq;
+using System.Data.Linq.Mapping;
+
+namespace <#= efStruct.Namespace #>
+{
+    [Serializable]
+    [Table(Name="<#=            efStruct.TableName#>")]
+    public class <#= efStruct.Classname #> : INotifyPropertyChanging, INotifyPropertyChanged
+    {
+        #region fields
+
+		private static PropertyChangingEventArgs emptyChangingEventArgs;
+
+<#
+    foreach(var key in efStruct.PropertyAttributes.Keys)
+    {
+        var keyType= key.Item2;
+        var keyName= key.Item1;
+#>
+        private <#=            keyType #> _<#=            keyName #>;
+
+<#
+    }
+#>
+        #endregion
+
+        #region properties
+
+<#
+    foreach(var key in efStruct.PropertyAttributes.Keys)
+    {
+        var keyType= key.Item2;
+        var keyName= key.Item1;
+        var fldName= string.Format("_{0}",keyName);
+        var attr = efStruct.PropertyAttributes[key];
+        var attrString = attr.ToString();
+#>
+        <#=            attrString#>
+        public <#=            keyType #> <#=            keyName #>		
+		{
+			get
+			{
+				return this.<#=fldName #>;
+			}
+			set
+			{
+				if (this.<#=fldName #> != value)
+				{
+					this.SendPropertyChanging();
+					this.<#=fldName #> = value;
+					this.SendPropertyChanged("<#=keyName #>");
+				}
+			}
+		}
+<#
+    }
+#>
+
+        #endregion
+
+        #region PropertyChange interfaces
+
+        protected virtual void SendPropertyChanged(string propertyName)
+        {
+            if (this.PropertyChanged != null)
+            {
+                this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
+
+        protected virtual void SendPropertyChanging()
+        {
+            if (this.PropertyChanging != null)
+            {
+                this.PropertyChanging(this, <#= efStruct.Classname #>.emptyChangingEventArgs);
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public event PropertyChangingEventHandler PropertyChanging;
+
+        #endregion
+
+    }
+}

@@ -89,11 +89,11 @@ namespace NoFuture.Gen
         {
             get
             {
-                if(MyPdbLines == null || MyPdbLines.Length <= 0)
+                if (MyPdbLines == null || MyPdbLines.Length <= 0)
                     return new Tuple<int?, int?>(null, null);
                 var sa = new int?(MyPdbLines.First().StartAt);
                 var ea = new int?(MyPdbLines.First().EndAt);
-                return new Tuple<int?, int?>(sa,ea);
+                return new Tuple<int?, int?>(sa, ea);
             }
         }
 
@@ -170,7 +170,7 @@ namespace NoFuture.Gen
             {
                 myImplementation.Add(string.Format("        {0}", Settings.LangStyle.ToDecl(this, true)));
                 myImplementation.Add(string.Format("        {0}", Settings.LangStyle.GetEnclosureOpenToken(this)));
-                
+
             }
             if (_myCgType == null || _myCgType.TypeFiles == null || MyPdbLines == null || MyPdbLines.Length <= 0)
             {
@@ -180,9 +180,9 @@ namespace NoFuture.Gen
             {
                 foreach (var pdbFile in MyPdbLines)
                 {
-                    myImplementation.AddRange(pdbFile.GetMyPdbTargetLines(_myCgType.TypeFiles.SymbolFolder, null));    
+                    myImplementation.AddRange(pdbFile.GetMyPdbTargetLines(_myCgType.TypeFiles.SymbolFolder, null));
                 }
-                
+
             }
             if (!justBody)
             {
@@ -260,12 +260,12 @@ namespace NoFuture.Gen
             {
                 var oldFilesInstanceToNew = Settings.LangStyle.ToDecl(renameCgType, newVariableName,
                     CgAccessModifier.Private);
-                dido.Add(new Tuple<int, int>(ofl, 1), new[] {oldFilesInstanceToNew});
+                dido.Add(new Tuple<int, int>(ofl, 1), new[] { oldFilesInstanceToNew });
             }
             var nKey = new Tuple<int, int>(MinStartAt,
                 MaxEndAt - MinStartAt - 1);
 
-            dido.Add(nKey, new[] {Settings.LangStyle.ToStmt(this, null, newVariableName)});
+            dido.Add(nKey, new[] { Settings.LangStyle.ToStmt(this, null, newVariableName) });
             _myRefactor = dido;
             return _myRefactor;
         }
@@ -319,7 +319,7 @@ namespace NoFuture.Gen
                     .Where(x => Args.All(myArg => !myArg.Equals(x) && dependencyArgs.All(nArg => !nArg.Equals(x)))));
 
             //arg names common to obj methods will cause confusion
-            var objMethods = typeof (object).GetMethods().Select(x => x.Name).ToArray();
+            var objMethods = typeof(object).GetMethods().Select(x => x.Name).ToArray();
             foreach (var dpArg in dependencyArgs)
             {
                 if (objMethods.Contains(dpArg.ArgName))

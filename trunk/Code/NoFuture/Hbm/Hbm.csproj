@@ -53,6 +53,7 @@
   <ItemGroup>
     <Compile Include="Compose.cs" />
     <Compile Include="SortingContainers\HbmFileContent.cs" />
+    <Compile Include="Templates\Ef35Mapping.cs" />
     <Compile Include="Templates\Ef6xFluentMapping.cs" />
     <Compile Include="Templates\Ef6xPoco.cs" />
     <Compile Include="Templates\HbmCommand.cs" />
@@ -116,6 +117,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="Templates\Ef35Mapping.tt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Templates\HbmCompKeyCsClass.tt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
