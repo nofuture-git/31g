@@ -5,7 +5,6 @@ using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
 using NoFuture.Exceptions;
 
 namespace NoFuture.Hbm.SortingContainers
@@ -22,6 +21,7 @@ namespace NoFuture.Hbm.SortingContainers
         internal StoredProcMetadata() { }
 
         private const string EXEC = "EXEC ";
+        private const int MAX_STR_LEN = 16;
 
         public string SchemaName { get { return schemaName; } set { schemaName = value; } }
         public string ProcName { get { return procName; }  set { procName = value; }}
@@ -69,6 +69,10 @@ namespace NoFuture.Hbm.SortingContainers
             }
         }
 
+        /// <summary>
+        /// The cdata inner-text of the sql-query hbm.xml node.
+        /// </summary>
+        /// <returns></returns>
         public string ToHbmSql()
         {
             var hbmSql = new StringBuilder();
@@ -118,6 +122,9 @@ namespace NoFuture.Hbm.SortingContainers
             }
         }
 
+        /// <summary>
+        /// Gets the <see cref="XsdFilePath"/> with the .bin extension.
+        /// </summary>
         public string BinFilePath
         {
             get { return Path.ChangeExtension(XsdFilePath, "bin"); }
@@ -133,7 +140,7 @@ namespace NoFuture.Hbm.SortingContainers
         {
             if(string.IsNullOrWhiteSpace(ProcName))
                 throw new RahRowRagee("This instance does not have a ProcName assigned.");
-
+            var myRand = new Random(Convert.ToInt32(string.Format("{0:ffffff}", DateTime.Now)));
             foreach (var param in Parameters)
             {
                 if (param.IsDataTable())
@@ -141,27 +148,57 @@ namespace NoFuture.Hbm.SortingContainers
                     sqlParams.Add(new SqlParameter(param.ParamName, null));
                     continue;
                 }
+                var randStr = new StringBuilder();
+                var llen = param.StringLength > MAX_STR_LEN || param.StringLength < 0
+                    ? MAX_STR_LEN
+                    : param.StringLength;
+
+                //assign some lower-case letters
+                for (var i = 0; i < llen; i++)
+                {
+                    randStr.Append(Convert.ToChar((byte)myRand.Next(0x61, 0x7A)));
+                }
+
+                if (param.IsOpenToSqlInj)
+                {
+                    randStr.Clear();
+                    //we just want the schema not the data...
+                    randStr.Append(" AND 1 = 0");
+                }
 
                 SqlParameter sqlParam;
                 var sqlParamType = param.GetSqlDataType();
                 switch (sqlParamType)
                 {
-                    case SqlDbType.NChar:
                     case SqlDbType.NText:
                     case SqlDbType.NVarChar:
                     case SqlDbType.Text:
                     case SqlDbType.VarChar:
+                        sqlParam = new SqlParameter(param.ParamName, param.GetSqlDataType())
+                        {
+                            IsNullable = param.IsNullable,
+                            Direction = param.IsOutput ? ParameterDirection.Output : ParameterDirection.Input,
+                            Value = randStr.ToString()
+                        };
+                        break;
                     case SqlDbType.Xml:
+                        sqlParam = new SqlParameter(param.ParamName, param.GetSqlDataType())
+                        {
+                            IsNullable = param.IsNullable,
+                            Direction = param.IsOutput ? ParameterDirection.Output : ParameterDirection.Input,
+                            Value = "<my-node>" + randStr + "</my-node>"
+                        };
+                        break;
+                    case SqlDbType.NChar:
                     case SqlDbType.Char:
                         sqlParam = new SqlParameter(param.ParamName, param.GetSqlDataType())
                         {
                             IsNullable = param.IsNullable,
                             Direction = param.IsOutput ? ParameterDirection.Output : ParameterDirection.Input,
-                            Value = string.Empty
+                            Value = Convert.ToChar((byte)myRand.Next(0x61, 0x7A))
                         };
                         break;
                     case SqlDbType.BigInt:
-                    case SqlDbType.Bit:
                     case SqlDbType.Decimal:
                     case SqlDbType.Float:
                     case SqlDbType.Int:
@@ -174,7 +211,15 @@ namespace NoFuture.Hbm.SortingContainers
                         {
                             IsNullable = param.IsNullable,
                             Direction = param.IsOutput ? ParameterDirection.Output : ParameterDirection.Input,
-                            Value = 0
+                            Value = myRand.Next(1,255)//should fit all types
+                        };
+                        break;
+                    case SqlDbType.Bit:
+                        sqlParam = new SqlParameter(param.ParamName, param.GetSqlDataType())
+                        {
+                            IsNullable = param.IsNullable,
+                            Direction = param.IsOutput ? ParameterDirection.Output : ParameterDirection.Input,
+                            Value = 1
                         };
                         break;
                     case SqlDbType.Date:

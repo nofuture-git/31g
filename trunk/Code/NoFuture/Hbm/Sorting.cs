@@ -497,7 +497,6 @@ namespace NoFuture.Hbm
 
             return new SortedBags() {Data = hbmHashBags};
         }
-        #endregion
 
         /// <summary>
         /// Returns a list of all stored procs as an instance of <see cref="StoredProcMetadata"/>
@@ -524,12 +523,13 @@ namespace NoFuture.Hbm
                     };
                     _allStoredProcMetadatas.Add(procName, procMetadata);
                 }
-                Settings.WriteToStoredProcLog("Contstruction of AllStoredProc complete");
+                Settings.WriteToStoredProcLog("Construction of AllStoredProc complete");
                 return _allStoredProcMetadatas;
             }
         }
+        #endregion
 
-        #region reporting 
+        #region reporting
         /// <summary>
         /// Returns the names of all tables which have a primary key.
         /// NOTE: this does not include view nor User-defined table types.
@@ -718,8 +718,6 @@ namespace NoFuture.Hbm
             return !hasAtLeastOneNonNullable && !hasAtLeastOneUqIdx;
         }
         #endregion
-
-
 
         #region sorting extension methods
         internal static void CopyFromDataSrc(this ColumnMetadata col, ColumnMetadata[] data)

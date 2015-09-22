@@ -4,9 +4,6 @@ using System.Collections.Generic;
 using NoFuture.Exceptions;
 using NoFuture.Shared;
 using System.Linq;
-using NoFuture.Hbm.DbQryContainers;
-using NoFuture.Hbm.DbQryContainers.MetadataDump;
-using NoFuture.Hbm.SortingContainers;
 
 namespace NoFuture.Hbm
 {
@@ -21,7 +18,15 @@ namespace NoFuture.Hbm
         private static int _spXsdTimeout = 30;
         private static string _defaultSchemaName = Globals.DEFAULT_SCHEMA_NAME;
 
+        private static readonly List<string> _sqlInjParamNames = new List<string>();
+
         public static string DefaultSchemaName { get { return _defaultSchemaName; } set { _defaultSchemaName = value; } }
+
+        /// <summary>
+        /// A global variable counterpart to 
+        /// the search criteria <see cref="StoredProxSearchCriteria.SqlInjOnParamNamesLike"/>
+        /// </summary>
+        public static List<string> SqlInjParamNames { get { return _sqlInjParamNames; } }
 
         /// <summary>
         /// See summary on <see cref="Globals.COMPILE_HBM_XML_DLL_OF_KB_SIZE"/>

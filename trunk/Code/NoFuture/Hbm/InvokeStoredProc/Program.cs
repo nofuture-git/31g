@@ -6,11 +6,16 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
+using System.Configuration;
 
 namespace NoFuture.Hbm.InvokeStoredProc
 {
-    class Program
+    public class Program
     {
+        public static class AppSettingKeyNames
+        {
+            public const string HbmStoredProcXsdTimeOut = "Hbm.Settings.HbmStoredProcXsdTimeOut";
+        }
         public static void Main(string[] args)
         {
             try
@@ -127,7 +132,11 @@ namespace NoFuture.Hbm.InvokeStoredProc
                             var ds = new DataSet(mySpm.ProcName);    
                             cmd.CommandType = CommandType.StoredProcedure;
                             cmd.Parameters.Clear();
-                            cmd.CommandTimeout = Settings.HbmStoredProcXsdTimeOut;
+
+                            //can be controlled from app.config
+                            cmd.CommandTimeout = ConfigTimeout;
+
+                            //assigns random values to (hopefully) avoid timeouts
                             mySpm.AssignSpParams(cmd.Parameters);
                             cmd.CommandText = mySpm.ProcName;
 
@@ -161,7 +170,10 @@ namespace NoFuture.Hbm.InvokeStoredProc
                                 processMsg.State != InvokeStoredProcExeState.TimedOut &&
                                 processMsg.State != InvokeStoredProcExeState.OtherError &&
                                 processMsg.State != InvokeStoredProcExeState.NoDsReturned)
+                            {
+                                //dump the returned dataset schema to file
                                 ds.WriteXmlSchema(xsdOutput);
+                            }
                             if(conn.State == ConnectionState.Open)
                                 conn.Close();
 
@@ -186,6 +198,26 @@ namespace NoFuture.Hbm.InvokeStoredProc
                 Settings.WriteToStoredProcLog(ex, string.Format("Error while executing NoFuture.Hbm.InvokeStoredProc.exe"));
             }
             Thread.Sleep(20);//slight pause
+        }
+
+        public static int ConfigTimeout
+        {
+            get
+            {
+                var appSet = ConfigurationManager.AppSettings[AppSettingKeyNames.HbmStoredProcXsdTimeOut];
+                if (string.IsNullOrWhiteSpace(appSet))
+                    return Settings.HbmStoredProcXsdTimeOut;
+
+                int timeout;
+                if (!int.TryParse(appSet, out timeout))
+                    return Settings.HbmStoredProcXsdTimeOut;
+
+                if (timeout <= 0)
+                    return Settings.HbmStoredProcXsdTimeOut;
+
+                Settings.HbmStoredProcXsdTimeOut = timeout;
+                return Settings.HbmStoredProcXsdTimeOut;
+            }
         }
 
         public static String Help()

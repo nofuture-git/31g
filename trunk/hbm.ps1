@@ -197,6 +197,10 @@ function Print-SpResultSetXsdProgress(){
     have a primary-key.  Apply this switch if the cmdlet should 
     produce a hbm.xml for tables without a primary-key in addition.
     
+    .PARAMETER IncludeStoredProx
+    Produces hbm.xml sql-query files for each stored proc.
+    SEE Get-HbmDbData for more info.
+
     .OUTPUTS
     null
 #>

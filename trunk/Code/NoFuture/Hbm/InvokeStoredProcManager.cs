@@ -71,10 +71,21 @@ namespace NoFuture.Hbm
     [Serializable]
     public class StoredProxSearchCriteria
     {
+        private List<string> _sqlInjParamNames;
         public string ExactName { get; set; }
         public string AnyStartingWith { get; set; }
         public string AnyNameEndingWith { get; set; }
         public string AnyNameContaining { get; set; }
+
+        /// <summary>
+        /// Use to set <see cref="SortingContainers.StoredProcParamItem.IsOpenToSqlInj"/>
+        /// as true whenever the <see cref="SortingContainers.StoredProcParamItem.ParamName"/> 
+        /// contains any one of these strings.
+        /// </summary>
+        public List<string> SqlInjOnParamNamesLike
+        {
+            get { return _sqlInjParamNames ?? (_sqlInjParamNames = new List<string>()); }
+        }
     }
 
     /// <summary>
@@ -341,7 +352,7 @@ namespace NoFuture.Hbm
         /// The excessive level of indirection here is an attempt to gain control 
         /// over the fact that any stored proc which itself calls 'sp_executesql' does
         /// not honor the timeout value assigned on the <see cref="System.Data.SqlClient.SqlCommand"/>.
-        /// Since every proc is invoked with default values (e.g. empty-string, 0, etc.) a stored proc
+        /// Since every proc is invoked with random values, a stored proc
         /// may run endlessly and comsume the entire machines resources. 
         /// Placing all this under the control of an autonomous process allows for the process, as a whole,
         /// to be shutdown, and SqlServer has to clean up the mess.
@@ -365,6 +376,13 @@ namespace NoFuture.Hbm
                 Activity = "Getting list of stored proc targets",
                 Status = Status
             });
+
+            //copy into local copy the global sql inj param names 
+            if (Settings.SqlInjParamNames.Any())
+            {
+                filterOnNamesLike = filterOnNamesLike ?? new StoredProxSearchCriteria();
+                filterOnNamesLike.SqlInjOnParamNamesLike.AddRange(Settings.SqlInjParamNames);
+            }
 
             //check the current connection has any procs present 
             var allStoredProx = GetFilteredStoredProcNames(filterOnNamesLike);
@@ -506,45 +524,80 @@ namespace NoFuture.Hbm
             if (allStoredProx == null || allStoredProx.Count <= 0)
                 return null;
             //apply filter if any
-            if (filterOnNamesLike != null)
+            if (filterOnNamesLike == null)
             {
-                var matchedProx = new Dictionary<string, StoredProcMetadata>();
-                List<string> matchedKeys = null;
+                return allStoredProx;
+            }
 
-                if (!string.IsNullOrWhiteSpace(filterOnNamesLike.ExactName))
-                {
-                    matchedKeys =
-                        allStoredProx.Keys.Where(x => string.Equals(x, filterOnNamesLike.ExactName, StringComparison.OrdinalIgnoreCase)).ToList();
-                    var exactNameEntries = allStoredProx.Keys.Where(matchedKeys.Contains).ToDictionary(pName => pName, pName => allStoredProx[pName]);
-                    foreach (var k in exactNameEntries.Keys.Where(k => !matchedProx.ContainsKey(k)))
-                        matchedProx.Add(k, exactNameEntries[k]);
-                }
-                if (!string.IsNullOrWhiteSpace(filterOnNamesLike.AnyStartingWith))
-                {
-                    matchedKeys =
-                        allStoredProx.Keys.Where(x => Regex.IsMatch(x, string.Format("^{0}.*", filterOnNamesLike.AnyStartingWith), RegexOptions.IgnoreCase)).ToList();
-                    var nameEntries = allStoredProx.Keys.Where(matchedKeys.Contains).ToDictionary(pName => pName, pName => allStoredProx[pName]);
-                    foreach (var k in nameEntries.Keys.Where(k => !matchedProx.ContainsKey(k)))
-                        matchedProx.Add(k, nameEntries[k]);
-                }
-                if (!string.IsNullOrWhiteSpace(filterOnNamesLike.AnyNameEndingWith))
-                {
-                    matchedKeys =
-                        allStoredProx.Keys.Where(x => Regex.IsMatch(x, string.Format(".*{0}$", filterOnNamesLike.AnyStartingWith), RegexOptions.IgnoreCase)).ToList();
-                    var nameEntries = allStoredProx.Keys.Where(matchedKeys.Contains).ToDictionary(pName => pName, pName => allStoredProx[pName]);
-                    foreach (var k in nameEntries.Keys.Where(k => !matchedProx.ContainsKey(k)))
-                        matchedProx.Add(k, nameEntries[k]);
-                }
-                if (!string.IsNullOrWhiteSpace(filterOnNamesLike.AnyNameContaining))
-                {
-                    matchedKeys =
-                        allStoredProx.Keys.Where(x => Regex.IsMatch(x, string.Format(".*{0}.*", filterOnNamesLike.AnyStartingWith), RegexOptions.IgnoreCase)).ToList();
-                    var nameEntries = allStoredProx.Keys.Where(matchedKeys.Contains).ToDictionary(pName => pName, pName => allStoredProx[pName]);
-                    foreach (var k in nameEntries.Keys.Where(k => !matchedProx.ContainsKey(k)))
-                        matchedProx.Add(k, nameEntries[k]);
-                }
+            var matchedProx = new Dictionary<string, StoredProcMetadata>();
+            List<string> matchedKeys = null;
 
-                allStoredProx = matchedProx;
+            if (!string.IsNullOrWhiteSpace(filterOnNamesLike.ExactName))
+            {
+                matchedKeys =
+                    allStoredProx.Keys.Where(
+                        x => string.Equals(x, filterOnNamesLike.ExactName, StringComparison.OrdinalIgnoreCase)).ToList();
+                var exactNameEntries = allStoredProx.Keys.Where(matchedKeys.Contains)
+                    .ToDictionary(pName => pName, pName => allStoredProx[pName]);
+                foreach (var k in exactNameEntries.Keys.Where(k => !matchedProx.ContainsKey(k)))
+                    matchedProx.Add(k, exactNameEntries[k]);
+            }
+            if (!string.IsNullOrWhiteSpace(filterOnNamesLike.AnyStartingWith))
+            {
+                matchedKeys =
+                    allStoredProx.Keys.Where(
+                        x =>
+                            Regex.IsMatch(x, string.Format("^{0}.*", filterOnNamesLike.AnyStartingWith),
+                                RegexOptions.IgnoreCase)).ToList();
+                var nameEntries = allStoredProx.Keys.Where(matchedKeys.Contains)
+                    .ToDictionary(pName => pName, pName => allStoredProx[pName]);
+                foreach (var k in nameEntries.Keys.Where(k => !matchedProx.ContainsKey(k)))
+                    matchedProx.Add(k, nameEntries[k]);
+            }
+            if (!string.IsNullOrWhiteSpace(filterOnNamesLike.AnyNameEndingWith))
+            {
+                matchedKeys =
+                    allStoredProx.Keys.Where(
+                        x =>
+                            Regex.IsMatch(x, string.Format(".*{0}$", filterOnNamesLike.AnyStartingWith),
+                                RegexOptions.IgnoreCase)).ToList();
+                var nameEntries = allStoredProx.Keys.Where(matchedKeys.Contains)
+                    .ToDictionary(pName => pName, pName => allStoredProx[pName]);
+                foreach (var k in nameEntries.Keys.Where(k => !matchedProx.ContainsKey(k)))
+                    matchedProx.Add(k, nameEntries[k]);
+            }
+            if (!string.IsNullOrWhiteSpace(filterOnNamesLike.AnyNameContaining))
+            {
+                matchedKeys =
+                    allStoredProx.Keys.Where(
+                        x =>
+                            Regex.IsMatch(x, string.Format(".*{0}.*", filterOnNamesLike.AnyStartingWith),
+                                RegexOptions.IgnoreCase)).ToList();
+                var nameEntries = allStoredProx.Keys.Where(matchedKeys.Contains)
+                    .ToDictionary(pName => pName, pName => allStoredProx[pName]);
+                foreach (var k in nameEntries.Keys.Where(k => !matchedProx.ContainsKey(k)))
+                    matchedProx.Add(k, nameEntries[k]);
+            }
+
+            allStoredProx = matchedProx;
+
+            if (filterOnNamesLike.SqlInjOnParamNamesLike == null || filterOnNamesLike.SqlInjOnParamNamesLike.Count <= 0)
+            {
+                return allStoredProx;
+            }
+
+            foreach (var param in allStoredProx.SelectMany(x => x.Value.Parameters))
+            {
+                foreach (var namedLike in filterOnNamesLike.SqlInjOnParamNamesLike)
+                {
+                    if (!param.ParamName.Contains(namedLike))
+                    {
+                        continue;
+                    }
+
+                    param.IsOpenToSqlInj = true;
+                    break;
+                }
             }
 
             return allStoredProx;
