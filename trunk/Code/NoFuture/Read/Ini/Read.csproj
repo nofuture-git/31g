@@ -65,6 +65,8 @@
     <Compile Include="Config\ExeConfig.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Ini\IniFileName.cs" />
+    <Compile Include="Vs\Microsoft_Build.net35.cs" />
+    <Compile Include="Vs\Microsoft_Build.net40.cs" />
     <Compile Include="Vs\ProjFile.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -72,6 +74,9 @@
       <Project>{4b77029a-6f3e-48ae-b8e2-c4dd06dce627}</Project>
       <Name>Shared</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Vs\Get-VsProjAsCs.ps1" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

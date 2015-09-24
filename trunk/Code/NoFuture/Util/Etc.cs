@@ -88,6 +88,44 @@ namespace NoFuture.Util
         }
 
         /// <summary>
+        /// Reduces multiple blank lines.
+        /// </summary>
+        /// <param name="fileFullName"></param>
+        /// <returns></returns>
+        public static string RemoveBlankLines(string fileFullName)
+        {
+            if (!File.Exists(fileFullName))
+                return null;
+
+            var fileLinesOut = new StringBuilder();
+
+            foreach (var ln in File.ReadAllLines(fileFullName))
+            {
+                if (string.IsNullOrWhiteSpace(ln))
+                {
+                    fileLinesOut.Append(Environment.NewLine);
+                }
+                else
+                {
+                    fileLinesOut.Append(string.Format("{0}{1}", ln, Environment.NewLine));
+                }
+            }
+
+            var value = fileLinesOut.ToString();
+
+            while (true)
+            {
+                if (value.Contains(Environment.NewLine + Environment.NewLine + Environment.NewLine))
+                {
+                    value = value.Replace(Environment.NewLine + Environment.NewLine + Environment.NewLine,
+                        Environment.NewLine + Environment.NewLine);
+                    continue;
+                }
+                return value;
+            }
+        }
+
+        /// <summary>
         /// Splits <see cref="value"/> into an array on any readable
         /// separator - being both camel-case words or special chars.
         /// </summary>
