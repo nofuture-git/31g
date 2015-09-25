@@ -216,6 +216,7 @@
     <Compile Include="Timeline\TestDrawings.cs" />
     <Compile Include="Tokens\TestXDocFrame.cs" />
     <Compile Include="Tokens\TestAspNetParseTree.cs" />
+    <Compile Include="TestRead.cs" />
     <Compile Include="Util\Gia\FlattenTests.cs" />
     <Compile Include="Util\Gia\AssemblyAnalysisTests.cs" />
     <Compile Include="Util\InvokeAsmTests\GetTokenIdsTests.cs" />

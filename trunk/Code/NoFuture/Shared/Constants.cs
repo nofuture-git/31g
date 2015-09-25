@@ -192,6 +192,18 @@ namespace NoFuture.Shared
         HTML,
         BLANK
     }
+
+    /// <summary>
+    /// Common versions of the .NET framework
+    /// </summary>
+    public enum DotNetVersion
+    {
+        NET11,
+        NET20,
+        NET35,
+        NET4Plus
+    }
+
     /// <summary>
     /// Misc. constant values used throughout.
     /// </summary>
