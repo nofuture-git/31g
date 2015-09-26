@@ -114,15 +114,6 @@ namespace NoFuture.Tests.Util
         }
 
         [TestMethod]
-        public void TestSafeFilename()
-        {
-            var testInput = "\"A name in quotes\"";
-            var testResult = Etc.SafeFilename(testInput);
-
-            Assert.AreEqual("A name in quotes", testResult);
-        }
-
-        [TestMethod]
         public void TestDistillTabs()
         {
             var testInput =

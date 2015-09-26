@@ -57,14 +57,6 @@ namespace NoFuture.Tests.Util
 
         }
 
-        [TestMethod]
-        public void TestBreakUpFileOverMaxJsonLength()
-        {
-            var testPath = @"C:\Projects\31g\trunk\Code\NoFuture.Tests\Util\TestChunkData\diaSdkData.lines.json";// 
-
-            //var testResults = NoFuture.Util.Etc.TrySplitFileOnMarker(testPath, new Tuple<char?, char?, char?>(null,'}',',') , 1440512);//5762048
-            var testResults = NoFuture.Util.Etc.TrySplitFileOnMarker(testPath, null);//5762048
-        }
 
         [TestMethod]
         public void TestFromDWord()

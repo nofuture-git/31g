@@ -466,7 +466,7 @@ function Print-StoredProcedure
 
         #print this to notepad++ since it has syntax highlighter
         
-        $tempName = join-path ([NoFuture.TempDirectories]::StoredProcedures) ("{0}.sql" -f ([NoFuture.Util.Etc]::SafeFilename($ProcedureName)))
+        $tempName = join-path ([NoFuture.TempDirectories]::StoredProcedures) ("{0}.sql" -f ([NoFuture.Util.NfPath]::SafeFilename($ProcedureName)))
         
         #check for temp spot existing, make if not
         if(-not (Test-Path ([NoFuture.TempDirectories]::StoredProcedures))){mkdir -Path ([NoFuture.TempDirectories]::StoredProcedures)}
