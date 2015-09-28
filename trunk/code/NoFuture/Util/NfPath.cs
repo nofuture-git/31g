@@ -217,11 +217,11 @@ namespace NoFuture.Util
             }
 
             //remove files from end if present
-            if (Path.HasExtension(currentWorkingDir))
+            if (HasKnownExtension(currentWorkingDir))
                 currentWorkingDir = Path.GetDirectoryName(currentWorkingDir);
 
             string somePathFile = null;
-            if (Path.HasExtension(somePathTemp))
+            if (HasKnownExtension(somePathTemp))
             {
                 somePathFile = Path.GetFileName(somePathTemp);
                 somePathTemp = Path.GetDirectoryName(somePathTemp);
@@ -271,6 +271,23 @@ namespace NoFuture.Util
             }
 
             return false;
+        }
+
+        /// <summary>
+        /// Asserts that <see cref="somePath"/> has an extension 
+        /// which is represented by the lists at <see cref="Constants.CodeExtensions"/>
+        /// or <see cref="Constants.ConfigExtensions"/> 
+        /// or <see cref="Constants.BinaryExtensions"/>
+        /// </summary>
+        /// <param name="somePath"></param>
+        /// <returns></returns>
+        public static bool HasKnownExtension(string somePath)
+        {
+            var ext = Path.GetExtension(somePath);
+            return !string.IsNullOrEmpty(ext) &&
+                   (Constants.CodeExtensions.Select(x => "." + x).Contains(ext) ||
+                    Constants.ConfigExtensions.Select(x => "." + x).Contains(ext) || 
+                    Constants.BinaryExtensions.Select(x => "." + x).Contains(ext));
         }
 
         /// <summary>

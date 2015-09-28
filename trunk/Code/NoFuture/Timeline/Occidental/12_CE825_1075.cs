@@ -24,7 +24,7 @@ namespace NoFuture.Timeline
             scdv.AddEntry(1018, "Cnut the Great[Denmark(1018-1035)", PrintLocation.Left);
             scdv.AddEntry(1021, ",Norway(1028-1035)", PrintLocation.Left);
             scdv.AddEntry(1025, ",England(1016-1035)]", PrintLocation.Left);
-            scdv.AddEntry(1046, "Harald Sigurdsson[Norway(1046-1066)]***", PrintLocation.Left);
+            scdv.AddEntry(1046, "Harald Sigurdsson[Norway(1046-1066)]*", PrintLocation.Left);
             scdv.AddEntry(1000,"Leif Erikson in N.America(1000)");
 
             var engd = new Block { Ruler = rule, Title = "English Isles", Width = 34};
@@ -122,12 +122,11 @@ namespace NoFuture.Timeline
             plate.AddArrow(new Arrow(slj,abb){StartValue = 1055, Text = "capture Baghdad(1055)"});
             plate.AddArrow(new Arrow(slj, byz){StartValue = 1071,Text = "Battle of Manzikert(1071)**"});
 
-            plate.Notes.Add("* this guy was all over the place, fights alongside his brother Olaf Haraldsson, a.k.a. Saint Olaf, who");
-            plate.Notes.Add("  sought to reclaim the Danish throne from Cnut the Great - is defeated, goes into exile to the Varangian (Viking) kingdom around Novgorod (Russia) working");
-            plate.Notes.Add("  with Yaroslav the Wise who unites Keiv and Novgorod then moves to Constantinople (1034) becomes captain of Byzantine Varangian Guard (Viking bodyguards to the Emperor) gets rich,");
-            plate.Notes.Add("  leaves in 1042 and becomes King of Norway 1045, was caught up in war of succession in England, goes there to become king and is killed at the Battle of Stamford Bridge(1066)");
-            plate.Notes.Add("  by Harold Godwinson's forces (which is considered the end of the Viking Age).  Even more, it is Harold Godwinson who is defeated by the Norman Conquest weeks later at the Battle of Hastings(1066).");
-            plate.Notes.Add("");
+            plate.Notes.Add("*  this guy was all over the place, fights alongside his brother Olaf Haraldsson, a.k.a. Saint Olaf, who sought to reclaim the Danish throne from Cnut the Great - is defeated,");
+            plate.Notes.Add("   goes into exile to the Varangian (Viking) kingdom around Novgorod (Russia) working with Yaroslav the Wise who unites Keiv and Novgorod then moves to Constantinople (1034)");
+            plate.Notes.Add("   becomes captain of Byzantine Varangian Guard (Viking bodyguards to the Emperor) gets rich, leaves in 1042 and becomes King of Norway 1045, was caught up in war of succession in England,");
+            plate.Notes.Add("   goes there to become king and is killed at the Battle of Stamford Bridge(1066) by Harold Godwinson's forces (which is considered the end of the Viking Age).");
+
             plate.Notes.Add("** during this war Palestine is taken from Fatimid Cali.- later catalyst for Crusades");
             
             return plate;

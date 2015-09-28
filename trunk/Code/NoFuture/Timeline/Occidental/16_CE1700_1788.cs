@@ -7,14 +7,14 @@ namespace NoFuture.Timeline
 {
     public partial class Occidental
     {
-        public Plate CE1700to1800()
+        public Plate CE1700to1788()
         {
-            var rule = new Rule {StartValue = 1700, EndValue = 1800, RuleLineSpacing = 7};
+            var rule = new Rule {StartValue = 1700, EndValue = 1790, RuleLineSpacing = 7};
             var amer = new Block {Ruler = rule, Title = "Americas"};
             
 
-            var col = new Block {StartValue = 1703, Title = "Colonies", Ruler = rule};
-            col.AddEntry(1770, "Boston Massacre(1770)");
+            var col = new Block {StartValue = 1703, EndValue = 1783, Title = "Colonies", Ruler = rule};
+            col.AddEntry(1771, "Boston Massacre(1770)", PrintLocation.Left);
             col.AddEntry(1703, "Yale College (1700)");
             col.AddEntry(1727,"[Bering] Bering straight(1728)");
             col.AddEntry(1739,"Stono Rebellion(1739)");
@@ -25,18 +25,29 @@ namespace NoFuture.Timeline
 
             col.AddEntry(1704, 1713, "Queen Anne's War");
             col.AddEntry(1754,1763, "French Indian War");
+            col.AddEntry(1775,1783, "American Rev.(1775-1783)", PrintLocation.Left);
+            col.AddEntry(1777, "NY occupied(1776)");
+            col.AddEntry(1778, "Savannah occupied(1778)");
+            col.AddEntry(1780,"Charleston occupied(1780)");
+
 
             var que = new Block {StartValue = 1703, EndValue = 1763, Title = "New France", Ruler = rule, Width = 22};
             que.AddEntry(1703,"Fr.settle Mobile AL");
             que.AddEntry(1718,"New Orleans LA(1718)");
 
-            var usa = new Block {StartValue = 1776, Title = "United States", Ruler = rule};
+            var usa = new Block {StartValue = 1775, Title = "United States", Ruler = rule};
+            usa.AddEntry(1776,"Lafayette in PA(1777)");
+            usa.AddEntry(1781, "Cornwallis surrender(1781)");
+            usa.AddEntry(1783, "Peace of Paris(1783)");
+            usa.AddEntry(1787, "U.S.Constitution(1787)");
             amer.AddInnerBlock(col);
             amer.AddInnerBlock(usa);
             amer.AddInnerBlock(que);
             amer.AddArrow(new Arrow(que,col){StartValue = 1706, ArrowTail = "."});
             amer.AddArrow(new Arrow(col, que) { StartValue = 1755, Text = "B. of the Monongahela" });
             amer.AddArrow(new Arrow(que, col) { StartValue = 1757, Text = "massacre @ F.William Henry" });
+
+            //            engd.AddEntry(1796, "E.Jenner[1st vaccine](1796)", PrintLocation.Right);
 
             var engd = new Block {Ruler = rule, Title = "United Kingdom"};
             engd.AddEntry(1704, "[Anne 1702-1714]", PrintLocation.Left);
@@ -48,9 +59,13 @@ namespace NoFuture.Timeline
             engd.AddEntry(1760, "[George III 1760-1820]", PrintLocation.Left);
             engd.AddEntry(1766, "H.Cavendish[hydrogen](1766)", PrintLocation.Right);
             engd.AddEntry(1776, "'Wealth of Nations' A.Smith(1776)", PrintLocation.Right);
-            engd.AddEntry(1796, "E.Jenner[1st vaccine](1796)", PrintLocation.Right);
+            engd.AddEntry(1777, " 'Rise & Fall..Roman Empire'Gibbon(1777)", PrintLocation.Right);
+            engd.AddEntry(1781, "1st Sunday-school(R.Raikes)(1781)", PrintLocation.Right);
             engd.AddEntry(1769, "J.Watt[steam engine](1769)", PrintLocation.Right);
             engd.AddEntry(1764, "J.Hargreaves[spinning jenny](1764)", PrintLocation.Right);
+            engd.AddEntry(1782, "Lord North resigns as PM(1782)");
+            engd.AddEntry(1787, "Australia penal settlement(1788)");
+            engd.AddEntry(1789, "[Cook]Hawaiian Islands(1788)");
             engd.AddEntry(1702, 1714, "Stuart(restored)", PrintLocation.Left); 
             engd.AddEntry(1715, 1800, "Hanover", PrintLocation.Left);
 
@@ -62,7 +77,8 @@ namespace NoFuture.Timeline
             fr.AddEntry(1748, "'The Spirit of Laws' Montesquieu(1748)", PrintLocation.Right);
             fr.AddEntry(1761, "'Social Contract' Rousseau(1761)", PrintLocation.Right);
             fr.AddEntry(1756, "Diplomatic Revolution(1756)(c.)");
-            fr.AddEntry(1702, 1792, "Capetian[Bourbon]", PrintLocation.Left);
+            fr.AddEntry(1783, "1st hot-air ballon(1783)", PrintLocation.Right);
+            fr.AddEntry(1702, 1790, "Capetian[Bourbon]", PrintLocation.Left);
             fr.AddEntry(1701, 1714, "War of Spanish Succ.(1701-1714)");            
 
             var de = new Block() {Ruler = rule, Title = "Prussia"};
@@ -80,7 +96,8 @@ namespace NoFuture.Timeline
             aus.AddEntry(1705, "[Joseph I 1705-1711]", PrintLocation.Left);
             aus.AddEntry(1711, "[Charles III 1711-1740]", PrintLocation.Left);
             aus.AddEntry(1739, "[Maria Theresa 1740-1780]", PrintLocation.Left);
-            aus.AddEntry(1790, "[Joseph II 1780-1790]", PrintLocation.Left);
+            aus.AddEntry(1780, "[Joseph II 1780-1790]", PrintLocation.Left);
+            aus.AddEntry(1783, "Mozart in Vienna",PrintLocation.Right);
             aus.AddEntry(1741, 1748, "War of Austrian Succ.(1740-1748)");
 
             var ott = new Block { Ruler = rule, Title = "Ottoman Empire"};
@@ -94,7 +111,10 @@ namespace NoFuture.Timeline
             var rus = new Block {Ruler = rule, Title = "Imperial Russia", StartValue = 1721};
             rus.AddEntry(1725, "[Peter the Great 1695-1725]");
             rus.AddEntry(1727,1760,"[internal intrigue]");
-            rus.AddEntry(1762,"[Catherine the Great 1762-1796]");
+            rus.AddEntry(1762,"[Catherine theGreat 1762-1796]");
+            rus.AddEntry(1783, "(+)Crimea(1783)");
+            rus.AddEntry(1768,1774, "1st Russio-Turkish War", PrintLocation.Right);
+
 
             var plate = new Plate { Ruler = rule, Name = "Early Modern Age(2)" };
             plate.AddBlock(amer);
@@ -113,7 +133,7 @@ namespace NoFuture.Timeline
             plate.AddArrow(new Arrow(de, aus) { StartValue = 1740, Text = "invasion of Silesia(1740)"});
             plate.AddArrow(new Arrow(engd, fr){StartValue = 1743, Text = "B. of Dettingen(1743)(e.)"});
             plate.AddArrow(new Arrow(de, aus){StartValue = 1757, Text = "B. of Prague(1757)"});
-            plate.AddArrow(new Arrow(rus,ott){StartValue = 1735, Text = "..........."});
+            plate.AddArrow(new Arrow(rus,ott){StartValue = 1770, Text = "B.of Chesma & Kagus(1770)"});
 
             plate.AddArrow(new Arrow(engd, aus)
             {
@@ -138,8 +158,17 @@ namespace NoFuture.Timeline
                 FromLeftToRightArrowHead = "......]",
             });
 
+            plate.AddArrow(new Arrow(de, aus)
+            {
+                StartValue = 1788,
+                Text = "War of Bavarian Succ.(1778\\79)",
+                ArrowTail = "[.........",
+                FromLeftToRightArrowHead = "]",
+            });
+
             plate.AddArrow(new Arrow(engd,amer){StartValue = 1771, Text = "B. of the Alamance(1771)", FromRightToLeftArrowHead = "<..............................."});
             plate.AddArrow(new Arrow(engd, amer) { StartValue = 1775, Text = "B. of Lexington(1775)", FromRightToLeftArrowHead = "<........................",ArrowTail = "."});
+            plate.AddArrow(new Arrow(engd, amer) { StartValue = 1777, Text = "B. at Trenton(1777)", FromRightToLeftArrowHead = "<........................", ArrowTail = "." });
 
             plate.Notes.Add("(a.)marks the end of Wars of Spanish Succession");
             plate.Notes.Add("(b.)British supremacy in Canada and India");

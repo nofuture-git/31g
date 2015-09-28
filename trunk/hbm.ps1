@@ -638,7 +638,7 @@ function Get-Ef35Cs
         Get-T4TextTemplate -InputFile $mappingTemplate -OutputFile $mappingCsFile -ParamNameValues @{$t4ParamName=$HbmXmlPath}
         
     }
-}#end Get-EfFluentCs
+}#end Get-Ef35Cs
 
 <#
     .SYNOPSIS

@@ -37,7 +37,7 @@ namespace NoFuture.Timeline
             amer.AddEntry(1636, "Harvard College(1636)");
             amer.AddEntry(1639, "Delaware settled by Finns & Swedes(1638)");
             amer.AddEntry(1650,"settlment in N.Carolina(1650)");
-            amer.AddEntry(1662,"Charlestown SC(1663)");
+            amer.AddEntry(1661,"Charlestown SC(1663)");
             amer.AddEntry(1664,"English take New Amsterdam-rename New York(1664)");
             amer.AddEntry(1669, "[La.Salle]-Ohio Riv.&Lake Mich.(1669/70)", PrintLocation.Left);
             amer.AddEntry(1682, "Philadelphia, PA founded(1682)");
@@ -71,7 +71,7 @@ namespace NoFuture.Timeline
             engd.AddEntry(1687, "'Principia' Newton(1687)", PrintLocation.Right);
             engd.AddEntry(1691, "'Two Treatises' J.Locke(1689)", PrintLocation.Right);
 
-            engd.AddEntry(1660, 1710, "Stuart(restored)", PrintLocation.Left);
+            engd.AddEntry(1660, 1700, "Stuart(restored)", PrintLocation.Left);
             engd.AddEntry(1600, 1649, "Stuart", PrintLocation.Left);
             engd.AddEntry(1503, 1553, "Tudor", PrintLocation.Left);
 

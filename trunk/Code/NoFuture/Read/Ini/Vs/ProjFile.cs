@@ -10,7 +10,6 @@ using NoFuture.Exceptions;
 
 namespace NoFuture.Read.Vs
 {
-
     public class ProjFile
     {
         #region constants
@@ -73,7 +72,6 @@ namespace NoFuture.Read.Vs
         #endregion
 
         #region instance methods
-
         /// <summary>
         /// Attempts to add the assembly at <see cref="assemblyPath"/>
         /// to the project's references
@@ -290,13 +288,17 @@ namespace NoFuture.Read.Vs
         /// Removes the <see cref="srcCodeFile"/> from the MsBuild xml (project file)
         /// </summary>
         /// <param name="srcCodeFile"></param>
+        /// <param name="relativePathsOut"></param>
         /// <returns></returns>
         /// <remarks>
         /// Will remove the '.designer.[cs|vb]' and '.[cs|vb]' files, when they exist,
         /// for any '.as[ax|cx|mx|px]' 
         /// </remarks>
-        public bool TryRemoveSrcCodeFile(string srcCodeFile)
+        public bool TryRemoveSrcCodeFile(string srcCodeFile, List<string> relativePathsOut)
         {
+            if(relativePathsOut == null)
+                relativePathsOut = new List<string>();
+
             if (string.IsNullOrWhiteSpace(srcCodeFile))
                 return false;
 
@@ -315,35 +317,31 @@ namespace NoFuture.Read.Vs
 
             foreach (var compileItem in compileItems)
             {
-                var compileItemNode = GetSingleCompileItemNode(compileItem);
-                if (compileItemNode == null)
+                var itemNode = GetSingleCompileItemNode(compileItem);
+                if (itemNode == null)
                     continue;
 
-                var lastItemNode = GetLastCompileItem();
-                if (lastItemNode == null)
-                    break;
-                var parentNode = lastItemNode.ParentNode;
+                var parentNode = itemNode.ParentNode;
                 if (parentNode == null)
                     break;
 
-                parentNode.RemoveChild(compileItemNode);
+                parentNode.RemoveChild(itemNode);
+                relativePathsOut.Add(compileItem);
                 _isChanged = true;
             }
 
             foreach (var contentItem in contentItems)
             {
-                var compileItemNode = GetSingleContentItemNode(contentItem);
-                if (compileItemNode == null)
+                var itemNode = GetSingleContentItemNode(contentItem);
+                if (itemNode == null)
                     continue;
 
-                var lastItemNode = GetLastContentItem();
-                if (lastItemNode == null)
-                    break;
-                var parentNode = lastItemNode.ParentNode;
+                var parentNode = itemNode.ParentNode;
                 if (parentNode == null)
                     break;
 
-                parentNode.RemoveChild(compileItemNode);
+                parentNode.RemoveChild(itemNode);
+                relativePathsOut.Add(contentItem);
                 _isChanged = true;
             }
 
@@ -406,12 +404,9 @@ namespace NoFuture.Read.Vs
 
             return cache;
         }
-
-
-
         #endregion
-        #region internal instance methods
 
+        #region internal instance methods
         internal bool IsExistingCompileItem(string fl) { return GetSingleCompileItemNode(fl) != null; }
 
         internal bool IsExistingContentItem(string fl) { return GetSingleContentItemNode(fl) != null; }
@@ -421,9 +416,21 @@ namespace NoFuture.Read.Vs
             return _vsprojXml.SelectSingleNode(string.Format("//{0}:ItemGroup/{0}:Compile[@Include='{1}']", NS, fl), _nsMgr);
         }
 
-        public XmlNode GetSingleContentItemNode(string fl)
+        internal List<XmlElement> GetListCompileItemNodes(string fl)
+        {
+            var dlk = _vsprojXml.SelectNodes(string.Format("//{0}:ItemGroup/{0}:Compile[contains(@Include,'{1}')]", NS, fl), _nsMgr);
+            return dlk == null ? null : dlk.Cast<XmlElement>().ToList();
+        }
+
+        internal XmlNode GetSingleContentItemNode(string fl)
         {
             return _vsprojXml.SelectSingleNode(string.Format("//{0}:ItemGroup/{0}:Content[@Include='{1}']", NS, fl), _nsMgr);
+        }
+
+        internal List<XmlElement> GetListContentItemNodes(string fl)
+        {
+            var dlk = _vsprojXml.SelectNodes(string.Format("//{0}:ItemGroup/{0}:Content[contains(@Include,'{1}')]", NS, fl), _nsMgr);
+            return dlk == null ? null : dlk.Cast<XmlElement>().ToList();
         }
 
         internal bool HasExistingIncludeAttr(XmlNode n)
@@ -498,25 +505,61 @@ namespace NoFuture.Read.Vs
 
         internal List<string> SingleFileToManifold(string srcCodeFile)
         {
-            //resolve to full path
-            if (!Path.IsPathRooted(srcCodeFile))
-                srcCodeFile = Path.Combine(_projDir, srcCodeFile);
-
-            //add possiable additionals
-            var files = new List<string> { srcCodeFile };
-
-            var isAsp = IsAspFile(srcCodeFile);
-            if (isAsp)
+            if(srcCodeFile == null)
+                throw new ArgumentNullException("srcCodeFile");
+            var files = new List<string>();
+            
+            //when srcCodeFile is not currently present in the xml
+            var allSuchNodes = GetListCompileItemNodes(srcCodeFile);
+            if (allSuchNodes == null || allSuchNodes.Count <= 0)
             {
-                files.Add(srcCodeFile + ".designer.cs");
-                files.Add(srcCodeFile + ".cs");
+                if (!Path.IsPathRooted(srcCodeFile))
+                    srcCodeFile = Path.Combine(_projDir, srcCodeFile);
 
-                files.Add(srcCodeFile + ".designer.vb");
-                files.Add(srcCodeFile + ".vb");
+                files.Add(srcCodeFile);
+
+                if (!IsAspFile(srcCodeFile))
+                    return files;
+
+                foreach (var ext in (new[] {".vb", ".cs"}))
+                {
+                    files.Add(srcCodeFile + ".designer" + ext);
+                    files.Add(srcCodeFile + ext);
+                }
+
+                return files.Where(File.Exists).Distinct().ToList();
             }
 
-            //filter to only those that exist
-            files = files.Where(File.Exists).ToList();
+            allSuchNodes.AddRange(GetListContentItemNodes(srcCodeFile));
+
+            files.AddRange(
+                allSuchNodes.Where(x => x != null && x.Attributes.Count > 0 && x.Attributes["Include"] != null)
+                    .Select(matchedFile => matchedFile.Attributes["Include"].Value));
+
+            //add any asp releated files as needed
+            for (var i = 0; i<files.Count; i++)
+            {
+                if (!IsAspFile(files[i])) continue;
+
+                if (!files.Contains(files[i] + ".designer.cs"))
+                    files.Add(files[i] + ".designer.cs");
+                if (!files.Contains(files[i] + ".cs"))
+                    files.Add(files[i] + ".cs");
+
+                if (!files.Contains(files[i] + ".designer.vb"))
+                    files.Add(files[i] + ".designer.vb");
+                if (!files.Contains(files[i] + ".vb"))
+                    files.Add(files[i] + ".vb");
+            }
+            for (var i = 0; i < files.Count; i++)
+            {
+                var fl = files[i];
+                if (!Path.IsPathRooted(fl))
+                    files[i] = Path.Combine(_projDir, fl);
+            }
+
+            //filter to only those that exist and are distinct
+            files = files.Where(File.Exists).Distinct().ToList();
             return files;
         }
 
@@ -537,9 +580,8 @@ namespace NoFuture.Read.Vs
         {
             return files.Where(x => IsSrcCodeFile(x) && IsExistingCompileItem(x)).ToList();
         }
-
-
         #endregion
+
         #region static methods
 
         /// <summary>
@@ -570,7 +612,6 @@ namespace NoFuture.Read.Vs
             if (!Regex.IsMatch(Path.GetExtension(vsprojPath), @"\.(vb|cs|fs)proj"))
                 throw new ItsDeadJim(string.Format("The Extension '{0}' was unexpected", Path.GetExtension(vsprojPath)));
         }
-
         #endregion
     }
 }
