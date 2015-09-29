@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -19,8 +21,15 @@ namespace NoFuture.Sql.Mssql
         /// <param name="server"></param>
         /// <param name="dbName"></param>
         /// <returns></returns>
-        public static string MakeSqlCommand(string expression, string server, string dbName)
+        public static string MakeSqlCmd(string expression, string server, string dbName)
         {
+            if (string.IsNullOrEmpty(expression))
+                throw new ArgumentNullException("expression");
+            if (string.IsNullOrWhiteSpace(server))
+                throw new ArgumentNullException("server");
+            if (string.IsNullOrWhiteSpace(dbName))
+                throw new ArgumentNullException("dbName");
+
             var sqlParams = new StringBuilder();
             sqlParams.Append("-S ");
             sqlParams.Append(server);
@@ -51,6 +60,53 @@ namespace NoFuture.Sql.Mssql
             sqlCmd.Append("sqlcmd.exe ");
             sqlCmd.Append(sqlParams);
             sqlCmd.Append(sqlExpr);
+            return sqlCmd.ToString();
+        }
+
+        /// <summary>
+        /// Drafts a command line invocation to SQLCMD.EXE using a single or range of 
+        /// files as the input.
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="server"></param>
+        /// <param name="dbName"></param>
+        /// <returns></returns>
+        public static string MakeInputFilesSqlCmd(string path, string server, string dbName)
+        {
+            if(string.IsNullOrEmpty(path))
+                throw new ArgumentNullException("path");
+            if(string.IsNullOrWhiteSpace(server))
+                throw new ArgumentNullException("server");
+            if(string.IsNullOrWhiteSpace(dbName))
+                throw new ArgumentNullException("dbName");
+
+            if(!File.Exists(path))
+                throw new IOException(string.Format("Bad path or file name at '{0}'",path));
+
+            var sqlCmd = new StringBuilder();
+            sqlCmd.Append("sqlcmd.exe");
+            sqlCmd.Append(" -S ");
+            sqlCmd.Append(server);
+            sqlCmd.Append(" -d ");
+            sqlCmd.Append(dbName);
+
+            sqlCmd.Append(" -i "); 
+            if (!Util.NfPath.HasKnownExtension(path) && Directory.Exists(path))
+            {
+                var files = new DirectoryInfo(path);
+                var fileNames =
+                    files.EnumerateFiles("*.sql")
+                        .Select(sqlFile => sqlFile.FullName)
+                        .Select(sqlFileName => sqlFileName.Contains(" ") ? string.Format("\"{0}\"", sqlFileName) : path)
+                        .ToList();
+                sqlCmd.Append(string.Join(",", fileNames));
+            }
+            else
+            {
+                var escPath = path.Contains(" ") ? string.Format("\"{0}\"", path) : path;
+                sqlCmd.Append(escPath);
+            }
+
             return sqlCmd.ToString();
         }
 
@@ -171,5 +227,26 @@ namespace NoFuture.Sql.Mssql
         /// doing some kind of high risk activity.
         /// </summary>
         public static List<string> WarnUserIfServerIn { get { return _warnUserIfServerIn; } }
+
+        /// <summary>
+        /// Filter applied in sql cmd-lets
+        /// </summary>
+        /// <param name="expression"></param>
+        /// <param name="columnName"></param>
+        /// <returns></returns>
+        public static string FilterSqlExpression(string expression, string columnName)
+        {
+            if (SqlFilterList.Count <= 0) return expression;
+
+            GlobalSwitches.SqlFiltersOff = false;
+            var tblFilter = SqlFilterList.Where(x => !string.IsNullOrWhiteSpace(x))
+                .Aggregate("", (current, lo) => current + (string.Format("'{0}',", lo)));
+            tblFilter +=
+                "'sysobjects','sysindexes','syscolumns','systypes','syscomments','sysusers','sysdepends','sysreferences','sysconstraints','syssegments'";
+            expression = string.Format("{0}{1}", expression,
+                string.Format(Qry.Catalog.FilterStatement, columnName, tblFilter));
+            return expression;
+
+        }
     }
 }

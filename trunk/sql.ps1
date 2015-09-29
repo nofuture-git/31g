@@ -82,12 +82,12 @@ function Mssql-Settings
 
 #=================================================
 #imprimis codex
-Set-Alias sql Run-SqlCommand
+Set-Alias sql Invoke-SqlCommand
 Set-Alias ado Get-DataTable
 Set-Alias pss Select-ProcedureString
 Set-Alias css Select-ColumnName
 Set-Alias tss Select-TableName
-Set-Alias proc Print-StoredProcedure
+Set-Alias proc Write-StoredProcedureToHost
 #=================================================
 
 <#
@@ -112,16 +112,32 @@ Set-Alias proc Print-StoredProcedure
     invokeing this command will warn the user they are pointed to production.
     
     .PARAMETER Expression
-    A valid and complete sql statement.
+    A full file name, a full directory path or a valid 
+    and complete sql statement.
+
+    .PARAMETER ServerName
+    Optional name of the server, defaults to the global 
+    at NoFuture.Shared.Constants.SqlServer
+
+    .PARAMETER CatalogName
+    Optional name of the database, defaults to the global 
+    at NoFuture.Shared.Constants.SqlCatalog
+
+    .PARAMETER IsPath
+    Optional, swtich to indicate that the 'Expression' is a path and not 
+    a sql query literal.
     
     .EXAMPLE
-    C:\PS>Run-SqlCommand "select top 1 an_id from [MyCatalog].[dbo].[MyTable]"
+    C:\PS> Invoke-SqlCommand "select top 1 an_id from [MyCatalog].[dbo].[MyTable]"
     
+    .EXAMPLE
+    C:\PS> Invoke-SqlCommand "C:\Projects\MySql\MySql.sql" -IsPath
+
     .OUTPUTS
     Prints the response from SqlCmd.exe
     
 #>
-function Run-SqlCommand
+function Invoke-SqlCommand
 {
     [CmdletBinding()]
     Param
@@ -131,14 +147,22 @@ function Run-SqlCommand
         [Parameter(Mandatory=$false,position=1)]
         [string] $ServerName,
         [Parameter(Mandatory=$false,position=2)]
-        [string] $CatalogName
+        [string] $CatalogName,
+        [Parameter(Mandatory=$false,position=3)]
+        [switch] $IsPath
+
     )
     Process
     {
       if([System.String]::IsNullOrWhiteSpace($ServerName)){$ServerName = ([NoFuture.Shared.Constants]::SqlServer)}
       if([System.String]::IsNullOrWhiteSpace($CatalogName)){$CatalogName = ([NoFuture.Shared.Constants]::SqlCatalog)}
 
-      $cmd =  ([NoFuture.Sql.Mssql.Etc]::MakeSqlCommand($expression,$ServerName,$CatalogName))
+      if($IsPath){
+        $cmd =  ([NoFuture.Sql.Mssql.Etc]::MakeInputFilesSqlCmd($expression,$ServerName,$CatalogName))
+      }
+      else{
+        $cmd =  ([NoFuture.Sql.Mssql.Etc]::MakeSqlCmd($expression,$ServerName,$CatalogName))
+      }
       if(([NoFuture.Sql.Mssql.Etc]::WarnUserIfServerIn -contains $ServerName) -and ([NoFuture.GlobalSwitches]::SupressNpp -eq $false)){
         $message = "WARNING: current settings are pointed to production!`nDo you want to continue this operation?"
         $yes = New-Object System.Management.Automation.Host.ChoiceDescription "&Yes", `
@@ -155,7 +179,20 @@ function Run-SqlCommand
         
       }
       $val = Invoke-Expression $cmd;
-      $val = CleanRecordsReturnedTrailer $val;
+
+      if(-not $IsPath){
+        $trimval = $false;
+        $i = 0
+        #look to remove the blank lines and the '(Total Records ...)' 
+        $val | % {
+            $i++; 
+            if(($_.Trim() -ne "") -and (-not $_.Contains("("))){
+                $trimval = $true;
+            }
+        }
+        if($trimval) {$val = $val[0..$($i-3)];}
+        return $val
+      }
       return $val; 
     }
 }
@@ -256,7 +293,7 @@ function Select-TableName
     {
         #table_name
         $expression = ([NoFuture.Sql.Mssql.Qry.Catalog]::TblSelectString -f $TableName)
-        $expression = FilterFactory $expression "table_name"
+        $expression = [NoFuture.Sql.Mssql.Etc]::FilterSqlExpression($expression, "table_name")
     	sql $expression
     }
 }
@@ -328,7 +365,7 @@ function Select-ColumnName
         }
 
         $expression = ([NoFuture.Sql.Mssql.Qry.Catalog]::ColSelectString -f $ColumnName,$TableName,$SchemaName)
-        #$expression = FilterFactory $expression "table_name"
+        
     	ado $expression
     }
 }
@@ -377,7 +414,7 @@ function Select-ProcedureString
     {
         #name
         $expression = [NoFuture.Sql.Mssql.Qry.Catalog]::SelectProcedureString
-        $expression = FilterFactory $expression "object_name(id)"
+        $expression = [NoFuture.Sql.Mssql.Etc]::FilterSqlExpression($expression, "object_name(id)")
         $qryRslts = ado $expression
         if($qryRslts -eq $null -or $qryRslts.Rows.Count -eq 0){return "no results"}
         
@@ -404,10 +441,10 @@ function Select-ProcedureString
 
 
 <#
-    .synopsis
+    .SYNOPSIS
     Prints the contents of a stored procedure to NotePad++.
     
-    .Description
+    .DESCRIPTION
     Print the contents of a stored procedure with the same formatting
     as it appears in SSMS to NotePad++.  The body of the stored
     procedure is actually save to file within the temp directory.
@@ -419,20 +456,20 @@ function Select-ProcedureString
     temp directory is left as-is and a message is printed to the 
     console.
     
-    .parameter ProcedureName
+    .PARAMETER ProcedureName
     The name of the stored procedure less and catalog or [dbo] qualifiers.
     
-    .example
-    C:\PS>Print-StoredProcedure -ProcedureName "p_myStoredProc"
+    .EXAMPLE
+    C:\PS>Write-StoredProcedureToHost -ProcedureName "p_myStoredProc"
     
-    .example
-    C:\PS>Print-StoredProcedure "fn_worksForAnyTextInSysComments"
+    .EXAMPLE
+    C:\PS>Write-StoredProcedureToHost "fn_worksForAnyTextInSysComments"
     
-    .outputs
-    null
+    .OUTPUTS
+    string
     
 #>
-function Print-StoredProcedure
+function Write-StoredProcedureToHost
 {
     [CmdletBinding()]
     Param
@@ -504,7 +541,7 @@ function Print-StoredProcedure
     Hashtable
     
 #>
-function Normalize-ToHashtable
+function Convert-SqlToHashtable
 {
     [CmdletBinding()]
     Param
@@ -1268,36 +1305,3 @@ function Export-CsvToScriptTempTable
     return (Get-Content -Path $outputPath)
     }#end Process
 }
-
-#=================================================
-# MISC SUPPORT CODE
-#=================================================
-#adjuvatus codex
-
-#return rows into PS Object
-function CleanRecordsReturnedTrailer($val)
-{
-$trimval = $false;
-$i = 0
- #look to remove the blank lines and the '(Total Records ...)' 
- $val | % {$i++; 
-           if(($_.Trim() -ne "") -and (-not $_.Contains("("))){
-                $trimval = $true;
-             }
-          }
- if($trimval) {$val = $val[0..$($i-3)];}
- return $val
-}
-function FilterFactory($expression,$columnName)
-{
-    if([NoFuture.Sql.Mssql.Etc]::SqlFilterList.Count -gt 0){
-        [NoFuture.GlobalSwitches]::SqlFiltersOff = $false
-        $tblFilter = ""
-        [NoFuture.Sql.Mssql.Etc]::SqlFilterList | ? {-not ([string]::IsNullOrWhiteSpace($_))} | % {$tblFilter += ("'{0}'," -f $_)}
-        $tblFilter += "'sysobjects','sysindexes','syscolumns','systypes','syscomments','sysusers','sysdepends','sysreferences','sysconstraints','syssegments'"
-        $expression = ("{0}{1}" -f $expression,([NoFuture.Sql.Mssql.Qry.Catalog]::FilterStatement -f $columnName,$tblFilter))
-    }
-    return $expression
-}
-#=================================================
-
