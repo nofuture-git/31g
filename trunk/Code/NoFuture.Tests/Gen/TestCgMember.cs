@@ -659,120 +659,19 @@ namespace NoFuture.Tests.Gen
         [TestMethod]
         public void TestGetMyEndEnclosure()
         {
-            var testCgMem = new CgMember()
-            {
-                Name = "GetYoMommaTypes",
-                IsMethod = true,
-                _myPdbTargetLine = new [] {new PdbTargetLine { StartAt = 364, EndAt = 446 }},
-                AccessModifier = CgAccessModifier.Family
-            };
-            testCgMem._myOriginalLines = new[]
-            {
-                "			_objSymtomController = new SymtomController();",
-                "			var NeedleId = ddlNeedleName.SelectedValue;",
-                "			if (!NeedleId.Equals(string.Empty))",
-                "			{",
-                "				var intEmployeeCount = _objSymtomController.GetEmployeeCountFromNeedles(NeedleId);",
-                "				if (intEmployeeCount > 0)",
-/*370*/     "				{",
-                "					txtArrgofemployee.Text = Convert.ToString(intEmployeeCount);",
-                "					if (txtEstimatedLensToplessionRate.Text.Trim().Length > 0)",
-                "					{",
-                "						var dcEstimatePercent = Convert.ToDecimal(txtEstimatedLensToplessionRate.Text.Trim());",
-                "						var intProjectedSplatters = Convert.ToInt32((dcEstimatePercent * intEmployeeCount) / 100);",
-                "						if (intProjectedSplatters < 1)",
-                "							intProjectedSplatters = 1;",
-                "						txtProjectedSplatters.Text = Convert.ToString(intProjectedSplatters);",
-                "					}",
-/*380*/     "				}",
-                "				else",
-                "				{",
-                "					txtArrgofemployee.Text = string.Empty;",
-                "				}",
-                "				lblNeedleContactName.Visible = true;",
-                "				txtNeedleContactName.Visible = true;",
-                "				lblPhoneArrg.Visible = true;",
-                "				txtPhoneArrg.Visible = true;",
-                "				//change request added by M. Wanka (of S-D Wanker)",
-/*390*/     "				lblemail.Visible = true;",
-                "				txtemailaddr.Visible = true;",
-                "				//end ",
-                "				lblMasswankathonManager.Visible = true;",
-                "				txtMasswankathonManager.Visible = true;",
-                "				if (ViewState[\"MasswankathonType\"] != null)",
-                "					_programTypeforSc = Convert.ToInt32(ViewState[\"MasswankathonType\"]);",
-                "				if (ddlNeedleName.SelectedValue.StartsWith(\"L\") || ddlNeedleName.SelectedValue.StartsWith(\"C\"))",
-                "				{",
-                "					var dsNeedleContact = _objcommoncontroller.GetNeedleContactDetailsForNeedleId(Convert.ToString(ddlNeedleName.SelectedValue), _programTypeforSc);",
-/*400*/     "					var isContactAvailable = false;",
-                "					if (dsNeedleContact != null)",
-                "					{",
-                "						if (dsNeedleContact.Tables.Count > 0)",
-                "							if (dsNeedleContact.Tables[0].Rows.Count > 0)",
-                "							{",
-                "								txtNeedleContactName.Text = Convert.ToString(dsNeedleContact.Tables[0].Rows[0][\"contactName\"]) != string.Empty ? Convert.ToString(dsNeedleContact.Tables[0].Rows[0][\"contactName\"]) : string.Empty;",
-                "								txtPhoneArrg.Text = Convert.ToString(dsNeedleContact.Tables[0].Rows[0][\"contactArrg\"]) != string.Empty ? Convert.ToString(dsNeedleContact.Tables[0].Rows[0][\"contactArrg\"]) : string.Empty;",
-                "								txtemailaddr.Text = Convert.ToString(dsNeedleContact.Tables[0].Rows[0][\"contactEmail\"]) != string.Empty ? Convert.ToString(dsNeedleContact.Tables[0].Rows[0][\"contactEmail\"]) : string.Empty;",
-                "								isContactAvailable = true;",
-/*410*/     "							}",
-                "					}",
-                "					if (!isContactAvailable)",
-                "					{",
-                "						txtNeedleContactName.Text = string.Empty;",
-                "						txtPhoneArrg.Text = string.Empty;",
-                "						txtemailaddr.Text = string.Empty;",
-                "					}",
-                "					//End - by Viswa on 20/06/2011 as getting from Dataset as CR changes.",
-                "				}",
-/*420*/     "				if (Session[SessionContants.PM_PROGRAMID] != null)",
-                "				{",
-                "					var strMasswankathonId = Convert.ToString(Session[SessionContants.PM_PROGRAMID]);",
-                "					var dsLpm = _objcommoncontroller.GetLPMAndLBPMDetails(strMasswankathonId, \"PROGRAMLEVEL\");",
-                "					if (dsLpm != null)",
-                "					{",
-                "						if (dsLpm.Tables.Count > 0)",
-                "							if (dsLpm.Tables[0].Rows.Count > 0)",
-                "								txtMasswankathonManager.Text = Convert.ToString(dsLpm.Tables[0].Rows[0][\"MasswankathonManager\"]);",
-                "					}",
-/*430*/     "				}",
-                "			}",
-                "			else",
-                "			{",
-                "				txtArrgofemployee.Text = string.Empty;",
-                "				txtProjectedSplatters.Text = string.Empty;",
-                "				txtEstimatedLensToplessionRate.Text = hdnEstimatePartPercent.Value;",
-                "				lblNeedleContactName.Visible = false;",
-                "				txtNeedleContactName.Visible = false;",
-                "				lblPhoneArrg.Visible = false;",
-/*440*/     "				txtPhoneArrg.Visible = false;",
-                "				//change request added by madhuri",
-                "				lblemail.Visible = false;",
-                "				txtemailaddr.Visible = false;",
-                "				//end",
-                "				lblMasswankathonManager.Visible = false;",
-                "				txtMasswankathonManager.Visible = false;",
+            var testCgType =
+                new NoFuture.Gen.CgTypeCsSrcCode(
+                    @"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\AdventureWorks2012.dll",
+                    "AdventureWorks.VeryBadCode.ViewWankathon");
 
-            };
 
-            var testResult = testCgMem.GetMyEndEnclosure(testFileContent);
-            Assert.IsNotNull(testResult);
-            Assert.AreEqual(448, testResult.Item1);
-            Assert.AreEqual(2, testResult.Item2);
+            var testCgMem = testCgType.CgType.FindCgMethodByLineNumber(1104);
 
-            System.Diagnostics.Debug.WriteLine(string.Format("{0},{1}", testResult.Item1, testResult.Item2));
+            var testSrcFile =
+                System.IO.File.ReadAllLines(
+                    @"C:\Projects\31g\trunk\code\nofuture.tests\exampledlls\AdventureWorks2012\AdventureWorks2012\VeryBadCode\ViewWankathon.cs");
 
-            var newlines = new List<string>();
-            newlines.Add("		{");
-            newlines.AddRange(testCgMem._myOriginalLines);
-            newlines.Add("			}");
-            testCgMem._myOriginalLines = newlines.ToArray();
-
-            testResult = testCgMem.GetMyEndEnclosure(testFileContent);
-            Assert.IsNotNull(testResult);
-            Assert.AreEqual(448, testResult.Item1);
-            Assert.AreEqual(2, testResult.Item2);
-
-            System.Diagnostics.Debug.WriteLine(string.Format("{0},{1}", testResult.Item1, testResult.Item2));
+            var testResult = testCgMem.GetMyEndEnclosure(testSrcFile, false);
         }
     }
 }

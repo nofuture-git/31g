@@ -16,6 +16,7 @@ using NoFuture.Shared;
 using NoFuture.Util.Binary;
 using NoFuture.Util.Gia.Args;
 using Newtonsoft.Json;
+using NoFuture.Util.Pos;
 
 namespace NoFuture.Util.Gia
 {
@@ -531,6 +532,9 @@ namespace NoFuture.Util.Gia
                             String.Equals(x.AssemblyName, type.Assembly.GetName().FullName,
                                 StringComparison.OrdinalIgnoreCase));
 
+                if (t == null)
+                    return null;
+
                 asmName = type.Assembly.GetName().Name;
                 expandedName = !String.IsNullOrEmpty(asmName)
                     ? type.FullName.Replace(String.Format("{0}", asmName), String.Empty)
@@ -538,7 +542,7 @@ namespace NoFuture.Util.Gia
                 if (!String.Equals(expandedName, tokenName.Name, StringComparison.OrdinalIgnoreCase))
                     tokenName.Name = expandedName;
 
-                tokenName.OwnAsmIdx = t != null ? t.IndexId : 0;
+                tokenName.OwnAsmIdx = t.IndexId;
                 return tokenName;
             }
             if (mi.DeclaringType == null) return tokenName;
@@ -553,6 +557,8 @@ namespace NoFuture.Util.Gia
                     x =>
                         String.Equals(x.AssemblyName, mi.DeclaringType.Assembly.GetName().FullName,
                             StringComparison.OrdinalIgnoreCase));
+            if (f == null)
+                return null;
 
             asmName = mi.DeclaringType.Assembly.GetName().Name;
             expandedName = !String.IsNullOrEmpty(asmName)
@@ -561,7 +567,7 @@ namespace NoFuture.Util.Gia
             if (!String.Equals(expandedName, tokenName.Name, StringComparison.OrdinalIgnoreCase))
                 tokenName.Name = String.Format("{0}{1}{2}", expandedName, Constants.TypeMethodNameSplitOn, tokenName.Name);
 
-            tokenName.OwnAsmIdx = f != null ? f.IndexId : 0;
+            tokenName.OwnAsmIdx = f.IndexId;
 
             var mti = mi as MethodInfo;
             if (mti == null)
@@ -703,8 +709,6 @@ namespace NoFuture.Util.Gia
 
             if (leftList == null || rightList == null)
                 return new List<MetadataTokenName>().ToArray();
-            if (rightList.Item1 == null || leftList.Item1 == null)
-                return new List<MetadataTokenName>().ToArray();
             if (rightList.Item2 == null || rightList.Item2.Names == null || rightList.Item2.Names.Length <= 0)
                 return new List<MetadataTokenName>().ToArray();
             if (leftList.Item2 == null || leftList.Item2.Names == null || leftList.Item2.Names.Length <= 0)
@@ -724,8 +728,40 @@ namespace NoFuture.Util.Gia
                     continue;
                 listOut.Add(k);
             }
-
+            
             return listOut.ToArray();
+        }
+
+        /// <summary>
+        /// Set operation for the joining of two <see cref="TokenNames"/> with
+        /// thier respective <see cref="AsmIndicies"/>
+        /// </summary>
+        /// <param name="leftList"></param>
+        /// <param name="rightList"></param>
+        /// <returns></returns>
+        public static MetadataTokenName[] Union(Tuple<AsmIndicies, TokenNames> leftList,
+            Tuple<AsmIndicies, TokenNames> rightList)
+        {
+            Func<MetadataTokenName, int> hashCode = x => x.GetNameHashCode();
+
+            if (leftList == null || rightList == null)
+                return new List<MetadataTokenName>().ToArray();
+            if (rightList.Item2 == null)
+                return leftList.Item2.Names;
+            if (leftList.Item2 == null)
+                return rightList.Item2.Names;
+
+            //expand to full names
+            leftList.Item2.ApplyFullName(leftList.Item1);
+            rightList.Item2.ApplyFullName(rightList.Item1);
+
+            var d = rightList.Item2.Names.Distinct(new MetadataTokenNameComparer()).ToDictionary(hashCode);
+            var e = leftList.Item2.Names.Distinct(new MetadataTokenNameComparer()).ToDictionary(hashCode);
+
+            foreach(var key in e.Keys.Where(k => !d.ContainsKey(k)))
+                d.Add(key, e[key]);
+
+            return d.Values.Where(x => x.IsMethodName()).ToArray();
         }
 
         /// <summary>

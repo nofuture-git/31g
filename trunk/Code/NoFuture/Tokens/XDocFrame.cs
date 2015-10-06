@@ -370,7 +370,7 @@ namespace NoFuture.Tokens
         {
             //at the bottom of token-stack - must match 
             if(arr0.Count <= 1 && arr1.Count <= 1)
-                return new Tuple<int, int>(ot,arr1[0]);
+                return new Tuple<int, int>(ot,(arr1.Count == 0 ? ot : arr1[0]));
 
             //assuming $ot equals $arr[0] at the top of the call-stack
             if (arr1[0] > arr0[0] && (arr0.Count == 1 || arr1[0] < arr0[1]))

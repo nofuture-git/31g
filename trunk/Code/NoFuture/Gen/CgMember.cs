@@ -558,6 +558,8 @@ namespace NoFuture.Gen
             var charCount = 0;
             for (var j = 0; j < minStartAt; j++)
             {
+                if (srcFile.Length < j)
+                    break;
                 charCount += srcFile[j].Length + Environment.NewLine.Length;
             }
             //we want the last token whose start is less-than-equal-to the array position of the Pdb Start line
@@ -567,6 +569,8 @@ namespace NoFuture.Gen
             charCount = 0;
             for (var j = 0; j < maxEndAt; j++)
             {
+                if (srcFile.Length < j)
+                    break;
                 charCount += srcFile[j].Length + Environment.NewLine.Length;
             }
             var myTokenFromMax = myTokens.FirstOrDefault(x => x.Start < charCount) ?? myTokenFromMin;
@@ -580,6 +584,8 @@ namespace NoFuture.Gen
                     //go up one line and try again
                     for (var j = 0; j < minStartAt - 1; j++)
                     {
+                        if (srcFile.Length < j)
+                            break;
                         charCount += srcFile[j].Length + Environment.NewLine.Length;
                     }
                     myTokenFromMin = myTokens.FirstOrDefault(x => x.Start < charCount) ?? myTokenFromMin;

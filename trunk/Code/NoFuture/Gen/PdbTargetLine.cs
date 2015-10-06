@@ -192,6 +192,8 @@ namespace NoFuture.Gen
             var irregulars = new List<PdbTargetLine>();
 
             var stackOfLines = new Stack<PdbTargetLine>(pdbTargetLines.OrderByDescending(x => x.StartAt).ToArray());
+            if (!stackOfLines.Any())
+                return irregulars;
             var t = stackOfLines.Pop();
             while (t != null)
             {

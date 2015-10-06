@@ -1096,5 +1096,49 @@ namespace AdventureWorks.VeryBadCode
         {
             Console.WriteLine("wait wait");
         }
+
+
+        public List<Wank> StartWithTryCatch()
+        {
+            try
+            {
+                var somethinglame = new[] {new Wank(), new Wank(), new Wank()};
+                var accountNames = from rows in somethinglame orderby rows.LimiterId ascending select rows;
+                return accountNames.ToList();
+
+            }
+            catch (Exception ex)
+            {
+                AdventureWorks.VeryBadCode.Wank.LookLikeALog("", ex);
+                //Code added by Supawank on 10/07/2011 to Write Exception Log in File server
+                //Code starts here
+
+                //code ends here
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>   
+        public List<Wank> AnotherTryCatch()
+        {
+            string nogood = string.Empty;
+            try
+            {
+                var somethinglame = new[] { new Wank(), new Wank(), new Wank() };
+                return somethinglame.ToList();
+
+            }
+            catch (Exception ex)
+            {
+                AdventureWorks.VeryBadCode.Wank.LookLikeALog("", ex);
+                //Code added by Supawank on 10/07/2011 to Write Exception Log in File server
+                //Code starts here
+
+                //code ends here
+                throw ex;
+            }
+        }
     }
 }

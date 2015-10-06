@@ -215,6 +215,22 @@ namespace NoFuture.Shared
         }
     }
 
+    [Serializable]
+    public class MetadataTokenNameComparer : IEqualityComparer<MetadataTokenName>
+    {
+        public bool Equals(MetadataTokenName x, MetadataTokenName y)
+        {
+            if (x == null || y == null)
+                return false;
+            return x.GetNameHashCode() == y.GetNameHashCode();
+        }
+
+        public int GetHashCode(MetadataTokenName obj)
+        {
+            return obj.GetNameHashCode();
+        }
+    }
+
     /// <summary>
     /// Bundler type for <see cref="MetadataTokenName"/>
     /// </summary>
@@ -248,11 +264,13 @@ namespace NoFuture.Shared
         /// <param name="asmIndicies"></param>
         public void ApplyFullName(AsmIndicies asmIndicies)
         {
+            if (Names == null || Names.Length <= 0)
+                return;
+            if (Names.All(x => !x.IsPartialName()))
+                return;
             if (asmIndicies == null)
                 return;
             if (St == MetadataTokenStatus.Error)
-                return;
-            if (Names == null || Names.Length <= 0)
                 return;
             foreach (var t in Names)
             {

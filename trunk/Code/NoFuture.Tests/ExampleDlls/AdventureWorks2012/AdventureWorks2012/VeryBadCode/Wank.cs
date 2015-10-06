@@ -54,6 +54,11 @@ namespace AdventureWorks.VeryBadCode
         {
             return new Wank();
         }
+
+        public static void LookLikeALog(string msg, System.Exception ex)
+        {
+            
+        }
     }
     public class CheckBox : Wank { }
     public class GridViewRow : Wank { }
