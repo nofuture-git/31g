@@ -90,28 +90,20 @@ namespace NoFuture.Util
         /// <summary>
         /// Reduces multiple blank lines.
         /// </summary>
-        /// <param name="fileFullName"></param>
+        /// <param name="lines"></param>
         /// <returns></returns>
-        public static string RemoveBlankLines(string fileFullName)
+        public static string RemoveBlankLines(string[] lines)
         {
-            if (!File.Exists(fileFullName))
-                return null;
+            var linesOut = new StringBuilder();
 
-            var fileLinesOut = new StringBuilder();
-
-            foreach (var ln in File.ReadAllLines(fileFullName))
+            foreach (var ln in lines)
             {
-                if (string.IsNullOrWhiteSpace(ln))
-                {
-                    fileLinesOut.Append(Environment.NewLine);
-                }
-                else
-                {
-                    fileLinesOut.Append(string.Format("{0}{1}", ln, Environment.NewLine));
-                }
+                linesOut.Append(string.IsNullOrWhiteSpace(ln)
+                    ? Environment.NewLine
+                    : string.Format("{0}{1}", ln, Environment.NewLine));
             }
 
-            var value = fileLinesOut.ToString();
+            var value = linesOut.ToString();
 
             while (true)
             {

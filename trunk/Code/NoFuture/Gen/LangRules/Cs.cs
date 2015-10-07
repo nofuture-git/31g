@@ -252,7 +252,8 @@ namespace NoFuture.Gen.LangRules
                 cgMem.Args.Select(
                     x =>
                         @"\s*\b" +
-                        TypeName.GetTypeNameWithoutNamespace(x.ArgType) + @"\b\s*([^\,]+?)").ToList();
+                        Util.Etc.EscapeString(TypeName.GetTypeNameWithoutNamespace(x.ArgType), EscapeStringType.REGEX) +
+                        @"\b\s*([^\,]+?)").ToList();
             regexPattern.AppendFormat(@"\s*\({0}\)", string.Join(@"\,", simpleArgTypes));
 
             return regexPattern.ToString();

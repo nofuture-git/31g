@@ -206,16 +206,10 @@ namespace NoFuture.Gen
 
             var justNameRegex = new Regex("(" + asNameOnlyRegexPattern + ")");
 
+            //set source to pristine for regex to get a match
             if (!isClean)
             {
-                srcFile = Settings.LangStyle.RemoveBlockComments(srcFile);
-                srcFile = Settings.LangStyle.RemoveLineComments(srcFile, Settings.LangStyle.LineComment);
-                srcFile = Settings.LangStyle.RemovePreprocessorCmds(srcFile);
-                var irregular = false;
-                for (var m = 0; m < srcFile.Length; m++)
-                {
-                    srcFile[m] = Settings.LangStyle.EscStringLiterals(srcFile[m], EscapeStringType.BLANK, ref irregular);
-                }
+                srcFile = RefactorExtensions.CleanSrcFile(srcFile);
             }
 
             var fileSig = new Tuple<int, string>(0, string.Empty);
@@ -269,75 +263,32 @@ namespace NoFuture.Gen
         /// <returns></returns>
         public Tuple<int, int> GetMyEndEnclosure(string[] srcFile, bool isClean = false)
         {
+            //only do this once-per-instance
             if (_myEndEnclosure != null) return _myEndEnclosure;
 
+            //validate we have everything needed to go foward
             if (srcFile == null || srcFile.Length <= 0)
                 return null;
-
             if (PdbModuleSymbols == null || PdbModuleSymbols.firstLine == null || PdbModuleSymbols.lastLine == null)
-                return null;
-
-            var minStartAt = PdbModuleSymbols.firstLine.lineNumber;
-            var maxEndAt = PdbModuleSymbols.lastLine.lineNumber;
-
-            //check if this is auto-property before cleaning all this content
-            if (minStartAt < 0 && !HasSetter && !HasGetter)
                 return null;
 
             //set source to pristine for tokens to operate on
             if (!isClean)
             {
-                srcFile = Settings.LangStyle.RemoveBlockComments(srcFile);
-                srcFile = Settings.LangStyle.RemoveLineComments(srcFile, Settings.LangStyle.LineComment);
-                srcFile = Settings.LangStyle.RemovePreprocessorCmds(srcFile);
-                var irregular = false;
-                for (var m = 0; m < srcFile.Length; m++)
-                {
-                    srcFile[m] = Settings.LangStyle.EscStringLiterals(srcFile[m], EscapeStringType.BLANK, ref irregular);
-                }
+                srcFile = RefactorExtensions.CleanSrcFile(srcFile);
             }
+
+            //will resolve the start to lock in on the very next token pair
+            var myStartEnclosure = GetMyStartEnclosure(srcFile, true);
 
             var openToken = Settings.LangStyle.GetEnclosureOpenToken(this);
             var closeToken = Settings.LangStyle.GetEnclosureCloseToken(this);
 
-            //handle finding auto-properties
-            if (minStartAt < 0 && (HasGetter || HasSetter))
+            //handle single line enclosures differently
+            if (GetSingleLineEndEnclosure(srcFile, myStartEnclosure))
             {
-                var autoPropSigAt = GetMyStartEnclosure(srcFile, true);
-                if (autoPropSigAt == null || autoPropSigAt.Item1 < 0 || autoPropSigAt.Item1 >= srcFile.Length)
-                    return null;
-
-                //get this line
-                var autoPropLine = srcFile[autoPropSigAt.Item1];
-                var idxInLine = autoPropSigAt.Item2 < 0 || autoPropSigAt.Item2 >= autoPropLine.Length
-                    ? 0
-                    : autoPropSigAt.Item2;
-
-                //reduce the line to where we know the auto-prop starts
-                autoPropLine = autoPropLine.Substring(idxInLine);
-
-                //now find the very first occurance of the open-token
-                idxInLine = autoPropLine.IndexOf(openToken, StringComparison.Ordinal);
-
-                //if we can move one index past this then that is our min
-                if (idxInLine <= 0 || idxInLine + 1 > autoPropLine.Length)
-                    return null;
-                minStartAt = idxInLine + 1;
-
-                //if there is a close token already on this line it must be our ending
-                autoPropLine = autoPropLine.Substring(minStartAt);
-                if (autoPropLine.Contains(closeToken))
-                {
-                    idxInLine = autoPropLine.IndexOf(closeToken, StringComparison.Ordinal);
-                    idxInLine -= 1;
-                    idxInLine = (srcFile[autoPropSigAt.Item1].Length - autoPropLine.Length) + idxInLine;
-                    _myEndEnclosure = new Tuple<int, int>(autoPropSigAt.Item1, idxInLine);
-
-                    return _myEndEnclosure;
-                }
+                return _myEndEnclosure;
             }
-
-            //return new Tuple<int, int>(PdbModuleSymbols.lastLine.lineNumber, PdbModuleSymbols.lastLine.length);
 
             //get the original file as an array of tokens
             XDocFrame myFilesFrame;
@@ -352,79 +303,120 @@ namespace NoFuture.Gen
 
             //turn the original file into a single string
             var srcFileStr = string.Join(Environment.NewLine, srcFile);
-            var myTokens = myFilesFrame.FindEnclosingTokens(srcFileStr);
 
-            myTokens = myTokens.OrderByDescending(x => x.Start).ToList();
-            //turn the pdb start line into an array index value
-            var charCount = 0;
-            for (var j = 0; j < minStartAt; j++)
+            List<Token> myTokens = null;
+            try
+            {
+                //get the token frame - this will throw an exception if its out-of-balance
+                myTokens = myFilesFrame.FindEnclosingTokens(srcFileStr);
+            }
+            catch (OutOfBalanceException)
+            {
+                return GetDefaultEndEnclosure(srcFile);
+            }
+
+            if (myTokens == null)
+                return GetDefaultEndEnclosure(srcFile);
+
+            myTokens = myTokens.OrderBy(x => x.Start).ToList();
+
+            //need the enclosure's start to be comparable to the tokens array
+            var charCount = myStartEnclosure.Item2;
+            for (var j = 1; j < myStartEnclosure.Item1; j++)
             {
                 if (srcFile.Length < j)
                     break;
+
                 charCount += srcFile[j].Length + Environment.NewLine.Length;
             }
-            //we want the last token whose start is less-than-equal-to the array position of the Pdb Start line
-            var myTokenFromMin = myTokens.FirstOrDefault(x => x.Start < charCount);
 
-            //need to validate our token on both ends
+            //we want the very first token we can find which started just after our method signature
+            var myToken = myTokens.FirstOrDefault(x => x.Start > charCount);
+
+            if (myToken == null)
+                return GetDefaultEndEnclosure(srcFile);
+
+            //need to reverse the Token's End back into a line number
             charCount = 0;
-            for (var j = 0; j < maxEndAt; j++)
+            for (var k = 0; k < srcFile.Length; k++)
             {
-                if (srcFile.Length < j)
-                    break;
-                charCount += srcFile[j].Length + Environment.NewLine.Length;
-            }
-            var myTokenFromMax = myTokens.FirstOrDefault(x => x.Start < charCount) ?? myTokenFromMin;
-
-            if (myTokenFromMin != null)
-            {
-                //being lopsided indicates the very first char of the method body is another open token
-                if (!myTokenFromMin.Equals(myTokenFromMax))
+                //if we go to the next line will be blow past the token's end?
+                if (charCount + srcFile[k].Length + Environment.NewLine.Length < myToken.End)
                 {
-                    charCount = 0;
-                    //go up one line and try again
-                    for (var j = 0; j < minStartAt - 1; j++)
-                    {
-                        if (srcFile.Length < j)
-                            break;
-                        charCount += srcFile[j].Length + Environment.NewLine.Length;
-                    }
-                    myTokenFromMin = myTokens.FirstOrDefault(x => x.Start < charCount) ?? myTokenFromMin;
+                    charCount += srcFile[k].Length + Environment.NewLine.Length;
+                    continue;
                 }
+                //this should be the index in line k
+                var sl = myToken.End - charCount;
 
-                //need to reverse the Token's End back into a line number
-                charCount = 0;
-                for (var k = 0; k < srcFile.Length; k++)
-                {
-                    //if we go to the next line will be blow past the token's end
-                    if (charCount + srcFile[k].Length + Environment.NewLine.Length < myTokenFromMin.End)
-                    {
-                        charCount += srcFile[k].Length + Environment.NewLine.Length;
-                        continue;
-                    }
-                    //this should be the index in line k
-                    var sl = myTokenFromMin.End - charCount;
-                    _myEndEnclosure = new Tuple<int, int>(k, sl);
-                    return _myEndEnclosure;
-                }
+                _myEndEnclosure = new Tuple<int, int>(k, sl);
+                return _myEndEnclosure;
             }
 
-            //default to look up from pdb line.
+            return GetDefaultEndEnclosure(srcFile);
+        }
+        #endregion
+
+        #region internal helpers
+
+        internal Tuple<int, int> GetDefaultEndEnclosure(string[] srcFile)
+        {
+            var closeToken = Settings.LangStyle.GetEnclosureCloseToken(this);
+            var maxEndAt = PdbModuleSymbols.lastLine.lineNumber;
+
             for (var i = maxEndAt; i > 0; i--)
             {
                 if (!srcFile[i].Contains(closeToken))
                     continue;
                 var idx = srcFile[i].LastIndexOf(closeToken, StringComparison.Ordinal);
                 _myEndEnclosure = new Tuple<int, int>(i, idx + closeToken.Length);
-                return _myEndEnclosure;
-
             }
-
-            return null;
+            return _myEndEnclosure;
         }
-        #endregion
 
-        #region internal helpers
+        internal bool GetSingleLineEndEnclosure(string[] srcFile, Tuple<int, int> myStartEnclosure)
+        {
+            var openToken = Settings.LangStyle.GetEnclosureOpenToken(this);
+            var closeToken = Settings.LangStyle.GetEnclosureCloseToken(this);
+            var minStartAt = PdbModuleSymbols.firstLine.lineNumber;
+            var maxEndAt = PdbModuleSymbols.lastLine.lineNumber;
+
+            if (minStartAt > 0 && minStartAt != maxEndAt) return false;
+
+            if (myStartEnclosure == null || myStartEnclosure.Item1 < 0 || myStartEnclosure.Item1 >= srcFile.Length)
+                return false;
+
+            //get this line
+            var autoPropLine = srcFile[myStartEnclosure.Item1];
+            var idxInLine = myStartEnclosure.Item2 < 0 || myStartEnclosure.Item2 >= autoPropLine.Length
+                ? 0
+                : myStartEnclosure.Item2;
+
+            //reduce the line to where we know the auto-prop starts
+            autoPropLine = autoPropLine.Substring(idxInLine);
+
+            //now find the very first occurance of the open-token
+            idxInLine = autoPropLine.IndexOf(openToken, StringComparison.Ordinal);
+
+            //if we can move one index past this then that is our min
+            if (idxInLine <= 0 || idxInLine + 1 > autoPropLine.Length)
+                return false;
+            minStartAt = idxInLine + 1;
+
+            //if there is a close token already on this line it must be our ending
+            autoPropLine = autoPropLine.Substring(minStartAt);
+            if (autoPropLine.Contains(closeToken))
+            {
+                idxInLine = autoPropLine.IndexOf(closeToken, StringComparison.Ordinal);
+                idxInLine -= 1;
+                idxInLine = (srcFile[myStartEnclosure.Item1].Length - autoPropLine.Length) + idxInLine;
+                _myEndEnclosure = new Tuple<int, int>(myStartEnclosure.Item1, idxInLine);
+
+                return true;
+            }
+            return false;
+        }
+
         internal CgType MyCgType { get { return _myCgType; } set { _myCgType = value; } }
         #endregion
 

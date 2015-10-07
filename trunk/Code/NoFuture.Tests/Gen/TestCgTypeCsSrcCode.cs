@@ -145,6 +145,66 @@ namespace NoFuture.Tests.Gen
         }
 
         [TestMethod]
+        public void TestBlanOutMethods02()
+        {
+            NoFuture.Util.FxPointers.AddResolveAsmEventHandlerToDomain();
+            var testTypeName = "SummitHealth.CRM.Data.Accounting.AccountingDAO";
+            var testAsm = @"C:\Projects\Summit\APEX\SummitHealth.CRM.UI.Design\bin\SummitHealth.CRM.Data.dll";
+
+            var testMethodNames = new List<string>
+            {
+                "Save",
+                "GetAccountNames",
+                "SaveAccountInformationValues",
+                "GetAccountID",
+                "GetAccountInformation",
+                "SaveAccountExecutiveInformationValues",
+                "UpdateAccountExecutiveInformationValues",
+                "UpdateAccountInformationValues",
+                "GetClientDetailInformation",
+                "GetClientContactInformation",
+                "UpdateAccountActiveInformation",
+                "GetAccountExecutiveCount",
+                "GetStaffAssignedToStates",
+                "DeleteStafferFromStafferStateAssigned",
+                "UpdateStafferAssignedStates",
+                "GetUnAssignedStatestoStaffer",
+                "GetStafferStateAllignSearch",
+                "InsertStafferStateAssign",
+                "CheckAccountGroupIdForUpdate",
+                "GetAccountNamesWithStatusAccount",
+                "GetClientNames",
+                "GetClinicTitles",
+                "GetProgramInfo",
+                "GetAllProgramStatus",
+                "GetAllClientNames",
+                "GetAllKitNames",
+                "GetAllKitNamesByParentKitID",
+                "InsertIntoKitsMaster",
+                "GetClinicDeatilsForVerifyInvoice",
+                "GetStafftypeDetailsForVerifyInvoice",
+                "getVendorAddress"
+            };
+
+            var testSubject = new NoFuture.Gen.CgTypeCsSrcCode(testAsm, testTypeName);
+            Assert.IsNotNull(testSubject);
+            Assert.IsNotNull(testSubject.CgType);
+
+            var testCgMems = new List<CgMember>();
+
+            foreach (var mn in testMethodNames)
+            {
+                var cgMem = testSubject.CgType.Methods.FirstOrDefault(x => x.Name == mn);
+                if (cgMem == null)
+                    continue;
+
+                testCgMems.Add(cgMem);
+            }
+
+            NoFuture.Gen.RefactorExtensions.BlankOutMembers(testCgMems);
+        }
+
+        [TestMethod]
         public void TestMyOriginalLines()
         {
             NoFuture.Util.FxPointers.AddResolveAsmEventHandlerToDomain();

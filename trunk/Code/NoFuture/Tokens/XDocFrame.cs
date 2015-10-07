@@ -2,9 +2,15 @@
 using System.Linq;
 using System.Xml.Linq;
 using System.Collections.Generic;
+using NoFuture.Exceptions;
 
 namespace NoFuture.Tokens
 {
+    public class OutOfBalanceException : General
+    {
+        public OutOfBalanceException(string msg) : base(msg) { }
+        public OutOfBalanceException(string msg, Exception innerException) : base(msg, innerException) { }
+    }
     /// <summary>
     /// Like the assembly summary says, this is slightly better than regex since it
     /// works with a sense for 'blocks' or 'enclosures' but far less than something
@@ -368,6 +374,9 @@ namespace NoFuture.Tokens
 
         protected internal Tuple<int, int> FindTokenMatch(int ot, List<int> arr0, List<int> arr1)
         {
+            if((arr0.Any() && !arr1.Any()) || (!arr0.Any() && arr1.Any()))
+                throw new OutOfBalanceException("The source file is out-of-balance, check the tokens and try again");
+
             //at the bottom of token-stack - must match 
             if(arr0.Count <= 1 && arr1.Count <= 1)
                 return new Tuple<int, int>(ot,(arr1.Count == 0 ? ot : arr1[0]));

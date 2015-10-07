@@ -118,12 +118,12 @@ namespace NoFuture.Gen
 
         /// <summary>
         /// Replaces the implementation of each <see cref="CgMember"/>, including signature 
-        /// but not attributes, with blank spaces, one-for-one.
+        /// but not attributes.
         /// The implementation is resolved on the <see cref="CgMember.PdbModuleSymbols"/>
         /// </summary>
         /// <param name="blankOutCgMems"></param>
-        /// <param name="outputFileName"></param>
-        public static void BlankOutMembers(List<CgMember> blankOutCgMems, string outputFileName)
+        /// <param name="removeEmptyLines">Optional, set to true to not have the results as blank char-for-char</param>
+        public static void BlankOutMembers(List<CgMember> blankOutCgMems, bool removeEmptyLines = false)
         {
             if (blankOutCgMems == null || blankOutCgMems.Count <= 0)
                 return;
@@ -142,7 +142,11 @@ namespace NoFuture.Gen
                 var cgMems =
                     byFile.Where(x => string.Equals(x.PdbModuleSymbols.file, fl, StringComparison.OrdinalIgnoreCase))
                         .ToList();
-                BlankOutMembers(srcLines, cgMems, outputFileName);
+                BlankOutMembers(srcLines, cgMems, fl);
+                if (removeEmptyLines)
+                {
+                    NfPath.RemoveBlankLinesInFile(fl);
+                }
             }
         }
 
@@ -353,14 +357,7 @@ namespace NoFuture.Gen
             var originalSrc = new string[srcLines.Length];
             Array.Copy(srcLines, originalSrc, srcLines.Length);
 
-            srcLines = Settings.LangStyle.RemoveBlockComments(srcLines);
-            srcLines = Settings.LangStyle.RemoveLineComments(srcLines, Settings.LangStyle.LineComment);
-            srcLines = Settings.LangStyle.RemovePreprocessorCmds(srcLines);
-            var irregular = false;
-            for (var m = 0; m < srcLines.Length; m++)
-            {
-                srcLines[m] = Settings.LangStyle.EscStringLiterals(srcLines[m], EscapeStringType.BLANK, ref irregular);
-            }
+            srcLines = CleanSrcFile(srcLines);
 
             const char blankChar = ' ';
 
@@ -541,6 +538,19 @@ namespace NoFuture.Gen
             }
 
             return filteredStmts.ToArray();
+        }
+
+        internal static string[] CleanSrcFile(string[] srcFile)
+        {
+            srcFile = Settings.LangStyle.RemoveBlockComments(srcFile);
+            srcFile = Settings.LangStyle.RemoveLineComments(srcFile, Settings.LangStyle.LineComment);
+            srcFile = Settings.LangStyle.RemovePreprocessorCmds(srcFile);
+            var irregular = false;
+            for (var m = 0; m < srcFile.Length; m++)
+            {
+                srcFile[m] = Settings.LangStyle.EscStringLiterals(srcFile[m], EscapeStringType.BLANK, ref irregular);
+            }
+            return srcFile;
         }
         #endregion
     }

@@ -335,5 +335,18 @@ namespace NoFuture.Util
             pathOut = tempPath;
             return true;
         }
+
+        /// <summary>
+        /// Utility method to remove redundant blank lines
+        /// </summary>
+        /// <param name="fileFullName"></param>
+        public static void RemoveBlankLinesInFile(string fileFullName)
+        {
+            if (string.IsNullOrWhiteSpace(fileFullName) || !File.Exists(fileFullName))
+                return;
+            var redux = Etc.RemoveBlankLines(File.ReadAllLines(fileFullName));
+
+            File.WriteAllText(fileFullName, redux);
+        }
     }
 }

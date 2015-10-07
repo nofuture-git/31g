@@ -1140,5 +1140,15 @@ namespace AdventureWorks.VeryBadCode
                 throw ex;
             }
         }
+
+        public List<Wank> WankCaller()
+        {
+            var firstWank = StartWithTryCatch();
+            firstWank.AddRange(AnotherTryCatch());
+
+            var somethinglame = new[] { new Wank(), new Wank(), new Wank() };
+            firstWank.AddRange(somethinglame.ToList());
+            return firstWank;
+        }
     }
 }

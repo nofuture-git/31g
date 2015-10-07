@@ -692,6 +692,43 @@ namespace NoFuture.Util.Gia
         #region static analysis
 
         /// <summary>
+        /// For the given assembly, gets the named being made from itself to itself.
+        /// </summary>
+        /// <param name="asmIdx"></param>
+        /// <param name="tokenMap"></param>
+        /// <param name="tokenNames"></param>
+        /// <returns></returns>
+        public static MetadataTokenName[] InternallyCalled(AsmIndicies asmIdx, TokenIds tokenMap, TokenNames tokenNames)
+        {
+            if(tokenNames == null || tokenNames.Names == null || tokenNames.Names.Length <= 0)
+                return new List<MetadataTokenName>().ToArray();
+            if (tokenMap == null || tokenMap.Tokens == null || tokenMap.Tokens.Length <= 0)
+                return new List<MetadataTokenName>().ToArray();
+            var typeTokens = tokenMap.Tokens;
+
+            if (typeTokens.All(x => x.Items == null || x.Items.Length <= 0))
+                return new List<MetadataTokenName>().ToArray();
+            
+
+            var memberTokens = typeTokens.SelectMany(x => x.Items).ToList();
+
+            //these are all the token Ids one could call on this assembly
+            var memberTokenIds = memberTokens.Select(x => x.Id).ToList();
+
+            //get all the tokenIds, defined in this assembly and being called from this assembly
+            var callsInMembers =
+                memberTokens.SelectMany(x => x.Items)
+                    .Select(x => x.Id)
+                    .Where(x => memberTokenIds.Any(y => x == y))
+                    .ToList();
+
+
+            tokenNames.ApplyFullName(asmIdx);
+
+            return tokenNames.Names.Where(x => callsInMembers.Any(y => y == x.Id)).ToArray();
+        }
+
+        /// <summary>
         /// Set operation for comparision of two <see cref="TokenNames"/> with
         /// thier respective <see cref="AsmIndicies"/>
         /// </summary>
