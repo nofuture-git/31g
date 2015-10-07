@@ -60,7 +60,7 @@ namespace NoFuture.Tests.Gen
         }
 
         [TestMethod]
-        public void TestFindCgMethodByLineNumber()
+        public void TestMyRefactoredLines()
         {
             NoFuture.Util.FxPointers.AddResolveAsmEventHandlerToDomain();
             var testtypeName = "AdventureWorks.VeryBadCode.ViewWankathon";
@@ -70,12 +70,6 @@ namespace NoFuture.Tests.Gen
 
             Assert.IsNotNull(testSubject);
             Assert.IsNotNull(testSubject.CgType);
-            Assert.IsNotNull(testSubject.CgType.TypeFiles);
-            Assert.IsNotNull(testSubject.CgType.TypeFiles.FileIndex);
-            Assert.IsNotNull(testSubject.CgType.TypeFiles.UsingStatementFile);
-            var testResult = testSubject.CgType.FindCgMethodByLineNumber(251);
-            Assert.IsNotNull(testResult);
-            Assert.AreEqual("Page_Load", testResult.Name);
 
             var testCgMember = testSubject.CgType.Methods.FirstOrDefault(x => x.Name == "UsesLocalAndInstanceStuff");
             Assert.IsNotNull(testCgMember);
@@ -87,7 +81,7 @@ namespace NoFuture.Tests.Gen
                 System.Diagnostics.Debug.WriteLine(string.Format("Replace lines {0} to {1} with the line '{2}'", k.Item1, k.Item2, refactoredTestResults[k]));
             }
 
-            System.Diagnostics.Debug.WriteLine(string.Join("\n",testCgMember.MyCgLines(false)));
+            System.Diagnostics.Debug.WriteLine(string.Join("\n",testCgMember.MyCgLines()));
         }
 
         [TestMethod]
@@ -100,17 +94,26 @@ namespace NoFuture.Tests.Gen
 
             const string testOutputfile = @"C:\Projects\31g\trunk\Code\NoFuture.Tests\Gen\testRefactorMethods.cs";
 
+            if(File.Exists(testOutputfile))
+                File.Delete(testOutputfile);
+
             var testSubject = new NoFuture.Gen.CgTypeCsSrcCode(testAsm, testtypeName);
             Assert.IsNotNull(testSubject);
             Assert.IsNotNull(testSubject.CgType);
-            Assert.IsNotNull(testSubject.CgType.TypeFiles);
             var testMethod00 = testSubject.CgType.Methods.FirstOrDefault(x => x.Name == testMethodNames[0]);
             Assert.IsNotNull(testMethod00);
             var testMethod01 = testSubject.CgType.Methods.FirstOrDefault(x => x.Name == testMethodNames[1]);
             Assert.IsNotNull(testMethod01);
-            testSubject.CgType.TypeFiles.MoveMethods(new List<CgMember>() {testMethod00, testMethod01}, "roeiu",
-                testOutputfile,
-                new Tuple<string, string>("AdventureWorks.VeryBadCode", "RefactoredType"));
+            testSubject.CgType.MoveMethods(new MoveMethodsArgs
+            {
+                SrcFile = @"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\AdventureWorks2012\AdventureWorks2012\VeryBadCode\ViewWankathon.cs",
+                MoveMembers = new List<CgMember> {testMethod00, testMethod01},
+                NewVariableName = "roeiu",
+                OutFilePath = testOutputfile,
+                OutFileNamespaceAndType = new Tuple<string, string>("AdventureWorks.VeryBadCode", "RefactoredType")
+            });
+
+            Assert.IsTrue(File.Exists(testOutputfile));
 
         }
 
@@ -121,25 +124,47 @@ namespace NoFuture.Tests.Gen
             var testtypeName = "AdventureWorks.VeryBadCode.ViewWankathon";
             var testAsm = @"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\AdventureWorks2012.dll";
             var testMethodNames = new List<string> { "MyReversedString", "UsesLocalAndInstanceStuff", "Page_Load" };
-
+            var testSrcFile =
+                File.ReadAllLines(
+                    @"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\AdventureWorks2012\AdventureWorks2012\VeryBadCode\ViewWankathon.cs");
 
             var testSubject = new NoFuture.Gen.CgTypeCsSrcCode(testAsm, testtypeName);
             Assert.IsNotNull(testSubject);
             Assert.IsNotNull(testSubject.CgType);
-            Assert.IsNotNull(testSubject.CgType.TypeFiles);
             var testMethod00 = testSubject.CgType.Methods.FirstOrDefault(x => x.Name == testMethodNames[1]);
             Assert.IsNotNull(testMethod00);
             var testMethod01 = testSubject.CgType.Methods.FirstOrDefault(x => x.Name == testMethodNames[2]);
             Assert.IsNotNull(testMethod01);
-
             var testProp00 = testSubject.CgType.Properties.FirstOrDefault(x => x.Name == testMethodNames[0]);
             Assert.IsNotNull(testProp00);
 
-            var testPropEndAt = testProp00.GetMyEndEnclosure(testSubject.CgType.TypeFiles.OriginalSourceFileContent);
-            System.Diagnostics.Debug.WriteLine(String.Format("{0},{1}", testPropEndAt.Item1, testPropEndAt.Item2));
-            // testProp00, 
-            testSubject.CgType.TypeFiles.BlankOutMethods(new List<CgMember>() {testProp00, testMethod00, testMethod01 }, @"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\AdventureWorks2012\AdventureWorks2012\VeryBadCode\TestBlankOutMethods.cs");
+            NoFuture.Gen.RefactorExtensions.BlankOutMembers(testSrcFile,
+                new List<CgMember> {testProp00, testMethod00, testMethod01},
+                @"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\AdventureWorks2012\AdventureWorks2012\VeryBadCode\TestBlankOutMethods.cs");
 
+        }
+
+        [TestMethod]
+        public void TestMyOriginalLines()
+        {
+            NoFuture.Util.FxPointers.AddResolveAsmEventHandlerToDomain();
+            var testtypeName = "AdventureWorks.VeryBadCode.ViewWankathon";
+            var testAsm = @"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\AdventureWorks2012.dll";
+
+            var testMethodName = "ddlScreeningLocation_SelectedIndexChanged";
+
+            var testSubject = new NoFuture.Gen.CgTypeCsSrcCode(testAsm, testtypeName);
+            Assert.IsNotNull(testSubject);
+            Assert.IsNotNull(testSubject.CgType);
+
+            var testMethod00 = testSubject.CgType.Methods.FirstOrDefault(x => x.Name == testMethodName);
+            Assert.IsNotNull(testMethod00);
+            var testResult = testMethod00.MyOriginalLines();
+
+            Assert.IsNotNull(testResult);
+
+            foreach(var ln in testResult)
+                System.Diagnostics.Debug.WriteLine(ln);
         }
     }
 }

@@ -48,20 +48,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CgTypeFileIndex.cs" />
     <Compile Include="Etc.cs" />
     <Compile Include="CgArg.cs" />
-    <Compile Include="CgTypeFiles.cs" />
     <Compile Include="CgMember.cs" />
     <Compile Include="CgType.cs" />
+    <Compile Include="GraphVizExtensions.cs" />
     <Compile Include="ICgTypeWithSrcCode.cs" />
     <Compile Include="LangRules\Cs.cs" />
     <Compile Include="LangRules\ILangStyle.cs" />
     <Compile Include="Matching.cs" />
-    <Compile Include="PdbTargetLine.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RefactorExtensions.cs" />
     <Compile Include="Settings.cs" />
-    <Compile Include="SortPdb.cs" />
     <Compile Include="CgTypeCsSrcCode.cs" />
     <Compile Include="Switches.cs" />
   </ItemGroup>

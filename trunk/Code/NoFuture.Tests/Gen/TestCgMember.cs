@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NoFuture.Gen;
+using NoFuture.Shared;
+using NoFuture.Shared.DiaSdk.LinesSwitch;
 
 namespace NoFuture.Tests.Gen
 {
@@ -152,8 +155,8 @@ namespace NoFuture.Tests.Gen
             Assert.IsTrue(System.Text.RegularExpressions.Regex.IsMatch(testCompare, testResult));
 
         }
-
-        private string[] testFileContent = new[]
+        #region Testfile contents
+        public static string[] TestFileContent = new[]
         {
             "using System;",
             "using System.Globalization;",
@@ -495,7 +498,7 @@ namespace NoFuture.Tests.Gen
             "			if (!IsPostBack)",
             "			{",
             "				if (Session[SessionContants.FROMDODO] != null)",
-/*340*/"				{",
+/*340*/     "				{",
             "					if (Convert.ToBoolean(Session[SessionContants.FROMDODO]))",
             "					{",
             "						btnback.Text = @\"BACK\";",
@@ -606,8 +609,9 @@ namespace NoFuture.Tests.Gen
             "		}	",
             "		",
 /*450*/     "		",
-            "		[System.Web.Services.Protocols.SoapDocumentMethodAttribute(\"http://tempuri.org/1stMethod\", RequestElementName = \"1stMethod\", RequestNamespace = \"http://tempuri.org/\", ResponseElementName = \"1stMethodResponse\", ResponseNamespace = \"http://tempuri.org/\", Use = System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle = System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]",
-            "		[return: System.Xml.Serialization.XmlElementAttribute(\"1stMethodResult\")]protected void ddlScreeningLocation_SelectedIndexChanged(object sender, EventArgs e)",
+            "		[System.Web.Services.Protocols.SoapDocumentMethodAttribute(\"http://tempuri.org/1stMethod\")]",
+            "		[return: System.Xml.Serialization.XmlElementAttribute(\"1stMethodResult\")]",
+            "		protected void ddlScreeningLocation_SelectedIndexChanged(object sender, EventArgs e)",
             "		{",
             "			hdnTestIDs.Value = string.Empty;",
             "			hdnVenomIDs.Value = string.Empty;",
@@ -618,6 +622,7 @@ namespace NoFuture.Tests.Gen
 /*460*/     "	}",
             "}"
         };
+        #endregion
 
         [TestMethod]
         public void TestMyStartEnclosure()
@@ -626,14 +631,14 @@ namespace NoFuture.Tests.Gen
             {
                 Name = "GetYoMommaTypes",
                 IsMethod = true,
-                _myPdbTargetLine = new []{ new PdbTargetLine {StartAt = 365, EndAt = 445}},
+                PdbModuleSymbols = new ModuleSymbols(){lastLine = new PdbLineNumber(){lineNumber = 365}, firstLine = new PdbLineNumber(){lineNumber = 445}},
                 AccessModifier = CgAccessModifier.Family
             };
 
-            var testResult = testCgMem.GetMyStartEnclosure(testFileContent);
+            var testResult = testCgMem.GetMyStartEnclosure(TestFileContent);
             Assert.IsNotNull(testResult);
             Assert.AreEqual(362, testResult.Item1);
-            Assert.AreEqual(2,testResult.Item2);
+            Assert.AreEqual(1,testResult.Item2);
             System.Diagnostics.Debug.WriteLine(string.Format("{0},{1}", testResult.Item1, testResult.Item2));
 
             testCgMem = new CgMember()
@@ -646,32 +651,38 @@ namespace NoFuture.Tests.Gen
                         new CgArg {ArgName = "e", ArgType = "EventArgs"}
                     },
                 IsMethod = true,
-                _myPdbTargetLine = new []{ new PdbTargetLine {StartAt = 453, EndAt = 458}},
+                PdbModuleSymbols = new ModuleSymbols() { lastLine = new PdbLineNumber() { lineNumber = 453 }, firstLine = new PdbLineNumber() { lineNumber = 458 } },
                 AccessModifier = CgAccessModifier.Family
             };
-            testResult = testCgMem.GetMyStartEnclosure(testFileContent);
+            testResult = testCgMem.GetMyStartEnclosure(TestFileContent);
             Assert.IsNotNull(testResult);
-            Assert.AreEqual(452, testResult.Item1);
-            Assert.AreEqual(75, testResult.Item2);
+            Assert.AreEqual(354, testResult.Item1);
+            Assert.AreEqual(1, testResult.Item2);
             System.Diagnostics.Debug.WriteLine(string.Format("{0},{1}", testResult.Item1, testResult.Item2));
         }
 
         [TestMethod]
         public void TestGetMyEndEnclosure()
         {
-            var testCgType =
-                new NoFuture.Gen.CgTypeCsSrcCode(
-                    @"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\AdventureWorks2012.dll",
-                    "AdventureWorks.VeryBadCode.ViewWankathon");
+            var testCgMem = new CgMember()
+            {
+                Name = "ddlScreeningLocation_SelectedIndexChanged",
+                Args =
+                    new List<CgArg>
+                    {
+                        new CgArg {ArgName = "sender", ArgType = "object"},
+                        new CgArg {ArgName = "e", ArgType = "EventArgs"}
+                    },
+                IsMethod = true,
+                PdbModuleSymbols = new ModuleSymbols() { firstLine = new PdbLineNumber() { lineNumber = 356 }, lastLine = new PdbLineNumber() { lineNumber = 359 } },
+                AccessModifier = CgAccessModifier.Family
+            };
 
+            var testSrcFile = TestFileContent;
 
-            var testCgMem = testCgType.CgType.FindCgMethodByLineNumber(1104);
-
-            var testSrcFile =
-                System.IO.File.ReadAllLines(
-                    @"C:\Projects\31g\trunk\code\nofuture.tests\exampledlls\AdventureWorks2012\AdventureWorks2012\VeryBadCode\ViewWankathon.cs");
-
-            var testResult = testCgMem.GetMyEndEnclosure(testSrcFile, false);
+            var testResult = testCgMem.GetMyEndEnclosure(testSrcFile);
+            System.Diagnostics.Debug.WriteLine(string.Format("{0},{1}", testResult.Item1, testResult.Item2));
         }
+
     }
 }

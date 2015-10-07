@@ -57,8 +57,9 @@ namespace NoFuture.Gen.LangRules
         /// <param name="cgType"></param>
         /// <param name="cgClsAccess"></param>
         /// <param name="typeModifier"></param>
+        /// <param name="nsImports"></param>
         /// <returns></returns>
-        string ToClass(CgType cgType, CgAccessModifier cgClsAccess, CgClassModifier typeModifier);
+        string ToClass(CgType cgType, CgAccessModifier cgClsAccess, CgClassModifier typeModifier, string[] nsImports);
 
         /// <summary>
         /// Transforms the <see cref="cgMem"/> into a useable parameter by another <see cref="CgMember"/>

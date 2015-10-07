@@ -474,7 +474,7 @@ namespace NoFuture.Tests.Gen
         public void TestRemoveLineComments()
         {
             var testInput01 = @"
-        FileUploadApex objFileUploadApex = new FileUploadApex();
+        FileUploadApex objFileUploadDownstream = new FileUploadDownstream();
 
         //private AccountDetail objAccountDetail = null;
 
@@ -506,6 +506,34 @@ namespace NoFuture.Tests.Gen
                 System.Diagnostics.Debug.WriteLine(string.Format("[{0}]", line));
             }
 
+        }
+
+        [TestMethod]
+        public void TestRemoveLineCommentsWithEmbeddedUri()
+        {
+            var testInput = new[]
+            {
+                "		",
+                "		",
+                "       ///<summary>",
+                "       /// Here is something we must use",
+                "       ///</summary>",
+                "       /// <param name='reportId'></param> ",
+                "		[System.Web.Services.Protocols.SoapDocumentMethodAttribute(\"http://tempuri.org/1stMethod\")]",
+                "		[return: System.Xml.Serialization.XmlElementAttribute(\"1stMethodResult\")]",
+                "		protected void ddlScreeningLocation_SelectedIndexChanged(object sender, EventArgs e)",
+                "		{",
+                "			hdnTestIDs.Value = string.Empty;",
+                "			hdnVenomIDs.Value = string.Empty;",
+                "			hdnSelectCount.Value = \"0\";",
+                "			GetYoMommaTypes();",
+                "		}",
+            };
+            var testResult = NoFuture.Gen.Settings.LangStyle.RemoveLineComments(testInput,
+                NoFuture.Gen.Settings.LangStyle.LineComment);
+
+            foreach(var ln in testResult)
+                System.Diagnostics.Debug.WriteLine(ln);
         }
 
         [TestMethod]
@@ -1594,8 +1622,31 @@ namespace NoFuture.Tests.Gen
 
             for (var i = 0; i < testExampleHereString.Length; i++)
             {
-                System.Diagnostics.Debug.WriteLine(string.Format("'{0}'",testExampleOut[i]));
+                //System.Diagnostics.Debug.WriteLine(string.Format("'{0}'",testExampleOut[i]));
                 Assert.AreEqual(testExampleHereString[i].Length, testExampleOut[i].Length);
+            }
+            testIrregular = false;
+            testExampleHereString = new[]
+            {
+                "		",
+                "		[System.Web.Services.Protocols.SoapDocumentMethodAttribute(\"http://tempuri.org/1stMethod\", RequestElementName = \"1stMethod\", RequestNamespace = \"http://tempuri.org/\", ResponseElementName = \"1stMethodResponse\", ResponseNamespace = \"http://tempuri.org/\", Use = System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle = System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]",
+                "		[return: System.Xml.Serialization.XmlElementAttribute(\"1stMethodResult\")]protected void ddlScreeningLocation_SelectedIndexChanged(object sender, EventArgs e)",
+                "		{",
+                "			hdnTestIDs.Value = string.Empty;",
+                "			hdnVenomIDs.Value = string.Empty;",
+                "			hdnSelectCount.Value = \"0\";",
+                "			GetYoMommaTypes();",
+                "		}"
+            };
+            testExampleOut.Clear();
+            foreach (var ln in testExampleHereString)
+            {
+                testExampleOut.Add(Settings.LangStyle.EscStringLiterals(ln,
+                EscapeStringType.BLANK, ref testIrregular));
+            }
+            for (var i = 0; i < testExampleHereString.Length; i++)
+            {
+                System.Diagnostics.Debug.WriteLine(string.Format("'{0}'",testExampleOut[i]));
             }
 
         }

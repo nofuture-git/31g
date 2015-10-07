@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using NoFuture.Shared;
+using NoFuture.Shared.DiaSdk.LinesSwitch;
 using NoFuture.Tokens;
 using NfTypeName = NoFuture.Util.TypeName;
 
@@ -20,12 +21,8 @@ namespace NoFuture.Gen
         #region fields
         protected internal readonly List<int> opCodeCallsAndCallvirtsMetadatTokens;
 
-        internal PdbTargetLine[] _myPdbTargetLine;
-        internal string[] _myOriginalLines;
-
         private string[] _myImplementation;
         private CgType _myCgType;
-        private Dictionary<Tuple<int, int>, string[]> _myRefactor;
         private readonly List<CgMember> _opCodeCallAndCallvirts;
         private Tuple<int, int> _myStartEnclosure;
         private Tuple<int, int> _myEndEnclosure;
@@ -82,51 +79,12 @@ namespace NoFuture.Gen
         public bool SkipIt { get; set; }
 
         /// <summary>
-        /// The start and end line numbers for this member in the original 
-        /// source code file.
+        /// PDB data bound to this <see cref="CgMember"/>
         /// </summary>
-        public Tuple<int?, int?> PdbStartEndLineNumbers
-        {
-            get
-            {
-                if (MyPdbLines == null || MyPdbLines.Length <= 0)
-                    return new Tuple<int?, int?>(null, null);
-                var sa = new int?(MyPdbLines.First().StartAt);
-                var ea = new int?(MyPdbLines.First().EndAt);
-                return new Tuple<int?, int?>(sa, ea);
-            }
-        }
-
+        public ModuleSymbols PdbModuleSymbols { get; set; }
         #endregion
 
         #region public api
-        /// <summary>
-        /// Returns string specific to graph-viz (ver. 2.38+)
-        /// see [http://www.graphviz.org/]
-        /// </summary>
-        /// <returns></returns>
-        public string ToGraphVizString()
-        {
-            var graphViz = new StringBuilder();
-            graphViz.Append("<tr><td align=\"left\">");
-            graphViz.Append(Name);
-            graphViz.Append(" ");
-            var typeColor = Etc.ValueTypesList.Contains(NfTypeName.GetLastTypeNameFromArrayAndGeneric(TypeName.Trim(), "<")) ? "blue" : "grey";
-            if (HasGetter || HasSetter)
-            {
-                graphViz.Append("(");
-                graphViz.Append(string.Join(", ", Args.Select(x => x.ToGraphVizString())));
-                graphViz.Append(")");
-            }
-            graphViz.Append(": <font color=\"");
-            graphViz.Append(typeColor);
-            graphViz.Append("\">");
-            graphViz.Append(NfTypeName.GetLastTypeNameFromArrayAndGeneric(TypeName, "<"));
-            if (IsEnumerableType)
-                graphViz.Append("[*]");
-            graphViz.Append("</font></td></tr>");
-            return graphViz.ToString();
-        }
 
         /// <summary>
         /// Renders the invocation of this <see cref="CgMember"/> as a regex pattern.
@@ -155,7 +113,7 @@ namespace NoFuture.Gen
         /// the body of the method contains them otherwise the body will default to 
         /// <see cref="Settings.NoImplementationDefault"/>
         /// </summary>
-        public string[] MyCgLines(bool justBody)
+        public string[] MyCgLines()
         {
             if (SkipIt)
                 return new[] { string.Empty };
@@ -166,205 +124,42 @@ namespace NoFuture.Gen
             }
 
             var myImplementation = new List<string>();
-            if (!justBody)
+            if (PdbModuleSymbols == null || string.IsNullOrWhiteSpace(PdbModuleSymbols.file) ||
+                !File.Exists(PdbModuleSymbols.file))
             {
                 myImplementation.Add(string.Format("        {0}", Settings.LangStyle.ToDecl(this, true)));
                 myImplementation.Add(string.Format("        {0}", Settings.LangStyle.GetEnclosureOpenToken(this)));
-
-            }
-            if (_myCgType == null || _myCgType.TypeFiles == null || MyPdbLines == null || MyPdbLines.Length <= 0)
-            {
                 myImplementation.Add(Settings.NoImplementationDefault);
-            }
-            else
-            {
-                foreach (var pdbFile in MyPdbLines)
-                {
-                    myImplementation.AddRange(pdbFile.GetMyPdbTargetLines(_myCgType.TypeFiles.SymbolFolder, null));
-                }
+                myImplementation.Add(string.Format("        {0}", Settings.LangStyle.GetEnclosureCloseToken(this)));
+                return myImplementation.ToArray();
 
             }
-            if (!justBody)
-            {
-                myImplementation.Add(string.Format("        {0}", Settings.LangStyle.GetEnclosureCloseToken(this)));
-            }
-            _myImplementation = myImplementation.ToArray();
+            _myImplementation = MyOriginalLines();
             return _myImplementation;
         }
 
         /// <summary>
         /// Returns the lines, sourced from the PDB, exactly as-is from the original source (null otherwise).
         /// </summary>
-        /// <param name="buffer">optional buffer to have the lines in both directions extended by</param>
         /// <returns></returns>
-        public string[] MyOriginalLines(int buffer = 0)
+        public string[] MyOriginalLines()
         {
-            if (_myOriginalLines != null)
-                return _myOriginalLines;
-
-            if (_myCgType == null || _myCgType.TypeFiles == null || MyPdbLines == null || MyPdbLines.Length <= 0)
-                return null;
-            var maxEndAt = MaxEndAt;
-            var minStartAt = MinStartAt;
-
-            if (buffer > 0)
-            {
-                minStartAt = minStartAt - buffer;
-                maxEndAt = maxEndAt + buffer;
-            }
-
-            _myOriginalLines = _myCgType.TypeFiles.ReadLinesFromOriginalSrc(minStartAt, maxEndAt);
-            return _myOriginalLines;
-        }
-
-        /// <summary>
-        /// Gets a dictionary for use in replacing content from the original source file.
-        /// </summary>
-        /// <param name="newVariableName">Optional, specify the name of the injected instance-level variable. 
-        /// Default to a random string.</param>
-        /// <param name="namespaceAndTypeName">Optional for use in specifying a new namespace and type name.
-        /// Defaults to the parent <see cref="CgType"/> values.</param>
-        /// <param name="includeVariableDecl">
-        /// Specify as true to have the resulting dictionary include where to inject a new 
-        /// variable declaration.  Typically the very first line after the classes' opening token.
-        /// </param>
-        /// <returns>
-        /// The dictionary's keys are in the form of index, length, same as 
-        /// in the common <see cref="System.String.Substring(int, int)"/> and represent what is
-        /// to be removed from the original source code file while its counterpart values are
-        /// what is placed in its stead.
-        /// </returns>
-        public Dictionary<Tuple<int, int>, string[]> MyRefactoredLines(string newVariableName,
-            Tuple<string, string> namespaceAndTypeName, bool includeVariableDecl = true)
-        {
-            if (_myRefactor != null)
-                return _myRefactor;
-            if (_myCgType == null || _myCgType.TypeFiles == null || MyPdbLines == null || MyPdbLines.Length <= 0)
-                return null;
-            if (string.IsNullOrWhiteSpace(newVariableName))
-                newVariableName = Path.GetRandomFileName().Replace(".", string.Empty);
-            var ofl = _myCgType.TypeFiles.OriginalSourceFirstLine;
-            var dido = new Dictionary<Tuple<int, int>, string[]>();
-
-            //allow calling assembly to specify a new namespace and type name
-            var renameCgType = namespaceAndTypeName == null
-                ? _myCgType
-                : new CgType()
-                {
-                    Namespace = namespaceAndTypeName.Item1 ?? _myCgType.Namespace,
-                    Name = namespaceAndTypeName.Item2 ?? _myCgType.Name
-                };
-
-            //this is an instance level declaration added to the original source
-            if (ofl > 1 && includeVariableDecl)
-            {
-                var oldFilesInstanceToNew = Settings.LangStyle.ToDecl(renameCgType, newVariableName,
-                    CgAccessModifier.Private);
-                dido.Add(new Tuple<int, int>(ofl, 1), new[] { oldFilesInstanceToNew });
-            }
-            var nKey = new Tuple<int, int>(MinStartAt,
-                MaxEndAt - MinStartAt - 1);
-
-            dido.Add(nKey, new[] { Settings.LangStyle.ToStmt(this, null, newVariableName) });
-            _myRefactor = dido;
-            return _myRefactor;
-        }
-
-        /// <summary>
-        /// Useful for refactoring, finds a list of all instance level fields, properties 
-        /// and methods which are used within this member's implementation.  
-        /// </summary>
-        /// <returns> </returns>
-        /// <remarks>
-        /// Depends on PDB data, results are not derived from assembly reflection.
-        /// </remarks>
-        public List<CgArg> GetAllRefactorDependencies()
-        {
-            if (_myCgType == null || _myCgType.TypeFiles == null || MyPdbLines == null)
+            if (PdbModuleSymbols == null || string.IsNullOrWhiteSpace(PdbModuleSymbols.file) || !File.Exists(PdbModuleSymbols.file))
                 return null;
 
-            var ssrcCode = new List<string>();
-            foreach (var pdb in MyPdbLines)
+            var content = File.ReadAllLines(PdbModuleSymbols.file);
+            var start = GetMyStartEnclosure(content);
+            var end = GetMyEndEnclosure(content);
+
+            var bodyOut = new List<string> {content[start.Item1].Substring(start.Item2)};
+
+            for (var i = start.Item1+1; i < end.Item1; i++)
             {
-                ssrcCode.AddRange(pdb.GetMyPdbTargetLines(_myCgType.TypeFiles.SymbolFolder, null));
+                bodyOut.Add(content[i]);
             }
-            if (ssrcCode.Count <= 0)
-                return null;
+            bodyOut.Add(content[end.Item1].Substring(0,end.Item2));
 
-            var dependencyArgs = new List<CgArg>();
-
-            var flattenCode = new string(Settings.LangStyle.FlattenCodeToCharStream(ssrcCode.ToArray()).ToArray());
-            bool irregular = false;
-            flattenCode = Settings.LangStyle.EscStringLiterals(flattenCode, EscapeStringType.UNICODE, ref irregular);
-
-            var instanceMembers =
-                _myCgType.Fields.Where(f => Regex.IsMatch(flattenCode, f.AsInvokeRegexPattern())).ToList();
-
-            //apply filters since arg names and types may be duplicated with instance variables.
-            dependencyArgs.AddRange(
-                instanceMembers.Select(ic => Settings.LangStyle.ToParam(ic, false))
-                    .Where(x => Args.All(myArg => !myArg.Equals(x) && dependencyArgs.All(nArg => !nArg.Equals(x)))));
-
-            instanceMembers =
-                _myCgType.Properties.Where(p => Regex.IsMatch(flattenCode, p.AsInvokeRegexPattern())).ToList();
-            dependencyArgs.AddRange(
-                instanceMembers.Select(ic => Settings.LangStyle.ToParam(ic, false))
-                    .Where(x => Args.All(myArg => !myArg.Equals(x) && dependencyArgs.All(nArg => !nArg.Equals(x)))));
-
-            instanceMembers =
-                _myCgType.Methods.Where(
-                    m => Regex.IsMatch(flattenCode, m.AsInvokeRegexPattern())).ToList();
-            dependencyArgs.AddRange(
-                instanceMembers.Select(ic => Settings.LangStyle.ToParam(ic, true))
-                    .Where(x => Args.All(myArg => !myArg.Equals(x) && dependencyArgs.All(nArg => !nArg.Equals(x)))));
-
-            //arg names common to obj methods will cause confusion
-            var objMethods = typeof(object).GetMethods().Select(x => x.Name).ToArray();
-            foreach (var dpArg in dependencyArgs)
-            {
-                if (objMethods.Contains(dpArg.ArgName))
-                    dpArg.ArgName = string.Format("{0}{1}", Util.TypeName.DEFAULT_NAME_PREFIX, dpArg.ArgName);
-            }
-
-            return dependencyArgs;
-        }
-
-        /// <summary>
-        /// Attempts to determine if the ArgNames present herein appear, as 
-        /// whole words, somewhere in the <see cref="codeBlockLines"/>.  
-        /// Typically developers will draft signatures where the most important
-        /// parameter is furtherest left.  This plays on that by first looking
-        /// for all the ArgNames then drops one off the right, tries again and 
-        /// so forth.  
-        /// </summary>
-        /// <param name="codeBlockLines"></param>
-        /// <returns>
-        /// A number being the number of matches for ArgName's found starting
-        /// on the left.
-        /// </returns>
-        /// <remarks>
-        /// This logic works if the overloaded signatures are ordered by
-        /// the number of parameters having highest go first.
-        /// </remarks>
-        public int CodeBlockUsesMyArgs(string[] codeBlockLines)
-        {
-            if (Args.Count == 0)
-                return 0;
-
-            //first get a cleaned up copy of the contents so not mislead by comments
-            var cleanCodeBlock = Settings.LangStyle.CleanupPdbLinesCodeBlock(codeBlockLines).ToList();
-
-            //start by looking for all names, failing that, drop one off the right and try again till down to one
-            for (var i = Args.Count; i > 0; i--)
-            {
-                var argNameList = Args.Take(i).Select(arg => arg.ArgName).ToList();
-                var prop =
-                    argNameList.All(arg => cleanCodeBlock.Any(ln => Regex.IsMatch(ln, string.Format(@"\W{0}\W", arg))));
-                if (prop)
-                    return i;
-            }
-
-            return 0;
+            return bodyOut.ToArray();
         }
 
         /// <summary>
@@ -387,7 +182,10 @@ namespace NoFuture.Gen
             if (srcFile == null || srcFile.Length <= 0)
                 return null;
 
-            var minStartAt = MinStartAt;
+            if (PdbModuleSymbols == null || PdbModuleSymbols.firstLine == null)
+                return null;
+
+            var minStartAt = PdbModuleSymbols.firstLine.lineNumber;
 
             //expecting auto-properties to not be represented in pdb data.
             if (minStartAt < 0 && (HasSetter || HasGetter))
@@ -476,8 +274,11 @@ namespace NoFuture.Gen
             if (srcFile == null || srcFile.Length <= 0)
                 return null;
 
-            var minStartAt = MinStartAt;
-            var maxEndAt = MaxEndAt;
+            if (PdbModuleSymbols == null || PdbModuleSymbols.firstLine == null || PdbModuleSymbols.lastLine == null)
+                return null;
+
+            var minStartAt = PdbModuleSymbols.firstLine.lineNumber;
+            var maxEndAt = PdbModuleSymbols.lastLine.lineNumber;
 
             //check if this is auto-property before cleaning all this content
             if (minStartAt < 0 && !HasSetter && !HasGetter)
@@ -532,10 +333,11 @@ namespace NoFuture.Gen
                     idxInLine = (srcFile[autoPropSigAt.Item1].Length - autoPropLine.Length) + idxInLine;
                     _myEndEnclosure = new Tuple<int, int>(autoPropSigAt.Item1, idxInLine);
 
-                    System.Diagnostics.Debug.WriteLine(_myEndEnclosure);
                     return _myEndEnclosure;
                 }
             }
+
+            //return new Tuple<int, int>(PdbModuleSymbols.lastLine.lineNumber, PdbModuleSymbols.lastLine.length);
 
             //get the original file as an array of tokens
             XDocFrame myFilesFrame;
@@ -553,7 +355,6 @@ namespace NoFuture.Gen
             var myTokens = myFilesFrame.FindEnclosingTokens(srcFileStr);
 
             myTokens = myTokens.OrderByDescending(x => x.Start).ToList();
-
             //turn the pdb start line into an array index value
             var charCount = 0;
             for (var j = 0; j < minStartAt; j++)
@@ -602,19 +403,19 @@ namespace NoFuture.Gen
                         continue;
                     }
                     //this should be the index in line k
-                    var sl = myTokenFromMin.End - charCount - 1;
+                    var sl = myTokenFromMin.End - charCount;
                     _myEndEnclosure = new Tuple<int, int>(k, sl);
                     return _myEndEnclosure;
                 }
             }
 
             //default to look up from pdb line.
-            for (var i = MaxEndAt; i > 0; i--)
+            for (var i = maxEndAt; i > 0; i--)
             {
                 if (!srcFile[i].Contains(closeToken))
                     continue;
                 var idx = srcFile[i].LastIndexOf(closeToken, StringComparison.Ordinal);
-                _myEndEnclosure = new Tuple<int, int>(i, idx);
+                _myEndEnclosure = new Tuple<int, int>(i, idx + closeToken.Length);
                 return _myEndEnclosure;
 
             }
@@ -624,79 +425,7 @@ namespace NoFuture.Gen
         #endregion
 
         #region internal helpers
-
-        /// <summary>
-        /// Specific to the use of <see cref="CgTypeFiles.TryFindPdbTargetLine"/>
-        /// </summary>
-        internal bool TiedForBestFileMatch { get; set; }
-        /// <summary>
-        /// Specific to the use of <see cref="CgTypeFiles.TryFindPdbTargetLine"/>
-        /// </summary>
-        internal bool LessThanPerfectFileMatch { get; set; }
-
         internal CgType MyCgType { get { return _myCgType; } set { _myCgType = value; } }
-
-        internal bool IsOneOfMyLines(int lnNum)
-        {
-            if (lnNum < 0)
-                return false;
-            if (MyPdbLines == null || MyPdbLines.Length <= 0)
-                return false;
-            if (_myCgType.TypeFiles.FileIndex == null)
-                return false;
-
-            PdbTargetLine pdbOut;
-            if (!_myCgType.TypeFiles.FileIndex.TryFindPdbTargetLine(lnNum, out pdbOut))
-                return false;
-
-            return pdbOut.Equals(MyPdbLines.First());
-        }
-
-        internal PdbTargetLine[] MyPdbLines
-        {
-            get
-            {
-                if (_myPdbTargetLine != null)
-                    return _myPdbTargetLine;
-                if (_myCgType == null || _myCgType.TypeFiles == null)
-                    return null;
-
-                PdbTargetLine[] pdbTout;
-                if (!_myCgType.TypeFiles.TryFindPdbTargetLine(this, out pdbTout))
-                    return null;
-                _myPdbTargetLine = pdbTout;
-                return _myPdbTargetLine;
-            }
-        }
-
-        internal int MaxEndAt
-        {
-            get
-            {
-                if (MyPdbLines == null || MyPdbLines.Length <= 0)
-                {
-                    return -1;
-                }
-                return MyPdbLines.Length == 1
-                    ? MyPdbLines.First().EndAt
-                    : MyPdbLines.Select(x => x.EndAt).Where(x => x > 0).Max();
-            }
-        }
-
-        internal int MinStartAt
-        {
-            get
-            {
-                if (MyPdbLines == null || MyPdbLines.Length <= 0)
-                {
-                    return -1;
-                }
-                return MyPdbLines.Length == 1
-                    ? MyPdbLines.First().StartAt
-                    : MyPdbLines.Select(x => x.StartAt).Where(x => x > 0 && x < MaxEndAt).Min();
-            }
-        }
-
         #endregion
 
         public virtual bool Equals(CgMember obj)

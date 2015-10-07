@@ -95,15 +95,15 @@ namespace NoFuture.Gen.LangRules
             return cgMem.TypeName == "void" ? stmtBldr.ToString() : string.Format("return {0}", stmtBldr);
         }
 
-        public string ToClass(CgType cgType, CgAccessModifier cgClsAccess, CgClassModifier typeModifier)
+        public string ToClass(CgType cgType, CgAccessModifier cgClsAccess, CgClassModifier typeModifier, string[] nsImports)
         {
             var hasNs = !string.IsNullOrWhiteSpace(cgType.Namespace);
             var splitFileContent = new StringBuilder();
-            if (cgType.TypeFiles != null && !string.IsNullOrWhiteSpace(cgType.TypeFiles.UsingStatementFile) &&
-                File.Exists(cgType.TypeFiles.UsingStatementFile))
+            if (nsImports != null && nsImports.Length > 0)
             {
-                splitFileContent.AppendLine(File.ReadAllText(cgType.TypeFiles.UsingStatementFile));
+                splitFileContent.AppendLine(string.Join(Environment.NewLine, nsImports));
             }
+
             if (hasNs)
             {
                 splitFileContent.AppendFormat("namespace {0}{1}", cgType.Namespace, Environment.NewLine);
@@ -118,11 +118,11 @@ namespace NoFuture.Gen.LangRules
                 Settings.LangStyle.TransposeCgAccessModToString(cgClsAccess), otherModifer, cgType.Name));
             splitFileContent.AppendLine("    " + C_OPEN_CURLY);
             foreach (var cg in cgType.Fields)
-                splitFileContent.AppendLine(string.Join(Environment.NewLine, cg.MyCgLines(false)));
+                splitFileContent.AppendLine(string.Join(Environment.NewLine, cg.MyCgLines()));
             foreach (var cg in cgType.Properties)
-                splitFileContent.AppendLine(string.Join(Environment.NewLine, cg.MyCgLines(false)));
+                splitFileContent.AppendLine(string.Join(Environment.NewLine, cg.MyCgLines()));
             foreach (var cg in cgType.Methods)
-                splitFileContent.AppendLine(string.Join(Environment.NewLine, cg.MyCgLines(false)));
+                splitFileContent.AppendLine(string.Join(Environment.NewLine, cg.MyCgLines()));
             splitFileContent.AppendLine("    " + C_CLOSE_CURLY);
 
             if (hasNs)
@@ -334,30 +334,37 @@ namespace NoFuture.Gen.LangRules
             if (fileMembers == null)
                 return null;
             const char blankChar = ' ';
+
+            //leverage the logic concering string literals as the logical base
+            var irregular = false;
+            var operationalFileMembers =
+                fileMembers.Select(x => EscStringLiterals(x, EscapeStringType.BLANK, ref irregular)).ToArray();
             for (var j = 0; j < fileMembers.Length; j++)
             {
-                if (!fileMembers[j].Contains(lineCommentSequence))
+                if (!operationalFileMembers[j].Contains(lineCommentSequence))
                     continue;
                 var newLine = new StringBuilder();
-                var fileLine = fileMembers[j].ToCharArray();
+                var operationFileLine = operationalFileMembers[j].ToCharArray();
+                var actualFileLine = fileMembers[j].ToCharArray();
                 var inCommentSection = false;
-                for (var i = 0; i < fileLine.Length; i++)
+                for (var i = 0; i < operationFileLine.Length; i++)
                 {
                     if (inCommentSection)
                     {
                         newLine.Append(blankChar);
                         continue;
                     }
-                    if (fileLine[i] != lineCommentSequence[0])
+                    if (operationFileLine[i] != lineCommentSequence[0])
                     {
-                        newLine.Append(fileLine[i]);
+                        //return the the values from the original, not the its logical base
+                        newLine.Append(actualFileLine[i]);
                         continue;
                     }
-                    if (i + lineCommentSequence.Length >= fileLine.Length)
+                    if (i + lineCommentSequence.Length >= operationFileLine.Length)
                         break;
 
                     //at this point we know that the char at 'i' matches and we have more chars ahead...
-                    if (new String(fileLine.Skip(i).Take(lineCommentSequence.Length).ToArray()) == lineCommentSequence)
+                    if (new String(operationFileLine.Skip(i).Take(lineCommentSequence.Length).ToArray()) == lineCommentSequence)
                     {
                         inCommentSection = true;
                         newLine.Append(blankChar);
@@ -792,12 +799,15 @@ namespace NoFuture.Gen.LangRules
             return String.Format("{0} != null", variableName);
         }
 
-        public bool TryFindFirstLineInClass(string typename, string[] srcFile, out int firstLine)
+        public bool TryFindFirstLineInClass(string typename, string[] srcFileLines, out int firstLine)
         {
             firstLine = 1;
+            if (srcFileLines == null)
+                return false;
+            var srcFile = srcFileLines.ToArray();
             if (String.IsNullOrWhiteSpace(typename))
                 return false;
-            if (srcFile == null || srcFile.Length <= 0)
+            if (srcFile.Length <= 0)
                 return false;
 
             //these preserve all lines
@@ -825,12 +835,15 @@ namespace NoFuture.Gen.LangRules
             return firstLine > 1;
         }
 
-        public bool TryFindLastLineInClass(string typename, string[] srcFile, out int lastLine)
+        public bool TryFindLastLineInClass(string typename, string[] srcFileLines, out int lastLine)
         {
             lastLine = int.MaxValue;
+            if (srcFileLines == null)
+                return false;
+            var srcFile = srcFileLines.ToArray();
             if (String.IsNullOrWhiteSpace(typename))
                 return false;
-            if (srcFile == null || srcFile.Length <= 0)
+            if (srcFile.Length <= 0)
                 return false;
 
             lastLine = srcFile.Length;

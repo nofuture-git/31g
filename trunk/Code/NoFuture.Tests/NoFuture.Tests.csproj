@@ -175,11 +175,7 @@
     <Compile Include="Encryption\HashTests.cs" />
     <Compile Include="Gen\EtcTests.cs" />
     <Compile Include="Gen\LangRulesTests.cs" />
-    <Compile Include="Gen\TestSortPdb.cs" />
-    <Compile Include="Gen\TestPdbTargetLine.cs" />
     <Compile Include="Gen\TestInvokeDia2Dump.cs" />
-    <Compile Include="Gen\TestCgTypeFiles.cs" />
-    <Compile Include="Gen\TestCgTypeFileIndex.cs" />
     <Compile Include="Gen\TestCgMember.cs" />
     <Compile Include="Gen\TestCgType.cs" />
     <Compile Include="Gen\TestCgTypeCsSrcCode.cs" />

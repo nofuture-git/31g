@@ -27,10 +27,5 @@ namespace NoFuture.Gen
         {
             get { return @"([^\,]+?)"; }
         }
-
-        public string ToGraphVizString()
-        {
-            return TypeName.GetTypeNameWithoutNamespace(ArgType);
-        }
     }
 }

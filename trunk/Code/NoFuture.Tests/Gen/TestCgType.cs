@@ -2,6 +2,8 @@
 using System.Linq;
 using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NoFuture.Gen;
+using NoFuture.Shared;
 
 namespace NoFuture.Tests.Gen
 {
@@ -117,7 +119,19 @@ namespace NoFuture.Tests.Gen
             var testMethod = testType.GetMember("TakesGenericArg").FirstOrDefault();
             Assert.IsNotNull(testMethod);
 
-            var testTokenName = NoFuture.Util.Gia.AssemblyAnalysis.ConvertToMetadataTokenName(testMethod, null, null);
+            var testAsmIndicies = new AsmIndicies()
+            {
+                Asms =
+                    new[]
+                    {
+                        new MetadataTokenAsm()
+                        {
+                            AssemblyName = "AdventureWorks2012, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+                            IndexId = 0
+                        }
+                    }
+            };
+            var testTokenName = NoFuture.Util.Gia.AssemblyAnalysis.ConvertToMetadataTokenName(testMethod, testAsmIndicies, null);
             Assert.IsNotNull(testTokenName);
 
             var testCgType = NoFuture.Gen.Etc.GetCgOfType(testAsm, testTypeName, false);

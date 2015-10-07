@@ -190,10 +190,10 @@ namespace NoFuture.Gen
             gv.AppendLine(topClass.ToGraphVizNode());
 
             foreach (var missing in missingTypes)
-                gv.AppendLine(CgType.EmptyGraphVizClassNode(missing,topClass.EnumsValues(missing)));
+                gv.AppendLine(GraphVizExtensions.EmptyGraphVizClassNode(missing,topClass.EnumsValues(missing)));
 
             foreach (var far in propertyManifold)
-                gv.AppendLine(CgType.EmptyGraphVizClassNode(far, topClass.EnumsValues(far)));
+                gv.AppendLine(GraphVizExtensions.EmptyGraphVizClassNode(far, topClass.EnumsValues(far)));
 
             foreach (var cg in allCgTypes.Where(x => !x.IsEnum))
                 gv.AppendLine(cg.ToGraphVizNode());
@@ -202,7 +202,7 @@ namespace NoFuture.Gen
                 var cg in
                     allCgTypes.Where(
                         x => x.IsEnum && !missingTypes.Contains(x.FullName) && !propertyManifold.Contains(x.FullName)))
-                gv.AppendLine(CgType.EmptyGraphVizClassNode(cg.FullName, topClass.EnumsValues(cg.FullName)));
+                gv.AppendLine(GraphVizExtensions.EmptyGraphVizClassNode(cg.FullName, topClass.EnumsValues(cg.FullName)));
 
             gv.AppendLine();
             gv.AppendLine();

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using NoFuture.Shared;
+using NoFuture.Shared.DiaSdk.LinesSwitch;
 using NoFuture.Util;
 using NoFuture.Util.Gia;
 using NfTypeName = NoFuture.Util.TypeName;
@@ -16,8 +17,6 @@ namespace NoFuture.Gen
     public class CgType
     {
         #region fields
-        private CgTypeFiles _typeFile;
-
         internal readonly Dictionary<string, string[]> EnumValueDictionary = new Dictionary<string, string[]>();
         #endregion
 
@@ -87,25 +86,6 @@ namespace NoFuture.Gen
                 }
                 return sortedMethods;
             }
-        }
-
-        /// <summary>
-        /// The type file is pertinent only to PDB data.
-        /// </summary>
-        public CgTypeFiles TypeFiles 
-        { 
-            get { return _typeFile; }
-            set
-            {
-                _typeFile = value;
-                //propagate this only at the time its assigned.
-                foreach (var property in Properties)
-                    property.MyCgType = this;
-                foreach (var fld in Fields)
-                    fld.MyCgType = this;
-                foreach (var m in Methods)
-                    m.MyCgType = this;
-            } 
         }
 
         /// <summary>
@@ -181,17 +161,18 @@ namespace NoFuture.Gen
             return false;
         }
 
-        /// <summary>
-        /// Locates the <see cref="CgMember"/> in <see cref="Methods"/> who owns this line number.
-        /// </summary>
-        /// <param name="lnNum"></param>
-        /// <returns></returns>
-        /// <remarks>
-        /// Depends on parsed PDB data.
-        /// </remarks>
-        public CgMember FindCgMethodByLineNumber(int lnNum)
+        public void AssignPdbSymbols(ModuleSymbols[] pdbData)
         {
-            return TypeFiles == null ? null : Methods.FirstOrDefault(x => x.IsOneOfMyLines(lnNum));
+            foreach (var property in Properties)
+                property.MyCgType = this;
+            foreach (var fld in Fields)
+                fld.MyCgType = this;
+            foreach (var m in Methods)
+                m.MyCgType = this;
+            var propsAndMethods = Properties.ToList();
+            propsAndMethods.AddRange(Methods);
+            foreach (var pm in propsAndMethods)
+                pm.TryAssignPdbSymbols(pdbData);
         }
 
         /// <summary>
@@ -248,113 +229,6 @@ namespace NoFuture.Gen
             return null;
         }
 
-        /// <summary>
-        /// Returns the starting line number, sourced from the PDB of 
-        /// the given type from the original source
-        /// </summary>
-        /// <returns></returns>
-        public int? StartAtLineNumber()
-        {
-            if (TypeFiles == null)
-                return null;
-            return TypeFiles.OriginalSourceFirstLine;
-        }
-
-        /// <summary>
-        /// Returns edge definitions specific to graph-viz (ver. 2.38+)
-        /// see [http://www.graphviz.org/]
-        /// </summary>
-        /// <returns></returns>
-        public string ToGraphVizEdge()
-        {
-            var graphViz = new StringBuilder();
-            var myName = NfTypeName.SafeDotNetIdentifier(FullName);
-            var edges = new List<string>();
-            foreach (
-                var property in
-                    Properties.Where(
-                        x => !Etc.ValueTypesList.Contains(TypeName.GetLastTypeNameFromArrayAndGeneric(x.TypeName, "<")))
-                )
-            {
-                var toName =
-                    TypeName.SafeDotNetIdentifier(TypeName.GetLastTypeNameFromArrayAndGeneric(property.TypeName, "<"));
-                var edg = new StringBuilder();
-                edg.AppendFormat("{0} -> {1}", myName, toName);
-                edg.Append(property.IsEnumerableType ? " [arrowhead=odiamond]" : " [arrowhead=vee]");
-                edg.Append(";");
-                if (!edges.Contains(edg.ToString()))
-                    edges.Add(edg.ToString());
-            }
-            foreach (var edge in edges)
-            {
-                graphViz.AppendLine(edge);
-            }
-            return graphViz.ToString();
-        }
-
-        /// <summary>
-        /// Returns node definition specific to graph-viz (ver. 2.38+)
-        /// see [http://www.graphviz.org/]
-        /// </summary>
-        /// <returns></returns>
-        public string ToGraphVizNode()
-        {
-            var graphViz = new StringBuilder();
-            graphViz.Append(TypeName.SafeDotNetIdentifier(FullName));
-            graphViz.AppendLine(" [shape=Mrecord, label=<<table bgcolor=\"white\" border=\"0\" >");
-            graphViz.AppendLine("<th>");
-            graphViz.AppendLine("<td bgcolor=\"grey\" align=\"center\">");
-            graphViz.Append("<font color=\"white\">");
-            graphViz.AppendFormat("{0} :: {1}", Name, string.IsNullOrWhiteSpace(Namespace) ? "global" : Namespace);
-            graphViz.AppendLine("</font></td></th>");
-
-            foreach (var prop in Properties)
-                graphViz.AppendLine(prop.ToGraphVizString());
-            foreach (var me in SortedMethods)
-                graphViz.AppendLine(me.ToGraphVizString());
-            graphViz.AppendLine("</table>> ];");
-
-            return graphViz.ToString();
-        }
-
-        /// <summary>
-        /// Returns a node definition with just the type name's header.
-        /// This is specific to graph-viz (ver. 2.38+)
-        /// </summary>
-        /// <param name="typeFullName"></param>
-        /// <param name="enumValues">Optional values to be listed as line items with no type specifiers nor .gv port ids.</param>
-        /// <returns></returns>
-        public static string EmptyGraphVizClassNode(string typeFullName, string[] enumValues)
-        {
-            var className = TypeName.GetTypeNameWithoutNamespace(typeFullName);
-            var ns = TypeName.GetNamespaceWithoutTypeName(typeFullName);
-            var fullName = string.Format("{0}{1}", string.IsNullOrWhiteSpace(ns) ? string.Empty : ns + ".", className);
-            var graphViz = new StringBuilder();
-            graphViz.Append(TypeName.SafeDotNetIdentifier(fullName));
-            graphViz.AppendLine(" [shape=Mrecord, label=<<table bgcolor=\"white\" border=\"0\" >");
-            graphViz.AppendLine("<th>");
-            graphViz.AppendLine("<td bgcolor=\"grey\" align=\"center\">");
-            graphViz.Append("<font color=\"white\">");
-            graphViz.AppendFormat("{0} :: {1}", className, string.IsNullOrWhiteSpace(ns) ? "global" : ns);
-            graphViz.AppendLine("</font></td></th>");
-            if (enumValues != null && enumValues.Length > 0)
-            {
-                foreach (var enumVal in enumValues)
-                {
-                    graphViz.Append("<tr><td><font color=\"blue\">");
-                    graphViz.Append(enumVal);
-                    graphViz.AppendLine("</font></td></tr>");
-                }
-            }
-            else
-            {
-                graphViz.AppendLine("<tr><td></td></tr>");
-                graphViz.AppendLine("<tr><td></td></tr>");
-            }
-            graphViz.AppendLine("</table>> ];");
-
-            return graphViz.ToString();
-        }
         #endregion
     }
 }
