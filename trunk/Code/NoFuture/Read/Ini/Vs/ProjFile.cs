@@ -288,7 +288,7 @@ namespace NoFuture.Read.Vs
         /// Removes the <see cref="srcCodeFile"/> from the MsBuild xml (project file)
         /// </summary>
         /// <param name="srcCodeFile"></param>
-        /// <param name="relativePathsOut"></param>
+        /// <param name="relativePathsOut">pass in a ref to get the paths of the items removed.</param>
         /// <returns></returns>
         /// <remarks>
         /// Will remove the '.designer.[cs|vb]' and '.[cs|vb]' files, when they exist,

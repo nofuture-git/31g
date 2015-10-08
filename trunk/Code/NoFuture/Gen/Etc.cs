@@ -311,6 +311,7 @@ namespace NoFuture.Gen
             cgType.AssemblyQualifiedName = asmType.AssemblyQualifiedName;
             cgType.IsEnum = TypeName.IsEnumType(asmType);
 
+            var cgTypesInterfaces = asmType.GetInterfaces();
             cgType.MetadataToken = asmType.MetadataToken;
 
             Func<CgType, string, bool> alreadyPresentHerein =
@@ -429,6 +430,7 @@ namespace NoFuture.Gen
 
                         if (cgm == null)
                             continue;
+                        cgm.IsInterfaceImpl = IsInterfaceImpl(mti, cgTypesInterfaces);
                         cgType.Methods.Add(cgm);
                     }
 
@@ -794,6 +796,57 @@ namespace NoFuture.Gen
 
             cgMem.opCodeCallsAndCallvirtsMetadatTokens.AddRange(Asm.GetCallsMetadataTokens(mti));
             return cgMem;
+        }
+
+        //https://msdn.microsoft.com/en-us/library/system.reflection.methodinfo.getbasedefinition(v=vs.110).aspx
+        internal static bool IsInterfaceImpl(MethodInfo mti, Type[] cgTypesInterfaces)
+        {
+            if (mti == null)
+                return false;
+            if (cgTypesInterfaces == null || cgTypesInterfaces.Length <= 0)
+                return false;
+            try
+            {
+                var bdef = mti.GetBaseDefinition();
+                if (bdef == null)
+                    return false;
+                //If the current MethodInfo object represents an interface implementation, 
+                //the GetBaseDefinition method returns the current MethodInfo object.
+                if (!bdef.Equals(mti))
+                    return false;
+
+                foreach (var i in cgTypesInterfaces)
+                {
+                    var iMethods = i.GetMethods();
+
+                    foreach (var im in iMethods)
+                    {
+                        if (im.Name != mti.Name)
+                            continue;
+                        var imParams = im.GetParameters();
+                        var mtiParams = mti.GetParameters();
+
+                        if (imParams.Length != mtiParams.Length)
+                            continue;
+
+                        if (mti.NfReturnType() != im.NfReturnType())
+                            return false;
+
+                        if (imParams.Length == 0)
+                            return true;
+
+                        var imParamTypes = imParams.Select(x => x.NfParameterType()).ToList();
+                        var mtiParamTypes = mtiParams.Select(x => x.NfParameterType()).ToList();
+
+                        return imParamTypes.All(x => mtiParamTypes.Any(y => x == y));
+                    }
+                }
+            }
+            catch
+            {
+                return false;
+            }
+            return false;
         }
     }
 }

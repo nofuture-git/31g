@@ -51,6 +51,7 @@ namespace NoFuture.Gen
         public bool IsCtor { get; set; }
         public bool IsEnum { get; set; }
         public bool IsMethod { get; set; }
+        public bool IsInterfaceImpl { get; set; }
 
         /// <summary>
         /// For use of <see cref="CgMember"/> types owned by another <see cref="CgMember"/>
@@ -281,6 +282,9 @@ namespace NoFuture.Gen
             //will resolve the start to lock in on the very next token pair
             var myStartEnclosure = GetMyStartEnclosure(srcFile, true);
 
+            if (myStartEnclosure == null)
+                return null;
+
             var openToken = Settings.LangStyle.GetEnclosureOpenToken(this);
             var closeToken = Settings.LangStyle.GetEnclosureCloseToken(this);
 
@@ -322,6 +326,7 @@ namespace NoFuture.Gen
 
             //need the enclosure's start to be comparable to the tokens array
             var charCount = myStartEnclosure.Item2;
+            
             for (var j = 1; j < myStartEnclosure.Item1; j++)
             {
                 if (srcFile.Length < j)

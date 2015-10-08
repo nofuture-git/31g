@@ -145,6 +145,7 @@ namespace NoFuture.Gen
                 BlankOutMembers(srcLines, cgMems, fl);
                 if (removeEmptyLines)
                 {
+                    System.Threading.Thread.Sleep(50);
                     NfPath.RemoveBlankLinesInFile(fl);
                 }
             }

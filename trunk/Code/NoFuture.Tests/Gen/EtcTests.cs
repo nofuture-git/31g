@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NoFuture.Gen;
+using NoFuture.Util.Pos;
 
 namespace NoFuture.Tests.Gen
 {
@@ -703,6 +704,51 @@ namespace NoFuture.Tests.Gen
             Assert.AreNotEqual(string.Empty, testResult);
 
             System.IO.File.WriteAllText(@"C:\Projects\31g\trunk\temp\GraphVizClassDiagram.gv", testResult);
+        }
+
+        [TestMethod]
+        public void TestIsInterfaceImpl()
+        {
+            //has simple no-arg interface
+            var testType = typeof (TagsetBase);
+
+            var testTypeInterfaces = testType.GetInterfaces();
+            var testTypeMethods = testType.GetMethods();
+
+            Assert.IsNotNull(testTypeInterfaces);
+            Assert.IsNotNull(testTypeMethods);
+            Assert.AreNotEqual(0, testTypeMethods.Length);
+
+            var testResult = NoFuture.Gen.Etc.IsInterfaceImpl(testTypeMethods[0], testTypeInterfaces);
+            Assert.IsTrue(testResult);
+
+            //has complex many method, many arg interface
+            testType = typeof (NoFuture.Gen.LangRules.Cs);
+            testTypeInterfaces = testType.GetInterfaces();
+
+            Assert.IsNotNull(testTypeInterfaces);
+            Assert.IsNotNull(testTypeMethods);
+            Assert.AreNotEqual(0, testTypeMethods.Length);
+
+            var testMti = testType.GetMethod("ToClass");
+            Assert.IsNotNull(testMti);
+
+            testResult = NoFuture.Gen.Etc.IsInterfaceImpl(testMti, testTypeInterfaces);
+            Assert.IsTrue(testResult);
+
+            //has no interfaces
+            testType = typeof (NoFuture.Gen.CgType);
+            testTypeInterfaces = testType.GetInterfaces();
+            testTypeMethods = testType.GetMethods();
+
+            Assert.IsNotNull(testTypeInterfaces);
+            Assert.IsNotNull(testTypeMethods);
+            Assert.AreNotEqual(0, testTypeMethods.Length);
+
+            testResult = NoFuture.Gen.Etc.IsInterfaceImpl(testMti, testTypeInterfaces);
+            Assert.IsFalse(testResult);
+
+
         }
     }
 }

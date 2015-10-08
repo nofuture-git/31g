@@ -10,9 +10,10 @@ namespace NoFuture.Tokens
 {
     public class HtmlParseResults
     {
-        private Dictionary<string, List<string>> _distinctTags = new Dictionary<string, List<string>>();
-        private List<String> _scriptBodies = new List<string>();
-        private List<String> _scriptLets = new List<string>();
+        private readonly Dictionary<string, List<string>> _distinctTags = new Dictionary<string, List<string>>();
+        private readonly List<String> _scriptBodies = new List<string>();
+        private readonly List<String> _scriptLets = new List<string>();
+        private List<string> _htmlComments = new List<string>();
 
         public String FullContent { get; set; }
 
@@ -29,6 +30,11 @@ namespace NoFuture.Tokens
         public Dictionary<string, List<string>> DistinctTags
         {
             get { return _distinctTags; }
+        }
+
+        public List<String> HtmlComments
+        {
+            get { return _htmlComments; }
         }
 
     }
@@ -51,6 +57,17 @@ namespace NoFuture.Tokens
             if (string.IsNullOrWhiteSpace(scriptletText))
                 return;
             _results.ScriptLets.Add(scriptletText);
+        }
+
+        public override void ExitHtmlComment(HTMLParser.HtmlCommentContext context)
+        {
+            var htmlCommentNode = context.HTML_COMMENT();
+            if (htmlCommentNode == null)
+                return;
+            var htmlCommentText = htmlCommentNode.GetText();
+            if (string.IsNullOrWhiteSpace(htmlCommentText))
+                return;
+            _results.HtmlComments.Add(htmlCommentText);
         }
 
         public override void ExitScript(HTMLParser.ScriptContext ctx)
