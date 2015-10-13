@@ -327,7 +327,10 @@ namespace NoFuture.Tokens
 
             walker.Walk(loader,tree);
 
-            return loader.Results;
+            var results = loader.Results;
+
+            tr.Close();
+            return results;
         }
     }
     

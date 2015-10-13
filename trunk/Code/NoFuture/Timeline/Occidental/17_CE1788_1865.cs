@@ -23,7 +23,7 @@ namespace NoFuture.Timeline
             usa.AddEntry(1796, "+TN(1796)", PrintLocation.Right);
             usa.AddEntry(1797, "[John Adams -1801]", PrintLocation.Left);
             usa.AddEntry(1801, "[T.Jefferson -1809]", PrintLocation.Left);
-            usa.AddEntry(1803, "+OH", PrintLocation.Right);
+            usa.AddEntry(1803, "+OH(1803)", PrintLocation.Right);
             usa.AddEntry(1809, "[James Madison -1817]", PrintLocation.Left);
             usa.AddEntry(1812, "+LA(1812)", PrintLocation.Right);
             usa.AddEntry(1816, "+IN(1816)", PrintLocation.Right);
@@ -98,12 +98,18 @@ namespace NoFuture.Timeline
             plate.AddBlock(ott);
             plate.AddBlock(rus);
 
-            plate.AddArrow(new Arrow(aus, ott){Text = "B.of Focsani(1789)"});
-            plate.AddArrow(new Arrow(rus, ott));
+            plate.AddArrow(new Arrow(aus, ott){Text = "B.of Focsani(1789)", StartValue = 1789});
+            plate.AddArrow(new Arrow(rus, ott) { StartValue = 1789, FromRightToLeftArrowHead = "<......" });
+            plate.AddArrow(new Arrow(aus, fr) {StartValue = 1792 });
+            plate.AddArrow(new Arrow(de, fr) { StartValue = 1793 });
+            plate.AddArrow(new Arrow(fr, aus){StartValue = 1796, Text = "B.of Rivoli(1797)"});
+            plate.AddArrow(new Arrow(fr, ott) {Text = "B.of the Pryamids(1798)(a.)" ,StartValue = 1797});
+            plate.AddArrow(new Arrow(engd, fr){Text = "B.of the Nile(1798)", StartValue = 1798});
+            plate.AddArrow(new Arrow(fr, aus){Text = "B.of Marengo(1800)", StartValue = 1800});
 
             plate.Notes.Add("(*)   last Prime Minister dismissed by a king");
             plate.Notes.Add("(**)  last met in 1614");
-
+            plate.Notes.Add("(a.)  intended to cut England off from India");
 
             return plate;
         }

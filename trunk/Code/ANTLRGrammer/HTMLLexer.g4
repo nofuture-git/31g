@@ -30,6 +30,7 @@ lexer grammar  HTMLLexer;
 
 HTML_COMMENT    
     : '<!--' .*? '-->'
+	| '<%--' .*? '--%>'
     ;
 
 HTML_CONDITIONAL_COMMENT    
@@ -50,7 +51,7 @@ DTD
 
 SCRIPTLET 
     : '<?' .*? '?>'
-    | '<%' .*? '%>'
+    | '<%'~[-] .*? '%>'
     ;
 
 SEA_WS
