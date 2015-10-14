@@ -59,7 +59,7 @@ namespace NoFuture.Timeline
             west.AddEntry(210, "Tertullian(160-225)",PrintLocation.Left);
             west.AddEntry(193, "[Apologeticus(Tertullian)]");
             west.AddEntry(175, "[H] Valentinians (Aeons)");
-            west.AddEntry(195, "[H] Adoptionism (χρ divine after baptism)");
+            west.AddEntry(195, "[H] Adoptionism (christ divine after baptism)");
             west.AddEntry(200, "[H] Sabellianism (no trinity)");
             west.AddEntry(312, "[H] Manichaeism (duality, east import)");
             west.AddEntry(250, "[H] Donatist (disallow lapsed)");
@@ -71,7 +71,7 @@ namespace NoFuture.Timeline
             east.AddEntry(225,"Origen(185-254)",PrintLocation.Left);
             east.AddEntry(240,"[Hexapla(Origen)]");
             east.AddEntry(165, "[H] Montanism (frenzy prophets)");
-            east.AddEntry(175, "[H] Docetism (χρ w/o body)");
+            east.AddEntry(175, "[H] Docetism (christ w/o body)");
             east.AddEntry(135,"[H] Ophites (serpent worship)");
             east.AddEntry(145,"[H] Egyptian Basilides (non-being creation)");
 

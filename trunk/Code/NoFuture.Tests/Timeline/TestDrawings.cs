@@ -858,8 +858,7 @@ namespace NoFuture.Tests.Timeline
             var testSubject = new Occidental();
             var testPlate00 = testSubject.BCE3000to2000();
 
-            System.Diagnostics.Debug.WriteLine(testPlate00);
-            System.IO.File.WriteAllText(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\Timeline\00BCE3000to2000.txt", testPlate00.ToString());
+            testPlate00.ToPdf(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\Timeline\BCE 3000 to 2000.pdf");
             
         }
         [TestMethod]
@@ -868,8 +867,8 @@ namespace NoFuture.Tests.Timeline
             var testSubject = new Occidental();
             var testPlate01 = testSubject.BCE2000to1500();
 
-            System.Diagnostics.Debug.WriteLine(testPlate01);
-            System.IO.File.WriteAllText(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\Timeline\01BCE2000to1500.txt", testPlate01.ToString());
+            testPlate01.ToPdf(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\Timeline\BCE 2000 to 1500.pdf");
+
 
         }
         [TestMethod]
@@ -878,8 +877,7 @@ namespace NoFuture.Tests.Timeline
             var testSubject = new Occidental();
             var testPlate02 = testSubject.BCE1600to1200();
 
-            System.Diagnostics.Debug.WriteLine(testPlate02);
-            System.IO.File.WriteAllText(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\Timeline\02BCE1600to1200.txt", testPlate02.ToString());
+            testPlate02.ToPdf(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\Timeline\BCE 1600 to 1200.pdf");
 
         }
         [TestMethod]
@@ -888,8 +886,7 @@ namespace NoFuture.Tests.Timeline
             var testSubject = new Occidental();
             var testPlate03 = testSubject.BCE1250to900();
 
-            System.Diagnostics.Debug.WriteLine(testPlate03);
-            System.IO.File.WriteAllText(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\Timeline\03BCE1250to900.txt", testPlate03.ToString());
+            testPlate03.ToPdf(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\Timeline\BCE 1250 to 900.pdf");
 
         }
         [TestMethod]
@@ -898,8 +895,7 @@ namespace NoFuture.Tests.Timeline
             var testSubject = new Occidental();
             var testPlate04 = testSubject.BCE922to750();
 
-            System.Diagnostics.Debug.WriteLine(testPlate04);
-            System.IO.File.WriteAllText(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\Timeline\04BCE922to750.txt", testPlate04.ToString());
+            testPlate04.ToPdf(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\Timeline\BCE 922 to 750.pdf");
 
         }
         [TestMethod]
@@ -908,14 +904,7 @@ namespace NoFuture.Tests.Timeline
             var testSubject = new Occidental();
             var testPlate05 = testSubject.BCE780to500();
 
-            System.Diagnostics.Debug.WriteLine(testPlate05);
-            System.IO.File.WriteAllText(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\Timeline\05BCE780to500.txt", testPlate05.ToString());
-
-            //var binS = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
-            //var fs = new System.IO.FileStream(@"C:\Projects\31g\trunk\temp\plate780to575.bin", System.IO.FileMode.Create);
-            //binS.Serialize(fs,testPlate05);
-
-            //fs.Close();
+            testPlate05.ToPdf(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\Timeline\BCE 780 to 500.pdf");
 
         }
         [TestMethod]
@@ -924,8 +913,7 @@ namespace NoFuture.Tests.Timeline
             var testSubject = new Occidental();
             var testPlate06 = testSubject.BCE500to325();
 
-            System.Diagnostics.Debug.WriteLine(testPlate06);
-            System.IO.File.WriteAllText(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\Timeline\06BCE500to325.txt", testPlate06.ToString());
+            testPlate06.ToPdf(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\Timeline\BCE 500 to 325.pdf");
 
         }
         [TestMethod]
@@ -934,8 +922,7 @@ namespace NoFuture.Tests.Timeline
             var testSubject = new Occidental();
             var testPlate07 = testSubject.BCE325to27();
 
-            System.Diagnostics.Debug.WriteLine(testPlate07);
-            System.IO.File.WriteAllText(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\Timeline\07BCE325to27.txt", testPlate07.ToString());
+            testPlate07.ToPdf(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\Timeline\BCE 325 to 27.pdf");
 
         }
         [TestMethod]
@@ -944,8 +931,7 @@ namespace NoFuture.Tests.Timeline
             var testSubject = new Occidental();
             var testPlate08 = testSubject.CE30to105();
 
-            System.Diagnostics.Debug.WriteLine(testPlate08);
-            System.IO.File.WriteAllText(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\Timeline\08CE30to105.txt", testPlate08.ToString());
+            testPlate08.ToPdf(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\Timeline\CE 30 to 105.pdf");
         }
 
         [TestMethod]
@@ -954,9 +940,7 @@ namespace NoFuture.Tests.Timeline
             var testSubject = new Occidental();
             var testPlate09 = testSubject.CE105to325();
 
-            System.Diagnostics.Debug.WriteLine(testPlate09);
-
-            System.IO.File.WriteAllText(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\Timeline\09CE105to325.txt", testPlate09.ToString());
+            testPlate09.ToPdf(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\Timeline\CE 105 to 325.pdf");
         }
         [TestMethod]
         public void TestOccidentalPlate10()
@@ -964,9 +948,7 @@ namespace NoFuture.Tests.Timeline
             var testSubject = new Occidental();
             var testPlate10 = testSubject.CE325to550();
 
-            System.Diagnostics.Debug.WriteLine(testPlate10);
-
-            System.IO.File.WriteAllText(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\Timeline\10CE325to550.txt", testPlate10.ToString());
+            testPlate10.ToPdf(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\Timeline\CE 325 to 550.pdf");
         }
         [TestMethod]
         public void TestOccidentalPlate11()
@@ -975,9 +957,7 @@ namespace NoFuture.Tests.Timeline
 
             var testPlate = testSubject.CE550to825();
 
-            System.Diagnostics.Debug.WriteLine(testPlate);
-
-            System.IO.File.WriteAllText(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\Timeline\11CE550to825.txt", testPlate.ToString());
+            testPlate.ToPdf(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\Timeline\CE 550 to 825.pdf");
         }
         [TestMethod]
         public void TestOccidentalPlate12()
@@ -985,9 +965,7 @@ namespace NoFuture.Tests.Timeline
             var testSubject = new Occidental();
             var testPlate = testSubject.CE825to1075();
 
-            //System.Diagnostics.Debug.WriteLine(testPlate);
-
-            System.IO.File.WriteAllText(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\Timeline\12CE825to1075.txt", testPlate.ToString());
+            testPlate.ToPdf(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\Timeline\CE 825 to 1075.pdf");
         }
         [TestMethod]
         public void TestOccidentalPlate13()
@@ -995,9 +973,7 @@ namespace NoFuture.Tests.Timeline
             var testSubject = new Occidental();
             var testPlate = testSubject.CE1075to1350();
 
-            //System.Diagnostics.Debug.WriteLine(testPlate);
-
-            System.IO.File.WriteAllText(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\Timeline\13CE1075to1350.txt", testPlate.ToString());
+            testPlate.ToPdf(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\Timeline\CE 1075 to 1350.pdf");
         }
         [TestMethod]
         public void TestOccidentalPlate14()
@@ -1005,9 +981,8 @@ namespace NoFuture.Tests.Timeline
             var testSubject = new Occidental();
             var testPlate = testSubject.CE1350to1500();
 
-            //System.Diagnostics.Debug.WriteLine(testPlate);
+            testPlate.ToPdf(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\Timeline\CE 1350 to 1500.pdf");
 
-            System.IO.File.WriteAllText(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\Timeline\14CE1350to1500.txt", testPlate.ToString());
         }
         [TestMethod]
         public void TestOccidentalPlate15()
@@ -1015,9 +990,7 @@ namespace NoFuture.Tests.Timeline
             var testSubject = new Occidental();
             var testPlate = testSubject.CE1500to1700();
 
-            //System.Diagnostics.Debug.WriteLine(testPlate);
-
-            System.IO.File.WriteAllText(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\Timeline\15CE1500to1700.txt", testPlate.ToString());
+            testPlate.ToPdf(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\Timeline\CE 1500 to 1700.pdf");
         }
 
         [TestMethod]
@@ -1026,9 +999,7 @@ namespace NoFuture.Tests.Timeline
             var testSubject = new Occidental();
             var testPlate = testSubject.CE1700to1788();
 
-            //System.Diagnostics.Debug.WriteLine(testPlate);
-
-            System.IO.File.WriteAllText(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\Timeline\16CE1700to1788.txt", testPlate.ToString());
+            testPlate.ToPdf(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\Timeline\CE 1700 to 1788.pdf");
         }
 
         [TestMethod]
@@ -1037,9 +1008,7 @@ namespace NoFuture.Tests.Timeline
             var testSubject = new Occidental();
             var testPlate = testSubject.CE1788to1865();
 
-            //System.Diagnostics.Debug.WriteLine(testPlate);
-
-            System.IO.File.WriteAllText(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\Timeline\17CE1788to1865.txt", testPlate.ToString());
+            testPlate.ToPdf(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\Timeline\CE 1788 to 1865.pdf");
         }
     }
 }

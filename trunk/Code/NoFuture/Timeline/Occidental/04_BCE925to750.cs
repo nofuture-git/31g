@@ -25,8 +25,7 @@
             israel.AddEntry(920,"Jeroboam I 922-901");
             israel.AddEntry(901,"Nadab 901-900");
             israel.AddEntry(897,"Baasha 900-877");
-            israel.AddEntry(877,"Elah 877-876");
-            israel.AddEntry(new Entry(){StartValue = 876,Text = "Zimri 876",Location = PrintLocation.Left});
+            israel.AddEntry(new Entry() { StartValue = 876, Text = "Zimri 876,Elah 877-876", Location = PrintLocation.Left });
             israel.AddEntry(new Entry(){StartValue = 876,Text= "Omri 876-869",Location = PrintLocation.Right});
             israel.AddEntry(new Entry(){StartValue = 869, Text = "Ahab 869-850",Location = PrintLocation.Left});
             israel.AddEntry(new Entry(){StartValue = 849, Text = "Jehoram 849-843/2", Location = PrintLocation.Left});

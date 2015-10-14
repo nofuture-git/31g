@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using NoFuture.Util;
@@ -203,6 +204,36 @@ namespace NoFuture.Timeline
             _width = _width - _rulerWidth;
             return tc;
         }//end ToTextCanvas
+        public virtual void ToPdf(string filePath)
+        {
+            var content = ToString();
+            var doc = DrawingDimensions.ToPdfDoc(content);
+
+            var fs = new System.IO.FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.None);
+            using (var writer = iTextSharp.text.pdf.PdfWriter.GetInstance(doc, fs))
+            {
+                doc.Open();
+
+                var paragraph = new iTextSharp.text.Paragraph(content,
+                    iTextSharp.text.FontFactory.GetFont(iTextSharp.text.FontFactory.COURIER))
+                {
+                    ExtraParagraphSpace = 0F,
+                    FirstLineIndent = 0F,
+                    IndentationLeft = 0F,
+                    IndentationRight = 0F,
+                    PaddingTop = 0F,
+                    SpacingBefore = 0F,
+                    SpacingAfter = 0F
+                };
+                doc.Add(paragraph);
+
+                doc.AddTitle(Name);
+                doc.AddSubject("Occidental Timelines");
+                doc.AddCreator(System.Reflection.Assembly.GetExecutingAssembly().GetName().Name);
+                doc.AddCreationDate();
+                doc.Close();
+            }
+        }//end ToPdf
         #endregion
 
         #region hidden
@@ -244,7 +275,7 @@ namespace NoFuture.Timeline
         public static string ToStringUnixNewline(this StringBuilder stringBuilder)
         {
             return stringBuilder.ToString()
-                .Replace(new string(new[] {(char) 0x0D, (char) 0x0A}), new string(new[] {(char) 0x0A}));
+                .Replace(new string(new[] {(char) 0x0D, (char) 0x0A}), new string(new[] {Constants.GraphChars.UNIX_NL_CHAR}));
         }//end ToStringUnixNewline
         public static TextCanvas ToTextCanvas(this IRuleEntry entry, Rule ruler)
         {
@@ -252,7 +283,7 @@ namespace NoFuture.Timeline
                 throw new NoRuleSetException();
 
             var entryIndex = ruler.CalcEntryIndex(entry);
-            var entryLines = entry.ToString().Split((char) 0x0A);
+            var entryLines = entry.ToString().Split(Constants.GraphChars.UNIX_NL_CHAR);
 
             var ruleIndex = ruler.GetIndexRule();
 
@@ -548,7 +579,7 @@ namespace NoFuture.Timeline
             //determine edge
             var min = StartValue > EndValue ? EndValue : StartValue;
 
-            var myRuleLines = ToString().Split((char)0x0A);
+            var myRuleLines = ToString().Split(Constants.GraphChars.UNIX_NL_CHAR);
             var perLineIncrement = CountIncrement.Value / RuleLineSpacing;
 
             var indexRule = new List<double>();
@@ -1235,5 +1266,10 @@ namespace NoFuture.Timeline
     {
         public InnerBlockRequiresStartValue(Block block) : base(string.Format("Block titled '{0}' must have a start value different from the start value of the Rule.", block.Title)) { }
     }//InnerBlockRequiresStartValue
+
+    public class TooWideForPdf : DrawingException
+    {
+        public TooWideForPdf() : base("the content is too large for even the A0 page size") { }
+    }
 
 }//end NoFuture.Timeline

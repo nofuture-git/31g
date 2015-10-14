@@ -40,14 +40,14 @@
             mus.AddEntry(569, 632, "Mohammed (569-632)", PrintLocation.Left);
             mus.AddEntry(610, "vision @ Mt. Hira(610)");
             mus.AddEntry(630, "Mohammad takes Mecca(630)");
-            mus.AddEntry(633, "  Abu Bekr(633-634) & Omar(634-644)", PrintLocation.Left);
+            mus.AddEntry(633, "Abu Bekr(633-634) & Omar(634-644)");
             mus.AddEntry(644, "Othman(644-656)", PrintLocation.Left);
             mus.AddEntry(656, "war of succesion Ali/Muawiya(656-669)");
             mus.AddEntry(669, "Muawiya(669-680)", PrintLocation.Left);
             mus.AddEntry(679, "war of succesion(680-683)");
             mus.AddEntry(685, "Abd-al-Malik(683-705)", PrintLocation.Left);
             mus.AddEntry(705, "Walid(705-715)", PrintLocation.Left);
-            mus.AddEntry(715, "  Suleiman(715-717)", PrintLocation.Left);
+            mus.AddEntry(715, "Suleiman(715-717)");
             mus.AddEntry(719, "Omar II(717-720)", PrintLocation.Left);
             mus.AddEntry(722, "Yezid II(720-24)", PrintLocation.Left);
             mus.AddEntry(725, "Hisham(724-743)", PrintLocation.Left);
@@ -69,7 +69,7 @@
             var sas = new Block {Ruler = rule, Title = "Sasanian Empire", EndValue = 642, Width = 30};
             sas.AddEntry(596,"Khosru II(590-628)");
 
-            var plate = new Plate { Ruler = rule, Name = "Late Germanic Iron Age" };
+            var plate = new Plate { Ruler = rule, Name = "The Dark Ages" };
             plate.AddBlock(euro);
             plate.AddBlock(byz);
             plate.AddBlock(mus);

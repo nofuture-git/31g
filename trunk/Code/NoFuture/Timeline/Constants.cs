@@ -2,6 +2,8 @@
 
 namespace NoFuture.Timeline
 {
+
+
     public class Constants
     {
         public static class Numerics
@@ -43,6 +45,8 @@ namespace NoFuture.Timeline
 
         public static class GraphChars 
         {
+            public static char UNIX_NL_CHAR = (char)0xA;
+
             private const char BAR = '|';
             private const char BAR_RAIL_INTERSECT = '+';
             private const char RAIL = '-';

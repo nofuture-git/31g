@@ -40,7 +40,7 @@
             hittities.AddEntry(new Entry(){StartValue = 1530, Text = "Mursilis I"});
             hittities.AddEntry(new Entry() {StartValue = 1375, Text = "Shuppiluliuma 1375-1335"});
             hittities.AddEntry(new Entry() {StartValue = 1306, Text = "Muwattalis 1306-1282"});
-            hittities.AddEntry(new Entry() {StartValue = 1275, Text = "Hattusilis III 1275-1250"});
+            hittities.AddEntry(new Entry() {StartValue = 1280, Text = "Hattusilis III 1275-1250", Location = PrintLocation.Right});
             hittities.AddEntry(new Entry() { StartValue = 1550, EndValue = 1410, Text = "Old Kingdom" });
             hittities.AddEntry(new Entry() { StartValue = 1400, EndValue = 1220, Text = "Hittite Empire" });
 
