@@ -36,6 +36,11 @@ $coll = New-Object 'System.Collections.ObjectModel.Collection`1[System.String]'
 
 #version 2 or higher
 $myDict = New-Object 'System.Collection.Generics.Dictionary[string, int]'
+
+#define a System.Func
+$callback = [System.Func[int, bool]] { param($someInt); $someInt -gt 0}
+$callback.Invoke(11) #True
+$callback.Invoke(-4) #False
 <#
     examples for adding types with references to other types
 #>

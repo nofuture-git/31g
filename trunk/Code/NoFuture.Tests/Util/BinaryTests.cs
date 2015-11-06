@@ -107,5 +107,13 @@ namespace NoFuture.Tests.Util
             Dbg.WriteLine((byte) (p | ~p));
 
         }
+
+        [TestMethod]
+        public void TestCompressionPropositions()
+        {
+            var testResult =
+                NoFuture.Util.Binary.Compression.Propositions(new[] {true, false, true, true, true, false, false, true});
+            Assert.AreEqual(185,testResult);
+        }
     }
 }
