@@ -1,0 +1,178 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<configuration>
+  <appSettings>
+    <add key="SummitHealthConnectionString" value="Server=WeWANK;Database=OurCodeSux;Trusted_Connection=True;" />
+    <add key="HTKConnectionString" value="Server=WeWANK;Database=OurCodeSux;Trusted_Connection=True;" />
+    <add key="SMTPServer" value="127.0.0.1" />
+    <add key="Port" value="25" />
+    <add key="SMTPCredentialsUserName" value="" />
+    <add key="SMTPCredentialsPassword" value="" />
+  </appSettings>
+  <system.web>
+    <compilation debug="true">
+    </compilation>
+  </system.web>
+  <system.serviceModel>
+    <behaviors>
+      <serviceBehaviors>
+        <behavior name="WCFToWank.OrNotToWankAdminUIControllerBehavior">
+          <serviceMetadata httpGetEnabled="false" />
+          <serviceDebug includeExceptionDetailInFaults="true" />
+          <serviceThrottling maxConcurrentCalls="16" maxConcurrentSessions="10" maxConcurrentInstances="2147483647" />
+          <dataContractSerializer maxItemsInObjectGraph="2147483647" />
+        </behavior>
+        <behavior name="WCFToWank.OrNotToWankCommonControllerBehavior">
+          <serviceMetadata httpGetEnabled="false" />
+          <serviceDebug includeExceptionDetailInFaults="true" />
+          <serviceThrottling maxConcurrentCalls="16" maxConcurrentSessions="10" maxConcurrentInstances="2147483647" />
+          <dataContractSerializer maxItemsInObjectGraph="2147483647" />
+        </behavior>
+        <behavior name="WCFToWank.OrNotToWankCRMUIControllerBehavior">
+          <serviceMetadata httpGetEnabled="false" />
+          <serviceDebug includeExceptionDetailInFaults="true" />
+          <serviceThrottling maxConcurrentCalls="16" maxConcurrentSessions="10" maxConcurrentInstances="2147483647" />
+          <dataContractSerializer maxItemsInObjectGraph="2147483647" />
+        </behavior>
+        <behavior name="WCFToWank.OrNotToWankDashboardUIControllerBehavior">
+          <serviceMetadata httpGetEnabled="false" />
+          <serviceDebug includeExceptionDetailInFaults="true" />
+          <serviceThrottling maxConcurrentCalls="16" maxConcurrentSessions="10" maxConcurrentInstances="2147483647" />
+          <dataContractSerializer maxItemsInObjectGraph="2147483647" />
+        </behavior>
+        <behavior name="WCFToWank.OrNotToWankReportControllerBehavior">
+          <serviceMetadata httpGetEnabled="false" />
+          <serviceDebug includeExceptionDetailInFaults="true" />
+          <serviceThrottling maxConcurrentCalls="16" maxConcurrentSessions="10" maxConcurrentInstances="2147483647" />
+          <dataContractSerializer maxItemsInObjectGraph="2147483647" />
+        </behavior>
+        <behavior name="WCFToWank.OrNotToWankTrackOrderUIControllerBehavior">
+          <serviceMetadata httpGetEnabled="false" />
+          <serviceDebug includeExceptionDetailInFaults="true" />
+          <serviceThrottling maxConcurrentCalls="16" maxConcurrentSessions="10" maxConcurrentInstances="2147483647" />
+          <dataContractSerializer maxItemsInObjectGraph="2147483647" />
+        </behavior>
+        <behavior name="WCFToWank.OrNotToWankSubmitOrderUIControllerBehavior">
+          <serviceMetadata httpGetEnabled="false" />
+          <serviceDebug includeExceptionDetailInFaults="true" />
+          <serviceThrottling maxConcurrentCalls="16" maxConcurrentSessions="10" maxConcurrentInstances="2147483647" />
+          <dataContractSerializer maxItemsInObjectGraph="2147483647" />
+        </behavior>
+        <behavior name="WCFToWank.OrNotToWankCRMUIControllerSecondBehavior">
+          <serviceMetadata httpGetEnabled="false" />
+          <serviceDebug includeExceptionDetailInFaults="true" />
+          <serviceThrottling maxConcurrentCalls="16" maxConcurrentSessions="10" maxConcurrentInstances="2147483647" />
+          <dataContractSerializer maxItemsInObjectGraph="2147483647" />
+        </behavior>
+      </serviceBehaviors>
+    </behaviors>
+    <services>
+      <service behaviorConfiguration="WCFToWank.OrNotToWankAdminUIControllerBehavior" name="WCFToWank.OrNotToWankAdminUIController">
+        <endpoint address="" binding="netTcpBinding" bindingConfiguration="OrNotToWankNetTcpBinding" contract="WCFToWank.IOrNotToWankAdminUIController" />
+        <endpoint address="mex" binding="mexTcpBinding" contract="IMetadataExchange" />
+        <host>
+          <baseAddresses>
+            <add baseAddress="net.tcp://224.11.89.55:1060/OrNotToWankAdminUIController/" />
+          </baseAddresses>
+        </host>
+      </service>
+      <service behaviorConfiguration="WCFToWank.OrNotToWankCommonControllerBehavior" name="WCFToWank.OrNotToWankCommonController">
+        <endpoint address="" binding="netTcpBinding" bindingConfiguration="OrNotToWankNetTcpBinding" contract="WCFToWank.IOrNotToWankCommonController" />
+        <endpoint address="mex" binding="mexTcpBinding" contract="IMetadataExchange" />
+        <host>
+          <baseAddresses>
+            <add baseAddress="net.tcp://224.11.89.55:1060/OrNotToWankCommonController/" />
+          </baseAddresses>
+        </host>
+      </service>
+      <service behaviorConfiguration="WCFToWank.OrNotToWankCRMUIControllerBehavior" name="WCFToWank.OrNotToWankCRMUIController">
+        <endpoint address="" binding="netTcpBinding" bindingConfiguration="OrNotToWankNetTcpBinding" contract="WCFToWank.IOrNotToWankCRMUIController" />
+        <endpoint address="mex" binding="mexTcpBinding" contract="IMetadataExchange" />
+        <host>
+          <baseAddresses>
+            <add baseAddress="net.tcp://224.11.89.55:1060/OrNotToWankCRMUIController/" />
+          </baseAddresses>
+        </host>
+      </service>
+      <service behaviorConfiguration="WCFToWank.OrNotToWankDashboardUIControllerBehavior" name="WCFToWank.OrNotToWankDashboardUIController">
+        <endpoint address="" binding="netTcpBinding" bindingConfiguration="OrNotToWankNetTcpBinding" contract="WCFToWank.IOrNotToWankDashboardUIController" />
+        <endpoint address="mex" binding="mexTcpBinding" contract="IMetadataExchange" />
+        <host>
+          <baseAddresses>
+            <add baseAddress="net.tcp://224.11.89.55:1060/OrNotToWankDashboardUIController/" />
+          </baseAddresses>
+        </host>
+      </service>
+      <service behaviorConfiguration="WCFToWank.OrNotToWankReportControllerBehavior" name="WCFToWank.OrNotToWankReportController">
+        <endpoint address="" binding="netTcpBinding" bindingConfiguration="OrNotToWankNetTcpBinding" contract="WCFToWank.IOrNotToWankReportController" />
+        <endpoint address="mex" binding="mexTcpBinding" contract="IMetadataExchange" />
+        <host>
+          <baseAddresses>
+            <add baseAddress="net.tcp://224.11.89.55:1060/OrNotToWankReportController/" />
+          </baseAddresses>
+        </host>
+      </service>
+      <service behaviorConfiguration="WCFToWank.OrNotToWankTrackOrderUIControllerBehavior" name="WCFToWank.OrNotToWankTrackOrderUIController">
+        <endpoint address="" binding="netTcpBinding" bindingConfiguration="OrNotToWankNetTcpBinding" contract="WCFToWank.IOrNotToWankTrackOrderUIController" />
+        <endpoint address="mex" binding="mexTcpBinding" contract="IMetadataExchange" />
+        <host>
+          <baseAddresses>
+            <add baseAddress="net.tcp://224.11.89.55:1060/OrNotToWankTrackOrderUIController/" />
+          </baseAddresses>
+        </host>
+      </service>
+      <service behaviorConfiguration="WCFToWank.OrNotToWankSubmitOrderUIControllerBehavior" name="WCFToWank.OrNotToWankSubmitOrderUIController">
+        <endpoint address="" binding="netTcpBinding" bindingConfiguration="OrNotToWankNetTcpBinding" contract="WCFToWank.IOrNotToWankSubmitOrderUIController" />
+        <endpoint address="mex" binding="mexTcpBinding" contract="IMetadataExchange" />
+        <host>
+          <baseAddresses>
+            <add baseAddress="net.tcp://224.11.89.55:1060/OrNotToWankSubmitOrderUIController/" />
+          </baseAddresses>
+        </host>
+      </service>
+      <service behaviorConfiguration="WCFToWank.OrNotToWankCRMUIControllerSecondBehavior" name="WCFToWank.OrNotToWankCRMUIControllerSecond">
+        <endpoint address="" binding="netTcpBinding" bindingConfiguration="OrNotToWankNetTcpBinding" contract="WCFToWank.IOrNotToWankCRMUIControllerSecond">
+        </endpoint>
+        <endpoint address="mex" binding="mexTcpBinding" contract="IMetadataExchange" />
+        <host>
+          <baseAddresses>
+            <add baseAddress="net.tcp://224.11.89.55:1060/OrNotToWankCRMUIControllerSecond/" />
+          </baseAddresses>
+        </host>
+      </service>
+    </services>
+    <bindings>
+      <netTcpBinding>
+        <binding name="OrNotToWankNetTcpBinding" closeTimeout="00:10:00" openTimeout="00:10:00" receiveTimeout="00:10:00">
+          <security mode="None">
+            <transport clientCredentialType="Windows" protectionLevel="EncryptAndSign" />
+            <message clientCredentialType="Windows" />
+          </security>
+        </binding>
+      </netTcpBinding>
+    </bindings>
+  </system.serviceModel>
+  <configSections>
+    <section name="log4net" type="log4net.Config.Log4NetConfigurationSectionHandler,log4net" />
+  </configSections>
+  <log4net>
+    <appender name="WSOrNotToWankErrorLog" type="log4net.Appender.RollingFileAppender">
+      <file value="C:\Projects\WankerCode\Logs\WSOrNotToWank_ExceptionLog.txt" />
+      <appendToFile value="true" />
+      <rollingStyle value="Composite" />
+      <datePattern value="yyyyMMdd" />
+      <maxSizeRollBackups value="-1" />
+      <maximumFileSize value="1MB" />
+      <layout type="log4net.Layout.PatternLayout">
+        <conversionPattern value="%date [%thread] %level - %message%newline%exception---%newline" />
+      </layout>
+      <filter type="log4net.Filter.LevelRangeFilter">
+        <levelMin value="ERROR" />
+        <levelMax value="FATAL" />
+      </filter>
+    </appender>
+    <root>
+      <level value="DEBUG" />
+      <appender-ref ref="WSOrNotToWankErrorLog" />
+    </root>
+  </log4net>
+</configuration>

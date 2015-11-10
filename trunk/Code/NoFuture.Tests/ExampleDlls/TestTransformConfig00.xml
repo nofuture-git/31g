@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<configuration xmlns:xdt="http://schemas.microsoft.com/XML-Document-Transform">
+
+  <log4net xdt:Transform="Replace" >
+    <appender name="WankErrorLog" type="log4net.Appender.RollingFileAppender">
+      <file value="P:\WANK\LogFiles\PROD\Wank_ExceptionLog.txt" />
+      <appendToFile value="true" />
+      <rollingStyle value="Composite" />
+      <datePattern value="yyyyMMdd" />
+      <maxSizeRollBackups value="-1" />
+      <maximumFileSize value="1MB" />
+      <layout type="log4net.Layout.PatternLayout">
+        <conversionPattern value="%date [%thread] %level - %message%newline%exception---%newline" />
+      </layout>
+      <filter type="log4net.Filter.LevelRangeFilter">
+        <levelMin value="ERROR" />
+        <levelMax value="FATAL" />
+      </filter>
+    </appender>
+    <root>
+      <level value="ERROR" />
+      <appender-ref ref="WankErrorLog" />
+    </root>
+  </log4net>
+
+  <appSettings>
+    <add key="ValidateAddressUsingGoogleOrMapQuest" value="debug" xdt:Transform="Remove" xdt:Locator="Match(key)"/>
+    <add key="SQL_ReportServer_MainReport" value="/DicDodo/MainAggReport" xdt:Transform="SetAttributes" xdt:Locator="Match(key)" />
+    <add key="SQL_ReportServer_Invoice" value="/SimpleReports/SicNaughtyTimeWiseInvoice" xdt:Transform="SetAttributes" xdt:Locator="Match(key)" />
+    <add key="SQL_Report_SavePath" value="/SimpleReports/SicNaughtyTimeWiseInvoice" xdt:Transform="SetAttributes" xdt:Locator="Match(key)" />
+    <add key="URLForUpperDownerConfirmation" value="http://127.0.0.1/WeWankWankWankQA1/WankMgmt/UpperDownerSetup/UpperDownerEventConfirmation.aspx" xdt:Transform="SetAttributes" xdt:Locator="Match(key)" />
+    <add key="WankMgmtURL" value="http://127.0.0.1/DeanSutterpantsSystemQA1/LoginDeanSutterpants.aspx" xdt:Transform="SetAttributes" xdt:Locator="Match(key)" />
+    <add key="ElectronicSignatureURL" value="http://127.0.0.1/WeWankWankWankQA1" xdt:Transform="SetAttributes" xdt:Locator="Match(key)" />
+    <add key="SiteUrl" value="http://127.0.0.1/WeWankWankWankQA1/" xdt:Transform="SetAttributes" xdt:Locator="Match(key)" />
+    <add key="CommunicationEmailAttachmentPaths" value="http://127.0.0.1/WeWankWankWankQA1/Admin/EmailBlastDownloadPage.aspx" xdt:Transform="SetAttributes" xdt:Locator="Match(key)" />
+    <add key="NewsLetterEmailAttachmentPaths" value="http://127.0.0.1/WeWankWankWankQA1/Documents/Admin/NewsLetter" xdt:Transform="SetAttributes" xdt:Locator="Match(key)" />
+    <add key="DodoURL" value="http://127.0.0.1/BrbQA1/" xdt:Transform="SetAttributes" xdt:Locator="Match(key)" />
+    <add key="CustomTextURL" value="http://127.0.0.1/WeWankWankWankQA1/Documents/DeanSutterpantsCustomfile/" xdt:Transform="SetAttributes" xdt:Locator="Match(key)" />
+    <add key="XQYProposalAndQuoteDocumnetUrl" value="http://127.0.0.1/WeWankWankWankQA1/Documents/XQYProposalAndQuoteDocument/" xdt:Transform="SetAttributes" xdt:Locator="Match(key)" />
+    <add key="NastySiteURL" value="http://127.0.0.1/WeWankWankWankQA1/Documents/DeanSutterpantsCustomfile/" xdt:Transform="SetAttributes" xdt:Locator="Match(key)" />
+    <add key="SILKeeeSiteURL" value="http://127.0.0.1/WeWankWankWankQA1/Documents/DeanSutterpantsCustomfile/" xdt:Transform="SetAttributes" xdt:Locator="Match(key)" />
+    <add key="LogoUrl" value="http://127.0.0.1/BrbQA1/" xdt:Transform="SetAttributes" xdt:Locator="Match(key)" />
+    <add key="DodoListFilePath" value="XCNastyDodoByClient\" xdt:Transform="SetAttributes" xdt:Locator="Match(key)" />
+    <add key="NastyTeamRamRodFilePath" value="XCNastyDodosTeamRamRodList\" xdt:Transform="SetAttributes" xdt:Locator="Match(key)" />
+    <add key="XQYApplicationURL" value="http://127.0.0.1/SmithyVienyQA1/" xdt:Transform="SetAttributes" xdt:Locator="Match(key)" />
+    <add key="BeanersChangeRequiredURL" value="http://127.0.0.1/WeWankWankWankQA1" xdt:Transform="SetAttributes" xdt:Locator="Match(key)" />
+    <add key="XCDubiousDirectoryPath" value="DubiousFlatFileUpload" xdt:Transform="SetAttributes" xdt:Locator="Match(key)" />
+    <add key="XCDubiousBackupDirectoryPath" value="DubiousFlatFileUploadBackUp" xdt:Transform="SetAttributes" xdt:Locator="Match(key)" />
+    <add key="VillianFileUploadPath" value="\\Villian\\Uploads\\" xdt:Transform="SetAttributes" xdt:Locator="Match(key)" />
+    <add key="DeanSutterpantsTeamRamRodFileUploadPath" value="\\DeanSutterpantsSystem\\Uploads\\" xdt:Transform="SetAttributes" xdt:Locator="Match(key)" />
+    <add key="DubiousFlatFileTextFormatBackup" value="DubiousFlatFileGenerated_filesBKP" xdt:Transform="SetAttributes" xdt:Locator="Match(key)" />
+    <add key="ErrorMailTemplatePath" value="D:\WeWankWankWank\WANK\PROD\MailTemplate\Error.xml" xdt:Transform="SetAttributes" xdt:Locator="Match(key)" />
+    <add key="DubiousVNLFilePath" value="\\45.22.63.89\ShoudaWouldaCoulda\WANK - QA1\Documents\DubiousVNL" xdt:Transform="SetAttributes" xdt:Locator="Match(key)" />
+    <add key="XCServiceVieny" value="http://127.0.0.1/GenericServiceVienyQA1/" xdt:Transform="SetAttributes" xdt:Locator="Match(key)" />
+    <add key="DubiousSicNaughtyTimeId" value="Nox,Tox,Lox" xdt:Transform="SetAttributes" xdt:Locator="Match(key)" />
+    <add key="EmdeonFilePath" value="C:\XCEMDEON" xdt:Transform="SetAttributes" xdt:Locator="Match(key)" />
+    <add key="XCAddress" value="666 Hell Hwy" xdt:Transform="SetAttributes" xdt:Locator="Match(key)" />
+    <add key="XCState" value="Spook City" xdt:Transform="SetAttributes" xdt:Locator="Match(key)" />
+    <add key="XCCity" value="NV" xdt:Transform="SetAttributes" xdt:Locator="Match(key)" />
+    <add key="XCZip" value="55662" xdt:Transform="SetAttributes" xdt:Locator="Match(key)" />
+    <add key="Tier4ID" value="OPMD-1245" xdt:Transform="SetAttributes" xdt:Locator="Match(key)" />
+    <add key="DubiousDataUploadSicNaughtyTimeId" value="PPROL,POPO,DODO,POOP,PEE" xdt:Transform="SetAttributes" xdt:Locator="Match(key)" />
+    <add key="PatientMismatch" value="D:\WeWankWankWank\AutomatedServices\NastyFiendIntegrationService_AES\MismatchXMLFile" xdt:Transform="SetAttributes" xdt:Locator="Match(key)" />
+    <add key="ProcessedXMLFile" value="D:\WeWankWankWank\AutomatedServices\NastyFiendIntegrationService_AES\ProcessedXMLFile" xdt:Transform="SetAttributes" xdt:Locator="Match(key)" />
+    <add key="Environment" value="yourMom" xdt:Transform="SetAttributes" xdt:Locator="Match(key)" />
+    <add key="TurboSicNaughtyTimeID" value="A0122" xdt:Transform="SetAttributes" xdt:Locator="Match(key)" />
+    <add key="Alere" value="OOlgj451" xdt:Transform="SetAttributes" xdt:Locator="Match(key)" />
+    <add key="EventLogInfo" value="D:\WeWankWankWank\WANK\PROD\SubContractor\EventLog.txt" xdt:Transform="SetAttributes" xdt:Locator="Match(key)" />
+    <add key="ApplicationURL" value="http://127.0.0.1/WeWankWankWankQA1/" xdt:Transform="SetAttributes" xdt:Locator="Match(key)" />
+    <add key="ApplicationEmailURL" value="http://127.0.0.1/WeWankWankWankQA1/" xdt:Transform="SetAttributes" xdt:Locator="Match(key)" />
+    <add key="DefaultAdimUrl" value="http://127.0.0.1/BrbQA1/" xdt:Transform="SetAttributes" xdt:Locator="Match(key)" />
+    <add key="DrivingDistGoogleAPIkey" value="sggsk-15613216579684654654687" xdt:Transform="SetAttributes" xdt:Locator="Match(key)" />
+    <add key="TurboDataEntryURL" value="" xdt:Transform="SetAttributes" xdt:Locator="Match(key)" />
+    <add key="IdentifyCoverageMaximumRadiusToCover" value="500.00" xdt:Transform="SetAttributes" xdt:Locator="Match(key)" />
+    <add key="WeWankWankWankDeanSutterpantsConnectionString" value="Data Source=255.255.255.255,1421;Initial Catalog=WE_WANK;User Id=thunderCats;Password=Hooooooo;Persist Security Info=True;Application Name=WANKPRODDeanSutterpantsConnectionString;" xdt:Transform="SetAttributes" xdt:Locator="Match(key)" />
+    <add key="NastyConnectionString" value="Data Source=255.255.255.255,1421;Initial Catalog=WE_WANK;User Id=thunderCats;Password=Hooooooo;Persist Security Info=True;Application Name=WANKPRODNastyConnectionString;" xdt:Transform="SetAttributes" xdt:Locator="Match(key)" />
+    <add key="SILKeeeConnectionString" value="Data Source=255.255.255.255,1421;Initial Catalog=WE_WANK;User Id=thunderCats;Password=Hooooooo;Persist Security Info=True;Application Name=WANKPRODSILKeeeConnectionString;" xdt:Transform="SetAttributes" xdt:Locator="Match(key)" />
+    <add key="WReference.SendMailService" value="http://localhost/DeanSutterpantsmailserviceQA1/SendMailService.asmx" xdt:Transform="SetAttributes" xdt:Locator="Match(key)" />
+    <add key="XCSiteUploadDirPath" value="FoRealService" xdt:Transform="SetAttributes" xdt:Locator="Match(key)" />
+    <add key="XCSiteUploadBackUpDirPath" value="FoRealService_Uploaded_filesBKP" xdt:Transform="SetAttributes" xdt:Locator="Match(key)" />
+    <add key="XCVNLBodyVitalsDirPath" value="VNLBootyVitalsService" xdt:Transform="SetAttributes" xdt:Locator="Match(key)" />
+    <add key="XCVNLBodyVitalsBackUpDirPath" value="VNLBootyService_Uploaded_filesBKP" xdt:Transform="SetAttributes" xdt:Locator="Match(key)" />
+    <add key="MapQuestAPIKey" value="u-g0tta-git-wit-da-prgrm" xdt:Transform="SetAttributes" xdt:Locator="Match(key)"/>
+    <add key="DeanSutterpantsDefaultMailID" value="DeanSutterpantsQA1@WeWankWankWank.com" xdt:Transform="SetAttributes" xdt:Locator="Match(key)" />
+    <add key="UpperDownerSurveyFromEmailId" value="" xdt:Transform="SetAttributes" xdt:Locator="Match(key)" />
+    <add key="DefaultAdminEmailId" value="DeanSutterpantsQA1@WeWankWankWank.com" xdt:Transform="SetAttributes" xdt:Locator="Match(key)" />
+    <add key="DefaultWANKEmailID" value="DeanSutterpantsQA1@WeWankWankWank.com" xdt:Transform="SetAttributes" xdt:Locator="Match(key)" />
+    <add key="DefaultUpperDownerSheduleRemainderEmailId" value="IlliadConfirmationsQA1@WeWankWankWank.com" xdt:Transform="SetAttributes" xdt:Locator="Match(key)" />
+    <add key="DefaultEmailIdForCredentialsEmails" value="DeanSutterpantsQA1@WeWankWankWank.com" xdt:Transform="SetAttributes" xdt:Locator="Match(key)" />
+    <add key="DefaultLogisticsEmailId" value="SwivnWANKSupportQA@heyKidWannaGetHigh.com" xdt:Transform="SetAttributes" xdt:Locator="Match(key)" />
+    <add key="DefaultStaffingRequestEmailId" value="SummitstaffingQA1@WeWankWankWank.com" xdt:Transform="SetAttributes" xdt:Locator="Match(key)" />
+    <add key="DoughMailId" value="SwivnWANKSupportQA@heyKidWannaGetHigh.com" xdt:Transform="SetAttributes" xdt:Locator="Match(key)" />
+    <add key="DropCCEmailId" value="SwivnWANKSupportQA@heyKidWannaGetHigh.com" xdt:Transform="SetAttributes" xdt:Locator="Match(key)" />
+    <add key="DropBCCEmails" value="SwivnWANKSupportQA@heyKidWannaGetHigh.com" xdt:Transform="SetAttributes" xdt:Locator="Match(key)" />
+    <add key="ErrorMailId" value="" xdt:Transform="SetAttributes" xdt:Locator="Match(key)" />
+    <add key="ExceptionDefaultToAddressMail" value="SwivnWANKSupportQA@heyKidWannaGetHigh.com" xdt:Transform="SetAttributes" xdt:Locator="Match(key)" />
+    <add key="ExceptionRedirectMailId" value="SwivnWANKSupportQA@heyKidWannaGetHigh.com" xdt:Transform="SetAttributes" xdt:Locator="Match(key)" />
+    <add key="ExpenseSicNaughtyTimeingEmail" value="SwivnWANKSupportQA@heyKidWannaGetHigh.com" xdt:Transform="SetAttributes" xdt:Locator="Match(key)" />
+    <add key="GlobalvariablesMailToAddress" value="SwivnWANKSupportQA@heyKidWannaGetHigh.com" xdt:Transform="SetAttributes" xdt:Locator="Match(key)" />
+    <add key="LogisticsTeamManagerEmail" value="SwivnWANKSupportQA@heyKidWannaGetHigh.com" xdt:Transform="SetAttributes" xdt:Locator="Match(key)" />
+    <add key="MailOfRichardForTravelRequestApprove" value="SwivnWANKSupportQA@heyKidWannaGetHigh.com" xdt:Transform="SetAttributes" xdt:Locator="Match(key)" />
+    <add key="MailOfRichardForTravelRequestReject" value="SwivnWANKSupportQA@heyKidWannaGetHigh.com" xdt:Transform="SetAttributes" xdt:Locator="Match(key)" />
+    <add key="MailOfRichardForTravelRequestSubmit" value="SwivnWANKSupportQA@heyKidWannaGetHigh.com" xdt:Transform="SetAttributes" xdt:Locator="Match(key)" />
+    <add key="PatientMismatchEmailId" value="" xdt:Transform="SetAttributes" xdt:Locator="Match(key)" />
+    <add key="PayrollEmailId" value="SwivnWANKSupportQA@heyKidWannaGetHigh.com" xdt:Transform="SetAttributes" xdt:Locator="Match(key)" />
+    <add key="ProgramMangerMailID" value="SwivnWANKSupportQA@heyKidWannaGetHigh.com" xdt:Transform="SetAttributes" xdt:Locator="Match(key)" />
+    <add key="ProhibitedEmailIds" value="" xdt:Transform="SetAttributes" xdt:Locator="Match(key)" />
+    <add key="PTOHREmail" value="SwivnWANKSupportQA@heyKidWannaGetHigh.com" xdt:Transform="SetAttributes" xdt:Locator="Match(key)" />
+    <add key="RecruitingEmail" value="SwivnWANKSupportQA@heyKidWannaGetHigh.com" xdt:Transform="SetAttributes" xdt:Locator="Match(key)" />
+    <add key="ReorderInventoryItemMail" value="SwivnWANKSupportQA@heyKidWannaGetHigh.com" xdt:Transform="SetAttributes" xdt:Locator="Match(key)" />
+    <add key="ReserveEquipmentsItemsEmailID" value="SwivnWANKSupportQA@heyKidWannaGetHigh.com" xdt:Transform="SetAttributes" xdt:Locator="Match(key)" />
+    <add key="StaffingMail" value="SwivnWANKSupportQA@heyKidWannaGetHigh.com" xdt:Transform="SetAttributes" xdt:Locator="Match(key)" />
+    <add key="subContractReferralMail" value="SwivnWANKSupportQA@heyKidWannaGetHigh.com" xdt:Transform="SetAttributes" xdt:Locator="Match(key)" />
+    <add key="TimeCardHREmail" value="SwivnWANKSupportQA@heyKidWannaGetHigh.com" xdt:Transform="SetAttributes" xdt:Locator="Match(key)" />
+    <add key="TimesheetEmailid" value="" xdt:Transform="SetAttributes" xdt:Locator="Match(key)" />
+    <add key="TrvaelWeWankWankWank" value="SwivnWANKSupportQA@heyKidWannaGetHigh.com" xdt:Transform="SetAttributes" xdt:Locator="Match(key)" />
+    <add key="TurboCCEmailId" value="" xdt:Transform="SetAttributes" xdt:Locator="Match(key)" />
+    <add key="TurboToEmailId" value="" xdt:Transform="SetAttributes" xdt:Locator="Match(key)" />
+    <add key="SatisfactionUpperDownerEmail" value="DeanSutterpantsQA1@WeWankWankWank.com" xdt:Transform="SetAttributes" xdt:Locator="Match(key)" />
+    <add key="ExcludeSicNaughtyTimeIDs" value="ABN441,A007" xdt:Transform="InsertIfMissing" xdt:Locator="Match(key)" />
+    <add key="resultPDF" value="\\45.22.63.89\ShoudaWouldaCoulda\WANK - QA1\Documents\XCLabFiend_PROD\XCLabResultPDF"  xdt:Transform="SetAttributes" xdt:Locator="Match(key)" />
+    <add key="SILKeeeresultPDF" xdt:Transform="RemoveAll" xdt:Locator="Match(key)"/>
+    <add key="SILKeeePatientMismatch" xdt:Transform="RemoveAll" xdt:Locator="Match(key)"/>
+    <add key="SILKeeeProcessedXMLFile" xdt:Transform="RemoveAll" xdt:Locator="Match(key)"/>
+    <add key="TemperFlatFileTextFormatBackup" xdt:Transform="RemoveAll" xdt:Locator="Match(key)"/>
+    <add key="FioledURL" value="http://127.0.0.1/BrbQA1/" xdt:Transform="SetAttributes" xdt:Locator="Match(key)" />
+    <add key="SurveyURL" value="http://127.0.0.1/DeanSutterpantsSystemQA1/EmailManager/Survey.aspx" xdt:Transform="SetAttributes" xdt:Locator="Match(key)" />
+    <add key="YeessImagePhyPath" value="\\10.130.13.34\YeessImageDestination\\" xdt:Transform="SetAttributes" xdt:Locator="Match(key)" />
+    <add key="YeessImageVirPath" value="http://10.130.13.34/ClaimsYeessImages/" xdt:Transform="SetAttributes" xdt:Locator="Match(key)" />
+    <add key="ImageLink" value="" xdt:Transform="SetAttributes" xdt:Locator="Match(key)" />
+    <add key="RSWebReference.SendPartialBooty2005" value="http://255.255.255.255/ReportServer/SendPartialBooty2005.asmx" xdt:Transform="SetAttributes" xdt:Locator="Match(key)"/>
+    <add key="SQL_Report_Server" value="http://255.255.255.255/ReportServer/SendPartialBooty2005.asmx" xdt:Transform="SetAttributes" xdt:Locator="Match(key)"/>
+    <add key="FileServerPath" value="\\45.22.63.89\XCDOCUMENTS\WANK - QA1\" xdt:Transform="SetAttributes" xdt:Locator="Match(key)"/>
+    <add key="FileServerIPWebServer" value="10.130.13.33" xdt:Transform="SetAttributes" xdt:Locator="Match(key)"/>
+    <add key="EmailBlastDownloadPath" value="\\45.22.63.89\XCDOCUMENTS\WANK - QA1\Documents\Admin\TempForEMailBlast\" xdt:Transform="SetAttributes" xdt:Locator="Match(key)"/>
+    <add key="SomedayPCPFaxForm" value="\\\\45.22.63.89\\XCDOCUMENTS\\WANK - QA1\SomedayPCPFaxForm\\PCP Fax SD tutu exp 12.31.13.pdf" xdt:Transform="SetAttributes" xdt:Locator="Match(key)"/>
+  </appSettings>
+
+  <connectionStrings>
+    <add name="WeWankWankWankConnectionString" connectionString="Data Source=255.255.255.255,1421;Initial Catalog=WE_WANK;User Id=thunderCats;Password=Hooooooo;Persist Security Info=True;Max Pool Size=20000;Application Name=WANKPRODConnectionString;" xdt:Transform="SetAttributes" xdt:Locator="Match(name)"/>
+    <add name="WeWankWankWankReportsConnectionString" connectionString="Data Source=255.255.255.255,1421;Initial Catalog=WE_WANK;User Id=thunderCats;Password=Hooooooo;Persist Security Info=True;Max Pool Size=20000;Application Name=WANKPRODReportsConnectionString;" xdt:Transform="SetAttributes" xdt:Locator="Match(name)"/>
+    <add name="WeWankWankWankSearchScreenConnectionString" connectionString="Data Source=255.255.255.255,1421;Initial Catalog=WE_WANK;User Id=thunderCats;Password=Hooooooo;Persist Security Info=True;Max Pool Size=20000;Application Name=WANKPRODSearchScreenConnectionString;" xdt:Transform="SetAttributes" xdt:Locator="Match(name)"/>
+    <add name="WeWankWankWankAggregateReportConnectionString" connectionString="Data Source=255.255.255.255,1421;Initial Catalog=WE_WANK;User Id=thunderCats;Password=Hooooooo;Persist Security Info=True;Max Pool Size=20000;Application Name=WANKPRODAggregateReportConnectionString;" xdt:Transform="SetAttributes" xdt:Locator="Match(name)"/>
+    <add name="WeWankWankWankPARConnectionString" connectionString="Data Source=255.255.255.255,1421;Initial Catalog=WankDW;User Id=WankReport;Password=Rokj%ddk11;Persist Security Info=True;Max Pool Size=20000;Application Name=WeWankWankWankPARPODConnectionString;" xdt:Transform="SetAttributes" xdt:Locator="Match(name)"/>
+
+  </connectionStrings>
+
+  <system.web>
+    <compilation xdt:Transform="RemoveAttributes(debug)">
+      <buildProviders>
+        <remove extension=".rdlc" xdt:Transform="RemoveAll" xdt:Locator="Match(extension)"/>
+      </buildProviders>
+    </compilation>
+
+
+    <customErrors defaultRedirect="ApplicationErrorPage.aspx" mode="On" xdt:Transform="Replace" />
+  </system.web>
+
+  <system.serviceModel>
+    <client>
+      <endpoint address="http://127.0.0.1/ProviderDropUpperDownerService_Prod/DropUpperDownerServiceImp.svc" binding="basicHttpBinding" contract="DropUpperDownerService.IDropUpperDownerService" name="BasicHttpBinding_IDropUpperDownerService" xdt:Transform="SetAttributes" xdt:Locator="Match(name)" />
+    </client>
+  </system.serviceModel>
+  <applicationSettings>
+    <WeWankWankWank.CCV.XAY.Whopper.Properties.Settings >
+      <setting name="WeWankWankWank_CRM_UI_Design_WReference_SendMailService"
+        serializeAs="String" value="http://10.130.13.34/DeanSutterpantsMailServiceQA1/SendMailService.asmx" xdt:Transform="SetAttributes" xdt:Locator="Match(name)"/>
+    </WeWankWankWank.CCV.XAY.Whopper.Properties.Settings>
+  </applicationSettings>
+</configuration>

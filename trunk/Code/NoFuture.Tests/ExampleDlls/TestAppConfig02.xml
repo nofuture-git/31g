@@ -1,0 +1,78 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<configuration>
+  <appSettings>
+    <add key="TriggerTime" value="03:58:00"/>
+    <add key="EventLogInfo" value="D:\AutomatedServices\ServiceInstallers\StElsewhere.txt" />
+    <add key="FileDownloadPath" value="D:\AutomatedServices\ServiceInstallers\\DownloadedFiles"/>
+    <add key="strToEmail" value="masta.wanker@wanksAlot.com"/>
+    <add key="MailBody" value="D:\AutomatedServices\ServiceInstallers\MailBody.xml"/>
+    <add key="ServiceUserName" value=""/>
+    <add key="ServicePassword" value=""/>
+
+  </appSettings>
+  <connectionStrings>
+    <add name="WeWankWankWankConnectionString" connectionString="Data Source=WeWANK;Initial Catalog=MegaWankerQA;Trusted_Connection=True;"/>
+    <add name="WeWankWankWankReportsConnectionString" connectionString="Data Source=WeWANK;Initial Catalog=MegaWankerQA;Trusted_Connection=True;"/>
+    <add name="WeWankWankWankSearchScreenConnectionString" connectionString="Data Source=WeWANK;Initial Catalog=MegaWankerQA;Trusted_Connection=True;"/>
+    <add name="WeWankWankWankAggregateReportConnectionString" connectionString="Data Source=WeWANK;Initial Catalog=MegaWankerQA;Trusted_Connection=True;"/>
+    <add name="WeWankWankWankPARConnectionString" connectionString="Data Source=WeWANK;Initial Catalog=MegaWankerQA;Trusted_Connection=True;"/>
+  </connectionStrings>
+  
+  <system.serviceModel>
+    <bindings>
+      <wsHttpBinding>
+        <binding name="WSHttpBinding_IStEleswhereWaaannnker"
+          closeTimeout="00:10:00" openTimeout="00:10:00" receiveTimeout="00:10:00"
+          sendTimeout="00:10:00" bypassProxyOnLocal="false" transactionFlow="false"
+          hostNameComparisonMode="StrongWildcard" maxBufferPoolSize="2147483647"
+          maxReceivedMessageSize="2147483647" messageEncoding="Text" textEncoding="utf-8"
+          useDefaultWebProxy="true" allowCookies="false">
+          <readerQuotas maxDepth="32" maxStringContentLength="2147483647"
+            maxArrayLength="2147483647" maxBytesPerRead="2147483647" maxNameTableCharCount="2147483647" />
+          <reliableSession ordered="true" inactivityTimeout="00:10:00"
+            enabled="false" />
+          <security mode="Message">
+            <transport clientCredentialType="Windows" proxyCredentialType="None"
+              realm="" />
+            <message clientCredentialType="Windows" negotiateServiceCredential="true"
+              algorithmSuite="Default" establishSecurityContext="true" />
+          </security>
+        </binding>
+        <binding name="WSHttpBinding_ISHLABErrorMailService" closeTimeout="00:01:00"
+          openTimeout="00:01:00" receiveTimeout="00:10:00" sendTimeout="00:01:00"
+          bypassProxyOnLocal="false" transactionFlow="false" hostNameComparisonMode="StrongWildcard"
+          maxBufferPoolSize="2147483647" maxReceivedMessageSize="2147483647"
+          messageEncoding="Text" textEncoding="utf-8" useDefaultWebProxy="true"
+          allowCookies="false">
+          <readerQuotas maxDepth="32" maxStringContentLength="2147483647"
+            maxArrayLength="2147483647" maxBytesPerRead="2147483647" maxNameTableCharCount="2147483647" />
+          <reliableSession ordered="true" inactivityTimeout="00:10:00"
+            enabled="false" />
+          <security mode="Message">
+            <transport clientCredentialType="Windows" proxyCredentialType="None"
+              realm="" />
+            <message clientCredentialType="Windows" negotiateServiceCredential="true"
+              algorithmSuite="Default" establishSecurityContext="true" />
+          </security>
+        </binding>
+      </wsHttpBinding>
+    </bindings>
+    <client>
+      <endpoint address="http://www.WeWankWankWank.com/SupaWankaServices/SHLABErrLogMailService.svc"
+        binding="wsHttpBinding" bindingConfiguration="WSHttpBinding_ISHLABErrorMailService"
+        contract="WeWankWankWank.WcfClientProxy.SupaWankaServices.ISHLABErrorMailService" name="WSHttpBinding_ISHLABErrorMailService">
+        <identity>
+          <dns value="localhost" />
+        </identity>
+      </endpoint>
+      <endpoint address="http://www.WeWankWankWank.com/StEleswhereWaaannnkerUAT/StEleswhereWaaannnker.svc"
+        binding="wsHttpBinding" bindingConfiguration="WSHttpBinding_IStEleswhereWaaannnker"
+        contract="WeWankWankWank.WcfClientProxy.StEleswhereWankerTime.IStEleswhereWankerTimeWcf"
+        name="WSHttpBinding_IStEleswhereWaaannnker">
+        <identity>
+          <dns value="localhost" />
+        </identity>
+      </endpoint>
+    </client>
+  </system.serviceModel>
+</configuration>
