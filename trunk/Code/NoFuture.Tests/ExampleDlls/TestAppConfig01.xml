@@ -118,6 +118,25 @@
         </endpoint>
         <endpoint address="mex" binding="mexHttpBinding" contract="IMetadataExchange" />
       </service>
+      <service name="SirWanksalot.GonnaCallYou" behaviorConfiguration="BootyConfig_PirateBootyThatIs">
+        <!-- Service Endpoints -->
+        <endpoint address="" binding="wsHttpBinding" contract="BootyConfig_PirateBootyThatIs" bindingConfiguration="BootyConfig_Config">
+          <!-- 
+              Upon deployment, the following identity element should be removed or replaced to reflect the 
+              identity under which the deployed service runs.  If removed, WCF will infer an appropriate identity 
+              automatically.
+          -->
+          <identity>
+						<dns value="http://44.11.94.65/SirWanksalot/GonnaCallYou.svc" />
+          </identity>
+        </endpoint>
+        <endpoint address="mex" binding="mexHttpsBinding" contract="IMetadataExchange" />
+        <!--<host>
+          <baseAddresses>
+            <add baseAddress="http://10.130.11.40/ProviderDropClinicService_Prod" />
+          </baseAddresses>
+        </host>-->
+      </service>	  
     </services>
     <bindings>
       <wsHttpBinding>
@@ -152,7 +171,7 @@
   </system.diagnostics>
   <log4net>
     <appender name="Doh-WeWankWankWank-WCFErrorLog" type="log4net.Appender.RollingFileAppender">
-      <file value="C:\Projects\Logs\Doh-WeWankWankWank-WCF_ExceptionLog.txt" />
+      <file value="P:\WankerProjects\Logs\Doh-WeWankWankWank-WCF_ExceptionLog.txt" />
       <appendToFile value="true" />
       <rollingStyle value="Composite" />
       <datePattern value="yyyyMMdd" />

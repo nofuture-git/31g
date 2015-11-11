@@ -35,7 +35,8 @@ namespace NoFuture.Tests
                     regexCatalog.EmailAddress,
                     string.Format("{0}@myDomain.net", System.Environment.GetEnvironmentVariable("USERNAME"))
                 },
-                {@"224\.11\.89\.55", "127.0.0.1"}
+                {regexCatalog.IPv4, "127.0.0.1"},
+                {regexCatalog.UrlClassicAmerican, "localhost"}
             };
             File.Copy(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\TestAppConfig00.xml", TEST00_EXE_CONFIG, true);
             File.Copy(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\TestAppConfig01.xml", TEST01_EXE_CONFIG, true);
@@ -175,6 +176,20 @@ namespace NoFuture.Tests
             Assert.IsNotNull(testResult);
             Assert.IsTrue(System.IO.File.Exists(testResult));
 
+        }
+
+        [TestMethod]
+        public void TestHandle()
+        {
+            var fileOnDisk = @"C:\Projects\Summit\ApexServices\WCF\DropProviderService\DropProvider\Web.config";
+            var copyThereof = @"C:\Projects\Summit\ApexServices\WCF\DropProviderService\DropProvider\Web-Copy.config";
+            File.Copy(fileOnDisk, copyThereof, true);
+
+            System.Threading.Thread.Sleep(500);
+
+            var testSubject = new NoFuture.Read.Config.ExeConfig(copyThereof);
+
+            var testResult = testSubject.WriteContentFile(Regex2Values, true);
         }
     }
 }

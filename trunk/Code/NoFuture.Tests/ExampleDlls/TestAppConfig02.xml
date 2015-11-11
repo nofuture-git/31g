@@ -58,9 +58,9 @@
       </wsHttpBinding>
     </bindings>
     <client>
-      <endpoint address="http://www.WeWankWankWank.com/SupaWankaServices/SHLABErrLogMailService.svc"
-        binding="wsHttpBinding" bindingConfiguration="WSHttpBinding_ISHLABErrorMailService"
-        contract="WeWankWankWank.WcfClientProxy.SupaWankaServices.ISHLABErrorMailService" name="WSHttpBinding_ISHLABErrorMailService">
+      <endpoint address="http://www.WeWankWankWank.com/SupaWankaServices/WestCoastLoveService.svc"
+        binding="wsHttpBinding" bindingConfiguration="WSHttpBinding_IWestCoastLoveService"
+        contract="WeWankWankWank.WcfClientProxy.SupaWankaServices.IWestCoastLoveService" name="WSHttpBinding_IWestCoastLoveService">
         <identity>
           <dns value="localhost" />
         </identity>

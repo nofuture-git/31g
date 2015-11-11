@@ -270,16 +270,5 @@ namespace NoFuture.Tests.Util
                 System.Diagnostics.Debug.WriteLine(t);
 
         }
-
-        [TestMethod]
-        public void TestToRegexExpression()
-        {
-            var testInput = "Dependent (18 yrs +)";
-            var testResult = NoFuture.Util.Etc.ToRegexExpression(testInput);
-
-            Assert.IsNotNull(testResult);
-            System.Text.RegularExpressions.Regex.IsMatch("Dependents", testResult);
-            System.Diagnostics.Debug.WriteLine(testResult);
-        }
     }
 }

@@ -6,7 +6,6 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 using NoFuture.Exceptions;
-using System.Text.RegularExpressions;
 
 namespace NoFuture.Read.Config
 {
@@ -43,11 +42,16 @@ namespace NoFuture.Read.Config
         #endregion
 
         #region instance api
-        public void SplitCustom(Action<XmlDocument, XmlWriter> customAction)
-        {
-            customAction.Invoke(_configContent, _xmlWriter);
-        }
-
+        /// <summary>
+        /// Targets specific attributes of a .NET configuration file replacing any matches
+        /// found in <see cref="regex2Values"/> Keys with the paired value.
+        /// </summary>
+        /// <param name="regex2Values"></param>
+        /// <param name="swapConnStrs"></param>
+        /// <returns>
+        /// The filename of the config transformations which received all the changes 
+        /// from the target.
+        /// </returns>
         public string WriteContentFile(Hashtable regex2Values, bool swapConnStrs)
         {
             _xmlWriter.WriteStartDocument();
@@ -57,7 +61,7 @@ namespace NoFuture.Read.Config
             _xmlWriter.WriteAttributeString("xmlns", "xdt", null, "http://schemas.microsoft.com/XML-Document-Transform");
 
             SplitAppSettings(regex2Values, swapConnStrs);
-            SplitConnectionStringNodes(regex2Values);
+            SplitConnectionStringNodes(regex2Values, swapConnStrs);
 
             if (_configContent.SelectSingleNode("//system.serviceModel") != null)
             {
@@ -140,7 +144,7 @@ namespace NoFuture.Read.Config
                     continue;
                 }
 
-                if (!AreAnyRegexMatch(appValAttr.Value, regex2Values))
+                if (!Shared.RegexCatalog.AreAnyRegexMatch(appValAttr.Value, regex2Values.Keys.Cast<string>().ToArray()))
                     continue;
 
                 AppropriateAllRegex(appValAttr, regex2Values);
@@ -151,7 +155,7 @@ namespace NoFuture.Read.Config
             _xmlWriter.WriteEndElement();
         }
 
-        internal void SplitConnectionStringNodes(Hashtable regex2Values)
+        internal void SplitConnectionStringNodes(Hashtable regex2Values, bool swapConnStrs)
         {
             var connectionStringNodes = _configContent.SelectSingleNode("//connectionStrings");
             if (connectionStringNodes == null || !connectionStringNodes.HasChildNodes)
@@ -168,18 +172,22 @@ namespace NoFuture.Read.Config
                 if (conStrAttr == null)
                     continue;
 
-                if (!AreAnyRegexMatch(conStrAttr.Value, regex2Values))
+                var conStrVal = conStrAttr.Value;
+
+                if (swapConnStrs ||
+                    !Shared.RegexCatalog.AreAnyRegexMatch(conStrAttr.Value, regex2Values.Keys.Cast<string>().ToArray()))
                 {
+
                     conStrAttr.Value = Shared.Constants.SqlServerDotNetConnString;
 
-                    AddConnStringNodeToTransform(conStrNameAttr.Value, conStrAttr.Value);
+                    AddConnStringNodeToTransform(conStrNameAttr.Value, conStrVal);
 
                     continue;
                 }
 
                 AppropriateAllRegex(conStrAttr, regex2Values);
 
-                AddConnStringNodeToTransform(conStrNameAttr.Value, conStrAttr.Value);
+                AddConnStringNodeToTransform(conStrNameAttr.Value, conStrVal);
 
             }
             _xmlWriter.WriteEndElement();
@@ -212,7 +220,7 @@ namespace NoFuture.Read.Config
                     endPtNode.Attributes["contract"] == null ? null : endPtNode.Attributes["contract"].Value,
                     endPtNode.Attributes["name"] == null ? null : endPtNode.Attributes["name"].Value);
 
-                if (!AreAnyRegexMatch(addrAttr.Value, regex2Values))
+                if (!Shared.RegexCatalog.AreAnyRegexMatch(addrAttr.Value, regex2Values.Keys.Cast<string>().ToArray()))
                 {
                     var addUri = new UriBuilder(addrAttr.Value) { Host = "localhost" };
 
@@ -245,9 +253,6 @@ namespace NoFuture.Read.Config
                 if (nameAttr == null || string.IsNullOrWhiteSpace(nameAttr.Value))
                     continue;
 
-                var hostNode =
-                    _configContent.SelectSingleNode(string.Format(
-                        "//system.serviceModel/services/service[@name='{0}']/host/baseAddresses", nameAttr.Value));
 
                 _xmlWriter.WriteStartElement("service");
 
@@ -256,96 +261,163 @@ namespace NoFuture.Read.Config
                 if (behConfigAttr != null && !string.IsNullOrWhiteSpace(behConfigAttr.Value))
                     _xmlWriter.WriteAttributeString("behaviorConfiguration", behConfigAttr.Value);
 
-                if (hostNode == null) //address attribute is being used
-                {
-                    var endPtNodes = _configContent.SelectNodes(string.Format(
-                        "//system.serviceModel/services/service[@name='{0}']/endpoint", nameAttr.Value));
-                    if (endPtNodes == null || endPtNodes.Count <= 0)
-                    {
-                        _xmlWriter.WriteEndElement();
-                        continue;
-                    }
+                _xmlWriter.WriteAttributeString("Locator", "http://schemas.microsoft.com/XML-Document-Transform",
+                    "Match(name)");
 
+                var endPtNodes = _configContent.SelectNodes(string.Format(
+                    "//system.serviceModel/services/service[@name='{0}']/endpoint", nameAttr.Value));
+
+                var hostNode = _configContent.SelectSingleNode(
+                    string.Format("//system.serviceModel/services/service[@name='{0}']/host/baseAddresses", nameAttr.Value));
+
+                if ((endPtNodes != null && endPtNodes.Count > 0))
+                {
                     foreach (var nodei in endPtNodes)
                     {
                         var endPtNode = nodei as XmlElement;
                         if (endPtNode == null)
                             continue;
+
                         if (endPtNode.Attributes["address"] == null ||
                             string.IsNullOrWhiteSpace(endPtNode.Attributes["address"].Value) ||
                             string.Equals(endPtNode.Attributes["address"].Value, "mex",
                                 StringComparison.OrdinalIgnoreCase) ||
                             !Uri.IsWellFormedUriString(endPtNode.Attributes["address"].Value, UriKind.RelativeOrAbsolute))
-                            continue; //next endpoint
-
-                        var endPtAttr = endPtNode.Attributes["address"];
-
-                        AddEndpointNodeToTransform(
-                            endPtAttr == null ? null : endPtAttr.Value,
-                            endPtNode.Attributes["binding"] == null ? null : endPtNode.Attributes["binding"].Value,
-                            endPtNode.Attributes["bindingConfiguration"] == null
-                                ? null
-                                : endPtNode.Attributes["bindingConfiguration"].Value,
-                            endPtNode.Attributes["contract"] == null ? null : endPtNode.Attributes["contract"].Value,
-                            endPtNode.Attributes["name"] == null ? null : endPtNode.Attributes["name"].Value);
-
-                        if (!AreAnyRegexMatch(endPtAttr.Value, regex2Values))
                         {
-                            var addUri = new UriBuilder(endPtAttr.Value) { Host = "localhost" };
+                            WriteEndpointIdDnsClosed(regex2Values, endPtNode, nameAttr);
+                            continue;
+                        }
 
-                            endPtAttr.Value = addUri.ToString();
-                        }
-                        else
-                        {
-                            AppropriateAllRegex(endPtAttr, regex2Values);
-                        }
+                        WriteEndpointAddressClosed(regex2Values, endPtNode);
                     }
                 }
-                else //address is specified in the host/baseAddresses
+
+                if (hostNode != null) //address is specified in the host/baseAddresses
                 {
-                    _xmlWriter.WriteStartElement("host");
-                    _xmlWriter.WriteStartElement("baseAddresses");
-                    foreach (var nodeV in hostNode.ChildNodes)
-                    {
-                        var bAddrNode = nodeV as XmlElement;
-                        if (bAddrNode == null)
-                            continue;
-                        var baseAddrAttr = bAddrNode.Attributes["baseAddress"];
-                        if (baseAddrAttr == null || string.IsNullOrEmpty(baseAddrAttr.Value) ||
-                            !Uri.IsWellFormedUriString(baseAddrAttr.Value, UriKind.RelativeOrAbsolute))
-                        {
-                            _xmlWriter.WriteEndElement();
-                            _xmlWriter.WriteEndElement();
-                            continue;
-                        }
-
-                        _xmlWriter.WriteStartElement("add");
-                        _xmlWriter.WriteAttributeString("baseAddress", baseAddrAttr.Value);
-
-                        _xmlWriter.WriteAttributeString("Transform", "http://schemas.microsoft.com/XML-Document-Transform",
-                            "SetAttributes");
-                        _xmlWriter.WriteAttributeString("Locator", "http://schemas.microsoft.com/XML-Document-Transform",
-                            "Match(baseAddress)");
-
-                        if (!AreAnyRegexMatch(baseAddrAttr.Value, regex2Values))
-                        {
-                            var bAddrUri = new UriBuilder(baseAddrAttr.Value) { Host = "localhost" };
-                            baseAddrAttr.Value = bAddrUri.ToString();
-                        }
-                        else
-                        {
-                            AppropriateAllRegex(baseAddrAttr, regex2Values);
-                        }
-                        _xmlWriter.WriteEndElement();
-                    }
-                    _xmlWriter.WriteEndElement();
-                    _xmlWriter.WriteEndElement();
+                    WriteServiceHostNodeClosed(regex2Values, hostNode);
                 }
 
                 _xmlWriter.WriteEndElement();//end service node
             }
 
             _xmlWriter.WriteEndElement();//end serviceS node
+        }
+
+        private void WriteEndpointIdDnsClosed(Hashtable regex2Values, XmlElement endPtNode, XmlAttribute nameAttr)
+        {
+            var endPtContractAttr = endPtNode.Attributes["contract"];
+            if (endPtContractAttr == null || string.IsNullOrWhiteSpace(endPtContractAttr.Value))
+                return;
+
+            //yet another way serviceModel lets you define an address...
+            var nodeVii =
+                _configContent.SelectSingleNode(
+                    string.Format("//system.serviceModel/services/service[@name='{0}']/endpoint[@contract='{1}']/identity/dns",
+                        nameAttr.Value,
+                        endPtContractAttr.Value));
+
+            if (nodeVii == null)
+                return;
+            var dnsNode = nodeVii as XmlElement;
+            if (dnsNode == null)
+                return;
+
+            var dnsValueAttr = dnsNode.Attributes["value"];
+            if (dnsValueAttr == null || string.IsNullOrWhiteSpace(dnsValueAttr.Value))
+                return;
+
+            var origDnsVal = dnsValueAttr.Value;
+            AppropriateAllRegex(dnsValueAttr, regex2Values);
+
+            WriteEndPointXmlUnclosed(
+                endPtNode.Attributes["address"] == null ? null : endPtNode.Attributes["address"].Value,
+                endPtNode.Attributes["binding"] == null ? null : endPtNode.Attributes["binding"].Value,
+                endPtNode.Attributes["bindingConfiguration"] == null
+                    ? null
+                    : endPtNode.Attributes["bindingConfiguration"].Value,
+                endPtNode.Attributes["contract"] == null ? null : endPtNode.Attributes["contract"].Value,
+                endPtNode.Attributes["name"] == null ? null : endPtNode.Attributes["name"].Value);
+
+            _xmlWriter.WriteAttributeString("Transform",
+                "http://schemas.microsoft.com/XML-Document-Transform",
+                "Replace");
+
+            _xmlWriter.WriteStartElement("identity");
+            _xmlWriter.WriteStartElement("dns");
+            _xmlWriter.WriteAttributeString("value", origDnsVal);
+
+            _xmlWriter.WriteEndElement(); //end dns node
+            _xmlWriter.WriteEndElement(); //end identity node
+            _xmlWriter.WriteEndElement(); //end endpoint node
+        }
+
+        private void WriteEndpointAddressClosed(Hashtable regex2Values, XmlElement endPtNode)
+        {
+            var endPtAddrAttr = endPtNode.Attributes["address"];
+
+            //implies the a contract with no end point address whatsoever.
+            if (endPtAddrAttr == null || string.IsNullOrWhiteSpace(endPtAddrAttr.Value))
+                return;
+
+            AddEndpointNodeToTransform(
+                endPtAddrAttr.Value,
+                endPtNode.Attributes["binding"] == null ? null : endPtNode.Attributes["binding"].Value,
+                endPtNode.Attributes["bindingConfiguration"] == null
+                    ? null
+                    : endPtNode.Attributes["bindingConfiguration"].Value,
+                endPtNode.Attributes["contract"] == null ? null : endPtNode.Attributes["contract"].Value,
+                endPtNode.Attributes["name"] == null ? null : endPtNode.Attributes["name"].Value);
+
+            if (!Shared.RegexCatalog.AreAnyRegexMatch(endPtAddrAttr.Value, regex2Values.Keys.Cast<string>().ToArray()))
+            {
+                var addUri = new UriBuilder(endPtAddrAttr.Value) {Host = "localhost"};
+
+                endPtAddrAttr.Value = addUri.ToString();
+            }
+            else
+            {
+                AppropriateAllRegex(endPtAddrAttr, regex2Values);
+            }
+        }
+
+        private void WriteServiceHostNodeClosed(Hashtable regex2Values, XmlNode hostNode)
+        {
+            _xmlWriter.WriteStartElement("host");
+            _xmlWriter.WriteAttributeString("Transform", "http://schemas.microsoft.com/XML-Document-Transform",
+                "Replace");
+
+            _xmlWriter.WriteStartElement("baseAddresses");
+            foreach (var nodeV in hostNode.ChildNodes)
+            {
+                var bAddrNode = nodeV as XmlElement;
+                if (bAddrNode == null)
+                    continue;
+                var baseAddrAttr = bAddrNode.Attributes["baseAddress"];
+                if (baseAddrAttr == null || string.IsNullOrEmpty(baseAddrAttr.Value) ||
+                    !Uri.IsWellFormedUriString(baseAddrAttr.Value, UriKind.RelativeOrAbsolute))
+                {
+                    _xmlWriter.WriteEndElement();
+                    _xmlWriter.WriteEndElement();
+                    continue;
+                }
+
+                _xmlWriter.WriteStartElement("add");
+                _xmlWriter.WriteAttributeString("baseAddress", baseAddrAttr.Value);
+
+
+                if (!Shared.RegexCatalog.AreAnyRegexMatch(baseAddrAttr.Value, regex2Values.Keys.Cast<string>().ToArray()))
+                {
+                    var bAddrUri = new UriBuilder(baseAddrAttr.Value) {Host = "localhost"};
+                    baseAddrAttr.Value = bAddrUri.ToString();
+                }
+                else
+                {
+                    AppropriateAllRegex(baseAddrAttr, regex2Values);
+                }
+                _xmlWriter.WriteEndElement();
+            }
+            _xmlWriter.WriteEndElement();//end baseAddresses node
+            _xmlWriter.WriteEndElement();//end host node
         }
 
         internal void SplitLog4NetAppenderFileName(Hashtable regex2Values)
@@ -400,14 +472,15 @@ namespace NoFuture.Read.Config
             _xmlWriter.WriteEndElement();//end log4net node
         }
 
-        internal void AddEndpointNodeToTransform(string addr, string binding, string bindingConfig, string contract,
+        internal void WriteEndPointXmlUnclosed(string addr, string binding, string bindingConfig, string contract,
             string name)
         {
-            if (string.IsNullOrWhiteSpace(addr))
-                return;
 
             _xmlWriter.WriteStartElement("endpoint");
-            _xmlWriter.WriteAttributeString("address", addr);
+            if (!string.IsNullOrWhiteSpace(addr))
+            {
+                _xmlWriter.WriteAttributeString("address", addr);
+            }
             if (!string.IsNullOrWhiteSpace(binding))
             {
                 _xmlWriter.WriteAttributeString("binding", binding);
@@ -424,11 +497,28 @@ namespace NoFuture.Read.Config
             {
                 _xmlWriter.WriteAttributeString("name", name);
             }
+            
+        }
 
-            _xmlWriter.WriteAttributeString("Transform", "http://schemas.microsoft.com/XML-Document-Transform",
-                "SetAttributes");
-            _xmlWriter.WriteAttributeString("Locator", "http://schemas.microsoft.com/XML-Document-Transform",
-                "Match(name)");
+        internal void AddEndpointNodeToTransform(string addr, string binding, string bindingConfig, string contract,
+            string name)
+        {
+
+            WriteEndPointXmlUnclosed(addr, binding,bindingConfig,contract,name);
+
+            if (!string.IsNullOrWhiteSpace(name))
+            {
+                _xmlWriter.WriteAttributeString("Transform", "http://schemas.microsoft.com/XML-Document-Transform",
+                    "SetAttributes");
+                _xmlWriter.WriteAttributeString("Locator", "http://schemas.microsoft.com/XML-Document-Transform",
+                    "Match(name)");
+            }
+            else
+            {
+                _xmlWriter.WriteAttributeString("Transform", "http://schemas.microsoft.com/XML-Document-Transform",
+                    "Replace");
+            }
+
             _xmlWriter.WriteEndElement();
         }
 
@@ -457,54 +547,19 @@ namespace NoFuture.Read.Config
             
         }
 
-        internal static bool IsRegexMatch(string subject, string pattern, out string match)
-        {
-            match = null;
-            if (string.IsNullOrEmpty(subject) || string.IsNullOrEmpty(pattern))
-                return false;
-
-            var regex = new Regex(pattern);
-
-            if (!regex.IsMatch(subject))
-                return false;
-
-            var grp = regex.Matches(subject)[0];
-            if (!grp.Success)
-                return false;
-            match = grp.Groups[0].Value;
-            return true;
-
-        }
-
-        internal static bool AreAnyRegexMatch(string subject, Hashtable regex2Values)
-        {
-            if (string.IsNullOrEmpty(subject))
-                return false;
-            if (regex2Values == null || regex2Values.Count <= 0)
-                return false;
-
-            return regex2Values.Keys.Cast<string>().Any(x => Regex.IsMatch(subject, x));
-        }
 
         internal static void AppropriateAllRegex(XmlAttribute attr, Hashtable regex2Values)
         {
+            if (attr == null)
+                return;
             var newAppVal = attr.Value;
             if (string.IsNullOrEmpty(newAppVal))
                 return;
+            if (regex2Values == null || regex2Values.Count <= 0)
+                return;
 
-            foreach (var regexKey in regex2Values.Keys.Cast<string>())
-            {
-                string matchedVal;
-
-                var isRegexKeyMatch = IsRegexMatch(newAppVal, regexKey, out matchedVal);
-
-                if (!isRegexKeyMatch)
-                    continue;
-
-                newAppVal = newAppVal.Replace(matchedVal, regex2Values[regexKey].ToString());
-            }
-
-            attr.Value = newAppVal;            
+            Shared.RegexCatalog.AppropriateAllRegex(ref newAppVal, regex2Values);
+            attr.Value = newAppVal;
         }
 
         internal static bool IsConnectionString(string someValue)

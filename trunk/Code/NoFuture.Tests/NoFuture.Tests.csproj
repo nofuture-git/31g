@@ -205,6 +205,7 @@
     <Compile Include="Rand\DataTypesTests.cs" />
     <Compile Include="Rand\UsStateTests.cs" />
     <Compile Include="Shared\TestBindings.cs" />
+    <Compile Include="Shared\TestRegexCatalog.cs" />
     <Compile Include="Sql\TestExportTo.cs" />
     <Compile Include="Sql\TestPsTypeInfo.cs" />
     <Compile Include="Sql\TestPsMetadata.cs" />

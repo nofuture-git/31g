@@ -156,7 +156,7 @@
   </configSections>
   <log4net>
     <appender name="WSOrNotToWankErrorLog" type="log4net.Appender.RollingFileAppender">
-      <file value="C:\Projects\WankerCode\Logs\WSOrNotToWank_ExceptionLog.txt" />
+      <file value="P:\WankerProjects\Logs\WSOrNotToWank_ExceptionLog.txt" />
       <appendToFile value="true" />
       <rollingStyle value="Composite" />
       <datePattern value="yyyyMMdd" />

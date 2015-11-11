@@ -461,45 +461,6 @@ namespace NoFuture.Util
         }
 
         /// <summary>
-        /// Constructs a basic regex pattern on the <see cref="someText"/> whole words.
-        /// </summary>
-        /// <param name="someText"></param>
-        /// <returns></returns>
-        public static string ToRegexExpression(string someText)
-        {
-            if (string.IsNullOrEmpty(someText))
-                return someText;
-
-            var regexPattern = new StringBuilder();
-            //this is probably just one single whole word
-            if (someText.ToCharArray().All(x => char.IsNumber(x) || char.IsLetter(x)))
-                return someText;
-            const string _x2a_x28_x28 = "*((";
-            const string _x29_x3f_x29 = ")?)";
-
-            foreach (var c in someText.ToCharArray())
-            {
-                var isNumOrLetter = char.IsNumber(c) || char.IsLetter(c);
-                var firstWholeWord = !regexPattern.ToString().Contains("*");
-                var cPattern = regexPattern.ToString();
-                var noTextBetwixt = cPattern.EndsWith(_x2a_x28_x28) || cPattern.EndsWith(_x29_x3f_x29);
-
-                if (!firstWholeWord && !isNumOrLetter && !noTextBetwixt)
-                    regexPattern.Append(_x29_x3f_x29);// )?)
-                if (!isNumOrLetter && !noTextBetwixt)
-                    regexPattern.Append(_x2a_x28_x28);// *((
-
-                if (isNumOrLetter)
-                    regexPattern.Append(c);
-            }
-            if (regexPattern.ToString().ToCharArray().Count(x => x == '*') >
-                regexPattern.ToString().ToCharArray().Count(x => x == '?'))
-                regexPattern.Append(_x29_x3f_x29);
-            //clean up the tail
-            return regexPattern.ToString().Replace(_x2a_x28_x28 + _x29_x3f_x29, string.Empty);
-        }
-
-        /// <summary>
         /// Trims a string then puts to lower case the first letter found there in.
         /// </summary>
         /// <param name="name"></param>
