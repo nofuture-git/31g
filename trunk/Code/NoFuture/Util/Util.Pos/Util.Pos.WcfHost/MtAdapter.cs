@@ -2,6 +2,7 @@
 using System.Linq;
 using edu.stanford.nlp.tagger.maxent;
 using NoFuture.Exceptions;
+using NoFuture.Tools;
 
 namespace NoFuture.Util.Pos.WcfHost
 {

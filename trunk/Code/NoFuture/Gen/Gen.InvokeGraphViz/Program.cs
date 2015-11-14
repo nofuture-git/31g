@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using NoFuture.Util.Binary;
+using NoFuture.Tools;
 using NoFuture.Util.Gia.Args;
 
 namespace NoFuture.Gen.InvokeGraphViz
@@ -51,13 +52,13 @@ namespace NoFuture.Gen.InvokeGraphViz
                     return;
                 }
 
-                X86Tools.DotExe = Path.Combine(BinDirectories.Root, f);
+                X86.DotExe = Path.Combine(BinDirectories.Root, f);
 
-                if (!File.Exists(X86Tools.DotExe))
+                if (!File.Exists(X86.DotExe))
                 {
                     var msg =
                         string.Format(
-                            "the path to Dot.exe is not present at '{0}' - change the config file settings", X86Tools.DotExe);
+                            "the path to Dot.exe is not present at '{0}' - change the config file settings", X86.DotExe);
                     Console.WriteLine(msg);
                     return;
                 }

@@ -1,4 +1,5 @@
-﻿namespace NoFuture.Rand.Gov.Bea
+﻿using NoFuture.Globals;
+namespace NoFuture.Rand.Gov.Bea
 {
     /// <summary>
     /// Contains the links used to make RESTful calls to the BEA's API
@@ -11,10 +12,10 @@
         {
             get
             {
-                if (string.IsNullOrWhiteSpace(Keys.BeaDataApiKey))
+                if (string.IsNullOrWhiteSpace(SecurityKeys.BeaDataApiKey))
                     throw new Exceptions.RahRowRagee(
                         "The '[NoFuture.Keys]::BeaDataApiKey' must be set before calling this property.");
-                return string.Format("{0}?&UserID={1}&", BeaBaseAccessUri, Keys.BeaDataApiKey);
+                return string.Format("{0}?&UserID={1}&", BeaBaseAccessUri, SecurityKeys.BeaDataApiKey);
             }
         }
 

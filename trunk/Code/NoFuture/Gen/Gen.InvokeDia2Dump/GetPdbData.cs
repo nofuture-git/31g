@@ -5,6 +5,7 @@ using System.Runtime.Remoting.Messaging;
 using System.Text;
 using NoFuture.Exceptions;
 using NoFuture.Shared;
+using NoFuture.Tools;
 using NoFuture.Shared.DiaSdk;
 using NoFuture.Shared.DiaSdk.LinesSwitch;
 

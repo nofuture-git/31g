@@ -11,6 +11,7 @@ using System.Text;
 using NoFuture.Exceptions;
 using NoFuture.Shared;
 using NoFuture.Util;
+using NoFuture.Tools;
 using NoFuture.Util.Binary;
 
 namespace NoFuture.Gen

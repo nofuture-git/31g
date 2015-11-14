@@ -46,7 +46,7 @@ function Get-SHA256HashString
         
         $data = [System.Text.Encoding]::UTF8.GetBytes($value)
         
-        $salt = [System.Text.Encoding]::UTF8.GetBytes([System.Convert]::FromBase64String([NoFuture.Keys]::AesIV))
+        $salt = [System.Text.Encoding]::UTF8.GetBytes([System.Convert]::FromBase64String([NoFuture.Globals.SecurityKeys]::AesIV))
         
         $dataAndSalt = [byte[]]($data + $salt)
         
@@ -89,7 +89,7 @@ function Get-HMACSHA1HashString
     )
     Process
     {
-        $privKey = [System.Convert]::FromBase64String([NoFuture.Keys]::HMACSHA1.Replace("-", "+").Replace("_", "/"))
+        $privKey = [System.Convert]::FromBase64String([NoFuture.Globals.SecurityKeys]::HMACSHA1.Replace("-", "+").Replace("_", "/"))
         $hmacsha1 = New-Object System.Security.Cryptography.HMACSHA1
         $hmacsha1.Key = $privKey
         return ([System.Convert]::ToBase64String($hmacsha1.ComputeHash([System.Text.Encoding]::UTF8.GetBytes($Value))).Replace("-", "+").Replace("_", "/"))
@@ -131,8 +131,8 @@ function Get-AesEncryptedValue
         $aesM = [System.Security.Cryptography.AESManaged]::Create()
         $aesM.Mode = [System.Security.Cryptography.CipherMode]::CBC
         $aesM.Padding = [System.Security.Cryptography.PaddingMode]::PKCS7
-        $aesM.Key = [System.Convert]::FromBase64String([NoFuture.Keys]::AesEncryptionKey)
-        $aesM.IV = [System.Convert]::FromBase64String([NoFuture.Keys]::AesIV)
+        $aesM.Key = [System.Convert]::FromBase64String([NoFuture.Globals.SecurityKeys]::AesEncryptionKey)
+        $aesM.IV = [System.Convert]::FromBase64String([NoFuture.Globals.SecurityKeys]::AesIV)
         
         
         $aesMEncrypt = $aesM.CreateEncryptor()
@@ -179,8 +179,8 @@ function Get-AesDecryptedValue
         $aesM = [System.Security.Cryptography.AESManaged]::Create()
         $aesM.Mode = [System.Security.Cryptography.CipherMode]::CBC
         $aesM.Padding = [System.Security.Cryptography.PaddingMode]::PKCS7
-        $aesM.Key = [System.Convert]::FromBase64String([NoFuture.Keys]::AesEncryptionKey)
-        $aesM.IV = [System.Convert]::FromBase64String([NoFuture.Keys]::AesIV)
+        $aesM.Key = [System.Convert]::FromBase64String([NoFuture.Globals.SecurityKeys]::AesEncryptionKey)
+        $aesM.IV = [System.Convert]::FromBase64String([NoFuture.Globals.SecurityKeys]::AesIV)
         
         $aesMDecrypt = $aesM.CreateDecryptor()
         

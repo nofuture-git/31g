@@ -35,7 +35,7 @@ namespace NoFuture.Sql.Mssql
             sqlParams.Append(server);
             sqlParams.Append(" -d ");
             sqlParams.Append(dbName);
-            if (GlobalSwitches.SqlCmdHeadersOff)
+            if (Globals.Switches.SqlCmdHeadersOff)
             {
                 sqlParams.Append(" -k 2 -h \"-1\" -W -s \"|\" -Q ");
             }
@@ -178,7 +178,7 @@ namespace NoFuture.Sql.Mssql
             sqlMatrixConsolePrint.AppendLine("***************");
             sqlMatrixConsolePrint.AppendLine(
                 string.Format("Current setttings:: -Server '{0}' -Database '{1}' -Header Off '{2}' -Filter Off '{3}'",
-                    Shared.Constants.SqlServer, Shared.Constants.SqlCatalog, GlobalSwitches.SqlCmdHeadersOff, GlobalSwitches.SqlFiltersOff));
+                    Shared.Constants.SqlServer, Shared.Constants.SqlCatalog, Globals.Switches.SqlCmdHeadersOff, Globals.Switches.SqlFiltersOff));
             sqlMatrixConsolePrint.AppendLine("***************");
             foreach (var sb in sqlMatrixPrint)
                 sqlMatrixConsolePrint.AppendLine(sb.ToString());
@@ -238,7 +238,7 @@ namespace NoFuture.Sql.Mssql
         {
             if (SqlFilterList.Count <= 0) return expression;
 
-            GlobalSwitches.SqlFiltersOff = false;
+            Globals.Switches.SqlFiltersOff = false;
             var tblFilter = SqlFilterList.Where(x => !string.IsNullOrWhiteSpace(x))
                 .Aggregate("", (current, lo) => current + (string.Format("'{0}',", lo)));
             tblFilter +=

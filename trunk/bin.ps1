@@ -74,10 +74,10 @@ function Get-BinaryDump
         }
         
         #test for dumpbin.exe being installed
-        if(-not(Test-Path ([NoFuture.X64Tools]::Dumpbin))){throw ("Expected to find 'dumpbin.exe' at '{0}'." -f ([NoFuture.X64Tools]::Dumpbin)) }
+        if(-not(Test-Path ([NoFuture.Tools.X64]::Dumpbin))){throw ("Expected to find 'dumpbin.exe' at '{0}'." -f ([NoFuture.Tools.X64]::Dumpbin)) }
         
         #construct command expression
-        $dumpbin = ("`"{0}`"" -f ([NoFuture.X64Tools]::Dumpbin))
+        $dumpbin = ("`"{0}`"" -f ([NoFuture.Tools.X64]::Dumpbin))
         if($DumpBinSwitches -eq $null -or $DumpBinSwitches -eq "")
         {
             $parameterSwitch = " /EXPORTS"
@@ -278,7 +278,7 @@ function New-JavaObject
 
             $javaTypeInstance | Add-Member NoteProperty JreRef $JreRef
 
-            $javaTypeInstance | Add-Member NoteProperty JrePort ([NoFuture.JavaTools]::JrePort)
+            $javaTypeInstance | Add-Member NoteProperty JrePort ([NoFuture.Tools.JavaTools]::JrePort)
 
             $javaTypeInstance | Add-Member NoteProperty DebugPath (Join-Path ([NoFuture.TempDirectories]::Debug) ("{0}.out.txt" -f $jCtor.TType))
 
@@ -351,7 +351,7 @@ function Write-JavaTypeMemberDef($Ctor)
 
 function Write-CustomJavaTypeCtorSyntax($TypeName,$jreCtor,$JrunscriptProcId,$debugPath)
 {
-    $jrunscriptPort = [NoFuture.JavaTools]::JrePort
+    $jrunscriptPort = [NoFuture.Tools.JavaTools]::JrePort
 
     #custom types will use the ref returned from 'Import-CustomTypeIntoJre' to create an instance of a just-defined-type
     #via a call to .newInstance (as compared to simply 'new ')
@@ -557,7 +557,7 @@ function Invoke-JavaCompiler
         $ClassPath = Get-JavaClassPath $ClassPath
 
         #compile
-        . ([NoFuture.JavaTools]::Javac) -d $javaBuild -cp $ClassPath (Join-Path $javaSrc ("$TypeName.java"))
+        . ([NoFuture.Tools.JavaTools]::Javac) -d $javaBuild -cp $ClassPath (Join-Path $javaSrc ("$TypeName.java"))
 
 
         #place into jar
@@ -572,7 +572,7 @@ function Invoke-JavaCompiler
         }
         
         Push-Location $javaBuild
-        . ([NoFuture.JavaTools]::Jar) cf $jarFile "*"
+        . ([NoFuture.Tools.JavaTools]::Jar) cf $jarFile "*"
         Pop-Location
 
         return $jarFile

@@ -17,6 +17,7 @@ using NoFuture.Util.Binary;
 using NoFuture.Util.Gia.Args;
 using Newtonsoft.Json;
 using NoFuture.Util.Pos;
+using NoFuture.Tools;
 
 namespace NoFuture.Util.Gia
 {

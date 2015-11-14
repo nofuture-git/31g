@@ -103,7 +103,7 @@ Set-Alias proc Write-StoredProcedureToHost
     the enviornment's PATH variable. The command makes no check that this is 
     the case.  
     
-    Set the global variable NoFuture.GlobalSwitches.SqlCmdHeadersOff to true to get only the results.
+    Set the global variable NoFuture.Globals.Switches.SqlCmdHeadersOff to true to get only the results.
     The delimiter is a bar character (|).  This command is intended for 
     update, delete, insert and scaler selects'.  Use the ADO function for 
     selecting multiple records. 
@@ -163,7 +163,7 @@ function Invoke-SqlCommand
       else{
         $cmd =  ([NoFuture.Sql.Mssql.Etc]::MakeSqlCmd($expression,$ServerName,$CatalogName))
       }
-      if(([NoFuture.Sql.Mssql.Etc]::WarnUserIfServerIn -contains $ServerName) -and ([NoFuture.GlobalSwitches]::SupressNpp -eq $false)){
+      if(([NoFuture.Sql.Mssql.Etc]::WarnUserIfServerIn -contains $ServerName) -and ([NoFuture.Globals.Switches]::SupressNpp -eq $false)){
         $message = "WARNING: current settings are pointed to production!`nDo you want to continue this operation?"
         $yes = New-Object System.Management.Automation.Host.ChoiceDescription "&Yes", `
             "Continue operation using SQLCMD.exe."
@@ -881,7 +881,7 @@ function Get-TableMetaData
         Write-Progress -Activity ("Unqualified table name calculated as '{0}'" -f $TableName) -Status "OK" -PercentComplete 10
     
         #check that the table is a valid one
-        [NoFuture.GlobalSwitches]::SqlCmdHeadersOff = $true
+        [NoFuture.Globals.Switches]::SqlCmdHeadersOff = $true
         $countByTableName = sql ([NoFuture.Sql.Mssql.Qry.Catalog]::CountByTableName -f $TableName)
         if($countByTableName -eq 0){throw ("The table name '{0}' is not present in the current database catalog" -f $Tablename)}
 
@@ -1049,7 +1049,7 @@ function Get-DatabaseDll
     Process
     {
     
-        if(-not(Test-Path ([NoFuture.X86Tools]::SqlMetal))){throw ("SqlMetal.exe is not found at '{0}'" -f ([NoFuture.X86Tools]::SqlMetal))}
+        if(-not(Test-Path ([NoFuture.Tools.X86]::SqlMetal))){throw ("SqlMetal.exe is not found at '{0}'" -f ([NoFuture.Tools.X86]::SqlMetal))}
         if([string]::IsNullOrWhiteSpace([NoFuture.Shared.Constants]::SqlServer) -or [string]::IsNullOrWhiteSpace([NoFuture.Shared.Constants]::SqlCatalog)) {
             Write-Host "The global sqlServer and sqlCatalog variables are not set, assign them and try again."
         }
@@ -1060,7 +1060,7 @@ function Get-DatabaseDll
         [System.IO.Path]::InvalidPathChars | % { $codeFile = $codeFile.Replace($_.ToString(),"")}
         $codeFile = (Join-Path ([NoFuture.TempDirectories]::Code) $codeFile)
 
-        $cmd = ("& '{0}' /server:{1} /database:{2} /code:{3} /namespace:{4}" -f ([NoFuture.X86Tools]::SqlMetal),([NoFuture.Shared.Constants]::SqlServer),([NoFuture.Shared.Constants]::SqlCatalog),$codeFile,$namespace)
+        $cmd = ("& '{0}' /server:{1} /database:{2} /code:{3} /namespace:{4}" -f ([NoFuture.Tools.X86]::SqlMetal),([NoFuture.Shared.Constants]::SqlServer),([NoFuture.Shared.Constants]::SqlCatalog),$codeFile,$namespace)
         Invoke-Expression -Command $cmd
         if($Error.Count -gt $errCount) {break;}
 

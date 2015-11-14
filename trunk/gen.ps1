@@ -956,7 +956,7 @@ function Invoke-DotExe
             break;
         }
         
-        $dotExe = ([NoFuture.X86Tools]::DotExe)
+        $dotExe = ([NoFuture.Tools.X86]::DotExe)
         if(-not (Test-Path $dotExe)){
             Write-Host "The dot.exe is not located at $dotExe" -ForegroundColor Yellow
             break;

@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using NoFuture.Shared;
 
 namespace NoFuture.Util
@@ -291,6 +293,65 @@ namespace NoFuture.Util
         }
 
         /// <summary>
+        /// Asserts the <see cref="somePath"/> is a file path
+        /// with one of the extensions in <see cref="Constants.CodeExtensions"/>
+        /// </summary>
+        /// <param name="somePath"></param>
+        /// <returns></returns>
+        public static bool IsCodeFileExtension(string somePath)
+        {
+            return IsExtensionType(somePath, Constants.CodeExtensions);
+        }
+
+        /// <summary>
+        /// Asserts the <see cref="somePath"/> is a file path
+        /// with one of the extensions in <see cref="Constants.ConfigExtensions"/>
+        /// </summary>
+        /// <param name="somePath"></param>
+        /// <returns></returns>
+        public static bool IsConfigFileExtension(string somePath)
+        {
+            return IsExtensionType(somePath, Constants.ConfigExtensions);
+        }
+
+        /// <summary>
+        /// Asserts the <see cref="somePath"/> is a file path
+        /// with one of the extensions in <see cref="Constants.BinaryExtensions"/>
+        /// </summary>
+        /// <param name="somePath"></param>
+        /// <returns></returns>
+        public static bool IsBinaryFileExtension(string somePath)
+        {
+            return IsExtensionType(somePath, Constants.BinaryExtensions);
+        }
+
+        /// <summary>
+        /// Asserts the <see cref="somePath"/> contains at least
+        /// one of the values in <see cref="Constants.ExcludeCodeDirectories"/>
+        /// </summary>
+        /// <param name="somePath"></param>
+        /// <returns></returns>
+        public static bool ContainsExcludeCodeDirectory(string somePath)
+        {
+            if (string.IsNullOrWhiteSpace(somePath))
+                return false;
+            return somePath.Contains(new string(new[] {Path.DirectorySeparatorChar})) &&
+                   Constants.ExcludeCodeDirectories.Any(somePath.Contains);
+        }
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        internal static bool IsExtensionType(string somePath, string[] possiableExtensions)
+        {
+            if (string.IsNullOrWhiteSpace(somePath) || possiableExtensions == null)
+                return false;
+            if(somePath.StartsWith("."))
+                return possiableExtensions.Any(x => Regex.IsMatch(somePath, x, RegexOptions.IgnoreCase));
+            var ext = Path.GetExtension(somePath);
+            return !string.IsNullOrWhiteSpace(ext) &&
+                   possiableExtensions.Any(x => Regex.IsMatch(ext, x, RegexOptions.IgnoreCase));
+        }
+
+        /// <summary>
         /// Resolves paths containing an environment variable(s).
         /// </summary>
         /// <param name="somePath"></param>
@@ -307,6 +368,12 @@ namespace NoFuture.Util
             if (string.IsNullOrWhiteSpace(somePath) || (!somePath.Contains("$") && !somePath.Contains("%")))
                 return false;
 
+            //just invoke the framework if it returns something
+            if (!string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable(somePath)))
+            {
+                pathOut = Environment.GetEnvironmentVariable(somePath);
+                return true;
+            }
             var lowerSomePath = somePath.ToLower();
 
             var envVars = Environment.GetEnvironmentVariables();

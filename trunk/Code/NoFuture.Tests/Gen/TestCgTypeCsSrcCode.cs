@@ -6,6 +6,7 @@ using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NoFuture.Gen;
 using NoFuture.Gen.LangRules;
+using NoFuture.Tools;
 
 namespace NoFuture.Tests.Gen
 {
@@ -16,10 +17,10 @@ namespace NoFuture.Tests.Gen
         [TestInitialize]
         public void Init()
         {
-            NoFuture.TempDirectories.Code = @"C:\Projects\31g\trunk\Code\NoFuture.Tests\Gen";
-            NoFuture.TempDirectories.Debug = @"C:\Projects\31g\trunk\Code\NoFuture.Tests\Gen";
-            NoFuture.CustomTools.Dia2Dump = @"C:\Projects\31g\trunk\bin\Dia2Dump.exe";
-            NoFuture.CustomTools.InvokeGetCgType = @"C:\Projects\31g\trunk\bin\NoFuture.Gen.InvokeGetCgOfType.exe";
+            TempDirectories.Code = @"C:\Projects\31g\trunk\Code\NoFuture.Tests\Gen";
+            TempDirectories.Debug = @"C:\Projects\31g\trunk\Code\NoFuture.Tests\Gen";
+            CustomTools.Dia2Dump = @"C:\Projects\31g\trunk\bin\Dia2Dump.exe";
+            CustomTools.InvokeGetCgType = @"C:\Projects\31g\trunk\bin\NoFuture.Gen.InvokeGetCgOfType.exe";
         }
         [TestMethod]
         public void TestCtor()

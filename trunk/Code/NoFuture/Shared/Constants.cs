@@ -18,30 +18,8 @@ namespace NoFuture
         /// </summary>
         public static Dictionary<string, string> FunctionFiles = new Dictionary<string, string>();
     }
-    /// <summary>
-    /// Booleans intended as global to the namespace
-    /// </summary>
-    public class GlobalSwitches
-    {
-        public static bool PrintWebHeaders { get; set; }
-        public static bool SqlCmdHeadersOff { get; set; }
-        public static bool SqlFiltersOff { get; set; }
-        public static bool SupressNpp { get; set; }
-    }
-    /// <summary>
-    /// Various keys, those which are not assigned a value would be real keys externally defined -
-    /// the rest is just for flippin' bits.
-    /// </summary>
-    public class Keys
-    {
-        public static string AesEncryptionKey = "gb0352wHVco94Gr260BpJzH+N1yrwmt5/BaVhXmPm6s=";
-        public static string AesIV = "az9HzsMj6pygMvZyTpRo6g==";
-        public static string HMACSHA1 = "eTcmPilTLmtbalRpKjFFJjpMNns=";
-        public static Uri ProxyServer;
-        public static string GoogleCodeApiKey { get; set; }
-        public static string BeaDataApiKey { get; set; }
-        public static string CensusDataApiKey { get; set; }
-    }
+
+
     /// <summary>
     /// Paths to directories used for storing temp results of NoFuture powershell scripts.
     /// </summary>
@@ -110,10 +88,14 @@ namespace NoFuture
         public static string JavaRoot { get; set; }
         public static string T4Templates { get; set; }
     }
+}
+
+namespace NoFuture.Tools
+{
     /// <summary>
     /// The file path to exe's referenced by NoFuture powershell scripts
     /// </summary>
-    public class X64Tools
+    public class X64
     {
         public static string SvcUtil { get; set; }
         public static string Cdb { get; set; }
@@ -126,12 +108,12 @@ namespace NoFuture
         public static string Mdbg { get; set; }
         public static string ClrVer { get; set; }
         public static string SymChk { get; set; }
-        public static string XsdExe { get; set; }        
+        public static string XsdExe { get; set; }
     }
     /// <summary>
     /// The file path to exe's referenced by NoFuture powershell scripts
     /// </summary>
-    public class X86Tools
+    public class X86
     {
         public static string Cdb { get; set; }
         public static string Depends { get; set; }
@@ -177,6 +159,34 @@ namespace NoFuture
     }
 }
 
+namespace NoFuture.Globals
+{
+    /// <summary>
+    /// Booleans intended as global to the namespace
+    /// </summary>
+    public class Switches
+    {
+        public static bool PrintWebHeaders { get; set; }
+        public static bool SqlCmdHeadersOff { get; set; }
+        public static bool SqlFiltersOff { get; set; }
+        public static bool SupressNpp { get; set; }
+    }
+    /// <summary>
+    /// Various keys, those which are not assigned a value would be real keys externally defined -
+    /// the rest is just for flippin' bits.
+    /// </summary>
+    public class SecurityKeys
+    {
+        public static string AesEncryptionKey = "gb0352wHVco94Gr260BpJzH+N1yrwmt5/BaVhXmPm6s=";
+        public static string AesIV = "az9HzsMj6pygMvZyTpRo6g==";
+        public static string HMACSHA1 = "eTcmPilTLmtbalRpKjFFJjpMNns=";
+        public static Uri ProxyServer;
+        public static string GoogleCodeApiKey { get; set; }
+        public static string BeaDataApiKey { get; set; }
+        public static string CensusDataApiKey { get; set; }
+    }
+}
+
 namespace NoFuture.Shared
 {
     /// <summary>
@@ -217,6 +227,7 @@ namespace NoFuture.Shared
         public static int SqlServerFalse = 0;
         public static int SqlServerTrue = 1;
         public static string AddJavaTypeRootPackage = "MyJava";
+        
         private static string _symbolsFolder = @"C:\Symbols";
         private static int _threadSleepTime;
         private static bool _useReflectionOnlyLoad = true;
@@ -376,6 +387,7 @@ namespace NoFuture.Shared
             "sep", //separator page files (for printing pages between pages)
             "scp", //Secure Copy Protocol? (C:\Windows\System32\ras)
             "wsc", //Windows Script Component
+            "idl", //present in own C++ project
 
         };
 
@@ -386,7 +398,7 @@ namespace NoFuture.Shared
             "ini", "inf", "config", "xml", "sitemap",
             "dtsx", "database", "user", "edmx",
             "fcc", "pdm", "pp", "svc", "testsettings",
-            "ps1xml", "content", "aml",
+            "ps1xml", "content", "aml","nuspec",
             "acl", //AutoCorrect List Format
             "cva", "cfg", "din", "ecf", "ecf", "hkf", "iss", "gpd",
             "isp", "dun", "obe", //useful data at C:\Windows\System32\sppui
@@ -434,8 +446,26 @@ namespace NoFuture.Shared
             "ttc","ttf","tts","tx_","txt","uaq","uce","udt","uni","uninstall",
             "unt","url","vch","vdf","ver","vp","vs_1_1","vs_4_0","vsd","vspscc",
             "wav","wdf","web","wih","wim","win32manifest","wma","wmf","wmv","wmz",
-            "wtv","wwd","x32","xex","xlb","xls","xlsx","zfsendtotarget","zip"
+            "wtv","wwd","x32","xex","xlb","xls","xlsx","zfsendtotarget","zip","pkc"
         };
+
+        public static string[] ExcludeCodeDirectories = new[]
+        {
+            @"\bin\",
+            @"\obj\",
+            @"\Interop\",
+            @"\TestResults\",
+            @"\_svn\",
+            @"\.svn\",
+            @"\_ReSharper",
+            @"\_TeamCity",
+            @"\.git\",
+            @"\lib\",
+            @"\build\", //common to Java
+            @"\dist\",  //common to Java
+            @"\packages\",
+        };
+
         #endregion
     }
 }
