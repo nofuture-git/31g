@@ -120,7 +120,7 @@ FROM    dbo.sysobjects AS tbl
                                  AND sik.indid = i.indid
         JOIN syscolumns sc ON sc.id = sik.id
                               AND sc.colid = sik.colid
-WHERE   tbl.type = 'U'
+WHERE   tbl.[type] = 'U'
         AND tbl.name = '{0}'
         AND CAST(i.status & 2 AS BIT) = 1
 ORDER BY sc.name ASC
@@ -134,6 +134,23 @@ WHERE   TABLE_NAME = '{0}'
                            'datetime2', 'varchar', 'text',
                            'nvarchar', 'nchar', 'uniqueidentifier', 
                            'nchar', 'xml', 'time' )";
+
+        public const string QryTableVarCharTypesWithMinLen = @"
+SELECT  s.name + '.' + tbl.name AS " + TABLE_NAME + @" ,
+        sc.name AS " + COLUMN_NAME + @" ,
+        ( CASE WHEN sc.[length] < 0 THEN 8000
+               ELSE sc.[length]
+          END ) AS [" + LENGTH + @"] ,
+        sc.[colid] AS [" + ORDINAL + @"]
+FROM    dbo.sysobjects AS tbl
+        JOIN syscolumns sc ON sc.id = tbl.id
+        JOIN sys.schemas s ON s.[schema_id] = tbl.[uid]
+        JOIN sys.types TYP ON TYP.user_type_id = sc.xtype
+WHERE   tbl.[type] = 'U'
+        AND TYP.name IN ( 'nvarchar', 'varchar', 'text' )
+        AND s.name + '.' + tbl.name = '{0}'
+		AND (sc.[length] > {1} OR sc.[length] < 0)";
+
 
         public const string QryColumnComputed = @"
 SELECT  name AS " + COLUMN_NAME + @"
@@ -153,7 +170,12 @@ FROM    INFORMATION_SCHEMA.COLUMNS
 WHERE   TABLE_NAME = '{0}'
         AND COLUMN_NAME = '{1}'";
 
-        public const string QryAllColumnsBySchemaTable = @"
+        public const string QryAllColumnsBySchemaTable = QryDumpAllTableData + @"
+        AND tbl.name = '{0}'
+        AND s.name = '{1}'
+ORDER BY sc.colid ASC";
+
+        public const string QryDumpAllTableData = @"
 SELECT  s.name AS " + SCHEMA_NAME + @" ,
         tbl.name AS " + TABLE_NAME + @" ,
         sc.name AS " + COLUMN_NAME + @" ,
@@ -171,11 +193,8 @@ FROM    dbo.sysobjects AS tbl
 		LEFT JOIN INFORMATION_SCHEMA.COLUMNS INFO_COL ON INFO_COL.TABLE_SCHEMA = s.name
                                                          AND INFO_COL.TABLE_NAME = tbl.name
                                                          AND INFO_COL.COLUMN_NAME = sc.name
-WHERE   tbl.type = 'U'
-        AND tbl.name = '{0}'
-        AND s.name = '{1}'
-        AND TYP.name NOT IN ('timestamp')
-ORDER BY sc.colid ASC";
+WHERE   tbl.[type] = 'U'
+        AND TYP.name NOT IN ('timestamp')";
 
         public const string QryColumnMaxLength = @"
 SELECT  CHARACTER_MAXIMUM_LENGTH AS " + LENGTH + @"
@@ -215,7 +234,7 @@ FROM    dbo.sysobjects AS tbl
                                                               AND col.TABLE_NAME = tbl.name
         LEFT OUTER JOIN INFORMATION_SCHEMA.TABLE_CONSTRAINTS itbl ON itbl.TABLE_NAME = col.TABLE_NAME
                                                               AND itbl.CONSTRAINT_NAME = col.CONSTRAINT_NAME
-WHERE   tbl.type = 'U'
+WHERE   tbl.[type] = 'U'
         AND CAST(i.status & 2 AS BIT) = 1
         AND ISNULL(itbl.CONSTRAINT_TYPE, 'UNIQUE') = 'UNIQUE'
 ORDER BY tbl.name ASC

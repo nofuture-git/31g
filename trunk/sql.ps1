@@ -1305,3 +1305,137 @@ function Export-CsvToScriptTempTable
     return (Get-Content -Path $outputPath)
     }#end Process
 }
+
+
+<#
+    .SYNOPSIS
+    Mines the database for a table and column name which has 
+    the search string
+    
+    .DESCRIPTION
+    For discovering if a given string appears any where in the
+    database.
+    
+    .PARAMETER Path
+    A simple search string with no MSSQL escape chars
+    
+    .OUTPUTS
+    Hashtable
+    
+#>
+function Mine-DatabaseForString
+{
+    [CmdletBinding()]
+    Param
+    (
+        [Parameter(Mandatory=$true,position=0)]
+        [string] $SearchString,
+        [Parameter(Mandatory=$false,position=1)]
+        [array] $SkipTablesNamed
+
+    )
+    Process
+    {
+        if([string]::IsNullOrWhiteSpace($SearchString)){
+            return;
+        }
+        if([string]::IsNullOrWhiteSpace([NoFuture.Shared.Constants]::SqlServer) -or 
+           [string]::IsNullOrWhiteSpace([NoFuture.Shared.Constants]::SqlCatalog)){
+
+            Write-Host "Set the connection first using Mssql-Settings cmdlet" -ForegroundColor Yellow
+            break;
+        } 
+        Write-Progress -Activity "Getting List of All Tables" -Status "Searching..."
+        $allTables = ado ([NoFuture.Sql.Mssql.Qry.Catalog]::TblSelectString -f "")
+
+        if($allTables -eq $null){
+            Write-Host "No table data found for current connection";
+            break;
+        }
+        
+        if($SkipTablesNamed -eq $null){
+            $SkipTablesNamed = @()
+        }
+
+        $isMatchTables = @{}
+
+        $counter = 0
+        $total = $allTables.Length
+        :nextTbl foreach($tbl in $allTables){
+            $counter += 1
+            $tblName = $tbl.TableName
+            $escTableName = "[" + [string]::Join("].[", $tblName.Split(".")) + "]"
+            Write-Progress -Activity "Working $tblName" -Status "Searching..." -PercentComplete ([NoFuture.Util.Etc]::CalcProgressCounter($counter, $total))
+
+            if([string]::IsNullOrWhiteSpace($tblName)){
+                continue nextTbl;
+            }
+
+            if($SkipTablesNamed -contains $tblName){
+                continue nextTbl;
+            }
+
+            $tblVarCharCols = ado ([NoFuture.Sql.Mssql.Qry.Catalog]::QryTableVarCharTypesWithMinLen -f $tblName, $SearchString.Length)
+            if($tblVarCharCols -eq $null){
+                continue nextTbl;
+            }
+
+            $criteria = @{}
+
+            :nextCol foreach($col in $tblVarCharCols){
+                if([string]::IsNullOrWhiteSpace($col)){
+                    continue nextCol;
+                }
+
+                $colTblName = $col.ColumnName
+
+                $criteria += @{"[$colTblName] LIKE '%$SearchString%'" = $col}
+            }
+
+            if($criteria.Keys.Length -le 0){
+                continue nextTbl;
+            }
+
+            $searchQry = ("SELECT COUNT(*) AS CountOfMatch FROM $escTableName WHERE {0}" -f ([string]::Join(" OR ", [array]($criteria.Keys))))
+            
+            $errorCount = $Error.Count
+            $hasAtLeastOne = ado $searchQry
+
+            if($Error.Count -gt $errorCount){
+                Write-Host $searchQry -ForegroundColor Yellow
+            }
+
+            if($hasAtLeastOne.CountOfMatch -le 0){
+                continue nextTbl;
+            }
+
+            #which one?
+            :nextCrit foreach($crit in $criteria.Keys){
+                if([string]::IsNullOrEmpty($crit)){
+                    continue nextCrit;
+                }
+
+                $searchQry = ("SELECT COUNT(*) AS CountOfMatch FROM $escTableName WHERE {0}" -f $crit)
+
+                $errorCount = $Error.Count
+                $hasAtLeastOne = ado $searchQry
+                if($Error.Count -gt $errorCount){
+                    Write-Host $searchQry -ForegroundColor Yellow
+                }
+
+                if($hasAtLeastOne.CountOfMatch -le 0){
+                    continue nextCrit;
+                }
+
+                if($isMatchTables.Keys -contains $tblName){
+                    $isMatchTables[$tblName] += $criteria[$crit]
+                }
+                else{
+                    $isMatchTables += @{$tblName = @($criteria[$crit])}
+                }
+            }
+        }#end foreach table
+
+        return $isMatchTables
+    }
+}

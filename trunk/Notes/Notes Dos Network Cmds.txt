@@ -107,3 +107,6 @@ appcmd set config /section:applicationPools "/[name='MyApplication'].processMode
 
 #search for by active port
 netstat -an | findstr :80
+
+#hard delete a windows service
+sc.exe delete "MyServiceName"
