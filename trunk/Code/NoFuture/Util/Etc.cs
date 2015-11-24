@@ -88,6 +88,21 @@ namespace NoFuture.Util
         }
 
         /// <summary>
+        /// Converts line endings to CrLf
+        /// </summary>
+        /// <param name="fileContent"></param>
+        /// <returns></returns>
+        public static string ConvertToCrLf(string fileContent)
+        {
+            if (fileContent == null)
+                return null;
+            fileContent = fileContent.Replace(new string(new[] { Constants.CR, Constants.LF }), new string(new[] { Constants.LF }));
+            fileContent = fileContent.Replace(new string(new[] { Constants.CR }), new string(new[] { Constants.LF }));
+            fileContent = fileContent.Replace(new string(new[] { Constants.LF }), new string(new[] { Constants.CR, Constants.LF }));
+            return fileContent;
+        }
+
+        /// <summary>
         /// Reduces multiple blank lines.
         /// </summary>
         /// <param name="lines"></param>

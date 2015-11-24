@@ -219,6 +219,8 @@ namespace NoFuture.Shared
     /// </summary>
     public class Constants
     {
+        public const char LF = (char)0xA;
+        public const char CR = (char)0xD;
         public const string OUTLOOK_APPT_PREFIX = "[shell]";
         public const long DEFAULT_BLOCK_SIZE = 256;
         public static char StringTerminator = '\0';

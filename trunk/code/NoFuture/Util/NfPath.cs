@@ -13,6 +13,47 @@ namespace NoFuture.Util
     public class NfPath
     {
         /// <summary>
+        /// End-of-line conversion.
+        /// </summary>
+        /// <param name="somePath"></param>
+        public static void ConvertToCrLf(string somePath)
+        {
+            if (string.IsNullOrWhiteSpace(somePath))
+            {
+                return;
+            }
+            if (!File.Exists(somePath))
+                return;
+
+            var fileContent = File.ReadAllText(somePath);
+            fileContent = Etc.ConvertToCrLf(fileContent);
+
+            File.WriteAllText(somePath, fileContent);
+
+        }
+
+        /// <summary>
+        /// End-of-line conversion with specific encoding.
+        /// </summary>
+        /// <param name="somePath"></param>
+        /// <param name="encoder"></param>
+        public static void ConvertToCrLf(string somePath, Encoding encoder)
+        {
+            if (string.IsNullOrWhiteSpace(somePath))
+            {
+                return;
+            }
+            if (!File.Exists(somePath))
+                return;
+
+            var fileContent = File.ReadAllText(somePath);
+            fileContent = Etc.ConvertToCrLf(fileContent);
+
+            File.WriteAllText(somePath, fileContent, encoder);
+
+        }
+
+        /// <summary>
         /// Simple method to eliminate any chars in <see cref="intendedFileName"/>
         /// of all of those found at <see cref="System.IO.Path.GetInvalidFileNameChars"/>
         /// </summary>
