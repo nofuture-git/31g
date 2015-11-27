@@ -66,3 +66,9 @@ Merge Branch into the Trunk
  - Perform a Commit of your working copy to finalize the 
    changes of the branch into the trunk.
 ----
+
+----
+Searching 
+ - for client version 1.8+
+  svn log -v URL-OF-REPO-ROOT --search foo_oustanding.dpr
+----

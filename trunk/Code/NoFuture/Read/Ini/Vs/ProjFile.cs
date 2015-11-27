@@ -349,6 +349,23 @@ namespace NoFuture.Read.Vs
         }
 
         /// <summary>
+        /// Sets the top-level property group's assembly name node's inner text
+        /// </summary>
+        /// <param name="newAssemblyName"></param>
+        /// <returns></returns>
+        public bool TrySetAssemblyName(string newAssemblyName)
+        {
+            if (string.IsNullOrWhiteSpace(newAssemblyName))
+                return false;
+            var assemblyNameNode = _vsprojXml.SelectSingleNode(string.Format("//{0}:PropertyGroup/{0}:AssemblyName", NS), _nsMgr);
+            if (assemblyNameNode == null)
+                return false;
+
+            assemblyNameNode.InnerText = newAssemblyName;
+            return true;
+        }
+
+        /// <summary>
         /// Writes the current in memory contents to file.
         /// </summary>
         public void WriteContentFile()
