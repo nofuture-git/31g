@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Xml;
 using NoFuture.Exceptions;
@@ -69,9 +68,84 @@ namespace NoFuture.Read.Vs
         public XmlDocument VsProjXml { get { return _vsprojXml; } }
         public XmlNamespaceManager NsMgr { get { return _nsMgr; } }
         public bool XmlContentChanged { get { return _isChanged; } }
+
+        public string AssemblyName
+        {
+            get
+            {
+                return GetInnerText("//{0}:PropertyGroup/{0}:AssemblyName");
+            }
+            set
+            {
+                SetInnerText("//{0}:PropertyGroup/{0}:AssemblyName", value);
+            }
+        }
+
+        public string OutputType
+        {
+            get
+            {
+                return GetInnerText("//{0}:PropertyGroup/{0}:OutputType");
+            }
+            set
+            {
+                SetInnerText("//{0}:PropertyGroup/{0}:OutputType", value);
+            }
+        }
+
+        public string RootNamespace
+        {
+            get
+            {
+                return GetInnerText("//{0}:PropertyGroup/{0}:RootNamespace");
+            }
+            set
+            {
+                SetInnerText("//{0}:PropertyGroup/{0}:RootNamespace", value);
+            }
+
+        }
+
+        public string TargetFrameworkVersion
+        {
+            get
+            {
+                return GetInnerText("//{0}:PropertyGroup/{0}:TargetFrameworkVersion");
+            }
+            set
+            {
+                SetInnerText("//{0}:PropertyGroup/{0}:TargetFrameworkVersion", value);
+            }
+
+        }
+
+        public string PreBuildEvent
+        {
+            get
+            {
+                return GetInnerText("//{0}:PropertyGroup/{0}:PreBuildEvent");
+            }
+            set
+            {
+                SetInnerText("//{0}:PropertyGroup/{0}:PreBuildEvent", value);
+            }
+        }
+
+        public string PostBuildEvent
+        {
+            get
+            {
+                return GetInnerText("//{0}:PropertyGroup/{0}:PostBuildEvent");
+            }
+            set
+            {
+                SetInnerText("//{0}:PropertyGroup/{0}:PostBuildEvent", value);
+            }
+        }
         #endregion
 
         #region instance methods
+
         /// <summary>
         /// Attempts to add the assembly at <see cref="assemblyPath"/>
         /// to the project's references
@@ -349,26 +423,9 @@ namespace NoFuture.Read.Vs
         }
 
         /// <summary>
-        /// Sets the top-level property group's assembly name node's inner text
-        /// </summary>
-        /// <param name="newAssemblyName"></param>
-        /// <returns></returns>
-        public bool TrySetAssemblyName(string newAssemblyName)
-        {
-            if (string.IsNullOrWhiteSpace(newAssemblyName))
-                return false;
-            var assemblyNameNode = _vsprojXml.SelectSingleNode(string.Format("//{0}:PropertyGroup/{0}:AssemblyName", NS), _nsMgr);
-            if (assemblyNameNode == null)
-                return false;
-
-            assemblyNameNode.InnerText = newAssemblyName;
-            return true;
-        }
-
-        /// <summary>
         /// Writes the current in memory contents to file.
         /// </summary>
-        public void WriteContentFile()
+        public void Save()
         {
             using (var xmlWriter = new XmlTextWriter(_filePath, Encoding.UTF8) {Formatting = Formatting.Indented})
             {
@@ -410,7 +467,7 @@ namespace NoFuture.Read.Vs
             if (!File.Exists(assemblyPath))
                 return null;
 
-            var assemblyName = AssemblyName.GetAssemblyName(assemblyPath);
+            var assemblyName = System.Reflection.AssemblyName.GetAssemblyName(assemblyPath);
             var refNode = _vsprojXml.SelectSingleNode(string.Format(
                     "//{0}:ItemGroup/{0}:Reference[contains(@Include,'{1}')]", NS, assemblyName.Name), _nsMgr);
             cache.AssemblyFullName = assemblyName.FullName;
@@ -424,6 +481,23 @@ namespace NoFuture.Read.Vs
         #endregion
 
         #region internal instance methods
+        internal string GetInnerText(string xpath)
+        {
+            var singleNode = _vsprojXml.SelectSingleNode(string.Format(xpath, NS), NsMgr);
+            if (singleNode == null)
+                return null;
+            return singleNode.InnerText;
+        }
+
+        internal void SetInnerText(string xpath, string theValue)
+        {
+            var singleNode = _vsprojXml.SelectSingleNode(string.Format(xpath, NS), NsMgr);
+            if (singleNode == null)
+                return;
+            singleNode.InnerText = theValue;
+        }
+
+
         internal bool IsExistingCompileItem(string fl) { return GetSingleCompileItemNode(fl) != null; }
 
         internal bool IsExistingContentItem(string fl) { return GetSingleContentItemNode(fl) != null; }

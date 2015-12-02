@@ -33,7 +33,7 @@ namespace NoFuture.Util
 
         /// <summary>
         /// Returns true if either the 'Content-Transfer-Encoding' is 'Binary'
-        /// or the 'Content-Type' equals any of the values in <see cref="BinaryMimeTypes"/>.
+        /// or the 'Content-Type' starts with any of the values in <see cref="BinaryMimeTypes"/>.
         /// </summary>
         /// <param name="responsHeaders">HTTP Response Headers as a simple hashtable.</param>
         /// <returns></returns>
@@ -44,12 +44,17 @@ namespace NoFuture.Util
                     StringComparison.OrdinalIgnoreCase))
                 return true;
 
+            var bMimeGType = new[] { "application", "audio", "image", "video", "drawing", "x-world" };
+
             if (responsHeaders.ContainsKey("Content-Type") &&
-                BinaryMimeTypes.Any(
+                !string.Equals(responsHeaders["Content-Type"].ToString(), "application/x-www-form-urlencoded",
+                    StringComparison.OrdinalIgnoreCase) &&
+                bMimeGType.Any(
                     binMime =>
-                        string.Equals(responsHeaders["Content-Type"].ToString(), binMime,
-                            StringComparison.OrdinalIgnoreCase)))
+                        responsHeaders["Content-Type"].ToString().StartsWith(binMime)))
+            {
                 return true;
+            }
 
             return false;
         }
@@ -65,76 +70,14 @@ namespace NoFuture.Util
             return (cmdPort != null && cmdPort > 0 && cmdPort < (System.Math.Pow(2, 16)));
         }
 
-        //application/x-www-form-urlencoded
-
         /// <summary>
-        /// Intended to determine if the response stream from a web request should
-        /// be returned as-is or written to a file and opened by some local application.
+        /// The standard MIME binary types (note, subtypes not included)
         /// </summary>
         public static string[] BinaryMimeTypes
         {
             get
             {
-                return new[]
-                {
-                    "application/octet-stream", 
-                    "application/ogg",
-                    "application/zip", 
-                    "application/gzip", 
-                    "application/x-nacl",
-                    "application/x-pnacl", 
-                    "audio/basic", 
-                    "audio/L24", 
-                    "audio/mpeg",
-                    "audio/ogg", 
-                    "audio/vorbis", 
-                    "audio/vnd.rn-realaudio", 
-                    "audio/vnd.wave",
-                    "audio/webm", 
-                    "image/gif", 
-                    "image/jpeg", 
-                    "image/pjpeg", 
-                    "image/png", 
-                    "image/vnd.djvu",
-                    "video/avi", 
-                    "video/mpeg", 
-                    "video/mp4", 
-                    "video/ogg", 
-                    "video/quicktime", 
-                    "video/webm",
-                    "video/x-matroska", 
-                    "video/x-ms-wmv", 
-                    "video/x-flv", 
-                    "application/vnd.debian.binary-package",
-                    "application/vnd.oasis.opendocument.text",
-                    "application/vnd.oasis.opendocument.spreadsheet",
-                    "application/vnd.oasis.opendocument.presentation",
-                    "application/vnd.oasis.opendocument.graphics",
-                    "application/vnd.ms-excel",
-                    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                    "application/vnd.ms-powerpoint",
-                    "application/vnd.openxmlformats-officedocument.presentationml.presentation",
-                    "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-                    "application/vnd.google-earth.kml+xml",
-                    "application/vnd.google-earth.kmz",
-                    "application/vnd.android.package-archive",
-                    "application/vnd.ms-xpsdocument",
-                    "application/x-7z-compressed",
-                    "application/x-chrome-extension",
-                    "application/x-dvi",
-                    "application/x-font-ttf",
-                    "application/x-latex",
-                    "application/x-rar-compressed",
-                    "application/x-shockwave-flash",
-                    "application/x-stuffit",
-                    "application/x-tar",
-                    "application/x-xpinstall",
-                    "audio/x-aac",
-                    "audio/x-caf",
-                    "image/x-xcf",
-                    "application/x-pkcs12"
-                };
-
+                return new[] { "application", "audio", "image", "video", "drawing", "x-world" };
             }
             
         }

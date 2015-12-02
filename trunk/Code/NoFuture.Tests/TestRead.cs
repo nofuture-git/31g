@@ -129,7 +129,7 @@ namespace NoFuture.Tests
             var testNewRef = testSubject.TryAddReferenceEntry(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\NoFuture.Shared.dll");
             Assert.IsTrue(testNewRef);
 
-            testSubject.WriteContentFile();
+            testSubject.Save();
 
         }
 

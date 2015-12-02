@@ -354,14 +354,31 @@ function AccessInnerClassTypes(){
 #look up Loader Exceptions
 #$Error[<some count here>].Exception.InnerException.LoaderExceptions[<some other number>].StackTrace
 
-function SetIISUser(){
-Import-Module WebAdministration
+function IISFromCommandLine(){
 Import-Module WebAdministration
 
+#get a user attached to an app pool
 $userBefore = Get-ItemProperty -Path "IIS:\AppPools\My IISAppPool" -Name processModel.UserName.value
 
+#set user properties
 Set-ItemProperty -Path "IIS:\AppPools\My IISAppPool" -Name processModel.username -Value "MYDOMAIN\myUser.x.name"
 Set-ItemProperty -Path "IIS:\AppPools\My IISAppPool" -Name processModel.password -Value "P@ssw0rd"
+
+#http://www.iis.net/learn/manage/powershell/powershell-snap-in-configuring-ssl-with-the-iis-powershell-snap-in
+#add a binding to a iis site
+New-WebBinding -Name "Default Web Site" -IP "*" -Port 443 -Protocol https
+
+#Get my cert (already in the Cert Store)
+$myCert = ls "Cert:\CurrentUser\Root" | ? {$_.FriendlyName -like "*NoFuture*"} | Select-Object -First 1
+
+#map the cert with the binding
+Push-Location "IIS:\SslBindings"
+$myCert | New-Item 0.0.0.0!443
+Pop-Location
+
+#iis settings are saved to 
+# %windir%\system32\inetsrv\config\applicationHost.config
+
 }
 
 function SetWindowsServiceUser(){

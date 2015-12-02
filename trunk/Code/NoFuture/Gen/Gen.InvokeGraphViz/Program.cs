@@ -42,7 +42,7 @@ namespace NoFuture.Gen.InvokeGraphViz
                     return;
                 }
 
-                var f = ConfigurationManager.AppSettings["NoFuture.X86Tools.DotExe"];
+                var f = ConfigurationManager.AppSettings["NoFuture.Tools.X86.DotExe"];
                 if (string.IsNullOrWhiteSpace(f))
                 {
                     var msg =
