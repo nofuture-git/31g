@@ -1,0 +1,137 @@
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Xml;
+using NoFuture.Exceptions;
+
+namespace NoFuture.Read
+{
+    public abstract class BaseXmlDoc
+    {
+        #region fields
+        protected XmlDocument _xmlDocument;
+
+        protected string _fileFullName;
+
+        #endregion
+
+        #region ctor
+        protected BaseXmlDoc(string xmlDoc)
+        {
+            _fileFullName = xmlDoc;
+            if (string.IsNullOrWhiteSpace(xmlDoc))
+            {
+                throw new ItsDeadJim("Bad Path or File Name");
+            }
+            if (!File.Exists(xmlDoc))
+            {
+                throw new ItsDeadJim(string.Format("Bad Path or File Name at '{0}'", xmlDoc));
+            }
+
+            _xmlDocument = new XmlDocument();
+            _xmlDocument.Load(xmlDoc);
+        }
+        #endregion
+
+        #region base api
+        /// <summary>
+        /// Writes the current in memory contents to file.
+        /// </summary>
+        public virtual void Save()
+        {
+            using (var xmlWriter = new XmlTextWriter(_fileFullName, Encoding.UTF8) { Formatting = Formatting.Indented })
+            {
+                _xmlDocument.WriteContentTo(xmlWriter);
+                xmlWriter.Flush();
+                xmlWriter.Close();
+            }
+        }
+
+        /// <summary>
+        /// Utility method to get inner text of some node
+        /// </summary>
+        /// <param name="xpath"></param>
+        /// <returns></returns>
+        public virtual string GetInnerText(string xpath)
+        {
+            if (string.IsNullOrWhiteSpace(xpath))
+                return null;
+            var singleNode = _xmlDocument.SelectSingleNode(xpath);
+            return singleNode == null ? null : singleNode.InnerText;
+        }
+
+        /// <summary>
+        /// Utility method to set the inner text of some node
+        /// </summary>
+        /// <param name="xpath"></param>
+        /// <param name="theValue"></param>
+        public virtual void SetInnerText(string xpath, string theValue)
+        {
+            if (string.IsNullOrWhiteSpace(xpath) || theValue == null)
+                return;
+            var singleNode = _xmlDocument.SelectSingleNode(xpath);
+            if (singleNode == null)
+                return;
+            singleNode.InnerText = theValue;
+        }
+
+        /// <summary>
+        /// Utility method to get a single attributes value at the given xpath
+        /// </summary>
+        /// <param name="xpath"></param>
+        /// <param name="attrName"></param>
+        /// <returns></returns>
+        public virtual string GetAttrValue(string xpath, string attrName)
+        {
+            var attr = GetAttribute(xpath, attrName);
+            return attr == null ? null : attr.Value;
+        }
+
+        /// <summary>
+        /// Utility method to set a single attributes value at the given xpath
+        /// </summary>
+        /// <param name="xpath"></param>
+        /// <param name="attrName"></param>
+        /// <param name="newValue"></param>
+        public virtual void SetAttrValue(string xpath, string attrName, string newValue)
+        {
+            var attr = GetAttribute(xpath, attrName);
+            if (attr == null)
+                return;
+            attr.Value = newValue;
+        }
+
+        protected virtual XmlAttribute GetAttribute(string xpath, string attrName)
+        {
+            if (string.IsNullOrWhiteSpace(xpath) || string.IsNullOrWhiteSpace(attrName))
+                return null;
+
+            var node = _xmlDocument.SelectSingleNode(xpath);
+            if (node == null)
+                return null;
+
+            var elem = node as XmlElement;
+            return elem == null ? null : elem.Attributes[attrName];
+        }
+        #endregion
+
+        #region static utilities
+        public static string SpliceInXmlNs(string xpath, string xmlNs)
+        {
+            if (string.IsNullOrWhiteSpace(xpath) || string.IsNullOrWhiteSpace(xmlNs))
+                return xpath;
+
+            if (xpath.Contains(":")) return xpath;
+
+            var xPathParts = xpath.Split('/').Where(x => !string.IsNullOrWhiteSpace(x)).ToList();
+            var newXpath = xmlNs + ":" + string.Join(string.Format("/{0}:", xmlNs), xPathParts);
+            if (xpath.StartsWith("//"))
+                xpath = string.Format("//{0}", newXpath);
+
+            return xpath;
+        }
+        #endregion
+    }
+}

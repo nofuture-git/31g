@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <configuration>
   <appSettings>
-    <add key="SummitHealthConnectionString" value="Server=WeWANK;Database=OurCodeSux;Trusted_Connection=True;" />
-    <add key="HTKConnectionString" value="Server=WeWANK;Database=OurCodeSux;Trusted_Connection=True;" />
+    <add key="ConnectionString" value="Server=WeWANK;Database=OurCodeSux;Trusted_Connection=True;" />
+    <add key="AnotherConnectionString" value="Server=WeWANK;Database=OurCodeSux;Trusted_Connection=True;" />
     <add key="SMTPServer" value="127.0.0.1" />
     <add key="Port" value="25" />
     <add key="SMTPCredentialsUserName" value="" />

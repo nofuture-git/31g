@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NoFuture.Read;
 using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 
 namespace NoFuture.Tests
@@ -14,6 +15,7 @@ namespace NoFuture.Tests
         public const string TEST00_EXE_CONFIG = @"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\TestAppConfig00-Copy.xml";
         public const string TEST01_EXE_CONFIG = @"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\TestAppConfig01-Copy.xml";
         public const string TEST02_EXE_CONFIG = @"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\TestAppConfig02-Copy.xml";
+        public const string TEST03_EXE_CONFIG = @"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\TestAppConfig03-Copy.xml";
 
         public const string TEST_TRANS00_CONFIG =
             @"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\TestTransformConfig00-Copy.xml";
@@ -41,6 +43,7 @@ namespace NoFuture.Tests
             File.Copy(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\TestAppConfig00.xml", TEST00_EXE_CONFIG, true);
             File.Copy(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\TestAppConfig01.xml", TEST01_EXE_CONFIG, true);
             File.Copy(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\TestAppConfig02.xml", TEST02_EXE_CONFIG, true);
+            File.Copy(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\TestAppConfig03.xml", TEST03_EXE_CONFIG, true);
             File.Copy(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\TestTransformConfig00.xml", TEST_TRANS00_CONFIG, true);
 
             System.Threading.Thread.Sleep(500);
@@ -138,7 +141,7 @@ namespace NoFuture.Tests
         {
             var testSubject = new NoFuture.Read.Config.ExeConfig(TEST00_EXE_CONFIG);
 
-            var testResult = testSubject.WriteContentFile(Regex2Values, true);
+            var testResult = testSubject.SplitAndSave(Regex2Values, true);
 
             Assert.IsNotNull(testResult);
             Assert.IsTrue(System.IO.File.Exists(testResult));
@@ -149,7 +152,7 @@ namespace NoFuture.Tests
         {
             var testSubject = new NoFuture.Read.Config.ExeConfig(TEST01_EXE_CONFIG);
 
-            var testResult = testSubject.WriteContentFile(Regex2Values, true);
+            var testResult = testSubject.SplitAndSave(Regex2Values, true);
 
             Assert.IsNotNull(testResult);
             Assert.IsTrue(System.IO.File.Exists(testResult));
@@ -160,7 +163,7 @@ namespace NoFuture.Tests
         {
             var testSubject = new NoFuture.Read.Config.ExeConfig(TEST02_EXE_CONFIG);
 
-            var testResult = testSubject.WriteContentFile(Regex2Values, true);
+            var testResult = testSubject.SplitAndSave(Regex2Values, true);
 
             Assert.IsNotNull(testResult);
             Assert.IsTrue(System.IO.File.Exists(testResult));
@@ -171,25 +174,37 @@ namespace NoFuture.Tests
         {
             var testSubject = new NoFuture.Read.Config.ExeConfig(TEST_TRANS00_CONFIG);
 
-            var testResult = testSubject.WriteContentFile(Regex2Values, true);
+            var testResult = testSubject.SplitAndSave(Regex2Values, true);
 
             Assert.IsNotNull(testResult);
             Assert.IsTrue(System.IO.File.Exists(testResult));
 
         }
+        [TestMethod]
+        public void TestAddAppSettingItem00()
+        {
+            var testSubject = new NoFuture.Read.Config.ExeConfig(TEST00_EXE_CONFIG);
+            testSubject.AddAppSettingItem("myKey", "myValue", "this is really important");
+            testSubject.Save();
+        }
 
         [TestMethod]
-        public void TestHandle()
+        public void TestAddAppSettingItem01()
         {
-            var fileOnDisk = @"C:\Projects\Summit\ApexServices\WCF\DropProviderService\DropProvider\Web.config";
-            var copyThereof = @"C:\Projects\Summit\ApexServices\WCF\DropProviderService\DropProvider\Web-Copy.config";
-            File.Copy(fileOnDisk, copyThereof, true);
+            var testSubject = new NoFuture.Read.Config.ExeConfig(TEST03_EXE_CONFIG);//no appSettings node
+            testSubject.AddAppSettingItem("myKey", "myValue", "this is really important");
+            testSubject.Save();
+        }
 
-            System.Threading.Thread.Sleep(500);
+        [TestMethod]
+        public void TestSpliceInXmlNs()
+        {
+            var testInput = "//docNode/sectionNode/listNode/itemNode[someAttr='applesauce']";
 
-            var testSubject = new NoFuture.Read.Config.ExeConfig(copyThereof);
+            var testResult = BaseXmlDoc.SpliceInXmlNs(testInput, "Wz");
 
-            var testResult = testSubject.WriteContentFile(Regex2Values, true);
+            System.Diagnostics.Debug.WriteLine(testResult);
+            Assert.AreEqual("//Wz:docNode/Wz:sectionNode/Wz:listNode/Wz:itemNode[someAttr='applesauce']", testResult);
         }
     }
 }

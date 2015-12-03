@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -9,39 +8,71 @@ using NoFuture.Exceptions;
 
 namespace NoFuture.Read.Config
 {
-    public class ExeConfig
+    public class ExeConfig : BaseXmlDoc
     {
+        #region constants
+        public const string XML_TRANSFORM_NS = "http://schemas.microsoft.com/XML-Document-Transform";
+        #endregion
+
         #region fields
-        private readonly XmlDocument _configContent;
-        private readonly XmlWriter _xmlWriter;
-        private readonly string _existingConfigFullName;
+        private XmlWriter _xmlWriter;
         private readonly string _transformFileOut;
         #endregion
 
         #region ctors
-        public ExeConfig(string configFile)
+        public ExeConfig(string configFile):base(configFile)
         {
-            if (!File.Exists(configFile))
-                throw new ItsDeadJim(string.Format("Bad Path or File Name at '{0}'", configFile));
-
             var configDir = Path.GetDirectoryName(configFile);
-            if(string.IsNullOrEmpty(configDir))
+            if (string.IsNullOrEmpty(configDir))
                 throw new ItsDeadJim(string.Format("Bad Path or File Name at '{0}'", configFile));
-
-            _existingConfigFullName = configFile;
 
             _transformFileOut = Path.Combine(configDir, string.Format("{0:yyyyMMdd-HHmmss}.config", DateTime.Now));
-
-            _configContent = new XmlDocument();
-            _configContent.Load(configFile);
-
-            var xmlWriterSettings = new XmlWriterSettings {Indent = true, IndentChars = "  ", OmitXmlDeclaration = true};
-
-            _xmlWriter = XmlWriter.Create(_transformFileOut, xmlWriterSettings);
         }
         #endregion
 
         #region instance api
+
+        /// <summary>
+        /// Adds a new entry to the appSettings section of the *.config
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="value"></param>
+        /// <param name="commentAbove">optional comment to be placed above the new entry</param>
+        public void AddAppSettingItem(string key, string value, string commentAbove = "")
+        {
+            if (_xmlDocument == null || _xmlDocument.DocumentElement == null)
+                return;
+
+            var appSettings = _xmlDocument.SelectSingleNode("//appSettings");
+
+            if (appSettings == null)
+            {
+                //is the configSection node present
+                var s = _xmlDocument.SelectSingleNode("//configSections") ??
+                        _xmlDocument.DocumentElement.FirstChild;
+
+                appSettings = _xmlDocument.CreateElement("appSettings");
+                _xmlDocument.DocumentElement.InsertAfter(appSettings, s);
+            }
+
+            var addNode = _xmlDocument.CreateElement("add");
+            var keyAttr = _xmlDocument.CreateAttribute("key");
+            keyAttr.Value = key;
+            var valAttr = _xmlDocument.CreateAttribute("value");
+            valAttr.Value = value;
+
+            addNode.Attributes.Append(keyAttr);
+            addNode.Attributes.Append(valAttr);
+
+            if (!string.IsNullOrWhiteSpace(commentAbove))
+            {
+                var rem = _xmlDocument.CreateComment(commentAbove);
+                appSettings.AppendChild(rem);
+            }
+
+            appSettings.AppendChild(addNode);
+        }
+
         /// <summary>
         /// Targets specific attributes of a .NET configuration file replacing any matches
         /// found in <see cref="regex2Values"/> Keys with the paired value.
@@ -52,18 +83,22 @@ namespace NoFuture.Read.Config
         /// The filename of the config transformations which received all the changes 
         /// from the target.
         /// </returns>
-        public string WriteContentFile(Hashtable regex2Values, bool swapConnStrs)
+        public string SplitAndSave(Hashtable regex2Values, bool swapConnStrs)
         {
+            var xmlWriterSettings = new XmlWriterSettings { Indent = true, IndentChars = "  ", OmitXmlDeclaration = true };
+
+            _xmlWriter = XmlWriter.Create(_transformFileOut, xmlWriterSettings);
+
             _xmlWriter.WriteStartDocument();
             _xmlWriter.WriteComment(
                 " For more information on using web.config transformation visit http://go.microsoft.com/fwlink/?LinkId=125889 ");
             _xmlWriter.WriteStartElement("configuration");
-            _xmlWriter.WriteAttributeString("xmlns", "xdt", null, "http://schemas.microsoft.com/XML-Document-Transform");
+            _xmlWriter.WriteAttributeString("xmlns", "xdt", null, XML_TRANSFORM_NS);
 
             SplitAppSettings(regex2Values, swapConnStrs);
             SplitConnectionStringNodes(regex2Values, swapConnStrs);
 
-            if (_configContent.SelectSingleNode("//system.serviceModel") != null)
+            if (_xmlDocument.SelectSingleNode("//system.serviceModel") != null)
             {
                 _xmlWriter.WriteStartElement("system.serviceModel");
                 SplitClientServiceModelNodes(regex2Values);
@@ -77,12 +112,7 @@ namespace NoFuture.Read.Config
             _xmlWriter.Flush();
             _xmlWriter.Close();
 
-            using (var xmlWriter = new XmlTextWriter(_existingConfigFullName, Encoding.UTF8) { Formatting = Formatting.Indented })
-            {
-                _configContent.WriteContentTo(xmlWriter);
-                xmlWriter.Flush();
-                xmlWriter.Close();
-            }
+            Save();
 
             return _transformFileOut;
         }
@@ -120,7 +150,7 @@ namespace NoFuture.Read.Config
 
         internal void SplitAppSettings(Hashtable regex2Values, bool swapConnStrs)
         {
-            var appSettingsNodes = _configContent.SelectSingleNode("//appSettings");
+            var appSettingsNodes = _xmlDocument.SelectSingleNode("//appSettings");
             if (appSettingsNodes == null || !appSettingsNodes.HasChildNodes)
                 return;
 
@@ -157,7 +187,7 @@ namespace NoFuture.Read.Config
 
         internal void SplitConnectionStringNodes(Hashtable regex2Values, bool swapConnStrs)
         {
-            var connectionStringNodes = _configContent.SelectSingleNode("//connectionStrings");
+            var connectionStringNodes = _xmlDocument.SelectSingleNode("//connectionStrings");
             if (connectionStringNodes == null || !connectionStringNodes.HasChildNodes)
                 return;
             _xmlWriter.WriteStartElement("connectionStrings");
@@ -195,7 +225,7 @@ namespace NoFuture.Read.Config
 
         internal void SplitClientServiceModelNodes(Hashtable regex2Values)
         {
-            var svcClientNode = _configContent.SelectSingleNode("//system.serviceModel/client");
+            var svcClientNode = _xmlDocument.SelectSingleNode("//system.serviceModel/client");
             if (svcClientNode == null || !svcClientNode.HasChildNodes)
                 return;
 
@@ -236,7 +266,7 @@ namespace NoFuture.Read.Config
 
         internal void SplitHostServiceModelNodes(Hashtable regex2Values)
         {
-            var svcServicesNode = _configContent.SelectNodes("//system.serviceModel/services/service");
+            var svcServicesNode = _xmlDocument.SelectNodes("//system.serviceModel/services/service");
             if (svcServicesNode == null || svcServicesNode.Count <= 0)
                 return;
 
@@ -261,13 +291,13 @@ namespace NoFuture.Read.Config
                 if (behConfigAttr != null && !string.IsNullOrWhiteSpace(behConfigAttr.Value))
                     _xmlWriter.WriteAttributeString("behaviorConfiguration", behConfigAttr.Value);
 
-                _xmlWriter.WriteAttributeString("Locator", "http://schemas.microsoft.com/XML-Document-Transform",
+                _xmlWriter.WriteAttributeString("Locator", XML_TRANSFORM_NS,
                     "Match(name)");
 
-                var endPtNodes = _configContent.SelectNodes(string.Format(
+                var endPtNodes = _xmlDocument.SelectNodes(string.Format(
                     "//system.serviceModel/services/service[@name='{0}']/endpoint", nameAttr.Value));
 
-                var hostNode = _configContent.SelectSingleNode(
+                var hostNode = _xmlDocument.SelectSingleNode(
                     string.Format("//system.serviceModel/services/service[@name='{0}']/host/baseAddresses", nameAttr.Value));
 
                 if ((endPtNodes != null && endPtNodes.Count > 0))
@@ -311,7 +341,7 @@ namespace NoFuture.Read.Config
 
             //yet another way serviceModel lets you define an address...
             var nodeVii =
-                _configContent.SelectSingleNode(
+                _xmlDocument.SelectSingleNode(
                     string.Format("//system.serviceModel/services/service[@name='{0}']/endpoint[@contract='{1}']/identity/dns",
                         nameAttr.Value,
                         endPtContractAttr.Value));
@@ -339,7 +369,7 @@ namespace NoFuture.Read.Config
                 endPtNode.Attributes["name"] == null ? null : endPtNode.Attributes["name"].Value);
 
             _xmlWriter.WriteAttributeString("Transform",
-                "http://schemas.microsoft.com/XML-Document-Transform",
+                XML_TRANSFORM_NS,
                 "Replace");
 
             _xmlWriter.WriteStartElement("identity");
@@ -383,7 +413,7 @@ namespace NoFuture.Read.Config
         private void WriteServiceHostNodeClosed(Hashtable regex2Values, XmlNode hostNode)
         {
             _xmlWriter.WriteStartElement("host");
-            _xmlWriter.WriteAttributeString("Transform", "http://schemas.microsoft.com/XML-Document-Transform",
+            _xmlWriter.WriteAttributeString("Transform", XML_TRANSFORM_NS,
                 "Replace");
 
             _xmlWriter.WriteStartElement("baseAddresses");
@@ -422,7 +452,7 @@ namespace NoFuture.Read.Config
 
         internal void SplitLog4NetAppenderFileName(Hashtable regex2Values)
         {
-            var appenderNodes = _configContent.SelectNodes("//log4net/appender");
+            var appenderNodes = _xmlDocument.SelectNodes("//log4net/appender");
             if (appenderNodes == null || appenderNodes.Count <= 0)
                 return;
 
@@ -442,7 +472,7 @@ namespace NoFuture.Read.Config
                     continue;
 
                 var appenderFileNode =
-                    _configContent.SelectSingleNode(string.Format("//log4net/appender[@name='{0}']/file", nameAttr.Value));
+                    _xmlDocument.SelectSingleNode(string.Format("//log4net/appender[@name='{0}']/file", nameAttr.Value));
                 var appenderFileElem = appenderFileNode as XmlElement;
 
                 if (appenderFileElem == null)
@@ -455,13 +485,13 @@ namespace NoFuture.Read.Config
                 _xmlWriter.WriteAttributeString("name", nameAttr.Value);
                 _xmlWriter.WriteAttributeString("type", typeAttr.Value);
 
-                _xmlWriter.WriteAttributeString("Locator", "http://schemas.microsoft.com/XML-Document-Transform",
+                _xmlWriter.WriteAttributeString("Locator", XML_TRANSFORM_NS,
                     "Match(name)");
 
                 _xmlWriter.WriteStartElement("file");
                 _xmlWriter.WriteAttributeString("value", origFileVal);
 
-                _xmlWriter.WriteAttributeString("Transform", "http://schemas.microsoft.com/XML-Document-Transform",
+                _xmlWriter.WriteAttributeString("Transform", XML_TRANSFORM_NS,
                     "Replace");
                 _xmlWriter.WriteEndElement();//end file node
 
@@ -508,14 +538,14 @@ namespace NoFuture.Read.Config
 
             if (!string.IsNullOrWhiteSpace(name))
             {
-                _xmlWriter.WriteAttributeString("Transform", "http://schemas.microsoft.com/XML-Document-Transform",
+                _xmlWriter.WriteAttributeString("Transform", XML_TRANSFORM_NS,
                     "SetAttributes");
-                _xmlWriter.WriteAttributeString("Locator", "http://schemas.microsoft.com/XML-Document-Transform",
+                _xmlWriter.WriteAttributeString("Locator", XML_TRANSFORM_NS,
                     "Match(name)");
             }
             else
             {
-                _xmlWriter.WriteAttributeString("Transform", "http://schemas.microsoft.com/XML-Document-Transform",
+                _xmlWriter.WriteAttributeString("Transform", XML_TRANSFORM_NS,
                     "Replace");
             }
 
@@ -527,9 +557,9 @@ namespace NoFuture.Read.Config
             _xmlWriter.WriteStartElement("add");
             _xmlWriter.WriteAttributeString("name", name);
             _xmlWriter.WriteAttributeString("connectionString", connStr);
-            _xmlWriter.WriteAttributeString("Transform", "http://schemas.microsoft.com/XML-Document-Transform",
+            _xmlWriter.WriteAttributeString("Transform", XML_TRANSFORM_NS,
                 "SetAttributes");
-            _xmlWriter.WriteAttributeString("Locator", "http://schemas.microsoft.com/XML-Document-Transform",
+            _xmlWriter.WriteAttributeString("Locator", XML_TRANSFORM_NS,
                 "Match(name)");
             _xmlWriter.WriteEndElement();
         }
@@ -539,9 +569,9 @@ namespace NoFuture.Read.Config
             _xmlWriter.WriteStartElement("add");
             _xmlWriter.WriteAttributeString("key", key);
             _xmlWriter.WriteAttributeString("value", val);
-            _xmlWriter.WriteAttributeString("Transform", "http://schemas.microsoft.com/XML-Document-Transform",
+            _xmlWriter.WriteAttributeString("Transform", XML_TRANSFORM_NS,
                 "SetAttributes");
-            _xmlWriter.WriteAttributeString("Locator", "http://schemas.microsoft.com/XML-Document-Transform",
+            _xmlWriter.WriteAttributeString("Locator", XML_TRANSFORM_NS,
                 "Match(key)");
             _xmlWriter.WriteEndElement();
             
