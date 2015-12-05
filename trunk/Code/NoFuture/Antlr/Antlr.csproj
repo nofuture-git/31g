@@ -58,9 +58,28 @@
     </Antlr4>
   </ItemGroup>
   <ItemGroup>
+    <Antlr4 Include="Grammers\CSV.g4">
+      <Generator>MSBuild:Compile</Generator>
+      <CustomToolNamespace>NoFuture.Antlr.Grammer</CustomToolNamespace>
+    </Antlr4>
+    <Antlr4 Include="Grammers\ICalendar.g4">
+      <Generator>MSBuild:Compile</Generator>
+      <CustomToolNamespace>NoFuture.Antlr.Grammer</CustomToolNamespace>
+    </Antlr4>
+    <Antlr4 Include="Grammers\CSharp4.g4">
+      <Generator>MSBuild:Compile</Generator>
+      <CustomToolNamespace>NoFuture.Antlr.Grammer</CustomToolNamespace>
+    </Antlr4>
+    <Antlr4 Include="Grammers\CSharp4PreProcessor.g4">
+      <Generator>MSBuild:Compile</Generator>
+      <CustomToolNamespace>NoFuture.Antlr.Grammer</CustomToolNamespace>
+    </Antlr4>
     <None Include="packages.config" />
     <None Include="PostBuildScript.ps1" />
     <None Include="PreBuildScript.ps1" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="README.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

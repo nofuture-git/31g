@@ -1,0 +1,63 @@
+namespace Symlluj
+{
+    // NOTE: We Wank Wank Wank
+    [Serializable]
+    public class FileService : IFileService
+    {
+        public const string LOGGER_NAME = "Jimmy";
+        public static void LogException(string message, Exception ex)
+        {
+            var logger = log4net.LogManager.GetLogger(LOGGER_NAME);
+            if (logger == null)
+                return;
+            logger.Error(message, ex);
+        }
+        public static void LogInfo(string message)
+        {
+            var logger = log4net.LogManager.GetLogger(LOGGER_NAME);
+            if (logger == null)
+                return;
+            logger.Info(message);
+        }
+
+
+        public string serverPath = null;
+        public DirectoryInfo dirInfo = null;
+        FileServerImpersonation.FileServerImpersonation objFileServerImpersonation = new FileServerImpersonation.FileServerImpersonation();
+        public void UploadFile(RemoteFileInfo request)
+        {
+            try
+            {
+                FileGonnaGo objFileUpload = new FileGonnaGo();
+                if (objFileUpload.impersonateValidUser())
+                {
+                    FileStream targetStream = null;
+                    Stream sourceStream = request.FileByteStream;
+                    string uploadFolder = objFileServerImpersonation.FileServerPath();
+                    string filePath = Path.Combine(uploadFolder, request.FileName);
+
+                    using (targetStream = new FileStream(filePath, FileMode.Create,
+                                      FileAccess.Write, FileShare.None))
+                    {
+
+                        const int bufferLen = 21474833;
+                        byte[] buffer = new byte[bufferLen];
+                        int count = 0;
+                        while ((count = sourceStream.Read(buffer, 0, bufferLen)) > 0)
+                        {
+                            targetStream.Write(buffer, 0, count);
+                        }
+                        targetStream.Close();
+                        sourceStream.Close();
+                    }
+                    objFileUpload.undoImpersonation();
+                }
+            }
+            catch (Exception ex)
+            {
+                WCFFILESERVER.FileService.LogException(string.Empty, ex);
+                throw;
+            }
+        }
+	}
+}

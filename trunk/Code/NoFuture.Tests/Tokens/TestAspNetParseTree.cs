@@ -9,7 +9,9 @@ namespace NoFuture.Tests.Tokens
         [TestMethod]
         public void TestPoc()
         {
-            var testFile = @"C:\Projects\APEX\SummitHealth.CRM\SummitHealth.CRM.UI.Design\Admin\AccountEdit.aspx";
+            var testFile = @"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\AccountEdit.aspx";
+
+            Assert.IsTrue(System.IO.File.Exists(testFile));
 
             var testResult = NoFuture.Tokens.AspNetParseTree.InvokeParse(testFile);
 
@@ -27,6 +29,25 @@ namespace NoFuture.Tests.Tokens
             foreach (var script in testResult.ScriptBodies)
             {
                 System.Diagnostics.Debug.WriteLine(script);
+            }
+        }
+
+        [TestMethod]
+        public void TestCsharpParse()
+        {
+            var testFile = @"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\SimpleExample.cs";
+
+            Assert.IsTrue(System.IO.File.Exists(testFile));
+
+            var testResult = NoFuture.Tokens.CsharpParseTree.InvokeParse(testFile);
+
+            Assert.IsNotNull(testResult);
+            Assert.IsNotNull(testResult.CatchBlocks);
+            Assert.AreNotEqual(0, testResult.CatchBlocks.Count);
+
+            foreach (var c in testResult.CatchBlocks)
+            {
+                System.Diagnostics.Debug.WriteLine(c);
             }
         }
     }
