@@ -356,7 +356,7 @@ Lexical Rules
 	- parsers differ from compilers & interpreters because they
 	  only consider the 'form' and not the 'meaning' of the symbols
  - lexers recognize grammatical structures in a character stream
- - grammer rules must be in lowercase
+ - grammer rules must be in lowercase (i.e. camel-case, never pascal-case)
  - lexer rules must be in uppercase
  - while order-of-precendence (top-down) matters, lexer rules
    are always considered subordinate to grammer rules

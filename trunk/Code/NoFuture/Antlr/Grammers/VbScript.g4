@@ -1,59 +1,59 @@
 grammar VbScript;
 
-vbBody   : ( stmt* | expr ) EOF;
+vbsBody   : ( stmt* | expr ) EOF;
 
-stmt : vbClass
-     | vbFunction
-	 | vbSub
-	 | vbGetProperty
-	 | vbSetProperty
-	 | vbWith
-     | vbDim 
-	 | vbReDim
-     | vbConst
-	 | vbExecute
-     | vbDoLoop 
-	 | vbForEachLoop
-	 | vbForLoop
-	 | vbWhile
-	 | vbSelect
-	 | vbExit
-	 | vbIfThen
-	 | vbErase
+stmt : vbsClass
+     | vbsFunction
+	 | vbsSub
+	 | vbsGetProperty
+	 | vbsSetProperty
+	 | vbsWith
+     | vbsDim 
+	 | vbsReDim
+     | vbsConst
+	 | vbsExecute
+     | vbsDoLoop 
+	 | vbsForEachLoop
+	 | vbsForLoop
+	 | vbsWhile
+	 | vbsSelect
+	 | vbsExit
+	 | vbsIfThen
+	 | vbsErase
 	 | expr NL
 	 | NL
 	 ;
 
-vbClass       : VB_CLASS ID vbBody VB_END VB_CLASS ;
-vbFunction    : (VB_PUBLIC (VB_DEFAULT)? | VB_PRIVATE)? VB_FUNCTION ID exprList vbBodyWithExit VB_END VB_FUNCTION ;
-vbSub         : (VB_PUBLIC (VB_DEFAULT)? | VB_PRIVATE)? VB_SUB ID ( exprList )? vbBodyWithExit VB_END VB_SUB ;
-vbGetProperty : (VB_PUBLIC (VB_DEFAULT)? | VB_PRIVATE)? VB_PROPERTY VB_GET ID ( exprList )? vbBodyWithExit VB_END VB_PROPERTY ;
-vbSetProperty : (VB_PUBLIC | VB_PRIVATE)? VB_PROPERTY (VB_SET | VB_GET) ID exprList vbBodyWithExit VB_END VB_PROPERTY ;
-vbDoLoop      : VB_DO ( (VB_WHILE | VB_UNTIL) expr)? vbBodyWithExit VB_LOOP ( (VB_WHILE | VB_UNTIL) expr)? ;
-vbWhile       : VB_WHILE expr vbBody VB_WEND  ;
-vbForEachLoop : VB_FOR VB_EACH ID VB_IN expr vbBodyWithExit VB_NEXT (ID)? ;
-vbForLoop     : VB_FOR ID '=' expr VB_TO expr (VB_STEP expr)? vbBodyWithExit VB_NEXT (expr)?  ;
-vbIfThen      : VB_IF expr VB_THEN vbBodyWithExit (VB_ELSEIF expr VB_THEN vbBodyWithExit )* (VB_ELSE vbBodyWithExit)? VB_ENDIF   ;
-vbWith        : VB_WITH ID vbBody VB_END VB_WITH ;
-vbSelect      : VB_SELECT vbSelectBody VB_END VB_SELECT ;
-vbExit        : VB_EXIT (VB_DO | VB_FOR | VB_FUNCTION | VB_PROPERTY | VB_SUB) ;
-vbDim         : (VB_PUBLIC | VB_PRIVATE | VB_DIM) ID VB_ARRAYINIT? (',' NL ID VB_ARRAYINIT? )* NL;
-vbErase       : VB_ERASE ID NL ;
-vbReDim       : VB_REDIM (VB_PRESERVE)? ID ('(' INT ')')? (',' NL ID ('(' INT ')')?)* NL ;
-vbConst       : (VB_PUBLIC | VB_PRIVATE)? VB_CONST ID '=' (STRING | INT) ('+' (STRING | INT))* NL ;
-vbExecute     : (VB_EXECUTE | VB_EXECUTE_GLOBAL) stmt NL;
+vbsClass       : VBS_CLASS ID vbsBody VBS_END VBS_CLASS ;
+vbsFunction    : (VBS_PUBLIC (VBS_DEFAULT)? | VBS_PRIVATE)? VBS_FUNCTION ID exprList vbsBodyWithExit VBS_END VBS_FUNCTION ;
+vbsSub         : (VBS_PUBLIC (VBS_DEFAULT)? | VBS_PRIVATE)? VBS_SUB ID ( exprList )? vbsBodyWithExit VBS_END VBS_SUB ;
+vbsGetProperty : (VBS_PUBLIC (VBS_DEFAULT)? | VBS_PRIVATE)? VBS_PROPERTY VBS_GET ID ( exprList )? vbsBodyWithExit VBS_END VBS_PROPERTY ;
+vbsSetProperty : (VBS_PUBLIC | VBS_PRIVATE)? VBS_PROPERTY (VBS_SET | VBS_GET) ID exprList vbsBodyWithExit VBS_END VBS_PROPERTY ;
+vbsDoLoop      : VBS_DO ( (VBS_WHILE | VBS_UNTIL) expr)? vbsBodyWithExit VBS_LOOP ( (VBS_WHILE | VBS_UNTIL) expr)? ;
+vbsWhile       : VBS_WHILE expr vbsBody VBS_WEND  ;
+vbsForEachLoop : VBS_FOR VBS_EACH ID VBS_IN expr vbsBodyWithExit VBS_NEXT (ID)? ;
+vbsForLoop     : VBS_FOR ID '=' expr VBS_TO expr (VBS_STEP expr)? vbsBodyWithExit VBS_NEXT (expr)?  ;
+vbsIfThen      : VBS_IF expr VBS_THEN vbsBodyWithExit (VBS_ELSEIF expr VBS_THEN vbsBodyWithExit )* (VBS_ELSE vbsBodyWithExit)? VBS_ENDIF   ;
+vbsWith        : VBS_WITH ID vbsBody VBS_END VBS_WITH ;
+vbsSelect      : VBS_SELECT vbsSelectBody VBS_END VBS_SELECT ;
+vbsExit        : VBS_EXIT (VBS_DO | VBS_FOR | VBS_FUNCTION | VBS_PROPERTY | VBS_SUB) ;
+vbsDim         : (VBS_PUBLIC | VBS_PRIVATE | VBS_DIM) ID VBS_ARRAYINIT? (',' NL ID VBS_ARRAYINIT? )* NL;
+vbsErase       : VBS_ERASE ID NL ;
+vbsReDim       : VBS_REDIM (VBS_PRESERVE)? ID ('(' INT ')')? (',' NL ID ('(' INT ')')?)* NL ;
+vbsConst       : (VBS_PUBLIC | VBS_PRIVATE)? VBS_CONST ID '=' (STRING | INT) ('+' (STRING | INT))* NL ;
+vbsExecute     : (VBS_EXECUTE | VBS_EXECUTE_GLOBAL) stmt NL;
 
-vbBodyWithExit : stmt (vbExit | stmt)* ;
-vbSelectBody   : VB_CASE expr ( VB_CASE expr stmt* )* (VB_CASE VB_ELSE stmt*)?  ;
+vbsBodyWithExit : stmt (vbsExit | stmt)* ;
+vbsSelectBody   : VBS_CASE expr ( VBS_CASE expr stmt* )* (VBS_CASE VBS_ELSE stmt*)?  ;
 	 
-expr : VB_SET ID 
+expr : VBS_SET ID 
 	 | ID
 	 | ID '=' expr 
 	 | ID ('(' exprList? ')' | exprList )
-	 | vbGlobalFx
-	 | vbCast
+	 | vbsGlobalFx
+	 | vbsCast
 	 | exprArg
-	 | expr VB_IS expr
+	 | expr VBS_IS expr
 	 | expr '<' expr
 	 | expr '<=' expr
 	 | expr '=<' expr
@@ -66,184 +66,184 @@ expr : VB_SET ID
 	 | expr '/' expr
 	 | expr '*' expr
 	 | expr '\\' expr
-	 | expr VB_MOD expr
+	 | expr VBS_MOD expr
 	 | expr '+' expr
 	 | expr '-' expr
 	 | expr '&' expr
-	 | VB_NOT expr
-	 | expr VB_AND expr
-	 | expr VB_OR expr
-	 | expr VB_XOR expr
-	 | expr VB_EQV expr
-	 | expr VB_IMP expr
-	 | VB_NOTHING
-	 | VB_DATE_LITERAL
+	 | VBS_NOT expr
+	 | expr VBS_AND expr
+	 | expr VBS_OR expr
+	 | expr VBS_XOR expr
+	 | expr VBS_EQV expr
+	 | expr VBS_IMP expr
+	 | VBS_NOTHING
+	 | VBS_DATE_LITERAL
 	 | INT
 	 | STRING
-	 | VB_TRUE
-	 | VB_FALSE
+	 | VBS_TRUE
+	 | VBS_FALSE
 	 | 'vbCr'
 	 | 'vbCrLf'
 	 | 'vbTab'
 	 ;
 	 
-vbGlobalFx   : vbCtor 
-             | vbNowFx
-			 | vbTimeFx
-			 | vbLenFx
-			 | vbOnErr
-			 | vbErrorRaise
-			 | vbIsNullFx
-			 | vbIsEmptyFx
-			 | vbIsArrayFx
-			 | vbIsObjectFx
-			 | vbIsNumericFx
-			 | vbArrayInitFx
-			 | vbFilterArrayFx
-			 | vbJoinArrayFx
-			 | vbLBoundArrayFx 
-			 | vbSplitFx
-			 | vbDateAddFx
-			 | vbDateDiffFx
-			 | vbDatePartFx
-			 | vbDateSerialFx
-			 | vbDateValueFx
-			 | vbDayFx
-			 | vbHourFx
-			 | vbMinuteFx
-			 | vbMonthFx
-			 | vbMonthNameFx
-			 | vbSecondFx
-			 | vbTimerFx
-			 | vbTimeValueFx
-			 | vbWeekdayFx
-			 | vbWeekdayNameFx
-			 | vbYearFx
-			 | vbTypeNameFx
-			 | vbVarTypeFx 
-			 | vbAbsFx       
-			 | vbCosFx       
-			 | vbExpFx       
-			 | vbFixFx       
-			 | vbIntFx       
-			 | vbLogFx       
-			 | vbRandomizeFx 
-			 | vbRndFx       
-			 | vbRoundFx     
-			 | vbSgnFx       
-			 | vbSinFx       
-			 | vbSqrFx       
-			 | vbTanFx       
-			 | vbEvalFx        
-			 | vbLoadPictureFx
-			 | vbGetObjectFx
-			 | vbGetRefFx
-			 | vbFormatCurrencyFx
-			 | vbFormatNumberFx  
-			 | vbFormatPercentFx
-			 | vbFormatDateTimeFx
-			 | vbInStrFx
-			 | vbInStrBFx
-			 | vbInStrRevFx
-			 | vbLCaseFx
-			 | vbLeftFx
-			 | vbLeftBFx
-			 | vbLTrimFx
-			 | vbMidFx
-			 | vbMidBFx
-			 | vbReplaceFx
-			 | vbRightFx
-			 | vbRightBFx
-			 | vbRTrimFx
-			 | vbSpaceFx
-			 | vbStrCompFx
-			 | vbStringFx
-			 | vbStringReverseFx
-			 | vbTrimFx
-			 | vbUCaseFx
-             | vbChrFx
+vbsGlobalFx   : vbsCtor 
+             | vbsNowFx
+			 | vbsTimeFx
+			 | vbsLenFx
+			 | vbsOnErr
+			 | vbsErrorRaise
+			 | vbsIsNullFx
+			 | vbsIsEmptyFx
+			 | vbsIsArrayFx
+			 | vbsIsObjectFx
+			 | vbsIsNumericFx
+			 | vbsArrayInitFx
+			 | vbsFilterArrayFx
+			 | vbsJoinArrayFx
+			 | vbsLBoundArrayFx 
+			 | vbsSplitFx
+			 | vbsDateAddFx
+			 | vbsDateDiffFx
+			 | vbsDatePartFx
+			 | vbsDateSerialFx
+			 | vbsDateValueFx
+			 | vbsDayFx
+			 | vbsHourFx
+			 | vbsMinuteFx
+			 | vbsMonthFx
+			 | vbsMonthNameFx
+			 | vbsSecondFx
+			 | vbsTimerFx
+			 | vbsTimeValueFx
+			 | vbsWeekdayFx
+			 | vbsWeekdayNameFx
+			 | vbsYearFx
+			 | vbsTypeNameFx
+			 | vbsVarTypeFx 
+			 | vbsAbsFx       
+			 | vbsCosFx       
+			 | vbsExpFx       
+			 | vbsFixFx       
+			 | vbsIntFx       
+			 | vbsLogFx       
+			 | vbsRandomizeFx 
+			 | vbsRndFx       
+			 | vbsRoundFx     
+			 | vbsSgnFx       
+			 | vbsSinFx       
+			 | vbsSqrFx       
+			 | vbsTanFx       
+			 | vbsEvalFx        
+			 | vbsLoadPictureFx
+			 | vbsGetObjectFx
+			 | vbsGetRefFx
+			 | vbsFormatCurrencyFx
+			 | vbsFormatNumberFx  
+			 | vbsFormatPercentFx
+			 | vbsFormatDateTimeFx
+			 | vbsInStrFx
+			 | vbsInStrBFx
+			 | vbsInStrRevFx
+			 | vbsLCaseFx
+			 | vbsLeftFx
+			 | vbsLeftBFx
+			 | vbsLTrimFx
+			 | vbsMidFx
+			 | vbsMidBFx
+			 | vbsReplaceFx
+			 | vbsRightFx
+			 | vbsRightBFx
+			 | vbsRTrimFx
+			 | vbsSpaceFx
+			 | vbsStrCompFx
+			 | vbsStringFx
+			 | vbsStringReverseFx
+			 | vbsTrimFx
+			 | vbsUCaseFx
+             | vbsChrFx
              ;	 
 	 
-vbCtor           : (VB_SERVER '.' | VB_WSCRIPT '.')? VB_CREATEOBJECT '(' STRING ')' NL ;
-vbNowFx          : VB_NOW ('('')')?  ;
-vbTimeFx         : VB_TIME ('('')')? ;
+vbsCtor           : (VBS_SERVER '.' | VBS_WSCRIPT '.')? VBS_CREATEOBJECT '(' STRING ')' NL ;
+vbsNowFx          : VBS_NOW ('('')')?  ;
+vbsTimeFx         : VBS_TIME ('('')')? ;
 	 
-vbIsNullFx       : VB_ISNULL exprArg  ;
-vbIsEmptyFx      : VB_ISEMPTY exprArg ;	 
-vbIsArrayFx      : VB_ISARRAY exprArg ;
-vbIsObjectFx     : VB_ISOBJECT exprArg ;
-vbIsNumericFx    : VB_ISNUMERIC exprArg ;
-vbLenFx          : VB_LEN exprArg  ;
-vbLenBFx         : VB_LENB exprArg  ;
-vbFilterArrayFx  : VB_FILTER '(' ID ',' STRING (',' (VB_TRUE | VB_FALSE) (',' INT)? )? ')'  ;
-vbArrayInitFx    : VB_ARRAY '(' expr (',' expr)* ')'   ;
-vbJoinArrayFx    : VB_JOIN '(' ID (',' STRING)? ')'   ;
-vbLBoundArrayFx  : VB_LBOUND '(' ID (',' INT)? ')'    ;
-vbSplitFx        : VB_SPLIT '(' expr (',' STRING (',' INT (',' ('0' | '1' | 'vbBinaryCompare' | 'vbTextCompare'))? )? )? ')'  ;	
-vbDateAddFx      : VB_DATEADD '(' vbDatePart ',' expr ',' expr ')' ;
-vbDateDiffFx     : VB_DATEDIFF '(' vbDatePart ',' expr ',' expr (',' (vbDayOfWeek | INT) (',' (vbFirstWeek | INT) )? )? ')' ;
-vbDatePartFx     : VB_DATEPART '(' vbDatePart ',' expr (',' (vbDayOfWeek | INT) (',' (vbFirstWeek | INT) )? )? ')' ;
-vbDateSerialFx   : VB_DATESERIAL '(' expr ',' expr ',' expr ')'  ;
-vbDateValueFx    : VB_DATEVALUE exprArg  ;
-vbDayFx          : VB_DAY exprArg ;
-vbHourFx         : VB_HOUR exprArg ;
-vbMinuteFx       : VB_MINUTE exprArg ;
-vbMonthFx        : VB_MONTH  exprArg ;
-vbMonthNameFx    : VB_MONTHNAME ('1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' | '10' | '11' | '12') (',' (VB_TRUE | VB_FALSE) )?  ;
-vbSecondFx       : VB_SECOND exprArg ;
-vbTimerFx        : VB_TIMER '(' ')'  ;
-vbTimeValueFx    : VB_TIMEVALUE exprArg ;
-vbWeekdayFx      : VB_WEEKDAY '(' expr (',' (vbDayOfWeek | INT) )?  ')' ;
-vbWeekdayNameFx  : VB_WEEKDAYNAME '(' expr (',' (VB_TRUE | VB_FALSE) (',' (vbDayOfWeek | INT))? )? ')' ;
-vbYearFx         : VB_YEAR exprArg ;
-vbOnErr          : VB_ON VB_ERR ;
-vbErrorRaise     : VB_ERRORRAISE exprList ;
-vbTypeNameFx     : VB_TYPENAME exprArg ; 
-vbVarTypeFx      : VB_VARTYPE exprArg ;
-vbAbsFx          : VB_ABS exprArg ;
-vbCosFx          : VB_COS exprArg ;
-vbExpFx          : VB_EXP exprArg ;
-vbFixFx          : VB_FIX exprArg ;
-vbIntFx          : VB_INT exprArg ;
-vbLogFx          : VB_LOG exprArg ;
-vbRandomizeFx    : VB_RANDOMIZE exprArg ;
-vbRndFx          : VB_RND exprArg;
-vbRoundFx        : VB_ROUND '(' expr (',' INT)? ')' ;
-vbSgnFx          : VB_SGN exprArg ;
-vbSinFx          : VB_SIN exprArg ;
-vbSqrFx          : VB_SQR exprArg ;
-vbTanFx          : VB_TAN exprArg ;
-vbEvalFx         : VB_EVAL exprArg ;
-vbLoadPictureFx  : VB_LOADPICTURE '(' STRING  ')' ;
-vbGetObjectFx    : VB_GET_OBJECT '(' STRING (',' ID) ')' ;
-vbGetRefFx       : VB_GET_REF '(' STRING ')' ;
-vbFormatCurrencyFx: VB_FORMATCURRENCY '(' exprList  ')' ;
-vbFormatNumberFx : VB_FORMATNUMBER '(' exprList ')' ;
-vbFormatPercentFx: VB_FORMATPERCENT '(' exprList ')' ;
-vbFormatDateTimeFx : VB_FORMATDATETIME '(' exprList ')' ;
-vbInStrFx        : VB_INSTR '(' exprList ')' ;
-vbInStrBFx       : VB_INSTRB '(' exprList ')' ;
-vbInStrRevFx     : VB_INSTRREV '(' exprList ')' ;
-vbLCaseFx        : VB_LCASE exprArg ;
-vbLeftFx         : VB_LEFT '(' STRING ',' INT ')' ;
-vbLeftBFx        : VB_LEFTB '(' STRING ',' INT ')' ;
-vbLTrimFx        : VB_LTRIM exprArg ;
-vbMidFx          : VB_MID '(' exprList ')' ;
-vbMidBFx         : VB_MIDB '(' exprList ')' ;
-vbReplaceFx      : VB_REPLACE '(' exprList ')' ;
-vbRightFx        : VB_RIGHT '(' exprList ')' ;
-vbRightBFx       : VB_RIGHTB '(' exprList ')' ;
-vbRTrimFx        : VB_RTRIM exprArg ;
-vbSpaceFx        : VB_SPACE exprArg ;
-vbStrCompFx      : VB_STRCOMP '(' exprList ')' ;  
-vbStringFx       : VB_STRING '(' exprList ')' ;
-vbStringReverseFx: VB_STRREVERSE exprArg ;
-vbTrimFx         : VB_TRIM exprArg ;
-vbUCaseFx        : VB_UCASE exprArg ;
-vbChrFx          : VB_CHR exprArg ;
+vbsIsNullFx       : VBS_ISNULL exprArg  ;
+vbsIsEmptyFx      : VBS_ISEMPTY exprArg ;	 
+vbsIsArrayFx      : VBS_ISARRAY exprArg ;
+vbsIsObjectFx     : VBS_ISOBJECT exprArg ;
+vbsIsNumericFx    : VBS_ISNUMERIC exprArg ;
+vbsLenFx          : VBS_LEN exprArg  ;
+vbsLenBFx         : VBS_LENB exprArg  ;
+vbsFilterArrayFx  : VBS_FILTER '(' ID ',' STRING (',' (VBS_TRUE | VBS_FALSE) (',' INT)? )? ')'  ;
+vbsArrayInitFx    : VBS_ARRAY '(' expr (',' expr)* ')'   ;
+vbsJoinArrayFx    : VBS_JOIN '(' ID (',' STRING)? ')'   ;
+vbsLBoundArrayFx  : VBS_LBOUND '(' ID (',' INT)? ')'    ;
+vbsSplitFx        : VBS_SPLIT '(' expr (',' STRING (',' INT (',' ('0' | '1' | 'vbBinaryCompare' | 'vbTextCompare'))? )? )? ')'  ;	
+vbsDateAddFx      : VBS_DATEADD '(' vbsDatePart ',' expr ',' expr ')' ;
+vbsDateDiffFx     : VBS_DATEDIFF '(' vbsDatePart ',' expr ',' expr (',' (vbsDayOfWeek | INT) (',' (vbsFirstWeek | INT) )? )? ')' ;
+vbsDatePartFx     : VBS_DATEPART '(' vbsDatePart ',' expr (',' (vbsDayOfWeek | INT) (',' (vbsFirstWeek | INT) )? )? ')' ;
+vbsDateSerialFx   : VBS_DATESERIAL '(' expr ',' expr ',' expr ')'  ;
+vbsDateValueFx    : VBS_DATEVALUE exprArg  ;
+vbsDayFx          : VBS_DAY exprArg ;
+vbsHourFx         : VBS_HOUR exprArg ;
+vbsMinuteFx       : VBS_MINUTE exprArg ;
+vbsMonthFx        : VBS_MONTH  exprArg ;
+vbsMonthNameFx    : VBS_MONTHNAME ('1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' | '10' | '11' | '12') (',' (VBS_TRUE | VBS_FALSE) )?  ;
+vbsSecondFx       : VBS_SECOND exprArg ;
+vbsTimerFx        : VBS_TIMER '(' ')'  ;
+vbsTimeValueFx    : VBS_TIMEVALUE exprArg ;
+vbsWeekdayFx      : VBS_WEEKDAY '(' expr (',' (vbsDayOfWeek | INT) )?  ')' ;
+vbsWeekdayNameFx  : VBS_WEEKDAYNAME '(' expr (',' (VBS_TRUE | VBS_FALSE) (',' (vbsDayOfWeek | INT))? )? ')' ;
+vbsYearFx         : VBS_YEAR exprArg ;
+vbsOnErr          : VBS_ON VBS_ERR ;
+vbsErrorRaise     : VBS_ERRORRAISE exprList ;
+vbsTypeNameFx     : VBS_TYPENAME exprArg ; 
+vbsVarTypeFx      : VBS_VARTYPE exprArg ;
+vbsAbsFx          : VBS_ABS exprArg ;
+vbsCosFx          : VBS_COS exprArg ;
+vbsExpFx          : VBS_EXP exprArg ;
+vbsFixFx          : VBS_FIX exprArg ;
+vbsIntFx          : VBS_INT exprArg ;
+vbsLogFx          : VBS_LOG exprArg ;
+vbsRandomizeFx    : VBS_RANDOMIZE exprArg ;
+vbsRndFx          : VBS_RND exprArg;
+vbsRoundFx        : VBS_ROUND '(' expr (',' INT)? ')' ;
+vbsSgnFx          : VBS_SGN exprArg ;
+vbsSinFx          : VBS_SIN exprArg ;
+vbsSqrFx          : VBS_SQR exprArg ;
+vbsTanFx          : VBS_TAN exprArg ;
+vbsEvalFx         : VBS_EVAL exprArg ;
+vbsLoadPictureFx  : VBS_LOADPICTURE '(' STRING  ')' ;
+vbsGetObjectFx    : VBS_GET_OBJECT '(' STRING (',' ID) ')' ;
+vbsGetRefFx       : VBS_GET_REF '(' STRING ')' ;
+vbsFormatCurrencyFx: VBS_FORMATCURRENCY '(' exprList  ')' ;
+vbsFormatNumberFx : VBS_FORMATNUMBER '(' exprList ')' ;
+vbsFormatPercentFx: VBS_FORMATPERCENT '(' exprList ')' ;
+vbsFormatDateTimeFx : VBS_FORMATDATETIME '(' exprList ')' ;
+vbsInStrFx        : VBS_INSTR '(' exprList ')' ;
+vbsInStrBFx       : VBS_INSTRB '(' exprList ')' ;
+vbsInStrRevFx     : VBS_INSTRREV '(' exprList ')' ;
+vbsLCaseFx        : VBS_LCASE exprArg ;
+vbsLeftFx         : VBS_LEFT '(' STRING ',' INT ')' ;
+vbsLeftBFx        : VBS_LEFTB '(' STRING ',' INT ')' ;
+vbsLTrimFx        : VBS_LTRIM exprArg ;
+vbsMidFx          : VBS_MID '(' exprList ')' ;
+vbsMidBFx         : VBS_MIDB '(' exprList ')' ;
+vbsReplaceFx      : VBS_REPLACE '(' exprList ')' ;
+vbsRightFx        : VBS_RIGHT '(' exprList ')' ;
+vbsRightBFx       : VBS_RIGHTB '(' exprList ')' ;
+vbsRTrimFx        : VBS_RTRIM exprArg ;
+vbsSpaceFx        : VBS_SPACE exprArg ;
+vbsStrCompFx      : VBS_STRCOMP '(' exprList ')' ;  
+vbsStringFx       : VBS_STRING '(' exprList ')' ;
+vbsStringReverseFx: VBS_STRREVERSE exprArg ;
+vbsTrimFx         : VBS_TRIM exprArg ;
+vbsUCaseFx        : VBS_UCASE exprArg ;
+vbsChrFx          : VBS_CHR exprArg ;
 
 
-vbCast : 'Asc' '(' STRING ')'
+vbsCast : 'Asc' '(' STRING ')'
        | 'AscW' '(' STRING ')'
 	   | 'CBool' exprArg
 	   | 'CByte' exprArg
@@ -258,157 +258,157 @@ vbCast : 'Asc' '(' STRING ')'
 	   | 'CStr' exprArg
 	   ;
 
-vbDatePart : ('"yyyy"' | '"q"' | '"m"' | '"y"' | '"d"' | '"w"' | '"ww"' | '"h"' | '"n"' | '"s"' )   ;
-vbDayOfWeek : ('vbUseSystem' | 'vbSunday' | 'vbMonday' | 'vbTuesday' | 'vbWednesday' | 'vbThursday' | 'vbFriday' | 'vbSaturday' ) ;
-vbFirstWeek : ('vbUseSystem' | 'vbFirstJan1' | 'vbFirstFourDays' | 'vbFirstFullWeek' ) ;
+vbsDatePart : ('"yyyy"' | '"q"' | '"m"' | '"y"' | '"d"' | '"w"' | '"ww"' | '"h"' | '"n"' | '"s"' )   ;
+vbsDayOfWeek : ('vbUseSystem' | 'vbSunday' | 'vbMonday' | 'vbTuesday' | 'vbWednesday' | 'vbThursday' | 'vbFriday' | 'vbSaturday' ) ;
+vbsFirstWeek : ('vbUseSystem' | 'vbFirstJan1' | 'vbFirstFourDays' | 'vbFirstFullWeek' ) ;
 exprArg : '(' expr ')' ;
 	 
 exprList : expr (',' expr)*               ;   // arg list
 
-VB_ISNULL      :  [Ii]'s'[Nn]'ull'     ;
-VB_ISEMPTY     :  [Ii]'s'[Ee]'mpty'    ;
-VB_ISARRAY     :  [Ii]'s'[Aa]'rray'    ;
-VB_ISOBJECT    :  [Ii]'s'[Oo]'bject'   ;
-VB_ISNUMERIC   :  [Ii]'s'[Nn]'umeric'  ;
-VB_LEN         :  [Ll]'en'             ;
-VB_LENB        :  [Ll]'en'[Bb]         ;
-VB_ERASE       :  [Ee]'rase'           ;
-VB_ARRAY       :  [Aa]'rray'           ;
-VB_FILTER      :  [Ff]'ilter'          ;
-VB_JOIN        :  [Jj]'oin'            ;
-VB_LBOUND      :  [Ll][Bb]'ound'       ;
-VB_PRESERVE    :  [Pp]'reserve'        ;
-VB_SPLIT       :  [Ss]'plit'           ;
-VB_DATEADD     :  [Dd]'ate'[Aa]'dd'    ;
-VB_DATEDIFF    :  [Dd]'ate'[Dd]'iff'   ;
-VB_DATEPART    :  [Dd]'ate'[Pp]'art'   ;
-VB_DATESERIAL  :  [Dd]'ate'[Ss]'erial' ;
-VB_DATEVALUE   :  [Dd]'ate'[Vv]'alue'  ;
-VB_DAY         :  [Dd]'ay'             ;
-VB_HOUR        :  [Hh]'our'            ;
-VB_MINUTE      :  [Mm]'inute'          ;
-VB_MONTH       :  [Mm]'onth'           ;
-VB_MONTHNAME   :  [Mm]'onth'[Nn]'ame'  ;
-VB_NOW         :  [Nn]'ow'             ;
-VB_SECOND      :  [Ss]'econd'          ;
-VB_TIME        :  [Tt]'ime'            ;
-VB_TIMER       :  [Tt]'imer'           ;
-VB_TIMESERIAL  :  [Tt]'ime'[Ss]'erial' ;
-VB_TIMEVALUE   :  [Tt]'ime'[Vv]'alue'  ;
-VB_WEEKDAY     :  [Ww]'eekday'         ;
-VB_WEEKDAYNAME :  [Ww]'eekdayName'     ;
-VB_YEAR        :  [Yy]'ear'            ;
-VB_ERR         :  [Ee]'rr'             ;
-VB_ON          :  [Oo]'n'              ;
-VB_ERRORRAISE  :  [Ee]'rror.'[Rr]'aise';
-VB_ARRAYINIT   :  '(' DIGIT+ ')'       ;
-VB_TYPENAME    :  [Tt]'ype'[Nn]'ame'   ;
-VB_VARTYPE     :  [Vv]'ar'[Tt]'ype'    ;
+VBS_ISNULL      :  [Ii]'s'[Nn]'ull'     ;
+VBS_ISEMPTY     :  [Ii]'s'[Ee]'mpty'    ;
+VBS_ISARRAY     :  [Ii]'s'[Aa]'rray'    ;
+VBS_ISOBJECT    :  [Ii]'s'[Oo]'bject'   ;
+VBS_ISNUMERIC   :  [Ii]'s'[Nn]'umeric'  ;
+VBS_LEN         :  [Ll]'en'             ;
+VBS_LENB        :  [Ll]'en'[Bb]         ;
+VBS_ERASE       :  [Ee]'rase'           ;
+VBS_ARRAY       :  [Aa]'rray'           ;
+VBS_FILTER      :  [Ff]'ilter'          ;
+VBS_JOIN        :  [Jj]'oin'            ;
+VBS_LBOUND      :  [Ll][Bb]'ound'       ;
+VBS_PRESERVE    :  [Pp]'reserve'        ;
+VBS_SPLIT       :  [Ss]'plit'           ;
+VBS_DATEADD     :  [Dd]'ate'[Aa]'dd'    ;
+VBS_DATEDIFF    :  [Dd]'ate'[Dd]'iff'   ;
+VBS_DATEPART    :  [Dd]'ate'[Pp]'art'   ;
+VBS_DATESERIAL  :  [Dd]'ate'[Ss]'erial' ;
+VBS_DATEVALUE   :  [Dd]'ate'[Vv]'alue'  ;
+VBS_DAY         :  [Dd]'ay'             ;
+VBS_HOUR        :  [Hh]'our'            ;
+VBS_MINUTE      :  [Mm]'inute'          ;
+VBS_MONTH       :  [Mm]'onth'           ;
+VBS_MONTHNAME   :  [Mm]'onth'[Nn]'ame'  ;
+VBS_NOW         :  [Nn]'ow'             ;
+VBS_SECOND      :  [Ss]'econd'          ;
+VBS_TIME        :  [Tt]'ime'            ;
+VBS_TIMER       :  [Tt]'imer'           ;
+VBS_TIMESERIAL  :  [Tt]'ime'[Ss]'erial' ;
+VBS_TIMEVALUE   :  [Tt]'ime'[Vv]'alue'  ;
+VBS_WEEKDAY     :  [Ww]'eekday'         ;
+VBS_WEEKDAYNAME :  [Ww]'eekdayName'     ;
+VBS_YEAR        :  [Yy]'ear'            ;
+VBS_ERR         :  [Ee]'rr'             ;
+VBS_ON          :  [Oo]'n'              ;
+VBS_ERRORRAISE  :  [Ee]'rror.'[Rr]'aise';
+VBS_ARRAYINIT   :  '(' DIGIT+ ')'       ;
+VBS_TYPENAME    :  [Tt]'ype'[Nn]'ame'   ;
+VBS_VARTYPE     :  [Vv]'ar'[Tt]'ype'    ;
 
 //math
-VB_ABS         :  [Aa]'bs'             ;
-VB_COS         :  [Cc]'os'             ;
-VB_EXP         :  [Ee]'xp'             ;
-VB_FIX         :  [Ff]'ix'             ;
-VB_INT         :  [Ii]'nt'             ;
-VB_LOG         :  [Ll]'og'             ;
-VB_RANDOMIZE   :  [Rr]'andomize'       ;
-VB_RND         :  [Rr]'nd'             ;
-VB_ROUND       :  [Rr]'ound'           ;
-VB_SGN         :  [Ss]'gn'             ;
-VB_SIN         :  [Ss]'in'             ;
-VB_SQR         :  [Ss]'qr'             ;
-VB_TAN         :  [Tt]'an'             ;
+VBS_ABS         :  [Aa]'bs'             ;
+VBS_COS         :  [Cc]'os'             ;
+VBS_EXP         :  [Ee]'xp'             ;
+VBS_FIX         :  [Ff]'ix'             ;
+VBS_INT         :  [Ii]'nt'             ;
+VBS_LOG         :  [Ll]'og'             ;
+VBS_RANDOMIZE   :  [Rr]'andomize'       ;
+VBS_RND         :  [Rr]'nd'             ;
+VBS_ROUND       :  [Rr]'ound'           ;
+VBS_SGN         :  [Ss]'gn'             ;
+VBS_SIN         :  [Ss]'in'             ;
+VBS_SQR         :  [Ss]'qr'             ;
+VBS_TAN         :  [Tt]'an'             ;
 
 //misc
-VB_EVAL            : [Ee]'val'                     ;
-VB_LOADPICTURE     : [Ll]'oad'[Pp]'icture'         ;
-VB_EXECUTE         : [Ee]'xecute'                  ;
-VB_EXECUTE_GLOBAL  : [Ee]'xecute'[Gg]'lobal'       ;
-VB_GET_OBJECT      : [Gg]'et'[Oo]'bject'           ;
-VB_GET_REF         : [Gg]'et'[Rr]'ef'              ;
-VB_SERVER          : [Ss]'ever'                    ;
-VB_WSCRIPT         : [Ww][Ss]'cript'               ;
-VB_CREATEOBJECT    : [Cc]'reate'[Oo]'bject'        ;
+VBS_EVAL            : [Ee]'val'                     ;
+VBS_LOADPICTURE     : [Ll]'oad'[Pp]'icture'         ;
+VBS_EXECUTE         : [Ee]'xecute'                  ;
+VBS_EXECUTE_GLOBAL  : [Ee]'xecute'[Gg]'lobal'       ;
+VBS_GET_OBJECT      : [Gg]'et'[Oo]'bject'           ;
+VBS_GET_REF         : [Gg]'et'[Rr]'ef'              ;
+VBS_SERVER          : [Ss]'ever'                    ;
+VBS_WSCRIPT         : [Ww][Ss]'cript'               ;
+VBS_CREATEOBJECT    : [Cc]'reate'[Oo]'bject'        ;
 
-VB_FORMATCURRENCY  : [Ff]'ormat'[Cc]'urrency'      ;
-VB_FORMATNUMBER    : [Ff]'ormat'[Nn]'umber'        ;
-VB_FORMATPERCENT   : [Ff]'ormat'[Pp]'ercent'       ;
-VB_FORMATDATETIME  : [Ff]'ormat'[Dd]'ate'[Tt]'ime' ;
-VB_INSTR           : [Ii]'n'[Ss]'tr'               ;
-VB_INSTRB          : [Ii]'n'[Ss]'tr'[Bb]           ;
-VB_INSTRREV        : [Ii]'n'[Ss]'tr'[Rr]'ev'       ;
-VB_LCASE           : [Ll][Cc]'ase'                 ;
-VB_LEFT            : [Ll]'eft'                     ;
-VB_LEFTB           : [Ll]'eft'[Bb]                 ;
-VB_LTRIM           : [Ll][Tt]'rim'                 ;
-VB_MID             : [Mm]'id'                      ;
-VB_MIDB            : [Mm]'id'[Bb]                  ;
-VB_REPLACE         : [Rr]'eplace'                  ;
-VB_RIGHT           : [Rr]'ight'                    ;
-VB_RIGHTB          : [Rr]'ight'[Bb]                ;
-VB_RTRIM           : [Rr][Tt]'rim'                 ;
-VB_SPACE           : [Ss]'pace'                    ;
-VB_STRCOMP         : [Ss]'tr'[Cc]'omp'             ;
-VB_STRING          : [Ss]'tring'                   ;
-VB_STRREVERSE      : [Ss]'tr'[Rr]'everse'          ;
-VB_TRIM            : [Tt]'rim'                     ;
-VB_UCASE           : [Uu][Cc]'ase'                 ;
-VB_CHR             : [Cc]'hr'                      ;
+VBS_FORMATCURRENCY  : [Ff]'ormat'[Cc]'urrency'      ;
+VBS_FORMATNUMBER    : [Ff]'ormat'[Nn]'umber'        ;
+VBS_FORMATPERCENT   : [Ff]'ormat'[Pp]'ercent'       ;
+VBS_FORMATDATETIME  : [Ff]'ormat'[Dd]'ate'[Tt]'ime' ;
+VBS_INSTR           : [Ii]'n'[Ss]'tr'               ;
+VBS_INSTRB          : [Ii]'n'[Ss]'tr'[Bb]           ;
+VBS_INSTRREV        : [Ii]'n'[Ss]'tr'[Rr]'ev'       ;
+VBS_LCASE           : [Ll][Cc]'ase'                 ;
+VBS_LEFT            : [Ll]'eft'                     ;
+VBS_LEFTB           : [Ll]'eft'[Bb]                 ;
+VBS_LTRIM           : [Ll][Tt]'rim'                 ;
+VBS_MID             : [Mm]'id'                      ;
+VBS_MIDB            : [Mm]'id'[Bb]                  ;
+VBS_REPLACE         : [Rr]'eplace'                  ;
+VBS_RIGHT           : [Rr]'ight'                    ;
+VBS_RIGHTB          : [Rr]'ight'[Bb]                ;
+VBS_RTRIM           : [Rr][Tt]'rim'                 ;
+VBS_SPACE           : [Ss]'pace'                    ;
+VBS_STRCOMP         : [Ss]'tr'[Cc]'omp'             ;
+VBS_STRING          : [Ss]'tring'                   ;
+VBS_STRREVERSE      : [Ss]'tr'[Rr]'everse'          ;
+VBS_TRIM            : [Tt]'rim'                     ;
+VBS_UCASE           : [Uu][Cc]'ase'                 ;
+VBS_CHR             : [Cc]'hr'                      ;
 
 
-VB_CLASS        : [Cc][Ll][Aa][Ss][Ss]              ;
-VB_FUNCTION     : [Ff][Uu][Nn][Cc][Tt][Ii][Oo][Nn]  ;
-VB_SUB          : [Ss][Uu][Bb]                      ;
-VB_PROPERTY     : [Pp][Rr][Oo][Pp][Ee][Rr][Tt][Yy]  ;
-VB_DEFAULT      : [Dd][Ee][Ff][Aa][Uu][Ll][Tt]      ;
+VBS_CLASS        : [Cc][Ll][Aa][Ss][Ss]              ;
+VBS_FUNCTION     : [Ff][Uu][Nn][Cc][Tt][Ii][Oo][Nn]  ;
+VBS_SUB          : [Ss][Uu][Bb]                      ;
+VBS_PROPERTY     : [Pp][Rr][Oo][Pp][Ee][Rr][Tt][Yy]  ;
+VBS_DEFAULT      : [Dd][Ee][Ff][Aa][Uu][Ll][Tt]      ;
 
-VB_END    :   [Ee]'nd'                 ;
-VB_DO     :   [Dd]'o'                  ;
-VB_WHILE  :   [Ww]'hile'               ;
-VB_UNTIL  :   [Uu]'ntil'               ;
-VB_LOOP   :   [Ll]'oop'                ;
-VB_EXIT   :   [Ee]'xit'                ;
-VB_FOR    :   [Ff]'or'                 ;
-VB_EACH   :   [Ee]'ach'                ;
-VB_IN     :   [Ii]'n'                  ;
-VB_NEXT   :   [Nn]'ext'                ;
-VB_IF     :   [Ii]'f'                  ;
-VB_THEN   :   [Tt]'hen'                ;
-VB_ELSE   :   [Ee]'lse'                ;
-VB_ELSEIF :   [Ee]'lse'[Ii]'f'         ;
-VB_ENDIF  :   [Ee]'nd '[Ii]'f'         ;
-VB_PUBLIC :   [Pp]'ublic'              ;
-VB_PRIVATE:   [Pp]'rivate'             ;
-VB_CONST  :   [Cc]'onst'               ;
-VB_WITH   :   [Ww]'ith'                ;
-VB_STEP   :   [Ss]'tep'                ;
-VB_SELECT :   [Ss]'elct'               ;
-VB_CASE   :   [Cc]'ase'                ;
-VB_WEND   :   [Ww]'end'                ;
+VBS_END    :   [Ee]'nd'                 ;
+VBS_DO     :   [Dd]'o'                  ;
+VBS_WHILE  :   [Ww]'hile'               ;
+VBS_UNTIL  :   [Uu]'ntil'               ;
+VBS_LOOP   :   [Ll]'oop'                ;
+VBS_EXIT   :   [Ee]'xit'                ;
+VBS_FOR    :   [Ff]'or'                 ;
+VBS_EACH   :   [Ee]'ach'                ;
+VBS_IN     :   [Ii]'n'                  ;
+VBS_NEXT   :   [Nn]'ext'                ;
+VBS_IF     :   [Ii]'f'                  ;
+VBS_THEN   :   [Tt]'hen'                ;
+VBS_ELSE   :   [Ee]'lse'                ;
+VBS_ELSEIF :   [Ee]'lse'[Ii]'f'         ;
+VBS_ENDIF  :   [Ee]'nd '[Ii]'f'         ;
+VBS_PUBLIC :   [Pp]'ublic'              ;
+VBS_PRIVATE:   [Pp]'rivate'             ;
+VBS_CONST  :   [Cc]'onst'               ;
+VBS_WITH   :   [Ww]'ith'                ;
+VBS_STEP   :   [Ss]'tep'                ;
+VBS_SELECT :   [Ss]'elct'               ;
+VBS_CASE   :   [Cc]'ase'                ;
+VBS_WEND   :   [Ww]'end'                ;
 
-VB_INCLUDE : [Ii]'nclude' ;
-VB_FILE    : [Ff]'ile'    ;
+VBS_INCLUDE : [Ii]'nclude' ;
+VBS_FILE    : [Ff]'ile'    ;
 
-VB_REDIM  :   [Rr][Ee][Dd][Ii][Mm]         ;
-VB_DIM    :   [Dd][Ii][Mm]                 ;
-VB_IS     :   [Ii][Ss]                     ;
-VB_SET    :   [Ss][Ee][Tt]                 ;
-VB_LET    :   [Ll][Ee][Tt]                 ;
-VB_GET    :   [Gg][Ee][Tt]                 ;
-VB_NOT    :   [Nn][Oo][Tt]                 ;
-VB_AND    :   [Aa][Nn][Dd]                 ;
-VB_OR     :   [Oo][Rr]                     ;
-VB_NOTHING:   [Nn][Oo][Tt][Hh][Ii][Nn][Gg] ;
-VB_MOD    :   [Mm][Oo][Dd]                 ;
-VB_XOR    :   [Xx][Oo][Rr]                 ;
-VB_EQV    :   [Ee][Qq][Vv]                 ;
-VB_IMP    :   [Ii][Mm][Pp]                 ;
-VB_TRUE   :   [Tt][Rr][Uu][Ee]             ;
-VB_FALSE  :   [Ff][Aa][Ll][Ss][Ee]         ;
-VB_TO     :   [Tt][Oo]                     ;
+VBS_REDIM  :   [Rr][Ee][Dd][Ii][Mm]         ;
+VBS_DIM    :   [Dd][Ii][Mm]                 ;
+VBS_IS     :   [Ii][Ss]                     ;
+VBS_SET    :   [Ss][Ee][Tt]                 ;
+VBS_LET    :   [Ll][Ee][Tt]                 ;
+VBS_GET    :   [Gg][Ee][Tt]                 ;
+VBS_NOT    :   [Nn][Oo][Tt]                 ;
+VBS_AND    :   [Aa][Nn][Dd]                 ;
+VBS_OR     :   [Oo][Rr]                     ;
+VBS_NOTHING:   [Nn][Oo][Tt][Hh][Ii][Nn][Gg] ;
+VBS_MOD    :   [Mm][Oo][Dd]                 ;
+VBS_XOR    :   [Xx][Oo][Rr]                 ;
+VBS_EQV    :   [Ee][Qq][Vv]                 ;
+VBS_IMP    :   [Ii][Mm][Pp]                 ;
+VBS_TRUE   :   [Tt][Rr][Uu][Ee]             ;
+VBS_FALSE  :   [Ff][Aa][Ll][Ss][Ee]         ;
+VBS_TO     :   [Tt][Oo]                     ;
 
-VB_DATE_LITERAL : '#' (DIGIT | '-')* '#'   ;
+VBS_DATE_LITERAL : '#' (DIGIT | '-')* '#'   ;
 
 STRING :   '"' ('\\"'|.)*? '"' ;
 INT    :  DIGIT+  ;

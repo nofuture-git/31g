@@ -50,29 +50,37 @@
   <ItemGroup>
     <Antlr4 Include="Grammers\HTMLLexer.g4">
       <Generator>MSBuild:Compile</Generator>
-      <CustomToolNamespace>NoFuture.Antlr.Grammer</CustomToolNamespace>
+      <CustomToolNamespace>NoFuture.Antlr.Grammers</CustomToolNamespace>
     </Antlr4>
     <Antlr4 Include="Grammers\HTMLParser.g4">
       <Generator>MSBuild:Compile</Generator>
-      <CustomToolNamespace>NoFuture.Antlr.Grammer</CustomToolNamespace>
+      <CustomToolNamespace>NoFuture.Antlr.Grammers</CustomToolNamespace>
     </Antlr4>
   </ItemGroup>
   <ItemGroup>
     <Antlr4 Include="Grammers\CSV.g4">
       <Generator>MSBuild:Compile</Generator>
-      <CustomToolNamespace>NoFuture.Antlr.Grammer</CustomToolNamespace>
+      <CustomToolNamespace>NoFuture.Antlr.Grammers</CustomToolNamespace>
     </Antlr4>
     <Antlr4 Include="Grammers\ICalendar.g4">
       <Generator>MSBuild:Compile</Generator>
-      <CustomToolNamespace>NoFuture.Antlr.Grammer</CustomToolNamespace>
+      <CustomToolNamespace>NoFuture.Antlr.Grammers</CustomToolNamespace>
     </Antlr4>
     <Antlr4 Include="Grammers\CSharp4.g4">
       <Generator>MSBuild:Compile</Generator>
-      <CustomToolNamespace>NoFuture.Antlr.Grammer</CustomToolNamespace>
+      <CustomToolNamespace>NoFuture.Antlr.Grammers</CustomToolNamespace>
     </Antlr4>
     <Antlr4 Include="Grammers\CSharp4PreProcessor.g4">
       <Generator>MSBuild:Compile</Generator>
-      <CustomToolNamespace>NoFuture.Antlr.Grammer</CustomToolNamespace>
+      <CustomToolNamespace>NoFuture.Antlr.Grammers</CustomToolNamespace>
+    </Antlr4>
+    <Antlr4 Include="Grammers\NfUri.g4">
+      <Generator>MSBuild:Compile</Generator>
+      <CustomToolNamespace>NoFuture.Antlr.Grammers</CustomToolNamespace>
+    </Antlr4>
+    <Antlr4 Include="Grammers\VbScript.g4">
+      <Generator>MSBuild:Compile</Generator>
+      <CustomToolNamespace>NoFuture.Antlr.Grammers</CustomToolNamespace>
     </Antlr4>
     <None Include="packages.config" />
     <None Include="PostBuildScript.ps1" />

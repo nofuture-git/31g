@@ -4,7 +4,7 @@ using System.Text;
 using System.Collections.Generic;
 using Antlr4.Runtime;
 using Antlr4.Runtime.Tree;
-using NoFuture.Antlr.Grammer;
+using NoFuture.Antlr.Grammers;
 
 namespace NoFuture.Tokens
 {

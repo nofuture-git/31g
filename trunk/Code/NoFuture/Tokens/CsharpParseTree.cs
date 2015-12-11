@@ -2,7 +2,7 @@
 using System.Text;
 using Antlr4.Runtime;
 using Antlr4.Runtime.Tree;
-using NoFuture.Antlr.Grammer;
+using NoFuture.Antlr.Grammers;
 
 namespace NoFuture.Tokens
 {
@@ -34,7 +34,7 @@ namespace NoFuture.Tokens
             slk.Append(context.CLOSE_PARENS().GetText());
             slk.AppendLine();
             var cBlock = context.block();
-            slk.AppendLine(cBlock.OPEN_BRACE().GetText());
+            
 
             PrintBlockStatements(slk, cBlock);
             Results.CatchBlocks.Add(slk.ToString());
@@ -47,13 +47,13 @@ namespace NoFuture.Tokens
             slk.AppendLine();
 
             var cBlock = context.block();
-            slk.AppendLine(cBlock.OPEN_BRACE().GetText());
 
             PrintBlockStatements(slk, cBlock);
         }
 
         private void PrintBlockStatements(StringBuilder slk, CSharp4Parser.BlockContext cBlock)
         {
+            slk.AppendLine(cBlock.OPEN_BRACE().GetText());
             if (cBlock.statement_list() != null)
             {
                 foreach (var stmt in cBlock.statement_list().statement())
