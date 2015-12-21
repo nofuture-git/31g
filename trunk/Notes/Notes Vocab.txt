@@ -412,3 +412,6 @@ phonemes - smallest units of sound in a language (pig compared to big)
 morphemes - minimal units of speech that convey a specific meaning (-s, -ed, -ly)
 obviate - to remove a need or difficulty
 repudiation - rejection of a proposal or idea.
+portmanteau - combining two or more existing words that all related to a singular concept (e.g. smog - smoke and fog)
+pejorative - a word or grammatical form expressing a low opinion of someone or something (e.g. heathen)
+exonym - name given to a region, peoples or language from some external source (e.g. Indians)

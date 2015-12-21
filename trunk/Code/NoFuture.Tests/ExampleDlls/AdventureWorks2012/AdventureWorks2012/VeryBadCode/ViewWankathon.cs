@@ -1150,5 +1150,16 @@ namespace AdventureWorks.VeryBadCode
             firstWank.AddRange(somethinglame.ToList());
             return firstWank;
         }
+		
+		public double AbsWank(double dTimeInterval)
+		{
+			if (dTimeInterval <= 0)
+			{
+				if (Convert.ToString(dTimeInterval).Contains('-'))
+				{
+					dTimeInterval = Convert.ToDouble(Convert.ToString(dTimeInterval).Replace("-", string.Empty));
+				}
+			}
+		}
     }
 }

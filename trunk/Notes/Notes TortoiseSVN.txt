@@ -69,6 +69,6 @@ Merge Branch into the Trunk
 
 ----
 Searching 
- - for client version 1.8+
-  svn log -v URL-OF-REPO-ROOT --search foo_oustanding.dpr
+ - for client version 1.8+ (with powershell)
+  svn list "http://MyServer/svn/MyRepo/Other/trunk" --depth infinity | Select-String index\.asp
 ----

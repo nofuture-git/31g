@@ -74,10 +74,6 @@
       <Generator>MSBuild:Compile</Generator>
       <CustomToolNamespace>NoFuture.Antlr.Grammers</CustomToolNamespace>
     </Antlr4>
-    <Antlr4 Include="Grammers\NfUri.g4">
-      <Generator>MSBuild:Compile</Generator>
-      <CustomToolNamespace>NoFuture.Antlr.Grammers</CustomToolNamespace>
-    </Antlr4>
     <Antlr4 Include="Grammers\VbScript.g4">
       <Generator>MSBuild:Compile</Generator>
       <CustomToolNamespace>NoFuture.Antlr.Grammers</CustomToolNamespace>
