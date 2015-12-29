@@ -32,7 +32,8 @@
 	"taskschd.msc" : "Task Scheduler",
 	"tpm.msc" : "Trusted Platform Monitor",
 	"wf.msc" : "Windows Firewall",
-	"wmimgmt.msc" : "WMI Management"
+	"wmimgmt.msc" : "WMI Management",
+	"optionalfeatures.exe" : "Add Remove Windows features (like IIS)"
 },
 "other" : {
 	"msconfig" : "System Configuration",

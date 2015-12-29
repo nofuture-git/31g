@@ -1,0 +1,672 @@
+﻿Notes PHP
+----
+Programming PHP, 3rd Edition
+By: Kevin Tatroe; Peter MacIntyre; Rasmus Lerdorf
+Publisher: O'Reilly Media, Inc.
+Pub. Date: February 15, 2013
+Print ISBN-13: 978-1-4493-9277-2
+
+Examples: http://examples.oreilly.com/0636920012443/
+----
+
+----
+PEAR 
+ - PHP Extension and Application Repository
+ - pear.php.net
+----
+
+----
+History
+ - created by Rasmus Lerdorf in 1994
+ - PHP stands for Personal Homepage Tools
+ - ver. 1 was 1995
+ - ver. 2 in 1996
+ - Zeev Suraski & Andi Gutmans re-wrote underlying
+   parser for PHP 3
+ - ver. 3 in 1998 as an Open Source project
+ - ver. 4 in 2000
+----
+
+----
+On Windows IIS
+ - requires CGI is enabled
+  - CGI means Common Gateway Interface
+   - defined in RFC 3875
+   - allows for invocation of executables from 
+     web requests.
+   - idea is that executables generate dynamic 
+     content.
+  - FastCGI uses a single process to handle 
+    all the request instead of a new process per
+	request.
+ - you then must add a Module Mapping into IIS 
+   to have IIS send *.php request to the php-cgi.exe
+ - the end result is at %windir%\system32\inetsrv\config\applicationHost.config
+   configuration/system.webServer/fastCgi/application[@fullPath='C:\PHP\php-cgi.exe']
+    -and-
+   configuration/location[@overrideMode='Allow']/system.webServer/handlers[@accessPolicy='Read, Script']/add[@name='PHP_via_FastCGI']
+----
+
+----
+Basics
+ - is loosely types
+ - function names are not case-sensitive
+ - variable names are case-sensitive
+ - statement terminator is the semi-colon
+ - enclosures are curly-brace
+ - line comments are same as C-style 
+   or Unix shell style (hash mark)
+ - block comments are C-style
+ - variable names begin with $ 
+ - language constructs are special cases
+   which look like function but are not
+   - they may be invoked with or without parenths
+ 
+ - integer primitives (literals) 
+  Dec 1241
+  Oct 0755
+  Hex 0x4B
+  Bin 0b001001
+ 
+ - floating point
+  3.14
+  0.017
+  0.221E1
+  14.0E-3
+  
+ - strings are enclosed in double-quotes
+  - esc char is the \ (same as C-style)
+  - may be enclosed in single-quotes 
+  - operate like powershell's 
+    - except the $ appears within the curly
+	"something within the {$myVar}st string!"
+	"$myVar looks like powershell"
+  - here-strings are defined as 
+  $myHereString = <<< AnyIdHere
+   Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+   Morbi hendrerit leo id justo interdum, eu luctus urna tincidunt. 
+   Integer eu ex libero. 
+   Curabitur quis est volutpat, suscipit massa iaculis, posuere nisl. 
+   Vivamus mollis erat sed sem vulputate auctor. AnyIdHere;
+  - the here string terminator is the identifier that appeared to 
+    the right of the <<<. 
+  - notice the terminating identifier has a semi-color after 
+    it.
+  - printf(); is the string formatter function 
+   - intended for formatting numbers to various base
+    printf("0x%X", 12); //would print 0xC
+  - var_dump() is a global function like JS's console.debug   
+  
+ - boolean 
+  - literals are 'true' and 'false'
+   - in addition the following are also propositional false
+    0
+	0.0
+	"" 
+	"0"
+	NULL
+	an empty array
+----
+
+----
+Operators
+ - Assignment
+ $myVar = 60;
+ $myVar = "sixty";
+ //by ref
+ $myRef =& $myVar;
+ $myRef .= "seventy";
+ - compound assignment ops are supported
+ +=, -=, etc.
+
+ - Standard Arithmetic
+  +, -, *, /, %
+  
+ - String Concat 
+  . 
+  - this is not C-style 
+  
+ - Auto increment 
+  ++, --
+  
+ - Propositional
+  ==, !=, >, >=, <, <=
+  - in addition there are 
+  === and !== 
+   - for these both operands are
+     both equal and the same type.
+
+ - Bitwise
+  ~, &, |, ^, <<, >>
+  
+ - Logical
+  &&, ||, xor, !
+  - in addition the operators
+   and, or 
+    - may be used instead of && and ||
+
+ - Ternary op is supported
+  ? : 
+	
+ - Idiomatic
+ @ will suppress errors 
+ ` ` will execute whatever is between the ticks
+     as a shell commmand returning its output
+ instanceof  will test type 	 
+ 
+----
+
+----
+Casting
+ - although loosely typed casting is possiable 
+ - syntax appears like in C-style
+ (int), (bool), (float), (string), (array), (object), (unset)
+  - additionally 
+  (int) may be (integer)
+  (bool) may be (boolean)
+  (float) may be (double) or (real)
+ - (unset) is unique in that it cast
+    the variable to the NULL singleton 
+----
+
+----
+Flow-Control
+ if, elseif and else 
+  - operate as expected
+  - tests are enclosed in parenths 
+  - blocks are curly
+  - single-statements without enclosures are allowed
+  
+ switch 
+  - operates as expected with fallthrough
+ 
+ while
+  - operates as expected
+  - has allowable VB style alt 
+   while (someTest):
+    some statement;
+	more statements;
+   endwhile;
+  - do\while alt works as expected
+   do {
+	stuff
+   } while(test);
+
+ for 
+  - only works with indexed array (not associative arrays)
+  - operates as expected
+  - uses std syntax
+  - also has a VB style alt
+   for(a;b;c):
+    stuff;
+   endfor;
+  - the for-ever is supported
+   for(;;) //ever
+   
+ foreach
+  - uses a copy of the array 
+  - operates in opposite of expected
+  foreach($collection as $item){ }
+  - where the collection appears first then the iter item 
+  - since hashtables are a kind of array, they have special syntax
+  foreach($myHashtable as $key => $value){
+	//both $key and $value are in scope.
+  }
+  - has a VB style alt
+   
+ break
+  - operates as expected in a loop
+  
+ try\catch
+ - operates as expected
+ - allows for exception casting in catch
+ try{ } catch(PDOException $ex) { }
+ 
+ exit
+  - operates like powershell's break
+ 
+ goto 
+  - is supported 
+  - labels are delcared with 
+   myLabel:
+----
+
+----
+Imports and Includes
+ - has two flavors
+ include & require
+  - include will not error-out if file cannot be found
+  - require will error-out when file is not found.
+  - syntax like VB where parenths are optional
+ require "myfile.php";
+ require("myOtherFile.php");
+ include "myThirdFile.php";
+ include("yetaFourthFile.php");
+
+ - adding the amp operator to the front of include 
+   will cause it to continue quietly
+ @include "myFile.php";
+ 
+ - remote files may be retrieved as well
+ include("ftp://myServer/Somefile.php");
+ include("http://myServer/AnotherFile.php");
+----
+
+----
+Syntax enclosures
+ - standard is XML style
+ <?php 
+   //php code here
+  ?>
+ - single line resolution is available
+   similar to ASP 
+  <p>A Number: <?= 2+2 ?> </p>
+ - its also valid to write
+  <p> A number: <?echo 2+2 ?> </p> 
+----
+
+----
+Functions
+ - PHP has many global functions
+ - are invoked in the expected manner
+ - are defined in expected manner using
+   the 'function' keyword
+ - are conventionally defined in all lowercase
+ 
+ - variables may be assigned to function enclosures
+ $callback = function(){
+	//some statements
+ };
+ 
+ - parameter default values are excepted
+ function myFunction($someParam = "my value"){
+	//do stuff
+ }
+ 
+ - functions may be invoked with or without thier parameters
+ function beinLazy($a, $b){
+	//stuff
+ }
+ beinLazy(1);  //this is valid
+ beinLazy(1,2);
+ 
+ - since types are definable, parameters may be specified as some type
+ class MyType {}
+ 
+ function usesMyType(MyType $someParam){
+	//stuff
+ }
+ 
+ usesMyType(new MyType);
+ 
+ - subroutines (in the VB sense) still return NULL.
+ 
+ - for a function to return by-ref, both its declaration and invocation 
+   require the amp char 
+   
+   function &myByRef($someParam){ 
+	//stuff
+   }
+   $byRef =& myByRef(" sels");
+   
+ - anonymous enclosures are supported
+ usort($array, function($a, $b) { return -1;});
+ - externally scoped variables may be passed to 
+   anonymous enclosures with the use ($myVar) syntax
+ $myVar = "I defined something";
+ usort($array, function($a, $b) use ($myVar) { return -1;});
+----
+
+----
+String Functions
+ - involve typical 
+ strlen, trim, ltrim, rtrim
+ - trim functions allow for a second string 
+   arg where you can specify whitespace chars you do 
+   NOT want removed
+ 
+ strtolower, strtoupper, ucfirst, ucwords
+ 
+ - lt-zero if arg0 sorts before arg1, gt-zero vice versa 
+   and just zero for equality
+ strcmp(arg0, arg1); 
+ 
+ - same, only ignoring case
+ strcasecmp(arg0, arg1);
+ 
+ - substring function
+ substr(arg0, start [, len]);
+  - get the remainder of the string after the first appearance of arg
+ strchr(string, arg); 
+  - same as previous only working from the last appearance
+ strrchr(string, arg);
+ 
+ - gets the count of small string contained within big string
+ substr_count(big_string, small_string); 
+ 
+ - replaces string by index
+ substr_replace(original, new, start [, len]);
+ 
+ - reverse a string
+ strrev("a man a plan panama"); 
+ 
+ - pad a string
+ str_pad(toPad, len [, with [, padtype]]);
+  - default 'with' is a space (0x20)
+  - the 'with' can be a string or a single-char
+  - the padtype is for constants
+   STR_PAD_RIGHT, STR_PAD_LEFT and STR_PAD_BOTH
+ 
+ - break a string into an array
+  explode(separator, string [, limit]);
+  
+ - join an array into a single string
+  implode(separator, array);
+  
+ - to iterate a string by some separator
+  strtok(string, separator);
+   - called the first time
+  strtok(separator);
+   - called each subsequent time
+   
+ - to parse a string by some template
+ sscanf(string, template);
+ sscanf(string, template [, var1]*);
+  - template uses the sequences avail to printf 
+  
+ - index of
+ strpos(string, arg); 
+  - arg may be a string or a single char
+ 
+ htmlentities("<>&"); //encodes to html esc &lt;&gt;&amp;
+ 
+ strip_tags("<p> Html enclosed string</p>");
+ 
+ - replaces the space with %20
+ rawurlencode("Encode this"); 
+ 
+ - for query strings, where space is now '+' sign
+ urlencode("myStuff have values"); 
+ urldecode("myStuff+have+values");
+ 
+ - breaks the url into the standard parts (e.g. scheme, host, path, query, etc).
+ parse_url(url);
+----
+
+----
+Regex
+ - regex is enclosed in both double-quote and slash "/cat|dog/"
+ - the 'captures' is some out variable
+ preg_match(pattern, string, [, captures]);
+ 
+ - for repeatedly matching from wher the last match ended until no more matches can be made
+ preg_match_all(perl_style_pattern, string, matches [, (PREG_PATTERN_ORDER|PREG_SET_ORDER)]);
+ 
+ - regex with replace
+ preg_replace(pattern, replacement, string [, limit]);
+ 
+ - preg_match_all extracts blocks of a string when you know what those blocks are, this
+   extracts blocks when you know what separates one block from another
+ preg_split(pattern, string [, limit [, (PREG_SPLIT_NO_EMPTY|PREG_SPLIT_DELIM_CAPTURE)]]);
+ 
+ - to match elements in an array
+ preg_grep(pattern, array);
+ 
+ - to escape a string to regex pattern
+ preg_quote(string, [, delimiter]);
+ 
+Quantifier Meaning
+?          0 or 1
+*          0 or more
++          1 or more
+{ n }      Exactly n times
+{ n , m }  At least n, no more than m times
+{ n ,}     At least n times
+
+Class			Description								Expansion
+[:alnum:]		Alphanumeric characters					[0-9a-zA-Z]
+[:alpha:]		Alphabetic characters (letters)			[a-zA-Z]
+[:ascii:]		7-bit ASCII								[\x01-\x7F]
+[:blank:]		Horizontal whitespace (space, tab)		[ \t]
+[:cntrl:]		Control characters						[\x01-\x1F]
+[:digit:]		Digits									[0-9]
+[:graph:]		Characters that use ink to print 
+				(nonspace, noncontrol)					[^\x01-\x20]
+[:lower:]		Lowercase letter						[a-z]
+[:print:]		Printable character (graph class 
+                plus space and tab)						[\t\x20-\xFF]
+[:punct:]		Any punctuation character, such as 
+				the period (.) and the semicolon (;)	[-!"#$%&'()*+,./:;<=>?@[\\\]^_'{|}~]
+[:space:]		Whitespace (newline, carriage return, 
+				tab, space, vertical tab)				[\n\r\t \x0B]
+[:upper:]		Uppercase letter						[A-Z]
+[:xdigit:]		Hexadecimal digit						[0-9a-fA-F]
+\s				Whitespace								[\r\n \t]
+\S				Nonwhitespace							[^\r\n \t]
+\w				Word (identifier) character				[0-9A-Za-z_]
+\W				Nonword (identifier) character			[^0-9A-Za-z_]
+\d				Digit									[0-9]
+\D				Nondigit								[^0-9]
+
+Anchor					Matches
+^						Start of string
+$						End of string
+[[:<:]]					Start of word
+[[:>:]]					End of word
+\b						Word boundary (between \w and \W or at start or end of string)
+\B						Nonword boundary (between \w and \w, or \W and \W)
+\A						Beginning of string
+\Z						End of string or before \n at end
+\z						End of string
+^						Start of line (or after \n if /m flag is enabled)
+$						End of line (or before \n if /m flag is enabled)
+
+Greedy quantifier	Nongreedy quantifier
+?					??
+*					*?
++					+?
+{m}					{m}?
+{m,}				{m,}?
+{m,n}				{m,n}?
+
+/regexp/i		Match case-insensitively
+/regexp/s		Make period (.) match any character, including newline (\n)
+/regexp/x		Remove whitespace and comments from the pattern
+/regexp/m		Make caret (^) match after, and dollar sign ($) match before, internal newlines (\n)
+/regexp/e		If the replacement string is PHP code, eval() it to get the actual replacement string
+
+Construct		Meaning
+(?=subpattern)	Positive lookahead
+(?!subpattern)	Negative lookahead
+(?<=subpattern)	Positive lookbehind
+(?<!subpattern)	Negative lookbehind
+----
+
+----
+Arrays
+ - index qualifiers
+  - may be integers or strings
+  - when using a string key, if contains no spaces then it does not need to 
+    be enclosed in quotes
+  - index keys allow for interpolation
+   $myArray["Something{$numero}"]
+ 
+ - hashtables are not considered as such 
+  - every array has a key-value pair where not defining a key defaults to the 
+    index.
+  - indexed array - known elsewhere as just 'array'
+  - associative array - known elsewhere as hashtable
+  
+ - array declaration happens with first item assignment
+  $myArray[0] = "one";
+  
+ - an array init is avail 
+ $myArray = array("one","two","three");
+ $myAkaHashtable = array("key01" => 17.5, "key02" => 18.5, "key03" = 16.2);
+  - also avail is even shorter init
+ $myAkaHashtable = ["key01" => 17.5, "key02" => 18.5, "key03" = 16.2];
+ 
+ - init an empty array as 
+ $myEmptyArray = array();
+ 
+ - associative and index arrays may be mixed - not recommended
+ $myMixed = array("3" => "two fish", "red fish", "blue fish", "one fish");
+ 
+ - to append to an array use
+ $myArray = array("one", "two");
+ $myArray[] = "three" //same as $myArray[2] = "three"
+ 
+ - range init 
+ $zero2Nine = range(0,9); //an array with 10 items being 0 to 9
+ $lowerLetters = range('a','z'); // a through z
+ $inReverse = range(5,1); // 5,4,3,2,1
+ 
+ - array length with more globals as 
+  - two flavors, exact same effect, no preference in convention
+ sizeof($myArray) -or- count($myArray)
+  
+ - array with default values
+  - array arg passed in is no modified
+  - result is new array having specified length and default value
+    for any item not already assigned something
+  - new_length may be negative to have existing items placed at the rear
+ array_pad(array, new_length, df_val);
+ 
+ - jagged arrays are indexed as array-of-array
+ - no construct for matrix 
+ $row0 = array(1,2,3);
+ $row1 = array(4,5,6);
+ $row2 = array(7,8,9);
+ 
+ $jArray = array($row0, $row1, $row2);
+ $someValue = $jArray[2][1]; //8
+ 
+ - array items may be assigned to variables en masse using list
+  - this is oddly left-assoc.
+ list(variable [, variable]*) = array;
+  - e.g.
+ $someData = array("Bob", "Smith", "555-4545");
+ list($firstName, $lastName, $phNum) = $someData
+ 
+ - slice array 
+ array_slice(array, offset, length);
+ 
+ - splitting array 
+  - the bool arg at the end is for perserving the keys
+  - this creates an jagged array from a single-dim array
+ array_chunk(array, per_chunk_size, [, (true|false)]); 
+ 
+ - array keys & values
+  - returns just the keys or just values
+ array_keys(array); 
+ array_values(array);
+ 
+ - test key exist - returns a bool
+ array_key_exists(key, array)
+ 
+ - to quickly extract assoc. array to variables
+  - actually creates implict local variables based on the key's
+ $assocArray = array("firstName" => "Bob", "lastName" => "Smith", "phNum" = "555-5656");
+ extract($assocArray);
+ echo $firstName; //now a variable...
+  - a prefix may be specified using
+ extract($assocArray, EXTR_PREFIX_ALL, "cust_");
+ echo $cust_firstName; //another variable now in scope
+ 
+ - variables may be compressed into an array quickly
+ $firstName = "Bob";
+ $lastName = "Smith";
+ $phNum = "555-4545"
+ $myArray = compact("firstName", "lastName", "phNum");
+ 
+ - any array's iterator is implied
+  - the foreach uses it without invocation
+  - it may be manipulated programaticlly using more globals
+ current(array); //item at iter's current location
+ reset(array); //iter back to 0
+ next(array); //next item after current
+ prev(array); //prev item before current
+ end(array); //moves iter to the last item
+ each(array); //returns the current key-value as an array and move the iter up one (like Next)
+ key(array); //returns the key of the current element 
+ 
+ - a lighter memory construct to foreach
+ reset($myArray)
+ while(list($key, $value) = each($myArray)){
+	// for use in very large arrays
+ }
+  
+ - invoke a function for each element
+  - callable is a function pointer which receives two args (viz. $key, $value)
+  - extra_data may itself be another array
+ array_walk(array, callable [, extra_data]);
+ 
+ - reduce an array to a single value
+  - callable is a function pointer receiving two args ($runningTotal, $currentValue)
+ array_reduce(array, callable [, df_val]);
+ 
+ - test for values in an array
+  - third bool arg is to require both value and type to equal 'to_find'
+ in_array(to_find, array [, (true|false)]);
+  - to both test and receive the key when true
+ $key = array_search(to_find, array [, (true|false)]);
+----
+
+----
+Array Sorting
+ - three kinds, sort by keys, sort by values and sort by values with key reassignment.
+ 
+ Effect					Ascending		Descending		User-defined order
+Sort array by 
+values, then 
+reassign indices 
+starting with 0			sort(array);	rsort(array);	usort(array, callable);
+Sort array by values	asort(array);	arsort(array);	uasort(array, callable);
+Sort array by keys		ksort(array);	krsort(array);	uksort(array, callable);
+
+ - sorting strings with numbers will use
+  natsort(array);
+  natcasesort(array);
+ 
+ - sorting multidim arrays
+  - similar to DB JOIN
+ array_multisort( (array [, (SORT_ASC|SORT_DESC)])* );
+ 
+ - reverse an array
+  array_reverse(array);
+ 
+ - to change keys to values and values to keys
+ array_flip(array);
+ 
+ - to randomize an array
+ shuffle(array);
+----
+
+----
+Array Operations
+ - sum of an array
+ array_sum(array); 
+ 
+ - join two or more arrays
+ array_merge(array0, array1 [, arrayN]*);
+ 
+ - values present in the array0 but not present in array1 .. N
+  array_diff(array0, array1 [, arrayN]*);
+ 
+ - remove duplicate entires
+ array_unique(array);
+ 
+ - select on where condition
+  - callable returns true or false
+ array_filter(array, callable);
+ 
+ - values present in all arrays
+ array_intersect(array0, array1 [, arrayN]*);
+  
+ - other collection functions
+ array_push & array_pop for implementing stacks
+ array_shift & array_unshift for implementing queues
+----
+ 
+ 
+ 
