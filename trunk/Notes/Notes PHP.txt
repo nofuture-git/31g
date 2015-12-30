@@ -7,6 +7,82 @@ Pub. Date: February 15, 2013
 Print ISBN-13: 978-1-4493-9277-2
 
 Examples: http://examples.oreilly.com/0636920012443/
+
+Doc: http://php.net/manual/en/index.php
+----
+
+----
+Syntax enclosures
+ - standard is XML style
+ <?php 
+   //php code here
+  ?>
+  
+ - when a file is all PHP code the closing 
+   tag is ommitted.
+   <?php
+   //code here
+   
+   <EOF>
+   
+ - single line resolution is available
+   similar to ASP 
+  <p>A Number: <?= 2+2 ?> </p>
+ - its also valid to write
+  <p> A number: <?echo 2+2 ?> </p> 
+----
+
+----
+Reference
+ - set response headers using the global 
+ header("Content-Type: text/plain");
+ 
+ - set cookies using 
+ setcookie(name [, value [, expire [, path [, domain [, secure]]]]]);
+ 
+ - encode to json
+  - uses the json extension
+ $myJson = json_encode(array);
+ $myArray = json_decode(string);
+ 
+ - to encode a PHP object you implement the JsonSerializable interface
+  - which requires you implement the jsonSerialize() method which 
+    returns typically an assoc. array.
+	
+ - make web requests
+  - uses the curl extension
+  $myUrl = "http://somewhere.net/something/iNeed";
+  $curlObj = curl_init();
+  curl_setopt($curlObj, CURLOPT_URL, $myUrl);
+  
+  $rspn = curl_exec($curlObj);
+  $rslt = curl_getinfo($curlObj);
+  
+  curl_close($curlObj);
+  
+ - update something
+  $someData = json_encode(array("something" => 4));
+  $rqstData = http_build_query($someData, '', '&');
+  $ch = curl_init();
+  curl_setopt($ch, CURLOPT_URL, $myUrl);
+  
+  $fh = fopen("php://memory", "rw"); //memory stream;
+  fwrite($fh, $rqstData);
+  rewind($fh);
+  
+  curl_setopt($ch, CURLOPT_INFILE, $fh);
+  curl_setopt($ch, CURLOPT_INFILESIZE, mb_strlen($rqstData));
+  curl_setopt($ch, CURLOPT_PUT, true);
+  
+  $rspn = curl_exec($ch);
+  $rslt = curl_getinfo($ch);
+  
+  curl_close($ch);
+  fclose($fh);
+  
+  - to post data - its the same only using
+  curl_setopt($ch, CURLOPT_POSTFIELDS, $rqstData);
+  curl_setopt($ch, CURLOPT_POST, true);
 ----
 
 ----
@@ -250,19 +326,6 @@ Imports and Includes
  - remote files may be retrieved as well
  include("ftp://myServer/Somefile.php");
  include("http://myServer/AnotherFile.php");
-----
-
-----
-Syntax enclosures
- - standard is XML style
- <?php 
-   //php code here
-  ?>
- - single line resolution is available
-   similar to ASP 
-  <p>A Number: <?= 2+2 ?> </p>
- - its also valid to write
-  <p> A number: <?echo 2+2 ?> </p> 
 ----
 
 ----
@@ -668,5 +731,563 @@ Array Operations
  array_shift & array_unshift for implementing queues
 ----
  
+----
+OOP
+ - object oriented program is supported
  
+ $myClass = new MyClass; //no-arg ctor's have no parenths
+ $myClass = new MyClass("fname",true); 
  
+ - oddly this does not work
+  $willError = new "MyClass";
+ - but this does...
+  $myName = "MyClass";
+  $wontError = new $myName;
+ 
+ - properties are accessed with arrow notation
+  "I can resolve this within a string {$myInstance->myProperty}";
+  - not the property has no parenths (like in .NET)
+  
+ - methods are invoked likewise except always having parenths (even for no-args)
+  $myInstance->someMethod();
+ 
+ - member modifiers:
+  public, protected, private, static, abstract and final
+  
+ - will resolve using what PHP calls variable-variables
+ $myPropName = "age";
+ $myInstance->$myPropName;
+ 
+ - static methods are invoked in IL-style
+ MyClass::myStaticMethod("has args too");
+ 
+ - are pass-by-value semantics
+  - may make full graph clone using 
+  $newCopy = clone $myInstance;
+ 
+ - other std features
+  - extend on parent concrete type, implement many interfaces
+  - use $this for current instance
+  - invoke parent method using 
+   parent::myParentMethod();
+   
+  - to override polymorph use
+   self::myMethod();
+----
+
+----
+Namespaces
+ - are supported
+ - must be first line in php file
+ - scope is implied as the whole file and all 
+   that is defined in it.
+ - use the keyword
+  namespace MyNamespace;
+  
+ - have sub namespaces with backslash
+  namespace MyTopNamespace\Util\Something;
+  
+ - namespace scope is assumed j
+ - to fully qualify, use the same \ char 
+ MyNamespace\Util\Something\MyClass::somestatic();
+----
+
+----
+Traits
+ - like classes
+ - reduce some limitations of single inheritance 
+ - cannot be directly instantiated 
+ - must be declared within a class def with the 'use' keyword
+ - may declare abstract methods which must be implemented 
+   by the class using the trait
+----
+
+----
+Ctors & Destructors
+ - are implemented using 
+ __construct()
+ - may be no-arg or have args
+ - to invoke parent ctor use
+ parent::__construct();
+ 
+ - destructor is similar
+ __destruct()
+ - is always a no-arg method
+----
+
+----
+Reflection (aka Introspection)
+ - uses global functions
+ 
+ class_exists(classname);
+ get_declared_classes();
+ get_class_methods(classname);
+ get_parent_class(classname);
+ 
+ - to get an object's type
+ 
+ is_object(some_variable);
+ get_class(some_variable);
+ method_exists(some_variable, method)
+ get_class_vars(classname); //index array of just prop names.
+ get_object_vars(some_variable); //returns an assoc. array of name-values
+----
+
+----
+Serialization
+ - is supported, quite simple
+ $encoded = serialize($something);
+ $something = unserialize(encoded);
+ 
+ - to plug into the serialization\de-ser events use
+ __sleep() & __wakeup()
+----
+
+----
+HTTP runtime globals
+ $_COOKIE
+ $_GET
+ $_POST
+ $_FILES
+ $_SERVER
+ $_ENV
+ 
+ $_REQUEST (contains get, post and cookie as a single array)
+ 
+  - when an input tag's name contains periods they are converted to underscore.
+ $_POST["inputName"]; //this is the name of the input tag
+ 
+ - when the form data allows for multiples you must name the html tag with sqr-braces
+ <select name="nationState[]">
+  <option name="us">United States</option>
+  <option name="fr">France</option>
+  <option name="uk">United Kingdom</option>
+ </select>
+  - as such the $_POST["nationState"] will be itself an array
+  
+ - this could also be accomplished using the same name in multiple tags 
+   (again with the sqr-braces)
+  <input type="checkbox" name="myStuff[]" value="somthing" />Something</input>
+  <input type="checkbox" name="myStuff[]" value="somthingElse" />Something Else</input>
+  <input type="checkbox" name="myStuff[]" value="aThirdThing" />A Third Thing</input>
+----
+
+----
+Server environment variables
+ - are invoked like $_SERVER["PHP_SELF"];
+  
+PHP_SELF : The name of the current script, relative 
+           to the document root (e.g., /store/cart.php). 
+		   You should already have noted seeing this used 
+		   in some of the sample code in earlier chapters. 
+		   This variable is useful when creating 
+		   self-referencing scripts, as we’ll see later.
+SERVER_SOFTWARE : A string that identifies the server 
+                  (e.g., “Apache/1.3.33 (Unix) mod_perl/1.26 PHP/5.0.4”).
+SERVER_NAME : The hostname, DNS alias, or IP address for 
+              self-referencing URLs (e.g., www.example.com).
+GATEWAY_INTERFACE : The version of the CGI standard being 
+                    followed (e.g., “CGI/1.1”).
+SERVER_PROTOCOL : The name and revision of the 
+                  request protocol (e.g., “HTTP/1.1”).
+SERVER_PORT : The server port number to which the request 
+              was sent (e.g., “80”).
+REQUEST_METHOD : The method the client used to fetch 
+                 the document (e.g., “GET”).
+PATH_INFO : Extra path elements given by the client (e.g., /list/users).
+PATH_TRANSLATED : The value of PATH_INFO, translated by the server 
+                  into a filename (e.g., /home/httpd/htdocs/list/users).
+SCRIPT_NAME : The URL path to the current page, which is useful 
+              for self-referencing scripts (e.g., /~me/menu.php).
+QUERY_STRING : Everything after the ? in the URL (e.g., name=Fred+age=35).
+REMOTE_HOST : The hostname of the machine that requested 
+              this page (e.g., “dialup-192-168-0-1.example.com 
+			  (http://dialup-192-168-0-1.example.com)”). If there’s no DNS 
+			  for the machine, this is blank and REMOTE_ADDR is the 
+			  only information given.
+REMOTE_ADDR : A string containing the IP address of the machine that 
+              requested this page (e.g., “192.168.0.250”).
+AUTH_TYPE : If the page is password-protected, this is the authentication 
+            method used to protect the page (e.g., “basic”).
+REMOTE_USER : If the page is password-protected, this is the 
+              username with which the client authenticated (e.g., “fred”). 
+			  Note that there’s no way to find out what password was used.
+REMOTE_IDENT : If the server is configured to use identd (RFC 931) 
+               identification checks, this is the username fetched 
+			   from the host that made the web request (e.g., “barney”). 
+			   Do not use this string for authentication purposes, 
+			   as it is easily spoofed.
+CONTENT_TYPE : The content type of the information attached to queries 
+               such as PUT and POST (e.g., “x-url-encoded”).
+CONTENT_LENGTH : The length of the information attached to queries 
+                 such as PUT and POST (e.g., “3,952”).
+				The Apache server also creates entries in the $_SERVER array for 
+                each HTTP header in the request. For each key, the header name 
+				is converted to uppercase, hyphens (-) are turned into 
+				underscores (_), and the string "HTTP_" is prepended. 
+				For example, the entry for the User-Agent header has the 
+				key "HTTP_USER_AGENT". The two most common and useful headers are:
+HTTP_USER_AGENT : The string the browser used to identify itself (e.g., 
+                  “Mozilla/5.0 (Windows 2000; U) Opera 6.0 [en]”)
+HTTP_REFERER : The page the browser said it came from to get to 
+               the current page (e.g., http://www.example.com/last_page.html) 
+----
+
+----
+Session
+ - PHP has built-ins
+ - requires two basics
+ 
+ session_start(); //loads the global $_SESSION array
+ $_SESSION["someKey"] =  somevalue; //added to session
+ 
+ unset($_SESSION["someKey"]); //remove key-value from session
+----
+ 
+----
+All Global Builtin Functions
+
+Arrays
+array_change_key_case	array_intersect_assoc
+array_chunk	array_intersect_key
+array_combine	array_intersect_uassoc
+array_count_values	array_intersect_ukey
+array_diff	array_key_exists
+array_diff_assoc	array_keys
+array_diff_key	array_map
+array_diff_uassoc	array_merge
+array_diff_ukey	array_merge_recursive
+array_fill	array_multisort
+array_fill_keys	array_pad
+array_filter	array_pop
+array_flip	array_product
+array_intersect	array_push
+array_rand	compact
+array_reduce	count
+array_replace	current
+array_replace_recursive	each
+array_reverse	end
+array_search	extract
+array_shift	in_array
+array_slice	key
+array_splice	krsort
+array_sum	ksort
+array_udiff	list
+array_udiff_assoc	natcasesort
+array_udiff_uassoc	natsort
+array_uintersect	next
+array_uintersect_assoc	prev
+array_uintersect_uassoc	range
+array_unique	reset
+array_unshift	rsort
+array_values	shuffle
+array_walk	sort
+array_walk_recursive	uasort
+arsort	uksort
+asort	usort
+
+Classes and Objects
+class_alias	get_object_vars
+class_exists	get_parent_class
+get_called_class	interface_exists
+get_class_methods	is_a
+get_class_vars	is_subclass_of
+get_class	method_exists
+get_declared_classes	property_exists
+get_declared_interfaces	trait_exists
+get_declared_traits	 
+
+Date and Time
+checkdate	date_default_timezone_set
+date_default_timezone_get	date_parse_from_format
+date_parse	idate
+date_sun_info	localtime
+date_sunrise	microtime
+date_sunset	mktime
+date	strftime
+getdate	strptime
+gettimeofday	strtotime
+gmdate	time
+gmmktime	timezone_name_from_abbr
+gmstrftime	timezone_version_get
+
+Directories
+chdir	opendir
+chroot	readdir
+closedir	rewinddir
+dir	scandir
+getcwd	 
+
+Errors and Logging
+debug_backtrace	restore_error_handler
+debug_print_backtrace	restore_exception_handler
+error_get_last	set_error_handler
+error_log	set_exception_handler
+error_reporting	trigger_error
+
+Program Execution
+escapeshellarg	proc_nice
+escapeshellcmd	proc_open
+exec	proc_terminate
+passthru	shell_exec
+proc_close	system
+proc_get_status	 
+
+Filesystem
+basename	copy
+chgrp	dirname
+chmod	disk_free_space
+chown	disk_total_space
+clearstatcache	fclose
+feof	is_executable
+fflush	is_file
+fgetc	is_link
+fgetcsv	is_readable
+fgets	is_uploaded_file
+fgetss	is_writable
+file_exists	lchgrp
+file_get_contents	lchown
+file_put_contents	link
+file	linkinfo
+fileatime	lstat
+filectime	mkdir
+filegroup	move_uploaded_file
+fileinode	parse_ini_file
+filemtime	parse_ini_string
+fileowner	pathinfo
+fileperms	pclose
+filesize	popen
+filetype	readfile
+flock	readlink
+fnmatch	realpath_cache_get
+fopen	realpath_cache_size
+fpassthru	realpath
+fputcsv	rename
+fread	rewind
+fscanf	rmdir
+fseek	stat
+fstat	symlink
+ftell	tempnam
+ftruncate	tmpfile
+fwrite	touch
+glob	umask
+is_dir	unlink
+
+Data Filtering
+filter_has_var	filter_input
+filter_id	filter_list
+filter_input_array	filter_var_array
+filter_var	 
+
+Functions
+call_user_func_array	forward_static_call
+call_user_func	func_get_arg
+create_function	func_get_args
+forward_static_call_array	func_num_args
+function_exists	register_tick_function
+get_defined_functions	unregister_tick_function
+register_shutdown_function	 
+
+PHP Options/Info
+assert_options	ini_get
+assert	ini_restore
+extension_loaded	ini_set
+gc_collect_cycles	memory_get_peak_usage
+gc_disable	memory_get_usage
+gc_enable	php_ini_loaded_file
+gc_enabled	php_ini_scanned_files
+get_cfg_var	php_logo_guid
+get_current_user	php_sapi_name
+get_defined_constants	php_uname
+get_extension_funcs	phpcredits
+get_include_path	phpinfo
+get_included_files	phpversion
+get_loaded_extensions	putenv
+getenv	restore_include_path
+getlastmod	set_include_path
+getmygid	set_time_limit
+getmyinode	sys_get_temp_dir
+getmypid	version_compare
+getmyuid	zend_logo_guid
+getopt	zend_thread_id
+getrusage	zend_version
+ini_get_all	 
+
+Mail
+mail	 
+
+Math
+abs	is_finite
+acos	is_infinite
+acosh	is_nan
+asin	lcg_value
+asinh	log10
+atan2	log1p
+atan	log
+atanh	max
+base_convert	min
+bindec	mt_getrandmax
+ceil	mt_rand
+cos	mt_srand
+cosh	octdec
+decbin	pi
+dechex	pow
+decoct	rad2deg
+deg2rad	rand
+exp	round
+expm1	sin
+floor	sinh
+fmod	sqrt
+getrandmax	srand
+hexdec	tan
+hypot	tanh
+
+Miscellaneous Functions
+connection_aborted	pack
+connection_status	php_strip_whitespace
+constant	sleep
+define	sys_getloadavg
+defined	time_nanosleep
+get_browser	time_sleep_until
+highlight_file	uniqid
+highlight_string	unpack
+ignore_user_abort	usleep
+
+Network
+checkdnsrr	header
+closelog	headers_list
+fsockopen	headers_sent
+gethostbyaddr	inet_ntop
+gethostbyname	inet_pton
+gethostbynamel	ip2long
+gethostname	long2ip
+getmxrr	openlog
+getprotobyname	pfsockopen
+getprotobynumber	setcookie
+getservbyname	setrawcookie
+getservbyport	syslog
+header_remove	
+ 
+Output Buffering
+flush	ob_get_level
+ob_clean	ob_get_status
+ob_end_clean	ob_gzhandler
+ob_end_flush	ob_implicit_flush
+ob_flush	ob_list_handlers
+ob_get_clean	ob_start
+ob_get_contents	output_add_rewrite_var
+ob_get_flush	output_reset_rewrite_vars
+ob_get_length	 
+
+Session Handling
+session_cache_expire	session_regenerate_id
+session_cache_limiter	session_register_shutdown
+session_decode	session_save_path
+session_destroy	session_set_cookie_params
+session_encode	session_set_save_handler
+session_get_cookie_params	session_start
+session_id	session_status
+session_module_name	session_unset
+session_name	session_write_close
+
+Streams
+stream_bucket_append	stream_bucket_make_writeable
+stream_bucket_new	stream_notification_callback
+stream_bucket_prepend	stream_resolve_include_path
+stream_context_create	stream_select
+stream_context_get_default	stream_set_blocking
+stream_context_get_options	stream_set_chunk_size
+stream_context_get_params	stream_set_read_buffer
+stream_context_set_default	stream_set_timeout
+stream_context_set_option	stream_set_write_buffer
+stream_context_set_params	stream_socket_accept
+stream_copy_to_stream	stream_socket_client
+stream_encoding	stream_socket_enable_crypto
+stream_filter_append	stream_socket_get_name
+stream_filter_prepend	stream_socket_pair
+stream_filter_register	stream_socket_recvfrom
+stream_filter_remove	stream_socket_sendto
+stream_get_contents	stream_socket_server
+stream_get_filters	stream_socket_shutdown
+stream_get_line	stream_supports_lock
+stream_get_meta_data	stream_wrapper_register
+stream_get_transports	stream_wrapper_restore
+stream_get_wrappers	stream_wrapper_unregister
+stream_is_local	 
+
+Strings
+addcslashes	get_html_translation_table
+addslashes	hebrev
+bin2hex	hebrevc
+chr	hex2bin
+chunk_split	html_entity_decode
+convert_cyr_string	htmlentities
+convert_uudecode	htmlspecialchars_decode
+convert_uuencode	htmlspecialchars
+count_chars	implode
+crc32	lcfirst
+crypt	levenshtein
+echo	localeconv
+explode	ltrim
+fprintf	md5_file
+md5	strip_tags
+metaphone	stripcslashes
+money_format	stripos
+nl_langinfo	stripslashes
+nl2br	stristr
+number_format	strlen
+ord	strnatcasecmp
+parse_str	strnatcmp
+printf	strncasecmp
+quoted_printable_decode	strncmp
+quoted_printable_encode	strpbrk
+quotemeta	strpos
+rtrim	strrchr
+setlocale	strrev
+sha1_file	strripos
+sha1	strrpos
+similar_text	strspn
+soundex	strstr
+sprintf	strtok
+sscanf	strtolower
+str_getcsv	strtoupper
+str_ireplace	strtr
+str_pad	substr_compare
+str_repeat	substr_count
+str_replace	substr_replace
+str_rot13	substr
+str_shuffle	trim
+str_split	ucfirst
+str_word_count	ucwords
+strcasecmp	vfprintf
+strcmp	vprintf
+strcoll	vsprintf
+strcspn	wordwrap
+
+PHP Language Tokenizer
+token_get_all
+token_name
+
+URLs
+base64_decode	parse_url
+base64_encode	rawurldecode
+get_headers	rawurlencode
+get_meta_tags	urldecode
+http_build_query	urlencode
+
+Variables
+debug_zval_dump	is_object
+empty	is_resource
+floatval	is_scalar
+get_defined_vars	is_string
+get_resource_type	isset
+gettype	print_r
+intval	serialize
+is_array	settype
+is_bool	strval
+is_callable	unserialize
+is_float	unset
+is_int	var_dump
+is_null	var_export
+is_numeric
+----
