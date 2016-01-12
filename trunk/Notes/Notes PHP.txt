@@ -9,6 +9,8 @@ Print ISBN-13: 978-1-4493-9277-2
 Examples: http://examples.oreilly.com/0636920012443/
 
 Doc: http://php.net/manual/en/index.php
+
+for cmd line: http://php.net/manual/en/features.commandline.introduction.php
 ----
 
 ----
@@ -28,12 +30,37 @@ Syntax enclosures
  - single line resolution is available
    similar to ASP 
   <p>A Number: <?= 2+2 ?> </p>
- - its also valid to write
-  <p> A number: <?echo 2+2 ?> </p> 
+----
+
+
+----
+Imports and Includes
+ - has two flavors
+ include & require
+  - include will not error-out if file cannot be found
+  - require will error-out when file is not found.
+  - syntax like VB where parenths are optional
+ require "myfile.php";
+ require("myOtherFile.php");
+ include "myThirdFile.php";
+ include("yetaFourthFile.php");
+
+ - adding the amp operator to the front of include 
+   will cause it to continue quietly
+ @include "myFile.php";
+ 
+ - remote files may be retrieved as well
+ include("ftp://myServer/Somefile.php");
+ include("http://myServer/AnotherFile.php");
 ----
 
 ----
 Reference
+ - to print an object to console 
+  echo var_dump($expr);
+
+ - the constant PHP_EOL may be used instead of "\n"
+
  - set response headers using the global 
  header("Content-Type: text/plain");
  
@@ -83,6 +110,14 @@ Reference
   - to post data - its the same only using
   curl_setopt($ch, CURLOPT_POSTFIELDS, $rqstData);
   curl_setopt($ch, CURLOPT_POST, true);
+  
+ - set curl proxy server
+ - http://stackoverflow.com/questions/5211887/how-to-use-curl-via-a-proxy
+  curl_setopt($ch, CURLOPT_PROXY, "127.0.0.1:9090");
+  curl_setopt($ch, CURLOPT_PROXYUSERPWD, "myUsername:myPassword");
+  curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+  curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+  curl_setopt($ch, CURLOPT_HEADER, 1);
 ----
 
 ----
@@ -131,7 +166,7 @@ Basics
  - statement terminator is the semi-colon
  - enclosures are curly-brace
  - line comments are same as C-style 
-   or Unix shell style (hash mark)
+    - older ver. supported Unix shell style (hash mark)
  - block comments are C-style
  - variable names begin with $ 
  - language constructs are special cases
@@ -305,27 +340,6 @@ Flow-Control
   - is supported 
   - labels are delcared with 
    myLabel:
-----
-
-----
-Imports and Includes
- - has two flavors
- include & require
-  - include will not error-out if file cannot be found
-  - require will error-out when file is not found.
-  - syntax like VB where parenths are optional
- require "myfile.php";
- require("myOtherFile.php");
- include "myThirdFile.php";
- include("yetaFourthFile.php");
-
- - adding the amp operator to the front of include 
-   will cause it to continue quietly
- @include "myFile.php";
- 
- - remote files may be retrieved as well
- include("ftp://myServer/Somefile.php");
- include("http://myServer/AnotherFile.php");
 ----
 
 ----
@@ -745,8 +759,13 @@ OOP
   $wontError = new $myName;
  
  - properties are accessed with arrow notation
-  "I can resolve this within a string {$myInstance->myProperty}";
-  - not the property has no parenths (like in .NET)
+ - they are actually what typically OO calls fields
+ - encapsulated properties requires methods.
+ - a property may be defined within a ctor using
+  $this->someProperty = "a value";
+   - 'someProperty' is only define within the ctor
+   - it still acts like a public property similar to 
+   public someProperty = "a value"; //this being defined w/i the class decl
   
  - methods are invoked likewise except always having parenths (even for no-args)
   $myInstance->someMethod();
@@ -943,288 +962,327 @@ Session
  
  unset($_SESSION["someKey"]); //remove key-value from session
 ----
- 
+
 ----
-All Global Builtin Functions
-
-Arrays
-array_change_key_case	array_intersect_assoc
-array_chunk	array_intersect_key
-array_combine	array_intersect_uassoc
-array_count_values	array_intersect_ukey
-array_diff	array_key_exists
-array_diff_assoc	array_keys
-array_diff_key	array_map
-array_diff_uassoc	array_merge
-array_diff_ukey	array_merge_recursive
-array_fill	array_multisort
-array_fill_keys	array_pad
-array_filter	array_pop
-array_flip	array_product
-array_intersect	array_push
-array_rand	compact
-array_reduce	count
-array_replace	current
-array_replace_recursive	each
-array_reverse	end
-array_search	extract
-array_shift	in_array
-array_slice	key
-array_splice	krsort
-array_sum	ksort
-array_udiff	list
-array_udiff_assoc	natcasesort
-array_udiff_uassoc	natsort
-array_uintersect	next
-array_uintersect_assoc	prev
-array_uintersect_uassoc	range
-array_unique	reset
-array_unshift	rsort
-array_values	shuffle
-array_walk	sort
-array_walk_recursive	uasort
-arsort	uksort
-asort	usort
-
-Classes and Objects
-class_alias	get_object_vars
-class_exists	get_parent_class
-get_called_class	interface_exists
-get_class_methods	is_a
-get_class_vars	is_subclass_of
-get_class	method_exists
-get_declared_classes	property_exists
-get_declared_interfaces	trait_exists
-get_declared_traits	 
-
 Date and Time
-checkdate	date_default_timezone_set
-date_default_timezone_get	date_parse_from_format
-date_parse	idate
-date_sun_info	localtime
-date_sunrise	microtime
-date_sunset	mktime
-date	strftime
-getdate	strptime
-gettimeofday	strtotime
-gmdate	time
-gmmktime	timezone_name_from_abbr
-gmstrftime	timezone_version_get
+ $currentDateTime = new DateTime();
+ $myDt = new DateTime("2016-01-01 00:00:00.000000"); //MSSQL like format
+ echo $myDt->format('Y-m-d H:i:s') . PHP_EOL;
+ echo $myDt->format(DateTime::ATOM) . PHP_EOL;
+ - format ref:
+  Year: 'Y'  4-digit year
+        'y'  2-digit year
+  Month 'F'  Full month name (e.g. July)		
+        'm'  2-digit month
+		'M'  Abbrev. for month name (e.g. Jan)
+		'n'  1 or 2-digit month
+  Day   'd'  2-digit day of month
+        'D'  Abbrev. for day name (e.g. Mon)
+		'j'  1 or 2-digit day of month
+		'l'  (\x6C) Full day of week name (e.g. Friday)
+		'N'  Day of week starting at 1 for Monday
+		'S'  append with 'j' to have 1st, 13th, 3rd, etc.
+		'w'  Day of week starting at 0 for Sunday
+  Time  'a'  lowercase am, pm
+        'A'  uppercase AM, PM
+		'g'  12 hour 1 or 2-digit
+		'G'  24 hour 1 or 2-digit
+		'H'  24 hour 2-digit
+		'h'  12 hour 2-digit
+		'i'  minutes
+		's'  seconds
+		'u'  microseconds
+  - DateTime object has canned formats as constants
+   ATOM, COOKIE, ISO08601, RFC822, RFC850, RFC1036
+   RFC1123, RFC2822, RFC3339, RSS, W3C
+  - to use DateTime::diff() the DateTime on which 
+    the method is invoked should be before (in-time)
+	the diff arg
+   $myDtInterval $myDt->diff($someFutureDt);
 
-Directories
-chdir	opendir
-chroot	readdir
-closedir	rewinddir
-dir	scandir
-getcwd	 
-
-Errors and Logging
-debug_backtrace	restore_error_handler
-debug_print_backtrace	restore_exception_handler
-error_get_last	set_error_handler
-error_log	set_exception_handler
-error_reporting	trigger_error
-
+date_parse_from_format(format, value);
+ - will parse the value according to the format
+ - returns an assoc. array 
+  "year", "month", "day", "hour", "minute", "second"
+----
+  
+----
 Program Execution
-escapeshellarg	proc_nice
-escapeshellcmd	proc_open
-exec	proc_terminate
-passthru	shell_exec
-proc_close	system
-proc_get_status	 
-
+shell_exec(cmd)
+ - executes the command using the shell and returns the output
+   as a string
+exec(cmd [, output]);
+ - executes the command 
+ - output is an array for each line returned from the command's 
+   execution
+----
+   
+----
 Filesystem
-basename	copy
-chgrp	dirname
-chmod	disk_free_space
-chown	disk_total_space
-clearstatcache	fclose
-feof	is_executable
-fflush	is_file
-fgetc	is_link
-fgetcsv	is_readable
-fgets	is_uploaded_file
-fgetss	is_writable
-file_exists	lchgrp
-file_get_contents	lchown
-file_put_contents	link
-file	linkinfo
-fileatime	lstat
-filectime	mkdir
-filegroup	move_uploaded_file
-fileinode	parse_ini_file
-filemtime	parse_ini_string
-fileowner	pathinfo
-fileperms	pclose
-filesize	popen
-filetype	readfile
-flock	readlink
-fnmatch	realpath_cache_get
-fopen	realpath_cache_size
-fpassthru	realpath
-fputcsv	rename
-fread	rewind
-fscanf	rmdir
-fseek	stat
-fstat	symlink
-ftell	tempnam
-ftruncate	tmpfile
-fwrite	touch
-glob	umask
-is_dir	unlink
+scandir(path [, options]);
+ - returns an array of directory contents 
+ - options
+  SCANDIR_SORT_ASCENDING (default)
+  SCANDIR_SORT_DESCENDING
 
-Data Filtering
-filter_has_var	filter_input
-filter_id	filter_list
-filter_input_array	filter_var_array
-filter_var	 
-
-Functions
-call_user_func_array	forward_static_call
-call_user_func	func_get_arg
-create_function	func_get_args
-forward_static_call_array	func_num_args
-function_exists	register_tick_function
-get_defined_functions	unregister_tick_function
-register_shutdown_function	 
-
-PHP Options/Info
-assert_options	ini_get
-assert	ini_restore
-extension_loaded	ini_set
-gc_collect_cycles	memory_get_peak_usage
-gc_disable	memory_get_usage
-gc_enable	php_ini_loaded_file
-gc_enabled	php_ini_scanned_files
-get_cfg_var	php_logo_guid
-get_current_user	php_sapi_name
-get_defined_constants	php_uname
-get_extension_funcs	phpcredits
-get_include_path	phpinfo
-get_included_files	phpversion
-get_loaded_extensions	putenv
-getenv	restore_include_path
-getlastmod	set_include_path
-getmygid	set_time_limit
-getmyinode	sys_get_temp_dir
-getmypid	version_compare
-getmyuid	zend_logo_guid
-getopt	zend_thread_id
-getrusage	zend_version
-ini_get_all	 
-
-Mail
-mail	 
-
-Math
-abs	is_finite
-acos	is_infinite
-acosh	is_nan
-asin	lcg_value
-asinh	log10
-atan2	log1p
-atan	log
-atanh	max
-base_convert	min
-bindec	mt_getrandmax
-ceil	mt_rand
-cos	mt_srand
-cosh	octdec
-decbin	pi
-dechex	pow
-decoct	rad2deg
-deg2rad	rand
-exp	round
-expm1	sin
-floor	sinh
-fmod	sqrt
-getrandmax	srand
-hexdec	tan
-hypot	tanh
-
-Miscellaneous Functions
-connection_aborted	pack
-connection_status	php_strip_whitespace
-constant	sleep
-define	sys_getloadavg
-defined	time_nanosleep
-get_browser	time_sleep_until
-highlight_file	uniqid
-highlight_string	unpack
-ignore_user_abort	usleep
-
-Network
-checkdnsrr	header
-closelog	headers_list
-fsockopen	headers_sent
-gethostbyaddr	inet_ntop
-gethostbyname	inet_pton
-gethostbynamel	ip2long
-gethostname	long2ip
-getmxrr	openlog
-getprotobyname	pfsockopen
-getprotobynumber	setcookie
-getservbyname	setrawcookie
-getservbyport	syslog
-header_remove	
+basename(string [, suffix])
+ - like Split-Path -Parent
+ - suffix is optional and having a value will cause 
+   result to have it removed (like GetFileNameWithoutExtension)
+   
+copy(string_src, string_dest)
+ - copies from source to dest
  
-Output Buffering
-flush	ob_get_level
-ob_clean	ob_get_status
-ob_end_clean	ob_gzhandler
-ob_end_flush	ob_implicit_flush
-ob_flush	ob_list_handlers
-ob_get_clean	ob_start
-ob_get_contents	output_add_rewrite_var
-ob_get_flush	output_reset_rewrite_vars
-ob_get_length	 
+dirname(string [, level=1]);
+ - gets the parent directory 
+ - EXAMPLE 
+  dirname("C:\\Projects\\31g\\trunk\\bin\\php\\stuff"); //C:\Projects\31g\trunk\bin\php
+  dirname("C:\\Projects\\31g\\trunk\\bin\\php\\stuff", 2); //C:\Projects\31g\trunk\bin
+  
+chmod(path, octal) 
+ - changes the access perms of a file
+  - 0600 Read and write for owner, nothing for everybody else
+  - 0644 Read and write for owner, read for everybody else
+  - 0755 Everything for owner, read and execute for others
+  - 0750 Everything for owner, read and execute for owner's group
+  
+clearstatcache()
+ - PHP has a virtual results table for various file ops 
+ - to imporve performance
+ - this clears that virtual table
+ - GOTCHA 
+  - calling file_exist on non-existent file returns false
+  - file is created, file_exist returns true
+  - file is then deleted, file_exist still returns true
+   - use this function or unlink()
+   
+fflush(resource)
+ - flushes all buffered output to the resouce.
+ 
+fgetcsv(resource, [,length=0 [,delimiter="," [, enclosure='"' [, escape = "\"]]]])
+ - for reading data on file in CSV format into an array
+  - max line length, 0 is unlimited
+  - delimiter  Must be one char string
+  - enclosure  Appearance of delimiter within are not considered as such
+  - escape  Char which appearing before delimiter makes it not as such
+ - is one call per line EXAMPLE:  while (($data = fgetcsv($handle, 1000, ",")) !== FALSE)
+   
+fputcsv(resource, ,array [,delimiter="," [, enclosure='"' [, escape = "\"]]])
+ - for writing arrays as CSV
+ - one array is one line written
 
-Session Handling
-session_cache_expire	session_regenerate_id
-session_cache_limiter	session_register_shutdown
-session_decode	session_save_path
-session_destroy	session_set_cookie_params
-session_encode	session_set_save_handler
-session_get_cookie_params	session_start
-session_id	session_status
-session_module_name	session_unset
-session_name	session_write_close
+fgets(resource [, length])
+ - reads a buffer from an opened file
+ - results are a string
+ 
+fgetss(resource [, length [, allow_tags]])
+ - reads a buffer from an opened file
+ - will strip out '\0' HTML and PHP tags from output
+ 
+is_writable(filename)
+ - tests if a file may be written to
+is_readable(filename)
+ - tests if a file may be read from
+file_exists(string)
+ - tests if a file exists
+is_uploaded_file(string)
+ - tests if a file is present via HTTP POST	
+is_link(string)
+ - tests if a file is a short-cut to another file
+feof(resource)
+ - tests if file is at its EOF
+is_dir(string)
+ - tests if a path is a directory
+is_file(string)
+ - tests if a path is a file
+ 
+file_get_contents(string [, bool])
+ - read the entire file into a single string
+ - bool will search php.ini's "include_path"
 
-Streams
-stream_bucket_append	stream_bucket_make_writeable
-stream_bucket_new	stream_notification_callback
-stream_bucket_prepend	stream_resolve_include_path
-stream_context_create	stream_select
-stream_context_get_default	stream_set_blocking
-stream_context_get_options	stream_set_chunk_size
-stream_context_get_params	stream_set_read_buffer
-stream_context_set_default	stream_set_timeout
-stream_context_set_option	stream_set_write_buffer
-stream_context_set_params	stream_socket_accept
-stream_copy_to_stream	stream_socket_client
-stream_encoding	stream_socket_enable_crypto
-stream_filter_append	stream_socket_get_name
-stream_filter_prepend	stream_socket_pair
-stream_filter_register	stream_socket_recvfrom
-stream_filter_remove	stream_socket_sendto
-stream_get_contents	stream_socket_server
-stream_get_filters	stream_socket_shutdown
-stream_get_line	stream_supports_lock
-stream_get_meta_data	stream_wrapper_register
-stream_get_transports	stream_wrapper_restore
-stream_get_wrappers	stream_wrapper_unregister
-stream_is_local	 
+file_put_contents(string, data, options)
+ - writes content to a fils
+ - data may be a string, an array or a stream
+ - join more than one option using bar "|"
+ - options:
+   FILE_USE_INCLUDE_PATH  See below
+   FILE_APPEND  To have the data overwrite or append
+   LOCK_EX  To have an exclusive lock on the file
+
+file(string, options)
+ - read an entire file into an array
+ - join more than one option using the bar "|"
+ - options:
+   FILE_USE_INCLUDE_PATH  Will search in the 
+    php.ini's "include_path"
+   FILE_IGNORE_NEW_LINES  each array element 
+    will NOT have a newline at the end.
+   FILE_SKIP_EMPTY_LINES  Empty lines will 
+    not be added to the returned array
+
+mkdir(string [, mode=0777 [, recursive=FALSE])
+ - creates a directory
+ - mode is ignored on Windows
+ - recursive is to create any parent directory needed
+
+parse_ini_file(string [, process_sections=FALSE])
+ - reads an ini file and returns the results as an array
+ - having it process sections will return a multi-dim array
+ 
+parse_ini_string(string [, process_sections=FALSE])
+ - same as the above only operates on the ini's contents 
+   as a string
+
+pathinfo(string)
+ - parse a path into parts
+ - returns an assoc. array having
+  "dirname", "basename", "extension", "filename"
+
+filesize(string)
+ - gets the size of a file
+
+fnmatch(pattern, string)
+ - test if string matches shell wildcard pattern
+
+fopen(string, mode [, bool])
+ - opens a file stream, path may be URI with schema
+ - returns a 'resource'
+ - mode is a string each having some access meaning
+  'r' opens for reading only 
+  'r+' opens for reading and writing
+  'w' opens for writing only, truncate prev. 
+      content, create file if not present
+  'w+' same as above only allow for reading too
+  'rb' read as a binary file (not text)
+ - bool is TRUE if search should include the path(s)
+   assigned in php.ini "include_path"
+
+fclose(resource)
+ - closes a file
+
+rename(oldname, newname)
+ - renames a file
+ 
+fread(resource, length)	
+ - read a buffer by the given length or EOF
+ 
+rewind(resource)
+ - sets the file pointer back to the begining
+ 
+rmdir(string)
+ - removes a directory
+ 
+fseek(resource, offset)
+ - moves the filepointer by offset
+ 
+stat(filename)
+ - gets files metadata 
+ - returns metadata as an assoc. array
+   "size", 
+   "atime"  Last access time
+   "mtime"  Loat modified time
+   
+fstat(resource)
+ - same as stat() only for an open file
+ 
+ftell(resource)
+ - gets the current file pointer position
+ 
+tempnam(dir, prefix)
+ - creates a temp file returning the full path as a string
+ 
+ftruncate(resource, size)
+ - truncates a files content by a given size
+ - exceeding the size will extend the file with '\0'
+  - couple with filesize(path) to have the runtime file size
+  
+tmpfile()
+ - creates a temp file in read-write and returns the resource handle
+ 
+fwrite(resource, string [, length])
+ - writes string to openned file
+ - will stop at length if given
+touch(string [, int])
+ - will update last write times to a file
+ - the int is the time and its optional
+  - leaving the second arg out the current time is used
+
+unlink(string)
+ - deletes a file 
+----
+
+----
+Numeric Parse
+bindec(string)
+ - converts binary string to int or float
+decbin(int)	
+ - converts int to binary string
+dechex(int)
+ - converts int to string hex
+decoct(int)	
+ - converts int to string octal
+hexdec(stringHex)	
+ - converts stringHex to int or float
+octdec(stringOct)
+ - converts stingOct to int or float
+----
+
+----
+Math
+exp(floatX)
+ - 'e' raised to power floatX
+
+expm1
+ - 'e' raised to power floatX minus 1
+	
+fmod(floatX, floatY)	
+ - get the remainder floatX/floatY
+ - returns a float
+ 
+max(array)
+ - gets highest num in array
+min(array) 
+ - gets lowest num in array
+
+mt_rand([min, max])
+ - generates a random int
+mt_srand([seed])
+ - generates a random int with seed
+lcg_value()
+ - returns a random float between 0 and 1
+
+sqrt(floatX)
+ - get square root of floatX
+ 
+pi()
+ - gets pi upto 14 decimal places
+
+pow(numBase, numExp)
+ - raises numBase by numExp
+
+round(float [,int])
+ - round number up to decimal place
+ceil(float)
+ - next highest int
+floor(float)
+ - next lowest int
+abs(num)    
+ - gets absolute value
+----
 
 Strings
-addcslashes	get_html_translation_table
-addslashes	hebrev
+addslashes(string)
+ - esc. reserved chars with backslash
+	hebrev
 bin2hex	hebrevc
 chr	hex2bin
 chunk_split	html_entity_decode
 convert_cyr_string	htmlentities
 convert_uudecode	htmlspecialchars_decode
 convert_uuencode	htmlspecialchars
-count_chars	implode
+count_chars(string)
+ - get the string's length
+	implode
 crc32	lcfirst
 crypt	levenshtein
 echo	localeconv

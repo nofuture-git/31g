@@ -87,6 +87,7 @@ namespace NoFuture
         public static string X86Root { get; set; }
         public static string JavaRoot { get; set; }
         public static string T4Templates { get; set; }
+        public static string PhpRoot { get; set; }
     }
 }
 

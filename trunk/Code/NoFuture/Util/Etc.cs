@@ -160,7 +160,10 @@ namespace NoFuture.Util
         /// encoded into UTF8.
         /// </summary>
         /// <param name="value">Any string which is to be escaped.</param>
-        /// <param name="escapeType">The kind of escape sequence to encode <see cref="value"/> into.</param>
+        /// <param name="escapeType">
+        /// The kind of escape sequence to encode <see cref="value"/> into.
+        /// The default is REGEX.
+        /// </param>
         /// <example>
         /// <![CDATA[
         /// Etc.EscapeString("I am decimal", EscapeStringType.DECIMAL); //"&#73;&#32;&#97;&#109;&#32;&#100;&#101;&#99;&#105;&#109;&#97;&#108;"
@@ -173,7 +176,7 @@ namespace NoFuture.Util
         /// ]]>
         /// </example>
         /// <returns></returns>
-        public static string EscapeString(string value, EscapeStringType escapeType)
+        public static string EscapeString(string value, EscapeStringType escapeType = EscapeStringType.REGEX)
         {
             var data = Encoding.GetEncoding("ISO-8859-1").GetBytes(value);
             var dataOut = new StringBuilder();
