@@ -14,24 +14,6 @@ https://docs.python.org/3.5/reference/index.html
 ----
 
 ----
-Ref
- - statement terminator is newline (LF | CRLF)
- - statement cont' is the foward slash \ (0x5C)
-  - enclosures in sqr, parenth or curly may span
-    multiple lines without line cont char
- - whitespace proceeding src code is part of the statement
-  - used to determine the grouping of statements
-  - the whitespace forms the enclosures
- - strings may be inclosed in double or single quote
-  - unlike other lang's these are interchangeable
-  - esc seq. is backslash
- - all computational units are objects
- - objects have identity, type and value
-  - identity is the stack variable or metadata token
-   id(myObject) #gets the objects ID
-----
-
-----
 Command line 
  python [-i | -q | -V | -h ] [ scriptFile | -c command | -m module | - ] [args*]
  -i will execute the script then inter interactive mode
@@ -41,6 +23,23 @@ Command line
  
  - having just the "-" will read command from the standard input stream 
  - args* will be passed to script file in global sys.argv[1:]
+ 
+ - interactive mode
+  - has the '>>>' as the command input
+  - to clear the console 
+  
+   import os
+   os.system('cls') #for windows
+   os.system('clear') #for linux\os x
+   
+ - the result of the last evaluation may be accessed using a single underscore
+ >>> 4 + 2
+ 6
+ >>> _
+ 6
+
+ - python is interpretated and the source code is typically part of the 
+   install (%pyInstall%\Lib\*.py) 
 ----
 
 ----
@@ -62,7 +61,8 @@ Ops,
   //
   - order of op is std 
    PEMDAS
-  
+  - each arithmatic op has a compound assignment op as well
+   
  - bitwise ops   
  << >> & | ~ ^
 
@@ -74,6 +74,12 @@ Ops,
 	
  - line comment char is bash style pound 0x23
   # here is line comment
+  
+ - block comments may be a here-string
+ """
+  I write some docx on the api here 
+   and what not
+ """
   
  - the at symbol is used for decorators (aka. Attributes in .NET)
   @
@@ -94,48 +100,84 @@ Ops,
 
  - bitwise
   | ^ & << >> ` 
+
+ - sequence assignment
   
- - other
-  - X, Y, Z, i, j and k are standins
-  X in Y, X not in Y
-  X is Y, X is not Y
-  X[i:j:k]  #called 'slicing'
-  (....)  #tuple expression
-  [....]  #list
-  {....}  #dictionary
+ >>> a, b, c, d = [1,2,3,4]
+ >>> a, d
+ (1,4)
+ >>> for (a, b, c) in [[1,2,3],[4,5,6]]
+ ...    print(a,b,c)
+ ...
+ 1 2 3
+ 4 5 6
+ 
+ - have a '*' before sequence variable is for when lengths don't match
+ >>> for (a, *b) in [[1,2,3],[4,5,6]]: print(a,b) #this will work
+ ...
+ 1 [2, 3]
+ 4 [5, 6]
+ >>> 
+
 ----
 
 ----
 Literals
- - only 3 
-  - string
-  - int
+ - null is singleton
+   None
+
+ - bool
+  - actually extends from int
+   True  #is an int equal to 1
+   False #is an int equal to 0
+   >>> 1 == True
+   True
+   >>> True + 3
+   4
+
+ - string
+   'my string' #seems more common in docx
+   "my string"
+  - Esc Seq.
+    \newline
+    \\
+    \n, \r, \t  #std meaning
+    \xhh #hex 
+   
+ - int
    0o177 #for oct
    0x4FD #for hex
    0b1101 #for binary
-  - float
+ - float
    1.23, 3.14e-10, 1. 
-   
- 
- - conversion through global func
-  int(42.3)  #42
-  float(878) #878.0
-  str(32.5)  #'32.5'
-  
+
  - std lib also include
   - decimal #fixed precision 
   - fraction #keeps numerator and denominator separate
-   >>> from factions import Fraction
-   >>> Fraction(3,10) - Fraction(1,10)
+   >>> from fractions import Fraction
+   >>> Fraction(1,2) + Fraction(2,4)
+   Fraction(1,1)
+   
+ - conversion through global func\ctors
+  >>> eval('Fraction(1,2) + Fraction(2,4)') #eval's the py code and returns the result
+  Fraction(1,1)
+  >>> int(42.3)
+  42
+  >>> float(878)
+  878.0
+  >>> myFrac = Fraction(1,2)
+  >>> repr(myFrac)
+  'Fraction(1, 2)'
+  >>> str(myFrac)
+  '1/2'
+  >>> hex(128)
+  '0x80'
+  >>> oct(16)
+  '0o20'
+  >>> bin(8)
+  '0b1000'
 ----
 
-----
-Esc Seq.
- \newline
- \\
- \n, \r, \t  #std meaning
- \xhh #hex 
-----
 
 ----
 String Methods
@@ -171,7 +213,7 @@ String Methods
 
 ----
 Lists
- - are mutable and may contain different types
+ - mutable sequences of object references accessed by offset
  - are 0-indexed
  [] #empty list
  [0,1,2,3]
@@ -200,6 +242,7 @@ Lists
 
 ----
 Dictionaries
+ - mutable mappings of object references accessed by key
  - like assoc. arrays in PHP
  - a.k.a. hashtables
 
@@ -229,12 +272,74 @@ Dictionaries
 
 ----
 Tuples
+ - immutable sequences of object references accessed by offset
  -like list but are immutable
  
  () #empty tuple
  (0,) #one-item tuple
  (0,1,2,3) #four item tuple
  ('mystring', (88, 'crazy')) #two-item tuple w\item two as another tuple
+----
+
+----
+Sets
+ - mutable unordered collection of unique and immutable objects.
+ - support relational ops 
+ - when invoking using operator overloads both operands must be sets
+ - when invoking using methods the method arg may be any iterable
+ 
+ set() #makes an empty set
+ E = set('abcd') #four item set of 'a', 'b', 'c' and 'd'
+ E = {'a', 'b', 'c', 'd'} #same as above
+ E = {ord(c) for c in 'abcd'} #same, using comprehension
+ E = frozenset(range(-5,5)) #set has 10 items being -5...4
+  
+ v in E #is 'v' contained in set 'E'
+ E1 - E2 #returns items in E1 not found in E2
+ 
+ E1 | E2 #union
+ E1.union(E2)
+ 
+ E1 & E2 #intersection
+ E1.intersection(E2)
+ 
+ E1 <= E2 #is every item in E1 also in E2
+ E1.issubset(E2)
+ 
+ E1 >= E2 #is every element in E2 also in E1
+ E1.issuperset(E2)
+ 
+ E1 < E2 #is E1 a subset of E2 (where E2 has additional items)
+ E1 > E2 #is E1 a superset of E2 (where E1 has additional items)
+  
+ E1 ^ E2 #symmetric difference
+ E1.symmetric_difference(E2)
+ 
+ E1 |= E2 #adds E2's items to E1
+ E1.update(E2)
+ 
+ E.add(x) #adds single itme
+ E.remove(x) #removes or errors
+ E.discard(x) #removes when present
+ x = E.pop() #removes and returns some item
+ E.clear() #clears the set of all items
+ 
+ for x in E1 #for each iteration
+ E1.copy() #makes a shallow copy 
+  
+ >>> E1 = set('abcd')
+ >>> E2 = set('abcd')
+ >>> E1 >= E2
+ True
+ >>> E1 <= E2
+ True
+ >>> E1 > E2 #they are in fact the same (equal)
+ False 
+ >>> E1 < E2 #again, are equal
+ False
+ >>> E1.remove('z') #errors out
+ Traceback (most re ...
+ >>> E1.discard('z') #no error, nothing returned 
 ----
 
 ----
@@ -248,12 +353,65 @@ String formatting
 ----
  
 ----
-Conventions
+File IO
+ myFile = open(filename, ('r' | 'rb')
+  - 'r' for text 
+  - 'rb' for binary
+  - 'r+' for read\write
+  
+ myContent = myFile.read() #with 'rb' myContent is a string 
+                           #which would contain non-printables
+ myFile.read(n)  #read 1 to n more bytes
+ myFile.readline() #read upto next newline
+ myFile.readline() #list of strings as content
+ 
+ for ln in myFile #uses line iterator of the file object
+ 
+ myFile = open(filename, ('w' | 'wb'))
+ myFile.write(S) #write string 'S' to myFile
+ myFile.writelines(I) #write iterable I into w/o adding newline at each end
+ myFile.close() #release unmanaged resources
+ myFile.tell() #current cursor position
+ myFile.seek(offset [, 0 | 1 | 2])
+  - 0 is offset from start
+  - 1 is offset from current position
+  - 2 is offset from end
+ myFile.isatty() #bool for if file is connected to a tty-like device
+ myFile.flush() #flush file's stdio buffer 
+ myFile.fileno() #gets id for this file instance
+ 
+ myFile.closed #true | false
+ file.mode # 'r' | 'rb' | 'w' | 'wb' | 'r+'
+ file.name #files name
+ 
+ - recommended use try\finally for closing
+ try:
+     #file used
+ finally:
+     myFile.close()
+	 
+ - or, like .NET using statement
+ with open('temp.txt', 'r') as myfile:
+     #myfile is in scope
+----
+ 
+----
+Syntax Constructs & Conventions
+ - blocks are delimited by having the same number of whitespace before the statement
+ - nested block is the expression after the ':' on the same line
+ - multiple statements on a single line are allowed when separated by a semi-colon (0x3B)
+ - single statements may span multiple lines when ending with backslash (0x5C)
+ - list, dictionary, tuple and set initializers (literals) may span multiple lines
+ - here-string may span multiple lines
+ - names begining and ending with double-underscore have special meaning (e.g. __iamspecial__)
+ - top-module level names with a single underscore are scoped only to that module
+
  - src code is in UTF8
  - .NET properties = Py attributes
  - Py3, indentation must be either tabs or spaces
   - not both
-  - spaces perferred
+  - spaces preferred
+  - one tab equals eight spaces
  - single line should be limited to 72 chars
  - package and module names are short and all lowercase
  - class names should be PascalCase
@@ -263,12 +421,98 @@ Conventions
  - function args
   - use 'self' for first arg of instance method
   - use 'cls' for first arg of class method
- - constants are in all uppercase with underscore sep.
+ - constants are in all uppercase with underscore sep. 
 ----
 
 ----
+Call Syntax
+ - inline function defined using the 'def' construct
+  >>> def myfunc(a, b, c, d): print(a, b, c, d)
+  
+ - function calls are comma-separated and positional
+  - a argname=argvalue is allowed in function invocation
+  - var-args are defined with the star or double-star 
+   - arg with a star in front is an iterable
+   - are with double-star in front is a dictionary
+  >>> myfunc(*[1,2], **dict(c=3, d=4))  
+  1 2 3 4
+----
+
+----
+Typical Constructs Syntax
+
+ if test:
+     suite
+ [elif test
+     suite]*
+ [else:
+     suite]
+   
+ while test:
+     suite
+ [else:
+     suite]
+	 
+ for target in iterable:
+     suite
+ [else:
+     suite]
+
+ - other single statment keywords and ops
+ pass     #noop
+ ...      #also noop for 3.X
+ break    #exits inner most loop 
+ continue #next loop iteration
+ del name[i | i:j:k | .attribute] #for data mgmt, not memory mgmt
+ 
+ - lambda expressions, for single line functions
+ >>> L = lambda a, b=2, *c, **d: [a, b, c, d]
+ >>> L(1,3,2,4,x=1,y=2)
+ [1, 3, (2, 4), {'y': 2, 'x': 1}]
+
+ - arbitrary runtime attributes can be added to function def's
+ >>> def myfunc(a, b, c, d): print(a, b, c, d)
+ >>> myfunc.anAttribute = 'this is arbitrary'
+ >>> myfunc.anAttribute
+ 'this is arbitrary'
+ 
+ - decorators
+  - are added atop of a declaration
+  - use the Java style '@' char
+  - may be added at runtime using the decorator's ctor passing in the def func's variable
+  
+  @decorator
+  def F():
+      ...
+   - or using runtime attachement
+  F = decorator(F)
+   
+  - allow for multiple decorators by stacking them as separate lines
+  @decor00
+  @decor01
+  @decor02
+  def F():
+      ....
+   - could also be done at runtime like
+  F = decor00( decor01( decor02(F)))
+----
+
+----
+Access Modifiers
+ - appear to be only two
+ global, nonlocal
+---- 
+
+----
+Module Imports
+ - use dot as path separated
+ - is relative to the install dir
+ - the .py extension is ommitted
+  dir00.dir01.myMod
+
+----
 Variable Names
- - std rules
+ - std C-style rules
 
  - keywords
 and
