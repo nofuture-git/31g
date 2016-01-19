@@ -38,7 +38,7 @@ namespace NoFuture.Tests.Util
             System.Diagnostics.Debug.WriteLine(testResult);
             Assert.AreEqual("Nofuture.Util.Etc",testResult);
 
-            testResult = NoFuture.Util.Etc.CapitalizeFirstLetterOfWholeWords("notes", null);
+            testResult = NoFuture.Util.Etc.CapitalizeFirstLetterOfWholeWords("A typical English sentence looks like this.", ' ');
             System.Diagnostics.Debug.WriteLine(testResult);
         }
 

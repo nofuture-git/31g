@@ -451,6 +451,11 @@ namespace NoFuture.Util
                 return String.Empty;
 
             name = name.Trim();
+            name =
+                new string(
+                    name.ToCharArray()
+                        .Where(c => char.IsLetterOrDigit(c) || char.IsPunctuation(c) || char.IsPunctuation(c))
+                        .ToArray());
 
             if (separator == null)
                 separator = Constants.DefaultTypeSeparator;

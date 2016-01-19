@@ -1,0 +1,307 @@
+Notes Python
+----
+Think Python, 2nd Edition
+By: Allen B. Downey
+Publisher: O'Reilly Media, Inc.
+Pub. Date: December 9, 2015
+Print ISBN-13: 978-1-4919-3936-9
+Pages in Print Edition: 300
+code examples: http://www.greenteapress.com/thinkpython2/code
+
+Docx at 
+https://docs.python.org/3.5/reference/index.html
+
+----
+
+----
+Ref
+ - statement terminator is newline (LF | CRLF)
+ - statement cont' is the foward slash \ (0x5C)
+  - enclosures in sqr, parenth or curly may span
+    multiple lines without line cont char
+ - whitespace proceeding src code is part of the statement
+  - used to determine the grouping of statements
+  - the whitespace forms the enclosures
+ - strings may be inclosed in double or single quote
+  - unlike other lang's these are interchangeable
+  - esc seq. is backslash
+ - all computational units are objects
+ - objects have identity, type and value
+  - identity is the stack variable or metadata token
+   id(myObject) #gets the objects ID
+----
+
+----
+Command line 
+ python [-i | -q | -V | -h ] [ scriptFile | -c command | -m module | - ] [args*]
+ -i will execute the script then inter interactive mode
+ -q will not print header
+ -v will print the version
+ -h will print help
+ 
+ - having just the "-" will read command from the standard input stream 
+ - args* will be passed to script file in global sys.argv[1:]
+----
+
+----
+Globals
+
+ PYTHONPATH default search paths(s) for importing modules, is semi-colon separated
+ PYTHONSTARTUP a script that is executed each time the python runtime is started 
+ PYTHONHOME alt prefix directory for lib modules
+ PYTHONCASEOK for Windows where file name case is ignored for import statements
+----
+
+----
+Ops,
+ - arithmetic ops
+  + - * / % 
+  - exponent is the 
+  **
+  - integer div (no remainder)
+  //
+  - order of op is std 
+   PEMDAS
+  
+ - bitwise ops   
+ << >> & | ~ ^
+
+ - concat
+  + for string concat
+  * works to repeat a string
+   - "MyString "*3
+    MyString MyString MyString 
+	
+ - line comment char is bash style pound 0x23
+  # here is line comment
+  
+ - the at symbol is used for decorators (aka. Attributes in .NET)
+  @
+  
+ - ternary
+  X if Y else Z
+  
+ - logical
+  or #is short-circuit
+  and
+  not 
+  ==
+  != 
+  <
+  >
+  <=
+  >=
+
+ - bitwise
+  | ^ & << >> ` 
+  
+ - other
+  - X, Y, Z, i, j and k are standins
+  X in Y, X not in Y
+  X is Y, X is not Y
+  X[i:j:k]  #called 'slicing'
+  (....)  #tuple expression
+  [....]  #list
+  {....}  #dictionary
+----
+
+----
+Literals
+ - only 3 
+  - string
+  - int
+   0o177 #for oct
+   0x4FD #for hex
+   0b1101 #for binary
+  - float
+   1.23, 3.14e-10, 1. 
+   
+ 
+ - conversion through global func
+  int(42.3)  #42
+  float(878) #878.0
+  str(32.5)  #'32.5'
+  
+ - std lib also include
+  - decimal #fixed precision 
+  - fraction #keeps numerator and denominator separate
+   >>> from factions import Fraction
+   >>> Fraction(3,10) - Fraction(1,10)
+----
+
+----
+Esc Seq.
+ \newline
+ \\
+ \n, \r, \t  #std meaning
+ \xhh #hex 
+----
+
+----
+String Methods
+ - S is standin for string instance
+ - sub is standin for some sub-string
+ 
+ S.find(sub [, start[, end] ) # -1 if not found
+ S.rfind(sub [, start[, end] ) #starts on the right
+ S.index(sub [, start[, end] ) #raises error if not found
+ S.rindex(sub [, start[, end] )
+ S.count(sub [, start[, end] ) #num of times 'sub' is present
+ S.startswith(sub) #has same options but why
+ S.endswith(sub)
+ 
+ S.split([sep [, maxsplit]) #if sep not given, splits on whitespace
+                            # for .NET like ToCharArray(), used global list(S)
+ S.join(iterable)  #like .NET string.Join(S,iterable)
+ S.replace(old, new)
+ S.splitlines([keepends]) #splits string to array on line breaks
+ 
+ S.capitalize() #first char is to upper, rest to lower
+ S.expandtabs([num]) #replace \t chars with spaces by num (df is 8)
+ S.strip() #like .NET Trim()
+ S.lstrip() #left trim
+ S.rstrip() #right trim
+ S.swapcase() #upper chars to lower, lower chars to upper
+ S.upper()
+ S.lower()
+ S.rjust(width [,fill]) #right-justify padded with fill (df is space)
+ S.ljust(width [, fill])
+ S.center(width [, fill]) #center-justify
+----
+
+----
+Lists
+ - are mutable and may contain different types
+ - are 0-indexed
+ [] #empty list
+ [0,1,2,3]
+ myList = ['my string', ['my', 'inner', 'list', 3.1415], 1.23, {}]
+ 
+ - list comprehension
+ [x ** 2 for x in range(5)] #results in [0,1,4,9,16]
+  - may include a test condition
+ [x ** 2 for x in range(5) if x % 2 == 0]  #results in [1,4,16]
+  - may include another comprehension
+ [x + y for x in range(3) for y in [10,20,30]]
+ 
+ L.append(X) 
+ L.extend(I) #like .NET .AddRange(I)
+ L.sort(key=None, reverse=False) #inline sorting
+ L.reverse()
+ L.index(X [,i [,j]]) #i,j optional index limiters, raised error if 
+                      # object 'X' is not found
+ L.insert(i, X)
+ L.count(X) #occurances of object X
+ L.remove(X) #raises exception if not found
+ L.pop([i]) #having list op like stacks, df is last item 
+ L.clear()
+ L.copy() #returns a shallow copy of L
+----
+
+----
+Dictionaries
+ - like assoc. arrays in PHP
+ - a.k.a. hashtables
+
+ {} #empty dictionary
+ {'myKey' : 4, 'otherKey' : 5}
+ {'myInnerDic' : {42 : 'strange'}, 'anotherKey' : 44}
+ -use the ctor
+ dict(fname='Joe', lname='Sampson', age=44, titles=('something', 'andsomething'))
+ 
+ - other init methods using ctor
+ dict(zip('abc', [1,2,3]))
+  - same as
+ dict([['a',1], ['b',2],['c',3]])
+ 
+ D.fromKeys(['a','b','c'], '') #creates dictionary from a list with df of ''
+ 
+ D.keys()
+ D.values()
+ D.items() #returns tuple
+ D.clear()
+ D.copy() #returns shallow copy
+ D.update(D2) #union 
+ D.get(K) #get by key
+ K in D #test for a key (replaces D.has_key(K) )
+ for K in D
+----
+
+----
+Tuples
+ -like list but are immutable
+ 
+ () #empty tuple
+ (0,) #one-item tuple
+ (0,1,2,3) #four item tuple
+ ('mystring', (88, 'crazy')) #two-item tuple w\item two as another tuple
+----
+
+----
+String formatting
+ # sprintf sytle
+ '%s %.2f' % ('my string', 1/3.0)
+ '%(n)s %(m)i' % {'n' : 'my string', 'm' : 4}
+ 
+ #.NET style
+ '{0} {1:.2f}'.format('my string', 1/3.0)
+----
+ 
+----
+Conventions
+ - src code is in UTF8
+ - .NET properties = Py attributes
+ - Py3, indentation must be either tabs or spaces
+  - not both
+  - spaces perferred
+ - single line should be limited to 72 chars
+ - package and module names are short and all lowercase
+ - class names should be PascalCase
+ - exceptions should be suffixed with 'Error'
+ - function names are all lowercase with underscore sep.
+  - use '_' prefix for non-public fields and methods
+ - function args
+  - use 'self' for first arg of instance method
+  - use 'cls' for first arg of class method
+ - constants are in all uppercase with underscore sep.
+----
+
+----
+Variable Names
+ - std rules
+
+ - keywords
+and
+as
+assert
+break
+class
+continue
+def
+del
+elif
+else
+except
+False
+finally
+for
+from
+global
+if
+import
+in
+is
+lambda
+None
+nonlocal
+not
+or
+pass
+raise
+return
+True
+try
+while
+with
+yield
+----
