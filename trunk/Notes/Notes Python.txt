@@ -28,9 +28,21 @@ Command line
   - has the '>>>' as the command input
   - to clear the console 
   
-   import os
-   os.system('cls') #for windows
-   os.system('clear') #for linux\os x
+   >>> import os
+   >>> os.system('cls') #for windows; 'clear' for linux\os x 
+   >>> os.system('notepad.exe') #have the underlying shell exec
+   >>> os.startfile('C:\MyFile\SomeHtml.htm') #will open file using it assoc. program
+   >>> os.getenv("JAVA_HOME", default=None) #resolve the enviro var.
+   >>> os.getcwd() # like 'pwd' on the shell
+   >>> os.chdir('C:\\Projects')  #change dir
+   >>> os.listdir('C:\\Projects') # like 'ls' on the shell
+   >>> os.mkdir('C:\\Projects\MyPy')
+
+ - import sys module 
+   >>> import sys
+   >>> sys.modules  #gets a dictionary of modules currently in scope
+   >>> sys.path     #get list of where modules will be searched for at
+   
    
  - the result of the last evaluation may be accessed using a single underscore
  >>> 4 + 2
@@ -177,7 +189,6 @@ Literals
   >>> bin(8)
   '0b1000'
 ----
-
 
 ----
 String Methods
@@ -509,7 +520,298 @@ Module Imports
  - is relative to the install dir
  - the .py extension is ommitted
   dir00.dir01.myMod
+  
+  import [package.]* module [as name] 
+     [, [package.]* module [as name]]
+ 
+ - the 'from ... import' copies all names 
+   all names assigned at the top level of 
+   the module (except having a single underscore prefix)
+ 
+ from [package.]* module import 
+             [(] name [as othername]            
+             [, name [as othername]]* [)]
+----
 
+----
+Try Statement
+ - has the standard op
+ - py has one extra feature of 'else'
+  - the 'else' runs after the try block
+    when no exception occurred
+ - py allows for simply try\finally as well
+ 
+ try:
+     suite
+ except [ type | (type1, type2) [as value]]: 
+     suite
+ [except [type [as value]]:
+     suite]*
+ [else:
+     suite]
+ [finally:
+     suite]
+----
+
+----
+With Statement
+ - similar to .NET's using(IDisposable)
+ - allows for multiple declarations in higher py ver.
+  - instead of nesting them within each other
+ - the equiv. of IDisposable is implementing the 
+   __enter__() and __exit__(type, value, traceback)
+ 
+ with expression [as variable]
+         [, expression [as variable]]*:
+      suite
+----
+
+----
+Raise Statement
+ - similar to the 'throw' in .NET
+ - syntax features are as expected
+ 
+ raise myInstance
+ raise myType()
+ raise  #throws the last exception caught
+----
+
+----
+Classes
+ - supports multiple inheritance 
+ - overcomes the runtime problems of diamond by 
+   only using the one to the right.
+ - parent types are listed in class decl's 
+   parenth's directly after the classname
+ - 'pass' has similar meaning to 'abstract' in .NET
+ - the order-of-inheritance in the parenths is the 
+   canon for resolving multi-inheritance 
+ 
+ #handling multi inheritance
+ class Proot:
+     attr = 0
+ class Pof_00(Proot):
+     attr = 1
+ class Pof_01(Proot):
+     attr = 2
+ class Pof_10(Pof_10, Pof_00):  #the order here is what matters
+     pass
+ myP = Pof_10()
+ print(myP.attr) #results in '2'
+ 
+ class Pof_11(Pof_00, Pof_10):
+     pass
+ myP2 = Pof_11()
+ print(myP2.attr) #results in '1'
+----
+
+----
+Object Operator Overloads
+ - builtin ops are provided by specially named methods
+ - are like methods present on all objects
+ - all start\end with double-underscore
+ 
+ - sort of like .NET object activator, not typically used
+ - py doesn't require the 'new' keyword for instantiation since
+   simply call "myVar = MyType()" does this.
+ __new__(cls [, args]*)
+ 
+ - this is an object ctor 
+ __init__(self [,args]*)
+ 
+ - this is called prior to GC
+ __del__(self)
+ 
+ - this my be implement to have the object returned a py code
+   as a string literal 
+ __repr__(self)
+ 
+ - this is the classic ToString() override
+ __str__(self)
+ 
+ - this is neat in that the string format is returned
+ - the string construct is the format used in str.format
+ __format__(self, formatspec)
+  
+ - this seems to be a kind of bin serialization builtin
+ - returns the object as a types string representation
+ __bytes__(self)
+ 
+ - this is just like .NET's GetHashCode() and is used
+   for equality ops
+ __hash__(self)  
+ 
+ - strange propositional testing of instances...
+ - not sure what this is used for, returns as expected 'True' or 'False'
+ __bool__(self)
+ 
+ - text has this as "when an instance is called like a function"
+ __call__(self [,arg]*)
+
+ - classic operator overloads
+ - meaning is obvious, similar to PowerShell's op names
+ __lt__(self,other)
+ __le__(self,other)
+ __eq__(self,other)
+ __ne__(self,other)
+ __gt__(self,other)
+ __ge__(self,other)
+ 
+ - calling "dir(myInstance)" returns an array strings of the 
+   instance members
+ - this allows for more control over the builtin
+ __dir__(self)
+----
+
+----
+Collection Operator Overloads
+ - these are not present on every kind of object
+ - are for use of collection-like object types
+ 
+ __len__(self)
+ __contains__(self, item)
+ 
+ - this is similar to .NET's GetEnumerator
+ __iter__(self) 
+ 
+ - this is like calles on the enumerator.Next()
+ __next__(self)
+ 
+ - for index collection access
+ __getitem__(self, key)
+ __setitem__(self, key)
+ __delitem__(self, key)
+
+----
+
+----
+Arithmetic & Bitwise Operator Overloads
+ - there are variants of these which 
+   have the same signature, but are prefixed
+   by an 'r' and are called when the 'other'
+   operand doesn't have an implementation for 
+   these builtins
+ - it is also possiable to overload the compound
+   assignment operators of these, in such a case
+   the builtin is prefixed with an 'i'
+   
+ __add__(self, other)         # a + b
+ __sub__(self, other)         # a - b
+ __mul__(self, other)         # a * b
+ __truediv__(self, other)     # a / b
+ __floordiv__(self, other)    # a // b
+ __mod__(self, other)         # a % b
+ __divmod__(self, other)      # divmod(a, b)
+ __pow__(self, other)         # a ** b
+ 
+ __lshift__(self, other)      # a << b
+ __rshift__(self, other)      # a >> b
+ __and__(self, other)         # a & b
+ __xor__(self, other)         # a ^ b
+ __or__(self, other)          # a | b
+ 
+ - these a single operand operators
+ - there are also builtins for complex, int, float
+   round and index
+ __neg__(self)                # -a
+ __pos__(self)                # +a
+ __invert__(self)             # ~a
+
+----
+
+----
+Builtin Global functions
+ - a select list, seem most useful from exp.
+   and not otherwise listed
+ - for eval'ing a single expression
+ eval(strExpr [, globals [, locals]]) 
+ 
+ - for eval'ing multiple statements
+ exec(strStmts [, globals [, locals]])
+ 
+ - returns a dictionary of all types in scope 
+   at the top of the runtime
+ globals()
+ 
+ - the opposite of the above, returns a like dict
+ locals()
+ 
+ - a kind of reflection for testing
+ - 'object' is the type, not an instance
+ - 'name' is a string
+ hasattr(object, name)
+ 
+ - text has that there is a "built-in help system"
+ help([object])
+ 
+ - is the memory location, takes instances and types
+ id(object)
+ 
+ - like id but is used by dictionaries for lookups
+ - appears to work with both types and instances
+ hash(object)
+ 
+ - for console user input
+ input([prompt])
+ 
+ - for testing of types
+ class Proot:
+     attr = 1
+ class Pnext(Proot):
+     pass
+ myP = Pnext()
+ type(myP) is Proot      # is false
+ type(myP) is Pnext      # is true
+ isinstance(myP, Proot)  # is true
+ isinstance(myP, Pnext)  # is true
+ 
+ - ctor for a kind of root object of all types (py 3.X)
+ object()
+ 
+ - for calling the parent's implementation of the method 
+   (being called from within the override)
+ - the arg params are implicitly passed to the parent
+ super() 
+----
+
+----
+IO Util
+ os.path.exists(path)
+ os.path.abspath(path)
+ os.path.basename(path)
+ os.path.dirname(path)
+ os.path.getsize(path)
+ os.path.isabs(path)
+ os.path.isfile(path)
+ os.path.isdir(path)
+ os.path.join(path1 [,path2]*)
+ os.path.split(path) #splits dir from filename
+ os.path.splittext(path) #splits filename from extension
+----
+
+----
+Regex Module
+ - module named 're'
+
+ re.escape(string) #esc the string for regex matching 
+ mobj = re.match(pattern, string [,flags])
+ mobj = re.search(pattern, string [,flags])
+
+ pobj = re.compile(pattern [,flags])
+ 
+---- 
+
+----
+Top Level Builtin Exception types
+ Exception 
+ ArithmeticError
+ BufferError
+ LookupError
+ LookupError
+ OSError  - for wrapping a lower OS related error
+ WindowsError - extends OSError, for windows only
+----
+ 
 ----
 Variable Names
  - std C-style rules
