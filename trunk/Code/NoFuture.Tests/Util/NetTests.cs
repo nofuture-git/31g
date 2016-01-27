@@ -6,6 +6,20 @@ namespace NoFuture.Tests.Util
     public class NetTests
     {
         [TestMethod]
+        public void TestGetProxyAuthHeaderValue()
+        {
+            var username = "Aladdin";
+            var pwd = "open sesame";
+
+            var testResult = NoFuture.Util.Net.GetProxyAuthHeaderValue(username, pwd);
+            Assert.AreEqual("Basic QWxhZGRpbjpvcGVuIHNlc2FtZQ==", testResult);
+
+            testResult = NoFuture.Util.Net.GetProxyAuthHeaderValue(null, pwd);
+            Assert.IsNotNull(testResult);
+
+        }
+
+        [TestMethod]
         public void TestGetNetStatUri()
         {
             var testResult = NoFuture.Util.Net.GetNetStatIp("23.235.44.133:443 ");

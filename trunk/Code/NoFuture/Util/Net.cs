@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Text;
+using NoFuture.Exceptions;
 
 namespace NoFuture.Util
 {
@@ -29,6 +31,41 @@ namespace NoFuture.Util
 
             return userHost;
             
+        }
+
+        /// <summary>
+        /// Get the current username-password pair in the form expected by the Authorization or
+        /// Proxy-Authorization HTML header.
+        /// </summary>
+        /// <param name="username">Optional, will resolve to the Windows Id name if null or empty.</param>
+        /// <param name="pwd"></param>
+        /// <param name="digest"></param>
+        /// <returns></returns>
+        /// <remarks>
+        /// https://www.ietf.org/rfc/rfc2068.txt
+        /// </remarks>
+        public static string GetProxyAuthHeaderValue(string username, string pwd, string digest = "Basic")
+        {
+            if(string.IsNullOrWhiteSpace(pwd))
+                throw new ArgumentNullException(pwd);
+
+            if (string.IsNullOrWhiteSpace(username))
+            {
+                var winId = System.Security.Principal.WindowsIdentity.GetCurrent();
+                username = winId == null ? Environment.GetEnvironmentVariable("USERNAME") : winId.Name;
+            }
+
+            if(string.IsNullOrWhiteSpace(username))
+                throw new RahRowRagee("Could not determine your username from either the " +
+                                      "current Windows Id nor the enviornment variable 'USERNAME'.");
+            //remove the domain part of the name
+            if (username.Contains("\\"))
+                username = username.Split((char) 0x5C)[1];
+
+            var b64UsernamePwd =
+                Convert.ToBase64String(Encoding.ASCII.GetBytes(string.Format("{0}:{1}", username, pwd)));
+
+            return string.Format("{0} {1}", digest, b64UsernamePwd);
         }
 
         /// <summary>
