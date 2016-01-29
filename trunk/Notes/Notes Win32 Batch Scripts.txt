@@ -1,0 +1,126 @@
+Notes Win32 Batch Scripts
+---
+https://technet.microsoft.com/en-us/library/bb490890.aspx
+---
+
+---
+Builtin Variables
+ %~f0       the current scripts path
+ %~dp0      the current scripts directory
+ %cd%       the location from where the batch file was invoked
+ %1         the first cmd line arg
+ %2         the second cmd line arg
+ %*         the entire cmd line args as single string
+----
+
+----
+Flow Control (ANTLRv4 style)
+ 'if' ('not')? 'exist' filename command  
+ 
+ 'if' ('not')? 'errorlevel' INT command
+ //this would be useful for invoking a EXE which 
+ // may return a exit code greater than 0
+ 
+ 'if' ('not')? 'defined' variable
+ 
+ ':' label //example :JarFileOk
+ 'goto' label // to go to a label, leave the ':' off
+ // labels limited to 8 characters
+ 
+ 'call' path batchFile //can exec a bat file from w/i a bat file
+ 
+ 'REM' text // REM is for remark and is a line comment
+----
+
+----
+Windows CLI Reference
+ 
+ arp -a    will list IP's to MAC address
+ assoc     will print all file extensions and file types
+ ftype     will print the 'assoc's names to actual cmd lines
+  - used together would look something like
+  assoc .myExt=MyApp.MoreName 
+  ftype MyApp.MoreName=C:\Somewhere\MyApp.exe %1 %*
+ 
+ cipher [{/e|/d}] [/s:dir] [/a] [/i] [/f] [/q] [/h] [/k] [/u[/n]] [PathName [...]] | [/r:PathNameWithoutExtension] | [/w:PathName]
+  - encrypts folder, they still appear visable to the user who invoked them but not anyone else (pretty cool).
+   - the /s:yourDirectory will encrypt the whole directory, 
+   - the /w:yourDirectory does something scary
+   - the 'PathName' can be a specific file or wild-card pattern
+   
+ comp file0, file1
+  - byte-for-byte file comparision
+  
+ compact (/c | /u) FileName
+  - /c for compress, /u for uncompress
+  - file name may be whole directory or a wild-card pattern
+  
+ getmac /fo csv > %TEMP%\getMac.txt
+  - this would get the MAC addresses and save to a text file
+  - the could then be ported pretty easy.
+  
+ hostname 
+  -prints the computer's name
+  
+ ipconfig
+  - displays the current DNS suffix, IPv4 address, Subnet Mask and Df. Gateway
+  
+ openfiles /query /fo list /v
+  - handy cmd to get a list of what remote users have files open on your box 
+  
+ pathping -n google.com
+  - performs an IPv4 hop trace, only works with servers that respond to 'ping'
+  - doesn't work behind a proxy server
+  
+ pushd, popd
+  - these are the equiv. to PowerShells Push-Directory and Pop-Directory
+  
+ prompt $g$g$g 
+  - will make the command prompt look like the python console of >>>
+ prompt $$
+  - will make the command prompt look like a bash root '$'
+  
+ route print
+  - prints where ranges of IPv4 addresses will get routed to from the local computer
+  
+ runas /netonly /user:ANOTHER_DOMAIN\me.x.username MyExe.exe
+  - will run the MyExe.exe and use the ANOTHER_DOMAIN\me.x.username
+    when ever the exe needs to do or connect to an external resource
+
+ cd %windir%\system32\inetsrv
+ appcmd set config /section:applicationPools "/[name='MyApplication'].processModel.identityType:SpecificUser" "/[name='MyApplication'].processModel.userName:DOMAIN\username" "/[name='MyApplication'].processModel.password:P@$$w0rd"
+  - set app pool user from cmd line - tested on IIS 7.5
+
+ netstat -an | findstr :80
+  - search for by active port
+
+ sc.exe delete "MyServiceName"
+  - hard delete a windows service
+
+ schtasks (bunch of options)
+  - used to create\modify scheduled tasks from the command line
+  
+ shutdown -r 
+  - restart your computer from the command line
+  
+ subst v: C:\MyProjects\Something\ReallyCool
+  - will create a new drive letter to the given path
+  
+ tasklist /s 10.130.11.11 /u SOME_DOMAIN\me.x.user /p Pa$4W0rd /fo (table | list | csv)
+  - will list all the processes running on a computer
+  
+ telnet 10.130.11.11 443
+  - sometimes it works
+  
+ title CLI Rocks!
+  - change the text that appears atop of the console
+  
+ tracert www.google.com
+  - alot like pathping, also doesn't work behind a proxy
+  
+ tree C:\Projects\MyStuff
+  - will display a text\graphic tree of the directories structure
+  
+ type C:\Projects\MyFile.xml
+  - like PowerShell's Get-Content and bash cat
+----

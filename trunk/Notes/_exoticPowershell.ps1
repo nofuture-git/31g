@@ -201,6 +201,10 @@ function WCFAndSecurity()
     $myAcl.GetSecurityDescriptorSddlForm([System.Security.AccessControl.AccessControlSections]::None)
     
     $ssdl = $myAcl.Sddl#this must be further parsed
+	
+	#get current user's sid
+	$mySsdl = [System.Security.Principal.WindowsIdentity]::GetCurrent().User.Value
+	
     $ssdlLooksLike = "S-1-5-21-823518204-1078145449-682003330-48898"
     $sid = New-Object System.Security.Principal.SecurityIdentifier($ssdlLooksLike)
     $claim = [System.IdentityModel.Claims.Claim]::CreateWindowsSidClaim($sid)
@@ -459,3 +463,20 @@ function ListSupportedCipherSuites(){
 }
 
 
+#get ClickOnce deployment locations
+#get current user SSDL
+$mySsdl = [System.Security.Principal.WindowsIdentity]::GetCurrent().User.Value
+
+#get HKU as drive for registry's HKEY_USERS
+New-PSDrive -PSProvider Registry -Name HKU -Root HKEY_USERS
+
+#get just the id of each ClickOnce app
+$regPaths = ls "HKU:\$mySsdl\Software\Microsoft\Windows\CurrentVersion\Uninstall" | % {$_.PsPath}
+
+#get the UrlUpdateInfo value of each ClickOnce App
+$regPaths | % {Split-Path -Path $_ -Leaf} | % {
+    $clickOnceRegId = $_
+    
+    $itemProp = Get-ItemProperty -Path "HKU:\$mySsdl\Software\Microsoft\Windows\CurrentVersion\Uninstall\$clickOnceRegId" -Name "UrlUpdateInfo" -ErrorAction SilentlyContinue
+    Write-Host $itemProp.UrlUpdateInfo
+}

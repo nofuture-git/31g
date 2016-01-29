@@ -679,20 +679,6 @@ function Import-CustomTypeIntoJre
     }
 }
 
-
-<#
-Examples, setting Registry value with powershell
-        $registryItem = "Registry::HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings\"
-        $autoConfigUrlValue = "http://${machineAddress}:${HttpPort}/NoFuture.pac"
-        $prevPacUrl = (Get-Item –Path $registryItem).GetValue("AutoConfigURL")
-
-        #registry changes involve four steps
-        Push-Location
-        Set-Location $registryItem 
-        Set-ItemProperty . AutoConfigURL $autoConfigUrlValue
-        Pop-Location
-#>
-
 <#
 Examples, using Jrunscript.exe
 http://download.java.net/jdk8/docs/technotes/guides/scripting/programmer_guide/index.html
@@ -762,7 +748,4 @@ var myClass = cl.loadClass("MyJavaClass");
 var myConstructor = myClass.getConstructor();
 var myActualType = myConstructor.newInstance();
 myActualType.GetMyString();
-
-#http://proxy.qdx.com/autoconfig/proxyr.pac
-
 #>

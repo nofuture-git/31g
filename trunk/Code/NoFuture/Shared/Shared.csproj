@@ -48,7 +48,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Areo.cs" />
+    <Compile Include="Aero.cs" />
     <Compile Include="DiaSdk\JsonData\Types.cs" />
     <Compile Include="DiaSdk\PdbData.cs" />
     <Compile Include="CipherText.cs" />

@@ -92,8 +92,8 @@ namespace NoFuture.Util
             if (setOnParentProc)
                 myproc = GetParentProcessById(myproc.Id);
             var hwnd = myproc.MainWindowHandle;
-            var margin = new Areo.MARGINS { top = -1, left = -1 };
-            Areo.DwmExtendFrameIntoClientArea(hwnd, ref margin);
+            var margin = new Aero.MARGINS { top = -1, left = -1 };
+            Aero.DwmExtendFrameIntoClientArea(hwnd, ref margin);
         }
 
         /// <summary>
