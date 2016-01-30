@@ -173,6 +173,7 @@
     <Compile Include="Encryption\PublicKeyTests.cs" />
     <Compile Include="Encryption\ResourceTests.cs" />
     <Compile Include="Encryption\HashTests.cs" />
+    <Compile Include="Encryption\TestCreateSelfSignedCert.cs" />
     <Compile Include="Gen\EtcTests.cs" />
     <Compile Include="Gen\LangRulesTests.cs" />
     <Compile Include="Gen\TestInvokeDia2Dump.cs" />
