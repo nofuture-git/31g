@@ -1,16 +1,61 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using CERTENROLLLib;
 using NoFuture.Exceptions;
+using NoFuture.Shared;
 using X509KeyUsageFlags = CERTENROLLLib.X509KeyUsageFlags;
 
 namespace NoFuture.Encryption
 {
     public class NfX509
     {
+        public const string MS_CRYPTO_PROV_NAME = "Microsoft Enhanced RSA and AES Cryptographic Provider";
+
+        /// <summary>
+        /// https://tools.ietf.org/html/rfc4519
+        /// </summary>
+        public struct DistinguishedName
+        {
+            public string OrgName;
+            public string OrgUnit;
+            public string CommonName;
+            public string City;
+            public string State;
+
+            public DistinguishedName(string cn)
+            {
+                CommonName = string.IsNullOrWhiteSpace(cn) ? "NoFuture" : cn;
+                OrgName = "NoFuture";
+                OrgUnit = null;
+                City = "Spook City";
+                State = "NV";
+            }
+
+            /// <summary>
+            /// https://www.ietf.org/rfc/rfc4514.txt
+            /// </summary>
+            /// <returns></returns>
+            public override string ToString()
+            {
+                var dn = new List<string> {"CN=" + CommonName, "C=US"};
+
+                if (!string.IsNullOrWhiteSpace(OrgName))
+                    dn.Add("O=" + OrgName);
+                if (!string.IsNullOrWhiteSpace(OrgUnit))
+                    dn.Add("OU=" + OrgUnit);
+                if (!string.IsNullOrWhiteSpace(City))
+                    dn.Add("L=" + City);
+                if (!string.IsNullOrWhiteSpace(State))
+                    dn.Add("S=" + State);
+
+                return string.Join(";", dn);
+            }
+        }
+
         /// <summary>
         /// Creates a self-signed cert.
         /// </summary>
@@ -23,25 +68,26 @@ namespace NoFuture.Encryption
         /// http://stackoverflow.com/questions/13806299/how-to-create-a-self-signed-certificate-using-c
         /// https://technet.microsoft.com/es-es/aa379410
         /// </remarks>
-        public static X509Certificate2 CreateSelfSignedCert(string subject, DateTime notAfter, String pwd)
+        public static X509Certificate2 CreateSelfSignedCert(DistinguishedName subject, DateTime notAfter, String pwd)
         {
-            var dn = new CX500DistinguishedName();
-            dn.Encode("CN=" + subject);
+            var cn = new CX500DistinguishedName();
+            cn.Encode(subject.ToString(), X500NameFlags.XCN_CERT_NAME_STR_SEMICOLON_FLAG);
 
             var privateKey = new CX509PrivateKey
             {
-                ProviderName = "Microsoft Base Cryptographic Provider v1.0",
-                MachineContext = true,
+                ContainerNamePrefix = "nf-",
+                ProviderName = MS_CRYPTO_PROV_NAME,
+                MachineContext = false,
                 Length = 2048,
-                KeySpec = X509KeySpec.XCN_AT_SIGNATURE,
-                KeyUsage = X509PrivateKeyUsageFlags.XCN_NCRYPT_ALLOW_ALL_USAGES,
-                ExportPolicy = X509PrivateKeyExportFlags.XCN_NCRYPT_ALLOW_PLAINTEXT_EXPORT_FLAG
+                KeySpec = X509KeySpec.XCN_AT_KEYEXCHANGE,
+                ExportPolicy = X509PrivateKeyExportFlags.XCN_NCRYPT_ALLOW_EXPORT_FLAG
             };
             privateKey.Create();
 
             var hashobj = new CObjectId();
             hashobj.InitializeFromAlgorithmName(ObjectIdGroupId.XCN_CRYPT_HASH_ALG_OID_GROUP_ID,
-                ObjectIdPublicKeyFlags.XCN_CRYPT_OID_INFO_PUBKEY_ANY, AlgorithmFlags.AlgorithmFlagsNone, "SHA512");
+                ObjectIdPublicKeyFlags.XCN_CRYPT_OID_INFO_PUBKEY_ANY, AlgorithmFlags.AlgorithmFlagsNone,
+                RSAPKCS1SHA512SigDesc.SHA_512);
 
             var keyUsage = new CX509ExtensionKeyUsage();
 
@@ -63,9 +109,9 @@ namespace NoFuture.Encryption
             eku.InitializeEncode(oidList);
 
             var cert = new CX509CertificateRequestCertificate();
-            cert.InitializeFromPrivateKey(X509CertificateEnrollmentContext.ContextMachine, privateKey, "");
-            cert.Subject = dn;
-            cert.Issuer = dn;
+            cert.InitializeFromPrivateKey(X509CertificateEnrollmentContext.ContextUser, privateKey, "");
+            cert.Subject = cn;
+            cert.Issuer = cn;
             cert.NotBefore = DateTime.Now;
             cert.NotAfter = notAfter;
             cert.X509Extensions.Add((CX509Extension)keyUsage);
@@ -75,14 +121,14 @@ namespace NoFuture.Encryption
 
             var enroll = new CX509Enrollment();
             enroll.InitializeFromRequest(cert);
-            enroll.CertificateFriendlyName = subject;
+            enroll.CertificateFriendlyName = subject.CommonName;
             
             var csr = enroll.CreateRequest();
 
-            enroll.InstallResponse(InstallResponseRestrictionFlags.AllowUntrustedCertificate, csr,
+            enroll.InstallResponse(InstallResponseRestrictionFlags.AllowUntrustedRoot, csr,
                 EncodingType.XCN_CRYPT_STRING_BASE64, pwd);
 
-            var b64Encode = enroll.CreatePFX(pwd, PFXExportOptions.PFXExportChainWithRoot);
+            var b64Encode = enroll.CreatePFX(pwd, PFXExportOptions.PFXExportEEOnly);
 
             var managedX509Cert = new X509Certificate2(Convert.FromBase64String(b64Encode), pwd, X509KeyStorageFlags.Exportable);
 
@@ -93,13 +139,12 @@ namespace NoFuture.Encryption
         /// Export the cert to a Base64 string
         /// </summary>
         /// <param name="cert"></param>
-        /// <param name="pwd"></param>
         /// <returns></returns>
-        public static string ExportToCer(X509Certificate2 cert, String pwd)
+        public static string ExportToCer(X509Certificate2 cert)
         {
             var bldr = new StringBuilder();
             bldr.AppendLine("-----BEGIN CERTIFICATE-----");
-            bldr.AppendLine(Convert.ToBase64String(cert.Export(X509ContentType.Cert, pwd),
+            bldr.AppendLine(Convert.ToBase64String(cert.Export(X509ContentType.Cert),
                 Base64FormattingOptions.InsertLineBreaks));
             bldr.AppendLine("-----END CERTIFICATE-----");
 
@@ -107,20 +152,21 @@ namespace NoFuture.Encryption
         }
 
         /// <summary>
-        /// Encrypts a file at <see cref="path"/> using the base64 encoded cert at <see cref="certCerPath"/>
+        /// Encrypts a file at <see cref="path"/> using the cert at <see cref="certCerPath"/>
         /// </summary>
         /// <param name="path"></param>
         /// <param name="certCerPath"></param>
-        /// <param name="certPassword"></param>
         /// <returns></returns>
-        public static string EncryptFile(string path, string certCerPath, string certPassword)
+        public static void EncryptFile(string path, string certCerPath)
         {
             //test inputs
-            TestEnDeCryptInputs(path, certCerPath, certPassword);
+            TestEnDeCryptInputs(path, certCerPath, string.Empty);
+
+            var encFile = Path.Combine(Path.GetDirectoryName(path) ?? Environment.CurrentDirectory,
+                Path.GetFileName(path) + Constants.NF_CRYPTO_EXT);
 
             //import the cert
-            var cert = new X509Certificate2();
-            cert.Import(certCerPath, certPassword, X509KeyStorageFlags.Exportable);
+            var cert = new X509Certificate2(certCerPath);
             var pubKey = cert.PublicKey.Key;
 
             using (var aes = new AesManaged())
@@ -134,18 +180,46 @@ namespace NoFuture.Encryption
                     var keyFm = new RSAPKCS1KeyExchangeFormatter(pubKey);
 
                     var enKey = keyFm.CreateKeyExchange(aes.Key, aes.GetType());
-                    
+                    var lenK = BitConverter.GetBytes(enKey.Length);
+                    var lIv = BitConverter.GetBytes(aes.IV.Length);
 
-                    
+                    using (var outFs = new FileStream(encFile, FileMode.Create))
+                    {
+                        outFs.Write(lenK, 0, 4);
+                        outFs.Write(lIv, 0, 4);
+                        outFs.Write(enKey, 0, enKey.Length);
+                        outFs.Write(aes.IV,0, aes.IV.Length);
+
+                        using (var cryptStream = new CryptoStream(outFs, trns, CryptoStreamMode.Write))
+                        {
+                            var blockSz = aes.BlockSize/8;
+                            var data = new byte[blockSz];
+                            using (var inFs = new FileStream(path, FileMode.Open))
+                            {
+                                var count = 0;
+                                do
+                                {
+                                    count = inFs.Read(data, 0, blockSz);
+                                    cryptStream.Write(data, 0, count);
+                                } while (count > 0);
+                                inFs.Close();
+                            }
+                            cryptStream.FlushFinalBlock();
+                            cryptStream.Close();
+                        }
+                        outFs.Close();
+                    }
                 }
-
-
             }
-
-            throw new NotImplementedException();
         }
 
-        public static string DecryptFile(string path, string certCerPath, string certPassword)
+        /// <summary>
+        /// Decrypts a file which was encrypted by its sister method <see cref="EncryptFile"/>
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="certCerPath"></param>
+        /// <param name="certPassword"></param>
+        public static void DecryptFile(string path, string certCerPath, string certPassword)
         {
             //test inputs
             TestEnDeCryptInputs(path, certCerPath, certPassword);
@@ -153,25 +227,81 @@ namespace NoFuture.Encryption
             //import the cert
             var cert = new X509Certificate2();
             cert.Import(certCerPath, certPassword, X509KeyStorageFlags.Exportable);
-            var privKey = cert.PrivateKey;
+            var privKey = (RSACryptoServiceProvider)cert.PrivateKey;
 
+            var plainTextFile = Path.Combine(Path.GetDirectoryName(path) ?? Environment.CurrentDirectory,
+                Path.GetFileNameWithoutExtension(path) ?? Path.GetRandomFileName());
 
-            throw new NotImplementedException();
+            using (var aes = new AesManaged())
+            {
+                aes.KeySize = 256;
+                aes.BlockSize = 128;
+                aes.Mode = CipherMode.CBC;
+
+                var bufferK = new byte[4];
+                var bufferIv = new byte[4];
+
+                using (var inFs = new FileStream(path, FileMode.Open))
+                {
+                    inFs.Seek(0, SeekOrigin.Begin);
+                    inFs.Read(bufferK, 0, 3);
+                    inFs.Seek(4, SeekOrigin.Begin);
+                    inFs.Read(bufferIv, 0, 3);
+
+                    var lenK = BitConverter.ToInt32(bufferK, 0);
+                    var lenIv = BitConverter.ToInt32(bufferIv, 0);
+
+                    var startC = lenK + lenIv + 8;
+                    var enKey = new byte[lenK];
+                    var iv = new byte[lenIv];
+
+                    inFs.Seek(8, SeekOrigin.Begin);
+                    inFs.Read(enKey, 0, lenK);
+                    inFs.Seek(8 + lenK, SeekOrigin.Begin);
+                    inFs.Read(iv, 0, lenIv);
+
+                    var decKey = privKey.Decrypt(enKey, false);
+                    using (var trans = aes.CreateDecryptor(decKey, iv))
+                    {
+                        using (var outFs = new FileStream(plainTextFile, FileMode.Create))
+                        {
+                            var blockSz = aes.BlockSize/8;
+                            var data = new byte[blockSz];
+                            inFs.Seek(startC, SeekOrigin.Begin);
+                            using (var outCrypto = new CryptoStream(outFs, trans, CryptoStreamMode.Write))
+                            {
+                                var count = 0;
+                                do
+                                {
+                                    count = inFs.Read(data, 0, blockSz);
+                                    outCrypto.Write(data, 0, count);
+                                } while (count > 0);
+
+                                outCrypto.FlushFinalBlock();
+                                outCrypto.Close();
+                            }
+                            outFs.Close();
+                        }
+                        inFs.Close();
+                    }// end decryptor
+                }// end fs in
+            } //end aes managed
         }
 
-        private static void TestEnDeCryptInputs(string path, string certCerPath, string certPassword)
+        private static bool TestEnDeCryptInputs(string path, string certCerPath, string certPassword)
         {
             if (string.IsNullOrWhiteSpace(path))
-                throw new ArgumentNullException(path);
+                throw new ArgumentNullException("path");
             if (string.IsNullOrWhiteSpace(certCerPath))
-                throw new ArgumentNullException(certCerPath);
-            if (string.IsNullOrWhiteSpace(certPassword))
-                throw new ArgumentNullException(certPassword);
+                throw new ArgumentNullException("certCerPath");
+            if (certPassword == null)
+                throw new ArgumentNullException("certPassword");
 
             if (!File.Exists(path))
-                throw new ItsDeadJim(string.Format("There is no file at {0}", path));
-            if (!File.Exists(certCerPath) || string.Equals(Path.GetExtension(certCerPath), ".cer", StringComparison.OrdinalIgnoreCase))
-                throw new ItsDeadJim(string.Format("There doesn't appear to be a base64 encoded certificate at '{0}'", certCerPath));            
+                throw new ItsDeadJim(string.Format("There is no file at '{0}'", path));
+            if (!File.Exists(certCerPath))
+                throw new ItsDeadJim(string.Format("There is no certificate at '{0}'", certCerPath));
+            return true;
         }
     }
 }

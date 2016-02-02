@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Reflection;
+using System.Security.Cryptography;
 
 namespace NoFuture
 {
@@ -190,6 +191,40 @@ namespace NoFuture.Globals
 
 namespace NoFuture.Shared
 {
+    public class RSAPKCS1SHA512SigDesc : SignatureDescription
+    {
+        public const string XML_NS_DIGEST = "http://www.w3.org/2001/04/xmlenc#sha512";
+        public const string XML_NS_SIG = "http://www.w3.org/2001/04/xmldsig-more#rsa-sha512";
+
+        public const string SHA_512 = "SHA512";
+
+        public RSAPKCS1SHA512SigDesc()
+        {
+            FormatterAlgorithm = typeof(RSAPKCS1SignatureFormatter).FullName;
+            DeformatterAlgorithm = typeof(RSAPKCS1SignatureDeformatter).FullName;
+
+            KeyAlgorithm = typeof(RSACryptoServiceProvider).FullName;
+            DigestAlgorithm = typeof(SHA512Managed).FullName;
+        }
+
+        public override AsymmetricSignatureDeformatter CreateDeformatter(AsymmetricAlgorithm key)
+        {
+            if (key == null)
+                throw new ArgumentNullException("key");
+            var d = new RSAPKCS1SignatureDeformatter(key);
+            d.SetHashAlgorithm(SHA_512);
+            return d;
+        }
+
+        public override AsymmetricSignatureFormatter CreateFormatter(AsymmetricAlgorithm key)
+        {
+            if (key == null)
+                throw new ArgumentNullException("key");
+            var f = new RSAPKCS1SignatureFormatter(key);
+            f.SetHashAlgorithm(SHA_512);
+            return f;
+        }
+    }
     /// <summary>
     /// For encoding strings
     /// </summary>
@@ -220,6 +255,7 @@ namespace NoFuture.Shared
     /// </summary>
     public class Constants
     {
+        public const string NF_CRYPTO_EXT = ".nfk"; //nofuture κρυπτος
         public const char LF = (char)0xA;
         public const char CR = (char)0xD;
         public const string OUTLOOK_APPT_PREFIX = "[shell]";

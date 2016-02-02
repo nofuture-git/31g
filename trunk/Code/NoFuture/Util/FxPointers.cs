@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Reflection;
+using System.Security.Cryptography;
 using NoFuture.Util.Binary;
 
 namespace NoFuture.Util
@@ -52,6 +53,15 @@ namespace NoFuture.Util
                     _addedAssemblyHandler = true;
                 }
             }
+        }
+
+        /// <summary>
+        /// Adds the NF implementation of SHA512 <see cref="Shared.RSAPKCS1SHA512SigDesc"/> to
+        /// the <see cref="CryptoConfig"/>
+        /// </summary>
+        public static void AddSHA512ToCryptoConfig()
+        {
+            CryptoConfig.AddAlgorithm(typeof (Shared.RSAPKCS1SHA512SigDesc), Shared.RSAPKCS1SHA512SigDesc.XML_NS_SIG);
         }
 
         /// <summary>
