@@ -255,7 +255,7 @@ namespace NoFuture.Shared
     /// </summary>
     public class Constants
     {
-        public const string NF_CRYPTO_EXT = ".nfk"; //nofuture κρυπτος
+        public const string NF_CRYPTO_EXT = ".nfk"; //nofuture kruptos
         public const char LF = (char)0xA;
         public const char CR = (char)0xD;
         public const string OUTLOOK_APPT_PREFIX = "[shell]";

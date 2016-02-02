@@ -10,7 +10,7 @@ namespace NoFuture.Encryption.Sjcl
     /// <summary>
     /// Responsible for doing the heavy load actions involved in compiling the 'sjcl.js' 
     /// into the .NET CLR along with instantiating the script engine used by the 
-    /// <see cref="PublicKey"/>, <see cref="Hash"/> and <see cref="BulkCipherKey"/> methods.
+    /// <see cref="Hash"/> and <see cref="BulkCipherKey"/> methods.
     /// </summary>
     public class Resources
     {

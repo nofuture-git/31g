@@ -61,8 +61,6 @@
     <Compile Include="Sjcl\BkToCipherTextCommand.cs" />
     <Compile Include="Sjcl\BkToPlainTextCommand.cs" />
     <Compile Include="Sjcl\ICommand.cs" />
-    <Compile Include="Sjcl\PkToCipherTextCommand.cs" />
-    <Compile Include="Sjcl\PkToPlainTextCommand.cs" />
     <Compile Include="Sjcl\Sha256HashCommand.cs" />
   </ItemGroup>
   <ItemGroup>

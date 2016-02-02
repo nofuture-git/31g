@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Configuration;
+using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Collections.Generic;
@@ -8,36 +9,56 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using NoFuture.Exceptions;
 using NoFuture.Host.Encryption.Sjcl;
 
 namespace NoFuture.Host.Encryption
 {
     #region Program's Parameters
 
-    internal struct Parameters
+    internal struct HostParameters
     {
-        public int SjclPublicKeyToPlainTextPort;
-        public int SjclPublicKeyToCipherTextPort;
-        public int SjclBulkKeyToPlainTextPort;
-        public int SjclBulkKeyToCipherTextPort;
-        public int SjclSha256HashPort;
-        public bool Valid;
+        internal int SjclBulkKeyToPlainTextPort;
+        internal int SjclBulkKeyToCipherTextPort;
+        internal int SjclSha256HashPort;
+
+        internal bool IsValid()
+        {
+            return SjclBulkKeyToCipherTextPort > 0 && SjclBulkKeyToPlainTextPort > 0 && SjclSha256HashPort > 0;
+        }
+    }
+    internal struct FileParameters
+    {
+        internal string InputFile;
+        internal InvokeKind FileCommand;
+        internal string CertPath;
+        internal string Pwd;
+
+        internal bool IsValid()
+        {
+            if (string.IsNullOrWhiteSpace(InputFile) || !File.Exists(InputFile) || string.IsNullOrWhiteSpace(CertPath) ||
+                !File.Exists(CertPath))
+                return false;
+            if (FileCommand == InvokeKind.DecryptFile && string.IsNullOrWhiteSpace(Pwd))
+                return false;
+            return true;
+        }
     }
     public static class SWITCHES
     {
-        public const string SJCL_PK_PT_PORT = "sjclPkPtPort";
-        public const string SJCL_PK_CT_PORT = "sjclPkCtPort";
-        public const string SJCL_BK_PT_PORT = "sjclBkPtPort";
-        public const string SJCL_BK_CT_PORT = "sjclBkCtPort";
-        public const string SJCL_HP_PORT = "sjclHpPort";
+        public const string ENCRYPT_FILE = "encrypt";
+        public const string DECRYPT_FILE = "decrypt";
+        public const string CERT = "cert";
+        public const string PWD = "pwd";
+        public const string TO_PLAIN_TXT_PORT = "toPlainTextPort";
+        public const string TO_CIPHER_TEXT_PORT = "toCipherTextPort";
+        public const string HASH_PORT = "hashPort";
         public const string HASH_SALT = "hashSalt";
         public const string BULK_CIPHER_KEY = "bulkCipherKey";
     }
     public static class APPCONFIG
     {
         public const string SALT = "Sha256HashSalt";
-        public const string PUBLIC_KEY_PUBLIC = "PublicKeyPublicKey";
-        public const string PUBLIC_KEY_PRIVATE = "PublicKeyPrivateKey";
         public const string BULK_KEY = "BulkCipherKey";
     }
     public static class STDIN_COMMANDS
@@ -48,15 +69,20 @@ namespace NoFuture.Host.Encryption
         public const string ALIVE = "alive";
     }
 
+    internal enum InvokeKind
+    {
+        HostSjcl,
+        EncryptFile,
+        DecryptFile
+    }
+
     #endregion
 
     /// <summary>
-    /// Creates a running console app which opens and listens on 
-    /// specified sockets to perform the encryption \ decryption
-    /// of 'sjcl.js' cipher text.
+    /// Performs a variety of encryption functions in an isolated exe
     /// <remarks>
-    /// The idea is that loading 
-    /// the 'sjcl.js' into the runtime for every call is too much 
+    /// Regarding hosting <see cref="NoFuture.Encryption.Sjcl"/>, the idea 
+    /// is that loading  the 'sjcl.js' into the runtime for every call is too much 
     /// of a performance hit.  This console app loads it once 
     /// and then opens sockets to perform the actual work - sending the
     /// data across the wire and receiveing it back again.
@@ -79,8 +105,6 @@ namespace NoFuture.Host.Encryption
         private static readonly Object LOCK = new object();
         private static readonly Object SECOND_LOCK = new object();
         private static Hashtable _sendReceiveBytes;
-        private static string _privKey;
-        private static string _pubKey;
         private static string _bulkKey;
         private static string _hashSalt;
         private static bool _alive;
@@ -93,7 +117,6 @@ namespace NoFuture.Host.Encryption
         {
             try
             {
-                Util.ConsoleCmd.SetConsoleAsTransparent();
                 //check for some args passed in
                 if (args == null || args.Length == 0 || args[0] == "-h" || args[0] == "-help")
                 {
@@ -105,49 +128,16 @@ namespace NoFuture.Host.Encryption
                 //parse command line args
                 var argHash = Util.ConsoleCmd.ArgHash(args);
 
-                var cmdL = GetCmdLineArgs(argHash);
-
-                //at least one port value must be present
-                if (!cmdL.Valid)
+                //either perform single file op
+                var cmlF = GetFileCmdArgs(argHash);
+                if (cmlF.FileCommand != InvokeKind.HostSjcl)
                 {
-                    Console.Out.WriteLine("Arg list is invalid.");
+                    PerformFileCipher(cmlF);
                     return;
                 }
 
-                //all keys will have value regardless of what is listening
-                if(AssignKeys())
-                {
-                    Console.Out.WriteLine("the app.config is invalid.");
-                    return;
-                }
-
-                //start up js interpreter
-                WarmUp();
-
-                //print to user that something is happening
-                PrintSettingsToConsole(cmdL);
-
-                _sendReceiveBytes = new Hashtable();
-
-                Thread.CurrentThread.Name = "Main";
-
-                //launch a socket listening on any ports specified
-                LaunchListeners(cmdL);
-
-                //park main thread to handle user commands
-                for (; ; )//ever
-                {
-                    _alive = true;
-                    var userText = Console.ReadLine();//main thread parks here
-                    try
-                    {
-                        HandleStdInText(userText);
-                    }
-                    catch (Exception ex)
-                    {
-                        Print(ex);
-                    }
-                }
+                //or host SJCL.js
+                HostSjcl(argHash);
             }
             catch (Exception ex)
             {
@@ -161,36 +151,78 @@ namespace NoFuture.Host.Encryption
         #endregion
 
         #region Program's Internals
+        internal static void HostSjcl(Hashtable argHash)
+        {
+            Util.ConsoleCmd.SetConsoleAsTransparent(true);
+
+            var cmdL = GetHostSjclCmdArgs(argHash);
+
+            //at least one port value must be present
+            if (!cmdL.IsValid())
+            {
+                Console.Out.WriteLine("Arg list is invalid.");
+                return;
+            }
+
+            //all keys will have value regardless of what is listening
+            if (AssignKeys())
+            {
+                Console.Out.WriteLine("the app.config is invalid.");
+                return;
+            }
+
+            //start up js interpreter
+            WarmUp();
+
+            //print to user that something is happening
+            PrintSettingsToConsole(cmdL);
+
+            _sendReceiveBytes = new Hashtable();
+
+            Thread.CurrentThread.Name = "Main";
+
+            //launch a socket listening on any ports specified
+            LaunchListeners(cmdL);
+
+            //park main thread to handle user commands
+            for (; ; ) //ever
+            {
+                _alive = true;
+                var userText = Console.ReadLine(); //main thread parks here
+                try
+                {
+                    HandleStdInText(userText);
+                }
+                catch (Exception ex)
+                {
+                    Print(ex);
+                }
+            }
+        }
+
+        internal static void PerformFileCipher(FileParameters p)
+        {
+            if (!p.IsValid())
+            {
+                Console.Out.WriteLine("Arg list is invalid.");
+                return;
+            }
+
+            if (p.FileCommand == InvokeKind.DecryptFile)
+            {
+                NoFuture.Encryption.NfX509.DecryptFile(p.InputFile, p.CertPath, p.Pwd);
+                return;
+            }
+            NoFuture.Encryption.NfX509.EncryptFile(p.InputFile, p.CertPath);
+
+        }
 
         //launch a socket listener on each specified port
-        internal static void LaunchListeners(Parameters cmdL)
+        internal static void LaunchListeners(HostParameters cmdL)
         {
             _taskFactory = new TaskFactory();
             _tasks = new List<Task>();
 
-            if (cmdL.SjclPublicKeyToPlainTextPort != 0)
-            {
-                _tasks.Add(_taskFactory.StartNew(
-                                                   () =>
-                                                   HostSjcl(new PkToPlainTextCommand(_privKey),
-                                                            cmdL.SjclPublicKeyToPlainTextPort,
-                                                            "PkToPlainTextCommand")));
-                Thread.Sleep(BRING_ONLINE_DEFAULT_WAIT_MS);
-                Print("Sjcl Public Key To Plain Text is online.");
-
-            }
-
-            if (cmdL.SjclPublicKeyToCipherTextPort != 0)
-            {
-                _tasks.Add(_taskFactory.StartNew(
-                                                   () =>
-                                                   HostSjcl(new PkToCipherTextCommand(_pubKey),
-                                                            cmdL.SjclPublicKeyToCipherTextPort,
-                                                            "PkToCipherTextCommand")));
-                Thread.Sleep(BRING_ONLINE_DEFAULT_WAIT_MS);
-                Print("Sjcl Public Key To Cipher Text is online.");
-
-            }
 
             if (cmdL.SjclBulkKeyToPlainTextPort != 0)
             {
@@ -247,7 +279,7 @@ namespace NoFuture.Host.Encryption
                 case STDIN_COMMANDS.EXIT:
                 case STDIN_COMMANDS.QUIT:
                 case STDIN_COMMANDS.STOP:
-                    Console.WriteLine("Please close the console window from the desktop.");
+                    Environment.Exit(0);
                     break;
                 default: //default echo
                     Console.WriteLine(text);
@@ -258,27 +290,18 @@ namespace NoFuture.Host.Encryption
         //assign instance keys to cmd arg or app.config value
         internal static bool AssignKeys()
         {
-            _privKey = ConfigurationManager.AppSettings[APPCONFIG.PUBLIC_KEY_PUBLIC];
-
-            _pubKey = ConfigurationManager.AppSettings[APPCONFIG.PUBLIC_KEY_PRIVATE];
-
             if(String.IsNullOrWhiteSpace(_bulkKey))
                 _bulkKey = ConfigurationManager.AppSettings[APPCONFIG.BULK_KEY];
 
             if(String.IsNullOrWhiteSpace(_hashSalt))
                 _hashSalt = ConfigurationManager.AppSettings[APPCONFIG.SALT];
 
-            return String.IsNullOrWhiteSpace(_privKey) || String.IsNullOrWhiteSpace(_bulkKey) ||
-                   String.IsNullOrWhiteSpace(_hashSalt) || String.IsNullOrWhiteSpace(_pubKey);
+            return String.IsNullOrWhiteSpace(_bulkKey) || String.IsNullOrWhiteSpace(_hashSalt);
         }
 
         //at startup print resolved settings
-        internal static void PrintSettingsToConsole(Parameters cmdL)
+        internal static void PrintSettingsToConsole(HostParameters cmdL)
         {
-            if (cmdL.SjclPublicKeyToPlainTextPort != 0)
-                Print(string.Format("Public Key To Plain Text on port '{0}'", cmdL.SjclPublicKeyToPlainTextPort));
-            if (cmdL.SjclPublicKeyToCipherTextPort != 0)
-                Print(string.Format("Public Key To Cipher Text on port '{0}'", cmdL.SjclPublicKeyToCipherTextPort));
             if (cmdL.SjclBulkKeyToPlainTextPort != 0)
                 Print(string.Format("Bulk Key To Plain Text on port '{0}'", cmdL.SjclBulkKeyToPlainTextPort));
             if (cmdL.SjclBulkKeyToCipherTextPort != 0)
@@ -288,8 +311,6 @@ namespace NoFuture.Host.Encryption
 
             Print("----");
 
-            Print(string.Format("Public Key '{0}'", _pubKey));
-            Print(string.Format("Private Key '{0}'", _privKey));
             Print(string.Format("Bulk Key '{0}'", _bulkKey));
             Print(string.Format("Hash Salt '{0}'", _hashSalt));
             Print("----");
@@ -298,33 +319,50 @@ namespace NoFuture.Host.Encryption
         internal static string Help()
         {
             var help = new StringBuilder();
-            help.AppendLine("Usage:  [options]");
-            help.AppendLine("Description : hosts NoFuture.Encryption library with an open ports, one for ");
-            help.AppendLine("              each function.  At least one port must be specified.");
+            help.AppendLine("Usage:  [File Operations | sjcl.js Host Operations ]");
 
             help.AppendLine("");
-            help.AppendLine("Options:");
             help.AppendLine(" -h | -help             Will print this help.");
             help.AppendLine("");
 
-            help.AppendLine(string.Format(" -{0}=[INT32]", SWITCHES.SJCL_PK_PT_PORT));
-            help.AppendLine("                        Optional, open port for sjcl.js Public Key Plain Text .");
+            help.AppendLine("File Operations:");
+            help.AppendLine("----------------");
+            help.AppendLine("Description : performs encryption or decryption on a single file using ");
+            help.AppendLine("              the X509 cert.");
+
+            help.AppendLine(string.Format(" -{0}=[PATH]", SWITCHES.ENCRYPT_FILE));
+            help.AppendLine("                        Path to file to be encrypted.");
             help.AppendLine("");
 
-            help.AppendLine(string.Format(" -{0}=[INT32]", SWITCHES.SJCL_PK_CT_PORT));
-            help.AppendLine("                        Optional, open port for sjcl.js Public Key Cipher Text .");
+            help.AppendLine(string.Format(" -{0}=[PATH]", SWITCHES.DECRYPT_FILE));
+            help.AppendLine("                        Path to file to be decrypted.");
             help.AppendLine("");
 
-            help.AppendLine(string.Format(" -{0}=[INT32]", SWITCHES.SJCL_BK_PT_PORT));
-            help.AppendLine("                        Optional, open port for sjcl.js Bulk Key Plain Text .");
+            help.AppendLine(string.Format(" -{0}=[PATH]", SWITCHES.CERT));
+            help.AppendLine("                        Path to X509 cert for encrypt or decrypt.");
             help.AppendLine("");
 
-            help.AppendLine(string.Format(" -{0}=[INT32]", SWITCHES.SJCL_BK_CT_PORT));
-            help.AppendLine("                        Optional, open port for sjcl.js Bulk Key Cipher Text .");
+            help.AppendLine(string.Format(" -{0}=[STRING]", SWITCHES.PWD));
+            help.AppendLine("                        Password used for decryption only");
+            help.AppendLine("");
             help.AppendLine("");
 
-            help.AppendLine(string.Format(" -{0}=[INT32]", SWITCHES.SJCL_HP_PORT));
-            help.AppendLine("                        Optional, open port for sjcl.js Sha256 Hash.");
+            help.AppendLine("sjcl.js Host Operations:");
+            help.AppendLine("------------------------");
+            help.AppendLine("Description : hosts NoFuture.Encryption.Sjcl on TCP\\IP sockets, one for ");
+            help.AppendLine("              each function.  All three ports must be specified.");
+
+
+            help.AppendLine(string.Format(" -{0}=[INT32]", SWITCHES.TO_PLAIN_TXT_PORT));
+            help.AppendLine("                        Port for sjcl.js encryption");
+            help.AppendLine("");
+
+            help.AppendLine(string.Format(" -{0}=[INT32]", SWITCHES.TO_CIPHER_TEXT_PORT));
+            help.AppendLine("                        Port for sjcl.js decryption");
+            help.AppendLine("");
+
+            help.AppendLine(string.Format(" -{0}=[INT32]", SWITCHES.HASH_PORT));
+            help.AppendLine("                        Port for sjcl.js Sha256 Hash.");
             help.AppendLine("");
 
             help.AppendLine(string.Format(" -{0}=[STRING]", SWITCHES.BULK_CIPHER_KEY));
@@ -332,39 +370,52 @@ namespace NoFuture.Host.Encryption
             help.AppendLine(string.Format("                        will default to App.Config '{0}' value.", APPCONFIG.BULK_KEY));
             help.AppendLine("");
 
-            help.AppendLine(string.Format(" -{0}=[STRING]", SWITCHES.SJCL_HP_PORT));
-            help.AppendLine("                        Optional, starts Sha256 Hash with specified value as the salt.");
+            help.AppendLine(string.Format(" -{0}=[STRING]", SWITCHES.HASH_PORT));
+            help.AppendLine("                        Optional, starts Sha256 Hash with value as the salt.");
             help.AppendLine(string.Format("                        will default to App.Config '{0}' value.", APPCONFIG.SALT));
             help.AppendLine("");
 
             return help.ToString();
         }
 
-        //turn the command line args into strong-typed values thereof
-        internal static Parameters GetCmdLineArgs(Hashtable argHash)
+        internal static FileParameters GetFileCmdArgs(Hashtable argHash)
         {
-            var sjclPkPt = 0;
-            var sjclPkCt = 0;
+            var p = new FileParameters();
+            if (argHash.ContainsKey(SWITCHES.CERT))
+                p.CertPath = argHash[SWITCHES.CERT].ToString();
+
+            if (argHash.ContainsKey(SWITCHES.ENCRYPT_FILE))
+            {
+                p.InputFile = argHash[SWITCHES.ENCRYPT_FILE].ToString();
+                p.FileCommand = InvokeKind.EncryptFile;
+            }
+            if (argHash.ContainsKey(SWITCHES.DECRYPT_FILE) && p.FileCommand != InvokeKind.EncryptFile)
+            {
+                p.InputFile = argHash[SWITCHES.DECRYPT_FILE].ToString();
+                p.FileCommand = InvokeKind.DecryptFile;
+            }
+            if (argHash.ContainsKey(SWITCHES.PWD))
+                p.Pwd = argHash[SWITCHES.PWD].ToString();
+
+            return p;
+        }
+
+        internal static HostParameters GetHostSjclCmdArgs(Hashtable argHash)
+        {
             var sjclBkPt = 0;
             var sjclBkCt = 0;
             var sjclHp = 0;
             var sjclHashSalt = string.Empty;
             var sjclBulkCipherKey = string.Empty;
 
-            if (argHash.ContainsKey(SWITCHES.SJCL_PK_PT_PORT))
-                Int32.TryParse(argHash[SWITCHES.SJCL_PK_PT_PORT].ToString(), out sjclPkPt);
+            if (argHash.ContainsKey(SWITCHES.TO_PLAIN_TXT_PORT))
+                Int32.TryParse(argHash[SWITCHES.TO_PLAIN_TXT_PORT].ToString(), out sjclBkPt);
 
-            if (argHash.ContainsKey(SWITCHES.SJCL_PK_CT_PORT))
-                Int32.TryParse(argHash[SWITCHES.SJCL_PK_CT_PORT].ToString(), out sjclPkCt);
+            if (argHash.ContainsKey(SWITCHES.TO_CIPHER_TEXT_PORT))
+                Int32.TryParse(argHash[SWITCHES.TO_CIPHER_TEXT_PORT].ToString(), out sjclBkCt);
 
-            if (argHash.ContainsKey(SWITCHES.SJCL_BK_PT_PORT))
-                Int32.TryParse(argHash[SWITCHES.SJCL_BK_PT_PORT].ToString(), out sjclBkPt);
-
-            if (argHash.ContainsKey(SWITCHES.SJCL_BK_CT_PORT))
-                Int32.TryParse(argHash[SWITCHES.SJCL_BK_CT_PORT].ToString(), out sjclBkCt);
-
-            if (argHash.ContainsKey(SWITCHES.SJCL_HP_PORT))
-                Int32.TryParse(argHash[SWITCHES.SJCL_HP_PORT].ToString(), out sjclHp);
+            if (argHash.ContainsKey(SWITCHES.HASH_PORT))
+                Int32.TryParse(argHash[SWITCHES.HASH_PORT].ToString(), out sjclHp);
 
             if (argHash.ContainsKey(SWITCHES.HASH_SALT))
                 sjclHashSalt = argHash[SWITCHES.HASH_SALT].ToString();
@@ -372,42 +423,29 @@ namespace NoFuture.Host.Encryption
             if (argHash.ContainsKey(SWITCHES.BULK_CIPHER_KEY))
                 sjclBulkCipherKey = argHash[SWITCHES.BULK_CIPHER_KEY].ToString();
 
-            var allPortsAreZero = sjclPkPt == 0 && sjclPkCt == 0 && sjclBkPt == 0 && sjclBkCt == 0 && sjclHp == 0;
-
-            var rtrn = new Parameters
+            var rtrn = new HostParameters
                            {
-                               SjclPublicKeyToPlainTextPort = sjclPkPt,
-                               SjclPublicKeyToCipherTextPort = sjclPkCt,
                                SjclBulkKeyToPlainTextPort = sjclBkPt,
                                SjclBulkKeyToCipherTextPort = sjclBkCt,
                                SjclSha256HashPort = sjclHp,
-                               Valid = !allPortsAreZero
                            };
 
-            if (!String.IsNullOrWhiteSpace(sjclHashSalt))
-            {
-                _hashSalt = sjclHashSalt;
-
-                //check if user wrapped string in single or double quotes
-                if (_hashSalt.StartsWith("\"") && _hashSalt.EndsWith("\""))
-                    _hashSalt = _hashSalt.Substring(1, (_hashSalt.Length - 2));
-
-                if (_hashSalt.StartsWith("'") && _hashSalt.EndsWith("'"))
-                    _hashSalt = _hashSalt.Substring(1, (_hashSalt.Length - 2));
-
-            }
-                
-            if (!String.IsNullOrWhiteSpace(sjclBulkCipherKey))
-            {
-                _bulkKey = sjclBulkCipherKey;
-                if (_bulkKey.StartsWith("\"") && _bulkKey.EndsWith("\""))
-                    _bulkKey = _bulkKey.Substring(1, (_bulkKey.Length - 2));
-
-                if (_bulkKey.StartsWith("'") && _bulkKey.EndsWith("'"))
-                    _bulkKey = _bulkKey.Substring(1, (_bulkKey.Length - 2));
-            }
+            _hashSalt = CleanupDblSnglQuotes(sjclHashSalt);
+            _bulkKey = CleanupDblSnglQuotes(sjclBulkCipherKey);
 
             return rtrn;
+        }
+
+        internal static string CleanupDblSnglQuotes(string s)
+        {
+            if (String.IsNullOrWhiteSpace(s)) return s;
+
+            if (s.StartsWith("\"") && s.EndsWith("\""))
+                s = s.Substring(1, (s.Length - 2));
+
+            if (s.StartsWith("'") && s.EndsWith("'"))
+                s = s.Substring(1, (s.Length - 2));
+            return s;
         }
 
         //starts slow & expensive js interpreter
