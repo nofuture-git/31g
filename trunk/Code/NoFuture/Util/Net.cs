@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mime;
 using System.Text.RegularExpressions;
 using System.Text;
 using NoFuture.Exceptions;
@@ -35,7 +36,7 @@ namespace NoFuture.Util
 
         /// <summary>
         /// Get the current username-password pair in the form expected by the Authorization or
-        /// Proxy-Authorization HTML header.
+        /// Proxy-Authorization HTTP header.
         /// </summary>
         /// <param name="username">Optional, will resolve to the Windows Id name if null or empty.</param>
         /// <param name="pwd"></param>
@@ -69,11 +70,13 @@ namespace NoFuture.Util
         }
 
         /// <summary>
-        /// Returns true if either the 'Content-Transfer-Encoding' is 'Binary'
-        /// or the 'Content-Type' starts with any of the values in <see cref="BinaryMimeTypes"/>.
+        /// Determines if the response headers indicate the data is binary (text being presumed otherwise).
         /// </summary>
         /// <param name="responsHeaders">HTTP Response Headers as a simple hashtable.</param>
         /// <returns></returns>
+        /// <remarks>
+        /// https://www.ietf.org/rfc/rfc2045.txt
+        /// </remarks>
         public static bool IsBinaryContent(Hashtable responsHeaders)
         {
             if (responsHeaders.ContainsKey("Content-Transfer-Encoding") &&
@@ -81,19 +84,47 @@ namespace NoFuture.Util
                     StringComparison.OrdinalIgnoreCase))
                 return true;
 
-            var bMimeGType = new[] { "application", "audio", "image", "video", "drawing", "x-world" };
+            //for no content type header - assume text
+            if (!responsHeaders.ContainsKey("Content-Type")) return false;
 
-            if (responsHeaders.ContainsKey("Content-Type") &&
-                !string.Equals(responsHeaders["Content-Type"].ToString(), "application/x-www-form-urlencoded",
-                    StringComparison.OrdinalIgnoreCase) &&
-                bMimeGType.Any(
-                    binMime =>
-                        responsHeaders["Content-Type"].ToString().StartsWith(binMime)))
-            {
+            var hdrVal = responsHeaders["Content-Type"];
+            if (hdrVal == null || string.IsNullOrWhiteSpace(hdrVal.ToString()))
+                return false;
+
+            //get content type as object
+            var contentType = new ContentType(hdrVal.ToString());
+
+            //if they specified a char set then assume text
+            if (!string.IsNullOrWhiteSpace(contentType.CharSet))
+                return false;
+
+            //get the media type string
+            var mimeType = contentType.MediaType;
+
+            if (string.IsNullOrWhiteSpace(mimeType))
+                return false;
+
+            var t = mimeType.Contains("/") ? mimeType.Split('/')[0] : mimeType;
+
+            //def NOT binary
+            if (string.Equals(t, "text", StringComparison.OrdinalIgnoreCase))
+                return false;
+
+            //def IS binary
+            if (
+                (new[] {"audio", "image", "video", "drawing"}).Any(
+                    x => string.Equals(x, t, StringComparison.OrdinalIgnoreCase)))
                 return true;
-            }
 
-            return false;
+            //need sub type to make the final determination
+            if (!string.Equals(t, "application", StringComparison.OrdinalIgnoreCase))
+                return false;
+
+            var subT = mimeType.Contains("/") ? mimeType.Split('/')[1] : string.Empty;
+
+            //let these pass as text 
+            return !(new[] {"xml", "json", "x-www-form-urlencoded"}).Any(
+                x => string.Equals(x, subT, StringComparison.OrdinalIgnoreCase));
         }
 
         /// <summary>
@@ -105,18 +136,6 @@ namespace NoFuture.Util
         public static bool IsValidPortNumber(int? cmdPort)
         {
             return (cmdPort != null && cmdPort > 0 && cmdPort < (System.Math.Pow(2, 16)));
-        }
-
-        /// <summary>
-        /// The standard MIME binary types (note, subtypes not included)
-        /// </summary>
-        public static string[] BinaryMimeTypes
-        {
-            get
-            {
-                return new[] { "application", "audio", "image", "video", "drawing", "x-world" };
-            }
-            
         }
 
         /// <summary>

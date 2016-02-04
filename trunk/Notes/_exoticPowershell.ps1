@@ -480,3 +480,132 @@ $regPaths | % {Split-Path -Path $_ -Leaf} | % {
     $itemProp = Get-ItemProperty -Path "HKU:\$mySsdl\Software\Microsoft\Windows\CurrentVersion\Uninstall\$clickOnceRegId" -Name "UrlUpdateInfo" -ErrorAction SilentlyContinue
     Write-Host $itemProp.UrlUpdateInfo
 }
+
+<#
+    .synopsis
+    Body of function includes examples and notes
+    of using the Windows Performance Counters.
+    
+    .Description
+    For view only.
+    
+    .outputs
+    null
+    
+#>
+function Counter-Examples
+{
+    [CmdletBinding()]
+    Param
+    (
+    )
+    Process
+    {
+        #add this to app/web.config
+        $allCountersOn = @'
+        <system.serviceModel>
+         <diagnostics performanceCounters="All" />
+        </system.serviceModel>   
+'@
+        #http://msdn.microsoft.com/en-us/library/w8f5kw2e(v=vs.100).aspx
+        #total number of request
+        $totalRequest = Get-Counter -Counter ("\\{0}\W3SVC_W3WP(*)\Total HTTP Requests Served" -f $env:COMPUTERNAME)
+        
+        #by web application, including the cached responses from http.sys
+        $allRequest = Get-Counter -Counter ("\\{0}\HTTP Service Url Groups(*)\AllRequests" -f $env:COMPUTERNAME)
+        #use this to map the group url hex ID to an application 
+        $file_lines = &"c:\windows\system32\netsh.exe" http show servicestate
+        
+		#http://technet.microsoft.com/en-us/library/ee624046%28v=ws.10%29.aspx
+		#perform a network trace
+		&"c:\windows\system32\netsh.exe" trace start scenario=directaccess capture=yes report=yes
+		#reproduce issue
+		&"c:\windows\system32\netsh.exe" trace stop
+		
+        #request from the web application
+        $eipWebRequest = Get-Counter -Counter "\\localhost\ASP.NET Apps v4.0.30319(_lm_w3svc_1_root_eip)\Anonymous Requests"
+        $eipSvcRequest = Get-Counter -Counter "\\localhost\ASP.NET Apps v4.0.30319(_lm_w3svc_1_root_eipservices)\Anonymous Requests"
+        
+        #request from the app services layer
+        $serviceMethod = "GetAnnouncements"
+        $serviceName = "WidgetService"
+        $serviceRequest = Get-Counter -Counter ("\\{0}\ServiceModelOperation 4.0.0.0(*{1}*{2}.svc)\Calls" -f $env:COMPUTERNAME,$serviceMethod.SubString(0,10),$serviceName)
+        
+        #request from the app service layer by method
+        $serviceRequestByMethod = Get-Counter -Counter ("\\{0}\ServiceModelService 4.0.0.0(*{1}.svc)\Calls" -f $env:COMPUTERNAME,$serviceName)
+        
+        #.NET data http://msdn.microsoft.com/en-us/library/kfhcywhs(v=vs.100)
+        
+        $w3wp = @{
+                                    #like the name says, throw 20, you'll see 20
+                  ".NET CLR Exceptions" = @(
+                                    "# of Exceps Thrown"
+                                    );
+                                    #CCW's (COM callable wrappers) are native objects having a refernce to a managed one
+                                    #stubs are for runtime arg passing between managed and unmanaged
+                  ".NET CLR Interop" = @(
+                                    "# of CCWs",
+                                    "# of Stubs"
+                                    );
+                                    #should expect this to rise then level off the longer the app is left running
+                                    #from http://msdn.microsoft.com/en-us/library/k5532s8a(v=vs.100).aspx
+                                    #[JIT compilation takes into account the possibility that some code might 
+                                    # never be called during execution. Instead of using time and memory to convert 
+                                    # all the MSIL in a PE file to native code, it converts the MSIL as needed 
+                                    # during execution and stores the resulting native code in memory so that it 
+                                    # is accessible for subsequent calls in the context of that process.]
+                  ".NET CLR Jit" = @(
+                                    "# of Methods JITted"
+                                    );
+                                    #just like it says
+                  ".NET CLR Loading" = @(
+                                    "Current Classes Loaded",
+                                    "Current Assemblies"
+                                    );
+                                    
+                                    #logical threads are owned by the managed runtime
+                                    #physical threads are the underlying native one's the managed one depend on
+                                    #recognized threads are only the ones that came through the main
+                                    #thread Factory generated threads are not recognized
+                  ".NET CLR LocksAndThreads" = @(
+                                    "Total # of Contentions",
+                                    "# of current logical Threads",
+                                    "# of current physical Threads",
+                                    "# of current recognized threads"
+                                    );
+                                    #this won't be updated until a GC.Collect() gets called
+                  ".NET CLR Memory" = @(
+                                    "# of Pinned Objects",
+                                    "Large Object Heap size",
+                                    "Gen 0 heap size",
+                                    "Gen 1 heap size",
+                                    "Gen 2 heap size"
+                                    );
+                                    #these don't have anything to do with the IPrincipal crap
+                  ".NET CLR Security" = @(
+                                    "% Time in RT checks",
+                                    "Total Runtime Checks"
+                                    );
+                                    #this has instances but its always just 1 or 2
+                  ".NET Data Provider for SqlServer" = @(
+                                    "numberofpooledconnections",
+                                    "numberofactiveconnectionpools"
+                                    )}
+        
+        
+
+        $w3wp = Get-Process -Name "w3wp"
+        
+        $w3wp.Threads | ? {$_.TotalProcessorTime -ne '00:00:00'} | Sort-Object -Property TotalProcessorTime
+    
+        $counters = @("HTTP Service","HTTP Service Url Groups","HTTP Service Request Queues",
+                      "APP_POOL_WAS","W3SVC_W3WP",".NET Data Provider for SqlServer",
+                      ".NET CLR Loading","ASP.NET v4.0.30319","ASP.NET Apps v4.0.30319",
+                      "ASP.NET State Service","ServiceModelEndpoint 4.0.0.0","ServiceModelOperation 4.0.0.0",
+                      "ServiceModelService 4.0.0.0","Windows Workflow Foundation",
+                      "WF (System.Workflow) 4.0.0.0",".NET CLR Data","Web Service")
+        
+        #example for getting all SQL Server connection counters
+        (Get-Counter -ListSet ".NET Data Provider for SqlServer") | % {Get-Counter -Counter $_.Counter}
+    }
+}

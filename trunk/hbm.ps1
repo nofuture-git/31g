@@ -7,10 +7,10 @@ if(-not [NoFuture.MyFunctions]::FunctionFiles.ContainsValue($MyInvocation.MyComm
 [NoFuture.MyFunctions]::FunctionFiles.Add("Write-CsCodeHbmCommand",$MyInvocation.MyCommand)
 [NoFuture.MyFunctions]::FunctionFiles.Add("Get-AllHbmCs",$MyInvocation.MyCommand)
 [NoFuture.MyFunctions]::FunctionFiles.Add("Get-HbmCs",$MyInvocation.MyCommand)
-[NoFuture.MyFunctions]::FunctionFiles.Add("Compile-HbmCs",$MyInvocation.MyCommand)
-[NoFuture.MyFunctions]::FunctionFiles.Add("Make-HbmAppConfig",$MyInvocation.MyCommand)
-[NoFuture.MyFunctions]::FunctionFiles.Add("Load-HbmConfiguration",$MyInvocation.MyCommand)
-[NoFuture.MyFunctions]::FunctionFiles.Add("Load-HbmSessionFactory",$MyInvocation.MyCommand)
+[NoFuture.MyFunctions]::FunctionFiles.Add("Invoke-HbmCsCompile",$MyInvocation.MyCommand)
+[NoFuture.MyFunctions]::FunctionFiles.Add("New-HbmAppConfig",$MyInvocation.MyCommand)
+[NoFuture.MyFunctions]::FunctionFiles.Add("Import-HbmConfiguration",$MyInvocation.MyCommand)
+[NoFuture.MyFunctions]::FunctionFiles.Add("Import-HbmSessionFactory",$MyInvocation.MyCommand)
 [NoFuture.MyFunctions]::FunctionFiles.Add("Get-HbmSession",$MyInvocation.MyCommand)
 }
 }catch{
@@ -71,7 +71,7 @@ function Get-HbmDbData
         else{
             $script:numOfSteps = 2
         }
-        GetHbmMetadataDump $numOfSteps
+        Get-HbmMetadataDump $numOfSteps
 
         $sleepTimerMs = [NoFuture.Shared.Constants]::ThreadSleepTime
         [System.Threading.Thread]::Sleep($sleepTimerMs)
@@ -109,7 +109,7 @@ function Get-HbmDbData
             [NoFuture.Hbm.Sorting]::UnknownErrorProx.Clear()
             [NoFuture.Hbm.Sorting]::NoDatasetReturnedProx.Clear()
 
-            Write-Host "This runs in the background. At anytime, use the 'Print-SpResultSetXsdProgress' cmdlet so see its current state." -ForegroundColor Yellow
+            Write-Host "This runs in the background. At anytime, use the 'Write-SpResultSetXsdProgress' cmdlet so see its current state." -ForegroundColor Yellow
             [NoFuture.Hbm.Mapping]::StoredProcManager.BeginGetSpResultSetXsd($null, ([NoFuture.Shared.Constants]::SqlServerDotNetConnString))
 
         }
@@ -117,7 +117,7 @@ function Get-HbmDbData
 
 }#end Get-HbmDbData
 
-function GetHbmMetadataDump(){
+function Get-HbmMetadataDump(){
         [NoFuture.Hbm.Settings]::LoadOutputPathCurrentSettings();
         $allHbmItems = @(
             [NoFuture.Hbm.Sorting+DbContainers]::Fks, 
@@ -134,12 +134,12 @@ function GetHbmMetadataDump(){
             
             $pcount = ([NoFuture.Util.Etc]::CalcProgressCounter($counter, $allHbmItems.Count)) 
             Write-Progress -Activity ("Saving data to '{0}'" -f $_.OutputPath) -Status "Metadata Dump: Fetching Metadata [Step 1 of $script:numOfSteps]" -PercentComplete $pcount
-            $doNotDisplay = (GetSingleHbmMetadataDump $_)
+            $doNotDisplay = (Get-SingleHbmMetadataDump $_)
             $counter += 1
         }
 }
 
-function GetSingleHbmMetadataDump($HbmValues){
+function Get-SingleHbmMetadataDump($HbmValues){
                 
         $outputPath = $HbmValues.OutputPath
 
@@ -165,9 +165,9 @@ function GetSingleHbmMetadataDump($HbmValues){
 
         return $outRsltJson
 
-}#end GetSingleHbmMetadataDump
+}#end Get-SingleHbmMetadataDump
 
-function Print-SpResultSetXsdProgress(){
+function Write-SpResultSetXsdProgress(){
     Write-Host $Global:SpResultSetXsdProgress -ForegroundColor Cyan
 }
 
@@ -727,7 +727,7 @@ function Write-CsCodeHbmCommand
     .OUTPUTS
     null
 #>
-function Compile-HbmCs
+function Invoke-HbmCsCompile
 {
     [CmdletBinding()]
     Param
@@ -851,7 +851,7 @@ function Compile-HbmCs
         } #end hbm xml dir compile
 
     }#end Process
-}#end Compile-HbmCs
+}#end Invoke-HbmCsCompile
 
 <#
     .SYNOPSIS
@@ -877,7 +877,7 @@ function Compile-HbmCs
     node of the output.
 
 #>
-function Make-HbmAppConfig
+function New-HbmAppConfig
 {
     [CmdletBinding()]
     Param
@@ -932,7 +932,7 @@ function Make-HbmAppConfig
         return $hbmConfigFilePath
 
     }
-}#end Make-HbmAppConfig
+}#end New-HbmAppConfig
 
 <#
     .SYNOPSIS
@@ -943,7 +943,7 @@ function Make-HbmAppConfig
     this cmdlet will create it only if its not been yet instantiated.
 
     The hbmCfg is also configured with values produced from the
-    Make-HbmAppConfig cmdlet (which is called internally herein).
+    New-HbmAppConfig cmdlet (which is called internally herein).
 
     A simple check is made on the appDomain to verify the NHibernate
     and Iesi.Collections binaries are loaded prior to any attempts 
@@ -951,7 +951,7 @@ function Make-HbmAppConfig
 
 
 #>
-function Load-HbmConfiguration
+function Import-HbmConfiguration
 {
     [CmdletBinding()]
     Param
@@ -1042,7 +1042,7 @@ function Load-HbmConfiguration
         $donotDisplay = [NoFuture.Hbm.Globals]::HbmCfg.AddAssembly("NoFuture.Hbm.Sid, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
 
     }#end Process
-}#end Load-HbmConfiguration
+}#end Import-HbmConfiguration
 
 <#
     .SYNOPSIS
@@ -1057,7 +1057,7 @@ function Load-HbmConfiguration
     is thrown.
 
 #>
-function Load-HbmSessionFactory
+function Import-HbmSessionFactory
 {
     [CmdletBinding()]
     Param
@@ -1078,7 +1078,7 @@ function Load-HbmSessionFactory
 
         if([NoFuture.Hbm.Globals]::HbmCfg -eq $null)
         {
-            throw "Instantiate the 'NoFuture.Hbm.Globals.HbmCfg' object via a call to 'Load-HbmConfiguration' then call this cmdlet again."
+            throw "Instantiate the 'NoFuture.Hbm.Globals.HbmCfg' object via a call to 'Import-HbmConfiguration' then call this cmdlet again."
         }
 
         #all matching hbm.xml files from Mssql-Settings location (compiled to binaries)
@@ -1130,7 +1130,7 @@ function Load-HbmSessionFactory
         }
 
     }
-}#end Load-HbmSessionFactory
+}#end Import-HbmSessionFactory
 
 <#
     .SYNOPSIS
@@ -1159,7 +1159,7 @@ function Get-HbmSession
     {
         if([NoFuture.Hbm.Globals]::HbmSessionFactory -eq $null -or [NoFuture.Hbm.Globals]::HbmCfg -eq $null)
         {
-           throw "load the Global hbm Configuation and Session Factory first by calling Load-HbmConfiguration and Load-HbmSessionFactory respectively"
+           throw "load the Global hbm Configuation and Session Factory first by calling Import-HbmConfiguration and Import-HbmSessionFactory respectively"
         }
 
         return [NoFuture.Hbm.Globals]::HbmSessionFactory.OpenSession()
@@ -1223,23 +1223,23 @@ function Get-HbmDb
             [System.Threading.Thread]::Sleep($sleepTimerMs)
 
             Write-Host "compiling Hbm Cs"
-            Compile-HbmCs -OutputNamespace $OutputNamespace
+            Invoke-HbmCsCompile -OutputNamespace $OutputNamespace
 
         }
         [System.Threading.Thread]::Sleep($sleepTimerMs)
 
         Write-Host "making Hbm AppConfig"
-        $hbmConfigFilePath = Make-HbmAppConfig -OutputNamespace $OutputNamespace 
+        $hbmConfigFilePath = New-HbmAppConfig -OutputNamespace $OutputNamespace 
 
         [System.Threading.Thread]::Sleep($sleepTimerMs)
 
         Write-Host "loading Hbm Configuration"
-        Load-HbmConfiguration -HbmAppConfigPath $hbmConfigFilePath
+        Import-HbmConfiguration -HbmAppConfigPath $hbmConfigFilePath
 
         [System.Threading.Thread]::Sleep($sleepTimerMs)
 
         Write-Host "loading Hbm Session Factory"
-        Load-HbmSessionFactory
+        Import-HbmSessionFactory
 
         [System.Threading.Thread]::Sleep($sleepTimerMs)
 

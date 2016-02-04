@@ -24,33 +24,9 @@ if(-not [NoFuture.MyFunctions]::FunctionFiles.ContainsValue($MyInvocation.MyComm
     Path to a valid Windows assembly.
     
     .PARAMETER DumpBinSwitches
-      /ALL
-      /ARCHIVEMEMBERS
-      /CLRHEADER
-      /DEPENDENTS
-      /DIRECTIVES
-      /DISASM[:{BYTES|NOBYTES}]
-      /ERRORREPORT:{NONE|PROMPT|QUEUE|SEND}
-      /EXPORTS
-      /FPO
-      /HEADERS
-      /IMPORTS[:filename]
-      /LINENUMBERS
-      /LINKERMEMBER[:{1|2}]
-      /LOADCONFIG
-      /OUT:filename
-      /PDATA
-      /PDBPATH[:VERBOSE]
-      /RANGE:vaMin[,vaMax]
-      /RAWDATA[:{NONE|1|2|4|8}[,#]]
-      /RELOCATIONS
-      /SECTION:name
-      /SUMMARY
-      /SYMBOLS
-      /TLS
-      /UNWINDINFO
+    Supports all switches available to the dumpbin.exe
 
-    .LINKS
+    .LINK
     http://msdn.microsoft.com/en-us/library/756as972%28v=vs.100%29.aspx
     
 #>
@@ -62,7 +38,7 @@ function Get-BinaryDump
         [Parameter(Mandatory=$true,Position=0)]
         [string] $Path,
         [Parameter(Mandatory=$false,Position=1)]
-        [string] $DumpBinSwitches
+        [array] $DumpBinSwitches
     )
     Process
     {
@@ -84,7 +60,7 @@ function Get-BinaryDump
         }
         else
         {
-            $parameterSwitch = $DumpBinSwitches
+            $parameterSwitch = "/" + [string]::Join("/", $DumpBinSwitches)
         }
         $cmd = ("& {0} {1} '{2}'" -f $dumpbin, $parameterSwitch, $Path)
         Write-Host $cmd

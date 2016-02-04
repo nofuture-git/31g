@@ -240,3 +240,89 @@ function Get-Md5CheckSum
 }
 
 Set-Alias md5sum Get-Md5CheckSum
+
+<#
+    .SYNOPSIS
+    Invokes the cipher.exe for the given path.
+    
+    .DESCRIPTION
+    Invoke the builtin Windows exe named 'cipher' for 
+    the given path.  The key appears to be an X509 cert
+    which is present in the store under Local User\Personal.
+    
+    .PARAMETER Path
+    A fully qualified path to a single file or folder
+    
+    .EXAMPLE
+    C:\PS>Protect-Files -Path 'C:\My Docs\MS Word Docs\'
+        
+    .OUTPUTS
+    Null
+#>
+function Protect-Files
+{
+    [CmdletBinding()]
+    Param
+    (
+        [Parameter(Mandatory=$true,position=0)]
+        [string] $Path
+    )
+    Process
+    {
+        #break on junk paths
+        if(-not (Test-Path $Path)){Write-Host ("The path '{0}' was not found." -f $Path); break;}
+        
+        $Path = (Resolve-Path $Path).Path
+
+        #encrypt everything in the directory
+        if([System.IO.Directory]::Exists($Path)){
+            iex "& cipher /e `"$Path`""
+        }
+        elseif([System.IO.File]::Exists($Path)){
+            iex "& cipher /e /a `"$Path`""
+        }
+    }
+}
+
+<#
+    .SYNOPSIS
+    Invokes the cipher.exe for the given path.
+    
+    .DESCRIPTION
+    Invoke the builtin Windows exe named 'cipher' for 
+    the given path.  The key appears to be an X509 cert
+    which is present in the store under Local User\Personal.
+    
+    .PARAMETER Path
+    A fully qualified path to a single file or folder
+    
+    .EXAMPLE
+    C:\PS>Unprotect-Files -Path 'C:\My Docs\MS Word Docs\'
+        
+    .OUTPUTS
+    Null
+#>
+function Unprotect-Files
+{
+    [CmdletBinding()]
+    Param
+    (
+        [Parameter(Mandatory=$true,position=0)]
+        [string] $Path
+    )
+    Process
+    {
+        #break on junk paths
+        if(-not (Test-Path $Path)){Write-Host ("The path '{0}' was not found." -f $Path); break;}
+        
+        $Path = (Resolve-Path $Path).Path
+
+        #encrypt everything in the directory
+        if([System.IO.Directory]::Exists($Path)){
+            iex "& cipher /d `"$Path`""
+        }
+        elseif([System.IO.File]::Exists($Path)){
+            iex "& cipher /d /a `"$Path`""
+        }
+    }
+}

@@ -8,7 +8,7 @@ if(-not [NoFuture.MyFunctions]::FunctionFiles.ContainsValue($MyInvocation.MyComm
 [NoFuture.MyFunctions]::FunctionFiles.Add("proc",$MyInvocation.MyCommand)
 [NoFuture.MyFunctions]::FunctionFiles.Add("ado",$MyInvocation.MyCommand)
 
-[NoFuture.MyFunctions]::FunctionFiles.Add("Mssql-Settings",$MyInvocation.MyCommand)
+[NoFuture.MyFunctions]::FunctionFiles.Add("Get-MssqlSettings",$MyInvocation.MyCommand)
 [NoFuture.MyFunctions]::FunctionFiles.Add("ExportTo-UpdateStatement",$MyInvocation.MyCommand)
 [NoFuture.MyFunctions]::FunctionFiles.Add("ExportTo-InsertStatement",$MyInvocation.MyCommand)
 [NoFuture.MyFunctions]::FunctionFiles.Add("ExportTo-MergeStatement",$MyInvocation.MyCommand)
@@ -17,6 +17,7 @@ if(-not [NoFuture.MyFunctions]::FunctionFiles.ContainsValue($MyInvocation.MyComm
 [NoFuture.MyFunctions]::FunctionFiles.Add("Get-TableXsd",$MyInvocation.MyCommand)
 [NoFuture.MyFunctions]::FunctionFiles.Add("Get-DatabaseDbml",$MyInvocation.MyCommand)
 [NoFuture.MyFunctions]::FunctionFiles.Add("Import-ExcelWs",$MyInvocation.MyCommand)
+[NoFuture.MyFunctions]::FunctionFiles.Add("Find-StringInDb",$MyInvocation.MyCommand)
 }
 }catch{
     Write-Host "file is being loaded independent of 'start.ps1' - some functions may not be available."
@@ -38,19 +39,19 @@ if(-not [NoFuture.MyFunctions]::FunctionFiles.ContainsValue($MyInvocation.MyComm
     X axis respectively.
     
     .EXAMPLE
-    C:\PS> Mssql-Settings
+    C:\PS> Get-MssqlSettings
     
     .EXAMPLE
-    C:\PS>Mssql-Settings 0,2
+    C:\PS> Get-MssqlSettings 0,2
     
     .EXAMPLE
-    C:\PS>Mssql-Settings -QuickChange @(0,2)
+    C:\PS> Get-MssqlSettings -QuickChange @(0,2)
 
     .OUTPUTS
     null
     
 #>
-function Mssql-Settings
+function Get-MssqlSettings
 {
     [CmdletBinding()]
     Param
@@ -1323,7 +1324,7 @@ function Export-CsvToScriptTempTable
     Hashtable
     
 #>
-function Mine-DatabaseForString
+function Find-StringInDb
 {
     [CmdletBinding()]
     Param
