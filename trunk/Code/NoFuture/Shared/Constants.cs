@@ -272,7 +272,8 @@ namespace NoFuture.Shared
         private static int _threadSleepTime;
         private static bool _useReflectionOnlyLoad = true;
 
-        public const double TROPICAL_YEAR = 365.24255;
+        public const double DBL_TROPICAL_YEAR = 365.24255;
+        public static TimeSpan TropicalYear = new TimeSpan(365, 5, 49, 16, 320);
 
         public const char DefaultTypeSeparator = '.';
         public const string TypeMethodNameSplitOn = "::";

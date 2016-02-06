@@ -306,8 +306,8 @@ namespace NoFuture.Rand.Domus
                 ? LinearEquations.FemaleDob2MarriageAge.SolveForY(dob.ToDouble())
                 : LinearEquations.MaleDob2MarriageAge.SolveForY(dob.ToDouble());
             var cdt = DateTime.Now;
-            var currentAge = (cdt.Year + cdt.DayOfYear / Constants.TROPICAL_YEAR) -
-                             (dob.Year + dob.DayOfYear / Constants.TROPICAL_YEAR);
+            var currentAge = (cdt.Year + cdt.DayOfYear / Constants.DBL_TROPICAL_YEAR) -
+                             (dob.Year + dob.DayOfYear / Constants.DBL_TROPICAL_YEAR);
 
             if (currentAge < avgAgeMarriage)
                 return MaritialStatus.Single;

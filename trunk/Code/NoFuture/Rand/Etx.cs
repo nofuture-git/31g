@@ -295,7 +295,7 @@ namespace NoFuture.Rand
 
         public static double ToDouble(this DateTime d)
         {
-            return (d.Year + (d.DayOfYear/Constants.TROPICAL_YEAR));
+            return (d.Year + (d.DayOfYear/Constants.DBL_TROPICAL_YEAR));
         }
         #endregion
     }

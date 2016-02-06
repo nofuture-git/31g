@@ -1,17 +1,24 @@
 ﻿using System;
+using NoFuture.Shared;
 
 namespace NoFuture.Util.Math
 {
-    public class Econ
+    public static class Econ
     {
-        public static Decimal CompoundInterest(Decimal principalAmt, float annualInterestRate, int termInYears, TimeSpan? frequency)
+        /// <summary>
+        /// Calc's value after compound, per diem, interest.
+        /// </summary>
+        /// <param name="balance"></param>
+        /// <param name="annualInterestRate"></param>
+        /// <param name="numberOfDays"></param>
+        /// <returns></returns>
+        public static Decimal PerDiemInterest(this Decimal balance, float annualInterestRate, double numberOfDays)
         {
-            var pa = System.Convert.ToDouble(principalAmt);
-            var freq = frequency == null ? new TimeSpan(365, 0, 0, 0) : frequency.Value;
+            var pa = Convert.ToDouble(balance);
+            var freq = Constants.TropicalYear;
             var calc = System.Math.Round(pa *
-                       System.Math.Pow((1 + (annualInterestRate / freq.TotalDays)), (freq.TotalDays * termInYears)), 2);
-
-            return System.Convert.ToDecimal(calc);
+                                         System.Math.Pow((1 + (annualInterestRate / freq.TotalDays)),numberOfDays), 2);
+            return Convert.ToDecimal(calc);
         }
     }
 }

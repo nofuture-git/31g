@@ -24,24 +24,6 @@ namespace NoFuture.Rand
         }
     }
 
-    /// <summary>
-    /// Basic Money object pattern 
-    /// </summary>
-    /// <remarks>
-    /// Is Latin for Money
-    /// </remarks>
-    [Serializable]
-    public struct Pecuniam
-    {
-        public Pecuniam(Decimal amount)
-        {
-            Amount = amount;
-            Currency = "US";
-        }
-        public Decimal Amount;
-        public string Currency;
-    }
-
     [Serializable]
     public enum MaritialStatus
     {

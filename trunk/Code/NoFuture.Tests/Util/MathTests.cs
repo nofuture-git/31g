@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Runtime.InteropServices;
+using com.sun.org.apache.bcel.@internal.generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NoFuture.Rand.Data;
 using NoFuture.Timeline;
@@ -292,5 +293,20 @@ namespace NoFuture.Tests.Util
             Assert.AreEqual(dob, y);
 
         }
+
+        [TestMethod]
+        public void TestPerDiemInterest()
+        {
+            var testResult = 1541M.PerDiemInterest(0.13f, 30);
+            Assert.AreEqual(1557.54M,testResult);
+
+            testResult = 36000M.PerDiemInterest(0.035f, NoFuture.Shared.Constants.TropicalYear.TotalDays*5);
+            Assert.AreEqual(42884.5M, testResult);
+
+            testResult = 36000M.PerDiemInterest(0f, NoFuture.Shared.Constants.TropicalYear.TotalDays*5);
+            Assert.AreEqual(36000M, testResult);
+
+        }
+
     }
 }
