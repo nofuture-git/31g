@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace NoFuture.Rand.Gov.Fed
 {
@@ -21,6 +23,83 @@ namespace NoFuture.Rand.Gov.Fed
         public override string Abbrev
         {
             get { return "RTN"; }
+        }
+
+        public string FedDistrict
+        {
+            get
+            {
+                if (string.IsNullOrWhiteSpace(Value))
+                    return string.Empty;
+                if (Value.Length < 2)
+                    return string.Empty;
+                switch (Value.Substring(0, 2))
+                {
+                    case ATLANTA:
+                        return "Federal Reserve Bank of Atlanta";
+                    case BOSTON:
+                        return "Federal Reserve Bank of Boston";
+                    case CHICAGO:
+                        return "Federal Reserve Bank of Chicago";
+                    case CLEVELAND:
+                        return "Federal Reserve Bank of Cleveland";
+                    case DALLAS:
+                        return "Federal Reserve Bank of Dallas";
+                    case KANSAS_CITY:
+                        return "Federal Reserve Bank of Kansas City";
+                    case MINNEAPOLIS:
+                        return "Federal Reserve Bank of Minneapolis";
+                    case PHILADELPHIA:
+                        return "Federal Reserve Bank of Philadelphia";
+                    case RICHMOND:
+                        return "Federal Reserve Bank of Richmond";
+                    case SAN_FRANCISCO:
+                        return "Federal Reserve Bank of San Francisco";
+                    case ST_LOUIS:
+                        return "Federal Reserve Bank of St. Louis";
+                    default:
+                        return "Federal Reserve Bank of New York";
+                }
+            }
+        }
+
+        /// <summary>
+        /// [https://en.wikipedia.org/wiki/Federal_Reserve_Bank#Assets]
+        /// </summary>
+        /// <returns></returns>
+        public static RoutingTransitNumber RandomRoutingNumber()
+        {
+            var rt = new StringBuilder();
+            var xx = NEY_YORK;
+            var roll = NoFuture.Rand.Etx.Number(1, 100);
+            if (roll >= 57 && roll < 69)
+                xx = SAN_FRANCISCO;
+            if (roll >= 69 && roll < 75)
+                xx = RICHMOND;
+            if (roll >= 75 && roll < 80)
+                xx = ATLANTA;
+            if (roll >= 80 && roll < 85)
+                xx = CHICAGO;
+            if (roll >= 85 && roll < 88)
+                xx = DALLAS;
+            if (roll >= 88 && roll < 91)
+                xx = CLEVELAND;
+            if (roll >= 91 && roll < 94)
+                xx = PHILADELPHIA;
+            if (roll >= 94 && roll < 96)
+                xx = BOSTON;
+            if (roll == 96 || roll == 97)
+                xx = KANSAS_CITY;
+            if (roll == 98 || roll == 99)
+                xx = ST_LOUIS;
+            if (roll == 100)
+                xx = MINNEAPOLIS;
+            rt.Append(xx);
+            for (var i = 0; i < 7; i++)
+                rt.Append(Etx.Number(0, 9));
+
+            rt.Append(CalcChkDigit(rt.ToString()));
+            return new RoutingTransitNumber {Value = rt.ToString()};
         }
 
         public const string BOSTON = "01";

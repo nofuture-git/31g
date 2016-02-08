@@ -269,7 +269,7 @@ namespace NoFuture.Rand
                 throw new ItsDeadJim("The calculation requires a date range.");
 
             var olderDate = DateTime.Compare(between.Item1, between.Item2) < 0 ? between.Item1 : between.Item2;
-            var newerDate = DateTime.Compare(between.Item1, between.Item2) > 0 ? between.Item2 : between.Item1;
+            var newerDate = DateTime.Compare(between.Item2, between.Item1) > 0 ? between.Item2 : between.Item1;
 
             var paymentsInRange =
                 ts.Where(

@@ -11,7 +11,7 @@ namespace NoFuture.Tests.Rand.DomusTests
         public void TestMethod1()
         {
             var testSubject = new NoFuture.Rand.Domus.Sp.TradeLine(DateTime.Now.AddDays(-370));
-            var testBalance = testSubject.CurrentBalance;
+            var testBalance = testSubject.Balance;
 
             testBalance.Transactions.Add(new Transaction(DateTime.Now.AddDays(-360), new Pecuniam(-450.0M)));
             testBalance.Transactions.Add(new Transaction(DateTime.Now.AddDays(-120), new Pecuniam(-458.0M)));

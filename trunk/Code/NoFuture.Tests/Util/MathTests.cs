@@ -306,6 +306,9 @@ namespace NoFuture.Tests.Util
             testResult = 36000M.PerDiemInterest(0f, NoFuture.Shared.Constants.TropicalYear.TotalDays*5);
             Assert.AreEqual(36000M, testResult);
 
+            testResult = 48000M.PerDiemInterest(-0.15f, NoFuture.Shared.Constants.TropicalYear.TotalDays*20);
+
+            System.Diagnostics.Debug.WriteLine(testResult);
         }
 
     }

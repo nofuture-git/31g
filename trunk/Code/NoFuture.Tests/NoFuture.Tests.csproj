@@ -194,6 +194,7 @@
     <Compile Include="Rand\AddressTests.cs" />
     <Compile Include="Rand\CityAreaTests.cs" />
     <Compile Include="Rand\DomusTests\TradeLineTests.cs" />
+    <Compile Include="Rand\DomusTests\LoanTests.cs" />
     <Compile Include="Rand\PecuniamTests.cs" />
     <Compile Include="Rand\EtxTests.cs" />
     <Compile Include="Rand\PersonTests.cs" />

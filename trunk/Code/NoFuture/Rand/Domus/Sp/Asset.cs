@@ -31,7 +31,13 @@ namespace NoFuture.Rand.Domus.Sp
     [Serializable]
     public abstract class BankAccount : Asset
     {
-        public Gov.Fed.RoutingTransitNumber RoutingNumber { get; set; }
+        private Gov.Fed.RoutingTransitNumber _routingNumber = Gov.Fed.RoutingTransitNumber.RandomRoutingNumber();
+
+        public Gov.Fed.RoutingTransitNumber RoutingNumber
+        {
+            get { return _routingNumber; }
+            set { _routingNumber = value; }
+        }
     }
 
     [Serializable]

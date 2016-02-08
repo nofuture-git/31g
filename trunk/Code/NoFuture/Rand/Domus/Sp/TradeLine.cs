@@ -6,7 +6,7 @@ namespace NoFuture.Rand.Domus.Sp
     {
         FormOfCredit FormOfCredit { get; set; }
         Pecuniam CreditLimit { get; set; }
-        Balance CurrentBalance { get; }
+        Balance Balance { get; }
         TimeSpan DueFrequency { get; set; }
         DateTime OpennedDate { get; }
         TradelineClosure? Closure { get; set; }
@@ -18,11 +18,14 @@ namespace NoFuture.Rand.Domus.Sp
         #region constants
         public const int MAX_FICO = 850;
         public const int MIN_FICO = 300;
+
+        public static TimeSpan DefaultDueFrequency = new TimeSpan(30,0,0,0);
         #endregion
 
         #region fields
         private readonly Balance _balance = new Balance();
         private readonly DateTime _openDate;
+        private TimeSpan _dueFrequency = DefaultDueFrequency;
         #endregion
 
         public TradeLine(DateTime openDate)
@@ -33,8 +36,8 @@ namespace NoFuture.Rand.Domus.Sp
         #region properties
         public FormOfCredit FormOfCredit { get; set; }
         public Pecuniam CreditLimit { get; set; }
-        public Balance CurrentBalance { get { return _balance; } }
-        public TimeSpan DueFrequency { get; set; }
+        public Balance Balance { get { return _balance; } }
+        public TimeSpan DueFrequency { get { return _dueFrequency; } set { _dueFrequency = value; }}
         public DateTime OpennedDate { get { return _openDate; } }
         public TradelineClosure? Closure { get; set; }
         #endregion

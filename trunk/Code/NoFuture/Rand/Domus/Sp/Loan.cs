@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using NoFuture.Rand.Com;
+using NoFuture.Util;
 
 namespace NoFuture.Rand.Domus.Sp //Sequere pecuniam
 {
@@ -85,12 +86,12 @@ namespace NoFuture.Rand.Domus.Sp //Sequere pecuniam
         #region methods
         public Pecuniam GetMinPayment(DateTime dt)
         {
-            var bal = _tradeLine.CurrentBalance.GetCurrent(dt, Rate);
+            var bal = _tradeLine.Balance.GetCurrent(dt, Rate);
             if (bal < new Pecuniam(0))
                 return new Pecuniam(0);
 
             var amt = bal.Amount * Convert.ToDecimal(MinPaymentRate);
-            return new Pecuniam(Math.Round(amt, 0));
+            return new Pecuniam(Math.Round(amt, 2) * -1);
         }
 
         public LoanStatus GetStatus(DateTime dt)
@@ -98,14 +99,18 @@ namespace NoFuture.Rand.Domus.Sp //Sequere pecuniam
             if ((_tradeLine.Closure != null && DateTime.Compare(_tradeLine.Closure.Value.ClosedDate, dt) < 0))
                 return LoanStatus.Closed;
 
-            if (_tradeLine.CurrentBalance.Transactions.Count <= 0)
+            if (_tradeLine.Balance.Transactions.Count <= 0)
                 return LoanStatus.NoHistory;
 
+            //make sure something is actually owed
+            if((_tradeLine.Balance.GetCurrent(dt, Rate)).Amount <= 0)
+                return LoanStatus.Current;
+
             var lastPayment =
-                _tradeLine.CurrentBalance.GetPaymentSum(
+                _tradeLine.Balance.GetPaymentSum(
                     new Tuple<DateTime, DateTime>(dt.AddDays(_tradeLine.DueFrequency.TotalDays*-1), dt));
 
-            return lastPayment < GetMinPayment(dt)
+            return lastPayment.Abs < GetMinPayment(dt).Abs
                 ? LoanStatus.Late
                 : LoanStatus.Current;
         }
@@ -115,22 +120,47 @@ namespace NoFuture.Rand.Domus.Sp //Sequere pecuniam
             if (GetStatus(dt) != LoanStatus.Late)
                 return null;
 
-            var lastPayment = _tradeLine.CurrentBalance.Transactions.LastOrDefault();
-            if (lastPayment == null)
+            //30 days past due when last payment was normal billing cycle plus 30 days
+            var billingCycleDays = TradeLine.DueFrequency.TotalDays;
+
+            var justLate = new Tuple<DateTime, DateTime>(dt.AddDays(-29 - billingCycleDays),
+                dt.AddDays(billingCycleDays*-1));
+
+            if ((_tradeLine.Balance.GetPaymentSum(justLate)).Amount < 0)
                 return null;
 
-            var daysFromLastPayment = (dt - lastPayment.AtTime).TotalDays;
+            //the line was openned some time before 30DPD
+            if (DateTime.Compare(TradeLine.OpennedDate, dt.AddDays(-30 - billingCycleDays)) > 0)
+                return null;
 
-            if (daysFromLastPayment >= 30 && daysFromLastPayment < 60)
+            var thirtyDpd = new Tuple<DateTime, DateTime>(dt.AddDays(-59 - billingCycleDays),
+                dt.AddDays(-30 - billingCycleDays));
+
+            if((_tradeLine.Balance.GetPaymentSum(thirtyDpd)).Amount < 0)
                 return PastDue.Thirty;
-            if (daysFromLastPayment >= 60 && daysFromLastPayment < 90)
+
+            if (DateTime.Compare(TradeLine.OpennedDate, dt.AddDays(-60 - billingCycleDays)) > 1)
                 return PastDue.Thirty;
-            if (daysFromLastPayment >= 90 && daysFromLastPayment < 180)
+
+            var sixtyDpd = new Tuple<DateTime, DateTime>(dt.AddDays(-89 - billingCycleDays),
+                dt.AddDays(-60 - billingCycleDays));
+
+            if ((TradeLine.Balance.GetPaymentSum(sixtyDpd)).Amount < 0)
+                return PastDue.Sixty;
+
+            if (DateTime.Compare(TradeLine.OpennedDate, dt.AddDays(-90 - billingCycleDays)) > 1)
+                return PastDue.Sixty;
+
+            var nintyDpd = new Tuple<DateTime, DateTime>(dt.AddDays(-179 - billingCycleDays),
+                dt.AddDays(-90 - billingCycleDays));
+
+            if((TradeLine.Balance.GetPaymentSum(nintyDpd)).Amount < 0)
                 return PastDue.Ninety;
-            if (daysFromLastPayment >= 180)
-                return PastDue.HundredAndEighty;
 
-            return null;
+            if(DateTime.Compare(TradeLine.OpennedDate, dt.AddDays(-180 - billingCycleDays)) > 1)
+                return PastDue.Ninety;
+
+            return PastDue.HundredAndEighty;
         }
         #endregion
     }
