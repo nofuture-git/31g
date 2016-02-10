@@ -11,7 +11,10 @@ $targetCodes = @(
     "ec/ec.ownership",
     "ec/ec.period",
     "cu/cu.area",
-    "cu/cu.item"
+    "cu/cu.item",
+    "ce/ce.supersector",
+    "ce/ce.industry",
+    "ce/ce.datatype"
 )
 $blsOutNs = "NoFuture.Rand.Gov.Bls.Codes"
 $blsOutPath = "C:\Projects\31g\trunk\Code\NoFuture\Rand\Gov\Bls\Codes"
@@ -47,7 +50,7 @@ function Get-BlsGovCodes
 
         [System.IO.File]::WriteAllBytes($DataPath,$Data)
 
-        CodeGenerate-CsvToCs -Path $DataPath -Delimiter ([char]0x09) -OutputPath $Path -Namespace $Namespace
+        Convert-CsvToCsCode -Path $DataPath -Delimiter ([char]0x09) -OutputPath $Path -Namespace $Namespace
 
     }
 }
@@ -63,4 +66,8 @@ $targetCodes | % {
         break;
     }
 }
+
+ls $blsOutPath -Filter *.cs | % {[NoFuture.Util.NfPath]::ConvertToCrLf($_.FullName)}
+
 Read-Host "Done, press any key to exit..."
+

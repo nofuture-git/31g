@@ -14,7 +14,7 @@ namespace NoFuture.Rand.Data.Types
     /// http://www.census.gov/cgi-bin/sssd/naics/naicsrch?chart=2012
     /// </remarks>
     [Serializable]
-    public abstract class NorthAmericanIndustryClassification : Identifier
+    public abstract class NorthAmericanIndustryClassification : XmlDocIdBase
     {
         #region fields
         protected readonly List<NorthAmericanIndustryClassification> divisions  = new List<NorthAmericanIndustryClassification>();
@@ -27,7 +27,6 @@ namespace NoFuture.Rand.Data.Types
         public bool IsSector { get { return Value.Length == 3; } }
         public bool IsIndustry { get { return Value.Length == 4; } }
         public virtual List<NorthAmericanIndustryClassification> Divisions { get { return divisions; } }
-        public abstract string XmlLocalName { get; }
         public override string Abbrev { get { return "NAICS"; } }
         #endregion
 
@@ -37,18 +36,12 @@ namespace NoFuture.Rand.Data.Types
         /// </summary>
         /// <param name="elem"></param>
         /// <returns></returns>
-        public virtual bool TryThisParseXml(XmlElement elem)
+        public override bool TryThisParseXml(XmlElement elem)
         {
-            if (elem == null)
-                return false;
-            if (elem.LocalName != XmlLocalName)
+            if (!base.TryThisParseXml(elem))
                 return false;
 
-            var attr = elem.Attributes["ID"];
-            if (attr != null)
-                Value = attr.Value;
-
-            attr = elem.Attributes["Description"];
+            var attr = elem.Attributes["Description"];
             if (attr != null)
                 Description = attr.Value;
             return true;
@@ -108,7 +101,7 @@ namespace NoFuture.Rand.Data.Types
     public class NaicsSuperSector : NorthAmericanIndustryClassification
     {
         //unique to super sectors
-        public char? BlsCode { get; set; }
+        public char? BlsIpCode { get; set; }
         public float? PercentOfTotalMarketAssests { get; set; }
         public float? TaxRate { get; set; }
         public float? NetIncome2NetWorth { get; set; }
@@ -117,33 +110,6 @@ namespace NoFuture.Rand.Data.Types
         {
             if (!base.TryThisParseXml(elem))
                 return false;
-
-            var attr = elem.Attributes["bls-code"];
-            if (attr != null && !string.IsNullOrWhiteSpace(attr.Value))
-                BlsCode = attr.Value.ToCharArray()[0];
-            attr = elem.Attributes["ptma"];
-            if (attr != null && !string.IsNullOrWhiteSpace(attr.Value))
-            {
-                float ptma;
-                if (float.TryParse(attr.Value, out ptma))
-                    PercentOfTotalMarketAssests = ptma;
-            }
-
-            attr = elem.Attributes["tax-rate"];
-            if (attr != null && !string.IsNullOrWhiteSpace(attr.Value))
-            {
-                float tax;
-                if (float.TryParse(attr.Value, out tax))
-                    TaxRate = tax;
-            }
-
-            attr = elem.Attributes["ni2nw"];
-            if (attr != null && !string.IsNullOrWhiteSpace(attr.Value))
-            {
-                float ni2nw;
-                if (float.TryParse(attr.Value, out ni2nw))
-                    NetIncome2NetWorth = ni2nw;
-            }
 
             if (!elem.HasChildNodes)
                 return true;

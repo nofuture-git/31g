@@ -51,12 +51,18 @@
     <Compile Include="Data\TreeData.cs" />
     <Compile Include="Data\Types\AddressData.cs" />
     <Compile Include="Data\Types\FinancialData.cs" />
+    <Compile Include="Data\Types\XmlDocIdBase.cs" />
+    <Compile Include="Data\Types\XRef.cs" />
     <Compile Include="Domus\IPerson.cs" />
+    <Compile Include="Domus\IProfession.cs" />
     <Compile Include="Domus\NorthAmerican.cs" />
     <Compile Include="Domus\Pneuma\Personality.cs" />
     <Compile Include="Domus\Sp\Asset.cs" />
     <Compile Include="Domus\Sp\Income.cs" />
     <Compile Include="Domus\Sp\Loan.cs" />
+    <Compile Include="Gov\Bls\Codes\CeDatatype.cs" />
+    <Compile Include="Gov\Bls\Codes\CeIndustry.cs" />
+    <Compile Include="Gov\Bls\Codes\CeSupersector.cs" />
     <Compile Include="Pecuniam.cs" />
     <Compile Include="Domus\Sp\TradeLine.cs" />
     <Compile Include="Edu\AmericanHighSchool.cs" />
@@ -153,6 +159,9 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Data\Source\US_Zip_ProbTable.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\Source\XRef.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

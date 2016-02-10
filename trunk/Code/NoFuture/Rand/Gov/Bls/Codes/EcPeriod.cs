@@ -2,17 +2,20 @@ using System;
 using System.Collections.Generic;
 namespace NoFuture.Rand.Gov.Bls.Codes
 {
-    public class EcPeriod
+    public class EcPeriod 
     {
         public string Period { get; set; }
         public string PeriodAbbr { get; set; }
         public string PeriodName { get; set; }
+        private static List<EcPeriod> _values;
         public static List<EcPeriod> Values
         {
             get
             {
-                return new List<EcPeriod>
-                       {
+                if (_values != null)
+                    return _values;
+                _values = new List<EcPeriod>
+                           {
                            
                            new EcPeriod
                            {
@@ -46,6 +49,7 @@ namespace NoFuture.Rand.Gov.Bls.Codes
                            },
 
                        };
+                return _values;
             }
         }
 	}//end EcPeriod

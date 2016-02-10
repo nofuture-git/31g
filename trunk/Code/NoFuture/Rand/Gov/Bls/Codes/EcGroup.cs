@@ -2,16 +2,19 @@ using System;
 using System.Collections.Generic;
 namespace NoFuture.Rand.Gov.Bls.Codes
 {
-    public class EcGroup
+    public class EcGroup 
     {
         public string GroupCode { get; set; }
         public string GroupName { get; set; }
+        private static List<EcGroup> _values;
         public static List<EcGroup> Values
         {
             get
             {
-                return new List<EcGroup>
-                       {
+                if (_values != null)
+                    return _values;
+                _values = new List<EcGroup>
+                           {
                            
                            new EcGroup
                            {
@@ -570,6 +573,7 @@ namespace NoFuture.Rand.Gov.Bls.Codes
                            },
 
                        };
+                return _values;
             }
         }
 	}//end EcGroup

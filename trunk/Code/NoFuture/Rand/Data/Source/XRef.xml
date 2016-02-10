@@ -1,0 +1,174 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<noFuture>
+  <rand>
+    <data>
+      <source>
+        <x-ref-group data-file="US_EconSectors.xml" node-name="primary-sector">
+          <x-data-reference>
+            <x-ref>
+              <x-ref-id>11</x-ref-id>
+            </x-ref>
+            <add name="ptma" value="0.18" />
+            <add name="tax-rate" value="0.0713" />
+            <add name="ni2nw" value="0.225" />
+          </x-data-reference>
+          <x-data-reference>
+            <x-ref>
+              <x-ref-id>21</x-ref-id>
+            </x-ref>
+            <add name="bls-ip-code" value="B" />
+            <add name="ptma" value="1.29" />
+            <add name="tax-rate" value="0.2751" />
+            <add name="ni2nw" value="0.1178" />
+          </x-data-reference>
+          <x-data-reference>
+            <x-ref>
+              <x-ref-id>22</x-ref-id>
+            </x-ref>
+            <add name="bls-ip-code" value="C" />
+            <add name="ptma" value="2" />
+            <add name="tax-rate" value="0.2646" />
+            <add name="ni2nw" value="0.0132" />
+          </x-data-reference>
+          <x-data-reference>
+            <x-ref>
+              <x-ref-id>23</x-ref-id>
+            </x-ref>
+            <add name="ptma" value="0.76" />
+            <add name="tax-rate" value="0.0451" />
+            <add name="ni2nw" value="0.2195" />
+          </x-data-reference>
+          <x-data-reference>
+            <x-ref>
+              <x-ref-id>31</x-ref-id>
+              <x-ref-id>32</x-ref-id>
+              <x-ref-id>33</x-ref-id>
+            </x-ref>
+            <add name="bls-ip-code" value="E" />
+            <add name="ptma" value="14.13" />
+            <add name="tax-rate" value="0.2857" />
+            <add name="ni2nw" value="0.1253" />
+          </x-data-reference>
+          <x-data-reference>
+            <x-ref>
+              <x-ref-id>42</x-ref-id>
+              <x-ref-id>44</x-ref-id>
+              <x-ref-id>45</x-ref-id>
+            </x-ref>
+            <add name="bls-ip-code" value="G" />
+            <add name="ptma" value="5.13" />
+            <add name="tax-rate" value="0.2211" />
+            <add name="ni2nw" value="0.1527" />
+          </x-data-reference>
+          <x-data-reference>
+            <x-ref>
+              <x-ref-id>48</x-ref-id>
+              <x-ref-id>49</x-ref-id>
+            </x-ref>
+            <add name="bls-ip-code" value="I" />
+            <add name="ptma" value="0.89" />
+            <add name="tax-rate" value="0.1587" />
+            <add name="ni2nw" value="0.1776" />
+          </x-data-reference>
+          <x-data-reference>
+            <x-ref>
+              <x-ref-id>51</x-ref-id>
+            </x-ref>
+            <add name="bls-ip-code" value="J" />
+            <add name="ptma" value="3.08" />
+            <add name="tax-rate" value="0.2776" />
+            <add name="ni2nw" value="0.0954" />
+          </x-data-reference>
+          <x-data-reference>
+            <x-ref>
+              <x-ref-id>52</x-ref-id>
+            </x-ref>
+            <add name="bls-ip-code" value="K" />
+            <add name="ptma" value="49.17" />
+            <add name="tax-rate" value="0.0978" />
+            <add name="ni2nw" value="0.0255" />
+          </x-data-reference>
+          <x-data-reference>
+            <x-ref>
+              <x-ref-id>53</x-ref-id>
+            </x-ref>
+            <add name="bls-ip-code" value="L" />
+            <add name="ptma" value="1.98" />
+            <add name="tax-rate" value="0.479" />
+            <add name="ni2nw" value="0.074" />
+          </x-data-reference>
+          <x-data-reference>
+            <x-ref>
+              <x-ref-id>54</x-ref-id>
+            </x-ref>
+            <add name="bls-ip-code" value="M" />
+            <add name="ptma" value="1.16" />
+            <add name="tax-rate" value="0.105" />
+            <add name="ni2nw" value="0.282" />
+          </x-data-reference>
+          <x-data-reference>
+            <x-ref>
+              <x-ref-id>55</x-ref-id>
+            </x-ref>
+            <add name="ptma" value="18.47" />
+            <add name="tax-rate" value="0.249" />
+            <add name="ni2nw" value="0.0544" />
+          </x-data-reference>
+          <x-data-reference>
+            <x-ref>
+              <x-ref-id>56</x-ref-id>
+            </x-ref>
+            <add name="bls-ip-code" value="P" />
+            <add name="ptma" value="0.39" />
+            <add name="tax-rate" value="0.1201" />
+            <add name="ni2nw" value="0.2412" />
+          </x-data-reference>
+          <x-data-reference>
+            <x-ref>
+              <x-ref-id>61</x-ref-id>
+            </x-ref>
+            <add name="ptma" value="0.07" />
+            <add name="tax-rate" value="0.1951" />
+            <add name="ni2nw" value="0.302" />
+          </x-data-reference>
+          <x-data-reference>
+            <x-ref>
+              <x-ref-id>62</x-ref-id>
+            </x-ref>
+            <add name="bls-ip-code" value="R" />
+            <add name="ptma" value="0.43" />
+            <add name="tax-rate" value="0.0596" />
+            <add name="ni2nw" value="0.6673" />
+          </x-data-reference>
+          <x-data-reference>
+            <x-ref>
+              <x-ref-id>71</x-ref-id>
+            </x-ref>
+            <add name="bls-ip-code" value="S" />
+            <add name="ptma" value="0.14" />
+            <add name="tax-rate" value="0.051" />
+            <add name="ni2nw" value="0.2921" />
+          </x-data-reference>
+          <x-data-reference>
+            <x-ref>
+              <x-ref-id>72</x-ref-id>
+            </x-ref>
+            <add name="bls-ip-code" value="T" />
+            <add name="ptma" value="0.58" />
+            <add name="tax-rate" value="0.1867" />
+            <add name="ni2nw" value="0.2659" />
+          </x-data-reference>
+          <x-data-reference>
+            <x-ref>
+              <x-ref-id>81</x-ref-id>
+            </x-ref>
+            <add name="bls-ip-code" value="U" />
+            <add name="ptma" value="0.15" />
+            <add name="tax-rate" value="0.0621" />
+            <add name="ni2nw" value="0.3719" />
+          </x-data-reference>
+        </x-ref-group>
+      </source>
+    </data>
+  </rand>
+</noFuture>

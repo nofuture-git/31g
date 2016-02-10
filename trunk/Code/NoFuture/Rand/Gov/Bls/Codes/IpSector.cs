@@ -2,16 +2,19 @@ using System;
 using System.Collections.Generic;
 namespace NoFuture.Rand.Gov.Bls.Codes
 {
-    public class IpSector
+    public class IpSector 
     {
         public string SectorCode { get; set; }
         public string SectorText { get; set; }
+        private static List<IpSector> _values;
         public static List<IpSector> Values
         {
             get
             {
-                return new List<IpSector>
-                       {
+                if (_values != null)
+                    return _values;
+                _values = new List<IpSector>
+                           {
                            
                            new IpSector
                            {
@@ -90,6 +93,7 @@ namespace NoFuture.Rand.Gov.Bls.Codes
                            },
 
                        };
+                return _values;
             }
         }
 	}//end IpSector

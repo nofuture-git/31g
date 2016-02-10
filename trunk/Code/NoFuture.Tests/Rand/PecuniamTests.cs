@@ -9,7 +9,7 @@ namespace NoFuture.Tests.Rand
     {
 
         [TestMethod]
-        public void TestTransactionsDup()
+        public void TestTransactionsGetCurrent()
         {
             var testBalance = new NoFuture.Rand.Balance();
             //monthly payments
@@ -44,6 +44,24 @@ namespace NoFuture.Tests.Rand
 
             Assert.AreEqual(4723.45M, testResult.Amount);
             System.Diagnostics.Debug.WriteLine(testResult.Amount);
+
+        }
+
+        [TestMethod]
+        public void TestGetCurrentNoInterest()
+        {
+            var testBalance = new NoFuture.Rand.Balance();
+            testBalance.Transactions.Add(new Transaction(DateTime.Now.AddDays(-15), new Pecuniam(2000.0M)));
+            testBalance.Transactions.Add(new Transaction(DateTime.Now.AddDays(-12), new Pecuniam(-451.0M)));
+            testBalance.Transactions.Add(new Transaction(DateTime.Now.AddDays(-12), new Pecuniam(-101.91M)));
+            testBalance.Transactions.Add(new Transaction(DateTime.Now.AddDays(-12), new Pecuniam(-87.88M)));
+            testBalance.Transactions.Add(new Transaction(DateTime.Now.AddDays(-12), new Pecuniam(-32.47M)));
+            testBalance.Transactions.Add(new Transaction(DateTime.Now.AddDays(-12), new Pecuniam(-16.88M)));
+
+            var testResult = testBalance.GetCurrent(DateTime.Now, 0);
+            Assert.AreEqual(1309.86M, testResult.Amount);
+            System.Diagnostics.Debug.WriteLine(testResult.Amount);
+
 
         }
 

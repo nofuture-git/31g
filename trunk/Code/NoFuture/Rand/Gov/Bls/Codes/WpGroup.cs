@@ -2,16 +2,19 @@ using System;
 using System.Collections.Generic;
 namespace NoFuture.Rand.Gov.Bls.Codes
 {
-    public class WpGroup
+    public class WpGroup 
     {
         public string GroupCode { get; set; }
         public string GroupName { get; set; }
+        private static List<WpGroup> _values;
         public static List<WpGroup> Values
         {
             get
             {
-                return new List<WpGroup>
-                       {
+                if (_values != null)
+                    return _values;
+                _values = new List<WpGroup>
+                           {
                            
                            new WpGroup
                            {
@@ -290,6 +293,11 @@ namespace NoFuture.Rand.Gov.Bls.Codes
                            },
                            new WpGroup
                            {
+                               GroupName = "Inputs to industries",
+                               GroupCode = "IP",
+                           },
+                           new WpGroup
+                           {
                                GroupName = "Farm products, processed foods and feeds",
                                GroupCode = "PFF",
                            },
@@ -305,6 +313,7 @@ namespace NoFuture.Rand.Gov.Bls.Codes
                            },
 
                        };
+                return _values;
             }
         }
 	}//end WpGroup

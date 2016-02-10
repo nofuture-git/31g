@@ -45,7 +45,7 @@ function Convert-CsvToCsCode
         $Name = [System.IO.Path]::GetFileNameWithoutExtension($Path)
 
         $Obj = Import-Csv -Path $Path -Delimiter $Delimiter
-        return CodeGenerate-PsObjsToCs -ArrayOfPsObjs $Obj -Name $Name -OutputDir $OutputPath -Namespace $Namespace
+        return Convert-PsObjsToCsCode -ArrayOfPsObjs $Obj -Name $Name -OutputDir $OutputPath -Namespace $Namespace
     }
 }#end Convert-CsvToCsCode
 
@@ -179,6 +179,7 @@ namespace $Namespace
                 $member = $_
                 $csVal = $blsCode.($member)
                 $csMember = $csMembers[$member]
+                if([string]::IsNullOrWhiteSpace($csVal)){ $csVal = [string]::Empty}
                 $csVal = $csVal.Replace("`"","'");
                 $TypeDecl += "                               $csMember = `"$csVal`",`n"
             }

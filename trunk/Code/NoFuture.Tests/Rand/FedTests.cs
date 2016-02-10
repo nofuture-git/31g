@@ -23,5 +23,18 @@ namespace NoFuture.Tests.Rand
                 System.Diagnostics.Debug.WriteLine("-----");
             }
         }
+
+        [TestMethod]
+        public void TestRoutingTransitNumber()
+        {
+            var testSubject = NoFuture.Rand.Gov.Fed.RoutingTransitNumber.RandomRoutingNumber();
+            Assert.IsNotNull(testSubject);
+            Assert.IsFalse(string.IsNullOrWhiteSpace(testSubject.Value));
+            Assert.IsFalse(string.IsNullOrWhiteSpace(testSubject.FedDistrict));
+            Assert.AreEqual(10, testSubject.Value.Length);
+
+            System.Diagnostics.Debug.WriteLine(testSubject.Value);
+            System.Diagnostics.Debug.WriteLine(testSubject.FedDistrict);
+        }
     }
 }

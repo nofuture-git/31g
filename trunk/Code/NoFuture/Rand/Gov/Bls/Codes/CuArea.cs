@@ -2,19 +2,22 @@ using System;
 using System.Collections.Generic;
 namespace NoFuture.Rand.Gov.Bls.Codes
 {
-    public class CuArea
+    public class CuArea 
     {
         public string AreaCode { get; set; }
         public string AreaName { get; set; }
         public string DisplayLevel { get; set; }
         public string Selectable { get; set; }
         public string SortSequence { get; set; }
+        private static List<CuArea> _values;
         public static List<CuArea> Values
         {
             get
             {
-                return new List<CuArea>
-                       {
+                if (_values != null)
+                    return _values;
+                _values = new List<CuArea>
+                           {
                            
                            new CuArea
                            {
@@ -378,6 +381,7 @@ namespace NoFuture.Rand.Gov.Bls.Codes
                            },
 
                        };
+                return _values;
             }
         }
 	}//end CuArea

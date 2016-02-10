@@ -2,16 +2,19 @@ using System;
 using System.Collections.Generic;
 namespace NoFuture.Rand.Gov.Bls.Codes
 {
-    public class EcCompensation
+    public class EcCompensation 
     {
         public string CompCode { get; set; }
         public string CompText { get; set; }
+        private static List<EcCompensation> _values;
         public static List<EcCompensation> Values
         {
             get
             {
-                return new List<EcCompensation>
-                       {
+                if (_values != null)
+                    return _values;
+                _values = new List<EcCompensation>
+                           {
                            
                            new EcCompensation
                            {
@@ -30,6 +33,7 @@ namespace NoFuture.Rand.Gov.Bls.Codes
                            },
 
                        };
+                return _values;
             }
         }
 	}//end EcCompensation

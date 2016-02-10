@@ -2,19 +2,22 @@ using System;
 using System.Collections.Generic;
 namespace NoFuture.Rand.Gov.Bls.Codes
 {
-    public class CuItem
+    public class CuItem 
     {
         public string DisplayLevel { get; set; }
         public string ItemCode { get; set; }
         public string ItemName { get; set; }
         public string Selectable { get; set; }
         public string SortSequence { get; set; }
+        private static List<CuItem> _values;
         public static List<CuItem> Values
         {
             get
             {
-                return new List<CuItem>
-                       {
+                if (_values != null)
+                    return _values;
+                _values = new List<CuItem>
+                           {
                            
                            new CuItem
                            {
@@ -3210,6 +3213,7 @@ namespace NoFuture.Rand.Gov.Bls.Codes
                            },
 
                        };
+                return _values;
             }
         }
 	}//end CuItem

@@ -2,16 +2,19 @@ using System;
 using System.Collections.Generic;
 namespace NoFuture.Rand.Gov.Bls.Codes
 {
-    public class IpDuration
+    public class IpDuration 
     {
         public string DurationCode { get; set; }
         public string DurationText { get; set; }
+        private static List<IpDuration> _values;
         public static List<IpDuration> Values
         {
             get
             {
-                return new List<IpDuration>
-                       {
+                if (_values != null)
+                    return _values;
+                _values = new List<IpDuration>
+                           {
                            
                            new IpDuration
                            {
@@ -25,6 +28,7 @@ namespace NoFuture.Rand.Gov.Bls.Codes
                            },
 
                        };
+                return _values;
             }
         }
 	}//end IpDuration

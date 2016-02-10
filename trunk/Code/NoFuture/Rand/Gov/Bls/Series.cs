@@ -49,8 +49,10 @@ namespace NoFuture.Rand.Gov.Bls
             str.Append(SeasonalAdjustment ?? Globals.Unadjusted);
             str.Append(Compensation == null ? Globals.Defaults.EcCompensation : Compensation.CompCode);
             str.Append(Group == null ? Globals.Defaults.EcGroup : Group.GroupCode);
+            str.Append(Ownership == null ? Globals.Defaults.EcOwnership : Ownership.OwnershipCode);
             str.Append(Period == null ? Globals.Defaults.EcPeriod : Period.Period);
-            return str.ToString();
+
+            return Globals.PostUrl + str;
         }
     }
 
@@ -75,7 +77,8 @@ namespace NoFuture.Rand.Gov.Bls
             str.Append(Industry == null ? Globals.Defaults.IpIndustry : Industry.IndustryCode);
             str.Append(Measure == null ? Globals.Defaults.IpMeasure : Measure.MeasureCode);
             str.Append(Duration == null ? Globals.Defaults.IpDuration : Duration.DurationCode);
-            return str.ToString();
+
+            return Globals.PostUrl + str;
         }
     }
 
@@ -97,7 +100,41 @@ namespace NoFuture.Rand.Gov.Bls
             str.Append(Group == null ? Globals.Defaults.WpGroup : Group.GroupCode);
             str.Append(Item == null ? Globals.Defaults.WpItem : Item.ItemCode);
 
-            return str.ToString();
+            return Globals.PostUrl + str;
+        }
+    }
+
+    public class NatlEmployment : ISeries
+    {
+        public Uri ApiLink { get { return new Uri("http://www.bls.gov/help/hlpforma.htm#EE"); } }
+        public string Prefix { get { return "CE"; } }
+        public char? SeasonalAdjustment { get; set; }
+
+        public Bls.Codes.CeSupersector Supersector { get; set; }
+        public Bls.Codes.CeIndustry Industry { get; set; }
+        public Bls.Codes.CeDatatype Datatype { get; set; }
+
+        public override string ToString()
+        {
+            var str = new StringBuilder();
+            str.Append(Prefix);
+            str.Append(SeasonalAdjustment ?? Globals.Unadjusted);
+            if (Supersector != null)
+            {
+                str.Append(Supersector.SupersectorCode);
+                str.Append("000000");
+            }
+            else if (Industry != null)
+            {
+                str.Append(Industry.IndustryCode);
+            }
+            else
+            {
+                str.Append(Globals.Defaults.CeIndustry);
+            }
+            
+            str.Append(Datatype == null ? Globals.Defaults.CeDatatype : Datatype.DataTypeCode);
+            return Globals.PostUrl + str;
         }
     }
 }

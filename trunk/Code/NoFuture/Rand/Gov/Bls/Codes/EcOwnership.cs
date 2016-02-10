@@ -2,16 +2,19 @@ using System;
 using System.Collections.Generic;
 namespace NoFuture.Rand.Gov.Bls.Codes
 {
-    public class EcOwnership
+    public class EcOwnership 
     {
         public string OwnershipCode { get; set; }
         public string OwnershipName { get; set; }
+        private static List<EcOwnership> _values;
         public static List<EcOwnership> Values
         {
             get
             {
-                return new List<EcOwnership>
-                       {
+                if (_values != null)
+                    return _values;
+                _values = new List<EcOwnership>
+                           {
                            
                            new EcOwnership
                            {
@@ -30,6 +33,7 @@ namespace NoFuture.Rand.Gov.Bls.Codes
                            },
 
                        };
+                return _values;
             }
         }
 	}//end EcOwnership

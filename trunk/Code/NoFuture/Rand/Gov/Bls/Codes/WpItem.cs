@@ -2,17 +2,20 @@ using System;
 using System.Collections.Generic;
 namespace NoFuture.Rand.Gov.Bls.Codes
 {
-    public class WpItem
+    public class WpItem 
     {
         public string GroupCode { get; set; }
         public string ItemCode { get; set; }
         public string ItemName { get; set; }
+        private static List<WpItem> _values;
         public static List<WpItem> Values
         {
             get
             {
-                return new List<WpItem>
-                       {
+                if (_values != null)
+                    return _values;
+                _values = new List<WpItem>
+                           {
                            
                            new WpItem
                            {
@@ -173,6 +176,12 @@ namespace NoFuture.Rand.Gov.Bls.Codes
                            new WpItem
                            {
                                GroupCode = "01",
+                               ItemName = "Gala apples",
+                               ItemCode = "110220",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "01",
                                ItemName = "Pears",
                                ItemCode = "110221",
                            },
@@ -227,6 +236,18 @@ namespace NoFuture.Rand.Gov.Bls.Codes
                            new WpItem
                            {
                                GroupCode = "01",
+                               ItemName = "Fuji apples",
+                               ItemCode = "110229",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "01",
+                               ItemName = "Empire apples",
+                               ItemCode = "110230",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "01",
                                ItemName = "Melons",
                                ItemCode = "1103",
                            },
@@ -263,56 +284,80 @@ namespace NoFuture.Rand.Gov.Bls.Codes
                            new WpItem
                            {
                                GroupCode = "01",
-                               ItemName = "Dry pea beans",
-                               ItemCode = "130101",
+                               ItemName = "Dry beans",
+                               ItemCode = "13011",
                            },
                            new WpItem
                            {
                                GroupCode = "01",
                                ItemName = "Dry pinto beans",
-                               ItemCode = "130102",
+                               ItemCode = "130110",
                            },
                            new WpItem
                            {
                                GroupCode = "01",
                                ItemName = "Dry great northern beans",
-                               ItemCode = "130103",
+                               ItemCode = "130111",
                            },
                            new WpItem
                            {
                                GroupCode = "01",
                                ItemName = "Dry pink beans",
-                               ItemCode = "130104",
+                               ItemCode = "130112",
                            },
                            new WpItem
                            {
                                GroupCode = "01",
-                               ItemName = "Dry peas",
-                               ItemCode = "130105",
-                           },
-                           new WpItem
-                           {
-                               GroupCode = "01",
-                               ItemName = "Dry lentils",
-                               ItemCode = "130106",
+                               ItemName = "Dry pea beans",
+                               ItemCode = "130113",
                            },
                            new WpItem
                            {
                                GroupCode = "01",
                                ItemName = "Dry kidney beans",
-                               ItemCode = "130107",
+                               ItemCode = "130114",
                            },
                            new WpItem
                            {
                                GroupCode = "01",
                                ItemName = "Dry small red beans",
-                               ItemCode = "130108",
+                               ItemCode = "130115",
                            },
                            new WpItem
                            {
                                GroupCode = "01",
                                ItemName = "Dry garbanzo beans",
-                               ItemCode = "130109",
+                               ItemCode = "130116",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "01",
+                               ItemName = "Dry black beans",
+                               ItemCode = "130117",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "01",
+                               ItemName = "Dry blackeye beans",
+                               ItemCode = "130119",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "01",
+                               ItemName = "Dry peas and lentils",
+                               ItemCode = "13012",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "01",
+                               ItemName = "Dry peas",
+                               ItemCode = "130120",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "01",
+                               ItemName = "Dry lentils",
+                               ItemCode = "130121",
                            },
                            new WpItem
                            {
@@ -497,6 +542,12 @@ namespace NoFuture.Rand.Gov.Bls.Codes
                            new WpItem
                            {
                                GroupCode = "01",
+                               ItemName = "Round yellow potatoes",
+                               ItemCode = "130605",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "01",
                                ItemName = "Tree nuts",
                                ItemCode = "19",
                            },
@@ -677,6 +728,18 @@ namespace NoFuture.Rand.Gov.Bls.Codes
                            new WpItem
                            {
                                GroupCode = "01",
+                               ItemName = "Long grain rough rice",
+                               ItemCode = "2301031",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "01",
+                               ItemName = "Medium/short grain rough rice",
+                               ItemCode = "2301032",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "01",
                                ItemName = "Slaughter livestock",
                                ItemCode = "3",
                            },
@@ -851,8 +914,20 @@ namespace NoFuture.Rand.Gov.Bls.Codes
                            new WpItem
                            {
                                GroupCode = "01",
-                               ItemName = "Raw cotton",
+                               ItemName = "Raw Cotton",
                                ItemCode = "510101",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "01",
+                               ItemName = "Upland cotton",
+                               ItemCode = "5101011",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "01",
+                               ItemName = "Pima cotton",
+                               ItemCode = "5101012",
                            },
                            new WpItem
                            {
@@ -953,13 +1028,13 @@ namespace NoFuture.Rand.Gov.Bls.Codes
                            new WpItem
                            {
                                GroupCode = "01",
-                               ItemName = "Alfalfa hay",
+                               ItemName = "Hay and hayseeds",
                                ItemCode = "81",
                            },
                            new WpItem
                            {
                                GroupCode = "01",
-                               ItemName = "Alfalfa hay",
+                               ItemName = "Hay and hayseeds",
                                ItemCode = "8101",
                            },
                            new WpItem
@@ -967,6 +1042,12 @@ namespace NoFuture.Rand.Gov.Bls.Codes
                                GroupCode = "01",
                                ItemName = "Alfalfa hay",
                                ItemCode = "810101",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "01",
+                               ItemName = "All other hay",
+                               ItemCode = "810102",
                            },
                            new WpItem
                            {
@@ -1067,7 +1148,7 @@ namespace NoFuture.Rand.Gov.Bls.Codes
                            new WpItem
                            {
                                GroupCode = "02",
-                               ItemName = "Other variety breads (rye, unleavened, muffin, bagel, croissant)",
+                               ItemName = "Other variety breads (rye, unleavened, raisin, potato etc.)",
                                ItemCode = "11020114",
                            },
                            new WpItem
@@ -1247,7 +1328,7 @@ namespace NoFuture.Rand.Gov.Bls.Codes
                            new WpItem
                            {
                                GroupCode = "02",
-                               ItemName = "Other cereals",
+                               ItemName = "Cereal and pasta products",
                                ItemCode = "14",
                            },
                            new WpItem
@@ -1271,7 +1352,7 @@ namespace NoFuture.Rand.Gov.Bls.Codes
                            new WpItem
                            {
                                GroupCode = "02",
-                               ItemName = "Other cereals except pasta products",
+                               ItemName = "Cereal and mill products, other than flour",
                                ItemCode = "1409",
                            },
                            new WpItem
@@ -1475,7 +1556,7 @@ namespace NoFuture.Rand.Gov.Bls.Codes
                            new WpItem
                            {
                                GroupCode = "02",
-                               ItemName = "Unprocessed and packaged fish",
+                               ItemName = "Unprocessed and prepared seafood",
                                ItemCode = "23",
                            },
                            new WpItem
@@ -1589,7 +1670,7 @@ namespace NoFuture.Rand.Gov.Bls.Codes
                            new WpItem
                            {
                                GroupCode = "02",
-                               ItemName = "Fresh and frozen seafood processing",
+                               ItemName = "Prepared fresh and frozen seafood",
                                ItemCode = "2306",
                            },
                            new WpItem
@@ -2159,7 +2240,7 @@ namespace NoFuture.Rand.Gov.Bls.Codes
                            new WpItem
                            {
                                GroupCode = "02",
-                               ItemName = "Unsweetened choc/sweetened/unsweetned cocoa powder, ex coatings",
+                               ItemName = "Sweet./unsweet. chocolate/cocoa powder, cacao beans",
                                ItemCode = "5401052",
                            },
                            new WpItem
@@ -2207,7 +2288,7 @@ namespace NoFuture.Rand.Gov.Bls.Codes
                            new WpItem
                            {
                                GroupCode = "02",
-                               ItemName = "Chocolate and chocolate-type confectionery products made from cacao beans",
+                               ItemName = "Chocolate/chocolate-type confectionery prods, cacao beans",
                                ItemCode = "5503011",
                            },
                            new WpItem
@@ -2405,6 +2486,12 @@ namespace NoFuture.Rand.Gov.Bls.Codes
                            new WpItem
                            {
                                GroupCode = "02",
+                               ItemName = "Wines, effervescent, including sparkling (carbonated), wine coolers",
+                               ItemCode = "61044122",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "02",
                                ItemName = "Other wines, brandy, and brandy spirits",
                                ItemCode = "6104413",
                            },
@@ -2431,6 +2518,18 @@ namespace NoFuture.Rand.Gov.Bls.Codes
                                GroupCode = "02",
                                ItemName = "Soft drinks, non-carbonated",
                                ItemCode = "620609",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "02",
+                               ItemName = "Soft drinks, non-carbonated, all other types",
+                               ItemCode = "6206093",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "02",
+                               ItemName = "Soft drinks, non-carbonated, fruit drinks, cocktails, ades",
+                               ItemCode = "6206094",
                            },
                            new WpItem
                            {
@@ -2555,7 +2654,7 @@ namespace NoFuture.Rand.Gov.Bls.Codes
                            new WpItem
                            {
                                GroupCode = "02",
-                               ItemName = "Cooking oils",
+                               ItemName = "Shortening and cooking oils",
                                ItemCode = "780115",
                            },
                            new WpItem
@@ -3425,13 +3524,13 @@ namespace NoFuture.Rand.Gov.Bls.Codes
                            new WpItem
                            {
                                GroupCode = "03",
-                               ItemName = "Vinyl coated fabrics",
+                               ItemName = "Vinyl coated fabrics, including expanded vinyl coated",
                                ItemCode = "460102",
                            },
                            new WpItem
                            {
                                GroupCode = "03",
-                               ItemName = "Other coated or laminated fabrics and coated yarns",
+                               ItemName = "Other coated or laminated fabrics and coated yarns, incl. impregnated",
                                ItemCode = "460103",
                            },
                            new WpItem
@@ -3947,6 +4046,12 @@ namespace NoFuture.Rand.Gov.Bls.Codes
                            new WpItem
                            {
                                GroupCode = "03",
+                               ItemName = "Towels and washcloths",
+                               ItemCode = "82031225",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "03",
                                ItemName = "Other household furnishings",
                                ItemCode = "82031226",
                            },
@@ -4079,7 +4184,7 @@ namespace NoFuture.Rand.Gov.Bls.Codes
                            new WpItem
                            {
                                GroupCode = "03",
-                               ItemName = "Recyclable textiles, incl. rags, scraps, & cloths",
+                               ItemName = "Recyclable textiles, including rags, textile scrap, and wiping cloths",
                                ItemCode = "910204",
                            },
                            new WpItem
@@ -4427,6 +4532,18 @@ namespace NoFuture.Rand.Gov.Bls.Codes
                            new WpItem
                            {
                                GroupCode = "05",
+                               ItemName = "Natural gas from the wellhead",
+                               ItemCode = "3101051",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "05",
+                               ItemName = "Natural gas from processing facilities",
+                               ItemCode = "3101052",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "05",
                                ItemName = "Liquefied petroleum gas",
                                ItemCode = "32",
                            },
@@ -4457,7 +4574,7 @@ namespace NoFuture.Rand.Gov.Bls.Codes
                            new WpItem
                            {
                                GroupCode = "05",
-                               ItemName = "Ethane, gas mixtures and other natural gas liquids",
+                               ItemName = "Plant condensate, ethane, gas mixtures, and other natural gas liquids",
                                ItemCode = "320108",
                            },
                            new WpItem
@@ -5687,6 +5804,24 @@ namespace NoFuture.Rand.Gov.Bls.Codes
                            new WpItem
                            {
                                GroupCode = "06",
+                               ItemName = "Mixed fertilizers, made in plants which manufacture fertilizer materials",
+                               ItemCode = "5105011",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "06",
+                               ItemName = "Mixed fertilizers, dry, mixing only",
+                               ItemCode = "5105012",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "06",
+                               ItemName = "Mixed fertilizers, liquid, mixing only",
+                               ItemCode = "5105013",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "06",
                                ItemName = "Fertilizer materials",
                                ItemCode = "52",
                            },
@@ -5699,20 +5834,26 @@ namespace NoFuture.Rand.Gov.Bls.Codes
                            new WpItem
                            {
                                GroupCode = "06",
+                               ItemName = "Fertilizer materials of organic origin",
+                               ItemCode = "520137",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "06",
+                               ItemName = "Synthetic ammonia, nitric acid, ammonium compounds, and urea",
+                               ItemCode = "52013A",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "06",
                                ItemName = "Synthetic ammonia, nitric acid, and ammonium compounds",
-                               ItemCode = "520135",
+                               ItemCode = "52013A5",
                            },
                            new WpItem
                            {
                                GroupCode = "06",
                                ItemName = "Urea",
-                               ItemCode = "520136",
-                           },
-                           new WpItem
-                           {
-                               GroupCode = "06",
-                               ItemName = "Fertilizer materials of organic origin",
-                               ItemCode = "520137",
+                               ItemCode = "52013A6",
                            },
                            new WpItem
                            {
@@ -5723,14 +5864,20 @@ namespace NoFuture.Rand.Gov.Bls.Codes
                            new WpItem
                            {
                                GroupCode = "06",
+                               ItemName = "Phosphoric acid, 52-54 percent APA, superphosphates and other phosphate fertilizer materials",
+                               ItemCode = "52026A",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "06",
                                ItemName = "Phosphoric acid, 52-54 percent APA",
-                               ItemCode = "520267",
+                               ItemCode = "52026A1",
                            },
                            new WpItem
                            {
                                GroupCode = "06",
                                ItemName = "Superphosphates and other phosphate fertilizer materials",
-                               ItemCode = "520271",
+                               ItemCode = "52026A2",
                            },
                            new WpItem
                            {
@@ -6251,13 +6398,13 @@ namespace NoFuture.Rand.Gov.Bls.Codes
                            new WpItem
                            {
                                GroupCode = "07",
-                               ItemName = "Synthetic rubber, inc. styrene-butadiene rubber (SBR) and ethylene propylene",
+                               ItemName = "Synthetic rubber",
                                ItemCode = "1102",
                            },
                            new WpItem
                            {
                                GroupCode = "07",
-                               ItemName = "Synthetic rubber, inc. styrene-butadiene rubber (SBR) and ethylene propylene",
+                               ItemName = "Synthetic rubber, inc. sbr and ethylene propylene",
                                ItemCode = "110224",
                            },
                            new WpItem
@@ -6401,7 +6548,7 @@ namespace NoFuture.Rand.Gov.Bls.Codes
                            new WpItem
                            {
                                GroupCode = "07",
-                               ItemName = "Miscellaneous rubber products, n.e.c",
+                               ItemName = "Miscellaneous rubber products, n.e.c.",
                                ItemCode = "1306",
                            },
                            new WpItem
@@ -6473,7 +6620,7 @@ namespace NoFuture.Rand.Gov.Bls.Codes
                            new WpItem
                            {
                                GroupCode = "07",
-                               ItemName = "Rubber coated fabrics",
+                               ItemName = "Rubber coated fabrics and garments",
                                ItemCode = "130618",
                            },
                            new WpItem
@@ -6623,7 +6770,7 @@ namespace NoFuture.Rand.Gov.Bls.Codes
                            new WpItem
                            {
                                GroupCode = "07",
-                               ItemName = "Transportation fabricated plastics products (excluding foam & reinforced plastics)",
+                               ItemName = "Transportation equipment fabricated plastic parts (exc. foam and reinforced plastics)",
                                ItemCode = "2601052",
                            },
                            new WpItem
@@ -7409,26 +7556,14 @@ namespace NoFuture.Rand.Gov.Bls.Codes
                            new WpItem
                            {
                                GroupCode = "09",
-                               ItemName = "News wastepaper",
+                               ItemName = "News and other low grade wastepaper",
                                ItemCode = "1201",
                            },
                            new WpItem
                            {
                                GroupCode = "09",
-                               ItemName = "News wastepaper",
+                               ItemName = "News and other low grade wastepaper",
                                ItemCode = "120125",
-                           },
-                           new WpItem
-                           {
-                               GroupCode = "09",
-                               ItemName = "Mixed wastepaper",
-                               ItemCode = "1202",
-                           },
-                           new WpItem
-                           {
-                               GroupCode = "09",
-                               ItemName = "Mixed wastepaper",
-                               ItemCode = "120225",
                            },
                            new WpItem
                            {
@@ -7445,26 +7580,14 @@ namespace NoFuture.Rand.Gov.Bls.Codes
                            new WpItem
                            {
                                GroupCode = "09",
-                               ItemName = "High grades wastepaper (pulp, substitutes & deinking)",
+                               ItemName = "High grade wastepaper (including pulp substitutes and deinking)",
                                ItemCode = "1207",
                            },
                            new WpItem
                            {
                                GroupCode = "09",
-                               ItemName = "High grades wastepaper (pulp, substitutes & deinking)",
+                               ItemName = "High grade wastepaper (including pulp substitutes and deinking)",
                                ItemCode = "120725",
-                           },
-                           new WpItem
-                           {
-                               GroupCode = "09",
-                               ItemName = "Wastepaper exports (all grades)",
-                               ItemCode = "1208",
-                           },
-                           new WpItem
-                           {
-                               GroupCode = "09",
-                               ItemName = "Wastepaper exports (all grades)",
-                               ItemCode = "120801",
                            },
                            new WpItem
                            {
@@ -7487,7 +7610,7 @@ namespace NoFuture.Rand.Gov.Bls.Codes
                            new WpItem
                            {
                                GroupCode = "09",
-                               ItemName = "Bleached bristol, clay-coated, uncoated, and industrial converting paper",
+                               ItemName = "Bleached bristol, clay-coated, uncoated, and industrial converted paper",
                                ItemCode = "130119",
                            },
                            new WpItem
@@ -7513,6 +7636,12 @@ namespace NoFuture.Rand.Gov.Bls.Codes
                                GroupCode = "09",
                                ItemName = "Packaging and industrial converting paper",
                                ItemCode = "1303",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "09",
+                               ItemName = "Paper, construction",
+                               ItemCode = "130306",
                            },
                            new WpItem
                            {
@@ -7607,13 +7736,7 @@ namespace NoFuture.Rand.Gov.Bls.Codes
                            new WpItem
                            {
                                GroupCode = "09",
-                               ItemName = "Bleached packaging and industrial converting paperboard",
-                               ItemCode = "141103",
-                           },
-                           new WpItem
-                           {
-                               GroupCode = "09",
-                               ItemName = "Semi-chemical paperboard",
+                               ItemName = "Semichemical paperboard",
                                ItemCode = "141104",
                            },
                            new WpItem
@@ -7651,6 +7774,42 @@ namespace NoFuture.Rand.Gov.Bls.Codes
                                GroupCode = "09",
                                ItemName = "Sanitary tissue paper  products, made in paper mills",
                                ItemCode = "1501233",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "09",
+                               ItemName = "Paper, facial tissues and handkerchiefs, incl. sputum wipes, made in paper mills",
+                               ItemCode = "15012331",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "09",
+                               ItemName = "Paper, table napkins, industrial & retail pkgs, bulk  and dispenser types, made in paper mills",
+                               ItemCode = "15012332",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "09",
+                               ItemName = "Paper towels, industrial pkgs (rolled, folded, and interfolded), made in paper mills",
+                               ItemCode = "15012335",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "09",
+                               ItemName = "Paper towels, retail packages (rolled, folded, and interfolded), made in paper mills",
+                               ItemCode = "15012336",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "09",
+                               ItemName = "Other sanitary paper products, made in paper mills",
+                               ItemCode = "15012337",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "09",
+                               ItemName = "Toilet tissue, retail packages, rolls and ovals",
+                               ItemCode = "15012338",
                            },
                            new WpItem
                            {
@@ -7867,18 +8026,6 @@ namespace NoFuture.Rand.Gov.Bls.Codes
                                GroupCode = "09",
                                ItemName = "Envelopes",
                                ItemCode = "150636",
-                           },
-                           new WpItem
-                           {
-                               GroupCode = "09",
-                               ItemName = "Inked ribbons",
-                               ItemCode = "150642",
-                           },
-                           new WpItem
-                           {
-                               GroupCode = "09",
-                               ItemName = "Carbon and stencil paper",
-                               ItemCode = "150644",
                            },
                            new WpItem
                            {
@@ -8513,7 +8660,7 @@ namespace NoFuture.Rand.Gov.Bls.Codes
                            new WpItem
                            {
                                GroupCode = "10",
-                               ItemName = "Heavy melting carbon steel scrap",
+                               ItemName = "Heavy melting scrap",
                                ItemCode = "121191",
                            },
                            new WpItem
@@ -8531,7 +8678,7 @@ namespace NoFuture.Rand.Gov.Bls.Codes
                            new WpItem
                            {
                                GroupCode = "10",
-                               ItemName = "Cut plate and structural carbon steel scrap",
+                               ItemName = "Cut plate and structural scrap",
                                ItemCode = "121194",
                            },
                            new WpItem
@@ -8993,6 +9140,18 @@ namespace NoFuture.Rand.Gov.Bls.Codes
                            new WpItem
                            {
                                GroupCode = "10",
+                               ItemName = "Lead and zinc ores",
+                               ItemCode = "2106",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "10",
+                               ItemName = "Lead and zinc ores",
+                               ItemCode = "210601",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "10",
                                ItemName = "Other metal ores",
                                ItemCode = "2112",
                            },
@@ -9101,25 +9260,25 @@ namespace NoFuture.Rand.Gov.Bls.Codes
                            new WpItem
                            {
                                GroupCode = "10",
-                               ItemName = "Used beverage aluminum can scrap",
+                               ItemName = "Used beverage can scrap",
                                ItemCode = "230205",
                            },
                            new WpItem
                            {
                                GroupCode = "10",
-                               ItemName = "Other old aluminum scrap",
+                               ItemName = "Other old aluminum base scrap",
                                ItemCode = "230206",
                            },
                            new WpItem
                            {
                                GroupCode = "10",
-                               ItemName = "Other nonferrous scrap, including lead, zinc & precious metals",
+                               ItemName = "Other nonferrous scrap (including lead, zinc and precious metals)",
                                ItemCode = "2303",
                            },
                            new WpItem
                            {
                                GroupCode = "10",
-                               ItemName = "Other nonferrous scrap, including lead, zinc & precious metals",
+                               ItemName = "Other nonferrous scrap (including lead, zinc and precious metals)",
                                ItemCode = "230309",
                            },
                            new WpItem
@@ -10433,31 +10592,19 @@ namespace NoFuture.Rand.Gov.Bls.Codes
                            new WpItem
                            {
                                GroupCode = "10",
-                               ItemName = "Vehicular lighting equipment",
-                               ItemCode = "8304",
-                           },
-                           new WpItem
-                           {
-                               GroupCode = "10",
-                               ItemName = "Vehicular lighting equipment",
-                               ItemCode = "830404",
-                           },
-                           new WpItem
-                           {
-                               GroupCode = "10",
                                ItemName = "Other lighting equipment",
                                ItemCode = "8305",
                            },
                            new WpItem
                            {
                                GroupCode = "10",
-                               ItemName = "Outdoor lighting equipment, including parts",
+                               ItemName = "Outdoor lighting equipment (including parts and accessories)",
                                ItemCode = "830522",
                            },
                            new WpItem
                            {
                                GroupCode = "10",
-                               ItemName = "All other miscellaneous electric and nonelectric lighting equipment",
+                               ItemName = "All other miscellaneous electric and nonelectric lighting equipment, incl parts and accessories",
                                ItemCode = "830524",
                            },
                            new WpItem
@@ -10625,13 +10772,13 @@ namespace NoFuture.Rand.Gov.Bls.Codes
                            new WpItem
                            {
                                GroupCode = "10",
-                               ItemName = "Automotive screw machine products",
+                               ItemName = "Precision turned products, automotive",
                                ItemCode = "890521",
                            },
                            new WpItem
                            {
                                GroupCode = "10",
-                               ItemName = "Other screw machine products",
+                               ItemName = "Precision turned products, except automotive",
                                ItemCode = "890522",
                            },
                            new WpItem
@@ -10639,12 +10786,6 @@ namespace NoFuture.Rand.Gov.Bls.Codes
                                GroupCode = "10",
                                ItemName = "Nonferrous woven wire, made from purchased wire",
                                ItemCode = "890552",
-                           },
-                           new WpItem
-                           {
-                               GroupCode = "10",
-                               ItemName = "Metal ladders",
-                               ItemCode = "890556",
                            },
                            new WpItem
                            {
@@ -11015,8 +11156,8 @@ namespace NoFuture.Rand.Gov.Bls.Codes
                            new WpItem
                            {
                                GroupCode = "11",
-                               ItemName = "Other construction machinery and equipment and parts",
-                               ItemCode = "2J02",
+                               ItemName = "Winches, all types (excluding parts)",
+                               ItemCode = "2J010175",
                            },
                            new WpItem
                            {
@@ -11693,13 +11834,19 @@ namespace NoFuture.Rand.Gov.Bls.Codes
                            new WpItem
                            {
                                GroupCode = "11",
-                               ItemName = "Non-aerospace type reciprocating fluid power pumps",
+                               ItemName = "Nonaerospace-type reciprocating fluid power pumps",
                                ItemCode = "430112",
                            },
                            new WpItem
                            {
                                GroupCode = "11",
-                               ItemName = "Non-aerospace type fluid power motors",
+                               ItemName = "Nonaerospace-type rotary and other fluid power pumps",
+                               ItemCode = "430113",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "11",
+                               ItemName = "Nonaerospace-type fluid power motors",
                                ItemCode = "430115",
                            },
                            new WpItem
@@ -12329,18 +12476,6 @@ namespace NoFuture.Rand.Gov.Bls.Codes
                            new WpItem
                            {
                                GroupCode = "11",
-                               ItemName = "Filters for hydraulic fluid power systems, nonaerospace, and all aerospace filters",
-                               ItemCode = "490808",
-                           },
-                           new WpItem
-                           {
-                               GroupCode = "11",
-                               ItemName = "Filters for pneumatic fluid power systems, non-aerospace",
-                               ItemCode = "490809",
-                           },
-                           new WpItem
-                           {
-                               GroupCode = "11",
                                ItemName = "Other miscellaneous general purpose equipment",
                                ItemCode = "4911",
                            },
@@ -12653,20 +12788,20 @@ namespace NoFuture.Rand.Gov.Bls.Codes
                            new WpItem
                            {
                                GroupCode = "11",
-                               ItemName = "Rubberworking machinery and equipment, excluding molds",
-                               ItemCode = "6601",
-                           },
-                           new WpItem
-                           {
-                               GroupCode = "11",
-                               ItemName = "Rubberworking machinery and equipment, excluding molds",
-                               ItemCode = "660109",
-                           },
-                           new WpItem
-                           {
-                               GroupCode = "11",
-                               ItemName = "Plasticworking machinery",
+                               ItemName = "Plastics and rubber working machinery",
                                ItemCode = "6603",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "11",
+                               ItemName = "Rubberworking machinery and equipment, excluding molds",
+                               ItemCode = "660319",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "11",
+                               ItemName = "Plastics working machinery and equipment, excluding patterns and molds, including parts",
+                               ItemCode = "66039",
                            },
                            new WpItem
                            {
@@ -12683,20 +12818,14 @@ namespace NoFuture.Rand.Gov.Bls.Codes
                            new WpItem
                            {
                                GroupCode = "11",
-                               ItemName = "Chemical manufacturing machinery",
-                               ItemCode = "6604",
-                           },
-                           new WpItem
-                           {
-                               GroupCode = "11",
-                               ItemName = "Chemical manufacturing machinery",
-                               ItemCode = "660415",
-                           },
-                           new WpItem
-                           {
-                               GroupCode = "11",
                                ItemName = "Miscellaneous special industry machinery",
                                ItemCode = "6606",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "11",
+                               ItemName = "Chemical manufacturing machinery",
+                               ItemCode = "660615",
                            },
                            new WpItem
                            {
@@ -12947,20 +13076,14 @@ namespace NoFuture.Rand.Gov.Bls.Codes
                            new WpItem
                            {
                                GroupCode = "11",
+                               ItemName = "Land transportation motors, generators, and control equipment (except parts)",
+                               ItemCode = "7311011",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "11",
                                ItemName = "Transformers and power regulators",
                                ItemCode = "74",
-                           },
-                           new WpItem
-                           {
-                               GroupCode = "11",
-                               ItemName = "Fluorescent lamp ballasts",
-                               ItemCode = "7402",
-                           },
-                           new WpItem
-                           {
-                               GroupCode = "11",
-                               ItemName = "Fluorescent lamp ballasts",
-                               ItemCode = "740299",
                            },
                            new WpItem
                            {
@@ -12991,6 +13114,12 @@ namespace NoFuture.Rand.Gov.Bls.Codes
                                GroupCode = "11",
                                ItemName = "Specialty transformers, except fluorescent lamp ballasts",
                                ItemCode = "741102",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "11",
+                               ItemName = "Fluorescent lamp ballasts",
+                               ItemCode = "741103",
                            },
                            new WpItem
                            {
@@ -13163,18 +13292,6 @@ namespace NoFuture.Rand.Gov.Bls.Codes
                            new WpItem
                            {
                                GroupCode = "11",
-                               ItemName = "Search, detection, navigation & guidance systems and equipment",
-                               ItemCode = "7604",
-                           },
-                           new WpItem
-                           {
-                               GroupCode = "11",
-                               ItemName = "Search, detection, navigation & guidance systems and equipment",
-                               ItemCode = "760413",
-                           },
-                           new WpItem
-                           {
-                               GroupCode = "11",
                                ItemName = "Electronic systems and equipment, n.e.c.",
                                ItemCode = "7605",
                            },
@@ -13183,6 +13300,18 @@ namespace NoFuture.Rand.Gov.Bls.Codes
                                GroupCode = "11",
                                ItemName = "Electronic systems and equipment, n.e.c.",
                                ItemCode = "760512",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "11",
+                               ItemName = "Search, detection, navigation & guidance systems and equipment",
+                               ItemCode = "7606",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "11",
+                               ItemName = "Search, detection, navigation & guidance systems and equipment",
+                               ItemCode = "760613",
                            },
                            new WpItem
                            {
@@ -13331,14 +13460,8 @@ namespace NoFuture.Rand.Gov.Bls.Codes
                            new WpItem
                            {
                                GroupCode = "11",
-                               ItemName = "MOS microprocessors, monolithic, digital",
+                               ItemName = "Microprocessors (including microcontrollers)",
                                ItemCode = "7839111",
-                           },
-                           new WpItem
-                           {
-                               GroupCode = "11",
-                               ItemName = "All other integrated microcircuits",
-                               ItemCode = "7839112",
                            },
                            new WpItem
                            {
@@ -13351,6 +13474,12 @@ namespace NoFuture.Rand.Gov.Bls.Codes
                                GroupCode = "11",
                                ItemName = "Other semiconductor and related devices",
                                ItemCode = "784711",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "11",
+                               ItemName = "Transistors",
+                               ItemCode = "784712",
                            },
                            new WpItem
                            {
@@ -13493,56 +13622,8 @@ namespace NoFuture.Rand.Gov.Bls.Codes
                            new WpItem
                            {
                                GroupCode = "11",
-                               ItemName = "Other motor vehicle electrical and electronic equipment",
-                               ItemCode = "7906",
-                           },
-                           new WpItem
-                           {
-                               GroupCode = "11",
-                               ItemName = "Ignition wiring harnesses and cable sets",
-                               ItemCode = "790601",
-                           },
-                           new WpItem
-                           {
-                               GroupCode = "11",
-                               ItemName = "Cranking motors (starters)",
-                               ItemCode = "790604",
-                           },
-                           new WpItem
-                           {
-                               GroupCode = "11",
-                               ItemName = "Battery charging alternators, generators, and regulators",
-                               ItemCode = "790607",
-                           },
-                           new WpItem
-                           {
-                               GroupCode = "11",
-                               ItemName = "All other miscellaneous complete engine electrical equipment, including spark plugs",
-                               ItemCode = "790608",
-                           },
-                           new WpItem
-                           {
-                               GroupCode = "11",
-                               ItemName = "Parts for engine electrical and electronic equipment",
-                               ItemCode = "790609",
-                           },
-                           new WpItem
-                           {
-                               GroupCode = "11",
-                               ItemName = "Motor vehicle electrical and electronic equipment",
-                               ItemCode = "790611",
-                           },
-                           new WpItem
-                           {
-                               GroupCode = "11",
                                ItemName = "Miscellaneous electrical industrial apparatus",
                                ItemCode = "7929",
-                           },
-                           new WpItem
-                           {
-                               GroupCode = "11",
-                               ItemName = "Industrial capacitors",
-                               ItemCode = "792901",
                            },
                            new WpItem
                            {
@@ -14039,24 +14120,6 @@ namespace NoFuture.Rand.Gov.Bls.Codes
                            new WpItem
                            {
                                GroupCode = "11",
-                               ItemName = "Parts & accesories for turbines, turbine generators, and turbine generator sets",
-                               ItemCode = "96",
-                           },
-                           new WpItem
-                           {
-                               GroupCode = "11",
-                               ItemName = "Parts & accesories for turbines, turbine generators, and turbine generator sets",
-                               ItemCode = "9602",
-                           },
-                           new WpItem
-                           {
-                               GroupCode = "11",
-                               ItemName = "Parts & accesories for turbines, turbine generators, and turbine generator sets",
-                               ItemCode = "960203",
-                           },
-                           new WpItem
-                           {
-                               GroupCode = "11",
                                ItemName = "Turbines and turbine generator sets",
                                ItemCode = "97",
                            },
@@ -14077,6 +14140,24 @@ namespace NoFuture.Rand.Gov.Bls.Codes
                                GroupCode = "11",
                                ItemName = "Steam, gas, and other turbines and turbine generators",
                                ItemCode = "970103",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "11",
+                               ItemName = "Parts & accesories for turbines, turbine generators, and turbine generator sets",
+                               ItemCode = "98",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "11",
+                               ItemName = "Parts & accesories for turbines, turbine generators, and turbine generator sets",
+                               ItemCode = "9801",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "11",
+                               ItemName = "Parts & accesories for turbines, turbine generators, and turbine generator sets",
+                               ItemCode = "980101",
                            },
                            new WpItem
                            {
@@ -14225,37 +14306,37 @@ namespace NoFuture.Rand.Gov.Bls.Codes
                            new WpItem
                            {
                                GroupCode = "12",
-                               ItemName = "Upholstered wood household furniture",
+                               ItemName = "Upholstered household furniture",
                                ItemCode = "130141",
                            },
                            new WpItem
                            {
                                GroupCode = "12",
-                               ItemName = "Upholstered wood household davenports, sofas, loveseats, and settees",
+                               ItemName = "Upholstered  household davenports, sofas, loveseats, and settees",
                                ItemCode = "1301411",
                            },
                            new WpItem
                            {
                                GroupCode = "12",
-                               ItemName = "Upholstered wood household sectional sofa pieces",
+                               ItemName = "Upholstered household sectional sofa pieces",
                                ItemCode = "1301412",
                            },
                            new WpItem
                            {
                                GroupCode = "12",
-                               ItemName = "Upholstered wood household rocking chairs, including swivel rockers",
+                               ItemName = "Upholstered household rocking chairs, including swivel rockers",
                                ItemCode = "1301413",
                            },
                            new WpItem
                            {
                                GroupCode = "12",
-                               ItemName = "Upholstered wood household reclining chairs, except custom",
+                               ItemName = "Upholstered household reclining chairs, except custom",
                                ItemCode = "1301414",
                            },
                            new WpItem
                            {
                                GroupCode = "12",
-                               ItemName = "Other upholstered wood household furniture, including custom",
+                               ItemName = "Other upholstered household furniture, including custom",
                                ItemCode = "1301415",
                            },
                            new WpItem
@@ -15449,13 +15530,13 @@ namespace NoFuture.Rand.Gov.Bls.Codes
                            new WpItem
                            {
                                GroupCode = "13",
-                               ItemName = "Building or common brick",
+                               ItemName = "Face brick and building brick",
                                ItemCode = "4201",
                            },
                            new WpItem
                            {
                                GroupCode = "13",
-                               ItemName = "Building or common brick",
+                               ItemName = "Face brick and building brick",
                                ItemCode = "420101",
                            },
                            new WpItem
@@ -15707,6 +15788,24 @@ namespace NoFuture.Rand.Gov.Bls.Codes
                            new WpItem
                            {
                                GroupCode = "13",
+                               ItemName = "Emulsified asphalt, including liquid additives",
+                               ItemCode = "940113A",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "13",
+                               ItemName = "Other liquid asphalt and tar paving materials, including cut-backs",
+                               ItemCode = "940113B",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "13",
+                               ItemName = "Asphalt and tar paving mixtures (excluding liquid)",
+                               ItemCode = "940113C",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "13",
                                ItemName = "Cut stone and stone products",
                                ItemCode = "95",
                            },
@@ -15841,6 +15940,18 @@ namespace NoFuture.Rand.Gov.Bls.Codes
                                GroupCode = "13",
                                ItemName = "Minerals and earths ground or treated",
                                ItemCode = "990209",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "13",
+                               ItemName = "Treated lightweight aggregate and crushed slag, minerals and earths",
+                               ItemCode = "9902094",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "13",
+                               ItemName = "Other minerals and earths, treated",
+                               ItemCode = "9902096",
                            },
                            new WpItem
                            {
@@ -16157,6 +16268,60 @@ namespace NoFuture.Rand.Gov.Bls.Codes
                            new WpItem
                            {
                                GroupCode = "14",
+                               ItemName = "Motor vehicle electrical and electronic equipment",
+                               ItemCode = "120514",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "14",
+                               ItemName = "Vehicular lighting equipment",
+                               ItemCode = "1205141",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "14",
+                               ItemName = "Other motor vehicle electrical and electronic equipment",
+                               ItemCode = "1205142",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "14",
+                               ItemName = "Ignition wiring harness and cable sets",
+                               ItemCode = "12051421",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "14",
+                               ItemName = "Battery charging alternators, generators, and regulators",
+                               ItemCode = "12051422",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "14",
+                               ItemName = "Cranking motors (starters)",
+                               ItemCode = "12051423",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "14",
+                               ItemName = "Parts for electrical and electronic engine equipment",
+                               ItemCode = "12051424",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "14",
+                               ItemName = "All other miscellaneous non-engine electrical and electronic equipment",
+                               ItemCode = "12051425",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "14",
+                               ItemName = "All other miscellaneous complete engine electrical equipment, including spark plugs",
+                               ItemCode = "12051426",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "14",
                                ItemName = "Truck and bus bodies",
                                ItemCode = "13",
                            },
@@ -16181,6 +16346,18 @@ namespace NoFuture.Rand.Gov.Bls.Codes
                            new WpItem
                            {
                                GroupCode = "14",
+                               ItemName = "Van bodies, walk-in, sold separately",
+                               ItemCode = "1301411",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "14",
+                               ItemName = "Van bodies, separate cab, sold separately",
+                               ItemCode = "1301412",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "14",
                                ItemName = "Other truck and vehicle bodies, sold separately",
                                ItemCode = "13015",
                            },
@@ -16195,6 +16372,12 @@ namespace NoFuture.Rand.Gov.Bls.Codes
                                GroupCode = "14",
                                ItemName = "All other truck and vehicle bodies, sold separately",
                                ItemCode = "130152",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "14",
+                               ItemName = "Service truck bodies, sold separately",
+                               ItemCode = "130153",
                            },
                            new WpItem
                            {
@@ -16217,14 +16400,20 @@ namespace NoFuture.Rand.Gov.Bls.Codes
                            new WpItem
                            {
                                GroupCode = "14",
-                               ItemName = "Other trucks and vehicles, complete, produced on purchased chassis, including upfitting",
+                               ItemName = "Other trucks and vehicles, complete, produced on purchased chassis",
                                ItemCode = "13029",
                            },
                            new WpItem
                            {
                                GroupCode = "14",
-                               ItemName = "Other trucks and vehicles, complete, produced on purchased chassis, including upfitting",
-                               ItemCode = "130293",
+                               ItemName = "Other trucks and vehicles, complete, produced on purchased chassis, except upfitting trucks",
+                               ItemCode = "130294",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "14",
+                               ItemName = "Upfitting trucks, complete, produced on purchased chassis",
+                               ItemCode = "130299",
                            },
                            new WpItem
                            {
@@ -17009,6 +17198,12 @@ namespace NoFuture.Rand.Gov.Bls.Codes
                            new WpItem
                            {
                                GroupCode = "15",
+                               ItemName = "Buttons, button blanks, and parts",
+                               ItemCode = "330121",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "15",
                                ItemName = "Photographic equipment and supplies",
                                ItemCode = "4",
                            },
@@ -17033,13 +17228,13 @@ namespace NoFuture.Rand.Gov.Bls.Codes
                            new WpItem
                            {
                                GroupCode = "15",
-                               ItemName = "Motion picture equipment",
-                               ItemCode = "4107017",
+                               ItemName = "Motion picture & other photographic equipment, n.e.c.",
+                               ItemCode = "4107019",
                            },
                            new WpItem
                            {
                                GroupCode = "15",
-                               ItemName = "All types of photographic & photocopying equipment, excluding motion picture equipment",
+                               ItemName = "Still picture and photocopying equipment",
                                ItemCode = "410701A",
                            },
                            new WpItem
@@ -17557,6 +17752,12 @@ namespace NoFuture.Rand.Gov.Bls.Codes
                                GroupCode = "15",
                                ItemName = "Paint and varnish brushes and rollers",
                                ItemCode = "970502",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "15",
+                               ItemName = "Paint and varnish brushes",
+                               ItemCode = "9705021",
                            },
                            new WpItem
                            {
@@ -18209,6 +18410,12 @@ namespace NoFuture.Rand.Gov.Bls.Codes
                            new WpItem
                            {
                                GroupCode = "33",
+                               ItemName = "Sales of digital books",
+                               ItemCode = "1106",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "33",
                                ItemName = "Sales and subscriptions of periodicals and newspapers",
                                ItemCode = "12",
                            },
@@ -18227,20 +18434,20 @@ namespace NoFuture.Rand.Gov.Bls.Codes
                            new WpItem
                            {
                                GroupCode = "33",
-                               ItemName = "Sales and subscriptions of newspapers",
+                               ItemName = "Newspaper subscription and single copy sales",
                                ItemCode = "1202",
                            },
                            new WpItem
                            {
                                GroupCode = "33",
-                               ItemName = "Sales and subscriptions of newspapers, daily and Sunday papers",
-                               ItemCode = "120201",
+                               ItemName = "Newspaper subscriptions, print and online bundled",
+                               ItemCode = "120203",
                            },
                            new WpItem
                            {
                                GroupCode = "33",
-                               ItemName = "Sales and subscriptions of newspapers, weekly and other papers",
-                               ItemCode = "120202",
+                               ItemName = "Newspaper subscriptions, print only",
+                               ItemCode = "120204",
                            },
                            new WpItem
                            {
@@ -18400,6 +18607,54 @@ namespace NoFuture.Rand.Gov.Bls.Codes
                            },
                            new WpItem
                            {
+                               GroupCode = "35",
+                               ItemName = "Affiliate agreements, programming sales, and retransmission fees for cable and broadcast tv",
+                               ItemCode = "1",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "35",
+                               ItemName = "Affiliate agreements, programming sales, and retransmission fees for cable and broadcast tv",
+                               ItemCode = "11",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "35",
+                               ItemName = "Affiliate agreements, programming sales, and retransmission fees for cable and broadcast tv",
+                               ItemCode = "1101",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "35",
+                               ItemName = "Affiliate agreements, programming sales, and retransmission fees for cable and broadcast tv",
+                               ItemCode = "110101",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "35",
+                               ItemName = "Affiliate agreements, programming sales, and retransmission fees for radio",
+                               ItemCode = "2",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "35",
+                               ItemName = "Affiliate agreements, programming sales, and retransmission fees for radio",
+                               ItemCode = "21",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "35",
+                               ItemName = "Affiliate agreements, programming sales, and retransmission fees for radio",
+                               ItemCode = "2101",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "35",
+                               ItemName = "Affiliate agreements, programming sales, and retransmission fees for radio",
+                               ItemCode = "210101",
+                           },
+                           new WpItem
+                           {
                                GroupCode = "36",
                                ItemName = "Advertising space and time sales",
                                ItemCode = "-",
@@ -18449,14 +18704,14 @@ namespace NoFuture.Rand.Gov.Bls.Codes
                            new WpItem
                            {
                                GroupCode = "36",
-                               ItemName = "Advertising space sales in newspapers, daily and Sunday papers",
-                               ItemCode = "110201",
+                               ItemName = "Advertising space sales in newspapers, print only",
+                               ItemCode = "110203",
                            },
                            new WpItem
                            {
                                GroupCode = "36",
-                               ItemName = "Advertising space sales in newspapers, weekly and other papers",
-                               ItemCode = "110202",
+                               ItemName = "Advertising space sales in newspapers, digital only and print and digital bundled",
+                               ItemCode = "110204",
                            },
                            new WpItem
                            {
@@ -18851,13 +19106,13 @@ namespace NoFuture.Rand.Gov.Bls.Codes
                            new WpItem
                            {
                                GroupCode = "38",
-                               ItemName = "Data management and storage, information transformation and other services",
+                               ItemName = "Data management, information transformation and other services",
                                ItemCode = "1103",
                            },
                            new WpItem
                            {
                                GroupCode = "38",
-                               ItemName = "Data management and storage, information transformation and other services",
+                               ItemName = "Data management, information transformation and other services",
                                ItemCode = "110301",
                            },
                            new WpItem
@@ -19475,62 +19730,44 @@ namespace NoFuture.Rand.Gov.Bls.Codes
                            new WpItem
                            {
                                GroupCode = "44",
-                               ItemName = "Truck rental",
+                               ItemName = "Truck, truck trailer and bus rental",
                                ItemCode = "2101",
                            },
                            new WpItem
                            {
                                GroupCode = "44",
-                               ItemName = "Truck rental",
+                               ItemName = "Truck, truck trailer and bus rental",
                                ItemCode = "210101",
                            },
                            new WpItem
                            {
                                GroupCode = "44",
-                               ItemName = "Truck leasing",
+                               ItemName = "Truck, truck trailer and bus leasing",
                                ItemCode = "2102",
                            },
                            new WpItem
                            {
                                GroupCode = "44",
-                               ItemName = "Truck leasing",
+                               ItemName = "Truck, truck trailer and bus leasing",
                                ItemCode = "210201",
                            },
                            new WpItem
                            {
                                GroupCode = "44",
-                               ItemName = "Truck tractor rental and leasing",
-                               ItemCode = "22",
+                               ItemName = "Rental and leasing of RVs and cargo and utility trailers",
+                               ItemCode = "24",
                            },
                            new WpItem
                            {
                                GroupCode = "44",
-                               ItemName = "Truck tractor rental and leasing",
-                               ItemCode = "2201",
+                               ItemName = "Rental and leasing of RVs and cargo and utility trailers",
+                               ItemCode = "2401",
                            },
                            new WpItem
                            {
                                GroupCode = "44",
-                               ItemName = "Truck tractor rental and leasing",
-                               ItemCode = "220101",
-                           },
-                           new WpItem
-                           {
-                               GroupCode = "44",
-                               ItemName = "Truck trailer, utility trailer, and RV rental and leasing",
-                               ItemCode = "23",
-                           },
-                           new WpItem
-                           {
-                               GroupCode = "44",
-                               ItemName = "Truck trailer, utility trailer, and RV rental and leasing",
-                               ItemCode = "2301",
-                           },
-                           new WpItem
-                           {
-                               GroupCode = "44",
-                               ItemName = "Truck trailer, utility trailer, and RV rental and leasing",
-                               ItemCode = "230101",
+                               ItemName = "Rental and leasing of RVs and cargo and utility trailers",
+                               ItemCode = "240101",
                            },
                            new WpItem
                            {
@@ -21209,14 +21446,26 @@ namespace NoFuture.Rand.Gov.Bls.Codes
                            new WpItem
                            {
                                GroupCode = "58",
-                               ItemName = "Food and alcohol retailing",
-                               ItemCode = "1101",
+                               ItemName = "Food retailing",
+                               ItemCode = "1102",
                            },
                            new WpItem
                            {
                                GroupCode = "58",
-                               ItemName = "Food and alcohol retailing",
-                               ItemCode = "110101",
+                               ItemName = "Food retailing",
+                               ItemCode = "110201",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "58",
+                               ItemName = "Alcohol retailing",
+                               ItemCode = "1103",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "58",
+                               ItemName = "Alcohol retailing",
+                               ItemCode = "110301",
                            },
                            new WpItem
                            {
@@ -22019,25 +22268,25 @@ namespace NoFuture.Rand.Gov.Bls.Codes
                            new WpItem
                            {
                                GroupCode = "80",
-                               ItemName = "Maintenance and repair of non-residential buildings (partial)",
+                               ItemName = "Maintenance and repair of nonresidential buildings (partial)",
                                ItemCode = "2",
                            },
                            new WpItem
                            {
                                GroupCode = "80",
-                               ItemName = "Maintenance and repair of non-residential buildings (partial)",
+                               ItemName = "Maintenance and repair of nonresidential buildings (partial)",
                                ItemCode = "21",
                            },
                            new WpItem
                            {
                                GroupCode = "80",
-                               ItemName = "Maintenance and repair of non-residential buildings (partial)",
+                               ItemName = "Maintenance and repair of nonresidential buildings (partial)",
                                ItemCode = "2101",
                            },
                            new WpItem
                            {
                                GroupCode = "80",
-                               ItemName = "Maintenance and repair of non-residential buildings (partial)",
+                               ItemName = "Maintenance and repair of nonresidential buildings (partial)",
                                ItemCode = "210101",
                            },
                            new WpItem
@@ -23039,6 +23288,12 @@ namespace NoFuture.Rand.Gov.Bls.Codes
                            new WpItem
                            {
                                GroupCode = "ID5",
+                               ItemName = "Inputs to stage 2 services producers, foods",
+                               ItemCode = "2211",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "ID5",
                                ItemName = "Inputs to stage 2 services producers, energy",
                                ItemCode = "2212",
                            },
@@ -23998,6 +24253,1356 @@ namespace NoFuture.Rand.Gov.Bls.Codes
                            },
                            new WpItem
                            {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to construction industries, excluding capital investment, labor, and imports",
+                               ItemCode = "230000",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to construction industries, goods",
+                               ItemCode = "2300001",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to construction industries, energy",
+                               ItemCode = "23000012",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to construction industries, goods less foods and energy",
+                               ItemCode = "23000013",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to construction industries, services",
+                               ItemCode = "2300002",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to construction industries, trade services",
+                               ItemCode = "23000021",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to construction industries, transportation and warehousing services",
+                               ItemCode = "23000022",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to construction industries, services less trade, transportation, and warehousing",
+                               ItemCode = "23000023",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to new construction, excluding capital investment, labor, and imports",
+                               ItemCode = "231000",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to new construction, goods",
+                               ItemCode = "2310001",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to new construction, energy",
+                               ItemCode = "23100012",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to new construction, goods less foods and energy",
+                               ItemCode = "23100013",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to new construction, services",
+                               ItemCode = "2310002",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to new construction, trade services",
+                               ItemCode = "23100021",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to new construction, transportation and warehousing services",
+                               ItemCode = "23100022",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to new construction, services excluding trade, transportation, and warehousing",
+                               ItemCode = "23100023",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to new residential construction, excluding capital investment, labor, and imports",
+                               ItemCode = "231100",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to residential construction, goods",
+                               ItemCode = "2311001",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to residential construction, energy",
+                               ItemCode = "23110012",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to residential construction, goods less foods and energy",
+                               ItemCode = "23110013",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to residential construction, services",
+                               ItemCode = "2311002",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to residential construction, trade services",
+                               ItemCode = "23110021",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to residential construction, transportation and warehousing services",
+                               ItemCode = "23110022",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to residential construction, services less trade, transportation, and warehousing",
+                               ItemCode = "23110023",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to single family residential construction, excl. capital investment, labor, and imports",
+                               ItemCode = "231110",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to single family residential construction, goods",
+                               ItemCode = "2311101",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to single family residential construction, energy",
+                               ItemCode = "23111012",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to single family residential construction, goods less foods and energy",
+                               ItemCode = "23111013",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to single family residential construction, services",
+                               ItemCode = "2311102",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to single family residential construction, trade services",
+                               ItemCode = "23111021",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to single family residential construction, transportation and warehousing services",
+                               ItemCode = "23111022",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to single family residential construction, services less trade, transp., and warehousing",
+                               ItemCode = "23111023",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to multifamily residential construction, excl. capital investment, labor, and imports",
+                               ItemCode = "231120",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to multifamily residential construction, goods",
+                               ItemCode = "2311201",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to multifamily residential construction, energy",
+                               ItemCode = "23112012",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to multifamily residential construction, goods less foods and energy",
+                               ItemCode = "23112013",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to multifamily residential construction, services",
+                               ItemCode = "2311202",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to multifamily residential construction, trade services",
+                               ItemCode = "23112021",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to multifamily residential construction, transportation and warehousing services",
+                               ItemCode = "23112022",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to multifamily residential construction, services less trade, transp., and warehousing",
+                               ItemCode = "23112023",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to other residential construction, excluding capital investment, labor, and imports",
+                               ItemCode = "231130",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to other residential construction, goods",
+                               ItemCode = "2311301",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to other residential construction, energy",
+                               ItemCode = "23113012",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to other residential construction, goods less foods and energy",
+                               ItemCode = "23113013",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to other residential construction, services",
+                               ItemCode = "2311302",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to other residential construction, trade services",
+                               ItemCode = "23113021",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to other residential construction, transportation and warehousing services",
+                               ItemCode = "23113022",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to other residential construction, services less trade, transp., and warehousing",
+                               ItemCode = "23113023",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to new nonresidential construction, excluding capital investment, labor, and imports",
+                               ItemCode = "231200",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to nonresidential construction, goods",
+                               ItemCode = "2312001",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to nonresidential construction, energy",
+                               ItemCode = "23120012",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to nonresidential construction, goods less foods and energy",
+                               ItemCode = "23120013",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to nonresidential construction, services",
+                               ItemCode = "2312002",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to nonresidential construction, trade services",
+                               ItemCode = "23120021",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to nonresidential construction, transportation and warehousing services",
+                               ItemCode = "23120022",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to nonresidential construction, services less trade, transportation, and warehousing",
+                               ItemCode = "23120023",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to commercial and healthcare structures, excl. capital investment, labor, and imports",
+                               ItemCode = "231210",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to commercial and healthcare structures, goods",
+                               ItemCode = "2312101",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to commercial and healthcare structures, energy",
+                               ItemCode = "23121012",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to commercial and healthcare structures, goods less foods and energy",
+                               ItemCode = "23121013",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to commercial and healthcare structures, services",
+                               ItemCode = "2312102",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to commercial and healthcare structures, trade services",
+                               ItemCode = "23121021",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to commercial and healthcare structures, transportation and warehousing services",
+                               ItemCode = "23121022",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to commercial and healthcare structures, services less trade, transp., and warehousing",
+                               ItemCode = "23121023",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to commercial structures, excluding capital investment, labor, and imports",
+                               ItemCode = "231211",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to commercial structures, goods",
+                               ItemCode = "2312111",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to commercial structures, energy",
+                               ItemCode = "23121112",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to commercial structures, goods less foods and energy",
+                               ItemCode = "23121113",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to commercial structures, services",
+                               ItemCode = "2312112",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to commercial structures, trade services",
+                               ItemCode = "23121121",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to commercial structures, transportation and warehousing services",
+                               ItemCode = "23121122",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to commercial structures, services less trade, transportation, and warehousing",
+                               ItemCode = "23121123",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to healthcare structures, excluding capital investment, labor, and imports",
+                               ItemCode = "231212",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to healthcare structures, goods",
+                               ItemCode = "2312121",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to healthcare structures, energy",
+                               ItemCode = "23121212",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to healthcare structures, goods less foods and energy",
+                               ItemCode = "23121213",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to healthcare structures, services",
+                               ItemCode = "2312122",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to healthcare structures, trade services",
+                               ItemCode = "23121221",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to healthcare structures, transportation and warehousing services",
+                               ItemCode = "23121222",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to healthcare structures, services less trade, transportation, and warehousing",
+                               ItemCode = "23121223",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to industrial structures, excluding capital investment, labor, and imports",
+                               ItemCode = "231220",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to industrial structures, goods",
+                               ItemCode = "2312201",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to industrial structures, energy",
+                               ItemCode = "23122012",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to industrial structures, goods less foods and energy",
+                               ItemCode = "23122013",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to industrial structures, services",
+                               ItemCode = "2312202",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to industrial structures, trade services",
+                               ItemCode = "23122021",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to industrial structures, transportation and warehousing services",
+                               ItemCode = "23122022",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to industrial structures, services less trade, transportation, and warehousing",
+                               ItemCode = "23122023",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to other nonresidential construction, excluding capital investment, labor, and imports",
+                               ItemCode = "231230",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to other nonresidential construction, goods",
+                               ItemCode = "2312301",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to other nonresidential construction, energy",
+                               ItemCode = "23123012",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to other nonresidential construction, goods less foods and energy",
+                               ItemCode = "23123013",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to other nonresidential construction, services",
+                               ItemCode = "2312302",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to other nonresidential construction, trade services",
+                               ItemCode = "23123021",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to other nonresidential construction, transportation and warehousing services",
+                               ItemCode = "23123022",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to other nonresidential construction, services less trade, transp., and warehousing",
+                               ItemCode = "23123023",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to highways and streets, excluding capital investment, labor, and imports",
+                               ItemCode = "231231",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to highways and streets, goods",
+                               ItemCode = "2312311",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to highways and streets, energy",
+                               ItemCode = "23123112",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to highways and streets, goods less foods and energy",
+                               ItemCode = "23123113",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to highways and streets, services",
+                               ItemCode = "2312312",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to highways and streets, trade services",
+                               ItemCode = "23123121",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to highways and streets, transportation and warehousing services",
+                               ItemCode = "23123122",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to highways and streets, services less trade, transportation, and warehousing",
+                               ItemCode = "23123123",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to power and communication structures, excluding capital investment, labor, and imports",
+                               ItemCode = "231232",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to power and communication structures, goods",
+                               ItemCode = "2312321",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to power and communication structures, energy",
+                               ItemCode = "23123212",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to power and communication structures, goods less foods and energy",
+                               ItemCode = "23123213",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to power and communication structures, services",
+                               ItemCode = "2312322",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to power and communication structures, trade services",
+                               ItemCode = "23123221",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to power and communication structures, transportation and warehousing services",
+                               ItemCode = "23123222",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to power and communication structures, services less trade, transp., and warehousing",
+                               ItemCode = "23123223",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to educational and vocational structures, excl. capital investment, labor, and imports",
+                               ItemCode = "231233",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to educational and vocational structures, goods",
+                               ItemCode = "2312331",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to educational and vocational structures, energy",
+                               ItemCode = "23123312",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to educational and vocational structures, goods less foods and energy",
+                               ItemCode = "23123313",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to educational and vocational structures, services",
+                               ItemCode = "2312332",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to educational and vocational structures, trade services",
+                               ItemCode = "23123321",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to educational and vocational structures, transportation and warehousing services",
+                               ItemCode = "23123322",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to educational and vocational structures, services less trade, transp., and warehousing",
+                               ItemCode = "23123323",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to other misc. nonresidential construction, excl. capital investment, labor, and imports",
+                               ItemCode = "231234",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to other misc. nonresidential construction, goods",
+                               ItemCode = "2312341",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to other misc. nonresidential construction, energy",
+                               ItemCode = "23123412",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to other misc. nonresidential construction, goods less foods and energy",
+                               ItemCode = "23123413",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to other misc. nonresidential construction, services",
+                               ItemCode = "2312342",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to other misc. nonresidential construction, trade services",
+                               ItemCode = "23123421",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to other misc. nonresidential construction, transportation and warehousing services",
+                               ItemCode = "23123422",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to other misc. nonresidential construction, services less trade, transp., & warehousing",
+                               ItemCode = "23123423",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to maintenance and repair construction, excluding capital investment, labor, and imports",
+                               ItemCode = "232000",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to maintenance and repair construction, goods",
+                               ItemCode = "2320001",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to maintenance and repair construction, energy",
+                               ItemCode = "23200012",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to maintenance and repair construction, goods less foods and energy",
+                               ItemCode = "23200013",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to maintenance and repair construction, services",
+                               ItemCode = "2320002",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to maintenance and repair construction, trade services",
+                               ItemCode = "23200021",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to maintenance and repair construction, transportation and warehousing services",
+                               ItemCode = "23200022",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to maintenance and repair construction, services less trade, transp., and warehousing",
+                               ItemCode = "23200023",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to residential maintenance and repair, excluding capital investment, labor, and imports",
+                               ItemCode = "232100",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to residential maintenance and repair, goods",
+                               ItemCode = "2321001",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to residential maintenance and repair, energy",
+                               ItemCode = "23210012",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to residential maintenance and repair, goods less foods and energy",
+                               ItemCode = "23210013",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to residential maintenance and repair, services",
+                               ItemCode = "2321002",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to residential maintenance and repair, trade services",
+                               ItemCode = "23210021",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to residential maintenance and repair, transportation and warehousing services",
+                               ItemCode = "23210022",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to residential maintenance and repair, services less trade, transp., and warehousing",
+                               ItemCode = "23210023",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to nonresidential maintenance and repair, excl. capital investment, labor, and imports",
+                               ItemCode = "232200",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to nonresidential maintenance and repair, goods",
+                               ItemCode = "2322001",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to nonresidential maintenance and repair, energy",
+                               ItemCode = "23220012",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to nonresidential maintenance and repair, goods less foods and energy",
+                               ItemCode = "23220013",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to nonresidential maintenance and repair, services",
+                               ItemCode = "2322002",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to nonresidential maintenance and repair, trade services",
+                               ItemCode = "23220021",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to nonresidential maintenance and repair, transportation and warehousing services",
+                               ItemCode = "23220022",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to nonresidential maintenance and repair, services less trade, transp., and warehousing",
+                               ItemCode = "23220023",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to 325510, paint and coating manufacturing, excl. capital investment, labor, and imports",
+                               ItemCode = "325510",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to 325510, goods",
+                               ItemCode = "3255101",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to 325510, energy",
+                               ItemCode = "32551012",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to 325510, goods less foods and energy",
+                               ItemCode = "32551013",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to 325510, services",
+                               ItemCode = "3255102",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to 325510, trade services",
+                               ItemCode = "32551021",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to 325510, transportation and warehousing services",
+                               ItemCode = "32551022",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to 325510, services less trade, transportation, and warehousing",
+                               ItemCode = "32551023",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to 326100, plastics products manufacturing, excl. capital investment, labor, and imports",
+                               ItemCode = "326100",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to 326100, goods",
+                               ItemCode = "3261001",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to 326100, energy",
+                               ItemCode = "32610012",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to 326100, goods less foods and energy",
+                               ItemCode = "32610013",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to 326100, services",
+                               ItemCode = "3261002",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to 326100, trade services",
+                               ItemCode = "32610021",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to 326100, transportation and warehousing services",
+                               ItemCode = "32610022",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to 326100, services less trade, transportation, and warehousing",
+                               ItemCode = "32610023",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to 326100, maintenance and repair construction",
+                               ItemCode = "3261003",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to 333130, mining & oil & gas field machinery mfg., excl. cap. invest., labor, & imports",
+                               ItemCode = "333130",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to 333130, goods",
+                               ItemCode = "3331301",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to 333130, energy",
+                               ItemCode = "33313012",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to 333130, goods less foods and energy",
+                               ItemCode = "33313013",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to 333130, services",
+                               ItemCode = "3331302",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to 333130, trade services",
+                               ItemCode = "33313021",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to 333130, transportation and warehousing services",
+                               ItemCode = "33313022",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to 333130, services less trade, transportation, and warehousing",
+                               ItemCode = "33313023",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to 333130, maintenance and repair construction",
+                               ItemCode = "3331303",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to 336111, automobile manufacturing, excluding capital investment, labor, and imports",
+                               ItemCode = "336111",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to 336111, goods",
+                               ItemCode = "3361111",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to 336111, goods less foods and energy",
+                               ItemCode = "33611113",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to 336111, services",
+                               ItemCode = "3361112",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to 336111, trade services",
+                               ItemCode = "33611121",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to 336111, transportation and warehousing services",
+                               ItemCode = "33611122",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to 336411, airplane manufacturing, excluding capital investment, labor, and imports",
+                               ItemCode = "336411",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to 336411, goods",
+                               ItemCode = "3364111",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to 336411, energy",
+                               ItemCode = "33641112",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to 336411, goods less foods and energy",
+                               ItemCode = "33641113",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to 336411, services",
+                               ItemCode = "3364112",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to 336411, trade services",
+                               ItemCode = "33641121",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to 336411, transportation and warehousing services",
+                               ItemCode = "33641122",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to 336411, services less trade, transportation, and warehousing",
+                               ItemCode = "33641123",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to 336611, ship building and repairing, excluding capital investment, labor, and imports",
+                               ItemCode = "336611",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to 336611, goods",
+                               ItemCode = "3366111",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to 336611, energy",
+                               ItemCode = "33661112",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to 336611, goods less foods and energy",
+                               ItemCode = "33661113",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to 336611, services",
+                               ItemCode = "3366112",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to 336611, trade services",
+                               ItemCode = "33661121",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to 336611, transportation and warehousing services",
+                               ItemCode = "33661122",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to 336611, services less trade, transportation, and warehousing",
+                               ItemCode = "33661123",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to 484000, truck transportation, excluding capital investment, labor, and imports",
+                               ItemCode = "484000",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to 484000, goods",
+                               ItemCode = "4840001",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to 484000, energy",
+                               ItemCode = "48400012",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to 484000, goods less foods and energy",
+                               ItemCode = "48400013",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to 484000, services",
+                               ItemCode = "4840002",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to 484000, trade services",
+                               ItemCode = "48400021",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to 484000, transportation and warehousing services",
+                               ItemCode = "48400022",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to 484000, services less trade, transportation, and warehousing",
+                               ItemCode = "48400023",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to 621A00, offices of health practitioners, excl. capital investment, labor, and imports",
+                               ItemCode = "621A00",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to 621A00, goods",
+                               ItemCode = "621A001",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to 621A00, energy",
+                               ItemCode = "621A0012",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to 621A00, goods less foods and energy",
+                               ItemCode = "621A0013",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to 621A00, services",
+                               ItemCode = "621A002",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to 621A00, trade services",
+                               ItemCode = "621A0021",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to 621A00, transportation and warehousing services",
+                               ItemCode = "621A0022",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to 621A00, services less trade, transportation, and warehousing",
+                               ItemCode = "621A0023",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to 813000, membership assoc. & organizations, excl. capital investment, labor, & imports",
+                               ItemCode = "813000",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to 813000, goods",
+                               ItemCode = "8130001",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to 813000, energy",
+                               ItemCode = "81300012",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to 813000, goods less foods and energy",
+                               ItemCode = "81300013",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to 813000, services",
+                               ItemCode = "8130002",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to 813000, trade services",
+                               ItemCode = "81300021",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to 813000, transportation and warehousing services",
+                               ItemCode = "81300022",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to 813000, services less trade, transportation, and warehousing",
+                               ItemCode = "81300023",
+                           },
+                           new WpItem
+                           {
+                               GroupCode = "IP",
+                               ItemName = "Inputs to 813000, maintenance and repair construction",
+                               ItemCode = "8130003",
+                           },
+                           new WpItem
+                           {
                                GroupCode = "PFF",
                                ItemName = "Farm products, processed foods and feeds",
                                ItemCode = "PLUS02",
@@ -24151,192 +25756,6 @@ namespace NoFuture.Rand.Gov.Bls.Codes
                                GroupCode = "SI",
                                ItemName = "Selected textile mill products",
                                ItemCode = "134011",
-                           },
-                           new WpItem
-                           {
-                               GroupCode = "SI",
-                               ItemName = "Inputs to 325510, paint & coating manufacturing, excluding capital investment, labor, & imports",
-                               ItemCode = "325510",
-                           },
-                           new WpItem
-                           {
-                               GroupCode = "SI",
-                               ItemName = "Inputs to 325510, goods",
-                               ItemCode = "3255101",
-                           },
-                           new WpItem
-                           {
-                               GroupCode = "SI",
-                               ItemName = "Inputs to 325510, energy",
-                               ItemCode = "32551012",
-                           },
-                           new WpItem
-                           {
-                               GroupCode = "SI",
-                               ItemName = "Inputs to 325510, goods less foods and energy",
-                               ItemCode = "32551013",
-                           },
-                           new WpItem
-                           {
-                               GroupCode = "SI",
-                               ItemName = "Inputs to 325510, services",
-                               ItemCode = "3255102",
-                           },
-                           new WpItem
-                           {
-                               GroupCode = "SI",
-                               ItemName = "Inputs to 325510, trade services",
-                               ItemCode = "32551021",
-                           },
-                           new WpItem
-                           {
-                               GroupCode = "SI",
-                               ItemName = "Inputs to 325510, transportation and warehousing services",
-                               ItemCode = "32551022",
-                           },
-                           new WpItem
-                           {
-                               GroupCode = "SI",
-                               ItemName = "Inputs to 325510, services less trade, transportation, and warehousing",
-                               ItemCode = "32551023",
-                           },
-                           new WpItem
-                           {
-                               GroupCode = "SI",
-                               ItemName = "Inputs to 336111, automobile manufacturing, excluding capital investment, labor, and imports",
-                               ItemCode = "336111",
-                           },
-                           new WpItem
-                           {
-                               GroupCode = "SI",
-                               ItemName = "Inputs to 336111, goods",
-                               ItemCode = "3361111",
-                           },
-                           new WpItem
-                           {
-                               GroupCode = "SI",
-                               ItemName = "Inputs to 336111, goods less foods and energy",
-                               ItemCode = "33611113",
-                           },
-                           new WpItem
-                           {
-                               GroupCode = "SI",
-                               ItemName = "Inputs to 336111, services",
-                               ItemCode = "3361112",
-                           },
-                           new WpItem
-                           {
-                               GroupCode = "SI",
-                               ItemName = "Inputs to 336111, trade services",
-                               ItemCode = "33611121",
-                           },
-                           new WpItem
-                           {
-                               GroupCode = "SI",
-                               ItemName = "Inputs to 336111, transportation and warehousing services",
-                               ItemCode = "33611122",
-                           },
-                           new WpItem
-                           {
-                               GroupCode = "SI",
-                               ItemName = "Inputs to 621A00, offices of health practitioners, exc. capital investment, labor, and imports",
-                               ItemCode = "621A00",
-                           },
-                           new WpItem
-                           {
-                               GroupCode = "SI",
-                               ItemName = "Inputs to 621A00, goods",
-                               ItemCode = "621A001",
-                           },
-                           new WpItem
-                           {
-                               GroupCode = "SI",
-                               ItemName = "Inputs to 621A00, energy",
-                               ItemCode = "621A0012",
-                           },
-                           new WpItem
-                           {
-                               GroupCode = "SI",
-                               ItemName = "Inputs to 621A00, goods less foods and energy",
-                               ItemCode = "621A0013",
-                           },
-                           new WpItem
-                           {
-                               GroupCode = "SI",
-                               ItemName = "Inputs to 621A00, services",
-                               ItemCode = "621A002",
-                           },
-                           new WpItem
-                           {
-                               GroupCode = "SI",
-                               ItemName = "Inputs to 621A00, trade services",
-                               ItemCode = "621A0021",
-                           },
-                           new WpItem
-                           {
-                               GroupCode = "SI",
-                               ItemName = "Inputs to 621A00, transportation and warehousing services",
-                               ItemCode = "621A0022",
-                           },
-                           new WpItem
-                           {
-                               GroupCode = "SI",
-                               ItemName = "Inputs to 621A00, services less trade, transportation, and warehousing",
-                               ItemCode = "621A0023",
-                           },
-                           new WpItem
-                           {
-                               GroupCode = "SI",
-                               ItemName = "Inputs to 813000, membership assoc. & organizations, exc. capital investment, labor, & imports",
-                               ItemCode = "813000",
-                           },
-                           new WpItem
-                           {
-                               GroupCode = "SI",
-                               ItemName = "Inputs to 813000, goods",
-                               ItemCode = "8130001",
-                           },
-                           new WpItem
-                           {
-                               GroupCode = "SI",
-                               ItemName = "Inputs to 813000, energy",
-                               ItemCode = "81300012",
-                           },
-                           new WpItem
-                           {
-                               GroupCode = "SI",
-                               ItemName = "Inputs to 813000, goods less foods and energy",
-                               ItemCode = "81300013",
-                           },
-                           new WpItem
-                           {
-                               GroupCode = "SI",
-                               ItemName = "Inputs to 813000, services",
-                               ItemCode = "8130002",
-                           },
-                           new WpItem
-                           {
-                               GroupCode = "SI",
-                               ItemName = "Inputs to 813000, trade services",
-                               ItemCode = "81300021",
-                           },
-                           new WpItem
-                           {
-                               GroupCode = "SI",
-                               ItemName = "Inputs to 813000, transportation and warehousing services",
-                               ItemCode = "81300022",
-                           },
-                           new WpItem
-                           {
-                               GroupCode = "SI",
-                               ItemName = "Inputs to 813000, services less trade, transportation, and warehousing",
-                               ItemCode = "81300023",
-                           },
-                           new WpItem
-                           {
-                               GroupCode = "SI",
-                               ItemName = "Inputs to 813000, maintenance and repair of non-residential buildings",
-                               ItemCode = "8130003",
                            },
                            new WpItem
                            {
@@ -24700,6 +26119,7 @@ namespace NoFuture.Rand.Gov.Bls.Codes
                            },
 
                        };
+                return _values;
             }
         }
 	}//end WpItem

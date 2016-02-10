@@ -2,6 +2,8 @@
 {
     public class Globals
     {
+        public const string ApiSignature = "http://www.bls.gov/developers/api_signature_v2.htm";
+
         public static string PostUrl = "http://api.bls.gov/publicAPI/v1/timeseries/data/";
 
         public const char SeasonallyAdjusted = 'S';
@@ -27,6 +29,9 @@
             public const string IpSector = "B"; //Mining
             public const string WpGroup = "00";
             public const string WpItem = "000000";
+            public const string CeSupersector = "05";
+            public const string CeIndustry = "00000000";
+            public const string CeDatatype = "01";
         }
     }
 }

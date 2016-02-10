@@ -323,9 +323,10 @@ end
 DECLARE @LENGTH BIGINT 
 		,@I BIGINT
 
-SET @I = 1;
+SET @I = 1; --you must terminate this with a semicolor
+            -- for the below 'WITH' statement to work
 
-WITH INSERTEDINDEX
+WITH INSERTEDINDEX --aka Common Table Expression
 AS
 (
 	SELECT 
