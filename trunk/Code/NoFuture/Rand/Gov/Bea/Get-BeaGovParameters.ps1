@@ -30,7 +30,7 @@ function Get-BeaGovParameter
         if(-not (Test-Path $beaOutNsPath)){
             mkdir $beaOutNsPath -Force
         }
-        CodeGenerate-PsObjsToCs -ArrayOfPsObjs $parameterValueJson.BEAAPI.Results.ParamValue -Name $parameterName -OutputDir $beaOutNsPath -Namespace ($beaOutNs + "." + $cleanDataSetName) -Extends $beaBaseCls -AddOverrideKeywordToProps
+        Convert-PsObjsToCsCode -ArrayOfPsObjs $parameterValueJson.BEAAPI.Results.ParamValue -Name $parameterName -OutputDir $beaOutNsPath -Namespace ($beaOutNs + "." + $cleanDataSetName) -Extends $beaBaseCls -AddOverrideKeywordToProps
 
     }
 }

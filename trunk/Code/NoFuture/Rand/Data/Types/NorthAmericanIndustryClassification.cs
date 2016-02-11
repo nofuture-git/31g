@@ -100,11 +100,6 @@ namespace NoFuture.Rand.Data.Types
     [Serializable]
     public class NaicsSuperSector : NorthAmericanIndustryClassification
     {
-        //unique to super sectors
-        public char? BlsIpCode { get; set; }
-        public float? PercentOfTotalMarketAssests { get; set; }
-        public float? TaxRate { get; set; }
-        public float? NetIncome2NetWorth { get; set; }
 
         public override bool TryThisParseXml(XmlElement elem)
         {

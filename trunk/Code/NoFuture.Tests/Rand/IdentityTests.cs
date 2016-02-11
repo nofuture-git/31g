@@ -24,7 +24,6 @@ namespace NoFuture.Tests.Rand
                 Assert.IsInstanceOfType(ss, typeof(NaicsSuperSector));
 
                 System.Diagnostics.Debug.WriteLine(ss.Description);
-                System.Diagnostics.Debug.WriteLine(ss.PercentOfTotalMarketAssests);
                 foreach (var s in ss.Divisions)
                 {
                     System.Diagnostics.Debug.WriteLine(s.Description);

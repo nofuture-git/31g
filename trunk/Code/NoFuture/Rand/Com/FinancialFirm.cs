@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using NoFuture.Rand.Data.Types;
 using NoFuture.Rand.Gov.Fed;
 
 namespace NoFuture.Rand.Com
@@ -22,6 +23,7 @@ namespace NoFuture.Rand.Com
         /// Parse from the respective line found in the <see cref="LargeCommercialBanks.RELEASE_URL"/>
         /// </summary>
         /// <param name="lrgBnkLstLine"></param>
+        /// <param name="reportDate"></param>
         public FinancialFirm(string lrgBnkLstLine, DateTime reportDate)
         {
             var vals = LargeCommercialBanks.SplitLrgBnkListLine(lrgBnkLstLine).ToArray();
@@ -36,12 +38,12 @@ namespace NoFuture.Rand.Com
             if (LargeCommercialBanks.TypeOfBankAbbrev3Enum.ContainsKey(getLnVal(vals,4)))
                 BankType = LargeCommercialBanks.TypeOfBankAbbrev3Enum[getLnVal(vals,4)];
             var assets = new FinancialAssets();
-            long conAssts = 0;
-            long domAssts = 0;
-            if (long.TryParse(getLnVal(vals,5).Replace(",", string.Empty), out conAssts))
-                assets.ConsolidatedAssets = conAssts*1000;
-            if (long.TryParse(getLnVal(vals,6).Replace(",", string.Empty), out domAssts))
-                assets.DomesticAssets = domAssts*1000;
+            Decimal conAssts = 0;
+            Decimal domAssts = 0;
+            if (Decimal.TryParse(getLnVal(vals,5).Replace(",", string.Empty), out conAssts))
+                assets.ConsolidatedAssets = new Pecuniam(conAssts*1000);
+            if (Decimal.TryParse(getLnVal(vals, 6).Replace(",", string.Empty), out domAssts))
+                assets.DomesticAssets = new Pecuniam(domAssts*1000);
             int domBranches = 0;
             int frnBranches = 0;
             int pfo = 0;
@@ -51,7 +53,7 @@ namespace NoFuture.Rand.Com
                 assets.ForeignBranches = frnBranches;
             IsInternational = getLnVal(vals,11) == "Y";
             if (int.TryParse(getLnVal(vals,12), out pfo))
-                assets.PercentForeignOwned = pfo;
+                assets.PercentForeignOwned =  Math.Round((double)pfo / 100 ,2);
             Assets = new Dictionary<DateTime, FinancialAssets> {{reportDate, assets}};
         }
 
@@ -61,11 +63,9 @@ namespace NoFuture.Rand.Com
         public Dictionary<DateTime, FinancialAssets> Assets { get; set; }
     }
 
-    public class FinancialAssets
+    public class FinancialAssets : Assets
     {
-        public long ConsolidatedAssets { get; set; }
-        public long DomesticAssets { get; set; }
-        public int PercentForeignOwned { get; set; }
+        public double PercentForeignOwned { get; set; }
         public int DomesticBranches { get; set; }
         public int ForeignBranches { get; set; }
     }

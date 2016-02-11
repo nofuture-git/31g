@@ -36,6 +36,13 @@ namespace NoFuture.Tests.Rand
             Assert.IsNotNull(testResults);
             Assert.AreNotEqual(0, testResults);
 
+            foreach (var v in testResults)
+            {
+                foreach (var d in v.Assets.Keys)
+                {
+                    System.Diagnostics.Debug.WriteLine(string.Format("{0} : {1}", d, v.Assets[d]));
+                }
+            }
         }
     }
 }
