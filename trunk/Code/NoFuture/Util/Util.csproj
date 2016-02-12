@@ -99,6 +99,7 @@
     <Compile Include="Math\Econ.cs" />
     <Compile Include="Math\LinearEquation.cs" />
     <Compile Include="Math\Matrix.cs" />
+    <Compile Include="Math\NaturalLogEquation.cs" />
     <Compile Include="Net.cs" />
     <Compile Include="NfPath.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

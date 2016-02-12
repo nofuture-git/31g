@@ -311,5 +311,17 @@ namespace NoFuture.Tests.Util
             System.Diagnostics.Debug.WriteLine(testResult);
         }
 
+        [TestMethod]
+        public void TestLnEq()
+        {
+            var testSubject = new NoFuture.Util.Math.NaturalLogEquation { Slope = 7.123, Intercept = -55.44 };
+            const double X_IN = 1985;
+            var solveY = testSubject.SolveForY(X_IN);
+
+            var solveX = testSubject.SolveForX(solveY);
+            Assert.AreEqual(System.Math.Round(X_IN), System.Math.Round(solveX));
+            
+        }
+
     }
 }
