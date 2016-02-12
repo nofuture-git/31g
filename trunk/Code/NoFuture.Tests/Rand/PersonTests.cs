@@ -46,7 +46,7 @@ namespace NoFuture.Tests.Rand
         public void AmericanRaceTests()
         {
             const string TEST_ZIP = "92071";
-            var testResult = NorthAmerican.GetRace(TEST_ZIP);
+            var testResult = NorthAmerican.GetAmericanRace(TEST_ZIP);
             Assert.AreNotEqual(string.Empty,testResult);
             System.Diagnostics.Debug.WriteLine(testResult);
         }
@@ -55,7 +55,7 @@ namespace NoFuture.Tests.Rand
         public void TestAmericanFemaleFirstName()
         {
             var testDob = new DateTime(1980, 10, 1);
-            var testResult = NorthAmerican.AmericanFirstName(testDob, NoFuture.Rand.Gender.Female);
+            var testResult = NorthAmerican.GetAmericanFirstName(testDob, NoFuture.Rand.Gender.Female);
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0, testResult.Length);
             System.Diagnostics.Debug.WriteLine(testResult);
@@ -65,7 +65,7 @@ namespace NoFuture.Tests.Rand
         public void TestAmericanMaleFirstName()
         {
             var testDob = new DateTime(1980, 10, 1);
-            var testResult = NorthAmerican.AmericanFirstName(testDob, NoFuture.Rand.Gender.Male);
+            var testResult = NorthAmerican.GetAmericanFirstName(testDob, NoFuture.Rand.Gender.Male);
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0, testResult.Length);
             System.Diagnostics.Debug.WriteLine(testResult);
@@ -74,7 +74,7 @@ namespace NoFuture.Tests.Rand
         [TestMethod]
         public void TestAmericanLastName()
         {
-            var testResult = NorthAmerican.AmericanLastName();
+            var testResult = NorthAmerican.GetAmericanLastName();
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0, testResult.Length);
             System.Diagnostics.Debug.WriteLine(testResult);

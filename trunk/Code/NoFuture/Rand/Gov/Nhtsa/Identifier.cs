@@ -201,14 +201,11 @@ namespace NoFuture.Rand.Gov.Nhtsa
             if(baseYear == 0)
                 throw new RahRowRagee("The char at position [7] (one-based) of the VIN is neither a number nor a letter.");
 
-            var yyyy = baseYear;
-
             for (var i = 0; i < YearIdx.Length; i++)
             {
                 if (YearIdx[i] == Vis.ModelYear)
-                    return yyyy;
+                    return baseYear + i;
 
-                yyyy = baseYear + i;
             }
             throw new ItsDeadJim(
                 String.Format("Cannot determine the VIN Model Year from the ModelYear char value of '{0}'",
@@ -279,6 +276,22 @@ namespace NoFuture.Rand.Gov.Nhtsa
             };
 
             return new Vin {Wmi = wmiOut, Vds = vds, Vis = vis};
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null)
+                return false;
+            var vin = obj as Vin;
+            if (vin == null)
+                return false;
+
+            return string.Equals(vin.ToString(), ToString(), StringComparison.OrdinalIgnoreCase);
+        }
+
+        public override int GetHashCode()
+        {
+            return ToString().GetHashCode();
         }
 
         #endregion

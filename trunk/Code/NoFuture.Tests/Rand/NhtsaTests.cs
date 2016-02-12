@@ -29,9 +29,65 @@ namespace NoFuture.Tests.Rand
         }
 
         [TestMethod]
+        public void TestVinSetValue()
+        {
+            var testVinValue = "3N1CN7AP0GL861987";
+
+            var testSubject = new Vin {Value = testVinValue};
+
+            Assert.AreEqual('3', testSubject.Wmi.Country);
+            Assert.AreEqual('N', testSubject.Wmi.RegionMaker);
+            Assert.AreEqual('1', testSubject.Wmi.VehicleType);
+
+            Assert.AreEqual('C', testSubject.Vds.Four);
+            Assert.AreEqual('N', testSubject.Vds.Five);
+            Assert.AreEqual('7', testSubject.Vds.Six);
+            Assert.AreEqual('A', testSubject.Vds.Seven);
+            Assert.AreEqual('P', testSubject.Vds.Eight);
+
+            Assert.AreEqual('G', testSubject.Vis.ModelYear);
+            Assert.AreEqual('L', testSubject.Vis.PlantCode);
+            Assert.AreEqual("861987", testSubject.Vis.SequentialNumber);
+        }
+
+        [TestMethod]
         public void TestGetModelYearYyyy()
         {
-            //TODO
+            var testVinValue = "3N1CN7AP0GL861987";
+
+            var testSubject = new Vin { Value = testVinValue };
+
+            var testResult = testSubject.GetModelYearYyyy();
+            Assert.AreEqual(2016,testResult);
+        }
+
+        [TestMethod]
+        public void TestVinToString()
+        {
+            var testVinValue = "3N1CN7AP0GL861987";
+            var testSubject = new Vin {Value = testVinValue};
+            Assert.AreEqual(testVinValue, testSubject.ToString());
+        }
+
+        [TestMethod]
+        public void TestVinEquality()
+        {
+            var testVinValue = "3N1CN7AP0GL861987";
+            var testSubject = new Vin { Value = testVinValue };
+
+            var compareTest = new Vin {Value = testVinValue};
+
+            Assert.IsTrue(testSubject.Equals(compareTest));
+
+        }
+
+        [TestMethod]
+        public void TestRandomVin()
+        {
+            var testResult = Vin.GetRandomVin();
+            Assert.IsNotNull(testResult);
+            
+            System.Diagnostics.Debug.WriteLine(testResult);
         }
     }
 }

@@ -3,7 +3,14 @@ using System.Linq;
 
 namespace NoFuture.Rand.Edu
 {
-    public class AmericanUniversity
+    public interface IUniversity
+    {
+        string Name { get; set; }
+        string CampusName { get; set; }
+        float? CrimeRate { get; set; }
+    }
+
+    public class AmericanUniversity : IUniversity
     {
         public Gov.UsState State { get; set; }
         public string Name { get; set; }

@@ -41,11 +41,11 @@ namespace NoFuture.Rand.Domus
             _dob = dob;
             _myGender = myGender;
 
-            _fname = _myGender != Gender.Unknown ? AmericanFirstName(_dob, _myGender) : "Pat";
+            _fname = _myGender != Gender.Unknown ? GetAmericanFirstName(_dob, _myGender) : "Pat";
             _ms = _myGender != Gender.Unknown ? GetMaritialStatus(_dob.Value, _myGender) : MaritialStatus.Unknown;
-            _lname = AmericanLastName();
+            _lname = GetAmericanLastName();
 
-            MiddleName = AmericanFirstName(_dob, _myGender);
+            MiddleName = GetAmericanFirstName(_dob, _myGender);
 
             var csz = CityArea.American();
             HomeAddress = Address.American();
@@ -161,9 +161,12 @@ namespace NoFuture.Rand.Domus
 
         #region static utility methods
         /// <summary>
-        /// Source [https://www.census.gov/population/socdemo/hh-fam/ms2.xls]
+        /// Marriage Source [https://www.census.gov/population/socdemo/hh-fam/ms2.xls] (1947-2011)
+        /// Age of Birth Sources (1970-2014)
+        /// [http://www.cdc.gov/nchs/data/nvsr/nvsr51/nvsr51_01.pdf] (Table 1.) 
+        /// [http://www.cdc.gov/nchs/data/nvsr/nvsr64/nvsr64_12_tables.pdf] (Table I-1.)
         /// </summary>
-        /// <remarks>1947-2011</remarks>
+        /// <remarks></remarks>
         public static class LinearEquations
         {
             public static LinearEquation MaleDob2MarriageAge = new LinearEquation { Intercept = -181.45, Slope = 0.1056 };
@@ -186,6 +189,30 @@ namespace NoFuture.Rand.Domus
                 Slope = 0.1083
             };
 
+            public static LinearEquation FemaleAge2FirstChild = new LinearEquation
+            {
+                Intercept = -180.32,
+                Slope = 0.1026
+            };
+
+            public static LinearEquation FemaleAge2SecondChild = new LinearEquation
+            {
+                Intercept = -175.88,
+                Slope = 0.1017
+            };
+
+            public static LinearEquation FemaleAge2ThirdChild = new LinearEquation
+            {
+                Intercept = -129.45,
+                Slope = 0.0792
+            };
+
+            public static LinearEquation FemaleAge2ForthChild = new LinearEquation
+            {
+                Intercept = -78.855,
+                Slope = 0.0545
+            };
+
         }
 
         /// <summary>
@@ -193,7 +220,7 @@ namespace NoFuture.Rand.Domus
         /// using one of top 200 names for the given decade in which the DOB is a part.
         /// </summary>
         /// <returns></returns>
-        public static string AmericanFirstName(DateTime? dateOfBirth, Gender gender)
+        public static string GetAmericanFirstName(DateTime? dateOfBirth, Gender gender)
         {
             var dt = dateOfBirth == null ? new DateTime(2000, 1, 2) : dateOfBirth.Value;
             var xmlData = TreeData.AmericanFirstNamesData;
@@ -223,7 +250,7 @@ namespace NoFuture.Rand.Domus
         /// Return one of 500 selected lastnames - source is unknown.
         /// </summary>
         /// <returns></returns>
-        public static string AmericanLastName()
+        public static string GetAmericanLastName()
         {
             var xmlData = TreeData.AmericanLastNamesData;
             var lnameNodes = xmlData.SelectSingleNode("//last-name");
@@ -232,19 +259,27 @@ namespace NoFuture.Rand.Domus
         }
 
         /// <summary>
-        /// Returns a date being between 18 years ago today back to 65 years ago today.
+        /// Returns a date being between 18 years ago today back to 68 years ago today.
         /// </summary>
-        public static DateTime WorkingAdultBirthDate()
+        public static DateTime GetWorkingAdultBirthDate()
         {
-            return (DateTime.Now.AddYears(-1 * (Etx.MyRand.Next(18, 65))));
+            return DateTime.Now.AddYears(-1 * Etx.MyRand.Next(18, 68)).AddDays(Etx.Number(1,360));
         }
 
+        /// <summary>
+        /// Returns a date within the last 18 years.
+        /// </summary>
+        /// <returns></returns>
+        public static DateTime GetChildBirthDate()
+        {
+            return DateTime.Now.AddYears(-1*Etx.Number(1, 18)).AddDays(-1*Etx.Number(1, 360));
+        }
         /// <summary>
         /// Return a string as American's call Race randomly with weight based on <see cref="zipCode"/>.
         /// </summary>
         /// <param name="zipCode"></param>
         /// <returns>Will default to string 'white' if <see cref="zipCode"/> cannot be resolved.</returns>
-        public static string GetRace(string zipCode)
+        public static string GetAmericanRace(string zipCode)
         {
             var amRace = Etx.RandomAmericanRaceWithRespectToZip(zipCode);
 
@@ -402,13 +437,13 @@ namespace NoFuture.Rand.Domus
 
             //mother not ever married to father
             if (_mother.MaritalStatus == MaritialStatus.Single)
-                _father.LastName = AmericanLastName();
+                _father.LastName = GetAmericanLastName();
 
             //mother no longer married to father
             if (_mother.MaritalStatus == MaritialStatus.Divorced || 
                 _mother.MaritalStatus == MaritialStatus.Remarried ||
                 _mother.MaritalStatus == MaritialStatus.Separated)
-                 _mother.LastName = AmericanLastName();
+                 _mother.LastName = GetAmericanLastName();
 
             //hea
             if (_mother.MaritalStatus == MaritialStatus.Married)
@@ -445,5 +480,10 @@ namespace NoFuture.Rand.Domus
             internal double From { get; set; }
             internal double To { get; set; }
         }
+    }
+
+    public static class NaUtil
+    {
+        
     }
 }

@@ -3,8 +3,16 @@ using System.Linq;
 
 namespace NoFuture.Rand.Edu
 {
+    public interface IHighSchool
+    {
+        string Name { get; set; }
+        UrbanCentric UrbanCentric { get; set; }
+        double TotalTeachers { get; set; }
+        int TotalStudents { get; set; }
+    }
+
     [Serializable]
-    public class AmericanHighSchool
+    public class AmericanHighSchool : IHighSchool
     {
         public Gov.UsState State { get; set; }
         public string PostalCode { get; set; }
