@@ -10,26 +10,8 @@ namespace NoFuture.Rand.Domus
 {
     public interface IProfession
     {
-        short GetEduLevel(DateTime? dt);
         Income GetProfessionalIncome(DateTime? dt);
         IEmployment GetEmployment(DateTime? dt);
-        IHighSchool GetHighSchool(DateTime? dt);
-        IUniversity GetUniversity(DateTime? dt);
-    }
-
-    [Flags]
-    public enum OccidentalEdu : short
-    {
-        HighSchool = 1,
-        College = 2,
-        PostGrad = 4,
-    }
-
-    [Flags]
-    public enum EduCompletion : short
-    {
-        Some = 16,
-        Grad = 32
     }
 
     public interface IEmployment

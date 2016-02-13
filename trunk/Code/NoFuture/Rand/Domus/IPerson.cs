@@ -17,5 +17,8 @@ namespace NoFuture.Rand.Domus
         IPerson Mother { get; set; }
         List<IPerson> Children { get; }
         Pneuma.Personality Personality { get; }
+        IEducation Education { get; set; }
+
+        int GetAge(DateTime? atTime);
     }
 }

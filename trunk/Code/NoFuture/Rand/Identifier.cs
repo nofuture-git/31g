@@ -58,6 +58,15 @@ namespace NoFuture.Rand
         Biological = 64,
         Spouse = 128,
     }
+
+    [Flags]
+    public enum OccidentalEdu : short
+    {
+        HighSchool = 1,
+        College = 2,
+        Some = 16,
+        Grad = 32
+    }
     [Serializable]
     public class AmericanRacePercents
     {

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using NoFuture.Exceptions;
 using NoFuture.Rand.Domus.Pneuma;
+using NoFuture.Shared;
 
 namespace NoFuture.Rand.Domus
 {
@@ -26,6 +28,24 @@ namespace NoFuture.Rand.Domus
         public virtual IPerson Mother { get; set; }
         public virtual List<IPerson> Children { get { return _children; } }
         public Personality Personality { get { return _personality; } }
+        public virtual IEducation Education { get; set; }
+        public int GetAge(DateTime? atTime)
+        {
+            var dt = DateTime.Now;
+            if (atTime != null)
+                dt = atTime.Value;
+            if (BirthDate == null)
+                throw
+                    new RahRowRagee(
+                        String.Format("The random person named {0}, {1} does not have a Date Of Birth assigned.",
+                            LastName, FirstName));
+
+            if (DeathDate != null && DateTime.Compare(DeathDate.Value, dt) < 0)
+                throw new ItsDeadJim("Its Dead Jim.");
+
+            return CalcAge(BirthDate.Value, dt);
+        }
+
         #endregion
 
         #region static utility methods
@@ -36,7 +56,7 @@ namespace NoFuture.Rand.Domus
         /// <returns></returns>
         public static NorthAmerican American()
         {
-            return new NorthAmerican(NorthAmerican.GetWorkingAdultBirthDate(), Etx.CoinToss ? Gender.Female : Gender.Male,
+            return new NorthAmerican(NAmerUtil.GetWorkingAdultBirthDate(), Etx.CoinToss ? Gender.Female : Gender.Male,
                 true);
         }
 
@@ -53,6 +73,11 @@ namespace NoFuture.Rand.Domus
             canadian.HomeCityArea = cpp;
 
             return canadian;
+        }
+
+        public static int CalcAge(DateTime dob, DateTime atTime)
+        {
+            return Convert.ToInt32(Math.Round((atTime - dob).TotalDays / Constants.DBL_TROPICAL_YEAR));
         }
 
         #endregion

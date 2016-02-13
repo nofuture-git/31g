@@ -30,6 +30,7 @@ namespace NoFuture.Rand.Domus
         private string _fname;
         private string _lname;
         private MaritialStatus _ms;
+        private readonly List<IPerson> _children = new List<IPerson>();
         #endregion
 
         #region ctors
@@ -41,11 +42,11 @@ namespace NoFuture.Rand.Domus
             _dob = dob;
             _myGender = myGender;
 
-            _fname = _myGender != Gender.Unknown ? GetAmericanFirstName(_dob, _myGender) : "Pat";
-            _ms = _myGender != Gender.Unknown ? GetMaritialStatus(_dob.Value, _myGender) : MaritialStatus.Unknown;
-            _lname = GetAmericanLastName();
+            _fname = _myGender != Gender.Unknown ? NAmerUtil.GetAmericanFirstName(_dob, _myGender) : "Pat";
+            _ms = _myGender != Gender.Unknown ? NAmerUtil.GetMaritialStatus(_dob.Value, _myGender) : MaritialStatus.Unknown;
+            _lname = NAmerUtil.GetAmericanLastName();
 
-            MiddleName = GetAmericanFirstName(_dob, _myGender);
+            MiddleName = NAmerUtil.GetAmericanFirstName(_dob, _myGender);
 
             var csz = CityArea.American();
             HomeAddress = Address.American();
@@ -157,9 +158,149 @@ namespace NoFuture.Rand.Domus
         public List<ILoan> Debts { get { return _debts; } }
         public Income Income { get; set; }
 
+        public override List<IPerson> Children
+        {
+            get { return _children; }
+        }
+
         #endregion
 
-        #region static utility methods
+        #region internal helpers
+        /// <summary>
+        /// Assigns <see cref="Father"/>, <see cref="Mother"/> and if applicable <see cref="Spouse"/> and <see cref="Children"/>
+        /// </summary>
+        protected internal void ResolveFamilyState()
+        {
+            ResolveParents();
+            ResolveSpouse();
+            ResolveChildren();
+        }
+
+        protected internal void ResolveParents()
+        {
+            if (_dob == null)
+                throw
+                    new RahRowRagee(
+                        String.Format("The random person named {0}, {1} does not have a Date Of Birth assigned.",
+                            LastName, FirstName));
+
+            _mother = _mother ?? (_mother = NAmerUtil.SolveForParent(_dob.Value, NAmerUtil.Equations.FemaleYearOfMarriage2AvgAge, Gender.Female));
+            _father = _father ?? (_father = NAmerUtil.SolveForParent(_dob.Value, NAmerUtil.Equations.MaleYearOfMarriage2AvgAge, Gender.Male));
+
+            //at time of birth
+            _mother.LastName = LastName;
+            _father.LastName = LastName;
+
+            _mother.MaritalStatus = NAmerUtil.GetMaritialStatus(_mother.BirthDate.Value, Gender.Female);
+            _father.MaritalStatus = _mother.MaritalStatus;
+
+            //mother not ever married to father
+            if (_mother.MaritalStatus == MaritialStatus.Single)
+                _father.LastName = NAmerUtil.GetAmericanLastName();
+
+            //mother no longer married to father
+            if (_mother.MaritalStatus == MaritialStatus.Divorced ||
+                _mother.MaritalStatus == MaritialStatus.Remarried ||
+                _mother.MaritalStatus == MaritialStatus.Separated)
+                _mother.LastName = NAmerUtil.GetAmericanLastName();
+
+            //hea
+            if (_mother.MaritalStatus == MaritialStatus.Married)
+                _mother.Spouse = _father;
+        }
+
+        protected internal void ResolveSpouse()
+        {
+            if (_myGender == Gender.Female &&
+                (MaritalStatus == MaritialStatus.Divorced || MaritalStatus == MaritialStatus.Remarried ||
+                 MaritalStatus == MaritialStatus.Separated))
+            {
+                //previous last name from previous marriage
+                OtherNames.Add(new Tuple<KindsOfPersonalNames, string>(KindsOfPersonalNames.Former, NAmerUtil.GetAmericanLastName()));
+            }
+
+            if (MaritalStatus != MaritialStatus.Married && MaritalStatus != MaritialStatus.Remarried) return;
+
+            if (_dob == null)
+                throw
+                    new RahRowRagee(
+                        String.Format("The random person named {0}, {1} does not have a Date Of Birth assigned.",
+                            LastName, FirstName));
+
+            _spouse = _spouse ?? NAmerUtil.SolveForSpouse(_dob.Value, _myGender);
+            _spouse.Spouse = this;
+            if (_myGender == Gender.Female)
+            {
+                _lname = _spouse.LastName;
+                if (OtherNames.All(x => x.Item1 != KindsOfPersonalNames.FatherSurname))
+                    OtherNames.Add(new Tuple<KindsOfPersonalNames, string>(KindsOfPersonalNames.FatherSurname, _father.LastName));
+            }
+        }
+
+        protected internal void ResolveChildren()
+        {
+            if (MyGender == Gender.Male)
+                return;
+
+            if (_dob == null)
+                throw
+                    new RahRowRagee(
+                        String.Format("The random person named {0}, {1} does not have a Date Of Birth assigned.",
+                            LastName, FirstName));
+
+            var numOfChildren = NAmerUtil.SolveForNumberOfChildren(_dob.Value,
+                Education == null ? Convert.ToInt16(0) : Education.GetEduLevel(null), null);
+
+            if (numOfChildren <= 0)
+                return;
+            for (var i = 0; i < numOfChildren; i++)
+            {
+                var childDob = NAmerUtil.GetChildBirthDate(_dob.Value, i, null);
+                if (childDob == null)
+                    continue;
+
+                var child = new NorthAmerican(NAmerUtil.GetChildBirthDate(_dob.Value, i, null),
+                    Etx.CoinToss ? Gender.Female : Gender.Male) {Mother = this};
+
+                var childAge = child.GetAge(null);
+
+                if (child.GetAge(null) < 18)
+                {
+                    child.HomeAddress = HomeAddress;
+                    child.MaritalStatus = MaritialStatus.Single;
+                    child.Spouse = null;
+                }
+                if (child.GetAge(null) < 16)
+                {
+                    child.WorkAddress = null;
+                }
+
+                var formerLName = OtherNames.FirstOrDefault(x => x.Item1 == KindsOfPersonalNames.Former);
+
+                var isDaughterWithSpouse = child.MyGender == Gender.Female &&
+                                           NAmerUtil.Equations.FemaleDob2MarriageAge.SolveForY(child.BirthDate.Value.Year) >=
+                                           childAge && childAge >= 18;
+
+                if(!isDaughterWithSpouse)
+                    child.LastName = formerLName == null ? LastName : formerLName.Item2;
+               
+                _children.Add(child);
+            }
+        }
+
+        protected internal void ResolveFinancialState()
+        {
+
+            throw new NotImplementedException();
+        }
+        #endregion
+    }
+
+    /// <summary>
+    /// Catalog of static utility methods related to North American
+    /// </summary>
+    public static class NAmerUtil
+    {
         /// <summary>
         /// Marriage Source [https://www.census.gov/population/socdemo/hh-fam/ms2.xls] (1947-2011)
         /// Age of Birth Sources (1970-2014)
@@ -167,7 +308,7 @@ namespace NoFuture.Rand.Domus
         /// [http://www.cdc.gov/nchs/data/nvsr/nvsr64/nvsr64_12_tables.pdf] (Table I-1.)
         /// </summary>
         /// <remarks></remarks>
-        public static class LinearEquations
+        public static class Equations
         {
             public static LinearEquation MaleDob2MarriageAge = new LinearEquation { Intercept = -181.45, Slope = 0.1056 };
 
@@ -211,6 +352,15 @@ namespace NoFuture.Rand.Domus
             {
                 Intercept = -78.855,
                 Slope = 0.0545
+            };
+
+            /// <summary>
+            /// https://en.wikipedia.org/wiki/Childfree#Statistics_and_research
+            /// </summary>
+            public static NaturalLogEquation FemaleYob2ProbChildless = new NaturalLogEquation
+            {
+                Intercept = -55.479,
+                Slope = 7.336
             };
 
         }
@@ -263,17 +413,60 @@ namespace NoFuture.Rand.Domus
         /// </summary>
         public static DateTime GetWorkingAdultBirthDate()
         {
-            return DateTime.Now.AddYears(-1 * Etx.MyRand.Next(18, 68)).AddDays(Etx.Number(1,360));
+            return DateTime.Now.AddYears(-1 * Etx.MyRand.Next(18, 68)).AddDays(Etx.Number(1, 360));
         }
 
         /// <summary>
         /// Returns a date within the last 18 years.
         /// </summary>
         /// <returns></returns>
-        public static DateTime GetChildBirthDate()
+        public static DateTime? GetChildBirthDate(DateTime motherDob, int numberOfSiblings, DateTime? atTime)
         {
-            return DateTime.Now.AddYears(-1*Etx.Number(1, 18)).AddDays(-1*Etx.Number(1, 360));
+            //put number of siblings in scope for equations
+            if (numberOfSiblings <= 0)
+                numberOfSiblings = 0;
+            if (numberOfSiblings > 4)
+                numberOfSiblings = 3;
+
+            //default atTime to now
+            var dt = DateTime.Now;
+            if (atTime != null)
+                dt = atTime.Value;
+
+            var motherAge = Person.CalcAge(motherDob, dt);
+
+            var meanAge = Equations.FemaleAge2FirstChild.SolveForY(motherDob.Year);
+
+            //mother is too young for children
+            if (motherAge < meanAge)
+                return null;
+
+            switch (numberOfSiblings)
+            {
+                case 2:
+                    meanAge = Equations.FemaleAge2SecondChild.SolveForY(motherDob.Year);
+                    if (motherAge < meanAge)
+                        return null;
+                    break;
+                case 3:
+                    meanAge = Equations.FemaleAge2ThirdChild.SolveForY(motherDob.Year);
+                    if (motherAge < meanAge)
+                        return null;
+                    break;
+                case 4:
+                    meanAge = Equations.FemaleAge2ForthChild.SolveForY(motherDob.Year);
+                    if (motherAge < meanAge)
+                        return null;
+                    break;
+            }
+
+            //plus or minus some random days
+            var randomDaysNear = Etx.Number(1, 360)*(Etx.CoinToss ? 1 : -1);
+
+            //go back meanAge years from atTime and add\minus some days
+            return motherDob.AddYears((int) Math.Round(meanAge)).AddDays(randomDaysNear);
         }
+
         /// <summary>
         /// Return a string as American's call Race randomly with weight based on <see cref="zipCode"/>.
         /// </summary>
@@ -288,7 +481,7 @@ namespace NoFuture.Rand.Domus
 
             var americanRaceProbabilityRanges = new List<AmericanRaceProbabilityRange>();
             double prevFrom = 0.000001D;
-            var raceHashByZip = new Dictionary<string,double>
+            var raceHashByZip = new Dictionary<string, double>
             {
                 {"AmericanIndian", amRace.AmericanIndian},
                 {"Asian", amRace.Asian},
@@ -338,8 +531,8 @@ namespace NoFuture.Rand.Domus
                 return MaritialStatus.Single;
 
             var avgAgeMarriage = sex == Gender.Female
-                ? LinearEquations.FemaleDob2MarriageAge.SolveForY(dob.ToDouble())
-                : LinearEquations.MaleDob2MarriageAge.SolveForY(dob.ToDouble());
+                ? Equations.FemaleDob2MarriageAge.SolveForY(dob.ToDouble())
+                : Equations.MaleDob2MarriageAge.SolveForY(dob.ToDouble());
             var cdt = DateTime.Now;
             var currentAge = (cdt.Year + cdt.DayOfYear / Constants.DBL_TROPICAL_YEAR) -
                              (dob.Year + dob.DayOfYear / Constants.DBL_TROPICAL_YEAR);
@@ -383,7 +576,7 @@ namespace NoFuture.Rand.Domus
                 eq.SolveForY(dtPm.ToDouble());
 
             var aParent =
-                new  NorthAmerican(
+                new NorthAmerican(
                     dtPm.AddYears(Convert.ToInt32(Math.Round(ageWhenParentsMarried, 0)) * -1),
                     gender);
             return aParent;
@@ -411,79 +604,69 @@ namespace NoFuture.Rand.Domus
             return new NorthAmerican(spouseDob, gender == Gender.Female ? Gender.Male : Gender.Female);
 
         }
-        #endregion 
 
-        #region internal helpers
         /// <summary>
-        /// Assigns <see cref="Father"/>, <see cref="Mother"/> and if applicable <see cref="Spouse"/>
+        /// Produces a random value between 0 and 4.
         /// </summary>
-        protected internal void ResolveFamilyState()
+        /// <param name="dob"></param>
+        /// <param name="edu">
+        /// https://en.wikipedia.org/wiki/Childfree#Education
+        /// </param>
+        /// <param name="atDateTime">Optional, will default to current system time to calc Age</param>
+        /// <returns></returns>
+        public static int SolveForNumberOfChildren(DateTime dob, short edu, DateTime? atDateTime)
         {
-            if (_dob == null)
-                throw
-                    new RahRowRagee(
-                        String.Format("The random person named {0}, {1} does not have a Date Of Birth assigned.",
-                            LastName, FirstName));
+            //rand for lifetime childless
+            var eduAdditive = 0.0;
+            if (edu == (short) (OccidentalEdu.College | OccidentalEdu.Grad))
+                eduAdditive = 0.09;
+            if (edu == (short) (OccidentalEdu.College | OccidentalEdu.Some))
+                eduAdditive = 0.04;
+            if (edu == (short) (OccidentalEdu.HighSchool | OccidentalEdu.Grad))
+                eduAdditive = 0.02;
 
-            _mother = _mother ?? (_mother = SolveForParent(_dob.Value, LinearEquations.FemaleYearOfMarriage2AvgAge, Gender.Female));
-            _father = _father ?? (_father = SolveForParent(_dob.Value, LinearEquations.MaleYearOfMarriage2AvgAge, Gender.Male));
+            var probChildless = Math.Round(Equations.FemaleYob2ProbChildless.SolveForY(dob.Year), 2);
 
-            //at time of birth
-            _mother.LastName = LastName;
-            _father.LastName = LastName;
+            probChildless += eduAdditive;
 
-            _mother.MaritalStatus = GetMaritialStatus(_mother.BirthDate.Value, Gender.Female);
-            _father.MaritalStatus = _mother.MaritalStatus;
+            if (Math.Round((double) Etx.Number(1, 100)/100, 2) <= probChildless)
+                return 0;
 
-            //mother not ever married to father
-            if (_mother.MaritalStatus == MaritialStatus.Single)
-                _father.LastName = GetAmericanLastName();
+            //average to be 2.5 
+            var vt = DateTime.Now;
+            if (atDateTime != null)
+                vt = atDateTime.Value;
 
-            //mother no longer married to father
-            if (_mother.MaritalStatus == MaritialStatus.Divorced || 
-                _mother.MaritalStatus == MaritialStatus.Remarried ||
-                _mother.MaritalStatus == MaritialStatus.Separated)
-                 _mother.LastName = GetAmericanLastName();
+            var age = Person.CalcAge(dob, vt);
+            var randV = Etx.Number(1, 100);
 
-            //hea
-            if (_mother.MaritalStatus == MaritialStatus.Married)
-                _mother.Spouse = _father;
+            var meanAge = Math.Round(Equations.FemaleAge2ForthChild.SolveForY(vt.Year));
 
-            if (_myGender == Gender.Unknown)
-                return;
+            if (randV >= 84 && age >= meanAge)
+                return 4;
 
-            if (MaritalStatus == MaritialStatus.Married || MaritalStatus == MaritialStatus.Remarried)
-            {
-                _spouse = _spouse ?? SolveForSpouse(_dob.Value, _myGender);
-                _spouse.Spouse = this;
-                if (_myGender == Gender.Female)
-                {
-                    _lname = _spouse.LastName;
-                    if (OtherNames.All(x => x.Item1 != KindsOfPersonalNames.FatherSurname))
-                        OtherNames.Add(new Tuple<KindsOfPersonalNames, string>(KindsOfPersonalNames.FatherSurname, _father.LastName));
-                }
-            }
-        }
+            meanAge = Math.Round(Equations.FemaleAge2ThirdChild.SolveForY(vt.Year));
 
-        protected internal void ResolveFinancialState()
-        {
+            if (randV >= 66 && age >= meanAge)
+                return 3;
 
-            throw new NotImplementedException();
-        }
-        #endregion
+            meanAge = Math.Round(Equations.FemaleAge2SecondChild.SolveForY(vt.Year));
 
-        //container class for Race probability tables
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        internal class AmericanRaceProbabilityRange
-        {
-            internal string Name { get; set; }
-            internal double From { get; set; }
-            internal double To { get; set; }
+            if (randV >= 33 && age >= meanAge)
+                return 2;
+
+            meanAge = Math.Round(Equations.FemaleAge2FirstChild.SolveForY(vt.Year));
+
+            return age >= meanAge ? 1 : 0;
         }
     }
 
-    public static class NaUtil
+    //container class for Race probability tables
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    internal class AmericanRaceProbabilityRange
     {
-        
+        internal string Name { get; set; }
+        internal double From { get; set; }
+        internal double To { get; set; }
     }
 }
