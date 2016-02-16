@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Linq;
+using com.sun.org.apache.bcel.@internal.generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json;
 using NoFuture.Rand;
 using NoFuture.Rand.Domus;
 
@@ -28,8 +30,6 @@ namespace NoFuture.Tests.Rand
             Assert.IsFalse(string.IsNullOrWhiteSpace(testResult.HomeAddress.ToString()));
 
             System.Diagnostics.Debug.WriteLine(testResult.NetUri.First().ToString());
-            System.Diagnostics.Debug.WriteLine(testResult.WorkCity);
-            System.Diagnostics.Debug.WriteLine(testResult.WorkZip);
         }
 
         [TestMethod]
@@ -134,7 +134,7 @@ namespace NoFuture.Tests.Rand
         [TestMethod]
         public void TestSolveForNumberOfChildren()
         {
-            var testResult = NAmerUtil.SolveForNumberOfChildren(new DateTime(1974, 8, 11), 0, null);
+            var testResult = NAmerUtil.SolveForNumberOfChildren(new DateTime(1974, 8, 11), null);
 
             Assert.IsTrue(-1 < testResult);
 
@@ -145,7 +145,7 @@ namespace NoFuture.Tests.Rand
             //averages, 18 year old never has children.
             for (var i = 0; i < 100; i++)
             {
-                testResult = NAmerUtil.SolveForNumberOfChildren(DateTime.Now.AddYears(-18).AddDays(-128), 0, null);
+                testResult = NAmerUtil.SolveForNumberOfChildren(DateTime.Now.AddYears(-18).AddDays(-128), null);
                 Assert.AreEqual(0,testResult);
             }
         }
@@ -162,5 +162,19 @@ namespace NoFuture.Tests.Rand
             System.Diagnostics.Debug.WriteLine(testResult);
         }
 
+        [TestMethod]
+        public void TestNorthAmericanWithFamily()
+        {
+            var testResult = new NoFuture.Rand.Domus.NorthAmerican(DateTime.Now.AddYears(-40), Gender.Female, true );
+
+            Assert.IsNotNull(testResult.Mother);
+            Assert.IsNotNull(testResult.Father);
+
+            System.Diagnostics.Debug.WriteLine(testResult.Children.Count);
+            
+
+
+            
+        }
     }
 }

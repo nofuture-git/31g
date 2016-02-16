@@ -18,7 +18,14 @@ namespace NoFuture.Rand.Domus
         List<IPerson> Children { get; }
         Pneuma.Personality Personality { get; }
         IEducation Education { get; set; }
+        List<Tuple<KindsOfPersonalNames, string>> OtherNames { get; }
 
-        int GetAge(DateTime? atTime);
+        //int GetAge(DateTime? atTime);
+        //MaritialStatus GetMaritialStatus(DateTime? atTime);
+        //IPerson GetSpouse(DateTime? atTime);
+        //IPerson[] GetChildren(DateTime? atTime);
+        //IEducation GetEducation(DateTime? atTime);
+        //string[] GetNames(KindsOfPersonalNames kindOfNames, DateTime? atTime);
+
     }
 }

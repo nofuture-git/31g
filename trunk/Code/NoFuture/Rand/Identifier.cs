@@ -37,6 +37,16 @@ namespace NoFuture.Rand
     }
 
     [Serializable]
+    [Flags]
+    public enum KindsOfLabels
+    {
+        None,
+        Home,
+        Work,
+        Mobile,
+    }
+
+    [Serializable]
     public enum Gender
     {
         Unknown,
@@ -51,17 +61,21 @@ namespace NoFuture.Rand
         None = 0,
         Current = 1,
         Former = 2,
-        Nickname = 4,
-        FatherSurname = 8,
-        MotherSurname = 16,
-        Adopted = 32,
-        Biological = 64,
-        Spouse = 128,
+        Firstname = 4,
+        Surname = 8,
+        Nickname = 16,
+        Father = 32,
+        Mother = 64,
+        Adopted = 128,
+        Biological = 264,
+        Spouse = 512,
+        Middle = 1024,
     }
 
     [Flags]
     public enum OccidentalEdu : short
     {
+        Empty = 0,
         HighSchool = 1,
         College = 2,
         Some = 16,
@@ -78,6 +92,20 @@ namespace NoFuture.Rand
         public double Pacific { get; set; }
         public double Mixed { get; set; }
     }
+
+    [Flags]
+    [Serializable]
+    public enum NorthAmericanRace : byte
+    {
+        White = 1,
+        Hispanic = 2,
+        Black = 4,
+        Asian = 8,
+        AmericanIndian = 16,
+        Pacific = 32,
+        Mixed = 64
+    }
+
     [Serializable]
     public enum UrbanCentric
     {

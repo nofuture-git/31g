@@ -8,7 +8,7 @@ namespace NoFuture.Rand.Domus
 {
     public interface IEducation
     {
-        short GetEduLevel(DateTime? dt);
+        OccidentalEdu GetEduLevel(DateTime? dt);
         IHighSchool GetHighSchool(DateTime? dt);
         IUniversity GetUniversity(DateTime? dt);
     }

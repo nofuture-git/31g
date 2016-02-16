@@ -39,7 +39,8 @@
 	"msconfig" : "System Configuration",
 	"explorer" : "Windows Explorer",
 	"mstsc" : "Remote Desktop",
-	"msinfo32" : "Windows Info"
+	"msinfo32" : "Windows Info",
+	"cleanmgr.exe" : "Disk Cleanup"
 }
 "windowsKey" : {
 	"win + [left|right] arrow" : "move window over",

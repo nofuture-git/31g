@@ -297,6 +297,27 @@ namespace NoFuture.Rand
         {
             return (d.Year + (d.DayOfYear/Constants.DBL_TROPICAL_YEAR));
         }
+
+        /// <summary>
+        /// Returns a random date near <see cref="plusOrMinusYears"/> years ago.
+        /// </summary>
+        /// <param name="plusOrMinusYears"></param>
+        /// <param name="fromThisDate">Optional, will default to current system time</param>
+        /// <param name="maxDaysSpread">
+        /// Additional number of days to further randomize the date where the final date
+        /// will be plus or minus one to <see cref="maxDaysSpread"/> days. Setting this to zero 
+        /// will result in exactly <see cref="fromThisDate"/> minus <see cref="plusOrMinusYears"/> number of years.
+        /// </param>
+        /// <returns></returns>
+        public static DateTime Date(int plusOrMinusYears, DateTime? fromThisDate, int maxDaysSpread = 360)
+        {
+            var dt = DateTime.Now;
+            if (fromThisDate != null)
+                dt = fromThisDate.Value;
+            //plus or minus some random days
+            var randomDaysNear = Etx.Number(1, 360) * PlusOrMinusOne;
+            return dt.AddYears(plusOrMinusYears).AddDays(randomDaysNear);
+        }
         #endregion
     }
 }

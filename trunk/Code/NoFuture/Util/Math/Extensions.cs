@@ -16,7 +16,7 @@ namespace NoFuture.Util.Math
         /// </remarks>
         public static int ParseRomanNumeral(this string someRomanNumerials)
         {
-            if (someRomanNumerials == null || string.IsNullOrWhiteSpace(someRomanNumerials))
+            if (string.IsNullOrWhiteSpace(someRomanNumerials))
                 return 0;
             
             var roman = someRomanNumerials.Trim().ToCharArray();
