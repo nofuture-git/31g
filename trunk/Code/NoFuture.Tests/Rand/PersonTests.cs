@@ -170,11 +170,26 @@ namespace NoFuture.Tests.Rand
             Assert.IsNotNull(testResult.Mother);
             Assert.IsNotNull(testResult.Father);
 
-            System.Diagnostics.Debug.WriteLine(testResult.Children.Count);
-            
+            var d = Newtonsoft.Json.JsonConvert.SerializeObject(testResult, Formatting.Indented,
+                new JsonSerializerSettings() { ReferenceLoopHandling = ReferenceLoopHandling.Ignore });
 
-
+            System.Diagnostics.Debug.WriteLine(d);
             
+        }
+
+        [TestMethod]
+        public void TestEquations()
+        {
+            var baseDob = new DateTime(2016,2,16,15,55,02);
+            for (var i = 0; i < 15; i++)
+            {
+                var dob = baseDob.AddYears((25 + i) * -1);
+                var marriageEq = NAmerUtil.Equations.FemaleDob2MarriageAge.SolveForY(dob.ToDouble());
+                var firstBornEq = NAmerUtil.Equations.FemaleAge2FirstChild.SolveForY(dob.Year);
+
+                System.Diagnostics.Debug.WriteLine(string.Format("dob: {0};  marriageAge: {1}; firstBornAge: {2};", dob, marriageEq, firstBornEq));
+
+            }
         }
     }
 }

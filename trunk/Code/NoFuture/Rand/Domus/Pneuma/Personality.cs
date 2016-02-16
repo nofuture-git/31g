@@ -41,7 +41,7 @@ namespace NoFuture.Rand.Domus.Pneuma
 
     public interface ITrait : IIdentifier<Dimension>
     {
-        INomenclature Description { get; }
+        INomenclature GetDescription();
     }
 
     [Serializable]
@@ -79,7 +79,8 @@ namespace NoFuture.Rand.Domus.Pneuma
                     break;
             }
         }
-        public abstract INomenclature Description { get; }
+
+        public abstract INomenclature GetDescription();
         public abstract string Abbrev { get; }
         public Dimension Value { get; set; }
     }
@@ -91,9 +92,9 @@ namespace NoFuture.Rand.Domus.Pneuma
             get { return "O"; }
         }
 
-        public override INomenclature Description
+        public override INomenclature GetDescription()
         {
-            get { return new Util.Etymological.Psy.Openness(); }
+            return new Util.Etymological.Psy.Openness();
         }
     }
     [Serializable]
@@ -104,9 +105,9 @@ namespace NoFuture.Rand.Domus.Pneuma
             get { return "C"; }
         }
 
-        public override INomenclature Description
+        public override INomenclature GetDescription()
         {
-            get { return new Util.Etymological.Psy.Conscientiousness(); }
+            return new Util.Etymological.Psy.Conscientiousness();
         }
     }
     [Serializable]
@@ -117,9 +118,9 @@ namespace NoFuture.Rand.Domus.Pneuma
             get { return "E"; }
         }
 
-        public override INomenclature Description
+        public override INomenclature GetDescription()
         {
-            get { return new Util.Etymological.Psy.Extraversion(); }
+            return new Util.Etymological.Psy.Extraversion();
         }
     }
     [Serializable]
@@ -130,9 +131,9 @@ namespace NoFuture.Rand.Domus.Pneuma
             get { return "A"; }
         }
 
-        public override INomenclature Description
+        public override INomenclature GetDescription()
         {
-            get { return new Util.Etymological.Psy.Agreeableness(); }
+            return new Util.Etymological.Psy.Agreeableness();
         }
     }
     [Serializable]
@@ -143,9 +144,9 @@ namespace NoFuture.Rand.Domus.Pneuma
             get { return "N"; }
         }
 
-        public override INomenclature Description
+        public override INomenclature GetDescription()
         {
-            get { return new Util.Etymological.Psy.Neuroticism(); }
+            return new Util.Etymological.Psy.Neuroticism();
         }
     }
 

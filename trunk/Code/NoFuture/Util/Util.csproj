@@ -100,6 +100,7 @@
     <Compile Include="Math\LinearEquation.cs" />
     <Compile Include="Math\Matrix.cs" />
     <Compile Include="Math\NaturalLogEquation.cs" />
+    <Compile Include="Math\NormalDistEquation.cs" />
     <Compile Include="Net.cs" />
     <Compile Include="NfPath.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

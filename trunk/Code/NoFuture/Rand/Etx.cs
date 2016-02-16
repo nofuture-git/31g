@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Globalization;
 using System.Linq;
 using System.Xml.Linq;
 using System.Text;
@@ -88,7 +91,7 @@ namespace NoFuture.Rand
                 //try to find on the zip code prefix 
                 var zip3 = zipCode.Substring(0, 3);
                 var zipCodes =
-                    Data.TreeData.AmericanHighSchoolData.SelectNodes(string.Format("//zip-code[@prefix='{0}'", zip3));
+                    Data.TreeData.AmericanHighSchoolData.SelectNodes(string.Format("//zip-code[@prefix='{0}']", zip3));
 
                 if (zipCodes == null || zipCodes.Count <=0)
                     return null;
@@ -306,7 +309,7 @@ namespace NoFuture.Rand
         /// <param name="maxDaysSpread">
         /// Additional number of days to further randomize the date where the final date
         /// will be plus or minus one to <see cref="maxDaysSpread"/> days. Setting this to zero 
-        /// will result in exactly <see cref="fromThisDate"/> minus <see cref="plusOrMinusYears"/> number of years.
+        /// will result in exactly <see cref="fromThisDate"/> plus <see cref="plusOrMinusYears"/> number of years.
         /// </param>
         /// <returns></returns>
         public static DateTime Date(int plusOrMinusYears, DateTime? fromThisDate, int maxDaysSpread = 360)
@@ -317,6 +320,68 @@ namespace NoFuture.Rand
             //plus or minus some random days
             var randomDaysNear = Etx.Number(1, 360) * PlusOrMinusOne;
             return dt.AddYears(plusOrMinusYears).AddDays(randomDaysNear);
+        }
+
+        /// <summary>
+        /// Gets a random value contrained to the normal distribution.
+        /// </summary>
+        /// <param name="mean"></param>
+        /// <param name="stdDev"></param>
+        /// <returns></returns>
+        public static double RandomValueInNormalDist(double mean, double stdDev)
+        {
+            var magnitude = GetMagnitudeAdjustment(mean);
+            var posMean = Convert.ToInt32(Math.Round(mean * magnitude));
+            var posStdDev = Convert.ToInt32(Math.Round(stdDev * magnitude));
+
+            var minRand = posMean - (posStdDev*3);
+            var maxRand = posMean + (posStdDev*3);
+
+            //Random only works on positive ints
+            if (minRand < 0 && maxRand < 0)
+            {
+                throw new NotImplementedException(
+                    "Only supported for distributions whose entire range is positive values.");
+            }
+
+            var probTbl = Util.Math.NormalDistEquation.GetCumulativeZScore();
+
+            var posProbTbl = probTbl.Keys.ToDictionary(p => p, p => Convert.ToInt32(probTbl[p]*10000));
+
+            for (var i = 0; i < 1000; i++)
+            {
+                //guess some value w/i 3 std dev's
+                var someValue = Etx.Number(minRand, maxRand);
+
+                //get the probability of it
+                var z = (double)(someValue - posMean) / posStdDev;
+                var zscore = Convert.ToInt32(posProbTbl.FirstOrDefault(x => x.Key >= Math.Abs(z)).Value);
+
+                var attempt = Etx.Number(1, 10000);
+                //try getting a value with that probability
+                var isGe = attempt >= zscore;
+
+                //when succeded - return some value
+                if (isGe)
+                    return (double)someValue / magnitude;
+            }
+            return mean;
+        }
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        internal static int GetMagnitudeAdjustment(double dbl)
+        {
+            var strDbl = dbl.ToString(CultureInfo.InvariantCulture);
+            var numLen = strDbl.Length;
+
+            var  magnitude = strDbl.IndexOf(".", StringComparison.Ordinal);
+
+            if (numLen > Int32.MaxValue.ToString().Length)
+                numLen = Int32.MaxValue.ToString().Length - 1;
+
+            magnitude = numLen - magnitude;
+
+            return Convert.ToInt32(string.Format("1{0}", new string('0', magnitude)));
         }
         #endregion
     }

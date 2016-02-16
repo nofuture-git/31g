@@ -49,7 +49,7 @@ namespace NoFuture.Rand.Domus
 
             MiddleName = NAmerUtil.GetAmericanFirstName(_dob, _myGender);
 
-            var csz = CityArea.American();
+            var csz = CityArea.American(null);
             HomeAddress = Address.American();
             HomeCityArea = csz;
 
@@ -58,12 +58,10 @@ namespace NoFuture.Rand.Domus
             _phoneNumbers.Add(new Tuple<KindsOfLabels, NorthAmericanPhone>(KindsOfLabels.Mobile, Phone.American(abbrv)));
 
             Ssn = new SocialSecurityNumber();
-            DriversLicense = csz.State.Formats[0];
+            if(GetAge(null) >= 16)
+                DriversLicense = csz.State.Formats[0];
 
             //http://www.internic.net/zones/root.zone
-            _netUris.Add(
-                new Uri(string.Format("email:{0}@{1}", Environment.GetEnvironmentVariable("USERNAME"),
-                    System.Net.Dns.GetHostEntry("127.0.0.1").HostName)));
 
             if(withWholeFamily)
                 ResolveFamilyState();
@@ -183,36 +181,47 @@ namespace NoFuture.Rand.Domus
         {
             ThrowOnBirthDateNull();
 
-            _mother = _mother ?? (_mother = NAmerUtil.SolveForParent(_dob.Value, NAmerUtil.Equations.FemaleYearOfMarriage2AvgAge, Gender.Female));
-            _father = _father ?? (_father = NAmerUtil.SolveForParent(_dob.Value, NAmerUtil.Equations.MaleYearOfMarriage2AvgAge, Gender.Male));
+            var myMother = (NorthAmerican)(_mother ?? (_mother = NAmerUtil.SolveForParent(_dob.Value, NAmerUtil.Equations.FemaleYearOfMarriage2AvgAge, Gender.Female)));
+            var myFather = (NorthAmerican)(_father ?? (_father = NAmerUtil.SolveForParent(_dob.Value, NAmerUtil.Equations.MaleYearOfMarriage2AvgAge, Gender.Male)));
 
             //at time of birth
-            _mother.LastName = LastName;
-            _father.LastName = LastName;
+            myMother.LastName = LastName;
+            myFather.LastName = LastName;
 
-            _mother.MaritalStatus = NAmerUtil.GetMaritialStatus(_mother.BirthDate.Value, Gender.Female);
-            _father.MaritalStatus = _mother.MaritalStatus;
+            myMother.MaritalStatus = NAmerUtil.GetMaritialStatus(myMother.BirthDate.Value, Gender.Female);
+            myFather.MaritalStatus = _mother.MaritalStatus;
 
             //mother not ever married to father
-            if (_mother.MaritalStatus == MaritialStatus.Single)
-                _father.LastName = NAmerUtil.GetAmericanLastName();
+            if (myMother.MaritalStatus == MaritialStatus.Single)
+                myFather.LastName = NAmerUtil.GetAmericanLastName();
 
             //mother no longer married to father
-            if (_mother.MaritalStatus == MaritialStatus.Divorced ||
-                _mother.MaritalStatus == MaritialStatus.Remarried ||
-                _mother.MaritalStatus == MaritialStatus.Separated)
+            if (myMother.MaritalStatus == MaritialStatus.Divorced ||
+                myMother.MaritalStatus == MaritialStatus.Remarried ||
+                myMother.MaritalStatus == MaritialStatus.Separated)
             {
-                _mother.LastName = NAmerUtil.GetAmericanLastName();
-                _mother.OtherNames.Add(new Tuple<KindsOfPersonalNames, string>(KindsOfPersonalNames.Surname | KindsOfPersonalNames.Former,
-                    NAmerUtil.GetAmericanLastName()));
+
+                myMother.LastName = NAmerUtil.GetAmericanLastName();
+                myMother.OtherNames.Add(
+                    new Tuple<KindsOfPersonalNames, string>(
+                        KindsOfPersonalNames.Surname | KindsOfPersonalNames.Former | KindsOfPersonalNames.Spouse,
+                        myFather.LastName));
             }
 
             //hea
-            if (_mother.MaritalStatus == MaritialStatus.Married)
-                _mother.Spouse = _father;
+            if (myMother.MaritalStatus == MaritialStatus.Married)
+            {
+                myMother.Spouse = myFather;
+                myFather.Spouse = myMother;
+                myMother.HomeCityArea = myFather.HomeCityArea;
+                myMother.HomeAddress = myFather.HomeAddress;
+            }
 
-            _mother.OtherNames.Add(new Tuple<KindsOfPersonalNames, string>(KindsOfPersonalNames.Father,
+            myMother.OtherNames.Add(new Tuple<KindsOfPersonalNames, string>(KindsOfPersonalNames.Father,
                 NAmerUtil.GetAmericanLastName()));
+
+            _father = myFather;
+            _mother = myMother;
         }
 
         protected internal void ResolveSpouse()
@@ -256,6 +265,9 @@ namespace NoFuture.Rand.Domus
             spouse.Spouse = this;
             _spouse = spouse;
 
+            spouse.HomeCityArea = HomeCityArea;
+            spouse.HomeAddress = HomeAddress;
+
             if (MaritalStatus != MaritialStatus.Divorced && MaritalStatus != MaritialStatus.Remarried &&
                 MaritalStatus != MaritialStatus.Separated)
             {
@@ -285,7 +297,10 @@ namespace NoFuture.Rand.Domus
 
                 //detach these reciprocial
                 _spouse.Spouse = null;
+                _spouse.MaritalStatus = MaritalStatus;
                 _spouse = null;
+                HomeCityArea = CityArea.American(HomeCityArea.GetPostalCodePrefix());
+                HomeAddress = Address.American();
 
                 //leave when no second spouse applicable
                 if (MaritalStatus != MaritialStatus.Remarried) return;
@@ -311,7 +326,9 @@ namespace NoFuture.Rand.Domus
                 //assign these reciprocial
                 _spouse = secondSpouse;
                 secondSpouse.Spouse = _spouse;
-                
+                secondSpouse.HomeCityArea = HomeCityArea;
+                secondSpouse.HomeAddress = HomeAddress;
+
             }
         }
 
@@ -523,6 +540,10 @@ namespace NoFuture.Rand.Domus
         /// Has no stat validity - just a guess
         /// </summary>
         public const double PercentUnmarriedWholeLife = 0.054;
+        /// <summary>
+        /// Has no stat validity - just a guess
+        /// </summary>
+        public const double EquationStdDev = 1.0D;
         #endregion
 
         /// <summary>
@@ -531,51 +552,66 @@ namespace NoFuture.Rand.Domus
         /// [http://www.cdc.gov/nchs/data/nvsr/nvsr51/nvsr51_01.pdf] (Table 1.) 
         /// [http://www.cdc.gov/nchs/data/nvsr/nvsr64/nvsr64_12_tables.pdf] (Table I-1.)
         /// </summary>
-        /// <remarks></remarks>
+        /// <remarks>
+        /// FemaleAge2*Child have had thier intercepts up'ed by 4.  The real data produces 
+        /// a condition where first born's are always before marriage.
+        /// </remarks>
         public static class Equations
         {
-            public static LinearEquation MaleDob2MarriageAge = new LinearEquation { Intercept = -181.45, Slope = 0.1056 };
+            public static RLinearEquation MaleDob2MarriageAge = new RLinearEquation
+            {
+                Intercept = -181.45,
+                Slope = 0.1056,
+                StdDev = EquationStdDev 
+            };
 
-            public static LinearEquation FemaleDob2MarriageAge = new LinearEquation
+            public static RLinearEquation FemaleDob2MarriageAge = new RLinearEquation
             {
                 Intercept = -209.41,
-                Slope = 0.1187
+                Slope = 0.1187,
+                StdDev = EquationStdDev 
             };
 
-            public static LinearEquation MaleYearOfMarriage2AvgAge = new LinearEquation
+            public static RLinearEquation MaleYearOfMarriage2AvgAge = new RLinearEquation
             {
                 Intercept = -166.24,
-                Slope = 0.0965
+                Slope = 0.0965,
+                StdDev = EquationStdDev 
             };
 
-            public static LinearEquation FemaleYearOfMarriage2AvgAge = new LinearEquation
+            public static RLinearEquation FemaleYearOfMarriage2AvgAge = new RLinearEquation
             {
                 Intercept = -191.74,
-                Slope = 0.1083
+                Slope = 0.1083,
+                StdDev = EquationStdDev 
             };
 
-            public static LinearEquation FemaleAge2FirstChild = new LinearEquation
+            public static RLinearEquation FemaleAge2FirstChild = new RLinearEquation
             {
-                Intercept = -180.32,
-                Slope = 0.1026
+                Intercept = -176.32,//-180.32
+                Slope = 0.1026,
+                StdDev = EquationStdDev 
             };
 
-            public static LinearEquation FemaleAge2SecondChild = new LinearEquation
+            public static RLinearEquation FemaleAge2SecondChild = new RLinearEquation
             {
-                Intercept = -175.88,
-                Slope = 0.1017
+                Intercept = -171.88,//-175.88
+                Slope = 0.1017,
+                StdDev = EquationStdDev
             };
 
-            public static LinearEquation FemaleAge2ThirdChild = new LinearEquation
+            public static RLinearEquation FemaleAge2ThirdChild = new RLinearEquation
             {
-                Intercept = -129.45,
-                Slope = 0.0792
+                Intercept = -125.45,//-129.45
+                Slope = 0.0792,
+                StdDev = EquationStdDev
             };
 
-            public static LinearEquation FemaleAge2ForthChild = new LinearEquation
+            public static RLinearEquation FemaleAge2ForthChild = new RLinearEquation
             {
-                Intercept = -78.855,
-                Slope = 0.0545
+                Intercept = -74.855,//-78.855
+                Slope = 0.0545,
+                StdDev = EquationStdDev
             };
 
             /// <summary>
@@ -592,18 +628,29 @@ namespace NoFuture.Rand.Domus
             /// </summary>
             /// <param name="race"></param>
             /// <returns></returns>
-            public static LinearEquation GetProbTeenPregnancyByRace(NorthAmericanRace race)
+            public static RLinearEquation GetProbTeenPregnancyByRace(NorthAmericanRace race)
             {
                 switch (race)
                 {
                     case NorthAmericanRace.Black:
-                        return new LinearEquation {Intercept = 6.8045, Slope = -0.0034};
+                        return new RLinearEquation
+                        {
+                            Intercept = 6.8045,
+                            Slope = -0.0034,
+                        };
                     case NorthAmericanRace.Hispanic:
-                        return new LinearEquation {Intercept = 5.1231, Slope = -0.0025};
+                        return new RLinearEquation
+                        {
+                            Intercept = 5.1231,
+                            Slope = -0.0025,
+                        };
                 }
-                return new LinearEquation {Intercept = 2.1241, Slope = -0.001};
+                return new RLinearEquation
+                {
+                    Intercept = 2.1241,
+                    Slope = -0.001,
+                };
             }
-
         }
 
         /// <summary>

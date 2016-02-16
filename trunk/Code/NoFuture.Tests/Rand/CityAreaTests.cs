@@ -15,7 +15,7 @@ namespace NoFuture.Tests.Rand
         [TestMethod]
         public void AmericanTest()
         {
-            var testResult = NoFuture.Rand.CityArea.American();
+            var testResult = NoFuture.Rand.CityArea.American(null);
             Assert.IsNotNull(testResult);
             Assert.IsFalse(string.IsNullOrWhiteSpace(testResult.City));
             Assert.IsFalse(string.IsNullOrWhiteSpace(testResult.ZipCode));

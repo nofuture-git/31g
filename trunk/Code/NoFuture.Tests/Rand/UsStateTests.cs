@@ -94,7 +94,7 @@ namespace NoFuture.Tests.Rand
         {
             NoFuture.BinDirectories.Root = @"C:\Projects\31g\trunk\Code\NoFuture\Rand";//this gets set by ps scripts
             var testSubject = NoFuture.Rand.Gov.UsState.GetStateByPostalCode("AZ");
-            var testResults = testSubject.Universities;
+            var testResults = testSubject.GetUniversities();
 
             Assert.IsNotNull(testResults);
             Assert.AreNotEqual(0, testResults.Length);
@@ -106,7 +106,7 @@ namespace NoFuture.Tests.Rand
         {
             NoFuture.BinDirectories.Root = @"C:\Projects\31g\trunk\Code\NoFuture\Rand";//this gets set by ps scripts
             var testSubject = NoFuture.Rand.Gov.UsState.GetStateByPostalCode("AZ");
-            var testResults = testSubject.HighSchools;
+            var testResults = testSubject.GetHighSchools();
 
             Assert.IsNotNull(testResults);
             Assert.AreNotEqual(0, testResults.Length);

@@ -18,26 +18,36 @@ namespace NoFuture.Rand
 
         public virtual AddressData AddressData { get { return data; } }
 
+        public virtual string GetPostalCodePrefix()
+        {
+            if (data == null || string.IsNullOrWhiteSpace(data.PostalCode) || data.PostalCode.Length < 3)
+                return null;
+            return data.PostalCode.Substring(0, 3);
+
+        }
+
         /// <summary>
-        /// Fetches, at random, a <see cref="UsCityStateZip"/> in which the values are related to a real place.
+        /// Fetches, at random, a <see cref="UsCityStateZip"/> by zip code prefix
         /// </summary>
+        /// <param name="zipCodePrefix">Optional, will be picked at random with respect to population if whitespace or null.</param>
+        /// <returns></returns>
         /// <remarks>
         /// Ranking is by population totals sourced from
         /// https://www.census.gov/geo/maps-data/data/docs/rel/zcta_cbsa_rel_10.txt
         /// </remarks>
-        /// <returns></returns>
-        public static UsCityStateZip American()
+        public static UsCityStateZip American(string zipCodePrefix)
         {
             //set defaults
             var ctz = new AddressData() {City = "New York", PostalCode = "10066", StateAbbrv = "NY"};
 
             //pick a zip code prefix at random
-            var pickOne = Etx.RandomAmericanZipWithRespectToPop();
+            if(string.IsNullOrWhiteSpace(zipCodePrefix))
+                zipCodePrefix = Etx.RandomAmericanZipWithRespectToPop();
 
             //x-ref it to the zip code data
             var randZipCode =
                 TreeData.AmericanZipCodeData.SelectSingleNode(string.Format(
-                    "//zip-codes//zip-code[@prefix='{0}']", pickOne));
+                    "//zip-codes//zip-code[@prefix='{0}']", zipCodePrefix));
             if (randZipCode == null || randZipCode.ParentNode == null || randZipCode.ParentNode.Attributes == null ||
                 randZipCode.ParentNode.Attributes["name"] == null)
             {
@@ -54,7 +64,7 @@ namespace NoFuture.Rand
 
             if (!randZipCode.HasChildNodes)
             {
-                ctz.PostalCode = string.Format("{0}{1:00}", pickOne, Etx.Number(1, 99));
+                ctz.PostalCode = string.Format("{0}{1:00}", zipCodePrefix, Etx.Number(1, 99));
             }
             else
             {
@@ -75,7 +85,7 @@ namespace NoFuture.Rand
 
             //pick a city based on zip-code prefix
             var randCityData =
-                TreeData.AmericanCityData.SelectSingleNode(string.Format("//zip-code[@prefix='{0}']/..", pickOne));
+                TreeData.AmericanCityData.SelectSingleNode(string.Format("//zip-code[@prefix='{0}']/..", zipCodePrefix));
             if (randCityData == null || randCityData.Attributes == null || randCityData.Attributes["name"] == null)
                 return new UsCityStateZip(ctz);
 

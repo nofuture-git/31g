@@ -10,12 +10,12 @@ namespace NoFuture.Util.Math
         public double Intercept { get; set; }
         public double Slope { get; set; }
 
-        public double SolveForY(double x)
+        public virtual double SolveForY(double x)
         {
             return Slope*x + Intercept;
         }
 
-        public double SolveForX(double y)
+        public virtual double SolveForX(double y)
         {
             if(Slope == 0.0D)
                 return 0.0D;

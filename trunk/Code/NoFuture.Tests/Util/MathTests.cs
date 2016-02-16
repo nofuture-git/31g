@@ -323,5 +323,23 @@ namespace NoFuture.Tests.Util
             
         }
 
+        [TestMethod]
+        public void TestNormalDist()
+        {
+            var testSubject = new NoFuture.Util.Math.NormalDistEquation() {Mean = 0, StdDev = 1};
+            System.Diagnostics.Debug.WriteLine(string.Format("{0}\t{1}","x","f(x)"));
+            for (var i = 0; i <= 30; i++)
+            {
+                for (var j = 0; j < 10; j++)
+                {
+                    var z = i*0.1 + j*0.01;
+                    var testResult = testSubject.SolveForY(z);
+                    //var testResult = (z - testSubject.Mean)/testSubject.StdDev;
+                    //System.Diagnostics.Debug.Write(string.Format(" {0} ", z));
+                    System.Diagnostics.Debug.WriteLine(string.Format("{0}\t{1}", z, testResult));
+                }
+                
+            }
+        }
     }
 }

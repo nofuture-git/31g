@@ -118,6 +118,7 @@
     <Compile Include="Phone.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Rchar.cs" />
+    <Compile Include="RLinearEquation.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Data\Source\CA_AreaCode.xml">

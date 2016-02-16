@@ -67,42 +67,39 @@ namespace NoFuture.Rand.Gov
         /// A path must be set to <see cref="NoFuture.BinDirectories.Root"/> off which /Data/Source/*.xml
         /// containing all the xml NoFuture depends on.
         /// </summary>
-        public virtual Edu.AmericanUniversity[] Universities
+        public virtual Edu.AmericanUniversity[] GetUniversities()
         {
-            get
-            {
-                if (universities != null)
-                    return universities;
-
-                //this will never pass so avoid the exception
-                if (string.IsNullOrWhiteSpace(BinDirectories.Root))
-                    return null;
-
-                var elements =
-                    Data.TreeData.AmericanUniversityData.SelectSingleNode(string.Format("//state[@name='{0}']",
-                        this.GetType().Name.ToUpper())) ??
-                    Data.TreeData.AmericanUniversityData.SelectSingleNode(string.Format("//state[@name='{0}']",
-                        this.GetType().Name));
-                if (elements == null || !elements.HasChildNodes)
-                    return null;
-
-                var tempList = new List<AmericanUniversity>();
-                foreach (var elem in elements)
-                {
-                    AmericanUniversity univOut = null;
-                    if (Edu.AmericanUniversity.TryParseXml(elem as XmlElement, out univOut))
-                    {
-                        univOut.State = this;
-                        tempList.Add(univOut);
-                    }
-                }
-
-                if (tempList.Count == 0)
-                    return null;
-
-                universities = tempList.ToArray();
+            if (universities != null)
                 return universities;
+
+            //this will never pass so avoid the exception
+            if (string.IsNullOrWhiteSpace(BinDirectories.Root))
+                return null;
+
+            var elements =
+                Data.TreeData.AmericanUniversityData.SelectSingleNode(string.Format("//state[@name='{0}']",
+                    this.GetType().Name.ToUpper())) ??
+                Data.TreeData.AmericanUniversityData.SelectSingleNode(string.Format("//state[@name='{0}']",
+                    this.GetType().Name));
+            if (elements == null || !elements.HasChildNodes)
+                return null;
+
+            var tempList = new List<AmericanUniversity>();
+            foreach (var elem in elements)
+            {
+                AmericanUniversity univOut = null;
+                if (Edu.AmericanUniversity.TryParseXml(elem as XmlElement, out univOut))
+                {
+                    univOut.State = this;
+                    tempList.Add(univOut);
+                }
             }
+
+            if (tempList.Count == 0)
+                return null;
+
+            universities = tempList.ToArray();
+            return universities;
         }
 
         /// <summary>
@@ -110,36 +107,34 @@ namespace NoFuture.Rand.Gov
         /// A path must be set to <see cref="NoFuture.BinDirectories.Root"/> off which /Data/Source/*.xml
         /// containing all the xml NoFuture depends on.
         /// </summary>
-        public virtual Edu.AmericanHighSchool[] HighSchools
+        public virtual Edu.AmericanHighSchool[] GetHighSchools()
         {
-            get
-            {
-                if (highSchools != null)
-                    return highSchools;
-
-                if (string.IsNullOrWhiteSpace(BinDirectories.Root))
-                    return null;
-                var elements =
-                    Data.TreeData.AmericanHighSchoolData.SelectNodes(string.Format("//state[@name='{0}']//high-school", GetType().Name));
-                if (elements == null || elements.Count <= 0)
-                    return null;
-
-                var tempList = new List<AmericanHighSchool>();
-                foreach (var elem in elements)
-                {
-                    AmericanHighSchool hsOut;
-                    if (AmericanHighSchool.TryParseXml(elem as XmlElement, out hsOut))
-                    {
-                        hsOut.State = this;
-                        tempList.Add(hsOut);
-                    }
-                }
-                if (tempList.Count == 0)
-                    return null;
-
-                highSchools = tempList.ToArray();
+            if (highSchools != null)
                 return highSchools;
+
+            if (string.IsNullOrWhiteSpace(BinDirectories.Root))
+                return null;
+            var elements =
+                Data.TreeData.AmericanHighSchoolData.SelectNodes(string.Format("//state[@name='{0}']//high-school",
+                    GetType().Name));
+            if (elements == null || elements.Count <= 0)
+                return null;
+
+            var tempList = new List<AmericanHighSchool>();
+            foreach (var elem in elements)
+            {
+                AmericanHighSchool hsOut;
+                if (AmericanHighSchool.TryParseXml(elem as XmlElement, out hsOut))
+                {
+                    hsOut.State = this;
+                    tempList.Add(hsOut);
+                }
             }
+            if (tempList.Count == 0)
+                return null;
+
+            highSchools = tempList.ToArray();
+            return highSchools;
         }
 
         public override bool Equals(object obj)
