@@ -25,6 +25,19 @@ namespace NoFuture.Rand
             return string.Format("{0} {1} {2}{3}", data.AddressNumber, data.StreetName, data.StreetType, string.IsNullOrWhiteSpace(secondary) ? string.Empty : secondary);
         }
 
+        public override bool Equals(object obj)
+        {
+            var addr = obj as Address;
+            if (addr == null)
+                return false;
+            return Data.Equals(addr.Data);
+        }
+
+        public override int GetHashCode()
+        {
+            return Data.GetHashCode();
+        }
+
         /// <summary>
         /// Generates at random a street address in the typical American form
         /// like '1600 Pennesylvania Ave'.

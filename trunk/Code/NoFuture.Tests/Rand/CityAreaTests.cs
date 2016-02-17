@@ -1,6 +1,8 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NoFuture.Rand;
+using NoFuture.Rand.Data.Types;
+using System.IO;
 
 namespace NoFuture.Tests.Rand
 {
@@ -89,6 +91,47 @@ namespace NoFuture.Tests.Rand
 
             Console.WriteLine(testResultOut2.City);
             Console.WriteLine(testResultOut2.PostalState);
+        }
+
+        [TestMethod]
+        public void TestEquality()
+        {
+            var addressNumber = Path.GetRandomFileName();
+            var postalCode = Path.GetRandomFileName();
+            var city = Path.GetRandomFileName();
+            var streetName = Path.GetRandomFileName();
+            var stateAbbrv = Path.GetRandomFileName();
+            var streetType = Path.GetRandomFileName();
+            var testSubject =
+                new UsAddress(new AddressData()
+                {
+                    AddressNumber = addressNumber,
+                    PostalCode = postalCode,
+                    City = city,
+                    StreetName = streetName,
+                    StateAbbrv = stateAbbrv,
+                    StreetType = streetType
+                });
+
+            Assert.IsFalse(testSubject.Equals(null));
+            Assert.IsFalse(testSubject.Equals(new UsAddress(new AddressData())));
+
+            var testAreEqual = new UsAddress(new AddressData()
+                {
+                    AddressNumber = addressNumber,
+                    PostalCode = postalCode,
+                    City = city,
+                    StreetName = streetName,
+                    StateAbbrv = stateAbbrv,
+                    StreetType = streetType
+                });
+
+            Assert.IsTrue(testSubject.Equals(testAreEqual));
+
+            testAreEqual.Data.AddressNumber = testAreEqual.Data.AddressNumber.ToUpper();
+
+            Assert.IsTrue(testSubject.Equals(testAreEqual));
+
         }
     }
 }

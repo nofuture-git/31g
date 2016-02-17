@@ -130,6 +130,7 @@ namespace NoFuture.Rand.Domus
         public List<Tuple<Address, CityArea>> FormerResidences { get { return _formerAddresses; } }
 
         public Address HomeAddress { get; set; }
+
         public CityArea HomeCityArea { get; set; }
 
         public string HomeCity { get { return HomeCityArea.AddressData.City; } }
@@ -168,6 +169,20 @@ namespace NoFuture.Rand.Domus
         #endregion
 
         #region family
+
+        public void AlignCohabitantsHomeData()
+        {
+            if ((MaritalStatus == MaritialStatus.Married || MaritalStatus == MaritialStatus.Remarried) && Spouse != null)
+            {
+                NAmerUtil.SetNAmerCohabitants((NorthAmerican) Spouse, this);
+            }
+            var underAgeChildren = Children.Cast<NorthAmerican>().Where(x => x.GetAge(null) < 18).ToList();
+            if (underAgeChildren.Count <= 0)
+                return;
+            foreach(var child in underAgeChildren)
+                NAmerUtil.SetNAmerCohabitants(child, this);
+        }
+
         /// <summary>
         /// Assigns <see cref="Race"/> and invokes <see cref="ResolveParents"/>, <see cref="ResolveSpouse"/> and <see cref="ResolveChildren"/>.
         /// Only Parents and Race are certian the other resolutions contrained by age and randomness.

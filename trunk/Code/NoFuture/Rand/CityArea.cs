@@ -26,6 +26,19 @@ namespace NoFuture.Rand
 
         }
 
+        public override bool Equals(object obj)
+        {
+            var ca = obj as CityArea;
+            if (ca == null)
+                return false;
+            return AddressData.Equals(ca.AddressData);
+        }
+
+        public override int GetHashCode()
+        {
+            return AddressData.GetHashCode();
+        }
+
         /// <summary>
         /// Fetches, at random, a <see cref="UsCityStateZip"/> by zip code prefix
         /// </summary>

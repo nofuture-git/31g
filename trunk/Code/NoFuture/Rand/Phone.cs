@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Text;
 using System.Xml;
 
@@ -141,6 +142,28 @@ namespace NoFuture.Rand
         }
 
         public override string Notes { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            var ph = obj as NorthAmericanPhone;
+            if (ph == null)
+                return false;
+
+            var p = new bool[]
+            {
+                string.Equals(ph.AreaCode, AreaCode, StringComparison.OrdinalIgnoreCase),
+                string.Equals(ph.CentralOfficeCode, CentralOfficeCode, StringComparison.OrdinalIgnoreCase),
+                string.Equals(ph.SubscriberNumber, SubscriberNumber, StringComparison.OrdinalIgnoreCase)
+            };
+            return p.All(x => x);
+        }
+
+        public override int GetHashCode()
+        {
+            return (AreaCode == null ? 0 : AreaCode.ToLower().GetHashCode()) +
+                   (CentralOfficeCode == null ? 0 : CentralOfficeCode.ToLower().GetHashCode()) +
+                   (SubscriberNumber == null ? 0 : SubscriberNumber.ToLower().GetHashCode());
+        }
 
         public static bool TryParse(string phNumber, out NorthAmericanPhone phone)
         {
