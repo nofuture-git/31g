@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using NoFuture.Exceptions;
 
 namespace NoFuture.Rand.Gov
 {
@@ -8,6 +9,7 @@ namespace NoFuture.Rand.Gov
     public class SocialSecurityNumber : GovernmentId
     {
         private readonly List<SsnAnomaly> _anomalies = new List<SsnAnomaly>();
+        private readonly string _regexPattern;
 
         public SocialSecurityNumber()
         {
@@ -18,6 +20,10 @@ namespace NoFuture.Rand.Gov
             AreaNumber = string.Format("{0:000}", areaNumber);
             GroupNumber = string.Format("{0:00}", Etx.MyRand.Next(1, 99));
             SerialNumber = string.Format("{0:0000}", Etx.MyRand.Next(1, 9999));
+            _value = string.Format("{0}-{1}-{2}", AreaNumber, GroupNumber, SerialNumber);
+            var regexCatalog = new Shared.RegexCatalog();
+            _regexPattern = regexCatalog.SSN;
+
         }
 
         public override string Abbrev { get { return "SSN"; } }
@@ -42,16 +48,31 @@ namespace NoFuture.Rand.Gov
         /// </summary>
         public override string Value
         {
-            get
-            {
-                return string.Format("{0}-{1}-{2}", AreaNumber, GroupNumber, SerialNumber);
-            }
+            get { return _value; }
             set
             {
-                throw new InvalidOperationException("Cannot assign the Value directly - assign each " +
-                                                    "part of the SSN instead " +
-                                                    "(viz. AreaNumber, GroupNumber & SerialNumber)");
+                if(!Validate(value))
+                    throw new RahRowRagee(string.Format("The value {0} does not match " +
+                                                        "the expect pattern of this id.", value));
+                var parts = value.Split('-');
+                AreaNumber = parts[0];
+                GroupNumber = parts[1];
+                SerialNumber = parts[2];
+                _value = string.Format("{0}-{1}-{2}", AreaNumber, GroupNumber, SerialNumber);
             }
+        }
+
+        /// <summary>
+        /// Expected to match the classic format.
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public override bool Validate(string value)
+        {
+            if (string.IsNullOrWhiteSpace(value))
+                return false;
+            return System.Text.RegularExpressions.Regex.IsMatch(value, _regexPattern);
+
         }
 
         /// <summary>

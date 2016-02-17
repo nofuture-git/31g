@@ -62,7 +62,7 @@ namespace NoFuture.Rand.Data.Types
             }
 
             var withSecRslts = _allSics.Where(x => x.SecResults).ToArray();
-            return withSecRslts[(Etx.Number(0, (withSecRslts.Length - 1)))];
+            return withSecRslts[(Etx.IntNumber(0, (withSecRslts.Length - 1)))];
         }
 
         public static Tuple<NaicsSuperSector, NaicsSector, NaicsMarket> LookupNaicsBySic(

@@ -64,7 +64,7 @@ namespace NoFuture.Rand
 
             if (!randZipCode.HasChildNodes)
             {
-                ctz.PostalCode = string.Format("{0}{1:00}", zipCodePrefix, Etx.Number(1, 99));
+                ctz.PostalCode = string.Format("{0}{1:00}", zipCodePrefix, Etx.IntNumber(1, 99));
             }
             else
             {
@@ -78,7 +78,7 @@ namespace NoFuture.Rand
                         .Select(x => x.Attributes["value"].Value).ToArray();
                 if (zipCodes.Length > 0)
                 {
-                    var pickNum = Etx.Number(0, zipCodes.Length - 1);
+                    var pickNum = Etx.IntNumber(0, zipCodes.Length - 1);
                     ctz.PostalCode = zipCodes[pickNum];
                 }
             }

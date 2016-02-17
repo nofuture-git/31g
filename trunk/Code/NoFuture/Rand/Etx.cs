@@ -129,14 +129,26 @@ namespace NoFuture.Rand
         }
 
         /// <summary>
-        /// Returns a random number between the given range.
+        /// Returns a random <see cref="Int32"/> between the given range.
         /// </summary>
         /// <param name="from"></param>
         /// <param name="to"></param>
         /// <returns></returns>
-        public static int Number(int from, int to)
+        public static int IntNumber(int from, int to)
         {
             return MyRand.Next(from, to);
+        }
+
+        /// <summary>
+        /// Returns a random <see cref="Double"/>
+        /// </summary>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <returns></returns>
+        public static double RationalNumber(int from, int to)
+        {
+            var someInt = IntNumber(from, to);
+            return (double) someInt + MyRand.NextDouble();
         }
 
         /// <summary>
@@ -319,7 +331,7 @@ namespace NoFuture.Rand
             if (fromThisDate != null)
                 dt = fromThisDate.Value;
             //plus or minus some random days
-            var randomDaysNear = Etx.Number(1, 360) * PlusOrMinusOne;
+            var randomDaysNear = Etx.IntNumber(1, 360) * PlusOrMinusOne;
             return dt.AddYears(plusOrMinusYears).AddDays(randomDaysNear);
         }
 
@@ -352,13 +364,13 @@ namespace NoFuture.Rand
             for (var i = 0; i < 1000; i++)
             {
                 //guess some value w/i 3 std dev's
-                var someValue = Etx.Number(minRand, maxRand);
+                var someValue = Etx.IntNumber(minRand, maxRand);
 
                 //get the probability of it
                 var z = (double)(someValue - posMean) / posStdDev;
                 var zscore = Convert.ToInt32(posProbTbl.FirstOrDefault(x => x.Key >= Math.Abs(z)).Value);
 
-                var attempt = Etx.Number(1, 10000);
+                var attempt = Etx.IntNumber(1, 10000);
                 //try getting a value with that probability
                 var isGe = attempt >= zscore;
 
@@ -375,7 +387,7 @@ namespace NoFuture.Rand
         /// <returns>The min length is 5 and the max is 15 </returns>
         public static Rchar[] GetRandomRChars(bool numbersOnly = false)
         {
-            var len = Number(5, 15);
+            var len = IntNumber(5, 15);
             var rcharsOut = new List<Rchar>();
 
             for (var i = 0; i <= len; i++)
@@ -386,7 +398,7 @@ namespace NoFuture.Rand
                     continue;
                 }
 
-                var j = Number(0, 6);
+                var j = IntNumber(0, 6);
                 switch (j)
                 {
                     case 0:

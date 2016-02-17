@@ -67,7 +67,7 @@ namespace NoFuture.Rand.Gov
             {
                 if (dlFormats == null || dlFormats.Length <= 0)
                     return string.Empty;
-                return dlFormats[0].Random;
+                return dlFormats[0].GetRandom();
             }
         }
 

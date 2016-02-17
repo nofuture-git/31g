@@ -29,7 +29,7 @@ namespace NoFuture.Rand.Domus
         private string _fname;
         private string _lname;
         private MaritialStatus _ms;
-        private readonly List<Tuple<KindsOfLabels, NorthAmericanPhone>> _phoneNumbers = new List<Tuple<KindsOfLabels, NorthAmericanPhone>>();
+        internal readonly List<Tuple<KindsOfLabels, NorthAmericanPhone>> _phoneNumbers = new List<Tuple<KindsOfLabels, NorthAmericanPhone>>();
         #endregion
 
         #region ctors
@@ -52,8 +52,13 @@ namespace NoFuture.Rand.Domus
             HomeCityArea = csz;
 
             var abbrv = csz.State.StateAbbrv;
-            _phoneNumbers.Add(new Tuple<KindsOfLabels, NorthAmericanPhone>(KindsOfLabels.Home, Phone.American(abbrv)));
-            _phoneNumbers.Add(new Tuple<KindsOfLabels, NorthAmericanPhone>(KindsOfLabels.Mobile, Phone.American(abbrv)));
+
+            //http://www.pewresearch.org/fact-tank/2014/07/08/two-of-every-five-u-s-households-have-only-wireless-phones/
+            if(Etx.IntNumber(1,10)<=6)
+                _phoneNumbers.Add(new Tuple<KindsOfLabels, NorthAmericanPhone>(KindsOfLabels.Home, Phone.American(abbrv)));
+
+            if(GetAge(null) >= 12)
+                _phoneNumbers.Add(new Tuple<KindsOfLabels, NorthAmericanPhone>(KindsOfLabels.Mobile, Phone.American(abbrv)));
 
             Ssn = new SocialSecurityNumber();
             if(GetAge(null) >= 16)
@@ -64,7 +69,7 @@ namespace NoFuture.Rand.Domus
             if(withWholeFamily)
                 ResolveFamilyState();
 
-            _personality = new Personality(Etx.Number(0, 10000) <= 16);
+            _personality = new Personality(Etx.IntNumber(0, 10000) <= 16);
         }
 
         #endregion
@@ -211,8 +216,7 @@ namespace NoFuture.Rand.Domus
             {
                 myMother.Spouse = myFather;
                 myFather.Spouse = myMother;
-                myMother.HomeCityArea = myFather.HomeCityArea;
-                myMother.HomeAddress = myFather.HomeAddress;
+                NAmerUtil.SetNAmerCohabitants(myMother, myFather);
             }
 
             myMother.OtherNames.Add(new Tuple<KindsOfPersonalNames, string>(KindsOfPersonalNames.Father,
@@ -255,7 +259,7 @@ namespace NoFuture.Rand.Domus
             if (MaritalStatus == MaritialStatus.Widowed)
             {
                 var d = Convert.ToInt32(Math.Round(GetAge(null) * 0.15));
-                spouse.DeathDate = Etx.Date(Etx.Number(1, d), null);
+                spouse.DeathDate = Etx.Date(Etx.IntNumber(1, d), null);
             }
 
 
@@ -263,8 +267,7 @@ namespace NoFuture.Rand.Domus
             spouse.Spouse = this;
             _spouse = spouse;
 
-            spouse.HomeCityArea = HomeCityArea;
-            spouse.HomeAddress = HomeAddress;
+            NAmerUtil.SetNAmerCohabitants(spouse, this);
 
             if (MaritalStatus != MaritialStatus.Divorced && MaritalStatus != MaritialStatus.Remarried &&
                 MaritalStatus != MaritialStatus.Separated)
@@ -293,7 +296,7 @@ namespace NoFuture.Rand.Domus
                     LastName = _father.LastName;
                 }
 
-                //detach these reciprocial
+                //separate and move out
                 _spouse.Spouse = null;
                 _spouse.MaritalStatus = MaritalStatus;
                 _spouse = null;
@@ -305,7 +308,7 @@ namespace NoFuture.Rand.Domus
 
                 var ageSpread = 6;
                 if (MyGender == Gender.Male)
-                    ageSpread = 10;
+                    ageSpread = 10;//he likes'em young...
 
                 //get a second spouse
                 var secondSpouse = (NorthAmerican)NAmerUtil.SolveForSpouse(_dob.Value, MyGender, ageSpread);
@@ -324,9 +327,7 @@ namespace NoFuture.Rand.Domus
                 //assign these reciprocial
                 _spouse = secondSpouse;
                 secondSpouse.Spouse = _spouse;
-                secondSpouse.HomeCityArea = HomeCityArea;
-                secondSpouse.HomeAddress = HomeAddress;
-
+                NAmerUtil.SetNAmerCohabitants(secondSpouse, this);
             }
         }
 
@@ -351,7 +352,7 @@ namespace NoFuture.Rand.Domus
             var propLifetimeChildless = 1000 - Math.Round(GetProbabilityLifetimeChildless()*1000);
 
             //random value within range of two extremes
-            var randItoM = Etx.Number(1, 1000);
+            var randItoM = Etx.IntNumber(1, 1000);
 
             //far high-end is no children for whole life
             if (randItoM >= propLifetimeChildless)
@@ -360,7 +361,7 @@ namespace NoFuture.Rand.Domus
             //other extreme is teenage preg
             if (randItoM <= propTeenagePreg)
             {
-                var teenPregChildDob = Etx.Date(Etx.Number(15, 19), _dob);
+                var teenPregChildDob = Etx.Date(Etx.IntNumber(15, 19), _dob);
                 AddNewChildToList(teenPregChildDob);
                 currentNumChildren += 1;
             }
@@ -407,7 +408,7 @@ namespace NoFuture.Rand.Domus
             //set underage child living with mother
             if (child.GetAge(null) < 18)
             {
-                child.HomeAddress = HomeAddress;
+                NAmerUtil.SetNAmerCohabitants(child, this);
                 child.MaritalStatus = MaritialStatus.Single;
                 child.Spouse = null;
             }
@@ -476,7 +477,7 @@ namespace NoFuture.Rand.Domus
 
             var teenPregEquation = NAmerUtil.Equations.GetProbTeenPregnancyByRace(Race);
 
-            var teenageYear = _dob.Value.AddYears(Etx.Number(15, 19)).Year;
+            var teenageYear = _dob.Value.AddYears(Etx.IntNumber(15, 19)).Year;
 
             return teenPregEquation.SolveForY(teenageYear);
         }
@@ -495,7 +496,7 @@ namespace NoFuture.Rand.Domus
             if (invalidRange == null)
                 return childDob;
 
-            return invalidRange.BirthDate.Value.AddDays(Etx.Number(5, 30));
+            return invalidRange.BirthDate.Value.AddDays(Etx.IntNumber(5, 30));
         }
 
         private void ThrowOnBirthDateNull()
@@ -538,10 +539,6 @@ namespace NoFuture.Rand.Domus
         /// Has no stat validity - just a guess
         /// </summary>
         public const double PercentUnmarriedWholeLife = 0.054;
-        /// <summary>
-        /// Has no stat validity - just a guess
-        /// </summary>
-        public const double EquationStdDev = 1.0D;
         #endregion
 
         /// <summary>
@@ -553,6 +550,7 @@ namespace NoFuture.Rand.Domus
         /// <remarks>
         /// FemaleAge2*Child have had thier intercepts up'ed by 4.  The real data produces 
         /// a condition where first born's are always before marriage.
+        /// Any <see cref="RLinearEquation"/> have a random Standard Dev between 0 and 2.99_
         /// </remarks>
         public static class Equations
         {
@@ -560,56 +558,56 @@ namespace NoFuture.Rand.Domus
             {
                 Intercept = -181.45,
                 Slope = 0.1056,
-                StdDev = EquationStdDev 
+                StdDev = Etx.RationalNumber(0,2) 
             };
 
             public static RLinearEquation FemaleDob2MarriageAge = new RLinearEquation
             {
                 Intercept = -209.41,
                 Slope = 0.1187,
-                StdDev = EquationStdDev 
+                StdDev = Etx.RationalNumber(0, 2)
             };
 
             public static RLinearEquation MaleYearOfMarriage2AvgAge = new RLinearEquation
             {
                 Intercept = -166.24,
                 Slope = 0.0965,
-                StdDev = EquationStdDev 
+                StdDev = Etx.RationalNumber(0, 2)
             };
 
             public static RLinearEquation FemaleYearOfMarriage2AvgAge = new RLinearEquation
             {
                 Intercept = -191.74,
                 Slope = 0.1083,
-                StdDev = EquationStdDev 
+                StdDev = Etx.RationalNumber(0, 2)
             };
 
             public static RLinearEquation FemaleAge2FirstChild = new RLinearEquation
             {
                 Intercept = -176.32,//-180.32
                 Slope = 0.1026,
-                StdDev = EquationStdDev 
+                StdDev = Etx.RationalNumber(0, 2)
             };
 
             public static RLinearEquation FemaleAge2SecondChild = new RLinearEquation
             {
                 Intercept = -171.88,//-175.88
                 Slope = 0.1017,
-                StdDev = EquationStdDev
+                StdDev = Etx.RationalNumber(0, 2)
             };
 
             public static RLinearEquation FemaleAge2ThirdChild = new RLinearEquation
             {
                 Intercept = -125.45,//-129.45
                 Slope = 0.0792,
-                StdDev = EquationStdDev
+                StdDev = Etx.RationalNumber(0, 2)
             };
 
             public static RLinearEquation FemaleAge2ForthChild = new RLinearEquation
             {
                 Intercept = -74.855,//-78.855
                 Slope = 0.0545,
-                StdDev = EquationStdDev
+                StdDev = Etx.RationalNumber(0, 2)
             };
 
             /// <summary>
@@ -699,7 +697,7 @@ namespace NoFuture.Rand.Domus
         /// </summary>
         public static DateTime GetWorkingAdultBirthDate()
         {
-            return DateTime.Now.AddYears(-1 * Etx.MyRand.Next(18, 68)).AddDays(Etx.Number(1, 360));
+            return DateTime.Now.AddYears(-1 * Etx.MyRand.Next(18, 68)).AddDays(Etx.IntNumber(1, 360));
         }
 
         /// <summary>
@@ -809,7 +807,7 @@ namespace NoFuture.Rand.Domus
         /// <returns></returns>
         public static MaritialStatus GetMaritialStatus(DateTime dob, Gender gender)
         {
-            if (Etx.Number(1, 1000) <= PercentUnmarriedWholeLife * 1000)
+            if (Etx.IntNumber(1, 1000) <= PercentUnmarriedWholeLife * 1000)
                 return MaritialStatus.Single;
 
             var avgAgeMarriage = gender == Gender.Female
@@ -824,17 +822,17 @@ namespace NoFuture.Rand.Domus
             if (currentAge > avgAgeMarriage + AvgLengthOfMarriage)
             {
                 //spin for divorce
-                var df = Etx.Number(1, 1000) <= PercentDivorced * 1000;
+                var df = Etx.IntNumber(1, 1000) <= PercentDivorced * 1000;
 
                 if (df && currentAge < avgAgeMarriage + AvgLengthOfMarriage + YearsBeforeNextMarriage)
-                    return Etx.Number(1, 1000) <= 64 ? MaritialStatus.Separated : MaritialStatus.Divorced;
+                    return Etx.IntNumber(1, 1000) <= 64 ? MaritialStatus.Separated : MaritialStatus.Divorced;
 
                 if(df)
                     return MaritialStatus.Remarried;
             }
 
             //in the mix with very low probability
-            if (Etx.Number(1, 1000) <= 10)
+            if (Etx.IntNumber(1, 1000) <= 10)
                 return MaritialStatus.Widowed;
 
             return MaritialStatus.Married;
@@ -852,7 +850,7 @@ namespace NoFuture.Rand.Domus
         public static IPerson SolveForParent(DateTime childDob, LinearEquation eq, Gender gender)
         {
             //assume mother & father married between 1 - 6 years prior the Person's dob
-            var dtPm = childDob.AddYears(-1 * Etx.Number(1, 6)).AddDays(Etx.Number(1, 360));
+            var dtPm = childDob.AddYears(-1 * Etx.IntNumber(1, 6)).AddDays(Etx.IntNumber(1, 360));
 
             var ageWhenParentsMarried =
                 eq.SolveForY(dtPm.ToDouble());
@@ -879,11 +877,11 @@ namespace NoFuture.Rand.Domus
             if (gender == Gender.Unknown)
                 return null;
 
-            var ageDiff = Etx.Number(0, maxAgeDiff);
+            var ageDiff = Etx.IntNumber(0, maxAgeDiff);
             ageDiff = gender == Gender.Female ? ageDiff * -1 : ageDiff;
 
             //randomize dob of spouse
-            var spouseDob = myDob.AddYears(ageDiff).AddDays(Etx.Number(1, 360) * Etx.PlusOrMinusOne);
+            var spouseDob = myDob.AddYears(ageDiff).AddDays(Etx.IntNumber(1, 360) * Etx.PlusOrMinusOne);
 
             //define spouse
             return new NorthAmerican(spouseDob, gender == Gender.Female ? Gender.Male : Gender.Female);
@@ -904,7 +902,7 @@ namespace NoFuture.Rand.Domus
                 vt = atDateTime.Value;
 
             var age = Person.CalcAge(dob, vt);
-            var randV = Etx.Number(1, 100);
+            var randV = Etx.IntNumber(1, 100);
 
             var meanAge = Math.Round(Equations.FemaleAge2ForthChild.SolveForY(vt.Year));
 
@@ -952,6 +950,25 @@ namespace NoFuture.Rand.Domus
             probChildless += eduAdditive;
 
             return probChildless;
+        }
+
+        /// <summary>
+        /// Sets <see cref="thisPerson"/> home-related data to the same values of <see cref="livesWithThisOne"/>
+        /// </summary>
+        /// <param name="thisPerson"></param>
+        /// <param name="livesWithThisOne"></param>
+        public static void SetNAmerCohabitants(NorthAmerican thisPerson, NorthAmerican livesWithThisOne)
+        {
+            thisPerson.HomeAddress = livesWithThisOne.HomeAddress;
+            thisPerson.HomeCityArea = livesWithThisOne.HomeCityArea;
+            thisPerson._phoneNumbers.Clear();
+            if (livesWithThisOne._phoneNumbers.Any(p => p.Item1 == KindsOfLabels.Home))
+            {
+                thisPerson._phoneNumbers.Add(livesWithThisOne._phoneNumbers.First(p => p.Item1 == KindsOfLabels.Home));
+            }
+            if (thisPerson.GetAge(null) >= 12)
+                thisPerson._phoneNumbers.Add(new Tuple<KindsOfLabels, NorthAmericanPhone>(KindsOfLabels.Mobile,
+                    Phone.American(thisPerson.HomeCityArea.GetPostalCodePrefix())));
         }
     }
 

@@ -71,7 +71,7 @@ namespace NoFuture.Rand.Gov.Fed
         {
             var rt = new StringBuilder();
             var xx = NEY_YORK;
-            var roll = NoFuture.Rand.Etx.Number(1, 100);
+            var roll = NoFuture.Rand.Etx.IntNumber(1, 100);
             if (roll >= 57 && roll < 69)
                 xx = SAN_FRANCISCO;
             if (roll >= 69 && roll < 75)
@@ -96,7 +96,7 @@ namespace NoFuture.Rand.Gov.Fed
                 xx = MINNEAPOLIS;
             rt.Append(xx);
             for (var i = 0; i < 7; i++)
-                rt.Append(Etx.Number(0, 9));
+                rt.Append(Etx.IntNumber(0, 9));
 
             rt.Append(CalcChkDigit(rt.ToString()));
             return new RoutingTransitNumber {Value = rt.ToString()};

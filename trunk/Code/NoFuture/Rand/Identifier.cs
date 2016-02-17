@@ -35,24 +35,21 @@ namespace NoFuture.Rand
         #endregion
 
         #region methods
-        public virtual string Random
+        public virtual string GetRandom()
         {
-            get
+            var dl = new char[format.Length];
+            for (var i = 0; i < format.Length; i++)
             {
-                var dl = new char[format.Length];
-                for (var i = 0; i < format.Length; i++)
-                {
-                    dl[i] = format[i].Rand;
-                }
-                return new string(dl);
+                dl[i] = format[i].Rand;
             }
+            return new string(dl);
         }
         public override string Value
         {
             get
             {
                 if (string.IsNullOrWhiteSpace(_value))
-                    _value = Random;
+                    _value = GetRandom();
                 return _value;
             }
             set
@@ -62,9 +59,9 @@ namespace NoFuture.Rand
                     throw new RahRowRagee(string.Format("The value given of '{0}' is not valid for this instance.", _value));
             }
         }
-        public virtual bool Validate(string dlValue)
+        public virtual bool Validate(string value)
         {
-            return format.All(rc => rc.Valid(dlValue));
+            return format.All(rc => rc.Valid(value));
         }
         #endregion
     }

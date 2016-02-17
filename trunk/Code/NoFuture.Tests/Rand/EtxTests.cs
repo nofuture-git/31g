@@ -87,5 +87,14 @@ namespace NoFuture.Tests.Rand
             System.Diagnostics.Debug.WriteLine(example);
             
         }
+
+        [TestMethod]
+        public void TestRandomDouble()
+        {
+            var testResult = NoFuture.Rand.Etx.RationalNumber(0, 3);
+            Assert.IsTrue(testResult >= 0);
+            Assert.IsTrue(testResult < 4);
+            System.Diagnostics.Debug.WriteLine(testResult);
+        }
     }
 }

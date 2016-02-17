@@ -59,7 +59,7 @@ namespace NoFuture.Rand.Domus.Pneuma
     {
         protected Trait()
         {
-            var pv = Etx.Number(1, 5);
+            var pv = Etx.IntNumber(1, 5);
             switch (pv)
             {
                 case 1:

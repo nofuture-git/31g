@@ -103,7 +103,7 @@ namespace NoFuture.Rand.Gov.Nhtsa
 
         public static char GetRandomVinChar()
         {
-            var d = Etx.Number(0, VinLetter2NumberValues.Count);
+            var d = Etx.IntNumber(0, VinLetter2NumberValues.Count);
             var f = VinLetter2NumberValues.Select(x => x.Key).ToArray()[d];
             return f;
         }
@@ -224,7 +224,7 @@ namespace NoFuture.Rand.Gov.Nhtsa
             //LA-L0 China
             //1A-10, 4A-40, 5A-50 US
             //3A-37 Mexico
-            var country = Etx.Number(1, 12);
+            var country = Etx.IntNumber(1, 12);
 
             switch (country)
             {
@@ -270,7 +270,7 @@ namespace NoFuture.Rand.Gov.Nhtsa
 
             var vis = new VehicleIdSection
             {
-                ModelYear = Vin.YearIdx[Etx.Number(0, YearIdx.Length)],
+                ModelYear = Vin.YearIdx[Etx.IntNumber(0, YearIdx.Length)],
                 PlantCode = GetRandomVinChar(),
                 SequentialNumber = Etx.Chars(0x30, 0x39, 6)
             };

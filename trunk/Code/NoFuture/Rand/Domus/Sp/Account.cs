@@ -31,7 +31,7 @@ namespace NoFuture.Rand.Domus.Sp
             var routingNumber = Gov.Fed.RoutingTransitNumber.RandomRoutingNumber();
             var accountId = new AccountId(format);
 
-            var rand = Etx.Number(1, 10);
+            var rand = Etx.IntNumber(1, 10);
             return rand >= 8
                 ? (BankAccount) new Checking {AccountNumber = accountId, RoutingNumber = routingNumber}
                 : (BankAccount) new Savings {AccountNumber = accountId, RoutingNumber = routingNumber};
