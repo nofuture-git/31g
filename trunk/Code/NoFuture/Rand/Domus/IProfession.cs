@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using NoFuture.Rand.Com;
 using NoFuture.Rand.Data.Types;
-using NoFuture.Rand.Edu;
 
 namespace NoFuture.Rand.Domus
 {

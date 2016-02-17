@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System.Linq;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace NoFuture.Tests.Rand
 {
@@ -54,7 +55,37 @@ namespace NoFuture.Tests.Rand
                 System.Diagnostics.Debug.WriteLine(testResult);
                 
             }
+        }
 
+        [TestMethod]
+        public void TestGetRandomRChars()
+        {
+            var testResult = NoFuture.Rand.Etx.GetRandomRChars();
+            Assert.IsNotNull(testResult);
+            Assert.AreNotEqual(0, testResult.Length);
+            Assert.IsTrue(testResult.Length >= 5);
+            Assert.IsTrue(testResult.Length <= 15);
+
+            var example = new System.Text.StringBuilder();
+            foreach (var r in testResult)
+                example.Append(r.Rand);
+
+            System.Diagnostics.Debug.WriteLine(example);
+
+            testResult = NoFuture.Rand.Etx.GetRandomRChars(true);
+            Assert.IsNotNull(testResult);
+            Assert.AreNotEqual(0, testResult.Length);
+            Assert.IsTrue(testResult.Length >= 5);
+            Assert.IsTrue(testResult.Length <= 15);
+
+            example = new System.Text.StringBuilder();
+            foreach (var r in testResult)
+                example.Append(r.Rand);
+
+            Assert.IsTrue(example.ToString().ToCharArray().All(char.IsNumber));
+
+            System.Diagnostics.Debug.WriteLine(example);
+            
         }
     }
 }

@@ -28,7 +28,7 @@ namespace NoFuture.Rand.Com
 
         public Gov.UsState UsStateOfIncorporation { get; set; }
 
-        public Uri PublicWebSite { get; set; }
+        public Uri[] WebDomains { get; set; }
 
         public List<Ticker> TickerSymbols { get; set; }
 

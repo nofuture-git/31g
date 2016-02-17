@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Linq;
 using NoFuture.Rand.Com;
-using NoFuture.Util;
 
 namespace NoFuture.Rand.Domus.Sp //Sequere pecuniam
 {

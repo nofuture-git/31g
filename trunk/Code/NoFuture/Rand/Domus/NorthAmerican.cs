@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -10,7 +9,6 @@ using NoFuture.Rand.Gov;
 using NoFuture.Util.Math;
 using System.Xml;
 using NoFuture.Rand.Data;
-using NoFuture.Shared;
 
 namespace NoFuture.Rand.Domus
 {
@@ -154,7 +152,7 @@ namespace NoFuture.Rand.Domus
 
         public List<IAsset> Assets { get { return _assets; }}
         public List<ILoan> Debts { get { return _debts; } }
-        public Income Income { get; set; }
+        public IIncome Income { get; set; }
 
         public override List<IPerson> Children
         {

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using NoFuture.Exceptions;
 
 namespace NoFuture.Rand
 {
@@ -22,6 +24,49 @@ namespace NoFuture.Rand
         {
             return string.Equals(obj.Value, Value);
         }
+    }
+
+    [Serializable]
+    public abstract class RIdentifier : Identifier
+    {
+        #region fields
+        protected Rchar[] format;
+        protected string _value;
+        #endregion
+
+        #region methods
+        public virtual string Random
+        {
+            get
+            {
+                var dl = new char[format.Length];
+                for (var i = 0; i < format.Length; i++)
+                {
+                    dl[i] = format[i].Rand;
+                }
+                return new string(dl);
+            }
+        }
+        public override string Value
+        {
+            get
+            {
+                if (string.IsNullOrWhiteSpace(_value))
+                    _value = Random;
+                return _value;
+            }
+            set
+            {
+                _value = value;
+                if (!Validate(_value))
+                    throw new RahRowRagee(string.Format("The value given of '{0}' is not valid for this instance.", _value));
+            }
+        }
+        public virtual bool Validate(string dlValue)
+        {
+            return format.All(rc => rc.Valid(dlValue));
+        }
+        #endregion
     }
 
     [Serializable]

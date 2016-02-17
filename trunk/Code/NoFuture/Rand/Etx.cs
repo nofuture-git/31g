@@ -10,6 +10,7 @@ using System.Xml;
 using System.IO;
 using NoFuture.Rand.Edu;
 using NoFuture.Shared;
+using NoFuture.Util;
 
 namespace NoFuture.Rand
 {
@@ -366,6 +367,52 @@ namespace NoFuture.Rand
                     return (double)someValue / magnitude;
             }
             return mean;
+        }
+
+        /// <summary>
+        /// Produces an array of <see cref="Rchar"/> in a random order and random length.
+        /// </summary>
+        /// <returns>The min length is 5 and the max is 15 </returns>
+        public static Rchar[] GetRandomRChars(bool numbersOnly = false)
+        {
+            var len = Number(5, 15);
+            var rcharsOut = new List<Rchar>();
+
+            for (var i = 0; i <= len; i++)
+            {
+                if (numbersOnly)
+                {
+                    rcharsOut.Add(new NumericRchar(i));
+                    continue;
+                }
+
+                var j = Number(0, 6);
+                switch (j)
+                {
+                    case 0:
+                    case 1:
+                        rcharsOut.Add(new AlphaNumericRchar(i));
+                        break;
+                    case 2:
+                        rcharsOut.Add(new UAlphaRchar(i));
+                        break;
+                    case 3:
+                        rcharsOut.Add(new LAlphaRchar(i));
+                        break;
+                    case 4:
+                        rcharsOut.Add(new NumericRchar(i));
+                        break;
+                    case 5:
+                        rcharsOut.Add(new LimitedRchar(i, Consonant(true), Consonant(true), Consonant(true),
+                            Vowel(false)));
+                        break;
+                    case 6:
+                        rcharsOut.Add( new LimitedRchar(i, '-','.',' '));
+                        break;
+                }
+            }
+
+            return rcharsOut.ToArray();
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]

@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using NoFuture.Exceptions;
 
 namespace NoFuture.Rand.Gov
 {
     [Serializable]
-    public abstract class GovernmentId : Identifier
+    public abstract class GovernmentId : RIdentifier
     {
         public abstract List<Anomaly> Anomalies { get; }
         public DateTime? IssuedDate { get; set; }

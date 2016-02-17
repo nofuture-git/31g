@@ -29,6 +29,17 @@ namespace NoFuture.Rand.Gov
         #endregion
 
         #region api
+
+        /// <summary>
+        /// https://en.wikipedia.org/wiki/List_of_U.S._states_by_educational_attainment
+        /// </summary>
+        public float PercentHighSchoolGrad { get; set; }
+
+        /// <summary>
+        /// https://en.wikipedia.org/wiki/List_of_U.S._states_by_educational_attainment
+        /// </summary>
+        public float PercentCollegeGrad { get; set; }
+
         /// <summary>
         /// The two letter postal code abbreviation
         /// </summary>
@@ -263,6 +274,8 @@ namespace NoFuture.Rand.Gov
         public Alabama() : base("AL")
         {
             dlFormats = new[] { new DriversLicense(Numerics(7)) };
+            PercentHighSchoolGrad = 82.1F;
+            PercentCollegeGrad = 22.0F;
         }
     }
 
@@ -271,6 +284,8 @@ namespace NoFuture.Rand.Gov
         public Alaska() : base("AK")
         {
             dlFormats = new[] { new DriversLicense(Numerics(7)) };
+            PercentHighSchoolGrad = 91.4F;
+            PercentCollegeGrad = 26.6F;
         }
     }
 
@@ -283,6 +298,9 @@ namespace NoFuture.Rand.Gov
             Array.Copy(Numerics(8,1), 0, dl, 1, 8);
 
             dlFormats = new[] { new DriversLicense(dl), new DriversLicense(Numerics(9))};
+            PercentHighSchoolGrad = 84.2F;
+            PercentCollegeGrad = 25.6F;
+
         }
     }
 
@@ -291,6 +309,8 @@ namespace NoFuture.Rand.Gov
         public Arkansas() : base("AR")
         {
             dlFormats = new[] { new DriversLicense(Numerics(9)), new DriversLicense(Numerics(8)) };
+            PercentHighSchoolGrad = 82.4F;
+            PercentCollegeGrad = 18.9F;
         }
     }
 
@@ -302,6 +322,9 @@ namespace NoFuture.Rand.Gov
             dl[0] = new UAlphaRchar(0);
             Array.Copy(Numerics(7,1), 0, dl, 1, 7);
             dlFormats = new[] { new DriversLicense(dl)};
+
+            PercentHighSchoolGrad = 80.6F;
+            PercentCollegeGrad = 29.9F;
         }
     }
 
@@ -315,6 +338,9 @@ namespace NoFuture.Rand.Gov
             Array.Copy(Numerics(6, 2), 0, dl, 2, 6);
 
             dlFormats = new[] { new DriversLicense(dl), new DriversLicense(Numerics(9)) };
+            PercentHighSchoolGrad = 89.3F;
+            PercentCollegeGrad = 35.9F;
+
         }
     }
 
@@ -340,6 +366,8 @@ namespace NoFuture.Rand.Gov
             var dlf02 = new DriversLicense(dl);
 
             dlFormats = new[] {dlf00, dlf01, dlf02};
+            PercentHighSchoolGrad = 88.6F;
+            PercentCollegeGrad = 35.6F;
         }
     }
 
@@ -348,6 +376,8 @@ namespace NoFuture.Rand.Gov
         public Delaware() : base("DE")
         {
             dlFormats = new[] {new DriversLicense(Numerics(7))};
+            PercentHighSchoolGrad = 87.4F;
+            PercentCollegeGrad = 28.7F;
         }
     }
 
@@ -360,6 +390,10 @@ namespace NoFuture.Rand.Gov
             Array.Copy(Numerics(11, 1), 0, dl, 1, 11);
 
             dlFormats = new[] {new DriversLicense(dl)};
+
+            PercentHighSchoolGrad = 85.3F;
+            PercentCollegeGrad = 25.3F;
+
         }
     }
 
@@ -368,6 +402,9 @@ namespace NoFuture.Rand.Gov
         public Georgia() : base("GA")
         {
             dlFormats = new[] { new DriversLicense(Numerics(9)) };
+            PercentHighSchoolGrad = 83.9F;
+            PercentCollegeGrad = 27.5F;
+
         }
     }
 
@@ -380,6 +417,8 @@ namespace NoFuture.Rand.Gov
             Array.Copy(Numerics(8, 1), 0, dl, 1, 8);
 
             dlFormats = new[] { new DriversLicense(dl), new DriversLicense(Numerics(9)) };
+            PercentHighSchoolGrad = 90.4F;
+            PercentCollegeGrad = 29.6F;
         }
     }
 
@@ -394,6 +433,9 @@ namespace NoFuture.Rand.Gov
             dl[8] = new UAlphaRchar(8);
 
             dlFormats = new[] { new DriversLicense(dl), new DriversLicense(Numerics(9)) };
+            PercentHighSchoolGrad = 88.4F;
+            PercentCollegeGrad = 23.9F;
+
         }
     }
 
@@ -406,6 +448,8 @@ namespace NoFuture.Rand.Gov
             Array.Copy(Numerics(11, 1), 0, dl, 1, 11);
 
             dlFormats = new[] { new DriversLicense(dl) };
+            PercentHighSchoolGrad = 86.4F;
+            PercentCollegeGrad = 30.6F;
         }
     }
 
@@ -418,6 +462,9 @@ namespace NoFuture.Rand.Gov
             Array.Copy(Numerics(9, 1), 0, dl, 1, 9);
 
             dlFormats = new[] { new DriversLicense(dl), new DriversLicense(Numerics(10)) };
+            PercentHighSchoolGrad = 86.6F;
+            PercentCollegeGrad = 22.5F;
+
         }
     }
 
@@ -432,6 +479,8 @@ namespace NoFuture.Rand.Gov
             }
 
             dlFormats = new[] {new DriversLicense(dl), new DriversLicense(Numerics(9))};
+            PercentHighSchoolGrad = 91.4F;
+            PercentCollegeGrad = 25.1F;
         }
     }
 
@@ -444,6 +493,8 @@ namespace NoFuture.Rand.Gov
             Array.Copy(Numerics(8, 1), 0, dl, 1, 8);
 
             dlFormats = new[] { new DriversLicense(dl) };
+            PercentHighSchoolGrad = 89.7F;
+            PercentCollegeGrad = 29.5F;
         }
     }
 
@@ -456,6 +507,9 @@ namespace NoFuture.Rand.Gov
             Array.Copy(Numerics(8, 1), 0, dl, 1, 8);
 
             dlFormats = new[] { new DriversLicense(dl) };
+            PercentHighSchoolGrad = 81.7F;
+            PercentCollegeGrad = 21.0F;
+
         }
     }
 
@@ -464,6 +518,9 @@ namespace NoFuture.Rand.Gov
         public Louisiana() : base("LA")
         {
             dlFormats = new[] { new DriversLicense(Numerics(9)) };
+            PercentHighSchoolGrad = 82.2F;
+            PercentCollegeGrad = 21.4F;
+
         }
     }
 
@@ -472,6 +529,9 @@ namespace NoFuture.Rand.Gov
         public Maine() : base("ME")
         {
             dlFormats = new[] { new DriversLicense(Numerics(7)) };
+            PercentHighSchoolGrad = 90.2F;
+            PercentCollegeGrad = 26.9F;
+
         }
     }
 
@@ -484,6 +544,8 @@ namespace NoFuture.Rand.Gov
             Array.Copy(Numerics(12, 1), 0, dl, 1, 12);
 
             dlFormats = new[] { new DriversLicense(dl) };
+            PercentHighSchoolGrad = 88.2F;
+            PercentCollegeGrad = 35.7F;
         }
     }
 
@@ -521,6 +583,9 @@ namespace NoFuture.Rand.Gov
             Array.Copy(Numerics(8, 1), 0, dl, 1, 8);
 
             dlFormats = new[] { new DriversLicense(dl), new DriversLicense(Numerics(9)) };
+            PercentHighSchoolGrad = 89.0F;
+            PercentCollegeGrad = 38.2F;
+
         }
     }
 
@@ -536,6 +601,10 @@ namespace NoFuture.Rand.Gov
             Array.Copy(Numerics(9, 4), 0, dl, 4, 9);
 
             dlFormats = new[] { new DriversLicense(dl) };
+
+            PercentHighSchoolGrad = 87.9F;
+            PercentCollegeGrad = 24.6F;
+
         }
     }
 
@@ -548,6 +617,8 @@ namespace NoFuture.Rand.Gov
             Array.Copy(Numerics(12, 1), 0, dl, 1, 12);
 
             dlFormats = new[] { new DriversLicense(dl) };
+            PercentHighSchoolGrad = 91.5F;
+            PercentCollegeGrad = 31.5F;
         }
     }
 
@@ -556,6 +627,9 @@ namespace NoFuture.Rand.Gov
         public Mississippi() : base("MS")
         {
             dlFormats = new[] { new DriversLicense(Numerics(9)) };
+            PercentHighSchoolGrad = 80.4F;
+            PercentCollegeGrad = 19.6F;
+
         }
     }
 
@@ -568,6 +642,9 @@ namespace NoFuture.Rand.Gov
             Array.Copy(Numerics(8, 1), 0, dl, 1, 8);
 
             dlFormats = new[] { new DriversLicense(dl)};
+            PercentHighSchoolGrad = 86.8F;
+            PercentCollegeGrad = 25.2F;
+
         }
     }
 
@@ -581,6 +658,10 @@ namespace NoFuture.Rand.Gov
             dl[2] = new AlphaNumericRchar(2);
             Array.Copy(Numerics(6, 3), 0, dl, 3, 6);
             dlFormats = new[] { new DriversLicense(dl) };
+
+            PercentHighSchoolGrad = 90.8F;
+            PercentCollegeGrad = 27.4F;
+
         }
     }
 
@@ -593,6 +674,10 @@ namespace NoFuture.Rand.Gov
             Array.Copy(Numerics(8, 1), 0, dl, 1, 8);
 
             dlFormats = new[] { new DriversLicense(dl) };
+
+            PercentHighSchoolGrad = 89.8F;
+            PercentCollegeGrad = 27.4F;
+
         }
     }
 
@@ -601,6 +686,9 @@ namespace NoFuture.Rand.Gov
         public Nevada() : base("NV")
         {
             dlFormats = new[] {new DriversLicense(Numerics(12)), new DriversLicense(Numerics(10))};
+            PercentHighSchoolGrad = 83.9F;
+            PercentCollegeGrad = 21.8F;
+
         }
     }
 
@@ -618,6 +706,9 @@ namespace NoFuture.Rand.Gov
             dl[9] = new LimitedRchar(9,'1','2','3','4','5','6','7','8','9');//no zero
 
             dlFormats = new[] {new DriversLicense(dl)};
+            PercentHighSchoolGrad = 91.3F;
+            PercentCollegeGrad = 32.0F;
+
         }
     }
 
@@ -629,6 +720,9 @@ namespace NoFuture.Rand.Gov
             dl[0] = new UAlphaRchar(0);
             Array.Copy(Numerics(14,1),0,dl,1,14);
             dlFormats = new[] {new DriversLicense(dl)};
+            PercentHighSchoolGrad = 87.4F;
+            PercentCollegeGrad = 34.5F;
+
         }
     }
 
@@ -637,6 +731,8 @@ namespace NoFuture.Rand.Gov
         public NewMexico() : base("NM")
         {
             dlFormats = new[] {new DriversLicense(Numerics(9)), new DriversLicense(Numerics(8))};
+            PercentHighSchoolGrad = 82.8F;
+            PercentCollegeGrad = 25.3F;
         }
     }
 
@@ -648,7 +744,8 @@ namespace NoFuture.Rand.Gov
             dl[0] = new UAlphaRchar(0);
             Array.Copy(Numerics(14, 1), 0, dl, 1, 14);
             dlFormats = new[] {new DriversLicense(dl)};
-
+            PercentHighSchoolGrad = 84.7F;
+            PercentCollegeGrad = 32.4F;
         }
 
         public override string RandomDriversLicense
@@ -687,6 +784,9 @@ namespace NoFuture.Rand.Gov
         public NorthCarolina() : base("NC")
         {
             dlFormats = new[] {new DriversLicense(Numerics(12))};
+            PercentHighSchoolGrad = 84.3F;
+            PercentCollegeGrad = 26.5F;
+
         }
     }
 
@@ -701,6 +801,9 @@ namespace NoFuture.Rand.Gov
             Array.Copy(Numerics(6,3),0,dl,3,6);
 
             dlFormats = new[] { new DriversLicense(dl), new DriversLicense(Numerics(9)) };
+            PercentHighSchoolGrad = 90.1F;
+            PercentCollegeGrad = 25.8F;
+
         }
     }
 
@@ -713,6 +816,9 @@ namespace NoFuture.Rand.Gov
             dl[1] = new UAlphaRchar(1);
             Array.Copy(Numerics(7, 2), 0, dl, 2, 7);
             dlFormats = new[] {new DriversLicense(dl)};
+            PercentHighSchoolGrad = 87.6F;
+            PercentCollegeGrad = 24.1F;
+
         }
     }
 
@@ -746,7 +852,8 @@ namespace NoFuture.Rand.Gov
                 'Z');//no 'I','O', 'X' nor 'Q'
             Array.Copy(Numerics(9,1),0,dl,1,9);
             dlFormats = new[] {new DriversLicense(dl), new DriversLicense(Numerics(9))};
-
+            PercentHighSchoolGrad = 85.6F;
+            PercentCollegeGrad = 22.7F;
         }
     }
 
@@ -755,6 +862,8 @@ namespace NoFuture.Rand.Gov
         public Oregon() : base("OR")
         {
             dlFormats = new[] {new DriversLicense(Numerics(9))};
+            PercentHighSchoolGrad = 89.1F;
+            PercentCollegeGrad = 29.2F;
         }
     }
 
@@ -763,6 +872,8 @@ namespace NoFuture.Rand.Gov
         public Pennsylvania() : base("PA")
         {
             dlFormats = new[] {new DriversLicense(Numerics(8))};
+            PercentHighSchoolGrad = 87.9F;
+            PercentCollegeGrad = 26.4F;
         }
     }
 
@@ -774,6 +885,9 @@ namespace NoFuture.Rand.Gov
             dl[0] = new LimitedRchar(0, 'V');
             Array.Copy(Numerics(6,1),0,dl,1,6);
             dlFormats = new[] {new DriversLicense(dl), new DriversLicense(Numerics(7))};
+            PercentHighSchoolGrad = 84.7F;
+            PercentCollegeGrad = 30.5F;
+
         }
     }
 
@@ -782,6 +896,8 @@ namespace NoFuture.Rand.Gov
         public SouthCarolina() : base("SC")
         {
             dlFormats = new[] { new DriversLicense(Numerics(10)) };
+            PercentHighSchoolGrad = 83.6F;
+            PercentCollegeGrad = 24.3F;
         }
     }
 
@@ -790,6 +906,9 @@ namespace NoFuture.Rand.Gov
         public SouthDakota() : base("SD")
         {
             dlFormats = new[] { new DriversLicense(Numerics(9)) };
+            PercentHighSchoolGrad = 89.9F;
+            PercentCollegeGrad = 25.1F;
+
         }
     }
 
@@ -798,6 +917,8 @@ namespace NoFuture.Rand.Gov
         public Tennessee() : base("TN")
         {
             dlFormats = new[] { new DriversLicense(Numerics(9)), new DriversLicense(Numerics(8)) };
+            PercentHighSchoolGrad = 83.1F;
+            PercentCollegeGrad = 23.0F;
         }
     }
 
@@ -806,6 +927,9 @@ namespace NoFuture.Rand.Gov
         public Texas() : base("TX")
         {
             dlFormats = new[] { new DriversLicense(Numerics(8)) };
+            PercentHighSchoolGrad = 79.9F;
+            PercentCollegeGrad = 25.5F;
+
         }
     }
 
@@ -814,6 +938,8 @@ namespace NoFuture.Rand.Gov
         public Utah() : base("UT")
         {
             dlFormats = new[] { new DriversLicense(Numerics(9)) };
+            PercentHighSchoolGrad = 90.4F;
+            PercentCollegeGrad = 28.5F;
         }
     }
 
@@ -826,6 +952,9 @@ namespace NoFuture.Rand.Gov
             dl[7] = new LimitedRchar(7,'A');
 
             dlFormats = new[] {new DriversLicense(dl), new DriversLicense(Numerics(8))};
+            PercentHighSchoolGrad = 91.0F;
+            PercentCollegeGrad = 33.1F;
+
         }
     }
 
@@ -838,6 +967,9 @@ namespace NoFuture.Rand.Gov
             Array.Copy(Numerics(8,1),0,dl,1,8);
 
             dlFormats = new[] {new DriversLicense(dl), new DriversLicense(Numerics(12))};
+            PercentHighSchoolGrad = 86.6F;
+            PercentCollegeGrad = 34.0F;
+
         }
     }
 
@@ -860,6 +992,9 @@ namespace NoFuture.Rand.Gov
             dl[11] = new AlphaNumericRchar(11);
 
             dlFormats = new[] {new DriversLicense(dl)};
+            PercentHighSchoolGrad = 89.7F;
+            PercentCollegeGrad = 31.0F;
+
         }
     }
 
@@ -872,6 +1007,8 @@ namespace NoFuture.Rand.Gov
             dl[1] = new UAlphaRchar(1);
             Array.Copy(Numerics(8,2),0,dl,2,8);
             dlFormats = new[] {new DriversLicense(dl)};
+            PercentHighSchoolGrad = 87.1F;
+            PercentCollegeGrad = 48.5F;
         }
     }
 
@@ -884,6 +1021,9 @@ namespace NoFuture.Rand.Gov
             Array.Copy(Numerics(6,1),0,dl,1,6);
 
             dlFormats = new[] {new DriversLicense(dl)};
+            PercentHighSchoolGrad = 82.8F;
+            PercentCollegeGrad = 17.3F;
+
         }
     }
 
@@ -895,6 +1035,8 @@ namespace NoFuture.Rand.Gov
             dl[0] = new UAlphaRchar(0);
             Array.Copy(Numerics(12,1),0,dl,1,12);
             dlFormats = new[] {new DriversLicense(dl)};
+            PercentHighSchoolGrad = 89.8F;
+            PercentCollegeGrad = 25.7F;
         }
 
         public override string RandomDriversLicense
@@ -933,6 +1075,8 @@ namespace NoFuture.Rand.Gov
         public Wyoming() : base("WY")
         {
             dlFormats = new[] {new DriversLicense(Numerics(10))};
+            PercentHighSchoolGrad = 91.8F;
+            PercentCollegeGrad = 23.8F;
         }
     }
 }

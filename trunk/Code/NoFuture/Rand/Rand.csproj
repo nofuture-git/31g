@@ -58,6 +58,7 @@
     <Compile Include="Domus\IProfession.cs" />
     <Compile Include="Domus\NorthAmerican.cs" />
     <Compile Include="Domus\Pneuma\Personality.cs" />
+    <Compile Include="Domus\Sp\Account.cs" />
     <Compile Include="Domus\Sp\Asset.cs" />
     <Compile Include="Domus\Sp\Income.cs" />
     <Compile Include="Domus\Sp\Loan.cs" />
