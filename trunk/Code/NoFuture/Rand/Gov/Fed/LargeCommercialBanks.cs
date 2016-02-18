@@ -92,9 +92,6 @@ namespace NoFuture.Rand.Gov.Fed
                 if (string.IsNullOrWhiteSpace(bankName))
                     continue;
 
-                //clean up names to be searchable
-                bankName = ReplaceBankAbbrev(bankName.Trim());
-
                 rtrnList.Add(new Tuple<string, string>(bankName, line)); 
 
             }
@@ -126,47 +123,6 @@ namespace NoFuture.Rand.Gov.Fed
             };
             return charIdx.Select(idx => lrgBnkLstLine.Substring(idx.Item1, idx.Item2).Trim()).ToList();
 
-        }
-
-        public static string ReplaceBankAbbrev(string bankName)
-        {
-            if (bankName.EndsWith(" BK"))
-                bankName = bankName.Substring(0, (bankName.Length - 2)) + "BANK";
-            if (bankName.StartsWith("BK "))
-                bankName = "BANK " + bankName.Substring(3, (bankName.Length - 3));
-            if (bankName.Contains(" BK "))
-                bankName = bankName.Replace(" BK ", " BANK ");
-            if (bankName.EndsWith(" NA"))
-                bankName = bankName.Substring(0, (bankName.Length - 3));
-            if (bankName.Contains(" BKG&TC"))
-                bankName = bankName.Replace(" BKG&TC", " BANKING & TRUST COMPANY");
-            if (bankName.Contains(" B&TC"))
-                bankName = bankName.Replace(" B&TC", " BANK & TRUST COMPANY");
-            if (bankName.Contains(" B&T CO"))
-                bankName = bankName.Replace(" B&T CO", " BANK & TRUST COMPANY");
-            if (bankName.Contains(" SVC"))
-                bankName = bankName.Replace(" SVC", " SERVICES");
-            if (bankName.Contains(" NB&TC"))
-                bankName = bankName.Replace(" NB&TC", " NATIONAL BANK & TRUST COMPANY");
-            if (bankName.EndsWith(" TC"))
-                bankName = bankName.Substring(0, (bankName.Length - 3)) + " TRUST COMPANY";
-            if (bankName.Contains(" TC "))
-                bankName = bankName.Replace(" TC ", " TRUST COMPANY ");
-            if (bankName.EndsWith(" NB"))
-                bankName = bankName.Substring(0, (bankName.Length - 3)) + " NATIONAL BANK";
-            if (bankName.Contains(" NB "))
-                bankName = bankName.Replace(" NB ", " NATIONAL BANK ");
-            if (bankName.Contains(" FNCL "))
-                bankName = bankName.Replace(" FNCL ", " FINACIAL ");
-            if (bankName.EndsWith(" FNCL"))
-                bankName = bankName.Substring(0, (bankName.Length - 5)) + " FINANCIAL";
-            if (bankName.Contains(" AMER "))
-                bankName = bankName.Replace(" AMER ", " AMERICA ");
-            if (bankName.EndsWith(" AMER"))
-                bankName = bankName.Substring(0, (bankName.Length - 5)) + " AMERICA";
-            if (bankName.Contains(" CMNTY "))
-                bankName = bankName.Replace(" CMNTY ", " COMMUNITY ");
-            return bankName;
         }
 
         //DataDownloadProgram ="http://www.federalreserve.gov/datadownload/";

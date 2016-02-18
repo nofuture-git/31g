@@ -24,7 +24,7 @@ namespace NoFuture.Rand.Data
         private static XmlDocument _usHighSchools;
         private static XmlDocument _usCities;
         private static XmlDocument _xrefData;
-        private static List<FinancialFirm> _fedReleaseLrgBnkNames;
+        private static LargeCommercialBank[] _fedReleaseLrgBnkNames;
         #endregion
 
         #region Constants
@@ -270,29 +270,29 @@ namespace NoFuture.Rand.Data
         /// This function uses the local copy of the doc and does not fetch it from The Fed over the net.
         /// </remarks>
         /// </summary>
-        public static List<FinancialFirm> CommercialBankData
+        public static LargeCommercialBank[] CommercialBankData
         {
             get
             {
                 if (String.IsNullOrWhiteSpace(BinDirectories.Root))
-                    throw new NullReferenceException(
-                        "A path must be assigned to NoFuture.BinDirectories.Root prior to calling this method.");
+                    return new LargeCommercialBank[0];//empty list here
 
-                if (_fedReleaseLrgBnkNames != null && _fedReleaseLrgBnkNames.Count > 0)
+                if (_fedReleaseLrgBnkNames != null && _fedReleaseLrgBnkNames.Length > 0)
                     return _fedReleaseLrgBnkNames;
 
-                var dataDir = Path.Combine(BinDirectories.Root, DATA_SOURCE);
-
                 var rawData =
-                    File.ReadAllText(Path.Combine(dataDir, FED_RELEASE_LRG_BANKS_PATH));
-                DateTime? rptDt;
-                var parsedData = Gov.Fed.LargeCommercialBanks.ParseBankData(rawData, out rptDt);
+                    File.ReadAllText(GetDataDocPath(FED_RELEASE_LRG_BANKS_PATH));
 
+                DateTime? rptDt;
+                //turn line data into a list of tuples 
+                var parsedData = Gov.Fed.LargeCommercialBanks.ParseBankData(rawData, out rptDt);
                 var useDate = rptDt == null ? DateTime.Today : rptDt.Value;
-                var tempList = parsedData.Select(pd => new FinancialFirm(pd.Item2, useDate)).ToList();
+
+                //take each line data structure and compose a full object
+                var tempList = parsedData.Select(pd => new LargeCommercialBank(pd.Item2, useDate){Name = pd.Item1}).ToList();
 
                 if (tempList.Count > 0)
-                    _fedReleaseLrgBnkNames = tempList;
+                    _fedReleaseLrgBnkNames = tempList.ToArray();
                 return _fedReleaseLrgBnkNames;
             }
         }

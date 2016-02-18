@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Json;
 using System.Text;
+using NoFuture.Rand.Data;
 using NoFuture.Rand.Data.Types;
 
 namespace NoFuture.Rand.Com
@@ -102,6 +103,16 @@ namespace NoFuture.Rand.Com
             {
                 return false;
             }
+        }
+
+        protected override void GetXrefXmlData()
+        {
+            if (string.IsNullOrWhiteSpace(BinDirectories.Root))
+                return;
+            var xrefXml = TreeData.XRefXml;
+            var myAssocNodes = xrefXml.SelectNodes(string.Format("//x-ref-group[@data-type='{0}']//x-ref-id[text()='{1}]/..", GetType().FullName, Name));
+            //TODO finish implementing this
+            throw new NotImplementedException();
         }
     }
 

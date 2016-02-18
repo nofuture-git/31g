@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Xml;
 using NoFuture.Exceptions;
 
 namespace NoFuture.Rand.Data.Types
 {
     [Serializable]
-    public class XRefGroup : XmlDocIdBase
+    public class XRefGroup : XmlDocXrefIdentifier
     {
         #region fields
         internal const string X_REF_GROUP = "x-ref-group";
@@ -16,8 +18,8 @@ namespace NoFuture.Rand.Data.Types
 
         #region properties
         public string NodeName { get; set; }
-        public XDataReference[] XRefData { get; set; }
-        public override string XmlLocalName
+        public XrefIdentifier[] XRefData { get; set; }
+        public override string LocalName
         {
             get { return X_REF_GROUP; }
         }
@@ -27,7 +29,7 @@ namespace NoFuture.Rand.Data.Types
 
         public XRefGroup()
         {
-            _xmlLocalName = X_REF_GROUP;
+            _localName = X_REF_GROUP;
         }
         #endregion
 
@@ -67,43 +69,55 @@ namespace NoFuture.Rand.Data.Types
         {
             if (!base.TryThisParseXml(elem))
                 return false;
+
+            if (elem.Attributes["node-name"] != null && elem.Attributes["data-file"] != null)
+                return TryParseXml2Xml(elem);
+
+            return false;
+        }
+
+        protected bool TryParseXml2Xml(XmlElement elem)
+        {
+            var dataFileAttr = elem.Attributes["data-file"];
+            if (dataFileAttr == null || string.IsNullOrWhiteSpace(dataFileAttr.Value))
+                throw new InvalidOperationException(string.Format("This {0} is not an XML-to-XML kind of cross-reference", LocalName));
+
             var nodeNameAttr = elem.Attributes["node-name"];
 
             if (nodeNameAttr == null || string.IsNullOrWhiteSpace(nodeNameAttr.Value))
-                throw new ItsDeadJim("For X-Ref data to work the 'x-ref-group' must have an attr named " +
-                                     "'node-name' is a non-whitespace value.");
+                throw new InvalidOperationException(string.Format("This {0} is not an XML-to-XML kind of cross-reference", LocalName));
 
             NodeName = nodeNameAttr.Value;
-
-            var dataFileAttr = elem.Attributes["data-file"];
-            if (dataFileAttr == null || string.IsNullOrWhiteSpace(dataFileAttr.Value))
-                throw new ItsDeadJim("For X-Ref data to work the 'x-ref-group' must have an attr named " +
-                                     "'data-file' is a non-whitespace value.");
-
 
             if (!elem.HasChildNodes)
                 return true;
 
-            var tempList = new List<XDataReference>();
+            var tempList = new List<Xml2XmlIdentifier>();
             foreach (var cnode in elem.ChildNodes)
             {
                 var cElem = cnode as XmlElement;
-                if(cElem == null)
+                if (cElem == null)
                     continue;
 
-                var xdata = new XDataReference(dataFileAttr.Value, NodeName);
-                if(xdata.TryThisParseXml(cElem))
+                var externalFile = dataFileAttr.Value;
+
+                if (!string.Equals(Path.GetExtension(externalFile), "xml", StringComparison.OrdinalIgnoreCase))
+                    continue;
+
+                var xdata = new Xml2XmlIdentifier(dataFileAttr.Value, NodeName);
+                if (xdata.TryThisParseXml(cElem))
                     tempList.Add(xdata);
             }
-            XRefData = tempList.ToArray();
-            return true;
+            XRefData = new XrefIdentifier[tempList.Count];
+            Array.Copy(tempList.ToArray(), XRefData, XRefData.Length);
+            return true;            
         }
 
         #endregion
     }
 
     [Serializable]
-    public class XDataReference : XmlDocIdBase
+    public class Xml2XmlIdentifier : XmlDocXrefIdentifier
     {
         #region fields
         private readonly XmlDocument _dataFile;
@@ -111,8 +125,7 @@ namespace NoFuture.Rand.Data.Types
         #endregion
 
         #region properties
-        public XmlDocIdBase[] XrefIds { get; set; }
-        public Dictionary<string, string> ReferenceDictionary { get; set; }
+        
         public string NodeName { get { return _nodeName; } }
         public override string Abbrev
         {
@@ -121,19 +134,17 @@ namespace NoFuture.Rand.Data.Types
         #endregion
 
         #region ctors
-        public XDataReference(string dataFileName, string nodeName)
+        public Xml2XmlIdentifier(string dataFileName, string nodeName)
         {
             if(string.IsNullOrWhiteSpace(dataFileName))
                 throw new ArgumentNullException("dataFileName");
             if(string.IsNullOrWhiteSpace(nodeName))
                 throw new ArgumentNullException("nodeName");
 
-            ReferenceDictionary = new Dictionary<string, string>();
-
             TreeData.GetXmlDataSource(TreeData.GetDataDocPath(dataFileName), ref _dataFile);
 
             _nodeName = nodeName;
-            _xmlLocalName = "x-data-reference";
+            _localName = "x-data-reference";
         }
         #endregion
 
@@ -146,7 +157,7 @@ namespace NoFuture.Rand.Data.Types
             if (!elem.HasChildNodes)
                 return true;
 
-            var tempIdList = new List<XmlDocIdBase>();
+            var tempIdList = new List<XrefIdentifier>();
             foreach (var cnode in elem.ChildNodes)
             {
                 var cElem = cnode as XmlElement;
@@ -173,7 +184,7 @@ namespace NoFuture.Rand.Data.Types
 
                         var dataFileXrefElem = dataFileXrefNode as XmlElement;
 
-                        var xmlDocId = new XmlDocIdBase {_xmlLocalName = _nodeName};
+                        var xmlDocId = new XmlDocXrefIdentifier {_localName = _nodeName};
                         if (xmlDocId.TryThisParseXml(dataFileXrefElem))
                         {
                             tempIdList.Add(xmlDocId);
@@ -194,7 +205,8 @@ namespace NoFuture.Rand.Data.Types
                 ReferenceDictionary.Add(nameAttr.Value, valueAttr.Value);
             }
 
-            XrefIds = tempIdList.ToArray();
+            XrefIds = new NamedIdentifier[tempIdList.Count];
+            Array.Copy(tempIdList.ToArray(), XrefIds, XrefIds.Length);
 
             return XrefIds.Length > 0;
         }

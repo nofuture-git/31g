@@ -81,7 +81,12 @@ namespace NoFuture.Util
         /// </summary>
         public virtual string FullName
         {
-            get { return String.Format("{0}", _typeFullName); }
+            get
+            {
+                return string.IsNullOrWhiteSpace(_typeFullName)
+                    ? string.Format("{0}.{1}", _namespace, _className)
+                    : String.Format("{0}", _typeFullName);
+            }
         }
 
         /// <summary>

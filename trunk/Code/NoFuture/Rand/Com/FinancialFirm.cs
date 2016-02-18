@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using NoFuture.Rand.Data.Types;
 using NoFuture.Rand.Gov.Fed;
 
@@ -17,20 +18,39 @@ namespace NoFuture.Rand.Com
  */
     public class FinancialFirm : PublicCorporation
     {
-        public FinancialFirm() { }
+        public FinancialFirm()
+        {
+            var superSectors = NorthAmericanIndustryClassification.AllSectors;
+            if (superSectors == null || superSectors.Length <= 0)
+                return;
 
+            SuperSector = superSectors.FirstOrDefault(x => x.Value == "52");
+        }
+
+        public ResearchStatisticsSupervisionDiscount Rssd { get; set; }
+        public TypeOfBank BankType { get; set; }
+        public bool IsInternational { get; set; }
+        public Dictionary<DateTime, FinancialAssets> Assets { get; set; }
+    }
+
+    /// <summary>
+    /// This is a type based on the data released by the Federal Reserve <see cref="LargeCommercialBanks.RELEASE_URL"/>
+    /// </summary>
+    public class LargeCommercialBank : FinancialFirm
+    {
+        
         /// <summary>
-        /// Parse from the respective line found in the <see cref="LargeCommercialBanks.RELEASE_URL"/>
+        /// Ctor is based on single line from the fed's text report
         /// </summary>
         /// <param name="lrgBnkLstLine"></param>
         /// <param name="reportDate"></param>
-        public FinancialFirm(string lrgBnkLstLine, DateTime reportDate)
+        public LargeCommercialBank(string lrgBnkLstLine, DateTime reportDate)
         {
+            //single line from the report
             var vals = LargeCommercialBanks.SplitLrgBnkListLine(lrgBnkLstLine).ToArray();
 
             Func<string[], int, string> getLnVal = (strings, i) => strings.Length >= i ? strings[i] : string.Empty;
 
-            Name = LargeCommercialBanks.ReplaceBankAbbrev(getLnVal(vals,0));
             Rssd = new ResearchStatisticsSupervisionDiscount {Value = getLnVal(vals,2)};
             UsCityStateZip cityOut;
             if(UsCityStateZip.TryParse(vals[3], out cityOut))
@@ -38,11 +58,11 @@ namespace NoFuture.Rand.Com
             if (LargeCommercialBanks.TypeOfBankAbbrev3Enum.ContainsKey(getLnVal(vals,4)))
                 BankType = LargeCommercialBanks.TypeOfBankAbbrev3Enum[getLnVal(vals,4)];
             var assets = new FinancialAssets();
-            Decimal conAssts = 0;
-            Decimal domAssts = 0;
-            if (Decimal.TryParse(getLnVal(vals,5).Replace(",", string.Empty), out conAssts))
+            decimal conAssts = 0;
+            decimal domAssts = 0;
+            if (decimal.TryParse(getLnVal(vals,5).Replace(",", string.Empty), out conAssts))
                 assets.ConsolidatedAssets = new Pecuniam(conAssts*1000);
-            if (Decimal.TryParse(getLnVal(vals, 6).Replace(",", string.Empty), out domAssts))
+            if (decimal.TryParse(getLnVal(vals, 6).Replace(",", string.Empty), out domAssts))
                 assets.DomesticAssets = new Pecuniam(domAssts*1000);
             int domBranches = 0;
             int frnBranches = 0;
@@ -56,11 +76,6 @@ namespace NoFuture.Rand.Com
                 assets.PercentForeignOwned =  Math.Round((double)pfo / 100 ,2);
             Assets = new Dictionary<DateTime, FinancialAssets> {{reportDate, assets}};
         }
-
-        public ResearchStatisticsSupervisionDiscount Rssd { get; set; }
-        public TypeOfBank BankType { get; set; }
-        public bool IsInternational { get; set; }
-        public Dictionary<DateTime, FinancialAssets> Assets { get; set; }
     }
 
     public class FinancialAssets : Assets

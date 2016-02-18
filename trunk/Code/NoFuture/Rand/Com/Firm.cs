@@ -16,7 +16,7 @@ namespace NoFuture.Rand.Com
     }
 
     [Serializable]
-    public class Firm : IFirm
+    public abstract class Firm : IFirm
     {
         #region fields
         private NaicsSuperSector _superSector;
@@ -29,6 +29,8 @@ namespace NoFuture.Rand.Com
         public Tuple<UsAddress, UsCityStateZip> BusinessAddress { get; set; }
         public NorthAmericanPhone[] Phone { get; set; }
         public StandardIndustryClassification SIC { get; set; }
+
+        protected abstract void GetXrefXmlData();
 
         public NaicsSuperSector SuperSector
         {
@@ -74,16 +76,5 @@ namespace NoFuture.Rand.Com
             _sector = naics.Item2;
             _market = naics.Item3;
         }
-    }
-    [Serializable]
-    public class LimitedLiabilityCompany : Firm
-    {
-        
-    }
- 
-    [Serializable]
-    public class Partnership : Firm
-    {
-        
     }
 }

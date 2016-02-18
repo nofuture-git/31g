@@ -11,7 +11,7 @@ namespace NoFuture.Tests.Rand
         public void TestCtor()
         {
             var testResult =
-                new NoFuture.Rand.Com.FinancialFirm(
+                new NoFuture.Rand.Com.LargeCommercialBank(
                     " JPMORGAN CHASE BK NA            1      852218     COLUMBUS, OH           NAT 2,074,9521,501,633  72   15   5,610  30   Y    0",
                     DateTime.Today);
             Assert.AreEqual("852218", testResult.Rssd.Value);

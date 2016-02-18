@@ -34,7 +34,7 @@ namespace NoFuture.Rand.Data.Types
 
             return true;
         }
-        public override string XmlLocalName
+        public override string LocalName
         {
             get { return "sic-code"; }
         }

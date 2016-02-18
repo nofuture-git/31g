@@ -14,7 +14,7 @@ namespace NoFuture.Rand.Data.Types
     /// http://www.census.gov/cgi-bin/sssd/naics/naicsrch?chart=2012
     /// </remarks>
     [Serializable]
-    public abstract class NorthAmericanIndustryClassification : XmlDocIdBase
+    public abstract class NorthAmericanIndustryClassification : XmlDocXrefIdentifier
     {
         #region fields
         protected readonly List<NorthAmericanIndustryClassification> divisions  = new List<NorthAmericanIndustryClassification>();
@@ -72,7 +72,7 @@ namespace NoFuture.Rand.Data.Types
 
                 var ssOut = new NaicsSuperSector();
 
-                var ssElements = Data.TreeData.EconSectorData.SelectNodes(string.Format("//{0}", ssOut.XmlLocalName));
+                var ssElements = Data.TreeData.EconSectorData.SelectNodes(string.Format("//{0}", ssOut.LocalName));
                 if (ssElements == null || ssElements.Count == 0)
                     return null;
 
@@ -122,7 +122,7 @@ namespace NoFuture.Rand.Data.Types
             return true;
         }
 
-        public override string XmlLocalName
+        public override string LocalName
         {
             get { return "primary-sector"; }
         }
@@ -151,7 +151,7 @@ namespace NoFuture.Rand.Data.Types
             return true;
         }
 
-        public override string XmlLocalName
+        public override string LocalName
         {
             get { return "secondary-sector"; }
         }
@@ -180,7 +180,7 @@ namespace NoFuture.Rand.Data.Types
 
             return true;
         }
-        public override string XmlLocalName
+        public override string LocalName
         {
             get { return "ternary-sector"; }
         }

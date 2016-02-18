@@ -156,9 +156,9 @@ namespace NoFuture.Rand
         public string PostalCodeAddonFour { get { return data.PostalCodeSuffix; } }
         public override string ToString()
         {
-            return !string.IsNullOrWhiteSpace(PostalCodeAddonFour)
-                           ? string.Format("{0}, {1} {2}-{3}", City, PostalState, PostalState, PostalCodeAddonFour)
-                           : string.Format("{0}, {1} {2}", City, PostalState, PostalState);
+            return !string.IsNullOrWhiteSpace(data.PostalCodeSuffix)
+                           ? string.Format("{0}, {1} {2}-{3}", data.City, data.StateAbbrv, data.PostalCode, data.PostalCodeSuffix)
+                           : string.Format("{0}, {1} {2}", data.City, data.StateAbbrv, data.PostalCode);
         }
 
         public static bool TryParse(string lastLine, out UsCityStateZip cityStateZip)

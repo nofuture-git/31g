@@ -51,11 +51,12 @@
     <Compile Include="Data\TreeData.cs" />
     <Compile Include="Data\Types\AddressData.cs" />
     <Compile Include="Data\Types\FinancialData.cs" />
-    <Compile Include="Data\Types\XmlDocIdBase.cs" />
+    <Compile Include="Data\Types\XmlDocXrefIdentifier.cs" />
     <Compile Include="Data\Types\XRef.cs" />
     <Compile Include="Domus\IEducation.cs" />
     <Compile Include="Domus\IPerson.cs" />
     <Compile Include="Domus\IProfession.cs" />
+    <Compile Include="Domus\NAmerUtil.cs" />
     <Compile Include="Domus\NorthAmerican.cs" />
     <Compile Include="Domus\Pneuma\Personality.cs" />
     <Compile Include="Domus\Sp\Account.cs" />

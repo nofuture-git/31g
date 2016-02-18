@@ -1,15 +1,23 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using NoFuture.Exceptions;
 
 namespace NoFuture.Rand
 {
+    /// <summary>
+    /// A preeminent identity type.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public interface IIdentifier<T>
     {
         string Abbrev { get; }
         T Value { get; set; }
     }
 
+    /// <summary>
+    /// Base type for string identity values
+    /// </summary>
     [Serializable]
     public abstract class Identifier : IIdentifier<string>
     {
@@ -26,6 +34,31 @@ namespace NoFuture.Rand
         }
     }
 
+    /// <summary>
+    /// Base type to couple a local name with an identity
+    /// </summary>
+    [Serializable]
+    public abstract class NamedIdentifier : Identifier
+    {
+        protected internal string _localName = string.Empty;
+        public virtual string LocalName { get { return _localName; } }
+    }
+
+    /// <summary>
+    /// Base type to interrelate identities
+    /// </summary>
+    [Serializable]
+    public abstract class XrefIdentifier : NamedIdentifier
+    {
+        private readonly Dictionary<string, string> _refDict = new Dictionary<string, string>();
+        public virtual Dictionary<string, string> ReferenceDictionary { get {return _refDict;}}
+        public virtual NamedIdentifier[] XrefIds { get; set; }
+    }
+
+    /// <summary>
+    /// Base type for identifiers whose value is derived 
+    /// from an array of <see cref="Rchar"/>(s).
+    /// </summary>
     [Serializable]
     public abstract class RIdentifier : Identifier
     {
@@ -123,6 +156,7 @@ namespace NoFuture.Rand
         Some = 16,
         Grad = 32
     }
+
     [Serializable]
     public class AmericanRacePercents
     {
