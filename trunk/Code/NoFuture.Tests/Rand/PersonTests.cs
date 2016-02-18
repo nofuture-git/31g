@@ -11,11 +11,6 @@ namespace NoFuture.Tests.Rand
     [TestClass]
     public class PersonTests
     {
-        [TestInitialize]
-        public void Init()
-        {
-            BinDirectories.Root = @"C:\Projects\31g\trunk\Code\NoFuture\Rand";
-        }
 
         [TestMethod]
         public void AmericanTests()

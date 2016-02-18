@@ -123,52 +123,30 @@
     <Compile Include="RLinearEquation.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Data\Source\CA_AreaCode.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Data\Source\CA_Zip.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    <EmbeddedResource Include="Data\Source\CA_AreaCode.xml" />
+    <EmbeddedResource Include="Data\Source\CA_Zip.xml">
       <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Data\Source\lrg_bnk_lst.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Data\Source\US_AreaCode.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Data\Source\US_City.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Data\Source\US_EconSectors.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Data\Source\lrg_bnk_lst.txt" />
+    <EmbeddedResource Include="Data\Source\US_AreaCode.xml" />
+    <EmbeddedResource Include="Data\Source\US_City.xml" />
+    <EmbeddedResource Include="Data\Source\US_EconSectors.xml">
       <SubType>Designer</SubType>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Data\Source\US_FirstNames.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Data\Source\US_HighSchools.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Data\Source\US_InsCompanyNames.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Data\Source\US_LastNames.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Data\Source\US_Universities.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Data\Source\US_FirstNames.xml" />
+    <EmbeddedResource Include="Data\Source\US_HighSchools.xml" />
+    <EmbeddedResource Include="Data\Source\US_InsCompanyNames.xml" />
+    <EmbeddedResource Include="Data\Source\US_LastNames.xml" />
+    <EmbeddedResource Include="Data\Source\US_Universities.xml">
       <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Data\Source\US_Zip.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Data\Source\US_Zip.xml">
       <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Data\Source\US_Zip_ProbTable.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Data\Source\XRef.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Data\Source\US_Zip_ProbTable.xml" />
+    <EmbeddedResource Include="Data\Source\XRef.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Shared\Shared.csproj">

@@ -8,6 +8,7 @@ using System.Xml.Linq;
 using System.Text;
 using System.Xml;
 using System.IO;
+using NoFuture.Rand.Data;
 using NoFuture.Rand.Edu;
 using NoFuture.Shared;
 using NoFuture.Util;
@@ -47,21 +48,22 @@ namespace NoFuture.Rand
         /// <summary>
         /// Selects a US Zip Code prefix at random taking into respect the population pertinent to that zip code prefix.
         /// </summary>
-        /// <remarks>
-        /// A path must be set to <see cref="NoFuture.BinDirectories.Root"/> which contains a 'Data' folder
-        /// and it is within that folder the method expects to find 'US_Zip_ProbTable.xml'.
-        /// If the required file is not found or nothing is selected by the random value then it will 
-        /// return '100' - the zip code prefix for New York NY.
-        /// </remarks>
-        /// <returns>The Zip Code Prefix</returns>
         public static string RandomAmericanZipWithRespectToPop()
         {
-            if (string.IsNullOrWhiteSpace(BinDirectories.Root) || !File.Exists(Path.Combine(BinDirectories.Root, US_ZIP_PROB_TABLE_DATA_PATH)))
+            XDocument usZips = null;
+            var usZipsXmlDocument = TreeData.UsZipProbabilityTable;
+
+            if(usZipsXmlDocument == null)
                 return "100"; //New York
 
-            var usZips = XDocument.Load(Path.Combine(BinDirectories.Root, US_ZIP_PROB_TABLE_DATA_PATH));
+            //http://stackoverflow.com/questions/1508572/converting-xdocument-to-xmldocument-and-vice-versa
+            using (var nodeReader = new XmlNodeReader(usZipsXmlDocument))
+            {
+                nodeReader.MoveToContent();
+                usZips = XDocument.Load(nodeReader);
+            }
 
-            double pickone = MyRand.Next(1, 9999999) / 100000;
+            double pickone = Convert.ToInt32(MyRand.Next(1, 9999999) / 100000);
             var randnode =
                 usZips.Descendants("zip-code").FirstOrDefault(
                                                               x =>

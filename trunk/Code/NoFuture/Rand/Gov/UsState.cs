@@ -84,7 +84,7 @@ namespace NoFuture.Rand.Gov
                 return universities;
 
             //this will never pass so avoid the exception
-            if (string.IsNullOrWhiteSpace(BinDirectories.Root))
+            if (Data.TreeData.AmericanUniversityData == null)
                 return null;
 
             var elements =
@@ -123,7 +123,7 @@ namespace NoFuture.Rand.Gov
             if (highSchools != null)
                 return highSchools;
 
-            if (string.IsNullOrWhiteSpace(BinDirectories.Root))
+            if (Data.TreeData.AmericanHighSchoolData == null)
                 return null;
             var elements =
                 Data.TreeData.AmericanHighSchoolData.SelectNodes(string.Format("//state[@name='{0}']//high-school",

@@ -39,12 +39,10 @@ namespace NoFuture.Rand.Data.Types
             {
                 if (_allXref != null)
                     return _allXref;
-                if (string.IsNullOrWhiteSpace(BinDirectories.Root))
-                    return null;
                 if (TreeData.XRefXml == null)
                     return null;
 
-                var elems = TreeData.XRefXml.SelectNodes(string.Format("//{0}", X_REF_GROUP));
+                var elems = TreeData.XRefXml.SelectNodes(String.Format("//{0}", X_REF_GROUP));
                 if (elems == null || elems.Count <= 0)
                     return null;
 
@@ -65,6 +63,72 @@ namespace NoFuture.Rand.Data.Types
         }
 
         #region methods
+
+        public static void SetTypeXrefValue(XmlElement elem, object rtInstance)
+        {
+            var nameAttr = elem.Attributes["name"];
+            if (nameAttr == null || string.IsNullOrWhiteSpace(nameAttr.Value))
+                return;
+
+            if (rtInstance == null)
+                return;
+
+            var propertyName = nameAttr.Value;
+            var pi = rtInstance.GetType().GetProperty(propertyName);
+
+            var valueAttr = elem.Attributes["value"];
+            if (valueAttr != null && !string.IsNullOrWhiteSpace(valueAttr.Value))
+            {
+                pi.SetValue(rtInstance, valueAttr.Value, null);
+                return;
+            }
+
+            if (!elem.HasChildNodes || pi == null) return;
+
+            var piType = pi.PropertyType;
+            var propertyInstance = Activator.CreateInstance(piType);
+
+            //expecting the type to have a getter and setter of generic List<T>
+            if (Util.TypeName.IsEnumerableReturnType(piType))
+            {
+                var addMi = piType.GetMethod("Add");
+                if (addMi == null)
+                    return;
+                var enumerableTypeName = Util.TypeName.GetLastTypeNameFromArrayAndGeneric(piType);
+                if (string.IsNullOrWhiteSpace(enumerableTypeName))
+                    return;
+
+                var enumerableType = Assembly.GetExecutingAssembly().GetType(enumerableTypeName);
+                if (enumerableType == null)
+                    return;
+
+                var enumerableInstance = Activator.CreateInstance(enumerableType);
+                foreach (var cNode in elem.ChildNodes)
+                {
+                    var cElem = cNode as XmlElement;
+                    if (cElem == null)
+                        continue;
+
+                    SetTypeXrefValue(cElem, enumerableInstance);
+
+                    addMi.Invoke(propertyInstance, new[] {enumerableInstance});
+                }
+            }
+            else//no generic type
+            {
+                foreach (var cNode in elem.ChildNodes)
+                {
+                    var cElem = cNode as XmlElement;
+                    if (cElem == null)
+                        continue;
+
+                    SetTypeXrefValue(cElem, propertyInstance);
+                }
+                
+            }
+            pi.SetValue(rtInstance, propertyInstance, null);
+        }
+
         public override bool TryThisParseXml(XmlElement elem)
         {
             if (!base.TryThisParseXml(elem))
@@ -79,13 +143,13 @@ namespace NoFuture.Rand.Data.Types
         protected bool TryParseXml2Xml(XmlElement elem)
         {
             var dataFileAttr = elem.Attributes["data-file"];
-            if (dataFileAttr == null || string.IsNullOrWhiteSpace(dataFileAttr.Value))
-                throw new InvalidOperationException(string.Format("This {0} is not an XML-to-XML kind of cross-reference", LocalName));
+            if (dataFileAttr == null || String.IsNullOrWhiteSpace(dataFileAttr.Value))
+                throw new InvalidOperationException(String.Format("This {0} is not an XML-to-XML kind of cross-reference", LocalName));
 
             var nodeNameAttr = elem.Attributes["node-name"];
 
-            if (nodeNameAttr == null || string.IsNullOrWhiteSpace(nodeNameAttr.Value))
-                throw new InvalidOperationException(string.Format("This {0} is not an XML-to-XML kind of cross-reference", LocalName));
+            if (nodeNameAttr == null || String.IsNullOrWhiteSpace(nodeNameAttr.Value))
+                throw new InvalidOperationException(String.Format("This {0} is not an XML-to-XML kind of cross-reference", LocalName));
 
             NodeName = nodeNameAttr.Value;
 
@@ -101,7 +165,7 @@ namespace NoFuture.Rand.Data.Types
 
                 var externalFile = dataFileAttr.Value;
 
-                if (!string.Equals(Path.GetExtension(externalFile), "xml", StringComparison.OrdinalIgnoreCase))
+                if (!String.Equals(Path.GetExtension(externalFile), "xml", StringComparison.OrdinalIgnoreCase))
                     continue;
 
                 var xdata = new Xml2XmlIdentifier(dataFileAttr.Value, NodeName);
@@ -141,7 +205,7 @@ namespace NoFuture.Rand.Data.Types
             if(string.IsNullOrWhiteSpace(nodeName))
                 throw new ArgumentNullException("nodeName");
 
-            TreeData.GetXmlDataSource(TreeData.GetDataDocPath(dataFileName), ref _dataFile);
+            TreeData.GetXmlDataSource(dataFileName, ref _dataFile);
 
             _nodeName = nodeName;
             _localName = "x-data-reference";

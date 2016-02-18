@@ -30,7 +30,7 @@ namespace NoFuture.Rand.Com
         public NorthAmericanPhone[] Phone { get; set; }
         public StandardIndustryClassification SIC { get; set; }
 
-        protected abstract void GetXrefXmlData();
+        public abstract void GetXrefXmlData();
 
         public NaicsSuperSector SuperSector
         {

@@ -31,7 +31,6 @@ namespace NoFuture.Tests.Rand
         [TestMethod]
         public void TestCommercialBankData()
         {
-            NoFuture.BinDirectories.Root = @"C:\Projects\31g\trunk\bin";
             var testResults = NoFuture.Rand.Data.TreeData.CommercialBankData;
             Assert.IsNotNull(testResults);
             Assert.AreNotEqual(0, testResults);

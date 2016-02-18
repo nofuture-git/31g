@@ -51,10 +51,6 @@ namespace NoFuture.Rand.Data.Types
         /// Helper method that parses all the data within the 'US_EconSectors.xml' into the 
         /// strongly typed <see cref="NorthAmericanIndustryClassification"/>.
         /// </summary>
-        /// <remarks>
-        /// Like all methods which are depenedent on XML data sources the 
-        /// path must be resolved from the <see cref="NoFuture.BinDirectories.Root"/>.
-        /// </remarks>
         public static NaicsSuperSector[] AllSectors
         {
             get
@@ -62,10 +58,6 @@ namespace NoFuture.Rand.Data.Types
                 //return this a singleton
                 if (_superSectors != null)
                     return _superSectors;
-
-                //have to be able to resolve path to .xml to continue
-                if (string.IsNullOrWhiteSpace(BinDirectories.Root))
-                    return null;
 
                 if (Data.TreeData.EconSectorData == null)
                     return null;

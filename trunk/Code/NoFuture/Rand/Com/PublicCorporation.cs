@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Json;
 using System.Text;
+using System.Xml;
 using NoFuture.Rand.Data;
 using NoFuture.Rand.Data.Types;
 
@@ -13,7 +14,6 @@ namespace NoFuture.Rand.Com
     {
         #region fields
         private readonly List<Gov.Sec.Form10K> _annualReports = new List<Gov.Sec.Form10K>();
-
         #endregion
 
         #region Properties
@@ -84,9 +84,6 @@ namespace NoFuture.Rand.Com
                 if (yrs == null || yrs.ResultSet == null || yrs.ResultSet.Result == null || yrs.ResultSet.Result.Length <= 0)
                     return false;
 
-                if (pc.TickerSymbols == null)
-                    pc.TickerSymbols = new List<Ticker>();
-
                 foreach (var sym in yrs.ResultSet.Result)
                 {
                     pc.TickerSymbols.Add(new Ticker
@@ -105,14 +102,25 @@ namespace NoFuture.Rand.Com
             }
         }
 
-        protected override void GetXrefXmlData()
+        public override void GetXrefXmlData()
         {
-            if (string.IsNullOrWhiteSpace(BinDirectories.Root))
-                return;
             var xrefXml = TreeData.XRefXml;
-            var myAssocNodes = xrefXml.SelectNodes(string.Format("//x-ref-group[@data-type='{0}']//x-ref-id[text()='{1}]/..", GetType().FullName, Name));
-            //TODO finish implementing this
-            throw new NotImplementedException();
+            if (xrefXml == null)
+                return;
+            var myAssocNodes =
+                xrefXml.SelectNodes(string.Format("//x-ref-group[@data-type='{0}']//x-ref-id[text()='{1}']/../../add",
+                    GetType().FullName, Name));
+            if (myAssocNodes == null || myAssocNodes.Count <= 0)
+                return;
+
+            foreach (var node in myAssocNodes)
+            {
+                var elem = node as XmlElement;
+                if (elem == null)
+                    continue;
+
+                XRefGroup.SetTypeXrefValue(elem, this);
+            }
         }
     }
 

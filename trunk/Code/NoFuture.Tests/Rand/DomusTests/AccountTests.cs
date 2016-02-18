@@ -20,8 +20,6 @@ namespace NoFuture.Tests.Rand.DomusTests
             System.Diagnostics.Debug.WriteLine(testResult.AccountNumber.Value);
 
             
-            NoFuture.BinDirectories.Root = @"C:\Projects\31g\trunk\bin";
-
             testResult = NoFuture.Rand.Domus.Sp.BankAccount.GetRandomBankAccount();
             Assert.IsNotNull(testResult.RoutingNumber);
             Assert.IsNotNull(testResult.AccountNumber);

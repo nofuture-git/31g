@@ -92,7 +92,6 @@ namespace NoFuture.Tests.Rand
         [TestMethod]
         public void TestGetUniversities()
         {
-            NoFuture.BinDirectories.Root = @"C:\Projects\31g\trunk\Code\NoFuture\Rand";//this gets set by ps scripts
             var testSubject = NoFuture.Rand.Gov.UsState.GetStateByPostalCode("AZ");
             var testResults = testSubject.GetUniversities();
 
@@ -104,7 +103,6 @@ namespace NoFuture.Tests.Rand
         [TestMethod]
         public void TestGetHighSchools()
         {
-            NoFuture.BinDirectories.Root = @"C:\Projects\31g\trunk\Code\NoFuture\Rand";//this gets set by ps scripts
             var testSubject = NoFuture.Rand.Gov.UsState.GetStateByPostalCode("AZ");
             var testResults = testSubject.GetHighSchools();
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Xml;
 using NoFuture.Exceptions;
 using NoFuture.Rand.Com;
@@ -24,12 +25,13 @@ namespace NoFuture.Rand.Data
         private static XmlDocument _usHighSchools;
         private static XmlDocument _usCities;
         private static XmlDocument _xrefData;
+        private static XmlDocument _usZipProbTable;
         private static LargeCommercialBank[] _fedReleaseLrgBnkNames;
         #endregion
 
         #region Constants
 
-        public const string DATA_SOURCE = @"Data\Source\";
+        public const string DATA_SOURCE = @"NoFuture.Rand.Data.Source";
 
         private const string CA_AREA_CODE_DATA_PATH = "CA_AreaCode.xml";
         private const string US_ZIP_DATA_PATH = "US_Zip.xml";
@@ -38,12 +40,13 @@ namespace NoFuture.Rand.Data
         private const string INS_COMPANY_PATH = "US_InsCompanyNames.xml";
         private const string ECON_SECTOR_PATH = "US_EconSectors.xml";
         private const string US_UNIV_PATH = "US_Universities.xml";
-        private const string FED_RELEASE_LRG_BANKS_PATH = "lrg_bnk_lst.txt";
         private const string US_FIRST_NAMES_DATA_PATH = "US_FirstNames.xml";
         private const string US_LAST_NAMES_DATA_PATH = "US_LastNames.xml";
         private const string US_HIGH_SCHOOL_DATA_PATH = "US_HighSchools.xml";
         private const string US_CITY_DATA_PATH = "US_City.xml";
         private const string X_REF_DATA = "XRef.xml";
+        private const string US_ZIP_PROBTABLE = "US_Zip_ProbTable.xml";
+        private const string LRG_BNK_LST = "lrg_bnk_lst.txt";
 
         #endregion
 
@@ -51,34 +54,26 @@ namespace NoFuture.Rand.Data
 
         /// <summary>
         /// Loads the 'US_FirstNames.xml' data into a <see cref="System.Xml.XmlDocument"/> document.
-        /// <remarks>
-        /// A path must be set to <see cref="NoFuture.BinDirectories.Root"/> which contains a 'Data\Source' folder
-        /// and it is within that folder the method expects to find 'US_FirstNames.xml'.
-        /// </remarks>
         /// </summary>
         public static XmlDocument AmericanFirstNamesData
         {
             get
             {
                 if(_usFnames == null)
-                    GetXmlDataSource(GetDataDocPath(US_FIRST_NAMES_DATA_PATH), ref _usFnames);
+                    GetXmlDataSource(US_FIRST_NAMES_DATA_PATH, ref _usFnames);
                 return _usFnames;
             }
         }
 
         /// <summary>
         /// Loads the 'US_LastNames.xml' data into a <see cref="System.Xml.XmlDocument"/> document.
-        /// <remarks>
-        /// A path must be set to <see cref="NoFuture.BinDirectories.Root"/> which contains a 'Data\Source' folder
-        /// and it is within that folder the method expects to find 'US_LastNames.xml'.
-        /// </remarks>
         /// </summary>
         public static XmlDocument AmericanLastNamesData
         {
             get
             {
                 if (_usLnames == null)
-                    GetXmlDataSource(GetDataDocPath(US_LAST_NAMES_DATA_PATH), ref _usLnames);
+                    GetXmlDataSource(US_LAST_NAMES_DATA_PATH, ref _usLnames);
                 return _usLnames;
             }
             
@@ -86,17 +81,13 @@ namespace NoFuture.Rand.Data
 
         /// <summary>
         /// Loads the 'US_Zip.xml' data into a <see cref="System.Xml.XmlDocument"/> document.
-        /// <remarks>
-        /// A path must be set to <see cref="NoFuture.BinDirectories.Root"/> which contains a 'Data\Source' folder
-        /// and it is within that folder the method expects to find 'US_Zip.xml'.
-        /// </remarks>
         /// </summary>
         public static XmlDocument AmericanZipCodeData
         {
             get
             {
                 if (_usZipXml == null)
-                    GetXmlDataSource(GetDataDocPath(US_ZIP_DATA_PATH), ref _usZipXml);
+                    GetXmlDataSource(US_ZIP_DATA_PATH, ref _usZipXml);
 
                 return _usZipXml;
             }
@@ -104,17 +95,13 @@ namespace NoFuture.Rand.Data
 
         /// <summary>
         /// Loads the 'US_HighSchools.xml' data into a <see cref="System.Xml.XmlDocument"/> document.
-        /// <remarks>
-        /// A path must be set to <see cref="NoFuture.BinDirectories.Root"/> which contains a 'Data\Source' folder
-        /// and it is within that folder the method expects to find 'US_HighSchools.xml'.
-        /// </remarks>
         /// </summary>
         public static XmlDocument AmericanHighSchoolData
         {
             get
             {
                 if(_usHighSchools == null)
-                    GetXmlDataSource(GetDataDocPath(US_HIGH_SCHOOL_DATA_PATH), ref _usHighSchools);
+                    GetXmlDataSource(US_HIGH_SCHOOL_DATA_PATH, ref _usHighSchools);
 
                 return _usHighSchools;
             }
@@ -122,34 +109,26 @@ namespace NoFuture.Rand.Data
 
         /// <summary>
         /// Loads the 'US_City.xml' data into a <see cref="System.Xml.XmlDocument"/> document.
-        /// <remarks>
-        /// A path must be set to <see cref="NoFuture.BinDirectories.Root"/> which contains a 'Data\Source' folder
-        /// and it is within that folder the method expects to find 'US_City.xml'.
-        /// </remarks>
         /// </summary>
         public static XmlDocument AmericanCityData
         {
             get
             {
                 if(_usCities == null)
-                    GetXmlDataSource(GetDataDocPath(US_CITY_DATA_PATH), ref _usCities);
+                    GetXmlDataSource(US_CITY_DATA_PATH, ref _usCities);
                 return _usCities;
             }
         }
         
         /// <summary>
         /// Loads the 'CA_Zip.xml' data into a <see cref="System.Xml.XmlDocument"/> document.
-        /// <remarks>
-        /// A path must be set to <see cref="NoFuture.BinDirectories.Root"/> which contains a 'Data\Source' folder
-        /// and it is within that folder the method expects to find 'CA_Zip.xml'.
-        /// </remarks>
         /// </summary>
         public static XmlDocument CanadianPostalCodeData
         {
             get
             {
                 if (_caZipXml == null)
-                    GetXmlDataSource(GetDataDocPath(CA_ZIP_DATA_PATH), ref _caZipXml);
+                    GetXmlDataSource(CA_ZIP_DATA_PATH, ref _caZipXml);
 
                 return _caZipXml;
             }
@@ -158,16 +137,12 @@ namespace NoFuture.Rand.Data
         /// <summary>
         /// Loads 'US_AreaCode.xml' data into <see cref="System.Xml.XmlDocument"/> document.
         /// </summary>
-        /// <remarks>
-        /// A path must be set to <see cref="NoFuture.BinDirectories.Root"/> which contains a 'Data\Source' folder
-        /// and it is within that folder the method expects to find 'US_AreaCode.xml'.
-        /// </remarks>
         public static XmlDocument AmericanAreaCodeData
         {
             get
             {
                 if (_usAreaCodeXml == null)
-                    GetXmlDataSource(GetDataDocPath(US_AREA_CODE_DATA_PATH), ref _usAreaCodeXml);
+                    GetXmlDataSource(US_AREA_CODE_DATA_PATH, ref _usAreaCodeXml);
 
                 return _usAreaCodeXml;
             }
@@ -176,16 +151,12 @@ namespace NoFuture.Rand.Data
         /// <summary>
         /// Loads 'CA_AreaCode.xml' data into <see cref="System.Xml.XmlDocument"/> document.
         /// </summary>
-        /// <remarks>
-        /// A path must be set to <see cref="NoFuture.BinDirectories.Root"/> which contains a 'Data\Source' folder
-        /// and it is within that folder the method expects to find 'CA_AreaCode.xml'.
-        /// </remarks>
         public static XmlDocument CanadianAreaCodeData
         {
             get
             {
                 if (_caAreaCodeXml == null)
-                    GetXmlDataSource(GetDataDocPath(CA_AREA_CODE_DATA_PATH), ref _caAreaCodeXml);
+                    GetXmlDataSource(CA_AREA_CODE_DATA_PATH, ref _caAreaCodeXml);
 
                 return _caAreaCodeXml;
             }
@@ -193,17 +164,13 @@ namespace NoFuture.Rand.Data
 
         /// <summary>
         /// Loads the 'US_InsCompanyNames.xml' data into <see cref="System.Xml.XmlDocument"/> document.
-        /// <remarks>
-        /// A path must be set to <see cref="NoFuture.BinDirectories.Root"/> which contains a 'Data\Source' folder
-        /// and it is within that folder the method expects to find 'US_InsCompanyNames.xml'.
-        /// </remarks>
         /// </summary>
         public static XmlDocument InsuranceCompanyNameData
         {
             get
             {
                 if (_usInsComXml == null)
-                    GetXmlDataSource(GetDataDocPath(INS_COMPANY_PATH), ref _usInsComXml);
+                    GetXmlDataSource(INS_COMPANY_PATH, ref _usInsComXml);
 
                 return _usInsComXml;
             }
@@ -211,17 +178,13 @@ namespace NoFuture.Rand.Data
 
         /// <summary>
         /// Loads the 'US_EconSectors.xml' data into a <see cref="System.Xml.XmlDocument"/> document.
-        /// <remarks>
-        /// A path must be set to <see cref="NoFuture.BinDirectories.Root"/> which contains a 'Data\Source' folder
-        /// and it is within that folder the method expects to find 'US_EconSectors.xml'.
-        /// </remarks>
         /// </summary>
         public static XmlDocument EconSectorData
         {
             get
             {
                 if (_econSectorXml == null)
-                    GetXmlDataSource(GetDataDocPath(ECON_SECTOR_PATH), ref _econSectorXml);
+                    GetXmlDataSource(ECON_SECTOR_PATH, ref _econSectorXml);
 
                 return _econSectorXml;
             }
@@ -229,17 +192,13 @@ namespace NoFuture.Rand.Data
 
         /// <summary>
         /// Loads the 'US_EconSectors.xml' data into a <see cref="System.Xml.XmlDocument"/> document.
-        /// <remarks>
-        /// A path must be set to <see cref="NoFuture.BinDirectories.Root"/> which contains a 'Data\Source' folder
-        /// and it is within that folder the method expects to find 'US_EconSectors.xml'.
-        /// </remarks>
         /// </summary>
         public static XmlDocument AmericanUniversityData
         {
             get
             {
                 if (_usUnivXml == null)
-                    GetXmlDataSource(GetDataDocPath(US_UNIV_PATH), ref _usUnivXml);
+                    GetXmlDataSource(US_UNIV_PATH, ref _usUnivXml);
 
                 return _usUnivXml;
             }
@@ -247,18 +206,27 @@ namespace NoFuture.Rand.Data
 
         /// <summary>
         /// Loads the 'XRef.xml' data into a <see cref="System.Xml.XmlDocument"/> document.
-        /// <remarks>
-        /// A path must be set to <see cref="NoFuture.BinDirectories.Root"/> which contains a 'Data\Source' folder
-        /// and it is within that folder the method expects to find 'XRef.xml'.
-        /// </remarks>
         /// </summary>
         public static XmlDocument XRefXml
         {
             get
             {
                 if(_xrefData == null)
-                    GetXmlDataSource(GetDataDocPath(X_REF_DATA), ref _xrefData);
+                    GetXmlDataSource(X_REF_DATA, ref _xrefData);
                 return _xrefData;
+            }
+        }
+
+        /// <summary>
+        /// Loads the 'XRef.xml' data into a <see cref="System.Xml.XmlDocument"/> document.
+        /// </summary>
+        public static XmlDocument UsZipProbabilityTable
+        {
+            get
+            {
+                if (_usZipProbTable == null)
+                    GetXmlDataSource(US_ZIP_PROBTABLE, ref _usZipProbTable);
+                return _usZipProbTable;
             }
         }
 
@@ -274,14 +242,12 @@ namespace NoFuture.Rand.Data
         {
             get
             {
-                if (String.IsNullOrWhiteSpace(BinDirectories.Root))
-                    return new LargeCommercialBank[0];//empty list here
-
                 if (_fedReleaseLrgBnkNames != null && _fedReleaseLrgBnkNames.Length > 0)
                     return _fedReleaseLrgBnkNames;
 
-                var rawData =
-                    File.ReadAllText(GetDataDocPath(FED_RELEASE_LRG_BANKS_PATH));
+                var rawData = GetTextDataSource(LRG_BNK_LST);
+                if(string.IsNullOrWhiteSpace(rawData))
+                    return new LargeCommercialBank[0];//return empty list for missing data
 
                 DateTime? rptDt;
                 //turn line data into a list of tuples 
@@ -289,7 +255,10 @@ namespace NoFuture.Rand.Data
                 var useDate = rptDt == null ? DateTime.Today : rptDt.Value;
 
                 //take each line data structure and compose a full object
-                var tempList = parsedData.Select(pd => new LargeCommercialBank(pd.Item2, useDate){Name = pd.Item1}).ToList();
+                var tempList =
+                    parsedData.Where(pd => !string.IsNullOrWhiteSpace(pd.Item1))
+                        .Select(pd => new LargeCommercialBank(pd.Item2, useDate) {Name = pd.Item1.Trim()})
+                        .ToList();
 
                 if (tempList.Count > 0)
                     _fedReleaseLrgBnkNames = tempList.ToArray();
@@ -298,32 +267,37 @@ namespace NoFuture.Rand.Data
         }
 
         #endregion
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        internal static string GetTextDataSource(string name)
+        {
+            var embeddedStream = Assembly.GetExecutingAssembly().GetManifestResourceStream(DATA_SOURCE + "." + name);
+            if (embeddedStream == null)
+            {
+                return null;
+            }
+
+            var strRdr = new StreamReader(embeddedStream);
+            return strRdr.ReadToEnd();
+        }
         
         [EditorBrowsable(EditorBrowsableState.Never)]
-        internal static void GetXmlDataSource(string path, ref XmlDocument assignTo)
+        internal static void GetXmlDataSource(string name, ref XmlDocument assignTo)
         {
-            //load once as singleton
             if (assignTo != null) return;
 
-            if (String.IsNullOrWhiteSpace(BinDirectories.Root))
-                throw new NullReferenceException("A path must be assigned to NoFuture.BinDirectories.Root prior to calling this method.");
+            var embeddedStream = Assembly.GetExecutingAssembly().GetManifestResourceStream(DATA_SOURCE + "." + name);
+            if (embeddedStream == null)
+            {
+                assignTo = null;
+                return;
+            }
 
-            if (string.IsNullOrWhiteSpace(path) || !File.Exists(path))
-                throw new ItsDeadJim(string.Format("Cannot find an Xml file at '{0}'", path));
+            var strRdr = new StreamReader(embeddedStream);
+            var embeddedXml = strRdr.ReadToEnd();
 
-            var buffer = File.ReadAllText(path);
             assignTo = new XmlDocument();
-            assignTo.LoadXml(buffer);
-        }
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        internal static string GetDataDocPath(string somename)
-        {
-            if(string.IsNullOrWhiteSpace(somename))
-                throw new ArgumentNullException("somename");
-            var dataFolder = Path.Combine(BinDirectories.Root, DATA_SOURCE);
-
-            return Path.Combine(dataFolder, somename);
+            assignTo.LoadXml(embeddedXml);
         }
     }
 }

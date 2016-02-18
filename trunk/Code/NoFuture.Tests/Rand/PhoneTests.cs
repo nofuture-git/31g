@@ -6,11 +6,6 @@ namespace NoFuture.Tests.Rand
     [TestClass]
     public class PhoneTests
     {
-        [TestInitialize]
-        public void Init()
-        {
-            BinDirectories.Root = @"C:\Projects\31g\trunk\Code\NoFuture\bin";
-        }
         [TestMethod]
         public void AmericanPhoneTests()
         {

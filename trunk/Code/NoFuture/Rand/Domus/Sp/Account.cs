@@ -36,14 +36,11 @@ namespace NoFuture.Rand.Domus.Sp
 
             FinancialFirm bank = null;
 
-            if (!String.IsNullOrWhiteSpace(BinDirectories.Root))
+            var banks = Data.TreeData.CommercialBankData;
+            if (banks != null && banks.Length > 0)
             {
-                var banks = Data.TreeData.CommercialBankData;
-                if (banks != null && banks.Length > 0)
-                {
-                    var pickOne = Etx.IntNumber(0, banks.Length - 1);
-                    bank = banks[pickOne];
-                }
+                var pickOne = Etx.IntNumber(0, banks.Length - 1);
+                bank = banks[pickOne];
             }
 
             var rand = Etx.IntNumber(1, 10);

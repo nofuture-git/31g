@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NoFuture.Rand.Com;
 using NoFuture.Rand.Data.Types;
@@ -8,11 +9,7 @@ namespace NoFuture.Tests.Rand
     [TestClass]
     public class IdentityTests
     {
-        [TestInitialize]
-        public void Init()
-        {
-            NoFuture.BinDirectories.Root = @"C:\Projects\31g\trunk\Code\NoFuture\Rand";
-        }
+
         [TestMethod]
         public void TestSuperSectors()
         {
@@ -41,7 +38,6 @@ namespace NoFuture.Tests.Rand
 
             foreach (var t in testResults)
             {
-                //Assert.IsFalse(string.IsNullOrWhiteSpace(t.NodeName));
                 Assert.IsNotNull(t.XRefData);
 
                 foreach (var dc in t.XRefData)
@@ -57,6 +53,49 @@ namespace NoFuture.Tests.Rand
                     }
                 }
             }
+        }
+
+        [TestMethod]
+        public void TestXrefOnTypes()
+        {
+            var testInput = NoFuture.Rand.Data.TreeData.CommercialBankData;
+            Assert.AreNotEqual(0, testInput.Length);
+
+            var testTarget = testInput.FirstOrDefault(x => x.Name == "JPMORGAN CHASE BK NA");
+
+            Assert.IsNotNull(testTarget);
+
+            //verify the properties have no value prior to test
+            Assert.IsNull(testTarget.CIK);
+            Assert.IsNull(testTarget.TickerSymbols);
+
+            testTarget.GetXrefXmlData();
+
+            Assert.IsNotNull(testTarget.CIK);
+            Assert.AreNotEqual(0, testTarget.TickerSymbols);
+
+            System.Diagnostics.Debug.WriteLine(testTarget.CIK.ToString());
+            System.Diagnostics.Debug.WriteLine(testTarget.TickerSymbols[0].Symbol);
+            System.Diagnostics.Debug.WriteLine(testTarget.TickerSymbols[0].Exchange);
+            System.Diagnostics.Debug.WriteLine(testTarget.SIC.ToString());
+
+            //test nothing found - no problems and no change
+            testTarget = testInput.FirstOrDefault(x => x.Name == "STATE STREET B&TC");
+
+            Assert.IsNotNull(testTarget);
+            Assert.IsNull(testTarget.CIK);
+            Assert.IsNull(testTarget.TickerSymbols);
+
+            testTarget.GetXrefXmlData();
+
+            Assert.IsNotNull(testTarget.CIK);
+            Assert.IsNotNull(testTarget.TickerSymbols);
+
+            System.Diagnostics.Debug.WriteLine(testTarget.CIK.ToString());
+            System.Diagnostics.Debug.WriteLine(testTarget.TickerSymbols[0].Symbol);
+            System.Diagnostics.Debug.WriteLine(testTarget.TickerSymbols[0].Exchange);
+            System.Diagnostics.Debug.WriteLine(testTarget.SIC.ToString());
+
         }
     }
 }
