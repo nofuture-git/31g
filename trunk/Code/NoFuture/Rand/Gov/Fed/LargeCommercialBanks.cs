@@ -11,6 +11,8 @@ namespace NoFuture.Rand.Gov.Fed
         public const string RELEASE_URL = "http://www.federalreserve.gov/releases/lbr/current/lrg_bnk_lst.txt";
         private static List<Tuple<string, string>> _bankNames;
 
+        public static Uri GetUriLargeBankList { get { return new Uri(RELEASE_URL);} }
+
         public static Dictionary<string, TypeOfBank> TypeOfBankAbbrev3Enum = new Dictionary<string, TypeOfBank>
         {
             {"SMB", TypeOfBank.StateChartered},

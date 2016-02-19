@@ -21,6 +21,21 @@ namespace NoFuture.Rand.Gov.Fed
     [Serializable]
     public class RoutingTransitNumber : Identifier
     {
+        #region constants
+        public const string BOSTON = "01";
+        public const string NEY_YORK = "02";
+        public const string PHILADELPHIA = "03";
+        public const string CLEVELAND = "04";
+        public const string RICHMOND = "05";
+        public const string ATLANTA = "06";
+        public const string CHICAGO = "07";
+        public const string ST_LOUIS = "08";
+        public const string MINNEAPOLIS = "09";
+        public const string KANSAS_CITY = "10";
+        public const string DALLAS = "11";
+        public const string SAN_FRANCISCO = "12";
+        #endregion
+
         #region fields
         private int _checkDigit = -1;
         #endregion
@@ -30,7 +45,6 @@ namespace NoFuture.Rand.Gov.Fed
         {
             get { return "RTN"; }
         }
-
         public string FedDistrictFullName
         {
             get
@@ -132,6 +146,8 @@ namespace NoFuture.Rand.Gov.Fed
         }
 
         #endregion
+
+        #region methods
         /// <summary>
         /// [https://en.wikipedia.org/wiki/Federal_Reserve_Bank#Assets]
         /// </summary>
@@ -183,19 +199,6 @@ namespace NoFuture.Rand.Gov.Fed
             return f;
         }
 
-        public const string BOSTON = "01";
-        public const string NEY_YORK = "02";
-        public const string PHILADELPHIA = "03";
-        public const string CLEVELAND = "04";
-        public const string RICHMOND = "05";
-        public const string ATLANTA = "06";
-        public const string CHICAGO = "07";
-        public const string ST_LOUIS = "08";
-        public const string MINNEAPOLIS = "09";
-        public const string KANSAS_CITY = "10";
-        public const string DALLAS = "11";
-        public const string SAN_FRANCISCO = "12";
-
         public static int CalcChkDigit(string rtn)
         {
             if (string.IsNullOrWhiteSpace(rtn))
@@ -213,5 +216,6 @@ namespace NoFuture.Rand.Gov.Fed
                     3 * (digits[1] + digits[4] + digits[7]) +
                     9 * (digits[2] + digits[5])) % 10;
         }
+        #endregion
     }
 }

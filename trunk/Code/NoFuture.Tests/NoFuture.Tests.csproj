@@ -245,6 +245,7 @@
     <Compile Include="Util\TestVs.cs" />
     <Compile Include="Util\AsmTests.cs" />
     <Compile Include="Util\TestNfPath.cs" />
+    <Compile Include="Util\EquationsTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NoFuture\Domain\Engine\Domain.Engine.csproj">

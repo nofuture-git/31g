@@ -13,6 +13,7 @@ namespace NoFuture.Rand.Gov.Fed
     {
         public const string SEARCH_URL_BASE = "https://www.ffiec.gov/nicpubweb/nicweb/";
 
+        #region methods
         /// <summary>
         /// This will produce a URI which upon being requested from FFIEC will return html in 
         /// which the <see cref="rssd"/> will map to an official name.  This name will
@@ -20,7 +21,7 @@ namespace NoFuture.Rand.Gov.Fed
         /// </summary>
         /// <param name="rssd"></param>
         /// <returns></returns>
-        public static Uri UrlSearchByRssd(ResearchStatisticsSupervisionDiscount rssd)
+        public static Uri GetUriSearchByRssd(ResearchStatisticsSupervisionDiscount rssd)
         {
             return new Uri(SEARCH_URL_BASE + "InstitutionProfile.aspx?parID_Rssd=" + rssd + "&parDT_END=99991231");
         }
@@ -62,9 +63,7 @@ namespace NoFuture.Rand.Gov.Fed
                 if (htmlLines[i].Contains("noWrap "))
                     htmlLines[i] = htmlLines[i].Replace("noWrap ", " ");
             }
-            XmlDocument attemptedParse = new XmlDocument();
-            var possiableXmlString = string.Join(Environment.NewLine, htmlLines);
-            System.IO.File.WriteAllText(@"C:\Temp\TryParseFfiec.txt", possiableXmlString);
+            var attemptedParse = new XmlDocument();
             try
             {
                 attemptedParse.LoadXml(string.Join(Environment.NewLine, htmlLines));
@@ -109,5 +108,6 @@ namespace NoFuture.Rand.Gov.Fed
 
             return true;
         }
+        #endregion
     }
 }

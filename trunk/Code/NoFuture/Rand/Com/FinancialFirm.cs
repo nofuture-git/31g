@@ -37,6 +37,34 @@ namespace NoFuture.Rand.Com
     /// <summary>
     /// This is a type based on the data released by the Federal Reserve <see cref="LargeCommercialBanks.RELEASE_URL"/>
     /// </summary>
+    /// <example>
+    /// <![CDATA[
+    ///  #example getting bank data in PowerShell
+    /// 
+    ///  #pick a bank from the public report from the Fed
+    ///  $banks = [NoFuture.Rand.Data.TreeData]::CommercialBankData
+    ///  $myBank = $banks[3]
+    /// 
+    ///  #use the Rssd on the report to get the bank's 'Legal Name'
+    ///  $ffiecUri = [NoFuture.Rand.Gov.Fed.Ffiec]::GetUriSearchByRssd($myBank.Rssd)
+    ///  $ffiecHtml = Request-File -Url $ffiecUri.ToString()
+    ///  [NoFuture.Rand.Gov.Fed.Ffiec]::TryParseFfiecInstitutionProfileAspxHtml($ffiecHtml, [ref] $myBank)
+    /// 
+    ///  #now use the Legal Name to search the SEC
+    ///  $secUri = [NoFuture.Rand.Gov.Sec.Edgar]::GetUriCompanyNameSearch($myBank.Name)
+    ///  $secHtml = Request-File -Url $secUri.ToString()
+    /// 
+    ///  #now splice in the SEC data to the data from the Fed and lrg_bnk_rpt.txt
+    ///  [NoFuture.Rand.Gov.Sec.Edgar]::TryParseCorpData($secHtml, [ref] $myBank)
+    /// 
+    ///  #get more details from yahoo finance
+    ///  $yahooData = Request-File -Url ([NoFuture.Rand.Com.PublicCorporation]::GetUriTickerSymbolLookup($myBank.Name))
+    ///  [NoFuture.Rand.Com.PublicCorporation]::MergeTickerLookupFromJson($yahooData, [ref] $myBank)
+    /// 
+    ///  #get any data you defined in the local XRef.xml
+    ///  $randomCorp.GetXrefXmlData()
+    /// ]]>
+    /// </example>
     public class Bank : FinancialFirm
     {
         

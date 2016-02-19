@@ -52,7 +52,7 @@ namespace NoFuture.Rand.Gov.Sec
             }
         }
 
-        public static Uri UrlFullTextSearchBySic(FullTextSearch fts)
+        public static Uri GetUriFullTextSearch(FullTextSearch fts)
         {
             if (string.IsNullOrWhiteSpace(fts.ToString()))
                 return null;
@@ -64,7 +64,7 @@ namespace NoFuture.Rand.Gov.Sec
             return new Uri(urlFullText.ToString());
         }
 
-        public static Uri UrlCorpDataByExactName(string companyName)
+        public static Uri GetUriCompanyNameSearch(string companyName)
         {
             if (string.IsNullOrWhiteSpace(companyName))
                 return null;
@@ -75,7 +75,7 @@ namespace NoFuture.Rand.Gov.Sec
             return new Uri(urlbyName.ToString());
         }
 
-        public static Uri UrlCompanyList10KFilings(CentralIndexKey cik)
+        public static Uri GetUriCikSearch(CentralIndexKey cik)
         {
             var urlByCik = new StringBuilder();
             
@@ -86,7 +86,7 @@ namespace NoFuture.Rand.Gov.Sec
 
         }
 
-        public static PublicCorporation[] ParseCompanyFullTextSearch(string rssContent)
+        public static PublicCorporation[] ParseFullTextSearch(string rssContent)
         {
             if (string.IsNullOrWhiteSpace(rssContent))
                 return null;
@@ -179,7 +179,7 @@ namespace NoFuture.Rand.Gov.Sec
             if(string.IsNullOrWhiteSpace(rssContent))
                 return null;
 
-            var companies = ParseCompanyFullTextSearch(rssContent);
+            var companies = ParseFullTextSearch(rssContent);
 
             if (companies == null || companies.Length <= 0)
                 return null;
@@ -189,7 +189,7 @@ namespace NoFuture.Rand.Gov.Sec
 
         }
 
-        public static bool TryGetCorpData(string xmlContent, ref PublicCorporation publicCorporation)
+        public static bool TryParseCorpData(string xmlContent, ref PublicCorporation publicCorporation)
         {
             const string ATOM = "atom";
             const string COMPANY_INFO = ATOM + ":company-info";

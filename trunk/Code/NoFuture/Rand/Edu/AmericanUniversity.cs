@@ -12,13 +12,16 @@ namespace NoFuture.Rand.Edu
 
     public class AmericanUniversity : IUniversity
     {
+        #region properties
         public Gov.UsState State { get; set; }
         public string Name { get; set; }
         public string CampusName { get; set; }
         public float? PercentOfStateStudents { get; set; }
         public float? CrimeRate { get; set; }
         public Uri Website { get; set; }
+        #endregion
 
+        #region methods
         public static bool TryParseXml(System.Xml.XmlElement node, out AmericanUniversity univ)
         {
             try
@@ -61,6 +64,7 @@ namespace NoFuture.Rand.Edu
                 return false;
             }
         }
+        #endregion
     }
 
     public class PublicAmericanUniversity : AmericanUniversity { }

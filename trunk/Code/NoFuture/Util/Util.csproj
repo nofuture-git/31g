@@ -96,6 +96,7 @@
     <Compile Include="Gsm.cs" />
     <Compile Include="Lexicon.cs" />
     <Compile Include="Math\Combination.cs" />
+    <Compile Include="Math\ExponentialEquation.cs" />
     <Compile Include="Math\Extensions.cs" />
     <Compile Include="Math\Econ.cs" />
     <Compile Include="Math\LinearEquation.cs" />

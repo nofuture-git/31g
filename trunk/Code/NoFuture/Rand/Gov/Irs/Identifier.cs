@@ -14,10 +14,12 @@ namespace NoFuture.Rand.Gov.Irs
         public override string Abbrev { get { return "ITIN"; } }
     }
 
+    /// <summary>
+    /// http://www.irs.gov/Businesses/Small-Businesses-&-Self-Employed/How-EINs-are-Assigned-and-Valid-EIN-Prefixes
+    /// </summary>
     [Serializable]
     public class EmployerIdentificationNumber : TaxpayerIdentificationNumber
     {
-        //http://www.irs.gov/Businesses/Small-Businesses-&-Self-Employed/How-EINs-are-Assigned-and-Valid-EIN-Prefixes
         public override string Abbrev { get { return "EIN"; } }
     }
 

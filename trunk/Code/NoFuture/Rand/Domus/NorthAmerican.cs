@@ -13,7 +13,6 @@ namespace NoFuture.Rand.Domus
     public class NorthAmerican : Person
     {
         #region fields
-
         private readonly List<Tuple<Address, CityArea>> _formerAddresses = new List<Tuple<Address, CityArea>>();
         private readonly List<IAsset> _assets = new List<IAsset>();
         private readonly List<ILoan> _debts = new List<ILoan>();

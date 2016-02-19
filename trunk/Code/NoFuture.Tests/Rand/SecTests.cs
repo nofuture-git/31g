@@ -19,7 +19,7 @@ namespace NoFuture.Tests.Rand
             var xmlContent = System.IO.File.ReadAllText(SEC_BY_CIK_XML_PATH);
 
             var testResultOut = new PublicCorporation();
-            var testResult = NoFuture.Rand.Gov.Sec.Edgar.TryGetCorpData(xmlContent, ref testResultOut);
+            var testResult = NoFuture.Rand.Gov.Sec.Edgar.TryParseCorpData(xmlContent, ref testResultOut);
 
             Assert.IsTrue(testResult);
             Assert.IsNotNull(testResultOut);
@@ -58,7 +58,7 @@ namespace NoFuture.Tests.Rand
         public void TestParseCompanyFullTextSearch()
         {
             var xmlContent = System.IO.File.ReadAllText(SEC_BY_FULLTEXT_XML_PATH);
-            var testResult = NoFuture.Rand.Gov.Sec.Edgar.ParseCompanyFullTextSearch(xmlContent);
+            var testResult = NoFuture.Rand.Gov.Sec.Edgar.ParseFullTextSearch(xmlContent);
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0, testResult.Length);
 
@@ -111,12 +111,12 @@ namespace NoFuture.Tests.Rand
         }
 
         [TestMethod]
-        public void TestUrlFullTextSearchBySic()
+        public void TestGetUriFullTextSearch()
         {
             var testInput = new NoFuture.Rand.Gov.Sec.Edgar.FullTextSearch();
             testInput.CompanyName = "CITIBANK, N.A.";
 
-            var testResult = NoFuture.Rand.Gov.Sec.Edgar.UrlFullTextSearchBySic(testInput);
+            var testResult = NoFuture.Rand.Gov.Sec.Edgar.GetUriFullTextSearch(testInput);
 
             System.Diagnostics.Debug.WriteLine(testResult.ToString());
         }

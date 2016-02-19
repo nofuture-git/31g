@@ -123,7 +123,7 @@ namespace NoFuture.Util
             var subT = mimeType.Contains("/") ? mimeType.Split('/')[1] : string.Empty;
 
             //let these pass as text 
-            return !(new[] {"xml", "json", "x-www-form-urlencoded"}).Any(
+            return !(new[] {"xml", "json", "x-www-form-urlencoded", "atom+xml"}).Any(
                 x => string.Equals(x, subT, StringComparison.OrdinalIgnoreCase));
         }
 

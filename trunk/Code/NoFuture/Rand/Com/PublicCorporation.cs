@@ -9,15 +9,49 @@ using NoFuture.Rand.Data.Types;
 
 namespace NoFuture.Rand.Com
 {
+    /// <summary>
+    /// Represents a publicly traded corporation
+    /// </summary>
+    /// <example>
+    /// <![CDATA[
+    ///  #example in PowerShell
+    /// 
+    ///  #get a sic code 
+    ///  $sic = [NoFuture.Rand.Data.Types.StandardIndustryClassification]::RandomSic();
+    /// 
+    ///  #get corps by sic code
+    ///  $searchCrit = New-Object NoFuture.Rand.Gov.Sec.Edgar+FullTextSearch
+    ///  $searchCrit.SicCode = $sic.Value
+    ///  $rssContent = Request-File -Url ([NoFuture.Rand.Gov.Sec.Edgar]::GetUriFullTextSearch($searchCrit))
+    /// 
+    ///  #pick one
+    ///  $randomCorp = $publicCorps[3]
+    /// 
+    ///  #get details from SEC
+    ///  $xmlContent = Request-File -Url ([NoFuture.Rand.Gov.Sec.Edgar]::GetUriCikSearch($randomCorp.CIK))
+    ///  [NoFuture.Rand.Gov.Sec.Edgar]::TryParseCorpData($xmlContent, [ref] $randomCorp)
+    /// 
+    ///  #get more details from yahoo finance
+    ///  $yahooData = Request-File -Url ([NoFuture.Rand.Com.PublicCorporation]::GetUriTickerSymbolLookup($randomCorp.Name))
+    ///  [NoFuture.Rand.Com.PublicCorporation]::MergeTickerLookupFromJson($yahooData, [ref] $randomCorp)
+    /// 
+    ///  #get any data you defined in the local XRef.xml
+    ///  $randomCorp.GetXrefXmlData()
+    /// ]]>
+    /// </example>
     [Serializable]
     public class PublicCorporation : Firm
     {
+        #region constants
+        internal const string TickerSearchStringEnclosure = "YAHOO.Finance.SymbolSuggest.ssCallback";
+
+        #endregion
+
         #region fields
         private readonly List<Gov.Sec.Form10K> _annualReports = new List<Gov.Sec.Form10K>();
         #endregion
 
-        #region Properties
-
+        #region properties
         public Gov.Irs.EmployerIdentificationNumber EIN { get; set; }
 
         public Gov.Sec.CentralIndexKey CIK { get; set; }
@@ -32,21 +66,16 @@ namespace NoFuture.Rand.Com
         public Uri[] WebDomains { get; set; }
 
         public List<Ticker> TickerSymbols { get; set; }
-
         #endregion
 
-        #region Internal helpers
-        internal const string TickerSearchStringEnclosure = "YAHOO.Finance.SymbolSuggest.ssCallback";
-
-        #endregion
-
+        #region methods
         /// <summary>
         /// Constructs a URI which may be used to lookup ticker symbols of a public company
         /// based on the the name of the company.
         /// </summary>
         /// <param name="companyName"></param>
         /// <returns></returns>
-        public static Uri CtorTickerSymbolLookup(string companyName)
+        public static Uri GetUriTickerSymbolLookup(string companyName)
         {
             return
                 new Uri("http://d.yimg.com/autoc.finance.yahoo.com/autoc?query=" + Uri.EscapeUriString(companyName) +
@@ -54,7 +83,7 @@ namespace NoFuture.Rand.Com
         }
 
         /// <summary>
-        /// Merges the json data returned from <see cref="CtorTickerSymbolLookup"/> into an 
+        /// Merges the json data returned from <see cref="GetUriTickerSymbolLookup"/> into an 
         /// instance of <see cref="PublicCorporation"/>
         /// </summary>
         /// <param name="webResponseBody"></param>
@@ -122,6 +151,7 @@ namespace NoFuture.Rand.Com
                 XRefGroup.SetTypeXrefValue(elem, this);
             }
         }
+        #endregion
     }
 
 }

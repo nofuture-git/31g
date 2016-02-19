@@ -14,6 +14,7 @@ namespace NoFuture.Rand.Edu
     [Serializable]
     public class AmericanHighSchool : IHighSchool
     {
+        #region properties
         public Gov.UsState State { get; set; }
         public string PostalCode { get; set; }
         public string Name { get; set; }
@@ -21,7 +22,9 @@ namespace NoFuture.Rand.Edu
         public double TotalTeachers { get; set; }
         public int TotalStudents { get; set; }
         public AmericanRacePercents RacePercents { get; set; }
+        #endregion
 
+        #region methods
         public override string ToString()
         {
             return Name;
@@ -164,6 +167,7 @@ namespace NoFuture.Rand.Edu
                 return false;
             }
         }
+        #endregion
     }
 
 

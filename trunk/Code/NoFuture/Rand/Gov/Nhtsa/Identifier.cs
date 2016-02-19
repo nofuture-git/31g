@@ -297,47 +297,47 @@ namespace NoFuture.Rand.Gov.Nhtsa
         #endregion
 
         #region nhtsa public web api
-        public string GetVpicDecodeVinUrl()
+        public Uri GetUriVpicDecodeVin()
         {
-            return PublicWebApiRootUri + "DecodeVinValues/" + Wmi + Vds + Vis + "?format=json&modelyear=" + GetModelYearYyyy();
+            return new Uri(PublicWebApiRootUri + "DecodeVinValues/" + Wmi + Vds + Vis + "?format=json&modelyear=" + GetModelYearYyyy());
         }
 
-        public string GetVpicDecodeWmiUrl()
+        public Uri GetUriVpicDecodeWmi()
         {
-            return PublicWebApiRootUri + "DecodeWMI/" + Wmi + "?format=json";
+            return new Uri(PublicWebApiRootUri + "DecodeWMI/" + Wmi + "?format=json");
         }
 
-        public static string GetVpicAllMakesUrl()
+        public static Uri GetUriVpicAllMakes()
         {
-            return PublicWebApiRootUri + "getallmakes?format=json";
+            return new Uri(PublicWebApiRootUri + "getallmakes?format=json");
         }
 
-        public static string GetVpicAllManufacturersUrl()
+        public static Uri GetUriVpicAllManufacturers()
         {
-            return PublicWebApiRootUri + "getallmanufacturers?format=json";
+            return new Uri(PublicWebApiRootUri + "getallmanufacturers?format=json");
         }
 
-        public static string GetVpicMakes2ManufacturerUrl(string manufacturerName)
+        public static Uri GetUriVpicMakes2Manufacturer(string manufacturerName)
         {
-            return PublicWebApiRootUri + "getmakesformanufacturer/" + manufacturerName + "?format=json";
+            return new Uri(PublicWebApiRootUri + "getmakesformanufacturer/" + manufacturerName + "?format=json");
         }
 
-        public static string GetVpicEquipPlantCodes(int? year)
+        public static Uri GetUriVpicEquipPlantCodes(int? year)
         {
-            var yyyy = year == null ? DateTime.Now.Year : year.Value;
-            return PublicWebApiRootUri + "GetEquipmentPlantCodes/" + yyyy + "?format=json";
+            var yyyy = year ?? DateTime.Now.Year;
+            return new Uri(PublicWebApiRootUri + "GetEquipmentPlantCodes/" + yyyy + "?format=json");
         }
 
-        public static string GetVpicModels2MakesUrl(string manufacturerName)
+        public static Uri GetVpicModels2MakesUrl(string manufacturerName)
         {
-            return PublicWebApiRootUri + "getmodelsformake/" + manufacturerName + "?format=json";
+            return new Uri(PublicWebApiRootUri + "getmodelsformake/" + manufacturerName + "?format=json");
         }
 
-        public static string GetVpicModels2Makes2YearUrl(string manufacturerName, int? year)
+        public static Uri GetVpicModels2Makes2YearUrl(string manufacturerName, int? year)
         {
-            var yyyy = year == null ? DateTime.Now.Year : year.Value;
-            return PublicWebApiRootUri + "GetModelsForMakeYear/make/" + manufacturerName + "/modelyear/" + yyyy +
-                   "?format=json";
+            var yyyy = year ?? DateTime.Now.Year;
+            return new Uri(PublicWebApiRootUri + "GetModelsForMakeYear/make/" + manufacturerName + "/modelyear/" + yyyy +
+                   "?format=json");
         }
         #endregion
     }

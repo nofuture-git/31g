@@ -29,6 +29,16 @@ namespace NoFuture.Rand.Domus
         /// Has no stat validity - just a guess
         /// </summary>
         public const double PercentUnmarriedWholeLife = 0.054;
+
+        /// <summary>
+        /// [http://www.pewsocialtrends.org/2014/11/14/four-in-ten-couples-are-saying-i-do-again/st_2014-11-14_remarriage-02/]
+        /// </summary>
+        public const double PercentOfMenMarriedOnceNeverAgain = 0.29D;
+
+        /// <summary>
+        /// [http://www.pewsocialtrends.org/2014/11/14/four-in-ten-couples-are-saying-i-do-again/st_2014-11-14_remarriage-02/]
+        /// </summary>
+        public const double PercentOfWomenMarriedOnceNeverAgain = 0.15D;
         #endregion
 
         /// <summary>
@@ -101,6 +111,15 @@ namespace NoFuture.Rand.Domus
             };
 
             /// <summary>
+            /// Has no stat validity - just a guess
+            /// </summary>
+            public static ExponentialEquation Age2ProbWidowed = new ExponentialEquation
+            {
+                ConstantValue = Math.Pow(10, -13),
+                Power = 6.547
+            };
+
+            /// <summary>
             /// https://en.wikipedia.org/wiki/Childfree#Statistics_and_research
             /// </summary>
             public static NaturalLogEquation FemaleYob2ProbChildless = new NaturalLogEquation
@@ -146,11 +165,23 @@ namespace NoFuture.Rand.Domus
         /// <returns></returns>
         public static string GetAmericanFirstName(DateTime? dateOfBirth, Gender gender)
         {
-            var dt = dateOfBirth ?? new DateTime(2000, 1, 2);
+            var dt = dateOfBirth ?? DateTime.Today.AddYears(-18);
             var xmlData = TreeData.AmericanFirstNamesData;
-            XmlElement decadeNode = null;
-            foreach (var decade in xmlData.SelectNodes("//first-name").Cast<XmlElement>())
+            XmlElement decadeElem = null;
+            if (xmlData == null)
             {
+                return gender == Gender.Male ? "John" : "Jane";
+            }
+            var firstNameNodes = xmlData.SelectNodes("//first-name");
+            if (firstNameNodes == null)
+            {
+                return gender == Gender.Male ? "John" : "Jane";
+            }
+            foreach (var decadeNode in firstNameNodes)
+            {
+                var decade = decadeNode as XmlElement;
+                if (decade == null)
+                    continue;
                 var start = DateTime.Parse(decade.Attributes["decade-start"].Value);
                 var end = DateTime.Parse(decade.Attributes["decade-end"].Value);
 
@@ -158,13 +189,13 @@ namespace NoFuture.Rand.Domus
                 var cEnd = DateTime.Compare(dt, end);//-le
                 if (cStart < 0 || cEnd > 0) continue;
 
-                decadeNode = decade;
+                decadeElem = decade;
                 break;
             }
-            if (decadeNode == null)
-                return "Jane";
+            if (decadeElem == null)
+                return gender == Gender.Male ? "John" : "Jane";
             var genderIdx = gender != Gender.Female ? 0 : 1;
-            var mfFnames = decadeNode.ChildNodes[genderIdx];
+            var mfFnames = decadeElem.ChildNodes[genderIdx];
 
             var p = Etx.MyRand.Next(0, mfFnames.ChildNodes.Count);
             return mfFnames.ChildNodes[p].InnerText;
@@ -178,6 +209,8 @@ namespace NoFuture.Rand.Domus
         {
             var xmlData = TreeData.AmericanLastNamesData;
             var lnameNodes = xmlData.SelectSingleNode("//last-name");
+            if (lnameNodes == null)
+                return "Doe";
             var p = Etx.MyRand.Next(0, lnameNodes.ChildNodes.Count);
             return lnameNodes.ChildNodes[p].InnerText;
         }
@@ -251,7 +284,7 @@ namespace NoFuture.Rand.Domus
                 return NorthAmericanRace.White;
 
             var americanRaceProbabilityRanges = new List<AmericanRaceProbabilityRange>();
-            double prevFrom = 0.000001D;
+            var prevFrom = 0.000001D;
             var raceHashByZip = new Dictionary<NorthAmericanRace, double>
             {
                 {NorthAmericanRace.AmericanIndian, amRace.AmericanIndian},
@@ -297,35 +330,47 @@ namespace NoFuture.Rand.Domus
         /// <returns></returns>
         public static MaritialStatus GetMaritialStatus(DateTime dob, Gender gender)
         {
-            if (Etx.IntNumber(1, 1000) <= PercentUnmarriedWholeLife * 1000)
+            if (Etx.IntNumber(1, 1000) <= (int)Math.Round(PercentUnmarriedWholeLife * 1000))
                 return MaritialStatus.Single;
 
             var avgAgeMarriage = gender == Gender.Female
                 ? Equations.FemaleDob2MarriageAge.SolveForY(dob.ToDouble())
                 : Equations.MaleDob2MarriageAge.SolveForY(dob.ToDouble());
+
             var cdt = DateTime.Now;
             var currentAge = Person.CalcAge(dob, cdt);
 
             if (currentAge < avgAgeMarriage)
                 return MaritialStatus.Single;
 
-            if (currentAge > avgAgeMarriage + AvgLengthOfMarriage)
-            {
-                //spin for divorce
-                var df = Etx.IntNumber(1, 1000) <= PercentDivorced * 1000;
-
-                if (df && currentAge < avgAgeMarriage + AvgLengthOfMarriage + YearsBeforeNextMarriage)
-                    return Etx.IntNumber(1, 1000) <= 64 ? MaritialStatus.Separated : MaritialStatus.Divorced;
-
-                if (df)
-                    return MaritialStatus.Remarried;
-            }
-
-            //in the mix with very low probability
-            if (Etx.IntNumber(1, 1000) <= 10)
+            //chance for being widowed goes up exp for older 
+            if (Etx.IntNumber(1, 1000) <= Math.Round(Equations.Age2ProbWidowed.SolveForY(currentAge) * 1000))
                 return MaritialStatus.Widowed;
 
-            return MaritialStatus.Married;
+            //young first marriage
+            if (!(currentAge > avgAgeMarriage + AvgLengthOfMarriage)) return MaritialStatus.Married;
+
+            //spin for divorce
+            var df = Etx.IntNumber(1, 1000) <= PercentDivorced * 1000;
+
+            //have 'separated' (whatever it means) as low probablity
+            if (df && currentAge < avgAgeMarriage + AvgLengthOfMarriage + YearsBeforeNextMarriage)
+                return Etx.IntNumber(1, 1000) <= 64 ? MaritialStatus.Separated : MaritialStatus.Divorced;
+
+            //have prob of never remarry
+            if (df && gender == Gender.Male)
+            {
+                return Etx.IntNumber(1, 100) > (int) Math.Round(PercentOfMenMarriedOnceNeverAgain)
+                    ? MaritialStatus.Remarried
+                    : MaritialStatus.Divorced;
+            }
+            if (df && gender == Gender.Female)
+            {
+                return Etx.IntNumber(1, 100) > (int)Math.Round(PercentOfWomenMarriedOnceNeverAgain)
+                    ? MaritialStatus.Remarried
+                    : MaritialStatus.Divorced;
+            }
+            return df ? MaritialStatus.Remarried : MaritialStatus.Married;
         }
 
         /// <summary>

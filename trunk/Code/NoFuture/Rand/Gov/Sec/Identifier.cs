@@ -12,10 +12,15 @@ namespace NoFuture.Rand.Gov.Sec
     [Serializable]
     public abstract class SecForm : Identifier
     {
+        #region constants
         public const string NotificationOfInabilityToTimelyFile = "NT";
+        #endregion
 
+        #region fields
         protected string secFormNumber;
+        #endregion
 
+        #region properties
         public override string Abbrev { get { return secFormNumber; }}
         public override string Value { get; set; }
         public abstract FederalStatute Statute { get; }
@@ -44,11 +49,14 @@ namespace NoFuture.Rand.Gov.Sec
                 return string.Join("-", new[] {p1, p2, p3});
             }
         }
+        #endregion
 
+        #region methods
         protected SecForm(string secFormNumber)
         {
             this.secFormNumber = secFormNumber;
         }
+        #endregion
     }
 
     [Serializable]

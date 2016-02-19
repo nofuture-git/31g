@@ -31,6 +31,9 @@ namespace NoFuture.Rand.Domus
         public Personality Personality { get { return _personality; } }
         public virtual IEducation Education { get; set; }
         public List<Tuple<KindsOfPersonalNames, string>> OtherNames { get { return _otherNames; } }
+        #endregion
+
+        #region methods
         public int GetAge(DateTime? atTime)
         {
             var dt = DateTime.Now;
@@ -47,10 +50,6 @@ namespace NoFuture.Rand.Domus
 
             return CalcAge(BirthDate.Value, dt);
         }
-
-        #endregion
-
-        #region static utility methods
 
         /// <summary>
         /// Returns a new <see cref="NorthAmerican"/> with all values selected at random.
