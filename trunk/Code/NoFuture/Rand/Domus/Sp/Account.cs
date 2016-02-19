@@ -20,8 +20,6 @@ namespace NoFuture.Rand.Domus.Sp
     [Serializable]
     public abstract class BankAccount : Asset
     {
-        public Gov.Fed.RoutingTransitNumber RoutingNumber { get; set; }
-
         public AccountId AccountNumber { get; set; }
 
         public IBalance Balance { get; set; }
@@ -31,7 +29,6 @@ namespace NoFuture.Rand.Domus.Sp
         public static BankAccount GetRandomBankAccount()
         {
             var format = Etx.GetRandomRChars(true);
-            var routingNumber = Gov.Fed.RoutingTransitNumber.RandomRoutingNumber();
             var accountId = new AccountId(format);
 
             FinancialFirm bank = null;
@@ -41,12 +38,14 @@ namespace NoFuture.Rand.Domus.Sp
             {
                 var pickOne = Etx.IntNumber(0, banks.Length - 1);
                 bank = banks[pickOne];
+                if (bank.RoutingNumber == null)
+                    bank.RoutingNumber = Gov.Fed.RoutingTransitNumber.RandomRoutingNumber();;
             }
 
             var rand = Etx.IntNumber(1, 10);
             return rand >= 8
-                ? (BankAccount) new Checking {AccountNumber = accountId, RoutingNumber = routingNumber, Bank = bank}
-                : (BankAccount)new Savings { AccountNumber = accountId, RoutingNumber = routingNumber, Bank = bank };
+                ? (BankAccount) new Checking {AccountNumber = accountId, Bank = bank}
+                : (BankAccount)new Savings { AccountNumber = accountId,  Bank = bank };
         }
     }
 

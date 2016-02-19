@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Xml;
+using System.Web;
 using NoFuture.Rand.Com;
 using NoFuture.Rand.Data.Types;
 
@@ -33,16 +34,20 @@ namespace NoFuture.Rand.Gov.Sec
                     return string.Empty;
                 var searchList = new List<string>();
                 if(!string.IsNullOrWhiteSpace(SicCode))
-                    searchList.Add(string.Format("ASSIGNED-SIC%3D{0}", SicCode));
-                searchList.Add("FORM-TYPE%3D10-K");
+                    searchList.Add(HttpUtility.UrlEncode(string.Format("ASSIGNED-SIC={0}", SicCode.Trim())));
+                searchList.Add(HttpUtility.UrlEncode("FORM-TYPE=10-K"));
                 if (!string.IsNullOrWhiteSpace(CompanyName))
-                    searchList.Add(string.Format("COMPANY-NAME%3D{0}", CompanyName.Contains(" ") ? "%28" + CompanyName + "%29" : CompanyName));
+                {
+                    searchList.Add(CompanyName.ToCharArray().All(char.IsLetterOrDigit)
+                        ? HttpUtility.UrlEncode(string.Format("COMPANY-NAME={0}", CompanyName.Trim()))
+                        : string.Format("COMPANY-NAME=%22{0}%22", HttpUtility.UrlEncode(CompanyName.Trim(),Encoding.GetEncoding("ISO-8859-1"))));
+                }
                 if(!string.IsNullOrWhiteSpace(ZipCode))
-                    searchList.Add(string.Format("ZIP%3D{0}", ZipCode));
+                    searchList.Add(HttpUtility.UrlEncode(string.Format("ZIP={0}", ZipCode.Trim())));
                 if(!string.IsNullOrWhiteSpace(StateOfIncorporation))
-                    searchList.Add(string.Format("STATE-OF-INCORPORATION%3D{0}", StateOfIncorporation));
+                    searchList.Add(HttpUtility.UrlEncode(string.Format("STATE-OF-INCORPORATION={0}", StateOfIncorporation.Trim())));
                 if(!string.IsNullOrWhiteSpace(BizAddrState))
-                    searchList.Add(string.Format("STATE%3D{0}", BizAddrState));
+                    searchList.Add(HttpUtility.UrlEncode(string.Format("STATE={0}", BizAddrState.Trim())));
                 return string.Join("+AND+", searchList);
             }
         }
@@ -59,23 +64,18 @@ namespace NoFuture.Rand.Gov.Sec
             return new Uri(urlFullText.ToString());
         }
 
-        public static string UrlListBySic(string sicCode,int startIdx)
+        public static Uri UrlCorpDataByExactName(string companyName)
         {
-            if (string.IsNullOrWhiteSpace(sicCode))
+            if (string.IsNullOrWhiteSpace(companyName))
                 return null;
-            if (startIdx < 0)
-                startIdx = 1;
-            
-            var urlbySic = new StringBuilder();
-            urlbySic.Append(EDGAR_ROOT);
-            urlbySic.AppendFormat(
-                                  "?action=getcompany&SIC={0}&owner=exclude&match=&start={1}&count=100&hidefilings=0&output=atom",
-                sicCode,
-                startIdx);
-            return urlbySic.ToString();
+            companyName = companyName.Trim();
+            var urlbyName = new StringBuilder();
+            urlbyName.Append(EDGAR_ROOT);
+            urlbyName.AppendFormat("?company={0}&owner=exclude&action=getcompany&output=atom", HttpUtility.UrlEncode(companyName));
+            return new Uri(urlbyName.ToString());
         }
 
-        public static Uri UrlCompanyList10KFilings(string cik)
+        public static Uri UrlCompanyList10KFilings(CentralIndexKey cik)
         {
             var urlByCik = new StringBuilder();
             

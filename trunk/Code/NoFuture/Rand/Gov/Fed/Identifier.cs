@@ -19,21 +19,27 @@ namespace NoFuture.Rand.Gov.Fed
     /// see [http://en.wikipedia.org/wiki/Routing_transit_number]
     /// </summary>
     [Serializable]
-    public class RoutingTransitNumber : Identifier {
+    public class RoutingTransitNumber : Identifier
+    {
+        #region fields
+        private int _checkDigit = -1;
+        #endregion
+
+        #region properties
         public override string Abbrev
         {
             get { return "RTN"; }
         }
 
-        public string FedDistrict
+        public string FedDistrictFullName
         {
             get
             {
-                if (string.IsNullOrWhiteSpace(Value))
+                if (string.IsNullOrWhiteSpace(FedDistrict))
                     return string.Empty;
-                if (Value.Length < 2)
+                if (FedDistrict.Length < 2)
                     return string.Empty;
-                switch (Value.Substring(0, 2))
+                switch (FedDistrict.Substring(0, 2))
                 {
                     case ATLANTA:
                         return "Federal Reserve Bank of Atlanta";
@@ -62,44 +68,119 @@ namespace NoFuture.Rand.Gov.Fed
                 }
             }
         }
+        public string FedDistrict { get; set; }
+        public string CheckProcCenter { get; set; }
+        public string AbaInstitutionId { get; set; }
+        public int CheckDigit { get { return _checkDigit; } set { _checkDigit = value; } }
+        public override string Value
+        {
+            get
+            {
+                var rt = new StringBuilder();
+                rt.Append(FedDistrict);
+                rt.Append(CheckProcCenter);
+                rt.Append(AbaInstitutionId);
+                if (CheckDigit < 0)
+                {
+                    CheckDigit = CalcChkDigit(rt.ToString());
+                }
+                rt.Append(CheckDigit);
+                return rt.ToString();
+            }
+            set
+            {
+                var rt = value;
+                if (string.IsNullOrWhiteSpace(rt))
+                {
+                    FedDistrict = null;
+                    CheckProcCenter = null;
+                    AbaInstitutionId = null;
+                    _checkDigit = -1;
+                    return;
+                }
+                rt = rt.Trim();
+                var rtChars = rt.ToCharArray();
+                var rtStrBldr = new StringBuilder();
+                for (var i = 0; i < rtChars.Length; i++)
+                {
+                    rtStrBldr.Append(rtChars[i]);
+                    if (i == 1)
+                    {
+                        FedDistrict = rtStrBldr.ToString();
+                        rtStrBldr.Clear();
+                    }
+                    if (i == 3)
+                    {
+                        CheckProcCenter = rtStrBldr.ToString();
+                        rtStrBldr.Clear();
+                    }
+                    if (i == 7)
+                    {
+                        AbaInstitutionId = rtStrBldr.ToString();
+                        rtStrBldr.Clear();
+                    }
+                    if (i == 8)
+                    {
+                        int cdOut;
+                        _checkDigit = int.TryParse(rtStrBldr.ToString(), out cdOut)
+                            ? cdOut
+                            : CalcChkDigit(string.Join("", FedDistrict, CheckProcCenter, AbaInstitutionId));
+                    }
+                }
 
+            }
+        }
+
+        #endregion
         /// <summary>
         /// [https://en.wikipedia.org/wiki/Federal_Reserve_Bank#Assets]
         /// </summary>
         /// <returns></returns>
         public static RoutingTransitNumber RandomRoutingNumber()
         {
-            var rt = new StringBuilder();
-            var xx = NEY_YORK;
-            var roll = NoFuture.Rand.Etx.IntNumber(1, 100);
-            if (roll >= 57 && roll < 69)
-                xx = SAN_FRANCISCO;
-            if (roll >= 69 && roll < 75)
-                xx = RICHMOND;
-            if (roll >= 75 && roll < 80)
-                xx = ATLANTA;
-            if (roll >= 80 && roll < 85)
-                xx = CHICAGO;
-            if (roll >= 85 && roll < 88)
-                xx = DALLAS;
-            if (roll >= 88 && roll < 91)
-                xx = CLEVELAND;
-            if (roll >= 91 && roll < 94)
-                xx = PHILADELPHIA;
-            if (roll >= 94 && roll < 96)
-                xx = BOSTON;
-            if (roll == 96 || roll == 97)
-                xx = KANSAS_CITY;
-            if (roll == 98 || roll == 99)
-                xx = ST_LOUIS;
-            if (roll == 100)
-                xx = MINNEAPOLIS;
-            rt.Append(xx);
-            for (var i = 0; i < 7; i++)
-                rt.Append(Etx.IntNumber(0, 9));
+            var f = new RoutingTransitNumber {FedDistrict = NEY_YORK};
 
-            rt.Append(CalcChkDigit(rt.ToString()));
-            return new RoutingTransitNumber {Value = rt.ToString()};
+            var roll = Etx.IntNumber(1, 100);
+            if (roll >= 57 && roll < 69)
+                f.FedDistrict = SAN_FRANCISCO;
+            if (roll >= 69 && roll < 75)
+                f.FedDistrict = RICHMOND;
+            if (roll >= 75 && roll < 80)
+                f.FedDistrict = ATLANTA;
+            if (roll >= 80 && roll < 85)
+                f.FedDistrict = CHICAGO;
+            if (roll >= 85 && roll < 88)
+                f.FedDistrict = DALLAS;
+            if (roll >= 88 && roll < 91)
+                f.FedDistrict = CLEVELAND;
+            if (roll >= 91 && roll < 94)
+                f.FedDistrict = PHILADELPHIA;
+            if (roll >= 94 && roll < 96)
+                f.FedDistrict = BOSTON;
+            if (roll == 96 || roll == 97)
+                f.FedDistrict = KANSAS_CITY;
+            if (roll == 98 || roll == 99)
+                f.FedDistrict = ST_LOUIS;
+            if (roll == 100)
+                f.FedDistrict = MINNEAPOLIS;
+
+            var rt = new StringBuilder();
+            rt.Append(Etx.IntNumber(0, 9));
+            rt.Append(Etx.IntNumber(0, 9));
+            f.CheckProcCenter = rt.ToString();
+            rt.Clear();
+
+            for (var i = 0; i < 4; i++)
+                rt.Append(Etx.IntNumber(0, 9));
+            f.AbaInstitutionId = rt.ToString();
+
+            rt.Clear();
+            rt.Append(f.FedDistrict);
+            rt.Append(f.CheckProcCenter);
+            rt.Append(f.AbaInstitutionId);
+
+            f.CheckDigit = CalcChkDigit(rt.ToString());
+            return f;
         }
 
         public const string BOSTON = "01";
@@ -120,12 +201,12 @@ namespace NoFuture.Rand.Gov.Fed
             if (string.IsNullOrWhiteSpace(rtn))
                 return -1;
             var digits = rtn.ToCharArray();
-            if (digits.Length != 9 && digits.Any(c => !char.IsNumber(c)))
+            if (digits.Length != 8 && digits.Any(c => !char.IsNumber(c)))
                 return -1;
-            var chksum = new int[9];
-            for (var i = 0; i < 9; i++)
+            var chksum = new int[8];
+            for (var i = 0; i < 8; i++)
             {
-                chksum[i] = int.Parse(new string(new[] {digits[i]}));
+                chksum[i] = int.Parse(digits[i].ToString());
             }
 
             return (7 * (digits[0] + digits[3] + digits[6]) +

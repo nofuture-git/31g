@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Xml;
+using System.Xml.Linq;
 using NoFuture.Shared;
 
 namespace NoFuture.Util
@@ -12,8 +13,37 @@ namespace NoFuture.Util
     /// <summary>
     /// This is your basic tool box of mildly useful functions.
     /// </summary>
-    public class Etc
+    public static class Etc
     {
+        /// <summary>
+        /// http://stackoverflow.com/questions/1508572/converting-xdocument-to-xmldocument-and-vice-versa
+        /// </summary>
+        /// <param name="xDocument"></param>
+        /// <returns></returns>
+        public static XmlDocument ToXmlDocument(this XDocument xDocument)
+        {
+            var xmlDocument = new XmlDocument();
+            using (var xmlReader = xDocument.CreateReader())
+            {
+                xmlDocument.Load(xmlReader);
+            }
+            return xmlDocument;
+        }
+
+        /// <summary>
+        /// http://stackoverflow.com/questions/1508572/converting-xdocument-to-xmldocument-and-vice-versa
+        /// </summary>
+        /// <param name="xmlDocument"></param>
+        /// <returns></returns>
+        public static XDocument ToXDocument(this XmlDocument xmlDocument)
+        {
+            using (var nodeReader = new XmlNodeReader(xmlDocument))
+            {
+                nodeReader.MoveToContent();
+                return XDocument.Load(nodeReader);
+            }
+        }
+
         private const string LOREM_IPSUM_RSC = "NoFuture.Util.LoremIpsum.EightParagraphs.txt";
 
         /// <summary>
@@ -800,6 +830,31 @@ namespace NoFuture.Util
                 buffer = new List<string>();
             }
             return srcFile;
+        }
+
+        /// <summary>
+        /// Simple content spliter. Gets the content from the first line containing <see cref="startLnContains"/>
+        /// up to the line containing <see cref="endLnContains"/>
+        /// </summary>
+        /// <param name="content"></param>
+        /// <param name="startLnContains"></param>
+        /// <param name="endLnContains">This line will NOT be included in the results</param>
+        /// <returns></returns>
+        public static string[] GetContentBetweenMarkers(string[] content, string startLnContains, string endLnContains)
+        {
+            var contentBetween = new List<string>();
+            var getContent = false;
+            foreach (var ln in content)
+            {
+                if (ln.Contains(startLnContains))
+                    getContent = true;
+                if (getContent && ln.Contains(endLnContains))
+                    getContent = false;
+                if (getContent)
+                    contentBetween.Add(ln);
+            }
+
+            return contentBetween.ToArray();
         }
     }
 }

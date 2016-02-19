@@ -26,7 +26,7 @@ namespace NoFuture.Rand.Data
         private static XmlDocument _usCities;
         private static XmlDocument _xrefData;
         private static XmlDocument _usZipProbTable;
-        private static LargeCommercialBank[] _fedReleaseLrgBnkNames;
+        private static Bank[] _fedReleaseLrgBnkNames;
         #endregion
 
         #region Constants
@@ -238,7 +238,7 @@ namespace NoFuture.Rand.Data
         /// This function uses the local copy of the doc and does not fetch it from The Fed over the net.
         /// </remarks>
         /// </summary>
-        public static LargeCommercialBank[] CommercialBankData
+        public static Bank[] CommercialBankData
         {
             get
             {
@@ -247,7 +247,7 @@ namespace NoFuture.Rand.Data
 
                 var rawData = GetTextDataSource(LRG_BNK_LST);
                 if(string.IsNullOrWhiteSpace(rawData))
-                    return new LargeCommercialBank[0];//return empty list for missing data
+                    return new Bank[0];//return empty list for missing data
 
                 DateTime? rptDt;
                 //turn line data into a list of tuples 
@@ -257,7 +257,7 @@ namespace NoFuture.Rand.Data
                 //take each line data structure and compose a full object
                 var tempList =
                     parsedData.Where(pd => !string.IsNullOrWhiteSpace(pd.Item1))
-                        .Select(pd => new LargeCommercialBank(pd.Item2, useDate) {Name = pd.Item1.Trim()})
+                        .Select(pd => new Bank(pd.Item2, useDate) {Name = pd.Item1.Trim()})
                         .ToList();
 
                 if (tempList.Count > 0)

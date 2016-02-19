@@ -56,12 +56,7 @@ namespace NoFuture.Rand
             if(usZipsXmlDocument == null)
                 return "100"; //New York
 
-            //http://stackoverflow.com/questions/1508572/converting-xdocument-to-xmldocument-and-vice-versa
-            using (var nodeReader = new XmlNodeReader(usZipsXmlDocument))
-            {
-                nodeReader.MoveToContent();
-                usZips = XDocument.Load(nodeReader);
-            }
+            usZips = usZipsXmlDocument.ToXDocument();
 
             double pickone = Convert.ToInt32(MyRand.Next(1, 9999999) / 100000);
             var randnode =

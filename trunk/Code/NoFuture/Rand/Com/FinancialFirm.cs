@@ -28,6 +28,7 @@ namespace NoFuture.Rand.Com
         }
 
         public ResearchStatisticsSupervisionDiscount Rssd { get; set; }
+        public RoutingTransitNumber RoutingNumber { get; set; }
         public TypeOfBank BankType { get; set; }
         public bool IsInternational { get; set; }
         public Dictionary<DateTime, FinancialAssets> Assets { get; set; }
@@ -36,7 +37,7 @@ namespace NoFuture.Rand.Com
     /// <summary>
     /// This is a type based on the data released by the Federal Reserve <see cref="LargeCommercialBanks.RELEASE_URL"/>
     /// </summary>
-    public class LargeCommercialBank : FinancialFirm
+    public class Bank : FinancialFirm
     {
         
         /// <summary>
@@ -44,7 +45,7 @@ namespace NoFuture.Rand.Com
         /// </summary>
         /// <param name="lrgBnkLstLine"></param>
         /// <param name="reportDate"></param>
-        public LargeCommercialBank(string lrgBnkLstLine, DateTime reportDate)
+        public Bank(string lrgBnkLstLine, DateTime reportDate)
         {
             //single line from the report
             var vals = LargeCommercialBanks.SplitLrgBnkListLine(lrgBnkLstLine).ToArray();

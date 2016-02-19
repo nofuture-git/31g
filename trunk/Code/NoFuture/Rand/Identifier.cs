@@ -32,6 +32,17 @@ namespace NoFuture.Rand
         {
             return string.Equals(obj.Value, Value);
         }
+
+        public override bool Equals(object obj)
+        {
+            var id = obj as Identifier;
+            return id != null && Equals(id);
+        }
+
+        public override int GetHashCode()
+        {
+            return Value == null ? 0 : Value.GetHashCode();
+        }
     }
 
     /// <summary>

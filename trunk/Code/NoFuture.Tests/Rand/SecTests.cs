@@ -109,5 +109,16 @@ namespace NoFuture.Tests.Rand
             System.Diagnostics.Debug.WriteLine(testResult);
             Assert.AreEqual("0001520138-15-000247", testResult);
         }
+
+        [TestMethod]
+        public void TestUrlFullTextSearchBySic()
+        {
+            var testInput = new NoFuture.Rand.Gov.Sec.Edgar.FullTextSearch();
+            testInput.CompanyName = "CITIBANK, N.A.";
+
+            var testResult = NoFuture.Rand.Gov.Sec.Edgar.UrlFullTextSearchBySic(testInput);
+
+            System.Diagnostics.Debug.WriteLine(testResult.ToString());
+        }
     }
 }

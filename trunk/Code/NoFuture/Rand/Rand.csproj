@@ -34,6 +34,7 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Xml" />
   </ItemGroup>
@@ -66,6 +67,7 @@
     <Compile Include="Gov\Bls\Codes\CeDatatype.cs" />
     <Compile Include="Gov\Bls\Codes\CeIndustry.cs" />
     <Compile Include="Gov\Bls\Codes\CeSupersector.cs" />
+    <Compile Include="Gov\Fed\Ffiec.cs" />
     <Compile Include="Gov\Nhtsa\Identifier.cs" />
     <Compile Include="Pecuniam.cs" />
     <Compile Include="Domus\Sp\TradeLine.cs" />

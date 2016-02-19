@@ -30,11 +30,31 @@ namespace NoFuture.Tests.Rand
             var testSubject = NoFuture.Rand.Gov.Fed.RoutingTransitNumber.RandomRoutingNumber();
             Assert.IsNotNull(testSubject);
             Assert.IsFalse(string.IsNullOrWhiteSpace(testSubject.Value));
-            Assert.IsFalse(string.IsNullOrWhiteSpace(testSubject.FedDistrict));
-            Assert.AreEqual(10, testSubject.Value.Length);
+            Assert.IsFalse(string.IsNullOrWhiteSpace(testSubject.FedDistrictFullName));
+            Assert.AreEqual(9, testSubject.Value.Length);
 
             System.Diagnostics.Debug.WriteLine(testSubject.Value);
-            System.Diagnostics.Debug.WriteLine(testSubject.FedDistrict);
+            System.Diagnostics.Debug.WriteLine(testSubject.FedDistrictFullName);
+
+            testSubject.Value = "053000196";
+
+            Assert.AreEqual("05", testSubject.FedDistrict);
+            Assert.AreEqual("30", testSubject.CheckProcCenter);
+            Assert.AreEqual("0019", testSubject.AbaInstitutionId);
+            Assert.AreEqual(6, testSubject.CheckDigit);
+        }
+
+        [TestMethod]
+        public void TestTryParseFfiecInstitutionProfileAspxHtml()
+        {
+            var testContent = System.IO.File.ReadAllText(@"C:\Temp\ffiec.html");
+
+            NoFuture.Rand.Com.FinancialFirm firmOut;
+            var testResult = NoFuture.Rand.Gov.Fed.Ffiec.TryParseFfiecInstitutionProfileAspxHtml(testContent,
+                out firmOut);
+
+            Assert.IsTrue(testResult);
+
         }
     }
 }
