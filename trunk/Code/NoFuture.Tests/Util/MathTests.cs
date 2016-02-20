@@ -309,6 +309,10 @@ namespace NoFuture.Tests.Util
             testResult = 48000M.PerDiemInterest(-0.15f, NoFuture.Shared.Constants.TropicalYear.TotalDays*20);
 
             System.Diagnostics.Debug.WriteLine(testResult);
+
+            testResult = 900M.PerDiemInterest(0.055F, 150);
+
+            System.Diagnostics.Debug.WriteLine(testResult);
         }
 
         [TestMethod]

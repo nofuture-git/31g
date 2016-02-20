@@ -219,11 +219,26 @@ namespace NoFuture.Rand
         List<Transaction> Transactions { get; }
 
         /// <summary>
-        /// Returns a negative value being the sum of all payments between dates in <see cref="between"/>
+        /// Gets transactions which occured on or after <see cref="from"/> up to the <see cref="to"/>
+        /// </summary>
+        /// <param name="from">
+        /// Transactions which occured exactly on this date WILL be included in the results.
+        /// </param>
+        /// <param name="to">
+        /// Transactions which occured exactly 
+        /// on this date will not be included unless <see cref="includeThoseOnToDate"/>
+        /// is set to true.
+        /// </param>
+        /// <param name="includeThoseOnToDate"></param>
+        /// <returns></returns>
+        List<Transaction> GetTransactionsBetween(DateTime from, DateTime to, bool includeThoseOnToDate = false);
+
+        /// <summary>
+        /// Returns a negative value being the sum of all payments-out between dates in <see cref="between"/>
         /// </summary>
         /// <param name="between"></param>
         /// <returns></returns>
-        Pecuniam GetPaymentSum(Tuple<DateTime, DateTime> between);
+        Pecuniam GetDebitSum(Tuple<DateTime, DateTime> between);
 
         /// <summary>
         /// Gets the current balance up to the <see cref="dt"/> for the
@@ -234,7 +249,16 @@ namespace NoFuture.Rand
         /// <returns></returns>
         Pecuniam GetCurrent(DateTime dt, float rate);
 
-        Pecuniam GetCurrent(DateTime dt, Func<DateTime, float> variableRate);
+        /// <summary>
+        /// Gets the current balance upt to the <see cref="dt"/> for the
+        /// given rates in <see cref="variableRate"/>
+        /// </summary>
+        /// <param name="dt"></param>
+        /// <param name="variableRate">
+        /// The dictonary keys are the dates the rate values end on, NOT begin on.
+        /// </param>
+        /// <returns></returns>
+        Pecuniam GetCurrent(DateTime dt, Dictionary<DateTime, float> variableRate);
     }
 
     [Serializable]
@@ -245,8 +269,7 @@ namespace NoFuture.Rand
         private readonly IComparer<Transaction> _comparer = new TransactionComparer();
         #endregion
 
-        #region methods
-
+        #region properties
         public List<Transaction> Transactions
         {
             get
@@ -255,8 +278,11 @@ namespace NoFuture.Rand
                 return _transactions;
             }
         }
+        #endregion
 
-        public Pecuniam GetPaymentSum(Tuple<DateTime, DateTime> between)
+        #region methods
+
+        public Pecuniam GetDebitSum(Tuple<DateTime, DateTime> between)
         {
             var ts = Transactions;
             if (ts.Count <= 0)
@@ -287,17 +313,19 @@ namespace NoFuture.Rand
 
         public Pecuniam GetCurrent(DateTime dt, float rate)
         {
-            if(_transactions.All(x => DateTime.Compare(x.AtTime, dt) > 0))
+            if (_transactions.Count <= 0)
                 return new Pecuniam(0);
 
-            var ts = Transactions;
-            var prev = ts[0];
-            var rest = ts.Skip(1);
+            if (Transactions.All(x => DateTime.Compare(x.AtTime, dt) > 0))
+                return new Pecuniam(0);
+
+            var prev = Transactions[0];
+            var rest = Transactions.Skip(1);
 
             var bal = prev.Cash.Amount;
             foreach (var t in rest)
             {
-                if(DateTime.Compare(t.AtTime, dt) > 0)
+                if (DateTime.Compare(t.AtTime, dt) > 0)
                     break;
                 var days = (t.AtTime - prev.AtTime).TotalDays;
                 bal = bal.PerDiemInterest(rate, days);
@@ -307,11 +335,68 @@ namespace NoFuture.Rand
             return new Pecuniam(bal);
         }
 
-        public Pecuniam GetCurrent(DateTime dt, Func<DateTime, float> variableRate)
+        public List<Transaction> GetTransactionsBetween(DateTime from, DateTime to, bool includeThoseOnToDate = false)
         {
-            throw new NotImplementedException();
+            if (includeThoseOnToDate)
+            {
+                return Transactions.Where(
+                    x => DateTime.Compare(x.AtTime, from) >= 0 && DateTime.Compare(x.AtTime, to) <= 0)
+                    .ToList();
+            }
+            return Transactions.Where(
+                x => DateTime.Compare(x.AtTime, from) >= 0 && DateTime.Compare(x.AtTime, to) < 0)
+                .ToList();
         }
 
+        public Pecuniam GetCurrent(DateTime dt, Dictionary<DateTime, float> variableRate)
+        {
+            if(variableRate == null || variableRate.Keys.Count <= 0)
+                throw new ArgumentNullException("variableRate");
+
+            //get very first recorded transaction
+            var oldestTransaction = Transactions.FirstOrDefault();
+            if(oldestTransaction == null)
+                return new Pecuniam(0);
+
+            var bal = new Pecuniam(0);
+
+            //set first transaction as the lower bounds of the current time-frame
+            var prevVdt = oldestTransaction.AtTime;
+
+            foreach (var vdt in variableRate.Keys)
+            {
+                //the dictionary is the date the rate ended, not began
+                if (DateTime.Compare(prevVdt, dt) > 0)
+                    continue;
+
+                var currVdt = vdt;
+
+                //this rate was only applicable to this many days
+                var daysAtRate = (currVdt - prevVdt).TotalDays;
+                
+                //this iteration's rate-ending-date is actually beyond our query date
+                if (DateTime.Compare(currVdt, dt) > 0)
+                {
+                    daysAtRate = (dt - prevVdt).TotalDays;
+                    currVdt = dt;
+                }
+                
+                //get those transactions which occured between
+                var betwixtTs = GetTransactionsBetween(prevVdt, currVdt);
+                betwixtTs.Sort(_comparer);
+
+                //add in this date-ranges transactions to the running balance
+                bal = betwixtTs.Aggregate(bal, (current, bts) => current + bts.Cash);
+
+                //get the balance plus iterest for the number of days this rate was in effect
+                bal = new Pecuniam(bal.Amount.PerDiemInterest(variableRate[vdt], daysAtRate));
+
+                //save where we ended this time for next iteration
+                prevVdt = currVdt;
+            }
+
+            return bal;
+        }
         #endregion
     }
 }

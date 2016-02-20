@@ -23,6 +23,7 @@ namespace NoFuture.Rand.Domus.Sp
         #endregion
 
         #region fields
+        internal readonly Guid _uniqueId = Guid.NewGuid();
         private readonly Balance _balance = new Balance();
         private readonly DateTime _openDate;
         private TimeSpan _dueFrequency = DefaultDueFrequency;
@@ -40,6 +41,23 @@ namespace NoFuture.Rand.Domus.Sp
         public TimeSpan DueFrequency { get { return _dueFrequency; } set { _dueFrequency = value; }}
         public DateTime OpennedDate { get { return _openDate; } }
         public TradelineClosure? Closure { get; set; }
+        #endregion
+
+        #region methods
+
+        public override bool Equals(object obj)
+        {
+            var tl = obj as TradeLine;
+            if (tl == null)
+                return false;
+            return tl._uniqueId == _uniqueId;
+        }
+
+        public override int GetHashCode()
+        {
+            return _uniqueId.GetHashCode();
+        }
+
         #endregion
     }
 
