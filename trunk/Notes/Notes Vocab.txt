@@ -432,3 +432,6 @@ Befehl ist Befehl - an order is an order (aka Superior orders)
 cacoethes - ill-habit, wickedness, itch for doing
 tactics - arrange military forces for combat
 subsume - include or absorb something in something else
+extrapolate - extend the application of
+syllogism - deductive reasoning from phil 101.
+concomitant - naturally accompanying or associated

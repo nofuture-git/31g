@@ -241,6 +241,13 @@ namespace NoFuture.Rand
         Pecuniam GetDebitSum(Tuple<DateTime, DateTime> between);
 
         /// <summary>
+        /// Returns a positive value being the sum of all payments-in between dates in <see cref="between"/>
+        /// </summary>
+        /// <param name="between"></param>
+        /// <returns></returns>
+        Pecuniam GetCreditSum(Tuple<DateTime, DateTime> between);
+
+        /// <summary>
         /// Gets the current balance up to the <see cref="dt"/> for the
         /// given rate of <see cref="rate"/>.
         /// </summary>
@@ -267,6 +274,8 @@ namespace NoFuture.Rand
         #region fields
         private readonly List<Transaction>  _transactions = new List<Transaction>();
         private readonly IComparer<Transaction> _comparer = new TransactionComparer();
+        private readonly Func<Decimal, bool> _debitOp = x => x < 0;
+        private readonly Func<Decimal, bool> _creditOp = x => x > 0;
         #endregion
 
         #region properties
@@ -284,31 +293,12 @@ namespace NoFuture.Rand
 
         public Pecuniam GetDebitSum(Tuple<DateTime, DateTime> between)
         {
-            var ts = Transactions;
-            if (ts.Count <= 0)
-                return new Pecuniam(0);
+            return GetRangeSum(between, _debitOp);
+        }
 
-            if (between == null)
-                throw new ArgumentNullException("between");
-
-            if(between.Item1.Equals(between.Item2))
-                throw new ItsDeadJim("The calculation requires a date range.");
-
-            var olderDate = DateTime.Compare(between.Item1, between.Item2) < 0 ? between.Item1 : between.Item2;
-            var newerDate = DateTime.Compare(between.Item2, between.Item1) > 0 ? between.Item2 : between.Item1;
-
-            var paymentsInRange =
-                ts.Where(
-                    x =>
-                        DateTime.Compare(x.AtTime, olderDate) >= 0 && DateTime.Compare(x.AtTime, newerDate) <= 0 &&
-                        x.Cash.Amount < 0)
-                    .ToList();
-
-            if(paymentsInRange.Count == 0)
-                return new Pecuniam(0);
-
-            var sumPayments = paymentsInRange.Select(x => x.Cash.Amount).Sum();
-            return new Pecuniam(sumPayments);
+        public Pecuniam GetCreditSum(Tuple<DateTime, DateTime> between)
+        {
+            return GetRangeSum(between, _creditOp);
         }
 
         public Pecuniam GetCurrent(DateTime dt, float rate)
@@ -396,6 +386,35 @@ namespace NoFuture.Rand
             }
 
             return bal;
+        }
+
+        protected internal Pecuniam GetRangeSum(Tuple<DateTime, DateTime> between, Func<Decimal, bool> op)
+        {
+            var ts = Transactions;
+            if (ts.Count <= 0)
+                return new Pecuniam(0);
+
+            if (between == null)
+                throw new ArgumentNullException("between");
+
+            if (between.Item1.Equals(between.Item2))
+                throw new ItsDeadJim("The calculation requires a date range.");
+
+            var olderDate = DateTime.Compare(between.Item1, between.Item2) < 0 ? between.Item1 : between.Item2;
+            var newerDate = DateTime.Compare(between.Item2, between.Item1) > 0 ? between.Item2 : between.Item1;
+
+            var paymentsInRange =
+                ts.Where(
+                    x =>
+                        DateTime.Compare(x.AtTime, olderDate) >= 0 && DateTime.Compare(x.AtTime, newerDate) <= 0 &&
+                        op(x.Cash.Amount))
+                    .ToList();
+
+            if (paymentsInRange.Count == 0)
+                return new Pecuniam(0);
+
+            var sumPayments = paymentsInRange.Select(x => x.Cash.Amount).Sum();
+            return new Pecuniam(sumPayments);
         }
         #endregion
     }
