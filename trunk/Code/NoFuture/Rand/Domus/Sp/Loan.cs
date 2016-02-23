@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using NoFuture.Rand.Com;
 
 namespace NoFuture.Rand.Domus.Sp //Sequere pecuniam
@@ -7,6 +8,16 @@ namespace NoFuture.Rand.Domus.Sp //Sequere pecuniam
     {
         Identifier Id { get; set; }
         string Description { get; set; }
+
+        /// <summary>
+        /// Can be set to a combination of the <see cref="FormOfCredit"/>
+        /// </summary>
+        FormOfCredit KindOfLoan { get; set; }
+
+        /// <summary>
+        /// The rate used to calc the minimum payment.
+        /// </summary>
+        float MinPaymentRate { get; set; }
 
         /// <summary>
         /// Credit history report for this loan
@@ -37,83 +48,33 @@ namespace NoFuture.Rand.Domus.Sp //Sequere pecuniam
         LoanStatus GetStatus(DateTime dt);
     }
 
-    public interface IFixedRateLoan : ILoan
-    {
-        /// <summary>
-        /// The interest rate for the loan 
-        /// </summary>
-        float Rate { get; set; }
-
-        /// <summary>
-        /// The rate used to calc the minimum payment.
-        /// </summary>
-        float MinPaymentRate { get; set; }
-    }
-
     [Serializable]
-    public class FixedRateLoan : IFixedRateLoan 
+    public abstract class LoanBase<T> : ILoan
     {
         #region fields
         private readonly TradeLine _tradeLine;
-        private float _minPaymentRate;
         #endregion
 
         #region ctors
-        public FixedRateLoan(DateTime openedDate, float minPaymentRate)
+        protected LoanBase(DateTime openedDate, float minPaymentRate)
         {
             _tradeLine = new TradeLine(openedDate);
-            _minPaymentRate = minPaymentRate;
+            MinPaymentRate = minPaymentRate;
         }
         #endregion
 
         #region properties
-
-        public float MinPaymentRate
-        {
-            get { return _minPaymentRate; }
-            set { _minPaymentRate = value; }
-        }
-
         public Identifier Id { get; set; }
         public string Description { get; set; }
-        public TradeLine TradeLine { get { return _tradeLine; }}
-        public float Rate { get; set; }
+        public FormOfCredit KindOfLoan { get; set; }
+        public float MinPaymentRate { get; set; }
+        public T Rate { get; set; }
+        public TradeLine TradeLine { get { return _tradeLine; } }
         public IFirm Lender { get; set; }
         #endregion
 
         #region methods
-        public Pecuniam GetMinPayment(DateTime dt)
-        {
-            var bal = _tradeLine.Balance.GetCurrent(dt, Rate);
-            if (bal < new Pecuniam(0))
-                return new Pecuniam(0);
-
-            var amt = bal.Amount * Convert.ToDecimal(MinPaymentRate);
-            return new Pecuniam(Math.Round(amt, 2) * -1);
-        }
-
-        public LoanStatus GetStatus(DateTime dt)
-        {
-            if ((_tradeLine.Closure != null && DateTime.Compare(_tradeLine.Closure.Value.ClosedDate, dt) < 0))
-                return LoanStatus.Closed;
-
-            if (_tradeLine.Balance.Transactions.Count <= 0)
-                return LoanStatus.NoHistory;
-
-            //make sure something is actually owed
-            if((_tradeLine.Balance.GetCurrent(dt, Rate)).Amount <= 0)
-                return LoanStatus.Current;
-
-            var lastPayment =
-                _tradeLine.Balance.GetDebitSum(
-                    new Tuple<DateTime, DateTime>(dt.AddDays(_tradeLine.DueFrequency.TotalDays*-1), dt));
-
-            return lastPayment.Abs < GetMinPayment(dt).Abs
-                ? LoanStatus.Late
-                : LoanStatus.Current;
-        }
-
-        public PastDue? GetDelinquency(DateTime dt)
+        public virtual PastDue? GetDelinquency(DateTime dt)
         {
             if (GetStatus(dt) != LoanStatus.Late)
                 return null;
@@ -122,9 +83,9 @@ namespace NoFuture.Rand.Domus.Sp //Sequere pecuniam
             var billingCycleDays = TradeLine.DueFrequency.TotalDays;
 
             var justLate = new Tuple<DateTime, DateTime>(dt.AddDays(-29 - billingCycleDays),
-                dt.AddDays(billingCycleDays*-1));
+                dt.AddDays(billingCycleDays * -1));
 
-            if ((_tradeLine.Balance.GetDebitSum(justLate)).Amount < 0)
+            if ((TradeLine.Balance.GetDebitSum(justLate)).Amount < 0)
                 return null;
 
             //the line was openned some time before 30DPD
@@ -134,7 +95,7 @@ namespace NoFuture.Rand.Domus.Sp //Sequere pecuniam
             var thirtyDpd = new Tuple<DateTime, DateTime>(dt.AddDays(-59 - billingCycleDays),
                 dt.AddDays(-30 - billingCycleDays));
 
-            if((_tradeLine.Balance.GetDebitSum(thirtyDpd)).Amount < 0)
+            if ((TradeLine.Balance.GetDebitSum(thirtyDpd)).Amount < 0)
                 return PastDue.Thirty;
 
             if (DateTime.Compare(TradeLine.OpennedDate, dt.AddDays(-60 - billingCycleDays)) > 1)
@@ -152,13 +113,77 @@ namespace NoFuture.Rand.Domus.Sp //Sequere pecuniam
             var nintyDpd = new Tuple<DateTime, DateTime>(dt.AddDays(-179 - billingCycleDays),
                 dt.AddDays(-90 - billingCycleDays));
 
-            if((TradeLine.Balance.GetDebitSum(nintyDpd)).Amount < 0)
+            if ((TradeLine.Balance.GetDebitSum(nintyDpd)).Amount < 0)
                 return PastDue.Ninety;
 
-            if(DateTime.Compare(TradeLine.OpennedDate, dt.AddDays(-180 - billingCycleDays)) > 1)
+            if (DateTime.Compare(TradeLine.OpennedDate, dt.AddDays(-180 - billingCycleDays)) > 1)
                 return PastDue.Ninety;
 
             return PastDue.HundredAndEighty;
+        }
+
+        public virtual Pecuniam GetMinPayment(DateTime dt)
+        {
+            var bal = GetCurrentBalance(dt, Rate);
+            if (bal < new Pecuniam(0))
+                return new Pecuniam(0);
+
+            var amt = bal.Amount * Convert.ToDecimal(MinPaymentRate);
+            return new Pecuniam(Math.Round(amt, 2) * -1);
+        }
+
+        public virtual LoanStatus GetStatus(DateTime dt)
+        {
+            if ((TradeLine.Closure != null && DateTime.Compare(TradeLine.Closure.Value.ClosedDate, dt) < 0))
+                return LoanStatus.Closed;
+
+            if (TradeLine.Balance.Transactions.Count <= 0)
+                return LoanStatus.NoHistory;
+
+            //make sure something is actually owed
+            if ((GetCurrentBalance(dt, Rate)).Amount <= 0)
+                return LoanStatus.Current;
+
+            var lastPayment =
+                TradeLine.Balance.GetDebitSum(
+                    new Tuple<DateTime, DateTime>(dt.AddDays(TradeLine.DueFrequency.TotalDays * -1), dt));
+
+            return lastPayment.Abs < GetMinPayment(dt).Abs
+                ? LoanStatus.Late
+                : LoanStatus.Current;
+        }
+
+        protected abstract Pecuniam GetCurrentBalance(DateTime dt, T rate);
+
+        #endregion
+    }
+
+    [Serializable]
+    public class FixedRateLoan : LoanBase<float>
+    {
+        #region ctors
+        public FixedRateLoan(DateTime openedDate, float minPaymentRate): base(openedDate, minPaymentRate) { }
+        #endregion
+
+        #region methods
+        protected override Pecuniam GetCurrentBalance(DateTime dt, float rate)
+        {
+            return TradeLine.Balance.GetCurrent(dt, Rate);
+        }
+        #endregion
+    }
+
+    [Serializable]
+    public class VariableRateLoan : LoanBase<Dictionary<DateTime, float>>
+    {
+        #region ctors
+        public VariableRateLoan(DateTime openedDate, float minPaymentRate) : base(openedDate, minPaymentRate) { }
+        #endregion
+
+        #region methods
+        protected override Pecuniam GetCurrentBalance(DateTime dt, Dictionary<DateTime, float> rate)
+        {
+            return TradeLine.Balance.GetCurrent(dt, Rate);
         }
         #endregion
     }

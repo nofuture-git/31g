@@ -162,8 +162,8 @@ namespace NoFuture.Tests.Rand
         {
             var testResult = new NoFuture.Rand.Domus.NorthAmerican(DateTime.Now.AddYears(-40), Gender.Female, true );
 
-            Assert.IsNotNull(testResult.Mother);
-            Assert.IsNotNull(testResult.Father);
+            Assert.IsNotNull(testResult.GetMother());
+            Assert.IsNotNull(testResult.GetFather());
 
             var d = Newtonsoft.Json.JsonConvert.SerializeObject(testResult, Formatting.Indented,
                 new JsonSerializerSettings() { ReferenceLoopHandling = ReferenceLoopHandling.Ignore });
@@ -185,6 +185,24 @@ namespace NoFuture.Tests.Rand
                 System.Diagnostics.Debug.WriteLine(string.Format("dob: {0};  marriageAge: {1}; firstBornAge: {2};", dob, marriageEq, firstBornEq));
 
             }
+        }
+
+        [TestMethod]
+        public void TestGetMaritalStatus()
+        {
+            var testSubject = new NoFuture.Rand.Domus.NorthAmerican(DateTime.Now.AddYears(-40), Gender.Female, true);
+
+            var testResult = testSubject.GetMaritalStatus(null);
+
+            Assert.AreNotEqual(MaritialStatus.Unknown, testResult);
+
+            System.Diagnostics.Debug.WriteLine(testResult);
+
+            testResult = testSubject.GetMaritalStatus(DateTime.Now.AddYears(-10));
+
+            Assert.AreNotEqual(MaritialStatus.Unknown, testResult);
+
+            System.Diagnostics.Debug.WriteLine(testResult);
         }
     }
 }

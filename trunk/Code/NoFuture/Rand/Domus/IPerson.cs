@@ -11,10 +11,10 @@ namespace NoFuture.Rand.Domus
         string LastName { get; set; }
         Gender MyGender { get; set; }
         List<Uri> NetUri { get; }
-        MaritialStatus MaritalStatus { get; set; }
-        IPerson Spouse { get; set; }
-        IPerson Father { get; set; }
-        IPerson Mother { get; set; }
+        MaritialStatus GetMaritalStatus(DateTime? dt);
+        IPerson GetSpouse(DateTime? dt);
+        IPerson GetFather();
+        IPerson GetMother();
         List<IPerson> Children { get; }
         Pneuma.Personality Personality { get; }
         IEducation Education { get; set; }

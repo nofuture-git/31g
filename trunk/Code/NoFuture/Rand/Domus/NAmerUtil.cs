@@ -487,6 +487,22 @@ namespace NoFuture.Rand.Domus
             return probChildless;
         }
 
+        public static DateTime? SolveForMarriageDate(DateTime? dob, Gender myGender)
+        {
+            if (dob == null)
+                return null;
+            var dt = DateTime.Now;
+            var avgAgeMarriage = myGender == Gender.Female
+                ? Equations.FemaleDob2MarriageAge.SolveForY(dob.Value.ToDouble())
+                : Equations.MaleDob2MarriageAge.SolveForY(dob.Value.ToDouble());
+            var currentAge = Person.CalcAge(dob.Value, dt);
+
+            //all other MaritialStatus imply at least one marriage in past
+            var yearsMarried = currentAge - Convert.ToInt32(Math.Round(avgAgeMarriage));
+
+            return Etx.Date(-1*yearsMarried, dt);
+        }
+
         /// <summary>
         /// Sets <see cref="thisPerson"/> home-related data to the same values of <see cref="livesWithThisOne"/>
         /// </summary>

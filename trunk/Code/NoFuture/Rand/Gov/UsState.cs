@@ -11,6 +11,11 @@ namespace NoFuture.Rand.Gov
 {
     public abstract class UsState
     {
+        #region constants
+        public const int AGE_OF_ADULT = 18;
+        public const int MIN_AGE_FOR_DL = 16;
+        #endregion
+
         #region fields
         protected readonly string _stateAbbrv;
         /// <summary>
@@ -19,6 +24,8 @@ namespace NoFuture.Rand.Gov
         protected DriversLicense[] dlFormats;
         protected Edu.AmericanUniversity[] universities;
         protected Edu.AmericanHighSchool[] highSchools;
+
+        private int _ageOfConsent = AGE_OF_ADULT;
         #endregion
 
         #region ctor
@@ -29,6 +36,8 @@ namespace NoFuture.Rand.Gov
         #endregion
 
         #region api
+
+        public virtual int AgeOfConsent { get { return _ageOfConsent; } set { _ageOfConsent = value; } }
 
         /// <summary>
         /// https://en.wikipedia.org/wiki/List_of_U.S._states_by_educational_attainment

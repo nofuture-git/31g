@@ -211,6 +211,9 @@ namespace NoFuture.Rand
         }
     }
 
+    /// <summary>
+    /// Represents the basic money account.
+    /// </summary>
     public interface IBalance
     {
         /// <summary>
@@ -325,27 +328,14 @@ namespace NoFuture.Rand
             return new Pecuniam(bal);
         }
 
-        public List<Transaction> GetTransactionsBetween(DateTime from, DateTime to, bool includeThoseOnToDate = false)
-        {
-            if (includeThoseOnToDate)
-            {
-                return Transactions.Where(
-                    x => DateTime.Compare(x.AtTime, from) >= 0 && DateTime.Compare(x.AtTime, to) <= 0)
-                    .ToList();
-            }
-            return Transactions.Where(
-                x => DateTime.Compare(x.AtTime, from) >= 0 && DateTime.Compare(x.AtTime, to) < 0)
-                .ToList();
-        }
-
         public Pecuniam GetCurrent(DateTime dt, Dictionary<DateTime, float> variableRate)
         {
-            if(variableRate == null || variableRate.Keys.Count <= 0)
+            if (variableRate == null || variableRate.Keys.Count <= 0)
                 throw new ArgumentNullException("variableRate");
 
             //get very first recorded transaction
             var oldestTransaction = Transactions.FirstOrDefault();
-            if(oldestTransaction == null)
+            if (oldestTransaction == null)
                 return new Pecuniam(0);
 
             var bal = new Pecuniam(0);
@@ -363,14 +353,14 @@ namespace NoFuture.Rand
 
                 //this rate was only applicable to this many days
                 var daysAtRate = (currVdt - prevVdt).TotalDays;
-                
+
                 //this iteration's rate-ending-date is actually beyond our query date
                 if (DateTime.Compare(currVdt, dt) > 0)
                 {
                     daysAtRate = (dt - prevVdt).TotalDays;
                     currVdt = dt;
                 }
-                
+
                 //get those transactions which occured between
                 var betwixtTs = GetTransactionsBetween(prevVdt, currVdt);
                 betwixtTs.Sort(_comparer);
@@ -386,6 +376,19 @@ namespace NoFuture.Rand
             }
 
             return bal;
+        }
+
+        public List<Transaction> GetTransactionsBetween(DateTime from, DateTime to, bool includeThoseOnToDate = false)
+        {
+            if (includeThoseOnToDate)
+            {
+                return Transactions.Where(
+                    x => DateTime.Compare(x.AtTime, from) >= 0 && DateTime.Compare(x.AtTime, to) <= 0)
+                    .ToList();
+            }
+            return Transactions.Where(
+                x => DateTime.Compare(x.AtTime, from) >= 0 && DateTime.Compare(x.AtTime, to) < 0)
+                .ToList();
         }
 
         protected internal Pecuniam GetRangeSum(Tuple<DateTime, DateTime> between, Func<Decimal, bool> op)

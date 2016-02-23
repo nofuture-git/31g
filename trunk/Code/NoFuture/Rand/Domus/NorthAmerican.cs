@@ -18,7 +18,6 @@ namespace NoFuture.Rand.Domus
         private readonly List<ILoan> _debts = new List<ILoan>();
         private IPerson _mother;
         private IPerson _father;
-        private IPerson _spouse;
         private readonly List<SpouseData> _spouses = new List<SpouseData>();
         private DateTime? _dob;
         private Gender _myGender;
@@ -57,7 +56,7 @@ namespace NoFuture.Rand.Domus
                 _phoneNumbers.Add(new Tuple<KindsOfLabels, NorthAmericanPhone>(KindsOfLabels.Mobile, Phone.American(abbrv)));
 
             Ssn = new SocialSecurityNumber();
-            if(GetAge(null) >= 16)
+            if(GetAge(null) >= UsState.MIN_AGE_FOR_DL)
                 DriversLicense = csz.State.Formats[0];
 
             //http://www.internic.net/zones/root.zone
@@ -66,6 +65,12 @@ namespace NoFuture.Rand.Domus
                 ResolveFamilyState();
 
             _personality = new Personality(Etx.IntNumber(0, 10000) <= 16);
+        }
+
+        public NorthAmerican(DateTime? dob, Gender myGender, IPerson mother, IPerson father): this(dob, myGender)
+        {
+            _mother = mother;
+            _father = father;
         }
 
         #endregion
@@ -97,28 +102,72 @@ namespace NoFuture.Rand.Domus
             set { _myGender = value; }
         }
 
-        public override MaritialStatus MaritalStatus
+        public override MaritialStatus GetMaritalStatus(DateTime? dt)
         {
-            get { return _ms; }
-            set { _ms = value; }
+            var mdt = dt ?? DateTime.Now;
+
+            var iAmUnderage = GetAge(mdt) < GetMyHomeStatesAgeOfConsent();
+
+            if (iAmUnderage || !_spouses.Any())
+                return MaritialStatus.Single;
+
+            //spread all status into single dictionary
+            var myTimeline = new Dictionary<int, MaritialStatus> {{0, MaritialStatus.Single}};
+            foreach (var spouseData in _spouses)
+            {
+                var days = (int)Math.Abs((spouseData.MarriedOn - _dob.Value).TotalDays);
+                while (myTimeline.ContainsKey(days))
+                    days += 1;
+
+                if (myTimeline.Values.Any(x => x == MaritialStatus.Married))
+                {
+                    myTimeline.Add(days, MaritialStatus.Remarried);
+                }
+                else
+                {
+                    myTimeline.Add(days, MaritialStatus.Married);
+                }
+
+                if (spouseData.SeparatedOn == null)
+                    continue;
+                days = (int) Math.Abs((spouseData.SeparatedOn.Value - _dob.Value).TotalDays);
+                while (myTimeline.ContainsKey(days))
+                    days += 1;
+
+                myTimeline.Add(days, MaritialStatus.Divorced);
+
+                if (spouseData.Spouse == null || spouseData.Spouse.DeathDate == null)
+                    continue;
+
+                days = (int) Math.Abs((spouseData.Spouse.DeathDate.Value - _dob.Value).TotalDays);
+                while (myTimeline.ContainsKey(days))
+                    days += 1;
+
+                myTimeline.Add(days, MaritialStatus.Widowed);
+            }
+
+            var mdtDays = (int) Math.Abs((mdt - _dob.Value).TotalDays);
+
+            return myTimeline.Any(x => x.Key >= mdtDays)
+                ? myTimeline.First(x => x.Key >= mdtDays).Value
+                : myTimeline.Last().Value;
         }
 
-        public override IPerson Mother
-        {
-            get { return _mother; }
-            set { _mother = value; }
-        }
+        public override IPerson GetMother() { return _mother;}
 
-        public override IPerson Father
-        {
-            get { return _father; }
-            set { _father = value; }
-        }
+        public override IPerson GetFather() { return _father;}
 
-        public override IPerson Spouse
+        public override IPerson GetSpouse(DateTime? dt)
         {
-            get { return _spouse; }
-            set { _spouse = value; }
+            var cdt = dt ?? DateTime.Now;
+
+            if (GetAge(cdt) < GetMyHomeStatesAgeOfConsent())
+            {
+                return null;
+            }
+
+            var spouseData = _spouses.FirstOrDefault(x => DateTime.Compare(x.MarriedOn, cdt) <= 0 && x.SeparatedOn == null);
+            return spouseData != null ? spouseData.Spouse : null;
         }
 
         public string MiddleName { get; set; }
@@ -166,13 +215,14 @@ namespace NoFuture.Rand.Domus
 
         #region family
 
-        public void AlignCohabitantsHomeData()
+        public void AlignCohabitantsHomeData(DateTime? dt)
         {
-            if ((MaritalStatus == MaritialStatus.Married || MaritalStatus == MaritialStatus.Remarried) && Spouse != null)
+            var ms = GetMaritalStatus(dt);
+            if ((ms == MaritialStatus.Married || ms == MaritialStatus.Remarried) && GetSpouse(dt) != null)
             {
-                NAmerUtil.SetNAmerCohabitants((NorthAmerican) Spouse, this);
+                NAmerUtil.SetNAmerCohabitants((NorthAmerican)GetSpouse(dt), this);
             }
-            var underAgeChildren = Children.Cast<NorthAmerican>().Where(x => x.GetAge(null) < 18).ToList();
+            var underAgeChildren = Children.Cast<NorthAmerican>().Where(x => x.GetAge(dt) < UsState.AGE_OF_ADULT).ToList();
             if (underAgeChildren.Count <= 0)
                 return;
             foreach(var child in underAgeChildren)
@@ -185,10 +235,13 @@ namespace NoFuture.Rand.Domus
         /// </summary>
         protected internal void ResolveFamilyState()
         {
+            ThrowOnBirthDateNull();
+            var dt = DateTime.Now;
             Race = NAmerUtil.GetAmericanRace(HomeZip);
             ResolveParents();
-            ResolveSpouse();
+            ResolveSpouse(NAmerUtil.GetMaritialStatus(_dob.Value, MyGender));
             ResolveChildren();
+            AlignCohabitantsHomeData(dt);
         }
 
         protected internal void ResolveParents()
@@ -202,17 +255,16 @@ namespace NoFuture.Rand.Domus
             myMother.LastName = LastName;
             myFather.LastName = LastName;
 
-            myMother.MaritalStatus = NAmerUtil.GetMaritialStatus(myMother.BirthDate.Value, Gender.Female);
-            myFather.MaritalStatus = _mother.MaritalStatus;
+            var myParentsAtMyBirth = NAmerUtil.GetMaritialStatus(myMother.BirthDate.Value, Gender.Female);
 
             //mother not ever married to father
-            if (myMother.MaritalStatus == MaritialStatus.Single)
+            if (myParentsAtMyBirth == MaritialStatus.Single)
                 myFather.LastName = NAmerUtil.GetAmericanLastName();
 
             //mother no longer married to father
-            if (myMother.MaritalStatus == MaritialStatus.Divorced ||
-                myMother.MaritalStatus == MaritialStatus.Remarried ||
-                myMother.MaritalStatus == MaritialStatus.Separated)
+            if (myParentsAtMyBirth == MaritialStatus.Divorced ||
+                myParentsAtMyBirth == MaritialStatus.Remarried ||
+                myParentsAtMyBirth == MaritialStatus.Separated)
             {
 
                 myMother.LastName = NAmerUtil.GetAmericanLastName();
@@ -223,11 +275,15 @@ namespace NoFuture.Rand.Domus
             }
 
             //hea
-            if (myMother.MaritalStatus == MaritialStatus.Married)
+            if (myParentsAtMyBirth == MaritialStatus.Married)
             {
-                myMother.Spouse = myFather;
-                myFather.Spouse = myMother;
                 NAmerUtil.SetNAmerCohabitants(myMother, myFather);
+                var marriedOn = NAmerUtil.SolveForMarriageDate(myFather.BirthDate, Gender.Male);
+                if (marriedOn != null)
+                {
+                    myMother.AddNewSpouseToList(myFather, marriedOn.Value);
+                    myFather.AddNewSpouseToList(myMother, marriedOn.Value);
+                }
             }
 
             myMother.OtherNames.Add(new Tuple<KindsOfPersonalNames, string>(KindsOfPersonalNames.Father,
@@ -237,9 +293,9 @@ namespace NoFuture.Rand.Domus
             _mother = myMother;
         }
 
-        protected internal void ResolveSpouse()
+        protected internal void ResolveSpouse(MaritialStatus myMaritialStatus)
         {
-            if (MaritalStatus == MaritialStatus.Single || MaritalStatus == MaritialStatus.Unknown)
+            if (myMaritialStatus == MaritialStatus.Single || myMaritialStatus == MaritialStatus.Unknown)
                 return;
 
             var dt = DateTime.Now;
@@ -261,30 +317,22 @@ namespace NoFuture.Rand.Domus
             //add maiden name, set new last name to match husband
             if (_myGender == Gender.Female)
             {
-                LastName = spouse.LastName;
                 if (OtherNames.All(x => x.Item1 != KindsOfPersonalNames.Father))
                     OtherNames.Add(new Tuple<KindsOfPersonalNames, string>(KindsOfPersonalNames.Father, _father.LastName));
             }
 
             //set death date if widowed
-            if (MaritalStatus == MaritialStatus.Widowed)
+            if (myMaritialStatus == MaritialStatus.Widowed)
             {
                 var d = Convert.ToInt32(Math.Round(GetAge(null) * 0.15));
                 spouse.DeathDate = Etx.Date(Etx.IntNumber(1, d), null);
             }
 
-
-            //assign reciprocial
-            spouse.Spouse = this;
-            _spouse = spouse;
-
-            NAmerUtil.SetNAmerCohabitants(spouse, this);
-
-            if (MaritalStatus != MaritialStatus.Divorced && MaritalStatus != MaritialStatus.Remarried &&
-                MaritalStatus != MaritialStatus.Separated)
+            if (myMaritialStatus != MaritialStatus.Divorced && myMaritialStatus != MaritialStatus.Remarried &&
+                myMaritialStatus != MaritialStatus.Separated)
             {
                 //add internal date-range for resolution of children
-                _spouses.Add(new SpouseData{Spouse = _spouse, MarriedOn = marriedOn, Ordinal = 0});
+                AddNewSpouseToList(spouse, marriedOn);
             }
             else
             {
@@ -292,30 +340,10 @@ namespace NoFuture.Rand.Domus
                 var separatedDate = Etx.Date(NAmerUtil.AvgLengthOfMarriage, marriedOn);
 
                 //reset date-range with separated date
-                _spouses.Clear();
-                _spouses.Add(new SpouseData { Spouse = _spouse, MarriedOn = marriedOn, SeparatedOn = separatedDate, Ordinal = 0 });
-
-                //add ex-husband last name to list
-                if (MyGender == Gender.Female)
-                {
-                    OtherNames.Add(
-                        new Tuple<KindsOfPersonalNames, string>(
-                            KindsOfPersonalNames.Former | KindsOfPersonalNames.Surname | KindsOfPersonalNames.Spouse,
-                            _spouse.LastName));
-
-                    //set back to maiden name
-                    LastName = _father.LastName;
-                }
-
-                //separate and move out
-                _spouse.Spouse = null;
-                _spouse.MaritalStatus = MaritalStatus;
-                _spouse = null;
-                HomeCityArea = CityArea.American(HomeCityArea.GetPostalCodePrefix());
-                HomeAddress = Address.American();
+                AddNewSpouseToList(spouse, marriedOn, separatedDate);
 
                 //leave when no second spouse applicable
-                if (MaritalStatus != MaritialStatus.Remarried) return;
+                if (myMaritialStatus != MaritialStatus.Remarried) return;
 
                 var ageSpread = 6;
                 if (MyGender == Gender.Male)
@@ -329,16 +357,7 @@ namespace NoFuture.Rand.Domus
                     separatedDate);
 
                 //add second date-range for resolution of children
-                _spouses.Add(new SpouseData {Spouse = secondSpouse, MarriedOn = remarriedOn, Ordinal = 1});
-
-                //change female last name to match second husband
-                if (_myGender == Gender.Female)
-                    LastName = secondSpouse.LastName;
-
-                //assign these reciprocial
-                _spouse = secondSpouse;
-                secondSpouse.Spouse = _spouse;
-                NAmerUtil.SetNAmerCohabitants(secondSpouse, this);
+                AddNewSpouseToList(secondSpouse, remarriedOn);
             }
         }
 
@@ -359,8 +378,13 @@ namespace NoFuture.Rand.Domus
             var currentNumChildren = 0;
 
             //two extremes
-            var propTeenagePreg = Math.Round(GetProbabilityTeenagePreg() * 1000);
-            var propLifetimeChildless = 1000 - Math.Round(GetProbabilityLifetimeChildless()*1000);
+            var teenPregEquation = NAmerUtil.Equations.GetProbTeenPregnancyByRace(Race);
+            var teenageAge = Etx.IntNumber(15, 19);
+            var teenageYear = _dob.Value.AddYears(teenageAge).Year;
+            var propTeenagePreg = Math.Round(teenPregEquation.SolveForY(teenageYear) * 1000);
+
+            var propLifetimeChildless = 1000 - Math.Round((NAmerUtil.SolveForProbabilityChildless(_dob.Value,
+                Education == null ? OccidentalEdu.Empty : Education.GetEduLevel(null))) * 1000);
 
             //random value within range of two extremes
             var randItoM = Etx.IntNumber(1, 1000);
@@ -372,7 +396,7 @@ namespace NoFuture.Rand.Domus
             //other extreme is teenage preg
             if (randItoM <= propTeenagePreg)
             {
-                var teenPregChildDob = Etx.Date(Etx.IntNumber(15, 19), _dob);
+                var teenPregChildDob = Etx.Date(teenageAge, _dob);
                 AddNewChildToList(teenPregChildDob);
                 currentNumChildren += 1;
             }
@@ -399,98 +423,70 @@ namespace NoFuture.Rand.Domus
         /// aligning <see cref="IPerson"/> last name and father to match
         /// spouses.
         /// </summary>
-        /// <param name="childDob">
+        /// <param name="myChildDob">
         /// This will be adusted up by when the Birth Date would occur during the pregnancy 
         /// of a sibling unless it is the exact same date (twins).
         /// </param>
-        protected internal void AddNewChildToList(DateTime? childDob)
+        protected internal void AddNewChildToList(DateTime? myChildDob)
         {
-            if (childDob == null || MyGender == Gender.Male)
+            if (myChildDob == null || MyGender == Gender.Male)
                 return;
 
+            var dt = DateTime.Now;
+
+            NorthAmerican myChild = null;
+
             //child dob must not be during the 280 day of pregnancy of next sibling unless twins
-            childDob = AdjustBirthDateWhenDuringAnotherPregnancy(childDob);
+            myChildDob = AdjustBirthDateWhenDuringAnotherPregnancy(myChildDob);
 
-            var child = new NorthAmerican(childDob,
-                Etx.CoinToss ? Gender.Female : Gender.Male) { Mother = this };
-
-            var childAge = child.GetAge(null);
-
-            //set underage child living with mother
-            if (child.GetAge(null) < 18)
-            {
-                NAmerUtil.SetNAmerCohabitants(child, this);
-                child.MaritalStatus = MaritialStatus.Single;
-                child.Spouse = null;
-            }
+            var myChildeAge = Person.CalcAge(myChildDob.Value, dt);
+            var myChildGender = Etx.CoinToss ? Gender.Female : Gender.Male;
 
 
-            var isDaughterWithSpouse = child.MyGender == Gender.Female &&
-                                       NAmerUtil.Equations.FemaleDob2MarriageAge.SolveForY(childDob.Value.Year) >=
-                                       childAge && childAge >= 18;
+            var isDaughterWithSpouse = myChildGender == Gender.Female &&
+                                       NAmerUtil.Equations.FemaleDob2MarriageAge.SolveForY(myChildDob.Value.Year) >=
+                                       myChildeAge && myChildeAge >= GetMyHomeStatesAgeOfConsent();
             //never married
             if (!_spouses.Any())
             {
+                myChild = new NorthAmerican(myChildDob, myChildGender, this, null) {LastName = LastName};
                 //default to mother last name
-                child.LastName = LastName;
-                _children.Add(child);
+                _children.Add(myChild);
                 return;
             }
 
             //assign child father and lastname when born within range of marriage
-            var assignedLname = false;
             for (var i = 0; i <= _spouses.Max(x => x.Ordinal); i++)
             {
                 var marriage = _spouses.FirstOrDefault(x => x.Ordinal == i);
                 if (marriage == null)
                     continue;
 
-                if (DateTime.Compare(childDob.Value, marriage.MarriedOn) >= 0 &&
+                if (DateTime.Compare(myChildDob.Value, marriage.MarriedOn) >= 0 &&
                     (marriage.SeparatedOn == null ||
-                     DateTime.Compare(childDob.Value, marriage.SeparatedOn.Value) < 0))
+                     DateTime.Compare(myChildDob.Value, marriage.SeparatedOn.Value) < 0))
                 {
-                    if (!isDaughterWithSpouse)
-                        child.LastName = marriage.Spouse.LastName;
 
-                    assignedLname = true;
-                    child.Father = marriage.Spouse;
+                    myChild = new NorthAmerican(myChildDob, myChildGender, this, marriage.Spouse);
+                    if (!isDaughterWithSpouse)
+                        myChild.LastName = marriage.Spouse.LastName;
                 }
             }
 
             //for child born in any range outside of marriage, assign lastname to maiden name
-            if (!assignedLname)
+            if (myChild == null)
             {
                 var maidenName = OtherNames.FirstOrDefault(x => x.Item1 == KindsOfPersonalNames.Father);
                 if (maidenName != null && !string.IsNullOrWhiteSpace(maidenName.Item2))
                 {
-                    child.LastName = maidenName.Item2;
+                    myChild = new NorthAmerican(myChildDob, myChildGender, this, null) {LastName = maidenName.Item2};
                 }
                 else
                 {
-                    //default to mother last name
-                    child.LastName = LastName;
+                    myChild = new NorthAmerican(myChildDob, myChildGender, this, null) { LastName = this.LastName };
                 }
             }
-            _children.Add(child);
-        }
-
-        protected internal double GetProbabilityLifetimeChildless()
-        {
-            ThrowOnBirthDateNull();
-
-            return NAmerUtil.SolveForProbabilityChildless(_dob.Value,
-                Education == null ? OccidentalEdu.Empty : Education.GetEduLevel(null));
-        }
-
-        protected internal double GetProbabilityTeenagePreg()
-        {
-            ThrowOnBirthDateNull();
-
-            var teenPregEquation = NAmerUtil.Equations.GetProbTeenPregnancyByRace(Race);
-
-            var teenageYear = _dob.Value.AddYears(Etx.IntNumber(15, 19)).Year;
-
-            return teenPregEquation.SolveForY(teenageYear);
+            _children.Add(myChild);
         }
 
         protected internal DateTime? AdjustBirthDateWhenDuringAnotherPregnancy(DateTime? childDob)
@@ -510,6 +506,41 @@ namespace NoFuture.Rand.Domus
             return invalidRange.BirthDate.Value.AddDays(Etx.IntNumber(5, 30));
         }
 
+        protected internal void AddNewSpouseToList(IPerson spouse, DateTime marriedOn, DateTime? separatedOn = null)
+        {
+            //we need this or will will blow out the stack 
+            if (_spouses.Any(x => DateTime.Compare(x.MarriedOn, marriedOn) == 0))
+                return;
+            if (separatedOn == null)
+            {
+                if (_myGender == Gender.Female)
+                    LastName = spouse.LastName;
+            }
+            else if (MyGender == Gender.Female)
+            {
+                //add ex-husband last name to list
+                OtherNames.Add(
+                    new Tuple<KindsOfPersonalNames, string>(
+                        KindsOfPersonalNames.Former | KindsOfPersonalNames.Surname | KindsOfPersonalNames.Spouse,
+                        spouse.LastName));
+
+                //set back to maiden name
+                LastName = _father.LastName;
+            }
+            _spouses.Add(new SpouseData
+            {
+                Spouse = spouse,
+                MarriedOn = marriedOn,
+                SeparatedOn = separatedOn,
+                Ordinal = _spouses.Count + 1
+            });
+            var nAmerSpouse = spouse as NorthAmerican;
+            if (nAmerSpouse == null)
+                return;
+
+            nAmerSpouse.AddNewSpouseToList(this, marriedOn, separatedOn);
+        }
+
         private void ThrowOnBirthDateNull()
         {
             if (_dob == null)
@@ -517,6 +548,14 @@ namespace NoFuture.Rand.Domus
                     new RahRowRagee(
                         String.Format("The random person named {0}, {1} does not have a Date Of Birth assigned.",
                             LastName, FirstName));
+        }
+
+        private int GetMyHomeStatesAgeOfConsent()
+        {
+            if (HomeCityArea == null)
+                return UsState.AGE_OF_ADULT;
+            var myHomeState = UsState.GetStateByPostalCode(HomeState);
+            return myHomeState == null ? UsState.AGE_OF_ADULT : myHomeState.AgeOfConsent;
         }
 
         #endregion
@@ -536,7 +575,6 @@ namespace NoFuture.Rand.Domus
         internal double From { get; set; }
         internal double To { get; set; }
     }
-
     [EditorBrowsable(EditorBrowsableState.Never)]
     internal class SpouseData
     {
@@ -544,6 +582,21 @@ namespace NoFuture.Rand.Domus
         internal DateTime MarriedOn;
         internal DateTime? SeparatedOn;
         internal int Ordinal;
+
+        public override bool Equals(object obj)
+        {
+            var sd = obj as SpouseData;
+            if (sd == null)
+                return false;
+
+            var mdq = DateTime.Compare(MarriedOn.Date, sd.MarriedOn.Date) == 0;
+
+            var ddq =
+                DateTime.Compare(SeparatedOn.GetValueOrDefault(MarriedOn.Date).Date,
+                    sd.SeparatedOn.GetValueOrDefault(sd.MarriedOn.Date)) == 0;
+
+            return mdq && ddq;
+        }
     }
 
 }

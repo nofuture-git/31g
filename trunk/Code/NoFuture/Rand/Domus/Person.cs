@@ -23,10 +23,10 @@ namespace NoFuture.Rand.Domus
         public virtual string LastName { get; set; }
         public virtual Gender MyGender { get; set; }
         public virtual List<Uri> NetUri { get { return _netUris; } }
-        public virtual MaritialStatus MaritalStatus { get; set; }
-        public virtual IPerson Spouse { get; set; }
-        public virtual IPerson Father { get; set; }
-        public virtual IPerson Mother { get; set; }
+        public abstract MaritialStatus GetMaritalStatus(DateTime? dt);
+        public abstract IPerson GetSpouse(DateTime? dt);
+        public abstract IPerson GetFather();
+        public abstract IPerson GetMother();
         public virtual List<IPerson> Children { get { return _children; } }
         public Personality Personality { get { return _personality; } }
         public virtual IEducation Education { get; set; }
@@ -49,6 +49,14 @@ namespace NoFuture.Rand.Domus
                 throw new ItsDeadJim("Its Dead Jim.");
 
             return CalcAge(BirthDate.Value, dt);
+        }
+
+        public Gender GetMyOppositeGender()
+        {
+            if(MyGender == Gender.Unknown)
+                return Gender.Unknown;
+
+            return MyGender == Gender.Female ? Gender.Male : Gender.Female;
         }
 
         /// <summary>
