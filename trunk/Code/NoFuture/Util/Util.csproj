@@ -105,8 +105,8 @@
     <Compile Include="Math\NormalDistEquation.cs" />
     <Compile Include="Net.cs" />
     <Compile Include="NfPath.cs" />
+    <Compile Include="NfTypeName.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TypeName.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="LoremIpsum.EightParagraphs.txt" />

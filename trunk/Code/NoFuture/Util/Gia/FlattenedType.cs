@@ -14,8 +14,8 @@ namespace NoFuture.Util.Gia
         public string Separator { get; set; }
         public bool UseTypeNames { get; set; }
 
-        public string TypeFullName { get { return TypeName.GetLastTypeNameFromArrayAndGeneric(RootType); } }
-        public string SimpleTypeName { get { return TypeName.GetTypeNameWithoutNamespace(TypeFullName); } }
+        public string TypeFullName { get { return NfTypeName.GetLastTypeNameFromArrayAndGeneric(RootType); } }
+        public string SimpleTypeName { get { return NfTypeName.GetTypeNameWithoutNamespace(TypeFullName); } }
 
         public Type RootType { get; set; }
         public List<FlattenedLine> Lines { get; set; }

@@ -74,7 +74,7 @@ namespace NoFuture.Gen.InvokeGetCgOfType
                     return;
                 }
                 
-                Shared.Constants.AssemblySearchPath = Path.GetDirectoryName(asmPath);
+                Shared.Constants.AssemblySearchPaths.Add(Path.GetDirectoryName(asmPath));
                 var asm = Shared.Constants.UseReflectionOnlyLoad
                     ? Asm.NfReflectionOnlyLoadFrom(asmPath)
                     : Asm.NfLoadFrom(asmPath);

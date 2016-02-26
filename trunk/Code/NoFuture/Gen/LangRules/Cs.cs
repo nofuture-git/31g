@@ -55,7 +55,7 @@ namespace NoFuture.Gen.LangRules
             var cgSig = string.Join(",", cgArgs);
             var tn = cgMem.IsCtor ? string.Empty : cgMem.TypeName;
             var n = cgMem.IsCtor
-                ? TypeName.GetTypeNameWithoutNamespace(cgMem.TypeName)
+                ? NfTypeName.GetTypeNameWithoutNamespace(cgMem.TypeName)
                 : string.Format(" {0}", cgMem.Name);
 
             cgSig = cgSig.Length > 0 || cgMem.IsCtor || cgMem.IsMethod
@@ -252,7 +252,7 @@ namespace NoFuture.Gen.LangRules
                 cgMem.Args.Select(
                     x =>
                         @"\s*\b" +
-                        Util.Etc.EscapeString(TypeName.GetTypeNameWithoutNamespace(x.ArgType), EscapeStringType.REGEX) +
+                        Util.Etc.EscapeString(NfTypeName.GetTypeNameWithoutNamespace(x.ArgType), EscapeStringType.REGEX) +
                         @"\b\s*([^\,]+?)").ToList();
             regexPattern.AppendFormat(@"\s*\({0}\)", string.Join(@"\,", simpleArgTypes));
 
@@ -822,7 +822,7 @@ namespace NoFuture.Gen.LangRules
             var mytokens = myXDocFrame.FindEnclosingTokens(joinedContent);
             if (mytokens == null || mytokens.Count < 1)
                 return false;
-            var targetToken = TypeName.GetTypeNameWithoutNamespace(typename) == typename ? mytokens[0] : mytokens[1];
+            var targetToken = NfTypeName.GetTypeNameWithoutNamespace(typename) == typename ? mytokens[0] : mytokens[1];
 
             var joinedContentAsChars = joinedContent.ToCharArray();
             //need to count the number of newlines up to the token's start
@@ -859,7 +859,7 @@ namespace NoFuture.Gen.LangRules
             var mytokens = myXDocFrame.FindEnclosingTokens(joinedContent);
             if (mytokens == null || mytokens.Count < 1)
                 return false;
-            var targetToken = TypeName.GetTypeNameWithoutNamespace(typename) == typename ? mytokens[0] : mytokens[1];
+            var targetToken = NfTypeName.GetTypeNameWithoutNamespace(typename) == typename ? mytokens[0] : mytokens[1];
 
             var joinedContentAsChars = joinedContent.ToCharArray();
 

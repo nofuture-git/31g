@@ -8,6 +8,7 @@ namespace NoFuture.Rand.Edu
         string Name { get; set; }
         string CampusName { get; set; }
         float? CrimeRate { get; set; }
+        Uri Website { get; set; }
     }
 
     public class AmericanUniversity : IUniversity

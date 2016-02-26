@@ -18,9 +18,9 @@
         {
             TypeFullName = typeFullName;
             IdTypeFullName = idTypeFullName;
-            OuputNamespace = Util.TypeName.GetTypeNameWithoutNamespace(TypeFullName);
+            OuputNamespace = Util.NfTypeName.GetTypeNameWithoutNamespace(TypeFullName);
             IdTypeTest = Gen.Settings.LangStyle.GenUseIsNotDefaultValueTest(IdTypeFullName, "DataId");
-            ClassName = Util.TypeName.GetTypeNameWithoutNamespace(TypeFullName);
+            ClassName = Util.NfTypeName.GetTypeNameWithoutNamespace(TypeFullName);
         }
     }
 }

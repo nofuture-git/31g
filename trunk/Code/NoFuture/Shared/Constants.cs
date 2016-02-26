@@ -271,6 +271,7 @@ namespace NoFuture.Shared
         private static string _symbolsFolder = @"C:\Symbols";
         private static int _threadSleepTime;
         private static bool _useReflectionOnlyLoad = true;
+        private static readonly List<string> _searchAsmDirs = new List<string>();
 
         public const double DBL_TROPICAL_YEAR = 365.24255;
         public static TimeSpan TropicalYear = new TimeSpan(365, 5, 49, 16, 320);
@@ -373,9 +374,9 @@ namespace NoFuture.Shared
         }
 
         /// <summary>
-        /// Global path used by NoFuture.Util.FxPointers.ResolveAssemblyEventHandler
+        /// Global paths used by NoFuture.Util.FxPointers.ResolveAssemblyEventHandler
         /// </summary>
-        public static string AssemblySearchPath { get; set; }
+        public static List<string> AssemblySearchPaths { get { return _searchAsmDirs; }}
 
         /// <summary>
         /// Path used as local directory within the environment variable '_NT_SYMBOL_PATH'

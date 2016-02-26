@@ -26,12 +26,12 @@ namespace NoFuture.Hbm
             {
                 var nameParts = name.Split(Constants.DefaultTypeSeparator);
                 var actualClassName = nameParts[(nameParts.Length - 1)].Replace(" ",Globals.REPLACE_SPACE_WITH_SEQUENCE);
-                nameParts[(nameParts.Length - 1)] = TypeName.SafeDotNetTypeName(actualClassName);
+                nameParts[(nameParts.Length - 1)] = NfTypeName.SafeDotNetTypeName(actualClassName);
                 name = string.Join(Constants.DefaultTypeSeparator.ToString(CultureInfo.InvariantCulture), nameParts);
             }
 
             //remove any chars not allowed in C# ids
-            name = TypeName.SafeDotNetTypeName(name);
+            name = NfTypeName.SafeDotNetTypeName(name);
 
             //capitalize first letter of whole word to avoid conflict with C# reserved words
             name = Etc.CapitalizeFirstLetterOfWholeWords(name, Constants.DefaultTypeSeparator);
@@ -45,9 +45,9 @@ namespace NoFuture.Hbm
             asmQualifiedName.Append(name);
 
             if (!String.IsNullOrWhiteSpace(outputNamespace))
-                asmQualifiedName.AppendFormat(", {0}", TypeName.DraftCscExeAsmName(outputNamespace));
+                asmQualifiedName.AppendFormat(", {0}", NfTypeName.DraftCscExeAsmName(outputNamespace));
 
-            var typeName = new TypeName(asmQualifiedName.ToString());
+            var typeName = new NfTypeName(asmQualifiedName.ToString());
 
             if (!String.IsNullOrWhiteSpace(outputNamespace))
                 return typeName.AssemblyQualifiedName;
@@ -58,7 +58,7 @@ namespace NoFuture.Hbm
         {
             name = Etc.ExtractLastWholeWord(name,Constants.DefaultTypeSeparator);
             name = Etc.CapitalizeFirstLetterOfWholeWords(name, null);
-            return TypeName.SafeDotNetIdentifier(name,replaceInvalidsWithHexEsc);
+            return NfTypeName.SafeDotNetIdentifier(name,replaceInvalidsWithHexEsc);
         }
         public static void ValidSplit(string name, int expectedLength)
         {
@@ -80,7 +80,7 @@ namespace NoFuture.Hbm
 
         public static string ManyToOnePropertyName(string fullAssemblyQualTypeName, string[] fkColumnNames)
         {
-            var fkPropertyType = new TypeName(fullAssemblyQualTypeName);
+            var fkPropertyType = new NfTypeName(fullAssemblyQualTypeName);
 
             var fkPropertyName = fkPropertyType.ClassName;
             fkColumnNames = fkColumnNames.Select(x => Util.Etc.CapitalizeFirstLetterOfWholeWords(Util.Etc.ExtractLastWholeWord(x, '.'), null)).ToArray();
@@ -90,7 +90,7 @@ namespace NoFuture.Hbm
 
         public static string BagPropertyName(string fullAssemblyQualTypeName)
         {
-            var pluralBagName = new Util.TypeName(fullAssemblyQualTypeName);
+            var pluralBagName = new Util.NfTypeName(fullAssemblyQualTypeName);
             return Util.Etymological.En.ToPlural(pluralBagName.ClassName, true);
         }
         

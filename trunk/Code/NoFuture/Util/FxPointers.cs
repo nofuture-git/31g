@@ -8,13 +8,21 @@ namespace NoFuture.Util
 {
     public class FxPointers
     {
+        #region fields
         [EditorBrowsable(EditorBrowsableState.Never)]
         private static readonly object AppDomainSearchLock = new object();
         [EditorBrowsable(EditorBrowsableState.Never)]
         private static bool _addedReflectionOnlyAssemblyHandler = false;
         [EditorBrowsable(EditorBrowsableState.Never)]
         private static bool _addedAssemblyHandler = false;
+        #endregion
 
+        #region properties
+        public static bool IsReflectionOnlyAssemblyResolve { get { return _addedReflectionOnlyAssemblyHandler; } }
+        public static bool IsAssemblyResolve { get { return _addedAssemblyHandler; } }
+        #endregion
+
+        #region methods
         /// <summary>
         /// Adds an event handler to <see cref="AppDomain.ReflectionOnlyAssemblyResolve"/>
         /// when the global variable <see cref="NoFuture.Shared.Constants.UseReflectionOnlyLoad"/> is True.  
@@ -129,5 +137,6 @@ namespace NoFuture.Util
         {
             return false;
         }
+        #endregion
     }
 }

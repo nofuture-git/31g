@@ -56,8 +56,8 @@ namespace NoFuture.Util.Gia
                 (info, s) =>
                     string.IsNullOrWhiteSpace(s) ||
                     string.Equals(string.Format("{0}", info.PropertyType), s, StringComparison.OrdinalIgnoreCase) ||
-                    string.Equals(TypeName.GetLastTypeNameFromArrayAndGeneric(info.PropertyType), s, StringComparison.OrdinalIgnoreCase) ||
-                    (s == Constants.ENUM && TypeName.IsEnumType(info.PropertyType));
+                    string.Equals(NfTypeName.GetLastTypeNameFromArrayAndGeneric(info.PropertyType), s, StringComparison.OrdinalIgnoreCase) ||
+                    (s == Constants.ENUM && NfTypeName.IsEnumType(info.PropertyType));
 
             var currentType = assembly.NfGetType(typeFullName);
             if (currentType == null)
@@ -71,14 +71,14 @@ namespace NoFuture.Util.Gia
                 typeStack = new Stack();
                 typeStack.Push(typeFullName);
                 fiValueTypes = new Stack<FlattenedItem>();
-                fiValueTypes.Push(new FlattenedItem { FlName = TypeName.GetTypeNameWithoutNamespace(typeFullName), FlType = currentType });
+                fiValueTypes.Push(new FlattenedItem { FlName = NfTypeName.GetTypeNameWithoutNamespace(typeFullName), FlType = currentType });
             }
 
             var typeNamesList =
-                currentType.GetProperties()
+                currentType.GetProperties(Constants.DefaultFlags)
                     .Where(
                         x =>
-                            (TypeName.IsValueTypeProperty(x) && limitOnPi(x, limitOnValueType) 
+                            (NfTypeName.IsValueTypeProperty(x) && limitOnPi(x, limitOnValueType) 
                              || (limitOnValueType == Constants.ENUM && limitOnPi(x, limitOnValueType))) //more limbo branching for enums
                             ) 
                     .Select(p => new Tuple<Type, string>(p.PropertyType, p.Name))
@@ -101,9 +101,9 @@ namespace NoFuture.Util.Gia
             }
 
             //then recurse the object types
-            foreach (var p in currentType.GetProperties().Where(x => !TypeName.IsValueTypeProperty(x)))
+            foreach (var p in currentType.GetProperties(Constants.DefaultFlags).Where(x => !NfTypeName.IsValueTypeProperty(x)))
             {
-                var typeIn = TypeName.GetLastTypeNameFromArrayAndGeneric(p.PropertyType);
+                var typeIn = NfTypeName.GetLastTypeNameFromArrayAndGeneric(p.PropertyType);
 
                 if (typeIn == null || typeStack.Contains(typeIn)) continue;
 
@@ -121,7 +121,7 @@ namespace NoFuture.Util.Gia
 
                 //enum types being handled as limbo between value type and ref type
                 string[] enumVals;
-                if (displayEnums && TypeName.IsEnumType(p.PropertyType, out enumVals))
+                if (displayEnums && NfTypeName.IsEnumType(p.PropertyType, out enumVals))
                 {
                     foreach (var ev in enumVals)
                     {

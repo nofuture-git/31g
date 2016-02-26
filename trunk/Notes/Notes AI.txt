@@ -219,6 +219,12 @@ Constraint Satisfaction Search
    on the yet-to-be assigned variables possiable values.
    - this is a special case of "arc consistency"
    - arc consistency exhibits a form of constraint propagation
+ - most-constraining-variable: in terms of heuristic the next 
+   to receive a value should be the one involved in the largest 
+   number of constraints on other yet-to-be-assigned variables
+ - least-constraining-value: the value which should be used next 
+   in assignment is a value that rules out the smallest number of values
+   in variables connected to the current variable by constraints.
 ----
 
 ----
@@ -277,3 +283,31 @@ Informed Search Methods
       - A* is optimally efficient for any given hueristic function, no other
         algorithm is guaranteed to expand fewer nodes than A*
 ----		
+
+----
+Heuristic Function Example:
+ 8-block puzzle (those cheap plastic puzzles with eight tiles and one empty one)
+ - tile in the corner could move 2 places
+ - tile in the middle could move 4 places
+ - the rest could move 3 places
+  - that averages to a branch factor of 3
+ - there are 9! possiable arrangements of the tiles
+ - cannot move diagonial so calc city distance is called manhattan distance
+ - effective branching factor is an algebra eq. solved for with guess of 
+   total number of nodes expanded at some depth
+  - at depth 5 with 52 nodes we find a solution then effective branching factor
+    is solved using the formula from breadth-frist max possiable nodes
+	N = 1 + b + b^2 + b^3 + ... + b^d
+   52 = 1 + b + b^2 + b^3 + b^4 + b^5 
+   - solve for 'b'
+   - higher numbered results are always better and are stated
+    has 'such-and-such heuristic f(x) dominates the other such-and-such f(x)'
+ - still not clear how to derive a heuristic function - for distance it was 
+   easy since we know the max straight-line distance and had something to subtract from
+ - sometimes using a less restricted operator helps solve for the hueristic function
+  - with the block problem tile movement (operator) was limited in direction and if
+    the state was empty - if we loosen these restrictions its called 'relaxed problem'
+  - when the operator is written down in formal syntax, relaxing it can be automatic
+ - another trick is to have a catalog of heuristics and wrap them in a function that 
+   returns the max.
+----

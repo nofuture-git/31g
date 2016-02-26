@@ -35,7 +35,7 @@ namespace NoFuture.Tests.Util
         public void TestResolveAssembly_InAssemblySearchPath()
         {
             MakeSomeAssemblies();
-            NoFuture.Shared.Constants.AssemblySearchPath = TEMPDIR;
+            NoFuture.Shared.Constants.AssemblySearchPaths.Add(TEMPDIR);
             var testAsm2 =
                 System.Reflection.Assembly.ReflectionOnlyLoadFrom(System.IO.Path.Combine(TEMPDIR, "TestAsm2.dll"));
             var arg = new ResolveEventArgs("TestAsm, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null", testAsm2);

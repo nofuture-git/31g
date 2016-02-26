@@ -8,7 +8,6 @@ using System.Text.RegularExpressions;
 using NoFuture.Shared;
 using NoFuture.Shared.DiaSdk.LinesSwitch;
 using NoFuture.Tokens;
-using NfTypeName = NoFuture.Util.TypeName;
 
 namespace NoFuture.Gen
 {

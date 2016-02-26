@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using NoFuture.Util;
-using NfTypeName = NoFuture.Util.TypeName;
 
 namespace NoFuture.Gen
 {
@@ -50,11 +49,11 @@ namespace NoFuture.Gen
             foreach (
                 var property in
                     cgType.Properties.Where(
-                        x => !Etc.ValueTypesList.Contains(TypeName.GetLastTypeNameFromArrayAndGeneric(x.TypeName, "<")))
+                        x => !Etc.ValueTypesList.Contains(NfTypeName.GetLastTypeNameFromArrayAndGeneric(x.TypeName, "<")))
                 )
             {
                 var toName =
-                    TypeName.SafeDotNetIdentifier(TypeName.GetLastTypeNameFromArrayAndGeneric(property.TypeName, "<"));
+                    NfTypeName.SafeDotNetIdentifier(NfTypeName.GetLastTypeNameFromArrayAndGeneric(property.TypeName, "<"));
                 var edg = new StringBuilder();
                 edg.AppendFormat("{0} -> {1}", myName, toName);
                 edg.Append(property.IsEnumerableType ? " [arrowhead=odiamond]" : " [arrowhead=vee]");
@@ -77,7 +76,7 @@ namespace NoFuture.Gen
         public static string ToGraphVizNode(this CgType cgType)
         {
             var graphViz = new StringBuilder();
-            graphViz.Append(TypeName.SafeDotNetIdentifier(cgType.FullName));
+            graphViz.Append(NfTypeName.SafeDotNetIdentifier(cgType.FullName));
             graphViz.AppendLine(" [shape=Mrecord, label=<<table bgcolor=\"white\" border=\"0\" >");
             graphViz.AppendLine("<th>");
             graphViz.AppendLine("<td bgcolor=\"grey\" align=\"center\">");
@@ -96,7 +95,7 @@ namespace NoFuture.Gen
 
         public static string ToGraphVizString(this CgArg cgArg)
         {
-            return TypeName.GetTypeNameWithoutNamespace(cgArg.ArgType);
+            return NfTypeName.GetTypeNameWithoutNamespace(cgArg.ArgType);
         }
 
         /// <summary>
@@ -108,11 +107,11 @@ namespace NoFuture.Gen
         /// <returns></returns>
         public static string EmptyGraphVizClassNode(string typeFullName, string[] enumValues)
         {
-            var className = TypeName.GetTypeNameWithoutNamespace(typeFullName);
-            var ns = TypeName.GetNamespaceWithoutTypeName(typeFullName);
+            var className = NfTypeName.GetTypeNameWithoutNamespace(typeFullName);
+            var ns = NfTypeName.GetNamespaceWithoutTypeName(typeFullName);
             var fullName = string.Format("{0}{1}", string.IsNullOrWhiteSpace(ns) ? string.Empty : ns + ".", className);
             var graphViz = new StringBuilder();
-            graphViz.Append(TypeName.SafeDotNetIdentifier(fullName));
+            graphViz.Append(NfTypeName.SafeDotNetIdentifier(fullName));
             graphViz.AppendLine(" [shape=Mrecord, label=<<table bgcolor=\"white\" border=\"0\" >");
             graphViz.AppendLine("<th>");
             graphViz.AppendLine("<td bgcolor=\"grey\" align=\"center\">");

@@ -29,7 +29,7 @@ namespace NoFuture.Hbm.SortingContainers
                 column_ordinal = col.Ordinal;
             if (col.DataType != null && !string.IsNullOrWhiteSpace(col.DataType.FullName))
             {
-                data_type = Util.TypeName.GetLastTypeNameFromArrayAndGeneric(col.DataType.FullName);
+                data_type = Util.NfTypeName.GetLastTypeNameFromArrayAndGeneric(col.DataType.FullName);
                 if (data_type == "System.String")
                     string_length = Globals.MSSQL_MAX_VARCHAR;
             }

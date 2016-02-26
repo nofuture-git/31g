@@ -525,7 +525,7 @@ namespace NoFuture.Rand.Domus
                         spouse.LastName));
 
                 //set back to maiden name
-                LastName = _father.LastName;
+                LastName = _father == null ? NAmerUtil.GetAmericanLastName() : _father.LastName;
             }
             _spouses.Add(new SpouseData
             {

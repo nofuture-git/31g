@@ -18,12 +18,9 @@ namespace NoFuture.Util
     /// These names are as they appear in IL and not one of 
     /// the particular .NET languages.
     /// </summary>
-    public class TypeName
+    public class NfTypeName
     {
         #region Fields
-        private const RegexOptions OPTIONS = RegexOptions.IgnoreCase;
-
-
         private readonly string _ctorString;
         private readonly string _version;
         private readonly string _assemblyName;
@@ -176,41 +173,26 @@ namespace NoFuture.Util
 
         #endregion
 
-        public TypeName(string name)
+        public NfTypeName(string name)
         {
             if(String.IsNullOrWhiteSpace(name))
                 return;
 
             _ctorString = name;
 
-            var myRegex = new Regex(ASM_VERSION_REGEX, OPTIONS);
-            if (myRegex.IsMatch(name))
-            {
-                var groups = myRegex.Matches(name)[0];
-                if (groups.Groups[0].Success)
-                    _version = groups.Groups[0].Value;
-            }
-            myRegex = new Regex(ASM_CULTURE_REGEX, OPTIONS);
-            if (myRegex.IsMatch(name))
-            {
-                var groups = myRegex.Matches(name)[0];
-                if (groups.Groups[0].Success)
-                    _culture = groups.Groups[0].Value;
-            }
-            myRegex = new Regex(ASM_PRIV_TOKEN_REGEX, OPTIONS);
-            if (myRegex.IsMatch(name))
-            {
-                var groups = myRegex.Matches(name)[0];
-                if (groups.Groups[0].Success)
-                    _publicKeyToken = groups.Groups[0].Value;
-            }
-            myRegex = new Regex(ASM_PROC_ARCH_REGEX, OPTIONS);
-            if (myRegex.IsMatch(name))
-            {
-                var groups = myRegex.Matches(name)[0];
-                if (groups.Groups[0].Success)
-                    _procArch = groups.Groups[0].Value;
-            }
+            string valOut;
+            if(RegexCatalog.IsRegexMatch(name, ASM_VERSION_REGEX, out valOut))
+                _version = valOut;
+            
+            if (RegexCatalog.IsRegexMatch(name, ASM_CULTURE_REGEX, out valOut))
+                _culture = valOut;
+
+            if (RegexCatalog.IsRegexMatch(name, ASM_PRIV_TOKEN_REGEX, out valOut))
+                _publicKeyToken = valOut;
+
+            if (RegexCatalog.IsRegexMatch(name, ASM_PROC_ARCH_REGEX, out valOut))
+                _procArch = valOut;
+
             Func<string, string> trimUp = s => s.Replace(",", String.Empty).Trim();
             
             var nameLessOthers = name;
@@ -297,7 +279,7 @@ namespace NoFuture.Util
         /// </remarks>
         public static bool IsFullAssemblyQualTypeName(string name)
         {
-            return !String.IsNullOrWhiteSpace(name) && Regex.IsMatch(name, ASSEMBLY_QUALIFIED_CLASS_NAME_REGEX, OPTIONS);
+            return !String.IsNullOrWhiteSpace(name) && Regex.IsMatch(name, ASSEMBLY_QUALIFIED_CLASS_NAME_REGEX, RegexCatalog.MyRegexOptions);
         }
 
         /// <summary>
@@ -310,7 +292,7 @@ namespace NoFuture.Util
         /// </remarks>
         public static bool IsAssemblyFullName(string name)
         {
-            return !String.IsNullOrWhiteSpace(name) && Regex.IsMatch(name, FULL_ASSEMBLY_NAME_REGEX, OPTIONS);
+            return !String.IsNullOrWhiteSpace(name) && Regex.IsMatch(name, FULL_ASSEMBLY_NAME_REGEX, RegexCatalog.MyRegexOptions);
         }
 
         /// <summary>

@@ -766,7 +766,7 @@ namespace NoFuture.Util
             foreach (var k in names2Count.Keys)
             {
                 var repeated = names2Count[k];
-                var newName = TypeName.SafeDotNetIdentifier(k);
+                var newName = NfTypeName.SafeDotNetIdentifier(k);
                 if (repeated > 1)
                 {
                     for (var i = 0; i < names2Count[k]; i++)

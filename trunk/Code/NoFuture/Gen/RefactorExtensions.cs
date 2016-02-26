@@ -71,7 +71,7 @@ namespace NoFuture.Gen
             foreach (var dpArg in dependencyArgs)
             {
                 if (objMethods.Contains(dpArg.ArgName))
-                    dpArg.ArgName = string.Format("{0}{1}", Util.TypeName.DEFAULT_NAME_PREFIX, dpArg.ArgName);
+                    dpArg.ArgName = string.Format("{0}{1}", Util.NfTypeName.DEFAULT_NAME_PREFIX, dpArg.ArgName);
             }
 
             return dependencyArgs;
@@ -185,9 +185,9 @@ namespace NoFuture.Gen
 
 
             //need to move the existing code to the new file
-            var newNs =  TypeName.SafeDotNetTypeName(outFileNamespaceAndTypeName.Item1);
+            var newNs =  NfTypeName.SafeDotNetTypeName(outFileNamespaceAndTypeName.Item1);
 
-            var newTn =  TypeName.SafeDotNetIdentifier(outFileNamespaceAndTypeName.Item2);
+            var newTn =  NfTypeName.SafeDotNetIdentifier(outFileNamespaceAndTypeName.Item2);
 
             var idxRefactor = new Dictionary<Tuple<int, int>, string[]>();
             var newCgType = new CgType { Namespace = newNs, Name = newTn };
@@ -281,7 +281,7 @@ namespace NoFuture.Gen
                         pdbData.Where(
                             x =>
                                 x.symbolName ==
-                                string.Format("{0}{1}", Util.TypeName.PropertyNamePrefix.GET_PREFIX, cgMem.Name))
+                                string.Format("{0}{1}", Util.NfTypeName.PropertyNamePrefix.GET_PREFIX, cgMem.Name))
                             .Select(x => x)
                             .FirstOrDefault();
                     if (getterMatch != null)
@@ -295,7 +295,7 @@ namespace NoFuture.Gen
                         pdbData.Where(
                             x =>
                                 x.symbolName ==
-                                string.Format("{0}{1}", Util.TypeName.PropertyNamePrefix.SET_PREFIX, cgMem.Name))
+                                string.Format("{0}{1}", Util.NfTypeName.PropertyNamePrefix.SET_PREFIX, cgMem.Name))
                             .Select(x => x)
                             .FirstOrDefault();
                     if (setterMatch != null)

@@ -101,7 +101,7 @@ namespace NoFuture.Hbm
                         {
                             var dKmtoCName = distinctColumn.constraint_name;
                             var keyMtoFullyQualTypeName = Compose.ClassName(keyname, outputNamespace);
-                            var keyMtoNfTypeNameObj = new Util.TypeName(keyMtoFullyQualTypeName);
+                            var keyMtoNfTypeNameObj = new Util.NfTypeName(keyMtoFullyQualTypeName);
                             var keyMtoSimpleName = keyMtoNfTypeNameObj.ClassName;
 
                             var keyMtoXe = XeFactory.KeyManyToOneNode(keyMtoSimpleName,
@@ -249,7 +249,7 @@ namespace NoFuture.Hbm
                             fkColumnNames.Add(cn);
                         }
 
-                        var fkPropertyType = new Util.TypeName(Compose.ClassName(fkName, outputNamespace));
+                        var fkPropertyType = new Util.NfTypeName(Compose.ClassName(fkName, outputNamespace));
                         var fkPropertyName = Compose.ManyToOnePropertyName(Compose.ClassName(fkName, outputNamespace),
                             fkColumnNames.ToArray());
 
@@ -396,7 +396,7 @@ namespace NoFuture.Hbm
             var classXe = XeFactory.ClassNode(className, null, null);
             classXe.Add(XeFactory.IdNode(null));
 
-            var sqlQryName = Util.TypeName.SafeDotNetIdentifier(storedProc);
+            var sqlQryName = Util.NfTypeName.SafeDotNetIdentifier(storedProc);
             var returnsXe = XeFactory.ReturnNode(sqlQryName, className);
 
             foreach (var cMeta in returnedData[returnedData.Keys.First()])
@@ -471,7 +471,7 @@ namespace NoFuture.Hbm
                         hbmXmlOutputPath));
 
             var hbmClassName = hbmClassNode.Attributes["name"].Value;
-            var hbmTypeName = new Util.TypeName(hbmClassName);
+            var hbmTypeName = new Util.NfTypeName(hbmClassName);
             hbmClassName = hbmTypeName.ClassName;
 
             var propertyNames = new List<string>();
@@ -653,8 +653,8 @@ namespace NoFuture.Hbm
 
             if (simplePropDataType == typeof (Boolean).Name)
             {
-                if (simplePropName.StartsWith(Util.TypeName.DEFAULT_NAME_PREFIX))
-                    simplePropName = simplePropName.Remove(0, Util.TypeName.DEFAULT_NAME_PREFIX.Length);
+                if (simplePropName.StartsWith(Util.NfTypeName.DEFAULT_NAME_PREFIX))
+                    simplePropName = simplePropName.Remove(0, Util.NfTypeName.DEFAULT_NAME_PREFIX.Length);
                 simplePropName = "Is" + simplePropName;
             }
 

@@ -247,7 +247,7 @@ namespace NoFuture.Hbm.SortingContainers
                 }
 
 
-                if (param.IsUserDefinedType && Util.TypeName.IsAssemblyFullName(param.DataType))
+                if (param.IsUserDefinedType && Util.NfTypeName.IsAssemblyFullName(param.DataType))
                     sqlParam.UdtTypeName = param.SqlUdtTypeName;
 
                 sqlParams.Add(sqlParam);

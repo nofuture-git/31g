@@ -18,6 +18,14 @@ namespace NoFuture.Gen.InvokeGraphViz
         {
             try
             {
+                if (ConfigurationManager.AppSettings["NoFuture.Shared.Constants.UseReflectionOnlyLoad"] != null)
+                {
+                    bool blnOut;
+                    bool.TryParse(ConfigurationManager.AppSettings["NoFuture.Shared.Constants.UseReflectionOnlyLoad"],
+                        out blnOut);
+                    Shared.Constants.UseReflectionOnlyLoad = blnOut;
+                } 
+                
                 Util.FxPointers.AddResolveAsmEventHandlerToDomain();
 
                 //test if there are any args, if not just leave with no message
@@ -107,7 +115,7 @@ namespace NoFuture.Gen.InvokeGraphViz
                     return;
                 }
 
-                Shared.Constants.AssemblySearchPath = Path.GetDirectoryName(asmPath);
+                Shared.Constants.AssemblySearchPaths.Add(Path.GetDirectoryName(asmPath));
 
                 var asm = Shared.Constants.UseReflectionOnlyLoad
                     ? Asm.NfReflectionOnlyLoadFrom(asmPath)

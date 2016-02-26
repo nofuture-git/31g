@@ -13,7 +13,7 @@ namespace NoFuture.Tests.Util.InvokeAsmTests
         [TestMethod]
         public void TestResolveCallOfCall()
         {
-            NoFuture.Shared.Constants.AssemblySearchPath = @"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\";
+            NoFuture.Shared.Constants.AssemblySearchPaths.Add(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\");
             NoFuture.Shared.Constants.UseReflectionOnlyLoad = false;
             NoFuture.Util.FxPointers.AddResolveAsmEventHandlerToDomain();
             var testAsm =

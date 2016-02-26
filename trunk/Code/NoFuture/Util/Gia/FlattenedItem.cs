@@ -27,11 +27,11 @@ namespace NoFuture.Util.Gia
             }
         }
 
-        public bool IsEnumerable { get { return TypeName.IsEnumerableReturnType(FlType); } }
+        public bool IsEnumerable { get { return NfTypeName.IsEnumerableReturnType(FlType); } }
         public Type FlType { get; set; }
         public string FlName { get; set; }
-        public string TypeFullName { get { return TypeName.GetLastTypeNameFromArrayAndGeneric(FlType); } }
-        public string SimpleTypeName { get { return TypeName.GetTypeNameWithoutNamespace(TypeFullName); } }
+        public string TypeFullName { get { return NfTypeName.GetLastTypeNameFromArrayAndGeneric(FlType); } }
+        public string SimpleTypeName { get { return NfTypeName.GetTypeNameWithoutNamespace(TypeFullName); } }
         public bool IsTerminalNode { get { return FlattenedItem.ValueTypesList.Contains(TypeFullName); } }
 
 

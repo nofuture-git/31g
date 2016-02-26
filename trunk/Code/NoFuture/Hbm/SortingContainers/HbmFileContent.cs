@@ -231,17 +231,17 @@ namespace NoFuture.Hbm.SortingContainers
                 _tableName = tableNameAttr.Value;
 
             var attrTypeName = GetAttrVal(CreateXpath(HbmXmlNames.HIBERNATE_MAPPING, HbmXmlNames.CLASS), HbmXmlNames.NAME);
-            if (TypeName.IsFullAssemblyQualTypeName(attrTypeName))
+            if (NfTypeName.IsFullAssemblyQualTypeName(attrTypeName))
             {
                 _asmQualTypeName = attrTypeName;
-                var nfName = new TypeName(attrTypeName);
+                var nfName = new NfTypeName(attrTypeName);
                 _className = nfName.ClassName;
                 _namespace = nfName.Namespace;
             }
             else
             {
-                _className = TypeName.GetTypeNameWithoutNamespace(attrTypeName);
-                _namespace = TypeName.GetNamespaceWithoutTypeName(attrTypeName);
+                _className = NfTypeName.GetTypeNameWithoutNamespace(attrTypeName);
+                _namespace = NfTypeName.GetNamespaceWithoutTypeName(attrTypeName);
                 _asmQualTypeName = Compose.ClassName(_className, _namespace);
             }
 
@@ -434,7 +434,7 @@ namespace NoFuture.Hbm.SortingContainers
                                     t.Attributes[HbmXmlNames.CLASS] != null))
                 {
                     var kpName = kmto.Attributes[HbmXmlNames.NAME].Value;
-                    var kpType = (new TypeName(kmto.Attributes[HbmXmlNames.CLASS].Value)).FullName;
+                    var kpType = (new NfTypeName(kmto.Attributes[HbmXmlNames.CLASS].Value)).FullName;
 
                     //filter list used in GetAllTablesColumns
                     _keyManyToOnePropertyNames.Add(kpName);
@@ -566,8 +566,8 @@ namespace NoFuture.Hbm.SortingContainers
 
             if (IsCompositeKey)
             {
-                _idType = TypeName.IsFullAssemblyQualTypeName(IdType)
-                    ? (new TypeName(IdType)).FullName
+                _idType = NfTypeName.IsFullAssemblyQualTypeName(IdType)
+                    ? (new NfTypeName(IdType)).FullName
                     : IdType;
             }
             else

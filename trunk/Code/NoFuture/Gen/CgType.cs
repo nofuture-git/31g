@@ -6,7 +6,6 @@ using NoFuture.Shared;
 using NoFuture.Shared.DiaSdk.LinesSwitch;
 using NoFuture.Util;
 using NoFuture.Util.Gia;
-using NfTypeName = NoFuture.Util.TypeName;
 
 namespace NoFuture.Gen
 {
@@ -100,7 +99,7 @@ namespace NoFuture.Gen
             get
             {
                 return
-                    Properties.Select(property => TypeName.GetLastTypeNameFromArrayAndGeneric(property.TypeName, "<"))
+                    Properties.Select(property => NfTypeName.GetLastTypeNameFromArrayAndGeneric(property.TypeName, "<"))
                         .Where(x => !Etc.ValueTypesList.Contains(x.Trim()))
                         .ToList();
             }
@@ -131,13 +130,13 @@ namespace NoFuture.Gen
             var vals = EnumValueDictionary.ContainsKey(enumTypeName) ? EnumValueDictionary[enumTypeName] : null;
             if (vals != null) return vals;
 
-            var clearName = TypeName.GetLastTypeNameFromArrayAndGeneric(enumTypeName);
+            var clearName = NfTypeName.GetLastTypeNameFromArrayAndGeneric(enumTypeName);
             vals = EnumValueDictionary.ContainsKey(clearName) ? EnumValueDictionary[clearName] : null;
             
             if (vals != null) return vals;
 
             //try one last time for cs style generics
-            clearName = TypeName.GetLastTypeNameFromArrayAndGeneric(enumTypeName, "<");
+            clearName = NfTypeName.GetLastTypeNameFromArrayAndGeneric(enumTypeName, "<");
             vals = EnumValueDictionary.ContainsKey(clearName) ? EnumValueDictionary[clearName] : null;
             return vals;
         }
@@ -192,7 +191,7 @@ namespace NoFuture.Gen
             if (string.IsNullOrWhiteSpace(methodName))
                 return null;
             string isPropName;
-            if (TypeName.IsClrMethodForProperty(tokenName.Name, out isPropName))
+            if (NfTypeName.IsClrMethodForProperty(tokenName.Name, out isPropName))
             {
                 methodName = isPropName;
                 var propMatches = Properties.Where(p => string.Equals(p.Name, methodName)).ToArray();

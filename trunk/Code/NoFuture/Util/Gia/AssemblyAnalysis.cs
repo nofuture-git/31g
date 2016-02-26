@@ -656,8 +656,8 @@ namespace NoFuture.Util.Gia
                 tokenName = String.Format("{0}{1}", owningAsmName, tokenName);
             }
 
-            var ns = Util.TypeName.GetNamespaceWithoutTypeName(tokenName);
-            var tn = Util.TypeName.GetTypeNameWithoutNamespace(tokenName);
+            var ns = Util.NfTypeName.GetNamespaceWithoutTypeName(tokenName);
+            var tn = Util.NfTypeName.GetTypeNameWithoutNamespace(tokenName);
 
             return String.Format("{0}{1}{2}", ns, sep, tn);
         }
@@ -969,7 +969,7 @@ namespace NoFuture.Util.Gia
                 {
                     if (!String.IsNullOrWhiteSpace(limitOnType) && !String.IsNullOrWhiteSpace(line.ValueType))
                         if (!String.Equals(limitOnType, line.ValueType, StringComparison.OrdinalIgnoreCase) &&
-                            !String.Equals(limitOnType, TypeName.GetLastTypeNameFromArrayAndGeneric(line.ValueType), StringComparison.OrdinalIgnoreCase))
+                            !String.Equals(limitOnType, NfTypeName.GetLastTypeNameFromArrayAndGeneric(line.ValueType), StringComparison.OrdinalIgnoreCase))
                             continue;
 
                     if (line == null)

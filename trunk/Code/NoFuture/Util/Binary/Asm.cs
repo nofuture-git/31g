@@ -14,7 +14,6 @@ namespace NoFuture.Util.Binary
     public static class Asm
     {
         #region constants
-        internal const string MS_REF_ASSEMBLIES_DIR = @"C:\Program Files\Reference Assemblies\Microsoft";
         public const string DEFAULT_ASM_LOG_FILE_NAME = "ResolveAssemblyEventHandler.log";
         #endregion
 
@@ -167,29 +166,21 @@ namespace NoFuture.Util.Binary
                 throw new ItsDeadJim(
                     String.Format("There is no way to resolve a assembly dependency with a name of '{0}'", asmFullName));
 
+
+            File.AppendAllText(ResolveAsmLog,
+                String.Format("[{0:yyyy-MM-dd HH:mm:ss.fffff}] Starting search for the assembly named '{1}' with reflection only set to '{2}'. \n",
+                    DateTime.Now,
+                    asmFullName, reflectionOnly));
+
             //if its already in the appdomain then just return it, why are we here in such a case?
-            Assembly itsAlreadyHere;
-            if (reflectionOnly)
-            {
-                itsAlreadyHere =
-                    AppDomain.CurrentDomain.ReflectionOnlyGetAssemblies()
-                        .FirstOrDefault(asm => asm.FullName == asmFullName);
-            }
-            else
-            {
-                itsAlreadyHere =
-                    AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(asm => asm.FullName == asmFullName);
-            }
+            var itsAlreadyHere = AppDomain.CurrentDomain.ReflectionOnlyGetAssemblies()
+                .FirstOrDefault(
+                    asm => string.Equals(asm.FullName, asmFullName, StringComparison.OrdinalIgnoreCase)) ??
+                                      AppDomain.CurrentDomain.GetAssemblies()
+                                          .FirstOrDefault(
+                                              asm => string.Equals(asm.FullName, asmFullName, StringComparison.OrdinalIgnoreCase));
             if (itsAlreadyHere != null)
                 return itsAlreadyHere;
-
-            //bet that this will be resolved...
-            if (asmFullName.StartsWith("System") || asmFullName.StartsWith("Microsoft"))
-                return reflectionOnly ? Assembly.ReflectionOnlyLoad(asmFullName) : Assembly.Load(asmFullName);
-
-            //parse the name 
-            var nfTn = new TypeName(asmFullName);
-            var rqstAsmDllName = nfTn.AssemblyFileName;
 
             //if requesting assembly has a location then start there
             if (!String.IsNullOrWhiteSpace(searchDirectory))
@@ -199,33 +190,33 @@ namespace NoFuture.Util.Binary
                     searchDirectory.StartsWith(@"C:\Windows\Microsoft.NET\Framework"))
                     return reflectionOnly ? Assembly.ReflectionOnlyLoad(asmFullName) : Assembly.Load(asmFullName);
 
-                if (SearchDirectoriesForAssembly(Path.GetDirectoryName(searchDirectory), rqstAsmDllName, out foundOne,
+                if (SearchDirectoriesForAssembly(Path.GetDirectoryName(searchDirectory), asmFullName, out foundOne,
                     reflectionOnly))
                     return foundOne;
             }
 
             //search the directory explicity set
-            if (!String.IsNullOrWhiteSpace(Constants.AssemblySearchPath))
+            if (Constants.AssemblySearchPaths.Any())
             {
-                if (SearchDirectoriesForAssembly(Constants.AssemblySearchPath, rqstAsmDllName, out foundOne,
-                    reflectionOnly))
+                if (
+                    Constants.AssemblySearchPaths.Distinct()
+                        .Any(sd => SearchDirectoriesForAssembly(sd, asmFullName, out foundOne,
+                            reflectionOnly)))
+                {
                     return foundOne;
+                }
             }
 
             //check in NoFuture's bin
             if (!String.IsNullOrWhiteSpace(BinDirectories.Root))
             {
-                if (SearchDirectoriesForAssembly(BinDirectories.Root, rqstAsmDllName, out foundOne, reflectionOnly))
+                if (SearchDirectoriesForAssembly(BinDirectories.Root, asmFullName, out foundOne, reflectionOnly))
                     return foundOne;
             }
 
             //search this domain's working directory
-            if (SearchDirectoriesForAssembly(AppDomain.CurrentDomain.BaseDirectory, rqstAsmDllName, out foundOne,
+            if (SearchDirectoriesForAssembly(AppDomain.CurrentDomain.BaseDirectory, asmFullName, out foundOne,
                 reflectionOnly))
-                return foundOne;
-
-            //this won't deal with versions and such
-            if (SearchDirectoriesForAssembly(MS_REF_ASSEMBLIES_DIR, rqstAsmDllName, out foundOne, reflectionOnly))
                 return foundOne;
 
             //hail mary
@@ -620,7 +611,10 @@ namespace NoFuture.Util.Binary
                 throw new ItsDeadJim(String.Format("There is no assembly at the path '{0}'", assemblyPath));
 
             //check our domain for this assembly having been loaded once before
-            var asm = AppDomain.CurrentDomain.ReflectionOnlyGetAssemblies().FirstOrDefault(x => x.Location == assemblyPath);
+            var asm =
+                AppDomain.CurrentDomain.ReflectionOnlyGetAssemblies()
+                    .Where(x => !x.IsDynamic)
+                    .FirstOrDefault(x => x.Location == assemblyPath);
             if (asm != null)
                 return asm;
 
@@ -640,7 +634,10 @@ namespace NoFuture.Util.Binary
                 throw new ItsDeadJim(String.Format("There is no assembly at the path '{0}'", assemblyPath));
 
             //check our domain for this assembly having been loaded once before
-            var asm = AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(x => x.Location == assemblyPath);
+            var asm =
+                AppDomain.CurrentDomain.GetAssemblies()
+                    .Where(x => !x.IsDynamic)
+                    .FirstOrDefault(x => x.Location == assemblyPath);
             if (asm != null)
                 return asm;
 
@@ -1504,7 +1501,17 @@ namespace NoFuture.Util.Binary
 
         #region internal api
 
-        internal static bool SearchDirectoriesForAssembly(string directoryLocation, string rqstAsmDllName,
+        /// <summary>
+        /// Search from <see cref="directoryLocation"/> recursively for all files 
+        /// ending in *.dll extension and checks that <see cref="rqstAsmFullName"/>
+        /// equals the full assembly name of the given dll file.
+        /// </summary>
+        /// <param name="directoryLocation"></param>
+        /// <param name="rqstAsmFullName"></param>
+        /// <param name="foundOne"></param>
+        /// <param name="reflectionOnly"></param>
+        /// <returns></returns>
+        internal static bool SearchDirectoriesForAssembly(string directoryLocation, string rqstAsmFullName,
             out Assembly foundOne, bool reflectionOnly = true)
         {
             foundOne = null;
@@ -1515,18 +1522,22 @@ namespace NoFuture.Util.Binary
 
             File.AppendAllText(logDir,
                 String.Format("[{0:yyyy-MM-dd HH:mm:ss.fffff}] Searching for '{1}' in '{2}' \n", DateTime.Now,
-                    rqstAsmDllName, directoryLocation));
+                    rqstAsmFullName, directoryLocation));
 
             var di = new DirectoryInfo(directoryLocation);
 
             //search all the files down from the requesting assembly's location
             foreach (var d in di.EnumerateFileSystemInfos("*.dll", SearchOption.AllDirectories))
             {
-                if (String.Equals(d.Name, rqstAsmDllName, StringComparison.OrdinalIgnoreCase))
+                var asmName = AssemblyName.GetAssemblyName(d.FullName);
+                if (asmName == null)
+                    continue;
+
+                if (String.Equals(asmName.FullName, rqstAsmFullName, StringComparison.OrdinalIgnoreCase))
                 {
                     foundOne = reflectionOnly
-                        ? NfReflectionOnlyLoadFrom(d.FullName)
-                        : NfLoadFrom(d.FullName);
+                        ? Assembly.ReflectionOnlyLoad(File.ReadAllBytes(d.FullName))
+                        : Assembly.Load(File.ReadAllBytes(d.FullName));
                     return true;
                 }
             }

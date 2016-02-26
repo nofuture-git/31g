@@ -37,7 +37,7 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds
                         });
                 } 
                 
-                Constants.AssemblySearchPath = Path.GetDirectoryName(asmPath);
+                Constants.AssemblySearchPaths.Add(Path.GetDirectoryName(asmPath));
 
                 var asm = Constants.UseReflectionOnlyLoad
                     ? Binary.Asm.NfReflectionOnlyLoadFrom(asmPath)
