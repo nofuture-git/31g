@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using NoFuture.Exceptions;
 using NoFuture.Util;
 
 namespace NoFuture.Timeline
@@ -189,6 +190,11 @@ namespace NoFuture.Timeline
             _blocks.Add(block);
         }//end AddBlock
         public virtual void AddArrow(Arrow arrow) { _arrows.Add(arrow); }//end AddArrow
+
+        public virtual void AddArrow(Block fromBlock, Block toBlock, int startVal)
+        {
+            _arrows.Add(new Arrow(fromBlock, toBlock) {StartValue = startVal});
+        }
         public TextCanvas ToTextCanvas()
         {
             var tc = Ruler.ToTextCanvas();
@@ -228,7 +234,7 @@ namespace NoFuture.Timeline
                 doc.Add(paragraph);
 
                 doc.AddTitle(Name);
-                doc.AddSubject("Occidental Timelines");
+                doc.AddSubject("Timelines");
                 doc.AddCreator(System.Reflection.Assembly.GetExecutingAssembly().GetName().Name);
                 doc.AddCreationDate();
                 doc.Close();
@@ -269,6 +275,89 @@ namespace NoFuture.Timeline
         }
         #endregion
     }//end Plate
+
+    /// <summary>
+    /// This is for for creating fast sequence diagrams.
+    /// </summary>
+    [Serializable]
+    public class FastPlate : Plate
+    {
+        #region fields
+        private Block _fromBlock;
+        private Block _toBlock;
+        private int _lineCounter = 2;
+        #endregion
+        #region ctor
+        public FastPlate(string plateTitle, params string[] blockNames)
+        {
+            if (blockNames == null || blockNames.Length <= 0)
+                throw new ArgumentNullException("blockNames");
+
+            Name = string.IsNullOrWhiteSpace(plateTitle) ? "Sequence Diagram" : plateTitle;
+
+            var dfRule = new Rule {StartValue = 1, EndValue = 22, RuleLineSpacing = 3};
+            Ruler = dfRule;
+            foreach (var blkNm in blockNames)
+            {
+                var blk = new Block {Ruler = dfRule, Title = blkNm};
+                _blocks.Add(blk);
+            }
+        }
+        #endregion
+
+        #region methods
+        public virtual FastPlate FFrom(string blockName)
+        {
+            if (string.IsNullOrWhiteSpace(blockName) || _blocks.All(x => x.Title != blockName))
+                return this;
+
+            _fromBlock = _blocks.First(x => x.Title == blockName);
+            return this;
+        }
+
+        public virtual FastPlate FTo(string blockName)
+        {
+            if (string.IsNullOrWhiteSpace(blockName) || _blocks.All(x => x.Title != blockName))
+                return this;
+
+            _toBlock = _blocks.First(x => x.Title == blockName);
+            return this;
+        }
+
+        public virtual void FText(string entryText)
+        {
+            if (_fromBlock == null || _toBlock == null)
+                return;
+            if (_fromBlock.Equals(_toBlock))
+                return;
+            var entryLine = new List<string>();
+            foreach (var word in entryText.Split(' '))
+            {
+                entryLine.Add(word);
+                if (string.Join(" ", entryLine).Length + 3 <= _fromBlock.Width)
+                    continue;
+
+                _fromBlock.AddEntry(_lineCounter, string.Join(" ", entryLine));
+                _lineCounter += 1;
+                entryLine.Clear();
+            }
+
+            _fromBlock.AddEntry(_lineCounter, string.Join(" ", entryLine));
+            _lineCounter += 1;
+            AddArrow(new Arrow(_fromBlock, _toBlock) {StartValue = _lineCounter});
+            _lineCounter += 1;
+            if (_lineCounter + 2 <= Ruler.EndValue) return;
+
+            var nRule = new Rule { StartValue = 1, EndValue = _lineCounter + 2, RuleLineSpacing = 3 };
+            Ruler = nRule;
+            foreach (var blk in _blocks)
+            {
+                blk.Ruler = nRule;
+            }
+        }
+        #endregion
+
+    }//end FastPlate
 
     public static class Extensions
     {
@@ -463,7 +552,6 @@ namespace NoFuture.Timeline
     {
         #region fields
         private double? _countIncrement;
-        private List<double> _ruleIndex;
         private int _width;
         private readonly string _id;
         #endregion
@@ -481,8 +569,7 @@ namespace NoFuture.Timeline
         public virtual double? CountIncrement {
             get
             {
-                if (_countIncrement == null || _countIncrement == 0.0D)
-                    _countIncrement = Math.Floor((double)(EndValue - StartValue) / 10);
+                _countIncrement = Math.Floor((double)(EndValue - StartValue) / 10);
                 return _countIncrement;
             }
             set { _countIncrement = value; }
@@ -573,9 +660,6 @@ namespace NoFuture.Timeline
         }//end CalcEntryIndex
         public virtual List<double> GetIndexRule()
         {
-            if (_ruleIndex != null)
-                return _ruleIndex;
-
             //determine edge
             var min = StartValue > EndValue ? EndValue : StartValue;
 
@@ -593,8 +677,6 @@ namespace NoFuture.Timeline
                 indexRule.Add(iVal);
             }
 
-            //look to only run this once per instance
-            _ruleIndex = indexRule;
             return indexRule;
         }//end GetIndexRule
         public virtual TextCanvas ToTextCanvas()
@@ -621,10 +703,27 @@ namespace NoFuture.Timeline
         protected internal bool _startValueExplicitlySet;
         protected internal int _endValue;
         protected internal bool _endValueExplicitlySet;
+        protected internal Rule _myRuler;
         #endregion
 
         #region properties
-        public virtual Rule Ruler { get; set; }
+
+        public virtual Rule Ruler
+        {
+            get
+            {
+                return _myRuler;
+            }
+            set
+            {
+                _myRuler = value;
+                foreach (var entry in _entries)
+                    entry.Ruler = _myRuler;
+                foreach (var iBlk in _innerBlocks)
+                    iBlk.Ruler = _myRuler;
+            }
+        }
+
         public virtual string Title { get; set; }
         public virtual char EmptyChar { get; set; }
         #endregion

@@ -28,7 +28,7 @@ namespace NoFuture.Domain
             Console.Title = System.Reflection.Assembly.GetExecutingAssembly().GetName().Name;
             try
             {
-                Util.ConsoleCmd.SetConsoleAsTransparent();
+                Util.ConsoleCmd.SetConsoleAsTransparent(true);
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.WindowWidth = 160;
                 Console.CursorVisible = false;

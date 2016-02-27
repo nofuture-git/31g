@@ -1,5 +1,7 @@
 http://tools.ietf.org/html/rfc5849
 
+https://tools.ietf.org/html/rfc6749
+
 OAuth summary:
 
 	Some user is on their browser viewing their content from some-site.  While on this some-site the user clicks on something 
@@ -83,3 +85,85 @@ Setting up Google OAuth with ASP.NET MVC
 	Microsoft.AspNet.Identity.Owin.SignInStatus  - this is also a black-box
    
 - most of the real work appears to be driven by the GetOwinContext() resulting type of Microsoft.Owin.IOwinContext
+----
+
+----
+RFC Spec for OAuth 2.0
+----
+
+----
+definitions:
+ - [resource owner]: an entity capable of granting access to a protected
+    resource.  Then the resource owner is a person, it is referred to as an 
+    end-user.
+ - [resource server]: the server hosting the protected resources
+ - [client]: an application making protected resource request on behalf of 
+   the resource owner
+ - [authorization server]: the server issuing access tokens to the client after
+   successfully authenticating the resource owner
+  - in actual implementation the resouce server may be the authorization server 
+ - [authorization grant]: a cred rep'ng the resource owner's authorization
+ - [authorization code]: a way to skip handing the resource owner's cred's to 
+   the client.  
+ - [implicit grant]: simplified auth for javascript.  The client is issued an 
+    access token directly.  Some of the loss in security can be made up with 
+    unique redirect urls.
+ - [client creds]: the creds the client has est. independently with the auth
+    server.  
+ - [access token]: are creds used to access protected resources.
+ - [refresh tokens]: tokens used to obtain access tokens.  Used by the client
+   when its access token expires - allows them to get a new one.  Is optional
+   and included with the access token.  Are only of use to auth server, not 
+   resource server.
+ - [client id]: a unique string used to id registed clients with the auth server
+ - [authorization endpoint]: the place where the resource-owner auth's with 
+    the auth server.
+ - [redirection endpoint]: the place the auth server will tell the user-agent
+    to redirect to after resource-owner has auth'ed with it.  This is typically
+    setup during client registration with the auth server.\
+ - [token endpoint]: where a client gets its access token.  Typically where 
+   the auth grant\code and refresh token are turned into access tokens.
+----
+
+----
+Client Registration
+ - a client registers with an auth server prior to init'ng the protocol
+  - sets an expectation of who will come'a knockin'
+ - purpose is specify a client type, provide client redirect uri's 
+   and include additional info required by auth server
+  
+  - client types
+  (1) web application     (web server)
+  (2) user-agent-base app (browser)
+  (3) native app          (app store) 
+----
+
+----
+Protocol Endpoints
+ - the request to the auth endpoint must include a name\value of 
+    'response_type' '=' ('code' | 'token')
+ 
+ - the request to auth endpoint should include the redirect uri 
+   even when there was one already setup in the client registration
+    'redirect_uri' '=' encodedUri
+  - when the resource-owner is interacting with the auth server
+    if the redirect uri is found to be invalid the auth server
+    should warn the resource-owner and not redirect them.
+  - client's should keep the actual code of thier redirect uri's
+    clean and free of all 3rd-party scripts.  The client ought
+    to nicely get the creds and again redirect the user-agent 
+    to yet another location    
+ 
+ - the client should auth with the token endpoint every time using
+   its client creds (note, this is nothing to do with resource-owner creds)
+  - request to token endpoint should include
+   'client_id' '=' issuedClientId
+  - both request and response will include the param
+   'scope' '=' someSpaceDelimitedString
+----
+
+----
+Auth Code Grant flow
+ 
+
+ 

@@ -9,12 +9,19 @@ namespace NoFuture.Gen.InvokeGetCgOfType
 {
     public class Program
     {
+        internal static class AppSettingKeys
+        {
+            internal const string UseReflectionOnlyLoad = "NoFuture.Shared.Constants.UseReflectionOnlyLoad";
+            internal const string DebugTempDir = "NoFuture.TempDirectories.Debug";
+        }
+
         static void Main(string[] args)
         {
             try
             {
+                //used during ReflectionOnlyAssemblyResolve event handler
                 bool useReflectionOnly;
-                var p = CfgMgr.AppSettings["Shared.Constants.UseReflectionOnlyLoad"];
+                var p = CfgMgr.AppSettings[AppSettingKeys.UseReflectionOnlyLoad];
                 if (!string.IsNullOrWhiteSpace(p) && bool.TryParse(p, out useReflectionOnly))
                 {
                     Shared.Constants.UseReflectionOnlyLoad = useReflectionOnly;
@@ -42,8 +49,7 @@ namespace NoFuture.Gen.InvokeGetCgOfType
                     return;
                 }
 
-                //used during ReflectionOnlyAssemblyResolve event handler
-                TempDirectories.Debug = CfgMgr.AppSettings["TempDirectories.Debug"];
+                TempDirectories.Debug = CfgMgr.AppSettings[AppSettingKeys.DebugTempDir];
 
                 if (!argHash.ContainsKey(Settings.INVOKE_ASM_PATH_SWITCH) ||
                     argHash[Settings.INVOKE_ASM_PATH_SWITCH] == null)

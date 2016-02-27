@@ -12,16 +12,25 @@ namespace NoFuture.Gen.InvokeGraphViz
 {
     public class Program
     {
-        private static string[] _implementedDiagrams = {Settings.CLASS_DIAGRAM, Settings.FLATTENED_DIAGRAM};
+        private static readonly string[] _implementedDiagrams = {Settings.CLASS_DIAGRAM, Settings.FLATTENED_DIAGRAM};
+
+        internal static class AppSettingKeys
+        {
+            internal const string UseReflectionOnlyLoad = "NoFuture.Shared.Constants.UseReflectionOnlyLoad";
+            internal const string DebugTempDir = "NoFuture.TempDirectories.Debug";
+            internal const string RootBinDir = "NoFuture.BinDirectories.Root";
+            internal const string GraphTempDir = "NoFuture.TempDirectories.Graph";
+            internal const string DotExe = "NoFuture.Tools.X86.DotExe";
+        }
 
         public static void Main(string[] args)
         {
             try
             {
-                if (ConfigurationManager.AppSettings["NoFuture.Shared.Constants.UseReflectionOnlyLoad"] != null)
+                if (ConfigurationManager.AppSettings[AppSettingKeys.UseReflectionOnlyLoad] != null)
                 {
                     bool blnOut;
-                    bool.TryParse(ConfigurationManager.AppSettings["NoFuture.Shared.Constants.UseReflectionOnlyLoad"],
+                    bool.TryParse(ConfigurationManager.AppSettings[AppSettingKeys.UseReflectionOnlyLoad],
                         out blnOut);
                     Shared.Constants.UseReflectionOnlyLoad = blnOut;
                 } 
@@ -35,10 +44,10 @@ namespace NoFuture.Gen.InvokeGraphViz
                     return;
                 }
 
-                TempDirectories.Debug = ConfigurationManager.AppSettings["NoFuture.TempDirectories.Debug"];
+                TempDirectories.Debug = ConfigurationManager.AppSettings[AppSettingKeys.DebugTempDir];
 
                 BinDirectories.Root =
-                    ConfigurationManager.AppSettings["NoFuture.BinDirectories.Root"];
+                    ConfigurationManager.AppSettings[AppSettingKeys.RootBinDir];
 
                 if (string.IsNullOrWhiteSpace(BinDirectories.Root) || !Directory.Exists(BinDirectories.Root))
                 {
@@ -50,7 +59,7 @@ namespace NoFuture.Gen.InvokeGraphViz
                     return;
                 }
 
-                var f = ConfigurationManager.AppSettings["NoFuture.Tools.X86.DotExe"];
+                var f = ConfigurationManager.AppSettings[AppSettingKeys.DotExe];
                 if (string.IsNullOrWhiteSpace(f))
                 {
                     var msg =
@@ -71,7 +80,7 @@ namespace NoFuture.Gen.InvokeGraphViz
                     return;
                 }
 
-                TempDirectories.Graph = ConfigurationManager.AppSettings["NoFuture.TempDirectories.Graph"];
+                TempDirectories.Graph = ConfigurationManager.AppSettings[AppSettingKeys.GraphTempDir];
 
                 if (string.IsNullOrWhiteSpace(TempDirectories.Graph))
                 {

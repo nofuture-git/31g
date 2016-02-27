@@ -1010,5 +1010,29 @@ namespace NoFuture.Tests.Timeline
 
             testPlate.ToPdf(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\Timeline\CE 1788 to 1865.pdf");
         }
+
+        [TestMethod]
+        public void TestFastPlate()
+        {
+            var testSubject = new FastPlate("OAuth 2.0 Authorization Code Flow", "Resource Owner", "User-Agent", "Client", "Auth Server");
+
+            testSubject.FFrom("Client").FTo("User-Agent").FText("Redirect to Auth Endpoint and a whole bunch of stuff in the request has to go as well");
+            testSubject.FFrom("User-Agent").FTo("Auth Server").FText("Redirect to Auth Endpoint");
+            testSubject.FFrom("Auth Server").FTo("User-Agent").FText("Send back login screen");
+            testSubject.FFrom("User-Agent").FTo("Resource Owner").FText("Prompt For Creds");
+            testSubject.FFrom("Resource Owner").FTo("User-Agent").FText("Enter creds");
+            testSubject.FFrom("User-Agent").FTo("Auth Server").FText("Post creds");
+            testSubject.FFrom("Auth Server").FTo("User-Agent").FText("Auth Code & Redirect");
+            testSubject.FFrom("User-Agent").FTo("Client").FText("Post Auth code to Redirect");
+            testSubject.FFrom("Client").FTo("Auth Server").FText("Send Auth Code & Redirect");
+            testSubject.FFrom("Auth Server").FTo("Client").FText("Return Access Token");
+
+            testSubject.FFrom("User-Agent").FTo("Resource Owner").FText("More Lines 00");
+            testSubject.FFrom("Resource Owner").FTo("Auth Server").FText("More Lines Again");
+            testSubject.FFrom("Auth Server").FTo("User-Agent").FText("More Dots");
+            testSubject.FFrom("User-Agent").FTo("Client").FText("Stop Dots");
+
+            System.Diagnostics.Debug.WriteLine(testSubject.ToString());
+        }
     }
 }

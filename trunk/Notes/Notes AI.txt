@@ -1,10 +1,10 @@
 ----
 Notes AI
-Artificial Intelligence,A Modern Approach
+Artificial Intelligence,A Modern Approach (1st Ed. & 3rd Ed)
 Stuart J. Russell and Peter Norvig
 Prentice Hall, Englewood Cliffs, New Jersey
-ISBN 0-13-103805-2
-1995
+ISBN 0-13-103805-2 1995 (1st Edition)
+ISBN 978-0-13-604259-4 2010 (3rd Edition)
 ----
 
 ----
@@ -14,6 +14,18 @@ AI is presented as a kind of API
    to perceive.
  - has a lot of technical words with 
    specific meanings
+ - practical math ports used in AI
+  - Hidden Markov Models: used in lang-rec being based 
+    on existing math and allowed for training using 
+	speech samples.
+  - Bayesian network:  deals with probablity and 
+    making decisions with uncertainty involved.
+ - recent changes: the knowledge base from which 
+   to work seems to be as, if not more, important
+   to generating solutions than the algorithm used
+   - in other words, worst algo with 100M training 
+     samples does better than best algo with only 1M
+ - entity is the thing which makes choices
    
  - my own observation:
  The problem with the term A.I. is that it is target
@@ -59,18 +71,33 @@ Agent
 ----
 
 ----
+Expressing State (Represent the Environment)
+ - text divides expression of state into three modes of 
+   increasing complexity
+  - atomic: each state is indivisible, a sinlge fact
+    like an enum
+  - factored: each state is a fixed set of attributes (variables)
+  - structured: is factored states which are related to each other
+----
+
+----
 Properties of an environment
- - accessible vs. inaccessible: the more accessible the less 
-   need for an internal state since conditions may be resolved 
-   at any time.
- - deterministic vs nondeterministic: where future environment state
+ - accessible (Fully observable) vs. inaccessible (partially observable): 
+   the more accessible the less need for an internal state since 
+   conditions may be resolved at any time.
+ - deterministic vs nondeterministic(stochastic): where future environment state
    is purely a function of the current state plus agent's actions.
- - episodic vs. nonepisodic: exp is circular or continuous, where circular
+ - episodic vs. nonepisodic(sequential): exp is circular or continuous, where circular
    exp only matters, "this time around"
  - static vs. dynamic: where the environment can change while the agent 
    is thinking
  - discrete vs. continuous: when the percepts are clear and limited to 
    a number of moves or not.
+ - single agent vs. multiagent: is the environment being effected by
+   other agents.
+ - known vs. unknown: where the outcome of an action is not even known
+   and must be discovered.
+   
 ----
   
 ----
