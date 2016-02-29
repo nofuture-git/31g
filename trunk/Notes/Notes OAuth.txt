@@ -1,35 +1,224 @@
+----
+Notes OAuth 2.0
 http://tools.ietf.org/html/rfc5849
-
 https://tools.ietf.org/html/rfc6749
+----
 
-OAuth summary:
+----
+definitions:
+ - [resource owner]: an entity capable of granting access to a protected
+    resource.  Then the resource owner is a person, it is referred to as an 
+    end-user.
+ - [username]: the resource owner's username with the auth server
+ - [password]: the resource owner's password with the auth server
+ - [resource server]: the server hosting the protected resources
+ - [client]: an application making protected resource request on behalf of 
+   the resource owner
+ - [authorization server]: the server issuing access tokens to the client after
+   successfully authenticating the resource owner
+  - in actual implementation the resouce server may be the authorization server 
+ - [authorization grant]: a cred rep'ng the resource owner's authorization
+ - [authorization code]: a way to skip handing the resource owner's cred's to 
+   the client.
+ - [implicit grant]: simplified auth for javascript.  The client is issued an 
+    access token directly.  Some of the loss in security can be made up with 
+    unique redirect urls.
+ - [client creds]: the creds the client has est. independently with the auth
+    server.  
+ - [access token]: are creds used to access protected resources.  The RFC has 
+    an example which is in JSON (sec. 4.1.4)
+ - [refresh tokens]: tokens used to obtain access tokens.  Used by the client
+   when its access token expires - allows them to get a new one.  Is optional
+   and included with the access token.  Are only of use to auth server, not 
+   resource server.
+ - [client_id]: a unique string used to id registed clients with the auth server
+ - [authorization endpoint]: the place where the resource-owner auth's with 
+    the auth server.
+ - [redirect_uri]: the place the auth server will tell the user-agent
+    to redirect to after resource-owner has auth'ed with it.  This is typically
+    setup during client registration with the auth server.\
+ - [token endpoint]: where a client gets its access token.  Typically where 
+   the auth grant\code and refresh token are turned into access tokens.
+ - [scope]: part of the data sent both to and from the Auth Server, 
+   indicates an expiration in a space delimited string.
+ - [state]: the RFC 6749 never defines this but uses it as some kinda
+    tag-along data the client may want down the request chain.
+ - [response_type]: indicates to the [Authorization Server] if the client 
+    wants an authorization code or an access token
+    'response_type' '=' ('code' | 'token')
+----
 
-	Some user is on their browser viewing their content from some-site.  While on this some-site the user clicks on something 
-about getting their content from some totally separate-site.  The browser sends this click event request back to 
-some-site which just tells the browser, "hey, you gotta go get permission from separate-site to do this - 
-here go request this location and tell'em some-site sent ya...wait, your gonna need these." and  some-site 
-hands its creds with separate-site to browser.
-	So the browser, being embarrassed, doesn't yet return anything to the user but instead immediately 
-makes another request to the location some-site told it about.  Sure enough, this location, out on separate-site, 
-is about getting the required permission regarding the original, and embarrassing, click-event.  
-Browser tells separate-site, "Uh, Hi, I am trying to get such-and-such stuff for this user on behalf of some-site, I have these
-creds from some-site."  Separate-site looks at the creds, "yeah some-site, I know this guy, Ok have user log in with 
-us and verify its cool for some-site to get thier stuff."
-	The browser then returns this content from separate-site to the user with a, "hey, you gotta tell 
-these guys its 'OK' for some-site to access this stuff."  So the user does by logging into separate-site 
-and then clicking on some kind of," yeah its cool for some-site to view my stuff."  Separate-site then 
-tells the browser, "here is a token, be sure and have some-site send it up whenever they want to get 
-this stuff."  So browser calls back to some-site with a, "OK, I got permission from separate-site to get this stuff, they 
-said you need to use this token here whenever you request it."  
-	Now, some-site is on the spot and has to think, "K, the original click event was for such-and-such on separate-site, I've got this token
-now so lets see if its any good."  Meanwhile, user has left cause this is taking so long, browser is thinking, "what a good 
-boy am I,"  and some-site is busy sending a request off to separate-site with this token in tow.  So now some-site is talking
-to separate-site, "hey separate-site, its some-site, can you get this users stuff please?"  and separate-site is like, "you gotta token?"
-Some-site then responds, "oh yeah, ahh here" handing separte-site the token browser told it would work. 
-Separate-site then goes behind his desk and some-site is sure he is about to be arrested and then - " looks good, here is 
-this user's stuff".  Some-site is like, "shew, well it worked lemme give this junk to browser."  Some-site sends the content 
-back to browser who, in turn, sends it to user with a, "OK, I got that stuff from separate-site, here it is,... hello... you there..?"
+----
+Client Registration
+ - a client registers with an auth server prior to init'ng the protocol
+  - sets an expectation of who will come'a knockin'
+ - purpose is specify a client type, provide client redirect uri's 
+   and include additional info required by auth server
+ - the [redirect_uri] is very important since its where 
+   the auth tokens are sent to, an attacker need only get thier
+   uri delivered to the auth server to get the resource-owners
+   protected resources
+  - as such auth servers should already have a whitelist of 
+    redirect uri's per client and should only use those.
+  - typically a resource-owner as simply an end-user is auth'ed 
+    with the client itself.  the redirect_uri should require 
+    some kind of hash to bind incoming request to auth'ed
+    end-user
+ 
+ - client types
+  (1) web application     (web server)
+  (2) user-agent-base app (browser)
+  (3) native app          (app store) 
+----
 
+----
+Protocol Endpoints
+ - the request to auth endpoint should include the redirect uri 
+   even when there was one already setup in the client registration
+  - when the resource-owner is interacting with the auth server
+    if the redirect uri is found to be invalid the auth server
+    should warn the resource-owner and not redirect them.
+  - client's should keep the actual code of thier redirect uri's
+    clean and free of all 3rd-party scripts.  The client ought
+    to nicely get the creds and again redirect the user-agent 
+    to yet another location 
+ - for an error a specific object with discrete values is specified 
+   in the RFC 
+   - see section 4.1.2.1 in RFC 6749
+----
+
+----
+      +---------------------------------------------------------------------------------------------------------------------+
+      |                                               OAuth 2.0 Auth Code Flow                                              |
+1     ||+-----Resource-Owner-----+|+--------User-Agent--------+|+-------Auth-Server------+|+-------------Client------------+|
+      ||                          |                            |                          |    Redirect to [auth endpoint]  |
+4     ||                          |                            |                          |[client_id]                      |
+      ||                          |                            |                          |[scope]                          |
+      ||                          |                            |                          |[state]                          |
+7     ||                          |                            |                          |[redirect_uri]                   |
+      ||                          |                            |                          |[response_type='code']           |
+      ||                          |                   <............................................                         |
+10    ||                          |  GET [auth endpoint] with  |                          |                                 |
+      ||                          |          this data         |                          |                                 |
+      ||                          |                      ................>                |                                 |
+13    ||                          |                            |    Return Login Screen   |                                 |
+      ||                          |                   <................                   |                                 |
+      ||   grant access request   |                            |                          |                                 |
+16    ||                   ................>                   |                          |                                 |
+      ||                          |      POST access grant     |                          |                                 |
+      ||                          |                      ................>                |                                 |
+19    ||                          |                            |Redirect to [redirect_uri]|                                 |
+      ||                          |                            |[code]                    |                                 |
+22    ||                          |                            |[state]                   |                                 |
+      ||                          |                   <................                   |                                 |
+      ||                          |GET [redirect_uri] with this|                          |                                 |
+25    ||                          |            data            |                          |                                 |
+      ||                          |                      ............................................>                      |
+      ||                          |                            |                          |       POST [token endpoint]     |
+28    ||                          |                            |                          |[client_id]                      |
+      ||                          |                            |                          |[code]                           |
+      ||                          |                            |                          |[grant_type='authorization_code']|
+31    ||                          |                            |                          |[redirect_uri]*                  |
+      ||                          |                            |                  <................                         |
+      ||                          |                            |   Return [access token]  |                                 |
+34    ||                          |                            |                     ................>                      |
+      ||                          |                            |                          |                                 |
+      ||                          |                            |                          |                                 |
+37    ||+------------------------+|+--------------------------+|+------------------------+|+-------------------------------+|
+
+* see RFC 6749 sec. 10.6, "Authorization Code Redirection URI Manipulation", the auth server must confirm the redirect_uri
+  which got the auth code is the same as the one exchanging it for a auth token.
+   
+----
+
+----
+      +------------------------------------------------------------------------------------------------------------------------------------+
+      |                                                   OAuth 2.0 Implicit Grant Flow                                                    |
+1     ||+---Resource-Owner---+|+-------User-Agent-------+|+-------Auth-Server------+|+--------Web-Client-------+|+------Native-Client-----+|
+      ||                      |                          |                          |                           | Direct to [auth endpoint]|
+4     ||                      |                          |                          |                           |[client_id]               |
+      ||                      |                          |                          |                           |[scope]                   |
+      ||                      |                          |                          |                           |[state]                   |
+7     ||                      |                          |                          |                           |[redirect_uri]            |
+      ||                      |                          |                          |                           |[response_type='token']   |
+      ||                      |                 <.........................................................................                 |
+10    ||                      | GET [auth endpoint] with |                          |                           |                          |
+      ||                      |         this data        |                          |                           |                          |
+      ||                      |                    ................>                |                           |                          |
+13    ||                      |                          |    Return Login Screen   |                           |                          |
+      ||                      |                 <................                   |                           |                          |
+      || grant access request |                          |                          |                           |                          |
+16    ||                 ..............>                 |                          |                           |                          |
+      ||                      |     POST access grant    |                          |                           |                          |
+      ||                      |                    ................>                |                           |                          |
+19    ||                      |                          |Redirect to [redirect_uri]|                           |                          |
+      ||                      |                          |[access_token]**          |                           |                          |
+22    ||                      |                          |[token_type]              |                           |                          |
+      ||                      |                          |[expires_in]              |                           |                          |
+      ||                      |                          |[scope]                   |                           |                          |
+25    ||                      |                          |[state]                   |                           |                          |
+      ||                      |                 <................                   |                           |                          |
+      ||                      |   GET [redirect_uri]***  |                          |                           |                          |
+28    ||                      |                    ............................................>                |                          |
+      ||                      |                          |                          |Return HTML with Javascript|                          |
+31    ||                      |                 <............................................                   |                          |
+      ||                      |    Execute Javascript    |                          |                           |                          |
+      ||                      |            [access token]|                          |                           |                          |
+34    ||                      |                    .........................................................................>              |
+      ||                      |                          |                          |                           |                          |
+37    ||+--------------------+|+------------------------+|+------------------------+|+-------------------------+|+------------------------+|
+
+** this is probably a base64, or something, encoded version of the final [access_token]
+*** the [access token] is NOT sent to the Web Client
+----
+
+----
+ - This flow is for Client's that the Resource Owner highly trust
+      +-------------------------------------------------------------------------------------+
+      |                      OAuth 2.0 Resource Owner Password Cred Flow                    |
+1     ||+-----Resource-Owner-----+|+-------Auth-Server------+|+-----------Client-----------+|
+      ||                          |                          |                              |
+      ||        Enter creds       |                          |                              |
+3     ||                [username]|                          |                              |
+      ||                [password]|                          |                              |
+5     ||                   ............................................>                    |
+      ||                          |                          |Client invokes [auth endpoint]|
+7     ||                          |                          |           directly           |
+      ||                          |                          |[grant_type='password']       |
+9     ||                          |                          |[username]                    |
+      ||                          |                          |[password]                    |
+11    ||                          |                          |[scope]                       |
+      ||                          |                          |                              |
+      ||                          |                 <................                       |
+13    ||                          |  Return [access token]*  |                              |
+      ||                          |                    ................>                    |
+15    ||                          |                          |                              |
+      ||+------------------------+|+------------------------+|+----------------------------+|
+
+* response doesn't involve a User-Agent is the access token is direct JSON
+----
+
+----
+      +-------------------------------------------------------------+
+      |             OAuth 2.0 Client Credentials Flow **            |
+1     ||+-------------Client------------+|+-------Auth-Server------+|
+      ||                                 |                          |
+      ||  Client invokes [auth endpoint] |                          |
+3     ||             directly            |                          |
+      ||[grant_type='client_credentials']|                          |
+5     ||                          [scope]|                          |
+      ||                          ................>                 |
+      ||                                 |                          |
+7     ||                                 |  Return [access token]*  |
+      ||                       <................                    |
+      ||                                 |                          |
+      ||+-------------------------------+|+------------------------+|
+
+* response doesn't involve a User-Agent is the access token is direct JSON
+** The Client is also the resource-owner
+----
+
+----
 Setting up Google OAuth with ASP.NET MVC
 
  - the click event hits a controller's ActionResult 
@@ -86,84 +275,3 @@ Setting up Google OAuth with ASP.NET MVC
    
 - most of the real work appears to be driven by the GetOwinContext() resulting type of Microsoft.Owin.IOwinContext
 ----
-
-----
-RFC Spec for OAuth 2.0
-----
-
-----
-definitions:
- - [resource owner]: an entity capable of granting access to a protected
-    resource.  Then the resource owner is a person, it is referred to as an 
-    end-user.
- - [resource server]: the server hosting the protected resources
- - [client]: an application making protected resource request on behalf of 
-   the resource owner
- - [authorization server]: the server issuing access tokens to the client after
-   successfully authenticating the resource owner
-  - in actual implementation the resouce server may be the authorization server 
- - [authorization grant]: a cred rep'ng the resource owner's authorization
- - [authorization code]: a way to skip handing the resource owner's cred's to 
-   the client.  
- - [implicit grant]: simplified auth for javascript.  The client is issued an 
-    access token directly.  Some of the loss in security can be made up with 
-    unique redirect urls.
- - [client creds]: the creds the client has est. independently with the auth
-    server.  
- - [access token]: are creds used to access protected resources.
- - [refresh tokens]: tokens used to obtain access tokens.  Used by the client
-   when its access token expires - allows them to get a new one.  Is optional
-   and included with the access token.  Are only of use to auth server, not 
-   resource server.
- - [client id]: a unique string used to id registed clients with the auth server
- - [authorization endpoint]: the place where the resource-owner auth's with 
-    the auth server.
- - [redirection endpoint]: the place the auth server will tell the user-agent
-    to redirect to after resource-owner has auth'ed with it.  This is typically
-    setup during client registration with the auth server.\
- - [token endpoint]: where a client gets its access token.  Typically where 
-   the auth grant\code and refresh token are turned into access tokens.
-----
-
-----
-Client Registration
- - a client registers with an auth server prior to init'ng the protocol
-  - sets an expectation of who will come'a knockin'
- - purpose is specify a client type, provide client redirect uri's 
-   and include additional info required by auth server
-  
-  - client types
-  (1) web application     (web server)
-  (2) user-agent-base app (browser)
-  (3) native app          (app store) 
-----
-
-----
-Protocol Endpoints
- - the request to the auth endpoint must include a name\value of 
-    'response_type' '=' ('code' | 'token')
- 
- - the request to auth endpoint should include the redirect uri 
-   even when there was one already setup in the client registration
-    'redirect_uri' '=' encodedUri
-  - when the resource-owner is interacting with the auth server
-    if the redirect uri is found to be invalid the auth server
-    should warn the resource-owner and not redirect them.
-  - client's should keep the actual code of thier redirect uri's
-    clean and free of all 3rd-party scripts.  The client ought
-    to nicely get the creds and again redirect the user-agent 
-    to yet another location    
- 
- - the client should auth with the token endpoint every time using
-   its client creds (note, this is nothing to do with resource-owner creds)
-  - request to token endpoint should include
-   'client_id' '=' issuedClientId
-  - both request and response will include the param
-   'scope' '=' someSpaceDelimitedString
-----
-
-----
-Auth Code Grant flow
- 
-
- 

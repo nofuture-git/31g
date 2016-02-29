@@ -116,13 +116,42 @@ namespace NoFuture.Timeline
 
         public static class GraphStrings
         {
+            #region fields
+            private static int _arrowImmediateShaftLen = 2;
+            private static int _arrowTailLen = 6;
+            #endregion
+
+            #region properties
+            /// <summary>
+            /// This is the shaft length immediately following the
+            /// <see cref="GraphChars.DirectLeft"/> or <see cref="GraphChars.DirectRight"/>
+            /// </summary>
+            public static int ShaftLenAfterArrowHead
+            {
+                get { return _arrowImmediateShaftLen; }
+                set { _arrowImmediateShaftLen = value; }
+            }
+
+            /// <summary>
+            /// This is the len of the arrow shaft present in the 
+            /// block from which it originates.
+            /// </summary>
+            public static int ShaftLenInOriginBlock
+            {
+                get { return _arrowTailLen;}
+                set { _arrowTailLen = value; }
+            }
+            public static string ArrowTailShaft { get { return new string(GraphChars.DirectShaft, _arrowTailLen); } }
+            #endregion
+
+            #region methods
             public static string ArrowHeadRight
             {
                 get
                 {
                     return string.Format("{0}{1}",
                         GraphChars.DirectLeft,
-                        new string(GraphChars.DirectShaft, 2));
+                        new string(GraphChars.DirectShaft, _arrowImmediateShaftLen));
                 }
             }
 
@@ -131,12 +160,11 @@ namespace NoFuture.Timeline
                 get
                 {
                     return string.Format("{0}{1}",
-                        new String(GraphChars.DirectShaft, 2),
+                        new String(GraphChars.DirectShaft, _arrowImmediateShaftLen),
                         GraphChars.DirectRight);
                 }
             }
-
-            public static string ArrowTailShaft { get { return new string(GraphChars.DirectShaft, 6); } }
+            #endregion 
         }
     }
 }

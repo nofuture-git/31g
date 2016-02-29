@@ -6,7 +6,7 @@ namespace NoFuture.Timeline
 {
     public abstract class DrawingDimensions
     {
-        public static iTextSharp.text.Document ToPdfDoc(string content)
+        public static Document ToPdfDoc(string content)
         {
             if (string.IsNullOrWhiteSpace(content))
                 throw new ArgumentNullException("content");

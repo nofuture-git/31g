@@ -1034,5 +1034,37 @@ namespace NoFuture.Tests.Timeline
 
             System.Diagnostics.Debug.WriteLine(testSubject.ToString());
         }
+
+        [TestMethod]
+        public void TestFastPlateExample()
+        {
+            var myFPlate = new FastPlate("Band Practice", "Left side", "Middle side", "Right side");
+            myFPlate.FFrom("Left side").FTo("Right side").FText("big meaty claws");
+            myFPlate.FFrom("Right side").FTo("Left side").FText("d'er not just for attractin' mates");
+            myFPlate.FFrom("Left side").FTo("Right side").FText("yeah - bring it on");
+            myFPlate.FFrom("Middle side").FTo("Left side").FText("no people,");
+            myFPlate.FFrom("Middle side").FTo("Right side").FText("lets bring it off.");
+            System.Diagnostics.Debug.WriteLine(myFPlate.ToString());
+
+        }
+
+        [TestMethod]
+        public void TestFastPlateWithListValues()
+        {
+            var testSubject = new FastPlate("OAuth 2.0 Authorization Code Flow", "Resource Owner", "User-Agent", "Client", "Auth Server");
+            testSubject.FTextNewLineDelimiter = "`";
+            testSubject.FFrom("Client").FTo("User-Agent").FText("Redirect to Auth Endpoint `client id`request scope`local state`redirection endpoint");
+            testSubject.FFrom("User-Agent").FTo("Auth Server").FText("Redirect to Auth Endpoint");
+            testSubject.FFrom("Auth Server").FTo("User-Agent").FText("Send back login screen");
+            testSubject.FFrom("User-Agent").FTo("Resource Owner").FText("Prompt For Creds");
+            testSubject.FFrom("Resource Owner").FTo("User-Agent").FText("Enter creds");
+            testSubject.FFrom("User-Agent").FTo("Auth Server").FText("Post creds");
+            testSubject.FFrom("Auth Server").FTo("User-Agent").FText("Auth Code & Redirect");
+            testSubject.FFrom("User-Agent").FTo("Client").FText("Post Auth code to Redirect");
+            testSubject.FFrom("Client").FTo("Auth Server").FText("Send Auth Code & Redirect");
+            testSubject.FFrom("Auth Server").FTo("Client").FText("Return Access Token");
+            System.Diagnostics.Debug.WriteLine(testSubject.ToString());
+            
+        }
     }
 }

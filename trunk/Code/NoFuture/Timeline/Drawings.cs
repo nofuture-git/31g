@@ -277,8 +277,21 @@ namespace NoFuture.Timeline
     }//end Plate
 
     /// <summary>
-    /// This is for for creating fast sequence diagrams.
+    /// This is for for creating fast sequence diagrams where you are not really 
+    /// concerned with the values on the ruler, but just with the order of the events.
     /// </summary>
+    /// <example>
+    /// <![CDATA[
+    /// var myFPlate = new FastPlate("Band Practice", "Left side", "Middle side", "Right side");
+    /// myFPlate.FFrom("Left side").FTo("Right side").FText("big meaty claws");
+    /// myFPlate.FFrom("Right side").FTo("Left side").FText("d'er not just for attractin' mates");
+    /// myFPlate.FFrom("Left side").FTo("Right side").FText("yeah - bring it on");
+    /// myFPlate.FFrom("Middle side").FTo("Left side").FText("no people,");
+    /// myFPlate.FFrom("Middle side").FTo("Right side").FText("lets bring it off.");
+    /// 
+    /// myFPlate.ToString();
+    /// ]]>
+    /// </example>
     [Serializable]
     public class FastPlate : Plate
     {
@@ -286,7 +299,9 @@ namespace NoFuture.Timeline
         private Block _fromBlock;
         private Block _toBlock;
         private int _lineCounter = 2;
+        private readonly Dictionary<int, string> _blockIdxName = new Dictionary<int, string>();
         #endregion
+
         #region ctor
         public FastPlate(string plateTitle, params string[] blockNames)
         {
@@ -297,12 +312,23 @@ namespace NoFuture.Timeline
 
             var dfRule = new Rule {StartValue = 1, EndValue = 22, RuleLineSpacing = 3};
             Ruler = dfRule;
+            var c = 0;
             foreach (var blkNm in blockNames)
             {
                 var blk = new Block {Ruler = dfRule, Title = blkNm};
                 _blocks.Add(blk);
+                _blockIdxName.Add(c, blkNm);
+                c += 1;
             }
         }
+        #endregion
+
+        #region properties
+        /// <summary>
+        /// The appearance of this will force a new line into the block text
+        /// and the text will appear on the same side the arrow is pointing.
+        /// </summary>
+        public string FTextNewLineDelimiter { get; set; }
         #endregion
 
         #region methods
@@ -328,15 +354,22 @@ namespace NoFuture.Timeline
         {
             if (_fromBlock == null || _toBlock == null)
                 return;
-            if (_fromBlock.Equals(_toBlock))
-                return;
+
             var entryLine = new List<string>();
+            var listLine = new List<string>();
+            if (!string.IsNullOrWhiteSpace(FTextNewLineDelimiter) && entryText.Contains(FTextNewLineDelimiter))
+            {
+                var idx = entryText.IndexOf(FTextNewLineDelimiter);
+                var len = entryText.Length - idx;
+                listLine = entryText.Substring(idx, len).Split(FTextNewLineDelimiter.ToCharArray()).ToList();
+                entryText = entryText.Substring(0,idx);
+            }
+
             foreach (var word in entryText.Split(' '))
             {
                 entryLine.Add(word);
                 if (string.Join(" ", entryLine).Length + 3 <= _fromBlock.Width)
                     continue;
-
                 _fromBlock.AddEntry(_lineCounter, string.Join(" ", entryLine));
                 _lineCounter += 1;
                 entryLine.Clear();
@@ -344,7 +377,23 @@ namespace NoFuture.Timeline
 
             _fromBlock.AddEntry(_lineCounter, string.Join(" ", entryLine));
             _lineCounter += 1;
-            AddArrow(new Arrow(_fromBlock, _toBlock) {StartValue = _lineCounter});
+            if (listLine.Count > 0)
+            {
+                var listPrint = _blocks.IndexOf(_fromBlock) > _blocks.IndexOf(_toBlock)
+                    ? PrintLocation.Left
+                    : PrintLocation.Right;
+
+                foreach (var lline in listLine.Where(x => !string.IsNullOrWhiteSpace(x)))
+                {
+                    _fromBlock.AddEntry(_lineCounter, lline, listPrint);
+                    _lineCounter += 1;
+                }
+            }
+
+            if (_fromBlock.Equals(_toBlock))
+                return; 
+            
+            AddArrow(new Arrow(_fromBlock, _toBlock) { StartValue = _lineCounter });
             _lineCounter += 1;
             if (_lineCounter + 2 <= Ruler.EndValue) return;
 
@@ -403,6 +452,13 @@ namespace NoFuture.Timeline
             //single line entry
             if (entryIndex.Item2 == entryIndex.Item1)
             {
+                if (entryIndex.Item1 < 0 || entryIndex.Item1 >= ruleIndex.Count)
+                    throw new DrawingException(
+                        string.Format(
+                            "The entry by ID '{0}' having the text value of '{1}' " +
+                            "is set to a position that is beyond the current ruler's max.",
+                            entry.Id, entry));
+
                 textCanvas.Items.Add(new TextItem
                                      {
                                          HashMarkValue = ruleIndex[entryIndex.Item1],
