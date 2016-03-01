@@ -4,7 +4,9 @@ using System.Linq;
 
 namespace NoFuture.Rand.Gov
 {
-
+    //Jurisprudence: the science of law
+    //Jurisdiction: authority given to a court to rule over some region
+    //Precedent: rule established in prev. legal case
     [Serializable]
     public abstract class Statute
     {

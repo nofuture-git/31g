@@ -155,6 +155,81 @@ namespace NoFuture.Util.Gia
         /// <remarks>
         /// The ports used are defaulted to <see cref="DF_START_PORT"/>.
         /// </remarks>
+        /// <remarks>
+        /// <![CDATA[
+        ///  +------------------------------------------------------------------------------------------------------------+
+        ///  |                                           Using AssemblyAnalysis                                           |
+        ///  ||+--operating-context(1)--+|+-----new-instance(2)----+|+------remote-exe(3)-----+|+---target-assembly(4)---+|
+        ///  ||      new instance of     |                          |                          |                          |
+        ///  ||                   ................>                 |                          |                          |
+        ///  ||                          |     start new process    |                          |                          |
+        ///  ||                          |   provide assembly name  |                          |                          |
+        ///  ||                          |                    ................>                |                          |
+        ///  ||                          |                          |      launch sockets      |                          |
+        ///  ||                          |                          | get asm names on manifest|                          |
+        ///  ||                          |                          |                     ................>               |
+        ///  ||                          |                          |send AsmIndicies on socket|                          |
+        ///  ||                          |                 <................                   |                          |
+        ///  ||                          |    receive AsmIndices    |                          |                          |
+        ///  ||                          |       save to disk       |                          |                          |
+        ///  ||                          |      assign to prop      |                          |                          |
+        ///  ||                <................                    |                          |                          |
+        ///  ||  invoke GetTokenIds with |                          |                          |                          |
+        ///  ||           regex          |                          |                          |                          |
+        ///  ||                   ................>                 |                          |                          |
+        ///  ||                          | send GetTokenIdsCriteria |                          |                          |
+        ///  ||                          |         on socket        |                          |                          |
+        ///  ||                          |                    ................>                |                          |
+        ///  ||                          |                          |    get types as tokens   |                          |
+        ///  ||                          |                          |                     ................>               |
+        ///  ||                          |                          |   get members as tokens  |                          |
+        ///  ||                          |                          |                     ................>               |
+        ///  ||                          |                          |  get callvirts as tokens |                          |
+        ///  ||                          |                          |                     ................>               |
+        ///  ||                          |                          |  get tokens-of-tokens(a) |                          |
+        ///  ||                          |                          |                     ................>               |
+        ///  ||                          |                          |send TokenIds on socket(b)|                          |
+        ///  ||                          |                 <................                   |                          |
+        ///  ||                          |       get TokenIds       |                          |                          |
+        ///  ||                          |       save to disk       |                          |                          |
+        ///  ||                          |      return TokenIds     |                          |                          |
+        ///  ||                <................                    |                          |                          |
+        ///  ||   flatten the TokenIds   |                          |                          |                          |
+        ///  ||   invoke GetTokenNames   |                          |                          |                          |
+        ///  ||                   ................>                 |                          |                          |
+        ///  ||                          | send MetadataTokenId[] on|                          |                          |
+        ///  ||                          |          socket          |                          |                          |
+        ///  ||                          |                    ................>                |                          |
+        ///  ||                          |                          | resolve each to a runtime|                          |
+        ///  ||                          |                          |           type           |                          |
+        ///  ||                          |                          |                     ................>               |
+        ///  ||                          |                          | send TokenNames on socket|                          |
+        ///  ||                          |                 <................                   |                          |
+        ///  ||                          |    receive TokenNames    |                          |                          |
+        ///  ||                          |       save to disk       |                          |                          |
+        ///  ||                          |     return TokenNames    |                          |                          |
+        ///  ||                <................                    |                          |                          |
+        ///  ||+------------------------+|+------------------------+|+------------------------+|+------------------------+|
+        /// 
+        /// (1) assume PowerShell
+        /// (2) new instance of NoFuture.Util.Gia.AssemblyAnalysis
+        /// (3) new process NoFuture.Util.Gia.InvokeAssemblyAnalysis.exe
+        /// (4) the assembly whose tokens we want
+        /// 
+        /// (a)  The top-level types already had all thier members resolved to tokens and every virtcall found within the body of those members.
+        ///      This is now starting it all over again as if the types found on the callvirts in the body of these members were themselves the top-level types.
+        ///      This will continue until we end up on a type which is contained in an assembly whose name doesn't match our regex pattern.
+        /// (b)  This is a tree data-struct. Each token has itself a collection of tokens and so on.
+        /// ]]>
+        /// </remarks>
+        /// <example>
+        /// <![CDATA[
+        ///  $myAsmAly = New-Object NoFuture.Util.Gia.AssemblyAnalysis($AssemblyPath,$false)
+        ///  $myTokensIds = $myAsmAly.GetTokenIds(0, "NoFuture.*")
+        ///  $myFlatTokens = $myTokensIds.FlattenToDistinct()
+        ///  $myTokenNames = $myAsmAly.GetTokenNames($myFlatTokens)
+        /// ]]>
+        /// </example>
         public AssemblyAnalysis(string assemblyPath, bool resolveGacAsmNames, params int[] ports)
         {
             if (String.IsNullOrWhiteSpace(assemblyPath) || !File.Exists(assemblyPath))
@@ -200,15 +275,15 @@ namespace NoFuture.Util.Gia
         /// </summary>
         /// <param name="asmIdx"></param>
         /// <param name="recurseAnyAsmNamedLike">
-        /// A regex pattern, on which tokens of tokens will 
-        /// continue to be resolved so long as the containing assembly's name does not match
-        /// this.
+        /// Optional regex pattern for tokens-of-tokens resolution.
+        /// Basically, "keep going while the token's containing assembly looks like this..."
+        /// Default is to stop at the end of <see cref="asmIdx"/> tokens-of-tokens.
         /// </param>
         /// <returns></returns>
         /// <remarks>
         /// Use the <see cref="AsmIndicies"/> property to get the index.
         /// </remarks>
-        public TokenIds GetTokenIds(int asmIdx, string recurseAnyAsmNamedLike)
+        public TokenIds GetTokenIds(int asmIdx, string recurseAnyAsmNamedLike = null)
         {
             if (_asmIndices.Asms.All(x => x.IndexId != asmIdx))
                 throw new RahRowRagee(String.Format("No matching index found for {0}", asmIdx));

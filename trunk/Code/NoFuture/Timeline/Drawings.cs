@@ -304,22 +304,26 @@ namespace NoFuture.Timeline
 
         #region ctor
         public FastPlate(string plateTitle, params string[] blockNames)
+            : this(plateTitle, new Rule { StartValue = 1, EndValue = 22, RuleLineSpacing = 3 }, blockNames)
+        {
+        }
+
+        public FastPlate(string plateTitle, Rule ruler, params string[] blockNames)
         {
             if (blockNames == null || blockNames.Length <= 0)
                 throw new ArgumentNullException("blockNames");
 
             Name = string.IsNullOrWhiteSpace(plateTitle) ? "Sequence Diagram" : plateTitle;
-
-            var dfRule = new Rule {StartValue = 1, EndValue = 22, RuleLineSpacing = 3};
-            Ruler = dfRule;
+            Ruler = ruler;
             var c = 0;
             foreach (var blkNm in blockNames)
             {
-                var blk = new Block {Ruler = dfRule, Title = blkNm};
+                var blk = new Block { Ruler = ruler, Title = blkNm };
                 _blocks.Add(blk);
                 _blockIdxName.Add(c, blkNm);
                 c += 1;
             }
+            
         }
         #endregion
 
@@ -368,7 +372,7 @@ namespace NoFuture.Timeline
             foreach (var word in entryText.Split(' '))
             {
                 entryLine.Add(word);
-                if (string.Join(" ", entryLine).Length + 3 <= _fromBlock.Width)
+                if (string.Join(" ", entryLine).Length + 4 <= _fromBlock.Width)
                     continue;
                 _fromBlock.AddEntry(_lineCounter, string.Join(" ", entryLine));
                 _lineCounter += 1;
@@ -397,7 +401,13 @@ namespace NoFuture.Timeline
             _lineCounter += 1;
             if (_lineCounter + 2 <= Ruler.EndValue) return;
 
-            var nRule = new Rule { StartValue = 1, EndValue = _lineCounter + 2, RuleLineSpacing = 3 };
+
+            var nRule = new Rule
+            {
+                StartValue = Ruler.StartValue,
+                EndValue = _lineCounter + 2,
+                RuleLineSpacing = Ruler.RuleLineSpacing
+            };
             Ruler = nRule;
             foreach (var blk in _blocks)
             {
