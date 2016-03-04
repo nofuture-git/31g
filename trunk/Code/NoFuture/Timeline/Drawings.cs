@@ -278,16 +278,16 @@ namespace NoFuture.Timeline
 
     /// <summary>
     /// This is for for creating fast sequence diagrams where you are not really 
-    /// concerned with the values on the ruler, but just with the order of the events.
+    /// concerned with the values on the ruler - just the ordering of the entries.
     /// </summary>
     /// <example>
     /// <![CDATA[
     /// var myFPlate = new FastPlate("Band Practice", "Left side", "Middle side", "Right side");
-    /// myFPlate.FFrom("Left side").FTo("Right side").FText("big meaty claws");
-    /// myFPlate.FFrom("Right side").FTo("Left side").FText("d'er not just for attractin' mates");
-    /// myFPlate.FFrom("Left side").FTo("Right side").FText("yeah - bring it on");
-    /// myFPlate.FFrom("Middle side").FTo("Left side").FText("no people,");
-    /// myFPlate.FFrom("Middle side").FTo("Right side").FText("lets bring it off.");
+    /// myFPlate.FBlk("Left side").FTxt("big meaty claws").FBlk("Right side");
+    /// myFPlate.FBlk("Right side").FTxt("d'er not just for attractin' mates").FBlk("Left side");
+    /// myFPlate.FBlk("Left side").FTxt("yeah - bring it on").FBlk("Right side").FBlk(null);
+    /// myFPlate.FBlk("Middle side").FTxt("no people,").FBlk("Left side").FBlk(null);
+    /// myFPlate.FBlk("Middle side").FTxt("lets bring it off.").FBlk("Right side");
     /// 
     /// myFPlate.ToString();
     /// ]]>
@@ -296,15 +296,14 @@ namespace NoFuture.Timeline
     public class FastPlate : Plate
     {
         #region fields
-        private Block _fromBlock;
-        private Block _toBlock;
+        private Block _liveBlock;
         private int _lineCounter = 2;
         private readonly Dictionary<int, string> _blockIdxName = new Dictionary<int, string>();
         #endregion
 
         #region ctor
         public FastPlate(string plateTitle, params string[] blockNames)
-            : this(plateTitle, new Rule { StartValue = 1, EndValue = 22, RuleLineSpacing = 3 }, blockNames)
+            : this(plateTitle, new Rule { StartValue = 1, EndValue = 16, RuleLineSpacing = 3 }, blockNames)
         {
         }
 
@@ -323,84 +322,84 @@ namespace NoFuture.Timeline
                 _blockIdxName.Add(c, blkNm);
                 c += 1;
             }
-            
         }
-        #endregion
-
-        #region properties
-        /// <summary>
-        /// The appearance of this will force a new line into the block text
-        /// and the text will appear on the same side the arrow is pointing.
-        /// </summary>
-        public string FTextNewLineDelimiter { get; set; }
         #endregion
 
         #region methods
-        public virtual FastPlate FFrom(string blockName)
+        /// <summary>
+        /// This identifies the current block. When the current block
+        /// is being replaced an arrow will be written from the previous
+        /// block to this block.
+        /// </summary>
+        /// <param name="blockName">Pass in null clear the current block.</param>
+        /// <returns></returns>
+        public virtual FastPlate Blk(string blockName)
         {
             if (string.IsNullOrWhiteSpace(blockName) || _blocks.All(x => x.Title != blockName))
+            {
+                _liveBlock = null;
                 return this;
+            }
+            if (_liveBlock == null)
+            {
+                _liveBlock = _blocks.First(x => x.Title == blockName);
+                return this;
+            }
 
-            _fromBlock = _blocks.First(x => x.Title == blockName);
+            var searchBlk = _blocks.First(x => x.Title == blockName);
+            if (_liveBlock!= null && !searchBlk.Equals(_liveBlock))
+            {
+                AddArrow(new Arrow(_liveBlock, searchBlk){StartValue = _lineCounter});
+                _lineCounter += 1;
+            }
+
+            _liveBlock = searchBlk;
             return this;
         }
 
-        public virtual FastPlate FTo(string blockName)
+        public virtual FastPlate Blk(int idx)
         {
-            if (string.IsNullOrWhiteSpace(blockName) || _blocks.All(x => x.Title != blockName))
-                return this;
-
-            _toBlock = _blocks.First(x => x.Title == blockName);
+            if (_blockIdxName.ContainsKey(idx)) return Blk(_blockIdxName[idx]);
+            _liveBlock = null;
             return this;
         }
 
-        public virtual void FText(string entryText)
+        /// <summary>
+        /// Prints a single line on to current block.
+        /// </summary>
+        /// <param name="entryText">
+        /// This is broken into many lines whenever the text is too large.</param>
+        /// <param name="pl">Lets the caller determine the <see cref="PrintLocation"/> of this line</param>
+        /// <returns></returns>
+        public virtual FastPlate Txt(string entryText, PrintLocation pl = PrintLocation.Center)
         {
-            if (_fromBlock == null || _toBlock == null)
-                return;
+            if (_liveBlock == null)
+                return this;
+            entryText = entryText ?? string.Empty;
 
             var entryLine = new List<string>();
-            var listLine = new List<string>();
-            if (!string.IsNullOrWhiteSpace(FTextNewLineDelimiter) && entryText.Contains(FTextNewLineDelimiter))
-            {
-                var idx = entryText.IndexOf(FTextNewLineDelimiter);
-                var len = entryText.Length - idx;
-                listLine = entryText.Substring(idx, len).Split(FTextNewLineDelimiter.ToCharArray()).ToList();
-                entryText = entryText.Substring(0,idx);
-            }
 
             foreach (var word in entryText.Split(' '))
             {
                 entryLine.Add(word);
-                if (string.Join(" ", entryLine).Length + 4 <= _fromBlock.Width)
+                if (string.Join(" ", entryLine).Length + 4 <= _liveBlock.Width)
                     continue;
-                _fromBlock.AddEntry(_lineCounter, string.Join(" ", entryLine));
+                _liveBlock.AddEntry(_lineCounter, string.Join(" ", entryLine),pl);
                 _lineCounter += 1;
                 entryLine.Clear();
             }
 
-            _fromBlock.AddEntry(_lineCounter, string.Join(" ", entryLine));
+            _liveBlock.AddEntry(_lineCounter, string.Join(" ", entryLine), pl);
             _lineCounter += 1;
-            if (listLine.Count > 0)
-            {
-                var listPrint = _blocks.IndexOf(_fromBlock) > _blocks.IndexOf(_toBlock)
-                    ? PrintLocation.Left
-                    : PrintLocation.Right;
 
-                foreach (var lline in listLine.Where(x => !string.IsNullOrWhiteSpace(x)))
-                {
-                    _fromBlock.AddEntry(_lineCounter, lline, listPrint);
-                    _lineCounter += 1;
-                }
-            }
+            AdjustRuler();
 
-            if (_fromBlock.Equals(_toBlock))
-                return; 
-            
-            AddArrow(new Arrow(_fromBlock, _toBlock) { StartValue = _lineCounter });
-            _lineCounter += 1;
+            return this;
+        }
+
+        protected internal void AdjustRuler()
+        {
             if (_lineCounter + 2 <= Ruler.EndValue) return;
-
 
             var nRule = new Rule
             {
@@ -412,7 +411,7 @@ namespace NoFuture.Timeline
             foreach (var blk in _blocks)
             {
                 blk.Ruler = nRule;
-            }
+            }            
         }
         #endregion
 

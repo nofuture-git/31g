@@ -1016,21 +1016,21 @@ namespace NoFuture.Tests.Timeline
         {
             var testSubject = new FastPlate("OAuth 2.0 Authorization Code Flow", "Resource Owner", "User-Agent", "Client", "Auth Server");
 
-            testSubject.FFrom("Client").FTo("User-Agent").FText("Redirect to Auth Endpoint and a whole bunch of stuff in the request has to go as well");
-            testSubject.FFrom("User-Agent").FTo("Auth Server").FText("Redirect to Auth Endpoint");
-            testSubject.FFrom("Auth Server").FTo("User-Agent").FText("Send back login screen");
-            testSubject.FFrom("User-Agent").FTo("Resource Owner").FText("Prompt For Creds");
-            testSubject.FFrom("Resource Owner").FTo("User-Agent").FText("Enter creds");
-            testSubject.FFrom("User-Agent").FTo("Auth Server").FText("Post creds");
-            testSubject.FFrom("Auth Server").FTo("User-Agent").FText("Auth Code & Redirect");
-            testSubject.FFrom("User-Agent").FTo("Client").FText("Post Auth code to Redirect");
-            testSubject.FFrom("Client").FTo("Auth Server").FText("Send Auth Code & Redirect");
-            testSubject.FFrom("Auth Server").FTo("Client").FText("Return Access Token");
+            testSubject.Blk("Client").Txt("Redirect to Auth Endpoint and a whole bunch of stuff in the request has to go as well").Blk("User-Agent");
+            testSubject.Blk("User-Agent").Txt("Redirect to Auth Endpoint").Blk("Auth Server");
+            testSubject.Blk("Auth Server").Txt("Send back login screen").Blk("User-Agent");
+            testSubject.Blk("User-Agent").Txt("Prompt For Creds").Blk("Resource Owner");
+            testSubject.Blk("Resource Owner").Txt("Enter creds").Blk("User-Agent");
+            testSubject.Blk("User-Agent").Txt("Post creds").Blk("Auth Server");
+            testSubject.Blk("Auth Server").Txt("Auth Code & Redirect").Blk("User-Agent");
+            testSubject.Blk("User-Agent").Txt("Post Auth code to Redirect").Blk("Client");
+            testSubject.Blk("Client").Txt("Send Auth Code & Redirect").Blk("Auth Server");
+            testSubject.Blk("Auth Server").Txt("Return Access Token").Blk("Client");
 
-            testSubject.FFrom("User-Agent").FTo("Resource Owner").FText("More Lines 00");
-            testSubject.FFrom("Resource Owner").FTo("Auth Server").FText("More Lines Again");
-            testSubject.FFrom("Auth Server").FTo("User-Agent").FText("More Dots");
-            testSubject.FFrom("User-Agent").FTo("Client").FText("Stop Dots");
+            testSubject.Blk("User-Agent").Txt("Start Dots").Blk("Resource Owner");
+            testSubject.Blk("Resource Owner").Txt("More Dots").Blk("Auth Server");
+            testSubject.Blk("Auth Server").Txt("More Dots").Blk("User-Agent");
+            testSubject.Blk("User-Agent").Txt("Stop Dots").Blk("Client");
 
             System.Diagnostics.Debug.WriteLine(testSubject.ToString());
         }
@@ -1039,11 +1039,11 @@ namespace NoFuture.Tests.Timeline
         public void TestFastPlateExample()
         {
             var myFPlate = new FastPlate("Band Practice", "Left side", "Middle side", "Right side");
-            myFPlate.FFrom("Left side").FTo("Right side").FText("big meaty claws");
-            myFPlate.FFrom("Right side").FTo("Left side").FText("d'er not just for attractin' mates");
-            myFPlate.FFrom("Left side").FTo("Right side").FText("yeah - bring it on");
-            myFPlate.FFrom("Middle side").FTo("Left side").FText("no people,");
-            myFPlate.FFrom("Middle side").FTo("Right side").FText("lets bring it off.");
+            myFPlate.Blk("Left side").Txt("big meaty claws").Blk("Right side");
+            myFPlate.Blk("Right side").Txt("d'er not just for attractin' mates").Blk("Left side");
+            myFPlate.Blk("Left side").Txt("yeah - bring it on").Blk("Right side").Blk(null);
+            myFPlate.Blk("Middle side").Txt("no people,").Blk("Left side").Blk(null);
+            myFPlate.Blk("Middle side").Txt("lets bring it off.").Blk("Right side");
             System.Diagnostics.Debug.WriteLine(myFPlate.ToString());
 
         }
@@ -1052,17 +1052,16 @@ namespace NoFuture.Tests.Timeline
         public void TestFastPlateWithListValues()
         {
             var testSubject = new FastPlate("OAuth 2.0 Authorization Code Flow", "Resource Owner", "User-Agent", "Client", "Auth Server");
-            testSubject.FTextNewLineDelimiter = "`";
-            testSubject.FFrom("Client").FTo("User-Agent").FText("Redirect to Auth Endpoint `client id`request scope`local state`redirection endpoint");
-            testSubject.FFrom("User-Agent").FTo("Auth Server").FText("Redirect to Auth Endpoint");
-            testSubject.FFrom("Auth Server").FTo("User-Agent").FText("Send back login screen");
-            testSubject.FFrom("User-Agent").FTo("Resource Owner").FText("Prompt For Creds");
-            testSubject.FFrom("Resource Owner").FTo("User-Agent").FText("Enter creds");
-            testSubject.FFrom("User-Agent").FTo("Auth Server").FText("Post creds");
-            testSubject.FFrom("Auth Server").FTo("User-Agent").FText("Auth Code & Redirect");
-            testSubject.FFrom("User-Agent").FTo("Client").FText("Post Auth code to Redirect");
-            testSubject.FFrom("Client").FTo("Auth Server").FText("Send Auth Code & Redirect");
-            testSubject.FFrom("Auth Server").FTo("Client").FText("Return Access Token");
+            testSubject.Blk("Client").Txt("Redirect to Auth Endpoint").Txt("client id").Txt("request scope").Txt("local state").Txt("redirection endpoint").Blk("User-Agent");
+            testSubject.Blk("User-Agent").Txt("Redirect to Auth Endpoint").Blk("Auth Server");
+            testSubject.Blk("Auth Server").Txt("Send back login screen").Blk("User-Agent");
+            testSubject.Blk("User-Agent").Txt("Prompt For Creds").Blk("Resource Owner");
+            testSubject.Blk("Resource Owner").Txt("Enter creds").Blk("User-Agent");
+            testSubject.Blk("User-Agent").Txt("Post creds").Blk("Auth Server");
+            testSubject.Blk("Auth Server").Txt("Auth Code & Redirect").Blk("User-Agent");
+            testSubject.Blk("User-Agent").Txt("Post Auth code to Redirect").Blk("Client");
+            testSubject.Blk("Client").Txt("Send Auth Code & Redirect").Blk("Auth Server");
+            testSubject.Blk("Auth Server").Txt("Return Access Token").Blk("Client");
             System.Diagnostics.Debug.WriteLine(testSubject.ToString());
             
         }

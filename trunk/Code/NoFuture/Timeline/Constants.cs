@@ -117,7 +117,7 @@ namespace NoFuture.Timeline
         public static class GraphStrings
         {
             #region fields
-            private static int _arrowImmediateShaftLen = 2;
+            private static int _arrowImmediateShaftLen = 4;
             private static int _arrowTailLen = 6;
             #endregion
 

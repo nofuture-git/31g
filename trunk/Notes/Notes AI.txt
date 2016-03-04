@@ -5,9 +5,6 @@ Stuart J. Russell and Peter Norvig
 Prentice Hall, Englewood Cliffs, New Jersey
 ISBN 0-13-103805-2 1995 (1st Edition)
 ISBN 978-0-13-604259-4 2010 (3rd Edition)
-
-code examples in Java (20160229)
-https://github.com/aimacode/aima-java
 ----
 
 ----
@@ -363,3 +360,42 @@ Advanced Search
    - objective function: the tautological thing which 
      defines the optimization
  - state-space landscape
+ - [hill-climbing search]for max the local search will 
+   expand all neighbor nodes and the one with the highest 
+   value is selected and the current node is reassigned to it, 
+   this repeats until a node is found which has no neighbors 
+   which have a higher value than the current.
+  - this could end up on only a local max, not the global max
+  - by repeating the max-on-local search from random starting
+    points the chances of getting stuck on a local high-point 
+    are reduced.
+  - max-on-local search cannot handle dream-like fractorial 
+    environments 
+ - [simulated annealing] on the reverse if looking for min 
+   the text has helpful illustration of trying to get a 
+   ping-pong ball into the deepest crevice on a bumpy surface.
+  - just dropping it will lead to a local min
+  - we can get it out of local min by shaking the surface
+  - trick is to shake it just right so that shaking is 
+    will get it out of any local min but not the global min
+ - [local beam search]: like hill-climbing or its reverse but
+    has (k) states instead of just one (current)
+   - begins in (k) random states, if these states or thier 
+     expanded neighbors are the solution its done.
+   - otherwise take the one (k) best of the successors 
+     and repeat
+   - appears like just repeating the max-on-local search but
+     its NOT since those are just (k) restarts, recall that
+     the (k) best among all the successors is selected 
+    - like (k) 49'ers spread across the prospect field,
+      they all start at whatever location seems best (random).
+    - if one of them calls out "gold" the others will leave thier 
+      locations and gather around the bragger
+    - obvious draw back is that this vein of gold is tiny
+      compared to what one of them was about to hit in 
+      a couple more pick-axe strikes.
+----
+
+----
+Local Search
+@pg 151

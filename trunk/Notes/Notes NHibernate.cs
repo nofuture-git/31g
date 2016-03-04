@@ -39,6 +39,28 @@ Query by Criteria
    but is formed by way of ordered key-words rather than an object pipe.
 */
 
+/*
+(N+1) Selects Problem
+ - a formula which represents the number of selects that occur when filtering a 
+   child collection.
+ - there is 1 select for the top-level entity and N selects for the child collection 
+   where the length of the child collection is N
+ - simple LINQ example 
+ 
+    var someSearch =
+        myProduct.WorkOrders.Where(
+            x => x.WorkOrderRoutings.IsReadOnly);
+            
+    - (1) is from the select which got 'myProduct'
+    - (N) equals 'WorkOrders.Count' and the framework will have to 
+          select every one to test the value of 'IsReadOnly'
+ - the N+1 selects problem can be avoided using the 
+  (1) HQL's 'left join fetch'
+  (2) ICriteria API use of 
+      .SetFetchMode("MyPropertyName", FetchMode.Eager)
+      //criteria expressions here
+*/
+
 //the 'entity' class does not implement any specific kind of NHibernate interface/class
 using NHibernate;
 using NHibernate.Cfg;
