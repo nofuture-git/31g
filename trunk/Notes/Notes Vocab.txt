@@ -435,3 +435,6 @@ subsume - include or absorb something in something else
 extrapolate - extend the application of
 syllogism - deductive reasoning from phil 101.
 concomitant - naturally accompanying or associated
+obstreperous - noisy and difficult to control
+truculent - eager or quick to argue or fight
+vitriolic - filled with bitter criticism or malice
