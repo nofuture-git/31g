@@ -228,14 +228,25 @@ Lists
  - are 0-indexed
  [] #empty list
  [0,1,2,3]
- myList = ['my string', ['my', 'inner', 'list', 3.1415], 1.23, {}]
+ myList = ['my string', ['my', 'inner', 'list', 3.1415], 1.23, {}, 'more', 'stuff', 'down' ,'here']
  
  - list slicing syntax
  myOtherList = myList[1:3] 
   - is like C# .Substring(x, y) where x is starting index and y is
     length to read out from that starting index
+  - start at '1' out to '3' not including '3' itself
   - C# LINQ syntax like
   var myOtherList = myList.Skip(1).Take(3);
+  
+ yetAnother = myList[1:4:2]
+  - another form of list slice where the third arg is now step size 
+  - unspecified step size means '1'
+   myList[1:3] same as myList[1:3:1]
+ 
+ something = myList[2:]
+  - get everything starting at index 2 out to the end
+ andMore = myList[:3]
+  - get everything up to but not including '3'
  
  L.append(X) 
  L.extend(I) #like .NET .AddRange(I)
@@ -293,6 +304,15 @@ List Comprehension
          nodesOut.Add(nNode);
      }
      return nodesOut;
+
+ - another example from AIMA
+  states = [s for (a, s) in problem.successor(problem.initial_state)[:n]]
+  - 'n' is a integer passed into a function
+  - 'successor' returns tuple of types Action and State
+  - so this is getting all the Action-State tuples from 'successor' upto the
+    'n' count and then only selecting the 'State' from the resulting spliced
+    list of tuples
+  
 ----
 
 ----
@@ -524,6 +544,9 @@ Typical Constructs Syntax
  >>> L = lambda a, b=2, *c, **d: [a, b, c, d]
  >>> L(1,3,2,4,x=1,y=2)
  [1, 3, (2, 4), {'y': 2, 'x': 1}]
+  - what appears before the colon is the variable decls
+   - the "(x, y) =>" the 'x' and 'y' in .NET before
+     the "goes to"
 
  - arbitrary runtime attributes can be added to function def's
  >>> def myfunc(a, b, c, d): print(a, b, c, d)

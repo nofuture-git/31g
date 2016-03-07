@@ -9,6 +9,6 @@ namespace aima_csharp_3e.Search.Framework
 {
     public interface ISearch<T>
     {
-        Node Search();
+        T Search();
     }
 }

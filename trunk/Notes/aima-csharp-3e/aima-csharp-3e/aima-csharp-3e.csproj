@@ -52,10 +52,12 @@
     <Compile Include="Agent\IState.cs" />
     <Compile Include="Agent\SimpleProblemSolvingAgent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Search\Framework\Extensions.cs" />
     <Compile Include="Search\Framework\IFx.cs" />
     <Compile Include="Search\Informed\AstarSearch.cs" />
     <Compile Include="Search\Informed\GreedyBestFirstSearch.cs" />
     <Compile Include="Search\Local\ExpSchedule.cs" />
+    <Compile Include="Search\Local\GeneticSearch.cs" />
     <Compile Include="Search\Local\HillClimbing.cs" />
     <Compile Include="Search\Local\SimulatedAnnealing.cs" />
     <Compile Include="Search\Uninformed\DepthLimitedSearch.cs" />
