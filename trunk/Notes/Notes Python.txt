@@ -547,6 +547,12 @@ Typical Constructs Syntax
   - what appears before the colon is the variable decls
    - the "(x, y) =>" the 'x' and 'y' in .NET before
      the "goes to"
+ - and example from AIMA
+  fitness_fn = lambda s: - problem.path_cost(0, s, None, s)
+   - 's' is the only arg, 
+   - 'path_cost' returns a int type
+   - the neg ('-') sign in front is simply flipping the results 
+     to a negative value
 
  - arbitrary runtime attributes can be added to function def's
  >>> def myfunc(a, b, c, d): print(a, b, c, d)

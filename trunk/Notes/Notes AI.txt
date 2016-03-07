@@ -116,9 +116,10 @@ Problem Solving
      achieves the goal but at different costs
    - a problem is then defined as a type having 
     (1) initial state
-	(2) operators (successor functions)
+	(2) actions (successor functions)
 	(3) goal-test
 	(4) path-cost functions
+    (5) transition model: results of those actions
    - additionaly there is a search-cost where trying to solve
      the problem is costly on its own
  - performing the actions is called execution
@@ -397,5 +398,36 @@ Advanced Search
 ----
 
 ----
-Local Search
-@pg 151
+Nodeterministic Search
+ - Percepts become useful
+ - in partially observable environment
+  - percept narrow dow possiable states 
+ - in nondeterministic environment
+  - percepts tell which possible outcomes actually occurred
+ - solution becomes a matter of contingency
+  - called 'strategy'
+ - transition model (idea was not present in 1st ed.)
+  - is not longer a single but multiple results
+  - solutions are in the form of nested branches (tree)
+
+ - [interleaving] first taking action, then observes it
+    the environment and computes the next action.
+ - [exploration problem]: the agent does not know what states
+   exist or what its actions do.
+   - the reuslts of action (a) at state (s) can only be known
+     by being at state (s) and doing action (a)
+   - the text refers to 'online search' where 'online' means
+     "process input data as the are received"
+ - [competitive ratio]: the actual choosen path cost compared to
+    its paragon
+ - [irreversible state]: a state from which no action leads back
+    to the previous state
+   - no algorithm can avoid dead ends in all state spaces
+ - [adversary argument]: imagined as an adversary constructing
+    the state space as the agent explores it putting goals and
+    dead-ends arbitrarily.
+ - [safely explorable]: goal state is reachable from every 
+    reachable state
+ 
+  
+    
