@@ -428,6 +428,23 @@ Nodeterministic Search
     dead-ends arbitrarily.
  - [safely explorable]: goal state is reachable from every 
     reachable state
+----
+
+----
+Games
+ - where agents are in conflict
+ - borrowed from Econ game theory
+  - properly labeled: "deterministic, turn-taking, two-player,
+     zero-sum games of perfect information"
+ - includes
+  - definition of optimal move and algo for finding it
+  - techniques for choosing a good move with limited time
+  - [Pruning]: ignore portions of the search tree that makes
+     no difference to the final choice
+  - heuristic evaluation functions: approx. the utility of a state
+    without doing a complete search
+    
+    
  
   
     

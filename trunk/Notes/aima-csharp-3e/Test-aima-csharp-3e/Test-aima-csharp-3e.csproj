@@ -52,8 +52,14 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="ErraticVacuumWorld\ErraticVacuumProblem.cs" />
+    <Compile Include="ErraticVacuumWorld\Left.cs" />
+    <Compile Include="ErraticVacuumWorld\Position.cs" />
+    <Compile Include="ErraticVacuumWorld\Right.cs" />
+    <Compile Include="ErraticVacuumWorld\Suck.cs" />
     <Compile Include="Informed\TestAstarSearch.cs" />
     <Compile Include="Local\TestExpSchedule.cs" />
+    <Compile Include="Nondeterministic\TestAndOrGraphSearch.cs" />
     <Compile Include="RoadMapRomania\City.cs" />
     <Compile Include="RoadMapRomania\Drive.cs" />
     <Compile Include="RoadMapRomania\RoadMapProblem.cs" />

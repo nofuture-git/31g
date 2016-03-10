@@ -60,6 +60,9 @@
     <Compile Include="Search\Local\GeneticSearch.cs" />
     <Compile Include="Search\Local\HillClimbing.cs" />
     <Compile Include="Search\Local\SimulatedAnnealing.cs" />
+    <Compile Include="Search\Nondeterministic\AndOrGraphSearch.cs" />
+    <Compile Include="Search\Nondeterministic\CondPlan.cs" />
+    <Compile Include="Search\Nondeterministic\INdProblem.cs" />
     <Compile Include="Search\Uninformed\DepthLimitedSearch.cs" />
     <Compile Include="Search\Framework\ISearch.cs" />
     <Compile Include="Search\Uninformed\GraphSearch.cs" />
