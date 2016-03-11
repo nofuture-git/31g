@@ -81,7 +81,7 @@ namespace aima_csharp_3e.Search.Local
             }
 
             //there can be only one.
-            return _wtFitness2State.Select(x => x.Item2).ToDictionary(x => FitnessFunction.Eval(x)).First().Value;
+            return _wtFitness2State.Select(x => x.Item2).OrderBy(x => FitnessFunction.Eval(x)).First();
         }
 
         /// <summary>
@@ -102,8 +102,6 @@ namespace aima_csharp_3e.Search.Local
         /// 0.1698369565      s_i-1 
         /// 0.0543478260      s_i
         /// 
-        /// This way we can pick a parent with a simple 
-        ///   .First(x => x.Item1 <= randProb).Item2
         /// ]]>
         /// </example>
         private void CalcWtFitness2State(IList<IState> pop)
@@ -121,15 +119,83 @@ namespace aima_csharp_3e.Search.Local
         }
 
         /// <summary>
-        /// Picks two <see cref="IState"/> from the poplutaion weighed by thier 
+        /// Picks two <see cref="IState"/> from the poplutaion weighed by their 
         /// fitness
         /// </summary>
         /// <returns>Golly jee willikers Mister</returns>
         private Tuple<IState, IState> PickFolks()
         {
-            var mom = _wtFitness2State.First(x => x.Item1 <= _myRand.NextDouble()).Item2;
-            var pop = _wtFitness2State.First(x => x.Item1 <= _myRand.NextDouble()).Item2;
+            //get parent index where value behind the index is never the same value
+            var parentIdx = GetParentIndex();
+            while (_wtFitness2State[parentIdx.Item1].Item2.Equals(_wtFitness2State[parentIdx.Item2].Item2))
+            {
+                parentIdx = GetParentIndex();
+            }
+
+            var mom = _wtFitness2State[parentIdx.Item1].Item2;
+            var pop = _wtFitness2State[parentIdx.Item2].Item2;
+
             return new Tuple<IState, IState>(mom, pop);
+        }
+
+        private Tuple<int, int> GetParentIndex()
+        {
+            var r1 = _myRand.NextDouble();
+            var r2 = _myRand.NextDouble();
+            var momIdx = 0;
+            var popIdx = 0;
+
+            for (var i = 0; i < _wtFitness2State.Count; i++)
+            {
+                var upperBound = _wtFitness2State[i].Item1;
+                var lowerBound = i >= _wtFitness2State.Count - 1 ? 0.0D : _wtFitness2State[i + 1].Item1;
+
+                if (r1 <= upperBound && r1 > lowerBound)
+                {
+                    momIdx = i;
+                }
+
+                if (r2 <= upperBound && r2 > lowerBound)
+                {
+                    popIdx = i;
+                    if (popIdx == momIdx)
+                    {
+                        //when on either edge move in next direction
+                        if (i == 0)
+                        {
+                            popIdx = 1;
+                        }
+                        else if (i == _wtFitness2State.Count - 1)
+                        {
+                            popIdx = _wtFitness2State.Count - 2 > 0 ? _wtFitness2State.Count - 2 : 0;
+                        }
+                        else//otherwise pick the side that is closest to r2
+                        {
+                            popIdx = (upperBound - r2 > r2 - lowerBound) ? popIdx + 1 : popIdx - 1;
+                            /*
+                                   .....
+                              idx   %
+                               4   0.33
+                               5   0.18
+                               6   0.04
+                               7   0.01 
+
+                               momIdx = popIdx = 5
+
+                               r2 = 0.05 (so we will want popIdx to be set to 6)
+                               0.18 - 0.05 > 0.05 - 0.04 
+                                   0.13    >     0.01
+                                          True
+                                       popIdx = popIdx + 1
+                                       popIdx =   5    + 1
+                                       popIdx = 6
+                            */
+                        }
+
+                    }
+                }
+            }
+            return new Tuple<int, int>(momIdx, popIdx);
         }
         #endregion
     }

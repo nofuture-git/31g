@@ -59,6 +59,7 @@
     <Compile Include="ErraticVacuumWorld\Suck.cs" />
     <Compile Include="Informed\TestAstarSearch.cs" />
     <Compile Include="Local\TestExpSchedule.cs" />
+    <Compile Include="Local\TestGeneticSearch.cs" />
     <Compile Include="Nondeterministic\TestAndOrGraphSearch.cs" />
     <Compile Include="RoadMapRomania\City.cs" />
     <Compile Include="RoadMapRomania\Drive.cs" />
