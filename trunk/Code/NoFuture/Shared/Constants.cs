@@ -62,6 +62,7 @@ namespace NoFuture
         public static string JavaArchive { get; set; }
         public static string Calendar { get; set; }
         public static string HttpAppDomain { get; set; }
+        public static string Audio { get; set; }
     }
     /// <summary>
     /// Resuable temp file paths used by various NoFuture powershell scripts.
@@ -158,6 +159,13 @@ namespace NoFuture.Tools
         public static string InvokeGetCgType { get; set; }
         public static string InvokeGraphViz { get; set; }
         public static string InvokeAssemblyAnalysis { get; set; }
+    }
+
+    public class BinTools
+    {
+        public static string Ffmpeg { get; set; }
+        public static string YoutubeDl { get; set; }
+        
     }
 }
 

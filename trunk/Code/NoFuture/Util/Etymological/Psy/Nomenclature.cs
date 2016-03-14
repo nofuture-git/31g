@@ -103,18 +103,18 @@
                 "\btrusting", 
                 "\bharmon(y|iously)", 
                 "\bconsiderate", 
-                "\bkind", 
-                "\bgenerous",
+                "\bkind(ly)?", 
+                "\bgenerous(ly)?",
                 "\bcompromis(e(d)?|ing)", 
-                "\boptimistic"
+                "\boptimistic(ally)?"
             });
             Antonyms.AddRange(new[]
             {
                 "\banalytical", 
                 "\bdetached", 
-                "antagonist", 
-                "disagree(able|ing)", 
-                "\bskeptic"
+                "antagonist(ic)?", 
+                "disagree(able|ing)?", 
+                "\bskeptic(al)?"
             });
         }
     }
@@ -125,7 +125,7 @@
         {
             Synonyms.AddRange(new[] 
             { 
-                "\bsensitive", 
+                "\bsensitiv(e|ity)", 
                 "nervous(ly)?", 
                 "\bvulnerab(e|ility)", 
                 "anger(y|ed)?", 
@@ -134,13 +134,14 @@
                 "(in|un)stab(e|ility)" });
             Antonyms.AddRange(new[]
             {
-                "\bsecure", 
-                "\bconfident", 
-                "cop(e|ing)", 
-                "\bcontent", 
-                "calm", 
+                "\bsecure",
+                "\bconfident(ly)",
+                "cop(e|ing)",
+                "\bcontent",
+                "calm(ly)",
                 "\bstabl(e|ity)"
             });
+
         }
     }
 }

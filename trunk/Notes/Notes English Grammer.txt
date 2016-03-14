@@ -11,10 +11,18 @@ Constants - sounds made by interfering with the flow of air from the lungs.
  - Manner of articulation
    - Mutes (aka Stops) - complete interruption of air flow
    - Fricatives (aka Continuants) - partial interruption of the air flow.
+   - Trill - rolling your 'r's, caused by vibrations of articulator
  - Place of Articulation
    - Bilabials - sound at the lips
    - Alveolars - sound at teeth or just behind them.
-   - Velum - produced at the palate (like 'K').
+   - Velum (aka Velars) - produced at the palate (like 'K').
+   - Glottal - Open your lips a bit and raise the middle of your tougue 
+     near the roof of your mouth while keeping it relaxed.  Then exhale.
+     It should make a rolling sound as the tougue virates against the 
+     roof of the mouth.  If it doesn't raise your tougue a little higher 
+     and try again.  If you make a choking sound, your tongue is pressed 
+     to firmly against the roof of your mouth.
+     
 Aspirates - constants combined with 'h' ('th' 'ph')
 ----
 

@@ -10,7 +10,6 @@ namespace NoFuture.Rand.Domus.Pneuma
         Extraversion Extraversion { get; }
         Agreeableness Agreeableness { get; }
         Neuroticism Neuroticism { get; }
-        bool IsHomosexual { get; }
     }
     [Serializable]
     public class Personality : IPersonality
@@ -24,19 +23,11 @@ namespace NoFuture.Rand.Domus.Pneuma
         private readonly bool _isHomosexual;
         #endregion
 
-        public Personality() { }
-
-        public Personality(bool isHomosexual)
-        {
-            _isHomosexual = isHomosexual;
-        }
-
         public Openness Openness { get { return _o; } }
         public Conscientiousness Conscientiousness { get { return _c; } }
         public Extraversion Extraversion { get { return _e; } }
         public Agreeableness Agreeableness { get { return _a; } }
         public Neuroticism Neuroticism { get { return _n; } }
-        public bool IsHomosexual { get { return _isHomosexual; } }
     }
 
     public interface ITrait : IIdentifier<Dimension>

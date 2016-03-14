@@ -283,13 +283,12 @@ namespace NoFuture.Timeline
     /// <example>
     /// <![CDATA[
     /// var myFPlate = new FastPlate("Band Practice", "Left side", "Middle side", "Right side");
-    /// myFPlate.FBlk("Left side").FTxt("big meaty claws").FBlk("Right side");
-    /// myFPlate.FBlk("Right side").FTxt("d'er not just for attractin' mates").FBlk("Left side");
-    /// myFPlate.FBlk("Left side").FTxt("yeah - bring it on").FBlk("Right side").FBlk(null);
-    /// myFPlate.FBlk("Middle side").FTxt("no people,").FBlk("Left side").FBlk(null);
-    /// myFPlate.FBlk("Middle side").FTxt("lets bring it off.").FBlk("Right side");
-    /// 
-    /// myFPlate.ToString();
+    /// myFPlate.Blk("Left side").Txt("big meaty claws").Blk("Right side");
+    /// myFPlate.Blk("Right side").Txt("d'er not just for attractin' mates").Blk("Left side");
+    /// myFPlate.Blk("Left side").Txt("yeah - bring it on").Blk("Right side").Blk(null);
+    /// myFPlate.Blk("Middle side").Txt("no people,").Blk("Left side").Blk(null);
+    /// myFPlate.Blk("Middle side").Txt("lets bring it off.").Blk("Right side");
+    /// System.Diagnostics.Debug.WriteLine(myFPlate.ToString());
     /// ]]>
     /// </example>
     [Serializable]

@@ -64,7 +64,7 @@ namespace NoFuture.Rand.Domus
             if(withWholeFamily)
                 ResolveFamilyState();
 
-            _personality = new Personality(Etx.IntNumber(0, 10000) <= 16);
+            _personality = new Personality();
         }
 
         public NorthAmerican(DateTime? dob, Gender myGender, IPerson mother, IPerson father): this(dob, myGender)
