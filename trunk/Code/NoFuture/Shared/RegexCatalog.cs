@@ -53,10 +53,11 @@ namespace NoFuture.Shared
         /// <param name="subject"></param>
         /// <param name="pattern"></param>
         /// <param name="match"></param>
+        /// <param name="matchGroup">The index value of the Groups array within the first Matches</param>
         /// <returns>
         /// The value of the first group.
         /// </returns>
-        public static bool IsRegexMatch(string subject, string pattern, out string match)
+        public static bool IsRegexMatch(string subject, string pattern, out string match, int matchGroup = 0)
         {
             match = null;
             if (string.IsNullOrEmpty(subject) || string.IsNullOrEmpty(pattern))
@@ -70,7 +71,7 @@ namespace NoFuture.Shared
             var grp = regex.Matches(subject)[0];
             if (!grp.Success)
                 return false;
-            match = grp.Groups[0].Value;
+            match = grp.Groups[matchGroup].Value;
             return true;
 
         }

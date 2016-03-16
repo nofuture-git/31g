@@ -67,6 +67,7 @@
     <Compile Include="Occidental\15_CE1500_1700.cs" />
     <Compile Include="Occidental\16_CE1700_1788.cs" />
     <Compile Include="Occidental\17_CE1788_1865.cs" />
+    <Compile Include="Occidental\18_CE1865_1914.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using NoFuture.Exceptions;
+using NoFuture.Shared;
 using NoFuture.Util;
 
 namespace NoFuture.Timeline
@@ -752,6 +753,106 @@ namespace NoFuture.Timeline
             }
             return tc;
         }//end ToTextCanvas
+
+        /// <summary>
+        /// Examples 
+        ///  ((789,797),(804,816)) as "789-97\804-16"
+        ///  ((1797,1803)) as "1797-1803"
+        ///  ((640, 609)) as "640-609" 
+        ///  ((1588,null)) as "1588-"
+        /// </summary>
+        /// <param name="years"></param>
+        /// <returns></returns>
+        /// <remarks>
+        /// BCE values do NOT have the century removed
+        /// </remarks>
+        public virtual string PrintYearsRange(IEnumerable<Tuple<int?, int?>> years)
+        {
+            Func<Tuple<int?, int?>, string> yearFmt = tuple => string.Format("{0}-{1}", tuple.Item1, tuple.Item2);
+
+            Func<int?, int, int?> remCentury;
+            //CE
+            if (StartValue < EndValue)
+            {
+                remCentury = (y, c) => y - c < 100 ? y - c : y;
+            }
+            else//BCE
+            {
+                remCentury = (y, c) => y;
+            }
+
+            years = years ?? new List<Tuple<int?, int?>>();
+
+            //for tuple item 1 in the same century as item 2, we only want last two digits
+            var yyyy = years.ToList();
+
+            var pCentury = 0;
+            var yy = new List<Tuple<int?, int?>>();
+            for (var i = 0; i < yyyy.Count; i++)
+            {
+                var ccyy = yyyy[i].Item1;
+                var century = ccyy.GetValueOrDefault(0) - ccyy.GetValueOrDefault(0) % 100;
+
+                var yyyy1 = yyyy[i].Item1 == null ? null : remCentury(yyyy[i].Item1, century);
+                var yyyy2 = yyyy[i].Item2 == null ? null : remCentury(yyyy[i].Item2, century);
+
+                yy.Add(new Tuple<int?, int?>(i == 0 || pCentury != century ? yyyy[i].Item1 : yyyy1  , yyyy2));
+
+                pCentury = century;
+            }
+
+            return string.Join("\\", yy.Select(x => yearFmt(x)));
+        }//end PrintYearsRange
+
+        /// <summary>
+        /// The counterpart to <see cref="PrintYearsRange"/>
+        /// </summary>
+        /// <param name="printyears"></param>
+        /// <returns></returns>
+        public virtual IEnumerable<Tuple<int?, int?>> ParseYearsRange(string printyears)
+        {
+            if (string.IsNullOrWhiteSpace(printyears) ||
+                !System.Text.RegularExpressions.Regex.IsMatch(printyears, "[0-9\x5C\x2d]+?"))
+                return new List<Tuple<int?, int?>>();
+
+            var century = StartValue - StartValue % 100;
+
+            var lowerBound = StartValue < EndValue ? StartValue : EndValue;
+            var upperBound = StartValue < EndValue ? EndValue : StartValue;
+
+            //century is removed from most of the string values for CE years
+            Func<int, bool> inBounds = v => (lowerBound <= v) && (v <= upperBound);
+
+            var aYears = new List<Tuple<int?, int?>>();
+            //now to transform back to tuples
+            foreach (var t in printyears.Split('\\'))//slash separates a tuple, 
+            {
+                var u = new[] { string.Empty, string.Empty };
+                var tt =
+                    t.Split('-')//dash is each item therein
+                        .Union(u.Select(y => y)).ToArray();
+                int y1;
+                int y2;
+                int? yy1 = null;
+                int? yy2 = null;
+                if (int.TryParse(tt[0], out y1))
+                {
+                    if (!inBounds(y1))
+                        y1 += century;
+                    yy1 = y1;
+                    century = y1 - y1%100;
+                }
+                if (int.TryParse(tt[1], out y2))
+                {
+                    if (!inBounds(y2))
+                        y2 += century;
+                    yy2 = y2;
+                }
+
+                aYears.Add(new Tuple<int?, int?>(yy1, yy2));
+            }
+            return aYears;
+        }//end ParseYearsRange
         #endregion
     }//end Rule
 
@@ -1157,6 +1258,140 @@ namespace NoFuture.Timeline
         }//end CalcHeight
         #endregion
     }//end Entry
+
+    [Serializable]
+    public class TerritoryEntry : Entry
+    {
+        private const string REGEX_PATTERN = @"\+([^\(]*?)\(([0-9]*)\)";
+
+        public string Name { get; set; }
+        public int? Year { get; set; }
+
+        public override string Text
+        {
+            get
+            {
+                return string.Format("+{0}({1})", Name, Year);
+            }
+            set
+            {
+                var tValue = value;
+                string tName;
+                string tYear;
+                int iYear;
+                if (RegexCatalog.IsRegexMatch(tValue, REGEX_PATTERN, out tName, 1))
+                {
+                    Name = tName;
+                }
+                if (RegexCatalog.IsRegexMatch(tValue, REGEX_PATTERN, out tYear, 2) && int.TryParse(tYear, out iYear))
+                {
+                    Year = iYear;
+                }
+            }
+        }
+    }//end TerritoryEntry
+
+    [Serializable]
+    public class LeaderEntry : Entry
+    {
+        private const string REGEX_PATTERN = @"\[([a-zA-Z\.\x20]+?)\x20([0-9\x5C\x2d]+?)]";
+
+        public string Name { get; set; }
+        public IEnumerable<Tuple<int?, int?>> Years { get; set; }
+
+        public override string Text
+        {
+            get
+            {
+                return string.Format("[{0} {1}]", Name, Ruler.PrintYearsRange(Years));
+            }
+            set
+            {
+                string s1;
+                var tValue = value;
+                if (RegexCatalog.IsRegexMatch(tValue, REGEX_PATTERN, out s1, 1))
+                {
+                    Name = s1;
+                }
+                if (RegexCatalog.IsRegexMatch(tValue, REGEX_PATTERN, out s1, 2))
+                {
+                    Years = Ruler.ParseYearsRange(s1);
+                }
+            }
+        }
+    }//end LeaderEntry
+
+    [Serializable]
+    public class ScienceAdvEntry : Entry
+    {
+        private const string REGEX_PATTERN = @"([a-zA-Z\.\x20]+?)\[([a-zA-Z\.\x20\x2C]+?)\]\(([0-9]+?)\)";
+
+        public string DiscoveredBy { get; set; }
+        public string Name { get; set; }
+        public int? Year { get; set; }
+
+        public override string Text
+        {
+            get
+            {
+                return string.Format("{0}[{1}]({2})", DiscoveredBy, Name, Year);
+            }
+            set
+            {
+                var tValue = value;
+                string s1;
+                int y1;
+                if (RegexCatalog.IsRegexMatch(tValue, REGEX_PATTERN, out s1, 1))
+                {
+                    DiscoveredBy = s1;
+                }
+                if (RegexCatalog.IsRegexMatch(tValue, REGEX_PATTERN, out s1, 2))
+                {
+                    Name = s1;
+                }
+                if (RegexCatalog.IsRegexMatch(tValue, REGEX_PATTERN, out s1, 3) && int.TryParse(s1, out y1))
+                {
+                    Year = y1;
+                }
+            }
+        }
+    }//end ScienceAdvEntry
+
+    [Serializable]
+    public class LiteraryWorkEntry : Entry
+    {
+        private const string REGEX_PATTERN = @"\'([a-zA-Z\.\x20]+?)\'([a-zA-Z\.\x20]+?)\(([0-9]+?)\)";
+
+        public string Title { get; set; }
+        public string Author { get; set; }
+        public int? Year { get; set; }
+
+        public override string Text
+        {
+            get
+            {
+                return string.Format("'{0}'{1}({2})", Title, Author, Year);
+            }
+            set
+            {
+                var tValue = value;
+                string s1;
+                int y1;
+                if (RegexCatalog.IsRegexMatch(tValue, REGEX_PATTERN, out s1, 1))
+                {
+                    Title = s1;
+                }
+                if (RegexCatalog.IsRegexMatch(tValue, REGEX_PATTERN, out s1, 2))
+                {
+                    Author = s1;
+                }
+                if (RegexCatalog.IsRegexMatch(tValue, REGEX_PATTERN, out s1, 3) && int.TryParse(s1, out y1))
+                {
+                    Year = y1;
+                }
+            }
+        }
+    }//end LiteraryWorkEntry
 
     [Serializable]
     public class Arrow : IRuleEntry 

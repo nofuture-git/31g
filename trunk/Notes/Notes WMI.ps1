@@ -314,6 +314,17 @@ Get-WmiObject -Class Win32_NetworkAdapter
 Get-WmiObject -Class Win32_NetworkAdapterConfiguration 
 
 <#
+disable service from command line
+#>
+$svc = Get-WmiObject Win32_Service -Filter "name = '$svcName'"
+if($svc -eq $null)
+{
+    break;
+}
+$svc.ChangeStartMode("Disabled")
+$svc.Put()
+
+<#
 IIS
  - not really WMI related
  - run 

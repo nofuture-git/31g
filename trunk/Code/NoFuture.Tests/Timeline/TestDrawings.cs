@@ -1065,5 +1065,218 @@ namespace NoFuture.Tests.Timeline
             System.Diagnostics.Debug.WriteLine(testSubject.ToString());
             
         }
+
+        [TestMethod]
+        public void TestPrintYearsRange()
+        {
+            //  ((789,797),(804,816)) as "789-97\804-16"
+            //  ((1797,1803)) as "1797-1803"
+            //  ((640, 609)) as "640-609" 
+            //  ((1588,null)) as "1588-"
+
+            var testSubject = new Rule {StartValue = 700, EndValue = 850};
+            var testResult =
+                testSubject.PrintYearsRange(new List<Tuple<int?, int?>>()
+                {
+                    new Tuple<int?, int?>(789, 797),
+                    new Tuple<int?, int?>(804, 816)
+                });
+            Assert.AreEqual(@"789-97\804-16", testResult);
+
+            testSubject = new Rule { StartValue = 1788, EndValue = 1865 };
+            testResult =
+                testSubject.PrintYearsRange(new List<Tuple<int?, int?>>()
+                {
+                    new Tuple<int?, int?>(1797, 1803)
+                });
+            Assert.AreEqual("1797-1803", testResult);
+
+            testSubject = new Rule { StartValue = 788, EndValue = 500 };
+            testResult =
+                testSubject.PrintYearsRange(new List<Tuple<int?, int?>>()
+                {
+                    new Tuple<int?, int?>(640, 609)
+                });
+            Assert.AreEqual("640-609", testResult);
+
+            testSubject = new Rule { StartValue = 1488, EndValue = 1605 };
+            testResult =
+                testSubject.PrintYearsRange(new List<Tuple<int?, int?>>()
+                {
+                    new Tuple<int?, int?>(1588, null)
+                });
+            Assert.AreEqual("1588-", testResult);
+
+            testResult =
+                testSubject.PrintYearsRange(new List<Tuple<int?, int?>>()
+                {
+                    new Tuple<int?, int?>(null, 1588)
+                });
+            Assert.AreEqual("-1588", testResult);
+            
+        }
+
+        [TestMethod]
+        public void TestParseYearsRange()
+        {
+            var testSubject = new Rule { StartValue = 700, EndValue = 850 };
+            var testResult = testSubject.ParseYearsRange(@"789-97\804-16");
+            Assert.IsNotNull(testResult);
+            var testList = testResult.ToList();
+            Assert.AreNotEqual(0, testList.Count);
+            Assert.AreEqual(789,testList[0].Item1);
+            Assert.AreEqual(797, testList[0].Item2);
+            Assert.AreEqual(804, testList[1].Item1);
+            Assert.AreEqual(816, testList[1].Item2);
+
+            testSubject = new Rule { StartValue = 1788, EndValue = 1865 };
+            testResult = testSubject.ParseYearsRange("1797-1803");
+            Assert.IsNotNull(testResult);
+            testList = testResult.ToList();
+            Assert.AreNotEqual(0, testList.Count);
+            Assert.AreEqual(1797, testList[0].Item1);
+            Assert.AreEqual(1803, testList[0].Item2);
+
+            testSubject = new Rule { StartValue = 788, EndValue = 500 };
+            testResult = testSubject.ParseYearsRange("640-609");
+            Assert.IsNotNull(testResult);
+            testList = testResult.ToList();
+            Assert.AreNotEqual(0, testList.Count);
+            Assert.AreEqual(640, testList[0].Item1);
+            Assert.AreEqual(609, testList[0].Item2);
+
+            testSubject = new Rule { StartValue = 1488, EndValue = 1605 };
+            testResult = testSubject.ParseYearsRange("1588-");
+            Assert.IsNotNull(testResult);
+            testList = testResult.ToList();
+            Assert.AreNotEqual(0, testList.Count);
+            Assert.AreEqual(1588, testList[0].Item1);
+            Assert.IsNull(testList[0].Item2);
+
+            testResult = testSubject.ParseYearsRange("-1588");
+            Assert.IsNotNull(testResult);
+            testList = testResult.ToList();
+            Assert.AreNotEqual(0, testList.Count);
+            Assert.IsNull(testList[0].Item1);
+            Assert.AreEqual(1588, testList[0].Item2);
+        }
+
+        [TestMethod]
+        public void TestTerritoryEntry()
+        {
+            var testSubject = new TerritoryEntry {Name = "MO", Year = 1821};
+            Assert.AreEqual("+MO(1821)", testSubject.Text);
+
+            testSubject.Text = "+WI(1848)";
+
+            Assert.AreEqual("WI",testSubject.Name);
+            Assert.AreEqual(new int?(1848), testSubject.Year);
+            
+        }
+
+        [TestMethod]
+        public void TestLeaderEntry()
+        {
+            var testSubject = new LeaderEntry
+            {
+                Name = "Washington",
+                Years = new List<Tuple<int?, int?>> {new Tuple<int?, int?>(1789, 1797)},
+                Ruler = new Rule() { StartValue = 1788, EndValue = 1865}
+            };
+
+            Assert.AreEqual("[Washington 1789-97]", testSubject.Text);
+
+
+            testSubject = new LeaderEntry
+            {
+                Name = "William H Harrison",
+                Years = new List<Tuple<int?, int?>> { new Tuple<int?, int?>(null, 1841) },
+                Ruler = new Rule() { StartValue = 1788, EndValue = 1865 }
+            };
+
+            Assert.AreEqual("[William H Harrison -1841]", testSubject.Text);
+
+            testSubject = new LeaderEntry
+            {
+                Name = "H. John Temple",
+                Years = new List<Tuple<int?, int?>> { new Tuple<int?, int?>(1855, 1858), new Tuple<int?, int?>(1859, 1865) },
+                Ruler = new Rule() { StartValue = 1788, EndValue = 1865 }
+            };
+
+            Assert.AreEqual("[H. John Temple 1855-58\\59-65]",testSubject.Text);
+
+            testSubject = new LeaderEntry
+            {
+                Name = "John Adams",
+                Years = new List<Tuple<int?, int?>> { new Tuple<int?, int?>(1797, 1801) },
+                Ruler = new Rule() { StartValue = 1788, EndValue = 1865 }
+            };
+
+            Assert.AreEqual("[John Adams 1797-1801]", testSubject.Text);
+
+            testSubject = new LeaderEntry
+            {
+                Name = "Hezekiah",
+                Years = new List<Tuple<int?, int?>> { new Tuple<int?, int?>(715, 687) },
+                Ruler = new Rule { StartValue = 780, EndValue = 500 }
+            };
+
+            Assert.AreEqual("[Hezekiah 715-687]", testSubject.Text);
+            testSubject = new LeaderEntry
+            {
+                Name = "Josiah",
+                Years = new List<Tuple<int?, int?>> { new Tuple<int?, int?>(640, 609) },
+                Ruler = new Rule { StartValue = 780, EndValue = 500 }
+            };
+            Assert.AreEqual("[Josiah 640-609]",testSubject.Text);
+            
+
+
+        }
+
+        [TestMethod]
+        public void TestScienceAdvEntry()
+        {
+            var testSubject = new ScienceAdvEntry
+            {
+                Ruler = new Rule {StartValue = 1788, EndValue = 1865},
+                Name = "Ohm's law",
+                DiscoveredBy = "Ohm",
+                Year = 1827
+            };
+            Assert.AreEqual("Ohm[Ohm's law](1827)", testSubject.Text);
+
+            testSubject.Name = "law of induction";
+            testSubject.DiscoveredBy = "Faraday";
+            testSubject.Year = 1831;
+
+            Assert.AreEqual("Faraday[law of induction](1831)", testSubject.Text);
+        }
+
+        [TestMethod]
+        public void TestLiteraryWorkEntry()
+        {
+            var testSubject = new LiteraryWorkEntry
+            {
+                Ruler = new Rule {StartValue = 1788, EndValue = 1865},
+                Author = "Darwin",
+                Title = "Origin of Species",
+                Year = 1859
+            };
+
+            var testResult = testSubject.Text;
+            Assert.AreEqual("'Origin of Species'Darwin(1859)",testResult);
+
+            testSubject = new LiteraryWorkEntry
+            {
+                Ruler = new Rule { StartValue = 1788, EndValue = 1865 },
+                Author = null,
+                Title = "Communist Manifesto",
+                Year = 1848
+            };
+            testResult = testSubject.Text;
+            Assert.AreEqual("'Communist Manifesto'(1848)", testResult);
+
+        }
     }
 }
