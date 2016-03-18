@@ -267,7 +267,7 @@ NetworkService account
    access the network as the machine (see caveat above).
 
 LocalSystem account
- - Name: .\LocalSystem (can also use LocalSystem or ComputerName\LocalSystem)
+ - Name: NT AUTHORITY\SYSTEM .\LocalSystem (can also use LocalSystem or ComputerName\LocalSystem)
  - the account has no password (any password information you provide is ignored)
  - HKCU represents the default user (LocalSystem has no profile of its own)
  - has extensive privileges on the local computer

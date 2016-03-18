@@ -51,6 +51,7 @@
     <Compile Include="Agent\IPercept.cs" />
     <Compile Include="Agent\IState.cs" />
     <Compile Include="Agent\SimpleProblemSolvingAgent.cs" />
+    <Compile Include="Learning\DecisionTree.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Search\Framework\Extensions.cs" />
     <Compile Include="Search\Framework\IFx.cs" />
