@@ -1259,19 +1259,24 @@ namespace NoFuture.Timeline
         #endregion
     }//end Entry
 
+    #region kinds of entries
     [Serializable]
     public class TerritoryEntry : Entry
     {
         private const string REGEX_PATTERN = @"\+([^\(]*?)\(([0-9]*)\)";
 
+        public TerritoryEntry()
+        {
+            Location = PrintLocation.Left;
+        }
+
         public string Name { get; set; }
-        public int? Year { get; set; }
 
         public override string Text
         {
             get
             {
-                return string.Format("+{0}({1})", Name, Year);
+                return string.Format("+{0}({1})", Name, StartValue);
             }
             set
             {
@@ -1285,7 +1290,7 @@ namespace NoFuture.Timeline
                 }
                 if (RegexCatalog.IsRegexMatch(tValue, REGEX_PATTERN, out tYear, 2) && int.TryParse(tYear, out iYear))
                 {
-                    Year = iYear;
+                    StartValue = iYear;
                 }
             }
         }
@@ -1294,7 +1299,7 @@ namespace NoFuture.Timeline
     [Serializable]
     public class LeaderEntry : Entry
     {
-        private const string REGEX_PATTERN = @"\[([a-zA-Z\.\x20]+?)\x20([0-9\x5C\x2d]+?)]";
+        private const string REGEX_PATTERN = @"\[([a-zA-Z\.\x20\x5B\x5D]+?)\x20([0-9\x5C\x2d]+?)]";
 
         public string Name { get; set; }
         public IEnumerable<Tuple<int?, int?>> Years { get; set; }
@@ -1328,13 +1333,12 @@ namespace NoFuture.Timeline
 
         public string DiscoveredBy { get; set; }
         public string Name { get; set; }
-        public int? Year { get; set; }
 
         public override string Text
         {
             get
             {
-                return string.Format("{0}[{1}]({2})", DiscoveredBy, Name, Year);
+                return string.Format("{0}[{1}]({2})", DiscoveredBy, Name, StartValue);
             }
             set
             {
@@ -1351,7 +1355,7 @@ namespace NoFuture.Timeline
                 }
                 if (RegexCatalog.IsRegexMatch(tValue, REGEX_PATTERN, out s1, 3) && int.TryParse(s1, out y1))
                 {
-                    Year = y1;
+                    StartValue = y1;
                 }
             }
         }
@@ -1360,17 +1364,16 @@ namespace NoFuture.Timeline
     [Serializable]
     public class LiteraryWorkEntry : Entry
     {
-        private const string REGEX_PATTERN = @"\'([a-zA-Z\.\x20]+?)\'([a-zA-Z\.\x20]+?)\(([0-9]+?)\)";
+        private const string REGEX_PATTERN = @"\'([a-zA-Z\.\x20\x2D\x2C]+?)\'([a-zA-Z\.\x20]+?)\(([0-9]+?)\)";
 
         public string Title { get; set; }
         public string Author { get; set; }
-        public int? Year { get; set; }
 
         public override string Text
         {
             get
             {
-                return string.Format("'{0}'{1}({2})", Title, Author, Year);
+                return string.Format("'{0}'{1}({2})", Title, Author, StartValue);
             }
             set
             {
@@ -1387,11 +1390,79 @@ namespace NoFuture.Timeline
                 }
                 if (RegexCatalog.IsRegexMatch(tValue, REGEX_PATTERN, out s1, 3) && int.TryParse(s1, out y1))
                 {
-                    Year = y1;
+                    StartValue = y1;
                 }
             }
         }
     }//end LiteraryWorkEntry
+
+    [Serializable]
+    public class ExplorerEntry : Entry
+    {
+        private const string REGEX_PATTERN = @"\x5B([a-zA-Z\.\x20]+?)\x5D\x2D([a-zA-Z\x2E\x26\x20\x2C]+)\x28([0-9\x2F\x2D]+)\x29";
+
+        public string ExplorerName { get; set; }
+        public string Area { get; set; }
+
+        public override string Text
+        {
+            get
+            {
+                return string.Format("[{0}]-{1}({2})", ExplorerName, Area, StartValue);
+            }
+            set
+            {
+                var tValue = value;
+                string s1;
+                int y1;
+                if (RegexCatalog.IsRegexMatch(tValue, REGEX_PATTERN, out s1, 1))
+                {
+                    ExplorerName = s1;
+                }
+                if (RegexCatalog.IsRegexMatch(tValue, REGEX_PATTERN, out s1, 2))
+                {
+                    Area = s1;
+                }
+                if (RegexCatalog.IsRegexMatch(tValue, REGEX_PATTERN, out s1, 3) && int.TryParse(s1, out y1))
+                {
+                    StartValue = y1;
+                }
+            }
+        }
+    }//end ExplorerEntry
+
+    [Serializable]
+    public class HeresyEntry : Entry
+    {
+        private const string REGEX_PATTERN =
+            @"\x5BH\x5D\x20([a-zA-Z\x2E\x26\x20\x2C]+)\x20\x28([a-zA-Z\x2E\x26\x20\x2C]+)\x29";
+
+        public string Name { get; set; }
+        public string Description { get; set; }
+
+        public override string Text
+        {
+            get
+            {
+                return string.Format("[H] {0} ({1})", Name, Description);
+            }
+            set
+            {
+                var tValue = value;
+                string s1;
+                int y1;
+                if (RegexCatalog.IsRegexMatch(tValue, REGEX_PATTERN, out s1, 1))
+                {
+                    Name = s1;
+                }
+                if (RegexCatalog.IsRegexMatch(tValue, REGEX_PATTERN, out s1, 2))
+                {
+                    Description = s1;
+                }
+            }
+        }
+    }//end HeresyEntry
+    #endregion
 
     [Serializable]
     public class Arrow : IRuleEntry 

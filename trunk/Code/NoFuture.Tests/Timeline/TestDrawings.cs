@@ -1164,13 +1164,13 @@ namespace NoFuture.Tests.Timeline
         [TestMethod]
         public void TestTerritoryEntry()
         {
-            var testSubject = new TerritoryEntry {Name = "MO", Year = 1821};
+            var testSubject = new TerritoryEntry {Name = "MO", StartValue = 1821};
             Assert.AreEqual("+MO(1821)", testSubject.Text);
 
             testSubject.Text = "+WI(1848)";
 
             Assert.AreEqual("WI",testSubject.Name);
-            Assert.AreEqual(new int?(1848), testSubject.Year);
+            Assert.AreEqual(new int?(1848), testSubject.StartValue);
             
         }
 
@@ -1229,9 +1229,6 @@ namespace NoFuture.Tests.Timeline
                 Ruler = new Rule { StartValue = 780, EndValue = 500 }
             };
             Assert.AreEqual("[Josiah 640-609]",testSubject.Text);
-            
-
-
         }
 
         [TestMethod]
@@ -1242,13 +1239,13 @@ namespace NoFuture.Tests.Timeline
                 Ruler = new Rule {StartValue = 1788, EndValue = 1865},
                 Name = "Ohm's law",
                 DiscoveredBy = "Ohm",
-                Year = 1827
+                StartValue = 1827
             };
             Assert.AreEqual("Ohm[Ohm's law](1827)", testSubject.Text);
 
             testSubject.Name = "law of induction";
             testSubject.DiscoveredBy = "Faraday";
-            testSubject.Year = 1831;
+            testSubject.StartValue = 1831;
 
             Assert.AreEqual("Faraday[law of induction](1831)", testSubject.Text);
         }
@@ -1261,7 +1258,7 @@ namespace NoFuture.Tests.Timeline
                 Ruler = new Rule {StartValue = 1788, EndValue = 1865},
                 Author = "Darwin",
                 Title = "Origin of Species",
-                Year = 1859
+                StartValue = 1859
             };
 
             var testResult = testSubject.Text;
@@ -1272,7 +1269,7 @@ namespace NoFuture.Tests.Timeline
                 Ruler = new Rule { StartValue = 1788, EndValue = 1865 },
                 Author = null,
                 Title = "Communist Manifesto",
-                Year = 1848
+                StartValue = 1848
             };
             testResult = testSubject.Text;
             Assert.AreEqual("'Communist Manifesto'(1848)", testResult);

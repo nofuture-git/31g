@@ -3,11 +3,6 @@ using System.Collections.Generic;
 
 namespace aima_csharp_3e.Learning
 {
-    public interface IDecisionTree<T>
-    {
-        IPathToLeaf<T> Goal { get; }
-        T Decide(IEnumerable<T> inputVector);
-    }
 
     public interface IAttr<out T>
     {
@@ -27,7 +22,7 @@ namespace aima_csharp_3e.Learning
         Positive
     }
 
-    public interface IPathToLeaf<T>
+    public interface IDecisionTree<T>
     {
         BooleanClassification Classification { get; set; }
         IEnumerable<IAttrValueTest<T>> ConjuntionOfAttrValueTests { get; set; }
@@ -64,16 +59,9 @@ namespace aima_csharp_3e.Learning
         }
     }
 
-    public class PathToLeafValueType : IPathToLeaf<ValueType>
+    public class DecisionTreeValueType : IDecisionTree<ValueType>
     {
         public BooleanClassification Classification { get; set; }
         public IEnumerable<IAttrValueTest<ValueType>> ConjuntionOfAttrValueTests { get; set; }
-    }
-
-    public abstract class BooleanDecisionTree : IDecisionTree<IDiscreteAttr>
-    {
-        public abstract IPathToLeaf<IDiscreteAttr> Goal { get; }
-
-        public abstract IDiscreteAttr Decide(IEnumerable<IDiscreteAttr> inputVector);
     }
 }

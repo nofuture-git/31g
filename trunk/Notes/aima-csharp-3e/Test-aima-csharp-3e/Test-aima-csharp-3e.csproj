@@ -65,6 +65,7 @@
     <Compile Include="RoadMapRomania\Drive.cs" />
     <Compile Include="RoadMapRomania\RoadMapProblem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WaitForTableRestaurant\Examples.cs" />
     <Compile Include="WaitForTableRestaurant\GoalPredicate.cs" />
   </ItemGroup>
   <ItemGroup>
