@@ -431,20 +431,40 @@ Nodeterministic Search
 ----
 
 ----
-Games
- - where agents are in conflict
- - borrowed from Econ game theory
-  - properly labeled: "deterministic, turn-taking, two-player,
-     zero-sum games of perfect information"
- - includes
-  - definition of optimal move and algo for finding it
-  - techniques for choosing a good move with limited time
-  - [Pruning]: ignore portions of the search tree that makes
-     no difference to the final choice
-  - heuristic evaluation functions: approx. the utility of a state
-    without doing a complete search
-    
-    
- 
+Machine Learning Projects for .NET Developers
+By: Mathias Brandewinder
+Publisher: Apress
+Pub. Date: July 6, 2015
+Print ISBN-13: 978-1-4302-6767-6
+Pages in Print Edition: 300
+----
+
+----
+Machine Learning is all about structured data
+test data sets available online
+http://archive.ics.uci.edu/ml/
+----
+
+----
+Bayes' Theorem
+
+ P(A|B) = (P(B|A) * P(A)) / P(B)
+  - bar reads as "given that"
+  "the probability of A given B will be 
+  equal to the ratio of the probability of 
+  B given A times the probability of A - over 
+  the probability of B"
   
-    
+  
+  
+  - P(A) & P(B) will be the count of A or B over the total 
+    count in the dataset 
+   - so if we have a dataset of 5000 and count 250 of A
+     then P(A) = 250 / 5000
+   - P(A) and P(B) are the prob. of these things to the 
+     whole while P(B|A) is the prob. of these things 
+     to each other
+     
+Laplace Smoothing: will add 1 to the P(A) & P(B)
+ so as in the above example of P(A) = 250 / 5000
+ would be solved as P(A) = (1 + 250) / (1 + 5000)
