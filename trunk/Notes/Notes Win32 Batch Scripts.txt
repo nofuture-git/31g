@@ -99,8 +99,9 @@ Windows CLI Reference
 
  schtasks (bunch of options)
   - used to create\modify scheduled tasks from the command line
+  - restart from command line with no wait
   
- shutdown -r 
+ shutdown /r /t 0
   - restart your computer from the command line
   
  subst v: C:\MyProjects\Something\ReallyCool
