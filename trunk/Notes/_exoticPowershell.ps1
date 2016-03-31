@@ -609,3 +609,15 @@ function Counter-Examples
         (Get-Counter -ListSet ".NET Data Provider for SqlServer") | % {Get-Counter -Counter $_.Counter}
     }
 }
+
+#disable windows services from loop
+$myService2BDisabled = @("ServiceName1", "ServiceName2");
+
+foreach($svcName in $myService2BDisabled){
+    if([string]::IsNullOrWhiteSpace($svcName)){continue;}
+
+    $svc = Get-WmiObject Win32_Service -Filter "name = '$svcName'"
+    if($svc -eq $null) { continue; }
+    $svc.ChangeStartMode("Disabled")
+    $svc.Put()
+} 

@@ -446,6 +446,38 @@ http://archive.ics.uci.edu/ml/
 ----
 
 ----
+ - Machine Learning is not as the name implies.
+   It starts with some data set (the-bigger-the-better)
+   which is divided into two parts, one part is for 
+   training the other is for testing. Each data item
+   is tagged with some kind of category which is the 
+   basis of the learning.
+   - This is foreign to an imperative programmer because
+     if you already know the answers (which is what these
+     category tags are) there is nothing left to do.
+   - It seems that whatever produced this data is crux
+     of the whole effort so simply continue to use that
+     for any other dataset.
+   - This is were the idea of learning comes in since
+     we are treating the program as a kind of student - 
+     showing them the data with answers and focusing on
+     how to arrive to those answers.
+ - Functional Lang is preferred since its most capable
+   of dealing with large structured data where the 
+   data is structured from primitive types.
+   - These langs currency is not custom types with 
+     interfaces but builtin data structures like array's
+     maps, lists, sets and tuples.  These structures 
+     may be combined into any kind graph.
+ - In practice the steps involve getting the data into 
+   memory, dividing it between training and testing
+   and then constructing the most rudimentary learning
+   apparatus to quickly form a benchmark to work towards
+   beating.
+---- 
+   
+
+----
 Bayes' Theorem
 
  P(A|B) = (P(B|A) * P(A)) / P(B)
@@ -454,8 +486,6 @@ Bayes' Theorem
   equal to the ratio of the probability of 
   B given A times the probability of A - over 
   the probability of B"
-  
-  
   
   - P(A) & P(B) will be the count of A or B over the total 
     count in the dataset 
@@ -468,3 +498,4 @@ Bayes' Theorem
 Laplace Smoothing: will add 1 to the P(A) & P(B)
  so as in the above example of P(A) = 250 / 5000
  would be solved as P(A) = (1 + 250) / (1 + 5000)
+----

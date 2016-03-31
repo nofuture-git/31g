@@ -333,3 +333,19 @@ Digital Signature
 `-------------`        |   digest  | | digest|
                        `-----------` `-------`
 ----
+
+----
+Testing certs using Openssl
+ - on windows use ConEmu -> Bash::gitBash
+ 
+ - in one console window invoke
+ openssl s_server -accept 12345 -cert path/to/cert.pem -key path/to/key.pem -CAfile path/to/cacert.pem
+ 
+ - and in another separate console do likewise
+   for a client
+ openssl s_client -connect localhost:12345 -cert path/to/cert.pem -key path/to/key.pem -CAfile path/to/cacert.pem
+ 
+ - whatever is typed in one console will show up in the 
+   other if its working
+----
+ 
