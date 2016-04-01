@@ -451,7 +451,8 @@ http://archive.ics.uci.edu/ml/
    which is divided into two parts, one part is for 
    training the other is for testing. Each data item
    is tagged with some kind of category which is the 
-   basis of the learning.
+   basis of the learning. 
+   - Each datam is a label-value hash
    - This is foreign to an imperative programmer because
      if you already know the answers (which is what these
      category tags are) there is nothing left to do.
@@ -474,8 +475,22 @@ http://archive.ics.uci.edu/ml/
    and then constructing the most rudimentary learning
    apparatus to quickly form a benchmark to work towards
    beating.
----- 
+ - Implementation (imperative perspective)
+    - Would involve some kind of type for the labels 
+     (the distinct list the "answers").
+   - Some kind of analyzer which would take data in 
+     its raw form and return some kind of comparable 
+     metric 
+   - Some kind of classifier which would receive the 
+     analyzer and some training data (where each item
+     is both its label and data-value)
+     - This classifier would then have some reusable 
+       method which would take a data-value and 
+       return a label.
+   - The objective then becomes tweeking the analyzer
+     to get better and better measures.
    
+---- 
 
 ----
 Bayes' Theorem

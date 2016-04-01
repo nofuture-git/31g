@@ -79,7 +79,12 @@ Windows CLI Reference
   - will make the command prompt look like the python console of >>>
  prompt $$
   - will make the command prompt look like a bash root '$'
-  
+ 
+ portqry -n 10.76.8.90 -p tcp -e 5671
+  - will query an ip (or dns name for -n switch) listening on a port by
+    protocal
+  - this is a separate download from Microsoft
+ 
  route print
   - prints where ranges of IPv4 addresses will get routed to from the local computer
   
