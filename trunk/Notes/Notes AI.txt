@@ -489,8 +489,19 @@ http://archive.ics.uci.edu/ml/
        return a label.
    - The objective then becomes tweeking the analyzer
      to get better and better measures.
-   
----- 
+   - The crucial piece is what connects the metric to 
+     the labels.
+     - Vaguely takes of form of the probability of 
+       such-and-such metric given this label.
+     - Its applicable since the metric is expected 
+       to be correlated to the label
+     - Bayes' Theorem captures how strongly the metric
+       is related to the label.
+     - we solve by calc'ing Bayes' Theorem for each 
+       label. The label with the highest metric wins
+     - we are not setting some arbitrary level the 
+       metric must reach to be considered this label
+----
 
 ----
 Bayes' Theorem
