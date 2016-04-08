@@ -653,8 +653,8 @@ namespace NoFuture.Hbm
 
             if (simplePropDataType == typeof (Boolean).Name)
             {
-                if (simplePropName.StartsWith(Util.NfTypeName.DEFAULT_NAME_PREFIX))
-                    simplePropName = simplePropName.Remove(0, Util.NfTypeName.DEFAULT_NAME_PREFIX.Length);
+                if (simplePropName.StartsWith(Util.NfTypeName.DefaultNamePrefix))
+                    simplePropName = simplePropName.Remove(0, Util.NfTypeName.DefaultNamePrefix.Length);
                 simplePropName = "Is" + simplePropName;
             }
 

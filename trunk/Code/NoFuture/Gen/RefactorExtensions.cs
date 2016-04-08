@@ -71,7 +71,7 @@ namespace NoFuture.Gen
             foreach (var dpArg in dependencyArgs)
             {
                 if (objMethods.Contains(dpArg.ArgName))
-                    dpArg.ArgName = string.Format("{0}{1}", Util.NfTypeName.DEFAULT_NAME_PREFIX, dpArg.ArgName);
+                    dpArg.ArgName = string.Format("{0}{1}", Util.NfTypeName.DefaultNamePrefix, dpArg.ArgName);
             }
 
             return dependencyArgs;

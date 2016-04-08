@@ -30,7 +30,7 @@ namespace NoFuture.Util
         private readonly string _namespace;
         private readonly string _className;
         private readonly string _procArch;
-
+        private static string _dfNamePrefix = DEFAULT_NAME_PREFIX;
         #endregion
 
         #region Constants
@@ -53,6 +53,7 @@ namespace NoFuture.Util
             public const string REMOVE_PREFIX = "remove_";
         }
 
+        public static string DefaultNamePrefix { get { return _dfNamePrefix; } set { _dfNamePrefix = value; } }
         #endregion
 
         #region ReadOnly Properties
@@ -416,13 +417,13 @@ namespace NoFuture.Util
         public static string SafeDotNetTypeName(string name)
         {
             if (String.IsNullOrWhiteSpace(name))
-                return string.Format("{0}_{1}", DEFAULT_NAME_PREFIX, Path.GetRandomFileName().Replace(".", "_"));
+                return string.Format("{0}_{1}", DefaultNamePrefix, Path.GetRandomFileName().Replace(".", "_"));
 
             var nameArray = name.ToCharArray();
             var csId = new StringBuilder();
 
             if (!Char.IsLetter(nameArray[0]))
-                csId.Append(DEFAULT_NAME_PREFIX);
+                csId.Append(DefaultNamePrefix);
 
             if (Char.IsNumber(nameArray[0]) || nameArray[0] == '_' || Char.IsLetter(nameArray[0]))
                 csId.Append(nameArray[0]);
@@ -442,35 +443,48 @@ namespace NoFuture.Util
         /// first char must be or a letter (the prefix 'nf' is used should that not be the case).
         /// </summary>
         /// <param name="someString"></param>
-        /// <param name="replaceInvalidsWithHexEsc">
+        /// <param name="replaceInvalidsWithUnicodeEsc">
         /// Set this to true if you want, for example, the <see cref="someString"/> 
-        /// with a value of say 'Personal Ph #' to be returned as 'Personalx20Phx20x23'
+        /// with a value of say 'Personal Ph #' to be returned as 'Personal_u0020Ph_u0020_u0023'
+        /// </param>
+        /// <param name="maxLen">
+        /// A max length of the output, if the input string will 
+        /// clearly exceed this then some random text will be added as the last 11 chars
         /// </param>
         /// <returns></returns>
-        public static string SafeDotNetIdentifier(string someString, bool replaceInvalidsWithHexEsc = false)
+        public static string SafeDotNetIdentifier(string someString, bool replaceInvalidsWithUnicodeEsc = false, int maxLen = 40)
         {
             if (String.IsNullOrWhiteSpace(someString))
-                return string.Format("{0}_{1}", DEFAULT_NAME_PREFIX, Path.GetRandomFileName().Replace(".","_"));
+                return string.Format("{0}_{1}", DefaultNamePrefix, Path.GetRandomFileName().Replace(".", "_"));
+
             var strChars = someString.ToCharArray();
             var strOut = new StringBuilder();
             if (!Char.IsLetter(strChars[0]))
-                strOut.Append(DEFAULT_NAME_PREFIX);
+                strOut.Append(DefaultNamePrefix);
             var iequals = 0;
-            if (!replaceInvalidsWithHexEsc && (Char.IsNumber(strChars[0]) || strChars[0] == '_' || Char.IsLetter(strChars[0])))
+            if (!replaceInvalidsWithUnicodeEsc && (Char.IsNumber(strChars[0]) || strChars[0] == '_' || Char.IsLetter(strChars[0])))
             {
                 strOut.Append(strChars[0]);
                 iequals = 1;
             }
 
+            var randSuffix = "_" + Path.GetRandomFileName().Replace(".", "");
+
             for (var i = iequals; i < strChars.Length; i++)
             {
-                if (Char.IsLetterOrDigit(strChars[i]) || (strChars[i] == '_' && !replaceInvalidsWithHexEsc))
+                if (strOut.Length >= maxLen)
+                {
+                    strOut.Append(randSuffix);
+                    break;
+
+                }
+                if (Char.IsLetterOrDigit(strChars[i]) || (strChars[i] == '_' && !replaceInvalidsWithUnicodeEsc))
                 {
                     strOut.Append(strChars[i]);
                     continue;
                 }
                     
-                if (!replaceInvalidsWithHexEsc)
+                if (!replaceInvalidsWithUnicodeEsc)
                     continue;
 
                 strOut.Append(string.Format("_u{0}", Convert.ToUInt16(strChars[i]).ToString("x4")));

@@ -97,7 +97,7 @@ namespace NoFuture.Tests.Util
             var testResult = NoFuture.Util.NfTypeName.SafeDotNetIdentifier("Personal Ph #",true);
             Assert.IsNotNull(testResult);
             System.Diagnostics.Debug.WriteLine(testResult);
-            Assert.AreEqual("Personalx20Phx20x23",testResult);
+            Assert.AreEqual("Personal_u0020Ph_u0020_u0023", testResult);
 
             testResult = NoFuture.Util.NfTypeName.SafeDotNetIdentifier("Personal Ph #");
             Assert.IsNotNull(testResult);
@@ -106,6 +106,15 @@ namespace NoFuture.Tests.Util
 
             testResult = NoFuture.Util.NfTypeName.SafeDotNetIdentifier("global::Some_Aspx_Page_With_No_Namespace");
             System.Diagnostics.Debug.WriteLine(testResult);
+
+            Assert.AreEqual("globalSome_Aspx_Page_With_No_Namespace", testResult);
+
+            testResult =
+                NoFuture.Util.NfTypeName.SafeDotNetIdentifier(
+                    "<p><font style='font-size:11px;font-family:calibri;text-align:left'>", true);
+            System.Diagnostics.Debug.WriteLine(testResult);
+
+            Assert.IsTrue(testResult.StartsWith(NoFuture.Util.NfTypeName.DefaultNamePrefix + "_u003cp_u003e_u003cfont_u0020style"));
 
         }
 

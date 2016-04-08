@@ -470,6 +470,10 @@ http://archive.ics.uci.edu/ml/
      interfaces but builtin data structures like array's
      maps, lists, sets and tuples.  These structures 
      may be combined into any kind graph.
+----
+
+----
+ Discrete Analysis
  - In practice the steps involve getting the data into 
    memory, dividing it between training and testing
    and then constructing the most rudimentary learning
@@ -525,3 +529,23 @@ Laplace Smoothing: will add 1 to the P(A) & P(B)
  so as in the above example of P(A) = 250 / 5000
  would be solved as P(A) = (1 + 250) / (1 + 5000)
 ----
+
+----
+Continous Analysis
+ - similar in practice but uses regession analysis
+ - base line is the average (or the line with 0 slope)
+ - the metric here is least squares
+  - sum of the square diff between each actual point
+    and predicted point
+ - tweaking the slope and intercept (theta0, theta1)
+   is called Grdient Descent
+ - extermum: where the derivitive slope is 0 
+ - learning rate: x[next] = x - alpha * (derivitive g(x))
+ 
+ - we are going to solve for theta0 and theta1 which gets
+   closer to extermum
+ - general equation form
+  Y = θ[0]*X[0] + θ[1]*X[1] + θ[2]*X[2] + ... + θ[n]*X[n]
+  
+  
+   
