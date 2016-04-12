@@ -53,6 +53,7 @@
     <Compile Include="AspNetParseTree.cs" />
     <Compile Include="CsharpParseTree.cs" />
     <Compile Include="Ctor.cs" />
+    <Compile Include="ErlangConfigParseTree.cs" />
     <Compile Include="XDocFrame.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

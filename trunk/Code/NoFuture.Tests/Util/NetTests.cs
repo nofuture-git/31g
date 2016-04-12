@@ -11,10 +11,10 @@ namespace NoFuture.Tests.Util
             var username = "Aladdin";
             var pwd = "open sesame";
 
-            var testResult = NoFuture.Util.Net.GetProxyAuthHeaderValue(username, pwd);
+            var testResult = NoFuture.Util.Net.GetAuthHeaderValue(username, pwd);
             Assert.AreEqual("Basic QWxhZGRpbjpvcGVuIHNlc2FtZQ==", testResult);
 
-            testResult = NoFuture.Util.Net.GetProxyAuthHeaderValue(null, pwd);
+            testResult = NoFuture.Util.Net.GetAuthHeaderValue(null, pwd);
             Assert.IsNotNull(testResult);
 
         }

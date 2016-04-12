@@ -45,7 +45,7 @@ namespace NoFuture.Util
         /// <remarks>
         /// https://www.ietf.org/rfc/rfc2068.txt
         /// </remarks>
-        public static string GetProxyAuthHeaderValue(string username, string pwd, string digest = "Basic")
+        public static string GetAuthHeaderValue(string username, string pwd, string digest = "Basic")
         {
             if(string.IsNullOrWhiteSpace(pwd))
                 throw new ArgumentNullException(pwd);

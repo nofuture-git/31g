@@ -78,6 +78,10 @@
       <Generator>MSBuild:Compile</Generator>
       <CustomToolNamespace>NoFuture.Antlr.Grammers</CustomToolNamespace>
     </Antlr4>
+    <Antlr4 Include="Grammers\ErlangConfig.g4">
+      <Generator>MSBuild:Compile</Generator>
+      <CustomToolNamespace>NoFuture.Antlr.Grammers</CustomToolNamespace>
+    </Antlr4>
     <None Include="packages.config" />
     <None Include="PostBuildScript.ps1" />
     <None Include="PreBuildScript.ps1" />

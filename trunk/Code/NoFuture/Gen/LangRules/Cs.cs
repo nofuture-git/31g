@@ -415,21 +415,27 @@ namespace NoFuture.Gen.LangRules
             var inDoubleQuotes = false;
             var buffer = lineIn.ToCharArray();
             var currentIdx = -1;
+            var isHereString = false;
             for (var j = 0; j < buffer.Length; j++)
             {
                 var isDblQuote = buffer[j] == '"';
                 var isEsc = j - 1 > 0 && buffer[j - 1] == (char) 0x5C;
-                isEsc = isEsc && j - 2 > 0 && buffer[j - 2] != (char)0x5C;
-                var isHereString = !isEsc && j - 1 > 0 && buffer[j - 1] == '@';
+                if (!isHereString && j - 1 > 0 && buffer[j - 1] == '@')
+                    isHereString = true;
+                isEsc =  !isHereString && isEsc && j - 2 > 0 && buffer[j - 2] != (char)0x5C;
 
                 if (isDblQuote && !isEsc)
                 {
                     inDoubleQuotes = !inDoubleQuotes;
                     if (inDoubleQuotes)
                     {
-                        currentIdx = isHereString ? j -1 : j;
+                        currentIdx = isHereString ? j - 1 : j;
                         stringLiterals.Add(currentIdx, new StringBuilder());
                     }
+
+                    if (!inDoubleQuotes && isHereString)
+                        isHereString = false;
+
                     continue;
                 }
 

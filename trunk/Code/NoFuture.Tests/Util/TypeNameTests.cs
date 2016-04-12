@@ -68,27 +68,34 @@ namespace NoFuture.Tests.Util
         [TestMethod]
         public void TestSafeDotNetTypeName()
         {
-            var testREsult = NoFuture.Util.NfTypeName.SafeDotNetTypeName("dbo.123ProcName");
-            Assert.IsNotNull(testREsult);
-            Assert.AreEqual("dbo.123ProcName",testREsult);
-            System.Diagnostics.Debug.WriteLine(testREsult);
+            var testResult = NoFuture.Util.NfTypeName.SafeDotNetTypeName("dbo.123ProcName");
+            Assert.IsNotNull(testResult);
+            Assert.AreEqual("dbo.123ProcName",testResult);
+            System.Diagnostics.Debug.WriteLine(testResult);
 
-            testREsult = NoFuture.Util.NfTypeName.SafeDotNetTypeName(null);
-            Assert.IsNotNull(testREsult);
+            testResult = NoFuture.Util.NfTypeName.SafeDotNetTypeName(null);
+            Assert.IsNotNull(testResult);
 
             var testInput = string.Empty;
-            testREsult = NoFuture.Util.NfTypeName.SafeDotNetTypeName(testInput);
-            Assert.IsNotNull(testREsult);
-            Assert.IsFalse(string.IsNullOrWhiteSpace(testREsult));
-            System.Diagnostics.Debug.WriteLine(testREsult);
+            testResult = NoFuture.Util.NfTypeName.SafeDotNetTypeName(testInput);
+            Assert.IsNotNull(testResult);
+            Assert.IsFalse(string.IsNullOrWhiteSpace(testResult));
+            System.Diagnostics.Debug.WriteLine(testResult);
 
             testInput = "     ";
-            testREsult = NoFuture.Util.NfTypeName.SafeDotNetTypeName(testInput);
-            Assert.IsNotNull(testREsult);
-            Assert.IsFalse(string.IsNullOrWhiteSpace(testREsult));
-            System.Diagnostics.Debug.WriteLine(testREsult);
+            testResult = NoFuture.Util.NfTypeName.SafeDotNetTypeName(testInput);
+            Assert.IsNotNull(testResult);
+            Assert.IsFalse(string.IsNullOrWhiteSpace(testResult));
+            System.Diagnostics.Debug.WriteLine(testResult);
 
-            testREsult = NoFuture.Util.NfTypeName.SafeDotNetTypeName("dbo.DELETED_LookupDetails");
+            testResult = NoFuture.Util.NfTypeName.SafeDotNetTypeName("dbo.DELETED_LookupDetails");
+            System.Diagnostics.Debug.WriteLine(testResult);
+            Assert.AreEqual("dbo.DELETED_LookupDetails", testResult);
+
+            testResult = NoFuture.Util.NfTypeName.SafeDotNetTypeName("Â© The End");
+
+            System.Diagnostics.Debug.WriteLine(testResult);
+
         }
 
         [TestMethod]
@@ -116,6 +123,17 @@ namespace NoFuture.Tests.Util
 
             Assert.IsTrue(testResult.StartsWith(NoFuture.Util.NfTypeName.DefaultNamePrefix + "_u003cp_u003e_u003cfont_u0020style"));
 
+            testResult =
+                NoFuture.Util.NfTypeName.SafeDotNetIdentifier("Â© The End Â©", false);
+            System.Diagnostics.Debug.WriteLine(testResult);
+
+            Assert.AreEqual("TheEnd",testResult);
+
+            testResult =
+                NoFuture.Util.NfTypeName.SafeDotNetIdentifier("Â© The End Â©", true);
+            System.Diagnostics.Debug.WriteLine(testResult);
+
+            Assert.AreEqual("_u00c2_u00a9_u0020The_u0020End_u0020_u00c2_u00a9", testResult);
         }
 
         [TestMethod]

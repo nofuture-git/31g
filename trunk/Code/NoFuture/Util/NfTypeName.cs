@@ -422,16 +422,18 @@ namespace NoFuture.Util
             var nameArray = name.ToCharArray();
             var csId = new StringBuilder();
 
-            if (!Char.IsLetter(nameArray[0]))
+            if (!Char.IsLetter(nameArray[0]) || Convert.ToUInt16(nameArray[0]) > 0x7F)
                 csId.Append(DefaultNamePrefix);
 
-            if (Char.IsNumber(nameArray[0]) || nameArray[0] == '_' || Char.IsLetter(nameArray[0]))
+            if (Char.IsNumber(nameArray[0]) || nameArray[0] == '_' ||
+                (Char.IsLetter(nameArray[0]) && Convert.ToUInt16(nameArray[0]) <= 0x7F))
                 csId.Append(nameArray[0]);
 
             for(var i = 1; i< nameArray.Length; i++)
             {
                 char cChar = nameArray[i];
-                if (Char.IsLetter(cChar) || Char.IsNumber(cChar) || cChar == '_' || cChar == '.')//expecting ns qualified ids
+                if ((Char.IsLetter(cChar) && Convert.ToUInt16(cChar) <= 0x7F) || Char.IsNumber(cChar) ||
+                    cChar == '_' || cChar == '.') //expecting ns qualified ids
                     csId.Append(cChar);
             }
 
@@ -452,17 +454,19 @@ namespace NoFuture.Util
         /// clearly exceed this then some random text will be added as the last 11 chars
         /// </param>
         /// <returns></returns>
-        public static string SafeDotNetIdentifier(string someString, bool replaceInvalidsWithUnicodeEsc = false, int maxLen = 40)
+        public static string SafeDotNetIdentifier(string someString, bool replaceInvalidsWithUnicodeEsc = false, int maxLen = 80)
         {
             if (String.IsNullOrWhiteSpace(someString))
                 return string.Format("{0}_{1}", DefaultNamePrefix, Path.GetRandomFileName().Replace(".", "_"));
 
             var strChars = someString.ToCharArray();
             var strOut = new StringBuilder();
-            if (!Char.IsLetter(strChars[0]))
+            if (!Char.IsLetter(strChars[0]) || (Char.IsLetter(strChars[0]) && Convert.ToUInt16(strChars[0]) > 0x7F))
                 strOut.Append(DefaultNamePrefix);
             var iequals = 0;
-            if (!replaceInvalidsWithUnicodeEsc && (Char.IsNumber(strChars[0]) || strChars[0] == '_' || Char.IsLetter(strChars[0])))
+            if (!replaceInvalidsWithUnicodeEsc &&
+                (Char.IsNumber(strChars[0]) || strChars[0] == '_' ||
+                 (Char.IsLetter(strChars[0]) && Convert.ToUInt16(strChars[0]) <= 0x7F)))
             {
                 strOut.Append(strChars[0]);
                 iequals = 1;
@@ -472,18 +476,19 @@ namespace NoFuture.Util
 
             for (var i = iequals; i < strChars.Length; i++)
             {
-                if (strOut.Length >= maxLen)
+                if (strOut.Length + randSuffix.Length >= maxLen - 1)
                 {
                     strOut.Append(randSuffix);
                     break;
 
                 }
-                if (Char.IsLetterOrDigit(strChars[i]) || (strChars[i] == '_' && !replaceInvalidsWithUnicodeEsc))
+                if ((Char.IsLetterOrDigit(strChars[i]) && Convert.ToUInt16(strChars[i]) <= 0x7F) ||
+                    (strChars[i] == '_' && !replaceInvalidsWithUnicodeEsc))
                 {
                     strOut.Append(strChars[i]);
                     continue;
                 }
-                    
+
                 if (!replaceInvalidsWithUnicodeEsc)
                     continue;
 

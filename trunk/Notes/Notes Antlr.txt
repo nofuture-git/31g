@@ -35,6 +35,15 @@ INT : DIGIT+ ;
 HEX_FOUR : HEX (HEX (HEX (HEX)?)?)? ;
 HEX : DIGIT | [a-fA-F] ;
 DIGIT : [0-9] ;	 
+
+ - we want to ignore the space char (\u0020) except when its in 
+   side of quotes
+
+//will let this be anything except ([]{},") AND space
+// the double-quote char needs to be present in the exclusion of it'll get matched on as part of the value
+DBL_QUOTE_VAL : '"' ( ~['\u007B' '\u007D' '\u005B' '\u005DB' '\u002C' '\u0022' '\u0027' '"'] | ' ')* '"' ;
+   
+WS : ['\t' '\r' '\n' ' ' ]+ -> skip ; //all empty space chars are getting ignored
 	 
  - encoding matters: 
   - grammar files must be in ANSI format

@@ -1826,6 +1826,14 @@ namespace NoFuture.Tests.Gen
             Assert.AreEqual(1, testResult.Count);
             System.Diagnostics.Debug.WriteLine(input.ToCharArray()[18]);
 
+            input = new string(new[] {'@', '"', '\\', '"'});
+
+            input = string.Format("      string myString = {0} + files[x-2] + {0} + files[x-1]", input);
+
+            testResult = Settings.LangStyle.ExtractAllStringLiterals(input);
+            foreach (var k in testResult.Keys)
+                 Assert.AreEqual("\\", testResult[k].ToString());
+
         }
 
         [TestMethod]
