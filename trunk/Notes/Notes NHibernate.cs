@@ -105,7 +105,7 @@ public class MyBasicExample
 	";
 	
 	//(4.) the configuration settings
-	string hibernateCfgXml = @"
+	string hibernateCfgSettingsXml = @"
 	<?xml version='1.0' encoding='utf-8' ?>
 	<configuration>
 		<configSections>
@@ -122,7 +122,31 @@ public class MyBasicExample
 		</nhibernate>
 	</configuration>
 	";
-	
+    
+    //(4.1) hibernate.cfg.xml, this may exist independent of a app's configuration
+    // adding it to the System.Environment.CurrentDirectory should work
+    string hibernateCfgXml = @"
+<?xml version="1.0" encoding="utf-8" ?> 
+<hibernate-configuration xmlns='urn:nhibernate-configuration-2.2'>
+  <session-factory>
+    <property name='dialect'>NHibernate.Dialect.MsSql2008Dialect</property> 
+    <property name='connection.provider'>NHibernate.Connection.DriverConnectionProvider</property> 
+    <property name='connection.driver_class'>NHibernate.Driver.SqlClientDriver</property> 
+    <property name='show_sql'>true</property> 
+    <mapping assembly='MyAssembly.Assembly.Name' /> 
+  </session-factory>
+</hibernate-configuration>    
+    ";
+    
+    //(4.2) trick to get all *.hbm.xml's into a binary as embedded resources
+	//within the .[cs|vb|fs]proj file add the following node right of the top-lvl "Project" node
+    string embedAllHbmXmls = @"
+      <Target Name="BeforeBuild">
+        <ItemGroup>
+          <EmbeddedResource Include='$(MSBuildProjectDirectory)\PathToMy\*.hbm.xml' />
+        </ItemGroup>
+      </Target>    
+  ";
 
 	//Insert Example
 	public void BasicExampleInput()

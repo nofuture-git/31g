@@ -621,3 +621,7 @@ foreach($svcName in $myService2BDisabled){
     $svc.ChangeStartMode("Disabled")
     $svc.Put()
 } 
+#get environment variable on another machine
+#get rabbitMQ home
+$wmiEnvObj = Get-WmiObject -Class Win32_Environment -ComputerName $computerIp -ErrorAction Stop
+$rabbitHome = $wmiEnvObj | ? {$_.Name -eq "RABBITMQ_BASE"} | Select-Object -First 1

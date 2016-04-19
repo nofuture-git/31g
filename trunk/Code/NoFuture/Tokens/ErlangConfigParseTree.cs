@@ -14,6 +14,7 @@ namespace NoFuture.Tokens
         public ErlangSslOptionsConfig SslOptionsConfig { get; set; }
         public string[] AuthMechanisms { get; set; }
         public string[] LoopBackUsers { get; set; }
+        public string SslCertLoginFrom { get; set; }
     }
 
     public class ErlangSslOptionsConfig
@@ -86,6 +87,7 @@ namespace NoFuture.Tokens
         private const string Verify = "verify";
         private const string FailIfNoPeerCert = "fail_if_no_peer_cert";
         private const string AuthMechanisms = "auth_mechanisms";
+        private const string SslCertLoginFrom = "ssl_cert_login_from";
         #endregion
 
         #region fields
@@ -143,6 +145,12 @@ namespace NoFuture.Tokens
                 {
                     _tracingConfig.Directory = fdkf.First(x => x.Item1 == Directory).Item2;
                 }
+            }
+            if (_activeAppName == Rabbit)
+            {
+                var simpleNv = _arrayOfNameValues.Get(context.erlArray());
+                if (simpleNv != null && simpleNv.Any(x => x.Item1 == SslCertLoginFrom))
+                    _rabbit.SslCertLoginFrom = simpleNv.First(x => x.Item1 == SslCertLoginFrom).Item2;
             }
         }
 

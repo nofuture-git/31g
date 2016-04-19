@@ -64,6 +64,15 @@ namespace NoFuture.Util
         }
 
         /// <summary>
+        /// Assign the <see cref="System.Net.ServicePointManager.ServerCertificateValidationCallback"/>
+        /// to accept all certs.
+        /// </summary>
+        public static void AddAcceptAllCerts()
+        {
+            System.Net.ServicePointManager.ServerCertificateValidationCallback = AcceptAllCertificates;
+        }
+
+        /// <summary>
         /// Adds the NF implementation of SHA512 <see cref="Shared.RSAPKCS1SHA512SigDesc"/> to
         /// the <see cref="CryptoConfig"/>
         /// </summary>

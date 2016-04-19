@@ -56,6 +56,9 @@ namespace NoFuture.Tests.Tokens
             Assert.AreNotEqual(0, testResults.Rabbit.AuthMechanisms.Length);
             Assert.IsNotNull(testResults.Rabbit.AuthMechanisms.FirstOrDefault(x => x == "'EXTERNAL'"));
 
+            Assert.IsNotNull(testResults.Rabbit.SslCertLoginFrom);
+            Assert.AreEqual("common_name", testResults.Rabbit.SslCertLoginFrom);
+
             Assert.AreEqual(15671, testResults.MgmtRabbit.Port);
             Assert.IsNotNull(testResults.MgmtRabbit.Ip);
             Assert.AreEqual("\"0.0.0.0\"", testResults.MgmtRabbit.Ip);

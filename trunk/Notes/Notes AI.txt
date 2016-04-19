@@ -449,9 +449,11 @@ http://archive.ics.uci.edu/ml/
  - Machine Learning is not as the name implies.
    It starts with some data set (the-bigger-the-better)
    which is divided into two parts, one part is for 
-   training the other is for testing. Each data item
-   is tagged with some kind of category which is the 
-   basis of the learning. 
+   training the other is for testing. 
+   
+ - In supervised learning, each data item is tagged 
+   with some kind of category which is the basis of 
+   the learning. 
    - Each datam is a label-value hash
    - This is foreign to an imperative programmer because
      if you already know the answers (which is what these
@@ -463,6 +465,13 @@ http://archive.ics.uci.edu/ml/
      we are treating the program as a kind of student - 
      showing them the data with answers and focusing on
      how to arrive to those answers.
+ - In unsupervised learning, you just have data with no
+   tags.  
+   - Idea is to find some pattern present therein
+   - "all unintersting datasets are alike; each interesting
+      dataset is interesting in its own way"
+      - Leo Tolstoy
+   
  - Functional Lang is preferred since its most capable
    of dealing with large structured data where the 
    data is structured from primitive types.
@@ -470,6 +479,7 @@ http://archive.ics.uci.edu/ml/
      interfaces but builtin data structures like array's
      maps, lists, sets and tuples.  These structures 
      may be combined into any kind graph.
+ 
 ----
 
 ----
@@ -531,7 +541,10 @@ Laplace Smoothing: will add 1 to the P(A) & P(B)
 ----
 
 ----
-Continous Analysis
+All Numbers
+ - in practice data is converted to some meaningful
+   numerical representation so the whole corpus of 
+   mathematical techniques may be applied.
  - similar in practice but uses regession analysis
  - base line is the average (or the line with 0 slope)
  - the metric here is least squares
@@ -546,6 +559,19 @@ Continous Analysis
    closer to extermum
  - general equation form
   Y = θ[0]*X[0] + θ[1]*X[1] + θ[2]*X[2] + ... + θ[n]*X[n]
-  
-  
+ - normal form regression 
+ min cost(θ)=(1/N)*[Y-θ*Xͭ]*[Y-θ*Xͭ] 
+  - the little (ͭ) means a matrix's transpose
+  - is solved by
+ θ=((Xͭ*X)^-1)*Xͭ*Y
+ 
+ - colinearity: when any term can be expressed as a linear
+   combination of the other features
+ - linear combination: the construct of a set of terms each
+   being multiplied by a constant and summing the results
+   aX +bY where a and b are constants 
+ - normalization: similar to meaning in DB's, means scaling
+   all values to they are comparable
+  (x_i - x_min) / (x_max - x_min)
+   
    
