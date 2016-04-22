@@ -140,7 +140,7 @@ namespace NoFuture.Encryption
         /// </summary>
         /// <param name="cert"></param>
         /// <returns></returns>
-        public static string ExportToCer(X509Certificate2 cert)
+        public static string ExportToPem(X509Certificate2 cert)
         {
             var bldr = new StringBuilder();
             bldr.AppendLine("-----BEGIN CERTIFICATE-----");

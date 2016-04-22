@@ -36,7 +36,7 @@ namespace NoFuture.Tests.Encryption
         public void TestGetCerOfTestPfx()
         {
             var myCert = new X509Certificate2(TEST_CERT_PFX_PATH, TEST_PWD);
-            var myCerCert = NoFuture.Encryption.NfX509.ExportToCer(myCert);
+            var myCerCert = NoFuture.Encryption.NfX509.ExportToPem(myCert);
             File.WriteAllText(
                 Path.Combine(Path.GetDirectoryName(TEST_CERT_PFX_PATH),
                     Path.GetFileNameWithoutExtension(TEST_CERT_PFX_PATH) + ".cer"), myCerCert);

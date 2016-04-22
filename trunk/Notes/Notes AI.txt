@@ -573,5 +573,38 @@ All Numbers
  - normalization: similar to meaning in DB's, means scaling
    all values to they are comparable
   (x_i - x_min) / (x_max - x_min)
+----
+
+----
+K-Means Clustering
+ - idea of instead of attempting to delimit a boundary 
+   around an obvious cluster of data, we image there is
+   some centerpoint and all the occurances are just
+   imperfect variations of it.
+  - the imagined centerpoints are called centroids
+ 
+ - the algo works from the fact that as a centroids move 
+   towards some concentration they must disassociate themselves
+   from points which are not in the same direction as this
+   concentration.  This allows for these latter points to 
+   then be associated to another centroid.
+ - by repeating the process the centroids become associated to 
+   these at the cost of those and will eventually settle at
+   some point where a concentration holds them.
+ - the 'k' is arbitrary and must be supplied.
+ 
+ -from the text (Brandewinder)
+ clusterize
+       1. initialize
+               assign every observation an initial centroid ID of 0
+               pick k distinct observations as the initial centroids 1 to k
+       2. search
+               assign each observation to the closest centroid
+               if no assignment changes, done: we have good, stable centroids
+               else
+                      group observations assigned to the same cluster
+                      reduce the observations to their average centroid
+                      repeat with the new centroids
+       3. search, starting from the initial centroids
    
    
