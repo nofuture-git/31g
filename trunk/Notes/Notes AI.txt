@@ -606,5 +606,60 @@ K-Means Clustering
                       reduce the observations to their average centroid
                       repeat with the new centroids
        3. search, starting from the initial centroids
-   
-   
+ 
+ - would expect that after having been run the count of 
+   items in each of the (k) clusters would be comparable
+   - when this is not the case 3 things could be happening
+   (1) there are not clusters whatsoever
+   (2) we picked the wrong (k)
+    - Residual Sum of Squares is the sum of distance
+      of each observation from its centroid.
+    - try different (k) values and take the one 
+      that min.'s the Residual Sum of Squares
+    - however, we want to limit complexity - if we
+      chose a (k) equal to the number of observations
+      it would be a perfect fit but meaningless.
+    - some means of measuring complexity is required
+      and a balance is needed between it an the RSS.
+      - Akaike Information Criterion (AIC) uses
+        2 * (number of features) * (k)
+   (3) clusters don't form a round scatter-plot but 
+       more vertical or horizontial lines - this means
+       one of the axis need to be streched so the 
+       clusters from a more rounded shape.
+    - rescale is often performed with 
+       x' = (x - min(x)) / (max(x) - min(x))
+    - another form is to remove the magnitude
+      to a proportion of itself using the max
+     f0	    f1	    f2		MAX		f0/MAX	f1/MAX	f2/MAX
+    1455	854	    54		1455	1.00	0.59	0.04
+    2044	1255	134		2044	1.00	0.61	0.07
+    90	    38	    8		90		1.00	0.42	0.09
+----
+
+----
+Principal Component Analysis (PCA)
+ - complement to k-means
+ - for detecting some structure features
+ - how features relate to each other
+ - builds on other relational concepts
+  - Covariance:
+   Cov(X,Y) = average((X-average(X)) * (Y-average(Y)))
+   - if x and y move in the same direction together 
+     then when x is above its average, y should be above
+     its average.
+   - has a problem of scale where its not clear 
+     what a "high covariance" is without its data
+  - Correlation:
+   Corr(X,Y) = Cov(X,Y) / (stdDev(X) * stdDev(Y))
+    -solves to-
+   Corr(X,Y) = average((X-average(X))/stdDev(X) * (Y-average(Y))/stdDev(Y))
+    - has property of going between -1.0 to 1.0
+   z-score:  
+    - rescale X to (X-average(X))/stdDev(X) is 
+   - either resulting in zero doesn't mean 
+     that no relation exists - it means the 
+     relation, if any, is not a matter of moving
+     up and down together (a perfect circle solves 
+      to 0 but has a very definite relationship)
+----   

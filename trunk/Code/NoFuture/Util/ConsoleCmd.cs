@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using NoFuture.Shared;
@@ -111,6 +112,42 @@ namespace NoFuture.Util
             var qryObj = rslts.Current;
             var parentId = (uint) qryObj["ParentProcessId"];
             return System.Diagnostics.Process.GetProcessById((int) parentId);
+        }
+
+        /// <summary>
+        /// Will parse the results of an invocation to 'tList.exe' with the '-c' switch.
+        /// </summary>
+        /// <param name="buffer"></param>
+        /// <returns></returns>
+        public static List<Tuple<int, string, string>> ParseTListExeOutput(string buffer)
+        {
+
+            const string lnI = @"([0-9]+)\W(.+?\x2E[Ee][Xx][Ee])\W";
+            const string lnIplus1 = @"\WCommand\sLine\:\W(.*)";
+            var procs = new List<Tuple<int, string, string>>();
+
+            var stdOut = buffer.Split('\n');
+
+            for (var i = 0; i < stdOut.Length; i += 2)
+            {
+                if (string.IsNullOrWhiteSpace(stdOut[i]) || stdOut[i].Split(' ').Length == 0 || i % 2 != 0)
+                    continue;
+                var pid = string.Empty;
+                var proc = string.Empty;
+                var cmdln = string.Empty;
+                if (!RegexCatalog.IsRegexMatch(stdOut[i], lnI, out pid, 1))
+                    pid = "0";
+                if (!RegexCatalog.IsRegexMatch(stdOut[i], lnI, out proc, 2))
+                    proc = stdOut[i];
+                if (!RegexCatalog.IsRegexMatch(stdOut[i + 1], lnIplus1, out cmdln, 1))
+                    cmdln = stdOut[i + 1];
+
+                int iPid = 0;
+                int.TryParse(pid, out iPid);
+                procs.Add(new Tuple<int, string, string>(iPid, proc.Trim(), cmdln.Trim()));
+            }
+
+            return procs;
         }
     }
 }
