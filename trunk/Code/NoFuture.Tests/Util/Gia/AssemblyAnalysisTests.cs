@@ -27,17 +27,6 @@ namespace NoFuture.Tests.Util.Gia
 
             Assert.IsNotNull(testAsm);
 
-            var testInput = new NoFuture.Util.Gia.Args.AssemblyLeftRightArgs
-            {
-                Assembly = testAsm,
-                Separator = "-",
-                MaxDepth = 16,
-                TargetWord = "CreditCard"
-            };
-
-            var refactoredCode = NoFuture.Util.Gia.AssemblyAnalysis.MapAssemblyWordLeftAndRight(testInput);
-
-            System.IO.File.WriteAllLines(@"C:\Projects\31g\trunk\temp\refactoredLeft.txt", refactoredCode.Item1.Items.Select(x => x.FlName));
         }
 
         [TestMethod]

@@ -3,6 +3,7 @@ using System.IO;
 using System.ServiceModel;
 using System.Text;
 using NoFuture.Tools;
+using NoFuture.Util.NfConsole;
 
 namespace NoFuture.Util.Pos.WcfHost
 {

@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NoFuture.Util.NfConsole;
 
 namespace NoFuture.Tests.Util
 {
@@ -10,7 +11,7 @@ namespace NoFuture.Tests.Util
         public void TestParseArgsToKeyValueHash()
         {
             var testcmd = "-connStr=Server=localhost;Database=ApexQA01;Trusted_Connection=True;";
-            var testResult = NoFuture.Util.ConsoleCmd.ParseArgKey2StringHash(testcmd);
+            var testResult = ConsoleCmd.ParseArgKey2StringHash(testcmd);
             Assert.IsNotNull(testResult);
             System.Diagnostics.Debug.WriteLine(testResult.Value.Value);
         }
@@ -24,7 +25,7 @@ namespace NoFuture.Tests.Util
                 @"-spmFilePath=C:\ProgramFiles (x86)\Somepath\SomeFile.bin",
                 "-mySwitchHere"
             };
-            var testResult = NoFuture.Util.ConsoleCmd.ArgHash(testCmd);
+            var testResult = ConsoleCmd.ArgHash(testCmd);
             Assert.IsNotNull(testResult);
             foreach(var k in testResult.Keys)
                 System.Diagnostics.Debug.WriteLine(string.Format("{0}\n\t\t{1}",k,testResult[k]));

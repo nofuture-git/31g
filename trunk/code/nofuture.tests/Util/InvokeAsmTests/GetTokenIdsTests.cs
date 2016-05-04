@@ -3,7 +3,7 @@ using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NoFuture.Shared;
 using NoFuture.Util.Gia.InvokeAssemblyAnalysis;
-using TestProgram = NoFuture.Util.Gia.InvokeAssemblyAnalysis.Program;
+using NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds;
 
 namespace NoFuture.Tests.Util.InvokeAsmTests
 {
@@ -38,10 +38,13 @@ namespace NoFuture.Tests.Util.InvokeAsmTests
             System.Reflection.Assembly.Load(
                     System.IO.File.ReadAllBytes(
                         @"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\ThirdDll.dll"));
-            TestProgram.RootAssembly = testAsm;
-            TestProgram.AssemblyNameRegexPattern = "(Some|ThirdDll)";
-            NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds.GetAsmIndices.Init(testAsm);
-            NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds.GetAsmIndices.AssignAsmIndicies(testAsm);
+            var tp = new IaaProgram(new[] {"noop"})
+            {
+                RootAssembly = testAsm,
+                AssemblyNameRegexPattern = "(Some|ThirdDll)"
+            };
+            tp.Init(testAsm);
+            tp.AssignAsmIndicies(testAsm);
 
             var testAsmTypes = testAsm.GetTypes();
 
@@ -50,6 +53,9 @@ namespace NoFuture.Tests.Util.InvokeAsmTests
             var dee = testTokens.FirstOrDefault();
             Assert.IsNotNull(dee);
 
+            var tProgram = new IaaProgram(null);
+            var tGetTokenIds = new GetTokenIds(tProgram);
+
             var testDepth = 0;
             foreach (var iToken in testTokens)
             {
@@ -57,7 +63,7 @@ namespace NoFuture.Tests.Util.InvokeAsmTests
                 {
                     foreach (var vToken in tToken.Items)
                     {
-                        NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds.GetTokenIds.ResolveCallOfCall(vToken, ref testDepth, new Stack<MetadataTokenId>(), null);        
+                        tGetTokenIds.ResolveCallOfCall(vToken, ref testDepth, new Stack<MetadataTokenId>(), null);        
                     }
                 }
                 
@@ -76,7 +82,7 @@ namespace NoFuture.Tests.Util.InvokeAsmTests
             Assert.IsTrue(tokenPrint.Split('\n').Length >= testFlattenedRslt.Length);
 
             var testTokenNames =
-                NoFuture.Util.Gia.InvokeAssemblyAnalysis.UtilityMethods.ResolveAllTokenNames(testFlattenedRslt);
+                tProgram.UtilityMethods.ResolveAllTokenNames(testFlattenedRslt);
             Assert.IsNotNull(testTokenNames);
             Assert.AreNotEqual(0, testTokenNames.Count);
 

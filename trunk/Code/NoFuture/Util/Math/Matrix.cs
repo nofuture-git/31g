@@ -319,6 +319,13 @@ namespace NoFuture.Util.Math
         /// </summary>
         /// <param name="len">Determinants and eigenvalues can only be calculated on square matrices.</param>
         /// <returns></returns>
+        /// <remarks>
+        /// Is pronounced "I-G-in" vector - is one that simply gets "scaled up" by some value (the eigen value).
+        /// Dx = rx -> (D -rI)x = 0
+        /// 
+        /// λ is the eigen value, v` is the eigen vector
+        /// T(v`) = Av` = λv`
+        /// </remarks>
         /// <example>
         /// <![CDATA[
         ///     var typicalMatrix = new[,]

@@ -66,13 +66,14 @@ namespace NoFuture.Tests.Util
 
             var eigenval00 = 1D;
             //var eigenval01 = 0.5D;
-            //pg 326 Dx = rx (where 'x' is a nX1 matrix, 'n' being dim's of D
-            //so for a 3x3 matrix the eigenvector is 3x1
+            //pg 326 Dx = rx (where 'x' is a nX1 matrix, 'n' being dim's of D so for a 3x3 matrix the eigenvector is 3x1)
 
             //(D -rI)x = 0
             //so all the eigenvalues do is get you closer to guessing what 'x' is
 
             //this is the property of eigenvectors that is being sought
+            //https://www.khanacademy.org/math/linear-algebra/alternate_bases/eigen_everything/v/linear-algebra-introduction-to-eigenvalues-and-eigenvectors
+            // " the line that they span will not change" its just extended in the same direction
             var really = Matrix.Product(typicalMatrix, new double[,] {{0.6D}, {0.4D}});
             System.Diagnostics.Debug.WriteLine(really.Print());//yep, this really is the {{0.6D}, {0.4D}}
 

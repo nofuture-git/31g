@@ -53,14 +53,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Cmds\CmdBase.cs" />
     <Compile Include="Cmds\GetAsmIndices.cs" />
     <Compile Include="Cmds\GetTokenIds.cs" />
     <Compile Include="Cmds\GetTokenNames.cs" />
-    <Compile Include="Cmds\ICmd.cs" />
     <Compile Include="Cmds\ProcessProgress.cs" />
     <Compile Include="UtilityMethods.cs" />
-    <Compile Include="Program.cs" />
+    <Compile Include="IaaProgram.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -3,6 +3,7 @@ using System.IO;
 using System.Text;
 using System.Threading;
 using NoFuture.Util.Binary;
+using NoFuture.Util.NfConsole;
 using CfgMgr = System.Configuration.ConfigurationManager;
 
 namespace NoFuture.Gen.InvokeGetCgOfType
@@ -40,7 +41,7 @@ namespace NoFuture.Gen.InvokeGetCgOfType
                 }
 
                 //get and test the cmd line arg key\values
-                var argHash = Util.ConsoleCmd.ArgHash(args);
+                var argHash = ConsoleCmd.ArgHash(args);
 
                 if (argHash == null || argHash.Keys.Count <= 0)
                 {

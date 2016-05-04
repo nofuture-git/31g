@@ -7,6 +7,7 @@ using System.Threading;
 using NoFuture.Util.Binary;
 using NoFuture.Tools;
 using NoFuture.Util.Gia.Args;
+using NoFuture.Util.NfConsole;
 
 namespace NoFuture.Gen.InvokeGraphViz
 {
@@ -90,7 +91,7 @@ namespace NoFuture.Gen.InvokeGraphViz
                 }
 
                 //get and test the cmd line arg key\values
-                var argHash = Util.ConsoleCmd.ArgHash(args);
+                var argHash = ConsoleCmd.ArgHash(args);
 
                 if (argHash == null || argHash.Keys.Count <= 0)
                 {

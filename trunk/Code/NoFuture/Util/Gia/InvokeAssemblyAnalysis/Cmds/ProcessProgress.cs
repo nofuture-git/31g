@@ -2,6 +2,7 @@
 using System.Net.Sockets;
 using System.Threading.Tasks;
 using NoFuture.Shared;
+using NoFuture.Util.NfConsole;
 
 namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds
 {
@@ -16,7 +17,7 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds
 
         public void ReportIn(ProgressMessage arg)
         {
-            if (!Net.IsValidPortNumber(Program.ProcessProgressCmdPort))
+            if (!Net.IsValidPortNumber(((IaaProgram)MyProgram).ProcessProgressCmdPort))
                 return;
 
             var buffer = EncodedResponse(arg);

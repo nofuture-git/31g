@@ -20,7 +20,6 @@ namespace NoFuture.Rand.Domus.Pneuma
         private readonly Extraversion _e = new Extraversion();
         private readonly Agreeableness _a = new Agreeableness();
         private readonly Neuroticism _n = new Neuroticism();
-        private readonly bool _isHomosexual;
         #endregion
 
         public Openness Openness { get { return _o; } }

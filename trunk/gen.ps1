@@ -792,7 +792,7 @@ function Measure-TypesWholeWords
     )
     Process
     {
-        return (([NoFuture.Util.Gia.AssemblyAnalysis]::GetAllPropertyWholeWordsByCount($Assembly, $TypeFullName, $FlattenMaxDepth)).GetEnumerator() | Sort-Object Value -Descending)
+        return (([NoFuture.Util.Gia.Flatten]::GetAllPropertyWholeWordsByCount($Assembly, $TypeFullName, $FlattenMaxDepth)).GetEnumerator() | Sort-Object Value -Descending)
     }
 }
 
@@ -809,7 +809,7 @@ function Measure-AssemblyWholeWords
     )
     Process
     {
-        return (([NoFuture.Util.Gia.AssemblyAnalysis]::GetAssemblyPropertyWholeWordsByCount($Assembly, $FlattenMaxDepth)).GetEnumerator() | Sort-Object Value -Descending)
+        return (([NoFuture.Util.Gia.Flatten]::GetAssemblyPropertyWholeWordsByCount($Assembly, $FlattenMaxDepth)).GetEnumerator() | Sort-Object Value -Descending)
     }
 }
 

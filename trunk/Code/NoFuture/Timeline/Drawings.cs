@@ -1450,7 +1450,6 @@ namespace NoFuture.Timeline
             {
                 var tValue = value;
                 string s1;
-                int y1;
                 if (RegexCatalog.IsRegexMatch(tValue, REGEX_PATTERN, out s1, 1))
                 {
                     Name = s1;

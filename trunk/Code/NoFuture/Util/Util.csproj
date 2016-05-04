@@ -66,6 +66,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Management" />
@@ -79,7 +80,8 @@
     <Compile Include="Binary\ByteArray.cs" />
     <Compile Include="Binary\Calc.cs" />
     <Compile Include="Binary\Compression.cs" />
-    <Compile Include="ConsoleCmd.cs" />
+    <Compile Include="NfConsole\CmdBase.cs" />
+    <Compile Include="NfConsole\ConsoleCmd.cs" />
     <Compile Include="Etc.cs" />
     <Compile Include="Etymological\Biz\Nomenclature.cs" />
     <Compile Include="Etymological\En.cs" />
@@ -104,6 +106,9 @@
     <Compile Include="Math\NaturalLogEquation.cs" />
     <Compile Include="Math\NormalDistEquation.cs" />
     <Compile Include="Net.cs" />
+    <Compile Include="NfConsole\ICmd.cs" />
+    <Compile Include="NfConsole\Program.cs" />
+    <Compile Include="NfConsole\SocketConsole.cs" />
     <Compile Include="NfPath.cs" />
     <Compile Include="NfTypeName.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

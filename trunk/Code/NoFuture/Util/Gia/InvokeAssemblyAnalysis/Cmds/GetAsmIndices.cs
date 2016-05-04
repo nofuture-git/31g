@@ -4,19 +4,25 @@ using System.IO;
 using System.Reflection;
 using System.Text;
 using NoFuture.Shared;
+using NoFuture.Util.NfConsole;
 
 namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds
 {
     public class GetAsmIndices : CmdBase<AsmIndicies>
     {
+        public GetAsmIndices(Program myProgram)
+            : base(myProgram)
+        {
+        }
+
         public override byte[] Execute(byte[] arg)
         {
-            Program.PrintToConsole("GetAsmIndices invoked");
+            MyProgram.PrintToConsole("GetAsmIndices invoked");
             try
             {
                 if (arg == null || arg.Length <= 0)
                 {
-                    Program.PrintToConsole("the arg for GetAsmIndices is null or empty");
+                    MyProgram.PrintToConsole("the arg for GetAsmIndices is null or empty");
                     return EncodedResponse(
                         new AsmIndicies
                         {
@@ -28,7 +34,7 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds
                 if (!File.Exists(asmPath))
                 {
 
-                    Program.PrintToConsole(string.Format("invalid path [{0}]", asmPath));
+                    MyProgram.PrintToConsole(string.Format("invalid path [{0}]", asmPath));
                     return EncodedResponse(
                         new AsmIndicies
                         {
@@ -45,7 +51,7 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds
 
                 if (asm == null)
                 {
-                    Program.PrintToConsole("cannot load assembly");
+                    MyProgram.PrintToConsole("cannot load assembly");
                     return EncodedResponse(
                         new AsmIndicies
                         {
@@ -54,14 +60,14 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds
                         });
                 }
 
-                Init(asm);
-                AssignAsmIndicies(asm);
+                ((IaaProgram)MyProgram).Init(asm);
+                ((IaaProgram)MyProgram).AssignAsmIndicies(asm);
 
-                return EncodedResponse(Program.AsmIndicies);
+                return EncodedResponse(((IaaProgram)MyProgram).AsmIndicies);
             }
             catch (Exception ex)
             {
-                Program.PrintToConsole(ex);
+                MyProgram.PrintToConsole(ex);
                 return EncodedResponse(
                     new AsmIndicies
                     {
@@ -71,27 +77,6 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds
             }
         }
 
-        internal static void Init(Assembly asm)
-        {
-            Program.RootAssembly = asm;
-            Program.TokenId2NameCache.Clear();
-            Program.DisolutionCache.Clear();
-            Program.DisolutionCache.Add(new MetadataTokenId());//empty token Id
-        }
 
-        internal static void AssignAsmIndicies(Assembly asm)
-        {
-            var tempList = new List<MetadataTokenAsm>();
-
-            var refedAsms = asm.GetReferencedAssemblies();
-            tempList.Add(new MetadataTokenAsm { AssemblyName = asm.GetName().FullName, IndexId = 0 });
-            for (var i = 0; i < refedAsms.Length; i++)
-            {
-                tempList.Add(new MetadataTokenAsm { AssemblyName = refedAsms[i].FullName, IndexId = i + 1 });
-            }
-
-            Program.AsmIndicies.Asms = tempList.ToArray();
-            Program.AsmIndicies.St = MetadataTokenStatus.Ok;            
-        }
     }
 }

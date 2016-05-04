@@ -6,40 +6,25 @@ using System.Text;
 namespace NoFuture.Util.Gia.Args
 {
     /// <summary>
-    /// Arg type used by <see cref="AssemblyAnalysis"/> to discover word
-    /// usage of a flattened type
+    /// Represent the args needed when flattening.
     /// </summary>
-    public class AssemblyLeftRightArgs
+    public class FlattenLineArgs
     {
-        public string TargetWord { get; set; }
-        public System.Reflection.Assembly Assembly { get; set; }
-        public int MaxDepth { get; set; }
-        public bool SplitNamesOnUpperCase { get; set; }
-        public bool JustOnValueTypes { get; set; }
-        public string LimitOnThisType { get; set; }
-        public string Separator { get; set; }
-        public bool UseTypeNames { get; set; }
-    }
-
-    /// <summary>
-    /// Command arg for <see cref="NoFuture.Util.Gia.Flatten"/>
-    /// </summary>
-    public class FlattenTypeArgs
-    {
-        public const int MAX_DEPTH = 16;
-        public const string DEFAULT_SEPARATOR = "-";
-        
         private string _separator = DEFAULT_SEPARATOR;
         private int _depth = 16;
-        
+
+        public const int MAX_DEPTH = 16;
+        public const string DEFAULT_SEPARATOR = "-";
+
         public System.Reflection.Assembly Assembly { get; set; }
         public bool UseTypeNames { get; set; }
-        public string TypeFullName { get; set; }
+
         public string Separator
         {
             get { return _separator; }
             set { _separator = value; }
         }
+
         public int Depth
         {
             get { return _depth; }
@@ -52,7 +37,16 @@ namespace NoFuture.Util.Gia.Args
                 _depth = value;
             }
         }
+
         public string LimitOnThisType { get; set; }
         public bool DisplayEnums { get; set; }
+    }
+
+    /// <summary>
+    /// Command arg for <see cref="NoFuture.Util.Gia.Flatten"/>
+    /// </summary>
+    public class FlattenTypeArgs : FlattenLineArgs
+    {
+        public string TypeFullName { get; set; }
     }
 }

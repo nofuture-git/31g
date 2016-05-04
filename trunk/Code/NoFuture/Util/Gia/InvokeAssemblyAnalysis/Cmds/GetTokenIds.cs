@@ -9,29 +9,35 @@ using NoFuture.Exceptions;
 using NoFuture.Shared;
 using System.Diagnostics;
 using NoFuture.Util.Binary;
+using NoFuture.Util.NfConsole;
 
 namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds
 {
     public class GetTokenIds : CmdBase<TokenIds>
     {
+        public GetTokenIds(Program myProgram)
+            : base(myProgram)
+        {
+        }
+
         public override byte[] Execute(byte[] arg)
         {
-            Program.PrintToConsole("GetTokenIds invoked");
-            Program.ProgressMessageState = null;
+            MyProgram.PrintToConsole("GetTokenIds invoked");
+            MyProgram.ProgressMessageState = null;
             try
             {
                 var cProc = Process.GetCurrentProcess();
                 var asm = GetAssembly(arg);
 
-                var asmTypes = asm.NfGetTypes(false, Program.LogFile);
+                var asmTypes = asm.NfGetTypes(false, MyProgram.LogFile);
                 var tokens = new List<MetadataTokenId>();
                 var counter = 0;
                 var total = asmTypes.Length;
-                Program.PrintToConsole(string.Format("There are {0} types in the assembly", total));
+                MyProgram.PrintToConsole(string.Format("There are {0} types in the assembly", total));
                 foreach (var asmType in asmTypes)
                 {
                     counter += 1;
-                    Program.ReportProgress(new ProgressMessage
+                    ((IaaProgram)MyProgram).ReportProgress(new ProgressMessage
                     {
                         Activity = asmType.FullName,
                         ProcName = cProc.ProcessName,
@@ -43,7 +49,7 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds
                 }
 
                 Console.Write('\n');
-                if (string.IsNullOrWhiteSpace(Program.AssemblyNameRegexPattern))
+                if (string.IsNullOrWhiteSpace(((IaaProgram)MyProgram).AssemblyNameRegexPattern))
                 {
                     return EncodedResponse(
                         new TokenIds
@@ -56,11 +62,11 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds
                 var callTokens = tokens.SelectMany(x => x.Items.SelectMany(y => y.Items)).ToArray();
                 counter = 0;
                 total = callTokens.Length;
-                Program.PrintToConsole(string.Format("There are {0} call-of-call tokens", total));
+                MyProgram.PrintToConsole(string.Format("There are {0} call-of-call tokens", total));
                 foreach (var iToken in callTokens)
                 {
                     counter += 1;
-                    Program.ReportProgress(new ProgressMessage
+                    ((IaaProgram)MyProgram).ReportProgress(new ProgressMessage
                     {
                         Activity = string.Format("{0}.{1}", iToken.RslvAsmIdx, iToken.Id),
                         ProcName = cProc.ProcessName,
@@ -80,7 +86,7 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds
             catch (Exception ex)
             {
                 Console.Write('\n');
-                Program.PrintToConsole(ex);
+                MyProgram.PrintToConsole(ex);
                 return EncodedResponse(
                     new TokenIds
                     {
@@ -97,7 +103,7 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds
         /// <param name="depth"></param>
         /// <param name="stackTrc">For detecting recursive call patterns</param>
         /// <param name="msgOut">For getting details on recursion.</param>
-        internal static void ResolveCallOfCall(MetadataTokenId token, ref int depth, Stack<MetadataTokenId> stackTrc, StringBuilder msgOut)
+        internal void ResolveCallOfCall(MetadataTokenId token, ref int depth, Stack<MetadataTokenId> stackTrc, StringBuilder msgOut)
         {
             if (msgOut != null)
             {
@@ -121,10 +127,10 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds
             depth += 1;
 
             //abort if max depth has been reached
-            if (depth > Program.MaxRecursionDepth)
+            if (depth > ((IaaProgram)MyProgram).MaxRecursionDepth)
             {
                 depth -= 1;
-                Program.PrintToConsole(
+                MyProgram.PrintToConsole(
                     String.Format("Max Recursion Depth @ {0}.{1}\n", token.RslvAsmIdx, token.Id));
                 if(msgOut != null)
                     msgOut.AppendLine(", Message:'max recursion depth'");
@@ -141,7 +147,7 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds
             }
 
             //don't waste clock cycles on Ignore types
-            if (Program.DisolutionCache.Contains(token))
+            if (((IaaProgram)MyProgram).DisolutionCache.Contains(token))
             {
                 depth -= 1;
                 if (msgOut != null)
@@ -151,23 +157,23 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds
 
             //resolve token to name
             MetadataTokenName tokenName = null;
-            if (Program.TokenId2NameCache.ContainsKey(token))
+            if (((IaaProgram)MyProgram).TokenId2NameCache.ContainsKey(token))
             {
-                tokenName = Program.TokenId2NameCache[token];
+                tokenName = ((IaaProgram)MyProgram).TokenId2NameCache[token];
             }
             else
             {
                 // the token must be resolvable with the its manifest module
-                var resolveRslt = UtilityMethods.ResolveSingleTokenName(token, out tokenName, msgOut);
+                var resolveRslt = ((IaaProgram)MyProgram).UtilityMethods.ResolveSingleTokenName(token, out tokenName, msgOut);
                 if (!resolveRslt || tokenName == null)
                 {
-                    Program.DisolutionCache.Add(token);
+                    ((IaaProgram)MyProgram).DisolutionCache.Add(token);
                     depth -= 1;
                     if (msgOut != null)
                         msgOut.AppendLine(", Message:'ResolveSingleTokenName failed'");
                     return;
                 }
-                Program.TokenId2NameCache.Add(token, tokenName);
+                ((IaaProgram)MyProgram).TokenId2NameCache.Add(token, tokenName);
             }
 
             //only proceed to find calls of calls, types are resolved elsewhere
@@ -180,10 +186,10 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds
             }
 
             //match is on Asm Name, not type nor member name
-            var owningAsmName = Program.AsmIndicies.Asms.FirstOrDefault(x => x.IndexId == tokenName.OwnAsmIdx);
+            var owningAsmName = ((IaaProgram)MyProgram).AsmIndicies.Asms.FirstOrDefault(x => x.IndexId == tokenName.OwnAsmIdx);
             if (owningAsmName == null)
             {
-                Program.DisolutionCache.Add(token);
+                ((IaaProgram)MyProgram).DisolutionCache.Add(token);
                 depth -= 1;
                 if (msgOut != null)
                     msgOut.AppendLine(string.Format(", Message:'owning assembly idx {0} has no match'",tokenName.OwnAsmIdx));
@@ -191,12 +197,12 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds
             }
 
             //check for match of asm name to user defined regex
-            if (!Regex.IsMatch(owningAsmName.AssemblyName, Program.AssemblyNameRegexPattern))
+            if (!Regex.IsMatch(owningAsmName.AssemblyName, ((IaaProgram)MyProgram).AssemblyNameRegexPattern))
             {
-                Program.DisolutionCache.Add(token);
+                ((IaaProgram)MyProgram).DisolutionCache.Add(token);
                 if (msgOut != null)
                     msgOut.AppendLine(string.Format(", Message:'assembly name [{1}] does not match regex [{0}]'",
-                        Program.AssemblyNameRegexPattern, owningAsmName.AssemblyName));
+                        ((IaaProgram)MyProgram).AssemblyNameRegexPattern, owningAsmName.AssemblyName));
 
                 depth -= 1;
                 return;
@@ -205,11 +211,11 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds
             //resolve token to runtime member info
             MemberInfo mi;
             var rtMiRslt =
-                UtilityMethods.TryResolveRtMemberInfo(Program.AsmIndicies.GetAssemblyByIndex(owningAsmName.IndexId),
+                ((IaaProgram)MyProgram).UtilityMethods.TryResolveRtMemberInfo(((IaaProgram)MyProgram).AsmIndicies.GetAssemblyByIndex(owningAsmName.IndexId),
                     tokenName.Name, out mi, msgOut);
             if (!rtMiRslt)
             {
-                Program.DisolutionCache.Add(token);
+                ((IaaProgram)MyProgram).DisolutionCache.Add(token);
                 depth -= 1;
                 return;
             }
@@ -252,24 +258,24 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds
         }
 
 
-        internal static Assembly GetAssembly(byte[] arg)
+        internal Assembly GetAssembly(byte[] arg)
         {
             Assembly asm;
-            if (Program.AsmInited != true)
+            if (((IaaProgram)MyProgram).AsmInited != true)
             {
                 throw new ItsDeadJim("no assemblies are loaded - call GetAsmIndices");
 
             }
             if (arg == null || arg.Length <= 0)
             {
-                asm = Program.RootAssembly;
+                asm = ((IaaProgram)MyProgram).RootAssembly;
             }
             else
             {
                 var crit = JsonConvert.DeserializeObject<GetTokenIdsCriteria>(Encoding.UTF8.GetString(arg));
 
                 var asmName = crit.AsmName;
-                Program.AssemblyNameRegexPattern = crit.ResolveAllNamedLike;
+                ((IaaProgram)MyProgram).AssemblyNameRegexPattern = crit.ResolveAllNamedLike;
 
                 if (string.IsNullOrWhiteSpace(asmName))
                 {

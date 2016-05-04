@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Text;
 using NoFuture.Exceptions;
+using NoFuture.Util.NfConsole;
 
 namespace NoFuture.Domain
 {
@@ -28,7 +29,7 @@ namespace NoFuture.Domain
             Console.Title = System.Reflection.Assembly.GetExecutingAssembly().GetName().Name;
             try
             {
-                Util.ConsoleCmd.SetConsoleAsTransparent(true);
+                ConsoleCmd.SetConsoleAsTransparent(true);
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.WindowWidth = 160;
                 Console.CursorVisible = false;
@@ -41,7 +42,7 @@ namespace NoFuture.Domain
                     return;
                 }
 
-                var argHash = Util.ConsoleCmd.ArgHash(args);
+                var argHash = ConsoleCmd.ArgHash(args);
 
                 var cmdL = AssignArgsToDomainParameters(argHash);
 

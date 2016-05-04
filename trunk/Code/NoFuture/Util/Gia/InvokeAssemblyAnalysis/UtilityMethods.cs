@@ -12,9 +12,15 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
     /// <summary>
     /// Utility methods specific to this console app.
     /// </summary>
-    public static class UtilityMethods
+    public class UtilityMethods
     {
         private static string[] _gacAsmNames;
+        private readonly IaaProgram _myProgram;
+
+        public UtilityMethods(IaaProgram myProgram)
+        {
+            _myProgram = myProgram;
+        }
 
         /// <summary>
         /// Get a list of Assemby names from the <see cref="AppDomain.CurrentDomain"/>
@@ -50,9 +56,9 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
         /// </summary>
         /// <param name="asmQualName"></param>
         /// <returns></returns>
-        internal static bool IsIgnore(string asmQualName)
+        internal bool IsIgnore(string asmQualName)
         {
-            if (!Program.AreGacAssembliesResolved)
+            if (!_myProgram.AreGacAssembliesResolved)
                 return false;
 
             if (String.IsNullOrWhiteSpace(asmQualName))
@@ -71,13 +77,13 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
         /// </summary>
         /// <param name="appKey"></param>
         /// <returns></returns>
-        internal static int? ResolvePort(string appKey)
+        internal int? ResolvePort(string appKey)
         {
             var cval = ConfigurationManager.AppSettings[appKey];
             return ResolveInt(cval);
         }
 
-        internal static int? ResolveInt(string cval)
+        internal int? ResolveInt(string cval)
         {
             int valOut;
             if (!String.IsNullOrWhiteSpace(cval) && Int32.TryParse(cval, out valOut))
@@ -85,7 +91,7 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
             return null;
         }
 
-        internal static bool? ResolveBool(string cval)
+        internal bool? ResolveBool(string cval)
         {
             bool valOut;
             if (!String.IsNullOrWhiteSpace(cval) && Boolean.TryParse(cval, out valOut))
@@ -100,9 +106,9 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
         /// <param name="tokenName"></param>
         /// <param name="msgOut">Inteneded for debug trace from the Console.</param>
         /// <returns></returns>
-        internal static bool ResolveSingleTokenName(MetadataTokenId tokenId, out MetadataTokenName tokenName, StringBuilder msgOut = null)
+        internal bool ResolveSingleTokenName(MetadataTokenId tokenId, out MetadataTokenName tokenName, StringBuilder msgOut = null)
         {
-            var manifestAsm = Program.AsmIndicies.GetAssemblyByIndex(tokenId.RslvAsmIdx);
+            var manifestAsm = _myProgram.AsmIndicies.GetAssemblyByIndex(tokenId.RslvAsmIdx);
             return ResolveSingleTokenName(manifestAsm, tokenId, out tokenName, msgOut);
         }
 
@@ -114,7 +120,7 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
         /// <param name="tokenName"></param>
         /// <param name="msgOut">Inteneded for debug trace from the Console.</param>
         /// <returns></returns>
-        internal static bool ResolveSingleTokenName(Assembly resolvesWith, MetadataTokenId tokenId,
+        internal bool ResolveSingleTokenName(Assembly resolvesWith, MetadataTokenId tokenId,
             out MetadataTokenName tokenName, StringBuilder msgOut = null)
         {
             tokenName = null;
@@ -124,9 +130,9 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
                     msgOut.Append(", Message:'the token id is zero'");
                 return false;
             }
-            if (Program.TokenId2NameCache.ContainsKey(tokenId))
+            if (_myProgram.TokenId2NameCache.ContainsKey(tokenId))
             {
-                tokenName = Program.TokenId2NameCache[tokenId];
+                tokenName = _myProgram.TokenId2NameCache[tokenId];
                 if (msgOut != null)
                     msgOut.Append(", Message:'token previously resolved'");
 
@@ -152,7 +158,7 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
                 return false;
             }
 
-            tokenName = AssemblyAnalysis.ConvertToMetadataTokenName(mi, Program.AsmIndicies, IsIgnore);
+            tokenName = AssemblyAnalysis.ConvertToMetadataTokenName(mi, _myProgram.AsmIndicies, IsIgnore);
 
             if (tokenName == null)
             {
@@ -175,7 +181,7 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
         /// <param name="mi"></param>
         /// <param name="msgOut">Inteneded for debug trace from the Console.</param>
         /// <returns></returns>
-        internal static bool TryResolveRtMemberInfo(Module manifestModule, MetadataTokenId tokenId, out MemberInfo mi, StringBuilder msgOut)
+        internal bool TryResolveRtMemberInfo(Module manifestModule, MetadataTokenId tokenId, out MemberInfo mi, StringBuilder msgOut)
         {
             mi = null;
 
@@ -202,7 +208,7 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
         /// <param name="mi"></param>
         /// <param name="msgOut">Inteneded for debug trace from the Console.</param>
         /// <returns></returns>
-        internal static bool TryResolveRtMemberInfo(Assembly owningAsm, string tokenName, out MemberInfo mi, StringBuilder msgOut = null)
+        internal bool TryResolveRtMemberInfo(Assembly owningAsm, string tokenName, out MemberInfo mi, StringBuilder msgOut = null)
         {
             //default the out variable
             mi = null;
@@ -241,7 +247,7 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
             try
             {
                 //framework throwing null-ref ex despite null checks
-                asmType = owningAsm.NfGetType(typeName, false, Program.LogFile);
+                asmType = owningAsm.NfGetType(typeName, false, _myProgram.LogFile);
             }
             catch
             {
@@ -285,13 +291,13 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
                 //there must be a one-for-one match of string names to first-class types
                 if (args.Length == argTypes.Length)
                     methodInfo = asmType.NfGetMethod(methodName, Constants.DefaultFlags, null, argTypes, null,
-                        false, Program.LogFile);
+                        false, _myProgram.LogFile);
             }
 
             //try it the very slow but certian way
             if (methodInfo == null)
             {
-                var methodInfos = asmType.NfGetMethods(Constants.DefaultFlags, false, Program.LogFile);
+                var methodInfos = asmType.NfGetMethods(Constants.DefaultFlags, false, _myProgram.LogFile);
                 if (methodInfos.Length <= 0)
                 {
                     if (msgOut != null)
@@ -304,7 +310,7 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
                 }
                 foreach (var info in methodInfos)
                 {
-                    var asTokenName = AssemblyAnalysis.ConvertToMetadataTokenName(info, Program.AsmIndicies, IsIgnore);
+                    var asTokenName = AssemblyAnalysis.ConvertToMetadataTokenName(info, _myProgram.AsmIndicies, IsIgnore);
                     if (asTokenName == null || string.IsNullOrWhiteSpace(asTokenName.Name))
                         continue;
                     if (string.Equals(asTokenName.Name, tokenName))
@@ -336,7 +342,7 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
         /// </summary>
         /// <param name="tokens"></param>
         /// <returns></returns>
-        internal static List<MetadataTokenName> ResolveAllTokenNames(MetadataTokenId[] tokens)
+        internal List<MetadataTokenName> ResolveAllTokenNames(MetadataTokenId[] tokens)
         {
             var counter = 0;
             var total = tokens.Length;
@@ -347,36 +353,36 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
                 try
                 {
                     var cid = tokens[i];
-                    Program.ReportProgress(new ProgressMessage
+                    _myProgram.ReportProgress(new ProgressMessage
                     {
                         Activity = string.Format("{0}.{1}", cid.RslvAsmIdx, cid.Id),
                         ProcName = System.Diagnostics.Process.GetCurrentProcess().ProcessName,
                         ProgressCounter = Etc.CalcProgressCounter(counter, total),
                         Status = "Resolving names"
                     });
-                    if (Program.DisolutionCache.Contains(cid) ||
+                    if (_myProgram.DisolutionCache.Contains(cid) ||
                         names.Any(x => x.Id == cid.Id && x.RslvAsmIdx == cid.RslvAsmIdx))
                         continue;
 
-                    if (Program.TokenId2NameCache.ContainsKey(cid))
+                    if (_myProgram.TokenId2NameCache.ContainsKey(cid))
                     {
-                        names.Add(Program.TokenId2NameCache[cid]);
+                        names.Add(_myProgram.TokenId2NameCache[cid]);
                         continue;
                     }
                     MetadataTokenName tokenName;
-                    var resolved = UtilityMethods.ResolveSingleTokenName(cid, out tokenName);
+                    var resolved = ResolveSingleTokenName(cid, out tokenName);
 
                     if (!resolved)
                     {
-                        if (!Program.DisolutionCache.Contains(cid))
-                            Program.DisolutionCache.Add(cid);
+                        if (!_myProgram.DisolutionCache.Contains(cid))
+                            _myProgram.DisolutionCache.Add(cid);
                         continue;
                     }
                     names.Add(tokenName);
 
-                    if (!Program.TokenId2NameCache.ContainsKey(cid))
+                    if (!_myProgram.TokenId2NameCache.ContainsKey(cid))
                     {
-                        Program.TokenId2NameCache.Add(cid, tokenName);
+                        _myProgram.TokenId2NameCache.Add(cid, tokenName);
                     }
                 }
                 catch

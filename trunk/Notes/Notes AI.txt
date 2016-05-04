@@ -471,6 +471,9 @@ http://archive.ics.uci.edu/ml/
    - "all unintersting datasets are alike; each interesting
       dataset is interesting in its own way"
       - Leo Tolstoy
+   - goal is to apply statistical & mathematical methods
+     to systematically extract and summarize information 
+     about the data.
    
  - Functional Lang is preferred since its most capable
    of dealing with large structured data where the 
@@ -551,7 +554,7 @@ All Numbers
   - sum of the square diff between each actual point
     and predicted point
  - tweaking the slope and intercept (theta0, theta1)
-   is called Grdient Descent
+   is called Gradient Descent
  - extermum: where the derivitive slope is 0 
  - learning rate: x[next] = x - alpha * (derivitive g(x))
  
@@ -573,6 +576,15 @@ All Numbers
  - normalization: similar to meaning in DB's, means scaling
    all values to they are comparable
   (x_i - x_min) / (x_max - x_min)
+----
+
+----
+Digression on Statistics 
+ - List of general concepts
+  - Variance, how wide the obs are spead along an axis
+  - Clustering, divide obs into groups
+  - Correlation, measure strength and direction of two
+    obs 
 ----
 
 ----
@@ -642,6 +654,10 @@ Principal Component Analysis (PCA)
  - complement to k-means
  - for detecting some structure features
  - how features relate to each other
+ - relies on the eigen decomposition of the dataset
+   covariance matrix
+ - expects features to be centered and on a similar scale
+ - as name implies, is intended for reducing redundant features
  - builds on other relational concepts
   - Covariance:
    Cov(X,Y) = average((X-average(X)) * (Y-average(Y)))

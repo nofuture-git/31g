@@ -18,6 +18,7 @@ using NoFuture.Util.Gia.Args;
 using Newtonsoft.Json;
 using NoFuture.Util.Pos;
 using NoFuture.Tools;
+using NoFuture.Util.NfConsole;
 
 namespace NoFuture.Util.Gia
 {
@@ -887,7 +888,7 @@ namespace NoFuture.Util.Gia
         public static MetadataTokenId GetMetadataToken(Type asmType, int asmIdx = 0)
         {
             if (asmType == null)
-                return new MetadataTokenId() { Items = new MetadataTokenId[0] };
+                return new MetadataTokenId { Items = new MetadataTokenId[0] };
 
             var token = new MetadataTokenId { Id = asmType.MetadataToken, RslvAsmIdx = asmIdx};
             token.Items =
@@ -923,194 +924,6 @@ namespace NoFuture.Util.Gia
             return token;
         }
 
-        /// <summary>
-        /// Flattens a type and breaks each word on Pascel or camel-case
-        /// then gets a count of that word.
-        /// </summary>
-        /// <param name="assembly"></param>
-        /// <param name="typeFullName"></param>
-        /// <param name="flattenMaxDepth"></param>
-        /// <returns></returns>
-        /// <remarks>
-        /// This is useful for discovering the nomenclature specific to an assembly.
-        /// </remarks>
-        public static Dictionary<string, int> GetAllPropertyWholeWordsByCount(Assembly assembly, string typeFullName, int flattenMaxDepth)
-        {
-            var flattenTypeArg = new FlattenTypeArgs()
-            {
-                Assembly = assembly,
-                Depth = flattenMaxDepth,
-                Separator = FlattenTypeArgs.DEFAULT_SEPARATOR,
-                TypeFullName = typeFullName
-            };
-            var flattenedType = (Flatten.FlattenType(flattenTypeArg)).PrintLines();
-            var allWords = new List<string>();
-
-            foreach (var v in flattenedType)
-            {
-                if (!v.Contains(" "))
-                    continue;
-                var parts = v.Split((char)0x20);
-                if (parts.Length < 2)
-                    continue;
-                var line = parts[1];
-                if (String.IsNullOrWhiteSpace(line))
-                    continue;
-
-                var newline = Etc.TransformCamelCaseToSeparator(line, '-');
-                allWords.AddRange(newline.Split('-'));
-            }
-
-            var allWholeWords = allWords.Distinct().ToList();
-            var wordsByCount = new Dictionary<string, int>();
-
-            foreach (var word in allWholeWords)
-            {
-                var wordCount = allWords.Count(x => x == word);
-                if (wordCount <= 0)
-                    continue;
-                if (wordsByCount.ContainsKey(word))
-                    wordsByCount[word] += wordCount;
-                else
-                    wordsByCount.Add(word, wordCount);
-            }
-
-            return wordsByCount;
-        }
-
-        /// <summary>
-        /// Same as its counterpart <see cref="GetAllPropertyWholeWordsByCount"/> except doing so on every property on 
-        /// every type within the assembly.
-        /// </summary>
-        /// <param name="assembly"></param>
-        /// <param name="flattenMaxDepth"></param>
-        /// <returns></returns>
-        public static Dictionary<string, int> GetAssemblyPropertyWholeWordsByCount(Assembly assembly,
-            int flattenMaxDepth)
-        {
-            var startDictionary = new Dictionary<string, int>();
-            foreach (var t in assembly.NfGetTypes())
-            {
-                var tPropWords = GetAllPropertyWholeWordsByCount(assembly, t.FullName, flattenMaxDepth);
-                foreach (var k in tPropWords.Keys)
-                {
-                    if (startDictionary.ContainsKey(k))
-                        startDictionary[k] += tPropWords[k];
-                    else
-                    {
-                        startDictionary.Add(k, tPropWords[k]);
-                    }
-                }
-            }
-            return startDictionary;
-        }
-
-        /// <summary>
-        /// Gets the words which appear on the left or right of 
-        /// the target word <see cref="Args.AssemblyLeftRightArgs.TargetWord"/>, with optional limit 
-        /// on the primitive type <see cref="Args.AssemblyLeftRightArgs.LimitOnThisType"/>
-        /// having flattened the assembly.
-        /// </summary>
-        /// <param name="arg"></param>
-        /// <returns></returns>
-        public static Tuple<FlattenedLine, FlattenedLine> MapAssemblyWordLeftAndRight(AssemblyLeftRightArgs arg)
-        {
-            if (arg == null)
-                throw new ArgumentNullException("arg");
-
-            var targetWord = arg.TargetWord;
-            var assembly = arg.Assembly;
-            var flattenMaxDepth = arg.MaxDepth;
-            var justOnValueTypes = arg.JustOnValueTypes;
-            var limitOnType = arg.LimitOnThisType;
-            var separator = arg.Separator;
-            var useTypeNames = arg.UseTypeNames;
-
-            var allTypeNames = assembly.NfGetTypes().Select(x => x.FullName).ToList();
-            var allLines = new List<FlattenedLine>();
-            foreach (var t in allTypeNames)
-            {
-                var flattenArgs = new FlattenTypeArgs()
-                {
-                    Assembly = assembly,
-                    TypeFullName = t,
-                    Depth = flattenMaxDepth,
-                    Separator = separator,
-                    UseTypeNames = useTypeNames,
-                    LimitOnThisType = limitOnType
-                };
-                var flattenedType = Flatten.FlattenType(flattenArgs);
-                foreach (var line in flattenedType.Lines.Where(x => !String.IsNullOrWhiteSpace(x.ValueType)))
-                {
-                    if (!String.IsNullOrWhiteSpace(limitOnType) && !String.IsNullOrWhiteSpace(line.ValueType))
-                        if (!String.Equals(limitOnType, line.ValueType, StringComparison.OrdinalIgnoreCase) &&
-                            !String.Equals(limitOnType, NfTypeName.GetLastTypeNameFromArrayAndGeneric(line.ValueType), StringComparison.OrdinalIgnoreCase))
-                            continue;
-
-                    if (line == null)
-                        continue;
-                    if (allLines.Any(x => x.Equals(line)))
-                        continue;
-                    if (!line.Contains(targetWord))
-                        continue;
-                    if (justOnValueTypes && !line.LastItemContains(targetWord))
-                        continue;
-
-                    allLines.Add(line);
-                }
-            }
-
-            Debug.WriteLine(String.Format("Refactored count of lines {0}",allLines.Count));
-
-            if (allLines.Count <= 0)
-                return null;
-
-            var toTheLeft = new List<FlattenedItem>();
-            var toTheRight = new List<FlattenedItem>();
-
-            foreach (var line in allLines)
-            {
-                for (var i = 0; i < line.Items.Count; i++)
-                {
-                    if (line.UseTypeNames
-                        ? !line.Items[i].SimpleTypeName.Contains(targetWord)
-                        : !line.Items[i].FlName.Contains(targetWord))
-                        continue;
-
-                    var targetIndex = i;
-
-                    if (targetIndex > 0)
-                    {
-                        var leftWord = line.Items[targetIndex - 1];
-                        if (toTheLeft.Any(x => x.Equals(leftWord)))
-                            continue;
-
-                        toTheLeft.Add(leftWord);
-                    }
-                    if (targetIndex < line.Items.Count - 1)
-                    {
-                        var rightWord = line.Items[targetIndex + 1];
-                        if (toTheRight.Any(x => x.Equals(rightWord)))
-                            continue;
-
-                        toTheRight.Add(rightWord);
-                    }
-                }
-            }
-
-            var flLeft = new FlattenedLine(toTheLeft)
-            {
-                Separator = arg.Separator,
-                UseTypeNames = arg.UseTypeNames
-            };
-            var flRight = new FlattenedLine(toTheRight)
-            {
-                Separator = arg.Separator,
-                UseTypeNames = arg.UseTypeNames
-            };
-
-            return new Tuple<FlattenedLine, FlattenedLine>(flLeft, flRight);
-        }
         #endregion
     }
 }

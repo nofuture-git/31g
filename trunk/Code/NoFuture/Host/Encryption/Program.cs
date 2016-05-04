@@ -11,6 +11,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using NoFuture.Exceptions;
 using NoFuture.Host.Encryption.Sjcl;
+using NoFuture.Util.NfConsole;
 
 namespace NoFuture.Host.Encryption
 {
@@ -126,7 +127,7 @@ namespace NoFuture.Host.Encryption
                 }
 
                 //parse command line args
-                var argHash = Util.ConsoleCmd.ArgHash(args);
+                var argHash = ConsoleCmd.ArgHash(args);
 
                 //either perform single file op
                 var cmlF = GetFileCmdArgs(argHash);
@@ -153,7 +154,7 @@ namespace NoFuture.Host.Encryption
         #region Program's Internals
         internal static void HostSjcl(Hashtable argHash)
         {
-            Util.ConsoleCmd.SetConsoleAsTransparent(true);
+            ConsoleCmd.SetConsoleAsTransparent(true);
 
             var cmdL = GetHostSjclCmdArgs(argHash);
 

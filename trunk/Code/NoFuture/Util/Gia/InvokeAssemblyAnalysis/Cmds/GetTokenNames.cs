@@ -2,20 +2,25 @@
 using System.Text;
 using Newtonsoft.Json;
 using NoFuture.Shared;
+using NoFuture.Util.NfConsole;
 
 namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds
 {
     public class GetTokenNames : CmdBase<TokenNames>
     {
+        public GetTokenNames(Program myProgram) : base(myProgram)
+        {
+        }
+
         public override byte[] Execute(byte[] arg)
         {
-            Program.PrintToConsole("GetTokenNames invoked");
-            Program.ProgressMessageState = null;
+            MyProgram.PrintToConsole("GetTokenNames invoked");
+            MyProgram.ProgressMessageState = null;
             try
             {
-                if (Program.AsmInited != true)
+                if (((IaaProgram)MyProgram).AsmInited != true)
                 {
-                    Program.PrintToConsole("no assemblies are loaded - call GetAsmIndices");
+                    MyProgram.PrintToConsole("no assemblies are loaded - call GetAsmIndices");
                     return EncodedResponse(
                             new TokenNames
                             {
@@ -36,14 +41,14 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds
                     });
                 }
 
-                var names = UtilityMethods.ResolveAllTokenNames(tokens);
+                var names = ((IaaProgram)MyProgram).UtilityMethods.ResolveAllTokenNames(tokens);
                 Console.Write('\n');
 
                 return EncodedResponse(new TokenNames {Names = names.ToArray()});
             }
             catch (Exception ex)
             {
-                Program.PrintToConsole(ex);
+                MyProgram.PrintToConsole(ex);
                 return EncodedResponse(new TokenNames
                 {
                     Msg = string.Format(ex.Message),
