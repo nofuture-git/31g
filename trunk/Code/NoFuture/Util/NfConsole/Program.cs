@@ -21,6 +21,8 @@ namespace NoFuture.Util.NfConsole
             _args = args;
         }
 
+        protected abstract string MyName { get; }
+
         /// <summary>
         /// Directory location where logs are saved to the file system.
         /// </summary>
@@ -31,6 +33,9 @@ namespace NoFuture.Util.NfConsole
                 var logDir = ConfigurationManager.AppSettings["NoFuture.TempDirectories.Debug"];
                 if (String.IsNullOrWhiteSpace(logDir))
                     logDir = TempDirectories.AppData;
+                var myName = MyName;
+                myName = NfPath.SafeFilename(myName);
+                logDir = string.IsNullOrWhiteSpace(myName) ? logDir : Path.Combine(logDir, myName);
                 if (!Directory.Exists(logDir))
                     Directory.CreateDirectory(logDir);
                 return logDir;
@@ -47,7 +52,7 @@ namespace NoFuture.Util.NfConsole
                 if (!String.IsNullOrWhiteSpace(_logName))
                     return _logName;
                 _logName = Path.Combine(LogDirectory,
-                    String.Format("{0}{1:yyyy-MM-dd_hhmmss}.log", "InvokeAssemblyAnalysis", _startTime));
+                    String.Format("{0}{1:yyyy-MM-dd_hhmmss}.log", "Program", _startTime));
                 return _logName;
             }
         }

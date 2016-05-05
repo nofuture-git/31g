@@ -1160,6 +1160,7 @@ namespace AdventureWorks.VeryBadCode
 					dTimeInterval = Convert.ToDouble(Convert.ToString(dTimeInterval).Replace("-", string.Empty));
 				}
 			}
+            return 0;
 		}
     }
 }

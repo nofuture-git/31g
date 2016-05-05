@@ -10,6 +10,7 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds
 {
     public class GetAsmIndices : CmdBase<AsmIndicies>, ICmd
     {
+        internal static string WAK_WAK = new string(new[] { (char)0x5C, (char)0x5C });
         public GetAsmIndices(Program myProgram)
             : base(myProgram)
         {
@@ -30,7 +31,12 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds
                             St = MetadataTokenStatus.Error
                         });
                 }
-                var asmPath = Encoding.UTF8.GetString(arg);
+                var asmPath = Encoding.UTF8.GetString(arg).Replace("\"",string.Empty);
+                if (asmPath.Contains(WAK_WAK) && !asmPath.StartsWith(WAK_WAK))
+                {
+                    asmPath = asmPath.Replace(WAK_WAK, new string(new[] { (char)0x5C }));
+                }
+
                 if (!File.Exists(asmPath))
                 {
 

@@ -26,6 +26,7 @@ namespace NoFuture.Util.Gia.InvokeFlatten.Cmds
                     throw new ItsDeadJim("No Path to an assembly was passed to the GetFlattenAssembly command.");
 
                 var asmPath = Encoding.UTF8.GetString(arg);
+                
                 if(!File.Exists(asmPath))
                     throw new ItsDeadJim("There isn't a file at the location: " + asmPath);
 

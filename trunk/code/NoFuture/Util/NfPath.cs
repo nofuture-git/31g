@@ -12,6 +12,7 @@ namespace NoFuture.Util
 {
     public class NfPath
     {
+        
         /// <summary>
         /// End-of-line conversion.
         /// </summary>

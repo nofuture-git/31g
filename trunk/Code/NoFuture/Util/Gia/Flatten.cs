@@ -249,7 +249,7 @@ namespace NoFuture.Util.Gia
                 }
                 counter += 1;
             }
-            return new FlattenAssembly {AllLines = allLines, AssemblyName = fla.Assembly.GetName()};
+            return new FlattenAssembly {AllLines = allLines, AssemblyName = fla.Assembly.GetName().FullName};
         }
 
         /// <summary>

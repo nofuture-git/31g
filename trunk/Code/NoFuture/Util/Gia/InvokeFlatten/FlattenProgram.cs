@@ -77,6 +77,11 @@ namespace NoFuture.Util.Gia.InvokeFlatten
 
         }
 
+        protected override string MyName
+        {
+            get { return "InvokeFlatten"; }
+        }
+
         protected override string Help()
         {
             var help = new StringBuilder();

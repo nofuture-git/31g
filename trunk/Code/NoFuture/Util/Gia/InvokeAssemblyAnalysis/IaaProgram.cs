@@ -399,6 +399,11 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
 
         }
 
+        protected override string MyName
+        {
+            get { return "InvokeAssemblyAnalysis"; }
+        }
+
         protected override String Help()
         {
             var help = new StringBuilder();
