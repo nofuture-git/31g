@@ -80,6 +80,7 @@
     <Compile Include="Binary\ByteArray.cs" />
     <Compile Include="Binary\Calc.cs" />
     <Compile Include="Binary\Compression.cs" />
+    <Compile Include="Gia\FlattenAssembly.cs" />
     <Compile Include="NfConsole\CmdBase.cs" />
     <Compile Include="NfConsole\ConsoleCmd.cs" />
     <Compile Include="Etc.cs" />
@@ -107,6 +108,7 @@
     <Compile Include="Math\NormalDistEquation.cs" />
     <Compile Include="Net.cs" />
     <Compile Include="NfConsole\ICmd.cs" />
+    <Compile Include="NfConsole\InvokeConsoleBase.cs" />
     <Compile Include="NfConsole\Program.cs" />
     <Compile Include="NfConsole\SocketConsole.cs" />
     <Compile Include="NfPath.cs" />

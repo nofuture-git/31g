@@ -5,17 +5,23 @@ using System.Linq;
 using System.Net.Mime;
 using System.Text.RegularExpressions;
 using System.Text;
+using System.Threading;
 using NoFuture.Exceptions;
+using System.ComponentModel;
+using System.Net;
+using System.Net.Sockets;
+using System.Security.Principal;
+using NoFuture.Shared;
 
 namespace NoFuture.Util
 {
     public class Net
     {
-        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         private static Tuple<int, string>[] _htmlEscStrings;
-        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
-        private static Dictionary<Tuple<string,string>, int> _tcpPorts;
-        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        private static Dictionary<Tuple<string, string>, int> _tcpPorts;
+        [EditorBrowsable(EditorBrowsableState.Never)]
         private static Dictionary<Tuple<string, string>, int> _udpPorts;
 
         /// <summary>
@@ -27,11 +33,47 @@ namespace NoFuture.Util
         {
             var userHost = Environment.GetEnvironmentVariable("COMPUTERNAME");
             var userDnsDomain = Environment.GetEnvironmentVariable("USERDNSDOMAIN");
-            if (!string.IsNullOrWhiteSpace(userDnsDomain))
+            if (!String.IsNullOrWhiteSpace(userDnsDomain))
                 userHost = userHost + "." + userDnsDomain;
 
             return userHost;
             
+        }
+
+        public static byte[] SendToLocalhostSocket(byte[] mdt, int port)
+        {
+            var buffer = new List<byte>();
+            using (var server = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.IP))
+            {
+
+                server.Connect(new IPEndPoint(IPAddress.Loopback, port));
+                server.Send(mdt);
+                var data = new byte[Constants.DEFAULT_BLOCK_SIZE];
+
+                //waits for response
+                server.Receive(data, 0, data.Length, SocketFlags.None);
+                buffer.AddRange(data.Where(b => b != (byte)'\0'));
+                while (server.Available > 0)
+                {
+                    if (server.Available < Constants.DEFAULT_BLOCK_SIZE)
+                    {
+                        data = new byte[server.Available];
+                        server.Receive(data, 0, server.Available, SocketFlags.None);
+                    }
+                    else
+                    {
+                        data = new byte[Constants.DEFAULT_BLOCK_SIZE];
+                        server.Receive(data, 0, data.Length, SocketFlags.None);
+                    }
+
+                    buffer.AddRange(data.Where(b => b != (byte)'\0'));
+
+                    if (server.Available == 0)
+                        Thread.Sleep(2000);//give it a couple seconds
+                }
+                server.Close();
+            }
+            return buffer.ToArray();
         }
 
         /// <summary>
@@ -47,16 +89,16 @@ namespace NoFuture.Util
         /// </remarks>
         public static string GetAuthHeaderValue(string username, string pwd, string digest = "Basic")
         {
-            if(string.IsNullOrWhiteSpace(pwd))
+            if(String.IsNullOrWhiteSpace(pwd))
                 throw new ArgumentNullException(pwd);
 
-            if (string.IsNullOrWhiteSpace(username))
+            if (String.IsNullOrWhiteSpace(username))
             {
-                var winId = System.Security.Principal.WindowsIdentity.GetCurrent();
+                var winId = WindowsIdentity.GetCurrent();
                 username = winId == null ? Environment.GetEnvironmentVariable("USERNAME") : winId.Name;
             }
 
-            if(string.IsNullOrWhiteSpace(username))
+            if(String.IsNullOrWhiteSpace(username))
                 throw new RahRowRagee("Could not determine your username from either the " +
                                       "current Windows Id nor the enviornment variable 'USERNAME'.");
             //remove the domain part of the name
@@ -64,9 +106,9 @@ namespace NoFuture.Util
                 username = username.Split((char) 0x5C)[1];
 
             var b64UsernamePwd =
-                Convert.ToBase64String(Encoding.ASCII.GetBytes(string.Format("{0}:{1}", username, pwd)));
+                Convert.ToBase64String(Encoding.ASCII.GetBytes(String.Format("{0}:{1}", username, pwd)));
 
-            return string.Format("{0} {1}", digest, b64UsernamePwd);
+            return String.Format("{0} {1}", digest, b64UsernamePwd);
         }
 
         /// <summary>
@@ -80,7 +122,7 @@ namespace NoFuture.Util
         public static bool IsBinaryContent(Hashtable responsHeaders)
         {
             if (responsHeaders.ContainsKey("Content-Transfer-Encoding") &&
-                string.Equals(responsHeaders["Content-Transfer-Encoding"].ToString(), "Binary",
+                String.Equals(responsHeaders["Content-Transfer-Encoding"].ToString(), "Binary",
                     StringComparison.OrdinalIgnoreCase))
                 return true;
 
@@ -88,43 +130,43 @@ namespace NoFuture.Util
             if (!responsHeaders.ContainsKey("Content-Type")) return false;
 
             var hdrVal = responsHeaders["Content-Type"];
-            if (hdrVal == null || string.IsNullOrWhiteSpace(hdrVal.ToString()))
+            if (hdrVal == null || String.IsNullOrWhiteSpace(hdrVal.ToString()))
                 return false;
 
             //get content type as object
             var contentType = new ContentType(hdrVal.ToString());
 
             //if they specified a char set then assume text
-            if (!string.IsNullOrWhiteSpace(contentType.CharSet))
+            if (!String.IsNullOrWhiteSpace(contentType.CharSet))
                 return false;
 
             //get the media type string
             var mimeType = contentType.MediaType;
 
-            if (string.IsNullOrWhiteSpace(mimeType))
+            if (String.IsNullOrWhiteSpace(mimeType))
                 return false;
 
             var t = mimeType.Contains("/") ? mimeType.Split('/')[0] : mimeType;
 
             //def NOT binary
-            if (string.Equals(t, "text", StringComparison.OrdinalIgnoreCase))
+            if (String.Equals(t, "text", StringComparison.OrdinalIgnoreCase))
                 return false;
 
             //def IS binary
             if (
                 (new[] {"audio", "image", "video", "drawing"}).Any(
-                    x => string.Equals(x, t, StringComparison.OrdinalIgnoreCase)))
+                    x => String.Equals(x, t, StringComparison.OrdinalIgnoreCase)))
                 return true;
 
             //need sub type to make the final determination
-            if (!string.Equals(t, "application", StringComparison.OrdinalIgnoreCase))
+            if (!String.Equals(t, "application", StringComparison.OrdinalIgnoreCase))
                 return false;
 
-            var subT = mimeType.Contains("/") ? mimeType.Split('/')[1] : string.Empty;
+            var subT = mimeType.Contains("/") ? mimeType.Split('/')[1] : String.Empty;
 
             //let these pass as text 
             return !(new[] {"xml", "json", "x-www-form-urlencoded", "atom+xml"}).Any(
-                x => string.Equals(x, subT, StringComparison.OrdinalIgnoreCase));
+                x => String.Equals(x, subT, StringComparison.OrdinalIgnoreCase));
         }
 
         /// <summary>
@@ -216,24 +258,24 @@ namespace NoFuture.Util
         /// </summary>
         /// <param name="netStatAddress"></param>
         /// <returns></returns>
-        public static System.Net.IPAddress GetNetStatIp(string netStatAddress)
+        public static IPAddress GetNetStatIp(string netStatAddress)
         {
             
-            if (string.IsNullOrWhiteSpace(netStatAddress))
-                return System.Net.IPAddress.Loopback;
+            if (String.IsNullOrWhiteSpace(netStatAddress))
+                return IPAddress.Loopback;
 
             netStatAddress = netStatAddress.Trim();
 
             if (Regex.IsMatch(netStatAddress, @"\x2a\x3a\x2a")) //*:*
-                return System.Net.IPAddress.Loopback;
+                return IPAddress.Loopback;
             if (Regex.IsMatch(netStatAddress, @"\x30\x2e\x30\x2e\x30\x2e\x30"))//0.0.0.0
-                return System.Net.IPAddress.Loopback;
+                return IPAddress.Loopback;
             if (Regex.IsMatch(netStatAddress, @"\x31\x32\x37\x2e\x30\x2e\x30\x2e\x31"))//127.0.0.1
-                return System.Net.IPAddress.Loopback;
+                return IPAddress.Loopback;
             if (Regex.IsMatch(netStatAddress, @"\x5b\x3a\x3a\x5d")) //[::]
-                return System.Net.IPAddress.IPv6Loopback;
+                return IPAddress.IPv6Loopback;
             if (Regex.IsMatch(netStatAddress, @"\x5b\x3a\x3a\x31\x5d")) //[::1]
-                return System.Net.IPAddress.IPv6Loopback;
+                return IPAddress.IPv6Loopback;
 
 
             if (netStatAddress.Contains(":"))
@@ -242,8 +284,8 @@ namespace NoFuture.Util
                 netStatAddress = netStatAddress.Substring(0, lastColon);
             }
 
-            System.Net.IPAddress ipOut;
-            return System.Net.IPAddress.TryParse(netStatAddress, out ipOut) ? ipOut : System.Net.IPAddress.Loopback;
+            IPAddress ipOut;
+            return IPAddress.TryParse(netStatAddress, out ipOut) ? ipOut : IPAddress.Loopback;
 
         }
 
@@ -260,8 +302,8 @@ namespace NoFuture.Util
         {
             const string UDP = "UDP";
             const string TCP = "TCP";
-            var emptyResult = new Tuple<string, string>(string.Empty, string.Empty);
-            if (string.IsNullOrWhiteSpace(netStatAddress) || string.IsNullOrWhiteSpace(protocol))
+            var emptyResult = new Tuple<string, string>(String.Empty, String.Empty);
+            if (String.IsNullOrWhiteSpace(netStatAddress) || String.IsNullOrWhiteSpace(protocol))
                 return emptyResult;
 
             protocol = protocol.Trim();
@@ -272,17 +314,17 @@ namespace NoFuture.Util
             var addrParts = netStatAddress.Split(':');
             var strPort = addrParts[(addrParts.Length - 1)];
             int port;
-            if (!int.TryParse(strPort, out port))
+            if (!Int32.TryParse(strPort, out port))
                 return emptyResult;
 
-            if (string.Equals(protocol, UDP, StringComparison.OrdinalIgnoreCase))
+            if (String.Equals(protocol, UDP, StringComparison.OrdinalIgnoreCase))
             {
                 if (CommonUdpPorts.All(udp => udp.Value != port))
                     return emptyResult;
                 var udpSvc = CommonUdpPorts.First(udp => udp.Value == port);
                 return udpSvc.Key;
             }
-            else if (string.Equals(protocol, TCP, StringComparison.OrdinalIgnoreCase))
+            else if (String.Equals(protocol, TCP, StringComparison.OrdinalIgnoreCase))
             {
                 if (CommonTcpPorts.All(tcp => tcp.Value != port))
                     return emptyResult;
@@ -306,12 +348,12 @@ namespace NoFuture.Util
         /// <returns></returns>
         public static Uri GetRequestUri(byte[] data)
         {
-            var stringData = System.Text.Encoding.UTF8.GetString(data);
-            if (!stringData.Contains(System.Environment.NewLine))
+            var stringData = Encoding.UTF8.GetString(data);
+            if (!stringData.Contains(Environment.NewLine))
             {
                 return null;
             }
-            var dataLines = stringData.Split(new string[] {System.Environment.NewLine},
+            var dataLines = stringData.Split(new string[] {Environment.NewLine},
                                              StringSplitOptions.RemoveEmptyEntries);
             for (var i = 0; i < dataLines.Length;i++ )
             {
@@ -339,7 +381,7 @@ namespace NoFuture.Util
                         if(!searchHostLine.StartsWith("Host:")){continue;}
 
                         searchHostLine = searchHostLine.Replace("Host:", "").Trim();
-                        expected = string.Format("{0}{1}{2}{3}",
+                        expected = String.Format("{0}{1}{2}{3}",
                                                  Uri.UriSchemeHttp,
                                                  Uri.SchemeDelimiter,
                                                  searchHostLine,

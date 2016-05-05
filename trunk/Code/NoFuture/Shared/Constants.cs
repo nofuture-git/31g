@@ -159,6 +159,7 @@ namespace NoFuture.Tools
         public static string InvokeGetCgType { get; set; }
         public static string InvokeGraphViz { get; set; }
         public static string InvokeAssemblyAnalysis { get; set; }
+        public static string InvokeFlatten { get; set; }
     }
 
     public class BinTools

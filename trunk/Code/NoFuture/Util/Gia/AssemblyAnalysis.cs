@@ -9,14 +9,11 @@ using System.Net;
 using System.Net.Sockets;
 using System.Reflection;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using NoFuture.Exceptions;
 using NoFuture.Shared;
 using NoFuture.Util.Binary;
-using NoFuture.Util.Gia.Args;
 using Newtonsoft.Json;
-using NoFuture.Util.Pos;
 using NoFuture.Tools;
 using NoFuture.Util.NfConsole;
 
@@ -25,7 +22,7 @@ namespace NoFuture.Util.Gia
     /// <summary>
     /// Acts a a wrapper around the independet process of similar name.
     /// </summary>
-    public class AssemblyAnalysis : IDisposable
+    public class AssemblyAnalysis : InvokeConsoleBase,  IDisposable
     {
         #region events
         /// <summary>
@@ -50,10 +47,6 @@ namespace NoFuture.Util.Gia
         private readonly InvokeAssemblyAnalysisId _myProcessPorts;
         private readonly AsmIndicies _asmIndices;
         private readonly string _appDataPath;
-        private static readonly JsonSerializerSettings _jsonSerializerSettings = new JsonSerializerSettings
-        {
-            ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-        };
         private static readonly List<int> _allInUsePorts = new List<int>();
 
         #endregion
@@ -237,8 +230,8 @@ namespace NoFuture.Util.Gia
                 throw new ItsDeadJim("This isn't a valid assembly path");
 
             if (String.IsNullOrWhiteSpace(CustomTools.InvokeAssemblyAnalysis) || !File.Exists(CustomTools.InvokeAssemblyAnalysis))
-                throw new ItsDeadJim("Don't know where to locate the InvokeDumpMetadataTokens.exe, assign " +
-                                     "the global variable at NoFuture.CustomTools.InvokeDumpMetadataTokens.");
+                throw new ItsDeadJim("Don't know where to locate the NoFuture.Util.Gia.InvokeAssemblyAnalysis, assign " +
+                                     "the global variable at NoFuture.CustomTools.InvokeAssemblyAnalysis.");
 
             var invoke = StartRemoteProcess(assemblyPath, resolveGacAsmNames, ports);
             var myProcess = invoke.Item2;
@@ -254,14 +247,14 @@ namespace NoFuture.Util.Gia
                 Directory.CreateDirectory(_appDataPath);
 
             //connect to the process on a socket 
-            var asmIndicesBuffer = SendToRemoteProcess(Encoding.UTF8.GetBytes(assemblyPath),
+            var asmIndicesBuffer = Net.SendToLocalhostSocket(Encoding.UTF8.GetBytes(assemblyPath),
                 _myProcessPorts.GetAsmIndiciesPort);
 
             //dump the result to file before attempting any decoding.
             File.WriteAllBytes(Path.Combine(_appDataPath, "AsmIndicies.json"), asmIndicesBuffer);
 
             _asmIndices = JsonConvert.DeserializeObject<AsmIndicies>(ConvertJsonFromBuffer(asmIndicesBuffer),
-                _jsonSerializerSettings);
+                JsonSerializerSettings);
 
             //listen for progress from the remote process since getting tokens may take some time
             _taskFactory = new TaskFactory();
@@ -296,7 +289,7 @@ namespace NoFuture.Util.Gia
 
             var bufferIn = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(crit));
 
-            var bufferOut = SendToRemoteProcess(bufferIn, _myProcessPorts.GetTokenIdsPort);
+            var bufferOut = Net.SendToLocalhostSocket(bufferIn, _myProcessPorts.GetTokenIdsPort);
 
             if (bufferOut == null || bufferOut.Length <= 0)
                 throw new ItsDeadJim(
@@ -306,7 +299,7 @@ namespace NoFuture.Util.Gia
             //record the full stream to file prior to any attempt to decode
             File.WriteAllBytes(Path.Combine(_appDataPath, "TokenIds.json"), bufferOut);
 
-            return JsonConvert.DeserializeObject<TokenIds>(ConvertJsonFromBuffer(bufferOut), _jsonSerializerSettings);
+            return JsonConvert.DeserializeObject<TokenIds>(ConvertJsonFromBuffer(bufferOut), JsonSerializerSettings);
         }
 
         /// <summary>
@@ -323,7 +316,7 @@ namespace NoFuture.Util.Gia
 
             var bufferIn = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(metadataTokenIds));
 
-            var bufferOut = SendToRemoteProcess(bufferIn, _myProcessPorts.GetTokenNamesPort);
+            var bufferOut = Net.SendToLocalhostSocket(bufferIn, _myProcessPorts.GetTokenNamesPort);
 
             if (bufferOut == null || bufferOut.Length <= 0)
                 throw new ItsDeadJim(
@@ -333,7 +326,7 @@ namespace NoFuture.Util.Gia
             //record the full stream to file prior to any attempt to decode
             File.WriteAllBytes(Path.Combine(_appDataPath, "TokenNames.json"), bufferOut);
 
-            return JsonConvert.DeserializeObject<TokenNames>(ConvertJsonFromBuffer(bufferOut), _jsonSerializerSettings);
+            return JsonConvert.DeserializeObject<TokenNames>(ConvertJsonFromBuffer(bufferOut), JsonSerializerSettings);
         }
 
         /// <summary>
@@ -370,7 +363,7 @@ namespace NoFuture.Util.Gia
             if (!File.Exists(filePath))
                 return null;
             var buffer = File.ReadAllBytes(filePath);
-            return JsonConvert.DeserializeObject<AsmIndicies>(ConvertJsonFromBuffer(buffer), _jsonSerializerSettings);
+            return JsonConvert.DeserializeObject<AsmIndicies>(ConvertJsonFromBuffer(buffer), JsonSerializerSettings);
         }
 
         /// <summary>
@@ -385,7 +378,7 @@ namespace NoFuture.Util.Gia
             if (!File.Exists(filePath))
                 return null;
             var buffer = File.ReadAllBytes(filePath);
-            return JsonConvert.DeserializeObject<TokenIds>(ConvertJsonFromBuffer(buffer), _jsonSerializerSettings);
+            return JsonConvert.DeserializeObject<TokenIds>(ConvertJsonFromBuffer(buffer), JsonSerializerSettings);
         }
 
         /// <summary>
@@ -400,22 +393,9 @@ namespace NoFuture.Util.Gia
             if (!File.Exists(filePath))
                 return null;
             var buffer = File.ReadAllBytes(filePath);
-            return JsonConvert.DeserializeObject<TokenNames>(ConvertJsonFromBuffer(buffer), _jsonSerializerSettings);
+            return JsonConvert.DeserializeObject<TokenNames>(ConvertJsonFromBuffer(buffer), JsonSerializerSettings);
         }
 
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        internal static string ConvertJsonFromBuffer(byte[] buffer)
-        {
-            var decoder = Encoding.UTF8.GetDecoder();
-
-            var jsonChars = new char[decoder.GetCharCount(buffer, 0, buffer.Length)];
-            decoder.GetChars(buffer, 0, buffer.Length, jsonChars, 0);
-
-            var jsonStringBldr = new StringBuilder();
-            jsonStringBldr.Append(jsonChars);
-
-            return jsonStringBldr.ToString();
-        }
         #endregion
 
         #region remote process
@@ -426,7 +406,7 @@ namespace NoFuture.Util.Gia
         /// <param name="resolveGacAsmNames"></param>
         /// <param name="ports"></param>
         /// <returns></returns>
-        public static Tuple<InvokeAssemblyAnalysisId, Process> StartRemoteProcess(string assemblyPath, bool resolveGacAsmNames, params int[] ports)
+        public Tuple<InvokeAssemblyAnalysisId, Process> StartRemoteProcess(string assemblyPath, bool resolveGacAsmNames, params int[] ports)
         {
             var np = _allInUsePorts.Count <= 0 ? DF_START_PORT : _allInUsePorts.Max() + 1 ;
             var usePorts = new int[3];
@@ -444,20 +424,7 @@ namespace NoFuture.Util.Gia
                         ConsoleCmd.ConstructCmdLineArgs(RESOLVE_GAC_ASM_SWITCH, resolveGacAsmNames.ToString()),
                     });
 
-            var proc = new Process
-            {
-                StartInfo =
-                    new ProcessStartInfo(CustomTools.InvokeAssemblyAnalysis, args)
-                    {
-                        CreateNoWindow = false,
-                        UseShellExecute = true,
-                        RedirectStandardOutput = false,
-                        RedirectStandardError = false
-                    }
-            };
-
-            proc.Start();
-            Thread.Sleep(Constants.ThreadSleepTime);
+            var proc = StartRemoteProcess(CustomTools.InvokeAssemblyAnalysis, args);
             var key = new InvokeAssemblyAnalysisId(proc.Id)
             {
                 AssemblyPath = assemblyPath,
@@ -468,43 +435,6 @@ namespace NoFuture.Util.Gia
             };
 
             return new Tuple<InvokeAssemblyAnalysisId, Process>(key, proc);
-        }
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        private static byte[] SendToRemoteProcess(byte[] mdt, int port)
-        {
-            var buffer = new List<byte>();
-            using (var server = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.IP))
-            {
-
-                server.Connect(new IPEndPoint(IPAddress.Loopback, port));
-                server.Send(mdt);
-                var data = new byte[Constants.DEFAULT_BLOCK_SIZE];
-
-                //waits for response
-                server.Receive(data, 0, data.Length, SocketFlags.None);
-                buffer.AddRange(data.Where(b => b != (byte)'\0'));
-                while (server.Available > 0)
-                {
-                    if (server.Available < Constants.DEFAULT_BLOCK_SIZE) 
-                    {
-                        data = new byte[server.Available];
-                        server.Receive(data, 0, server.Available, SocketFlags.None);
-                    }
-                    else
-                    {
-                        data = new byte[Constants.DEFAULT_BLOCK_SIZE];
-                        server.Receive(data, 0, data.Length, SocketFlags.None);
-                    }
-
-                    buffer.AddRange(data.Where(b => b != (byte)'\0'));
-
-                    if(server.Available == 0)
-                        Thread.Sleep(2000);//give it a couple seconds
-                }
-                server.Close();
-            }
-            return buffer.ToArray();
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]

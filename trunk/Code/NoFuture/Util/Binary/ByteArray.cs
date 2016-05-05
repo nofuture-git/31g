@@ -141,6 +141,7 @@ namespace NoFuture.Util.Binary
             return word;
         }
 
+
         /// <summary>
         /// Given some string in the form of serial characters of two digit hex values, 
         /// a byte array is returned accordingly.

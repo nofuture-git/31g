@@ -2,16 +2,138 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
+using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text;
+using Newtonsoft.Json;
+using NoFuture.Exceptions;
 using NoFuture.Shared;
+using NoFuture.Tools;
 using NoFuture.Util.Binary;
 using NoFuture.Util.Gia.Args;
+using NoFuture.Util.NfConsole;
 
 namespace NoFuture.Util.Gia
 {
-    public class Flatten
+    public class Flatten : NfConsole.InvokeConsoleBase, IDisposable
     {
+        #region constants
+        public const string GET_FLAT_ASM_PORT_CMD_SWITCH = "nfGetFlattenAssemblyPort";
+        public const int DF_START_PORT = 5062;
+        #endregion
+
+        #region fields
+        private readonly Process _myProcess;
+        private string _appDataPath;
+        private readonly int _getFlatAsmPort;
+        #endregion
+
+        #region properties
+        internal bool IsMyProcessRunning
+        {
+            get
+            {
+                if (_myProcess == null)
+                    return false;
+                _myProcess.Refresh();
+                return !_myProcess.HasExited;
+            }
+        }
+        #endregion
+
+        #region ctors
+
+        /// <summary>
+        /// Creates a new wrapper around the remote process. 
+        /// </summary>
+        /// <param name="ports"></param>
+        /// <remarks>
+        /// See the detailed notes on its sister type <see cref="AssemblyAnalysis"/> ctor.
+        /// While not exact in terms of what its doing - it is exact in terms of how it does it.
+        /// </remarks>
+        public Flatten(params int[] ports)
+        {
+            if (String.IsNullOrWhiteSpace(CustomTools.InvokeFlatten) || !File.Exists(CustomTools.InvokeFlatten))
+                throw new ItsDeadJim("Don't know where to locate the NoFuture.Util.Gia.InvokeFlatten.exe, assign " +
+                                     "the global variable at NoFuture.CustomTools.InvokeFlatten.");
+            var args = string.Empty;
+            _getFlatAsmPort = DF_START_PORT;
+            if (ports != null && ports.Length > 0)
+            {
+                _getFlatAsmPort = ports[0];
+                args = ConsoleCmd.ConstructCmdLineArgs(GET_FLAT_ASM_PORT_CMD_SWITCH,
+                    _getFlatAsmPort.ToString(CultureInfo.InvariantCulture));
+            }
+
+            _myProcess = StartRemoteProcess(CustomTools.InvokeFlatten,args);
+        }
+        #endregion
+
+        #region instance methods
+        /// <summary>
+        /// Invokes the <see cref="GetFlattenedAssembly"/> on the remote process using the 
+        /// assembly located at <see cref="assemblyPath"/>
+        /// </summary>
+        /// <param name="assemblyPath"></param>
+        /// <returns></returns>
+        /// <example>
+        /// <![CDATA[ 
+        /// $flAsm = New-Object NoFuture.Util.Gia.Flatten
+        /// $flAsm.GetFlattenAssembly($AssemblyPath)
+        /// ]]>
+        /// </example>
+        public FlattenAssembly GetFlattenAssembly(string assemblyPath)
+        {
+            if (String.IsNullOrWhiteSpace(assemblyPath) || !File.Exists(assemblyPath))
+                throw new ItsDeadJim("This isn't a valid assembly path");
+
+            if(!IsMyProcessRunning)
+                throw new ItsDeadJim("The NoFuture.Util.Gia.InvokeFlatten.exe is either dead or was never started.");
+
+            _appDataPath = Path.Combine(TempDirectories.AppData, (Path.GetFileNameWithoutExtension(assemblyPath)));
+
+            var bufferOut = Net.SendToLocalhostSocket(Encoding.UTF8.GetBytes(assemblyPath), _getFlatAsmPort);
+
+            if (bufferOut == null || bufferOut.Length <= 0)
+                throw new ItsDeadJim(
+                    String.Format("The remote process by id [{0}] did not return anything on port [{1}]",
+                        _myProcess == null ? 0 : _myProcess.Id, _getFlatAsmPort));
+
+            File.WriteAllBytes(Path.Combine(_appDataPath, "GetFlattenAssembly.json"), bufferOut);
+
+            return JsonConvert.DeserializeObject<FlattenAssembly>(ConvertJsonFromBuffer(bufferOut), JsonSerializerSettings);
+        }
+        public void Dispose()
+        {
+            if (!IsMyProcessRunning)
+                return;
+            _myProcess.CloseMainWindow();
+            _myProcess.Close();
+        }
+        #endregion
+
+        #region static methods
+
+        /// <summary>
+        /// An invocation to <see cref="GetFlattenAssembly"/> will write the results to 
+        /// disk at <see cref="TempDirectories.AppData"/>.  This method may then be used
+        /// to load those results after the remote process has closed.
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <returns></returns>
+        public static FlattenAssembly LoadFlattenAssembly(string filePath)
+        {
+            if (String.IsNullOrWhiteSpace(filePath))
+                return null;
+            if (!File.Exists(filePath))
+                return null;
+            var buffer = File.ReadAllBytes(filePath);
+            return JsonConvert.DeserializeObject<FlattenAssembly>(ConvertJsonFromBuffer(buffer), JsonSerializerSettings);
+        }
+
         /// <summary>
         /// Flattens a type and breaks each word on Pascel or camel-case
         /// then gets a count of that word.
@@ -75,13 +197,25 @@ namespace NoFuture.Util.Gia
         /// </summary>
         /// <param name="assembly"></param>
         /// <param name="flattenMaxDepth"></param>
+        /// <param name="writeProgress">Optional handler to write progress for the calling assembly.</param>
         /// <returns></returns>
         public static Dictionary<string, int> GetAssemblyPropertyWholeWordsByCount(Assembly assembly,
-            int flattenMaxDepth)
+            int flattenMaxDepth, Action<ProgressMessage> writeProgress = null)
         {
             var startDictionary = new Dictionary<string, int>();
-            foreach (var t in assembly.NfGetTypes())
+            var allTypes = assembly.NfGetTypes();
+            var counter = 0;
+            var total = allTypes.Length;
+            foreach (var t in allTypes)
             {
+                if (writeProgress != null)
+                    writeProgress(new ProgressMessage
+                    {
+                        Activity = t.ToString(),
+                        ProcName = System.Diagnostics.Process.GetCurrentProcess().ProcessName,
+                        ProgressCounter = Etc.CalcProgressCounter(counter, total),
+                        Status = "Working Type Names"
+                    });
                 var tPropWords = GetAllPropertyWholeWordsByCount(assembly, t.FullName, flattenMaxDepth);
                 if (tPropWords == null)
                     continue;
@@ -94,6 +228,7 @@ namespace NoFuture.Util.Gia
                         startDictionary.Add(k, tPropWords[k]);
                     }
                 }
+                counter += 1;
             }
             return startDictionary;
         }
@@ -102,8 +237,9 @@ namespace NoFuture.Util.Gia
         /// Dumps an entire assembly into a list of <see cref="FlattenedLine"/>
         /// </summary>
         /// <param name="fla"></param>
+        /// <param name="writeProgress">Optional handler to write progress for the calling assembly.</param>
         /// <returns></returns>
-        public static List<FlattenedLine> FlattenAssemblyToLines(FlattenLineArgs fla)
+        public static FlattenAssembly GetFlattenedAssembly(FlattenLineArgs fla, Action<ProgressMessage> writeProgress = null)
         {
             if (fla == null)
                 throw new ArgumentNullException("fla");
@@ -111,10 +247,31 @@ namespace NoFuture.Util.Gia
                 throw new ArgumentException("The Assembly reference must be passed in " +
                                             "with the FlattenLineArgs");
 
+            if (writeProgress != null)
+                writeProgress(new ProgressMessage
+                {
+                    Activity = "Getting all types from assembly",
+                    ProcName = System.Diagnostics.Process.GetCurrentProcess().ProcessName,
+                    ProgressCounter = 1,
+                    Status = "OK"
+                });
+
             var allTypeNames = fla.Assembly.NfGetTypes().Select(x => x.FullName).ToList();
             var allLines = new List<FlattenedLine>();
+            var counter = 0;
+            var total = allTypeNames.Count;
+
             foreach (var t in allTypeNames)
             {
+                if(writeProgress != null)
+                    writeProgress(new ProgressMessage
+                    {
+                        Activity = t,
+                        ProcName = System.Diagnostics.Process.GetCurrentProcess().ProcessName,
+                        ProgressCounter = Etc.CalcProgressCounter(counter, total),
+                        Status = "Working Type Names"
+                    });
+
                 var flattenArgs = new FlattenTypeArgs
                 {
                     Assembly = fla.Assembly,
@@ -140,8 +297,9 @@ namespace NoFuture.Util.Gia
 
                     allLines.Add(line);
                 }
+                counter += 1;
             }
-            return allLines;
+            return new FlattenAssembly {AllLines = allLines, AssemblyName = fla.Assembly.GetName()};
         }
 
         /// <summary>
@@ -280,6 +438,7 @@ namespace NoFuture.Util.Gia
             }
             return printList;
         }
+        #endregion
     }
 
 }

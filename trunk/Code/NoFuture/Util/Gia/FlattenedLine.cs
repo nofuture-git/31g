@@ -19,7 +19,7 @@ namespace NoFuture.Util.Gia
         public string ValueType { get; set; }
         public List<FlattenedItem> Items { get; private set; }
 
-        public bool Equals(FlattenedLine line)
+        public virtual bool Equals(FlattenedLine line)
         {
             if (line == null)
                 return false;
@@ -36,28 +36,28 @@ namespace NoFuture.Util.Gia
             return true;
         }
 
-        public bool Contains(string targetWord)
+        public virtual bool Contains(string targetWord)
         {
             return UseTypeNames
                 ? Items.Any(x => string.Format("{0}", x.FlType).Contains(targetWord))
                 : Items.Any(x => x.FlName.Contains(targetWord));
         }
 
-        public FlattenedItem FirstOrDefaultOnWord(string targetWord)
+        public virtual FlattenedItem FirstOrDefaultOnWord(string targetWord)
         {
             return UseTypeNames
                 ? Items.FirstOrDefault(x => string.Format("{0}", x.FlType).Contains(targetWord))
                 : Items.FirstOrDefault(x => x.FlName.Contains(targetWord));
         }
 
-        public bool LastItemContains(string targetWord)
+        public virtual bool LastItemContains(string targetWord)
         {
             return UseTypeNames
                 ? string.Format("{0}", Items.Last().FlType).Contains(targetWord)
                 : Items.Last().FlName.Contains(targetWord);
         }
 
-        public FlattenedItem FirstOnLeft(FlattenedItem searchItem)
+        public virtual FlattenedItem FirstOnLeft(FlattenedItem searchItem)
         {
             if (Items == null)
                 return null;
@@ -65,7 +65,7 @@ namespace NoFuture.Util.Gia
             return searchIndex <= 0 ? null : Items[searchIndex - 1];
         }
 
-        public FlattenedItem FirstOnRight(FlattenedItem searchItem)
+        public virtual FlattenedItem FirstOnRight(FlattenedItem searchItem)
         {
             if (Items == null)
                 return null;
@@ -75,7 +75,7 @@ namespace NoFuture.Util.Gia
             return searchIndex == Items.Count - 1 ? null : Items[searchIndex + 1];
         }
 
-        public string ToFlattenedString(string separator, bool usetypeNames)
+        public virtual string ToFlattenedString(string separator, bool usetypeNames)
         {
             var lnBldr = new StringBuilder();
             lnBldr.Append(ValueType);
@@ -89,5 +89,59 @@ namespace NoFuture.Util.Gia
         }
     }
 
+    public class NullFlattenedLine : FlattenedLine
+    {
+        private readonly List<FlattenedItem> _blank = new List<FlattenedItem>
+        {
+            new FlattenedItem() {FlName = string.Empty, FlType = typeof (object)}
+        };
+
+        private readonly Exception _error;
+
+        public NullFlattenedLine(Exception ex)
+            : base(new List<FlattenedItem>
+            {
+                new FlattenedItem {FlName = string.Empty, FlType = typeof (object)}
+            })
+        {
+            _error = ex;
+        }
+
+        public override bool Equals(FlattenedLine line)
+        {
+            var nfl = line as NullFlattenedLine;
+            return nfl != null;
+        }
+
+        public override bool Contains(string targetWord)
+        {
+            return false;
+        }
+
+        public override FlattenedItem FirstOnLeft(FlattenedItem searchItem)
+        {
+            return _blank.FirstOrDefault();
+        }
+
+        public override FlattenedItem FirstOnRight(FlattenedItem searchItem)
+        {
+            return _blank.FirstOrDefault();
+        }
+
+        public override FlattenedItem FirstOrDefaultOnWord(string targetWord)
+        {
+            return _blank.FirstOrDefault();
+        }
+
+        public override bool LastItemContains(string targetWord)
+        {
+            return false;
+        }
+
+        public override string ToFlattenedString(string separator, bool usetypeNames)
+        {
+            return _error == null ? string.Empty : string.Format("{0}\n{1}", _error.Message, _error.StackTrace);
+        }
+    }
 
 }

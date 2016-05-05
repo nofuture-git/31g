@@ -85,5 +85,7 @@ namespace NoFuture.Util.NfConsole
         /// Opens all the sockets for all <see cref="ICmd"/>
         /// </summary>
         protected abstract void LaunchListeners();
+
+
     }
 }
