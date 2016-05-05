@@ -809,7 +809,7 @@ function Measure-AssemblyWholeWords
     )
     Process
     {
-        return (([NoFuture.Util.Gia.Flatten]::GetAssemblyPropertyWholeWordsByCount($Assembly, $FlattenMaxDepth)).GetEnumerator() | Sort-Object Value -Descending)
+        return (([NoFuture.Util.Gia.Flatten]::GetAssemblyPropertyWholeWordsByCount($Assembly, $FlattenMaxDepth, $null)).GetEnumerator() | Sort-Object Value -Descending)
     }
 }
 
