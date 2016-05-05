@@ -1,10 +1,11 @@
 ﻿using System;
+using System.IO;
 using System.Text;
 using Newtonsoft.Json;
 
 namespace NoFuture.Util.NfConsole
 {
-    public abstract class CmdBase<T> : ICmd
+    public abstract class CmdBase<T>
     {
         protected byte[] EmptyBytes = {(byte) '\0'};
 
@@ -32,6 +33,8 @@ namespace NoFuture.Util.NfConsole
                 var bufferOut = new byte[encoder.GetByteCount(jsonChars, 0, jsonChars.Length, false)];
                 encoder.GetBytes(jsonChars, 0, jsonChars.Length, bufferOut, 0, false);
 
+                WriteOutputToDisk(bufferOut);
+
                 return bufferOut;
             }
             catch (Exception ex)
@@ -41,5 +44,12 @@ namespace NoFuture.Util.NfConsole
             }
         }
         public abstract byte[] Execute(byte[] arg);
+
+        public void WriteOutputToDisk(byte[] bytes)
+        {
+            var tn = this.GetType().FullName;
+            var dir = MyProgram == null ? TempDirectories.AppData : MyProgram.LogDirectory;
+            File.WriteAllBytes(Path.Combine(dir, tn + ".json"), bytes);
+        }
     }
 }

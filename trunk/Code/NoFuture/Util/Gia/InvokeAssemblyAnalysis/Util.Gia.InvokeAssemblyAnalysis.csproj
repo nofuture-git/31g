@@ -50,7 +50,6 @@
     <Compile Include="Cmds\GetAsmIndices.cs" />
     <Compile Include="Cmds\GetTokenIds.cs" />
     <Compile Include="Cmds\GetTokenNames.cs" />
-    <Compile Include="Cmds\ProcessProgress.cs" />
     <Compile Include="UtilityMethods.cs" />
     <Compile Include="IaaProgram.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

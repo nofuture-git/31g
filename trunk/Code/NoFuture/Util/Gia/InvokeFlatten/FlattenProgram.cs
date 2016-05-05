@@ -117,7 +117,7 @@ namespace NoFuture.Util.Gia.InvokeFlatten
                                       String.Format(" GetFlattenAssemblyCmdPort is port [{0}]", GetFlattenAssemblyCmdPort));
             _taskFactory = new TaskFactory();
 
-            _taskFactory.StartNew(() => HostCmd(new GetFlattenAssembly(), GetFlattenAssemblyCmdPort.Value));
+            _taskFactory.StartNew(() => HostCmd(new GetFlattenAssembly(this), GetFlattenAssemblyCmdPort.Value));
         }
     }
 }

@@ -30,7 +30,6 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
         private int? _getTokenNamesCmdPort;
         private int? _getTokenIdsCmdPort;
         private int? _getasmIndicesCmdPort;
-        private int? _processProgressCmdPort;
         private bool? _resolveGacAsms;
         private readonly Dictionary<MetadataTokenId, MetadataTokenName> _tokenId2NameCache =
             new Dictionary<MetadataTokenId, MetadataTokenName>();
@@ -38,7 +37,6 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
         private TaskFactory _taskFactory;
         private readonly AsmIndicies _asmIndices = new AsmIndicies();
         private int _maxRecursionDepth;
-        private ProcessProgress _processProgress;
         private readonly UtilityMethods _utilityMethods;
         #endregion
 
@@ -69,7 +67,6 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
                 p.PrintToConsole(String.Format("GetTokenIdsCmdPort listening on port [{0}]", p.GetTokenIdsCmdPort));
                 p.PrintToConsole(String.Format("GetTokenNamesCmdPort listening on port [{0}]", p.GetTokenNamesCmdPort));
                 p.PrintToConsole(String.Format("Resolve GAC Assembly names is [{0}]", p.AreGacAssembliesResolved));
-                p.PrintToConsole(String.Format("Progress reported on port [{0}]", p.ProcessProgressCmdPort));
                 p.PrintToConsole("type 'exit' to quit", false);
 
                 //open ports
@@ -207,20 +204,6 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
         }
 
         /// <summary>
-        /// Resolves the socket port used for <see cref="Cmds.ProcessProgress"/>
-        /// </summary>
-        protected internal int? ProcessProgressCmdPort
-        {
-            get
-            {
-                if (Net.IsValidPortNumber(_processProgressCmdPort))
-                    return _processProgressCmdPort;
-                _processProgressCmdPort = ResolvePort("ProcessProgressCmdPort");
-                return _processProgressCmdPort;
-            }
-        }
-
-        /// <summary>
         /// Assignable from the config file, a value to keep <see cref="Cmds.GetTokenIds.ResolveCallOfCall"/>
         /// from blowing out the stack.
         /// </summary>
@@ -287,9 +270,6 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
         protected internal void ReportProgress(ProgressMessage msg)
         {
             PrintToConsole(msg);
-            if (!Net.IsValidPortNumber(ProcessProgressCmdPort) || _processProgress == null)
-                return;
-            _processProgress.ReportIn(msg);
         }
 
         protected override void ParseProgramArgs()
@@ -312,11 +292,7 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
             {
                 _resolveGacAsms = ResolveBool(argHash[AssemblyAnalysis.RESOLVE_GAC_ASM_SWITCH].ToString());
             }
-            if (argHash.ContainsKey(AssemblyAnalysis.PROCESS_PROGRESS_PORT_CMD_SWITCH))
-            {
-                _processProgressCmdPort =
-                    ResolveInt(argHash[AssemblyAnalysis.PROCESS_PROGRESS_PORT_CMD_SWITCH].ToString());
-            }            
+           
         }
 
         /// <summary>
@@ -421,10 +397,6 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
             _taskFactory.StartNew(() => HostCmd(new GetTokenIds(this), GetTokenIdsCmdPort.Value));
             _taskFactory.StartNew(() => HostCmd(new GetTokenNames(this), GetTokenNamesCmdPort.Value));
 
-            if (Net.IsValidPortNumber(ProcessProgressCmdPort))
-            {
-                _processProgress = new ProcessProgress(ProcessProgressCmdPort.Value);
-            }
         }
 
         protected override String Help()
@@ -462,12 +434,6 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
                 Constants.CMD_LINE_ARG_ASSIGN));
             help.AppendLine("                                 the GetTokenNames return names from ");
             help.AppendLine("                                 assemblies in GAC, defaults to app.config.");
-            help.AppendLine("");
-            help.AppendLine(String.Format(" {0}{1}{2}[INT]     Optional, cmd line port on which ",
-                Constants.CMD_LINE_ARG_SWITCH, AssemblyAnalysis.PROCESS_PROGRESS_PORT_CMD_SWITCH,
-                Constants.CMD_LINE_ARG_ASSIGN));
-            help.AppendLine("                                 the progress of long running calls ");
-            help.AppendLine("                                 reported.");
             help.AppendLine("");
 
             return help.ToString();

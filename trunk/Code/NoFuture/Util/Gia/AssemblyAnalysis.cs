@@ -1,20 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Net;
-using System.Net.Sockets;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using NoFuture.Exceptions;
 using NoFuture.Shared;
 using NoFuture.Util.Binary;
-using Newtonsoft.Json;
 using NoFuture.Tools;
+using NoFuture.Util.Gia.InvokeCmds;
 using NoFuture.Util.NfConsole;
 
 namespace NoFuture.Util.Gia
@@ -22,93 +16,21 @@ namespace NoFuture.Util.Gia
     /// <summary>
     /// Acts a a wrapper around the independet process of similar name.
     /// </summary>
-    public class AssemblyAnalysis : InvokeConsoleBase,  IDisposable
+    public class AssemblyAnalysis : InvokeConsoleBase
     {
-        #region events
-        /// <summary>
-        /// Having passed a port value for progress reporting, subscribers of this event will 
-        /// receive messages back from the remote process.  This is usefule for analysis of 
-        /// very large assemblies.
-        /// </summary>
-        public event ProgressReportEvent ProgressReporter;
-        #endregion
-
         #region constants
         public const string GET_TOKEN_IDS_PORT_CMD_SWITCH = "nfDumpAsmTokensPort";
         public const string GET_TOKEN_NAMES_PORT_CMD_SWITCH = "nfResolveTokensPort";
         public const string GET_ASM_INDICES_PORT_CMD_SWITCH = "nfGetAsmIndicies";
         public const string RESOLVE_GAC_ASM_SWITCH = "nfResolveGacAsm";
-        public const string PROCESS_PROGRESS_PORT_CMD_SWITCH = "nfProgressPort";
         public const int DF_START_PORT = 5059;
         #endregion
 
         #region fields
-        private readonly TaskFactory _taskFactory;
-        private readonly InvokeAssemblyAnalysisId _myProcessPorts;
         private readonly AsmIndicies _asmIndices;
-        private readonly string _appDataPath;
-        private static readonly List<int> _allInUsePorts = new List<int>();
-
-        #endregion
-
-        #region inner types
-        /// <summary>
-        /// Data concerning the launch of <see cref="AssemblyAnalysis.StartRemoteProcess"/>
-        /// </summary>
-        public class InvokeAssemblyAnalysisId
-        {
-            private readonly int _pid;
-            public InvokeAssemblyAnalysisId(int pid)
-            {
-                _pid = pid;
-            }
-
-            public string AssemblyPath { get; set; }
-            public int GetAsmIndiciesPort { get; set; }
-            public int GetTokenIdsPort { get; set; }
-            public int GetTokenNamesPort { get; set; }
-            public int ProcessProgressPort { get; set; }
-            public int Pid { get { return _pid; } }
-
-            public bool PortsAreValid
-            {
-                get
-                {
-                    return Net.IsValidPortNumber(GetAsmIndiciesPort) && Net.IsValidPortNumber(GetTokenIdsPort) &&
-                           Net.IsValidPortNumber(GetTokenNamesPort);
-                }
-            }
-
-            public int[] MyPorts
-            {
-                get
-                {
-                    var ports = new List<int>();
-                    if(Net.IsValidPortNumber(GetAsmIndiciesPort))
-                        ports.Add(GetAsmIndiciesPort);
-                    if(Net.IsValidPortNumber(GetTokenIdsPort))
-                        ports.Add(GetTokenIdsPort);
-                    if(Net.IsValidPortNumber(GetTokenNamesPort))
-                        ports.Add(GetTokenNamesPort);
-                    if(Net.IsValidPortNumber(ProcessProgressPort))
-                        ports.Add(ProcessProgressPort);
-                    return ports.ToArray();
-                }
-            }
-
-            public bool ProcessIsRunning
-            {
-                get
-                {
-                    if (_pid == 0)
-                        return false;
-                    var proc = Process.GetProcessById(_pid);
-                    proc.Refresh();
-                    return !proc.HasExited;
-                }
-            }
-            
-        }
+        private readonly InvokeGetAsmIndicies _getAsmIndicesCmd;
+        private readonly InvokeGetTokenIds _getTokenIdsCmd;
+        private readonly InvokeGetTokenNames _getTokenNamesCmd;
         #endregion
 
         #region properties
@@ -116,25 +38,6 @@ namespace NoFuture.Util.Gia
         /// A mapping of index ids to assembly names.
         /// </summary>
         public AsmIndicies AsmIndicies { get { return _asmIndices; } }
-
-        /// <summary>
-        /// Identifier for tying a the running InvokeAssemblyAnalysis to this 
-        /// runtime type
-        /// </summary>
-        public InvokeAssemblyAnalysisId Id { get { return _myProcessPorts; } }
-
-        /// <summary>
-        /// List all ports in use by all instances of <see cref="AssemblyAnalysis"/>
-        /// within the current AppDomain
-        /// </summary>
-        public static int[] AllInUsePorts
-        {
-            get
-            {
-                return _allInUsePorts.ToArray();
-            }
-        }
-
         #endregion
 
         #region ctors
@@ -233,33 +136,45 @@ namespace NoFuture.Util.Gia
                 throw new ItsDeadJim("Don't know where to locate the NoFuture.Util.Gia.InvokeAssemblyAnalysis, assign " +
                                      "the global variable at NoFuture.CustomTools.InvokeAssemblyAnalysis.");
 
-            var invoke = StartRemoteProcess(assemblyPath, resolveGacAsmNames, ports);
-            var myProcess = invoke.Item2;
-            _myProcessPorts = invoke.Item1;
+            var np = DF_START_PORT;
+            var usePorts = new int[3];
+            for (var i = 0; i < usePorts.Length; i++)
+            {
+                usePorts[i] = ports != null && ports.Length >= i + 1 ? ports[i] : np + i;
+            }
+            var args = String.Join(" ",
+                ConsoleCmd.ConstructCmdLineArgs(GET_ASM_INDICES_PORT_CMD_SWITCH,
+                    usePorts[0].ToString(CultureInfo.InvariantCulture)),
+                ConsoleCmd.ConstructCmdLineArgs(GET_TOKEN_IDS_PORT_CMD_SWITCH,
+                    usePorts[1].ToString(CultureInfo.InvariantCulture)),
+                ConsoleCmd.ConstructCmdLineArgs(GET_TOKEN_NAMES_PORT_CMD_SWITCH,
+                    usePorts[2].ToString(CultureInfo.InvariantCulture)),
+                ConsoleCmd.ConstructCmdLineArgs(RESOLVE_GAC_ASM_SWITCH, resolveGacAsmNames.ToString()));
 
-            if (_myProcessPorts == null || !_myProcessPorts.PortsAreValid)
-                throw new ItsDeadJim(
-                    String.Format("Could resolve the ports to used for connecting to process by pid [{0}]", myProcess.Id));
+            MyProcess = StartRemoteProcess(CustomTools.InvokeAssemblyAnalysis, args);
 
-            _appDataPath = Path.Combine(TempDirectories.AppData, (Path.GetFileNameWithoutExtension(assemblyPath)));
+            _getAsmIndicesCmd = new InvokeGetAsmIndicies()
+            {
+                ProcessId = MyProcess.Id,
+                SocketPort = usePorts[0]
+            };
 
-            if (!Directory.Exists(_appDataPath))
-                Directory.CreateDirectory(_appDataPath);
+            _asmIndices = _getAsmIndicesCmd.Receive(assemblyPath);
 
-            //connect to the process on a socket 
-            var asmIndicesBuffer = Net.SendToLocalhostSocket(Encoding.UTF8.GetBytes(assemblyPath),
-                _myProcessPorts.GetAsmIndiciesPort);
+            _getTokenIdsCmd = new InvokeGetTokenIds(_asmIndices)
+            {
+                ProcessId = MyProcess.Id,
+                SocketPort = usePorts[1]
+            };
 
-            //dump the result to file before attempting any decoding.
-            File.WriteAllBytes(Path.Combine(_appDataPath, "AsmIndicies.json"), asmIndicesBuffer);
+            _getTokenNamesCmd = new InvokeGetTokenNames()
+            {
+                ProcessId = MyProcess.Id,
+                SocketPort = usePorts[2]
+            };
 
-            _asmIndices = JsonConvert.DeserializeObject<AsmIndicies>(ConvertJsonFromBuffer(asmIndicesBuffer),
-                JsonSerializerSettings);
 
-            //listen for progress from the remote process since getting tokens may take some time
-            _taskFactory = new TaskFactory();
-            if (Net.IsValidPortNumber(_myProcessPorts.ProcessProgressPort))
-                _taskFactory.StartNew(ReceiveFromRemoteProcess);
+
         }
         #endregion
 
@@ -279,27 +194,8 @@ namespace NoFuture.Util.Gia
         /// </remarks>
         public TokenIds GetTokenIds(int asmIdx, string recurseAnyAsmNamedLike = null)
         {
-            if (_asmIndices.Asms.All(x => x.IndexId != asmIdx))
-                throw new RahRowRagee(String.Format("No matching index found for {0}", asmIdx));
-            if(!_myProcessPorts.ProcessIsRunning)
-                throw new RahRowRagee(String.Format("The process by id [{0}] has exited", _myProcessPorts.Pid));
-            var asmName = _asmIndices.Asms.First(x => x.IndexId == asmIdx).AssemblyName;
-
-            var crit = new GetTokenIdsCriteria {AsmName = asmName, ResolveAllNamedLike = recurseAnyAsmNamedLike};
-
-            var bufferIn = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(crit));
-
-            var bufferOut = Net.SendToLocalhostSocket(bufferIn, _myProcessPorts.GetTokenIdsPort);
-
-            if (bufferOut == null || bufferOut.Length <= 0)
-                throw new ItsDeadJim(
-                    String.Format("The remote process by id [{0}] did not return anything on port [{1}]",
-                        _myProcessPorts.Pid, _myProcessPorts.GetTokenIdsPort));
-
-            //record the full stream to file prior to any attempt to decode
-            File.WriteAllBytes(Path.Combine(_appDataPath, "TokenIds.json"), bufferOut);
-
-            return JsonConvert.DeserializeObject<TokenIds>(ConvertJsonFromBuffer(bufferOut), JsonSerializerSettings);
+            _getTokenIdsCmd.RecurseAnyAsmNamedLike = recurseAnyAsmNamedLike;
+            return _getTokenIdsCmd.Receive(asmIdx);
         }
 
         /// <summary>
@@ -309,191 +205,9 @@ namespace NoFuture.Util.Gia
         /// <returns></returns>
         public TokenNames GetTokenNames(MetadataTokenId[] metadataTokenIds)
         {
-            if (metadataTokenIds == null)
-                throw new ArgumentNullException("metadataTokenIds");
-            if (!_myProcessPorts.ProcessIsRunning)
-                throw new RahRowRagee(String.Format("The process by id [{0}] has exited", _myProcessPorts.Pid));
-
-            var bufferIn = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(metadataTokenIds));
-
-            var bufferOut = Net.SendToLocalhostSocket(bufferIn, _myProcessPorts.GetTokenNamesPort);
-
-            if (bufferOut == null || bufferOut.Length <= 0)
-                throw new ItsDeadJim(
-                    String.Format("The remote process by id [{0}] did not return anything on port [{1}]",
-                        _myProcessPorts.Pid, _myProcessPorts.GetTokenNamesPort));
-
-            //record the full stream to file prior to any attempt to decode
-            File.WriteAllBytes(Path.Combine(_appDataPath, "TokenNames.json"), bufferOut);
-
-            return JsonConvert.DeserializeObject<TokenNames>(ConvertJsonFromBuffer(bufferOut), JsonSerializerSettings);
+            return _getTokenNamesCmd.Receive(metadataTokenIds);
         }
 
-        /// <summary>
-        /// Closes the associated <see cref="Process"/> if its still running.
-        /// </summary>
-        public void Dispose()
-        {
-            if (!_myProcessPorts.ProcessIsRunning)
-                return;
-
-            var proc = Process.GetProcessById(_myProcessPorts.Pid);
-            proc.CloseMainWindow();
-            proc.Close();
-
-            foreach (var p in _myProcessPorts.MyPorts)
-            {
-                if (!_allInUsePorts.Contains(p))
-                    continue;
-                _allInUsePorts.Remove(p);
-            }
-        }
-        #endregion
-
-        #region io methods
-        /// <summary>
-        /// Utility method to load <see cref="AsmIndicies"/> from a file
-        /// </summary>
-        /// <param name="filePath"></param>
-        /// <returns></returns>
-        public static AsmIndicies LoadAsmIndicies(string filePath)
-        {
-            if (String.IsNullOrWhiteSpace(filePath))
-                return null;
-            if (!File.Exists(filePath))
-                return null;
-            var buffer = File.ReadAllBytes(filePath);
-            return JsonConvert.DeserializeObject<AsmIndicies>(ConvertJsonFromBuffer(buffer), JsonSerializerSettings);
-        }
-
-        /// <summary>
-        /// Utility method to load <see cref="TokenIds"/> from a file
-        /// </summary>
-        /// <param name="filePath"></param>
-        /// <returns></returns>
-        public static TokenIds LoadTokenIds(string filePath)
-        {
-            if (String.IsNullOrWhiteSpace(filePath))
-                return null;
-            if (!File.Exists(filePath))
-                return null;
-            var buffer = File.ReadAllBytes(filePath);
-            return JsonConvert.DeserializeObject<TokenIds>(ConvertJsonFromBuffer(buffer), JsonSerializerSettings);
-        }
-
-        /// <summary>
-        /// Utility method to load <see cref="TokenNames"/> from a file
-        /// </summary>
-        /// <param name="filePath"></param>
-        /// <returns></returns>
-        public static TokenNames LoadTokenNames(string filePath)
-        {
-            if (String.IsNullOrWhiteSpace(filePath))
-                return null;
-            if (!File.Exists(filePath))
-                return null;
-            var buffer = File.ReadAllBytes(filePath);
-            return JsonConvert.DeserializeObject<TokenNames>(ConvertJsonFromBuffer(buffer), JsonSerializerSettings);
-        }
-
-        #endregion
-
-        #region remote process
-        /// <summary>
-        /// Starts the NoFuture.Util.Gia.InvokeAssemblyAnalysis.exe process.
-        /// </summary>
-        /// <param name="assemblyPath"></param>
-        /// <param name="resolveGacAsmNames"></param>
-        /// <param name="ports"></param>
-        /// <returns></returns>
-        public Tuple<InvokeAssemblyAnalysisId, Process> StartRemoteProcess(string assemblyPath, bool resolveGacAsmNames, params int[] ports)
-        {
-            var np = _allInUsePorts.Count <= 0 ? DF_START_PORT : _allInUsePorts.Max() + 1 ;
-            var usePorts = new int[3];
-            for (var i = 0; i < usePorts.Length; i++)
-            {
-                usePorts[i] = ports != null && ports.Length >= i + 1 ? ports[i] : np + i;
-            }
-            _allInUsePorts.AddRange(usePorts);
-            var args = String.Join(" ",
-                new[]
-                    {
-                        ConsoleCmd.ConstructCmdLineArgs(GET_ASM_INDICES_PORT_CMD_SWITCH, usePorts[0].ToString(CultureInfo.InvariantCulture)),
-                        ConsoleCmd.ConstructCmdLineArgs(GET_TOKEN_IDS_PORT_CMD_SWITCH, usePorts[1].ToString(CultureInfo.InvariantCulture)),
-                        ConsoleCmd.ConstructCmdLineArgs(GET_TOKEN_NAMES_PORT_CMD_SWITCH, usePorts[2].ToString(CultureInfo.InvariantCulture)),
-                        ConsoleCmd.ConstructCmdLineArgs(RESOLVE_GAC_ASM_SWITCH, resolveGacAsmNames.ToString()),
-                    });
-
-            var proc = StartRemoteProcess(CustomTools.InvokeAssemblyAnalysis, args);
-            var key = new InvokeAssemblyAnalysisId(proc.Id)
-            {
-                AssemblyPath = assemblyPath,
-                GetAsmIndiciesPort = usePorts[0],
-                GetTokenIdsPort = usePorts[1],
-                GetTokenNamesPort = usePorts[2],
-                ProcessProgressPort = -1
-            };
-
-            return new Tuple<InvokeAssemblyAnalysisId, Process>(key, proc);
-        }
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        private void ReceiveFromRemoteProcess()
-        {
-            using (var socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp))
-            {
-                //this should NOT be reachable from any other machine
-                var endPt = new IPEndPoint(IPAddress.Loopback, Id.ProcessProgressPort);
-                socket.Bind(endPt);
-                socket.Listen(1);
-
-                for (; ; )//ever
-                {
-                    try
-                    {
-                        var buffer = new List<byte>();
-
-                        var client = socket.Accept();
-                        var data = new byte[Constants.DEFAULT_BLOCK_SIZE];
-
-                        //park for first data received
-                        client.Receive(data, 0, data.Length, SocketFlags.None);
-                        buffer.AddRange(data.Where(b => b != (byte)'\0'));
-                        while (client.Available > 0)
-                        {
-                            if (client.Available < Constants.DEFAULT_BLOCK_SIZE)
-                            {
-                                data = new byte[client.Available];
-                                client.Receive(data, 0, client.Available, SocketFlags.None);
-                            }
-                            else
-                            {
-                                data = new byte[Constants.DEFAULT_BLOCK_SIZE];
-                                client.Receive(data, 0, (int)Constants.DEFAULT_BLOCK_SIZE, SocketFlags.None);
-                            }
-                            buffer.AddRange(data.Where(b => b != (byte)'\0'));
-                        }
-
-                        var progress =
-                            JsonConvert.DeserializeObject<ProgressMessage>(Encoding.UTF8.GetString(buffer.ToArray()));
-
-                        if (progress == null)
-                            return;
-
-                        var subscribers = ProgressReporter.GetInvocationList();
-                        var enumerable = subscribers.GetEnumerator();
-                        while (enumerable.MoveNext())
-                        {
-                            var handler = enumerable.Current as ProgressReportEvent;
-                            if (handler == null)
-                                continue;
-                            handler.Invoke(progress);
-                        }
-                    }
-                    catch { }
-                }
-            }
-        }
         #endregion
 
         #region token name parsers

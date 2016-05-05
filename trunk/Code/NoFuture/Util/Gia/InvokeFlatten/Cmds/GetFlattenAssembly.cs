@@ -5,11 +5,16 @@ using System.Text;
 using NoFuture.Exceptions;
 using NoFuture.Shared;
 using NoFuture.Util.Gia.Args;
+using NoFuture.Util.NfConsole;
 
 namespace NoFuture.Util.Gia.InvokeFlatten.Cmds
 {
-    public class GetFlattenAssembly : NfConsole.CmdBase<FlattenAssembly>
+    public class GetFlattenAssembly : CmdBase<FlattenAssembly>, ICmd
     {
+        public GetFlattenAssembly(Program myProgram)
+            : base(myProgram)
+        {
+        }
         public override byte[] Execute(byte[] arg)
         {
             MyProgram.PrintToConsole("GetFlattenAssembly invoked");

@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.Text;
 using System.Threading;
 using Newtonsoft.Json;
@@ -6,8 +7,10 @@ using NoFuture.Shared;
 
 namespace NoFuture.Util.NfConsole
 {
-    public abstract class InvokeConsoleBase
+    public abstract class InvokeConsoleBase : IDisposable
     {
+
+        protected Process MyProcess;
         protected static readonly JsonSerializerSettings JsonSerializerSettings = new JsonSerializerSettings
         {
             ReferenceLoopHandling = ReferenceLoopHandling.Ignore
@@ -43,6 +46,25 @@ namespace NoFuture.Util.NfConsole
             Thread.Sleep(Constants.ThreadSleepTime);
 
             return myProcess;
+        }
+
+        protected internal bool IsMyProcessRunning
+        {
+            get
+            {
+                if (MyProcess == null)
+                    return false;
+                MyProcess.Refresh();
+                return !MyProcess.HasExited;
+            }
+        }
+
+        public void Dispose()
+        {
+            if (!IsMyProcessRunning)
+                return;
+            MyProcess.CloseMainWindow();
+            MyProcess.Close();
         }
     }
 }

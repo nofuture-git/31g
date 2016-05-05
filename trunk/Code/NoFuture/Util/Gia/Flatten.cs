@@ -7,18 +7,17 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using Newtonsoft.Json;
 using NoFuture.Exceptions;
 using NoFuture.Shared;
 using NoFuture.Tools;
 using NoFuture.Util.Binary;
 using NoFuture.Util.Gia.Args;
+using NoFuture.Util.Gia.InvokeCmds;
 using NoFuture.Util.NfConsole;
 
 namespace NoFuture.Util.Gia
 {
-    public class Flatten : NfConsole.InvokeConsoleBase, IDisposable
+    public class Flatten : InvokeConsoleBase
     {
         #region constants
         public const string GET_FLAT_ASM_PORT_CMD_SWITCH = "nfGetFlattenAssemblyPort";
@@ -26,22 +25,7 @@ namespace NoFuture.Util.Gia
         #endregion
 
         #region fields
-        private readonly Process _myProcess;
-        private string _appDataPath;
-        private readonly int _getFlatAsmPort;
-        #endregion
-
-        #region properties
-        internal bool IsMyProcessRunning
-        {
-            get
-            {
-                if (_myProcess == null)
-                    return false;
-                _myProcess.Refresh();
-                return !_myProcess.HasExited;
-            }
-        }
+        private readonly InvokeGetFlattenAssembly _invokeGetFlattenAssemblyCmd;
         #endregion
 
         #region ctors
@@ -60,15 +44,21 @@ namespace NoFuture.Util.Gia
                 throw new ItsDeadJim("Don't know where to locate the NoFuture.Util.Gia.InvokeFlatten.exe, assign " +
                                      "the global variable at NoFuture.CustomTools.InvokeFlatten.");
             var args = string.Empty;
-            _getFlatAsmPort = DF_START_PORT;
+            var getFlatAsmPort = DF_START_PORT;
             if (ports != null && ports.Length > 0)
             {
-                _getFlatAsmPort = ports[0];
+                getFlatAsmPort = ports[0];
                 args = ConsoleCmd.ConstructCmdLineArgs(GET_FLAT_ASM_PORT_CMD_SWITCH,
-                    _getFlatAsmPort.ToString(CultureInfo.InvariantCulture));
+                    getFlatAsmPort.ToString(CultureInfo.InvariantCulture));
             }
 
-            _myProcess = StartRemoteProcess(CustomTools.InvokeFlatten,args);
+            MyProcess = StartRemoteProcess(CustomTools.InvokeFlatten,args);
+
+            _invokeGetFlattenAssemblyCmd = new InvokeGetFlattenAssembly()
+            {
+                ProcessId = MyProcess.Id,
+                SocketPort = getFlatAsmPort
+            };
         }
         #endregion
 
@@ -87,52 +77,12 @@ namespace NoFuture.Util.Gia
         /// </example>
         public FlattenAssembly GetFlattenAssembly(string assemblyPath)
         {
-            if (String.IsNullOrWhiteSpace(assemblyPath) || !File.Exists(assemblyPath))
-                throw new ItsDeadJim("This isn't a valid assembly path");
-
-            if(!IsMyProcessRunning)
-                throw new ItsDeadJim("The NoFuture.Util.Gia.InvokeFlatten.exe is either dead or was never started.");
-
-            _appDataPath = Path.Combine(TempDirectories.AppData, (Path.GetFileNameWithoutExtension(assemblyPath)));
-
-            var bufferOut = Net.SendToLocalhostSocket(Encoding.UTF8.GetBytes(assemblyPath), _getFlatAsmPort);
-
-            if (bufferOut == null || bufferOut.Length <= 0)
-                throw new ItsDeadJim(
-                    String.Format("The remote process by id [{0}] did not return anything on port [{1}]",
-                        _myProcess == null ? 0 : _myProcess.Id, _getFlatAsmPort));
-
-            File.WriteAllBytes(Path.Combine(_appDataPath, "GetFlattenAssembly.json"), bufferOut);
-
-            return JsonConvert.DeserializeObject<FlattenAssembly>(ConvertJsonFromBuffer(bufferOut), JsonSerializerSettings);
+            return _invokeGetFlattenAssemblyCmd.Receive(assemblyPath);
         }
-        public void Dispose()
-        {
-            if (!IsMyProcessRunning)
-                return;
-            _myProcess.CloseMainWindow();
-            _myProcess.Close();
-        }
+
         #endregion
 
         #region static methods
-
-        /// <summary>
-        /// An invocation to <see cref="GetFlattenAssembly"/> will write the results to 
-        /// disk at <see cref="TempDirectories.AppData"/>.  This method may then be used
-        /// to load those results after the remote process has closed.
-        /// </summary>
-        /// <param name="filePath"></param>
-        /// <returns></returns>
-        public static FlattenAssembly LoadFlattenAssembly(string filePath)
-        {
-            if (String.IsNullOrWhiteSpace(filePath))
-                return null;
-            if (!File.Exists(filePath))
-                return null;
-            var buffer = File.ReadAllBytes(filePath);
-            return JsonConvert.DeserializeObject<FlattenAssembly>(ConvertJsonFromBuffer(buffer), JsonSerializerSettings);
-        }
 
         /// <summary>
         /// Flattens a type and breaks each word on Pascel or camel-case
@@ -212,7 +162,7 @@ namespace NoFuture.Util.Gia
                     writeProgress(new ProgressMessage
                     {
                         Activity = t.ToString(),
-                        ProcName = System.Diagnostics.Process.GetCurrentProcess().ProcessName,
+                        ProcName = Process.GetCurrentProcess().ProcessName,
                         ProgressCounter = Etc.CalcProgressCounter(counter, total),
                         Status = "Working Type Names"
                     });

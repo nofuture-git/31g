@@ -8,7 +8,7 @@ using NoFuture.Util.NfConsole;
 
 namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds
 {
-    public class GetAsmIndices : CmdBase<AsmIndicies>
+    public class GetAsmIndices : CmdBase<AsmIndicies>, ICmd
     {
         public GetAsmIndices(Program myProgram)
             : base(myProgram)
@@ -76,7 +76,5 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds
                     });
             }
         }
-
-
     }
 }
