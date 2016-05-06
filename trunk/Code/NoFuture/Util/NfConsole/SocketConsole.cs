@@ -10,7 +10,10 @@ namespace NoFuture.Util.NfConsole
 {
     public abstract class SocketConsole : Program
     {
-        protected SocketConsole(string[] args) : base(args)
+        public const int LISTEN_NUM_REQUEST = 5;
+
+        protected SocketConsole(string[] args, bool isVisable)
+            : base(args, isVisable)
         {
         }
 
@@ -85,7 +88,5 @@ namespace NoFuture.Util.NfConsole
         /// Opens all the sockets for all <see cref="ICmd"/>
         /// </summary>
         protected abstract void LaunchListeners();
-
-
     }
 }

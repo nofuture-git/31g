@@ -72,7 +72,8 @@ namespace NoFuture.Util.Gia.InvokeFlatten
             }
         }
 
-        public FlattenProgram(string[] args) : base(args)
+        public FlattenProgram(string[] args)
+            : base(args, true)
         {
 
         }

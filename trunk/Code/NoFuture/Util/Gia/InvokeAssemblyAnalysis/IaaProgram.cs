@@ -40,7 +40,8 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
         private readonly UtilityMethods _utilityMethods;
         #endregion
 
-        public IaaProgram(string[] args) : base(args)
+        public IaaProgram(string[] args)
+            : base(args, true)
         {
             _utilityMethods = new UtilityMethods(this);
         }

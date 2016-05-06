@@ -9,16 +9,16 @@ namespace NoFuture.Util.NfConsole
 {
     public abstract class Program
     {
-        public const int LISTEN_NUM_REQUEST = 5;
-
         private string _logName;
         private DateTime _startTime;
         private static readonly object _printLock = new object();
         protected readonly string[] _args;
+        protected readonly bool _isVisable;
 
-        protected Program(string[] args)
+        protected Program(string[] args, bool isVisable)
         {
             _args = args;
+            _isVisable = isVisable;
         }
 
         protected abstract string MyName { get; }
@@ -84,6 +84,8 @@ namespace NoFuture.Util.NfConsole
         /// <param name="pMsg"></param>
         public void PrintToConsole(ProgressMessage pMsg)
         {
+            if (!_isVisable)
+                return;
             var currentState = new Tuple<int, string>(pMsg.ProgressCounter, pMsg.Status);
 
             if (ProgressMessageState == null)
@@ -116,7 +118,8 @@ namespace NoFuture.Util.NfConsole
             if (trunc && someString.Length >= 74)
                 someString = String.Format("{0}[...]", someString.Substring(0, 68));
 
-            Console.WriteLine(String.Format("{0:yyyy-MM-dd HH:mm:ss.fff} {1}", DateTime.Now, someString));
+            if(_isVisable)
+                Console.WriteLine(String.Format("{0:yyyy-MM-dd HH:mm:ss.fff} {1}", DateTime.Now, someString));
         }
         /// <summary>
         /// Prints to console and writes to <see cref="LogFile"/>
@@ -129,11 +132,17 @@ namespace NoFuture.Util.NfConsole
                 Console.WriteLine();
                 var msg = String.Format("{0:yyyy-MM-dd HH:mm:ss.fff} {1}", DateTime.Now, ex.Message);
                 File.AppendAllText(LogFile, String.Format("{0}\n", msg));
-                Console.WriteLine(msg);
+
+                if(_isVisable)
+                    Console.WriteLine(msg);
 
                 msg = String.Format("{0:yyyy-MM-dd HH:mm:ss.fff} {1}", DateTime.Now, ex.StackTrace);
                 File.AppendAllText(LogFile, String.Format("{0}\n", msg));
-                Console.WriteLine(msg);
+                if(_isVisable)
+                    Console.WriteLine(msg);
+
+                if(ex.InnerException != null)
+                    PrintToConsole(ex.InnerException);
             }
         }
 
@@ -141,10 +150,13 @@ namespace NoFuture.Util.NfConsole
         {
             //set app domain cfg
             _startTime = DateTime.Now;
-            Console.WindowWidth = 100;
-            ConsoleCmd.SetConsoleAsTransparent();
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.Title = Assembly.GetExecutingAssembly().GetName().Name;
+            if (_isVisable)
+            {
+                Console.WindowWidth = 100;
+                ConsoleCmd.SetConsoleAsTransparent();
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.Title = Assembly.GetExecutingAssembly().GetName().Name;
+            }
             SetReflectionOnly();
             FxPointers.AddResolveAsmEventHandlerToDomain();            
         }
