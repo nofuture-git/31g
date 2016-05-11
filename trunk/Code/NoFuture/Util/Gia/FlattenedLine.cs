@@ -93,7 +93,7 @@ namespace NoFuture.Util.Gia
     {
         private readonly List<FlattenedItem> _blank = new List<FlattenedItem>
         {
-            new FlattenedItem() {FlName = string.Empty, FlType = typeof (object)}
+            new FlattenedItem(typeof (object)) {FlName = string.Empty }
         };
 
         private readonly Exception _error;
@@ -101,7 +101,7 @@ namespace NoFuture.Util.Gia
         public NullFlattenedLine(Exception ex)
             : base(new List<FlattenedItem>
             {
-                new FlattenedItem {FlName = string.Empty, FlType = typeof (object)}
+                new FlattenedItem(typeof (object)) {FlName = string.Empty}
             })
         {
             _error = ex;

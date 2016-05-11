@@ -26,12 +26,20 @@ namespace NoFuture.Util.Gia
                 return _ffVTypes;
             }
         }
-        [Newtonsoft.Json.JsonIgnore]
-        public Type FlType { get; set; }
 
-        public bool IsEnumerable { get { return NfTypeName.IsEnumerableReturnType(FlType); } }
+        public FlattenedItem(Type flType)
+        {
+            FlType = flType;
+            IsEnumerable = NfTypeName.IsEnumerableReturnType(flType);
+            TypeFullName = NfTypeName.GetLastTypeNameFromArrayAndGeneric(flType);
+        }
+
+        [Newtonsoft.Json.JsonIgnore]
+        public Type FlType { get; private set; }
+
+        public bool IsEnumerable { get; set; }
         public string FlName { get; set; }
-        public string TypeFullName { get { return NfTypeName.GetLastTypeNameFromArrayAndGeneric(FlType); } }
+        public string TypeFullName { get; set; }
         public string SimpleTypeName { get { return NfTypeName.GetTypeNameWithoutNamespace(TypeFullName); } }
         public bool IsTerminalNode { get { return FlattenedItem.ValueTypesList.Contains(TypeFullName); } }
 

@@ -312,7 +312,7 @@ namespace NoFuture.Util.Gia
                 typeStack = new Stack();
                 typeStack.Push(typeFullName);
                 fiValueTypes = new Stack<FlattenedItem>();
-                fiValueTypes.Push(new FlattenedItem { FlName = NfTypeName.GetTypeNameWithoutNamespace(typeFullName), FlType = currentType });
+                fiValueTypes.Push(new FlattenedItem(currentType) { FlName = NfTypeName.GetTypeNameWithoutNamespace(typeFullName) });
             }
 
             var typeNamesList =
@@ -331,7 +331,7 @@ namespace NoFuture.Util.Gia
                 var pVtype = typeNamePair.Item1;
                 var pVname = typeNamePair.Item2;
 
-                fiValueTypes.Push(new FlattenedItem { FlName = pVname, FlType = pVtype });
+                fiValueTypes.Push(new FlattenedItem(pVtype) { FlName = pVname });
                 var fiItems = fiValueTypes.ToList();
                 fiItems.Reverse();
                 printList.Add(new FlattenedLine(fiItems.Distinct(new FlattenedItemComparer()).ToList())
@@ -348,7 +348,7 @@ namespace NoFuture.Util.Gia
 
                 if (typeIn == null || typeStack.Contains(typeIn)) continue;
 
-                var fi = new FlattenedItem { FlName = p.Name, FlType = p.PropertyType };
+                var fi = new FlattenedItem(p.PropertyType) { FlName = p.Name };
                 if (fiValueTypes.ToList().Any(x => x.FlType == p.PropertyType))
                     continue;
 
@@ -366,7 +366,7 @@ namespace NoFuture.Util.Gia
                 {
                     foreach (var ev in enumVals)
                     {
-                        fiValueTypes.Push(new FlattenedItem{FlName = ev, FlType = typeof(Enum)});
+                        fiValueTypes.Push(new FlattenedItem(typeof(Enum)) { FlName = ev });
                         var fiItems = fiValueTypes.ToList();
                         fiItems.Reverse();
                         printList.Add(new FlattenedLine(fiItems.Distinct(new FlattenedItemComparer()).ToList())

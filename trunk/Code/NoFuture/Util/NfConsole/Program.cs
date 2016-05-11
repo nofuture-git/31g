@@ -152,10 +152,14 @@ namespace NoFuture.Util.NfConsole
             _startTime = DateTime.Now;
             if (_isVisable)
             {
-                Console.WindowWidth = 100;
-                ConsoleCmd.SetConsoleAsTransparent();
-                Console.ForegroundColor = ConsoleColor.Green;
-                Console.Title = Assembly.GetExecutingAssembly().GetName().Name;
+                try
+                {
+                    Console.WindowWidth = 100;
+                    ConsoleCmd.SetConsoleAsTransparent();
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.Title = Assembly.GetExecutingAssembly().GetName().Name;
+                }
+                catch { }
             }
             SetReflectionOnly();
             FxPointers.AddResolveAsmEventHandlerToDomain();            
