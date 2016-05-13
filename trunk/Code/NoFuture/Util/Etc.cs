@@ -360,7 +360,9 @@ namespace NoFuture.Util
                 return (char)(Convert.ToInt32(pChar) | Convert.ToInt32(sChar));
             };
 
-            var length = primaryString.Length > secondaryString.Length ? primaryString.Length : secondaryString.Length;
+            var length = (primaryString == null ? 0 : primaryString.Length) > secondaryString.Length
+                ? (primaryString == null ? 0 : primaryString.Length)
+                : secondaryString.Length;
 
             var mergedChars = new char[length];
             for (var i = 0; i < length; i++)
@@ -695,7 +697,7 @@ namespace NoFuture.Util
 
             for (var i = valueChars.Length - 1; i >= 0; i--)
             {
-                var valAti = 0;
+                int valAti;
                 if (!Int32.TryParse(new string(new[] {valueChars[i]}), out valAti))
                     continue;
                 if (i % 2 == 0)

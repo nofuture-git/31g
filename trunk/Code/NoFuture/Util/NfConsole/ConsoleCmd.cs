@@ -132,9 +132,9 @@ namespace NoFuture.Util.NfConsole
             {
                 if (string.IsNullOrWhiteSpace(stdOut[i]) || stdOut[i].Split(' ').Length == 0 || i % 2 != 0)
                     continue;
-                var pid = string.Empty;
-                var proc = string.Empty;
-                var cmdln = string.Empty;
+                string pid;
+                string proc;
+                string cmdln;
                 if (!RegexCatalog.IsRegexMatch(stdOut[i], lnI, out pid, 1))
                     pid = "0";
                 if (!RegexCatalog.IsRegexMatch(stdOut[i], lnI, out proc, 2))
@@ -142,7 +142,7 @@ namespace NoFuture.Util.NfConsole
                 if (!RegexCatalog.IsRegexMatch(stdOut[i + 1], lnIplus1, out cmdln, 1))
                     cmdln = stdOut[i + 1];
 
-                int iPid = 0;
+                int iPid;
                 int.TryParse(pid, out iPid);
                 procs.Add(new Tuple<int, string, string>(iPid, proc.Trim(), cmdln.Trim()));
             }

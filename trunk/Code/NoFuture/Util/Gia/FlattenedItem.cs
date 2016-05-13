@@ -32,6 +32,7 @@ namespace NoFuture.Util.Gia
             FlType = flType;
             IsEnumerable = NfTypeName.IsEnumerableReturnType(flType);
             TypeFullName = NfTypeName.GetLastTypeNameFromArrayAndGeneric(flType);
+            MetadataToken = flType == null ? 0 : flType.MetadataToken;
         }
 
         [Newtonsoft.Json.JsonIgnore]
@@ -41,7 +42,8 @@ namespace NoFuture.Util.Gia
         public string FlName { get; set; }
         public string TypeFullName { get; set; }
         public string SimpleTypeName { get { return NfTypeName.GetTypeNameWithoutNamespace(TypeFullName); } }
-        public bool IsTerminalNode { get { return FlattenedItem.ValueTypesList.Contains(TypeFullName); } }
+        public bool IsTerminalNode { get { return ValueTypesList.Contains(TypeFullName); } }
+        public int MetadataToken { get; set; }
 
 
         public bool Equals(FlattenedItem item)

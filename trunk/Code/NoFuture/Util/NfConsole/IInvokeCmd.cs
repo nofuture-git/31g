@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace NoFuture.Util.NfConsole
+﻿namespace NoFuture.Util.NfConsole
 {
     public interface IInvokeCmd<out T>
     {

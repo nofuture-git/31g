@@ -39,21 +39,21 @@ namespace NoFuture.Util.Gia
         public virtual bool Contains(string targetWord)
         {
             return UseTypeNames
-                ? Items.Any(x => string.Format("{0}", x.FlType).Contains(targetWord))
+                ? Items.Any(x => string.Format("{0}", x.TypeFullName).Contains(targetWord))
                 : Items.Any(x => x.FlName.Contains(targetWord));
         }
 
         public virtual FlattenedItem FirstOrDefaultOnWord(string targetWord)
         {
             return UseTypeNames
-                ? Items.FirstOrDefault(x => string.Format("{0}", x.FlType).Contains(targetWord))
+                ? Items.FirstOrDefault(x => string.Format("{0}", x.TypeFullName).Contains(targetWord))
                 : Items.FirstOrDefault(x => x.FlName.Contains(targetWord));
         }
 
         public virtual bool LastItemContains(string targetWord)
         {
             return UseTypeNames
-                ? string.Format("{0}", Items.Last().FlType).Contains(targetWord)
+                ? string.Format("{0}", Items.Last().TypeFullName).Contains(targetWord)
                 : Items.Last().FlName.Contains(targetWord);
         }
 

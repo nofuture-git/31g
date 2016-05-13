@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace NoFuture.Util.Math
+﻿namespace NoFuture.Util.Math
 {
     public class NaturalLogEquation
     {
@@ -17,7 +12,7 @@ namespace NoFuture.Util.Math
 
         public virtual double SolveForX(double y)
         {
-            if (Slope == 0.0D)
+            if (System.Math.Abs(Slope) < 0.0000000D)
                 return 0.0D;
             var yy = y - Intercept;
             yy = yy / Slope;

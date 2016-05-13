@@ -12,9 +12,9 @@ namespace NoFuture.Util
         [EditorBrowsable(EditorBrowsableState.Never)]
         private static readonly object AppDomainSearchLock = new object();
         [EditorBrowsable(EditorBrowsableState.Never)]
-        private static bool _addedReflectionOnlyAssemblyHandler = false;
+        private static bool _addedReflectionOnlyAssemblyHandler;
         [EditorBrowsable(EditorBrowsableState.Never)]
-        private static bool _addedAssemblyHandler = false;
+        private static bool _addedAssemblyHandler;
         #endregion
 
         #region properties
@@ -102,7 +102,7 @@ namespace NoFuture.Util
             var locationOfAsmInNeed = asmInNeedOfDependency.Location;
             lock (AppDomainSearchLock)
             {
-                return Asm.SearchAppDomainForAssembly(rqstAsmName, locationOfAsmInNeed, true);
+                return Asm.SearchAppDomainForAssembly(rqstAsmName, locationOfAsmInNeed);
             }
         }
 

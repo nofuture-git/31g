@@ -8,7 +8,6 @@ namespace NoFuture.Util.Math
     public class NonConformable : System.Exception
     {
         public NonConformable()
-            : base()
         {
 
         }

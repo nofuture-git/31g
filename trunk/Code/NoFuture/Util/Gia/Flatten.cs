@@ -104,7 +104,7 @@ namespace NoFuture.Util.Gia
                 Separator = FlattenLineArgs.DEFAULT_SEPARATOR,
                 TypeFullName = typeFullName
             };
-            var flattenedType = (Flatten.FlattenType(flattenTypeArg)).PrintLines();
+            var flattenedType = (FlattenType(flattenTypeArg)).PrintLines();
             if (flattenedType == null)
                 return null;
             var allWords = new List<string>();
@@ -201,7 +201,7 @@ namespace NoFuture.Util.Gia
                 writeProgress(new ProgressMessage
                 {
                     Activity = "Getting all types from assembly",
-                    ProcName = System.Diagnostics.Process.GetCurrentProcess().ProcessName,
+                    ProcName = Process.GetCurrentProcess().ProcessName,
                     ProgressCounter = 1,
                     Status = "OK"
                 });
@@ -217,7 +217,7 @@ namespace NoFuture.Util.Gia
                     writeProgress(new ProgressMessage
                     {
                         Activity = t,
-                        ProcName = System.Diagnostics.Process.GetCurrentProcess().ProcessName,
+                        ProcName = Process.GetCurrentProcess().ProcessName,
                         ProgressCounter = Etc.CalcProgressCounter(counter, total),
                         Status = "Working Type Names"
                     });
@@ -231,7 +231,7 @@ namespace NoFuture.Util.Gia
                     UseTypeNames = fla.UseTypeNames,
                     LimitOnThisType = fla.LimitOnThisType
                 };
-                var flattenedType = Flatten.FlattenType(flattenArgs);
+                var flattenedType = FlattenType(flattenArgs);
                 foreach (var line in flattenedType.Lines.Where(x => !String.IsNullOrWhiteSpace(x.ValueType)))
                 {
                     //if there is a limit on some type and this line is that type in any form then continue

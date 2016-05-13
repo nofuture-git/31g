@@ -171,7 +171,7 @@ namespace NoFuture.Util
                             break;
                     }
 
-                    var dumpFileName = Path.Combine(fileDir,
+                    var dumpFileName = Path.Combine(fileDir ?? TempDirectories.AppData,
                         String.Format("{0}.{1:000}{2}", fileBreakCounter >= 0 ? bareFileName : "_" + bareFileName,
                             fileBreakCounter, fileExt));
 
@@ -204,7 +204,7 @@ namespace NoFuture.Util
                 //we still need to drop the head of the file
                 if (fileStream.Position > 0)
                 {
-                    var dumpFileName = Path.Combine(fileDir,
+                    var dumpFileName = Path.Combine(fileDir ?? TempDirectories.AppData,
                         String.Format("{0}.{1:000}{2}", fileBreakCounter >= 0 ? bareFileName : "_" + bareFileName,
                             fileBreakCounter, fileExt));
 
@@ -277,6 +277,9 @@ namespace NoFuture.Util
             {
                 return false;
             }
+
+            if (string.IsNullOrWhiteSpace(currentWorkingDir) || string.IsNullOrWhiteSpace(somePathTemp))
+                return false;
 
             var p = currentWorkingDir.Split(Path.DirectorySeparatorChar);
             var q = somePathTemp.Split(Path.DirectorySeparatorChar);
