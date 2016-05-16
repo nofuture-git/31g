@@ -46,25 +46,43 @@ namespace NoFuture.Rand.Data.Types
         /// <returns></returns>
         public static StandardIndustryClassification RandomSic()
         {
-            if (_allSics == null)
-            {
-                _allSics = new List<StandardIndustryClassification>();
-                var allSectors = AllSectors;
-                if (allSectors == null)
-                    return null;
-                _allSics.AddRange(AllSectors.SelectMany(
-                    s =>
-                        s.Divisions.Cast<NaicsSector>()
-                            .SelectMany(
-                                ns =>
-                                    ns.Divisions.Cast<NaicsMarket>()
-                                        .SelectMany(mk => mk.Divisions.Cast<StandardIndustryClassification>()))));
-            }
-
-            var withSecRslts = _allSics.Where(x => x.SecResults).ToArray();
-            return withSecRslts[(Etx.IntNumber(0, (withSecRslts.Length - 1)))];
+            var secSics = AllSicWithSecResults;
+            return secSics[(Etx.IntNumber(0, (secSics.Length - 1)))];
         }
 
+        /// <summary>
+        /// Lists all <see cref="StandardIndustryClassification"/> which 
+        /// have, in the past, returned something from an SEC Edgar search.
+        /// </summary>
+        public static StandardIndustryClassification[] AllSicWithSecResults
+        {
+            get
+            {
+                if (_allSics == null)
+                {
+                    _allSics = new List<StandardIndustryClassification>();
+                    var allSectors = AllSectors;
+                    if (allSectors == null)
+                        return null;
+                    _allSics.AddRange(AllSectors.SelectMany(
+                        s =>
+                            s.Divisions.Cast<NaicsSector>()
+                                .SelectMany(
+                                    ns =>
+                                        ns.Divisions.Cast<NaicsMarket>()
+                                            .SelectMany(mk => mk.Divisions.Cast<StandardIndustryClassification>()))));
+                }
+
+                return _allSics.Where(x => x.SecResults).ToArray();
+            }
+        }
+
+        /// <summary>
+        /// Reverses a <see cref="StandardIndustryClassification"/> into 
+        /// its NAICS groups.
+        /// </summary>
+        /// <param name="sic"></param>
+        /// <returns></returns>
         public static Tuple<NaicsSuperSector, NaicsSector, NaicsMarket> LookupNaicsBySic(
             StandardIndustryClassification sic)
         {

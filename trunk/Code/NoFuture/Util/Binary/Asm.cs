@@ -175,10 +175,10 @@ namespace NoFuture.Util.Binary
             //if its already in the appdomain then just return it, why are we here in such a case?
             var itsAlreadyHere = AppDomain.CurrentDomain.ReflectionOnlyGetAssemblies()
                 .FirstOrDefault(
-                    asm => string.Equals(asm.FullName, asmFullName, StringComparison.OrdinalIgnoreCase)) ??
+                    asm => AssemblyName.ReferenceMatchesDefinition(asm.GetName(), new AssemblyName(asmFullName))) ??
                                       AppDomain.CurrentDomain.GetAssemblies()
                                           .FirstOrDefault(
-                                              asm => string.Equals(asm.FullName, asmFullName, StringComparison.OrdinalIgnoreCase));
+                                              asm => AssemblyName.ReferenceMatchesDefinition(asm.GetName(), new AssemblyName(asmFullName)));
             if (itsAlreadyHere != null)
                 return itsAlreadyHere;
 
@@ -219,8 +219,8 @@ namespace NoFuture.Util.Binary
                 reflectionOnly))
                 return foundOne;
 
-            //hail mary
-            return reflectionOnly ? Assembly.ReflectionOnlyLoad(asmFullName) : Assembly.Load(asmFullName);
+            //have next app domain handler give it a go
+            return null;
         }
 
         #region metadata tokens
@@ -618,7 +618,13 @@ namespace NoFuture.Util.Binary
             if (asm != null)
                 return asm;
 
-            return Assembly.ReflectionOnlyLoadFrom(assemblyPath);
+            asm = Assembly.ReflectionOnlyLoadFrom(assemblyPath);
+            if (asm != null &&
+                Constants.AssemblySearchPaths.Any(
+                    x => !string.Equals(x, Path.GetDirectoryName(assemblyPath), StringComparison.OrdinalIgnoreCase)))
+                Constants.AssemblySearchPaths.Add(Path.GetDirectoryName(assemblyPath));
+
+            return asm;
         }
 
         /// <summary>
@@ -641,7 +647,14 @@ namespace NoFuture.Util.Binary
             if (asm != null)
                 return asm;
 
-            return Assembly.LoadFrom(assemblyPath);
+            asm = Assembly.LoadFrom(assemblyPath);
+            if (asm != null &&
+                Constants.AssemblySearchPaths.Any(
+                    x => !string.Equals(x, Path.GetDirectoryName(assemblyPath), StringComparison.OrdinalIgnoreCase)))
+                Constants.AssemblySearchPaths.Add(Path.GetDirectoryName(assemblyPath));
+
+            return asm;
+
         }
 
         /// <summary>
@@ -1533,7 +1546,7 @@ namespace NoFuture.Util.Binary
                 if (asmName == null)
                     continue;
 
-                if (String.Equals(asmName.FullName, rqstAsmFullName, StringComparison.OrdinalIgnoreCase))
+                if (AssemblyName.ReferenceMatchesDefinition(asmName, new AssemblyName(rqstAsmFullName)))
                 {
                     foundOne = reflectionOnly
                         ? Assembly.ReflectionOnlyLoad(File.ReadAllBytes(d.FullName))

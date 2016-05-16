@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using System.Xml;
+using System.Linq;
 using NoFuture.Rand.Com;
+using NoFuture.Shared;
 
 namespace NoFuture.Rand.Data.Types
 {
@@ -59,12 +62,12 @@ namespace NoFuture.Rand.Data.Types
                 if (_superSectors != null)
                     return _superSectors;
 
-                if (Data.TreeData.EconSectorData == null)
+                if (TreeData.EconSectorData == null)
                     return null;
 
                 var ssOut = new NaicsSuperSector();
 
-                var ssElements = Data.TreeData.EconSectorData.SelectNodes(string.Format("//{0}", ssOut.LocalName));
+                var ssElements = TreeData.EconSectorData.SelectNodes(string.Format("//{0}", ssOut.LocalName));
                 if (ssElements == null || ssElements.Count == 0)
                     return null;
 
