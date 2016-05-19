@@ -78,8 +78,7 @@ namespace NoFuture.Rand.Com
         public static Uri GetUriTickerSymbolLookup(string companyName)
         {
             return
-                new Uri("http://d.yimg.com/autoc.finance.yahoo.com/autoc?query=" + Uri.EscapeUriString(companyName) +
-                        "&callback=" + TickerSearchStringEnclosure);
+                new Uri("http://www.bloomberg.com/markets/symbolsearch?query=" + Uri.EscapeUriString(companyName.Replace(",","").Replace(".","")) + "&commit=Find+Symbols");
         }
 
         /// <summary>
@@ -89,10 +88,14 @@ namespace NoFuture.Rand.Com
         /// <param name="webResponseBody"></param>
         /// <param name="pc"></param>
         /// <returns></returns>
-        public static bool MergeTickerLookupFromJson(string webResponseBody, ref PublicCorporation pc)
+        public static bool TryMergeTickerLookup(string webResponseBody, ref PublicCorporation pc)
         {
+            throw new NotImplementedException("the older use of 'yimg.com' has stopped working and " +
+                                              "a new implementation using a WebDriver and bloomberg.com " +
+                                              "needs to be coded.");
             try
             {
+                //https://w3c.github.io/webdriver/webdriver-spec.html
                 if (string.IsNullOrWhiteSpace(webResponseBody))
                     return false;
                 if (webResponseBody.StartsWith(TickerSearchStringEnclosure))
@@ -122,7 +125,7 @@ namespace NoFuture.Rand.Com
                         InstrumentType = sym.typeDisp
                     });
                 }
-
+                //ticker_matches
                 return pc.TickerSymbols.Count > 0;
             }
             catch
