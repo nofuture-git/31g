@@ -17,14 +17,14 @@ namespace NoFuture.Tests.Rand
             Assert.AreEqual("852218", testResult.Rssd.Value);
             Assert.IsNotNull(testResult.Assets);
             Assert.AreNotEqual(0, testResult.Assets.Count);
-            Assert.AreNotEqual(0L, testResult.Assets.First().Value.ConsolidatedAssets);
+            Assert.AreNotEqual(0L, testResult.Assets.First().Value.TotalAssets);
             Assert.AreNotEqual(0L, testResult.Assets.First().Value.DomesticAssets);
             Assert.AreNotEqual(0, testResult.Assets.First().Value.DomesticBranches);
             Assert.AreEqual(0, testResult.Assets.First().Value.PercentForeignOwned);
             Assert.AreNotEqual(0, testResult.Assets.First().Value.ForeignBranches);
             Assert.IsTrue(testResult.IsInternational);
 
-            System.Diagnostics.Debug.WriteLine(testResult.Assets.First().Value.ConsolidatedAssets);
+            System.Diagnostics.Debug.WriteLine(testResult.Assets.First().Value.TotalAssets);
             System.Diagnostics.Debug.WriteLine(testResult.Assets.First().Value.DomesticAssets);
         }
 

@@ -5,7 +5,22 @@ namespace NoFuture.Rand.Com
     [Serializable]
     public class Ticker : Identifier
     {
-        public string Symbol { get; set; }
+        private string _symbol;
+
+        public string Symbol
+        {
+            get
+            {
+                if (_symbol.Contains(":"))
+                    _symbol = _symbol.Split(':')[0];
+                return _symbol;
+            }
+            set
+            {
+                _symbol = value;
+            }
+        }
+
         public string Exchange { get; set; }
         public string InstrumentType { get; set; }
 

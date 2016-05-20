@@ -69,7 +69,7 @@ namespace NoFuture.Tests.Rand
             Assert.IsNull(testTarget.CIK);
             Assert.IsNull(testTarget.TickerSymbols);
 
-            testTarget.GetXrefXmlData();
+            testTarget.LoadXrefXmlData();
 
             Assert.IsNotNull(testTarget.CIK);
             Assert.AreNotEqual(0, testTarget.TickerSymbols);
@@ -86,7 +86,7 @@ namespace NoFuture.Tests.Rand
             Assert.IsNull(testTarget.CIK);
             Assert.IsNull(testTarget.TickerSymbols);
 
-            testTarget.GetXrefXmlData();
+            testTarget.LoadXrefXmlData();
 
             Assert.IsNotNull(testTarget.CIK);
             Assert.IsNotNull(testTarget.TickerSymbols);

@@ -59,7 +59,7 @@ namespace NoFuture.Rand.Com
     /// 
     ///  #get more details from yahoo finance
     ///  $yahooData = Request-File -Url ([NoFuture.Rand.Com.PublicCorporation]::GetUriTickerSymbolLookup($myBank.Name))
-    ///  [NoFuture.Rand.Com.PublicCorporation]::MergeTickerLookupFromJson($yahooData, [ref] $myBank)
+    ///  [NoFuture.Rand.Com.PublicCorporation]::TryMergeTickerLookup($yahooData, [ref] $myBank)
     /// 
     ///  #get any data you defined in the local XRef.xml
     ///  $randomCorp.GetXrefXmlData()
@@ -86,11 +86,11 @@ namespace NoFuture.Rand.Com
                 BusinessAddress = new Tuple<UsAddress, UsCityStateZip>(null, cityOut);
             if (LargeCommercialBanks.TypeOfBankAbbrev3Enum.ContainsKey(getLnVal(vals,4)))
                 BankType = LargeCommercialBanks.TypeOfBankAbbrev3Enum[getLnVal(vals,4)];
-            var assets = new FinancialAssets();
+            var assets = new FinancialAssets {Src = LargeCommercialBanks.RELEASE_URL};
             decimal conAssts = 0;
             decimal domAssts = 0;
             if (decimal.TryParse(getLnVal(vals,5).Replace(",", string.Empty), out conAssts))
-                assets.ConsolidatedAssets = new Pecuniam(conAssts*1000);
+                assets.TotalAssets = new Pecuniam(conAssts*1000);
             if (decimal.TryParse(getLnVal(vals, 6).Replace(",", string.Empty), out domAssts))
                 assets.DomesticAssets = new Pecuniam(domAssts*1000);
             int domBranches = 0;

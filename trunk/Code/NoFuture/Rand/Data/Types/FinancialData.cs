@@ -2,7 +2,7 @@
 {
     public class FinancialData
     {
-        public string FiscalYearEndAt { get; set; }
+        public int FiscalYear { get; set; }
         public Income Income { get; set; }
         public Assets Assets { get; set; }
         public int NumOfShares { get; set; }
@@ -10,8 +10,11 @@
 
     public class Assets
     {
-        public Pecuniam ConsolidatedAssets { get; set; }
-        public Pecuniam DomesticAssets { get; set; }        
+        public string Src { get; set; }
+        public Pecuniam DomesticAssets { get; set; }
+
+        public Pecuniam TotalAssets { get; set; }
+        public Pecuniam TotalLiabilities { get; set; }
     }
 
     public class Income

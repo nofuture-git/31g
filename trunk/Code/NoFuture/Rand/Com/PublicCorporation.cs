@@ -6,7 +6,9 @@ using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Xml;
 using NoFuture.Rand.Data;
+using NoFuture.Rand.Data.NfHtml;
 using NoFuture.Rand.Data.Types;
+using NoFuture.Rand.Gov.Sec;
 
 namespace NoFuture.Rand.Com
 {
@@ -34,25 +36,25 @@ namespace NoFuture.Rand.Com
     /// 
     ///  #get more details from yahoo finance
     ///  $yahooData = Request-File -Url ([NoFuture.Rand.Com.PublicCorporation]::GetUriTickerSymbolLookup($randomCorp.Name))
-    ///  [NoFuture.Rand.Com.PublicCorporation]::MergeTickerLookupFromJson($yahooData, [ref] $randomCorp)
+    ///  [NoFuture.Rand.Com.PublicCorporation]::TryMergeTickerLookup($yahooData, [ref] $randomCorp)
     /// 
     ///  #get any data you defined in the local XRef.xml
-    ///  $randomCorp.GetXrefXmlData()
+    ///  $randomCorp.LoadXrefXmlData()
     /// ]]>
     /// </example>
     [Serializable]
     public class PublicCorporation : Firm
     {
         #region fields
-        private readonly List<Gov.Sec.Form10K> _annualReports = new List<Gov.Sec.Form10K>();
+        private readonly List<Form10K> _annualReports = new List<Gov.Sec.Form10K>();
         #endregion
 
         #region properties
         public Gov.Irs.EmployerIdentificationNumber EIN { get; set; }
 
-        public Gov.Sec.CentralIndexKey CIK { get; set; }
+        public CentralIndexKey CIK { get; set; }
 
-        public List<Gov.Sec.Form10K> AnnualReports
+        public List<Form10K> AnnualReports
         {
             get { return _annualReports; }
         }
@@ -74,11 +76,56 @@ namespace NoFuture.Rand.Com
         public static Uri GetUriTickerSymbolLookup(string companyName)
         {
             return
-                new Uri("http://www.bloomberg.com/markets/symbolsearch?query=" + Uri.EscapeUriString(companyName.Replace(",","").Replace(".","")) + "&commit=Find+Symbols");
+                new Uri("http://www.bloomberg.com/markets/symbolsearch?query=" +
+                        Uri.EscapeUriString(companyName.Replace(",", "").Replace(".", "")) + "&commit=Find+Symbols");
         }
 
         /// <summary>
-        /// Merges the json data returned from <see cref="GetUriTickerSymbolLookup"/> into an 
+        /// Constructs a URI to use for getting balance sheet data by ticker symbol.
+        /// </summary>
+        /// <param name="tickerSymbol"></param>
+        /// <returns></returns>
+        public static Uri GetUriAnnualBalanceSheet(Ticker tickerSymbol)
+        {
+            return new Uri("http://finance.yahoo.com/q/bs?s=" + tickerSymbol.Symbol + "&annual");
+        }
+
+        /// <summary>
+        /// Merges the data returned from <see cref="GetUriAnnualBalanceSheet"/> into an 
+        /// instance of <see cref="PublicCorporation"/>
+        /// </summary>
+        /// <param name="webResponseBody"></param>
+        /// <param name="pc"></param>
+        /// <returns></returns>
+        public static bool TryMergeFinancialData(string webResponseBody, ref PublicCorporation pc)
+        {
+
+            var nfChardata = new YhooFinIncomeStmt();
+            var nfChardataRslts = nfChardata.ParseContent(webResponseBody);
+            if (nfChardataRslts == null || nfChardataRslts.Count <= 0)
+                return false;
+
+            pc.AnnualReports.Add(new Form10K
+            {
+                FinancialData =
+                    new FinancialData
+                    {
+                        FiscalYear = nfChardataRslts[0].FiscalYearEndAt,
+                        Assets =
+                            new Assets
+                            {
+                                Src = nfChardata.SourceUri.ToString(),
+                                TotalAssets = new Pecuniam(nfChardataRslts[0].TotalAssets),
+                                TotalLiabilities = new Pecuniam(nfChardataRslts[0].TotalLiabilities)
+                            }
+                    }
+            });
+
+            return true;
+        }
+
+        /// <summary>
+        /// Merges the data returned from <see cref="GetUriTickerSymbolLookup"/> into an 
         /// instance of <see cref="PublicCorporation"/>
         /// </summary>
         /// <param name="webResponseBody"></param>
@@ -88,58 +135,15 @@ namespace NoFuture.Rand.Com
         {
             try
             {
-                if (string.IsNullOrWhiteSpace(webResponseBody))
-                    return false;
-                var tempFile = Path.Combine(TempDirectories.AppData, Path.GetRandomFileName());
-                File.WriteAllText(tempFile, webResponseBody);
-                System.Threading.Thread.Sleep(Shared.Constants.ThreadSleepTime);
-
-                var antlrHtml = Tokens.AspNetParseTree.InvokeParse(tempFile);
-
-                var innerText = antlrHtml.CharData;
-
-                if (innerText.Count <= 0)
+                var myNfCdata = new BloombergSymbolSearch();
+                var myNfCdataRslts = myNfCdata.ParseContent(webResponseBody);
+                if (myNfCdataRslts == null)
                     return false;
 
-                var st =
-                    innerText.FindIndex(
-                        x => string.Equals(x.Trim(), "Symbol Lookup", StringComparison.OrdinalIgnoreCase));
-                var ed =
-                    innerText.FindIndex(
-                        x => string.Equals(x.Trim(), "Sponsored Link", StringComparison.OrdinalIgnoreCase));
-
-                if (st > ed)
-                    return false;
-
-                var targetData = innerText.Skip(st).Take(ed - st).ToList();
-                if (targetData.Count <= 0)
-                    return false;
-
-                if (targetData.Any(x => x.Contains(" no matches ")))
-                    return false;
-
-                st =
-                    targetData.FindIndex(
-                        x => string.Equals(x.Trim(), "Symbol", StringComparison.OrdinalIgnoreCase));
-
-                targetData = targetData.Skip(st).ToList();
-
-                var isDivisible = targetData.Count % 5 == 0;
-
-                if (!isDivisible)
-                    return false;
-
-                var rowCount = Math.Floor(targetData.Count / 5M);
-
-                if (rowCount <= 1)
-                    return false;
-
-                rowCount -= 1;
                 pc.TickerSymbols = new List<Ticker>();
-                for (var i = 1; i <= rowCount; i++)
+                foreach (var dd in myNfCdataRslts)
                 {
-                    var te = targetData.Skip(i * 5).Take(5).ToArray();
-                    pc.TickerSymbols.Add(new Ticker { Symbol = te[0], InstrumentType = te[3] });
+                    pc.TickerSymbols.Add(new Ticker { Symbol = dd.Symbol, InstrumentType = dd.InstrumentType });
                 }
 
                 return pc.TickerSymbols.Count > 0;
@@ -150,7 +154,7 @@ namespace NoFuture.Rand.Com
             }
         }
 
-        public override void GetXrefXmlData()
+        public override void LoadXrefXmlData()
         {
             var xrefXml = TreeData.XRefXml;
             if (xrefXml == null)

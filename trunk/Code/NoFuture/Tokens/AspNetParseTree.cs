@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Text;
 using System.Collections.Generic;
+using System.IO;
 using Antlr4.Runtime;
 using Antlr4.Runtime.Tree;
 using NoFuture.Shared;
@@ -375,6 +376,31 @@ namespace NoFuture.Tokens
 
             tr.Close();
             return results;
+        }
+
+        public static bool TryGetCdata(string webResponseText, Func<string, bool> filter, out string[] cdata)
+        {
+            cdata = null;
+            if (string.IsNullOrWhiteSpace(webResponseText))
+                return false;
+            var tempFile = Path.Combine(TempDirectories.AppData, Path.GetRandomFileName());
+            File.WriteAllText(tempFile, webResponseText);
+            System.Threading.Thread.Sleep(Constants.ThreadSleepTime);
+
+            var antlrHtml = InvokeParse(tempFile);
+
+            var innerText = antlrHtml.CharData;
+
+            if (innerText.Count <= 0)
+                return false;
+
+            cdata = antlrHtml.CharData.ToArray();
+
+            if (filter != null)
+            {
+                cdata = cdata.Where(filter).ToArray();
+            }
+            return cdata.Length > 0;
         }
     }
     
