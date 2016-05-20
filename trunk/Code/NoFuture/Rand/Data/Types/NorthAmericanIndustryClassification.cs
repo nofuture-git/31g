@@ -1,10 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
 using System.Xml;
-using System.Linq;
-using NoFuture.Rand.Com;
-using NoFuture.Shared;
 
 namespace NoFuture.Rand.Data.Types
 {

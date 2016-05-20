@@ -1,17 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using NoFuture.Rand.Data.Types;
 
 namespace NoFuture.Rand.Data.NfHtml
 {
-    public class BloombergSymbolSearch : INfCdata
+    public class BloombergSymbolSearch : INfDynData
     {
-        private readonly Uri _src = new Uri("http://www.bloomberg.com/markets/symbolsearch");
+        private readonly Uri _srcUri;
 
-        public Uri SourceUri { get { return _src; } }
-
-        public List<dynamic> ParseContent(string webResponseBody)
+        public BloombergSymbolSearch(Uri srcUri)
         {
+            _srcUri = srcUri;
+        }
+
+        public Uri SourceUri { get { return _srcUri; } }
+
+        public List<dynamic> ParseContent(object content)
+        {
+            var webResponseBody = content as string;
+            if (webResponseBody == null)
+                return null;
+
             string[] d = null;
             if (!Tokens.AspNetParseTree.TryGetCdata(webResponseBody, null, out d))
                 return null;

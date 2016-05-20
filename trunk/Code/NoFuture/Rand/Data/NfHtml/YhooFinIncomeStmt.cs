@@ -1,181 +1,121 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace NoFuture.Rand.Data.NfHtml
 {
-    public class YhooFinIncomeStmt : INfCdata
+    public class YhooFinIncomeStmt : YhooFinBase
     {
-        public Uri SourceUri { get { return new Uri("http://finance.yahoo.com"); } }
+        public YhooFinIncomeStmt(Uri srcUri) :base(srcUri) { }
 
-        public List<dynamic> ParseContent(string webResponseBody)
+        public override List<dynamic> ParseContent(object content)
         {
-            Func<string, bool> filter = s => s.Trim().Length > 1 && s.Trim() != "&nbsp;";
-
-            string[] d = null;
-            if (!Tokens.AspNetParseTree.TryGetCdata(webResponseBody, filter, out d))
-                return null;
-            var innerText = d.ToList();
-            if (innerText.Count <= 0)
+            var webResponseBody = content as string;
+            if (webResponseBody == null)
                 return null;
 
-            var st =
-                innerText.FindIndex(
-                    x => string.Equals(x.Trim(), "Period Ending", StringComparison.OrdinalIgnoreCase));
-            var ed =
-                innerText.FindIndex(
-                    x => string.Equals(x.Trim(), "Net Tangible Assets", StringComparison.OrdinalIgnoreCase));
-
-            if (st < 0 || ed < 0 || st > ed)
+            if (!GetDtsAndDictionary(webResponseBody, "Period Ending", "Net Income Applicable To Common Shares"))
                 return null;
 
-            var targetData =
-                innerText.Skip(st).Take(ed + 4 - st).Select(x => x.Replace("&nbsp;", string.Empty)).ToList();
-            //we want the pattern of either text-date-date-date or text-number-number-number
-            var outDt00 = DateTime.MinValue;
-            var outDt01 = DateTime.MinValue;
-            var outDt02 = DateTime.MinValue;
-            Func<List<string>, int, bool> isTxtDtDtDt =
-                (list, i) =>
-                    list.Count > i && char.IsLetter(list[i].ToCharArray().First()) &&
-                    DateTime.TryParse(list[i + 1], out outDt00) &&
-                    DateTime.TryParse(list[i + 2], out outDt01) &&
-                    DateTime.TryParse(list[i + 3], out outDt02);
-            var intOut00 = 0;
-            var intOut01 = 0;
-            var intOut02 = 0;
-            Func<List<string>, int, bool> isTxtIntIntInt =
-                (list, i) =>
-                    list.Count > i && char.IsLetter(list[i].ToCharArray().First()) &&
-                    int.TryParse(list[i + 1].Replace(",", string.Empty).Replace("(", "-").Replace(")", string.Empty),
-                        out intOut00) &&
-                    int.TryParse(list[i + 2].Replace(",", string.Empty).Replace("(", "-").Replace(")", string.Empty),
-                        out intOut01) &&
-                    int.TryParse(list[i + 3].Replace(",", string.Empty).Replace("(", "-").Replace(")", string.Empty),
-                        out intOut02);
-
-            //move text list into structured data
-            DateTime[] dts = { outDt00, outDt01, outDt02 };
-            var dictNums = new Dictionary<string, int[]>();
-
-            for (var i = 0; i < targetData.Count; i++)
-            {
-                if (isTxtDtDtDt(targetData, i))
-                    dts = new []{outDt00, outDt01, outDt02};
-                else if (isTxtIntIntInt(targetData, i) && !dictNums.ContainsKey(targetData[i]))
-                    dictNums.Add(targetData[i], new[]
-                    {
-                        intOut00,
-                        intOut01,
-                        intOut02
-                    });
-            }
-          
             var nfCdataOut = new List<dynamic>();
 
             for (var i = 0; i < 3; i++)
             {
                 nfCdataOut.Add(new
                 {
-                    FiscalYearEndAt = dts[i].Year,
-                    CashAndCashEquivalents =
-                        dictNums.ContainsKey("Cash And Cash Equivalents") ? dictNums["Cash And Cash Equivalents"][i] : 0
+                    FiscalYearEndAt = Dts[i].Year
                     ,
-                    ShortTermInvestments =
-                        dictNums.ContainsKey("Short Term Investments") ? dictNums["Short Term Investments"][i] : 0
+                    TotalRevenue = DictionaryNums.ContainsKey("Total Revenue") ? DictionaryNums["Total Revenue"][i] : 0
                     ,
-                    NetReceivables = dictNums.ContainsKey("Net Receivables") ? dictNums["Net Receivables"][i] : 0
+                    CostofRevenue =
+                        DictionaryNums.ContainsKey("Cost of Revenue") ? DictionaryNums["Cost of Revenue"][i] : 0
                     ,
-                    OtherCurrentAssets =
-                        dictNums.ContainsKey("Other Current Assets") ? dictNums["Other Current Assets"][i] : 0
+                    GrossProfit = DictionaryNums.ContainsKey("Gross Profit") ? DictionaryNums["Gross Profit"][i] : 0
                     ,
-                    TotalCurrentAssets =
-                        dictNums.ContainsKey("Total Current Assets") ? dictNums["Total Current Assets"][i] : 0
-                    ,
-                    LongTermInvestments =
-                        dictNums.ContainsKey("Long Term Investments") ? dictNums["Long Term Investments"][i] : 0
-                    ,
-                    PropertyPlantandEquipment =
-                        dictNums.ContainsKey("Property Plant and Equipment")
-                            ? dictNums["Property Plant and Equipment"][i]
+                    ResearchDevelopment =
+                        DictionaryNums.ContainsKey("Research Development")
+                            ? DictionaryNums["Research Development"][i]
                             : 0
                     ,
-                    Goodwill = dictNums.ContainsKey("Goodwill") ? dictNums["Goodwill"][i] : 0
-                    ,
-                    IntangibleAssets = dictNums.ContainsKey("Intangible Assets") ? dictNums["Intangible Assets"][i] : 0
-                    ,
-                    AccumulatedAmortization =
-                        dictNums.ContainsKey("Accumulated Amortization") ? dictNums["Accumulated Amortization"][i] : 0
-                    ,
-                    OtherAssets = dictNums.ContainsKey("Other Assets") ? dictNums["Other Assets"][i] : 0
-                    ,
-                    DeferredLongTermAssetCharges =
-                        dictNums.ContainsKey("Deferred Long Term Asset Charges")
-                            ? dictNums["Deferred Long Term Asset Charges"][i]
+                    SellingGeneralandAdministrative =
+                        DictionaryNums.ContainsKey("Selling General and Administrative")
+                            ? DictionaryNums["Selling General and Administrative"][i]
                             : 0
                     ,
-                    TotalAssets = dictNums.ContainsKey("Total Assets") ? dictNums["Total Assets"][i] : 0
+                    NonRecurring = DictionaryNums.ContainsKey("Non Recurring") ? DictionaryNums["Non Recurring"][i] : 0
                     ,
-                    AccountsPayable = dictNums.ContainsKey("Accounts Payable") ? dictNums["Accounts Payable"][i] : 0
+                    Others = DictionaryNums.ContainsKey("Others") ? DictionaryNums["Others"][i] : 0
                     ,
-                    ShortCurrentLongTermDebt =
-                        dictNums.ContainsKey("Short/Current Long Term Debt")
-                            ? dictNums["Short/Current Long Term Debt"][i]
+                    TotalOperatingExpenses =
+                        DictionaryNums.ContainsKey("Total Operating Expenses")
+                            ? DictionaryNums["Total Operating Expenses"][i]
                             : 0
                     ,
-                    OtherCurrentLiabilities =
-                        dictNums.ContainsKey("Other Current Liabilities") ? dictNums["Other Current Liabilities"][i] : 0
-                    ,
-                    TotalCurrentLiabilities =
-                        dictNums.ContainsKey("Total Current Liabilities") ? dictNums["Total Current Liabilities"][i] : 0
-                    ,
-                    LongTermDebt = dictNums.ContainsKey("Long Term Debt") ? dictNums["Long Term Debt"][i] : 0
-                    ,
-                    OtherLiabilities = dictNums.ContainsKey("Other Liabilities") ? dictNums["Other Liabilities"][i] : 0
-                    ,
-                    DeferredLongTermLiabilityCharges =
-                        dictNums.ContainsKey("Deferred Long Term Liability Charges")
-                            ? dictNums["Deferred Long Term Liability Charges"][i]
+                    OperatingIncomeorLoss =
+                        DictionaryNums.ContainsKey("Operating Income or Loss")
+                            ? DictionaryNums["Operating Income or Loss"][i]
                             : 0
                     ,
-                    MinorityInterest = dictNums.ContainsKey("Minority Interest") ? dictNums["Minority Interest"][i] : 0
-                    ,
-                    NegativeGoodwill = dictNums.ContainsKey("Negative Goodwill") ? dictNums["Negative Goodwill"][i] : 0
-                    ,
-                    TotalLiabilities = dictNums.ContainsKey("Total Liabilities") ? dictNums["Total Liabilities"][i] : 0
-                    ,
-                    MiscStocksOptionsWarrants =
-                        dictNums.ContainsKey("Misc Stocks Options Warrants")
-                            ? dictNums["Misc Stocks Options Warrants"][i]
+                    TotalOtherIncomeExpensesNet =
+                        DictionaryNums.ContainsKey("Total Other Income/Expenses Net")
+                            ? DictionaryNums["Total Other Income/Expenses Net"][i]
                             : 0
                     ,
-                    RedeemablePreferredStock =
-                        dictNums.ContainsKey("Redeemable Preferred Stock")
-                            ? dictNums["Redeemable Preferred Stock"][i]
+                    EarningsBeforeInterestAndTaxes =
+                        DictionaryNums.ContainsKey("Earnings Before Interest And Taxes")
+                            ? DictionaryNums["Earnings Before Interest And Taxes"][i]
                             : 0
                     ,
-                    PreferredStock = dictNums.ContainsKey("Preferred Stock") ? dictNums["Preferred Stock"][i] : 0
+                    InterestExpense =
+                        DictionaryNums.ContainsKey("Interest Expense") ? DictionaryNums["Interest Expense"][i] : 0
                     ,
-                    CommonStock = dictNums.ContainsKey("Common Stock") ? dictNums["Common Stock"][i] : 0
+                    IncomeBeforeTax =
+                        DictionaryNums.ContainsKey("Income Before Tax") ? DictionaryNums["Income Before Tax"][i] : 0
                     ,
-                    RetainedEarnings = dictNums.ContainsKey("Retained Earnings") ? dictNums["Retained Earnings"][i] : 0
+                    IncomeTaxExpense =
+                        DictionaryNums.ContainsKey("Income Tax Expense") ? DictionaryNums["Income Tax Expense"][i] : 0
                     ,
-                    TreasuryStock = dictNums.ContainsKey("Treasury Stock") ? dictNums["Treasury Stock"][i] : 0
+                    MinorityInterest =
+                        DictionaryNums.ContainsKey("Minority Interest") ? DictionaryNums["Minority Interest"][i] : 0
                     ,
-                    CapitalSurplus = dictNums.ContainsKey("Capital Surplus") ? dictNums["Capital Surplus"][i] : 0
+                    NetIncomeFromContinuingOps =
+                        DictionaryNums.ContainsKey("Net Income From Continuing Ops ")
+                            ? DictionaryNums["Net Income From Continuing Ops "][i]
+                            : 0
                     ,
-                    OtherStockholderEquity =
-                        dictNums.ContainsKey("Other Stockholder Equity") ? dictNums["Other Stockholder Equity"][i] : 0
+                    NonrecurringEvents =
+                        DictionaryNums.ContainsKey("Non-recurring Events")
+                            ? DictionaryNums["Non-recurring Events"][i]
+                            : 0
                     ,
-                    TotalStockholderEquity =
-                        dictNums.ContainsKey("Total Stockholder Equity") ? dictNums["Total Stockholder Equity"][i] : 0
+                    DiscontinuedOperations =
+                        DictionaryNums.ContainsKey("Discontinued Operations")
+                            ? DictionaryNums["Discontinued Operations"][i]
+                            : 0
                     ,
-                    NetTangibleAssets =
-                        dictNums.ContainsKey("Net Tangible Assets") ? dictNums["Net Tangible Assets"][i] : 0
+                    ExtraordinaryItems =
+                        DictionaryNums.ContainsKey("Extraordinary Items") ? DictionaryNums["Extraordinary Items"][i] : 0
+                    ,
+                    EffectOfAccountingChanges =
+                        DictionaryNums.ContainsKey("Effect Of Accounting Changes")
+                            ? DictionaryNums["Effect Of Accounting Changes"][i]
+                            : 0
+                    ,
+                    OtherItems = DictionaryNums.ContainsKey("Other Items") ? DictionaryNums["Other Items"][i] : 0
+                    ,
+                    PreferredStockAndOtherAdjustments =
+                        DictionaryNums.ContainsKey("Preferred Stock And Other Adjustments")
+                            ? DictionaryNums["Preferred Stock And Other Adjustments"][i]
+                            : 0
+                    ,
+                    NetIncome = DictionaryNums.ContainsKey("Net Income") ? DictionaryNums["Net Income"][i] : 0
+                    ,
+                    NetIncomeApplicableToCommonShares =
+                        DictionaryNums.ContainsKey("Net Income Applicable To Common Shares")
+                            ? DictionaryNums["Net Income Applicable To Common Shares"][i]
+                            : 0
                 });
             }
             return nfCdataOut;
-
         }
     }
 }

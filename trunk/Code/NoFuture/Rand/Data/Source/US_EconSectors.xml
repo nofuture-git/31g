@@ -1164,7 +1164,7 @@
                 <sic-code value="5932" sec-results="False" />
               </ternary-sector>
               <ternary-sector ID="4539" Description="Other Miscellaneous Store Retailers ">
-                <sic-code value="5271" sec-results="True" />
+                <sic-code value="5271" sec-results="False" />
                 <sic-code value="5993" sec-results="False" />
               </ternary-sector>
             </secondary-sector>

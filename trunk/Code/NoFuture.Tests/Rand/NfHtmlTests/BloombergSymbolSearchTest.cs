@@ -832,7 +832,7 @@ BLOOMBERG.gpt.render({""ad_description"":""blp.persfin/invest//ticker//lookup"",
         [TestMethod]
         public void TestMethod1()
         {
-            var testSubject = new NoFuture.Rand.Data.NfHtml.BloombergSymbolSearch();
+            var testSubject = new NoFuture.Rand.Data.NfHtml.BloombergSymbolSearch(null);
             var testResult = testSubject.ParseContent(_testData);
 
             Assert.IsNotNull(testResult);

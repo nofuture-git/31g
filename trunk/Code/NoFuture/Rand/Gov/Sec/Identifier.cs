@@ -27,13 +27,14 @@ namespace NoFuture.Rand.Gov.Sec
         public Uri HtmlFormLink { get; set; }
         public Uri InteractiveFormLink { get; set; }
         public Uri XbrlZipLink { get; set; }
+
         /// <summary>
         /// Reports prefixed with <see cref="NotificationOfInabilityToTimelyFile"/> will 
         /// have this set to true.
         /// </summary>
         public bool IsLate { get; set; }
 
-        public string AccessionNumber { get; set; }
+        public string AccessionNumber { get { return Value; } set { Value = value; } }
 
         public string FormattedAccessionNumber
         {
@@ -65,7 +66,7 @@ namespace NoFuture.Rand.Gov.Sec
         public Form10K() : base("10-K") { }
         public override string Value { get; set; }
         public DateTime FilingDate { get; set; }
-        public override FederalStatute Statute { get { return new SecuritiesAct(); } }
+        public override FederalStatute Statute { get { return new SecuritiesExchangeAct(); } }
         public FinancialData FinancialData { get; set; }
         public SummaryOfBusiness Summary { get; set; }
     }

@@ -132,8 +132,10 @@ namespace NoFuture.Rand.Gov.Sec
                 //this will be an id while looping
                 var corpName = ParseNameFromTitle(titleNode.InnerText);
 
-                var corp = corporations.Any(x => string.Equals(x.Name, corpName, StringComparison.OrdinalIgnoreCase)) ? corporations.First(
-                    x => string.Equals(x.Name, corpName, StringComparison.OrdinalIgnoreCase)) : new PublicCorporation();
+                var corp = corporations.Any(x => string.Equals(x.Name, corpName, StringComparison.OrdinalIgnoreCase))
+                    ? corporations.First(
+                        x => string.Equals(x.Name, corpName, StringComparison.OrdinalIgnoreCase))
+                    : new PublicCorporation();
 
                 corp.Name = corpName;
 
@@ -144,7 +146,8 @@ namespace NoFuture.Rand.Gov.Sec
                     form10K.IsLate = true;
 
                 DateTime parseRslt;
-                if (form10KDtNode != null && !string.IsNullOrWhiteSpace(form10KDtNode.InnerText) && DateTime.TryParse(form10KDtNode.InnerText, out parseRslt))
+                if (form10KDtNode != null && !string.IsNullOrWhiteSpace(form10KDtNode.InnerText) &&
+                    DateTime.TryParse(form10KDtNode.InnerText, out parseRslt))
                 {
                     form10K.FilingDate = parseRslt;
                 }

@@ -17,6 +17,7 @@ namespace NoFuture.Rand.Gov
         }
         public abstract string Name { get; }
         public abstract StatuteType Type { get; }
+        public abstract int Year { get; }
     }
 
     [Serializable]
@@ -54,6 +55,8 @@ namespace NoFuture.Rand.Gov
         {
             get { return "Dodd-Frank Act of 2010"; }
         }
+
+        public override int Year { get { return 2010; } }
     }
     [Serializable]
     public class InvestmentAdvisorsAct : FederalStatute
@@ -62,6 +65,7 @@ namespace NoFuture.Rand.Gov
         {
             get { return "Investment Advisers Act of 1940"; }
         }
+        public override int Year { get { return 1940; } }
     }
     [Serializable]
     public class InvestmentCompanyAct : FederalStatute
@@ -70,6 +74,7 @@ namespace NoFuture.Rand.Gov
         {
             get { return "Investment Company Act of 1940"; }
         }
+        public override int Year { get { return 1940; } }
     }
     [Serializable]
     public class JOBSAct : FederalStatute
@@ -78,6 +83,7 @@ namespace NoFuture.Rand.Gov
         {
             get { return "JOBS Act of 2012"; }
         }
+        public override int Year { get { return 2012; } }
     }
     [Serializable]
     public class SarbanesOxley : FederalStatute
@@ -86,6 +92,7 @@ namespace NoFuture.Rand.Gov
         {
             get { return "Sarbanes-Oxley Act of 2002"; }
         }
+        public override int Year { get { return 2002; } }
     }
     [Serializable]
     public class SecuritiesAct : FederalStatute
@@ -94,6 +101,7 @@ namespace NoFuture.Rand.Gov
         {
             get { return "Securities Act of 1933"; }
         }
+        public override int Year { get { return 1933; } }
     }
     [Serializable]
     public class SecuritiesExchangeAct : FederalStatute
@@ -102,6 +110,7 @@ namespace NoFuture.Rand.Gov
         {
             get { return "Securities Exchange Act of 1934"; }
         }
+        public override int Year { get { return 1934; } }
     }
     [Serializable]
     public class TrustIndentureAct : FederalStatute
@@ -110,5 +119,6 @@ namespace NoFuture.Rand.Gov
         {
             get { return "Trust Indenture Act of 1939"; }
         }
+        public override int Year { get { return 1939; } }
     }
 }

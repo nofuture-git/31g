@@ -1,5 +1,8 @@
-﻿namespace NoFuture.Rand.Data.Types
+﻿using System;
+
+namespace NoFuture.Rand.Data.Types
 {
+    [Serializable]
     public class FinancialData
     {
         public int FiscalYear { get; set; }
@@ -7,7 +10,7 @@
         public Assets Assets { get; set; }
         public int NumOfShares { get; set; }
     }
-
+    [Serializable]
     public class Assets
     {
         public string Src { get; set; }
@@ -16,23 +19,15 @@
         public Pecuniam TotalAssets { get; set; }
         public Pecuniam TotalLiabilities { get; set; }
     }
-
+    [Serializable]
     public class Income
     {
+        public string Src { get; set; }
         public Pecuniam Revenue { get; set; }
-        public Pecuniam OperatingCost { get; set; }
-        public Pecuniam Tax { get; set; }
-        public Pecuniam OperatingIncome
-        {
-            get { return new Pecuniam(Revenue.Amount - OperatingCost.Amount); }
-        }
-
-        public Pecuniam NetIncome
-        {
-            get { return new Pecuniam(OperatingIncome.Amount - Tax.Amount); }
-        }
+        public Pecuniam OperatingIncome { get; set; }
+        public Pecuniam NetIncome { get; set; }
     }
-
+    [Serializable]
     public class SummaryOfBusiness
     {
         public string PlainText { get; set; }

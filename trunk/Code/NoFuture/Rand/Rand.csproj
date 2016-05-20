@@ -55,9 +55,12 @@
     <Compile Include="CityArea.cs" />
     <Compile Include="Com\FinancialFirm.cs" />
     <Compile Include="Data\NfHtml\BloombergSymbolSearch.cs" />
-    <Compile Include="Data\NfHtml\INfCdata.cs" />
+    <Compile Include="Data\NfHtml\YhooFinBalanceSheet.cs" />
+    <Compile Include="Data\NfHtml\YhooFinBase.cs" />
     <Compile Include="Data\NfHtml\YhooFinIncomeStmt.cs" />
+    <Compile Include="Data\NfHttp\YhooFinSymbolLookup.cs" />
     <Compile Include="Data\Types\JsonTypes.cs" />
+    <Compile Include="Data\Types\INfDynData.cs" />
     <Compile Include="Data\Types\NorthAmericanIndustryClassification.cs" />
     <Compile Include="Com\PublicCorporation.cs" />
     <Compile Include="Data\Types\StandardIndustryClassification.cs" />
