@@ -4,7 +4,9 @@ using System.Text;
 using System.Collections.Generic;
 using Antlr4.Runtime;
 using Antlr4.Runtime.Tree;
+using NoFuture.Shared;
 using NoFuture.Antlr.Grammers;
+using NoFuture.Util;
 
 namespace NoFuture.Tokens
 {
@@ -13,29 +15,22 @@ namespace NoFuture.Tokens
         private readonly Dictionary<string, List<string>> _distinctTags = new Dictionary<string, List<string>>();
         private readonly List<String> _scriptBodies = new List<string>();
         private readonly List<String> _scriptLets = new List<string>();
-        private List<string> _htmlComments = new List<string>();
+        private readonly List<string> _styleBodies = new List<string>();
+        private readonly List<string> _htmlComments = new List<string>();
+        private readonly List<string> _dtdNodes = new List<string>();
+        private readonly List<string> _emptyAttrs = new List<string>();
+
+        private readonly List<string> _charData = new List<string>();
 
         public String FullContent { get; set; }
-
-        public List<String> ScriptBodies
-        {
-            get { return _scriptBodies; }
-        }
-
-        public List<String> ScriptLets
-        {
-            get { return _scriptLets; }
-        }
-
-        public Dictionary<string, List<string>> DistinctTags
-        {
-            get { return _distinctTags; }
-        }
-
-        public List<String> HtmlComments
-        {
-            get { return _htmlComments; }
-        }
+        public List<String> ScriptBodies { get { return _scriptBodies; } }
+        public List<String> ScriptLets { get { return _scriptLets; } }
+        public List<string> EmptyAttrs { get { return _emptyAttrs; } }
+        public List<string> StyleBodies { get { return _styleBodies; } }
+        public List<string> DtdNodes { get { return _dtdNodes; } }
+        public Dictionary<string, List<string>> DistinctTags { get { return _distinctTags; } }
+        public List<String> HtmlComments { get { return _htmlComments; } }
+        public List<string> CharData { get { return _charData;} }
 
     }
     public class AspNetParseTree : HTMLParserBaseListener
@@ -89,6 +84,36 @@ namespace NoFuture.Tokens
             _results.ScriptBodies.Add(scriptBodyText);
         }
 
+        public override void ExitStyle(HTMLParser.StyleContext ctx)
+        {
+            const string SHORT_BODY = "</>";
+            const string BODY = "</style>";
+            var styleBody = ctx.STYLE_BODY() ?? ctx.STYLE_SHORT_BODY();
+            if (styleBody == null)
+                return;
+            var styleBodyText = styleBody.GetText();
+            if (string.IsNullOrWhiteSpace(styleBodyText))
+                return;
+            if (styleBodyText.EndsWith(SHORT_BODY))
+                styleBodyText = styleBodyText.Substring(0, styleBodyText.Length - SHORT_BODY.Length);
+            if (styleBodyText.EndsWith(BODY))
+                styleBodyText = styleBodyText.Substring(0, styleBodyText.Length - BODY.Length);
+
+            styleBodyText = styleBodyText.Trim();
+            _results.StyleBodies.Add(styleBodyText);
+        }
+
+        public override void ExitDtd(HTMLParser.DtdContext context)
+        {
+            var dtdNode = context.DTD();
+            if (dtdNode == null)
+                return;
+            var dtdNodeText = dtdNode.GetText();
+            if (string.IsNullOrWhiteSpace(dtdNodeText))
+                return;
+            _results.DtdNodes.Add(dtdNodeText);
+        }
+
         public override void ExitHtmlAttributeValue(HTMLParser.HtmlAttributeValueContext ctx)
         {
             var attrValue = ctx.ATTVALUE_VALUE();
@@ -98,7 +123,7 @@ namespace NoFuture.Tokens
             }
 
             var attrValueText = attrValue.GetText();
-            MyTreeProperty.Put(ctx, attrValueText);
+            FilteredPut(ctx, attrValueText);
         }
 
         public override void ExitHtmlAttributeName(HTMLParser.HtmlAttributeNameContext ctx)
@@ -110,7 +135,7 @@ namespace NoFuture.Tokens
             }
 
             var attrNameText = attrName.GetText();
-            MyTreeProperty.Put(ctx, attrNameText);
+            FilteredPut(ctx, attrNameText);
         }
 
         public override void ExitAssignedAttr(HTMLParser.AssignedAttrContext ctx)
@@ -138,8 +163,16 @@ namespace NoFuture.Tokens
             }
 
             //TODO swap attributes name & values here
-
-            MyTreeProperty.Put(ctx, attrNameText + "=" + attrValueText);
+            if (attrValueText.Length <= 2)
+                FilteredPut(ctx, attrNameText + "=" + attrValueText);
+            else
+            {
+                var openQuot = attrValueText.Substring(0, 1);
+                var closeQuot = attrValueText.Substring(attrValueText.Length - 1, 1);
+                var attrInnerValue =
+                    attrValueText.Substring(1, attrValueText.Length - 2).EscapeString(EscapeStringType.XML);
+                FilteredPut(ctx, attrNameText + "=" + openQuot + attrInnerValue + closeQuot);
+            }
         }
 
         public override void ExitEmptyAttr(HTMLParser.EmptyAttrContext ctx)
@@ -156,8 +189,10 @@ namespace NoFuture.Tokens
             }
 
             //TODO swap attributes name with name-value pair here
+            if(_results.EmptyAttrs.All(x => attrNameText != x))
+                _results.EmptyAttrs.Add(attrNameText);
 
-            MyTreeProperty.Put(ctx, attrNameText);
+            FilteredPut(ctx, attrNameText + "='true'");
         }
 
         public override void ExitHtmlContent(HTMLParser.HtmlContentContext ctx)
@@ -171,8 +206,8 @@ namespace NoFuture.Tokens
 				}
 				textContent.Append(elemText);
 			}
-			
-			MyTreeProperty.Put(ctx, textContent.ToString());
+
+            FilteredPut(ctx, textContent.ToString());
         }
 
         public override void ExitPairElement(HTMLParser.PairElementContext ctx)
@@ -201,10 +236,9 @@ namespace NoFuture.Tokens
                 _results.DistinctTags.Add(tagNameText, new List<string>());
             }
 
-            var tagContents = new List<string>();
-            tagContents.Add(tagNameText);
-			
-			foreach(var attrCtx in ctx.htmlAttribute()){
+            var tagContents = new List<string> {tagNameText};
+
+            foreach(var attrCtx in ctx.htmlAttribute()){
 				var attrText = MyTreeProperty.Get(attrCtx);
 				if(string.IsNullOrEmpty(attrText)){
 					continue;
@@ -233,8 +267,8 @@ namespace NoFuture.Tokens
 			textContent.Append(tagNameText);
 			textContent.Append(">");
 			textContent.Append("\n");
-			
-			MyTreeProperty.Put(ctx, textContent.ToString());
+
+            FilteredPut(ctx, textContent.ToString());
         }
 
         public override void ExitEmptyElement(HTMLParser.EmptyElementContext ctx)
@@ -263,10 +297,9 @@ namespace NoFuture.Tokens
                 _results.DistinctTags.Add(tagNameText, new List<string>());
             }
 
-            var tagContents = new List<string>();
-            tagContents.Add(tagNameText);
-			
-			foreach(var attrCtx in ctx.htmlAttribute()){
+            var tagContents = new List<string> {tagNameText};
+
+            foreach(var attrCtx in ctx.htmlAttribute()){
 				var attrText = MyTreeProperty.Get(attrCtx);
 				if(string.IsNullOrEmpty(attrText)){
 					continue;
@@ -281,8 +314,14 @@ namespace NoFuture.Tokens
             textContent.Append(string.Join(" ", tagContents));
 			textContent.Append("/>");
 			textContent.Append("\n");
-			
-			MyTreeProperty.Put(ctx, textContent.ToString());
+
+            FilteredPut(ctx, textContent.ToString());
+        }
+
+        public override void ExitHtmlChardata(HTMLParser.HtmlChardataContext context)
+        {
+            if(!string.IsNullOrWhiteSpace(context.GetText()))
+                _results.CharData.Add(context.GetText().Trim());
         }
 
         public override void ExitHtmlDocument(HTMLParser.HtmlDocumentContext ctx)
@@ -297,7 +336,6 @@ namespace NoFuture.Tokens
 				
 				textContent.Append(markup);
 			}
-			
             _results.FullContent = textContent.ToString();
         }
 
@@ -305,7 +343,13 @@ namespace NoFuture.Tokens
         {
             var topNodeCtx = ctx.htmlElement();
             var expectedFullMarkup = MyTreeProperty.Get(topNodeCtx);
-            MyTreeProperty.Put(ctx, expectedFullMarkup);
+            FilteredPut(ctx, expectedFullMarkup);
+        }
+
+        protected internal void FilteredPut(ParserRuleContext ctx, string val)
+        {
+            if(MyTreeProperty.Get(ctx) == null)
+                MyTreeProperty.Put(ctx, val);
         }
 
         public static HtmlParseResults InvokeParse(string fileName)

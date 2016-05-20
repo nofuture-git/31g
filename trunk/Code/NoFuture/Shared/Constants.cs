@@ -246,6 +246,7 @@ namespace NoFuture.Shared
         UNICODE,
         REGEX,
         HTML,
+        XML,
         BLANK
     }
 

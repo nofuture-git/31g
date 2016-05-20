@@ -18,6 +18,8 @@ namespace NoFuture.Util
     public class Net
     {
         [EditorBrowsable(EditorBrowsableState.Never)]
+        private static Tuple<char, string>[] _xmlEscStrings;
+        [EditorBrowsable(EditorBrowsableState.Never)]
         private static Tuple<int, string>[] _htmlEscStrings;
         [EditorBrowsable(EditorBrowsableState.Never)]
         private static Dictionary<Tuple<string, string>, int> _tcpPorts;
@@ -414,6 +416,26 @@ namespace NoFuture.Util
                                "TRACE",
                                "CONNECT"
                            };
+            }
+        }
+
+        /// <summary>
+        /// Gets the five reserved chars of XML
+        /// </summary>
+        public static Tuple<char, string>[] XmlEscStrings
+        {
+            get
+            {
+                if (_xmlEscStrings == null)
+                    _xmlEscStrings = new[]
+                    {
+                        new Tuple<char, string>('<', "&lt;"),
+                        new Tuple<char, string>('>', "&gt;"),
+                        new Tuple<char, string>('&', "&amp;"),
+                        new Tuple<char, string>('"', "&quot;"),
+                        new Tuple<char, string>('\'', "&apos;")
+                    };
+                return _xmlEscStrings;
             }
         }
 

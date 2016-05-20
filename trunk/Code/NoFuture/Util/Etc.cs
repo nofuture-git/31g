@@ -206,10 +206,13 @@ namespace NoFuture.Util
         /// ]]>
         /// </example>
         /// <returns></returns>
-        public static string EscapeString(string value, EscapeStringType escapeType = EscapeStringType.REGEX)
+        public static string EscapeString(this string value, EscapeStringType escapeType = EscapeStringType.REGEX)
         {
             var data = Encoding.GetEncoding("ISO-8859-1").GetBytes(value);
             var dataOut = new StringBuilder();
+
+            if (string.IsNullOrEmpty(value))
+                return string.Empty;
 
             switch (escapeType)
             {
@@ -252,6 +255,25 @@ namespace NoFuture.Util
                             dataOut.Append(htmlEsc.First(t => t.Item1 == dex).Item2);
                         else
                             dataOut.AppendFormat("&#{0};", dex);
+                    }
+                    break;
+                case EscapeStringType.XML:
+                    //turn any existing esc-seq back into char literals
+                    var xmlEsc = Net.XmlEscStrings;
+                    foreach (var t in xmlEsc)
+                    {
+                        if (value.Contains(t.Item2))
+                            value = value.Replace(t.Item2, t.Item1.ToString());
+                    }
+
+                    var chars = value.ToCharArray();
+                    
+                    foreach (var c in chars)
+                    {
+                        if (xmlEsc.Select(x => x.Item1).Contains(c))
+                            dataOut.Append(xmlEsc.First(x => x.Item1 == c).Item2);
+                        else
+                            dataOut.Append(c);
                     }
                     break;
                 case EscapeStringType.BLANK:

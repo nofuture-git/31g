@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Xml;
@@ -42,11 +43,6 @@ namespace NoFuture.Rand.Com
     [Serializable]
     public class PublicCorporation : Firm
     {
-        #region constants
-        internal const string TickerSearchStringEnclosure = "YAHOO.Finance.SymbolSuggest.ssCallback";
-
-        #endregion
-
         #region fields
         private readonly List<Gov.Sec.Form10K> _annualReports = new List<Gov.Sec.Form10K>();
         #endregion
@@ -90,42 +86,62 @@ namespace NoFuture.Rand.Com
         /// <returns></returns>
         public static bool TryMergeTickerLookup(string webResponseBody, ref PublicCorporation pc)
         {
-            throw new NotImplementedException("the older use of 'yimg.com' has stopped working and " +
-                                              "a new implementation using a WebDriver and bloomberg.com " +
-                                              "needs to be coded.");
             try
             {
-                //https://w3c.github.io/webdriver/webdriver-spec.html
                 if (string.IsNullOrWhiteSpace(webResponseBody))
                     return false;
-                if (webResponseBody.StartsWith(TickerSearchStringEnclosure))
-                    webResponseBody = webResponseBody.Replace(TickerSearchStringEnclosure, string.Empty);
+                var tempFile = Path.Combine(TempDirectories.AppData, Path.GetRandomFileName());
+                File.WriteAllText(tempFile, webResponseBody);
+                System.Threading.Thread.Sleep(Shared.Constants.ThreadSleepTime);
 
-                if (webResponseBody.StartsWith("("))
-                    webResponseBody = webResponseBody.Substring(1, webResponseBody.Length - 1);
-                if (webResponseBody.EndsWith(")"))
-                    webResponseBody = webResponseBody.Substring(0, webResponseBody.Length - 1);
-                YahooTickerResultSet yrs;
-                var data = Encoding.UTF8.GetBytes(webResponseBody);
-                var jsonSerializer = new DataContractJsonSerializer(typeof(YahooTickerResultSet));
-                using (var ms = new MemoryStream(data))
-                {
-                    yrs = (YahooTickerResultSet)jsonSerializer.ReadObject(ms);
-                }
+                var antlrHtml = Tokens.AspNetParseTree.InvokeParse(tempFile);
 
-                if (yrs == null || yrs.ResultSet == null || yrs.ResultSet.Result == null || yrs.ResultSet.Result.Length <= 0)
+                var innerText = antlrHtml.CharData;
+
+                if (innerText.Count <= 0)
                     return false;
 
-                foreach (var sym in yrs.ResultSet.Result)
+                var st =
+                    innerText.FindIndex(
+                        x => string.Equals(x.Trim(), "Symbol Lookup", StringComparison.OrdinalIgnoreCase));
+                var ed =
+                    innerText.FindIndex(
+                        x => string.Equals(x.Trim(), "Sponsored Link", StringComparison.OrdinalIgnoreCase));
+
+                if (st > ed)
+                    return false;
+
+                var targetData = innerText.Skip(st).Take(ed - st).ToList();
+                if (targetData.Count <= 0)
+                    return false;
+
+                if (targetData.Any(x => x.Contains(" no matches ")))
+                    return false;
+
+                st =
+                    targetData.FindIndex(
+                        x => string.Equals(x.Trim(), "Symbol", StringComparison.OrdinalIgnoreCase));
+
+                targetData = targetData.Skip(st).ToList();
+
+                var isDivisible = targetData.Count % 5 == 0;
+
+                if (!isDivisible)
+                    return false;
+
+                var rowCount = Math.Floor(targetData.Count / 5M);
+
+                if (rowCount <= 1)
+                    return false;
+
+                rowCount -= 1;
+                pc.TickerSymbols = new List<Ticker>();
+                for (var i = 1; i <= rowCount; i++)
                 {
-                    pc.TickerSymbols.Add(new Ticker
-                    {
-                        Exchange = sym.exch,
-                        Symbol = sym.symbol,
-                        InstrumentType = sym.typeDisp
-                    });
+                    var te = targetData.Skip(i * 5).Take(5).ToArray();
+                    pc.TickerSymbols.Add(new Ticker { Symbol = te[0], InstrumentType = te[3] });
                 }
-                //ticker_matches
+
                 return pc.TickerSymbols.Count > 0;
             }
             catch
