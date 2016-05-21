@@ -9,6 +9,9 @@ using System.Text;
 using System.Xml;
 using System.IO;
 using NoFuture.Rand.Data;
+using NoFuture.Rand.Data.NfHtml;
+using NoFuture.Rand.Data.NfHttp;
+using NoFuture.Rand.Data.Types;
 using NoFuture.Rand.Edu;
 using NoFuture.Shared;
 using NoFuture.Util;
@@ -422,6 +425,33 @@ namespace NoFuture.Rand
             }
 
             return rcharsOut.ToArray();
+        }
+
+        /// <summary>
+        /// Factory method to get a concrete implementation of <see cref="INfDynData"/>
+        /// based on a Uri
+        /// </summary>
+        /// <param name="uri"></param>
+        /// <returns></returns>
+        public static INfDynData DynamicDataFactory(Uri uri)
+        {
+            if (uri == null)
+                return null;
+
+            if (uri.Host == "finance.yahoo.com")
+            {
+                if (uri.LocalPath == "/q")
+                    return new YhooFinSymbolLookup(uri);
+                if(uri.LocalPath == "/q/bs")
+                    return new YhooFinBalanceSheet(uri);
+                if (uri.LocalPath == "/q/is")
+                    return new YhooFinIncomeStmt(uri);
+            }
+            else if (uri.Host == "www.bloomberg.com")
+            {
+                return new BloombergSymbolSearch(uri);
+            }
+            throw new NotImplementedException();
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]

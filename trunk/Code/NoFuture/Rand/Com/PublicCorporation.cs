@@ -16,38 +16,7 @@ namespace NoFuture.Rand.Com
     /// </summary>
     /// <example>
     /// <![CDATA[
-    ///  #example in PowerShell
     /// 
-    ///  #get a sic code 
-    ///  $sic = [NoFuture.Rand.Data.Types.StandardIndustryClassification]::RandomSic();
-    /// 
-    ///  #get corps by sic code
-    ///  $searchCrit = New-Object NoFuture.Rand.Gov.Sec.Edgar+FullTextSearch
-    ///  $searchCrit.SicCode = $sic.Value
-    ///  $rssContent = Request-File -Url ([NoFuture.Rand.Gov.Sec.Edgar]::GetUriFullTextSearch($searchCrit))
-    ///  $publicCorps = ([NoFuture.Rand.Gov.Sec.Edgar]::ParseFullTextSearch($rssContent))
-    /// 
-    ///  #pick one
-    ///  $randomCorp = $publicCorps[3]
-    /// 
-    ///  #get details from SEC
-    ///  $xmlContent = Request-File -Url ([NoFuture.Rand.Gov.Sec.Edgar]::GetUriCikSearch($randomCorp.CIK))
-    ///  [NoFuture.Rand.Gov.Sec.Edgar]::TryParseCorpData($xmlContent, [ref] $randomCorp)
-    /// 
-    ///  #get more details from yahoo finance
-    ///  $rawHtml = Request-File -Url ([NoFuture.Rand.Com.PublicCorporation]::GetUriTickerSymbolLookup($randomCorp.Name))
-    ///  if( [NoFuture.Rand.Com.PublicCorporation]::TryMergeTickerLookup($rawHtml, [ref] $randomCorp)){
-    ///     $ticker = $randomCorp.TickerSymbols | Select-Object -First 1
-    /// 
-    ///     $rawHtml = Request-File -Url ([NoFuture.Rand.Com.PublicCorporation]::GetUriAnnualBalanceSheet($ticker))
-    ///     [NoFuture.Rand.Com.PublicCorporation]::TryMergeAssets($rawHtml, [ref] $randomCorp)
-    /// 
-    ///     $rawHtml = Request-File -Url ([NoFuture.Rand.Com.PublicCorporation]::GetUriAnnualIncomeStmt($ticker))
-    ///     [NoFuture.Rand.Com.PublicCorporation]::TryMergeIncome($rawHtml, [ref] $randomCorp)
-    ///  }
-    /// 
-    ///  #get any data you defined in the local XRef.xml
-    ///  $randomCorp.LoadXrefXmlData()
     /// ]]>
     /// </example>
     [Serializable]
@@ -97,8 +66,6 @@ namespace NoFuture.Rand.Com
                 return Uri.EscapeUriString(searchCompanyName);
             }
         }
-
-
 
         #endregion
 
@@ -161,13 +128,13 @@ namespace NoFuture.Rand.Com
         /// <param name="srcUri"></param>
         /// <param name="pc"></param>
         /// <returns></returns>
-        public static bool TryMergeAssets(string webResponseBody, Uri srcUri, ref PublicCorporation pc)
+        public static bool TryMergeAssets(object webResponseBody, Uri srcUri, ref PublicCorporation pc)
         {
             try
             {
                 if (pc == null)
                     return false;
-                var nfChardata = new YhooFinBalanceSheet(srcUri);
+                var nfChardata = Etx.DynamicDataFactory(srcUri);
                 var nfChardataRslts = nfChardata.ParseContent(webResponseBody);
                 if (nfChardataRslts == null || nfChardataRslts.Count <= 0)
                     return false;
@@ -195,13 +162,13 @@ namespace NoFuture.Rand.Com
         /// <param name="srcUri"></param>
         /// <param name="pc"></param>
         /// <returns></returns>
-        public static bool TryMergeIncome(string webResponseBody, Uri srcUri, ref PublicCorporation pc)
+        public static bool TryMergeIncome(object webResponseBody, Uri srcUri, ref PublicCorporation pc)
         {
             try
             {
                 if (pc == null)
                     return false;
-                var nfChardata = new YhooFinIncomeStmt(srcUri);
+                var nfChardata = Etx.DynamicDataFactory(srcUri);
                 var nfChardataRslts = nfChardata.ParseContent(webResponseBody);
                 if (nfChardataRslts == null || nfChardataRslts.Count <= 0)
                     return false;
@@ -231,12 +198,12 @@ namespace NoFuture.Rand.Com
         /// <param name="srcUri"></param>
         /// <param name="pc"></param>
         /// <returns></returns>
-        public static bool TryMergeTickerLookup(string webResponseBody, Uri srcUri, ref PublicCorporation pc)
+        public static bool TryMergeTickerLookup(object webResponseBody, Uri srcUri, ref PublicCorporation pc)
         {
             try
             {
-                
-                var myNfCdata = new BloombergSymbolSearch(srcUri);
+
+                var myNfCdata = Etx.DynamicDataFactory(srcUri);
                 var myNfCdataRslts = myNfCdata.ParseContent(webResponseBody);
                 if (myNfCdataRslts == null)
                     return false;

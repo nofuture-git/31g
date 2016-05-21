@@ -11,6 +11,7 @@ using System.ComponentModel;
 using System.Net;
 using System.Net.Sockets;
 using System.Security.Principal;
+using Newtonsoft.Json;
 using NoFuture.Shared;
 
 namespace NoFuture.Util
@@ -40,6 +41,117 @@ namespace NoFuture.Util
 
             return userHost;
             
+        }
+
+        /// <summary>
+        /// Attempts to decode Http Cookie values into some meaning name-value pairs.
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="nvout"></param>
+        /// <returns></returns>
+        public static bool TryParseCookie(string value, out Tuple<string,object>[] nvout)
+        {
+            nvout = null;
+            if (string.IsNullOrWhiteSpace(value))
+                return false;
+
+            var iniParse = value.Split(new[] {';'}, StringSplitOptions.RemoveEmptyEntries).Select(x => x.Trim());
+            var values = new List<Tuple<string, object>>();
+            foreach (var cv in iniParse)
+            {
+                var d = cv.IndexOf('=');
+                var name = cv.Substring(0, d);
+                var iniValue = cv.Substring(d, cv.Length - d).Substring(1);
+                Guid guidOut;
+                try
+                {
+                    //Json
+                    if (iniValue.ToLower().StartsWith("%7b") && iniValue.ToLower().EndsWith("%7d"))
+                    {
+                        var v = JsonConvert.DeserializeObject<dynamic>(System.Web.HttpUtility.UrlDecode(iniValue));
+                        values.Add(new Tuple<string, object>(name, v));
+                    }
+
+                    //embedded uris
+                    else if (iniValue.ToLower().StartsWith("%5b") && iniValue.ToLower().EndsWith("%5d"))
+                    {
+                        var dict = new Dictionary<string, string>();
+                        var decode00 = System.Web.HttpUtility.UrlDecode(iniValue);
+                        if (string.IsNullOrWhiteSpace(decode00))
+                        {
+                            values.Add(new Tuple<string, object>(name, iniValue));
+                            continue;
+                        }
+                        decode00 = decode00.Substring(1, decode00.Length - 2);
+                        var decodeParts = decode00.Split(new[] {"\",\""}, StringSplitOptions.RemoveEmptyEntries).Select(x => x.Replace("\"", string.Empty));
+
+                        foreach (var f in decodeParts.Where(x => x.Contains("=") && x.Split('=').Length >= 2 && !dict.ContainsKey(x.Split('=')[0])))
+                        {
+                            var dd = f.IndexOf('=');
+                            var tn = f.Substring(0, dd);
+                            var tv = f.Substring(dd, f.Length - dd).Substring(1);
+                            dict.Add(tn, System.Web.HttpUtility.UrlDecode(tv));
+                        }
+                        if (dict.Count <= 0)
+                        {
+                            values.Add(new Tuple<string, object>(name, iniValue));
+                            continue;
+                        }
+                        values.Add(new Tuple<string, object>(name, dict));
+                    }
+
+                    //guid
+
+                    else if (iniValue.Length <= 36 && iniValue.Length >= 32 &&
+                             Regex.IsMatch(iniValue.ToLower(), "[a-f0-9\x2d]") && Guid.TryParse(iniValue, out guidOut))
+                    {
+                        values.Add(new Tuple<string, object>(name, guidOut));
+                    }
+
+                    //key-values
+                    else if (Regex.IsMatch(iniValue, "\x26[a-z0-9]\x3d.+"))
+                    {
+                        var ff = iniValue.Split(new[] {'&'}, StringSplitOptions.RemoveEmptyEntries);
+                        var dict = new Dictionary<string, string>();
+                        if (ff.Length == 1)
+                        {
+                            values.Add(new Tuple<string, object>(name, iniValue));
+                            continue;
+                        }
+
+                        foreach (var f in ff.Where(x => x.Contains("=") && x.Split('=').Length >= 2 && !dict.ContainsKey(x.Split('=')[0])))
+                        {
+                            var t = f.Split('=');
+                            dict.Add(t[0],t[1]);
+                        }
+
+                        if (dict.Count <= 0)
+                        {
+                            values.Add(new Tuple<string, object>(name, iniValue));
+                            continue;
+                        }
+
+                        values.Add(new Tuple<string, object>(name, dict));
+                    }
+
+                    //delimited
+                    else if (iniValue.Contains("|"))
+                    {
+                        values.Add(new Tuple<string, object>(name, iniValue.Split(new []{'|'}, StringSplitOptions.RemoveEmptyEntries)));
+                    }
+                    else
+                    {
+                        values.Add(new Tuple<string, object>(name, iniValue));
+                    }
+                }
+                catch
+                {
+                    values.Add(new Tuple<string, object>(name, iniValue));
+                }
+            }
+
+            nvout = values.ToArray();
+            return nvout.Length > 0;
         }
 
         public static byte[] SendToLocalhostSocket(byte[] mdt, int port)
