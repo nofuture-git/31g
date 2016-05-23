@@ -43,7 +43,11 @@ namespace NoFuture.Rand.Com
 
         public List<Ticker> TickerSymbols
         {
-            get { return _tickerSymbols; }
+            get
+            {
+                _tickerSymbols.Sort(new TickerComparer(Name));
+                return _tickerSymbols;
+            }
         }
 
         /// <summary>
@@ -71,20 +75,22 @@ namespace NoFuture.Rand.Com
 
         #region methods
 
-        public Tuple<Type, Uri>[] GetDataUris()
+        public Tuple<string, Uri>[] GetDataUris()
         {
-            var dataUris = new List<Tuple<Type, Uri>>();
-            var tickerSymbol = _tickerSymbols.FirstOrDefault();
+            var dataUris = new List<Tuple<string, Uri>>();
+            var tickerSymbol =
+                _tickerSymbols.FirstOrDefault(
+                    x => x.Value.ToUpper().ToCharArray().First() == Name.ToUpper().ToCharArray().First());
             if (tickerSymbol != null)
             {
-                dataUris.Add(new Tuple<Type, Uri>(typeof(YhooFinBalanceSheet),
+                dataUris.Add(new Tuple<string, Uri>(typeof(YhooFinBalanceSheet).Name,
                     new Uri("http://finance.yahoo.com/q/bs?s=" + tickerSymbol.Symbol + "&annual")));
-                dataUris.Add(new Tuple<Type, Uri>(typeof(YhooFinIncomeStmt),
+                dataUris.Add(new Tuple<string, Uri>(typeof(YhooFinIncomeStmt).Name,
                     new Uri("http://finance.yahoo.com/q/is?s=" + tickerSymbol.Symbol + "&annual")));
             }
-            dataUris.Add(new Tuple<Type, Uri>(typeof(BloombergSymbolSearch),
+            dataUris.Add(new Tuple<string, Uri>(typeof(BloombergSymbolSearch).Name,
                 new Uri("http://www.bloomberg.com/markets/symbolsearch?query=" + UrlEncodedName + "&commit=Find+Symbols")));
-            dataUris.Add(new Tuple<Type, Uri>(typeof(YhooFinSymbolLookup),
+            dataUris.Add(new Tuple<string, Uri>(typeof(YhooFinSymbolLookup).Name,
                 new Uri("http://finance.yahoo.com/q?s=" + UrlEncodedName + "&ql=1")));
             return dataUris.ToArray();
         }
@@ -95,7 +101,7 @@ namespace NoFuture.Rand.Com
         /// </summary>
         /// <param name="year"></param>
         /// <returns></returns>
-        protected internal Form10K GetForm10KByYear(int year)
+        public Form10K GetForm10KByYear(int year)
         {
             if (_annualReports.All(x => x.FilingDate.Year - 1 != year))
             {
@@ -118,7 +124,7 @@ namespace NoFuture.Rand.Com
 
                 _annualReports.Add(form10K); 
             }
-            return _annualReports.First(x => x.FilingDate.Year - 1 != year);
+            return _annualReports.First(x => x.FilingDate.Year - 1 == year);
         }
 
         /// <summary>
@@ -134,17 +140,17 @@ namespace NoFuture.Rand.Com
             {
                 if (pc == null)
                     return false;
-                var nfChardata = Etx.DynamicDataFactory(srcUri);
-                var nfChardataRslts = nfChardata.ParseContent(webResponseBody);
-                if (nfChardataRslts == null || nfChardataRslts.Count <= 0)
+                var myDynData = Etx.DynamicDataFactory(srcUri);
+                var myDynDataRslt = myDynData.ParseContent(webResponseBody);
+                if (myDynDataRslt == null || myDynDataRslt.Count <= 0)
                     return false;
 
-                foreach (var cd in nfChardataRslts)
+                foreach (var cd in myDynDataRslt)
                 {
                     var tenK = pc.GetForm10KByYear((int)cd.FiscalYearEndAt);
                     tenK.FinancialData.Assets.TotalAssets = new Pecuniam((Decimal)cd.TotalAssets);
                     tenK.FinancialData.Assets.TotalAssets = new Pecuniam((Decimal)cd.TotalLiabilities);
-                    tenK.FinancialData.Assets.Src = nfChardata.SourceUri.ToString();
+                    tenK.FinancialData.Assets.Src = myDynData.SourceUri.ToString();
                 }
 
                 return true;
@@ -168,18 +174,18 @@ namespace NoFuture.Rand.Com
             {
                 if (pc == null)
                     return false;
-                var nfChardata = Etx.DynamicDataFactory(srcUri);
-                var nfChardataRslts = nfChardata.ParseContent(webResponseBody);
-                if (nfChardataRslts == null || nfChardataRslts.Count <= 0)
+                var myDynData = Etx.DynamicDataFactory(srcUri);
+                var myDynDataRslt = myDynData.ParseContent(webResponseBody);
+                if (myDynDataRslt == null || myDynDataRslt.Count <= 0)
                     return false;
 
-                foreach (var cd in nfChardataRslts)
+                foreach (var cd in myDynDataRslt)
                 {
                     var tenK = pc.GetForm10KByYear((int) cd.FiscalYearEndAt);
                     tenK.FinancialData.Income.Revenue = new Pecuniam((Decimal) cd.TotalRevenue);
                     tenK.FinancialData.Income.OperatingIncome = new Pecuniam((Decimal) cd.OperatingIncomeorLoss);
                     tenK.FinancialData.Income.NetIncome = new Pecuniam((Decimal) cd.NetIncome);
-                    tenK.FinancialData.Income.Src = nfChardata.SourceUri.ToString();
+                    tenK.FinancialData.Income.Src = myDynData.SourceUri.ToString();
                 }
 
                 return true;
@@ -202,13 +208,12 @@ namespace NoFuture.Rand.Com
         {
             try
             {
-
-                var myNfCdata = Etx.DynamicDataFactory(srcUri);
-                var myNfCdataRslts = myNfCdata.ParseContent(webResponseBody);
-                if (myNfCdataRslts == null)
+                var myDynData = Etx.DynamicDataFactory(srcUri);
+                var myDynDataRslt = myDynData.ParseContent(webResponseBody);
+                if (myDynDataRslt == null)
                     return false;
 
-                foreach (var dd in myNfCdataRslts)
+                foreach (var dd in myDynDataRslt)
                 {
                     pc.TickerSymbols.Add(new Ticker { Symbol = dd.Symbol, InstrumentType = dd.InstrumentType });
                 }

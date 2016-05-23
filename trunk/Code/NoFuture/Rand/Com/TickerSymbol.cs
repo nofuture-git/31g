@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace NoFuture.Rand.Com
 {
@@ -48,6 +50,62 @@ namespace NoFuture.Rand.Com
         public override string Abbrev
         {
             get { return "Ticker"; }
+        }
+    }
+
+    public class TickerComparer : IComparer<Ticker>
+    {
+        private readonly string _companyName;
+        public TickerComparer(string companyName)
+        {
+            _companyName = companyName;
+        }
+
+        protected char FirstCharOfName
+        {
+            get
+            {
+                return string.IsNullOrWhiteSpace(_companyName)
+                    ? '\0'
+                    : _companyName.Trim().ToUpper().ToCharArray().First();
+            }
+        }
+
+        public int Compare(Ticker x, Ticker y)
+        {
+            if (x == null && y == null)
+                return 0;
+            if (y == null || string.IsNullOrWhiteSpace(y.Value))
+                return -1;
+            if (x == null || string.IsNullOrWhiteSpace(x.Value))
+                return 1;
+
+            var p0x = x.Value.Trim().Length <= 3;
+            var p0y = y.Value.Trim().Length <= 3;
+
+            var p1x = x.Value.Trim().ToUpper().ToCharArray().First() == FirstCharOfName;
+            var p1y = y.Value.Trim().ToUpper().ToCharArray().First() == FirstCharOfName;
+
+            var p2x = x.Value.Trim().Length <= 4;
+            var p2y = y.Value.Trim().Length <= 4;
+
+            if (p0x && !p0y)
+                return -1;
+            if (!p0x && p0y)
+                return 1;
+
+            if (p1x && !p1y)
+                return -1;
+            if (!p1x && p1y)
+                return 1;
+
+            if (p2x && !p2y)
+                return -1;
+
+            if (!p2x && p2y)
+                return 1;
+
+            return x.Value.Trim().Length < y.Value.Trim().Length ? -1 : 1;
         }
     }
 }

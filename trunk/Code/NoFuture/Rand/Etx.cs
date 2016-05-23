@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
@@ -7,7 +6,6 @@ using System.Linq;
 using System.Xml.Linq;
 using System.Text;
 using System.Xml;
-using System.IO;
 using NoFuture.Rand.Data;
 using NoFuture.Rand.Data.NfHtml;
 using NoFuture.Rand.Data.NfHttp;
