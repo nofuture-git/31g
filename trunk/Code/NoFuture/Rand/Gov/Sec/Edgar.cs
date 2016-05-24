@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Xml;
 using System.Web;
 using NoFuture.Rand.Com;
 using NoFuture.Rand.Data.Types;
@@ -11,7 +10,8 @@ namespace NoFuture.Rand.Gov.Sec
 {
     public class Edgar
     {
-        public const string SEC_ROOT_URL = "http://www.sec.gov";
+        public const string SEC_ROOT_URL = "http://" + SEC_HOST;
+        public const string SEC_HOST = "www.sec.gov";
         public const string EDGAR_ROOT = SEC_ROOT_URL + "/cgi-bin/browse-edgar";
         public const string INTERACTIVE_ROOT = SEC_ROOT_URL + "/cgi-bin/viewer";
         public const string ARCHIVE_ROOT = SEC_ROOT_URL + "/Archives/edgar/data/";
@@ -86,51 +86,33 @@ namespace NoFuture.Rand.Gov.Sec
 
         }
 
-        public static PublicCorporation[] ParseFullTextSearch(string rssContent)
+        public static PublicCorporation[] ParseFullTextSearch(string rssContent, Uri srcUri)
         {
             if (string.IsNullOrWhiteSpace(rssContent))
                 return null;
 
-            for (var i = 0; i < 9; i++)
-                rssContent = rssContent.Replace(string.Format("<{0} ", i), "<val ");
+            var myDynData = Etx.DynamicDataFactory(srcUri);
+            var myDynDataRslts = myDynData.ParseContent(rssContent);
 
-            var rssXml = new XmlDocument();
-            rssXml.LoadXml(rssContent);
-
-            if (!rssXml.HasChildNodes)
-                return null;
-
-            var nsMgr = new XmlNamespaceManager(rssXml.NameTable);
-            nsMgr.AddNamespace("atom", ATOM_XML_NS);
-
-            var entries = rssXml.SelectNodes("//atom:entry", nsMgr);
-
-            if (entries == null || entries.Count <= 0)
+            if (myDynDataRslts == null || myDynDataRslts.Count <= 0)
                 return null;
 
             var corporations = new List<PublicCorporation>();
-            for (var i = 0; i < entries.Count; i++)
+            foreach(var dd in myDynDataRslts)
             {
 
-                var xpathRoot = string.Format("//atom:entry[{0}]", i);
+                var titleNode = dd.Title;
 
-                var entry = entries.Item(i);
-
-                if (entry == null)
+                if (titleNode == null || string.IsNullOrWhiteSpace(titleNode))
                     continue;
 
-                var titleNode = entry.SelectSingleNode(xpathRoot + "/atom:title", nsMgr);
-
-                if (titleNode == null || string.IsNullOrWhiteSpace(titleNode.InnerText))
-                    continue;
-
-                var idNode = entry.SelectSingleNode(xpathRoot + "/atom:id", nsMgr);
-                var linkNode = entry.SelectSingleNode(xpathRoot + "/atom:link", nsMgr);
-                var form10KDtNode = entry.SelectSingleNode(xpathRoot + "/atom:updated", nsMgr);
-                var summaryNode = entry.SelectSingleNode(xpathRoot + "/atom:summary", nsMgr);
+                var idNode = dd.Id;
+                var linkVal = dd.Link;
+                var form10KDtNode = dd.Update;
+                var summaryNode = dd.Summary;
 
                 //this will be an id while looping
-                var corpName = ParseNameFromTitle(titleNode.InnerText);
+                var corpName = ParseNameFromTitle(titleNode);
 
                 var corp = corporations.Any(x => string.Equals(x.Name, corpName, StringComparison.OrdinalIgnoreCase))
                     ? corporations.First(
@@ -142,28 +124,23 @@ namespace NoFuture.Rand.Gov.Sec
                 //annual report
                 var form10K = new Form10K();
 
-                if (titleNode.InnerText.StartsWith(SecForm.NotificationOfInabilityToTimelyFile))
+                if (titleNode.StartsWith(SecForm.NotificationOfInabilityToTimelyFile))
                     form10K.IsLate = true;
 
-                DateTime parseRslt;
-                if (form10KDtNode != null && !string.IsNullOrWhiteSpace(form10KDtNode.InnerText) &&
-                    DateTime.TryParse(form10KDtNode.InnerText, out parseRslt))
+                var parseRslt = DateTime.Now;
+                if (form10KDtNode != null && !string.IsNullOrWhiteSpace(form10KDtNode) &&
+                    DateTime.TryParse(form10KDtNode.ToString(), out parseRslt))
                 {
                     form10K.FilingDate = parseRslt;
                 }
 
-                if (linkNode != null && linkNode.Attributes != null && linkNode.Attributes["href"] != null)
-                {
-                    var linkVal = linkNode.Attributes["href"].Value;
-                    form10K.HtmlFormLink = new Uri(SEC_ROOT_URL + linkVal);
-                    //this is only presented within the html link s
-                    corp.CIK = new CentralIndexKey() { Value = idNode == null ? string.Empty : ParseCikFromUriPath(linkVal) };
-                }
-                
+                form10K.HtmlFormLink = new Uri(SEC_ROOT_URL + linkVal);
+                //this is only presented within the html link s
+                corp.CIK = new CentralIndexKey { Value = idNode == string.Empty ? string.Empty : ParseCikFromUriPath(linkVal) };
 
-                if (summaryNode != null && !string.IsNullOrWhiteSpace(summaryNode.InnerText))
+                if (summaryNode != null && !string.IsNullOrWhiteSpace(summaryNode))
                 {
-                    var summaryText = summaryNode.InnerText;
+                    var summaryText = summaryNode;
                     form10K.AccessionNumber = ParseAccessionNumFromSummary(summaryText);
                     form10K.InteractiveFormLink = CtorInteractiveLink(corp.CIK.Value, form10K.AccessionNumber);
                     form10K.XbrlZipLink = CtorXbrlZipLink(corp.CIK.Value, form10K);
@@ -177,110 +154,91 @@ namespace NoFuture.Rand.Gov.Sec
             
         }
 
-        public static PublicCorporation SelectRandomCorporation(string rssContent)
+        public static bool TryParseCorpData(string xmlContent, Uri srcUri, ref PublicCorporation publicCorporation)
         {
-            if(string.IsNullOrWhiteSpace(rssContent))
-                return null;
-
-            var companies = ParseFullTextSearch(rssContent);
-
-            if (companies == null || companies.Length <= 0)
-                return null;
-
-            var pickOne = Etx.MyRand.Next(0, companies.Length);
-            return companies[pickOne];
-
-        }
-
-        public static bool TryParseCorpData(string xmlContent, ref PublicCorporation publicCorporation)
-        {
-            const string ATOM = "atom";
-            const string COMPANY_INFO = ATOM + ":company-info";
             if (string.IsNullOrWhiteSpace(xmlContent))
                 return false;
+
+            var myDynData = Etx.DynamicDataFactory(srcUri);
+            var myDynDataRslt = myDynData.ParseContent(xmlContent);
+
+            if (myDynDataRslt == null || myDynDataRslt.Count <= 0)
+                return false;
+
+            var pr = myDynDataRslt.First();
+
             if(publicCorporation == null)
                 publicCorporation = new PublicCorporation();
 
-            var filingXml = new XmlDocument();
-            filingXml.LoadXml(xmlContent);
-
-            if (!filingXml.HasChildNodes)
-                return false;
-            var nsMgr = new XmlNamespaceManager(filingXml.NameTable);
-            nsMgr.AddNamespace("atom", ATOM_XML_NS);
-
-
-            var cikNode = filingXml.SelectSingleNode("//" + COMPANY_INFO + "/" + ATOM + ":cik", nsMgr);
-            var sicNode = filingXml.SelectSingleNode("//" + COMPANY_INFO + "/" + ATOM + ":assigned-sic", nsMgr);
-            var nameNode = filingXml.SelectSingleNode("//" + COMPANY_INFO + "/" + ATOM + ":conformed-name", nsMgr);
-
-            publicCorporation.Name = nameNode == null ? publicCorporation.Name : nameNode.InnerText;
-            publicCorporation.CIK = cikNode == null ? publicCorporation.CIK : new CentralIndexKey {Value = cikNode.InnerText};
-            publicCorporation.SIC = sicNode == null
+            publicCorporation.Name = string.IsNullOrWhiteSpace(pr.Name) ? publicCorporation.Name : pr.Name;
+            publicCorporation.CIK = string.IsNullOrWhiteSpace(pr.Cik) ? publicCorporation.CIK : new CentralIndexKey { Value = pr.Cik };
+            publicCorporation.SIC = string.IsNullOrWhiteSpace(pr.Sic)
                 ? publicCorporation.SIC
-                : new StandardIndustryClassification {Value = sicNode.InnerText};
+                : new StandardIndustryClassification { Value = pr.Sic };
 
-            var stateNode = filingXml.SelectSingleNode("//" + COMPANY_INFO + "/" + ATOM + ":state-of-incorporation", nsMgr);
-
-            publicCorporation.UsStateOfIncorporation = stateNode == null
+            publicCorporation.UsStateOfIncorporation = string.IsNullOrWhiteSpace(pr.IncorpState)
                 ? publicCorporation.UsStateOfIncorporation
-                : UsState.GetStateByPostalCode(stateNode.InnerText);
+                : UsState.GetStateByPostalCode(pr.IncorpState);
 
-            var sicDescNode = filingXml.SelectSingleNode("//" + COMPANY_INFO + "/" + ATOM + ":assigned-sic-desc", nsMgr);
-            if (publicCorporation.SIC != null && sicDescNode != null)
-                publicCorporation.SIC.Description = sicDescNode.InnerText;
+            if (publicCorporation.SIC != null && !string.IsNullOrWhiteSpace(pr.SicDesc))
+                publicCorporation.SIC.Description = pr.SicDesc;
 
-            var bizAddrNode = filingXml.SelectSingleNode("//" + COMPANY_INFO + "/" + ATOM + ":addresses/" + ATOM + ":address[@type='business']", nsMgr);
-            var mailAddrNode = filingXml.SelectSingleNode("//" + COMPANY_INFO + "/" + ATOM + ":addresses/" + ATOM + ":address[@type='mailing']", nsMgr);
-
-            Func<string, Tuple<UsAddress, UsCityStateZip>> resolveAddr =
-                c =>
-                {
-                    var addrData = new AddressData();
-                    var addrStreet = filingXml.SelectSingleNode(string.Format("//" + COMPANY_INFO + "/{0}/" + ATOM + ":street1", c), nsMgr);
-                    if (addrStreet != null)
-                    {
-                        UsAddress temp;
-                        if (UsAddress.TryParse(addrStreet.InnerText, out temp))
-                            addrData = temp.Data;
-                    }
-
-                    var addrCity = filingXml.SelectSingleNode(string.Format("//" + COMPANY_INFO + "/{0}/" + ATOM + ":city", c), nsMgr);
-                    if (addrCity != null)
-                        addrData.City = addrCity.InnerText;
-
-                    var addrState = filingXml.SelectSingleNode(string.Format("//" + COMPANY_INFO + "/{0}/" + ATOM + ":state", c), nsMgr);
-                    if (addrState != null)
-                        addrData.StateAbbrv = addrState.InnerText;
-
-                    var addrZip = filingXml.SelectSingleNode(string.Format("//" + COMPANY_INFO + "/{0}/" + ATOM + ":zip", c), nsMgr);
-                    if (addrZip != null)
-                        addrData.PostalCode = addrZip.InnerText;
-
-                    return new Tuple<UsAddress, UsCityStateZip>(new UsAddress(addrData),
-                        new UsCityStateZip(addrData));
-                };
-
-            Func<string, NorthAmericanPhone> resolvePhone = ph =>
+            var bizAddr = new AddressData();
+            if (!string.IsNullOrWhiteSpace(pr.BizAddrStreet))
             {
-                NorthAmericanPhone phoneOut;
-                NorthAmericanPhone.TryParse(ph, out phoneOut);
-                return phoneOut;
-            };
-
-            if (bizAddrNode != null && bizAddrNode.HasChildNodes)
-            {
-                publicCorporation.BusinessAddress = resolveAddr(ATOM + ":addresses/" + ATOM + ":address[@type='business']");
-                var phNode = filingXml.SelectSingleNode("//" + COMPANY_INFO + "/" + ATOM + ":addresses/" + ATOM + ":address[@type='business']/" + ATOM + ":phone", nsMgr);
-                NorthAmericanPhone phoneOut;
-                if (phNode != null && NorthAmericanPhone.TryParse(phNode.InnerText, out phoneOut))
-                    publicCorporation.Phone = new[] {phoneOut};
-            }
-            if (mailAddrNode != null && mailAddrNode.HasChildNodes)
-            {
-                publicCorporation.MailingAddress = resolveAddr(ATOM + ":addresses/" + ATOM + ":address[@type='mailing']");
+                UsAddress temp;
+                if (UsAddress.TryParse(pr.BizAddrStreet, out temp))
+                    bizAddr = temp.Data;
             }
 
+            if (!string.IsNullOrWhiteSpace(pr.BizAddrCity))
+                bizAddr.City = pr.BizAddrCity;
+
+            if (!string.IsNullOrWhiteSpace(pr.BizAddrState))
+                bizAddr.StateAbbrv = pr.BizAddrState;
+
+            if (!string.IsNullOrWhiteSpace(pr.BizPostalCode))
+                bizAddr.PostalCode = pr.BizPostalCode;
+
+            publicCorporation.BusinessAddress = new Tuple<UsAddress, UsCityStateZip>(new UsAddress(bizAddr),
+                new UsCityStateZip(bizAddr));
+
+            var mailAddr = new AddressData();
+            if (!string.IsNullOrWhiteSpace(pr.MailAddrStreet))
+            {
+                UsAddress temp;
+                if (UsAddress.TryParse(pr.MailAddrStreet, out temp))
+                    mailAddr = temp.Data;
+            }
+
+            if (!string.IsNullOrWhiteSpace(pr.MailAddrCity))
+                mailAddr.City = pr.MailAddrCity;
+
+            if (!string.IsNullOrWhiteSpace(pr.MailAddrState))
+                mailAddr.StateAbbrv = pr.MailAddrState;
+
+            if (!string.IsNullOrWhiteSpace(pr.MailPostalCode))
+                mailAddr.PostalCode = pr.MailPostalCode;
+
+            publicCorporation.MailingAddress = new Tuple<UsAddress, UsCityStateZip>(new UsAddress(mailAddr),
+                new UsCityStateZip(mailAddr));
+
+            var phs = new List<NorthAmericanPhone>();
+            if (publicCorporation.Phone != null && publicCorporation.Phone.Length > 0)
+            {
+                phs.AddRange(publicCorporation.Phone);
+            }
+            NorthAmericanPhone phOut;
+            if (NorthAmericanPhone.TryParse(pr.BizPhone, out phOut) && phs.All(x => !x.Equals(phOut)))
+            {
+                phs.Add(phOut);
+            }
+
+            if (NorthAmericanPhone.TryParse(pr.MailPhone, out phOut) && phs.All(x => !x.Equals(phOut)))
+            {
+                phs.Add(phOut);
+            }
+            publicCorporation.Phone = phs.ToArray();
             return true;
         }
 

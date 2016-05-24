@@ -245,20 +245,17 @@ namespace NoFuture.Rand.Data
                 if (_fedReleaseLrgBnkNames != null && _fedReleaseLrgBnkNames.Length > 0)
                     return _fedReleaseLrgBnkNames;
 
+
                 var rawData = GetTextDataSource(LRG_BNK_LST);
                 if(string.IsNullOrWhiteSpace(rawData))
                     return new Bank[0];//return empty list for missing data
 
-                DateTime? rptDt;
-                //turn line data into a list of tuples 
-                var parsedData = Gov.Fed.LargeCommercialBanks.ParseBankData(rawData, out rptDt);
-                var useDate = rptDt == null ? DateTime.Today : rptDt.Value;
+                var myDynData = NoFuture.Rand.Etx.DynamicDataFactory(new Uri(NfText.FedLrgBnk.RELEASE_URL));
+                var myDynDataRslt = myDynData.ParseContent(rawData);
+
 
                 //take each line data structure and compose a full object
-                var tempList =
-                    parsedData.Where(pd => !string.IsNullOrWhiteSpace(pd.Item1))
-                        .Select(pd => new Bank(pd.Item2, useDate) {Name = pd.Item1.Trim()})
-                        .ToList();
+                var tempList = myDynDataRslt.Select(pd => new Bank(pd)).ToList();
 
                 if (tempList.Count > 0)
                     _fedReleaseLrgBnkNames = tempList.ToArray();

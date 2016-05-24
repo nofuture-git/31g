@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
@@ -34,6 +33,10 @@ namespace NoFuture.Rand.Gov.Fed
         public const string KANSAS_CITY = "10";
         public const string DALLAS = "11";
         public const string SAN_FRANCISCO = "12";
+
+        public const string REGEX_PATTERN = "(" + BOSTON + "|" + NEY_YORK + "|" + PHILADELPHIA + "|" + CLEVELAND
+                                            + "|" + RICHMOND + "|" + ATLANTA + "|" + CHICAGO + "|" + ST_LOUIS + "|" +
+                                            MINNEAPOLIS + "|" + KANSAS_CITY + "|" + DALLAS + "|" + ")[0-9]{7}"; 
         #endregion
 
         #region fields

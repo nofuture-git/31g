@@ -14,11 +14,6 @@ namespace NoFuture.Rand.Com
     /// <summary>
     /// Represents a publicly traded corporation
     /// </summary>
-    /// <example>
-    /// <![CDATA[
-    /// 
-    /// ]]>
-    /// </example>
     [Serializable]
     public class PublicCorporation : Firm
     {
@@ -78,9 +73,8 @@ namespace NoFuture.Rand.Com
         public Tuple<string, Uri>[] GetDataUris()
         {
             var dataUris = new List<Tuple<string, Uri>>();
-            var tickerSymbol =
-                _tickerSymbols.FirstOrDefault(
-                    x => x.Value.ToUpper().ToCharArray().First() == Name.ToUpper().ToCharArray().First());
+            var tickerSymbol = 
+                _tickerSymbols.FirstOrDefault();
             if (tickerSymbol != null)
             {
                 dataUris.Add(new Tuple<string, Uri>(typeof(YhooFinBalanceSheet).Name,

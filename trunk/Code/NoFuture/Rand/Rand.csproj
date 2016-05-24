@@ -55,10 +55,14 @@
     <Compile Include="CityArea.cs" />
     <Compile Include="Com\FinancialFirm.cs" />
     <Compile Include="Data\NfHtml\BloombergSymbolSearch.cs" />
+    <Compile Include="Data\NfHtml\FfiecInstitProfile.cs" />
     <Compile Include="Data\NfHtml\YhooFinBalanceSheet.cs" />
     <Compile Include="Data\NfHtml\YhooFinBase.cs" />
     <Compile Include="Data\NfHtml\YhooFinIncomeStmt.cs" />
     <Compile Include="Data\NfHttp\YhooFinSymbolLookup.cs" />
+    <Compile Include="Data\NfText\FedLrgBnk.cs" />
+    <Compile Include="Data\NfXml\SecCikSearch.cs" />
+    <Compile Include="Data\NfXml\SecFullTxtSearch.cs" />
     <Compile Include="Data\Types\JsonTypes.cs" />
     <Compile Include="Data\Types\INfDynData.cs" />
     <Compile Include="Data\Types\NorthAmericanIndustryClassification.cs" />
@@ -123,7 +127,6 @@
     <Compile Include="Gov\Census\Links.cs" />
     <Compile Include="Gov\DriversLicense.cs" />
     <Compile Include="Gov\Fed\Identifier.cs" />
-    <Compile Include="Gov\Fed\LargeCommercialBanks.cs" />
     <Compile Include="Gov\Identifier.cs" />
     <Compile Include="Gov\Irs\Identifier.cs" />
     <Compile Include="Gov\Irs\Soi.cs" />

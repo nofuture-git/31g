@@ -1,33 +1,18 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NoFuture.Rand.Com;
+using NoFuture.Rand.Gov.Fed;
 
 namespace NoFuture.Tests.Rand
 {
     [TestClass]
     public class FedTests
     {
-        [TestMethod]
-        public void TestParseBankNames()
-        {
-            var testFile = System.IO.File.ReadAllText(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\Rand\lrg_bnk_lst.txt");
-            DateTime? rptDt = null;
-            var testResult = NoFuture.Rand.Gov.Fed.LargeCommercialBanks.ParseBankData(testFile, out rptDt);
-
-            Assert.IsNotNull(testResult);
-            Assert.AreNotEqual(0,testResult.Count);
-            System.Diagnostics.Debug.WriteLine(rptDt);
-            foreach (var nm in testResult)
-            {
-                System.Diagnostics.Debug.WriteLine(nm.Item1);
-                System.Diagnostics.Debug.WriteLine(nm.Item2);
-                System.Diagnostics.Debug.WriteLine("-----");
-            }
-        }
 
         [TestMethod]
         public void TestRoutingTransitNumber()
         {
-            var testSubject = NoFuture.Rand.Gov.Fed.RoutingTransitNumber.RandomRoutingNumber();
+            var testSubject = RoutingTransitNumber.RandomRoutingNumber();
             Assert.IsNotNull(testSubject);
             Assert.IsFalse(string.IsNullOrWhiteSpace(testSubject.Value));
             Assert.IsFalse(string.IsNullOrWhiteSpace(testSubject.FedDistrictFullName));
@@ -47,12 +32,12 @@ namespace NoFuture.Tests.Rand
         [TestMethod]
         public void TestTryParseFfiecInstitutionProfileAspxHtml()
         {
-            var testContent = System.IO.File.ReadAllText(@"C:\Temp\ffiec.html");
+            var testContent = System.IO.File.ReadAllText(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\Rand\ffiecHtml.html");
 
-            NoFuture.Rand.Com.FinancialFirm firmOut;
-            var testResult = NoFuture.Rand.Gov.Fed.Ffiec.TryParseFfiecInstitutionProfileAspxHtml(testContent,
-                out firmOut);
-
+            FinancialFirm firmOut = new Bank();
+            var testResult = Ffiec.TryParseFfiecInstitutionProfileAspxHtml(testContent, new Uri(Ffiec.SEARCH_URL_BASE), 
+                ref firmOut);
+            System.Diagnostics.Debug.WriteLine(firmOut.RoutingNumber);
             Assert.IsTrue(testResult);
 
         }

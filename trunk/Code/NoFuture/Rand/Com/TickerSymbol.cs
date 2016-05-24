@@ -80,11 +80,11 @@ namespace NoFuture.Rand.Com
             if (x == null || string.IsNullOrWhiteSpace(x.Value))
                 return 1;
 
-            var p0x = x.Value.Trim().Length <= 3;
-            var p0y = y.Value.Trim().Length <= 3;
+            var p0x = x.Value.Trim().ToUpper().ToCharArray().First() == FirstCharOfName;
+            var p0y = y.Value.Trim().ToUpper().ToCharArray().First() == FirstCharOfName;
 
-            var p1x = x.Value.Trim().ToUpper().ToCharArray().First() == FirstCharOfName;
-            var p1y = y.Value.Trim().ToUpper().ToCharArray().First() == FirstCharOfName;
+            var p1x = x.Value.Trim().Length <= 3;
+            var p1y = y.Value.Trim().Length <= 3;
 
             var p2x = x.Value.Trim().Length <= 4;
             var p2y = y.Value.Trim().Length <= 4;

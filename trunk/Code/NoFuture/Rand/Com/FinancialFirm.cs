@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using NoFuture.Rand.Data.NfText;
 using NoFuture.Rand.Data.Types;
 using NoFuture.Rand.Gov.Fed;
 
@@ -12,10 +13,8 @@ namespace NoFuture.Rand.Com
         StateChartered,
         StateCharteredNonMember
     }
-    /*financial institution 
-  commercial bank, savings bank, card issuer, industrial loan company, trust company, savings associations, building and loan, homestead association,
- * cooperative banks, credit union, consumer finance institution
- */
+/* commercial bank, savings bank, card issuer, industrial loan company, trust company, savings associations, building and loan, homestead association,
+ * cooperative banks, credit union, consumer finance institution */
     public class FinancialFirm : PublicCorporation
     {
         public FinancialFirm()
@@ -35,75 +34,43 @@ namespace NoFuture.Rand.Com
     }
 
     /// <summary>
-    /// This is a type based on the data released by the Federal Reserve <see cref="LargeCommercialBanks.RELEASE_URL"/>
+    /// Represent a bank which is under the auspices of the US Federal Reserve
     /// </summary>
-    /// <example>
-    /// <![CDATA[
-    ///  #example getting bank data in PowerShell
-    /// 
-    ///  #pick a bank from the public report from the Fed
-    ///  $banks = [NoFuture.Rand.Data.TreeData]::CommercialBankData
-    ///  $myBank = $banks[3]
-    /// 
-    ///  #use the Rssd on the report to get the bank's 'Legal Name'
-    ///  $ffiecUri = [NoFuture.Rand.Gov.Fed.Ffiec]::GetUriSearchByRssd($myBank.Rssd)
-    ///  $ffiecHtml = Request-File -Url $ffiecUri.ToString()
-    ///  [NoFuture.Rand.Gov.Fed.Ffiec]::TryParseFfiecInstitutionProfileAspxHtml($ffiecHtml, [ref] $myBank)
-    /// 
-    ///  #now use the Legal Name to search the SEC
-    ///  $secUri = [NoFuture.Rand.Gov.Sec.Edgar]::GetUriCompanyNameSearch($myBank.Name)
-    ///  $secHtml = Request-File -Url $secUri.ToString()
-    /// 
-    ///  #now splice in the SEC data to the data from the Fed and lrg_bnk_rpt.txt
-    ///  [NoFuture.Rand.Gov.Sec.Edgar]::TryParseCorpData($secHtml, [ref] $myBank)
-    /// 
-    ///  #get more details from yahoo finance
-    ///  $yahooData = Request-File -Url ([NoFuture.Rand.Com.PublicCorporation]::GetUriTickerSymbolLookup($myBank.Name))
-    ///  [NoFuture.Rand.Com.PublicCorporation]::TryMergeTickerLookup($yahooData, [ref] $myBank)
-    /// 
-    ///  #get any data you defined in the local XRef.xml
-    ///  $randomCorp.GetXrefXmlData()
-    /// ]]>
-    /// </example>
     public class Bank : FinancialFirm
     {
-        
+        public Bank() { }
+
         /// <summary>
         /// Ctor is based on single line from the fed's text report
         /// </summary>
-        /// <param name="lrgBnkLstLine"></param>
-        /// <param name="reportDate"></param>
-        public Bank(string lrgBnkLstLine, DateTime reportDate)
+        /// <param name="li"></param>
+        internal Bank(dynamic li)
         {
-            //single line from the report
-            var vals = LargeCommercialBanks.SplitLrgBnkListLine(lrgBnkLstLine).ToArray();
-
-            Func<string[], int, string> getLnVal = (strings, i) => strings.Length >= i ? strings[i] : string.Empty;
-
-            Rssd = new ResearchStatisticsSupervisionDiscount {Value = getLnVal(vals,2)};
+            Name = li.BankName;
+            Rssd = new ResearchStatisticsSupervisionDiscount { Value = li.BankId };
             UsCityStateZip cityOut;
-            if(UsCityStateZip.TryParse(vals[3], out cityOut))
+            if (UsCityStateZip.TryParse(li.Location, out cityOut))
                 BusinessAddress = new Tuple<UsAddress, UsCityStateZip>(null, cityOut);
-            if (LargeCommercialBanks.TypeOfBankAbbrev3Enum.ContainsKey(getLnVal(vals,4)))
-                BankType = LargeCommercialBanks.TypeOfBankAbbrev3Enum[getLnVal(vals,4)];
-            var assets = new FinancialAssets {Src = LargeCommercialBanks.RELEASE_URL};
+            if (FedLrgBnk.TypeOfBankAbbrev3Enum.ContainsKey(li.Chtr))
+                BankType = FedLrgBnk.TypeOfBankAbbrev3Enum[li.Chtr];
+            var assets = new FinancialAssets { Src = FedLrgBnk.RELEASE_URL };
             decimal conAssts = 0;
             decimal domAssts = 0;
-            if (decimal.TryParse(getLnVal(vals,5).Replace(",", string.Empty), out conAssts))
-                assets.TotalAssets = new Pecuniam(conAssts*1000);
-            if (decimal.TryParse(getLnVal(vals, 6).Replace(",", string.Empty), out domAssts))
-                assets.DomesticAssets = new Pecuniam(domAssts*1000);
+            if (decimal.TryParse(li.ConsolAssets.Replace(",", string.Empty), out conAssts))
+                assets.TotalAssets = new Pecuniam(conAssts * 1000);
+            if (decimal.TryParse(li.DomesticAssets.Replace(",", string.Empty), out domAssts))
+                assets.DomesticAssets = new Pecuniam(domAssts * 1000);
             int domBranches = 0;
             int frnBranches = 0;
             int pfo = 0;
-            if (int.TryParse(getLnVal(vals,9).Replace(",",string.Empty), out domBranches))
+            if (int.TryParse(li.NumOfDomBranches.Replace(",", string.Empty), out domBranches))
                 assets.DomesticBranches = domBranches;
-            if (int.TryParse(getLnVal(vals, 10).Replace(",", string.Empty), out frnBranches))
+            if (int.TryParse(li.NumOfFgnBranches.Replace(",", string.Empty), out frnBranches))
                 assets.ForeignBranches = frnBranches;
-            IsInternational = getLnVal(vals,11) == "Y";
-            if (int.TryParse(getLnVal(vals,12), out pfo))
-                assets.PercentForeignOwned =  Math.Round((double)pfo / 100 ,2);
-            Assets = new Dictionary<DateTime, FinancialAssets> {{reportDate, assets}};
+            IsInternational = li.Ibf == "Y";
+            if (int.TryParse(li.PercentFgnOwned, out pfo))
+                assets.PercentForeignOwned = Math.Round((double)pfo / 100, 2);
+            Assets = new Dictionary<DateTime, FinancialAssets> { { li.RptDate, assets } };
         }
     }
 

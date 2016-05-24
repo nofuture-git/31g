@@ -9,8 +9,12 @@ using System.Xml;
 using NoFuture.Rand.Data;
 using NoFuture.Rand.Data.NfHtml;
 using NoFuture.Rand.Data.NfHttp;
+using NoFuture.Rand.Data.NfText;
+using NoFuture.Rand.Data.NfXml;
 using NoFuture.Rand.Data.Types;
 using NoFuture.Rand.Edu;
+using NoFuture.Rand.Gov.Fed;
+using NoFuture.Rand.Gov.Sec;
 using NoFuture.Shared;
 using NoFuture.Util;
 
@@ -434,7 +438,7 @@ namespace NoFuture.Rand
         public static INfDynData DynamicDataFactory(Uri uri)
         {
             if (uri == null)
-                return null;
+                throw new ArgumentNullException("uri");
 
             if (uri.Host == "finance.yahoo.com")
             {
@@ -449,6 +453,26 @@ namespace NoFuture.Rand
             {
                 return new BloombergSymbolSearch(uri);
             }
+            else if (uri.Host == Edgar.SEC_HOST)
+            {
+                if (uri.LocalPath == "/cgi-bin/srch-edgar")
+                {
+                    return new SecFullTxtSearch(uri);
+                }
+                if (uri.LocalPath == "/cgi-bin/browse-edgar" && uri.Query.StartsWith("?action=getcompany&CIK="))
+                {
+                    return new SecCikSearch(uri);
+                }
+            }
+            else if (uri.Host == new Uri(FedLrgBnk.RELEASE_URL).Host)
+            {
+                return new FedLrgBnk();
+            }
+            else if (uri.Host == new Uri(Ffiec.SEARCH_URL_BASE).Host)
+            {
+                return new FfiecInstitProfile(uri);
+            }
+
             throw new NotImplementedException();
         }
 
