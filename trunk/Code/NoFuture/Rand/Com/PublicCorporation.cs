@@ -97,11 +97,12 @@ namespace NoFuture.Rand.Com
         /// <returns></returns>
         public Form10K GetForm10KByYear(int year)
         {
+            Form10K form10K;
             if (_annualReports.All(x => x.FilingDate.Year - 1 != year))
             {
-                var form10K = new Form10K
+                form10K = new Form10K
                 {
-                    FilingDate = new DateTime(year - 1, 1, 2),
+                    FilingDate = new DateTime(year + 1, 1, 2),
                     FinancialData =
                         new FinancialData
                         {
@@ -116,9 +117,18 @@ namespace NoFuture.Rand.Com
                                                         "since the '{1}' is from the year '{2}'", year,
                         form10K.Statute.Name, form10K.Statute.Year));
 
-                _annualReports.Add(form10K); 
+                _annualReports.Add(form10K);
             }
-            return _annualReports.First(x => x.FilingDate.Year - 1 == year);
+            form10K = _annualReports.First(x => x.FilingDate.Year - 1 == year);
+
+            if (form10K.FinancialData == null)
+                form10K.FinancialData = new FinancialData();
+            if(form10K.FinancialData.Assets == null)
+                form10K.FinancialData.Assets = new Assets();
+            if(form10K.FinancialData.Income == null)
+                form10K.FinancialData.Income = new Income();
+
+            return form10K;
         }
 
         /// <summary>
@@ -209,7 +219,12 @@ namespace NoFuture.Rand.Com
 
                 foreach (var dd in myDynDataRslt)
                 {
-                    pc.TickerSymbols.Add(new Ticker { Symbol = dd.Symbol, InstrumentType = dd.InstrumentType });
+                    pc.TickerSymbols.Add(new Ticker
+                    {
+                        Symbol = dd.Symbol,
+                        InstrumentType = dd.InstrumentType,
+                        Country = dd.Country
+                    });
                 }
 
                 return pc.TickerSymbols.Count > 0;

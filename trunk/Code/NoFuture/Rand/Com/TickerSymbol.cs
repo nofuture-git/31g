@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
+using NoFuture.Exceptions;
+using NoFuture.Shared;
 
 namespace NoFuture.Rand.Com
 {
@@ -25,6 +28,7 @@ namespace NoFuture.Rand.Com
 
         public string Exchange { get; set; }
         public string InstrumentType { get; set; }
+        public string Country { get; set; }
 
         public override bool Equals(object obj)
         {
@@ -44,7 +48,8 @@ namespace NoFuture.Rand.Com
         public bool Equals(Ticker obj)
         {
             return string.Equals(Symbol, obj.Symbol, StringComparison.OrdinalIgnoreCase) &&
-                   string.Equals(Exchange, obj.Exchange, StringComparison.OrdinalIgnoreCase);
+                   string.Equals(Exchange, obj.Exchange, StringComparison.OrdinalIgnoreCase) &&
+                   string.Equals(Country, obj.Country, StringComparison.OrdinalIgnoreCase);
         }
 
         public override string Abbrev
@@ -56,9 +61,14 @@ namespace NoFuture.Rand.Com
     public class TickerComparer : IComparer<Ticker>
     {
         private readonly string _companyName;
+        private readonly Regex _companyNameRegex;
         public TickerComparer(string companyName)
         {
+            if(string.IsNullOrWhiteSpace(companyName))
+                throw new ArgumentNullException("companyName");
+
             _companyName = companyName;
+            _companyNameRegex = new Regex(RegexCatalog.ToRegexExpression(_companyName), RegexOptions.IgnoreCase);
         }
 
         protected char FirstCharOfName
@@ -73,6 +83,7 @@ namespace NoFuture.Rand.Com
 
         public int Compare(Ticker x, Ticker y)
         {
+            const string USA = "USA";
             if (x == null && y == null)
                 return 0;
             if (y == null || string.IsNullOrWhiteSpace(y.Value))
@@ -80,31 +91,26 @@ namespace NoFuture.Rand.Com
             if (x == null || string.IsNullOrWhiteSpace(x.Value))
                 return 1;
 
-            var p0x = x.Value.Trim().ToUpper().ToCharArray().First() == FirstCharOfName;
-            var p0y = y.Value.Trim().ToUpper().ToCharArray().First() == FirstCharOfName;
+            Func<Ticker, bool[]> getProps = ticker => new[]
+            {
+                _companyNameRegex.IsMatch(ticker.Value.Trim()),
+                string.Equals(ticker.Country, USA, StringComparison.OrdinalIgnoreCase),
+                ticker.Value.Trim().ToUpper().ToCharArray().First() == FirstCharOfName,
+                ticker.Value.Trim().Length <= 3,
+                ticker.Value.Trim().Length <= 4
+            };
 
-            var p1x = x.Value.Trim().Length <= 3;
-            var p1y = y.Value.Trim().Length <= 3;
+            var propX = getProps(x);
 
-            var p2x = x.Value.Trim().Length <= 4;
-            var p2y = y.Value.Trim().Length <= 4;
+            var propY = getProps(y);
 
-            if (p0x && !p0y)
-                return -1;
-            if (!p0x && p0y)
-                return 1;
-
-            if (p1x && !p1y)
-                return -1;
-            if (!p1x && p1y)
-                return 1;
-
-            if (p2x && !p2y)
-                return -1;
-
-            if (!p2x && p2y)
-                return 1;
-
+            for (var i = 0; i < propX.Length; i++)
+            {
+                if (propX[i] && !propY[i])
+                    return -1;
+                if (!propX[i] && propY[i])
+                    return 1;
+            }
             return x.Value.Trim().Length < y.Value.Trim().Length ? -1 : 1;
         }
     }

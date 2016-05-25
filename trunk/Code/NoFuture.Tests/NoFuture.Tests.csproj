@@ -216,6 +216,7 @@
     <Compile Include="Rand\PublicCorporationTests.cs" />
     <Compile Include="Rand\DataTypesTests.cs" />
     <Compile Include="Rand\NhtsaTests.cs" />
+    <Compile Include="Rand\TickerTests.cs" />
     <Compile Include="Rand\UsStateTests.cs" />
     <Compile Include="Shared\TestBindings.cs" />
     <Compile Include="Shared\TestRegexCatalog.cs" />

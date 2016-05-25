@@ -10,13 +10,16 @@ namespace NoFuture.Rand.Gov.Sec
 {
     public class Edgar
     {
+        #region constants
         public const string SEC_ROOT_URL = "http://" + SEC_HOST;
         public const string SEC_HOST = "www.sec.gov";
         public const string EDGAR_ROOT = SEC_ROOT_URL + "/cgi-bin/browse-edgar";
         public const string INTERACTIVE_ROOT = SEC_ROOT_URL + "/cgi-bin/viewer";
         public const string ARCHIVE_ROOT = SEC_ROOT_URL + "/Archives/edgar/data/";
         public const string ATOM_XML_NS = "http://www.w3.org/2005/Atom";
+        #endregion
 
+        #region inner types
         /// <summary>
         /// see [http://www.sec.gov/edgar/searchedgar/edgarzones.htm]
         /// </summary>
@@ -51,7 +54,9 @@ namespace NoFuture.Rand.Gov.Sec
                 return string.Join("+AND+", searchList);
             }
         }
+        #endregion
 
+        #region methods
         public static Uri GetUriFullTextSearch(FullTextSearch fts)
         {
             if (string.IsNullOrWhiteSpace(fts.ToString()))
@@ -241,6 +246,7 @@ namespace NoFuture.Rand.Gov.Sec
             publicCorporation.Phone = phs.ToArray();
             return true;
         }
+        #endregion
 
         #region helper methods
 
@@ -296,6 +302,7 @@ namespace NoFuture.Rand.Gov.Sec
                 return string.Empty;
             return name.Trim();
         }
+
         internal static string ParseCikFromUriPath(string htmlLink)
         {
             if (string.IsNullOrWhiteSpace(htmlLink) || !htmlLink.Contains("/"))
