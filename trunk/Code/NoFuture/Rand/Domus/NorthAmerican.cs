@@ -151,7 +151,7 @@ namespace NoFuture.Rand.Domus
 
         public override IPerson GetFather() { return _father;}
 
-        public override IPerson GetSpouse(DateTime? dt)
+        public override SpouseData GetSpouse(DateTime? dt)
         {
             var cdt = dt ?? DateTime.Now;
 
@@ -161,7 +161,7 @@ namespace NoFuture.Rand.Domus
             }
 
             var spouseData = _spouses.FirstOrDefault(x => DateTime.Compare(x.MarriedOn, cdt) <= 0 && x.SeparatedOn == null);
-            return spouseData != null ? spouseData.Spouse : null;
+            return spouseData != null ? spouseData : null;
         }
 
         public string MiddleName { get; set; }
@@ -214,7 +214,7 @@ namespace NoFuture.Rand.Domus
             var ms = GetMaritalStatus(dt);
             if ((ms == MaritialStatus.Married || ms == MaritialStatus.Remarried) && GetSpouse(dt) != null)
             {
-                NAmerUtil.SetNAmerCohabitants((NorthAmerican)GetSpouse(dt), this);
+                NAmerUtil.SetNAmerCohabitants((NorthAmerican)GetSpouse(dt).Spouse, this);
             }
             var underAgeChildren = Children.Cast<NorthAmerican>().Where(x => x.GetAge(dt) < UsState.AGE_OF_ADULT).ToList();
             if (underAgeChildren.Count <= 0)
@@ -421,7 +421,6 @@ namespace NoFuture.Rand.Domus
                 if (childDob == null)
                     continue;
 
-
                 AddNewChildToList(childDob.Value);
             }
         }
@@ -438,7 +437,9 @@ namespace NoFuture.Rand.Domus
         protected internal void AddNewChildToList(DateTime myChildDob)
         {
             if (MyGender == Gender.Male)
+            {
                 return;
+            }
 
             var dt = DateTime.Now;
             DateTime dtOut;
@@ -465,7 +466,7 @@ namespace NoFuture.Rand.Domus
             //never married
             if (!_spouses.Any())
             {
-                myChild = new NorthAmerican(myChildDob, myChildGender, this, null) {LastName = LastName};
+                myChild = new NorthAmerican(myChildDob, myChildGender, this, null) {LastName = LastName, Race = Race};
                 //default to mother last name
                 _children.Add(myChild);
                 return;
@@ -483,7 +484,7 @@ namespace NoFuture.Rand.Domus
                      DateTime.Compare(myChildDob, marriage.SeparatedOn.Value) < 0))
                 {
 
-                    myChild = new NorthAmerican(myChildDob, myChildGender, this, marriage.Spouse);
+                    myChild = new NorthAmerican(myChildDob, myChildGender, this, marriage.Spouse) {Race = Race};
                     if (!isDaughterWithSpouse)
                         myChild.LastName = marriage.Spouse.LastName;
                 }
@@ -495,11 +496,19 @@ namespace NoFuture.Rand.Domus
                 var maidenName = OtherNames.FirstOrDefault(x => x.Item1 == KindsOfPersonalNames.Father);
                 if (maidenName != null && !string.IsNullOrWhiteSpace(maidenName.Item2))
                 {
-                    myChild = new NorthAmerican(myChildDob, myChildGender, this, null) {LastName = maidenName.Item2};
+                    myChild = new NorthAmerican(myChildDob, myChildGender, this, null)
+                    {
+                        LastName = maidenName.Item2,
+                        Race = Race
+                    };
                 }
                 else
                 {
-                    myChild = new NorthAmerican(myChildDob, myChildGender, this, null) { LastName = this.LastName };
+                    myChild = new NorthAmerican(myChildDob, myChildGender, this, null)
+                    {
+                        LastName = LastName,
+                        Race = Race
+                    };
                 }
             }
             _children.Add(myChild);
@@ -620,43 +629,4 @@ namespace NoFuture.Rand.Domus
         internal double From { get; set; }
         internal double To { get; set; }
     }
-    [EditorBrowsable(EditorBrowsableState.Never)]
-    internal class SpouseData
-    {
-        internal IPerson Spouse { get; set; }
-        internal DateTime MarriedOn { get; set; }
-        internal DateTime? SeparatedOn { get; set; }
-        internal int Ordinal { get; set; }
-
-        public override bool Equals(object obj)
-        {
-            var sd = obj as SpouseData;
-            if (sd == null)
-                return false;
-
-            var mdq = Mdq(sd);
-
-            var ddq = Ddq(sd);
-
-            return mdq && ddq;
-        }
-
-        public override int GetHashCode()
-        {
-            var sh = Spouse != null ? Spouse.GetHashCode() : 0;
-            var mo = MarriedOn.GetHashCode();
-            var so = SeparatedOn.HasValue ? SeparatedOn.Value.GetHashCode() : 0;
-            var o = Ordinal.GetHashCode();
-
-            return sh + mo + so + o;
-        }
-
-        private bool Mdq(SpouseData sd) { return DateTime.Compare(MarriedOn.Date, sd.MarriedOn.Date) == 0; }
-        private bool Ddq(SpouseData sd)
-        {
-            return DateTime.Compare(SeparatedOn.GetValueOrDefault(MarriedOn.Date).Date,
-                sd.SeparatedOn.GetValueOrDefault(sd.MarriedOn.Date)) == 0;
-        }
-    }
-
 }

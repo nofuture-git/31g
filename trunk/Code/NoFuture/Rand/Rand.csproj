@@ -81,6 +81,7 @@
     <Compile Include="Domus\NAmerUtil.cs" />
     <Compile Include="Domus\NorthAmerican.cs" />
     <Compile Include="Domus\Pneuma\Personality.cs" />
+    <Compile Include="Domus\SpouseData.cs" />
     <Compile Include="Domus\Sp\Account.cs" />
     <Compile Include="Domus\Sp\Asset.cs" />
     <Compile Include="Domus\Sp\Income.cs" />
@@ -191,7 +192,9 @@
     <None Include="Gov\Bea\Get-BeaGovParameters.ps1" />
     <None Include="Gov\Bls\Get-BlsGovCodes.ps1" />
     <None Include="Gov\Fed\Get-FedLrgBnkListData.ps1" />
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
