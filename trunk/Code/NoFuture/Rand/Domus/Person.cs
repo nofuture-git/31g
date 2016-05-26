@@ -33,7 +33,7 @@ namespace NoFuture.Rand.Domus
         public virtual Gender MyGender { get; set; }
         public virtual List<Uri> NetUri { get { return _netUris; } }
         public abstract MaritialStatus GetMaritalStatus(DateTime? dt);
-        public abstract SpouseData GetSpouse(DateTime? dt);
+        public abstract Spouse GetSpouse(DateTime? dt);
         public abstract IPerson GetFather();
         public abstract IPerson GetMother();
         public virtual List<IPerson> Children { get { return _children; } }

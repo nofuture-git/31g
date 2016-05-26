@@ -13,7 +13,7 @@ namespace NoFuture.Rand.Domus
         Gender MyGender { get; set; }
         List<Uri> NetUri { get; }
         MaritialStatus GetMaritalStatus(DateTime? dt);
-        SpouseData GetSpouse(DateTime? dt);
+        Spouse GetSpouse(DateTime? dt);
         IPerson GetFather();
         IPerson GetMother();
         List<IPerson> Children { get; }
