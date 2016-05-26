@@ -261,6 +261,12 @@ namespace NoFuture.Shared
         NET4Plus
     }
 
+    public enum ChronoCompare
+    {
+        Before = -1,
+        SameTime = 0,
+        After = 1
+    }
     /// <summary>
     /// Misc. constant values used throughout.
     /// </summary>

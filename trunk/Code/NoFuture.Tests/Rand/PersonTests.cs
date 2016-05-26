@@ -21,10 +21,9 @@ namespace NoFuture.Tests.Rand
             Assert.AreNotEqual(Gender.Unknown, testResult.MyGender);
             Assert.IsFalse(string.IsNullOrWhiteSpace(testResult.LastName));
             Assert.IsFalse(string.IsNullOrWhiteSpace(testResult.FirstName));
-            Assert.IsNotNull(testResult.BirthDate);
+            Assert.IsNotNull(testResult.BirthCert);
             Assert.IsFalse(string.IsNullOrWhiteSpace(testResult.HomeAddress.ToString()));
 
-            System.Diagnostics.Debug.WriteLine(testResult.NetUri.First().ToString());
         }
 
         [TestMethod]
@@ -94,12 +93,12 @@ namespace NoFuture.Tests.Rand
             DateTime testDob = new DateTime(1984,4,22);
             var father = NAmerUtil.SolveForParent(testDob, NAmerUtil.Equations.MaleYearOfMarriage2AvgAge, Gender.Male);
             Assert.IsNotNull(father);
-            Assert.IsNotNull(father.BirthDate);
-            Assert.IsTrue(father.BirthDate.Value.Year < testDob.Year);
+            Assert.IsNotNull(father.BirthCert);
+            Assert.IsTrue(father.BirthCert.DateOfBirth.Year < testDob.Year);
 
             System.Diagnostics.Debug.WriteLine(father.FirstName);
             System.Diagnostics.Debug.WriteLine(father.LastName);
-            System.Diagnostics.Debug.WriteLine(father.BirthDate);
+            System.Diagnostics.Debug.WriteLine(father.BirthCert.DateOfBirth);
         }
 
         [TestMethod]
@@ -112,7 +111,7 @@ namespace NoFuture.Tests.Rand
 
             System.Diagnostics.Debug.WriteLine(spouse.FirstName);
             System.Diagnostics.Debug.WriteLine(spouse.LastName);
-            System.Diagnostics.Debug.WriteLine(spouse.BirthDate);
+            System.Diagnostics.Debug.WriteLine(spouse.BirthCert.DateOfBirth);
 
         }
 
@@ -151,6 +150,12 @@ namespace NoFuture.Tests.Rand
             var inputDob = DateTime.Now.AddYears(-50);
 
             var testResult = NAmerUtil.GetChildBirthDate(inputDob, 0, null);
+
+            Assert.IsNotNull(testResult);
+
+            System.Diagnostics.Debug.WriteLine(testResult);
+
+            testResult = NAmerUtil.GetChildBirthDate(inputDob, 1, null);
 
             Assert.IsNotNull(testResult);
 
@@ -203,6 +208,36 @@ namespace NoFuture.Tests.Rand
             Assert.AreNotEqual(MaritialStatus.Unknown, testResult);
 
             System.Diagnostics.Debug.WriteLine(testResult);
+        }
+
+        [TestMethod]
+        public void TestIsValidDobOfChild()
+        {
+            var testPerson = new NorthAmerican(new DateTime(1955,6,20), Gender.Female, false);
+            testPerson.FirstName = NAmerUtil.GetAmericanFirstName(testPerson.BirthCert.DateOfBirth, Gender.Female);
+
+            testPerson.Children.Add(new NorthAmerican(new DateTime(1976, 10, 2), Gender.Female, false));
+            testPerson.Children.Add(new NorthAmerican(new DateTime(1986, 3, 11), Gender.Female, false));
+            testPerson.Children.Add(new NorthAmerican(new DateTime(1982, 12, 30), Gender.Female, false));
+
+            var testDob = new DateTime(1985, 9, 10);//conception ~ 12/4/1984
+
+            var testResult = testPerson.IsValidDobOfChild(testDob);
+
+            //invalid: dob during prev preg
+            Assert.IsFalse(testResult);
+
+            testDob = testDob.AddDays(313);//conception ~ 10/13/1985, dob ~ 7/20/1986
+
+            //invalid: conception during prev preg
+            testResult = testPerson.IsValidDobOfChild(testDob);
+            Assert.IsFalse(testResult);
+
+            testDob = testDob.AddDays(313);//conception ~ 8/22/1986, dob 5/29/1987 
+
+            //valid: conception ~ 5 months after prev birth
+            testResult = testPerson.IsValidDobOfChild(testDob);
+            Assert.IsTrue(testResult);
         }
     }
 }

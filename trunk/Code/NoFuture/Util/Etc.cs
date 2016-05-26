@@ -880,5 +880,21 @@ namespace NoFuture.Util
 
             return contentBetween.ToArray();
         }
+
+        public static ChronoCompare ComparedTo(this DateTime t1, DateTime t2)
+        {
+            var num = DateTime.Compare(t1, t2);
+
+            if(num < 0)
+                return ChronoCompare.Before;
+            return num == 0 ? ChronoCompare.SameTime : ChronoCompare.After;
+        }
+
+        public static bool IsBetween(this DateTime t0, DateTime t1, DateTime t2)
+        {
+            var afterOrOnT1 = t0.ComparedTo(t1) == ChronoCompare.After || t0.ComparedTo(t1) == ChronoCompare.SameTime;
+            var beforeOrOnT2 = t0.ComparedTo(t2) == ChronoCompare.Before || t0.ComparedTo(t2) == ChronoCompare.SameTime;
+            return afterOrOnT1 && beforeOrOnT2;
+        }
     }
 }

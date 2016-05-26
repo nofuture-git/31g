@@ -399,7 +399,7 @@ namespace NoFuture.Rand.Domus
 
         /// <summary>
         /// Returns a new <see cref="IPerson"/> having the opposite gender
-        /// of <see cref="gender"/> with a similar <see cref="IPerson.BirthDate"/>
+        /// of <see cref="gender"/> with a similar <see cref="IPerson.BirthCert"/>
         /// </summary>
         /// <param name="myDob">
         /// Only used to generate a Birth Date around the <see cref="maxAgeDiff"/>

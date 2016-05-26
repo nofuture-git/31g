@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using NoFuture.Rand.Gov;
 
 namespace NoFuture.Rand.Domus
 {
     public interface IPerson
     {
-        DateTime? BirthDate { get; set; }
+        BirthCert BirthCert { get; }
         DateTime? DeathDate { get; set; }
         string FirstName { get; set; }
         string LastName { get; set; }

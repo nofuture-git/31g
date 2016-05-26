@@ -51,7 +51,7 @@ namespace NoFuture.Rand.Domus.Pneuma
 
         public Dimension()
         {
-            var s = Etx.CoinToss ? -1 : 1;
+            var s = Etx.PlusOrMinusOne;
             Zscore = s*Math.Round(Etx.MyRand.NextDouble(), 7);
         }
 

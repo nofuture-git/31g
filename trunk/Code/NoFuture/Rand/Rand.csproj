@@ -90,6 +90,7 @@
     <Compile Include="Gov\Bls\Codes\CeSupersector.cs" />
     <Compile Include="Gov\Fed\Ffiec.cs" />
     <Compile Include="Gov\Nhtsa\Identifier.cs" />
+    <Compile Include="Gov\VitalRecord.cs" />
     <Compile Include="Pecuniam.cs" />
     <Compile Include="Domus\Sp\TradeLine.cs" />
     <Compile Include="Edu\AmericanHighSchool.cs" />

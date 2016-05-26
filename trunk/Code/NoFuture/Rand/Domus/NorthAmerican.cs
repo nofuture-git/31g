@@ -6,6 +6,8 @@ using NoFuture.Exceptions;
 using NoFuture.Rand.Domus.Pneuma;
 using NoFuture.Rand.Domus.Sp;
 using NoFuture.Rand.Gov;
+using NoFuture.Shared;
+using NoFuture.Util;
 
 namespace NoFuture.Rand.Domus
 {
@@ -19,28 +21,23 @@ namespace NoFuture.Rand.Domus
         private IPerson _mother;
         private IPerson _father;
         private readonly List<SpouseData> _spouses = new List<SpouseData>();
-        private DateTime? _dob;
         private Gender _myGender;
         private string _fname;
-        private string _lname;
-        private MaritialStatus _ms;
+        protected string _lname;
         internal readonly List<Tuple<KindsOfLabels, NorthAmericanPhone>> _phoneNumbers = new List<Tuple<KindsOfLabels, NorthAmericanPhone>>();
         #endregion
 
         #region ctors
 
-        public NorthAmerican(DateTime? dob, Gender myGender, bool withWholeFamily = false)
+        public NorthAmerican(DateTime dob, Gender myGender, bool withWholeFamily = false):base(dob)
         {
-            if(dob == null)
-                throw new ArgumentNullException("dob");
-            _dob = dob;
+            _birthCert = new AmericanBirthCert(this) { DateOfBirth = dob };
             _myGender = myGender;
 
-            _fname = _myGender != Gender.Unknown ? NAmerUtil.GetAmericanFirstName(_dob, _myGender) : "Pat";
-            _ms = _myGender != Gender.Unknown ? NAmerUtil.GetMaritialStatus(_dob.Value, _myGender) : MaritialStatus.Unknown;
+            _fname = _myGender != Gender.Unknown ? NAmerUtil.GetAmericanFirstName(_birthCert.DateOfBirth, _myGender) : "Pat";
             _lname = NAmerUtil.GetAmericanLastName();
 
-            MiddleName = NAmerUtil.GetAmericanFirstName(_dob, _myGender);
+            MiddleName = NAmerUtil.GetAmericanFirstName(_birthCert.DateOfBirth, _myGender);
 
             var csz = CityArea.American(null);
             HomeAddress = Address.American();
@@ -67,22 +64,19 @@ namespace NoFuture.Rand.Domus
             _personality = new Personality();
         }
 
-        public NorthAmerican(DateTime? dob, Gender myGender, IPerson mother, IPerson father): this(dob, myGender)
+        public NorthAmerican(DateTime dob, Gender myGender, IPerson mother, IPerson father): this(dob, myGender)
         {
             _mother = mother;
             _father = father;
+            var nAmerMother = _mother as NorthAmerican;
+            if (nAmerMother == null)
+                return;
+            ((AmericanBirthCert) _birthCert).City = nAmerMother.HomeCityArea;
         }
 
         #endregion
 
         #region properties
-
-        public override DateTime? BirthDate
-        {
-            get { return _dob; }
-
-            set { _dob = value; }
-        }
 
         public override string FirstName
         {
@@ -115,7 +109,7 @@ namespace NoFuture.Rand.Domus
             var myTimeline = new Dictionary<int, MaritialStatus> {{0, MaritialStatus.Single}};
             foreach (var spouseData in _spouses)
             {
-                var days = (int)Math.Abs((spouseData.MarriedOn - _dob.Value).TotalDays);
+                var days = (int)Math.Abs((spouseData.MarriedOn - _birthCert.DateOfBirth).TotalDays);
                 while (myTimeline.ContainsKey(days))
                     days += 1;
 
@@ -130,7 +124,7 @@ namespace NoFuture.Rand.Domus
 
                 if (spouseData.SeparatedOn == null)
                     continue;
-                days = (int) Math.Abs((spouseData.SeparatedOn.Value - _dob.Value).TotalDays);
+                days = (int)Math.Abs((spouseData.SeparatedOn.Value - _birthCert.DateOfBirth).TotalDays);
                 while (myTimeline.ContainsKey(days))
                     days += 1;
 
@@ -139,14 +133,14 @@ namespace NoFuture.Rand.Domus
                 if (spouseData.Spouse == null || spouseData.Spouse.DeathDate == null)
                     continue;
 
-                days = (int) Math.Abs((spouseData.Spouse.DeathDate.Value - _dob.Value).TotalDays);
+                days = (int)Math.Abs((spouseData.Spouse.DeathDate.Value - _birthCert.DateOfBirth).TotalDays);
                 while (myTimeline.ContainsKey(days))
                     days += 1;
 
                 myTimeline.Add(days, MaritialStatus.Widowed);
             }
 
-            var mdtDays = (int) Math.Abs((mdt - _dob.Value).TotalDays);
+            var mdtDays = (int)Math.Abs((mdt - _birthCert.DateOfBirth).TotalDays);
 
             return myTimeline.Any(x => x.Key >= mdtDays)
                 ? myTimeline.First(x => x.Key >= mdtDays).Value
@@ -235,27 +229,41 @@ namespace NoFuture.Rand.Domus
         /// </summary>
         protected internal void ResolveFamilyState()
         {
-            ThrowOnBirthDateNull();
+            ThrowOnBirthDateNull(this);
             var dt = DateTime.Now;
             Race = NAmerUtil.GetAmericanRace(HomeZip);
             ResolveParents();
-            ResolveSpouse(NAmerUtil.GetMaritialStatus(_dob.Value, MyGender));
+            ResolveSpouse(NAmerUtil.GetMaritialStatus(_birthCert.DateOfBirth, MyGender));
             ResolveChildren();
             AlignCohabitantsHomeData(dt);
         }
 
         protected internal void ResolveParents()
         {
-            ThrowOnBirthDateNull();
+            ThrowOnBirthDateNull(this);
 
-            var myMother = (NorthAmerican)(_mother ?? (_mother = NAmerUtil.SolveForParent(_dob.Value, NAmerUtil.Equations.FemaleYearOfMarriage2AvgAge, Gender.Female)));
-            var myFather = (NorthAmerican)(_father ?? (_father = NAmerUtil.SolveForParent(_dob.Value, NAmerUtil.Equations.MaleYearOfMarriage2AvgAge, Gender.Male)));
+            var myMother =
+                (NorthAmerican)
+                    (_mother ??
+                     (_mother =
+                         NAmerUtil.SolveForParent(_birthCert.DateOfBirth,
+                             NAmerUtil.Equations.FemaleYearOfMarriage2AvgAge, Gender.Female)));
+            var myFather =
+                (NorthAmerican)
+                    (_father ??
+                     (_father =
+                         NAmerUtil.SolveForParent(_birthCert.DateOfBirth, NAmerUtil.Equations.MaleYearOfMarriage2AvgAge,
+                             Gender.Male)));
 
             //at time of birth
             myMother.LastName = LastName;
             myFather.LastName = LastName;
 
-            var myParentsAtMyBirth = NAmerUtil.GetMaritialStatus(myMother.BirthDate.Value, Gender.Female);
+            BirthCert.Father = myFather;
+            BirthCert.Mother = myMother;
+            ((AmericanBirthCert) BirthCert).City = myMother.HomeCityArea;
+
+            var myParentsAtMyBirth = NAmerUtil.GetMaritialStatus(myMother.BirthCert.DateOfBirth, Gender.Female);
 
             //mother not ever married to father
             if (myParentsAtMyBirth == MaritialStatus.Single)
@@ -278,7 +286,7 @@ namespace NoFuture.Rand.Domus
             if (myParentsAtMyBirth == MaritialStatus.Married)
             {
                 NAmerUtil.SetNAmerCohabitants(myMother, myFather);
-                var marriedOn = NAmerUtil.SolveForMarriageDate(myFather.BirthDate, Gender.Male);
+                var marriedOn = NAmerUtil.SolveForMarriageDate(myFather.BirthCert.DateOfBirth, Gender.Male);
                 if (marriedOn != null)
                 {
                     myMother.AddNewSpouseToList(myFather, marriedOn.Value);
@@ -300,19 +308,19 @@ namespace NoFuture.Rand.Domus
 
             var dt = DateTime.Now;
 
-            ThrowOnBirthDateNull();
+            ThrowOnBirthDateNull(this);
 
             var avgAgeMarriage = MyGender == Gender.Female
-                ? NAmerUtil.Equations.FemaleDob2MarriageAge.SolveForY(_dob.Value.ToDouble())
-                : NAmerUtil.Equations.MaleDob2MarriageAge.SolveForY(_dob.Value.ToDouble());
-            var currentAge = Person.CalcAge(_dob.Value, dt);
+                ? NAmerUtil.Equations.FemaleDob2MarriageAge.SolveForY(_birthCert.DateOfBirth.ToDouble())
+                : NAmerUtil.Equations.MaleDob2MarriageAge.SolveForY(_birthCert.DateOfBirth.ToDouble());
+            var currentAge = Person.CalcAge(_birthCert.DateOfBirth, dt);
 
             //all other MaritialStatus imply at least one marriage in past
             var yearsMarried = currentAge - Convert.ToInt32(Math.Round(avgAgeMarriage));
 
             var marriedOn = Etx.Date(-1*yearsMarried, dt);
 
-            var spouse = (NorthAmerican)NAmerUtil.SolveForSpouse(_dob.Value, MyGender);
+            var spouse = (NorthAmerican)NAmerUtil.SolveForSpouse(_birthCert.DateOfBirth, MyGender);
 
             //add maiden name, set new last name to match husband
             if (_myGender == Gender.Female)
@@ -350,7 +358,7 @@ namespace NoFuture.Rand.Domus
                     ageSpread = 10;//he likes'em young...
 
                 //get a second spouse
-                var secondSpouse = (NorthAmerican)NAmerUtil.SolveForSpouse(_dob.Value, MyGender, ageSpread);
+                var secondSpouse = (NorthAmerican)NAmerUtil.SolveForSpouse(_birthCert.DateOfBirth, MyGender, ageSpread);
 
                 //random second marriage date
                 var remarriedOn = Etx.Date(Convert.ToInt32(Math.Round(NAmerUtil.YearsBeforeNextMarriage)),
@@ -373,17 +381,17 @@ namespace NoFuture.Rand.Domus
             if (MyGender == Gender.Male)
                 return;
 
-            ThrowOnBirthDateNull();
+            ThrowOnBirthDateNull(this);
 
             var currentNumChildren = 0;
 
             //two extremes
             var teenPregEquation = NAmerUtil.Equations.GetProbTeenPregnancyByRace(Race);
             var teenageAge = Etx.IntNumber(15, 19);
-            var teenageYear = _dob.Value.AddYears(teenageAge).Year;
+            var teenageYear = _birthCert.DateOfBirth.AddYears(teenageAge).Year;
             var propTeenagePreg = Math.Round(teenPregEquation.SolveForY(teenageYear) * 1000);
 
-            var propLifetimeChildless = 1000 - Math.Round((NAmerUtil.SolveForProbabilityChildless(_dob.Value,
+            var propLifetimeChildless = 1000 - Math.Round((NAmerUtil.SolveForProbabilityChildless(_birthCert.DateOfBirth,
                 Education == null ? OccidentalEdu.Empty : Education.GetEduLevel(null))) * 1000);
 
             //random value within range of two extremes
@@ -396,25 +404,25 @@ namespace NoFuture.Rand.Domus
             //other extreme is teenage preg
             if (randItoM <= propTeenagePreg)
             {
-                var teenPregChildDob = Etx.Date(teenageAge, _dob);
+                var teenPregChildDob = Etx.Date(teenageAge, _birthCert.DateOfBirth);
                 AddNewChildToList(teenPregChildDob);
                 currentNumChildren += 1;
             }
             
             //last is averages
-            var numOfChildren = NAmerUtil.SolveForNumberOfChildren(_dob.Value, null);
+            var numOfChildren = NAmerUtil.SolveForNumberOfChildren(_birthCert.DateOfBirth, null);
 
             if (numOfChildren <= 0)
                 return;
 
             for (var i = currentNumChildren; i < numOfChildren; i++)
             {
-                var childDob = NAmerUtil.GetChildBirthDate(_dob.Value, i, null);
+                var childDob = NAmerUtil.GetChildBirthDate(_birthCert.DateOfBirth, i, null);
                 if (childDob == null)
                     continue;
 
 
-                AddNewChildToList(childDob);
+                AddNewChildToList(childDob.Value);
             }
         }
 
@@ -427,24 +435,32 @@ namespace NoFuture.Rand.Domus
         /// This will be adusted up by when the Birth Date would occur during the pregnancy 
         /// of a sibling unless it is the exact same date (twins).
         /// </param>
-        protected internal void AddNewChildToList(DateTime? myChildDob)
+        protected internal void AddNewChildToList(DateTime myChildDob)
         {
-            if (myChildDob == null || MyGender == Gender.Male)
+            if (MyGender == Gender.Male)
                 return;
 
             var dt = DateTime.Now;
-
+            DateTime dtOut;
             NorthAmerican myChild = null;
+            if (IsTwin(myChildDob, out dtOut) && DateTime.Compare(dtOut, DateTime.MinValue) != 0)
+            {
+                myChildDob = dtOut;
+            }
+            else
+            {
+                //throws ex when exceed mothers age.
+                while (!IsValidDobOfChild(myChildDob))
+                {
+                    myChildDob = myChildDob.AddDays(PREG_DAYS + MS_DAYS);
+                }  
+            }
 
-            //child dob must not be during the 280 day of pregnancy of next sibling unless twins
-            myChildDob = AdjustBirthDateWhenDuringAnotherPregnancy(myChildDob);
-
-            var myChildeAge = Person.CalcAge(myChildDob.Value, dt);
+            var myChildeAge = CalcAge(myChildDob, dt);
             var myChildGender = Etx.CoinToss ? Gender.Female : Gender.Male;
 
-
             var isDaughterWithSpouse = myChildGender == Gender.Female &&
-                                       NAmerUtil.Equations.FemaleDob2MarriageAge.SolveForY(myChildDob.Value.Year) >=
+                                       NAmerUtil.Equations.FemaleDob2MarriageAge.SolveForY(myChildDob.Year) >=
                                        myChildeAge && myChildeAge >= GetMyHomeStatesAgeOfConsent();
             //never married
             if (!_spouses.Any())
@@ -462,9 +478,9 @@ namespace NoFuture.Rand.Domus
                 if (marriage == null)
                     continue;
 
-                if (DateTime.Compare(myChildDob.Value, marriage.MarriedOn) >= 0 &&
+                if (DateTime.Compare(myChildDob, marriage.MarriedOn) >= 0 &&
                     (marriage.SeparatedOn == null ||
-                     DateTime.Compare(myChildDob.Value, marriage.SeparatedOn.Value) < 0))
+                     DateTime.Compare(myChildDob, marriage.SeparatedOn.Value) < 0))
                 {
 
                     myChild = new NorthAmerican(myChildDob, myChildGender, this, marriage.Spouse);
@@ -489,21 +505,59 @@ namespace NoFuture.Rand.Domus
             _children.Add(myChild);
         }
 
-        protected internal DateTime? AdjustBirthDateWhenDuringAnotherPregnancy(DateTime? childDob)
+        protected internal bool IsTwin(DateTime childDob, out DateTime minutesAfterChildDob)
         {
-            if (childDob == null)
-                return null;
+            var siblingsBdays = _children.Where(x => x.BirthCert != null).Select(x => x.BirthCert.DateOfBirth).ToList();
 
-            //dob must not, unless a twin, be during the pregnancy of a sibling.
-            var invalidRange = _children.FirstOrDefault(
-                x =>
-                    x.BirthDate.HasValue && DateTime.Compare(x.BirthDate.Value.Date, childDob.Value.Date) != 0 &&
-                    (x.BirthDate.Value.AddDays(-280) - childDob.Value).Days < 280);
+            if (siblingsBdays.Any(x => DateTime.Compare(x.Date, childDob.Date) == 0))
+            {
+                childDob = siblingsBdays.First(x => DateTime.Compare(x.Date, childDob.Date) == 0);
+                minutesAfterChildDob = childDob.AddMinutes(Etx.IntNumber(2, 8)).AddSeconds(Etx.IntNumber(0, 59));
+                return true;
+            }
+            minutesAfterChildDob = DateTime.MinValue;
+            return false;
 
-            if (invalidRange == null)
-                return childDob;
+        }
 
-            return invalidRange.BirthDate.Value.AddDays(Etx.IntNumber(5, 30));
+        protected internal bool IsValidDobOfChild(DateTime childDob)
+        {
+            ThrowOnBirthDateNull(this);
+
+            var maxDate = BirthCert.DateOfBirth.AddYears(55);
+            var minDate = BirthCert.DateOfBirth.AddYears(13);
+
+            if (childDob.ComparedTo(minDate) == ChronoCompare.Before ||
+                childDob.ComparedTo(maxDate) == ChronoCompare.After)
+            {
+                throw new RahRowRagee(
+                    string.Format(
+                        "The Child Date-of-Birth, {0}, does not fall " +
+                        "within a rational range given the mother's Date-of-Birth of {1}",
+                        childDob, BirthCert.DateOfBirth));
+            }
+            var clildDobTuple = new Tuple<DateTime, DateTime>(childDob.AddDays(-1 * PREG_DAYS), childDob);
+
+            var bdayTuples =
+                _children.Where(x => x.BirthCert != null)
+                    .Select(
+                        x =>
+                            new Tuple<DateTime, DateTime>(x.BirthCert.DateOfBirth.AddDays(-1*PREG_DAYS),
+                                x.BirthCert.DateOfBirth.AddDays(MS_DAYS))).ToList();
+            foreach (var s in bdayTuples)
+            {
+                var xDoC = s.Item1;
+                var xDoB = s.Item2;
+
+                var yDoC = clildDobTuple.Item1;
+                var yDoB = clildDobTuple.Item2;
+
+                //neither of the (y) values can appear between the x values
+                if (yDoC.IsBetween(xDoC, xDoB) || yDoB.IsBetween(xDoC, xDoB))
+                    return false;
+            }
+
+            return true;
         }
 
         protected internal void AddNewSpouseToList(IPerson spouse, DateTime marriedOn, DateTime? separatedOn = null)
@@ -539,15 +593,6 @@ namespace NoFuture.Rand.Domus
                 return;
 
             nAmerSpouse.AddNewSpouseToList(this, marriedOn, separatedOn);
-        }
-
-        private void ThrowOnBirthDateNull()
-        {
-            if (_dob == null)
-                throw
-                    new RahRowRagee(
-                        String.Format("The random person named {0}, {1} does not have a Date Of Birth assigned.",
-                            LastName, FirstName));
         }
 
         private int GetMyHomeStatesAgeOfConsent()

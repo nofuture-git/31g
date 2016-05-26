@@ -8,11 +8,11 @@ using System.Xml;
 namespace NoFuture.Rand
 {
     [Serializable]
-    public abstract class Phone : ICited
+    public abstract class Phone : Identifier
     {
         public abstract string Notes { get; set; }
         public abstract string Formatted { get; }
-        public virtual string Src { get; set; }
+        public abstract string Unformatted { get; }
         /// <summary>
         /// Gets a <see cref="NorthAmericanPhone"/> whose Area Code, Central Office and 
         /// Subscriber number are all random values.
@@ -127,18 +127,43 @@ namespace NoFuture.Rand
         public string AreaCode { get; set; }
         public string CentralOfficeCode { get; set; }
         public string SubscriberNumber { get; set; }
-        public override string ToString()
+
+        public override string Value
         {
-            return string.Format("{0}{1}{2}", AreaCode, CentralOfficeCode, SubscriberNumber);
+            get
+            {
+                return Formatted;
+            }
+            set
+            {
+                NorthAmericanPhone phout;
+                if(!TryParse(value, out phout))
+                    throw new InvalidOperationException(string.Format("Cannot parse the value '{0}' into " +
+                                                        "a North American phone number", value));
+                AreaCode = phout.AreaCode;
+                CentralOfficeCode = phout.CentralOfficeCode;
+                SubscriberNumber = phout.SubscriberNumber;
+            }
         }
+
+        public override string Abbrev
+        {
+            get { return "PH"; }
+        }
+
         public override string Formatted
         {
             get { return string.Format("({0}) {1}-{2}", AreaCode, CentralOfficeCode, SubscriberNumber); }
         }
 
+        public override string Unformatted
+        {
+            get { return string.Format("{0}{1}{2}", AreaCode, CentralOfficeCode, SubscriberNumber); }
+        }
+
         public virtual Uri ToUri()
         {
-            return new Uri("tel:" + this);
+            return new Uri("tel:" + Unformatted);
         }
 
         public override string Notes { get; set; }

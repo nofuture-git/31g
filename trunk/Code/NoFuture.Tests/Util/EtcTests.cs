@@ -270,5 +270,16 @@ namespace NoFuture.Tests.Util
                 System.Diagnostics.Debug.WriteLine(t);
 
         }
+
+        [TestMethod]
+        public void TestIsBetween()
+        {
+            
+            Assert.IsTrue(new DateTime(2010, 1, 1).IsBetween(new DateTime(2009, 12, 31), new DateTime(2010, 1, 2)));
+
+            Assert.IsFalse(new DateTime(2009, 12, 30).IsBetween(new DateTime(2009, 12, 31), new DateTime(2010, 1, 2)));
+
+            Assert.IsTrue(new DateTime(2010, 1, 1).IsBetween(new DateTime(2009, 1, 1), new DateTime(2010, 1, 2)));
+        }
     }
 }

@@ -17,7 +17,7 @@ namespace NoFuture.Tests.Rand
             Assert.IsFalse(string.IsNullOrWhiteSpace(testResult.Formatted));
             Assert.IsFalse(string.IsNullOrWhiteSpace(testResult.ToString()));
 
-            Assert.IsFalse(testResult.ToString().Contains("-"));
+            Assert.IsTrue(testResult.ToString().Contains("-"));
 
             System.Diagnostics.Debug.WriteLine(testResult.AreaCode);
             System.Diagnostics.Debug.WriteLine(testResult.CentralOfficeCode);

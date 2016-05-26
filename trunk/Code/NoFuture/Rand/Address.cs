@@ -221,6 +221,7 @@ namespace NoFuture.Rand
         #endregion
         public UsAddress(AddressData d) : base(d) { }
 
+        public string CountyTownship { get; set; }
         public string PostBox { get { return data.AddressNumber; } }
         public string StreetName { get { return data.StreetName; }  }
         public string StreetKind { get { return data.StreetType; } }

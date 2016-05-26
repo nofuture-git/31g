@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NoFuture.Rand;
+using NoFuture.Shared;
+using NoFuture.Util;
 
 namespace NoFuture.Tests.Rand
 {
@@ -36,11 +38,11 @@ namespace NoFuture.Tests.Rand
 
             var testResult = testBalance.Transactions.FirstOrDefault();
             Assert.IsNotNull(testResult);
-            Assert.IsTrue(DateTime.Compare(oldestDt, testResult.AtTime) == 0);
+            Assert.IsTrue(oldestDt.ComparedTo(testResult.AtTime) == ChronoCompare.SameTime);
 
             testResult = testBalance.Transactions.LastOrDefault();
             Assert.IsNotNull(testResult);
-            Assert.IsTrue(DateTime.Compare(newestDt, testResult.AtTime) == 0);
+            Assert.IsTrue(newestDt.ComparedTo(testResult.AtTime) == ChronoCompare.SameTime);
         }
 
         [TestMethod]
