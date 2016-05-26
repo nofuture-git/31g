@@ -41,6 +41,12 @@ namespace NoFuture.Rand
         #endregion
 
         #region overrides
+
+        public override string ToString()
+        {
+            return string.Format("{0} {1}", Amount, CurrencyAbbrev);
+        }
+
         public override bool Equals(object obj)
         {
             if (obj == null)

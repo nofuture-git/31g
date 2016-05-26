@@ -10,11 +10,11 @@ namespace NoFuture.Tests.Rand.PneumaTests
         public void TestCtor()
         {
             var testSubject = new NoFuture.Rand.Domus.Pneuma.Personality();
-            Assert.AreNotEqual(NoFuture.Rand.Domus.Pneuma.Dimension.Null, testSubject.Openness);
-            Assert.AreNotEqual(NoFuture.Rand.Domus.Pneuma.Dimension.Null, testSubject.Conscientiousness);
-            Assert.AreNotEqual(NoFuture.Rand.Domus.Pneuma.Dimension.Null, testSubject.Extraversion);
-            Assert.AreNotEqual(NoFuture.Rand.Domus.Pneuma.Dimension.Null, testSubject.Agreeableness);
-            Assert.AreNotEqual(NoFuture.Rand.Domus.Pneuma.Dimension.Null, testSubject.Neuroticism);
+            Assert.IsNotNull(testSubject.Openness.Value);
+            Assert.IsNotNull(testSubject.Conscientiousness.Value);
+            Assert.IsNotNull(testSubject.Extraversion.Value);
+            Assert.IsNotNull(testSubject.Agreeableness.Value);
+            Assert.IsNotNull(testSubject.Neuroticism.Value);
         }
     }
 }

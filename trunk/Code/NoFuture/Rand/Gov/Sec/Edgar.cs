@@ -127,7 +127,7 @@ namespace NoFuture.Rand.Gov.Sec
                 corp.Name = corpName;
 
                 //annual report
-                var form10K = new Form10K();
+                var form10K = new Form10K {Src = myDynData.SourceUri.ToString()};
 
                 if (titleNode.StartsWith(SecForm.NotificationOfInabilityToTimelyFile))
                     form10K.IsLate = true;
@@ -176,10 +176,12 @@ namespace NoFuture.Rand.Gov.Sec
                 publicCorporation = new PublicCorporation();
 
             publicCorporation.Name = string.IsNullOrWhiteSpace(pr.Name) ? publicCorporation.Name : pr.Name;
-            publicCorporation.CIK = string.IsNullOrWhiteSpace(pr.Cik) ? publicCorporation.CIK : new CentralIndexKey { Value = pr.Cik };
+            publicCorporation.CIK = string.IsNullOrWhiteSpace(pr.Cik)
+                ? publicCorporation.CIK
+                : new CentralIndexKey {Value = pr.Cik, Src = myDynData.SourceUri.ToString()};
             publicCorporation.SIC = string.IsNullOrWhiteSpace(pr.Sic)
                 ? publicCorporation.SIC
-                : new StandardIndustryClassification { Value = pr.Sic };
+                : new StandardIndustryClassification {Value = pr.Sic, Src = myDynData.SourceUri.ToString()};
 
             publicCorporation.UsStateOfIncorporation = string.IsNullOrWhiteSpace(pr.IncorpState)
                 ? publicCorporation.UsStateOfIncorporation
@@ -205,8 +207,9 @@ namespace NoFuture.Rand.Gov.Sec
             if (!string.IsNullOrWhiteSpace(pr.BizPostalCode))
                 bizAddr.PostalCode = pr.BizPostalCode;
 
-            publicCorporation.BusinessAddress = new Tuple<UsAddress, UsCityStateZip>(new UsAddress(bizAddr),
-                new UsCityStateZip(bizAddr));
+            publicCorporation.BusinessAddress =
+                new Tuple<UsAddress, UsCityStateZip>(new UsAddress(bizAddr) {Src = myDynData.SourceUri.ToString()},
+                    new UsCityStateZip(bizAddr) {Src = myDynData.SourceUri.ToString()});
 
             var mailAddr = new AddressData();
             if (!string.IsNullOrWhiteSpace(pr.MailAddrStreet))
@@ -225,8 +228,8 @@ namespace NoFuture.Rand.Gov.Sec
             if (!string.IsNullOrWhiteSpace(pr.MailPostalCode))
                 mailAddr.PostalCode = pr.MailPostalCode;
 
-            publicCorporation.MailingAddress = new Tuple<UsAddress, UsCityStateZip>(new UsAddress(mailAddr),
-                new UsCityStateZip(mailAddr));
+            publicCorporation.MailingAddress = new Tuple<UsAddress, UsCityStateZip>(new UsAddress(mailAddr) { Src = myDynData.SourceUri.ToString() },
+                new UsCityStateZip(mailAddr) { Src = myDynData.SourceUri.ToString() });
 
             var phs = new List<NorthAmericanPhone>();
             if (publicCorporation.Phone != null && publicCorporation.Phone.Length > 0)
@@ -236,11 +239,13 @@ namespace NoFuture.Rand.Gov.Sec
             NorthAmericanPhone phOut;
             if (NorthAmericanPhone.TryParse(pr.BizPhone, out phOut) && phs.All(x => !x.Equals(phOut)))
             {
+                phOut.Src = myDynData.SourceUri.ToString();
                 phs.Add(phOut);
             }
 
             if (NorthAmericanPhone.TryParse(pr.MailPhone, out phOut) && phs.All(x => !x.Equals(phOut)))
             {
+                phOut.Src = myDynData.SourceUri.ToString();
                 phs.Add(phOut);
             }
             publicCorporation.Phone = phs.ToArray();

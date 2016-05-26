@@ -6,12 +6,13 @@ using NoFuture.Rand.Data.Types;
 namespace NoFuture.Rand
 {
     [Serializable]
-    public abstract class Address
+    public abstract class Address : ICited
     {
         protected readonly AddressData data;
 
         protected Address(AddressData d) { data = d; }
 
+        public virtual string Src { get; set; }
         public AddressData Data { get { return data; } }
 
         /// <summary>

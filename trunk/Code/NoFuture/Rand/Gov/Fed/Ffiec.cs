@@ -43,7 +43,11 @@ namespace NoFuture.Rand.Gov.Fed
 
             var pd = myDynDataRslt.First();
 
-            firmOut.RoutingNumber = new RoutingTransitNumber {Value = pd.RoutingNumber};
+            firmOut.RoutingNumber = new RoutingTransitNumber
+            {
+                Value = pd.RoutingNumber,
+                Src = myDynData.SourceUri.ToString()
+            };
             if(firmOut.Rssd == null || string.IsNullOrWhiteSpace(firmOut.Rssd.ToString()))
                 firmOut.Rssd = new ResearchStatisticsSupervisionDiscount {Value = pd.Rssd};
             if (string.IsNullOrWhiteSpace(firmOut.Name))

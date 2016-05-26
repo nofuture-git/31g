@@ -9,10 +9,19 @@ namespace NoFuture.Rand
     /// A preeminent identity type.
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public interface IIdentifier<T>
+    public interface IIdentifier<T> : ICited
     {
         string Abbrev { get; }
         T Value { get; set; }
+        
+    }
+
+    /// <summary>
+    /// Any type whose source is explicit
+    /// </summary>
+    public interface ICited
+    {
+        string Src { get; set; }
     }
 
     /// <summary>
@@ -23,6 +32,7 @@ namespace NoFuture.Rand
     {
         public abstract string Abbrev { get; }
         public virtual string Value { get; set; }
+        public virtual string Src { get; set; }
         public override string ToString()
         {
             return Value ?? string.Empty;

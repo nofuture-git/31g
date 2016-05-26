@@ -8,11 +8,11 @@ using System.Xml;
 namespace NoFuture.Rand
 {
     [Serializable]
-    public abstract class Phone
+    public abstract class Phone : ICited
     {
         public abstract string Notes { get; set; }
         public abstract string Formatted { get; }
-
+        public virtual string Src { get; set; }
         /// <summary>
         /// Gets a <see cref="NorthAmericanPhone"/> whose Area Code, Central Office and 
         /// Subscriber number are all random values.

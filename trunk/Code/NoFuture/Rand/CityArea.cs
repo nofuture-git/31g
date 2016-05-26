@@ -8,14 +8,14 @@ using NoFuture.Rand.Data.Types;
 namespace NoFuture.Rand
 {
     [Serializable]
-    public abstract class CityArea
+    public abstract class CityArea : ICited
     {
         protected readonly AddressData data;
         protected CityArea(AddressData d)
         {
             data = d;
         }
-
+        public virtual string Src { get; set; }
         public virtual AddressData AddressData { get { return data; } }
 
         public virtual string GetPostalCodePrefix()

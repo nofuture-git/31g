@@ -223,7 +223,8 @@ namespace NoFuture.Rand.Com
                     {
                         Symbol = dd.Symbol,
                         InstrumentType = dd.InstrumentType,
-                        Country = dd.Country
+                        Country = dd.Country,
+                        Src = myDynData.SourceUri.ToString()
                     });
                 }
 

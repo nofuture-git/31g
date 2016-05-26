@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using NoFuture.Util.Etymological;
 
 namespace NoFuture.Rand.Domus.Pneuma
@@ -27,6 +28,12 @@ namespace NoFuture.Rand.Domus.Pneuma
         public Extraversion Extraversion { get { return _e; } }
         public Agreeableness Agreeableness { get { return _a; } }
         public Neuroticism Neuroticism { get { return _n; } }
+        public override string ToString()
+        {
+            return "{" +
+                   string.Join(",", Openness.ToString(), Conscientiousness.ToString(), Extraversion.ToString(),
+                       Agreeableness.ToString(), Neuroticism.ToString()) + "}";
+        }
     }
 
     public interface ITrait : IIdentifier<Dimension>
@@ -35,44 +42,54 @@ namespace NoFuture.Rand.Domus.Pneuma
     }
 
     [Serializable]
-    public enum Dimension
+    public class Dimension
     {
-        Null = 0,
-        Never,
-        Rarely,
-        Sometimes,
-        Often,
-        Always
+        public Dimension(double z)
+        {
+            Zscore = z;
+        }
+
+        public Dimension()
+        {
+            var s = Etx.CoinToss ? -1 : 1;
+            Zscore = s*Math.Round(Etx.MyRand.NextDouble(), 7);
+        }
+
+        public override int GetHashCode()
+        {
+            return Zscore.GetHashCode();
+        }
+
+        public override bool Equals(object obj)
+        {
+            var z = obj as Dimension;
+            if (z == null)
+                return false;
+            return Math.Abs(Zscore - z.Zscore) < 0.0000000;
+        }
+
+        public override string ToString()
+        {
+            return Zscore.ToString(CultureInfo.InvariantCulture);
+        }
+
+        public double Zscore { get; set; }
     }
     [Serializable]
     public abstract class Trait : ITrait
     {
         protected Trait()
         {
-            var pv = Etx.IntNumber(1, 5);
-            switch (pv)
-            {
-                case 1:
-                    Value = Dimension.Never;
-                    break;
-                case 2:
-                    Value = Dimension.Rarely;
-                    break;
-                case 3:
-                    Value = Dimension.Sometimes;
-                    break;
-                case 4:
-                    Value = Dimension.Often;
-                    break;
-                case 5:
-                    Value = Dimension.Always;
-                    break;
-            }
+            Value = new Dimension();
         }
-
+        public virtual string Src { get; set; }
         public abstract INomenclature GetDescription();
         public abstract string Abbrev { get; }
         public Dimension Value { get; set; }
+        public override string ToString()
+        {
+            return "'" +  Abbrev + "':" + Value;
+        }
     }
     [Serializable]
     public class Openness : Trait
