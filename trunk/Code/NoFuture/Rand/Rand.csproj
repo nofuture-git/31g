@@ -63,6 +63,10 @@
     <Compile Include="Data\NfText\FedLrgBnk.cs" />
     <Compile Include="Data\NfXml\SecCikSearch.cs" />
     <Compile Include="Data\NfXml\SecFullTxtSearch.cs" />
+    <Compile Include="Data\Sp\Account.cs" />
+    <Compile Include="Data\Sp\FinancialData.cs" />
+    <Compile Include="Data\Sp\Loan.cs" />
+    <Compile Include="Data\Sp\TradeLine.cs" />
     <Compile Include="Data\Types\JsonTypes.cs" />
     <Compile Include="Data\Types\INfDynData.cs" />
     <Compile Include="Data\Types\NorthAmericanIndustryClassification.cs" />
@@ -72,7 +76,6 @@
     <Compile Include="Data\ListData.cs" />
     <Compile Include="Data\TreeData.cs" />
     <Compile Include="Data\Types\AddressData.cs" />
-    <Compile Include="Data\Types\FinancialData.cs" />
     <Compile Include="Data\Types\XmlDocXrefIdentifier.cs" />
     <Compile Include="Data\Types\XRef.cs" />
     <Compile Include="Domus\IEducation.cs" />
@@ -82,8 +85,6 @@
     <Compile Include="Domus\NorthAmerican.cs" />
     <Compile Include="Domus\Pneuma\Personality.cs" />
     <Compile Include="Domus\SpouseData.cs" />
-    <Compile Include="Domus\Sp\Account.cs" />
-    <Compile Include="Domus\Sp\Loan.cs" />
     <Compile Include="Gov\Bls\Codes\CeDatatype.cs" />
     <Compile Include="Gov\Bls\Codes\CeIndustry.cs" />
     <Compile Include="Gov\Bls\Codes\CeSupersector.cs" />
@@ -91,7 +92,6 @@
     <Compile Include="Gov\Nhtsa\Identifier.cs" />
     <Compile Include="Gov\VitalRecord.cs" />
     <Compile Include="Pecuniam.cs" />
-    <Compile Include="Domus\Sp\TradeLine.cs" />
     <Compile Include="Edu\AmericanHighSchool.cs" />
     <Compile Include="Edu\AmericanUniversity.cs" />
     <Compile Include="Etx.cs" />

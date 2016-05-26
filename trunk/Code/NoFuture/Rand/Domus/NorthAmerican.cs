@@ -16,7 +16,6 @@ namespace NoFuture.Rand.Domus
     {
         #region fields
         private readonly List<Tuple<Address, CityArea>> _formerAddresses = new List<Tuple<Address, CityArea>>();
-        private readonly List<IAsset> _assets = new List<IAsset>();
         private readonly List<ILoan> _debts = new List<ILoan>();
         private IPerson _mother;
         private IPerson _father;
@@ -195,9 +194,7 @@ namespace NoFuture.Rand.Domus
         public SocialSecurityNumber Ssn { get; set; }
         public DriversLicense DriversLicense { get; set; }
 
-        public List<IAsset> Assets { get { return _assets; }}
         public List<ILoan> Debts { get { return _debts; } }
-        public IIncome Income { get; set; }
 
         public override List<IPerson> Children
         {
