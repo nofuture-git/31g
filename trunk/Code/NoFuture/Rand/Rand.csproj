@@ -83,8 +83,6 @@
     <Compile Include="Domus\Pneuma\Personality.cs" />
     <Compile Include="Domus\SpouseData.cs" />
     <Compile Include="Domus\Sp\Account.cs" />
-    <Compile Include="Domus\Sp\Asset.cs" />
-    <Compile Include="Domus\Sp\Income.cs" />
     <Compile Include="Domus\Sp\Loan.cs" />
     <Compile Include="Gov\Bls\Codes\CeDatatype.cs" />
     <Compile Include="Gov\Bls\Codes\CeIndustry.cs" />

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Xml;
-using NoFuture.Rand.Data;
 using NoFuture.Rand.Edu;
 using NoFuture.Util;
 
@@ -22,10 +21,9 @@ namespace NoFuture.Rand.Gov
         /// Derived from [https://insurancelink.custhelp.com/app/answers/detail/a_id/1631/~/license-formats-for-individual-states]
         /// </summary>
         protected DriversLicense[] dlFormats;
-        protected Edu.AmericanUniversity[] universities;
-        protected Edu.AmericanHighSchool[] highSchools;
+        protected AmericanUniversity[] universities;
+        protected AmericanHighSchool[] highSchools;
 
-        private int _ageOfConsent = AGE_OF_ADULT;
         #endregion
 
         #region ctor
@@ -37,7 +35,12 @@ namespace NoFuture.Rand.Gov
 
         #region api
 
-        public virtual int AgeOfConsent { get { return _ageOfConsent; } set { _ageOfConsent = value; } }
+        public override string ToString()
+        {
+            return StateAbbrv;
+        }
+
+        public virtual int AgeOfConsent { get; set; } = AGE_OF_ADULT;
 
         /// <summary>
         /// https://en.wikipedia.org/wiki/List_of_U.S._states_by_educational_attainment
@@ -52,7 +55,7 @@ namespace NoFuture.Rand.Gov
         /// <summary>
         /// The two letter postal code abbreviation
         /// </summary>
-        public string StateAbbrv { get { return _stateAbbrv; } }
+        public string StateAbbrv => _stateAbbrv;
 
         /// <summary>
         /// Asserts that the given value matches at least one of this 
@@ -80,7 +83,7 @@ namespace NoFuture.Rand.Gov
             }
         }
 
-        public virtual DriversLicense[] Formats { get { return dlFormats; } }
+        public virtual DriversLicense[] Formats => dlFormats;
 
         /// <summary>
         /// Uses the data presented from <see cref="TreeData.AmericanUniversityData"/>.

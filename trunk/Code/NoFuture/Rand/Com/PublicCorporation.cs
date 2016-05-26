@@ -113,16 +113,16 @@ namespace NoFuture.Rand.Com
                 };
 
                 if (year < form10K.Statute.Year)
-                    throw new RahRowRagee(string.Format("A Form 10-K for year {0} is invalid " +
-                                                        "since the '{1}' is from the year '{2}'", year,
-                        form10K.Statute.Name, form10K.Statute.Year));
+                    throw new RahRowRagee($"A Form 10-K for year {year} is invalid " +
+                                          $"since the '{form10K.Statute.Name}' is from " +
+                                          $"the year '{form10K.Statute.Year}'");
 
                 _annualReports.Add(form10K);
             }
             form10K = _annualReports.First(x => x.FilingDate.Year - 1 == year);
 
             if (form10K.FinancialData == null)
-                form10K.FinancialData = new FinancialData();
+                form10K.FinancialData = new FinancialData {FiscalYear = year};
             if(form10K.FinancialData.Assets == null)
                 form10K.FinancialData.Assets = new Assets();
             if(form10K.FinancialData.Income == null)
@@ -242,8 +242,8 @@ namespace NoFuture.Rand.Com
             if (xrefXml == null)
                 return;
             var myAssocNodes =
-                xrefXml.SelectNodes(string.Format("//x-ref-group[@data-type='{0}']//x-ref-id[text()='{1}']/../../add",
-                    GetType().FullName, Name));
+                xrefXml.SelectNodes(
+                    $"//x-ref-group[@data-type='{GetType().FullName}']//x-ref-id[text()='{Name}']/../../add");
             if (myAssocNodes == null || myAssocNodes.Count <= 0)
                 return;
 

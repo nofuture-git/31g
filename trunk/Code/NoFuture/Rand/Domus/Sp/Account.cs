@@ -18,7 +18,7 @@ namespace NoFuture.Rand.Domus.Sp
     }
 
     [Serializable]
-    public abstract class BankAccount : Asset
+    public abstract class BankAccount
     {
         public AccountId AccountNumber { get; set; }
 

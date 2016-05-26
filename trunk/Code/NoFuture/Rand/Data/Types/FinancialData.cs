@@ -11,21 +11,34 @@ namespace NoFuture.Rand.Data.Types
         public int NumOfShares { get; set; }
     }
     [Serializable]
-    public class Assets
+    public class Assets : ICited
     {
         public string Src { get; set; }
         public Pecuniam DomesticAssets { get; set; }
-
         public Pecuniam TotalAssets { get; set; }
         public Pecuniam TotalLiabilities { get; set; }
+        public override string ToString()
+        {
+            return "{" + 
+                   $"'DomesticAssets':{DomesticAssets}," +
+                   $"'TotalAssets':{TotalAssets}," +
+                   $"'TotalLiabilities':{TotalLiabilities}" + "}";
+        }
     }
     [Serializable]
-    public class Income
+    public class Income : ICited
     {
         public string Src { get; set; }
         public Pecuniam Revenue { get; set; }
         public Pecuniam OperatingIncome { get; set; }
-        public Pecuniam NetIncome { get; set; }
+        public Pecuniam NetIncome { get; set; } //NI
+        public override string ToString()
+        {
+            return "{" + 
+                   $"'Revenue':{Revenue}," +
+                   $"'OperatingIncome':{OperatingIncome}," +
+                   $"'NetIncome':{NetIncome}" + "}";
+        }
     }
     [Serializable]
     public class SummaryOfBusiness

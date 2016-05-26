@@ -156,6 +156,19 @@ namespace NoFuture.Rand.Domus
                     Slope = -0.001,
                 };
             }
+
+            /// <summary>
+            /// Mean is from WHO [http://apps.who.int/gho/data/node.main.688?lang=en],
+            /// the StdDev is made-up.
+            /// </summary>
+            /// <param name="mf"></param>
+            /// <returns></returns>
+            public static NormalDistEquation LifeExpectancy(Gender mf)
+            {
+                return mf == Gender.Male
+                    ? new NormalDistEquation {Mean = 76.9D, StdDev = 4.9}
+                    : new NormalDistEquation {Mean = 81.6, StdDev = 3.9};
+            }
         }
 
         /// <summary>

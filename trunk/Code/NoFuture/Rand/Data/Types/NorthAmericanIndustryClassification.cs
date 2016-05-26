@@ -30,6 +30,12 @@ namespace NoFuture.Rand.Data.Types
         #endregion
 
         #region methods
+
+        public override string ToString()
+        {
+            return "{" + $"'Value':{Value},'Description':'{Description}'" + "}";
+        }
+
         /// <summary>
         /// Translates the XML into the strongly typed <see cref="NorthAmericanIndustryClassification"/>
         /// </summary>
