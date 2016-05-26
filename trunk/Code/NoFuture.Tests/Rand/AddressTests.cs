@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NoFuture.Rand;
+using NoFuture.Rand.Data.Types;
 
 namespace NoFuture.Tests.Rand
 {
@@ -9,7 +10,7 @@ namespace NoFuture.Tests.Rand
         [TestMethod]
         public void AmericanTest()
         {
-            var testResult = NoFuture.Rand.Address.American();
+            var testResult = Address.American();
             Assert.IsNotNull(testResult);
             Assert.IsFalse(string.IsNullOrWhiteSpace(testResult.PostBox));
             Assert.IsFalse(string.IsNullOrWhiteSpace(testResult.StreetName));

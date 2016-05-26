@@ -4,6 +4,7 @@ using System.Linq;
 using NoFuture.Util.Math;
 using System.Xml;
 using NoFuture.Rand.Data;
+using NoFuture.Rand.Data.Types;
 
 namespace NoFuture.Rand.Domus
 {

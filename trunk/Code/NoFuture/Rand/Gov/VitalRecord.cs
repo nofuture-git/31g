@@ -1,4 +1,5 @@
 ﻿using System;
+using NoFuture.Rand.Data.Types;
 using NoFuture.Rand.Domus;
 
 namespace NoFuture.Rand.Gov

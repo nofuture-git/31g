@@ -1,4 +1,5 @@
 ﻿using System;
+using NoFuture.Rand.Data.Sp;
 using NoFuture.Rand.Data.Types;
 
 namespace NoFuture.Rand.Gov.Sec

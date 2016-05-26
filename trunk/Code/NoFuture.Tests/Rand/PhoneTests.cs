@@ -1,5 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NoFuture.Rand;
+using NoFuture.Rand.Data.Types;
 
 namespace NoFuture.Tests.Rand
 {
@@ -9,7 +9,7 @@ namespace NoFuture.Tests.Rand
         [TestMethod]
         public void AmericanPhoneTests()
         {
-            var testResult = NoFuture.Rand.Phone.American();
+            var testResult = Phone.American();
             Assert.IsNotNull(testResult);
             Assert.IsFalse(string.IsNullOrWhiteSpace(testResult.AreaCode));
             Assert.IsFalse(string.IsNullOrWhiteSpace(testResult.CentralOfficeCode));
@@ -30,13 +30,13 @@ namespace NoFuture.Tests.Rand
             const string TEST_STATE_WITH_MANY = "CA";
             const string TEST_STATE_WITH_ONE = "DC";
 
-            var testResult = NoFuture.Rand.Phone.American(TEST_STATE_WITH_MANY);
+            var testResult = Phone.American(TEST_STATE_WITH_MANY);
             Assert.IsNotNull(testResult);
             Assert.IsNotNull(testResult.AreaCode);
 
             System.Diagnostics.Debug.WriteLine(testResult.AreaCode);
 
-            testResult = NoFuture.Rand.Phone.American(TEST_STATE_WITH_ONE);
+            testResult = Phone.American(TEST_STATE_WITH_ONE);
             Assert.IsNotNull(testResult);
             Assert.IsNotNull(testResult.AreaCode);
 
@@ -50,13 +50,13 @@ namespace NoFuture.Tests.Rand
             const string TEST_STATE_WITH_MANY = "ON";
             const string TEST_STATE_WITH_ONE = "YT";
 
-            var testResult = NoFuture.Rand.Phone.Canadian(TEST_STATE_WITH_MANY);
+            var testResult = Phone.Canadian(TEST_STATE_WITH_MANY);
             Assert.IsNotNull(testResult);
             Assert.IsNotNull(testResult.AreaCode);
 
             System.Diagnostics.Debug.WriteLine(testResult.AreaCode);
 
-            testResult = NoFuture.Rand.Phone.Canadian(TEST_STATE_WITH_ONE);
+            testResult = Phone.Canadian(TEST_STATE_WITH_ONE);
             Assert.IsNotNull(testResult);
             Assert.IsNotNull(testResult.AreaCode);
 

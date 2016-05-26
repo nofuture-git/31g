@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NoFuture.Rand.Data.Sp;
 
 namespace NoFuture.Tests.Rand.DomusTests
 {
@@ -9,7 +10,7 @@ namespace NoFuture.Tests.Rand.DomusTests
         [TestMethod]
         public void TestGetRandomBankAccount()
         {
-            var testResult = NoFuture.Rand.Domus.Sp.BankAccount.GetRandomBankAccount();
+            var testResult = BankAccount.GetRandomBankAccount();
 
             Assert.IsNotNull(testResult);
 
@@ -18,7 +19,7 @@ namespace NoFuture.Tests.Rand.DomusTests
             System.Diagnostics.Debug.WriteLine(testResult.AccountNumber.Value);
 
             
-            testResult = NoFuture.Rand.Domus.Sp.BankAccount.GetRandomBankAccount();
+            testResult = BankAccount.GetRandomBankAccount();
             Assert.IsNotNull(testResult.AccountNumber);
             Assert.IsNotNull(testResult.Bank);
 

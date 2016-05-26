@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NoFuture.Rand;
+using NoFuture.Rand.Data.Sp;
 
 namespace NoFuture.Tests.Rand.DomusTests
 {
@@ -10,7 +11,7 @@ namespace NoFuture.Tests.Rand.DomusTests
         [TestMethod]
         public void TestMethod1()
         {
-            var testSubject = new NoFuture.Rand.Domus.Sp.TradeLine(DateTime.Now.AddDays(-370));
+            var testSubject = new TradeLine(DateTime.Now.AddDays(-370));
             var testBalance = testSubject.Balance;
 
             testBalance.Transactions.Add(new Transaction(DateTime.Now.AddDays(-360), new Pecuniam(-450.0M)));

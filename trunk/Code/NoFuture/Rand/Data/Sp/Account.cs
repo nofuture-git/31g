@@ -1,7 +1,7 @@
 ﻿using System;
 using NoFuture.Rand.Com;
 
-namespace NoFuture.Rand.Domus.Sp
+namespace NoFuture.Rand.Data.Sp
 {
     [Serializable]
     public class AccountId : RIdentifier

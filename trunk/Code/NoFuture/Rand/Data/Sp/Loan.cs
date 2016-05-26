@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using NoFuture.Rand.Com;
 
-namespace NoFuture.Rand.Domus.Sp //Sequere pecuniam
+namespace NoFuture.Rand.Data.Sp //Sequere pecuniam
 {
     public interface ILoan
     {

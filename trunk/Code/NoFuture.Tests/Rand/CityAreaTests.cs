@@ -12,7 +12,7 @@ namespace NoFuture.Tests.Rand
         [TestMethod]
         public void AmericanTest()
         {
-            var testResult = NoFuture.Rand.CityArea.American(null);
+            var testResult = CityArea.American(null);
             Assert.IsNotNull(testResult);
             Assert.IsFalse(string.IsNullOrWhiteSpace(testResult.City));
             Assert.IsFalse(string.IsNullOrWhiteSpace(testResult.ZipCode));
@@ -27,7 +27,7 @@ namespace NoFuture.Tests.Rand
         [TestMethod]
         public void CanadianTest()
         {
-            var testResult = NoFuture.Rand.CityArea.Canadian();
+            var testResult = CityArea.Canadian();
             Assert.IsNotNull(testResult);
             Assert.IsFalse(string.IsNullOrWhiteSpace(testResult.City));
             Assert.IsFalse(string.IsNullOrWhiteSpace(testResult.PostalCode));

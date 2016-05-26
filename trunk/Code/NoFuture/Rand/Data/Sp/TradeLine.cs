@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NoFuture.Rand.Domus.Sp
+namespace NoFuture.Rand.Data.Sp
 {
     public interface ITradeLine
     {

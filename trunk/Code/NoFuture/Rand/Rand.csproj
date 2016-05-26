@@ -50,9 +50,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Address.cs" />
     <Compile Include="Com\Firm.cs" />
-    <Compile Include="CityArea.cs" />
     <Compile Include="Com\FinancialFirm.cs" />
     <Compile Include="Data\NfHtml\BloombergSymbolSearch.cs" />
     <Compile Include="Data\NfHtml\FfiecInstitProfile.cs" />
@@ -67,10 +65,13 @@
     <Compile Include="Data\Sp\FinancialData.cs" />
     <Compile Include="Data\Sp\Loan.cs" />
     <Compile Include="Data\Sp\TradeLine.cs" />
+    <Compile Include="Data\Types\Address.cs" />
+    <Compile Include="Data\Types\CityArea.cs" />
     <Compile Include="Data\Types\JsonTypes.cs" />
     <Compile Include="Data\Types\INfDynData.cs" />
     <Compile Include="Data\Types\NorthAmericanIndustryClassification.cs" />
     <Compile Include="Com\PublicCorporation.cs" />
+    <Compile Include="Data\Types\Phone.cs" />
     <Compile Include="Data\Types\StandardIndustryClassification.cs" />
     <Compile Include="Com\TickerSymbol.cs" />
     <Compile Include="Data\ListData.cs" />
@@ -139,7 +140,6 @@
     <Compile Include="Identifier.cs" />
     <Compile Include="Org\Naic.cs" />
     <Compile Include="Domus\Person.cs" />
-    <Compile Include="Phone.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Rchar.cs" />
     <Compile Include="RLinearEquation.cs" />

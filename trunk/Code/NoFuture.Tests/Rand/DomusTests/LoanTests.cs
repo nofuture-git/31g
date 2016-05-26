@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NoFuture.Rand;
-using NoFuture.Rand.Domus.Sp;
+using NoFuture.Rand.Data.Sp;
 
 namespace NoFuture.Tests.Rand.DomusTests
 {

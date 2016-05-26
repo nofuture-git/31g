@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using NoFuture.Exceptions;
+using NoFuture.Rand.Data.Types;
 using NoFuture.Rand.Domus.Pneuma;
 using NoFuture.Rand.Gov;
 using NoFuture.Shared;
