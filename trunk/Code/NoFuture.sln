@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.40629.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Console.TestTarget", "NoFuture\Console\TestTarget\Console.TestTarget.csproj", "{E77D79D8-683E-4125-A0E3-FD1619574CC7}"
 EndProject
@@ -105,6 +105,7 @@ Global
 		{E48B5E3D-7E4E-4F3F-81ED-A36E9CA90C20}.Debug|Any CPU.ActiveCfg = Debug|x86
 		{E48B5E3D-7E4E-4F3F-81ED-A36E9CA90C20}.Debug|Any CPU.Build.0 = Debug|x86
 		{E48B5E3D-7E4E-4F3F-81ED-A36E9CA90C20}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{E48B5E3D-7E4E-4F3F-81ED-A36E9CA90C20}.Debug|Mixed Platforms.Build.0 = Debug|x86
 		{E48B5E3D-7E4E-4F3F-81ED-A36E9CA90C20}.Debug|Win32.ActiveCfg = Debug|x86
 		{E48B5E3D-7E4E-4F3F-81ED-A36E9CA90C20}.Debug|x64.ActiveCfg = Debug|x64
 		{E48B5E3D-7E4E-4F3F-81ED-A36E9CA90C20}.Debug|x64.Build.0 = Debug|x64
@@ -121,6 +122,7 @@ Global
 		{9DAC506B-CC22-43D2-9E72-A463E0015A03}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9DAC506B-CC22-43D2-9E72-A463E0015A03}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9DAC506B-CC22-43D2-9E72-A463E0015A03}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{9DAC506B-CC22-43D2-9E72-A463E0015A03}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
 		{9DAC506B-CC22-43D2-9E72-A463E0015A03}.Debug|Win32.ActiveCfg = Debug|Any CPU
 		{9DAC506B-CC22-43D2-9E72-A463E0015A03}.Debug|x64.ActiveCfg = Debug|x64
 		{9DAC506B-CC22-43D2-9E72-A463E0015A03}.Debug|x64.Build.0 = Debug|x64
@@ -185,6 +187,7 @@ Global
 		{B48811E5-CCB2-4AAE-B4E8-A711FA018460}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B48811E5-CCB2-4AAE-B4E8-A711FA018460}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B48811E5-CCB2-4AAE-B4E8-A711FA018460}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{B48811E5-CCB2-4AAE-B4E8-A711FA018460}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
 		{B48811E5-CCB2-4AAE-B4E8-A711FA018460}.Debug|Win32.ActiveCfg = Debug|Any CPU
 		{B48811E5-CCB2-4AAE-B4E8-A711FA018460}.Debug|x64.ActiveCfg = Debug|Any CPU
 		{B48811E5-CCB2-4AAE-B4E8-A711FA018460}.Debug|x86.ActiveCfg = Debug|Any CPU
@@ -310,6 +313,7 @@ Global
 		{CC26246E-1809-4BC4-8AD7-0237E76F8968}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{CC26246E-1809-4BC4-8AD7-0237E76F8968}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CC26246E-1809-4BC4-8AD7-0237E76F8968}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{CC26246E-1809-4BC4-8AD7-0237E76F8968}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
 		{CC26246E-1809-4BC4-8AD7-0237E76F8968}.Debug|Win32.ActiveCfg = Debug|Any CPU
 		{CC26246E-1809-4BC4-8AD7-0237E76F8968}.Debug|x64.ActiveCfg = Debug|Any CPU
 		{CC26246E-1809-4BC4-8AD7-0237E76F8968}.Debug|x86.ActiveCfg = Debug|Any CPU
@@ -323,6 +327,7 @@ Global
 		{B543F5F2-CF3C-411E-96E6-486D9C790355}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B543F5F2-CF3C-411E-96E6-486D9C790355}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B543F5F2-CF3C-411E-96E6-486D9C790355}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{B543F5F2-CF3C-411E-96E6-486D9C790355}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
 		{B543F5F2-CF3C-411E-96E6-486D9C790355}.Debug|Win32.ActiveCfg = Debug|Any CPU
 		{B543F5F2-CF3C-411E-96E6-486D9C790355}.Debug|x64.ActiveCfg = Debug|Any CPU
 		{B543F5F2-CF3C-411E-96E6-486D9C790355}.Debug|x86.ActiveCfg = Debug|Any CPU
@@ -335,6 +340,7 @@ Global
 		{B543F5F2-CF3C-411E-96E6-486D9C790355}.Release|x86.ActiveCfg = Release|Any CPU
 		{5950D092-E050-43E2-8FA0-F293DE81C5A8}.Debug|Any CPU.ActiveCfg = Debug|Win32
 		{5950D092-E050-43E2-8FA0-F293DE81C5A8}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
+		{5950D092-E050-43E2-8FA0-F293DE81C5A8}.Debug|Mixed Platforms.Build.0 = Debug|Win32
 		{5950D092-E050-43E2-8FA0-F293DE81C5A8}.Debug|Win32.ActiveCfg = Debug|Win32
 		{5950D092-E050-43E2-8FA0-F293DE81C5A8}.Debug|Win32.Build.0 = Debug|Win32
 		{5950D092-E050-43E2-8FA0-F293DE81C5A8}.Debug|x64.ActiveCfg = Debug|Win32
@@ -365,6 +371,7 @@ Global
 		{DEF64325-02A2-4208-B250-9446E8BF73AC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{DEF64325-02A2-4208-B250-9446E8BF73AC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DEF64325-02A2-4208-B250-9446E8BF73AC}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{DEF64325-02A2-4208-B250-9446E8BF73AC}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
 		{DEF64325-02A2-4208-B250-9446E8BF73AC}.Debug|Win32.ActiveCfg = Debug|Any CPU
 		{DEF64325-02A2-4208-B250-9446E8BF73AC}.Debug|x64.ActiveCfg = Debug|Any CPU
 		{DEF64325-02A2-4208-B250-9446E8BF73AC}.Debug|x86.ActiveCfg = Debug|Any CPU

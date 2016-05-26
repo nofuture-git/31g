@@ -419,7 +419,7 @@ namespace NoFuture.Rand.Domus
             var spouseDob = myDob.AddYears(ageDiff).AddDays(Etx.IntNumber(1, 360) * Etx.PlusOrMinusOne);
 
             //define spouse
-            return new NorthAmerican(spouseDob, gender == Gender.Female ? Gender.Male : Gender.Female, gender == Gender.Female);
+            return new NorthAmerican(spouseDob, gender == Gender.Female ? Gender.Male : Gender.Female);
 
         }
 

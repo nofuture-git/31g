@@ -4,10 +4,10 @@ namespace NoFuture.Rand.Domus
 {
     public class SpouseData
     {
-        internal IPerson Spouse { get; set; }
-        internal DateTime MarriedOn { get; set; }
-        internal DateTime? SeparatedOn { get; set; }
-        internal int Ordinal { get; set; }
+        public IPerson Spouse { get; set; }
+        public DateTime MarriedOn { get; set; }
+        public DateTime? SeparatedOn { get; set; }
+        public int Ordinal { get; set; }
 
         public override bool Equals(object obj)
         {

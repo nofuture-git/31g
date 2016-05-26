@@ -233,7 +233,9 @@ namespace NoFuture.Rand.Domus
             var dt = DateTime.Now;
             Race = NAmerUtil.GetAmericanRace(HomeZip);
             ResolveParents();
+            //resolve spouse to each other
             ResolveSpouse(NAmerUtil.GetMaritialStatus(_birthCert.DateOfBirth, MyGender));
+            //to solve for childern when gender -eq Male
             ResolveChildren();
             AlignCohabitantsHomeData(dt);
         }
@@ -379,7 +381,23 @@ namespace NoFuture.Rand.Domus
         {
             //equations data is by women only.
             if (MyGender == Gender.Male)
+            {
+                foreach (var s in _spouses.Where(x => x.Spouse != null && x.Spouse.MyGender == Gender.Female))
+                {
+                    var nAmerSpouse = s.Spouse as NorthAmerican;
+                    if (nAmerSpouse == null)
+                        continue;
+                    nAmerSpouse.ResolveChildren();
+
+                    foreach (var childFrom in nAmerSpouse.Children)
+                    {
+                        if (childFrom.LastName != LastName && childFrom.OtherNames.All(x => x.Item2 != LastName))
+                            continue;
+                        Children.Add(childFrom);
+                    }
+                }
                 return;
+            }
 
             ThrowOnBirthDateNull(this);
 
@@ -389,20 +407,17 @@ namespace NoFuture.Rand.Domus
             var teenPregEquation = NAmerUtil.Equations.GetProbTeenPregnancyByRace(Race);
             var teenageAge = Etx.IntNumber(15, 19);
             var teenageYear = _birthCert.DateOfBirth.AddYears(teenageAge).Year;
-            var propTeenagePreg = Math.Round(teenPregEquation.SolveForY(teenageYear) * 1000);
+            var propTeenagePreg = teenPregEquation.SolveForY(teenageYear);
 
-            var propLifetimeChildless = 1000 - Math.Round((NAmerUtil.SolveForProbabilityChildless(_birthCert.DateOfBirth,
-                Education == null ? OccidentalEdu.Empty : Education.GetEduLevel(null))) * 1000);
-
-            //random value within range of two extremes
-            var randItoM = Etx.IntNumber(1, 1000);
+            var propLifetimeChildless = NAmerUtil.SolveForProbabilityChildless(_birthCert.DateOfBirth,
+                Education?.GetEduLevel(null) ?? OccidentalEdu.Empty);
 
             //far high-end is no children for whole life
-            if (randItoM >= propLifetimeChildless)
+            if (Etx.MyRand.NextDouble() <= propLifetimeChildless)
                 return;
 
             //other extreme is teenage preg
-            if (randItoM <= propTeenagePreg)
+            if (Etx.MyRand.NextDouble() <= propTeenagePreg)
             {
                 var teenPregChildDob = Etx.Date(teenageAge, _birthCert.DateOfBirth);
                 AddNewChildToList(teenPregChildDob);
@@ -460,7 +475,7 @@ namespace NoFuture.Rand.Domus
             var myChildeAge = CalcAge(myChildDob, dt);
             var myChildGender = Etx.CoinToss ? Gender.Female : Gender.Male;
 
-            var isDaughterWithSpouse = myChildGender == Gender.Female &&
+            var isDaughterMarriedOff = myChildGender == Gender.Female &&
                                        NAmerUtil.Equations.FemaleDob2MarriageAge.SolveForY(myChildDob.Year) >=
                                        myChildeAge && myChildeAge >= GetMyHomeStatesAgeOfConsent();
             //never married
@@ -479,13 +494,16 @@ namespace NoFuture.Rand.Domus
                 if (marriage == null)
                     continue;
 
-                if (DateTime.Compare(myChildDob, marriage.MarriedOn) >= 0 &&
+                if (myChildDob.ComparedTo(marriage.MarriedOn) == ChronoCompare.After &&
                     (marriage.SeparatedOn == null ||
-                     DateTime.Compare(myChildDob, marriage.SeparatedOn.Value) < 0))
+                     myChildDob.ComparedTo(marriage.SeparatedOn.Value) == ChronoCompare.Before))
                 {
 
                     myChild = new NorthAmerican(myChildDob, myChildGender, this, marriage.Spouse) {Race = Race};
-                    if (!isDaughterWithSpouse)
+                    if (isDaughterMarriedOff)
+                        myChild.OtherNames.Add(new Tuple<KindsOfPersonalNames, string>(KindsOfPersonalNames.Father,
+                            marriage.Spouse.LastName));
+                    else
                         myChild.LastName = marriage.Spouse.LastName;
                 }
             }
