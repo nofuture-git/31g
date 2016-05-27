@@ -18,7 +18,9 @@ namespace NoFuture.Rand.Domus
         #endregion
 
         #region fields
-        protected readonly List<Tuple<KindsOfPersonalNames, string>> _otherNames = new List<Tuple<KindsOfPersonalNames, string>>();
+
+        protected readonly List<Tuple<KindsOfNames, string>> _otherNames =
+            new List<Tuple<KindsOfNames, string>>();
         protected readonly List<Uri> _netUris = new List<Uri>();
         protected readonly List<IPerson> _children = new List<IPerson>();
         protected Personality _personality = new Personality();
@@ -39,7 +41,8 @@ namespace NoFuture.Rand.Domus
         public virtual List<IPerson> Children { get { return _children; } }
         public Personality Personality { get { return _personality; } }
         public virtual IEducation Education { get; set; }
-        public List<Tuple<KindsOfPersonalNames, string>> OtherNames { get { return _otherNames; } }
+        public List<Tuple<KindsOfNames, string>> OtherNames => _otherNames;
+
         #endregion
 
         protected Person(DateTime dob)

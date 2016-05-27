@@ -58,9 +58,9 @@ namespace NoFuture.Rand.Com
             decimal conAssts = 0;
             decimal domAssts = 0;
             if (decimal.TryParse(li.ConsolAssets.Replace(",", string.Empty), out conAssts))
-                assets.TotalAssets = new Pecuniam(conAssts * 1000);
+                assets.TotalAssets = new Pecuniam(conAssts * ONE_THOUSAND);
             if (decimal.TryParse(li.DomesticAssets.Replace(",", string.Empty), out domAssts))
-                assets.DomesticAssets = new Pecuniam(domAssts * 1000);
+                assets.DomesticAssets = new Pecuniam(domAssts * ONE_THOUSAND);
             int domBranches = 0;
             int frnBranches = 0;
             int pfo = 0;

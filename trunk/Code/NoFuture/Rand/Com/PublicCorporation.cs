@@ -153,8 +153,8 @@ namespace NoFuture.Rand.Com
                 foreach (var cd in myDynDataRslt)
                 {
                     var tenK = pc.GetForm10KByYear((int)cd.FiscalYearEndAt);
-                    tenK.FinancialData.Assets.TotalAssets = new Pecuniam((Decimal)cd.TotalAssets);
-                    tenK.FinancialData.Assets.TotalAssets = new Pecuniam((Decimal)cd.TotalLiabilities);
+                    tenK.FinancialData.Assets.TotalAssets = new Pecuniam((decimal)cd.TotalAssets * ONE_THOUSAND);
+                    tenK.FinancialData.Assets.TotalLiabilities = new Pecuniam((decimal) cd.TotalLiabilities*ONE_THOUSAND);
                     tenK.FinancialData.Assets.Src = myDynData.SourceUri.ToString();
                 }
 
@@ -187,9 +187,9 @@ namespace NoFuture.Rand.Com
                 foreach (var cd in myDynDataRslt)
                 {
                     var tenK = pc.GetForm10KByYear((int) cd.FiscalYearEndAt);
-                    tenK.FinancialData.Income.Revenue = new Pecuniam((Decimal) cd.TotalRevenue);
-                    tenK.FinancialData.Income.OperatingIncome = new Pecuniam((Decimal) cd.OperatingIncomeorLoss);
-                    tenK.FinancialData.Income.NetIncome = new Pecuniam((Decimal) cd.NetIncome);
+                    tenK.FinancialData.Income.Revenue = new Pecuniam((Decimal) cd.TotalRevenue * ONE_THOUSAND);
+                    tenK.FinancialData.Income.OperatingIncome = new Pecuniam((Decimal) cd.OperatingIncomeorLoss * ONE_THOUSAND);
+                    tenK.FinancialData.Income.NetIncome = new Pecuniam((Decimal) cd.NetIncome * ONE_THOUSAND);
                     tenK.FinancialData.Income.Src = myDynData.SourceUri.ToString();
                 }
 

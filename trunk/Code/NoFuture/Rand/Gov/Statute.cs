@@ -28,6 +28,11 @@ namespace NoFuture.Rand.Gov
             get { return StatuteType.Federal; }
         }
 
+        public override string ToString()
+        {
+            return Name;
+        }
+
         internal static List<FederalStatute> statutes;
 
         public static FederalStatute GetFederalStatue(string namedLike)

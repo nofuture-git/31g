@@ -249,6 +249,26 @@ namespace NoFuture.Rand.Gov.Sec
                 phs.Add(phOut);
             }
             publicCorporation.Phone = phs.ToArray();
+
+            if (pr.FormerNames != null)
+            {
+                foreach (var fn in pr.FormerNames)
+                {
+                    var strFnDt = fn.FormerDate ?? string.Empty;
+                    var strFnVal = fn.FormerName ?? string.Empty;
+
+                    publicCorporation.OtherNames.Add(new Tuple<KindsOfNames, string>(
+                        KindsOfNames.Former | KindsOfNames.Legal, $"{strFnVal}[{strFnDt}]"));
+                }
+            }
+
+            if (pr.FiscalYearEnd != null && pr.FiscalYearEnd.Length == 4)
+            {
+                int fyed;
+                if (TryGetDayOfYearFiscalEnd(pr.FiscalYearEnd, out fyed))
+                    publicCorporation.FiscalYearEndDay = fyed;
+            }
+
             return true;
         }
         #endregion
@@ -315,6 +335,37 @@ namespace NoFuture.Rand.Gov.Sec
 
             var s = htmlLink.Split(new[] {"/"}, StringSplitOptions.RemoveEmptyEntries);
             return s.Length <= 3 ? string.Empty : s[3];
+        }
+
+        internal static bool TryGetDayOfYearFiscalEnd(string rawValue, out int dayOfYear)
+        {
+            dayOfYear = 0;
+
+            if (string.IsNullOrEmpty(rawValue) || rawValue.Length != 4)
+                return false;
+
+            var sm = rawValue.Substring(0, 2);
+            var sd = rawValue.Substring(2, 2);
+
+            int month;
+            int day;
+
+            if (!int.TryParse(sm, out month) || month > 12)
+            {
+                return false;
+            }
+
+            if (!int.TryParse(sd, out day) || day > 31)
+            {
+                return false;
+            }
+
+            var year = DateTime.Today.Year;
+
+            var fiscalDt = new DateTime(year, month, day);
+
+            dayOfYear = fiscalDt.DayOfYear;
+            return dayOfYear > 0;
         }
         #endregion
 

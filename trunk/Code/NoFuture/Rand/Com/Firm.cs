@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using NoFuture.Rand.Data.Types;
 
 namespace NoFuture.Rand.Com
@@ -6,6 +7,7 @@ namespace NoFuture.Rand.Com
     public interface IFirm
     {
         string Name { get; set; }
+        List<Tuple<KindsOfNames, string>> OtherNames { get; }
         Tuple<UsAddress, UsCityStateZip> MailingAddress { get; set; }
         Tuple<UsAddress, UsCityStateZip> BusinessAddress { get; set; }
         NorthAmericanPhone[] Phone { get; set; }
@@ -13,25 +15,32 @@ namespace NoFuture.Rand.Com
         NaicsSuperSector SuperSector { get; set; }
         NaicsSector Sector { get; set; }
         NaicsMarket Market { get; set; }
+        int FiscalYearEndDay { get; set; }
     }
 
     [Serializable]
     public abstract class Firm : IFirm
     {
+        #region constants
+        public const int ONE_THOUSAND = 1000;
+        #endregion
+
         #region fields
         private NaicsSuperSector _superSector;
         private NaicsSector _sector;
         private NaicsMarket _market;
+        private int _fiscalYearEndDay = 1;
+        protected readonly List<Tuple<KindsOfNames, string>> _otherNames =
+            new List<Tuple<KindsOfNames, string>>();
         #endregion
 
+        #region properties
         public string Name { get; set; }
+        public List<Tuple<KindsOfNames, string>> OtherNames => _otherNames;
         public Tuple<UsAddress, UsCityStateZip> MailingAddress { get; set; }
         public Tuple<UsAddress, UsCityStateZip> BusinessAddress { get; set; }
         public NorthAmericanPhone[] Phone { get; set; }
         public StandardIndustryClassification SIC { get; set; }
-
-        public abstract void LoadXrefXmlData();
-
         public NaicsSuperSector SuperSector
         {
             get
@@ -65,6 +74,12 @@ namespace NoFuture.Rand.Com
             set { _market = value; }
         }
 
+        public int FiscalYearEndDay { get { return _fiscalYearEndDay; } set { _fiscalYearEndDay = value; } }
+        #endregion
+
+        #region methods
+        public abstract void LoadXrefXmlData();
+
         protected internal void ResolveNaicsOnSic()
         {
             if (SIC == null)
@@ -76,5 +91,6 @@ namespace NoFuture.Rand.Com
             _sector = naics.Item2;
             _market = naics.Item3;
         }
+        #endregion
     }
 }

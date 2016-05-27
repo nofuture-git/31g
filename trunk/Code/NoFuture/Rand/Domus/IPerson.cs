@@ -19,7 +19,7 @@ namespace NoFuture.Rand.Domus
         List<IPerson> Children { get; }
         Pneuma.Personality Personality { get; }
         IEducation Education { get; set; }
-        List<Tuple<KindsOfPersonalNames, string>> OtherNames { get; }
+        List<Tuple<KindsOfNames, string>> OtherNames { get; }
 
     }
 }

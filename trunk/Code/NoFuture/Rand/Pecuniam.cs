@@ -83,6 +83,28 @@ namespace NoFuture.Rand
             return new Pecuniam(pp1.Amount - pp2.Amount);
         }
 
+        public static Pecuniam operator *(Pecuniam p1, Pecuniam p2)
+        {
+            var pp1 = p1 ?? new Pecuniam(0);
+            var pp2 = p2 ?? new Pecuniam(0);
+
+            if (pp1.CurrencyAbbrev != pp2.CurrencyAbbrev)
+                throw new RahRowRagee("Can only add currencies from the same nation");
+
+            return new Pecuniam(pp1.Amount * pp2.Amount);
+        }
+
+        public static Pecuniam operator /(Pecuniam p1, Pecuniam p2)
+        {
+            var pp1 = p1 ?? new Pecuniam(0);
+            var pp2 = p2 ?? new Pecuniam(0);
+
+            if (pp1.CurrencyAbbrev != pp2.CurrencyAbbrev)
+                throw new RahRowRagee("Can only add currencies from the same nation");
+
+            return new Pecuniam(pp1.Amount / pp2.Amount);
+        }
+
         public static bool operator ==(Pecuniam p1, Pecuniam p2)
         {
             var pp1 = p1 ?? new Pecuniam(0);

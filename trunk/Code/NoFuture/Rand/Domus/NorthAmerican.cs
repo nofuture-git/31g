@@ -277,8 +277,8 @@ namespace NoFuture.Rand.Domus
 
                 myMother.LastName = NAmerUtil.GetAmericanLastName();
                 myMother.OtherNames.Add(
-                    new Tuple<KindsOfPersonalNames, string>(
-                        KindsOfPersonalNames.Surname | KindsOfPersonalNames.Former | KindsOfPersonalNames.Spouse,
+                    new Tuple<KindsOfNames, string>(
+                        KindsOfNames.Surname | KindsOfNames.Former | KindsOfNames.Spouse,
                         myFather.LastName));
             }
 
@@ -294,7 +294,7 @@ namespace NoFuture.Rand.Domus
                 }
             }
 
-            myMother.OtherNames.Add(new Tuple<KindsOfPersonalNames, string>(KindsOfPersonalNames.Father,
+            myMother.OtherNames.Add(new Tuple<KindsOfNames, string>(KindsOfNames.Father,
                 NAmerUtil.GetAmericanLastName()));
 
             _father = myFather;
@@ -325,8 +325,8 @@ namespace NoFuture.Rand.Domus
             //add maiden name, set new last name to match husband
             if (_myGender == Gender.Female)
             {
-                if (OtherNames.All(x => x.Item1 != KindsOfPersonalNames.Father))
-                    OtherNames.Add(new Tuple<KindsOfPersonalNames, string>(KindsOfPersonalNames.Father, _father.LastName));
+                if (OtherNames.All(x => x.Item1 != KindsOfNames.Father))
+                    OtherNames.Add(new Tuple<KindsOfNames, string>(KindsOfNames.Father, _father.LastName));
             }
 
             //set death date if widowed
@@ -499,7 +499,7 @@ namespace NoFuture.Rand.Domus
 
                     myChild = new NorthAmerican(myChildDob, myChildGender, this, marriage.SO) {Race = Race};
                     if (isDaughterMarriedOff)
-                        myChild.OtherNames.Add(new Tuple<KindsOfPersonalNames, string>(KindsOfPersonalNames.Father,
+                        myChild.OtherNames.Add(new Tuple<KindsOfNames, string>(KindsOfNames.Father,
                             marriage.SO.LastName));
                     else
                         myChild.LastName = marriage.SO.LastName;
@@ -509,7 +509,7 @@ namespace NoFuture.Rand.Domus
             //for child born in any range outside of marriage, assign lastname to maiden name
             if (myChild == null)
             {
-                var maidenName = OtherNames.FirstOrDefault(x => x.Item1 == KindsOfPersonalNames.Father);
+                var maidenName = OtherNames.FirstOrDefault(x => x.Item1 == KindsOfNames.Father);
                 if (maidenName != null && !string.IsNullOrWhiteSpace(maidenName.Item2))
                 {
                     myChild = new NorthAmerican(myChildDob, myChildGender, this, null)
@@ -599,8 +599,8 @@ namespace NoFuture.Rand.Domus
             {
                 //add ex-husband last name to list
                 OtherNames.Add(
-                    new Tuple<KindsOfPersonalNames, string>(
-                        KindsOfPersonalNames.Former | KindsOfPersonalNames.Surname | KindsOfPersonalNames.Spouse,
+                    new Tuple<KindsOfNames, string>(
+                        KindsOfNames.Former | KindsOfNames.Surname | KindsOfNames.Spouse,
                         spouse.LastName));
 
                 //set back to maiden name

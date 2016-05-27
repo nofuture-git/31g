@@ -152,7 +152,7 @@ namespace NoFuture.Rand
 
     [Serializable]
     [Flags]
-    public enum KindsOfPersonalNames : short
+    public enum KindsOfNames : short
     {
         None = 0,
         Current = 1,
@@ -166,6 +166,7 @@ namespace NoFuture.Rand
         Biological = 264,
         Spouse = 512,
         Middle = 1024,
+        Legal = 2048
     }
 
     [Flags]

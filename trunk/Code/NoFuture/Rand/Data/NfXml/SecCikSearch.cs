@@ -53,7 +53,15 @@ namespace NoFuture.Rand.Data.NfXml
             var stateNode = filingXml.SelectSingleNode("//" + COMPANY_INFO + "/" + ATOM + ":state-of-incorporation",
                 nsMgr);
             if (stateNode != null)
+            {
                 st = stateNode.InnerText;
+            }
+            else
+            {
+                stateNode = filingXml.SelectSingleNode("//" + COMPANY_INFO + "/" + ATOM + ":state-location", nsMgr);
+                if (stateNode != null)
+                    st = stateNode.InnerText;
+            }
 
             var sicDescNode = filingXml.SelectSingleNode("//" + COMPANY_INFO + "/" + ATOM + ":assigned-sic-desc", nsMgr);
             if (sicDescNode != null)
@@ -155,6 +163,32 @@ namespace NoFuture.Rand.Data.NfXml
                 if (addrPh != null)
                     mailPhone = addrPh.InnerText;
             }
+            var formerNamesNode = filingXml.SelectSingleNode("//" + COMPANY_INFO + "/" + ATOM + ":formerly-names", nsMgr);
+            var formerNames = new List<dynamic>();
+            if (formerNamesNode != null && formerNamesNode.HasChildNodes)
+            {
+                foreach (var names in formerNamesNode.ChildNodes)
+                {
+                    var namesNode = names as XmlElement;
+                    if (namesNode == null || !namesNode.HasChildNodes)
+                        continue;
+
+                    var formerNameValue = string.Empty;
+                    var formerNameDate = string.Empty;
+                    var firstChild = namesNode.FirstChild;
+                    if (firstChild != null)
+                    {
+                        formerNameDate = firstChild.InnerText;
+                    }
+
+                    var secondChild = firstChild.NextSibling;
+                    if (secondChild != null)
+                    {
+                        formerNameValue = secondChild.InnerText;
+                    }
+                    formerNames.Add(new {FormerName = formerNameValue, FormerDate = formerNameDate});
+                }
+            }
 
             return new List<dynamic>
             {
@@ -175,7 +209,8 @@ namespace NoFuture.Rand.Data.NfXml
                     MailAddrCity = mailCity,
                     MailAddrState = mailState,
                     MailPostalCode = mailZip,
-                    MailPhone = mailPhone
+                    MailPhone = mailPhone,
+                    FormerNames = formerNames
 
                 }
             };
