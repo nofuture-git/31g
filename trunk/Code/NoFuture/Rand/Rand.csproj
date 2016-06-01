@@ -185,11 +185,11 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Com\Scripts\Get-UsInsuranceCompanyNames.ps1" />
+    <None Include="Data\Scripts\Get-BeaGovParameters.ps1" />
+    <None Include="Data\Scripts\Get-BlsGovCodes.ps1" />
+    <None Include="Data\Scripts\Get-FedLrgBnkListData.ps1" />
+    <None Include="Data\Scripts\Get-UsInsuranceCompanyNames.ps1" />
     <None Include="Gov\Bea\bea_web_service_api_user_guide.pdf" />
-    <None Include="Gov\Bea\Get-BeaGovParameters.ps1" />
-    <None Include="Gov\Bls\Get-BlsGovCodes.ps1" />
-    <None Include="Gov\Fed\Get-FedLrgBnkListData.ps1" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>

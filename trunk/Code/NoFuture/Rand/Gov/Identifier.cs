@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using NoFuture.Exceptions;
 
 namespace NoFuture.Rand.Gov
 {
@@ -10,6 +8,12 @@ namespace NoFuture.Rand.Gov
     {
         public abstract List<Anomaly> Anomalies { get; }
         public DateTime? IssuedDate { get; set; }
+    }
+
+    [Serializable]
+    public abstract class StateIssuedId : GovernmentId
+    {
+        public UsState IssuingState { get; set; }
     }
 
     [Serializable]

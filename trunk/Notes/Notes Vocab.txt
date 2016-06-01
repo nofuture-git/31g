@@ -1,5 +1,5 @@
 accelerator
-acetate
+acetate - a salt or ester of acetic acid
 actuation - moved to action
 aperture - opening, hole or gap
 arc
