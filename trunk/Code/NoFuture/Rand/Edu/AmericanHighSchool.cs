@@ -49,40 +49,40 @@ namespace NoFuture.Rand.Edu
                     switch (attr.Value)
                     {
                         case "City-Large":
-                            hs.UrbanCentric = UrbanCentric.CityLarge;
+                            hs.UrbanCentric = UrbanCentric.City | UrbanCentric.Large;
                             break;
                         case "City-Midsize":
-                            hs.UrbanCentric = UrbanCentric.CityLarge;
+                            hs.UrbanCentric = UrbanCentric.City | UrbanCentric.Large;
                             break;
                         case "City-Small":
-                            hs.UrbanCentric = UrbanCentric.CitySmall;
+                            hs.UrbanCentric = UrbanCentric.City | UrbanCentric.Small;
                             break;
                         case "Rural-Distant":
-                            hs.UrbanCentric = UrbanCentric.RuralDistant;
+                            hs.UrbanCentric = UrbanCentric.Rural | UrbanCentric.Distant;
                             break;
                         case "Rural-Fringe":
-                            hs.UrbanCentric = UrbanCentric.RuralFringe;
+                            hs.UrbanCentric = UrbanCentric.Rural | UrbanCentric.Fringe;
                             break;
                         case "Rural-Remote":
-                            hs.UrbanCentric = UrbanCentric.RuralRemote;
+                            hs.UrbanCentric = UrbanCentric.Rural | UrbanCentric.Remote;
                             break;
                         case "Suburb-Large":
-                            hs.UrbanCentric = UrbanCentric.SuburbLarge;
+                            hs.UrbanCentric = UrbanCentric.Suburb | UrbanCentric.Large;
                             break;
                         case "Suburb-Midsize":
-                            hs.UrbanCentric = UrbanCentric.SuburbMidsize;
+                            hs.UrbanCentric = UrbanCentric.Suburb | UrbanCentric.Midsize;
                             break;
                         case "Suburb-Small":
-                            hs.UrbanCentric = UrbanCentric.SuburbSmall;
+                            hs.UrbanCentric = UrbanCentric.Suburb | UrbanCentric.Small;
                             break;
                         case "Town-Distant":
-                            hs.UrbanCentric = UrbanCentric.TownDistant;
+                            hs.UrbanCentric = UrbanCentric.Town | UrbanCentric.Distant;
                             break;
                         case "Town-Fringe":
-                            hs.UrbanCentric = UrbanCentric.TownFringe;
+                            hs.UrbanCentric = UrbanCentric.Town | UrbanCentric.Fringe;
                             break;
                         case "Town-Remote":
-                            hs.UrbanCentric = UrbanCentric.TownRemote;
+                            hs.UrbanCentric = UrbanCentric.Town | UrbanCentric.Remote;
                             break;
                     }
                 }
@@ -154,10 +154,11 @@ namespace NoFuture.Rand.Edu
                 }
 
                 if (node.ParentNode == null || node.ParentNode.LocalName != "zip-stat" ||
-                    node.ParentNode.Attributes == null || node.ParentNode.Attributes["value"] == null) return true;
+                    node.ParentNode.Attributes?["value"] == null)
+                    return true;
                 var zipStatNode = node.ParentNode;
-                attr = zipStatNode.Attributes["value"];
-                hs.PostalCode = attr.Value;
+                if (zipStatNode.Attributes != null) attr = zipStatNode.Attributes["value"];
+                hs.PostalCode = attr?.Value;
 
                 return true;
             }

@@ -15,6 +15,9 @@ namespace NoFuture.Rand.Gov.Nhtsa
     /// 
     /// Web Description
     /// http://vpic.nhtsa.dot.gov/
+    /// 
+    /// % Americans with Auto
+    /// Src: [https://people.hofstra.edu/geotrans/eng/ch6en/conc6en/USAownershipcars.html]
     /// </remarks>
     public class Vin : Identifier
     {

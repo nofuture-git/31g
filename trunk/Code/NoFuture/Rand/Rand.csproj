@@ -89,6 +89,7 @@
     <Compile Include="Gov\Bls\Codes\CeDatatype.cs" />
     <Compile Include="Gov\Bls\Codes\CeIndustry.cs" />
     <Compile Include="Gov\Bls\Codes\CeSupersector.cs" />
+    <Compile Include="Gov\Census\Identifier.cs" />
     <Compile Include="Gov\Fed\Ffiec.cs" />
     <Compile Include="Gov\Nhtsa\Identifier.cs" />
     <Compile Include="Gov\VitalRecord.cs" />

@@ -7,7 +7,7 @@
 
         public virtual double SolveForY(double x)
         {
-            return Slope*x + Intercept;
+            return System.Math.Round(Slope*x + Intercept,5);
         }
 
         public virtual double SolveForX(double y)

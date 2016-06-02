@@ -50,18 +50,18 @@ namespace NoFuture.Rand.Data.Types
         public override int GetHashCode()
         {
 
-            return (AddressNumber == null ? 0 : AddressNumber.ToLower().GetHashCode()) +
-                   (StreetNamePreDirectional == null ? 0 : StreetNamePreDirectional.ToLower().GetHashCode()) +
-                   (StreetName == null ? 0 : StreetName.ToLower().GetHashCode()) +
-                   (StreetType == null ? 0 : StreetType.ToLower().GetHashCode()) +
-                   (SecondaryUnitDesignator == null ? 0 : SecondaryUnitDesignator.ToLower().GetHashCode()) +
-                   (SecondaryUnitId == null ? 0 : SecondaryUnitId.ToLower().GetHashCode()) +
-                   (MajorMetro == null ? 0 : MajorMetro.ToLower().GetHashCode()) +
-                   (City == null ? 0 : City.ToLower().GetHashCode()) +
-                   (StateAbbrv == null ? 0 : StateAbbrv.ToLower().GetHashCode()) +
-                   (StateName == null ? 0 : StateName.ToLower().GetHashCode()) +
-                   (PostalCode == null ? 0 : PostalCode.ToLower().GetHashCode()) +
-                   (PostalCodeSuffix == null ? 0 : PostalCodeSuffix.ToLower().GetHashCode()) +
+            return (AddressNumber?.ToLower().GetHashCode() ?? 0) +
+                   (StreetNamePreDirectional?.ToLower().GetHashCode() ?? 0) +
+                   (StreetName?.ToLower().GetHashCode() ?? 0) +
+                   (StreetType?.ToLower().GetHashCode() ?? 0) +
+                   (SecondaryUnitDesignator?.ToLower().GetHashCode() ?? 0) +
+                   (SecondaryUnitId?.ToLower().GetHashCode() ?? 0) +
+                   (MajorMetro?.ToLower().GetHashCode() ?? 0) +
+                   (City?.ToLower().GetHashCode() ?? 0) +
+                   (StateAbbrv?.ToLower().GetHashCode() ?? 0) +
+                   (StateName?.ToLower().GetHashCode() ?? 0) +
+                   (PostalCode?.ToLower().GetHashCode() ?? 0) +
+                   (PostalCodeSuffix?.ToLower().GetHashCode() ?? 0) +
                    Lng.GetHashCode() +
                    Lat.GetHashCode();
         }

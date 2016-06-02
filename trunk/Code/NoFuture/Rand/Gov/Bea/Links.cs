@@ -14,7 +14,7 @@ namespace NoFuture.Rand.Gov.Bea
             {
                 if (string.IsNullOrWhiteSpace(SecurityKeys.BeaDataApiKey))
                     throw new Exceptions.RahRowRagee(
-                        "The '[NoFuture.Keys]::BeaDataApiKey' must be set before calling this property.");
+                        "The 'NoFuture.Globals.SecurityKeys.BeaDataApiKey' must be set before calling this property.");
                 return string.Format("{0}?&UserID={1}&", BeaBaseAccessUri, SecurityKeys.BeaDataApiKey);
             }
         }

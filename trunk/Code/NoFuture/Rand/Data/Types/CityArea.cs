@@ -2,6 +2,8 @@
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Xml;
+using NoFuture.Rand.Gov.Census;
+using NoFuture.Util.Math;
 
 namespace NoFuture.Rand.Data.Types
 {
@@ -49,7 +51,7 @@ namespace NoFuture.Rand.Data.Types
         public static UsCityStateZip American(string zipCodePrefix)
         {
             //set defaults
-            var ctz = new AddressData() {City = "New York", PostalCode = "10066", StateAbbrv = "NY"};
+            var ctz = new AddressData {City = "New York", PostalCode = "10066", StateAbbrv = "NY"};
 
             //pick a zip code prefix at random
             if(string.IsNullOrWhiteSpace(zipCodePrefix))
@@ -57,10 +59,8 @@ namespace NoFuture.Rand.Data.Types
 
             //x-ref it to the zip code data
             var randZipCode =
-                TreeData.AmericanZipCodeData.SelectSingleNode(string.Format(
-                    "//zip-codes//zip-code[@prefix='{0}']", zipCodePrefix));
-            if (randZipCode == null || randZipCode.ParentNode == null || randZipCode.ParentNode.Attributes == null ||
-                randZipCode.ParentNode.Attributes["name"] == null)
+                TreeData.AmericanZipCodeData.SelectSingleNode($"//zip-codes//zip-code[@prefix='{zipCodePrefix}']");
+            if (randZipCode?.ParentNode?.Attributes?["name"] == null)
             {
                 return new UsCityStateZip(ctz);
             }
@@ -71,11 +71,11 @@ namespace NoFuture.Rand.Data.Types
                           Gov.UsState.GetStateByPostalCode("NY");
 
             ctz.StateAbbrv = nfState.StateAbbrv ?? "NY";
-            ctz.PostalCodeSuffix = string.Format("{0:0000}", Etx.MyRand.Next(1, 9999));
+            ctz.PostalCodeSuffix = $"{Etx.MyRand.Next(1, 9999):0000}";
 
             if (!randZipCode.HasChildNodes)
             {
-                ctz.PostalCode = string.Format("{0}{1:00}", zipCodePrefix, Etx.IntNumber(1, 99));
+                ctz.PostalCode = $"{zipCodePrefix}{Etx.IntNumber(1, 99):00}";
             }
             else
             {
@@ -93,15 +93,6 @@ namespace NoFuture.Rand.Data.Types
                     ctz.PostalCode = zipCodes[pickNum];
                 }
             }
-
-            //pick a city based on zip-code prefix
-            var randCityData =
-                TreeData.AmericanCityData.SelectSingleNode(string.Format("//zip-code[@prefix='{0}']/..", zipCodePrefix));
-            if (randCityData == null || randCityData.Attributes == null || randCityData.Attributes["name"] == null)
-                return new UsCityStateZip(ctz);
-
-            ctz.City = randCityData.Attributes["name"].Value;
-
             return new UsCityStateZip(ctz);
         }
 
@@ -116,47 +107,129 @@ namespace NoFuture.Rand.Data.Types
             var ctz = new AddressData();
             var zipCodes = Data.TreeData.CanadianPostalCodeData.SelectNodes("//zip-code");
 
+            if (zipCodes == null) return new CaCityProvidencePost(ctz);
+
             var pickOne = Etx.MyRand.Next(0, zipCodes.Count);
 
             var randZipCode = zipCodes[pickOne];
-            ctz.PostalCode = string.Format("{0} 4Z4", randZipCode.SelectSingleNode("prefix").InnerText);
-            ctz.StateAbbrv = randZipCode.SelectSingleNode("state-abbreviation").InnerText;
-            ctz.StateName = randZipCode.SelectSingleNode("state-name").InnerText;
-            ctz.City = randZipCode.SelectSingleNode("municipality").InnerText.Replace("\n", "").Trim();
+            var selectSingleNode = randZipCode.SelectSingleNode("prefix");
+            if (selectSingleNode != null)
+                ctz.PostalCode = $"{selectSingleNode.InnerText} 4Z4";
+            selectSingleNode = randZipCode.SelectSingleNode("state-abbreviation");
+            if (selectSingleNode != null)
+                ctz.StateAbbrv = selectSingleNode.InnerText;
+            selectSingleNode = randZipCode.SelectSingleNode("state-name");
+            if (selectSingleNode != null)
+                ctz.StateName = selectSingleNode.InnerText;
+            selectSingleNode = randZipCode.SelectSingleNode("municipality");
+            if (selectSingleNode != null)
+                ctz.City = selectSingleNode.InnerText.Replace("\n", "").Trim();
 
             return new CaCityProvidencePost(ctz);
         }
 
     }
+
     [Serializable]
     public class UsCityStateZip : CityArea
     {
-        #region Regex Patterns
-        public const string STATE_CODE_REGEX = @"[\x20|\x2C](AK|AL|AR|AZ|CA|CO|CT|DC|DE|FL|GA|HI|" + 
+        #region constants
+
+        public const string STATE_CODE_REGEX = @"[\x20|\x2C](AK|AL|AR|AZ|CA|CO|CT|DC|DE|FL|GA|HI|" +
                                                "IA|ID|IL|IN|KS|KY|LA|MA|MD|ME|MI|MN|MO|MS|" +
                                                "MT|NC|ND|NE|NH|NJ|NM|NV|NY|OH|OK|OR|PA|RI|" +
                                                @"SC|SD|TN|TX|UT|VA|VI|VT|WA|WI|WV|WY)\x20*";
+
         public const string ZIP_CODE_REGEX = @"\x20([0-9]{5})(\x2d[0-9]{4})?";
-        private Gov.UsState _myState;
+
         #endregion
+
+        #region fields
+
+        private Gov.UsState _myState;
+
+        #endregion
+
+        #region ctor
+
         public UsCityStateZip(AddressData d) : base(d)
         {
+            var zipCodePrefix = d.PostalCode?.Substring(0, 3);
+            if (string.IsNullOrWhiteSpace(zipCodePrefix))
+                return;
+            var cityNode =
+                TreeData.AmericanCityData.SelectSingleNode($"//zip-code[@prefix='{zipCodePrefix}']/..");
+            if (cityNode?.Attributes?["name"] == null)
+                return;
+            data.City = cityNode.Attributes["name"].Value ?? data.City;
+
+            if (!string.IsNullOrWhiteSpace(cityNode.Attributes["msa-code"]?.Value))
+            {
+                Msa = new MStatArea {Value = cityNode.Attributes["msa-code"].Value};
+                if (!string.IsNullOrWhiteSpace(cityNode.Attributes["msa-type"]?.Value))
+                {
+                    Msa.MsaType = cityNode.Attributes["msa-type"].Value == "Metro"
+                        ? UrbanCentric.City | UrbanCentric.Large
+                        : UrbanCentric.City | UrbanCentric.Small;
+                }
+            }
+            if (!string.IsNullOrWhiteSpace(cityNode.Attributes["cbsa-code"]?.Value))
+            {
+                Msa = new MStatArea { Value = cityNode.Attributes["cbsa-code"].Value };
+                if (!string.IsNullOrWhiteSpace(cityNode.Attributes["cbsa-type"]?.Value))
+                {
+                    Msa.MsaType = cityNode.Attributes["cbsa-type"].Value == "Metro"
+                        ? UrbanCentric.City | UrbanCentric.Large
+                        : UrbanCentric.City | UrbanCentric.Small;
+                }
+            }
+            if (!string.IsNullOrWhiteSpace(cityNode.Attributes["avg-earning-per-year"]?.Value))
+            {
+                var attrVal = cityNode.Attributes["avg-earning-per-year"].Value;
+                if (attrVal.Contains(","))
+                {
+                    var interceptStr = attrVal.Split(',')[0];
+                    var slopeStr = attrVal.Split(',')[1];
+
+                    double intercept;
+                    double slope;
+                    if (double.TryParse(interceptStr, out intercept) && double.TryParse(slopeStr, out slope))
+                    {
+                        AverageEarnings = new LinearEquation {Intercept = intercept, Slope = slope};
+                    }
+
+                }
+            }
         }
 
-        public string PostalState { get { return data.StateAbbrv; } }
-        public Gov.UsState State { get {
-            return _myState ??
-                   (_myState = Gov.UsState.GetStateByPostalCode(string.IsNullOrWhiteSpace(data.StateAbbrv) ? "NY" : data.StateAbbrv));
-        }
-        }
-        public string City { get { return data.City; } }
-        public string ZipCode { get { return data.PostalCode; } }
-        public string PostalCodeAddonFour { get { return data.PostalCodeSuffix; } }
+        #endregion
+
+        #region properties
+
+        public string PostalState => data.StateAbbrv;
+
+        public Gov.UsState State => _myState ??
+                                    (_myState =
+                                        Gov.UsState.GetStateByPostalCode(string.IsNullOrWhiteSpace(data.StateAbbrv)
+                                            ? "NY"
+                                            : data.StateAbbrv));
+
+        public string City => data.City;
+        public string ZipCode => data.PostalCode;
+        public string PostalCodeAddonFour => data.PostalCodeSuffix;
+        public Gov.Census.MStatArea Msa { get; set; }
+        public Gov.Census.ComboMStatArea CbsaCode { get; set; }
+        public Util.Math.LinearEquation AverageEarnings { get; set; }
+
+
+        #endregion
+
+        #region methods
         public override string ToString()
         {
             return !string.IsNullOrWhiteSpace(data.PostalCodeSuffix)
-                           ? string.Format("{0}, {1} {2}-{3}", data.City, data.StateAbbrv, data.PostalCode, data.PostalCodeSuffix)
-                           : string.Format("{0}, {1} {2}", data.City, data.StateAbbrv, data.PostalCode);
+                ? $"{data.City}, {data.StateAbbrv} {data.PostalCode}-{data.PostalCodeSuffix}"
+                : $"{data.City}, {data.StateAbbrv} {data.PostalCode}";
         }
 
         public static bool TryParse(string lastLine, out UsCityStateZip cityStateZip)
@@ -181,10 +254,12 @@ namespace NoFuture.Rand.Data.Types
             {
                 var matches = regex.Match(lastLine);
 
-                var fiveDigitZip = matches.Groups.Count >= 2 && matches.Groups[1].Success && matches.Groups[1].Captures.Count > 0
+                var fiveDigitZip = matches.Groups.Count >= 2 && matches.Groups[1].Success &&
+                                   matches.Groups[1].Captures.Count > 0
                     ? matches.Groups[1].Captures[0].Value
                     : string.Empty;
-                var zipPlusFour = matches.Groups.Count >= 3 && matches.Groups[2].Success && matches.Groups[2].Captures.Count > 0
+                var zipPlusFour = matches.Groups.Count >= 3 && matches.Groups[2].Success &&
+                                  matches.Groups[2].Captures.Count > 0
                     ? matches.Groups[2].Captures[0].Value
                     : string.Empty;
 
@@ -204,7 +279,6 @@ namespace NoFuture.Rand.Data.Types
                     : string.Empty;
 
                 addrData.StateAbbrv = state.Trim();
-
             }
 
             //city
@@ -212,7 +286,7 @@ namespace NoFuture.Rand.Data.Types
             if (addrData.PostalCode.Length > 0)
                 city = city.Replace(addrData.PostalCode, string.Empty);
             if (addrData.PostalCodeSuffix.Length > 0)
-                city = city.Replace(string.Format("-{0}", addrData.PostalCodeSuffix), string.Empty);
+                city = city.Replace($"-{addrData.PostalCodeSuffix}", string.Empty);
             if (addrData.StateAbbrv.Length > 0 && city.Contains(" " + addrData.StateAbbrv))
                 city = city.Replace(" " + addrData.StateAbbrv, string.Empty);
             if (addrData.StateAbbrv.Length > 0 && city.Contains("," + addrData.StateAbbrv))
@@ -222,21 +296,21 @@ namespace NoFuture.Rand.Data.Types
 
             cityStateZip = new UsCityStateZip(addrData);
             return true;
-
         }
+        #endregion
     }
     [Serializable]
     public class CaCityProvidencePost : CityArea
     {
         public CaCityProvidencePost(AddressData d) : base(d) { }
-        public string ProvidenceAbbrv { get { return data.StateAbbrv; } }
-        public string Providence { get { return data.StateName; } }
-        public string City { get { return data.City; } }
-        public string PostalCode { get { return data.PostalCode; } }
+        public string ProvidenceAbbrv => data.StateAbbrv;
+        public string Providence => data.StateName;
+        public string City => data.City;
+        public string PostalCode => data.PostalCode;
 
         public override string ToString()
         {
-            return string.Format("{0} {1}, {2}", City, ProvidenceAbbrv, PostalCode);
+            return $"{City} {ProvidenceAbbrv}, {PostalCode}";
         }
     }
 }

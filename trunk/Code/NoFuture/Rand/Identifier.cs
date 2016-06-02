@@ -204,21 +204,20 @@ namespace NoFuture.Rand
         Mixed = 64
     }
 
+    [Flags]
     [Serializable]
-    public enum UrbanCentric
+    public enum UrbanCentric : short
     {
-        CityLarge,
-        CityMidsize,
-        CitySmall,
-        RuralDistant,
-        RuralFringe,
-        RuralRemote,
-        SuburbLarge,
-        SuburbMidsize,
-        SuburbSmall,
-        TownDistant,
-        TownFringe,
-        TownRemote,
+        City,
+        Rural,
+        Suburb,
+        Town,
+        Large,
+        Midsize,
+        Small,
+        Distant,
+        Fringe,
+        Remote
     }
 }//end NoFuture.Rand
 

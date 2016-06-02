@@ -20,8 +20,9 @@ namespace NoFuture.Rand.Data.Types
         /// <returns></returns>
         public override string ToString()
         {
-            var secondary = string.Format("{0} {1}", data.SecondaryUnitDesignator, data.SecondaryUnitId).Trim();
-            return string.Format("{0} {1} {2}{3}", data.AddressNumber, data.StreetName, data.StreetType, string.IsNullOrWhiteSpace(secondary) ? string.Empty : secondary);
+            var secondary = $"{data.SecondaryUnitDesignator} {data.SecondaryUnitId}".Trim();
+            return
+                $"{data.AddressNumber} {data.StreetName} {data.StreetType}{(string.IsNullOrWhiteSpace(secondary) ? string.Empty : secondary)}";
         }
 
         public override bool Equals(object obj)
@@ -72,7 +73,7 @@ namespace NoFuture.Rand.Data.Types
                     addressData.StreetType = "Ct";
                     break;
                 case 6:
-                    addressData.StreetType = string.Format("Unit #{0}", Etx.MyRand.Next(1, 99));
+                    addressData.StreetType = $"Unit #{Etx.MyRand.Next(1, 99)}";
                     break;
                 case 7:
                     addressData.StreetType = "Hwy";
@@ -81,7 +82,7 @@ namespace NoFuture.Rand.Data.Types
                     addressData.StreetType = "Avenue";
                     break;
                 case 9:
-                    addressData.StreetType = string.Format("Alt {0:000}", Etx.MyRand.Next(0, 99));
+                    addressData.StreetType = $"Alt {Etx.MyRand.Next(0, 99):000}";
                     break;
                 default:
                     addressData.StreetType = string.Empty;
@@ -218,16 +219,16 @@ namespace NoFuture.Rand.Data.Types
 
         public const string POUND_UNIT_ID = @"\x20\x23\x20?([0-9]+)";
         #endregion
+
         public UsAddress(AddressData d) : base(d) { }
 
+        #region properties
         public string CountyTownship { get; set; }
-        public string PostBox { get { return data.AddressNumber; } }
-        public string StreetName { get { return data.StreetName; }  }
-        public string StreetKind { get { return data.StreetType; } }
-        public string SecondaryUnit { get
-        {
-            return string.Format("{0} {1}", data.SecondaryUnitDesignator, data.SecondaryUnitId).Trim();
-        } }
+        public string PostBox => data.AddressNumber;
+        public string StreetName => data.StreetName;
+        public string StreetKind => data.StreetType;
+        public string SecondaryUnit => $"{data.SecondaryUnitDesignator} {data.SecondaryUnitId}".Trim();
+        #endregion
 
         /// <summary>
         /// Based on the USPS Pub. 28 [http://pe.usps.gov/cpim/ftp/pubs/Pub28/pub28.pdf]
