@@ -28,6 +28,7 @@ namespace NoFuture.Rand.Gov.Bls
             return str.ToString();
 
         }
+
     }
 
     public class EmploymentCostIndex : ISeries
@@ -106,7 +107,7 @@ namespace NoFuture.Rand.Gov.Bls
 
     public class NatlEmployment : ISeries
     {
-        public Uri ApiLink { get { return new Uri("http://www.bls.gov/help/hlpforma.htm#EE"); } }
+        public Uri ApiLink { get { return new Uri("http://www.bls.gov/help/hlpforma.htm#CE"); } }
         public string Prefix { get { return "CE"; } }
         public char? SeasonalAdjustment { get; set; }
 

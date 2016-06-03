@@ -14,7 +14,12 @@ $targetCodes = @(
     "cu/cu.item",
     "ce/ce.supersector",
     "ce/ce.industry",
-    "ce/ce.datatype"
+    "ce/ce.datatype",
+	"sm/sm.state",
+	"sm/sm.area",
+	"sm/sm.supersector",
+	"sm/sm.industry",
+	"sm/sm.data_type"
 )
 $blsOutNs = "NoFuture.Rand.Gov.Bls.Codes"
 $blsOutPath = "C:\Projects\31g\trunk\Code\NoFuture\Rand\Gov\Bls\Codes"

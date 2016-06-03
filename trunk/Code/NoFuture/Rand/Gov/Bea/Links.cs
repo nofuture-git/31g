@@ -19,6 +19,13 @@ namespace NoFuture.Rand.Gov.Bea
             }
         }
 
+        public static string BeaRegionalDataPJEARN_MI(bool byCounty = false)
+        {
+            var geo = byCounty ? "COUNTY" : "MSA";
+            return
+                $"{BeaStdUri}&method=GetData&datasetname=RegionalData&KeyCode=PJEARN_CI&Year=ALL&GeoFips={geo}&ResultFormat=json";
+        }
+
         public static string BeaGetDatasetListUri
         {
             get { return string.Format("{0}method=GETDATASETLIST&", BeaStdUri); }

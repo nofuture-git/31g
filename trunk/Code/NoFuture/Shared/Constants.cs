@@ -196,6 +196,7 @@ namespace NoFuture.Globals
         public static string BeaDataApiKey { get; set; }
         public static string CensusDataApiKey { get; set; }
         public static string NoFutureX509Cert { get; set; }
+        public static string BlsApiRegistrationKey { get; set; }
     }
 }
 

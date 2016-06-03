@@ -30,8 +30,16 @@ namespace NoFuture.Rand
     [Serializable]
     public abstract class Identifier : IIdentifier<string>
     {
+        private string _value;
+
         public abstract string Abbrev { get; }
-        public virtual string Value { get; set; }
+
+        public virtual string Value
+        {
+            get { return _value; }
+            set { _value = value; }
+        }
+
         public virtual string Src { get; set; }
         public override string ToString()
         {
@@ -51,7 +59,7 @@ namespace NoFuture.Rand
 
         public override int GetHashCode()
         {
-            return Value == null ? 0 : Value.GetHashCode();
+            return Value?.GetHashCode() ?? 0;
         }
     }
 
@@ -62,7 +70,7 @@ namespace NoFuture.Rand
     public abstract class NamedIdentifier : Identifier
     {
         protected internal string _localName = string.Empty;
-        public virtual string LocalName { get { return _localName; } }
+        public virtual string LocalName => _localName;
     }
 
     /// <summary>
@@ -72,7 +80,7 @@ namespace NoFuture.Rand
     public abstract class XrefIdentifier : NamedIdentifier
     {
         private readonly Dictionary<string, string> _refDict = new Dictionary<string, string>();
-        public virtual Dictionary<string, string> ReferenceDictionary { get {return _refDict;}}
+        public virtual Dictionary<string, string> ReferenceDictionary => _refDict;
         public virtual NamedIdentifier[] XrefIds { get; set; }
     }
 
@@ -134,12 +142,12 @@ namespace NoFuture.Rand
 
     [Serializable]
     [Flags]
-    public enum KindsOfLabels
+    public enum KindsOfLabels :byte
     {
-        None,
-        Home,
-        Work,
-        Mobile,
+        None = 0,
+        Home = 1,
+        Work = 2,
+        Mobile = 4,
     }
 
     [Serializable]
@@ -208,16 +216,16 @@ namespace NoFuture.Rand
     [Serializable]
     public enum UrbanCentric : short
     {
-        City,
-        Rural,
-        Suburb,
-        Town,
-        Large,
-        Midsize,
-        Small,
-        Distant,
-        Fringe,
-        Remote
+        City = 0,
+        Suburb = 1,
+        Town = 2,
+        Rural = 4,
+        Large = 8,
+        Midsize = 16,
+        Small = 32,
+        Distant = 64,
+        Fringe = 128,
+        Remote = 256
     }
 }//end NoFuture.Rand
 

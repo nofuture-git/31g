@@ -221,7 +221,6 @@ namespace NoFuture.Rand.Data.Types
         public Gov.Census.ComboMStatArea CbsaCode { get; set; }
         public Util.Math.LinearEquation AverageEarnings { get; set; }
 
-
         #endregion
 
         #region methods

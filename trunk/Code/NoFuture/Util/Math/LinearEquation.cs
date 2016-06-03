@@ -2,6 +2,14 @@
 {
     public class LinearEquation
     {
+        public LinearEquation() { }
+
+        public LinearEquation(double intercept, double slope)
+        {
+            Intercept = intercept;
+            Slope = slope;
+        }
+
         public double Intercept { get; set; }
         public double Slope { get; set; }
 
