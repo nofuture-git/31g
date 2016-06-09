@@ -55,7 +55,7 @@ namespace <#= myhbm.Namespace #>
     foreach(var fk in myhbm.FkProperties.Keys)
     {
         var fkType= myhbm.FkProperties[fk];
-        var nfFkType = new NoFuture.Util.TypeName(fkType);
+        var nfFkType = new NoFuture.Util.NfTypeName(fkType);
         fkType = nfFkType.FullName;
         var fkName= fk;
 #>
@@ -73,7 +73,7 @@ namespace <#= myhbm.Namespace #>
     {
 
         var bagType= myhbm.ListProperties[bag];
-        var nfBagType= new NoFuture.Util.TypeName(bagType);
+        var nfBagType= new NoFuture.Util.NfTypeName(bagType);
         bagType = nfBagType.FullName;
         var bagName= bag;
 #>

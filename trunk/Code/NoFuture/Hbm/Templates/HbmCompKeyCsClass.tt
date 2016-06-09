@@ -11,8 +11,8 @@
     var hbmFilePath = this.Host.ResolveParameterValue("","",paramName);
 	var compositeIdNode = new NoFuture.Hbm.Templates.HbmCompKeyCsClass(hbmFilePath);
 
-    var compKeyClassName = NoFuture.Util.TypeName.GetTypeNameWithoutNamespace(compositeIdNode.IdType);
-    var _namespace = NoFuture.Util.TypeName.GetNamespaceWithoutTypeName(compositeIdNode.IdType);
+    var compKeyClassName = NoFuture.Util.NfTypeName.GetTypeNameWithoutNamespace(compositeIdNode.IdType);
+    var _namespace = NoFuture.Util.NfTypeName.GetNamespaceWithoutTypeName(compositeIdNode.IdType);
 #>
 using System;
 

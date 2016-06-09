@@ -12,12 +12,10 @@ open FSharp.Data
 open MathNet
 open MathNet.Numerics.LinearAlgebra
 open MathNet.Numerics.LinearAlgebra.Double
-
-System.Environment.CurrentDirectory <- __SOURCE_DIRECTORY__
-
 open MathNet.Numerics
 open MathNet.Numerics.Providers.LinearAlgebra.Mkl
 
+System.Environment.CurrentDirectory <- __SOURCE_DIRECTORY__
 Control.LinearAlgebraProvider <- MklLinearAlgebraProvider()
 
 type Vec = Vector<float>

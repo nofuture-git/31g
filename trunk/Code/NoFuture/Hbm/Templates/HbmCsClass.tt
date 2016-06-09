@@ -165,7 +165,7 @@ namespace <#= hbmNamespace #>
 <#
     foreach(var k in hbmFkProperties.Keys){
         var fkTnName =  hbmFkProperties[k];
-        var nfFkPropertyType = new NoFuture.Util.TypeName(fkTnName);
+        var nfFkPropertyType = new NoFuture.Util.NfTypeName(fkTnName);
         var fkPropertyType = nfFkPropertyType.FullName;
         var fkPropertyName = k;
 #>
@@ -182,7 +182,7 @@ namespace <#= hbmNamespace #>
 <#
     foreach(var k in hbmListProperties.Keys){
         var bagTnName =  hbmListProperties[k];
-        var nfBagPropertyType = new NoFuture.Util.TypeName(bagTnName);
+        var nfBagPropertyType = new NoFuture.Util.NfTypeName(bagTnName);
         var bagPropertyType = nfBagPropertyType.FullName;
         var bagPropertyName = k;
 #>
