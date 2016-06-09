@@ -55,10 +55,10 @@
     <Compile Include="AssemblyInfo.fs" />
     <None Include="MsaAvgEarningPerYear.fsx" />
     <None Include="ZipCodeXref.fsx" />
-    <Content Include="packages.config" />
-    <None Include="NoFutureRandSrc.ps1" />
     <None Include="CountyAvgEarningPerYear.fsx" />
     <None Include="State2NaiscSuperSector.fsx" />
+    <Content Include="packages.config" />
+    <None Include="NoFutureRandSrc.ps1" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="FSharp.Charting">
@@ -66,7 +66,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="FSharp.Core">
-      <HintPath>..\..\..\packages\FSharp.Core.3.1.2.5\lib\net40\FSharp.Core.dll</HintPath>
+      <HintPath>..\..\..\packages\FSharp.Core.4.0.0.1\lib\net40\FSharp.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="FSharp.Data">
