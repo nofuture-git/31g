@@ -59,17 +59,19 @@ $smStates | ? {$notUsStates -notcontains $_.state_name} | % {
 	}	
 }
 
+$endYear = [System.DateTime]::Today.Year - 1
+#http://www.bls.gov/developers/api_faqs.htm#register1, 20 year limit
+$startYear = $endYear - 19
+
 $seriesIdsBySector.Keys | % {
 	$sectorCode = $_
-	$stateSeries = $seriesIdsBySector[$_]
-	$endYear = [System.DateTime]::Today.Year - 1
-	#http://www.bls.gov/developers/api_faqs.htm#register1, 20 year limit
-	$startYear = $endYear - 20
-	$payloadJson = [NoFuture.Rand.Gov.Bls.BlsSeriesBase]::GetMultiSeriesPostBody($seriesIdsBySector[$_], $startYear,$endYear)
-	$outFile = Join-Path $myScriptLocation ("{0}.{1}.{2}.json" -f $sectorCode,$startYear,$endYear)
+	$stateSeries = $seriesIdsBySector[$sectorCode]
+	
+	$payloadJson = [NoFuture.Rand.Gov.Bls.BlsSeriesBase]::GetMultiSeriesPostBody($stateSeries, $startYear,$endYear)
+	$outFile = Join-Path $myScriptLocation ("BLS_SMU.{0}.{1}.{2}.json" -f $sectorCode,$startYear,$endYear)
 	if(Test-Path $outFile){
 		Remove-Item -Path $outFile -Force
 	}
-	Invoke-RestMethod -Method Post -Uri "http://api.bls.gov/publicAPI/v2/timeseries/data/" -ContentType "application/json" -Body $payloadJson -OutFile $outFile
+	Invoke-RestMethod -Method Post -Uri ([NoFuture.Rand.Gov.Bls.Globals]::PostUrl) -ContentType "application/json" -Body $payloadJson -OutFile $outFile
 } 
 

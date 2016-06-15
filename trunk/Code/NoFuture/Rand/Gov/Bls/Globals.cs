@@ -4,7 +4,7 @@
     {
         public const string ApiSignature = "http://www.bls.gov/developers/api_signature_v2.htm";
 
-        public static string PostUrl = "http://api.bls.gov/publicAPI/v1/timeseries/data/";
+        public static string PostUrl = "http://api.bls.gov/publicAPI/v2/timeseries/data/";
 
         public const char SeasonallyAdjusted = 'S';
         public const char Unadjusted = 'U';
