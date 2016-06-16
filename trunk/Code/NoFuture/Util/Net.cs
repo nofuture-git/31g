@@ -12,6 +12,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Security.Principal;
 using Newtonsoft.Json;
+using NoFuture.Globals;
 using NoFuture.Shared;
 
 namespace NoFuture.Util
@@ -295,7 +296,7 @@ namespace NoFuture.Util
         }
 
         /// <summary>
-        /// These are intended as my own additions to the contents from <see cref="NoFuture.Shared.Constants.HostTxt"/>.
+        /// These are intended as my own additions to the contents from <see cref="NfConfig.HostTxt"/>.
         /// </summary>
         public static string[] MyRestrictedDomains { get
         {

@@ -1,241 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.IO;
-using System.Reflection;
-using System.Security.Cryptography;
-
-namespace NoFuture
-{
-    /// <summary>
-    /// A reference class used to store the names of NoFuture powershell functions.
-    /// </summary>
-    public class MyFunctions
-    {
-        /// <summary>
-        /// At the top of most NoFuture powershell scripts a try\catch used to map the 
-        /// powershell function to the file in which its defined.  All of the NoFuture powershell 
-        /// script files are expected to be loaded into a console from a single call to the start.ps1
-        /// </summary>
-        public static Dictionary<string, string> FunctionFiles = new Dictionary<string, string>();
-    }
-
-
-    /// <summary>
-    /// Paths to directories used for storing temp results of NoFuture powershell scripts.
-    /// </summary>
-    public class TempDirectories
-    {
-        /// <summary>
-        /// The NoFuture's AppData folder contained withing this environment's <see cref="Environment.SpecialFolder.ApplicationData"/>
-        /// </summary>
-        public static string AppData
-        {
-            get
-            {
-                var nfAppData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-                if(string.IsNullOrWhiteSpace(nfAppData) || !Directory.Exists(nfAppData))
-                    throw new DirectoryNotFoundException("The Environment.GetFolderPath for SpecialFolder.ApplicationData returned a bad path.");
-                nfAppData = Path.Combine(nfAppData, "NoFuture");
-                if (!Directory.Exists(nfAppData))
-                {
-                    Directory.CreateDirectory(nfAppData);
-                }
-                return nfAppData;
-            }
-        }
-
-        public static string Root { get; set; }
-        public static string Sql { get; set; }
-        public static string StoredProcedures { get; set; }
-        public static string Binary { get; set; }
-        public static string Code { get; set; }
-        public static string Graph { get; set; }
-        public static string Text { get; set; }
-        public static string Debug { get; set; }
-        public static string SvcUtil { get; set; }
-        public static string Wsdl { get; set; }
-        public static string Hbm { get; set; }
-        public static string JavaSrc { get; set; }
-        public static string JavaBuild { get; set; }
-        public static string JavaDist { get; set; }
-        public static string JavaArchive { get; set; }
-        public static string Calendar { get; set; }
-        public static string HttpAppDomain { get; set; }
-        public static string Audio { get; set; }
-    }
-    /// <summary>
-    /// Resuable temp file paths used by various NoFuture powershell scripts.
-    /// </summary>
-    public class TempFiles
-    {
-        public static string JavaScript { get; set; }
-        public static string Html { get; set; }
-        public static string Csv { get; set; }
-        public static string NetStat { get; set; }
-        public static string T4Template { get; set; }
-        public static string StdOut { get; set; }
-        public static string Wmi { get; set; }
-    }
-    /// <summary>
-    /// Paths to specific directories used by powershell scripts, 
-    /// <see cref="Root"/> is expected to be in a 'bin' folder directly 
-    /// below the location of the powershell scripts themselves.
-    /// </summary>
-    public class BinDirectories
-    {
-        public static string Root { get; set; }
-        public static string X64Root { get; set; }
-        public static string X86Root { get; set; }
-        public static string JavaRoot { get; set; }
-        public static string T4Templates { get; set; }
-        public static string PhpRoot { get; set; }
-    }
-}
-
-namespace NoFuture.Tools
-{
-    /// <summary>
-    /// The file path to exe's referenced by NoFuture powershell scripts
-    /// </summary>
-    public class X64
-    {
-        public static string SvcUtil { get; set; }
-        public static string Cdb { get; set; }
-        public static string TList { get; set; }
-        public static string Depends { get; set; }
-        public static string Dumpbin { get; set; }
-        public static string Ildasm { get; set; }
-        public static string SqlCmd { get; set; }
-        public static string Wsdl { get; set; }
-        public static string Mdbg { get; set; }
-        public static string ClrVer { get; set; }
-        public static string SymChk { get; set; }
-        public static string XsdExe { get; set; }
-    }
-    /// <summary>
-    /// The file path to exe's referenced by NoFuture powershell scripts
-    /// </summary>
-    public class X86
-    {
-        public static string Cdb { get; set; }
-        public static string Depends { get; set; }
-        public static string Dumpbin { get; set; }
-        public static string Ildasm { get; set; }
-        public static string SqlMetal { get; set; }
-        public static string SvcUtil { get; set; }
-        public static string TextTransform { get; set; }
-        public static string Wsdl { get; set; }
-        public static string DotExe { get; set; }
-        public static int NsLookupPort { get; set; }
-    }
-    /// <summary>
-    /// The file path to exe's, and java JAR files referenced by NoFuture powershell scripts
-    /// </summary>
-    public class JavaTools
-    {
-        public static string Javac { get; set; }
-        public static string Java { get; set; }
-        public static string JavaDoc { get; set; }
-        public static string JavaRtJar { get; set; }
-        public static string Jar { get; set; }
-        public static string Ant { get; set; }
-        public static string JRunScript { get; set; }
-        public static int JrePort { get; set; }
-        public static string Antlr { get; set; }
-        public static string StanfordPostTagger { get; set; }
-        public static string StanfordPostTaggerModels { get; set; }
-    }
-    /// <summary>
-    /// The file path to exe's and dll's produced by this solution.
-    /// </summary>
-    public class CustomTools
-    {
-        public static string HostProc { get; set; }
-        public static string RunTransparent { get; set; }
-        public static string Favicon { get; set; }
-        public static string CodeBase { get; set; }
-        public static string Dia2Dump { get; set; }
-        public static string InvokeGetCgType { get; set; }
-        public static string InvokeGraphViz { get; set; }
-        public static string InvokeAssemblyAnalysis { get; set; }
-        public static string InvokeFlatten { get; set; }
-    }
-
-    public class BinTools
-    {
-        public static string Ffmpeg { get; set; }
-        public static string YoutubeDl { get; set; }
-        
-    }
-}
-
-namespace NoFuture.Globals
-{
-    /// <summary>
-    /// Booleans intended as global to the namespace
-    /// </summary>
-    public class Switches
-    {
-        public static bool PrintWebHeaders { get; set; }
-        public static bool SqlCmdHeadersOff { get; set; }
-        public static bool SqlFiltersOff { get; set; }
-        public static bool SupressNpp { get; set; }
-    }
-    /// <summary>
-    /// Various keys, those which are not assigned a value would be real keys externally defined -
-    /// the rest is just for flippin' bits.
-    /// </summary>
-    public class SecurityKeys
-    {
-        public static string AesEncryptionKey = "gb0352wHVco94Gr260BpJzH+N1yrwmt5/BaVhXmPm6s=";
-        public static string AesIV = "az9HzsMj6pygMvZyTpRo6g==";
-        public static string HMACSHA1 = "eTcmPilTLmtbalRpKjFFJjpMNns=";
-        public static Uri ProxyServer;
-        public static string GoogleCodeApiKey { get; set; }
-        public static string BeaDataApiKey { get; set; }
-        public static string CensusDataApiKey { get; set; }
-        public static string NoFutureX509Cert { get; set; }
-        public static string BlsApiRegistrationKey { get; set; }
-    }
-}
 
 namespace NoFuture.Shared
 {
-    public class RSAPKCS1SHA512SigDesc : SignatureDescription
-    {
-        public const string XML_NS_DIGEST = "http://www.w3.org/2001/04/xmlenc#sha512";
-        public const string XML_NS_SIG = "http://www.w3.org/2001/04/xmldsig-more#rsa-sha512";
-
-        public const string SHA_512 = "SHA512";
-
-        public RSAPKCS1SHA512SigDesc()
-        {
-            FormatterAlgorithm = typeof(RSAPKCS1SignatureFormatter).FullName;
-            DeformatterAlgorithm = typeof(RSAPKCS1SignatureDeformatter).FullName;
-
-            KeyAlgorithm = typeof(RSACryptoServiceProvider).FullName;
-            DigestAlgorithm = typeof(SHA512Managed).FullName;
-        }
-
-        public override AsymmetricSignatureDeformatter CreateDeformatter(AsymmetricAlgorithm key)
-        {
-            if (key == null)
-                throw new ArgumentNullException("key");
-            var d = new RSAPKCS1SignatureDeformatter(key);
-            d.SetHashAlgorithm(SHA_512);
-            return d;
-        }
-
-        public override AsymmetricSignatureFormatter CreateFormatter(AsymmetricAlgorithm key)
-        {
-            if (key == null)
-                throw new ArgumentNullException("key");
-            var f = new RSAPKCS1SignatureFormatter(key);
-            f.SetHashAlgorithm(SHA_512);
-            return f;
-        }
-    }
     /// <summary>
     /// For encoding strings
     /// </summary>
@@ -273,32 +40,25 @@ namespace NoFuture.Shared
     /// </summary>
     public class Constants
     {
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public const string ENUM = "System.Enum";
+
         public const string NF_CRYPTO_EXT = ".nfk"; //nofuture kruptos
         public const char LF = (char)0xA;
         public const char CR = (char)0xD;
         public const string OUTLOOK_APPT_PREFIX = "[shell]";
         public const long DEFAULT_BLOCK_SIZE = 256;
-        public static char StringTerminator = '\0';
-        public static DateTime UnixTimeZero = new DateTime(1970, 1, 1, 0, 0, 0);
-        public static DateTime MsDosTimeZero = new DateTime(1980, 1, 1, 0, 0, 0);
-        public static int SqlServerFalse = 0;
-        public static int SqlServerTrue = 1;
-        public static string AddJavaTypeRootPackage = "MyJava";
-        
-        private static string _symbolsFolder = @"C:\Symbols";
-        private static int _threadSleepTime;
-        private static bool _useReflectionOnlyLoad = true;
-        private static readonly List<string> _searchAsmDirs = new List<string>();
+        public const char STRING_TERMINATOR = '\0';
+        public const int SQL_SERVER_FALSE = 0;
+        public const int SQL_SERVER_TRUE = 1;
 
         public const double DBL_TROPICAL_YEAR = 365.24255;
+        public static DateTime UnixTimeZero = new DateTime(1970, 1, 1, 0, 0, 0);
+        public static DateTime MsDosTimeZero = new DateTime(1980, 1, 1, 0, 0, 0);
         public static TimeSpan TropicalYear = new TimeSpan(365, 5, 49, 16, 320);
 
-        public const char DefaultTypeSeparator = '.';
-        public const string TypeMethodNameSplitOn = "::";
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public const string ENUM = "System.Enum";
-
+        public const char DEFAULT_TYPE_SEPARATOR = '.';
+        public const string TYPE_METHOD_NAME_SPLIT_ON = "::";
         /// <summary>
         /// The max size allowed by PowerShell 3.0's ConvertTo-Json cmdlet.
         /// </summary>
@@ -325,95 +85,21 @@ namespace NoFuture.Shared
         /// </summary>
         public const char CMD_LINE_ARG_ASSIGN = '=';
 
-        public static bool UseReflectionOnlyLoad
-        {
-            get { return _useReflectionOnlyLoad; }
-            set { _useReflectionOnlyLoad = value; }
-        }
-
-        private static BindingFlags _defalutFlags = BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.NonPublic |
-                                                    BindingFlags.Public | BindingFlags.Static;
-
-        /// <summary>
-        /// Default flags used to get a type's members.
-        /// </summary>
-        public static BindingFlags DefaultFlags
-        {
-            get { return _defalutFlags; }
-            set { _defalutFlags = value; }
-        }
-
-
-        /// <summary>
-        /// Shared location to assign thread sleep in milliseconds
-        /// </summary>
-        public static int ThreadSleepTime
-        {
-            get
-            {
-                if (_threadSleepTime == 0)
-                    _threadSleepTime = 500;
-                return _threadSleepTime;
-            }
-            set { _threadSleepTime = value; }
-        }
-
-        /// <summary>
-        /// This is expected, in PowerShell, to match the $Global variable of the same name
-        /// </summary>
-        public static string SqlServer { get; set; }
-
-        /// <summary>
-        /// This is expected, in PowerShell, to match the $Global variable of the same name
-        /// </summary>
-        public static string SqlCatalog { get; set; }
-
-        /// <summary>
-        /// Drafts a trusted connection .NET SqlClient Connection string using the 
-        /// assigned values from <see cref="SqlServer"/> and <see cref="SqlCatalog"/>
-        /// </summary>
-        public static string SqlServerDotNetConnString
-        {
-            get { return String.Format("Server={0};Database={1};Trusted_Connection=True;", SqlServer, SqlCatalog); }
-        }
-
-        /// <summary>
-        /// Drafts an integrated security SSPI COM SqlServer Connection string using the 
-        /// assigned values from <see cref="SqlServer"/> and <see cref="SqlCatalog"/>
-        /// </summary>
-        public static string SqlServerComConnString
-        {
-            get
-            {
-                return String.Format("Provider=SQLOLEDB;Data Source={0};Initial Catalog={1};Integrated Security=SSPI;",
-                    SqlServer, SqlCatalog);
-            }
-        }
-
-        /// <summary>
-        /// Global paths used by NoFuture.Util.FxPointers.ResolveAssemblyEventHandler
-        /// </summary>
-        public static List<string> AssemblySearchPaths { get { return _searchAsmDirs; }}
-
-        /// <summary>
-        /// Path used as local directory within the environment variable '_NT_SYMBOL_PATH'
-        /// </summary>
-        public static string SymbolsPath { get { return _symbolsFolder; } set { _symbolsFolder = value; } }
-
         /// <summary>
         /// The location within the Registry where one may set 
         /// domains to a specific Zone.
         /// </summary>
-        public const string RegistryZonePath = @"HKCU:\Software\Microsoft\Windows\CurrentVersion\Internet Settings\ZoneMap\Domains";
+        public const string REGISTRY_ZONE_PATH = @"HKCU:\Software\Microsoft\Windows\CurrentVersion\Internet Settings\ZoneMap\Domains";
 
         /// <summary>
         /// Useful link to a very extensive list of domains used 
         /// by advertisers.  Its original intention was for use in 
         /// 'Hosts' file.
         /// </summary>
-        public const string HostTxt = "http://winhelp2002.mvps.org/hosts.txt";
+        public const string HOST_TXT = "http://winhelp2002.mvps.org/hosts.txt";
 
         #region string arrays
+
         /// <summary>
         /// see http://msdn.microsoft.com/en-us/library/system.data.sqlclient.sqlconnection.connectionstring(v=vs.90).aspx
         /// </summary>

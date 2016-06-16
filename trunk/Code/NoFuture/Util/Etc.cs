@@ -512,7 +512,7 @@ namespace NoFuture.Util
                         .ToArray());
 
             if (separator == null)
-                separator = Constants.DefaultTypeSeparator;
+                separator = Constants.DEFAULT_TYPE_SEPARATOR;
 
             var nameArray = name.Split(separator.Value);
             var nameFormatted = new StringBuilder();
@@ -582,7 +582,7 @@ namespace NoFuture.Util
                 return String.Empty;
 
             if (separator == null)
-                separator = Constants.DefaultTypeSeparator;
+                separator = Constants.DEFAULT_TYPE_SEPARATOR;
 
             if (!name.Contains(separator.ToString()))
                 return name;

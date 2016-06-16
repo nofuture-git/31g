@@ -117,7 +117,7 @@ namespace NoFuture.Util.Gia
                 if (parts.Length < 2)
                     continue;
                 var line = parts[1];
-                if (String.IsNullOrWhiteSpace(line))
+                if (string.IsNullOrWhiteSpace(line))
                     continue;
 
                 var newline = Etc.TransformCamelCaseToSeparator(line, flattenTypeArg.Separator.ToCharArray()[0]);
@@ -158,14 +158,13 @@ namespace NoFuture.Util.Gia
             var total = allTypes.Length;
             foreach (var t in allTypes)
             {
-                if (writeProgress != null)
-                    writeProgress(new ProgressMessage
-                    {
-                        Activity = t.ToString(),
-                        ProcName = Process.GetCurrentProcess().ProcessName,
-                        ProgressCounter = Etc.CalcProgressCounter(counter, total),
-                        Status = "Working Type Names"
-                    });
+                writeProgress?.Invoke(new ProgressMessage
+                {
+                    Activity = t.ToString(),
+                    ProcName = Process.GetCurrentProcess().ProcessName,
+                    ProgressCounter = Etc.CalcProgressCounter(counter, total),
+                    Status = "Working Type Names"
+                });
                 var tPropWords = GetAllPropertyWholeWordsByCount(assembly, t.FullName, flattenMaxDepth);
                 if (tPropWords == null)
                     continue;
@@ -192,19 +191,18 @@ namespace NoFuture.Util.Gia
         public static FlattenAssembly GetFlattenedAssembly(FlattenLineArgs fla, Action<ProgressMessage> writeProgress = null)
         {
             if (fla == null)
-                throw new ArgumentNullException("fla");
+                throw new ArgumentNullException(nameof(fla));
             if (fla.Assembly == null)
                 throw new ArgumentException("The Assembly reference must be passed in " +
                                             "with the FlattenLineArgs");
 
-            if (writeProgress != null)
-                writeProgress(new ProgressMessage
-                {
-                    Activity = "Getting all types from assembly",
-                    ProcName = Process.GetCurrentProcess().ProcessName,
-                    ProgressCounter = 1,
-                    Status = "OK"
-                });
+            writeProgress?.Invoke(new ProgressMessage
+            {
+                Activity = "Getting all types from assembly",
+                ProcName = Process.GetCurrentProcess().ProcessName,
+                ProgressCounter = 1,
+                Status = "OK"
+            });
 
             var allTypeNames = fla.Assembly.NfGetTypes().Select(x => x.FullName).ToList();
             var allLines = new List<FlattenedLine>();
@@ -213,14 +211,13 @@ namespace NoFuture.Util.Gia
 
             foreach (var t in allTypeNames)
             {
-                if(writeProgress != null)
-                    writeProgress(new ProgressMessage
-                    {
-                        Activity = t,
-                        ProcName = Process.GetCurrentProcess().ProcessName,
-                        ProgressCounter = Etc.CalcProgressCounter(counter, total),
-                        Status = "Working Type Names"
-                    });
+                writeProgress?.Invoke(new ProgressMessage
+                {
+                    Activity = t,
+                    ProcName = Process.GetCurrentProcess().ProcessName,
+                    ProgressCounter = Etc.CalcProgressCounter(counter, total),
+                    Status = "Working Type Names"
+                });
 
                 var flattenArgs = new FlattenTypeArgs
                 {
@@ -232,12 +229,12 @@ namespace NoFuture.Util.Gia
                     LimitOnThisType = fla.LimitOnThisType
                 };
                 var flattenedType = FlattenType(flattenArgs);
-                foreach (var line in flattenedType.Lines.Where(x => !String.IsNullOrWhiteSpace(x.ValueType)))
+                foreach (var line in flattenedType.Lines.Where(x => !string.IsNullOrWhiteSpace(x.ValueType)))
                 {
                     //if there is a limit on some type and this line is that type in any form then continue
-                    if (!String.IsNullOrWhiteSpace(fla.LimitOnThisType) &&
-                        !String.Equals(fla.LimitOnThisType, line.ValueType, StringComparison.OrdinalIgnoreCase) &&
-                        !String.Equals(fla.LimitOnThisType,
+                    if (!string.IsNullOrWhiteSpace(fla.LimitOnThisType) &&
+                        !string.Equals(fla.LimitOnThisType, line.ValueType, StringComparison.OrdinalIgnoreCase) &&
+                        !string.Equals(fla.LimitOnThisType,
                             NfTypeName.GetLastTypeNameFromArrayAndGeneric(line.ValueType),
                             StringComparison.OrdinalIgnoreCase))
                         continue;
@@ -275,7 +272,8 @@ namespace NoFuture.Util.Gia
             var startCount = 0;
             if (maxDepth <= 0)
                 maxDepth = 16;
-            var results = FlattenType(assembly, typeFulleName, ref startCount, maxDepth, fta.LimitOnThisType, fta.DisplayEnums, null, null);
+            var results = FlattenType(assembly, typeFulleName, ref startCount, maxDepth, fta.LimitOnThisType,
+                fta.DisplayEnums, null, null);
             return new FlattenedType
             {
                 Lines = results,
@@ -290,14 +288,15 @@ namespace NoFuture.Util.Gia
             ref int currentDepth, int maxDepth, string limitOnValueType, bool displayEnums, Stack<FlattenedItem> fiValueTypes, Stack typeStack)
         {
             var printList = new List<FlattenedLine>();
-            if (String.IsNullOrWhiteSpace(typeFullName))
+            if (string.IsNullOrWhiteSpace(typeFullName))
                 return printList;
 
             Func<PropertyInfo, string, bool> limitOnPi =
                 (info, s) =>
-                    String.IsNullOrWhiteSpace(s) ||
-                    String.Equals(String.Format("{0}", info.PropertyType), s, StringComparison.OrdinalIgnoreCase) ||
-                    String.Equals(NfTypeName.GetLastTypeNameFromArrayAndGeneric(info.PropertyType), s, StringComparison.OrdinalIgnoreCase) ||
+                    string.IsNullOrWhiteSpace(s) ||
+                    string.Equals($"{info.PropertyType}", s, StringComparison.OrdinalIgnoreCase) ||
+                    string.Equals(NfTypeName.GetLastTypeNameFromArrayAndGeneric(info.PropertyType), s,
+                        StringComparison.OrdinalIgnoreCase) ||
                     (s == Constants.ENUM && NfTypeName.IsEnumType(info.PropertyType));
 
             var currentType = assembly.NfGetType(typeFullName);
@@ -312,16 +311,20 @@ namespace NoFuture.Util.Gia
                 typeStack = new Stack();
                 typeStack.Push(typeFullName);
                 fiValueTypes = new Stack<FlattenedItem>();
-                fiValueTypes.Push(new FlattenedItem(currentType) { FlName = NfTypeName.GetTypeNameWithoutNamespace(typeFullName) });
+                fiValueTypes.Push(new FlattenedItem(currentType)
+                {
+                    FlName = NfTypeName.GetTypeNameWithoutNamespace(typeFullName)
+                });
             }
 
             var typeNamesList =
-                currentType.GetProperties(Constants.DefaultFlags)
+                currentType.GetProperties(Globals.NfConfig.DefaultFlags)
                     .Where(
                         x =>
-                            (NfTypeName.IsValueTypeProperty(x) && limitOnPi(x, limitOnValueType) 
-                             || (limitOnValueType == Constants.ENUM && limitOnPi(x, limitOnValueType))) //more limbo branching for enums
-                            ) 
+                            (NfTypeName.IsValueTypeProperty(x) && limitOnPi(x, limitOnValueType)
+                             || (limitOnValueType == Constants.ENUM && limitOnPi(x, limitOnValueType)))
+                    //more limbo branching for enums
+                    )
                     .Select(p => new Tuple<Type, string>(p.PropertyType, p.Name))
                     .ToList();
 
@@ -336,19 +339,22 @@ namespace NoFuture.Util.Gia
                 fiItems.Reverse();
                 printList.Add(new FlattenedLine(fiItems.Distinct(new FlattenedItemComparer()).ToList())
                 {
-                    ValueType = String.Format("{0}", typeNamePair.Item1)
+                    ValueType = $"{typeNamePair.Item1}"
                 });
                 fiValueTypes.Pop();
             }
 
             //then recurse the object types
-            foreach (var p in currentType.GetProperties(Constants.DefaultFlags).Where(x => !NfTypeName.IsValueTypeProperty(x)))
+            foreach (
+                var p in
+                    currentType.GetProperties(Globals.NfConfig.DefaultFlags)
+                        .Where(x => !NfTypeName.IsValueTypeProperty(x)))
             {
                 var typeIn = NfTypeName.GetLastTypeNameFromArrayAndGeneric(p.PropertyType);
 
                 if (typeIn == null || typeStack.Contains(typeIn)) continue;
 
-                var fi = new FlattenedItem(p.PropertyType) { FlName = p.Name };
+                var fi = new FlattenedItem(p.PropertyType) {FlName = p.Name};
                 if (fiValueTypes.ToList().Any(x => x.FlType == p.PropertyType))
                     continue;
 
@@ -366,7 +372,7 @@ namespace NoFuture.Util.Gia
                 {
                     foreach (var ev in enumVals)
                     {
-                        fiValueTypes.Push(new FlattenedItem(typeof(Enum)) { FlName = ev });
+                        fiValueTypes.Push(new FlattenedItem(typeof(Enum)) {FlName = ev});
                         var fiItems = fiValueTypes.ToList();
                         fiItems.Reverse();
                         printList.Add(new FlattenedLine(fiItems.Distinct(new FlattenedItemComparer()).ToList())

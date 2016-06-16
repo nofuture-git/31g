@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using NoFuture.Exceptions;
+using NoFuture.Globals;
 using NoFuture.Shared;
 using NoFuture.Util.Gia.Args;
 using NoFuture.Util.NfConsole;
@@ -30,9 +31,9 @@ namespace NoFuture.Util.Gia.InvokeFlatten.Cmds
                 if(!File.Exists(asmPath))
                     throw new ItsDeadJim("There isn't a file at the location: " + asmPath);
 
-                Constants.AssemblySearchPaths.Add(Path.GetDirectoryName(asmPath));
+                NfConfig.AssemblySearchPaths.Add(Path.GetDirectoryName(asmPath));
 
-                var asm = Constants.UseReflectionOnlyLoad
+                var asm = NfConfig.UseReflectionOnlyLoad
                     ? Binary.Asm.NfReflectionOnlyLoadFrom(asmPath)
                     : Binary.Asm.NfLoadFrom(asmPath);
 

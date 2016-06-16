@@ -2,6 +2,7 @@
 using System.Configuration;
 using System.IO;
 using System.Reflection;
+using NoFuture.Globals;
 using NoFuture.Shared;
 
 
@@ -183,7 +184,7 @@ namespace NoFuture.Util.NfConsole
         {
             var useReflectionOnly =
                 ResolveBool(ConfigurationManager.AppSettings["NoFuture.Shared.Constants.UseReflectionOnlyLoad"]);
-            Constants.UseReflectionOnlyLoad = useReflectionOnly != null && useReflectionOnly.Value;
+            NfConfig.UseReflectionOnlyLoad = useReflectionOnly != null && useReflectionOnly.Value;
         }
         /// <summary>
         /// Standard help for a console app - does NOT write to <see cref="LogFile"/>

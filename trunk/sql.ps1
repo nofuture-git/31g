@@ -155,8 +155,8 @@ function Invoke-SqlCommand
     )
     Process
     {
-      if([System.String]::IsNullOrWhiteSpace($ServerName)){$ServerName = ([NoFuture.Shared.Constants]::SqlServer)}
-      if([System.String]::IsNullOrWhiteSpace($CatalogName)){$CatalogName = ([NoFuture.Shared.Constants]::SqlCatalog)}
+      if([System.String]::IsNullOrWhiteSpace($ServerName)){$ServerName = ([NoFuture.Globals.NfConfig]::SqlServer)}
+      if([System.String]::IsNullOrWhiteSpace($CatalogName)){$CatalogName = ([NoFuture.Globals.NfConfig]::SqlCatalog)}
 
       if($IsPath){
         $cmd =  ([NoFuture.Sql.Mssql.Etc]::MakeInputFilesSqlCmd($expression,$ServerName,$CatalogName))
@@ -361,8 +361,8 @@ function Select-ColumnName
     Process
     {
         if(-not [System.String]::IsNullOrWhiteSpace($ServerName) -and -not [System.String]::IsNullOrWhiteSpace($CatalogName)){
-            [NoFuture.Shared.Constants]::SqlServer = $ServerName
-            [NoFuture.Shared.Constants]::SqlCatalog = $CatalogName
+            [NoFuture.Globals.NfConfig]::SqlServer = $ServerName
+            [NoFuture.Globals.NfConfig]::SqlCatalog = $CatalogName
         }
 
         $expression = ([NoFuture.Sql.Mssql.Qry.Catalog]::ColSelectString -f $ColumnName,$TableName,$SchemaName)
@@ -768,8 +768,8 @@ function ExportTo-SqlScript
     )
     Process
     {
-        if([string]::IsNullOrWhiteSpace([NoFuture.Shared.Constants]::SqlServer) -or 
-           [string]::IsNullOrWhiteSpace([NoFuture.Shared.Constants]::SqlCatalog)){
+        if([string]::IsNullOrWhiteSpace([NoFuture.Globals.NfConfig]::SqlServer) -or 
+           [string]::IsNullOrWhiteSpace([NoFuture.Globals.NfConfig]::SqlCatalog)){
 
             Write-Host "Set the connection first using Mssql-Settings cmdlet" -ForegroundColor Yellow
             break;
@@ -793,11 +793,11 @@ function ExportTo-SqlScript
 
         $sqlScript = [NoFuture.Sql.Mssql.ExportTo]::ScriptDataBody($Expression,$MaxLength,$ExportType,$metaData,$adoRows);
 
-        $sqlScriptPath = Join-Path ([NoFuture.TempDirectories]::Sql) ([NoFuture.Shared.Constants]::SqlServer)
+        $sqlScriptPath = Join-Path ([NoFuture.TempDirectories]::Sql) ([NoFuture.Globals.NfConfig]::SqlServer)
 
         if(-not (Test-Path ($sqlScriptPath))){$dnd = mkdir -Path $sqlScriptPath -Force}
 
-        $sqlScriptPath = Join-Path $sqlScriptPath ([NoFuture.Shared.Constants]::SqlCatalog)
+        $sqlScriptPath = Join-Path $sqlScriptPath ([NoFuture.Globals.NfConfig]::SqlCatalog)
 
         if(-not (Test-Path ($sqlScriptPath))){$dnd = mkdir -Path $sqlScriptPath -Force}
 
@@ -862,8 +862,8 @@ function Get-TableMetaData
     Process
     {
         if(-not [System.String]::IsNullOrWhiteSpace($ServerName) -and -not [System.String]::IsNullOrWhiteSpace($CatalogName)){
-            [NoFuture.Shared.Constants]::SqlServer = $ServerName
-            [NoFuture.Shared.Constants]::SqlCatalog = $CatalogName
+            [NoFuture.Globals.NfConfig]::SqlServer = $ServerName
+            [NoFuture.Globals.NfConfig]::SqlCatalog = $CatalogName
         }
 
         if($TableName.Contains(".")){
@@ -993,7 +993,7 @@ function Get-TableXsd
 
         $OutputPath = (Join-Path $xsdDir $xsdFn)
 
-        [System.Data.SqlClient.SqlConnection]$conn = New-Object System.Data.SqlClient.SqlConnection([NoFuture.Shared.Constants]::SqlServerDotNetConnString);
+        [System.Data.SqlClient.SqlConnection]$conn = New-Object System.Data.SqlClient.SqlConnection([NoFuture.Globals.NfConfig]::SqlServerDotNetConnString);
         [System.Data.SqlClient.SqlCommand]$cmd = $conn.CreateCommand();
         $cmd.CommandText = $("select top 1 * from " + $TableName)
         [System.Data.SqlClient.SqlDataAdapter]$da = New-Object System.Data.SqlClient.SqlDataAdapter
@@ -1017,7 +1017,7 @@ function Get-TableXsd
     it to this ps appdomain
     
     .DESCRIPTION
-    Calls SqlMetal.exe using the NoFuture.Shared.Constants.SqlServer 
+    Calls SqlMetal.exe using the NoFuture.Globals.NfConfig.SqlServer 
 	and NoFuture.Shared.Constants.SqlCatalog using the /code whose value is given by 
 	the NoFuture.Shared.Constants.SqlCatalog less any invalid path characters.
     Upon SqlMetal successfully generating a code file, the C# compiler is called
@@ -1051,17 +1051,17 @@ function Get-DatabaseDll
     {
     
         if(-not(Test-Path ([NoFuture.Tools.X86]::SqlMetal))){throw ("SqlMetal.exe is not found at '{0}'" -f ([NoFuture.Tools.X86]::SqlMetal))}
-        if([string]::IsNullOrWhiteSpace([NoFuture.Shared.Constants]::SqlServer) -or [string]::IsNullOrWhiteSpace([NoFuture.Shared.Constants]::SqlCatalog)) {
+        if([string]::IsNullOrWhiteSpace([NoFuture.Globals.NfConfig]::SqlServer) -or [string]::IsNullOrWhiteSpace([NoFuture.Globals.NfConfig]::SqlCatalog)) {
             Write-Host "The global sqlServer and sqlCatalog variables are not set, assign them and try again."
         }
         $errCount = $Error.Count;
 
         $namespace = "NoFuture.Db"
-        $codeFile = ("{0}.cs" -f [NoFuture.Shared.Constants]::SqlCatalog)
+        $codeFile = ("{0}.cs" -f [NoFuture.Globals.NfConfig]::SqlCatalog)
         [System.IO.Path]::InvalidPathChars | % { $codeFile = $codeFile.Replace($_.ToString(),"")}
         $codeFile = (Join-Path ([NoFuture.TempDirectories]::Code) $codeFile)
 
-        $cmd = ("& '{0}' /server:{1} /database:{2} /code:{3} /namespace:{4}" -f ([NoFuture.Tools.X86]::SqlMetal),([NoFuture.Shared.Constants]::SqlServer),([NoFuture.Shared.Constants]::SqlCatalog),$codeFile,$namespace)
+        $cmd = ("& '{0}' /server:{1} /database:{2} /code:{3} /namespace:{4}" -f ([NoFuture.Tools.X86]::SqlMetal),([NoFuture.Globals.NfConfig]::SqlServer),([NoFuture.Globals.NfConfig]::SqlCatalog),$codeFile,$namespace)
         Invoke-Expression -Command $cmd
         if($Error.Count -gt $errCount) {break;}
 
@@ -1281,10 +1281,10 @@ function Export-CsvToScriptTempTable
             }
             elseif($_.PsDbType -eq "bit"){
                 if(($line.($_.Name)).ToLower() -eq "false"){
-                    $lineInsert +=  ",{0}" -f [NoFuture.Shared.Constants]::SqlServerFalse
+                    $lineInsert +=  ",{0}" -f [NoFuture.Shared.Constants]::SQL_SERVER_FALSE
                 }
                 elseif(($line.($_.Name)).ToLower() -eq "true"){
-                    $lineInsert +=  ",{0}" -f [NoFuture.Shared.Constants]::SqlServerTrue
+                    $lineInsert +=  ",{0}" -f [NoFuture.Shared.Constants]::SQL_SERVER_TRUE
                 }
                 else{
                     $lineInsert +=  ",{0}" -f $line.($_.Name)
@@ -1340,8 +1340,8 @@ function Find-StringInDb
         if([string]::IsNullOrWhiteSpace($SearchString)){
             return;
         }
-        if([string]::IsNullOrWhiteSpace([NoFuture.Shared.Constants]::SqlServer) -or 
-           [string]::IsNullOrWhiteSpace([NoFuture.Shared.Constants]::SqlCatalog)){
+        if([string]::IsNullOrWhiteSpace([NoFuture.Globals.NfConfig]::SqlServer) -or 
+           [string]::IsNullOrWhiteSpace([NoFuture.Globals.NfConfig]::SqlCatalog)){
 
             Write-Host "Set the connection first using Mssql-Settings cmdlet" -ForegroundColor Yellow
             break;

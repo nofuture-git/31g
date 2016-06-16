@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Reflection.Emit;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NoFuture.Globals;
 
 namespace NoFuture.Tests.Util
 {
@@ -27,8 +28,8 @@ namespace NoFuture.Tests.Util
         [TestMethod]
         public void TestGetMetadataToken()
         {
-            NoFuture.Shared.Constants.AssemblySearchPaths.Add(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\");
-            NoFuture.Shared.Constants.UseReflectionOnlyLoad = false;
+            NfConfig.AssemblySearchPaths.Add(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\");
+            NfConfig.UseReflectionOnlyLoad = false;
             NoFuture.Util.FxPointers.AddResolveAsmEventHandlerToDomain();
             var myAsm =
                 System.Reflection.Assembly.Load(

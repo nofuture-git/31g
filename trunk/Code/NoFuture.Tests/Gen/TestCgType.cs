@@ -3,6 +3,7 @@ using System.Linq;
 using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NoFuture.Gen;
+using NoFuture.Globals;
 using NoFuture.Shared;
 using NoFuture.Tools;
 
@@ -19,7 +20,7 @@ namespace NoFuture.Tests.Gen
             TempDirectories.Debug = @"C:\Projects\31g\trunk\Code\NoFuture.Tests\Gen";
             CustomTools.Dia2Dump = @"C:\Projects\31g\trunk\bin\Dia2Dump.exe";
             CustomTools.InvokeGetCgType = @"C:\Projects\31g\trunk\bin\NoFuture.Gen.InvokeGetCgOfType.exe";
-            NoFuture.Shared.Constants.AssemblySearchPaths.Add(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls");
+            NfConfig.AssemblySearchPaths.Add(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls");
         }
         [TestMethod]
         public void TestToGraphVizString()
@@ -57,7 +58,7 @@ namespace NoFuture.Tests.Gen
         [TestMethod]
         public void TestResolveAllMetadataTokens()
         {
-            NoFuture.Shared.Constants.UseReflectionOnlyLoad = false;
+            NfConfig.UseReflectionOnlyLoad = false;
             NoFuture.Util.FxPointers.AddResolveAsmEventHandlerToDomain();
             
             var testtypeName = "AdventureWorks.VeryBadCode.ViewWankathon";
@@ -86,8 +87,8 @@ namespace NoFuture.Tests.Gen
         [TestMethod]
         public void TestFindCgMethodByTokenName()
         {
-            NoFuture.Shared.Constants.AssemblySearchPaths.Add( @"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\");
-            NoFuture.Shared.Constants.UseReflectionOnlyLoad = false;
+            NfConfig.AssemblySearchPaths.Add( @"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\");
+            NfConfig.UseReflectionOnlyLoad = false;
             NoFuture.Util.FxPointers.AddResolveAsmEventHandlerToDomain();
             var testAsm =
                 System.Reflection.Assembly.Load(

@@ -10,6 +10,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using NoFuture.Exceptions;
+using NoFuture.Globals;
 using NoFuture.Hbm.SortingContainers;
 using NoFuture.Util;
 using NoFuture.Shared;
@@ -345,8 +346,8 @@ namespace NoFuture.Hbm
         /// <param name="connectionString">
         /// The calling assembly is forced to specify what the connection string is.
         /// This value should bare a semblance to the current connection values at 
-        /// <see cref="NoFuture.Shared.Constants.SqlServer"/> and 
-        /// <see cref="NoFuture.Shared.Constants.SqlCatalog"/>
+        /// <see cref="NfConfig.SqlServer"/> and 
+        /// <see cref="NfConfig.SqlCatalog"/>
         /// but its value is not inspected verifying this.  
         /// </param>
         /// <remarks>

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Text;
+using NoFuture.Globals;
 using NoFuture.Shared;
 using NoFuture.Util.NfConsole;
 
@@ -49,9 +50,9 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds
                         });
                 } 
                 
-                Constants.AssemblySearchPaths.Add(Path.GetDirectoryName(asmPath));
+                NfConfig.AssemblySearchPaths.Add(Path.GetDirectoryName(asmPath));
 
-                var asm = Constants.UseReflectionOnlyLoad
+                var asm = NfConfig.UseReflectionOnlyLoad
                     ? Binary.Asm.NfReflectionOnlyLoadFrom(asmPath)
                     : Binary.Asm.NfLoadFrom(asmPath);
 

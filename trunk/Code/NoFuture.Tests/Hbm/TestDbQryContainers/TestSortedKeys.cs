@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NoFuture.Globals;
 using NoFuture.Hbm;
 using NoFuture.Hbm.DbQryContainers;
 using NoFuture.Hbm.SortingContainers;
@@ -16,8 +17,8 @@ namespace NoFuture.Tests.Hbm.TestDbQryContainers
         public void Init()
         {
             NoFuture.TempDirectories.Hbm = @"C:\Projects\31g\trunk\Code\NoFuture.Tests\Hbm\TestFiles";
-            NoFuture.Shared.Constants.SqlServer = "localhost";
-            NoFuture.Shared.Constants.SqlCatalog = "Whatever";
+            NfConfig.SqlServer = "localhost";
+            NfConfig.SqlCatalog = "Whatever";
         }
         [TestMethod]
         public void TestGetDistinctConstraintNames()

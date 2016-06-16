@@ -7,6 +7,7 @@ using Antlr4.Runtime;
 using Antlr4.Runtime.Tree;
 using NoFuture.Shared;
 using NoFuture.Antlr.Grammers;
+using NoFuture.Globals;
 using NoFuture.Util;
 
 namespace NoFuture.Tokens
@@ -385,7 +386,7 @@ namespace NoFuture.Tokens
                 return false;
             var tempFile = Path.Combine(TempDirectories.AppData, Path.GetRandomFileName());
             File.WriteAllText(tempFile, webResponseText);
-            System.Threading.Thread.Sleep(Constants.ThreadSleepTime);
+            System.Threading.Thread.Sleep(NfConfig.ThreadSleepTime);
 
             var antlrHtml = InvokeParse(tempFile);
 

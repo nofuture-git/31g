@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Reflection;
 using System.Security.Cryptography;
+using NoFuture.Globals;
 using NoFuture.Util.Binary;
 
 namespace NoFuture.Util
@@ -25,7 +26,7 @@ namespace NoFuture.Util
         #region methods
         /// <summary>
         /// Adds an event handler to <see cref="AppDomain.ReflectionOnlyAssemblyResolve"/>
-        /// when the global variable <see cref="NoFuture.Shared.Constants.UseReflectionOnlyLoad"/> is True.  
+        /// when the global variable <see cref="NfConfig.UseReflectionOnlyLoad"/> is True.  
         /// Otherwise add and event handler to <see cref="AppDomain.AssemblyResolve"/>.
         /// </summary>
         /// <remarks>
@@ -35,7 +36,7 @@ namespace NoFuture.Util
         /// </remarks>
         public static void AddResolveAsmEventHandlerToDomain()
         {
-            if (Shared.Constants.UseReflectionOnlyLoad)
+            if (NfConfig.UseReflectionOnlyLoad)
             {
                 if (_addedAssemblyHandler)
                 {

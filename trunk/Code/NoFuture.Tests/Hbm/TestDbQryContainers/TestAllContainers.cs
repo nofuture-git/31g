@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NoFuture.Globals;
 using NoFuture.Hbm.DbQryContainers.MetadataDump;
 
 namespace NoFuture.Tests.Hbm.TestDbQryContainers
@@ -11,8 +12,8 @@ namespace NoFuture.Tests.Hbm.TestDbQryContainers
         public void Init()
         {
             NoFuture.TempDirectories.Hbm = @"C:\Projects\31g\trunk\temp\code\hbm";
-            NoFuture.Shared.Constants.SqlServer = "localhost";
-            NoFuture.Shared.Constants.SqlCatalog = "Whatever";
+            NfConfig.SqlServer = "localhost";
+            NfConfig.SqlCatalog = "Whatever";
         }
 
         [TestMethod]

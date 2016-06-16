@@ -126,7 +126,7 @@ function Invoke-AntlrToJavaSrc
     )
     Process
     {
-        $ms = [NoFuture.Shared.Constants]::ThreadSleepTime
+        $ms = [NoFuture.Globals.NfConfig]::ThreadSleepTime
         $pushFlag = $false
         $javaSrc = ([NoFuture.TempDirectories]::JavaSrc)
         $antlrFilePath = ([NoFuture.Tools.JavaTools]::Antlr)

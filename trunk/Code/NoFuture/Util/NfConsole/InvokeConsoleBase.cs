@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Text;
 using System.Threading;
 using Newtonsoft.Json;
+using NoFuture.Globals;
 using NoFuture.Shared;
 
 namespace NoFuture.Util.NfConsole
@@ -43,7 +44,7 @@ namespace NoFuture.Util.NfConsole
             var myProcess = new Process { StartInfo = si };
 
             myProcess.Start();
-            Thread.Sleep(Constants.ThreadSleepTime);
+            Thread.Sleep(NfConfig.ThreadSleepTime);
 
             return myProcess;
         }

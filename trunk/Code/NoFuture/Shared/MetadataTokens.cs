@@ -176,7 +176,7 @@ namespace NoFuture.Shared
         public bool IsMethodName()
         {
             return !String.IsNullOrWhiteSpace(Name) 
-                && Name.Contains(Constants.TypeMethodNameSplitOn) 
+                && Name.Contains(Constants.TYPE_METHOD_NAME_SPLIT_ON) 
                 && Name.Contains("(") 
                 && Name.Contains(")");
         }
@@ -188,7 +188,7 @@ namespace NoFuture.Shared
         /// <returns></returns>
         public bool IsPartialName()
         {
-            return !String.IsNullOrWhiteSpace(Name) && Name.StartsWith(Constants.DefaultTypeSeparator.ToString(CultureInfo.InvariantCulture));
+            return !String.IsNullOrWhiteSpace(Name) && Name.StartsWith(Constants.DEFAULT_TYPE_SEPARATOR.ToString(CultureInfo.InvariantCulture));
         }
 
         public override bool Equals(object obj)

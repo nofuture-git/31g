@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NoFuture.Globals;
 using NoFuture.Hbm;
 using NoFuture.Hbm.SortingContainers;
 
@@ -14,8 +15,8 @@ namespace NoFuture.Tests.Hbm
         public void Init()
         {
             NoFuture.TempDirectories.Hbm = @"C:\Projects\31g\trunk\Code\NoFuture.Tests\Hbm\TestFiles";
-            NoFuture.Shared.Constants.SqlServer = "localhost";
-            NoFuture.Shared.Constants.SqlCatalog = "Whatever";
+            NfConfig.SqlServer = "localhost";
+            NfConfig.SqlCatalog = "Whatever";
         }
 
         [TestMethod]
@@ -92,8 +93,8 @@ namespace NoFuture.Tests.Hbm
         public void TestGetHbmFksWhichArePks()
         {
             NoFuture.TempDirectories.Hbm = @"C:\Projects\31g\trunk\temp\code\hbm";
-            NoFuture.Shared.Constants.SqlServer = "localhost";
-            NoFuture.Shared.Constants.SqlCatalog = "ApexQA01";
+            NfConfig.SqlServer = "localhost";
+            NfConfig.SqlCatalog = "ApexQA01";
             NoFuture.BinDirectories.Root = @"C:\Projects\31g\trunk\bin";
             var tbl = "dbo.ClinicStaffDetails";
             var pkManifold = NoFuture.Hbm.Sorting.GetHbmDistinctPks(tbl);

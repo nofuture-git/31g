@@ -200,9 +200,9 @@ namespace NoFuture.Sql.Mssql
         internal static Tuple<string,string> FormatKeyValue(string key, string value, int len, int counter, bool withNameMarker = false)
         {
             if (string.Equals(value, bool.TrueString, StringComparison.OrdinalIgnoreCase))
-                value = Shared.Constants.SqlServerTrue.ToString(CultureInfo.InvariantCulture);
+                value = Shared.Constants.SQL_SERVER_TRUE.ToString(CultureInfo.InvariantCulture);
             if (string.Equals(value, bool.FalseString, StringComparison.OrdinalIgnoreCase))
-                value = Shared.Constants.SqlServerFalse.ToString(CultureInfo.InvariantCulture);
+                value = Shared.Constants.SQL_SERVER_FALSE.ToString(CultureInfo.InvariantCulture);
             var val = withNameMarker ? string.Format("/*{0:000}-{1}*/ {2}", counter, key, value) : value;
             key = string.Format("[{0}]", key);
 

@@ -3,6 +3,7 @@ using System.IO;
 using System.Text;
 using System.Threading;
 using NoFuture.Exceptions;
+using NoFuture.Globals;
 using NoFuture.Util.Binary;
 using NoFuture.Util.NfConsole;
 using CfgMgr = System.Configuration.ConfigurationManager;
@@ -71,8 +72,8 @@ namespace NoFuture.Gen.InvokeGetCgOfType
                 throw new RahRowRagee(string.Format("There is no assembly at '{0}'.", AsmPath));
             }
 
-            Shared.Constants.AssemblySearchPaths.Add(Path.GetDirectoryName(AsmPath));
-            Assembly = Shared.Constants.UseReflectionOnlyLoad
+            NfConfig.AssemblySearchPaths.Add(Path.GetDirectoryName(AsmPath));
+            Assembly = NfConfig.UseReflectionOnlyLoad
                 ? Asm.NfReflectionOnlyLoadFrom(AsmPath)
                 : Asm.NfLoadFrom(AsmPath);
             if (Assembly == null)

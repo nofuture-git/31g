@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NoFuture.Globals;
 
 namespace NoFuture.Tests.Sql
 {
@@ -81,8 +82,8 @@ namespace NoFuture.Tests.Sql
             NoFuture.Sql.Mssql.Etc.AddSqlServer("ZXHUH0416SQL2\\SQLPROD2", new[] { "DDL", "Audit", "HappeninNow", "DDL_ETL" });
             NoFuture.Sql.Mssql.Etc.AddSqlServer("ZXHUH0542NNSQL", new[] { "DDL", "Audit", "HappeninNow", "DDL_ETL" });
 
-            NoFuture.Shared.Constants.SqlServer = "localhost";
-            NoFuture.Shared.Constants.SqlCatalog = "AdventureWorks2012";
+            NfConfig.SqlServer = "localhost";
+            NfConfig.SqlCatalog = "AdventureWorks2012";
 
             var testResult = NoFuture.Sql.Mssql.Etc.PrintCurrentDbSettings();
 
@@ -107,8 +108,8 @@ namespace NoFuture.Tests.Sql
             NoFuture.Sql.Mssql.Etc.AddSqlServer("ZXHUH0416SQL2\\SQLPROD2", new[] { "DDL", "Audit", "HappeninNow", "DDL_ETL" });
             NoFuture.Sql.Mssql.Etc.AddSqlServer("ZXHUH0542NNSQL", new[] { "DDL", "Audit", "HappeninNow", "DDL_ETL" });
 
-            NoFuture.Shared.Constants.SqlServer = "localhost";
-            NoFuture.Shared.Constants.SqlCatalog = "AdventureWorks2012";
+            NfConfig.SqlServer = "localhost";
+            NfConfig.SqlCatalog = "AdventureWorks2012";
 
             NoFuture.Sql.Mssql.Etc.SetMssqlSettings(10, 2);
             var testResult = NoFuture.Sql.Mssql.Etc.PrintCurrentDbSettings();
@@ -117,8 +118,8 @@ namespace NoFuture.Tests.Sql
 
             System.Diagnostics.Debug.WriteLine(testResult);
 
-            Assert.AreEqual(NoFuture.Shared.Constants.SqlServer, "ZXHUH0416SQL2\\SQLPROD2");
-            Assert.AreEqual(NoFuture.Shared.Constants.SqlCatalog, "HappeninNow");
+            Assert.AreEqual(NfConfig.SqlServer, "ZXHUH0416SQL2\\SQLPROD2");
+            Assert.AreEqual(NfConfig.SqlCatalog, "HappeninNow");
         }
     }
 }

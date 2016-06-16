@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NoFuture.Globals;
 using NoFuture.Shared;
 using NoFuture.Util.Gia.InvokeAssemblyAnalysis;
 using NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds;
@@ -13,8 +14,8 @@ namespace NoFuture.Tests.Util.InvokeAsmTests
         [TestMethod]
         public void TestResolveCallOfCall()
         {
-            NoFuture.Shared.Constants.AssemblySearchPaths.Add(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\");
-            NoFuture.Shared.Constants.UseReflectionOnlyLoad = false;
+            NfConfig.AssemblySearchPaths.Add(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\");
+            NfConfig.UseReflectionOnlyLoad = false;
             NoFuture.Util.FxPointers.AddResolveAsmEventHandlerToDomain();
             var testAsm =
                 System.Reflection.Assembly.Load(

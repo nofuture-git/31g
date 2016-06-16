@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using NoFuture.Exceptions;
+using NoFuture.Globals;
 using NoFuture.Shared;
 using NoFuture.Util.Binary;
 using NoFuture.Tools;
@@ -286,7 +287,7 @@ namespace NoFuture.Util.Gia
                 ? mi.DeclaringType.FullName.Replace(String.Format("{0}", asmName), String.Empty)
                 : mi.DeclaringType.FullName;
             if (!String.Equals(expandedName, tokenName.Name, StringComparison.OrdinalIgnoreCase))
-                tokenName.Name = String.Format("{0}{1}{2}", expandedName, Constants.TypeMethodNameSplitOn, tokenName.Name);
+                tokenName.Name = String.Format("{0}{1}{2}", expandedName, Constants.TYPE_METHOD_NAME_SPLIT_ON, tokenName.Name);
 
             tokenName.OwnAsmIdx = f.IndexId;
 
@@ -368,7 +369,7 @@ namespace NoFuture.Util.Gia
             if (String.IsNullOrWhiteSpace(tokenName))
                 return null;
 
-            var sep = Constants.DefaultTypeSeparator.ToString(CultureInfo.InvariantCulture);
+            var sep = Constants.DEFAULT_TYPE_SEPARATOR.ToString(CultureInfo.InvariantCulture);
 
             //assembly name and namespace being equal will have equal portion removed, add it back
             if (!string.IsNullOrWhiteSpace(owningAsmName) && tokenName.StartsWith(sep))
@@ -392,9 +393,9 @@ namespace NoFuture.Util.Gia
             if (string.IsNullOrWhiteSpace(tokenName))
                 return null;
 
-            var idxSplt = tokenName.IndexOf(Constants.TypeMethodNameSplitOn, StringComparison.Ordinal);
+            var idxSplt = tokenName.IndexOf(Constants.TYPE_METHOD_NAME_SPLIT_ON, StringComparison.Ordinal);
 
-            idxSplt = idxSplt + (Constants.TypeMethodNameSplitOn).Length;
+            idxSplt = idxSplt + (Constants.TYPE_METHOD_NAME_SPLIT_ON).Length;
             if (idxSplt > tokenName.Length || idxSplt < 0)
                 return null;
 
@@ -536,7 +537,7 @@ namespace NoFuture.Util.Gia
 
             var token = new MetadataTokenId { Id = asmType.MetadataToken, RslvAsmIdx = asmIdx};
             token.Items =
-                asmType.GetMembers(Constants.DefaultFlags).Select(x => GetMetadataToken(x, true, asmIdx)).Distinct().ToArray();
+                asmType.GetMembers(NfConfig.DefaultFlags).Select(x => GetMetadataToken(x, true, asmIdx)).Distinct().ToArray();
             return token;
         }
 

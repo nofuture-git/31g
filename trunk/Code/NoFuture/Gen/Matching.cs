@@ -20,7 +20,7 @@ namespace NoFuture.Gen
             if (String.IsNullOrWhiteSpace(flattenedMember))
                 return null;
 
-            var separator = Constants.DefaultTypeSeparator;
+            var separator = Constants.DEFAULT_TYPE_SEPARATOR;
             var sp = Convert.ToChar(" ");
 
             if (!String.IsNullOrWhiteSpace(strSeparator))
@@ -32,8 +32,8 @@ namespace NoFuture.Gen
             if (!flattenedMember.Contains(separator))
                 return string.Format(".{0}", flattenedMember);
 
-            var srcName = flattenedMember.Replace(separator, Constants.DefaultTypeSeparator);
-            var startAt = srcName.IndexOf(Constants.DefaultTypeSeparator);
+            var srcName = flattenedMember.Replace(separator, Constants.DEFAULT_TYPE_SEPARATOR);
+            var startAt = srcName.IndexOf(Constants.DEFAULT_TYPE_SEPARATOR);
 
             var lengthOf = srcName.Length - startAt;
 
@@ -68,7 +68,7 @@ namespace NoFuture.Gen
         }
         public static bool AutoMapperMatchingRules(string searchFor, string searchIn, string strSeparator, List<INomenclature> nomenclatures)
         {
-            var separator = Constants.DefaultTypeSeparator;
+            var separator = Constants.DEFAULT_TYPE_SEPARATOR;
             if (!String.IsNullOrWhiteSpace(strSeparator))
                 separator = Convert.ToChar(strSeparator.Substring(0, 1));
 

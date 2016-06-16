@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using NoFuture.Exceptions;
 using NoFuture.Shared;
 using System.Linq;
+using NoFuture.Globals;
 
 namespace NoFuture.Hbm
 {
@@ -62,7 +63,7 @@ namespace NoFuture.Hbm
                     ? Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "NoFutureData")
                     : TempDirectories.Hbm;
 
-                var svrCatalogDir = String.Format(@"{0}\{1}", Constants.SqlServer, Constants.SqlCatalog);
+                var svrCatalogDir = String.Format(@"{0}\{1}", NfConfig.SqlServer, NfConfig.SqlCatalog);
                 return Path.Combine(baseDir, svrCatalogDir);
             }
         }
@@ -116,7 +117,7 @@ namespace NoFuture.Hbm
         /// </summary>
         public static void LoadOutputPathCurrentSettings()
         {
-            if(String.IsNullOrWhiteSpace(Constants.SqlServer) || String.IsNullOrWhiteSpace(Constants.SqlCatalog))
+            if(String.IsNullOrWhiteSpace(NfConfig.SqlServer) || String.IsNullOrWhiteSpace(NfConfig.SqlCatalog))
                 throw new  RahRowRagee("Set the current connection string using the Mssql-Settings cmdlet.");
 
             if (!Directory.Exists(HbmDirectory))

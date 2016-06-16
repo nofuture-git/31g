@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NoFuture.Globals;
 
 namespace NoFuture.Tests.Util.Gia
 {
@@ -32,8 +33,8 @@ namespace NoFuture.Tests.Util.Gia
         [TestMethod]
         public void TestToMetadataTokenName()
         {
-            NoFuture.Shared.Constants.AssemblySearchPaths.Add(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\");
-            NoFuture.Shared.Constants.UseReflectionOnlyLoad = false;
+            NfConfig.AssemblySearchPaths.Add(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\");
+            NfConfig.UseReflectionOnlyLoad = false;
             NoFuture.Util.FxPointers.AddResolveAsmEventHandlerToDomain();
             var testAsm =
                 System.Reflection.Assembly.Load(

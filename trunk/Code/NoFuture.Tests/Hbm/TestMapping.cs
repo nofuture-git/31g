@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NoFuture.Globals;
 using NoFuture.Hbm.DbQryContainers;
 
 namespace NoFuture.Tests.Hbm
@@ -11,8 +12,8 @@ namespace NoFuture.Tests.Hbm
         public void Init()
         {
             NoFuture.TempDirectories.Hbm = @"C:\Projects\31g\trunk\Code\NoFuture.Tests\Hbm\TestFiles";
-            NoFuture.Shared.Constants.SqlServer = "localhost";
-            NoFuture.Shared.Constants.SqlCatalog = "Whatever";
+            NfConfig.SqlServer = "localhost";
+            NfConfig.SqlCatalog = "Whatever";
             NoFuture.Hbm.Mapping.HbmBags = new SortedBags();
             NoFuture.Hbm.Mapping.HbmKeys = new SortedKeys();
             NoFuture.Hbm.Mapping.HbmOneToMany = new SortedOneToMany();

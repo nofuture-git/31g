@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NoFuture.Globals;
 
 namespace NoFuture.Tests.Util
 {
@@ -35,7 +36,7 @@ namespace NoFuture.Tests.Util
         public void TestResolveAssembly_InAssemblySearchPath()
         {
             MakeSomeAssemblies();
-            NoFuture.Shared.Constants.AssemblySearchPaths.Add(TEMPDIR);
+            NfConfig.AssemblySearchPaths.Add(TEMPDIR);
             var testAsm2 =
                 System.Reflection.Assembly.ReflectionOnlyLoadFrom(System.IO.Path.Combine(TEMPDIR, "TestAsm2.dll"));
             var arg = new ResolveEventArgs("TestAsm, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null", testAsm2);

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Configuration;
 using System.Text;
+using NoFuture.Globals;
 using NoFuture.Shared;
 using NoFuture.Util.Binary;
 
@@ -27,7 +28,7 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
         /// which are flagged as <see cref="System.Reflection.Assembly.GlobalAssemblyCache"/>
         /// </summary>
         /// <remarks>
-        /// Results depend on the global switch <see cref="Constants.UseReflectionOnlyLoad"/>
+        /// Results depend on the global switch <see cref="NfConfig.UseReflectionOnlyLoad"/>
         /// </remarks>
         internal static string[] GacAssemblyNames
         {
@@ -36,7 +37,7 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
                 if (_gacAsmNames != null)
                     return _gacAsmNames;
 
-                _gacAsmNames = Constants.UseReflectionOnlyLoad
+                _gacAsmNames = NfConfig.UseReflectionOnlyLoad
                     ? AppDomain.CurrentDomain.ReflectionOnlyGetAssemblies()
                         .Where(x => x.GlobalAssemblyCache)
                         .Select(x => x.FullName)
@@ -220,11 +221,11 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
                     msgOut.Append(", Message:'the token name is null'");
                 return false;
             }
-            if (!tokenName.Contains(Constants.TypeMethodNameSplitOn))
+            if (!tokenName.Contains(Constants.TYPE_METHOD_NAME_SPLIT_ON))
             {
                 if (msgOut != null)
                     msgOut.AppendFormat(", Message:'[{0}] does not contain {1}'", tokenName,
-                        Constants.TypeMethodNameSplitOn);
+                        Constants.TYPE_METHOD_NAME_SPLIT_ON);
             }
 
             if (owningAsm == null)
@@ -276,7 +277,7 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
             //try easiest first
             try
             {
-                methodInfo = asmType.NfGetMethod(methodName, Constants.DefaultFlags);
+                methodInfo = asmType.NfGetMethod(methodName, NfConfig.DefaultFlags);
             }
             catch (AmbiguousMatchException) { }//is overloaded 
 
@@ -290,14 +291,14 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
 
                 //there must be a one-for-one match of string names to first-class types
                 if (args.Length == argTypes.Length)
-                    methodInfo = asmType.NfGetMethod(methodName, Constants.DefaultFlags, null, argTypes, null,
+                    methodInfo = asmType.NfGetMethod(methodName, NfConfig.DefaultFlags, null, argTypes, null,
                         false, _myProgram.LogFile);
             }
 
             //try it the very slow but certian way
             if (methodInfo == null)
             {
-                var methodInfos = asmType.NfGetMethods(Constants.DefaultFlags, false, _myProgram.LogFile);
+                var methodInfos = asmType.NfGetMethods(NfConfig.DefaultFlags, false, _myProgram.LogFile);
                 if (methodInfos.Length <= 0)
                 {
                     if (msgOut != null)

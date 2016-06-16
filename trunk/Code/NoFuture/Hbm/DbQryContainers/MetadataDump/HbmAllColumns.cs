@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System.Reflection;
+using NoFuture.Globals;
 
 namespace NoFuture.Hbm.DbQryContainers.MetadataDump
 {
@@ -10,7 +11,7 @@ namespace NoFuture.Hbm.DbQryContainers.MetadataDump
             get
             {
                 return Path.Combine(Settings.HbmDirectory,
-                    string.Format("{0}.{1}.cols.json", Shared.Constants.SqlServer, Shared.Constants.SqlCatalog));
+                    string.Format("{0}.{1}.cols.json", NfConfig.SqlServer, NfConfig.SqlCatalog));
             }
         }
 

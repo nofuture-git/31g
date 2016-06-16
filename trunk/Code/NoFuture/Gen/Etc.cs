@@ -3,12 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using NoFuture.Exceptions;
+using NoFuture.Globals;
 using NoFuture.Shared;
 using NoFuture.Util;
 using NoFuture.Tools;
@@ -22,15 +22,18 @@ namespace NoFuture.Gen
     /// </summary>
     public class Etc
     {
+        #region constants
+        private const string DF_TYPE_NAME = "System.Object";
+        private const string VALUE_TYPE = "ValueType";
+        #endregion
+
         #region private static fields
         private static ArrayList _objectMembers;
         private static List<string> _ffVTypes;
         #endregion
 
-        public static ArrayList ObjectMembers
-        {
-            get { return _objectMembers ?? (_objectMembers = new ArrayList {"Equals", "GetHashCode", "ToString", "GetType"}); }
-        }
+        public static ArrayList ObjectMembers => _objectMembers ??
+                                                 (_objectMembers = new ArrayList {"Equals", "GetHashCode", "ToString", "GetType"});
 
         public static List<string> ValueTypesList
         {
@@ -73,7 +76,8 @@ namespace NoFuture.Gen
         /// <param name="displayEnums"></param>
         /// <param name="maxWaitInSeconds"></param>
         /// <returns></returns>
-        public static string RunIsolatedFlattenTypeDiagram(string assemblyPath, string typeFullName, string onlyPrimitivesNamed, bool displayEnums, int maxWaitInSeconds = 60)
+        public static string RunIsolatedFlattenTypeDiagram(string assemblyPath, string typeFullName,
+            string onlyPrimitivesNamed, bool displayEnums, int maxWaitInSeconds = 60)
         {
             var argPath = ConsoleCmd.ConstructCmdLineArgs(Settings.INVOKE_ASM_PATH_SWITCH, assemblyPath);
             var argType = ConsoleCmd.ConstructCmdLineArgs(Settings.INVOKE_FULL_TYPE_NAME_SWITCH, typeFullName);
@@ -82,25 +86,28 @@ namespace NoFuture.Gen
             var argP = !string.IsNullOrWhiteSpace(onlyPrimitivesNamed)
                 ? ConsoleCmd.ConstructCmdLineArgs(Settings.INVOKE_GRAPHVIZ_FLATTENED_LIMIT_TYPE, onlyPrimitivesNamed)
                 : null;
-            var argEn = displayEnums ? ConsoleCmd.ConstructCmdLineArgs(Settings.INVOKE_GRAPHVIZ_DISPLAY_ENUMS, null) : null;
+            var argEn = displayEnums
+                ? ConsoleCmd.ConstructCmdLineArgs(Settings.INVOKE_GRAPHVIZ_DISPLAY_ENUMS, null)
+                : null;
             return RunGraphViz(argPath, argType, diagramType, argP, argEn, maxWaitInSeconds);
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        private static string RunGraphViz(string argPath, string argType, string diagramType, string primitiveLimit, string displayEnumsArg, int maxWaitInSeconds)
+        private static string RunGraphViz(string argPath, string argType, string diagramType, string primitiveLimit,
+            string displayEnumsArg, int maxWaitInSeconds)
         {
             var invokeGraphVizPath = CustomTools.InvokeGraphViz;
             if (string.IsNullOrWhiteSpace(invokeGraphVizPath))
                 throw new RahRowRagee("The constants value at 'NoFuture.CustomTools.InvokeGraphViz' is not assigned.");
             if (!File.Exists(invokeGraphVizPath))
-                throw new ItsDeadJim(string.Format("The binary 'NoFuture.Gen.InvokeGraphViz.exe' is not at '{0}'.", invokeGraphVizPath));
+                throw new ItsDeadJim($"The binary 'NoFuture.Gen.InvokeGraphViz.exe' is not at '{invokeGraphVizPath}'.");
 
             string buffer = null;
 
             var args = new List<string> {argPath, argType, diagramType};
-            if(!string.IsNullOrWhiteSpace(primitiveLimit))
+            if (!string.IsNullOrWhiteSpace(primitiveLimit))
                 args.Add(primitiveLimit);
-            if(!string.IsNullOrWhiteSpace(displayEnumsArg))
+            if (!string.IsNullOrWhiteSpace(displayEnumsArg))
                 args.Add(displayEnumsArg);
 
             using (var invokeGetCgType = new Process
@@ -122,7 +129,9 @@ namespace NoFuture.Gen
                 if (!invokeGetCgType.HasExited)
                 {
                     invokeGetCgType.Kill();
-                    throw new ItsDeadJim(string.Format("The 'NoFuture.Gen.InvokeGraphViz.exe' ran longer than '{0}' seconds and was shut down.", maxWaitInSeconds));
+                    throw new ItsDeadJim(
+                        "The 'NoFuture.Gen.InvokeGraphViz.exe' ran " +
+                        $"longer than '{maxWaitInSeconds}' seconds and was shut down.");
                 }
             }
             return buffer;
@@ -139,12 +148,13 @@ namespace NoFuture.Gen
         public static string GetClassDiagram(Assembly assembly, string typeFullName)
         {
             if(assembly == null)
-                throw new ArgumentNullException("assembly");
+                throw new ArgumentNullException(nameof(assembly));
             if(string.IsNullOrWhiteSpace(typeFullName))
-                throw new ArgumentNullException("typeFullName");
+                throw new ArgumentNullException(nameof(typeFullName));
             var asmType = assembly.NfGetType(typeFullName);
             if (asmType == null)
-                throw new RahRowRagee(string.Format("This type '{0}' could not be found in the assembly '{1}'", typeFullName, assembly.GetName().Name));
+                throw new RahRowRagee(
+                    $"This type '{typeFullName}' could not be found in the assembly '{assembly.GetName().Name}'");
 
             var gv = new StringBuilder();
             var graphName = NfTypeName.SafeDotNetIdentifier(assembly.GetName().Name);
@@ -184,7 +194,7 @@ namespace NoFuture.Gen
             missingTypes.AddRange(
                 topClass.AllPropertyTypes.Where(x => assembly.NfGetType(x) == null && !missingTypes.Contains(x)));
 
-            gv.AppendFormat("digraph {0}Assembly", graphName);
+            gv.Append($"digraph {graphName}Assembly");
             gv.AppendLine("{");
             gv.AppendLine("graph [rankdir=\"LR\"];");
             gv.AppendLine("node [fontname=\"Consolas\"];");
@@ -231,11 +241,13 @@ namespace NoFuture.Gen
             var invokeGetCgTypePath = CustomTools.InvokeGetCgType;
 
             if(string.IsNullOrWhiteSpace(typeFullName))
-                throw new ArgumentNullException("typeFullName");
+                throw new ArgumentNullException(nameof(typeFullName));
             if(string.IsNullOrWhiteSpace(invokeGetCgTypePath))
-                throw new RahRowRagee("The constants value at 'NoFuture.CustomTools.InvokeGetCgType' is not assigned.");
+                throw new RahRowRagee("The constants value at " +
+                                      "'NoFuture.CustomTools.InvokeGetCgType' is not assigned.");
             if(!File.Exists(invokeGetCgTypePath))
-                throw new ItsDeadJim(string.Format("The binary 'NoFuture.Gen.InvokeGetCgOfType.exe' is not at '{0}'.", invokeGetCgTypePath));
+                throw new ItsDeadJim(
+                    $"The binary 'NoFuture.Gen.InvokeGetCgOfType.exe' is not at '{invokeGetCgTypePath}'.");
 
             var argPath = ConsoleCmd.ConstructCmdLineArgs(Settings.INVOKE_ASM_PATH_SWITCH, assemblyPath);
             var argType = ConsoleCmd.ConstructCmdLineArgs(Settings.INVOKE_FULL_TYPE_NAME_SWITCH, typeFullName);
@@ -262,21 +274,26 @@ namespace NoFuture.Gen
                 if (!invokeGetCgType.HasExited)
                 {
                     invokeGetCgType.Kill();
-                    throw new ItsDeadJim(string.Format("The 'NoFuture.Gen.InvokeGetCgOfType.exe' ran longer than '{0}' seconds and was shut down.",maxWaitInSeconds));
+                    throw new ItsDeadJim(
+                        "The 'NoFuture.Gen.InvokeGetCgOfType.exe' ran " +
+                        $"longer than '{maxWaitInSeconds}' seconds and was shut down.");
                 }
             }
 
             if(string.IsNullOrWhiteSpace(buffer))
-                throw new ItsDeadJim("The invocation to 'NoFuture.Gen.InvokeGetCgOfType.exe' didn't return anything on its standard output.");
+                throw new ItsDeadJim("The invocation to 'NoFuture.Gen.InvokeGetCgOfType.exe' didn't " +
+                                     "return anything on its standard output.");
 
-            File.WriteAllBytes(Path.Combine(TempDirectories.Debug, "GetIsolatedCgType.json"), Encoding.UTF8.GetBytes(buffer));
+            File.WriteAllBytes(Path.Combine(TempDirectories.Debug, "GetIsolatedCgType.json"),
+                Encoding.UTF8.GetBytes(buffer));
 
             var dcs = new System.Runtime.Serialization.Json.DataContractJsonSerializer(typeof(CgType));
             using (var ms = new MemoryStream(Encoding.UTF8.GetBytes(buffer)))
             {
                 var cgTypeOut = dcs.ReadObject(ms) as CgType;
                 if(cgTypeOut == null)
-                    throw new ItsDeadJim(string.Format("Could not deserialize into a CgType from the standard output text of\n {0}",buffer));
+                    throw new ItsDeadJim(
+                        $"Could not deserialize into a CgType from the standard output text of\n {buffer}");
                 return cgTypeOut;
             }
         }
@@ -317,15 +334,21 @@ namespace NoFuture.Gen
             cgType.MetadataToken = asmType.MetadataToken;
 
             Func<CgType, string, bool> alreadyPresentHerein =
-                (cg, nextName) =>  (cg.Properties.FirstOrDefault(cgP => string.Equals(cgP.Name, nextName, StringComparison.OrdinalIgnoreCase)) != null 
-                                    || cg.Fields.FirstOrDefault(cgF => string.Equals(cgF.Name, nextName,StringComparison.OrdinalIgnoreCase)) != null 
-                                    || cg.Events.FirstOrDefault(cgE => string.Equals(cgE.Name, nextName, StringComparison.OrdinalIgnoreCase)) != null)
-                                   ;
+                (cg, nextName) =>
+                    (cg.Properties.FirstOrDefault(
+                        cgP => string.Equals(cgP.Name, nextName, StringComparison.OrdinalIgnoreCase)) != null
+                     ||
+                     cg.Fields.FirstOrDefault(
+                         cgF => string.Equals(cgF.Name, nextName, StringComparison.OrdinalIgnoreCase)) != null
+                     ||
+                     cg.Events.FirstOrDefault(
+                         cgE => string.Equals(cgE.Name, nextName, StringComparison.OrdinalIgnoreCase)) != null)
+                ;
 
             //have events go first since they tend to be speard across fields and properties
             foreach (
                 var evtInfo in
-                    asmType.GetEvents(Constants.DefaultFlags))
+                    asmType.GetEvents(NfConfig.DefaultFlags))
             {
                 var evtHandlerType = evtInfo.NfEventHandlerType().ToString();
 
@@ -339,7 +362,7 @@ namespace NoFuture.Gen
             }
 
             var asmMembers =
-                asmType.GetMembers(Constants.DefaultFlags);
+                asmType.GetMembers(NfConfig.DefaultFlags);
 
             foreach (var mi in asmMembers)
             {
@@ -376,7 +399,7 @@ namespace NoFuture.Gen
                     cgType.Properties.Add(new CgMember()
                     {
                         Name = mi.Name,
-                        TypeName = "System.Object",
+                        TypeName = DF_TYPE_NAME,
                         HasGetter = true,
                         HasSetter = true,
                         SkipIt = true
@@ -417,7 +440,7 @@ namespace NoFuture.Gen
                     cgType.Fields.Add(new CgMember()
                     {
                         Name = mi.Name,
-                        TypeName = "System.Object",
+                        TypeName = DF_TYPE_NAME,
                         SkipIt = true
                     });
                 }
@@ -439,7 +462,7 @@ namespace NoFuture.Gen
                         var ci = mi as ConstructorInfo;
                         var tn = (string.IsNullOrWhiteSpace(cgTypeName.Namespace)
                             ? cgTypeName.ClassName
-                            : string.Format("{0}.{1}", cgTypeName.Namespace, cgTypeName.ClassName));
+                            : $"{cgTypeName.Namespace}.{cgTypeName.ClassName}");
 
                         var cgm = GetAsCgMember(ci, tn, resolveDependencies);
 
@@ -458,7 +481,7 @@ namespace NoFuture.Gen
                     cgType.Methods.Add(new CgMember()
                     {
                         Name = mi.Name,
-                        TypeName = "System.Object",
+                        TypeName = DF_TYPE_NAME,
                         SkipIt = true
                     });
                 }
@@ -485,7 +508,7 @@ namespace NoFuture.Gen
             var memberInfoCache = new Dictionary<int, MemberInfo>();
 
             //we don't want this clutter
-            var gacAssemblies = Constants.UseReflectionOnlyLoad
+            var gacAssemblies = NfConfig.UseReflectionOnlyLoad
                 ? AppDomain.CurrentDomain.ReflectionOnlyGetAssemblies()
                     .Where(x => x.GlobalAssemblyCache)
                     .Select(x => x.FullName)
@@ -548,7 +571,7 @@ namespace NoFuture.Gen
                     if (runtimeMem == null)
                         continue;
                     var declaringType = runtimeMem.DeclaringType;
-                    var declaringTypeAsmName = declaringType == null ? null : declaringType.AssemblyQualifiedName;
+                    var declaringTypeAsmName = declaringType?.AssemblyQualifiedName;
 
                     if (string.IsNullOrWhiteSpace(declaringTypeAsmName))
                         continue;
@@ -623,7 +646,7 @@ namespace NoFuture.Gen
             var piType = pi.NfPropertyType();
 
             if (valueTypeOnly && piType.NfBaseType() != null &&
-                piType.NfBaseType().Name != "ValueType")
+                piType.NfBaseType().Name != VALUE_TYPE)
                 return null;
 
             var cgMem = new CgMember
@@ -679,7 +702,7 @@ namespace NoFuture.Gen
 
             var fiType = fi.NfFieldType();
 
-            if (valueTypeOnly && fiType.NfBaseType() != null && fiType.NfBaseType().Name != "ValueType")
+            if (valueTypeOnly && fiType.NfBaseType() != null && fiType.NfBaseType().Name != VALUE_TYPE)
                 return null;
 
             var cgMem = new CgMember

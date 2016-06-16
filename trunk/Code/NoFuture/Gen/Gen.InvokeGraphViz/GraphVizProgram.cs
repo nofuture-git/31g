@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using NoFuture.Exceptions;
+using NoFuture.Globals;
 using NoFuture.Util.Binary;
 using NoFuture.Tools;
 using NoFuture.Util.Gia.Args;
@@ -207,9 +208,9 @@ namespace NoFuture.Gen.InvokeGraphViz
                 throw new RahRowRagee(string.Format("There is no assembly at '{0}'.", AsmPath));
             }
 
-            Shared.Constants.AssemblySearchPaths.Add(Path.GetDirectoryName(AsmPath));
+            NfConfig.AssemblySearchPaths.Add(Path.GetDirectoryName(AsmPath));
 
-            Assembly = Shared.Constants.UseReflectionOnlyLoad
+            Assembly = NfConfig.UseReflectionOnlyLoad
                 ? Asm.NfReflectionOnlyLoadFrom(AsmPath)
                 : Asm.NfLoadFrom(AsmPath);
             if (Assembly == null)

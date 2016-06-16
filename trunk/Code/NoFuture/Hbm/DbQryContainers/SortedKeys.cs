@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using NoFuture.Globals;
 using NoFuture.Hbm.SortingContainers;
 
 namespace NoFuture.Hbm.DbQryContainers
@@ -20,8 +21,8 @@ namespace NoFuture.Hbm.DbQryContainers
             get
             {
                 return Path.Combine(Settings.HbmDirectory,
-                    string.Format("{0}.{1}.pk.hbm.json", Shared.Constants.SqlServer,
-                        Shared.Constants.SqlCatalog));
+                    string.Format("{0}.{1}.pk.hbm.json", NfConfig.SqlServer,
+                        NfConfig.SqlCatalog));
             }
         }
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using NoFuture.Globals;
 
 namespace NoFuture.Sql.Mssql
 {
@@ -178,7 +179,7 @@ namespace NoFuture.Sql.Mssql
             sqlMatrixConsolePrint.AppendLine("***************");
             sqlMatrixConsolePrint.AppendLine(
                 string.Format("Current setttings:: -Server '{0}' -Database '{1}' -Header Off '{2}' -Filter Off '{3}'",
-                    Shared.Constants.SqlServer, Shared.Constants.SqlCatalog, Globals.Switches.SqlCmdHeadersOff, Globals.Switches.SqlFiltersOff));
+                    NfConfig.SqlServer, NfConfig.SqlCatalog, Globals.Switches.SqlCmdHeadersOff, Globals.Switches.SqlFiltersOff));
             sqlMatrixConsolePrint.AppendLine("***************");
             foreach (var sb in sqlMatrixPrint)
                 sqlMatrixConsolePrint.AppendLine(sb.ToString());
@@ -187,10 +188,10 @@ namespace NoFuture.Sql.Mssql
         }
 
         /// <summary>
-        /// Will change the <see cref="Shared.Constants.SqlServer"/> 
+        /// Will change the <see cref="NfConfig.SqlServer"/> 
         /// to the index, as printed in <see cref="PrintCurrentDbSettings"/>
         /// using the <see cref="qc1"/> value and likewise 
-        /// for <see cref="Shared.Constants.SqlCatalog"/> using 
+        /// for <see cref="NfConfig.SqlCatalog"/> using 
         /// <see cref="qc2"/>.  Both values must correspond to 
         /// entries printed from <see cref="PrintCurrentDbSettings"/>
         /// </summary>
@@ -205,15 +206,15 @@ namespace NoFuture.Sql.Mssql
             var serverNames = _sqlServers.Keys.ToArray();
             if (qc1 > serverNames.Length)
                 qc1 = 0;
-            Shared.Constants.SqlServer = serverNames[qc1];
+            NfConfig.SqlServer = serverNames[qc1];
 
-            var catalogNames = _sqlServers[Shared.Constants.SqlServer];
+            var catalogNames = _sqlServers[NfConfig.SqlServer];
             if (catalogNames == null || catalogNames.Length <= 0)
                 return;
 
             if (qc2 > catalogNames.Length)
                 qc2 = 0;
-            Shared.Constants.SqlCatalog = catalogNames[qc2];
+            NfConfig.SqlCatalog = catalogNames[qc2];
         }
 
         /// <summary>
@@ -222,7 +223,7 @@ namespace NoFuture.Sql.Mssql
         public static List<string> SqlFilterList { get { return _sqlFilterList; } }
 
         /// <summary>
-        /// An optional list whose contents are compared to the value at <see cref="Shared.Constants.SqlServer"/>
+        /// An optional list whose contents are compared to the value at <see cref="NfConfig.SqlServer"/>
         /// Intended for use within PowerShell to force the user to choose to continue when
         /// doing some kind of high risk activity.
         /// </summary>

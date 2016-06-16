@@ -8,6 +8,7 @@ using Newtonsoft.Json;
 using NoFuture.Exceptions;
 using NoFuture.Shared;
 using System.Diagnostics;
+using NoFuture.Globals;
 using NoFuture.Util.Binary;
 using NoFuture.Util.NfConsole;
 
@@ -282,7 +283,7 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds
                     throw new ItsDeadJim("could not deserialize the byte array");
                 }
 
-                var allAsms = Constants.UseReflectionOnlyLoad
+                var allAsms = NfConfig.UseReflectionOnlyLoad
                     ? AppDomain.CurrentDomain.ReflectionOnlyGetAssemblies()
                     : AppDomain.CurrentDomain.GetAssemblies();
 

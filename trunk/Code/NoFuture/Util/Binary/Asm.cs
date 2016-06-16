@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Text;
 using System.Reflection.Emit;
 using NoFuture.Exceptions;
+using NoFuture.Globals;
 using NoFuture.Shared;
 
 namespace NoFuture.Util.Binary
@@ -196,10 +197,10 @@ namespace NoFuture.Util.Binary
             }
 
             //search the directory explicity set
-            if (Constants.AssemblySearchPaths.Any())
+            if (NfConfig.AssemblySearchPaths.Any())
             {
                 if (
-                    Constants.AssemblySearchPaths.Distinct()
+                    NfConfig.AssemblySearchPaths.Distinct()
                         .Any(sd => SearchDirectoriesForAssembly(sd, asmFullName, out foundOne,
                             reflectionOnly)))
                 {
@@ -620,9 +621,9 @@ namespace NoFuture.Util.Binary
 
             asm = Assembly.ReflectionOnlyLoadFrom(assemblyPath);
             if (asm != null &&
-                Constants.AssemblySearchPaths.Any(
+                NfConfig.AssemblySearchPaths.Any(
                     x => !string.Equals(x, Path.GetDirectoryName(assemblyPath), StringComparison.OrdinalIgnoreCase)))
-                Constants.AssemblySearchPaths.Add(Path.GetDirectoryName(assemblyPath));
+                NfConfig.AssemblySearchPaths.Add(Path.GetDirectoryName(assemblyPath));
 
             return asm;
         }
@@ -649,9 +650,9 @@ namespace NoFuture.Util.Binary
 
             asm = Assembly.LoadFrom(assemblyPath);
             if (asm != null &&
-                Constants.AssemblySearchPaths.Any(
+                NfConfig.AssemblySearchPaths.Any(
                     x => !string.Equals(x, Path.GetDirectoryName(assemblyPath), StringComparison.OrdinalIgnoreCase)))
-                Constants.AssemblySearchPaths.Add(Path.GetDirectoryName(assemblyPath));
+                NfConfig.AssemblySearchPaths.Add(Path.GetDirectoryName(assemblyPath));
 
             return asm;
 

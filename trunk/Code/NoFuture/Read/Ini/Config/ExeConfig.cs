@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 using NoFuture.Exceptions;
+using NoFuture.Globals;
 
 namespace NoFuture.Read.Config
 {
@@ -170,7 +171,7 @@ namespace NoFuture.Read.Config
                 if (swapConnStrs && IsConnectionString(appValAttr.Value))
                 {
                     AddAppSettingAddNodeToTransform(appKeyAttr.Value, appValAttr.Value);
-                    appValAttr.Value = Shared.Constants.SqlServerDotNetConnString;
+                    appValAttr.Value = NfConfig.SqlServerDotNetConnString;
                     continue;
                 }
 
@@ -208,7 +209,7 @@ namespace NoFuture.Read.Config
                     !Shared.RegexCatalog.AreAnyRegexMatch(conStrAttr.Value, regex2Values.Keys.Cast<string>().ToArray()))
                 {
 
-                    conStrAttr.Value = Shared.Constants.SqlServerDotNetConnString;
+                    conStrAttr.Value = NfConfig.SqlServerDotNetConnString;
 
                     AddConnStringNodeToTransform(conStrNameAttr.Value, conStrVal);
 

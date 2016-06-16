@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Collections.Generic;
+using NoFuture.Globals;
 
 namespace NoFuture.Gsm
 {
@@ -10,7 +11,7 @@ namespace NoFuture.Gsm
         /// <summary>
         /// A default amount of milliseconds used to park thread between Write and Read calls to a Serial Port.
         /// </summary>
-        public static int ThreadSleepMs = Shared.Constants.ThreadSleepTime;
+        public static int ThreadSleepMs = NfConfig.ThreadSleepTime;
 
         /// <summary>
         /// A global flag used within various cmdlets to flag if it has sent the +CMGF to the Serial Port.

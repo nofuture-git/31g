@@ -7,6 +7,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
+using NoFuture.Globals;
 using NoFuture.Shared;
 using NoFuture.Util.Binary;
 
@@ -297,8 +298,8 @@ namespace NoFuture.Util
         }
 
         /// <summary>
-        /// Returns everything except the last entry after <see cref="Constants.DefaultTypeSeparator"/>
-        /// or in the case where <see cref="Constants.DefaultTypeSeparator"/> isn't present -
+        /// Returns everything except the last entry after <see cref="Constants.DEFAULT_TYPE_SEPARATOR"/>
+        /// or in the case where <see cref="Constants.DEFAULT_TYPE_SEPARATOR"/> isn't present -
         /// just returns <see cref="name"/>
         /// </summary>
         /// <param name="name"></param>
@@ -308,15 +309,15 @@ namespace NoFuture.Util
             if(String.IsNullOrWhiteSpace(name))
                 return null;
 
-            if(!name.Contains(Constants.DefaultTypeSeparator))
+            if(!name.Contains(Constants.DEFAULT_TYPE_SEPARATOR))
                 return null;
 
-            if (name.Contains(Constants.TypeMethodNameSplitOn))
+            if (name.Contains(Constants.TYPE_METHOD_NAME_SPLIT_ON))
             {
-                name = name.Substring(0, name.IndexOf(Constants.TypeMethodNameSplitOn, StringComparison.Ordinal));
+                name = name.Substring(0, name.IndexOf(Constants.TYPE_METHOD_NAME_SPLIT_ON, StringComparison.Ordinal));
             }
 
-            var nameArray = name.Split(Constants.DefaultTypeSeparator);
+            var nameArray = name.Split(Constants.DEFAULT_TYPE_SEPARATOR);
             var nsLength = nameArray.Length - 1;
             if (nsLength < 0)
                 return name;
@@ -330,7 +331,7 @@ namespace NoFuture.Util
                 ns.Append(s);
                 //as long as its not the last entry
                 if (i < nsLength - 1)
-                    ns.Append(Constants.DefaultTypeSeparator);
+                    ns.Append(Constants.DEFAULT_TYPE_SEPARATOR);
             }
             return ns.ToString();
         }
@@ -345,16 +346,16 @@ namespace NoFuture.Util
             if (String.IsNullOrWhiteSpace(simplePropType))
                 return null;
 
-            if (!simplePropType.Contains(Constants.DefaultTypeSeparator))
+            if (!simplePropType.Contains(Constants.DEFAULT_TYPE_SEPARATOR))
                 return simplePropType;
 
-            if (simplePropType.Contains(Constants.TypeMethodNameSplitOn))
+            if (simplePropType.Contains(Constants.TYPE_METHOD_NAME_SPLIT_ON))
             {
                 simplePropType = simplePropType.Substring(0,
-                    simplePropType.IndexOf(Constants.TypeMethodNameSplitOn, StringComparison.Ordinal));
+                    simplePropType.IndexOf(Constants.TYPE_METHOD_NAME_SPLIT_ON, StringComparison.Ordinal));
             }
 
-            return Etc.ExtractLastWholeWord(simplePropType, Constants.DefaultTypeSeparator);
+            return Etc.ExtractLastWholeWord(simplePropType, Constants.DEFAULT_TYPE_SEPARATOR);
         }
 
         /// <summary>
@@ -729,7 +730,7 @@ namespace NoFuture.Util
                 return null;
 
             //get a MethodInfo by probable property name
-            var allMethods = ty.GetMethods((Constants.DefaultFlags));
+            var allMethods = ty.GetMethods((NfConfig.DefaultFlags));
 
             var propName2Mi = new Dictionary<string, List<MethodInfo>>();
 

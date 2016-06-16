@@ -3,6 +3,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NoFuture.Globals;
 
 namespace NoFuture.Tests.Hbm
 {
@@ -13,8 +14,8 @@ namespace NoFuture.Tests.Hbm
         public void Init()
         {
             NoFuture.TempDirectories.Hbm = @"C:\Projects\31g\trunk\Code\NoFuture.Tests\Hbm\TestFiles";
-            NoFuture.Shared.Constants.SqlServer = "localhost";
-            NoFuture.Shared.Constants.SqlCatalog = "Whatever";
+            NfConfig.SqlServer = "localhost";
+            NfConfig.SqlCatalog = "Whatever";
         }
 
         [TestMethod]
