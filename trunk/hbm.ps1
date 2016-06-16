@@ -73,7 +73,7 @@ function Get-HbmDbData
         }
         Get-HbmMetadataDump $numOfSteps
 
-        $sleepTimerMs = [NoFuture.Globals.NfConfig]::ThreadSleepTime
+        $sleepTimerMs = [NoFuture.Shared.NfConfig]::ThreadSleepTime
         [System.Threading.Thread]::Sleep($sleepTimerMs)
 
         $dnd = [NoFuture.Hbm.Settings]::AddNoPkAllNonNullableToBlockedNameList()
@@ -110,7 +110,7 @@ function Get-HbmDbData
             [NoFuture.Hbm.Sorting]::NoDatasetReturnedProx.Clear()
 
             Write-Host "This runs in the background. At anytime, use the 'Write-SpResultSetXsdProgress' cmdlet so see its current state." -ForegroundColor Yellow
-            [NoFuture.Hbm.Mapping]::StoredProcManager.BeginGetSpResultSetXsd($null, ([NoFuture.Globals.NfConfig]::SqlServerDotNetConnString))
+            [NoFuture.Hbm.Mapping]::StoredProcManager.BeginGetSpResultSetXsd($null, ([NoFuture.Shared.NfConfig]::SqlServerDotNetConnString))
 
         }
     }
@@ -342,7 +342,7 @@ function Get-SingleHbmXml
         if([NoFuture.Hbm.Sorting]::AllStoredProcNames -contains $DbObjectName){
             $searchCrit = New-Object NoFuture.Hbm.StoredProxSearchCriteria -Property @{ExactName = $DbObjectName}
             Write-Progress -Activity "Invoking stored proc $DbObjectName" -Status "Working"
-            [NoFuture.Hbm.Mapping]::StoredProcManager.GetSpResultSetXsd($searchCrit, ([NoFuture.Globals.NfConfig]::SqlServerDotNetConnString))
+            [NoFuture.Hbm.Mapping]::StoredProcManager.GetSpResultSetXsd($searchCrit, ([NoFuture.Shared.NfConfig]::SqlServerDotNetConnString))
             $hbmXml = [NoFuture.Hbm.Mapping]::GetHbmNamedQueryXml($OutputNamespace, $DbObjectName)
             return New-Object NoFuture.Hbm.SortingContainers.HbmFileContent($hbmXml)
         }
@@ -911,7 +911,7 @@ function New-HbmAppConfig
             }
         }
         
-		$hibernateconfiguration = [NoFuture.Hbm.XeFactory]::HibernateConfigurationNode(([NoFuture.Globals.NfConfig]::SqlServerDotNetConnString), 
+		$hibernateconfiguration = [NoFuture.Hbm.XeFactory]::HibernateConfigurationNode(([NoFuture.Shared.NfConfig]::SqlServerDotNetConnString), 
 																						$OutputNamespace)
 
         $configuration.Add($configSections)
@@ -1190,8 +1190,8 @@ function Get-HbmDb
     Process
     {
         
-        if([System.String]::IsNullOrWhiteSpace([NoFuture.Globals.NfConfig]::SqlServer)){Write-Host "set the MSSQL server global variables."; break;}
-        if([System.String]::IsNullOrWhiteSpace([NoFuture.Globals.NfConfig]::SqlCatalog)){Write-Host "set the MSSQL server global variables."; break;}
+        if([System.String]::IsNullOrWhiteSpace([NoFuture.Shared.NfConfig]::SqlServer)){Write-Host "set the MSSQL server global variables."; break;}
+        if([System.String]::IsNullOrWhiteSpace([NoFuture.Shared.NfConfig]::SqlCatalog)){Write-Host "set the MSSQL server global variables."; break;}
 
         $mappingAssemblyPath = (Join-Path ([NoFuture.Hbm.Settings]::HbmDirectory) $OutputDllName)
         if(-not (Test-Path $mappingAssemblyPath) -or $Force){

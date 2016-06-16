@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NoFuture.Globals;
 using NoFuture.Hbm.DbQryContainers;
+using NoFuture.Shared;
 
 namespace NoFuture.Tests.Hbm
 {

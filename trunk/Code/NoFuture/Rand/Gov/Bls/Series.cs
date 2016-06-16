@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Text;
-using NoFuture.Globals;
+using NoFuture.Shared;
 
 namespace NoFuture.Rand.Gov.Bls
 {

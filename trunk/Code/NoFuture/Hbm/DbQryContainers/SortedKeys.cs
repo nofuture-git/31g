@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using NoFuture.Globals;
 using NoFuture.Hbm.SortingContainers;
+using NoFuture.Shared;
 
 namespace NoFuture.Hbm.DbQryContainers
 {

@@ -7,7 +7,6 @@ using System.Reflection;
 using System.Text;
 using System.Reflection.Emit;
 using NoFuture.Exceptions;
-using NoFuture.Globals;
 using NoFuture.Shared;
 
 namespace NoFuture.Util.Binary

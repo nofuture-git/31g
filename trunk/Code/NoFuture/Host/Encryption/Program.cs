@@ -2,14 +2,11 @@
 using System.Collections;
 using System.Configuration;
 using System.IO;
-using System.Net;
-using System.Net.Sockets;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using NoFuture.Exceptions;
+using Cfg = System.Configuration.ConfigurationManager;
 using NoFuture.Host.Encryption.Sjcl;
 using NoFuture.Util.NfConsole;
 
@@ -25,7 +22,9 @@ namespace NoFuture.Host.Encryption
 
         internal bool IsValid()
         {
-            return SjclBulkKeyToCipherTextPort > 0 && SjclBulkKeyToPlainTextPort > 0 && SjclSha256HashPort > 0;
+            return Util.Net.IsValidPortNumber(SjclBulkKeyToCipherTextPort) 
+                && Util.Net.IsValidPortNumber(SjclBulkKeyToPlainTextPort) 
+                && Util.Net.IsValidPortNumber(SjclSha256HashPort);
         }
     }
     internal struct FileParameters
@@ -89,86 +88,81 @@ namespace NoFuture.Host.Encryption
     /// data across the wire and receiveing it back again.
     /// </remarks>
     /// </summary>
-    public class Program
+    public class Program : SocketConsole
     {
-        #region Constants
-
+        #region constants
         public const int BRING_ONLINE_DEFAULT_WAIT_MS = 1000;
         public const int LISTEN_NUM_REQUEST = 5;
-
         #endregion
 
-        #region Fields
-
-        private static TaskFactory _taskFactory;
-
-        private static List<Task> _tasks;
-        private static readonly Object LOCK = new object();
-        private static readonly Object SECOND_LOCK = new object();
-        private static Hashtable _sendReceiveBytes;
-        private static string _bulkKey;
-        private static string _hashSalt;
-        private static bool _alive;
-
+        #region fields
+        private TaskFactory _taskFactory;
+        private List<Task> _tasks;
+        private readonly Object _lock = new object();
+        private Hashtable _sendReceiveBytes;
+        private string _bulkKey;
+        private string _hashSalt;
+        private bool _alive;
+        private FileParameters MyFileParameters { get; set; }
+        private HostParameters MyHostParameters { get; set; }
         #endregion
 
-        #region Program's Main
+        #region ctors
+        public Program(string[] args) : base(args, true)
+        {
+        }
+        #endregion
+
+        #region properties
+        protected override string MyName => "NoFuture.Host.Encryption";
+        #endregion
 
         public static void Main(string[] args)
         {
+            var p = new Program(args);
             try
             {
-                //check for some args passed in
-                if (args == null || args.Length == 0 || args[0] == "-h" || args[0] == "-help")
-                {
-                    //no args, print help, exit
-                    Console.Out.WriteLine(Help());
-                    return;
-                }
+                p.StartConsole();
 
-                //parse command line args
-                var argHash = ConsoleCmd.ArgHash(args);
+                if (p.PrintHelp())
+                    return;
+
+                p.ParseProgramArgs();
 
                 //either perform single file op
-                var cmlF = GetFileCmdArgs(argHash);
-                if (cmlF.FileCommand != InvokeKind.HostSjcl)
+                if (p.MyFileParameters.FileCommand != InvokeKind.HostSjcl)
                 {
-                    PerformFileCipher(cmlF);
+                    p.PerformFileCipher();
                     return;
                 }
 
                 //or host SJCL.js
-                HostSjcl(argHash);
+                p.HostSjcl();
             }
             catch (Exception ex)
             {
-                Print("CRITICAL ERROR");
-                Print(ex);
-                Print("press any key to exit...");
-                var noop = Console.ReadKey();
+                p.PrintToConsole("CRITICAL ERROR");
+                p.PrintToConsole(ex);
             }
+            p.PrintToConsole("press any key to exit...");
+            var noop = Console.ReadKey();
         }
 
-        #endregion
+        #region methods
 
-        #region Program's Internals
-        internal static void HostSjcl(Hashtable argHash)
+        internal void HostSjcl()
         {
-            ConsoleCmd.SetConsoleAsTransparent(true);
-
-            var cmdL = GetHostSjclCmdArgs(argHash);
-
             //at least one port value must be present
-            if (!cmdL.IsValid())
+            if (!MyHostParameters.IsValid())
             {
-                Console.Out.WriteLine("Arg list is invalid.");
+                PrintToConsole("Arg list is invalid.");
                 return;
             }
 
             //all keys will have value regardless of what is listening
             if (AssignKeys())
             {
-                Console.Out.WriteLine("the app.config is invalid.");
+                PrintToConsole("the app.config is invalid.");
                 return;
             }
 
@@ -176,17 +170,17 @@ namespace NoFuture.Host.Encryption
             WarmUp();
 
             //print to user that something is happening
-            PrintSettingsToConsole(cmdL);
+            PrintSettingsToConsole();
 
             _sendReceiveBytes = new Hashtable();
 
             Thread.CurrentThread.Name = "Main";
 
             //launch a socket listening on any ports specified
-            LaunchListeners(cmdL);
+            LaunchListeners();
 
             //park main thread to handle user commands
-            for (; ; ) //ever
+            for (;;) //ever
             {
                 _alive = true;
                 var userText = Console.ReadLine(); //main thread parks here
@@ -196,84 +190,82 @@ namespace NoFuture.Host.Encryption
                 }
                 catch (Exception ex)
                 {
-                    Print(ex);
+                    PrintToConsole(ex);
                 }
             }
         }
 
-        internal static void PerformFileCipher(FileParameters p)
+        internal void PerformFileCipher()
         {
-            if (!p.IsValid())
+            if (!MyFileParameters.IsValid())
             {
-                Console.Out.WriteLine("Arg list is invalid.");
+                PrintToConsole("Arg list is invalid.");
                 return;
             }
 
-            if (p.FileCommand == InvokeKind.DecryptFile)
+            if (MyFileParameters.FileCommand == InvokeKind.DecryptFile)
             {
-                NoFuture.Encryption.NfX509.DecryptFile(p.InputFile, p.CertPath, p.Pwd);
+                NoFuture.Encryption.NfX509.DecryptFile(MyFileParameters.InputFile, MyFileParameters.CertPath,
+                    MyFileParameters.Pwd);
                 return;
             }
-            NoFuture.Encryption.NfX509.EncryptFile(p.InputFile, p.CertPath);
+            NoFuture.Encryption.NfX509.EncryptFile(MyFileParameters.InputFile, MyFileParameters.CertPath);
 
         }
 
         //launch a socket listener on each specified port
-        internal static void LaunchListeners(HostParameters cmdL)
+        protected override void LaunchListeners()
         {
+
             _taskFactory = new TaskFactory();
             _tasks = new List<Task>();
 
-
-            if (cmdL.SjclBulkKeyToPlainTextPort != 0)
+            if (Util.Net.IsValidPortNumber(MyHostParameters.SjclBulkKeyToPlainTextPort))
             {
                 _tasks.Add(_taskFactory.StartNew(
-                                                   () =>
-                                                   HostSjcl(new BkToPlainTextCommand(_bulkKey),
-                                                            cmdL.SjclBulkKeyToPlainTextPort,
-                                                            "BkToPlainTextCommand")));
+                    () =>
+                        HostCmd(new BkToPlainTextCommand(_bulkKey),
+                            MyHostParameters.SjclBulkKeyToPlainTextPort)));
                 Thread.Sleep(BRING_ONLINE_DEFAULT_WAIT_MS);
-                Print("Sjcl Bulk Key To Plain Text is online.");
+                PrintToConsole("Sjcl Bulk Key To Plain Text is online.");
 
             }
 
-            if (cmdL.SjclBulkKeyToCipherTextPort != 0)
+            if (Util.Net.IsValidPortNumber(MyHostParameters.SjclBulkKeyToCipherTextPort))
             {
                 _tasks.Add(_taskFactory.StartNew(
-                                                   () =>
-                                                   HostSjcl(new BkToCipherTextCommand(_bulkKey),
-                                                            cmdL.SjclBulkKeyToCipherTextPort,
-                                                            "BkToCipherTextCommand")));
+                    () =>
+                        HostCmd(new BkToCipherTextCommand(_bulkKey),
+                            MyHostParameters.SjclBulkKeyToCipherTextPort)));
                 Thread.Sleep(BRING_ONLINE_DEFAULT_WAIT_MS);
-                Print("Sjcl Bulk Key To Cipher Text is online.");
+                PrintToConsole("Sjcl Bulk Key To Cipher Text is online.");
 
             }
 
-            if (cmdL.SjclSha256HashPort != 0)
+            if (Util.Net.IsValidPortNumber(MyHostParameters.SjclSha256HashPort))
             {
                 _tasks.Add(_taskFactory.StartNew(
-                                                   () =>
-                                                   HostSjcl(new Sha256HashCommand(_hashSalt),
-                                                            cmdL.SjclSha256HashPort,
-                                                            "Sha256HashCommand")));
+                    () =>
+                        HostCmd(new Sha256HashCommand(_hashSalt),
+                            MyHostParameters.SjclSha256HashPort)));
                 Thread.Sleep(BRING_ONLINE_DEFAULT_WAIT_MS);
-                Print("Sjcl Sha256 Hash is online.");
+                PrintToConsole("Sjcl Sha256 Hash is online.");
 
             }
         }
 
         //handle user entered text from the console app
-        internal static void HandleStdInText(string text)
+        internal void HandleStdInText(string text)
         {
             switch (text)
             {
                 case STDIN_COMMANDS.ALIVE:
-                    if(_alive)
+                    if (_alive)
                     {
-                        foreach(string threadname in _sendReceiveBytes.Keys)
+                        foreach (string threadname in _sendReceiveBytes.Keys)
                         {
-                            var totals = (int[])_sendReceiveBytes[threadname];
-                            Print(string.Format("{0} received {1} bytes, sent {2} bytes", threadname,totals[0],totals[1]));
+                            var totals = (int[]) _sendReceiveBytes[threadname];
+                            PrintToConsole($"{threadname} received {totals[0]} bytes, sent {totals[1]} bytes");
                         }
                     }
                     break;
@@ -283,41 +275,41 @@ namespace NoFuture.Host.Encryption
                     Environment.Exit(0);
                     break;
                 default: //default echo
-                    Console.WriteLine(text);
+                    PrintToConsole(text);
                     break;
             }
         }
 
         //assign instance keys to cmd arg or app.config value
-        internal static bool AssignKeys()
+        internal bool AssignKeys()
         {
-            if(String.IsNullOrWhiteSpace(_bulkKey))
+            if (String.IsNullOrWhiteSpace(_bulkKey))
                 _bulkKey = ConfigurationManager.AppSettings[APPCONFIG.BULK_KEY];
 
-            if(String.IsNullOrWhiteSpace(_hashSalt))
+            if (String.IsNullOrWhiteSpace(_hashSalt))
                 _hashSalt = ConfigurationManager.AppSettings[APPCONFIG.SALT];
 
             return String.IsNullOrWhiteSpace(_bulkKey) || String.IsNullOrWhiteSpace(_hashSalt);
         }
 
         //at startup print resolved settings
-        internal static void PrintSettingsToConsole(HostParameters cmdL)
+        internal void PrintSettingsToConsole()
         {
-            if (cmdL.SjclBulkKeyToPlainTextPort != 0)
-                Print(string.Format("Bulk Key To Plain Text on port '{0}'", cmdL.SjclBulkKeyToPlainTextPort));
-            if (cmdL.SjclBulkKeyToCipherTextPort != 0)
-                Print(string.Format("Bulk Key To Cipher Text on port '{0}'", cmdL.SjclBulkKeyToCipherTextPort));
-            if (cmdL.SjclSha256HashPort != 0)
-                Print(string.Format("Hash on port '{0}'", cmdL.SjclSha256HashPort));
+            if (MyHostParameters.SjclBulkKeyToPlainTextPort != 0)
+                PrintToConsole($"Bulk Key To Plain Text on port '{MyHostParameters.SjclBulkKeyToPlainTextPort}'");
+            if (MyHostParameters.SjclBulkKeyToCipherTextPort != 0)
+                PrintToConsole($"Bulk Key To Cipher Text on port '{MyHostParameters.SjclBulkKeyToCipherTextPort}'");
+            if (MyHostParameters.SjclSha256HashPort != 0)
+                PrintToConsole($"Hash on port '{MyHostParameters.SjclSha256HashPort}'");
 
-            Print("----");
+            PrintToConsole("----");
 
-            Print(string.Format("Bulk Key '{0}'", _bulkKey));
-            Print(string.Format("Hash Salt '{0}'", _hashSalt));
-            Print("----");
+            PrintToConsole($"Bulk Key '{_bulkKey}'");
+            PrintToConsole($"Hash Salt '{_hashSalt}'");
+            PrintToConsole("----");
         }
 
-        internal static string Help()
+        protected override string Help()
         {
             var help = new StringBuilder();
             help.AppendLine("Usage:  [File Operations | sjcl.js Host Operations ]");
@@ -368,18 +360,30 @@ namespace NoFuture.Host.Encryption
 
             help.AppendLine(string.Format(" -{0}=[STRING]", SWITCHES.BULK_CIPHER_KEY));
             help.AppendLine("                        Optional, starts listener using specified key");
-            help.AppendLine(string.Format("                        will default to App.Config '{0}' value.", APPCONFIG.BULK_KEY));
+            help.AppendLine(string.Format("                        will default to App.Config '{0}' value.",
+                APPCONFIG.BULK_KEY));
             help.AppendLine("");
 
             help.AppendLine(string.Format(" -{0}=[STRING]", SWITCHES.HASH_PORT));
             help.AppendLine("                        Optional, starts Sha256 Hash with value as the salt.");
-            help.AppendLine(string.Format("                        will default to App.Config '{0}' value.", APPCONFIG.SALT));
+            help.AppendLine(string.Format("                        will default to App.Config '{0}' value.",
+                APPCONFIG.SALT));
             help.AppendLine("");
 
             return help.ToString();
         }
 
-        internal static FileParameters GetFileCmdArgs(Hashtable argHash)
+        protected override void ParseProgramArgs()
+        {
+            var argHash = ConsoleCmd.ArgHash(_args);
+            GetFileCmdArgs(argHash);
+            if (MyFileParameters.FileCommand == InvokeKind.HostSjcl)
+                return;
+
+            GetHostSjclCmdArgs(argHash);
+        }
+
+        internal void GetFileCmdArgs(Hashtable argHash)
         {
             var p = new FileParameters();
             if (argHash.ContainsKey(SWITCHES.CERT))
@@ -397,11 +401,10 @@ namespace NoFuture.Host.Encryption
             }
             if (argHash.ContainsKey(SWITCHES.PWD))
                 p.Pwd = argHash[SWITCHES.PWD].ToString();
-
-            return p;
+            MyFileParameters = p;
         }
 
-        internal static HostParameters GetHostSjclCmdArgs(Hashtable argHash)
+        internal void GetHostSjclCmdArgs(Hashtable argHash)
         {
             var sjclBkPt = 0;
             var sjclBkCt = 0;
@@ -409,14 +412,19 @@ namespace NoFuture.Host.Encryption
             var sjclHashSalt = string.Empty;
             var sjclBulkCipherKey = string.Empty;
 
-            if (argHash.ContainsKey(SWITCHES.TO_PLAIN_TXT_PORT))
-                Int32.TryParse(argHash[SWITCHES.TO_PLAIN_TXT_PORT].ToString(), out sjclBkPt);
+            var ptp = argHash.ContainsKey(SWITCHES.TO_PLAIN_TXT_PORT)
+                ? argHash[SWITCHES.TO_PLAIN_TXT_PORT].ToString()
+                : Cfg.AppSettings[SWITCHES.TO_PLAIN_TXT_PORT];
+            var ctp = argHash.ContainsKey(SWITCHES.TO_CIPHER_TEXT_PORT)
+                ? argHash[SWITCHES.TO_CIPHER_TEXT_PORT].ToString()
+                : Cfg.AppSettings[SWITCHES.TO_CIPHER_TEXT_PORT];
+            var hp = argHash.ContainsKey(SWITCHES.HASH_PORT)
+                ? argHash[SWITCHES.HASH_PORT].ToString()
+                : Cfg.AppSettings[SWITCHES.HASH_PORT];
 
-            if (argHash.ContainsKey(SWITCHES.TO_CIPHER_TEXT_PORT))
-                Int32.TryParse(argHash[SWITCHES.TO_CIPHER_TEXT_PORT].ToString(), out sjclBkCt);
-
-            if (argHash.ContainsKey(SWITCHES.HASH_PORT))
-                Int32.TryParse(argHash[SWITCHES.HASH_PORT].ToString(), out sjclHp);
+            sjclBkPt = ResolvePort(ptp).GetValueOrDefault();
+            sjclBkCt = ResolvePort(ctp).GetValueOrDefault(0);
+            sjclHp = ResolvePort(hp).GetValueOrDefault(0);
 
             if (argHash.ContainsKey(SWITCHES.HASH_SALT))
                 sjclHashSalt = argHash[SWITCHES.HASH_SALT].ToString();
@@ -424,20 +432,18 @@ namespace NoFuture.Host.Encryption
             if (argHash.ContainsKey(SWITCHES.BULK_CIPHER_KEY))
                 sjclBulkCipherKey = argHash[SWITCHES.BULK_CIPHER_KEY].ToString();
 
-            var rtrn = new HostParameters
-                           {
-                               SjclBulkKeyToPlainTextPort = sjclBkPt,
-                               SjclBulkKeyToCipherTextPort = sjclBkCt,
-                               SjclSha256HashPort = sjclHp,
-                           };
+            MyHostParameters = new HostParameters
+            {
+                SjclBulkKeyToPlainTextPort = sjclBkPt,
+                SjclBulkKeyToCipherTextPort = sjclBkCt,
+                SjclSha256HashPort = sjclHp,
+            };
 
             _hashSalt = CleanupDblSnglQuotes(sjclHashSalt);
             _bulkKey = CleanupDblSnglQuotes(sjclBulkCipherKey);
-
-            return rtrn;
         }
 
-        internal static string CleanupDblSnglQuotes(string s)
+        internal string CleanupDblSnglQuotes(string s)
         {
             if (String.IsNullOrWhiteSpace(s)) return s;
 
@@ -450,118 +456,14 @@ namespace NoFuture.Host.Encryption
         }
 
         //starts slow & expensive js interpreter
-        internal static void WarmUp()
+        internal void WarmUp()
         {
             var noop00 = NoFuture.Encryption.Sjcl.Resources.ScriptEngine;
             var noop01 = NoFuture.Encryption.Sjcl.Resources.CipherTextSerializer;
             var noop02 = NoFuture.Encryption.Sjcl.Resources.SjclJs;
         }
 
-        //sync locked console print
-        internal static void Print(string msg)
-        {
-            lock(LOCK)
-            {
-                try
-                {
-                    var printMsg = string.Format("{0:yyyyMMdd HH:mm:ss.fffff} - {1}\n", DateTime.Now, msg);
-                    Console.Write(printMsg);
-                }
-                catch (Exception ex)
-                {
-
-                    var printEx = string.Format("Logging exception :: {0}\n{1}\n", ex.Message, ex.StackTrace);
-                    Console.Write(printEx);
-                    if (ex.InnerException != null)
-                    {
-                        var printInnerEx = string.Format("Inner exception :: {0}\n{1}\n",
-                                                         ex.InnerException.Message,
-                                                         ex.InnerException.StackTrace);
-
-                        Console.Write(printInnerEx);
-                    }
-                }                
-            }
-        }
-
-        internal static void Print(Exception ex)
-        {
-            if (ex == null)
-                return;
-            Print(String.Format("Logging exception :: {0}\n{1}", ex.Message, ex.StackTrace));
-            if (ex.InnerException != null)
-            {
-                Print(String.Format("Inner exception :: {0}\n{1}", ex.InnerException.Message, ex.InnerException.StackTrace));
-            }
-            
-        }
-
-        //sync locked totals counters
-        internal static void AddToTotals(string threadName, int bytesSent, int bytesReceived)
-        {
-            if (string.IsNullOrWhiteSpace(threadName))
-                return;
-
-            lock (SECOND_LOCK)
-            {
-                if (!_sendReceiveBytes.ContainsKey(threadName))
-                    return;
-                ((int[]) _sendReceiveBytes[threadName])[0] += bytesSent;
-                ((int[]) _sendReceiveBytes[threadName])[1] += bytesReceived;
-            }
-        }
-
-        internal static void HostSjcl(ICommand cmd, int cmdPort, string name)
-        {
-            Thread.CurrentThread.Name = name;
-            if(!_sendReceiveBytes.ContainsKey(name))
-                _sendReceiveBytes.Add(name,new[]{0,0});
-
-            var socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-
-            //this should NOT be reachable from any other machine
-            var endPt = new IPEndPoint(IPAddress.Loopback, cmdPort);
-            socket.Bind(endPt);
-            socket.Listen(LISTEN_NUM_REQUEST);
-
-            for(;;)//ever
-            {
-                try
-                {
-                    var buffer = new List<byte>();
-
-                    var client = socket.Accept();
-
-                    //park for first data received
-                    var data = new byte[Shared.Constants.DEFAULT_BLOCK_SIZE];
-                    client.Receive(data, 0, data.Length, SocketFlags.None);
-                    buffer.AddRange(data.Where(b => b != (byte)'\0'));
-
-                    while(client.Available > 0)
-                    {
-                        data = new byte[client.Available];
-                        client.Receive(data, 0, data.Length, SocketFlags.None);
-                        buffer.AddRange(data.ToArray());
-                    }
-
-                    var output = cmd.Execute(buffer.ToArray());
-                    client.Send(output);
-                    client.Close();
-
-                    Print(string.Format("THREAD: '{0}', receive: {1} bytes, send: {2} bytes", Thread.CurrentThread.Name, buffer.Count, output.Length));
-
-                    //contains lock
-                    AddToTotals(Thread.CurrentThread.Name, buffer.Count, output.Length);
-
-                }
-                catch (Exception ex)
-                {
-                    Print(String.Format("THREAD: '{0}'", Thread.CurrentThread.Name));
-                    Print(ex);
-                }
-            }
-        }
-
         #endregion
+
     }
 }

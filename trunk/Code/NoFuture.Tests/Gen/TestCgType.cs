@@ -3,7 +3,6 @@ using System.Linq;
 using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NoFuture.Gen;
-using NoFuture.Globals;
 using NoFuture.Shared;
 using NoFuture.Tools;
 

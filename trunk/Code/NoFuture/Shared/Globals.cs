@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace NoFuture.Globals
+namespace NoFuture.Shared
 {
     /// <summary>
     /// Booleans intended as global to the namespace
@@ -35,13 +35,14 @@ namespace NoFuture.Globals
     {
         private static int _threadSleepTime;
 
+        public static string NfLoggerName { get; set; } = "NfConsoleLogger";
+
         /// <summary>
         /// Default flags used to get a type's members.
         /// </summary>
         public static BindingFlags DefaultFlags { get; set; } = BindingFlags.DeclaredOnly | BindingFlags.Instance |
                                                                 BindingFlags.NonPublic |
                                                                 BindingFlags.Public | BindingFlags.Static;
-
         /// <summary>
         /// Used when invoking Assembly.Load
         /// </summary>

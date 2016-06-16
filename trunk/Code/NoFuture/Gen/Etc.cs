@@ -8,7 +8,6 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using NoFuture.Exceptions;
-using NoFuture.Globals;
 using NoFuture.Shared;
 using NoFuture.Util;
 using NoFuture.Tools;

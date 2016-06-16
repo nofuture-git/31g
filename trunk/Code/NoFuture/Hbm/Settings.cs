@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using NoFuture.Exceptions;
 using NoFuture.Shared;
 using System.Linq;
-using NoFuture.Globals;
 
 namespace NoFuture.Hbm
 {

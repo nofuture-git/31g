@@ -50,7 +50,7 @@ namespace NoFuture.Util.NfConsole
                         var buffer = new List<byte>();
 
                         var client = socket.Accept();
-                        PrintToConsole(String.Format("Connect from port {0}", cmdPort));
+                        PrintToConsole($"Connect from port {cmdPort}");
                         var data = new byte[Constants.DEFAULT_BLOCK_SIZE];
 
                         //park for first data received

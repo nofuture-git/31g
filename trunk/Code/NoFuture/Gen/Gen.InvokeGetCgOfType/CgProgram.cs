@@ -3,16 +3,16 @@ using System.IO;
 using System.Text;
 using System.Threading;
 using NoFuture.Exceptions;
-using NoFuture.Globals;
+using NoFuture.Shared;
 using NoFuture.Util.Binary;
 using NoFuture.Util.NfConsole;
-using CfgMgr = System.Configuration.ConfigurationManager;
 
 namespace NoFuture.Gen.InvokeGetCgOfType
 {
     public class CgProgram : Program
     {
         public CgProgram(string[] args) :base(args, false) { }
+
         public bool ResolveDependencies { get; set; }
         public string TypeName { get; set; }
         public string AsmPath { get; set; }
@@ -43,7 +43,7 @@ namespace NoFuture.Gen.InvokeGetCgOfType
             {
                 p.PrintToConsole(ex);
             }
-            Thread.Sleep(20);//slight pause
+            Thread.Sleep(NfConfig.ThreadSleepTime);//slight pause
         }
 
         protected override void ParseProgramArgs()
@@ -52,24 +52,27 @@ namespace NoFuture.Gen.InvokeGetCgOfType
             if (!argHash.ContainsKey(Settings.INVOKE_ASM_PATH_SWITCH) ||
                 argHash[Settings.INVOKE_ASM_PATH_SWITCH] == null)
             {
-                throw new RahRowRagee(string.Format("the switch '{0}' could be parsed from cmd line arg \n{1}",
-                    Settings.INVOKE_ASM_PATH_SWITCH, string.Join(" ", _args)));
+                throw new RahRowRagee(
+                    $"the switch '{Settings.INVOKE_ASM_PATH_SWITCH}' could not be " +
+                    $"parsed from cmd line arg \n{string.Join(" ", _args)}");
             }
             if (!argHash.ContainsKey(Settings.INVOKE_FULL_TYPE_NAME_SWITCH) ||
                 argHash[Settings.INVOKE_FULL_TYPE_NAME_SWITCH] == null)
             {
-                throw new RahRowRagee(string.Format("the switch '{0}' could be parsed from cmd line arg \n{1}",
-                    Settings.INVOKE_FULL_TYPE_NAME_SWITCH, string.Join(" ", _args)));
+                throw new RahRowRagee(
+                    $"the switch '{Settings.INVOKE_FULL_TYPE_NAME_SWITCH}' could not " +
+                    $"be parsed from cmd line arg \n{string.Join(" ", _args)}");
             }
 
             ResolveDependencies = argHash.ContainsKey(Settings.INVOKE_RESOLVE_ALL_DEPENDENCIES) &&
-                                       string.Equals(argHash[Settings.INVOKE_RESOLVE_ALL_DEPENDENCIES].ToString(), bool.TrueString,
-                                           StringComparison.OrdinalIgnoreCase);
+                                  string.Equals(argHash[Settings.INVOKE_RESOLVE_ALL_DEPENDENCIES].ToString(),
+                                      bool.TrueString,
+                                      StringComparison.OrdinalIgnoreCase);
 
             AsmPath = argHash[Settings.INVOKE_ASM_PATH_SWITCH].ToString();
             if (!File.Exists(AsmPath))
             {
-                throw new RahRowRagee(string.Format("There is no assembly at '{0}'.", AsmPath));
+                throw new RahRowRagee($"There is no assembly at '{AsmPath}'.");
             }
 
             NfConfig.AssemblySearchPaths.Add(Path.GetDirectoryName(AsmPath));
@@ -79,8 +82,8 @@ namespace NoFuture.Gen.InvokeGetCgOfType
             if (Assembly == null)
             {
                 throw new RahRowRagee(
-                    string.Format("The assembly at '{0}' could not be loaded, see the log at '{1}' for more info.",
-                        AsmPath, Asm.ResolveAsmLog));
+                    $"The assembly at '{AsmPath}' could not be loaded, " +
+                    $"see the log at '{Asm.ResolveAsmLog}' for more info.");
             }
 
             TypeName = argHash[Settings.INVOKE_FULL_TYPE_NAME_SWITCH].ToString();            
@@ -95,7 +98,7 @@ namespace NoFuture.Gen.InvokeGetCgOfType
         {
             var help = new StringBuilder();
             help.AppendLine(" ----");
-            help.AppendLine(string.Format(" [{0}] ", System.Reflection.Assembly.GetExecutingAssembly().GetName().Name));
+            help.AppendLine($" [{System.Reflection.Assembly.GetExecutingAssembly().GetName().Name}] ");
             help.AppendLine("");
             help.AppendLine(" This executable is specific to getting a serialized instance of ");
             help.AppendLine(" NoFuture.Gen.CgType on the standard output.");

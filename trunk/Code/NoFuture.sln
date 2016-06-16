@@ -2,8 +2,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Console.TestTarget", "NoFuture\Console\TestTarget\Console.TestTarget.csproj", "{E77D79D8-683E-4125-A0E3-FD1619574CC7}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain.Carriage", "NoFuture\Domain\Carriage\Domain.Carriage.csproj", "{E48B5E3D-7E4E-4F3F-81ED-A36E9CA90C20}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain.Engine", "NoFuture\Domain\Engine\Domain.Engine.csproj", "{9DAC506B-CC22-43D2-9E72-A463E0015A03}"
@@ -88,22 +86,6 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{E77D79D8-683E-4125-A0E3-FD1619574CC7}.Debug|Any CPU.ActiveCfg = Debug|x86
-		{E77D79D8-683E-4125-A0E3-FD1619574CC7}.Debug|Any CPU.Build.0 = Debug|x86
-		{E77D79D8-683E-4125-A0E3-FD1619574CC7}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
-		{E77D79D8-683E-4125-A0E3-FD1619574CC7}.Debug|Win32.ActiveCfg = Debug|x86
-		{E77D79D8-683E-4125-A0E3-FD1619574CC7}.Debug|x64.ActiveCfg = Debug|x64
-		{E77D79D8-683E-4125-A0E3-FD1619574CC7}.Debug|x64.Build.0 = Debug|x64
-		{E77D79D8-683E-4125-A0E3-FD1619574CC7}.Debug|x86.ActiveCfg = Debug|x86
-		{E77D79D8-683E-4125-A0E3-FD1619574CC7}.Debug|x86.Build.0 = Debug|x86
-		{E77D79D8-683E-4125-A0E3-FD1619574CC7}.Release|Any CPU.ActiveCfg = Release|x86
-		{E77D79D8-683E-4125-A0E3-FD1619574CC7}.Release|Mixed Platforms.ActiveCfg = Release|x86
-		{E77D79D8-683E-4125-A0E3-FD1619574CC7}.Release|Mixed Platforms.Build.0 = Release|x86
-		{E77D79D8-683E-4125-A0E3-FD1619574CC7}.Release|Win32.ActiveCfg = Release|x86
-		{E77D79D8-683E-4125-A0E3-FD1619574CC7}.Release|x64.ActiveCfg = Release|x64
-		{E77D79D8-683E-4125-A0E3-FD1619574CC7}.Release|x64.Build.0 = Release|x64
-		{E77D79D8-683E-4125-A0E3-FD1619574CC7}.Release|x86.ActiveCfg = Release|x86
-		{E77D79D8-683E-4125-A0E3-FD1619574CC7}.Release|x86.Build.0 = Release|x86
 		{E48B5E3D-7E4E-4F3F-81ED-A36E9CA90C20}.Debug|Any CPU.ActiveCfg = Debug|x86
 		{E48B5E3D-7E4E-4F3F-81ED-A36E9CA90C20}.Debug|Any CPU.Build.0 = Debug|x86
 		{E48B5E3D-7E4E-4F3F-81ED-A36E9CA90C20}.Debug|Mixed Platforms.ActiveCfg = Debug|x86

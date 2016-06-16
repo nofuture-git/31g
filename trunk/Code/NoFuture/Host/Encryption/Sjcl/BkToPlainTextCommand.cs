@@ -4,7 +4,7 @@ using NoFuture.Shared;
 
 namespace NoFuture.Host.Encryption.Sjcl
 {
-    public class BkToPlainTextCommand : ICommand
+    public class BkToPlainTextCommand : Util.NfConsole.ICmd
     {
         private readonly string _bulkCipherKey;
         public BkToPlainTextCommand(string bulkCipherKey)

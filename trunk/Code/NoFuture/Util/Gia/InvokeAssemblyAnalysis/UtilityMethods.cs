@@ -4,7 +4,6 @@ using System.Linq;
 using System.Reflection;
 using System.Configuration;
 using System.Text;
-using NoFuture.Globals;
 using NoFuture.Shared;
 using NoFuture.Util.Binary;
 

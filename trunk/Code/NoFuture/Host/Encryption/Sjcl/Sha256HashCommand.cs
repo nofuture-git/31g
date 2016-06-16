@@ -2,7 +2,7 @@
 
 namespace NoFuture.Host.Encryption.Sjcl
 {
-    public class Sha256HashCommand : ICommand
+    public class Sha256HashCommand : Util.NfConsole.ICmd
     {
         private readonly string _salt;
         public Sha256HashCommand(string salt)

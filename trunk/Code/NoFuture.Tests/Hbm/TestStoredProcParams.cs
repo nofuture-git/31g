@@ -3,7 +3,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NoFuture.Globals;
+using NoFuture.Shared;
 
 namespace NoFuture.Tests.Hbm
 {

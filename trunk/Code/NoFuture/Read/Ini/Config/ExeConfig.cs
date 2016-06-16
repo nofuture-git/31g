@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 using NoFuture.Exceptions;
-using NoFuture.Globals;
+using NoFuture.Shared;
 
 namespace NoFuture.Read.Config
 {

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using NoFuture.Exceptions;
-using NoFuture.Globals;
 using NoFuture.Shared;
 using NoFuture.Util.Gia.Args;
 using NoFuture.Util.NfConsole;
@@ -36,8 +35,8 @@ namespace NoFuture.Util.Gia.InvokeFlatten.Cmds
                 var asm = NfConfig.UseReflectionOnlyLoad
                     ? Binary.Asm.NfReflectionOnlyLoadFrom(asmPath)
                     : Binary.Asm.NfLoadFrom(asmPath);
-
-                var flatAsm = Flatten.GetFlattenedAssembly(new FlattenLineArgs {Assembly = asm}, MyProgram.PrintToConsole);
+                Action<ProgressMessage> myProgress = message => MyProgram.PrintToConsole(message);
+                var flatAsm = Flatten.GetFlattenedAssembly(new FlattenLineArgs {Assembly = asm}, myProgress);
                 flatAsm.Path = asmPath;
 
                 return EncodedResponse(flatAsm);

@@ -2,7 +2,7 @@
 using System.Configuration;
 using System.IO;
 using System.Reflection;
-using NoFuture.Globals;
+using System.Diagnostics;
 using NoFuture.Shared;
 
 
@@ -32,7 +32,7 @@ namespace NoFuture.Util.NfConsole
             get
             {
                 var logDir = ConfigurationManager.AppSettings["NoFuture.TempDirectories.Debug"];
-                if (String.IsNullOrWhiteSpace(logDir))
+                if (string.IsNullOrWhiteSpace(logDir))
                     logDir = TempDirectories.AppData;
                 var myName = MyName;
                 myName = NfPath.SafeFilename(myName);
@@ -50,10 +50,10 @@ namespace NoFuture.Util.NfConsole
         {
             get
             {
-                if (!String.IsNullOrWhiteSpace(_logName))
+                if (!string.IsNullOrWhiteSpace(_logName))
                     return _logName;
                 _logName = Path.Combine(LogDirectory,
-                    String.Format("{0}{1:yyyy-MM-dd_hhmmss}.log", "Program", _startTime));
+                    $"Program{_startTime:yyyy-MM-dd_hhmmss}.log");
                 return _logName;
             }
         }
@@ -66,7 +66,7 @@ namespace NoFuture.Util.NfConsole
         protected internal int? ResolveInt(string cval)
         {
             int valOut;
-            if (!String.IsNullOrWhiteSpace(cval) && Int32.TryParse(cval, out valOut))
+            if (!string.IsNullOrWhiteSpace(cval) && int.TryParse(cval, out valOut))
                 return valOut;
             return null;
         }
@@ -74,7 +74,7 @@ namespace NoFuture.Util.NfConsole
         protected internal bool? ResolveBool(string cval)
         {
             bool valOut;
-            if (!String.IsNullOrWhiteSpace(cval) && Boolean.TryParse(cval, out valOut))
+            if (!string.IsNullOrWhiteSpace(cval) && bool.TryParse(cval, out valOut))
                 return valOut;
             return null;
         }
@@ -115,12 +115,12 @@ namespace NoFuture.Util.NfConsole
         /// <param name="trunc"></param>
         public void PrintToConsole(string someString, bool trunc = true)
         {
-            File.AppendAllText(LogFile, String.Format("{0:yyyy-MM-dd HH:mm:ss.fff} {1}\n", DateTime.Now, someString));
+            File.AppendAllText(LogFile, $"{DateTime.Now:yyyy-MM-dd HH:mm:ss.fff} {someString}\n");
             if (trunc && someString.Length >= 74)
-                someString = String.Format("{0}[...]", someString.Substring(0, 68));
+                someString = $"{someString.Substring(0, 68)}[...]";
 
             if(_isVisable)
-                Console.WriteLine(String.Format("{0:yyyy-MM-dd HH:mm:ss.fff} {1}", DateTime.Now, someString));
+                Console.WriteLine($"{DateTime.Now:yyyy-MM-dd HH:mm:ss.fff} {someString}");
         }
         /// <summary>
         /// Prints to console and writes to <see cref="LogFile"/>
@@ -131,14 +131,14 @@ namespace NoFuture.Util.NfConsole
             lock (_printLock)
             {
                 Console.WriteLine();
-                var msg = String.Format("{0:yyyy-MM-dd HH:mm:ss.fff} {1}", DateTime.Now, ex.Message);
-                File.AppendAllText(LogFile, String.Format("{0}\n", msg));
+                var msg = $"{DateTime.Now:yyyy-MM-dd HH:mm:ss.fff} {ex.Message}";
+                File.AppendAllText(LogFile, $"{msg}\n");
 
                 if(_isVisable)
                     Console.WriteLine(msg);
 
-                msg = String.Format("{0:yyyy-MM-dd HH:mm:ss.fff} {1}", DateTime.Now, ex.StackTrace);
-                File.AppendAllText(LogFile, String.Format("{0}\n", msg));
+                msg = $"{DateTime.Now:yyyy-MM-dd HH:mm:ss.fff} {ex.StackTrace}";
+                File.AppendAllText(LogFile, $"{msg}\n");
                 if(_isVisable)
                     Console.WriteLine(msg);
 

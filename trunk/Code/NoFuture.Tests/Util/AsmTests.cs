@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Reflection.Emit;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NoFuture.Globals;
+using NoFuture.Shared;
 
 namespace NoFuture.Tests.Util
 {

@@ -1,6 +1,6 @@
 ﻿using System.IO;
 using System.Reflection;
-using NoFuture.Globals;
+using NoFuture.Shared;
 
 namespace NoFuture.Hbm.DbQryContainers.MetadataDump
 {

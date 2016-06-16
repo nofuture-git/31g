@@ -2,7 +2,7 @@
 
 namespace NoFuture.Host.Encryption.Sjcl
 {
-    public class BkToCipherTextCommand : ICommand
+    public class BkToCipherTextCommand : Util.NfConsole.ICmd
     {
         private readonly string _bulkCipherKey;
         public BkToCipherTextCommand(string bulkCipherKey)

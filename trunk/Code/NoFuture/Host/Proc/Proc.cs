@@ -9,8 +9,10 @@ using System.Threading;
 namespace NoFuture.Host
 {
     /// <summary>
-    /// Wrapper class around a target Exe to run async with a socket listener 
-    /// used to route UTF8 text to the standard input.
+    /// Intended for an existing console app for which there is 
+    /// no source code.
+    /// Allows the cli to run as a process with sockets used 
+    /// for stdin and stdout.
     /// <example>
     /// Simple example
     /// <code>

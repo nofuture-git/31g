@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NoFuture.Globals;
 using NoFuture.Hbm;
 using NoFuture.Hbm.SortingContainers;
+using NoFuture.Shared;
 
 namespace NoFuture.Tests.Hbm
 {

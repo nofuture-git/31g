@@ -2,23 +2,29 @@
 using System.Configuration;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading;
 using NoFuture.Exceptions;
-using NoFuture.Globals;
-using NoFuture.Util.Binary;
+using NoFuture.Shared;
 using NoFuture.Tools;
+using NoFuture.Util.Binary;
+using NoFuture.Util.Gia;
 using NoFuture.Util.Gia.Args;
 using NoFuture.Util.NfConsole;
 
 namespace NoFuture.Gen.InvokeGraphViz
 {
-    public class GraphVizProgram : NoFuture.Util.NfConsole.Program
+    public class GraphVizProgram : Program
     {
         private static readonly string[] _implementedDiagrams = {Settings.CLASS_DIAGRAM, Settings.FLATTENED_DIAGRAM};
 
+        public GraphVizProgram(string[] args) : base(args, false)
+        {
+        }
+
         public string AsmPath { get; set; }
-        public System.Reflection.Assembly Assembly { get; set; }
+        public Assembly Assembly { get; set; }
         public string TypeName { get; set; }
         public string DiagramType { get; set; }
         public string GraphText { get; set; }
@@ -26,16 +32,7 @@ namespace NoFuture.Gen.InvokeGraphViz
         public object LimitOn { get; set; }
         public bool DisplayEnums { get; set; }
 
-        public GraphVizProgram(string[] args) : base(args, false) { }
-
-        internal static class AppSettingKeys
-        {
-            internal const string UseReflectionOnlyLoad = "NoFuture.Shared.Constants.UseReflectionOnlyLoad";
-            internal const string DebugTempDir = "NoFuture.TempDirectories.Debug";
-            internal const string RootBinDir = "NoFuture.BinDirectories.Root";
-            internal const string GraphTempDir = "NoFuture.TempDirectories.Graph";
-            internal const string DotExe = "NoFuture.Tools.X86.DotExe";
-        }
+        protected override string MyName => "InvokeGraphViz";
 
         public static void Main(string[] args)
         {
@@ -44,10 +41,11 @@ namespace NoFuture.Gen.InvokeGraphViz
             {
                 p.StartConsole();
 
-                if (p.PrintHelp()) return;
+                if (p.PrintHelp())
+                    return;
 
-                p.ParseProgramArgs(); 
-                
+                p.ParseProgramArgs();
+
                 ValidateBinDir();
 
                 switch (p.DiagramType)
@@ -55,7 +53,7 @@ namespace NoFuture.Gen.InvokeGraphViz
                     case Settings.FLATTENED_DIAGRAM:
 
                         var ft =
-                            Util.Gia.Flatten.FlattenType(new FlattenTypeArgs()
+                            Flatten.FlattenType(new FlattenTypeArgs
                             {
                                 Assembly = p.Assembly,
                                 Depth = 16,
@@ -66,11 +64,11 @@ namespace NoFuture.Gen.InvokeGraphViz
                                 DisplayEnums = p.DisplayEnums
                             });
                         p.GraphText = ft.ToGraphVizString();
-                        p.OutputFileName = string.Format("{0}Flattened.gv", p.TypeName.Replace(".", ""));
+                        p.OutputFileName = $"{p.TypeName.Replace(".", "")}Flattened.gv";
                         break;
                     case Settings.CLASS_DIAGRAM:
                         p.GraphText = Etc.GetClassDiagram(p.Assembly, p.TypeName);
-                        p.OutputFileName = string.Format("{0}ClassDiagram.gv", p.TypeName.Replace(".", ""));
+                        p.OutputFileName = $"{p.TypeName.Replace(".", "")}ClassDiagram.gv";
                         break;
                 }
 
@@ -88,7 +86,7 @@ namespace NoFuture.Gen.InvokeGraphViz
             {
                 p.PrintToConsole(ex);
             }
-            Thread.Sleep(20);//slight pause
+            Thread.Sleep(20); //slight pause
         }
 
         protected static void ValidateBinDir()
@@ -99,17 +97,16 @@ namespace NoFuture.Gen.InvokeGraphViz
             if (string.IsNullOrWhiteSpace(BinDirectories.Root) || !Directory.Exists(BinDirectories.Root))
             {
                 throw new ItsDeadJim(
-                    string.Format(
-                        "the root bin directory is not present at '{0}' - change the config file settings",
-                        BinDirectories.Root));
+                    $"the root bin directory is not present at '{BinDirectories.Root}' " +
+                    "- change the config file settings");
             }
 
             var f = ConfigurationManager.AppSettings[AppSettingKeys.DotExe];
             if (string.IsNullOrWhiteSpace(f))
             {
                 throw new ItsDeadJim(
-                    string.Format(
-                        "the path to Dot.exe is not present at '{0}' - change the config file settings", f));
+                    $"the path to Dot.exe is not present at '{f}' " +
+                    $"- change the config file settings");
             }
 
             X86.DotExe = Path.Combine(BinDirectories.Root, f);
@@ -117,8 +114,8 @@ namespace NoFuture.Gen.InvokeGraphViz
             if (!File.Exists(X86.DotExe))
             {
                 throw new ItsDeadJim(
-                    string.Format(
-                        "the path to Dot.exe is not present at '{0}' - change the config file settings", X86.DotExe));
+                    $"the path to Dot.exe is not present at '{X86.DotExe}' " +
+                    $"- change the config file settings");
             }
 
             TempDirectories.Graph = ConfigurationManager.AppSettings[AppSettingKeys.GraphTempDir];
@@ -126,20 +123,16 @@ namespace NoFuture.Gen.InvokeGraphViz
             if (string.IsNullOrWhiteSpace(TempDirectories.Graph))
             {
                 throw new ItsDeadJim(
-                    @"assign a config file's appSettings for  'NoFuture.TempDirectories.Graph' to a valid directory");
+                    "assign a config file's appSettings for " +
+                    "'NoFuture.TempDirectories.Graph' to a valid directory");
             }
         }
 
-        protected override string MyName
-        {
-            get { return "InvokeGraphViz"; }
-        }
-
-        protected override String Help()
+        protected override string Help()
         {
             var help = new StringBuilder();
             help.AppendLine(" ----");
-            help.AppendLine(string.Format(" [{0}] ", System.Reflection.Assembly.GetExecutingAssembly().GetName().Name));
+            help.AppendLine($" [{Assembly.GetExecutingAssembly().GetName().Name}] ");
             help.AppendLine("");
             help.AppendLine(" This executable is specific to creating GraphViz (ver. 2.38+) ");
             help.AppendLine(" for types defined in the NoFuture namespace.");
@@ -155,25 +148,25 @@ namespace NoFuture.Gen.InvokeGraphViz
             help.AppendLine(" -h | -help             Will print this help.");
             help.AppendLine("");
             help.AppendLine(string.Format(" {0}{1}{2}[STRING]      The full directory path ",
-                Shared.Constants.CMD_LINE_ARG_SWITCH, Settings.INVOKE_ASM_PATH_SWITCH,
-                Shared.Constants.CMD_LINE_ARG_ASSIGN));
+                Constants.CMD_LINE_ARG_SWITCH, Settings.INVOKE_ASM_PATH_SWITCH,
+                Constants.CMD_LINE_ARG_ASSIGN));
             help.AppendLine("                        to a valid .NET assembly. ");
             help.AppendLine("");
             help.AppendLine(string.Format(" {0}{1}{2}[STRING]      The types full name ",
-                Shared.Constants.CMD_LINE_ARG_SWITCH, Settings.INVOKE_FULL_TYPE_NAME_SWITCH,
-                Shared.Constants.CMD_LINE_ARG_ASSIGN));
+                Constants.CMD_LINE_ARG_SWITCH, Settings.INVOKE_FULL_TYPE_NAME_SWITCH,
+                Constants.CMD_LINE_ARG_ASSIGN));
             help.AppendLine("                        (i.e. the namespace and class name).");
             help.AppendLine("");
             help.AppendLine(string.Format(" [{0}{1}]      Optional switch to have Enum's values displayed",
-                Shared.Constants.CMD_LINE_ARG_SWITCH, Settings.INVOKE_GRAPHVIZ_DISPLAY_ENUMS));
+                Constants.CMD_LINE_ARG_SWITCH, Settings.INVOKE_GRAPHVIZ_DISPLAY_ENUMS));
             help.AppendLine("");
             help.AppendLine(string.Format(" {0}{1}{2}[{3}]      The kind of diagram to create.",
-                Shared.Constants.CMD_LINE_ARG_SWITCH, Settings.INVOKE_GRAPHVIZ_DIAGRAM_TYPE, Shared.Constants.CMD_LINE_ARG_ASSIGN,
+                Constants.CMD_LINE_ARG_SWITCH, Settings.INVOKE_GRAPHVIZ_DIAGRAM_TYPE, Constants.CMD_LINE_ARG_ASSIGN,
                 string.Join(" | ", _implementedDiagrams)));
             help.AppendLine("");
             help.AppendLine(string.Format(" [{0}{1}{2}[\n  {3}]]              Optional and specific to Flattened.",
-                Shared.Constants.CMD_LINE_ARG_SWITCH, Settings.INVOKE_GRAPHVIZ_FLATTENED_LIMIT_TYPE,
-                Shared.Constants.CMD_LINE_ARG_ASSIGN,
+                Constants.CMD_LINE_ARG_SWITCH, Settings.INVOKE_GRAPHVIZ_FLATTENED_LIMIT_TYPE,
+                Constants.CMD_LINE_ARG_ASSIGN,
                 string.Join("\n| ", Etc.ValueTypesList)));
             help.AppendLine("");
             return help.ToString();
@@ -186,26 +179,28 @@ namespace NoFuture.Gen.InvokeGraphViz
 
             if (argHash == null || argHash.Keys.Count <= 0)
             {
-                throw new RahRowRagee(string.Format("could not parse cmd line arg \n{0}", string.Join(" ", _args)));
+                throw new RahRowRagee($"could not parse cmd line arg \n{string.Join(" ", _args)}");
             }
 
             if (!argHash.ContainsKey(Settings.INVOKE_ASM_PATH_SWITCH) ||
                 argHash[Settings.INVOKE_ASM_PATH_SWITCH] == null)
             {
-                throw new RahRowRagee(string.Format("the switch '{0}' could be parsed from cmd line arg \n{1}",
-                    Settings.INVOKE_ASM_PATH_SWITCH, string.Join(" ", _args)));
+                throw new RahRowRagee(
+                    $"the switch '{Settings.INVOKE_ASM_PATH_SWITCH}' could not " +
+                    $"be parsed from cmd line arg \n{string.Join(" ", _args)}");
             }
             if (!argHash.ContainsKey(Settings.INVOKE_FULL_TYPE_NAME_SWITCH) ||
                 argHash[Settings.INVOKE_FULL_TYPE_NAME_SWITCH] == null)
             {
-                throw new RahRowRagee(string.Format("the switch '{0}' could be parsed from cmd line arg \n{1}",
-                    Settings.INVOKE_FULL_TYPE_NAME_SWITCH, string.Join(" ", _args)));
+                throw new RahRowRagee(
+                    $"the switch '{Settings.INVOKE_FULL_TYPE_NAME_SWITCH}' could not " +
+                    $"be parsed from cmd line arg \n{string.Join(" ", _args)}");
             }
 
             AsmPath = argHash[Settings.INVOKE_ASM_PATH_SWITCH].ToString();
             if (!File.Exists(AsmPath))
             {
-                throw new RahRowRagee(string.Format("There is no assembly at '{0}'.", AsmPath));
+                throw new RahRowRagee($"There is no assembly at '{AsmPath}'.");
             }
 
             NfConfig.AssemblySearchPaths.Add(Path.GetDirectoryName(AsmPath));
@@ -216,8 +211,8 @@ namespace NoFuture.Gen.InvokeGraphViz
             if (Assembly == null)
             {
                 throw new RahRowRagee(
-                    string.Format("The assembly at '{0}' could not be loaded, see the log at '{1}' for more info.",
-                        AsmPath, Asm.ResolveAsmLog));
+                    $"The assembly at '{AsmPath}' could not " +
+                    $"be loaded, see the log at '{Asm.ResolveAsmLog}' for more info.");
             }
 
             TypeName = argHash[Settings.INVOKE_FULL_TYPE_NAME_SWITCH].ToString();
@@ -232,6 +227,15 @@ namespace NoFuture.Gen.InvokeGraphViz
             DisplayEnums = argHash.ContainsKey(Settings.INVOKE_GRAPHVIZ_DISPLAY_ENUMS);
             GraphText = string.Empty;
             OutputFileName = string.Empty;
+        }
+
+        internal static class AppSettingKeys
+        {
+            internal const string UseReflectionOnlyLoad = "NoFuture.Shared.Constants.UseReflectionOnlyLoad";
+            internal const string DebugTempDir = "NoFuture.TempDirectories.Debug";
+            internal const string RootBinDir = "NoFuture.BinDirectories.Root";
+            internal const string GraphTempDir = "NoFuture.TempDirectories.Graph";
+            internal const string DotExe = "NoFuture.Tools.X86.DotExe";
         }
     }
 }

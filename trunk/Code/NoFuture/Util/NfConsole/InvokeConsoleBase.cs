@@ -3,7 +3,6 @@ using System.Diagnostics;
 using System.Text;
 using System.Threading;
 using Newtonsoft.Json;
-using NoFuture.Globals;
 using NoFuture.Shared;
 
 namespace NoFuture.Util.NfConsole

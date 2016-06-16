@@ -12,7 +12,6 @@ using System.Net;
 using System.Net.Sockets;
 using System.Security.Principal;
 using Newtonsoft.Json;
-using NoFuture.Globals;
 using NoFuture.Shared;
 
 namespace NoFuture.Util

@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Reflection;
 using System.Security.Cryptography;
-using NoFuture.Globals;
+using NoFuture.Shared;
 using NoFuture.Util.Binary;
 
 namespace NoFuture.Util

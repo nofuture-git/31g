@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NoFuture.Globals;
+using NoFuture.Shared;
 
 namespace NoFuture.Tests.Sql
 {
@@ -26,7 +26,7 @@ namespace NoFuture.Tests.Sql
         [TestMethod]
         public void TestMakeSqlCommandHeaderOff()
         {
-            NoFuture.Globals.Switches.SqlCmdHeadersOff = true;
+            Switches.SqlCmdHeadersOff = true;
             var expectedResult =
                 "sqlcmd.exe -S localhost -d AdventureWorks2012 -k 2 -h \"-1\" -W -s \"|\" -Q \"SELECT * FROM [AdventureWorks2012].[Production].[Location]\"";
 
@@ -38,7 +38,7 @@ namespace NoFuture.Tests.Sql
         [TestMethod]
         public void TestMakeSqlCommandDdlQry()
         {
-            Globals.Switches.SqlCmdHeadersOff = false;
+            Switches.SqlCmdHeadersOff = false;
             var expectedResult =
                 "sqlcmd.exe -S localhost -d AdventureWorks2012 -k 2 -W -s \"|\" -I -Q \"INSERT INTO [Person].[Person]([PersonType],[Title],[FirstName],[MiddleName],[LastName]) VALUES ('EM',NULL,'Ken','J','Sánchez')\"";
 

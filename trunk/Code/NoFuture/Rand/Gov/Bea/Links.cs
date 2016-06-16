@@ -1,4 +1,5 @@
-﻿using NoFuture.Globals;
+﻿using NoFuture.Shared;
+
 namespace NoFuture.Rand.Gov.Bea
 {
     /// <summary>

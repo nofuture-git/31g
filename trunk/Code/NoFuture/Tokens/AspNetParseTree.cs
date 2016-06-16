@@ -7,7 +7,6 @@ using Antlr4.Runtime;
 using Antlr4.Runtime.Tree;
 using NoFuture.Shared;
 using NoFuture.Antlr.Grammers;
-using NoFuture.Globals;
 using NoFuture.Util;
 
 namespace NoFuture.Tokens

@@ -1,68 +1,58 @@
 using System;
-using System.Collections;
 using System.Text;
 using NoFuture.Exceptions;
 using NoFuture.Util.NfConsole;
 
 namespace NoFuture.Domain
 {
-    public class Carriage
+    public class Carriage : Program
     {
+        #region inner types
         public struct DomainParameters
         {
             public string AppDomain { get; set; }
             public string AspListenerPrefix { get; set; }
         }
+        #endregion
 
-        public static string ConfigFileAppDomain
-        {
-            get { return System.Configuration.ConfigurationManager.AppSettings[Engine.APP_DOMAIN_SWITCH]; }
-        }
+        #region ctors
+        public Carriage(string[] args) : base(args, true) { }
+        #endregion
 
-        public static string ConfigFileAspHttp
-        {
-            get { return System.Configuration.ConfigurationManager.AppSettings[Engine.ASP_LISTENER_SWITCH]; }
-        }
+        #region properties
+        public string ConfigFileAppDomain
+            => System.Configuration.ConfigurationManager.AppSettings[Engine.APP_DOMAIN_SWITCH];
+
+        public string ConfigFileAspHttp
+            => System.Configuration.ConfigurationManager.AppSettings[Engine.ASP_LISTENER_SWITCH];
+
+        public DomainParameters MyParameters { get; private set; }
+
+        #endregion
 
         public static void Main(string[] args)
         {
-            Console.Title = System.Reflection.Assembly.GetExecutingAssembly().GetName().Name;
+
+            var p = new Carriage(args);
             try
             {
-                ConsoleCmd.SetConsoleAsTransparent(true);
-                Console.ForegroundColor = ConsoleColor.White;
-                Console.WindowWidth = 160;
-                Console.CursorVisible = false;
+                p.StartConsole();
 
-                Console.Out.WriteLine("{0:yyyyMMdd HH:mm:ss.fffff} - Starting application domain...", DateTime.Now);
-                //check for 'help' switch or no-arg
-                if (args.Length > 0 && (args[0] == "-h" || args[0] == "-help" || args[0] == "/?"))
-                {
-                    Console.Out.WriteLine(Help());
-                    return;
-                }
+                if (p.PrintHelp()) return;
 
-                var argHash = ConsoleCmd.ArgHash(args);
+                p.ParseProgramArgs();
 
-                var cmdL = AssignArgsToDomainParameters(argHash);
-
-                if(string.IsNullOrWhiteSpace(cmdL.AppDomain) || !System.IO.Directory.Exists(cmdL.AppDomain))
-                    throw new ItsDeadJim(string.Format("The '{0}' value is missing or invalid.", Engine.APP_DOMAIN_SWITCH));
-
-                if(string.IsNullOrWhiteSpace(cmdL.AspListenerPrefix))
-                    throw new ItsDeadJim(string.Format("The '{0}' value is missing or invalid", Engine.ASP_LISTENER_SWITCH));
-
-                PrintParameters(cmdL);
+                p.PrintParameters(p.MyParameters);
 
                 //AppDomain
                 var myApp = (Engine)
-                    System.Web.Hosting.ApplicationHost.CreateApplicationHost(typeof(Engine), Engine.V_DIR, cmdL.AppDomain);
-                Console.Out.WriteLine("{0:yyyyMMdd HH:mm:ss.fffff} - Application domain created at '{1}'",
-                                             DateTime.Now,
-                                             cmdL.AppDomain);
+                    System.Web.Hosting.ApplicationHost.CreateApplicationHost(typeof(Engine), Engine.V_DIR,
+                        p.MyParameters.AppDomain);
+                p.PrintToConsole(
+                    $"Application domain created at '{p.MyParameters.AppDomain}'");
 
                 //asp fitting 
-                myApp.AspFitting(new[] { cmdL.AspListenerPrefix }, Engine.V_DIR, cmdL.AppDomain);
+                myApp.AspFitting(new[] {p.MyParameters.AspListenerPrefix}, Engine.V_DIR, p.MyParameters.AppDomain);
 
                 //start the engine
                 myApp.LaunchHost();
@@ -70,43 +60,26 @@ namespace NoFuture.Domain
             }
             catch (Exception ex) //exceptions move up the entire stack to the main, get caught and the exe exits.
             {
-                Console.Out.WriteLine("Exception in Main statement");
-                Console.Out.WriteLine(ex.Message);
-                Console.Out.WriteLine(ex.StackTrace);
-
-                Console.Out.WriteLine("");
-                Console.Out.WriteLine("");
+                p.PrintToConsole(ex);
             }
             Console.Out.WriteLine("press any key to exit...");
             Console.ReadKey();
         }
 
-        #region command args parse
-
-        public static DomainParameters AssignArgsToDomainParameters(Hashtable argHash)
-        {
-            var cmdLineProperties = new DomainParameters
-            {
-                AppDomain = argHash.ContainsKey(Engine.APP_DOMAIN_SWITCH) ? string.Format("{0}", argHash[Engine.APP_DOMAIN_SWITCH]) : ConfigFileAppDomain,
-                AspListenerPrefix = argHash.ContainsKey(Engine.ASP_LISTENER_SWITCH) ? string.Format("{0}", argHash[Engine.ASP_LISTENER_SWITCH]) : ConfigFileAspHttp
-            };
-
-            return cmdLineProperties;
-        }
-        #endregion
-
-        #region Prints
-        public static void PrintParameters(DomainParameters cmdL)
+        #region methods
+        public void PrintParameters(DomainParameters cmdL)
         {
             var i = 0;
-            Console.Out.WriteLine("Arguements :: ");
-            Console.Out.WriteLine("{0:00} {1,-15} = {2,-40}", ++i, "App Domain", cmdL.AppDomain);
-            Console.Out.WriteLine("{0:00} {1,-15} = {2,-40}", ++i, "Http Prefix", cmdL.AspListenerPrefix);
-            Console.Out.WriteLine("");
+            PrintToConsole("Arguements :: ");
+            PrintToConsole($"{++i:00} {"App Domain",-15} = {cmdL.AppDomain,-40}");
+            PrintToConsole($"{++i:00} {"Http Prefix",-15} = {cmdL.AspListenerPrefix,-40}");
+            PrintToConsole("");
 
         }
 
-        public static String Help()
+        protected override string MyName => "NoFuture.Domain.Carriage";
+
+        protected override string Help()
         {
             var help = new StringBuilder();
             help.AppendLine("Usage: [options] ");
@@ -117,17 +90,36 @@ namespace NoFuture.Domain
             help.AppendLine("Options:");
             help.AppendLine(" -h | -help             Will print this help.");
             help.AppendLine("");
-            help.AppendLine(string.Format(" -{0}=[location]  Must be a valid path,",Engine.APP_DOMAIN_SWITCH));
+            help.AppendLine($" -{Engine.APP_DOMAIN_SWITCH}=[location]  Must be a valid path,");
             help.AppendLine("                        must contain a \bin folder");
             help.AppendLine("                        with this exe in it.");
             help.AppendLine("");
-            help.AppendLine(string.Format(" -{0}=[prefix]      Only one. ", Engine.ASP_LISTENER_SWITCH));
+            help.AppendLine($" -{Engine.ASP_LISTENER_SWITCH}=[prefix]      Only one. ");
             help.AppendLine("                        Example 'http://+:8081/' ");
             help.AppendLine("                        for all request on port 8081.");
             help.AppendLine("");
  
             return help.ToString();
         }
+
+        protected override void ParseProgramArgs()
+        {
+            var argHash = ConsoleCmd.ArgHash(_args);
+            MyParameters = new DomainParameters
+            {
+                AppDomain = argHash.ContainsKey(Engine.APP_DOMAIN_SWITCH) ? $"{argHash[Engine.APP_DOMAIN_SWITCH]}"
+                    : ConfigFileAppDomain,
+                AspListenerPrefix = argHash.ContainsKey(Engine.ASP_LISTENER_SWITCH) ?
+                    $"{argHash[Engine.ASP_LISTENER_SWITCH]}"
+                    : ConfigFileAspHttp
+            };
+            if (string.IsNullOrWhiteSpace(MyParameters.AppDomain) || !System.IO.Directory.Exists(MyParameters.AppDomain))
+                throw new ItsDeadJim($"The '{Engine.APP_DOMAIN_SWITCH}' value is missing or invalid.");
+
+            if (string.IsNullOrWhiteSpace(MyParameters.AspListenerPrefix))
+                throw new ItsDeadJim($"The '{Engine.ASP_LISTENER_SWITCH}' value is missing or invalid");
+        }
+
         #endregion
     }
 }

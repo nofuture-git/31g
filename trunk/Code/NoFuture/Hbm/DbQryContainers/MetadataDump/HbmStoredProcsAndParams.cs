@@ -1,8 +1,8 @@
 ﻿using System.IO;
 using System.Linq;
 using System.Reflection;
-using NoFuture.Globals;
 using NoFuture.Hbm.SortingContainers;
+using NoFuture.Shared;
 
 namespace NoFuture.Hbm.DbQryContainers.MetadataDump
 {

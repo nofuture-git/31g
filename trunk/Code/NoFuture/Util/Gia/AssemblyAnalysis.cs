@@ -5,7 +5,6 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using NoFuture.Exceptions;
-using NoFuture.Globals;
 using NoFuture.Shared;
 using NoFuture.Util.Binary;
 using NoFuture.Tools;

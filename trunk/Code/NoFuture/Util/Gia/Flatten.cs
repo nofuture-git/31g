@@ -318,7 +318,7 @@ namespace NoFuture.Util.Gia
             }
 
             var typeNamesList =
-                currentType.GetProperties(Globals.NfConfig.DefaultFlags)
+                currentType.GetProperties(NfConfig.DefaultFlags)
                     .Where(
                         x =>
                             (NfTypeName.IsValueTypeProperty(x) && limitOnPi(x, limitOnValueType)
@@ -347,7 +347,7 @@ namespace NoFuture.Util.Gia
             //then recurse the object types
             foreach (
                 var p in
-                    currentType.GetProperties(Globals.NfConfig.DefaultFlags)
+                    currentType.GetProperties(NfConfig.DefaultFlags)
                         .Where(x => !NfTypeName.IsValueTypeProperty(x)))
             {
                 var typeIn = NfTypeName.GetLastTypeNameFromArrayAndGeneric(p.PropertyType);

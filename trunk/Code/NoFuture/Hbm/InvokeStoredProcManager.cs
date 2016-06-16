@@ -10,7 +10,6 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using NoFuture.Exceptions;
-using NoFuture.Globals;
 using NoFuture.Hbm.SortingContainers;
 using NoFuture.Util;
 using NoFuture.Shared;

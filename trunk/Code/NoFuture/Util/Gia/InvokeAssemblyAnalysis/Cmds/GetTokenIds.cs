@@ -8,7 +8,6 @@ using Newtonsoft.Json;
 using NoFuture.Exceptions;
 using NoFuture.Shared;
 using System.Diagnostics;
-using NoFuture.Globals;
 using NoFuture.Util.Binary;
 using NoFuture.Util.NfConsole;
 
