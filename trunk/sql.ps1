@@ -243,7 +243,7 @@ function Get-DataTable
             $connStr = "Server=$ServerName;Database=$CatalogName;Trusted_Connection=True;"
         }
         else{
-            $connStr = [NoFuture.Shared.Constants]::SqlServerDotNetConnString
+            $connStr = [NoFuture.Shared.NfConfig]::SqlServerDotNetConnString
         }
         
     	$sqlCon = New-Object System.Data.SqlClient.SqlConnection $connStr

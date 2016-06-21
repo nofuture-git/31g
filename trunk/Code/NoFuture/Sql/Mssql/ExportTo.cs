@@ -109,7 +109,7 @@ namespace NoFuture.Sql.Mssql
 
                     if (stmtType == ExportToStatementType.MERGE)
                     {
-                        formattedPair = FormatKeyValue(key, val, len + 2, counter++);
+                        formattedPair = FormatKeyValue(key, val, len + 2, counter++, true);
                         mergeVals.Add(formattedPair.Item2);
                     }
 
