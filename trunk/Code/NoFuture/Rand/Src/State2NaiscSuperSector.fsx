@@ -106,50 +106,26 @@ let getStateData (stateName:string) (ss:EconSector) =
 
 
 //an example
-let stateData = getStateData "North Dakota" MiningAndLogging
-
-Chart.Point [  for x in stateData -> x ]
 
 
-//TODO - get the linear fx
+let chartStateAndSectorJobData stateName (ss:EconSector) = 
+    let stateData = getStateData stateName ss
+    let chartTitle = sprintf "%s - %A" stateName ss
+    Chart.Point([for x in stateData -> x], Name=chartTitle,XTitle="Years",YTitle="Jobs in thousands")
 
-//
-//let blsStateCodes = blsStateData.Rows |> Seq.toList  |> List.map(fun x -> x.State_code)
-//
-//let blsSector = [for x in 1 .. 9 -> x * 10]
-//
-//let rec cartesian xs ys =
-//    xs |> List.collect (fun x -> ys |> List.map (fun y -> x, y))
-//
-////get the number of sectors times the number of states
-//let blsSmSeriesTable = cartesian blsSector blsStateCodes
-//
-//let writeAllRsltsToFile (sector:int) (stateCode:int) (jsonDataFile:string)= 
-//    
-//    let matchStateRec = blsStateData.Rows |> Seq.find (fun x -> x.State_code = stateCode)
-//    let stateName = matchStateRec.State_name
-//    let blsSmData = BlsProvider.Load(jsonDataFile)
-//
-//    if blsSmData.Results.Series.Length > 0 then
-//        
-//        let year2Value = blsSmData.Results.Series.[0].Data 
-//                                  |> Seq.toList 
-//                                  |> List.filter (fun x -> x.Period <> "M13") 
-//                                  |> List.map(fun x -> (float x.Year + (getYearAsDec x.Period), float x.Value))
-//
-//        let years = year2Value |> List.map (fun x -> fst x )
-//        let allValues = year2Value |> List.map (fun x -> snd x)
-//
-//        if years.Length > 0 then
-//
-//            let yearsMatrix = matrix [for y in years -> [1.; y]]
-//            let valueVector = vector [for v in allValues -> v]
-//
-//            let testEstimate = estimate valueVector yearsMatrix
-//            let lineData = System.String.Format("{0}\t{1}\t{2}\t{3}\n",stateName,sector,testEstimate.[0],testEstimate.[1])
-//            System.IO.File.AppendAllText((System.IO.Path.Combine(System.Environment.CurrentDirectory, """BlsEmplSector2State.tsv""")), lineData)
+let chartAllSectorJobDataByState stateName =
+    Chart.Combine [
+        Chart.Point([for x in (getStateData stateName MiningAndLogging) -> x], Name="MiningAndLogging") 
+        Chart.Point([for x in (getStateData stateName Construction) -> x], Name="Construction") 
+        Chart.Point([for x in (getStateData stateName Manufacturing) -> x], Name="Manufacturing") 
+        Chart.Point([for x in (getStateData stateName TradeTransportationUtilities) -> x], Name="TradeTransportationUtilities") 
+        Chart.Point([for x in (getStateData stateName Information) -> x], Name="Information") 
+        Chart.Point([for x in (getStateData stateName ProfessionalServices) -> x], Name="ProfessionalServices") 
+        Chart.Point([for x in (getStateData stateName LeisureHospitality) -> x], Name="LeisureHospitality") 
+        Chart.Point([for x in (getStateData stateName OtherServices) -> x], Name="OtherServices") 
+        Chart.Point([for x in (getStateData stateName Government) -> x], Name="Government") 
+    ]
+    |> Chart.WithLegend(InsideArea=false)
 
 
-//TODO - need to set BlsApi Reg key or will blow out my limit 
-//for (sector, stateCode) in blsSmSeriesTable do
-//    writeRsltToFile sector stateCode
+
