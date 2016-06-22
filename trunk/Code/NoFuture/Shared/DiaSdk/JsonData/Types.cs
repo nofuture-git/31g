@@ -59,6 +59,11 @@ namespace NoFuture.Shared.DiaSdk.LinesSwitch
         public string offset;
         [DataMember]
         public int length;
+
+        public override string ToString()
+        {
+            return lineNumber.ToString();
+        }
     }
 }
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using NoFuture.Rand.Data.Types;
 
 namespace NoFuture.Rand.Gov
 {
@@ -14,6 +15,18 @@ namespace NoFuture.Rand.Gov
     public abstract class StateIssuedId : GovernmentId
     {
         public UsState IssuingState { get; set; }
+
+        //https://en.wikipedia.org/wiki/REAL_ID_Act#Data_requirements
+        public string FullLegalName { get; set; }
+        public DateTime Dob { get; set; }
+        public Gender Gender { get; set; }
+        public string PrincipalResidence { get; set; }
+
+        [Newtonsoft.Json.JsonIgnore]
+        public System.Drawing.Bitmap FrontFacingPhoto { get; set; }
+        [Newtonsoft.Json.JsonIgnore]
+        public System.Drawing.Bitmap Signature { get; set; }
+
     }
 
     [Serializable]

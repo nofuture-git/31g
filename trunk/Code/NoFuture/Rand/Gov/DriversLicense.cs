@@ -7,7 +7,7 @@ namespace NoFuture.Rand.Gov
     public class DriversLicense : StateIssuedId
     {
         private readonly List<Anomaly> _anomalies = new List<Anomaly>();
-
+        
         public DriversLicense(Rchar[] format)
         {
             this.format = format;
@@ -18,15 +18,9 @@ namespace NoFuture.Rand.Gov
             return $"{this.IssuingState} {base.ToString()}";
         }
 
-        public override string Abbrev
-        {
-            get { return "DL"; }
-        }
+        public override string Abbrev => "DL";
 
-        public override List<Anomaly> Anomalies
-        {
-            get { return _anomalies; }
-        }
+        public override List<Anomaly> Anomalies => _anomalies;
     }
 
 }

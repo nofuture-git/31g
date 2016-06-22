@@ -24,7 +24,10 @@ namespace NoFuture.Rand.Domus
         private Gender _myGender;
         private string _fname;
         protected string _lname;
-        internal readonly List<Tuple<KindsOfLabels, NorthAmericanPhone>> _phoneNumbers = new List<Tuple<KindsOfLabels, NorthAmericanPhone>>();
+        internal readonly List<Tuple<KindsOfLabels, NorthAmericanPhone>> _phoneNumbers = 
+            new List<Tuple<KindsOfLabels, NorthAmericanPhone>>();
+        private DriversLicense _dl;
+        private SocialSecurityNumber _ssn;
         #endregion
 
         #region ctors
@@ -40,7 +43,8 @@ namespace NoFuture.Rand.Domus
             MiddleName = NAmerUtil.GetAmericanFirstName(_birthCert.DateOfBirth, _myGender);
 
             var csz = CityArea.American(null);
-            HomeAddress = Address.American();
+            var homeAddr = Address.American();
+            HomeAddress = homeAddr;
             HomeCityArea = csz;
 
             var abbrv = csz.State.StateAbbrv;
@@ -52,9 +56,11 @@ namespace NoFuture.Rand.Domus
             if(GetAge(null) >= 12)
                 _phoneNumbers.Add(new Tuple<KindsOfLabels, NorthAmericanPhone>(KindsOfLabels.Mobile, Phone.American(abbrv)));
 
-            Ssn = new SocialSecurityNumber();
-            if(GetAge(null) >= UsState.MIN_AGE_FOR_DL)
-                DriversLicense = csz.State.Formats[0];
+            _ssn = new SocialSecurityNumber();
+            if (GetAge(null) >= UsState.MIN_AGE_FOR_DL)
+            {
+                _dl = csz.State.DriversLicenseFormats[0];
+            }
 
             //http://www.internic.net/zones/root.zone
 
@@ -166,15 +172,15 @@ namespace NoFuture.Rand.Domus
 
         public string MiddleName { get; set; }
         
-        public List<Tuple<Address, CityArea>> FormerResidences { get { return _formerAddresses; } }
+        public List<Tuple<Address, CityArea>> FormerResidences => _formerAddresses;
 
         public Address HomeAddress { get; set; }
 
         public CityArea HomeCityArea { get; set; }
 
-        public string HomeCity { get { return HomeCityArea.AddressData.City; } }
-        public string HomeState { get { return HomeCityArea.AddressData.StateAbbrv; } }
-        public string HomeZip { get { return HomeCityArea.AddressData.PostalCode; } }
+        public string HomeCity => HomeCityArea.AddressData.City;
+        public string HomeState => HomeCityArea.AddressData.StateAbbrv;
+        public string HomeZip => HomeCityArea.AddressData.PostalCode;
 
         public NorthAmericanPhone HomePhone {
             get
@@ -192,10 +198,25 @@ namespace NoFuture.Rand.Domus
             }
         }
 
-        public SocialSecurityNumber Ssn { get; set; }
-        public DriversLicense DriversLicense { get; set; }
+        public virtual SocialSecurityNumber Ssn { get {return _ssn;} set { _ssn = value; } }
 
-        public List<ILoan> Debts { get { return _debts; } }
+        public virtual DriversLicense DriversLicense
+        {
+            get
+            {
+                _dl.FullLegalName = string.Join(" ", FirstName, MiddleName, LastName).ToUpper();
+                _dl.Gender = MyGender;
+                _dl.Dob = BirthCert.DateOfBirth;
+                _dl.PrincipalResidence = string.Join(" ", HomeAddress.ToString(), HomeCityArea.ToString()).ToUpper();
+                return _dl;
+            }
+            set
+            {
+                _dl = value;
+            }
+        }
+
+        public List<ILoan> Debts => _debts;
 
         public override List<IPerson> Children
         {

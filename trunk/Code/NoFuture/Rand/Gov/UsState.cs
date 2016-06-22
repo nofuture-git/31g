@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Xml;
-using NoFuture.Rand.Data;
 using NoFuture.Rand.Edu;
 using NoFuture.Util;
 using NoFuture.Util.Math;
@@ -68,7 +67,7 @@ namespace NoFuture.Rand.Gov
             }
         }
 
-        public virtual DriversLicense[] Formats => dlFormats;
+        public virtual DriversLicense[] DriversLicenseFormats => dlFormats;
 
         public LinearEquation AverageEarnings => _income;
 
