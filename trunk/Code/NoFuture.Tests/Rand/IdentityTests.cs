@@ -19,8 +19,7 @@ namespace NoFuture.Tests.Rand
             foreach (var ss in testResult)
             {
                 Assert.IsInstanceOfType(ss, typeof(NaicsSuperSector));
-
-                System.Diagnostics.Debug.WriteLine(ss.Description);
+                System.Diagnostics.Debug.WriteLine($"{ss.Value} {ss.Description}");
                 foreach (var s in ss.Divisions)
                 {
                     System.Diagnostics.Debug.WriteLine(s.Description);

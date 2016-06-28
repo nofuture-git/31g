@@ -8,7 +8,7 @@
         <!--http://download.bls.gov/pub/time.series/sm/sm.supersector-->
 
         <econ-sectors>
-          <category ID="10" Description="Mining and Logging">
+          <category ID="10" Description="Farming and Logging">
             <primary-sector ID="11" Description="Agriculture, Forestry, Fishing and Hunting">
               <secondary-sector ID="111" Description="Crop Production">
                 <ternary-sector ID="1111" Description="Oilseed and Grain Farming">

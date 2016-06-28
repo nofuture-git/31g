@@ -24,7 +24,10 @@ namespace NoFuture.Rand.Com
             if (superSectors == null || superSectors.Length <= 0)
                 return;
 
-            SuperSector = superSectors.FirstOrDefault(x => x.Value == "52");
+            PrimarySector =
+                superSectors.SelectMany(x => x.Divisions)
+                    .Cast<NaicsPrimarySector>()
+                    .FirstOrDefault(x => x.Value == "52");
         }
 
         public ResearchStatisticsSupervisionDiscount Rssd { get; set; }

@@ -105,9 +105,7 @@ let getStateData (stateName:string) (ss:EconSector) =
     whatever |> List.map (fun x -> year2ValuePlotter x) |> List.concat
 
 
-//an example
-
-
+//to Chart results
 let chartStateAndSectorJobData stateName (ss:EconSector) = 
     let stateData = getStateData stateName ss
     let chartTitle = sprintf "%s - %A" stateName ss
@@ -127,5 +125,25 @@ let chartAllSectorJobDataByState stateName =
     ]
     |> Chart.WithLegend(InsideArea=false)
 
+let outFileFullName = """C:\Projects\31g\trunk\Code\NoFuture\Rand\Src\SectorEmplByState.txt"""
+let header = sprintf "%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n" "State" "Mining" "Construction" "Manufacturing" "Trade" "Information" "Professional" "Leisure" "Other" "Government"
+System.IO.File.AppendAllText(outFileFullName, header)
+
+
+let getSectorAvgByState stateName =
+    let mining = [for x in (getStateData stateName MiningAndLogging) -> snd x] |> List.average
+    let ctortn = [for x in (getStateData stateName Construction) -> snd x] |> List.average
+    let mfactg = [for x in (getStateData stateName Manufacturing) -> snd x] |> List.average
+    let trade = [for x in (getStateData stateName TradeTransportationUtilities) -> snd x] |> List.average
+    let info = [for x in (getStateData stateName Information) -> snd x] |> List.average
+    let proSvc = [for x in (getStateData stateName ProfessionalServices) -> snd x] |> List.average
+    let hostp = [for x in (getStateData stateName LeisureHospitality) -> snd x] |> List.average
+    let oother = [for x in (getStateData stateName OtherServices) -> snd x] |> List.average
+    let govt = [for x in (getStateData stateName Government) -> snd x] |> List.average
+
+    let total = mining + ctortn + mfactg + trade + info + proSvc + hostp + oother + govt
+    let lineItem = sprintf "%s\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\n" stateName (mining/total) (ctortn/total) (mfactg/total) (trade/total) (info/total) (proSvc/total) (hostp/total) (oother/total) (govt/total)
+    System.IO.File.AppendAllText(outFileFullName, lineItem)
+    
 
 

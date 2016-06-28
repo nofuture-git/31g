@@ -183,23 +183,7 @@ namespace NoFuture.Rand.Data.Types
                         : UrbanCentric.City | UrbanCentric.Small;
                 }
             }
-            if (!string.IsNullOrWhiteSpace(cityNode.Attributes["avg-earning-per-year"]?.Value))
-            {
-                var attrVal = cityNode.Attributes["avg-earning-per-year"].Value;
-                if (attrVal.Contains(","))
-                {
-                    var interceptStr = attrVal.Split(',')[0];
-                    var slopeStr = attrVal.Split(',')[1];
-
-                    double intercept;
-                    double slope;
-                    if (double.TryParse(interceptStr, out intercept) && double.TryParse(slopeStr, out slope))
-                    {
-                        AverageEarnings = new LinearEquation {Intercept = intercept, Slope = slope};
-                    }
-
-                }
-            }
+            AverageEarnings = GetAvgEarningsPerYear(cityNode);
         }
 
         #endregion
@@ -295,6 +279,26 @@ namespace NoFuture.Rand.Data.Types
 
             cityStateZip = new UsCityStateZip(addrData);
             return true;
+        }
+
+        internal static LinearEquation GetAvgEarningsPerYear(XmlNode someNode)
+        {
+            var cityNode = someNode as XmlElement;
+            if (string.IsNullOrWhiteSpace(cityNode?.Attributes["avg-earning-per-year"]?.Value))
+                return null;
+            var attrVal = cityNode.Attributes["avg-earning-per-year"].Value;
+            if (!attrVal.Contains(","))
+                return null;
+            var interceptStr = attrVal.Split(',')[0];
+            var slopeStr = attrVal.Split(',')[1];
+
+            double intercept;
+            double slope;
+            if (double.TryParse(interceptStr, out intercept) && double.TryParse(slopeStr, out slope))
+            {
+                return new LinearEquation { Intercept = intercept, Slope = slope };
+            }
+            return null;
         }
         #endregion
     }

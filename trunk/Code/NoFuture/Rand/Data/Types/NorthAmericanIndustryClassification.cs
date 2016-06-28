@@ -16,17 +16,20 @@ namespace NoFuture.Rand.Data.Types
     public abstract class NorthAmericanIndustryClassification : XmlDocXrefIdentifier
     {
         #region fields
-        protected readonly List<NorthAmericanIndustryClassification> divisions  = new List<NorthAmericanIndustryClassification>();
+
+        protected readonly List<NorthAmericanIndustryClassification> divisions =
+            new List<NorthAmericanIndustryClassification>();
         private static NaicsSuperSector[] _superSectors;
         #endregion
 
         #region properties
         public string Description { get; set; }
-        public bool IsSuperSector { get { return Value.Length == 2; } }
-        public bool IsSector { get { return Value.Length == 3; } }
-        public bool IsIndustry { get { return Value.Length == 4; } }
-        public virtual List<NorthAmericanIndustryClassification> Divisions { get { return divisions; } }
-        public override string Abbrev { get { return "NAICS"; } }
+        public bool IsSuperSector => Value.Length == 2;
+        public bool IsSector => Value.Length == 3;
+        public bool IsIndustry => Value.Length == 4;
+        public virtual List<NorthAmericanIndustryClassification> Divisions => divisions;
+        public override string Abbrev => "NAICS";
+
         #endregion
 
         #region methods
@@ -69,7 +72,7 @@ namespace NoFuture.Rand.Data.Types
 
                 var ssOut = new NaicsSuperSector();
 
-                var ssElements = TreeData.EconSectorData.SelectNodes(string.Format("//{0}", ssOut.LocalName));
+                var ssElements = TreeData.EconSectorData.SelectNodes($"//{ssOut.LocalName}");
                 if (ssElements == null || ssElements.Count == 0)
                     return null;
 
@@ -90,12 +93,38 @@ namespace NoFuture.Rand.Data.Types
         #endregion
     }
 
-    /// <summary>
-    /// This represents the highest grouping level of the NAICS - this
-    /// grouping is also applicable to the Bureau of Labor Statistics.
-    /// </summary>
     [Serializable]
     public class NaicsSuperSector : NorthAmericanIndustryClassification
+    {
+        public override bool TryThisParseXml(XmlElement elem)
+        {
+            if (!base.TryThisParseXml(elem))
+                return false;
+
+            if (!elem.HasChildNodes)
+                return true;
+
+            foreach (var cNode in elem.ChildNodes)
+            {
+                var cElem = cNode as XmlElement;
+                if (cElem == null)
+                    continue;
+                var sector = new NaicsPrimarySector();
+                if (sector.TryThisParseXml(cElem))
+                    divisions.Add(sector);
+            }
+
+            return true;
+        }
+
+        public override string LocalName => "category";
+    }
+
+    /// <summary>
+    /// This represents the primary grouping level of the NAICS 
+    /// </summary>
+    [Serializable]
+    public class NaicsPrimarySector : NorthAmericanIndustryClassification
     {
 
         public override bool TryThisParseXml(XmlElement elem)
@@ -119,10 +148,7 @@ namespace NoFuture.Rand.Data.Types
             return true;
         }
 
-        public override string LocalName
-        {
-            get { return "primary-sector"; }
-        }
+        public override string LocalName => "primary-sector";
     }
 
     [Serializable]
@@ -148,11 +174,7 @@ namespace NoFuture.Rand.Data.Types
             return true;
         }
 
-        public override string LocalName
-        {
-            get { return "secondary-sector"; }
-        }
-
+        public override string LocalName => "secondary-sector";
     }
 
     [Serializable]
@@ -177,9 +199,6 @@ namespace NoFuture.Rand.Data.Types
 
             return true;
         }
-        public override string LocalName
-        {
-            get { return "ternary-sector"; }
-        }
+        public override string LocalName => "ternary-sector";
     }
 }

@@ -110,5 +110,21 @@ namespace NoFuture.Tests.Rand
             Assert.AreNotEqual(0, testResults.Length);
             
         }
+
+        [TestMethod]
+        public void TestGetStateData()
+        {
+            var testStateName = "Maryland";
+            var testState = NoFuture.Rand.Gov.UsState.GetStateByName(testStateName);
+            var testResult = testState.GetStateData();
+            Assert.IsNotNull(testResult);
+            Assert.IsNotNull(testResult.AverageEarnings);
+            Assert.AreNotEqual(0,testResult.EmploymentSectors.Count);
+            Assert.AreNotEqual(0, testResult.PercentOfGrads.Count);
+            Assert.AreNotEqual(0, testResult.PropertyCrimeRate.Count);
+            Assert.AreNotEqual(0, testResult.ViolentCrimeRate.Count);
+
+
+        }
     }
 }

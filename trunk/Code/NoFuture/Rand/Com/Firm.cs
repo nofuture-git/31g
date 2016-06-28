@@ -12,7 +12,7 @@ namespace NoFuture.Rand.Com
         Tuple<UsAddress, UsCityStateZip> BusinessAddress { get; set; }
         NorthAmericanPhone[] Phone { get; set; }
         StandardIndustryClassification SIC { get; set; }
-        NaicsSuperSector SuperSector { get; set; }
+        NaicsPrimarySector PrimarySector { get; set; }
         NaicsSector Sector { get; set; }
         NaicsMarket Market { get; set; }
         int FiscalYearEndDay { get; set; }
@@ -26,7 +26,7 @@ namespace NoFuture.Rand.Com
         #endregion
 
         #region fields
-        private NaicsSuperSector _superSector;
+        private NaicsPrimarySector _primarySector;
         private NaicsSector _sector;
         private NaicsMarket _market;
         private int _fiscalYearEndDay = 1;
@@ -41,15 +41,15 @@ namespace NoFuture.Rand.Com
         public Tuple<UsAddress, UsCityStateZip> BusinessAddress { get; set; }
         public NorthAmericanPhone[] Phone { get; set; }
         public StandardIndustryClassification SIC { get; set; }
-        public NaicsSuperSector SuperSector
+        public NaicsPrimarySector PrimarySector
         {
             get
             {
-                if (_superSector == null && SIC != null) 
+                if (_primarySector == null && SIC != null) 
                     ResolveNaicsOnSic();
-                return _superSector;
+                return _primarySector;
             }
-            set { _superSector = value; }
+            set { _primarySector = value; }
         }
 
         public NaicsSector Sector
@@ -87,7 +87,7 @@ namespace NoFuture.Rand.Com
             var naics = StandardIndustryClassification.LookupNaicsBySic(SIC);
             if (naics == null)
                 return;
-            _superSector = naics.Item1;
+            _primarySector = naics.Item1;
             _sector = naics.Item2;
             _market = naics.Item3;
         }

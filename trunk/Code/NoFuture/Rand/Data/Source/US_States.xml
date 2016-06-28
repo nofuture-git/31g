@@ -1,0 +1,1184 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<noFuture>
+  <rand>
+    <data>
+      <source>
+        <states>
+          <state name="Alabama" avg-earning-per-year="-1918692.60413191,976.184335491814">
+            <econ-data>
+              <sector category-ID="10" percent-employed="0.8239" />
+              <sector category-ID="20" percent-employed="5.9344" />
+              <sector category-ID="30" percent-employed="18.5885" />
+              <sector category-ID="40" percent-employed="23.1661" />
+              <sector category-ID="50" percent-employed="1.7132" />
+              <sector category-ID="60" percent-employed="12.3026" />
+              <sector category-ID="70" percent-employed="10.011" />
+              <sector category-ID="80" percent-employed="4.9169" />
+              <sector category-ID="90" percent-employed="22.5434" />
+            </econ-data>
+            <edu-data percent-highschool-grad="82.1" percent-college-grad="22" />
+            <crime-data>
+              <crime type="Violent" name="Murder" rate="0.0717195" />
+              <crime type="Violent" name="Rape" rate="0.031346" />
+              <crime type="Violent" name="Assault" rate="0.2660612" />
+              <crime type="Violent" name="Robbery" rate="0.1244592" />
+              <crime type="Property" name="Theft" rate="2.4653962" />
+              <crime type="Property" name="Burglary" rate="0.9647606" />
+              <crime type="Property" name="GTA" rate="0.2519411" />
+            </crime-data>
+          </state>
+          <state name="Alaska" avg-earning-per-year="-2178383.79518956,1111.57761332099">
+            <econ-data>
+              <sector category-ID="10" percent-employed="5.0782" />
+              <sector category-ID="20" percent-employed="6.2966" />
+              <sector category-ID="30" percent-employed="5.0518" />
+              <sector category-ID="40" percent-employed="23.8994" />
+              <sector category-ID="50" percent-employed="2.5523" />
+              <sector category-ID="60" percent-employed="10.2258" />
+              <sector category-ID="70" percent-employed="11.6899" />
+              <sector category-ID="80" percent-employed="4.4025" />
+              <sector category-ID="90" percent-employed="30.8035" />
+            </econ-data>
+            <edu-data percent-highschool-grad="91.4" percent-college-grad="26.6" />
+            <crime-data>
+              <crime type="Violent" name="Murder" rate="0.0466522" />
+              <crime type="Violent" name="Rape" rate="0.0751612" />
+              <crime type="Violent" name="Assault" rate="0.4666041" />
+              <crime type="Violent" name="Robbery" rate="0.0863389" />
+              <crime type="Property" name="Theft" rate="2.2818078" />
+              <crime type="Property" name="Burglary" rate="0.4824039" />
+              <crime type="Property" name="GTA" rate="0.2696397" />
+            </crime-data>
+          </state>
+          <state name="Arizona" avg-earning-per-year="-2034700.95571994,1035.38902251001">
+            <econ-data>
+              <sector category-ID="10" percent-employed="0.586" />
+              <sector category-ID="20" percent-employed="8.2658" />
+              <sector category-ID="30" percent-employed="9.3616" />
+              <sector category-ID="40" percent-employed="24.0533" />
+              <sector category-ID="50" percent-employed="2.28" />
+              <sector category-ID="60" percent-employed="17.7467" />
+              <sector category-ID="70" percent-employed="12.9445" />
+              <sector category-ID="80" percent-employed="4.4297" />
+              <sector category-ID="90" percent-employed="20.3323" />
+            </econ-data>
+            <edu-data percent-highschool-grad="84.2" percent-college-grad="25.6" />
+            <crime-data>
+              <crime type="Violent" name="Murder" rate="0.0625114" />
+              <crime type="Violent" name="Rape" rate="0.0333934" />
+              <crime type="Violent" name="Assault" rate="0.276994" />
+              <crime type="Violent" name="Robbery" rate="0.1243813" />
+              <crime type="Property" name="Theft" rate="2.5640239" />
+              <crime type="Property" name="Burglary" rate="0.8298743" />
+              <crime type="Property" name="GTA" rate="0.5000535" />
+            </crime-data>
+          </state>
+          <state name="Arkansas" avg-earning-per-year="-1787876.96978101,909.415664508158">
+            <econ-data>
+              <sector category-ID="10" percent-employed="0.8615" />
+              <sector category-ID="20" percent-employed="5.2477" />
+              <sector category-ID="30" percent-employed="20.7485" />
+              <sector category-ID="40" percent-employed="24.8608" />
+              <sector category-ID="50" percent-employed="1.8221" />
+              <sector category-ID="60" percent-employed="11.438" />
+              <sector category-ID="70" percent-employed="9.7223" />
+              <sector category-ID="80" percent-employed="4.3525" />
+              <sector category-ID="90" percent-employed="20.9466" />
+            </econ-data>
+            <edu-data percent-highschool-grad="82.4" percent-college-grad="18.9" />
+            <crime-data>
+              <crime type="Violent" name="Murder" rate="0.0596543" />
+              <crime type="Violent" name="Rape" rate="0.0438456" />
+              <crime type="Violent" name="Assault" rate="0.3632216" />
+              <crime type="Violent" name="Robbery" rate="0.0866981" />
+              <crime type="Property" name="Theft" rate="2.4381654" />
+              <crime type="Property" name="Burglary" rate="1.0955084" />
+              <crime type="Property" name="GTA" rate="0.2175574" />
+            </crime-data>
+          </state>
+          <state name="California" avg-earning-per-year="-2593003.00277512,1318.76040703051">
+            <econ-data>
+              <sector category-ID="10" percent-employed="0.2225" />
+              <sector category-ID="20" percent-employed="5.9255" />
+              <sector category-ID="30" percent-employed="12.8497" />
+              <sector category-ID="40" percent-employed="22.7851" />
+              <sector category-ID="50" percent-employed="3.9642" />
+              <sector category-ID="60" percent-employed="18.0019" />
+              <sector category-ID="70" percent-employed="12.3017" />
+              <sector category-ID="80" percent-employed="4.1415" />
+              <sector category-ID="90" percent-employed="19.808" />
+            </econ-data>
+            <edu-data percent-highschool-grad="80.6" percent-college-grad="29.9" />
+            <crime-data>
+              <crime type="Violent" name="Murder" rate="0.0545703" />
+              <crime type="Violent" name="Rape" rate="0.0228066" />
+              <crime type="Violent" name="Assault" rate="0.2694114" />
+              <crime type="Violent" name="Robbery" rate="0.1639466" />
+              <crime type="Property" name="Theft" rate="1.6973462" />
+              <crime type="Property" name="Burglary" rate="0.6284289" />
+              <crime type="Property" name="GTA" rate="0.500902" />
+            </crime-data>
+          </state>
+          <state name="Colorado" avg-earning-per-year="-2275104.63983958,1156.92476102373">
+            <econ-data>
+              <sector category-ID="10" percent-employed="1.112" />
+              <sector category-ID="20" percent-employed="7.726" />
+              <sector category-ID="30" percent-employed="8.4071" />
+              <sector category-ID="40" percent-employed="22.2009" />
+              <sector category-ID="50" percent-employed="4.3323" />
+              <sector category-ID="60" percent-employed="17.6265" />
+              <sector category-ID="70" percent-employed="14.0446" />
+              <sector category-ID="80" percent-employed="4.7862" />
+              <sector category-ID="90" percent-employed="19.7644" />
+            </econ-data>
+            <edu-data percent-highschool-grad="89.3" percent-college-grad="35.9" />
+            <crime-data>
+              <crime type="Violent" name="Murder" rate="0.0311819" />
+              <crime type="Violent" name="Rape" rate="0.042624" />
+              <crime type="Violent" name="Assault" rate="0.2207311" />
+              <crime type="Violent" name="Robbery" rate="0.0680007" />
+              <crime type="Property" name="Theft" rate="2.0597019" />
+              <crime type="Property" name="Burglary" rate="0.556166" />
+              <crime type="Property" name="GTA" rate="0.3008753" />
+            </crime-data>
+          </state>
+          <state name="Connecticut" avg-earning-per-year="-2971233.00992898,1509.98143694108">
+            <econ-data>
+              <sector category-ID="10" percent-employed="0.0551" />
+              <sector category-ID="20" percent-employed="4.7933" />
+              <sector category-ID="30" percent-employed="16.3164" />
+              <sector category-ID="40" percent-employed="24.2161" />
+              <sector category-ID="50" percent-employed="3.0824" />
+              <sector category-ID="60" percent-employed="16.4494" />
+              <sector category-ID="70" percent-employed="10.5154" />
+              <sector category-ID="80" percent-employed="4.9885" />
+              <sector category-ID="90" percent-employed="19.5833" />
+            </econ-data>
+            <edu-data percent-highschool-grad="88.6" percent-college-grad="35.6" />
+            <crime-data>
+              <crime type="Violent" name="Murder" rate="0.031853" />
+              <crime type="Violent" name="Rape" rate="0.0190166" />
+              <crime type="Violent" name="Assault" rate="0.1459587" />
+              <crime type="Violent" name="Robbery" rate="0.1053094" />
+              <crime type="Property" name="Theft" rate="1.6345455" />
+              <crime type="Property" name="Burglary" rate="0.4104844" />
+              <crime type="Property" name="GTA" rate="0.2225815" />
+            </crime-data>
+          </state>
+          <state name="Delaware" avg-earning-per-year="-2483505.13518339,1263.1272278754">
+            <econ-data>
+              <sector category-ID="10" percent-employed="0" />
+              <sector category-ID="20" percent-employed="0" />
+              <sector category-ID="30" percent-employed="0" />
+              <sector category-ID="40" percent-employed="0" />
+              <sector category-ID="50" percent-employed="0" />
+              <sector category-ID="60" percent-employed="0" />
+              <sector category-ID="70" percent-employed="0" />
+              <sector category-ID="80" percent-employed="0" />
+              <sector category-ID="90" percent-employed="0" />
+            </econ-data>
+            <edu-data percent-highschool-grad="87.4" percent-college-grad="28.7" />
+            <crime-data>
+              <crime type="Violent" name="Murder" rate="0.0518053" />
+              <crime type="Violent" name="Rape" rate="0.0368765" />
+              <crime type="Violent" name="Assault" rate="0.3866377" />
+              <crime type="Violent" name="Robbery" rate="0.1762874" />
+              <crime type="Property" name="Theft" rate="2.3491329" />
+              <crime type="Property" name="Burglary" rate="0.7484139" />
+              <crime type="Property" name="GTA" rate="0.2206605" />
+            </crime-data>
+          </state>
+          <state name="District of Columbia" avg-earning-per-year="-4330505.15874176,2199.23441258091">
+            <econ-data>
+              <sector category-ID="10" percent-employed="0" />
+              <sector category-ID="20" percent-employed="0" />
+              <sector category-ID="30" percent-employed="0" />
+              <sector category-ID="40" percent-employed="0" />
+              <sector category-ID="50" percent-employed="0" />
+              <sector category-ID="60" percent-employed="0" />
+              <sector category-ID="70" percent-employed="0" />
+              <sector category-ID="80" percent-employed="0" />
+              <sector category-ID="90" percent-employed="0" />
+            </econ-data>
+            <edu-data percent-highschool-grad="87.1" percent-college-grad="48.5" />
+            <crime-data>
+              <crime type="Violent" name="Murder" rate="0.2340435" />
+              <crime type="Violent" name="Rape" rate="0.0344937" />
+              <crime type="Violent" name="Assault" rate="0.6113021" />
+              <crime type="Violent" name="Robbery" rate="0.667938" />
+              <crime type="Property" name="Theft" rate="3.3100818" />
+              <crime type="Property" name="Burglary" rate="0.6116278" />
+              <crime type="Property" name="GTA" rate="0.9100321" />
+            </crime-data>
+          </state>
+          <state name="Florida" avg-earning-per-year="-1948686.44415658,991.655442491506">
+            <econ-data>
+              <sector category-ID="10" percent-employed="0.1068" />
+              <sector category-ID="20" percent-employed="8.0526" />
+              <sector category-ID="30" percent-employed="6.9352" />
+              <sector category-ID="40" percent-employed="26.2326" />
+              <sector category-ID="50" percent-employed="2.6569" />
+              <sector category-ID="60" percent-employed="16.8999" />
+              <sector category-ID="70" percent-employed="15.9161" />
+              <sector category-ID="80" percent-employed="5.2085" />
+              <sector category-ID="90" percent-employed="17.9915" />
+            </econ-data>
+            <edu-data percent-highschool-grad="85.3" percent-college-grad="25.3" />
+            <crime-data>
+              <crime type="Violent" name="Murder" rate="0.0560141" />
+              <crime type="Violent" name="Rape" rate="0.0307021" />
+              <crime type="Violent" name="Assault" rate="0.4040366" />
+              <crime type="Violent" name="Robbery" rate="0.1572426" />
+              <crime type="Property" name="Theft" rate="2.5161907" />
+              <crime type="Property" name="Burglary" rate="0.8892586" />
+              <crime type="Property" name="GTA" rate="0.2881091" />
+            </crime-data>
+          </state>
+          <state name="Georgia" avg-earning-per-year="-2179550.04415657,1108.40326857846">
+            <econ-data>
+              <sector category-ID="10" percent-employed="0.3498" />
+              <sector category-ID="20" percent-employed="5.533" />
+              <sector category-ID="30" percent-employed="13.6524" />
+              <sector category-ID="40" percent-employed="25.5483" />
+              <sector category-ID="50" percent-employed="3.3799" />
+              <sector category-ID="60" percent-employed="16.0033" />
+              <sector category-ID="70" percent-employed="11.1295" />
+              <sector category-ID="80" percent-employed="4.5075" />
+              <sector category-ID="90" percent-employed="19.8963" />
+            </econ-data>
+            <edu-data percent-highschool-grad="83.9" percent-college-grad="27.5" />
+            <crime-data>
+              <crime type="Violent" name="Murder" rate="0.0610192" />
+              <crime type="Violent" name="Rape" rate="0.022147" />
+              <crime type="Violent" name="Assault" rate="0.2469154" />
+              <crime type="Violent" name="Robbery" rate="0.1457535" />
+              <crime type="Property" name="Theft" rate="2.4144781" />
+              <crime type="Property" name="Burglary" rate="0.9269871" />
+              <crime type="Property" name="GTA" rate="0.358137" />
+            </crime-data>
+          </state>
+          <state name="Hawaii" avg-earning-per-year="-2035980.99346277,1036.51316682083">
+            <econ-data>
+              <sector category-ID="10" percent-employed="0" />
+              <sector category-ID="20" percent-employed="0" />
+              <sector category-ID="30" percent-employed="0" />
+              <sector category-ID="40" percent-employed="0" />
+              <sector category-ID="50" percent-employed="0" />
+              <sector category-ID="60" percent-employed="0" />
+              <sector category-ID="70" percent-employed="0" />
+              <sector category-ID="80" percent-employed="0" />
+              <sector category-ID="90" percent-employed="0" />
+            </econ-data>
+            <edu-data percent-highschool-grad="90.4" percent-college-grad="29.6" />
+            <crime-data>
+              <crime type="Violent" name="Murder" rate="0.0183503" />
+              <crime type="Violent" name="Rape" rate="0.0259027" />
+              <crime type="Violent" name="Assault" rate="0.1540499" />
+              <crime type="Violent" name="Robbery" rate="0.0786037" />
+              <crime type="Property" name="Theft" rate="2.5658701" />
+              <crime type="Property" name="Burglary" rate="0.6499404" />
+              <crime type="Property" name="GTA" rate="0.4173105" />
+            </crime-data>
+          </state>
+          <state name="Idaho" avg-earning-per-year="-1695991.24193642,863.551464693173">
+            <econ-data>
+              <sector category-ID="10" percent-employed="0.8577" />
+              <sector category-ID="20" percent-employed="7.5471" />
+              <sector category-ID="30" percent-employed="12.7547" />
+              <sector category-ID="40" percent-employed="24.6477" />
+              <sector category-ID="50" percent-employed="1.9227" />
+              <sector category-ID="60" percent-employed="14.0151" />
+              <sector category-ID="70" percent-employed="11.5615" />
+              <sector category-ID="80" percent-employed="3.9029" />
+              <sector category-ID="90" percent-employed="22.7906" />
+            </econ-data>
+            <edu-data percent-highschool-grad="88.4" percent-college-grad="23.9" />
+            <crime-data>
+              <crime type="Violent" name="Murder" rate="0.0203563" />
+              <crime type="Violent" name="Rape" rate="0.0344471" />
+              <crime type="Violent" name="Assault" rate="0.1739529" />
+              <crime type="Violent" name="Robbery" rate="0.0153794" />
+              <crime type="Property" name="Theft" rate="1.5571666" />
+              <crime type="Property" name="Burglary" rate="0.4524841" />
+              <crime type="Property" name="GTA" rate="0.1171387" />
+            </crime-data>
+          </state>
+          <state name="Illinois" avg-earning-per-year="-2442083.2197964,1242.44162812209">
+            <econ-data>
+              <sector category-ID="10" percent-employed="0.2146" />
+              <sector category-ID="20" percent-employed="5.1171" />
+              <sector category-ID="30" percent-employed="15.4025" />
+              <sector category-ID="40" percent-employed="25.3017" />
+              <sector category-ID="50" percent-employed="2.5793" />
+              <sector category-ID="60" percent-employed="17.3822" />
+              <sector category-ID="70" percent-employed="10.8539" />
+              <sector category-ID="80" percent-employed="5.3208" />
+              <sector category-ID="90" percent-employed="17.8278" />
+            </econ-data>
+            <edu-data percent-highschool-grad="86.4" percent-college-grad="30.6" />
+            <crime-data>
+              <crime type="Violent" name="Murder" rate="0.0583455" />
+              <crime type="Violent" name="Rape" rate="0.0288689" />
+              <crime type="Violent" name="Assault" rate="0.2697639" />
+              <crime type="Violent" name="Robbery" rate="0.1632312" />
+              <crime type="Property" name="Theft" rate="1.9149067" />
+              <crime type="Property" name="Burglary" rate="0.5603851" />
+              <crime type="Property" name="GTA" rate="0.2274589" />
+            </crime-data>
+          </state>
+          <state name="Indiana" avg-earning-per-year="-1958684.71347511,997.013937711981">
+            <econ-data>
+              <sector category-ID="10" percent-employed="0.2901" />
+              <sector category-ID="20" percent-employed="5.7158" />
+              <sector category-ID="30" percent-employed="23.5117" />
+              <sector category-ID="40" percent-employed="24.0358" />
+              <sector category-ID="50" percent-employed="1.6605" />
+              <sector category-ID="60" percent-employed="11.2424" />
+              <sector category-ID="70" percent-employed="11.3812" />
+              <sector category-ID="80" percent-employed="4.7849" />
+              <sector category-ID="90" percent-employed="17.3775" />
+            </econ-data>
+            <edu-data percent-highschool-grad="86.6" percent-college-grad="22.5" />
+            <crime-data>
+              <crime type="Violent" name="Murder" rate="0.0514989" />
+              <crime type="Violent" name="Rape" rate="0.0267168" />
+              <crime type="Violent" name="Assault" rate="0.1923605" />
+              <crime type="Violent" name="Robbery" rate="0.1096679" />
+              <crime type="Property" name="Theft" rate="2.185324" />
+              <crime type="Property" name="Burglary" rate="0.7133794" />
+              <crime type="Property" name="GTA" rate="0.2555338" />
+            </crime-data>
+          </state>
+          <state name="Iowa" avg-earning-per-year="-1909482.44409491,971.247240209668">
+            <econ-data>
+              <sector category-ID="10" percent-employed="0.1798" />
+              <sector category-ID="20" percent-employed="5.6467" />
+              <sector category-ID="30" percent-employed="19.1604" />
+              <sector category-ID="40" percent-employed="25.9301" />
+              <sector category-ID="50" percent-employed="2.7227" />
+              <sector category-ID="60" percent-employed="9.7794" />
+              <sector category-ID="70" percent-employed="10.9555" />
+              <sector category-ID="80" percent-employed="4.7999" />
+              <sector category-ID="90" percent-employed="20.8254" />
+            </econ-data>
+            <edu-data percent-highschool-grad="91.4" percent-college-grad="25.1" />
+            <crime-data>
+              <crime type="Violent" name="Murder" rate="0.0156629" />
+              <crime type="Violent" name="Rape" rate="0.0284663" />
+              <crime type="Violent" name="Assault" rate="0.209697" />
+              <crime type="Violent" name="Robbery" rate="0.0363147" />
+              <crime type="Property" name="Theft" rate="1.7191899" />
+              <crime type="Property" name="Burglary" rate="0.5532291" />
+              <crime type="Property" name="GTA" rate="0.1447378" />
+            </crime-data>
+          </state>
+          <state name="Kansas" avg-earning-per-year="-1969152.62362004,1001.52408263952">
+            <econ-data>
+              <sector category-ID="10" percent-employed="0.7338" />
+              <sector category-ID="20" percent-employed="5.4964" />
+              <sector category-ID="30" percent-employed="16.274" />
+              <sector category-ID="40" percent-employed="23.7473" />
+              <sector category-ID="50" percent-employed="3.2132" />
+              <sector category-ID="60" percent-employed="12.9722" />
+              <sector category-ID="70" percent-employed="10.2076" />
+              <sector category-ID="80" percent-employed="4.5989" />
+              <sector category-ID="90" percent-employed="22.7566" />
+            </econ-data>
+            <edu-data percent-highschool-grad="89.7" percent-college-grad="29.5" />
+            <crime-data>
+              <crime type="Violent" name="Murder" rate="0.0380482" />
+              <crime type="Violent" name="Rape" rate="0.0399412" />
+              <crime type="Violent" name="Assault" rate="0.2816872" />
+              <crime type="Violent" name="Robbery" rate="0.0578983" />
+              <crime type="Property" name="Theft" rate="2.3632177" />
+              <crime type="Property" name="Burglary" rate="0.6667164" />
+              <crime type="Property" name="GTA" rate="0.2584943" />
+            </crime-data>
+          </state>
+          <state name="Kentucky" avg-earning-per-year="-1884982.19093426,959.055134135046">
+            <econ-data>
+              <sector category-ID="10" percent-employed="1.4134" />
+              <sector category-ID="20" percent-employed="5.365" />
+              <sector category-ID="30" percent-employed="17.8234" />
+              <sector category-ID="40" percent-employed="25.2606" />
+              <sector category-ID="50" percent-employed="1.9508" />
+              <sector category-ID="60" percent-employed="11.6716" />
+              <sector category-ID="70" percent-employed="11.0752" />
+              <sector category-ID="80" percent-employed="4.8516" />
+              <sector category-ID="90" percent-employed="20.5884" />
+            </econ-data>
+            <edu-data percent-highschool-grad="81.7" percent-college-grad="21" />
+            <crime-data>
+              <crime type="Violent" name="Murder" rate="0.0420139" />
+              <crime type="Violent" name="Rape" rate="0.0302733" />
+              <crime type="Violent" name="Assault" rate="0.1280256" />
+              <crime type="Violent" name="Robbery" rate="0.085009" />
+              <crime type="Property" name="Theft" rate="1.6918696" />
+              <crime type="Property" name="Burglary" rate="0.6548783" />
+              <crime type="Property" name="GTA" rate="0.1685835" />
+            </crime-data>
+          </state>
+          <state name="Louisiana" avg-earning-per-year="-2013142.74326234,1024.17563983964">
+            <econ-data>
+              <sector category-ID="10" percent-employed="3.3052" />
+              <sector category-ID="20" percent-employed="8.0735" />
+              <sector category-ID="30" percent-employed="10.2546" />
+              <sector category-ID="40" percent-employed="24.3689" />
+              <sector category-ID="50" percent-employed="1.7441" />
+              <sector category-ID="60" percent-employed="12.1008" />
+              <sector category-ID="70" percent-employed="12.5996" />
+              <sector category-ID="80" percent-employed="4.4269" />
+              <sector category-ID="90" percent-employed="23.1265" />
+            </econ-data>
+            <edu-data percent-highschool-grad="82.2" percent-college-grad="21.4" />
+            <crime-data>
+              <crime type="Violent" name="Murder" rate="0.1142276" />
+              <crime type="Violent" name="Rape" rate="0.0286651" />
+              <crime type="Violent" name="Assault" rate="0.4282064" />
+              <crime type="Violent" name="Robbery" rate="0.1256996" />
+              <crime type="Property" name="Theft" rate="2.5103094" />
+              <crime type="Property" name="Burglary" rate="0.9632168" />
+              <crime type="Property" name="GTA" rate="0.2606527" />
+            </crime-data>
+          </state>
+          <state name="Maine" avg-earning-per-year="-1783942.0522972,907.807708911488">
+            <econ-data>
+              <sector category-ID="10" percent-employed="0.5637" />
+              <sector category-ID="20" percent-employed="5.9974" />
+              <sector category-ID="30" percent-employed="14.2005" />
+              <sector category-ID="40" percent-employed="26.2986" />
+              <sector category-ID="50" percent-employed="2.2116" />
+              <sector category-ID="60" percent-employed="11.6946" />
+              <sector category-ID="70" percent-employed="12.7425" />
+              <sector category-ID="80" percent-employed="4.2485" />
+              <sector category-ID="90" percent-employed="22.0425" />
+            </econ-data>
+            <edu-data percent-highschool-grad="90.2" percent-college-grad="26.9" />
+            <crime-data>
+              <crime type="Violent" name="Murder" rate="0.0181327" />
+              <crime type="Violent" name="Rape" rate="0.0278536" />
+              <crime type="Violent" name="Assault" rate="0.0621385" />
+              <crime type="Violent" name="Robbery" rate="0.0274524" />
+              <crime type="Property" name="Theft" rate="1.8134208" />
+              <crime type="Property" name="Burglary" rate="0.5078467" />
+              <crime type="Property" name="GTA" rate="0.082525" />
+            </crime-data>
+          </state>
+          <state name="Maryland" avg-earning-per-year="-2542964.29084173,1292.69065679924">
+            <econ-data>
+              <sector category-ID="10" percent-employed="0.0837" />
+              <sector category-ID="20" percent-employed="7.9591" />
+              <sector category-ID="30" percent-employed="7.1222" />
+              <sector category-ID="40" percent-employed="22.9328" />
+              <sector category-ID="50" percent-employed="2.4179" />
+              <sector category-ID="60" percent-employed="18.9909" />
+              <sector category-ID="70" percent-employed="11.2138" />
+              <sector category-ID="80" percent-employed="5.6475" />
+              <sector category-ID="90" percent-employed="23.6321" />
+            </econ-data>
+            <edu-data percent-highschool-grad="88.2" percent-college-grad="35.7" />
+            <crime-data>
+              <crime type="Violent" name="Murder" rate="0.0790365" />
+              <crime type="Violent" name="Rape" rate="0.0206682" />
+              <crime type="Violent" name="Assault" rate="0.3316398" />
+              <crime type="Violent" name="Robbery" rate="0.2063995" />
+              <crime type="Property" name="Theft" rate="2.1079964" />
+              <crime type="Property" name="Burglary" rate="0.6133323" />
+              <crime type="Property" name="GTA" rate="0.3740655" />
+            </crime-data>
+          </state>
+          <state name="Massachusetts" avg-earning-per-year="-2872440.32580934,1459.40222016649">
+            <econ-data>
+              <sector category-ID="10" percent-employed="0.0579" />
+              <sector category-ID="20" percent-employed="5.1319" />
+              <sector category-ID="30" percent-employed="13.4482" />
+              <sector category-ID="40" percent-employed="23.3624" />
+              <sector category-ID="50" percent-employed="3.7881" />
+              <sector category-ID="60" percent-employed="19.362" />
+              <sector category-ID="70" percent-employed="12.2115" />
+              <sector category-ID="80" percent-employed="4.8245" />
+              <sector category-ID="90" percent-employed="17.8135" />
+            </econ-data>
+            <edu-data percent-highschool-grad="89" percent-college-grad="38.2" />
+            <crime-data>
+              <crime type="Violent" name="Murder" rate="0.0255296" />
+              <crime type="Violent" name="Rape" rate="0.0258836" />
+              <crime type="Violent" name="Assault" rate="0.297402" />
+              <crime type="Violent" name="Robbery" rate="0.1072915" />
+              <crime type="Property" name="Theft" rate="1.5412998" />
+              <crime type="Property" name="Burglary" rate="0.5193597" />
+              <crime type="Property" name="GTA" rate="0.1916926" />
+            </crime-data>
+          </state>
+          <state name="Michigan" avg-earning-per-year="-2039576.15935855,1039.49034844279">
+            <econ-data>
+              <sector category-ID="10" percent-employed="0.2382" />
+              <sector category-ID="20" percent-employed="4.7381" />
+              <sector category-ID="30" percent-employed="19.4639" />
+              <sector category-ID="40" percent-employed="22.5244" />
+              <sector category-ID="50" percent-employed="1.7954" />
+              <sector category-ID="60" percent-employed="16.8099" />
+              <sector category-ID="70" percent-employed="11.1487" />
+              <sector category-ID="80" percent-employed="4.9086" />
+              <sector category-ID="90" percent-employed="18.3728" />
+            </econ-data>
+            <edu-data percent-highschool-grad="87.9" percent-college-grad="24.6" />
+            <crime-data>
+              <crime type="Violent" name="Murder" rate="0.0623365" />
+              <crime type="Violent" name="Rape" rate="0.0463583" />
+              <crime type="Violent" name="Assault" rate="0.3180189" />
+              <crime type="Violent" name="Robbery" rate="0.116898" />
+              <crime type="Property" name="Theft" rate="1.7191656" />
+              <crime type="Property" name="Burglary" rate="0.6837497" />
+              <crime type="Property" name="GTA" rate="0.3288366" />
+            </crime-data>
+          </state>
+          <state name="Minnesota" avg-earning-per-year="-2234703.520999,1136.44939870489">
+            <econ-data>
+              <sector category-ID="10" percent-employed="0.3241" />
+              <sector category-ID="20" percent-employed="5.1831" />
+              <sector category-ID="30" percent-employed="16.4061" />
+              <sector category-ID="40" percent-employed="24.4504" />
+              <sector category-ID="50" percent-employed="2.8078" />
+              <sector category-ID="60" percent-employed="14.9577" />
+              <sector category-ID="70" percent-employed="11.0824" />
+              <sector category-ID="80" percent-employed="5.4231" />
+              <sector category-ID="90" percent-employed="19.3654" />
+            </econ-data>
+            <edu-data percent-highschool-grad="91.5" percent-college-grad="31.5" />
+            <crime-data>
+              <crime type="Violent" name="Murder" rate="0.0191553" />
+              <crime type="Violent" name="Rape" rate="0.0337733" />
+              <crime type="Violent" name="Assault" rate="0.1423876" />
+              <crime type="Violent" name="Robbery" rate="0.0764902" />
+              <crime type="Property" name="Theft" rate="2.0260102" />
+              <crime type="Property" name="Burglary" rate="0.493797" />
+              <crime type="Property" name="GTA" rate="0.1905562" />
+            </crime-data>
+          </state>
+          <state name="Mississippi" avg-earning-per-year="-1746340.75467154,888.21480111007">
+            <econ-data>
+              <sector category-ID="10" percent-employed="0.98" />
+              <sector category-ID="20" percent-employed="5.3998" />
+              <sector category-ID="30" percent-employed="18.8929" />
+              <sector category-ID="40" percent-employed="22.786" />
+              <sector category-ID="50" percent-employed="1.4852" />
+              <sector category-ID="60" percent-employed="9.063" />
+              <sector category-ID="70" percent-employed="12.526" />
+              <sector category-ID="80" percent-employed="4.1089" />
+              <sector category-ID="90" percent-employed="24.7583" />
+            </econ-data>
+            <edu-data percent-highschool-grad="80.4" percent-college-grad="19.6" />
+            <crime-data>
+              <crime type="Violent" name="Murder" rate="0.0748238" />
+              <crime type="Violent" name="Rape" rate="0.0310826" />
+              <crime type="Violent" name="Assault" rate="0.148372" />
+              <crime type="Violent" name="Robbery" rate="0.0907023" />
+              <crime type="Property" name="Theft" rate="1.8705213" />
+              <crime type="Property" name="Burglary" rate="0.9350593" />
+              <crime type="Property" name="GTA" rate="0.1985473" />
+            </crime-data>
+          </state>
+          <state name="Missouri" avg-earning-per-year="-2007418.99500456,1021.32691951895">
+            <econ-data>
+              <sector category-ID="10" percent-employed="0.2212" />
+              <sector category-ID="20" percent-employed="5.8022" />
+              <sector category-ID="30" percent-employed="14.408" />
+              <sector category-ID="40" percent-employed="24.4799" />
+              <sector category-ID="50" percent-employed="2.9977" />
+              <sector category-ID="60" percent-employed="14.7061" />
+              <sector category-ID="70" percent-employed="12.2946" />
+              <sector category-ID="80" percent-employed="5.2896" />
+              <sector category-ID="90" percent-employed="19.8005" />
+            </econ-data>
+            <edu-data percent-highschool-grad="86.8" percent-college-grad="25.2" />
+            <crime-data>
+              <crime type="Violent" name="Murder" rate="0.0662557" />
+              <crime type="Violent" name="Rape" rate="0.0270878" />
+              <crime type="Violent" name="Assault" rate="0.3334117" />
+              <crime type="Violent" name="Robbery" rate="0.1110882" />
+              <crime type="Property" name="Theft" rate="2.4131089" />
+              <crime type="Property" name="Burglary" rate="0.7155067" />
+              <crime type="Property" name="GTA" rate="0.325957" />
+            </crime-data>
+          </state>
+          <state name="Montana" avg-earning-per-year="-1512210.69133513,770.295405488735">
+            <econ-data>
+              <sector category-ID="10" percent-employed="2.1938" />
+              <sector category-ID="20" percent-employed="7.0159" />
+              <sector category-ID="30" percent-employed="5.8882" />
+              <sector category-ID="40" percent-employed="25.8504" />
+              <sector category-ID="50" percent-employed="2.1844" />
+              <sector category-ID="60" percent-employed="10.3504" />
+              <sector category-ID="70" percent-employed="16.1019" />
+              <sector category-ID="80" percent-employed="4.8576" />
+              <sector category-ID="90" percent-employed="25.5575" />
+            </econ-data>
+            <edu-data percent-highschool-grad="90.8" percent-college-grad="27.4" />
+            <crime-data>
+              <crime type="Violent" name="Murder" rate="0.0249483" />
+              <crime type="Violent" name="Rape" rate="0.0344444" />
+              <crime type="Violent" name="Assault" rate="0.222121" />
+              <crime type="Violent" name="Robbery" rate="0.0190626" />
+              <crime type="Property" name="Theft" rate="2.0975942" />
+              <crime type="Property" name="Burglary" rate="0.3588399" />
+              <crime type="Property" name="GTA" rate="0.1759503" />
+            </crime-data>
+          </state>
+          <state name="Nebraska" avg-earning-per-year="-2041114.36577236,1037.78686401478">
+            <econ-data>
+              <sector category-ID="10" percent-employed="0.1559" />
+              <sector category-ID="20" percent-employed="5.9774" />
+              <sector category-ID="30" percent-employed="13.9216" />
+              <sector category-ID="40" percent-employed="26.6477" />
+              <sector category-ID="50" percent-employed="2.8158" />
+              <sector category-ID="60" percent-employed="13.3959" />
+              <sector category-ID="70" percent-employed="10.7117" />
+              <sector category-ID="80" percent-employed="4.6217" />
+              <sector category-ID="90" percent-employed="21.7523" />
+            </econ-data>
+            <edu-data percent-highschool-grad="89.8" percent-college-grad="27.4" />
+            <crime-data>
+              <crime type="Violent" name="Murder" rate="0.0306276" />
+              <crime type="Violent" name="Rape" rate="0.034" />
+              <crime type="Violent" name="Assault" rate="0.1798812" />
+              <crime type="Violent" name="Robbery" rate="0.0607915" />
+              <crime type="Property" name="Theft" rate="2.1623773" />
+              <crime type="Property" name="Burglary" rate="0.4858486" />
+              <crime type="Property" name="GTA" rate="0.2445447" />
+            </crime-data>
+          </state>
+          <state name="Nevada" avg-earning-per-year="-2039859.52001227,1038.78772741288">
+            <econ-data>
+              <sector category-ID="10" percent-employed="1.2602" />
+              <sector category-ID="20" percent-employed="9.257" />
+              <sector category-ID="30" percent-employed="4.3686" />
+              <sector category-ID="40" percent-employed="20.9029" />
+              <sector category-ID="50" percent-employed="1.5252" />
+              <sector category-ID="60" percent-employed="13.385" />
+              <sector category-ID="70" percent-employed="31.8357" />
+              <sector category-ID="80" percent-employed="3.2282" />
+              <sector category-ID="90" percent-employed="14.2372" />
+            </econ-data>
+            <edu-data percent-highschool-grad="83.9" percent-college-grad="21.8" />
+            <crime-data>
+              <crime type="Violent" name="Murder" rate="0.0644533" />
+              <crime type="Violent" name="Rape" rate="0.038634" />
+              <crime type="Violent" name="Assault" rate="0.3976783" />
+              <crime type="Violent" name="Robbery" rate="0.2151933" />
+              <crime type="Property" name="Theft" rate="1.761608" />
+              <crime type="Property" name="Burglary" rate="0.8672545" />
+              <crime type="Property" name="GTA" rate="0.5957186" />
+            </crime-data>
+          </state>
+          <state name="New Hampshire" avg-earning-per-year="-2270957.35405481,1154.18495220473">
+            <econ-data>
+              <sector category-ID="10" percent-employed="0.201" />
+              <sector category-ID="20" percent-employed="5.07" />
+              <sector category-ID="30" percent-employed="16.9164" />
+              <sector category-ID="40" percent-employed="27.5622" />
+              <sector category-ID="50" percent-employed="2.5192" />
+              <sector category-ID="60" percent-employed="12.5063" />
+              <sector category-ID="70" percent-employed="12.5516" />
+              <sector category-ID="80" percent-employed="4.5626" />
+              <sector category-ID="90" percent-employed="18.1107" />
+            </econ-data>
+            <edu-data percent-highschool-grad="91.3" percent-college-grad="32" />
+            <crime-data>
+              <crime type="Violent" name="Murder" rate="0.0112305" />
+              <crime type="Violent" name="Rape" rate="0.0325742" />
+              <crime type="Violent" name="Assault" rate="0.0996279" />
+              <crime type="Violent" name="Robbery" rate="0.0357062" />
+              <crime type="Property" name="Theft" rate="1.6453466" />
+              <crime type="Property" name="Burglary" rate="0.3717385" />
+              <crime type="Property" name="GTA" rate="0.0871846" />
+            </crime-data>
+          </state>
+          <state name="New Jersey" avg-earning-per-year="-2793172.74085714,1420.25575084796">
+            <econ-data>
+              <sector category-ID="10" percent-employed="0.0536" />
+              <sector category-ID="20" percent-employed="4.7475" />
+              <sector category-ID="30" percent-employed="10.7861" />
+              <sector category-ID="40" percent-employed="27.2782" />
+              <sector category-ID="50" percent-employed="3.1517" />
+              <sector category-ID="60" percent-employed="18.9801" />
+              <sector category-ID="70" percent-employed="10.3883" />
+              <sector category-ID="80" percent-employed="4.8972" />
+              <sector category-ID="90" percent-employed="19.7173" />
+            </econ-data>
+            <edu-data percent-highschool-grad="87.4" percent-college-grad="34.5" />
+            <crime-data>
+              <crime type="Violent" name="Murder" rate="0.0434018" />
+              <crime type="Violent" name="Rape" rate="0.0119568" />
+              <crime type="Violent" name="Assault" rate="0.157628" />
+              <crime type="Violent" name="Robbery" rate="0.1383452" />
+              <crime type="Property" name="Theft" rate="1.4607047" />
+              <crime type="Property" name="Burglary" rate="0.4385958" />
+              <crime type="Property" name="GTA" rate="0.2109852" />
+            </crime-data>
+          </state>
+          <state name="New Mexico" avg-earning-per-year="-1861396.70545785,947.295467160023">
+            <econ-data>
+              <sector category-ID="10" percent-employed="2.8596" />
+              <sector category-ID="20" percent-employed="7.2674" />
+              <sector category-ID="30" percent-employed="5.607" />
+              <sector category-ID="40" percent-employed="21.1651" />
+              <sector category-ID="50" percent-employed="2.2721" />
+              <sector category-ID="60" percent-employed="14.3799" />
+              <sector category-ID="70" percent-employed="12.7381" />
+              <sector category-ID="80" percent-employed="4.3448" />
+              <sector category-ID="90" percent-employed="29.366" />
+            </econ-data>
+            <edu-data percent-highschool-grad="82.8" percent-college-grad="25.3" />
+            <crime-data>
+              <crime type="Violent" name="Murder" rate="0.0702578" />
+              <crime type="Violent" name="Rape" rate="0.0512331" />
+              <crime type="Violent" name="Assault" rate="0.4587064" />
+              <crime type="Violent" name="Robbery" rate="0.096689" />
+              <crime type="Property" name="Theft" rate="2.3571563" />
+              <crime type="Property" name="Burglary" rate="1.0317206" />
+              <crime type="Property" name="GTA" rate="0.3429192" />
+            </crime-data>
+          </state>
+          <state name="New York" avg-earning-per-year="-3030233.60055494,1540.46512488434">
+            <econ-data>
+              <sector category-ID="10" percent-employed="0.0867" />
+              <sector category-ID="20" percent-employed="5.0473" />
+              <sector category-ID="30" percent-employed="9.679" />
+              <sector category-ID="40" percent-employed="23.6786" />
+              <sector category-ID="50" percent-employed="4.3629" />
+              <sector category-ID="60" percent-employed="17.3572" />
+              <sector category-ID="70" percent-employed="11.0422" />
+              <sector category-ID="80" percent-employed="5.5795" />
+              <sector category-ID="90" percent-employed="23.1667" />
+            </econ-data>
+            <edu-data percent-highschool-grad="84.7" percent-college-grad="32.4" />
+            <crime-data>
+              <crime type="Violent" name="Murder" rate="0.0400337" />
+              <crime type="Violent" name="Rape" rate="0.015386" />
+              <crime type="Violent" name="Assault" rate="0.2313045" />
+              <crime type="Violent" name="Robbery" rate="0.1528037" />
+              <crime type="Property" name="Theft" rate="1.4933521" />
+              <crime type="Property" name="Burglary" rate="0.3245294" />
+              <crime type="Property" name="GTA" rate="0.1188575" />
+            </crime-data>
+          </state>
+          <state name="North Carolina" avg-earning-per-year="-2090850.77798328,1062.99352451432">
+            <econ-data>
+              <sector category-ID="10" percent-employed="0.2128" />
+              <sector category-ID="20" percent-employed="6.3639" />
+              <sector category-ID="30" percent-employed="18.4993" />
+              <sector category-ID="40" percent-employed="22.6116" />
+              <sector category-ID="50" percent-employed="2.1471" />
+              <sector category-ID="60" percent-employed="14.1121" />
+              <sector category-ID="70" percent-employed="11.2979" />
+              <sector category-ID="80" percent-employed="4.2819" />
+              <sector category-ID="90" percent-employed="20.4735" />
+            </econ-data>
+            <edu-data percent-highschool-grad="84.3" percent-college-grad="26.5" />
+            <crime-data>
+              <crime type="Violent" name="Murder" rate="0.0559544" />
+              <crime type="Violent" name="Rape" rate="0.022781" />
+              <crime type="Violent" name="Assault" rate="0.2515456" />
+              <crime type="Violent" name="Robbery" rate="0.1202732" />
+              <crime type="Property" name="Theft" rate="2.3116472" />
+              <crime type="Property" name="Burglary" rate="1.0878464" />
+              <crime type="Property" name="GTA" rate="0.2294645" />
+            </crime-data>
+          </state>
+          <state name="North Dakota" avg-earning-per-year="-1908816.45790928,970.423681776118">
+            <econ-data>
+              <sector category-ID="10" percent-employed="3.2394" />
+              <sector category-ID="20" percent-employed="7.1061" />
+              <sector category-ID="30" percent-employed="8.1448" />
+              <sector category-ID="40" percent-employed="27.4144" />
+              <sector category-ID="50" percent-employed="2.5509" />
+              <sector category-ID="60" percent-employed="9.3531" />
+              <sector category-ID="70" percent-employed="11.1875" />
+              <sector category-ID="80" percent-employed="5.2692" />
+              <sector category-ID="90" percent-employed="25.7347" />
+            </econ-data>
+            <edu-data percent-highschool-grad="90.1" percent-college-grad="25.8" />
+            <crime-data>
+              <crime type="Violent" name="Murder" rate="0.0215271" />
+              <crime type="Violent" name="Rape" rate="0.0363073" />
+              <crime type="Violent" name="Assault" rate="0.151608" />
+              <crime type="Violent" name="Robbery" rate="0.0149572" />
+              <crime type="Property" name="Theft" rate="1.464987" />
+              <crime type="Property" name="Burglary" rate="0.3508535" />
+              <crime type="Property" name="GTA" rate="0.1588814" />
+            </crime-data>
+          </state>
+          <state name="Ohio" avg-earning-per-year="-2046735.65519574,1042.04539007091">
+            <econ-data>
+              <sector category-ID="10" percent-employed="0.2894" />
+              <sector category-ID="20" percent-employed="4.9657" />
+              <sector category-ID="30" percent-employed="19.3157" />
+              <sector category-ID="40" percent-employed="23.9393" />
+              <sector category-ID="50" percent-employed="2.0795" />
+              <sector category-ID="60" percent-employed="14.8657" />
+              <sector category-ID="70" percent-employed="11.3667" />
+              <sector category-ID="80" percent-employed="5.0485" />
+              <sector category-ID="90" percent-employed="18.1295" />
+            </econ-data>
+            <edu-data percent-highschool-grad="87.6" percent-college-grad="24.1" />
+            <crime-data>
+              <crime type="Violent" name="Murder" rate="0.0445115" />
+              <crime type="Violent" name="Rape" rate="0.035535" />
+              <crime type="Violent" name="Assault" rate="0.135178" />
+              <crime type="Violent" name="Robbery" rate="0.1453441" />
+              <crime type="Property" name="Theft" rate="2.1873046" />
+              <crime type="Property" name="Burglary" rate="0.8700768" />
+              <crime type="Property" name="GTA" rate="0.2284406" />
+            </crime-data>
+          </state>
+          <state name="Oklahoma" avg-earning-per-year="-1966600.74289232,1000.20468701818">
+            <econ-data>
+              <sector category-ID="10" percent-employed="3.2295" />
+              <sector category-ID="20" percent-employed="5.2553" />
+              <sector category-ID="30" percent-employed="11.9937" />
+              <sector category-ID="40" percent-employed="22.7234" />
+              <sector category-ID="50" percent-employed="2.2704" />
+              <sector category-ID="60" percent-employed="13.5201" />
+              <sector category-ID="70" percent-employed="10.6802" />
+              <sector category-ID="80" percent-employed="4.7812" />
+              <sector category-ID="90" percent-employed="25.5463" />
+            </econ-data>
+            <edu-data percent-highschool-grad="85.6" percent-college-grad="22.7" />
+            <crime-data>
+              <crime type="Violent" name="Murder" rate="0.0554787" />
+              <crime type="Violent" name="Rape" rate="0.0403327" />
+              <crime type="Violent" name="Assault" rate="0.342558" />
+              <crime type="Violent" name="Robbery" rate="0.0881716" />
+              <crime type="Property" name="Theft" rate="2.2080007" />
+              <crime type="Property" name="Burglary" rate="0.9436513" />
+              <crime type="Property" name="GTA" rate="0.3153731" />
+            </crime-data>
+          </state>
+          <state name="Oregon" avg-earning-per-year="-1991106.37582479,1013.36731421522">
+            <econ-data>
+              <sector category-ID="10" percent-employed="0.6591" />
+              <sector category-ID="20" percent-employed="6.1387" />
+              <sector category-ID="30" percent-employed="14.9374" />
+              <sector category-ID="40" percent-employed="23.8049" />
+              <sector category-ID="50" percent-employed="2.5646" />
+              <sector category-ID="60" percent-employed="14.2665" />
+              <sector category-ID="70" percent-employed="12.007" />
+              <sector category-ID="80" percent-employed="4.2664" />
+              <sector category-ID="90" percent-employed="21.3554" />
+            </econ-data>
+            <edu-data percent-highschool-grad="89.1" percent-college-grad="29.2" />
+            <crime-data>
+              <crime type="Violent" name="Murder" rate="0.0219681" />
+              <crime type="Violent" name="Rape" rate="0.03074" />
+              <crime type="Violent" name="Assault" rate="0.1597269" />
+              <crime type="Violent" name="Robbery" rate="0.0647895" />
+              <crime type="Property" name="Theft" rate="2.459033" />
+              <crime type="Property" name="Burglary" rate="0.5653292" />
+              <crime type="Property" name="GTA" rate="0.3090606" />
+            </crime-data>
+          </state>
+          <state name="Pennsylvania" avg-earning-per-year="-2301849.69737889,1170.99488128275">
+            <econ-data>
+              <sector category-ID="10" percent-employed="0.5629" />
+              <sector category-ID="20" percent-employed="5.4701" />
+              <sector category-ID="30" percent-employed="16.5209" />
+              <sector category-ID="40" percent-employed="25.5522" />
+              <sector category-ID="50" percent-employed="2.5281" />
+              <sector category-ID="60" percent-employed="15.2483" />
+              <sector category-ID="70" percent-employed="11.1885" />
+              <sector category-ID="80" percent-employed="5.8258" />
+              <sector category-ID="90" percent-employed="17.1032" />
+            </econ-data>
+            <edu-data percent-highschool-grad="87.9" percent-college-grad="26.4" />
+            <crime-data>
+              <crime type="Violent" name="Murder" rate="0.05386" />
+              <crime type="Violent" name="Rape" rate="0.0262991" />
+              <crime type="Violent" name="Assault" rate="0.2096543" />
+              <crime type="Violent" name="Robbery" rate="0.137007" />
+              <crime type="Property" name="Theft" rate="1.6419272" />
+              <crime type="Property" name="Burglary" rate="0.4370764" />
+              <crime type="Property" name="GTA" rate="0.1600175" />
+            </crime-data>
+          </state>
+          <state name="Rhode Island" avg-earning-per-year="-2326704.60080165,1182.75010792474">
+            <econ-data>
+              <sector category-ID="10" percent-employed="0.0607" />
+              <sector category-ID="20" percent-employed="5.1845" />
+              <sector category-ID="30" percent-employed="16.4105" />
+              <sector category-ID="40" percent-employed="21.9378" />
+              <sector category-ID="50" percent-employed="2.9569" />
+              <sector category-ID="60" percent-employed="15.2123" />
+              <sector category-ID="70" percent-employed="13.9617" />
+              <sector category-ID="80" percent-employed="6.2253" />
+              <sector category-ID="90" percent-employed="18.0502" />
+            </econ-data>
+            <edu-data percent-highschool-grad="84.7" percent-college-grad="30.5" />
+            <crime-data>
+              <crime type="Violent" name="Murder" rate="0.0265922" />
+              <crime type="Violent" name="Rape" rate="0.0276943" />
+              <crime type="Violent" name="Assault" rate="0.1419666" />
+              <crime type="Violent" name="Robbery" rate="0.0698085" />
+              <crime type="Property" name="Theft" rate="1.7749838" />
+              <crime type="Property" name="Burglary" rate="0.5380374" />
+              <crime type="Property" name="GTA" rate="0.2673476" />
+            </crime-data>
+          </state>
+          <state name="South Carolina" avg-earning-per-year="-1899932.40881893,966.364230650618">
+            <econ-data>
+              <sector category-ID="10" percent-employed="0.3006" />
+              <sector category-ID="20" percent-employed="6.4444" />
+              <sector category-ID="30" percent-employed="17.3912" />
+              <sector category-ID="40" percent-employed="22.637" />
+              <sector category-ID="50" percent-employed="1.7145" />
+              <sector category-ID="60" percent-employed="13.241" />
+              <sector category-ID="70" percent-employed="12.772" />
+              <sector category-ID="80" percent-employed="4.1982" />
+              <sector category-ID="90" percent-employed="21.3011" />
+            </econ-data>
+            <edu-data percent-highschool-grad="83.6" percent-college-grad="24.3" />
+            <crime-data>
+              <crime type="Violent" name="Murder" rate="0.0697696" />
+              <crime type="Violent" name="Rape" rate="0.0367309" />
+              <crime type="Violent" name="Assault" rate="0.4871377" />
+              <crime type="Violent" name="Robbery" rate="0.1154759" />
+              <crime type="Property" name="Theft" rate="2.6903296" />
+              <crime type="Property" name="Burglary" rate="0.9627542" />
+              <crime type="Property" name="GTA" rate="0.3231646" />
+            </crime-data>
+          </state>
+          <state name="South Dakota" avg-earning-per-year="-1820056.19130429,925.417391304333">
+            <econ-data>
+              <sector category-ID="10" percent-employed="0.3029" />
+              <sector category-ID="20" percent-employed="6.4435" />
+              <sector category-ID="30" percent-employed="13.4766" />
+              <sector category-ID="40" percent-employed="25.9708" />
+              <sector category-ID="50" percent-employed="2.1525" />
+              <sector category-ID="60" percent-employed="8.5914" />
+              <sector category-ID="70" percent-employed="13.4806" />
+              <sector category-ID="80" percent-employed="5.167" />
+              <sector category-ID="90" percent-employed="24.4147" />
+            </econ-data>
+            <edu-data percent-highschool-grad="89.9" percent-college-grad="25.1" />
+            <crime-data>
+              <crime type="Violent" name="Murder" rate="0.0252613" />
+              <crime type="Violent" name="Rape" rate="0.0526971" />
+              <crime type="Violent" name="Assault" rate="0.1692872" />
+              <crime type="Violent" name="Robbery" rate="0.0177365" />
+              <crime type="Property" name="Theft" rate="1.3492383" />
+              <crime type="Property" name="Burglary" rate="0.3453098" />
+              <crime type="Property" name="GTA" rate="0.106789" />
+            </crime-data>
+          </state>
+          <state name="Tennessee" avg-earning-per-year="-2105681.01566444,1070.55294480418">
+            <econ-data>
+              <sector category-ID="10" percent-employed="0.1982" />
+              <sector category-ID="20" percent-employed="4.9259" />
+              <sector category-ID="30" percent-employed="18.3386" />
+              <sector category-ID="40" percent-employed="26.0617" />
+              <sector category-ID="50" percent-employed="2.1933" />
+              <sector category-ID="60" percent-employed="13.9245" />
+              <sector category-ID="70" percent-employed="11.5367" />
+              <sector category-ID="80" percent-employed="4.4434" />
+              <sector category-ID="90" percent-employed="18.3779" />
+            </econ-data>
+            <edu-data percent-highschool-grad="83.1" percent-college-grad="23" />
+            <crime-data>
+              <crime type="Violent" name="Murder" rate="0.0628493" />
+              <crime type="Violent" name="Rape" rate="0.0328484" />
+              <crime type="Violent" name="Assault" rate="0.4840503" />
+              <crime type="Violent" name="Robbery" rate="0.1466894" />
+              <crime type="Property" name="Theft" rate="2.4989314" />
+              <crime type="Property" name="Burglary" rate="0.9502227" />
+              <crime type="Property" name="GTA" rate="0.2728716" />
+            </crime-data>
+          </state>
+          <state name="Texas" avg-earning-per-year="-2344516.85507238,1191.98550724636">
+            <econ-data>
+              <sector category-ID="10" percent-employed="2.3845" />
+              <sector category-ID="20" percent-employed="7.0473" />
+              <sector category-ID="30" percent-employed="11.5623" />
+              <sector category-ID="40" percent-employed="24.9056" />
+              <sector category-ID="50" percent-employed="2.726" />
+              <sector category-ID="60" percent-employed="14.8372" />
+              <sector category-ID="70" percent-employed="11.5091" />
+              <sector category-ID="80" percent-employed="4.3973" />
+              <sector category-ID="90" percent-employed="20.6307" />
+            </econ-data>
+            <edu-data percent-highschool-grad="79.9" percent-college-grad="25.5" />
+            <crime-data>
+              <crime type="Violent" name="Murder" rate="0.0514378" />
+              <crime type="Violent" name="Rape" rate="0.0322887" />
+              <crime type="Violent" name="Assault" rate="0.2861015" />
+              <crime type="Violent" name="Robbery" rate="0.1379907" />
+              <crime type="Property" name="Theft" rate="2.5654065" />
+              <crime type="Property" name="Burglary" rate="0.8631245" />
+              <crime type="Property" name="GTA" rate="0.3137829" />
+            </crime-data>
+          </state>
+          <state name="Utah" avg-earning-per-year="-1855797.12192408,944.494172062891">
+            <econ-data>
+              <sector category-ID="10" percent-employed="0.987" />
+              <sector category-ID="20" percent-employed="7.825" />
+              <sector category-ID="30" percent-employed="12.5197" />
+              <sector category-ID="40" percent-employed="23.9012" />
+              <sector category-ID="50" percent-employed="3.2587" />
+              <sector category-ID="60" percent-employed="15.5853" />
+              <sector category-ID="70" percent-employed="11.2004" />
+              <sector category-ID="80" percent-employed="3.5362" />
+              <sector category-ID="90" percent-employed="21.1865" />
+            </econ-data>
+            <edu-data percent-highschool-grad="90.4" percent-college-grad="28.5" />
+            <crime-data>
+              <crime type="Violent" name="Murder" rate="0.0185498" />
+              <crime type="Violent" name="Rape" rate="0.0335124" />
+              <crime type="Violent" name="Assault" rate="0.133482" />
+              <crime type="Violent" name="Robbery" rate="0.0455513" />
+              <crime type="Property" name="Theft" rate="2.4744971" />
+              <crime type="Property" name="Burglary" rate="0.5178496" />
+              <crime type="Property" name="GTA" rate="0.2662917" />
+            </crime-data>
+          </state>
+          <state name="Vermont" avg-earning-per-year="-1817722.0812827,924.662781375256">
+            <econ-data>
+              <sector category-ID="10" percent-employed="0.3846" />
+              <sector category-ID="20" percent-employed="6.3496" />
+              <sector category-ID="30" percent-employed="16.1719" />
+              <sector category-ID="40" percent-employed="24.4271" />
+              <sector category-ID="50" percent-employed="2.5137" />
+              <sector category-ID="60" percent-employed="9.5339" />
+              <sector category-ID="70" percent-employed="14.1333" />
+              <sector category-ID="80" percent-employed="4.2094" />
+              <sector category-ID="90" percent-employed="22.2765" />
+            </econ-data>
+            <edu-data percent-highschool-grad="91" percent-college-grad="33.1" />
+            <crime-data>
+              <crime type="Violent" name="Murder" rate="0.0165067" />
+              <crime type="Violent" name="Rape" rate="0.0207647" />
+              <crime type="Violent" name="Assault" rate="0.0927232" />
+              <crime type="Violent" name="Robbery" rate="0.014355" />
+              <crime type="Property" name="Theft" rate="1.6689859" />
+              <crime type="Property" name="Burglary" rate="0.5299299" />
+              <crime type="Property" name="GTA" rate="0.0788061" />
+            </crime-data>
+          </state>
+          <state name="Virginia" avg-earning-per-year="-2461434.97668817,1250.96040703051">
+            <econ-data>
+              <sector category-ID="10" percent-employed="0.3621" />
+              <sector category-ID="20" percent-employed="6.7598" />
+              <sector category-ID="30" percent-employed="9.9882" />
+              <sector category-ID="40" percent-employed="21.2187" />
+              <sector category-ID="50" percent-employed="3.0009" />
+              <sector category-ID="60" percent-employed="19.9388" />
+              <sector category-ID="70" percent-employed="10.8422" />
+              <sector category-ID="80" percent-employed="5.8393" />
+              <sector category-ID="90" percent-employed="22.05" />
+            </econ-data>
+            <edu-data percent-highschool-grad="86.6" percent-college-grad="34" />
+            <crime-data>
+              <crime type="Violent" name="Murder" rate="0.0460979" />
+              <crime type="Violent" name="Rape" rate="0.0203513" />
+              <crime type="Violent" name="Assault" rate="0.126869" />
+              <crime type="Violent" name="Robbery" rate="0.0777847" />
+              <crime type="Property" name="Theft" rate="1.8095741" />
+              <crime type="Property" name="Burglary" rate="0.3762309" />
+              <crime type="Property" name="GTA" rate="0.1466043" />
+            </crime-data>
+          </state>
+          <state name="Washington" avg-earning-per-year="-2415417.14036378,1228.41621954978">
+            <econ-data>
+              <sector category-ID="10" percent-employed="0.3592" />
+              <sector category-ID="20" percent-employed="6.9576" />
+              <sector category-ID="30" percent-employed="12.9501" />
+              <sector category-ID="40" percent-employed="23.043" />
+              <sector category-ID="50" percent-employed="4.1955" />
+              <sector category-ID="60" percent-employed="13.8281" />
+              <sector category-ID="70" percent-employed="11.4921" />
+              <sector category-ID="80" percent-employed="4.5756" />
+              <sector category-ID="90" percent-employed="22.5986" />
+            </econ-data>
+            <edu-data percent-highschool-grad="89.7" percent-college-grad="31" />
+            <crime-data>
+              <crime type="Violent" name="Murder" rate="0.0271809" />
+              <crime type="Violent" name="Rape" rate="0.0371493" />
+              <crime type="Violent" name="Assault" rate="0.1857464" />
+              <crime type="Violent" name="Robbery" rate="0.0900716" />
+              <crime type="Property" name="Theft" rate="2.5928433" />
+              <crime type="Property" name="Burglary" rate="0.8434164" />
+              <crime type="Property" name="GTA" rate="0.4842304" />
+            </crime-data>
+          </state>
+          <state name="West Virginia" avg-earning-per-year="-1751708.90866476,892.191551032982">
+            <econ-data>
+              <sector category-ID="10" percent-employed="4.4915" />
+              <sector category-ID="20" percent-employed="5.7913" />
+              <sector category-ID="30" percent-employed="10.5068" />
+              <sector category-ID="40" percent-employed="23.1308" />
+              <sector category-ID="50" percent-employed="1.9436" />
+              <sector category-ID="60" percent-employed="9.7323" />
+              <sector category-ID="70" percent-employed="11.3105" />
+              <sector category-ID="80" percent-employed="8.8776" />
+              <sector category-ID="90" percent-employed="24.2156" />
+            </econ-data>
+            <edu-data percent-highschool-grad="82.8" percent-college-grad="17.3" />
+            <crime-data>
+              <crime type="Violent" name="Murder" rate="0.0393601" />
+              <crime type="Violent" name="Rape" rate="0.0203052" />
+              <crime type="Violent" name="Assault" rate="0.2228405" />
+              <crime type="Violent" name="Robbery" rate="0.0441627" />
+              <crime type="Property" name="Theft" rate="1.6381919" />
+              <crime type="Property" name="Burglary" rate="0.5886041" />
+              <crime type="Property" name="GTA" rate="0.1515639" />
+            </crime-data>
+          </state>
+          <state name="Wisconsin" avg-earning-per-year="-2030494.605427,1033.01745297562">
+            <econ-data>
+              <sector category-ID="10" percent-employed="0.1665" />
+              <sector category-ID="20" percent-employed="5.0178" />
+              <sector category-ID="30" percent-employed="22.6829" />
+              <sector category-ID="40" percent-employed="23.3727" />
+              <sector category-ID="50" percent-employed="2.1675" />
+              <sector category-ID="60" percent-employed="11.6817" />
+              <sector category-ID="70" percent-employed="10.9441" />
+              <sector category-ID="80" percent-employed="5.9118" />
+              <sector category-ID="90" percent-employed="18.0551" />
+            </econ-data>
+            <edu-data percent-highschool-grad="89.8" percent-college-grad="25.7" />
+            <crime-data>
+              <crime type="Violent" name="Murder" rate="0.0289887" />
+              <crime type="Violent" name="Rape" rate="0.0208455" />
+              <crime type="Violent" name="Assault" rate="0.1573716" />
+              <crime type="Violent" name="Robbery" rate="0.0870755" />
+              <crime type="Property" name="Theft" rate="1.8955979" />
+              <crime type="Property" name="Burglary" rate="0.4611057" />
+              <crime type="Property" name="GTA" rate="0.1814918" />
+            </crime-data>
+          </state>
+          <state name="Wyoming" avg-earning-per-year="-1941425.05895769,987.763120567361">
+            <econ-data>
+              <sector category-ID="10" percent-employed="9.5843" />
+              <sector category-ID="20" percent-employed="9.0324" />
+              <sector category-ID="30" percent-employed="4.2072" />
+              <sector category-ID="40" percent-employed="21.934" />
+              <sector category-ID="50" percent-employed="1.704" />
+              <sector category-ID="60" percent-employed="6.9975" />
+              <sector category-ID="70" percent-employed="13.8005" />
+              <sector category-ID="80" percent-employed="4.385" />
+              <sector category-ID="90" percent-employed="28.355" />
+            </econ-data>
+            <edu-data percent-highschool-grad="91.8" percent-college-grad="23.8" />
+            <crime-data>
+              <crime type="Violent" name="Murder" rate="0.0241325" />
+              <crime type="Violent" name="Rape" rate="0.0274967" />
+              <crime type="Violent" name="Assault" rate="0.1729255" />
+              <crime type="Violent" name="Robbery" rate="0.0134195" />
+              <crime type="Property" name="Theft" rate="2.0414651" />
+              <crime type="Property" name="Burglary" rate="0.3889196" />
+              <crime type="Property" name="GTA" rate="0.1221444" />
+            </crime-data>
+          </state>
+        </states>
+      </source>
+    </data>
+  </rand>
+</noFuture>

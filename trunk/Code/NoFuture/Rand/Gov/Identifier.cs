@@ -32,6 +32,25 @@ namespace NoFuture.Rand.Gov
     [Serializable]
     public abstract class Anomaly : Identifier { }
 
+    [Serializable]
+    [Flags]
+    public enum ViolentCrime : short
+    {
+        Murder = 1,
+        Rape = 2,
+        Robbery = 4,
+        Assault = 8
+    }
+
+    [Serializable]
+    [Flags]
+    public enum PropertyCrime : short
+    {
+        Burglary = 1,
+        Theft = 2,
+        Gta = 4
+    }
+
     #region address anomalies
 
     /// <summary>

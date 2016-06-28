@@ -14,6 +14,7 @@ namespace NoFuture.Rand.Data
     {
         #region Fields
         private static XmlDocument _usZipXml;
+        private static XmlDocument _usStateData;
         private static XmlDocument _caZipXml;
         private static XmlDocument _usAreaCodeXml;
         private static XmlDocument _caAreaCodeXml;
@@ -41,6 +42,7 @@ namespace NoFuture.Rand.Data
         private const string ECON_SECTOR_PATH = "US_EconSectors.xml";
         private const string US_UNIV_PATH = "US_Universities.xml";
         private const string US_FIRST_NAMES_DATA_PATH = "US_FirstNames.xml";
+        private const string US_STATE_DATA_PATH = "US_States.xml";
         private const string US_LAST_NAMES_DATA_PATH = "US_LastNames.xml";
         private const string US_HIGH_SCHOOL_DATA_PATH = "US_HighSchools.xml";
         private const string US_CITY_DATA_PATH = "US_City.xml";
@@ -51,7 +53,18 @@ namespace NoFuture.Rand.Data
         #endregion
 
         #region API
-
+        /// <summary>
+        /// Loads the 'US_States.xml' data into a <see cref="System.Xml.XmlDocument"/> document.
+        /// </summary>
+        public static XmlDocument UsStateData
+        {
+            get
+            {
+                if (_usStateData == null)
+                    GetXmlDataSource(US_STATE_DATA_PATH, ref _usStateData);
+                return _usStateData;
+            }
+        }
         /// <summary>
         /// Loads the 'US_FirstNames.xml' data into a <see cref="System.Xml.XmlDocument"/> document.
         /// </summary>

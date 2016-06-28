@@ -646,7 +646,7 @@ namespace NoFuture.Rand.Domus
             if (HomeCityArea == null)
                 return UsState.AGE_OF_ADULT;
             var myHomeState = UsState.GetStateByPostalCode(HomeState);
-            return myHomeState == null ? UsState.AGE_OF_ADULT : myHomeState.AgeOfConsent;
+            return myHomeState == null ? UsState.AGE_OF_ADULT : myHomeState.AgeOfMajority;
         }
 
         #endregion

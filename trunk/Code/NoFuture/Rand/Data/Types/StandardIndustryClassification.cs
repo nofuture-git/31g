@@ -83,7 +83,7 @@ namespace NoFuture.Rand.Data.Types
         /// </summary>
         /// <param name="sic"></param>
         /// <returns></returns>
-        public static Tuple<NaicsSuperSector, NaicsSector, NaicsMarket> LookupNaicsBySic(
+        public static Tuple<NaicsPrimarySector, NaicsSector, NaicsMarket> LookupNaicsBySic(
             StandardIndustryClassification sic)
         {
             var allSectors = AllSectors;
@@ -91,15 +91,18 @@ namespace NoFuture.Rand.Data.Types
                 return null;
             foreach (var s in AllSectors)
             {
-                foreach (var ns in s.Divisions.Cast<NaicsSector>())
+                foreach (var ps in s.Divisions.Cast<NaicsPrimarySector>())
                 {
-                    foreach (var mk in ns.Divisions.Cast<NaicsMarket>())
+                    foreach (var ns in ps.Divisions.Cast<NaicsSector>())
                     {
-                        var ssic = mk.Divisions.Cast<StandardIndustryClassification>()
-                            .FirstOrDefault(x => x.Equals(sic));
-                        if (ssic == null)
-                            continue;
-                        return new Tuple<NaicsSuperSector, NaicsSector, NaicsMarket>(s, ns, mk);
+                        foreach (var mk in ns.Divisions.Cast<NaicsMarket>())
+                        {
+                            var ssic = mk.Divisions.Cast<StandardIndustryClassification>()
+                                .FirstOrDefault(x => x.Equals(sic));
+                            if (ssic == null)
+                                continue;
+                            return new Tuple<NaicsPrimarySector, NaicsSector, NaicsMarket>(ps, ns, mk);
+                        }
                     }
                 }
             }
