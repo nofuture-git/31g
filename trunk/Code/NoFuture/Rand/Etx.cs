@@ -3,45 +3,25 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
-using System.Xml.Linq;
 using System.Text;
-using System.Xml;
-using NoFuture.Rand.Data;
 using NoFuture.Rand.Data.NfHtml;
 using NoFuture.Rand.Data.NfHttp;
 using NoFuture.Rand.Data.NfText;
 using NoFuture.Rand.Data.NfXml;
 using NoFuture.Rand.Data.Types;
-using NoFuture.Rand.Edu;
 using NoFuture.Rand.Gov.Fed;
 using NoFuture.Rand.Gov.Sec;
 using NoFuture.Shared;
-using NoFuture.Util;
 
 namespace NoFuture.Rand
 {
     /// <summary>
     /// Represents basic 'etc' like functions for generating random data.
-    /// <remarks>
-    /// US zip code data is derived from a list on wikipedia x-ref'ed with 
-    /// 2010 census data.  Likewise, the first names data (both male and female)
-    /// are from US Census website.
-    /// https://www.census.gov/geo/maps-data/index.html
-    /// 
-    /// US High School data is a subset derived from listing:
-    /// http://nces.ed.gov/ccd/pubschuniv.asp and is what is 
-    /// used for American Race.
-    /// </remarks>
     /// </summary>
     public static class Etx
     {
         #region Fields
         private static Random _myRand;
-        #endregion
-
-        #region Constants
-        private const string US_ZIP_PROB_TABLE_DATA_PATH = @"Data\Source\US_Zip_ProbTable.xml";
-
         #endregion
 
         internal static Random MyRand
@@ -50,73 +30,47 @@ namespace NoFuture.Rand
         }
 
         #region API
-        /// <summary>
-        /// Selects a US Zip Code prefix at random taking into respect the population pertinent to that zip code prefix.
-        /// </summary>
-        public static string RandomAmericanZipWithRespectToPop()
+
+        public enum Dice
         {
-            XDocument usZips = null;
-            var usZipsXmlDocument = TreeData.UsZipProbabilityTable;
-
-            if(usZipsXmlDocument == null)
-                return "100"; //New York
-
-            usZips = usZipsXmlDocument.ToXDocument();
-
-            double pickone = Convert.ToInt32(MyRand.Next(1, 9999999) / 100000);
-            var randnode =
-                usZips.Descendants("zip-code").FirstOrDefault(
-                                                              x =>
-                                                              Convert.ToDouble(x.Attribute("weight").Value) > pickone);
-            if (randnode == null)
-                return "100"; //New York
-
-            return randnode.Attribute("prefix").Value;
+            Four,
+            Six,
+            Eight,
+            Ten,
+            Twelve,
+            Twenty,
+            OneHundred,
+            OneThousand
         }
 
         /// <summary>
-        /// Returns a hashtable whose keys as American's call Race based on the given <see cref="zipCode"/>
+        /// Helper method for common random tests
         /// </summary>
-        /// <param name="zipCode"></param>
-        public static AmericanRacePercents RandomAmericanRaceWithRespectToZip(string zipCode)
+        /// <param name="v"></param>
+        /// <param name="die"></param>
+        /// <returns> </returns>
+        public static bool TryAboveOrAt(int v, Dice die)
         {
-            
-            var pick = 0;
-            //if calling assembly passed in no-args then return all zeros
-            if (string.IsNullOrWhiteSpace(zipCode))
-                return null;
+            Func<int, int, bool> op = (i, i1) => i >= i1;
+            return TryRoll(v, die, op);
+        }
 
-            //get the data for the given zip code
-            var zipStat = Data.TreeData.AmericanHighSchoolData.SelectSingleNode($"//zip-stat[@value='{zipCode}']");
-
-            if (zipStat == null || !zipStat.HasChildNodes)
-            {
-                //try to find on the zip code prefix 
-                var zip3 = zipCode.Substring(0, 3);
-                var zipCodes =
-                    Data.TreeData.AmericanHighSchoolData.SelectNodes($"//zip-code[@prefix='{zip3}']");
-
-                if (zipCodes == null || zipCodes.Count <=0)
-                    return null;
-
-                zipStat = zipCodes.Cast<XmlElement>().FirstOrDefault(x => x.HasChildNodes);
-                if (zipStat == null)
-                    return null;
-            }
-
-            AmericanHighSchool hsOut;
-            pick = MyRand.Next(0, zipStat.ChildNodes.Count - 1);
-            var hsNode = zipStat.ChildNodes[pick];
-            if (!AmericanHighSchool.TryParseXml(hsNode as XmlElement, out hsOut))
-                return null;
-            return hsOut.RacePercents;
-
+        /// <summary>
+        /// Helper method for common random tests
+        /// </summary>
+        /// <param name="v"></param>
+        /// <param name="die"></param>
+        /// <returns></returns>
+        public static bool TryBelowOrAt(int v, Dice die)
+        {
+            Func<int, int, bool> op = (i, i1) => i <= i1;
+            return TryRoll(v, die, op);
         }
 
         /// <summary>
         /// A fifty-fifty probability.
         /// </summary>
-        public static bool CoinToss => MyRand.Next(0, int.MaxValue) % 2 == 0;
+        public static bool CoinToss => MyRand.Next(0, int.MaxValue)%2 == 0;
 
         /// <summary>
         /// Same as its counterpart <see cref="CoinToss"/>
@@ -125,14 +79,15 @@ namespace NoFuture.Rand
         public static int PlusOrMinusOne => CoinToss ? 1 : -1;
 
         /// <summary>
-        /// Returns a random <see cref="Int32"/> between the given range.
+        /// Returns a random <see cref="Int32"/> between the given range
+        /// including the range values themselves.
         /// </summary>
-        /// <param name="from"></param>
-        /// <param name="to"></param>
+        /// <param name="from">Inclusive</param>
+        /// <param name="to">Inclusive</param>
         /// <returns></returns>
         public static int IntNumber(int from, int to)
         {
-            return MyRand.Next(from, to);
+            return MyRand.Next(from, to + 1);
         }
 
         /// <summary>
@@ -157,7 +112,7 @@ namespace NoFuture.Rand
         public static string Chars(int asciiStart, int asciiEnd, int length)
         {
             var str = new StringBuilder();
-            for(var i = 0; i<length;i++)
+            for (var i = 0; i < length; i++)
             {
                 str.Append(Convert.ToChar(MyRand.Next(asciiStart, asciiEnd)));
             }
@@ -179,7 +134,7 @@ namespace NoFuture.Rand
         {
             var word = new StringBuilder();
 
-            for(var i = 0; i< length; i++)
+            for (var i = 0; i < length; i++)
             {
                 if (i == 0)
                     word.Append(CoinToss ? Vowel(true) : Consonant(true));
@@ -327,7 +282,7 @@ namespace NoFuture.Rand
             if (fromThisDate != null)
                 dt = fromThisDate.Value;
             //plus or minus some random days
-            var randomDaysNear = Etx.IntNumber(1, 360) * PlusOrMinusOne;
+            var randomDaysNear = Etx.IntNumber(1, 360)*PlusOrMinusOne;
             return dt.AddYears(plusOrMinusYears).AddDays(randomDaysNear);
         }
 
@@ -340,8 +295,8 @@ namespace NoFuture.Rand
         public static double RandomValueInNormalDist(double mean, double stdDev)
         {
             var magnitude = GetMagnitudeAdjustment(mean);
-            var posMean = Convert.ToInt32(Math.Round(mean * magnitude));
-            var posStdDev = Convert.ToInt32(Math.Round(stdDev * magnitude));
+            var posMean = Convert.ToInt32(Math.Round(mean*magnitude));
+            var posStdDev = Convert.ToInt32(Math.Round(stdDev*magnitude));
 
             var minRand = posMean - (posStdDev*3);
             var maxRand = posMean + (posStdDev*3);
@@ -349,8 +304,7 @@ namespace NoFuture.Rand
             //Random only works on positive ints
             if (minRand < 0 && maxRand < 0)
             {
-                throw new NotImplementedException(
-                    "Only supported for distributions whose entire range is positive values.");
+                throw new NotImplementedException("Only supported for distributions whose entire range is positive values.");
             }
 
             var probTbl = Util.Math.NormalDistEquation.GetCumulativeZScore();
@@ -363,7 +317,7 @@ namespace NoFuture.Rand
                 var someValue = Etx.IntNumber(minRand, maxRand);
 
                 //get the probability of it
-                var z = (double)(someValue - posMean) / posStdDev;
+                var z = (double) (someValue - posMean)/posStdDev;
                 var zscore = Convert.ToInt32(posProbTbl.FirstOrDefault(x => x.Key >= Math.Abs(z)).Value);
 
                 var attempt = Etx.IntNumber(1, 10000);
@@ -372,7 +326,7 @@ namespace NoFuture.Rand
 
                 //when succeded - return some value
                 if (isGe)
-                    return (double)someValue / magnitude;
+                    return (double) someValue/magnitude;
             }
             return mean;
         }
@@ -411,11 +365,10 @@ namespace NoFuture.Rand
                         rcharsOut.Add(new NumericRchar(i));
                         break;
                     case 5:
-                        rcharsOut.Add(new LimitedRchar(i, Consonant(true), Consonant(true), Consonant(true),
-                            Vowel(false)));
+                        rcharsOut.Add(new LimitedRchar(i, Consonant(true), Consonant(true), Consonant(true), Vowel(false)));
                         break;
                     case 6:
-                        rcharsOut.Add( new LimitedRchar(i, '-','.',' '));
+                        rcharsOut.Add(new LimitedRchar(i, '-', '.', ' '));
                         break;
                 }
             }
@@ -438,7 +391,7 @@ namespace NoFuture.Rand
             {
                 if (uri.LocalPath == "/q")
                     return new YhooFinSymbolLookup(uri);
-                if(uri.LocalPath == "/q/bs")
+                if (uri.LocalPath == "/q/bs")
                     return new YhooFinBalanceSheet(uri);
                 if (uri.LocalPath == "/q/is")
                     return new YhooFinIncomeStmt(uri);
@@ -469,6 +422,7 @@ namespace NoFuture.Rand
 
             throw new NotImplementedException();
         }
+        #endregion
 
         [EditorBrowsable(EditorBrowsableState.Never)]
         internal static int GetMagnitudeAdjustment(double dbl)
@@ -476,7 +430,7 @@ namespace NoFuture.Rand
             var strDbl = dbl.ToString(CultureInfo.InvariantCulture);
             var numLen = strDbl.Length;
 
-            var  magnitude = strDbl.IndexOf(".", StringComparison.Ordinal);
+            var magnitude = strDbl.IndexOf(".", StringComparison.Ordinal);
 
             if (numLen > Int32.MaxValue.ToString().Length)
                 numLen = Int32.MaxValue.ToString().Length - 1;
@@ -485,6 +439,58 @@ namespace NoFuture.Rand
 
             return Convert.ToInt32($"1{new string('0', magnitude)}");
         }
-        #endregion
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        private static int GetDiceAsInt(Dice die)
+        {
+            switch (die)
+            {
+                case Dice.Four:
+                    return 4;
+                case Dice.Six:
+                    return 6;
+                case Dice.Eight:
+                    return 8;
+                case Dice.Ten:
+                    return 10;
+                case Dice.Twelve:
+                    return 12;
+                case Dice.Twenty:
+                    return 20;
+                case Dice.OneHundred:
+                    return 100;
+                case Dice.OneThousand:
+                    return 1000;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(die), die, @"No implementation for this dice");
+            }
+        }
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        private static bool TryRoll(int v, Dice die, Func<int, int, bool> op)
+        {
+            if (v <= 0)
+                return false;
+            switch (die)
+            {
+                case Dice.Four:
+                    return op(IntNumber(1, 4), v);
+                case Dice.Six:
+                    return op(IntNumber(1, 6), v);
+                case Dice.Eight:
+                    return op(IntNumber(1, 8), v);
+                case Dice.Ten:
+                    return op(IntNumber(1, 10), v);
+                case Dice.Twelve:
+                    return op(IntNumber(1, 12), v);
+                case Dice.Twenty:
+                    return op(IntNumber(1, 20), v);
+                case Dice.OneHundred:
+                    return op(IntNumber(1, 100), v);
+                case Dice.OneThousand:
+                    return op(IntNumber(1, 100), v);
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(die), die, @"No implementation for this dice");
+            }
+        }
+
     }
 }

@@ -20,9 +20,14 @@
 
         public virtual double SolveForX(double y)
         {
-            if(Slope == 0.0D)
+            if(System.Math.Abs(Slope) < 0.0000001D)
                 return 0.0D;
             return (1/Slope)*y - (Intercept/Slope);
+        }
+
+        public override string ToString()
+        {
+            return $"f(x) = {Slope}x + {Intercept}";
         }
     }
 }

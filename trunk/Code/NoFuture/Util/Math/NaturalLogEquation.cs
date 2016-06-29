@@ -12,12 +12,16 @@
 
         public virtual double SolveForX(double y)
         {
-            if (System.Math.Abs(Slope) < 0.0000000D)
+            if (System.Math.Abs(Slope) < 0.0000001D)
                 return 0.0D;
             var yy = y - Intercept;
             yy = yy / Slope;
             return System.Math.Pow(System.Math.E, yy);
+        }
 
+        public override string ToString()
+        {
+            return $"f(x) = {Slope}*log(x) + {Intercept}";
         }
     }
 }

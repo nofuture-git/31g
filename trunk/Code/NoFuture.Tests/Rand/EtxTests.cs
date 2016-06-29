@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NoFuture.Rand.Domus;
 
 namespace NoFuture.Tests.Rand
 {
@@ -9,7 +10,7 @@ namespace NoFuture.Tests.Rand
         [TestMethod]
         public void RandomUSZipWithRespectToPopTest()
         {
-            var testResult = NoFuture.Rand.Etx.RandomAmericanZipWithRespectToPop();
+            var testResult = NAmerUtil.RandomAmericanZipWithRespectToPop();
             Assert.IsNotNull(testResult);
 
             System.Diagnostics.Debug.WriteLine(testResult);
@@ -18,7 +19,7 @@ namespace NoFuture.Tests.Rand
         public void AmericanRaceRatioByZipCodeTests()
         {
             const string TEST_ZIP = "92071";
-            var testResult = NoFuture.Rand.Etx.RandomAmericanRaceWithRespectToZip(TEST_ZIP);
+            var testResult = NAmerUtil.RandomAmericanRaceWithRespectToZip(TEST_ZIP);
             Assert.IsNotNull(testResult);
             
         }

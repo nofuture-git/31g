@@ -64,7 +64,7 @@ namespace NoFuture.Rand.Gov
 
         public override string ToString()
         {
-            return StateAbbrv;
+            return GetType().Name;
         }
 
         /// <summary>

@@ -6,6 +6,7 @@ using NoFuture.Rand.Data.Types;
 using NoFuture.Rand.Domus.Pneuma;
 using NoFuture.Rand.Gov;
 using NoFuture.Shared;
+using NoFuture.Util;
 
 namespace NoFuture.Rand.Domus
 {
@@ -32,7 +33,6 @@ namespace NoFuture.Rand.Domus
         #region properties
         public virtual BirthCert BirthCert => _birthCert;
         public virtual DateTime? DeathDate { get; set; }
-
         public virtual string FirstName
         {
             get { return _otherNames.First(x => x.Item1 == KindsOfNames.Firstname).Item2; }
@@ -50,6 +50,8 @@ namespace NoFuture.Rand.Domus
         public List<Tuple<KindsOfNames, string>> OtherNames => _otherNames;
         public HomeAddress Address => GetAddressAt(null);
         public Spouse Spouse => GetSpouseAt(null);
+        public int Age => GetAgeAt(null);
+        public MaritialStatus MaritialStatus => GetMaritalStatusAt(null);
         #endregion
 
         #region ctors
@@ -64,9 +66,13 @@ namespace NoFuture.Rand.Domus
 
         public abstract Spouse GetSpouseAt(DateTime? dt);
 
-        public virtual List<IPerson> GetChildernAt(DateTime? dt)
+        public virtual List<IPerson> GetChildrenAt(DateTime? dt)
         {
-            return _children.Where(x => x.BirthCert.DateOfBirth >= dt.GetValueOrDefault(DateTime.Now)).ToList();
+            var ddt = dt.GetValueOrDefault(DateTime.Now);
+
+            return
+                _children.Where(
+                    x => x.BirthCert != null && ddt.ComparedTo(x.BirthCert.DateOfBirth) == ChronoCompare.After).ToList();
         }
 
         public virtual IPerson GetMother() { return _mother; }
@@ -76,7 +82,9 @@ namespace NoFuture.Rand.Domus
         public virtual HomeAddress GetAddressAt(DateTime? dt)
         {
             //TODO enhance to have previous address
-            return dt == null ? _addresses.First() : _addresses.FirstOrDefault(x => x.FromDate <= dt.Value);
+            return dt == null
+                ? _addresses.First()
+                : (_addresses.FirstOrDefault(x => x.FromDate <= dt.Value) ?? _addresses.First());
         }
 
         public int GetAgeAt(DateTime? atTime)

@@ -19,6 +19,11 @@ namespace NoFuture.Util.Math
             return System.Math.Round(j*System.Math.Pow(System.Math.E, f), Int32.MaxValue.ToString().Length - 1);
         }
 
+        public override string ToString()
+        {
+            return $"f(x) = 1/({StdDev} * √(2π)) * e^(-0.5 * (x-{Mean}/{StdDev})²)";
+        }
+
         public static Dictionary<double, double> GetCumulativeZScore()
         {
             if(_zscore != null)

@@ -15,7 +15,8 @@ namespace NoFuture.Rand.Gov
 
         public override string ToString()
         {
-            return $"{this.IssuingState} {base.ToString()}";
+            return string.Join(" ",this.IssuingState,
+                base.ToString());
         }
 
         public override string Abbrev => "DL";

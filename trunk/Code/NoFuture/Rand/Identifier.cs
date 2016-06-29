@@ -168,7 +168,7 @@ namespace NoFuture.Rand
         Firstname = 4,
         Surname = 8,
         Nickname = 16,
-        Father = 32,
+        Maiden = 32,
         Mother = 64,
         Adopted = 128,
         Biological = 264,

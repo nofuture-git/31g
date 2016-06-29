@@ -5,12 +5,26 @@ using NoFuture.Util.Math;
 using System.Xml;
 using NoFuture.Rand.Data;
 using NoFuture.Rand.Data.Types;
+using System.Xml.Linq;
+using NoFuture.Rand.Edu;
+using NoFuture.Rand.Gov;
+using NoFuture.Util;
 
 namespace NoFuture.Rand.Domus
 {
     /// <summary>
     /// Catalog of static utility methods related to North American
     /// </summary>
+    /// <remarks>
+    /// US zip code data is derived from a list on wikipedia x-ref'ed with 
+    /// 2010 census data.  Likewise, the first names data (both male and female)
+    /// are from US Census website.
+    /// https://www.census.gov/geo/maps-data/index.html
+    /// 
+    /// US High School data is a subset derived from listing:
+    /// http://nces.ed.gov/ccd/pubschuniv.asp and is what is 
+    /// used for American Race.
+    /// </remarks>
     public static class NAmerUtil
     {
         #region constants
@@ -59,21 +73,21 @@ namespace NoFuture.Rand.Domus
             {
                 Intercept = -181.45,
                 Slope = 0.1056,
-                StdDev = Etx.RationalNumber(0, 2)
+                StdDev = Etx.RationalNumber(0, 1)
             };
 
             public static RLinearEquation FemaleDob2MarriageAge = new RLinearEquation
             {
                 Intercept = -209.41,
                 Slope = 0.1187,
-                StdDev = Etx.RationalNumber(0, 2)
+                StdDev = Etx.RationalNumber(0, 1)
             };
 
             public static RLinearEquation MaleYearOfMarriage2AvgAge = new RLinearEquation
             {
                 Intercept = -166.24,
                 Slope = 0.0965,
-                StdDev = Etx.RationalNumber(0, 2)
+                StdDev = Etx.RationalNumber(0, 1)
             };
 
             public static RLinearEquation FemaleYearOfMarriage2AvgAge = new RLinearEquation
@@ -87,28 +101,28 @@ namespace NoFuture.Rand.Domus
             {
                 Intercept = -176.32,//-180.32
                 Slope = 0.1026,
-                StdDev = Etx.RationalNumber(0, 2)
+                StdDev = Etx.RationalNumber(0, 1)
             };
 
             public static RLinearEquation FemaleAge2SecondChild = new RLinearEquation
             {
                 Intercept = -171.88,//-175.88
                 Slope = 0.1017,
-                StdDev = Etx.RationalNumber(0, 2)
+                StdDev = Etx.RationalNumber(0, 1)
             };
 
             public static RLinearEquation FemaleAge2ThirdChild = new RLinearEquation
             {
                 Intercept = -125.45,//-129.45
                 Slope = 0.0792,
-                StdDev = Etx.RationalNumber(0, 2)
+                StdDev = Etx.RationalNumber(0, 1)
             };
 
             public static RLinearEquation FemaleAge2ForthChild = new RLinearEquation
             {
                 Intercept = -74.855,//-78.855
                 Slope = 0.0545,
-                StdDev = Etx.RationalNumber(0, 2)
+                StdDev = Etx.RationalNumber(0, 1)
             };
 
             /// <summary>
@@ -230,11 +244,14 @@ namespace NoFuture.Rand.Domus
         }
 
         /// <summary>
-        /// Returns a date being between 18 years ago today back to 68 years ago today.
+        /// Returns a date being between 21 years ago today back to 55 years ago today.
         /// </summary>
+        /// <remarks>
+        /// The age is limited - generate with family to get other age sets
+        /// </remarks>
         public static DateTime GetWorkingAdultBirthDate()
         {
-            return DateTime.Now.AddYears(-1 * Etx.MyRand.Next(18, 68)).AddDays(Etx.IntNumber(1, 360));
+            return DateTime.Now.AddYears(-1 * Etx.MyRand.Next(21, 55)).AddDays(Etx.IntNumber(1, 360));
         }
 
         /// <summary>
@@ -289,10 +306,39 @@ namespace NoFuture.Rand.Domus
         /// Return a <see cref="NorthAmericanRace"/> randomly with weight based on <see cref="zipCode"/>.
         /// </summary>
         /// <param name="zipCode"></param>
-        /// <returns>Will default to string <see cref="NorthAmericanRace.White"/> if <see cref="zipCode"/> cannot be resolved.</returns>
+        /// <returns>
+        /// Defaults to randomly to national averages
+        /// [http://kff.org/other/state-indicator/distribution-by-raceethnicity/]
+        /// </returns>
         public static NorthAmericanRace GetAmericanRace(string zipCode)
         {
-            var amRace = Etx.RandomAmericanRaceWithRespectToZip(zipCode);
+            //defaults
+            if (string.IsNullOrWhiteSpace(zipCode))
+            {
+                var roll = Etx.IntNumber(0, 100);
+                if(roll >= 0 && roll < 61)
+                    return NorthAmericanRace.White;
+
+                if(roll >= 61 && roll < 73)
+                    return NorthAmericanRace.Black;
+
+                if(roll >= 73 && roll < 91)
+                    return NorthAmericanRace.Hispanic;
+
+                if(roll >= 91 && roll < 97)
+                    return NorthAmericanRace.Asian;
+
+                if(roll == 97)
+                    return NorthAmericanRace.Pacific;
+
+                if(roll == 98)
+                    return NorthAmericanRace.AmericanIndian;
+
+                if(roll == 99 || roll == 100)
+                    return NorthAmericanRace.Mixed;
+
+            }
+            var amRace = RandomAmericanRaceWithRespectToZip(zipCode);
 
             if (amRace == null)
                 return NorthAmericanRace.White;
@@ -344,7 +390,7 @@ namespace NoFuture.Rand.Domus
         /// <returns></returns>
         public static MaritialStatus GetMaritialStatus(DateTime dob, Gender gender)
         {
-            if (Etx.IntNumber(1, 1000) <= (int)Math.Round(PercentUnmarriedWholeLife * 1000))
+            if (Etx.MyRand.NextDouble() <= PercentUnmarriedWholeLife)
                 return MaritialStatus.Single;
 
             var avgAgeMarriage = gender == Gender.Female
@@ -358,31 +404,31 @@ namespace NoFuture.Rand.Domus
                 return MaritialStatus.Single;
 
             //chance for being widowed goes up exp for older 
-            if (Etx.IntNumber(1, 1000) <= Math.Round(Equations.Age2ProbWidowed.SolveForY(currentAge) * 1000))
+            if (Etx.MyRand.NextDouble() <= Equations.Age2ProbWidowed.SolveForY(currentAge))
                 return MaritialStatus.Widowed;
 
             //young first marriage
             if (!(currentAge > avgAgeMarriage + AvgLengthOfMarriage)) return MaritialStatus.Married;
 
             //spin for divorce
-            var df = Etx.IntNumber(1, 1000) <= PercentDivorced * 1000;
+            var df = Etx.MyRand.NextDouble() <= PercentDivorced;
 
             //have 'separated' (whatever it means) as low probablity
             if (df && currentAge < avgAgeMarriage + AvgLengthOfMarriage + YearsBeforeNextMarriage)
-                return Etx.IntNumber(1, 1000) <= 64 ? MaritialStatus.Separated : MaritialStatus.Divorced;
+                return Etx.TryBelowOrAt(64, Etx.Dice.OneThousand) ? MaritialStatus.Separated : MaritialStatus.Divorced;
 
             //have prob of never remarry
             if (df && gender == Gender.Male)
             {
-                return Etx.IntNumber(1, 100) > (int) Math.Round(PercentOfMenMarriedOnceNeverAgain)
-                    ? MaritialStatus.Remarried
-                    : MaritialStatus.Divorced;
+                return Etx.MyRand.NextDouble() <= PercentOfMenMarriedOnceNeverAgain
+                    ? MaritialStatus.Divorced
+                    : MaritialStatus.Remarried;
             }
             if (df && gender == Gender.Female)
             {
-                return Etx.IntNumber(1, 100) > (int)Math.Round(PercentOfWomenMarriedOnceNeverAgain)
-                    ? MaritialStatus.Remarried
-                    : MaritialStatus.Divorced;
+                return Etx.MyRand.NextDouble() <= PercentOfWomenMarriedOnceNeverAgain
+                    ? MaritialStatus.Divorced
+                    : MaritialStatus.Remarried;
             }
             return df ? MaritialStatus.Remarried : MaritialStatus.Married;
         }
@@ -398,16 +444,17 @@ namespace NoFuture.Rand.Domus
         /// <returns></returns>
         public static IPerson SolveForParent(DateTime childDob, LinearEquation eq, Gender gender)
         {
-            //assume mother & father married between 1 - 6 years prior the Person's dob
+            //move to a date 1 - 6 years prior the Person's dob
             var dtPm = childDob.AddYears(-1 * Etx.IntNumber(1, 6)).AddDays(Etx.IntNumber(1, 360));
 
-            var ageWhenParentsMarried =
+            //calc the age of marriable person at this time
+            var avgAgeCouldMarry =
                 eq.SolveForY(dtPm.ToDouble());
 
-            var aParent =
-                new NorthAmerican(
-                    dtPm.AddYears(Convert.ToInt32(Math.Round(ageWhenParentsMarried, 0)) * -1),
-                    gender);
+            //move the adjusted child-dob date back by calc'ed years 
+            var parentDob = dtPm.AddYears(Convert.ToInt32(Math.Round(avgAgeCouldMarry, 0))*-1);
+
+            var aParent = new NorthAmerican(parentDob, gender);
             return aParent;
         }
 
@@ -501,6 +548,13 @@ namespace NoFuture.Rand.Domus
             return probChildless;
         }
 
+        /// <summary>
+        /// Solves for a marriage date based on gender and date-of-birth
+        /// with randomness.
+        /// </summary>
+        /// <param name="dob"></param>
+        /// <param name="myGender"></param>
+        /// <returns></returns>
         public static DateTime? SolveForMarriageDate(DateTime? dob, Gender myGender)
         {
             if (dob == null)
@@ -518,12 +572,54 @@ namespace NoFuture.Rand.Domus
         }
 
         /// <summary>
+        /// Difference of national avg to race average added to state average.
+        /// [http://nces.ed.gov/programs/coe/indicator_coi.asp]
+        /// </summary>
+        /// <param name="state"></param>
+        /// <param name="race"></param>
+        /// <returns></returns>
+        public static int SolvePercentHsGradByStateAndRace(UsState state, NorthAmericanRace race)
+        {
+            var natlAvg = 82;
+            var stateAvg = natlAvg;
+            if (state?.GetStateData() != null)
+            {
+                var stateData = state.GetStateData();
+                if (stateData.PercentOfGrads != null && stateData.PercentOfGrads.Count > 0)
+                {
+                    var f = stateData.PercentOfGrads.FirstOrDefault(x => x.Item1 == OccidentalEdu.HighSchool);
+                    if (f != null)
+                    {
+                        stateAvg = (int) Math.Round(f.Item2*100);
+                    }
+                }
+            }
+            
+            var raceNatlAvg = new Dictionary<NorthAmericanRace, int>()
+            {
+                {NorthAmericanRace.White, 87 - natlAvg},
+                {NorthAmericanRace.Black, 73 - natlAvg },
+                {NorthAmericanRace.Hispanic, 76 - natlAvg },
+                {NorthAmericanRace.Asian, 89 - natlAvg },
+                {NorthAmericanRace.Pacific, 89 - natlAvg },
+                {NorthAmericanRace.AmericanIndian, 70 - natlAvg },
+                {NorthAmericanRace.Mixed, 0 }
+            };
+            if(!raceNatlAvg.ContainsKey(race))
+                return stateAvg;
+
+            return stateAvg + raceNatlAvg[race];
+        }
+
+        /// <summary>
         /// Sets <see cref="thisPerson"/> home-related data to the same values of <see cref="livesWithThisOne"/>
         /// </summary>
         /// <param name="thisPerson"></param>
         /// <param name="livesWithThisOne"></param>
         public static void SetNAmerCohabitants(NorthAmerican thisPerson, NorthAmerican livesWithThisOne)
         {
+            if (thisPerson == null || livesWithThisOne == null)
+                return;
             var addrMatchTo = livesWithThisOne.GetAddressAt(null);
             if (addrMatchTo == null)
                 return;
@@ -533,9 +629,72 @@ namespace NoFuture.Rand.Domus
             {
                 thisPerson._phoneNumbers.Add(livesWithThisOne._phoneNumbers.First(p => p.Item1 == KindsOfLabels.Home));
             }
-            if (thisPerson.GetAgeAt(null) >= 12 && !string.IsNullOrWhiteSpace(addrMatchTo.HomeCityArea?.GetPostalCodePrefix()))
+            if (thisPerson.GetAgeAt(null) >= 12 && !String.IsNullOrWhiteSpace(addrMatchTo.HomeCityArea?.GetPostalCodePrefix()))
                 thisPerson._phoneNumbers.Add(new Tuple<KindsOfLabels, NorthAmericanPhone>(KindsOfLabels.Mobile,
                     Phone.American(addrMatchTo.HomeCityArea.GetPostalCodePrefix())));
+        }
+
+        /// <summary>
+        /// Selects a US Zip Code prefix at random taking into respect the population pertinent to that zip code prefix.
+        /// </summary>
+        public static string RandomAmericanZipWithRespectToPop()
+        {
+            XDocument usZips = null;
+            var usZipsXmlDocument = TreeData.UsZipProbabilityTable;
+
+            if (usZipsXmlDocument == null)
+                return "100"; //New York
+
+            usZips = usZipsXmlDocument.ToXDocument();
+
+            double pickone = Convert.ToInt32(Etx.MyRand.Next(1, 9999999) / 100000);
+            var randnode =
+                usZips.Descendants("zip-code").FirstOrDefault(
+                    x =>
+                        Convert.ToDouble(x.Attribute("weight").Value) > pickone);
+            if (randnode == null)
+                return "100"; //New York
+
+            return randnode.Attribute("prefix").Value;
+        }
+
+        /// <summary>
+        /// Returns a hashtable whose keys as American's call Race based on the given <see cref="zipCode"/>
+        /// </summary>
+        /// <param name="zipCode"></param>
+        public static AmericanRacePercents RandomAmericanRaceWithRespectToZip(string zipCode)
+        {
+
+            var pick = 0;
+            //if calling assembly passed in no-args then return all zeros
+            if (String.IsNullOrWhiteSpace(zipCode))
+                return null;
+
+            //get the data for the given zip code
+            var zipStat = Data.TreeData.AmericanHighSchoolData.SelectSingleNode($"//zip-stat[@value='{zipCode}']");
+
+            if (zipStat == null || !zipStat.HasChildNodes)
+            {
+                //try to find on the zip code prefix 
+                var zip3 = zipCode.Substring(0, 3);
+                var zipCodes =
+                    Data.TreeData.AmericanHighSchoolData.SelectNodes($"//zip-code[@prefix='{zip3}']");
+
+                if (zipCodes == null || zipCodes.Count <= 0)
+                    return null;
+
+                zipStat = zipCodes.Cast<XmlElement>().FirstOrDefault(x => x.HasChildNodes);
+                if (zipStat == null)
+                    return null;
+            }
+
+            AmericanHighSchool hsOut;
+            pick = Etx.MyRand.Next(0, zipStat.ChildNodes.Count - 1);
+            var hsNode = zipStat.ChildNodes[pick];
+            if (!AmericanHighSchool.TryParseXml(hsNode as XmlElement, out hsOut))
+                return null;
+            return hsOut.RacePercents;
+
         }
     }
 }

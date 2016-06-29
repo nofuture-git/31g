@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Linq;
-using com.sun.org.apache.bcel.@internal.generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using NoFuture.Rand;
+using NoFuture.Rand.Data.Types;
 using NoFuture.Rand.Domus;
 
 namespace NoFuture.Tests.Rand
@@ -22,7 +21,13 @@ namespace NoFuture.Tests.Rand
             Assert.IsFalse(string.IsNullOrWhiteSpace(testResult.LastName));
             Assert.IsFalse(string.IsNullOrWhiteSpace(testResult.FirstName));
             Assert.IsNotNull(testResult.BirthCert);
-
+            Assert.IsNotNull(testResult.Address);
+            Assert.IsNotNull(testResult.Address.HomeCityArea);
+            Assert.IsInstanceOfType(testResult.Address.HomeCityArea, typeof(UsCityStateZip));
+            Assert.IsNotNull(((UsCityStateZip)testResult.Address.HomeCityArea).State);
+            Assert.IsNotNull(testResult.DriversLicense);
+            Assert.IsNotNull(testResult.GetMother());
+            Assert.AreNotEqual(0, testResult.GetMother().GetChildrenAt(null));
         }
 
         [TestMethod]

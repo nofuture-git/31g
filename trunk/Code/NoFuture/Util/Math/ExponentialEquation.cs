@@ -21,5 +21,10 @@
         {
             return System.Math.Pow((y/ConstantValue), (1/Power));
         }
+
+        public override string ToString()
+        {
+            return $"f(x) = {ConstantValue} * x^{Power}";
+        }
     }
 }

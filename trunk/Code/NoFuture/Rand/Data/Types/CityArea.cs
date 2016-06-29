@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Xml;
+using NoFuture.Rand.Domus;
 using NoFuture.Rand.Gov.Census;
 using NoFuture.Util.Math;
 
@@ -55,7 +56,7 @@ namespace NoFuture.Rand.Data.Types
 
             //pick a zip code prefix at random
             if(string.IsNullOrWhiteSpace(zipCodePrefix))
-                zipCodePrefix = Etx.RandomAmericanZipWithRespectToPop();
+                zipCodePrefix = NAmerUtil.RandomAmericanZipWithRespectToPop();
 
             //x-ref it to the zip code data
             var randZipCode =
@@ -183,7 +184,7 @@ namespace NoFuture.Rand.Data.Types
                         : UrbanCentric.City | UrbanCentric.Small;
                 }
             }
-            AverageEarnings = GetAvgEarningsPerYear(cityNode);
+            AverageEarnings = GetAvgEarningsPerYear(cityNode) ?? _myState?.GetStateData()?.AverageEarnings;
         }
 
         #endregion
@@ -194,9 +195,7 @@ namespace NoFuture.Rand.Data.Types
 
         public Gov.UsState State => _myState ??
                                     (_myState =
-                                        Gov.UsState.GetStateByPostalCode(string.IsNullOrWhiteSpace(data.StateAbbrv)
-                                            ? "NY"
-                                            : data.StateAbbrv));
+                                        Gov.UsState.GetStateByPostalCode(data.StateAbbrv));
 
         public string City => data.City;
         public string ZipCode => data.PostalCode;

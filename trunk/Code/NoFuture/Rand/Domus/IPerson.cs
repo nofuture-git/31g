@@ -16,7 +16,7 @@ namespace NoFuture.Rand.Domus
         IEducation Education { get; set; }
         List<Tuple<KindsOfNames, string>> OtherNames { get; }
 
-        List<IPerson> GetChildernAt(DateTime? dt);
+        List<IPerson> GetChildrenAt(DateTime? dt);
         MaritialStatus GetMaritalStatusAt(DateTime? dt);
         Spouse GetSpouseAt(DateTime? dt);
         IPerson GetFather();

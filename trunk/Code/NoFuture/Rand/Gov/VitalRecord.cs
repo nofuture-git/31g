@@ -27,10 +27,7 @@ namespace NoFuture.Rand.Gov
         {
         }
 
-        public override string Abbrev
-        {
-            get { return "Birth certificate"; }
-        }
+        public override string Abbrev => "Birth certificate";
         public IPerson Mother { get; set; }
         public IPerson Father { get; set; }
         public DateTime DateOfBirth { get; set; }
@@ -47,11 +44,11 @@ namespace NoFuture.Rand.Gov
         {
         }
 
-        public CityArea City { get; set; }
+        public UsCityStateZip BirthPlace { get; set; }
 
         public override string ToString()
         {
-            return string.Format("{0} {1} {2}", base.ToString(), City.AddressData.City, City.AddressData.StateAbbrv);
+            return string.Join(" ", base.ToString(), BirthPlace?.City, BirthPlace?.PostalState);
         }
         
     }

@@ -40,18 +40,18 @@ namespace NoFuture.Rand.Domus
             var homeAddr = StreetPo.American();
             _addresses.Add(new HomeAddress {HomeStreetPo = homeAddr, HomeCityArea = csz});
 
-            var abbrv = csz.State.StateAbbrv;
+            var abbrv = csz?.PostalState;
 
             //http://www.pewresearch.org/fact-tank/2014/07/08/two-of-every-five-u-s-households-have-only-wireless-phones/
-            if(Etx.IntNumber(1,10)<=6)
+            if(Etx.TryAboveOrAt(6, Etx.Dice.Ten))
                 _phoneNumbers.Add(new Tuple<KindsOfLabels, NorthAmericanPhone>(KindsOfLabels.Home, Phone.American(abbrv)));
 
             if(GetAgeAt(null) >= 12)
                 _phoneNumbers.Add(new Tuple<KindsOfLabels, NorthAmericanPhone>(KindsOfLabels.Mobile, Phone.American(abbrv)));
 
             _ssn = new SocialSecurityNumber();
-
-            if(withWholeFamily)
+            Race = NAmerUtil.GetAmericanRace(csz?.ZipCode);
+            if (withWholeFamily)
                 ResolveFamilyState();
 
             _personality = new Personality();
@@ -61,10 +61,13 @@ namespace NoFuture.Rand.Domus
         {
             _mother = mother;
             _father = father;
+            _birthCert.Mother = _mother;
+            _birthCert.Father = _father;
             var nAmerMother = _mother as NorthAmerican;
             if (nAmerMother == null)
                 return;
-            ((AmericanBirthCert) _birthCert).City = nAmerMother.GetAddressAt(null)?.HomeCityArea;
+            ((AmericanBirthCert) _birthCert).BirthPlace = nAmerMother.GetAddressAt(dob)?.HomeCityArea as UsCityStateZip;
+            Race = nAmerMother.Race;
         }
 
         #endregion
@@ -210,7 +213,7 @@ namespace NoFuture.Rand.Domus
         {
             ThrowOnBirthDateNull(this);
             var dt = DateTime.Now;
-            Race = NAmerUtil.GetAmericanRace(GetAddressAt(null)?.HomeCityArea?.AddressData?.PostalCode);
+            
             ResolveParents();
             //resolve spouse to each other
             ResolveSpouse(NAmerUtil.GetMaritialStatus(_birthCert.DateOfBirth, MyGender));
@@ -223,63 +226,55 @@ namespace NoFuture.Rand.Domus
         {
             ThrowOnBirthDateNull(this);
 
-            var myMother =
-                (NorthAmerican)
-                    (_mother ??
-                     (_mother =
-                         NAmerUtil.SolveForParent(_birthCert.DateOfBirth,
-                             NAmerUtil.Equations.FemaleYearOfMarriage2AvgAge, Gender.Female)));
-            var myFather =
-                (NorthAmerican)
-                    (_father ??
-                     (_father =
-                         NAmerUtil.SolveForParent(_birthCert.DateOfBirth, NAmerUtil.Equations.MaleYearOfMarriage2AvgAge,
-                             Gender.Male)));
+            //create current instance mother
+            _mother = _mother ??
+                      NAmerUtil.SolveForParent(_birthCert.DateOfBirth, NAmerUtil.Equations.FemaleYearOfMarriage2AvgAge,
+                          Gender.Female);
+            //line mothers last name with child
+            UpsertName(KindsOfNames.Surname, _mother.LastName);
 
-            //at time of birth
-            myMother.LastName = LastName;
-            myFather.LastName = LastName;
+            var myMother = (NorthAmerican) _mother;
+            myMother.Race = Race;
+            BirthCert.Mother = _mother;
 
-            BirthCert.Father = myFather;
-            BirthCert.Mother = myMother;
-            ((AmericanBirthCert) BirthCert).City = myMother.GetAddressAt(null)?.HomeCityArea;
+            //add self as one of mother's children
+            myMother._children.Add(this);
 
-            var myParentsAtMyBirth = NAmerUtil.GetMaritialStatus(myMother.BirthCert.DateOfBirth, Gender.Female);
+            //TODO reslove this using data from census.gov
+            ((AmericanBirthCert) BirthCert).BirthPlace = myMother.GetAddressAt(null)?.HomeCityArea as UsCityStateZip;
 
-            //mother not ever married to father
-            if (myParentsAtMyBirth == MaritialStatus.Single)
-                myFather.LastName = NAmerUtil.GetAmericanLastName();
+            //resolve mother's spouse(s)
+            var motherMaritalStatus = NAmerUtil.GetMaritialStatus(_mother.BirthCert.DateOfBirth, Gender.Female);
+            myMother.ResolveSpouse(motherMaritalStatus);
+            
+            //resolve for siblings
+            myMother.ResolveChildren();
 
-            //mother no longer married to father
-            if (myParentsAtMyBirth == MaritialStatus.Divorced ||
-                myParentsAtMyBirth == MaritialStatus.Remarried ||
-                myParentsAtMyBirth == MaritialStatus.Separated)
+            myMother.AlignCohabitantsHomeDataAt(null, GetAddressAt(null));
+
+            //father is whoever was married to mother at time of birth
+            var myFather = myMother.GetSpouseAt(_birthCert.DateOfBirth)?.SO as NorthAmerican;
+
+            //mother not married at time of birth
+            if (motherMaritalStatus == MaritialStatus.Single || myFather == null)
             {
-
-                myMother.LastName = NAmerUtil.GetAmericanLastName();
-                myMother.OtherNames.Add(
-                    new Tuple<KindsOfNames, string>(
-                        KindsOfNames.Surname | KindsOfNames.Former | KindsOfNames.Spouse,
-                        myFather.LastName));
+                //small percent of father unknown
+                if (Etx.TryAboveOrAt(98, Etx.Dice.OneHundred))
+                    return;
+                _father =
+                    _father ??
+                    NAmerUtil.SolveForParent(_birthCert.DateOfBirth, NAmerUtil.Equations.MaleYearOfMarriage2AvgAge,
+                        Gender.Male);
+                return;
             }
-
-            //hea
-            if (myParentsAtMyBirth == MaritialStatus.Married)
-            {
-                NAmerUtil.SetNAmerCohabitants(myMother, myFather);
-                var marriedOn = NAmerUtil.SolveForMarriageDate(myFather.BirthCert.DateOfBirth, Gender.Male);
-                if (marriedOn != null)
-                {
-                    myMother.AddNewSpouseToList(myFather, marriedOn.Value);
-                    myFather.AddNewSpouseToList(myMother, marriedOn.Value);
-                }
-            }
-
-            myMother.OtherNames.Add(new Tuple<KindsOfNames, string>(KindsOfNames.Father,
-                NAmerUtil.GetAmericanLastName()));
-
+            //mother will receive last name of spouse
+            myFather.Race = Race;
             _father = myFather;
-            _mother = myMother;
+            _birthCert.Father = _father;
+
+            //last name assigned from birth father
+            if(_father != null)
+                UpsertName(KindsOfNames.Surname, _father.LastName);
         }
 
         protected internal void ResolveSpouse(MaritialStatus myMaritialStatus)
@@ -303,12 +298,6 @@ namespace NoFuture.Rand.Domus
 
             var spouse = (NorthAmerican)NAmerUtil.SolveForSpouse(_birthCert.DateOfBirth, MyGender);
 
-            //add maiden name, set new last name to match husband
-            if (_myGender == Gender.Female)
-            {
-                UpsertName(KindsOfNames.Father, _father.LastName);
-            }
-
             //set death date if widowed
             if (myMaritialStatus == MaritialStatus.Widowed)
             {
@@ -331,7 +320,8 @@ namespace NoFuture.Rand.Domus
                 AddNewSpouseToList(spouse, marriedOn, separatedDate);
 
                 //leave when no second spouse applicable
-                if (myMaritialStatus != MaritialStatus.Remarried) return;
+                if (myMaritialStatus != MaritialStatus.Remarried)
+                    return;
 
                 var ageSpread = 6;
                 if (MyGender == Gender.Male)
@@ -479,7 +469,7 @@ namespace NoFuture.Rand.Domus
 
                     myChild = new NorthAmerican(myChildDob, myChildGender, this, marriage.SO) {Race = Race};
                     if (isDaughterMarriedOff)
-                        myChild.OtherNames.Add(new Tuple<KindsOfNames, string>(KindsOfNames.Father,
+                        myChild.OtherNames.Add(new Tuple<KindsOfNames, string>(KindsOfNames.Maiden,
                             marriage.SO.LastName));
                     else
                         myChild.LastName = marriage.SO.LastName;
@@ -489,8 +479,8 @@ namespace NoFuture.Rand.Domus
             //for child born in any range outside of marriage, assign lastname to maiden name
             if (myChild == null)
             {
-                var maidenName = OtherNames.FirstOrDefault(x => x.Item1 == KindsOfNames.Father);
-                if (maidenName != null && !string.IsNullOrWhiteSpace(maidenName.Item2))
+                var maidenName = OtherNames.FirstOrDefault(x => x.Item1 == KindsOfNames.Maiden);
+                if (!string.IsNullOrWhiteSpace(maidenName?.Item2))
                 {
                     myChild = new NorthAmerican(myChildDob, myChildGender, this, null)
                     {
@@ -568,10 +558,18 @@ namespace NoFuture.Rand.Domus
             //we need this or will will blow out the stack 
             if (_spouses.Any(x => DateTime.Compare(x.MarriedOn, marriedOn) == 0))
                 return;
+
             if (separatedOn == null)
             {
+                //when this is the bride
                 if (_myGender == Gender.Female)
+                {
+                    if (LastName != null && OtherNames.All(x => x.Item1 != KindsOfNames.Maiden))
+                        UpsertName(KindsOfNames.Maiden, BirthCert.Father?.LastName ?? LastName);
+
                     LastName = spouse.LastName;
+                }
+                    
             }
             else if (MyGender == Gender.Female)
             {
@@ -579,7 +577,9 @@ namespace NoFuture.Rand.Domus
                 UpsertName(KindsOfNames.Former | KindsOfNames.Surname | KindsOfNames.Spouse, spouse.LastName);
 
                 //set back to maiden name
-                LastName = _father == null ? NAmerUtil.GetAmericanLastName() : _father.LastName;
+                var maidenName = OtherNames.FirstOrDefault(x => x.Item1 == KindsOfNames.Maiden);
+                if (!string.IsNullOrWhiteSpace(maidenName?.Item2))
+                    LastName = maidenName.Item2;
             }
             _spouses.Add(new Spouse
             {
@@ -588,8 +588,9 @@ namespace NoFuture.Rand.Domus
                 SeparatedOn = separatedOn,
                 Ordinal = _spouses.Count + 1
             });
-            var nAmerSpouse = spouse as NorthAmerican;
 
+            //recepricate to spouse
+            var nAmerSpouse = spouse as NorthAmerican;
             nAmerSpouse?.AddNewSpouseToList(this, marriedOn, separatedOn);
         }
 

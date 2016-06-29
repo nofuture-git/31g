@@ -39,8 +39,7 @@ namespace NoFuture.Rand.Data.Sp
                     bank.RoutingNumber = Gov.Fed.RoutingTransitNumber.RandomRoutingNumber();;
             }
 
-            var rand = Etx.IntNumber(1, 10);
-            return rand >= 8
+            return Etx.TryAboveOrAt(8, Etx.Dice.Ten)
                 ? (BankAccount) new Checking {AccountNumber = accountId, Bank = bank}
                 : (BankAccount)new Savings { AccountNumber = accountId,  Bank = bank };
         }
