@@ -28,8 +28,8 @@ namespace NoFuture.Rand.Data.Types
             var usphone = new NorthAmericanPhone();
 
             var phstr = new StringBuilder();
-            phstr.Append(string.Format("{0}", Etx.MyRand.Next(2, 9)));
-            phstr.Append(string.Format("{0:00}", Etx.MyRand.Next(12, 99)));
+            phstr.Append($"{Etx.MyRand.Next(2, 9)}");
+            phstr.Append($"{Etx.MyRand.Next(12, 99):00}");
 
             usphone.AreaCode = phstr.ToString();
 
@@ -45,7 +45,7 @@ namespace NoFuture.Rand.Data.Types
             }
             phstr.Clear();
 
-            phstr.Append(string.Format("{0}", Etx.MyRand.Next(2, 9)));
+            phstr.Append($"{Etx.MyRand.Next(2, 9)}");
             var subscriberRand = Etx.MyRand.Next(1, 100);
             switch (subscriberRand)
             {
@@ -53,16 +53,16 @@ namespace NoFuture.Rand.Data.Types
                     phstr.Append("00");
                     break;
                 case 1-49:
-                    phstr.Append(string.Format("{0}", Etx.MyRand.Next(1, 9)));
-                    phstr.Append(string.Format("{0}", Etx.MyRand.Next(2, 9)));
+                    phstr.Append($"{Etx.MyRand.Next(1, 9)}");
+                    phstr.Append($"{Etx.MyRand.Next(2, 9)}");
                     break;
                 default:
-                    phstr.Append(string.Format("{0}", Etx.MyRand.Next(2, 9)));
-                    phstr.Append(string.Format("{0}", Etx.MyRand.Next(1, 9)));
+                    phstr.Append($"{Etx.MyRand.Next(2, 9)}");
+                    phstr.Append($"{Etx.MyRand.Next(1, 9)}");
                     break;
             }
             usphone.CentralOfficeCode = phstr.ToString();
-            usphone.SubscriberNumber = string.Format("{0:0000}", Etx.MyRand.Next(1, 9999));
+            usphone.SubscriberNumber = $"{Etx.MyRand.Next(1, 9999):0000}";
             return usphone;
         }
 
@@ -106,9 +106,11 @@ namespace NoFuture.Rand.Data.Types
                 countryCode = "us";
 
             if(countryCode.ToLower() == "ca")
-                state = Data.TreeData.CanadianAreaCodeData.SelectSingleNode(string.Format("area-codes/state[@abbreviation='{0}']", stateCode));
+                state = Data.TreeData.CanadianAreaCodeData.SelectSingleNode(
+                    $"area-codes/state[@abbreviation='{stateCode}']");
             else
-                state = Data.TreeData.AmericanAreaCodeData.SelectSingleNode(string.Format("area-codes/state[@abbreviation='{0}']", stateCode));    
+                state = Data.TreeData.AmericanAreaCodeData.SelectSingleNode(
+                    $"area-codes/state[@abbreviation='{stateCode}']");    
             
             if (state == null)
                 return null;
@@ -138,28 +140,19 @@ namespace NoFuture.Rand.Data.Types
             {
                 NorthAmericanPhone phout;
                 if(!TryParse(value, out phout))
-                    throw new InvalidOperationException(string.Format("Cannot parse the value '{0}' into " +
-                                                        "a North American phone number", value));
+                    throw new InvalidOperationException($"Cannot parse the value '{value}' into " +
+                                                        "a North American phone number");
                 AreaCode = phout.AreaCode;
                 CentralOfficeCode = phout.CentralOfficeCode;
                 SubscriberNumber = phout.SubscriberNumber;
             }
         }
 
-        public override string Abbrev
-        {
-            get { return "PH"; }
-        }
+        public override string Abbrev => "PH";
 
-        public override string Formatted
-        {
-            get { return string.Format("({0}) {1}-{2}", AreaCode, CentralOfficeCode, SubscriberNumber); }
-        }
+        public override string Formatted => $"({AreaCode}) {CentralOfficeCode}-{SubscriberNumber}";
 
-        public override string Unformatted
-        {
-            get { return string.Format("{0}{1}{2}", AreaCode, CentralOfficeCode, SubscriberNumber); }
-        }
+        public override string Unformatted => $"{AreaCode}{CentralOfficeCode}{SubscriberNumber}";
 
         public virtual Uri ToUri()
         {

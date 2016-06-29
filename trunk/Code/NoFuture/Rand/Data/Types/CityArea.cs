@@ -16,7 +16,7 @@ namespace NoFuture.Rand.Data.Types
             data = d;
         }
         public virtual string Src { get; set; }
-        public virtual AddressData AddressData { get { return data; } }
+        public virtual AddressData AddressData => data;
 
         public virtual string GetPostalCodePrefix()
         {
@@ -48,7 +48,7 @@ namespace NoFuture.Rand.Data.Types
         /// Ranking is by population totals sourced from
         /// https://www.census.gov/geo/maps-data/data/docs/rel/zcta_cbsa_rel_10.txt
         /// </remarks>
-        public static UsCityStateZip American(string zipCodePrefix)
+        public static UsCityStateZip American(string zipCodePrefix = null)
         {
             //set defaults
             var ctz = new AddressData {City = "New York", PostalCode = "10066", StateAbbrv = "NY"};

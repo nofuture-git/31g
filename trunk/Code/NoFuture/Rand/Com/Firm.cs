@@ -8,8 +8,8 @@ namespace NoFuture.Rand.Com
     {
         string Name { get; set; }
         List<Tuple<KindsOfNames, string>> OtherNames { get; }
-        Tuple<UsAddress, UsCityStateZip> MailingAddress { get; set; }
-        Tuple<UsAddress, UsCityStateZip> BusinessAddress { get; set; }
+        Tuple<UsStreetPo, UsCityStateZip> MailingAddress { get; set; }
+        Tuple<UsStreetPo, UsCityStateZip> BusinessAddress { get; set; }
         NorthAmericanPhone[] Phone { get; set; }
         StandardIndustryClassification SIC { get; set; }
         NaicsPrimarySector PrimarySector { get; set; }
@@ -37,8 +37,8 @@ namespace NoFuture.Rand.Com
         #region properties
         public string Name { get; set; }
         public List<Tuple<KindsOfNames, string>> OtherNames => _otherNames;
-        public Tuple<UsAddress, UsCityStateZip> MailingAddress { get; set; }
-        public Tuple<UsAddress, UsCityStateZip> BusinessAddress { get; set; }
+        public Tuple<UsStreetPo, UsCityStateZip> MailingAddress { get; set; }
+        public Tuple<UsStreetPo, UsCityStateZip> BusinessAddress { get; set; }
         public NorthAmericanPhone[] Phone { get; set; }
         public StandardIndustryClassification SIC { get; set; }
         public NaicsPrimarySector PrimarySector

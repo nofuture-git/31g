@@ -524,16 +524,18 @@ namespace NoFuture.Rand.Domus
         /// <param name="livesWithThisOne"></param>
         public static void SetNAmerCohabitants(NorthAmerican thisPerson, NorthAmerican livesWithThisOne)
         {
-            thisPerson.HomeAddress = livesWithThisOne.HomeAddress;
-            thisPerson.HomeCityArea = livesWithThisOne.HomeCityArea;
+            var addrMatchTo = livesWithThisOne.GetAddressAt(null);
+            if (addrMatchTo == null)
+                return;
+            thisPerson.UpsertAddress(addrMatchTo);
             thisPerson._phoneNumbers.Clear();
             if (livesWithThisOne._phoneNumbers.Any(p => p.Item1 == KindsOfLabels.Home))
             {
                 thisPerson._phoneNumbers.Add(livesWithThisOne._phoneNumbers.First(p => p.Item1 == KindsOfLabels.Home));
             }
-            if (thisPerson.GetAge(null) >= 12)
+            if (thisPerson.GetAgeAt(null) >= 12 && !string.IsNullOrWhiteSpace(addrMatchTo.HomeCityArea?.GetPostalCodePrefix()))
                 thisPerson._phoneNumbers.Add(new Tuple<KindsOfLabels, NorthAmericanPhone>(KindsOfLabels.Mobile,
-                    Phone.American(thisPerson.HomeCityArea.GetPostalCodePrefix())));
+                    Phone.American(addrMatchTo.HomeCityArea.GetPostalCodePrefix())));
         }
     }
 }

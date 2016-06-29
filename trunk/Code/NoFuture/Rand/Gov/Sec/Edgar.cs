@@ -193,8 +193,8 @@ namespace NoFuture.Rand.Gov.Sec
             var bizAddr = new AddressData();
             if (!string.IsNullOrWhiteSpace(pr.BizAddrStreet))
             {
-                UsAddress temp;
-                if (UsAddress.TryParse(pr.BizAddrStreet, out temp))
+                UsStreetPo temp;
+                if (UsStreetPo.TryParse(pr.BizAddrStreet, out temp))
                     bizAddr = temp.Data;
             }
 
@@ -208,14 +208,14 @@ namespace NoFuture.Rand.Gov.Sec
                 bizAddr.PostalCode = pr.BizPostalCode;
 
             publicCorporation.BusinessAddress =
-                new Tuple<UsAddress, UsCityStateZip>(new UsAddress(bizAddr) {Src = myDynData.SourceUri.ToString()},
+                new Tuple<UsStreetPo, UsCityStateZip>(new UsStreetPo(bizAddr) {Src = myDynData.SourceUri.ToString()},
                     new UsCityStateZip(bizAddr) {Src = myDynData.SourceUri.ToString()});
 
             var mailAddr = new AddressData();
             if (!string.IsNullOrWhiteSpace(pr.MailAddrStreet))
             {
-                UsAddress temp;
-                if (UsAddress.TryParse(pr.MailAddrStreet, out temp))
+                UsStreetPo temp;
+                if (UsStreetPo.TryParse(pr.MailAddrStreet, out temp))
                     mailAddr = temp.Data;
             }
 
@@ -228,7 +228,7 @@ namespace NoFuture.Rand.Gov.Sec
             if (!string.IsNullOrWhiteSpace(pr.MailPostalCode))
                 mailAddr.PostalCode = pr.MailPostalCode;
 
-            publicCorporation.MailingAddress = new Tuple<UsAddress, UsCityStateZip>(new UsAddress(mailAddr) { Src = myDynData.SourceUri.ToString() },
+            publicCorporation.MailingAddress = new Tuple<UsStreetPo, UsCityStateZip>(new UsStreetPo(mailAddr) { Src = myDynData.SourceUri.ToString() },
                 new UsCityStateZip(mailAddr) { Src = myDynData.SourceUri.ToString() });
 
             var phs = new List<NorthAmericanPhone>();

@@ -14,8 +14,6 @@ namespace NoFuture.Rand.Com
         StateChartered,
         StateCharteredNonMember
     }
-/* commercial bank, savings bank, card issuer, industrial loan company, trust company, savings associations, building and loan, homestead association,
- * cooperative banks, credit union, consumer finance institution */
     public class FinancialFirm : PublicCorporation
     {
         public FinancialFirm()
@@ -35,6 +33,11 @@ namespace NoFuture.Rand.Com
         public TypeOfBank BankType { get; set; }
         public bool IsInternational { get; set; }
         public Dictionary<DateTime, FinancialAssets> Assets { get; set; }
+
+        public override string ToString()
+        {
+            return string.Join(" ", Name, RoutingNumber);
+        }
     }
 
     /// <summary>
@@ -54,7 +57,7 @@ namespace NoFuture.Rand.Com
             Rssd = new ResearchStatisticsSupervisionDiscount { Value = li.BankId };
             UsCityStateZip cityOut;
             if (UsCityStateZip.TryParse(li.Location, out cityOut))
-                BusinessAddress = new Tuple<UsAddress, UsCityStateZip>(null, cityOut);
+                BusinessAddress = new Tuple<UsStreetPo, UsCityStateZip>(null, cityOut);
             if (FedLrgBnk.TypeOfBankAbbrev3Enum.ContainsKey(li.Chtr))
                 BankType = FedLrgBnk.TypeOfBankAbbrev3Enum[li.Chtr];
             var assets = new FinancialAssets { Src = FedLrgBnk.RELEASE_URL };

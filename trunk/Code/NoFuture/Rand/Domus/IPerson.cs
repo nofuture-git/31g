@@ -12,14 +12,14 @@ namespace NoFuture.Rand.Domus
         string LastName { get; set; }
         Gender MyGender { get; set; }
         List<Uri> NetUri { get; }
-        MaritialStatus GetMaritalStatus(DateTime? dt);
-        Spouse GetSpouse(DateTime? dt);
-        IPerson GetFather();
-        IPerson GetMother();
-        List<IPerson> Children { get; }
         Pneuma.Personality Personality { get; }
         IEducation Education { get; set; }
         List<Tuple<KindsOfNames, string>> OtherNames { get; }
 
+        List<IPerson> GetChildernAt(DateTime? dt);
+        MaritialStatus GetMaritalStatusAt(DateTime? dt);
+        Spouse GetSpouseAt(DateTime? dt);
+        IPerson GetFather();
+        IPerson GetMother();
     }
 }

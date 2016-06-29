@@ -5,14 +5,14 @@ using System.Text.RegularExpressions;
 namespace NoFuture.Rand.Data.Types
 {
     [Serializable]
-    public abstract class Address : ICited
+    public abstract class StreetPo : ICited
     {
         protected readonly AddressData data;
 
-        protected Address(AddressData d) { data = d; }
+        protected StreetPo(AddressData d) { data = d; }
 
         public virtual string Src { get; set; }
-        public AddressData Data { get { return data; } }
+        public AddressData Data => data;
 
         /// <summary>
         /// Prints the address as it would appear as post marked.
@@ -27,7 +27,7 @@ namespace NoFuture.Rand.Data.Types
 
         public override bool Equals(object obj)
         {
-            var addr = obj as Address;
+            var addr = obj as StreetPo;
             if (addr == null)
                 return false;
             return Data.Equals(addr.Data);
@@ -47,7 +47,7 @@ namespace NoFuture.Rand.Data.Types
         /// The street type is limited to ten choices or empty.
         /// The street name is one of top twenty in the United States.
         /// </remarks>
-        public static UsAddress American()
+        public static UsStreetPo American()
         {
             var addressData = new AddressData();
             var pickOne = Etx.MyRand.Next(0, 10);
@@ -161,12 +161,12 @@ namespace NoFuture.Rand.Data.Types
 
             addressData.AddressNumber = Etx.MyRand.Next(0, 999).ToString(CultureInfo.InvariantCulture);
 
-            return new UsAddress(addressData);
+            return new UsStreetPo(addressData);
 
         }
     }
     [Serializable]
-    public class UsAddress : Address
+    public class UsStreetPo : StreetPo
     {
         #region Regex Patterns
         public const string STD_ADDR_LINE_REGEX = @"^([0-9\x5c\x2f\x2d]*)\x20*([\x21-\x7e]*)(\x20*([\x21-\x7e][\x20-\x7e]*))?";
@@ -220,7 +220,7 @@ namespace NoFuture.Rand.Data.Types
         public const string POUND_UNIT_ID = @"\x20\x23\x20?([0-9]+)";
         #endregion
 
-        public UsAddress(AddressData d) : base(d) { }
+        public UsStreetPo(AddressData d) : base(d) { }
 
         #region properties
         public string CountyTownship { get; set; }
@@ -234,13 +234,13 @@ namespace NoFuture.Rand.Data.Types
         /// Based on the USPS Pub. 28 [http://pe.usps.gov/cpim/ftp/pubs/Pub28/pub28.pdf]
         /// </summary>
         /// <param name="addressLine"></param>
-        /// <param name="address"></param>
+        /// <param name="streetPo"></param>
         /// <returns></returns>
-        public static bool TryParse(string addressLine, out UsAddress address)
+        public static bool TryParse(string addressLine, out UsStreetPo streetPo)
         {
             if (string.IsNullOrWhiteSpace(addressLine))
             {
-                address = null;
+                streetPo = null;
                 return false;
             }
 
@@ -249,7 +249,7 @@ namespace NoFuture.Rand.Data.Types
             var regex = new Regex(STD_ADDR_LINE_REGEX,RegexOptions.IgnoreCase);
             if (!regex.IsMatch(addressLine))
             {
-                address = null;
+                streetPo = null;
                 return false;
             }
 
@@ -257,7 +257,7 @@ namespace NoFuture.Rand.Data.Types
 
             if (matches.Groups.Count < 2)
             {
-                address = null;
+                streetPo = null;
                 return false;
             }
             
@@ -346,7 +346,7 @@ namespace NoFuture.Rand.Data.Types
             addrData.StreetName = streetName.Replace("#", "").Trim();//per the standard, these should be removed
 
             //consider whatever remains as the street's name
-            address = new UsAddress(addrData);
+            streetPo = new UsStreetPo(addrData);
             return true;
         }
     }

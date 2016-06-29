@@ -26,10 +26,15 @@ namespace NoFuture.Rand.Domus
         {
             var sh = SO != null ? SO.GetHashCode() : 0;
             var mo = MarriedOn.GetHashCode();
-            var so = SeparatedOn.HasValue ? SeparatedOn.Value.GetHashCode() : 0;
+            var so = SeparatedOn?.GetHashCode() ?? 0;
             var o = Ordinal.GetHashCode();
 
             return sh + mo + so + o;
+        }
+
+        public override string ToString()
+        {
+            return string.Join(" ", SO.FirstName, SO.LastName);
         }
 
         private bool Mdq(Spouse sd) { return DateTime.Compare(MarriedOn.Date, sd.MarriedOn.Date) == 0; }

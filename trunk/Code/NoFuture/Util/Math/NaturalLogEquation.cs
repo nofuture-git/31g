@@ -1,6 +1,6 @@
 ﻿namespace NoFuture.Util.Math
 {
-    public class NaturalLogEquation
+    public class NaturalLogEquation : IEquation
     {
         public double Intercept { get; set; }
         public double Slope { get; set; }

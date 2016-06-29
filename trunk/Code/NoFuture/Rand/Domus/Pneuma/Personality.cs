@@ -4,6 +4,7 @@ using NoFuture.Util.Etymological;
 
 namespace NoFuture.Rand.Domus.Pneuma
 {
+    //some data at http://personality-testing.info/_rawdata/
     public interface IPersonality
     {
         Openness Openness { get; }
@@ -15,19 +16,12 @@ namespace NoFuture.Rand.Domus.Pneuma
     [Serializable]
     public class Personality : IPersonality
     {
-        #region fields
-        private readonly Openness _o = new Openness();
-        private readonly Conscientiousness _c = new Conscientiousness();
-        private readonly Extraversion _e = new Extraversion();
-        private readonly Agreeableness _a = new Agreeableness();
-        private readonly Neuroticism _n = new Neuroticism();
-        #endregion
+        public Openness Openness { get; } = new Openness();
+        public Conscientiousness Conscientiousness { get; } = new Conscientiousness();
+        public Extraversion Extraversion { get; } = new Extraversion();
+        public Agreeableness Agreeableness { get; } = new Agreeableness();
+        public Neuroticism Neuroticism { get; } = new Neuroticism();
 
-        public Openness Openness { get { return _o; } }
-        public Conscientiousness Conscientiousness { get { return _c; } }
-        public Extraversion Extraversion { get { return _e; } }
-        public Agreeableness Agreeableness { get { return _a; } }
-        public Neuroticism Neuroticism { get { return _n; } }
         public override string ToString()
         {
             return "{" +
@@ -73,7 +67,7 @@ namespace NoFuture.Rand.Domus.Pneuma
             return Zscore.ToString(CultureInfo.InvariantCulture);
         }
 
-        public double Zscore { get; set; }
+        public double Zscore { get; }
     }
     [Serializable]
     public abstract class Trait : ITrait
@@ -94,10 +88,7 @@ namespace NoFuture.Rand.Domus.Pneuma
     [Serializable]
     public class Openness : Trait
     {
-        public override string Abbrev
-        {
-            get { return "O"; }
-        }
+        public override string Abbrev => "O";
 
         public override INomenclature GetDescription()
         {
@@ -107,10 +98,7 @@ namespace NoFuture.Rand.Domus.Pneuma
     [Serializable]
     public class Conscientiousness : Trait
     {
-        public override string Abbrev
-        {
-            get { return "C"; }
-        }
+        public override string Abbrev => "C";
 
         public override INomenclature GetDescription()
         {
@@ -120,10 +108,7 @@ namespace NoFuture.Rand.Domus.Pneuma
     [Serializable]
     public class Extraversion : Trait
     {
-        public override string Abbrev
-        {
-            get { return "E"; }
-        }
+        public override string Abbrev => "E";
 
         public override INomenclature GetDescription()
         {
@@ -133,10 +118,7 @@ namespace NoFuture.Rand.Domus.Pneuma
     [Serializable]
     public class Agreeableness : Trait
     {
-        public override string Abbrev
-        {
-            get { return "A"; }
-        }
+        public override string Abbrev => "A";
 
         public override INomenclature GetDescription()
         {
@@ -146,10 +128,7 @@ namespace NoFuture.Rand.Domus.Pneuma
     [Serializable]
     public class Neuroticism : Trait
     {
-        public override string Abbrev
-        {
-            get { return "N"; }
-        }
+        public override string Abbrev => "N";
 
         public override INomenclature GetDescription()
         {

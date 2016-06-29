@@ -87,14 +87,14 @@ namespace NoFuture.Rand
                 return null;
 
             //get the data for the given zip code
-            var zipStat = Data.TreeData.AmericanHighSchoolData.SelectSingleNode(string.Format("//zip-stat[@value='{0}']", zipCode));
+            var zipStat = Data.TreeData.AmericanHighSchoolData.SelectSingleNode($"//zip-stat[@value='{zipCode}']");
 
             if (zipStat == null || !zipStat.HasChildNodes)
             {
                 //try to find on the zip code prefix 
                 var zip3 = zipCode.Substring(0, 3);
                 var zipCodes =
-                    Data.TreeData.AmericanHighSchoolData.SelectNodes(string.Format("//zip-code[@prefix='{0}']", zip3));
+                    Data.TreeData.AmericanHighSchoolData.SelectNodes($"//zip-code[@prefix='{zip3}']");
 
                 if (zipCodes == null || zipCodes.Count <=0)
                     return null;
@@ -116,19 +116,13 @@ namespace NoFuture.Rand
         /// <summary>
         /// A fifty-fifty probability.
         /// </summary>
-        public static bool CoinToss
-        {
-            get { return MyRand.Next(0, int.MaxValue) % 2 == 0; }
-        }
+        public static bool CoinToss => MyRand.Next(0, int.MaxValue) % 2 == 0;
 
         /// <summary>
         /// Same as its counterpart <see cref="CoinToss"/>
         /// only returning 1 for true and -1 for false.
         /// </summary>
-        public static int PlusOrMinusOne
-        {
-            get { return CoinToss ? 1 : -1; }
-        }
+        public static int PlusOrMinusOne => CoinToss ? 1 : -1;
 
         /// <summary>
         /// Returns a random <see cref="Int32"/> between the given range.
@@ -438,7 +432,7 @@ namespace NoFuture.Rand
         public static INfDynData DynamicDataFactory(Uri uri)
         {
             if (uri == null)
-                throw new ArgumentNullException("uri");
+                throw new ArgumentNullException(nameof(uri));
 
             if (uri.Host == "finance.yahoo.com")
             {
@@ -489,7 +483,7 @@ namespace NoFuture.Rand
 
             magnitude = numLen - magnitude;
 
-            return Convert.ToInt32(string.Format("1{0}", new string('0', magnitude)));
+            return Convert.ToInt32($"1{new string('0', magnitude)}");
         }
         #endregion
     }

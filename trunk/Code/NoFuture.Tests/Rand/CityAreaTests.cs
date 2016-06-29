@@ -98,7 +98,7 @@ namespace NoFuture.Tests.Rand
             var stateAbbrv = Path.GetRandomFileName();
             var streetType = Path.GetRandomFileName();
             var testSubject =
-                new UsAddress(new AddressData()
+                new UsStreetPo(new AddressData()
                 {
                     AddressNumber = addressNumber,
                     PostalCode = postalCode,
@@ -109,9 +109,9 @@ namespace NoFuture.Tests.Rand
                 });
 
             Assert.IsFalse(testSubject.Equals(null));
-            Assert.IsFalse(testSubject.Equals(new UsAddress(new AddressData())));
+            Assert.IsFalse(testSubject.Equals(new UsStreetPo(new AddressData())));
 
-            var testAreEqual = new UsAddress(new AddressData()
+            var testAreEqual = new UsStreetPo(new AddressData()
                 {
                     AddressNumber = addressNumber,
                     PostalCode = postalCode,

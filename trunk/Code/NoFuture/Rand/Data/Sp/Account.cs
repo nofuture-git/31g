@@ -8,13 +8,10 @@ namespace NoFuture.Rand.Data.Sp
     {
         public AccountId(Rchar[] format)
         {
-            base.format = format;
+            this.format = format;
         }
 
-        public override string Abbrev
-        {
-            get { return "Acct"; }
-        }
+        public override string Abbrev => "Acct";
     }
 
     [Serializable]
@@ -47,10 +44,16 @@ namespace NoFuture.Rand.Data.Sp
                 ? (BankAccount) new Checking {AccountNumber = accountId, Bank = bank}
                 : (BankAccount)new Savings { AccountNumber = accountId,  Bank = bank };
         }
+        public override string ToString()
+        {
+            return string.Join(" ", GetType().Name, Bank, AccountNumber);
+        }
     }
 
     [Serializable]
-    public class Checking : BankAccount { }
+    public class Checking : BankAccount
+    {
+    }
 
     [Serializable]
     public class Savings : BankAccount

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace NoFuture.Util.Math
 {
-    public class NormalDistEquation
+    public class NormalDistEquation : IEquation
     {
         private static Dictionary<double, double> _zscore;
 

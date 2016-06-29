@@ -84,6 +84,8 @@
     <Compile Include="Gia\InvokeCmds\InvokeGetFlattenAssembly.cs" />
     <Compile Include="Gia\InvokeCmds\InvokeGetTokenIds.cs" />
     <Compile Include="Gia\InvokeCmds\InvokeGetTokenNames.cs" />
+    <Compile Include="Math\IEquation.cs" />
+    <Compile Include="Math\SinusoidEquation.cs" />
     <Compile Include="NfConsole\CmdBase.cs" />
     <Compile Include="NfConsole\ConsoleCmd.cs" />
     <Compile Include="Etc.cs" />

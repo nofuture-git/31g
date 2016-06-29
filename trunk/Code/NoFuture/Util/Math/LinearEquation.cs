@@ -1,6 +1,6 @@
 ﻿namespace NoFuture.Util.Math
 {
-    public class LinearEquation
+    public class LinearEquation : IEquation
     {
         public LinearEquation() { }
 

@@ -2,6 +2,9 @@
 	These data sources are either too big to load at runtime
 	or they require a POST - which the Csv and Json FSharp
 	Providers don't appear to handle.
+
+	The FBI UCR are .xls format and require alot of manual
+	modification before they are usable tsv.
 #>
 
 #current location
@@ -75,3 +78,16 @@ $seriesIdsBySector.Keys | % {
 	Invoke-RestMethod -Method Post -Uri ([NoFuture.Rand.Gov.Bls.Globals]::PostUrl) -ContentType "application/json" -Body $payloadJson -OutFile $outFile
 } 
 
+<#
+FBI Uniform Crime Report uris 
+
+These basically stack with the exception of a revised def. of Rape starting in the 2014 report.
+I assume that the "Legacy" def. is what is labelled in the other reports as "Forceable Rape"
+#>
+$fbiUcr = @(
+"https://www.fbi.gov/about-us/cjis/ucr/crime-in-the-u.s/2014/crime-in-the-u.s.-2014/tables/table-4/table_4_crime_in_the_united_states_by_region_geographic_division_and_state_2013-2014.xls/output.xls",
+"https://www.fbi.gov/about-us/cjis/ucr/crime-in-the-u.s/2012/crime-in-the-u.s.-2012/tables/4tabledatadecoverviewpdf/table_4_crime_in_the_united_states_by_region_geographic_division_and_state_2011-2012.xls",
+"https://www.fbi.gov/about-us/cjis/ucr/crime-in-the-u.s/2010/crime-in-the-u.s.-2010/tables/10tbl04.xls",
+"https://www2.fbi.gov/ucr/cius2008/data/documents/08tbl04.xls",
+"https://www2.fbi.gov/ucr/cius2006/data/documents/06tbl04.xls"
+)

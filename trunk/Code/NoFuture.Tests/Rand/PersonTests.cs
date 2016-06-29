@@ -22,18 +22,7 @@ namespace NoFuture.Tests.Rand
             Assert.IsFalse(string.IsNullOrWhiteSpace(testResult.LastName));
             Assert.IsFalse(string.IsNullOrWhiteSpace(testResult.FirstName));
             Assert.IsNotNull(testResult.BirthCert);
-            Assert.IsFalse(string.IsNullOrWhiteSpace(testResult.HomeAddress.ToString()));
 
-        }
-
-        [TestMethod]
-        public void CanadianTests()
-        {
-            var testResult = Person.Canadian();
-            Assert.IsNotNull(testResult);
-            Assert.IsFalse(string.IsNullOrWhiteSpace(testResult.HomeCity));
-            Assert.IsFalse(string.IsNullOrWhiteSpace(testResult.HomeState));
-            Assert.IsFalse(string.IsNullOrWhiteSpace(testResult.HomeZip));
         }
 
         [TestMethod]
@@ -197,13 +186,13 @@ namespace NoFuture.Tests.Rand
         {
             var testSubject = new NoFuture.Rand.Domus.NorthAmerican(DateTime.Now.AddYears(-40), Gender.Female, true);
 
-            var testResult = testSubject.GetMaritalStatus(null);
+            var testResult = testSubject.GetMaritalStatusAt(null);
 
             Assert.AreNotEqual(MaritialStatus.Unknown, testResult);
 
             System.Diagnostics.Debug.WriteLine(testResult);
 
-            testResult = testSubject.GetMaritalStatus(DateTime.Now.AddYears(-10));
+            testResult = testSubject.GetMaritalStatusAt(DateTime.Now.AddYears(-10));
 
             Assert.AreNotEqual(MaritialStatus.Unknown, testResult);
 
@@ -214,11 +203,10 @@ namespace NoFuture.Tests.Rand
         public void TestIsValidDobOfChild()
         {
             var testPerson = new NorthAmerican(new DateTime(1955,6,20), Gender.Female, false);
-            testPerson.FirstName = NAmerUtil.GetAmericanFirstName(testPerson.BirthCert.DateOfBirth, Gender.Female);
 
-            testPerson.Children.Add(new NorthAmerican(new DateTime(1976, 10, 2), Gender.Female, false));
-            testPerson.Children.Add(new NorthAmerican(new DateTime(1986, 3, 11), Gender.Female, false));
-            testPerson.Children.Add(new NorthAmerican(new DateTime(1982, 12, 30), Gender.Female, false));
+            testPerson._children.Add(new NorthAmerican(new DateTime(1976, 10, 2), Gender.Female, false));
+            testPerson._children.Add(new NorthAmerican(new DateTime(1986, 3, 11), Gender.Female, false));
+            testPerson._children.Add(new NorthAmerican(new DateTime(1982, 12, 30), Gender.Female, false));
 
             var testDob = new DateTime(1985, 9, 10);//conception ~ 12/4/1984
 

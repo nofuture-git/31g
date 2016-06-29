@@ -1,6 +1,6 @@
 ﻿namespace NoFuture.Util.Math
 {
-    public class ExponentialEquation
+    public class ExponentialEquation : IEquation
     {
         /// <summary>
         /// In the form of f(x) = a * x^n this is 'a'

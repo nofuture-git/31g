@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using NoFuture.Exceptions;
-using NoFuture.Rand.Data.Sp;
 using NoFuture.Rand.Data.Types;
 using NoFuture.Rand.Domus.Pneuma;
 using NoFuture.Rand.Gov;
@@ -16,17 +15,10 @@ namespace NoFuture.Rand.Domus
     public class NorthAmerican : Person
     {
         #region fields
-        private readonly List<Tuple<Address, CityArea>> _formerAddresses = new List<Tuple<Address, CityArea>>();
-        private readonly List<ILoan> _debts = new List<ILoan>();
-        private IPerson _mother;
-        private IPerson _father;
         private readonly List<Spouse> _spouses = new List<Spouse>();
         private Gender _myGender;
-        private string _fname;
-        protected string _lname;
         internal readonly List<Tuple<KindsOfLabels, NorthAmericanPhone>> _phoneNumbers = 
             new List<Tuple<KindsOfLabels, NorthAmericanPhone>>();
-        private DriversLicense _dl;
         private SocialSecurityNumber _ssn;
         #endregion
 
@@ -37,15 +29,16 @@ namespace NoFuture.Rand.Domus
             _birthCert = new AmericanBirthCert(this) { DateOfBirth = dob };
             _myGender = myGender;
 
-            _fname = _myGender != Gender.Unknown ? NAmerUtil.GetAmericanFirstName(_birthCert.DateOfBirth, _myGender) : "Pat";
-            _lname = NAmerUtil.GetAmericanLastName();
+            var fname = _myGender != Gender.Unknown ? NAmerUtil.GetAmericanFirstName(_birthCert.DateOfBirth, _myGender) : "Pat";
+            _otherNames.Add(new Tuple<KindsOfNames, string>(KindsOfNames.Firstname, fname));
+            var lname = NAmerUtil.GetAmericanLastName();
+            _otherNames.Add(new Tuple<KindsOfNames, string>(KindsOfNames.Surname, lname));
 
             MiddleName = NAmerUtil.GetAmericanFirstName(_birthCert.DateOfBirth, _myGender);
 
-            var csz = CityArea.American(null);
-            var homeAddr = Address.American();
-            HomeAddress = homeAddr;
-            HomeCityArea = csz;
+            var csz = CityArea.American();
+            var homeAddr = StreetPo.American();
+            _addresses.Add(new HomeAddress {HomeStreetPo = homeAddr, HomeCityArea = csz});
 
             var abbrv = csz.State.StateAbbrv;
 
@@ -53,16 +46,10 @@ namespace NoFuture.Rand.Domus
             if(Etx.IntNumber(1,10)<=6)
                 _phoneNumbers.Add(new Tuple<KindsOfLabels, NorthAmericanPhone>(KindsOfLabels.Home, Phone.American(abbrv)));
 
-            if(GetAge(null) >= 12)
+            if(GetAgeAt(null) >= 12)
                 _phoneNumbers.Add(new Tuple<KindsOfLabels, NorthAmericanPhone>(KindsOfLabels.Mobile, Phone.American(abbrv)));
 
             _ssn = new SocialSecurityNumber();
-            if (GetAge(null) >= UsState.MIN_AGE_FOR_DL)
-            {
-                _dl = csz.State.DriversLicenseFormats[0];
-            }
-
-            //http://www.internic.net/zones/root.zone
 
             if(withWholeFamily)
                 ResolveFamilyState();
@@ -77,42 +64,73 @@ namespace NoFuture.Rand.Domus
             var nAmerMother = _mother as NorthAmerican;
             if (nAmerMother == null)
                 return;
-            ((AmericanBirthCert) _birthCert).City = nAmerMother.HomeCityArea;
+            ((AmericanBirthCert) _birthCert).City = nAmerMother.GetAddressAt(null)?.HomeCityArea;
         }
 
         #endregion
 
         #region properties
-
-        public override string FirstName
-        {
-            get { return _fname; }
-            set { _fname = value; }
-        }
-
-        public override string LastName
-        {
-            get { return _lname; }
-            set { _lname = value; }
-        }
-
         public override Gender MyGender
         {
             get { return _myGender; }
             set { _myGender = value; }
         }
 
-        public override MaritialStatus GetMaritalStatus(DateTime? dt)
+        public string MiddleName
+        {
+            get { return _otherNames.First(x => x.Item1 == KindsOfNames.Middle).Item2; }
+            set { UpsertName(KindsOfNames.Middle, value); }
+
+        }
+
+        public NorthAmericanPhone HomePhone
+        {
+            get
+            {
+                var hph = _phoneNumbers.FirstOrDefault(x => x.Item1 == KindsOfLabels.Home);
+                return hph?.Item2;
+            }
+        }
+
+        public NorthAmericanPhone CellPhone
+        {
+            get
+            {
+                var mobilePh = _phoneNumbers.FirstOrDefault(x => x.Item1 == KindsOfLabels.Mobile);
+                return mobilePh?.Item2;
+            }
+        }
+
+        public virtual SocialSecurityNumber Ssn { get {return _ssn;} set { _ssn = value; } }
+
+        public NorthAmericanRace Race { get; set; }
+
+        public DriversLicense DriversLicense => GetDriversLicenseAt(null);
+
+        #endregion
+
+        public virtual DriversLicense GetDriversLicenseAt(DateTime? dt)
+        {
+            if (GetAgeAt(dt) < UsState.MIN_AGE_FOR_DL)
+                return null;
+
+            var csz = GetAddressAt(dt)?.HomeCityArea;
+            var amerCsz = csz as UsCityStateZip;
+            var dl = amerCsz?.State.DriversLicenseFormats[0];
+            return dl;
+        }
+
+        public override MaritialStatus GetMaritalStatusAt(DateTime? dt)
         {
             var mdt = dt ?? DateTime.Now;
 
-            var iAmUnderage = GetAge(mdt) < GetMyHomeStatesAgeOfConsent();
+            var iAmUnderage = GetAgeAt(mdt) < GetMyHomeStatesAgeOfMajority();
 
             if (iAmUnderage || !_spouses.Any())
                 return MaritialStatus.Single;
 
             //spread all status into single dictionary
-            var myTimeline = new Dictionary<int, MaritialStatus> {{0, MaritialStatus.Single}};
+            var myTimeline = new Dictionary<int, MaritialStatus> { { 0, MaritialStatus.Single } };
             foreach (var spouseData in _spouses)
             {
                 var days = (int)Math.Abs((spouseData.MarriedOn - _birthCert.DateOfBirth).TotalDays);
@@ -153,95 +171,37 @@ namespace NoFuture.Rand.Domus
                 : myTimeline.Last().Value;
         }
 
-        public override IPerson GetMother() { return _mother;}
-
-        public override IPerson GetFather() { return _father;}
-
-        public override Spouse GetSpouse(DateTime? dt)
+        public override Spouse GetSpouseAt(DateTime? dt)
         {
             var cdt = dt ?? DateTime.Now;
 
-            if (GetAge(cdt) < GetMyHomeStatesAgeOfConsent())
+            if (GetAgeAt(cdt) < GetMyHomeStatesAgeOfMajority())
             {
                 return null;
             }
 
             var spouseData = _spouses.FirstOrDefault(x => DateTime.Compare(x.MarriedOn, cdt) <= 0 && x.SeparatedOn == null);
-            return spouseData != null ? spouseData : null;
+            return spouseData;
         }
 
-        public string MiddleName { get; set; }
-        
-        public List<Tuple<Address, CityArea>> FormerResidences => _formerAddresses;
-
-        public Address HomeAddress { get; set; }
-
-        public CityArea HomeCityArea { get; set; }
-
-        public string HomeCity => HomeCityArea.AddressData.City;
-        public string HomeState => HomeCityArea.AddressData.StateAbbrv;
-        public string HomeZip => HomeCityArea.AddressData.PostalCode;
-
-        public NorthAmericanPhone HomePhone {
-            get
-            {
-                var hph = _phoneNumbers.FirstOrDefault(x => x.Item1 == KindsOfLabels.Home);
-                return hph != null ? hph.Item2 : null;
-            }
-        }
-        public NorthAmericanPhone CellPhone
+        public void AlignCohabitantsHomeDataAt(DateTime? dt, HomeAddress addr)
         {
-            get
+            if (addr == null)
+                return;
+            UpsertAddress(addr);
+            var ms = GetMaritalStatusAt(dt);
+            if ((ms == MaritialStatus.Married || ms == MaritialStatus.Remarried) && GetSpouseAt(dt) != null)
             {
-                var mobilePh = _phoneNumbers.FirstOrDefault(x => x.Item1 == KindsOfLabels.Mobile);
-                return mobilePh != null ? mobilePh.Item2 : null;
+                NAmerUtil.SetNAmerCohabitants((NorthAmerican)GetSpouseAt(dt).SO, this);
             }
-        }
-
-        public virtual SocialSecurityNumber Ssn { get {return _ssn;} set { _ssn = value; } }
-
-        public virtual DriversLicense DriversLicense
-        {
-            get
-            {
-                _dl.FullLegalName = string.Join(" ", FirstName, MiddleName, LastName).ToUpper();
-                _dl.Gender = MyGender;
-                _dl.Dob = BirthCert.DateOfBirth;
-                _dl.PrincipalResidence = string.Join(" ", HomeAddress.ToString(), HomeCityArea.ToString()).ToUpper();
-                return _dl;
-            }
-            set
-            {
-                _dl = value;
-            }
-        }
-
-        public List<ILoan> Debts => _debts;
-
-        public override List<IPerson> Children
-        {
-            get { return _children; }
-        }
-        public NorthAmericanRace Race { get; set; }
-        
-        #endregion
-
-        #region family
-
-        public void AlignCohabitantsHomeData(DateTime? dt)
-        {
-            var ms = GetMaritalStatus(dt);
-            if ((ms == MaritialStatus.Married || ms == MaritialStatus.Remarried) && GetSpouse(dt) != null)
-            {
-                NAmerUtil.SetNAmerCohabitants((NorthAmerican)GetSpouse(dt).SO, this);
-            }
-            var underAgeChildren = Children.Cast<NorthAmerican>().Where(x => x.GetAge(dt) < UsState.AGE_OF_ADULT).ToList();
+            var underAgeChildren = _children.Cast<NorthAmerican>().Where(x => x.GetAgeAt(dt) < UsState.AGE_OF_ADULT).ToList();
             if (underAgeChildren.Count <= 0)
                 return;
-            foreach(var child in underAgeChildren)
+            foreach (var child in underAgeChildren)
                 NAmerUtil.SetNAmerCohabitants(child, this);
         }
 
+        #region internal methods
         /// <summary>
         /// Assigns <see cref="Race"/> and invokes <see cref="ResolveParents"/>, <see cref="ResolveSpouse"/> and <see cref="ResolveChildren"/>.
         /// Only Parents and Race are certian the other resolutions contrained by age and randomness.
@@ -250,13 +210,13 @@ namespace NoFuture.Rand.Domus
         {
             ThrowOnBirthDateNull(this);
             var dt = DateTime.Now;
-            Race = NAmerUtil.GetAmericanRace(HomeZip);
+            Race = NAmerUtil.GetAmericanRace(GetAddressAt(null)?.HomeCityArea?.AddressData?.PostalCode);
             ResolveParents();
             //resolve spouse to each other
             ResolveSpouse(NAmerUtil.GetMaritialStatus(_birthCert.DateOfBirth, MyGender));
             //to solve for childern when gender -eq Male
             ResolveChildren();
-            AlignCohabitantsHomeData(dt);
+            AlignCohabitantsHomeDataAt(dt, GetAddressAt(null));
         }
 
         protected internal void ResolveParents()
@@ -282,7 +242,7 @@ namespace NoFuture.Rand.Domus
 
             BirthCert.Father = myFather;
             BirthCert.Mother = myMother;
-            ((AmericanBirthCert) BirthCert).City = myMother.HomeCityArea;
+            ((AmericanBirthCert) BirthCert).City = myMother.GetAddressAt(null)?.HomeCityArea;
 
             var myParentsAtMyBirth = NAmerUtil.GetMaritialStatus(myMother.BirthCert.DateOfBirth, Gender.Female);
 
@@ -346,14 +306,13 @@ namespace NoFuture.Rand.Domus
             //add maiden name, set new last name to match husband
             if (_myGender == Gender.Female)
             {
-                if (OtherNames.All(x => x.Item1 != KindsOfNames.Father))
-                    OtherNames.Add(new Tuple<KindsOfNames, string>(KindsOfNames.Father, _father.LastName));
+                UpsertName(KindsOfNames.Father, _father.LastName);
             }
 
             //set death date if widowed
             if (myMaritialStatus == MaritialStatus.Widowed)
             {
-                var d = Convert.ToInt32(Math.Round(GetAge(null) * 0.15));
+                var d = Convert.ToInt32(Math.Round(GetAgeAt(null) * 0.15));
                 spouse.DeathDate = Etx.Date(Etx.IntNumber(1, d), null);
             }
 
@@ -376,7 +335,7 @@ namespace NoFuture.Rand.Domus
 
                 var ageSpread = 6;
                 if (MyGender == Gender.Male)
-                    ageSpread = 10;//he likes'em young...
+                    ageSpread = 10;
 
                 //get a second spouse
                 var secondSpouse = (NorthAmerican)NAmerUtil.SolveForSpouse(_birthCert.DateOfBirth, MyGender, ageSpread);
@@ -394,7 +353,7 @@ namespace NoFuture.Rand.Domus
         /// Will only function when <see cref="MyGender"/> is <see cref="Gender.Female"/> since all equations used
         /// are derived from woman-only datasets.
         /// Resolves to some random amount of <see cref="IPerson"/> 
-        /// added to the <see cref="Children"/> collection.  
+        /// added to the Children collection.  
         /// </summary>
         protected internal void ResolveChildren()
         {
@@ -408,11 +367,11 @@ namespace NoFuture.Rand.Domus
                         continue;
                     nAmerSpouse.ResolveChildren();
 
-                    foreach (var childFrom in nAmerSpouse.Children)
+                    foreach (var childFrom in nAmerSpouse._children)
                     {
                         if (childFrom.LastName != LastName && childFrom.OtherNames.All(x => x.Item2 != LastName))
                             continue;
-                        Children.Add(childFrom);
+                        _children.Add(childFrom);
                     }
                 }
                 return;
@@ -460,7 +419,7 @@ namespace NoFuture.Rand.Domus
         }
 
         /// <summary>
-        /// Add a random <see cref="IPerson"/> to the <see cref="Children"/> collection
+        /// Add a random <see cref="IPerson"/> to the Children collection
         /// aligning <see cref="IPerson"/> last name and father to match
         /// spouses.
         /// </summary>
@@ -496,7 +455,7 @@ namespace NoFuture.Rand.Domus
 
             var isDaughterMarriedOff = myChildGender == Gender.Female &&
                                        NAmerUtil.Equations.FemaleDob2MarriageAge.SolveForY(myChildDob.Year) >=
-                                       myChildeAge && myChildeAge >= GetMyHomeStatesAgeOfConsent();
+                                       myChildeAge && myChildeAge >= GetMyHomeStatesAgeOfMajority();
             //never married
             if (!_spouses.Any())
             {
@@ -577,10 +536,8 @@ namespace NoFuture.Rand.Domus
                 childDob.ComparedTo(maxDate) == ChronoCompare.After)
             {
                 throw new RahRowRagee(
-                    string.Format(
-                        "The Child Date-of-Birth, {0}, does not fall " +
-                        "within a rational range given the mother's Date-of-Birth of {1}",
-                        childDob, BirthCert.DateOfBirth));
+                    $"The Child Date-of-Birth, {childDob}, does not fall " +
+                    $"within a rational range given the mother's Date-of-Birth of {BirthCert.DateOfBirth}");
             }
             var clildDobTuple = new Tuple<DateTime, DateTime>(childDob.AddDays(-1 * PREG_DAYS), childDob);
 
@@ -619,10 +576,7 @@ namespace NoFuture.Rand.Domus
             else if (MyGender == Gender.Female)
             {
                 //add ex-husband last name to list
-                OtherNames.Add(
-                    new Tuple<KindsOfNames, string>(
-                        KindsOfNames.Former | KindsOfNames.Surname | KindsOfNames.Spouse,
-                        spouse.LastName));
+                UpsertName(KindsOfNames.Former | KindsOfNames.Surname | KindsOfNames.Spouse, spouse.LastName);
 
                 //set back to maiden name
                 LastName = _father == null ? NAmerUtil.GetAmericanLastName() : _father.LastName;
@@ -635,27 +589,19 @@ namespace NoFuture.Rand.Domus
                 Ordinal = _spouses.Count + 1
             });
             var nAmerSpouse = spouse as NorthAmerican;
-            if (nAmerSpouse == null)
-                return;
 
-            nAmerSpouse.AddNewSpouseToList(this, marriedOn, separatedOn);
+            nAmerSpouse?.AddNewSpouseToList(this, marriedOn, separatedOn);
         }
 
-        private int GetMyHomeStatesAgeOfConsent()
+        private int GetMyHomeStatesAgeOfMajority()
         {
-            if (HomeCityArea == null)
+            if (GetAddressAt(null) == null)
                 return UsState.AGE_OF_ADULT;
-            var myHomeState = UsState.GetStateByPostalCode(HomeState);
-            return myHomeState == null ? UsState.AGE_OF_ADULT : myHomeState.AgeOfMajority;
+            var myHomeState = UsState.GetStateByPostalCode(GetAddressAt(null)?.HomeCityArea?.AddressData?.StateAbbrv);
+            return myHomeState?.AgeOfMajority ?? UsState.AGE_OF_ADULT;
         }
 
         #endregion
-
-        protected internal void ResolveFinancialState()
-        {
-
-            throw new NotImplementedException();
-        }
     }
 
     //container class for Race probability tables
