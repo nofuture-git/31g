@@ -1,14 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using NoFuture.Rand.Domus;
-using NoFuture.Util.Math;
 
 namespace NoFuture.Rand.Data.Sp
 {
     public abstract class CreditScore
     {
+        public const int MAX_FICO = 850;
+        public const int MIN_FICO = 300;
     }
 
     public class PersonalCreditScore : CreditScore
@@ -55,10 +53,10 @@ namespace NoFuture.Rand.Data.Sp
 
             var ficoScore = (int)Math.Ceiling(FicoBaseValue + agePenalty + discipline + consistent);
 
-            if (ficoScore > TradeLine.MAX_FICO)
-                ficoScore = TradeLine.MAX_FICO;
-            if (ficoScore < TradeLine.MIN_FICO)
-                ficoScore = TradeLine.MIN_FICO;
+            if (ficoScore > MAX_FICO)
+                ficoScore = MAX_FICO;
+            if (ficoScore < MIN_FICO)
+                ficoScore = MIN_FICO;
 
             return ficoScore;
         }

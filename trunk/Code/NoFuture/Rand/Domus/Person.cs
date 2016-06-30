@@ -84,6 +84,11 @@ namespace NoFuture.Rand.Domus
 
         public virtual IPerson GetFather() { return _father; }
 
+        public IEducation GetEducationAt(DateTime? dt)
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// Resolves the <see cref="HomeAddress"/> which was current 
         /// at time <see cref="dt"/>

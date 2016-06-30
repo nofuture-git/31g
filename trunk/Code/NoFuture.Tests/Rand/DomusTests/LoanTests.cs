@@ -2,6 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NoFuture.Rand;
 using NoFuture.Rand.Data.Sp;
+using Dbg = System.Diagnostics.Debug;
 
 namespace NoFuture.Tests.Rand.DomusTests
 {
@@ -32,12 +33,12 @@ namespace NoFuture.Tests.Rand.DomusTests
 
             testSubject.TradeLine.Balance.Transactions.Add(new Transaction(DateTime.Now.AddDays(-15), new Pecuniam(-461.0M)));
             var testResult = testSubject.GetStatus(DateTime.Now);
-            Assert.AreEqual(LoanStatus.Current, testResult);
+            Assert.AreEqual(AccountStatus.Current, testResult);
 
             testSubject = new FixedRateLoan(DateTime.Now.AddYears(-3).Date, 0.0125F);
 
             testResult = testSubject.GetStatus(DateTime.Now);
-            Assert.AreEqual(LoanStatus.NoHistory, testResult);
+            Assert.AreEqual(AccountStatus.NoHistory, testResult);
 
             testSubject.TradeLine.Closure = new TradelineClosure()
             {
@@ -46,7 +47,7 @@ namespace NoFuture.Tests.Rand.DomusTests
             };
 
             testResult = testSubject.GetStatus(DateTime.Now);
-            Assert.AreEqual(LoanStatus.Closed, testResult);
+            Assert.AreEqual(AccountStatus.Closed, testResult);
 
             testSubject.TradeLine.Closure = new TradelineClosure()
             {
@@ -55,7 +56,7 @@ namespace NoFuture.Tests.Rand.DomusTests
             };
 
             testResult = testSubject.GetStatus(DateTime.Now);
-            Assert.AreNotEqual(LoanStatus.Closed, testResult);
+            Assert.AreNotEqual(AccountStatus.Closed, testResult);
 
             testSubject = new FixedRateLoan(DateTime.Now.AddYears(-3).Date, 0.0125F);
             testSubject.TradeLine.DueFrequency = new TimeSpan(28,0,0,0);
@@ -63,11 +64,11 @@ namespace NoFuture.Tests.Rand.DomusTests
             AddRecentPayments(testSubject);
 
             testResult = testSubject.GetStatus(DateTime.Now);
-            Assert.AreEqual(LoanStatus.Late, testResult);
+            Assert.AreEqual(AccountStatus.Late, testResult);
 
             testSubject.TradeLine.DueFrequency = new TimeSpan(45, 0, 0, 0);
             testResult = testSubject.GetStatus(DateTime.Now);
-            Assert.AreEqual(LoanStatus.Current, testResult);
+            Assert.AreEqual(AccountStatus.Current, testResult);
 
             //account openned then over paid off - better be current
             testSubject = new FixedRateLoan(DateTime.Now.AddYears(-3).Date, 0.0125F);
@@ -75,7 +76,7 @@ namespace NoFuture.Tests.Rand.DomusTests
             testSubject.TradeLine.Balance.Transactions.Add(new Transaction(DateTime.Now.AddDays(-360), new Pecuniam(-9000.0M)));
 
             testResult = testSubject.GetStatus(DateTime.Now);
-            Assert.AreEqual(LoanStatus.Current, testResult);
+            Assert.AreEqual(AccountStatus.Current, testResult);
 
             //immediate payment didn't cover it cause of per diem interest
             testSubject = new FixedRateLoan(DateTime.Now.AddYears(-3).Date, 0.0125F) {Rate = 0.0825f};
@@ -83,7 +84,7 @@ namespace NoFuture.Tests.Rand.DomusTests
             testSubject.TradeLine.Balance.Transactions.Add(new Transaction(DateTime.Now.AddDays(-35), new Pecuniam(-8000.0M)));
 
             testResult = testSubject.GetStatus(DateTime.Now);
-            Assert.AreEqual(LoanStatus.Late, testResult);
+            Assert.AreEqual(AccountStatus.Late, testResult);
         }
 
         [TestMethod]

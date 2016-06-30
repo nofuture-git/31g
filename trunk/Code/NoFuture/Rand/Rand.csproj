@@ -69,7 +69,9 @@
     <Compile Include="Data\Sp\Account.cs" />
     <Compile Include="Data\Sp\CreditScore.cs" />
     <Compile Include="Data\Sp\FinancialData.cs" />
+    <Compile Include="Data\Sp\Receivable.cs" />
     <Compile Include="Data\Sp\Loan.cs" />
+    <Compile Include="Data\Sp\Rent.cs" />
     <Compile Include="Data\Sp\TradeLine.cs" />
     <Compile Include="Data\Types\AmericanRaceProbabilityRange.cs" />
     <Compile Include="Data\Types\StreetPo.cs" />
@@ -206,6 +208,9 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Data\Source\US_States.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Domus\Opes\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

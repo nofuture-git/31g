@@ -2,6 +2,24 @@
 
 namespace NoFuture.Rand.Data.Sp
 {
+    [Serializable]
+    public enum ClosedCondition
+    {
+        ClosedWithZeroBalance,
+        VoluntarySurrender,
+        ClosureSurrender,
+        Repossession,
+        ChargeOff,
+        Foreclosure
+    }
+
+    [Serializable]
+    public struct TradelineClosure
+    {
+        public DateTime ClosedDate;
+        public ClosedCondition Condition;
+    }
+
     public interface ITradeLine
     {
         FormOfCredit FormOfCredit { get; set; }
@@ -16,9 +34,6 @@ namespace NoFuture.Rand.Data.Sp
     public class TradeLine : ITradeLine
     {
         #region constants
-        public const int MAX_FICO = 850;
-        public const int MIN_FICO = 300;
-
         public static TimeSpan DefaultDueFrequency = new TimeSpan(30,0,0,0);
         #endregion
 
@@ -37,9 +52,9 @@ namespace NoFuture.Rand.Data.Sp
         #region properties
         public FormOfCredit FormOfCredit { get; set; }
         public Pecuniam CreditLimit { get; set; }
-        public Balance Balance { get { return _balance; } }
+        public Balance Balance => _balance;
         public TimeSpan DueFrequency { get { return _dueFrequency; } set { _dueFrequency = value; }}
-        public DateTime OpennedDate { get { return _openDate; } }
+        public DateTime OpennedDate => _openDate;
         public TradelineClosure? Closure { get; set; }
         #endregion
 
@@ -60,5 +75,4 @@ namespace NoFuture.Rand.Data.Sp
 
         #endregion
     }
-
 }

@@ -56,6 +56,14 @@ namespace NoFuture.Rand.Domus
         /// </summary>
         /// <returns></returns>
         IPerson GetMother();
+
+        /// <summary>
+        /// Resolve the edu of this instance at time <see cref="dt"/>
+        /// </summary>
+        /// <param name="dt">Null for the current time right now.</param>
+        /// <returns></returns>
+        IEducation GetEducationAt(DateTime? dt);
+
         #endregion
     }
 }

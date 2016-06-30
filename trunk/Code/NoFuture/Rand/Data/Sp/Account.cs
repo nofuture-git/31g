@@ -4,6 +4,14 @@ using NoFuture.Rand.Com;
 namespace NoFuture.Rand.Data.Sp
 {
     [Serializable]
+    public enum AccountStatus
+    {
+        Closed,
+        Current,
+        Late,
+        NoHistory
+    }
+    [Serializable]
     public class AccountId : RIdentifier
     {
         public AccountId(Rchar[] format)

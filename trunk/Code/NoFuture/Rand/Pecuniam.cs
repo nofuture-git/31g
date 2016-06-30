@@ -359,7 +359,7 @@ namespace NoFuture.Rand
         public Pecuniam GetCurrent(DateTime dt, Dictionary<DateTime, float> variableRate)
         {
             if (variableRate == null || variableRate.Keys.Count <= 0)
-                throw new ArgumentNullException("variableRate");
+                throw new ArgumentNullException(nameof(variableRate));
 
             //get very first recorded transaction
             var oldestTransaction = Transactions.FirstOrDefault();
@@ -426,7 +426,7 @@ namespace NoFuture.Rand
                 return new Pecuniam(0);
 
             if (between == null)
-                throw new ArgumentNullException("between");
+                throw new ArgumentNullException(nameof(between));
 
             if (between.Item1.Equals(between.Item2))
                 throw new ItsDeadJim("The calculation requires a date range.");
