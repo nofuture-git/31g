@@ -9,6 +9,13 @@ namespace NoFuture.Rand.Domus
         public DateTime? SeparatedOn { get; set; }
         public int Ordinal { get; set; }
 
+        /// <summary>
+        /// Determins that <see cref="obj"/> is type <see cref="Spouse"/>
+        /// and that both <see cref="MarriedOn"/> and <see cref="SeparatedOn"/>
+        /// equal.
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
         public override bool Equals(object obj)
         {
             var sd = obj as Spouse;

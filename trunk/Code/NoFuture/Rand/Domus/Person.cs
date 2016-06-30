@@ -28,9 +28,15 @@ namespace NoFuture.Rand.Domus
         protected internal Personality _personality = new Personality();
         protected internal BirthCert _birthCert;
         protected internal readonly List<HomeAddress> _addresses = new List<HomeAddress>();
+        protected internal Gender _myGender;
         #endregion
 
         #region properties
+        public virtual Gender MyGender
+        {
+            get { return _myGender; }
+            set { _myGender = value; }
+        }
         public virtual BirthCert BirthCert => _birthCert;
         public virtual DateTime? DeathDate { get; set; }
         public virtual string FirstName
@@ -43,7 +49,6 @@ namespace NoFuture.Rand.Domus
             get { return _otherNames.First(x => x.Item1 == KindsOfNames.Surname).Item2; }
             set { UpsertName(KindsOfNames.Surname, value); }
         }
-        public virtual Gender MyGender { get; set; }
         public virtual List<Uri> NetUri => _netUris;
         public Personality Personality => _personality;
         public virtual IEducation Education { get; set; }
@@ -79,6 +84,12 @@ namespace NoFuture.Rand.Domus
 
         public virtual IPerson GetFather() { return _father; }
 
+        /// <summary>
+        /// Resolves the <see cref="HomeAddress"/> which was current 
+        /// at time <see cref="dt"/>
+        /// </summary>
+        /// <param name="dt">Null for the current time right now.</param>
+        /// <returns></returns>
         public virtual HomeAddress GetAddressAt(DateTime? dt)
         {
             //TODO enhance to have previous address
@@ -87,6 +98,11 @@ namespace NoFuture.Rand.Domus
                 : (_addresses.FirstOrDefault(x => x.FromDate <= dt.Value) ?? _addresses.First());
         }
 
+        /// <summary>
+        /// Helper method to get the age at time <see cref="atTime"/>
+        /// </summary>
+        /// <param name="atTime">Null for the current time right now.</param>
+        /// <returns></returns>
         public int GetAgeAt(DateTime? atTime)
         {
             var dt = DateTime.Now;
@@ -100,6 +116,10 @@ namespace NoFuture.Rand.Domus
             return CalcAge(BirthCert.DateOfBirth, dt);
         }
 
+        /// <summary>
+        /// Helper method to get the opposite gender.
+        /// </summary>
+        /// <returns><see cref="Gender.Unknown"/> returns the same.</returns>
         public Gender GetMyOppositeGender()
         {
             if(MyGender == Gender.Unknown)
@@ -108,6 +128,12 @@ namespace NoFuture.Rand.Domus
             return MyGender == Gender.Female ? Gender.Male : Gender.Female;
         }
 
+        /// <summary>
+        /// Helper method to overwrite or add the given <see cref="k"/>
+        /// to this instance.
+        /// </summary>
+        /// <param name="k"></param>
+        /// <param name="name"></param>
         protected internal void UpsertName(KindsOfNames k, string name)
         {
             var cname = _otherNames.FirstOrDefault(x => x.Item1 == k);
@@ -119,6 +145,11 @@ namespace NoFuture.Rand.Domus
             _otherNames.Add(new Tuple<KindsOfNames, string>(k, name));
         }
 
+        /// <summary>
+        /// Handles details of adding <see cref="addr"/> to 
+        /// this instance's history of addresses.
+        /// </summary>
+        /// <param name="addr"></param>
         protected internal void UpsertAddress(HomeAddress addr)
         {
             if (addr == null)
@@ -155,11 +186,27 @@ namespace NoFuture.Rand.Domus
             return canadian;
         }
 
+        /// <summary>
+        /// Reuseable method to get the diffence, in years, between
+        /// <see cref="dob"/> and <see cref="atTime"/>
+        /// </summary>
+        /// <param name="dob"></param>
+        /// <param name="atTime"></param>
+        /// <returns>
+        /// The total number of days difference 
+        /// divided by <see cref="Constants.DBL_TROPICAL_YEAR"/>,
+        /// rounded off.
+        /// </returns>
         public static int CalcAge(DateTime dob, DateTime atTime)
         {
             return Convert.ToInt32(Math.Round((atTime - dob).TotalDays / Constants.DBL_TROPICAL_YEAR));
         }
 
+        /// <summary>
+        /// Helper method to throw an ex when the Birth Cert is 
+        /// unassigned.
+        /// </summary>
+        /// <param name="p"></param>
         internal static void ThrowOnBirthDateNull(IPerson p)
         {
             if (p == null)

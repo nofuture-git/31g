@@ -439,3 +439,6 @@ obstreperous - noisy and difficult to control
 truculent - eager or quick to argue or fight
 vitriolic - filled with bitter criticism or malice
 pleonasm - use of more words than are necessary to convey meaning
+allusion - indirect reference 
+illusion - deception (mistaken preception of reality)
+delusion - false belief (belief counter the evidence)

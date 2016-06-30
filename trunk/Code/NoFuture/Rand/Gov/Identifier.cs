@@ -32,6 +32,7 @@ namespace NoFuture.Rand.Gov
     [Serializable]
     public abstract class Anomaly : Identifier { }
 
+    #region kinds of crime
     [Serializable]
     [Flags]
     public enum ViolentCrime : short
@@ -50,6 +51,7 @@ namespace NoFuture.Rand.Gov
         Theft = 2,
         Gta = 4
     }
+    #endregion
 
     #region address anomalies
 

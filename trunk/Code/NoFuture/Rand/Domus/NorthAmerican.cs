@@ -11,12 +11,16 @@ using NoFuture.Util;
 
 namespace NoFuture.Rand.Domus
 {
+    /// <summary>
+    /// The extended <see cref="Person"/> type for 
+    /// a North American.
+    /// </summary>
     [Serializable]
     public class NorthAmerican : Person
     {
         #region fields
         private readonly List<Spouse> _spouses = new List<Spouse>();
-        private Gender _myGender;
+        
         internal readonly List<Tuple<KindsOfLabels, NorthAmericanPhone>> _phoneNumbers = 
             new List<Tuple<KindsOfLabels, NorthAmericanPhone>>();
         private SocialSecurityNumber _ssn;
@@ -24,6 +28,14 @@ namespace NoFuture.Rand.Domus
 
         #region ctors
 
+        /// <summary>
+        /// Typical ctor to create the random instance.
+        /// </summary>
+        /// <param name="dob"></param>
+        /// <param name="myGender"></param>
+        /// <param name="withWholeFamily">
+        /// When set to true the ctor will assign parents, children and spouse at random.
+        /// </param>
         public NorthAmerican(DateTime dob, Gender myGender, bool withWholeFamily = false):base(dob)
         {
             _birthCert = new AmericanBirthCert(this) { DateOfBirth = dob };
@@ -42,7 +54,6 @@ namespace NoFuture.Rand.Domus
 
             var abbrv = csz?.PostalState;
 
-            //http://www.pewresearch.org/fact-tank/2014/07/08/two-of-every-five-u-s-households-have-only-wireless-phones/
             if(Etx.TryAboveOrAt(6, Etx.Dice.Ten))
                 _phoneNumbers.Add(new Tuple<KindsOfLabels, NorthAmericanPhone>(KindsOfLabels.Home, Phone.American(abbrv)));
 
@@ -57,6 +68,13 @@ namespace NoFuture.Rand.Domus
             _personality = new Personality();
         }
 
+        /// <summary>
+        /// Ctor to directly assign the parents of the given instance
+        /// </summary>
+        /// <param name="dob"></param>
+        /// <param name="myGender"></param>
+        /// <param name="mother"></param>
+        /// <param name="father"></param>
         public NorthAmerican(DateTime dob, Gender myGender, IPerson mother, IPerson father): this(dob, myGender)
         {
             _mother = mother;
@@ -73,12 +91,9 @@ namespace NoFuture.Rand.Domus
         #endregion
 
         #region properties
-        public override Gender MyGender
-        {
-            get { return _myGender; }
-            set { _myGender = value; }
-        }
-
+        /// <summary>
+        /// Helper method to get the middle name which is mostly a North American thing.
+        /// </summary>
         public string MiddleName
         {
             get { return _otherNames.First(x => x.Item1 == KindsOfNames.Middle).Item2; }
@@ -86,6 +101,11 @@ namespace NoFuture.Rand.Domus
 
         }
 
+        /// <summary>
+        /// Helper method to get a home phone.
+        /// May be null:
+        /// [http://www.pewresearch.org/fact-tank/2014/07/08/two-of-every-five-u-s-households-have-only-wireless-phones/]
+        /// </summary>
         public NorthAmericanPhone HomePhone
         {
             get
@@ -95,7 +115,10 @@ namespace NoFuture.Rand.Domus
             }
         }
 
-        public NorthAmericanPhone CellPhone
+        /// <summary>
+        /// Helper method to get the mobile phone.
+        /// </summary>
+        public NorthAmericanPhone MobilePhone
         {
             get
             {
@@ -104,14 +127,31 @@ namespace NoFuture.Rand.Domus
             }
         }
 
+        /// <summary>
+        /// Get or sets the United States <see cref="SocialSecurityNumber"/> 
+        /// of this instance.
+        /// </summary>
         public virtual SocialSecurityNumber Ssn { get {return _ssn;} set { _ssn = value; } }
 
+        /// <summary>
+        /// Gets or sets the <see cref="NorthAmericanRace"/> of this instance.
+        /// </summary>
         public NorthAmericanRace Race { get; set; }
 
+        /// <summary>
+        /// Get the <see cref="Gov.DriversLicense"/> at the current time.
+        /// </summary>
         public DriversLicense DriversLicense => GetDriversLicenseAt(null);
 
         #endregion
 
+        #region public methods
+        /// <summary>
+        /// Resolves the <see cref="Gov.DriversLicense"/> which was 
+        /// current at <see cref="dt"/>
+        /// </summary>
+        /// <param name="dt">Null for the current time</param>
+        /// <returns></returns>
         public virtual DriversLicense GetDriversLicenseAt(DateTime? dt)
         {
             if (GetAgeAt(dt) < UsState.MIN_AGE_FOR_DL)
@@ -187,6 +227,13 @@ namespace NoFuture.Rand.Domus
             return spouseData;
         }
 
+        /// <summary>
+        /// Utility method to assign the <see cref="addr"/> to this intance, 
+        /// the spouse and children who are under <see cref="UsState.AGE_OF_ADULT"/> 
+        /// given the <see cref="dt"/>.
+        /// </summary>
+        /// <param name="dt">Null for current time.</param>
+        /// <param name="addr"></param>
         public void AlignCohabitantsHomeDataAt(DateTime? dt, HomeAddress addr)
         {
             if (addr == null)
@@ -203,11 +250,12 @@ namespace NoFuture.Rand.Domus
             foreach (var child in underAgeChildren)
                 NAmerUtil.SetNAmerCohabitants(child, this);
         }
+        #endregion
 
         #region internal methods
         /// <summary>
-        /// Assigns <see cref="Race"/> and invokes <see cref="ResolveParents"/>, <see cref="ResolveSpouse"/> and <see cref="ResolveChildren"/>.
-        /// Only Parents and Race are certian the other resolutions contrained by age and randomness.
+        /// Invokes <see cref="ResolveParents"/>, <see cref="ResolveSpouse"/> and <see cref="ResolveChildren"/>.
+        /// Only Parents are certian the other resolutions contrained by age and randomness.
         /// </summary>
         protected internal void ResolveFamilyState()
         {
@@ -222,6 +270,14 @@ namespace NoFuture.Rand.Domus
             AlignCohabitantsHomeDataAt(dt, GetAddressAt(null));
         }
 
+        /// <summary>
+        /// Assigns the parents as <see cref="IPerson"/> to this instance
+        /// </summary>
+        /// <remarks>
+        /// The mother will always be assigned as such and present on <see cref="AmericanBirthCert"/>
+        /// while the father <i>may be</i> likewise, <i>may just</i> be assigned 
+        /// but not on the <see cref="AmericanBirthCert"/> or, lastly, <i>may be null</i>.
+        /// </remarks>
         protected internal void ResolveParents()
         {
             ThrowOnBirthDateNull(this);
@@ -277,6 +333,11 @@ namespace NoFuture.Rand.Domus
                 UpsertName(KindsOfNames.Surname, _father.LastName);
         }
 
+        /// <summary>
+        /// Will create a current and, possiably, past spouses for this instance.
+        /// Calc' will be based on DOB and <see cref="MyGender"/>.
+        /// </summary>
+        /// <param name="myMaritialStatus"></param>
         protected internal void ResolveSpouse(MaritialStatus myMaritialStatus)
         {
             if (myMaritialStatus == MaritialStatus.Single || myMaritialStatus == MaritialStatus.Unknown)
@@ -340,10 +401,8 @@ namespace NoFuture.Rand.Domus
         }
 
         /// <summary>
-        /// Will only function when <see cref="MyGender"/> is <see cref="Gender.Female"/> since all equations used
-        /// are derived from woman-only datasets.
-        /// Resolves to some random amount of <see cref="IPerson"/> 
-        /// added to the Children collection.  
+        /// Instantiates and assigns zero to many <see cref="IPerson"/> as children 
+        /// of this instance at random.
         /// </summary>
         protected internal void ResolveChildren()
         {
@@ -410,8 +469,7 @@ namespace NoFuture.Rand.Domus
 
         /// <summary>
         /// Add a random <see cref="IPerson"/> to the Children collection
-        /// aligning <see cref="IPerson"/> last name and father to match
-        /// spouses.
+        /// aligning <see cref="IPerson"/> last name and father to match.
         /// </summary>
         /// <param name="myChildDob">
         /// This will be adusted up by when the Birth Date would occur during the pregnancy 
@@ -500,13 +558,25 @@ namespace NoFuture.Rand.Domus
             _children.Add(myChild);
         }
 
+        /// <summary>
+        /// Handle detail for random <see cref="childDob"/> being the same date as 
+        /// an existing sibling.  
+        /// </summary>
+        /// <param name="childDob"></param>
+        /// <param name="minutesAfterChildDob"></param>
+        /// <returns>
+        /// False when no sibling shares the same DOB (year, month, day)
+        /// True when one or more siblings shares this DOB.
+        /// The <see cref="minutesAfterChildDob"/> will be equal to the
+        /// sibling's DOB plus 120 to 539 seconds.
+        /// </returns>
         protected internal bool IsTwin(DateTime childDob, out DateTime minutesAfterChildDob)
         {
             var siblingsBdays = _children.Where(x => x.BirthCert != null).Select(x => x.BirthCert.DateOfBirth).ToList();
 
             if (siblingsBdays.Any(x => DateTime.Compare(x.Date, childDob.Date) == 0))
             {
-                childDob = siblingsBdays.First(x => DateTime.Compare(x.Date, childDob.Date) == 0);
+                childDob = siblingsBdays.Last(x => DateTime.Compare(x.Date, childDob.Date) == 0);
                 minutesAfterChildDob = childDob.AddMinutes(Etx.IntNumber(2, 8)).AddSeconds(Etx.IntNumber(0, 59));
                 return true;
             }
@@ -515,6 +585,20 @@ namespace NoFuture.Rand.Domus
 
         }
 
+        /// <summary>
+        /// Tests if the <see cref="childDob"/> is a real possiablity 
+        /// given the presence of siblings and thier date-of-birth.
+        /// </summary>
+        /// <param name="childDob"></param>
+        /// <returns>
+        /// True when the <see cref="childDob"/> is possiable given 
+        /// the this instance's age at this time and the date-of-birth
+        /// of siblings.
+        /// </returns>
+        /// <remarks>
+        /// Is coded with implicit presumption of <see cref="MyGender"/> 
+        /// being <see cref="Gender.Female"/>, but does not test as such.
+        /// </remarks>
         protected internal bool IsValidDobOfChild(DateTime childDob)
         {
             ThrowOnBirthDateNull(this);
@@ -553,6 +637,15 @@ namespace NoFuture.Rand.Domus
             return true;
         }
 
+        /// <summary>
+        /// Handles detail of adding a assigning a spouse to this instance and 
+        /// reciprocating such assignment to the <see cref="spouse"/>.  Additionaly
+        /// handles the assignment of names (i.e. <see cref="KindsOfNames.Surname"/> 
+        /// and <see cref="KindsOfNames.Maiden"/>).
+        /// </summary>
+        /// <param name="spouse"></param>
+        /// <param name="marriedOn"></param>
+        /// <param name="separatedOn"></param>
         protected internal void AddNewSpouseToList(IPerson spouse, DateTime marriedOn, DateTime? separatedOn = null)
         {
             //we need this or will will blow out the stack 
@@ -594,6 +687,7 @@ namespace NoFuture.Rand.Domus
             nAmerSpouse?.AddNewSpouseToList(this, marriedOn, separatedOn);
         }
 
+        //min. age a person could be married at
         private int GetMyHomeStatesAgeOfMajority()
         {
             if (GetAddressAt(null) == null)
@@ -603,14 +697,5 @@ namespace NoFuture.Rand.Domus
         }
 
         #endregion
-    }
-
-    //container class for Race probability tables
-    [EditorBrowsable(EditorBrowsableState.Never)]
-    internal class AmericanRaceProbabilityRange
-    {
-        internal NorthAmericanRace Name { get; set; }
-        internal double From { get; set; }
-        internal double To { get; set; }
     }
 }

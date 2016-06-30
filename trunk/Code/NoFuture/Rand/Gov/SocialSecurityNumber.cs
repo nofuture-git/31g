@@ -26,7 +26,7 @@ namespace NoFuture.Rand.Gov
 
         }
 
-        public override string Abbrev { get { return "SSN"; } }
+        public override string Abbrev => "SSN";
 
         /// <summary>
         /// i.e. the first three numbers
@@ -52,8 +52,8 @@ namespace NoFuture.Rand.Gov
             set
             {
                 if(!Validate(value))
-                    throw new RahRowRagee(string.Format("The value {0} does not match " +
-                                                        "the expect pattern of this id.", value));
+                    throw new RahRowRagee($"The value {value} does not match " +
+                                          "the expect pattern of this id.");
                 var parts = value.Split('-');
                 AreaNumber = parts[0];
                 GroupNumber = parts[1];
@@ -95,37 +95,37 @@ namespace NoFuture.Rand.Gov
 
     [Serializable]
     public class SsnAssociatedWithDeceasedPerson : SsnAnomaly {
-        public override string Abbrev { get { return "I"; } }
+        public override string Abbrev => "I";
     }
     [Serializable]
     public class SsnMaybeTaxId : SsnAnomaly
     {
-        public override string Abbrev { get { return "4"; } }
+        public override string Abbrev => "4";
     }
     [Serializable]
     public class SsnInvalid : SsnAnomaly
     {
-        public override string Abbrev { get { return "9"; } }
+        public override string Abbrev => "9";
     }
     [Serializable]
     public class SsnNeverIssued : SsnAnomaly
     {
-        public override string Abbrev { get { return "A"; } }
+        public override string Abbrev => "A";
     }
     [Serializable]
     public class SsnRecentIssued : SsnAnomaly
     {
-        public override string Abbrev { get { return "M"; } }
+        public override string Abbrev => "M";
     }
     [Serializable]
     public class SsnIssuedPriorToDob : SsnAnomaly
     {
-        public override string Abbrev { get { return "O"; } }
+        public override string Abbrev => "O";
     }
     [Serializable]
     public class SsnReportedAsMisused : SsnAnomaly
     {
-        public override string Abbrev { get { return "B"; } }
+        public override string Abbrev => "B";
     }
 
     #endregion
