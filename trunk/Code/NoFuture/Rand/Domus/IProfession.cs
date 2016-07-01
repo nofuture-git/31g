@@ -7,7 +7,7 @@ namespace NoFuture.Rand.Domus
 {
     public interface IProfession
     {
-        Income GetProfessionalIncome(DateTime? dt);
+        NetConIncome GetProfessionalIncome(DateTime? dt);
         IEmployment GetEmployment(DateTime? dt);
     }
 

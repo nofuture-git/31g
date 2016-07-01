@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Xml;
+using NoFuture.Rand.Data;
 
 namespace NoFuture.Rand.Edu
 {
@@ -11,7 +13,7 @@ namespace NoFuture.Rand.Edu
     }
 
     [Serializable]
-    public class AmericanHighSchool : IHighSchool
+    public class AmericanHighSchool : AmericanEduBase, IHighSchool
     {
         #region properties
         public Gov.UsState State { get; set; }
@@ -29,7 +31,17 @@ namespace NoFuture.Rand.Edu
             return Name;
         }
 
-        public static bool TryParseXml(System.Xml.XmlElement node, out AmericanHighSchool hs)
+        /// <summary>
+        /// [http://nces.ed.gov/programs/coe/indicator_coi.asp]
+        /// </summary>
+        /// <returns></returns>
+        public static AmericanRacePercents NatlGradRate()
+        {
+            const float DF_NATL_AVG = 82.0f;
+            return GetNatlGradRates(TreeData.AmericanHighSchoolData, DF_NATL_AVG);
+        }
+
+        public static bool TryParseXml(XmlElement node, out AmericanHighSchool hs)
         {
             try
             {

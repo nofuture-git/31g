@@ -2,12 +2,17 @@
 
 namespace NoFuture.Rand.Data.Sp
 {
+    public interface IAsset
+    {
+        Pecuniam Value { get; }
+    }
+
     [Serializable]
     public class FinancialData
     {
         public int FiscalYear { get; set; }
-        public Income Income { get; set; }
-        public Assets Assets { get; set; }
+        public NetConIncome Income { get; set; }
+        public NetConAssets Assets { get; set; }
         public int NumOfShares { get; set; }
         public override string ToString()
         {
@@ -17,7 +22,7 @@ namespace NoFuture.Rand.Data.Sp
         }
     }
     [Serializable]
-    public class Assets : ICited
+    public class NetConAssets : ICited
     {
         public string Src { get; set; }
         public Pecuniam DomesticAssets { get; set; }
@@ -41,7 +46,7 @@ namespace NoFuture.Rand.Data.Sp
         }
     }
     [Serializable]
-    public class Income : ICited
+    public class NetConIncome : ICited
     {
         public string Src { get; set; }
         public Pecuniam Revenue { get; set; }

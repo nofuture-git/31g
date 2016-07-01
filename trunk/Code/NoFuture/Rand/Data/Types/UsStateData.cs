@@ -38,22 +38,22 @@ namespace NoFuture.Rand.Data.Types
         /// <summary>
         /// FBI Table 4 average by population 2005-2014
         /// </summary>
-        public List<Tuple<ViolentCrime, float>> ViolentCrimeRate { get; } = new List<Tuple<ViolentCrime, float>>();
+        public List<Tuple<ViolentCrime, double>> ViolentCrimeRate { get; } = new List<Tuple<ViolentCrime, double>>();
 
         /// <summary>
         /// FBI Table 4 average by population 2005-2014
         /// </summary>
-        public List<Tuple<PropertyCrime, float>> PropertyCrimeRate { get; } = new List<Tuple<PropertyCrime, float>>();
+        public List<Tuple<PropertyCrime, double>> PropertyCrimeRate { get; } = new List<Tuple<PropertyCrime, double>>();
 
         /// <summary>
         /// BLS SMU series - see State2NaiscSuperSector.fsx
         /// </summary>
-        public List<Tuple<NaicsSuperSector, float>> EmploymentSectors { get; } = new List<Tuple<NaicsSuperSector, float>>();
+        public List<Tuple<NaicsSuperSector, double>> EmploymentSectors { get; } = new List<Tuple<NaicsSuperSector, double>>();
 
         /// <summary>
         /// https://en.wikipedia.org/wiki/List_of_U.S._states_by_educational_attainment
         /// </summary>
-        public List<Tuple<OccidentalEdu, float>> PercentOfGrads { get; } = new List<Tuple<OccidentalEdu, float>>();
+        public List<Tuple<OccidentalEdu, double>> PercentOfGrads { get; } = new List<Tuple<OccidentalEdu, double>>();
         #endregion
 
         #region methods
@@ -67,13 +67,13 @@ namespace NoFuture.Rand.Data.Types
             foreach (var propertyCrime in Enum.GetNames(typeof(PropertyCrime)))
             {
                 var crimeNode = xml.SelectSingleNode($"//state[@name='{_stateName}']//crime[@name='{propertyCrime}']");
-                float crimeRate;
+                double crimeRate;
                 if (crimeNode?.Attributes?["rate"]?.Value == null ||
-                    !float.TryParse(crimeNode.Attributes?["rate"]?.Value, out crimeRate)) continue;
+                    !double.TryParse(crimeNode.Attributes?["rate"]?.Value, out crimeRate)) continue;
                 PropertyCrime crime;
                 if (!Enum.TryParse(propertyCrime, out crime))
                     continue;
-                PropertyCrimeRate.Add(new Tuple<PropertyCrime, float>(crime, crimeRate));
+                PropertyCrimeRate.Add(new Tuple<PropertyCrime, double>(crime, crimeRate));
             }
         }
 
@@ -88,13 +88,13 @@ namespace NoFuture.Rand.Data.Types
             foreach (var violentCrime in Enum.GetNames(typeof(ViolentCrime)))
             {
                 var crimeNode = xml.SelectSingleNode($"//state[@name='{_stateName}']//crime[@name='{violentCrime}']");
-                float crimeRate;
+                double crimeRate;
                 if (crimeNode?.Attributes?["rate"]?.Value == null ||
-                    !float.TryParse(crimeNode?.Attributes?["rate"]?.Value, out crimeRate)) continue;
+                    !double.TryParse(crimeNode?.Attributes?["rate"]?.Value, out crimeRate)) continue;
                 ViolentCrime crime;
                 if (!Enum.TryParse(violentCrime, out crime))
                     continue;
-                ViolentCrimeRate.Add(new Tuple<ViolentCrime, float>(crime, crimeRate));
+                ViolentCrimeRate.Add(new Tuple<ViolentCrime, double>(crime, crimeRate));
             }
         }
 
@@ -107,16 +107,16 @@ namespace NoFuture.Rand.Data.Types
 
             var eduNode = TreeData.UsStateData.SelectSingleNode($"//state[@name='{_stateName}']/edu-data");
             var strVal = eduNode?.Attributes?["percent-highschool-grad"]?.Value;
-            float highSchoolGrad;
-            if (!string.IsNullOrWhiteSpace(strVal) && float.TryParse(strVal, out highSchoolGrad))
+            double highSchoolGrad;
+            if (!string.IsNullOrWhiteSpace(strVal) && double.TryParse(strVal, out highSchoolGrad))
             {
-                PercentOfGrads.Add(new Tuple<OccidentalEdu, float>(OccidentalEdu.HighSchool, highSchoolGrad));
+                PercentOfGrads.Add(new Tuple<OccidentalEdu, double>(OccidentalEdu.HighSchool, highSchoolGrad));
             }
             strVal = eduNode?.Attributes?["percent-college-grad"]?.Value;
-            float collegeGrad;
-            if (!string.IsNullOrWhiteSpace(strVal) && float.TryParse(strVal, out collegeGrad))
+            double collegeGrad;
+            if (!string.IsNullOrWhiteSpace(strVal) && double.TryParse(strVal, out collegeGrad))
             {
-                PercentOfGrads.Add(new Tuple<OccidentalEdu, float>(OccidentalEdu.College, collegeGrad));
+                PercentOfGrads.Add(new Tuple<OccidentalEdu, double>(OccidentalEdu.College, collegeGrad));
             }
         }
 
@@ -133,13 +133,13 @@ namespace NoFuture.Rand.Data.Types
                 if (emplyData?.Attributes?["percent-employed"]?.Value == null)
                     continue;
                 var strPercent = emplyData.Attributes["percent-employed"].Value;
-                float percent;
-                if (!float.TryParse(strPercent, out percent))
+                double percent;
+                if (!double.TryParse(strPercent, out percent))
                     continue;
                 var ss = NorthAmericanIndustryClassification.AllSectors.FirstOrDefault(x => x.Value == ssId.ToString());
                 if (ss == null)
                     continue;
-                EmploymentSectors.Add(new Tuple<NaicsSuperSector, float>(ss, percent));
+                EmploymentSectors.Add(new Tuple<NaicsSuperSector, double>(ss, percent));
             }
         }
         #endregion 

@@ -305,7 +305,7 @@ namespace NoFuture.Rand.Domus
         /// <summary>
         /// Return a <see cref="NorthAmericanRace"/> randomly with weight based on <see cref="zipCode"/>.
         /// </summary>
-        /// <param name="zipCode"></param>
+        /// <param name="zipCode">Null to get natl averages.</param>
         /// <returns>
         /// Defaults to randomly to national averages
         /// [http://kff.org/other/state-indicator/distribution-by-raceethnicity/]
@@ -573,42 +573,48 @@ namespace NoFuture.Rand.Domus
 
         /// <summary>
         /// Difference of national avg to race average added to state average.
-        /// [http://nces.ed.gov/programs/coe/indicator_coi.asp]
         /// </summary>
         /// <param name="state"></param>
         /// <param name="race"></param>
+        /// <param name="edu"></param>
         /// <returns></returns>
-        public static int SolvePercentHsGradByStateAndRace(UsState state, NorthAmericanRace race)
+        public static double SolvePercentGradByStateAndRace(UsState state, NorthAmericanRace? race, OccidentalEdu edu = OccidentalEdu.HighSchool)
         {
-            var natlAvg = 82;
-            var stateAvg = natlAvg;
+            if (edu != OccidentalEdu.HighSchool && edu != OccidentalEdu.College)
+            {
+                throw new NotImplementedException($"Not implemented for edu type {Enum.GetName(typeof(OccidentalEdu), edu)}");
+            }
+            AmericanRacePercents p;
+            p = edu == OccidentalEdu.College ? AmericanUniversity.NatlGradRate() : AmericanHighSchool.NatlGradRate();
+            var stateAvg = p.National;
+            var natlAvg = p.National;
             if (state?.GetStateData() != null)
             {
                 var stateData = state.GetStateData();
                 if (stateData.PercentOfGrads != null && stateData.PercentOfGrads.Count > 0)
                 {
-                    var f = stateData.PercentOfGrads.FirstOrDefault(x => x.Item1 == OccidentalEdu.HighSchool);
+                    var f = stateData.PercentOfGrads.FirstOrDefault(x => x.Item1 == edu);
                     if (f != null)
                     {
-                        stateAvg = (int) Math.Round(f.Item2*100);
+                        stateAvg = Math.Round(f.Item2,1);
                     }
                 }
             }
             
-            var raceNatlAvg = new Dictionary<NorthAmericanRace, int>()
+            var raceNatlAvg = new Dictionary<NorthAmericanRace, double>
             {
-                {NorthAmericanRace.White, 87 - natlAvg},
-                {NorthAmericanRace.Black, 73 - natlAvg },
-                {NorthAmericanRace.Hispanic, 76 - natlAvg },
-                {NorthAmericanRace.Asian, 89 - natlAvg },
-                {NorthAmericanRace.Pacific, 89 - natlAvg },
-                {NorthAmericanRace.AmericanIndian, 70 - natlAvg },
-                {NorthAmericanRace.Mixed, 0 }
+                {NorthAmericanRace.AmericanIndian, p.AmericanIndian - natlAvg },
+                {NorthAmericanRace.Asian, p.Asian - natlAvg },
+                {NorthAmericanRace.Hispanic, p.Hispanic - natlAvg },
+                {NorthAmericanRace.Black, p.Black - natlAvg },
+                {NorthAmericanRace.White, p.White - natlAvg},
+                {NorthAmericanRace.Pacific, p.Pacific - natlAvg },
+                {NorthAmericanRace.Mixed, p.Mixed - natlAvg }
             };
-            if(!raceNatlAvg.ContainsKey(race))
-                return stateAvg;
+            if(race == null || !raceNatlAvg.ContainsKey(race.Value))
+                return Math.Round(stateAvg,1);
 
-            return stateAvg + raceNatlAvg[race];
+            return Math.Round(stateAvg + raceNatlAvg[race.Value],1);
         }
 
         /// <summary>

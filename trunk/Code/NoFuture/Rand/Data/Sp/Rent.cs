@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using NoFuture.Shared;
 using NoFuture.Util;
 
@@ -9,15 +6,17 @@ namespace NoFuture.Rand.Data.Sp
 {
     public class Rent : ReceivableBase
     {
-        private Pecuniam _proRatedAmt;
-        private DateTime _dtOfFirstFullRentDue;
-        private DateTime _leaseExpiry;
-        private Pecuniam _fullTermAmt;
+        #region fields
+        private readonly Pecuniam _proRatedAmt;
+        private readonly DateTime _dtOfFirstFullRentDue;
         private int _dayOfMonthRentDue = 1;
+        #endregion
+
         #region properties
         public Pecuniam Deposit { get; private set; }
-        public int LeaseTermInMonths { get; private set; }
-        public Pecuniam MonthlyPmt { get; private set; }
+        public int LeaseTermInMonths { get; }
+        public Pecuniam MonthlyPmt { get; }
+        public DateTime LeaseExpiry { get; }
         #endregion
 
         #region ctors
@@ -39,9 +38,9 @@ namespace NoFuture.Rand.Data.Sp
                 _proRatedAmt = new Pecuniam(0);
                 _dtOfFirstFullRentDue = signing;
             }
-            _leaseExpiry = _dtOfFirstFullRentDue.AddMonths(forMonths);
-            _fullTermAmt = _proRatedAmt + new Pecuniam(monthlyRent.Amount*forMonths);
-            base.TradeLine.Balance.Transactions.Add(new Transaction(signing, _fullTermAmt));
+            LeaseExpiry = _dtOfFirstFullRentDue.AddMonths(forMonths);
+            var fullTermAmt = _proRatedAmt + new Pecuniam(monthlyRent.Amount*forMonths);
+            base.TradeLine.Balance.Transactions.Add(new Transaction(signing, fullTermAmt));
 
             LeaseTermInMonths = forMonths;
             Deposit = deposit;
@@ -54,10 +53,9 @@ namespace NoFuture.Rand.Data.Sp
         public override Pecuniam GetCurrentBalance(DateTime dt)
         {
             //when date is prior to signing 
-            if (dt.ComparedTo(TradeLine.OpennedDate) == ChronoCompare.Before)
-                return new Pecuniam(0);
-
-            return TradeLine.Balance.GetCurrent(dt, 0);
+            return dt.ComparedTo(TradeLine.OpennedDate) == ChronoCompare.Before
+                ? new Pecuniam(0)
+                : TradeLine.Balance.GetCurrent(dt, 0);
         }
 
         public override Pecuniam GetMinPayment(DateTime dt)

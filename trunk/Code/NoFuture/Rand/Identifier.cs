@@ -190,6 +190,7 @@ namespace NoFuture.Rand
     [Serializable]
     public class AmericanRacePercents
     {
+        public double National { get; set; }
         public double AmericanIndian { get; set; }
         public double Asian { get; set; }
         public double Hispanic { get; set; }

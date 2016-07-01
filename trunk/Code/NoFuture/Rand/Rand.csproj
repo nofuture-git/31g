@@ -95,8 +95,10 @@
     <Compile Include="Domus\IProfession.cs" />
     <Compile Include="Domus\NAmerUtil.cs" />
     <Compile Include="Domus\NorthAmerican.cs" />
+    <Compile Include="Domus\Opes.cs" />
     <Compile Include="Domus\Pneuma\Personality.cs" />
     <Compile Include="Domus\Spouse.cs" />
+    <Compile Include="Edu\AmericanEduBase.cs" />
     <Compile Include="Gov\Bls\Codes\CeDatatype.cs" />
     <Compile Include="Gov\Bls\Codes\CeIndustry.cs" />
     <Compile Include="Gov\Bls\Codes\CeSupersector.cs" />
@@ -209,9 +211,7 @@
   <ItemGroup>
     <EmbeddedResource Include="Data\Source\US_States.xml" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Domus\Opes\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

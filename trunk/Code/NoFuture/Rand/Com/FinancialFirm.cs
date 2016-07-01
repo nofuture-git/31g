@@ -81,7 +81,7 @@ namespace NoFuture.Rand.Com
         }
     }
 
-    public class FinancialAssets : Assets
+    public class FinancialAssets : NetConAssets
     {
         public double PercentForeignOwned { get; set; }
         public int DomesticBranches { get; set; }

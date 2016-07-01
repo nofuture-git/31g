@@ -7,22 +7,7 @@ namespace NoFuture.Tests.Rand
     [TestClass]
     public class EtxTests
     {
-        [TestMethod]
-        public void RandomUSZipWithRespectToPopTest()
-        {
-            var testResult = NAmerUtil.RandomAmericanZipWithRespectToPop();
-            Assert.IsNotNull(testResult);
 
-            System.Diagnostics.Debug.WriteLine(testResult);
-        }
-        [TestMethod]
-        public void AmericanRaceRatioByZipCodeTests()
-        {
-            const string TEST_ZIP = "92071";
-            var testResult = NAmerUtil.RandomAmericanRaceWithRespectToZip(TEST_ZIP);
-            Assert.IsNotNull(testResult);
-            
-        }
 
         [TestMethod]
         public void TestGetMagnitudeAdjustment()

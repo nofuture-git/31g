@@ -108,8 +108,8 @@ namespace NoFuture.Rand.Com
                         new FinancialData
                         {
                             FiscalYear = year,
-                            Assets = new Assets(),
-                            Income = new Income()
+                            Assets = new NetConAssets(),
+                            Income = new NetConIncome()
                         }
                 };
 
@@ -125,9 +125,9 @@ namespace NoFuture.Rand.Com
             if (form10K.FinancialData == null)
                 form10K.FinancialData = new FinancialData {FiscalYear = year};
             if(form10K.FinancialData.Assets == null)
-                form10K.FinancialData.Assets = new Assets();
+                form10K.FinancialData.Assets = new NetConAssets();
             if(form10K.FinancialData.Income == null)
-                form10K.FinancialData.Income = new Income();
+                form10K.FinancialData.Income = new NetConIncome();
 
             return form10K;
         }

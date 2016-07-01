@@ -23,7 +23,7 @@ namespace NoFuture.Rand.Data.Sp
     }
 
     [Serializable]
-    public abstract class BankAccount
+    public abstract class BankAccount : IAsset
     {
         public AccountId AccountNumber { get; set; }
 
@@ -55,16 +55,20 @@ namespace NoFuture.Rand.Data.Sp
         {
             return string.Join(" ", GetType().Name, Bank, AccountNumber);
         }
+
+        public abstract Pecuniam Value { get; }
     }
 
     [Serializable]
     public class Checking : BankAccount
     {
+        public override Pecuniam Value => Balance.GetCurrent(DateTime.Now, 0F);
     }
 
     [Serializable]
     public class Savings : BankAccount
     {
         public float InterestRate { get; set; }
+        public override Pecuniam Value => Balance.GetCurrent(DateTime.Now, InterestRate);
     }
 }

@@ -146,23 +146,6 @@ namespace NoFuture.Rand.Domus
         #endregion
 
         #region public methods
-        /// <summary>
-        /// Resolves the <see cref="Gov.DriversLicense"/> which was 
-        /// current at <see cref="dt"/>
-        /// </summary>
-        /// <param name="dt">Null for the current time</param>
-        /// <returns></returns>
-        public virtual DriversLicense GetDriversLicenseAt(DateTime? dt)
-        {
-            if (GetAgeAt(dt) < UsState.MIN_AGE_FOR_DL)
-                return null;
-
-            var csz = GetAddressAt(dt)?.HomeCityArea;
-            var amerCsz = csz as UsCityStateZip;
-            var dl = amerCsz?.State.DriversLicenseFormats[0];
-            return dl;
-        }
-
         public override MaritialStatus GetMaritalStatusAt(DateTime? dt)
         {
             var mdt = dt ?? DateTime.Now;
@@ -249,6 +232,23 @@ namespace NoFuture.Rand.Domus
                 return;
             foreach (var child in underAgeChildren)
                 NAmerUtil.SetNAmerCohabitants(child, this);
+        }
+
+        /// <summary>
+        /// Resolves the <see cref="Gov.DriversLicense"/> which was 
+        /// current at <see cref="dt"/>
+        /// </summary>
+        /// <param name="dt">Null for the current time</param>
+        /// <returns></returns>
+        public virtual DriversLicense GetDriversLicenseAt(DateTime? dt)
+        {
+            if (GetAgeAt(dt) < UsState.MIN_AGE_FOR_DL)
+                return null;
+
+            var csz = GetAddressAt(dt)?.HomeCityArea;
+            var amerCsz = csz as UsCityStateZip;
+            var dl = amerCsz?.State.DriversLicenseFormats[0];
+            return dl;
         }
         #endregion
 

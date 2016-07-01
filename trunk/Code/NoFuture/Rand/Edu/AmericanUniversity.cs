@@ -1,4 +1,5 @@
 ﻿using System;
+using NoFuture.Rand.Data;
 
 namespace NoFuture.Rand.Edu
 {
@@ -10,7 +11,7 @@ namespace NoFuture.Rand.Edu
         Uri Website { get; set; }
     }
 
-    public class AmericanUniversity : IUniversity
+    public class AmericanUniversity : AmericanEduBase, IUniversity
     {
         #region properties
         public Gov.UsState State { get; set; }
@@ -22,6 +23,17 @@ namespace NoFuture.Rand.Edu
         #endregion
 
         #region methods
+
+        /// <summary>
+        /// [http://www.census.gov/prod/2012pubs/p20-566.pdf]
+        /// </summary>
+        /// <returns></returns>
+        public static AmericanRacePercents NatlGradRate()
+        {
+            const float DF_NATL_AVG = 30.0f;
+            return GetNatlGradRates(TreeData.AmericanUniversityData, DF_NATL_AVG);
+        }
+
         public static bool TryParseXml(System.Xml.XmlElement node, out AmericanUniversity univ)
         {
             try

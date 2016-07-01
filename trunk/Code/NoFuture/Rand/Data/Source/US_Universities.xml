@@ -4,6 +4,10 @@
     <data>
       <source>
         <universities>
+          <national>
+            <avg-graduation-rate natl-percent="30.0" american-indian="12.0" asian="54.0" hispanic="16.4" black="16.5" white="30.7" pacific="54.0" mixed-race="30.0"/>
+          </national>
+          <states>
           <state name="ALABAMA" percent-of-all-students="1.2335">
             <college-univ name="Alabama A&amp;M University" campus="" percent-of-state-students="4.8228" crime-rate="4.0829" />
             <college-univ name="Jacksonville State University" campus="" percent-of-state-students="9.2987" crime-rate="0.8956" />
@@ -728,6 +732,7 @@
             <college-univ name="Northern Wyoming Community College District" campus="" percent-of-state-students="24.9463" crime-rate="0.0233" />
             <college-univ name="University of Wyoming" campus="" percent-of-state-students="75.0537" crime-rate="1.292" />
           </state>
+          </states>
         </universities>
       </source>
     </data>
