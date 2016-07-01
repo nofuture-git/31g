@@ -11,7 +11,7 @@ namespace NoFuture.Rand.Gov.Sec
     public class Edgar
     {
         #region constants
-        public const string SEC_ROOT_URL = "http://" + SEC_HOST;
+        public const string SEC_ROOT_URL = "https://" + SEC_HOST;
         public const string SEC_HOST = "www.sec.gov";
         public const string EDGAR_ROOT = SEC_ROOT_URL + "/cgi-bin/browse-edgar";
         public const string INTERACTIVE_ROOT = SEC_ROOT_URL + "/cgi-bin/viewer";

@@ -66,11 +66,17 @@ namespace NoFuture.Rand.Data.Types
                         return null;
                     _allSics.AddRange(AllSectors.SelectMany(
                         s =>
-                            s.Divisions.Cast<NaicsSector>()
+                            s.Divisions.Cast<NaicsPrimarySector>()
                                 .SelectMany(
-                                    ns =>
-                                        ns.Divisions.Cast<NaicsMarket>()
-                                            .SelectMany(mk => mk.Divisions.Cast<StandardIndustryClassification>()))));
+                                    ps =>
+                                        ps.Divisions.Cast<NaicsSector>()
+                                            .SelectMany(
+                                                ns =>
+                                                    ns.Divisions.Cast<NaicsMarket>()
+                                                        .SelectMany(
+                                                            mk => mk.Divisions.Cast<StandardIndustryClassification>())
+                                            )
+                                )));
                 }
 
                 return _allSics.Where(x => x.SecResults).ToArray();
