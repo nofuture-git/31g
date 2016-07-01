@@ -51,48 +51,52 @@ namespace NoFuture.Tests.Rand
             //15 days later
             var testResult = testSubject.GetMinPayment(firstOfYear.AddDays(15));
 
-            //nothing should be due
+            //paid first month so nothing should be due
             Assert.AreEqual(0M, testResult.Amount);
 
-            //signing in mid Dec of prev year
-            var newSigningDate = firstOfYear.AddDays(-16);
+            //move signing back to mid Dec of prev year
+            var newSigningDate = new DateTime(DateTime.Today.Year-1, 12, 14);
             testSubject = new Rent(newSigningDate, 12, new Pecuniam(700), new Pecuniam(0));
 
             //pro-rated amount should be due immediately
             testResult = testSubject.GetMinPayment(newSigningDate);
-            Assert.AreEqual(new Pecuniam(-350), testResult);
+            Assert.AreEqual(new Pecuniam(-396.67M), testResult);
 
-            //shoudl be the same for next 15 days
-            testResult = testSubject.GetMinPayment(newSigningDate.AddDays(15));
-            Assert.AreEqual(new Pecuniam(-350), testResult);
+            //should be the same until first of next month
+            testResult = testSubject.GetMinPayment(new DateTime(DateTime.Today.Year - 1, 12, 31));
+            Assert.AreEqual(new Pecuniam(-396.67M), testResult);
 
             //first month rent due
-            testResult = testSubject.GetMinPayment(newSigningDate.AddDays(16));
-            Assert.AreEqual(new Pecuniam(-350 + -700), testResult);
+            testResult = testSubject.GetMinPayment(firstOfYear);
+            Assert.AreEqual(new Pecuniam(-396.67M + -700), testResult);
 
             //pay prorated amt
-            testSubject.PayRent(newSigningDate.AddDays(16), new Pecuniam(-350));
+            testSubject.PayRent(new DateTime(DateTime.Today.Year - 1, 12, 31), new Pecuniam(-396.67M));
 
             //should still be due one months
-            testResult = testSubject.GetMinPayment(newSigningDate.AddDays(16));
+            testResult = testSubject.GetMinPayment(firstOfYear);
             Assert.AreEqual(new Pecuniam(-700), testResult);
 
             //pay first month at exact same time only as another transaction
-            testSubject.PayRent(newSigningDate.AddDays(16), new Pecuniam(-700));
+            testSubject.PayRent(new DateTime(DateTime.Today.Year - 1, 12, 31), new Pecuniam(-700));
 
-            //should be current
-            testResult = testSubject.GetMinPayment(newSigningDate.AddDays(16));
-            Assert.AreEqual(0M, testResult.Amount );
+            //since rent is not due until tommorrow - there is a 700 credit 
+            testResult = testSubject.GetMinPayment(new DateTime(DateTime.Today.Year - 1, 12, 31));
+            Assert.AreEqual(700.0M, testResult.Amount );
+
+            //very next day should be current
+            testResult = testSubject.GetMinPayment(new DateTime(DateTime.Today.Year, 1, 1));
+            Assert.AreEqual(0M, testResult.Amount);
 
             //pay some part of next month ahead of due
-            testSubject.PayRent(newSigningDate.AddDays(18), new Pecuniam(-300));
+            testSubject.PayRent(new DateTime(DateTime.Today.Year, 1, 18), new Pecuniam(-300));
 
             //should register as a credit
-            testResult = testSubject.GetMinPayment(newSigningDate.AddDays(18));
+            testResult = testSubject.GetMinPayment(new DateTime(DateTime.Today.Year, 1, 18));
             Assert.AreEqual(new Pecuniam(300), testResult);
 
             //at first of next month rent less the credit should be due
-            testResult = testSubject.GetMinPayment(firstOfYear.AddMonths(1));
+            testResult = testSubject.GetMinPayment(new DateTime(DateTime.Today.Year, 2, 1));
             Assert.AreEqual(new Pecuniam(300-700), testResult);
         }
 
@@ -106,43 +110,35 @@ namespace NoFuture.Tests.Rand
 
             var testResult = testSubject.GetExpectedTotalRent(new DateTime(DateTime.Today.Year, 3,1));
             //only two whole months have passed but rent's due on the first
-            Assert.AreEqual(new Pecuniam(700*2), testResult);
+            Assert.AreEqual(new Pecuniam(700*3), testResult);
 
+            //after 15 days only first rent is due
             testResult = testSubject.GetExpectedTotalRent(firstOfYear.AddDays(15));
             Assert.AreEqual(new Pecuniam(700), testResult);
 
             //back the signing date to middle of Dec
             var newSigningDate = firstOfYear.AddDays(-16);
             testSubject = new Rent(newSigningDate, 12, new Pecuniam(700), new Pecuniam(0));
-            testResult = testSubject.GetExpectedTotalRent(newSigningDate.AddDays(15));
-            
+
             //this should be only the pro-rated amount, first full month is due tommorrow
+            testResult = testSubject.GetExpectedTotalRent(newSigningDate.AddDays(15));
             Assert.AreEqual(new Pecuniam(350), testResult);
 
-            //add another day 
+            //add another day - this should be pro-rated amount plus first month
             testResult = testSubject.GetExpectedTotalRent(firstOfYear.AddDays(16));
-
-            //this should be pro-rated amount plus first month
             Assert.AreEqual(new Pecuniam(350 + 700), testResult);
 
-            //move to first of Feb
-            testResult = testSubject.GetExpectedTotalRent(firstOfYear.AddMonths(1));
-            System.Diagnostics.Debug.WriteLine(firstOfYear.AddMonths(1));
-            //this should be pro-rated amount plus two months rent
+            //move to first of Feb - this should be pro-rated amount plus two months rent
+            testResult = testSubject.GetExpectedTotalRent(new DateTime(DateTime.Today.Year, 2, 1));
             Assert.AreEqual(new Pecuniam(350 + 700*2), testResult);
 
-            //move date out to middle of march
-            testResult = testSubject.GetExpectedTotalRent(firstOfYear.AddMonths(3).AddDays(15));
-
-            //this should be prorated amount plus three months
+            //middle of march -should be prorated amount plus three months
+            testResult = testSubject.GetExpectedTotalRent(new DateTime(DateTime.Today.Year, 3, 15));
             Assert.AreEqual(new Pecuniam(350 + 700*3), testResult);
-        }
 
-        [TestMethod]
-        public void TestGetDtOfFirstRent()
-        {
-
-            System.Diagnostics.Debug.WriteLine(Math.Round(700/30.0 * (16.0 - 1), 2));
+            //on the last day of march - should still be the same
+            testResult = testSubject.GetExpectedTotalRent(new DateTime(DateTime.Today.Year, 4, 1).AddDays(-1));
+            Assert.AreEqual(new Pecuniam(350 + 700 * 3), testResult);
         }
     }
 }

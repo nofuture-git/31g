@@ -88,16 +88,12 @@ namespace NoFuture.Rand.Data.Sp
             if(dt.ComparedTo(_dtOfFirstFullRentDue) == ChronoCompare.Before)
                 return _proRatedAmt;
 
-            //when in first month, one whole month has not yet occured.
-            if (dt.ComparedTo(_dtOfFirstFullRentDue.AddMonths(1)) == ChronoCompare.Before)
-                return MonthlyPmt + _proRatedAmt;
-
-            var numOfRentPmts = CountOfWholeCalendarMonthsBetween(TradeLine.OpennedDate, dt);
+            var numOfRentPmts = CountOfWholeCalendarMonthsBetween(TradeLine.OpennedDate, dt, _dayOfMonthRentDue);
 
             //don't let calc exceed contract limit
             numOfRentPmts = numOfRentPmts > LeaseTermInMonths ? LeaseTermInMonths : numOfRentPmts;
 
-            return new Pecuniam(MonthlyPmt.Amount * numOfRentPmts) + _proRatedAmt;
+            return new Pecuniam(MonthlyPmt.Amount * (numOfRentPmts+1)) + _proRatedAmt;
         }
 
         public static int CountOfWholeCalendarMonthsBetween(DateTime d1, DateTime d2, int dayOfMonthRentDue = 1)
