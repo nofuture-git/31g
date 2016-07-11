@@ -1265,12 +1265,15 @@ namespace NoFuture.Timeline
     {
         private const string REGEX_PATTERN = @"\+([^\(]*?)\(([0-9]*)\)";
 
-        public TerritoryEntry()
+        private string _name;
+
+        public TerritoryEntry(string name)
         {
+            _name = name;
             Location = PrintLocation.Left;
         }
 
-        public string Name { get; set; }
+        public string Name => _name;
 
         public override string Text
         {
@@ -1286,7 +1289,7 @@ namespace NoFuture.Timeline
                 int iYear;
                 if (RegexCatalog.IsRegexMatch(tValue, REGEX_PATTERN, out tName, 1))
                 {
-                    Name = tName;
+                    _name = tName;
                 }
                 if (RegexCatalog.IsRegexMatch(tValue, REGEX_PATTERN, out tYear, 2) && int.TryParse(tYear, out iYear))
                 {
@@ -1301,8 +1304,21 @@ namespace NoFuture.Timeline
     {
         private const string REGEX_PATTERN = @"\[([a-zA-Z\.\x20\x5B\x5D]+?)\x20([0-9\x5C\x2d]+?)]";
 
-        public string Name { get; set; }
-        public IEnumerable<Tuple<int?, int?>> Years { get; set; }
+        private string _name;
+        private IEnumerable<Tuple<int?, int?>> _years;
+        public LeaderEntry(string name, int?[,] years)
+        {
+            var yy = new List<Tuple<int?, int?>>();
+            for (var i = 0; i < years.GetLongLength(0); i++)
+            {
+                yy.Add(new Tuple<int?, int?>(years[i,0], years[i,1]));
+            }
+            _name = name;
+            _years = yy;
+        }
+
+        public string Name => _name;
+        public IEnumerable<Tuple<int?, int?>> Years => _years;
 
         public override string Text
         {
@@ -1316,11 +1332,11 @@ namespace NoFuture.Timeline
                 var tValue = value;
                 if (RegexCatalog.IsRegexMatch(tValue, REGEX_PATTERN, out s1, 1))
                 {
-                    Name = s1;
+                    _name = s1;
                 }
                 if (RegexCatalog.IsRegexMatch(tValue, REGEX_PATTERN, out s1, 2))
                 {
-                    Years = Ruler.ParseYearsRange(s1);
+                    _years = Ruler.ParseYearsRange(s1);
                 }
             }
         }
@@ -1331,8 +1347,17 @@ namespace NoFuture.Timeline
     {
         private const string REGEX_PATTERN = @"([a-zA-Z\.\x20]+?)\[([a-zA-Z\.\x20\x2C]+?)\]\(([0-9]+?)\)";
 
-        public string DiscoveredBy { get; set; }
-        public string Name { get; set; }
+        private string _discoveredBy;
+        private string _name;
+
+        public ScienceAdvEntry(string name, string discoveredBy)
+        {
+            _discoveredBy = discoveredBy;
+            _name = name;
+        }
+
+        public string DiscoveredBy => _discoveredBy;
+        public string Name => _name;
 
         public override string Text
         {
@@ -1347,11 +1372,11 @@ namespace NoFuture.Timeline
                 int y1;
                 if (RegexCatalog.IsRegexMatch(tValue, REGEX_PATTERN, out s1, 1))
                 {
-                    DiscoveredBy = s1;
+                    _discoveredBy = s1;
                 }
                 if (RegexCatalog.IsRegexMatch(tValue, REGEX_PATTERN, out s1, 2))
                 {
-                    Name = s1;
+                    _name = s1;
                 }
                 if (RegexCatalog.IsRegexMatch(tValue, REGEX_PATTERN, out s1, 3) && int.TryParse(s1, out y1))
                 {
@@ -1366,8 +1391,17 @@ namespace NoFuture.Timeline
     {
         private const string REGEX_PATTERN = @"\'([a-zA-Z\.\x20\x2D\x2C]+?)\'([a-zA-Z\.\x20]+?)\(([0-9]+?)\)";
 
-        public string Title { get; set; }
-        public string Author { get; set; }
+        private string _title;
+        private string _author;
+
+        public LiteraryWorkEntry(string title, string author)
+        {
+            _title = title;
+            _author = author;
+        }
+
+        public string Title => _title;
+        public string Author => _author;
 
         public override string Text
         {
@@ -1382,11 +1416,11 @@ namespace NoFuture.Timeline
                 int y1;
                 if (RegexCatalog.IsRegexMatch(tValue, REGEX_PATTERN, out s1, 1))
                 {
-                    Title = s1;
+                    _title = s1;
                 }
                 if (RegexCatalog.IsRegexMatch(tValue, REGEX_PATTERN, out s1, 2))
                 {
-                    Author = s1;
+                    _author = s1;
                 }
                 if (RegexCatalog.IsRegexMatch(tValue, REGEX_PATTERN, out s1, 3) && int.TryParse(s1, out y1))
                 {

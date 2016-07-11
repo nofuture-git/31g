@@ -110,6 +110,8 @@ namespace NoFuture.Timeline
             engd.AddEntry(1838, "'Oliver Twist'Dickens(1838)");
             engd.AddEntry(1859, "'Origin of Species' Darwin(1859)", PrintLocation.Right);
             engd.AddEntry(1861, "'Great Expectations'Dickens(1861)");
+            engd.AddEntry(new ScienceAdvEntry("electromag.", "Maxwell") {StartValue = 1864});
+
             engd.AddEntry(1840, 1860, "Industrial Revolution", PrintLocation.Right);
             engd.AddEntry(1837, 1868, "Queen Victoria (1837-1901)");
 

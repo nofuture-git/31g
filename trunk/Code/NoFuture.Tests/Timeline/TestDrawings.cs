@@ -1012,6 +1012,16 @@ namespace NoFuture.Tests.Timeline
         }
 
         [TestMethod]
+        public void TestOccidentalPlate18()
+        {
+            var testSubject = new Occidental();
+            var testPlate = testSubject.CE1865to1914();
+
+            testPlate.ToPdf(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\Timeline\CE 1865 to 1914.pdf");
+        }
+
+
+        [TestMethod]
         public void TestFastPlate()
         {
             var testSubject = new FastPlate("OAuth 2.0 Authorization Code Flow", "Resource Owner", "User-Agent", "Client", "Auth Server");
@@ -1164,7 +1174,7 @@ namespace NoFuture.Tests.Timeline
         [TestMethod]
         public void TestTerritoryEntry()
         {
-            var testSubject = new TerritoryEntry {Name = "MO", StartValue = 1821};
+            var testSubject = new TerritoryEntry("MO") {StartValue = 1821};
             Assert.AreEqual("+MO(1821)", testSubject.Text);
 
             testSubject.Text = "+WI(1848)";
@@ -1177,55 +1187,43 @@ namespace NoFuture.Tests.Timeline
         [TestMethod]
         public void TestLeaderEntry()
         {
-            var testSubject = new LeaderEntry
-            {
-                Name = "Washington",
-                Years = new List<Tuple<int?, int?>> {new Tuple<int?, int?>(1789, 1797)},
+            var testSubject = new LeaderEntry("Washington",new int?[,] { { 1789, 1797 } })
+            { 
                 Ruler = new Rule() { StartValue = 1788, EndValue = 1865}
             };
 
             Assert.AreEqual("[Washington 1789-97]", testSubject.Text);
 
 
-            testSubject = new LeaderEntry
-            {
-                Name = "William H Harrison",
-                Years = new List<Tuple<int?, int?>> { new Tuple<int?, int?>(null, 1841) },
+            testSubject = new LeaderEntry("William H Harrison",new int?[,] { { null, 1841 } })
+            { 
                 Ruler = new Rule() { StartValue = 1788, EndValue = 1865 }
             };
 
             Assert.AreEqual("[William H Harrison -1841]", testSubject.Text);
 
-            testSubject = new LeaderEntry
-            {
-                Name = "H. John Temple",
-                Years = new List<Tuple<int?, int?>> { new Tuple<int?, int?>(1855, 1858), new Tuple<int?, int?>(1859, 1865) },
+            testSubject = new LeaderEntry("H. John Temple",new int?[,] { { 1855, 1858 }, { 1859, 1865 } })
+            { 
                 Ruler = new Rule() { StartValue = 1788, EndValue = 1865 }
             };
 
             Assert.AreEqual("[H. John Temple 1855-58\\59-65]",testSubject.Text);
 
-            testSubject = new LeaderEntry
-            {
-                Name = "John Adams",
-                Years = new List<Tuple<int?, int?>> { new Tuple<int?, int?>(1797, 1801) },
+            testSubject = new LeaderEntry("John Adams",new int?[,] { { 1797, 1801 } })
+            { 
                 Ruler = new Rule() { StartValue = 1788, EndValue = 1865 }
             };
 
             Assert.AreEqual("[John Adams 1797-1801]", testSubject.Text);
 
-            testSubject = new LeaderEntry
-            {
-                Name = "Hezekiah",
-                Years = new List<Tuple<int?, int?>> { new Tuple<int?, int?>(715, 687) },
+            testSubject = new LeaderEntry("Hezekiah",new int?[,] { { 715, 687 } })
+            { 
                 Ruler = new Rule { StartValue = 780, EndValue = 500 }
             };
 
             Assert.AreEqual("[Hezekiah 715-687]", testSubject.Text);
-            testSubject = new LeaderEntry
-            {
-                Name = "Josiah",
-                Years = new List<Tuple<int?, int?>> { new Tuple<int?, int?>(640, 609) },
+            testSubject = new LeaderEntry("Josiah",new int?[,] { { 640, 609 } })
+            { 
                 Ruler = new Rule { StartValue = 780, EndValue = 500 }
             };
             Assert.AreEqual("[Josiah 640-609]",testSubject.Text);
@@ -1234,18 +1232,18 @@ namespace NoFuture.Tests.Timeline
         [TestMethod]
         public void TestScienceAdvEntry()
         {
-            var testSubject = new ScienceAdvEntry
+            var testSubject = new ScienceAdvEntry("Ohm's law", "Ohm")
             {
                 Ruler = new Rule {StartValue = 1788, EndValue = 1865},
-                Name = "Ohm's law",
-                DiscoveredBy = "Ohm",
                 StartValue = 1827
             };
             Assert.AreEqual("Ohm[Ohm's law](1827)", testSubject.Text);
 
-            testSubject.Name = "law of induction";
-            testSubject.DiscoveredBy = "Faraday";
-            testSubject.StartValue = 1831;
+            testSubject = new ScienceAdvEntry("law of induction", "Faraday")
+            {
+                Ruler = new Rule { StartValue = 1788, EndValue = 1865 },
+                StartValue = 1831
+            };
 
             Assert.AreEqual("Faraday[law of induction](1831)", testSubject.Text);
         }
@@ -1253,22 +1251,18 @@ namespace NoFuture.Tests.Timeline
         [TestMethod]
         public void TestLiteraryWorkEntry()
         {
-            var testSubject = new LiteraryWorkEntry
+            var testSubject = new LiteraryWorkEntry("Origin of Species", "Darwin")
             {
                 Ruler = new Rule {StartValue = 1788, EndValue = 1865},
-                Author = "Darwin",
-                Title = "Origin of Species",
                 StartValue = 1859
             };
 
             var testResult = testSubject.Text;
             Assert.AreEqual("'Origin of Species'Darwin(1859)",testResult);
 
-            testSubject = new LiteraryWorkEntry
+            testSubject = new LiteraryWorkEntry("Communist Manifesto", null)
             {
                 Ruler = new Rule { StartValue = 1788, EndValue = 1865 },
-                Author = null,
-                Title = "Communist Manifesto",
                 StartValue = 1848
             };
             testResult = testSubject.Text;
