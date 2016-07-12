@@ -10,7 +10,7 @@ namespace NoFuture.Rand.Data.NfText
     public class FedLrgBnk : INfDynData
     {
         public const string RELEASE_URL = "http://www.federalreserve.gov/releases/lbr/current/lrg_bnk_lst.txt";
-        public Uri SourceUri { get { return new Uri(RELEASE_URL); } }
+        public Uri SourceUri => new Uri(RELEASE_URL);
 
         public static Dictionary<string, TypeOfBank> TypeOfBankAbbrev3Enum = new Dictionary<string, TypeOfBank>
         {
@@ -31,7 +31,7 @@ namespace NoFuture.Rand.Data.NfText
                 return null;
             }
 
-            var crlf = new char[] { (char)0x0D, (char)0x0A };
+            var crlf = new[] { (char)0x0D, (char)0x0A };
             var lines = lrgBnkLstTxt.Split(crlf);
 
             //find the range for the reports body

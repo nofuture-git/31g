@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Xml;
-using NoFuture.Rand.Com;
 using NoFuture.Rand.Data.Types;
 using NoFuture.Rand.Gov.Sec;
 
@@ -20,11 +19,11 @@ namespace NoFuture.Rand.Data.NfXml
         {
             var rssContent = content as string;
 
-            if (String.IsNullOrWhiteSpace(rssContent))
+            if (string.IsNullOrWhiteSpace(rssContent))
                 return null;
 
             for (var i = 0; i < 9; i++)
-                rssContent = rssContent.Replace(String.Format("<{0} ", i), "<val ");
+                rssContent = rssContent.Replace($"<{i} ", "<val ");
 
             var rssXml = new XmlDocument();
             rssXml.LoadXml(rssContent);
@@ -44,14 +43,11 @@ namespace NoFuture.Rand.Data.NfXml
             for (var i = 0; i < entries.Count; i++)
             {
 
-                var xpathRoot = String.Format("//atom:entry[{0}]", i);
+                var xpathRoot = $"//atom:entry[{i}]";
 
                 var entry = entries.Item(i);
 
-                if (entry == null)
-                    continue;
-
-                var titleNode = entry.SelectSingleNode(xpathRoot + "/atom:title", nsMgr);
+                var titleNode = entry?.SelectSingleNode(xpathRoot + "/atom:title", nsMgr);
 
                 if (titleNode == null || String.IsNullOrWhiteSpace(titleNode.InnerText))
                     continue;
@@ -62,7 +58,7 @@ namespace NoFuture.Rand.Data.NfXml
                 var summaryNode = entry.SelectSingleNode(xpathRoot + "/atom:summary", nsMgr);
 
                 var linkHref = string.Empty;
-                if (linkNode != null && linkNode.Attributes != null && linkNode.Attributes["href"] != null)
+                if (linkNode?.Attributes?["href"] != null)
                 {
                     linkHref = linkNode.Attributes["href"].Value;
                 }
@@ -70,10 +66,10 @@ namespace NoFuture.Rand.Data.NfXml
                 dynContent.Add( new
                 {
                     Title = titleNode.InnerText,
-                    Id = idNode == null ? string.Empty : idNode.InnerText,
+                    Id = idNode?.InnerText ?? string.Empty,
                     Link = linkHref,
-                    Update = form10KDtNode == null ? string.Empty : form10KDtNode.InnerText,
-                    Summary = summaryNode == null ? string.Empty : summaryNode.InnerText
+                    Update = form10KDtNode?.InnerText ?? string.Empty,
+                    Summary = summaryNode?.InnerText ?? string.Empty
                 });
             }
             

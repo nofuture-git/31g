@@ -125,10 +125,7 @@ namespace NoFuture.Hbm.SortingContainers
         /// <summary>
         /// Gets the <see cref="XsdFilePath"/> with the .bin extension.
         /// </summary>
-        public string BinFilePath
-        {
-            get { return Path.ChangeExtension(XsdFilePath, "bin"); }
-        }
+        public string BinFilePath => Path.ChangeExtension(XsdFilePath, "bin");
 
         /// <summary>
         /// With a MSSQL Stored Proc there is no way of knowing what, if any, kind of dataset

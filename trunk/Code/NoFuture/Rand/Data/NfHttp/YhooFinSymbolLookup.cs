@@ -8,13 +8,13 @@ namespace NoFuture.Rand.Data.NfHttp
 {
     public class YhooFinSymbolLookup : INfDynData
     {
-        private readonly Uri _srcUri;
         public YhooFinSymbolLookup(Uri srcUri)
         {
-            _srcUri = srcUri;
+            SourceUri = srcUri;
         }
 
-        public Uri SourceUri { get {return _srcUri;} }
+        public Uri SourceUri { get; }
+
         public List<dynamic> ParseContent(object content)
         {
             var headers = content as Hashtable;
@@ -25,10 +25,10 @@ namespace NoFuture.Rand.Data.NfHttp
                 return null;
 
             var tVal = headers["Set-Cookie"];
-            if (tVal == null || string.IsNullOrWhiteSpace(tVal.ToString()))
+            if (string.IsNullOrWhiteSpace(tVal?.ToString()))
                 return null;
 
-            var tickerSymbol = "";
+            string tickerSymbol;
             if (!RegexCatalog.IsRegexMatch(tVal.ToString(), "\x26t\x3d([A-Z]+)", out tickerSymbol, 1))
                 return null;
 

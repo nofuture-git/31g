@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Xml;
-using NoFuture.Exceptions;
 using NoFuture.Rand.Com;
 
 namespace NoFuture.Rand.Data
@@ -32,20 +29,18 @@ namespace NoFuture.Rand.Data
 
         #region Constants
 
-        public const string DATA_SOURCE = @"NoFuture.Rand.Data.Source";
-
-        private const string CA_AREA_CODE_DATA_PATH = "CA_AreaCode.xml";
-        private const string US_ZIP_DATA_PATH = "US_Zip.xml";
-        private const string CA_ZIP_DATA_PATH = "CA_Zip.xml";
-        private const string US_AREA_CODE_DATA_PATH = "US_AreaCode.xml";
-        private const string INS_COMPANY_PATH = "US_InsCompanyNames.xml";
-        private const string ECON_SECTOR_PATH = "US_EconSectors.xml";
-        private const string US_UNIV_PATH = "US_Universities.xml";
-        private const string US_FIRST_NAMES_DATA_PATH = "US_FirstNames.xml";
-        private const string US_STATE_DATA_PATH = "US_States.xml";
-        private const string US_LAST_NAMES_DATA_PATH = "US_LastNames.xml";
-        private const string US_HIGH_SCHOOL_DATA_PATH = "US_HighSchools.xml";
-        private const string US_CITY_DATA_PATH = "US_City.xml";
+        private const string CA_AREA_CODE_DATA = "CA_AreaCode.xml";
+        private const string US_ZIP_DATA = "US_Zip.xml";
+        private const string CA_ZIP_DATA = "CA_Zip.xml";
+        private const string US_AREA_CODE_DATA = "US_AreaCode.xml";
+        private const string INS_COMPANY = "US_InsCompanyNames.xml";
+        private const string ECON_SECTOR = "US_EconSectors.xml";
+        private const string US_UNIV = "US_Universities.xml";
+        private const string US_FIRST_NAMES_DATA = "US_FirstNames.xml";
+        private const string US_STATE_DATA = "US_States.xml";
+        private const string US_LAST_NAMES_DATA = "US_LastNames.xml";
+        private const string US_HIGH_SCHOOL_DATA = "US_HighSchools.xml";
+        private const string US_CITY_DATA = "US_City.xml";
         private const string X_REF_DATA = "XRef.xml";
         private const string US_ZIP_PROBTABLE = "US_Zip_ProbTable.xml";
         private const string LRG_BNK_LST = "lrg_bnk_lst.txt";
@@ -61,7 +56,7 @@ namespace NoFuture.Rand.Data
             get
             {
                 if (_usStateData == null)
-                    GetXmlDataSource(US_STATE_DATA_PATH, ref _usStateData);
+                    GetXmlDataSource(US_STATE_DATA, ref _usStateData);
                 return _usStateData;
             }
         }
@@ -73,7 +68,7 @@ namespace NoFuture.Rand.Data
             get
             {
                 if(_usFnames == null)
-                    GetXmlDataSource(US_FIRST_NAMES_DATA_PATH, ref _usFnames);
+                    GetXmlDataSource(US_FIRST_NAMES_DATA, ref _usFnames);
                 return _usFnames;
             }
         }
@@ -86,7 +81,7 @@ namespace NoFuture.Rand.Data
             get
             {
                 if (_usLnames == null)
-                    GetXmlDataSource(US_LAST_NAMES_DATA_PATH, ref _usLnames);
+                    GetXmlDataSource(US_LAST_NAMES_DATA, ref _usLnames);
                 return _usLnames;
             }
             
@@ -100,7 +95,7 @@ namespace NoFuture.Rand.Data
             get
             {
                 if (_usZipXml == null)
-                    GetXmlDataSource(US_ZIP_DATA_PATH, ref _usZipXml);
+                    GetXmlDataSource(US_ZIP_DATA, ref _usZipXml);
 
                 return _usZipXml;
             }
@@ -114,7 +109,7 @@ namespace NoFuture.Rand.Data
             get
             {
                 if(_usHighSchools == null)
-                    GetXmlDataSource(US_HIGH_SCHOOL_DATA_PATH, ref _usHighSchools);
+                    GetXmlDataSource(US_HIGH_SCHOOL_DATA, ref _usHighSchools);
 
                 return _usHighSchools;
             }
@@ -128,7 +123,7 @@ namespace NoFuture.Rand.Data
             get
             {
                 if(_usCities == null)
-                    GetXmlDataSource(US_CITY_DATA_PATH, ref _usCities);
+                    GetXmlDataSource(US_CITY_DATA, ref _usCities);
                 return _usCities;
             }
         }
@@ -141,7 +136,7 @@ namespace NoFuture.Rand.Data
             get
             {
                 if (_caZipXml == null)
-                    GetXmlDataSource(CA_ZIP_DATA_PATH, ref _caZipXml);
+                    GetXmlDataSource(CA_ZIP_DATA, ref _caZipXml);
 
                 return _caZipXml;
             }
@@ -155,7 +150,7 @@ namespace NoFuture.Rand.Data
             get
             {
                 if (_usAreaCodeXml == null)
-                    GetXmlDataSource(US_AREA_CODE_DATA_PATH, ref _usAreaCodeXml);
+                    GetXmlDataSource(US_AREA_CODE_DATA, ref _usAreaCodeXml);
 
                 return _usAreaCodeXml;
             }
@@ -169,7 +164,7 @@ namespace NoFuture.Rand.Data
             get
             {
                 if (_caAreaCodeXml == null)
-                    GetXmlDataSource(CA_AREA_CODE_DATA_PATH, ref _caAreaCodeXml);
+                    GetXmlDataSource(CA_AREA_CODE_DATA, ref _caAreaCodeXml);
 
                 return _caAreaCodeXml;
             }
@@ -183,7 +178,7 @@ namespace NoFuture.Rand.Data
             get
             {
                 if (_usInsComXml == null)
-                    GetXmlDataSource(INS_COMPANY_PATH, ref _usInsComXml);
+                    GetXmlDataSource(INS_COMPANY, ref _usInsComXml);
 
                 return _usInsComXml;
             }
@@ -197,7 +192,7 @@ namespace NoFuture.Rand.Data
             get
             {
                 if (_econSectorXml == null)
-                    GetXmlDataSource(ECON_SECTOR_PATH, ref _econSectorXml);
+                    GetXmlDataSource(ECON_SECTOR, ref _econSectorXml);
 
                 return _econSectorXml;
             }
@@ -211,7 +206,7 @@ namespace NoFuture.Rand.Data
             get
             {
                 if (_usUnivXml == null)
-                    GetXmlDataSource(US_UNIV_PATH, ref _usUnivXml);
+                    GetXmlDataSource(US_UNIV, ref _usUnivXml);
 
                 return _usUnivXml;
             }
@@ -281,33 +276,40 @@ namespace NoFuture.Rand.Data
         [EditorBrowsable(EditorBrowsableState.Never)]
         internal static string GetTextDataSource(string name)
         {
-            var embeddedStream = Assembly.GetExecutingAssembly().GetManifestResourceStream(DATA_SOURCE + "." + name);
-            if (embeddedStream == null)
-            {
-                return null;
-            }
+            CheckForBinDirAssigned();
 
-            var strRdr = new StreamReader(embeddedStream);
-            return strRdr.ReadToEnd();
+            return string.IsNullOrWhiteSpace(name)
+                ? null
+                : File.ReadAllText(Path.Combine(BinDirectories.DataRoot, name));
         }
         
         [EditorBrowsable(EditorBrowsableState.Never)]
         internal static void GetXmlDataSource(string name, ref XmlDocument assignTo)
         {
-            if (assignTo != null) return;
+            CheckForBinDirAssigned();
+            if (string.IsNullOrWhiteSpace(name))
+                return;
 
-            var embeddedStream = Assembly.GetExecutingAssembly().GetManifestResourceStream(DATA_SOURCE + "." + name);
-            if (embeddedStream == null)
+            var xmlData = File.ReadAllText(Path.Combine(BinDirectories.DataRoot, name));
+            if (string.IsNullOrWhiteSpace(xmlData))
             {
                 assignTo = null;
                 return;
             }
 
-            var strRdr = new StreamReader(embeddedStream);
-            var embeddedXml = strRdr.ReadToEnd();
-
             assignTo = new XmlDocument();
-            assignTo.LoadXml(embeddedXml);
+            assignTo.LoadXml(xmlData);
+        }
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        private static void CheckForBinDirAssigned()
+        {
+            if (string.IsNullOrWhiteSpace(BinDirectories.DataRoot) || !Directory.Exists(BinDirectories.DataRoot))
+            {
+                throw new InvalidOperationException("Data is stored on the drive in the folder assigned to " +
+                                                    "NoFuture.BinDirectories.DataRoot.  Assign this variable " +
+                                                    "and try again.");
+            }
         }
     }
 }

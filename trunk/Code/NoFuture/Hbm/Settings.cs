@@ -9,46 +9,31 @@ namespace NoFuture.Hbm
 {
     public class Settings
     {
-        private static readonly List<string> _doNotReference = new List<string>();
         private static string _hbmStoredProxDir;
 
-        //TODO replace with new Mutex(false, "Global\\uniquename"); [http://stackoverflow.com/questions/229565/what-is-a-good-pattern-for-using-a-global-mutex-in-c]
+        //TODO replace with new Mutex(false, "Global\\uniquename"); 
+        //[http://stackoverflow.com/questions/229565/what-is-a-good-pattern-for-using-a-global-mutex-in-c]
         private static object myLock = new object();
-        private static int _chxdoks = Globals.COMPILE_HBM_XML_DLL_OF_KB_SIZE;
-        private static int _spXsdTimeout = 30;
-        private static string _defaultSchemaName = Globals.DEFAULT_SCHEMA_NAME;
 
-        private static readonly List<string> _sqlInjParamNames = new List<string>();
-
-        public static string DefaultSchemaName { get { return _defaultSchemaName; } set { _defaultSchemaName = value; } }
+        public static string DefaultSchemaName { get; set; } = Globals.DEFAULT_SCHEMA_NAME;
 
         /// <summary>
         /// A global variable counterpart to 
         /// the search criteria <see cref="StoredProxSearchCriteria.SqlInjOnParamNamesLike"/>
         /// </summary>
-        public static List<string> SqlInjParamNames { get { return _sqlInjParamNames; } }
+        public static List<string> SqlInjParamNames { get; } = new List<string>();
 
         /// <summary>
         /// See summary on <see cref="Globals.COMPILE_HBM_XML_DLL_OF_KB_SIZE"/>
         /// </summary>
-        public static int CompileHbmXmlDllOfKbSize
-        {
-            get { return _chxdoks; }
-            set { _chxdoks = value; }
-        }
+        public static int CompileHbmXmlDllOfKbSize { get; set; } = Globals.COMPILE_HBM_XML_DLL_OF_KB_SIZE;
 
         /// <summary>
         /// A special exclusion list of table names which should not be considered nor 
         /// added into any sorting function.  The values must match exactly so be sure to 
         /// include the schema qualifier.
         /// </summary>
-        internal static List<string> DoNotReference 
-        {
-            get
-            {
-                return _doNotReference;
-            } 
-        }
+        internal static List<string> DoNotReference { get; } = new List<string>();
 
         /// <summary>
         /// A context specific path directory which acts as the working directory of all NoFuture.Hbm and hbm.ps1
@@ -62,7 +47,7 @@ namespace NoFuture.Hbm
                     ? Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "NoFutureData")
                     : TempDirectories.Hbm;
 
-                var svrCatalogDir = String.Format(@"{0}\{1}", NfConfig.SqlServer, NfConfig.SqlCatalog);
+                var svrCatalogDir = $@"{NfConfig.SqlServer}\{NfConfig.SqlCatalog}";
                 return Path.Combine(baseDir, svrCatalogDir);
             }
         }
@@ -109,7 +94,7 @@ namespace NoFuture.Hbm
         /// NOTE: setting the command timeout does not work if the stored proc calls 'sp_executesql';
         ///       such a call, may in theory, last forever.
         /// </summary>
-        public static int HbmStoredProcXsdTimeOut { get { return _spXsdTimeout; } set { _spXsdTimeout = value; }}
+        public static int HbmStoredProcXsdTimeOut { get; set; } = 30;
 
         /// <summary>
         /// Checks the directories are present and verifies the connection string is set.

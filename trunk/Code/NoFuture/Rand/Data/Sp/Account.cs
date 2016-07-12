@@ -38,17 +38,17 @@ namespace NoFuture.Rand.Data.Sp
 
             FinancialFirm bank = null;
 
-            var banks = Data.TreeData.CommercialBankData;
+            var banks = TreeData.CommercialBankData;
             if (banks != null && banks.Length > 0)
             {
                 var pickOne = Etx.IntNumber(0, banks.Length - 1);
                 bank = banks[pickOne];
                 if (bank.RoutingNumber == null)
-                    bank.RoutingNumber = Gov.Fed.RoutingTransitNumber.RandomRoutingNumber();;
+                    bank.RoutingNumber = Gov.Fed.RoutingTransitNumber.RandomRoutingNumber();
             }
 
             return Etx.TryAboveOrAt(8, Etx.Dice.Ten)
-                ? (BankAccount) new Checking {AccountNumber = accountId, Bank = bank}
+                ? new Checking {AccountNumber = accountId, Bank = bank}
                 : (BankAccount)new Savings { AccountNumber = accountId,  Bank = bank };
         }
         public override string ToString()

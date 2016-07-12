@@ -35,10 +35,10 @@ $Global:invokeMgrEvent = Register-ObjectEvent -InputObject ([NoFuture.Hbm.Mappin
     Gathers all database metadata needed and sorts it.
    
     .DESCRIPTION
-    Having called the Mssql-Settings cmdlet and set the current 
-    database connection string to a valid target.  Running this 
-    cmdlet will produce an output of eleven JSON unformatted files
-    to a directory at NoFuture.Hbm.Settings.HbmDirectory.
+    Having set the current database connection string to a 
+    valid target.  Running this cmdlet will produce an output 
+    of eleven JSON unformatted files to a directory at 
+    NoFuture.Hbm.Settings.HbmDirectory.
 
     The sorted JSON files, versus those just dumped from the DB, 
     have the file extension pattern of '.hbm.json'.

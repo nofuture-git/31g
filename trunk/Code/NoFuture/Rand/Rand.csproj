@@ -159,30 +159,53 @@
     <Compile Include="RLinearEquation.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Data\Source\CA_AreaCode.xml" />
-    <EmbeddedResource Include="Data\Source\CA_Zip.xml">
+    <None Include="Data\Source\CA_AreaCode.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Source\CA_Zip.xml">
       <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Data\Source\lrg_bnk_lst.txt" />
-    <EmbeddedResource Include="Data\Source\US_AreaCode.xml" />
-    <EmbeddedResource Include="Data\Source\US_City.xml" />
-    <EmbeddedResource Include="Data\Source\US_EconSectors.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Source\lrg_bnk_lst.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Source\US_AreaCode.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Source\US_City.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Source\US_EconSectors.xml">
       <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Data\Source\US_FirstNames.xml" />
-    <EmbeddedResource Include="Data\Source\US_HighSchools.xml" />
-    <EmbeddedResource Include="Data\Source\US_InsCompanyNames.xml" />
-    <EmbeddedResource Include="Data\Source\US_LastNames.xml" />
-    <EmbeddedResource Include="Data\Source\US_Universities.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Source\US_FirstNames.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Source\US_HighSchools.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Source\US_InsCompanyNames.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Source\US_LastNames.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Source\US_Universities.xml">
       <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Data\Source\US_Zip.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Source\US_Zip.xml">
       <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Data\Source\US_Zip_ProbTable.xml" />
-    <EmbeddedResource Include="Data\Source\XRef.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Source\US_Zip_ProbTable.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Source\XRef.xml">
       <SubType>Designer</SubType>
-    </EmbeddedResource>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Shared\Shared.csproj">
@@ -209,7 +232,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Data\Source\US_States.xml" />
+    <None Include="Data\Source\US_States.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

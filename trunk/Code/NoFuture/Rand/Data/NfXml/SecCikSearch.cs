@@ -211,11 +211,8 @@ namespace NoFuture.Rand.Data.NfXml
                     MailPostalCode = mailZip,
                     MailPhone = mailPhone,
                     FormerNames = formerNames
-
                 }
             };
         }
-
-
     }
 }

@@ -7,14 +7,12 @@ namespace NoFuture.Rand.Data.NfHtml
 {
     public class BloombergSymbolSearch : INfDynData
     {
-        private readonly Uri _srcUri;
-
         public BloombergSymbolSearch(Uri srcUri)
         {
-            _srcUri = srcUri;
+            SourceUri = srcUri;
         }
 
-        public Uri SourceUri { get { return _srcUri; } }
+        public Uri SourceUri { get; }
 
         public List<dynamic> ParseContent(object content)
         {
@@ -22,7 +20,7 @@ namespace NoFuture.Rand.Data.NfHtml
             if (webResponseBody == null)
                 return null;
 
-            string[] d = null;
+            string[] d;
             if (!Tokens.AspNetParseTree.TryGetCdata(webResponseBody, null, out d))
                 return null;
             var innerText = d.ToList();

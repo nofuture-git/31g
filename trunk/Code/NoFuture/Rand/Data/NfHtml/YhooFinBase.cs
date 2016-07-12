@@ -1,18 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using NoFuture.Rand.Data.Types;
 
 namespace NoFuture.Rand.Data.NfHtml
 {
     public abstract class YhooFinBase : INfDynData
     {
-        private readonly Uri _srcUri;
-
         protected YhooFinBase(Uri srcUri)
         {
-            _srcUri = srcUri;
+            SourceUri = srcUri;
         }
 
         protected DateTime[] Dts;
@@ -22,7 +19,7 @@ namespace NoFuture.Rand.Data.NfHtml
         {
             Func<string, bool> filter = s => s.Trim().Length > 1 && s.Trim() != "&nbsp;";
 
-            string[] d = null;
+            string[] d;
             if (!Tokens.AspNetParseTree.TryGetCdata(webResponseBody, filter, out d))
                 return false;
             var innerText = d.ToList();
@@ -88,7 +85,8 @@ namespace NoFuture.Rand.Data.NfHtml
             return DictionaryNums.Count > 0;
         }
 
-        public Uri SourceUri { get {return _srcUri;} }
+        public Uri SourceUri { get; }
+
         public abstract List<dynamic> ParseContent(object content);
     }
 }
