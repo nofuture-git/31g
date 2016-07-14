@@ -518,6 +518,10 @@ http://archive.ics.uci.edu/ml/
        label. The label with the highest metric wins
      - we are not setting some arbitrary level the 
        metric must reach to be considered this label
+ - discretization:  when a metric is continuous feature 
+   (like price or temp.) and we want to group into 
+   discrete labels of (e.g. those above the avg and those
+   below).
 ----
 
 ----
@@ -541,6 +545,24 @@ Bayes' Theorem
 Laplace Smoothing: will add 1 to the P(A) & P(B)
  so as in the above example of P(A) = 250 / 5000
  would be solved as P(A) = (1 + 250) / (1 + 5000)
+----
+
+----
+Shannon entropy
+ - derived from Information Theory
+ - a kind of measure for "how informative" a feature is
+ - defined as:
+ entropy(sample) = sum [ - p(x) * log p(x) ]
+  - where p(x) is the proportion of x in the sample
+  
+ - given some features like:
+ ["apple";"pear";"orange";"banana";"apple";"apple";"orange"]
+ [   1   ;  1   ;   1    ;    1   ;   1   ;   2   ;    2   ]
+  - the entropy value of the fruit names is 1.277034
+    and the numbers entropy value of 0.598270
+  - this indicates that the numbers are more predictive
+    than the fruit names
+ - the lower the entropy value the more predictive it is
 ----
 
 ----
