@@ -14,8 +14,8 @@ namespace NoFuture.Util.Gia
         public string Separator { get; set; }
         public bool UseTypeNames { get; set; }
 
-        public string TypeFullName { get { return NfTypeName.GetLastTypeNameFromArrayAndGeneric(RootType); } }
-        public string SimpleTypeName { get { return NfTypeName.GetTypeNameWithoutNamespace(TypeFullName); } }
+        public string TypeFullName => NfTypeName.GetLastTypeNameFromArrayAndGeneric(RootType);
+        public string SimpleTypeName => NfTypeName.GetTypeNameWithoutNamespace(TypeFullName);
 
         public Type RootType { get; set; }
         public List<FlattenedLine> Lines { get; set; }
@@ -27,7 +27,6 @@ namespace NoFuture.Util.Gia
             foreach (var ln in Lines)
             {
                 ln.Separator = Separator;
-                ln.UseTypeNames = UseTypeNames;
             }
             return Lines.Select(x => x.ToFlattenedString(Separator, UseTypeNames)).ToList();
         }
@@ -36,9 +35,11 @@ namespace NoFuture.Util.Gia
         {
             get
             {
-                var l = Lines == null
-                    ? new List<string>()
-                    : Lines.SelectMany(x => x.Items.Select(y => y.TypeFullName)).Where(s => !FlattenedItem.ValueTypesList.Contains(s)).Distinct().ToList();
+                var l =
+                    Lines?.SelectMany(x => x.Items.Select(y => y.TypeFullName))
+                        .Where(s => !FlattenedItem.ValueTypesList.Contains(s))
+                        .Distinct()
+                        .ToList() ?? new List<string>();
                 l.Add(TypeFullName);
                 return l.ToArray();
             }

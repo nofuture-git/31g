@@ -42,7 +42,7 @@ namespace NoFuture.Util.Gia
         {
             if (String.IsNullOrWhiteSpace(CustomTools.InvokeFlatten) || !File.Exists(CustomTools.InvokeFlatten))
                 throw new ItsDeadJim("Don't know where to locate the NoFuture.Util.Gia.InvokeFlatten.exe, assign " +
-                                     "the global variable at NoFuture.CustomTools.InvokeFlatten.");
+                                     "the global variable at NoFuture.Tools.CustomTools.InvokeFlatten.");
             var args = string.Empty;
             var getFlatAsmPort = DF_START_PORT;
             if (ports != null && ports.Length > 0)
@@ -83,104 +83,6 @@ namespace NoFuture.Util.Gia
         #endregion
 
         #region static methods
-
-        /// <summary>
-        /// Flattens a type and breaks each word on Pascel or camel-case
-        /// then gets a count of that word.
-        /// </summary>
-        /// <param name="assembly"></param>
-        /// <param name="typeFullName"></param>
-        /// <param name="flattenMaxDepth"></param>
-        /// <returns></returns>
-        /// <remarks>
-        /// This is useful for discovering the nomenclature specific to an assembly.
-        /// </remarks>
-        public static Dictionary<string, int> GetAllPropertyWholeWordsByCount(Assembly assembly, string typeFullName, int flattenMaxDepth)
-        {
-            var flattenTypeArg = new FlattenTypeArgs
-            {
-                Assembly = assembly,
-                Depth = flattenMaxDepth,
-                Separator = FlattenLineArgs.DEFAULT_SEPARATOR,
-                TypeFullName = typeFullName
-            };
-            var flattenedType = (FlattenType(flattenTypeArg)).PrintLines();
-            if (flattenedType == null)
-                return null;
-            var allWords = new List<string>();
-
-            foreach (var v in flattenedType)
-            {
-                if (!v.Contains(" "))
-                    continue;
-                var parts = v.Split((char)0x20);
-                if (parts.Length < 2)
-                    continue;
-                var line = parts[1];
-                if (string.IsNullOrWhiteSpace(line))
-                    continue;
-
-                var newline = Etc.TransformCamelCaseToSeparator(line, flattenTypeArg.Separator.ToCharArray()[0]);
-                allWords.AddRange(newline.Split(flattenTypeArg.Separator.ToCharArray()[0]));
-            }
-
-            var allWholeWords = allWords.Distinct().ToList();
-            var wordsByCount = new Dictionary<string, int>();
-
-            foreach (var word in allWholeWords)
-            {
-                var wordCount = allWords.Count(x => x == word);
-                if (wordCount <= 0)
-                    continue;
-                if (wordsByCount.ContainsKey(word))
-                    wordsByCount[word] += wordCount;
-                else
-                    wordsByCount.Add(word, wordCount);
-            }
-
-            return wordsByCount;
-        }
-
-        /// <summary>
-        /// Same as its counterpart <see cref="GetAllPropertyWholeWordsByCount"/> except doing so on every property on 
-        /// every type within the assembly.
-        /// </summary>
-        /// <param name="assembly"></param>
-        /// <param name="flattenMaxDepth"></param>
-        /// <param name="writeProgress">Optional handler to write progress for the calling assembly.</param>
-        /// <returns></returns>
-        public static Dictionary<string, int> GetAssemblyPropertyWholeWordsByCount(Assembly assembly,
-            int flattenMaxDepth, Action<ProgressMessage> writeProgress = null)
-        {
-            var startDictionary = new Dictionary<string, int>();
-            var allTypes = assembly.NfGetTypes();
-            var counter = 0;
-            var total = allTypes.Length;
-            foreach (var t in allTypes)
-            {
-                writeProgress?.Invoke(new ProgressMessage
-                {
-                    Activity = t.ToString(),
-                    ProcName = Process.GetCurrentProcess().ProcessName,
-                    ProgressCounter = Etc.CalcProgressCounter(counter, total),
-                    Status = "Working Type Names"
-                });
-                var tPropWords = GetAllPropertyWholeWordsByCount(assembly, t.FullName, flattenMaxDepth);
-                if (tPropWords == null)
-                    continue;
-                foreach (var k in tPropWords.Keys)
-                {
-                    if (startDictionary.ContainsKey(k))
-                        startDictionary[k] += tPropWords[k];
-                    else
-                    {
-                        startDictionary.Add(k, tPropWords[k]);
-                    }
-                }
-                counter += 1;
-            }
-            return startDictionary;
-        }
 
         /// <summary>
         /// Dumps an entire assembly into a list of <see cref="FlattenedLine"/>

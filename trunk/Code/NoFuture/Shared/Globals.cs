@@ -76,7 +76,8 @@ namespace NoFuture.Shared
         /// Drafts a trusted connection .NET SqlClient Connection string using the 
         /// assigned values from <see cref="SqlServer"/> and <see cref="SqlCatalog"/>
         /// </summary>
-        public static string SqlServerDotNetConnString => $"Server={SqlServer};Database={SqlCatalog};Trusted_Connection=True;";
+        public static string SqlServerDotNetConnString
+            => $"Server={SqlServer};Database={SqlCatalog};Trusted_Connection=True;";
 
         /// <summary>
         /// Global paths used by NoFuture.Util.FxPointers.ResolveAssemblyEventHandler

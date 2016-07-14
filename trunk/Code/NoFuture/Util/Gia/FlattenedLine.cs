@@ -15,7 +15,6 @@ namespace NoFuture.Util.Gia
             Items = items;
         }
         public string Separator { get; set; }
-        public bool UseTypeNames { get; set; }
         public string ValueType { get; set; }
         public List<FlattenedItem> Items { get; private set; }
 
@@ -36,24 +35,24 @@ namespace NoFuture.Util.Gia
             return true;
         }
 
-        public virtual bool Contains(string targetWord)
+        public virtual bool Contains(string targetWord, bool usetypeNames)
         {
-            return UseTypeNames
-                ? Items.Any(x => string.Format("{0}", x.TypeFullName).Contains(targetWord))
+            return usetypeNames
+                ? Items.Any(x => $"{x.TypeFullName}".Contains(targetWord))
                 : Items.Any(x => x.FlName.Contains(targetWord));
         }
 
-        public virtual FlattenedItem FirstOrDefaultOnWord(string targetWord)
+        public virtual FlattenedItem FirstOrDefaultOnWord(string targetWord, bool usetypeNames)
         {
-            return UseTypeNames
-                ? Items.FirstOrDefault(x => string.Format("{0}", x.TypeFullName).Contains(targetWord))
+            return usetypeNames
+                ? Items.FirstOrDefault(x => $"{x.TypeFullName}".Contains(targetWord))
                 : Items.FirstOrDefault(x => x.FlName.Contains(targetWord));
         }
 
-        public virtual bool LastItemContains(string targetWord)
+        public virtual bool LastItemContains(string targetWord, bool usetypeNames)
         {
-            return UseTypeNames
-                ? string.Format("{0}", Items.Last().TypeFullName).Contains(targetWord)
+            return usetypeNames
+                ? $"{Items.Last().TypeFullName}".Contains(targetWord)
                 : Items.Last().FlName.Contains(targetWord);
         }
 
@@ -75,11 +74,14 @@ namespace NoFuture.Util.Gia
             return searchIndex == Items.Count - 1 ? null : Items[searchIndex + 1];
         }
 
-        public virtual string ToFlattenedString(string separator, bool usetypeNames)
+        public virtual string ToFlattenedString(string separator, bool usetypeNames, bool pathsOnly = false)
         {
             var lnBldr = new StringBuilder();
-            lnBldr.Append(ValueType);
-            lnBldr.Append(" ");
+            if (!pathsOnly)
+            {
+                lnBldr.Append(ValueType);
+                lnBldr.Append(" ");
+            }
 
             lnBldr.Append(usetypeNames
                 ? string.Join(separator, Items.Select(x => x.SimpleTypeName))
@@ -113,7 +115,7 @@ namespace NoFuture.Util.Gia
             return nfl != null;
         }
 
-        public override bool Contains(string targetWord)
+        public override bool Contains(string targetWord, bool usetypeNames)
         {
             return false;
         }
@@ -128,19 +130,19 @@ namespace NoFuture.Util.Gia
             return _blank.FirstOrDefault();
         }
 
-        public override FlattenedItem FirstOrDefaultOnWord(string targetWord)
+        public override FlattenedItem FirstOrDefaultOnWord(string targetWord, bool usetypeNames)
         {
             return _blank.FirstOrDefault();
         }
 
-        public override bool LastItemContains(string targetWord)
+        public override bool LastItemContains(string targetWord, bool usetypeNames)
         {
             return false;
         }
 
-        public override string ToFlattenedString(string separator, bool usetypeNames)
+        public override string ToFlattenedString(string separator, bool usetypeNames, bool pathsOnly = false)
         {
-            return _error == null ? string.Empty : string.Format("{0}\n{1}", _error.Message, _error.StackTrace);
+            return _error == null ? string.Empty : $"{_error.Message}\n{_error.StackTrace}";
         }
     }
 

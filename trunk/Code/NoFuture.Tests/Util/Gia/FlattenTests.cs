@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -191,5 +192,4 @@ namespace NoFuture.Tests.Util.Gia
             System.IO.File.WriteAllText(@"C:\Projects\31g\trunk\temp\TestGraphVizFlatType.gv", testResult);
         }
     }
-
 }

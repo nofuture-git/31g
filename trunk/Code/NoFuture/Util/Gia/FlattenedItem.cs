@@ -32,7 +32,7 @@ namespace NoFuture.Util.Gia
             FlType = flType;
             IsEnumerable = NfTypeName.IsEnumerableReturnType(flType);
             TypeFullName = NfTypeName.GetLastTypeNameFromArrayAndGeneric(flType);
-            MetadataToken = flType == null ? 0 : flType.MetadataToken;
+            MetadataToken = flType?.MetadataToken ?? 0;
         }
 
         [Newtonsoft.Json.JsonIgnore]
@@ -41,15 +41,27 @@ namespace NoFuture.Util.Gia
         public bool IsEnumerable { get; set; }
         public string FlName { get; set; }
         public string TypeFullName { get; set; }
-        public string SimpleTypeName { get { return NfTypeName.GetTypeNameWithoutNamespace(TypeFullName); } }
-        public bool IsTerminalNode { get { return ValueTypesList.Contains(TypeFullName); } }
+        public string SimpleTypeName => NfTypeName.GetTypeNameWithoutNamespace(TypeFullName);
+        public bool IsTerminalNode => ValueTypesList.Contains(TypeFullName);
         public int MetadataToken { get; set; }
 
+        public override bool Equals(object obj)
+        {
+            return Equals(obj as FlattenedItem);
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode() + MetadataToken;
+        }
 
         public bool Equals(FlattenedItem item)
         {
             if (item == null)
                 return false;
+            if(item.MetadataToken > 0 && MetadataToken > 0)
+                return item.MetadataToken == MetadataToken;
+
             return string.Equals(item.TypeFullName, TypeFullName, StringComparison.OrdinalIgnoreCase) &&
                    string.Equals(item.FlName, FlName, StringComparison.OrdinalIgnoreCase);
         }
@@ -63,7 +75,7 @@ namespace NoFuture.Util.Gia
         {
             if (IsTerminalNode)
             {
-                return string.Format("{0} : {1}", FlName, SimpleTypeName);
+                return $"{FlName} : {SimpleTypeName}";
             }
             return string.Format("<{0}{1}> {1}", Mrecord.PROPERTY_PORT_PREFIX, FlName);
         }

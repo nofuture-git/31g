@@ -15,13 +15,13 @@ namespace NoFuture.Util.Gia.InvokeCmds
         public AsmIndicies Receive(object anything)
         {
             if(anything == null)
-                throw new ArgumentNullException("anything");
+                throw new ArgumentNullException(nameof(anything));
 
             if (String.IsNullOrWhiteSpace(anything.ToString()) || !File.Exists(anything.ToString()))
                 throw new ItsDeadJim("This isn't a valid assembly path");
 
             if (!IsMyProcessRunning(ProcessId))
-                throw new RahRowRagee(String.Format("The process by id [{0}] has exited", ProcessId));
+                throw new RahRowRagee($"The process by id [{ProcessId}] has exited");
 
             if (!Net.IsValidPortNumber(SocketPort))
                 throw new ItsDeadJim("The assigned socket port is not valids " + SocketPort);

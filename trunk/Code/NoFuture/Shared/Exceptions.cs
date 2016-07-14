@@ -2,14 +2,14 @@
 
 namespace NoFuture.Exceptions
 {
-    public class Arg : System.Exception
+    public class Arg : Exception
     {
         public Arg(string msg) : base(msg) { }
 
         public Arg(string msg, Exception innerException) : base(msg, innerException) { }
     }
 
-    public class General : System.Exception
+    public class General : Exception
     {
         public General(string msg) : base(msg) { }
         public General(string msg, Exception innerException) : base(msg, innerException) { }

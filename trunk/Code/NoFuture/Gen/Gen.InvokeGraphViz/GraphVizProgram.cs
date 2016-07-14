@@ -60,7 +60,7 @@ namespace NoFuture.Gen.InvokeGraphViz
                                 Separator = "-",
                                 UseTypeNames = false,
                                 TypeFullName = p.TypeName,
-                                LimitOnThisType = p.LimitOn == null ? null : p.LimitOn.ToString(),
+                                LimitOnThisType = p.LimitOn?.ToString(),
                                 DisplayEnums = p.DisplayEnums
                             });
                         p.GraphText = ft.ToGraphVizString();

@@ -22,6 +22,7 @@ namespace NoFuture.Util.Etymological
             {"Man", "Men"},
             {"Child", "Children"},
             {"Person", "People"},
+            {"Datum", "Data" }
         };
         #endregion
 
@@ -37,7 +38,7 @@ namespace NoFuture.Util.Etymological
         /// <returns></returns>
         public static string ToPlural(string name, bool skipWordsEndingInS = false)
         {
-            if (String.IsNullOrWhiteSpace(name))
+            if (string.IsNullOrWhiteSpace(name))
                 return name;
 
             name = name.Trim();
@@ -50,7 +51,7 @@ namespace NoFuture.Util.Etymological
 
             if ((name.EndsWith("s") || name.EndsWith("ch") || name.EndsWith("o")) && !name.EndsWith("es"))
             {
-                return String.Format("{0}es", name);
+                return $"{name}es";
             }
             if (name.EndsWith("y"))
             {
@@ -61,17 +62,17 @@ namespace NoFuture.Util.Etymological
                     if (!Regex.IsMatch(nameArray[secondToLastIndex].ToString(CultureInfo.InvariantCulture), "[aeiou]"))
                     {
 
-                        return String.Format("{0}ies", name.Substring(0, (name.Length - 1)));
+                        return $"{name.Substring(0, (name.Length - 1))}ies";
                     }
                 }
             }
             if (name.EndsWith("fe") && name.Length > 2)
             {
-                return String.Format("{0}ves", name.Substring(0, (name.Length - 2)));
+                return $"{name.Substring(0, (name.Length - 2))}ves";
             }
             if (name.EndsWith("x"))
             {
-                return String.Format("{0}ces", name.Substring(0, name.Length - 1));
+                return $"{name.Substring(0, name.Length - 1)}ces";
             }
 
             if (IRREGULAR_PLURALS.ContainsKey(name))
@@ -79,7 +80,15 @@ namespace NoFuture.Util.Etymological
                 return IRREGULAR_PLURALS[name].ToString();
             }
 
-            return String.Format("{0}s", name);
+            foreach (var val in IRREGULAR_PLURALS.Values)
+            {
+                if (val == null)
+                    continue;
+                if (name.EndsWith(val.ToString()))
+                    return name;
+            }
+
+            return $"{name}s";
         }
     }
 }

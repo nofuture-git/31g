@@ -7,44 +7,37 @@ namespace NoFuture.Shared
 {
     public class RegexCatalog
     {
-        private static RegexOptions _myRegexOptions = RegexOptions.IgnoreCase;
-        public static RegexOptions MyRegexOptions { get { return _myRegexOptions; } set { _myRegexOptions = value; } }
+        public static RegexOptions MyRegexOptions { get; set; } = RegexOptions.IgnoreCase;
 
-        public string CppClassMember { get { return Properties.Resources.CppClassMember; } }
-        public string CsClass { get { return Properties.Resources.CsClass; } }
-        public string CsClassMember { get { return Properties.Resources.CsClassMember; } }
-        public string CsFunction { get { return Properties.Resources.CsFunction; } }
-        public string EmailAddress { get { return Properties.Resources.EmailAddress; } }
-        public string EmbeddedHtml { get { return Properties.Resources.EmbeddedHtml; } }
-        public string IPv4 { get { return Properties.Resources.IPv4; } }
-        public string JsFunction { get { return Properties.Resources.JsFunction; } }
-        public string PhoneNumber01 { get { return Properties.Resources.PhoneNumber01; } }
-        public string PhoneNumber02 { get { return Properties.Resources.PhoneNumber02; } }
-        public string SqlSelectValues { get { return Properties.Resources.SqlSelectValues; } }
-        public string SqlServerTableName { get { return Properties.Resources.SqlServerTableName; } }
-        public string SSN { get { return Properties.Resources.SSN; } }
-        public string StringIsRegex { get { return Properties.Resources.StringIsRegex; } }
-        public string StringLiteral { get { return Properties.Resources.StringLiteral; } }
-        public string TimeValue { get { return Properties.Resources.TimeValue; } }
-        public string Uri { get { return Properties.Resources.Uri; } }
-        public string Url { get { return Properties.Resources.Url; } }
-        public string USD { get { return Properties.Resources.USD; } }
-        public string UsZipcode { get { return Properties.Resources.UsZipcode; } }
-        public string VbClassMember { get { return Properties.Resources.VbClassMember; } }
-        public string WindowsRootedPath { get { return Properties.Resources.WindowsRootedPath; } }
-        public string LongDate { get { return Properties.Resources.LongDate; } }
-        public string UrlClassicAmerican { get { return Properties.Resources.UrlClassicAmerican; } }
-
-        private static Hashtable _myRegex2Values = new Hashtable();
+        public string CppClassMember => Properties.Resources.CppClassMember;
+        public string CsClass => Properties.Resources.CsClass;
+        public string CsClassMember => Properties.Resources.CsClassMember;
+        public string CsFunction => Properties.Resources.CsFunction;
+        public string EmailAddress => Properties.Resources.EmailAddress;
+        public string EmbeddedHtml => Properties.Resources.EmbeddedHtml;
+        public string IPv4 => Properties.Resources.IPv4;
+        public string JsFunction => Properties.Resources.JsFunction;
+        public string PhoneNumber01 => Properties.Resources.PhoneNumber01;
+        public string PhoneNumber02 => Properties.Resources.PhoneNumber02;
+        public string SqlSelectValues => Properties.Resources.SqlSelectValues;
+        public string SqlServerTableName => Properties.Resources.SqlServerTableName;
+        public string SSN => Properties.Resources.SSN;
+        public string StringIsRegex => Properties.Resources.StringIsRegex;
+        public string StringLiteral => Properties.Resources.StringLiteral;
+        public string TimeValue => Properties.Resources.TimeValue;
+        public string Uri => Properties.Resources.Uri;
+        public string Url => Properties.Resources.Url;
+        public string USD => Properties.Resources.USD;
+        public string UsZipcode => Properties.Resources.UsZipcode;
+        public string VbClassMember => Properties.Resources.VbClassMember;
+        public string WindowsRootedPath => Properties.Resources.WindowsRootedPath;
+        public string LongDate => Properties.Resources.LongDate;
+        public string UrlClassicAmerican => Properties.Resources.UrlClassicAmerican;
 
         /// <summary>
         /// A global container for assigning idiosyncratic pattern-value pairs.
         /// </summary>
-        public static Hashtable MyRegex2Values
-        {
-            get { return _myRegex2Values; }
-            set { _myRegex2Values = value; }
-        }
+        public static Hashtable MyRegex2Values { get; set; } = new Hashtable();
 
         /// <summary>
         /// Test the <see cref="subject"/> against the <see cref="pattern"/>
@@ -100,7 +93,6 @@ namespace NoFuture.Shared
             }
 
             return false;
-            //return regexii.Where(x => !string.IsNullOrWhiteSpace(x)).Any(x => Regex.IsMatch(subject, x, MyRegexOptions));
         }
 
         /// <summary>
@@ -150,29 +142,29 @@ namespace NoFuture.Shared
             //this is probably just one single whole word
             if (someText.ToCharArray().All(x => char.IsNumber(x) || char.IsLetter(x)))
                 return someText;
-            const string _x2a_x28_x28 = "*((";
-            const string _x29_x3f_x29 = ")?)";
+            const string X2_A_X28_X28 = "*((";
+            const string X29_X3_F_X29 = ")?)";
 
             foreach (var c in someText.ToCharArray())
             {
                 var isNumOrLetter = char.IsNumber(c) || char.IsLetter(c);
                 var firstWholeWord = !regexPattern.ToString().Contains("*");
                 var cPattern = regexPattern.ToString();
-                var noTextBetwixt = cPattern.EndsWith(_x2a_x28_x28) || cPattern.EndsWith(_x29_x3f_x29);
+                var noTextBetwixt = cPattern.EndsWith(X2_A_X28_X28) || cPattern.EndsWith(X29_X3_F_X29);
 
                 if (!firstWholeWord && !isNumOrLetter && !noTextBetwixt)
-                    regexPattern.Append(_x29_x3f_x29);// )?)
+                    regexPattern.Append(X29_X3_F_X29);// )?)
                 if (!isNumOrLetter && !noTextBetwixt)
-                    regexPattern.Append(_x2a_x28_x28);// *((
+                    regexPattern.Append(X2_A_X28_X28);// *((
 
                 if (isNumOrLetter)
                     regexPattern.Append(c);
             }
             if (regexPattern.ToString().ToCharArray().Count(x => x == '*') >
                 regexPattern.ToString().ToCharArray().Count(x => x == '?'))
-                regexPattern.Append(_x29_x3f_x29);
+                regexPattern.Append(X29_X3_F_X29);
             //clean up the tail
-            return regexPattern.ToString().Replace(_x2a_x28_x28 + _x29_x3f_x29, string.Empty);
+            return regexPattern.ToString().Replace(X2_A_X28_X28 + X29_X3_F_X29, string.Empty);
         }
     }
 }

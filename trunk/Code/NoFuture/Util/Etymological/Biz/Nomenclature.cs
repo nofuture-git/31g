@@ -6,21 +6,20 @@ namespace NoFuture.Util.Etymological.Biz
 {
     public class CardinalOrdinal : NomenclatureBase
     {
-        private static string[] P = new[]
-        {
+        private static readonly string[] CARDINAL = {
             "First", "Second", "Third", "Forth", "Fifth", "Sixth", "Primary", "Secondary", "Tertiary", "Once", "Twice",
             "Thrice", "Preferred", "Alternative"
         };
 
         public CardinalOrdinal()
         {
-            Synonyms.AddRange(P);
+            Synonyms.AddRange(CARDINAL);
         }
     }
 
     public class Demonyms : NomenclatureBase
     {
-        private static string[] DEMONYMS = 
+        private static readonly string[] DEMONYMS = 
         {
             "African", "American", "Australian", "Austrian", "Canadian",
             "English", "European",
@@ -37,11 +36,11 @@ namespace NoFuture.Util.Etymological.Biz
 
     public class Toponyms : NomenclatureBase
     {
-        public static string ADDRESS = "Addr(ess|esses)?";
+        public const string ADDRESS = "Addr(ess|esses)?";
 
-        public static string[] ADDR_PARTS = { "City", "Postalcode", "Zip(code(s)?)?", "(State|Providence)", "Street", "Country", };
+        public static readonly string[] ADDR_PARTS = { "City", "Postalcode", "Zip(code(s)?)?", "(State|Providence)", "Street", "Country", };
 
-        private static string[] TOPONYMS = 
+        private static readonly string[] TOPONYMS = 
         {
             "Altitude", "District",
             "(Latitude|Lat)", "(Longitude|Lng)",
@@ -79,13 +78,13 @@ namespace NoFuture.Util.Etymological.Biz
 
     public class Chronos : NomenclatureBase
     {
-        private static string[] DEFINITIVE = {"Date", "Time"};
-        private static string[] CHRONOS = 
+        private static readonly string[] DEFINITIVE = {"Date", "Time"};
+        private static readonly string[] CHRONOS = 
         {
             "Age", "Annual", "Daily", "Season", "Week",  "Period", "Phase", "Deadline", 
         };
 
-        private static string[] PREFIX_SUFFIX_DATE_TIME =
+        private static readonly string[] PREFIX_SUFFIX_DATE_TIME =
         {
             "Start", "End", "Finish", "Create", "Begin", "Birth", "Death", "Arriv(al|e)", "Depart(ure)?", "Deliver(y)?", "Schedule(d)?"
         };
@@ -119,7 +118,7 @@ namespace NoFuture.Util.Etymological.Biz
 
     public class Monetary : NomenclatureBase
     {
-        private static string[] MONEY = 
+        private static readonly string[] MONEY = 
         {
             "Amount", "Balance", "Charge", "Cost", "Currency", "Debit",
             "Deductible", "Deposit", "Discount", "Estimate", "Interest", "Pay",
@@ -136,7 +135,7 @@ namespace NoFuture.Util.Etymological.Biz
 
     public class Numeric : NomenclatureBase
     {
-        private static string[] NUMERIC = 
+        private static readonly string[] NUMERIC = 
         {
             "Coefficient", "Coordinate", "Dimension", "Number", "Size",
             "Weight", "Width", "Yield", "Distance", "Variance", "Variant", 
@@ -155,7 +154,7 @@ namespace NoFuture.Util.Etymological.Biz
     public class BizStrings : NomenclatureBase
     {
 
-        private static string[] STRINGS = new[]
+        private static readonly string[] STRINGS = new[]
         {
             "Note", "Token", "Text", "Description", "Content", "Value", "Comment",
             "Symbol", "Password", "Remarks", "Message", "Descriptor", "Alias",
@@ -177,7 +176,7 @@ namespace NoFuture.Util.Etymological.Biz
 
     public class NetworkResource : NomenclatureBase
     {
-        private static string[] URIS = 
+        private static readonly string[] URIS = 
         {
              "Uri", "Url", "Website", "Path", "File", "Email", "Ip", "Ipv4", "Ipv6"
         };
@@ -191,7 +190,7 @@ namespace NoFuture.Util.Etymological.Biz
 
     public class TelecoResource : NomenclatureBase
     {
-        private static string[] TELECO = { "Phone", "Fax", "Mobile", "Cell" };
+        private static readonly string[] TELECO = { "Phone", "Fax", "Mobile", "Cell" };
 
         public TelecoResource()
         {
@@ -202,7 +201,7 @@ namespace NoFuture.Util.Etymological.Biz
 
     public class Metrix : NomenclatureBase
     {
-        private static string[] METRIX =
+        private static readonly string[] METRIX =
         {
             "Gram", "Meter", "Liter", "Inch", "Feet", "Yard", "Mile",
             "Acre", "Pint", "Quart", "Gallon", "Ounce", "Ton", "Pound", "Bushel",
@@ -218,7 +217,7 @@ namespace NoFuture.Util.Etymological.Biz
 
     public class Identity : NomenclatureBase
     {
-        private static string[] IDENTITY = 
+        private static readonly string[] IDENTITY = 
         {
             "Code", "Name", "Type", "Id", "Identity", "Index", "Key",
             "Class", "Mode", "Uid", "Guid"

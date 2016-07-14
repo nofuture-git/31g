@@ -89,7 +89,8 @@ namespace NoFuture.Shared
         /// The location within the Registry where one may set 
         /// domains to a specific Zone.
         /// </summary>
-        public const string REGISTRY_ZONE_PATH = @"HKCU:\Software\Microsoft\Windows\CurrentVersion\Internet Settings\ZoneMap\Domains";
+        public const string REGISTRY_ZONE_PATH =
+            @"HKCU:\Software\Microsoft\Windows\CurrentVersion\Internet Settings\ZoneMap\Domains";
 
         /// <summary>
         /// Useful link to a very extensive list of domains used 

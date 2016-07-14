@@ -26,8 +26,6 @@ namespace NoFuture.Shared
 
         public override bool Equals(object obj)
         {
-            if (obj == null)
-                return false;
             var objMdti = obj as MetadataTokenId;
             if (objMdti == null)
                 return false;
@@ -211,7 +209,7 @@ namespace NoFuture.Shared
         /// <returns></returns>
         public int GetNameHashCode()
         {
-            return Name == null ? 0 : Name.GetHashCode();
+            return Name?.GetHashCode() ?? 0;
         }
     }
 

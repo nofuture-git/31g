@@ -773,45 +773,44 @@ function Get-FlattenedType
     }#end Process
 }#end Get-FlattenedType
 
+<#
+    .SYNOPSIS
+    Flats in an assembly.
+   
+    .DESCRIPTION
+    Invokes a separate console process to 
+    flatten the target assembly.  
+    The results represent all possiable property 
+    invocation paths which terminate on a value-type.
 
-#---------
-# code analysis cmdlets
-#--------
-function Measure-TypesWholeWords
+    All redundancies are present.  If type (A) has 
+    5 possiable property paths and type (B) HAS-A 
+    property of type (A) then type (B) must have 
+    at least 5 possiable property paths likewise.
+
+    .PARAMETER AssemblyPath
+    The path to the assembly to flatten
+
+#>
+function Get-FlattenedAssembly
 {
     [CmdletBinding()]
     Param
     (
         [Parameter(Mandatory=$true,position=0)]
-        [System.Reflection.Assembly] $Assembly,
-        [Parameter(Mandatory=$true,position=1)]
-        [string] $TypeFullName,
-        [Parameter(Mandatory=$false,position=2)]
-        [int] $FlattenMaxDepth
-
+        [string] $AssemblyPath
     )
     Process
     {
-        return (([NoFuture.Util.Gia.Flatten]::GetAllPropertyWholeWordsByCount($Assembly, $TypeFullName, $FlattenMaxDepth)).GetEnumerator() | Sort-Object Value -Descending)
-    }
-}
+        if(-not (Test-Path $AssemblyPath)){
+            throw "No assembly found at $AssemblyPath"
+            break;
+        }
 
-function Measure-AssemblyWholeWords
-{
-    [CmdletBinding()]
-    Param
-    (
-        [Parameter(Mandatory=$true,position=0)]
-        [System.Reflection.Assembly] $Assembly,
-        [Parameter(Mandatory=$false,position=1)]
-        [int] $FlattenMaxDepth
-
-    )
-    Process
-    {
-        return (([NoFuture.Util.Gia.Flatten]::GetAssemblyPropertyWholeWordsByCount($Assembly, $FlattenMaxDepth, $null)).GetEnumerator() | Sort-Object Value -Descending)
+        $flattened = New-Object NoFuture.Util.Gia.Flatten(5062)
+        return $flattened.GetFlattenAssembly($AssemblyPath)
     }
-}
+}#Get-FlattenedAssembly
 
 <#
     .SYNOPSIS
