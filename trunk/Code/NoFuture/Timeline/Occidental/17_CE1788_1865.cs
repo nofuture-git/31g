@@ -79,6 +79,7 @@ namespace NoFuture.Timeline
             usa.AddEntry(1865, "surrender @ Appomattox(1865)(f.)", PrintLocation.Right);
             usa.AddEntry(1866, "Lincoln assassinated(1865)");
 
+            usa.AddEntry(new ScienceAdvEntry("rotary press", "R.M.Hoe") { StartValue = 1843 });
 
             var engd = new Block {Ruler = rule, Title = "United Kingdom"};
             engd.AddEntry(1798, "Jenner[vaccination](1798)",PrintLocation.Left);
@@ -111,9 +112,9 @@ namespace NoFuture.Timeline
             engd.AddEntry(1859, "'Origin of Species' Darwin(1859)", PrintLocation.Right);
             engd.AddEntry(1861, "'Great Expectations'Dickens(1861)");
             engd.AddEntry(new ScienceAdvEntry("electromag.", "Maxwell") {StartValue = 1864});
-
+            engd.AddEntry(1865, "First Subway(1864)");
             engd.AddEntry(1840, 1860, "Industrial Revolution", PrintLocation.Right);
-            engd.AddEntry(1837, 1868, "Queen Victoria (1837-1901)");
+            engd.AddEntry(1839, 1866, "Queen Victoria (1837-1901)", PrintLocation.Left);
 
             var fr = new Block {Ruler = rule, Title = "France"};
             fr.AddEntry(1789, "Estates-General meets(1789)(b.)", PrintLocation.Left);

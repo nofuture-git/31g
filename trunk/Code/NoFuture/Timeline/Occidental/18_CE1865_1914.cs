@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace NoFuture.Timeline
+﻿namespace NoFuture.Timeline
 {
     public partial class Occidental
     {
         public Plate CE1865to1914()
         {
-            var rule = new Rule { StartValue = 1865, EndValue = 1914, RuleLineSpacing = 7 };
+            var rule = new Rule { StartValue = 1864, EndValue = 1914, RuleLineSpacing = 7 };
 
+            //united states
             var usa = new Block { Ruler = rule, Title = "United States" };
             usa.AddEntry(new TerritoryEntry("NE") { StartValue = 1867 });
             usa.AddEntry(new TerritoryEntry("CO") { StartValue = 1876 });
@@ -40,16 +36,31 @@ namespace NoFuture.Timeline
 
             usa.AddEntry(new ScienceAdvEntry("airplane", "Wright bros.") {StartValue = 1903});
             usa.AddEntry(new ScienceAdvEntry("lightbulb", "Edison") {StartValue = 1879});
-
+            usa.AddEntry(new ScienceAdvEntry("telephone", "Bell"){StartValue = 1874});
             usa.AddEntry(new LiteraryWorkEntry("Huckleberry Finn", "M.Twain") {StartValue = 1884});
             usa.AddEntry(new LiteraryWorkEntry("The Jungle", "Sinclair") {StartValue = 1906});
             usa.AddEntry(new LiteraryWorkEntry("The Call of the Wild", "London") {StartValue = 1904});
 
-            var engd = new Block { Ruler = rule, Title = "United Kingdom" };
-            engd.AddEntry(new ScienceAdvEntry("diffuse sky radiation", "Rayleigh") {StartValue = 1871});
+            //england
+            var engd = new Block { Ruler = rule, Title = "United Kingdom", Width = 44};
+            engd.AddEntry(new LeaderEntry("J.Russel", new int?[,] { { 1865, 1866 } }) { StartValue = 1866 });
+            engd.AddEntry(new LeaderEntry("E.Smith-Stanley", new int?[,] { { 1866, 1868 } }) { StartValue = 1867 });
+            engd.AddEntry(new LeaderEntry("B.Disraeli", new int?[,] { { null, 1868 }, {1874, 1880} }) { StartValue = 1868 });
+            engd.AddEntry(new LeaderEntry("W.E.Gladstone", new int?[,] { { 1868, 1874 }, {1880,1885}, {null,1886}, {1892,1894} }) { StartValue = 1869 });
+            engd.AddEntry(new LeaderEntry("R.Cecil", new int?[,] { { 1885, 1886 }, { 1886, 1892 }, {1895,1902} }) { StartValue = 1885 });
+            engd.AddEntry(new LeaderEntry("A.Primrose", new int?[,] { { 1894, 1895 } }) { StartValue = 1894 });
+            engd.AddEntry(new LeaderEntry("A.Balfour", new int?[,] { { 1902, 1905 } }) { StartValue = 1902 });
+            engd.AddEntry(new LeaderEntry("H.C.Bannerman", new int?[,] { { 1905, 1908 } }) { StartValue = 1905 });
+            engd.AddEntry(new LeaderEntry("H.Asquith", new int?[,] { { 1908, 1916 } }) { StartValue = 1908 });
+
             engd.AddEntry(new ScienceAdvEntry("cathode rays","Thomson") {StartValue = 1897});
-            engd.AddEntry(1880,"First Boer War(1880\\81)");
-            engd.AddEntry(1899, 1902, "Second Boer War(1899-1902)");
+
+            engd.AddEntry(1870, "Suez Canel(1869)");
+
+            engd.AddEntry(1879, "Anglo-Zulu War(1879)", PrintLocation.Left);
+            engd.AddEntry(1880,"First Boer War(1880\\81)", PrintLocation.Left);
+            engd.AddEntry(1899, 1902, "Second Boer War(1899-1902)", PrintLocation.Left);
+            engd.AddEntry(1865, 1901, "Queen Victoria (1837-1901)", PrintLocation.Right);
 
             var fr = new Block { Ruler = rule, Title = "France" };
             fr.AddEntry(new ScienceAdvEntry("radioactivity", "Becquerel") {StartValue = 1896});
