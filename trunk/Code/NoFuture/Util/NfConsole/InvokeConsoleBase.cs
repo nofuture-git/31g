@@ -48,7 +48,7 @@ namespace NoFuture.Util.NfConsole
             return myProcess;
         }
 
-        protected internal bool IsMyProcessRunning
+        public bool IsMyProcessRunning
         {
             get
             {
@@ -56,6 +56,16 @@ namespace NoFuture.Util.NfConsole
                     return false;
                 MyProcess.Refresh();
                 return !MyProcess.HasExited;
+            }
+        }
+
+        public int MyProcessId
+        {
+            get
+            {
+                if (!IsMyProcessRunning)
+                    return -1;
+                return MyProcess.Id;
             }
         }
 

@@ -775,42 +775,72 @@ function Get-FlattenedType
 
 <#
     .SYNOPSIS
-    Flats in an assembly.
+    Creates and displays an assembly type graph.
    
     .DESCRIPTION
-    Invokes a separate console process to 
-    flatten the target assembly.  
-    The results represent all possiable property 
-    invocation paths which terminate on a value-type.
-
-    All redundancies are present.  If type (A) has 
-    5 possiable property paths and type (B) HAS-A 
-    property of type (A) then type (B) must have 
-    at least 5 possiable property paths likewise.
+    The InvokeFlatten.exe can take some time to complete depending
+    on the complexity of the assembly's object graph.
 
     .PARAMETER AssemblyPath
     The path to the assembly to flatten
 
+    .PARAMETER RegexPatterns
+    Optional, will center the graph around 
+    types by these names (and their property types)
+    while excluding the rest.
+
 #>
-function Get-FlattenedAssembly
+function Get-DotGraphFlattenedAssembly
 {
     [CmdletBinding()]
     Param
     (
         [Parameter(Mandatory=$true,position=0)]
-        [string] $AssemblyPath
+        [string] $AssemblyPath,
+        [Parameter(Mandatory=$false,position=1)]
+        [string[]] $RegexPatterns
+
     )
     Process
     {
-        if(-not (Test-Path $AssemblyPath)){
-            throw "No assembly found at $AssemblyPath"
+        #validate input
+        $graphDir = ([NoFuture.TempDirectories]::Graph)
+
+        if([string]::IsNullOrWhiteSpace($graphDir)){
+            Write-Host "Assign a directory to the global NoFuture.TempDirectories.Graph variable" -ForegroundColor Yellow
             break;
         }
+        if(-not (Test-Path $AssemblyPath)){
+            Write-Host "There isn't an assembly at $AssemblyPath" -ForegroundColor Yellow
+            break;
+        }
+        Write-Progress -Activity "Starting..." -Status "Working" -PercentComplete 11
 
-        $flattened = New-Object NoFuture.Util.Gia.Flatten(5062)
-        return $flattened.GetFlattenAssembly($AssemblyPath)
+        $asmName = [System.Reflection.AssemblyName]::GetAssemblyName($AssemblyPath)
+        Write-Progress -Activity ("Flattening assembly '{0}'" -f $asmName.Name)  -Status "Working" -PercentComplete 50
+
+        $flatten = New-Object NoFuture.Util.Gia.Flatten([NoFuture.Util.Gia.Flatten]::DF_START_PORT)
+
+        #thread should park here until the remote process completes
+        $flatAsm = $flatten.GetFlattenAssembly($AssemblyPath)
+
+        $gvContent = $flatAsm.ToGraphVizString($RegexPatterns)
+
+        $gvFile = Join-Path $graphDir ("{0}FlatAsm.gv" -f $asmName.Name).Replace(".","")
+
+        [System.IO.File]::WriteAllBytes($gvFile, ([System.Text.Encoding]::UTF8.GetBytes($gvContent)))
+        $flatAsm.Dispose()
+
+        Write-Progress -Activity ("Creating graph from '{0}'" -f $asmName.Name) -Status "Working" -PercentComplete 82
+
+        $graphFile = Invoke-DotExe -GraphvizFile $gvFile
+
+        Write-Progress -Activity "Done" -Status "Working" -PercentComplete 98
+        
+        #display the svg with whatever program is assoc. to that extension
+        Invoke-Expression -Command "& $graphFile"
     }
-}#Get-FlattenedAssembly
+}#Get-DotGraphFlattenedAssembly
 
 <#
     .SYNOPSIS
@@ -951,7 +981,8 @@ function Invoke-DotExe
     )
     Process
     {
-        if(-not (Test-Path $GraphvizFile)){
+        
+        if([string]::IsNullOrWhiteSpace($GraphvizFile) -or -not (Test-Path $GraphvizFile)){
             Write-Host "The file path '$GraphvizFile' is invalid."
             break;
         }

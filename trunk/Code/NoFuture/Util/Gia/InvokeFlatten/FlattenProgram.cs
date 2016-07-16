@@ -40,7 +40,7 @@ namespace NoFuture.Util.Gia.InvokeFlatten
                 p.ParseProgramArgs();
 
                 //print settings
-                p.PrintToConsole(String.Format("GetFlattenAssembly listening on port [{0}]", p.GetFlattenAssemblyCmdPort));
+                p.PrintToConsole($"GetFlattenAssembly listening on port [{p.GetFlattenAssemblyCmdPort}]");
                 p.PrintToConsole("type 'exit' to quit", false);
 
                 //open ports

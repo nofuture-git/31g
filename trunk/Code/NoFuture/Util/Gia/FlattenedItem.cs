@@ -22,6 +22,7 @@ namespace NoFuture.Util.Gia
                     _ffVTypes = Lexicon.ValueType2Cs.Keys.ToList();
                     _ffVTypes.Add("System.DateTime");
                     _ffVTypes.Add("System.Enum");
+                    _ffVTypes.Add("System.Guid");
                 }
                 return _ffVTypes;
             }

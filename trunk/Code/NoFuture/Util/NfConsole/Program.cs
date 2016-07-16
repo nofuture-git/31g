@@ -85,27 +85,35 @@ namespace NoFuture.Util.NfConsole
         /// <param name="pMsg"></param>
         public void PrintToConsole(ProgressMessage pMsg)
         {
-            if (!_isVisable)
-                return;
-            var currentState = new Tuple<int, string>(pMsg.ProgressCounter, pMsg.Status);
+            try
+            {
+                if (!_isVisable)
+                    return;
+                var currentState = new Tuple<int, string>(pMsg.ProgressCounter, pMsg.Status);
 
-            if (ProgressMessageState == null)
-            {
-                Console.WriteLine(currentState.Item2);
-                ProgressMessageState = currentState;
-                return;
+                if (ProgressMessageState == null)
+                {
+                    Console.WriteLine(currentState.Item2);
+                    ProgressMessageState = currentState;
+                    return;
+                }
+                if (currentState.Item2 != ProgressMessageState.Item2)
+                {
+                    Console.WriteLine();
+                    Console.WriteLine(currentState.Item2);
+                    ProgressMessageState = currentState;
+                    return;
+                }
+                if (currentState.Item1 > ProgressMessageState.Item1)
+                {
+                    Console.Write('.');
+                    ProgressMessageState = currentState;
+                }
             }
-            if (currentState.Item2 != ProgressMessageState.Item2)
+            catch (Exception ex)
             {
-                Console.WriteLine();
-                Console.WriteLine(currentState.Item2);
-                ProgressMessageState = currentState;
-                return;
-            }
-            if (currentState.Item1 > ProgressMessageState.Item1)
-            {
-                Console.Write('.');
-                ProgressMessageState = currentState;
+                Debug.WriteLine(ex.Message);
+                Debug.WriteLine(ex.StackTrace);
             }
         }
         /// <summary>
@@ -115,12 +123,20 @@ namespace NoFuture.Util.NfConsole
         /// <param name="trunc"></param>
         public void PrintToConsole(string someString, bool trunc = true)
         {
-            File.AppendAllText(LogFile, $"{DateTime.Now:yyyy-MM-dd HH:mm:ss.fff} {someString}\n");
-            if (trunc && someString.Length >= 74)
-                someString = $"{someString.Substring(0, 68)}[...]";
+            try
+            {
+                File.AppendAllText(LogFile, $"{DateTime.Now:yyyy-MM-dd HH:mm:ss.fff} {someString}\n");
+                if (trunc && someString.Length >= 74)
+                    someString = $"{someString.Substring(0, 68)}[...]";
 
-            if(_isVisable)
-                Console.WriteLine($"{DateTime.Now:yyyy-MM-dd HH:mm:ss.fff} {someString}");
+                if (_isVisable)
+                    Console.WriteLine($"{DateTime.Now:yyyy-MM-dd HH:mm:ss.fff} {someString}");
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+                Debug.WriteLine(ex.StackTrace);
+            }
         }
         /// <summary>
         /// Prints to console and writes to <see cref="LogFile"/>
@@ -130,20 +146,28 @@ namespace NoFuture.Util.NfConsole
         {
             lock (_printLock)
             {
-                Console.WriteLine();
-                var msg = $"{DateTime.Now:yyyy-MM-dd HH:mm:ss.fff} {ex.Message}";
-                File.AppendAllText(LogFile, $"{msg}\n");
+                try
+                {
+                    Console.WriteLine();
+                    var msg = $"{DateTime.Now:yyyy-MM-dd HH:mm:ss.fff} {ex.Message}";
+                    File.AppendAllText(LogFile, $"{msg}\n");
 
-                if(_isVisable)
-                    Console.WriteLine(msg);
+                    if (_isVisable)
+                        Console.WriteLine(msg);
 
-                msg = $"{DateTime.Now:yyyy-MM-dd HH:mm:ss.fff} {ex.StackTrace}";
-                File.AppendAllText(LogFile, $"{msg}\n");
-                if(_isVisable)
-                    Console.WriteLine(msg);
+                    msg = $"{DateTime.Now:yyyy-MM-dd HH:mm:ss.fff} {ex.StackTrace}";
+                    File.AppendAllText(LogFile, $"{msg}\n");
+                    if (_isVisable)
+                        Console.WriteLine(msg);
 
-                if(ex.InnerException != null)
-                    PrintToConsole(ex.InnerException);
+                    if (ex.InnerException != null)
+                        PrintToConsole(ex.InnerException);
+                }
+                catch (Exception exx)
+                {
+                    Debug.WriteLine(exx.Message);
+                    Debug.WriteLine(exx.StackTrace);
+                }
             }
         }
 
@@ -159,8 +183,14 @@ namespace NoFuture.Util.NfConsole
                     ConsoleCmd.SetConsoleAsTransparent();
                     Console.ForegroundColor = ConsoleColor.Green;
                     Console.Title = Assembly.GetExecutingAssembly().GetName().Name;
+                    PrintToConsole($"{Console.Title} started");
+
                 }
-                catch { }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex.Message);
+                    Debug.WriteLine(ex.StackTrace);
+                }
             }
             SetReflectionOnly();
             FxPointers.AddResolveAsmEventHandlerToDomain();            

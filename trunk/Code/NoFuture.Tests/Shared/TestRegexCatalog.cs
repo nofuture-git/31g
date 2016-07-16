@@ -65,6 +65,9 @@ namespace NoFuture.Tests.Shared
                 Regex2Values.Keys.Cast<string>().ToArray());
 
             Assert.IsTrue(testResult);
+
+            testResult = RegexCatalog.AreAnyRegexMatch("ContractDocument", new[] {"Contract", "Client", "Location"});
+            Assert.IsTrue(testResult);
         }
 
         [TestMethod]
