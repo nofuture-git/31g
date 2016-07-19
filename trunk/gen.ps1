@@ -826,10 +826,10 @@ function Get-DotGraphFlattenedAssembly
 
         $gvContent = $flatAsm.ToGraphVizString($RegexPatterns)
 
-        $gvFile = Join-Path $graphDir ("{0}FlatAsm.gv" -f $asmName.Name).Replace(".","")
+        $gvFile = Join-Path $graphDir (("{0}FlatAsm" -f $asmName.Name).Replace(".","") + ".gv")
 
         [System.IO.File]::WriteAllBytes($gvFile, ([System.Text.Encoding]::UTF8.GetBytes($gvContent)))
-        $flatAsm.Dispose()
+        $flatten.Dispose()
 
         Write-Progress -Activity ("Creating graph from '{0}'" -f $asmName.Name) -Status "Working" -PercentComplete 82
 

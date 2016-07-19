@@ -20,7 +20,7 @@ namespace NoFuture.Util.Gia
             gviz.AppendLine("{");
             gviz.AppendLine("graph [rankdir=\"LR\", splines=ortho, nodesep=0.06];");
             gviz.AppendLine("node [shape=circle, height=0.5, width=0.5, fontsize=10, fixedsize=\"true\"];");
-            gviz.AppendLine("edge [arrowhead=none, color=\"red;0.06:#808080:blue;0.06\"]");
+            gviz.AppendLine("edge [arrowhead=none, color=\"#808080\"]");
             gviz.AppendLine(AllLinesToGraphViz(regexPatterns));
             gviz.AppendLine("}");
             return gviz.ToString();
@@ -53,19 +53,41 @@ namespace NoFuture.Util.Gia
                             !RegexCatalog.AreAnyRegexMatch(rightToken, regexPatterns))
                             continue;
                     }
-
-                    var e = string.Join("->", leftToken, rightToken);
+                    var e = item1.IsEnumerable
+                        ? $"{leftToken} -> {rightToken} [arrowhead=\"diamond\", arrowsize=0.26];"
+                        : $"{leftToken} -> {rightToken};";
+                    
                     var n0 = $"{leftToken} [label=\"-¦-\"];";
                     var n1 = $"{rightToken} [label=\"-¦-\"];";
-
-                    if (!edges.Any(x => x.Equals(e)))
-                        edges.Add(e);
 
                     if (!nodes.Any(x => x.Equals(n0)))
                         nodes.Add(n0);
 
                     if (!nodes.Any(x => x.Equals(n1)))
                         nodes.Add(n1);
+
+                    var existingEdge =
+                        edges.FirstOrDefault(
+                            x =>
+                                x.StartsWith($"{rightToken} -> {leftToken}") ||
+                                x.StartsWith($"{leftToken} -> {rightToken}"));
+
+                    //when there is already a edge for these two and its more detailed
+                    if (existingEdge != null && existingEdge.Length >= e.Length)
+                        continue;
+
+                    //when the new edge is more detailed than the existing add it and remove the old one
+                    if (existingEdge != null && e.Length > existingEdge.Length)
+                    {
+                        edges.Add(e);
+                        edges.Remove(existingEdge);
+                    }
+                    //for everything else
+                    else if (edges.All(x => x != e))
+                    {
+                        edges.Add(e);
+                    }
+
                 }
             }
 
