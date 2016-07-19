@@ -50,17 +50,17 @@ namespace NoFuture.Util.Gia
         /// see [http://www.graphviz.org/]
         /// </summary>
         /// <returns></returns>
-        public List<Mrecord> GetGraphVizMrecords
+        public List<FlattenMrecord> GetGraphVizMrecords
         {
             get
             {
                 //add all types 
-                var mRecordDict = new Dictionary<string, Mrecord>();
+                var mRecordDict = new Dictionary<string, FlattenMrecord>();
                 foreach (var ty in DistinctTypeNames)
                 {
                     if (mRecordDict.ContainsKey(ty))
                         continue;
-                    mRecordDict.Add(ty, new Mrecord(ty));
+                    mRecordDict.Add(ty, new FlattenMrecord(ty));
                 }
 
                 foreach (var rec in mRecordDict.Keys)

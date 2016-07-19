@@ -19,6 +19,7 @@ namespace NoFuture.Gen
         public const string INVOKE_RESOLVE_ALL_DEPENDENCIES = "nfResolveDependencies";
         public const string CLASS_DIAGRAM = "classDia";
         public const string FLATTENED_DIAGRAM = "flattened";
+        public const string ASM_OBJ_GRAPH_DIAGRAM = "asmObjGraph";
         #endregion
 
         #region settings

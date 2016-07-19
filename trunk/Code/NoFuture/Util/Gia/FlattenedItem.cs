@@ -78,7 +78,7 @@ namespace NoFuture.Util.Gia
             {
                 return $"{FlName} : {SimpleTypeName}";
             }
-            return string.Format("<{0}{1}> {1}", Mrecord.PROPERTY_PORT_PREFIX, FlName);
+            return string.Format("<{0}{1}> {1}", FlattenMrecord.PROPERTY_PORT_PREFIX, FlName);
         }
     }
 
