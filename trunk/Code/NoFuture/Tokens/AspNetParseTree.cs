@@ -383,7 +383,7 @@ namespace NoFuture.Tokens
             cdata = null;
             if (string.IsNullOrWhiteSpace(webResponseText))
                 return false;
-            var tempFile = Path.Combine(TempDirectories.AppData, Path.GetRandomFileName());
+            var tempFile = Path.Combine(TempDirectories.AppData, NfTypeName.GetNfRandomName());
             File.WriteAllText(tempFile, webResponseText);
             System.Threading.Thread.Sleep(NfConfig.ThreadSleepTime);
 

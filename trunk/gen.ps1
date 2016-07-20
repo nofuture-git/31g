@@ -790,15 +790,13 @@ function Get-FlattenedType
     while excluding the rest.
 
 #>
-function Get-DotGraphFlattenedAssembly
+function Get-DotGraphAssemblyDiagram
 {
     [CmdletBinding()]
     Param
     (
         [Parameter(Mandatory=$true,position=0)]
-        [string] $AssemblyPath,
-        [Parameter(Mandatory=$false,position=1)]
-        [string[]] $RegexPatterns
+        [string] $AssemblyPath
 
     )
     Process
@@ -817,30 +815,18 @@ function Get-DotGraphFlattenedAssembly
         Write-Progress -Activity "Starting..." -Status "Working" -PercentComplete 11
 
         $asmName = [System.Reflection.AssemblyName]::GetAssemblyName($AssemblyPath)
-        Write-Progress -Activity ("Flattening assembly '{0}'" -f $asmName.Name)  -Status "Working" -PercentComplete 50
+        Write-Progress -Activity ("Getting assembly '{0}' as diagram" -f $asmName.Name)  -Status "Working" -PercentComplete 50
 
-        $flatten = New-Object NoFuture.Util.Gia.Flatten([NoFuture.Util.Gia.Flatten]::DF_START_PORT)
+        $fileOutPath = [NoFuture.Gen.Etc]::RunIsolatedAsmDiagram($AssemblyPath)
 
-        #thread should park here until the remote process completes
-        $flatAsm = $flatten.GetFlattenAssembly($AssemblyPath)
+        Write-Progress -Activity ("Creating graph from {0}" -f $asmName.Name) -Status "Working" -PercentComplete 88
 
-        $gvContent = $flatAsm.ToGraphVizString($RegexPatterns)
-
-        $gvFile = Join-Path $graphDir (("{0}FlatAsm" -f $asmName.Name).Replace(".","") + ".gv")
-
-        [System.IO.File]::WriteAllBytes($gvFile, ([System.Text.Encoding]::UTF8.GetBytes($gvContent)))
-        $flatten.Dispose()
-
-        Write-Progress -Activity ("Creating graph from '{0}'" -f $asmName.Name) -Status "Working" -PercentComplete 82
-
-        $graphFile = Invoke-DotExe -GraphvizFile $gvFile
-
-        Write-Progress -Activity "Done" -Status "Working" -PercentComplete 98
+        $graphFile = Invoke-DotExe -GraphvizFile $fileOutPath
         
         #display the svg with whatever program is assoc. to that extension
         Invoke-Expression -Command "& $graphFile"
     }
-}#Get-DotGraphFlattenedAssembly
+}#Get-DotGraphAssemblyDiagram
 
 <#
     .SYNOPSIS

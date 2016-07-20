@@ -256,7 +256,7 @@ namespace NoFuture.Util
         /// <returns></returns>
         public static string DraftCscExeAsmName(string outputNamespace)
         {
-            return String.Format("{0}, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null", outputNamespace);
+            return $"{outputNamespace}, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null";
         }
 
         /// <summary>
@@ -266,7 +266,7 @@ namespace NoFuture.Util
         /// <returns></returns>
         public static string DraftCscDllName(string outputNamespace)
         {
-            return String.Format("{0}.dll", outputNamespace);
+            return $"{outputNamespace}.dll";
         }
 
         /// <summary>
@@ -280,7 +280,8 @@ namespace NoFuture.Util
         /// </remarks>
         public static bool IsFullAssemblyQualTypeName(string name)
         {
-            return !String.IsNullOrWhiteSpace(name) && Regex.IsMatch(name, ASSEMBLY_QUALIFIED_CLASS_NAME_REGEX, RegexCatalog.MyRegexOptions);
+            return !String.IsNullOrWhiteSpace(name) &&
+                   Regex.IsMatch(name, ASSEMBLY_QUALIFIED_CLASS_NAME_REGEX, RegexCatalog.MyRegexOptions);
         }
 
         /// <summary>
@@ -293,7 +294,8 @@ namespace NoFuture.Util
         /// </remarks>
         public static bool IsAssemblyFullName(string name)
         {
-            return !String.IsNullOrWhiteSpace(name) && Regex.IsMatch(name, FULL_ASSEMBLY_NAME_REGEX, RegexCatalog.MyRegexOptions);
+            return !String.IsNullOrWhiteSpace(name) &&
+                   Regex.IsMatch(name, FULL_ASSEMBLY_NAME_REGEX, RegexCatalog.MyRegexOptions);
         }
 
         /// <summary>
@@ -417,7 +419,7 @@ namespace NoFuture.Util
         public static string SafeDotNetTypeName(string name)
         {
             if (String.IsNullOrWhiteSpace(name))
-                return string.Format("{0}_{1}", DefaultNamePrefix, Path.GetRandomFileName().Replace(".", "_"));
+                return GetNfRandomName();
 
             var nameArray = name.ToCharArray();
             var csId = new StringBuilder();
@@ -457,7 +459,7 @@ namespace NoFuture.Util
         public static string SafeDotNetIdentifier(string someString, bool replaceInvalidsWithUnicodeEsc = false, int maxLen = 80)
         {
             if (String.IsNullOrWhiteSpace(someString))
-                return string.Format("{0}_{1}", DefaultNamePrefix, Path.GetRandomFileName().Replace(".", "_"));
+                return GetNfRandomName();
 
             var strChars = someString.ToCharArray();
             var strOut = new StringBuilder();
@@ -472,7 +474,7 @@ namespace NoFuture.Util
                 iequals = 1;
             }
 
-            var randSuffix = "_" + Path.GetRandomFileName().Replace(".", "");
+            var randSuffix = "_" + GetNfRandomName();
 
             for (var i = iequals; i < strChars.Length; i++)
             {
@@ -492,7 +494,7 @@ namespace NoFuture.Util
                 if (!replaceInvalidsWithUnicodeEsc)
                     continue;
 
-                strOut.Append(string.Format("_u{0}", Convert.ToUInt16(strChars[i]).ToString("x4")));
+                strOut.Append($"_u{Convert.ToUInt16(strChars[i]).ToString("x4")}");
             }
 
             return strOut.ToString();
@@ -776,6 +778,12 @@ namespace NoFuture.Util
                 return IsEnumType(onlyGeneric, out values);
             }
             return false;
+        }
+
+        public static string GetNfRandomName()
+        {
+            var randchars = Path.GetRandomFileName().Replace(".", "_");
+            return $"{DefaultNamePrefix}_{randchars}";
         }
 
         #endregion

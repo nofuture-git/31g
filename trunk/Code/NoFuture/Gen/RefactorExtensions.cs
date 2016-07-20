@@ -178,10 +178,10 @@ namespace NoFuture.Gen
 
             //need this to be the same for the whole batch of refactored lines
             if (string.IsNullOrWhiteSpace(newVariableName))
-                newVariableName = Path.GetRandomFileName().Replace(".", string.Empty);
+                newVariableName = NfTypeName.GetNfRandomName();
 
             if (string.IsNullOrWhiteSpace(outFilePath))
-                outFilePath = Path.Combine(TempDirectories.AppData, Path.GetRandomFileName());
+                outFilePath = Path.Combine(TempDirectories.AppData, NfTypeName.GetNfRandomName());
 
 
             //need to move the existing code to the new file
@@ -363,7 +363,7 @@ namespace NoFuture.Gen
             const char blankChar = ' ';
 
             if (string.IsNullOrWhiteSpace(outputFileName))
-                outputFileName = Path.Combine(TempDirectories.AppData, Path.GetRandomFileName());
+                outputFileName = Path.Combine(TempDirectories.AppData, NfTypeName.GetNfRandomName());
 
             var d = new SortedList<int, List<int>>();
             foreach (var cgMem in blankOutCgMems.Where(x => x != null))
@@ -446,7 +446,7 @@ namespace NoFuture.Gen
                 return null;
 
             if (string.IsNullOrWhiteSpace(newVariableName))
-                newVariableName = Path.GetRandomFileName().Replace(".", string.Empty);
+                newVariableName = NfTypeName.GetNfRandomName();
 
             int lnNumOut;
             Settings.LangStyle.TryFindFirstLineInClass(cgMem.MyCgType.FullName, File.ReadAllLines(cgMem.PdbModuleSymbols.file),

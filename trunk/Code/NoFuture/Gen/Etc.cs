@@ -91,6 +91,20 @@ namespace NoFuture.Gen
             return RunGraphViz(argPath, argType, diagramType, argP, argEn, maxWaitInSeconds);
         }
 
+        /// <summary>
+        /// Runs <see cref="NoFuture.Util.Gia.GraphViz.AsmDiagram"/> to generate a diagram 
+        /// on another process to keep the loaded assemblies isolated from the invoking app domain.
+        /// </summary>
+        /// <param name="assemblyPath"></param>
+        /// <returns></returns>
+        public static string RunIsolatedAsmDiagram(string assemblyPath)
+        {
+            var argPath = ConsoleCmd.ConstructCmdLineArgs(Settings.INVOKE_ASM_PATH_SWITCH, assemblyPath);
+            var diagramType = ConsoleCmd.ConstructCmdLineArgs(Settings.INVOKE_GRAPHVIZ_DIAGRAM_TYPE,
+                Settings.ASM_OBJ_GRAPH_DIAGRAM);
+            return RunGraphViz(argPath, null, diagramType, null, null, 60);
+        }
+
         [EditorBrowsable(EditorBrowsableState.Never)]
         private static string RunGraphViz(string argPath, string argType, string diagramType, string primitiveLimit,
             string displayEnumsArg, int maxWaitInSeconds)

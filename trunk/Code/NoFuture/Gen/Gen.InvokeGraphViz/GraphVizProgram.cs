@@ -17,7 +17,11 @@ namespace NoFuture.Gen.InvokeGraphViz
 {
     public class GraphVizProgram : Program
     {
-        private static readonly string[] _implementedDiagrams = {Settings.CLASS_DIAGRAM, Settings.FLATTENED_DIAGRAM, Settings.ASM_OBJ_GRAPH_DIAGRAM};
+        private static readonly string[] _implementedDiagrams =
+        {
+            Settings.CLASS_DIAGRAM, Settings.FLATTENED_DIAGRAM,
+            Settings.ASM_OBJ_GRAPH_DIAGRAM
+        };
 
         public GraphVizProgram(string[] args) : base(args, false)
         {
@@ -71,7 +75,9 @@ namespace NoFuture.Gen.InvokeGraphViz
                         p.OutputFileName = $"{p.TypeName.Replace(".", "")}ClassDiagram.gv";
                         break;
                     case Settings.ASM_OBJ_GRAPH_DIAGRAM:
-
+                        var asmDia = new Util.Gia.GraphViz.AsmDiagram(p.Assembly);
+                        p.GraphText = asmDia.ToGraphVizString();
+                        p.OutputFileName = $"{p.Assembly.GetName().Name}AsmDiagram.gv";
                         break;
                 }
 
@@ -192,13 +198,6 @@ namespace NoFuture.Gen.InvokeGraphViz
                     $"the switch '{Settings.INVOKE_ASM_PATH_SWITCH}' could not " +
                     $"be parsed from cmd line arg \n{string.Join(" ", _args)}");
             }
-            if (!argHash.ContainsKey(Settings.INVOKE_FULL_TYPE_NAME_SWITCH) ||
-                argHash[Settings.INVOKE_FULL_TYPE_NAME_SWITCH] == null)
-            {
-                throw new RahRowRagee(
-                    $"the switch '{Settings.INVOKE_FULL_TYPE_NAME_SWITCH}' could not " +
-                    $"be parsed from cmd line arg \n{string.Join(" ", _args)}");
-            }
 
             AsmPath = argHash[Settings.INVOKE_ASM_PATH_SWITCH].ToString();
             if (!File.Exists(AsmPath))
@@ -211,6 +210,9 @@ namespace NoFuture.Gen.InvokeGraphViz
             Assembly = NfConfig.UseReflectionOnlyLoad
                 ? Asm.NfReflectionOnlyLoadFrom(AsmPath)
                 : Asm.NfLoadFrom(AsmPath);
+            GraphText = string.Empty;
+            OutputFileName = string.Empty;
+
             if (Assembly == null)
             {
                 throw new RahRowRagee(
@@ -218,9 +220,18 @@ namespace NoFuture.Gen.InvokeGraphViz
                     $"be loaded, see the log at '{Asm.ResolveAsmLog}' for more info.");
             }
 
-            TypeName = argHash[Settings.INVOKE_FULL_TYPE_NAME_SWITCH].ToString();
-
             DiagramType = argHash[Settings.INVOKE_GRAPHVIZ_DIAGRAM_TYPE].ToString();
+            if (DiagramType == Settings.ASM_OBJ_GRAPH_DIAGRAM)
+                return;
+
+            if (!argHash.ContainsKey(Settings.INVOKE_FULL_TYPE_NAME_SWITCH) ||
+                argHash[Settings.INVOKE_FULL_TYPE_NAME_SWITCH] == null)
+            {
+                throw new RahRowRagee(
+                    $"the switch '{Settings.INVOKE_FULL_TYPE_NAME_SWITCH}' could not " +
+                    $"be parsed from cmd line arg \n{string.Join(" ", _args)}");
+            }
+            TypeName = argHash[Settings.INVOKE_FULL_TYPE_NAME_SWITCH].ToString();
 
             if (string.IsNullOrWhiteSpace(DiagramType) || !_implementedDiagrams.Contains(DiagramType))
             {
@@ -228,8 +239,7 @@ namespace NoFuture.Gen.InvokeGraphViz
             }
             LimitOn = argHash[Settings.INVOKE_GRAPHVIZ_FLATTENED_LIMIT_TYPE];
             DisplayEnums = argHash.ContainsKey(Settings.INVOKE_GRAPHVIZ_DISPLAY_ENUMS);
-            GraphText = string.Empty;
-            OutputFileName = string.Empty;
+
         }
 
         internal static class AppSettingKeys

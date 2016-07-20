@@ -230,7 +230,7 @@ namespace NoFuture.Encryption
             var privKey = (RSACryptoServiceProvider)cert.PrivateKey;
 
             var plainTextFile = Path.Combine(Path.GetDirectoryName(path) ?? Environment.CurrentDirectory,
-                Path.GetFileNameWithoutExtension(path) ?? Path.GetRandomFileName());
+                Path.GetFileNameWithoutExtension(path) ?? Util.NfTypeName.GetNfRandomName());
 
             using (var aes = new AesManaged())
             {
