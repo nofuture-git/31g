@@ -21,8 +21,8 @@ namespace NoFuture.Util.Gia.GraphViz
             public string Node2 { get; }
             public EvData(Tuple<FlattenedItem, FlattenedItem> f)
             {
-                _node1Name = NfTypeName.SafeDotNetIdentifier(f.Item1.SimpleTypeName);
-                _node2Name = NfTypeName.SafeDotNetIdentifier(f.Item2.SimpleTypeName);
+                _node1Name = NfTypeName.SafeDotNetIdentifier(f.Item1.TypeFullName.Replace(".", "_"), false, 128);
+                _node2Name = NfTypeName.SafeDotNetIdentifier(f.Item2.TypeFullName.Replace(".", "_"), false, 128);
 
                 Node1 = f.Item1.TypeFullName;
                 Node2 = f.Item2.TypeFullName;

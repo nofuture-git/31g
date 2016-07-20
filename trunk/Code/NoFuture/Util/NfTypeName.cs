@@ -30,7 +30,7 @@ namespace NoFuture.Util
         private readonly string _namespace;
         private readonly string _className;
         private readonly string _procArch;
-        private static string _dfNamePrefix = DEFAULT_NAME_PREFIX;
+
         #endregion
 
         #region Constants
@@ -53,7 +53,8 @@ namespace NoFuture.Util
             public const string REMOVE_PREFIX = "remove_";
         }
 
-        public static string DefaultNamePrefix { get { return _dfNamePrefix; } set { _dfNamePrefix = value; } }
+        public static string DefaultNamePrefix { get; set; } = DEFAULT_NAME_PREFIX;
+
         #endregion
 
         #region ReadOnly Properties
