@@ -173,7 +173,7 @@ namespace NoFuture.Gen.InvokeGraphViz
                 Constants.CMD_LINE_ARG_SWITCH, Settings.INVOKE_GRAPHVIZ_DIAGRAM_TYPE, Constants.CMD_LINE_ARG_ASSIGN,
                 string.Join(" | ", _implementedDiagrams)));
             help.AppendLine("");
-            help.AppendLine(string.Format(" [{0}{1}{2}[\n  {3}]]              Optional and specific to Flattened.",
+            help.AppendLine(string.Format(" [{0}{1}{2}[\n  {3}]]              Optional for limiting to kinds of types.",
                 Constants.CMD_LINE_ARG_SWITCH, Settings.INVOKE_GRAPHVIZ_FLATTENED_LIMIT_TYPE,
                 Constants.CMD_LINE_ARG_ASSIGN,
                 string.Join("\n| ", Etc.ValueTypesList)));
@@ -219,7 +219,8 @@ namespace NoFuture.Gen.InvokeGraphViz
                     $"The assembly at '{AsmPath}' could not " +
                     $"be loaded, see the log at '{Asm.ResolveAsmLog}' for more info.");
             }
-
+            LimitOn = argHash[Settings.INVOKE_GRAPHVIZ_FLATTENED_LIMIT_TYPE];
+            DisplayEnums = argHash.ContainsKey(Settings.INVOKE_GRAPHVIZ_DISPLAY_ENUMS);
             DiagramType = argHash[Settings.INVOKE_GRAPHVIZ_DIAGRAM_TYPE].ToString();
             if (DiagramType == Settings.ASM_OBJ_GRAPH_DIAGRAM)
                 return;
@@ -237,9 +238,6 @@ namespace NoFuture.Gen.InvokeGraphViz
             {
                 throw new RahRowRagee("choose a valid type of diagram listed in the help ");
             }
-            LimitOn = argHash[Settings.INVOKE_GRAPHVIZ_FLATTENED_LIMIT_TYPE];
-            DisplayEnums = argHash.ContainsKey(Settings.INVOKE_GRAPHVIZ_DISPLAY_ENUMS);
-
         }
 
         internal static class AppSettingKeys

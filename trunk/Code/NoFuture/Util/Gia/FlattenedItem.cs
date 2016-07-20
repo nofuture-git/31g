@@ -46,22 +46,10 @@ namespace NoFuture.Util.Gia
         public bool IsTerminalNode => ValueTypesList.Contains(TypeFullName);
         public int MetadataToken { get; set; }
 
-        public override bool Equals(object obj)
-        {
-            return Equals(obj as FlattenedItem);
-        }
-
-        public override int GetHashCode()
-        {
-            return base.GetHashCode() + MetadataToken;
-        }
-
         public bool Equals(FlattenedItem item)
         {
             if (item == null)
                 return false;
-            if(item.MetadataToken > 0 && MetadataToken > 0)
-                return item.MetadataToken == MetadataToken;
 
             return string.Equals(item.TypeFullName, TypeFullName, StringComparison.OrdinalIgnoreCase) &&
                    string.Equals(item.FlName, FlName, StringComparison.OrdinalIgnoreCase);

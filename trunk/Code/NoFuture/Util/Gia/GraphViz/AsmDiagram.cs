@@ -21,8 +21,8 @@ namespace NoFuture.Util.Gia.GraphViz
             public string Node2 { get; }
             public EvData(Tuple<FlattenedItem, FlattenedItem> f)
             {
-                _node1Name = f.Item1.SimpleTypeName.Replace("`", "");
-                _node2Name = f.Item2.SimpleTypeName.Replace("`", "");
+                _node1Name = NfTypeName.SafeDotNetIdentifier(f.Item1.SimpleTypeName);
+                _node2Name = NfTypeName.SafeDotNetIdentifier(f.Item2.SimpleTypeName);
 
                 Node1 = f.Item1.TypeFullName;
                 Node2 = f.Item2.TypeFullName;
@@ -82,11 +82,16 @@ namespace NoFuture.Util.Gia.GraphViz
             foreach (var asmType in asm.NfGetExportedTypes())
             {
                 var item1 = new FlattenedItem(asmType) {FlName = asmType.Name};
+                if (item1.IsTerminalNode || NfTypeName.IsEnumType(asmType))
+                    continue;
 
-                foreach (var p in asmType.GetProperties(NfConfig.DefaultFlags)
-                    .Where( x => !NfTypeName.IsValueTypeProperty(x)))
+                foreach (var p in asmType.GetProperties(NfConfig.DefaultFlags))
                 {
+                    if (NfTypeName.IsEnumType(p.PropertyType))
+                        continue;
                     var item2 = new FlattenedItem(p.PropertyType) {FlName = p.Name};
+                    if(item2.IsTerminalNode)
+                        continue;
                     var tupleOfItems = new Tuple<FlattenedItem, FlattenedItem>(item1, item2);
                     var itemEv = new EvData(tupleOfItems);
                     if (Items.Any(x => x.AreSame(itemEv)))

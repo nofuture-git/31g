@@ -14,7 +14,7 @@ namespace NoFuture.Gen
         public const string INVOKE_ASM_PATH_SWITCH = "asmPath";
         public const string INVOKE_FULL_TYPE_NAME_SWITCH = "typeName";
         public const string INVOKE_GRAPHVIZ_DIAGRAM_TYPE = "nfGraphType";
-        public const string INVOKE_GRAPHVIZ_FLATTENED_LIMIT_TYPE = "nfPrimitiveNamed";
+        public const string INVOKE_GRAPHVIZ_FLATTENED_LIMIT_TYPE = "nfTypesNamed";
         public const string INVOKE_GRAPHVIZ_DISPLAY_ENUMS = "nfDisplayEnums";
         public const string INVOKE_RESOLVE_ALL_DEPENDENCIES = "nfResolveDependencies";
         public const string CLASS_DIAGRAM = "classDia";
