@@ -230,6 +230,7 @@
     <Compile Include="Tokens\TestErlangConfigParseTree.cs" />
     <Compile Include="Util\Gia\FlattenTests.cs" />
     <Compile Include="Util\Gia\AssemblyAnalysisTests.cs" />
+    <Compile Include="Util\Gia\AsmDiagramTests.cs" />
     <Compile Include="Util\InvokeAsmTests\GetTokenIdsTests.cs" />
     <Compile Include="Util\Pos\PennTreebankTagsetTests.cs" />
     <Compile Include="Util\EtcTests.cs" />

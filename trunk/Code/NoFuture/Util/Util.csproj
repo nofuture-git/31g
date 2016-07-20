@@ -80,6 +80,7 @@
     <Compile Include="Binary\Calc.cs" />
     <Compile Include="Binary\Compression.cs" />
     <Compile Include="Gia\FlattenAssembly.cs" />
+    <Compile Include="Gia\GraphViz\AsmDiagram.cs" />
     <Compile Include="Gia\InvokeCmds\InvokeGetAsmIndicies.cs" />
     <Compile Include="Gia\InvokeCmds\InvokeGetFlattenAssembly.cs" />
     <Compile Include="Gia\InvokeCmds\InvokeGetTokenIds.cs" />
@@ -100,7 +101,7 @@
     <Compile Include="Gia\FlattenedItem.cs" />
     <Compile Include="Gia\FlattenedLine.cs" />
     <Compile Include="Gia\FlattenedType.cs" />
-    <Compile Include="Gia\GraphViz\Mrecord.cs" />
+    <Compile Include="Gia\GraphViz\FlattenMrecord.cs" />
     <Compile Include="Gsm.cs" />
     <Compile Include="Lexicon.cs" />
     <Compile Include="Math\Combination.cs" />

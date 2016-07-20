@@ -88,11 +88,11 @@ namespace NoFuture.Util.Gia
         /// see [http://www.graphviz.org/]
         /// </summary>
         /// <returns></returns>
-        public List<MrecordEdge> GetGraphVizEdges
+        public List<FlattenMrecordEdge> GetGraphVizEdges
         {
             get
             {
-                var edges = new List<MrecordEdge>();
+                var edges = new List<FlattenMrecordEdge>();
                 foreach (var ln in Lines)
                 {
                     for (var i = 0; i < ln.Items.Count; i++)
@@ -103,7 +103,7 @@ namespace NoFuture.Util.Gia
                         var right = ln.Items[i + 1];
                         if (right.IsTerminalNode)
                             break;
-                        var edge = new MrecordEdge(left, right);
+                        var edge = new FlattenMrecordEdge(left, right);
                         if(!edges.Any(x => x.Equals(edge)))
                             edges.Add(edge);
                     }

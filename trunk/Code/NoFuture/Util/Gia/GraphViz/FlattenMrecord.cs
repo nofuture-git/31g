@@ -10,7 +10,7 @@ namespace NoFuture.Util.Gia.GraphViz
     /// see [http://www.graphviz.org/]
     /// </summary>
     /// <returns></returns>
-    public class Mrecord
+    public class FlattenMrecord
     {
         public const string NAME_PORT = "nm";
         public const string PROPERTY_PORT_PREFIX = "p";
@@ -26,7 +26,7 @@ namespace NoFuture.Util.Gia.GraphViz
             return string.Format("{0}", safeLabelName);
         }
 
-        public Mrecord(string labelName)
+        public FlattenMrecord(string labelName)
         {
             if(string.IsNullOrWhiteSpace(labelName))
                 throw new ArgumentNullException("labelName");
@@ -61,12 +61,12 @@ namespace NoFuture.Util.Gia.GraphViz
     /// see [http://www.graphviz.org/]
     /// </summary>
     /// <returns></returns>
-    public class MrecordEdge
+    public class FlattenMrecordEdge
     {
         public FlattenedItem Left { get; private set; }
         public FlattenedItem Right { get; private set; }
 
-        public MrecordEdge(FlattenedItem left, FlattenedItem right)
+        public FlattenMrecordEdge(FlattenedItem left, FlattenedItem right)
         {
             Left = left;
             Right = right;
@@ -77,15 +77,15 @@ namespace NoFuture.Util.Gia.GraphViz
             if (Left.IsTerminalNode || Right.IsTerminalNode)
                 return string.Empty;
             var edgeString = new StringBuilder();
-            edgeString.AppendFormat("{0}:{1}{2} -> ", Mrecord.MrecordName(Left.TypeFullName), Mrecord.PROPERTY_PORT_PREFIX, Right.FlName);
-            edgeString.AppendFormat("{0}:{1}", Mrecord.MrecordName(Right.TypeFullName), Mrecord.NAME_PORT);
+            edgeString.AppendFormat("{0}:{1}{2} -> ", FlattenMrecord.MrecordName(Left.TypeFullName), FlattenMrecord.PROPERTY_PORT_PREFIX, Right.FlName);
+            edgeString.AppendFormat("{0}:{1}", FlattenMrecord.MrecordName(Right.TypeFullName), FlattenMrecord.NAME_PORT);
 
             edgeString.Append(Right.IsEnumerable ? " [arrowhead=odiamond];" : " [arrowhead=vee];");
 
             return edgeString.ToString();
         }
 
-        public bool Equals(MrecordEdge edge)
+        public bool Equals(FlattenMrecordEdge edge)
         {
             if (edge == null)
                 return false;

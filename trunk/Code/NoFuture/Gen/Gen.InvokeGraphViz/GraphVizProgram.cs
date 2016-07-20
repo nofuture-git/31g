@@ -17,7 +17,7 @@ namespace NoFuture.Gen.InvokeGraphViz
 {
     public class GraphVizProgram : Program
     {
-        private static readonly string[] _implementedDiagrams = {Settings.CLASS_DIAGRAM, Settings.FLATTENED_DIAGRAM};
+        private static readonly string[] _implementedDiagrams = {Settings.CLASS_DIAGRAM, Settings.FLATTENED_DIAGRAM, Settings.ASM_OBJ_GRAPH_DIAGRAM};
 
         public GraphVizProgram(string[] args) : base(args, false)
         {
@@ -69,6 +69,9 @@ namespace NoFuture.Gen.InvokeGraphViz
                     case Settings.CLASS_DIAGRAM:
                         p.GraphText = Etc.GetClassDiagram(p.Assembly, p.TypeName);
                         p.OutputFileName = $"{p.TypeName.Replace(".", "")}ClassDiagram.gv";
+                        break;
+                    case Settings.ASM_OBJ_GRAPH_DIAGRAM:
+
                         break;
                 }
 

@@ -709,6 +709,57 @@ namespace NoFuture.Util.Binary
         }
 
         /// <summary>
+        /// Simply wraps the call to <see cref="Assembly.GetExportedTypes"/> with a try-catch
+        /// that adds logging.
+        /// </summary>
+        /// <param name="assembly"></param>
+        /// <param name="rethrow">
+        /// optional ability to suppress the exception form being rethrown - default is true.
+        /// </param>
+        /// <param name="logFile">optional override of the default log file at <see cref="ResolveAsmLog"/> </param>
+        /// <returns></returns>
+        public static Type[] NfGetExportedTypes(this Assembly assembly, bool rethrow = true, string logFile = "")
+        {
+            if (assembly == null)
+                return null;
+            try
+            {
+                return assembly.GetExportedTypes();
+            }
+            catch (ReflectionTypeLoadException rtle)
+            {
+                AddLoaderExceptionToLog(null, rtle, logFile);
+                if (rethrow)
+                    throw;
+            }
+            catch (FileNotFoundException fnfe)
+            {
+                AddLoaderExceptionToLog(null, fnfe, logFile);
+                if (rethrow)
+                    throw;
+            }
+            catch (TypeLoadException tle)
+            {
+                AddLoaderExceptionToLog(null, tle, logFile);
+                if (rethrow)
+                    throw;
+            }
+            catch (FileLoadException fle)
+            {
+                AddLoaderExceptionToLog(null, fle, logFile);
+                if (rethrow)
+                    throw;
+            }
+            catch (BadImageFormatException bife)
+            {
+                AddLoaderExceptionToLog(null, bife, logFile);
+                if (rethrow)
+                    throw;
+            }
+            return null;
+        }
+
+        /// <summary>
         /// Wraps the call to <see cref="Assembly.GetType(string)"/> adding logging 
         /// of typical loader exceptions.
         /// </summary>
