@@ -15,10 +15,10 @@ namespace NoFuture.Util.Gia.InvokeCmds
         public TokenNames Receive(object anything)
         {
             if(anything == null)
-                throw new ArgumentNullException("anything");
+                throw new ArgumentNullException(nameof(anything));
 
             if (!IsMyProcessRunning(ProcessId))
-                throw new RahRowRagee(String.Format("The process by id [{0}] has exited", ProcessId));
+                throw new RahRowRagee($"The process by id [{ProcessId}] has exited");
 
             if (!Net.IsValidPortNumber(SocketPort))
                 throw new ItsDeadJim("The assigned socket port is not valids " + SocketPort);

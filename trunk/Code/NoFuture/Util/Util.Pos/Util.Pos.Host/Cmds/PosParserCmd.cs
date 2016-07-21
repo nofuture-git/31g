@@ -4,37 +4,39 @@ using NoFuture.Util.NfConsole;
 
 namespace NoFuture.Util.Pos.Host.Cmds
 {
-    public class PosParserCmd : ICmd
+    public class PosParserCmd : CmdBase<string>, ICmd
     {
-        private readonly NfConsole.Program _myProgram;
-        public PosParserCmd(NfConsole.Program myProgram)
+        public PosParserCmd(NfConsole.Program myProgram): base(myProgram)
         {
-            _myProgram = myProgram;
         }
 
-        public byte[] Execute(byte[] arg)
+        public override byte[] Execute(byte[] arg)
         {
             try
             {
                 if (arg == null || arg.Length <= 0)
                 {
-                    _myProgram.PrintToConsole("no data was received");
+                    MyProgram.PrintToConsole("no data was received");
                     return new[] {(byte) '\0'};
                 }
 
                 var text = Encoding.UTF8.GetString(arg);
 
-                _myProgram.PrintToConsole($"data received, {text.Length} chars long");
+                MyProgram.PrintToConsole($"data received, {text.Length} chars long");
 
                 var taggedText = text.ToTaggedString();
 
-                _myProgram.PrintToConsole($"Part-Of-Speech tagger complete");
+                MyProgram.PrintToConsole($"Part-Of-Speech tagger complete");
 
-                return Encoding.UTF8.GetBytes(taggedText);
+                var bufferout = Encoding.UTF8.GetBytes(taggedText);
+
+                WriteOutputToDisk(bufferout);
+
+                return bufferout;
             }
             catch (Exception ex)
             {
-                _myProgram.PrintToConsole(ex);
+                MyProgram.PrintToConsole(ex);
                 return new[] { (byte)'\0' };
             }
         }

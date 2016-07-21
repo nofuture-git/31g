@@ -31,7 +31,6 @@ namespace NoFuture.Util.Pos
         #endregion
 
         #region Methods
-
         /// <summary>
         /// Helper method parse a files content to the jagged array of <see cref="TagsetBase"/>
         /// </summary>

@@ -65,6 +65,7 @@
         public static string InvokeGraphViz { get; set; }
         public static string InvokeAssemblyAnalysis { get; set; }
         public static string InvokeFlatten { get; set; }
+        public static string UtilPosHost { get; set; }
     }
 
     public class BinTools
