@@ -227,7 +227,10 @@ namespace NoFuture.Encryption
             //import the cert
             var cert = new X509Certificate2();
             cert.Import(certCerPath, certPassword, X509KeyStorageFlags.Exportable);
-            var privKey = (RSACryptoServiceProvider)cert.PrivateKey;
+            var privKey = cert.PrivateKey as RSACryptoServiceProvider;
+
+            if(privKey == null)
+                throw new ItsDeadJim("The private could not be resolved.");
 
             var plainTextFile = Path.Combine(Path.GetDirectoryName(path) ?? Environment.CurrentDirectory,
                 Path.GetFileNameWithoutExtension(path) ?? Util.NfTypeName.GetNfRandomName());
