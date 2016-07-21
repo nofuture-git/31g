@@ -5,7 +5,7 @@ using System.Text;
 using NoFuture.Tools;
 using NoFuture.Util.NfConsole;
 
-namespace NoFuture.Util.Pos.WcfHost
+namespace NoFuture.Util.Pos.Host
 {
     public static class Program
     {

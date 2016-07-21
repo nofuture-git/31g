@@ -70,7 +70,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{A18BF9
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Rand.Src", "NoFuture\Rand\Src\Rand.Src.fsproj", "{E98E53E8-DB34-4BC7-841D-24E79AE073A9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Util.Pos.WcfHost", "NoFuture\Util\Util.Pos\Util.Pos.Host\Util.Pos.WcfHost.csproj", "{C6815124-E486-42BA-8185-7C6980EA4542}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Util.Pos.Host", "NoFuture\Util\Util.Pos\Util.Pos.Host\Util.Pos.Host.csproj", "{C6815124-E486-42BA-8185-7C6980EA4542}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

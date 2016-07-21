@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("NoFuture.Util.Pos.WcfHost")]
+[assembly: AssemblyTitle("NoFuture.Util.Pos.Host")]
 [assembly: AssemblyDescription("Host the Stanford POS Maxent Tagger")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("NoFuture.Util.Pos.WcfHost")]
+[assembly: AssemblyProduct("NoFuture.Util.Pos.Host")]
 [assembly: AssemblyCopyright("")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

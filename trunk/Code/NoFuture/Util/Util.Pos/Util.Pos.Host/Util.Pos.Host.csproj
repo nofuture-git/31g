@@ -7,8 +7,8 @@
     <ProjectGuid>{C6815124-E486-42BA-8185-7C6980EA4542}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NoFuture.Util.Pos.WcfHost</RootNamespace>
-    <AssemblyName>NoFuture.Util.Pos.WcfHost</AssemblyName>
+    <RootNamespace>NoFuture.Util.Pos.Host</RootNamespace>
+    <AssemblyName>NoFuture.Util.Pos.Host</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />

@@ -4,7 +4,7 @@ using edu.stanford.nlp.tagger.maxent;
 using NoFuture.Exceptions;
 using NoFuture.Tools;
 
-namespace NoFuture.Util.Pos.WcfHost
+namespace NoFuture.Util.Pos.Host
 {
     /// <summary>
     /// see [http://www-nlp.stanford.edu/nlp/javadoc/javanlp/edu/stanford/nlp/tagger/maxent/MaxentTagger.html]

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NoFuture.Util.Pos.WcfHost
+namespace NoFuture.Util.Pos.Host
 {
     public class EnPosParser : IPosParser
     {

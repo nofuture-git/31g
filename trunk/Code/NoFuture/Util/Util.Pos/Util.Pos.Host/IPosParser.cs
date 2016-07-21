@@ -1,6 +1,6 @@
 ﻿using System.ServiceModel;
 
-namespace NoFuture.Util.Pos.WcfHost
+namespace NoFuture.Util.Pos.Host
 {
     [ServiceContract]
     public interface IPosParser
