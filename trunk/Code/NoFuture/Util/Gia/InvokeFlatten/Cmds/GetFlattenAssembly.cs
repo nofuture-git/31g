@@ -39,14 +39,14 @@ namespace NoFuture.Util.Gia.InvokeFlatten.Cmds
                 var flatAsm = Flatten.GetFlattenedAssembly(new FlattenLineArgs {Assembly = asm}, myProgress);
                 flatAsm.Path = asmPath;
 
-                return EncodedResponse(flatAsm);
+                return JsonEncodedResponse(flatAsm);
 
             }
             catch (Exception ex)
             {
                 Console.WriteLine('\n');
                 MyProgram.PrintToConsole(ex);
-                return EncodedResponse(
+                return JsonEncodedResponse(
                     new FlattenAssembly {AllLines = new List<FlattenedLine> {new NullFlattenedLine(ex)}});
             }
         }

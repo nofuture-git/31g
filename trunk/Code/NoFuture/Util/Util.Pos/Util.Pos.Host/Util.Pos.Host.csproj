@@ -164,8 +164,7 @@
     <Reference Include="System.ServiceModel" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EnPosParser.cs" />
-    <Compile Include="IPosParser.cs" />
+    <Compile Include="Cmds\PosParserCmd.cs" />
     <Compile Include="MtAdapter.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

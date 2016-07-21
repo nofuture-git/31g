@@ -1,174 +1,119 @@
 ﻿using System;
 using System.IO;
-using System.ServiceModel;
+using System.Reflection;
 using System.Text;
+using System.Threading.Tasks;
+using NoFuture.Exceptions;
 using NoFuture.Tools;
 using NoFuture.Util.NfConsole;
+using NoFuture.Util.Pos.Host.Cmds;
+using Cfg = System.Configuration.ConfigurationManager;
 
 namespace NoFuture.Util.Pos.Host
 {
-    public static class Program
+    public class Program : SocketConsole
     {
-        internal static ServiceHost _svcHost = null;
-        internal static int exceptionCount = 0;
-        private static int _maxExceptionCount;
-        private static object _printLock = new object();
-        private const string HOST_URI = "net.tcp://localhost/PosParser";
-        private const string EN_SVC = "English";
-        private const string MEX = "mex";
+        private int? _utilPosHostCmdPort;
+        private readonly TaskFactory _taskFactory;
+        public Program(string[] args) : base(args, true)
+        {
+            _taskFactory = new TaskFactory();
+        }
 
-        public static int MaxExceptionsCount
+        protected internal int? CmdPort
         {
             get
             {
-                if (_maxExceptionCount > 0) return _maxExceptionCount < 0 ? 10 : _maxExceptionCount;
-                int configVal;
-                _maxExceptionCount =
-                    !int.TryParse(System.Configuration.ConfigurationManager.AppSettings["MaxExceptionsCount"],
-                        out configVal)
-                        ? 10
-                        : configVal;
-                return _maxExceptionCount < 0 ? 10 : _maxExceptionCount;
+                if (Net.IsValidPortNumber(_utilPosHostCmdPort))
+                    return _utilPosHostCmdPort;
+
+                _utilPosHostCmdPort = ResolvePort("UtilPosHostDefaultPort");
+                return _utilPosHostCmdPort;
             }
         }
-
-        public static string NfRootBinFolder
-        {
-            get
-            {
-                var cval = System.Configuration.ConfigurationManager.AppSettings["NoFuture.BinDirectories.Root"];
-                return string.IsNullOrWhiteSpace(cval) || !Directory.Exists(cval) ? string.Empty : cval;
-            }
-        }
-
-        public static string NfSvcUtilDir
-        {
-            get
-            { 
-                var cval = System.Configuration.ConfigurationManager.AppSettings["NoFuture.TempDirectories.SvcUtil"];
-                return string.IsNullOrWhiteSpace(cval) || !Directory.Exists(cval) ? string.Empty : cval;
-            }
-        }
-
-        /// <summary>
-        /// Uses default port of 808
-        /// </summary>
-        public static Uri HostUri
-        {
-            get
-            {
-                var compName = Environment.GetEnvironmentVariable("COMPUTERNAME");
-                var compDomain = Environment.GetEnvironmentVariable("USERDNSDOMAIN");
-                if (string.IsNullOrWhiteSpace(compName) || string.IsNullOrWhiteSpace(compDomain))
-                    return new Uri(HOST_URI);
-                var uriBldr = new UriBuilder("net:tcp", string.Format("{0}.{1}", compName, compDomain))
-                {
-                    Path = "PosParser"
-                };
-                return uriBldr.Uri;
-            }
-        }
-
         public static void Main(string[] args)
         {
             var ut = string.Empty;
+            var p = new Program(args);
             try
             {
-                ConsoleCmd.SetConsoleAsTransparent(true);
-                Console.ForegroundColor = ConsoleColor.DarkRed;
+                p.StartConsole();
 
-                JavaTools.StanfordPostTaggerModels =
-                    System.Configuration.ConfigurationManager.AppSettings["NoFuture.JavaTools.StanfordPostTaggerModels"];
+                if (p.PrintHelp()) return;
+                p.PrintToConsole("New console started!");
 
-                using (
-                    _svcHost =
-                        new ServiceHost(typeof (EnPosParser),
-                            new[] {HostUri}))
+                p.ParseProgramArgs();
+
+                JavaTools.StanfordPostTaggerModels = Cfg.AppSettings["NoFuture.JavaTools.StanfordPostTaggerModels"];
+                if (string.IsNullOrWhiteSpace(JavaTools.StanfordPostTaggerModels) ||
+                    !File.Exists(JavaTools.StanfordPostTaggerModels))
+                    throw new ItsDeadJim("The Stanford Post Tagger Models are not assigned in the config file");
+
+                p.PrintToConsole($"models @ {JavaTools.StanfordPostTaggerModels}");
+
+                //open ports
+                p.LaunchListeners();
+
+                //park main
+                for (;;) //ever
                 {
-                    var tcpBind = new NetTcpBinding();
-                    _svcHost.AddServiceEndpoint(typeof(IPosParser), tcpBind, EN_SVC);
-
-                    var behavior = new System.ServiceModel.Description.ServiceMetadataBehavior();
-                    _svcHost.Description.Behaviors.Add(behavior);
-
-                    var mex = System.ServiceModel.Description.MetadataExchangeBindings.CreateMexTcpBinding();
-                    _svcHost.AddServiceEndpoint(typeof (System.ServiceModel.Description.IMetadataExchange), mex,
-                        MEX);
-
-                    PrintToConsole("Opening this host.");
-                    _svcHost.Open();
-
-                    for (;;) //ever
+                    ut = Console.ReadLine();
+                    if (string.IsNullOrWhiteSpace(ut))
+                        continue;
+                    ut = ut.Trim();
+                    if (String.Equals(ut, "exit", StringComparison.OrdinalIgnoreCase))
+                        break;
+                    if (string.Equals(ut, "-help", StringComparison.OrdinalIgnoreCase) || string.Equals(ut, "-h", StringComparison.OrdinalIgnoreCase))
                     {
-                        ut = Console.ReadLine();//thread parks here
-                        ut = string.IsNullOrWhiteSpace(ut) ? string.Empty : ut.Trim().ToLower();
-                        if (ut.StartsWith("exit") || exceptionCount >= MaxExceptionsCount)
-                            break;
-
-                        var svcUtilCmd = CtorMySvcUtilCmd();
-                        PrintToConsole("Run the following commnad to generate a proxy -OR- enter 'exit' to quit.", false);
-                        PrintToConsole(string.Format("\n{0}", svcUtilCmd), false);
+                        Console.WriteLine(p.Help());
                     }
-
-                    PrintToConsole("Closing this host.");
-                    _svcHost.Close();
                 }
+
             }
             catch (Exception ex)
             {
-                exceptionCount += 1;
-                PrintToConsole(ex);
-            }
-
-            PrintToConsole("press any key to exit or close the console window.", false);
-
-            if (string.IsNullOrWhiteSpace(ut) || !ut.StartsWith("exit"))
-            {
-                var k = Console.ReadLine();
+                p.PrintToConsole(ex);
             }
         }
 
-        public static void PrintToConsole(string someString, bool trunc = true)
-        {
-            lock (_printLock)
-            {
-                if (trunc && someString.Length > 55)
-                    someString = string.Format("{0}[...]", someString.Substring(0, 48));
+        protected override string MyName => "Util.Pos.Host";
 
-                Console.WriteLine(string.Format("{0:yyyy-MM-dd HH:mm:ss.fffff} {1}", DateTime.Now, someString));
-            }
+        protected override string Help()
+        {
+            var help = new StringBuilder();
+            help.AppendLine(" ----");
+            help.AppendLine($" [{Assembly.GetExecutingAssembly().GetName().Name}] ");
+            help.AppendLine("");
+            help.AppendLine(" ");
+            help.AppendLine(" This exe will open a socket listeners on the ");
+            help.AppendLine(" localhost for the ports specified in the  ");
+            help.AppendLine(" config file.");
+            help.AppendLine(" ");
+            help.AppendLine(" The exe will tag any unstructured text." );
+            help.AppendLine(" ");
+            help.AppendLine(" Usage: options ");
+            help.AppendLine(" Options:");
+            help.AppendLine(" -h | -help             Will print this help.");
+            help.AppendLine("");
+
+            return help.ToString();
         }
 
-        public static void PrintToConsole(System.Exception ex)
+        protected override void ParseProgramArgs()
         {
-            lock (_printLock)
-            {
-                Console.WriteLine(string.Format("{0:yyyy-MM-dd HH:mm:ss.fffff} {1}", DateTime.Now, ex.Message));
-                Console.WriteLine(string.Format("{0:yyyy-MM-dd HH:mm:ss.fffff} {1}", DateTime.Now, ex.StackTrace));
-            }
+            //noop
         }
 
-        public static string CtorMySvcUtilCmd()
+        protected override void LaunchListeners()
         {
-            var svcUtilCmd = new StringBuilder();
-            svcUtilCmd.Append("svcutil ");
-            svcUtilCmd.Append(HOST_URI);
-            svcUtilCmd.Append("/");
-            svcUtilCmd.Append(MEX);
-            svcUtilCmd.Append(" /out:");
-            svcUtilCmd.AppendLine(Path.Combine(NfSvcUtilDir, "PosParserClient.cs"));
-            svcUtilCmd.Append(" /config:");
-            svcUtilCmd.AppendLine(Path.Combine(NfSvcUtilDir, "PosParserClient.config"));
+            if (!Net.IsValidPortNumber(CmdPort))
+                throw new RahRowRagee("the command's ports are either null or invalid " +
+                                      $"[{CmdPort}].");
 
-            var nfAsms = new[] { "NoFuture.Shared.dll", "NoFuture.Util.dll", "NoFuture.Util.Pos.dll" };
-            foreach (var nfAsm in nfAsms)
-            {
-                svcUtilCmd.Append(" /reference:");
-                svcUtilCmd.AppendLine(Path.Combine(NfRootBinFolder, nfAsm));
-            }
-            svcUtilCmd.AppendLine(" /namespace:\"*,NoFuture\"");
+            _taskFactory.StartNew(() => HostCmd(new PosParserCmd(this), CmdPort.Value));
+            //print settings
+            PrintToConsole($"InvokeFlatten listening on port [{CmdPort}]");
 
-            return svcUtilCmd.ToString();
         }
     }
 }

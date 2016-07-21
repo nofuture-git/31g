@@ -21,7 +21,7 @@ namespace NoFuture.Util.NfConsole
             
         } 
 
-        public byte[] EncodedResponse(T rspn)
+        public byte[] JsonEncodedResponse(T rspn)
         {
             try
             {

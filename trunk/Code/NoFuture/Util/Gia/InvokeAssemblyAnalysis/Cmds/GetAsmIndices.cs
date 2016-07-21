@@ -22,7 +22,7 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds
                 if (arg == null || arg.Length <= 0)
                 {
                     MyProgram.PrintToConsole("the arg for GetAsmIndices is null or empty");
-                    return EncodedResponse(
+                    return JsonEncodedResponse(
                         new AsmIndicies
                         {
                             Msg = "the arg for GetAsmIndices is null or empty",
@@ -39,7 +39,7 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds
                 {
 
                     MyProgram.PrintToConsole(string.Format("invalid path [{0}]", asmPath));
-                    return EncodedResponse(
+                    return JsonEncodedResponse(
                         new AsmIndicies
                         {
                             Msg = string.Format("invalid path [{0}]", asmPath),
@@ -56,7 +56,7 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds
                 if (asm == null)
                 {
                     MyProgram.PrintToConsole("cannot load assembly");
-                    return EncodedResponse(
+                    return JsonEncodedResponse(
                         new AsmIndicies
                         {
                             Msg = "cannot load assembly",
@@ -67,12 +67,12 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds
                 ((IaaProgram)MyProgram).Init(asm);
                 ((IaaProgram)MyProgram).AssignAsmIndicies(asm);
 
-                return EncodedResponse(((IaaProgram)MyProgram).AsmIndicies);
+                return JsonEncodedResponse(((IaaProgram)MyProgram).AsmIndicies);
             }
             catch (Exception ex)
             {
                 MyProgram.PrintToConsole(ex);
-                return EncodedResponse(
+                return JsonEncodedResponse(
                     new AsmIndicies
                     {
                         Msg = string.Format(ex.Message),

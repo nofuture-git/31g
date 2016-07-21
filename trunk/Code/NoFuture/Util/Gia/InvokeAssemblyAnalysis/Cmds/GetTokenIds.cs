@@ -51,7 +51,7 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds
                 Console.Write('\n');
                 if (string.IsNullOrWhiteSpace(((IaaProgram)MyProgram).AssemblyNameRegexPattern))
                 {
-                    return EncodedResponse(
+                    return JsonEncodedResponse(
                         new TokenIds
                         {
                             Tokens = tokens.ToArray()
@@ -77,7 +77,7 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds
                     ResolveCallOfCall(iToken, ref countDepth, stackTrc, null);
                 }
                 Console.Write('\n');
-                return EncodedResponse(
+                return JsonEncodedResponse(
                     new TokenIds
                     {
                         Tokens = tokens.ToArray()
@@ -87,7 +87,7 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds
             {
                 Console.Write('\n');
                 MyProgram.PrintToConsole(ex);
-                return EncodedResponse(
+                return JsonEncodedResponse(
                     new TokenIds
                     {
                         Msg = ex.Message,
