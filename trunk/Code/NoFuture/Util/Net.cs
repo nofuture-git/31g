@@ -83,9 +83,16 @@ namespace NoFuture.Util
                             continue;
                         }
                         decode00 = decode00.Substring(1, decode00.Length - 2);
-                        var decodeParts = decode00.Split(new[] {"\",\""}, StringSplitOptions.RemoveEmptyEntries).Select(x => x.Replace("\"", string.Empty));
+                        var decodeParts =
+                            decode00.Split(new[] {"\",\""}, StringSplitOptions.RemoveEmptyEntries)
+                                .Select(x => x.Replace("\"", string.Empty));
 
-                        foreach (var f in decodeParts.Where(x => x.Contains("=") && x.Split('=').Length >= 2 && !dict.ContainsKey(x.Split('=')[0])))
+                        foreach (
+                            var f in
+                                decodeParts.Where(
+                                    x =>
+                                        x.Contains("=") && x.Split('=').Length >= 2 &&
+                                        !dict.ContainsKey(x.Split('=')[0])))
                         {
                             var dd = f.IndexOf('=');
                             var tn = f.Substring(0, dd);
@@ -119,10 +126,15 @@ namespace NoFuture.Util
                             continue;
                         }
 
-                        foreach (var f in ff.Where(x => x.Contains("=") && x.Split('=').Length >= 2 && !dict.ContainsKey(x.Split('=')[0])))
+                        foreach (
+                            var f in
+                                ff.Where(
+                                    x =>
+                                        x.Contains("=") && x.Split('=').Length >= 2 &&
+                                        !dict.ContainsKey(x.Split('=')[0])))
                         {
                             var t = f.Split('=');
-                            dict.Add(t[0],t[1]);
+                            dict.Add(t[0], t[1]);
                         }
 
                         if (dict.Count <= 0)
@@ -137,7 +149,8 @@ namespace NoFuture.Util
                     //delimited
                     else if (iniValue.Contains("|"))
                     {
-                        values.Add(new Tuple<string, object>(name, iniValue.Split(new []{'|'}, StringSplitOptions.RemoveEmptyEntries)));
+                        values.Add(new Tuple<string, object>(name,
+                            iniValue.Split(new[] {'|'}, StringSplitOptions.RemoveEmptyEntries)));
                     }
                     else
                     {
@@ -220,9 +233,9 @@ namespace NoFuture.Util
                 username = username.Split((char) 0x5C)[1];
 
             var b64UsernamePwd =
-                Convert.ToBase64String(Encoding.ASCII.GetBytes(String.Format("{0}:{1}", username, pwd)));
+                Convert.ToBase64String(Encoding.ASCII.GetBytes($"{username}:{pwd}"));
 
-            return String.Format("{0} {1}", digest, b64UsernamePwd);
+            return $"{digest} {b64UsernamePwd}";
         }
 
         /// <summary>
@@ -295,66 +308,64 @@ namespace NoFuture.Util
         }
 
         /// <summary>
-        /// These are intended as my own additions to the contents from <see cref="NfConfig.HostTxt"/>.
+        /// These are intended as my own additions to the contents from <see cref="Constants.HOST_TXT"/>.
         /// </summary>
-        public static string[] MyRestrictedDomains { get
-        {
-            return new[] {
-			"*.imwx.com", 
-			"*.amazon-adsystem.com", 
-			"*.wfxtriggers.com", 
-			"*.insightexpressai.com",
-			"*.abajurlight.ru",
-			"*.arskat.ru",
-			"*.cookingok.ruyasitemap",
-			"*.domik-derevne.ru",
-			"*.dresswoman.ru",
-			"*.golden-praga.ru",
-			"*.homesp.ru",
-			"*.iqfood.ru",
-			"*.jjbabskoe.ru",
-			"*.komputernaya-pomosh-moscow.ru",
-			"*.kulinapko.ruyasitemap",
-			"*.master-muznachas.ru",
-			"*.myfavoritebag.ru",
-			"*.pechatay-prosto.ru",
-			"*.pornovkoz.ru",
-			"*.psi-lab.ru",
-			"*.reklama1.ru",
-			"*.remont-comp-pomosh.ru",
-			"*.remont-fridge-tv.ru",
-			"*.remont-komputerov-notebook.ru",
-			"*.sdelai-prosto.ru",
-			"*.ucoz.ru",
-			"*.tiu.ru",
-			"*.vita-power.ru",
-			"*.vroze.ru",
-			"*.vsepravda.ru",
-			"*.afina-lingerie.ru",
-			"*.artparquet.ru",
-			"*.edunok.ru",
-			"*.kbaptupa.ru",
-			"*.video12.ru",
-			"*.xxart.ru",
-			"*.ary.kz",
-			"*.mastercash.co.il",
-			"*.prorok.pw",
-			"*.10-casino.net",
-			"*.cvety24.by",
-			"*.fastxak.com",
-			"*.gungamesz.com",
-			"*.pornowife.tv",
-			"*.prorok.pw",
-			"*.statuses.su",
-			"*.pornboobsy.com",
-			"*.infoprosto.com",
-			"*.droidlook.net",
-			"*.banan.tv",
-			"*.7zap.pro",
-			"*.hdporno7.com",
-			"*.lampokrat.ws",
-			"*.ridder.asia",
-			"*.flowwwers.com",
+        public static string[] MyRestrictedDomains => new[] {
+            "*.imwx.com", 
+            "*.amazon-adsystem.com", 
+            "*.wfxtriggers.com", 
+            "*.insightexpressai.com",
+            "*.abajurlight.ru",
+            "*.arskat.ru",
+            "*.cookingok.ruyasitemap",
+            "*.domik-derevne.ru",
+            "*.dresswoman.ru",
+            "*.golden-praga.ru",
+            "*.homesp.ru",
+            "*.iqfood.ru",
+            "*.jjbabskoe.ru",
+            "*.komputernaya-pomosh-moscow.ru",
+            "*.kulinapko.ruyasitemap",
+            "*.master-muznachas.ru",
+            "*.myfavoritebag.ru",
+            "*.pechatay-prosto.ru",
+            "*.pornovkoz.ru",
+            "*.psi-lab.ru",
+            "*.reklama1.ru",
+            "*.remont-comp-pomosh.ru",
+            "*.remont-fridge-tv.ru",
+            "*.remont-komputerov-notebook.ru",
+            "*.sdelai-prosto.ru",
+            "*.ucoz.ru",
+            "*.tiu.ru",
+            "*.vita-power.ru",
+            "*.vroze.ru",
+            "*.vsepravda.ru",
+            "*.afina-lingerie.ru",
+            "*.artparquet.ru",
+            "*.edunok.ru",
+            "*.kbaptupa.ru",
+            "*.video12.ru",
+            "*.xxart.ru",
+            "*.ary.kz",
+            "*.mastercash.co.il",
+            "*.prorok.pw",
+            "*.10-casino.net",
+            "*.cvety24.by",
+            "*.fastxak.com",
+            "*.gungamesz.com",
+            "*.pornowife.tv",
+            "*.prorok.pw",
+            "*.statuses.su",
+            "*.pornboobsy.com",
+            "*.infoprosto.com",
+            "*.droidlook.net",
+            "*.banan.tv",
+            "*.7zap.pro",
+            "*.hdporno7.com",
+            "*.lampokrat.ws",
+            "*.ridder.asia",
+            "*.flowwwers.com",
             "*.tinyurl.com",
             "*.avto-mir.dp.ua",
             "*.diplom-nk.com",
@@ -362,8 +373,7 @@ namespace NoFuture.Util
             "*.weblinkvalidator.com",
             "*.streamingvideoslive.com",
             "*.duckduckgo.com"
-			};
-        } }
+        };
 
         /// <summary>
         /// This is intended, but no limited, to the use of calls to netStat.exe
@@ -495,11 +505,7 @@ namespace NoFuture.Util
                         if(!searchHostLine.StartsWith("Host:")){continue;}
 
                         searchHostLine = searchHostLine.Replace("Host:", "").Trim();
-                        expected = String.Format("{0}{1}{2}{3}",
-                                                 Uri.UriSchemeHttp,
-                                                 Uri.SchemeDelimiter,
-                                                 searchHostLine,
-                                                 uriResult);
+                        expected = $"{Uri.UriSchemeHttp}{Uri.SchemeDelimiter}{searchHostLine}{uriResult}";
                         if(Uri.TryCreate(expected,UriKind.Absolute, out uriResult))
                         {
                             return uriResult;
@@ -513,23 +519,17 @@ namespace NoFuture.Util
         /// <summary>
         /// http://www.w3.org/Protocols/rfc2616/rfc2616-sec5.html#sec5 section 5.1.1
         /// </summary>
-        public static string[] HttpMethods
+        public static string[] HttpMethods => new[]
         {
-            get
-            {
-                return new[]
-                           {
-                               "OPTIONS",
-                               "GET",
-                               "HEAD",
-                               "POST",
-                               "PUT",
-                               "DELETE",
-                               "TRACE",
-                               "CONNECT"
-                           };
-            }
-        }
+            "OPTIONS",
+            "GET",
+            "HEAD",
+            "POST",
+            "PUT",
+            "DELETE",
+            "TRACE",
+            "CONNECT"
+        };
 
         /// <summary>
         /// Gets the five reserved chars of XML
@@ -993,38 +993,32 @@ namespace NoFuture.Util
         /// <summary>
         /// String values used in calls to Google Places API
         /// </summary>
-        public static string[] GooglePlaces
+        public static string[] GooglePlaces => new[]
         {
-            get
-            {
-                return new[]
-                {
-                    "accounting", "airport", "amusement_park", "aquarium",
-                    "art_gallery", "atm", "bakery", "bank",
-                    "bar", "beauty_salon", "bicycle_store", "book_store",
-                    "bowling_alley", "bus_station", "cafe", "campground",
-                    "car_dealer", "car_rental", "car_repair", "car_wash",
-                    "casino", "cemetery", "church", "city_hall",
-                    "clothing_store", "convenience_store", "courthouse", "dentist",
-                    "department_store", "doctor", "electrician", "electronics_store",
-                    "embassy", "fire_station", 
-                    "florist", "funeral_home", "furniture_store",
-                    "gas_station", "general_contractor", "grocery_or_supermarket", "gym",
-                    "hair_care", "hardware_store", "hindu_temple",
-                    "home_goods_store", "hospital", "insurance_agency", "jewelry_store",
-                    "laundry", "lawyer", "library", "liquor_store",
-                    "local_government_office", "locksmith", "lodging", "meal_delivery",
-                    "meal_takeaway", "mosque", "movie_rental", "movie_theater",
-                    "moving_company", "museum", "night_club", "painter",
-                    "park", "parking", "pet_store", "pharmacy",
-                    "physiotherapist", "plumber", "police",
-                    "post_office", "real_estate_agency", "restaurant", "roofing_contractor",
-                    "rv_park", "school", "shoe_store", "shopping_mall",
-                    "spa", "stadium", "storage", "store",
-                    "subway_station", "synagogue", "taxi_stand", "train_station",
-                    "travel_agency", "university", "veterinary_care", "zoo"
-                };
-            }
-        }
+            "accounting", "airport", "amusement_park", "aquarium",
+            "art_gallery", "atm", "bakery", "bank",
+            "bar", "beauty_salon", "bicycle_store", "book_store",
+            "bowling_alley", "bus_station", "cafe", "campground",
+            "car_dealer", "car_rental", "car_repair", "car_wash",
+            "casino", "cemetery", "church", "city_hall",
+            "clothing_store", "convenience_store", "courthouse", "dentist",
+            "department_store", "doctor", "electrician", "electronics_store",
+            "embassy", "fire_station", 
+            "florist", "funeral_home", "furniture_store",
+            "gas_station", "general_contractor", "grocery_or_supermarket", "gym",
+            "hair_care", "hardware_store", "hindu_temple",
+            "home_goods_store", "hospital", "insurance_agency", "jewelry_store",
+            "laundry", "lawyer", "library", "liquor_store",
+            "local_government_office", "locksmith", "lodging", "meal_delivery",
+            "meal_takeaway", "mosque", "movie_rental", "movie_theater",
+            "moving_company", "museum", "night_club", "painter",
+            "park", "parking", "pet_store", "pharmacy",
+            "physiotherapist", "plumber", "police",
+            "post_office", "real_estate_agency", "restaurant", "roofing_contractor",
+            "rv_park", "school", "shoe_store", "shopping_mall",
+            "spa", "stadium", "storage", "store",
+            "subway_station", "synagogue", "taxi_stand", "train_station",
+            "travel_agency", "university", "veterinary_care", "zoo"
+        };
     }//end Net
 }//end Util

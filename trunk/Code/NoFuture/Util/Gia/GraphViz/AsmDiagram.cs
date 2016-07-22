@@ -10,6 +10,7 @@ namespace NoFuture.Util.Gia.GraphViz
 {
     public class AsmDiagram
     {
+        #region inner types
         public class EvData
         {
             private readonly string _node1Name;
@@ -67,13 +68,16 @@ namespace NoFuture.Util.Gia.GraphViz
 
             }
         }
-        #region fields
+        #endregion
 
+        #region fields
         private readonly List<string> _nodes;
         private readonly string _asmName;
         #endregion
 
+        #region properties
         public List<EvData> Items { get; } = new List<EvData>();
+        #endregion
 
         #region ctor
         public AsmDiagram(Assembly asm)
@@ -107,6 +111,7 @@ namespace NoFuture.Util.Gia.GraphViz
         }
         #endregion
 
+        #region methods
         internal List<EvData> RemoveDuplicates(List<EvData> dataIn)
         {
             var dupIdx = GetDupIndices();
@@ -178,14 +183,58 @@ namespace NoFuture.Util.Gia.GraphViz
             return idx;
         }
 
-        #region methods
+        internal int GetCountOfEdgesOn(string nodeName)
+        {
+            return Items.Sum(x => x.NodeName.Contains(nodeName) ? 1 : 0);
+        }
+
+        internal string GetNodeText(string nodeName)
+        {
+            var nodeEdges = GetCountOfEdgesOn(nodeName);
+            switch (nodeEdges)
+            {
+                case 0:
+                case 1:
+                case 2:
+                    return $"{nodeName} [label=\"-¦-\"];";
+                case 3:
+                    return $"{nodeName} [label=\"-¦-\", shape=circle, height=0.25, width=0.25, fontsize=6, fixedsize=\"true\"];";
+                case 4:
+                    return $"{nodeName} [label=\"-¦-\", shape=circle, height=0.30, width=0.30, fontsize=6, fixedsize=\"true\"];";
+                case 5:
+                    return $"{nodeName} [label=\"-¦-\", shape=circle, height=0.35, width=0.35, fontsize=6, fixedsize=\"true\"];";
+                case 6:
+                    return $"{nodeName} [label=\"-¦-\", shape=circle, height=0.40, width=0.40, fontsize=8, fixedsize=\"true\"];";
+                case 7:
+                    return $"{nodeName} [label=\"-¦-\", shape=circle, height=0.45, width=0.45, fontsize=8, fixedsize=\"true\"];";
+                case 8:
+                    return $"{nodeName} [label=\"-¦-\", shape=circle, height=0.5, width=0.5, fontsize=10, fixedsize=\"true\"];";
+                case 9:
+                    return $"{nodeName} [label=\"-¦-\", shape=circle, height=0.55, width=0.55, fontsize=12, fixedsize=\"true\"];";
+                case 10:
+                    return $"{nodeName} [label=\"-¦-\", shape=circle, height=0.6, width=0.6, fontsize=12, fixedsize=\"true\"];";
+                case 11:
+                    return $"{nodeName} [label=\"-¦-\", shape=circle, height=0.7, width=0.7, fontsize=12, fixedsize=\"true\"];";
+                case 12:
+                    return $"{nodeName} [label=\"-¦-\", shape=circle, height=0.75, width=0.75, fontsize=12, fixedsize=\"true\"];";
+                case 13:
+                    return $"{nodeName} [label=\"-¦-\", shape=circle, height=0.8, width=0.8, fontsize=12, fixedsize=\"true\"];";
+                case 14:
+                    return $"{nodeName} [label=\"-¦-\", shape=circle, height=0.85, width=0.85, fontsize=12, fixedsize=\"true\"];";
+                case 15:
+                    return $"{nodeName} [label=\"-¦-\", shape=circle, height=0.95, width=0.95, fontsize=14, fixedsize=\"true\"];";
+                default:
+                    return $"{nodeName} [label=\"-¦-\", shape=circle, height=1.0, width=1.0, fontsize=14, fixedsize=\"true\"];";
+            }
+        }
+
         public string ToGraphVizString()
         {
             var gviz = new StringBuilder();
             gviz.AppendLine($"digraph {_asmName} ");
             gviz.AppendLine("{");
             gviz.AppendLine("graph [rankdir=\"LR\", splines=ortho, nodesep=0.06];");
-            gviz.AppendLine("node [shape=circle, height=0.5, width=0.5, fontsize=10, fixedsize=\"true\"];");
+            gviz.AppendLine("node [shape=circle, height=0.2, width=0.2, fontsize=6, fixedsize=\"true\"];");
             gviz.AppendLine("edge [arrowhead=none, color=\"#808080\"]");
             gviz.AppendLine(GetGraphContents());
             gviz.AppendLine("}");
@@ -195,7 +244,7 @@ namespace NoFuture.Util.Gia.GraphViz
         private string GetGraphContents()
         {
             var itemsOut = new List<string>();
-            itemsOut.AddRange(_nodes.Select(x => $"{x} [label=\"-¦-\"];"));
+            itemsOut.AddRange(_nodes.Select(GetNodeText));
             itemsOut.Add("");
             itemsOut.AddRange(Items.Select(x => x.ToString()));
             return string.Join("\n", itemsOut);
