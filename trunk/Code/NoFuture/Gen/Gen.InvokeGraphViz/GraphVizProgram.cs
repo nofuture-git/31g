@@ -101,7 +101,7 @@ namespace NoFuture.Gen.InvokeGraphViz
         protected static void ValidateBinDir()
         {
             BinDirectories.Root =
-                ConfigurationManager.AppSettings[AppSettingKeys.RootBinDir];
+                ConfigurationManager.AppSettings[ROOT_BIN_DIR];
 
             if (string.IsNullOrWhiteSpace(BinDirectories.Root) || !Directory.Exists(BinDirectories.Root))
             {
@@ -137,7 +137,7 @@ namespace NoFuture.Gen.InvokeGraphViz
             }
         }
 
-        protected override string Help()
+        protected override string GetHelpText()
         {
             var help = new StringBuilder();
             help.AppendLine(" ----");
@@ -242,9 +242,6 @@ namespace NoFuture.Gen.InvokeGraphViz
 
         internal static class AppSettingKeys
         {
-            internal const string UseReflectionOnlyLoad = "NoFuture.Shared.Constants.UseReflectionOnlyLoad";
-            internal const string DebugTempDir = "NoFuture.TempDirectories.Debug";
-            internal const string RootBinDir = "NoFuture.BinDirectories.Root";
             internal const string GraphTempDir = "NoFuture.TempDirectories.Graph";
             internal const string DotExe = "NoFuture.Tools.X86.DotExe";
         }

@@ -111,7 +111,7 @@ namespace NoFuture.Host
 
         #region constants
 
-        public const int DEFAULT_PORT = 780;
+        public const int DEFAULT_PORT = Tools.NfDefaultPorts.HOST_PROC;
         public const int BUFFSIZE = 512;
         public const int DEFAULT_THREAD_WAIT_MS = 50;
         public const int DEFAULT_WAIT_COUNT = 40; //roughly 2 seconds @ 50ms each

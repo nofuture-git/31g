@@ -46,7 +46,7 @@ namespace NoFuture.Util.Pos.Host
 
                 JavaTools.StanfordPostTaggerModels = Cfg.AppSettings["NoFuture.JavaTools.StanfordPostTaggerModels"];
                 if (string.IsNullOrWhiteSpace(JavaTools.StanfordPostTaggerModels) ||
-                    !File.Exists(JavaTools.StanfordPostTaggerModels))
+                    !Directory.Exists(JavaTools.StanfordPostTaggerModels))
                     throw new ItsDeadJim("The Stanford Post Tagger Models are not assigned in the config file");
 
                 p.PrintToConsole($"models @ {JavaTools.StanfordPostTaggerModels}");
@@ -61,11 +61,12 @@ namespace NoFuture.Util.Pos.Host
                     if (string.IsNullOrWhiteSpace(ut))
                         continue;
                     ut = ut.Trim();
-                    if (String.Equals(ut, "exit", StringComparison.OrdinalIgnoreCase))
+                    if (string.Equals(ut, "exit", StringComparison.OrdinalIgnoreCase))
                         break;
-                    if (string.Equals(ut, "-help", StringComparison.OrdinalIgnoreCase) || string.Equals(ut, "-h", StringComparison.OrdinalIgnoreCase))
+                    if (string.Equals(ut, "-help", StringComparison.OrdinalIgnoreCase) ||
+                        string.Equals(ut, "-h", StringComparison.OrdinalIgnoreCase))
                     {
-                        Console.WriteLine(p.Help());
+                        Console.WriteLine(p.GetHelpText());
                     }
                 }
 
@@ -74,11 +75,16 @@ namespace NoFuture.Util.Pos.Host
             {
                 p.PrintToConsole(ex);
             }
+            if (String.IsNullOrWhiteSpace(ut) || !ut.StartsWith("exit"))
+            {
+                Console.ReadKey();
+            }
+            Environment.Exit(0);
         }
 
         protected override string MyName => "Util.Pos.Host";
 
-        protected override string Help()
+        protected override string GetHelpText()
         {
             var help = new StringBuilder();
             help.AppendLine(" ----");
@@ -89,7 +95,13 @@ namespace NoFuture.Util.Pos.Host
             help.AppendLine(" localhost for the ports specified in the  ");
             help.AppendLine(" config file.");
             help.AppendLine(" ");
-            help.AppendLine(" The exe will tag any unstructured text." );
+            help.AppendLine(" The exe will tag any unstructured text using" );
+            help.AppendLine(" Stanford Part-of-Speech tagger see: ");
+            help.AppendLine(" [http://nlp.stanford.edu/software/tagger.shtml]");
+            help.AppendLine(" for more information. ");
+            help.AppendLine(" Send unstructured data on the the socket and the ");
+            help.AppendLine(" response will be the tagged text.");
+            help.AppendLine(" ");
             help.AppendLine(" ");
             help.AppendLine(" Usage: options ");
             help.AppendLine(" Options:");
@@ -110,7 +122,8 @@ namespace NoFuture.Util.Pos.Host
                 throw new RahRowRagee("the command's ports are either null or invalid " +
                                       $"[{CmdPort}].");
 
-            _taskFactory.StartNew(() => HostCmd(new PosParserCmd(this), CmdPort.Value));
+            _taskFactory.StartNew(
+                () => HostCmd(new PosParserCmd(this), CmdPort.GetValueOrDefault(PosParserHost.DF_START_PORT)));
             //print settings
             PrintToConsole($"InvokeFlatten listening on port [{CmdPort}]");
 

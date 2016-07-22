@@ -94,7 +94,7 @@ namespace NoFuture.Gen.InvokeGetCgOfType
             get { return "InvokeGetCgOfType"; }
         }
 
-        protected override String Help()
+        protected override String GetHelpText()
         {
             var help = new StringBuilder();
             help.AppendLine(" ----");

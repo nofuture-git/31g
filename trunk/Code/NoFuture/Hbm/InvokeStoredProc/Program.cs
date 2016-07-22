@@ -140,7 +140,7 @@ namespace NoFuture.Hbm.InvokeStoredProc
 
         protected override string MyName => "NoFuture.Hbm.InvokeStoredProc";
 
-        protected override String Help()
+        protected override String GetHelpText()
         {
             var help = new StringBuilder();
             help.AppendLine(" ----");

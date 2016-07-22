@@ -8,10 +8,12 @@ using NoFuture.Shared;
 
 namespace NoFuture.Util.NfConsole
 {
+    /// <summary>
+    /// A Nf type to extend for console apps which listen on 
+    /// one or more sockets.
+    /// </summary>
     public abstract class SocketConsole : Program
     {
-        public const int LISTEN_NUM_REQUEST = 5;
-
         protected SocketConsole(string[] args, bool isVisable)
             : base(args, isVisable)
         {
@@ -41,7 +43,7 @@ namespace NoFuture.Util.NfConsole
                 //this should NOT be reachable from any other machine
                 var endPt = new IPEndPoint(IPAddress.Loopback, cmdPort);
                 socket.Bind(endPt);
-                socket.Listen(LISTEN_NUM_REQUEST);
+                socket.Listen(Constants.SOCKET_LISTEN_NUM);
 
                 for (; ; )//ever
                 {

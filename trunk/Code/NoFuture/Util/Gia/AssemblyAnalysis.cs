@@ -23,7 +23,7 @@ namespace NoFuture.Util.Gia
         public const string GET_TOKEN_NAMES_PORT_CMD_SWITCH = "nfResolveTokensPort";
         public const string GET_ASM_INDICES_PORT_CMD_SWITCH = "nfGetAsmIndicies";
         public const string RESOLVE_GAC_ASM_SWITCH = "nfResolveGacAsm";
-        public const int DF_START_PORT = 5059;
+        public const int DF_START_PORT = NfDefaultPorts.ASSEMBLY_ANALYSIS;
         #endregion
 
         #region fields

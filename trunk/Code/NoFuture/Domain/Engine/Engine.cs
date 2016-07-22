@@ -27,7 +27,6 @@ namespace NoFuture.Domain
         public string[] AspPrefixes { get; set; }
 
         public const int BREAK_ON_EXCEPTION_COUNT = 3;
-        public const int DEFAULT_HTTP_PORT = 1138;
         public const string APP_DOMAIN_SWITCH = "appdomain";
         public const string ASP_LISTENER_SWITCH = "asphttp";
         public const string V_DIR = "/";

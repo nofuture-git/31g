@@ -82,8 +82,8 @@ namespace NoFuture.Util.NfConsole
 
             cmdArg.Append(Constants.CMD_LINE_ARG_ASSIGN);
             cmdArg.Append(argValue.Contains(" ")
-                ? string.Format("\"{0}\"", argValue)
-                : string.Format("{0}", argValue));
+                ? $"\"{argValue}\""
+                : $"{argValue}");
             return cmdArg.ToString();
         }
 
@@ -122,8 +122,8 @@ namespace NoFuture.Util.NfConsole
         public static List<Tuple<int, string, string>> ParseTListExeOutput(string buffer)
         {
 
-            const string lnI = @"([0-9]+)\W(.+?\x2E[Ee][Xx][Ee])\W";
-            const string lnIplus1 = @"\WCommand\sLine\:\W(.*)";
+            const string LN_I = @"([0-9]+)\W(.+?\x2E[Ee][Xx][Ee])\W";
+            const string LN_IPLUS1 = @"\WCommand\sLine\:\W(.*)";
             var procs = new List<Tuple<int, string, string>>();
 
             var stdOut = buffer.Split('\n');
@@ -135,11 +135,11 @@ namespace NoFuture.Util.NfConsole
                 string pid;
                 string proc;
                 string cmdln;
-                if (!RegexCatalog.IsRegexMatch(stdOut[i], lnI, out pid, 1))
+                if (!RegexCatalog.IsRegexMatch(stdOut[i], LN_I, out pid, 1))
                     pid = "0";
-                if (!RegexCatalog.IsRegexMatch(stdOut[i], lnI, out proc, 2))
+                if (!RegexCatalog.IsRegexMatch(stdOut[i], LN_I, out proc, 2))
                     proc = stdOut[i];
-                if (!RegexCatalog.IsRegexMatch(stdOut[i + 1], lnIplus1, out cmdln, 1))
+                if (!RegexCatalog.IsRegexMatch(stdOut[i + 1], LN_IPLUS1, out cmdln, 1))
                     cmdln = stdOut[i + 1];
 
                 int iPid;

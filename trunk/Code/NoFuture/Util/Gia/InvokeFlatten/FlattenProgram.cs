@@ -57,7 +57,7 @@ namespace NoFuture.Util.Gia.InvokeFlatten
                         break;
                     if (string.Equals(ut, "-help", StringComparison.OrdinalIgnoreCase) || string.Equals(ut, "-h", StringComparison.OrdinalIgnoreCase))
                     {
-                        Console.WriteLine(p.Help());
+                        Console.WriteLine(p.GetHelpText());
                     }
                 }
             }
@@ -83,7 +83,7 @@ namespace NoFuture.Util.Gia.InvokeFlatten
             get { return "InvokeFlatten"; }
         }
 
-        protected override string Help()
+        protected override string GetHelpText()
         {
             var help = new StringBuilder();
             help.AppendLine(" ----");

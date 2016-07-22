@@ -31,25 +31,6 @@ NoFuture.Host.Encryption.exe -toPlainTextPort=4696 -toCipherTextPort=4697 -hashP
         public const string TEST_INPUT = "plain text";
 
         [TestMethod]
-        public void TestsGetCmdLineArgs()
-        {
-
-            var argHash = new System.Collections.Hashtable
-                              {
-                                  {NoFuture.Host.Encryption.SWITCHES.TO_PLAIN_TXT_PORT, BK_PT_PORT},
-                                  {NoFuture.Host.Encryption.SWITCHES.TO_CIPHER_TEXT_PORT, BK_CT_PORT},
-                                  {NoFuture.Host.Encryption.SWITCHES.HASH_PORT, HP_PORT}
-                              };
-
-            var testResult = NoFuture.Host.Encryption.Program.GetHostSjclCmdArgs(argHash);
-            Assert.AreEqual(BK_PT_PORT, testResult.SjclBulkKeyToPlainTextPort);
-            Assert.AreEqual(BK_CT_PORT, testResult.SjclBulkKeyToCipherTextPort);
-            Assert.AreEqual(HP_PORT, testResult.SjclSha256HashPort);
-
-            Assert.IsTrue(testResult.IsValid());
-        }
-
-        [TestMethod]
         [Ignore]
         public void TestStartProgram()
         {

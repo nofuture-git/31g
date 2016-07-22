@@ -17,7 +17,7 @@ namespace NoFuture.Util.Pos.Host.Cmds
                 if (arg == null || arg.Length <= 0)
                 {
                     MyProgram.PrintToConsole("no data was received");
-                    return new[] {(byte) '\0'};
+                    return EmptyBytes;
                 }
 
                 var text = Encoding.UTF8.GetString(arg);
@@ -30,14 +30,14 @@ namespace NoFuture.Util.Pos.Host.Cmds
 
                 var bufferout = Encoding.UTF8.GetBytes(taggedText);
 
-                WriteOutputToDisk(bufferout);
+                WriteOutputToDisk(bufferout, ".txt");
 
                 return bufferout;
             }
             catch (Exception ex)
             {
                 MyProgram.PrintToConsole(ex);
-                return new[] { (byte)'\0' };
+                return EmptyBytes;
             }
         }
     }

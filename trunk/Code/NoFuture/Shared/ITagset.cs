@@ -6,7 +6,6 @@ namespace NoFuture.Util.Pos
     public interface ITagset
     {
         string CharacterCodes { get; }
-        string Description { get; }
         string Value { get; set; }
     }
 
@@ -17,9 +16,95 @@ namespace NoFuture.Util.Pos
         [DataMember] 
         public abstract string CharacterCodes { get; }
         [DataMember]
-        public abstract string Description { get; }
-        [DataMember]
-        public abstract string Value { get; set; }
+        public string Value { get; set; }
+
+        public static string GetDescription(ITagset t)
+        {
+            if (t == null)
+                return null;
+            var tsTypeName = t.GetType().Name;
+            switch (tsTypeName)
+            {
+                case "SentenceBreakPunctuation":
+                    return ". ! or ?";
+                case "Comma":
+                    return "a comma";
+                case "CoordinatingConjunction":
+                    return "e.g. and,but,or...";
+                case "CardinalNumber":
+                    return "e.g. 1, third";
+                case "Determiner":
+                    return "e.g. the";
+                case "ExistentialThere":
+                    return "e.g. there is";
+                case "ForeignWord":
+                    return "e.g. d'hoevre";
+                case "PreposisionOrSubordinatingConjunction":
+                    return "e.g. in, of, like";
+                case "Adjective":
+                    return "e.g. green";
+                case "AdjectiveComparative":
+                    return "e.g. greener";
+                case "AdjectiveSuperlative":
+                    return "e.g. greenest";
+                case "ListItemMarker":
+                    return "e.g. 1.)";
+                case "Modal":
+                    return "denoting the mood of a verb, e.g. can, could, might, may...";
+                case "NounSingularOrMass":
+                    return "e.g. table";
+                case "ProperNounSingular":
+                    return "e.g. Beth";
+                case "ProperNounPlural":
+                    return "e.g. Romans";
+                case "NounPlural":
+                    return "e.g. tables";
+                case "Predeterminer":
+                    return "e.g. all, both ... when they precede an article";
+                case "PossessiveEnding":
+                    return "e.g. Nouns ending in 's";
+                case "PersonalPronoun":
+                    return "e.g. I, me, you, he...";
+                case "PossessivePronoun":
+                    return "e.g. my, your, mine, yours...";
+                case "Adverb":
+                    return "Most words that end in -ly as well as degree words like quite, too and very";
+                case "AdverbComparative":
+                    return "Adverbs with the comparative ending -er, with a strictly comparative meaning.";
+                case "AdverbSuperlative":
+                    return "e.g. best";
+                case "Particle":
+                    return "e.g. give up";
+                case "Symbol":
+                    return "Should be used for mathematical, scientific or technical symbols";
+                case "To":
+                    return "to";
+                case "Interjection":
+                    return "e.g. uh, well, yes, my...";
+                case "VerbBaseForm":
+                    return "subsumes imperatives, infinitives and subjunctives; e.g. be";
+                case "VerbPastTense":
+                    return "includes the conditional form of the verb to be; e.g. was, were";
+                case "VerbGerundOrPersentParticiple":
+                    return "e.g. being";
+                case "VerbPastParticiple":
+                    return "e.g. been";
+                case "VerbNon3rdPersonSingularPresent":
+                    return "e.g. am, are";
+                case "Verb3rdPersonSingularPresent":
+                    return "e.g. is";
+                case "Wh_Determiner":
+                    return "e.g. which, and that when it is used as a relative pronoun";
+                case "Wh_Pronoun":
+                    return "e.g. what, who, whom...";
+                case "PossessiveWh_pronoun":
+                    return "e.g. whose";
+                case "Wh_Adverb":
+                    return "e.g. how, where, when, why";
+                default:
+                    return null;
+            }
+        }
     }
 
     /// <summary>
@@ -31,11 +116,7 @@ namespace NoFuture.Util.Pos
     public class NullTagset : TagsetBase
     {
         [DataMember] 
-        public override string CharacterCodes { get { return null; } }
-        [DataMember]
-        public override string Description { get { return null; } }
-        [DataMember]
-        public override string Value { get; set; }
+        public override string CharacterCodes => null;
     }
 
     [Serializable]
@@ -43,9 +124,7 @@ namespace NoFuture.Util.Pos
     [KnownType(typeof(TagsetBase))]
     public class SentenceBreakPunctuation : TagsetBase
     {
-        [DataMember] public override string CharacterCodes { get { return "."; } }
-        [DataMember] public override string Description { get { return ". ! or ?"; } }
-        [DataMember] public override string Value { get; set; }
+        [DataMember] public override string CharacterCodes => ".";
     }
 
     [Serializable]
@@ -53,9 +132,7 @@ namespace NoFuture.Util.Pos
     [KnownType(typeof(TagsetBase))]
     public class Comma : TagsetBase
     {
-        [DataMember] public override string CharacterCodes { get { return ","; } }
-        [DataMember] public override string Description { get { return "a comma"; } }
-        [DataMember] public override string Value { get; set; }
+        [DataMember] public override string CharacterCodes => ",";
     }
 
     [Serializable]
@@ -63,9 +140,7 @@ namespace NoFuture.Util.Pos
     [KnownType(typeof(TagsetBase))]
     public class CoordinatingConjunction : TagsetBase
     {
-        [DataMember] public override string CharacterCodes { get { return "CC"; } }
-        [DataMember] public override string Description { get { return "e.g. and,but,or..."; } }
-        [DataMember] public override string Value { get; set; }
+        [DataMember] public override string CharacterCodes => "CC";
     }
 
     [Serializable]
@@ -73,9 +148,7 @@ namespace NoFuture.Util.Pos
     [KnownType(typeof(TagsetBase))]
     public class CardinalNumber : TagsetBase
     {
-        [DataMember] public override string CharacterCodes { get { return "CD"; } }
-        [DataMember] public override string Description { get { return "e.g. 1, third"; } }
-        [DataMember] public override string Value { get; set; }
+        [DataMember] public override string CharacterCodes => "CD";
     }
 
     [Serializable]
@@ -83,9 +156,7 @@ namespace NoFuture.Util.Pos
     [KnownType(typeof(TagsetBase))]
     public class Determiner : TagsetBase
     {
-        [DataMember] public override string CharacterCodes { get { return "DT"; } }
-        [DataMember] public override string Description { get { return "e.g. the"; } }
-        [DataMember] public override string Value { get; set; }
+        [DataMember] public override string CharacterCodes => "DT";
     }
 
     [Serializable]
@@ -93,9 +164,7 @@ namespace NoFuture.Util.Pos
     [KnownType(typeof(TagsetBase))]
     public class ExistentialThere : TagsetBase
     {
-        [DataMember] public override string CharacterCodes { get { return "EX"; } }
-        [DataMember] public override string Description { get { return "e.g. there is"; } }
-        [DataMember] public override string Value { get; set; }
+        [DataMember] public override string CharacterCodes => "EX";
     }
 
     [Serializable]
@@ -103,9 +172,7 @@ namespace NoFuture.Util.Pos
     [KnownType(typeof(TagsetBase))]
     public class ForeignWord : TagsetBase
     {
-        [DataMember] public override string CharacterCodes { get { return "FW"; } }
-        [DataMember] public override string Description { get { return "e.g. d'hoevre"; } }
-        [DataMember] public override string Value { get; set; }
+        [DataMember] public override string CharacterCodes => "FW";
     }
 
     [Serializable]
@@ -113,9 +180,7 @@ namespace NoFuture.Util.Pos
     [KnownType(typeof(TagsetBase))]
     public class PreposisionOrSubordinatingConjunction : TagsetBase
     {
-        [DataMember] public override string CharacterCodes { get { return "IN"; } }
-        [DataMember] public override string Description { get { return "e.g. in, of, like"; } }
-        [DataMember] public override string Value { get; set; }
+        [DataMember] public override string CharacterCodes => "IN";
     }
 
     [Serializable]
@@ -123,9 +188,7 @@ namespace NoFuture.Util.Pos
     [KnownType(typeof(TagsetBase))]
     public class Adjective : TagsetBase
     {
-        [DataMember] public override string CharacterCodes { get { return "JJ"; } }
-        [DataMember] public override string Description { get { return "e.g. green"; } }
-        [DataMember] public override string Value { get; set; }
+        [DataMember] public override string CharacterCodes => "JJ";
     }
 
     [Serializable]
@@ -133,9 +196,7 @@ namespace NoFuture.Util.Pos
     [KnownType(typeof(TagsetBase))]
     public class AdjectiveComparative : TagsetBase
     {
-        [DataMember] public override string CharacterCodes { get { return "JJR"; } }
-        [DataMember] public override string Description { get { return "e.g. greener"; } }
-        [DataMember] public override string Value { get; set; }
+        [DataMember] public override string CharacterCodes => "JJR";
     }
 
     [Serializable]
@@ -143,9 +204,7 @@ namespace NoFuture.Util.Pos
     [KnownType(typeof(TagsetBase))]
     public class AdjectiveSuperlative : TagsetBase
     {
-        [DataMember] public override string CharacterCodes { get { return "JJS"; } }
-        [DataMember] public override string Description { get { return "e.g. greenest"; } }
-        [DataMember] public override string Value { get; set; }
+        [DataMember] public override string CharacterCodes => "JJS";
     }
 
     [Serializable]
@@ -153,9 +212,7 @@ namespace NoFuture.Util.Pos
     [KnownType(typeof(TagsetBase))]
     public class ListItemMarker : TagsetBase
     {
-        [DataMember] public override string CharacterCodes { get { return "LS"; } }
-        [DataMember] public override string Description { get { return "e.g. 1.)"; } }
-        [DataMember] public override string Value { get; set; }
+        [DataMember] public override string CharacterCodes => "LS";
     }
 
     [Serializable]
@@ -163,9 +220,7 @@ namespace NoFuture.Util.Pos
     [KnownType(typeof(TagsetBase))]
     public class Modal : TagsetBase
     {
-        [DataMember] public override string CharacterCodes { get { return "MD"; } }
-        [DataMember] public override string Description { get { return "denoting the mood of a verb, e.g. can, could, might, may..."; } }
-        [DataMember] public override string Value { get; set; }
+        [DataMember] public override string CharacterCodes => "MD";
     }
 
     [Serializable]
@@ -173,9 +228,7 @@ namespace NoFuture.Util.Pos
     [KnownType(typeof(TagsetBase))]
     public class NounSingularOrMass : TagsetBase
     {
-        [DataMember] public override string CharacterCodes { get { return "NN"; } }
-        [DataMember] public override string Description { get { return "e.g. table"; } }
-        [DataMember] public override string Value { get; set; }
+        [DataMember] public override string CharacterCodes => "NN";
     }
 
     [Serializable]
@@ -183,9 +236,7 @@ namespace NoFuture.Util.Pos
     [KnownType(typeof(TagsetBase))]
     public class ProperNounSingular : TagsetBase
     {
-        [DataMember] public override string CharacterCodes { get { return "NNP"; } }
-        [DataMember] public override string Description { get { return "e.g. tables"; } }
-        [DataMember] public override string Value { get; set; }
+        [DataMember] public override string CharacterCodes => "NNP";
     }
 
     [Serializable]
@@ -193,9 +244,7 @@ namespace NoFuture.Util.Pos
     [KnownType(typeof(TagsetBase))]
     public class ProperNounPlural : TagsetBase
     {
-        [DataMember] public override string CharacterCodes { get { return "NNPS"; } }
-        [DataMember] public override string Description { get { return "e.g. Beth"; } }
-        [DataMember] public override string Value { get; set; }
+        [DataMember] public override string CharacterCodes => "NNPS";
     }
 
     [Serializable]
@@ -203,9 +252,7 @@ namespace NoFuture.Util.Pos
     [KnownType(typeof(TagsetBase))]
     public class NounPlural : TagsetBase
     {
-        [DataMember] public override string CharacterCodes { get { return "NNS"; } }
-        [DataMember] public override string Description { get { return "e.g. Romans"; } }
-        [DataMember] public override string Value { get; set; }
+        [DataMember] public override string CharacterCodes => "NNS";
     }
 
     [Serializable]
@@ -213,9 +260,7 @@ namespace NoFuture.Util.Pos
     [KnownType(typeof(TagsetBase))]
     public class Predeterminer : TagsetBase
     {
-        [DataMember] public override string CharacterCodes { get { return "PDT"; } }
-        [DataMember] public override string Description { get { return "e.g. all, both ... when they precede an article"; } }
-        [DataMember] public override string Value { get; set; }
+        [DataMember] public override string CharacterCodes => "PDT";
     }
 
     [Serializable]
@@ -223,9 +268,7 @@ namespace NoFuture.Util.Pos
     [KnownType(typeof(TagsetBase))]
     public class PossessiveEnding : TagsetBase
     {
-        [DataMember] public override string CharacterCodes { get { return "POS"; } }
-        [DataMember] public override string Description { get { return "e.g. Nouns ending in 's"; } }
-        [DataMember] public override string Value { get; set; }
+        [DataMember] public override string CharacterCodes => "POS";
     }
 
     [Serializable]
@@ -233,9 +276,7 @@ namespace NoFuture.Util.Pos
     [KnownType(typeof(TagsetBase))]
     public class PersonalPronoun : TagsetBase
     {
-        [DataMember] public override string CharacterCodes { get { return "PRP"; } }
-        [DataMember] public override string Description { get { return "e.g. I, me, you, he..."; } }
-        [DataMember] public override string Value { get; set; }
+        [DataMember] public override string CharacterCodes => "PRP";
     }
 
     [Serializable]
@@ -243,9 +284,7 @@ namespace NoFuture.Util.Pos
     [KnownType(typeof(TagsetBase))]
     public class PossessivePronoun : TagsetBase
     {
-        [DataMember] public override string CharacterCodes { get { return "PRP$"; } }
-        [DataMember] public override string Description { get { return "e.g. my, your, mine, yours..."; } }
-        [DataMember] public override string Value { get; set; }
+        [DataMember] public override string CharacterCodes => "PRP$";
     }
 
     [Serializable]
@@ -253,9 +292,7 @@ namespace NoFuture.Util.Pos
     [KnownType(typeof(TagsetBase))]
     public class Adverb : TagsetBase
     {
-        [DataMember] public override string CharacterCodes { get { return "RB"; } }
-        [DataMember] public override string Description { get { return "Most words that end in -ly as well as degree words like quite, too and very"; } }
-        [DataMember] public override string Value { get; set; }
+        [DataMember] public override string CharacterCodes => "RB";
     }
 
     [Serializable]
@@ -263,9 +300,7 @@ namespace NoFuture.Util.Pos
     [KnownType(typeof(TagsetBase))]
     public class AdverbComparative : TagsetBase
     {
-        [DataMember] public override string CharacterCodes { get { return "RBR"; } }
-        [DataMember] public override string Description { get { return "Adverbs with the comparative ending -er, with a strictly comparative meaning."; } }
-        [DataMember] public override string Value { get; set; }
+        [DataMember] public override string CharacterCodes => "RBR";
     }
 
     [Serializable]
@@ -273,9 +308,7 @@ namespace NoFuture.Util.Pos
     [KnownType(typeof(TagsetBase))]
     public class AdverbSuperlative : TagsetBase
     {
-        [DataMember] public override string CharacterCodes { get { return "RBS"; } }
-        [DataMember] public override string Description { get { return "e.g. best"; } }
-        [DataMember] public override string Value { get; set; }
+        [DataMember] public override string CharacterCodes => "RBS";
     }
 
     [Serializable]
@@ -283,9 +316,7 @@ namespace NoFuture.Util.Pos
     [KnownType(typeof(TagsetBase))]
     public class Particle : TagsetBase
     {
-        [DataMember] public override string CharacterCodes { get { return "RP"; } }
-        [DataMember] public override string Description { get { return "e.g. give up"; } }
-        [DataMember] public override string Value { get; set; }
+        [DataMember] public override string CharacterCodes => "RP";
     }
 
     [Serializable]
@@ -293,9 +324,7 @@ namespace NoFuture.Util.Pos
     [KnownType(typeof(TagsetBase))]
     public class Symbol : TagsetBase
     {
-        [DataMember] public override string CharacterCodes { get { return "SYM"; } }
-        [DataMember] public override string Description { get { return "Should be used for mathematical, scientific or technical symbols"; } }
-        [DataMember] public override string Value { get; set; }
+        [DataMember] public override string CharacterCodes => "SYM";
     }
 
     [Serializable]
@@ -303,9 +332,7 @@ namespace NoFuture.Util.Pos
     [KnownType(typeof(TagsetBase))]
     public class To : TagsetBase
     {
-        [DataMember] public override string CharacterCodes { get { return "TO"; } }
-        [DataMember] public override string Description { get { return "to"; } }
-        [DataMember] public override string Value { get; set; }
+        [DataMember] public override string CharacterCodes => "TO";
     }
 
     [Serializable]
@@ -313,9 +340,7 @@ namespace NoFuture.Util.Pos
     [KnownType(typeof(TagsetBase))]
     public class Interjection : TagsetBase
     {
-        [DataMember] public override string CharacterCodes { get { return "UH"; } }
-        [DataMember] public override string Description { get { return "e.g. uh, well, yes, my..."; } }
-        [DataMember] public override string Value { get; set; }
+        [DataMember] public override string CharacterCodes => "UH";
     }
 
     [Serializable]
@@ -323,9 +348,7 @@ namespace NoFuture.Util.Pos
     [KnownType(typeof(TagsetBase))]
     public class VerbBaseForm : TagsetBase
     {
-        [DataMember] public override string CharacterCodes { get { return "VB"; } }
-        [DataMember] public override string Description { get { return "subsumes imperatives, infinitives and subjunctives; e.g. be"; } }
-        [DataMember] public override string Value { get; set; }
+        [DataMember] public override string CharacterCodes => "VB";
     }
 
     [Serializable]
@@ -333,9 +356,7 @@ namespace NoFuture.Util.Pos
     [KnownType(typeof(TagsetBase))]
     public class VerbPastTense : TagsetBase
     {
-        [DataMember] public override string CharacterCodes { get { return "VBD"; } }
-        [DataMember] public override string Description { get { return "includes the conditional form of the verb to be; e.g. was, were"; } }
-        [DataMember] public override string Value { get; set; }
+        [DataMember] public override string CharacterCodes => "VBD";
     }
 
     [Serializable]
@@ -343,9 +364,7 @@ namespace NoFuture.Util.Pos
     [KnownType(typeof(TagsetBase))]
     public class VerbGerundOrPersentParticiple : TagsetBase
     {
-        [DataMember] public override string CharacterCodes { get { return "VBG"; } }
-        [DataMember] public override string Description { get { return "e.g. being"; } }
-        [DataMember] public override string Value { get; set; }
+        [DataMember] public override string CharacterCodes => "VBG";
     }
 
     [Serializable]
@@ -353,9 +372,7 @@ namespace NoFuture.Util.Pos
     [KnownType(typeof(TagsetBase))]
     public class VerbPastParticiple : TagsetBase
     {
-        [DataMember] public override string CharacterCodes { get { return "VBN"; } }
-        [DataMember] public override string Description { get { return "e.g. been"; } }
-        [DataMember] public override string Value { get; set; }
+        [DataMember] public override string CharacterCodes => "VBN";
     }
 
     [Serializable]
@@ -363,9 +380,7 @@ namespace NoFuture.Util.Pos
     [KnownType(typeof(TagsetBase))]
     public class VerbNon3rdPersonSingularPresent : TagsetBase
     {
-        [DataMember] public override string CharacterCodes { get { return "VBP"; } }
-        [DataMember] public override string Description { get { return "e.g. am, are"; } }
-        [DataMember] public override string Value { get; set; }
+        [DataMember] public override string CharacterCodes => "VBP";
     }
 
     [Serializable]
@@ -373,9 +388,7 @@ namespace NoFuture.Util.Pos
     [KnownType(typeof(TagsetBase))]
     public class Verb3rdPersonSingularPresent : TagsetBase
     {
-        [DataMember] public override string CharacterCodes { get { return "VBZ"; } }
-        [DataMember] public override string Description { get { return "e.g. is"; } }
-        [DataMember] public override string Value { get; set; }
+        [DataMember] public override string CharacterCodes => "VBZ";
     }
 
     [Serializable]
@@ -383,9 +396,7 @@ namespace NoFuture.Util.Pos
     [KnownType(typeof(TagsetBase))]
     public class Wh_Determiner : TagsetBase
     {
-        [DataMember] public override string CharacterCodes { get { return "WDT"; } }
-        [DataMember] public override string Description { get { return "e.g. which, and that when it is used as a relative pronoun"; } }
-        [DataMember] public override string Value { get; set; }
+        [DataMember] public override string CharacterCodes => "WDT";
     }
 
     [Serializable]
@@ -393,9 +404,7 @@ namespace NoFuture.Util.Pos
     [KnownType(typeof(TagsetBase))]
     public class Wh_Pronoun : TagsetBase
     {
-        [DataMember] public override string CharacterCodes { get { return "WP"; } }
-        [DataMember] public override string Description { get { return "e.g. what, who, whom..."; } }
-        [DataMember] public override string Value { get; set; }
+        [DataMember] public override string CharacterCodes => "WP";
     }
 
     [Serializable]
@@ -403,9 +412,7 @@ namespace NoFuture.Util.Pos
     [KnownType(typeof(TagsetBase))]
     public class PossessiveWh_pronoun : TagsetBase
     {
-        [DataMember] public override string CharacterCodes { get { return "WP$"; } }
-        [DataMember] public override string Description { get { return "e.g. whose"; } }
-        [DataMember] public override string Value { get; set; }
+        [DataMember] public override string CharacterCodes => "WP$";
     }
 
     [Serializable]
@@ -413,9 +420,7 @@ namespace NoFuture.Util.Pos
     [KnownType(typeof(TagsetBase))]
     public class Wh_Adverb : TagsetBase
     {
-        [DataMember] public override string CharacterCodes { get { return "WRB"; } }
-        [DataMember] public override string Description { get { return "e.g. how, where, when, why"; } }
-        [DataMember] public override string Value { get; set; }
+        [DataMember] public override string CharacterCodes => "WRB";
     }
 
 }

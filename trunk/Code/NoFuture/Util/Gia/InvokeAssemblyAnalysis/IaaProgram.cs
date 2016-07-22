@@ -31,11 +31,7 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
         private int? _getTokenIdsCmdPort;
         private int? _getasmIndicesCmdPort;
         private bool? _resolveGacAsms;
-        private readonly Dictionary<MetadataTokenId, MetadataTokenName> _tokenId2NameCache =
-            new Dictionary<MetadataTokenId, MetadataTokenName>();
-        private readonly HashSet<MetadataTokenId> _disolutionCache = new HashSet<MetadataTokenId>();
         private TaskFactory _taskFactory;
-        private readonly AsmIndicies _asmIndices = new AsmIndicies();
         private int _maxRecursionDepth;
         private readonly UtilityMethods _utilityMethods;
         #endregion
@@ -64,10 +60,10 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
                 p.ParseProgramArgs();
 
                 //print settings
-                p.PrintToConsole(String.Format("GetAsmIndicesCmdPort listening on port [{0}]", p.GetAsmIndicesCmdPort));
-                p.PrintToConsole(String.Format("GetTokenIdsCmdPort listening on port [{0}]", p.GetTokenIdsCmdPort));
-                p.PrintToConsole(String.Format("GetTokenNamesCmdPort listening on port [{0}]", p.GetTokenNamesCmdPort));
-                p.PrintToConsole(String.Format("Resolve GAC Assembly names is [{0}]", p.AreGacAssembliesResolved));
+                p.PrintToConsole($"GetAsmIndicesCmdPort listening on port [{p.GetAsmIndicesCmdPort}]");
+                p.PrintToConsole($"GetTokenIdsCmdPort listening on port [{p.GetTokenIdsCmdPort}]");
+                p.PrintToConsole($"GetTokenNamesCmdPort listening on port [{p.GetTokenNamesCmdPort}]");
+                p.PrintToConsole($"Resolve GAC Assembly names is [{p.AreGacAssembliesResolved}]");
                 p.PrintToConsole("type 'exit' to quit", false);
 
                 //open ports
@@ -82,7 +78,7 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
                     ut = ut.Trim();
                     if (String.Equals(ut, "exit", StringComparison.OrdinalIgnoreCase))
                         break;
-                    if (string.Equals(ut, "-help", StringComparison.OrdinalIgnoreCase) || string.Equals(ut, "-h", StringComparison.OrdinalIgnoreCase))
+                    if (p.PrintHelp(new [] {ut}))
                     {
                         Console.WriteLine(p.RuntimeHelp());
                     }
@@ -96,7 +92,7 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
                 p.PrintToConsole(ex);
             }
 
-            if (String.IsNullOrWhiteSpace(ut) || !ut.StartsWith("exit"))
+            if (string.IsNullOrWhiteSpace(ut) || !ut.StartsWith("exit"))
             {
                 Console.ReadKey();
             }
@@ -108,20 +104,14 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
         /// Proposition that the required assemblies are ready and loaded
         /// for subsequent calls by any <see cref="ICmd"/>
         /// </summary>
-        protected internal bool AsmInited
-        {
-            get
-            {
-                return RootAssembly != null &&
-                       AsmIndicies.Asms != null &&
-                       AsmIndicies.Asms.Length > 0;
-            }
-        }
+        protected internal bool AsmInited => RootAssembly != null &&
+                                             AsmIndicies.Asms != null &&
+                                             AsmIndicies.Asms.Length > 0;
 
         /// <summary>
         /// Single instance of <see cref="UtilityMethods"/> shared by all commands.
         /// </summary>
-        protected internal UtilityMethods UtilityMethods { get { return _utilityMethods;} }
+        protected internal UtilityMethods UtilityMethods => _utilityMethods;
 
         /// <summary>
         /// The original assembly that the <see cref="AssemblyAnalysis"/> was spawned from.
@@ -137,27 +127,19 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
         /// Internal memory for token-ids to token-names so that the expense of resolution
         /// occurs only once.
         /// </summary>
-        protected internal Dictionary<MetadataTokenId, MetadataTokenName> TokenId2NameCache
-        {
-            get { return _tokenId2NameCache; }
-        }
+        protected internal Dictionary<MetadataTokenId, MetadataTokenName> TokenId2NameCache { get; } =
+            new Dictionary<MetadataTokenId, MetadataTokenName>();
 
         /// <summary>
         /// Internal memory hashset for tokens which could not or will
         /// not be resolved.
         /// </summary>
-        protected internal HashSet<MetadataTokenId> DisolutionCache
-        {
-            get { return _disolutionCache; }
-        }
+        protected internal HashSet<MetadataTokenId> DisolutionCache { get; } = new HashSet<MetadataTokenId>();
 
         /// <summary>
         /// The dictionary of internal ids to assembly names
         /// </summary>
-        protected internal AsmIndicies AsmIndicies
-        {
-            get { return _asmIndices; }
-        }
+        protected internal AsmIndicies AsmIndicies { get; } = new AsmIndicies();
 
         /// <summary>
         /// Resolves the socket port used for <see cref="Cmds.GetTokenNames"/>
@@ -315,22 +297,19 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
                 if (rtArgHash.ContainsKey(ASSIGN_REGEX_PATTERN_RT_CMD))
                 {
                     var regexPattern = rtArgHash[ASSIGN_REGEX_PATTERN_RT_CMD];
-                    if (regexPattern == null)
-                        return;
-                    if (string.IsNullOrWhiteSpace(regexPattern.ToString()))
+                    if (string.IsNullOrWhiteSpace(regexPattern?.ToString()))
                         return;
                     AssemblyNameRegexPattern = regexPattern.ToString().Trim();
-                    PrintToConsole(string.Format("AssemblyNameRegexPattern = {0}",AssemblyNameRegexPattern));
+                    PrintToConsole($"AssemblyNameRegexPattern = {AssemblyNameRegexPattern}");
                 }
                 if (rtArgHash.ContainsKey(RESOLVE_TOKEN_ID_CMD))
                 {
                     var tokenCmd = rtArgHash[RESOLVE_TOKEN_ID_CMD];
-                    if (tokenCmd == null)
-                        return;
-                    if (string.IsNullOrWhiteSpace(tokenCmd.ToString()))
+                    if (string.IsNullOrWhiteSpace(tokenCmd?.ToString()))
                         return;
                     var tokenCmdStr = tokenCmd.ToString().Trim();
-                    if (!Regex.IsMatch(tokenCmdStr, @"^[0-9]\.([0-9]+|0x[0-9a-fA-F]+)$")) return;
+                    if (!Regex.IsMatch(tokenCmdStr, @"^[0-9]\.([0-9]+|0x[0-9a-fA-F]+)$"))
+                        return;
                     var asmIdxStr = tokenCmdStr.Split('.')[0];
                     var tokenIdStr = tokenCmdStr.Split('.')[1];
 
@@ -354,7 +333,7 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
                     MetadataTokenName tokenName;
                     if (!_utilityMethods.ResolveSingleTokenName(mdt, out tokenName))
                     {
-                        PrintToConsole(string.Format("could not resolve name {0}", ut));
+                        PrintToConsole($"could not resolve name {ut}");
                         return;
                     }
                     PrintToConsole(tokenName.Name);
@@ -389,9 +368,9 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
             if (!Net.IsValidPortNumber(GetTokenIdsCmdPort) || !Net.IsValidPortNumber(GetTokenNamesCmdPort) ||
                 !Net.IsValidPortNumber(GetAsmIndicesCmdPort))
                 throw new RahRowRagee("the command's ports are either null or invalid " +
-                                      String.Format(" GetAsmIndicesCmdPort is port [{0}]", GetAsmIndicesCmdPort) +
-                                      String.Format(" GetTokenIdsCmdPort is port [{0}]", GetTokenIdsCmdPort) +
-                                      String.Format(" GetTokenNamesCmdPort is port [{0}]", GetTokenNamesCmdPort));
+                                      $" GetAsmIndicesCmdPort is port [{GetAsmIndicesCmdPort}]" +
+                                      $" GetTokenIdsCmdPort is port [{GetTokenIdsCmdPort}]" +
+                                      $" GetTokenNamesCmdPort is port [{GetTokenNamesCmdPort}]");
 
             _taskFactory = new TaskFactory();
             _taskFactory.StartNew(() => HostCmd(new GetAsmIndices(this), GetAsmIndicesCmdPort.Value));
@@ -400,16 +379,13 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
 
         }
 
-        protected override string MyName
-        {
-            get { return "InvokeAssemblyAnalysis"; }
-        }
+        protected override string MyName => "InvokeAssemblyAnalysis";
 
-        protected override String Help()
+        protected override String GetHelpText()
         {
             var help = new StringBuilder();
             help.AppendLine(" ----");
-            help.AppendLine(String.Format(" [{0}] ", Assembly.GetExecutingAssembly().GetName().Name));
+            help.AppendLine($" [{Assembly.GetExecutingAssembly().GetName().Name}] ");
             help.AppendLine("");
             help.AppendLine(" ");
             help.AppendLine(" This exe will open a socket listeners on the ");

@@ -45,11 +45,11 @@ namespace NoFuture.Util.NfConsole
         }
         public abstract byte[] Execute(byte[] arg);
 
-        public void WriteOutputToDisk(byte[] bytes)
+        public void WriteOutputToDisk(byte[] bytes, string fileExt = ".json")
         {
             var tn = GetType().FullName;
             var dir = MyProgram == null ? TempDirectories.AppData : MyProgram.LogDirectory;
-            File.WriteAllBytes(Path.Combine(dir, tn + ".json"), bytes);
+            File.WriteAllBytes(Path.Combine(dir, tn + fileExt), bytes);
         }
     }
 }

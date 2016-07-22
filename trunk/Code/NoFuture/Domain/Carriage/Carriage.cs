@@ -79,7 +79,7 @@ namespace NoFuture.Domain
 
         protected override string MyName => "NoFuture.Domain.Carriage";
 
-        protected override string Help()
+        protected override string GetHelpText()
         {
             var help = new StringBuilder();
             help.AppendLine("Usage: [options] ");

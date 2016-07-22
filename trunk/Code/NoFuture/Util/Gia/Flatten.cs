@@ -21,7 +21,7 @@ namespace NoFuture.Util.Gia
     {
         #region constants
         public const string GET_FLAT_ASM_PORT_CMD_SWITCH = "nfGetFlattenAssemblyPort";
-        public const int DF_START_PORT = 5062;
+        public const int DF_START_PORT = NfDefaultPorts.FLATTEN_ASSEMBLY;
         #endregion
 
         #region fields

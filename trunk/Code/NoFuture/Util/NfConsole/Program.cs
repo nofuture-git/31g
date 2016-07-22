@@ -3,25 +3,44 @@ using System.Configuration;
 using System.IO;
 using System.Reflection;
 using System.Diagnostics;
+using System.Linq;
 using NoFuture.Shared;
 
 
 namespace NoFuture.Util.NfConsole
 {
+    /// <summary>
+    /// A Nf type to extend for basic console apps
+    /// </summary>
     public abstract class Program
     {
+        #region constants
+        protected internal static string[] HelpCmdLnArgs = {"-h", "-help", "/?", "--help" };
+        protected internal const string TEMP_DIR_DEBUG = "NoFuture.TempDirectories.Debug";
+        protected internal const string ROOT_BIN_DIR = "NoFuture.BinDirectories.Root";
+        protected internal const string USE_REFLX_LOAD = "NoFuture.Shared.Constants.UseReflectionOnlyLoad";
+        #endregion
+
+        #region fields
         private string _logName;
         private DateTime _startTime;
         private static readonly object _printLock = new object();
         protected readonly string[] _args;
         protected readonly bool _isVisable;
+        #endregion
 
+        #region ctors
         protected Program(string[] args, bool isVisable)
         {
             _args = args;
             _isVisable = isVisable;
         }
+        #endregion
 
+        #region properties
+        /// <summary>
+        /// A name used for creating a log folder in the <see cref="TEMP_DIR_DEBUG"/>
+        /// </summary>
         protected abstract string MyName { get; }
 
         /// <summary>
@@ -31,7 +50,7 @@ namespace NoFuture.Util.NfConsole
         {
             get
             {
-                var logDir = ConfigurationManager.AppSettings["NoFuture.TempDirectories.Debug"];
+                var logDir = ConfigurationManager.AppSettings[TEMP_DIR_DEBUG];
                 if (string.IsNullOrWhiteSpace(logDir))
                     logDir = TempDirectories.AppData;
                 var myName = MyName;
@@ -63,6 +82,19 @@ namespace NoFuture.Util.NfConsole
         /// </summary>
         public Tuple<int, string> ProgressMessageState { get; set; }
 
+        /// <summary>
+        /// The original cmd line args passed in at ctor time.
+        /// </summary>
+        public string[] MyArgs => _args;
+
+        #endregion
+
+        #region methods
+        /// <summary>
+        /// Helper method to get a possiable int from some string the the config.
+        /// </summary>
+        /// <param name="cval"></param>
+        /// <returns></returns>
         protected internal int? ResolveInt(string cval)
         {
             int valOut;
@@ -71,6 +103,11 @@ namespace NoFuture.Util.NfConsole
             return null;
         }
 
+        /// <summary>
+        /// Helper method to get a possiable bool from some string in the config.
+        /// </summary>
+        /// <param name="cval"></param>
+        /// <returns></returns>
         protected internal bool? ResolveBool(string cval)
         {
             bool valOut;
@@ -78,6 +115,7 @@ namespace NoFuture.Util.NfConsole
                 return valOut;
             return null;
         }
+
         /// <summary>
         /// Prints a header then a kind of console progress bar.
         /// Does NOT write to <see cref="LogFile"/>.
@@ -116,6 +154,7 @@ namespace NoFuture.Util.NfConsole
                 Debug.WriteLine(ex.StackTrace);
             }
         }
+
         /// <summary>
         /// Prints to console and writes to <see cref="LogFile"/>
         /// </summary>
@@ -138,6 +177,7 @@ namespace NoFuture.Util.NfConsole
                 Debug.WriteLine(ex.StackTrace);
             }
         }
+
         /// <summary>
         /// Prints to console and writes to <see cref="LogFile"/>
         /// </summary>
@@ -171,6 +211,9 @@ namespace NoFuture.Util.NfConsole
             }
         }
 
+        /// <summary>
+        /// Performs boilerplate code settings
+        /// </summary>
         protected internal void StartConsole()
         {
             //set app domain cfg
@@ -182,7 +225,7 @@ namespace NoFuture.Util.NfConsole
                     Console.WindowWidth = 100;
                     ConsoleCmd.SetConsoleAsTransparent();
                     Console.ForegroundColor = ConsoleColor.Green;
-                    Console.Title = Assembly.GetExecutingAssembly().GetName().Name;
+                    Console.Title = Assembly.GetEntryAssembly().GetName().Name;
                     PrintToConsole($"{Console.Title} started");
 
                 }
@@ -196,15 +239,22 @@ namespace NoFuture.Util.NfConsole
             FxPointers.AddResolveAsmEventHandlerToDomain();            
         }
 
-        protected internal bool PrintHelp()
+        /// <summary>
+        /// Prints the contents of <see cref="GetHelpText"/> to the console.
+        /// </summary>
+        /// <returns>
+        /// Returns true if there is at least one cmd line arg and its value is 
+        /// found in <see cref="HelpCmdLnArgs"/>.
+        /// </returns>
+        protected internal bool PrintHelp(string[] cmdLnArgs = null)
         {
+            if (cmdLnArgs == null)
+                cmdLnArgs = _args;
             //test if there are any args, if not just leave with no message
-            if (_args.Length > 0 && (_args[0] == "-h" || _args[0] == "-help" || _args[0] == "/?" || _args[0] == "--help"))
-            {
-                Console.WriteLine(Help());
-                return true;
-            }
-            return false;
+            if (cmdLnArgs.Length <= 0 || HelpCmdLnArgs.All(x => x != cmdLnArgs[0]?.ToLower()))
+                return false;
+            Console.WriteLine(GetHelpText());
+            return true;
         }
 
         /// <summary>
@@ -213,15 +263,20 @@ namespace NoFuture.Util.NfConsole
         protected internal void SetReflectionOnly()
         {
             var useReflectionOnly =
-                ResolveBool(ConfigurationManager.AppSettings["NoFuture.Shared.Constants.UseReflectionOnlyLoad"]);
+                ResolveBool(ConfigurationManager.AppSettings[USE_REFLX_LOAD]);
             NfConfig.UseReflectionOnlyLoad = useReflectionOnly != null && useReflectionOnly.Value;
         }
+
         /// <summary>
         /// Standard help for a console app - does NOT write to <see cref="LogFile"/>
         /// </summary>
         /// <returns></returns>
-        protected abstract string Help();
+        protected abstract string GetHelpText();
 
+        /// <summary>
+        /// Parse the console cmd line args into instance variables of the given type.
+        /// </summary>
         protected abstract void ParseProgramArgs();
+        #endregion 
     }
 }

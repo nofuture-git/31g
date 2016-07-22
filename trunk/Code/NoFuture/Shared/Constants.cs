@@ -59,6 +59,8 @@ namespace NoFuture.Shared
 
         public const char DEFAULT_TYPE_SEPARATOR = '.';
         public const string TYPE_METHOD_NAME_SPLIT_ON = "::";
+
+        public const int SOCKET_LISTEN_NUM = 5;
         /// <summary>
         /// The max size allowed by PowerShell 3.0's ConvertTo-Json cmdlet.
         /// </summary>

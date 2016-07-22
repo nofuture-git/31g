@@ -146,7 +146,7 @@ namespace NoFuture.Hbm
         /// is - a constant.  The process will send UTF8 string versions of <see cref="InvokeStoredProcExeMessage"/>
         /// across the socket and the manager, listening on the same port, will receive and record them.
         /// </summary>
-        public const int SOCKET_COMM_PORT = 45121;
+        public const int SOCKET_COMM_PORT = Tools.NfDefaultPorts.HBM_INVOKE_STORED_PROC_MGR;
         #endregion
 
         #region message communication

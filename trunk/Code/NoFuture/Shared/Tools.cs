@@ -68,10 +68,22 @@
         public static string UtilPosHost { get; set; }
     }
 
+    public static class NfDefaultPorts
+    {
+        public const int DOMAIN_ENGINE = 1138;
+        public const int HOST_PROC = 780;
+        public const int ASSEMBLY_ANALYSIS = 5059;//will add to this two times
+        public const int FLATTEN_ASSEMBLY = 5062;
+        public const int PART_OF_SPEECH_PARSER_HOST = 5063;
+        public const int SJCL_TO_PLAIN_TXT = 5064;
+        public const int SJCL_TO_CIPHER_TXT = 5065;
+        public const int SJCL_HASH_PORT = 5066;
+        public const int HBM_INVOKE_STORED_PROC_MGR = 45121;
+    }
+
     public class BinTools
     {
         public static string Ffmpeg { get; set; }
         public static string YoutubeDl { get; set; }
-
     }
 }

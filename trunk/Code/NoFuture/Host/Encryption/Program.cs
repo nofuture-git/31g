@@ -92,7 +92,6 @@ namespace NoFuture.Host.Encryption
     {
         #region constants
         public const int BRING_ONLINE_DEFAULT_WAIT_MS = 1000;
-        public const int LISTEN_NUM_REQUEST = 5;
         #endregion
 
         #region fields
@@ -309,7 +308,7 @@ namespace NoFuture.Host.Encryption
             PrintToConsole("----");
         }
 
-        protected override string Help()
+        protected override string GetHelpText()
         {
             var help = new StringBuilder();
             help.AppendLine("Usage:  [File Operations | sjcl.js Host Operations ]");
@@ -422,9 +421,9 @@ namespace NoFuture.Host.Encryption
                 ? argHash[SWITCHES.HASH_PORT].ToString()
                 : Cfg.AppSettings[SWITCHES.HASH_PORT];
 
-            sjclBkPt = ResolvePort(ptp).GetValueOrDefault();
-            sjclBkCt = ResolvePort(ctp).GetValueOrDefault(0);
-            sjclHp = ResolvePort(hp).GetValueOrDefault(0);
+            sjclBkPt = ResolvePort(ptp).GetValueOrDefault(Tools.NfDefaultPorts.SJCL_TO_PLAIN_TXT);
+            sjclBkCt = ResolvePort(ctp).GetValueOrDefault(Tools.NfDefaultPorts.SJCL_TO_CIPHER_TXT);
+            sjclHp = ResolvePort(hp).GetValueOrDefault(Tools.NfDefaultPorts.SJCL_HASH_PORT);
 
             if (argHash.ContainsKey(SWITCHES.HASH_SALT))
                 sjclHashSalt = argHash[SWITCHES.HASH_SALT].ToString();
