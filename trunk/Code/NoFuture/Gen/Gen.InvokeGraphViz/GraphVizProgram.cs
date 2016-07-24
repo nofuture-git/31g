@@ -11,6 +11,7 @@ using NoFuture.Tools;
 using NoFuture.Util.Binary;
 using NoFuture.Util.Gia;
 using NoFuture.Util.Gia.Args;
+using NoFuture.Util.Gia.GraphViz;
 using NoFuture.Util.NfConsole;
 
 namespace NoFuture.Gen.InvokeGraphViz
@@ -35,6 +36,7 @@ namespace NoFuture.Gen.InvokeGraphViz
         public string OutputFileName { get; set; }
         public object LimitOn { get; set; }
         public bool DisplayEnums { get; set; }
+        public bool WithNamespaceOutlines { get; set; }
 
         protected override string MyName => "InvokeGraphViz";
 
@@ -75,7 +77,9 @@ namespace NoFuture.Gen.InvokeGraphViz
                         p.OutputFileName = $"{p.TypeName.Replace(".", "")}ClassDiagram.gv";
                         break;
                     case Settings.ASM_OBJ_GRAPH_DIAGRAM:
-                        var asmDia = new Util.Gia.GraphViz.AsmDiagram(p.Assembly);
+                        var asmDia = p.WithNamespaceOutlines
+                            ? new AsmDiagram(p.Assembly, true)
+                            : new AsmDiagram(p.Assembly);
                         p.GraphText = asmDia.ToGraphVizString();
                         p.OutputFileName = $"{p.Assembly.GetName().Name}AsmDiagram.gv";
                         break;
@@ -169,6 +173,10 @@ namespace NoFuture.Gen.InvokeGraphViz
             help.AppendLine(string.Format(" [{0}{1}]      Optional switch to have Enum's values displayed",
                 Constants.CMD_LINE_ARG_SWITCH, Settings.INVOKE_GRAPHVIZ_DISPLAY_ENUMS));
             help.AppendLine("");
+            help.AppendLine(string.Format(" [{0}{1}]      Optional switch to have Assembly Diagram outlined ",
+                Constants.CMD_LINE_ARG_SWITCH, Settings.ASM_OBJ_OUTLINE_NS));
+            help.AppendLine("                        namespaces.");
+            help.AppendLine("");
             help.AppendLine(string.Format(" {0}{1}{2}[{3}]      The kind of diagram to create.",
                 Constants.CMD_LINE_ARG_SWITCH, Settings.INVOKE_GRAPHVIZ_DIAGRAM_TYPE, Constants.CMD_LINE_ARG_ASSIGN,
                 string.Join(" | ", _implementedDiagrams)));
@@ -223,7 +231,10 @@ namespace NoFuture.Gen.InvokeGraphViz
             DisplayEnums = argHash.ContainsKey(Settings.INVOKE_GRAPHVIZ_DISPLAY_ENUMS);
             DiagramType = argHash[Settings.INVOKE_GRAPHVIZ_DIAGRAM_TYPE].ToString();
             if (DiagramType == Settings.ASM_OBJ_GRAPH_DIAGRAM)
+            {
+                WithNamespaceOutlines = argHash.ContainsKey(Settings.ASM_OBJ_OUTLINE_NS);
                 return;
+            }
 
             if (!argHash.ContainsKey(Settings.INVOKE_FULL_TYPE_NAME_SWITCH) ||
                 argHash[Settings.INVOKE_FULL_TYPE_NAME_SWITCH] == null)

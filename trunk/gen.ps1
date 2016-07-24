@@ -6,11 +6,10 @@ if(-not [NoFuture.MyFunctions]::FunctionFiles.ContainsValue($MyInvocation.MyComm
 [NoFuture.MyFunctions]::FunctionFiles.Add("Get-FlattenedType",$MyInvocation.MyCommand)
 [NoFuture.MyFunctions]::FunctionFiles.Add("Write-CsCodeAutoMapper",$MyInvocation.MyCommand)
 [NoFuture.MyFunctions]::FunctionFiles.Add("Write-CsCodeAssignRand",$MyInvocation.MyCommand)
-[NoFuture.MyFunctions]::FunctionFiles.Add("Measure-TypesWholeWords",$MyInvocation.MyCommand)
-[NoFuture.MyFunctions]::FunctionFiles.Add("Measure-AssemblyWholeWords",$MyInvocation.MyCommand)
 [NoFuture.MyFunctions]::FunctionFiles.Add("Get-TypePdbLines",$MyInvocation.MyCommand)
 [NoFuture.MyFunctions]::FunctionFiles.Add("Get-DotGraphFlattenedType",$MyInvocation.MyCommand)
 [NoFuture.MyFunctions]::FunctionFiles.Add("Get-DotGraphClassDiagram",$MyInvocation.MyCommand)
+[NoFuture.MyFunctions]::FunctionFiles.Add("Get-DotGraphAssemblyDiagram",$MyInvocation.MyCommand)
 }
 }catch{
     Write-Host "file is being loaded independent of 'start.ps1' - some functions may not be available."
@@ -796,7 +795,9 @@ function Get-DotGraphAssemblyDiagram
     Param
     (
         [Parameter(Mandatory=$true,position=0)]
-        [string] $AssemblyPath
+        [string] $AssemblyPath,
+        [Parameter(Mandatory=$false,position=1)]
+        [switch] $OutlineNamespaces
 
     )
     Process
@@ -817,12 +818,46 @@ function Get-DotGraphAssemblyDiagram
         $asmName = [System.Reflection.AssemblyName]::GetAssemblyName($AssemblyPath)
         Write-Progress -Activity ("Getting assembly '{0}' as diagram" -f $asmName.Name)  -Status "Working" -PercentComplete 50
 
-        $fileOutPath = [NoFuture.Gen.Etc]::RunIsolatedAsmDiagram($AssemblyPath)
+        if($OutlineNamespaces){
+            $fileOutPath = [NoFuture.Gen.Etc]::RunIsolatedAsmDiagram($AssemblyPath,$true)
+        }
+        else{
+            $fileOutPath = [NoFuture.Gen.Etc]::RunIsolatedAsmDiagram($AssemblyPath)
+        }
 
         Write-Progress -Activity ("Creating graph from {0}" -f $asmName.Name) -Status "Working" -PercentComplete 88
 
         $graphFile = Invoke-DotExe -GraphvizFile $fileOutPath
-        
+
+        #add a style sheet 
+        $cssFile = Join-Path (Split-Path $graphFile -Parent) ([System.IO.Path]::GetFileNameWithoutExtension($graphFile) + ".css")
+
+        $cssContent = @"
+.edge:hover  > path, .edge:hover  > polygon {
+	cursor: crosshair;
+	stroke: deepskyblue;
+	stroke-width: 2;
+}
+
+.node:hover {
+	cursor: crosshair;
+	fill: beige;
+	stroke: deepskyblue;
+	stroke-width: 2;
+}        
+"@
+
+        [System.IO.File]::WriteAllText($cssFile, $cssContent)
+
+        $graphvizContent = [System.IO.File]::ReadAllLines($graphFile)
+
+        $introCss = @(
+            "<?xml version=`"1.0`" encoding=`"UTF-8`" standalone=`"no`"?>",
+            "<?xml-stylesheet type=`"text/css`" href=`"Bfw.DtoAsmDiagram.css`"?>"
+            )
+        $introCss += $graphvizContent[1..($graphvizContent.Length -1)]
+        [System.IO.File]::WriteAllLines($graphFile,$introCss)
+
         #display the svg with whatever program is assoc. to that extension
         Invoke-Expression -Command "& $graphFile"
     }

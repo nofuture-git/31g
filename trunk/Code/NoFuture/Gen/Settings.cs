@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Security.Cryptography;
-using NoFuture.Exceptions;
 using NoFuture.Gen.LangRules;
 
 namespace NoFuture.Gen
@@ -20,6 +18,7 @@ namespace NoFuture.Gen
         public const string CLASS_DIAGRAM = "classDia";
         public const string FLATTENED_DIAGRAM = "flattened";
         public const string ASM_OBJ_GRAPH_DIAGRAM = "asmObjGraph";
+        public const string ASM_OBJ_OUTLINE_NS = "withNamespaceOutline";
         #endregion
 
         #region settings

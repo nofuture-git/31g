@@ -63,7 +63,7 @@ namespace NoFuture.Gen
             var argType = ConsoleCmd.ConstructCmdLineArgs(Settings.INVOKE_FULL_TYPE_NAME_SWITCH, typeFullName);
             var diagramType = ConsoleCmd.ConstructCmdLineArgs(Settings.INVOKE_GRAPHVIZ_DIAGRAM_TYPE,
                 Settings.CLASS_DIAGRAM);
-            return RunGraphViz(argPath, argType, diagramType, null, null, maxWaitInSeconds);
+            return RunGraphViz(argPath, argType, diagramType, maxWaitInSeconds);
         }
 
         /// <summary>
@@ -88,7 +88,7 @@ namespace NoFuture.Gen
             var argEn = displayEnums
                 ? ConsoleCmd.ConstructCmdLineArgs(Settings.INVOKE_GRAPHVIZ_DISPLAY_ENUMS, null)
                 : null;
-            return RunGraphViz(argPath, argType, diagramType, argP, argEn, maxWaitInSeconds);
+            return RunGraphViz(argPath, argType, diagramType, maxWaitInSeconds, argP, argEn);
         }
 
         /// <summary>
@@ -96,18 +96,24 @@ namespace NoFuture.Gen
         /// on another process to keep the loaded assemblies isolated from the invoking app domain.
         /// </summary>
         /// <param name="assemblyPath"></param>
+        /// <param name="withNamespaceSubgraphs"></param>
         /// <returns></returns>
-        public static string RunIsolatedAsmDiagram(string assemblyPath)
+        public static string RunIsolatedAsmDiagram(string assemblyPath, bool withNamespaceSubgraphs = false)
         {
             var argPath = ConsoleCmd.ConstructCmdLineArgs(Settings.INVOKE_ASM_PATH_SWITCH, assemblyPath);
             var diagramType = ConsoleCmd.ConstructCmdLineArgs(Settings.INVOKE_GRAPHVIZ_DIAGRAM_TYPE,
                 Settings.ASM_OBJ_GRAPH_DIAGRAM);
-            return RunGraphViz(argPath, null, diagramType, null, null, 60);
+            if (withNamespaceSubgraphs)
+            {
+                var withNsOutlines = ConsoleCmd.ConstructCmdLineArgs(Settings.ASM_OBJ_OUTLINE_NS, null);
+                return RunGraphViz(argPath, null, diagramType, 60, withNsOutlines);
+            }
+
+            return RunGraphViz(argPath, null, diagramType, 60);
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        private static string RunGraphViz(string argPath, string argType, string diagramType, string primitiveLimit,
-            string displayEnumsArg, int maxWaitInSeconds)
+        private static string RunGraphViz(string argPath, string argType, string diagramType, int maxWaitInSeconds, params string[] additionalArgs)
         {
             var invokeGraphVizPath = CustomTools.InvokeGraphViz;
             if (string.IsNullOrWhiteSpace(invokeGraphVizPath))
@@ -118,10 +124,8 @@ namespace NoFuture.Gen
             string buffer = null;
 
             var args = new List<string> {argPath, argType, diagramType};
-            if (!string.IsNullOrWhiteSpace(primitiveLimit))
-                args.Add(primitiveLimit);
-            if (!string.IsNullOrWhiteSpace(displayEnumsArg))
-                args.Add(displayEnumsArg);
+            foreach(var arg in additionalArgs.Where(x => !string.IsNullOrWhiteSpace(x)))
+                args.Add(arg);
 
             using (var invokeGetCgType = new Process
             {
