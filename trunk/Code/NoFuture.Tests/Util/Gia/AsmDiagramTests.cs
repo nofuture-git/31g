@@ -47,7 +47,7 @@ namespace NoFuture.Tests.Util.Gia
         {
             var testSubject = new NoFuture.Util.Gia.GraphViz.AsmDiagram(GetTestAsm());
 
-            var tesdf = testSubject.Items;
+            var tesdf = testSubject.Edges;
 
             var t = tesdf.FirstOrDefault(x => x.NodeName[0] == "WorkOrder" && x.NodeName[1] == "Product");
             Assert.IsNotNull(t);

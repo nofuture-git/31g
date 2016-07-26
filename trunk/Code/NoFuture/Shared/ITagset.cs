@@ -7,6 +7,7 @@ namespace NoFuture.Util.Pos
     {
         string CharacterCodes { get; }
         string Value { get; set; }
+        string Name { get; }
     }
 
     [Serializable]
@@ -17,6 +18,8 @@ namespace NoFuture.Util.Pos
         public abstract string CharacterCodes { get; }
         [DataMember]
         public string Value { get; set; }
+        [DataMember]
+        public string Name => GetType().Name;
 
         public static string GetDescription(ITagset t)
         {

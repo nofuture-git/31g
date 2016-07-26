@@ -442,3 +442,7 @@ pleonasm - use of more words than are necessary to convey meaning
 allusion - indirect reference 
 illusion - deception (mistaken preception of reality)
 delusion - false belief (belief counter the evidence)
+Semiotics - study of meaning-making, divided into
+ semantics - relation between signs and the things to which they refer
+ syntactics - relation amoung or between signs in formal structure
+ pragmatics - relation between signs and sign-using agents 

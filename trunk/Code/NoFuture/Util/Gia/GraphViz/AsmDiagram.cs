@@ -8,9 +8,11 @@ using NoFuture.Util.Binary;
 
 namespace NoFuture.Util.Gia.GraphViz
 {
+    [Serializable]
     public class AsmDiagram
     {
         #region inner types
+        [Serializable]
         public class AsmDiagramEdge
         {
             private readonly string _node1Name;
@@ -68,7 +70,7 @@ namespace NoFuture.Util.Gia.GraphViz
 
             }
         }
-
+        [Serializable]
         public class AsmDiagramNode
         {
             private readonly string _origText;
@@ -123,7 +125,7 @@ namespace NoFuture.Util.Gia.GraphViz
                 }
             }
         }
-
+        [Serializable]
         public class AsmDiagramSubGraph
         {
             private readonly List<AsmDiagramNode> _nsNodes;

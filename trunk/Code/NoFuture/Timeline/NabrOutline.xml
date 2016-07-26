@@ -1,0 +1,3180 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<bible name="New American Bible Revised">
+  <testament name="Old Testament">
+    <category name="The Pentateuch">
+      <book name="Genesis" num-of-chapters="50">
+        <division title="The Creation of the World" start="1:1" end="2:3">
+        </division>
+        <division title="The Story of the Nations" start="2:4" end="11:26">
+          <sub-division title="The Creation of the Man and the Woman, Their Offspring, and the Spread of Civilization" start="2:4" end="4:26">
+            <section title="The Garden of Eden." start="2:4" />
+            <section title="Expulsion from Eden." start="3:1" />
+            <section title="Cain and Abel." start="4:1" />
+            <section title="Descendants of Cain and Seth." start="4:17" />
+          </sub-division>
+          <sub-division title="The Pre-flood Generations" start="5:1" end="6:8">
+            <section title="Generations: Adam to Noah." start="5:1" />
+            <section title="Origin of the Nephilim." start="6:1" />
+            <section title="Warning of the Flood." start="6:5" />
+          </sub-division>
+          <sub-division title="The Flood and the Renewed Blessing" start="6:9" end="9:29">
+            <section title="Preparation for the Flood." start="6:14" />
+            <section title="The Great Flood." start="7:6" />
+            <section title="Covenant with Noah." start="9:1" />
+            <section title="Noah and His Sons." start="9:18" />
+          </sub-division>
+          <sub-division title="The Populating of the World and the Prideful City" start="10:1" end="11:9">
+            <section title="Table of the Nations." start="10:1" />
+            <section title="Tower of Babel." start="11:1" />
+          </sub-division>
+          <sub-division title="The Genealogy from Shem to Terah" start="11:10" end="11:26">
+            <section title="Descendants from Shem to Abraham." start="11:10" />
+          </sub-division>
+        </division>
+        <division title="The Story of the Ancestors of Israel" start="11:27" end="50:26">
+          <sub-division title="The Story of Abraham and Sarah" start="11:27" end="25:18">
+            <section title="Terah." start="11:27" />
+            <section title="Abram’s Call and Migration." start="12:1" />
+            <section title="Abram and Sarai in Egypt." start="12:10" />
+            <section title="Abram and Lot Part." start="13:1" />
+            <section title="The Four Kings." start="14:1" />
+            <section title="The Covenant with Abram." start="15:1" />
+            <section title="Birth of Ishmael." start="16:1" />
+            <section title="Covenant of Circumcision." start="17:1" />
+            <section title="Abraham’s Visitors." start="18:1" />
+            <section title="Abraham Intercedes for Sodom." start="18:16" />
+            <section title="Destruction of Sodom and Gomorrah." start="19:1" />
+            <section title="Moabites and Ammonites." start="19:30" />
+            <section title="Abraham at Gerar." start="20:1" />
+            <section title="Birth of Isaac." start="21:1" />
+            <section title="The Covenant at Beer-sheba." start="21:22" />
+            <section title="The Testing of Abraham." start="22:1" />
+            <section title="Nahor’s Descendants." start="22:20" />
+            <section title="Purchase of a Burial Plot." start="23:1" />
+            <section title="Isaac and Rebekah." start="24:1" />
+            <section title="Abraham’s Sons by Keturah." start="25:1" />
+            <section title="Death of Abraham." start="25:7" />
+            <section title="Descendants of Ishmael." start="25:12" />
+          </sub-division>
+          <sub-division title="The Story of Isaac and Jacob" start="25:19" end="36:43">
+            <section title="Birth of Esau and Jacob." start="25:19" />
+            <section title="Isaac and Abimelech." start="26:1" />
+            <section title="Jacob’s Deception." start="27:1" />
+            <section title="Jacob Sent to Laban." start="27:46" />
+            <section title="Jacob’s Dream at Bethel." start="28:10" />
+            <section title="Arrival in Haran." start="29:1" />
+            <section title="Marriage to Leah and Rachel." start="29:15" />
+            <section title="Jacob’s Children." start="29:31" />
+            <section title="Jacob Outwits Laban." start="30:25" />
+            <section title="Flight from Laban." start="31:1" />
+            <section title="Jacob and Laban in Gilead." start="31:25" />
+            <section title="Envoys to Esau." start="32:4" />
+            <section title="Jacob’s New Name." start="32:23" />
+            <section title="Jacob and Esau Meet." start="33:1" />
+            <section title="The Rape of Dinah." start="34:1" />
+            <section title="Revenge of Jacob’s Sons." start="34:13" />
+            <section title="Bethel Revisited." start="35:1" />
+            <section title="Jacob’s Family." start="35:16" />
+            <section title="Edomite Lists." start="36:1" />
+          </sub-division>
+          <sub-division title="The Story of Joseph" start="37:1" end="50:26">
+            <section title="Joseph Sold into Egypt." start="37:1" />
+            <section title="Judah and Tamar." start="38:1" />
+            <section title="Joseph’s Temptation." start="39:1" />
+            <section title="The Dreams Interpreted." start="40:1" />
+            <section title="Pharaoh’s Dream." start="41:1" />
+            <section title="The Brothers’ First Journey to Egypt." start="42:1" />
+            <section title="The Second Journey to Egypt." start="43:1" />
+            <section title="Final Test." start="44:1" />
+            <section title="The Truth Revealed." start="45:1" />
+            <section title="Migration to Egypt." start="46:1" />
+            <section title="Settlement in Goshen." start="47:1" />
+            <section title="Joseph’s Land Policy." start="47:13" />
+            <section title="Israel Blesses Ephraim and Manasseh." start="47:27" />
+            <section title="Jacob’s Testament." start="49:1" />
+            <section title="Farewell and Death." start="49:28" />
+            <section title="Jacob’s Funeral." start="50:1" />
+            <section title="Plea for Forgiveness." start="50:15" />
+            <section title="Death of Joseph." start="50:24" />
+          </sub-division>
+        </division>
+      </book>
+      <book name="Exodus" num-of-chapters="40">
+        <division title="Introduction: The Oppression of the Israelites in Egypt" start="1:1" end="2:22">
+          <section title="Jacob’s Descendants in Egypt." start="1:1" />
+          <section title="The Oppression." start="1:8" />
+          <section title="Command to the Midwives." start="1:15" />
+          <section title="Birth and Adoption of Moses." start="2:1" />
+          <section title="Moses’ Flight to Midian." start="2:11" />
+        </division>
+        <division title="The Call and Commission of Moses" start="2:23" end="7:7">
+          <section title="The Burning Bush." start="2:23" />
+          <section title="The Call and Commission of Moses." start="3:7" />
+          <section title="Aaron’s Office as Assistant." start="4:10" />
+          <section title="Moses’ Return to Egypt." start="4:18" />
+          <section title="Pharaoh’s Hardness of Heart." start="5:1" />
+          <section title="Complaint of the Foremen." start="5:15" />
+          <section title="Renewal of God’s Promise." start="5:22" />
+          <section title="Confirmation of the Promise to the Ancestors." start="6:2" />
+          <section title="Genealogy of Moses and Aaron." start="6:14" />
+        </division>
+        <division title="The Contest with Pharaoh" start="7:8" end="13:16">
+          <section title="The Staff Turned into a Serpent." start="7:8" />
+          <section title="First Plague: Water Turned into Blood." start="7:14" />
+          <section title="Second Plague: The Frogs." start="7:25" />
+          <section title="Third Plague: The Gnats." start="8:12" />
+          <section title="Fourth Plague: The Flies." start="8:16" />
+          <section title="Fifth Plague:The Pestilence." start="9:1" />
+          <section title="Sixth Plague: The Boils." start="9:8" />
+          <section title="Seventh Plague: The Hail." start="9:13" />
+          <section title="Eighth Plague: The Locusts." start="10:1" />
+          <section title="Ninth Plague: The Darkness." start="10:21" />
+          <section title="Tenth Plague: The Death of the Firstborn." start="11:1" />
+          <section title="The Passover Ritual Prescribed." start="12:1" />
+          <section title="Promulgation of the Passover." start="12:21" />
+          <section title="Death of the Firstborn." start="12:29" />
+          <section title="Permission to Depart." start="12:31" />
+          <section title="Departure from Egypt." start="12:37" />
+          <section title="Law of the Passover." start="12:43" />
+          <section title="Consecration of Firstborn." start="13:1" />
+        </division>
+        <division title="The Deliverance of the Israelites from Pharaoh and Victory at the Sea" start="13:17" end="15:21">
+          <section title="Toward the Red Sea." start="13:17" />
+          <section title="Crossing the Red Sea." start="14:10" />
+          <section title="Rout of the Egyptians." start="14:23" />
+        </division>
+        <division title="The Journey in the Wilderness to Sinai" start="15:22" end="18:27">
+          <section title="At Marah and Elim." start="15:22" />
+          <section title="The Wilderness of Sin." start="16:1" />
+          <section title="The Quail and the Manna." start="16:4" />
+          <section title="Regulations Regarding the Manna." start="16:16" />
+          <section title="Water from the Rock." start="17:1" />
+          <section title="Battle with Amalek." start="17:8" />
+          <section title="Meeting with Jethro." start="18:1" />
+          <section title="Appointment of Minor Judges." start="18:13" />
+        </division>
+        <division title="Covenant and Legislation at Mount Sinai" start="19:1" end="31:18">
+          <section title="Arrival at Sinai." start="19:1" />
+          <section title="The Great Theophany." start="19:16" />
+          <section title="The Ten Commandments." start="20:1" />
+          <section title="Moses Accepted as Mediator." start="20:18" />
+          <section title="The Covenant Code." start="20:22" />
+          <section title="Laws Regarding Slaves." start="21:1" />
+          <section title="Personal Injury." start="21:12" />
+          <section title="Property Damage." start="21:33" />
+          <section title="Trusts and Loans." start="22:6" />
+          <section title="Social Laws." start="22:15" />
+          <section title="Religious Laws." start="23:10" />
+          <section title="Reward of Fidelity." start="23:20" />
+          <section title="Ratification of the Covenant." start="24:1" />
+          <section title="Moses on the Mountain." start="24:12" />
+          <section title="Collection of Materials." start="25:1" />
+          <section title="Plan of the Ark." start="25:10" />
+          <section title="The Table." start="25:23" />
+          <section title="The Menorah." start="25:31" />
+          <section title="The Tent Cloth." start="26:1" />
+          <section title="The Framework." start="26:15" />
+          <section title="The Veils." start="26:31" />
+          <section title="The Altar for Burnt Offerings." start="27:1" />
+          <section title="Court of the Tabernacle." start="27:9" />
+          <section title="Oil for the Lamps." start="27:20" />
+          <section title="The Priestly Vestments." start="28:1" />
+          <section title="The Ephod and Breastpiece." start="28:6" />
+          <section title="Other Vestments." start="28:31" />
+          <section title="Consecration of the Priests." start="29:1" />
+          <section title="Installation Sacrifices." start="29:10" />
+          <section title="Altar of Incense." start="30:1" />
+          <section title="Census Tax." start="30:11" />
+          <section title="The Basin." start="30:17" />
+          <section title="The Anointing Oil." start="30:22" />
+          <section title="The Incense." start="30:34" />
+          <section title="Choice of Artisans." start="31:1" />
+          <section title="Sabbath Laws." start="31:12" />
+        </division>
+        <division title="Israel’s Apostasy and God’s Renewal of the Covenant" start="32:1" end="34:35">
+          <section title="The Golden Calf." start="32:1" />
+          <section title="The Atonement." start="32:30" />
+          <section title="Moses’ Intimacy with God." start="33:7" />
+          <section title="Renewal of the Tablets." start="34:1" />
+          <section title="Religious Laws." start="34:10" />
+          <section title="Radiance of Moses’ Face." start="34:27" />
+        </division>
+        <division title="The Building of the Tabernacle and the Descent of God’s Glory upon It" start="35:1" end="40:38">
+          <section title="Sabbath Regulations." start="35:1" />
+          <section title="Collection of Materials." start="35:4" />
+          <section title="Call for Artisans." start="35:10" />
+          <section title="The Contribution." start="35:20" />
+          <section title="The Artisans." start="35:30" />
+          <section title="The Tent Cloth and Coverings." start="36:8" />
+          <section title="The Framework." start="36:20" />
+          <section title="The Veil." start="36:35" />
+          <section title="The Ark." start="37:1" />
+          <section title="The Table." start="37:10" />
+          <section title="The Menorah." start="37:17" />
+          <section title="The Altar of Incense." start="37:25" />
+          <section title="The Altar for Burnt Offerings." start="38:1" />
+          <section title="The Court of the Tabernacle." start="38:9" />
+          <section title="Amount of Metal Used." start="38:21" />
+          <section title="The Priestly Vestments." start="39:1" />
+          <section title="Other Vestments." start="39:22" />
+          <section title="Presentation of the Work to Moses." start="39:32" />
+          <section title="Setting Up the Tabernacle." start="40:1" />
+          <section title="God’s Presence in the Tabernacle." start="40:34" />
+        </division>
+      </book>
+      <book name="Leviticus" num-of-chapters="27">
+        <division title="Ritual of Sacrifices" start="1:1" end="7:38">
+          <sub-division title="Instructions for the Israelites" start="1:1" end="5:26">
+            <section title="Burnt Offerings." start="1:1" />
+            <section title="Grain Offerings." start="2:1" />
+            <section title="Communion Sacrifices." start="3:1" />
+            <section title="Purification Offerings." start="4:1" />
+            <section title="For the Anointed Priest." start="4:3" />
+            <section title="For the Community." start="4:13" />
+            <section title="For the Tribal Leader." start="4:22" />
+            <section title="For the General Populace." start="4:27" />
+            <section title="Special Cases for Purification Offerings." start="5:1" />
+            <section title="Reparation Offerings." start="5:14" />
+          </sub-division>
+          <sub-division title="Instructions for the Priests" start="6:1" end="7:38">
+            <section title="The Daily Burnt Offering." start="6:1" />
+            <section title="The Grain Offering." start="6:7" />
+            <section title="High Priest’s Daily Grain Offering." start="6:12" />
+            <section title="Purification Offerings." start="6:17" />
+            <section title="Reparation Offerings." start="7:1" />
+            <section title="Communion Sacrifices." start="7:11" />
+            <section title="Prohibition Against Blood and Fat." start="7:22" />
+            <section title="Portions from the Communion Sacrifice for Priests." start="7:28" />
+            <section title="Summary." start="7:37" />
+          </sub-division>
+        </division>
+        <division title="Ceremony of Ordination" start="8:1" end="10:20">
+        </division>
+        <division title="Laws Regarding Ritual Purity" start="11:1" end="16:34">
+        </division>
+        <division title="Holiness Laws" start="17:1" end="26:46">
+        </division>
+        <division title="Redemption of Offerings" start="27:1" end="27:34">
+        </division>
+      </book>
+      <book name="Numbers" num-of-chapters="36">
+        <division title="Census and Preparation for the Departure from Sinai" start="1:1" end="10:10">
+          <section title="The Census." start="1:1" />
+          <section title="Moses’ Assistants." start="1:4" />
+          <section title="Count of the Twelve Tribes." start="1:20" />
+          <section title="Levites Omitted in the Census." start="1:47" />
+          <section title="Arrangement of the Tribes." start="2:1" />
+          <section title="The Sons of Aaron." start="3:1" />
+          <section title="Levites in Place of the Firstborn." start="3:5" />
+          <section title="Census of the Levites." start="3:14" />
+          <section title="Duties of the Levitical Clans." start="3:21" />
+          <section title="Census and Ransom of Firstborn." start="3:40" />
+          <section title="Duties Further Defined." start="4:1" />
+          <section title="Number of Adult Levites." start="4:34" />
+          <section title="The Unclean Expelled." start="5:1" />
+          <section title="Unjust Possession." start="5:5" />
+          <section title="Ordeal for Suspected Adultery." start="5:11" />
+          <section title="Laws Concerning Nazirites." start="6:1" />
+          <section title="The Priestly Blessing." start="6:22" />
+          <section title="Offerings of the Tribal Leaders." start="7:1" />
+          <section title="The Voice." start="7:89" />
+          <section title="The Menorah." start="8:1" />
+          <section title="Purification of the Levites." start="8:5" />
+          <section title="Age Limits for Levitical Service." start="8:23" />
+          <section title="Second Passover." start="9:1" />
+          <section title="The Fiery Cloud." start="9:15" />
+          <section title="The Silver Trumpets." start="10:1" />
+        </division>
+        <division title="Departure, Rebellion, and Wandering in the Wilderness for Forty Years" start="10:11" end="25:18">
+          <section title="Departure from Sinai." start="10:11" />
+          <section title="Hobab as Guide." start="10:29" />
+          <section title="Into the Wilderness." start="10:33" />
+          <section title="Discontent of the People." start="11:1" />
+          <section title="The Seventy Elders." start="11:16" />
+          <section title="The Spirit on the Elders." start="11:24" />
+          <section title="The Quail." start="11:31" />
+          <section title="Jealousy of Aaron and Miriam." start="12:1" />
+          <section title="Miriam’s Punishment." start="12:10" />
+          <section title="The Twelve Scouts." start="13:1" />
+          <section title="Their Report." start="13:25" />
+          <section title="Threats of Revolt." start="14:1" />
+          <section title="The Lord’s Sentence." start="14:10" />
+          <section title="Unsuccessful Invasion." start="14:39" />
+          <section title="Secondary Offerings." start="15:1" />
+          <section title="Purification Offerings." start="15:22" />
+          <section title="The Sabbath-breaker." start="15:32" />
+          <section title="Tassels on the Cloak." start="15:37" />
+          <section title="Rebellion of Korah." start="16:1" />
+          <section title="Rebellion of Dathan and Abiram." start="16:12" />
+          <section title="Korah." start="16:16" />
+          <section title="Punishment of Dathan and Abiram." start="16:25" />
+          <section title="Punishment of Korah." start="16:35" />
+          <section title="Aaron’s Staff." start="17:16" />
+          <section title="Charge of the Sacred Things." start="17:27" />
+          <section title="The Priests’ Share of the Sacrifices." start="18:8" />
+          <section title="Tithes Due the Levites." start="18:21" />
+          <section title="Tithes Paid by the Levites." start="18:25" />
+          <section title="Ashes of the Red Heifer." start="19:1" />
+          <section title="Use of the Ashes." start="19:11" />
+          <section title="Death of Miriam." start="20:1" />
+          <section title="Need for Water at Kadesh." start="20:2" />
+          <section title="Sin of Moses and Aaron." start="20:7" />
+          <section title="Edom’s Refusal." start="20:14" />
+          <section title="Death of Aaron." start="20:22" />
+          <section title="Victory over Arad." start="21:1" />
+          <section title="The Bronze Serpent." start="21:4" />
+          <section title="Journey Around Moab." start="21:10" />
+          <section title="Victory over Sihon." start="21:21" />
+          <section title="Victory over Og." start="21:33" />
+          <section title="Balaam Summoned." start="22:2" />
+          <section title="Second Appeal to Balaam." start="22:15" />
+          <section title="The Talking Donkey." start="22:22" />
+          <section title="The First Oracle." start="22:41" />
+          <section title="The Second Oracle." start="23:13" />
+          <section title="The Third Oracle." start="23:27" />
+          <section title="The Fourth Oracle." start="24:14" />
+          <section title="Worship of Baal of Peor." start="25:1" />
+          <section title="Zeal of Phinehas." start="25:6" />
+          <section title="Vengeance on the Midianites." start="25:16" />
+        </division>
+        <division title="Second Census of a New Generation and Preparation to Enter the Promised Land" start="25:19" end="36:13">
+          <section title="The Second Census." start="26:19" />
+          <section title="Allotment of the Land." start="26:52" />
+          <section title="Census of the Levites." start="26:57" />
+          <section title="Zelophehad’s Daughters." start="27:1" />
+          <section title="Laws Concerning Heiresses." start="27:5" />
+          <section title="Joshua to Succeed Moses." start="27:12" />
+          <section title="General Sacrifices." start="28:1" />
+          <section title="Each Morning and Evening." start="28:3" />
+          <section title="On the Sabbath." start="28:9" />
+          <section title="At the New Moon Feast." start="28:11" />
+          <section title="At the Passover." start="28:16" />
+          <section title="At Pentecost." start="28:26" />
+          <section title="On New Year’s Day." start="29:1" />
+          <section title="On the Day of Atonement." start="29:7" />
+          <section title="On the Feast of Booths." start="29:12" />
+          <section title="Validity and Annulment of Vows." start="30:2" />
+          <section title="Campaign Against the Midianites." start="31:1" />
+          <section title="Treatment of the Captives." start="31:13" />
+          <section title="Purification After Combat." start="31:19" />
+          <section title="Division of the Spoils." start="31:25" />
+          <section title="Amount of the Plunder." start="31:32" />
+          <section title="Gifts of the Officers." start="31:48" />
+          <section title="Request of Gad and Reuben." start="32:1" />
+          <section title="Moses’ Rebuke." start="32:6" />
+          <section title="Counter Proposal." start="32:16" />
+          <section title="Agreement Reached." start="32:20" />
+          <section title="Other Conquests." start="32:39" />
+          <section title="Stages of the Journey." start="33:1" />
+          <section title="From Egypt to Sinai." start="33:5" />
+          <section title="From Sinai to Kadesh." start="33:16" />
+          <section title="From Kadesh to the Plains of Moab." start="33:37" />
+          <section title="Conquest and Division of Canaan." start="33:50" />
+          <section title="The Boundaries." start="34:1" />
+          <section title="Supervisors of the Allotment." start="34:16" />
+          <section title="Cities for the Levites." start="35:1" />
+          <section title="Cities of Asylum." start="35:9" />
+          <section title="Murder and Manslaughter." start="35:16" />
+          <section title="Judgment." start="35:30" />
+          <section title="No Indemnity." start="35:31" />
+          <section title="Inheritance of Daughters." start="36:1" />
+          <section title="Conclusion." start="36:13" />
+        </division>
+      </book>
+      <book name="Deuteronomy" num-of-chapters="34">
+        <division title="First Address" start="1:1" end="4:43">
+        </division>
+        <division title="Second Address" start="4:44" end="28:69">
+          <sub-division title="The Lord’s Covenant with Israel" start="4:44" end="11:32">
+            <section title="Introduction." start="4:44" />
+            <section title="The Covenant at Horeb." start="5:1" />
+            <section title="The Decalogue." start="5:6" />
+            <section title="Moses as Mediator." start="5:22" />
+            <section title="The Great Commandment." start="6:4" />
+            <section title="Fidelity in Prosperity." start="6:10" />
+            <section title="Instruction to Children." start="6:20" />
+            <section title="Destruction of the Nations in the Land." start="7:1" />
+            <section title="Blessings of Obedience." start="7:12" />
+            <section title="God’s Care." start="8:1" />
+            <section title="Cautions About Prosperity." start="8:7" />
+            <section title="Unmerited Success." start="9:1" />
+            <section title="The Golden Calf." start="9:7" />
+            <section title="The Lord’s Majesty and Compassion." start="10:12" />
+            <section title="Recalling the Wonders of the Lord." start="11:1" />
+            <section title="The Gift of Rain." start="11:8" />
+            <section title="Need for Fidelity." start="11:18" />
+            <section title="Blessing and Curse." start="11:26" />
+          </sub-division>
+          <sub-division title="The Deuteronomic Code" start="12:1" end="28:69">
+            <section title="One Center of Worship." start="12:1" />
+            <section title="Profane and Sacred Slaughter." start="12:15" />
+            <section title="Warning Against Abominable Practices." start="12:29" />
+            <section title="Penalties for Enticing to Idolatry." start="13:1" />
+            <section title="Improper Mourning Rites." start="14:1" />
+            <section title="Clean and Unclean Animals." start="14:3" />
+            <section title="Tithes." start="14:22" />
+            <section title="Debts and the Poor." start="15:1" />
+            <section title="Hebrew Slaves." start="15:12" />
+            <section title="Firstlings." start="15:19" />
+            <section title="Feast of the Passover." start="16:1" />
+            <section title="Feast of Weeks." start="16:9" />
+            <section title="Feast of Booths." start="16:13" />
+            <section title="Justice." start="16:18" />
+            <section title="Illicit Worship." start="16:21" />
+            <section title="Judges." start="17:8" />
+            <section title="The King." start="17:14" />
+            <section title="Priests." start="18:1" />
+            <section title="Prophets." start="18:9" />
+            <section title="Cities of Refuge." start="19:1" />
+            <section title="Removal of Landmarks." start="19:14" />
+            <section title="False Witnesses." start="19:15" />
+            <section title="Courage in War." start="20:1" />
+            <section title="Cities of the Enemy." start="20:10" />
+            <section title="Trees of a Besieged City." start="20:19" />
+            <section title="Absolution of Untraced Murder." start="21:1" />
+            <section title="Marriage with a Female Captive." start="21:10" />
+            <section title="Rights of the Firstborn." start="21:15" />
+            <section title="The Stubborn and Rebellious Son." start="21:18" />
+            <section title="Corpse of a Criminal." start="21:22" />
+            <section title="Concern for the Neighbor." start="22:1" />
+            <section title="Various Precepts." start="22:5" />
+            <section title="Marriage Legislation." start="22:13" />
+            <section title="Membership in the Assembly." start="23:2" />
+            <section title="Cleanliness in Camp." start="23:10" />
+            <section title="Various Precepts." start="23:16" />
+            <section title="Marriage Legislation." start="24:1" />
+            <section title="Pledges and Kidnappings." start="24:6" />
+            <section title="Skin Diseases." start="24:8" />
+            <section title="Loans and Wages." start="24:10" />
+            <section title="Individual Responsibility." start="24:16" />
+            <section title="Rights of the Unprotected." start="24:17" />
+            <section title="Limits on Punishments." start="25:1" />
+            <section title="Treatment of Oxen." start="25:4" />
+            <section title="Levirate Marriage." start="25:5" />
+            <section title="Various Precepts." start="25:11" />
+            <section title="Thanksgiving for the Harvest." start="26:1" />
+            <section title="Declaration Concerning Tithes." start="26:12" />
+            <section title="The Covenant." start="26:16" />
+            <section title="The Altar on Mount Ebal." start="27:1" />
+            <section title="Preparation for Blessings and Curses." start="27:11" />
+            <section title="The Twelve Curses." start="27:14" />
+            <section title="Blessings for Obedience." start="28:1" />
+            <section title="Victory and Prosperity." start="28:7" />
+            <section title="Curses for Disobedience." start="28:15" />
+            <section title="Sickness and Defeat." start="28:20" />
+            <section title="Despoilment." start="28:30" />
+            <section title="Exile." start="28:36" />
+            <section title="Fruitless Labors." start="28:38" />
+            <section title="Invasion and Siege." start="28:49" />
+            <section title="Plagues." start="28:58" />
+            <section title="Exile (cont)." start="28:63" />
+          </sub-division>
+        </division>
+        <division title="Third Address" start="29:1" end="33:29">
+        </division>
+        <division title="The Death of Moses" start="34:1" end="34:12">
+        </division>
+      </book>
+    </category>
+    <category name="Historical Books">
+      <book name="Joshua" num-of-chapters="24">
+        <division title="Conquest of Canaan" start="1:1" end="12:24">
+          <section title="Divine Promise of Assistance." start="1:1" />
+          <section title="The Transjordan Tribes." start="1:12" />
+          <section title="Spies Saved by Rahab." start="2:1" />
+          <section title="Preparations for Crossing the Jordan." start="3:1" />
+          <section title="The Crossing Begun." start="3:14" />
+          <section title="Memorial Stones." start="4:1" />
+          <section title="Rites at Gilgal." start="5:1" />
+          <section title="Siege at Jericho." start="5:13" />
+          <section title="The Fall of Jericho." start="6:20" />
+          <section title="Defeat at Ai." start="7:1" />
+          <section title="Achan’s Guilt and Punishment." start="7:16" />
+          <section title="Capture of Ai." start="8:1" />
+          <section title="Altar on Mount Ebal." start="8:30" />
+          <section title="Confederacy Against Israel." start="9:1" />
+          <section title="The Gibeonite Deception." start="9:3" />
+          <section title="Gibeonites Made Vassals." start="9:16" />
+          <section title="The Siege of Gibeon." start="10:1" />
+          <section title="Joshua’s Victory." start="10:7" />
+          <section title="Execution of Amorite Kings." start="10:16" />
+          <section title="Conquest of Southern Canaan." start="10:28" />
+          <section title="Northern Confederacy." start="11:1" />
+          <section title="Conquest of Northern Canaan." start="11:10" />
+          <section title="Survey of the Conquest." start="11:16" />
+          <section title="Lists of Conquered Kings." start="12:1" />
+        </division>
+        <division title="Division of the Land" start="13:1" end="21:45">
+          <section title="Division of Land Commanded." start="13:1" />
+          <section title="The Eastern Tribes." start="13:8" />
+          <section title="Reuben." start="13:15" />
+          <section title="Gad." start="13:24" />
+          <section title="Manasseh." start="13:29" />
+          <section title="The Western Tribes." start="14:1" />
+          <section title="Caleb’s Portion." start="14:6" />
+          <section title="Boundaries of Judah." start="15:1" />
+          <section title="Conquest by Caleb." start="15:13" />
+          <section title="Cities of Judah." start="15:20" />
+          <section title="The Joseph Tribes." start="16:1" />
+          <section title="Ephraim." start="16:4" />
+          <section title="Manasseh." start="17:1" />
+          <section title="Protest of Joseph Tribes." start="17:14" />
+          <section title="The Seven Remaining Portions." start="18:2" />
+          <section title="Benjamin." start="18:11" />
+          <section title="Simeon." start="19:1" />
+          <section title="Zebulun." start="19:10" />
+          <section title="Issachar." start="19:17" />
+          <section title="Asher." start="19:24" />
+          <section title="Naphtali." start="19:32" />
+          <section title="Dan." start="19:40" />
+          <section title="Joshua’s City." start="19:49" />
+          <section title="Cities of Refuge." start="20:1" />
+          <section title="List of Cities." start="20:7" />
+          <section title="Levitical Cities." start="21:1" />
+          <section title="Cities of the Priests." start="21:9" />
+          <section title="Cities of the Other Kohathites." start="21:20" />
+          <section title="Cities of the Gershonites." start="21:27" />
+          <section title="Cities of the Merarites." start="21:34" />
+        </division>
+        <division title="Return of the Transjordan Tribes and Joshua’s Farewell" start="22:1" end="24:33">
+          <section title="The Eastern Tribes Dismissed." start="22:1" />
+          <section title="The Altar Beside the Jordan." start="22:10" />
+          <section title="Accusation of the Western Tribes." start="22:13" />
+          <section title="Reply of the Eastern Tribes." start="22:21" />
+          <section title="Joshua’s Final Plea." start="23:1" />
+          <section title="Covenant Ceremony." start="24:1" />
+          <section title="Death of Joshua." start="24:29" />
+        </division>
+      </book>
+      <book name="Judges" num-of-chapters="21">
+        <division title="The Situation in Canaan Following the Israelite Conquest" start="1:1" end="3:6">
+          <section title="Canaanites in Palestine." start="1:1" />
+          <section title="Infidelities of the Israelites." start="2:1" />
+        </division>
+        <division title="Stories of the Judges" start="3:7" end="16:31">
+          <section title="Othniel." start="3:7" />
+          <section title="Ehud." start="3:12" />
+          <section title="Shamgar." start="3:31" />
+          <section title="Deborah and Barak." start="4:1" />
+          <section title="Song of Deborah." start="5:1" />
+          <section title="The Call of Gideon." start="6:1" />
+          <section title="Defeat of Midian." start="7:1" />
+          <section title="Gideon’s Son Abimelech." start="8:29" />
+          <section title="Tola." start="10:1" />
+          <section title="Jair." start="10:3" />
+          <section title="Oppression by the Ammonites." start="10:6" />
+          <section title="Jephthah." start="11:1" />
+          <section title="Jephthah’s Vow." start="11:29" />
+          <section title="The Shibboleth Incident." start="12:1" />
+          <section title="Ibzan." start="12:8" />
+          <section title="Elon." start="12:11" />
+          <section title="Abdon." start="12:13" />
+          <section title="The Birth of Samson." start="13:1" />
+          <section title="Marriage of Samson." start="14:1" />
+          <section title="Samson Defeats the Philistines." start="15:1" />
+          <section title="Samson and Delilah." start="16:4" />
+          <section title="The Death of Samson." start="16:23" />
+        </division>
+        <division title="Further Stories of the Tribes of Dan and Benjamin" start="17:1" end="21:25">
+          <section title="Micah and the Levite." start="17:1" />
+          <section title="Migration of the Danites." start="18:1" />
+          <section title="The Levite from Ephraim." start="19:1" />
+          <section title="The Outrage at Gibeah." start="19:22" />
+          <section title="Assembly of Israelites." start="20:1" />
+          <section title="War with Benjamin." start="20:20" />
+          <section title="Ensuring a Future for Benjamin." start="21:1" />
+        </division>
+      </book>
+      <book name="Ruth" num-of-chapters="4">
+      </book>
+      <book name="1 Samuel" num-of-chapters="31">
+        <division title="The Last Judges, Eli and Samuel" start="1:1" end="7:17">
+          <section title="Elkanah and His Family at Shiloh." start="1:1" />
+          <section title="Hannah’s Prayer." start="1:9" />
+          <section title="Hannah Bears a Son." start="1:20" />
+          <section title="Hannah Presents Samuel to the Lord." start="1:24" />
+          <section title="Wickedness of Eli’s Sons." start="2:12" />
+          <section title="The Lord Rewards Hannah." start="2:18" />
+          <section title="Eli’s Futile Rebuke." start="2:22" />
+          <section title="The Fate of Eli’s House." start="2:27" />
+          <section title="Revelation to Samuel." start="3:1" />
+          <section title="Samuel Acknowledged as Prophet." start="3:19" />
+          <section title="Defeat of the Israelites." start="4:1" />
+          <section title="Loss of the Ark." start="4:4" />
+          <section title="Death of Eli." start="4:12" />
+          <section title="The Ark in the Temple of Dagon." start="5:1" />
+          <section title="The Ark Is Carried About." start="5:6" />
+          <section title="The Ark Is Returned." start="6:1" />
+          <section title="The Ark in Beth-shemesh." start="6:10" />
+          <section title="Penalty for Irreverence." start="6:19" />
+          <section title="Samuel the Judge." start="7:2" />
+          <section title="Rout of the Philistines." start="7:7" />
+        </division>
+        <division title="Establishment of the Monarchy" start="8:1" end="12:25">
+          <section title="Request for a King." start="8:1" />
+          <section title="The Governance of the King." start="8:10" />
+          <section title="Persistent Demand." start="8:19" />
+          <section title="Saul." start="9:1" />
+          <section title="The Lost Donkeys." start="9:3" />
+          <section title="Meeting the Young Women." start="9:11" />
+          <section title="Saul Meets Samuel." start="9:14" />
+          <section title="The Meal." start="9:22" />
+          <section title="Saul’s Anointing." start="9:27" />
+          <section title="The Signs Foretold." start="10:2" />
+          <section title="The Signs Come to Pass." start="10:9" />
+          <section title="Silence About the Kingship." start="10:14" />
+          <section title="Saul Chosen King." start="10:17" />
+          <section title="Defeat of the Ammonites." start="11:1" />
+          <section title="Saul Accepted as King." start="11:12" />
+          <section title="Samuel’s Integrity." start="12:1" />
+          <section title="Samuel Admonishes the People." start="12:6" />
+          <section title="Warnings for People and King." start="12:13" />
+          <section title="Assistance Promised." start="12:19" />
+        </division>
+        <division title="Saul and David" start="13:1" end="31:13">
+          <section title="Saul Offers Sacrifice." start="13:2" />
+          <section title="King Saul Reproved." start="13:10" />
+          <section title="Philistine Invasion." start="13:15" />
+          <section title="Disarmament of Israel." start="13:19" />
+          <section title="Jonathan’s Exploit." start="13:23" />
+          <section title="Rout of the Philistines." start="14:16" />
+          <section title="Saul’s Oath." start="14:24" />
+          <section title="Violation of the Oath." start="14:27" />
+          <section title="Consuming the Blood." start="14:31" />
+          <section title="Jonathan in Danger of Death." start="14:36" />
+          <section title="Rescue of Jonathan." start="14:45" />
+          <section title="Saul’s Victories." start="14:47" />
+          <section title="Saul’s Family." start="14:49" />
+          <section title="Disobedience of Saul." start="15:1" />
+          <section title="Samuel Rebukes Saul." start="15:10" />
+          <section title="Rejection of Saul." start="15:24" />
+          <section title="Samuel Executes Agag." start="15:32" />
+          <section title="Samuel Is Sent to Bethlehem." start="16:1" />
+          <section title="Samuel Anoints David." start="16:4" />
+          <section title="David Wins Saul’s Approval." start="16:14" />
+          <section title="David Made Armor-Bearer." start="16:19" />
+          <section title="The Challenge of Goliath." start="17:1" />
+          <section title="David Comes to the Camp." start="17:12" />
+          <section title="David Challenges Goliath." start="17:32" />
+          <section title="Preparation for the Encounter." start="17:38" />
+          <section title="David’s Victory." start="17:41" />
+          <section title="Flight of the Philistines." start="17:52" />
+          <section title="David Presented to Saul." start="17:55" />
+          <section title="David and Jonathan." start="18:1" />
+          <section title="Saul’s Jealousy." start="18:6" />
+          <section title="Saul Plots Against David." start="18:17" />
+          <section title="Persecution of David." start="19:1" />
+          <section title="David Escapes from Saul." start="19:8" />
+          <section title="David and Saul in Ramah." start="19:18" />
+          <section title="Saul Among the Prophets." start="19:22" />
+          <section title="David Consults with Jonathan." start="20:1" />
+          <section title="Mutual Agreement." start="20:11" />
+          <section title="David’s Absence." start="20:25" />
+          <section title="Jonathan’s Farewell." start="20:35" />
+          <section title="The Holy Bread." start="21:2" />
+          <section title="The Sword of Goliath." start="21:9" />
+          <section title="David a Fugitive." start="21:11" />
+          <section title="Doeg Betrays Ahimelech." start="22:6" />
+          <section title="Slaughter of the Priests." start="22:11" />
+          <section title="Abiathar Escapes." start="22:20" />
+          <section title="Keilah Liberated." start="23:1" />
+          <section title="Flight from Keilah." start="23:7" />
+          <section title="David and Jonathan in Horesh." start="23:14" />
+          <section title="Treachery of the Ziphites." start="23:19" />
+          <section title="Escape from Saul." start="23:25" />
+          <section title="David Spares Saul." start="24:1" />
+          <section title="Saul’s Remorse." start="24:17" />
+          <section title="Death of Samuel." start="25:1" />
+          <section title="Nabal and Abigail." start="25:2" />
+          <section title="Nabal’s Death." start="25:36" />
+          <section title="David Marries Abigail and Ahinoam." start="25:40" />
+          <section title="David Spares Saul Again." start="26:1" />
+          <section title="David Taunts Abner." start="26:13" />
+          <section title="Saul Admits His Guilt." start="26:17" />
+          <section title="David Flees to the Philistines." start="27:1" />
+          <section title="David Raids Israel’s Foes." start="27:8" />
+          <section title="Saul in Despair." start="28:4" />
+          <section title="The Medium at Endor." start="28:8" />
+          <section title="Samuel Appears." start="28:12" />
+          <section title="Saul’s Doom." start="28:15" />
+          <section title="David’s Aid Rejected." start="29:1" />
+          <section title="Ziklag in Ruins." start="30:1" />
+          <section title="Raid on the Amalekites." start="30:9" />
+          <section title="The Plunder Recovered." start="30:17" />
+          <section title="Division of the Plunder." start="30:21" />
+          <section title="David’s Gifts to Judah." start="30:26" />
+          <section title="Death of Saul and His Sons." start="31:1" />
+          <section title="Burial of Saul." start="31:11" />
+        </division>
+      </book>
+      <book name="2 Samuel" num-of-chapters="24">
+        <division title="Saul and David" start="1:1" end="2:7">
+          <section title="Report of Saul’s Death." start="1:1" />
+          <section title="Lament for Saul and Jonathan." start="1:17" />
+          <section title="David Is Anointed King." start="2:1" />
+        </division>
+        <division title="The Reign of David" start="2:8" end="20:26">
+          <section title="Ishbaal King of Israel." start="2:8" />
+          <section title="Combat near Gibeon." start="2:12" />
+          <section title="Death of Asahel." start="2:17" />
+          <section title="Truce Between Joab and Abner." start="2:25" />
+          <section title="Sons Born in Hebron." start="3:2" />
+          <section title="Ishbaal and Abner Quarrel." start="3:6" />
+          <section title="Abner and David Reconciled." start="3:12" />
+          <section title="Death of Abner." start="3:22" />
+          <section title="David Mourns Abner." start="3:31" />
+          <section title="Death of Ishbaal." start="4:1" />
+          <section title="The Murder Avenged." start="4:8" />
+          <section title="David King of Israel." start="5:1" />
+          <section title="Capture of Zion." start="5:6" />
+          <section title="David’s Family in Jerusalem." start="5:13" />
+          <section title="Rout of the Philistines." start="5:17" />
+          <section title="The Ark Brought to Jerusalem." start="6:1" />
+          <section title="The Oracle of Nathan." start="7:1" />
+          <section title="David’s Thanksgiving." start="7:18" />
+          <section title="Summary of David’s Wars." start="8:1" />
+          <section title="David’s Officials." start="8:15" />
+          <section title="David and Meribbaal." start="9:1" />
+          <section title="Campaigns Against Ammon." start="10:1" />
+          <section title="David’s Sin." start="11:1" />
+          <section title="Nathan’s Parable." start="12:1" />
+          <section title="Nathan’s Indictment." start="12:8" />
+          <section title="David’s Repentance." start="12:13" />
+          <section title="End of the Ammonite War." start="12:26" />
+          <section title="Amnon’s Rape of Tamar." start="13:1" />
+          <section title="Absalom’s Plot." start="13:23" />
+          <section title="Death of Amnon." start="13:29" />
+          <section title="The Wise Woman of Tekoa." start="14:1" />
+          <section title="Absalom’s Return." start="14:21" />
+          <section title="Absalom Is Pardoned." start="14:28" />
+          <section title="Absalom’s Ambition." start="15:1" />
+          <section title="Conspiracy in Hebron." start="15:7" />
+          <section title="David Flees Jerusalem." start="15:13" />
+          <section title="David and Ittai." start="15:19" />
+          <section title="David and the Priests." start="15:24" />
+          <section title="David and Hushai." start="15:32" />
+          <section title="David and Ziba." start="16:1" />
+          <section title="David and Shimei." start="16:5" />
+          <section title="Absalom’s Counselors." start="16:15" />
+          <section title="Counsel of Ahithophel." start="16:23" />
+          <section title="Counsel of Hushai." start="17:5" />
+          <section title="David Told of the Plan." start="17:15" />
+          <section title="Preparation for Battle." start="18:1" />
+          <section title="Defeat of Absalom’s Forces." start="18:6" />
+          <section title="Death of Absalom." start="18:9" />
+          <section title="David Told of Absalom’s Death." start="18:19" />
+          <section title="Joab Reproves David." start="19:2" />
+          <section title="The Reconciliation." start="19:10" />
+          <section title="David and Shimei." start="19:16" />
+          <section title="David and Meribbaal." start="19:25" />
+          <section title="David and Barzillai." start="19:32" />
+          <section title="Israel and Judah Quarrel." start="19:42" />
+          <section title="Sheba’s Rebellion." start="20:1" />
+          <section title="Amasa’s Death." start="20:4" />
+          <section title="Joab Pursues Sheba." start="20:14" />
+          <section title="David’s Officials." start="20:23" />
+        </division>
+        <division title="Appendixes" start="21:1" end="24:25">
+          <section title="Gibeonite Vengeance." start="21:1" />
+          <section title="Exploits in Philistine Wars." start="21:15" />
+          <section title="Song of Thanksgiving." start="22:1" />
+          <section title="The Last Words of David." start="23:1" />
+          <section title="David’s Warriors." start="23:8" />
+          <section title="David’s Census; the Plague." start="24:1" />
+          <section title="David Offers Sacrifices." start="24:18" />
+        </division>
+      </book>
+      <book name="1 Kings" num-of-chapters="22">
+        <division title="The Reign of Solomon" start="1:1" end="11:43">
+          <section title="David’s Old Age." start="1:1" />
+          <section title="Adonijah’s Ambition." start="1:5" />
+          <section title="Solomon Proclaimed King." start="1:11" />
+          <section title="Adonijah Submits to Solomon." start="1:41" />
+          <section title="David’s Last Instructions and Death." start="2:1" />
+          <section title="The Kingdom Made Secure." start="2:12" />
+          <section title="Early Promise of Solomon’s Reign." start="3:1" />
+          <section title="Solomon’s Listening Heart." start="3:16" />
+          <section title="Solomon’s Riches: Domestic Affairs." start="4:1" />
+          <section title="Solomon’s Riches: International Affairs." start="5:1" />
+          <section title="Solomon’s Riches: Chariots and Horses." start="5:6" />
+          <section title="Solomon’s Renown." start="5:9" />
+          <section title="Preparations for the Temple." start="5:15" />
+          <section title="Building of the Temple." start="6:1" />
+          <section title="Dedication of the Temple." start="8:1" />
+          <section title="Solomon’s Prayer." start="8:22" />
+          <section title="Promise and Warning to Solomon." start="9:1" />
+          <section title="After Building the Temple." start="9:10" />
+          <section title="Solomon’s Gifts." start="9:26" />
+          <section title="Solomon’s Listening Heart: The Queen of Sheba." start="10:1" />
+          <section title="Solomon’s Riches: Domestic Affairs." start="10:14" />
+          <section title="Solomon’s Renown." start="10:23" />
+          <section title="Solomon’s Riches: Chariots and Horses." start="10:26" />
+          <section title="The End of Solomon’s Reign." start="11:1" />
+          <section title="Threats to Solomon’s Kingdom." start="11:14" />
+          <section title="Ahijah Announces Jeroboam’s Kingship." start="11:26" />
+        </division>
+        <division title="The Reign of Jeroboam" start="12:1" end="14:20">
+          <section title="Political Disunity." start="12:1" />
+          <section title="Divine Approval." start="12:21" />
+          <section title="Jeroboam’s Cultic Innovations." start="12:26" />
+          <section title="Divine Disapproval." start="12:32" />
+          <section title="Prophetic Disunity." start="13:11" />
+          <section title="Ahijah Announces Jeroboam’s Downfall." start="14:1" />
+        </division>
+        <division title="Kings of Judah and Israel" start="14:21" end="16:34">
+          <section title="Reign of Rehoboam." start="14:21" />
+          <section title="Reign of Abijam." start="15:1" />
+          <section title="Reign of Asa." start="15:9" />
+          <section title="Reign of Nadab." start="15:25" />
+          <section title="Reign of Baasha." start="15:33" />
+          <section title="Reign of Elah." start="16:8" />
+          <section title="Reign of Zimri." start="16:15" />
+          <section title="Civil War." start="16:21" />
+          <section title="Reign of Omri." start="16:23" />
+          <section title="Reign of Ahab." start="16:29" />
+        </division>
+        <division title="The Story of Elijah" start="17:1" end="19:21">
+          <section title="Elijah Proclaims a Drought." start="17:1" />
+          <section title="Elijah Ends the Drought." start="18:1" />
+          <section title="Flight to Horeb." start="19:1" />
+        </division>
+        <division title="The Story of Ahab" start="20:1" end="23:54">
+          <section title="Ahab’s Victories over Aram." start="20:1" />
+          <section title="Prophetic Condemnation." start="20:35" />
+          <section title="Seizure of Naboth’s Vineyard." start="21:1" />
+          <section title="Prophetic Condemnation." start="21:17" />
+          <section title="Ahab’s Defeat by Aram." start="22:1" />
+          <section title="Prophetic Condemnation." start="22:5" />
+          <section title="Ahab at Ramoth-gilead." start="22:29" />
+          <section title="Reign of Jehoshaphat." start="22:41" />
+          <section title="Reign of Ahaziah." start="22:52" />
+        </division>
+      </book>
+      <book name="2 Kings" num-of-chapters="25">
+        <division title="The Story of Ahab" start="1:1" end="1:18">
+          <section title="Reign of Ahaziah, Continued." start="1:1" />
+        </division>
+        <division title="Elisha Succeeds Elijah" start="2:1" end="2:25">
+          <section title="Elijah’s Journey." start="2:1" />
+          <section title="Elisha Succeeds Elijah." start="2:8" />
+          <section title="Elisha’s Journey." start="2:15" />
+        </division>
+        <division title="Stories of Elisha and Joram" start="3:1" end="9:13">
+          <section title="Reign of Joram of Israel." start="3:1" />
+          <section title="War Against Moab: Drought." start="3:4" />
+          <section title="The Widow’s Oil." start="4:1" />
+          <section title="Elisha Raises the Shunammite’s Son." start="4:8" />
+          <section title="The Poisoned Stew." start="4:38" />
+          <section title="The Barley Loaves." start="4:42" />
+          <section title="Elisha Cures Naaman’s Leprosy." start="5:1" />
+          <section title="The Lost Ax." start="6:1" />
+          <section title="The Aramean Ambush." start="6:8" />
+          <section title="War Against Aram: Famine." start="6:24" />
+          <section title="The Shunammite’s Return." start="8:1" />
+          <section title="Elisha and Hazael of Aram." start="8:7" />
+          <section title="Reign of Joram of Judah." start="8:16" />
+          <section title="Reign of Ahaziah of Judah." start="8:25" />
+          <section title="Elisha and Jehu of Israel." start="9:1" />
+        </division>
+        <division title="The End of the Omrid Dynasty" start="9:14" end="11:20">
+          <section title="Death of Joram of Israel." start="9:14" />
+          <section title="Death of Ahaziah of Judah." start="9:27" />
+          <section title="Death of Jezebel." start="9:30" />
+          <section title="Death of the Sons of Ahab of Israel." start="10:1" />
+          <section title="Death of the Relatives of Ahaziah of Judah." start="10:13" />
+          <section title="Slaughter of the Worshipers of Baal." start="10:17" />
+          <section title="Death of Jehu of Israel." start="10:29" />
+          <section title="Death of the Heirs of Ahaziah of Judah." start="11:1" />
+          <section title="Death of Athaliah." start="11:4" />
+        </division>
+        <division title="Kings of Judah and Israel" start="12:1" end="17:5">
+          <section title="Reign of Joash of Judah." start="12:1" />
+          <section title="Reign of Jehoahaz of Israel." start="13:1" />
+          <section title="Reign of Joash of Israel." start="13:10" />
+          <section title="Elisha’s Deathbed Prophecy." start="13:14" />
+          <section title="Reign of Amaziah of Judah." start="14:1" />
+          <section title="Reign of Jeroboam II of Israel." start="14:23" />
+          <section title="Reign of Azariah of Judah." start="15:1" />
+          <section title="Reign of Zechariah of Israel." start="15:8" />
+          <section title="Reign of Shallum of Israel." start="15:13" />
+          <section title="Reign of Menahem of Israel." start="15:17" />
+          <section title="Reign of Pekahiah of Israel." start="15:23" />
+          <section title="Reign of Pekah of Israel." start="15:27" />
+          <section title="Reign of Jotham of Judah." start="15:32" />
+          <section title="Reign of Ahaz of Judah." start="16:1" />
+          <section title="Reign of Hoshea of Israel." start="17:1" />
+        </division>
+        <division title="The End of Israel" start="17:6" end="17:41">
+          <section title="Israelites Deported." start="17:6" />
+          <section title="Foreigners Deported to Israel." start="17:24" />
+        </division>
+        <division title="The End of Judah" start="18:1" end="25:30">
+          <section title="Reign of Hezekiah." start="18:1" />
+          <section title="Sennacherib and Hezekiah." start="18:13" />
+          <section title="Hezekiah and Isaiah." start="19:1" />
+          <section title="Sennacherib, Hezekiah, and Isaiah." start="19:9" />
+          <section title="End of Hezekiah’s Reign." start="20:1" />
+          <section title="Reign of Manasseh." start="21:1" />
+          <section title="Reign of Amon." start="21:19" />
+          <section title="Reign of Josiah." start="22:1" />
+          <section title="The Book of the Law." start="22:3" />
+          <section title="Josiah’s Religious Reform." start="23:4" />
+          <section title="Reign of Jehoahaz." start="23:31" />
+          <section title="Reign of Jehoiakim." start="23:36" />
+          <section title="Reign of Jehoiachin." start="24:8" />
+          <section title="Reign of Zedekiah." start="24:18" />
+          <section title="Governorship of Gedaliah." start="25:22" />
+          <section title="Release of Jehoiachin." start="25:27" />
+        </division>
+      </book>
+      <book name="1 Chronicles" num-of-chapters="29">
+        <division title="Genealogical Tables" start="1:1" end="9:34">
+          <section title="Judah." start="2:3" />
+          <section title="Simeon." start="4:24" />
+          <section title="Reuben." start="5:1" />
+          <section title="Gad." start="5:11" />
+          <section title="The Half-tribe of Manasseh." start="5:23" />
+          <section title="Levi." start="5:27" />
+          <section title="Issachar." start="7:1" />
+          <section title="Benjamin." start="7:6" />
+          <section title="Dan, Naphtali and Manasseh." start="7:13" />
+          <section title="Ephraim." start="7:20" />
+          <section title="Asher." start="7:30" />
+          <section title="Benjamin." start="8:1" />
+          <section title="Jerusalemites." start="9:3" />
+        </division>
+        <division title="The History of David" start="9:35" end="29:30">
+          <section title="Genealogy of Saul." start="9:35" />
+          <section title="Death of Saul and His Sons." start="10:-1" />
+          <section title="David Is Made King." start="11:-1" />
+          <section title="David’s Early Followers." start="12:-1" />
+          <section title="Transfer of the Ark." start="13:-1" />
+          <section title="David in Jerusalem." start="14:12" />
+          <section title="Preparations for Moving the Ark." start="15:1" />
+          <section title="The Ark Comes to Jerusalem." start="15:25" />
+          <section title="David’s Directives for the Levites." start="16:4" />
+          <section title="The Oracle of Nathan." start="17:1" />
+          <section title="David’s Thanksgiving." start="17:16" />
+          <section title="David’s Victories." start="18:1" />
+          <section title="David’s Officials." start="18:14" />
+          <section title="Campaigns Against Ammon." start="19:1" />
+          <section title="Victories over the Philistines." start="20:4" />
+          <section title="David’s Census; the Plague." start="21:1" />
+          <section title="Ornan’s Threshing Floor." start="21:16" />
+          <section title="Altar for Burnt Offerings." start="21:26" />
+          <section title="Charge to Solomon." start="22:6" />
+          <section title="Charge to the Officials." start="22:17" />
+          <section title="The Levitical Divisions." start="23:1" />
+          <section title="The Priestly Divisions." start="24:1" />
+          <section title="Other Levites." start="24:20" />
+          <section title="The Singers." start="25:1" />
+          <section title="Divisions of Gatekeepers." start="26:1" />
+          <section title="Treasurers." start="26:20" />
+          <section title="Magistrates." start="26:29" />
+          <section title="Army Commanders." start="27:1" />
+          <section title="Tribal Leaders." start="27:16" />
+          <section title="Overseers." start="27:25" />
+          <section title="David’s Court." start="27:32" />
+          <section title="The Assembly at Jerusalem." start="28:1" />
+          <section title="Temple Plans Given to Solomon." start="28:11" />
+          <section title="Offerings for the Temple." start="29:1" />
+          <section title="David’s Prayer." start="29:10" />
+          <section title="Solomon Anointed." start="29:23" />
+          <section title="David’s Death." start="29:26" />
+        </division>
+      </book>
+      <book name="2 Chronicles" num-of-chapters="36">
+        <division title="The Reign of Solomon" start="1:1" end="9:31">
+          <section title="Solomon at Gibeon." start="1:1" />
+          <section title="Solomon’s Wealth." start="1:13" />
+          <section title="Preparations for the Temple." start="1:18" />
+          <section title="Building of the Temple." start="3:1" />
+          <section title="Dedication of the Temple." start="5:1" />
+          <section title="Solomon’s Prayer." start="6:12" />
+          <section title="End of the Dedication." start="7:6" />
+          <section title="God’s Promise to Solomon." start="7:12" />
+          <section title="Public Works." start="8:1" />
+          <section title="Solomon’s Piety." start="8:11" />
+          <section title="Glories of the Court." start="8:17" />
+          <section title="The Queen of Sheba." start="9:1" />
+          <section title="Solomon’s Renown." start="9:22" />
+          <section title="The Death of Solomon." start="9:29" />
+        </division>
+        <division title="The Post-Solomonic Monarchy of Judah" start="10:1" end="36:23">
+          <section title="Division of the Kingdom." start="10:1" />
+          <section title="Rehoboam’s Works." start="11:5" />
+          <section title="Refugees from the North." start="11:13" />
+          <section title="Rehoboam’s Family." start="11:18" />
+          <section title="Rehoboam’s Apostasy." start="12:1" />
+          <section title="War Between Abijah and Jeroboam." start="13:1" />
+          <section title="Death of Abijah." start="13:22" />
+          <section title="Asa’s Initial Reforms." start="14:1" />
+          <section title="The Ethiopian Invasion." start="14:7" />
+          <section title="Further Reforms." start="15:1" />
+          <section title="Asa’s Infidelity." start="16:1" />
+          <section title="Jehoshaphat’s Zeal for the Law." start="17:1" />
+          <section title="His Power." start="17:10" />
+          <section title="Alliance with Israel." start="18:1" />
+          <section title="Prophets in Conflict." start="18:5" />
+          <section title="Ahab’s Death." start="18:28" />
+          <section title="Jehoshaphat Rebuked." start="19:1" />
+          <section title="Judges Appointed." start="19:4" />
+          <section title="Invasion from Edom." start="20:1" />
+          <section title="Jehoshaphat’s Prayer." start="20:5" />
+          <section title="Victory Prophesied." start="20:13" />
+          <section title="The Invaders Destroyed." start="20:20" />
+          <section title="Jehoshaphat’s Other Deeds." start="20:31" />
+          <section title="Jehoram’s Evil Deeds." start="21:4" />
+          <section title="Jehoram Punished." start="21:12" />
+          <section title="Ahaziah." start="22:1" />
+          <section title="Usurpation of Athaliah." start="22:10" />
+          <section title="Athaliah Overthrown." start="23:1" />
+          <section title="The Temple Restored." start="24:1" />
+          <section title="Joash’s Apostasy." start="24:17" />
+          <section title="Joash Punished." start="24:23" />
+          <section title="Amaziah’s Good Start." start="25:1" />
+          <section title="Amaziah’s Apostasy." start="25:14" />
+          <section title="Amaziah Punished." start="25:17" />
+          <section title="Uzziah’s Projects." start="26:1" />
+          <section title="Pride and Fall." start="26:16" />
+          <section title="Jotham." start="27:1" />
+          <section title="Ahaz’s Misdeeds." start="28:1" />
+          <section title="Ahaz Punished." start="28:5" />
+          <section title="Oded’s Prophecy." start="28:9" />
+          <section title="Further Sins of Ahaz." start="28:16" />
+          <section title="Hezekiah’s Reforms." start="29:1" />
+          <section title="The Rite of Expiation." start="29:20" />
+          <section title="Invitation to Passover." start="30:1" />
+          <section title="Passover Celebrated." start="30:14" />
+          <section title="Liturgical Reforms." start="31:1" />
+          <section title="Sennacherib’s Invasion." start="32:1" />
+          <section title="Threat of Sennacherib." start="32:9" />
+          <section title="Sennacherib’s Defeat." start="32:21" />
+          <section title="Hezekiah’s Later Reign." start="32:24" />
+          <section title="Manasseh’s Impiety." start="33:1" />
+          <section title="Manasseh’s Conversion." start="33:11" />
+          <section title="Reign of Amon." start="33:21" />
+          <section title="Josiah’s Reforms." start="34:1" />
+          <section title="The Temple Restored." start="34:8" />
+          <section title="The Finding of the Law." start="34:14" />
+          <section title="Covenant Renewal." start="34:29" />
+          <section title="The Passover." start="35:1" />
+          <section title="Josiah’s End." start="35:20" />
+          <section title="Jehoahaz." start="36:1" />
+          <section title="Jehoiakim." start="36:5" />
+          <section title="Jehoiachin." start="36:9" />
+          <section title="Zedekiah." start="36:11" />
+          <section title="The Fall of Judah." start="36:15" />
+          <section title="Decree of Cyrus." start="36:22" />
+        </division>
+      </book>
+      <book name="Ezra" num-of-chapters="10">
+        <division title="The Return from Exile" start="1:1" end="6:22">
+          <section title="The Decree of Cyrus." start="1:1" />
+          <section title="A Census of the Returned Exiles." start="2:1" />
+          <section title="Restoration of Worship." start="3:1" />
+          <section title="Laying the Foundations of the Temple." start="3:6" />
+          <section title="Outside Interference." start="4:1" />
+          <section title="Later Hostility." start="4:6" />
+          <section title="The Work Resumed Under Darius; Further Problems." start="5:1" />
+          <section title="The Decree of Darius." start="6:1" />
+          <section title="The Task Finally Completed." start="6:13" />
+          <section title="The Passover." start="6:19" />
+        </division>
+        <division title="The Work of Ezra" start="7:1" end="10:44">
+          <section title="Ezra, Priest and Scribe." start="7:1" />
+          <section title="The Decree of Artaxerxes." start="7:11" />
+          <section title="Ezra Prepares for the Journey." start="7:27" />
+          <section title="Ezra’s Caravan." start="8:1" />
+          <section title="Final Preparations for the Journey." start="8:15" />
+          <section title="Arrival in Jerusalem." start="8:31" />
+          <section title="The Crisis of Mixed Marriages." start="9:1" />
+          <section title="Ezra’s Reaction." start="9:3" />
+          <section title="A Penitential Prayer." start="9:6" />
+          <section title="Response to the Crisis." start="10:1" />
+          <section title="The List of Transgressors." start="10:18" />
+        </division>
+      </book>
+      <book name="Nehemiah" num-of-chapters="13">
+        <division title="The Deeds of Nehemiah" start="1:1" end="7:72">
+          <section title="Nehemiah Hears Bad News." start="1:1" />
+          <section title="Appointment by the King." start="2:1" />
+          <section title="Circuit of the City." start="2:11" />
+          <section title="Decision to Rebuild the City Wall." start="2:17" />
+          <section title="List of Workers." start="3:1" />
+          <section title="Opposition from Judah’s Enemies." start="3:33" />
+          <section title="Social and Economic Problems." start="5:1" />
+          <section title="Nehemiah’s Record." start="5:14" />
+          <section title="Plots Against Nehemiah." start="6:1" />
+          <section title="Completion of the Work." start="6:15" />
+          <section title="Census of the Province." start="7:4" />
+        </division>
+        <division title="Promulgation of the Law" start="8:1" end="10:40">
+          <section title="Ezra Reads the Law." start="8:1" />
+          <section title="The Feast of Booths." start="8:13" />
+          <section title="Public Confession of Sin." start="9:1" />
+          <section title="Signatories to the Pact." start="10:1" />
+          <section title="Provisions of the Pact." start="10:29" />
+        </division>
+        <division title="Dedication of the Wall; Other Reforms" start="11:1" end="13:31">
+          <section title="Resettlement of Jerusalem." start="11:1" />
+          <section title="Other Settlements." start="11:25" />
+          <section title="Priests and Levites at the Time of Zerubbabel." start="12:1" />
+          <section title="High Priests." start="12:10" />
+          <section title="Priests and Levites Under Joiakim." start="12:12" />
+          <section title="Dedication of the Wall." start="12:27" />
+          <section title="Reform in the Temple." start="13:4" />
+          <section title="Sabbath Observance." start="13:15" />
+          <section title="Mixed Marriages." start="13:23" />
+        </division>
+      </book>
+    </category>
+    <category name="Biblical Novellas">
+      <book name="Tobit" num-of-chapters="14">
+        <division title="Tobit’s Ordeals" start="1:3" end="3:6">
+          <section title="His Virtue." start="1:3" />
+          <section title="Courage in Burying the Dead." start="1:16" />
+          <section title="Tobit’s Blindness." start="2:9" />
+        </division>
+        <division title="Sarah’s Plight" start="3:7" end="3:17">
+          <section title="Sarah Falsely Accused." start="3:7" />
+          <section title="An Answer to Prayer." start="3:16" />
+        </division>
+        <division title="Preparation for the Journey" start="4:1" end="6:1">
+          <section title="A Father’s Instruction." start="4:1" />
+          <section title="The Angel Raphael." start="5:1" />
+        </division>
+        <division title="Tobiah’s Journey to Media" start="6:2" end="6:18">
+          <section title="On the Way to Rages." start="6:2" />
+          <section title="Raphael’s Instructions." start="6:7" />
+        </division>
+        <division title="Marriage and Healing of Sarah" start="7:1" end="9:6">
+          <section title="At the House of Raguel." start="7:1" />
+          <section title="Marriage of Tobiah and Sarah." start="7:9" />
+          <section title="Expulsion of the Demon." start="8:1" />
+          <section title="Wedding Feast." start="8:19" />
+          <section title="The Money Recovered." start="9:1" />
+        </division>
+        <division title="Tobiah’s Return Journey to Nineveh and the Healing of Tobit" start="10:1" end="11:18">
+          <section title="Anxiety of the Parents." start="10:1" />
+          <section title="Departure from Ecbatana." start="10:8" />
+          <section title="Homeward Journey." start="11:1" />
+          <section title="Sight Restored." start="11:9" />
+        </division>
+        <division title="Raphael Reveals His Identity" start="12:1" end="12:22">
+          <section title="Raphael’s Wages." start="12:1" />
+          <section title="Exhortation." start="12:6" />
+          <section title="Raphael’s Identity." start="12:11" />
+        </division>
+        <division title="Tobit’s Song of Praise" start="13:1" end="13:18">
+        </division>
+        <division title="Epilogue" start="14:1" end="14:15">
+          <section title="Parting Advice." start="14:1" />
+          <section title="Death of Tobit and Tobiah." start="14:12" />
+        </division>
+      </book>
+      <book name="Judith" num-of-chapters="16">
+        <division title="Assyrian Threat" start="1:1" end="3:10">
+          <section title="Nebuchadnezzar Against Arphaxad." start="1:1" />
+          <section title="Defeat of Arphaxad." start="1:13" />
+          <section title="Revenge Planned Against the Western Nations." start="2:1" />
+          <section title="Campaigns of Holofernes." start="2:14" />
+          <section title="Submission of the Vassal Nations." start="3:1" />
+        </division>
+        <division title="Siege of Bethulia" start="4:1" end="7:32">
+          <section title="Israel Prepares for War." start="4:1" />
+          <section title="Israel at Prayer." start="4:9" />
+          <section title="Achior in the Assyrian War Council." start="5:1" />
+          <section title="Achior in Bethulia." start="6:14" />
+          <section title="The Campaign Against Israel." start="7:1" />
+          <section title="The Siege of Bethulia." start="7:6" />
+          <section title="The Distress of the Israelites." start="7:19" />
+        </division>
+        <division title="Judith, Instrument of the Lord" start="8:1" end="10:10">
+          <section title="Description of Judith." start="8:1" />
+          <section title="Judith and the Elders." start="8:9" />
+          <section title="The Prayer of Judith." start="9:1" />
+          <section title="Judith Prepares to Depart." start="10:1" />
+          <section title="Judith and Her Maid Leave Bethulia." start="10:10" />
+        </division>
+        <division title="Judith Goes Out to War" start="10:11" end="13:20">
+          <section title="Judith Meets Holofernes." start="10:20" />
+          <section title="Judith at the Banquet of Holofernes." start="12:10" />
+          <section title="Judith Beheads Holofernes." start="13:1" />
+          <section title="Judith and Her Maid Return to Bethulia." start="13:11" />
+          <section title="Judith Displays the Head of Holofernes." start="13:12" />
+        </division>
+        <division title="Victory and Thanksgiving" start="14:1" end="16:25">
+          <section title="Judith’s Plan of Attack." start="14:1" />
+          <section title="Achior’s Conversion." start="14:6" />
+          <section title="Panic in the Assyrian Camp." start="14:11" />
+          <section title="Israel Celebrates Judith’s Victory." start="15:8" />
+          <section title="The Renown and Death of Judith." start="16:21" />
+        </division>
+      </book>
+      <book name="Esther" num-of-chapters="10">
+        <division title="Prologue" start="0:1" end="0:17">
+        </division>
+        <division title="Esther Becomes Queen" start="1:1" end="2:23">
+          <section title="The Banquet of Ahasuerus." start="1:1" />
+          <section title="Dream of Mordecai." start="1:1" />
+          <section title="Refusal of Vashti." start="1:10" />
+          <section title="Mordecai Thwarts an Assassination." start="1:12" />
+          <section title="The Search for a New Queen." start="2:1" />
+          <section title="Ahasuerus Chooses Esther." start="2:16" />
+          <section title="Mordecai Thwarts an Assassination." start="2:19" />
+        </division>
+        <division title="Haman’s Plot Against the Jews" start="3:1" end="3:15">
+          <section title="Mordecai Refuses to Honor Haman." start="3:1" />
+          <section title="Haman’s Reprisal." start="3:5" />
+          <section title="Decree Against the Jews." start="3:8" />
+        </division>
+        <division title="Esther and Mordecai Plead for Help" start="4:1" end="5:5">
+          <section title="Mordecai Exhorts Esther." start="4:1" />
+          <section title="Prayer of Mordecai." start="4:1" />
+          <section title="Esther Goes to Ahasuerus." start="4:1" />
+          <section title="Prayer of Esther." start="4:12" />
+        </division>
+        <division title="Haman’s Downfall" start="5:6" end="8:2">
+          <section title="First Banquet of Esther." start="5:6" />
+          <section title="Haman’s Plot Against Mordecai." start="5:9" />
+          <section title="Mordecai’s Reward from the King." start="6:1" />
+          <section title="Esther’s Second Banquet." start="6:14" />
+          <section title="Punishment of Haman." start="7:9" />
+        </division>
+        <division title="The Jewish Victory and the Feast of Purim" start="8:3" end="9:23">
+          <section title="The Second Royal Decree." start="8:3" />
+          <section title="The Massacre Reversed." start="9:1" />
+          <section title="The Feast of Purim." start="9:18" />
+        </division>
+        <division title="Epilogue: The Rise of Mordecai" start="9:24" end="12:11">
+          <section title="Summary of the Story." start="9:24" />
+          <section title="Esther and Mordecai Act in Concert." start="9:29" />
+          <section title="The Rise of Mordecai Completed." start="10:1" />
+          <section title="Mordecai’s Dream Fulfilled." start="10:1" />
+          <section title="Colophon." start="10:11" />
+        </division>
+      </book>
+      <book name="1 Maccabees" num-of-chapters="16">
+        <division title="Crisis and Response" start="1:1" end="2:70">
+          <section title="From Alexander to Antiochus." start="1:1" />
+          <section title="Lawless Jews." start="1:11" />
+          <section title="Antiochus in Egypt." start="1:16" />
+          <section title="Robbery of the Temple." start="1:20" />
+          <section title="Attack and Occupation." start="1:29" />
+          <section title="Religious Persecution." start="1:41" />
+          <section title="Mattathias and His Sons." start="2:1" />
+          <section title="Pagan Worship Refused and Resisted." start="2:15" />
+          <section title="Farewell of Mattathias." start="2:49" />
+        </division>
+        <division title="Leadership of Judas Maccabeus" start="3:1" end="9:22">
+          <section title="Judas and His Early Victories." start="3:1" />
+          <section title="The King’s Strategy." start="3:27" />
+          <section title="Preparations for Battle." start="3:38" />
+          <section title="Victory over Gorgias." start="4:1" />
+          <section title="Victory over Lysias." start="4:26" />
+          <section title="Purification and Rededication of the Temple." start="4:36" />
+          <section title="Victories over Hostile Neighbors." start="5:1" />
+          <section title="Liberation of Jews in Galilee and Gilead." start="5:9" />
+          <section title="Return to Jerusalem." start="5:45" />
+          <section title="Joseph and Azariah Defeated." start="5:55" />
+          <section title="Victories at Hebron and Azotus." start="5:63" />
+          <section title="Siege of the Citadel." start="6:18" />
+          <section title="Battle of Beth-zechariah." start="6:32" />
+          <section title="The Siege of Jerusalem." start="6:48" />
+          <section title="Peace Treaty." start="6:55" />
+          <section title="Expedition of Bacchides and Alcimus." start="7:1" />
+          <section title="Defeat of Nicanor." start="7:26" />
+          <section title="Eulogy of the Romans." start="8:1" />
+          <section title="Treaty with the Romans." start="8:17" />
+          <section title="Death of Judas." start="9:1" />
+        </division>
+        <division title="Leadership of Jonathan" start="9:23" end="12:53">
+          <section title="Jonathan Succeeds Judas." start="9:23" />
+          <section title="Bacchides Pursues Jonathan." start="9:32" />
+          <section title="Jonathan Becomes High Priest." start="10:1" />
+          <section title="A Letter from Demetrius to Jonathan." start="10:22" />
+          <section title="Treaty of Ptolemy and Alexander." start="10:51" />
+          <section title="Jonathan Defeats Apollonius." start="10:67" />
+          <section title="Alliance of Ptolemy and Demetrius II." start="11:1" />
+          <section title="Alliance of Jonathan and Demetrius II." start="11:20" />
+          <section title="The Intrigue of Trypho." start="11:38" />
+          <section title="Jonathan Aids Demetrius II." start="11:41" />
+          <section title="Alliance of Jonathan and Antiochus VI." start="11:54" />
+          <section title="Campaigns of Jonathan and Simon." start="11:60" />
+          <section title="Alliances with Rome and Sparta." start="12:1" />
+          <section title="More Campaigns of Jonathan and Simon." start="12:24" />
+          <section title="Capture of Jonathan." start="12:39" />
+        </division>
+        <division title="Leadership of Simon" start="13:1" end="16:24">
+          <section title="Simon as Leader." start="13:1" />
+          <section title="Trypho’s Deceit." start="13:12" />
+          <section title="Jonathan’s Tomb." start="13:25" />
+          <section title="Alliance of Simon and Demetrius II." start="13:31" />
+          <section title="Simon Captures Gazara." start="13:43" />
+          <section title="Simon Captures the Citadel." start="13:49" />
+          <section title="Capture of Demetrius II." start="14:1" />
+          <section title="Alliance with Rome and Sparta." start="14:16" />
+          <section title="Official Honors for Simon." start="14:25" />
+          <section title="Letter of Antiochus VII." start="15:1" />
+          <section title="Roman Alliance Renewed." start="15:15" />
+          <section title="Hostility from Antiochus VII." start="15:25" />
+          <section title="Victory over Cendebeus." start="15:37" />
+          <section title="Murder of Simon and His Sons." start="16:11" />
+        </division>
+      </book>
+      <book name="2 Maccabees" num-of-chapters="16">
+        <division title="Letters to the Jews in Egypt" start="1:1" end="2:18">
+          <section title="Letter 1: 124 B.C." start="1:1" />
+          <section title="Letter 2: 164 B.C." start="1:11" />
+        </division>
+        <division title="Compiler's Preface" start="2:19" end="2:31">
+        </division>
+        <division title="Heliodorus' Attempt to Profane the Temple" start="3:1" end="3:40">
+          <section title="Heliodorus’ Arrival in Jerusalem." start="3:1" />
+          <section title="Heliodorus’ Plan to Rob the Temple." start="3:13" />
+          <section title="God Protects the Temple." start="3:24" />
+          <section title="The Restoration and Testimony of Heliodorus." start="3:29" />
+        </division>
+        <division title="Profanation and Persecution" start="4:1" end="7:42">
+          <section title="Simon Accuses Onias." start="4:1" />
+          <section title="Jason as High Priest." start="4:7" />
+          <section title="Menelaus as High Priest." start="4:23" />
+          <section title="Murder of Onias." start="4:30" />
+          <section title="More Outrages." start="4:39" />
+          <section title="Jason’s Revolt." start="5:1" />
+          <section title="Revenge by Antiochus." start="5:11" />
+          <section title="Abolition of Judaism." start="6:1" />
+          <section title="God’s Purpose." start="6:12" />
+          <section title="Martyrdom of Eleazar." start="6:18" />
+          <section title="Martyrdom of a Mother and Her Seven Sons." start="7:1" />
+        </division>
+        <division title="Victories of Judas and Purification of the Temple" start="8:1" end="10:9">
+          <section title="Resistance from Judas Maccabeus." start="8:1" />
+          <section title="First Victory over Nicanor." start="8:8" />
+          <section title="Other Victories." start="8:30" />
+          <section title="Punishment and Death of Antiochus IV." start="9:1" />
+          <section title="Purification of the Temple." start="10:1" />
+        </division>
+        <division title="Renewed Persecution" start="10:10" end="15:36">
+          <section title="Accession of Antiochus V." start="10:10" />
+          <section title="Victory over the Idumeans." start="10:14" />
+          <section title="Victory over Timothy." start="10:24" />
+          <section title="Defeat of Lysias." start="11:1" />
+          <section title="Peace Negotiations." start="11:13" />
+          <section title="Incidents at Joppa and Jamnia." start="12:1" />
+          <section title="More Victories by Judas." start="12:10" />
+          <section title="Expiation for the Dead." start="12:38" />
+          <section title="Death of Menelaus." start="13:1" />
+          <section title="Battle near Modein." start="13:9" />
+          <section title="Treaty with Antiochus V." start="13:18" />
+          <section title="Dealings with Nicanor." start="14:12" />
+          <section title="Nicanor’s Threat Against Judas." start="14:26" />
+          <section title="Martyrdom of Razis." start="14:37" />
+          <section title="Nicanor’s Arrogance." start="15:1" />
+          <section title="Defeat of Nicanor." start="15:21" />
+        </division>
+        <division title="Epilogue" start="15:37" end="15:39">
+          <section title="Compiler’s Apology." start="15:37" />
+        </division>
+      </book>
+    </category>
+    <category name="Wisdom Books">
+      <book name="Job" num-of-chapters="42">
+        <division title="Prologue" start="1:1" end="2:13">
+          <section title="Job’s Piety." start="1:1" />
+          <section title="The Interview Between the Lord and the Satan." start="1:6" />
+          <section title="The First Trial." start="1:13" />
+          <section title="Job’s Reaction." start="1:20" />
+          <section title="The Second Interview." start="2:1" />
+          <section title="The Second Trial." start="2:7" />
+          <section title="Job’s Reaction." start="2:8" />
+          <section title="Job’s Three Friends." start="2:11" />
+        </division>
+        <division title="First Cycle of Speeches" start="3:1" end="14:22">
+          <section title="Job’s Complaint." start="3:1" />
+          <section title="Eliphaz’s First Speech." start="4:1" />
+          <section title="Job’s First Reply." start="6:1" />
+          <section title="Bildad’s First Speech." start="8:1" />
+          <section title="Job’s Second Reply." start="9:1" />
+          <section title="Zophar’s First Speech." start="11:1" />
+          <section title="Job’s Third Reply." start="12:1" />
+        </division>
+        <division title="Second Cycle of Speeches" start="15:1" end="21:34">
+          <section title="Second Speech of Eliphaz." start="15:1" />
+          <section title="Job’s Fourth Reply." start="16:1" />
+          <section title="Bildad’s Second Speech." start="18:1" />
+          <section title="Job’s Fifth Reply." start="19:1" />
+          <section title="Zophar’s Second Speech." start="20:1" />
+          <section title="Job’s Sixth Reply." start="21:1" />
+        </division>
+        <division title="Third Cycle of Speeches" start="22:1" end="27:21">
+          <section title="Eliphaz’s Third Speech." start="22:1" />
+          <section title="Job’s Seventh Reply." start="23:1" />
+          <section title="Bildad’s Third Speech." start="25:1" />
+          <section title="Job’s Reply." start="26:1" />
+          <section title="Job’s Reply." start="27:1" />
+        </division>
+        <division title="The Poem on Wisdom" start="28:1" end="28:28">
+        </division>
+        <division title="Job’s Final Summary of His Cause" start="29:1" end="31:37">
+        </division>
+        <division title="Elihu’s Speeches" start="32:1" end="37:24">
+        </division>
+        <division title="The Lord and Job Meet" start="38:1" end="42:6">
+        </division>
+        <division title="Epilogue" start="42:7" end="42:17">
+          <section title="Job’s Restoration." start="42:7" />
+        </division>
+      </book>
+      <book name="Psalms" num-of-chapters="150">
+        <division title="First Book" start="1:1" end="41:13">
+        </division>
+        <division title="Second Book" start="42:1" end="72:20">
+        </division>
+        <division title="Third Book" start="73:1" end="89:52">
+        </division>
+        <division title="Fourth Book" start="90:1" end="106:48">
+        </division>
+        <division title="Fifth Book" start="107:1" end="150:6">
+        </division>
+      </book>
+      <book name="Proverbs" num-of-chapters="31">
+        <division title="Title and Introduction" start="1:1" end="1:7">
+        </division>
+        <division title="Instructions of Parents and of Woman Wisdom" start="1:8" end="9:18">
+        </division>
+        <division title="First Solomonic Collection of Sayings" start="10:1" end="22:16">
+        </division>
+        <division title="Sayings of the Wise" start="22:17" end="24:22">
+        </division>
+        <division title="Further Sayings of the Wise" start="24:23" end="24:34">
+        </division>
+        <division title="Second Solomonic Collection, Collected Under King Hezekiah" start="25:1" end="29:27">
+        </division>
+        <division title="Sayings of Agur and Others" start="30:1" end="30:33">
+        </division>
+        <division title="Sayings of King Lemuel" start="31:1" end="31:9">
+        </division>
+        <division title="Poem on the Woman of Worth" start="31:10" end="31:31">
+        </division>
+      </book>
+      <book name="Ecclesiastes" num-of-chapters="12">
+        <division title="Qoheleth’s Investigation of Life" start="1:12" end="6:9">
+        </division>
+        <division title="Qoheleth’s Conclusions" start="6:10" end="12:14">
+          <sub-division title="No One Can Find Out the Best Way of Acting" start="7:1" end="8:17">
+            <section title="Critique of Sages on Justice and Wickedness." start="7:15" />
+            <section title="Critique of Advice on Women." start="7:26" />
+            <section title="The Problem of Retribution." start="8:10" />
+          </sub-division>
+          <sub-division title="No One Knows the Future" start="9:1" end="12:14">
+            <section title="The Time of Misfortune Is Not Known." start="9:11" />
+            <section title="The Uncertain Future and the Sages." start="9:13" />
+            <section title="Poem on Youth and Old Age." start="11:7" />
+            <section title="Epilogue." start="12:9" />
+          </sub-division>
+        </division>
+      </book>
+      <book name="Song of Songs" num-of-chapters="8">
+      </book>
+      <book name="Wisdom" num-of-chapters="19">
+        <division title="The Reward of Righteousness" start="1:1" end="6:21">
+        </division>
+        <division title="Praise of Wisdom by Solomon" start="6:22" end="11:1">
+        </division>
+        <division title="Special Providence of God During the Exodus [1]" start="11:2" end="11:16">
+        </division>
+        <division title="Digressions on God’s mercy" start="11:17" end="12:22">
+        </division>
+        <division title="Special Providence of God During the Exodus [2]" start="12:23" end="12:27">
+        </division>
+        <division title="On the Folly and Shame of Idolatry" start="13:1" end="15:17">
+        </division>
+        <division title="Special Providence of God During the Exodus [3]" start="15:18" end="19:22">
+        </division>
+      </book>
+      <book name="Sirach" num-of-chapters="51">
+      </book>
+    </category>
+    <category name="Prophetic Books">
+      <book name="Isaiah" num-of-chapters="66">
+        <division name="Isaiah 1-39" start="1:1" end="39:8">
+          <sub-division title="Indictment of Israel and Judah" start="1:1" end="5:30">
+          </sub-division>
+          <sub-division title="The Book of Emmanuel" start="6:1" end="12:6">
+            <section title="The Sending of Isaiah." start="6:1" />
+            <section title="Crisis in Judah." start="7:1" />
+            <section title="Emmanuel." start="7:10" />
+            <section title="A Son of Isaiah." start="8:1" />
+            <section title="The Choice: The Lord or Assyria." start="8:5" />
+            <section title="Disciples of Isaiah." start="8:11" />
+            <section title="The Promise of Salvation Under a New Davidic King." start="8:23" />
+          </sub-division>
+          <sub-division title="Oracles Against the Foreign Nations" start="13:1" end="23:18">
+            <section title="Babylon." start="13:1" />
+            <section title="Restoration of Israel." start="14:1" />
+            <section title="Downfall of the King of Babylon." start="14:3" />
+            <section title="Philistia." start="14:28" />
+            <section title="Isaiah’s Warning Against Trust in Egypt and Ethiopia." start="20:1" />
+          </sub-division>
+          <sub-division title="Apocalypse of Isaiah" start="24:1" end="27:13">
+            <section title="Judah’s Praise and Prayer for Deliverance." start="26:1" />
+          </sub-division>
+          <sub-division title="The Lord Alone, Israel’s and Judah’s Salvation" start="28:1" end="33:24">
+          </sub-division>
+          <sub-division title="The Lord, Zion’s Avenger" start="34:1" end="35:10">
+          </sub-division>
+          <sub-division title="Historical Appendix" start="36:1" end="39:8">
+            <section title="Invasion of Sennacherib." start="36:1" />
+            <section title="Sickness and Recovery of Hezekiah." start="38:1" />
+            <section title="Hezekiah’s Hymn of Thanksgiving." start="38:9" />
+            <section title="Embassy from Merodach-baladan." start="39:1" />
+          </sub-division>
+        </division>
+        <division name="Isaiah 40-55" start="40:1" end="55:13">
+          <sub-division title="The Lord’s Glory in Israel’s Liberation" start="40:1" end="48:22">
+          </sub-division>
+          <sub-division title="Expiation of Sin, Spiritual Liberation of Israel" start="49:1" end="55:13">
+          </sub-division>
+        </division>
+        <division name="Isaiah 56-66" start="56:1" end="66:24">
+        </division>
+      </book>
+      <book name="Jeremiah" num-of-chapters="52">
+        <division title="Oracles in the Days of Josiah" start="1:1" end="6:30">
+          <section title="Infidelity of Israel." start="2:1" />
+          <section title="Judah and Israel." start="3:6" />
+          <section title="Restoration of Israel." start="3:11" />
+        </division>
+        <division title="Oracles Primarily from the Days of Jehoiakim" start="7:1" end="20:18">
+          <section title="The Temple Sermon." start="7:1" />
+          <section title="Abuses in Worship." start="7:16" />
+          <section title="False Circumcision." start="9:24" />
+          <section title="The Folly of Idolatry." start="10:1" />
+          <section title="Plea for Fidelity to the Covenant." start="11:1" />
+          <section title="The Plot Against Jeremiah." start="11:18" />
+          <section title="Judah’s Neighbors." start="12:14" />
+          <section title="Judah’s Corruption." start="13:1" />
+          <section title="The Broken Wineflask." start="13:12" />
+          <section title="The Great Drought." start="14:1" />
+          <section title="Jeremiah’s Life a Warning." start="16:1" />
+          <section title="Return from Exile." start="16:14" />
+          <section title="Double Punishment." start="16:16" />
+          <section title="Observance of the Sabbath." start="17:19" />
+          <section title="The Potter’s Vessel." start="18:1" />
+          <section title="Another Prayer for Vengeance." start="18:18" />
+          <section title="Symbol of the Potter’s Flask." start="19:1" />
+        </division>
+        <division title="Oracles in the Last Years of Jerusalem" start="21:1" end="25:38">
+          <section title="Fate of Zedekiah and Jerusalem." start="21:1" />
+          <section title="A Just Shepherd." start="23:1" />
+          <section title="The Two Baskets of Figs." start="24:1" />
+          <section title="Seventy Years of Exile." start="25:1" />
+          <section title="The Cup of Judgment on the Nations." start="25:15" />
+        </division>
+        <division title="The Temple Sermon" start="26:1" end="26:24">
+          <section title="Jeremiah Threatened with Death." start="26:1" />
+          <section title="The Fate of Uriah." start="26:20" />
+        </division>
+        <division title="Controversies with the False Prophets" start="27:1" end="29:32">
+          <section title="Serve Babylon or Perish." start="27:1" />
+          <section title="The Two Yokes." start="28:1" />
+          <section title="Letter to the Exiles in Babylon." start="29:1" />
+          <section title="The False Prophet Shemaiah." start="29:24" />
+        </division>
+        <division title="Oracles of the Restoration of Israel and Judah" start="30:1" end="35:19">
+          <section title="The Restoration." start="30:1" />
+          <section title="The New Covenant." start="31:31" />
+          <section title="Jerusalem Rebuilt." start="31:38" />
+          <section title="Pledge of Restoration." start="32:1" />
+          <section title="Restoration of Jerusalem." start="33:1" />
+          <section title="Fate of Zedekiah." start="34:1" />
+          <section title="The Pact Broken." start="34:8" />
+          <section title="The Faithful Rechabites." start="35:1" />
+        </division>
+        <division title="Jeremiah and the Fall of Jerusalem" start="36:1" end="45:5">
+          <section title="Baruch, the Scribe of Jeremiah." start="36:1" />
+          <section title="Jeremiah in the Dungeon." start="37:1" />
+          <section title="Jeremiah in the Muddy Cistern." start="38:1" />
+          <section title="The Capture of Jerusalem." start="39:1" />
+          <section title="Jeremiah Released to Gedaliah’s Custody." start="39:11" />
+          <section title="A Word of Comfort for Ebed-melech." start="39:15" />
+          <section title="Jeremiah Still in Judah." start="40:1" />
+          <section title="Assassination of Gedaliah." start="40:13" />
+          <section title="Flight to Egypt." start="41:11" />
+          <section title="Jeremiah in Egypt." start="43:8" />
+          <section title="A Message to Baruch." start="45:1" />
+        </division>
+        <division title="Oracles Against the Nations" start="46:1" end="51:64">
+          <section title="Against Egypt." start="46:2" />
+          <section title="Against the Philistines." start="47:1" />
+          <section title="Against Moab." start="48:1" />
+          <section title="Against the Ammonites." start="49:1" />
+          <section title="Against Edom." start="49:7" />
+          <section title="Against Damascus." start="49:23" />
+          <section title="Against Arabia." start="49:28" />
+          <section title="Against Elam." start="49:34" />
+          <section title="The First Oracle Against Babylon." start="50:1" />
+          <section title="The Prophecy Sent to Babylon." start="51:59" />
+        </division>
+        <division title="Historical Appendix" start="52:1" end="52:34">
+          <section title="Capture of Jerusalem." start="52:1" />
+          <section title="Destruction of Jerusalem." start="52:12" />
+          <section title="Favor Shown to Jehoiachin." start="52:31" />
+        </division>
+      </book>
+      <book name="Lamentations" num-of-chapters="5">
+        <division title="The Desolation of Jerusalem" start="1:1" end="1:22">
+        </division>
+        <division title="The Lord’s Wrath and Zion’s Ruin" start="2:1" end="2:22">
+        </division>
+        <division title="The Voice of a Suffering Individual" start="3:1" end="3:66">
+        </division>
+        <division title="Miseries of the Besieged City" start="4:1" end="4:22">
+        </division>
+        <division title="The Community’s Lament to the Lord" start="5:1" end="5:22">
+        </division>
+      </book>
+      <book name="Baruch" num-of-chapters="6">
+        <division title="Letter to Jerusalem" start="1:1" end="3:8">
+          <sub-division title="Historical Setting" start="1:1" end="1:9">
+          </sub-division>
+          <sub-division title="Confession of Guilt" start="1:10" end="2:10">
+          </sub-division>
+          <sub-division title="Prayer for Deliverance" start="2:11" end="3:8">
+            <section title="God’s Promises Recalled." start="2:27" />
+          </sub-division>
+        </division>
+        <division title="Praise of Wisdom" start="3:9" end="4:4">
+          <sub-division title="Importance of Wisdom" start="3:9" end="3:23">
+          </sub-division>
+          <sub-division title="Inaccessibility of Wisdom" start="3:24" end="3:36">
+          </sub-division>
+          <sub-division title="Wisdom Contained in the Law" start="3:37" end="4:4">
+          </sub-division>
+        </division>
+        <division title="Baruch’s Poem of Consolation" start="4:5" end="5:9">
+          <sub-division title="Baruch Addresses Diaspora" start="4:5" end="4:9">
+          </sub-division>
+          <sub-division title="Jerusalem Addresses Neighbors" start="4:9" end="4:16">
+          </sub-division>
+          <sub-division title="Jerusalem Addresses Diaspora" start="4:17" end="4:29">
+          </sub-division>
+          <sub-division title="Baruch Addresses Jerusalem" start="4:30" end="5:9">
+          </sub-division>
+        </division>
+        <division title="Letter of Jeremiah" start="6:1" end="6:72">
+        </division>
+      </book>
+      <book name="Ezekiel" num-of-chapters="48">
+        <division title="Call of the Prophet" start="1:1" end="3:27">
+          <section title="The Vision: God on the Cherubim." start="1:1" />
+          <section title="Eating of the Scroll." start="2:1" />
+          <section title="The Prophet as Sentinel." start="3:17" />
+          <section title="Ezekiel Mute." start="3:22" />
+        </division>
+        <division title="Before the Siege of Jerusalem" start="4:1" end="24:27">
+          <section title="Acts Symbolic of Siege and Exile." start="4:1" />
+          <section title="Against the Mountains of Israel." start="6:1" />
+          <section title="The End Has Come." start="7:1" />
+          <section title="Vision of Abominations in the Temple." start="8:3" />
+          <section title="Slaughter of the Idolaters." start="9:1" />
+          <section title="Death for the Remnant in Jerusalem." start="11:1" />
+          <section title="Restoration for the Exiles." start="11:14" />
+          <section title="Acts Symbolic of the Exile." start="12:1" />
+          <section title="Prophecy Ridiculed." start="12:21" />
+          <section title="Against the Prophets of Peace." start="13:1" />
+          <section title="Against Witches." start="13:17" />
+          <section title="Idolatry and Unfaithfulness." start="14:1" />
+          <section title="Just Cause." start="14:12" />
+          <section title="Parable of the Vine." start="15:1" />
+          <section title="A Parable of Infidelity." start="16:1" />
+          <section title="The Eagles and the Vine." start="17:1" />
+          <section title="Personal Responsibility." start="18:1" />
+          <section title="Israel’s History of Infidelity." start="20:1" />
+          <section title="The Sword of the Lord." start="21:1" />
+          <section title="Act Symbolic of the City’s Fall." start="21:11" />
+          <section title="Song of the Sword." start="21:13" />
+          <section title="Nebuchadnezzar at the Crossroads." start="21:23" />
+          <section title="To the Ammonites." start="21:33" />
+          <section title="Crimes of Jerusalem." start="22:1" />
+          <section title="The Two Sisters." start="23:1" />
+          <section title="Allegory of the Pot." start="24:1" />
+          <section title="Ezekiel as a Sign for the Exiles." start="24:15" />
+          <section title="End of Ezekiel’s Muteness." start="24:25" />
+        </division>
+        <division title="Prophecies Against Foreign Nations" start="25:1" end="32:32">
+          <section title="Against Ammon." start="25:1" />
+          <section title="Against Moab." start="25:8" />
+          <section title="Against Edom." start="25:12" />
+          <section title="Against the Philistines." start="25:15" />
+          <section title="Against the City of Tyre." start="26:1" />
+          <section title="The Ship Tyre." start="27:1" />
+          <section title="The Prince of Tyre." start="28:1" />
+          <section title="Against Sidon." start="28:20" />
+          <section title="Egypt the Crocodile." start="29:1" />
+          <section title="Wages for Nebuchadnezzar." start="29:17" />
+          <section title="The Day of the Lord Against Egypt." start="30:1" />
+          <section title="Pharaoh’s Broken Arm." start="30:20" />
+          <section title="Allegory of the Cedar." start="31:1" />
+          <section title="Lament over Pharaoh." start="32:1" />
+          <section title="Another Lament over Egypt." start="32:17" />
+        </division>
+        <division title="Hope for the Future" start="33:1" end="39:29">
+          <section title="The Prophet as Sentinel." start="33:1" />
+          <section title="Individual Retribution." start="33:10" />
+          <section title="The Survivor from Jerusalem." start="33:21" />
+          <section title="Those Left in Judah." start="33:23" />
+          <section title="Popular Misunderstanding." start="33:30" />
+          <section title="Parable of the Shepherds." start="34:1" />
+          <section title="Separation of the Sheep." start="34:17" />
+          <section title="Against Edom." start="35:1" />
+          <section title="Regeneration of the Land." start="36:1" />
+          <section title="Regeneration of the People." start="36:16" />
+          <section title="Vision of the Dry Bones." start="37:1" />
+          <section title="The Two Sticks." start="37:15" />
+          <section title="First Prophecy Against Gog." start="38:1" />
+          <section title="Second Prophecy Against Gog." start="38:14" />
+          <section title="Third Prophecy Against Gog." start="39:1" />
+          <section title="Israel’s Return." start="39:21" />
+        </division>
+        <division title="The New Israel" start="40:1" end="48:35">
+          <section title="The Man with a Measure." start="40:1" />
+          <section title="The East Gate." start="40:6" />
+          <section title="The Outer Court." start="40:17" />
+          <section title="The North Gate." start="40:20" />
+          <section title="The South Gate." start="40:24" />
+          <section title="Gates of the Inner Court." start="40:28" />
+          <section title="Side Rooms." start="40:38" />
+          <section title="The Temple Building." start="40:48" />
+          <section title="Interior of the Temple." start="41:16" />
+          <section title="Other Structures." start="42:1" />
+          <section title="Measuring the Outer Court." start="42:15" />
+          <section title="The Glory of the Lord Returns." start="43:1" />
+          <section title="The Law of the Temple." start="43:10" />
+          <section title="The Altar." start="43:13" />
+          <section title="The Closed Gate." start="44:1" />
+          <section title="Admission to the Temple." start="44:4" />
+          <section title="Levites." start="44:10" />
+          <section title="Priests." start="44:15" />
+          <section title="The Holy Portion." start="45:1" />
+          <section title="Weights and Measures." start="45:10" />
+          <section title="Offerings." start="45:13" />
+          <section title="The Passover." start="45:18" />
+          <section title="The Feast of Booths." start="45:25" />
+          <section title="Sabbaths." start="46:1" />
+          <section title="Ritual Laws." start="46:8" />
+          <section title="The Prince and the Land." start="46:16" />
+          <section title="The Temple Kitchens." start="46:19" />
+          <section title="The Wonderful Stream." start="47:1" />
+          <section title="Boundaries of the Land." start="47:13" />
+          <section title="The Northern Portions." start="47:21" />
+          <section title="The Sacred Tract." start="48:8" />
+          <section title="The Southern Portions." start="48:23" />
+          <section title="The Gates of the City." start="48:30" />
+        </division>
+      </book>
+      <book name="Daniel" num-of-chapters="14">
+        <division title="Daniel and the Kings of Babylon" start="1:1" end="6:29">
+          <section title="The Food Test." start="1:1" />
+          <section title="Nebuchadnezzar’s Dream." start="2:1" />
+          <section title="The Fiery Furnace." start="3:1" />
+          <section title="Prayer of Azariah." start="3:24" />
+          <section title="Deliverance from the Furnace." start="3:91" />
+          <section title="Nebuchadnezzar’s Madness." start="4:1" />
+          <section title="The Writing on the Wall." start="5:1" />
+          <section title="The Lions’ Den." start="6:2" />
+        </division>
+        <division title="Daniel’s Visions" start="7:1" end="12:13">
+          <section title="The Beasts and the Judgment." start="7:1" />
+          <section title="The Ram and the He-goat." start="8:1" />
+          <section title="The Seventy Weeks of Years." start="9:1" />
+          <section title="An Angelic Vision." start="10:1" />
+          <section title="The Hellenistic Age." start="11:2" />
+        </division>
+        <division title="Appendix: Susanna, Bel, and the Dragon" start="13:1" end="14:42">
+          <section title="Susanna." start="13:1" />
+          <section title="Bel and the Dragon." start="14:1" />
+        </division>
+      </book>
+      <book name="Hosea" num-of-chapters="14">
+        <division title="The Prophet’s Marriage and Its Symbolism" start="1:2" end="3:5">
+          <section title="Marriage of Hosea and Gomer." start="1:2" />
+          <section title="Hosea and His Wife Reunited" start="3:1" />
+        </division>
+        <division title="Israel’s Guilt, Punishment, and Restoration" start="4:1" end="14:9">
+        </division>
+      </book>
+      <book name="Joel" num-of-chapters="4">
+        <division title="Announcement of Unprecedented Disaster" start="1:2" end="1:20">
+        </division>
+        <division title="The Day of the Lord" start="2:1" end="2:27">
+          <section title="The Lord Relents." start="2:18" />
+        </division>
+        <division title="The Lord’s Final Judgment" start="3:1" end="4:21">
+        </division>
+      </book>
+      <book name="Amos" num-of-chapters="9">
+        <division title="Editorial Introduction" start="1:1" end="1:2">
+        </division>
+        <division title="Oracles Against the Nations" start="1:3" end="2:16">
+        </division>
+        <division title="Threefold Summons to Hear the Word of the Lord" start="3:1" end="5:9">
+        </division>
+        <division title="Three Woes" start="5:7" end="6:14">
+        </division>
+        <division title="Symbolic Visions" start="7:1" end="9:10">
+        </division>
+        <division title="Epilogue: Restoration Under a Davidic King" start="9:11" end="9:15">
+        </division>
+      </book>
+      <book name="Obadiah" num-of-chapters="1">
+        <division title="Edom’s Fall Decreed" start="1:1" end="1:7">
+        </division>
+        <division title="Edom’s Betrayal of Judah" start="1:8" end="1:14">
+        </division>
+        <division title="Edom’s Fall and Judah’s Restoration" start="1:15" end="1:21">
+        </division>
+      </book>
+      <book name="Jonah" num-of-chapters="4">
+        <division title="Jonah’s Disobedience and Flight" start="1:1" end="1:16">
+          <section title="Jonah’s Disobedience and Flight." start="1:1" />
+        </division>
+        <division title="Jonah’s Prayer" start="2:1" end="2:11">
+          <section title="Jonah’s Prayer." start="2:1" />
+        </division>
+        <division title="Jonah’s Obedience and the Ninevites’ Repentance" start="3:1" end="3:10">
+          <section title="Jonah’s Obedience and the Ninevites’ Repentance." start="3:1" />
+        </division>
+        <division title="Jonah’s Anger and God’s Reproof" start="4:1" end="4:11">
+          <section title="Jonah’s Anger and God’s Reproof." start="4:1" />
+        </division>
+      </book>
+      <book name="Micah" num-of-chapters="7">
+        <division title="Oracles of Punishment" start="1:2" end="3:12">
+        </division>
+        <division title="Oracles of Salvation" start="4:1" end="5:14">
+        </division>
+        <division title="Announcement of Judgment" start="6:1" end="7:6">
+        </division>
+        <division title="Confidence in God’s Future" start="7:7" end="7:20">
+        </division>
+      </book>
+      <book name="Nahum" num-of-chapters="3">
+        <division title="God’s Terrifying Appearance" start="1:2" end="1:8">
+        </division>
+        <division title="Nineveh’s Judgment and Judah’s Restoration" start="1:9" end="2:1">
+        </division>
+        <division title="The Attack on Nineveh" start="2:2" end="3:7">
+        </division>
+        <division title="Nineveh’s Inescapable Fate" start="3:8" end="3:19">
+        </division>
+      </book>
+      <book name="Habakkuk" num-of-chapters="3">
+        <division title="Habakkuk’s First Complaint" start="1:2" end="1:4">
+        </division>
+        <division title="God’s Response" start="1:5" end="1:11">
+        </division>
+        <division title="Habakkuk’s Second Complaint" start="1:12" end="2:1">
+        </division>
+        <division title="God’s Response" start="2:2" end="2:4">
+        </division>
+        <division title="Sayings Against Tyrants" start="2:5" end="2:20">
+        </division>
+        <division title="Hymn About God’s Reign" start="3:1" end="3:19">
+        </division>
+      </book>
+      <book name="Zephaniah" num-of-chapters="3">
+        <division title="The Day of the Lord: Judgment on Judah" start="1:2" end="2:3">
+        </division>
+        <division title="Judgment on the Nations" start="2:4" end="2:15">
+        </division>
+        <division title="Jerusalem Reproached" start="3:1" end="3:7">
+        </division>
+        <division title="The Nations Punished and Jerusalem Restored" start="3:8" end="3:20">
+        </division>
+      </book>
+      <book name="Haggai" num-of-chapters="2">
+        <division title="The Restoration of the Temple" start="1:1" end="1:15">
+          <section title="Prophetic Call to Work on the Temple." start="1:1" />
+          <section title="Response of Leaders and People." start="1:12" />
+        </division>
+        <division title="Oracles of Encouragement" start="2:1" end="2:23">
+          <section title="Assurance of God’s Presence." start="2:1" />
+          <section title="Priestly Ruling with Prophetic Interpretation." start="2:10" />
+          <section title="Future Hope." start="2:20" />
+        </division>
+      </book>
+      <book name="Zechariah" num-of-chapters="14">
+        <division title="Oracles" start="1:1" end="8:23">
+        </division>
+        <division title="Deutero-Zechariah" start="9:1" end="14:21">
+          <sub-division title="Indeterminate Oracles" start="9:1" end="9:8">
+          </sub-division>
+          <sub-division title="Messianic Vision" start="9:9" end="11:17">
+            <section title="The Shepherd Narrative." start="11:4" />
+          </sub-division>
+          <sub-division title="Victory of God's People over the Heathen" start="12:1" end="14:21">
+            <section title="Oracles Concerning the Nations and Judah." start="12:1" />
+            <section title="Catalogue of Mourners." start="12:11" />
+            <section title="Oracles Concerning the End of False Prophecy." start="13:1" />
+            <section title="Devastation and Rescue of Jerusalem." start="14:1" />
+            <section title="Jerusalem Restored." start="14:6" />
+            <section title="The Fate of Jerusalem’s Foes." start="14:12" />
+            <section title="The Future: Jerusalem, Judah, and the Nations." start="14:16" />
+          </sub-division>
+        </division>
+      </book>
+      <book name="Malachi" num-of-chapters="3">
+        <division title="Israel Preferred to Edom" start="1:2" end="1:5">
+        </division>
+        <division title="Offense in Sacrifice and Priestly Duty" start="1:6" end="2:9">
+        </division>
+        <division title="Marriage and Divorce" start="2:10" end="2:16">
+        </division>
+        <division title="Purification and Just Judgment" start="2:17" end="2:17">
+        </division>
+        <division title="The Messenger of the Covenant" start="3:1" end="3:5">
+        </division>
+        <division title="Gifts for God, Blessings for the People" start="3:6" end="3:12">
+        </division>
+        <division title="The Need to Serve God" start="3:13" end="3:21">
+        </division>
+        <division title="Moses and Elijah" start="3:22" end="3:24">
+        </division>
+      </book>
+    </category>
+  </testament>
+  <testament name="New Testament">
+    <category name="The Gospels">
+      <book name="Matthew" num-of-chapters="28">
+        <division title="The Infancy Narrative" start="1:1" end="2:23">
+          <section title="The Genealogy of Jesus." start="1:1" />
+          <section title="The Birth of Jesus." start="1:18" />
+          <section title="The Visit of the Magi." start="2:1" />
+          <section title="The Flight to Egypt." start="2:13" />
+          <section title="The Massacre of the Infants." start="2:16" />
+          <section title="The Return from Egypt." start="2:19" />
+        </division>
+        <division title="The Proclamation of the Kingdom" start="3:1" end="7:29">
+          <section title="The Preaching of John the Baptist." start="3:1" />
+          <section title="The Baptism of Jesus." start="3:13" />
+          <section title="The Temptation of Jesus." start="4:1" />
+          <section title="The Beginning of the Galilean Ministry." start="4:12" />
+          <section title="The Call of the First Disciples." start="4:18" />
+          <section title="Ministering to a Great Multitude." start="4:23" />
+          <section title="The Sermon on the Mount." start="5:1" />
+          <section title="The Similes of Salt and Light." start="5:13" />
+          <section title="Teaching About the Law." start="5:17" />
+          <section title="Teaching About Anger." start="5:21" />
+          <section title="Teaching About Adultery." start="5:27" />
+          <section title="Teaching About Divorce." start="5:31" />
+          <section title="Teaching About Oaths." start="5:33" />
+          <section title="Teaching About Retaliation." start="5:38" />
+          <section title="Love of Enemies." start="5:43" />
+          <section title="Teaching About Almsgiving." start="6:1" />
+          <section title="Teaching About Prayer." start="6:5" />
+          <section title="The Lord’s Prayer." start="6:9" />
+          <section title="Teaching About Fasting." start="6:16" />
+          <section title="Treasure in Heaven." start="6:19" />
+          <section title="The Light of the Body." start="6:22" />
+          <section title="God and Money." start="6:24" />
+          <section title="Dependence on God." start="6:25" />
+          <section title="Judging Others." start="7:1" />
+          <section title="Pearls Before Swine." start="7:6" />
+          <section title="The Answer to Prayers." start="7:7" />
+          <section title="The Golden Rule." start="7:12" />
+          <section title="The Narrow Gate." start="7:13" />
+          <section title="False Prophets." start="7:15" />
+          <section title="The True Disciple." start="7:21" />
+          <section title="The Two Foundations." start="7:24" />
+        </division>
+        <division title="Ministry and Mission in Galilee" start="8:1" end="11:1">
+          <section title="The Cleansing of a Leper." start="8:1" />
+          <section title="The Healing of a Centurion’s Servant." start="8:5" />
+          <section title="The Cure of Peter’s Mother-in-Law." start="8:14" />
+          <section title="Other Healings." start="8:16" />
+          <section title="The Would-be Followers of Jesus." start="8:18" />
+          <section title="The Calming of the Storm at Sea." start="8:23" />
+          <section title="The Healing of the Gadarene Demoniacs." start="8:28" />
+          <section title="The Healing of a Paralytic." start="9:1" />
+          <section title="The Call of Matthew." start="9:9" />
+          <section title="The Question About Fasting." start="9:14" />
+          <section title="The Official’s Daughter and the Woman with a Hemorrhage." start="9:18" />
+          <section title="The Healing of Two Blind Men." start="9:27" />
+          <section title="The Healing of a Mute Person." start="9:32" />
+          <section title="The Compassion of Jesus." start="9:35" />
+          <section title="The Mission of the Twelve." start="10:1" />
+          <section title="The Commissioning of the Twelve." start="10:5" />
+          <section title="Coming Persecutions." start="10:16" />
+          <section title="Courage Under Persecution." start="10:26" />
+          <section title="Jesus: A Cause of Division." start="10:34" />
+          <section title="The Conditions of Discipleship." start="10:37" />
+          <section title="Rewards." start="10:40" />
+        </division>
+        <division title="Opposition from Israel" start="11:2" end="13:53">
+          <section title="The Messengers from John the Baptist." start="11:2" />
+          <section title="Jesus’ Testimony to John." start="11:7" />
+          <section title="Reproaches to Unrepentant Towns." start="11:20" />
+          <section title="The Praise of the Father." start="11:25" />
+          <section title="The Gentle Mastery of Christ." start="11:28" />
+          <section title="Picking Grain on the Sabbath." start="12:1" />
+          <section title="The Man with a Withered Hand." start="12:9" />
+          <section title="The Chosen Servant." start="12:15" />
+          <section title="Jesus and Beelzebul." start="12:22" />
+          <section title="A Tree and Its Fruits." start="12:33" />
+          <section title="The Demand for a Sign." start="12:38" />
+          <section title="The Return of the Unclean Spirit." start="12:43" />
+          <section title="The True Family of Jesus." start="12:46" />
+          <section title="The Parable of the Sower." start="13:1" />
+          <section title="The Purpose of Parables." start="13:10" />
+          <section title="The Privilege of Discipleship." start="13:16" />
+          <section title="The Explanation of the Parable of the Sower." start="13:18" />
+          <section title="The Parable of the Weeds Among the Wheat." start="13:24" />
+          <section title="The Parable of the Mustard Seed." start="13:31" />
+          <section title="The Parable of the Yeast." start="13:33" />
+          <section title="The Use of Parables." start="13:34" />
+          <section title="The Explanation of the Parable of the Weeds." start="13:36" />
+          <section title="More Parables." start="13:44" />
+          <section title="Treasures New and Old." start="13:51" />
+        </division>
+        <division title="Jesus, the Kingdom, and the Church" start="13:54" end="18:35">
+          <section title="The Rejection at Nazareth." start="13:54" />
+          <section title="Herod’s Opinion of Jesus." start="14:1" />
+          <section title="The Death of John the Baptist." start="14:3" />
+          <section title="The Return of the Twelve and the Feeding of the Five Thousand." start="14:13" />
+          <section title="The Walking on the Water." start="14:22" />
+          <section title="The Healings at Gennesaret." start="14:34" />
+          <section title="The Tradition of the Elders." start="15:1" />
+          <section title="The Canaanite Woman’s Faith." start="15:21" />
+          <section title="The Healing of Many People." start="15:29" />
+          <section title="The Feeding of the Four Thousand." start="15:32" />
+          <section title="The Demand for a Sign." start="16:1" />
+          <section title="The Leaven of the Pharisees and Sadducees." start="16:5" />
+          <section title="Peter’s Confession About Jesus." start="16:13" />
+          <section title="The First Prediction of the Passion." start="16:21" />
+          <section title="The Conditions of Discipleship." start="16:24" />
+          <section title="The Transfiguration of Jesus." start="17:1" />
+          <section title="The Coming of Elijah." start="17:9" />
+          <section title="The Healing of a Boy with a Demon." start="17:14" />
+          <section title="The Second Prediction of the Passion." start="17:22" />
+          <section title="Payment of the Temple Tax." start="17:24" />
+          <section title="The Greatest in the Kingdom." start="18:1" />
+          <section title="Temptations to Sin." start="18:6" />
+          <section title="The Parable of the Lost Sheep." start="18:10" />
+          <section title="A Brother Who Sins." start="18:15" />
+          <section title="The Parable of the Unforgiving Servant." start="18:21" />
+        </division>
+        <division title="Ministry in Judea and Jerusalem" start="19:1" end="25:46">
+          <section title="Marriage and Divorce." start="19:1" />
+          <section title="Blessing of the Children." start="19:13" />
+          <section title="The Rich Young Man." start="19:16" />
+          <section title="The Workers in the Vineyard." start="20:1" />
+          <section title="The Third Prediction of the Passion." start="20:17" />
+          <section title="The Request of James and John." start="20:20" />
+          <section title="The Healing of Two Blind Men." start="20:29" />
+          <section title="The Entry into Jerusalem." start="21:1" />
+          <section title="The Cleansing of the Temple." start="21:12" />
+          <section title="The Cursing of the Fig Tree." start="21:18" />
+          <section title="The Authority of Jesus Questioned." start="21:23" />
+          <section title="The Parable of the Two Sons." start="21:28" />
+          <section title="The Parable of the Tenants." start="21:33" />
+          <section title="The Parable of the Wedding Feast." start="22:1" />
+          <section title="Paying Taxes to the Emperor." start="22:15" />
+          <section title="The Question About the Resurrection." start="22:23" />
+          <section title="The Greatest Commandment." start="22:34" />
+          <section title="The Question About David’s Son." start="22:41" />
+          <section title="Denunciation of the Scribes and Pharisees." start="23:1" />
+          <section title="The Lament over Jerusalem." start="23:37" />
+          <section title="The Destruction of the Temple Foretold." start="24:1" />
+          <section title="The Beginning of Calamities." start="24:3" />
+          <section title="The Great Tribulation." start="24:15" />
+          <section title="The Coming of the Son of Man." start="24:29" />
+          <section title="The Lesson of the Fig Tree." start="24:32" />
+          <section title="The Unknown Day and Hour." start="24:36" />
+          <section title="The Faithful or the Unfaithful Servant." start="24:45" />
+          <section title="The Parable of the Ten Virgins." start="25:1" />
+          <section title="The Parable of the Talents." start="25:14" />
+          <section title="The Judgment of the Nations." start="25:31" />
+        </division>
+        <division title="The Passion and Resurrection" start="26:1" end="28:20">
+          <section title="The Conspiracy Against Jesus." start="26:1" />
+          <section title="The Anointing at Bethany." start="26:6" />
+          <section title="The Betrayal by Judas." start="26:14" />
+          <section title="Preparations for the Passover." start="26:17" />
+          <section title="The Betrayer." start="26:20" />
+          <section title="The Lord’s Supper." start="26:26" />
+          <section title="Peter’s Denial Foretold." start="26:31" />
+          <section title="The Agony in the Garden." start="26:36" />
+          <section title="The Betrayal and Arrest of Jesus." start="26:47" />
+          <section title="Jesus Before the Sanhedrin." start="26:57" />
+          <section title="Peter’s Denial of Jesus." start="26:69" />
+          <section title="Jesus Before Pilate." start="27:1" />
+          <section title="The Death of Judas." start="27:3" />
+          <section title="Jesus Questioned by Pilate." start="27:11" />
+          <section title="The Sentence of Death." start="27:15" />
+          <section title="Mockery by the Soldiers." start="27:27" />
+          <section title="The Way of the Cross." start="27:32" />
+          <section title="The Crucifixion." start="27:33" />
+          <section title="The Death of Jesus." start="27:45" />
+          <section title="The Burial of Jesus." start="27:57" />
+          <section title="The Guard at the Tomb." start="27:62" />
+          <section title="The Resurrection of Jesus." start="28:1" />
+          <section title="The Report of the Guard." start="28:11" />
+          <section title="The Commissioning of the Disciples." start="28:16" />
+        </division>
+      </book>
+      <book name="Mark" num-of-chapters="16">
+        <division title="The Preparation for the Public Ministry of Jesus" start="1:1" end="1:13">
+          <section title="The Preaching of John the Baptist." start="1:2" />
+          <section title="The Baptism of Jesus." start="1:9" />
+          <section title="The Temptation of Jesus." start="1:12" />
+        </division>
+        <division title="The Mystery of Jesus" start="1:14" end="8:26">
+          <section title="The Beginning of the Galilean Ministry." start="1:14" />
+          <section title="The Call of the First Disciples." start="1:16" />
+          <section title="The Cure of a Demoniac." start="1:21" />
+          <section title="The Cure of Simon’s Mother-in-Law." start="1:29" />
+          <section title="Other Healings." start="1:32" />
+          <section title="Jesus Leaves Capernaum." start="1:35" />
+          <section title="The Cleansing of a Leper." start="1:40" />
+          <section title="The Healing of a Paralytic." start="2:1" />
+          <section title="The Call of Levi." start="2:13" />
+          <section title="The Question About Fasting." start="2:18" />
+          <section title="The Disciples and the Sabbath." start="2:23" />
+          <section title="A Man with a Withered Hand." start="3:1" />
+          <section title="The Mercy of Jesus." start="3:7" />
+          <section title="The Mission of the Twelve." start="3:13" />
+          <section title="Blasphemy of the Scribes." start="3:20" />
+          <section title="Jesus and Beelzebul." start="3:23" />
+          <section title="Jesus and His Family." start="3:31" />
+          <section title="The Parable of the Sower." start="4:1" />
+          <section title="The Purpose of the Parables." start="4:10" />
+          <section title="Parable of the Lamp." start="4:21" />
+          <section title="Seed Grows of Itself." start="4:26" />
+          <section title="The Mustard Seed." start="4:30" />
+          <section title="The Calming of a Storm at Sea." start="4:35" />
+          <section title="The Healing of the Gerasene Demoniac." start="5:1" />
+          <section title="Jairus’s Daughter and the Woman with a Hemorrhage." start="5:21" />
+          <section title="The Rejection at Nazareth." start="6:1" />
+          <section title="The Mission of the Twelve." start="6:7" />
+          <section title="Herod’s Opinion of Jesus." start="6:14" />
+          <section title="The Death of John the Baptist." start="6:17" />
+          <section title="The Return of the Twelve." start="6:30" />
+          <section title="The Feeding of the Five Thousand." start="6:34" />
+          <section title="The Walking on the Water." start="6:45" />
+          <section title="The Healings at Gennesaret." start="6:53" />
+          <section title="The Tradition of the Elders." start="7:1" />
+          <section title="The Syrophoenician Woman’s Faith." start="7:24" />
+          <section title="The Healing of a Deaf Man." start="7:31" />
+          <section title="The Feeding of the Four Thousand." start="8:1" />
+          <section title="The Demand for a Sign." start="8:11" />
+          <section title="The Leaven of the Pharisees." start="8:14" />
+          <section title="The Blind Man of Bethsaida." start="8:22" />
+        </division>
+        <division title="The Mystery Begins to Be Revealed" start="8:27" end="9:32">
+          <section title="Peter’s Confession About Jesus." start="8:27" />
+          <section title="The First Prediction of the Passion." start="8:31" />
+          <section title="The Conditions of Discipleship." start="8:34" />
+          <section title="The Transfiguration of Jesus." start="9:2" />
+          <section title="The Coming of Elijah." start="9:9" />
+          <section title="The Healing of a Boy with a Demon." start="9:14" />
+          <section title="The Second Prediction of the Passion." start="9:30" />
+        </division>
+        <division title="The Full Revelation of the Mystery" start="9:33" end="16:8">
+          <section title="The Greatest in the Kingdom." start="9:33" />
+          <section title="Another Exorcist." start="9:38" />
+          <section title="Temptations to Sin." start="9:42" />
+          <section title="The Simile of Salt." start="9:49" />
+          <section title="Marriage and Divorce." start="10:1" />
+          <section title="Blessing of the Children." start="10:13" />
+          <section title="The Rich Man." start="10:17" />
+          <section title="The Third Prediction of the Passion." start="10:32" />
+          <section title="Ambition of James and John." start="10:35" />
+          <section title="The Blind Bartimaeus." start="10:46" />
+          <section title="The Entry into Jerusalem." start="11:1" />
+          <section title="Jesus Curses a Fig Tree." start="11:12" />
+          <section title="Cleansing of the Temple." start="11:15" />
+          <section title="The Withered Fig Tree." start="11:20" />
+          <section title="The Authority of Jesus Questioned." start="11:27" />
+          <section title="Parable of the Tenants." start="12:1" />
+          <section title="Paying Taxes to the Emperor." start="12:13" />
+          <section title="The Question About the Resurrection." start="12:18" />
+          <section title="The Greatest Commandment." start="12:28" />
+          <section title="The Question About David’s Son." start="12:35" />
+          <section title="Denunciation of the Scribes." start="12:38" />
+          <section title="The Poor Widow’s Contribution." start="12:41" />
+          <section title="The Destruction of the Temple Foretold." start="13:1" />
+          <section title="The Signs of the End." start="13:3" />
+          <section title="The Coming Persecution." start="13:9" />
+          <section title="The Great Tribulation." start="13:14" />
+          <section title="The Coming of the Son of Man." start="13:24" />
+          <section title="The Lesson of the Fig Tree." start="13:28" />
+          <section title="Need for Watchfulness." start="13:32" />
+          <section title="The Conspiracy Against Jesus." start="14:1" />
+          <section title="The Anointing at Bethany." start="14:3" />
+          <section title="The Betrayal by Judas." start="14:10" />
+          <section title="Preparations for the Passover." start="14:12" />
+          <section title="The Betrayer." start="14:17" />
+          <section title="The Lord’s Supper." start="14:22" />
+          <section title="Peter’s Denial Foretold." start="14:27" />
+          <section title="The Agony in the Garden." start="14:32" />
+          <section title="The Betrayal and Arrest of Jesus." start="14:43" />
+          <section title="Jesus Before the Sanhedrin." start="14:53" />
+          <section title="Peter’s Denial of Jesus." start="14:66" />
+          <section title="Jesus Before Pilate." start="15:1" />
+          <section title="The Sentence of Death." start="15:6" />
+          <section title="Mockery by the Soldiers." start="15:16" />
+          <section title="The Way of the Cross." start="15:21" />
+          <section title="The Crucifixion." start="15:22" />
+          <section title="The Death of Jesus." start="15:33" />
+          <section title="The Burial of Jesus." start="15:42" />
+          <section title="The Resurrection of Jesus." start="16:1" />
+        </division>
+        <division title="The Longer Ending" start="16:9" end="16:20">
+          <section title="The Appearance to Mary Magdalene." start="16:9" />
+          <section title="The Appearance to Two Disciples." start="16:12" />
+          <section title="The Commissioning of the Eleven." start="16:14" />
+          <section title="The Ascension of Jesus." start="16:19" />
+        </division>
+        <division name="The Shorter Ending">
+        </division>
+        <division title="The Freer Logion" start="16:9" end="16:20">
+          <section title="The Appearance to Mary Magdalene." start="16:9" />
+          <section title="The Appearance to Two Disciples." start="16:12" />
+          <section title="The Commissioning of the Eleven." start="16:14" />
+          <section title="The Ascension of Jesus." start="16:19" />
+        </division>
+      </book>
+      <book name="Luke" num-of-chapters="24">
+        <division title="The Prologue" start="1:1" end="1:4">
+        </division>
+        <division title="The Infancy Narrative" start="1:5" end="2:52">
+          <section title="Announcement of the Birth of John." start="1:5" />
+          <section title="Announcement of the Birth of Jesus." start="1:26" />
+          <section title="Mary Visits Elizabeth." start="1:39" />
+          <section title="The Canticle of Mary." start="1:46" />
+          <section title="The Birth of John." start="1:57" />
+          <section title="The Canticle of Zechariah." start="1:67" />
+          <section title="The Birth of Jesus." start="2:1" />
+          <section title="The Visit of the Shepherds." start="2:15" />
+          <section title="The Circumcision and Naming of Jesus." start="2:21" />
+          <section title="The Presentation in the Temple." start="2:22" />
+          <section title="The Return to Nazareth." start="2:39" />
+          <section title="The Boy Jesus in the Temple." start="2:41" />
+        </division>
+        <division title="The Preparation for the Public Ministry" start="3:1" end="4:13">
+          <section title="The Preaching of John the Baptist." start="3:1" />
+          <section title="The Baptism of Jesus." start="3:21" />
+          <section title="The Genealogy of Jesus." start="3:23" />
+          <section title="The Temptation of Jesus." start="4:1" />
+        </division>
+        <division title="The Ministry in Galilee" start="4:14" end="9:50">
+          <section title="The Beginning of the Galilean Ministry." start="4:14" />
+          <section title="The Rejection at Nazareth." start="4:16" />
+          <section title="The Cure of a Demoniac." start="4:31" />
+          <section title="The Cure of Simon’s Mother-in-Law." start="4:38" />
+          <section title="Other Healings." start="4:40" />
+          <section title="Jesus Leaves Capernaum." start="4:42" />
+          <section title="The Call of Simon the Fisherman." start="5:1" />
+          <section title="The Cleansing of a Leper." start="5:12" />
+          <section title="The Healing of a Paralytic." start="5:17" />
+          <section title="The Call of Levi." start="5:27" />
+          <section title="The Question About Fasting." start="5:33" />
+          <section title="Debates About the Sabbath." start="6:1" />
+          <section title="The Mission of the Twelve." start="6:12" />
+          <section title="Ministering to a Great Multitude." start="6:17" />
+          <section title="Sermon on the Plain." start="6:20" />
+          <section title="Love of Enemies." start="6:27" />
+          <section title="Judging Others." start="6:37" />
+          <section title="A Tree Known by Its Fruit." start="6:43" />
+          <section title="The Two Foundations." start="6:46" />
+          <section title="The Healing of a Centurion’s Slave." start="7:1" />
+          <section title="Raising of the Widow’s Son." start="7:11" />
+          <section title="The Messengers from John the Baptist." start="7:18" />
+          <section title="Jesus’ Testimony to John." start="7:24" />
+          <section title="The Pardon of the Sinful Woman." start="7:36" />
+          <section title="Galilean Women Follow Jesus." start="8:1" />
+          <section title="The Parable of the Sower." start="8:4" />
+          <section title="The Purpose of the Parables." start="8:9" />
+          <section title="The Parable of the Sower Explained." start="8:11" />
+          <section title="The Parable of the Lamp." start="8:16" />
+          <section title="Jesus and His Family." start="8:19" />
+          <section title="The Calming of a Storm at Sea." start="8:22" />
+          <section title="The Healing of the Gerasene Demoniac." start="8:26" />
+          <section title="Jairus’s Daughter and the Woman with a Hemorrhage." start="8:40" />
+          <section title="The Mission of the Twelve." start="9:1" />
+          <section title="Herod’s Opinion of Jesus." start="9:7" />
+          <section title="The Return of the Twelve and the Feeding of the Five Thousand." start="9:10" />
+          <section title="Peter’s Confession About Jesus." start="9:18" />
+          <section title="The First Prediction of the Passion." start="9:22" />
+          <section title="The Conditions of Discipleship." start="9:23" />
+          <section title="The Transfiguration of Jesus." start="9:28" />
+          <section title="The Healing of a Boy with a Demon." start="9:37" />
+          <section title="The Second Prediction of the Passion." start="9:44" />
+          <section title="The Greatest in the Kingdom." start="9:46" />
+          <section title="Another Exorcist." start="9:49" />
+        </division>
+        <division title="The Journey to Jerusalem: Luke’s Travel Narrative" start="9:51" end="19:27">
+          <section title="Departure for Jerusalem; Samaritan Inhospitality." start="9:51" />
+          <section title="The Would-be Followers of Jesus." start="9:57" />
+          <section title="The Mission of the Seventy-two." start="10:1" />
+          <section title="Reproaches to Unrepentant Towns." start="10:13" />
+          <section title="Return of the Seventy-two." start="10:17" />
+          <section title="Praise of the Father." start="10:21" />
+          <section title="The Privileges of Discipleship." start="10:23" />
+          <section title="The Greatest Commandment." start="10:25" />
+          <section title="The Parable of the Good Samaritan." start="10:29" />
+          <section title="Martha and Mary." start="10:38" />
+          <section title="The Lord’s Prayer." start="11:1" />
+          <section title="Further Teachings on Prayer." start="11:5" />
+          <section title="The Answer to Prayer." start="11:9" />
+          <section title="Jesus and Beelzebul." start="11:14" />
+          <section title="The Return of the Unclean Spirit." start="11:24" />
+          <section title="True Blessedness." start="11:27" />
+          <section title="The Demand for a Sign." start="11:29" />
+          <section title="The Simile of Light." start="11:33" />
+          <section title="Denunciation of the Pharisees and Scholars of the Law." start="11:37" />
+          <section title="The Leaven of the Pharisees." start="12:1" />
+          <section title="Courage Under Persecution." start="12:2" />
+          <section title="Sayings About the Holy Spirit." start="12:10" />
+          <section title="Saying Against Greed." start="12:13" />
+          <section title="Parable of the Rich Fool." start="12:16" />
+          <section title="Dependence on God." start="12:22" />
+          <section title="Vigilant and Faithful Servants." start="12:35" />
+          <section title="Jesus: A Cause of Division." start="12:49" />
+          <section title="Signs of the Times." start="12:54" />
+          <section title="Settlement with an Opponent." start="12:57" />
+          <section title="A Call to Repentance." start="13:1" />
+          <section title="The Parable of the Barren Fig Tree." start="13:6" />
+          <section title="Cure of a Crippled Woman on the Sabbath." start="13:10" />
+          <section title="The Parable of the Mustard Seed." start="13:18" />
+          <section title="The Parable of the Yeast." start="13:20" />
+          <section title="The Narrow Door; Salvation and Rejection." start="13:22" />
+          <section title="Herod’s Desire to Kill Jesus." start="13:31" />
+          <section title="The Lament over Jerusalem." start="13:34" />
+          <section title="Healing of the Man with Dropsy on the Sabbath." start="14:1" />
+          <section title="Conduct of Invited Guests and Hosts." start="14:7" />
+          <section title="The Parable of the Great Feast." start="14:15" />
+          <section title="Sayings on Discipleship." start="14:25" />
+          <section title="The Simile of Salt." start="14:34" />
+          <section title="The Parable of the Lost Sheep." start="15:1" />
+          <section title="The Parable of the Lost Coin." start="15:8" />
+          <section title="The Parable of the Lost Son." start="15:11" />
+          <section title="The Parable of the Dishonest Steward." start="16:1" />
+          <section title="Application of the Parable." start="16:9" />
+          <section title="A Saying Against the Pharisees." start="16:14" />
+          <section title="Sayings About the Law." start="16:16" />
+          <section title="Sayings About Divorce." start="16:18" />
+          <section title="The Parable of the Rich Man and Lazarus." start="16:19" />
+          <section title="Temptations to Sin." start="17:1" />
+          <section title="Saying of Faith." start="17:5" />
+          <section title="Attitude of a Servant." start="17:7" />
+          <section title="The Cleansing of Ten Lepers." start="17:11" />
+          <section title="The Coming of the Kingdom of God." start="17:20" />
+          <section title="The Day of the Son of Man." start="17:22" />
+          <section title="The Parable of the Persistent Widow." start="18:1" />
+          <section title="The Parable of the Pharisee and the Tax Collector." start="18:9" />
+          <section title="Saying on Children and the Kingdom." start="18:15" />
+          <section title="The Rich Official." start="18:18" />
+          <section title="On Riches and Renunciation." start="18:24" />
+          <section title="The Third Prediction of the Passion." start="18:31" />
+          <section title="The Healing of the Blind Beggar." start="18:35" />
+          <section title="Zacchaeus the Tax Collector." start="19:1" />
+          <section title="The Parable of the Ten Gold Coins." start="19:11" />
+        </division>
+        <division title="The Teaching Ministry in Jerusalem" start="19:28" end="21:38">
+          <section title="The Entry into Jerusalem." start="19:28" />
+          <section title="The Lament for Jerusalem." start="19:41" />
+          <section title="The Cleansing of the Temple." start="19:45" />
+          <section title="The Authority of Jesus Questioned." start="20:1" />
+          <section title="The Parable of the Tenant Farmers." start="20:9" />
+          <section title="Paying Taxes to the Emperor." start="20:20" />
+          <section title="The Question About the Resurrection." start="20:27" />
+          <section title="The Question About David’s Son." start="20:41" />
+          <section title="Denunciation of the Scribes." start="20:45" />
+          <section title="The Poor Widow’s Contribution." start="21:1" />
+          <section title="The Destruction of the Temple Foretold." start="21:5" />
+          <section title="The Signs of the End." start="21:7" />
+          <section title="The Coming Persecution." start="21:12" />
+          <section title="The Great Tribulation." start="21:20" />
+          <section title="The Coming of the Son of Man." start="21:25" />
+          <section title="The Lesson of the Fig Tree." start="21:29" />
+          <section title="Exhortation to Be Vigilant." start="21:34" />
+          <section title="Ministry in Jerusalem." start="21:37" />
+        </division>
+        <division title="The Passion Narrative" start="22:1" end="23:56">
+          <section title="The Conspiracy Against Jesus." start="22:1" />
+          <section title="Preparations for the Passover." start="22:7" />
+          <section title="The Last Supper." start="22:14" />
+          <section title="The Betrayal Foretold." start="22:21" />
+          <section title="The Role of the Disciples." start="22:24" />
+          <section title="Peter’s Denial Foretold." start="22:31" />
+          <section title="Instructions for the Time of Crisis." start="22:35" />
+          <section title="The Agony in the Garden." start="22:39" />
+          <section title="The Betrayal and Arrest of Jesus." start="22:47" />
+          <section title="Peter’s Denial of Jesus." start="22:54" />
+          <section title="Jesus Before the Sanhedrin." start="22:66" />
+          <section title="Jesus Before Pilate." start="23:1" />
+          <section title="Jesus Before Herod." start="23:6" />
+          <section title="The Sentence of Death." start="23:18" />
+          <section title="The Way of the Cross." start="23:26" />
+          <section title="The Crucifixion." start="23:33" />
+          <section title="The Death of Jesus." start="23:44" />
+          <section title="The Burial of Jesus." start="23:50" />
+        </division>
+        <division title="The Resurrection Narrative" start="24:1" end="24:53">
+          <section title="The Resurrection of Jesus." start="24:1" />
+          <section title="The Appearance on the Road to Emmaus." start="24:13" />
+          <section title="The Appearance to the Disciples in Jerusalem." start="24:36" />
+          <section title="The Ascension." start="24:50" />
+        </division>
+      </book>
+      <book name="John" num-of-chapters="21">
+        <division title="Prologue" start="1:1" end="1:18">
+        </division>
+        <division title="The Book of Signs" start="1:19" end="12:50">
+          <section title="John the Baptist’s Testimony to Himself." start="1:19" />
+          <section title="John the Baptist’s Testimony to Jesus." start="1:29" />
+          <section title="The First Disciples." start="1:35" />
+          <section title="The Wedding at Cana." start="2:1" />
+          <section title="Cleansing of the Temple." start="2:13" />
+          <section title="Nicodemus." start="3:1" />
+          <section title="Final Witness of the Baptist." start="3:22" />
+          <section title="The One from Heaven." start="3:31" />
+          <section title="The Samaritan Woman." start="4:4" />
+          <section title="Return to Galilee." start="4:43" />
+          <section title="Second Sign at Cana." start="4:46" />
+          <section title="Cure on a Sabbath." start="5:1" />
+          <section title="The Work of the Son." start="5:19" />
+          <section title="Witnesses to Jesus." start="5:31" />
+          <section title="Unbelief of Jesus’ Hearers." start="5:41" />
+          <section title="Multiplication of the Loaves." start="6:1" />
+          <section title="Walking on the Water." start="6:16" />
+          <section title="The Bread of Life Discourse." start="6:22" />
+          <section title="The Words of Eternal Life." start="6:60" />
+          <section title="The Feast of Tabernacles." start="7:1" />
+          <section title="The First Dialogue." start="7:14" />
+          <section title="Officers Sent to Arrest Jesus." start="7:32" />
+          <section title="Rivers of Living Water." start="7:37" />
+          <section title="Discussion about the Origins of the Messiah." start="7:40" />
+          <section title="A Woman Caught in Adultery." start="8:1" />
+          <section title="The Light of the World." start="8:12" />
+          <section title="Jesus, the Father’s Ambassador." start="8:21" />
+          <section title="Jesus and Abraham." start="8:31" />
+          <section title="The Man Born Blind." start="9:1" />
+          <section title="The Good Shepherd." start="10:1" />
+          <section title="Feast of the Dedication." start="10:22" />
+          <section title="The Raising of Lazarus." start="11:1" />
+          <section title="Session of the Sanhedrin." start="11:45" />
+          <section title="The Last Passover." start="11:55" />
+          <section title="The Anointing at Bethany." start="12:1" />
+          <section title="The Entry into Jerusalem." start="12:12" />
+          <section title="The Coming of Jesus’ Hour." start="12:20" />
+          <section title="Unbelief and Belief among the Jews." start="12:37" />
+          <section title="Recapitulation." start="12:44" />
+        </division>
+        <division title="The Book of Glory" start="13:1" end="20:31">
+          <section title="The Washing of the Disciples’ Feet." start="13:1" />
+          <section title="Announcement of Judas’s Betrayal." start="13:21" />
+          <section title="The New Commandment." start="13:31" />
+          <section title="Peter’s Denial Predicted." start="13:36" />
+          <section title="Last Supper Discourses." start="14:1" />
+          <section title="The Advocate." start="14:15" />
+          <section title="The Vine and the Branches." start="15:1" />
+          <section title="The World’s Hatred." start="15:18" />
+          <section title="Jesus’ Departure; Coming of the Advocate." start="16:5" />
+          <section title="The Prayer of Jesus." start="17:1" />
+          <section title="Jesus Arrested." start="18:1" />
+          <section title="Peter’s First Denial." start="18:15" />
+          <section title="The Inquiry before Annas." start="18:19" />
+          <section title="Peter Denies Jesus Again." start="18:25" />
+          <section title="The Trial before Pilate." start="18:28" />
+          <section title="The Crucifixion of Jesus." start="19:17" />
+          <section title="The Blood and Water." start="19:31" />
+          <section title="The Burial of Jesus." start="19:38" />
+          <section title="The Empty Tomb." start="20:1" />
+          <section title="The Appearance to Mary of Magdala." start="20:11" />
+          <section title="Appearance to the Disciples." start="20:19" />
+          <section title="Thomas." start="20:24" />
+          <section title="Conclusion." start="20:30" />
+        </division>
+        <division title="Epilogue: The Resurrection Appearance in Galilee" start="21:1" end="21:25">
+          <section title="The Appearance to the Seven Disciples." start="21:1" />
+          <section title="Jesus and Peter." start="21:15" />
+          <section title="The Beloved Disciple." start="21:20" />
+          <section title="Conclusion." start="21:24" />
+        </division>
+      </book>
+      <book name="Acts" num-of-chapters="28">
+        <division title="The Preparation for the Christian Mission" start="1:1" end="2:13">
+          <section title="The Promise of the Spirit." start="1:1" />
+          <section title="The Ascension of Jesus." start="1:6" />
+          <section title="The First Community in Jerusalem." start="1:13" />
+          <section title="The Choice of Judas’s Successor." start="1:15" />
+          <section title="The Coming of the Spirit." start="2:1" />
+        </division>
+        <division title="The Mission in Jerusalem" start="2:14" end="8:3">
+          <section title="Peter’s Speech at Pentecost." start="2:14" />
+          <section title="Communal Life." start="2:42" />
+          <section title="Cure of a Crippled Beggar." start="3:1" />
+          <section title="Peter’s Speech." start="3:11" />
+          <section title="Before the Sanhedrin." start="4:5" />
+          <section title="Prayer of the Community." start="4:23" />
+          <section title="Life in the Christian Community." start="4:32" />
+          <section title="Ananias and Sapphira." start="5:1" />
+          <section title="Signs and Wonders of the Apostles." start="5:12" />
+          <section title="Trial before the Sanhedrin." start="5:17" />
+          <section title="The Need for Assistants." start="6:1" />
+          <section title="Accusation against Stephen." start="6:8" />
+          <section title="Stephen’s Discourses." start="7:1" />
+          <section title="Conclusion." start="7:51" />
+          <section title="Stephen’s Martyrdom." start="7:54" />
+          <section title="Persecution of the Church." start="8:2" />
+        </division>
+        <division title="The Mission in Judea and Samaria" start="8:4" end="9:43">
+          <section title="Philip in Samaria." start="8:4" />
+          <section title="Simon the Magician." start="8:9" />
+          <section title="Philip and the Ethiopian." start="8:26" />
+          <section title="Saul’s Conversion." start="9:1" />
+          <section title="Saul’s Baptism." start="9:10" />
+          <section title="Saul Preaches in Damascus." start="9:20" />
+          <section title="Saul Visits Jerusalem." start="9:23" />
+          <section title="The Church at Peace." start="9:31" />
+          <section title="Peter Heals Aeneas at Lydda." start="9:32" />
+          <section title="Peter Restores Tabitha to Life." start="9:36" />
+        </division>
+        <division title="The Inauguration of the Gentile Mission" start="10:1" end="15:35">
+          <section title="The Vision of Cornelius." start="10:1" />
+          <section title="The Vision of Peter." start="10:9" />
+          <section title="Peter’s Speech." start="10:34" />
+          <section title="The Baptism of Cornelius." start="10:44" />
+          <section title="The Baptism of the Gentiles Explained." start="11:1" />
+          <section title="The Church at Antioch." start="11:19" />
+          <section title="The Prediction of Agabus." start="11:27" />
+          <section title="Herod’s Persecution of the Christians." start="12:1" />
+          <section title="Herod’s Death." start="12:20" />
+          <section title="Mission of Barnabas and Saul." start="12:25" />
+          <section title="First Mission Begins in Cyprus." start="13:4" />
+          <section title="Paul’s Arrival at Antioch in Pisidia." start="13:13" />
+          <section title="Paul’s Address in the Synagogue." start="13:16" />
+          <section title="Address to the Gentiles." start="13:44" />
+          <section title="Paul and Barnabas at Iconium." start="14:1" />
+          <section title="Paul and Barnabas at Lystra." start="14:8" />
+          <section title="End of the First Mission." start="14:21" />
+          <section title="Council of Jerusalem." start="15:1" />
+          <section title="James on Dietary Law." start="15:13" />
+          <section title="Letter of the Apostles." start="15:22" />
+          <section title="Delegates at Antioch." start="15:30" />
+        </division>
+        <division title="The Mission of Paul to the Ends of the Earth" start="15:36" end="28:31">
+          <section title="Paul and Barnabas Separate." start="15:36" />
+          <section title="Paul in Lycaonia: Timothy." start="16:1" />
+          <section title="Through Asia Minor." start="16:6" />
+          <section title="Into Europe." start="16:11" />
+          <section title="Imprisonment at Philippi." start="16:16" />
+          <section title="Deliverance from Prison." start="16:25" />
+          <section title="Paul in Thessalonica." start="17:1" />
+          <section title="Paul in Beroea." start="17:10" />
+          <section title="Paul in Athens." start="17:16" />
+          <section title="Paul’s Speech at the Areopagus." start="17:22" />
+          <section title="Paul in Corinth." start="18:1" />
+          <section title="Accusations before Gallio." start="18:12" />
+          <section title="Return to Syrian Antioch." start="18:18" />
+          <section title="Apollos." start="18:24" />
+          <section title="Paul in Ephesus." start="19:1" />
+          <section title="The Jewish Exorcists." start="19:13" />
+          <section title="Paul’s Plans." start="19:21" />
+          <section title="The Riot of the Silversmiths." start="19:23" />
+          <section title="Journey to Macedonia and Greece." start="20:1" />
+          <section title="Return to Troas." start="20:4" />
+          <section title="Eutychus Restored to Life." start="20:7" />
+          <section title="Journey to Miletus." start="20:13" />
+          <section title="Paul’s Farewell Speech at Miletus." start="20:17" />
+          <section title="Arrival at Tyre." start="21:1" />
+          <section title="Arrival at Ptolemais and Caesarea." start="21:7" />
+          <section title="Paul and James in Jerusalem." start="21:15" />
+          <section title="Paul’s Arrest." start="21:27" />
+          <section title="Paul’s Defense before the Jerusalem Jews." start="22:1" />
+          <section title="Paul Imprisoned." start="22:22" />
+          <section title="Paul before the Sanhedrin." start="22:30" />
+          <section title="Transfer to Caesarea." start="23:12" />
+          <section title="Trial before Felix." start="24:1" />
+          <section title="Captivity in Caesarea." start="24:24" />
+          <section title="Appeal to Caesar." start="25:1" />
+          <section title="Paul before King Agrippa." start="25:13" />
+          <section title="King Agrippa Hears Paul." start="26:1" />
+          <section title="Reactions to Paul’s Speech." start="26:24" />
+          <section title="Departure for Rome." start="27:1" />
+          <section title="Storm and Shipwreck." start="27:6" />
+          <section title="Winter in Malta." start="28:1" />
+          <section title="Arrival in Rome." start="28:11" />
+          <section title="Testimony to Jews in Rome." start="28:17" />
+        </division>
+      </book>
+    </category>
+    <category name="New Testament Letters">
+      <book name="Romans" num-of-chapters="16">
+        <division title="Address" start="1:1" end="1:15">
+          <section title="Greeting." start="1:1" />
+          <section title="Thanksgiving." start="1:8" />
+        </division>
+        <division title="Humanity Lost without the Gospel" start="1:16" end="3:20">
+          <section title="God’s Power for Salvation." start="1:16" />
+          <section title="Punishment of Idolaters." start="1:18" />
+          <section title="God’s Just Judgment." start="2:1" />
+          <section title="Judgment by the Interior Law." start="2:12" />
+          <section title="Judgment by the Mosaic Law." start="2:17" />
+          <section title="Answers to Objections." start="3:1" />
+          <section title="Universal Bondage to Sin." start="3:9" />
+        </division>
+        <division title="Justification through Faith in Christ" start="3:21" end="5:21">
+          <section title="Justification apart from the Law." start="3:21" />
+          <section title="Abraham Justified by Faith." start="4:1" />
+          <section title="Inheritance through Faith." start="4:13" />
+          <section title="Faith, Hope, and Love." start="5:1" />
+          <section title="Humanity’s Sin through Adam." start="5:12" />
+          <section title="Grace and Life through Christ." start="5:15" />
+        </division>
+        <division title="Justification and the Christian Life" start="6:1" end="8:39">
+          <section title="Freedom from Sin; Life in God." start="6:1" />
+          <section title="Freedom from the Law." start="7:1" />
+          <section title="Acquaintance with Sin through the Law." start="7:7" />
+          <section title="Sin and Death." start="7:13" />
+          <section title="The Flesh and the Spirit." start="8:1" />
+          <section title="Children of God through Adoption." start="8:14" />
+          <section title="Destiny of Glory." start="8:18" />
+          <section title="God’s Indomitable Love in Christ." start="8:28" />
+        </division>
+        <division title="Jews and Gentiles in God’s Plan" start="9:1" end="11:36">
+          <section title="Paul’s Love for Israel." start="9:1" />
+          <section title="God’s Free Choice." start="9:6" />
+          <section title="Witness of the Prophets." start="9:25" />
+          <section title="Righteousness Based on Faith." start="9:30" />
+          <section title="The Remnant of Israel." start="11:1" />
+          <section title="The Gentiles’ Salvation." start="11:11" />
+          <section title="God’s Irrevocable Call." start="11:25" />
+          <section title="Triumph of God’s Mercy." start="11:30" />
+        </division>
+        <division title="The Duties of Christians" start="12:1" end="15:13">
+          <section title="Sacrifice of Body and Mind." start="12:1" />
+          <section title="Many Parts in One Body." start="12:3" />
+          <section title="Mutual Love." start="12:9" />
+          <section title="Obedience in Authority." start="13:1" />
+          <section title="Love Fulfills the Law." start="13:8" />
+          <section title="Awareness of the End of Time." start="13:11" />
+          <section title="To Live and Die for Christ." start="14:1" />
+          <section title="Consideration for the Weak Conscience." start="14:13" />
+          <section title="Patience and Self-Denial." start="15:1" />
+          <section title="God’s Fidelity and Mercy." start="15:7" />
+        </division>
+        <division title="Conclusion" start="15:14" end="16:27">
+          <section title="Apostle to the Gentiles." start="15:14" />
+          <section title="Paul’s Plans; Need for Prayers." start="15:22" />
+          <section title="Phoebe Commended." start="16:1" />
+          <section title="Paul’s Greetings." start="16:3" />
+          <section title="Against Factions." start="16:17" />
+          <section title="Greetings from Corinth." start="16:21" />
+          <section title="Doxology." start="16:25" />
+        </division>
+      </book>
+      <book name="1 Corinthians" num-of-chapters="16">
+        <division title="Address" start="1:1" end="1:9">
+        </division>
+        <division title="Disorders in the Corinthian Community" start="1:10" end="6:20">
+          <sub-division title="Divisions in the Church" start="1:10" end="4:21">
+            <section title="Groups and Slogans." start="1:10" />
+            <section title="Paradox of the Cross." start="1:18" />
+            <section title="The Corinthians and Paul." start="1:26" />
+            <section title="The True Wisdom." start="2:6" />
+            <section title="The Role of God’s Ministers." start="3:5" />
+            <section title="Paul’s Life as Pattern." start="4:6" />
+          </sub-division>
+          <sub-division title="Moral Disorders" start="5:1" end="6:20">
+            <section title="A Case of Incest." start="5:1" />
+            <section title="Lawsuits before Unbelievers." start="6:1" />
+            <section title="Sexual Immorality." start="6:12" />
+          </sub-division>
+        </division>
+        <division title="Answers to the Corinthians’ Questions" start="7:1" end="11:1">
+          <division title="Marriage and Virginity" start="7:1" end="7:40">
+          </division>
+          <division title="Offerings to Idols" start="8:1" end="11:1">
+          </division>
+        </division>
+        <division title="Problems in Liturgical Assemblies" start="11:2" end="14:40">
+          <division title="Women’s Headdresses" start="11:3" end="11:16">
+          </division>
+          <division title="The Lord’s Supper" start="11:17" end="11:34">
+          </division>
+          <division title="Spiritual Gifts" start="12:1" end="14:40">
+          </division>
+        </division>
+        <division title="The Resurrection" start="15:1" end="15:58">
+          <division title="The Resurrection of Christ" start="15:1" end="15:11">
+          </division>
+          <division title="The Resurrection of the Dead" start="15:12" end="15:34">
+          </division>
+          <division title="The Manner of the Resurrection" start="15:35" end="15:58">
+          </division>
+        </division>
+        <division title="Conclusion" start="16:1" end="16:24">
+        </division>
+      </book>
+      <book name="2 Corinthians" num-of-chapters="13">
+        <division title="Address" start="1:1" end="1:11">
+        </division>
+        <division title="The Crisis between Paul and the Corinthians" start="1:12" end="7:16">
+          <sub-division title="Past Relationships" start="1:12" end="2:13">
+            <section title="Paul’s Sincerity and Constancy." start="1:12" />
+            <section title="Paul’s Change of Plan." start="1:23" />
+            <section title="The Offender." start="2:5" />
+            <section title="Paul’s Anxiety." start="2:12" />
+          </sub-division>
+          <sub-division title="Paul's Ministry" start="2:14" end="7:4">
+            <section title="Ministers of a New Covenant." start="2:14" />
+            <section title="Contrast with the Old Covenant." start="3:7" />
+            <section title="Integrity in the Ministry." start="4:1" />
+            <section title="The Paradox of the Ministry." start="4:7" />
+            <section title="Our Future Destiny." start="5:1" />
+            <section title="The Ministry of Reconciliation." start="5:11" />
+            <section title="The Experience of the Ministry." start="6:1" />
+            <section title="Call to Holiness." start="6:14" />
+          </sub-division>
+          <sub-division title="Resolution of the Crisis" start="7:5" end="7:16">
+            <section title="Paul’s Joy in Macedonia." start="7:5" />
+          </sub-division>
+        </division>
+        <division title="The Collection for Jerusalem" start="8:1" end="9:15">
+        </division>
+        <division title="Paul's Defense of His Ministry" start="10:1" end="13:10">
+        </division>
+        <division title="Conclusion" start="13:11" end="13:13">
+        </division>
+      </book>
+      <book name="Galatians" num-of-chapters="6">
+        <division title="Address" start="1:1" end="1:5">
+          <section title="Greeting." start="1:1" />
+        </division>
+        <division title="Loyalty to the Gospel" start="1:6" end="1:10">
+        </division>
+        <division title="Paul’s Defense of His Gospel and His Authority" start="1:11" end="2:21">
+          <section title="His Call by Christ." start="1:11" />
+          <section title="The Council of Jerusalem." start="2:1" />
+          <section title="Peter’s Inconsistency at Antioch." start="2:11" />
+          <section title="Faith and Works." start="2:15" />
+        </division>
+        <division title="Faith and Liberty" start="3:1" end="4:31">
+          <section title="Justification by Faith." start="3:1" />
+          <section title="The Law Did Not Nullify the Promise." start="3:15" />
+          <section title="What Faith Has Brought Us." start="3:23" />
+          <section title="God’s Free Children in Christ." start="4:1" />
+          <section title="Do Not Throw This Freedom Away." start="4:8" />
+          <section title="Appeal to Former Loyalty." start="4:12" />
+          <section title="An Allegory on Christian Freedom." start="4:21" />
+        </division>
+        <division title="Exhortation to Christian Living" start="5:1" end="6:10">
+          <section title="The Importance of Faith." start="5:1" />
+          <section title="Be Not Misled." start="5:7" />
+          <section title="Freedom for Service." start="5:13" />
+          <section title="Life in the Community of Christ." start="6:1" />
+        </division>
+        <division title="Conclusion" start="6:11" end="6:18">
+          <section title="Final Appeal." start="6:11" />
+        </division>
+      </book>
+      <book name="Ephesians" num-of-chapters="6">
+        <division title="Address" start="1:1" end="1:14">
+          <section title="Greeting." start="1:1" />
+          <section title="The Father’s Plan of Salvation." start="1:3" />
+          <section title="Fulfillment through Christ." start="1:7" />
+          <section title="Inheritance through the Spirit." start="1:11" />
+        </division>
+        <division title="Unity of the Church in Christ" start="1:15" end="2:22">
+          <section title="The Church as Christ’s Body." start="1:15" />
+          <section title="Generosity of God’s Plan." start="2:1" />
+          <section title="One in Christ." start="2:11" />
+        </division>
+        <division title="World Mission of the Church" start="3:1" end="4:24">
+          <section title="Commission to Preach God’s Plan." start="3:1" />
+          <section title="Prayer for the Readers." start="3:14" />
+          <section title="Unity in the Body." start="4:1" />
+          <section title="Diversity of Gifts." start="4:7" />
+          <section title="Renewal in Christ." start="4:17" />
+        </division>
+        <division title="Daily Conduct, an Expression of Unity" start="4:25" end="6:20">
+          <section title="Rules for the New Life." start="4:25" />
+          <section title="Duty to Live in the Light." start="5:6" />
+          <section title="Wives and Husbands." start="5:21" />
+          <section title="Children and Parents." start="6:1" />
+          <section title="Slaves and Masters." start="6:5" />
+          <section title="Battle against Evil." start="6:10" />
+          <section title="Constant Prayer." start="6:18" />
+        </division>
+        <division title="Conclusion" start="6:21" end="6:24">
+          <section title="A Final Message." start="6:21" />
+        </division>
+      </book>
+      <book name="Philippians" num-of-chapters="4">
+        <division title="Address" start="1:1" end="1:11">
+          <section title="Greeting." start="1:1" />
+          <section title="Thanksgiving." start="1:3" />
+        </division>
+        <division title="Progress of the Gospel" start="1:12" end="1:26">
+        </division>
+        <division title="Instructions for the Community" start="1:27" end="2:18">
+          <section title="Steadfastness in Faith." start="1:27" />
+          <section title="Plea for Unity and Humility." start="2:1" />
+          <section title="Obedience and Service in the World." start="2:12" />
+        </division>
+        <division title="Travel Plans of Paul and His Assistants" start="2:19" end="3:1">
+          <section title="Timothy and Paul." start="2:19" />
+          <section title="Epaphroditus." start="2:25" />
+          <section title="Concluding Admonitions." start="3:1" />
+        </division>
+        <division title="Polemic: Righteousness and the Goal in Christ" start="3:2" end="3:21">
+          <section title="Against Legalistic Teachers." start="3:2" />
+          <section title="Paul’s Autobiography." start="3:5" />
+          <section title="Righteousness from God." start="3:7" />
+          <section title="Forward in Christ." start="3:12" />
+          <section title="Wrong Conduct and Our Goal." start="3:17" />
+        </division>
+        <division title="Instructions for the Community" start="4:1" end="4:9">
+          <section title="Live in Concord." start="4:1" />
+          <section title="Joy and Peace." start="4:4" />
+        </division>
+        <division title="Gratitude for the Philippians’ Generosity" start="4:10" end="4:20">
+        </division>
+        <division title="Farewell" start="4:21" end="4:23">
+        </division>
+      </book>
+      <book name="Colossians" num-of-chapters="4">
+        <division title="Address" start="1:1" end="1:14">
+          <section title="Greeting." start="1:1" />
+          <section title="Thanksgiving." start="1:3" />
+          <section title="Prayer for Continued Progress." start="1:9" />
+        </division>
+        <division title="The Preeminence of Christ" start="1:15" end="2:3">
+          <section title="Christ in Us." start="1:24" />
+        </division>
+        <division title="Warnings against False Teachers" start="2:4" end="2:23">
+          <section title="A General Admonition." start="2:4" />
+          <section title="Sovereign Role of Christ." start="2:9" />
+          <section title="Practices Contrary to Faith." start="2:16" />
+        </division>
+        <division title="The Ideal Christian Life in the World" start="3:1" end="4:6">
+          <section title="Mystical Death and Resurrection." start="3:1" />
+          <section title="Renunciation of Vice." start="3:5" />
+          <section title="The Christian Family." start="3:18" />
+          <section title="Slaves and Masters." start="3:22" />
+          <section title="Prayer and Apostolic Spirit." start="4:2" />
+        </division>
+        <division title="Conclusion" start="4:7" end="4:18">
+          <section title="Tychicus and Onesimus." start="4:7" />
+          <section title="From Paul’s Co-Workers." start="4:10" />
+          <section title="A Message for the Laodiceans." start="4:15" />
+        </division>
+      </book>
+      <book name="1 Thessalonians" num-of-chapters="5">
+        <division title="Address" start="1:1" end="1:10">
+          <section title="Greeting." start="1:1" />
+          <section title="Thanksgiving for Their Faith." start="1:2" />
+        </division>
+        <division title="Previous Relations with the Thessalonians" start="2:1" end="3:13">
+          <section title="Paul’s Ministry Among Them." start="2:1" />
+          <section title="Further Thanksgiving." start="2:13" />
+          <section title="Paul’s Recent Travel Plans." start="2:17" />
+          <section title="Concluding Thanksgiving and Prayer." start="3:9" />
+        </division>
+        <division title="Specific Exhortations" start="4:1" end="5:25">
+          <section title="General Exhortations." start="4:1" />
+          <section title="Holiness in Sexual Contact." start="4:3" />
+          <section title="Mutual Charity." start="4:9" />
+          <section title="Hope for the Christian Dead." start="4:13" />
+          <section title="Vigilance." start="5:1" />
+          <section title="Church Order." start="5:12" />
+          <section title="Concluding Prayer." start="5:23" />
+        </division>
+        <division title="Final Greeting" start="5:26" end="5:28">
+        </division>
+      </book>
+      <book name="2 Thessalonians" num-of-chapters="3">
+        <division title="Address" start="1:1" end="1:12">
+          <section title="Greeting." start="1:1" />
+          <section title="Thanksgiving." start="1:3" />
+          <section title="Prayer." start="1:11" />
+        </division>
+        <division title="Warning against Deception Concerning the Parousia" start="2:1" end="2:17">
+          <section title="Christ and the Lawless One." start="2:1" />
+        </division>
+        <division title="Concluding Exhortations" start="3:1" end="3:16">
+          <section title="Request for Prayers." start="3:1" />
+          <section title="Neglect of Work." start="3:6" />
+        </division>
+        <division title="Final Greeting" start="3:17" end="3:18">
+        </division>
+      </book>
+      <book name="1 Timothy" num-of-chapters="6">
+        <division title="Address" start="1:1" end="1:2">
+          <section title="Greeting." start="1:1" />
+        </division>
+        <division title="Sound Teaching" start="1:3" end="1:20">
+          <section title="Warning against False Doctrine." start="1:3" />
+          <section title="Gratitude for God’s Mercy." start="1:12" />
+          <section title="Responsibility of Timothy." start="1:18" />
+        </division>
+        <division title="Problems of Discipline" start="2:1" end="4:16">
+          <section title="Prayer and Conduct." start="2:1" />
+          <section title="Qualifications of Various Ministers." start="3:1" />
+          <section title="The Mystery of Our Religion." start="3:14" />
+          <section title="False Asceticism." start="4:1" />
+          <section title="Counsel to Timothy." start="4:6" />
+        </division>
+        <division title="Duties toward Others" start="5:1" end="6:2">
+          <section title="Rules for Widows." start="5:3" />
+          <section title="Rules for Presbyters." start="5:17" />
+          <section title="Rules for Slaves." start="6:1" />
+        </division>
+        <division title="False Teaching and True Wealth" start="6:2" end="6:19">
+          <section title="Teach and Urge These Things." start="6:3" />
+          <section title="Exhortations to Timothy." start="6:11" />
+          <section title="Right Use of Wealth." start="6:17" />
+        </division>
+        <division title="Final Recommendation and Warning" start="6:20" end="6:21">
+        </division>
+      </book>
+      <book name="2 Timothy" num-of-chapters="4">
+        <division title="Address" start="1:1" end="1:5">
+          <section title="Greeting." start="1:1" />
+          <section title="Thanksgiving." start="1:3" />
+        </division>
+        <division title="Exhortations to Timothy" start="1:6" end="2:13">
+          <section title="The Gifts Timothy Has Received." start="1:6" />
+          <section title="Paul’s Suffering." start="1:15" />
+          <section title="Timothy’s Conduct." start="2:1" />
+        </division>
+        <division title="Instructions Concerning False Teaching" start="2:14" end="4:8">
+          <section title="Warning against Useless Disputes." start="2:14" />
+          <section title="The Dangers of the Last Days." start="3:1" />
+          <section title="Paul’s Example and Teaching." start="3:10" />
+          <section title="Solemn Charge." start="4:1" />
+          <section title="Reward for Fidelity." start="4:6" />
+        </division>
+        <division title="Personal Requests and Final Greetings" start="4:9" end="4:22">
+          <section title="Paul’s Loneliness." start="4:9" />
+          <section title="Final Greeting." start="4:19" />
+        </division>
+      </book>
+      <book name="Titus" num-of-chapters="3">
+        <division title="Address" start="1:1" end="1:4">
+          <section title="Greeting." start="1:1" />
+        </division>
+        <division title="Pastoral Charge" start="1:5" end="1:16">
+          <section title="Titus in Crete." start="1:5" />
+        </division>
+        <division title="Teaching the Christian Life" start="2:1" end="3:15">
+          <section title="Christian Behavior." start="2:1" />
+          <section title="Transformation of Life." start="2:11" />
+          <section title="Advice to Titus." start="3:9" />
+          <section title="Directives, Greetings, and Blessing." start="3:12" />
+        </division>
+      </book>
+      <book name="Philemon" num-of-chapters="1">
+      </book>
+    </category>
+    <category name="Catholic Letters">
+      <book name="Hebrews" num-of-chapters="13">
+        <division title="Introduction" start="1:1" end="1:4">
+        </division>
+        <division title="The Son Higher than the Angels" start="1:5" end="2:18">
+          <section title="Messianic Enthronement." start="1:5" />
+          <section title="Exhortation to Faithfulness." start="2:1" />
+          <section title="Exaltation through Abasement." start="2:5" />
+        </division>
+        <division title="Jesus, Faithful and Compassionate High Priest" start="3:1" end="5:10">
+          <section title="Jesus, Superior to Moses." start="3:1" />
+          <section title="Israel’s Infidelity a Warning." start="3:7" />
+          <section title="The Sabbath Rest." start="4:1" />
+          <section title="Jesus, Compassionate High Priest." start="4:14" />
+        </division>
+        <division title="Jesus’ Eternal Priesthood and Eternal Sacrifice" start="5:11" end="10:39">
+          <section title="Exhortation to Spiritual Renewal." start="5:11" />
+          <section title="God’s Promise Immutable." start="6:13" />
+          <section title="Melchizedek, a Type of Christ." start="7:1" />
+          <section title="Heavenly Priesthood of Jesus." start="8:1" />
+          <section title="Old and New Covenants." start="8:7" />
+          <section title="The Worship of the First Covenant." start="9:1" />
+          <section title="Sacrifice of Jesus." start="9:11" />
+          <section title="One Sacrifice instead of Many." start="10:1" />
+          <section title="Recalling the Past." start="10:19" />
+        </division>
+        <division title="Examples, Discipline, Disobedience" start="11:1" end="12:29">
+          <section title="Faith of the Ancients." start="11:1" />
+          <section title="God our Father." start="12:1" />
+          <section title="Penalties of Disobedience." start="12:14" />
+        </division>
+        <division title="Final Exhortation, Blessing, Greetings" start="13:1" end="13:25">
+        </division>
+      </book>
+      <book name="James" num-of-chapters="5">
+        <division title="Address" start="1:1" end="1:1">
+        </division>
+        <division title="The Value of Trials and Temptation" start="1:2" end="1:18">
+          <section title="Perseverance in Trial." start="1:2" />
+          <section title="Temptation." start="1:12" />
+        </division>
+        <division title="Exhortations and Warnings" start="1:19" end="5:12">
+          <section title="Doers of the Word." start="1:19" />
+          <section title="Sin of Partiality." start="2:1" />
+          <section title="Faith and Works." start="2:14" />
+          <section title="Power of the Tongue." start="3:1" />
+          <section title="True Wisdom." start="3:13" />
+          <section title="Causes of Division." start="4:1" />
+          <section title="Warning against Presumption." start="4:13" />
+          <section title="Warning to the Rich." start="5:1" />
+          <section title="Patience and Oaths." start="5:7" />
+        </division>
+        <division title="The Power of Prayer" start="5:13" end="5:20">
+          <section title="Anointing of the Sick." start="5:13" />
+          <section title="Confession and Intercession." start="5:16" />
+          <section title="Conversion of Sinners." start="5:19" />
+        </division>
+      </book>
+      <book name="1 Peter" num-of-chapters="5">
+        <division title="Address" start="1:1" end="1:2">
+          <section title="Greeting." start="1:1" />
+        </division>
+        <division title="The Gift and Call of God in Baptism" start="1:3" end="2:10">
+          <section title="Blessing." start="1:3" />
+          <section title="Obedience." start="1:13" />
+          <section title="Reverence." start="1:17" />
+          <section title="Mutual Love." start="1:22" />
+          <section title="God’s House and People." start="2:1" />
+        </division>
+        <division title="The Christian in a Hostile World" start="2:11" end="4:11">
+          <section title="Christian Examples." start="2:11" />
+          <section title="Christian Citizens." start="2:13" />
+          <section title="Christian Slaves." start="2:18" />
+          <section title="Christian Spouses." start="3:1" />
+          <section title="Christian Conduct." start="3:8" />
+          <section title="Christian Suffering." start="3:13" />
+          <section title="Christian Restraint." start="4:1" />
+          <section title="Christian Charity." start="4:7" />
+        </division>
+        <division title="Advice to the Persecuted" start="4:12" end="5:11">
+          <section title="Trial of Persecution." start="4:12" />
+          <section title="Advice to Presbyters." start="5:1" />
+          <section title="Advice to the Community." start="5:5" />
+        </division>
+        <division title="Conclusion" start="5:12" end="5:14">
+        </division>
+      </book>
+      <book name="2 Peter" num-of-chapters="3">
+        <division title="Address" start="1:1" end="1:2">
+          <section title="Greeting." start="1:1" />
+        </division>
+        <division title="Exhortation to Christian Virtue" start="1:3" end="1:21">
+          <section title="The Power of God’s Promise." start="1:3" />
+          <section title="Apostolic Witness." start="1:12" />
+        </division>
+        <division title="Condemnation of the False Teachers" start="2:1" end="2:22">
+          <section title="False Teachers." start="2:1" />
+          <section title="Lessons from the Past." start="2:4" />
+          <section title="False Teachers Denounced." start="2:11" />
+        </division>
+        <division title="The Delay of the Second Coming" start="3:1" end="3:16">
+          <section title="Denial of the Parousia." start="3:1" />
+          <section title="Exhortation to Preparedness." start="3:11" />
+        </division>
+        <division title="Final Exhortation and Doxology" start="3:17" end="3:18">
+        </division>
+      </book>
+      <book name="1 John" num-of-chapters="5">
+        <division title="Prologue" start="1:1" end="1:4">
+          <section title="The Word of Life" start="1:1" />
+        </division>
+        <division title="God as Light" start="1:5" end="3:10">
+          <section title="God is Light." start="1:5" />
+          <section title="Christ and His Commandments." start="2:1" />
+          <section title="The New Commandment." start="2:7" />
+          <section title="Members of the Community." start="2:12" />
+          <section title="Antichrists." start="2:18" />
+          <section title="Life from God’s Anointing." start="2:24" />
+          <section title="Children of God." start="2:28" />
+          <section title="Avoiding Sin." start="3:4" />
+        </division>
+        <division title="Love for One Another" start="3:11" end="5:12">
+          <section title="Confidence before God." start="3:19" />
+          <section title="Testing the Spirits." start="4:1" />
+          <section title="God’s Love and Christian Life." start="4:7" />
+          <section title="Faith is Victory over the World." start="5:1" />
+        </division>
+        <division title="Epilogue" start="5:13" end="5:21">
+          <section title="Prayer for Sinners." start="5:13" />
+        </division>
+      </book>
+      <book name="2 John" num-of-chapters="1">
+      </book>
+      <book name="3 John" num-of-chapters="1">
+      </book>
+      <book name="Jude" num-of-chapters="1">
+      </book>
+      <book name="Revelation" num-of-chapters="22">
+        <division title="Prologue" start="1:1" end="1:3">
+        </division>
+        <division title="Letters to the Churches of Asia" start="1:4" end="3:22">
+          <section title="Greeting." start="1:4" />
+          <section title="The First Vision." start="1:9" />
+          <section title="To Ephesus." start="2:1" />
+          <section title="To Smyrna." start="2:8" />
+          <section title="To Pergamum." start="2:12" />
+          <section title="To Thyatira." start="2:18" />
+          <section title="To Sardis." start="3:1" />
+          <section title="To Philadelphia." start="3:7" />
+          <section title="To Laodicea." start="3:14" />
+        </division>
+        <division title="God and the Lamb in Heaven" start="4:1" end="5:14">
+          <section title="Vision of Heavenly Worship." start="4:1" />
+          <section title="The Scroll and the Lamb." start="5:1" />
+        </division>
+        <division title="The Seven Seals, Trumpets, and Plagues, with Interludes" start="6:1" end="16:21">
+          <section title="The First Six Seals." start="6:1" />
+          <section title="The 144,000 Sealed." start="7:1" />
+          <section title="Triumph of the Elect." start="7:9" />
+          <section title="The Seven Trumpets." start="8:1" />
+          <section title="The Gold Censer." start="8:3" />
+          <section title="The First Four Trumpets." start="8:6" />
+          <section title="The Fifth Trumpet." start="9:1" />
+          <section title="The Sixth Trumpet." start="9:13" />
+          <section title="The Angel with the Small Scroll." start="10:1" />
+          <section title="The Two Witnesses." start="11:1" />
+          <section title="The Seventh Trumpet." start="11:15" />
+          <section title="The Woman and the Dragon." start="12:1" />
+          <section title="The First Beast." start="13:1" />
+          <section title="The Second Beast." start="13:11" />
+          <section title="The Lamb’s Companions." start="14:1" />
+          <section title="The Three Angels." start="14:6" />
+          <section title="The Harvest of the Earth." start="14:14" />
+          <section title="The Seven Last Plagues." start="15:1" />
+          <section title="The Seven Bowls." start="16:1" />
+        </division>
+        <division title="The Punishment of Babylon and the Destruction of Pagan Nations" start="17:1" end="20:15">
+          <section title="Babylon the Great." start="17:1" />
+          <section title="Meaning of the Beast and Harlot." start="17:7" />
+          <section title="The Fall of Babylon." start="18:1" />
+          <section title="The Victory Song." start="19:5" />
+          <section title="The King of Kings." start="19:11" />
+          <section title="The Thousand-year Reign." start="20:1" />
+          <section title="The Large White Throne." start="20:11" />
+        </division>
+        <division title="The New Creation" start="21:1" end="22:5">
+          <section title="The New Heaven and the New Earth." start="21:1" />
+          <section title="The New Jerusalem." start="21:9" />
+        </division>
+        <division title="Epilogue" start="22:6" end="22:21">
+        </division>
+      </book>
+    </category>
+  </testament>
+</bible>
