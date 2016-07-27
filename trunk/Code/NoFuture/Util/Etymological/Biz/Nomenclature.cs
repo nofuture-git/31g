@@ -63,16 +63,16 @@ namespace NoFuture.Util.Etymological.Biz
                 return base.HasSemblance(variousStrings);
 
             var nextToLast = GetNextToLast(variousStrings);
-            if (Regex.IsMatch(nextToLast, ADDRESS, RegexOptions.IgnoreCase))
+            if (Regex.IsMatch(nextToLast, ADDRESS, Options.RegexOpt))
                 return true;
 
             var lastEntry = variousStrings.Last();
-            if (ADDR_PARTS.Any(x => Regex.IsMatch(lastEntry, x, RegexOptions.IgnoreCase)) ||
-                ADDR_PARTS.Any(x => Regex.IsMatch(nextToLast, x, RegexOptions.IgnoreCase)))
+            if (ADDR_PARTS.Any(x => Regex.IsMatch(lastEntry, WithOpt(x), Options.RegexOpt)) ||
+                ADDR_PARTS.Any(x => Regex.IsMatch(nextToLast, WithOpt(x), Options.RegexOpt)))
                 return true;
 
-            return TOPONYMS.Any(x => Regex.IsMatch(lastEntry, x, RegexOptions.IgnoreCase)) ||
-                   TOPONYMS.Any(x => Regex.IsMatch(nextToLast, x, RegexOptions.IgnoreCase));
+            return TOPONYMS.Any(x => Regex.IsMatch(lastEntry, WithOpt(x), Options.RegexOpt)) ||
+                   TOPONYMS.Any(x => Regex.IsMatch(nextToLast, WithOpt(x), Options.RegexOpt));
         }
     }
 
@@ -104,11 +104,11 @@ namespace NoFuture.Util.Etymological.Biz
             var lastEntry = variousStrings.Last();
             var nextToLast = GetNextToLast(variousStrings);
 
-            var oneIsDateTime = DEFINITIVE.Any(x => Regex.IsMatch(lastEntry, x, RegexOptions.IgnoreCase)) ||
-                                DEFINITIVE.Any(x => Regex.IsMatch(nextToLast, x, RegexOptions.IgnoreCase));
+            var oneIsDateTime = DEFINITIVE.Any(x => Regex.IsMatch(lastEntry, WithOpt(x), Options.RegexOpt)) ||
+                                DEFINITIVE.Any(x => Regex.IsMatch(nextToLast, WithOpt(x), Options.RegexOpt));
 
-            var oneIsPreSuff = PREFIX_SUFFIX_DATE_TIME.Any(x => Regex.IsMatch(lastEntry, x, RegexOptions.IgnoreCase)) ||
-                                PREFIX_SUFFIX_DATE_TIME.Any(x => Regex.IsMatch(nextToLast, x, RegexOptions.IgnoreCase));
+            var oneIsPreSuff = PREFIX_SUFFIX_DATE_TIME.Any(x => Regex.IsMatch(lastEntry, WithOpt(x), Options.RegexOpt)) ||
+                                PREFIX_SUFFIX_DATE_TIME.Any(x => Regex.IsMatch(nextToLast, WithOpt(x), Options.RegexOpt));
 
             return oneIsDateTime
                 ? oneIsPreSuff
@@ -120,11 +120,51 @@ namespace NoFuture.Util.Etymological.Biz
     {
         private static readonly string[] MONEY = 
         {
-            "Amount", "Balance", "Charge", "Cost", "Currency", "Debit",
-            "Deductible", "Deposit", "Discount", "Estimate", "Interest", "Pay",
-            "Paid", "Price", "Subtotal", "Total", "Bill", "Fee", 
-            "Loss", "Gross", "Money", "Monetary", "Prepaid", "Award",
-            "Funds", "Advance", "Credit", "Dollar", "Euro", "Yen"
+            "Acc(rual|umulation)",
+            "Advance",
+            "Allowance",
+            "Amount",
+            "Annuity",
+            "Asset",
+            "Award",
+            "Balance",
+            "Bill",
+            "Bond",
+            "Carryover",
+            "Cash",
+            "Charge(able)?",
+            "Commission",
+            "Compensat(e|ory)",
+            "Cost(ing)?",
+            "Credit",
+            "Currency",
+            "Deb(t|it|enture)",
+            "Deduct(ible)?",
+            "Deficit",
+            "Deposit(ory)?",
+            "Discount(able)?",
+            "Dividend",
+            "Dollar",
+            "Estimate(d)?",
+            "Expenditure",
+            "Euro",
+            "Fee",
+            "Fund",
+            "Gross",
+            "Income",
+            "Interest",
+            "Liability",
+            "Loss",
+            "Monetary",
+            "Money",
+            "(Prep|P)aid",
+            "Pay(able|ment)?",
+            "Price",
+            "Recei(pt|vable)",
+            "Stock",
+            "Sale",
+            "(Subt|T)otal",
+            "Yen",
         };
 
         public Monetary()
@@ -140,8 +180,8 @@ namespace NoFuture.Util.Etymological.Biz
             "Coefficient", "Coordinate", "Dimension", "Number", "Size",
             "Weight", "Width", "Yield", "Distance", "Variance", "Variant", 
             "Volume", "Capacity", "Accuracy", "Count", "Percent", "Score", 
-            "Viscosity", "Range", "Rate", "Actual", "Max", "Maximum", "Min", 
-            "Minimum", "Limit", "Digit", "Length", "Quantity", "Temperature", 
+            "Viscosity", "Range", "Rate", "Actual", "Max(imum)?", "Min(imum)?",
+            "Limit", "Digit", "Length", "Quantity", "Temperature", 
             "Minus", "Pressure", "Point", "Height", "Plus", "Factor", "Occupancy",
         };
 
@@ -158,7 +198,7 @@ namespace NoFuture.Util.Etymological.Biz
         {
             "Note", "Token", "Text", "Description", "Content", "Value", "Comment",
             "Symbol", "Password", "Remarks", "Message", "Descriptor", "Alias",
-            "Barcode", "Tag", "Title", "Display"
+            "Tag", "Title", "Display"
         };
         public BizStrings()
         {
@@ -170,7 +210,7 @@ namespace NoFuture.Util.Etymological.Biz
             if (variousStrings == null || variousStrings.Length <= 1)
                 return base.HasSemblance(variousStrings);
 
-            return STRINGS.Any(x => Regex.IsMatch(variousStrings.Last(), x, RegexOptions.IgnoreCase));
+            return STRINGS.Any(x => Regex.IsMatch(variousStrings.Last(), WithOpt(x), Options.RegexOpt));
         }
     }
 
@@ -178,7 +218,7 @@ namespace NoFuture.Util.Etymological.Biz
     {
         private static readonly string[] URIS = 
         {
-             "Uri", "Url", "Website", "Path", "File", "Email", "Ip", "Ipv4", "Ipv6"
+             "Uri", "Url", "Website", "Path", "File", "Email", "IpAddr(ress)?", "Ipv4", "Ipv6"
         };
 
         public NetworkResource()
@@ -219,8 +259,8 @@ namespace NoFuture.Util.Etymological.Biz
     {
         private static readonly string[] IDENTITY = 
         {
-            "Code", "Name", "Type", "Id", "Identity", "Index", "Key",
-            "Class", "Mode", "Uid", "Guid"
+            "Code", "Name", "Type", "I(d|D)$", "Identity", "Index", "Key",
+            "Class", "Mode", "Uid", "Guid", "Barcode"
         };
 
         public Identity()
@@ -234,7 +274,7 @@ namespace NoFuture.Util.Etymological.Biz
                 return base.HasSemblance(variousStrings);
 
             var lastEntry = variousStrings.Last();
-            return IDENTITY.Any(x => Regex.IsMatch(lastEntry, x, RegexOptions.IgnoreCase));
+            return IDENTITY.Any(x => Regex.IsMatch(lastEntry, WithOpt(x), Options.RegexOpt));
         }
     }
 }

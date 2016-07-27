@@ -13,26 +13,6 @@ namespace NoFuture.Tests.Gen
     public class EtcTests
     {
         [TestMethod]
-        public void TestGetFlattenedPossiableMatches()
-        {
-            var testTargetFlat = System.IO.File.ReadAllLines(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\Gen\TargetFlatMembersData.txt");
-            var testSourceFlat = new List<string>();
-            foreach (var tResult in System.IO.File.ReadAllLines(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\Gen\SourceFlatMembersDataData.txt"))
-            {
-                testSourceFlat.Add(tResult);
-            }
-            const string TEST_STR_SEPARATOR = "-";
-
-            foreach (var f in testTargetFlat)
-            {
-                var testResult = Matching.GetFlattenedPossiableMatches(f,
-                    testSourceFlat,
-                    TEST_STR_SEPARATOR);
-            }
-
-        }
-
-        [TestMethod]
         public void TestCgMemberCompare()
         {
             var testSubject = new CgMemberCompare();

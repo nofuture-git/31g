@@ -5,6 +5,11 @@ using System.Text.RegularExpressions;
 
 namespace NoFuture.Util.Etymological
 {
+    public struct NomOptions
+    {
+        public RegexOptions RegexOpt { get; set; }
+        public bool WholeWordsOnly { get; set; }
+    }
     public interface INomenclature
     {
         List<string> Synonyms { get; }
@@ -13,6 +18,7 @@ namespace NoFuture.Util.Etymological
         bool HasSemblance(string[] variousString);
         bool IsContrast(string someString);
         bool IsContrast(string[] variousString);
+        NomOptions Options { get; set; }
     }
 
     public abstract class NomenclatureBase : INomenclature
@@ -22,15 +28,21 @@ namespace NoFuture.Util.Etymological
             Synonyms = new List<string>();
             Antonyms = new List<string>();
         }
-        public List<string> Synonyms { get; private set; }
-        public List<string> Antonyms { get; private set; } 
+        public List<string> Synonyms { get; }
+        public List<string> Antonyms { get; }
+
+        public NomOptions Options { get; set; } = new NomOptions
+        {
+            RegexOpt = RegexOptions.None,
+            WholeWordsOnly = false
+        };
 
         public bool HasSemblance(string someString)
         {
             if (string.IsNullOrWhiteSpace(someString))
                 return false;
-            return Synonyms.Any(x => Regex.IsMatch(someString, x, RegexOptions.IgnoreCase)) &&
-                   !Antonyms.Any(x => Regex.IsMatch(someString, x, RegexOptions.IgnoreCase));
+            return Synonyms.Any(x => Regex.IsMatch(someString, WithOpt(x), Options.RegexOpt)) &&
+                   !Antonyms.Any(x => Regex.IsMatch(someString, WithOpt(x), Options.RegexOpt));
         }
 
         public virtual bool HasSemblance(string[] variousStrings)
@@ -44,8 +56,8 @@ namespace NoFuture.Util.Etymological
         {
             if (string.IsNullOrWhiteSpace(someString))
                 return false;
-            return !Synonyms.Any(x => Regex.IsMatch(someString, x, RegexOptions.IgnoreCase)) &&
-                   Antonyms.Any(x => Regex.IsMatch(someString, x, RegexOptions.IgnoreCase));
+            return !Synonyms.Any(x => Regex.IsMatch(someString, WithOpt(x), Options.RegexOpt)) &&
+                   Antonyms.Any(x => Regex.IsMatch(someString, WithOpt(x), Options.RegexOpt));
         }
 
         public bool IsContrast(string[] variousStrings)
@@ -66,6 +78,11 @@ namespace NoFuture.Util.Etymological
                 return variousStrings[i];
             }
             return string.Empty;
+        }
+
+        protected string WithOpt(string s)
+        {
+            return !string.IsNullOrWhiteSpace(s) && Options.WholeWordsOnly ? $@"\W{s}\W" : s;
         }
     }
 }

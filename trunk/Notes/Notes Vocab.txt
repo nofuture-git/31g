@@ -445,4 +445,8 @@ delusion - false belief (belief counter the evidence)
 Semiotics - study of meaning-making, divided into
  semantics - relation between signs and the things to which they refer
  syntactics - relation amoung or between signs in formal structure
- pragmatics - relation between signs and sign-using agents 
+ pragmatics - relation between signs and sign-using agents
+Mores (from Latin meaning manner or custome) - social norms of what's right and wrong
+Folkways - social norms between what's right and rude.
+neologism - name for a new or isolated word
+equivocation - ambiguous language to avoid telling the truth or committing oneself
