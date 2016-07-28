@@ -16,6 +16,10 @@ namespace NoFuture.Rand.Domus
         Pneuma.Personality Personality { get; }
         IEducation Education { get; }
         List<Tuple<KindsOfNames, string>> OtherNames { get; }
+        Spouse Spouse { get; }
+        int Age { get; }
+        MaritialStatus MaritialStatus { get; }
+        List<Child> Children { get; }
         #endregion
 
         #region methods
@@ -25,7 +29,7 @@ namespace NoFuture.Rand.Domus
         /// </summary>
         /// <param name="dt">Null for the current time right now.</param>
         /// <returns></returns>
-        List<IPerson> GetChildrenAt(DateTime? dt);
+        List<Child> GetChildrenAt(DateTime? dt);
 
         /// <summary>
         /// Resolves the <see cref="MaritialStatus"/>

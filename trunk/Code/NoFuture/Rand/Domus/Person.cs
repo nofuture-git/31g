@@ -24,7 +24,7 @@ namespace NoFuture.Rand.Domus
         protected internal IPerson _mother;
         protected internal IPerson _father;
         protected internal readonly List<Uri> _netUris = new List<Uri>();
-        protected internal readonly List<IPerson> _children = new List<IPerson>();
+        protected internal readonly List<Child> _children = new List<Child>();
         protected internal Personality _personality = new Personality();
         protected internal BirthCert _birthCert;
         protected internal readonly List<HomeAddress> _addresses = new List<HomeAddress>();
@@ -51,12 +51,13 @@ namespace NoFuture.Rand.Domus
         }
         public virtual List<Uri> NetUri => _netUris;
         public Personality Personality => _personality;
-        public virtual IEducation Education { get; set; }
+        public virtual IEducation Education => GetEducationAt(null);
         public List<Tuple<KindsOfNames, string>> OtherNames => _otherNames;
         public HomeAddress Address => GetAddressAt(null);
         public Spouse Spouse => GetSpouseAt(null);
         public int Age => GetAgeAt(null);
         public MaritialStatus MaritialStatus => GetMaritalStatusAt(null);
+        public List<Child> Children => _children;
         #endregion
 
         #region ctors
@@ -71,23 +72,20 @@ namespace NoFuture.Rand.Domus
 
         public abstract Spouse GetSpouseAt(DateTime? dt);
 
-        public virtual List<IPerson> GetChildrenAt(DateTime? dt)
+        public virtual List<Child> GetChildrenAt(DateTime? dt)
         {
             var ddt = dt.GetValueOrDefault(DateTime.Now);
 
             return
                 _children.Where(
-                    x => x.BirthCert != null && ddt.ComparedTo(x.BirthCert.DateOfBirth) == ChronoCompare.After).ToList();
+                    x => x.Est.BirthCert != null && ddt.ComparedTo(x.Est.BirthCert.DateOfBirth) == ChronoCompare.After).ToList();
         }
 
         public virtual IPerson GetMother() { return _mother; }
 
         public virtual IPerson GetFather() { return _father; }
 
-        public IEducation GetEducationAt(DateTime? dt)
-        {
-            throw new NotImplementedException();
-        }
+        public abstract IEducation GetEducationAt(DateTime? dt);
 
         /// <summary>
         /// Resolves the <see cref="HomeAddress"/> which was current 

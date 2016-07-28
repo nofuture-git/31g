@@ -702,5 +702,15 @@ namespace NoFuture.Rand.Domus
             return hsOut.RacePercents;
 
         }
+
+        /// <summary>
+        /// Utility method to dump all the spouse data on an instance of <see cref="NorthAmerican"/>
+        /// </summary>
+        /// <param name="nAmer"></param>
+        /// <returns></returns>
+        public static List<Spouse> DumpAllSpouses(NorthAmerican nAmer)
+        {
+            return nAmer._spouses;
+        }
     }
 }

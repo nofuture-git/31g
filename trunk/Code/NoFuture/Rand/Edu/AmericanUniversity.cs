@@ -24,6 +24,11 @@ namespace NoFuture.Rand.Edu
 
         #region methods
 
+        public override string ToString()
+        {
+            return string.Join(" ", Name, CampusName);
+        }
+
         /// <summary>
         /// [http://www.census.gov/prod/2012pubs/p20-566.pdf]
         /// </summary>

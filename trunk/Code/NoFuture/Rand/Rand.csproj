@@ -89,12 +89,14 @@
     <Compile Include="Data\Types\UsStateData.cs" />
     <Compile Include="Data\Types\XmlDocXrefIdentifier.cs" />
     <Compile Include="Data\Types\XRef.cs" />
+    <Compile Include="Domus\Child.cs" />
     <Compile Include="Domus\HomeAddress.cs" />
     <Compile Include="Domus\IEducation.cs" />
     <Compile Include="Domus\IPerson.cs" />
     <Compile Include="Domus\IProfession.cs" />
     <Compile Include="Domus\NAmerUtil.cs" />
     <Compile Include="Domus\NorthAmerican.cs" />
+    <Compile Include="Domus\NorthAmericanEdu.cs" />
     <Compile Include="Domus\Opes.cs" />
     <Compile Include="Domus\Pneuma\Personality.cs" />
     <Compile Include="Domus\Spouse.cs" />

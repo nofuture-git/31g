@@ -4,12 +4,20 @@ using Newtonsoft.Json;
 using NoFuture.Rand;
 using NoFuture.Rand.Data.Types;
 using NoFuture.Rand.Domus;
+using static System.Diagnostics.Debug;
+using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
+using Dbg = System.Diagnostics.Debug;
 
 namespace NoFuture.Tests.Rand
 {
     [TestClass]
     public class PersonTests
     {
+        [TestInitialize]
+        public void Init()
+        {
+            BinDirectories.DataRoot = @"C:\Projects\31g\trunk\bin\Data\Source";
+        }
 
         [TestMethod]
         public void AmericanTests()
@@ -31,12 +39,24 @@ namespace NoFuture.Tests.Rand
         }
 
         [TestMethod]
+        public void NorthAmericanEduTests()
+        {
+            var testContext = Person.American();
+            var testResult = testContext.GetEducationAt(null);
+
+            Assert.IsNotNull(testResult);
+            WriteLine(testResult.HighSchool);
+            WriteLine(testResult.College);
+
+        }
+
+        [TestMethod]
         public void AmericanRaceTests()
         {
             const string TEST_ZIP = "92071";
             var testResult = NAmerUtil.GetAmericanRace(TEST_ZIP);
             Assert.AreNotEqual(string.Empty,testResult);
-            System.Diagnostics.Debug.WriteLine(testResult);
+            WriteLine(testResult);
         }
 
         [TestMethod]
@@ -46,7 +66,7 @@ namespace NoFuture.Tests.Rand
             var testResult = NAmerUtil.GetAmericanFirstName(testDob, NoFuture.Rand.Gender.Female);
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0, testResult.Length);
-            System.Diagnostics.Debug.WriteLine(testResult);
+            WriteLine(testResult);
         }
 
         [TestMethod]
@@ -56,7 +76,7 @@ namespace NoFuture.Tests.Rand
             var testResult = NAmerUtil.GetAmericanFirstName(testDob, NoFuture.Rand.Gender.Male);
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0, testResult.Length);
-            System.Diagnostics.Debug.WriteLine(testResult);
+            WriteLine(testResult);
         }
 
         [TestMethod]
@@ -65,7 +85,7 @@ namespace NoFuture.Tests.Rand
             var testResult = NAmerUtil.GetAmericanLastName();
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0, testResult.Length);
-            System.Diagnostics.Debug.WriteLine(testResult);
+            WriteLine(testResult);
         }
 
         [TestMethod]
@@ -76,9 +96,9 @@ namespace NoFuture.Tests.Rand
             Assert.AreEqual(MaritialStatus.Single, NAmerUtil.GetMaritialStatus(DateTime.Today.AddYears(-16), Gender.Female));
 
             //cannot test further since its is random...
-            System.Diagnostics.Debug.WriteLine(NAmerUtil.GetMaritialStatus(new DateTime(1974, 11, 21), Gender.Male));
-            System.Diagnostics.Debug.WriteLine(NAmerUtil.GetMaritialStatus(new DateTime(1962, 1, 31), Gender.Female));
-            System.Diagnostics.Debug.WriteLine(NAmerUtil.GetMaritialStatus(new DateTime(1982, 1, 31), Gender.Female));
+            WriteLine(NAmerUtil.GetMaritialStatus(new DateTime(1974, 11, 21), Gender.Male));
+            WriteLine(NAmerUtil.GetMaritialStatus(new DateTime(1962, 1, 31), Gender.Female));
+            WriteLine(NAmerUtil.GetMaritialStatus(new DateTime(1982, 1, 31), Gender.Female));
         }
 
         [TestMethod]
@@ -90,9 +110,9 @@ namespace NoFuture.Tests.Rand
             Assert.IsNotNull(father.BirthCert);
             Assert.IsTrue(father.BirthCert.DateOfBirth.Year < testDob.Year);
 
-            System.Diagnostics.Debug.WriteLine(father.FirstName);
-            System.Diagnostics.Debug.WriteLine(father.LastName);
-            System.Diagnostics.Debug.WriteLine(father.BirthCert.DateOfBirth);
+            WriteLine(father.FirstName);
+            WriteLine(father.LastName);
+            WriteLine(father.BirthCert.DateOfBirth);
         }
 
         [TestMethod]
@@ -103,9 +123,9 @@ namespace NoFuture.Tests.Rand
             Assert.IsNotNull(spouse);
             Assert.IsNotNull(spouse.FirstName);
 
-            System.Diagnostics.Debug.WriteLine(spouse.FirstName);
-            System.Diagnostics.Debug.WriteLine(spouse.LastName);
-            System.Diagnostics.Debug.WriteLine(spouse.BirthCert.DateOfBirth);
+            WriteLine(spouse.FirstName);
+            WriteLine(spouse.LastName);
+            WriteLine(spouse.BirthCert.DateOfBirth);
 
         }
 
@@ -113,7 +133,7 @@ namespace NoFuture.Tests.Rand
         public void TestFemaleDob2ProbChildless()
         {
             var testResult = NAmerUtil.Equations.FemaleYob2ProbChildless.SolveForY(1951);
-            System.Diagnostics.Debug.WriteLine(testResult);
+            WriteLine(testResult);
             Assert.IsTrue(testResult < 0.19);
             Assert.IsTrue(testResult > 0.09);
 
@@ -128,7 +148,7 @@ namespace NoFuture.Tests.Rand
 
             Assert.IsTrue(5 > testResult);
 
-            System.Diagnostics.Debug.WriteLine(testResult);
+            WriteLine(testResult);
 
             //averages, 18 year old never has children.
             for (var i = 0; i < 100; i++)
@@ -147,13 +167,13 @@ namespace NoFuture.Tests.Rand
 
             Assert.IsNotNull(testResult);
 
-            System.Diagnostics.Debug.WriteLine(testResult);
+            WriteLine(testResult);
 
             testResult = NAmerUtil.GetChildBirthDate(inputDob, 1, null);
 
             Assert.IsNotNull(testResult);
 
-            System.Diagnostics.Debug.WriteLine(testResult);
+            WriteLine(testResult);
         }
 
         [TestMethod]
@@ -167,7 +187,7 @@ namespace NoFuture.Tests.Rand
             var d = Newtonsoft.Json.JsonConvert.SerializeObject(testResult, Formatting.Indented,
                 new JsonSerializerSettings() { ReferenceLoopHandling = ReferenceLoopHandling.Ignore });
 
-            System.Diagnostics.Debug.WriteLine(d);
+            WriteLine(d);
             
         }
 
@@ -181,7 +201,7 @@ namespace NoFuture.Tests.Rand
                 var marriageEq = NAmerUtil.Equations.FemaleDob2MarriageAge.SolveForY(dob.ToDouble());
                 var firstBornEq = NAmerUtil.Equations.FemaleAge2FirstChild.SolveForY(dob.Year);
 
-                System.Diagnostics.Debug.WriteLine(string.Format("dob: {0};  marriageAge: {1}; firstBornAge: {2};", dob, marriageEq, firstBornEq));
+                WriteLine($"dob: {dob};  marriageAge: {marriageEq}; firstBornAge: {firstBornEq};");
 
             }
         }
@@ -195,13 +215,13 @@ namespace NoFuture.Tests.Rand
 
             Assert.AreNotEqual(MaritialStatus.Unknown, testResult);
 
-            System.Diagnostics.Debug.WriteLine(testResult);
+            WriteLine(testResult);
 
             testResult = testSubject.GetMaritalStatusAt(DateTime.Now.AddYears(-10));
 
             Assert.AreNotEqual(MaritialStatus.Unknown, testResult);
 
-            System.Diagnostics.Debug.WriteLine(testResult);
+            WriteLine(testResult);
         }
 
         [TestMethod]
@@ -209,9 +229,9 @@ namespace NoFuture.Tests.Rand
         {
             var testPerson = new NorthAmerican(new DateTime(1955,6,20), Gender.Female, false);
 
-            testPerson._children.Add(new NorthAmerican(new DateTime(1976, 10, 2), Gender.Female, false));
-            testPerson._children.Add(new NorthAmerican(new DateTime(1986, 3, 11), Gender.Female, false));
-            testPerson._children.Add(new NorthAmerican(new DateTime(1982, 12, 30), Gender.Female, false));
+            testPerson._children.Add(new Child(new NorthAmerican(new DateTime(1976, 10, 2), Gender.Female, false)));
+            testPerson._children.Add(new Child(new NorthAmerican(new DateTime(1986, 3, 11), Gender.Female, false)));
+            testPerson._children.Add(new Child(new NorthAmerican(new DateTime(1982, 12, 30), Gender.Female, false)));
 
             var testDob = new DateTime(1985, 9, 10);//conception ~ 12/4/1984
 

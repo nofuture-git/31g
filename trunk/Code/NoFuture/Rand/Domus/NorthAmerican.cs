@@ -5,6 +5,7 @@ using System.Linq;
 using NoFuture.Exceptions;
 using NoFuture.Rand.Data.Types;
 using NoFuture.Rand.Domus.Pneuma;
+using NoFuture.Rand.Edu;
 using NoFuture.Rand.Gov;
 using NoFuture.Shared;
 using NoFuture.Util;
@@ -19,8 +20,8 @@ namespace NoFuture.Rand.Domus
     public class NorthAmerican : Person
     {
         #region fields
-        private readonly List<Spouse> _spouses = new List<Spouse>();
-        
+        internal readonly List<Spouse> _spouses = new List<Spouse>();
+        private IEducation _edu;
         internal readonly List<Tuple<KindsOfLabels, NorthAmericanPhone>> _phoneNumbers = 
             new List<Tuple<KindsOfLabels, NorthAmericanPhone>>();
         private SocialSecurityNumber _ssn;
@@ -146,6 +147,11 @@ namespace NoFuture.Rand.Domus
         #endregion
 
         #region public methods
+        /// <summary>
+        /// Gets this person's <see cref="MaritialStatus"/> at time <see cref="dt"/>
+        /// </summary>
+        /// <param name="dt">Null for the current time</param>
+        /// <returns></returns>
         public override MaritialStatus GetMaritalStatusAt(DateTime? dt)
         {
             var mdt = dt ?? DateTime.Now;
@@ -197,6 +203,11 @@ namespace NoFuture.Rand.Domus
                 : myTimeline.Last().Value;
         }
 
+        /// <summary>
+        /// Gets the <see cref="Spouse"/> as they were at the given time of <see cref="dt"/>
+        /// </summary>
+        /// <param name="dt">Null for the current time</param>
+        /// <returns></returns>
         public override Spouse GetSpouseAt(DateTime? dt)
         {
             var cdt = dt ?? DateTime.Now;
@@ -208,6 +219,41 @@ namespace NoFuture.Rand.Domus
 
             var spouseData = _spouses.FirstOrDefault(x => DateTime.Compare(x.MarriedOn, cdt) <= 0 && x.SeparatedOn == null);
             return spouseData;
+        }
+
+        /// <summary>
+        /// Gets the <see cref="IEducation"/> at time <see cref="dt"/>
+        /// </summary>
+        /// <param name="dt">Null for the current time</param>
+        /// <returns></returns>
+        public override IEducation GetEducationAt(DateTime? dt)
+        {
+            if(_edu == null)
+                _edu = new NorthAmericanEdu(this);
+
+            if (dt == null)
+                return _edu;
+
+            if(_edu.EduLevel == OccidentalEdu.Empty)
+                return _edu;
+
+            var hsGradDt = _edu.HighSchool == null ? dt.Value.AddDays(-1) : _edu.HighSchool.Item2;
+
+            if (hsGradDt < dt)
+            {
+                return new NorthAmericanEdu(new Tuple<IHighSchool, DateTime?>(_edu?.HighSchool?.Item1, null));
+            }
+
+            var univGradDt = _edu.College == null ? dt.Value.AddDays(-1) : _edu.College.Item2;
+
+            if (univGradDt < dt)
+            {
+                return new NorthAmericanEdu(new Tuple<IUniversity, DateTime?>(_edu?.College?.Item1, null),
+                    new Tuple<IHighSchool, DateTime?>(_edu?.HighSchool?.Item1, _edu?.HighSchool?.Item2));
+            }
+
+            return _edu;
+
         }
 
         /// <summary>
@@ -227,11 +273,14 @@ namespace NoFuture.Rand.Domus
             {
                 NAmerUtil.SetNAmerCohabitants((NorthAmerican)GetSpouseAt(dt).SO, this);
             }
-            var underAgeChildren = _children.Cast<NorthAmerican>().Where(x => x.GetAgeAt(dt) < UsState.AGE_OF_ADULT).ToList();
+            var underAgeChildren =
+                _children.Where(
+                    x => x.Est is NorthAmerican && ((NorthAmerican) x.Est).GetAgeAt(dt) < UsState.AGE_OF_ADULT)
+                    .ToList();
             if (underAgeChildren.Count <= 0)
                 return;
             foreach (var child in underAgeChildren)
-                NAmerUtil.SetNAmerCohabitants(child, this);
+                NAmerUtil.SetNAmerCohabitants((NorthAmerican)child.Est, this);
         }
 
         /// <summary>
@@ -294,10 +343,11 @@ namespace NoFuture.Rand.Domus
             BirthCert.Mother = _mother;
 
             //add self as one of mother's children
-            myMother._children.Add(this);
+            myMother._children.Add(new Child(this));
 
             //TODO reslove this using data from census.gov
-            ((AmericanBirthCert) BirthCert).BirthPlace = myMother.GetAddressAt(null)?.HomeCityArea as UsCityStateZip;
+            ((AmericanBirthCert) BirthCert).BirthPlace =
+                myMother.GetAddressAt(_birthCert.DateOfBirth)?.HomeCityArea as UsCityStateZip;
 
             //resolve mother's spouse(s)
             var motherMaritalStatus = NAmerUtil.GetMaritialStatus(_mother.BirthCert.DateOfBirth, Gender.Female);
@@ -418,7 +468,7 @@ namespace NoFuture.Rand.Domus
 
                     foreach (var childFrom in nAmerSpouse._children)
                     {
-                        if (childFrom.LastName != LastName && childFrom.OtherNames.All(x => x.Item2 != LastName))
+                        if (childFrom.Est.LastName != LastName && childFrom.Est.OtherNames.All(x => x.Item2 != LastName))
                             continue;
                         _children.Add(childFrom);
                     }
@@ -437,7 +487,7 @@ namespace NoFuture.Rand.Domus
             var propTeenagePreg = teenPregEquation.SolveForY(teenageYear);
 
             var propLifetimeChildless = NAmerUtil.SolveForProbabilityChildless(_birthCert.DateOfBirth,
-                Education?.GetEduLevel(null) ?? OccidentalEdu.Empty);
+                Education?.EduLevel ?? OccidentalEdu.Empty);
 
             //far high-end is no children for whole life
             if (Etx.MyRand.NextDouble() <= propLifetimeChildless)
@@ -484,7 +534,7 @@ namespace NoFuture.Rand.Domus
 
             var dt = DateTime.Now;
             DateTime dtOut;
-            NorthAmerican myChild = null;
+            Child myChild = null;
             if (IsTwin(myChildDob, out dtOut) && DateTime.Compare(dtOut, DateTime.MinValue) != 0)
             {
                 myChildDob = dtOut;
@@ -507,7 +557,12 @@ namespace NoFuture.Rand.Domus
             //never married
             if (!_spouses.Any())
             {
-                myChild = new NorthAmerican(myChildDob, myChildGender, this, null) {LastName = LastName, Race = Race};
+                myChild =
+                    new Child(new NorthAmerican(myChildDob, myChildGender, this, null)
+                    {
+                        LastName = LastName,
+                        Race = Race
+                    });
                 //default to mother last name
                 _children.Add(myChild);
                 return;
@@ -525,12 +580,12 @@ namespace NoFuture.Rand.Domus
                      myChildDob.ComparedTo(marriage.SeparatedOn.Value) == ChronoCompare.Before))
                 {
 
-                    myChild = new NorthAmerican(myChildDob, myChildGender, this, marriage.SO) {Race = Race};
+                    myChild = new Child(new NorthAmerican(myChildDob, myChildGender, this, marriage.SO) {Race = Race});
                     if (isDaughterMarriedOff)
-                        myChild.OtherNames.Add(new Tuple<KindsOfNames, string>(KindsOfNames.Maiden,
+                        myChild.Est.OtherNames.Add(new Tuple<KindsOfNames, string>(KindsOfNames.Maiden,
                             marriage.SO.LastName));
                     else
-                        myChild.LastName = marriage.SO.LastName;
+                        myChild.Est.LastName = marriage.SO.LastName;
                 }
             }
 
@@ -540,19 +595,19 @@ namespace NoFuture.Rand.Domus
                 var maidenName = OtherNames.FirstOrDefault(x => x.Item1 == KindsOfNames.Maiden);
                 if (!string.IsNullOrWhiteSpace(maidenName?.Item2))
                 {
-                    myChild = new NorthAmerican(myChildDob, myChildGender, this, null)
+                    myChild = new Child(new NorthAmerican(myChildDob, myChildGender, this, null)
                     {
                         LastName = maidenName.Item2,
                         Race = Race
-                    };
+                    });
                 }
                 else
                 {
-                    myChild = new NorthAmerican(myChildDob, myChildGender, this, null)
+                    myChild = new Child(new NorthAmerican(myChildDob, myChildGender, this, null)
                     {
                         LastName = LastName,
                         Race = Race
-                    };
+                    });
                 }
             }
             _children.Add(myChild);
@@ -572,7 +627,7 @@ namespace NoFuture.Rand.Domus
         /// </returns>
         protected internal bool IsTwin(DateTime childDob, out DateTime minutesAfterChildDob)
         {
-            var siblingsBdays = _children.Where(x => x.BirthCert != null).Select(x => x.BirthCert.DateOfBirth).ToList();
+            var siblingsBdays = _children.Where(x => x.Est.BirthCert != null).Select(x => x.Est.BirthCert.DateOfBirth).ToList();
 
             if (siblingsBdays.Any(x => DateTime.Compare(x.Date, childDob.Date) == 0))
             {
@@ -616,11 +671,11 @@ namespace NoFuture.Rand.Domus
             var clildDobTuple = new Tuple<DateTime, DateTime>(childDob.AddDays(-1 * PREG_DAYS), childDob);
 
             var bdayTuples =
-                _children.Where(x => x.BirthCert != null)
+                _children.Where(x => x.Est.BirthCert != null)
                     .Select(
                         x =>
-                            new Tuple<DateTime, DateTime>(x.BirthCert.DateOfBirth.AddDays(-1*PREG_DAYS),
-                                x.BirthCert.DateOfBirth.AddDays(MS_DAYS))).ToList();
+                            new Tuple<DateTime, DateTime>(x.Est.BirthCert.DateOfBirth.AddDays(-1*PREG_DAYS),
+                                x.Est.BirthCert.DateOfBirth.AddDays(MS_DAYS))).ToList();
             foreach (var s in bdayTuples)
             {
                 var xDoC = s.Item1;

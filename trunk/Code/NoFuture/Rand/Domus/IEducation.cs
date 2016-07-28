@@ -5,8 +5,8 @@ namespace NoFuture.Rand.Domus
 {
     public interface IEducation
     {
-        OccidentalEdu GetEduLevel(DateTime? dt);
-        IHighSchool GetHighSchool(DateTime? dt);
-        IUniversity GetUniversity(DateTime? dt);
+        OccidentalEdu EduLevel { get; }
+        Tuple<IHighSchool, DateTime?> HighSchool { get; }
+        Tuple<IUniversity, DateTime?> College { get; }
     }
 }
