@@ -162,6 +162,7 @@ namespace NoFuture.Util.Gia.GraphViz
         private readonly List<AsmDiagramSubGraph> _nsSubGraphs = new List<AsmDiagramSubGraph>();
         private readonly string _asmName;
         private readonly bool _withNsSubgraphs;
+        private readonly string _targetedNs;
         #endregion
 
         #region properties
@@ -172,20 +173,35 @@ namespace NoFuture.Util.Gia.GraphViz
         #region ctor
         public AsmDiagram(Assembly asm, bool withNamespaceSubGraphs = false)
         {
+            if (asm == null)
+                throw new ArgumentNullException(nameof(asm));
+
+            _targetedNs = asm.GetName().Name;
+
             _withNsSubgraphs = withNamespaceSubGraphs;
             _asmName = NfTypeName.SafeDotNetIdentifier(asm.GetName().Name);
-            foreach (var asmType in asm.NfGetExportedTypes())
+            foreach (
+                var asmType in
+                    asm.NfGetExportedTypes()
+                        .Where(x => !string.IsNullOrWhiteSpace(x.Namespace) && x.Namespace.StartsWith(_targetedNs)))
             {
                 var item1 = new FlattenedItem(asmType) {FlName = asmType.Name};
                 if (item1.IsTerminalNode || NfTypeName.IsEnumType(asmType))
                     continue;
 
-                foreach (var p in asmType.GetProperties(NfConfig.DefaultFlags))
+                foreach (
+                    var p in
+                        asmType.GetProperties(NfConfig.DefaultFlags)
+                            .Where(
+                                x =>
+                                    !string.IsNullOrWhiteSpace(x.PropertyType.Namespace) &&
+                                    x.PropertyType.Namespace.StartsWith(_targetedNs))
+                    )
                 {
                     if (NfTypeName.IsEnumType(p.PropertyType))
                         continue;
                     var item2 = new FlattenedItem(p.PropertyType) {FlName = p.Name};
-                    if(item2.IsTerminalNode)
+                    if (item2.IsTerminalNode)
                         continue;
                     var tupleOfItems = new Tuple<FlattenedItem, FlattenedItem>(item1, item2);
                     var itemEv = new AsmDiagramEdge(tupleOfItems);

@@ -450,3 +450,6 @@ Mores (from Latin meaning manner or custome) - social norms of what's right and 
 Folkways - social norms between what's right and rude.
 neologism - name for a new or isolated word
 equivocation - ambiguous language to avoid telling the truth or committing oneself
+orthography - conventional spelling system of a language
+diphthong - two vowel sounds combined to form a new sound
+digraph - two letters that spell one sound

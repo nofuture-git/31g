@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NoFuture.Util;
+using Dbg = System.Diagnostics.Debug;
 
 namespace NoFuture.Tests.Util
 {
@@ -111,6 +112,66 @@ namespace NoFuture.Tests.Util
             Assert.IsFalse(testSubject.HasSemblance(new[] { "Date", "Of", "Date" }));
 
             
+        }
+
+        [TestMethod]
+        public void TestToPlural()
+        {
+            var testResult = NoFuture.Util.Etymological.En.ToPlural("Birth");
+            Dbg.WriteLine($"Birth -> {testResult}");
+            Assert.AreEqual("Births", testResult);
+
+            testResult = NoFuture.Util.Etymological.En.ToPlural("Apple");
+            Dbg.WriteLine($"Apple -> {testResult}");
+            Assert.AreEqual("Apples", testResult);
+
+            testResult = NoFuture.Util.Etymological.En.ToPlural("Banana");
+            Dbg.WriteLine($"Banana -> {testResult}");
+            Assert.AreEqual("Bananas", testResult);
+
+            testResult = NoFuture.Util.Etymological.En.ToPlural("Woman");
+            Dbg.WriteLine($"Woman -> {testResult}");
+            Assert.AreEqual("Women", testResult);
+
+            testResult = NoFuture.Util.Etymological.En.ToPlural("Wolf");
+            Dbg.WriteLine($"Wolf -> {testResult}");
+            Assert.AreEqual("Wolves", testResult);
+
+            testResult = NoFuture.Util.Etymological.En.ToPlural("Freeway");
+            Dbg.WriteLine($"Freeway -> {testResult}");
+            Assert.AreEqual("Freeways", testResult);
+
+            testResult = NoFuture.Util.Etymological.En.ToPlural("Today");
+            Dbg.WriteLine($"Today -> {testResult}");
+            Assert.AreEqual("Todays", testResult);
+
+            testResult = NoFuture.Util.Etymological.En.ToPlural("Addendum");
+            Dbg.WriteLine($"Addendum -> {testResult}");
+            Assert.AreEqual("Addenda", testResult);
+
+            testResult = NoFuture.Util.Etymological.En.ToPlural("Nucleus");
+            Dbg.WriteLine($"Nucleus -> {testResult}");
+            Assert.AreEqual("Nuclei", testResult);
+
+            testResult = NoFuture.Util.Etymological.En.ToPlural("Criterion");
+            Dbg.WriteLine($"Criterion -> {testResult}");
+            Assert.AreEqual("Criteria", testResult);
+
+            testResult = NoFuture.Util.Etymological.En.ToPlural("Die");
+            Dbg.WriteLine($"Die -> {testResult}");
+            Assert.AreEqual("Dies", testResult);
+
+            testResult = NoFuture.Util.Etymological.En.ToPlural("Life");
+            Dbg.WriteLine($"Life -> {testResult}");
+            Assert.AreEqual("Lives", testResult);
+
+            testResult = NoFuture.Util.Etymological.En.ToPlural("Shelf");
+            Dbg.WriteLine($"Shelf -> {testResult}");
+            Assert.AreEqual("Shelves", testResult);
+
+            testResult = NoFuture.Util.Etymological.En.ToPlural("Wife");
+            Dbg.WriteLine($"Wife -> {testResult}");
+            Assert.AreEqual("Wives", testResult);
         }
     }
 }
