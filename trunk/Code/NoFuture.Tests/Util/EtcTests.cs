@@ -106,11 +106,28 @@ namespace NoFuture.Tests.Util
         [TestMethod]
         public void TestCalcLuhnCheckDigit()
         {
-            var testInput = "7992739871";
-            var testResult = Etc.CalcLuhnCheckDigit(testInput);
-
-            System.Diagnostics.Debug.WriteLine(testResult);
-
+            var testResult = Etc.CalcLuhnCheckDigit("455673758689985");
+            Assert.AreEqual(5, testResult);
+            testResult = Etc.CalcLuhnCheckDigit("453211001754030");
+            Assert.AreEqual(9,testResult);
+            testResult = Etc.CalcLuhnCheckDigit("471604448140316");
+            Assert.AreEqual(5, testResult);
+            testResult = Etc.CalcLuhnCheckDigit("554210251648257");
+            Assert.AreEqual(5, testResult);
+            testResult = Etc.CalcLuhnCheckDigit("537886423943754");
+            Assert.AreEqual(6, testResult);
+            testResult = Etc.CalcLuhnCheckDigit("511329925461278");
+            Assert.AreEqual(2, testResult);
+            testResult = Etc.CalcLuhnCheckDigit("37322049976972");
+            Assert.AreEqual(0, testResult);
+            testResult = Etc.CalcLuhnCheckDigit("34561114407525");
+            Assert.AreEqual(4, testResult);
+            testResult = Etc.CalcLuhnCheckDigit("34831152135173");
+            Assert.AreEqual(6, testResult);
+            testResult = Etc.CalcLuhnCheckDigit("601198900163944");
+            Assert.AreEqual(0, testResult);
+            testResult = Etc.CalcLuhnCheckDigit("3653092434341");
+            Assert.AreEqual(5, testResult);
         }
 
         [TestMethod]

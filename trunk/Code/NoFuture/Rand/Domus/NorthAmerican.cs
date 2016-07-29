@@ -186,10 +186,10 @@ namespace NoFuture.Rand.Domus
 
                 myTimeline.Add(days, MaritialStatus.Divorced);
 
-                if (spouseData.SO == null || spouseData.SO.DeathDate == null)
+                if (spouseData.Est == null || spouseData.Est.DeathDate == null)
                     continue;
 
-                days = (int)Math.Abs((spouseData.SO.DeathDate.Value - _birthCert.DateOfBirth).TotalDays);
+                days = (int)Math.Abs((spouseData.Est.DeathDate.Value - _birthCert.DateOfBirth).TotalDays);
                 while (myTimeline.ContainsKey(days))
                     days += 1;
 
@@ -271,7 +271,7 @@ namespace NoFuture.Rand.Domus
             var ms = GetMaritalStatusAt(dt);
             if ((ms == MaritialStatus.Married || ms == MaritialStatus.Remarried) && GetSpouseAt(dt) != null)
             {
-                NAmerUtil.SetNAmerCohabitants((NorthAmerican)GetSpouseAt(dt).SO, this);
+                NAmerUtil.SetNAmerCohabitants((NorthAmerican)GetSpouseAt(dt).Est, this);
             }
             var underAgeChildren =
                 _children.Where(
@@ -359,7 +359,7 @@ namespace NoFuture.Rand.Domus
             myMother.AlignCohabitantsHomeDataAt(null, GetAddressAt(null));
 
             //father is whoever was married to mother at time of birth
-            var myFather = myMother.GetSpouseAt(_birthCert.DateOfBirth)?.SO as NorthAmerican;
+            var myFather = myMother.GetSpouseAt(_birthCert.DateOfBirth)?.Est as NorthAmerican;
 
             //mother not married at time of birth
             if (motherMaritalStatus == MaritialStatus.Single || myFather == null)
@@ -459,9 +459,9 @@ namespace NoFuture.Rand.Domus
             //equations data is by women only.
             if (MyGender == Gender.Male)
             {
-                foreach (var s in _spouses.Where(x => x.SO != null && x.SO.MyGender == Gender.Female))
+                foreach (var s in _spouses.Where(x => x.Est != null && x.Est.MyGender == Gender.Female))
                 {
-                    var nAmerSpouse = s.SO as NorthAmerican;
+                    var nAmerSpouse = s.Est as NorthAmerican;
                     if (nAmerSpouse == null)
                         continue;
                     nAmerSpouse.ResolveChildren();
@@ -580,12 +580,12 @@ namespace NoFuture.Rand.Domus
                      myChildDob.ComparedTo(marriage.SeparatedOn.Value) == ChronoCompare.Before))
                 {
 
-                    myChild = new Child(new NorthAmerican(myChildDob, myChildGender, this, marriage.SO) {Race = Race});
+                    myChild = new Child(new NorthAmerican(myChildDob, myChildGender, this, marriage.Est) {Race = Race});
                     if (isDaughterMarriedOff)
                         myChild.Est.OtherNames.Add(new Tuple<KindsOfNames, string>(KindsOfNames.Maiden,
-                            marriage.SO.LastName));
+                            marriage.Est.LastName));
                     else
-                        myChild.Est.LastName = marriage.SO.LastName;
+                        myChild.Est.LastName = marriage.Est.LastName;
                 }
             }
 
@@ -731,7 +731,7 @@ namespace NoFuture.Rand.Domus
             }
             _spouses.Add(new Spouse
             {
-                SO = spouse,
+                Est = spouse,
                 MarriedOn = marriedOn,
                 SeparatedOn = separatedOn,
                 Ordinal = _spouses.Count + 1

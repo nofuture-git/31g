@@ -1,6 +1,6 @@
 ﻿namespace NoFuture.Rand.Domus
 {
-    public class Child
+    public class Child : IRelation
     {
         public Child(IPerson p)
         {

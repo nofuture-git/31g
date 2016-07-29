@@ -2,9 +2,9 @@ using System;
 
 namespace NoFuture.Rand.Domus
 {
-    public class Spouse
+    public class Spouse : IRelation
     {
-        public IPerson SO { get; set; }
+        public IPerson Est { get; set; }
         public DateTime MarriedOn { get; set; }
         public DateTime? SeparatedOn { get; set; }
         public int Ordinal { get; set; }
@@ -31,7 +31,7 @@ namespace NoFuture.Rand.Domus
 
         public override int GetHashCode()
         {
-            var sh = SO != null ? SO.GetHashCode() : 0;
+            var sh = Est != null ? Est.GetHashCode() : 0;
             var mo = MarriedOn.GetHashCode();
             var so = SeparatedOn?.GetHashCode() ?? 0;
             var o = Ordinal.GetHashCode();
@@ -41,7 +41,7 @@ namespace NoFuture.Rand.Domus
 
         public override string ToString()
         {
-            return string.Join(" ", SO.FirstName, SO.LastName);
+            return string.Join(" ", Est.FirstName, Est.LastName);
         }
 
         private bool Mdq(Spouse sd) { return DateTime.Compare(MarriedOn.Date, sd.MarriedOn.Date) == 0; }

@@ -94,6 +94,7 @@
     <Compile Include="Domus\IEducation.cs" />
     <Compile Include="Domus\IPerson.cs" />
     <Compile Include="Domus\IProfession.cs" />
+    <Compile Include="Domus\IRelation.cs" />
     <Compile Include="Domus\NAmerUtil.cs" />
     <Compile Include="Domus\NorthAmerican.cs" />
     <Compile Include="Domus\NorthAmericanEdu.cs" />

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -716,13 +717,14 @@ namespace NoFuture.Util
             var valueChars = somevalue.ToCharArray().Where(Char.IsNumber).ToArray();
             if (valueChars.Length <= 0)
                 return -1;
-
-            for (var i = valueChars.Length - 1; i >= 0; i--)
+            valueChars = valueChars.Reverse().ToArray();
+            Debug.WriteLine(string.Join("", valueChars));
+            for (var i = 0; i < valueChars.Length; i++)
             {
                 int valAti;
-                if (!Int32.TryParse(new string(new[] {valueChars[i]}), out valAti))
+                if (!Int32.TryParse(valueChars[i].ToString(), out valAti))
                     continue;
-                if (i % 2 == 0)
+                if ((i+1) % 2 == 0)
                 {
                     dblEveryOtherSum += valAti;
                     continue;
@@ -752,7 +754,8 @@ namespace NoFuture.Util
                 }
             }
 
-            return 10 - (dblEveryOtherSum % 10);
+            var calc = 10 - (dblEveryOtherSum % 10);
+            return calc == 10 ? 0 : calc;
         }
 
         /// <summary>

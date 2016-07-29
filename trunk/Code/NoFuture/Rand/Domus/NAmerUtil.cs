@@ -653,7 +653,7 @@ namespace NoFuture.Rand.Domus
 
             usZips = usZipsXmlDocument.ToXDocument();
 
-            double pickone = Convert.ToInt32(Etx.MyRand.Next(1, 9999999) / 100000);
+            var pickone = Etx.RationalNumber(1, 100);
             var randnode =
                 usZips.Descendants("zip-code").FirstOrDefault(
                     x =>

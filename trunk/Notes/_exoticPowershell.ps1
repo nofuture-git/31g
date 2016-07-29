@@ -625,3 +625,14 @@ foreach($svcName in $myService2BDisabled){
 #get rabbitMQ home
 $wmiEnvObj = Get-WmiObject -Class Win32_Environment -ComputerName $computerIp -ErrorAction Stop
 $rabbitHome = $wmiEnvObj | ? {$_.Name -eq "RABBITMQ_BASE"} | Select-Object -First 1
+
+function ApplyPermsToExistingX509Cert(){
+	#get the cert
+	$bfwRelyingPartyCert = Get-Item Cert:\LocalMachine\My\ED4B5A1BCA77B7193FE7442BC0815BF713BB7768
+	#this is where the certs\keys are on the drive
+	$cryptoKeyPath = join-path $env:ProgramData "Microsoft\Crypto\RSA\MachineKeys"
+	#get the location of the Private Key on the drive
+	$rpCertPath = join-path $cryptoKeyPath (($bfwRelyingPartyCert.PrivateKey).CspKeyContainerInfo).UniqueKeyContainerName
+	#apply this permission
+	invoke-expression "icacls $rpCertPath `/grant 'IIS APPPOOL\my-web-site`:RX'"
+}
