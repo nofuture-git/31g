@@ -82,7 +82,7 @@ namespace NoFuture.Rand.Domus.Pneuma
         public Dimension Value { get; set; }
         public override string ToString()
         {
-            return "'" +  Abbrev + "':" + Value;
+            return Abbrev + ":" + Value;
         }
     }
     [Serializable]

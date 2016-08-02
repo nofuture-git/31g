@@ -15,10 +15,13 @@ namespace NoFuture.Rand.Data.Types
         #region ctor
         public UsStateData(string name)
         {
-            _stateName = name;
+            if (string.IsNullOrWhiteSpace(name))
+                return;
+            //need to put the spaces back into state's name (NewYork as New York)
+            _stateName = string.Join(" ", Util.Etc.DistillToWholeWords(name));
             if (TreeData.UsStateData == null)
                 return;
-            var myNameNode = TreeData.UsStateData.SelectSingleNode($"//state[@name='{name}']");
+            var myNameNode = TreeData.UsStateData.SelectSingleNode($"//state[@name='{_stateName}']");
             if (myNameNode == null)
                 return;
             AverageEarnings = UsCityStateZip.GetAvgEarningsPerYear(myNameNode);

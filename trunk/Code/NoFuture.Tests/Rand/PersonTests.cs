@@ -105,7 +105,7 @@ namespace NoFuture.Tests.Rand
         public void TestSolveForParent()
         {
             DateTime testDob = new DateTime(1984,4,22);
-            var father = NAmerUtil.SolveForParent(testDob, NAmerUtil.Equations.MaleYearOfMarriage2AvgAge, Gender.Male);
+            var father = NAmerUtil.SolveForParent(testDob, NAmerUtil.Equations.MaleAge2FirstMarriage, Gender.Male);
             Assert.IsNotNull(father);
             Assert.IsNotNull(father.BirthCert);
             Assert.IsTrue(father.BirthCert.DateOfBirth.Year < testDob.Year);
@@ -198,7 +198,7 @@ namespace NoFuture.Tests.Rand
             for (var i = 0; i < 15; i++)
             {
                 var dob = baseDob.AddYears((25 + i) * -1);
-                var marriageEq = NAmerUtil.Equations.FemaleDob2MarriageAge.SolveForY(dob.ToDouble());
+                var marriageEq = NAmerUtil.Equations.FemaleAge2FirstMarriage.SolveForY(dob.ToDouble());
                 var firstBornEq = NAmerUtil.Equations.FemaleAge2FirstChild.SolveForY(dob.Year);
 
                 WriteLine($"dob: {dob};  marriageAge: {marriageEq}; firstBornAge: {firstBornEq};");
@@ -251,6 +251,20 @@ namespace NoFuture.Tests.Rand
             //valid: conception ~ 5 months after prev birth
             testResult = testPerson.IsValidDobOfChild(testDob);
             Assert.IsTrue(testResult);
+
+            testPerson = new NorthAmerican(new DateTime(1982,4,13), Gender.Female, false );
+            testPerson._children.Add(new Child(new NorthAmerican(new DateTime(2007, 8, 30), Gender.Male)));
+            testPerson._children.Add(new Child(new NorthAmerican(new DateTime(2009, 12, 20), Gender.Female)));
+
+            testDob = new DateTime(2009,3,6);
+            Assert.IsFalse(testPerson.IsValidDobOfChild(testDob));
+            testDob = testDob.AddDays(280 + 28);
+            Assert.IsFalse(testPerson.IsValidDobOfChild(testDob));
+            testDob = testDob.AddDays(280 + 28);
+            
+            testResult = testPerson.IsValidDobOfChild(testDob);
+            Assert.IsTrue(testResult);
+            WriteLine(testDob);
         }
     }
 }

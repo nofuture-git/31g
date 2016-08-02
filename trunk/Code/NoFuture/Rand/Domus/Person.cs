@@ -29,6 +29,7 @@ namespace NoFuture.Rand.Domus
         protected internal BirthCert _birthCert;
         protected internal readonly List<HomeAddress> _addresses = new List<HomeAddress>();
         protected internal Gender _myGender;
+        protected internal List<Tuple<KindsOfNames, Parent>> _parents = new List<Tuple<KindsOfNames, Parent>>();
         #endregion
 
         #region properties
@@ -41,8 +42,8 @@ namespace NoFuture.Rand.Domus
         public virtual DateTime? DeathDate { get; set; }
         public virtual string FirstName
         {
-            get { return _otherNames.First(x => x.Item1 == KindsOfNames.Firstname).Item2; }
-            set { UpsertName(KindsOfNames.Firstname, value); }
+            get { return _otherNames.First(x => x.Item1 == KindsOfNames.First).Item2; }
+            set { UpsertName(KindsOfNames.First, value); }
         }
         public virtual string LastName
         {
@@ -58,6 +59,41 @@ namespace NoFuture.Rand.Domus
         public int Age => GetAgeAt(null);
         public MaritialStatus MaritialStatus => GetMaritalStatusAt(null);
         public List<Child> Children => _children;
+
+        public List<Tuple<KindsOfNames, Parent>> Parents
+        {
+            get
+            {
+                if(_parents.Count > 0)
+                    return _parents;
+
+                var f = GetFather();
+                var m = GetMother();
+                var lbl = KindsOfNames.Biological;
+                if (!IsLegalAdult(null))
+                    lbl = KindsOfNames.Legal | lbl;
+
+                _parents.Add(new Tuple<KindsOfNames, Parent>(lbl | KindsOfNames.Father,
+                    new Parent(f)));
+                _parents.Add(new Tuple<KindsOfNames, Parent>(lbl | KindsOfNames.Mother,
+                    new Parent(m)));
+
+                Action<IPerson> addStepParent = person => _parents.Add(
+                    new Tuple<KindsOfNames, Parent>(
+                        KindsOfNames.Step |
+                        (person.GetSpouseAt(null).Est.MyGender == Gender.Female
+                            ? KindsOfNames.Mother
+                            : KindsOfNames.Father),
+                        new Parent(person.GetSpouseAt(null).Est)));
+
+                if (f.MaritialStatus == MaritialStatus.Remarried && f.GetSpouseAt(null) != m)
+                    addStepParent(f);
+                if (m.MaritialStatus == MaritialStatus.Remarried && m.GetSpouseAt(null) != f)
+                    addStepParent(m);
+                return _parents;
+            }
+        }
+
         #endregion
 
         #region ctors
@@ -80,10 +116,6 @@ namespace NoFuture.Rand.Domus
                 _children.Where(
                     x => x.Est.BirthCert != null && ddt.ComparedTo(x.Est.BirthCert.DateOfBirth) == ChronoCompare.After).ToList();
         }
-
-        public virtual IPerson GetMother() { return _mother; }
-
-        public virtual IPerson GetFather() { return _father; }
 
         public abstract IEducation GetEducationAt(DateTime? dt);
 
@@ -161,6 +193,22 @@ namespace NoFuture.Rand.Domus
             _addresses.Clear();
             _addresses.Add(addr);
         }
+
+        protected abstract bool IsLegalAdult(DateTime? dt);
+
+        /// <summary>
+        /// Gets the mother, as another 
+        /// instance of <see cref="IPerson"/>, of this instance.
+        /// </summary>
+        /// <returns></returns>
+        protected internal virtual IPerson GetMother() { return _mother; }
+
+        /// <summary>
+        /// Gets the father, as another 
+        /// instance of <see cref="IPerson"/>, of this instance.
+        /// </summary>
+        /// <returns></returns>
+        protected internal virtual IPerson GetFather() { return _father; }
         #endregion
 
         #region static api

@@ -20,6 +20,7 @@ namespace NoFuture.Rand.Domus
         int Age { get; }
         MaritialStatus MaritialStatus { get; }
         List<Child> Children { get; }
+        List<Tuple<KindsOfNames, Parent>> Parents { get; }
         #endregion
 
         #region methods
@@ -46,20 +47,6 @@ namespace NoFuture.Rand.Domus
         /// <param name="dt">Null for the current time right now.</param>
         /// <returns></returns>
         Spouse GetSpouseAt(DateTime? dt);
-
-        /// <summary>
-        /// Gets the mother, as another 
-        /// instance of <see cref="IPerson"/>, of this instance.
-        /// </summary>
-        /// <returns></returns>
-        IPerson GetFather();
-
-        /// <summary>
-        /// Gets the father, as another 
-        /// instance of <see cref="IPerson"/>, of this instance.
-        /// </summary>
-        /// <returns></returns>
-        IPerson GetMother();
 
         /// <summary>
         /// Resolve the edu of this instance at time <see cref="dt"/>

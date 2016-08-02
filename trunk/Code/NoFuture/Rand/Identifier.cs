@@ -165,16 +165,18 @@ namespace NoFuture.Rand
         None = 0,
         Current = 1,
         Former = 2,
-        Firstname = 4,
+        First = 4,
         Surname = 8,
         Nickname = 16,
         Maiden = 32,
         Mother = 64,
-        Adopted = 128,
-        Biological = 264,
-        Spouse = 512,
-        Middle = 1024,
-        Legal = 2048
+        Father = 128,
+        Adopted = 264,
+        Biological = 512,
+        Spouse = 1024,
+        Middle = 2048,
+        Legal = 4098,
+        Step = 8196
     }
 
     [Flags]

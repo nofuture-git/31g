@@ -65,38 +65,33 @@ namespace NoFuture.Rand.Domus
         /// <remarks>
         /// FemaleAge2*Child have had thier intercepts up'ed by 4.  The real data produces 
         /// a condition where first born's are always before marriage.
-        /// Any <see cref="RLinearEquation"/> have a random Standard Dev between 0 and 2.99_
+        /// Any <see cref="RLinearEquation"/> have a random Standard Dev between 0 and 1.0
         /// </remarks>
         public static class Equations
         {
-            public static RLinearEquation MaleDob2MarriageAge = new RLinearEquation
+            /// <summary>
+            /// SolveForY using partial year value (e.g. 12/14/1979 is 1979.952791508)
+            /// </summary>
+            public static RLinearEquation MaleAge2FirstMarriage = new RLinearEquation
             {
                 Intercept = -181.45,
                 Slope = 0.1056,
                 StdDev = Etx.RationalNumber(0, 1)
             };
 
-            public static RLinearEquation FemaleDob2MarriageAge = new RLinearEquation
+            /// <summary>
+            /// SolveForY using partial year value (e.g. 6/15/1979 is 1979.45449250094)
+            /// </summary>
+            public static RLinearEquation FemaleAge2FirstMarriage = new RLinearEquation
             {
                 Intercept = -209.41,
                 Slope = 0.1187,
                 StdDev = Etx.RationalNumber(0, 1)
             };
 
-            public static RLinearEquation MaleYearOfMarriage2AvgAge = new RLinearEquation
-            {
-                Intercept = -166.24,
-                Slope = 0.0965,
-                StdDev = Etx.RationalNumber(0, 1)
-            };
-
-            public static RLinearEquation FemaleYearOfMarriage2AvgAge = new RLinearEquation
-            {
-                Intercept = -191.74,
-                Slope = 0.1083,
-                StdDev = Etx.RationalNumber(0, 2)
-            };
-
+            /// <summary>
+            /// SolveForY using partial year value (e.g. 11/14/1989 is 1989.87065430903)
+            /// </summary>
             public static RLinearEquation FemaleAge2FirstChild = new RLinearEquation
             {
                 Intercept = -176.32,//-180.32
@@ -104,6 +99,9 @@ namespace NoFuture.Rand.Domus
                 StdDev = Etx.RationalNumber(0, 1)
             };
 
+            /// <summary>
+            /// SolveForY using partial year value (e.g. 11/14/1989 is 1989.87065430903)
+            /// </summary>
             public static RLinearEquation FemaleAge2SecondChild = new RLinearEquation
             {
                 Intercept = -171.88,//-175.88
@@ -111,6 +109,9 @@ namespace NoFuture.Rand.Domus
                 StdDev = Etx.RationalNumber(0, 1)
             };
 
+            /// <summary>
+            /// SolveForY using partial year value (e.g. 11/14/1989 is 1989.87065430903)
+            /// </summary>
             public static RLinearEquation FemaleAge2ThirdChild = new RLinearEquation
             {
                 Intercept = -125.45,//-129.45
@@ -118,6 +119,9 @@ namespace NoFuture.Rand.Domus
                 StdDev = Etx.RationalNumber(0, 1)
             };
 
+            /// <summary>
+            /// SolveForY using partial year value (e.g. 11/14/1989 is 1989.87065430903)
+            /// </summary>
             public static RLinearEquation FemaleAge2ForthChild = new RLinearEquation
             {
                 Intercept = -74.855,//-78.855
@@ -371,7 +375,7 @@ namespace NoFuture.Rand.Domus
             }
 
             //pick one at random with probability
-            var pick = (double)(Etx.MyRand.Next(1, 99999999)) / 1000000;
+            var pick = Etx.RationalNumber(0,100);
 
             var race = NorthAmericanRace.White;
 
@@ -394,8 +398,8 @@ namespace NoFuture.Rand.Domus
                 return MaritialStatus.Single;
 
             var avgAgeMarriage = gender == Gender.Female
-                ? Equations.FemaleDob2MarriageAge.SolveForY(dob.ToDouble())
-                : Equations.MaleDob2MarriageAge.SolveForY(dob.ToDouble());
+                ? Equations.FemaleAge2FirstMarriage.SolveForY(dob.ToDouble())
+                : Equations.MaleAge2FirstMarriage.SolveForY(dob.ToDouble());
 
             var cdt = DateTime.Now;
             var currentAge = Person.CalcAge(dob, cdt);
@@ -561,8 +565,8 @@ namespace NoFuture.Rand.Domus
                 return null;
             var dt = DateTime.Now;
             var avgAgeMarriage = myGender == Gender.Female
-                ? Equations.FemaleDob2MarriageAge.SolveForY(dob.Value.ToDouble())
-                : Equations.MaleDob2MarriageAge.SolveForY(dob.Value.ToDouble());
+                ? Equations.FemaleAge2FirstMarriage.SolveForY(dob.Value.ToDouble())
+                : Equations.MaleAge2FirstMarriage.SolveForY(dob.Value.ToDouble());
             var currentAge = Person.CalcAge(dob.Value, dt);
 
             //all other MaritialStatus imply at least one marriage in past

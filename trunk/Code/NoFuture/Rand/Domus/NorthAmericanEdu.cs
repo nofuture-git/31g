@@ -20,13 +20,15 @@ namespace NoFuture.Rand.Domus
             College = assignUniv;
         }
 
-        public NorthAmericanEdu(IPerson amer)
+        public NorthAmericanEdu(IPerson p)
         {
+            var amer = p as NorthAmerican;
             if (amer?.BirthCert == null)
                 return;
+
             var mother = amer.GetMother() as NorthAmerican ??
                          NAmerUtil.SolveForParent(amer.BirthCert.DateOfBirth,
-                             NAmerUtil.Equations.FemaleYearOfMarriage2AvgAge,
+                             NAmerUtil.Equations.FemaleAge2FirstMarriage,
                              Gender.Female) as NorthAmerican;
             var dtAtAge18 = amer.BirthCert.DateOfBirth.AddYears(18);
             var sdf = mother?.GetAddressAt(dtAtAge18);

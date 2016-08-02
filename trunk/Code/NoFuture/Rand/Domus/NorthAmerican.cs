@@ -43,7 +43,7 @@ namespace NoFuture.Rand.Domus
             _myGender = myGender;
 
             var fname = _myGender != Gender.Unknown ? NAmerUtil.GetAmericanFirstName(_birthCert.DateOfBirth, _myGender) : "Pat";
-            _otherNames.Add(new Tuple<KindsOfNames, string>(KindsOfNames.Firstname, fname));
+            _otherNames.Add(new Tuple<KindsOfNames, string>(KindsOfNames.First, fname));
             var lname = NAmerUtil.GetAmericanLastName();
             _otherNames.Add(new Tuple<KindsOfNames, string>(KindsOfNames.Surname, lname));
 
@@ -156,7 +156,7 @@ namespace NoFuture.Rand.Domus
         {
             var mdt = dt ?? DateTime.Now;
 
-            var iAmUnderage = GetAgeAt(mdt) < GetMyHomeStatesAgeOfMajority();
+            var iAmUnderage = !IsLegalAdult(mdt);
 
             if (iAmUnderage || !_spouses.Any())
                 return MaritialStatus.Single;
@@ -210,14 +210,12 @@ namespace NoFuture.Rand.Domus
         /// <returns></returns>
         public override Spouse GetSpouseAt(DateTime? dt)
         {
-            var cdt = dt ?? DateTime.Now;
-
-            if (GetAgeAt(cdt) < GetMyHomeStatesAgeOfMajority())
+            if (!IsLegalAdult(dt))
             {
                 return null;
             }
 
-            var spouseData = _spouses.FirstOrDefault(x => DateTime.Compare(x.MarriedOn, cdt) <= 0 && x.SeparatedOn == null);
+            var spouseData = _spouses.FirstOrDefault(x => x.MarriedOn <= (dt ?? DateTime.Now) && x.SeparatedOn == null);
             return spouseData;
         }
 
@@ -333,7 +331,7 @@ namespace NoFuture.Rand.Domus
 
             //create current instance mother
             _mother = _mother ??
-                      NAmerUtil.SolveForParent(_birthCert.DateOfBirth, NAmerUtil.Equations.FemaleYearOfMarriage2AvgAge,
+                      NAmerUtil.SolveForParent(_birthCert.DateOfBirth, NAmerUtil.Equations.FemaleAge2FirstMarriage,
                           Gender.Female);
             //line mothers last name with child
             UpsertName(KindsOfNames.Surname, _mother.LastName);
@@ -369,7 +367,7 @@ namespace NoFuture.Rand.Domus
                     return;
                 _father =
                     _father ??
-                    NAmerUtil.SolveForParent(_birthCert.DateOfBirth, NAmerUtil.Equations.MaleYearOfMarriage2AvgAge,
+                    NAmerUtil.SolveForParent(_birthCert.DateOfBirth, NAmerUtil.Equations.MaleAge2FirstMarriage,
                         Gender.Male);
                 return;
             }
@@ -385,7 +383,7 @@ namespace NoFuture.Rand.Domus
 
         /// <summary>
         /// Will create a current and, possiably, past spouses for this instance.
-        /// Calc' will be based on DOB and <see cref="MyGender"/>.
+        /// Calc' will be based on DOB and <see cref="IPerson.MyGender"/>.
         /// </summary>
         /// <param name="myMaritialStatus"></param>
         protected internal void ResolveSpouse(MaritialStatus myMaritialStatus)
@@ -398,8 +396,8 @@ namespace NoFuture.Rand.Domus
             ThrowOnBirthDateNull(this);
 
             var avgAgeMarriage = MyGender == Gender.Female
-                ? NAmerUtil.Equations.FemaleDob2MarriageAge.SolveForY(_birthCert.DateOfBirth.ToDouble())
-                : NAmerUtil.Equations.MaleDob2MarriageAge.SolveForY(_birthCert.DateOfBirth.ToDouble());
+                ? NAmerUtil.Equations.FemaleAge2FirstMarriage.SolveForY(_birthCert.DateOfBirth.ToDouble())
+                : NAmerUtil.Equations.MaleAge2FirstMarriage.SolveForY(_birthCert.DateOfBirth.ToDouble());
             var currentAge = Person.CalcAge(_birthCert.DateOfBirth, dt);
 
             //all other MaritialStatus imply at least one marriage in past
@@ -552,7 +550,7 @@ namespace NoFuture.Rand.Domus
             var myChildGender = Etx.CoinToss ? Gender.Female : Gender.Male;
 
             var isDaughterMarriedOff = myChildGender == Gender.Female &&
-                                       NAmerUtil.Equations.FemaleDob2MarriageAge.SolveForY(myChildDob.Year) >=
+                                       NAmerUtil.Equations.FemaleAge2FirstMarriage.SolveForY(myChildDob.Year) >=
                                        myChildeAge && myChildeAge >= GetMyHomeStatesAgeOfMajority();
             //never married
             if (!_spouses.Any())
@@ -582,8 +580,11 @@ namespace NoFuture.Rand.Domus
 
                     myChild = new Child(new NorthAmerican(myChildDob, myChildGender, this, marriage.Est) {Race = Race});
                     if (isDaughterMarriedOff)
+                    {
                         myChild.Est.OtherNames.Add(new Tuple<KindsOfNames, string>(KindsOfNames.Maiden,
                             marriage.Est.LastName));
+
+                    }
                     else
                         myChild.Est.LastName = marriage.Est.LastName;
                 }
@@ -674,7 +675,7 @@ namespace NoFuture.Rand.Domus
                 _children.Where(x => x.Est.BirthCert != null)
                     .Select(
                         x =>
-                            new Tuple<DateTime, DateTime>(x.Est.BirthCert.DateOfBirth.AddDays(-1*PREG_DAYS),
+                            new Tuple<DateTime, DateTime>(x.Est.BirthCert.DateOfBirth.AddDays(-1*(PREG_DAYS + MS_DAYS)),
                                 x.Est.BirthCert.DateOfBirth.AddDays(MS_DAYS))).ToList();
             foreach (var s in bdayTuples)
             {
@@ -740,6 +741,11 @@ namespace NoFuture.Rand.Domus
             //recepricate to spouse
             var nAmerSpouse = spouse as NorthAmerican;
             nAmerSpouse?.AddNewSpouseToList(this, marriedOn, separatedOn);
+        }
+
+        protected override bool IsLegalAdult(DateTime? dt)
+        {
+            return GetAgeAt(dt) > GetMyHomeStatesAgeOfMajority();
         }
 
         //min. age a person could be married at
