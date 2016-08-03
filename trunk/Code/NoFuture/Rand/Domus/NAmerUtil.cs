@@ -538,9 +538,9 @@ namespace NoFuture.Rand.Domus
         public static double SolveForProbabilityChildless(DateTime dob, OccidentalEdu educationLevel)
         {
             var eduAdditive = 0.0;
-            if (educationLevel == (OccidentalEdu.College | OccidentalEdu.Grad))
+            if (educationLevel == (OccidentalEdu.Bachelor | OccidentalEdu.Grad))
                 eduAdditive = 0.09;
-            if (educationLevel == (OccidentalEdu.College | OccidentalEdu.Some))
+            if (educationLevel == (OccidentalEdu.Bachelor | OccidentalEdu.Some))
                 eduAdditive = 0.04;
             if (educationLevel == (OccidentalEdu.HighSchool | OccidentalEdu.Grad))
                 eduAdditive = 0.02;
@@ -582,14 +582,10 @@ namespace NoFuture.Rand.Domus
         /// <param name="race"></param>
         /// <param name="edu"></param>
         /// <returns></returns>
-        public static double SolvePercentGradByStateAndRace(UsState state, NorthAmericanRace? race, OccidentalEdu edu = OccidentalEdu.HighSchool)
+        public static double SolvePercentGradByStateAndRace(UsState state, NorthAmericanRace? race, OccidentalEdu edu = OccidentalEdu.HighSchool | OccidentalEdu.Grad)
         {
-            if (edu != OccidentalEdu.HighSchool && edu != OccidentalEdu.College)
-            {
-                throw new NotImplementedException($"Not implemented for edu type {Enum.GetName(typeof(OccidentalEdu), edu)}");
-            }
             AmericanRacePercents p;
-            p = edu == OccidentalEdu.College ? AmericanUniversity.NatlGradRate() : AmericanHighSchool.NatlGradRate();
+            p = edu >= OccidentalEdu.Bachelor ? AmericanUniversity.NatlGradRate() : AmericanHighSchool.NatlGradRate();
             var stateAvg = p.National;
             var natlAvg = p.National;
             if (state?.GetStateData() != null)

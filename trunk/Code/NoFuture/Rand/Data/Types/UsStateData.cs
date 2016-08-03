@@ -116,13 +116,13 @@ namespace NoFuture.Rand.Data.Types
             double highSchoolGrad;
             if (!string.IsNullOrWhiteSpace(strVal) && double.TryParse(strVal, out highSchoolGrad))
             {
-                PercentOfGrads.Add(new Tuple<OccidentalEdu, double>(OccidentalEdu.HighSchool, highSchoolGrad));
+                PercentOfGrads.Add(new Tuple<OccidentalEdu, double>(OccidentalEdu.HighSchool | OccidentalEdu.Grad, highSchoolGrad));
             }
             strVal = eduNode?.Attributes?["percent-college-grad"]?.Value;
             double collegeGrad;
             if (!string.IsNullOrWhiteSpace(strVal) && double.TryParse(strVal, out collegeGrad))
             {
-                PercentOfGrads.Add(new Tuple<OccidentalEdu, double>(OccidentalEdu.College, collegeGrad));
+                PercentOfGrads.Add(new Tuple<OccidentalEdu, double>(OccidentalEdu.Bachelor | OccidentalEdu.Grad, collegeGrad));
             }
         }
 

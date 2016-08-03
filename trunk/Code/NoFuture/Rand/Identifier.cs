@@ -182,11 +182,13 @@ namespace NoFuture.Rand
     [Flags]
     public enum OccidentalEdu : short
     {
-        Empty = 0,
-        HighSchool = 1,
-        College = 2,
-        Some = 16,
-        Grad = 32
+        None = 0,
+        Some = 1,
+        Grad = 2,
+        HighSchool = 16,
+        Assoc = 32,
+        Bachelor = 64,
+        Post = 128,
     }
 
     [Serializable]
@@ -229,6 +231,15 @@ namespace NoFuture.Rand
         Distant = 64,
         Fringe = 128,
         Remote = 256
+    }
+
+    [Serializable]
+    public enum AmericanRegion
+    {
+        Northeast,
+        South,
+        Midwest,
+        West
     }
 }//end NoFuture.Rand
 

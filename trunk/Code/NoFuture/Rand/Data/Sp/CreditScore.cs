@@ -32,6 +32,8 @@ namespace NoFuture.Rand.Data.Sp
         #region ctor
         public PersonalCreditScore(NorthAmerican american)
         {
+            if (american == null)
+                return;
             _american = american;
             //need this to stay same for object lifecycle so repeated calls return same result.
             FicoBaseValue = Etx.RandomValueInNormalDist(AVG_AMERICAN_FICO_SCORE, STD_DEV_FICO_SCORE);

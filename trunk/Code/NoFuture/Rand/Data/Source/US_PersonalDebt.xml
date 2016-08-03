@@ -12,15 +12,15 @@
             ]]>
           </comments>
           <table name="VehicleDebt" value="10000.0">
-            <factor name="EDUCATION OF HOUSEHOLDER">
-              <add name="No High School Diploma" value="-0.22000" />
-              <add name="High School Graduate Only" value="-0.10000" />
+            <factor name="Edu">
+              <add name="DropOut" value="-0.22000" />
+              <add name="High School" value="-0.10000" />
               <add name="Some College, No Degree" value="0.00000" />
-              <add name="Associate's Degree" value="0.00000" />
-              <add name="Bachelor's Degree" value="0.10000" />
-              <add name="Graduate or Professional Degree" value="0.20000" />
+              <add name="Associate" value="0.00000" />
+              <add name="Bachelor" value="0.10000" />
+              <add name="PostGrad" value="0.20000" />
             </factor>
-            <factor name="RACE ORIGIN OF HOUSEHOLDER">
+            <factor name="Race">
               <add name="White" value="0.00000" />
               <add name="Black" value="-0.10000" />
               <add name="Asian" value="0.10000" />
@@ -29,43 +29,43 @@
               <add name="Mixed" value="-0.13000" />
               <add name="Hispanic" value="0.00000" />
             </factor>
-            <factor name="REGION">
+            <factor name="Region">
               <add name="Northeast" value="0.00000" />
               <add name="Midwest" value="-0.10000" />
               <add name="South" value="0.00000" />
               <add name="West" value="0.00000" />
             </factor>
-            <factor name="TYPE OF HOUSEHOLD BY AGE OF HOUSEHOLDER">
-              <sub-factor name="Married-couple households">
-                <add age-min="18" age-max="34" value="0.10000" />
-                <add age-min="35" age-max="54" value="0.20000" />
-                <add age-min="55" age-max="64" value="0.06000" />
-                <add age-min="65" age-max="99" value="0.00000" />
-              </sub-factor>
-              <sub-factor name="Male householder">
-                <add age-min="18" age-max="34" value="-0.08000" />
-                <add age-min="35" age-max="54" value="-0.10000" />
-                <add age-min="55" age-max="64" value="-0.20000" />
-                <add age-min="65" age-max="99" value="-0.20000" />
-              </sub-factor>
-              <sub-factor name="Female householder">
-                <add age-min="18" age-max="34" value="-0.20000" />
-                <add age-min="35" age-max="54" value="-0.15000" />
-                <add age-min="55" age-max="64" value="-0.20000" />
-                <add age-min="65" age-max="99" value="-0.24000" />
-              </sub-factor>
+            <factor name="Age">
+              <factor name="Married">
+                <add min="18" max="34" value="0.10000" />
+                <add min="35" max="54" value="0.20000" />
+                <add min="55" max="64" value="0.06000" />
+                <add min="65" max="99" value="0.00000" />
+              </factor>
+              <factor name="Male">
+                <add min="18" max="34" value="-0.08000" />
+                <add min="35" max="54" value="-0.10000" />
+                <add min="55" max="64" value="-0.20000" />
+                <add min="65" max="99" value="-0.20000" />
+              </factor>
+              <factor name="Female">
+                <add min="18" max="34" value="-0.20000" />
+                <add min="35" max="54" value="-0.15000" />
+                <add min="55" max="64" value="-0.20000" />
+                <add min="65" max="99" value="-0.24000" />
+              </factor>
             </factor>
           </table>
           <table name="HomeDebt" value="117000.0">
-            <factor name="EDUCATION OF HOUSEHOLDER">
-              <add name="No High School Diploma" value="-0.35043" />
-              <add name="High School Graduate Only" value="-0.25209" />
+            <factor name="Edu">
+              <add name="DropOut" value="-0.35043" />
+              <add name="High School" value="-0.25209" />
               <add name="Some College, No Degree" value="-0.02564" />
-              <add name="Associate's Degree" value="-0.10256" />
-              <add name="Bachelor's Degree" value="0.19658" />
-              <add name="Graduate or Professional Degree" value="0.36752" />
+              <add name="Associate" value="-0.10256" />
+              <add name="Bachelor" value="0.19658" />
+              <add name="PostGrad" value="0.36752" />
             </factor>
-            <factor name="RACE ORIGIN OF HOUSEHOLDER">
+            <factor name="Race">
               <add name="White" value="0.00000" />
               <add name="Black" value="-0.17094" />
               <add name="Asian" value="0.62393" />
@@ -74,43 +74,43 @@
               <add name="Mixed" value="-0.14530" />
               <add name="Hispanic" value="0.02564" />
             </factor>
-            <factor name="REGION">
+            <factor name="Region">
               <add name="Northeast" value="0.03366" />
               <add name="Midwest" value="-0.17949" />
               <add name="South" value="-0.14530" />
               <add name="West" value="0.53846" />
             </factor>
-            <factor name="TYPE OF HOUSEHOLD BY AGE OF HOUSEHOLDER">
-              <sub-factor name="Married-couple households">
-                <add age-min="18" age-max="34" value="0.17949" />
-                <add age-min="35" age-max="54" value="0.19658" />
-                <add age-min="55" age-max="64" value="-0.14530" />
-                <add age-min="65" age-max="99" value="-0.25641" />
-              </sub-factor>
-              <sub-factor name="Male householder">
-                <add age-min="18" age-max="34" value="-0.08547" />
-                <add age-min="35" age-max="54" value="0.02564" />
-                <add age-min="55" age-max="64" value="-0.23932" />
-                <add age-min="65" age-max="99" value="-0.40171" />
-              </sub-factor>
-              <sub-factor name="Female householder">
-                <add age-min="18" age-max="34" value="-0.08547" />
-                <add age-min="35" age-max="54" value="-0.14530" />
-                <add age-min="55" age-max="64" value="-0.23077" />
-                <add age-min="65" age-max="99" value="-0.48718" />
-              </sub-factor>
+            <factor name="Age">
+              <factor name="Married">
+                <add min="18" max="34" value="0.17949" />
+                <add min="35" max="54" value="0.19658" />
+                <add min="55" max="64" value="-0.14530" />
+                <add min="65" max="99" value="-0.25641" />
+              </factor>
+              <factor name="Male">
+                <add min="18" max="34" value="-0.08547" />
+                <add min="35" max="54" value="0.02564" />
+                <add min="55" max="64" value="-0.23932" />
+                <add min="65" max="99" value="-0.40171" />
+              </factor>
+              <factor name="Female">
+                <add min="18" max="34" value="-0.08547" />
+                <add min="35" max="54" value="-0.14530" />
+                <add min="55" max="64" value="-0.23077" />
+                <add min="65" max="99" value="-0.48718" />
+              </factor>
             </factor>
           </table>
           <table name="CreditCardDebt" value="3500.0">
-            <factor name="EDUCATION OF HOUSEHOLDER">
-              <add name="No High School Diploma" value="-0.28571" />
-              <add name="High School Graduate Only" value="-0.14286" />
+            <factor name="Edu">
+              <add name="DropOut" value="-0.28571" />
+              <add name="High School" value="-0.14286" />
               <add name="Some College, No Degree" value="0.00000" />
-              <add name="Associate's Degree" value="-0.02857" />
-              <add name="Bachelor's Degree" value="0.14286" />
-              <add name="Graduate or Professional Degree" value="0.20000" />
+              <add name="Associate" value="-0.02857" />
+              <add name="Bachelor" value="0.14286" />
+              <add name="PostGrad" value="0.20000" />
             </factor>
-            <factor name="RACE ORIGIN OF HOUSEHOLDER">
+            <factor name="Race">
               <add name="White" value="0.00857" />
               <add name="Black" value="-0.14286" />
               <add name="Asian" value="0.14286" />
@@ -119,31 +119,31 @@
               <add name="Mixed" value="-0.11429" />
               <add name="Hispanic" value="-0.11429" />
             </factor>
-            <factor name="REGION">
+            <factor name="Region">
               <add name="Northeast" value="0.14286" />
               <add name="Midwest" value="-0.11429" />
               <add name="South" value="-0.14286" />
               <add name="West" value="0.14286" />
             </factor>
-            <factor name="TYPE OF HOUSEHOLD BY AGE OF HOUSEHOLDER">
-              <sub-factor name="Married-couple households">
-                <add age-min="18" age-max="34" value="-0.02857" />
-                <add age-min="35" age-max="54" value="0.31429" />
-                <add age-min="55" age-max="64" value="0.14286" />
-                <add age-min="65" age-max="99" value="-0.14286" />
-              </sub-factor>
-              <sub-factor name="Male householder">
-                <add age-min="18" age-max="34" value="-0.28571" />
-                <add age-min="35" age-max="54" value="0.14286" />
-                <add age-min="55" age-max="64" value="0.08571" />
-                <add age-min="65" age-max="99" value="-0.42857" />
-              </sub-factor>
-              <sub-factor name="Female householder">
-                <add age-min="18" age-max="34" value="-0.42857" />
-                <add age-min="35" age-max="54" value="-0.14286" />
-                <add age-min="55" age-max="64" value="-0.14286" />
-                <add age-min="65" age-max="99" value="-0.42857" />
-              </sub-factor>
+            <factor name="Age">
+              <factor name="Married">
+                <add min="18" max="34" value="-0.02857" />
+                <add min="35" max="54" value="0.31429" />
+                <add min="55" max="64" value="0.14286" />
+                <add min="65" max="99" value="-0.14286" />
+              </factor>
+              <factor name="Male">
+                <add min="18" max="34" value="-0.28571" />
+                <add min="35" max="54" value="0.14286" />
+                <add min="55" max="64" value="0.08571" />
+                <add min="65" max="99" value="-0.42857" />
+              </factor>
+              <factor name="Female">
+                <add min="18" max="34" value="-0.42857" />
+                <add min="35" max="54" value="-0.14286" />
+                <add min="55" max="64" value="-0.14286" />
+                <add min="65" max="99" value="-0.42857" />
+              </factor>
             </factor>
           </table>
         </debt>

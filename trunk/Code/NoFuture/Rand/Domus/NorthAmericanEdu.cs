@@ -36,7 +36,8 @@ namespace NoFuture.Rand.Domus
                 return;
             var homeState = Gov.UsState.GetStateByPostalCode(sdf.HomeCityArea?.AddressData?.StateAbbrv);
             var hsGradData =
-                homeState?.GetStateData().PercentOfGrads.FirstOrDefault(x => x.Item1 == OccidentalEdu.HighSchool);
+                homeState?.GetStateData()
+                    .PercentOfGrads.FirstOrDefault(x => x.Item1 == (OccidentalEdu.HighSchool | OccidentalEdu.Grad));
             if (hsGradData == null)
                 return;
             var hsGradRate = (int)Math.Round(hsGradData.Item2);
@@ -63,7 +64,8 @@ namespace NoFuture.Rand.Domus
             HighSchool = new Tuple<IHighSchool, DateTime?>(hs, hsGradDt);
 
             var univGradData =
-                homeState.GetStateData().PercentOfGrads.FirstOrDefault(x => x.Item1 == OccidentalEdu.College);
+                homeState.GetStateData()
+                    .PercentOfGrads.FirstOrDefault(x => x.Item1 == (OccidentalEdu.Bachelor | OccidentalEdu.Grad));
             if (univGradData == null)
                 return;
             var univGradRate = (int)Math.Round(univGradData.Item2);
@@ -131,11 +133,11 @@ namespace NoFuture.Rand.Domus
                 var isCollegeGrad = College?.Item2 != null;
 
                 if (new[] { hasHs, isHsGrad, hasCollge, isCollegeGrad }.All(x => x == false))
-                    return OccidentalEdu.Empty;
+                    return OccidentalEdu.None;
                 if (hasCollge && isCollegeGrad)
-                    return OccidentalEdu.College | OccidentalEdu.Grad;
+                    return OccidentalEdu.Bachelor | OccidentalEdu.Grad;
                 if (hasCollge)
-                    return OccidentalEdu.College | OccidentalEdu.Some;
+                    return OccidentalEdu.Bachelor | OccidentalEdu.Some;
                 if (hasHs && isHsGrad)
                     return OccidentalEdu.HighSchool | OccidentalEdu.Grad;
 

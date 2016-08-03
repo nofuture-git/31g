@@ -56,7 +56,7 @@ namespace NoFuture.Tests.Rand
             Assert.IsNotNull(testState);
             Assert.IsNotNull(testState.GetStateData());
 
-            testResult = NAmerUtil.SolvePercentGradByStateAndRace(testState, NorthAmericanRace.Asian, OccidentalEdu.College);
+            testResult = NAmerUtil.SolvePercentGradByStateAndRace(testState, NorthAmericanRace.Asian, OccidentalEdu.Bachelor | OccidentalEdu.Grad);
             //percent-college-grad="23.9"
             //
             //asian="54.0" natl-percent="30.0"

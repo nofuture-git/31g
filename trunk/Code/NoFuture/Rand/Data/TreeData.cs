@@ -24,6 +24,8 @@ namespace NoFuture.Rand.Data
         private static XmlDocument _usCities;
         private static XmlDocument _xrefData;
         private static XmlDocument _usZipProbTable;
+        private static XmlDocument _usPersonalDebt;
+        private static XmlDocument _usPersonalWealth;
         private static Bank[] _fedReleaseLrgBnkNames;
         #endregion
 
@@ -44,7 +46,8 @@ namespace NoFuture.Rand.Data
         private const string X_REF_DATA = "XRef.xml";
         private const string US_ZIP_PROBTABLE = "US_Zip_ProbTable.xml";
         private const string LRG_BNK_LST = "lrg_bnk_lst.txt";
-
+        private const string US_PERSON_DEBT = "US_PersonalDebt.xml";
+        private const string US_PERSON_WEALTH = "US_PersonalWealth.xml";
         #endregion
 
         #region API
@@ -226,7 +229,7 @@ namespace NoFuture.Rand.Data
         }
 
         /// <summary>
-        /// Loads the 'XRef.xml' data into a <see cref="System.Xml.XmlDocument"/> document.
+        /// Loads the 'US_Zip_ProbTable.xml' data into a <see cref="System.Xml.XmlDocument"/> document.
         /// </summary>
         public static XmlDocument UsZipProbabilityTable
         {
@@ -235,6 +238,32 @@ namespace NoFuture.Rand.Data
                 if (_usZipProbTable == null)
                     GetXmlDataSource(US_ZIP_PROBTABLE, ref _usZipProbTable);
                 return _usZipProbTable;
+            }
+        }
+
+        /// <summary>
+        /// Loads the 'US_PersonalDebt.xml' data into a <see cref="System.Xml.XmlDocument"/> document.
+        /// </summary>
+        public static XmlDocument UsPersonalDebt
+        {
+            get
+            {
+                if(_usPersonalDebt == null)
+                    GetXmlDataSource(US_PERSON_DEBT, ref _usPersonalDebt);
+                return _usPersonalDebt;
+            }
+        }
+
+        /// <summary>
+        /// Loads the 'US_PersonalWealth.xml' data into a <see cref="System.Xml.XmlDocument"/> document.
+        /// </summary>
+        public static XmlDocument UsPersonalWealth
+        {
+            get
+            {
+                if (_usPersonalWealth == null)
+                    GetXmlDataSource(US_PERSON_DEBT, ref _usPersonalWealth);
+                return _usPersonalWealth;
             }
         }
 
