@@ -20,7 +20,7 @@ namespace NoFuture.Rand.Com
     {
         #region fields
         private readonly List<Form10K> _annualReports = new List<Form10K>();
-        private readonly List<Ticker> _tickerSymbols = new List<Ticker>();
+        private List<Ticker> _tickerSymbols = new List<Ticker>();
         #endregion
 
         #region properties
@@ -28,10 +28,7 @@ namespace NoFuture.Rand.Com
 
         public CentralIndexKey CIK { get; set; }
 
-        public List<Form10K> AnnualReports
-        {
-            get { return _annualReports; }
-        }
+        public List<Form10K> AnnualReports => _annualReports;
 
         public Gov.UsState UsStateOfIncorporation { get; set; }
 
@@ -44,6 +41,7 @@ namespace NoFuture.Rand.Com
                 _tickerSymbols.Sort(new TickerComparer(Name));
                 return _tickerSymbols;
             }
+            set { _tickerSymbols = value; } //XRef.cs needs this as RW
         }
 
         /// <summary>
@@ -240,11 +238,14 @@ namespace NoFuture.Rand.Com
         public override void LoadXrefXmlData()
         {
             var xrefXml = TreeData.XRefXml;
-            if (xrefXml == null)
-                return;
+            var firmName = Name;
+            if (GetType() == typeof(Bank))
+            {
+                firmName = ((Bank) this).FedRptBankName;
+            }
             var myAssocNodes =
-                xrefXml.SelectNodes(
-                    $"//x-ref-group[@data-type='{GetType().FullName}']//x-ref-id[text()='{Name}']/../../add");
+                xrefXml?.SelectNodes(
+                    $"//x-ref-group[@data-type='{GetType().FullName}']//x-ref-id[text()='{firmName}']/../../add");
             if (myAssocNodes == null || myAssocNodes.Count <= 0)
                 return;
 

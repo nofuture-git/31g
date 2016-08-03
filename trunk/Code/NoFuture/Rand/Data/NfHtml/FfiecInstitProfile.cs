@@ -13,7 +13,7 @@ namespace NoFuture.Rand.Data.NfHtml
             SourceUri = srcUri;
         }
 
-        public Uri SourceUri { get; private set; }
+        public Uri SourceUri { get; }
         public List<dynamic> ParseContent(object content)
         {
             var webResponseBody = content as string;
@@ -31,38 +31,43 @@ namespace NoFuture.Rand.Data.NfHtml
             var rt = string.Empty;
             var nm = string.Empty;
             var rssd = string.Empty;
+            var fdicCert = string.Empty;
 
             var st =
                 innerText.FindIndex(
-                    x => string.Equals(x.Trim(), "lblID_ABA_PRIM", StringComparison.OrdinalIgnoreCase));
-
-            var fromHere = innerText.Skip(st);
-
-            foreach (var val in fromHere)
-                if (Shared.RegexCatalog.IsRegexMatch(val.Trim(), RoutingTransitNumber.REGEX_PATTERN, out rt))
-                    break;
-
-            st =
-                innerText.FindIndex(
-                    x => string.Equals(x.Trim(), "lblNm_lgl", StringComparison.OrdinalIgnoreCase));
-
-            fromHere = innerText.Skip(st);
-            foreach (var val in fromHere)
+                    x => x.Trim().StartsWith("Branch Locator"));
+            var fromHere = innerText.Skip(st + 1);
+            foreach (var val in fromHere.Where(x => !x.StartsWith("&nbsp")))
                 if (Shared.RegexCatalog.IsRegexMatch(val.Trim(), @"[a-zA-Z\x2C\x20]+", out nm))
                     break;
 
             st =
                 innerText.FindIndex(
-                    x => string.Equals(x.Trim(), "lblID_RSSD", StringComparison.OrdinalIgnoreCase));
-
+                    x => x.Trim().StartsWith("RSSD ID"));
             fromHere = innerText.Skip(st);
             foreach (var val in fromHere)
                 if (Shared.RegexCatalog.IsRegexMatch(val.Trim(), @"^[0-9]+$", out rssd))
                     break;
 
+            st =
+                innerText.FindIndex(
+                    x => x.Trim().StartsWith("FDIC Certificate"));
+            fromHere = innerText.Skip(st);
+            foreach (var val in fromHere)
+                if (Shared.RegexCatalog.IsRegexMatch(val.Trim(), @"^[0-9]+$", out fdicCert))
+                    break;
+
+            st =
+                innerText.FindIndex(
+                    x => x.Trim().StartsWith("Routing Transit Number"));
+            fromHere = innerText.Skip(st);
+            foreach (var val in fromHere)
+                if (Shared.RegexCatalog.IsRegexMatch(val.Trim(), RoutingTransitNumber.REGEX_PATTERN, out rt))
+                    break;
+
             return new List<dynamic>
             {
-                new {RoutingNumber = rt, Rssd = rssd, BankName = nm}
+                new {RoutingNumber = rt, Rssd = rssd, BankName = nm, FdicCert = fdicCert}
             };
         }
     }

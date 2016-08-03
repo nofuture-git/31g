@@ -48,10 +48,14 @@ namespace NoFuture.Rand.Gov.Fed
                 Value = pd.RoutingNumber,
                 Src = myDynData.SourceUri.ToString()
             };
-            if(firmOut.Rssd == null || string.IsNullOrWhiteSpace(firmOut.Rssd.ToString()))
+            if(string.IsNullOrWhiteSpace(firmOut.Rssd?.ToString()))
                 firmOut.Rssd = new ResearchStatisticsSupervisionDiscount {Value = pd.Rssd};
-            if (string.IsNullOrWhiteSpace(firmOut.Name))
+            if (firmOut is Bank)
+            {
                 firmOut.Name = pd.BankName;
+            }
+            if (string.IsNullOrWhiteSpace(firmOut.FdicNumber?.ToString()))
+                firmOut.FdicNumber = new FdicNum {Value = pd.FdicCert, Src = myDynData.SourceUri.ToString()};
 
             return !string.IsNullOrWhiteSpace(pd.RoutingNumber);
         }

@@ -64,7 +64,7 @@ namespace NoFuture.Rand.Gov
 
         public override string ToString()
         {
-            return GetType().Name;
+            return string.Join(" ", Util.Etc.DistillToWholeWords(GetType().Name));
         }
 
         /// <summary>
@@ -157,7 +157,7 @@ namespace NoFuture.Rand.Gov
         {
             if (myData != null)
                 return myData;
-            myData = new UsStateData(GetType().Name);
+            myData = new UsStateData(this);
             return myData;
         }
 
@@ -211,7 +211,9 @@ namespace NoFuture.Rand.Gov
 
             return
                 _theStates.FirstOrDefault(
-                    x => string.Equals(x.GetType().Name, fullStateName, StringComparison.OrdinalIgnoreCase));
+                    x => string.Equals(x.GetType().Name, fullStateName, StringComparison.OrdinalIgnoreCase)) ??
+                _theStates.FirstOrDefault(
+                    x => string.Equals(x.ToString(), fullStateName, StringComparison.OrdinalIgnoreCase));
         }
 
         /// <summary>

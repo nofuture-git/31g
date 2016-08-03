@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Xml;
 using NoFuture.Exceptions;
@@ -67,7 +66,7 @@ namespace NoFuture.Rand.Data.Types
         public static void SetTypeXrefValue(XmlElement elem, object rtInstance)
         {
             var nameAttr = elem.Attributes["name"];
-            if (nameAttr == null || string.IsNullOrWhiteSpace(nameAttr.Value))
+            if (string.IsNullOrWhiteSpace(nameAttr?.Value))
                 return;
 
             if (rtInstance == null)
@@ -77,7 +76,7 @@ namespace NoFuture.Rand.Data.Types
             var pi = rtInstance.GetType().GetProperty(propertyName);
 
             var valueAttr = elem.Attributes["value"];
-            if (valueAttr != null && !string.IsNullOrWhiteSpace(valueAttr.Value))
+            if (!string.IsNullOrWhiteSpace(valueAttr?.Value))
             {
                 pi.SetValue(rtInstance, valueAttr.Value, null);
                 return;
@@ -110,9 +109,9 @@ namespace NoFuture.Rand.Data.Types
                         continue;
 
                     SetTypeXrefValue(cElem, enumerableInstance);
-
-                    addMi.Invoke(propertyInstance, new[] {enumerableInstance});
+                    
                 }
+                addMi.Invoke(propertyInstance, new[] { enumerableInstance });
             }
             else//no generic type
             {
@@ -143,13 +142,13 @@ namespace NoFuture.Rand.Data.Types
         protected bool TryParseXml2Xml(XmlElement elem)
         {
             var dataFileAttr = elem.Attributes["data-file"];
-            if (dataFileAttr == null || String.IsNullOrWhiteSpace(dataFileAttr.Value))
-                throw new InvalidOperationException(String.Format("This {0} is not an XML-to-XML kind of cross-reference", LocalName));
+            if (string.IsNullOrWhiteSpace(dataFileAttr?.Value))
+                throw new InvalidOperationException($"This {LocalName} is not an XML-to-XML kind of cross-reference");
 
             var nodeNameAttr = elem.Attributes["node-name"];
 
-            if (nodeNameAttr == null || String.IsNullOrWhiteSpace(nodeNameAttr.Value))
-                throw new InvalidOperationException(String.Format("This {0} is not an XML-to-XML kind of cross-reference", LocalName));
+            if (string.IsNullOrWhiteSpace(nodeNameAttr?.Value))
+                throw new InvalidOperationException($"This {LocalName} is not an XML-to-XML kind of cross-reference");
 
             NodeName = nodeNameAttr.Value;
 

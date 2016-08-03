@@ -304,12 +304,14 @@ namespace NoFuture.Rand.Domus
         /// Invokes <see cref="ResolveParents"/>, <see cref="ResolveSpouse"/> and <see cref="ResolveChildren"/>.
         /// Only Parents are certian the other resolutions contrained by age and randomness.
         /// </summary>
-        protected internal void ResolveFamilyState()
+        protected internal void ResolveFamilyState(bool skipParents = false)
         {
             ThrowOnBirthDateNull(this);
             var dt = DateTime.Now;
             
-            ResolveParents();
+            if(!skipParents)
+                ResolveParents();
+
             //resolve spouse to each other
             ResolveSpouse(NAmerUtil.GetMaritialStatus(_birthCert.DateOfBirth, MyGender));
             //to solve for childern when gender -eq Male
@@ -516,8 +518,7 @@ namespace NoFuture.Rand.Domus
         }
 
         /// <summary>
-        /// Add a random <see cref="IPerson"/> to the Children collection
-        /// aligning <see cref="IPerson"/> last name and father to match.
+        /// Add a random <see cref="IPerson"/> to the Children collection.
         /// </summary>
         /// <param name="myChildDob">
         /// This will be adusted up by when the Birth Date would occur during the pregnancy 
@@ -526,13 +527,10 @@ namespace NoFuture.Rand.Domus
         protected internal void AddNewChildToList(DateTime myChildDob)
         {
             if (MyGender == Gender.Male)
-            {
                 return;
-            }
 
             var dt = DateTime.Now;
             DateTime dtOut;
-            Child myChild = null;
             if (IsTwin(myChildDob, out dtOut) && DateTime.Compare(dtOut, DateTime.MinValue) != 0)
             {
                 myChildDob = dtOut;
@@ -548,70 +546,21 @@ namespace NoFuture.Rand.Domus
 
             var myChildeAge = CalcAge(myChildDob, dt);
             var myChildGender = Etx.CoinToss ? Gender.Female : Gender.Male;
+            var isChildAdult = myChildeAge >= GetMyHomeStatesAgeOfMajority();
+            var spouseAtChildDob = GetSpouseAt(myChildDob);
 
-            var isDaughterMarriedOff = myChildGender == Gender.Female &&
-                                       NAmerUtil.Equations.FemaleAge2FirstMarriage.SolveForY(myChildDob.Year) >=
-                                       myChildeAge && myChildeAge >= GetMyHomeStatesAgeOfMajority();
-            //never married
-            if (!_spouses.Any())
+            var childLastName = string.IsNullOrWhiteSpace(spouseAtChildDob?.Est?.LastName) ||
+                                spouseAtChildDob.Est?.MyGender == Gender.Female
+                                ? LastName
+                                : spouseAtChildDob.Est?.LastName;
+
+            var nAmerChild = new NorthAmerican(myChildDob, myChildGender, this, spouseAtChildDob?.Est)
             {
-                myChild =
-                    new Child(new NorthAmerican(myChildDob, myChildGender, this, null)
-                    {
-                        LastName = LastName,
-                        Race = Race
-                    });
-                //default to mother last name
-                _children.Add(myChild);
-                return;
-            }
-
-            //assign child father and lastname when born within range of marriage
-            for (var i = 0; i <= _spouses.Max(x => x.Ordinal); i++)
-            {
-                var marriage = _spouses.FirstOrDefault(x => x.Ordinal == i);
-                if (marriage == null)
-                    continue;
-
-                if (myChildDob.ComparedTo(marriage.MarriedOn) == ChronoCompare.After &&
-                    (marriage.SeparatedOn == null ||
-                     myChildDob.ComparedTo(marriage.SeparatedOn.Value) == ChronoCompare.Before))
-                {
-
-                    myChild = new Child(new NorthAmerican(myChildDob, myChildGender, this, marriage.Est) {Race = Race});
-                    if (isDaughterMarriedOff)
-                    {
-                        myChild.Est.OtherNames.Add(new Tuple<KindsOfNames, string>(KindsOfNames.Maiden,
-                            marriage.Est.LastName));
-
-                    }
-                    else
-                        myChild.Est.LastName = marriage.Est.LastName;
-                }
-            }
-
-            //for child born in any range outside of marriage, assign lastname to maiden name
-            if (myChild == null)
-            {
-                var maidenName = OtherNames.FirstOrDefault(x => x.Item1 == KindsOfNames.Maiden);
-                if (!string.IsNullOrWhiteSpace(maidenName?.Item2))
-                {
-                    myChild = new Child(new NorthAmerican(myChildDob, myChildGender, this, null)
-                    {
-                        LastName = maidenName.Item2,
-                        Race = Race
-                    });
-                }
-                else
-                {
-                    myChild = new Child(new NorthAmerican(myChildDob, myChildGender, this, null)
-                    {
-                        LastName = LastName,
-                        Race = Race
-                    });
-                }
-            }
-            _children.Add(myChild);
+                LastName = childLastName
+            };
+            if (isChildAdult)
+                nAmerChild.ResolveFamilyState(true);
+            _children.Add(new Child(nAmerChild));
         }
 
         /// <summary>
@@ -638,7 +587,6 @@ namespace NoFuture.Rand.Domus
             }
             minutesAfterChildDob = DateTime.MinValue;
             return false;
-
         }
 
         /// <summary>
@@ -652,7 +600,7 @@ namespace NoFuture.Rand.Domus
         /// of siblings.
         /// </returns>
         /// <remarks>
-        /// Is coded with implicit presumption of <see cref="MyGender"/> 
+        /// Is coded with implicit presumption of <see cref="IPerson.MyGender"/> 
         /// being <see cref="Gender.Female"/>, but does not test as such.
         /// </remarks>
         protected internal bool IsValidDobOfChild(DateTime childDob)
@@ -718,7 +666,6 @@ namespace NoFuture.Rand.Domus
 
                     LastName = spouse.LastName;
                 }
-                    
             }
             else if (MyGender == Gender.Female)
             {

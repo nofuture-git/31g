@@ -73,6 +73,20 @@ namespace NoFuture.Tests.Rand
         }
 
         [TestMethod]
+        public void TestGetStateByName()
+        {
+            var testResult = NoFuture.Rand.Gov.UsState.GetStateByName("New York");
+            Assert.IsNotNull(testResult);
+
+            testResult = NoFuture.Rand.Gov.UsState.GetStateByName("NewYork");
+            Assert.IsNotNull(testResult);
+
+            testResult = NoFuture.Rand.Gov.UsState.GetStateByName("Kansas");
+            Assert.IsNotNull(testResult);
+
+        }
+
+        [TestMethod]
         public void TestGetStateAll()
         {
             var noUse = NoFuture.Rand.Gov.UsState.GetStateByPostalCode("AZ");//the internal member is a singleton, this gets it pop'ed
@@ -123,8 +137,6 @@ namespace NoFuture.Tests.Rand
             Assert.AreNotEqual(0, testResult.PercentOfGrads.Count);
             Assert.AreNotEqual(0, testResult.PropertyCrimeRate.Count);
             Assert.AreNotEqual(0, testResult.ViolentCrimeRate.Count);
-
-
         }
     }
 }

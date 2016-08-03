@@ -239,7 +239,7 @@ namespace NoFuture.Rand.Data
         }
 
         /// <summary>
-        /// Loads a list of <see cref="FinancialFirm"/> by parsing the data from <see cref="NoFuture.Rand.Gov.Fed.LargeCommercialBanks.RELEASE_URL"/> 
+        /// Loads a list of <see cref="FinancialFirm"/> by parsing the data from "lrg_bnk_lst.txt" 
         /// <remarks>
         /// A path must be set to <see cref="NoFuture.BinDirectories.Root"/> which contains a 'Data\Source' folder
         /// and it is within that folder the method expects to find 'lrg_bnk_lst.txt'.
@@ -253,12 +253,11 @@ namespace NoFuture.Rand.Data
                 if (_fedReleaseLrgBnkNames != null && _fedReleaseLrgBnkNames.Length > 0)
                     return _fedReleaseLrgBnkNames;
 
-
                 var rawData = GetTextDataSource(LRG_BNK_LST);
                 if(string.IsNullOrWhiteSpace(rawData))
                     return new Bank[0];//return empty list for missing data
 
-                var myDynData = NoFuture.Rand.Etx.DynamicDataFactory(new Uri(NfText.FedLrgBnk.RELEASE_URL));
+                var myDynData = Etx.DynamicDataFactory(new Uri(NfText.FedLrgBnk.RELEASE_URL));
                 var myDynDataRslt = myDynData.ParseContent(rawData);
 
 

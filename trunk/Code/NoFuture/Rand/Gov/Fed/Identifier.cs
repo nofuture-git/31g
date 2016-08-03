@@ -11,7 +11,7 @@ namespace NoFuture.Rand.Gov.Fed
     [Serializable]
     public class ResearchStatisticsSupervisionDiscount : Identifier
     {
-        public override string Abbrev { get { return "RSSD"; } }
+        public override string Abbrev => "RSSD";
     }
 
     /// <summary>
@@ -44,10 +44,8 @@ namespace NoFuture.Rand.Gov.Fed
         #endregion
 
         #region properties
-        public override string Abbrev
-        {
-            get { return "RTN"; }
-        }
+        public override string Abbrev => "RTN";
+
         public string FedDistrictFullName
         {
             get
@@ -220,5 +218,12 @@ namespace NoFuture.Rand.Gov.Fed
                     9 * (digits[2] + digits[5])) % 10;
         }
         #endregion
+    }
+
+    [Serializable]
+    public class FdicNum : Identifier
+    {
+        //https://research.fdic.gov/bankfind/
+        public override string Abbrev => "FDIC #";
     }
 }

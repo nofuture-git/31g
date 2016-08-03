@@ -30,6 +30,7 @@ namespace NoFuture.Rand.Com
 
         public ResearchStatisticsSupervisionDiscount Rssd { get; set; }
         public RoutingTransitNumber RoutingNumber { get; set; }
+        public FdicNum FdicNumber { get; set; }
         public TypeOfBank BankType { get; set; }
         public bool IsInternational { get; set; }
         public Dictionary<DateTime, FinancialAssets> Assets { get; set; }
@@ -54,6 +55,7 @@ namespace NoFuture.Rand.Com
         internal Bank(dynamic li)
         {
             Name = li.BankName;
+            FedRptBankName = li.BankName;
             Rssd = new ResearchStatisticsSupervisionDiscount { Value = li.BankId };
             UsCityStateZip cityOut;
             if (UsCityStateZip.TryParse(li.Location, out cityOut))
@@ -79,6 +81,7 @@ namespace NoFuture.Rand.Com
                 assets.PercentForeignOwned = Math.Round((double)pfo / 100, 2);
             Assets = new Dictionary<DateTime, FinancialAssets> { { li.RptDate, assets } };
         }
+        public string FedRptBankName { get; set; }
     }
 
     public class FinancialAssets : NetConAssets

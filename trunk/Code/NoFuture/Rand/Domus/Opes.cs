@@ -1,5 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using NoFuture.Rand.Data.Sp;
+using NoFuture.Rand.Data.Types;
+using NoFuture.Util.Math;
 
 namespace NoFuture.Rand.Domus
 {
@@ -22,12 +25,24 @@ namespace NoFuture.Rand.Domus
 
     public class NorthAmericanWealth : Opes
     {
+        private readonly NorthAmerican _amer;
         public NorthAmericanWealth(NorthAmerican american)
         {
+            _amer = american;
             CreditScore = new PersonalCreditScore(american);
         }
         public CreditScore CreditScore { get; }
 
+        /// <summary>
+        /// Get the linear eq of the city if its found otherwise
+        /// defaults to the state.
+        /// </summary>
+        /// <returns></returns>
+        protected internal LinearEquation GetAvgEarningPerYear()
+        {
+            var ca = _amer.Address?.HomeCityArea as UsCityStateZip;
+            return ca?.AverageEarnings ?? ca?.State?.GetStateData()?.AverageEarnings;
+        }
     }
 
 }

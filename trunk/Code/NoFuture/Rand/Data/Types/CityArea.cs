@@ -3,6 +3,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Xml;
 using NoFuture.Rand.Domus;
+using NoFuture.Rand.Gov;
 using NoFuture.Rand.Gov.Census;
 using NoFuture.Util.Math;
 
@@ -155,36 +156,10 @@ namespace NoFuture.Rand.Data.Types
 
         public UsCityStateZip(AddressData d) : base(d)
         {
-            var zipCodePrefix = d.PostalCode?.Substring(0, 3);
-            if (string.IsNullOrWhiteSpace(zipCodePrefix))
+            var xmlNode = GetCityXmlNode();
+            if (xmlNode == null)
                 return;
-            var cityNode =
-                TreeData.AmericanCityData.SelectSingleNode($"//zip-code[@prefix='{zipCodePrefix}']/..");
-            if (cityNode?.Attributes?["name"] == null)
-                return;
-            data.City = cityNode.Attributes["name"].Value ?? data.City;
-
-            if (!string.IsNullOrWhiteSpace(cityNode.Attributes["msa-code"]?.Value))
-            {
-                Msa = new MStatArea {Value = cityNode.Attributes["msa-code"].Value};
-                if (!string.IsNullOrWhiteSpace(cityNode.Attributes["msa-type"]?.Value))
-                {
-                    Msa.MsaType = cityNode.Attributes["msa-type"].Value == "Metro"
-                        ? UrbanCentric.City | UrbanCentric.Large
-                        : UrbanCentric.City | UrbanCentric.Small;
-                }
-            }
-            if (!string.IsNullOrWhiteSpace(cityNode.Attributes["cbsa-code"]?.Value))
-            {
-                Msa = new MStatArea { Value = cityNode.Attributes["cbsa-code"].Value };
-                if (!string.IsNullOrWhiteSpace(cityNode.Attributes["cbsa-type"]?.Value))
-                {
-                    Msa.MsaType = cityNode.Attributes["cbsa-type"].Value == "Metro"
-                        ? UrbanCentric.City | UrbanCentric.Large
-                        : UrbanCentric.City | UrbanCentric.Small;
-                }
-            }
-            AverageEarnings = GetAvgEarningsPerYear(cityNode) ?? _myState?.GetStateData()?.AverageEarnings;
+            ParseCityXmlNode(xmlNode);
         }
 
         #endregion
@@ -195,14 +170,14 @@ namespace NoFuture.Rand.Data.Types
 
         public Gov.UsState State => _myState ??
                                     (_myState =
-                                        Gov.UsState.GetStateByPostalCode(data.StateAbbrv));
+                                        UsState.GetStateByPostalCode(data.StateAbbrv));
 
         public string City => data.City;
         public string ZipCode => data.PostalCode;
         public string PostalCodeAddonFour => data.PostalCodeSuffix;
-        public Gov.Census.MStatArea Msa { get; set; }
-        public Gov.Census.ComboMStatArea CbsaCode { get; set; }
-        public Util.Math.LinearEquation AverageEarnings { get; set; }
+        public MStatArea Msa { get; set; }
+        public ComboMStatArea CbsaCode { get; set; }
+        public LinearEquation AverageEarnings { get; set; }
 
         #endregion
 
@@ -280,7 +255,59 @@ namespace NoFuture.Rand.Data.Types
             return true;
         }
 
-        internal static LinearEquation GetAvgEarningsPerYear(XmlNode someNode)
+        protected internal XmlNode GetCityXmlNode()
+        {
+            if (TreeData.AmericanCityData == null)
+                return null;
+            var searchCrit = string.Empty;
+            if (!string.IsNullOrWhiteSpace(data.StateAbbrv) && !string.IsNullOrWhiteSpace(data.City) &&
+                UsState.GetStateByPostalCode(data.StateAbbrv) != null)
+            {
+                var usState = UsState.GetStateByPostalCode(data.StateAbbrv);
+                var cityName = Util.Etc.CapitalizeFirstLetterOfWholeWords(data.City.ToLower(), ' ');
+                searchCrit = $"//state[@name='{usState}']/city[@name='{cityName}']";
+            }
+            else if (!string.IsNullOrWhiteSpace(data.PostalCode) && data.PostalCode.Length >= 3)
+            {
+                var zipCodePrefix= data.PostalCode.Substring(0, 3);
+                searchCrit = $"//zip-code[@prefix='{zipCodePrefix}']/..";
+            }
+            if (string.IsNullOrWhiteSpace(searchCrit))
+                return null;
+            return TreeData.AmericanCityData.SelectSingleNode(searchCrit);
+        }
+
+        protected internal void ParseCityXmlNode(XmlNode node)
+        {
+            var cityNode = node as XmlElement;
+            if (cityNode?.Attributes["name"] == null)
+                return;
+            data.City = cityNode.Attributes["name"].Value ?? data.City;
+
+            if (!string.IsNullOrWhiteSpace(cityNode.Attributes["msa-code"]?.Value))
+            {
+                Msa = new MStatArea { Value = cityNode.Attributes["msa-code"].Value };
+                if (!string.IsNullOrWhiteSpace(cityNode.Attributes["msa-type"]?.Value))
+                {
+                    Msa.MsaType = cityNode.Attributes["msa-type"].Value == "Metro"
+                        ? UrbanCentric.City | UrbanCentric.Large
+                        : UrbanCentric.City | UrbanCentric.Small;
+                }
+            }
+            if (!string.IsNullOrWhiteSpace(cityNode.Attributes["cbsa-code"]?.Value))
+            {
+                Msa = new MStatArea { Value = cityNode.Attributes["cbsa-code"].Value };
+                if (!string.IsNullOrWhiteSpace(cityNode.Attributes["cbsa-type"]?.Value))
+                {
+                    Msa.MsaType = cityNode.Attributes["cbsa-type"].Value == "Metro"
+                        ? UrbanCentric.City | UrbanCentric.Large
+                        : UrbanCentric.City | UrbanCentric.Small;
+                }
+            }
+            AverageEarnings = GetAvgEarningsPerYear(cityNode) ?? _myState?.GetStateData()?.AverageEarnings;
+        }
+
+        protected internal static LinearEquation GetAvgEarningsPerYear(XmlNode someNode)
         {
             var cityNode = someNode as XmlElement;
             if (string.IsNullOrWhiteSpace(cityNode?.Attributes["avg-earning-per-year"]?.Value))

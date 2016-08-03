@@ -87,7 +87,7 @@ namespace NoFuture.Rand
         /// <returns></returns>
         public static int IntNumber(int from, int to)
         {
-            return MyRand.Next(from, to + 1);
+            return @from == to ? @from : MyRand.Next(@from, to + 1);
         }
 
         /// <summary>
