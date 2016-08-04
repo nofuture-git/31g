@@ -7,21 +7,19 @@
 
         public virtual double SolveForY(double x)
         {
-            return (Slope*(System.Math.Log(x))) + Intercept;
+            return Slope*System.Math.Log(x) + Intercept;
         }
 
         public virtual double SolveForX(double y)
         {
-            if (System.Math.Abs(Slope) < 0.0000001D)
-                return 0.0D;
-            var yy = y - Intercept;
-            yy = yy / Slope;
-            return System.Math.Pow(System.Math.E, yy);
+            return System.Math.Abs(Slope) < 0.0000001D 
+                ? 0.0D 
+                : System.Math.Pow(System.Math.E, (y - Intercept)/Slope);
         }
 
         public override string ToString()
         {
-            return $"f(x) = {Slope}*log(x) + {Intercept}";
+            return $"f(x) = {Slope}*ln(x) + {Intercept}";
         }
     }
 }

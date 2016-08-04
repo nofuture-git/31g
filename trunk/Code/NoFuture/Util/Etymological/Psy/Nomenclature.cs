@@ -1,6 +1,18 @@
 ﻿namespace NoFuture.Util.Etymological.Psy
 {
-    public class Openness : NomenclatureBase
+    public abstract class PsyBase : NomenclatureBase
+    {
+        protected PsyBase()
+        {
+            Options = new NomOptions
+            {
+                RegexOpt = System.Text.RegularExpressions.RegexOptions.IgnoreCase,
+                WholeWordsOnly = false
+            };
+        }
+    }
+
+    public class Openness : PsyBase
     {
         public Openness()
         {
@@ -37,7 +49,7 @@
         }
     }
 
-    public class Conscientiousness : NomenclatureBase
+    public class Conscientiousness : PsyBase
     {
         public Conscientiousness()
         {
@@ -66,7 +78,7 @@
         }
     }
 
-    public class Extraversion : NomenclatureBase
+    public class Extraversion : PsyBase
     {
         public Extraversion()
         {
@@ -91,7 +103,7 @@
         }
     }
 
-    public class Agreeableness : NomenclatureBase
+    public class Agreeableness : PsyBase
     {
         public Agreeableness()
         {
@@ -119,7 +131,7 @@
         }
     }
 
-    public class Neuroticism : NomenclatureBase
+    public class Neuroticism : PsyBase
     {
         public Neuroticism()
         {

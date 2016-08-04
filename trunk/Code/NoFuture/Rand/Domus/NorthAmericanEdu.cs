@@ -42,7 +42,7 @@ namespace NoFuture.Rand.Domus
                 return;
             var hsGradRate = (int)Math.Round(hsGradData.Item2);
             var hshs = homeState.GetHighSchools();
-            if (hshs == null)
+            if (!hshs.Any())
                 return;
             var hs = hshs.FirstOrDefault(x => x.PostalCode == sdf.HomeStreetPo.Data.PostalCode) ??
                          hshs[Etx.IntNumber(0, hshs.Length - 1)];
@@ -90,6 +90,8 @@ namespace NoFuture.Rand.Domus
             {
                 //pick a univ from the home state
                 var stateUnivs = homeState.GetUniversities();
+                if (!stateUnivs.Any())
+                    return;
 
                 univ = stateUnivs[Etx.IntNumber(0, stateUnivs.Length - 1)];
             }

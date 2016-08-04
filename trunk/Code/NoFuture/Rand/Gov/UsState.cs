@@ -86,18 +86,18 @@ namespace NoFuture.Rand.Gov
         public virtual AmericanUniversity[] GetUniversities()
         {
             if (universities != null)
-                return universities;
+                return new AmericanUniversity[] {};
 
             //this will never pass so avoid the exception
             if (Data.TreeData.AmericanUniversityData == null)
-                return null;
+                return new AmericanUniversity[] { };
 
             var elements =
                 Data.TreeData.AmericanUniversityData.SelectSingleNode(
                     $"//state[@name='{GetType().Name.ToUpper()}']") ??
                 Data.TreeData.AmericanUniversityData.SelectSingleNode($"//state[@name='{GetType().Name}']");
             if (elements == null || !elements.HasChildNodes)
-                return null;
+                return new AmericanUniversity[] { };
 
             var tempList = new List<AmericanUniversity>();
             foreach (var elem in elements)
@@ -111,7 +111,7 @@ namespace NoFuture.Rand.Gov
             }
 
             if (tempList.Count == 0)
-                return null;
+                return new AmericanUniversity[] { };
 
             universities = tempList.ToArray();
             return universities;
@@ -123,14 +123,14 @@ namespace NoFuture.Rand.Gov
         public virtual AmericanHighSchool[] GetHighSchools()
         {
             if (highSchools != null)
-                return highSchools;
+                return new AmericanHighSchool[] {};
 
             if (Data.TreeData.AmericanHighSchoolData == null)
-                return null;
+                return new AmericanHighSchool[] { };
             var elements =
                 Data.TreeData.AmericanHighSchoolData.SelectNodes($"//state[@name='{GetType().Name}']//high-school");
             if (elements == null || elements.Count <= 0)
-                return null;
+                return new AmericanHighSchool[] { };
 
             var tempList = new List<AmericanHighSchool>();
             foreach (var elem in elements)
@@ -143,7 +143,7 @@ namespace NoFuture.Rand.Gov
                 }
             }
             if (tempList.Count == 0)
-                return null;
+                return new AmericanHighSchool[] { };
 
             highSchools = tempList.ToArray();
             return highSchools;

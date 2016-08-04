@@ -62,6 +62,12 @@ namespace NoFuture.Rand.Data.Sp //Sequere pecuniam
             var amt = bal.Amount * Convert.ToDecimal(MinPaymentRate);
             return new Pecuniam(Math.Round(amt, 2) * -1);
         }
+        public void MakeAPayemnt(DateTime dt, Pecuniam amt)
+        {
+            if (amt.Amount > 0)
+                amt = new Pecuniam(-1 * amt.Amount);
+            TradeLine.Balance.Transactions.Add(new Transaction(dt, amt));
+        }
         #endregion
     }
 
@@ -69,7 +75,12 @@ namespace NoFuture.Rand.Data.Sp //Sequere pecuniam
     public class FixedRateLoan : LoanBase<float>
     {
         #region ctors
-        public FixedRateLoan(DateTime openedDate, float minPaymentRate): base(openedDate, minPaymentRate) { }
+
+        public FixedRateLoan(DateTime openedDate, float minPaymentRate, Pecuniam amt = null) : base(openedDate, minPaymentRate)
+        {
+            if(amt != null && amt.Amount != 0)
+                _tl.Balance.Transactions.Add(new Transaction(openedDate, new Pecuniam(Math.Abs(amt.Amount))));
+        }
         #endregion
 
         #region methods
@@ -84,7 +95,12 @@ namespace NoFuture.Rand.Data.Sp //Sequere pecuniam
     public class VariableRateLoan : LoanBase<Dictionary<DateTime, float>>
     {
         #region ctors
-        public VariableRateLoan(DateTime openedDate, float minPaymentRate) : base(openedDate, minPaymentRate) { }
+
+        public VariableRateLoan(DateTime openedDate, float minPaymentRate, Pecuniam amt = null) : base(openedDate, minPaymentRate)
+        {
+            if (amt != null && amt.Amount != 0)
+                _tl.Balance.Transactions.Add(new Transaction(openedDate, new Pecuniam(Math.Abs(amt.Amount))));
+        }
         #endregion
 
         #region methods

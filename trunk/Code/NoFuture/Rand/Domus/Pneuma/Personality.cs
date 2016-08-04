@@ -28,6 +28,16 @@ namespace NoFuture.Rand.Domus.Pneuma
                    string.Join(",", Openness.ToString(), Conscientiousness.ToString(), Extraversion.ToString(),
                        Agreeableness.ToString(), Neuroticism.ToString()) + "}";
         }
+
+        public bool GetRandomActsIrresponsible()
+        {
+            return Etx.RandomValueInNormalDist(Conscientiousness.Value.Zscore, Conscientiousness.Value.Zscore) < 0;
+        }
+
+        public bool GetRandomActsStressed()
+        {
+            return Etx.RandomValueInNormalDist(Neuroticism.Value.Zscore, Conscientiousness.Value.Zscore) < 0;
+        }
     }
 
     public interface ITrait : IIdentifier<Dimension>
@@ -38,9 +48,10 @@ namespace NoFuture.Rand.Domus.Pneuma
     [Serializable]
     public class Dimension
     {
-        public Dimension(double z)
+        public Dimension(double z, double stdDev)
         {
             Zscore = z;
+            StdDev = stdDev;
         }
 
         public Dimension()
@@ -68,10 +79,13 @@ namespace NoFuture.Rand.Domus.Pneuma
         }
 
         public double Zscore { get; }
+        public double StdDev { get; } = 0.124D;
     }
     [Serializable]
     public abstract class Trait : ITrait
     {
+        protected INomenclature _nom;
+
         protected Trait()
         {
             Value = new Dimension();
@@ -84,6 +98,7 @@ namespace NoFuture.Rand.Domus.Pneuma
         {
             return Abbrev + ":" + Value;
         }
+
     }
     [Serializable]
     public class Openness : Trait
@@ -92,7 +107,7 @@ namespace NoFuture.Rand.Domus.Pneuma
 
         public override INomenclature GetDescription()
         {
-            return new Util.Etymological.Psy.Openness();
+            return _nom ?? (_nom = new Util.Etymological.Psy.Openness());
         }
     }
     [Serializable]
@@ -102,7 +117,7 @@ namespace NoFuture.Rand.Domus.Pneuma
 
         public override INomenclature GetDescription()
         {
-            return new Util.Etymological.Psy.Conscientiousness();
+            return _nom ?? (_nom = new Util.Etymological.Psy.Conscientiousness());
         }
     }
     [Serializable]
@@ -112,7 +127,7 @@ namespace NoFuture.Rand.Domus.Pneuma
 
         public override INomenclature GetDescription()
         {
-            return new Util.Etymological.Psy.Extraversion();
+            return _nom ?? (_nom = new Util.Etymological.Psy.Extraversion());
         }
     }
     [Serializable]
@@ -122,7 +137,7 @@ namespace NoFuture.Rand.Domus.Pneuma
 
         public override INomenclature GetDescription()
         {
-            return new Util.Etymological.Psy.Agreeableness();
+            return _nom ?? (_nom = new Util.Etymological.Psy.Agreeableness());
         }
     }
     [Serializable]
@@ -132,7 +147,7 @@ namespace NoFuture.Rand.Domus.Pneuma
 
         public override INomenclature GetDescription()
         {
-            return new Util.Etymological.Psy.Neuroticism();
+            return _nom ?? (_nom = new Util.Etymological.Psy.Neuroticism());
         }
     }
 

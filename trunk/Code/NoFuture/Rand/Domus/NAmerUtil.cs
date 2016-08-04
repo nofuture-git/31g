@@ -188,6 +188,7 @@ namespace NoFuture.Rand.Domus
                     ? new NormalDistEquation {Mean = 76.9D, StdDev = 4.9}
                     : new NormalDistEquation {Mean = 81.6, StdDev = 3.9};
             }
+
         }
 
         /// <summary>

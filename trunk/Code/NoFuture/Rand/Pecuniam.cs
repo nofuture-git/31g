@@ -224,6 +224,12 @@ namespace NoFuture.Rand
         {
             return _guid.GetHashCode();
         }
+
+        public override string ToString()
+        {
+            return string.Join(" ", $"[{UniqueId}]", $"{AtTime:yyyy-MM-dd}", $"{Cash.Amount}");
+        }
+
         #endregion
     }
 

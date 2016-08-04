@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml;
 using NoFuture.Rand.Gov;
 using NoFuture.Util.Math;
 
@@ -24,9 +25,12 @@ namespace NoFuture.Rand.Data.Types
             _stateName = name;
             if (TreeData.UsStateData == null)
                 return;
-            var myNameNode = TreeData.UsStateData.SelectSingleNode($"//state[@name='{_stateName}']");
+            var myNameNode = TreeData.UsStateData.SelectSingleNode($"//state[@name='{_stateName}']") as XmlElement;
             if (myNameNode == null)
                 return;
+            AmericanRegion reg;
+            if (Enum.TryParse(myNameNode.Attributes["region"].Value, out reg))
+                Region = reg;
             AverageEarnings = UsCityStateZip.GetAvgEarningsPerYear(myNameNode);
             GetEmploymentSectorData();
             GetEduData();
@@ -60,6 +64,8 @@ namespace NoFuture.Rand.Data.Types
         /// https://en.wikipedia.org/wiki/List_of_U.S._states_by_educational_attainment
         /// </summary>
         public List<Tuple<OccidentalEdu, double>> PercentOfGrads { get; } = new List<Tuple<OccidentalEdu, double>>();
+
+        public AmericanRegion Region { get; }
         #endregion
 
         #region methods

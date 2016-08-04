@@ -262,7 +262,7 @@ namespace NoFuture.Rand.Data
             get
             {
                 if (_usPersonalWealth == null)
-                    GetXmlDataSource(US_PERSON_DEBT, ref _usPersonalWealth);
+                    GetXmlDataSource(US_PERSON_WEALTH, ref _usPersonalWealth);
                 return _usPersonalWealth;
             }
         }

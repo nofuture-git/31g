@@ -1,6 +1,7 @@
 ﻿using System;
 using NoFuture.Shared;
 using NoFuture.Util;
+using NoFuture.Util.Math;
 
 namespace NoFuture.Rand.Data.Sp
 {
@@ -126,6 +127,20 @@ namespace NoFuture.Rand.Data.Sp
             }
 
             return countOfMonths;
+        }
+
+        /// <summary>
+        /// http://www.deptofnumbers.com/rent/us/
+        /// </summary>
+        /// <param name="dt"></param>
+        /// <returns></returns>
+        public static Pecuniam GetAvgAmericanRentByYear(DateTime? dt)
+        {
+            var eq = new LinearEquation {Intercept = -13340, Slope = 7.1091};
+
+            var year = dt.GetValueOrDefault(DateTime.Today).ToDouble();
+
+            return new Pecuniam( (decimal)eq.SolveForY(year));
         }
         #endregion
     }

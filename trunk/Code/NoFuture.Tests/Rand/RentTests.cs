@@ -140,5 +140,13 @@ namespace NoFuture.Tests.Rand
             testResult = testSubject.GetExpectedTotalRent(new DateTime(DateTime.Today.Year, 4, 1).AddDays(-1));
             Assert.AreEqual(new Pecuniam(350 + 700 * 3), testResult);
         }
+
+        [TestMethod]
+        public void TestGetAvgAmericanRentByYear()
+        {
+            var testResult = Rent.GetAvgAmericanRentByYear(null);
+            Assert.IsTrue(testResult.Amount > 0);
+            System.Diagnostics.Debug.WriteLine(testResult);
+        }
     }
 }

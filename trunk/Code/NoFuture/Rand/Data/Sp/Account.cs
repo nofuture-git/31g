@@ -33,44 +33,6 @@ namespace NoFuture.Rand.Data.Sp
 
         public FinancialFirm Bank { get; set; }
 
-        public static BankAccount GetRandomBankAccount(CityArea ca = null)
-        {
-            var format = Etx.GetRandomRChars(true);
-            var accountId = new AccountId(format);
-
-            FinancialFirm bank = null;
-
-            var banks = TreeData.CommercialBankData;
-            if (ca?.AddressData != null)
-            {
-                var stateCode = ca.AddressData.StateAbbrv;
-                var cityName = ca.AddressData.City;
-
-                var banksByState =
-                    banks.Where(x => x.BusinessAddress?.Item2?.AddressData?.StateAbbrv == stateCode).ToArray();
-                var banksByCityState =
-                    banksByState.Where(x => x.BusinessAddress?.Item2?.AddressData?.City == cityName).ToArray();
-
-                if (banksByCityState.Any())
-                    banks = banksByCityState;
-                else if (banksByState.Any())
-                    banks = banksByState;
-            }
-
-            if (banks.Any())
-            {
-                var pickOne = Etx.IntNumber(0, banks.Length - 1);
-                bank = banks[pickOne];
-                bank.LoadXrefXmlData();
-                if (bank.RoutingNumber == null)
-                    bank.RoutingNumber = Gov.Fed.RoutingTransitNumber.RandomRoutingNumber();
-            }
-
-            return Etx.TryAboveOrAt(8, Etx.Dice.Ten)
-                ? new Checking {AccountNumber = accountId, Bank = bank}
-                : (BankAccount)new Savings { AccountNumber = accountId,  Bank = bank };
-        }
-
         public override string ToString()
         {
             return string.Join(" ", GetType().Name, Bank, AccountNumber);
@@ -83,6 +45,13 @@ namespace NoFuture.Rand.Data.Sp
     public class Checking : BankAccount
     {
         public override Pecuniam Value => Balance.GetCurrent(DateTime.Now, 0F);
+
+        public static Checking GetRandomCheckingAcct(CityArea ca)
+        {
+            var accountId = new AccountId(Etx.GetRandomRChars(true));
+            var bank = Com.Bank.GetRandomBank(ca);
+            return new Checking {AccountNumber = accountId, Bank = bank};
+        }
     }
 
     [Serializable]
@@ -90,5 +59,12 @@ namespace NoFuture.Rand.Data.Sp
     {
         public float InterestRate { get; set; }
         public override Pecuniam Value => Balance.GetCurrent(DateTime.Now, InterestRate);
+
+        public static Savings GetRandomSavingAcct(CityArea ca)
+        {
+            var accountId = new AccountId(Etx.GetRandomRChars(true));
+            var bank = Com.Bank.GetRandomBank(ca);
+            return new Savings {AccountNumber = accountId, Bank = bank};
+        }
     }
 }

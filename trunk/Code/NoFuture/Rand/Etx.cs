@@ -87,7 +87,17 @@ namespace NoFuture.Rand
         /// <returns></returns>
         public static int IntNumber(int from, int to)
         {
-            return @from == to ? @from : MyRand.Next(@from, to + 1);
+            if (from == to)
+                return from;
+            if (from <= to)
+                return MyRand.Next(from, to + 1);
+
+            //passed in backwards is ok
+            var t = from;
+            from = to;
+            to = t;
+
+            return MyRand.Next(from, to + 1);
         }
 
         /// <summary>
@@ -98,8 +108,8 @@ namespace NoFuture.Rand
         /// <returns></returns>
         public static double RationalNumber(int from, int to)
         {
-            var someInt = IntNumber(from, to);
-            return (double) someInt + MyRand.NextDouble();
+            var someInt = IntNumber(from, to-1);
+            return someInt + MyRand.NextDouble();
         }
 
         /// <summary>
@@ -295,11 +305,11 @@ namespace NoFuture.Rand
         public static double RandomValueInNormalDist(double mean, double stdDev)
         {
             var magnitude = GetMagnitudeAdjustment(mean);
-            var posMean = Convert.ToInt32(Math.Round(mean*magnitude));
-            var posStdDev = Convert.ToInt32(Math.Round(stdDev*magnitude));
+            var posMean = Convert.ToInt32(Math.Round(mean * magnitude));
+            var posStdDev = Convert.ToInt32(Math.Round(stdDev * magnitude));
 
-            var minRand = posMean - (posStdDev*3);
-            var maxRand = posMean + (posStdDev*3);
+            var minRand = posMean - (posStdDev * 3);
+            var maxRand = posMean + (posStdDev * 3);
 
             //Random only works on positive ints
             if (minRand < 0 && maxRand < 0)
@@ -309,7 +319,7 @@ namespace NoFuture.Rand
 
             var probTbl = Util.Math.NormalDistEquation.GetCumulativeZScore();
 
-            var posProbTbl = probTbl.Keys.ToDictionary(p => p, p => Convert.ToInt32(probTbl[p]*10000));
+            var posProbTbl = probTbl.Keys.ToDictionary(p => p, p => Convert.ToInt32(probTbl[p] * 10000));
 
             for (var i = 0; i < 1000; i++)
             {
@@ -317,7 +327,7 @@ namespace NoFuture.Rand
                 var someValue = Etx.IntNumber(minRand, maxRand);
 
                 //get the probability of it
-                var z = (double) (someValue - posMean)/posStdDev;
+                var z = (double)(someValue - posMean) / posStdDev;
                 var zscore = Convert.ToInt32(posProbTbl.FirstOrDefault(x => x.Key >= Math.Abs(z)).Value);
 
                 var attempt = Etx.IntNumber(1, 10000);
@@ -326,7 +336,7 @@ namespace NoFuture.Rand
 
                 //when succeded - return some value
                 if (isGe)
-                    return (double) someValue/magnitude;
+                    return (double)someValue / magnitude;
             }
             return mean;
         }
@@ -438,31 +448,6 @@ namespace NoFuture.Rand
             magnitude = numLen - magnitude;
 
             return Convert.ToInt32($"1{new string('0', magnitude)}");
-        }
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        private static int GetDiceAsInt(Dice die)
-        {
-            switch (die)
-            {
-                case Dice.Four:
-                    return 4;
-                case Dice.Six:
-                    return 6;
-                case Dice.Eight:
-                    return 8;
-                case Dice.Ten:
-                    return 10;
-                case Dice.Twelve:
-                    return 12;
-                case Dice.Twenty:
-                    return 20;
-                case Dice.OneHundred:
-                    return 100;
-                case Dice.OneThousand:
-                    return 1000;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(die), die, @"No implementation for this dice");
-            }
         }
         [EditorBrowsable(EditorBrowsableState.Never)]
         private static bool TryRoll(int v, Dice die, Func<int, int, bool> op)

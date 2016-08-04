@@ -42,12 +42,13 @@ namespace NoFuture.Rand.Data.Sp
 
     public abstract class ReceivableBase : IReceivable
     {
+        protected internal TradeLine _tl;
         protected ReceivableBase(DateTime openedDate)
         {
-            TradeLine = new TradeLine(openedDate);
+            _tl = new TradeLine(openedDate);
         }
 
-        public virtual TradeLine TradeLine { get; }
+        public virtual TradeLine TradeLine => _tl;
         public Identifier Id { get; set; }
         public string Description { get; set; }
 

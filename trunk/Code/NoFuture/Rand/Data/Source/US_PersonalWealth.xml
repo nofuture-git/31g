@@ -26,7 +26,9 @@
               <add name="White" value="0.16667" />
               <add name="Black" value="-0.59667" />
               <add name="Asian" value="0.50000" />
-              <add name="Other" value="-0.52500" />
+              <add name="Mixed" value="-0.52500" />
+              <add name="AmericanIndian" value="-0.52500" />
+              <add name="Pacific" value="-0.52500" />
               <add name="Hispanic" value="-0.50000" />
             </factor>
             <factor name="Region">
@@ -69,7 +71,9 @@
               <add name="White" value="0.22449" />
               <add name="Black" value="-0.79592" />
               <add name="Asian" value="0.83673" />
-              <add name="Other" value="-0.69388" />
+              <add name="Mixed" value="-0.69388" />
+              <add name="Pacific" value="-0.69388" />
+              <add name="AmericanIndian" value="-0.69388" />
               <add name="Hispanic" value="-0.71429" />
             </factor>
             <factor name="Region">
@@ -112,7 +116,9 @@
               <add name="White" value="0.30088" />
               <add name="Black" value="-0.90826" />
               <add name="Asian" value="0.29800" />
-              <add name="Other" value="-0.72362" />
+              <add name="Mixed" value="-0.72362" />
+              <add name="AmericanIndian" value="-0.72362" />
+              <add name="Pacific" value="-0.72362" />
               <add name="Hispanic" value="-0.88837" />
             </factor>
             <factor name="Region">
@@ -155,7 +161,9 @@
               <add name="White" value="0.04235" />
               <add name="Black" value="-0.42614" />
               <add name="Asian" value="0.14874" />
-              <add name="Other" value="-0.23007" />
+              <add name="Mixed" value="-0.23007" />
+              <add name="AmericanIndian" value="-0.23007" />
+              <add name="Pacific" value="-0.23007" />
               <add name="Hispanic" value="-0.22817" />
             </factor>
             <factor name="Region">
@@ -198,7 +206,9 @@
               <add name="White" value="0.00000" />
               <add name="Black" value="-0.37500" />
               <add name="Asian" value="0.50000" />
-              <add name="Other" value="-0.31743" />
+              <add name="Mixed" value="-0.31743" />
+              <add name="Pacific" value="-0.31743" />
+              <add name="AmericanIndian" value="-0.31743" />
               <add name="Hispanic" value="-0.41250" />
             </factor>
             <factor name="Region">

@@ -325,7 +325,6 @@ namespace NoFuture.Tests.Util
 
             var solveX = testSubject.SolveForX(solveY);
             Assert.AreEqual(System.Math.Round(X_IN), System.Math.Round(solveX));
-            
         }
 
         [TestMethod]

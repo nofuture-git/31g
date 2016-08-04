@@ -7,6 +7,8 @@ namespace NoFuture.Rand.Data.Sp
     {
         public const int MAX_FICO = 850;
         public const int MIN_FICO = 300;
+        public abstract int GetScore(DateTime? dt);
+        public abstract double GetRandomInterestRate(DateTime? atDt, double baseRate = 3.0D);
     }
 
     public class PersonalCreditScore : CreditScore
@@ -47,7 +49,7 @@ namespace NoFuture.Rand.Data.Sp
         /// </summary>
         /// <param name="dt"></param>
         /// <returns></returns>
-        public int GetScore(DateTime? dt)
+        public override int GetScore(DateTime? dt)
         {
             var agePenalty = GetAgePenalty(dt);
             var discipline = GetUndisciplinedPenalty();
@@ -56,11 +58,27 @@ namespace NoFuture.Rand.Data.Sp
             var ficoScore = (int)Math.Ceiling(FicoBaseValue + agePenalty + discipline + consistent);
 
             if (ficoScore > MAX_FICO)
-                ficoScore = MAX_FICO;
+                ficoScore = MAX_FICO-1;
             if (ficoScore < MIN_FICO)
-                ficoScore = MIN_FICO;
+                ficoScore = MIN_FICO+1;
 
             return ficoScore;
+        }
+
+        public override double GetRandomInterestRate(DateTime? atDt, double baseRate = 3.0D)
+        {
+            var addPts = baseRate;
+            var scoreCounter = MAX_FICO;
+            var score = GetScore(atDt);
+            var moreRand = 1+((atDt.GetValueOrDefault(DateTime.Today).DayOfYear % 9) * 0.1);
+
+            while (scoreCounter > score)
+            {
+                addPts += moreRand;
+                scoreCounter -= STD_DEV_FICO_SCORE;
+            }
+
+            return addPts + 0.099;
         }
 
         protected internal double GetAgePenalty(DateTime? dt)

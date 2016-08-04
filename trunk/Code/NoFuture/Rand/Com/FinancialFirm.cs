@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using NoFuture.Rand.Data;
 using NoFuture.Rand.Data.NfText;
 using NoFuture.Rand.Data.Sp;
 using NoFuture.Rand.Data.Types;
@@ -82,6 +83,38 @@ namespace NoFuture.Rand.Com
             Assets = new Dictionary<DateTime, FinancialAssets> { { li.RptDate, assets } };
         }
         public string FedRptBankName { get; set; }
+
+        public static Bank GetRandomBank(CityArea ca)
+        {
+            Bank bank = null;
+
+            var banks = TreeData.CommercialBankData;
+            if (ca?.AddressData != null)
+            {
+                var stateCode = ca.AddressData.StateAbbrv;
+                var cityName = ca.AddressData.City;
+
+                var banksByState =
+                    banks.Where(x => x.BusinessAddress?.Item2?.AddressData?.StateAbbrv == stateCode).ToArray();
+                var banksByCityState =
+                    banksByState.Where(x => x.BusinessAddress?.Item2?.AddressData?.City == cityName).ToArray();
+
+                if (banksByCityState.Any())
+                    banks = banksByCityState;
+                else if (banksByState.Any())
+                    banks = banksByState;
+            }
+
+            if (banks.Any())
+            {
+                var pickOne = Etx.IntNumber(0, banks.Length - 1);
+                bank = banks[pickOne];
+                bank.LoadXrefXmlData();
+                if (bank.RoutingNumber == null)
+                    bank.RoutingNumber = RoutingTransitNumber.RandomRoutingNumber();
+            }
+            return bank;
+        }
     }
 
     public class FinancialAssets : NetConAssets
