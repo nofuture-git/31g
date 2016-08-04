@@ -4,6 +4,15 @@ using System.Text;
 
 namespace NoFuture.Rand.Gov.Fed
 {
+    [Serializable]
+    public class RiskFreeInterestRate : IIdentifier<float>
+    {
+        private float _val = DF_VALUE;
+        public const float DF_VALUE = 1.5F;
+        public string Src { get; set; }
+        public string Abbrev => "RFIR";
+        public float Value { get {return _val;} set { _val = value; } }
+    }
     /// <summary>
     /// This is unique id assigned by the Fed to all financial institutions.
     /// see [https://cdr.ffiec.gov/CDR/Public/CDRHelp/FAQs1205.htm#FAQ16]

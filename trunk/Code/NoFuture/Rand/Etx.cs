@@ -304,39 +304,31 @@ namespace NoFuture.Rand
         /// <returns></returns>
         public static double RandomValueInNormalDist(double mean, double stdDev)
         {
-            var magnitude = GetMagnitudeAdjustment(mean);
-            var posMean = Convert.ToInt32(Math.Round(mean * magnitude));
-            var posStdDev = Convert.ToInt32(Math.Round(stdDev * magnitude));
+            var minRand = mean - (stdDev * 3);
+            var maxRand = mean + (stdDev * 3);
 
-            var minRand = posMean - (posStdDev * 3);
-            var maxRand = posMean + (posStdDev * 3);
+            if(minRand < int.MinValue || maxRand > int.MaxValue)
+                throw new ArgumentException("The random number generator is limited to int max values.");
 
-            //Random only works on positive ints
-            if (minRand < 0 && maxRand < 0)
-            {
-                throw new NotImplementedException("Only supported for distributions whose entire range is positive values.");
-            }
-
-            var probTbl = Util.Math.NormalDistEquation.GetCumulativeZScore();
-
-            var posProbTbl = probTbl.Keys.ToDictionary(p => p, p => Convert.ToInt32(probTbl[p] * 10000));
+            var eq = new Util.Math.NormalDistEquation {Mean = mean, StdDev = stdDev};
 
             for (var i = 0; i < 1000; i++)
             {
                 //guess some value w/i 3 std dev's
-                var someValue = Etx.IntNumber(minRand, maxRand);
+                var someValue = Etx.RationalNumber(Convert.ToInt32(minRand), Convert.ToInt32(maxRand));
 
-                //get the probability of it
-                var z = (double)(someValue - posMean) / posStdDev;
-                var zscore = Convert.ToInt32(posProbTbl.FirstOrDefault(x => x.Key >= Math.Abs(z)).Value);
+                //get the probability of that guess
+                var zscore = eq.GetZScoreFor(someValue);
 
-                var attempt = Etx.IntNumber(1, 10000);
+                //zscore
+                var attempt = Etx.RationalNumber(0, 5)*0.1;
+
                 //try getting a value with that probability
                 var isGe = attempt >= zscore;
 
                 //when succeded - return some value
                 if (isGe)
-                    return (double)someValue / magnitude;
+                    return someValue;
             }
             return mean;
         }
@@ -434,21 +426,6 @@ namespace NoFuture.Rand
         }
         #endregion
 
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        internal static int GetMagnitudeAdjustment(double dbl)
-        {
-            var strDbl = dbl.ToString(CultureInfo.InvariantCulture);
-            var numLen = strDbl.Length;
-
-            var magnitude = strDbl.IndexOf(".", StringComparison.Ordinal);
-
-            if (numLen > Int32.MaxValue.ToString().Length)
-                numLen = Int32.MaxValue.ToString().Length - 1;
-
-            magnitude = numLen - magnitude;
-
-            return Convert.ToInt32($"1{new string('0', magnitude)}");
-        }
         [EditorBrowsable(EditorBrowsableState.Never)]
         private static bool TryRoll(int v, Dice die, Func<int, int, bool> op)
         {

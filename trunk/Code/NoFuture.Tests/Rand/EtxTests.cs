@@ -8,21 +8,6 @@ namespace NoFuture.Tests.Rand
     public class EtxTests
     {
 
-
-        [TestMethod]
-        public void TestGetMagnitudeAdjustment()
-        {
-            var testResult = NoFuture.Rand.Etx.GetMagnitudeAdjustment(5.0D);
-            Assert.AreEqual(100D, testResult);
-
-            testResult = NoFuture.Rand.Etx.GetMagnitudeAdjustment(0.5);
-            Assert.AreEqual(100D, testResult);
-
-            testResult = NoFuture.Rand.Etx.GetMagnitudeAdjustment(500);
-
-            System.Diagnostics.Debug.WriteLine(testResult);
-        }
-
         [TestMethod]
         public void TestRandomValueInNormalDist()
         {

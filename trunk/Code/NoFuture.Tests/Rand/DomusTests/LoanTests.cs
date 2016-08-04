@@ -21,7 +21,22 @@ namespace NoFuture.Tests.Rand.DomusTests
             Assert.AreEqual(-52.79M, testResult.Amount);
 
             System.Diagnostics.Debug.WriteLine(testResult.Amount);
+        }
 
+        [TestMethod]
+        public void TestGet30yearBalance()
+        {
+            var testSubject = new FixedRateLoan(DateTime.Today, 0.0885F, new Pecuniam(150000)) {Rate = 0.05F};
+            var testResult = testSubject.GetCurrentBalance(DateTime.Today.AddYears(30));
+
+            var fv = NoFuture.Util.Math.Econ.PerDiemInterest(150000M, 0.03F,
+                (DateTime.Today.AddYears(30) - DateTime.Today).TotalDays);
+
+            System.Diagnostics.Debug.WriteLine(fv);
+
+            var v = fv/30;
+            v = v/12;
+            System.Diagnostics.Debug.WriteLine(v);
         }
 
         [TestMethod]

@@ -345,5 +345,17 @@ namespace NoFuture.Tests.Util
                 
             }
         }
+
+        [TestMethod]
+        public void TestNormalDistGetZScore()
+        {
+            var testSubject = new NoFuture.Util.Math.NormalDistEquation { Mean = 0, StdDev = 1 };
+
+            var testResult = testSubject.GetZScoreFor(0);
+            Assert.IsTrue(testResult >= 0.499);
+
+            testResult = testSubject.GetZScoreFor(1);
+            Assert.IsTrue(testResult >= 0.34134);
+        }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace NoFuture.Util.Math
 {
@@ -17,6 +18,16 @@ namespace NoFuture.Util.Math
             var j = 1/(StdDev*System.Math.Sqrt(2*System.Math.PI));
 
             return System.Math.Round(j*System.Math.Pow(System.Math.E, f), Int32.MaxValue.ToString().Length - 1);
+        }
+
+        public virtual double GetZScoreFor(double someValue)
+        {
+            if (someValue == 0.0D && Mean == 0.0D)
+            {
+                return GetCumulativeZScore().Last().Value;
+            }
+            var z = (someValue - Mean) / StdDev;
+            return GetCumulativeZScore().FirstOrDefault(x => x.Key >= System.Math.Abs(z)).Value;
         }
 
         public override string ToString()
