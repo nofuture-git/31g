@@ -111,7 +111,10 @@ namespace NoFuture.Rand
             get
             {
                 if (string.IsNullOrWhiteSpace(_value))
+                {
                     _value = GetRandom();
+                    System.Diagnostics.Debug.WriteLine($"Value at time of first assignment {_value}");
+                }
                 return _value;
             }
             set
@@ -126,6 +129,47 @@ namespace NoFuture.Rand
             return format.All(rc => rc.Valid(value));
         }
         #endregion
+    }
+
+    [Serializable]
+    public abstract class RIdentifierWithChkDigit : RIdentifier
+    {
+        protected internal Func<string, int> CheckDigitFunc;
+
+        public override string GetRandom()
+        {
+            var valLessCk = base.GetRandom();
+            System.Diagnostics.Debug.WriteLine($"Value without Check Digit appended {valLessCk}");
+            if (CheckDigitFunc == null)
+                return valLessCk;
+
+            var chkDigit = CheckDigitFunc(valLessCk);
+            var rVal = $"{valLessCk}{chkDigit}";
+            System.Diagnostics.Debug.WriteLine($"Value at exit of GetRandom {rVal}");
+            return rVal;
+        }
+
+        public override bool Validate(string value)
+        {
+            if (value == null)
+                return false;
+            System.Diagnostics.Debug.WriteLine($"Value passed into the Validate fx {value}");
+            var lastChar = value.ToCharArray().Last(char.IsDigit);
+            var lessChk = value.Substring(0, value.Length - 1);
+            System.Diagnostics.Debug.WriteLine($"Value passed into base.Validate {lessChk}");
+            if (!base.Validate(lessChk))
+            {
+                System.Diagnostics.Debug.WriteLine("Validate failed prior the examining the check digit");
+                return false;
+            }
+            int chkDigit;
+            if (!int.TryParse(lastChar.ToString(), out chkDigit))
+            {
+                return false;
+            }
+            var calcChkDigit = CheckDigitFunc(lessChk);
+            return chkDigit == calcChkDigit;
+        }
     }
 
     [Serializable]

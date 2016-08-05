@@ -337,12 +337,12 @@ namespace NoFuture.Rand
         /// Produces an array of <see cref="Rchar"/> in a random order and random length.
         /// </summary>
         /// <returns>The min length is 5 and the max is 15 </returns>
-        public static Rchar[] GetRandomRChars(bool numbersOnly = false)
+        public static Rchar[] GetRandomRChars(bool numbersOnly = false, int? exactLen = null, int startAtIdx = 0)
         {
-            var len = IntNumber(5, 15);
+            var len = exactLen.GetValueOrDefault(IntNumber(5, 15));
             var rcharsOut = new List<Rchar>();
 
-            for (var i = 0; i <= len; i++)
+            for (var i = startAtIdx; i < len + startAtIdx; i++)
             {
                 if (numbersOnly)
                 {

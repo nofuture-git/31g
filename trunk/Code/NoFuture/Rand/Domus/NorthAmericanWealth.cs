@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Xml;
+using NoFuture.Rand.Com;
 using NoFuture.Rand.Data;
 using NoFuture.Rand.Data.Sp;
 using NoFuture.Rand.Data.Types;
@@ -124,7 +125,7 @@ namespace NoFuture.Rand.Domus
                 rent.PayRent(paidRentOn, new Pecuniam((decimal)randRent));
                 rentDueDate = rentDueDate.AddMonths(1);
             }
-
+            rent.Description = $"{rendTerm}-Month Lease";
             HomeDebt.Add(rent);
         }
 
@@ -187,7 +188,9 @@ namespace NoFuture.Rand.Domus
                 loan.MakeAPayemnt(paidOnDate, minPmt);
                 dtIncrement = dtIncrement.AddMonths(1);
             }
-
+            loan.Description = "30-Year Mortgage";
+            loan.KindOfLoan = FormOfCredit.Mortgage;
+            loan.Lender = Bank.GetRandomBank(_amer?.Address?.HomeCityArea);
             HomeDebt.Add(loan);
         }
 

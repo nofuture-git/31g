@@ -718,7 +718,7 @@ namespace NoFuture.Util
             if (valueChars.Length <= 0)
                 return -1;
             valueChars = valueChars.Reverse().ToArray();
-            Debug.WriteLine(string.Join("", valueChars));
+            Debug.WriteLine($"Value passed into ChkDigit Fx in Reverse {string.Join("", valueChars)}");
             for (var i = 0; i < valueChars.Length; i++)
             {
                 int valAti;

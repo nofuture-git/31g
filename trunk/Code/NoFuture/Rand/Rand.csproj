@@ -67,6 +67,7 @@
     <Compile Include="Data\NfXml\SecCikSearch.cs" />
     <Compile Include="Data\NfXml\SecFullTxtSearch.cs" />
     <Compile Include="Data\Sp\Account.cs" />
+    <Compile Include="Data\Sp\CreditCard.cs" />
     <Compile Include="Data\Sp\CreditScore.cs" />
     <Compile Include="Data\Sp\FinancialData.cs" />
     <Compile Include="Data\Sp\Receivable.cs" />

@@ -31,7 +31,7 @@ namespace NoFuture.Rand.Domus.Pneuma
 
         public bool GetRandomActsIrresponsible()
         {
-            return Etx.RandomValueInNormalDist(Conscientiousness.Value.Zscore, Conscientiousness.Value.Zscore) < 0;
+            return Etx.RandomValueInNormalDist(Openness.Value.Zscore, Conscientiousness.Value.Zscore) < 0;
         }
 
         public bool GetRandomActsStressed()

@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NoFuture.Rand;
 using NoFuture.Rand.Com;
 using NoFuture.Rand.Data.Types;
 
