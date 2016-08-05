@@ -37,10 +37,6 @@ namespace NoFuture.Rand.Data.Sp
         public const float DF_MIN_PMT_RATE = 0.0125F;
         #endregion
 
-        #region fields
-        private Pecuniam _max;
-        #endregion
-
         #region ctor
         protected CreditCard(IPerson cardholder, DateTime openedDate, float minPaymentRate, Pecuniam ccMax = null)
             : base(openedDate, minPaymentRate <= 0 ? DF_MIN_PMT_RATE : minPaymentRate, null)
@@ -51,7 +47,10 @@ namespace NoFuture.Rand.Data.Sp
             CardHolderName = string.Join(" ", cardholder.FirstName.ToUpper(), cardholder.LastName.ToUpper());
             Cvv = $"{Etx.IntNumber(7, 999),3:D3}";
             Number = GetRandomCardNumber();
-            _max = ccMax ?? new Pecuniam(1000);
+            base.TradeLine.CreditLimit = ccMax ?? new Pecuniam(1000);
+            base.TradeLine.FormOfCredit = FormOfCredit.Revolving;
+            base.TradeLine.DueFrequency = new TimeSpan(30,0,0,0);
+
         }
         #endregion
 
@@ -61,7 +60,7 @@ namespace NoFuture.Rand.Data.Sp
         public string CardHolderName { get; }
         public string Cvv { get; }
         public DateTime CardHolderSince => TradeLine.OpennedDate;
-        public Pecuniam Max => _max;
+        public Pecuniam Max => base.TradeLine.CreditLimit;
 
         protected abstract int CardNumLen { get; }
         protected abstract int CardNumPrefix { get; }
@@ -89,9 +88,9 @@ namespace NoFuture.Rand.Data.Sp
         /// <param name="val"></param>
         public void IncreaseMaxTo(Pecuniam val)
         {
-            if (_max != null && _max > val)
+            if (Max != null && Max > val)
                 return;
-            _max = val;
+            base.TradeLine.CreditLimit = val;
         }
 
         /// <summary>
@@ -106,8 +105,7 @@ namespace NoFuture.Rand.Data.Sp
         }
 
         /// <summary>
-        /// Applies a purchase transation to this credit cards
-        /// balance.
+        /// Applies a purchase transation to this credit card.
         /// </summary>
         /// <param name="dt"></param>
         /// <param name="val"></param>
@@ -116,20 +114,14 @@ namespace NoFuture.Rand.Data.Sp
         /// the purchase amount <see cref="val"/>
         /// will not cause the total balance to exceed <see cref="Max"/>.
         /// </returns>
-        public bool ChargeIt(DateTime dt, Pecuniam val)
+        public override bool MakeAPurchase(DateTime dt, Pecuniam val)
         {
             if (dt > ExpDate)
                 return false;
             var cBal = GetCurrentBalance(dt);
             if (cBal >= Max || cBal + val >= Max)
                 return false;
-            while (TradeLine.Balance.Transactions.Any(x => DateTime.Compare(x.AtTime, dt) == 0))
-            {
-                dt = dt.AddMilliseconds(10);
-            }
-            //charges are always positive, payments always negative
-            TradeLine.Balance.Transactions.Add(new Transaction(dt, val.Abs));
-            return true;
+            return base.MakeAPurchase(dt, val);
         }
 
         /// <summary>

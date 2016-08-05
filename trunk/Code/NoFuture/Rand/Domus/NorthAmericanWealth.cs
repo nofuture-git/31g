@@ -188,7 +188,8 @@ namespace NoFuture.Rand.Domus
                 dtIncrement = dtIncrement.AddMonths(1);
             }
             loan.Description = "30-Year Mortgage";
-            loan.KindOfLoan = FormOfCredit.Mortgage;
+            loan.TradeLine.FormOfCredit = FormOfCredit.Mortgage;
+            loan.TradeLine.DueFrequency = new TimeSpan(30, 0, 0, 0);
             loan.Lender = Bank.GetRandomBank(_amer?.Address?.HomeCityArea);
             HomeDebt.Add(loan);
         }
@@ -198,6 +199,7 @@ namespace NoFuture.Rand.Domus
         /// it to the <see cref="Opes.CreditCardDebt"/> collection.
         /// </summary>
         /// <param name="stdDevAsPercent"></param>
+        /// <param name="maxCcDebt"></param>
         protected internal bool GetRandomCcDebt(double stdDevAsPercent = 0.1285D, double maxCcDebt = 15000D)
         {
             var randCcValue = GetRandomFactorValue(FactorTables.CreditCardDebt, _ccDebtFactor, stdDevAsPercent);
@@ -213,7 +215,7 @@ namespace NoFuture.Rand.Domus
             //determine timespan for generated history
             var historyTs = DateTime.Now - cc.CardHolderSince;
 
-            //create charge history
+            //create history
             for (var i = 1; i < historyTs.Days; i++)
             {
                 var loopDt = cc.CardHolderSince.AddDays(i);
@@ -315,7 +317,7 @@ namespace NoFuture.Rand.Domus
                         chargeAmt = Pecuniam.GetRandPecuniam(100, 1000);
 
                     //check if cardholder is maxed-out
-                    if (!cc.ChargeIt(loopDt, chargeAmt))
+                    if (!cc.MakeAPurchase(loopDt, chargeAmt))
                     {
                         return;
                     }

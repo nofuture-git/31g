@@ -19,11 +19,6 @@ namespace NoFuture.Rand.Data.Sp //Sequere pecuniam
     public interface ILoan
     {
         /// <summary>
-        /// Can be set to a combination of the <see cref="FormOfCredit"/>
-        /// </summary>
-        FormOfCredit KindOfLoan { get; set; }
-
-        /// <summary>
         /// The rate used to calc the minimum payment.
         /// </summary>
         float MinPaymentRate { get; set; }
@@ -47,7 +42,6 @@ namespace NoFuture.Rand.Data.Sp //Sequere pecuniam
         #endregion
 
         #region properties
-        public FormOfCredit KindOfLoan { get; set; }
         public float MinPaymentRate { get; set; }
         public T Rate { get; set; }
         public IFirm Lender { get; set; }
@@ -63,13 +57,29 @@ namespace NoFuture.Rand.Data.Sp //Sequere pecuniam
             var amt = bal.Amount * Convert.ToDecimal(MinPaymentRate);
             return new Pecuniam(Math.Round(amt, 2)).Neg;
         }
+
+        /// <summary>
+        /// Applied a negative valued transaction against the balance.
+        /// </summary>
+        /// <param name="dt"></param>
+        /// <param name="amt"></param>
         public void MakeAPayemnt(DateTime dt, Pecuniam amt)
         {
             if (amt == Pecuniam.Zero)
                 return;
-            while (TradeLine.Balance.Transactions.Any(x => DateTime.Compare(x.AtTime, dt) == 0))
-                dt = dt.AddMilliseconds(10);
-            TradeLine.Balance.Transactions.Add(new Transaction(dt, amt.Neg));
+            TradeLine.Balance.AddTransaction(dt, amt.Neg);
+        }
+
+        /// <summary>
+        /// Applies a positive valued transaction against the balance
+        /// </summary>
+        /// <param name="dt"></param>
+        /// <param name="val"></param>
+        /// <returns></returns>
+        public virtual bool MakeAPurchase(DateTime dt, Pecuniam val)
+        {
+            TradeLine.Balance.AddTransaction(dt, val.Abs);
+            return true;
         }
         #endregion
     }
@@ -82,7 +92,7 @@ namespace NoFuture.Rand.Data.Sp //Sequere pecuniam
         public FixedRateLoan(DateTime openedDate, float minPaymentRate, Pecuniam amt = null) : base(openedDate, minPaymentRate)
         {
             if(amt != null && amt.Amount != 0)
-                _tl.Balance.Transactions.Add(new Transaction(openedDate, amt.Abs));
+                _tl.Balance.AddTransaction(openedDate, amt.Abs);
         }
         #endregion
 
@@ -102,7 +112,7 @@ namespace NoFuture.Rand.Data.Sp //Sequere pecuniam
         public VariableRateLoan(DateTime openedDate, float minPaymentRate, Pecuniam amt = null) : base(openedDate, minPaymentRate)
         {
             if (amt != null && amt.Amount != 0)
-                _tl.Balance.Transactions.Add(new Transaction(openedDate, amt.Abs));
+                _tl.Balance.AddTransaction(openedDate, amt.Abs);
         }
         #endregion
 

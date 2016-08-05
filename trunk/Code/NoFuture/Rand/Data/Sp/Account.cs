@@ -27,6 +27,7 @@ namespace NoFuture.Rand.Data.Sp
     [Serializable]
     public abstract class BankAccount : IAsset
     {
+        public bool IsJointAcct { get; set; }
         public AccountId AccountNumber { get; set; }
 
         public IBalance Balance { get; set; }

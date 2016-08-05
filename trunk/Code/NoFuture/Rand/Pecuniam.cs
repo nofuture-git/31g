@@ -341,6 +341,17 @@ namespace NoFuture.Rand
 
         #region methods
 
+        public void AddTransaction(DateTime dt, Pecuniam amnt)
+        {
+            if (amnt == Pecuniam.Zero)
+                return;
+            while (_transactions.Any(x => DateTime.Compare(x.AtTime, dt) == 0))
+            {
+                dt = dt.AddMilliseconds(10);
+            }
+            _transactions.Add(new Transaction(dt, amnt));
+        }
+
         public Pecuniam GetDebitSum(Tuple<DateTime, DateTime> between)
         {
             return GetRangeSum(between, _debitOp);

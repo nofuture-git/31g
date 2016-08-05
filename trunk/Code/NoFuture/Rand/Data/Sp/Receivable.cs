@@ -48,16 +48,24 @@ namespace NoFuture.Rand.Data.Sp
     [Serializable]
     public abstract class ReceivableBase : IReceivable
     {
+        #region fields
         protected internal TradeLine _tl;
+        #endregion
+
+        #region ctor
         protected ReceivableBase(DateTime openedDate)
         {
             _tl = new TradeLine(openedDate);
         }
+        #endregion
 
+        #region properties
         public virtual TradeLine TradeLine => _tl;
         public Identifier Id { get; set; }
         public string Description { get; set; }
+        #endregion
 
+        #region methods
         public virtual PastDue? GetDelinquency(DateTime dt)
         {
             if (GetStatus(dt) != AccountStatus.Late)
@@ -130,6 +138,6 @@ namespace NoFuture.Rand.Data.Sp
         public abstract Pecuniam GetCurrentBalance(DateTime dt);
 
         public abstract Pecuniam GetMinPayment(DateTime dt);
-
+        #endregion  
     }
 }

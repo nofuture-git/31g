@@ -41,8 +41,8 @@ namespace NoFuture.Rand.Data.Sp
             }
             LeaseExpiry = _dtOfFirstFullRentDue.AddMonths(forMonths);
             var fullTermAmt = _proRatedAmt + new Pecuniam(monthlyRent.Amount*forMonths);
-            base.TradeLine.Balance.Transactions.Add(new Transaction(signing, fullTermAmt));
-
+            base.TradeLine.Balance.AddTransaction(signing, fullTermAmt);
+            base.TradeLine.FormOfCredit = FormOfCredit.None;
             LeaseTermInMonths = forMonths;
             Deposit = deposit;
             MonthlyPmt = monthlyRent;
