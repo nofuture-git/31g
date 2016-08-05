@@ -35,26 +35,24 @@ namespace NoFuture.Rand
         #endregion
 
         #region properties
-        public Decimal Amount { get { return _amount; } }
-        public CurrencyAbbrev CurrencyAbbrev { get { return _currencyAbbrev; } }
-        public Pecuniam Abs { get { return new Pecuniam(Math.Abs(_amount));} }
+        public Decimal Amount => _amount;
+        public CurrencyAbbrev CurrencyAbbrev => _currencyAbbrev;
+        public Pecuniam Abs => new Pecuniam(Math.Abs(_amount));
+        public Pecuniam Neg => new Pecuniam(-1*Math.Abs(_amount));
+        public static Pecuniam Zero => new Pecuniam(0.0M);
         #endregion
 
         #region overrides
 
         public override string ToString()
         {
-            return string.Format("{0} {1}", Amount, CurrencyAbbrev);
+            return $"{Amount} {CurrencyAbbrev}";
         }
 
         public override bool Equals(object obj)
         {
-            if (obj == null)
-                return false;
             var p1 = obj as Pecuniam;
-            if (p1 == null)
-                return false;
-            return p1.Amount == Amount;
+            return p1?.Amount == Amount;
         }
 
         public override int GetHashCode()
@@ -64,8 +62,8 @@ namespace NoFuture.Rand
 
         public static Pecuniam operator +(Pecuniam p1, Pecuniam p2)
         {
-            var pp1 = p1 ?? new Pecuniam(0);
-            var pp2 = p2 ?? new Pecuniam(0);
+            var pp1 = p1 ?? Zero;
+            var pp2 = p2 ?? Zero;
             if (pp1.CurrencyAbbrev != pp2.CurrencyAbbrev)
                 throw new RahRowRagee("Can only add currencies from the same nation");
 
@@ -74,8 +72,8 @@ namespace NoFuture.Rand
 
         public static Pecuniam operator -(Pecuniam p1, Pecuniam p2)
         {
-            var pp1 = p1 ?? new Pecuniam(0);
-            var pp2 = p2 ?? new Pecuniam(0);
+            var pp1 = p1 ?? Zero;
+            var pp2 = p2 ?? Zero;
 
             if (pp1.CurrencyAbbrev != pp2.CurrencyAbbrev)
                 throw new RahRowRagee("Can only add currencies from the same nation");
@@ -85,8 +83,8 @@ namespace NoFuture.Rand
 
         public static Pecuniam operator *(Pecuniam p1, Pecuniam p2)
         {
-            var pp1 = p1 ?? new Pecuniam(0);
-            var pp2 = p2 ?? new Pecuniam(0);
+            var pp1 = p1 ?? Zero;
+            var pp2 = p2 ?? Zero;
 
             if (pp1.CurrencyAbbrev != pp2.CurrencyAbbrev)
                 throw new RahRowRagee("Can only add currencies from the same nation");
@@ -96,8 +94,8 @@ namespace NoFuture.Rand
 
         public static Pecuniam operator /(Pecuniam p1, Pecuniam p2)
         {
-            var pp1 = p1 ?? new Pecuniam(0);
-            var pp2 = p2 ?? new Pecuniam(0);
+            var pp1 = p1 ?? Zero;
+            var pp2 = p2 ?? Zero;
 
             if (pp1.CurrencyAbbrev != pp2.CurrencyAbbrev)
                 throw new RahRowRagee("Can only add currencies from the same nation");
@@ -107,8 +105,8 @@ namespace NoFuture.Rand
 
         public static bool operator ==(Pecuniam p1, Pecuniam p2)
         {
-            var pp1 = p1 ?? new Pecuniam(0);
-            var pp2 = p2 ?? new Pecuniam(0);
+            var pp1 = p1 ?? Zero;
+            var pp2 = p2 ?? Zero;
 
             if (pp1.CurrencyAbbrev != pp2.CurrencyAbbrev)
                 return false;
@@ -123,8 +121,8 @@ namespace NoFuture.Rand
 
         public static bool operator >(Pecuniam p1, Pecuniam p2)
         {
-            var pp1 = p1 ?? new Pecuniam(0);
-            var pp2 = p2 ?? new Pecuniam(0);
+            var pp1 = p1 ?? Zero;
+            var pp2 = p2 ?? Zero;
 
             if (pp1.CurrencyAbbrev != pp2.CurrencyAbbrev)
                 return false;
@@ -133,8 +131,8 @@ namespace NoFuture.Rand
 
         public static bool operator <(Pecuniam p1, Pecuniam p2)
         {
-            var pp1 = p1 ?? new Pecuniam(0);
-            var pp2 = p2 ?? new Pecuniam(0);
+            var pp1 = p1 ?? Zero;
+            var pp2 = p2 ?? Zero;
             if (pp1.CurrencyAbbrev != pp2.CurrencyAbbrev)
                 return false;
             return pp1.Amount < pp2.Amount;
@@ -142,8 +140,8 @@ namespace NoFuture.Rand
 
         public static bool operator >=(Pecuniam p1, Pecuniam p2)
         {
-            var pp1 = p1 ?? new Pecuniam(0);
-            var pp2 = p2 ?? new Pecuniam(0);
+            var pp1 = p1 ?? Zero;
+            var pp2 = p2 ?? Zero;
 
             if (pp1.CurrencyAbbrev != pp2.CurrencyAbbrev)
                 return false;
@@ -152,11 +150,25 @@ namespace NoFuture.Rand
 
         public static bool operator <=(Pecuniam p1, Pecuniam p2)
         {
-            var pp1 = p1 ?? new Pecuniam(0);
-            var pp2 = p2 ?? new Pecuniam(0);
+            var pp1 = p1 ?? Zero;
+            var pp2 = p2 ?? Zero;
             if (pp1.CurrencyAbbrev != pp2.CurrencyAbbrev)
                 return false;
             return pp1.Amount <= pp2.Amount;
+        }
+
+        public static Pecuniam GetRandPecuniam(int min = 3, int max = 999, int wholeNumbersOf = 0)
+        {
+            var num = (double)Etx.IntNumber(min, max);
+
+            if (wholeNumbersOf > 10)
+                num = num - (num%wholeNumbersOf);
+            else
+            {
+                num = Etx.RationalNumber(min, max);
+            }
+
+            return new Pecuniam((decimal) Math.Round(num,2));
         }
         #endregion
     }
@@ -204,9 +216,10 @@ namespace NoFuture.Rand
         }
 
         #region properties
-        public Guid UniqueId { get { return _guid; } }
-        public DateTime AtTime { get { return _atTime; } }
-        public Pecuniam Cash { get { return _cash; } }
+        public Guid UniqueId => _guid;
+        public DateTime AtTime => _atTime;
+        public Pecuniam Cash => _cash;
+
         #endregion
 
         #region overrides
@@ -234,12 +247,12 @@ namespace NoFuture.Rand
     }
 
     /// <summary>
-    /// Sorts by <see cref="Transaction.AtTime"/>
+    /// Sorts by <see cref="ITransaction.AtTime"/>
     /// </summary>
     [Serializable]
-    public class TransactionComparer : IComparer<Transaction>
+    public class TransactionComparer : IComparer<ITransaction>
     {
-        public int Compare(Transaction x, Transaction y)
+        public int Compare(ITransaction x, ITransaction y)
         {
             return DateTime.Compare(x.AtTime, y.AtTime);
         }
@@ -253,7 +266,7 @@ namespace NoFuture.Rand
         /// <summary>
         /// Sorted oldest (index 0) to most current (index Count - 1)
         /// </summary>
-        List<Transaction> Transactions { get; }
+        List<ITransaction> Transactions { get; }
 
         /// <summary>
         /// Gets transactions which occured on or after <see cref="from"/> up to the <see cref="to"/>
@@ -268,7 +281,7 @@ namespace NoFuture.Rand
         /// </param>
         /// <param name="includeThoseOnToDate"></param>
         /// <returns></returns>
-        List<Transaction> GetTransactionsBetween(DateTime from, DateTime to, bool includeThoseOnToDate = false);
+        List<ITransaction> GetTransactionsBetween(DateTime from, DateTime to, bool includeThoseOnToDate = false);
 
         /// <summary>
         /// Returns a negative value being the sum of all payments-out between dates in <see cref="between"/>
@@ -309,14 +322,14 @@ namespace NoFuture.Rand
     public class Balance : IBalance
     {
         #region fields
-        private readonly List<Transaction>  _transactions = new List<Transaction>();
-        private readonly IComparer<Transaction> _comparer = new TransactionComparer();
+        private readonly List<ITransaction>  _transactions = new List<ITransaction>();
+        private readonly IComparer<ITransaction> _comparer = new TransactionComparer();
         private readonly Func<Decimal, bool> _debitOp = x => x < 0;
         private readonly Func<Decimal, bool> _creditOp = x => x > 0;
         #endregion
 
         #region properties
-        public List<Transaction> Transactions
+        public List<ITransaction> Transactions
         {
             get
             {
@@ -341,10 +354,10 @@ namespace NoFuture.Rand
         public Pecuniam GetCurrent(DateTime dt, float rate)
         {
             if (_transactions.Count <= 0)
-                return new Pecuniam(0);
+                return Pecuniam.Zero;
 
-            if (Transactions.All(x => DateTime.Compare(x.AtTime, dt) > 0))
-                return new Pecuniam(0);
+            if (Transactions.All(x => x.AtTime > dt))
+                return Pecuniam.Zero;
 
             var prev = Transactions[0];
             var rest = Transactions.Skip(1);
@@ -352,7 +365,7 @@ namespace NoFuture.Rand
             var bal = prev.Cash.Amount;
             foreach (var t in rest)
             {
-                if (DateTime.Compare(t.AtTime, dt) > 0)
+                if (t.AtTime > dt)
                     break;
                 var days = (t.AtTime - prev.AtTime).TotalDays;
                 bal = bal.PerDiemInterest(rate, days);
@@ -370,9 +383,9 @@ namespace NoFuture.Rand
             //get very first recorded transaction
             var oldestTransaction = Transactions.FirstOrDefault();
             if (oldestTransaction == null)
-                return new Pecuniam(0);
+                return Pecuniam.Zero;
 
-            var bal = new Pecuniam(0);
+            var bal = Pecuniam.Zero;
 
             //set first transaction as the lower bounds of the current time-frame
             var prevVdt = oldestTransaction.AtTime;
@@ -412,7 +425,7 @@ namespace NoFuture.Rand
             return bal;
         }
 
-        public List<Transaction> GetTransactionsBetween(DateTime from, DateTime to, bool includeThoseOnToDate = false)
+        public List<ITransaction> GetTransactionsBetween(DateTime from, DateTime to, bool includeThoseOnToDate = false)
         {
             if (includeThoseOnToDate)
             {
@@ -429,7 +442,7 @@ namespace NoFuture.Rand
         {
             var ts = Transactions;
             if (ts.Count <= 0)
-                return new Pecuniam(0);
+                return Pecuniam.Zero;
 
             if (between == null)
                 throw new ArgumentNullException(nameof(between));
@@ -448,7 +461,7 @@ namespace NoFuture.Rand
                     .ToList();
 
             if (paymentsInRange.Count == 0)
-                return new Pecuniam(0);
+                return Pecuniam.Zero;
 
             var sumPayments = paymentsInRange.Select(x => x.Cash.Amount).Sum();
             return new Pecuniam(sumPayments);

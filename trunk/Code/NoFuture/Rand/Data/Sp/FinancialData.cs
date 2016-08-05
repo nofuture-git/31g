@@ -34,7 +34,7 @@ namespace NoFuture.Rand.Data.Sp
             get
             {
                 if(TotalLiabilities.Amount == 0)
-                    return new Pecuniam(0);
+                    return Pecuniam.Zero;
                 var nw = TotalAssets/TotalLiabilities;
                 return new Pecuniam(Math.Round(nw.Amount, 3));
             }
@@ -58,7 +58,7 @@ namespace NoFuture.Rand.Data.Sp
             get
             {
                 if(Revenue.Amount == 0)
-                    return new Pecuniam(0);
+                    return Pecuniam.Zero;
                 var pm = NetIncome/Revenue;
 
                 return new Pecuniam(Math.Round(pm.Amount, 3));

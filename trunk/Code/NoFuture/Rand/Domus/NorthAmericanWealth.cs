@@ -92,15 +92,19 @@ namespace NoFuture.Rand.Domus
 
         #region methods
 
-        protected internal void GetRandomRent()
+        /// <summary>
+        /// Creates random <see cref="Rent"/> instances with a history and adds
+        /// it to the <see cref="Opes.HomeDebt"/> collection.
+        /// </summary>
+        /// <param name="stdDevAsPercent"></param>
+        protected internal void GetRandomRent(double stdDevAsPercent = 0.1725D)
         {
             if (!IsRenting)
                 return;
             //create a rent object
             var avgRent = (double)Rent.GetAvgAmericanRentByYear(null).Amount;
-            avgRent = avgRent + avgRent * _homeDebtFactor;
 
-            var randRent = Math.Round(Etx.RandomValueInNormalDist(avgRent, (avgRent * 0.1725)), 2);
+            var randRent = GetRandomFactorValue(FactorTables.HomeDebt, _homeDebtFactor, stdDevAsPercent, avgRent);
             var isYearTerm = Etx.CoinToss;
             var rendTerm = isYearTerm ? 12 : 6;
             var randDate = Etx.Date(0, DateTime.Today.AddDays(-2), isYearTerm ? 360 : 178);
@@ -129,22 +133,17 @@ namespace NoFuture.Rand.Domus
             HomeDebt.Add(rent);
         }
 
-        protected internal void GetRandomHomeLoan()
+        /// <summary>
+        /// Creates random <see cref="FixedRateLoan"/> instances with a history and adds
+        /// it to the <see cref="Opes.HomeDebt"/> collection.
+        /// </summary>
+        /// <param name="stdDevAsPercent"></param>
+        protected internal void GetRandomHomeLoan(double stdDevAsPercent = 0.1285D)
         {
-            const double STD_DEV_PERCENT = 0.1285D;
             //calc a rand amount of what is still owed on house
-            var baseHomeDebt = GetFactorBaseValue(FactorTables.HomeDebt);
-            baseHomeDebt += baseHomeDebt * _homeDebtFactor;
-            var randHouseDebt =
-                Math.Round(
-                    Etx.RandomValueInNormalDist(Math.Round(baseHomeDebt, 0), Math.Round(baseHomeDebt * STD_DEV_PERCENT, 0)), 2);
-
+            var randHouseDebt = GetRandomFactorValue(FactorTables.HomeDebt, _homeDebtFactor, stdDevAsPercent);
             //calc rand amount of equity accrued on house
-            var baseHomeEquity = GetFactorBaseValue(FactorTables.HomeEquity);
-            baseHomeEquity += baseHomeEquity * _homeEquityFactor;
-            var randHouseEquity =
-                Math.Round(
-                    Etx.RandomValueInNormalDist(Math.Round(baseHomeEquity, 0), Math.Round(baseHomeEquity * STD_DEV_PERCENT, 0)), 2);
+            var randHouseEquity = GetRandomFactorValue(FactorTables.HomeEquity, _homeEquityFactor, stdDevAsPercent);
 
             //get rand interest rate weighted by score
             var randRate = CreditScore.GetRandomInterestRate(null, Gov.Fed.RiskFreeInterestRate.DF_VALUE) * 0.01;
@@ -194,9 +193,57 @@ namespace NoFuture.Rand.Domus
             HomeDebt.Add(loan);
         }
 
-        protected internal void GetRandomCcDebt()
+        /// <summary>
+        /// Creates random <see cref="CreditCard"/> instances with a history and adds
+        /// it to the <see cref="Opes.CreditCardDebt"/> collection.
+        /// </summary>
+        /// <param name="stdDevAsPercent"></param>
+        protected internal bool GetRandomCcDebt(double stdDevAsPercent = 0.1285D, double maxCcDebt = 15000D)
         {
-            throw new NotImplementedException();
+            var randCcValue = GetRandomFactorValue(FactorTables.CreditCardDebt, _ccDebtFactor, stdDevAsPercent);
+            System.Diagnostics.Debug.WriteLine($"Target is {randCcValue}");
+
+            //have we already exceeded abs max
+            if ((double)GetTotalCurrentCcDebt().Amount > maxCcDebt)
+                return false;
+
+            //create random cc
+            var cc = CreditCard.GetRandomCc(_amer, CreditScore);
+
+            //determine timespan for generated history
+            var historyTs = DateTime.Now - cc.CardHolderSince;
+
+            //create charge history
+            for (var i = 1; i < historyTs.Days; i++)
+            {
+                var loopDt = cc.CardHolderSince.AddDays(i);
+                if (cc.GetStatus(loopDt) == AccountStatus.Closed)
+                    break;
+
+                CreateSingleDaysCcCharges(cc, loopDt, randCcValue);
+
+                if (i%30 != 0 || cc.GetCurrentBalance(loopDt).Amount < 0.0M)
+                    continue;
+
+                var minDue = cc.GetMinPayment(loopDt);
+                if(minDue < new Pecuniam(10.0M))
+                    minDue = new Pecuniam(10.0M);
+                if (_amer.Personality.GetRandomActsIrresponsible())
+                {
+                    var fowardDays = Etx.IntNumber(1, 45);
+                    var paidDate = loopDt.AddDays(fowardDays);
+                    cc.MakeAPayemnt(paidDate, minDue);
+                    i += fowardDays;
+                }
+                else
+                {
+                    var additionalPaid = Pecuniam.GetRandPecuniam(20, 200, 10);
+                    cc.MakeAPayemnt(loopDt, minDue + additionalPaid);
+                }
+            }
+
+            CreditCardDebt.Add(cc);
+            return (double) GetTotalCurrentCcDebt().Amount < maxCcDebt;
         }
 
         protected internal void GetRandomBankAccounts()
@@ -210,6 +257,72 @@ namespace NoFuture.Rand.Domus
         protected internal void GetRandomVehicles()
         {
             throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Get a random value for the given <see cref="factor"/> table.
+        /// </summary>
+        /// <param name="factor"></param>
+        /// <param name="factorMultiplier"></param>
+        /// <param name="stdDevAsPercent"></param>
+        /// <param name="assignedBase">
+        /// Optional value to directly assign a factor table's base value, defaults to 
+        /// the value from <see cref="GetFactorBaseValue"/>
+        /// </param>
+        /// <returns></returns>
+        protected internal double GetRandomFactorValue(FactorTables factor, double factorMultiplier,
+            double stdDevAsPercent, double? assignedBase = null)
+        {
+            var baseValue = assignedBase.GetValueOrDefault(GetFactorBaseValue(factor));
+            baseValue = Math.Round(baseValue + baseValue*factorMultiplier, 2);
+            var randValue = Math.Round(
+                Etx.RandomValueInNormalDist(Math.Round(baseValue, 0), Math.Round(baseValue*stdDevAsPercent, 0)), 2);
+            return randValue;
+        }
+
+        /// <summary>
+        /// Creates purchase transactions on <see cref="cc"/> at random for the given <see cref="loopDt"/>.
+        /// </summary>
+        /// <param name="cc"></param>
+        /// <param name="loopDt"></param>
+        /// <param name="randCcValue"></param>
+        protected internal void CreateSingleDaysCcCharges(CreditCard cc, DateTime loopDt, double randCcValue)
+        {
+            //build charges history
+            var keepSpending = !cc.IsMaxedOut(loopDt);
+            while (keepSpending)//want possiable multiple transactions per day
+            {
+                //if we reached target then exit 
+                if (cc.GetCurrentBalance(loopDt) >= new Pecuniam((decimal)randCcValue))
+                {
+                    return;
+                }
+
+                //make purchase based on day-of-week and card holder personality
+                var v = 2;
+                if (loopDt.DayOfWeek == DayOfWeek.Friday || loopDt.DayOfWeek == DayOfWeek.Saturday ||
+                    loopDt.DayOfWeek == DayOfWeek.Sunday)
+                    v = 4;
+                if (_amer.Personality.GetRandomActsIrresponsible())
+                    v = 7;
+                if (Etx.TryBelowOrAt(v, Etx.Dice.Ten))
+                {
+                    //create some random purchase amount
+                    var chargeAmt = Pecuniam.GetRandPecuniam(2, v * 10);
+
+                    //allow rare case for some big ticket item
+                    if (Etx.TryAboveOrAt(94, Etx.Dice.OneHundred))
+                        chargeAmt = Pecuniam.GetRandPecuniam(100, 1000);
+
+                    //check if cardholder is maxed-out
+                    if (!cc.ChargeIt(loopDt, chargeAmt))
+                    {
+                        return;
+                    }
+                }
+                //determine if more transactions for this day
+                keepSpending = Etx.CoinToss;
+            }
         }
 
         /// <summary>

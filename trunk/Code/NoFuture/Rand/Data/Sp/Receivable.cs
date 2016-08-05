@@ -37,9 +37,15 @@ namespace NoFuture.Rand.Data.Sp
         /// <returns></returns>
         AccountStatus GetStatus(DateTime dt);
 
+        /// <summary>
+        /// Get the current balance for the given <see cref="dt"/>
+        /// </summary>
+        /// <param name="dt"></param>
+        /// <returns></returns>
         Pecuniam GetCurrentBalance(DateTime dt);
     }
 
+    [Serializable]
     public abstract class ReceivableBase : IReceivable
     {
         protected internal TradeLine _tl;

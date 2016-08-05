@@ -68,5 +68,27 @@ namespace NoFuture.Tests.Rand
             }
         }
 
+        [TestMethod]
+        public void TestGetRandomCcDebt()
+        {
+            var amer = Person.American();
+            var testSubject = new NorthAmericanWealth(amer);
+
+            testSubject.GetRandomCcDebt();
+
+            Assert.IsTrue(testSubject.CreditCardDebt.Any());
+
+            var testResult = testSubject.CreditCardDebt.First() as CreditCard;
+            Assert.IsNotNull(testResult);
+
+            System.Diagnostics.Debug.WriteLine(testResult.CardHolderSince);
+            System.Diagnostics.Debug.WriteLine(testResult.Max);
+
+            foreach (var t in testResult.TradeLine.Balance.Transactions)
+            {
+                System.Diagnostics.Debug.WriteLine(t);
+            }
+        }
+
     }
 }

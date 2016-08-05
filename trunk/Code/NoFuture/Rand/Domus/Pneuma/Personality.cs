@@ -31,12 +31,12 @@ namespace NoFuture.Rand.Domus.Pneuma
 
         public bool GetRandomActsIrresponsible()
         {
-            return Etx.RandomValueInNormalDist(Openness.Value.Zscore, Conscientiousness.Value.Zscore) < 0;
+            return Etx.RandomValueInNormalDist(Conscientiousness.Value.Zscore, Conscientiousness.Value.StdDev) < 0;
         }
 
         public bool GetRandomActsStressed()
         {
-            return Etx.RandomValueInNormalDist(Neuroticism.Value.Zscore, Conscientiousness.Value.Zscore) < 0;
+            return Etx.RandomValueInNormalDist(Neuroticism.Value.Zscore, Neuroticism.Value.StdDev) > 0;
         }
     }
 
@@ -79,7 +79,7 @@ namespace NoFuture.Rand.Domus.Pneuma
         }
 
         public double Zscore { get; }
-        public double StdDev { get; } = 0.124D;
+        public double StdDev { get; } = 0.125D;
     }
     [Serializable]
     public abstract class Trait : ITrait

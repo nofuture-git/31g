@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using NoFuture.Rand.Com;
 
 namespace NoFuture.Rand.Data.Sp //Sequere pecuniam
@@ -56,17 +57,19 @@ namespace NoFuture.Rand.Data.Sp //Sequere pecuniam
         public override Pecuniam GetMinPayment(DateTime dt)
         {
             var bal = GetCurrentBalance(dt);
-            if (bal < new Pecuniam(0))
-                return new Pecuniam(0);
+            if (bal < Pecuniam.Zero)
+                return Pecuniam.Zero;
 
             var amt = bal.Amount * Convert.ToDecimal(MinPaymentRate);
-            return new Pecuniam(Math.Round(amt, 2) * -1);
+            return new Pecuniam(Math.Round(amt, 2)).Neg;
         }
         public void MakeAPayemnt(DateTime dt, Pecuniam amt)
         {
-            if (amt.Amount > 0)
-                amt = new Pecuniam(-1 * amt.Amount);
-            TradeLine.Balance.Transactions.Add(new Transaction(dt, amt));
+            if (amt == Pecuniam.Zero)
+                return;
+            while (TradeLine.Balance.Transactions.Any(x => DateTime.Compare(x.AtTime, dt) == 0))
+                dt = dt.AddMilliseconds(10);
+            TradeLine.Balance.Transactions.Add(new Transaction(dt, amt.Neg));
         }
         #endregion
     }
@@ -79,7 +82,7 @@ namespace NoFuture.Rand.Data.Sp //Sequere pecuniam
         public FixedRateLoan(DateTime openedDate, float minPaymentRate, Pecuniam amt = null) : base(openedDate, minPaymentRate)
         {
             if(amt != null && amt.Amount != 0)
-                _tl.Balance.Transactions.Add(new Transaction(openedDate, new Pecuniam(Math.Abs(amt.Amount))));
+                _tl.Balance.Transactions.Add(new Transaction(openedDate, amt.Abs));
         }
         #endregion
 
@@ -99,7 +102,7 @@ namespace NoFuture.Rand.Data.Sp //Sequere pecuniam
         public VariableRateLoan(DateTime openedDate, float minPaymentRate, Pecuniam amt = null) : base(openedDate, minPaymentRate)
         {
             if (amt != null && amt.Amount != 0)
-                _tl.Balance.Transactions.Add(new Transaction(openedDate, new Pecuniam(Math.Abs(amt.Amount))));
+                _tl.Balance.Transactions.Add(new Transaction(openedDate, amt.Abs));
         }
         #endregion
 

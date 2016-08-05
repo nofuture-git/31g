@@ -36,7 +36,7 @@ namespace NoFuture.Rand.Data.Sp
             }
             else
             {
-                _proRatedAmt = new Pecuniam(0);
+                _proRatedAmt = Pecuniam.Zero;
                 _dtOfFirstFullRentDue = signing;
             }
             LeaseExpiry = _dtOfFirstFullRentDue.AddMonths(forMonths);
@@ -55,7 +55,7 @@ namespace NoFuture.Rand.Data.Sp
         {
             //when date is prior to signing 
             return dt.ComparedTo(TradeLine.OpennedDate) == ChronoCompare.Before
-                ? new Pecuniam(0)
+                ? Pecuniam.Zero
                 : TradeLine.Balance.GetCurrent(dt, 0);
         }
 
@@ -81,7 +81,7 @@ namespace NoFuture.Rand.Data.Sp
         {
             //when date is prior to signing 
             if (dt.ComparedTo(TradeLine.OpennedDate) == ChronoCompare.Before)
-                return new Pecuniam(0);
+                return Pecuniam.Zero;
 
             //when between signing and first months rent
             if(dt.ComparedTo(_dtOfFirstFullRentDue) == ChronoCompare.Before)

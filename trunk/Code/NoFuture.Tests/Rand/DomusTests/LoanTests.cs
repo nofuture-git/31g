@@ -9,6 +9,7 @@ namespace NoFuture.Tests.Rand.DomusTests
     [TestClass]
     public class LoanTests
     {
+
         [TestMethod]
         public void TestGetMinPayment()
         {
@@ -28,6 +29,8 @@ namespace NoFuture.Tests.Rand.DomusTests
         {
             var testSubject = new FixedRateLoan(DateTime.Today, 0.0885F, new Pecuniam(150000)) {Rate = 0.05F};
             var testResult = testSubject.GetCurrentBalance(DateTime.Today.AddYears(30));
+
+            Dbg.WriteLine(testResult);
 
             var fv = NoFuture.Util.Math.Econ.PerDiemInterest(150000M, 0.03F,
                 (DateTime.Today.AddYears(30) - DateTime.Today).TotalDays);

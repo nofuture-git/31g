@@ -88,6 +88,10 @@ namespace NoFuture.Rand
     /// Base type for identifiers whose value is derived 
     /// from an array of <see cref="Rchar"/>(s).
     /// </summary>
+    /// <remarks>
+    /// Given the format as an ordered-array of <see cref="Rchar"/>
+    /// this type can both create random values and validate them.
+    /// </remarks>
     [Serializable]
     public abstract class RIdentifier : Identifier
     {
@@ -131,6 +135,10 @@ namespace NoFuture.Rand
         #endregion
     }
 
+    /// <summary>
+    /// An extension of <see cref="RIdentifier"/> having a f(x) pointer 
+    /// to some algo for a check digit.
+    /// </summary>
     [Serializable]
     public abstract class RIdentifierWithChkDigit : RIdentifier
     {
