@@ -90,5 +90,20 @@ namespace NoFuture.Tests.Rand
             }
         }
 
+        [TestMethod]
+        public void TestGetPaycheck()
+        {
+            var amer = new NorthAmerican(NAmerUtil.GetWorkingAdultBirthDate(), Gender.Female);
+            var testSubject = new NorthAmericanWealth(amer);
+            System.Diagnostics.Debug.WriteLine(string.Join(" ", amer.Age, amer.MaritialStatus, amer.Education, amer.Race));
+
+            var testResult = testSubject.GetPaycheck(null);
+            System.Diagnostics.Debug.WriteLine(testResult);
+            Assert.IsNotNull(testResult);
+            Assert.IsTrue(testResult.Amount > 0.0M);
+
+
+        }
+
     }
 }

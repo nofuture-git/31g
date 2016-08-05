@@ -46,7 +46,7 @@ namespace NoFuture.Rand.Domus
 
         #region ctor
         /// <summary>
-        /// Rent prob is simple dice roll for any <see cref="american"/> which is over 27.
+        /// Creates random transaction history.
         /// </summary>
         /// <param name="american"></param>
         /// <remarks>
@@ -93,7 +93,7 @@ namespace NoFuture.Rand.Domus
         #region methods
 
         /// <summary>
-        /// Creates random <see cref="Rent"/> instances with a history and adds
+        /// Creates random <see cref="Rent"/> instance with a history and adds
         /// it to the <see cref="Opes.HomeDebt"/> collection.
         /// </summary>
         /// <param name="stdDevAsPercent"></param>
@@ -134,7 +134,7 @@ namespace NoFuture.Rand.Domus
         }
 
         /// <summary>
-        /// Creates random <see cref="FixedRateLoan"/> instances with a history and adds
+        /// Creates random <see cref="FixedRateLoan"/> instance with a history and adds
         /// it to the <see cref="Opes.HomeDebt"/> collection.
         /// </summary>
         /// <param name="stdDevAsPercent"></param>
@@ -259,6 +259,43 @@ namespace NoFuture.Rand.Domus
         protected internal void GetRandomVehicles()
         {
             throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Calc a yearly income salary or pay.
+        /// </summary>
+        /// <param name="factorCalc">
+        /// Optional, allows caller to specify how to factor the raw results of 
+        /// <see cref="GetAvgEarningPerYear"/> for the current date.
+        /// </param>
+        /// <param name="stdDevInUsd"></param>
+        /// <returns></returns>
+        protected internal Pecuniam GetPaycheck(Func<double,double, double> factorCalc = null,  double stdDevInUsd = 2000)
+        {
+            var eq = GetAvgEarningPerYear();
+            if (eq == null)
+                return null;
+            var baseValue = Math.Round(eq.SolveForY(DateTime.Today.ToDouble()), 2);
+            if (baseValue <= 0)
+                return null;
+
+            Func<double, double, double> dfFunc = (d, d1) =>
+            {
+                var factorVal = (d/5)*d1;
+                while (Math.Abs(factorVal) > d)
+                    factorVal = factorVal/2;
+                return factorVal;
+            };
+
+            factorCalc = factorCalc ?? dfFunc;
+
+            var factorValue = factorCalc(baseValue, _netWorthFactor);
+
+            baseValue = Math.Round(baseValue + factorValue, 2);
+
+            var randValue = Math.Round(
+                Etx.RandomValueInNormalDist(Math.Round(baseValue, 0), stdDevInUsd), 2);
+            return new Pecuniam((decimal)randValue);
         }
 
         /// <summary>
