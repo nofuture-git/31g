@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NoFuture.Rand.Domus;
 
@@ -61,6 +62,39 @@ namespace NoFuture.Tests.Rand
             Assert.IsTrue(testResult >= 0);
             Assert.IsTrue(testResult < 4);
             System.Diagnostics.Debug.WriteLine(testResult);
+        }
+
+        [TestMethod]
+        public void TestDiscreteRange()
+        {
+            var testResult = NoFuture.Rand.Etx.DiscreteRange(null);
+
+            //returns null 
+            Assert.IsNull(testResult);
+
+            //handles only one thing
+            testResult = NoFuture.Rand.Etx.DiscreteRange(new Dictionary<string, double> {{"onlyOne", 12}});
+            Assert.AreEqual("onlyOne", testResult);
+
+            var testInput = new Dictionary<string, double>()
+            {
+                {"small", 2.5},
+                {"expected", 95.0},
+                {"x-small", 1.0},
+                {"another-small", 1.5}
+            };
+
+            var testRsltCount = 0.0D;
+            for (var i = 0; i < 100; i++)
+            {
+                testResult = NoFuture.Rand.Etx.DiscreteRange(testInput);
+                if (testResult == "expected")
+                    testRsltCount += 1;
+            }
+
+            var aggTestResult = testRsltCount/100.0D;
+            System.Diagnostics.Debug.WriteLine(aggTestResult);
+            Assert.IsTrue(0.925 <= aggTestResult && aggTestResult <= 0.975);
         }
     }
 }

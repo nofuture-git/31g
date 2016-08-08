@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Xml;
@@ -144,12 +145,13 @@ namespace NoFuture.Rand.Data.Types
 
         public const string ZIP_CODE_REGEX = @"\x20([0-9]{5})(\x2d[0-9]{4})?";
 
+        public const string DF_ZIPCODE_PREFIX = "100";//new york, new york
         #endregion
 
         #region fields
 
-        private Gov.UsState _myState;
-
+        private UsState _myState;
+        private static readonly Dictionary<string,double> _zipCodePrefix2Pop = new Dictionary<string, double>();
         #endregion
 
         #region ctor
@@ -168,7 +170,7 @@ namespace NoFuture.Rand.Data.Types
 
         public string PostalState => data.StateAbbrv;
 
-        public Gov.UsState State => _myState ??
+        public UsState State => _myState ??
                                     (_myState =
                                         UsState.GetStateByPostalCode(data.StateAbbrv));
 
@@ -178,6 +180,45 @@ namespace NoFuture.Rand.Data.Types
         public MStatArea Msa { get; set; }
         public ComboMStatArea CbsaCode { get; set; }
         public LinearEquation AverageEarnings { get; set; }
+
+        /// <summary>
+        /// Dictionary parsed from 'US_Zip_ProbTable.xml'
+        /// </summary>
+        public static Dictionary<string, double> ZipCodePrefix2Population
+        {
+            get
+            {
+                if (_zipCodePrefix2Pop.Any()) return _zipCodePrefix2Pop;
+                var usZipsXmlDocument = TreeData.UsZipProbabilityTable;
+
+                var zipCodesElem = usZipsXmlDocument?.SelectSingleNode("//zip-codes");
+
+                if (zipCodesElem == null || !zipCodesElem.HasChildNodes)
+                    return _zipCodePrefix2Pop;
+
+                foreach (var zipNode in zipCodesElem.ChildNodes)
+                {
+                    var zipElem = zipNode as XmlElement;
+                    if (zipElem == null)
+                        continue;
+                    var key = zipElem.Attributes["prefix"]?.Value;
+                    var strVal = zipElem.Attributes["weight"]?.Value;
+
+                    if (string.IsNullOrWhiteSpace(key) || string.IsNullOrWhiteSpace(strVal))
+                        continue;
+
+                    double val;
+                    if (!double.TryParse(strVal, out val))
+                        continue;
+
+                    if (_zipCodePrefix2Pop.ContainsKey(key))
+                        _zipCodePrefix2Pop[key] = val;
+                    else
+                        _zipCodePrefix2Pop.Add(key, val);
+                }
+                return _zipCodePrefix2Pop;
+            }
+        }
 
         #endregion
 

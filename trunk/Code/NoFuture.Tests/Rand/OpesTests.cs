@@ -44,11 +44,6 @@ namespace NoFuture.Tests.Rand
             testSubject.GetRandomRent();
             var rent = testSubject.HomeDebt.FirstOrDefault() as Rent;
             Assert.IsNotNull(rent);
-
-            foreach (var t in rent.TradeLine.Balance.Transactions)
-            {
-                System.Diagnostics.Debug.WriteLine(t);
-            }
         }
 
         [TestMethod]
@@ -62,10 +57,7 @@ namespace NoFuture.Tests.Rand
             var homeLoan = testSubject.HomeDebt.FirstOrDefault() as FixedRateLoan;
             Assert.IsNotNull(homeLoan);
 
-            foreach (var t in homeLoan.TradeLine.Balance.Transactions)
-            {
-                System.Diagnostics.Debug.WriteLine(t);
-            }
+            System.Diagnostics.Debug.WriteLine(homeLoan.TradeLine.Balance.ToString());
         }
 
         [TestMethod]
@@ -84,10 +76,8 @@ namespace NoFuture.Tests.Rand
             System.Diagnostics.Debug.WriteLine(testResult.CardHolderSince);
             System.Diagnostics.Debug.WriteLine(testResult.Max);
 
-            foreach (var t in testResult.TradeLine.Balance.Transactions)
-            {
-                System.Diagnostics.Debug.WriteLine(t);
-            }
+            System.Diagnostics.Debug.WriteLine(testResult.TradeLine.Balance.ToString());
+
         }
 
         [TestMethod]
@@ -101,9 +91,6 @@ namespace NoFuture.Tests.Rand
             System.Diagnostics.Debug.WriteLine(testResult);
             Assert.IsNotNull(testResult);
             Assert.IsTrue(testResult.Amount > 0.0M);
-
-
         }
-
     }
 }

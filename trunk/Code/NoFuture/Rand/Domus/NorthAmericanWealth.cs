@@ -320,27 +320,27 @@ namespace NoFuture.Rand.Domus
         }
 
         /// <summary>
-        /// Creates purchase transactions on <see cref="cc"/> at random for the given <see cref="loopDt"/>.
+        /// Creates purchase transactions on <see cref="cc"/> at random for the given <see cref="ccDate"/>.
         /// </summary>
         /// <param name="cc"></param>
-        /// <param name="loopDt"></param>
-        /// <param name="randCcValue"></param>
-        protected internal void CreateSingleDaysCcCharges(CreditCard cc, DateTime loopDt, double randCcValue)
+        /// <param name="ccDate"></param>
+        /// <param name="ccBalMax"></param>
+        protected internal void CreateSingleDaysCcCharges(CreditCard cc, DateTime ccDate, double ccBalMax)
         {
             //build charges history
-            var keepSpending = !cc.IsMaxedOut(loopDt);
+            var keepSpending = !cc.IsMaxedOut(ccDate);
             while (keepSpending)//want possiable multiple transactions per day
             {
                 //if we reached target then exit 
-                if (cc.GetCurrentBalance(loopDt) >= new Pecuniam((decimal)randCcValue))
+                if (cc.GetCurrentBalance(ccDate) >= new Pecuniam((decimal)ccBalMax))
                 {
                     return;
                 }
 
                 //make purchase based on day-of-week and card holder personality
                 var v = 2;
-                if (loopDt.DayOfWeek == DayOfWeek.Friday || loopDt.DayOfWeek == DayOfWeek.Saturday ||
-                    loopDt.DayOfWeek == DayOfWeek.Sunday)
+                if (ccDate.DayOfWeek == DayOfWeek.Friday || ccDate.DayOfWeek == DayOfWeek.Saturday ||
+                    ccDate.DayOfWeek == DayOfWeek.Sunday)
                     v = 4;
                 if (_amer.Personality.GetRandomActsIrresponsible())
                     v = 7;
@@ -354,7 +354,7 @@ namespace NoFuture.Rand.Domus
                         chargeAmt = Pecuniam.GetRandPecuniam(100, 1000);
 
                     //check if cardholder is maxed-out
-                    if (!cc.MakeAPurchase(loopDt, chargeAmt))
+                    if (!cc.MakeAPurchase(ccDate, chargeAmt))
                     {
                         return;
                     }

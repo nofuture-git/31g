@@ -74,7 +74,7 @@ namespace NoFuture.Rand.Data.Sp
         {
             if (amt.Amount > 0)
                 amt = new Pecuniam(-1*amt.Amount);
-            TradeLine.Balance.Transactions.Add(new Transaction(dt, amt));
+            TradeLine.Balance.AddTransaction(dt, amt);
         }
 
         protected internal Pecuniam GetExpectedTotalRent(DateTime dt)

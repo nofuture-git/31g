@@ -119,7 +119,7 @@ namespace NoFuture.Rand.Data.Sp
             if (TradeLine.Closure != null && DateTime.Compare(TradeLine.Closure.Value.ClosedDate, dt) < 0)
                 return AccountStatus.Closed;
 
-            if (TradeLine.Balance.Transactions.Count <= 0)
+            if (TradeLine.Balance.IsEmpty)
                 return AccountStatus.NoHistory;
 
             //make sure something is actually owed

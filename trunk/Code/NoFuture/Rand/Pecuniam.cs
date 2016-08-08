@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using NoFuture.Exceptions;
+using NoFuture.Rand.Com;
 using NoFuture.Util.Math;
 
 namespace NoFuture.Rand
@@ -195,6 +196,7 @@ namespace NoFuture.Rand
         Guid UniqueId { get; }
         DateTime AtTime { get; }
         Pecuniam Cash { get; }
+        string Description { get; }
     }
 
     /// <summary>
@@ -209,16 +211,18 @@ namespace NoFuture.Rand
         private readonly Guid _guid = Guid.NewGuid();
         #endregion
 
-        public Transaction(DateTime atTime, Pecuniam amt)
+        public Transaction(DateTime atTime, Pecuniam amt, string description = null)
         {
             _atTime = atTime;
             _cash = amt;
+            Description = description;
         }
 
         #region properties
         public Guid UniqueId => _guid;
         public DateTime AtTime => _atTime;
         public Pecuniam Cash => _cash;
+        public string Description { get; }
 
         #endregion
 
@@ -263,10 +267,15 @@ namespace NoFuture.Rand
     /// </summary>
     public interface IBalance
     {
+        bool IsEmpty { get; }
+
         /// <summary>
-        /// Sorted oldest (index 0) to most current (index Count - 1)
+        /// Adds the new transaction to the balance
         /// </summary>
-        List<ITransaction> Transactions { get; }
+        /// <param name="dt"></param>
+        /// <param name="amnt"></param>
+        /// <param name="note"></param>
+        void AddTransaction(DateTime dt, Pecuniam amnt, string note = null);
 
         /// <summary>
         /// Gets transactions which occured on or after <see cref="from"/> up to the <see cref="to"/>
@@ -316,13 +325,14 @@ namespace NoFuture.Rand
         /// </param>
         /// <returns></returns>
         Pecuniam GetCurrent(DateTime dt, Dictionary<DateTime, float> variableRate);
+
     }
 
     [Serializable]
     public class Balance : IBalance
     {
         #region fields
-        private readonly List<ITransaction>  _transactions = new List<ITransaction>();
+        protected internal readonly List<ITransaction>  _transactions = new List<ITransaction>();
         private readonly IComparer<ITransaction> _comparer = new TransactionComparer();
         private readonly Func<Decimal, bool> _debitOp = x => x < 0;
         private readonly Func<Decimal, bool> _creditOp = x => x > 0;
@@ -337,11 +347,14 @@ namespace NoFuture.Rand
                 return _transactions;
             }
         }
+
+        public bool IsEmpty => _transactions.Count <= 0;
+
         #endregion
 
         #region methods
 
-        public void AddTransaction(DateTime dt, Pecuniam amnt)
+        public void AddTransaction(DateTime dt, Pecuniam amnt, string note = null)
         {
             if (amnt == Pecuniam.Zero)
                 return;
@@ -477,6 +490,12 @@ namespace NoFuture.Rand
             var sumPayments = paymentsInRange.Select(x => x.Cash.Amount).Sum();
             return new Pecuniam(sumPayments);
         }
+
+        public override string ToString()
+        {
+            return string.Join("\n", _transactions);
+        }
+
         #endregion
     }
 }

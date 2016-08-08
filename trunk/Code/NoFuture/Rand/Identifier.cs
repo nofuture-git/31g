@@ -254,6 +254,12 @@ namespace NoFuture.Rand
         public double White { get; set; }
         public double Pacific { get; set; }
         public double Mixed { get; set; }
+
+        public override string ToString()
+        {
+            return string.Join(" ", "AmericanIndian", AmericanIndian, "Asian", Asian, "Black", Black, "Hispanic", Hispanic,
+                "Mixed", Mixed, "Pacific", Pacific, "White", White);
+        }
     }
 
     [Flags]

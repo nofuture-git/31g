@@ -57,6 +57,9 @@ namespace NoFuture.Tests.Rand
             var testResult = NAmerUtil.GetAmericanRace(TEST_ZIP);
             Assert.AreNotEqual(string.Empty,testResult);
             WriteLine(testResult);
+
+            testResult = NAmerUtil.GetAmericanRace("68415");
+            Assert.AreEqual(NorthAmericanRace.White, testResult);
         }
 
         [TestMethod]

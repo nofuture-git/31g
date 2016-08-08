@@ -39,6 +39,24 @@ namespace NoFuture.Rand.Data.Sp
             return string.Join(" ", GetType().Name, Bank, AccountNumber);
         }
 
+        public virtual void MakeADeposit(DateTime dt, Pecuniam val, string note = null)
+        {
+            if (val == Pecuniam.Zero)
+                return;
+            Balance.AddTransaction(dt, val.Abs, note);
+        }
+
+        public virtual bool MakeAWithdraw(DateTime dt, Pecuniam val, string note = null)
+        {
+            if (val == Pecuniam.Zero)
+                return true;
+
+            if (val > Balance.GetCurrent(dt, 0F))
+                return false;
+            Balance.AddTransaction(dt, val.Neg, note);
+            return true;
+        }
+
         public abstract Pecuniam Value { get; }
     }
 

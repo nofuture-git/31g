@@ -317,74 +317,37 @@ namespace NoFuture.Rand.Domus
         /// </returns>
         public static NorthAmericanRace GetAmericanRace(string zipCode)
         {
-            //defaults
-            if (string.IsNullOrWhiteSpace(zipCode))
-            {
-                var roll = Etx.IntNumber(0, 100);
-                if(roll >= 0 && roll < 61)
-                    return NorthAmericanRace.White;
-
-                if(roll >= 61 && roll < 73)
-                    return NorthAmericanRace.Black;
-
-                if(roll >= 73 && roll < 91)
-                    return NorthAmericanRace.Hispanic;
-
-                if(roll >= 91 && roll < 97)
-                    return NorthAmericanRace.Asian;
-
-                if(roll == 97)
-                    return NorthAmericanRace.Pacific;
-
-                if(roll == 98)
-                    return NorthAmericanRace.AmericanIndian;
-
-                if(roll == 99 || roll == 100)
-                    return NorthAmericanRace.Mixed;
-
-            }
             var amRace = RandomAmericanRaceWithRespectToZip(zipCode);
 
-            if (amRace == null)
-                return NorthAmericanRace.White;
-
-            var americanRaceProbabilityRanges = new List<AmericanRaceProbabilityRange>();
-            var prevFrom = 0.000001D;
-            var raceHashByZip = new Dictionary<NorthAmericanRace, double>
-            {
-                {NorthAmericanRace.AmericanIndian, amRace.AmericanIndian},
-                {NorthAmericanRace.Asian, amRace.Asian},
-                {NorthAmericanRace.Black, amRace.Black},
-                {NorthAmericanRace.Hispanic, amRace.Hispanic},
-                {NorthAmericanRace.Mixed, amRace.Mixed},
-                {NorthAmericanRace.Pacific, amRace.Pacific},
-                {NorthAmericanRace.White, amRace.White}
-            };
-
-            foreach (var key in raceHashByZip.Keys)
-            {
-                var val = raceHashByZip[key];
-                var f = prevFrom;
-                var t = (val + prevFrom);
-                americanRaceProbabilityRanges.Add(new AmericanRaceProbabilityRange
+            var raceHashByZip = amRace != null
+                ? new Dictionary<string, double>
                 {
-                    Name = key,
-                    From = f,
-                    To = t
-                });
-                prevFrom = (val + prevFrom + 0.000001D);
-            }
+                    {Enum.GetName(typeof(NorthAmericanRace), NorthAmericanRace.AmericanIndian), amRace.AmericanIndian},
+                    {Enum.GetName(typeof(NorthAmericanRace), NorthAmericanRace.Asian), amRace.Asian},
+                    {Enum.GetName(typeof(NorthAmericanRace), NorthAmericanRace.Black), amRace.Black},
+                    {Enum.GetName(typeof(NorthAmericanRace), NorthAmericanRace.Hispanic), amRace.Hispanic},
+                    {Enum.GetName(typeof(NorthAmericanRace), NorthAmericanRace.Mixed), amRace.Mixed},
+                    {Enum.GetName(typeof(NorthAmericanRace), NorthAmericanRace.Pacific), amRace.Pacific},
+                    {Enum.GetName(typeof(NorthAmericanRace), NorthAmericanRace.White), amRace.White}
+                }
+                : new Dictionary<string, double>
+                {
+                    {Enum.GetName(typeof(NorthAmericanRace), NorthAmericanRace.White), 61.0D},
+                    {Enum.GetName(typeof(NorthAmericanRace), NorthAmericanRace.Black), 12.0D},
+                    {Enum.GetName(typeof(NorthAmericanRace), NorthAmericanRace.Hispanic), 18.0D},
+                    {Enum.GetName(typeof(NorthAmericanRace), NorthAmericanRace.Asian), 6.0D},
+                    {Enum.GetName(typeof(NorthAmericanRace), NorthAmericanRace.Mixed), 2.0D},
+                    {Enum.GetName(typeof(NorthAmericanRace), NorthAmericanRace.Pacific), 1.0D},
+                    {Enum.GetName(typeof(NorthAmericanRace), NorthAmericanRace.AmericanIndian), 1.0D}
+                };
 
-            //pick one at random with probability
-            var pick = Etx.RationalNumber(0,100);
+            var randPick = Etx.DiscreteRange(raceHashByZip);
 
-            var race = NorthAmericanRace.White;
+            NorthAmericanRace pickOut;
+            Enum.TryParse(randPick, out pickOut);
 
-            var randomRace = americanRaceProbabilityRanges.FirstOrDefault(arpr => arpr.From <= pick && arpr.To >= pick);
-            if (randomRace != null)
-                race = randomRace.Name;
+            return pickOut;
 
-            return race;
         }
 
         /// <summary>
@@ -646,23 +609,9 @@ namespace NoFuture.Rand.Domus
         /// </summary>
         public static string RandomAmericanZipWithRespectToPop()
         {
-            XDocument usZips = null;
-            var usZipsXmlDocument = TreeData.UsZipProbabilityTable;
+            var zip2Wt = UsCityStateZip.ZipCodePrefix2Population;
 
-            if (usZipsXmlDocument == null)
-                return "100"; //New York
-
-            usZips = usZipsXmlDocument.ToXDocument();
-
-            var pickone = Etx.RationalNumber(1, 100);
-            var randnode =
-                usZips.Descendants("zip-code").FirstOrDefault(
-                    x =>
-                        Convert.ToDouble(x.Attribute("weight").Value) > pickone);
-            if (randnode == null)
-                return "100"; //New York
-
-            return randnode.Attribute("prefix").Value;
+            return !zip2Wt.Any() ? UsCityStateZip.DF_ZIPCODE_PREFIX : Etx.DiscreteRange(zip2Wt);
         }
 
         /// <summary>
@@ -678,26 +627,28 @@ namespace NoFuture.Rand.Domus
                 return null;
 
             //get the data for the given zip code
-            var zipStat = Data.TreeData.AmericanHighSchoolData.SelectSingleNode($"//zip-stat[@value='{zipCode}']");
+            var zipStatElem = TreeData.AmericanHighSchoolData.SelectSingleNode($"//zip-stat[@value='{zipCode}']");
 
-            if (zipStat == null || !zipStat.HasChildNodes)
+            if (zipStatElem == null || !zipStatElem.HasChildNodes)
             {
                 //try to find on the zip code prefix 
                 var zip3 = zipCode.Substring(0, 3);
-                var zipCodes =
-                    Data.TreeData.AmericanHighSchoolData.SelectNodes($"//zip-code[@prefix='{zip3}']");
+                var zipCodeElem =
+                    TreeData.AmericanHighSchoolData.SelectSingleNode($"//zip-code[@prefix='{zip3}']");
 
-                if (zipCodes == null || zipCodes.Count <= 0)
+                if (zipCodeElem == null || !zipCodeElem.HasChildNodes)
                     return null;
 
-                zipStat = zipCodes.Cast<XmlElement>().FirstOrDefault(x => x.HasChildNodes);
-                if (zipStat == null)
+                pick = Etx.MyRand.Next(0, zipCodeElem.ChildNodes.Count - 1);
+
+                zipStatElem = zipCodeElem.ChildNodes[pick];
+                if (zipStatElem == null)
                     return null;
             }
 
             AmericanHighSchool hsOut;
-            pick = Etx.MyRand.Next(0, zipStat.ChildNodes.Count - 1);
-            var hsNode = zipStat.ChildNodes[pick];
+            pick = Etx.MyRand.Next(0, zipStatElem.ChildNodes.Count - 1);
+            var hsNode = zipStatElem.ChildNodes[pick];
             if (!AmericanHighSchool.TryParseXml(hsNode as XmlElement, out hsOut))
                 return null;
             return hsOut.RacePercents;

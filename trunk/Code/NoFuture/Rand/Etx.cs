@@ -113,6 +113,38 @@ namespace NoFuture.Rand
         }
 
         /// <summary>
+        /// Picks a key at random from <see cref="tbl"/> where the 
+        /// probablity of each is the value over the sum-of-values.
+        /// </summary>
+        /// <param name="tbl"></param>
+        /// <returns></returns>
+        public static string DiscreteRange(Dictionary<string, double> tbl)
+        {
+            if (tbl == null)
+                return null;
+            if (tbl.Count == 1)
+                return tbl.Keys.First();
+
+            var sum = tbl.Values.Sum();
+
+            var isSumAsOne = sum < 0.99 && sum > 1.01;
+
+            //move the dictionary into an increasing range 
+            var tblCopy = new Dictionary<string, double>();
+            var runningSum = 0.0D;
+            foreach (var k in tbl.Keys)
+            {
+                var val = isSumAsOne ? tbl[k] : tbl[k]/sum;
+                tblCopy[k] = val + runningSum;
+                runningSum += val;
+            }
+
+            var pick = MyRand.NextDouble();
+
+            return tblCopy.FirstOrDefault(x => x.Value >= pick).Key;
+        }
+
+        /// <summary>
         /// Get a random string of characters within ASCII (256) range.
         /// </summary>
         /// <param name="asciiStart"></param>

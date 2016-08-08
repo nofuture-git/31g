@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using NoFuture.Rand.Com;
 using NoFuture.Rand.Domus;
 using NoFuture.Util;
 
