@@ -265,20 +265,24 @@ namespace NoFuture.Rand.Domus
         }
 
         /// <summary>
-        /// Calc a yearly income salary or pay.
+        /// Calc a yearly income salary or pay at random.
         /// </summary>
         /// <param name="factorCalc">
         /// Optional, allows caller to specify how to factor the raw results of 
-        /// <see cref="GetAvgEarningPerYear"/> for the current date.
+        /// <see cref="GetAvgEarningPerYear"/> for the <see cref="dt"/>.
         /// </param>
         /// <param name="stdDevInUsd"></param>
+        /// <param name="dt">
+        /// Optional, date used for solving the <see cref="GetAvgEarningPerYear"/> eq.
+        /// </param>
         /// <returns></returns>
-        protected internal Pecuniam GetPaycheck(Func<double,double, double> factorCalc = null,  double stdDevInUsd = 2000)
+        protected internal Pecuniam GetPaycheck(Func<double, double, double> factorCalc = null,
+            double stdDevInUsd = 2000, DateTime? dt = null)
         {
             var eq = GetAvgEarningPerYear();
             if (eq == null)
                 return null;
-            var baseValue = Math.Round(eq.SolveForY(DateTime.Today.ToDouble()), 2);
+            var baseValue = Math.Round(eq.SolveForY(dt.GetValueOrDefault(DateTime.Today).ToDouble()), 2);
             if (baseValue <= 0)
                 return null;
 
@@ -298,7 +302,7 @@ namespace NoFuture.Rand.Domus
 
             var randValue = Math.Round(
                 Etx.RandomValueInNormalDist(Math.Round(baseValue, 0), stdDevInUsd), 2);
-            return new Pecuniam((decimal)randValue);
+            return new Pecuniam((decimal) randValue);
         }
 
         /// <summary>

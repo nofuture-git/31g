@@ -3,7 +3,7 @@
   <rand>
     <data>
       <source>
-        <vin-wmi src="http://vpic.nhtsa.dot.gov/api/vehicles/GetWMIsForManufacturer">
+        <vin src="http://vpic.nhtsa.dot.gov/api/vehicles/GetWMIsForManufacturer">
           <vehicle-type name="Passenger Car">
             <wmi id="Chrysler">
               <add value="3C3" />
@@ -46,7 +46,7 @@
             <wmi id="Fiat">
               <add value="ZAR" />
             </wmi>
-            <wmi id="General Motors">
+            <wmi id="GM">
               <add value="1G1" />
               <add value="1G4" />
               <add value="1G6" />
@@ -220,7 +220,7 @@
               <add value="ZFB" />
               <add value="ZAC" />
             </wmi>
-            <wmi id="General Motors">
+            <wmi id="GM">
               <add value="5GA" />
               <add value="KL4" />
               <add value="1GY" />
@@ -346,7 +346,7 @@
               <add value="1N6" />
               <add value="3N6" />
             </wmi>
-            <wmi id="General Motors">
+            <wmi id="GM">
               <add value="1GC" />
               <add value="1GT" />
               <add value="3GC" />
@@ -389,7 +389,7 @@
               <add value="5TF" />
             </wmi>
           </vehicle-type>
-        </vin-wmi>
+        </vin>
       </source>
     </data>
   </rand>
