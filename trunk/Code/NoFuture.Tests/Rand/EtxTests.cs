@@ -96,5 +96,16 @@ namespace NoFuture.Tests.Rand
             System.Diagnostics.Debug.WriteLine(aggTestResult);
             Assert.IsTrue(0.925 <= aggTestResult && aggTestResult <= 0.975);
         }
+
+        [TestMethod]
+        public void TestRandomPortions()
+        {
+            var testResults = NoFuture.Rand.Etx.RandomPortions(6);
+
+            Assert.IsNotNull(testResults);
+            Assert.AreEqual(6, testResults.Length);
+            var testResultsSum = testResults.Sum();
+            Assert.IsTrue(testResultsSum > 0.99D && testResultsSum < 1.01D);
+        }
     }
 }

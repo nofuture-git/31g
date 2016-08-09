@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Security;
@@ -74,6 +76,23 @@ namespace NoFuture.Rand.Data.Sp
             Balance.AddTransaction(dt, val.Neg, note);
             return true;
         }
+
+        public void AddDebitTransactionsByDate(DateTime? dt, IList<IReceivable> receivables)
+        {
+            if (receivables == null || receivables.Count <= 0)
+                return;
+
+
+            var stDt = dt.GetValueOrDefault(DateTime.Now).Date;
+            var endDt = dt.GetValueOrDefault(DateTime.Now).Date.AddSeconds(24*60*60);
+            var pmts = receivables.Select(
+                x => x.TradeLine.Balance.GetDebitSum(new Tuple<DateTime, DateTime>(stDt, endDt))).ToList();
+            for (var j = 0; j < pmts.Count; j++)
+            {
+                TakeCashOut(endDt.AddSeconds(j*-1), pmts[j]);
+            }
+        }
+
         #endregion
     }
 

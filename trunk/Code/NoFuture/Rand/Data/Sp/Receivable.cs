@@ -15,6 +15,7 @@ namespace NoFuture.Rand.Data.Sp
     {
         Identifier Id { get; set; }
         string Description { get; set; }
+        TradeLine TradeLine { get; }
 
         /// <summary>
         /// Determins the deliquency for the given <see cref="dt"/>

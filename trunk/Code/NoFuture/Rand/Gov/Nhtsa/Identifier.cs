@@ -360,7 +360,6 @@ namespace NoFuture.Rand.Gov.Nhtsa
             var df = new Tuple<WorldManufacturerId, string>(CreateRandomManufacturerId(), string.Empty);
             if (TreeData.VinWmi == null)
             {
-                System.Diagnostics.Debug.WriteLine("VinWmi is null");
                 return df;
             }
 

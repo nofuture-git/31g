@@ -144,6 +144,27 @@ namespace NoFuture.Rand
             return tblCopy.FirstOrDefault(x => x.Value >= pick).Key;
         }
 
+
+        /// <summary>
+        /// Produces an array of percents whose sum is 1 
+        /// where the number of percents therein is <see cref="numOfDiv"/>
+        /// </summary>
+        /// <param name="numOfDiv"></param>
+        /// <returns></returns>
+        public static double[] RandomPortions(int numOfDiv)
+        {
+            numOfDiv = Math.Abs(numOfDiv);
+            var df = new[] {1.0D};
+            if (numOfDiv == 0 || numOfDiv == 1)
+                return df;
+
+            var someNums = new List<int>();
+            for (var i = 0; i < numOfDiv; i++)
+                someNums.Add(IntNumber(1,99999));
+
+            return someNums.Select(num => Math.Round((double) num/someNums.Sum(), 8)).ToArray();
+        }
+
         /// <summary>
         /// Get a random string of characters within ASCII (256) range.
         /// </summary>
@@ -480,7 +501,7 @@ namespace NoFuture.Rand
                 case Dice.OneHundred:
                     return op(IntNumber(1, 100), v);
                 case Dice.OneThousand:
-                    return op(IntNumber(1, 100), v);
+                    return op(IntNumber(1, 1000), v);
                 default:
                     throw new ArgumentOutOfRangeException(nameof(die), die, @"No implementation for this dice");
             }

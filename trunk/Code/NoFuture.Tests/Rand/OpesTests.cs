@@ -66,7 +66,7 @@ namespace NoFuture.Tests.Rand
             var amer = Person.American();
             var testSubject = new NorthAmericanWealth(amer);
 
-            testSubject.GetRandomCcDebt();
+            testSubject.GetRandomSingleCcDebt();
 
             Assert.IsTrue(testSubject.CreditCardDebt.Any());
 

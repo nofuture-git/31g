@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Xml;
 using NoFuture.Rand.Com;
 using NoFuture.Rand.Data;
@@ -10,10 +11,13 @@ using NoFuture.Util.Math;
 
 namespace NoFuture.Rand.Domus
 {
+    /// <summary>
+    /// For generating the financial state and history of a <see cref="NorthAmerican"/>
+    /// at random.
+    /// </summary>
     public class NorthAmericanWealth : Opes
     {
         #region innerTypes
-
         public enum FactorTables
         {
             HomeDebt,
@@ -27,12 +31,12 @@ namespace NoFuture.Rand.Domus
         }
         #endregion
 
+        #region constants
+        public const double DF_STD_DEV_PERCENT = 0.1285D;
+        #endregion
+
         #region fields
         private readonly NorthAmerican _amer;
-        private readonly OccidentalEdu _edu;
-        private readonly NorthAmericanRace _race;
-        private readonly AmericanRegion _region;
-        private readonly UsCityStateZip _usCityArea;
 
         private readonly double _homeDebtFactor;
         private readonly double _vehicleDebtFactor;
@@ -43,6 +47,10 @@ namespace NoFuture.Rand.Domus
 
         private readonly double _checkingAcctFactor;
         private readonly double _savingAcctFactor;
+
+        private Pecuniam _yearlyIncome;
+        private Pecuniam _residencePmt;
+        private Pecuniam _carPmt;
         #endregion
 
         #region ctor
@@ -50,56 +58,235 @@ namespace NoFuture.Rand.Domus
         /// Creates random transaction history.
         /// </summary>
         /// <param name="american"></param>
-        /// <remarks>
-        /// http://www.nmhc.org/Content.aspx?id=4708
-        /// </remarks>
         public NorthAmericanWealth(NorthAmerican american)
         {
+            if(american == null)
+                throw new ArgumentNullException(nameof(american));
             _amer = american;
-            _usCityArea = _amer.Address.HomeCityArea as UsCityStateZip;
-            if (_usCityArea == null)
+            var usCityArea = _amer.Address.HomeCityArea as UsCityStateZip;
+            if (usCityArea == null)
                 return;
+
             CreditScore = new PersonalCreditScore(american);
 
-            //simple split for renter-to-own when over 27
-            IsRenting = _amer.GetAgeAt(null) <= 27 || Etx.TryBelowOrAt(65, Etx.Dice.OneHundred);
+            //determin if renting or own
+            var roll = 65;
+            if (usCityArea.Msa?.MsaType == (UrbanCentric.City | UrbanCentric.Large))
+                roll -= 23;
+            if (_amer.GetAgeAt(null) <= 25)
+                roll -= 25;
+            IsRenting = Etx.TryBelowOrAt(roll, Etx.Dice.OneHundred);
 
-            _edu = _amer.Education?.EduLevel ?? (OccidentalEdu.HighSchool | OccidentalEdu.Grad);
-            _race = _amer.Race;
-            _region = _usCityArea.State?.GetStateData()?.Region ?? AmericanRegion.Midwest;
+            var edu = _amer.Education?.EduLevel ?? (OccidentalEdu.HighSchool | OccidentalEdu.Grad);
+            var race = _amer.Race;
+            var region = usCityArea.State?.GetStateData()?.Region ?? AmericanRegion.Midwest;
 
-            _homeDebtFactor = GetFactor(FactorTables.HomeDebt, _edu, _race, _region, _amer.Age, _amer.MyGender,
+            _homeDebtFactor = GetFactor(FactorTables.HomeDebt, edu, race, region, _amer.Age, _amer.MyGender,
                 _amer.MaritialStatus);
-            _vehicleDebtFactor = GetFactor(FactorTables.VehicleDebt, _edu, _race, _region, _amer.Age, _amer.MyGender,
+            _vehicleDebtFactor = GetFactor(FactorTables.VehicleDebt, edu, race, region, _amer.Age, _amer.MyGender,
                 _amer.MaritialStatus);
-            _ccDebtFactor = GetFactor(FactorTables.CreditCardDebt, _edu, _race, _region, _amer.Age, _amer.MyGender,
+            _ccDebtFactor = GetFactor(FactorTables.CreditCardDebt, edu, race, region, _amer.Age, _amer.MyGender,
                 _amer.MaritialStatus);
-            _savingAcctFactor = GetFactor(FactorTables.SavingsAccount, _edu, _race, _region, _amer.Age, _amer.MyGender,
+            _savingAcctFactor = GetFactor(FactorTables.SavingsAccount, edu, race, region, _amer.Age, _amer.MyGender,
                 _amer.MaritialStatus);
-            _checkingAcctFactor = GetFactor(FactorTables.CheckingAccount, _edu, _race, _region, _amer.Age, _amer.MyGender,
+            _checkingAcctFactor = GetFactor(FactorTables.CheckingAccount, edu, race, region, _amer.Age, _amer.MyGender,
                 _amer.MaritialStatus);
-            _netWorthFactor = GetFactor(FactorTables.NetWorth, _edu, _race, _region, _amer.Age, _amer.MyGender,
+            _netWorthFactor = GetFactor(FactorTables.NetWorth, edu, race, region, _amer.Age, _amer.MyGender,
                 _amer.MaritialStatus);
-            _homeEquityFactor = GetFactor(FactorTables.HomeEquity, _edu, _race, _region, _amer.Age, _amer.MyGender,
+            _homeEquityFactor = GetFactor(FactorTables.HomeEquity, edu, race, region, _amer.Age, _amer.MyGender,
                 _amer.MaritialStatus);
-            _vehicleEquityFactor = GetFactor(FactorTables.VehicleEquity, _edu, _race, _region, _amer.Age, _amer.MyGender,
+            _vehicleEquityFactor = GetFactor(FactorTables.VehicleEquity, edu, race, region, _amer.Age, _amer.MyGender,
                 _amer.MaritialStatus);
+
+            CreateRandomAmericanOpes();
         }
         #endregion
 
         #region properties
         public CreditScore CreditScore { get; }
+        /// <summary>
+        /// http://www.nmhc.org/Content.aspx?id=4708
+        /// </summary>
         public bool IsRenting { get; }
+        public Pecuniam YearlyIncome => _yearlyIncome;
+        public Pecuniam ResidencePmt => _residencePmt;
+        public Pecuniam CarPmt => _carPmt;
         #endregion
 
         #region methods
+        /// <summary>
+        /// Creates a full Opes state and history at random.
+        /// </summary>
+        /// <param name="stdDevAsPercent"></param>
+        protected void CreateRandomAmericanOpes(double stdDevAsPercent = DF_STD_DEV_PERCENT)
+        {
+            //determine residence pmt
+            _residencePmt = IsRenting
+                ? GetRandomRent(stdDevAsPercent)
+                : GetRandomHomeLoan(stdDevAsPercent) ?? Pecuniam.Zero;
+
+            //determin car payment
+            _carPmt = GetRandomVehicle(stdDevAsPercent) ?? Pecuniam.Zero;
+
+            //determine pay where it exceeds car and residence by 1/3rd
+            var payBase = new Pecuniam(2000);
+            var majorEx = (double)(_residencePmt.Amount + _carPmt.Amount);
+            Func<Pecuniam, double> calcMonthlyPay =
+                pecuniam => Math.Round((double) GetPaycheck(pecuniam).Amount/12, 2);
+
+            var monthlyPay = calcMonthlyPay(payBase);
+            while (Math.Round(monthlyPay / majorEx, 2) < 0.67D)
+            {
+                payBase = payBase + new Pecuniam(2000);
+                monthlyPay = calcMonthlyPay(payBase);
+            }
+
+            _yearlyIncome = new Pecuniam((decimal)monthlyPay * 12);
+
+            GetRandomTotalCcDebt(stdDevAsPercent);
+
+            //create six months of checking account history
+            var paycheck = Math.Round(monthlyPay/2, 2).ToPecuniam();
+            
+            GetRandomBankingAccounts(paycheck, stdDevAsPercent);
+        }
+
+        /// <summary>
+        /// Creates random checking and savings accounts with a history which is intertwined with 
+        /// other <see cref="Opes"/> history.
+        /// </summary>
+        /// <param name="paycheck"></param>
+        /// <param name="stdDevAsPercent"></param>
+        protected internal void GetRandomBankingAccounts(Pecuniam paycheck, double stdDevAsPercent = DF_STD_DEV_PERCENT)
+        {
+            if(paycheck == null)
+                throw new ArgumentNullException(nameof(paycheck));
+
+            //six months history
+            var baseDate = DateTime.Today.AddMonths(-6);
+
+            //set up checking
+            var checking = CheckingAccount.GetRandomCheckingAcct(_amer);
+            var randChecking = GetRandomFactorValue(FactorTables.CheckingAccount, _checkingAcctFactor, stdDevAsPercent);
+            checking.PutCashIn(baseDate.AddDays(-1), randChecking.ToPecuniam());
+
+            //set up a savings
+            var randSavings = GetRandomFactorValue(FactorTables.SavingsAccount, _savingAcctFactor, stdDevAsPercent);
+            var savings = SavingsAccount.GetRandomSavingAcct(_amer);
+            savings.PutCashIn(baseDate.AddDays(-1), randSavings.ToPecuniam());
+
+            var friCounter = 0;
+            for (var i = 0; i < (DateTime.Today - baseDate).TotalDays; i++)
+            {
+                var loopDtSt = baseDate.AddDays(i).Date;
+
+                //add pay
+                if (loopDtSt.DayOfWeek == DayOfWeek.Friday)
+                {
+                    if (friCounter % 2 == 0)
+                        checking.PutCashIn(loopDtSt, paycheck);
+                    friCounter += 1;
+                    if (savings.Value < randSavings.ToPecuniam())
+                    {
+                        var toSavings = randSavings.ToPecuniam() - savings.Value;
+                        toSavings = toSavings > 250.ToPecuniam() ? 250.ToPecuniam() : toSavings;
+                        var transDt = loopDtSt.AddHours(Etx.IntNumber(6, 18));
+                        checking.TakeCashOut(transDt, toSavings);
+                        savings.PutCashIn(transDt, toSavings);
+                    }
+                }
+
+                //b-day money
+                if (DateTime.Compare(loopDtSt,
+                        new DateTime(loopDtSt.Year, _amer.BirthCert.DateOfBirth.Month, _amer.BirthCert.DateOfBirth.Day)) ==
+                    0)
+                {
+                    checking.PutCashIn(loopDtSt.AddHours(15), 50.ToPecuniam());
+                }
+
+                //add house pmts
+                checking.AddDebitTransactionsByDate(loopDtSt, HomeDebt);
+
+                //add car pmts
+                checking.AddDebitTransactionsByDate(loopDtSt, VehicleDebt);
+
+                //add cc pmts
+                checking.AddDebitTransactionsByDate(loopDtSt, CreditCardDebt);
+
+                //if broke, move funds from savings and no spending
+                if (checking.Value < Pecuniam.Zero)
+                {
+                    if (savings.Value <= Pecuniam.Zero)
+                        continue;
+
+                    var fromSaving = 250.ToPecuniam();
+                    while (savings.Value < fromSaving)
+                    {
+                        fromSaving = ((int) Math.Round(fromSaving.Amount/2)).ToPecuniam();
+                    }
+                    var transDt = loopDtSt.AddHours(Etx.IntNumber(6, 18));
+                    savings.TakeCashOut(transDt, fromSaving);
+                    checking.PutCashIn(transDt, fromSaving);
+                    continue;
+                }
+
+                //create some checking account transactions 
+                CreateSingleDaysPurchases(checking, loopDtSt, (double) paycheck.Amount*0.05);
+            }
+            SavingAccounts.Add(savings);
+            CheckingAccounts.Add(checking);
+        }
+
+        /// <summary>
+        /// Src [http://www.creditcards.com/credit-card-news/ownership-statistics-charts-1276.php]
+        /// </summary>
+        /// <param name="stdDevAsPercent"></param>
+        protected internal void GetRandomTotalCcDebt(double stdDevAsPercent = DF_STD_DEV_PERCENT)
+        {
+            //~ 25% americans have no CC
+            if (!(_amer.Personality.Conscientiousness.Value.Zscore < 0.5D))
+                return;
+
+            //get random total cc debt
+            var randCcValue = GetRandomFactorValue(FactorTables.CreditCardDebt, _ccDebtFactor, stdDevAsPercent);
+
+            //get number of cc's to divide total cc debt into
+            var numOfCc = 1;
+            var roll = 100;
+            if (_amer.Age >= 30)
+            {
+                numOfCc += 1;
+                roll = 13;
+            }
+            if (_amer.Age >= 47 && _amer.Age < 66)
+                roll = 66;
+
+            if (Etx.TryBelowOrAt(roll, Etx.Dice.OneHundred))
+                numOfCc += 1;
+
+            //get number of cc's as random portions of total cc debt
+            var ccRatio = Etx.RandomPortions(numOfCc);
+
+            //create cc and history for targeted count of cc
+            foreach (var cc in ccRatio)
+            {
+                //don't waste clock cycles for very small total amounts
+                if (cc*randCcValue < 1.0D)
+                    break;
+                //limit to total cc debt
+                if (GetTotalCurrentCcDebt() > randCcValue.ToPecuniam())
+                    break;
+
+                GetRandomSingleCcDebt(stdDevAsPercent, cc*randCcValue);
+            }
+        }
 
         /// <summary>
         /// Creates random <see cref="Rent"/> instance with a history and adds
         /// it to the <see cref="Opes.HomeDebt"/> collection.
         /// </summary>
         /// <param name="stdDevAsPercent"></param>
-        protected internal Pecuniam GetRandomRent(double stdDevAsPercent = 0.1725D)
+        protected internal Pecuniam GetRandomRent(double stdDevAsPercent = DF_STD_DEV_PERCENT)
         {
             if (!IsRenting)
                 return Pecuniam.Zero;
@@ -142,7 +329,7 @@ namespace NoFuture.Rand.Domus
         /// it to the <see cref="Opes.HomeDebt"/> collection.
         /// </summary>
         /// <param name="stdDevAsPercent"></param>
-        protected internal Pecuniam GetRandomHomeLoan(double stdDevAsPercent = 0.1285D)
+        protected internal Pecuniam GetRandomHomeLoan(double stdDevAsPercent = DF_STD_DEV_PERCENT)
         {
             //calc a rand amount of what is still owed
             var randHouseDebt = GetRandomFactorValue(FactorTables.HomeDebt, _homeDebtFactor, stdDevAsPercent);
@@ -170,15 +357,8 @@ namespace NoFuture.Rand.Domus
         /// </summary>
         /// <param name="stdDevAsPercent"></param>
         /// <param name="maxCcDebt"></param>
-        protected internal bool GetRandomCcDebt(double stdDevAsPercent = 0.1285D, double maxCcDebt = 15000D)
+        protected internal void GetRandomSingleCcDebt(double stdDevAsPercent = DF_STD_DEV_PERCENT, double maxCcDebt = 15000D)
         {
-            var randCcValue = GetRandomFactorValue(FactorTables.CreditCardDebt, _ccDebtFactor, stdDevAsPercent);
-            System.Diagnostics.Debug.WriteLine($"Target is {randCcValue}");
-
-            //have we already exceeded abs max
-            if ((double)GetTotalCurrentCcDebt().Amount > maxCcDebt)
-                return false;
-
             //create random cc
             var ccAcct = CreditCardAccount.GetRandomCcAcct(_amer, CreditScore);
 
@@ -192,7 +372,7 @@ namespace NoFuture.Rand.Domus
                 if (ccAcct.GetStatus(loopDt) == AccountStatus.Closed)
                     break;
 
-                CreateSingleDaysPurchases(ccAcct, loopDt, randCcValue);
+                CreateSingleDaysPurchases(ccAcct, loopDt, maxCcDebt);
 
                 if (i%30 != 0 || ccAcct.GetCurrentBalance(loopDt).Amount < 0.0M)
                     continue;
@@ -215,18 +395,6 @@ namespace NoFuture.Rand.Domus
             }
 
             CreditCardDebt.Add(ccAcct);
-            return (double) GetTotalCurrentCcDebt().Amount < maxCcDebt;
-        }
-
-        protected internal void GetRandomBankAccounts(double stdDevAsPercent = 0.1285D)
-        {
-            var randSavings = GetRandomFactorValue(FactorTables.SavingsAccount, _savingAcctFactor, stdDevAsPercent);
-            var randChecking = GetRandomFactorValue(FactorTables.CheckingAccount, _checkingAcctFactor, stdDevAsPercent);
-
-            var savings = SavingsAccount.GetRandomSavingAcct(_amer);
-            var checking = CheckingAccount.GetRandomCheckingAcct(_amer);
-
-            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -235,8 +403,16 @@ namespace NoFuture.Rand.Domus
         /// </summary>
         /// <param name="stdDevAsPercent"></param>
         /// <returns></returns>
-        protected internal Pecuniam GetRandomVehicle(double stdDevAsPercent = 0.1285D)
+        /// <remarks>
+        /// Returns zero 9% of the time.
+        /// [https://people.hofstra.edu/geotrans/eng/ch6en/conc6en/USAownershipcars.html]
+        /// </remarks>
+        protected internal Pecuniam GetRandomVehicle(double stdDevAsPercent = DF_STD_DEV_PERCENT)
         {
+            //roll for no-car
+            if (Etx.TryBelowOrAt(9, Etx.Dice.OneHundred))
+                return Pecuniam.Zero;
+
             //calc a rand amount of what is still owed
             var randCarDebt = GetRandomFactorValue(FactorTables.VehicleDebt, _vehicleDebtFactor, stdDevAsPercent);
 
@@ -248,6 +424,10 @@ namespace NoFuture.Rand.Domus
             var spCost = new Pecuniam((decimal)randCarDebt);
             var totalCost = new Pecuniam((decimal)(randCarDebt + randCarEquity));
             var vin = Gov.Nhtsa.Vin.GetRandomVin();
+
+            //this would never happen
+            while (_amer.MyGender == Gender.Male && vin.Description == "Toyota Yaris")
+                vin = Gov.Nhtsa.Vin.GetRandomVin();
 
             Pecuniam minPmt;
             var loan = GetRandomLoanWithHistory(vin, spCost, totalCost, (float)randRate, out minPmt);
@@ -313,6 +493,7 @@ namespace NoFuture.Rand.Domus
         /// <summary>
         /// Calc a yearly income salary or pay at random.
         /// </summary>
+        /// <param name="min"></param>
         /// <param name="factorCalc">
         /// Optional, allows caller to specify how to factor the raw results of 
         /// <see cref="GetAvgEarningPerYear"/> for the <see cref="dt"/>.
@@ -322,9 +503,12 @@ namespace NoFuture.Rand.Domus
         /// Optional, date used for solving the <see cref="GetAvgEarningPerYear"/> eq.
         /// </param>
         /// <returns></returns>
-        protected internal Pecuniam GetPaycheck(Func<double, double, double> factorCalc = null,
+        protected internal Pecuniam GetPaycheck(Pecuniam min, Func<double, double, double> factorCalc = null,
             double stdDevInUsd = 2000, DateTime? dt = null)
         {
+            if(min == null)
+                min = Pecuniam.Zero;
+
             var eq = GetAvgEarningPerYear();
             if (eq == null)
                 return null;
@@ -348,7 +532,7 @@ namespace NoFuture.Rand.Domus
 
             var randValue = Math.Round(
                 Etx.RandomValueInNormalDist(Math.Round(baseValue, 0), stdDevInUsd), 2);
-            return new Pecuniam((decimal) randValue);
+            return new Pecuniam((decimal) randValue) + min;
         }
 
         /// <summary>
@@ -378,7 +562,11 @@ namespace NoFuture.Rand.Domus
         /// <param name="t"></param>
         /// <param name="ccDate"></param>
         /// <param name="daysMax"></param>
-        protected internal void CreateSingleDaysPurchases(ITransactionable t, DateTime ccDate, double daysMax)
+        /// <param name="randMaxFactor">
+        /// The multiplier used for the rand dollar's max, raising this value 
+        /// will raise every transactions possiable max by a factor of this.
+        /// </param>
+        protected internal void CreateSingleDaysPurchases(ITransactionable t, DateTime ccDate, double daysMax, int randMaxFactor = 10)
         {
             //build charges history
             var keepSpending = true;
@@ -389,8 +577,10 @@ namespace NoFuture.Rand.Domus
                 if (spentSum >= new Pecuniam((decimal)daysMax))
                     return;
 
+                var isXmasSeason = ccDate.Month >= 11 && ccDate.Day >= 20 ? 2 : 1;
+
                 //make purchase based on day-of-week and card holder personality
-                var v = 2;
+                var v = 2 * isXmasSeason;
                 if (ccDate.DayOfWeek == DayOfWeek.Friday || 
                     ccDate.DayOfWeek == DayOfWeek.Saturday ||
                     ccDate.DayOfWeek == DayOfWeek.Sunday)
@@ -399,12 +589,12 @@ namespace NoFuture.Rand.Domus
                     v = 7;
                 if (Etx.TryBelowOrAt(v, Etx.Dice.Ten))
                 {
-                    //create some random purchase amount
-                    var chargeAmt = Pecuniam.GetRandPecuniam(2, v * 10);
-
                     //allow rare case for some big ticket item
-                    if (Etx.TryAboveOrAt(94, Etx.Dice.OneHundred))
-                        chargeAmt = Pecuniam.GetRandPecuniam(100, 500);
+                    if (Etx.TryAboveOrAt(96, Etx.Dice.OneHundred))
+                        v *= 4;
+
+                    //create some random purchase amount
+                    var chargeAmt = Pecuniam.GetRandPecuniam(2, v * randMaxFactor);
 
                     //check if cardholder is maxed-out
                     if (!t.TakeCashOut(ccDate, chargeAmt))

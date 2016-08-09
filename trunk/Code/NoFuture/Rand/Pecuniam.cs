@@ -174,6 +174,18 @@ namespace NoFuture.Rand
         #endregion
     }
 
+    public static class PecuniamExtensions
+    {
+        public static Pecuniam ToPecuniam(this double x)
+        {
+            return new Pecuniam((decimal)x);
+        }
+        public static Pecuniam ToPecuniam(this int x)
+        {
+            return new Pecuniam(x);
+        }
+    }
+
     /// <summary>
     /// ISO 4217 Currency Codes
     /// </summary>
