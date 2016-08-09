@@ -70,6 +70,7 @@
     <Compile Include="Data\Sp\CreditCard.cs" />
     <Compile Include="Data\Sp\CreditScore.cs" />
     <Compile Include="Data\Sp\FinancialData.cs" />
+    <Compile Include="Data\Sp\ITransactionable.cs" />
     <Compile Include="Data\Sp\Receivable.cs" />
     <Compile Include="Data\Sp\Loan.cs" />
     <Compile Include="Data\Sp\Rent.cs" />
@@ -246,6 +247,11 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Data\Source\US_PersonalWealth.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Data\Source\Vin_Wmi.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

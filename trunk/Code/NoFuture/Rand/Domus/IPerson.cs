@@ -21,6 +21,8 @@ namespace NoFuture.Rand.Domus
         MaritialStatus MaritialStatus { get; }
         List<Child> Children { get; }
         List<Tuple<KindsOfNames, Parent>> Parents { get; }
+        HomeAddress Address { get; }
+
         #endregion
 
         #region methods

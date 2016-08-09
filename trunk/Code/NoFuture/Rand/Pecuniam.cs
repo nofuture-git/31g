@@ -213,7 +213,7 @@ namespace NoFuture.Rand
 
         public Transaction(DateTime atTime, Pecuniam amt, string description = null)
         {
-            _atTime = atTime;
+            _atTime = atTime.ToUniversalTime();
             _cash = amt;
             Description = description;
         }
@@ -332,14 +332,14 @@ namespace NoFuture.Rand
     public class Balance : IBalance
     {
         #region fields
-        protected internal readonly List<ITransaction>  _transactions = new List<ITransaction>();
+        private readonly List<ITransaction>  _transactions = new List<ITransaction>();
         private readonly IComparer<ITransaction> _comparer = new TransactionComparer();
         private readonly Func<Decimal, bool> _debitOp = x => x < 0;
         private readonly Func<Decimal, bool> _creditOp = x => x > 0;
         #endregion
 
         #region properties
-        public List<ITransaction> Transactions
+        protected internal List<ITransaction> Transactions
         {
             get
             {

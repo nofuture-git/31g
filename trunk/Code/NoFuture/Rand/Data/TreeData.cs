@@ -26,6 +26,7 @@ namespace NoFuture.Rand.Data
         private static XmlDocument _usZipProbTable;
         private static XmlDocument _usPersonalDebt;
         private static XmlDocument _usPersonalWealth;
+        private static XmlDocument _vinWmi;
         private static Bank[] _fedReleaseLrgBnkNames;
         #endregion
 
@@ -48,6 +49,7 @@ namespace NoFuture.Rand.Data
         private const string LRG_BNK_LST = "lrg_bnk_lst.txt";
         private const string US_PERSON_DEBT = "US_PersonalDebt.xml";
         private const string US_PERSON_WEALTH = "US_PersonalWealth.xml";
+        private const string VIN_WMI = "Vin_Wmi.xml";
         #endregion
 
         #region API
@@ -264,6 +266,19 @@ namespace NoFuture.Rand.Data
                 if (_usPersonalWealth == null)
                     GetXmlDataSource(US_PERSON_WEALTH, ref _usPersonalWealth);
                 return _usPersonalWealth;
+            }
+        }
+
+        /// <summary>
+        /// Loads the 'Vin_Wmi.xml' data into a <see cref="System.Xml.XmlDocument"/> document.
+        /// </summary>
+        public static XmlDocument VinWmi
+        {
+            get
+            {
+                if(_vinWmi == null)
+                    GetXmlDataSource(VIN_WMI, ref _vinWmi);
+                return _vinWmi;
             }
         }
 

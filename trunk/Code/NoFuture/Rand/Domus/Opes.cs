@@ -7,8 +7,8 @@ namespace NoFuture.Rand.Domus
 {
     public abstract class Opes
     {
-        public IList<Savings> SavingAccounts { get; } = new List<Savings>();
-        public IList<Checking> CheckingAccounts { get; } = new List<Checking>();
+        public IList<SavingsAccount> SavingAccounts { get; } = new List<SavingsAccount>();
+        public IList<CheckingAccount> CheckingAccounts { get; } = new List<CheckingAccount>();
 
         public IList<IReceivable> HomeDebt { get; } = new List<IReceivable>();
         public IList<IReceivable> VehicleDebt { get; } = new List<IReceivable>();
@@ -17,7 +17,7 @@ namespace NoFuture.Rand.Domus
         public Pecuniam GetTotalCurrentCcDebt()
         {
             var dk = new Pecuniam(0.0M);
-            foreach (var cc in CreditCardDebt.Cast<CreditCard>())
+            foreach (var cc in CreditCardDebt.Cast<CreditCardAccount>())
             {
                 dk += cc.GetCurrentBalance(DateTime.Now);
             }

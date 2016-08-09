@@ -70,10 +70,10 @@ namespace NoFuture.Tests.Rand
 
             Assert.IsTrue(testSubject.CreditCardDebt.Any());
 
-            var testResult = testSubject.CreditCardDebt.First() as CreditCard;
+            var testResult = testSubject.CreditCardDebt.First() as CreditCardAccount;
             Assert.IsNotNull(testResult);
 
-            System.Diagnostics.Debug.WriteLine(testResult.CardHolderSince);
+            System.Diagnostics.Debug.WriteLine(testResult.Cc.CardHolderSince);
             System.Diagnostics.Debug.WriteLine(testResult.Max);
 
             System.Diagnostics.Debug.WriteLine(testResult.TradeLine.Balance.ToString());

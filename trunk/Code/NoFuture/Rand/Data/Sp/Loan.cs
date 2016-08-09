@@ -32,7 +32,7 @@ namespace NoFuture.Rand.Data.Sp //Sequere pecuniam
     }
 
     [Serializable]
-    public abstract class LoanBase<T> : ReceivableBase, ILoan
+    public abstract class LoanBase<T> : ReceivableBase, ILoan, ITransactionable
     {
         #region ctors
         protected LoanBase(DateTime openedDate, float minPaymentRate):base(openedDate)
@@ -63,11 +63,12 @@ namespace NoFuture.Rand.Data.Sp //Sequere pecuniam
         /// </summary>
         /// <param name="dt"></param>
         /// <param name="amt"></param>
-        public void MakeAPayemnt(DateTime dt, Pecuniam amt)
+        /// <param name="note"></param>
+        public void PutCashIn(DateTime dt, Pecuniam amt, string note = null)
         {
             if (amt == Pecuniam.Zero)
                 return;
-            TradeLine.Balance.AddTransaction(dt, amt.Neg);
+            TradeLine.Balance.AddTransaction(dt, amt.Neg, note);
         }
 
         /// <summary>
@@ -75,10 +76,11 @@ namespace NoFuture.Rand.Data.Sp //Sequere pecuniam
         /// </summary>
         /// <param name="dt"></param>
         /// <param name="val"></param>
+        /// <param name="note"></param>
         /// <returns></returns>
-        public virtual bool MakeAPurchase(DateTime dt, Pecuniam val)
+        public virtual bool TakeCashOut(DateTime dt, Pecuniam val, string note = null)
         {
-            TradeLine.Balance.AddTransaction(dt, val.Abs);
+            TradeLine.Balance.AddTransaction(dt, val.Abs, note);
             return true;
         }
         #endregion

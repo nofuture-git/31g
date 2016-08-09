@@ -1,6 +1,9 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NoFuture.Rand;
 using NoFuture.Rand.Data.Sp;
 using NoFuture.Rand.Data.Types;
+using NoFuture.Rand.Domus;
 
 namespace NoFuture.Tests.Rand.DomusTests
 {
@@ -15,7 +18,8 @@ namespace NoFuture.Tests.Rand.DomusTests
         [TestMethod]
         public void TestGetRandomBankAccount()
         {
-            var testResult = Checking.GetRandomCheckingAcct(new UsCityStateZip(new AddressData {City = "New York", StateAbbrv = "NY"}));
+            var p = new NorthAmerican(NAmerUtil.GetWorkingAdultBirthDate(), Gender.Female);
+            var testResult = CheckingAccount.GetRandomCheckingAcct(p);
 
             Assert.IsNotNull(testResult);
 
@@ -24,13 +28,25 @@ namespace NoFuture.Tests.Rand.DomusTests
             System.Diagnostics.Debug.WriteLine(testResult.AccountNumber.Value);
 
             
-            testResult = Checking.GetRandomCheckingAcct(new UsCityStateZip(new AddressData { City = "New York", StateAbbrv = "NY" }));
+            testResult = CheckingAccount.GetRandomCheckingAcct(p);
             Assert.IsNotNull(testResult.AccountNumber);
             Assert.IsNotNull(testResult.Bank);
 
             System.Diagnostics.Debug.WriteLine(testResult.AccountNumber.Value);
             System.Diagnostics.Debug.WriteLine(testResult.Bank.Name);
             
+        }
+
+        [TestMethod]
+        public void TestIsPin()
+        {
+            var testSubject = new CheckingAccount(DateTime.Today.AddDays(-65),
+                new Tuple<ICreditCard, string>(
+                    CreditCard.GetRandomCreditCard(new NorthAmerican(NAmerUtil.GetWorkingAdultBirthDate(), Gender.Female)),
+                    "8745"));
+
+            Assert.IsTrue(testSubject.IsPin("8745"));
+
         }
     }
 }

@@ -36,11 +36,11 @@ namespace NoFuture.Tests.Rand
             testBalance.AddTransaction(dt.AddDays(-210), new Pecuniam(-455.0M));
             testBalance.AddTransaction(dt.AddDays(-330), new Pecuniam(-451.0M));
 
-            var testResult = testBalance._transactions.FirstOrDefault();
+            var testResult = testBalance.Transactions.FirstOrDefault();
             Assert.IsNotNull(testResult);
             Assert.IsTrue(oldestDt.ComparedTo(testResult.AtTime) == ChronoCompare.SameTime);
 
-            testResult = testBalance._transactions.LastOrDefault();
+            testResult = testBalance.Transactions.LastOrDefault();
             Assert.IsNotNull(testResult);
             Assert.IsTrue(newestDt.ComparedTo(testResult.AtTime) == ChronoCompare.SameTime);
         }

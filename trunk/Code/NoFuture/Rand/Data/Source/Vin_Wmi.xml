@@ -1,0 +1,396 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<no-future>
+  <rand>
+    <data>
+      <source>
+        <vin-wmi src="http://vpic.nhtsa.dot.gov/api/vehicles/GetWMIsForManufacturer">
+          <vehicle-type name="Passenger Car">
+            <wmi id="Chrysler">
+              <add value="3C3" />
+              <add value="3B3" />
+              <add value="3E3" />
+              <add value="3P3" />
+            </wmi>
+            <wmi id="Nissan">
+              <add value="JN1" />
+              <add value="JNK" />
+              <add value="1N4" />
+              <add value="3N1" />
+            </wmi>
+            <wmi id="Mitsubishi">
+              <add value="JA3" />
+              <add value="ML3" />
+              <add value="4A3" />
+              <add value="6MM" />
+            </wmi>
+            <wmi id="BMW">
+              <add value="WAP" />
+              <add value="WBA" />
+              <add value="WMW" />
+              <add value="5UM" />
+              <add value="WBY" />
+              <add value="WBS" />
+              <add value="4US" />
+              <add value="SUM" />
+            </wmi>
+            <wmi id="Isuzu">
+              <add value="JAB" />
+              <add value="J81" />
+              <add value="J87" />
+            </wmi>
+            <wmi id="Mazda">
+              <add value="JM1" />
+              <add value="JC1" />
+              <add value="3MZ" />
+            </wmi>
+            <wmi id="Fiat">
+              <add value="ZAR" />
+            </wmi>
+            <wmi id="General Motors">
+              <add value="1G1" />
+              <add value="1G4" />
+              <add value="1G6" />
+              <add value="5G8" />
+              <add value="1G0" />
+              <add value="2G1" />
+              <add value="2G4" />
+              <add value="2G6" />
+              <add value="3G1" />
+              <add value="KL8" />
+              <add value="6G3" />
+              <add value="6G1" />
+              <add value="KL1" />
+              <add value="LSG" />
+              <add value="2C1" />
+              <add value="1G2" />
+              <add value="2G2" />
+              <add value="3G2" />
+              <add value="KL2" />
+              <add value="1G8" />
+              <add value="5GD" />
+              <add value="2C2" />
+              <add value="4G5" />
+              <add value="W0L" />
+              <add value="3G4" />
+              <add value="1G7" />
+              <add value="6G2" />
+              <add value="W04" />
+              <add value="4G3" />
+              <add value="1G3" />
+              <add value="2G3" />
+              <add value="4G1" />
+              <add value="4G2" />
+              <add value="JG1" />
+              <add value="JG2" />
+              <add value="3G3" />
+            </wmi>
+            <wmi id="Hyundai">
+              <add value="KMH" />
+              <add value="KNA" />
+              <add value="5XX" />
+              <add value="U5Y" />
+              <add value="5NP" />
+              <add value="KMH" />
+              <add value="KNA" />
+              <add value="5XX" />
+              <add value="U5Y" />
+              <add value="5NP" />
+            </wmi>
+            <wmi id="Honda">
+              <add value="JHM" />
+              <add value="JH4" />
+              <add value="19U" />
+              <add value="1HG" />
+              <add value="5KB" />
+              <add value="5KC" />
+              <add value="2HH" />
+              <add value="2HG" />
+              <add value="SHH" />
+              <add value="3HG" />
+              <add value="19X" />
+              <add value="19V" />
+            </wmi>
+            <wmi id="Mercedes-Benz">
+              <add value="WDD" />
+              <add value="WDB" />
+              <add value="WME" />
+              <add value="55S" />
+            </wmi>
+            <wmi id="Audi">
+              <add value="TRU" />
+              <add value="WAU" />
+            </wmi>
+            <wmi id="Ford">
+              <add value="1FA" />
+              <add value="1LN" />
+              <add value="1ME" />
+              <add value="1L1" />
+              <add value="1FL" />
+              <add value="2FA" />
+              <add value="2LN" />
+              <add value="2ME" />
+              <add value="1F7" />
+              <add value="3FA" />
+              <add value="3LN" />
+              <add value="3ME" />
+              <add value="3MA" />
+              <add value="KNJ" />
+              <add value="TMC" />
+              <add value="WF0" />
+              <add value="KNJ" />
+            </wmi>
+            <wmi id="Subaru">
+              <add value="4S3" />
+              <add value="JF1" />
+              <add value="JF4" />
+            </wmi>
+            <wmi id="Toyota">
+              <add value="JTH" />
+              <add value="JTK" />
+              <add value="JTD" />
+              <add value="JTN" />
+              <add value="JT2" />
+              <add value="JT8" />
+              <add value="2T1" />
+              <add value="4T1" />
+              <add value="58A" />
+              <add value="4T4" />
+              <add value="5YF" />
+              <add value="VNK" />
+            </wmi>
+            <wmi id="Volkswagen">
+              <add value="WVW" />
+              <add value="3VW" />
+              <add value="9BW" />
+              <add value="1VW" />
+            </wmi>
+            <wmi id="Saab">
+              <add value="YS3" />
+            </wmi>
+            <wmi id="Volvo">
+              <add value="YV1" />
+              <add value="LYV" />
+            </wmi>
+          </vehicle-type>
+          <vehicle-type name="Multipurpose Passenger Vehicle (MPV)">
+            <wmi id="Chrysler">
+              <add value="3A4" />
+              <add value="3D4" />
+              <add value="3E4" />
+              <add value="3J4" />
+              <add value="3C4" />
+              <add value="3B4" />
+              <add value="3P4" />
+              <add value="3A8" />
+              <add value="3CA" />
+              <add value="3C8" />
+              <add value="3D8" />
+              <add value="3B8" />
+              <add value="WD5" />
+              <add value="2V8" />
+              <add value="2BA" />
+            </wmi>
+            <wmi id="Nissan">
+              <add value="JN8" />
+              <add value="JNR" />
+              <add value="5N3" />
+              <add value="5N1" />
+              <add value="3N8" />
+            </wmi>
+            <wmi id="Mitsubishi">
+              <add value="JA4" />
+              <add value="4A4" />
+            </wmi>
+            <wmi id="BMW">
+              <add value="WBX" />
+              <add value="SUX" />
+              <add value="5UX" />
+              <add value="5YM" />
+            </wmi>
+            <wmi id="Isuzu">
+              <add value="4S6" />
+              <add value="JAC" />
+              <add value="4S2" />
+              <add value="JAE" />
+            </wmi>
+            <wmi id="Mazda">
+              <add value="JM3" />
+            </wmi>
+            <wmi id="Fiat">
+              <add value="ZFB" />
+              <add value="ZAC" />
+            </wmi>
+            <wmi id="General Motors">
+              <add value="5GA" />
+              <add value="KL4" />
+              <add value="1GY" />
+              <add value="3GY" />
+              <add value="1GN" />
+              <add value="2GN" />
+              <add value="3GN" />
+              <add value="KL7" />
+              <add value="1GK" />
+              <add value="2GK" />
+              <add value="3G0" />
+              <add value="ADM" />
+              <add value="1GM" />
+              <add value="4GL" />
+              <add value="2CG" />
+              <add value="2GB" />
+              <add value="2GD" />
+              <add value="3GK" />
+              <add value="3GM" />
+              <add value="3G5" />
+              <add value="3G7" />
+              <add value="1GG" />
+              <add value="2CC" />
+              <add value="2CT" />
+              <add value="2CK" />
+              <add value="2CN" />
+              <add value="4GD" />
+              <add value="4NU" />
+              <add value="5S3" />
+              <add value="5GR" />
+              <add value="5GT" />
+              <add value="5GZ" />
+              <add value="4NT" />
+              <add value="3GS" />
+              <add value="1GH" />
+              <add value="LRB" />
+            </wmi>
+            <wmi id="Hyundai">
+              <add value="KND" />
+              <add value="5XY" />
+              <add value="KM8" />
+              <add value="5NM" />
+              <add value="KND" />
+              <add value="5XY" />
+              <add value="KM8" />
+              <add value="5NM" />
+            </wmi>
+            <wmi id="Honda">
+              <add value="JHL" />
+              <add value="5J6" />
+              <add value="5J8" />
+              <add value="5FN" />
+              <add value="5FR" />
+              <add value="2HK" />
+              <add value="2HN" />
+              <add value="SHS" />
+              <add value="3CZ" />
+              <add value="JR2" />
+            </wmi>
+            <wmi id="Mercedes-Benz">
+              <add value="WD4" />
+              <add value="WDR" />
+              <add value="8BT" />
+              <add value="WDC" />
+              <add value="4JG" />
+            </wmi>
+            <wmi id="Audi">
+              <add value="WA1" />
+            </wmi>
+            <wmi id="Ford">
+              <add value="5LM" />
+              <add value="4F2" />
+              <add value="4M2" />
+              <add value="1FM" />
+              <add value="1F1" />
+              <add value="5L1" />
+              <add value="3FM" />
+              <add value="4N2" />
+              <add value="2MR" />
+              <add value="2FM" />
+              <add value="2LM" />
+            </wmi>
+            <wmi id="Subaru">
+              <add value="4S4" />
+              <add value="JF2" />
+            </wmi>
+            <wmi id="Toyota">
+              <add value="JTE" />
+              <add value="JTL" />
+              <add value="JTJ" />
+              <add value="JTM" />
+              <add value="JT6" />
+              <add value="JT3" />
+              <add value="2T3" />
+              <add value="2T2" />
+              <add value="5TD" />
+              <add value="4T3" />
+            </wmi>
+            <wmi id="Volkswagen">
+              <add value="WVG" />
+              <add value="WV2" />
+            </wmi>
+            <wmi id="Volvo">
+              <add value="YV4" />
+            </wmi>
+          </vehicle-type>
+          <vehicle-type name="Truck">
+            <wmi id="Chrysler">
+              <add value="3D7" />
+              <add value="3C6" />
+              <add value="3B7" />
+              <add value="3P7" />
+              <add value="3A3" />
+              <add value="3A7" />
+              <add value="3D3" />
+              <add value="WD2" />
+              <add value="WD6" />
+              <add value="3F6" />
+            </wmi>
+            <wmi id="Nissan">
+              <add value="JN6" />
+              <add value="JNT" />
+              <add value="1N6" />
+              <add value="3N6" />
+            </wmi>
+            <wmi id="General Motors">
+              <add value="1GC" />
+              <add value="1GT" />
+              <add value="3GC" />
+              <add value="3GT" />
+              <add value="3GG" />
+              <add value="2GC" />
+              <add value="2GT" />
+              <add value="4GT" />
+              <add value="5GN" />
+              <add value="JGC" />
+              <add value="JGT" />
+              <add value="J8C" />
+              <add value="J8T" />
+            </wmi>
+            <wmi id="Honda">
+              <add value="JH1" />
+              <add value="5J7" />
+              <add value="5J0" />
+              <add value="5FP" />
+              <add value="5FS" />
+              <add value="2HJ" />
+              <add value="2HU" />
+            </wmi>
+            <wmi id="Ford">
+              <add value="1FT" />
+              <add value="4F4" />
+              <add value="4F3" />
+              <add value="5LT" />
+              <add value="4N4" />
+              <add value="4M4" />
+              <add value="2FT" />
+              <add value="3FT" />
+              <add value="NM0" />
+            </wmi>
+            <wmi id="Toyota">
+              <add value="JT4" />
+              <add value="3TM" />
+              <add value="5TE" />
+              <add value="5TB" />
+              <add value="5TF" />
+            </wmi>
+          </vehicle-type>
+        </vin-wmi>
+      </source>
+    </data>
+  </rand>
+</no-future>

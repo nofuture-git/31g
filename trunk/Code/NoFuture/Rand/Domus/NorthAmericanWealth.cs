@@ -97,19 +97,20 @@ namespace NoFuture.Rand.Domus
         /// it to the <see cref="Opes.HomeDebt"/> collection.
         /// </summary>
         /// <param name="stdDevAsPercent"></param>
-        protected internal void GetRandomRent(double stdDevAsPercent = 0.1725D)
+        protected internal Pecuniam GetRandomRent(double stdDevAsPercent = 0.1725D)
         {
             if (!IsRenting)
-                return;
+                return Pecuniam.Zero;
             //create a rent object
             var avgRent = (double)Rent.GetAvgAmericanRentByYear(null).Amount;
 
-            var randRent = GetRandomFactorValue(FactorTables.HomeDebt, _homeDebtFactor, stdDevAsPercent, avgRent);
+            var randRent =
+                new Pecuniam(
+                    (decimal) GetRandomFactorValue(FactorTables.HomeDebt, _homeDebtFactor, stdDevAsPercent, avgRent));
             var isYearTerm = Etx.CoinToss;
             var rendTerm = isYearTerm ? 12 : 6;
             var randDate = Etx.Date(0, DateTime.Today.AddDays(-2), isYearTerm ? 360 : 178);
-            var rent = new Rent(randDate, rendTerm, new Pecuniam((decimal)randRent),
-                Etx.CoinToss ? new Pecuniam(250) : new Pecuniam(500));
+            var rent = new Rent(randDate, rendTerm, randRent, Etx.CoinToss ? new Pecuniam(250) : new Pecuniam(500));
 
             //create payment history until current
             var firstPmt = rent.GetMinPayment(randDate);
@@ -126,11 +127,12 @@ namespace NoFuture.Rand.Domus
                 if (_amer.Personality.GetRandomActsIrresponsible())
                     paidRentOn = paidRentOn.AddDays(Etx.IntNumber(5, 15));
 
-                rent.PayRent(paidRentOn, new Pecuniam((decimal)randRent));
+                rent.PayRent(paidRentOn, randRent);
                 rentDueDate = rentDueDate.AddMonths(1);
             }
             rent.Description = $"{rendTerm}-Month Lease";
             HomeDebt.Add(rent);
+            return randRent;
         }
 
         /// <summary>
@@ -138,7 +140,7 @@ namespace NoFuture.Rand.Domus
         /// it to the <see cref="Opes.HomeDebt"/> collection.
         /// </summary>
         /// <param name="stdDevAsPercent"></param>
-        protected internal void GetRandomHomeLoan(double stdDevAsPercent = 0.1285D)
+        protected internal Pecuniam GetRandomHomeLoan(double stdDevAsPercent = 0.1285D)
         {
             //calc a rand amount of what is still owed on house
             var randHouseDebt = GetRandomFactorValue(FactorTables.HomeDebt, _homeDebtFactor, stdDevAsPercent);
@@ -168,7 +170,7 @@ namespace NoFuture.Rand.Domus
             var dtIncrement = firstOfYear.AddMonths(1);
             while (loan.GetCurrentBalance(dtIncrement) > spCost)
             {
-                loan.MakeAPayemnt(dtIncrement, minPmt);
+                loan.PutCashIn(dtIncrement, minPmt);
                 dtIncrement = dtIncrement.AddMonths(1);
             }
 
@@ -184,7 +186,7 @@ namespace NoFuture.Rand.Domus
                 var paidOnDate = dtIncrement;
                 if (_amer.Personality.GetRandomActsIrresponsible())
                     paidOnDate = paidOnDate.AddDays(Etx.IntNumber(5, 15));
-                loan.MakeAPayemnt(paidOnDate, minPmt);
+                loan.PutCashIn(paidOnDate, minPmt);
                 dtIncrement = dtIncrement.AddMonths(1);
             }
             loan.Description = "30-Year Mortgage";
@@ -192,10 +194,11 @@ namespace NoFuture.Rand.Domus
             loan.TradeLine.DueFrequency = new TimeSpan(30, 0, 0, 0);
             loan.Lender = Bank.GetRandomBank(_amer?.Address?.HomeCityArea);
             HomeDebt.Add(loan);
+            return minPmt;
         }
 
         /// <summary>
-        /// Creates random <see cref="CreditCard"/> instances with a history and adds
+        /// Creates random <see cref="CreditCardAccount"/> instances with a history and adds
         /// it to the <see cref="Opes.CreditCardDebt"/> collection.
         /// </summary>
         /// <param name="stdDevAsPercent"></param>
@@ -210,53 +213,53 @@ namespace NoFuture.Rand.Domus
                 return false;
 
             //create random cc
-            var cc = CreditCard.GetRandomCc(_amer, CreditScore);
+            var ccAcct = CreditCardAccount.GetRandomCcAcct(_amer, CreditScore);
 
             //determine timespan for generated history
-            var historyTs = DateTime.Now - cc.CardHolderSince;
+            var historyTs = DateTime.Now - ccAcct.Cc.CardHolderSince;
 
             //create history
             for (var i = 1; i < historyTs.Days; i++)
             {
-                var loopDt = cc.CardHolderSince.AddDays(i);
-                if (cc.GetStatus(loopDt) == AccountStatus.Closed)
+                var loopDt = ccAcct.Cc.CardHolderSince.AddDays(i);
+                if (ccAcct.GetStatus(loopDt) == AccountStatus.Closed)
                     break;
 
-                CreateSingleDaysCcCharges(cc, loopDt, randCcValue);
+                CreateSingleDaysPurchases(ccAcct, loopDt, randCcValue);
 
-                if (i%30 != 0 || cc.GetCurrentBalance(loopDt).Amount < 0.0M)
+                if (i%30 != 0 || ccAcct.GetCurrentBalance(loopDt).Amount < 0.0M)
                     continue;
 
-                var minDue = cc.GetMinPayment(loopDt);
+                var minDue = ccAcct.GetMinPayment(loopDt);
                 if(minDue < new Pecuniam(10.0M))
                     minDue = new Pecuniam(10.0M);
                 if (_amer.Personality.GetRandomActsIrresponsible())
                 {
                     var fowardDays = Etx.IntNumber(1, 45);
                     var paidDate = loopDt.AddDays(fowardDays);
-                    cc.MakeAPayemnt(paidDate, minDue);
+                    ccAcct.PutCashIn(paidDate, minDue);
                     i += fowardDays;
                 }
                 else
                 {
                     var additionalPaid = Pecuniam.GetRandPecuniam(20, 200, 10);
-                    cc.MakeAPayemnt(loopDt, minDue + additionalPaid);
+                    ccAcct.PutCashIn(loopDt, minDue + additionalPaid);
                 }
             }
 
-            CreditCardDebt.Add(cc);
+            CreditCardDebt.Add(ccAcct);
             return (double) GetTotalCurrentCcDebt().Amount < maxCcDebt;
         }
 
         protected internal void GetRandomBankAccounts()
         {
-            var savings = Savings.GetRandomSavingAcct(_usCityArea);
-            var checking = Checking.GetRandomCheckingAcct(_usCityArea);
+            var savings = SavingsAccount.GetRandomSavingAcct(_amer);
+            var checking = CheckingAccount.GetRandomCheckingAcct(_amer);
 
             throw new NotImplementedException();
         }
 
-        protected internal void GetRandomVehicles()
+        protected internal Pecuniam[] GetRandomVehicles()
         {
             throw new NotImplementedException();
         }
@@ -320,26 +323,26 @@ namespace NoFuture.Rand.Domus
         }
 
         /// <summary>
-        /// Creates purchase transactions on <see cref="cc"/> at random for the given <see cref="ccDate"/>.
+        /// Creates purchase transactions on <see cref="t"/> at random for the given <see cref="ccDate"/>.
         /// </summary>
-        /// <param name="cc"></param>
+        /// <param name="t"></param>
         /// <param name="ccDate"></param>
-        /// <param name="ccBalMax"></param>
-        protected internal void CreateSingleDaysCcCharges(CreditCard cc, DateTime ccDate, double ccBalMax)
+        /// <param name="daysMax"></param>
+        protected internal void CreateSingleDaysPurchases(ITransactionable t, DateTime ccDate, double daysMax)
         {
             //build charges history
-            var keepSpending = !cc.IsMaxedOut(ccDate);
+            var keepSpending = true;
+            var spentSum = new Pecuniam(0);
             while (keepSpending)//want possiable multiple transactions per day
             {
                 //if we reached target then exit 
-                if (cc.GetCurrentBalance(ccDate) >= new Pecuniam((decimal)ccBalMax))
-                {
+                if (spentSum >= new Pecuniam((decimal)daysMax))
                     return;
-                }
 
                 //make purchase based on day-of-week and card holder personality
                 var v = 2;
-                if (ccDate.DayOfWeek == DayOfWeek.Friday || ccDate.DayOfWeek == DayOfWeek.Saturday ||
+                if (ccDate.DayOfWeek == DayOfWeek.Friday || 
+                    ccDate.DayOfWeek == DayOfWeek.Saturday ||
                     ccDate.DayOfWeek == DayOfWeek.Sunday)
                     v = 4;
                 if (_amer.Personality.GetRandomActsIrresponsible())
@@ -351,13 +354,13 @@ namespace NoFuture.Rand.Domus
 
                     //allow rare case for some big ticket item
                     if (Etx.TryAboveOrAt(94, Etx.Dice.OneHundred))
-                        chargeAmt = Pecuniam.GetRandPecuniam(100, 1000);
+                        chargeAmt = Pecuniam.GetRandPecuniam(100, 500);
 
                     //check if cardholder is maxed-out
-                    if (!cc.MakeAPurchase(ccDate, chargeAmt))
-                    {
+                    if (!t.TakeCashOut(ccDate, chargeAmt))
                         return;
-                    }
+
+                    spentSum += chargeAmt;
                 }
                 //determine if more transactions for this day
                 keepSpending = Etx.CoinToss;
