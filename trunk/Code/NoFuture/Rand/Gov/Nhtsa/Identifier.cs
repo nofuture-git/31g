@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Xml;
 using NoFuture.Exceptions;
+using NoFuture.Rand.Data;
 
 namespace NoFuture.Rand.Gov.Nhtsa
 {
@@ -21,6 +23,17 @@ namespace NoFuture.Rand.Gov.Nhtsa
     /// </remarks>
     public class Vin : Identifier
     {
+        #region inner types
+
+        public enum VehicleType
+        {
+            Unknown,
+            Car,
+            Truck,
+            Suv
+        }
+        #endregion
+
         #region fields
         public static readonly char[] YearIdx = new[]
             {
@@ -46,16 +59,16 @@ namespace NoFuture.Rand.Gov.Nhtsa
         #endregion
 
         #region constants
-        public const string PublicWebApiRootUri = "http://vpic.nhtsa.dot.gov/api/vehicles/";
-        public const char DfDigit = '0';
+        public const string PUBLIC_WEB_API_ROOT_URI = "http://vpic.nhtsa.dot.gov/api/vehicles/";
+        public const char DF_DIGIT = '0';
         #endregion
 
         #region properties
         public WorldManufacturerId Wmi { get; set; }
         public VehicleDescription Vds { get; set; }
-        public char? CheckDigit { get { return _chkDigit; }}
+        public char? CheckDigit => _chkDigit;
         public VehicleIdSection Vis { get; set; }
-
+        public string Description { get; set; }
         public bool IsNhtsaValid { get; set; }
 
         public override string Value
@@ -106,7 +119,7 @@ namespace NoFuture.Rand.Gov.Nhtsa
 
         public static char GetRandomVinChar()
         {
-            var d = Etx.IntNumber(0, VinLetter2NumberValues.Count);
+            var d = Etx.IntNumber(0, VinLetter2NumberValues.Count-1);
             var f = VinLetter2NumberValues.Select(x => x.Key).ToArray()[d];
             return f;
         }
@@ -120,11 +133,11 @@ namespace NoFuture.Rand.Gov.Nhtsa
             var vin = GetVinWithChkDigit(null);
 
             if (String.IsNullOrWhiteSpace(vin))
-                return DfDigit;
+                return DF_DIGIT;
             if (vin.Length != 17)
-                return DfDigit;
+                return DF_DIGIT;
             if (ContainsInvalidChars(vin))
-                return DfDigit;
+                return DF_DIGIT;
 
             var vinChars = vin.ToCharArray();
             var workingArray = new int[17];
@@ -221,15 +234,212 @@ namespace NoFuture.Rand.Gov.Nhtsa
         /// <returns></returns>
         public static Vin GetRandomVin()
         {
+            var wmiAndName = WorldManufacturerId.GetRandomManufacturerId();
+            var wmiOut = wmiAndName.Item1;
+
+            var vds = new VehicleDescription
+            {
+                Four = GetRandomVinChar(),
+                Five = GetRandomVinChar(),
+                Six = GetRandomVinChar(),
+                Seven = GetRandomVinChar(),
+                Eight = GetRandomVinChar()
+            };
+
+            var vis = new VehicleIdSection
+            {
+                ModelYear = Vin.YearIdx[Etx.IntNumber(0, YearIdx.Length)],
+                PlantCode = GetRandomVinChar(),
+                SequentialNumber = Etx.Chars(0x30, 0x39, 6)
+            };
+
+            var vin = new Vin {Wmi = wmiOut, Vds = vds, Vis = vis};
+
+            if (!string.IsNullOrWhiteSpace(wmiAndName.Item2))
+                vin.Description = wmiAndName.Item2;
+
+            return vin;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null)
+                return false;
+            var vin = obj as Vin;
+            if (vin == null)
+                return false;
+
+            return string.Equals(vin.ToString(), ToString(), StringComparison.OrdinalIgnoreCase);
+        }
+
+        public override int GetHashCode()
+        {
+            return ToString().GetHashCode();
+        }
+
+        #endregion
+
+        #region nhtsa public web api
+        public Uri GetUriVpicDecodeVin()
+        {
+            return new Uri(PUBLIC_WEB_API_ROOT_URI + "DecodeVinValues/" + Wmi + Vds + Vis + "?format=json&modelyear=" + GetModelYearYyyy());
+        }
+
+        public Uri GetUriVpicDecodeWmi()
+        {
+            return new Uri(PUBLIC_WEB_API_ROOT_URI + "DecodeWMI/" + Wmi + "?format=json");
+        }
+
+        public static Uri GetUriVpicAllMakes()
+        {
+            return new Uri(PUBLIC_WEB_API_ROOT_URI + "getallmakes?format=json");
+        }
+
+        public static Uri GetUriVpicAllManufacturers()
+        {
+            return new Uri(PUBLIC_WEB_API_ROOT_URI + "getallmanufacturers?format=json");
+        }
+
+        public static Uri GetUriVpicMakes2Manufacturer(string manufacturerName)
+        {
+            return new Uri(PUBLIC_WEB_API_ROOT_URI + "getmakesformanufacturer/" + manufacturerName + "?format=json");
+        }
+
+        public static Uri GetUriVpicEquipPlantCodes(int? year)
+        {
+            var yyyy = year ?? DateTime.Now.Year;
+            return new Uri(PUBLIC_WEB_API_ROOT_URI + "GetEquipmentPlantCodes/" + yyyy + "?format=json");
+        }
+
+        public static Uri GetVpicModels2MakesUrl(string manufacturerName)
+        {
+            return new Uri(PUBLIC_WEB_API_ROOT_URI + "getmodelsformake/" + manufacturerName + "?format=json");
+        }
+
+        public static Uri GetVpicModels2Makes2YearUrl(string manufacturerName, int? year)
+        {
+            var yyyy = year ?? DateTime.Now.Year;
+            return new Uri(PUBLIC_WEB_API_ROOT_URI + "GetModelsForMakeYear/make/" + manufacturerName + "/modelyear/" + yyyy +
+                   "?format=json");
+        }
+        #endregion
+    }
+
+
+    /// <summary>
+    /// Represents the chars 1-3 of a VIN 
+    /// see http://vpic.nhtsa.dot.gov/
+    /// </summary>
+    public struct WorldManufacturerId
+    {
+        [VinPosition(1,1)]
+        public char? Country { get; set; }
+        [VinPosition(2, 1)]
+        public char? RegionMaker { get; set; }
+        [VinPosition(3, 1)]
+        public char? VehicleType { get; set; }
+
+        /// <summary>
+        /// String representation of this portion of the VIN
+        /// </summary>
+        /// <returns></returns>
+        /// <remarks>
+        /// Defaults to <see cref="Vin.DF_DIGIT"/>
+        /// </remarks>
+        public override string ToString()
+        {
+            var str = new StringBuilder();
+            str.Append(Country ?? Vin.DF_DIGIT);
+            str.Append(RegionMaker ?? Vin.DF_DIGIT);
+            str.Append(VehicleType ?? Vin.DF_DIGIT);
+            return str.ToString();
+        }
+
+        public static Tuple<WorldManufacturerId, string> GetRandomManufacturerId()
+        {
+            var df = new Tuple<WorldManufacturerId, string>(CreateRandomManufacturerId(), string.Empty);
+            if (TreeData.VinWmi == null)
+            {
+                System.Diagnostics.Debug.WriteLine("VinWmi is null");
+                return df;
+            }
+
+            //pick the kind of vehicle
+            var xml = TreeData.VinWmi;
+            var wmiOut = new WorldManufacturerId();
+            var xpath = "//vehicle-type";
+            var pick = Etx.IntNumber(1, 3);
+            switch (pick)
+            {
+                case 1:
+                    xpath += "[@name='car']/wmi";
+                    break;
+                case 2:
+                    xpath += "[@name='truck']/wmi";
+                    break;
+                case 3:
+                    xpath += "[@name='suv']/wmi";
+                    break;
+            }
+
+            // pick a manufacturer for vehicle type
+            var mfNodes = xml.SelectNodes(xpath);
+            if (mfNodes == null || mfNodes.Count <= 0)
+                return df;
+            pick = Etx.IntNumber(0, mfNodes.Count - 1);
+            var mfNode = mfNodes[pick];
+            if (mfNode == null)
+                return df;
+            var mfName = mfNode.Attributes?["id"]?.Value;
+            if (string.IsNullOrWhiteSpace(mfName))
+                return df;
+            xpath += $"[@id='{mfName}']";
+            var wmiNodes = xml.SelectNodes(xpath + "/add");
+            if (wmiNodes == null || wmiNodes.Count <= 0)
+                return df;
+            pick = Etx.IntNumber(0, wmiNodes.Count - 1);
+            var wmiNode = wmiNodes[pick];
+            if (wmiNode == null)
+                return df;
+            var wmiStr = wmiNode.Attributes?["value"]?.Value;
+            if (string.IsNullOrWhiteSpace(wmiStr) || wmiStr.Length != 3)
+                return df;
+            var wmiChars = wmiStr.ToCharArray();
+            wmiOut.Country = wmiChars[0];
+            wmiOut.RegionMaker = wmiChars[1];
+            wmiOut.VehicleType = wmiChars[2];
+
+            df = new Tuple<WorldManufacturerId, string>(wmiOut, string.Empty);
+
+            //pick a vehicle's common name
+            xpath += "/vehicle-names/add";
+            var vhNameNodes = xml.SelectNodes(xpath);
+            if (vhNameNodes == null || vhNameNodes.Count <= 0)
+                return df;
+
+            pick = Etx.IntNumber(0, vhNameNodes.Count - 1);
+            var vhNameNode = vhNameNodes[pick];
+            if (vhNameNode == null)
+                return df;
+
+            var vhName = vhNameNode.Attributes?["value"]?.Value;
+            if (string.IsNullOrWhiteSpace(vhName))
+                return df;
+
+            return new Tuple<WorldManufacturerId, string>(wmiOut, vhName);
+        }
+
+        internal static WorldManufacturerId CreateRandomManufacturerId()
+        {
             var wmiOut = new WorldManufacturerId();
             //JA-J0 Japan
             //KL-KR Korea
             //LA-L0 China
             //1A-10, 4A-40, 5A-50 US
             //3A-37 Mexico
-            var country = Etx.IntNumber(1, 12);
+            var pick = Etx.IntNumber(1, 12);
 
-            switch (country)
+            switch (pick)
             {
                 case 1:
                     wmiOut.Country = 'J';
@@ -259,120 +469,23 @@ namespace NoFuture.Rand.Gov.Nhtsa
                     break;
             }
 
-            wmiOut.RegionMaker = GetRandomVinChar();
-            wmiOut.VehicleType = GetRandomVinChar();
+            wmiOut.RegionMaker = Vin.GetRandomVinChar();
 
-            var vds = new VehicleDescription
+            pick = Etx.IntNumber(1, 3);
+            switch (pick)
             {
-                Four = GetRandomVinChar(),
-                Five = GetRandomVinChar(),
-                Six = GetRandomVinChar(),
-                Seven = GetRandomVinChar(),
-                Eight = GetRandomVinChar()
-            };
+                case 1:
+                    wmiOut.VehicleType = '2';
+                    break;
+                case 2:
+                    wmiOut.VehicleType = '3';
+                    break;
+                case 3:
+                    wmiOut.VehicleType = '7';
+                    break;
+            }
 
-            var vis = new VehicleIdSection
-            {
-                ModelYear = Vin.YearIdx[Etx.IntNumber(0, YearIdx.Length)],
-                PlantCode = GetRandomVinChar(),
-                SequentialNumber = Etx.Chars(0x30, 0x39, 6)
-            };
-
-            return new Vin {Wmi = wmiOut, Vds = vds, Vis = vis};
-        }
-
-        public override bool Equals(object obj)
-        {
-            if (obj == null)
-                return false;
-            var vin = obj as Vin;
-            if (vin == null)
-                return false;
-
-            return string.Equals(vin.ToString(), ToString(), StringComparison.OrdinalIgnoreCase);
-        }
-
-        public override int GetHashCode()
-        {
-            return ToString().GetHashCode();
-        }
-
-        #endregion
-
-        #region nhtsa public web api
-        public Uri GetUriVpicDecodeVin()
-        {
-            return new Uri(PublicWebApiRootUri + "DecodeVinValues/" + Wmi + Vds + Vis + "?format=json&modelyear=" + GetModelYearYyyy());
-        }
-
-        public Uri GetUriVpicDecodeWmi()
-        {
-            return new Uri(PublicWebApiRootUri + "DecodeWMI/" + Wmi + "?format=json");
-        }
-
-        public static Uri GetUriVpicAllMakes()
-        {
-            return new Uri(PublicWebApiRootUri + "getallmakes?format=json");
-        }
-
-        public static Uri GetUriVpicAllManufacturers()
-        {
-            return new Uri(PublicWebApiRootUri + "getallmanufacturers?format=json");
-        }
-
-        public static Uri GetUriVpicMakes2Manufacturer(string manufacturerName)
-        {
-            return new Uri(PublicWebApiRootUri + "getmakesformanufacturer/" + manufacturerName + "?format=json");
-        }
-
-        public static Uri GetUriVpicEquipPlantCodes(int? year)
-        {
-            var yyyy = year ?? DateTime.Now.Year;
-            return new Uri(PublicWebApiRootUri + "GetEquipmentPlantCodes/" + yyyy + "?format=json");
-        }
-
-        public static Uri GetVpicModels2MakesUrl(string manufacturerName)
-        {
-            return new Uri(PublicWebApiRootUri + "getmodelsformake/" + manufacturerName + "?format=json");
-        }
-
-        public static Uri GetVpicModels2Makes2YearUrl(string manufacturerName, int? year)
-        {
-            var yyyy = year ?? DateTime.Now.Year;
-            return new Uri(PublicWebApiRootUri + "GetModelsForMakeYear/make/" + manufacturerName + "/modelyear/" + yyyy +
-                   "?format=json");
-        }
-        #endregion
-    }
-
-
-    /// <summary>
-    /// Represents the chars 1-3 of a VIN 
-    /// see http://vpic.nhtsa.dot.gov/
-    /// </summary>
-    public struct WorldManufacturerId
-    {
-        [VinPosition(1,1)]
-        public char? Country { get; set; }
-        [VinPosition(2, 1)]
-        public char? RegionMaker { get; set; }
-        [VinPosition(3, 1)]
-        public char? VehicleType { get; set; }
-
-        /// <summary>
-        /// String representation of this portion of the VIN
-        /// </summary>
-        /// <returns></returns>
-        /// <remarks>
-        /// Defaults to <see cref="Vin.DfDigit"/>
-        /// </remarks>
-        public override string ToString()
-        {
-            var str = new StringBuilder();
-            str.Append(Country ?? Vin.DfDigit);
-            str.Append(RegionMaker ?? Vin.DfDigit);
-            str.Append(VehicleType ?? Vin.DfDigit);
-            return str.ToString();
+            return wmiOut;
         }
     }
 
@@ -398,16 +511,16 @@ namespace NoFuture.Rand.Gov.Nhtsa
         /// </summary>
         /// <returns></returns>
         /// <remarks>
-        /// Defaults to <see cref="Vin.DfDigit"/>
+        /// Defaults to <see cref="Vin.DF_DIGIT"/>
         /// </remarks>
         public override string ToString()
         {
             var str = new StringBuilder();
-            str.Append(Four ?? Vin.DfDigit);
-            str.Append(Five ?? Vin.DfDigit);
-            str.Append(Six ?? Vin.DfDigit);
-            str.Append(Seven ?? Vin.DfDigit);
-            str.Append(Eight ?? Vin.DfDigit);
+            str.Append(Four ?? Vin.DF_DIGIT);
+            str.Append(Five ?? Vin.DF_DIGIT);
+            str.Append(Six ?? Vin.DF_DIGIT);
+            str.Append(Seven ?? Vin.DF_DIGIT);
+            str.Append(Eight ?? Vin.DF_DIGIT);
             return str.ToString();
         }
     }
@@ -430,14 +543,14 @@ namespace NoFuture.Rand.Gov.Nhtsa
         /// </summary>
         /// <returns></returns>
         /// <remarks>
-        /// Defaults to <see cref="Vin.DfDigit"/>
+        /// Defaults to <see cref="Vin.DF_DIGIT"/>
         /// </remarks>
         public override string ToString()
         {
             var str = new StringBuilder();
-            str.Append(ModelYear ?? Vin.DfDigit);
-            str.Append(PlantCode ?? Vin.DfDigit);
-            str.Append(SequentialNumber ?? new string(Vin.DfDigit, 6));
+            str.Append(ModelYear ?? Vin.DF_DIGIT);
+            str.Append(PlantCode ?? Vin.DF_DIGIT);
+            str.Append(SequentialNumber ?? new string(Vin.DF_DIGIT, 6));
             return str.ToString();
         }
     }
@@ -448,15 +561,14 @@ namespace NoFuture.Rand.Gov.Nhtsa
     [AttributeUsage(AttributeTargets.Property)]
     public class VinPositionAttribute : Attribute
     {
-        private readonly int _pos;
-        private readonly int _len ;
-        public int Position1Base { get { return _pos; }}
-        public int Len { get { return _len; } }
+        public int Position1Base { get; }
+
+        public int Len { get; }
 
         public VinPositionAttribute(int position, int length)
         {
-            _pos = position;
-            _len = length;
+            Position1Base = position;
+            Len = length;
         }
 
     }

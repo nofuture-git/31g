@@ -39,6 +39,7 @@ namespace NoFuture.Rand.Domus
         private readonly double _ccDebtFactor;
         private readonly double _netWorthFactor;
         private readonly double _homeEquityFactor;
+        private readonly double _vehicleEquityFactor;
 
         private readonly double _checkingAcctFactor;
         private readonly double _savingAcctFactor;
@@ -81,7 +82,8 @@ namespace NoFuture.Rand.Domus
                 _amer.MaritialStatus);
             _homeEquityFactor = GetFactor(FactorTables.HomeEquity, _edu, _race, _region, _amer.Age, _amer.MyGender,
                 _amer.MaritialStatus);
-
+            _vehicleEquityFactor = GetFactor(FactorTables.VehicleEquity, _edu, _race, _region, _amer.Age, _amer.MyGender,
+                _amer.MaritialStatus);
         }
         #endregion
 
@@ -142,57 +144,22 @@ namespace NoFuture.Rand.Domus
         /// <param name="stdDevAsPercent"></param>
         protected internal Pecuniam GetRandomHomeLoan(double stdDevAsPercent = 0.1285D)
         {
-            //calc a rand amount of what is still owed on house
+            //calc a rand amount of what is still owed
             var randHouseDebt = GetRandomFactorValue(FactorTables.HomeDebt, _homeDebtFactor, stdDevAsPercent);
-            //calc rand amount of equity accrued on house
+
+            //calc rand amount of equity accrued
             var randHouseEquity = GetRandomFactorValue(FactorTables.HomeEquity, _homeEquityFactor, stdDevAsPercent);
 
             //get rand interest rate weighted by score
             var randRate = CreditScore.GetRandomInterestRate(null, Gov.Fed.RiskFreeInterestRate.DF_VALUE) * 0.01;
-
-            //calc total cost of house 
-            var totalHouseCost = randHouseDebt + randHouseEquity;
-
             var spCost = new Pecuniam((decimal)randHouseDebt);
+            var totalCost = new Pecuniam((decimal)(randHouseDebt + randHouseEquity));
 
-            //calc the monthly payment
-            var fv = spCost.Amount.PerDiemInterest(randRate, Constants.TropicalYear.TotalDays * 30);
-            var minPmt = new Pecuniam(Math.Round(fv / (30 * 12), 2));
-            var minPmtRate = (float)Math.Round(minPmt.Amount / fv, 6);
-
-            //given this value and rate - calc the timespan needed to have aquired this amount of equity
-            var firstOfYear = new DateTime(DateTime.Today.Year, 1, 1);
-            var loan = new FixedRateLoan(firstOfYear, minPmtRate, new Pecuniam((decimal)totalHouseCost))
-            {
-                Rate = (float)randRate
-            };
-
-            var dtIncrement = firstOfYear.AddMonths(1);
-            while (loan.GetCurrentBalance(dtIncrement) > spCost)
-            {
-                loan.PutCashIn(dtIncrement, minPmt);
-                dtIncrement = dtIncrement.AddMonths(1);
-            }
-
-            //repeat process from calc'ed past date to create a history
-            var housePurchaseDate = DateTime.Today.AddDays(-1 * (dtIncrement - firstOfYear).Days);
-            loan = new FixedRateLoan(housePurchaseDate, minPmtRate, new Pecuniam((decimal)totalHouseCost))
-            {
-                Rate = (float)randRate
-            };
-            dtIncrement = housePurchaseDate.AddMonths(1);
-            while (loan.GetCurrentBalance(dtIncrement) > spCost)
-            {
-                var paidOnDate = dtIncrement;
-                if (_amer.Personality.GetRandomActsIrresponsible())
-                    paidOnDate = paidOnDate.AddDays(Etx.IntNumber(5, 15));
-                loan.PutCashIn(paidOnDate, minPmt);
-                dtIncrement = dtIncrement.AddMonths(1);
-            }
+            //create a loan on current residence
+            Pecuniam minPmt;
+            var loan = GetRandomLoanWithHistory(_amer.Address, spCost, totalCost, (float) randRate, out minPmt);
             loan.Description = "30-Year Mortgage";
             loan.TradeLine.FormOfCredit = FormOfCredit.Mortgage;
-            loan.TradeLine.DueFrequency = new TimeSpan(30, 0, 0, 0);
-            loan.Lender = Bank.GetRandomBank(_amer?.Address?.HomeCityArea);
             HomeDebt.Add(loan);
             return minPmt;
         }
@@ -251,17 +218,96 @@ namespace NoFuture.Rand.Domus
             return (double) GetTotalCurrentCcDebt().Amount < maxCcDebt;
         }
 
-        protected internal void GetRandomBankAccounts()
+        protected internal void GetRandomBankAccounts(double stdDevAsPercent = 0.1285D)
         {
+            var randSavings = GetRandomFactorValue(FactorTables.SavingsAccount, _savingAcctFactor, stdDevAsPercent);
+            var randChecking = GetRandomFactorValue(FactorTables.CheckingAccount, _checkingAcctFactor, stdDevAsPercent);
+
             var savings = SavingsAccount.GetRandomSavingAcct(_amer);
             var checking = CheckingAccount.GetRandomCheckingAcct(_amer);
 
             throw new NotImplementedException();
         }
 
-        protected internal Pecuniam[] GetRandomVehicles()
+        /// <summary>
+        /// Creates a random <see cref="FixedRateLoan"/> instance with a history and adds it to the 
+        /// <see cref="Opes.VehicleDebt"/> collection.
+        /// </summary>
+        /// <param name="stdDevAsPercent"></param>
+        /// <returns></returns>
+        protected internal Pecuniam GetRandomVehicle(double stdDevAsPercent = 0.1285D)
         {
-            throw new NotImplementedException();
+            //calc a rand amount of what is still owed
+            var randCarDebt = GetRandomFactorValue(FactorTables.VehicleDebt, _vehicleDebtFactor, stdDevAsPercent);
+
+            //calc rand amount of equity
+            var randCarEquity = GetRandomFactorValue(FactorTables.VehicleEquity, _vehicleEquityFactor, stdDevAsPercent);
+
+            //get rand interest rate weighted by score
+            var randRate = CreditScore.GetRandomInterestRate(null, Gov.Fed.RiskFreeInterestRate.DF_VALUE + 4.2) * 0.01;
+            var spCost = new Pecuniam((decimal)randCarDebt);
+            var totalCost = new Pecuniam((decimal)(randCarDebt + randCarEquity));
+            var vin = Gov.Nhtsa.Vin.GetRandomVin();
+
+            Pecuniam minPmt;
+            var loan = GetRandomLoanWithHistory(vin, spCost, totalCost, (float)randRate, out minPmt);
+            loan.Description = string.Join(" ", vin.Value, vin.Description);
+            loan.TradeLine.FormOfCredit = FormOfCredit.Installment;
+            VehicleDebt.Add(loan);
+            return minPmt;
+        }
+
+        /// <summary>
+        /// Produces a <see cref="SecuredFixedRateLoan"/> with history.
+        /// </summary>
+        /// <param name="property"></param>
+        /// <param name="remainingCost"></param>
+        /// <param name="totalCost"></param>
+        /// <param name="randRate"></param>
+        /// <param name="minPmt"></param>
+        /// <returns></returns>
+        protected internal SecuredFixedRateLoan GetRandomLoanWithHistory(Identifier property, Pecuniam remainingCost,
+            Pecuniam totalCost, float randRate, out Pecuniam minPmt)
+        {
+            //calc the monthly payment
+            var fv = remainingCost.Amount.PerDiemInterest(randRate, Constants.TropicalYear.TotalDays*30);
+            minPmt = new Pecuniam(Math.Round(fv/(30*12), 2));
+            var minPmtRate = (float) Math.Round(minPmt.Amount/fv, 6);
+
+            //given this value and rate - calc the timespan needed to have aquired this amount of equity
+            var firstOfYear = new DateTime(DateTime.Today.Year, 1, 1);
+            var loan = new SecuredFixedRateLoan(property, firstOfYear, minPmtRate, totalCost)
+            {
+                Rate = randRate
+            };
+
+            var dtIncrement = firstOfYear.AddMonths(1);
+            while (loan.GetCurrentBalance(dtIncrement) > remainingCost)
+            {
+                loan.PutCashIn(dtIncrement, minPmt);
+                dtIncrement = dtIncrement.AddMonths(1);
+            }
+
+            //repeat process from calc'ed past date to create a history
+            var calcPurchaseDt = DateTime.Today.AddDays(-1*(dtIncrement - firstOfYear).Days);
+            loan = new SecuredFixedRateLoan(property, calcPurchaseDt, minPmtRate, totalCost)
+            {
+                Rate = randRate
+            };
+            dtIncrement = calcPurchaseDt.AddMonths(1);
+            while (loan.GetCurrentBalance(dtIncrement) > remainingCost)
+            {
+                var paidOnDate = dtIncrement;
+                if (_amer.Personality.GetRandomActsIrresponsible())
+                    paidOnDate = paidOnDate.AddDays(Etx.IntNumber(5, 15));
+                loan.PutCashIn(paidOnDate, minPmt);
+                dtIncrement = dtIncrement.AddMonths(1);
+            }
+
+            //assign boilerplate props
+            loan.TradeLine.DueFrequency = new TimeSpan(30, 0, 0, 0);
+            loan.Lender = Bank.GetRandomBank(_amer?.Address?.HomeCityArea);
+            return loan;
         }
 
         /// <summary>

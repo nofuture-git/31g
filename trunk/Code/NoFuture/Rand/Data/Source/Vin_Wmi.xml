@@ -4,24 +4,70 @@
     <data>
       <source>
         <vin src="http://vpic.nhtsa.dot.gov/api/vehicles/GetWMIsForManufacturer">
-          <vehicle-type name="Passenger Car">
+          <vehicle-type name="car">
             <wmi id="Chrysler">
               <add value="3C3" />
               <add value="3B3" />
               <add value="3E3" />
               <add value="3P3" />
+              <vehicle-names>
+                <add value="Chrysler Cirrus" />
+                <add value="Chrysler Sebring" />
+                <add value="Chrysler 300" />
+                <add value="Chrysler Thema" />
+                <add value="Chrysler Flavia" />
+                <add value="Chrysler 200" />
+                <add value="Chrysler 500" />
+                <add value="Chrysler PT Cruiser" />
+                <add value="Chrysler Crossfire" />
+                <add value="Chrysler Concorde" />
+                <add value="Chrysler New Yorker" />
+                <add value="Chrysler LHS" />
+                <add value="Chrysler Vision" />
+                <add value="Dodge Avenger" />
+                <add value="Dodge Charger" />
+                <add value="Dodge Viper" />
+                <add value="Dodge Dart" />
+                <add value="Dodge Intrepid" />
+                <add value="Dodge Stratus" />
+                <add value="Dodge Neon" />
+                <add value="Dodge Colt" />
+                <add value="Dodge Stealth" />
+                <add value="Dodge Stratus" />
+                <add value="Dodge Viper" />
+                <add value="Dodge Shadow" />
+                <add value="Dodge Prowler" />                
+              </vehicle-names>
             </wmi>
             <wmi id="Nissan">
               <add value="JN1" />
               <add value="JNK" />
               <add value="1N4" />
               <add value="3N1" />
+              <vehicle-names>
+                <add value="Nissan Versa" />
+                <add value="Nissan Versa Note" />
+                <add value="Nissan Altima" />
+                <add value="Nissan 370Z" />
+                <add value="Nissan Sentra" />
+                <add value="Nissan Q70L" />
+                <add value="Nissan Maxima" />
+                <add value="Nissan 350Z" />
+                <add value="Nissan 240SX" />
+                <add value="Nissan 300ZX" />                
+              </vehicle-names>
             </wmi>
             <wmi id="Mitsubishi">
               <add value="JA3" />
               <add value="ML3" />
               <add value="4A3" />
               <add value="6MM" />
+              <vehicle-names>
+                <add value="Mitsubishi Lancer" />
+                <add value="Mitsubishi Galant" />
+                <add value="Mitsubishi Eclipse" />
+                <add value="Mitsubishi Mirage" />
+              </vehicle-names>
             </wmi>
             <wmi id="BMW">
               <add value="WAP" />
@@ -32,19 +78,33 @@
               <add value="WBS" />
               <add value="4US" />
               <add value="SUM" />
-            </wmi>
-            <wmi id="Isuzu">
-              <add value="JAB" />
-              <add value="J81" />
-              <add value="J87" />
+              <vehicle-names>
+                <add value="BMW 128i" />
+                <add value="BMW 135i" />
+                <add value="BMW 328i" />
+              </vehicle-names>
             </wmi>
             <wmi id="Mazda">
               <add value="JM1" />
               <add value="JC1" />
               <add value="3MZ" />
-            </wmi>
-            <wmi id="Fiat">
-              <add value="ZAR" />
+              <vehicle-names>
+                <add value="Mazda MX-5" />
+                <add value="Mazda RX-8" />
+                <add value="Mazda Mazda3" />
+                <add value="Mazda Mazda5" />
+                <add value="Mazda Mazda6" />
+                <add value="Mazda MPV" />
+                <add value="Mazda Protege" />
+                <add value="Mazda Millenia" />
+                <add value="Mazda 626" />
+                <add value="Mazda 323" />
+                <add value="Mazda MX-3" />
+                <add value="Mazda 929" />
+                <add value="Mazda RX-7" />
+                <add value="Mazda MX-6" />
+                <add value="Mazda CX-3" />
+              </vehicle-names>
             </wmi>
             <wmi id="GM">
               <add value="1G1" />
@@ -83,18 +143,92 @@
               <add value="JG1" />
               <add value="JG2" />
               <add value="3G3" />
+              <vehicle-names>
+                <add value="GMC Eldorado" />
+                <add value="GMC Catera" />
+                <add value="Chevrolet Aveo" />
+                <add value="Chevrolet Camaro" />
+                <add value="Chevrolet Corvette" />
+                <add value="Chevrolet Cruze" />
+                <add value="Chevrolet Impala" />
+                <add value="Chevrolet Malibu" />
+                <add value="Chevrolet Sonic" />
+                <add value="Chevrolet Spark" />
+                <add value="Chevrolet Volt" />
+                <add value="Chevrolet Prizm" />
+                <add value="Chevrolet Cobalt" />
+                <add value="Chevrolet Monte Carlo" />
+                <add value="Chevrolet Cavalier" />
+                <add value="Chevrolet Lumina" />
+                <add value="Chevrolet Alero" />
+                <add value="Geo Metro" />
+                <add value="Chevrolet Caprice" />
+                <add value="Chevrolet Corsica" />
+                <add value="Pontiac Vibe" />
+                <add value="Pontiac G5" />
+                <add value="Pontiac Solistice" />
+                <add value="Pontiac Wave" />
+                <add value="Pontiac Grand Prix" />
+                <add value="Pontiac G6" />
+                <add value="Pontiac G8" />
+                <add value="Pontiac G3" />
+                <add value="Pontiac Pursuit" />
+                <add value="Pontiac GTO" />
+                <add value="Pontiac Matiz" />
+                <add value="Pontiac Bonneville" />
+                <add value="Pontiac Sunfire" />
+                <add value="Pontiac Grand AM" />
+                <add value="Pontiac Firebird" />
+                <add value="Pontiac Sunbird" />
+                <add value="Cadillac ATS" />
+                <add value="Cadillac CTS" />
+                <add value="Cadillac ELR" />
+                <add value="Cadillac XTS" />
+                <add value="Cadillac Deville" />
+                <add value="Cadillac SLS" />
+                <add value="Cadillac Catera" />
+                <add value="Cadillac Seville" />
+                <add value="Buick LaCrosse" />
+                <add value="Buick Regal" />
+                <add value="Buick Verano" />
+                <add value="Buick Lucerne" />
+                <add value="Buick Allure" />
+                <add value="Buick Park Avenue" />
+                <add value="Buick LeSabre" />
+                <add value="Buick Century" />
+                <add value="Buick Riviera" />
+                <add value="Buick Skylark" />
+                <add value="Buick Coachbuilder" />
+                <add value="Buick Roadmaster" />
+                <add value="Buick Cascada" />
+                <add value="Oldsmobile Alero" />
+                <add value="Oldsmobile Aurora" />
+                <add value="Oldsmobile Intrigue" />
+                <add value="Oldsmobile Regency" />
+                <add value="Oldsmobile Eighty Eight" />
+                <add value="Oldsmobile LSS" />
+                <add value="Oldsmobile Cutlass" />
+                <add value="Oldsmobile Achieva" />
+                <add value="Oldsmobile Cutlass Supreme" />
+                <add value="Oldsmobile Ciera" />
+              </vehicle-names>
             </wmi>
             <wmi id="Hyundai">
               <add value="KMH" />
               <add value="KNA" />
               <add value="5XX" />
-              <add value="U5Y" />
               <add value="5NP" />
-              <add value="KMH" />
-              <add value="KNA" />
-              <add value="5XX" />
-              <add value="U5Y" />
-              <add value="5NP" />
+              <vehicle-names>
+                <add value="Hyundai Equus" />
+                <add value="Hyundai Genesis Coupe" />
+                <add value="Hyundai Sonata" />
+                <add value="Hyundai Forte" />
+                <add value="Hyundai Elantra" />
+                <add value="Hyundai Optima" />
+                <add value="Hyundai Sorento" />
+                <add value="Hyundai Accent" />
+                <add value="Hyundai Genesis" />
+              </vehicle-names>
             </wmi>
             <wmi id="Honda">
               <add value="JHM" />
@@ -109,16 +243,45 @@
               <add value="3HG" />
               <add value="19X" />
               <add value="19V" />
+              <vehicle-names>
+                <add value="Honda Accord" />
+                <add value="Honda Civic" />
+                <add value="Honda Insight" />
+                <add value="Honda Prelude" />
+              </vehicle-names>
             </wmi>
             <wmi id="Mercedes-Benz">
               <add value="WDD" />
               <add value="WDB" />
               <add value="WME" />
               <add value="55S" />
+              <vehicle-names>
+                <add value="Mercedes-Benz SL-Class" />
+                <add value="Mercedes-Benz SLK-Class" />
+                <add value="Mercedes-Benz E-Class" />
+                <add value="Mercedes-Benz CLS-Class" />
+                <add value="Mercedes-Benz CLA-Class" />
+                <add value="Mercedes-Benz GLA-Class" />
+                <add value="Mercedes-Benz C-Class" />
+                <add value="Mercedes-Benz S-Class" />
+                <add value="Mercedes-Benz SLS-Class" />
+                <add value="Mercedes-Benz B-Class" />
+                <add value="Mercedes-Benz G-Class" />
+                <add value="Mercedes-Benz CL-Class" />
+              </vehicle-names>
             </wmi>
             <wmi id="Audi">
               <add value="TRU" />
               <add value="WAU" />
+              <vehicle-names>
+                <add value="Audi TT" />
+                <add value="Audi A4" />
+                <add value="Audi S4" />
+                <add value="Audi A6" />
+                <add value="Audi RS6" />
+                <add value="Audi A8" />
+                <add value="Audi RS4" />
+              </vehicle-names>
             </wmi>
             <wmi id="Ford">
               <add value="1FA" />
@@ -138,11 +301,43 @@
               <add value="TMC" />
               <add value="WF0" />
               <add value="KNJ" />
+              <vehicle-names>
+                <add value="Ford Crown Victoria" />
+                <add value="Ford Focus" />
+                <add value="Ford Fusion" />
+                <add value="Ford Mustang" />
+                <add value="Ford Taurus" />
+                <add value="Ford Thunderbird" />
+                <add value="Ford Five Hundred" />
+                <add value="Ford Fiesta" />
+                <add value="Ford Escort" />
+                <add value="Ford Aspire" />
+                <add value="Ford Probe" />
+                <add value="Lincoln MKZ" />
+                <add value="Lincoln Town Car" />
+                <add value="Lincoln MKS" />
+                <add value="Lincoln LS" />
+                <add value="Lincoln Zephyr" />
+                <add value="Lincoln Continental" />
+                <add value="Lincoln Mark" />
+                <add value="Mercury Grand Marquis" />
+                <add value="Mercury Milan" />
+                <add value="Mercury Sable" />
+                <add value="Mercury Montego" />
+                <add value="Mercury Cougar" />
+                <add value="Mercury Mystique" />
+              </vehicle-names>
             </wmi>
             <wmi id="Subaru">
               <add value="4S3" />
               <add value="JF1" />
               <add value="JF4" />
+              <vehicle-names>
+                <add value="Subaru Legacy" />
+                <add value="Subaru Outback" />
+                <add value="Subaru Forester" />
+                <add value="Subaru Impreza" />
+              </vehicle-names>
             </wmi>
             <wmi id="Toyota">
               <add value="JTH" />
@@ -157,22 +352,74 @@
               <add value="4T4" />
               <add value="5YF" />
               <add value="VNK" />
+              <vehicle-names>
+                <add value="Toyota Scion xA" />
+                <add value="Toyota Scion tC" />
+                <add value="Toyota Corolla" />
+                <add value="Toyota Prius" />
+                <add value="Toyota Impreza" />
+                <add value="Toyota Scion FR-S" />
+                <add value="Toyota Yaris" />
+                <add value="Toyota Camry" />
+                <add value="Toyota Solara" />
+                <add value="Toyota Celica" />
+                <add value="Toyota Supra" />
+                <add value="Toyota Scion iQ" />
+                <add value="Toyota Scion iM" />
+                <add value="Acura Accord" />
+                <add value="Acura RL" />
+                <add value="Acura TL" />
+                <add value="Acura TSX" />
+                <add value="Acura RLX" />
+                <add value="Acura ILX" />
+                <add value="Acura RSX" />
+                <add value="Acura Integra" />
+                <add value="Acura CL" />
+                <add value="Acura NSX" />
+                <add value="Acura Legend" />
+                <add value="Acura TLX" />
+                <add value="Acura Vigor" />
+              </vehicle-names>
             </wmi>
             <wmi id="Volkswagen">
               <add value="WVW" />
               <add value="3VW" />
               <add value="9BW" />
               <add value="1VW" />
+              <vehicle-names>
+                <add value="Volkswagen Golf" />
+                <add value="Volkswagen Passat" />
+                <add value="Volkswagen Jetta" />
+                <add value="Volkswagen Rabbit" />
+                <add value="Volkswagen Beetle" />
+              </vehicle-names>
             </wmi>
             <wmi id="Saab">
               <add value="YS3" />
+              <vehicle-names>
+                <add value="SAAB 9-3" />
+                <add value="SAAB 9-5" />
+                <add value="SAAB 900" />
+                <add value="SAAB 9000" />
+                <add value="SAAB 9-2X" />
+              </vehicle-names>
             </wmi>
             <wmi id="Volvo">
               <add value="YV1" />
               <add value="LYV" />
+              <vehicle-names>
+                <add value="Volvo S60" />
+                <add value="Volvo S80" />
+                <add value="Volvo V60" />
+                <add value="Volvo XC60" />
+                <add value="Volvo XC70" />
+                <add value="Volvo S40" />
+                <add value="Volvo V50" />
+                <add value="Volvo C70" />
+              </vehicle-names>
             </wmi>
           </vehicle-type>
-          <vehicle-type name="Multipurpose Passenger Vehicle (MPV)">
+          <vehicle-type name="suv">
             <wmi id="Chrysler">
               <add value="3A4" />
               <add value="3D4" />
@@ -189,6 +436,27 @@
               <add value="WD5" />
               <add value="2V8" />
               <add value="2BA" />
+              <vehicle-names>
+                <add value="Chrysler Town &amp; Country" />
+                <add value="Chrysler Grand Voyager" />
+                <add value="Chrysler Pacifica" />
+                <add value="Dodge Journey" />
+                <add value="Dodge Nitro" />
+                <add value="Dodge Dakota" />
+                <add value="Dodge Grand Caravan" />
+                <add value="Dodge Freemont" />
+                <add value="Dodge Durango" />
+                <add value="Dodge Aspen" />
+                <add value="Dodge Magnum" />
+                <add value="Dodge Caravan" />
+                <add value="Jeep Wrangler" />
+                <add value="Jeep Liberty" />
+                <add value="Jeep Cherokee" />
+                <add value="Jeep Compass" />
+                <add value="Jeep Patriot" />
+                <add value="Jeep Commander" />
+                <add value="Jeep Grand Cherokee" />
+              </vehicle-names>
             </wmi>
             <wmi id="Nissan">
               <add value="JN8" />
@@ -196,29 +464,52 @@
               <add value="5N3" />
               <add value="5N1" />
               <add value="3N8" />
+              <vehicle-names>
+                <add value="Nissan Pathfinder" />
+                <add value="Nissan Juke" />
+                <add value="Nissan Rogue" />
+                <add value="Nissan Murano" />
+                <add value="Nissan Armada" />
+                <add value="Nissan Xterra" />
+                <add value="Nissan Quest" />
+                <add value="Nissan Cube" />
+              </vehicle-names>
             </wmi>
             <wmi id="Mitsubishi">
               <add value="JA4" />
               <add value="4A4" />
+              <vehicle-names>
+                <add value="Mitsubishi Raider" />
+                <add value="Mitsubishi Eclipse" />
+                <add value="Mitsubishi Endeavor" />
+                <add value="Mitsubishi Montero" />
+                <add value="Mitsubishi Mirage" />
+                <add value="Mitsubishi Expo" />
+              </vehicle-names>
             </wmi>
             <wmi id="BMW">
               <add value="WBX" />
               <add value="SUX" />
               <add value="5UX" />
               <add value="5YM" />
+              <vehicle-names>
+                <add value="BMW X6" />
+                <add value="BMW X5" />
+                <add value="BMW X3" />
+                <add value="BMW X1" />
+                <add value="BMW X4" />
+              </vehicle-names>
             </wmi>
             <wmi id="Isuzu">
               <add value="4S6" />
               <add value="JAC" />
               <add value="4S2" />
               <add value="JAE" />
-            </wmi>
-            <wmi id="Mazda">
-              <add value="JM3" />
-            </wmi>
-            <wmi id="Fiat">
-              <add value="ZFB" />
-              <add value="ZAC" />
+              <vehicle-names>
+                <add value="Isuzu Trooper" />
+                <add value="Isuzu Rodeo" />
+                <add value="Isuzu Hombre" />
+              </vehicle-names>
             </wmi>
             <wmi id="GM">
               <add value="5GA" />
@@ -257,6 +548,41 @@
               <add value="3GS" />
               <add value="1GH" />
               <add value="LRB" />
+              <vehicle-names>
+                <add value="Chevrolet Equinox" />
+                <add value="Chevrolet Suburban" />
+                <add value="Chevrolet Tahoe" />
+                <add value="Chevrolet Traverse" />
+                <add value="Chevrolet Tracker" />
+                <add value="Chevrolet Acadia" />
+                <add value="Chevrolet Sierra" />
+                <add value="Chevrolet Yukon" />
+                <add value="Chevrolet Avalanche" />
+                <add value="Chevrolet Envoy" />
+                <add value="Chevrolet Trailblazer" />
+                <add value="Chevrolet Uplander" />
+                <add value="Chevrolet Astro Van" />
+                <add value="Chevrolet Venture" />
+                <add value="Chevrolet Trax" />
+                <add value="Chevrolet Sonoma" />
+                <add value="Chevrolet Blazer" />
+                <add value="Pontiac Montana" />
+                <add value="Pontiac Torrent" />
+                <add value="Pontiac Aztek" />
+                <add value="Cadillac Escalade" />
+                <add value="Cadillac Escalade ESV" />
+                <add value="Cadillac Escalade EXT" />
+                <add value="Buick Enclave" />
+                <add value="Buick Encore" />
+                <add value="Buick SRX" />
+                <add value="Buick Terraza" />
+                <add value="Buick Rainier" />
+                <add value="Buick Rendezvous" />
+                <add value="Buick Roadmaster" />
+                <add value="Buick Envision" />
+                <add value="Oldsmobile Bravada" />
+                <add value="Oldsmobile Silhouette" />
+              </vehicle-names>
             </wmi>
             <wmi id="Hyundai">
               <add value="KND" />
@@ -267,6 +593,24 @@
               <add value="5XY" />
               <add value="KM8" />
               <add value="5NM" />
+              <vehicle-names>
+                <add value="Hyundai Equus" />
+                <add value="Hyundai Santa Fe" />
+                <add value="Hyundai Tucson" />
+                <add value="Hyundai Rio" />
+                <add value="Hyundai Sonata" />
+                <add value="Hyundai Soul" />
+                <add value="Hyundai Borrego" />
+                <add value="Hyundai Elantra" />
+                <add value="Hyundai Entourage" />
+                <add value="Hyundai Optima" />
+                <add value="Hyundai Sedona" />
+                <add value="Hyundai Sorento" />
+                <add value="Hyundai Sportage" />
+                <add value="Hyundai Azera" />
+                <add value="Hyundai Veracruz" />
+                <add value="Hyundai Accent" />
+              </vehicle-names>
             </wmi>
             <wmi id="Honda">
               <add value="JHL" />
@@ -279,6 +623,14 @@
               <add value="SHS" />
               <add value="3CZ" />
               <add value="JR2" />
+              <vehicle-names>
+                <add value="Honda Pilot" />
+                <add value="Honda CR-V" />
+                <add value="Honda Element" />
+                <add value="Honda Odyssey" />
+                <add value="Honda Passport" />
+                <add value="Honda Crosstour" />
+              </vehicle-names>
             </wmi>
             <wmi id="Mercedes-Benz">
               <add value="WD4" />
@@ -286,9 +638,25 @@
               <add value="8BT" />
               <add value="WDC" />
               <add value="4JG" />
+              <vehicle-names>
+                <add value="Mercedes-Benz Sprinter" />
+                <add value="Mercedes-Benz GLA-Class" />
+                <add value="Mercedes-Benz M-Class" />
+                <add value="Mercedes-Benz GL-Class" />
+                <add value="Mercedes-Benz G-Class" />
+                <add value="Mercedes-Benz GLK-Class" />
+                <add value="Mercedes-Benz R-Class" />
+              </vehicle-names>
             </wmi>
             <wmi id="Audi">
               <add value="WA1" />
+              <vehicle-names>
+                <add value="Audi TT" />
+                <add value="Audi A4" />
+                <add value="Audi S4" />
+                <add value="Audi A6" />
+                <add value="Audi RS6" />
+              </vehicle-names>
             </wmi>
             <wmi id="Ford">
               <add value="5LM" />
@@ -302,10 +670,30 @@
               <add value="2MR" />
               <add value="2FM" />
               <add value="2LM" />
-            </wmi>
-            <wmi id="Subaru">
-              <add value="4S4" />
-              <add value="JF2" />
+              <vehicle-names>
+                <add value="Ford Edge" />
+                <add value="Ford Escape" />
+                <add value="Ford Expedition" />
+                <add value="Ford Explorer" />
+                <add value="Ford Flex" />
+                <add value="Ford Explorer Sport Trac" />
+                <add value="Ford Navigator" />
+                <add value="Ford Mountaineer" />
+                <add value="Ford Expedition EL" />
+                <add value="Ford Quest" />
+                <add value="Ford Excursion" />
+                <add value="Ford Freestyle" />
+                <add value="Ford Freestar" />
+                <add value="Ford Transit" />
+                <add value="Ford Villager" />
+                <add value="Ford Windstar" />
+                <add value="Ford Explorer Sport" />
+                <add value="Ford Aerostar" />
+                <add value="Lincoln Mountaineer" />
+                <add value="Lincoln Aviator" />
+                <add value="Lincoln Villager" />
+                <add value="Lincoln Windstar" />
+              </vehicle-names>
             </wmi>
             <wmi id="Toyota">
               <add value="JTE" />
@@ -318,16 +706,40 @@
               <add value="2T2" />
               <add value="5TD" />
               <add value="4T3" />
+              <vehicle-names>
+                <add value="Toyota SCION xB" />
+                <add value="Toyota LAND CRUISER" />
+                <add value="Toyota Highlander" />
+                <add value="Toyota 4-Runner" />
+                <add value="Toyota RAV4" />
+                <add value="Toyota FJ Cruiser" />
+                <add value="Toyota Avalon" />
+                <add value="Toyota Sienna" />
+                <add value="Toyota Sequoia" />
+              </vehicle-names>
             </wmi>
             <wmi id="Volkswagen">
               <add value="WVG" />
               <add value="WV2" />
+              <vehicle-names>
+                <add value="Volkswagen Touareg" />
+                <add value="Volkswagen Jetta Wagon" />
+              </vehicle-names>
             </wmi>
             <wmi id="Volvo">
               <add value="YV4" />
+              <vehicle-names>
+                <add value="Volvo S60" />
+                <add value="Volvo S80" />
+                <add value="Volvo V60" />
+                <add value="Volvo XC60" />
+                <add value="Volvo XC70" />
+                <add value="Volvo S40" />
+                <add value="Volvo V50" />
+              </vehicle-names>
             </wmi>
           </vehicle-type>
-          <vehicle-type name="Truck">
+          <vehicle-type name="truck">
             <wmi id="Chrysler">
               <add value="3D7" />
               <add value="3C6" />
@@ -339,12 +751,19 @@
               <add value="WD2" />
               <add value="WD6" />
               <add value="3F6" />
+              <vehicle-names>
+                <add value="Dodge Ram" />
+              </vehicle-names>
             </wmi>
             <wmi id="Nissan">
               <add value="JN6" />
               <add value="JNT" />
               <add value="1N6" />
               <add value="3N6" />
+              <vehicle-names>
+                <add value="Nissan Frontier" />
+                <add value="Nissan Titan" />
+              </vehicle-names>
             </wmi>
             <wmi id="GM">
               <add value="1GC" />
@@ -360,6 +779,10 @@
               <add value="JGT" />
               <add value="J8C" />
               <add value="J8T" />
+              <vehicle-names>
+                <add value="Chevrolet Silverado" />
+                <add value="Chevrolet Colorado" />
+              </vehicle-names>
             </wmi>
             <wmi id="Honda">
               <add value="JH1" />
@@ -369,6 +792,9 @@
               <add value="5FS" />
               <add value="2HJ" />
               <add value="2HU" />
+              <vehicle-names>
+                <add value="Honda Ridgeline" />
+              </vehicle-names>
             </wmi>
             <wmi id="Ford">
               <add value="1FT" />
@@ -380,6 +806,18 @@
               <add value="2FT" />
               <add value="3FT" />
               <add value="NM0" />
+              <vehicle-names>
+                <add value="Ford F-150" />
+                <add value="Ford Ranger" />
+                <add value="Ford F-250" />
+                <add value="Ford F-350" />
+                <add value="Ford F-450" />
+                <add value="Ford F-550" />
+                <add value="Ford F-650" />
+                <add value="Ford F-750" />
+                <add value="Ford F-Super Duty" />
+                <add value="Ford F-700" />
+              </vehicle-names>
             </wmi>
             <wmi id="Toyota">
               <add value="JT4" />
@@ -387,6 +825,9 @@
               <add value="5TE" />
               <add value="5TB" />
               <add value="5TF" />
+              <vehicle-names>
+                <add value="Toyota Tundra" />
+              </vehicle-names>
             </wmi>
           </vehicle-type>
         </vin>

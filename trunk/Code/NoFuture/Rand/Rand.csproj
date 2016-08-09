@@ -91,7 +91,6 @@
     <Compile Include="Data\Types\XmlDocXrefIdentifier.cs" />
     <Compile Include="Data\Types\XRef.cs" />
     <Compile Include="Domus\Child.cs" />
-    <Compile Include="Domus\HomeAddress.cs" />
     <Compile Include="Domus\IEducation.cs" />
     <Compile Include="Domus\IPerson.cs" />
     <Compile Include="Domus\IProfession.cs" />
@@ -103,6 +102,7 @@
     <Compile Include="Domus\Opes.cs" />
     <Compile Include="Domus\Parent.cs" />
     <Compile Include="Domus\Pneuma\Personality.cs" />
+    <Compile Include="Domus\ResidentAddress.cs" />
     <Compile Include="Domus\Spouse.cs" />
     <Compile Include="Edu\AmericanEduBase.cs" />
     <Compile Include="Gov\Bls\Codes\CeDatatype.cs" />

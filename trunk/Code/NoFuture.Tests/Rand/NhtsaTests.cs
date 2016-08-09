@@ -7,6 +7,12 @@ namespace NoFuture.Tests.Rand
     [TestClass]
     public class NhtsaTests
     {
+        [TestInitialize]
+        public void Init()
+        {
+            BinDirectories.DataRoot = @"C:\Projects\31g\trunk\bin\Data\Source";
+        }
+
         [TestMethod]
         public void TestVinNoValues()
         {
@@ -88,6 +94,16 @@ namespace NoFuture.Tests.Rand
             Assert.IsNotNull(testResult);
             
             System.Diagnostics.Debug.WriteLine(testResult);
+        }
+
+        [TestMethod]
+        public void TestGetRandoManufacturerId()
+        {
+            var testResult = WorldManufacturerId.GetRandomManufacturerId();
+            Assert.IsNotNull(testResult);
+            System.Diagnostics.Debug.WriteLine(string.Join(" ", testResult.Item1, testResult.Item2));
+            Assert.IsNotNull(testResult.Item1);
+            Assert.IsFalse(string.IsNullOrWhiteSpace(testResult.Item2));
         }
     }
 }

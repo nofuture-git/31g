@@ -51,7 +51,7 @@ namespace NoFuture.Rand.Domus
 
             var csz = CityArea.American();
             var homeAddr = StreetPo.American();
-            _addresses.Add(new HomeAddress {HomeStreetPo = homeAddr, HomeCityArea = csz});
+            _addresses.Add(new ResidentAddress {HomeStreetPo = homeAddr, HomeCityArea = csz});
 
             var abbrv = csz?.PostalState;
 
@@ -261,7 +261,7 @@ namespace NoFuture.Rand.Domus
         /// </summary>
         /// <param name="dt">Null for current time.</param>
         /// <param name="addr"></param>
-        public void AlignCohabitantsHomeDataAt(DateTime? dt, HomeAddress addr)
+        public void AlignCohabitantsHomeDataAt(DateTime? dt, ResidentAddress addr)
         {
             if (addr == null)
                 return;

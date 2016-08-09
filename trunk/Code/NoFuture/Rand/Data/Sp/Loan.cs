@@ -91,11 +91,13 @@ namespace NoFuture.Rand.Data.Sp //Sequere pecuniam
     {
         #region ctors
 
-        public FixedRateLoan(DateTime openedDate, float minPaymentRate, Pecuniam amt = null) : base(openedDate, minPaymentRate)
+        public FixedRateLoan(DateTime openedDate, float minPaymentRate, Pecuniam amt = null)
+            : base(openedDate, minPaymentRate)
         {
-            if(amt != null && amt.Amount != 0)
+            if (amt != null && amt.Amount != 0)
                 _tl.Balance.AddTransaction(openedDate, amt.Abs);
         }
+
         #endregion
 
         #region methods
@@ -111,11 +113,13 @@ namespace NoFuture.Rand.Data.Sp //Sequere pecuniam
     {
         #region ctors
 
-        public VariableRateLoan(DateTime openedDate, float minPaymentRate, Pecuniam amt = null) : base(openedDate, minPaymentRate)
+        public VariableRateLoan(DateTime openedDate, float minPaymentRate, Pecuniam amt = null)
+            : base(openedDate, minPaymentRate)
         {
             if (amt != null && amt.Amount != 0)
                 _tl.Balance.AddTransaction(openedDate, amt.Abs);
         }
+
         #endregion
 
         #region methods
@@ -124,5 +128,17 @@ namespace NoFuture.Rand.Data.Sp //Sequere pecuniam
             return TradeLine.Balance.GetCurrent(dt, Rate);
         }
         #endregion
+    }
+
+    [Serializable]
+    public class SecuredFixedRateLoan : FixedRateLoan
+    {
+        public Identifier Property { get; }
+
+        public SecuredFixedRateLoan(Identifier property, DateTime openedDate, float minPaymentRate, Pecuniam amt = null)
+            : base(openedDate, minPaymentRate, amt)
+        {
+            Property = property;
+        }
     }
 }
