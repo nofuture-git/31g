@@ -68,7 +68,7 @@ namespace NoFuture.Rand.Gov.Sec
         public override string Value { get; set; }
         public DateTime FilingDate { get; set; }
         public override FederalStatute Statute { get { return new SecuritiesExchangeAct(); } }
-        public FinancialData FinancialData { get; set; }
+        public ComFinancialData FinancialData { get; set; }
         public SummaryOfBusiness Summary { get; set; }
     }
 }

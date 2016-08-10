@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using NoFuture.Exceptions;
+using NoFuture.Rand.Data.Sp;
 using NoFuture.Rand.Data.Types;
 using NoFuture.Rand.Domus.Pneuma;
 using NoFuture.Rand.Edu;
@@ -25,6 +26,7 @@ namespace NoFuture.Rand.Domus
         internal readonly List<Tuple<KindsOfLabels, NorthAmericanPhone>> _phoneNumbers = 
             new List<Tuple<KindsOfLabels, NorthAmericanPhone>>();
         private SocialSecurityNumber _ssn;
+        private NorthAmericanWealth _opes;
         #endregion
 
         #region ctors
@@ -37,7 +39,10 @@ namespace NoFuture.Rand.Domus
         /// <param name="withWholeFamily">
         /// When set to true the ctor will assign parents, children and spouse at random.
         /// </param>
-        public NorthAmerican(DateTime dob, Gender myGender, bool withWholeFamily = false):base(dob)
+        /// <param name="withFinanceData">
+        /// When set to true will ctor will create and assign <see cref="Opes"/>
+        /// </param>
+        public NorthAmerican(DateTime dob, Gender myGender, bool withWholeFamily = false, bool withFinanceData = false):base(dob)
         {
             _birthCert = new AmericanBirthCert(this) { DateOfBirth = dob };
             _myGender = myGender;
@@ -63,10 +68,15 @@ namespace NoFuture.Rand.Domus
 
             _ssn = new SocialSecurityNumber();
             Race = NAmerUtil.GetAmericanRace(csz?.ZipCode);
+            _personality = new Personality();
+
             if (withWholeFamily)
                 ResolveFamilyState();
-
-            _personality = new Personality();
+            if (withFinanceData)
+            {
+                _opes = new NorthAmericanWealth(this);
+                _opes.CreateRandomAmericanOpes();
+            }
         }
 
         /// <summary>
@@ -144,6 +154,20 @@ namespace NoFuture.Rand.Domus
         /// </summary>
         public DriversLicense DriversLicense => GetDriversLicenseAt(null);
 
+        /// <summary>
+        /// Get FICO credit score for the current time
+        /// </summary>
+        public CreditScore CreditScore => _opes?.CreditScore;
+
+        /// <summary>
+        /// Get the current finacial data.
+        /// </summary>
+        public FinancialData CurrentFinances => _opes?.FinancialData;
+
+        /// <summary>
+        /// Get a list of vehicles which currently have payments.
+        /// </summary>
+        public IList<IReceivable> Vehicles => _opes?.VehicleDebt;
         #endregion
 
         #region public methods
@@ -252,6 +276,11 @@ namespace NoFuture.Rand.Domus
 
             return _edu;
 
+        }
+
+        public override Opes GetWealthAt(DateTime? dt)
+        {
+            return _opes ?? (_opes = new NorthAmericanWealth(this));
         }
 
         /// <summary>

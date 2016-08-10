@@ -487,21 +487,21 @@ namespace NoFuture.Rand
             switch (die)
             {
                 case Dice.Four:
-                    return op(IntNumber(1, 4), v);
+                    return v > 4 || op(IntNumber(1, 4), v);
                 case Dice.Six:
-                    return op(IntNumber(1, 6), v);
+                    return v > 6 || op(IntNumber(1, 6), v);
                 case Dice.Eight:
-                    return op(IntNumber(1, 8), v);
+                    return v > 8 || op(IntNumber(1, 8), v);
                 case Dice.Ten:
-                    return op(IntNumber(1, 10), v);
+                    return v > 10 || op(IntNumber(1, 10), v);
                 case Dice.Twelve:
-                    return op(IntNumber(1, 12), v);
+                    return v > 12 || op(IntNumber(1, 12), v);
                 case Dice.Twenty:
-                    return op(IntNumber(1, 20), v);
+                    return v > 20 || op(IntNumber(1, 20), v);
                 case Dice.OneHundred:
-                    return op(IntNumber(1, 100), v);
+                    return v > 100 || op(IntNumber(1, 100), v);
                 case Dice.OneThousand:
-                    return op(IntNumber(1, 1000), v);
+                    return v > 1000 || op(IntNumber(1, 1000), v);
                 default:
                     throw new ArgumentOutOfRangeException(nameof(die), die, @"No implementation for this dice");
             }

@@ -9,12 +9,14 @@ namespace NoFuture.Rand.Domus
         public DateTime? ToDate { get; set; }
         public StreetPo HomeStreetPo { get; set; }
         public CityArea HomeCityArea { get; set; }
+        public bool IsLeased { get; set; }
 
         public override string Abbrev => "Addr";
 
         public override string ToString()
         {
-            return string.Join(" ", HomeStreetPo, HomeCityArea);
+            var rentOrOwn = IsLeased ? "Leased" : "Owned";
+            return string.Join(" ", $"[{rentOrOwn}]", HomeStreetPo, HomeCityArea);
         }
     }
 }

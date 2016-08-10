@@ -3,7 +3,7 @@ using NoFuture.Rand.Domus;
 
 namespace NoFuture.Rand.Data.Sp
 {
-    public abstract class CreditScore
+    public abstract class CreditScore : Identifier
     {
         public const int MAX_FICO = 850;
         public const int MIN_FICO = 300;
@@ -111,6 +111,8 @@ namespace NoFuture.Rand.Data.Sp
         {
             return _american.Personality.Openness.Value.Zscore * NEGATIVE_FICO;
         }
+
+        public override string Abbrev => "FICO";
 
         public override string ToString()
         {

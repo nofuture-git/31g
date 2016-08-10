@@ -70,11 +70,9 @@ namespace NoFuture.Rand.Data.Sp
             return new Pecuniam(e - pd.Amount);
         }
 
-        public void PayRent(DateTime dt, Pecuniam amt)
+        public void PayRent(DateTime dt, Pecuniam amt, string note = "")
         {
-            if (amt.Amount > 0)
-                amt = new Pecuniam(-1*amt.Amount);
-            TradeLine.Balance.AddTransaction(dt, amt);
+            TradeLine.Balance.AddTransaction(dt, amt.Neg, note);
         }
 
         protected internal Pecuniam GetExpectedTotalRent(DateTime dt)

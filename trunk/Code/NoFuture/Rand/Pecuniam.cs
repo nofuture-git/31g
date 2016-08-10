@@ -162,7 +162,7 @@ namespace NoFuture.Rand
         {
             var num = (double)Etx.IntNumber(min, max);
 
-            if (wholeNumbersOf > 10)
+            if (wholeNumbersOf >= 10)
                 num = num - (num%wholeNumbersOf);
             else
             {
@@ -256,7 +256,7 @@ namespace NoFuture.Rand
 
         public override string ToString()
         {
-            return string.Join(" ", $"[{UniqueId}]", $"{AtTime:yyyy-MM-dd}", $"{Cash.Amount}");
+            return string.Join("\t", UniqueId, $"{AtTime:yyyy-MM-dd HH:mm:ss.ffff}", $"{Cash.Amount:0.00}", Description);
         }
 
         #endregion
@@ -344,6 +344,7 @@ namespace NoFuture.Rand
     public class Balance : IBalance
     {
         #region fields
+        private readonly Dictionary<Guid, Pecuniam> _balanceHistory = new Dictionary<Guid, Pecuniam>();
         private readonly List<ITransaction>  _transactions = new List<ITransaction>();
         private readonly IComparer<ITransaction> _comparer = new TransactionComparer();
         private readonly Func<Decimal, bool> _debitOp = x => x < 0;
@@ -374,7 +375,8 @@ namespace NoFuture.Rand
             {
                 dt = dt.AddMilliseconds(10);
             }
-            _transactions.Add(new Transaction(dt, amnt));
+            var t = new Transaction(dt, amnt, note);
+            _transactions.Add(t);
         }
 
         public Pecuniam GetDebitSum(Tuple<DateTime, DateTime> between)

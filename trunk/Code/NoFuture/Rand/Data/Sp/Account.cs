@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Security;
 using System.Text;
 using System.Text.RegularExpressions;
 using NoFuture.Rand.Com;
-using NoFuture.Rand.Data.Types;
 using NoFuture.Rand.Domus;
 
 namespace NoFuture.Rand.Data.Sp
@@ -77,19 +74,19 @@ namespace NoFuture.Rand.Data.Sp
             return true;
         }
 
-        public void AddDebitTransactionsByDate(DateTime? dt, IList<IReceivable> receivables)
+        public void AddDebitTransactionsByDate(DateTime? dt, IList<IReceivable> receivables, string note = "")
         {
             if (receivables == null || receivables.Count <= 0)
                 return;
 
-
             var stDt = dt.GetValueOrDefault(DateTime.Now).Date;
-            var endDt = dt.GetValueOrDefault(DateTime.Now).Date.AddSeconds(24*60*60);
-            var pmts = receivables.Select(
-                x => x.TradeLine.Balance.GetDebitSum(new Tuple<DateTime, DateTime>(stDt, endDt))).ToList();
-            for (var j = 0; j < pmts.Count; j++)
+            var endDt = dt.GetValueOrDefault(DateTime.Now).Date.AddDays(1).AddMilliseconds(-1);
+
+            var trans = receivables.SelectMany(x => x.TradeLine.Balance.GetTransactionsBetween(stDt, endDt, true));
+
+            foreach (var t in trans)
             {
-                TakeCashOut(endDt.AddSeconds(j*-1), pmts[j]);
+                TakeCashOut(t.AtTime.AddMilliseconds(1), t.Cash, t.Description);
             }
         }
 
@@ -290,7 +287,7 @@ namespace NoFuture.Rand.Data.Sp
             var cc = CreditCard.GetRandomCreditCard(p);
             var max = ccScore == null ? new Pecuniam(1000) : ccScore.GetRandomMax(cc.CardHolderSince);
             var randRate = ccScore?.GetRandomInterestRate(cc.CardHolderSince, baseInterestRate) * 0.01 ?? baseInterestRate;
-            var ccAcct = new CreditCardAccount(cc, minPmtPercent, max) {Rate = (float) randRate};
+            var ccAcct = new CreditCardAccount(cc, minPmtPercent, max) {Rate = (float) randRate, Id = cc.Number};
             return ccAcct;
         }
         #endregion

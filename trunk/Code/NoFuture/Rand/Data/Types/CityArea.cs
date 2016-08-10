@@ -54,17 +54,18 @@ namespace NoFuture.Rand.Data.Types
         public static UsCityStateZip American(string zipCodePrefix = null)
         {
             //set defaults
-            var ctz = new AddressData {City = "New York", PostalCode = "10066", StateAbbrv = "NY"};
+            var ctz = new AddressData {PostalCode = "10066", StateAbbrv = "NY"};
 
             //pick a zip code prefix at random
-            if(string.IsNullOrWhiteSpace(zipCodePrefix))
-                zipCodePrefix = NAmerUtil.RandomAmericanZipWithRespectToPop();
+            if (string.IsNullOrWhiteSpace(zipCodePrefix))
+                zipCodePrefix = NAmerUtil.RandomAmericanZipWithRespectToPop() ?? UsCityStateZip.DF_ZIPCODE_PREFIX;
 
             //x-ref it to the zip code data
             var randZipCode =
                 TreeData.AmericanZipCodeData.SelectSingleNode($"//zip-codes//zip-code[@prefix='{zipCodePrefix}']");
             if (randZipCode?.ParentNode?.Attributes?["name"] == null)
             {
+                ctz.City = "New York";
                 return new UsCityStateZip(ctz);
             }
 
@@ -315,7 +316,14 @@ namespace NoFuture.Rand.Data.Types
             }
             if (string.IsNullOrWhiteSpace(searchCrit))
                 return null;
-            return TreeData.AmericanCityData.SelectSingleNode(searchCrit);
+            var matchedNodes = TreeData.AmericanCityData.SelectNodes(searchCrit);
+            if (matchedNodes == null || matchedNodes.Count <= 0)
+                return null;
+            if (matchedNodes.Count == 1)
+                return matchedNodes[0];
+
+            var pick = Etx.IntNumber(0, matchedNodes.Count - 1);
+            return matchedNodes[pick];
         }
 
         protected internal void ParseCityXmlNode(XmlNode node)

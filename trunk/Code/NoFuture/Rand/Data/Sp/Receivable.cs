@@ -64,6 +64,15 @@ namespace NoFuture.Rand.Data.Sp
         public virtual TradeLine TradeLine => _tl;
         public Identifier Id { get; set; }
         public string Description { get; set; }
+        public override string ToString()
+        {
+            if(!string.IsNullOrWhiteSpace(Description))
+                return Description;
+            if (Id != null)
+                return Id.ToString();
+            return base.ToString();
+        }
+
         #endregion
 
         #region methods

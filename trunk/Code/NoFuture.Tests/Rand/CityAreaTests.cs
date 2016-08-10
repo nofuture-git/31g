@@ -9,6 +9,11 @@ namespace NoFuture.Tests.Rand
     [TestClass]
     public class CityAreaTests
     {
+        [TestInitialize]
+        public void Init()
+        {
+            BinDirectories.DataRoot = @"C:\Projects\31g\trunk\bin\Data\Source";
+        }
         [TestMethod]
         public void AmericanTest()
         {
@@ -127,6 +132,15 @@ namespace NoFuture.Tests.Rand
 
             Assert.IsTrue(testSubject.Equals(testAreEqual));
 
+        }
+
+        [TestMethod]
+        public void TestUsCityStateZipCtor()
+        {
+            var addrData = new AddressData {StateAbbrv = "NV", PostalCode = "89421"};
+            var testResult = new UsCityStateZip(addrData);
+            Assert.AreNotEqual("New York", testResult.City);
+            System.Diagnostics.Debug.WriteLine(testResult.City);
         }
     }
 }

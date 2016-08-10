@@ -103,7 +103,7 @@ namespace NoFuture.Rand.Com
                 {
                     FilingDate = new DateTime(year + 1, 1, 2),
                     FinancialData =
-                        new FinancialData
+                        new ComFinancialData
                         {
                             FiscalYear = year,
                             Assets = new NetConAssets(),
@@ -121,7 +121,7 @@ namespace NoFuture.Rand.Com
             form10K = _annualReports.First(x => x.FilingDate.Year - 1 == year);
 
             if (form10K.FinancialData == null)
-                form10K.FinancialData = new FinancialData {FiscalYear = year};
+                form10K.FinancialData = new ComFinancialData {FiscalYear = year};
             if(form10K.FinancialData.Assets == null)
                 form10K.FinancialData.Assets = new NetConAssets();
             if(form10K.FinancialData.Income == null)

@@ -7,6 +7,7 @@ namespace NoFuture.Rand.Domus
     public interface IPerson
     {
         #region properties
+        int Age { get; }
         BirthCert BirthCert { get; }
         DateTime? DeathDate { get; set; }
         string FirstName { get; set; }
@@ -17,7 +18,6 @@ namespace NoFuture.Rand.Domus
         IEducation Education { get; }
         List<Tuple<KindsOfNames, string>> OtherNames { get; }
         Spouse Spouse { get; }
-        int Age { get; }
         MaritialStatus MaritialStatus { get; }
         List<Child> Children { get; }
         List<Tuple<KindsOfNames, Parent>> Parents { get; }
@@ -56,6 +56,14 @@ namespace NoFuture.Rand.Domus
         /// <param name="dt">Null for the current time right now.</param>
         /// <returns></returns>
         IEducation GetEducationAt(DateTime? dt);
+
+        /// <summary>
+        /// Resolves the financial state and history of the person
+        /// at time <see cref="dt"/>
+        /// </summary>
+        /// <param name="dt"></param>
+        /// <returns></returns>
+        Opes GetWealthAt(DateTime? dt);
 
         #endregion
     }

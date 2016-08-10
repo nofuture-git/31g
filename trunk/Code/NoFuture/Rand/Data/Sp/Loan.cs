@@ -133,12 +133,10 @@ namespace NoFuture.Rand.Data.Sp //Sequere pecuniam
     [Serializable]
     public class SecuredFixedRateLoan : FixedRateLoan
     {
-        public Identifier Property { get; }
-
         public SecuredFixedRateLoan(Identifier property, DateTime openedDate, float minPaymentRate, Pecuniam amt = null)
             : base(openedDate, minPaymentRate, amt)
         {
-            Property = property;
+            Id = property;
         }
     }
 }

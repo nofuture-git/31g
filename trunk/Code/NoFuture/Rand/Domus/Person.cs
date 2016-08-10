@@ -119,6 +119,8 @@ namespace NoFuture.Rand.Domus
 
         public abstract IEducation GetEducationAt(DateTime? dt);
 
+        public abstract Opes GetWealthAt(DateTime? dt);
+
         /// <summary>
         /// Resolves the <see cref="ResidentAddress"/> which was current 
         /// at time <see cref="dt"/>
@@ -219,7 +221,7 @@ namespace NoFuture.Rand.Domus
         public static NorthAmerican American()
         {
             return new NorthAmerican(NAmerUtil.GetWorkingAdultBirthDate(), Etx.CoinToss ? Gender.Female : Gender.Male,
-                true);
+                true, true);
         }
 
         /// <summary>

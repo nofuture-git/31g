@@ -10,16 +10,21 @@ namespace NoFuture.Rand.Data.Sp
     [Serializable]
     public class FinancialData
     {
-        public int FiscalYear { get; set; }
         public NetConIncome Income { get; set; }
         public NetConAssets Assets { get; set; }
-        public int NumOfShares { get; set; }
         public override string ToString()
         {
             var i = Income?.ToString() ?? "0";
             var w = Assets?.ToString() ?? "0";
             return $"{i} {w}";
         }
+    }
+
+    [Serializable]
+    public class ComFinancialData : FinancialData
+    {
+        public int FiscalYear { get; set; }
+        public int NumOfShares { get; set; }
     }
     [Serializable]
     public class NetConAssets : ICited

@@ -61,6 +61,7 @@ namespace NoFuture.Rand.Gov.Nhtsa
         #region constants
         public const string PUBLIC_WEB_API_ROOT_URI = "http://vpic.nhtsa.dot.gov/api/vehicles/";
         public const char DF_DIGIT = '0';
+        public const char DF_LETTER = 'A';
         #endregion
 
         #region properties
@@ -202,7 +203,7 @@ namespace NoFuture.Rand.Gov.Nhtsa
         /// the typical four-digit year.
         /// </summary>
         /// <returns></returns>
-        public int GetModelYearYyyy()
+        public int? GetModelYearYyyy()
         {
             const int BASE_YEAR = 1980;
             const int AMENDED_BASE_YEAR = 2010;
@@ -214,8 +215,8 @@ namespace NoFuture.Rand.Gov.Nhtsa
             if (Char.IsLetter(Vds.Seven.GetValueOrDefault()))
                 baseYear = AMENDED_BASE_YEAR;
 
-            if(baseYear == 0)
-                throw new RahRowRagee("The char at position [7] (one-based) of the VIN is neither a number nor a letter.");
+            if (baseYear == 0)
+                return null;
 
             for (var i = 0; i < YearIdx.Length; i++)
             {
@@ -223,9 +224,7 @@ namespace NoFuture.Rand.Gov.Nhtsa
                     return baseYear + i;
 
             }
-            throw new ItsDeadJim(
-                String.Format("Cannot determine the VIN Model Year from the ModelYear char value of '{0}'",
-                    Vis.ModelYear));
+            return null;
         }
 
         /// <summary>
@@ -237,21 +236,21 @@ namespace NoFuture.Rand.Gov.Nhtsa
             var wmiAndName = WorldManufacturerId.GetRandomManufacturerId();
             var wmiOut = wmiAndName.Item1;
 
+            //when this is a digit it will allow for a much older make back to 1980
+            var yearBaseDeterminer = Etx.TryAboveOrAt(66, Etx.Dice.OneHundred)
+                ? DF_DIGIT
+                : GetRandomVinChar();
+
             var vds = new VehicleDescription
             {
                 Four = GetRandomVinChar(),
                 Five = GetRandomVinChar(),
                 Six = GetRandomVinChar(),
-                Seven = GetRandomVinChar(),
+                Seven = yearBaseDeterminer,
                 Eight = GetRandomVinChar()
             };
 
-            var vis = new VehicleIdSection
-            {
-                ModelYear = Vin.YearIdx[Etx.IntNumber(0, YearIdx.Length)],
-                PlantCode = GetRandomVinChar(),
-                SequentialNumber = Etx.Chars(0x30, 0x39, 6)
-            };
+            var vis = VehicleIdSection.GetVehicleIdSection(vds);
 
             var vin = new Vin {Wmi = wmiOut, Vds = vds, Vis = vis};
 
@@ -518,7 +517,7 @@ namespace NoFuture.Rand.Gov.Nhtsa
             str.Append(Four ?? Vin.DF_DIGIT);
             str.Append(Five ?? Vin.DF_DIGIT);
             str.Append(Six ?? Vin.DF_DIGIT);
-            str.Append(Seven ?? Vin.DF_DIGIT);
+            str.Append(Seven ?? Vin.DF_LETTER);
             str.Append(Eight ?? Vin.DF_DIGIT);
             return str.ToString();
         }
@@ -551,6 +550,25 @@ namespace NoFuture.Rand.Gov.Nhtsa
             str.Append(PlantCode ?? Vin.DF_DIGIT);
             str.Append(SequentialNumber ?? new string(Vin.DF_DIGIT, 6));
             return str.ToString();
+        }
+
+        public static VehicleIdSection GetVehicleIdSection(VehicleDescription vds)
+        {
+            const int AMENDED_BASE_YEAR = 2010;
+
+            var pick = Etx.IntNumber(0, DateTime.Today.Year - AMENDED_BASE_YEAR); 
+
+            if (char.IsNumber(vds.Seven.GetValueOrDefault()))
+                pick = Etx.IntNumber(0, Vin.YearIdx.Length-1);
+
+            var vis = new VehicleIdSection
+            {
+                ModelYear = Vin.YearIdx[pick],
+                PlantCode = Vin.GetRandomVinChar(),
+                SequentialNumber = Etx.Chars(0x30, 0x39, 6)
+            };
+
+            return vis;
         }
     }
 

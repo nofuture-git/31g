@@ -41,9 +41,11 @@ namespace NoFuture.Tests.Rand
             var amer = Person.American();
             var testSubject = new NorthAmericanWealth(amer);
             
-            testSubject.GetRandomRent();
+            testSubject.AddRent();
             var rent = testSubject.HomeDebt.FirstOrDefault() as Rent;
             Assert.IsNotNull(rent);
+
+            System.Diagnostics.Debug.WriteLine(rent.TradeLine.Balance.ToString());
         }
 
         [TestMethod]
@@ -52,7 +54,7 @@ namespace NoFuture.Tests.Rand
             var amer = Person.American();
             var testSubject = new NorthAmericanWealth(amer);
 
-            testSubject.GetRandomHomeLoan();
+            testSubject.AddMortgage();
 
             var homeLoan = testSubject.HomeDebt.FirstOrDefault() as FixedRateLoan;
             Assert.IsNotNull(homeLoan);
@@ -66,7 +68,7 @@ namespace NoFuture.Tests.Rand
             var amer = Person.American();
             var testSubject = new NorthAmericanWealth(amer);
 
-            testSubject.GetRandomSingleCcDebt();
+            testSubject.AddSingleCcDebt();
 
             Assert.IsTrue(testSubject.CreditCardDebt.Any());
 
@@ -87,10 +89,50 @@ namespace NoFuture.Tests.Rand
             var testSubject = new NorthAmericanWealth(amer);
             System.Diagnostics.Debug.WriteLine(string.Join(" ", amer.Age, amer.MaritialStatus, amer.Education, amer.Race));
 
-            var testResult = testSubject.GetPaycheck(null);
+            var testResult = testSubject.GetYearlyIncome(null);
             System.Diagnostics.Debug.WriteLine(testResult);
             Assert.IsNotNull(testResult);
             Assert.IsTrue(testResult.Amount > 0.0M);
+        }
+
+        [TestMethod]
+        public void TestGetRandomVehicle()
+        {
+            var amer = new NorthAmerican(NAmerUtil.GetWorkingAdultBirthDate(), Gender.Female);
+            var testSubject = new NorthAmericanWealth(amer);
+            System.Diagnostics.Debug.WriteLine(string.Join(" ", amer.Age, amer.MaritialStatus, amer.Education, amer.Race));
+
+            var testResult = testSubject.AddVehicleLoan();
+            Assert.IsNotNull(testResult);
+
+            if (testSubject.VehicleDebt.Any())
+            {
+                
+                var testResultSfrl = testSubject.VehicleDebt.First() as NoFuture.Rand.Data.Sp.SecuredFixedRateLoan;
+
+                Assert.IsNotNull(testResultSfrl);
+
+                System.Diagnostics.Debug.WriteLine(testResultSfrl.Description);
+
+                Assert.IsNotNull( testResultSfrl.Id);
+            }
+        }
+
+        [TestMethod]
+        public void TestCreateRandomAmericanOpes()
+        {
+            var amer = new NorthAmerican(NAmerUtil.GetWorkingAdultBirthDate(), Gender.Female);
+            var testSubject = new NorthAmericanWealth(amer);
+            System.Diagnostics.Debug.WriteLine(string.Join(" ", amer.Age, amer.MaritialStatus, amer.Education, amer.Race));
+
+            testSubject.CreateRandomAmericanOpes();
+
+            Assert.IsTrue(testSubject.HomeDebt.Any());
+
+            Assert.IsTrue(testSubject.CheckingAccounts.Any());
+            Assert.IsTrue(testSubject.SavingAccounts.Any());
+
+            System.Diagnostics.Debug.WriteLine(testSubject.FinancialData.ToString());
         }
     }
 }

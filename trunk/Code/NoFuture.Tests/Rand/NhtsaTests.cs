@@ -90,10 +90,17 @@ namespace NoFuture.Tests.Rand
         [TestMethod]
         public void TestRandomVin()
         {
-            var testResult = Vin.GetRandomVin();
-            Assert.IsNotNull(testResult);
-            
-            System.Diagnostics.Debug.WriteLine(testResult);
+            for (var i = 0; i < 45; i++)
+            {
+                var testResult = Vin.GetRandomVin();
+                Assert.IsNotNull(testResult);
+                var testResultYear = testResult.GetModelYearYyyy();
+                Assert.IsNotNull(testResultYear);
+                Assert.IsTrue(testResultYear.Value <= DateTime.Today.Year);
+
+                System.Diagnostics.Debug.WriteLine(string.Join(" ", testResult.Value, testResult.Description, testResult.GetModelYearYyyy()));
+
+            }
         }
 
         [TestMethod]
