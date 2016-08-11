@@ -75,8 +75,8 @@ namespace NoFuture.Rand.Data.Types
 
             //get the containing us state
             ctz.StateName =  randZipCode.ParentNode.Attributes["name"].Value;
-            var nfState = Gov.UsState.GetStateByName(ctz.StateName) ??
-                          Gov.UsState.GetStateByPostalCode(UsCityStateZip.DF_STATE_ABBREV);
+            var nfState = UsState.GetStateByName(ctz.StateName) ??
+                          UsState.GetStateByPostalCode(UsCityStateZip.DF_STATE_ABBREV);
 
             ctz.StateAbbrv = nfState.StateAbbrv ?? UsCityStateZip.DF_STATE_ABBREV;
             ctz.PostalCodeSuffix = $"{Etx.MyRand.Next(1, 9999):0000}";

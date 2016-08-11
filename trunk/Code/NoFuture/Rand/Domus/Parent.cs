@@ -12,5 +12,19 @@
         {
             return string.Join(" ", Est.FirstName, Est.LastName);
         }
+
+        public override int GetHashCode()
+        {
+            return Est?.GetHashCode() ?? 0;
+        }
+
+        public override bool Equals(object obj)
+        {
+            var p = obj as Parent;
+            if (p == null)
+                return false;
+
+            return p.Est == Est;
+        }
     }
 }

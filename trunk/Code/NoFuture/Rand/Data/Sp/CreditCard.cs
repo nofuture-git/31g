@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using NoFuture.Rand.Com;
 using NoFuture.Rand.Domus;
 using NoFuture.Util;
 
 namespace NoFuture.Rand.Data.Sp
 {
+    /// <summary>
+    /// Represents the std properites from a card-issuer
+    /// </summary>
     public interface ICreditCard
     {
         CreditCardNumber Number { get; }
@@ -36,14 +36,16 @@ namespace NoFuture.Rand.Data.Sp
     }
 
     /// <summary>
-    /// Represents the std properites from a card-issuer
+    /// Creates new instance with properties randomly assigned, 
+    /// All date-time fields are converted to UTC
     /// </summary>
     [Serializable]
     public abstract class CreditCard : ICreditCard
     {
+        #region ctor
         protected CreditCard(IPerson cardholder, DateTime? openedDate, DateTime? expiryDate)
         {
-            CardHolderSince = openedDate.GetValueOrDefault(DateTime.Now).ToUniversalTime();
+            CardHolderSince = openedDate.GetValueOrDefault(DateTime.Now);
 
             if (expiryDate == null)
             {
@@ -59,7 +61,9 @@ namespace NoFuture.Rand.Data.Sp
             Cvv = $"{Etx.IntNumber(7, 999),3:D3}";
             Number = GetRandomCardNumber();
         }
+        #endregion
 
+        #region properties
         public CreditCardNumber Number { get; }
         public DateTime ExpDate { get; }
         public string CardHolderName { get; }
@@ -69,7 +73,9 @@ namespace NoFuture.Rand.Data.Sp
         protected abstract int CardNumLen { get; }
         protected abstract int CardNumPrefix { get; }
         protected abstract string CcName { get; }
+        #endregion
 
+        #region methods
         protected CreditCardNumber GetRandomCardNumber()
         {
             var prefixVal = CardNumPrefix;
@@ -83,6 +89,11 @@ namespace NoFuture.Rand.Data.Sp
             return new CreditCardNumber(prefixRChars.ToArray());
         }
 
+        /// <summary>
+        /// Returs a new, randomly gen'ed, concrete instance of <see cref="ICreditCard"/>
+        /// </summary>
+        /// <param name="p"></param>
+        /// <returns></returns>
         public static ICreditCard GetRandomCreditCard(IPerson p)
         {
             var fk = Etx.IntNumber(0, 3);
@@ -100,6 +111,7 @@ namespace NoFuture.Rand.Data.Sp
                     return new VisaCc(p, dt, dt.AddYears(4));
             }
         }
+        #endregion
     }
 
     [Serializable]

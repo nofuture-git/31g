@@ -25,7 +25,7 @@ namespace NoFuture.Rand.Domus
         protected internal IPerson _father;
         protected internal readonly List<Uri> _netUris = new List<Uri>();
         protected internal readonly List<Child> _children = new List<Child>();
-        protected internal Personality _personality = new Personality();
+        private readonly Personality _personality = new Personality();
         protected internal BirthCert _birthCert;
         protected internal readonly List<ResidentAddress> _addresses = new List<ResidentAddress>();
         protected internal Gender _myGender;
@@ -59,7 +59,6 @@ namespace NoFuture.Rand.Domus
         public int Age => GetAgeAt(null);
         public MaritialStatus MaritialStatus => GetMaritalStatusAt(null);
         public List<Child> Children => _children;
-
         public List<Tuple<KindsOfNames, Parent>> Parents
         {
             get
@@ -69,6 +68,9 @@ namespace NoFuture.Rand.Domus
 
                 var f = GetFather();
                 var m = GetMother();
+                if (f == null && m == null)
+                    return _parents;
+
                 var lbl = KindsOfNames.Biological;
                 if (!IsLegalAdult(null))
                     lbl = KindsOfNames.Legal | lbl;
@@ -86,10 +88,14 @@ namespace NoFuture.Rand.Domus
                             : KindsOfNames.Father),
                         new Parent(person.GetSpouseAt(null).Est)));
 
-                if (f.MaritialStatus == MaritialStatus.Remarried && f.GetSpouseAt(null) != m)
+                Func<IPerson, IPerson, bool> isParentSpouseStepParent =
+                    (p0, p1) => p0 != null && p0.MaritialStatus == MaritialStatus.Remarried && p0.GetSpouseAt(null).Est == p1;
+
+                if(isParentSpouseStepParent(f,m))
                     addStepParent(f);
-                if (m.MaritialStatus == MaritialStatus.Remarried && m.GetSpouseAt(null) != f)
+                if (isParentSpouseStepParent(m,f))
                     addStepParent(m);
+
                 return _parents;
             }
         }
@@ -131,8 +137,8 @@ namespace NoFuture.Rand.Domus
         {
             //TODO enhance to have previous address
             return dt == null
-                ? _addresses.First()
-                : (_addresses.FirstOrDefault(x => x.FromDate <= dt.Value) ?? _addresses.First());
+                ? _addresses.FirstOrDefault()
+                : (_addresses.FirstOrDefault(x => x.FromDate <= dt.Value) ?? _addresses.FirstOrDefault());
         }
 
         /// <summary>
@@ -196,7 +202,7 @@ namespace NoFuture.Rand.Domus
             _addresses.Add(addr);
         }
 
-        protected abstract bool IsLegalAdult(DateTime? dt);
+        protected internal abstract bool IsLegalAdult(DateTime? dt);
 
         /// <summary>
         /// Gets the mother, as another 

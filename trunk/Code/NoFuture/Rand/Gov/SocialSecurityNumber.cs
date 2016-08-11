@@ -58,7 +58,7 @@ namespace NoFuture.Rand.Gov
                 AreaNumber = parts[0];
                 GroupNumber = parts[1];
                 SerialNumber = parts[2];
-                _value = string.Format("{0}-{1}-{2}", AreaNumber, GroupNumber, SerialNumber);
+                _value = string.Join("-", AreaNumber, GroupNumber, SerialNumber);
             }
         }
 
@@ -69,19 +69,14 @@ namespace NoFuture.Rand.Gov
         /// <returns></returns>
         public override bool Validate(string value)
         {
-            if (string.IsNullOrWhiteSpace(value))
-                return false;
-            return System.Text.RegularExpressions.Regex.IsMatch(value, _regexPattern);
-
+            return !string.IsNullOrWhiteSpace(value) &&
+                   System.Text.RegularExpressions.Regex.IsMatch(value, _regexPattern);
         }
 
         /// <summary>
         /// List of <see cref="SsnAnomaly"/> attached to this <see cref="SocialSecurityNumber"/>
         /// </summary>
-        public override List<Anomaly> Anomalies
-        {
-            get { return _anomalies.Cast<Anomaly>().ToList(); }
-        }
+        public override List<Anomaly> Anomalies => _anomalies.Cast<Anomaly>().ToList();
     }
 
     #region Ssn anomalies

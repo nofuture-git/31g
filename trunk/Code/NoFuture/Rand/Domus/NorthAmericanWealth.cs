@@ -51,7 +51,6 @@ namespace NoFuture.Rand.Domus
         private readonly double _checkingAcctFactor;
         private readonly double _savingAcctFactor;
 
-        
         private Pecuniam _residencePmt = Pecuniam.Zero;
         private Pecuniam _carPmt = Pecuniam.Zero;
         private Pecuniam _homeEquity = Pecuniam.Zero;
@@ -59,11 +58,13 @@ namespace NoFuture.Rand.Domus
         #endregion
 
         #region ctor
+
         /// <summary>
         /// Creates random transaction history.
         /// </summary>
         /// <param name="american"></param>
-        public NorthAmericanWealth(NorthAmerican american)
+        /// <param name="isRenting">Optional, force the generated instance as renting (instead of mortgage)</param>
+        public NorthAmericanWealth(NorthAmerican american, bool isRenting = false)
         {
             if(american == null)
                 throw new ArgumentNullException(nameof(american));
@@ -75,7 +76,7 @@ namespace NoFuture.Rand.Domus
             CreditScore = new PersonalCreditScore(american);
 
             //determine if renting or own
-            _isRenting = GetIsLeaseResidence(usCityArea);
+            _isRenting = isRenting || GetIsLeaseResidence(usCityArea);
 
             var edu = _amer.Education?.EduLevel ?? (OccidentalEdu.HighSchool | OccidentalEdu.Grad);
             var race = _amer.Race;
@@ -204,17 +205,18 @@ namespace NoFuture.Rand.Domus
             if(Paycheck == null)
                 throw new ArgumentNullException(nameof(Paycheck));
 
+
             //1 year history
             var baseDate = DateTime.Today.AddYears(-1);
 
             //set up checking
-            var checking = CheckingAccount.GetRandomCheckingAcct(_amer);
+            var checking = CheckingAccount.GetRandomCheckingAcct(_amer,baseDate);
             var randChecking = GetRandomFactorValue(FactorTables.CheckingAccount, _checkingAcctFactor, stdDevAsPercent);
             checking.PutCashIn(baseDate.AddDays(-1), randChecking.ToPecuniam(), "Init Checking");
 
             //set up a savings
             var randSavings = GetRandomFactorValue(FactorTables.SavingsAccount, _savingAcctFactor, stdDevAsPercent);
-            var savings = SavingsAccount.GetRandomSavingAcct(_amer);
+            var savings = SavingsAccount.GetRandomSavingAcct(_amer, baseDate);
             savings.PutCashIn(baseDate.AddDays(-1), randSavings.ToPecuniam(), "Init Savings");
             var totalDays = (DateTime.Today - baseDate).TotalDays;
             var friCounter = 0;
@@ -223,17 +225,19 @@ namespace NoFuture.Rand.Domus
                 var loopDtSt = baseDate.AddDays(i).Date;
 
                 //add pay every other friday
-                if (friCounter % 2 == 0)
+                if (loopDtSt.DayOfWeek == DayOfWeek.Friday)
                 {
-                    checking.PutCashIn(loopDtSt.AddSeconds(1), Paycheck.Abs, "Pay");
+                    if (friCounter%2 == 0)
+                    {
+                        checking.PutCashIn(loopDtSt.AddSeconds(1), Paycheck.Abs, "Pay");
+                    }
                     
                     //replenish savings
                     if (savings.Value < randSavings.ToPecuniam())
                         TransferFundsInBankAccounts(checking, savings, randSavings.ToPecuniam() - savings.Value,
                             loopDtSt.AddSeconds(15));
-                }
-                if (loopDtSt.DayOfWeek == DayOfWeek.Friday)
                     friCounter += 1;
+                }
 
                 //b-day money
                 if (DateTime.Compare(loopDtSt,
@@ -252,8 +256,11 @@ namespace NoFuture.Rand.Domus
                 //add cc pmts
                 checking.AddDebitTransactionsByDate(loopDtSt, CreditCardDebt);
 
+                //add utility pmts
+                PayUtilityBills(loopDtSt, checking);
+
                 //if broke, move funds from savings and no spending
-                if (checking.Value <= Pecuniam.Zero)
+                if (checking.GetStatus(loopDtSt) != AccountStatus.Current)
                 {
                     TransferFundsInBankAccounts(savings, checking, randChecking.ToPecuniam() - checking.Value,
                         loopDtSt.AddHours(19));
@@ -267,11 +274,43 @@ namespace NoFuture.Rand.Domus
             CheckingAccounts.Add(checking);
         }
 
+        protected internal void PayUtilityBills(DateTime loopDtSt, CheckingAccount checking)
+        {
+            var utils = new List<Tuple<string, int>>
+            {
+                new Tuple<string, int>("Electric", Etx.IntNumber(1, 28)),
+                new Tuple<string, int>("Gas", Etx.IntNumber(1, 28)),
+                new Tuple<string, int>("Water", Etx.IntNumber(1, 28)),
+                new Tuple<string, int>("Telco", Etx.IntNumber(1, 28))
+            };
+
+            var utilsDfMin = (int)Math.Round((double)Paycheck.Amount * DF_DAILY_SPEND_PERCENT);
+            var utilsDfMax = (int)Math.Round((double)Paycheck.Amount * DF_DAILY_SPEND_PERCENT*2);
+            var utilsDfMid = (int)Math.Round(((double)utilsDfMax - utilsDfMin) / 2);
+
+            //add utility pmts
+            foreach (var t in utils)
+            {
+                if (loopDtSt.Day != t.Item2)
+                    continue;
+
+                var randAmt = Pecuniam.GetRandPecuniam(utilsDfMin, utilsDfMax);
+
+                //raise these by season-of-year
+                if (t.Item1 == "Electric" && new[] { 6, 7, 8 }.Contains(loopDtSt.Month)
+                    || t.Item1 == "Gas" && new[] { 12, 1, 2 }.Contains(loopDtSt.Month))
+                {
+                    randAmt += Pecuniam.GetRandPecuniam(utilsDfMin, utilsDfMid);
+                }
+                checking.PutCashIn(loopDtSt.AddHours(12), randAmt, t.Item1);
+            }
+        }
+
         protected internal void TransferFundsInBankAccounts(DepositAccount fromAccount, DepositAccount toAccount, Pecuniam amt, DateTime dt)
         {
             if (fromAccount == null || toAccount == null || amt == null || amt == Pecuniam.Zero)
                 return;
-            if (fromAccount.Value <= Pecuniam.Zero && toAccount.Value <= Pecuniam.Zero)
+            if (fromAccount.GetStatus(dt) != AccountStatus.Current && toAccount.GetStatus(dt) != AccountStatus.Current)
                 return;
 
             if (fromAccount.OpenDate < dt || toAccount.OpenDate < dt)
@@ -472,11 +511,7 @@ namespace NoFuture.Rand.Domus
             //roll for no-car
             if (Etx.TryBelowOrAt(9, Etx.Dice.OneHundred))
                 return Pecuniam.Zero;
-            var vin = Gov.Nhtsa.Vin.GetRandomVin();
 
-            //this would never happen
-            while (_amer.MyGender == Gender.Male && vin.Description == "Toyota Yaris")
-                vin = Gov.Nhtsa.Vin.GetRandomVin();
 
             //calc a rand amount of what is still owed
             var randCarDebt = GetRandomFactorValue(FactorTables.VehicleDebt, _vehicleDebtFactor, stdDevAsPercent);
@@ -484,6 +519,12 @@ namespace NoFuture.Rand.Domus
             //allow for car to be paid off
             if (Etx.TryBelowOrAt(23, Etx.Dice.OneHundred))
                 randCarDebt = 0.0D;
+
+            var vin = Gov.Nhtsa.Vin.GetRandomVin(randCarDebt <= 2000.0D);
+
+            //this would never happen
+            while (_amer.MyGender == Gender.Male && vin.Description == "Toyota Yaris")
+                vin = Gov.Nhtsa.Vin.GetRandomVin(randCarDebt <= 2000.0D);
 
             //calc rand amount of equity
             var randCarEquity = GetRandomFactorValue(FactorTables.VehicleEquity, _vehicleEquityFactor, stdDevAsPercent);
@@ -539,6 +580,8 @@ namespace NoFuture.Rand.Domus
             var dtIncrement = firstOfYear.AddMonths(1);
             while (loan.GetCurrentBalance(dtIncrement) > remainingCost)
             {
+                if (dtIncrement > DateTime.Now)
+                    break;
                 loan.PutCashIn(dtIncrement, minPmt);
                 dtIncrement = dtIncrement.AddMonths(1);
             }

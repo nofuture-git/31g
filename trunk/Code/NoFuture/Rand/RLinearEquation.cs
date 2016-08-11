@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace NoFuture.Rand
+﻿namespace NoFuture.Rand
 {
     public class RLinearEquation : Util.Math.LinearEquation
     {

@@ -90,7 +90,7 @@ namespace NoFuture.Tests.Rand
 
             var testResult = testSubject.GetMinPayment(new DateTime(2014, 1, 28));
 
-            Assert.AreEqual(-18.38M, testResult.Amount);
+            Assert.AreEqual(-17.68M, testResult.Amount);
             System.Diagnostics.Debug.WriteLine(testResult);
             System.Diagnostics.Debug.WriteLine(testSubject.GetCurrentBalance(new DateTime(2014, 1, 28)));
 

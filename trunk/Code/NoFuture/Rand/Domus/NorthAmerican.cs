@@ -26,24 +26,18 @@ namespace NoFuture.Rand.Domus
         internal readonly List<Tuple<KindsOfLabels, NorthAmericanPhone>> _phoneNumbers = 
             new List<Tuple<KindsOfLabels, NorthAmericanPhone>>();
         private SocialSecurityNumber _ssn;
-        private NorthAmericanWealth _opes;
+        protected internal NorthAmericanWealth _opes;
         private DriversLicense _dl;
         #endregion
 
         #region ctors
 
         /// <summary>
-        /// Typical ctor to create the random instance.
+        /// Creates a new instance with names only.
         /// </summary>
         /// <param name="dob"></param>
         /// <param name="myGender"></param>
-        /// <param name="withWholeFamily">
-        /// When set to true the ctor will assign parents, children and spouse at random.
-        /// </param>
-        /// <param name="withFinanceData">
-        /// When set to true will ctor will create and assign <see cref="Opes"/>
-        /// </param>
-        public NorthAmerican(DateTime dob, Gender myGender, bool withWholeFamily = false, bool withFinanceData = false):base(dob)
+        public NorthAmerican(DateTime dob, Gender myGender) : base(dob)
         {
             _birthCert = new AmericanBirthCert(this) { DateOfBirth = dob };
             _myGender = myGender;
@@ -54,7 +48,22 @@ namespace NoFuture.Rand.Domus
             _otherNames.Add(new Tuple<KindsOfNames, string>(KindsOfNames.Surname, lname));
 
             MiddleName = NAmerUtil.GetAmericanFirstName(_birthCert.DateOfBirth, _myGender);
+            _ssn = new SocialSecurityNumber();
+        }
 
+        /// <summary>
+        /// Create new instance with both names and address, race and phone
+        /// </summary>
+        /// <param name="dob"></param>
+        /// <param name="myGender"></param>
+        /// <param name="withWholeFamily">
+        /// When set to true the ctor will assign parents, children and spouse at random.
+        /// </param>
+        /// <param name="withFinanceData">
+        /// When set to true will ctor will create and assign <see cref="Opes"/>
+        /// </param>
+        public NorthAmerican(DateTime dob, Gender myGender, bool withWholeFamily, bool withFinanceData = false):this(dob,myGender)
+        {
             var csz = CityArea.American();
             var homeAddr = StreetPo.American();
             _addresses.Add(new ResidentAddress {HomeStreetPo = homeAddr, HomeCityArea = csz});
@@ -66,17 +75,14 @@ namespace NoFuture.Rand.Domus
 
             if(GetAgeAt(null) >= 12)
                 _phoneNumbers.Add(new Tuple<KindsOfLabels, NorthAmericanPhone>(KindsOfLabels.Mobile, Phone.American(abbrv)));
-
-            _ssn = new SocialSecurityNumber();
+            
             Race = NAmerUtil.GetAmericanRace(csz?.ZipCode);
-            _personality = new Personality();
 
             if (withWholeFamily)
                 ResolveFamilyState();
             if (withFinanceData)
             {
-                _opes = new NorthAmericanWealth(this);
-                _opes.CreateRandomAmericanOpes();
+                ResolveFinancialState();
             }
         }
 
@@ -181,55 +187,21 @@ namespace NoFuture.Rand.Domus
         {
             var mdt = dt ?? DateTime.Now;
 
-            var iAmUnderage = !IsLegalAdult(mdt);
-
-            if (iAmUnderage || !_spouses.Any())
+            if (!IsLegalAdult(mdt) || !_spouses.Any())
                 return MaritialStatus.Single;
 
-            //spread all status into single dictionary
-            var myTimeline = new Dictionary<int, MaritialStatus> { { 0, MaritialStatus.Single } };
-            foreach (var spouseData in _spouses)
-            {
-                var days = (int)Math.Abs((spouseData.MarriedOn - _birthCert.DateOfBirth).TotalDays);
-                while (myTimeline.ContainsKey(days))
-                    days += 1;
+            var spAtDt = GetSpouseAt(mdt);
+            if (spAtDt == null)
+                return MaritialStatus.Divorced;
 
-                if (myTimeline.Values.Any(x => x == MaritialStatus.Married))
-                {
-                    myTimeline.Add(days, MaritialStatus.Remarried);
-                }
-                else
-                {
-                    myTimeline.Add(days, MaritialStatus.Married);
-                }
+            if(spAtDt.Est?.DeathDate != null && mdt >= spAtDt.Est.DeathDate.Value)
+                return  MaritialStatus.Widowed;
 
-                if (spouseData.SeparatedOn == null)
-                    continue;
-                days = (int)Math.Abs((spouseData.SeparatedOn.Value - _birthCert.DateOfBirth).TotalDays);
-                while (myTimeline.ContainsKey(days))
-                    days += 1;
-
-                myTimeline.Add(days, MaritialStatus.Divorced);
-
-                if (spouseData.Est == null || spouseData.Est.DeathDate == null)
-                    continue;
-
-                days = (int)Math.Abs((spouseData.Est.DeathDate.Value - _birthCert.DateOfBirth).TotalDays);
-                while (myTimeline.ContainsKey(days))
-                    days += 1;
-
-                myTimeline.Add(days, MaritialStatus.Widowed);
-            }
-
-            var mdtDays = (int)Math.Abs((mdt - _birthCert.DateOfBirth).TotalDays);
-
-            return myTimeline.Any(x => x.Key >= mdtDays)
-                ? myTimeline.First(x => x.Key >= mdtDays).Value
-                : myTimeline.Last().Value;
+            return spAtDt.Ordinal > 1 ? MaritialStatus.Remarried : MaritialStatus.Married;
         }
 
         /// <summary>
-        /// Gets the <see cref="Spouse"/> as they were at the given time of <see cref="dt"/>
+        /// Gets the <see cref="Spouse"/> as they were at the given date-and-only-date of <see cref="dt"/>
         /// </summary>
         /// <param name="dt">Null for the current time</param>
         /// <returns></returns>
@@ -240,7 +212,13 @@ namespace NoFuture.Rand.Domus
                 return null;
             }
 
-            var spouseData = _spouses.FirstOrDefault(x => x.MarriedOn <= (dt ?? DateTime.Now) && x.SeparatedOn == null);
+            dt = (dt ?? DateTime.Now).Date;
+
+            var spouseData =
+                _spouses.FirstOrDefault(
+                    x =>
+                        x.MarriedOn.Date <= dt &&
+                        (x.SeparatedOn == null || x.SeparatedOn.Value.Date > dt));
             return spouseData;
         }
 
@@ -333,9 +311,57 @@ namespace NoFuture.Rand.Domus
             _dl = dlFormats[0].IssueNewLicense(this, dt);
             return _dl;
         }
+
+        public override bool Equals(object obj)
+        {
+            var person = obj as IPerson;
+            if (person == null)
+                return false;
+
+            //this depends on a readonly GUID 
+            if (person.Personality.Equals(Personality))
+                return true;
+
+            //must be an american
+            var amer = obj as NorthAmerican;
+            if (amer == null)
+                return false;
+            var isSameBday = amer.BirthCert?.ToString() == BirthCert?.ToString();
+            var isSameDl = amer.DriversLicense == DriversLicense;
+            var isSameSsn = amer.Ssn == Ssn;
+
+            return isSameBday && isSameDl && isSameSsn;
+        }
+
+        public override int GetHashCode()
+        {
+            var p = BirthCert?.ToString().GetHashCode() ?? 0;
+            var q = DriversLicense?.ToString().GetHashCode() ?? 0;
+            var m = Ssn?.ToString().GetHashCode() ?? 0;
+
+            return p + q + m;
+        }
+
         #endregion
 
         #region internal methods
+
+        /// <summary>
+        /// Instantiates new <see cref="NorthAmericanWealth"/> for this instance
+        /// and assigns a ref likewise to current <see cref="Spouse"/>
+        /// </summary>
+        protected internal void ResolveFinancialState()
+        {
+            _opes = new NorthAmericanWealth(this);
+            _opes.CreateRandomAmericanOpes();
+            var sp = Spouse?.Est as NorthAmerican;
+            if (sp == null)
+                return;
+            sp._opes = _opes;
+            foreach (var ca in _opes.CheckingAccounts)
+                ca.IsJointAcct = true;
+        }
+
         /// <summary>
         /// Invokes <see cref="ResolveParents"/>, <see cref="ResolveSpouse"/> and <see cref="ResolveChildren"/>.
         /// Only Parents are certian the other resolutions contrained by age and randomness.
@@ -344,8 +370,8 @@ namespace NoFuture.Rand.Domus
         {
             ThrowOnBirthDateNull(this);
             var dt = DateTime.Now;
-            
-            if(!skipParents)
+
+            if (!skipParents)
                 ResolveParents();
 
             //resolve spouse to each other
@@ -441,7 +467,7 @@ namespace NoFuture.Rand.Domus
             //all other MaritialStatus imply at least one marriage in past
             var yearsMarried = currentAge - Convert.ToInt32(Math.Round(avgAgeMarriage));
 
-            var marriedOn = Etx.Date(-1*yearsMarried, dt);
+            var marriedOn = Etx.Date(-1*yearsMarried, dt).Date.AddHours(12);
 
             var spouse = (NorthAmerican)NAmerUtil.SolveForSpouse(_birthCert.DateOfBirth, MyGender);
 
@@ -564,7 +590,7 @@ namespace NoFuture.Rand.Domus
         {
             if (MyGender == Gender.Male)
                 return;
-
+            
             var dt = DateTime.Now;
             DateTime dtOut;
             if (IsTwin(myChildDob, out dtOut) && DateTime.Compare(dtOut, DateTime.MinValue) != 0)
@@ -573,7 +599,7 @@ namespace NoFuture.Rand.Domus
             }
             else
             {
-                //throws ex when exceed mothers age.
+                //need to move Dob based on timing of siblings and biology of mother
                 while (!IsValidDobOfChild(myChildDob))
                 {
                     myChildDob = myChildDob.AddDays(PREG_DAYS + MS_DAYS);
@@ -583,7 +609,11 @@ namespace NoFuture.Rand.Domus
             var myChildeAge = CalcAge(myChildDob, dt);
             var myChildGender = Etx.CoinToss ? Gender.Female : Gender.Male;
             var isChildAdult = myChildeAge >= GetMyHomeStatesAgeOfMajority();
-            var spouseAtChildDob = GetSpouseAt(myChildDob);
+
+            //look for spouse at and around Dob
+            var spouseAtChildDob = GetSpouseAt(myChildDob) ??
+                                   GetSpouseAt(myChildDob.AddDays(-1*(PREG_DAYS + MS_DAYS))) ??
+                                   GetSpouseAt(myChildDob.AddDays(PREG_DAYS + MS_DAYS));
 
             var childLastName = string.IsNullOrWhiteSpace(spouseAtChildDob?.Est?.LastName) ||
                                 spouseAtChildDob.Est?.MyGender == Gender.Female
@@ -594,8 +624,15 @@ namespace NoFuture.Rand.Domus
             {
                 LastName = childLastName
             };
-            if (isChildAdult)
-                nAmerChild.ResolveFamilyState(true);
+
+            //child has ref to father, father needs ref to child
+            var nAmerFather = spouseAtChildDob?.Est as NorthAmerican;
+            if (nAmerFather != null && nAmerFather.MyGender == Gender.Male 
+                && nAmerFather.Children.All(x => !nAmerChild.Equals(x.Est)))
+            {
+                nAmerFather._children.Add(new Child(nAmerChild));
+            }
+
             _children.Add(new Child(nAmerChild));
         }
 
@@ -689,7 +726,7 @@ namespace NoFuture.Rand.Domus
         protected internal void AddNewSpouseToList(IPerson spouse, DateTime marriedOn, DateTime? separatedOn = null)
         {
             //we need this or will will blow out the stack 
-            if (_spouses.Any(x => DateTime.Compare(x.MarriedOn, marriedOn) == 0))
+            if (_spouses.Any(x => DateTime.Compare(x.MarriedOn.Date, marriedOn.Date) == 0))
                 return;
 
             if (separatedOn == null)
@@ -713,20 +750,14 @@ namespace NoFuture.Rand.Domus
                 if (!string.IsNullOrWhiteSpace(maidenName?.Item2))
                     LastName = maidenName.Item2;
             }
-            _spouses.Add(new Spouse
-            {
-                Est = spouse,
-                MarriedOn = marriedOn.Date.AddHours(12),
-                SeparatedOn = separatedOn,
-                Ordinal = _spouses.Count + 1
-            });
+            _spouses.Add(new Spouse(this, spouse, marriedOn, separatedOn, _spouses.Count + 1));
 
             //recepricate to spouse
             var nAmerSpouse = spouse as NorthAmerican;
             nAmerSpouse?.AddNewSpouseToList(this, marriedOn, separatedOn);
         }
 
-        protected override bool IsLegalAdult(DateTime? dt)
+        protected internal override bool IsLegalAdult(DateTime? dt)
         {
             return GetAgeAt(dt) > GetMyHomeStatesAgeOfMajority();
         }
@@ -739,7 +770,6 @@ namespace NoFuture.Rand.Domus
             var myHomeState = UsState.GetStateByPostalCode(GetAddressAt(null)?.HomeCityArea?.AddressData?.StateAbbrv);
             return myHomeState?.AgeOfMajority ?? UsState.AGE_OF_ADULT;
         }
-
         #endregion
     }
 }

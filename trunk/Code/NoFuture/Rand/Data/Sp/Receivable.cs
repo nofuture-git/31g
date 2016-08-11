@@ -11,7 +11,7 @@ namespace NoFuture.Rand.Data.Sp
         HundredAndEighty
     }
 
-    public interface IReceivable
+    public interface IReceivable : IAsset
     {
         Identifier Id { get; set; }
         string Description { get; set; }
@@ -30,13 +30,6 @@ namespace NoFuture.Rand.Data.Sp
         /// <param name="dt"></param>
         /// <returns></returns>
         Pecuniam GetMinPayment(DateTime dt);
-
-        /// <summary>
-        /// Get the loans status for the given <see cref="dt"/>
-        /// </summary>
-        /// <param name="dt"></param>
-        /// <returns></returns>
-        AccountStatus GetStatus(DateTime dt);
 
         /// <summary>
         /// Get the current balance for the given <see cref="dt"/>
@@ -64,18 +57,9 @@ namespace NoFuture.Rand.Data.Sp
         public virtual TradeLine TradeLine => _tl;
         public Identifier Id { get; set; }
         public string Description { get; set; }
-        public override string ToString()
-        {
-            if(!string.IsNullOrWhiteSpace(Description))
-                return Description;
-            if (Id != null)
-                return Id.ToString();
-            return base.ToString();
-        }
-
         public AccountStatus CurrentStatus => GetStatus(DateTime.Now);
         public PastDue? CurrentDelinquency => GetDelinquency(DateTime.Now);
-        public Pecuniam Payoff => GetCurrentBalance(DateTime.Now);
+        public Pecuniam Value => GetCurrentBalance(DateTime.Now);
         #endregion
 
         #region methods
@@ -151,6 +135,13 @@ namespace NoFuture.Rand.Data.Sp
         public abstract Pecuniam GetCurrentBalance(DateTime dt);
 
         public abstract Pecuniam GetMinPayment(DateTime dt);
+
+        public override string ToString()
+        {
+            if (!string.IsNullOrWhiteSpace(Description))
+                return Description;
+            return Id?.ToString() ?? base.ToString();
+        }
         #endregion  
     }
 }

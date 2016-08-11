@@ -361,7 +361,7 @@ namespace NoFuture.Rand
             var maxRand = mean + (stdDev * 3);
 
             if(minRand < int.MinValue || maxRand > int.MaxValue)
-                throw new ArgumentException("The random number generator is limited to int max values.");
+                throw new ArgumentException("The random number generator is limited to int max 2^31 value.");
 
             var eq = new Util.Math.NormalDistEquation {Mean = mean, StdDev = stdDev};
 

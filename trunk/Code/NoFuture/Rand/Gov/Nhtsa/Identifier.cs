@@ -230,14 +230,17 @@ namespace NoFuture.Rand.Gov.Nhtsa
         /// <summary>
         /// Generates a random VIN
         /// </summary>
+        /// <param name="allowForOldModel">
+        /// Allow random to produce model years back to 1980
+        /// </param>
         /// <returns></returns>
-        public static Vin GetRandomVin()
+        public static Vin GetRandomVin(bool allowForOldModel = false)
         {
             var wmiAndName = WorldManufacturerId.GetRandomManufacturerId();
             var wmiOut = wmiAndName.Item1;
 
             //when this is a digit it will allow for a much older make back to 1980
-            var yearBaseDeterminer = Etx.TryAboveOrAt(66, Etx.Dice.OneHundred)
+            var yearBaseDeterminer = allowForOldModel && Etx.TryAboveOrAt(66, Etx.Dice.OneHundred)
                 ? DF_DIGIT
                 : GetRandomVinChar();
 

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NoFuture.Rand;
+using NoFuture.Rand.Domus;
 
 namespace NoFuture.Tests.Rand
 {
@@ -15,7 +17,7 @@ namespace NoFuture.Tests.Rand
         [TestMethod]
         public void TestGetScore()
         {
-            var testInput = NoFuture.Rand.Domus.Person.American();
+            var testInput = new NorthAmerican(NAmerUtil.GetWorkingAdultBirthDate(), Gender.Female);
 
             var testSubject = new NoFuture.Rand.Data.Sp.PersonalCreditScore(testInput);
 
@@ -39,15 +41,13 @@ namespace NoFuture.Tests.Rand
         [TestMethod]
         public void TestGetRandomInterestRate()
         {
-            var testInput = NoFuture.Rand.Domus.Person.American();
+            var testInput = new NorthAmerican(NAmerUtil.GetWorkingAdultBirthDate(), Gender.Female);
 
             var testSubject = new NoFuture.Rand.Data.Sp.PersonalCreditScore(testInput);
-
+            Debug.WriteLine(testSubject.GetScore(new DateTime(DateTime.Today.Year, 1, 1)));
             var testResult = testSubject.GetRandomInterestRate(new DateTime(DateTime.Today.Year, 1,1));
             Assert.IsTrue(testResult > 3.0D);
             Debug.WriteLine(testResult);
-            var secondTest = testSubject.GetRandomInterestRate(new DateTime(DateTime.Today.Year, 1, 1));
-            Assert.AreEqual(testResult, secondTest);
 
         }
     }

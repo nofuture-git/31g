@@ -89,13 +89,13 @@ namespace NoFuture.Rand.Gov
                 return new AmericanUniversity[] {};
 
             //this will never pass so avoid the exception
-            if (Data.TreeData.AmericanUniversityData == null)
+            if (TreeData.AmericanUniversityData == null)
                 return new AmericanUniversity[] { };
 
             var elements =
-                Data.TreeData.AmericanUniversityData.SelectSingleNode(
+                TreeData.AmericanUniversityData.SelectSingleNode(
                     $"//state[@name='{GetType().Name.ToUpper()}']") ??
-                Data.TreeData.AmericanUniversityData.SelectSingleNode($"//state[@name='{GetType().Name}']");
+                TreeData.AmericanUniversityData.SelectSingleNode($"//state[@name='{GetType().Name}']");
             if (elements == null || !elements.HasChildNodes)
                 return new AmericanUniversity[] { };
 
@@ -103,7 +103,7 @@ namespace NoFuture.Rand.Gov
             foreach (var elem in elements)
             {
                 AmericanUniversity univOut = null;
-                if (Edu.AmericanUniversity.TryParseXml(elem as XmlElement, out univOut))
+                if (AmericanUniversity.TryParseXml(elem as XmlElement, out univOut))
                 {
                     univOut.State = this;
                     tempList.Add(univOut);

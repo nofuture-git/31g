@@ -117,7 +117,6 @@ namespace NoFuture.Rand
                 if (string.IsNullOrWhiteSpace(_value))
                 {
                     _value = GetRandom();
-                    System.Diagnostics.Debug.WriteLine($"Value at time of first assignment {_value}");
                 }
                 return _value;
             }
@@ -125,7 +124,7 @@ namespace NoFuture.Rand
             {
                 _value = value;
                 if (!Validate(_value))
-                    throw new RahRowRagee(string.Format("The value given of '{0}' is not valid for this instance.", _value));
+                    throw new RahRowRagee($"The value given of '{_value}' is not valid for this instance.");
             }
         }
         public virtual bool Validate(string value)
@@ -147,13 +146,11 @@ namespace NoFuture.Rand
         public override string GetRandom()
         {
             var valLessCk = base.GetRandom();
-            System.Diagnostics.Debug.WriteLine($"Value without Check Digit appended {valLessCk}");
             if (CheckDigitFunc == null)
                 return valLessCk;
 
             var chkDigit = CheckDigitFunc(valLessCk);
             var rVal = $"{valLessCk}{chkDigit}";
-            System.Diagnostics.Debug.WriteLine($"Value at exit of GetRandom {rVal}");
             return rVal;
         }
 
@@ -161,13 +158,10 @@ namespace NoFuture.Rand
         {
             if (value == null)
                 return false;
-            System.Diagnostics.Debug.WriteLine($"Value passed into the Validate fx {value}");
             var lastChar = value.ToCharArray().Last(char.IsDigit);
             var lessChk = value.Substring(0, value.Length - 1);
-            System.Diagnostics.Debug.WriteLine($"Value passed into base.Validate {lessChk}");
             if (!base.Validate(lessChk))
             {
-                System.Diagnostics.Debug.WriteLine("Validate failed prior the examining the check digit");
                 return false;
             }
             int chkDigit;
@@ -297,13 +291,13 @@ namespace NoFuture.Rand
         {
             return new Dictionary<string, double>
             {
-                {Enum.GetName(typeof(NorthAmericanRace), NorthAmericanRace.White), 61.0D},
-                {Enum.GetName(typeof(NorthAmericanRace), NorthAmericanRace.Black), 12.0D},
-                {Enum.GetName(typeof(NorthAmericanRace), NorthAmericanRace.Hispanic), 18.0D},
-                {Enum.GetName(typeof(NorthAmericanRace), NorthAmericanRace.Asian), 6.0D},
-                {Enum.GetName(typeof(NorthAmericanRace), NorthAmericanRace.Mixed), 2.0D},
-                {Enum.GetName(typeof(NorthAmericanRace), NorthAmericanRace.Pacific), 1.0D},
-                {Enum.GetName(typeof(NorthAmericanRace), NorthAmericanRace.AmericanIndian), 1.0D}
+                {_w, 61.0D},
+                {_b, 12.0D},
+                {_h, 18.0D},
+                {_a, 6.0D},
+                {_m, 2.0D},
+                {_p, 1.0D},
+                {_ai, 1.0D}
             };
         }
     }
@@ -345,7 +339,7 @@ namespace NoFuture.Rand
         Midwest,
         West
     }
-}//end NoFuture.Rand
+}
 
 /*
  Other APIs
@@ -353,4 +347,5 @@ https://www.data.gov/developers/apis
 http://www.irs.gov/uac/Tax-Stats-2
 http://projects.propublica.org/nonprofits/api
 https://www.pacer.gov/
+https://nccd.cdc.gov/NPAO_DTM/
  */

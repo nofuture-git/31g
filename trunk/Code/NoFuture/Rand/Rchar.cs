@@ -49,7 +49,8 @@ namespace NoFuture.Rand
     {
         public UAlphaRchar(int indexValue) : base(indexValue) { }
 
-        public override char Rand { get { return (char) Etx.MyRand.Next(0x41, 0x5A); } }
+        public override char Rand => (char) Etx.MyRand.Next(0x41, 0x5A);
+
         public override bool Valid(string dlValue)
         {
             return base.Valid(dlValue) && char.IsUpper(dlValue.ToCharArray()[idx]);
@@ -61,7 +62,8 @@ namespace NoFuture.Rand
     {
         public LAlphaRchar(int indexValue) : base(indexValue) { }
 
-        public override char Rand { get { return (char)Etx.MyRand.Next(0x61, 0x7A); } }
+        public override char Rand => (char)Etx.MyRand.Next(0x61, 0x7A);
+
         public override bool Valid(string dlValue)
         {
             return base.Valid(dlValue) && char.IsLower(dlValue.ToCharArray()[idx]);
@@ -104,7 +106,8 @@ namespace NoFuture.Rand
     public class NumericRchar : Rchar
     {
         public NumericRchar(int indexValue) : base(indexValue) { }
-        public override char Rand { get { return (char)Etx.MyRand.Next(0x30, 0x39); } }
+        public override char Rand => (char)Etx.MyRand.Next(0x30, 0x39);
+
         public override bool Valid(string dlValue)
         {
             return base.Valid(dlValue) && char.IsNumber(dlValue.ToCharArray()[idx]);

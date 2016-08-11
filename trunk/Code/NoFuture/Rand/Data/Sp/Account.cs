@@ -15,7 +15,8 @@ namespace NoFuture.Rand.Data.Sp
         Closed,
         Current,
         Late,
-        NoHistory
+        NoHistory,
+        Overdrawn
     }
     [Serializable]
     public class AccountId : RIdentifier
@@ -28,17 +29,25 @@ namespace NoFuture.Rand.Data.Sp
         public override string Abbrev => "Acct";
     }
 
+    public interface IAccount : IAsset
+    {
+        AccountId AccountNumber { get; set; }
+        DateTime OpenDate { get; }
+        DateTime? ClosedDate { get; set; }
+    }
+
+    /// <summary>
+    /// Base type for a depository account held at a commercial bank.
+    /// </summary>
     [Serializable]
-    public abstract class DepositAccount : IAsset, ITransactionable
+    public abstract class DepositAccount : IAccount, ITransactionable
     {
         #region ctor
-
         protected DepositAccount(DateTime dateOpenned)
         {
             Balance = new Balance();
-            OpenDate = dateOpenned.ToUniversalTime();
+            OpenDate = dateOpenned;
         }
-
         #endregion 
 
         #region properties
@@ -48,6 +57,7 @@ namespace NoFuture.Rand.Data.Sp
         public FinancialFirm Bank { get; set; }
         public abstract Pecuniam Value { get; }
         public DateTime OpenDate { get; }
+        public DateTime? ClosedDate { get; set; }
         #endregion
 
         #region methods
@@ -56,10 +66,23 @@ namespace NoFuture.Rand.Data.Sp
             return string.Join(" ", GetType().Name, Bank, AccountNumber);
         }
 
+        public AccountStatus GetStatus(DateTime dt)
+        {
+            if(ClosedDate != null && ClosedDate < dt)
+                return AccountStatus.Closed;
+
+            var balAtDt = Balance.GetCurrent(dt, 0F);
+            return balAtDt < Pecuniam.Zero ? AccountStatus.Overdrawn : AccountStatus.Current;
+        }
+
         public virtual void PutCashIn(DateTime dt, Pecuniam val, string note = null)
         {
             if (val == Pecuniam.Zero)
                 return;
+            var status = GetStatus(dt);
+            if (status != AccountStatus.Current)
+                return;
+
             Balance.AddTransaction(dt, val.Abs, note);
         }
 
@@ -67,20 +90,30 @@ namespace NoFuture.Rand.Data.Sp
         {
             if (val == Pecuniam.Zero)
                 return true;
-
+            if (GetStatus(dt) != AccountStatus.Current)
+                return false;
             if (val > Balance.GetCurrent(dt, 0F))
                 return false;
             Balance.AddTransaction(dt, val.Neg, note);
             return true;
         }
 
-        public void AddDebitTransactionsByDate(DateTime? dt, IList<IReceivable> receivables, string note = "")
+        /// <summary>
+        /// Helper method to copy the debit transactions within any of <see cref="receivables"/>
+        /// whose <see cref="ITransaction.AtTime"/> is on the <see cref="dt"/>.
+        /// </summary>
+        /// <param name="dt">Defaults to today, ranges between 00:00:00.000 and 23:59:59.999 hours</param>
+        /// <param name="receivables"></param>
+        public void AddDebitTransactionsByDate(DateTime? dt, IList<IReceivable> receivables)
         {
             if (receivables == null || receivables.Count <= 0)
                 return;
 
             var stDt = dt.GetValueOrDefault(DateTime.Now).Date;
             var endDt = dt.GetValueOrDefault(DateTime.Now).Date.AddDays(1).AddMilliseconds(-1);
+
+            if (ClosedDate != null && stDt > ClosedDate.Value.Date)
+                return;
 
             var trans = receivables.SelectMany(x => x.TradeLine.Balance.GetTransactionsBetween(stDt, endDt, true));
 
@@ -89,7 +122,6 @@ namespace NoFuture.Rand.Data.Sp
                 TakeCashOut(t.AtTime.AddMilliseconds(1), t.Cash, t.Description);
             }
         }
-
         #endregion
     }
 
@@ -102,9 +134,17 @@ namespace NoFuture.Rand.Data.Sp
         #endregion
 
         #region ctor
+        /// <summary>
+        /// Creates new Checking Deposit account instance
+        /// </summary>
+        /// <param name="dateOpenned"></param>
+        /// <param name="debitCard">
+        /// Item2 is the PIN number and must be 4 numerical chars. 
+        /// Its value is hashed and not stored within the instance.
+        /// </param>
         public CheckingAccount(DateTime dateOpenned, Tuple<ICreditCard, string> debitCard = null) : base(dateOpenned)
         {
-            if (debitCard?.Item1 == null || string.IsNullOrWhiteSpace(debitCard.Item2) || !Regex.IsMatch(debitCard.Item2, "[0-9]{4}") )
+            if (debitCard?.Item1 == null || !IsPossiablePin(debitCard.Item2) )
                 return;
             DebitCard = debitCard.Item1;
             _pinKey = Encoding.UTF8.GetBytes(Path.GetRandomFileName());
@@ -118,6 +158,12 @@ namespace NoFuture.Rand.Data.Sp
         #endregion
 
         #region methods
+        /// <summary>
+        /// Returns true if <see cref="tryPin"/>
+        /// equals the PIN assigned at ctor-time.
+        /// </summary>
+        /// <param name="tryPin"></param>
+        /// <returns></returns>
         public bool IsPin(string tryPin)
         {
             if (_pinHash == null || _pinKey == null)
@@ -135,17 +181,38 @@ namespace NoFuture.Rand.Data.Sp
             return hmac.ComputeHash(pinBuffer);
         }
 
-        public static CheckingAccount GetRandomCheckingAcct(IPerson p, DateTime? dt = null)
+        internal static bool IsPossiablePin(string somestring)
+        {
+            return !string.IsNullOrWhiteSpace(somestring) && Regex.IsMatch(somestring, "[0-9]{4}");
+        }
+
+        /// <summary>
+        /// Creates a new random Checking Account
+        /// </summary>
+        /// <param name="p"></param>
+        /// <param name="dt">Date account was openned, default to now.</param>
+        /// <param name="debitPin">
+        /// Optional, when present and random instance of <see cref="DebitCard"/> is created with 
+        /// this as its PIN.
+        /// </param>
+        /// <returns></returns>
+        public static CheckingAccount GetRandomCheckingAcct(IPerson p, DateTime? dt = null, string debitPin = null)
         {
             var dtd = dt.GetValueOrDefault(DateTime.Now);
             var accountId = new AccountId(Etx.GetRandomRChars(true));
             var bank = Com.Bank.GetRandomBank(p?.Address?.HomeCityArea);
-            return new CheckingAccount(dtd,
-                new Tuple<ICreditCard, string>(CreditCard.GetRandomCreditCard(p), $"{Etx.IntNumber(7, 9999),4:D4}"))
-            {
-                AccountNumber = accountId,
-                Bank = bank
-            };
+            return IsPossiablePin(debitPin)
+                ? new CheckingAccount(dtd,
+                    new Tuple<ICreditCard, string>(CreditCard.GetRandomCreditCard(p), debitPin))
+                {
+                    AccountNumber = accountId,
+                    Bank = bank
+                }
+                : new CheckingAccount(dtd)
+                {
+                    AccountNumber = accountId,
+                    Bank = bank
+                };
         }
         #endregion
     }

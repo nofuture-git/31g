@@ -22,8 +22,8 @@ namespace NoFuture.Tests.Rand
         [TestMethod]
         public void AmericanTests()
         {
-            DateTime? testDob = new DateTime(1974,5,6);
-            var testResult = Person.American();
+            var testDob = new DateTime(1974,5,6);
+            var testResult = new NorthAmerican(testDob, Gender.Female);
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(Gender.Unknown, testResult.MyGender);
             Assert.IsFalse(string.IsNullOrWhiteSpace(testResult.LastName));
@@ -34,21 +34,29 @@ namespace NoFuture.Tests.Rand
             Assert.IsInstanceOfType(testResult.Address.HomeCityArea, typeof(UsCityStateZip));
             Assert.IsNotNull(((UsCityStateZip)testResult.Address.HomeCityArea).State);
             Assert.IsNotNull(testResult.DriversLicense);
+            //Assert.IsNotNull(testResult.GetMother());
+            //Assert.AreNotEqual(0, testResult.GetMother().GetChildrenAt(null));
+        }
+
+        [TestMethod]
+        public void TestAmericanFull()
+        {
+            var testResult = new NorthAmerican(DateTime.Now.AddYears(-36), Gender.Female, true, true);
             Assert.IsNotNull(testResult.GetMother());
             Assert.AreNotEqual(0, testResult.GetMother().GetChildrenAt(null));
+            Assert.IsNotNull(testResult.GetWealthAt(null));
         }
 
         [TestMethod]
         public void NorthAmericanEduTests()
         {
-            var testContext = Person.American();
-            var testResult = testContext.GetEducationAt(null);
+            var amer = new NorthAmerican(NAmerUtil.GetWorkingAdultBirthDate(), Gender.Female);
+            var testResult = new NorthAmericanEdu(amer);
 
             Assert.IsNotNull(testResult);
             Assert.IsNotNull(testResult.HighSchool);
             WriteLine(testResult.HighSchool);
             WriteLine(testResult.College);
-
         }
 
         [TestMethod]
@@ -60,6 +68,16 @@ namespace NoFuture.Tests.Rand
             Assert.IsNotNull(testResult.HighSchool);
             WriteLine(testResult.HighSchool);
             WriteLine(testResult.College);
+        }
+
+        [TestMethod]
+        public void NorthAmericanEduTestsChild()
+        {
+            var amer = new NorthAmerican(DateTime.Now.AddYears(-9), Gender.Female);
+            var testResult = new NorthAmericanEdu(amer);
+            Assert.IsNotNull(testResult);
+            Assert.IsNull(testResult.HighSchool);
+            Assert.IsNull(testResult.College);
         }
 
         [TestMethod]
@@ -198,12 +216,20 @@ namespace NoFuture.Tests.Rand
 
             Assert.IsNotNull(testResult.GetMother());
             Assert.IsNotNull(testResult.GetFather());
-
-            var d = Newtonsoft.Json.JsonConvert.SerializeObject(testResult, Formatting.Indented,
-                new JsonSerializerSettings() { ReferenceLoopHandling = ReferenceLoopHandling.Ignore });
-
-            WriteLine(d);
             
+        }
+
+        [TestMethod]
+        public void TestResolveParents()
+        {
+            var testResult = new NoFuture.Rand.Domus.NorthAmerican(DateTime.Now.AddYears(-40), Gender.Female);
+            Assert.IsNull(testResult.GetMother());
+            Assert.IsNull(testResult.GetFather());
+            testResult.ResolveParents();
+            Assert.IsNotNull(testResult.GetMother());
+            Assert.IsNotNull(testResult.GetFather());
+
+
         }
 
         [TestMethod]
@@ -224,7 +250,7 @@ namespace NoFuture.Tests.Rand
         [TestMethod]
         public void TestGetMaritalStatus()
         {
-            var testSubject = new NoFuture.Rand.Domus.NorthAmerican(DateTime.Now.AddYears(-40), Gender.Female, true);
+            var testSubject = new NoFuture.Rand.Domus.NorthAmerican(DateTime.Now.AddYears(-40), Gender.Female);
 
             var testResult = testSubject.GetMaritalStatusAt(null);
 
@@ -280,6 +306,60 @@ namespace NoFuture.Tests.Rand
             testResult = testPerson.IsValidDobOfChild(testDob);
             Assert.IsTrue(testResult);
             WriteLine(testDob);
+        }
+
+        [TestMethod]
+        public void TestGetSpouseAt()
+        {
+            //test with full timestamps
+            var firstMarriageDate = new DateTime(DateTime.Today.Year - 15, 8, 8, DateTime.Now.Hour, DateTime.Now.Minute,
+                DateTime.Now.Second);
+            var firstDivorceDate = new DateTime(DateTime.Today.Year - 3, 2, 14, DateTime.Now.Hour, DateTime.Now.Minute,
+                DateTime.Now.Second);
+            var secondMarriageDate = new DateTime((DateTime.Today.Year - 1), 12, 23, DateTime.Now.Hour, DateTime.Now.Minute,
+                DateTime.Now.Second);
+
+
+            var testPerson = new NorthAmerican(new DateTime((DateTime.Today.Year - 42), 6, 20), Gender.Female);
+            var firstSpouse = new NorthAmerican(new DateTime((DateTime.Today.Year - 46), 4, 4), Gender.Male);
+
+            testPerson.AddNewSpouseToList(firstSpouse, firstMarriageDate, firstDivorceDate);
+
+            var secondSpouse = new NorthAmerican(new DateTime((DateTime.Today.Year - 43), 12, 16), Gender.Male);
+            testPerson.AddNewSpouseToList(secondSpouse, secondMarriageDate);
+
+            //expect true when on day-of-wedding
+            var testResult = testPerson.GetSpouseAt(firstMarriageDate);
+            Assert.IsNotNull(testResult);
+            Assert.IsNotNull(testResult.Est);
+            Assert.IsTrue(testResult.Est.Equals(firstSpouse));
+
+            //expect false for day of separated
+            testResult = testPerson.GetSpouseAt(firstDivorceDate);
+            Assert.IsNull(testResult);
+
+            //expect true any time between 
+            for (var i = firstMarriageDate.Year + 1; i < firstDivorceDate.Year; i++)
+            {
+                for (var j = 1; j < 13; j++)
+                {
+                    testResult = testPerson.GetSpouseAt(new DateTime(i, j, 8));
+                    Assert.IsNotNull(testResult);
+                    Assert.IsNotNull(testResult.Est);
+                    Assert.IsTrue(testResult.Est.Equals(firstSpouse));
+                }
+            }
+            
+            //expect false day directly before second marriage
+            testResult = testPerson.GetSpouseAt(secondMarriageDate.Date.AddMilliseconds(-1));
+            Assert.IsNull(testResult);
+
+            testResult = testPerson.GetSpouseAt(secondMarriageDate.Date);
+            Assert.IsNotNull(testResult);
+            Assert.IsNotNull(testResult.Est);
+            Assert.IsTrue(testResult.Est.Equals(secondSpouse));
+
+
         }
     }
 }

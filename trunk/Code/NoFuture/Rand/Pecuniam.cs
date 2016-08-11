@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using NoFuture.Exceptions;
-using NoFuture.Rand.Com;
 using NoFuture.Util.Math;
 
 namespace NoFuture.Rand
@@ -23,7 +22,7 @@ namespace NoFuture.Rand
     public class Pecuniam
     {
         #region fields
-        private readonly Decimal _amount;
+        private readonly decimal _amount;
         private readonly CurrencyAbbrev _currencyAbbrev;
         #endregion
 
@@ -175,6 +174,9 @@ namespace NoFuture.Rand
         #endregion
     }
 
+    /// <summary>
+    /// Nf money type extension methods
+    /// </summary>
     public static class PecuniamExtensions
     {
         public static Pecuniam ToPecuniam(this double x)
@@ -182,6 +184,11 @@ namespace NoFuture.Rand
             return new Pecuniam((decimal)x);
         }
         public static Pecuniam ToPecuniam(this int x)
+        {
+            return new Pecuniam(x);
+        }
+
+        public static Pecuniam ToPecuniam(this decimal x)
         {
             return new Pecuniam(x);
         }
@@ -226,7 +233,7 @@ namespace NoFuture.Rand
 
         public Transaction(DateTime atTime, Pecuniam amt, string description = null)
         {
-            _atTime = atTime.ToUniversalTime();
+            _atTime = atTime;
             _cash = amt;
             Description = description;
         }
@@ -348,8 +355,8 @@ namespace NoFuture.Rand
         private readonly Dictionary<Guid, Pecuniam> _balanceHistory = new Dictionary<Guid, Pecuniam>();
         private readonly List<ITransaction>  _transactions = new List<ITransaction>();
         private readonly IComparer<ITransaction> _comparer = new TransactionComparer();
-        private readonly Func<Decimal, bool> _debitOp = x => x < 0;
-        private readonly Func<Decimal, bool> _creditOp = x => x > 0;
+        private readonly Func<decimal, bool> _debitOp = x => x < 0;
+        private readonly Func<decimal, bool> _creditOp = x => x > 0;
         #endregion
 
         #region properties
@@ -477,7 +484,7 @@ namespace NoFuture.Rand
                 .ToList();
         }
 
-        protected internal Pecuniam GetRangeSum(Tuple<DateTime, DateTime> between, Func<Decimal, bool> op)
+        protected internal Pecuniam GetRangeSum(Tuple<DateTime, DateTime> between, Func<decimal, bool> op)
         {
             var ts = Transactions;
             if (ts.Count <= 0)

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using NoFuture.Rand.Data.Types;
 
 namespace NoFuture.Rand.Gov
 {
@@ -65,52 +64,52 @@ namespace NoFuture.Rand.Gov
     [Serializable]
     public class AddressIsCorrectionalFacility : AddressAnomaly
     {
-        public override string Abbrev { get { return "P"; } }
+        public override string Abbrev => "P";
     }
     [Serializable]
     public class AddressIsMailReceivingService : AddressAnomaly
     {
-        public override string Abbrev { get { return "Z"; } }
+        public override string Abbrev => "Z";
     }
     [Serializable]
     public class AddressIsHotel : AddressAnomaly
     {
-        public override string Abbrev { get { return "J"; } }
+        public override string Abbrev => "J";
     }
     [Serializable]
     public class AddressIsCampground : AddressAnomaly
     {
-        public override string Abbrev { get { return "H"; } }
+        public override string Abbrev => "H";
     }
     [Serializable]
     public class AddressIsPoBox : AddressAnomaly
     {
-        public override string Abbrev { get { return "G"; } }
+        public override string Abbrev => "G";
     }
     [Serializable]
     public class AddressIsNonResidential : AddressAnomaly
     {
-        public override string Abbrev { get { return "W"; } }
+        public override string Abbrev => "W";
     }
     [Serializable]
     public class AddressIsMultiDwelling : AddressAnomaly
     {
-        public override string Abbrev { get { return "1"; } }
+        public override string Abbrev => "1";
     }
     [Serializable]
     public class AddressIsReportedAsMisused : AddressAnomaly
     {
-        public override string Abbrev { get { return "2"; } }
+        public override string Abbrev => "2";
     }
     [Serializable]
     public class AddressIsAmbiguousIdentifier : AddressAnomaly
     {
-        public override string Abbrev { get { return "C"; } }
+        public override string Abbrev => "C";
     }
     [Serializable]
     public class AddressIsUnverifiable : AddressAnomaly
     {
-        public override string Abbrev { get { return "D"; } }
+        public override string Abbrev => "D";
     }
     #endregion
 }

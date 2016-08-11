@@ -32,9 +32,10 @@ namespace NoFuture.Rand.Domus
         public NorthAmericanEdu(IPerson p)
         {
             var amer = p as NorthAmerican;
+            if (amer != null && !amer.IsLegalAdult(DateTime.Now))
+                return;
 
             var dob = amer?.BirthCert?.DateOfBirth ?? NAmerUtil.GetWorkingAdultBirthDate();
-
             //determine where amer lived when they were 18
             var mother = amer?.BirthCert == null
                 ? NAmerUtil.SolveForParent(dob,

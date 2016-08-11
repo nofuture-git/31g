@@ -20,17 +20,15 @@ namespace NoFuture.Rand.Data.Types
         /// <returns></returns>
         public override string ToString()
         {
-            var secondary = $"{data.SecondaryUnitDesignator} {data.SecondaryUnitId}".Trim();
-            return
-                $"{data.AddressNumber} {data.StreetName} {data.StreetType}{(string.IsNullOrWhiteSpace(secondary) ? string.Empty : secondary)}";
+            return string.Join(" ", data.AddressNumber, data.StreetName, 
+                data.StreetType, data.SecondaryUnitDesignator,
+                data.SecondaryUnitId);
         }
 
         public override bool Equals(object obj)
         {
             var addr = obj as StreetPo;
-            if (addr == null)
-                return false;
-            return Data.Equals(addr.Data);
+            return addr != null && Data.Equals(addr.Data);
         }
 
         public override int GetHashCode()
@@ -306,11 +304,14 @@ namespace NoFuture.Rand.Data.Types
             {
                 matches = regex.Match(addressLine);
 
-                var secUnit = matches.Groups.Count >= 2 && matches.Groups[1].Success && matches.Groups[1].Captures.Count > 0
+                var secUnit = matches.Groups.Count >= 2 && 
+                              matches.Groups[1].Success && 
+                              matches.Groups[1].Captures.Count > 0
                     ? matches.Groups[1].Captures[0].Value
                     : string.Empty;
 
-                var secUnitId = matches.Groups.Count >= 3 && matches.Groups[2].Success &&
+                var secUnitId = matches.Groups.Count >= 3 && 
+                                matches.Groups[2].Success &&
                                 matches.Groups[2].Captures.Count > 0
                     ? matches.Groups[2].Captures[0].Value
                     : string.Empty;

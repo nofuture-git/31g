@@ -41,6 +41,7 @@ namespace NoFuture.Rand.Data.Sp
         #region fields
         private readonly NorthAmerican _american;
         internal readonly double FicoBaseValue;
+        private string _ficoScore;
         #endregion
 
         #region ctor
@@ -52,6 +53,24 @@ namespace NoFuture.Rand.Data.Sp
             //need this to stay same for object lifecycle so repeated calls return same result.
             FicoBaseValue = Etx.RandomValueInNormalDist(AVG_AMERICAN_FICO_SCORE, STD_DEV_FICO_SCORE);
         }
+        #endregion
+
+        #region properties
+        public override string Abbrev => "FICO";
+
+        public override string Value
+        {
+            get
+            {
+                if (string.IsNullOrWhiteSpace(_ficoScore))
+                {
+                    _ficoScore = GetScore(DateTime.Now).ToString();
+                }
+                return _ficoScore;
+            }
+            set { _ficoScore = value; }
+        }
+
         #endregion
 
         #region methods
@@ -77,20 +96,26 @@ namespace NoFuture.Rand.Data.Sp
             return ficoScore;
         }
 
+        /// <summary>
+        /// Adds a random value between 0-1 to <see cref="baseRate"/> for each std dev the
+        /// calc score at time <see cref="atDt"/> is from <see cref="CreditScore.MAX_FICO"/>
+        /// </summary>
+        /// <param name="atDt"></param>
+        /// <param name="baseRate"></param>
+        /// <returns></returns>
         public override double GetRandomInterestRate(DateTime? atDt, double baseRate = 3.0D)
         {
             var addPts = baseRate;
             var scoreCounter = MAX_FICO;
             var score = GetScore(atDt);
-            var moreRand = 1+((atDt.GetValueOrDefault(DateTime.Today).DayOfYear % 9) * 0.1);
 
             while (scoreCounter > score)
             {
-                addPts += moreRand;
+                addPts += Etx.MyRand.NextDouble();
                 scoreCounter -= STD_DEV_FICO_SCORE;
             }
 
-            return addPts + 0.099;
+            return Math.Round(addPts,1) + 0.099;
         }
 
         protected internal double GetAgePenalty(DateTime? dt)
@@ -108,13 +133,6 @@ namespace NoFuture.Rand.Data.Sp
         protected internal double GetInconsistentPenalty()
         {
             return _american.Personality.Openness.Value.Zscore * (STD_DEV_FICO_SCORE * -1);
-        }
-
-        public override string Abbrev => "FICO";
-
-        public override string ToString()
-        {
-            return GetScore(DateTime.Now).ToString();
         }
         #endregion
     }

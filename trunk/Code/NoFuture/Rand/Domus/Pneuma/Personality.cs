@@ -7,6 +7,7 @@ namespace NoFuture.Rand.Domus.Pneuma
     //some data at http://personality-testing.info/_rawdata/
     public interface IPersonality
     {
+        Guid SoulId { get; }
         Openness Openness { get; }
         Conscientiousness Conscientiousness { get; }
         Extraversion Extraversion { get; }
@@ -16,6 +17,8 @@ namespace NoFuture.Rand.Domus.Pneuma
     [Serializable]
     public class Personality : IPersonality
     {
+        private readonly Guid _id = Guid.NewGuid();
+        public Guid SoulId => _id;
         public Openness Openness { get; } = new Openness();
         public Conscientiousness Conscientiousness { get; } = new Conscientiousness();
         public Extraversion Extraversion { get; } = new Extraversion();
@@ -37,6 +40,19 @@ namespace NoFuture.Rand.Domus.Pneuma
         public bool GetRandomActsStressed()
         {
             return Etx.RandomValueInNormalDist(Neuroticism.Value.Zscore, Neuroticism.Value.StdDev) > 0;
+        }
+
+        public override bool Equals(object obj)
+        {
+            var p = obj as IPersonality;
+            if (p == null)
+                return false;
+            return _id == p.SoulId;
+        }
+
+        public override int GetHashCode()
+        {
+            return _id.GetHashCode();
         }
     }
 

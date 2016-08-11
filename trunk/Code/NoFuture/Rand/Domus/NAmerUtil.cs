@@ -56,6 +56,7 @@ namespace NoFuture.Rand.Domus
         public const double PercentOfWomenMarriedOnceNeverAgain = 0.15D;
         #endregion
 
+        #region methods
         /// <summary>
         /// Marriage Source [https://www.census.gov/population/socdemo/hh-fam/ms2.xls] (1947-2011)
         /// Age of Birth Sources (1970-2014)
@@ -655,5 +656,6 @@ namespace NoFuture.Rand.Domus
         {
             return nAmer._spouses;
         }
+        #endregion
     }
 }

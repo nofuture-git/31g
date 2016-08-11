@@ -106,10 +106,10 @@ namespace NoFuture.Rand.Data.Types
                 countryCode = "us";
 
             if(countryCode.ToLower() == "ca")
-                state = Data.TreeData.CanadianAreaCodeData.SelectSingleNode(
+                state = TreeData.CanadianAreaCodeData.SelectSingleNode(
                     $"area-codes/state[@abbreviation='{stateCode}']");
             else
-                state = Data.TreeData.AmericanAreaCodeData.SelectSingleNode(
+                state = TreeData.AmericanAreaCodeData.SelectSingleNode(
                     $"area-codes/state[@abbreviation='{stateCode}']");    
             
             if (state == null)
@@ -178,9 +178,9 @@ namespace NoFuture.Rand.Data.Types
 
         public override int GetHashCode()
         {
-            return (AreaCode == null ? 0 : AreaCode.ToLower().GetHashCode()) +
-                   (CentralOfficeCode == null ? 0 : CentralOfficeCode.ToLower().GetHashCode()) +
-                   (SubscriberNumber == null ? 0 : SubscriberNumber.ToLower().GetHashCode());
+            return (AreaCode?.ToLower().GetHashCode() ?? 0) +
+                   (CentralOfficeCode?.ToLower().GetHashCode() ?? 0) +
+                   (SubscriberNumber?.ToLower().GetHashCode() ?? 0);
         }
 
         public static bool TryParse(string phNumber, out NorthAmericanPhone phone)

@@ -38,8 +38,8 @@ namespace NoFuture.Tests.Rand
         [TestMethod]
         public void TestGetRandomRent()
         {
-            var amer = Person.American();
-            var testSubject = new NorthAmericanWealth(amer);
+            var amer = new NorthAmerican(NAmerUtil.GetWorkingAdultBirthDate(), Gender.Female);
+            var testSubject = new NorthAmericanWealth(amer, true);
             
             testSubject.AddRent();
             var rent = testSubject.HomeDebt.FirstOrDefault() as Rent;
@@ -51,7 +51,7 @@ namespace NoFuture.Tests.Rand
         [TestMethod]
         public void TestGetRandomHomeLoan()
         {
-            var amer = Person.American();
+            var amer = new NorthAmerican(NAmerUtil.GetWorkingAdultBirthDate(), Gender.Female);
             var testSubject = new NorthAmericanWealth(amer);
 
             testSubject.AddMortgage();
@@ -65,7 +65,7 @@ namespace NoFuture.Tests.Rand
         [TestMethod]
         public void TestGetRandomCcDebt()
         {
-            var amer = Person.American();
+            var amer = new NorthAmerican(NAmerUtil.GetWorkingAdultBirthDate(), Gender.Female);
             var testSubject = new NorthAmericanWealth(amer);
 
             testSubject.AddSingleCcDebt();
