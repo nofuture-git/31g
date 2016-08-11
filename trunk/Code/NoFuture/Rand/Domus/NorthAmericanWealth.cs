@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
-using NoFuture.Exceptions;
 using NoFuture.Rand.Com;
 using NoFuture.Rand.Data;
 using NoFuture.Rand.Data.Sp;
@@ -55,6 +54,13 @@ namespace NoFuture.Rand.Domus
         private Pecuniam _carPmt = Pecuniam.Zero;
         private Pecuniam _homeEquity = Pecuniam.Zero;
         private Pecuniam _vehicleEquity = Pecuniam.Zero;
+        private readonly List<Tuple<string, int>> _utils = new List<Tuple<string, int>>
+            {
+                new Tuple<string, int>("Electric", Etx.IntNumber(1, 28)),
+                new Tuple<string, int>("Gas", Etx.IntNumber(1, 28)),
+                new Tuple<string, int>("Water", Etx.IntNumber(1, 28)),
+                new Tuple<string, int>("Telco", Etx.IntNumber(1, 28))
+            };
         #endregion
 
         #region ctor
@@ -205,7 +211,6 @@ namespace NoFuture.Rand.Domus
             if(Paycheck == null)
                 throw new ArgumentNullException(nameof(Paycheck));
 
-
             //1 year history
             var baseDate = DateTime.Today.AddYears(-1);
 
@@ -276,20 +281,12 @@ namespace NoFuture.Rand.Domus
 
         protected internal void PayUtilityBills(DateTime loopDtSt, CheckingAccount checking)
         {
-            var utils = new List<Tuple<string, int>>
-            {
-                new Tuple<string, int>("Electric", Etx.IntNumber(1, 28)),
-                new Tuple<string, int>("Gas", Etx.IntNumber(1, 28)),
-                new Tuple<string, int>("Water", Etx.IntNumber(1, 28)),
-                new Tuple<string, int>("Telco", Etx.IntNumber(1, 28))
-            };
-
             var utilsDfMin = (int)Math.Round((double)Paycheck.Amount * DF_DAILY_SPEND_PERCENT);
             var utilsDfMax = (int)Math.Round((double)Paycheck.Amount * DF_DAILY_SPEND_PERCENT*2);
             var utilsDfMid = (int)Math.Round(((double)utilsDfMax - utilsDfMin) / 2);
 
             //add utility pmts
-            foreach (var t in utils)
+            foreach (var t in _utils)
             {
                 if (loopDtSt.Day != t.Item2)
                     continue;
@@ -598,6 +595,8 @@ namespace NoFuture.Rand.Domus
             dtIncrement = calcPurchaseDt.AddMonths(1);
             while (loan.GetCurrentBalance(dtIncrement) > remainingCost)
             {
+                if (dtIncrement >= DateTime.Now)
+                    break;
                 var paidOnDate = dtIncrement;
                 if (_amer.Personality.GetRandomActsIrresponsible())
                     paidOnDate = paidOnDate.AddDays(Etx.IntNumber(5, 15));
@@ -610,7 +609,6 @@ namespace NoFuture.Rand.Domus
                 loan.PutCashIn(paidOnDate, minPmt, pmtNote);
                 if (isPayoff)
                     break;
-
                 dtIncrement = dtIncrement.AddMonths(1);
             }
 

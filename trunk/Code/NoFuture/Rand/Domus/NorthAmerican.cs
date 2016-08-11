@@ -632,7 +632,12 @@ namespace NoFuture.Rand.Domus
             {
                 nAmerFather._children.Add(new Child(nAmerChild));
             }
-
+            //resolve spouse, no grand-children
+            if (isChildAdult)
+            {
+                nAmerChild.ResolveSpouse(NAmerUtil.GetMaritialStatus(myChildDob, myChildGender));
+                nAmerChild.AlignCohabitantsHomeDataAt(DateTime.Now, nAmerChild.GetAddressAt(null));
+            }
             _children.Add(new Child(nAmerChild));
         }
 
