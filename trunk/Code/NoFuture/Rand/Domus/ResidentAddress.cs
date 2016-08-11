@@ -15,8 +15,7 @@ namespace NoFuture.Rand.Domus
 
         public override string ToString()
         {
-            var rentOrOwn = IsLeased ? "Leased" : "Owned";
-            return string.Join(" ", $"[{rentOrOwn}]", HomeStreetPo, HomeCityArea);
+            return string.Join(" ", HomeStreetPo, HomeCityArea);
         }
     }
 }

@@ -27,6 +27,7 @@ namespace NoFuture.Rand.Domus
             new List<Tuple<KindsOfLabels, NorthAmericanPhone>>();
         private SocialSecurityNumber _ssn;
         private NorthAmericanWealth _opes;
+        private DriversLicense _dl;
         #endregion
 
         #region ctors
@@ -321,10 +322,16 @@ namespace NoFuture.Rand.Domus
             if (GetAgeAt(dt) < UsState.MIN_AGE_FOR_DL)
                 return null;
 
+            if (_dl != null)
+                return _dl;
+
             var csz = GetAddressAt(dt)?.HomeCityArea;
             var amerCsz = csz as UsCityStateZip;
-            var dl = amerCsz?.State.DriversLicenseFormats[0];
-            return dl;
+            var dlFormats = amerCsz?.State.DriversLicenseFormats;
+            if (dlFormats == null || !dlFormats.Any())
+                return null;
+            _dl = dlFormats[0].IssueNewLicense(this, dt);
+            return _dl;
         }
         #endregion
 
@@ -709,7 +716,7 @@ namespace NoFuture.Rand.Domus
             _spouses.Add(new Spouse
             {
                 Est = spouse,
-                MarriedOn = marriedOn,
+                MarriedOn = marriedOn.Date.AddHours(12),
                 SeparatedOn = separatedOn,
                 Ordinal = _spouses.Count + 1
             });

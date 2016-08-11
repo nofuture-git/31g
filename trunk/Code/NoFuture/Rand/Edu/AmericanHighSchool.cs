@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Xml;
 using NoFuture.Rand.Data;
+using NoFuture.Rand.Gov;
 
 namespace NoFuture.Rand.Edu
 {
@@ -15,6 +16,10 @@ namespace NoFuture.Rand.Edu
     [Serializable]
     public class AmericanHighSchool : AmericanEduBase, IHighSchool
     {
+        public const float DF_NATL_AVG = 82.0f;
+
+        private static AmericanHighSchool _dfHs;
+
         #region properties
         public Gov.UsState State { get; set; }
         public string PostalCode { get; set; }
@@ -37,8 +42,21 @@ namespace NoFuture.Rand.Edu
         /// <returns></returns>
         public static AmericanRacePercents NatlGradRate()
         {
-            const float DF_NATL_AVG = 82.0f;
             return GetNatlGradRates(TreeData.AmericanHighSchoolData, DF_NATL_AVG);
+        }
+
+        public static AmericanHighSchool GetDefaultHs()
+        {
+            return _dfHs ?? (_dfHs = new AmericanHighSchool
+            {
+                State = UsState.GetStateByPostalCode("DC"),
+                Name = "G.E.D.",
+                RacePercents = AmericanRacePercents.GetNatlAvg(),
+                PostalCode = "20024",
+                TotalTeachers = -1,
+                UrbanCentric = UrbanCentric.City | UrbanCentric.Large,
+                TotalStudents = -1
+            });
         }
 
         public static bool TryParseXml(XmlElement node, out AmericanHighSchool hs)

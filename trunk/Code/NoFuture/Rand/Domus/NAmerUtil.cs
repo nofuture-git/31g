@@ -330,16 +330,7 @@ namespace NoFuture.Rand.Domus
                     {Enum.GetName(typeof(NorthAmericanRace), NorthAmericanRace.Pacific), amRace.Pacific},
                     {Enum.GetName(typeof(NorthAmericanRace), NorthAmericanRace.White), amRace.White}
                 }
-                : new Dictionary<string, double>
-                {
-                    {Enum.GetName(typeof(NorthAmericanRace), NorthAmericanRace.White), 61.0D},
-                    {Enum.GetName(typeof(NorthAmericanRace), NorthAmericanRace.Black), 12.0D},
-                    {Enum.GetName(typeof(NorthAmericanRace), NorthAmericanRace.Hispanic), 18.0D},
-                    {Enum.GetName(typeof(NorthAmericanRace), NorthAmericanRace.Asian), 6.0D},
-                    {Enum.GetName(typeof(NorthAmericanRace), NorthAmericanRace.Mixed), 2.0D},
-                    {Enum.GetName(typeof(NorthAmericanRace), NorthAmericanRace.Pacific), 1.0D},
-                    {Enum.GetName(typeof(NorthAmericanRace), NorthAmericanRace.AmericanIndian), 1.0D}
-                };
+                : AmericanRacePercents.GetNatlAvgAsDict();
 
             var randPick = Etx.DiscreteRange(raceHashByZip);
 
@@ -546,7 +537,8 @@ namespace NoFuture.Rand.Domus
         /// <param name="race"></param>
         /// <param name="edu"></param>
         /// <returns></returns>
-        public static double SolvePercentGradByStateAndRace(UsState state, NorthAmericanRace? race, OccidentalEdu edu = OccidentalEdu.HighSchool | OccidentalEdu.Grad)
+        public static double SolvePercentGradByStateAndRace(UsState state, NorthAmericanRace? race,
+            OccidentalEdu edu = OccidentalEdu.HighSchool | OccidentalEdu.Grad)
         {
             AmericanRacePercents p;
             p = edu >= OccidentalEdu.Bachelor ? AmericanUniversity.NatlGradRate() : AmericanHighSchool.NatlGradRate();
@@ -560,25 +552,25 @@ namespace NoFuture.Rand.Domus
                     var f = stateData.PercentOfGrads.FirstOrDefault(x => x.Item1 == edu);
                     if (f != null)
                     {
-                        stateAvg = Math.Round(f.Item2,1);
+                        stateAvg = Math.Round(f.Item2, 1);
                     }
                 }
             }
-            
+
             var raceNatlAvg = new Dictionary<NorthAmericanRace, double>
             {
-                {NorthAmericanRace.AmericanIndian, p.AmericanIndian - natlAvg },
-                {NorthAmericanRace.Asian, p.Asian - natlAvg },
-                {NorthAmericanRace.Hispanic, p.Hispanic - natlAvg },
-                {NorthAmericanRace.Black, p.Black - natlAvg },
+                {NorthAmericanRace.AmericanIndian, p.AmericanIndian - natlAvg},
+                {NorthAmericanRace.Asian, p.Asian - natlAvg},
+                {NorthAmericanRace.Hispanic, p.Hispanic - natlAvg},
+                {NorthAmericanRace.Black, p.Black - natlAvg},
                 {NorthAmericanRace.White, p.White - natlAvg},
-                {NorthAmericanRace.Pacific, p.Pacific - natlAvg },
-                {NorthAmericanRace.Mixed, p.Mixed - natlAvg }
+                {NorthAmericanRace.Pacific, p.Pacific - natlAvg},
+                {NorthAmericanRace.Mixed, p.Mixed - natlAvg}
             };
-            if(race == null || !raceNatlAvg.ContainsKey(race.Value))
-                return Math.Round(stateAvg,1);
+            if (race == null || !raceNatlAvg.ContainsKey(race.Value))
+                return Math.Round(stateAvg, 1);
 
-            return Math.Round(stateAvg + raceNatlAvg[race.Value],1);
+            return Math.Round(stateAvg + raceNatlAvg[race.Value], 1);
         }
 
         /// <summary>
@@ -624,7 +616,7 @@ namespace NoFuture.Rand.Domus
             var pick = 0;
             //if calling assembly passed in no-args then return all zeros
             if (String.IsNullOrWhiteSpace(zipCode))
-                return null;
+                return AmericanRacePercents.GetNatlAvg();
 
             //get the data for the given zip code
             var zipStatElem = TreeData.AmericanHighSchoolData.SelectSingleNode($"//zip-stat[@value='{zipCode}']");
@@ -637,22 +629,21 @@ namespace NoFuture.Rand.Domus
                     TreeData.AmericanHighSchoolData.SelectSingleNode($"//zip-code[@prefix='{zip3}']");
 
                 if (zipCodeElem == null || !zipCodeElem.HasChildNodes)
-                    return null;
+                    return AmericanRacePercents.GetNatlAvg();
 
                 pick = Etx.MyRand.Next(0, zipCodeElem.ChildNodes.Count - 1);
 
                 zipStatElem = zipCodeElem.ChildNodes[pick];
                 if (zipStatElem == null)
-                    return null;
+                    return AmericanRacePercents.GetNatlAvg();
             }
 
             AmericanHighSchool hsOut;
             pick = Etx.MyRand.Next(0, zipStatElem.ChildNodes.Count - 1);
             var hsNode = zipStatElem.ChildNodes[pick];
             if (!AmericanHighSchool.TryParseXml(hsNode as XmlElement, out hsOut))
-                return null;
+                return AmericanRacePercents.GetNatlAvg();
             return hsOut.RacePercents;
-
         }
 
         /// <summary>

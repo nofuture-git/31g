@@ -45,9 +45,21 @@ namespace NoFuture.Tests.Rand
             var testResult = testContext.GetEducationAt(null);
 
             Assert.IsNotNull(testResult);
+            Assert.IsNotNull(testResult.HighSchool);
             WriteLine(testResult.HighSchool);
             WriteLine(testResult.College);
 
+        }
+
+        [TestMethod]
+        public void NorthAmericanEduTestsNullPerson()
+        {
+            IPerson p = null;
+            var testResult = new NorthAmericanEdu(p);
+            Assert.IsNotNull(testResult);
+            Assert.IsNotNull(testResult.HighSchool);
+            WriteLine(testResult.HighSchool);
+            WriteLine(testResult.College);
         }
 
         [TestMethod]

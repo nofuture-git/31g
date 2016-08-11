@@ -73,6 +73,9 @@ namespace NoFuture.Rand.Data.Sp
             return base.ToString();
         }
 
+        public AccountStatus CurrentStatus => GetStatus(DateTime.Now);
+        public PastDue? CurrentDelinquency => GetDelinquency(DateTime.Now);
+        public Pecuniam Payoff => GetCurrentBalance(DateTime.Now);
         #endregion
 
         #region methods

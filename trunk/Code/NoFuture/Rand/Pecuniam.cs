@@ -41,6 +41,7 @@ namespace NoFuture.Rand
         public Pecuniam Abs => new Pecuniam(Math.Abs(_amount));
         public Pecuniam Neg => new Pecuniam(-1*Math.Abs(_amount));
         public static Pecuniam Zero => new Pecuniam(0.0M);
+        public Pecuniam Round => new Pecuniam(Math.Round(_amount, 2));
         #endregion
 
         #region overrides

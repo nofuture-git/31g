@@ -35,9 +35,7 @@ namespace NoFuture.Rand.Data.Sp
         /// <summary>
         /// max minus the average divided by three.
         /// </summary>
-        internal const int STD_DEV_FICO_SCORE = 53;
-        internal const int POSITIVE_FICO = STD_DEV_FICO_SCORE * 3;
-        internal const int NEGATIVE_FICO = -1*POSITIVE_FICO;
+        internal const int STD_DEV_FICO_SCORE = 33;
         #endregion
 
         #region fields
@@ -99,17 +97,17 @@ namespace NoFuture.Rand.Data.Sp
         {
             Func<double, double> ageCalc = d => Math.Pow(Math.E, (d - 9.5)/-9.5);
 
-            return ageCalc(_american.GetAgeAt(dt)) * NEGATIVE_FICO;
+            return ageCalc(_american.GetAgeAt(dt)) * (STD_DEV_FICO_SCORE * -1);
         }
 
         protected internal double GetUndisciplinedPenalty()
         {
-            return _american.Personality.Conscientiousness.Value.Zscore * POSITIVE_FICO;
+            return _american.Personality.Conscientiousness.Value.Zscore * STD_DEV_FICO_SCORE;
         }
 
         protected internal double GetInconsistentPenalty()
         {
-            return _american.Personality.Openness.Value.Zscore * NEGATIVE_FICO;
+            return _american.Personality.Openness.Value.Zscore * (STD_DEV_FICO_SCORE * -1);
         }
 
         public override string Abbrev => "FICO";

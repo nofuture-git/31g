@@ -54,7 +54,11 @@ namespace NoFuture.Rand.Data.Types
         public static UsCityStateZip American(string zipCodePrefix = null)
         {
             //set defaults
-            var ctz = new AddressData {PostalCode = "10066", StateAbbrv = "NY"};
+            var ctz = new AddressData
+            {
+                PostalCode = $"{UsCityStateZip.DF_ZIPCODE_PREFIX}{Etx.IntNumber(1, 99):00}",
+                StateAbbrv = UsCityStateZip.DF_STATE_ABBREV
+            };
 
             //pick a zip code prefix at random
             if (string.IsNullOrWhiteSpace(zipCodePrefix))
@@ -65,16 +69,16 @@ namespace NoFuture.Rand.Data.Types
                 TreeData.AmericanZipCodeData.SelectSingleNode($"//zip-codes//zip-code[@prefix='{zipCodePrefix}']");
             if (randZipCode?.ParentNode?.Attributes?["name"] == null)
             {
-                ctz.City = "New York";
+                ctz.City = UsCityStateZip.DF_CITY_NAME;
                 return new UsCityStateZip(ctz);
             }
 
             //get the containing us state
             ctz.StateName =  randZipCode.ParentNode.Attributes["name"].Value;
             var nfState = Gov.UsState.GetStateByName(ctz.StateName) ??
-                          Gov.UsState.GetStateByPostalCode("NY");
+                          Gov.UsState.GetStateByPostalCode(UsCityStateZip.DF_STATE_ABBREV);
 
-            ctz.StateAbbrv = nfState.StateAbbrv ?? "NY";
+            ctz.StateAbbrv = nfState.StateAbbrv ?? UsCityStateZip.DF_STATE_ABBREV;
             ctz.PostalCodeSuffix = $"{Etx.MyRand.Next(1, 9999):0000}";
 
             if (!randZipCode.HasChildNodes)
@@ -147,6 +151,8 @@ namespace NoFuture.Rand.Data.Types
         public const string ZIP_CODE_REGEX = @"\x20([0-9]{5})(\x2d[0-9]{4})?";
 
         public const string DF_ZIPCODE_PREFIX = "100";//new york, new york
+        public const string DF_STATE_ABBREV = "NY";
+        public const string DF_CITY_NAME = "New York";
         #endregion
 
         #region fields

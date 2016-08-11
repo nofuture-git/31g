@@ -246,6 +246,23 @@ namespace NoFuture.Rand
     [Serializable]
     public class AmericanRacePercents
     {
+        #region fields
+        private static readonly string _ai =
+            Enum.GetName(typeof(NorthAmericanRace), NorthAmericanRace.AmericanIndian) ?? "AmericanIndian";
+        private static readonly string _p = 
+            Enum.GetName(typeof(NorthAmericanRace), NorthAmericanRace.Pacific) ?? "Pacific";
+        private static readonly string _m = 
+            Enum.GetName(typeof(NorthAmericanRace), NorthAmericanRace.Mixed) ?? "Mixed";
+        private static readonly string _a = 
+            Enum.GetName(typeof(NorthAmericanRace), NorthAmericanRace.Asian) ?? "Asian";
+        private static readonly string _h = 
+            Enum.GetName(typeof(NorthAmericanRace), NorthAmericanRace.Hispanic) ?? "Hispanic";
+        private static readonly string _b = 
+            Enum.GetName(typeof(NorthAmericanRace), NorthAmericanRace.Black) ?? "Black";
+        private static readonly string _w = 
+            Enum.GetName(typeof(NorthAmericanRace), NorthAmericanRace.White) ?? "White";
+        #endregion
+
         public double National { get; set; }
         public double AmericanIndian { get; set; }
         public double Asian { get; set; }
@@ -257,8 +274,37 @@ namespace NoFuture.Rand
 
         public override string ToString()
         {
-            return string.Join(" ", "AmericanIndian", AmericanIndian, "Asian", Asian, "Black", Black, "Hispanic", Hispanic,
-                "Mixed", Mixed, "Pacific", Pacific, "White", White);
+            return string.Join(" ", _ai, AmericanIndian, _a, Asian, _b, Black, _h, Hispanic,
+                _m, Mixed, _p, Pacific, _w, White);
+        }
+
+        public static AmericanRacePercents GetNatlAvg()
+        {
+            var dict = GetNatlAvgAsDict();
+            return new AmericanRacePercents
+            {
+                AmericanIndian = dict[_ai],
+                Pacific = dict[_p],
+                Mixed = dict[_m],
+                Asian = dict[_a],
+                Hispanic = dict[_h],
+                Black = dict[_b],
+                White = dict[_w]
+            };
+        }
+
+        public static Dictionary<string, double> GetNatlAvgAsDict()
+        {
+            return new Dictionary<string, double>
+            {
+                {Enum.GetName(typeof(NorthAmericanRace), NorthAmericanRace.White), 61.0D},
+                {Enum.GetName(typeof(NorthAmericanRace), NorthAmericanRace.Black), 12.0D},
+                {Enum.GetName(typeof(NorthAmericanRace), NorthAmericanRace.Hispanic), 18.0D},
+                {Enum.GetName(typeof(NorthAmericanRace), NorthAmericanRace.Asian), 6.0D},
+                {Enum.GetName(typeof(NorthAmericanRace), NorthAmericanRace.Mixed), 2.0D},
+                {Enum.GetName(typeof(NorthAmericanRace), NorthAmericanRace.Pacific), 1.0D},
+                {Enum.GetName(typeof(NorthAmericanRace), NorthAmericanRace.AmericanIndian), 1.0D}
+            };
         }
     }
 

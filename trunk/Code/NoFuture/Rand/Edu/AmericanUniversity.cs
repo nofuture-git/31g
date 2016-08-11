@@ -13,6 +13,8 @@ namespace NoFuture.Rand.Edu
 
     public class AmericanUniversity : AmericanEduBase, IUniversity
     {
+        public const float DF_NATL_AVG = 30.0f;
+
         #region properties
         public Gov.UsState State { get; set; }
         public string Name { get; set; }
@@ -35,7 +37,6 @@ namespace NoFuture.Rand.Edu
         /// <returns></returns>
         public static AmericanRacePercents NatlGradRate()
         {
-            const float DF_NATL_AVG = 30.0f;
             return GetNatlGradRates(TreeData.AmericanUniversityData, DF_NATL_AVG);
         }
 

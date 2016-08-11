@@ -31,14 +31,14 @@ namespace NoFuture.Rand.Data.Sp
     }
 
     [Serializable]
-    public class TradeLine : ITradeLine
+    public class TradeLine : Identifier, ITradeLine
     {
         #region constants
         public static TimeSpan DefaultDueFrequency = new TimeSpan(30,0,0,0);
         #endregion
 
         #region fields
-        internal readonly Guid _uniqueId = Guid.NewGuid();
+        private readonly Guid _uniqueId = Guid.NewGuid();
         private readonly Balance _balance = new Balance();
         private readonly DateTime _openDate;
         private TimeSpan _dueFrequency = DefaultDueFrequency;
@@ -59,6 +59,13 @@ namespace NoFuture.Rand.Data.Sp
         #endregion
 
         #region methods
+
+        public override string Abbrev => "Tradeline";
+
+        public override string ToString()
+        {
+            return _uniqueId.ToString();
+        }
 
         public override bool Equals(object obj)
         {

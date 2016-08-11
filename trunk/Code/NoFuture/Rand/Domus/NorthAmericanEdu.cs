@@ -2,12 +2,14 @@
 using System.Linq;
 using System.Xml;
 using NoFuture.Rand.Data;
+using NoFuture.Rand.Data.Types;
 using NoFuture.Rand.Edu;
 
 namespace NoFuture.Rand.Domus
 {
     public class NorthAmericanEdu : IEducation
     {
+
         #region ctor
         internal NorthAmericanEdu(Tuple<IHighSchool, DateTime?> assignHs)
         {
@@ -20,73 +22,91 @@ namespace NoFuture.Rand.Domus
             College = assignUniv;
         }
 
+        /// <summary>
+        /// Ctor using geography, age of <see cref="p"/>
+        /// </summary>
+        /// <param name="p">
+        /// Optional, will return random if this is null or 
+        /// not a type of <see cref="NorthAmerican"/>
+        /// </param>
         public NorthAmericanEdu(IPerson p)
         {
             var amer = p as NorthAmerican;
-            if (amer?.BirthCert == null)
-                return;
 
-            var mother = amer.GetMother() as NorthAmerican ??
-                         NAmerUtil.SolveForParent(amer.BirthCert.DateOfBirth,
-                             NAmerUtil.Equations.FemaleAge2FirstMarriage,
-                             Gender.Female) as NorthAmerican;
-            var dtAtAge18 = amer.BirthCert.DateOfBirth.AddYears(18);
-            var sdf = mother?.GetAddressAt(dtAtAge18);
-            if (sdf == null)
-                return;
-            var homeState = Gov.UsState.GetStateByPostalCode(sdf.HomeCityArea?.AddressData?.StateAbbrv);
+            var dob = amer?.BirthCert?.DateOfBirth ?? NAmerUtil.GetWorkingAdultBirthDate();
+
+            //determine where amer lived when they were 18
+            var mother = amer?.BirthCert == null
+                ? NAmerUtil.SolveForParent(dob,
+                    NAmerUtil.Equations.FemaleAge2FirstMarriage,
+                    Gender.Female) as NorthAmerican
+                : amer.GetMother() as NorthAmerican;
+            
+            var dtAtAge18 = dob.AddYears(18);
+
+            var hca = mother?.GetAddressAt(dtAtAge18)?.HomeCityArea ?? CityArea.American();
+            var homeState = Gov.UsState.GetStateByPostalCode(hca?.AddressData?.StateAbbrv) ??
+                            Gov.UsState.GetStateByPostalCode(UsCityStateZip.DF_STATE_ABBREV);
+
+            //get hs grad data for state amer lived in when 18
             var hsGradData =
-                homeState?.GetStateData()
+                homeState.GetStateData()
                     .PercentOfGrads.FirstOrDefault(x => x.Item1 == (OccidentalEdu.HighSchool | OccidentalEdu.Grad));
-            if (hsGradData == null)
-                return;
-            var hsGradRate = (int)Math.Round(hsGradData.Item2);
-            var hshs = homeState.GetHighSchools();
-            if (!hshs.Any())
-                return;
-            var hs = hshs.FirstOrDefault(x => x.PostalCode == sdf.HomeStreetPo.Data.PostalCode) ??
-                         hshs[Etx.IntNumber(0, hshs.Length - 1)];
 
-            var hsGradDt = dtAtAge18;
+            //determine prob. of having hs grad
+            var hsGradRate = hsGradData?.Item2 ?? AmericanHighSchool.DF_NATL_AVG;
+
+            //get all hs for the state
+            var hshs = homeState.GetHighSchools() ??
+                       Gov.UsState.GetStateByPostalCode(UsCityStateZip.DF_STATE_ABBREV).GetHighSchools();
+
+            //first try city, then state, last natl
+            var hs = hshs.FirstOrDefault(x => x.PostalCode == hca?.AddressData?.PostalCode) ??
+                         (hshs.Any() ? hshs[Etx.IntNumber(0, hshs.Length - 1)] : AmericanHighSchool.GetDefaultHs());
+
             //hs drop out
-            if (!Etx.TryBelowOrAt(hsGradRate, Etx.Dice.OneHundred))
+            if (Etx.TryAboveOrAt((int)Math.Round(hsGradRate)+1, Etx.Dice.OneHundred))
             {
+                //assign grad hs but no date
                 HighSchool = new Tuple<IHighSchool, DateTime?>(hs, null);
                 return;
             }
 
-            //hs grad
+            //get a date of when amer would be grad'ing from hs
+            var hsGradDt = dtAtAge18;
             while (hsGradDt.Month != 5)
                 hsGradDt = hsGradDt.AddMonths(1);
-
             hsGradDt = new DateTime(hsGradDt.Year, hsGradDt.Month, Etx.IntNumber(12, 28));
 
+            //assign grad hs with grad date
             HighSchool = new Tuple<IHighSchool, DateTime?>(hs, hsGradDt);
 
+            //get college grad data for same state as hs
             var univGradData =
                 homeState.GetStateData()
                     .PercentOfGrads.FirstOrDefault(x => x.Item1 == (OccidentalEdu.Bachelor | OccidentalEdu.Grad));
-            if (univGradData == null)
-                return;
-            var univGradRate = (int)Math.Round(univGradData.Item2);
 
-            //no college ever
-            if (Etx.TryAboveOrAt(univGradRate * 2, Etx.Dice.OneHundred))
+            var univGradRate = univGradData?.Item2 ?? AmericanUniversity.DF_NATL_AVG;
+
+            //roll for some college
+            if (Etx.TryAboveOrAt((int)Math.Round(univGradRate * 2), Etx.Dice.OneHundred))
             {
                 return;
             }
 
-            //mostly made up actual avg is 6 years
+            //get random num of years as undergrad
             var yearsInCollege = Etx.RandomValueInNormalDist(4.67, 1.58);
 
+            //get a date for when amer would grad from college
             var univGradDt = hsGradDt.AddYears((int)Math.Round(yearsInCollege));
             while (univGradDt.Month != 5)
                 univGradDt = univGradDt.AddMonths(1);
-
             univGradDt = new DateTime(univGradDt.Year, univGradDt.Month, Etx.IntNumber(12, 28));
+
+            //pick a univ 
             IUniversity univ = null;
             //79 percent attend home state is a guess
-            if (Etx.TryAboveOrAt(79, Etx.Dice.OneHundred) && homeState.GetUniversities().Any())
+            if (Etx.TryBelowOrAt(79, Etx.Dice.OneHundred) && homeState.GetUniversities().Any())
             {
                 //pick a univ from the home state
                 var stateUnivs = homeState.GetUniversities();
@@ -113,7 +133,7 @@ namespace NoFuture.Rand.Domus
             if (univ == null)
                 return;
             //college grad
-            if (Etx.TryBelowOrAt(univGradRate, Etx.Dice.OneHundred))
+            if (Etx.TryBelowOrAt((int)Math.Round(univGradRate), Etx.Dice.OneHundred))
             {
                 College = new Tuple<IUniversity, DateTime?>(univ, univGradDt);
                 return;
