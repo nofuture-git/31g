@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using NoFuture.Rand;
 using NoFuture.Rand.Data.Types;
 using NoFuture.Rand.Domus;
+using NoFuture.Rand.Gov;
 using static System.Diagnostics.Debug;
 using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 using Dbg = System.Diagnostics.Debug;
@@ -57,6 +58,15 @@ namespace NoFuture.Tests.Rand
             Assert.IsNotNull(testResult.HighSchool);
             WriteLine(testResult.HighSchool);
             WriteLine(testResult.College);
+        }
+
+        [TestMethod]
+        public void TestGetAmericanUniversity()
+        {
+            var testResult = NorthAmericanEdu.GetAmericanUniversity(null);
+            Assert.IsNotNull(testResult);
+            testResult = NorthAmericanEdu.GetAmericanUniversity(UsState.GetStateByPostalCode("AZ"));
+            Assert.IsNotNull(testResult);
         }
 
         [TestMethod]

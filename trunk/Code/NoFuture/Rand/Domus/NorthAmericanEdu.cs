@@ -4,6 +4,7 @@ using System.Xml;
 using NoFuture.Rand.Data;
 using NoFuture.Rand.Data.Types;
 using NoFuture.Rand.Edu;
+using NoFuture.Rand.Gov;
 
 namespace NoFuture.Rand.Domus
 {
@@ -57,13 +58,8 @@ namespace NoFuture.Rand.Domus
             //determine prob. of having hs grad
             var hsGradRate = hsGradData?.Item2 ?? AmericanHighSchool.DF_NATL_AVG;
 
-            //get all hs for the state
-            var hshs = homeState.GetHighSchools() ??
-                       Gov.UsState.GetStateByPostalCode(UsCityStateZip.DF_STATE_ABBREV).GetHighSchools();
-
             //first try city, then state, last natl
-            var hs = hshs.FirstOrDefault(x => x.PostalCode == hca?.AddressData?.PostalCode) ??
-                         (hshs.Any() ? hshs[Etx.IntNumber(0, hshs.Length - 1)] : AmericanHighSchool.GetDefaultHs());
+            var hs = GetAmericanHighSchool(homeState, hca);
 
             //hs drop out
             if (Etx.TryAboveOrAt((int)Math.Round(hsGradRate)+1, Etx.Dice.OneHundred))
@@ -105,32 +101,7 @@ namespace NoFuture.Rand.Domus
             univGradDt = new DateTime(univGradDt.Year, univGradDt.Month, Etx.IntNumber(12, 28));
 
             //pick a univ 
-            IUniversity univ = null;
-            //79 percent attend home state is a guess
-            if (Etx.TryBelowOrAt(79, Etx.Dice.OneHundred) && homeState.GetUniversities().Any())
-            {
-                //pick a univ from the home state
-                var stateUnivs = homeState.GetUniversities();
-                if (!stateUnivs.Any())
-                    return;
-
-                univ = stateUnivs[Etx.IntNumber(0, stateUnivs.Length - 1)];
-            }
-            else
-            {
-                //pick a university from anywhere in the US
-                var allUnivs = TreeData.AmericanUniversityData.SelectNodes("//state");
-                if (allUnivs == null)
-                    return;
-                AmericanUniversity univOut;
-                var randUnivXml = allUnivs[Etx.IntNumber(0, allUnivs.Count-1)] as XmlElement;
-                if (randUnivXml == null)
-                    return;
-                if (AmericanUniversity.TryParseXml(randUnivXml, out univOut))
-                {
-                    univ = univOut;
-                }
-            }
+            IUniversity univ = GetAmericanUniversity(homeState);
             if (univ == null)
                 return;
             //college grad
@@ -179,6 +150,56 @@ namespace NoFuture.Rand.Domus
             return string.Join(" ", HighSchool, College);
         }
 
+        public static AmericanUniversity GetAmericanUniversity(UsState homeState)
+        {
+            //pick a univ 
+            IUniversity univ = null;
+            int pick = 0;
+            //79 percent attend home state is a guess
+            if (Etx.TryBelowOrAt(79, Etx.Dice.OneHundred) && 
+                homeState != null && homeState.GetUniversities().Any())
+            {
+                //pick a univ from the home state
+                var stateUnivs = homeState.GetUniversities();
+                if (!stateUnivs.Any())
+                    return null;
+                pick = Etx.IntNumber(0, stateUnivs.Length - 1);
+                univ = stateUnivs[pick];
+            }
+            else
+            {
+                //pick a university from anywhere in the US
+                var allUnivs = TreeData.AmericanUniversityData.SelectNodes("//state");
+                if (allUnivs == null)
+                    return null;
+                AmericanUniversity univOut;
+                pick = Etx.IntNumber(0, allUnivs.Count - 1);
+                var randUnivXml = allUnivs[pick] as XmlElement;
+                if (randUnivXml == null || !randUnivXml.HasChildNodes)
+                    return null;
+                pick = Etx.IntNumber(0, randUnivXml.ChildNodes.Count - 1);
+                var univXmlNode = randUnivXml.ChildNodes[pick] as XmlElement;
+                if (univXmlNode == null)
+                    return null;
+                if (AmericanUniversity.TryParseXml(univXmlNode, out univOut))
+                {
+                    univ = univOut;
+                }
+            }
+            return (AmericanUniversity)univ;
+        }
+
+        public static AmericanHighSchool GetAmericanHighSchool(UsState homeState, CityArea hca)
+        {
+            //get all hs for the state
+            var hshs = homeState.GetHighSchools() ??
+                       Gov.UsState.GetStateByPostalCode(UsCityStateZip.DF_STATE_ABBREV).GetHighSchools();
+
+            //first try city, then state, last natl
+            var hs = hshs.FirstOrDefault(x => x.PostalCode == hca?.AddressData?.PostalCode) ??
+                         (hshs.Any() ? hshs[Etx.IntNumber(0, hshs.Length - 1)] : AmericanHighSchool.GetDefaultHs());
+            return hs;
+        }
         #endregion
     }
 }

@@ -36,7 +36,8 @@ namespace NoFuture.Rand.Data.Types
 
         public override string ToString()
         {
-            return "{" + $"'Value':{Value},'Description':'{Description}'" + "}";
+            //Value Description
+            return string.Join("-", Value, Description);
         }
 
         /// <summary>
