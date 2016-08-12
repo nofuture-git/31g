@@ -23,16 +23,16 @@ namespace NoFuture.Tests.Rand.DomusTests
 
             Assert.IsNotNull(testResult);
 
-            Assert.IsNotNull(testResult.AccountNumber);
+            Assert.IsNotNull(testResult.Id);
 
-            System.Diagnostics.Debug.WriteLine(testResult.AccountNumber.Value);
+            System.Diagnostics.Debug.WriteLine(testResult.Id.Value);
 
             
             testResult = CheckingAccount.GetRandomCheckingAcct(p);
-            Assert.IsNotNull(testResult.AccountNumber);
+            Assert.IsNotNull(testResult.Id);
             Assert.IsNotNull(testResult.Bank);
 
-            System.Diagnostics.Debug.WriteLine(testResult.AccountNumber.Value);
+            System.Diagnostics.Debug.WriteLine(testResult.Id.Value);
             System.Diagnostics.Debug.WriteLine(testResult.Bank.Name);
             
         }
@@ -40,7 +40,7 @@ namespace NoFuture.Tests.Rand.DomusTests
         [TestMethod]
         public void TestIsPin()
         {
-            var testSubject = new CheckingAccount(DateTime.Today.AddDays(-65),
+            var testSubject = new CheckingAccount(null, DateTime.Today.AddDays(-65),
                 new Tuple<ICreditCard, string>(
                     CreditCard.GetRandomCreditCard(new NorthAmerican(NAmerUtil.GetWorkingAdultBirthDate(), Gender.Female)),
                     "8745"));

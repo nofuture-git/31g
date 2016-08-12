@@ -11,34 +11,6 @@ namespace NoFuture.Rand.Data.Sp
         HundredAndEighty
     }
 
-    public interface IReceivable : IAsset
-    {
-        Identifier Id { get; set; }
-        string Description { get; set; }
-        TradeLine TradeLine { get; }
-
-        /// <summary>
-        /// Determins the deliquency for the given <see cref="dt"/>
-        /// </summary>
-        /// <param name="dt"></param>
-        /// <returns></returns>
-        PastDue? GetDelinquency(DateTime dt);
-
-        /// <summary>
-        /// Calc's the minimum payment for the given <see cref="dt"/>
-        /// </summary>
-        /// <param name="dt"></param>
-        /// <returns></returns>
-        Pecuniam GetMinPayment(DateTime dt);
-
-        /// <summary>
-        /// Get the current balance for the given <see cref="dt"/>
-        /// </summary>
-        /// <param name="dt"></param>
-        /// <returns></returns>
-        Pecuniam GetCurrentBalance(DateTime dt);
-    }
-
     [Serializable]
     public abstract class ReceivableBase : IReceivable
     {
@@ -54,8 +26,7 @@ namespace NoFuture.Rand.Data.Sp
         #endregion
 
         #region properties
-        public virtual TradeLine TradeLine => _tl;
-        public Identifier Id { get; set; }
+        public virtual ITradeLine TradeLine => _tl;
         public string Description { get; set; }
         public AccountStatus CurrentStatus => GetStatus(DateTime.Now);
         public PastDue? CurrentDelinquency => GetDelinquency(DateTime.Now);
@@ -138,10 +109,9 @@ namespace NoFuture.Rand.Data.Sp
 
         public override string ToString()
         {
-            if (!string.IsNullOrWhiteSpace(Description))
-                return Description;
-            return Id?.ToString() ?? base.ToString();
+            return !string.IsNullOrWhiteSpace(Description) ? Description : base.ToString();
         }
+
         #endregion  
     }
 }

@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using NoFuture.Rand.Com;
+using NoFuture.Shared;
+using NoFuture.Util.Math;
+using NoFuture.Rand.Domus;
 
 namespace NoFuture.Rand.Data.Sp //Sequere pecuniam
 {
@@ -13,21 +16,6 @@ namespace NoFuture.Rand.Data.Sp //Sequere pecuniam
         Installment = 2,
         Mortgage = 4,
         Fixed = 8,
-    }
-
-    public interface ILoan
-    {
-        /// <summary>
-        /// The rate used to calc the minimum payment.
-        /// </summary>
-        float MinPaymentRate { get; set; }
-
-        /// <summary>
-        /// Credit history report for this loan
-        /// </summary>
-        TradeLine TradeLine { get;}
-
-        IFirm Lender { get; set; }
     }
 
     [Serializable]
@@ -135,7 +123,92 @@ namespace NoFuture.Rand.Data.Sp //Sequere pecuniam
         public SecuredFixedRateLoan(Identifier property, DateTime openedDate, float minPaymentRate, Pecuniam amt = null)
             : base(openedDate, minPaymentRate, amt)
         {
-            Id = property;
+            PropertyId = property;
         }
+
+        public Identifier PropertyId { get; set; }
+
+        #region methods
+
+        /// <summary>
+        /// Produces a <see cref="SecuredFixedRateLoan"/> with history.
+        /// </summary>
+        /// <param name="borrower"></param>
+        /// <param name="property"></param>
+        /// <param name="remainingCost"></param>
+        /// <param name="totalCost"></param>
+        /// <param name="rate"></param>
+        /// <param name="termInYears"></param>
+        /// <param name="minPmt"></param>
+        /// <returns></returns>
+        public static SecuredFixedRateLoan GetRandomLoanWithHistory(IPerson borrower, Identifier property, Pecuniam remainingCost,
+            Pecuniam totalCost, float rate, int termInYears, out Pecuniam minPmt)
+        {
+            if (borrower == null)
+                throw new ArgumentNullException(nameof(borrower));
+            //if no or nonsense values given, change to some default
+            if (totalCost == null || totalCost < Pecuniam.Zero)
+                totalCost = new Pecuniam(2000);
+            if (remainingCost == null || remainingCost < Pecuniam.Zero)
+                remainingCost = Pecuniam.Zero;
+
+            rate = Math.Abs(rate);
+
+            //calc the monthly payment
+            var fv = remainingCost.Amount.PerDiemInterest(rate, Constants.TropicalYear.TotalDays * termInYears);
+            minPmt = new Pecuniam(Math.Round(fv / (termInYears * 12), 2));
+            var minPmtRate = fv == 0 ? CreditCardAccount.DF_MIN_PMT_RATE : (float)Math.Round(minPmt.Amount / fv, 6);
+
+            //given this value and rate - calc the timespan needed to have aquired this amount of equity
+            var firstOfYear = new DateTime(DateTime.Today.Year, 1, 1);
+            var loan = new SecuredFixedRateLoan(property, firstOfYear, minPmtRate, totalCost)
+            {
+                Rate = rate
+            };
+
+            var dtIncrement = firstOfYear.AddMonths(1);
+            while (loan.GetCurrentBalance(dtIncrement) > remainingCost)
+            {
+                if (dtIncrement > DateTime.Now.AddYears(termInYears))
+                    break;
+                loan.PutCashIn(dtIncrement, minPmt);
+                dtIncrement = dtIncrement.AddMonths(1);
+            }
+
+            //repeat process from calc'ed past date to create a history
+            var calcPurchaseDt = DateTime.Today.AddDays(-1 * (dtIncrement - firstOfYear).Days);
+            loan = new SecuredFixedRateLoan(property, calcPurchaseDt, minPmtRate, totalCost)
+            {
+                Rate = rate
+            };
+
+            var pmtNote = Opes.GetPaymentNote(property);
+
+            dtIncrement = calcPurchaseDt.AddMonths(1);
+            while (loan.GetCurrentBalance(dtIncrement) > remainingCost)
+            {
+                if (dtIncrement >= DateTime.Now)
+                    break;
+                var paidOnDate = dtIncrement;
+                if (borrower.Personality.GetRandomActsIrresponsible())
+                    paidOnDate = paidOnDate.AddDays(Etx.IntNumber(5, 15));
+
+                //is this the payoff
+                var isPayoff = loan.GetCurrentBalance(dtIncrement) <= minPmt;
+                if (isPayoff)
+                    minPmt = loan.GetCurrentBalance(dtIncrement);
+
+                loan.PutCashIn(paidOnDate, minPmt, pmtNote);
+                if (isPayoff)
+                    break;
+                dtIncrement = dtIncrement.AddMonths(1);
+            }
+
+            //assign boilerplate props
+            loan.Lender = Bank.GetRandomBank(borrower?.Address?.HomeCityArea);
+            return loan;
+        }
+
+        #endregion
     }
 }

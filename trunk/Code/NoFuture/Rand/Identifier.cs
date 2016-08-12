@@ -13,7 +13,6 @@ namespace NoFuture.Rand
     {
         string Abbrev { get; }
         T Value { get; set; }
-        
     }
 
     /// <summary>
@@ -22,6 +21,14 @@ namespace NoFuture.Rand
     public interface ICited
     {
         string Src { get; set; }
+    }
+
+    /// <summary>
+    /// Any type which could be given a name.
+    /// </summary>
+    public interface IVoca
+    {
+        List<Tuple<KindsOfNames, string>> Names { get; }
     }
 
     /// <summary>

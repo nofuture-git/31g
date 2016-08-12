@@ -18,11 +18,12 @@ namespace NoFuture.Rand.Data.Sp
         public int LeaseTermInMonths { get; }
         public Pecuniam MonthlyPmt { get; }
         public DateTime LeaseExpiry { get; }
+        public Identifier Id { get; }
         #endregion
 
         #region ctors
 
-        public Rent(DateTime signing, int forMonths, Pecuniam monthlyRent, Pecuniam deposit): base(signing)
+        public Rent(Identifier property, DateTime signing, int forMonths, Pecuniam monthlyRent, Pecuniam deposit): base(signing)
         {
             //calc number of days till the first day of the next month
             if (signing.Day != 1)
@@ -46,6 +47,7 @@ namespace NoFuture.Rand.Data.Sp
             LeaseTermInMonths = forMonths;
             Deposit = deposit;
             MonthlyPmt = monthlyRent;
+            Id = property;
         }
         #endregion
 

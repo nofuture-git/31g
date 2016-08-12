@@ -257,7 +257,7 @@ namespace NoFuture.Rand.Gov.Sec
                     var strFnDt = fn.FormerDate ?? string.Empty;
                     var strFnVal = fn.FormerName ?? string.Empty;
 
-                    publicCorporation.OtherNames.Add(new Tuple<KindsOfNames, string>(
+                    publicCorporation.Names.Add(new Tuple<KindsOfNames, string>(
                         KindsOfNames.Former | KindsOfNames.Legal, $"{strFnVal}[{strFnDt}]"));
                 }
             }

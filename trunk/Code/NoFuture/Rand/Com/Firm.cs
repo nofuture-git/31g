@@ -4,10 +4,9 @@ using NoFuture.Rand.Data.Types;
 
 namespace NoFuture.Rand.Com
 {
-    public interface IFirm
+    public interface IFirm : IVoca
     {
         string Name { get; set; }
-        List<Tuple<KindsOfNames, string>> OtherNames { get; }
         Tuple<UsStreetPo, UsCityStateZip> MailingAddress { get; set; }
         Tuple<UsStreetPo, UsCityStateZip> BusinessAddress { get; set; }
         NorthAmericanPhone[] Phone { get; set; }
@@ -36,7 +35,7 @@ namespace NoFuture.Rand.Com
 
         #region properties
         public string Name { get; set; }
-        public List<Tuple<KindsOfNames, string>> OtherNames => _otherNames;
+        public List<Tuple<KindsOfNames, string>> Names => _otherNames;
         public Tuple<UsStreetPo, UsCityStateZip> MailingAddress { get; set; }
         public Tuple<UsStreetPo, UsCityStateZip> BusinessAddress { get; set; }
         public NorthAmericanPhone[] Phone { get; set; }

@@ -89,7 +89,7 @@ namespace NoFuture.Tests.Rand
             var testSubject = new NorthAmericanWealth(amer);
             System.Diagnostics.Debug.WriteLine(string.Join(" ", amer.Age, amer.MaritialStatus, amer.Education, amer.Race));
 
-            var testResult = testSubject.GetYearlyIncome(null);
+            var testResult = testSubject.GetYearlyIncome(null,1.0);
             System.Diagnostics.Debug.WriteLine(testResult);
             Assert.IsNotNull(testResult);
             Assert.IsTrue(testResult.Amount > 0.0M);
@@ -114,7 +114,7 @@ namespace NoFuture.Tests.Rand
 
                 System.Diagnostics.Debug.WriteLine(testResultSfrl.Description);
 
-                Assert.IsNotNull( testResultSfrl.Id);
+                Assert.IsNotNull( testResultSfrl.PropertyId);
             }
         }
 

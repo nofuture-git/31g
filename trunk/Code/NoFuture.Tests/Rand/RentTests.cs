@@ -44,7 +44,7 @@ namespace NoFuture.Tests.Rand
             //most straight foward example
             var firstOfYear = new DateTime(DateTime.Today.Year, 1, 1);
 
-            var testSubject = new Rent(firstOfYear, 12,new Pecuniam(700), new Pecuniam(0));
+            var testSubject = new Rent(null, firstOfYear, 12,new Pecuniam(700), new Pecuniam(0));
             //first rent due immediately
             testSubject.PayRent(firstOfYear, new Pecuniam(-700));
 
@@ -56,7 +56,7 @@ namespace NoFuture.Tests.Rand
 
             //move signing back to mid Dec of prev year
             var newSigningDate = new DateTime(DateTime.Today.Year-1, 12, 14);
-            testSubject = new Rent(newSigningDate, 12, new Pecuniam(700), new Pecuniam(0));
+            testSubject = new Rent(null, newSigningDate, 12, new Pecuniam(700), new Pecuniam(0));
 
             //pro-rated amount should be due immediately
             testResult = testSubject.GetMinPayment(newSigningDate);
@@ -106,7 +106,7 @@ namespace NoFuture.Tests.Rand
             //most straight foward example
             var firstOfYear = new DateTime(DateTime.Today.Year, 1, 1);
 
-            var testSubject = new Rent(firstOfYear, 12, new Pecuniam(700), new Pecuniam(0));
+            var testSubject = new Rent(null, firstOfYear, 12, new Pecuniam(700), new Pecuniam(0));
 
             var testResult = testSubject.GetExpectedTotalRent(new DateTime(DateTime.Today.Year, 3,1));
             //only two whole months have passed but rent's due on the first
@@ -118,7 +118,7 @@ namespace NoFuture.Tests.Rand
 
             //back the signing date to middle of Dec
             var newSigningDate = firstOfYear.AddDays(-16);
-            testSubject = new Rent(newSigningDate, 12, new Pecuniam(700), new Pecuniam(0));
+            testSubject = new Rent(null, newSigningDate, 12, new Pecuniam(700), new Pecuniam(0));
 
             //this should be only the pro-rated amount, first full month is due tommorrow
             testResult = testSubject.GetExpectedTotalRent(newSigningDate.AddDays(15));

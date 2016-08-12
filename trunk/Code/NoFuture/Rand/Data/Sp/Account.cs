@@ -18,6 +18,7 @@ namespace NoFuture.Rand.Data.Sp
         NoHistory,
         Overdrawn
     }
+
     [Serializable]
     public class AccountId : RIdentifier
     {
@@ -27,13 +28,6 @@ namespace NoFuture.Rand.Data.Sp
         }
 
         public override string Abbrev => "Acct";
-    }
-
-    public interface IAccount : IAsset
-    {
-        AccountId AccountNumber { get; set; }
-        DateTime OpenDate { get; }
-        DateTime? ClosedDate { get; set; }
     }
 
     /// <summary>
@@ -52,7 +46,7 @@ namespace NoFuture.Rand.Data.Sp
 
         #region properties
         public bool IsJointAcct { get; set; }
-        public AccountId AccountNumber { get; set; }
+        public Identifier Id { get; set; }
         public IBalance Balance { get; }
         public FinancialFirm Bank { get; set; }
         public abstract Pecuniam Value { get; }
@@ -63,7 +57,7 @@ namespace NoFuture.Rand.Data.Sp
         #region methods
         public override string ToString()
         {
-            return string.Join(" ", GetType().Name, Bank, AccountNumber);
+            return string.Join(" ", GetType().Name, Bank, Id);
         }
 
         public AccountStatus GetStatus(DateTime dt)
@@ -122,6 +116,37 @@ namespace NoFuture.Rand.Data.Sp
                 TakeCashOut(t.AtTime.AddMilliseconds(1), t.Cash, t.Description);
             }
         }
+
+        /// <summary>
+        /// Moves <see cref="amt"/> out of <see cref="fromAccount"/> to <see cref="toAccount"/>.
+        /// When the amount exceeds what is available it will be divided in half continously until
+        /// it fits or goes down to one penny.
+        /// </summary>
+        /// <param name="fromAccount"></param>
+        /// <param name="toAccount"></param>
+        /// <param name="amt"></param>
+        /// <param name="dt"></param>
+        public static void TransferFundsInBankAccounts(DepositAccount fromAccount, DepositAccount toAccount, Pecuniam amt, DateTime dt)
+        {
+            if (fromAccount == null || toAccount == null || amt == null || amt == Pecuniam.Zero)
+                return;
+            if (fromAccount.GetStatus(dt) != AccountStatus.Current && toAccount.GetStatus(dt) != AccountStatus.Current)
+                return;
+
+            if (fromAccount.OpenDate < dt || toAccount.OpenDate < dt)
+                return;
+            amt = amt.Abs;
+
+            while (fromAccount.Value < amt)
+            {
+                amt = amt / 2.ToPecuniam();
+                if (amt.Amount < 0.01M)
+                    break;
+            }
+            fromAccount.TakeCashOut(dt, amt, Opes.GetPaymentNote(fromAccount.Id));
+            toAccount.PutCashIn(dt.AddMilliseconds(100), amt, Opes.GetPaymentNote(toAccount.Id));
+        }
+
         #endregion
     }
 
@@ -137,18 +162,20 @@ namespace NoFuture.Rand.Data.Sp
         /// <summary>
         /// Creates new Checking Deposit account instance
         /// </summary>
+        /// <param name="acctId"></param>
         /// <param name="dateOpenned"></param>
         /// <param name="debitCard">
         /// Item2 is the PIN number and must be 4 numerical chars. 
         /// Its value is hashed and not stored within the instance.
         /// </param>
-        public CheckingAccount(DateTime dateOpenned, Tuple<ICreditCard, string> debitCard = null) : base(dateOpenned)
+        public CheckingAccount(RIdentifier acctId, DateTime dateOpenned, Tuple<ICreditCard, string> debitCard = null) : base(dateOpenned)
         {
             if (debitCard?.Item1 == null || !IsPossiablePin(debitCard.Item2) )
                 return;
             DebitCard = debitCard.Item1;
             _pinKey = Encoding.UTF8.GetBytes(Path.GetRandomFileName());
             _pinHash = ComputePinHash(debitCard.Item2);
+            Id = acctId;
         }
         #endregion
 
@@ -202,15 +229,13 @@ namespace NoFuture.Rand.Data.Sp
             var accountId = new AccountId(Etx.GetRandomRChars(true));
             var bank = Com.Bank.GetRandomBank(p?.Address?.HomeCityArea);
             return IsPossiablePin(debitPin)
-                ? new CheckingAccount(dtd,
+                ? new CheckingAccount(accountId, dtd,
                     new Tuple<ICreditCard, string>(CreditCard.GetRandomCreditCard(p), debitPin))
                 {
-                    AccountNumber = accountId,
                     Bank = bank
                 }
-                : new CheckingAccount(dtd)
+                : new CheckingAccount(accountId, dtd)
                 {
-                    AccountNumber = accountId,
                     Bank = bank
                 };
         }
@@ -220,20 +245,27 @@ namespace NoFuture.Rand.Data.Sp
     [Serializable]
     public class SavingsAccount : DepositAccount
     {
-        public SavingsAccount(DateTime dateOpenned) : base(dateOpenned)
+        #region ctor
+        public SavingsAccount(RIdentifier acctId, DateTime dateOpenned) : base(dateOpenned)
         {
+            Id = acctId;
         }
+        #endregion
 
+        #region properties
         public float InterestRate { get; set; }
         public override Pecuniam Value => Balance.GetCurrent(DateTime.Now, InterestRate);
+        #endregion
 
+        #region methods
         public static SavingsAccount GetRandomSavingAcct(IPerson p, DateTime? dt = null)
         {
             var dtd = dt.GetValueOrDefault(DateTime.Now);
             var accountId = new AccountId(Etx.GetRandomRChars(true));
             var bank = Com.Bank.GetRandomBank(p?.Address?.HomeCityArea);
-            return new SavingsAccount(dtd) {AccountNumber = accountId, Bank = bank};
+            return new SavingsAccount(accountId,dtd) {Bank = bank};
         }
+        #endregion
     }
 
     /// <summary>
@@ -242,7 +274,7 @@ namespace NoFuture.Rand.Data.Sp
     /// the history of transactions and payments.
     /// </summary>
     [Serializable]
-    public class CreditCardAccount : FixedRateLoan
+    public class CreditCardAccount : FixedRateLoan, IAccount
     {
         #region constants
         public const float DF_MIN_PMT_RATE = 0.0125F;
@@ -260,12 +292,23 @@ namespace NoFuture.Rand.Data.Sp
         #endregion
 
         #region properties
-        public Pecuniam Max => base.TradeLine.CreditLimit;
+        public Pecuniam Max => TradeLine.CreditLimit;
         public ICreditCard Cc { get; }
+        public Identifier Id => Cc.Number;
+        public DateTime OpenDate => TradeLine.OpennedDate;
+
+        public DateTime? ClosedDate
+        {
+            get { return TradeLine.Closure?.ClosedDate; }
+            set
+            {
+                if (value.HasValue)
+                    TradeLine.Closure = new TradelineClosure {ClosedDate = value.Value};
+            }
+        }
         #endregion
 
         #region methods
-
         /// <summary>
         /// Public API method to allow the <see cref="Max"/> to 
         /// be increased and only increased.
@@ -354,7 +397,7 @@ namespace NoFuture.Rand.Data.Sp
             var cc = CreditCard.GetRandomCreditCard(p);
             var max = ccScore == null ? new Pecuniam(1000) : ccScore.GetRandomMax(cc.CardHolderSince);
             var randRate = ccScore?.GetRandomInterestRate(cc.CardHolderSince, baseInterestRate) * 0.01 ?? baseInterestRate;
-            var ccAcct = new CreditCardAccount(cc, minPmtPercent, max) {Rate = (float) randRate, Id = cc.Number};
+            var ccAcct = new CreditCardAccount(cc, minPmtPercent, max) {Rate = (float) randRate};
             return ccAcct;
         }
         #endregion

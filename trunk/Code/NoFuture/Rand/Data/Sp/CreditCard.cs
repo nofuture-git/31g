@@ -5,17 +5,7 @@ using NoFuture.Util;
 
 namespace NoFuture.Rand.Data.Sp
 {
-    /// <summary>
-    /// Represents the std properites from a card-issuer
-    /// </summary>
-    public interface ICreditCard
-    {
-        CreditCardNumber Number { get; }
-        DateTime ExpDate { get; }
-        string CardHolderName { get; }
-        string Cvv { get; }
-        DateTime CardHolderSince { get; }
-    }
+
 
     /// <summary>
     /// Represents a credit card number with algo for check digit

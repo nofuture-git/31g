@@ -530,7 +530,7 @@ namespace NoFuture.Rand.Domus
 
                     foreach (var childFrom in nAmerSpouse._children)
                     {
-                        if (childFrom.Est.LastName != LastName && childFrom.Est.OtherNames.All(x => x.Item2 != LastName))
+                        if (childFrom.Est.LastName != LastName && childFrom.Est.Names.All(x => x.Item2 != LastName))
                             continue;
                         _children.Add(childFrom);
                     }
@@ -739,7 +739,7 @@ namespace NoFuture.Rand.Domus
                 //when this is the bride
                 if (_myGender == Gender.Female)
                 {
-                    if (LastName != null && OtherNames.All(x => x.Item1 != KindsOfNames.Maiden))
+                    if (LastName != null && Names.All(x => x.Item1 != KindsOfNames.Maiden))
                         UpsertName(KindsOfNames.Maiden, BirthCert.Father?.LastName ?? LastName);
 
                     LastName = spouse.LastName;
@@ -751,7 +751,7 @@ namespace NoFuture.Rand.Domus
                 UpsertName(KindsOfNames.Former | KindsOfNames.Surname | KindsOfNames.Spouse, spouse.LastName);
 
                 //set back to maiden name
-                var maidenName = OtherNames.FirstOrDefault(x => x.Item1 == KindsOfNames.Maiden);
+                var maidenName = Names.FirstOrDefault(x => x.Item1 == KindsOfNames.Maiden);
                 if (!string.IsNullOrWhiteSpace(maidenName?.Item2))
                     LastName = maidenName.Item2;
             }

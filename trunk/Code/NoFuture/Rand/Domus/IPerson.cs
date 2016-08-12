@@ -4,7 +4,7 @@ using NoFuture.Rand.Gov;
 
 namespace NoFuture.Rand.Domus
 {
-    public interface IPerson
+    public interface IPerson : IVoca
     {
         #region properties
         int Age { get; }
@@ -16,7 +16,6 @@ namespace NoFuture.Rand.Domus
         List<Uri> NetUri { get; }
         Pneuma.Personality Personality { get; }
         IEducation Education { get; }
-        List<Tuple<KindsOfNames, string>> OtherNames { get; }
         Spouse Spouse { get; }
         MaritialStatus MaritialStatus { get; }
         List<Child> Children { get; }

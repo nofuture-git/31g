@@ -53,7 +53,7 @@ namespace NoFuture.Rand.Domus
         public virtual List<Uri> NetUri => _netUris;
         public Personality Personality => _personality;
         public virtual IEducation Education => GetEducationAt(null);
-        public List<Tuple<KindsOfNames, string>> OtherNames => _otherNames;
+        public List<Tuple<KindsOfNames, string>> Names => _otherNames;
         public ResidentAddress Address => GetAddressAt(null);
         public Spouse Spouse => GetSpouseAt(null);
         public int Age => GetAgeAt(null);

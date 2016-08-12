@@ -2,11 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
-using NoFuture.Rand.Com;
 using NoFuture.Rand.Data;
 using NoFuture.Rand.Data.Sp;
 using NoFuture.Rand.Data.Types;
-using NoFuture.Shared;
 using NoFuture.Util.Math;
 
 namespace NoFuture.Rand.Domus
@@ -34,6 +32,11 @@ namespace NoFuture.Rand.Domus
         #region constants
         public const double DF_STD_DEV_PERCENT = 0.1285D;
         public const double DF_DAILY_SPEND_PERCENT = 0.05D;
+
+        private const string UTIL_ELEC = "Electric";
+        private const string UTIL_GAS = "Gas";
+        private const string UTIL_TELCO = "Telco";
+        private const string UTIL_WATER = "Water";
         #endregion
 
         #region fields
@@ -56,15 +59,14 @@ namespace NoFuture.Rand.Domus
         private Pecuniam _vehicleEquity = Pecuniam.Zero;
         private readonly List<Tuple<string, int>> _utils = new List<Tuple<string, int>>
             {
-                new Tuple<string, int>("Electric", Etx.IntNumber(1, 28)),
-                new Tuple<string, int>("Gas", Etx.IntNumber(1, 28)),
-                new Tuple<string, int>("Water", Etx.IntNumber(1, 28)),
-                new Tuple<string, int>("Telco", Etx.IntNumber(1, 28))
+                new Tuple<string, int>(UTIL_ELEC, Etx.IntNumber(1, 28)),
+                new Tuple<string, int>(UTIL_GAS, Etx.IntNumber(1, 28)),
+                new Tuple<string, int>(UTIL_WATER, Etx.IntNumber(1, 28)),
+                new Tuple<string, int>(UTIL_TELCO, Etx.IntNumber(1, 28))
             };
         #endregion
 
         #region ctor
-
         /// <summary>
         /// Creates random transaction history.
         /// </summary>
@@ -107,7 +109,7 @@ namespace NoFuture.Rand.Domus
 
             var payBase = new Pecuniam(2000);
             Func<Pecuniam, double> calcMonthlyPay =
-                pecuniam => Math.Round((double)GetYearlyIncome(pecuniam).Amount / 12, 2);
+                pecuniam => Math.Round((double)GetYearlyIncome(pecuniam, _netWorthFactor).Amount / 12, 2);
             Paycheck = Math.Round(calcMonthlyPay(payBase) / 2, 2).ToPecuniam();
         }
         #endregion
@@ -183,6 +185,11 @@ namespace NoFuture.Rand.Domus
             return tlt;
         }
 
+        /// <summary>
+        /// Determine if the given <see cref="NorthAmerican"/> is renting or has a mortgage
+        /// </summary>
+        /// <param name="usCityArea"></param>
+        /// <returns></returns>
         protected internal bool GetIsLeaseResidence(UsCityStateZip usCityArea)
         {
             var cannotGetFinanced = CreditScore.GetRandomInterestRate(null, Gov.Fed.RiskFreeInterestRate.DF_VALUE) > 8.5;
@@ -239,7 +246,7 @@ namespace NoFuture.Rand.Domus
                     
                     //replenish savings
                     if (savings.Value < randSavings.ToPecuniam())
-                        TransferFundsInBankAccounts(checking, savings, randSavings.ToPecuniam() - savings.Value,
+                        DepositAccount.TransferFundsInBankAccounts(checking, savings, randSavings.ToPecuniam() - savings.Value,
                             loopDtSt.AddSeconds(15));
                     friCounter += 1;
                 }
@@ -267,18 +274,24 @@ namespace NoFuture.Rand.Domus
                 //if broke, move funds from savings and no spending
                 if (checking.GetStatus(loopDtSt) != AccountStatus.Current)
                 {
-                    TransferFundsInBankAccounts(savings, checking, randChecking.ToPecuniam() - checking.Value,
+                    DepositAccount.TransferFundsInBankAccounts(savings, checking, randChecking.ToPecuniam() - checking.Value,
                         loopDtSt.AddHours(19));
                     continue;
                 }
 
                 //create some checking account transactions 
-                CreateSingleDaysPurchases(checking, loopDtSt);
+                CreateSingleDaysPurchases(_amer.Personality, checking, loopDtSt, (double)Paycheck.Amount * DF_DAILY_SPEND_PERCENT);
             }
             SavingAccounts.Add(savings);
             CheckingAccounts.Add(checking);
         }
 
+        /// <summary>
+        /// Generates some utiltiy bill history for the <see cref="checking"/>.  
+        /// The dates and amounts routine and random.
+        /// </summary>
+        /// <param name="loopDtSt"></param>
+        /// <param name="checking"></param>
         protected internal void PayUtilityBills(DateTime loopDtSt, CheckingAccount checking)
         {
             var utilsDfMin = (int)Math.Round((double)Paycheck.Amount * DF_DAILY_SPEND_PERCENT);
@@ -294,34 +307,13 @@ namespace NoFuture.Rand.Domus
                 var randAmt = Pecuniam.GetRandPecuniam(utilsDfMin, utilsDfMax);
 
                 //raise these by season-of-year
-                if (t.Item1 == "Electric" && new[] { 6, 7, 8 }.Contains(loopDtSt.Month)
-                    || t.Item1 == "Gas" && new[] { 12, 1, 2 }.Contains(loopDtSt.Month))
+                if (t.Item1 == UTIL_ELEC && new[] { 6, 7, 8 }.Contains(loopDtSt.Month)
+                    || t.Item1 == UTIL_GAS && new[] { 12, 1, 2 }.Contains(loopDtSt.Month))
                 {
                     randAmt += Pecuniam.GetRandPecuniam(utilsDfMin, utilsDfMid);
                 }
                 checking.PutCashIn(loopDtSt.AddHours(12), randAmt, t.Item1);
             }
-        }
-
-        protected internal void TransferFundsInBankAccounts(DepositAccount fromAccount, DepositAccount toAccount, Pecuniam amt, DateTime dt)
-        {
-            if (fromAccount == null || toAccount == null || amt == null || amt == Pecuniam.Zero)
-                return;
-            if (fromAccount.GetStatus(dt) != AccountStatus.Current && toAccount.GetStatus(dt) != AccountStatus.Current)
-                return;
-
-            if (fromAccount.OpenDate < dt || toAccount.OpenDate < dt)
-                return;
-            amt = amt.Abs;
-
-            while (fromAccount.Value < amt)
-            {
-                amt = amt/2.ToPecuniam();
-                if (amt.Amount < 0.01M)
-                    break;
-            }
-            fromAccount.TakeCashOut(dt, amt, GetPaymentNote(fromAccount.AccountNumber));
-            toAccount.PutCashIn(dt.AddMilliseconds(100), amt, GetPaymentNote(toAccount.AccountNumber));
         }
 
         /// <summary>
@@ -388,9 +380,8 @@ namespace NoFuture.Rand.Domus
                     (decimal) GetRandomFactorValue(FactorTables.HomeDebt, _homeDebtFactor, stdDevAsPercent, avgRent));
             var term = 12;
             var randDate = Etx.Date(0, DateTime.Today.AddDays(-2));
-            var rent = new Rent(randDate, term, randRent, Etx.CoinToss ? new Pecuniam(250) : new Pecuniam(500))
+            var rent = new Rent(_amer.Address, randDate, term, randRent, Etx.CoinToss ? new Pecuniam(250) : new Pecuniam(500))
             {
-                Id = _amer.Address,
                 Description = $"{term}-Month Lease"
             };
             _amer.Address.IsLeased = true;
@@ -438,7 +429,7 @@ namespace NoFuture.Rand.Domus
 
             //create a loan on current residence
             Pecuniam minPmt;
-            var loan = GetRandomLoanWithHistory(_amer.Address, spCost, totalCost, (float) randRate, 30, out minPmt);
+            var loan = SecuredFixedRateLoan.GetRandomLoanWithHistory(_amer, _amer.Address, spCost, totalCost, (float) randRate, 30, out minPmt);
             loan.Description = "30-Year Mortgage";
             loan.TradeLine.FormOfCredit = FormOfCredit.Mortgage;
             HomeDebt.Add(loan);
@@ -468,7 +459,7 @@ namespace NoFuture.Rand.Domus
                 if (ccAcct.GetStatus(loopDt) == AccountStatus.Closed)
                     break;
 
-                CreateSingleDaysPurchases(ccAcct, loopDt);
+                CreateSingleDaysPurchases(_amer.Personality, ccAcct, loopDt, (double)Paycheck.Amount * DF_DAILY_SPEND_PERCENT);
 
                 if (i%30 != 0 || ccAcct.GetCurrentBalance(loopDt).Amount < 0.0M)
                     continue;
@@ -534,132 +525,11 @@ namespace NoFuture.Rand.Domus
             var totalCost = new Pecuniam((decimal)(randCarDebt + randCarEquity));
 
             Pecuniam minPmt;
-            var loan = GetRandomLoanWithHistory(vin, spCost, totalCost, (float)randRate, 5, out minPmt);
+            var loan = SecuredFixedRateLoan.GetRandomLoanWithHistory(_amer, vin, spCost, totalCost, (float)randRate, 5, out minPmt);
             loan.Description = string.Join(" ", vin.Value, vin.Description, vin.GetModelYearYyyy());
             loan.TradeLine.FormOfCredit = FormOfCredit.Installment;
             VehicleDebt.Add(loan);
             return minPmt;
-        }
-
-        /// <summary>
-        /// Produces a <see cref="SecuredFixedRateLoan"/> with history.
-        /// </summary>
-        /// <param name="property"></param>
-        /// <param name="remainingCost"></param>
-        /// <param name="totalCost"></param>
-        /// <param name="rate"></param>
-        /// <param name="termInYears"></param>
-        /// <param name="minPmt"></param>
-        /// <returns></returns>
-        protected internal SecuredFixedRateLoan GetRandomLoanWithHistory(Identifier property, Pecuniam remainingCost,
-            Pecuniam totalCost, float rate, int termInYears, out Pecuniam minPmt)
-        {
-            //if no or nonsense values given, change to some default
-            if (totalCost == null || totalCost < Pecuniam.Zero)
-                totalCost = new Pecuniam(2000);
-            if(remainingCost == null || remainingCost < Pecuniam.Zero)
-                remainingCost = Pecuniam.Zero;
-
-            rate = Math.Abs(rate);
-
-            //calc the monthly payment
-            var fv = remainingCost.Amount.PerDiemInterest(rate, Constants.TropicalYear.TotalDays* termInYears);
-            minPmt = new Pecuniam(Math.Round(fv/(termInYears * 12), 2));
-            var minPmtRate = fv == 0 ? CreditCardAccount.DF_MIN_PMT_RATE : (float) Math.Round(minPmt.Amount/fv, 6);
-
-            //given this value and rate - calc the timespan needed to have aquired this amount of equity
-            var firstOfYear = new DateTime(DateTime.Today.Year, 1, 1);
-            var loan = new SecuredFixedRateLoan(property, firstOfYear, minPmtRate, totalCost)
-            {
-                Rate = rate
-            };
-
-            var dtIncrement = firstOfYear.AddMonths(1);
-            while (loan.GetCurrentBalance(dtIncrement) > remainingCost)
-            {
-                if (dtIncrement > DateTime.Now)
-                    break;
-                loan.PutCashIn(dtIncrement, minPmt);
-                dtIncrement = dtIncrement.AddMonths(1);
-            }
-
-            //repeat process from calc'ed past date to create a history
-            var calcPurchaseDt = DateTime.Today.AddDays(-1*(dtIncrement - firstOfYear).Days);
-            loan = new SecuredFixedRateLoan(property, calcPurchaseDt, minPmtRate, totalCost)
-            {
-                Rate = rate
-            };
-
-            var pmtNote = GetPaymentNote(property);
-
-            dtIncrement = calcPurchaseDt.AddMonths(1);
-            while (loan.GetCurrentBalance(dtIncrement) > remainingCost)
-            {
-                if (dtIncrement >= DateTime.Now)
-                    break;
-                var paidOnDate = dtIncrement;
-                if (_amer.Personality.GetRandomActsIrresponsible())
-                    paidOnDate = paidOnDate.AddDays(Etx.IntNumber(5, 15));
-
-                //is this the payoff
-                var isPayoff = loan.GetCurrentBalance(dtIncrement) <= minPmt;
-                if (isPayoff)
-                    minPmt = loan.GetCurrentBalance(dtIncrement);
-
-                loan.PutCashIn(paidOnDate, minPmt, pmtNote);
-                if (isPayoff)
-                    break;
-                dtIncrement = dtIncrement.AddMonths(1);
-            }
-
-            //assign boilerplate props
-            loan.Lender = Bank.GetRandomBank(_amer?.Address?.HomeCityArea);
-            return loan;
-        }
-
-        /// <summary>
-        /// Calc a yearly income salary or pay at random.
-        /// </summary>
-        /// <param name="min"></param>
-        /// <param name="factorCalc">
-        /// Optional, allows caller to specify how to factor the raw results of 
-        /// <see cref="GetAvgEarningPerYear"/> for the <see cref="dt"/>.
-        /// </param>
-        /// <param name="stdDevInUsd"></param>
-        /// <param name="dt">
-        /// Optional, date used for solving the <see cref="GetAvgEarningPerYear"/> eq.
-        /// </param>
-        /// <returns></returns>
-        protected internal Pecuniam GetYearlyIncome(Pecuniam min, Func<double, double, double> factorCalc = null,
-            double stdDevInUsd = 2000, DateTime? dt = null)
-        {
-            if(min == null)
-                min = Pecuniam.Zero;
-            //get linear eq for earning 
-            var eq = GetAvgEarningPerYear();
-            if (eq == null)
-                return Pecuniam.Zero;
-            var baseValue = Math.Round(eq.SolveForY(dt.GetValueOrDefault(DateTime.Today).ToDouble()), 2);
-            if (baseValue <= 0)
-                return Pecuniam.Zero;
-
-            Func<double, double, double> dfFunc = (d, d1) =>
-            {
-                var factorVal = (d/5)*d1;
-                while (Math.Abs(factorVal) > d)
-                    factorVal = factorVal/2;
-                return factorVal;
-            };
-
-            factorCalc = factorCalc ?? dfFunc;
-
-            var factorValue = factorCalc(baseValue, _netWorthFactor);
-
-            baseValue = Math.Round(baseValue + factorValue, 2);
-
-            var randValue = Math.Round(
-                Etx.RandomValueInNormalDist(Math.Round(baseValue, 0), stdDevInUsd), 2);
-            return new Pecuniam((decimal) randValue) + min;
         }
 
         /// <summary>
@@ -684,72 +554,11 @@ namespace NoFuture.Rand.Domus
         }
 
         /// <summary>
-        /// Creates purchase transactions on <see cref="t"/> at random for the given <see cref="ccDate"/>.
-        /// </summary>
-        /// <param name="t"></param>
-        /// <param name="ccDate"></param>
-        /// <param name="daysMax"></param>
-        /// <param name="randMaxFactor">
-        /// The multiplier used for the rand dollar's max, raising this value 
-        /// will raise every transactions possiable max by a factor of this.
-        /// </param>
-        protected internal void CreateSingleDaysPurchases(ITransactionable t, DateTime ccDate, int randMaxFactor = 10)
-        {
-            var daysMax = (double) Paycheck.Amount*DF_DAILY_SPEND_PERCENT;
-            //build charges history
-            var keepSpending = true;
-            var spentSum = new Pecuniam(0);
-
-            while (keepSpending)//want possiable multiple transactions per day
-            {
-                //if we reached target then exit 
-                if (spentSum >= new Pecuniam((decimal)daysMax))
-                    return;
-
-                var isXmasSeason = ccDate.Month >= 11 && ccDate.Day >= 20;
-                var isWeekend = ccDate.DayOfWeek == DayOfWeek.Friday ||
-                                ccDate.DayOfWeek == DayOfWeek.Saturday ||
-                                ccDate.DayOfWeek == DayOfWeek.Sunday;
-                var actingIrresp = _amer.Personality.GetRandomActsIrresponsible();
-                var isbigTicketItem = Etx.TryAboveOrAt(96, Etx.Dice.OneHundred);
-                var isSomeEvenAmt = Etx.TryBelowOrAt(3, Etx.Dice.Ten);
-
-                //keep times during normal waking hours
-                var randCcDate =
-                        ccDate.Date.AddHours(Etx.IntNumber(6, isWeekend ? 23 : 19))
-                            .AddMinutes(Etx.IntNumber(0, 59))
-                            .AddSeconds(Etx.IntNumber(0, 59))
-                            .AddMilliseconds(Etx.IntNumber(0,999));
-
-                //make purchase based various factors
-                var v = 2;
-                v = isXmasSeason ? v + 1 : v;
-                v = isWeekend ? v + 2 : v;
-                v = actingIrresp ? v + 3 : v;
-                randMaxFactor = isbigTicketItem ? randMaxFactor * 10 : randMaxFactor;
-
-                if (Etx.TryBelowOrAt(v, Etx.Dice.Ten))
-                {
-                    //create some random purchase amount
-                    var chargeAmt = Pecuniam.GetRandPecuniam(5, v*randMaxFactor, isSomeEvenAmt ? 10 : 0);
-
-                    //check if account is maxed-out\empty
-                    if (!t.TakeCashOut(randCcDate, chargeAmt))
-                        return;
-
-                    spentSum += chargeAmt;
-                }
-                //determine if more transactions for this day
-                keepSpending = Etx.CoinToss;
-            }
-        }
-
-        /// <summary>
         /// Get the linear eq of the city if its found otherwise
         /// defaults to the state.
         /// </summary>
         /// <returns></returns>
-        protected internal LinearEquation GetAvgEarningPerYear()
+        protected internal override LinearEquation GetAvgEarningPerYear()
         {
             var ca = _amer.Address?.HomeCityArea as UsCityStateZip;
             return ca?.AverageEarnings ?? ca?.State?.GetStateData()?.AverageEarnings;
@@ -868,31 +677,6 @@ namespace NoFuture.Rand.Domus
                 eduName = "PostGrad";
             return eduName;
         }
-
-        internal static string GetPaymentNote(Identifier property, string prefix = null)
-        {
-            var residenceLoan = property as ResidentAddress;
-            
-            if (residenceLoan != null)
-            {
-                return residenceLoan.IsLeased
-                    ? string.Join(" ", prefix, "Rent Payment")
-                    : string.Join(" ", prefix, "Mortgage Payment");
-            }
-            var carloan = property as Gov.Nhtsa.Vin;
-            if (carloan != null)
-                return string.Join(" ", prefix, "Vehicle Payment");
-            var ccNum = property as CreditCardNumber;
-            if (ccNum != null)
-                return string.Join(" ", prefix, "Cc Payment");
-
-            var acctNum = property as AccountId;
-            if (acctNum != null)
-                return string.Join(" ", prefix, "Bank Account Transfer");
-
-            return prefix;
-        }
         #endregion
     }
-
 }
