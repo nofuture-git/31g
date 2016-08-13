@@ -156,28 +156,24 @@ namespace NoFuture.Rand
         {
             if (list == null || list.Length < 0)
                 return null;
-            var dict = new Dictionary<string, double>();
-            foreach (var s in list)
-            {
-                if (dict.ContainsKey(s))
-                    continue;
-                dict.Add(s, 1.0D);
-            }
-            return DiscreteRange(dict);
+            if (list.Length == 1)
+                return list[0];
+            var pick = IntNumber(0, list.Length - 1);
+            return list[pick];
         }
 
+        /// <summary>
+        /// Gets a random Uri host.
+        /// </summary>
+        /// <returns></returns>
         public static string RandomUriHost()
         {
             var webDomains = ListData.UsWebmailDomains;
             var host = new StringBuilder();
 
-            //get a random sub-domain
-            if (TryAboveOrAt(5, Dice.Ten))
-                host.Append("www.");
-            else if (TryAboveOrAt(5, Dice.Ten))
-                host.Append("m.");
-            else
-                host.Append(Word() + ".");
+            var subdomain = DiscreteRange(ListData.Subdomains);
+
+            host.Append(subdomain + ".");
 
             if (webDomains != null)
             {
@@ -191,6 +187,12 @@ namespace NoFuture.Rand
             return host.ToString();
         }
 
+        /// <summary>
+        /// Create a random http scheme uri with optional query string.
+        /// </summary>
+        /// <param name="useHttps"></param>
+        /// <param name="addQry"></param>
+        /// <returns></returns>
         public static Uri RandomHttpUri(bool useHttps = false, bool addQry = false)
         {
             
@@ -198,6 +200,11 @@ namespace NoFuture.Rand
             var pathSegLen = IntNumber(0, 5);
             for (var i = 0; i < pathSegLen; i++)
                 pathSeg.Add(Word());
+
+            if (CoinToss)
+            {
+                pathSeg.Add(Word() + DiscreteRange(new [] { ".php",".aspx",".html",".txt", ".asp"}));
+            }
 
             var uri = new UriBuilder
             {
@@ -228,6 +235,10 @@ namespace NoFuture.Rand
             return uri.Uri;
         }
 
+        /// <summary>
+        /// Creates a random email address 
+        /// </summary>
+        /// <returns></returns>
         public static string RandomEmailUri()
         {
             var bunchOfWords = new List<string>();

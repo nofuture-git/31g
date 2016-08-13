@@ -17,11 +17,6 @@ namespace NoFuture.Tests.Rand
         public void TestExtWord()
         {
             var testResult = NoFuture.Rand.Etx.Word();
-            Assert.IsNotNull(testResult);
-            Assert.AreNotEqual(string.Empty, testResult);
-            System.Diagnostics.Debug.WriteLine(testResult);
-            BinDirectories.DataRoot = @"C:\Projects\31g\trunk\bin\Data\Source";
-            testResult = NoFuture.Rand.Etx.Word();
             Assert.AreNotEqual(string.Empty, testResult);
 
             System.Diagnostics.Debug.WriteLine(testResult);
@@ -30,15 +25,21 @@ namespace NoFuture.Tests.Rand
         [TestMethod]
         public void TestRandomHttpUri()
         {
-            var testResult = NoFuture.Rand.Etx.RandomHttpUri();
-            Assert.IsNotNull(testResult);
-            Assert.IsFalse(string.IsNullOrWhiteSpace(testResult.ToString()));
-            System.Diagnostics.Debug.WriteLine(testResult);
-            testResult = NoFuture.Rand.Etx.RandomHttpUri(false, true);
-            Assert.IsNotNull(testResult);
-            Assert.IsFalse(string.IsNullOrWhiteSpace(testResult.ToString()));
-            System.Diagnostics.Debug.WriteLine(testResult);
+            for (var i = 0; i < 10; i++)
+            {
+                var testResult = NoFuture.Rand.Etx.RandomHttpUri();
+                Assert.IsNotNull(testResult);
+                Assert.IsFalse(string.IsNullOrWhiteSpace(testResult.ToString()));
+                System.Diagnostics.Debug.WriteLine(testResult);
+            }
 
+            for (var i = 0; i < 10; i++)
+            {
+                var testResult = NoFuture.Rand.Etx.RandomHttpUri(false, true);
+                Assert.IsNotNull(testResult);
+                Assert.IsFalse(string.IsNullOrWhiteSpace(testResult.ToString()));
+                System.Diagnostics.Debug.WriteLine(testResult);
+            }
         }
 
         [TestMethod]
