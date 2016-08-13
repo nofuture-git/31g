@@ -8,6 +8,48 @@ namespace NoFuture.Tests.Rand
     [TestClass]
     public class EtxTests
     {
+        [TestInitialize]
+        public void Init()
+        {
+            BinDirectories.DataRoot = @"C:\Projects\31g\trunk\bin\Data\Source";
+        }
+        [TestMethod]
+        public void TestExtWord()
+        {
+            var testResult = NoFuture.Rand.Etx.Word();
+            Assert.IsNotNull(testResult);
+            Assert.AreNotEqual(string.Empty, testResult);
+            System.Diagnostics.Debug.WriteLine(testResult);
+            BinDirectories.DataRoot = @"C:\Projects\31g\trunk\bin\Data\Source";
+            testResult = NoFuture.Rand.Etx.Word();
+            Assert.AreNotEqual(string.Empty, testResult);
+
+            System.Diagnostics.Debug.WriteLine(testResult);
+        }
+
+        [TestMethod]
+        public void TestRandomHttpUri()
+        {
+            var testResult = NoFuture.Rand.Etx.RandomHttpUri();
+            Assert.IsNotNull(testResult);
+            Assert.IsFalse(string.IsNullOrWhiteSpace(testResult.ToString()));
+            System.Diagnostics.Debug.WriteLine(testResult);
+            testResult = NoFuture.Rand.Etx.RandomHttpUri(false, true);
+            Assert.IsNotNull(testResult);
+            Assert.IsFalse(string.IsNullOrWhiteSpace(testResult.ToString()));
+            System.Diagnostics.Debug.WriteLine(testResult);
+
+        }
+
+        [TestMethod]
+        public void TestRandomEmailUri()
+        {
+            var testResult = NoFuture.Rand.Etx.RandomEmailUri();
+            Assert.IsNotNull(testResult);
+            Assert.IsFalse(string.IsNullOrWhiteSpace(testResult));
+            System.Diagnostics.Debug.WriteLine( new System.Uri("mailto:" + testResult));
+
+        }
 
         [TestMethod]
         public void TestRandomValueInNormalDist()
@@ -67,13 +109,8 @@ namespace NoFuture.Tests.Rand
         [TestMethod]
         public void TestDiscreteRange()
         {
-            var testResult = NoFuture.Rand.Etx.DiscreteRange(null);
-
-            //returns null 
-            Assert.IsNull(testResult);
-
             //handles only one thing
-            testResult = NoFuture.Rand.Etx.DiscreteRange(new Dictionary<string, double> {{"onlyOne", 12}});
+            var testResult = NoFuture.Rand.Etx.DiscreteRange(new Dictionary<string, double> {{"onlyOne", 12}});
             Assert.AreEqual("onlyOne", testResult);
 
             var testInput = new Dictionary<string, double>()
@@ -95,6 +132,16 @@ namespace NoFuture.Tests.Rand
             var aggTestResult = testRsltCount/100.0D;
             System.Diagnostics.Debug.WriteLine(aggTestResult);
             Assert.IsTrue(0.925 <= aggTestResult && aggTestResult <= 0.975);
+
+            testInput = new Dictionary<string, double>()
+            {
+                {".com", 1.0},
+                {".net", 1.0},
+                {".edu", 1.0},
+                {".org", 1.0}
+            };
+            testResult = NoFuture.Rand.Etx.DiscreteRange(testInput);
+            Assert.IsTrue(new[] { ".com" , ".net", ".edu", ".org" }.Contains(testResult));
         }
 
         [TestMethod]

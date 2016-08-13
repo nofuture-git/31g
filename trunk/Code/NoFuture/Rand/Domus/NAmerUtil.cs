@@ -414,7 +414,7 @@ namespace NoFuture.Rand.Domus
             //move the adjusted child-dob date back by calc'ed years 
             var parentDob = dtPm.AddYears(Convert.ToInt32(Math.Round(avgAgeCouldMarry, 0))*-1);
 
-            var aParent = new NorthAmerican(parentDob, gender);
+            var aParent = new NorthAmerican(parentDob, gender, false, false);
             return aParent;
         }
 

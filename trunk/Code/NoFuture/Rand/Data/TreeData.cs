@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Xml;
+using NoFuture.Exceptions;
 using NoFuture.Rand.Com;
 
 namespace NoFuture.Rand.Data
@@ -27,6 +29,7 @@ namespace NoFuture.Rand.Data
         private static XmlDocument _usPersonalDebt;
         private static XmlDocument _usPersonalWealth;
         private static XmlDocument _vinWmi;
+        private static List<Tuple<string, double>> _enWords;
         private static Bank[] _fedReleaseLrgBnkNames;
         #endregion
 
@@ -50,6 +53,7 @@ namespace NoFuture.Rand.Data
         private const string US_PERSON_DEBT = "US_PersonalDebt.xml";
         private const string US_PERSON_WEALTH = "US_PersonalWealth.xml";
         private const string VIN_WMI = "Vin_Wmi.xml";
+        private const string ENGLISH_WORDS = "English_Words.xml";
         #endregion
 
         #region API
@@ -283,6 +287,53 @@ namespace NoFuture.Rand.Data
         }
 
         /// <summary>
+        /// Loads the 'English_Words.xml' data into a <see cref="System.Xml.XmlDocument"/> document.
+        /// </summary>
+        public static List<Tuple<string, double>> EnglishWords
+        {
+            get
+            {
+                try
+                {
+                    if (_enWords != null && _enWords.Count > 0)
+                        return _enWords;
+
+                    if (!TestDataFileIsPresent(ENGLISH_WORDS))
+                        return null;
+
+                    XmlDocument enWordsXml = null;
+                    GetXmlDataSource(ENGLISH_WORDS, ref enWordsXml);
+                    var wordNodes = enWordsXml?.SelectNodes("//word[@lang='en']");
+                    if (wordNodes == null)
+                        return null;
+
+                    _enWords = new List<Tuple<string, double>>();
+                    foreach (var node in wordNodes)
+                    {
+                        var elem = node as XmlElement;
+                        var word = elem?.InnerText;
+                        if (string.IsNullOrWhiteSpace(word))
+                            continue;
+                        var countStr = elem.Attributes["count"]?.Value;
+                        if (string.IsNullOrWhiteSpace(countStr))
+                            continue;
+                        double count;
+                        if (!double.TryParse(countStr, out count))
+                            continue;
+                        _enWords.Add(new Tuple<string, double>(word, count));
+                    }
+                    return _enWords;
+                }
+                catch (Exception ex)//keep this contained
+                {
+                    System.Diagnostics.Debug.WriteLine(ex.Message);
+                    System.Diagnostics.Debug.WriteLine(ex.StackTrace);
+                }
+                return null;
+            }
+        }
+
+        /// <summary>
         /// Loads a list of <see cref="FinancialFirm"/> by parsing the data from "lrg_bnk_lst.txt" 
         /// <remarks>
         /// A path must be set to <see cref="NoFuture.BinDirectories.Root"/> which contains a 'Data\Source' folder
@@ -319,7 +370,7 @@ namespace NoFuture.Rand.Data
         [EditorBrowsable(EditorBrowsableState.Never)]
         internal static string GetTextDataSource(string name)
         {
-            CheckForBinDirAssigned();
+            ThrowExOnFileNotFound(name);
 
             return string.IsNullOrWhiteSpace(name)
                 ? null
@@ -329,9 +380,13 @@ namespace NoFuture.Rand.Data
         [EditorBrowsable(EditorBrowsableState.Never)]
         internal static void GetXmlDataSource(string name, ref XmlDocument assignTo)
         {
-            CheckForBinDirAssigned();
+            ThrowExOnFileNotFound(name);
+
             if (string.IsNullOrWhiteSpace(name))
                 return;
+
+            if(!File.Exists(Path.Combine(BinDirectories.DataRoot, name)))
+                throw new RahRowRagee($"{name} file is missing from {BinDirectories.DataRoot}");
 
             var xmlData = File.ReadAllText(Path.Combine(BinDirectories.DataRoot, name));
             if (string.IsNullOrWhiteSpace(xmlData))
@@ -345,14 +400,22 @@ namespace NoFuture.Rand.Data
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        private static void CheckForBinDirAssigned()
+        internal static void ThrowExOnFileNotFound(string name)
         {
-            if (string.IsNullOrWhiteSpace(BinDirectories.DataRoot) || !Directory.Exists(BinDirectories.DataRoot))
+            if (!TestDataFileIsPresent(name))
             {
                 throw new InvalidOperationException("Data is stored on the drive in the folder assigned to " +
                                                     "NoFuture.BinDirectories.DataRoot.  Assign this variable " +
                                                     "and try again.");
             }
+        }
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        internal static bool TestDataFileIsPresent(string name)
+        {
+            if (string.IsNullOrWhiteSpace(BinDirectories.DataRoot) || !Directory.Exists(BinDirectories.DataRoot))
+                return false;
+            return !string.IsNullOrWhiteSpace(name) && File.Exists(Path.Combine(BinDirectories.DataRoot, name));
         }
     }
 }

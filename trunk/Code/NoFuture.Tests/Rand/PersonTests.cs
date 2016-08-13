@@ -222,7 +222,7 @@ namespace NoFuture.Tests.Rand
         [TestMethod]
         public void TestNorthAmericanWithFamily()
         {
-            var testResult = new NoFuture.Rand.Domus.NorthAmerican(DateTime.Now.AddYears(-40), Gender.Female, true );
+            var testResult = new NoFuture.Rand.Domus.NorthAmerican(DateTime.Now.AddYears(-40), Gender.Female, true, false );
 
             Assert.IsNotNull(testResult.GetMother());
             Assert.IsNotNull(testResult.GetFather());
@@ -278,11 +278,11 @@ namespace NoFuture.Tests.Rand
         [TestMethod]
         public void TestIsValidDobOfChild()
         {
-            var testPerson = new NorthAmerican(new DateTime(1955,6,20), Gender.Female, false);
+            var testPerson = new NorthAmerican(new DateTime(1955,6,20), Gender.Female, false, false);
 
-            testPerson._children.Add(new Child(new NorthAmerican(new DateTime(1976, 10, 2), Gender.Female, false)));
-            testPerson._children.Add(new Child(new NorthAmerican(new DateTime(1986, 3, 11), Gender.Female, false)));
-            testPerson._children.Add(new Child(new NorthAmerican(new DateTime(1982, 12, 30), Gender.Female, false)));
+            testPerson._children.Add(new Child(new NorthAmerican(new DateTime(1976, 10, 2), Gender.Female, false, false)));
+            testPerson._children.Add(new Child(new NorthAmerican(new DateTime(1986, 3, 11), Gender.Female, false, false)));
+            testPerson._children.Add(new Child(new NorthAmerican(new DateTime(1982, 12, 30), Gender.Female, false, false)));
 
             var testDob = new DateTime(1985, 9, 10);//conception ~ 12/4/1984
 
@@ -303,7 +303,7 @@ namespace NoFuture.Tests.Rand
             testResult = testPerson.IsValidDobOfChild(testDob);
             Assert.IsTrue(testResult);
 
-            testPerson = new NorthAmerican(new DateTime(1982,4,13), Gender.Female, false );
+            testPerson = new NorthAmerican(new DateTime(1982,4,13), Gender.Female, false, false);
             testPerson._children.Add(new Child(new NorthAmerican(new DateTime(2007, 8, 30), Gender.Male)));
             testPerson._children.Add(new Child(new NorthAmerican(new DateTime(2009, 12, 20), Gender.Female)));
 

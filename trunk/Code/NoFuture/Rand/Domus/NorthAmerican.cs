@@ -62,7 +62,7 @@ namespace NoFuture.Rand.Domus
         /// <param name="withFinanceData">
         /// When set to true will ctor will create and assign <see cref="Opes"/>
         /// </param>
-        public NorthAmerican(DateTime dob, Gender myGender, bool withWholeFamily, bool withFinanceData = false):this(dob,myGender)
+        public NorthAmerican(DateTime dob, Gender myGender, bool withWholeFamily, bool withFinanceData):this(dob,myGender)
         {
             var csz = CityArea.American();
             var homeAddr = StreetPo.American();
@@ -81,9 +81,7 @@ namespace NoFuture.Rand.Domus
             if (withWholeFamily)
                 ResolveFamilyState();
             if (withFinanceData)
-            {
                 ResolveFinancialState();
-            }
         }
 
         /// <summary>

@@ -33,7 +33,7 @@ namespace NoFuture.Rand.Domus
         public NorthAmericanEdu(IPerson p)
         {
             var amer = p as NorthAmerican;
-            if (amer != null && !amer.IsLegalAdult(DateTime.Now))
+            ;            if (amer != null && amer.Age < 14)
                 return;
 
             var dob = amer?.BirthCert?.DateOfBirth ?? NAmerUtil.GetWorkingAdultBirthDate();
@@ -61,8 +61,8 @@ namespace NoFuture.Rand.Domus
             //first try city, then state, last natl
             var hs = GetAmericanHighSchool(homeState, hca);
 
-            //hs drop out
-            if (Etx.TryAboveOrAt((int)Math.Round(hsGradRate)+1, Etx.Dice.OneHundred))
+            //still in hs or dropped out
+            if (!(amer?.IsLegalAdult(DateTime.Now) ?? true) || Etx.TryAboveOrAt((int)Math.Round(hsGradRate)+1, Etx.Dice.OneHundred))
             {
                 //assign grad hs but no date
                 HighSchool = new Tuple<IHighSchool, DateTime?>(hs, null);

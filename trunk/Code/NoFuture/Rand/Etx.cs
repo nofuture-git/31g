@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Text;
+using NoFuture.Rand.Data;
 using NoFuture.Rand.Data.NfHtml;
 using NoFuture.Rand.Data.NfHttp;
 using NoFuture.Rand.Data.NfText;
@@ -144,6 +146,101 @@ namespace NoFuture.Rand
             return tblCopy.FirstOrDefault(x => x.Value >= pick).Key;
         }
 
+        /// <summary>
+        /// Picks at random from a discrete list - its 
+        /// assumed that each is equal prob.
+        /// </summary>
+        /// <param name="list"></param>
+        /// <returns></returns>
+        public static string DiscreteRange(string[] list)
+        {
+            if (list == null || list.Length < 0)
+                return null;
+            var dict = new Dictionary<string, double>();
+            foreach (var s in list)
+            {
+                if (dict.ContainsKey(s))
+                    continue;
+                dict.Add(s, 1.0D);
+            }
+            return DiscreteRange(dict);
+        }
+
+        public static string RandomUriHost()
+        {
+            var webDomains = ListData.UsWebmailDomains;
+            var host = new StringBuilder();
+
+            //get a random sub-domain
+            if (TryAboveOrAt(5, Dice.Ten))
+                host.Append("www.");
+            else if (TryAboveOrAt(5, Dice.Ten))
+                host.Append("m.");
+            else
+                host.Append(Word() + ".");
+
+            if (webDomains != null)
+            {
+                host.Append(webDomains[IntNumber(0, webDomains.Length - 1)]);
+            }
+            else
+            {
+                host.Append(Word());
+                host.Append(DiscreteRange(new[] { ".com", ".net", ".edu", ".org" }));
+            }
+            return host.ToString();
+        }
+
+        public static Uri RandomHttpUri(bool useHttps = false, bool addQry = false)
+        {
+            
+            var pathSeg = new List<string>();
+            var pathSegLen = IntNumber(0, 5);
+            for (var i = 0; i < pathSegLen; i++)
+                pathSeg.Add(Word());
+
+            var uri = new UriBuilder
+            {
+                Scheme = useHttps ? "https" : "http",
+                Host = RandomUriHost(),
+                Path =  string.Join("/", pathSeg.ToArray())
+            };
+
+            if (!addQry)
+                return uri.Uri;
+
+            var qry = new List<string>();
+            var qryParms = IntNumber(1, 5);
+            for (var i = 0; i < qryParms; i++)
+            {
+                var someVals = new[]
+                {
+                    Guid.NewGuid().ToString(),
+                    IntNumber(0, 999).ToString(),
+                    Convert.ToBase64String(Encoding.UTF8.GetBytes(Path.GetRandomFileName())),
+                    Word(5),
+                    Word()
+                };
+                qry.Add(string.Join("_", Word(), Word()) + "=" + DiscreteRange(someVals));
+            }
+
+            uri.Query = string.Join("&", qry);
+            return uri.Uri;
+        }
+
+        public static string RandomEmailUri()
+        {
+            var bunchOfWords = new List<string>();
+            for (var i = 0; i < 4; i++)
+            {
+                bunchOfWords.Add(Util.Etc.CapitalizeFirstLetterOfWholeWords(Word(), ' '));
+                bunchOfWords.Add(Domus.NAmerUtil.GetAmericanFirstName(DateTime.Today, CoinToss ? Gender.Male : Gender.Female));
+            }
+            var userName = string.Join((CoinToss ? "." : "_"), DiscreteRange(bunchOfWords.ToArray()),
+                DiscreteRange(bunchOfWords.ToArray()));
+            var host = RandomUriHost();
+            return string.Join("@", userName, host);
+        }
 
         /// <summary>
         /// Produces an array of percents whose sum is 1 
@@ -200,14 +297,32 @@ namespace NoFuture.Rand
             for (var i = 0; i < length; i++)
             {
                 if (i == 0)
+                {
                     word.Append(CoinToss ? Vowel(true) : Consonant(true));
-                if (MyRand.Next(1, 100) <= 60)
-                    word.Append(Consonant(false));
-                else
-                    word.Append(Vowel(false));
+                    continue;
+                }
+                word.Append(MyRand.Next(1, 100) <= 60 ? Consonant(false) : Vowel(false));
             }
 
             return word.ToString();
+        }
+
+        /// <summary>
+        /// Attempts to return a valid english word using 
+        /// 'English_Words.xml' at <see cref="BinDirectories.DataRoot"/>,
+        /// failing that defaults back to its overload.
+        /// </summary>
+        /// <returns></returns>
+        public static string Word()
+        {
+            var enWords = TreeData.EnglishWords;
+            if (enWords == null || enWords.Count <= 0)
+                return Word(8);
+            var pick = IntNumber(0, enWords.Count - 1);
+            var enWord = enWords[pick]?.Item1;
+            return !string.IsNullOrWhiteSpace(enWord)
+                ? enWord
+                : Word(8);
         }
 
         /// <summary>
