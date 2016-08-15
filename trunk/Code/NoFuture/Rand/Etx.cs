@@ -5,6 +5,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Newtonsoft.Json;
 using NoFuture.Rand.Data;
 using NoFuture.Rand.Data.NfHtml;
 using NoFuture.Rand.Data.NfHttp;
@@ -199,7 +200,15 @@ namespace NoFuture.Rand
             var pathSeg = new List<string>();
             var pathSegLen = IntNumber(0, 5);
             for (var i = 0; i < pathSegLen; i++)
+            {
+                DiscreteRange(new Dictionary<string, double>()
+                {
+                    {Word(), 72},
+                    {Consonant(false).ToString(), 11},
+                    {IntNumber(1, 9999).ToString(), 17}
+                });
                 pathSeg.Add(Word());
+            }
 
             if (CoinToss)
             {
@@ -220,19 +229,58 @@ namespace NoFuture.Rand
             var qryParms = IntNumber(1, 5);
             for (var i = 0; i < qryParms; i++)
             {
-                var someVals = new[]
+                var len = IntNumber(1, 4);
+                var qryParam = new List<string>();
+                for (var j = 0; j < len; j++)
                 {
-                    Guid.NewGuid().ToString(),
-                    IntNumber(0, 999).ToString(),
-                    Convert.ToBase64String(Encoding.UTF8.GetBytes(Path.GetRandomFileName())),
-                    Word(5),
-                    Word()
-                };
-                qry.Add(string.Join("_", Word(), Word()) + "=" + DiscreteRange(someVals));
+                    if (CoinToss)
+                    {
+                        qryParam.Add(Word());
+                        continue;
+                    }
+                    if (CoinToss)
+                    {
+                        qryParam.Add(IntNumber(0,99999).ToString());
+                        continue;
+                    }
+                    qryParam.Add(Consonant(CoinToss).ToString());
+
+                }
+                qry.Add(string.Join("_", qryParam) + "=" + SupriseMe());
             }
 
             uri.Query = string.Join("&", qry);
             return uri.Uri;
+        }
+
+        /// <summary>
+        /// Returns some string taking various forms from the other
+        /// random functions herein
+        /// </summary>
+        /// <returns></returns>
+        public static string SupriseMe()
+        {
+            var pick = IntNumber(0, 10);
+            switch (pick)
+            {
+                case 0:
+                    return Guid.NewGuid().ToString();
+                case 1:
+                    return IntNumber(0, 99999).ToString();
+                case 2:
+                    return Convert.ToBase64String(Encoding.UTF8.GetBytes(Path.GetRandomFileName()));
+                case 3:
+                    return Word(IntNumber(5, 10));
+                case 4:
+                    return Consonant(CoinToss).ToString();
+                case 5:
+                    return Vowel(CoinToss).ToString();
+                case 6:
+                    return JsonConvert.SerializeObject(Etx.Date(-1*IntNumber(0, 4), null));
+                default:
+                    return Word();
+
+            }
         }
 
         /// <summary>
