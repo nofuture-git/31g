@@ -22,7 +22,7 @@ namespace NoFuture.Rand.Data.Types
         {
             return string.Join(" ", data.AddressNumber, data.StreetName, 
                 data.StreetType, data.SecondaryUnitDesignator,
-                data.SecondaryUnitId);
+                data.SecondaryUnitId).Trim();
         }
 
         public override bool Equals(object obj)

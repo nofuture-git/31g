@@ -279,7 +279,7 @@ namespace NoFuture.Rand.Domus
             }
             var underAgeChildren =
                 _children.Where(
-                    x => x.Est is NorthAmerican && ((NorthAmerican) x.Est).GetAgeAt(dt) < UsState.AGE_OF_ADULT)
+                    x => x.Est is NorthAmerican && !((NorthAmerican) x.Est).IsLegalAdult(dt))
                     .ToList();
             if (underAgeChildren.Count <= 0)
                 return;

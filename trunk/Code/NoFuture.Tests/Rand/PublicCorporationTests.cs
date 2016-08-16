@@ -1,11 +1,20 @@
 ﻿using System;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NoFuture.Rand;
+using NoFuture.Rand.Gov.Sec;
 
 namespace NoFuture.Tests.Rand
 {
     [TestClass]
     public class PublicCorporationTests
     {
+        [TestInitialize]
+        public void Init()
+        {
+            BinDirectories.DataRoot = @"C:\Projects\31g\trunk\bin\Data\Source";
+        }
+
         [TestMethod]
         public void TestMergeTickerLookupFromJson()
         {
@@ -17,6 +26,41 @@ namespace NoFuture.Tests.Rand
             Assert.IsTrue(testResult);
             Assert.IsNotNull(testSubject.TickerSymbols);
             Assert.AreNotEqual(0, testSubject.TickerSymbols.Count);
+        }
+
+        [TestMethod]
+        public void TestTryMergeXbrl()
+        {
+            var testUri = new Uri("https://www.sec.gov/Archives/edgar/data/1593936/000155837016004206/mik-20160130.xml");
+            var testSubject = new NoFuture.Rand.Com.PublicCorporation
+            {
+                CIK = new CentralIndexKey {Value = "0000768899"}, Name = "TrueBlue, Inc.",
+            };
+            testSubject.AnnualReports.Add(new Form10K {XbrlXmlLink = testUri});
+            var testContent =
+                System.IO.File.ReadAllText(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\ExampleSecXbrl.xml");
+            var testResult = NoFuture.Rand.Com.PublicCorporation.TryMergeXbrl(testContent,
+                testUri,
+                ref testSubject);
+
+            Assert.IsTrue(testResult);
+            Assert.IsTrue(testSubject.TickerSymbols.Any(x => x.Symbol == "TBI"));
+
+            var tenK2015 = testSubject.AnnualReports.FirstOrDefault(x => x.XbrlXmlLink == testUri);
+            Assert.IsNotNull(tenK2015);
+
+            Assert.AreEqual(42029009, tenK2015.FinancialData.NumOfShares);
+
+            Assert.AreEqual(new Pecuniam(1266835M), tenK2015.FinancialData.Assets.TotalAssets);
+
+            Assert.AreEqual(new Pecuniam(731262M), tenK2015.FinancialData.Assets.TotalLiabilities);
+
+            Assert.AreEqual(new Pecuniam(71247M), tenK2015.FinancialData.Income.NetIncome);
+
+            Assert.AreEqual(new Pecuniam(97842M), tenK2015.FinancialData.Income.OperatingIncome);
+
+            Assert.AreEqual(new Pecuniam(2695680M), tenK2015.FinancialData.Income.Revenue);
+
         }
     }
 }

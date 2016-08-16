@@ -123,5 +123,14 @@ namespace NoFuture.Tests.Rand
 
             System.Diagnostics.Debug.WriteLine(testResult.ToString());
         }
+
+        [TestMethod]
+        public void TestTryGetDayOfYearFiscalEnd()
+        {
+            int testResultOut;
+            var testResult = Edgar.TryGetDayOfYearFiscalEnd("--12-25", out testResultOut);
+            System.Diagnostics.Debug.WriteLine(testResultOut);
+            Assert.IsTrue(testResult);
+        }
     }
 }

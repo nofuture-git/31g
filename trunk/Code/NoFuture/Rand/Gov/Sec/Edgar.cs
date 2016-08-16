@@ -147,8 +147,7 @@ namespace NoFuture.Rand.Gov.Sec
                 {
                     var summaryText = summaryNode;
                     form10K.AccessionNumber = ParseAccessionNumFromSummary(summaryText);
-                    form10K.InteractiveFormLink = CtorInteractiveLink(corp.CIK.Value, form10K.AccessionNumber);
-                    form10K.XbrlZipLink = CtorXbrlZipLink(corp.CIK.Value, form10K);
+                    form10K.CIK = corp.CIK;
                 }
 
                 corp.AnnualReports.Add(form10K);
@@ -265,7 +264,7 @@ namespace NoFuture.Rand.Gov.Sec
             if (pr.FiscalYearEnd != null && pr.FiscalYearEnd.Length == 4)
             {
                 int fyed;
-                if (TryGetDayOfYearFiscalEnd(pr.FiscalYearEnd, out fyed))
+                if ( TryGetDayOfYearFiscalEnd(pr.FiscalYearEnd, out fyed))
                     publicCorporation.FiscalYearEndDay = fyed;
             }
 
@@ -284,11 +283,6 @@ namespace NoFuture.Rand.Gov.Sec
             qry.Append("xbrl_type=v");
 
             return new Uri(INTERACTIVE_ROOT + qry);
-        }
-
-        internal static Uri CtorXbrlZipLink(string cik, Form10K form10K)
-        {
-            return new Uri(ARCHIVE_ROOT + cik + "/" + form10K.AccessionNumber + "/" + form10K.FormattedAccessionNumber + "-xbrl.zip");
         }
 
         internal static string ParseAccessionNumFromSummary(string summaryText)
@@ -341,8 +335,10 @@ namespace NoFuture.Rand.Gov.Sec
         {
             dayOfYear = 0;
 
-            if (string.IsNullOrEmpty(rawValue) || rawValue.Length != 4)
+            if (string.IsNullOrEmpty(rawValue))
                 return false;
+
+            rawValue = new string(rawValue.ToCharArray().Where(char.IsDigit).ToArray());
 
             var sm = rawValue.Substring(0, 2);
             var sd = rawValue.Substring(2, 2);

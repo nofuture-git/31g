@@ -785,7 +785,7 @@
                 <ternary-sector ID="3341" Description="Computer and Peripheral Equipment Manufacturing">
                   <sic-code value="3571" sec-results="True" />
                   <sic-code value="3572" sec-results="True" />
-                  <sic-code value="3575" sec-results="True" />
+                  <sic-code value="3575" sec-results="False" />
                   <sic-code value="3577" sec-results="True" />
                 </ternary-sector>
                 <ternary-sector ID="3342" Description="Communications Equipment Manufacturing">

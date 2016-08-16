@@ -197,8 +197,8 @@
     <Compile Include="Rand\DomusTests\LoanTests.cs" />
     <Compile Include="Rand\DomusTests\AccountTests.cs" />
     <Compile Include="Rand\NfHtmlTests\BloombergSymbolSearchTest.cs" />
-    <Compile Include="Rand\NfHtmlTests\YhooFinBalanceSheetTests.cs" />
-    <Compile Include="Rand\NfHtmlTests\YhooFinIncomeStmtTests.cs" />
+    <Compile Include="Rand\NfHtmlTests\SecGetXbrlUriTests.cs" />
+    <Compile Include="Rand\NfXmlTests\SecXbrlInstanceFileTests.cs" />
     <Compile Include="Rand\PecuniamTests.cs" />
     <Compile Include="Rand\EtxTests.cs" />
     <Compile Include="Rand\PersonTests.cs" />

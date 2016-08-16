@@ -1,13 +1,12 @@
 ﻿using System;
 using NoFuture.Rand.Data.Sp;
-using NoFuture.Rand.Data.Types;
 
 namespace NoFuture.Rand.Gov.Sec
 {
     [Serializable]
     public class CentralIndexKey : Identifier
     {
-        public override string Abbrev { get { return "CIK"; } }
+        public override string Abbrev => "CIK";
     }
 
     [Serializable]
@@ -22,12 +21,25 @@ namespace NoFuture.Rand.Gov.Sec
         #endregion
 
         #region properties
-        public override string Abbrev { get { return secFormNumber; }}
+        public CentralIndexKey CIK { get; set; }
+        public override string Abbrev => secFormNumber;
         public override string Value { get; set; }
         public abstract FederalStatute Statute { get; }
         public Uri HtmlFormLink { get; set; }
-        public Uri InteractiveFormLink { get; set; }
-        public Uri XbrlZipLink { get; set; }
+        /// <summary>
+        /// Returns the link to the SEC's interative version of the report.
+        /// </summary>
+        public Uri InteractiveFormLink
+        {
+            get
+            {
+                if(!string.IsNullOrWhiteSpace(CIK?.Value) && !string.IsNullOrWhiteSpace(AccessionNumber) && XbrlXmlLink != null)
+                    return Edgar.CtorInteractiveLink(CIK.Value, AccessionNumber);
+
+                return null;
+            }
+        }
+        public Uri XbrlXmlLink { get; set; }
 
         /// <summary>
         /// Reports prefixed with <see cref="NotificationOfInabilityToTimelyFile"/> will 
@@ -67,7 +79,8 @@ namespace NoFuture.Rand.Gov.Sec
         public Form10K() : base("10-K") { }
         public override string Value { get; set; }
         public DateTime FilingDate { get; set; }
-        public override FederalStatute Statute { get { return new SecuritiesExchangeAct(); } }
+        public int FiscalYear => FinancialData?.FiscalYear ?? 0;
+        public override FederalStatute Statute => new SecuritiesExchangeAct();
         public ComFinancialData FinancialData { get; set; }
         public SummaryOfBusiness Summary { get; set; }
     }

@@ -6,6 +6,8 @@ namespace NoFuture.Rand.Data.Types
     [Serializable]
     public class AddressData
     {
+        private string _city;
+
         public string AddressNumber { get; set; }
         public string StreetNamePreDirectional { get; set; }
         public string StreetName { get; set; }
@@ -13,7 +15,17 @@ namespace NoFuture.Rand.Data.Types
         public string SecondaryUnitDesignator { get; set; }
         public string SecondaryUnitId { get; set; }
         public string MajorMetro { get; set; }
-        public string City { get; set; }
+
+        public string City
+        {
+            get
+            {
+                if (_city.Contains(","))
+                    _city = _city.Replace(",", "");
+                return _city;
+            }
+            set { _city = value; }
+        }
         public string StateAbbrv { get; set; }
         public string StateName { get; set; }
         public string PostalCode { get; set; }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Xml;
 using NoFuture.Exceptions;
@@ -25,15 +26,10 @@ namespace NoFuture.Rand.Com
 
         #region properties
         public Gov.Irs.EmployerIdentificationNumber EIN { get; set; }
-
         public CentralIndexKey CIK { get; set; }
-
         public List<Form10K> AnnualReports => _annualReports;
-
         public Gov.UsState UsStateOfIncorporation { get; set; }
-
         public Uri[] WebDomains { get; set; }
-
         public List<Ticker> TickerSymbols
         {
             get
@@ -43,7 +39,6 @@ namespace NoFuture.Rand.Com
             }
             set { _tickerSymbols = value; } //XRef.cs needs this as RW
         }
-
         /// <summary>
         /// Strips periods and comma's and any whole words which 
         /// do not begin with a letter or digit and encodes these results.
@@ -68,136 +63,133 @@ namespace NoFuture.Rand.Com
         #endregion
 
         #region methods
-
-        public Tuple<string, Uri>[] GetDataUris()
+        /// <summary>
+        /// Parses the web response html content from <see cref="SecForm.HtmlFormLink"/> 
+        /// locating the XBRL's Uri therein.
+        /// </summary>
+        /// <param name="webResponseBody"></param>
+        /// <param name="srcUri"></param>
+        /// <param name="pc"></param>
+        /// <returns></returns>
+        public static bool TryGetXbrlUri(object webResponseBody, Uri srcUri, ref PublicCorporation pc)
         {
-            var dataUris = new List<Tuple<string, Uri>>();
-            var tickerSymbol = 
-                _tickerSymbols.FirstOrDefault();
-            if (tickerSymbol != null)
-            {
-                dataUris.Add(new Tuple<string, Uri>(typeof(YhooFinBalanceSheet).Name,
-                    new Uri("http://finance.yahoo.com/q/bs?s=" + tickerSymbol.Symbol + "&annual")));
-                dataUris.Add(new Tuple<string, Uri>(typeof(YhooFinIncomeStmt).Name,
-                    new Uri("http://finance.yahoo.com/q/is?s=" + tickerSymbol.Symbol + "&annual")));
-            }
-            dataUris.Add(new Tuple<string, Uri>(typeof(BloombergSymbolSearch).Name,
-                new Uri("http://www.bloomberg.com/markets/symbolsearch?query=" + UrlEncodedName + "&commit=Find+Symbols")));
-            dataUris.Add(new Tuple<string, Uri>(typeof(YhooFinSymbolLookup).Name,
-                new Uri("http://finance.yahoo.com/q?s=" + UrlEncodedName + "&ql=1")));
-            return dataUris.ToArray();
+            if (pc.AnnualReports == null)
+                return false;
+            if (pc.AnnualReports.All(x => x.HtmlFormLink != srcUri))
+                return false;
+            var myDynData = Etx.DynamicDataFactory(srcUri);
+            var myDynDataRslt = myDynData.ParseContent(webResponseBody);
+            if (myDynDataRslt == null || myDynDataRslt.Count <= 0)
+                return false;
+            var xrblUriStr = myDynDataRslt.First().XrblUri;
+
+            var pcAnnualRpt = pc.AnnualReports.First(x => x.HtmlFormLink == srcUri);
+            pcAnnualRpt.XbrlXmlLink = new Uri(xrblUriStr);
+            return true;
         }
 
         /// <summary>
-        /// For a guaranteed ref to a <see cref="Form10K"/> 
-        /// within this instances <see cref="AnnualReports"/>
+        /// Merges the XBRL xml from the SEC filing for the given <see cref="pc"/> 
         /// </summary>
-        /// <param name="year"></param>
+        /// <param name="webResponseBody">The raw XML content from the SEC</param>
+        /// <param name="srcUri"></param>
+        /// <param name="pc"></param>
         /// <returns></returns>
-        public Form10K GetForm10KByYear(int year)
+        public static bool TryMergeXbrl(object webResponseBody, Uri srcUri, ref PublicCorporation pc)
         {
-            Form10K form10K;
-            if (_annualReports.All(x => x.FilingDate.Year - 1 != year))
-            {
-                form10K = new Form10K
+            if (pc == null)
+                return false;
+            var myDynData = Etx.DynamicDataFactory(srcUri);
+            var myDynDataRslt = myDynData.ParseContent(webResponseBody);
+            if (myDynDataRslt == null || myDynDataRslt.Count <= 0)
+                return false;
+
+            var rptTenK = pc.AnnualReports.FirstOrDefault(x => x.XbrlXmlLink == srcUri);
+            if (rptTenK == null)
+                return false;
+
+            if (rptTenK.FinancialData == null)
+                rptTenK.FinancialData = new ComFinancialData
                 {
-                    FilingDate = new DateTime(year + 1, 1, 2),
-                    FinancialData =
-                        new ComFinancialData
-                        {
-                            FiscalYear = year,
-                            Assets = new NetConAssets(),
-                            Income = new NetConIncome()
-                        }
+                    Assets = new NetConAssets(),
+                    Income = new NetConIncome()
                 };
 
-                if (year < form10K.Statute.Year)
-                    throw new RahRowRagee($"A Form 10-K for year {year} is invalid " +
-                                          $"since the '{form10K.Statute.Name}' is from " +
-                                          $"the year '{form10K.Statute.Year}'");
-
-                _annualReports.Add(form10K);
-            }
-            form10K = _annualReports.First(x => x.FilingDate.Year - 1 == year);
-
-            if (form10K.FinancialData == null)
-                form10K.FinancialData = new ComFinancialData {FiscalYear = year};
-            if(form10K.FinancialData.Assets == null)
-                form10K.FinancialData.Assets = new NetConAssets();
-            if(form10K.FinancialData.Income == null)
-                form10K.FinancialData.Income = new NetConIncome();
-
-            return form10K;
-        }
-
-        /// <summary>
-        /// Merges the balance sheet data contained in <see cref="webResponseBody"/> into the instance of <see cref="PublicCorporation"/>
-        /// </summary>
-        /// <param name="webResponseBody">The raw html from a web request.</param>
-        /// <param name="srcUri"></param>
-        /// <param name="pc"></param>
-        /// <returns></returns>
-        public static bool TryMergeAssets(object webResponseBody, Uri srcUri, ref PublicCorporation pc)
-        {
-            try
-            {
-                if (pc == null)
-                    return false;
-                var myDynData = Etx.DynamicDataFactory(srcUri);
-                var myDynDataRslt = myDynData.ParseContent(webResponseBody);
-                if (myDynDataRslt == null || myDynDataRslt.Count <= 0)
-                    return false;
-
-                foreach (var cd in myDynDataRslt)
-                {
-                    var tenK = pc.GetForm10KByYear((int)cd.FiscalYearEndAt);
-                    tenK.FinancialData.Assets.TotalAssets = new Pecuniam((decimal)cd.TotalAssets * ONE_THOUSAND);
-                    tenK.FinancialData.Assets.TotalLiabilities = new Pecuniam((decimal) cd.TotalLiabilities*ONE_THOUSAND);
-                    tenK.FinancialData.Assets.Src = myDynData.SourceUri.ToString();
-                }
-
-                return true;
-            }
-            catch
-            {
+            var xbrlDyn = myDynDataRslt.First();
+            var cik = xbrlDyn.Cik;
+            if (pc.CIK.Value != cik)
                 return false;
-            }
-        }
+            if (rptTenK.CIK == null)
+                rptTenK.CIK = cik;
 
-        /// <summary>
-        /// Merges the income statement data contained in <see cref="webResponseBody"/> into the instance of <see cref="PublicCorporation"/>
-        /// </summary>
-        /// <param name="webResponseBody">The raw html from a web request.</param>
-        /// <param name="srcUri"></param>
-        /// <param name="pc"></param>
-        /// <returns></returns>
-        public static bool TryMergeIncome(object webResponseBody, Uri srcUri, ref PublicCorporation pc)
-        {
-            try
+            var ticker = xbrlDyn.Ticker;
+            if (!string.IsNullOrWhiteSpace(ticker))
+                pc.TickerSymbols.Add(new Ticker {Symbol = ticker, Country = "USA"});
+
+            var legalName = xbrlDyn.Name;
+            if(!string.IsNullOrWhiteSpace(legalName) && pc.Names.All(x => x.Item1 != KindsOfNames.Legal))
+                pc.Names.Add(new Tuple<KindsOfNames, string>(KindsOfNames.Legal, legalName));
+            if (string.IsNullOrWhiteSpace(pc.Name))
+                pc.Name = legalName;
+
+            rptTenK.FinancialData.NumOfShares = xbrlDyn.NumOfShares;
+            if (xbrlDyn.EndOfYear > 0)
+                pc.FiscalYearEndDay = xbrlDyn.EndOfYear;
+
+            var assets = xbrlDyn.Assets as List<Tuple<int, decimal>>;
+            var rptVal = assets?.OrderByDescending(x => x.Item1).FirstOrDefault();
+            if (rptVal != null)
             {
-                if (pc == null)
-                    return false;
-                var myDynData = Etx.DynamicDataFactory(srcUri);
-                var myDynDataRslt = myDynData.ParseContent(webResponseBody);
-                if (myDynDataRslt == null || myDynDataRslt.Count <= 0)
-                    return false;
-
-                foreach (var cd in myDynDataRslt)
-                {
-                    var tenK = pc.GetForm10KByYear((int) cd.FiscalYearEndAt);
-                    tenK.FinancialData.Income.Revenue = new Pecuniam((Decimal) cd.TotalRevenue * ONE_THOUSAND);
-                    tenK.FinancialData.Income.OperatingIncome = new Pecuniam((Decimal) cd.OperatingIncomeorLoss * ONE_THOUSAND);
-                    tenK.FinancialData.Income.NetIncome = new Pecuniam((Decimal) cd.NetIncome * ONE_THOUSAND);
-                    tenK.FinancialData.Income.Src = myDynData.SourceUri.ToString();
-                }
-
-                return true;
+                rptTenK.FinancialData.Assets.TotalAssets = new Pecuniam(rptVal.Item2);
+                rptTenK.FinancialData.FiscalYear = rptTenK.FinancialData.FiscalYear < rptVal.Item1
+                    ? rptVal.Item1
+                    : rptTenK.FinancialData.FiscalYear;
             }
-            catch
+
+            var lias = xbrlDyn.Liabilities as List<Tuple<int, decimal>>;
+            rptVal = lias?.OrderByDescending(x => x.Item1).FirstOrDefault();
+            if (rptVal != null)
             {
-                return false;
+                rptTenK.FinancialData.Assets.TotalLiabilities = new Pecuniam(rptVal.Item2);
+                rptTenK.FinancialData.FiscalYear = rptTenK.FinancialData.FiscalYear < rptVal.Item1
+                    ? rptVal.Item1
+                    : rptTenK.FinancialData.FiscalYear;
             }
 
+            var nis = xbrlDyn.NetIncome as List<Tuple<int, decimal>>;
+            rptVal = nis?.OrderByDescending(x => x.Item1).FirstOrDefault();
+            if (rptVal != null)
+            {
+                rptTenK.FinancialData.Income.NetIncome = new Pecuniam(rptVal.Item2);
+                rptTenK.FinancialData.FiscalYear = rptTenK.FinancialData.FiscalYear < rptVal.Item1
+                    ? rptVal.Item1
+                    : rptTenK.FinancialData.FiscalYear;
+            }
+
+            var ois = xbrlDyn.OperatingIncome as List<Tuple<int, decimal>>;
+            rptVal = ois?.OrderByDescending(x => x.Item1).FirstOrDefault();
+            if (rptVal != null)
+            {
+                rptTenK.FinancialData.Income.OperatingIncome = new Pecuniam(rptVal.Item2);
+                rptTenK.FinancialData.FiscalYear = rptTenK.FinancialData.FiscalYear < rptVal.Item1
+                    ? rptVal.Item1
+                    : rptTenK.FinancialData.FiscalYear;
+            }
+
+            var revs = xbrlDyn.Revenue as List<Tuple<int, decimal>>;
+            rptVal = revs?.OrderByDescending(x => x.Item1).FirstOrDefault();
+            if (rptVal != null)
+            {
+                rptTenK.FinancialData.Income.Revenue = new Pecuniam(rptVal.Item2);
+                rptTenK.FinancialData.FiscalYear = rptTenK.FinancialData.FiscalYear < rptVal.Item1
+                    ? rptVal.Item1
+                    : rptTenK.FinancialData.FiscalYear;
+            }
+
+            rptTenK.FinancialData.Income.Src = srcUri.ToString();
+            rptTenK.FinancialData.Assets.Src = srcUri.ToString();
+
+            return true;
         }
 
         /// <summary>

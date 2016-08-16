@@ -59,13 +59,12 @@
     <Compile Include="Com\FinancialFirm.cs" />
     <Compile Include="Data\NfHtml\BloombergSymbolSearch.cs" />
     <Compile Include="Data\NfHtml\FfiecInstitProfile.cs" />
-    <Compile Include="Data\NfHtml\YhooFinBalanceSheet.cs" />
-    <Compile Include="Data\NfHtml\YhooFinBase.cs" />
-    <Compile Include="Data\NfHtml\YhooFinIncomeStmt.cs" />
+    <Compile Include="Data\NfHtml\SecGetXbrlUri.cs" />
     <Compile Include="Data\NfHttp\YhooFinSymbolLookup.cs" />
     <Compile Include="Data\NfText\FedLrgBnk.cs" />
     <Compile Include="Data\NfXml\SecCikSearch.cs" />
     <Compile Include="Data\NfXml\SecFullTxtSearch.cs" />
+    <Compile Include="Data\NfXml\SecXbrlInstanceFile.cs" />
     <Compile Include="Data\Sp\Account.cs" />
     <Compile Include="Data\Sp\CreditCard.cs" />
     <Compile Include="Data\Sp\CreditScore.cs" />

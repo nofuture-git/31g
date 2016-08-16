@@ -13,43 +13,27 @@ namespace NoFuture.Tokens
 {
     public class HtmlParseResults
     {
-        private readonly Dictionary<string, List<string>> _distinctTags = new Dictionary<string, List<string>>();
-        private readonly List<String> _scriptBodies = new List<string>();
-        private readonly List<String> _scriptLets = new List<string>();
-        private readonly List<string> _styleBodies = new List<string>();
-        private readonly List<string> _htmlComments = new List<string>();
-        private readonly List<string> _dtdNodes = new List<string>();
-        private readonly List<string> _emptyAttrs = new List<string>();
-
-        private readonly List<string> _charData = new List<string>();
-
-        public String FullContent { get; set; }
-        public List<String> ScriptBodies { get { return _scriptBodies; } }
-        public List<String> ScriptLets { get { return _scriptLets; } }
-        public List<string> EmptyAttrs { get { return _emptyAttrs; } }
-        public List<string> StyleBodies { get { return _styleBodies; } }
-        public List<string> DtdNodes { get { return _dtdNodes; } }
-        public Dictionary<string, List<string>> DistinctTags { get { return _distinctTags; } }
-        public List<String> HtmlComments { get { return _htmlComments; } }
-        public List<string> CharData { get { return _charData;} }
-
+        public String HtmlOnly { get; set; }
+        public List<String> ScriptBodies { get; } = new List<string>();
+        public List<String> ScriptLets { get; } = new List<string>();
+        public List<string> EmptyAttrs { get; } = new List<string>();
+        public List<string> StyleBodies { get; } = new List<string>();
+        public List<string> DtdNodes { get; } = new List<string>();
+        public Dictionary<string, List<string>> DistinctTags { get; } = new Dictionary<string, List<string>>();
+        public List<String> HtmlComments { get; } = new List<string>();
+        public List<string> CharData { get; } = new List<string>();
     }
     public class AspNetParseTree : HTMLParserBaseListener
     {
         protected ParseTreeProperty<String> MyTreeProperty = new ParseTreeProperty<string>();
         private readonly HtmlParseResults _results = new HtmlParseResults();
 
-        public HtmlParseResults Results
-        {
-            get { return _results; }
-        }
+        public HtmlParseResults Results => _results;
 
         public override void ExitScriptlet(HTMLParser.ScriptletContext ctx)
         {
             var scriptLetNode = ctx.SCRIPTLET();
-            if (scriptLetNode == null)
-                return;
-            var scriptletText = scriptLetNode.GetText();
+            var scriptletText = scriptLetNode?.GetText();
             if (string.IsNullOrWhiteSpace(scriptletText))
                 return;
             _results.ScriptLets.Add(scriptletText);
@@ -58,9 +42,7 @@ namespace NoFuture.Tokens
         public override void ExitHtmlComment(HTMLParser.HtmlCommentContext context)
         {
             var htmlCommentNode = context.HTML_COMMENT();
-            if (htmlCommentNode == null)
-                return;
-            var htmlCommentText = htmlCommentNode.GetText();
+            var htmlCommentText = htmlCommentNode?.GetText();
             if (string.IsNullOrWhiteSpace(htmlCommentText))
                 return;
             _results.HtmlComments.Add(htmlCommentText);
@@ -71,9 +53,7 @@ namespace NoFuture.Tokens
             const string SHORT_BODY = "</>";
             const string BODY = "</script>";
             var scriptBodyNode = ctx.SCRIPT_BODY() ?? ctx.SCRIPT_SHORT_BODY();
-            if (scriptBodyNode == null)
-                return;
-            var scriptBodyText = scriptBodyNode.GetText();
+            var scriptBodyText = scriptBodyNode?.GetText();
             if (string.IsNullOrWhiteSpace(scriptBodyText))
                 return;
             if (scriptBodyText.EndsWith(SHORT_BODY))
@@ -90,9 +70,7 @@ namespace NoFuture.Tokens
             const string SHORT_BODY = "</>";
             const string BODY = "</style>";
             var styleBody = ctx.STYLE_BODY() ?? ctx.STYLE_SHORT_BODY();
-            if (styleBody == null)
-                return;
-            var styleBodyText = styleBody.GetText();
+            var styleBodyText = styleBody?.GetText();
             if (string.IsNullOrWhiteSpace(styleBodyText))
                 return;
             if (styleBodyText.EndsWith(SHORT_BODY))
@@ -107,9 +85,7 @@ namespace NoFuture.Tokens
         public override void ExitDtd(HTMLParser.DtdContext context)
         {
             var dtdNode = context.DTD();
-            if (dtdNode == null)
-                return;
-            var dtdNodeText = dtdNode.GetText();
+            var dtdNodeText = dtdNode?.GetText();
             if (string.IsNullOrWhiteSpace(dtdNodeText))
                 return;
             _results.DtdNodes.Add(dtdNodeText);
@@ -217,15 +193,9 @@ namespace NoFuture.Tokens
 			textContent.Append("<");
 			
 			var tagNameCtx = ctx.htmlTagName(0);
-			if(tagNameCtx == null){
-				return;
-			}
-			var tagNameNode = tagNameCtx.TAG_NAME();
-			if(tagNameNode == null){
-				return;
-			}
-			
-			var tagNameText = tagNameNode.GetText();
+            var tagNameNode = tagNameCtx?.TAG_NAME();
+
+            var tagNameText = tagNameNode?.GetText();
 			
 			if(string.IsNullOrEmpty(tagNameText)){
 				return;
@@ -337,7 +307,7 @@ namespace NoFuture.Tokens
 				
 				textContent.Append(markup);
 			}
-            _results.FullContent = textContent.ToString();
+            _results.HtmlOnly = textContent.ToString();
         }
 
         public override void ExitHtmlElements(HTMLParser.HtmlElementsContext ctx)
@@ -357,10 +327,17 @@ namespace NoFuture.Tokens
         {
             if (string.IsNullOrWhiteSpace(fileName))
                 return null;
-            if (!System.IO.File.Exists(fileName))
+            if (!File.Exists(fileName))
                 return null;
-            var tr = System.IO.File.OpenRead(fileName);
-            var input = new AntlrInputStream(tr);
+            var tr = File.OpenRead(fileName);
+            var results = InvokeParse(tr);
+            tr.Close();
+            return results;
+        }
+
+        public static HtmlParseResults InvokeParse(Stream stream)
+        {
+            var input = new AntlrInputStream(stream);
             var lexer = new HTMLLexer(input);
             var tokens = new CommonTokenStream(lexer);
             var parser = new HTMLParser(tokens);
@@ -370,12 +347,9 @@ namespace NoFuture.Tokens
             var walker = new ParseTreeWalker();
             var loader = new AspNetParseTree();
 
-            walker.Walk(loader,tree);
+            walker.Walk(loader, tree);
 
-            var results = loader.Results;
-
-            tr.Close();
-            return results;
+            return loader.Results;
         }
 
         public static bool TryGetCdata(string webResponseText, Func<string, bool> filter, out string[] cdata)
@@ -403,5 +377,4 @@ namespace NoFuture.Tokens
             return cdata.Length > 0;
         }
     }
-    
 }

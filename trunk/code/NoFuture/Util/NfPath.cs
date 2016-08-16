@@ -12,7 +12,20 @@ namespace NoFuture.Util
 {
     public class NfPath
     {
-        
+        /// <summary>
+        /// Writes the <see cref="content"/> to a temp file in <see cref="TempDirectories.AppData"/>
+        /// </summary>
+        /// <param name="fileNamePrefix"></param>
+        /// <param name="content"></param>
+        /// <returns></returns>
+        public static string WriteToTempFile(string fileNamePrefix, string content)
+        {
+            var fl = Path.Combine(TempDirectories.AppData,
+                (fileNamePrefix ?? NfTypeName.DEFAULT_NAME_PREFIX) + Path.GetRandomFileName());
+            File.WriteAllText(fl, content);
+            return fl;
+        }
+
         /// <summary>
         /// End-of-line conversion.
         /// </summary>

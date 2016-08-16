@@ -616,20 +616,11 @@ namespace NoFuture.Rand
             if (uri == null)
                 throw new ArgumentNullException(nameof(uri));
 
-            if (uri.Host == "finance.yahoo.com")
-            {
-                if (uri.LocalPath == "/q")
-                    return new YhooFinSymbolLookup(uri);
-                if (uri.LocalPath == "/q/bs")
-                    return new YhooFinBalanceSheet(uri);
-                if (uri.LocalPath == "/q/is")
-                    return new YhooFinIncomeStmt(uri);
-            }
-            else if (uri.Host == "www.bloomberg.com")
+            if (uri.Host == "www.bloomberg.com")
             {
                 return new BloombergSymbolSearch(uri);
             }
-            else if (uri.Host == Edgar.SEC_HOST)
+            if (uri.Host == Edgar.SEC_HOST)
             {
                 if (uri.LocalPath == "/cgi-bin/srch-edgar")
                 {
@@ -639,12 +630,19 @@ namespace NoFuture.Rand
                 {
                     return new SecCikSearch(uri);
                 }
+                if (uri.LocalPath.StartsWith("/Archives/edgar/data"))
+                {
+                    if(uri.LocalPath.EndsWith("index.htm"))
+                        return new SecGetXbrlUri(uri);
+                    if(uri.LocalPath.EndsWith(".xml"))
+                        return new SecXbrlInstanceFile(uri);
+                }
             }
-            else if (uri.Host == new Uri(FedLrgBnk.RELEASE_URL).Host)
+            if (uri.Host == new Uri(FedLrgBnk.RELEASE_URL).Host)
             {
                 return new FedLrgBnk();
             }
-            else if (uri.Host == new Uri(Ffiec.SEARCH_URL_BASE).Host)
+            if (uri.Host == new Uri(Ffiec.SEARCH_URL_BASE).Host)
             {
                 return new FfiecInstitProfile(uri);
             }
