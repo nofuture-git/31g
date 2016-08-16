@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Xml;
 using NoFuture.Rand.Data.Types;
 using NoFuture.Rand.Gov.Sec;
@@ -101,25 +102,22 @@ namespace NoFuture.Rand.Data.NfXml
             var assets = GetNodeDollarYear(xml, $"//{XmlNs.US_GAAP}:Assets", _nsMgr);
             var liabilities = GetNodeDollarYear(xml, $"//{XmlNs.US_GAAP}:Liabilities", _nsMgr);
 
-            var netIncome = GetNodeDollarYear(xml, $"//{XmlNs.US_GAAP}:NetIncomeLoss[contains(@contextRef,'YTD')]",
-                _nsMgr, DF_YEAR_PARSE_REGEX + YEAR_REGEX_APPDX);
+            var netIncome = GetNodeDollarYear(xml, $"//{XmlNs.US_GAAP}:NetIncomeLoss",_nsMgr);
 
             List<Tuple<int, decimal>> operateIncome = new List<Tuple<int, decimal>>();
             foreach (var anotherName in new[] {"OperatingIncomeLoss", "BenefitsLossesAndExpenses"})
             {
                 operateIncome = GetNodeDollarYear(xml,
-                    $"//{XmlNs.US_GAAP}:{anotherName}[contains(@contextRef,'YTD')]", _nsMgr,
-                    DF_YEAR_PARSE_REGEX + YEAR_REGEX_APPDX);
+                    $"//{XmlNs.US_GAAP}:{anotherName}", _nsMgr);
                 if (operateIncome.Any())
                     break;
             }
 
             List<Tuple<int, decimal>> salesRev = new List<Tuple<int, decimal>>();
-            foreach (var anotherName in new[] {"SalesRevenueServicesNet", "Revenues" })
+            foreach (var anotherName in new[] {"SalesRevenueServicesNet", "SalesRevenueGoodsNet", "Revenues"})
             {
                 salesRev = GetNodeDollarYear(xml,
-                    $"//{XmlNs.US_GAAP}:{anotherName}[contains(@contextRef,'YTD')]", _nsMgr,
-                    DF_YEAR_PARSE_REGEX + YEAR_REGEX_APPDX);
+                    $"//{XmlNs.US_GAAP}:{anotherName}", _nsMgr);
                 if (salesRev.Any())
                     break;
             }
@@ -153,6 +151,7 @@ namespace NoFuture.Rand.Data.NfXml
             var nodes = xml.SelectNodes(xpath, nsMgr);
             if (nodes == null || nodes.Count <= 0)
                 return year2usd;
+
             //find the shortest context ref attr value's length
             var contextRefLen = int.MaxValue-1;
             for (var i = 0; i < nodes.Count; i++)
@@ -166,17 +165,60 @@ namespace NoFuture.Rand.Data.NfXml
                 return year2usd;
 
             //now only target the nodes with this context ref len
+            var year2usdMoreInfo = new List<Tuple<int, decimal, string>>();
             for (var i = 0; i < nodes.Count; i++)
             {
-                var currContextRefLen = nodes[i]?.Attributes?["contextRef"]?.Value?.Length ?? 0;
-                if (currContextRefLen != contextRefLen)
+                var contextRefVal = nodes[i]?.Attributes?["contextRef"]?.Value ?? string.Empty;
+                var currContextRefLen = contextRefVal.Length;
+
+                //allow for +-1
+                var diffInLen = Math.Abs(currContextRefLen - contextRefLen);
+                if (diffInLen > 1)
                     continue;
+
                 Tuple<int, decimal> data = null;
                 if (TryParseDollarYear(nodes[i], out data, contextRefValMatch))
                 {
-                    if (year2usd.Any(x => x.Item1 == data.Item1))
-                        continue;
-                    year2usd.Add(data);
+                    year2usdMoreInfo.Add(new Tuple<int, decimal, string>(data.Item1, data.Item2, contextRefVal));
+                }
+            }
+            if (!year2usdMoreInfo.Any())
+                return year2usd;
+
+            //decide which one to pick when more than one has same year (Item1)
+            var years = year2usdMoreInfo.Select(x => x.Item1).Distinct();
+            foreach (var year in years)
+            {
+                var byYearItems = year2usdMoreInfo.Where(x => x.Item1 == year).ToList();
+                //when only one for that year just take it and go
+                if (byYearItems.Count == 1)
+                {
+                    year2usd.Add(new Tuple<int, decimal>(byYearItems[0].Item1, byYearItems[0].Item2));
+                    continue;
+                }
+
+                //when more than one look for one ending with year-to-date indicator
+                var pickBySuffix = byYearItems.FirstOrDefault(x => x.Item3.EndsWith("YTD"));
+                if (pickBySuffix != null)
+                {
+                    year2usd.Add(new Tuple<int, decimal>(pickBySuffix.Item1, pickBySuffix.Item2));
+                    continue;
+                }
+
+                //look for one with a number that appears to be the days-in-a-year
+                var pickWithYearWorthOfDays =
+                    byYearItems.FirstOrDefault(x => Regex.IsMatch(x.Item3, "[^0-9]36[0-5][^0-9]"));
+                if (pickWithYearWorthOfDays != null)
+                {
+                    year2usd.Add(new Tuple<int, decimal>(pickWithYearWorthOfDays.Item1, pickWithYearWorthOfDays.Item2));
+                    continue;
+                }
+
+                //last, just take the first one
+                var dfPick = byYearItems.FirstOrDefault();
+                if (dfPick != null && year2usd.All(x => x.Item1 != dfPick.Item1))
+                {
+                    year2usd.Add(new Tuple<int, decimal>(dfPick.Item1, dfPick.Item2));
                 }
             }
 
