@@ -11,7 +11,7 @@ namespace NoFuture.Rand.Data.Sp
         {
             var i = Income?.ToString() ?? "0";
             var w = Assets?.ToString() ?? "0";
-            return $"{i} {w}";
+            return $"{w} {i}";
         }
     }
 
@@ -33,7 +33,7 @@ namespace NoFuture.Rand.Data.Sp
         {
             get
             {
-                if(TotalLiabilities.Amount == 0)
+                if(TotalLiabilities == null || TotalLiabilities.Amount == 0)
                     return Pecuniam.Zero;
                 var nw = TotalAssets/TotalLiabilities;
                 return new Pecuniam(Math.Round(nw.Amount, 3));
@@ -42,7 +42,7 @@ namespace NoFuture.Rand.Data.Sp
 
         public override string ToString()
         {
-            return GetNetWorthMargin.ToString();
+            return (TotalAssets ?? Pecuniam.Zero).ToString();
         }
     }
     [Serializable]
@@ -57,7 +57,7 @@ namespace NoFuture.Rand.Data.Sp
         {
             get
             {
-                if(Revenue.Amount == 0)
+                if(Revenue == null || Revenue.Amount == 0)
                     return Pecuniam.Zero;
                 var pm = NetIncome/Revenue;
 
@@ -67,7 +67,7 @@ namespace NoFuture.Rand.Data.Sp
 
         public override string ToString()
         {
-            return GetProfitMargin.ToString();
+            return (NetIncome ?? Pecuniam.Zero).ToString();
         }
     }
     [Serializable]

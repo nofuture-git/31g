@@ -118,9 +118,14 @@ namespace NoFuture.Rand.Com
             if (rptTenK.CIK == null)
                 rptTenK.CIK = cik;
 
-            var ticker = xbrlDyn.Ticker;
-            if (!string.IsNullOrWhiteSpace(ticker) && pc.TickerSymbols.All(x => x.Symbol != ticker))
+            var ticker = xbrlDyn.Ticker ??
+                         srcUri?.LocalPath.Split('/').LastOrDefault()?.Split('-').FirstOrDefault()?.ToUpper();
+
+            if (ticker!= null && pc.TickerSymbols.All(x => !string.Equals(x.Symbol, ticker, StringComparison.OrdinalIgnoreCase)))
+            {
+                ticker = ticker.ToUpper();
                 pc.TickerSymbols.Add(new Ticker {Symbol = ticker, Country = "USA"});
+            }
 
             var legalName = xbrlDyn.Name;
             if(!string.IsNullOrWhiteSpace(legalName) && pc.Names.All(x => x.Item1 != KindsOfNames.Legal))
@@ -206,6 +211,13 @@ namespace NoFuture.Rand.Com
 
                 foreach (var dd in myDynDataRslt)
                 {
+                    var existing = pc.TickerSymbols.FirstOrDefault(x => x.Symbol == dd.Symbol && x.Country == dd.Country);
+                    if (existing != null)
+                    {
+                        existing.Src = myDynData.SourceUri.ToString();
+                        existing.InstrumentType = dd.InstrumentType;
+                        continue;
+                    }
                     pc.TickerSymbols.Add(new Ticker
                     {
                         Symbol = dd.Symbol,

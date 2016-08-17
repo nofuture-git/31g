@@ -107,7 +107,10 @@ namespace NoFuture.Rand.Data.NfXml
             }
 
             List<Tuple<int, decimal>> salesRev = new List<Tuple<int, decimal>>();
-            foreach (var anotherName in new[] { "Revenues", "SalesRevenueNet", "SalesRevenueServicesNet", "SalesRevenueGoodsNet" })
+            foreach (
+                var anotherName in
+                    new[]
+                    {"Revenues", "RetailRevenue", "SalesRevenueNet", "SalesRevenueServicesNet", "SalesRevenueGoodsNet"})
             {
                 salesRev = GetNodeDollarYear(xml,
                     $"//{XmlNs.US_GAAP}:{anotherName}", _nsMgr);

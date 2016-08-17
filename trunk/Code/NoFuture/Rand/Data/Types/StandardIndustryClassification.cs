@@ -13,7 +13,7 @@ namespace NoFuture.Rand.Data.Types
     {
         private static List<StandardIndustryClassification> _allSics;
 
-        public override string Abbrev { get { return "SIC"; } }
+        public override string Abbrev => "SIC";
         public bool SecResults { get; set; }
 
         public override bool TryThisParseXml(XmlElement elem)
@@ -34,10 +34,7 @@ namespace NoFuture.Rand.Data.Types
 
             return true;
         }
-        public override string LocalName
-        {
-            get { return "sic-code"; }
-        }
+        public override string LocalName => "sic-code";
 
         /// <summary>
         /// Selects one <see cref="StandardIndustryClassification"/> at random
@@ -47,7 +44,7 @@ namespace NoFuture.Rand.Data.Types
         public static StandardIndustryClassification RandomSic()
         {
             var secSics = AllSicWithSecResults;
-            return secSics[(Etx.IntNumber(0, (secSics.Length - 1)))];
+            return secSics[Etx.IntNumber(0, secSics.Length - 1)];
         }
 
         /// <summary>

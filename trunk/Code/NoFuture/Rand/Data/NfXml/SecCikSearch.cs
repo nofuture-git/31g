@@ -29,7 +29,7 @@ namespace NoFuture.Rand.Data.NfXml
             if (!filingXml.HasChildNodes)
                 return null;
             var nsMgr = new XmlNamespaceManager(filingXml.NameTable);
-            nsMgr.AddNamespace("atom", Edgar.ATOM_XML_NS);
+            nsMgr.AddNamespace(ATOM, Edgar.ATOM_XML_NS);
 
             var cik = string.Empty;
             var sic = string.Empty;

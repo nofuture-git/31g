@@ -17,6 +17,7 @@ namespace NoFuture.Rand.Data.NfXml
 
         public List<dynamic> ParseContent(object content)
         {
+            const string ATOM = "atom";
             var rssContent = content as string;
 
             if (string.IsNullOrWhiteSpace(rssContent))
@@ -32,9 +33,9 @@ namespace NoFuture.Rand.Data.NfXml
                 return null;
 
             var nsMgr = new XmlNamespaceManager(rssXml.NameTable);
-            nsMgr.AddNamespace("atom", Edgar.ATOM_XML_NS);
+            nsMgr.AddNamespace(ATOM, Edgar.ATOM_XML_NS);
 
-            var entries = rssXml.SelectNodes("//atom:entry", nsMgr);
+            var entries = rssXml.SelectNodes($"//{ATOM}:entry", nsMgr);
 
             if (entries == null || entries.Count <= 0)
                 return null;
@@ -43,19 +44,19 @@ namespace NoFuture.Rand.Data.NfXml
             for (var i = 0; i < entries.Count; i++)
             {
 
-                var xpathRoot = $"//atom:entry[{i}]";
+                var xpathRoot = $"//{ATOM}:entry[{i+1}]";//xpath idx is one based.
 
                 var entry = entries.Item(i);
 
-                var titleNode = entry?.SelectSingleNode(xpathRoot + "/atom:title", nsMgr);
+                var titleNode = entry?.SelectSingleNode($"{xpathRoot}/{ATOM}:title", nsMgr);
 
-                if (titleNode == null || String.IsNullOrWhiteSpace(titleNode.InnerText))
+                if (string.IsNullOrWhiteSpace(titleNode?.InnerText))
                     continue;
 
-                var idNode = entry.SelectSingleNode(xpathRoot + "/atom:id", nsMgr);
-                var linkNode = entry.SelectSingleNode(xpathRoot + "/atom:link", nsMgr);
-                var form10KDtNode = entry.SelectSingleNode(xpathRoot + "/atom:updated", nsMgr);
-                var summaryNode = entry.SelectSingleNode(xpathRoot + "/atom:summary", nsMgr);
+                var idNode = entry.SelectSingleNode($"{xpathRoot}/{ATOM}:id", nsMgr);
+                var linkNode = entry.SelectSingleNode($"{xpathRoot}/{ATOM}:link", nsMgr);
+                var form10KDtNode = entry.SelectSingleNode($"{xpathRoot}/{ATOM}:updated", nsMgr);
+                var summaryNode = entry.SelectSingleNode($"{xpathRoot}/{ATOM}:summary", nsMgr);
 
                 var linkHref = string.Empty;
                 if (linkNode?.Attributes?["href"] != null)

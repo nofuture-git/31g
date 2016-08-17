@@ -104,16 +104,6 @@ namespace NoFuture.Tests.Rand
         }
 
         [TestMethod]
-        public void TestFormattedAccessionNumber()
-        {
-            var testSubject = new NoFuture.Rand.Gov.Sec.Form10K();
-            testSubject.AccessionNumber = "000152013815000247";
-            var testResult = testSubject.FormattedAccessionNumber;
-            System.Diagnostics.Debug.WriteLine(testResult);
-            Assert.AreEqual("0001520138-15-000247", testResult);
-        }
-
-        [TestMethod]
         public void TestGetUriFullTextSearch()
         {
             var testInput = new NoFuture.Rand.Gov.Sec.Edgar.FullTextSearch();

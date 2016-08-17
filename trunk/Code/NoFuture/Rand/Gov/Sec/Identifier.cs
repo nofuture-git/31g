@@ -49,20 +49,6 @@ namespace NoFuture.Rand.Gov.Sec
 
         public string AccessionNumber { get { return Value; } set { Value = value; } }
 
-        public string FormattedAccessionNumber
-        {
-            get
-            {
-                if (string.IsNullOrWhiteSpace(AccessionNumber))
-                    return AccessionNumber;
-                if (AccessionNumber.Length < 18)
-                    return AccessionNumber;
-                var p1 = AccessionNumber.Substring(0, 10);
-                var p2 = AccessionNumber.Substring(10, 2);
-                var p3 = AccessionNumber.Substring(12, 6);
-                return string.Join("-", new[] {p1, p2, p3});
-            }
-        }
         #endregion
 
         #region methods
