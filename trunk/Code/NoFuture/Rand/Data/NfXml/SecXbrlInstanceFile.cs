@@ -40,7 +40,6 @@ namespace NoFuture.Rand.Data.NfXml
         }
 
         private const string DF_YEAR_PARSE_REGEX = "((19|20)[0-9]{2})";
-        private const string YEAR_REGEX_APPDX = "Q[1-4]YTD([^\x5f]|$)";
 
         private XmlNamespaceManager _nsMgr;
 
@@ -114,7 +113,7 @@ namespace NoFuture.Rand.Data.NfXml
             }
 
             List<Tuple<int, decimal>> salesRev = new List<Tuple<int, decimal>>();
-            foreach (var anotherName in new[] {"SalesRevenueServicesNet", "SalesRevenueGoodsNet", "Revenues"})
+            foreach (var anotherName in new[] {"SalesRevenueServicesNet", "SalesRevenueGoodsNet", "Revenues", "SalesRevenueNet" })
             {
                 salesRev = GetNodeDollarYear(xml,
                     $"//{XmlNs.US_GAAP}:{anotherName}", _nsMgr);
@@ -215,7 +214,8 @@ namespace NoFuture.Rand.Data.NfXml
                 }
 
                 //last, just take the first one
-                var dfPick = byYearItems.FirstOrDefault();
+                var dfPick = byYearItems.FirstOrDefault(x => x.Item3.Length == contextRefLen) ??
+                             byYearItems.FirstOrDefault();
                 if (dfPick != null && year2usd.All(x => x.Item1 != dfPick.Item1))
                 {
                     year2usd.Add(new Tuple<int, decimal>(dfPick.Item1, dfPick.Item2));

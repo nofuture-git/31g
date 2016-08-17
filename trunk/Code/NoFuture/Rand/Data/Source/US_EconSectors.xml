@@ -134,7 +134,7 @@
                 <ternary-sector ID="2122" Description="Metal Ore Mining">
                   <sic-code value="1011" sec-results="False" />
                   <sic-code value="1041" sec-results="False" />
-                  <sic-code value="1044" sec-results="True" />
+                  <sic-code value="1044" sec-results="False" />
                   <sic-code value="1031" sec-results="False" />
                   <sic-code value="1021" sec-results="False" />
                   <sic-code value="1061" sec-results="False" />
