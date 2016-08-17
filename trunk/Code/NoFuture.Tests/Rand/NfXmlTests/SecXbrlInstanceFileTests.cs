@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Xml;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-
+using NoFuture.Rand.Data.NfXml;
 namespace NoFuture.Tests.Rand.NfXmlTests
 {
     [TestClass]
@@ -96,21 +96,94 @@ namespace NoFuture.Tests.Rand.NfXmlTests
         }
 
         [TestMethod]
+        public void TestGetXmlAndNsMgr()
+        {
+            var content =
+                System.IO.File.ReadAllText(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\ExampleSecXbrl.xml");
+            var testResult = SecXbrlInstanceFile.GetXmlAndNsMgr(content);
+            Assert.IsNotNull(testResult);
+            Assert.IsNotNull(testResult.Item1);
+            Assert.IsNotNull(testResult.Item2);
+            Assert.AreEqual("http://xbrl.sec.gov/dei/2014-01-31",
+                testResult.Item2.LookupNamespace(SecXbrlInstanceFile.XmlNs.DEI));
+            Assert.AreEqual("http://fasb.org/us-gaap/2015-01-31",
+                testResult.Item2.LookupNamespace(SecXbrlInstanceFile.XmlNs.US_GAAP));
+            Assert.AreEqual("http://www.xbrl.org/2003/instance",
+                testResult.Item2.LookupNamespace(SecXbrlInstanceFile.XmlNs.ROOTNS));
+
+            content =System.IO.File.ReadAllText(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\ExampleSecXbrl2.xml");
+            testResult = SecXbrlInstanceFile.GetXmlAndNsMgr(content);
+            Assert.IsNotNull(testResult);
+            Assert.IsNotNull(testResult.Item1);
+            Assert.IsNotNull(testResult.Item2);
+            Assert.AreEqual("http://xbrl.sec.gov/dei/2014-01-31",
+                testResult.Item2.LookupNamespace(SecXbrlInstanceFile.XmlNs.DEI));
+            Assert.AreEqual("http://fasb.org/us-gaap/2015-01-31",
+                testResult.Item2.LookupNamespace(SecXbrlInstanceFile.XmlNs.US_GAAP));
+            Assert.AreEqual("http://www.xbrl.org/2003/instance",
+                testResult.Item2.LookupNamespace(SecXbrlInstanceFile.XmlNs.ROOTNS));
+        }
+
+        [TestMethod]
+        public void TestTryParseDollar()
+        {
+            var xml = new System.Xml.XmlDocument();
+            xml.LoadXml(@"
+            <xbrl>
+                <SalesRevenueServicesNet contextRef=""FD2013Q4YTD"" decimals=""-3"" id=""Fact-15D9A15CC4357F62E26EAAD1EC523789"" unitRef=""usd"">1668929000</SalesRevenueServicesNet>
+            </xbrl>");
+
+            var testInput = xml.SelectSingleNode("//SalesRevenueServicesNet");
+            Assert.IsNotNull(testInput);
+            var testResultOut = 0M;
+            var testResult = SecXbrlInstanceFile.TryParseDollar(testInput, out testResultOut);
+            Assert.IsTrue(testResult);
+            Assert.AreEqual(1668929M, testResultOut);
+        }
+
+        [TestMethod]
+        public void TestTryGetYear()
+        {
+            var content =
+                System.IO.File.ReadAllText(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\ExampleSecXbrl.xml");
+            var testSubject = SecXbrlInstanceFile.GetXmlAndNsMgr(content);
+            int testResultOut;
+            var testResult = SecXbrlInstanceFile.TryGetYear("FD2013Q4YTD", testSubject.Item1, testSubject.Item2, out testResultOut);
+            Assert.IsTrue(testResult);
+            Assert.AreEqual(2013, testResultOut);
+
+            content =
+                System.IO.File.ReadAllText(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\ExampleSecXbrl2.xml");
+            testSubject = SecXbrlInstanceFile.GetXmlAndNsMgr(content);
+            testResult = SecXbrlInstanceFile.TryGetYear("FYCurrentYearM12", testSubject.Item1, testSubject.Item2, out testResultOut);
+            Assert.IsTrue(testResult);
+            Assert.AreEqual(2015, testResultOut);
+        }
+
+        [TestMethod]
         public void TestGetNodeDollarYear()
         {
-            var xml = new XmlDocument();
-            xml.Load(@"C:\Projects\31g\trunk\temp\bco-20151231.xml");
-            var nsMgr = new XmlNamespaceManager(xml.NameTable);
-            nsMgr.AddNamespace("us-gaap", "http://fasb.org/us-gaap/2015-01-31");
-            nsMgr.AddNamespace("xbrli", "http://www.xbrl.org/2003/instance");
-            var rootElem = xml.DocumentElement;
-            Assert.IsNotNull(rootElem);
-            foreach (var attr in rootElem.Attributes.Cast<XmlAttribute>())
-            {
-                 System.Diagnostics.Debug.WriteLine(string.Join(" ", attr.Name, attr.Value));
-            }
+            var content =
+                System.IO.File.ReadAllText(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\ExampleSecXbrl.xml");
+            var testSubject = SecXbrlInstanceFile.GetXmlAndNsMgr(content);
+            var testResult = SecXbrlInstanceFile.GetNodeDollarYear(testSubject.Item1, "//us-gaap:SalesRevenueServicesNet", testSubject.Item2);
+            Assert.IsNotNull(testResult);
+            Assert.IsTrue(testResult.Any());
 
+            foreach(var tr in testResult)
+                System.Diagnostics.Debug.WriteLine(tr);
+
+            content =
+                System.IO.File.ReadAllText(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\ExampleSecXbrl2.xml");
+            testSubject = SecXbrlInstanceFile.GetXmlAndNsMgr(content);
+            testResult = SecXbrlInstanceFile.GetNodeDollarYear(testSubject.Item1, "//us-gaap:Revenues", testSubject.Item2);
+            Assert.IsNotNull(testResult);
+            Assert.IsTrue(testResult.Any());
+
+            foreach (var tr in testResult)
+                System.Diagnostics.Debug.WriteLine(tr);
 
         }
     }
 }
+

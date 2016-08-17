@@ -1,12 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Xml;
-using NoFuture.Exceptions;
 using NoFuture.Rand.Data;
-using NoFuture.Rand.Data.NfHtml;
-using NoFuture.Rand.Data.NfHttp;
 using NoFuture.Rand.Data.Sp;
 using NoFuture.Rand.Data.Types;
 using NoFuture.Rand.Gov.Sec;
@@ -123,7 +119,7 @@ namespace NoFuture.Rand.Com
                 rptTenK.CIK = cik;
 
             var ticker = xbrlDyn.Ticker;
-            if (!string.IsNullOrWhiteSpace(ticker))
+            if (!string.IsNullOrWhiteSpace(ticker) && pc.TickerSymbols.All(x => x.Symbol != ticker))
                 pc.TickerSymbols.Add(new Ticker {Symbol = ticker, Country = "USA"});
 
             var legalName = xbrlDyn.Name;
@@ -252,5 +248,4 @@ namespace NoFuture.Rand.Com
         }
         #endregion
     }
-
 }
