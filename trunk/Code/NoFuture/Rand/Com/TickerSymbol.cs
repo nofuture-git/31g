@@ -41,7 +41,7 @@ namespace NoFuture.Rand.Com
 
         public override int GetHashCode()
         {
-            return (Symbol == null ? 0 : Symbol.GetHashCode()) + (Exchange == null ? 0 : Exchange.GetHashCode());
+            return (Symbol?.GetHashCode() ?? 0) + (Exchange?.GetHashCode() ?? 0);
         }
 
         public bool Equals(Ticker obj)

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using NoFuture.Rand.Data.Types;
 
 namespace NoFuture.Rand.Com
@@ -15,10 +14,11 @@ namespace NoFuture.Rand.Com
         NaicsSector Sector { get; set; }
         NaicsMarket Market { get; set; }
         int FiscalYearEndDay { get; set; }
+        void LoadXrefXmlData();
     }
 
     [Serializable]
-    public abstract class Firm : IFirm
+    public abstract class Firm : VocaBase, IFirm
     {
         #region constants
         public const int ONE_THOUSAND = 1000;
@@ -29,13 +29,10 @@ namespace NoFuture.Rand.Com
         private NaicsSector _sector;
         private NaicsMarket _market;
         private int _fiscalYearEndDay = 1;
-        protected readonly List<Tuple<KindsOfNames, string>> _otherNames =
-            new List<Tuple<KindsOfNames, string>>();
         #endregion
 
         #region properties
         public string Name { get; set; }
-        public List<Tuple<KindsOfNames, string>> Names => _otherNames;
         public Tuple<UsStreetPo, UsCityStateZip> MailingAddress { get; set; }
         public Tuple<UsStreetPo, UsCityStateZip> BusinessAddress { get; set; }
         public NorthAmericanPhone[] Phone { get; set; }

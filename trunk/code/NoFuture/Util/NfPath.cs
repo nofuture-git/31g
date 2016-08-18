@@ -6,12 +6,33 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Xml;
 using NoFuture.Shared;
 
 namespace NoFuture.Util
 {
     public class NfPath
     {
+        /// <summary>
+        /// Writes an xml document to file with formatting in UTF8 encoding
+        /// </summary>
+        /// <param name="xml"></param>
+        /// <param name="fileName"></param>
+        /// <returns></returns>
+        public static string SaveXml(XmlDocument xml, string fileName)
+        {
+            if (xml == null)
+                return null;
+            fileName = fileName ?? GetRandomFileFullName();
+            using (var xmlWriter = new XmlTextWriter(fileName, Encoding.UTF8) { Formatting = Formatting.Indented })
+            {
+                xml.WriteContentTo(xmlWriter);
+                xmlWriter.Flush();
+                xmlWriter.Close();
+            }
+            return fileName;
+        }
+
         /// <summary>
         /// Writes the <see cref="content"/> to a temp file in <see cref="TempDirectories.AppData"/>
         /// </summary>
@@ -20,10 +41,20 @@ namespace NoFuture.Util
         /// <returns></returns>
         public static string WriteToTempFile(string fileNamePrefix, string content)
         {
-            var fl = Path.Combine(TempDirectories.AppData,
-                (fileNamePrefix ?? NfTypeName.DEFAULT_NAME_PREFIX) + Path.GetRandomFileName());
+            var fl = GetRandomFileFullName(fileNamePrefix);
             File.WriteAllText(fl, content);
             return fl;
+        }
+
+        /// <summary>
+        /// Gets a full path to a random file name in directory <see cref="TempDirectories.AppData"/>
+        /// </summary>
+        /// <param name="fileNamePrefix"></param>
+        /// <returns></returns>
+        public static string GetRandomFileFullName(string fileNamePrefix = null)
+        {
+            return Path.Combine(TempDirectories.AppData,
+                (fileNamePrefix ?? NfTypeName.DEFAULT_NAME_PREFIX) + Path.GetRandomFileName());
         }
 
         /// <summary>

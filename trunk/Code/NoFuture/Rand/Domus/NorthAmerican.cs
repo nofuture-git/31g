@@ -43,9 +43,9 @@ namespace NoFuture.Rand.Domus
             _myGender = myGender;
 
             var fname = _myGender != Gender.Unknown ? NAmerUtil.GetAmericanFirstName(_birthCert.DateOfBirth, _myGender) : "Pat";
-            _otherNames.Add(new Tuple<KindsOfNames, string>(KindsOfNames.First, fname));
+            UpsertName(KindsOfNames.First, fname);
             var lname = NAmerUtil.GetAmericanLastName();
-            _otherNames.Add(new Tuple<KindsOfNames, string>(KindsOfNames.Surname, lname));
+            UpsertName(KindsOfNames.Surname, lname);
 
             MiddleName = NAmerUtil.GetAmericanFirstName(_birthCert.DateOfBirth, _myGender);
             _ssn = new SocialSecurityNumber();
@@ -112,7 +112,7 @@ namespace NoFuture.Rand.Domus
         /// </summary>
         public string MiddleName
         {
-            get { return _otherNames.First(x => x.Item1 == KindsOfNames.Middle).Item2; }
+            get { return Names.First(x => x.Item1 == KindsOfNames.Middle).Item2; }
             set { UpsertName(KindsOfNames.Middle, value); }
 
         }

@@ -27,7 +27,7 @@ namespace NoFuture.Read
             }
             if (!File.Exists(xmlDoc))
             {
-                throw new ItsDeadJim(string.Format("Bad Path or File Name at '{0}'", xmlDoc));
+                throw new ItsDeadJim($"Bad Path or File Name at '{xmlDoc}'");
             }
 
             _xmlDocument = new XmlDocument();
@@ -41,12 +41,7 @@ namespace NoFuture.Read
         /// </summary>
         public virtual void Save()
         {
-            using (var xmlWriter = new XmlTextWriter(_fileFullName, Encoding.UTF8) { Formatting = Formatting.Indented })
-            {
-                _xmlDocument.WriteContentTo(xmlWriter);
-                xmlWriter.Flush();
-                xmlWriter.Close();
-            }
+            Util.NfPath.SaveXml(_xmlDocument, _fileFullName);
         }
 
         /// <summary>
@@ -59,7 +54,7 @@ namespace NoFuture.Read
             if (string.IsNullOrWhiteSpace(xpath))
                 return null;
             var singleNode = _xmlDocument.SelectSingleNode(xpath);
-            return singleNode == null ? null : singleNode.InnerText;
+            return singleNode?.InnerText;
         }
 
         /// <summary>
@@ -86,7 +81,7 @@ namespace NoFuture.Read
         public virtual string GetAttrValue(string xpath, string attrName)
         {
             var attr = GetAttribute(xpath, attrName);
-            return attr == null ? null : attr.Value;
+            return attr?.Value;
         }
 
         /// <summary>
@@ -109,11 +104,9 @@ namespace NoFuture.Read
                 return null;
 
             var node = _xmlDocument.SelectSingleNode(xpath);
-            if (node == null)
-                return null;
 
             var elem = node as XmlElement;
-            return elem == null ? null : elem.Attributes[attrName];
+            return elem?.Attributes[attrName];
         }
         #endregion
 
@@ -126,9 +119,9 @@ namespace NoFuture.Read
             if (xpath.Contains(":")) return xpath;
 
             var xPathParts = xpath.Split('/').Where(x => !string.IsNullOrWhiteSpace(x)).ToList();
-            var newXpath = xmlNs + ":" + string.Join(string.Format("/{0}:", xmlNs), xPathParts);
+            var newXpath = xmlNs + ":" + string.Join($"/{xmlNs}:", xPathParts);
             if (xpath.StartsWith("//"))
-                xpath = string.Format("//{0}", newXpath);
+                xpath = $"//{newXpath}";
 
             return xpath;
         }

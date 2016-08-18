@@ -29,6 +29,23 @@ namespace NoFuture.Rand
     public interface IVoca
     {
         List<Tuple<KindsOfNames, string>> Names { get; }
+        void UpsertName(KindsOfNames k, string name);
+    }
+
+    public abstract class VocaBase : IVoca
+    {
+        public List<Tuple<KindsOfNames, string>> Names { get; } = new List<Tuple<KindsOfNames, string>>();
+
+        public void UpsertName(KindsOfNames k, string name)
+        {
+            var cname = Names.FirstOrDefault(x => x.Item1 == k);
+
+            if (cname != null)
+            {
+                Names.Remove(cname);
+            }
+            Names.Add(new Tuple<KindsOfNames, string>(k, name));
+        }
     }
 
     /// <summary>
@@ -216,20 +233,19 @@ namespace NoFuture.Rand
     public enum KindsOfNames : short
     {
         None = 0,
-        Current = 1,
-        Former = 2,
-        First = 4,
-        Surname = 8,
-        Nickname = 16,
-        Maiden = 32,
-        Mother = 64,
-        Father = 128,
-        Adopted = 264,
-        Biological = 512,
-        Spouse = 1024,
-        Middle = 2048,
-        Legal = 4098,
-        Step = 8196
+        Former = 1,
+        First = 2,
+        Surname = 4,
+        Abbrev = 8,
+        Maiden = 16,
+        Mother = 32,
+        Father = 64,
+        Adopted = 128,
+        Biological = 264,
+        Spouse = 512,
+        Middle = 1024,
+        Legal = 2048,
+        Step = 4098
     }
 
     [Flags]

@@ -52,6 +52,7 @@ namespace NoFuture.Rand.Gov.Fed
                 firmOut.Rssd = new ResearchStatisticsSupervisionDiscount {Value = pd.Rssd};
             if (firmOut is Bank)
             {
+                firmOut.UpsertName(KindsOfNames.Abbrev, firmOut.Name);
                 firmOut.Name = pd.BankName;
             }
             if (string.IsNullOrWhiteSpace(firmOut.FdicNumber?.ToString()))

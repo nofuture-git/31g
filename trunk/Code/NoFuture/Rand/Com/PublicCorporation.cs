@@ -237,15 +237,12 @@ namespace NoFuture.Rand.Com
 
         public override void LoadXrefXmlData()
         {
-            var xrefXml = TreeData.XRefXml;
             var firmName = Name;
             if (GetType() == typeof(Bank))
             {
-                firmName = ((Bank) this).FedRptBankName;
+                firmName = Names.FirstOrDefault(x => x.Item1 == KindsOfNames.Abbrev)?.Item2 ?? Name;
             }
-            var myAssocNodes =
-                xrefXml?.SelectNodes(
-                    $"//x-ref-group[@data-type='{GetType().FullName}']//x-ref-id[text()='{firmName}']/../../add");
+            var myAssocNodes = XRefGroup.GetXrefAddNodes(GetType(), firmName);
             if (myAssocNodes == null || myAssocNodes.Count <= 0)
                 return;
 

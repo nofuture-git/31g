@@ -11,7 +11,7 @@ using NoFuture.Util;
 namespace NoFuture.Rand.Domus
 {
     [Serializable]
-    public abstract class Person : IPerson
+    public abstract class Person : VocaBase, IPerson
     {
         #region constants
         internal const int PREG_DAYS = 280;
@@ -19,8 +19,6 @@ namespace NoFuture.Rand.Domus
         #endregion
 
         #region fields
-        protected internal readonly List<Tuple<KindsOfNames, string>> _otherNames =
-            new List<Tuple<KindsOfNames, string>>();
         protected internal IPerson _mother;
         protected internal IPerson _father;
         protected internal readonly List<Uri> _netUris = new List<Uri>();
@@ -42,18 +40,17 @@ namespace NoFuture.Rand.Domus
         public virtual DateTime? DeathDate { get; set; }
         public virtual string FirstName
         {
-            get { return _otherNames.First(x => x.Item1 == KindsOfNames.First).Item2; }
+            get { return Names.First(x => x.Item1 == KindsOfNames.First).Item2; }
             set { UpsertName(KindsOfNames.First, value); }
         }
         public virtual string LastName
         {
-            get { return _otherNames.First(x => x.Item1 == KindsOfNames.Surname).Item2; }
+            get { return Names.First(x => x.Item1 == KindsOfNames.Surname).Item2; }
             set { UpsertName(KindsOfNames.Surname, value); }
         }
         public virtual List<Uri> NetUri => _netUris;
         public Personality Personality => _personality;
         public virtual IEducation Education => GetEducationAt(null);
-        public List<Tuple<KindsOfNames, string>> Names => _otherNames;
         public ResidentAddress Address => GetAddressAt(null);
         public Spouse Spouse => GetSpouseAt(null);
         public int Age => GetAgeAt(null);
@@ -169,23 +166,6 @@ namespace NoFuture.Rand.Domus
                 return Gender.Unknown;
 
             return MyGender == Gender.Female ? Gender.Male : Gender.Female;
-        }
-
-        /// <summary>
-        /// Helper method to overwrite or add the given <see cref="k"/>
-        /// to this instance.
-        /// </summary>
-        /// <param name="k"></param>
-        /// <param name="name"></param>
-        protected internal void UpsertName(KindsOfNames k, string name)
-        {
-            var cname = _otherNames.FirstOrDefault(x => x.Item1 == k);
-
-            if (cname != null)
-            {
-                _otherNames.Remove(cname);
-            }
-            _otherNames.Add(new Tuple<KindsOfNames, string>(k, name));
         }
 
         /// <summary>

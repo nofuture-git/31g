@@ -56,7 +56,7 @@ namespace NoFuture.Rand.Com
         internal Bank(dynamic li)
         {
             Name = li.BankName;
-            FedRptBankName = li.BankName;
+            UpsertName(KindsOfNames.Abbrev, li.BankName);
             Rssd = new ResearchStatisticsSupervisionDiscount { Value = li.BankId };
             UsCityStateZip cityOut;
             if (UsCityStateZip.TryParse(li.Location, out cityOut))
@@ -82,7 +82,6 @@ namespace NoFuture.Rand.Com
                 assets.PercentForeignOwned = Math.Round((double)pfo / 100, 2);
             Assets = new Dictionary<DateTime, FinancialAssets> { { li.RptDate, assets } };
         }
-        public string FedRptBankName { get; set; }
 
         public static Bank GetRandomBank(CityArea ca)
         {
