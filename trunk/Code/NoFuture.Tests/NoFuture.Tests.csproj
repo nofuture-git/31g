@@ -48,6 +48,10 @@
       <HintPath>..\packages\Antlr4.Runtime.4.5.3\lib\net45\Antlr4.Runtime.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="HtmlAgilityPack, Version=2.0.20.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
+      <HintPath>..\packages\HtmlAgilityPack.Net45.2.0.20\lib\net45\HtmlAgilityPack.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="IKVM.AWT.WinForms, Version=8.1.5717.0, Culture=neutral, PublicKeyToken=13235d27fcbfff58, processorArchitecture=MSIL">
       <HintPath>..\packages\IKVM.8.1.5717.0\lib\IKVM.AWT.WinForms.dll</HintPath>
       <Private>True</Private>
@@ -269,6 +273,7 @@
     <Compile Include="Tokens\TestAspNetParseTree.cs" />
     <Compile Include="TestRead.cs" />
     <Compile Include="Tokens\TestErlangConfigParseTree.cs" />
+    <Compile Include="Tokens\TestEtx.cs" />
     <Compile Include="Util\Gia\FlattenTests.cs" />
     <Compile Include="Util\Gia\AssemblyAnalysisTests.cs" />
     <Compile Include="Util\Gia\AsmDiagramTests.cs" />

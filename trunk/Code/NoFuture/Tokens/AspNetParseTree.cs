@@ -240,11 +240,15 @@ namespace NoFuture.Tokens
 					textContent.Append(contentsText);
 				}
 			}
-			
-			textContent.Append("</");
-			textContent.Append(tagNameText);
-			textContent.Append(">");
-			textContent.Append("\n");
+
+            //html closing nodes with attributes throws this off
+            if (!string.Equals(tagNameText, "html", StringComparison.OrdinalIgnoreCase))
+            {
+                textContent.Append("</");
+                textContent.Append(tagNameText);
+                textContent.Append(">");
+                textContent.Append("\n");
+            }
 
             FilteredPut(ctx, textContent.ToString());
         }
@@ -297,8 +301,10 @@ namespace NoFuture.Tokens
         {
             if (string.IsNullOrWhiteSpace(context.GetText()))
                 return;
-            _results.CharData.Add(context.GetText().Trim());
-            FilteredPut(context, context.GetText().Trim());
+            var cdatatxt = context.GetText().Trim();
+            cdatatxt = cdatatxt.EscapeString(EscapeStringType.XML);
+            _results.CharData.Add(cdatatxt);
+            FilteredPut(context, cdatatxt);
         }
 
         public override void ExitHtmlDocument(HTMLParser.HtmlDocumentContext ctx)
@@ -313,7 +319,7 @@ namespace NoFuture.Tokens
 				
 				textContent.Append(markup);
 			}
-            _results.HtmlOnly = textContent.ToString();
+            _results.HtmlOnly = textContent + "</html>";
         }
 
         public override void ExitHtmlElements(HTMLParser.HtmlElementsContext ctx)
@@ -356,31 +362,6 @@ namespace NoFuture.Tokens
             walker.Walk(loader, tree);
 
             return loader.Results;
-        }
-
-        public static bool TryGetCdata(string webResponseText, Func<string, bool> filter, out string[] cdata)
-        {
-            cdata = null;
-            if (string.IsNullOrWhiteSpace(webResponseText))
-                return false;
-            var tempFile = Path.Combine(TempDirectories.AppData, NfTypeName.GetNfRandomName());
-            File.WriteAllText(tempFile, webResponseText);
-            System.Threading.Thread.Sleep(NfConfig.ThreadSleepTime);
-
-            var antlrHtml = InvokeParse(tempFile);
-
-            var innerText = antlrHtml.CharData;
-
-            if (innerText.Count <= 0)
-                return false;
-
-            cdata = antlrHtml.CharData.ToArray();
-
-            if (filter != null)
-            {
-                cdata = cdata.Where(filter).ToArray();
-            }
-            return cdata.Length > 0;
         }
     }
 }

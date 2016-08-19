@@ -17,7 +17,7 @@ namespace NoFuture.Rand.Data.NfHtml
                 return null;
 
             string[] d;
-            if (!Tokens.AspNetParseTree.TryGetCdata(webResponseBody, null, out d))
+            if (!Tokens.Etx.TryGetCdata(webResponseBody, null, out d))
             {
                 return null;
             }
