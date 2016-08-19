@@ -6,16 +6,11 @@ using NoFuture.Rand.Gov.Sec;
 
 namespace NoFuture.Rand.Data.NfXml
 {
-    public class SecCikSearch : INfDynData
+    public class SecCikSearch : NfDynDataBase
     {
-        public Uri SourceUri { get; private set; }
+        public SecCikSearch(Uri src):base(src) { }
 
-        public SecCikSearch(Uri src)
-        {
-            SourceUri = src;
-        }
-
-        public List<dynamic> ParseContent(object content)
+        public override List<dynamic> ParseContent(object content)
         {
             var xmlContent = content as string;
             if (xmlContent == null)

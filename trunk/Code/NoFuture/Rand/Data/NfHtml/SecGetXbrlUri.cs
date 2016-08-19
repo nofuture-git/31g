@@ -7,15 +7,15 @@ using NoFuture.Rand.Data.Types;
 
 namespace NoFuture.Rand.Data.NfHtml
 {
-    public class SecGetXbrlUri : INfDynData
+    /// <summary>
+    /// The uri to an individual XBRL xml file is embedded inside the
+    /// html from <see cref="Gov.Sec.SecForm.HtmlFormLink"/>
+    /// </summary>
+    public class SecGetXbrlUri : NfDynDataBase
     {
-        public SecGetXbrlUri(Uri src)
-        {
-            SourceUri = src;
-        }
+        public SecGetXbrlUri(Uri src):base(src) { }
 
-        public Uri SourceUri { get; }
-        public List<dynamic> ParseContent(object content)
+        public override List<dynamic> ParseContent(object content)
         {
             var webResponseBody = content as string;
             if (webResponseBody == null)
@@ -23,9 +23,9 @@ namespace NoFuture.Rand.Data.NfHtml
 
             var ms = new MemoryStream(Encoding.UTF8.GetBytes(webResponseBody));
             var htmlRslts = Tokens.AspNetParseTree.InvokeParse(ms);
-            if (htmlRslts?.DistinctTags == null || !htmlRslts.DistinctTags.ContainsKey("a"))
+            if (htmlRslts?.Tags2Attrs == null || !htmlRslts.Tags2Attrs.ContainsKey("a"))
                 return null;
-            var xrblUri = GetXbrlXmlPartialUri(htmlRslts.DistinctTags["a"]);
+            var xrblUri = GetXbrlXmlPartialUri(htmlRslts.Tags2Attrs["a"]);
             if (string.IsNullOrWhiteSpace(xrblUri))
                 return null;
 

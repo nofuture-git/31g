@@ -5,16 +5,11 @@ using NoFuture.Rand.Data.Types;
 
 namespace NoFuture.Rand.Data.NfHtml
 {
-    public class BloombergSymbolSearch : INfDynData
+    public class BloombergSymbolSearch : NfDynDataBase
     {
-        public BloombergSymbolSearch(Uri srcUri)
-        {
-            SourceUri = srcUri;
-        }
+        public BloombergSymbolSearch(Uri srcUri):base(srcUri) { }
 
-        public Uri SourceUri { get; }
-
-        public List<dynamic> ParseContent(object content)
+        public override List<dynamic> ParseContent(object content)
         {
             var webResponseBody = content as string;
             if (webResponseBody == null)

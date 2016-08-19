@@ -16,9 +16,9 @@ namespace NoFuture.Tests.Tokens
             var testResult = NoFuture.Tokens.AspNetParseTree.InvokeParse(testFile);
 
             Assert.IsNotNull(testResult);
-            Assert.IsNotNull(testResult.DistinctTags);
-            Assert.AreNotEqual(0,testResult.DistinctTags.Keys.Count);
-            foreach (var key in testResult.DistinctTags.Keys)
+            Assert.IsNotNull(testResult.Tags2Attrs);
+            Assert.AreNotEqual(0,testResult.Tags2Attrs.Keys.Count);
+            foreach (var key in testResult.Tags2Attrs.Keys)
             {
                 //var attrs = string.Join("|", testResult.DistinctTags[key]);
                 System.Diagnostics.Debug.WriteLine(key);

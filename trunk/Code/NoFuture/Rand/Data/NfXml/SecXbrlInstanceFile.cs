@@ -9,7 +9,7 @@ using NoFuture.Shared;
 
 namespace NoFuture.Rand.Data.NfXml
 {
-    public class SecXbrlInstanceFile : INfDynData
+    public class SecXbrlInstanceFile : NfDynDataBase
     {
         #region inner types
         public static class XmlNs
@@ -51,18 +51,11 @@ namespace NoFuture.Rand.Data.NfXml
         #endregion
 
         #region ctor
-        public SecXbrlInstanceFile(Uri src)
-        {
-            SourceUri = src;
-        }
-        #endregion
-
-        #region properties
-        public Uri SourceUri { get; }
+        public SecXbrlInstanceFile(Uri src):base(src) { }
         #endregion
 
         #region methods
-        public List<dynamic> ParseContent(object content)
+        public override List<dynamic> ParseContent(object content)
         {
             var xmlContent = content as string;
             if (string.IsNullOrWhiteSpace(xmlContent))

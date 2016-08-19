@@ -28,7 +28,7 @@ namespace NoFuture.Rand.Gov.Fed
         /// <param name="srcUri"></param>
         /// <param name="firmOut"></param>
         /// <returns></returns>
-        public static bool TryParseFfiecInstitutionProfileAspxHtml(string rawHtmlContent, Uri srcUri, ref FinancialFirm firmOut)
+        public static bool TryParseFfiecInstitutionProfileAspxHtml(string rawHtmlContent, Uri srcUri, ref Bank firmOut)
         {
             if (string.IsNullOrWhiteSpace(rawHtmlContent))
                 return false;
@@ -50,11 +50,9 @@ namespace NoFuture.Rand.Gov.Fed
             };
             if(string.IsNullOrWhiteSpace(firmOut.Rssd?.ToString()))
                 firmOut.Rssd = new ResearchStatisticsSupervisionDiscount {Value = pd.Rssd};
-            if (firmOut is Bank)
-            {
-                firmOut.UpsertName(KindsOfNames.Abbrev, firmOut.Name);
-                firmOut.Name = pd.BankName;
-            }
+
+            firmOut.UpsertName(KindsOfNames.Abbrev, firmOut.Name);
+            firmOut.Name = pd.BankName;
             if (string.IsNullOrWhiteSpace(firmOut.FdicNumber?.ToString()))
                 firmOut.FdicNumber = new FdicNum {Value = pd.FdicCert, Src = myDynData.SourceUri.ToString()};
 

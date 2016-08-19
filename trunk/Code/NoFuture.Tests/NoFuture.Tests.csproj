@@ -198,6 +198,7 @@
     <Compile Include="Rand\DomusTests\AccountTests.cs" />
     <Compile Include="Rand\NfHtmlTests\BloombergSymbolSearchTest.cs" />
     <Compile Include="Rand\NfHtmlTests\SecGetXbrlUriTests.cs" />
+    <Compile Include="Rand\NfHtmlTests\WikepediaInsComTests.cs" />
     <Compile Include="Rand\NfXmlTests\SecXbrlInstanceFileTests.cs" />
     <Compile Include="Rand\NfXmlTests\SecFullTxtSearchTests.cs" />
     <Compile Include="Rand\PecuniamTests.cs" />

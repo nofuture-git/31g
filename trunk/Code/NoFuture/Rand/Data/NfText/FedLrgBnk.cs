@@ -7,10 +7,10 @@ using NoFuture.Shared;
 
 namespace NoFuture.Rand.Data.NfText
 {
-    public class FedLrgBnk : INfDynData
+    public class FedLrgBnk : NfDynDataBase
     {
         public const string RELEASE_URL = "http://www.federalreserve.gov/releases/lbr/current/lrg_bnk_lst.txt";
-        public Uri SourceUri => new Uri(RELEASE_URL);
+        public FedLrgBnk():base(new Uri(RELEASE_URL)) { }
 
         public static Dictionary<string, TypeOfBank> TypeOfBankAbbrev3Enum = new Dictionary<string, TypeOfBank>
         {
@@ -19,7 +19,7 @@ namespace NoFuture.Rand.Data.NfText
             {"SNM", TypeOfBank.StateCharteredNonMember}
         };
 
-        public List<dynamic> ParseContent(object content)
+        public override List<dynamic> ParseContent(object content)
         {
             DateTime rptDt = DateTime.Today;
             var lrgBnkLstTxt = content as string;

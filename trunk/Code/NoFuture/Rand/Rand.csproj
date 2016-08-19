@@ -60,6 +60,7 @@
     <Compile Include="Data\NfHtml\BloombergSymbolSearch.cs" />
     <Compile Include="Data\NfHtml\FfiecInstitProfile.cs" />
     <Compile Include="Data\NfHtml\SecGetXbrlUri.cs" />
+    <Compile Include="Data\NfHtml\WikipediaInsCom.cs" />
     <Compile Include="Data\NfHttp\YhooFinSymbolLookup.cs" />
     <Compile Include="Data\NfText\FedLrgBnk.cs" />
     <Compile Include="Data\NfXml\SecCikSearch.cs" />
@@ -79,6 +80,7 @@
     <Compile Include="Data\Sp\Loan.cs" />
     <Compile Include="Data\Sp\Rent.cs" />
     <Compile Include="Data\Sp\TradeLine.cs" />
+    <Compile Include="Data\Types\NfDynDataBase.cs" />
     <Compile Include="Data\Types\StreetPo.cs" />
     <Compile Include="Data\Types\CityArea.cs" />
     <Compile Include="Data\Types\JsonTypes.cs" />
@@ -235,7 +237,6 @@
     <None Include="Data\Scripts\Get-BeaGovParameters.ps1" />
     <None Include="Data\Scripts\Get-BlsGovCodes.ps1" />
     <None Include="Data\Scripts\Get-FedLrgBnkListData.ps1" />
-    <None Include="Data\Scripts\Get-UsInsuranceCompanyNames.ps1" />
     <None Include="Gov\Bea\bea_web_service_api_user_guide.pdf" />
     <None Include="packages.config">
       <SubType>Designer</SubType>

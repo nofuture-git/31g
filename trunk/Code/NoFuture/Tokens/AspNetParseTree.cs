@@ -19,7 +19,7 @@ namespace NoFuture.Tokens
         public List<string> EmptyAttrs { get; } = new List<string>();
         public List<string> StyleBodies { get; } = new List<string>();
         public List<string> DtdNodes { get; } = new List<string>();
-        public Dictionary<string, List<string>> DistinctTags { get; } = new Dictionary<string, List<string>>();
+        public Dictionary<string, List<string>> Tags2Attrs { get; } = new Dictionary<string, List<string>>();
         public List<String> HtmlComments { get; } = new List<string>();
         public List<string> CharData { get; } = new List<string>();
     }
@@ -183,6 +183,13 @@ namespace NoFuture.Tokens
 				}
 				textContent.Append(elemText);
 			}
+            foreach (var charDataCtx in ctx.htmlChardata())
+            {
+                var cdataText = MyTreeProperty.Get(charDataCtx);
+                if (string.IsNullOrWhiteSpace(cdataText))
+                    continue;
+                textContent.Append(cdataText);
+            }
 
             FilteredPut(ctx, textContent.ToString());
         }
@@ -202,9 +209,9 @@ namespace NoFuture.Tokens
 			}
 
             //add this tag name to the list if its not already present
-            if (!_results.DistinctTags.ContainsKey(tagNameText))
+            if (!_results.Tags2Attrs.ContainsKey(tagNameText))
             {
-                _results.DistinctTags.Add(tagNameText, new List<string>());
+                _results.Tags2Attrs.Add(tagNameText, new List<string>());
             }
 
             var tagContents = new List<string> {tagNameText};
@@ -215,9 +222,9 @@ namespace NoFuture.Tokens
 					continue;
 				}
                 //add this tag's attributes if its not already present as-is
-                if (_results.DistinctTags[tagNameText].All(a => a != attrText))
+                if (_results.Tags2Attrs[tagNameText].All(a => a != attrText))
                 {
-                    _results.DistinctTags[tagNameText].Add(attrText);
+                    _results.Tags2Attrs[tagNameText].Add(attrText);
                 }
                 tagContents.Add(attrText);
 			}
@@ -252,20 +259,17 @@ namespace NoFuture.Tokens
 				return;
 			}
 			var tagNameNode = tagNameCtx.TAG_NAME();
-			if(tagNameNode == null){
-				return;
-			}
-			
-			var tagNameText = tagNameNode.GetText();
+
+            var tagNameText = tagNameNode?.GetText();
 
 			if(string.IsNullOrEmpty(tagNameText)){
 				return;
 			}
 
             //add this tag name to the list if its not already present
-            if (!_results.DistinctTags.ContainsKey(tagNameText))
+            if (!_results.Tags2Attrs.ContainsKey(tagNameText))
             {
-                _results.DistinctTags.Add(tagNameText, new List<string>());
+                _results.Tags2Attrs.Add(tagNameText, new List<string>());
             }
 
             var tagContents = new List<string> {tagNameText};
@@ -276,9 +280,9 @@ namespace NoFuture.Tokens
 					continue;
 				}
                 //add this tag's attributes if its not already present as-is
-			    if (_results.DistinctTags[tagNameText].All(a => a != attrText))
+			    if (_results.Tags2Attrs[tagNameText].All(a => a != attrText))
 			    {
-			        _results.DistinctTags[tagNameText].Add(attrText);
+			        _results.Tags2Attrs[tagNameText].Add(attrText);
 			    }
                 tagContents.Add(attrText);
 			}
@@ -291,8 +295,10 @@ namespace NoFuture.Tokens
 
         public override void ExitHtmlChardata(HTMLParser.HtmlChardataContext context)
         {
-            if(!string.IsNullOrWhiteSpace(context.GetText()))
-                _results.CharData.Add(context.GetText().Trim());
+            if (string.IsNullOrWhiteSpace(context.GetText()))
+                return;
+            _results.CharData.Add(context.GetText().Trim());
+            FilteredPut(context, context.GetText().Trim());
         }
 
         public override void ExitHtmlDocument(HTMLParser.HtmlDocumentContext ctx)

@@ -34,7 +34,7 @@ namespace NoFuture.Tests.Rand
         {
             var testContent = System.IO.File.ReadAllText(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\Rand\ffiecHtml.html");
 
-            FinancialFirm firmOut = new Bank();
+            Bank firmOut = new Bank();
             var testResult = Ffiec.TryParseFfiecInstitutionProfileAspxHtml(testContent, new Uri(Ffiec.SEARCH_URL_BASE), 
                 ref firmOut);
             System.Diagnostics.Debug.WriteLine(firmOut.RoutingNumber);

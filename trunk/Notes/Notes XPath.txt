@@ -11,7 +11,12 @@ Examples
    whose direct-childnode of ID has text of '1' then goes back up 
    to this particular CompanyAssociation node 
    and then finds descendents nodes of AgencyAgentSummary
-//c:CompanyAssociation/c:ID[text()=6]/..//c:AgencyAgentSummary   
+//c:CompanyAssociation/c:ID[text()=6]/..//c:AgencyAgentSummary
+
+ - this finds the 'div' tag which contains the given text then looks
+   for all 'ul' siblings and under each of these the 'li/a'.  This 
+   is useful for document-level lists whose only clue is relative position
+//div[contains(text(),'Main article')]/following-sibling::ul/li/a
 ----
 
 ----

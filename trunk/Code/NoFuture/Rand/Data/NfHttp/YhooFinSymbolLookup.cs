@@ -6,16 +6,11 @@ using NoFuture.Shared;
 
 namespace NoFuture.Rand.Data.NfHttp
 {
-    public class YhooFinSymbolLookup : INfDynData
+    public class YhooFinSymbolLookup : NfDynDataBase
     {
-        public YhooFinSymbolLookup(Uri srcUri)
-        {
-            SourceUri = srcUri;
-        }
+        public YhooFinSymbolLookup(Uri srcUri):base(srcUri) { }
 
-        public Uri SourceUri { get; }
-
-        public List<dynamic> ParseContent(object content)
+        public override List<dynamic> ParseContent(object content)
         {
             var headers = content as Hashtable;
             if (headers == null)

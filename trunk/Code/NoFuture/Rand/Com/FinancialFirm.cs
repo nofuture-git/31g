@@ -29,16 +29,12 @@ namespace NoFuture.Rand.Com
                     .FirstOrDefault(x => x.Value == "52");
         }
 
-        public ResearchStatisticsSupervisionDiscount Rssd { get; set; }
-        public RoutingTransitNumber RoutingNumber { get; set; }
-        public FdicNum FdicNumber { get; set; }
-        public TypeOfBank BankType { get; set; }
         public bool IsInternational { get; set; }
         public Dictionary<DateTime, FinancialAssets> Assets { get; set; }
 
         public override string ToString()
         {
-            return string.Join(" ", Name, RoutingNumber);
+            return Name;
         }
     }
 
@@ -47,6 +43,7 @@ namespace NoFuture.Rand.Com
     /// </summary>
     public class Bank : FinancialFirm
     {
+        #region ctor
         public Bank() { }
 
         /// <summary>
@@ -82,7 +79,16 @@ namespace NoFuture.Rand.Com
                 assets.PercentForeignOwned = Math.Round((double)pfo / 100, 2);
             Assets = new Dictionary<DateTime, FinancialAssets> { { li.RptDate, assets } };
         }
+        #endregion
 
+        #region properties
+        public ResearchStatisticsSupervisionDiscount Rssd { get; set; }
+        public RoutingTransitNumber RoutingNumber { get; set; }
+        public FdicNum FdicNumber { get; set; }
+        public TypeOfBank BankType { get; set; }
+        #endregion
+
+        #region methods
         public static Bank GetRandomBank(CityArea ca)
         {
             Bank bank = null;
@@ -114,6 +120,11 @@ namespace NoFuture.Rand.Com
             }
             return bank;
         }
+        public override string ToString()
+        {
+            return string.Join(" ", Name, RoutingNumber);
+        }
+        #endregion
     }
 
     public class FinancialAssets : NetConAssets

@@ -25,6 +25,9 @@ namespace NoFuture.Rand.Gov.Sec
         public override string Abbrev => secFormNumber;
         public override string Value { get; set; }
         public abstract FederalStatute Statute { get; }
+        /// <summary>
+        /// This html will contain, when available from the SEC, the uri to the XBRL xml
+        /// </summary>
         public Uri HtmlFormLink { get; set; }
         /// <summary>
         /// Returns the link to the SEC's interative version of the report.

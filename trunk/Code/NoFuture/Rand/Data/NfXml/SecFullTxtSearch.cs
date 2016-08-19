@@ -6,16 +6,11 @@ using NoFuture.Rand.Gov.Sec;
 
 namespace NoFuture.Rand.Data.NfXml
 {
-    public class SecFullTxtSearch : INfDynData
+    public class SecFullTxtSearch : NfDynDataBase
     {
-        public Uri SourceUri { get; private set; }
+        public SecFullTxtSearch(Uri src):base(src) { }
 
-        public SecFullTxtSearch(Uri src)
-        {
-            SourceUri = src;
-        }
-
-        public List<dynamic> ParseContent(object content)
+        public override List<dynamic> ParseContent(object content)
         {
             const string ATOM = "atom";
             var rssContent = content as string;

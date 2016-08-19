@@ -6,15 +6,11 @@ using NoFuture.Rand.Gov.Fed;
 
 namespace NoFuture.Rand.Data.NfHtml
 {
-    public class FfiecInstitProfile : INfDynData
+    public class FfiecInstitProfile : NfDynDataBase
     {
-        public FfiecInstitProfile(Uri srcUri)
-        {
-            SourceUri = srcUri;
-        }
+        public FfiecInstitProfile(Uri srcUri):base(srcUri) { }
 
-        public Uri SourceUri { get; }
-        public List<dynamic> ParseContent(object content)
+        public override List<dynamic> ParseContent(object content)
         {
             var webResponseBody = content as string;
             if (webResponseBody == null)
