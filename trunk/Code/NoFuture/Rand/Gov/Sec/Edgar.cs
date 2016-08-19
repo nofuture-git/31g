@@ -80,13 +80,12 @@ namespace NoFuture.Rand.Gov.Sec
             return new Uri(urlbyName.ToString());
         }
 
-        public static Uri GetUriCikSearch(CentralIndexKey cik)
+        public static Uri GetUriCikSearch(CentralIndexKey cik, string rptType = "10-K")
         {
             var urlByCik = new StringBuilder();
             
             urlByCik.Append(EDGAR_ROOT);
-            urlByCik.AppendFormat("?action=getcompany&CIK={0}&type=10-K&dateb=&owner=exclude&count=100&output=atom",
-                cik);
+            urlByCik.Append($"?action=getcompany&CIK={cik}&type={rptType}&dateb=&owner=exclude&count=100&output=atom");
             return new Uri(urlByCik.ToString());
 
         }
