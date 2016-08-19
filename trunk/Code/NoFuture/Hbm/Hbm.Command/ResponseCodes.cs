@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace NoFuture.Hbm.Command
+﻿namespace NoFuture.Hbm.Command
 {
     public class ResponseCodes
     {
