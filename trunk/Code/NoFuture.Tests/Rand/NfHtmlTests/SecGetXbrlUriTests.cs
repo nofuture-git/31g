@@ -24,13 +24,14 @@ namespace NoFuture.Tests.Rand.NfHtmlTests
                 System.IO.File.ReadAllText(
                     @"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\ExampleSecIndexHtm.html");
             var testSubject = new NoFuture.Rand.Com.PublicCorporation { CIK = new CentralIndexKey { Value = "0000768899" }, Name = "TrueBlue, Inc." };
-            testSubject.AnnualReports.Add(new Form10K {HtmlFormLink = testUri });
-            var testResult = NoFuture.Rand.Com.PublicCorporation.TryGetXbrlUri(testContent,testUri,ref testSubject);
+            testSubject.SecReports.Add(new Form10K {HtmlFormLink = testUri });
+            var testResult = NoFuture.Rand.Com.PublicCorporation.TryGetXmlLink(testContent,testUri,ref testSubject);
 
             Assert.IsTrue(testResult);
-            var testResultItem = testSubject.AnnualReports.FirstOrDefault(x => x.HtmlFormLink == testUri);
+            var testResultItem = testSubject.SecReports.FirstOrDefault(x =>x is Form10K && ((Form10K)x).HtmlFormLink == testUri);
             Assert.IsNotNull(testResultItem);
-            Assert.IsNotNull(testResultItem.XbrlXmlLink);
+            Assert.IsInstanceOfType(testResultItem, typeof(Form10K));
+            Assert.IsNotNull( ((Form10K)testResultItem).XmlLink);
 
         }
 

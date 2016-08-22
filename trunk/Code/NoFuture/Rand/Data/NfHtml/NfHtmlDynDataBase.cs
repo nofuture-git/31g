@@ -25,12 +25,12 @@ namespace NoFuture.Rand.Data.NfHtml
         public static string PreParser(string webContent)
         {
             if (string.IsNullOrWhiteSpace(webContent))
-                return null;
+                return webContent;
 
             var regex = new Regex(ATTR_ON_CLOSE_NODE_REGEX);
 
             if (!regex.IsMatch(webContent))
-                return null;
+                return webContent;
             var matches = regex.Matches(webContent);
             foreach (Match m in matches)
             {

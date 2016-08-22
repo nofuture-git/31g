@@ -13,6 +13,12 @@ namespace NoFuture.Tests.Rand
         public const string SEC_BY_CIK_XML_PATH = @"C:\Projects\31g\trunk\Code\NoFuture.Tests\Rand\SecByCIK.xml";
         public const string SEC_BY_FULLTEXT_XML_PATH = @"C:\Projects\31g\trunk\Code\NoFuture.Tests\Rand\SecByFullText.xml";
 
+        [TestInitialize]
+        public void Init()
+        {
+            BinDirectories.DataRoot = @"C:\Projects\31g\trunk\bin\Data\Source";
+        }
+
         [TestMethod]
         public void TestTryGetCorpData()
         {
@@ -67,12 +73,15 @@ namespace NoFuture.Tests.Rand
 
             foreach (var r in testResult)
             {
-                System.Diagnostics.Debug.WriteLine(string.Format("Name: {0}; CIK: {1}", r.Name, r.CIK.Value));
-                foreach (var ar in r.AnnualReports)
+                System.Diagnostics.Debug.WriteLine($"Name: {r.Name}; CIK: {r.CIK.Value}");
+                foreach (var a in r.SecReports)
                 {
-                    System.Diagnostics.Debug.WriteLine(string.Format("IsLate: {2}; Accession Number: {0}; Link: {1}",
-                        ar.AccessionNumber, ar.InteractiveFormLink, ar.IsLate));
-                    System.Diagnostics.Debug.WriteLine(string.Format("HtmlLink: {0}",ar.HtmlFormLink));
+                    var ar = a as Form10K;
+                    if (ar == null)
+                        continue;
+                    System.Diagnostics.Debug.WriteLine("IsLate: {2}; Accession Number: {0}; Link: {1}",
+                        ar.AccessionNumber, ar.InteractiveFormLink, ar.IsLate);
+                    System.Diagnostics.Debug.WriteLine($"HtmlLink: {ar.HtmlFormLink}");
 
                 }
                 System.Diagnostics.Debug.WriteLine("----------");
@@ -121,6 +130,27 @@ namespace NoFuture.Tests.Rand
             var testResult = Edgar.TryGetDayOfYearFiscalEnd("--12-25", out testResultOut);
             System.Diagnostics.Debug.WriteLine(testResultOut);
             Assert.IsTrue(testResult);
+        }
+
+        [TestMethod]
+        public void TestParseNameFromTitle()
+        {
+            var testResult = Edgar.ParseNameFromTitle("10-K - 1347 Property Insurance Holdings, Inc.");
+            System.Diagnostics.Debug.WriteLine(testResult.Item2);
+            Assert.IsInstanceOfType(testResult.Item1, typeof(Form10K));
+            Assert.AreEqual("1347 Property Insurance Holdings, Inc.", testResult.Item2);
+            testResult = Edgar.ParseNameFromTitle("13F-HR - 10-15 ASSOCIATES, INC.");
+            Assert.IsInstanceOfType(testResult.Item1, typeof(Form13Fhr));
+            Assert.AreEqual("10-15 ASSOCIATES, INC.", testResult.Item2);
+            System.Diagnostics.Debug.WriteLine(testResult.Item2);
+        }
+
+        [TestMethod]
+        public void TestSecFormFactory()
+        {
+            var testResult = NoFuture.Rand.Gov.Sec.SecForm.SecFormFactory("10-K");
+            Assert.IsNotNull(testResult);
+            Assert.IsInstanceOfType(testResult, typeof(Form10K));
         }
     }
 }

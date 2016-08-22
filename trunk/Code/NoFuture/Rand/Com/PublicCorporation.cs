@@ -16,14 +16,14 @@ namespace NoFuture.Rand.Com
     public class PublicCorporation : Firm
     {
         #region fields
-        private readonly List<Form10K> _annualReports = new List<Form10K>();
+        private readonly List<SecForm> _secReports = new List<SecForm>();
         private List<Ticker> _tickerSymbols = new List<Ticker>();
         #endregion
 
         #region properties
         public Gov.Irs.EmployerIdentificationNumber EIN { get; set; }
         public CentralIndexKey CIK { get; set; }
-        public List<Form10K> AnnualReports => _annualReports;
+        public List<SecForm> SecReports => _secReports;
         public Gov.UsState UsStateOfIncorporation { get; set; }
         public Uri[] WebDomains { get; set; }
         public List<Ticker> TickerSymbols
@@ -55,32 +55,29 @@ namespace NoFuture.Rand.Com
                 return Uri.EscapeUriString(searchCompanyName);
             }
         }
-
         #endregion
 
         #region methods
         /// <summary>
         /// Parses the web response html content from <see cref="SecForm.HtmlFormLink"/> 
-        /// locating the XBRL's Uri therein.
+        /// locating the .xml Uri therein.
         /// </summary>
         /// <param name="webResponseBody"></param>
         /// <param name="srcUri"></param>
         /// <param name="pc"></param>
         /// <returns></returns>
-        public static bool TryGetXbrlUri(object webResponseBody, Uri srcUri, ref PublicCorporation pc)
+        public static bool TryGetXmlLink(object webResponseBody, Uri srcUri, ref PublicCorporation pc)
         {
-            if (pc.AnnualReports == null)
-                return false;
-            if (pc.AnnualReports.All(x => x.HtmlFormLink != srcUri))
+            var pcAnnualRpt = pc.SecReports?.FirstOrDefault(x => x.HtmlFormLink == srcUri);
+            if (pcAnnualRpt == null)
                 return false;
             var myDynData = Etx.DynamicDataFactory(srcUri);
             var myDynDataRslt = myDynData.ParseContent(webResponseBody);
             if (myDynDataRslt == null || myDynDataRslt.Count <= 0)
                 return false;
             var xrblUriStr = myDynDataRslt.First().XrblUri;
-
-            var pcAnnualRpt = pc.AnnualReports.First(x => x.HtmlFormLink == srcUri);
-            pcAnnualRpt.XbrlXmlLink = new Uri(xrblUriStr);
+            
+            pcAnnualRpt.XmlLink = new Uri(xrblUriStr);
             return true;
         }
 
@@ -91,18 +88,18 @@ namespace NoFuture.Rand.Com
         /// <param name="srcUri"></param>
         /// <param name="pc"></param>
         /// <returns></returns>
-        public static bool TryMergeXbrl(object webResponseBody, Uri srcUri, ref PublicCorporation pc)
+        public static bool TryMergeXbrlInto10K(object webResponseBody, Uri srcUri, ref PublicCorporation pc)
         {
-            if (pc == null)
+            var rptTenK =
+                pc?.SecReports.FirstOrDefault(x => x is Form10K && ((Form10K)x).XmlLink == srcUri) as Form10K;
+            if (rptTenK == null)
                 return false;
+
             var myDynData = Etx.DynamicDataFactory(srcUri);
             var myDynDataRslt = myDynData.ParseContent(webResponseBody);
             if (myDynDataRslt == null || myDynDataRslt.Count <= 0)
                 return false;
 
-            var rptTenK = pc.AnnualReports.FirstOrDefault(x => x.XbrlXmlLink == srcUri);
-            if (rptTenK == null)
-                return false;
 
             if (rptTenK.FinancialData == null)
                 rptTenK.FinancialData = new ComFinancialData
@@ -116,7 +113,7 @@ namespace NoFuture.Rand.Com
             if (pc.CIK.Value != cik)
                 return false;
             if (rptTenK.CIK == null)
-                rptTenK.CIK = cik;
+                rptTenK.CIK = new CentralIndexKey {Value = cik};
 
             var ticker = xbrlDyn.Ticker ??
                          srcUri?.LocalPath.Split('/').LastOrDefault()?.Split('-').FirstOrDefault()?.ToUpper();

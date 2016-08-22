@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Web;
 using NoFuture.Rand.Com;
 using NoFuture.Rand.Data.Types;
+using NoFuture.Shared;
+using NoFuture.Util.Binary;
 
 namespace NoFuture.Rand.Gov.Sec
 {
@@ -23,34 +26,54 @@ namespace NoFuture.Rand.Gov.Sec
         /// <summary>
         /// see [http://www.sec.gov/edgar/searchedgar/edgarzones.htm]
         /// </summary>
-        public struct FullTextSearch
+        public class FullTextSearch
         {
             public string SicCode;
             public string CompanyName;
             public string ZipCode;
             public string StateOfIncorporation;
             public string BizAddrState;
+            public SecForm FormType;
+            public int PagingStartAt;
+            public int PagingCount;
+            public int YearStart;
+            public int YearEnd;
+
+            public FullTextSearch()
+            {
+                PagingStartAt = 1;
+                PagingCount = 80;
+                YearStart = DateTime.Today.Year - 1;
+                YearEnd = DateTime.Today.Year;
+            }
 
             public override string ToString()
             {
-                if((new []{SicCode, CompanyName, ZipCode, StateOfIncorporation, BizAddrState}).All(string.IsNullOrWhiteSpace))
+                if (
+                    new[] {SicCode, CompanyName, ZipCode, StateOfIncorporation, BizAddrState}.All(
+                        string.IsNullOrWhiteSpace))
                     return string.Empty;
+
                 var searchList = new List<string>();
                 if(!string.IsNullOrWhiteSpace(SicCode))
-                    searchList.Add(HttpUtility.UrlEncode(string.Format("ASSIGNED-SIC={0}", SicCode.Trim())));
-                searchList.Add(HttpUtility.UrlEncode("FORM-TYPE=10-K"));
+                    searchList.Add(HttpUtility.UrlEncode($"ASSIGNED-SIC={SicCode.Trim()}"));
+
+                FormType = FormType ?? new Form10K();
+                searchList.Add(HttpUtility.UrlEncode($"FORM-TYPE={FormType.Abbrev}"));
+
                 if (!string.IsNullOrWhiteSpace(CompanyName))
                 {
                     searchList.Add(CompanyName.ToCharArray().All(char.IsLetterOrDigit)
-                        ? HttpUtility.UrlEncode(string.Format("COMPANY-NAME={0}", CompanyName.Trim()))
-                        : string.Format("COMPANY-NAME=%22{0}%22", HttpUtility.UrlEncode(CompanyName.Trim(),Encoding.GetEncoding("ISO-8859-1"))));
+                        ? HttpUtility.UrlEncode($"COMPANY-NAME={CompanyName.Trim()}")
+                        : $"COMPANY-NAME=%22{HttpUtility.UrlEncode(CompanyName.Trim(), Encoding.GetEncoding("ISO-8859-1"))}%22");
                 }
+
                 if(!string.IsNullOrWhiteSpace(ZipCode))
-                    searchList.Add(HttpUtility.UrlEncode(string.Format("ZIP={0}", ZipCode.Trim())));
+                    searchList.Add(HttpUtility.UrlEncode($"ZIP={ZipCode.Trim()}"));
                 if(!string.IsNullOrWhiteSpace(StateOfIncorporation))
-                    searchList.Add(HttpUtility.UrlEncode(string.Format("STATE-OF-INCORPORATION={0}", StateOfIncorporation.Trim())));
+                    searchList.Add(HttpUtility.UrlEncode($"STATE-OF-INCORPORATION={StateOfIncorporation.Trim()}"));
                 if(!string.IsNullOrWhiteSpace(BizAddrState))
-                    searchList.Add(HttpUtility.UrlEncode(string.Format("STATE={0}", BizAddrState.Trim())));
+                    searchList.Add(HttpUtility.UrlEncode($"STATE={BizAddrState.Trim()}"));
                 return string.Join("+AND+", searchList);
             }
         }
@@ -65,7 +88,8 @@ namespace NoFuture.Rand.Gov.Sec
 
             urlFullText.Append(SEC_ROOT_URL);
             urlFullText.AppendFormat("/cgi-bin/srch-edgar?text={0}", fts);
-            urlFullText.AppendFormat("&first={0}&last={1}&output=atom", DateTime.Today.Year - 1, DateTime.Today.Year);
+            urlFullText.Append($"&start={fts.PagingStartAt}&count={fts.PagingCount}");
+            urlFullText.Append($"&first={fts.YearStart}&last={fts.YearEnd}&output=atom");
             return new Uri(urlFullText.ToString());
         }
 
@@ -112,12 +136,12 @@ namespace NoFuture.Rand.Gov.Sec
 
                 var idNode = dd.Id;
                 var linkVal = dd.Link;
-                var form10KDtNode = dd.Update;
+                var formDtNode = dd.Update;
                 var summaryNode = dd.Summary;
 
                 //this will be an id while looping
-                var corpName = ParseNameFromTitle(titleNode);
-
+                var nameData = ParseNameFromTitle(titleNode) as Tuple<SecForm, string>;
+                var corpName = nameData?.Item2;
                 var corp = corporations.Any(x => string.Equals(x.Name, corpName, StringComparison.OrdinalIgnoreCase))
                     ? corporations.First(
                         x => string.Equals(x.Name, corpName, StringComparison.OrdinalIgnoreCase))
@@ -126,30 +150,30 @@ namespace NoFuture.Rand.Gov.Sec
                 corp.Name = corpName;
 
                 //annual report
-                var form10K = new Form10K {Src = myDynData.SourceUri.ToString()};
+                var secForm = nameData?.Item1 ?? new Form10K {Src = myDynData.SourceUri.ToString()};
 
                 if (titleNode.StartsWith(SecForm.NotificationOfInabilityToTimelyFile))
-                    form10K.IsLate = true;
+                    secForm.IsLate = true;
 
                 var parseRslt = DateTime.Now;
-                if (form10KDtNode != null && !string.IsNullOrWhiteSpace(form10KDtNode) &&
-                    DateTime.TryParse(form10KDtNode.ToString(), out parseRslt))
+                if (formDtNode != null && !string.IsNullOrWhiteSpace(formDtNode) &&
+                    DateTime.TryParse(formDtNode.ToString(), out parseRslt))
                 {
-                    form10K.FilingDate = parseRslt;
+                    secForm.FilingDate = parseRslt;
                 }
 
-                form10K.HtmlFormLink = new Uri(SEC_ROOT_URL + linkVal);
+                secForm.HtmlFormLink = new Uri(SEC_ROOT_URL + linkVal);
                 //this is only presented within the html link s
                 corp.CIK = new CentralIndexKey { Value = idNode == string.Empty ? string.Empty : ParseCikFromUriPath(linkVal) };
 
                 if (summaryNode != null && !string.IsNullOrWhiteSpace(summaryNode))
                 {
                     var summaryText = summaryNode;
-                    form10K.AccessionNumber = ParseAccessionNumFromSummary(summaryText);
-                    form10K.CIK = corp.CIK;
+                    secForm.AccessionNumber = ParseAccessionNumFromSummary(summaryText);
+                    secForm.CIK = corp.CIK;
                 }
 
-                corp.AnnualReports.Add(form10K);
+                corp.SecReports.Add(secForm);
                 if (!corporations.Any(x => string.Equals(x.Name, corpName, StringComparison.OrdinalIgnoreCase)))
                     corporations.Add(corp);
             }
@@ -306,19 +330,22 @@ namespace NoFuture.Rand.Gov.Sec
 
         }
 
-        internal static string ParseNameFromTitle(string titleText)
+        internal static Tuple<SecForm, string> ParseNameFromTitle(string titleText)
         {
+            var blank = new Tuple<SecForm, string>(new Form10K(), string.Empty);
             if (string.IsNullOrWhiteSpace(titleText))
-                return string.Empty;
+                return blank;
             if (!titleText.Contains("-"))
-                return string.Empty;
-            var titleParts = titleText.Split('-');
-            if (titleParts.Length <= 2)
-                return string.Empty;
-            var name = titleParts[2];
-            if (string.IsNullOrWhiteSpace(name))
-                return string.Empty;
-            return name.Trim();
+                return blank;
+            string name;
+            if(!RegexCatalog.IsRegexMatch(titleText, @"(.*)?\x20\x2D\x20(.*)?", out name, 2))
+                return blank;
+            string formAbbrev;
+            RegexCatalog.IsRegexMatch(titleText, @"(.*)?\x20\x2D\x20(.*)?", out formAbbrev, 1);
+
+            var secForm = SecForm.SecFormFactory(formAbbrev) ?? new Form10K();
+
+            return new Tuple<SecForm, string>(secForm, (name ?? string.Empty).Trim());
         }
 
         internal static string ParseCikFromUriPath(string htmlLink)

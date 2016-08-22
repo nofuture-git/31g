@@ -36,17 +36,19 @@ namespace NoFuture.Tests.Rand
             {
                 CIK = new CentralIndexKey {Value = "0000768899"}, Name = "TrueBlue, Inc.",
             };
-            testSubject.AnnualReports.Add(new Form10K {XbrlXmlLink = testUri});
+            testSubject.SecReports.Add(new Form10K {XmlLink = testUri});
             var testContent =
                 System.IO.File.ReadAllText(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\ExampleSecXbrl.xml");
-            var testResult = NoFuture.Rand.Com.PublicCorporation.TryMergeXbrl(testContent,
+            var testResult = NoFuture.Rand.Com.PublicCorporation.TryMergeXbrlInto10K(testContent,
                 testUri,
                 ref testSubject);
 
             Assert.IsTrue(testResult);
             Assert.IsTrue(testSubject.TickerSymbols.Any(x => x.Symbol == "TBI"));
 
-            var tenK2015 = testSubject.AnnualReports.FirstOrDefault(x => x.XbrlXmlLink == testUri);
+            var tenK2015 =
+                testSubject.SecReports.FirstOrDefault(x => x is Form10K && ((Form10K) x).XmlLink == testUri) as
+                    Form10K;
             Assert.IsNotNull(tenK2015);
 
             Assert.AreEqual(42029009, tenK2015.FinancialData.NumOfShares);
