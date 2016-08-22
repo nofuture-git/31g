@@ -5,8 +5,6 @@ using NoFuture.Util;
 
 namespace NoFuture.Rand.Data.Sp
 {
-
-
     /// <summary>
     /// Represents a credit card number with algo for check digit
     /// </summary>

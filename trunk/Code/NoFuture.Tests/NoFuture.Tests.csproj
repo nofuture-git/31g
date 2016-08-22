@@ -239,6 +239,7 @@
     <Compile Include="Rand\NfHtmlTests\BloombergSymbolSearchTest.cs" />
     <Compile Include="Rand\NfHtmlTests\SecGetXbrlUriTests.cs" />
     <Compile Include="Rand\NfHtmlTests\WikepediaInsComTests.cs" />
+    <Compile Include="Rand\NfPdfTests\Sec13fCuispListTests.cs" />
     <Compile Include="Rand\NfXmlTests\SecXbrlInstanceFileTests.cs" />
     <Compile Include="Rand\NfXmlTests\SecFullTxtSearchTests.cs" />
     <Compile Include="Rand\PecuniamTests.cs" />
@@ -260,6 +261,7 @@
     <Compile Include="Rand\NAmerUtilTests.cs" />
     <Compile Include="Rand\OpesTests.cs" />
     <Compile Include="Rand\CreditCardTests.cs" />
+    <Compile Include="Rand\CusipTests.cs" />
     <Compile Include="Rand\XRefTests.cs" />
     <Compile Include="Rand\UsStateTests.cs" />
     <Compile Include="Shared\TestBindings.cs" />

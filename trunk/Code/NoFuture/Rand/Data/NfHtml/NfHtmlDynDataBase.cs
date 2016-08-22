@@ -4,6 +4,7 @@ using NoFuture.Rand.Data.Types;
 
 namespace NoFuture.Rand.Data.NfHtml
 {
+    [Serializable]
     public abstract class NfHtmlDynDataBase : NfDynDataBase
     {
         protected NfHtmlDynDataBase(Uri src) : base(src) { }

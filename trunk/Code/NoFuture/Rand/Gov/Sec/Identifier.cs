@@ -29,20 +29,6 @@ namespace NoFuture.Rand.Gov.Sec
         /// This html will contain, when available from the SEC, the uri to the XBRL xml
         /// </summary>
         public Uri HtmlFormLink { get; set; }
-        /// <summary>
-        /// Returns the link to the SEC's interative version of the report.
-        /// </summary>
-        public Uri InteractiveFormLink
-        {
-            get
-            {
-                if(!string.IsNullOrWhiteSpace(CIK?.Value) && !string.IsNullOrWhiteSpace(AccessionNumber) && XbrlXmlLink != null)
-                    return Edgar.CtorInteractiveLink(CIK.Value, AccessionNumber);
-
-                return null;
-            }
-        }
-        public Uri XbrlXmlLink { get; set; }
 
         /// <summary>
         /// Reports prefixed with <see cref="NotificationOfInabilityToTimelyFile"/> will 
@@ -72,5 +58,19 @@ namespace NoFuture.Rand.Gov.Sec
         public override FederalStatute Statute => new SecuritiesExchangeAct();
         public ComFinancialData FinancialData { get; set; }
         public SummaryOfBusiness Summary { get; set; }
+        /// <summary>
+        /// Returns the link to the SEC's interative version of the report.
+        /// </summary>
+        public Uri InteractiveFormLink
+        {
+            get
+            {
+                if (!string.IsNullOrWhiteSpace(CIK?.Value) && !string.IsNullOrWhiteSpace(AccessionNumber) && XbrlXmlLink != null)
+                    return Edgar.CtorInteractiveLink(CIK.Value, AccessionNumber);
+
+                return null;
+            }
+        }
+        public Uri XbrlXmlLink { get; set; }
     }
 }

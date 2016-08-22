@@ -44,6 +44,10 @@
       <HintPath>..\..\packages\HtmlAgilityPack.Net45.2.0.20\lib\net45\HtmlAgilityPack.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="itextsharp, Version=5.5.9.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\iTextSharp.5.5.9\lib\itextsharp.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -69,6 +73,7 @@
     <Compile Include="Data\NfHtml\SecGetXbrlUri.cs" />
     <Compile Include="Data\NfHtml\WikipediaInsCom.cs" />
     <Compile Include="Data\NfHttp\YhooFinSymbolLookup.cs" />
+    <Compile Include="Data\NfPdf\Sec13fCuispList.cs" />
     <Compile Include="Data\NfText\FedLrgBnk.cs" />
     <Compile Include="Data\NfXml\SecCikSearch.cs" />
     <Compile Include="Data\NfXml\SecFullTxtSearch.cs" />
@@ -76,6 +81,7 @@
     <Compile Include="Data\Sp\Account.cs" />
     <Compile Include="Data\Sp\CreditCard.cs" />
     <Compile Include="Data\Sp\CreditScore.cs" />
+    <Compile Include="Data\Sp\Cusip.cs" />
     <Compile Include="Data\Sp\FinancialData.cs" />
     <Compile Include="Data\Sp\ILoan.cs" />
     <Compile Include="Data\Sp\IAccount.cs" />
