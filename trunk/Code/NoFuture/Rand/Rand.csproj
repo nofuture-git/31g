@@ -65,6 +65,7 @@
     <Compile Include="Com\FinancialFirm.cs" />
     <Compile Include="Data\NfHtml\BloombergSymbolSearch.cs" />
     <Compile Include="Data\NfHtml\FfiecInstitProfile.cs" />
+    <Compile Include="Data\NfHtml\NfHtmlDynDataBase.cs" />
     <Compile Include="Data\NfHtml\SecGetXbrlUri.cs" />
     <Compile Include="Data\NfHtml\WikipediaInsCom.cs" />
     <Compile Include="Data\NfHttp\YhooFinSymbolLookup.cs" />

@@ -1,21 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using NoFuture.Rand.Data.Types;
 using NoFuture.Rand.Gov.Fed;
 
 namespace NoFuture.Rand.Data.NfHtml
 {
-    public class FfiecInstitProfile : NfDynDataBase
+    public class FfiecInstitProfile : NfHtmlDynDataBase
     {
         public FfiecInstitProfile(Uri srcUri):base(srcUri) { }
 
         public override List<dynamic> ParseContent(object content)
         {
-            var webResponseBody = content as string;
+            var webResponseBody = GetWebResponseBody(content);
             if (webResponseBody == null)
                 return null;
-
             string[] d;
             if (!Tokens.Etx.TryGetCdata(webResponseBody, null, out d))
             {

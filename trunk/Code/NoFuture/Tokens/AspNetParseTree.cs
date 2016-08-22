@@ -241,14 +241,10 @@ namespace NoFuture.Tokens
 				}
 			}
 
-            //html closing nodes with attributes throws this off
-            if (!string.Equals(tagNameText, "html", StringComparison.OrdinalIgnoreCase))
-            {
-                textContent.Append("</");
-                textContent.Append(tagNameText);
-                textContent.Append(">");
-                textContent.Append("\n");
-            }
+            textContent.Append("</");
+            textContent.Append(tagNameText);
+            textContent.Append(">");
+            textContent.Append("\n");
 
             FilteredPut(ctx, textContent.ToString());
         }

@@ -837,8 +837,20 @@ BLOOMBERG.gpt.render({""ad_description"":""blp.persfin/invest//ticker//lookup"",
 
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0, testResult.Count);
-            foreach (var t in testResult)
-                System.Console.WriteLine(Newtonsoft.Json.JsonConvert.SerializeObject(t));
+
+        }
+
+        [TestMethod]
+        public void TestPreParser()
+        {
+            var testFile = @"C:\Projects\31g\trunk\Code\NoFuture.Tests\Rand\BloombergSearchRslt_multiple.html";
+
+            var testInput = System.IO.File.ReadAllText(testFile);
+            var testResult = NoFuture.Rand.Data.NfHtml.NfHtmlDynDataBase.PreParser(testInput);
+
+            Assert.AreNotEqual(testInput.Length, testResult.Length);
+
+            System.IO.File.WriteAllText(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\Rand\BloombergSearchRslt_tr.html", testResult);
 
         }
     }

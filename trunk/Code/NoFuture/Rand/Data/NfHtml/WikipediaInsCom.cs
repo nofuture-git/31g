@@ -4,11 +4,10 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Xml;
-using NoFuture.Rand.Data.Types;
 
 namespace NoFuture.Rand.Data.NfHtml
 {
-    public class WikipediaInsCom : NfDynDataBase
+    public class WikipediaInsCom : NfHtmlDynDataBase
     {
         private static readonly string[] _skipThese = new[]
         {
@@ -20,7 +19,7 @@ namespace NoFuture.Rand.Data.NfHtml
 
         public override List<dynamic> ParseContent(object content)
         {
-            var webResponseBody = content as string;
+            var webResponseBody = GetWebResponseBody(content);
             if (webResponseBody == null)
                 return null;
 

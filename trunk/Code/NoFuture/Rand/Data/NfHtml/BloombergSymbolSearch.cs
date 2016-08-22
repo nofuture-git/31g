@@ -1,17 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using NoFuture.Rand.Data.Types;
 
 namespace NoFuture.Rand.Data.NfHtml
 {
-    public class BloombergSymbolSearch : NfDynDataBase
+    public class BloombergSymbolSearch : NfHtmlDynDataBase
     {
         public BloombergSymbolSearch(Uri srcUri):base(srcUri) { }
 
         public override List<dynamic> ParseContent(object content)
         {
-            var webResponseBody = content as string;
+            var webResponseBody = GetWebResponseBody(content);
             if (webResponseBody == null)
                 return null;
 

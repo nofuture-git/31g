@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using NoFuture.Rand.Data.Types;
 
 namespace NoFuture.Rand.Data.NfHtml
 {
@@ -11,13 +10,13 @@ namespace NoFuture.Rand.Data.NfHtml
     /// The uri to an individual XBRL xml file is embedded inside the
     /// html from <see cref="Gov.Sec.SecForm.HtmlFormLink"/>
     /// </summary>
-    public class SecGetXbrlUri : NfDynDataBase
+    public class SecGetXbrlUri : NfHtmlDynDataBase
     {
         public SecGetXbrlUri(Uri src):base(src) { }
 
         public override List<dynamic> ParseContent(object content)
         {
-            var webResponseBody = content as string;
+            var webResponseBody = GetWebResponseBody(content);
             if (webResponseBody == null)
                 return null;
 
