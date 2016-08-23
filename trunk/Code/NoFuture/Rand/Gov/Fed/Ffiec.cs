@@ -38,7 +38,7 @@ namespace NoFuture.Rand.Gov.Fed
             var myDynData = Etx.DynamicDataFactory(srcUri);
             var myDynDataRslt = myDynData.ParseContent(rawHtmlContent);
 
-            if (myDynDataRslt == null || myDynDataRslt.Count <= 0)
+            if (myDynDataRslt == null || !myDynDataRslt.Any())
                 return false;
 
             var pd = myDynDataRslt.First();
@@ -51,8 +51,7 @@ namespace NoFuture.Rand.Gov.Fed
             if(string.IsNullOrWhiteSpace(firmOut.Rssd?.ToString()))
                 firmOut.Rssd = new ResearchStatisticsSupervisionDiscount {Value = pd.Rssd};
 
-            firmOut.UpsertName(KindsOfNames.Abbrev, firmOut.Name);
-            firmOut.Name = pd.BankName;
+            firmOut.UpsertName(KindsOfNames.Legal, pd.BankName);
             if (string.IsNullOrWhiteSpace(firmOut.FdicNumber?.ToString()))
                 firmOut.FdicNumber = new FdicNum {Value = pd.FdicCert, Src = myDynData.SourceUri.ToString()};
 

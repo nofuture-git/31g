@@ -73,8 +73,9 @@ namespace NoFuture.Rand.Com
                 return false;
             var myDynData = Etx.DynamicDataFactory(srcUri);
             var myDynDataRslt = myDynData.ParseContent(webResponseBody);
-            if (myDynDataRslt == null || myDynDataRslt.Count <= 0)
+            if (myDynDataRslt == null || !myDynDataRslt.Any())
                 return false;
+
             var xrblUriStr = myDynDataRslt.First().XrblUri;
             
             pcAnnualRpt.XmlLink = new Uri(xrblUriStr);
@@ -97,9 +98,8 @@ namespace NoFuture.Rand.Com
 
             var myDynData = Etx.DynamicDataFactory(srcUri);
             var myDynDataRslt = myDynData.ParseContent(webResponseBody);
-            if (myDynDataRslt == null || myDynDataRslt.Count <= 0)
+            if (myDynDataRslt == null || !myDynDataRslt.Any())
                 return false;
-
 
             if (rptTenK.FinancialData == null)
                 rptTenK.FinancialData = new ComFinancialData
@@ -125,10 +125,7 @@ namespace NoFuture.Rand.Com
             }
 
             var legalName = xbrlDyn.Name;
-            if(!string.IsNullOrWhiteSpace(legalName) && pc.Names.All(x => x.Item1 != KindsOfNames.Legal))
-                pc.Names.Add(new Tuple<KindsOfNames, string>(KindsOfNames.Legal, legalName));
-            if (string.IsNullOrWhiteSpace(pc.Name))
-                pc.Name = legalName;
+            pc.UpsertName(KindsOfNames.Legal, legalName);
 
             rptTenK.FinancialData.NumOfShares = xbrlDyn.NumOfShares;
             if (xbrlDyn.EndOfYear > 0)

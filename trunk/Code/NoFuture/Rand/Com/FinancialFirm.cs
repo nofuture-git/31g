@@ -52,7 +52,7 @@ namespace NoFuture.Rand.Com
         /// <param name="li"></param>
         internal Bank(dynamic li)
         {
-            Name = li.BankName;
+            UpsertName(KindsOfNames.Legal, li.BankName);
             UpsertName(KindsOfNames.Abbrev, li.BankName);
             Rssd = new ResearchStatisticsSupervisionDiscount { Value = li.BankId };
             UsCityStateZip cityOut;

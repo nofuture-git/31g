@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Linq;
 using NoFuture.Rand.Data.Types;
 
 namespace NoFuture.Rand.Com
 {
     public interface IFirm : IVoca
     {
-        string Name { get; set; }
+        string Name { get;}
         Tuple<UsStreetPo, UsCityStateZip> MailingAddress { get; set; }
         Tuple<UsStreetPo, UsCityStateZip> BusinessAddress { get; set; }
         NorthAmericanPhone[] Phone { get; set; }
@@ -32,7 +33,8 @@ namespace NoFuture.Rand.Com
         #endregion
 
         #region properties
-        public string Name { get; set; }
+
+        public string Name => Names.FirstOrDefault(x => x.Item1 == KindsOfNames.Legal)?.Item2;
         public Tuple<UsStreetPo, UsCityStateZip> MailingAddress { get; set; }
         public Tuple<UsStreetPo, UsCityStateZip> BusinessAddress { get; set; }
         public NorthAmericanPhone[] Phone { get; set; }

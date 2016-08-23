@@ -24,7 +24,7 @@ namespace NoFuture.Tests.Rand.NfHtmlTests
             var testSubject = new NoFuture.Rand.Data.NfHtml.WikipediaInsCom(new Uri("http://localhost"));
             var testResults = testSubject.ParseContent(testContent);
             Assert.IsNotNull(testResults);
-            Assert.AreNotEqual(0, testResults.Count);
+            Assert.IsTrue(testResults.Any());
 
             var testResultItem = testResults.First();
             var testResultProp = testResultItem.UsInsComNames;

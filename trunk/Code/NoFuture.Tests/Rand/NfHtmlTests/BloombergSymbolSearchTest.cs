@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace NoFuture.Tests.Rand.NfHtmlTests
@@ -836,7 +837,7 @@ BLOOMBERG.gpt.render({""ad_description"":""blp.persfin/invest//ticker//lookup"",
             var testResult = testSubject.ParseContent(_testData);
 
             Assert.IsNotNull(testResult);
-            Assert.AreNotEqual(0, testResult.Count);
+            Assert.IsTrue(testResult.Any());
 
         }
 

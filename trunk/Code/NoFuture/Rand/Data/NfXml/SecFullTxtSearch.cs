@@ -10,7 +10,7 @@ namespace NoFuture.Rand.Data.NfXml
     {
         public SecFullTxtSearch(Uri src):base(src) { }
 
-        public override List<dynamic> ParseContent(object content)
+        public override IEnumerable<dynamic> ParseContent(object content)
         {
             const string ATOM = "atom";
             var rssContent = content as string;

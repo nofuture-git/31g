@@ -122,7 +122,7 @@ namespace NoFuture.Rand.Gov.Sec
             var myDynData = Etx.DynamicDataFactory(srcUri);
             var myDynDataRslts = myDynData.ParseContent(rssContent);
 
-            if (myDynDataRslts == null || myDynDataRslts.Count <= 0)
+            if (myDynDataRslts == null || !myDynDataRslts.Any())
                 return null;
 
             var corporations = new List<PublicCorporation>();
@@ -147,7 +147,7 @@ namespace NoFuture.Rand.Gov.Sec
                         x => string.Equals(x.Name, corpName, StringComparison.OrdinalIgnoreCase))
                     : new PublicCorporation();
 
-                corp.Name = corpName;
+                corp.UpsertName(KindsOfNames.Legal, corpName);
 
                 //annual report
                 var secForm = nameData?.Item1 ?? new Form10K {Src = myDynData.SourceUri.ToString()};
@@ -189,7 +189,7 @@ namespace NoFuture.Rand.Gov.Sec
             var myDynData = Etx.DynamicDataFactory(srcUri);
             var myDynDataRslt = myDynData.ParseContent(xmlContent);
 
-            if (myDynDataRslt == null || myDynDataRslt.Count <= 0)
+            if (myDynDataRslt == null || !myDynDataRslt.Any())
                 return false;
 
             var pr = myDynDataRslt.First();
@@ -197,7 +197,8 @@ namespace NoFuture.Rand.Gov.Sec
             if(publicCorporation == null)
                 publicCorporation = new PublicCorporation();
 
-            publicCorporation.Name = string.IsNullOrWhiteSpace(pr.Name) ? publicCorporation.Name : pr.Name;
+            if(!string.IsNullOrWhiteSpace(pr.Name))
+                publicCorporation.UpsertName(KindsOfNames.Legal, pr.Name);
             publicCorporation.CIK = string.IsNullOrWhiteSpace(pr.Cik)
                 ? publicCorporation.CIK
                 : new CentralIndexKey {Value = pr.Cik, Src = myDynData.SourceUri.ToString()};

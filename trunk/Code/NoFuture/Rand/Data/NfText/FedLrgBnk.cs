@@ -19,7 +19,7 @@ namespace NoFuture.Rand.Data.NfText
             {"SNM", TypeOfBank.StateCharteredNonMember}
         };
 
-        public override List<dynamic> ParseContent(object content)
+        public override IEnumerable<dynamic> ParseContent(object content)
         {
             DateTime rptDt = DateTime.Today;
             var lrgBnkLstTxt = content as string;

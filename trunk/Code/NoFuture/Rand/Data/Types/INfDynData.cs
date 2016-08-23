@@ -6,6 +6,6 @@ namespace NoFuture.Rand.Data.Types
     public interface INfDynData
     {
         Uri SourceUri { get; }
-        List<dynamic> ParseContent(object content);
+        IEnumerable<dynamic> ParseContent(object content);
     }
 }

@@ -10,7 +10,7 @@ namespace NoFuture.Rand.Data.NfHttp
     {
         public YhooFinSymbolLookup(Uri srcUri):base(srcUri) { }
 
-        public override List<dynamic> ParseContent(object content)
+        public override IEnumerable<dynamic> ParseContent(object content)
         {
             var headers = content as Hashtable;
             if (headers == null)

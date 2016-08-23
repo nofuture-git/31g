@@ -21,7 +21,7 @@ namespace NoFuture.Tests.Rand.NfXmlTests
 
             var testResult = testSubject.ParseContent(System.IO.File.ReadAllText(testXmlFile));
             Assert.IsNotNull(testResult);
-            Assert.AreNotEqual(0, testResult.Count);
+            Assert.IsTrue(testResult.Any());
             var testResultItem = testResult.First();
             var title = testResultItem.Title;
             var id = testResultItem.Id;

@@ -35,7 +35,7 @@ namespace NoFuture.Tests.Rand.NfPdfTests
             var testSubject = new NoFuture.Rand.Data.NfPdf.Sec13FCuispList(null);
             var testResult = testSubject.ParseContent(testInput);
             Assert.IsNotNull(testResult);
-            Assert.AreNotEqual(0, testResult.Count);
+            Assert.IsTrue(testResult.Any());
 
             //sample some
             var testContent = new List<string>();

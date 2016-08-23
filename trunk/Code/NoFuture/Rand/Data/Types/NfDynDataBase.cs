@@ -10,6 +10,6 @@ namespace NoFuture.Rand.Data.Types
             SourceUri = src;
         }
         public Uri SourceUri { get; }
-        public abstract List<dynamic> ParseContent(object content);
+        public abstract IEnumerable<dynamic> ParseContent(object content);
     }
 }

@@ -28,7 +28,7 @@ namespace NoFuture.Rand.Data.NfPdf
         /// Code sample from [http://stackoverflow.com/questions/12953965/how-to-convert-pdf-to-text-file-in-itextsharp]
         /// dynamic type names taken from [https://www.cusip.com/cusip/about-cgs-identifiers.htm]
         /// </remarks>
-        public override List<dynamic> ParseContent(object content)
+        public override IEnumerable<dynamic> ParseContent(object content)
         {
             var pdfBuffer = content as byte[];
 

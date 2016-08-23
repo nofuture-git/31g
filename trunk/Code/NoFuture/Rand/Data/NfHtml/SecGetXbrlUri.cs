@@ -14,7 +14,7 @@ namespace NoFuture.Rand.Data.NfHtml
     {
         public SecGetXbrlUri(Uri src):base(src) { }
 
-        public override List<dynamic> ParseContent(object content)
+        public override IEnumerable<dynamic> ParseContent(object content)
         {
             var webResponseBody = GetWebResponseBody(content);
             if (webResponseBody == null)

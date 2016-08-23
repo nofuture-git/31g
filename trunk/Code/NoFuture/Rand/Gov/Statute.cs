@@ -56,74 +56,50 @@ namespace NoFuture.Rand.Gov
     [Serializable]
     public class DoddFrankAct : FederalStatute
     {
-        public override string Name
-        {
-            get { return "Dodd-Frank Act of 2010"; }
-        }
-
-        public override int Year { get { return 2010; } }
+        public override string Name => "Dodd-Frank Act of 2010";
+        public override int Year => 2010;
     }
     [Serializable]
     public class InvestmentAdvisorsAct : FederalStatute
     {
-        public override string Name
-        {
-            get { return "Investment Advisers Act of 1940"; }
-        }
-        public override int Year { get { return 1940; } }
+        public override string Name => "Investment Advisers Act of 1940";
+        public override int Year => 1940;
     }
     [Serializable]
     public class InvestmentCompanyAct : FederalStatute
     {
-        public override string Name
-        {
-            get { return "Investment Company Act of 1940"; }
-        }
-        public override int Year { get { return 1940; } }
+        public override string Name => "Investment Company Act of 1940";
+        public override int Year => 1940;
+        public Uri FullForm => new Uri("https://www.sec.gov/about/laws/ica40.pdf");
     }
     [Serializable]
     public class JOBSAct : FederalStatute
     {
-        public override string Name
-        {
-            get { return "JOBS Act of 2012"; }
-        }
-        public override int Year { get { return 2012; } }
+        public override string Name => "JOBS Act of 2012";
+        public override int Year => 2012;
     }
     [Serializable]
     public class SarbanesOxley : FederalStatute
     {
-        public override string Name
-        {
-            get { return "Sarbanes-Oxley Act of 2002"; }
-        }
-        public override int Year { get { return 2002; } }
+        public override string Name => "Sarbanes-Oxley Act of 2002";
+        public override int Year => 2002;
     }
     [Serializable]
     public class SecuritiesAct : FederalStatute
     {
-        public override string Name
-        {
-            get { return "Securities Act of 1933"; }
-        }
-        public override int Year { get { return 1933; } }
+        public override string Name => "Securities Act of 1933";
+        public override int Year => 1933;
     }
     [Serializable]
     public class SecuritiesExchangeAct : FederalStatute
     {
-        public override string Name
-        {
-            get { return "Securities Exchange Act of 1934"; }
-        }
-        public override int Year { get { return 1934; } }
+        public override string Name => "Securities Exchange Act of 1934";
+        public override int Year => 1934;
     }
     [Serializable]
     public class TrustIndentureAct : FederalStatute
     {
-        public override string Name
-        {
-            get { return "Trust Indenture Act of 1939"; }
-        }
-        public override int Year { get { return 1939; } }
+        public override string Name => "Trust Indenture Act of 1939";
+        public override int Year => 1939;
     }
 }

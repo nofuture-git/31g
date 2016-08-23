@@ -240,6 +240,7 @@
     <Compile Include="Rand\NfHtmlTests\SecGetXbrlUriTests.cs" />
     <Compile Include="Rand\NfHtmlTests\WikepediaInsComTests.cs" />
     <Compile Include="Rand\NfPdfTests\Sec13fCuispListTests.cs" />
+    <Compile Include="Rand\NfXmlTests\SecForm13fInfoTableTests.cs" />
     <Compile Include="Rand\NfXmlTests\SecXbrlInstanceFileTests.cs" />
     <Compile Include="Rand\NfXmlTests\SecFullTxtSearchTests.cs" />
     <Compile Include="Rand\PecuniamTests.cs" />

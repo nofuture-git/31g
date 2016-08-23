@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NoFuture.Rand;
 using NoFuture.Rand.Gov.Sec;
 
 namespace NoFuture.Tests.Rand.NfHtmlTests
@@ -23,7 +24,8 @@ namespace NoFuture.Tests.Rand.NfHtmlTests
             var testContent =
                 System.IO.File.ReadAllText(
                     @"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\ExampleSecIndexHtm.html");
-            var testSubject = new NoFuture.Rand.Com.PublicCorporation { CIK = new CentralIndexKey { Value = "0000768899" }, Name = "TrueBlue, Inc." };
+            var testSubject = new NoFuture.Rand.Com.PublicCorporation { CIK = new CentralIndexKey { Value = "0000768899" }};
+            testSubject.UpsertName(KindsOfNames.Legal, "TrueBlue, Inc.");
             testSubject.SecReports.Add(new Form10K {HtmlFormLink = testUri });
             var testResult = NoFuture.Rand.Com.PublicCorporation.TryGetXmlLink(testContent,testUri,ref testSubject);
 

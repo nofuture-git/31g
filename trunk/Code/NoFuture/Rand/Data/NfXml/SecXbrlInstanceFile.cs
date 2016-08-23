@@ -55,7 +55,7 @@ namespace NoFuture.Rand.Data.NfXml
         #endregion
 
         #region methods
-        public override List<dynamic> ParseContent(object content)
+        public override IEnumerable<dynamic> ParseContent(object content)
         {
             var xmlContent = content as string;
             if (string.IsNullOrWhiteSpace(xmlContent))

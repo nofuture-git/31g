@@ -8,7 +8,7 @@ namespace NoFuture.Rand.Data.NfHtml
     {
         public BloombergSymbolSearch(Uri srcUri):base(srcUri) { }
 
-        public override List<dynamic> ParseContent(object content)
+        public override IEnumerable<dynamic> ParseContent(object content)
         {
             var webResponseBody = GetWebResponseBody(content);
             if (webResponseBody == null)
