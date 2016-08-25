@@ -109,7 +109,7 @@ namespace NoFuture.Timeline
                 return true;
             return Items.Count == 0 || Items.All(i => i.IsEmptyText());
         }//end IsEmptyItems
-        public virtual TextItem GetTextOrEmpty(int index, int emptyTextLen = Constants.Numerics.DEFAULT_WIDTH)
+        public virtual TextItem GetTextOrEmpty(int index, int emptyTextLen = Config.Numerics.DEFAULT_WIDTH)
         {
             if(Ruler == null)
                 throw new NoRuleSetException();
@@ -204,7 +204,7 @@ namespace NoFuture.Timeline
 
             foreach (var ti in tc.Items)
             {
-                ti.Text.Add(Constants.GraphChars.Bar);
+                ti.Text.Add(Config.GraphChars.Bar);
                 if (ti.Text.Count > _width)
                     _width = ti.Text.Count;
             }
@@ -254,9 +254,9 @@ namespace NoFuture.Timeline
             var strBuilder = new StringBuilder();
             if (_rulerWidth > 0)
                 strBuilder.Append(new string((char) 0x20, _rulerWidth));
-            strBuilder.Append(Constants.GraphChars.Bar);
+            strBuilder.Append(Config.GraphChars.Bar);
             strBuilder.Append(title);
-            strBuilder.Append(Constants.GraphChars.Bar);
+            strBuilder.Append(Config.GraphChars.Bar);
             return strBuilder.ToStringUnixNewline();
         }
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
@@ -267,9 +267,9 @@ namespace NoFuture.Timeline
             var strBuilder = new StringBuilder();
             if (_rulerWidth > 0)
                 strBuilder.Append(new string((char)0x20, _rulerWidth));
-            strBuilder.Append(Constants.GraphChars.BarRailIntersect);
-            strBuilder.Append(new string(Constants.GraphChars.Rail, _width - 2));
-            strBuilder.Append(Constants.GraphChars.BarRailIntersect);
+            strBuilder.Append(Config.GraphChars.BarRailIntersect);
+            strBuilder.Append(new string(Config.GraphChars.Rail, _width - 2));
+            strBuilder.Append(Config.GraphChars.BarRailIntersect);
 
             return strBuilder.ToStringUnixNewline();
 
@@ -422,7 +422,7 @@ namespace NoFuture.Timeline
         public static string ToStringUnixNewline(this StringBuilder stringBuilder)
         {
             return stringBuilder.ToString()
-                .Replace(new string(new[] {(char) 0x0D, (char) 0x0A}), new string(new[] {Constants.GraphChars.UNIX_NL_CHAR}));
+                .Replace(new string(new[] {(char) 0x0D, (char) 0x0A}), new string(new[] {Config.GraphChars.UNIX_NL_CHAR}));
         }//end ToStringUnixNewline
         public static TextCanvas ToTextCanvas(this IRuleEntry entry, Rule ruler)
         {
@@ -430,7 +430,7 @@ namespace NoFuture.Timeline
                 throw new NoRuleSetException();
 
             var entryIndex = ruler.CalcEntryIndex(entry);
-            var entryLines = entry.ToString().Split(Constants.GraphChars.UNIX_NL_CHAR);
+            var entryLines = entry.ToString().Split(Config.GraphChars.UNIX_NL_CHAR);
 
             var ruleIndex = ruler.GetIndexRule();
 
@@ -576,10 +576,10 @@ namespace NoFuture.Timeline
             Func<char[], bool> printBar =
                 c =>
                     new String(c).EndsWith(string.Format("{0}{1}",
-                        Constants.GraphChars.Rail,
-                        Constants.GraphChars.BarRailIntersect));
+                        Config.GraphChars.Rail,
+                        Config.GraphChars.BarRailIntersect));
 
-            var tc = new TextCanvas() { MaxIndex = maxIndex, Ruler = ruler, MinIndex = minIndex, Id = block1Tc.Id + Constants.GraphChars.IDSeparator + block2Tc.Id };
+            var tc = new TextCanvas() { MaxIndex = maxIndex, Ruler = ruler, MinIndex = minIndex, Id = block1Tc.Id + Config.GraphChars.IDSeparator + block2Tc.Id };
             for (var i = minIndex; i <= maxIndex; i++)
             {
                 var ti1 = block1Tc.GetTextOrEmpty(i, block1Tc.Width);
@@ -590,7 +590,7 @@ namespace NoFuture.Timeline
 
                 var ntxt = new List<char>(ti1.Text);
                 if (blockBarCount == 1 || block2Tc.MaxIndex >= i)
-                    ntxt.Add(Constants.GraphChars.Bar);
+                    ntxt.Add(Config.GraphChars.Bar);
                 else
                     ntxt.Add((char)0x20);
 
@@ -624,7 +624,7 @@ namespace NoFuture.Timeline
         #region ctors
         public Rule()
         {
-            _width = Constants.Numerics.RuleWidth;
+            _width = Config.Numerics.RuleWidth;
             _id = "Rule";
         }
         #endregion
@@ -665,7 +665,7 @@ namespace NoFuture.Timeline
 
             //default these if not assigned
             if (RuleLineSpacing == 0)
-                RuleLineSpacing = Constants.Numerics.DefaultRuleLnSp;
+                RuleLineSpacing = Config.Numerics.DefaultRuleLnSp;
             double increment = CountIncrement.Value;
 
             //construct a the ruler as a printable string 
@@ -728,7 +728,7 @@ namespace NoFuture.Timeline
             //determine edge
             var min = StartValue > EndValue ? EndValue : StartValue;
 
-            var myRuleLines = ToString().Split(Constants.GraphChars.UNIX_NL_CHAR);
+            var myRuleLines = ToString().Split(Config.GraphChars.UNIX_NL_CHAR);
             var perLineIncrement = CountIncrement.Value / RuleLineSpacing;
 
             var indexRule = new List<double>();
@@ -749,7 +749,7 @@ namespace NoFuture.Timeline
             var tc = this.ToTextCanvas(this);
             foreach (var ti in tc.Items)
             {
-                ti.Text.Add(Constants.GraphChars.Bar);
+                ti.Text.Add(Config.GraphChars.Bar);
             }
             return tc;
         }//end ToTextCanvas
@@ -898,7 +898,7 @@ namespace NoFuture.Timeline
         {
             _entries = new List<Entry>();
             _innerBlocks = new List<Block>();
-            _width = Constants.Numerics.DefaultWidth;
+            _width = Config.Numerics.DefaultWidth;
             _arrows = new List<Arrow>();
         }
         #endregion
@@ -1082,12 +1082,12 @@ namespace NoFuture.Timeline
         protected internal virtual string DrawBar()
         {
             var strBuilder = new StringBuilder();
-            strBuilder.Append(Constants.GraphChars.BarRailIntersect);
+            strBuilder.Append(Config.GraphChars.BarRailIntersect);
             for (var i = 1; i < Width - 1; i++)
             {
-                strBuilder.Append(Constants.GraphChars.Rail);
+                strBuilder.Append(Config.GraphChars.Rail);
             }
-            strBuilder.Append(Constants.GraphChars.BarRailIntersect);
+            strBuilder.Append(Config.GraphChars.BarRailIntersect);
             strBuilder.AppendLine();
 
             return strBuilder.ToStringUnixNewline();
@@ -1111,8 +1111,8 @@ namespace NoFuture.Timeline
                 var reqW = 0;
                 var contendedEntries = _entries.Where(e => e.StartValue == dsv).ToList();
                 contendedEntries.ForEach(ce => reqW += ce.Text.Length);
-                if (maxWidthReq < reqW + Constants.Numerics.MinPaddingBetweenContentions)
-                    maxWidthReq = reqW + Constants.Numerics.MinPaddingBetweenContentions;
+                if (maxWidthReq < reqW + Config.Numerics.MinPaddingBetweenContentions)
+                    maxWidthReq = reqW + Config.Numerics.MinPaddingBetweenContentions;
             }
 
             var maxInTextLen = _entries.Max(x => x.Text.Length);
@@ -1144,7 +1144,7 @@ namespace NoFuture.Timeline
         #region ctors
         public Entry()
         {
-            _width = Constants.Numerics.DefaultWidth;
+            _width = Config.Numerics.DefaultWidth;
             _id = Guid.NewGuid().ToString();
         }
         #endregion
@@ -1155,7 +1155,7 @@ namespace NoFuture.Timeline
             if (string.IsNullOrEmpty(Text))
                 return string.Empty;
             if (Width == 0)
-                _width = Constants.Numerics.DefaultWidth;
+                _width = Config.Numerics.DefaultWidth;
             if (_height == 0)
                 _height = CalcHeight();
 
@@ -1184,26 +1184,26 @@ namespace NoFuture.Timeline
                 switch (Location)
                 {
                     case PrintLocation.Center:
-                        strBuilder.AppendLine(Util.Etc.PrintInCenter(Width, Constants.GraphChars.LifeLine.ToString()));
+                        strBuilder.AppendLine(Util.Etc.PrintInCenter(Width, Config.GraphChars.LifeLine.ToString()));
                         break;
                     case PrintLocation.Left:
-                        strBuilder.AppendLine(string.Format(sfOpL(Width), Constants.GraphChars.LifeLine));
+                        strBuilder.AppendLine(string.Format(sfOpL(Width), Config.GraphChars.LifeLine));
                         break;
                     case PrintLocation.Right:
-                        strBuilder.AppendLine(string.Format(sfOpR(Width), Constants.GraphChars.LifeLine));
+                        strBuilder.AppendLine(string.Format(sfOpR(Width), Config.GraphChars.LifeLine));
                         break;
                 }
             }
             switch (Location)
             {
                 case PrintLocation.Center:
-                    strBuilder.AppendLine(Util.Etc.PrintInCenter(Width, new string(Constants.GraphChars.Rail,3)));
+                    strBuilder.AppendLine(Util.Etc.PrintInCenter(Width, new string(Config.GraphChars.Rail,3)));
                     break;
                 case PrintLocation.Left:
-                    strBuilder.AppendLine(string.Format(sfOpL(Width), new string(Constants.GraphChars.Rail, 3)));
+                    strBuilder.AppendLine(string.Format(sfOpL(Width), new string(Config.GraphChars.Rail, 3)));
                     break;
                 case PrintLocation.Right:
-                    strBuilder.AppendLine(string.Format(sfOpR(Width), new string(Constants.GraphChars.Rail, 3)));
+                    strBuilder.AppendLine(string.Format(sfOpR(Width), new string(Config.GraphChars.Rail, 3)));
                     break;
             }
             return strBuilder.ToStringUnixNewline();
@@ -1505,10 +1505,10 @@ namespace NoFuture.Timeline
         protected Block _toBlock;
         protected int _singleValue;
         private readonly string _id;
-        private string _fromLeftToRightArrowHead = Constants.GraphStrings.ArrowHeadLeft;
-        private string _arrowTail = Constants.GraphStrings.ArrowTailShaft;
-        private string _fromRightToLeftArrowHead = Constants.GraphStrings.ArrowHeadRight;
-        private char _arrowShaft = Constants.GraphChars.DirectShaft;
+        private string _fromLeftToRightArrowHead = Config.GraphStrings.ArrowHeadLeft;
+        private string _arrowTail = Config.GraphStrings.ArrowTailShaft;
+        private string _fromRightToLeftArrowHead = Config.GraphStrings.ArrowHeadRight;
+        private char _arrowShaft = Config.GraphChars.DirectShaft;
 
         #endregion
 

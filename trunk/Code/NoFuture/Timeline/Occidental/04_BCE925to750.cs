@@ -50,7 +50,7 @@
             assyria.AddEntry(811,"Adad-nirari III 811-784");
             var plate = new Plate() {Ruler = rule, Name = "Schism to Mid-Eighth Century BCE"};
             plate.AddArrow(new Arrow(egypt,judah){StartValue = 910});
-            plate.AddArrow(new Arrow(assyria,israel){StartValue = 853,Text = "Battle of Qarqar" + new string(Constants.GraphChars.DirectShaft,3)});
+            plate.AddArrow(new Arrow(assyria,israel){StartValue = 853,Text = "Battle of Qarqar" + new string(Config.GraphChars.DirectShaft,3)});
             plate.AddArrow(new Arrow(assyria,damascus){StartValue = 796, Text = "Siege of Damascus"});
             plate.AddBlock(egypt);
             plate.AddBlock(judah);

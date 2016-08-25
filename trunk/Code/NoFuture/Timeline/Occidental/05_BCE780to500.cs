@@ -95,7 +95,7 @@
             greece.AddEntry(685,668,"Second Messenian War");
 
             var rome = new Block() { Ruler = rule, Title = "Kingdom of Rome" };
-            rome.AddEntry(753, new string(Constants.GraphChars.Rail,3) + "Rome founded" + new string(Constants.GraphChars.Rail,3));
+            rome.AddEntry(753, new string(Config.GraphChars.Rail,3) + "Rome founded" + new string(Config.GraphChars.Rail,3));
             rome.AddEntry(748,"Romulus 753-716");
             rome.AddEntry(717, "Numa Pompilius 715-672");
             rome.AddEntry(674, "Tullus Hostilius 672-640");
@@ -103,7 +103,7 @@
             rome.AddEntry(616,"Lucius T. Priscus 616-578");
             rome.AddEntry(578,"Servius Tullius 578-534");
             rome.AddEntry(534, "Lucius T Superbus 534-510");
-            rome.AddEntry(509, new string(Constants.GraphChars.Rail, 3) + "Republic Founded" + new string(Constants.GraphChars.Rail, 3));
+            rome.AddEntry(509, new string(Config.GraphChars.Rail, 3) + "Republic Founded" + new string(Config.GraphChars.Rail, 3));
 
             var plate = new Plate() { Ruler = rule, Name = "Mid-Eighth to Fifth Centuries BCE" };
             plate.AddArrow(new Arrow(assyria,egypt){StartValue = 663,Text = "Thebes sacked(663)"});

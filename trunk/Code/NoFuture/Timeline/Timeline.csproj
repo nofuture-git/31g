@@ -43,7 +43,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Constants.cs" />
+    <Compile Include="Config.cs" />
     <Compile Include="Dimensions.cs" />
     <Compile Include="Drawings.cs" />
     <Compile Include="Occidental\04_BCE925to750.cs" />

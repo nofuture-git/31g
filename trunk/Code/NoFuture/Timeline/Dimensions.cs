@@ -11,7 +11,7 @@ namespace NoFuture.Timeline
             if (string.IsNullOrWhiteSpace(content))
                 throw new ArgumentNullException("content");
 
-            var lines = content.Split(Constants.GraphChars.UNIX_NL_CHAR);
+            var lines = content.Split(Config.GraphChars.UNIX_NL_CHAR);
             var line = lines.FirstOrDefault(x => x.Length > 0);
             if (line == null)
                 throw new DrawingException("a page size cannot be determined from the given content.");
