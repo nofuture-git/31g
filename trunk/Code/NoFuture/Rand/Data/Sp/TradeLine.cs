@@ -24,7 +24,7 @@ namespace NoFuture.Rand.Data.Sp
     {
         FormOfCredit FormOfCredit { get; set; }
         Pecuniam CreditLimit { get; set; }
-        Balance Balance { get; }
+        IBalance Balance { get; }
         TimeSpan DueFrequency { get; set; }
         DateTime OpennedDate { get; }
         TradelineClosure? Closure { get; set; }
@@ -52,7 +52,7 @@ namespace NoFuture.Rand.Data.Sp
         #region properties
         public FormOfCredit FormOfCredit { get; set; }
         public Pecuniam CreditLimit { get; set; }
-        public Balance Balance => _balance;
+        public IBalance Balance => _balance;
         public TimeSpan DueFrequency { get { return _dueFrequency; } set { _dueFrequency = value; }}
         public DateTime OpennedDate => _openDate;
         public TradelineClosure? Closure { get; set; }

@@ -80,6 +80,9 @@
     <Compile Include="Data\NfXml\SecFullTxtSearch.cs" />
     <Compile Include="Data\NfXml\SecXbrlInstanceFile.cs" />
     <Compile Include="Data\Sp\Account.cs" />
+    <Compile Include="Data\Sp\Balance.cs" />
+    <Compile Include="Data\Sp\TransactionHistory.cs" />
+    <Compile Include="Data\Sp\Transaction.cs" />
     <Compile Include="Data\Sp\CreditCard.cs" />
     <Compile Include="Data\Sp\CreditScore.cs" />
     <Compile Include="Data\Sp\Cusip.cs" />
@@ -88,11 +91,14 @@
     <Compile Include="Data\Sp\IAccount.cs" />
     <Compile Include="Data\Sp\ICreditCard.cs" />
     <Compile Include="Data\Sp\IAsset.cs" />
+    <Compile Include="Data\Sp\IBalance.cs" />
+    <Compile Include="Data\Sp\ITransaction.cs" />
     <Compile Include="Data\Sp\IReceivable.cs" />
     <Compile Include="Data\Sp\ITransactionable.cs" />
     <Compile Include="Data\Sp\Receivable.cs" />
     <Compile Include="Data\Sp\Loan.cs" />
     <Compile Include="Data\Sp\Rent.cs" />
+    <Compile Include="Data\Sp\Security.cs" />
     <Compile Include="Data\Sp\TradeLine.cs" />
     <Compile Include="Data\Types\NfDynDataBase.cs" />
     <Compile Include="Data\Types\StreetPo.cs" />
@@ -132,7 +138,7 @@
     <Compile Include="Gov\Fed\Ffiec.cs" />
     <Compile Include="Gov\Nhtsa\Identifier.cs" />
     <Compile Include="Gov\VitalRecord.cs" />
-    <Compile Include="Pecuniam.cs" />
+    <Compile Include="Data\Sp\Pecuniam.cs" />
     <Compile Include="Edu\AmericanHighSchool.cs" />
     <Compile Include="Edu\AmericanUniversity.cs" />
     <Compile Include="Etx.cs" />

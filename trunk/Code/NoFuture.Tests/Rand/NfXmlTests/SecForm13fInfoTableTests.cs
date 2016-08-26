@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace NoFuture.Tests.Rand.NfXmlTests
@@ -28,14 +24,18 @@ namespace NoFuture.Tests.Rand.NfXmlTests
             Assert.IsNotNull(testResult);
             Assert.IsTrue(testResult.Any());
 
-            var cD = testResult.First();
-            var dictTestResult = testResult.First() as Dictionary<string, long>;
+            var firstEntry = testResult.FirstOrDefault();
+            Assert.IsNotNull(firstEntry);
 
-            Assert.IsNotNull(dictTestResult);
+            var trCusipId = firstEntry.CusipId as string;
+            var trUsd = Convert.ToInt64(firstEntry.MarketValue);
+            var trCount = Convert.ToInt64(firstEntry.TotalNumberOf);
+            var trAbbrev = firstEntry.SecurityAbbrev as string;
 
-            foreach(var k in dictTestResult.Keys)
-                System.Diagnostics.Debug.WriteLine($"{k} {dictTestResult[k]}");
-
+            Assert.IsNotNull(trCusipId);
+            Assert.IsNotNull(trAbbrev);
+            Assert.AreNotEqual(0, trUsd);
+            Assert.AreNotEqual(0, trCount);
         }
     }
 }

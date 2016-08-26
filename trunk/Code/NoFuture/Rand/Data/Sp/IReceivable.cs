@@ -26,7 +26,7 @@ namespace NoFuture.Rand.Data.Sp
         /// </summary>
         /// <param name="dt"></param>
         /// <returns></returns>
-        Pecuniam GetCurrentBalance(DateTime dt);
+        Pecuniam GetBalance(DateTime dt);
     }
 
 }

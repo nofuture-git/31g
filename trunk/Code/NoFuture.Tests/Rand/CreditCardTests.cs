@@ -92,7 +92,7 @@ namespace NoFuture.Tests.Rand
 
             Assert.AreEqual(-17.68M, testResult.Amount);
             System.Diagnostics.Debug.WriteLine(testResult);
-            System.Diagnostics.Debug.WriteLine(testSubject.GetCurrentBalance(new DateTime(2014, 1, 28)));
+            System.Diagnostics.Debug.WriteLine(testSubject.GetBalance(new DateTime(2014, 1, 28)));
 
             testSubject.TakeCashOut(new DateTime(2014, 1, 30), new Pecuniam(61.28M));
             testSubject.TakeCashOut(new DateTime(2014, 2, 1), new Pecuniam(23.11M));

@@ -53,7 +53,7 @@ namespace NoFuture.Rand.Data.Sp
 
         #region methods
 
-        public override Pecuniam GetCurrentBalance(DateTime dt)
+        public override Pecuniam GetBalance(DateTime dt)
         {
             //when date is prior to signing 
             return dt.ComparedTo(TradeLine.OpennedDate) == ChronoCompare.Before

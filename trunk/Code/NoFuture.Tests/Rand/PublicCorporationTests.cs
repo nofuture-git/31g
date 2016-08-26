@@ -2,6 +2,7 @@
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NoFuture.Rand;
+using NoFuture.Rand.Data.Sp;
 using NoFuture.Rand.Gov.Sec;
 
 namespace NoFuture.Tests.Rand

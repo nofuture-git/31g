@@ -13,7 +13,7 @@ namespace NoFuture.Rand.Data.NfXml
         {
             var xmlContent = content as string;
             if (xmlContent == null)
-                yield return new List<dynamic>();
+                return new List<dynamic>();
             const string NS = "ns";
             const string XMLNS = "http://www.sec.gov/edgar/document/thirteenf/informationtable";
 
@@ -21,16 +21,16 @@ namespace NoFuture.Rand.Data.NfXml
             infoTable.LoadXml(xmlContent);
 
             if (!infoTable.HasChildNodes)
-                yield return new List<dynamic>();
+                return new List<dynamic>();
 
             var nsMgr = new XmlNamespaceManager(infoTable.NameTable);
             nsMgr.AddNamespace(NS, XMLNS);
 
-            var cusipIds = new Dictionary<string, long>();
+            var cusipIds = new List<dynamic>();
 
             var allCusips = infoTable.SelectNodes($"//{NS}:cusip",nsMgr);
             if (allCusips == null || allCusips.Count <= 0)
-                yield return new List<dynamic>();
+                return new List<dynamic>();
             foreach (var cusipNode in allCusips)
             {
                 var cusipElem = cusipNode as XmlElement;
@@ -44,13 +44,28 @@ namespace NoFuture.Rand.Data.NfXml
                 long usd;
                 if (!long.TryParse(usdVal, out usd))
                     continue;
-                if (cusipIds.ContainsKey(cusipId))
-                    cusipIds[cusipId] += usd;
-                else
-                    cusipIds.Add(cusipId, usd);
+                var shrsOrPrnNode = usdValNode.NextSibling;
+                if (shrsOrPrnNode == null || !shrsOrPrnNode.HasChildNodes)
+                    continue;
+                var valueNode = shrsOrPrnNode.FirstChild;
+                if (string.IsNullOrWhiteSpace(valueNode?.InnerText))
+                    continue;
+                long totalNumber;
+                if (!long.TryParse(valueNode.InnerText.Trim(), out totalNumber))
+                    continue;
+
+                var secAbbrevNode = valueNode.NextSibling;
+                var secAbbrev = secAbbrevNode?.InnerText.Trim() ?? "SH";
+                cusipIds.Add(GetSingleItemEntry(cusipId, usd, totalNumber, secAbbrev));
             }
 
-            yield return cusipIds;
+            return cusipIds;
+        }
+
+        internal static dynamic GetSingleItemEntry(string cusipId, long usd, long totalNumber, string securityType)
+        {
+            return
+                new {CusipId = cusipId, MarketValue = usd, TotalNumberOf = totalNumber, SecurityAbbrev = securityType};
         }
     }
 }

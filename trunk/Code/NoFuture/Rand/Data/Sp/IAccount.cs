@@ -2,9 +2,9 @@
 
 namespace NoFuture.Rand.Data.Sp
 {
-    public interface IAccount : IAsset
+    public interface IAccount<T> : IAsset
     {
-        Identifier Id { get; }
+        T Id { get; }
         DateTime OpenDate { get; }
         DateTime? ClosedDate { get; set; }
     }

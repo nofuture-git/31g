@@ -28,15 +28,15 @@ namespace NoFuture.Rand.Data.Sp
         #region properties
         public virtual ITradeLine TradeLine => _tl;
         public string Description { get; set; }
-        public AccountStatus CurrentStatus => GetStatus(DateTime.Now);
+        public SpStatus CurrentStatus => GetStatus(DateTime.Now);
         public PastDue? CurrentDelinquency => GetDelinquency(DateTime.Now);
-        public Pecuniam Value => GetCurrentBalance(DateTime.Now);
+        public Pecuniam CurrentMarketValue => GetBalance(DateTime.Now);
         #endregion
 
         #region methods
         public virtual PastDue? GetDelinquency(DateTime dt)
         {
-            if (GetStatus(dt) != AccountStatus.Late)
+            if (GetStatus(dt) != SpStatus.Late)
                 return null;
 
             //30 days past due when last payment was normal billing cycle plus 30 days
@@ -82,28 +82,29 @@ namespace NoFuture.Rand.Data.Sp
             return PastDue.HundredAndEighty;
         }
 
-        public virtual AccountStatus GetStatus(DateTime dt)
+        public virtual SpStatus GetStatus(DateTime? dt)
         {
-            if (TradeLine.Closure != null && DateTime.Compare(TradeLine.Closure.Value.ClosedDate, dt) < 0)
-                return AccountStatus.Closed;
+            var ddt = dt ?? DateTime.Now;
+            if (TradeLine.Closure != null && DateTime.Compare(TradeLine.Closure.Value.ClosedDate, ddt) < 0)
+                return SpStatus.Closed;
 
             if (TradeLine.Balance.IsEmpty)
-                return AccountStatus.NoHistory;
+                return SpStatus.NoHistory;
 
             //make sure something is actually owed
-            if (GetCurrentBalance(dt).Amount <= 0)
-                return AccountStatus.Current;
+            if (GetBalance(ddt).Amount <= 0)
+                return SpStatus.Current;
 
             var lastPayment =
                 TradeLine.Balance.GetDebitSum(
-                    new Tuple<DateTime, DateTime>(dt.AddDays(TradeLine.DueFrequency.TotalDays*-1), dt));
+                    new Tuple<DateTime, DateTime>(ddt.AddDays(TradeLine.DueFrequency.TotalDays*-1), ddt));
 
-            return lastPayment.Abs < GetMinPayment(dt).Abs
-                ? AccountStatus.Late
-                : AccountStatus.Current;
+            return lastPayment.Abs < GetMinPayment(ddt).Abs
+                ? SpStatus.Late
+                : SpStatus.Current;
         }
 
-        public abstract Pecuniam GetCurrentBalance(DateTime dt);
+        public abstract Pecuniam GetBalance(DateTime dt);
 
         public abstract Pecuniam GetMinPayment(DateTime dt);
 

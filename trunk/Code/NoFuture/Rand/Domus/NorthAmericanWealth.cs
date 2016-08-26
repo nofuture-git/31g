@@ -178,9 +178,9 @@ namespace NoFuture.Rand.Domus
             tlt += _homeEquity.Abs;
             tlt += _vehicleEquity.Abs;
             foreach (var da in CheckingAccounts)
-                tlt += da.Value.Abs;
+                tlt += da.CurrentMarketValue.Abs;
             foreach (var da in SavingAccounts)
-                tlt += da.Value.Abs;
+                tlt += da.CurrentMarketValue.Abs;
 
             return tlt;
         }
@@ -245,8 +245,8 @@ namespace NoFuture.Rand.Domus
                     }
                     
                     //replenish savings
-                    if (savings.Value < randSavings.ToPecuniam())
-                        DepositAccount.TransferFundsInBankAccounts(checking, savings, randSavings.ToPecuniam() - savings.Value,
+                    if (savings.CurrentMarketValue < randSavings.ToPecuniam())
+                        DepositAccount.TransferFundsInBankAccounts(checking, savings, randSavings.ToPecuniam() - savings.CurrentMarketValue,
                             loopDtSt.AddSeconds(15));
                     friCounter += 1;
                 }
@@ -272,9 +272,9 @@ namespace NoFuture.Rand.Domus
                 PayUtilityBills(loopDtSt, checking);
 
                 //if broke, move funds from savings and no spending
-                if (checking.GetStatus(loopDtSt) != AccountStatus.Current)
+                if (checking.GetStatus(loopDtSt) != SpStatus.Current)
                 {
-                    DepositAccount.TransferFundsInBankAccounts(savings, checking, randChecking.ToPecuniam() - checking.Value,
+                    DepositAccount.TransferFundsInBankAccounts(savings, checking, randChecking.ToPecuniam() - checking.CurrentMarketValue,
                         loopDtSt.AddHours(19));
                     continue;
                 }
@@ -456,12 +456,12 @@ namespace NoFuture.Rand.Domus
             for (var i = 1; i < historyTs.Days; i++)
             {
                 var loopDt = ccAcct.Cc.CardHolderSince.AddDays(i);
-                if (ccAcct.GetStatus(loopDt) == AccountStatus.Closed)
+                if (ccAcct.GetStatus(loopDt) == SpStatus.Closed)
                     break;
 
                 CreateSingleDaysPurchases(_amer.Personality, ccAcct, loopDt, (double)Paycheck.Amount * DF_DAILY_SPEND_PERCENT);
 
-                if (i%30 != 0 || ccAcct.GetCurrentBalance(loopDt).Amount < 0.0M)
+                if (i%30 != 0 || ccAcct.GetBalance(loopDt).Amount < 0.0M)
                     continue;
 
                 var minDue = ccAcct.GetMinPayment(loopDt);

@@ -1825,3 +1825,69 @@ window.top.screenX   window.top.screenLeft
 window.top.screenY   window.top.screenTop
 
 ----
+
+----
+Using Java's jrunscript
+ - http://download.java.net/jdk8/docs/technotes/guides/scripting/programmer_guide/index.html
+ - Examples, using Jrunscript.exe
+
+js> // Import Java packages and classes 
+js> // like import package.*; in Java
+js> importPackage(java.awt);
+js> // like import java.awt.Frame in Java
+js> importClass(java.awt.Frame);
+js> // Create Java Objects by "new ClassName"
+js> var frame = new java.awt.Frame("hello");
+js> // Call Java public methods from script
+js> frame.setVisible(true);
+js> // Access "JavaBean" properties like "fields"
+js> print(frame.title);
+
+js> // create JavaImporter with specific packages and classes to import
+js> var SwingGui = new JavaImporter(javax.swing,javax.swing.event,javax.swing.border,java.awt.event);
+js> // within this 'with' statement, we can access Swing and AWT
+js> with (SwingGui) {var mybutton = new JButton("test");var myframe = new JFrame("test");}
+
+js> // create Java String array of 5 elements
+js> var a = java.lang.reflect.Array.newInstance(java.lang.String, 5);
+
+js> // Accessing elements and length access is by usual Java syntax
+js> a[0] = "scripting is great!";
+js> print(a.length);
+
+var r  = new java.lang.Runnable() {
+    run: function() {
+        print("running...\n");
+    }
+};
+
+// "r" can be passed to Java methods that expect java.lang.Runnable
+var th = new java.lang.Thread(r);
+th.start();
+
+function func() {
+     print("I am func!");
+}
+
+// pass script function for java.lang.Runnable argument
+var th = new java.lang.Thread(func);
+th.start();
+
+ - Getting members of a java jar
+
+importPackage(java.util.jar);
+var myJar = new JarFile("C:\\Projects\WindowsPowerShell\temp\code\java\dist\MyJar.jar");
+var e = myJar.entries();
+while(e.hasMoreElements()) {var je = e.nextElement(); print(je.getName() + "\n");}
+
+importPackage(java.net);
+var myJar = "jar:file:C:\\Projects\WindowsPowerShell\temp\code\java\dist\MyJar.jar!/"
+var myUrlJar = new URL(myJar);
+var myUrls = java.lang.reflect.Array.newInstance(URL,1);
+myUrls[0] = myUrlJar;
+var cl = URLClassLoader.newInstance(myUrls);
+var myClass = cl.loadClass("MyJavaClass");
+var myConstructor = myClass.getConstructor();
+var myActualType = myConstructor.newInstance();
+myActualType.GetMyString();
+----

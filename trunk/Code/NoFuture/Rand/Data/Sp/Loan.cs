@@ -37,7 +37,7 @@ namespace NoFuture.Rand.Data.Sp //Sequere pecuniam
         #region methods
         public override Pecuniam GetMinPayment(DateTime dt)
         {
-            var bal = GetCurrentBalance(dt);
+            var bal = GetBalance(dt);
             if (bal < Pecuniam.Zero)
                 return Pecuniam.Zero;
 
@@ -88,7 +88,7 @@ namespace NoFuture.Rand.Data.Sp //Sequere pecuniam
         #endregion
 
         #region methods
-        public override Pecuniam GetCurrentBalance(DateTime dt)
+        public override Pecuniam GetBalance(DateTime dt)
         {
             return TradeLine.Balance.GetCurrent(dt, Rate);
         }
@@ -110,7 +110,7 @@ namespace NoFuture.Rand.Data.Sp //Sequere pecuniam
         #endregion
 
         #region methods
-        public override Pecuniam GetCurrentBalance(DateTime dt)
+        public override Pecuniam GetBalance(DateTime dt)
         {
             return TradeLine.Balance.GetCurrent(dt, Rate);
         }
@@ -167,7 +167,7 @@ namespace NoFuture.Rand.Data.Sp //Sequere pecuniam
             };
 
             var dtIncrement = firstOfYear.AddMonths(1);
-            while (loan.GetCurrentBalance(dtIncrement) > remainingCost)
+            while (loan.GetBalance(dtIncrement) > remainingCost)
             {
                 if (dtIncrement > DateTime.Now.AddYears(termInYears))
                     break;
@@ -185,7 +185,7 @@ namespace NoFuture.Rand.Data.Sp //Sequere pecuniam
             var pmtNote = Opes.GetPaymentNote(property);
 
             dtIncrement = calcPurchaseDt.AddMonths(1);
-            while (loan.GetCurrentBalance(dtIncrement) > remainingCost)
+            while (loan.GetBalance(dtIncrement) > remainingCost)
             {
                 if (dtIncrement >= DateTime.Now)
                     break;
@@ -194,9 +194,9 @@ namespace NoFuture.Rand.Data.Sp //Sequere pecuniam
                     paidOnDate = paidOnDate.AddDays(Etx.IntNumber(5, 15));
 
                 //is this the payoff
-                var isPayoff = loan.GetCurrentBalance(dtIncrement) <= minPmt;
+                var isPayoff = loan.GetBalance(dtIncrement) <= minPmt;
                 if (isPayoff)
-                    minPmt = loan.GetCurrentBalance(dtIncrement);
+                    minPmt = loan.GetBalance(dtIncrement);
 
                 loan.PutCashIn(paidOnDate, minPmt, pmtNote);
                 if (isPayoff)

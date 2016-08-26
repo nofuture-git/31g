@@ -10,7 +10,7 @@ using NoFuture.Rand.Domus;
 namespace NoFuture.Rand.Data.Sp
 {
     [Serializable]
-    public enum AccountStatus
+    public enum SpStatus
     {
         Closed,
         Current,
@@ -34,7 +34,7 @@ namespace NoFuture.Rand.Data.Sp
     /// Base type for a depository account held at a commercial bank.
     /// </summary>
     [Serializable]
-    public abstract class DepositAccount : IAccount, ITransactionable
+    public abstract class DepositAccount : IAccount<Identifier>, ITransactionable
     {
         #region ctor
         protected DepositAccount(DateTime dateOpenned)
@@ -49,7 +49,7 @@ namespace NoFuture.Rand.Data.Sp
         public Identifier Id { get; set; }
         public IBalance Balance { get; }
         public FinancialFirm Bank { get; set; }
-        public abstract Pecuniam Value { get; }
+        public abstract Pecuniam CurrentMarketValue { get; }
         public DateTime OpenDate { get; }
         public DateTime? ClosedDate { get; set; }
         #endregion
@@ -60,13 +60,14 @@ namespace NoFuture.Rand.Data.Sp
             return string.Join(" ", GetType().Name, Bank, Id);
         }
 
-        public AccountStatus GetStatus(DateTime dt)
+        public SpStatus GetStatus(DateTime? dt)
         {
             if(ClosedDate != null && ClosedDate < dt)
-                return AccountStatus.Closed;
+                return SpStatus.Closed;
+            var ddt = dt ?? DateTime.Now;
 
-            var balAtDt = Balance.GetCurrent(dt, 0F);
-            return balAtDt < Pecuniam.Zero ? AccountStatus.Overdrawn : AccountStatus.Current;
+            var balAtDt = Balance.GetCurrent(ddt, 0F);
+            return balAtDt < Pecuniam.Zero ? SpStatus.Overdrawn : SpStatus.Current;
         }
 
         public virtual void PutCashIn(DateTime dt, Pecuniam val, string note = null)
@@ -74,7 +75,7 @@ namespace NoFuture.Rand.Data.Sp
             if (val == Pecuniam.Zero)
                 return;
             var status = GetStatus(dt);
-            if (status != AccountStatus.Current)
+            if (status != SpStatus.Current)
                 return;
 
             Balance.AddTransaction(dt, val.Abs, note);
@@ -84,7 +85,7 @@ namespace NoFuture.Rand.Data.Sp
         {
             if (val == Pecuniam.Zero)
                 return true;
-            if (GetStatus(dt) != AccountStatus.Current)
+            if (GetStatus(dt) != SpStatus.Current)
                 return false;
             if (val > Balance.GetCurrent(dt, 0F))
                 return false;
@@ -130,14 +131,14 @@ namespace NoFuture.Rand.Data.Sp
         {
             if (fromAccount == null || toAccount == null || amt == null || amt == Pecuniam.Zero)
                 return;
-            if (fromAccount.GetStatus(dt) != AccountStatus.Current && toAccount.GetStatus(dt) != AccountStatus.Current)
+            if (fromAccount.GetStatus(dt) != SpStatus.Current && toAccount.GetStatus(dt) != SpStatus.Current)
                 return;
 
             if (fromAccount.OpenDate < dt || toAccount.OpenDate < dt)
                 return;
             amt = amt.Abs;
 
-            while (fromAccount.Value < amt)
+            while (fromAccount.CurrentMarketValue < amt)
             {
                 amt = amt / 2.ToPecuniam();
                 if (amt.Amount < 0.01M)
@@ -180,7 +181,7 @@ namespace NoFuture.Rand.Data.Sp
         #endregion
 
         #region properties
-        public override Pecuniam Value => Balance.GetCurrent(DateTime.Now, 0F);
+        public override Pecuniam CurrentMarketValue => Balance.GetCurrent(DateTime.Now, 0F);
         public virtual ICreditCard DebitCard { get; }
         #endregion
 
@@ -254,7 +255,7 @@ namespace NoFuture.Rand.Data.Sp
 
         #region properties
         public float InterestRate { get; set; }
-        public override Pecuniam Value => Balance.GetCurrent(DateTime.Now, InterestRate);
+        public override Pecuniam CurrentMarketValue => Balance.GetCurrent(DateTime.Now, InterestRate);
         #endregion
 
         #region methods
@@ -274,7 +275,7 @@ namespace NoFuture.Rand.Data.Sp
     /// the history of transactions and payments.
     /// </summary>
     [Serializable]
-    public class CreditCardAccount : FixedRateLoan, IAccount
+    public class CreditCardAccount : FixedRateLoan, IAccount<Identifier>
     {
         #region constants
         public const float DF_MIN_PMT_RATE = 0.0125F;
@@ -329,7 +330,7 @@ namespace NoFuture.Rand.Data.Sp
         /// <returns></returns>
         public bool IsMaxedOut(DateTime dt)
         {
-            return GetCurrentBalance(dt) >= Max;
+            return GetBalance(dt) >= Max;
         }
 
         /// <summary>
@@ -347,7 +348,7 @@ namespace NoFuture.Rand.Data.Sp
         {
             if (dt > Cc.ExpDate)
                 return false;
-            var cBal = GetCurrentBalance(dt);
+            var cBal = GetBalance(dt);
             if (cBal >= Max || cBal + val >= Max)
                 return false;
             return base.TakeCashOut(dt, val, note);

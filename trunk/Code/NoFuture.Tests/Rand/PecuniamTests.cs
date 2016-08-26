@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NoFuture.Rand;
+using NoFuture.Rand.Data.Sp;
 using NoFuture.Shared;
 using NoFuture.Util;
 
@@ -15,7 +16,7 @@ namespace NoFuture.Tests.Rand
         [TestMethod]
         public void TestSort()
         {
-            var testBalance = new NoFuture.Rand.Balance();
+            var testBalance = new Balance();
             //monthly payments
 
             var dt = DateTime.Now;
@@ -49,7 +50,7 @@ namespace NoFuture.Tests.Rand
         public void TestGetTransactionsFromUpTo()
         {
             //set some past date 
-            var testBalance = new NoFuture.Rand.Balance();
+            var testBalance = new Balance();
             var dt = DateTime.Today.ToUniversalTime();
             testBalance.AddTransaction(dt.AddDays(-360), new Pecuniam(450.0M));
             testBalance.AddTransaction(dt.AddDays(-180), new Pecuniam(450.0M));
@@ -70,7 +71,7 @@ namespace NoFuture.Tests.Rand
         public void TestTransactionsGetCurrentWithVariableRate()
         {
             //set some past date 
-            var testBalance = new NoFuture.Rand.Balance();
+            var testBalance = new Balance();
             var dt = DateTime.Now;
             testBalance.AddTransaction(dt.AddDays(-360), new Pecuniam(450.0M));
             //180 day spread
@@ -95,7 +96,7 @@ namespace NoFuture.Tests.Rand
         [TestMethod]
         public void TestTransactionsGetCurrent()
         {
-            var testBalance = new NoFuture.Rand.Balance();
+            var testBalance = new Balance();
             //monthly payments
             
             testBalance.AddTransaction(DateTime.Now.AddDays(-360), new Pecuniam(-450.0M));
@@ -134,7 +135,7 @@ namespace NoFuture.Tests.Rand
         [TestMethod]
         public void TestGetCurrentNoInterest()
         {
-            var testBalance = new NoFuture.Rand.Balance();
+            var testBalance = new Balance();
             testBalance.AddTransaction(DateTime.Now.AddDays(-15), new Pecuniam(2000.0M));
             testBalance.AddTransaction(DateTime.Now.AddDays(-12), new Pecuniam(-451.0M));
             testBalance.AddTransaction(DateTime.Now.AddDays(-12), new Pecuniam(-101.91M));
