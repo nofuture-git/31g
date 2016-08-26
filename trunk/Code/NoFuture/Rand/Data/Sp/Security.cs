@@ -3,49 +3,38 @@
 namespace NoFuture.Rand.Data.Sp
 {
     [Serializable]
-    public class Security : IAsset, INumera
+    public abstract class Security : Pecuniam, IAccount<Identifier>
     {
         #region fields
-        private readonly TransactionHistory _history = new TransactionHistory();
-        private DateTime _expiry = DateTime.MaxValue;
+        protected readonly TransactionHistory _history = new TransactionHistory();
         #endregion
 
         #region ctor
-        public Security(string cusip, Decimal amount = 1M)
+        protected Security(string cusip, DateTime? inceptionDate = null, decimal amount = 0M):base(amount)
         {
             Id = new Cusip { Value = cusip };
-            Amount = amount;
+            Inception = inceptionDate.GetValueOrDefault(DateTime.Now);
         }
 
-        public Security(Cusip id, Decimal amount = 1M)
+        protected Security(Cusip id, DateTime? inceptionDate = null, decimal amount = 0M) : base(amount)
         {
             Id = id;
-            Amount = amount;
+            Inception = inceptionDate.GetValueOrDefault(DateTime.Now);
         }
         #endregion
 
         #region properties
-        public Decimal Amount { get; }
-        public Identifier Id { get; }
-        public DateTime Expiry { get { return _expiry;} set { _expiry = value; } }
-        public Pecuniam CurrentMarketValue => GetMarketValue(null);
-        public SpStatus CurrentStatus => GetStatus(null);
+        public override Identifier Id { get; }
+        public virtual DateTime Inception { get; }
+        public virtual DateTime? Terminus { get; set; }
+        public virtual Pecuniam CurrentMarketValue => GetMarketValue(null);
+        public virtual SpStatus CurrentStatus => GetStatus(null);
         #endregion
 
-        public INumera Trade(INumera exchange, DateTime? dt, Pecuniam fee = null, string note = null)
-        {
-            
-            throw new NotImplementedException();
-        }
+        #region methods
+        public abstract SpStatus GetStatus(DateTime? dt);
 
-        public SpStatus GetStatus(DateTime? dt)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Pecuniam GetMarketValue(DateTime? dt)
-        {
-            throw new NotImplementedException();
-        }
+        public abstract Pecuniam GetMarketValue(DateTime? dt);
+        #endregion
     }
 }

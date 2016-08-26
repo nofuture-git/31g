@@ -10,7 +10,7 @@ namespace NoFuture.Rand.Data.Sp
     /// Is Latin for Money
     /// </remarks>
     [Serializable]
-    public sealed class Pecuniam : INumera
+    public class Pecuniam : INumera
     {
         #region fields
         private readonly decimal _amount;
@@ -26,27 +26,15 @@ namespace NoFuture.Rand.Data.Sp
         #endregion
 
         #region properties
-        public Decimal Amount => _amount;
-        public Identifier Id => _currency;
-        public Pecuniam Abs => new Pecuniam(Math.Abs(_amount));
-        public Pecuniam Neg => new Pecuniam(-1*Math.Abs(_amount));
+        public virtual Decimal Amount => _amount;
+        public virtual Identifier Id => _currency;
+        public virtual Pecuniam Abs => new Pecuniam(Math.Abs(_amount));
+        public virtual Pecuniam Neg => new Pecuniam(-1*Math.Abs(_amount));
         public static Pecuniam Zero => new Pecuniam(0.0M);
-        public Pecuniam Round => new Pecuniam(Math.Round(_amount, 2));
+        public virtual Pecuniam Round => new Pecuniam(Math.Round(_amount, 2));
         #endregion
 
         #region methods
-        public INumera Trade(INumera exchange, DateTime? dt, Pecuniam fee = null, string note = null)
-        {
-            var currency = exchange as Pecuniam;
-            if (currency == null)
-                return this;
-
-            if(!Id.Equals(currency.Id))
-                throw new NotImplementedException("Exchange rate logic not implemented");
-
-            return this;
-        }
-
         public override string ToString()
         {
             return $"{Amount} {Id}";

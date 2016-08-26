@@ -30,7 +30,7 @@ namespace NoFuture.Rand.Data.Sp
         protected DepositAccount(DateTime dateOpenned)
         {
             Balance = new Balance();
-            OpenDate = dateOpenned;
+            Inception = dateOpenned;
         }
         #endregion 
 
@@ -40,8 +40,8 @@ namespace NoFuture.Rand.Data.Sp
         public IBalance Balance { get; }
         public FinancialFirm Bank { get; set; }
         public abstract Pecuniam CurrentMarketValue { get; }
-        public virtual DateTime OpenDate { get; }
-        public virtual DateTime? ClosedDate { get; set; }
+        public virtual DateTime Inception { get; }
+        public virtual DateTime? Terminus { get; set; }
         #endregion
 
         #region methods
@@ -52,7 +52,7 @@ namespace NoFuture.Rand.Data.Sp
 
         public SpStatus GetStatus(DateTime? dt)
         {
-            if(ClosedDate != null && ClosedDate < dt)
+            if(Terminus != null && Terminus < dt)
                 return SpStatus.Closed;
             var ddt = dt ?? DateTime.Now;
 
@@ -60,7 +60,7 @@ namespace NoFuture.Rand.Data.Sp
             return balAtDt < Pecuniam.Zero ? SpStatus.Overdrawn : SpStatus.Current;
         }
 
-        public virtual void PutCashIn(DateTime dt, Pecuniam val, string note = null)
+        public virtual void PutCashIn(DateTime dt, Pecuniam val, Pecuniam fee = null, string note = null)
         {
             if (val == Pecuniam.Zero)
                 return;
@@ -68,10 +68,10 @@ namespace NoFuture.Rand.Data.Sp
             if (status != SpStatus.Current)
                 return;
 
-            Balance.AddTransaction(dt, val.Abs, note);
+            Balance.AddTransaction(dt, val.Abs, Pecuniam.Zero, note);
         }
 
-        public virtual bool TakeCashOut(DateTime dt, Pecuniam val, string note = null)
+        public virtual bool TakeCashOut(DateTime dt, Pecuniam val, Pecuniam fee = null, string note = null)
         {
             if (val == Pecuniam.Zero)
                 return true;
@@ -79,7 +79,7 @@ namespace NoFuture.Rand.Data.Sp
                 return false;
             if (val > Balance.GetCurrent(dt, 0F))
                 return false;
-            Balance.AddTransaction(dt, val.Neg, note);
+            Balance.AddTransaction(dt, val.Neg, Pecuniam.Zero, note);
             return true;
         }
 
@@ -97,14 +97,14 @@ namespace NoFuture.Rand.Data.Sp
             var stDt = dt.GetValueOrDefault(DateTime.Now).Date;
             var endDt = dt.GetValueOrDefault(DateTime.Now).Date.AddDays(1).AddMilliseconds(-1);
 
-            if (ClosedDate != null && stDt > ClosedDate.Value.Date)
+            if (Terminus != null && stDt > Terminus.Value.Date)
                 return;
 
             var trans = receivables.SelectMany(x => x.TradeLine.Balance.GetTransactionsBetween(stDt, endDt, true));
 
             foreach (var t in trans)
             {
-                TakeCashOut(t.AtTime.AddMilliseconds(1), (Pecuniam)t.Cash, t.Description);
+                TakeCashOut(t.AtTime.AddMilliseconds(1), (Pecuniam)t.Cash, Pecuniam.Zero, t.Description);
             }
         }
 
@@ -124,7 +124,7 @@ namespace NoFuture.Rand.Data.Sp
             if (fromAccount.GetStatus(dt) != SpStatus.Current && toAccount.GetStatus(dt) != SpStatus.Current)
                 return;
 
-            if (fromAccount.OpenDate < dt || toAccount.OpenDate < dt)
+            if (fromAccount.Inception < dt || toAccount.Inception < dt)
                 return;
             amt = amt.Abs;
 
@@ -134,8 +134,8 @@ namespace NoFuture.Rand.Data.Sp
                 if (amt.Amount < 0.01M)
                     break;
             }
-            fromAccount.TakeCashOut(dt, amt, Opes.GetPaymentNote(fromAccount.Id));
-            toAccount.PutCashIn(dt.AddMilliseconds(100), amt, Opes.GetPaymentNote(toAccount.Id));
+            fromAccount.TakeCashOut(dt, amt, Pecuniam.Zero, Opes.GetPaymentNote(fromAccount.Id));
+            toAccount.PutCashIn(dt.AddMilliseconds(100), amt, Pecuniam.Zero, Opes.GetPaymentNote(toAccount.Id));
         }
 
         #endregion
@@ -286,9 +286,9 @@ namespace NoFuture.Rand.Data.Sp
         public Pecuniam Max => TradeLine.CreditLimit;
         public ICreditCard Cc { get; }
         public Identifier Id => Cc.Number;
-        public DateTime OpenDate => TradeLine.OpennedDate;
+        public DateTime Inception => TradeLine.OpennedDate;
 
-        public DateTime? ClosedDate
+        public DateTime? Terminus
         {
             get { return TradeLine.Closure?.ClosedDate; }
             set
@@ -328,20 +328,21 @@ namespace NoFuture.Rand.Data.Sp
         /// </summary>
         /// <param name="dt"></param>
         /// <param name="val"></param>
+        /// <param name="fee"></param>
         /// <param name="note"></param>
         /// <returns>
         /// True when the card is not expired and
         /// the purchase amount <see cref="val"/>
         /// will not cause the total balance to exceed <see cref="Max"/>.
         /// </returns>
-        public override bool TakeCashOut(DateTime dt, Pecuniam val, string note = null)
+        public override bool TakeCashOut(DateTime dt, Pecuniam val, Pecuniam fee = null, string note = null)
         {
             if (dt > Cc.ExpDate)
                 return false;
             var cBal = GetBalance(dt);
             if (cBal >= Max || cBal + val >= Max)
                 return false;
-            return base.TakeCashOut(dt, val, note);
+            return base.TakeCashOut(dt, val, fee, note);
         }
 
         /// <summary>

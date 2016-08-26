@@ -74,7 +74,7 @@ namespace NoFuture.Rand.Data.Sp
 
         public void PayRent(DateTime dt, Pecuniam amt, string note = "")
         {
-            TradeLine.Balance.AddTransaction(dt, amt.Neg, note);
+            TradeLine.Balance.AddTransaction(dt, amt.Neg, Pecuniam.Zero, note);
         }
 
         protected internal Pecuniam GetExpectedTotalRent(DateTime dt)

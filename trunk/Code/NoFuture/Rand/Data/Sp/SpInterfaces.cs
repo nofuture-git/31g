@@ -26,8 +26,8 @@ namespace NoFuture.Rand.Data.Sp //Sequere pecuniam
     public interface IAccount<T> : IAsset
     {
         T Id { get; }
-        DateTime OpenDate { get; }
-        DateTime? ClosedDate { get; set; }
+        DateTime Inception { get; }
+        DateTime? Terminus { get; set; }
     }
 
     /// <summary>
@@ -56,8 +56,9 @@ namespace NoFuture.Rand.Data.Sp //Sequere pecuniam
         /// </summary>
         /// <param name="dt"></param>
         /// <param name="amnt"></param>
+        /// <param name="fee"></param>
         /// <param name="note"></param>
-        void AddTransaction(DateTime dt, Pecuniam amnt, string note = null);
+        void AddTransaction(DateTime dt, Pecuniam amnt, Pecuniam fee = null, string note = null);
 
         /// <summary>
         /// Gets transactions which occured on or after <see cref="from"/> up to the <see cref="to"/>
@@ -171,7 +172,7 @@ namespace NoFuture.Rand.Data.Sp //Sequere pecuniam
     {
         Guid UniqueId { get; }
         DateTime AtTime { get; }
-        INumera Cash { get; }
+        Pecuniam Cash { get; }
         Pecuniam Fee { get; }
         string Description { get; }
     }
@@ -180,8 +181,8 @@ namespace NoFuture.Rand.Data.Sp //Sequere pecuniam
     /// </summary>
     public interface ITransactionable
     {
-        void PutCashIn(DateTime dt, Pecuniam amt, string note = null);
-        bool TakeCashOut(DateTime dt, Pecuniam amt, string note = null);
+        void PutCashIn(DateTime dt, Pecuniam amt, Pecuniam fee = null, string note = null);
+        bool TakeCashOut(DateTime dt, Pecuniam amt, Pecuniam fee = null, string note = null);
     }
     /// <summary>
     /// Any type which has a count-of and an identifier
@@ -191,6 +192,5 @@ namespace NoFuture.Rand.Data.Sp //Sequere pecuniam
     {
         Decimal Amount { get; }
         Identifier Id { get; }
-        INumera Trade(INumera exchange, DateTime? dt, Pecuniam fee = null, string note = null);
     }
 }

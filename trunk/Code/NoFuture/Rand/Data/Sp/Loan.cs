@@ -39,12 +39,13 @@ namespace NoFuture.Rand.Data.Sp //Sequere pecuniam
         /// </summary>
         /// <param name="dt"></param>
         /// <param name="amt"></param>
+        /// <param name="fee"></param>
         /// <param name="note"></param>
-        public void PutCashIn(DateTime dt, Pecuniam amt, string note = null)
+        public void PutCashIn(DateTime dt, Pecuniam amt, Pecuniam fee = null, string note = null)
         {
             if (amt == Pecuniam.Zero)
                 return;
-            TradeLine.Balance.AddTransaction(dt, amt.Neg, note);
+            TradeLine.Balance.AddTransaction(dt, amt.Neg, Pecuniam.Zero, note);
         }
 
         /// <summary>
@@ -52,11 +53,12 @@ namespace NoFuture.Rand.Data.Sp //Sequere pecuniam
         /// </summary>
         /// <param name="dt"></param>
         /// <param name="val"></param>
+        /// <param name="fee"></param>
         /// <param name="note"></param>
         /// <returns></returns>
-        public virtual bool TakeCashOut(DateTime dt, Pecuniam val, string note = null)
+        public virtual bool TakeCashOut(DateTime dt, Pecuniam val, Pecuniam fee = null, string note = null)
         {
-            TradeLine.Balance.AddTransaction(dt, val.Abs, note);
+            TradeLine.Balance.AddTransaction(dt, val.Abs, Pecuniam.Zero, note);
             return true;
         }
         #endregion
@@ -71,7 +73,7 @@ namespace NoFuture.Rand.Data.Sp //Sequere pecuniam
             : base(openedDate, minPaymentRate)
         {
             if (amt != null && amt.Amount != 0)
-                _tl.Balance.AddTransaction(openedDate, amt.Abs);
+                _tl.Balance.AddTransaction(openedDate, Pecuniam.Zero, amt.Abs);
         }
 
         #endregion
@@ -187,7 +189,7 @@ namespace NoFuture.Rand.Data.Sp //Sequere pecuniam
                 if (isPayoff)
                     minPmt = loan.GetBalance(dtIncrement);
 
-                loan.PutCashIn(paidOnDate, minPmt, pmtNote);
+                loan.PutCashIn(paidOnDate, minPmt, Pecuniam.Zero, pmtNote);
                 if (isPayoff)
                     break;
                 dtIncrement = dtIncrement.AddMonths(1);
