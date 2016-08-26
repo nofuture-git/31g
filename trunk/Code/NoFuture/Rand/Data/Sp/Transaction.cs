@@ -11,13 +11,13 @@ namespace NoFuture.Rand.Data.Sp
     public class Transaction : ITransaction
     {
         #region ctor
-        public Transaction(DateTime atTime, Pecuniam amt, string description = null)
+        public Transaction(DateTime atTime, INumera amt, string description = null)
         {
             AtTime = atTime;
             Cash = amt;
             Description = description;
         }
-        public Transaction(DateTime atTime, Pecuniam amt, Pecuniam fee, string description = null)
+        public Transaction(DateTime atTime, INumera amt, Pecuniam fee, string description = null)
         {
             AtTime = atTime;
             Cash = amt;
@@ -29,7 +29,7 @@ namespace NoFuture.Rand.Data.Sp
         #region properties
         public Guid UniqueId { get; } = Guid.NewGuid();
         public DateTime AtTime { get; }
-        public Pecuniam Cash { get; }
+        public INumera Cash { get; }
         public Pecuniam Fee { get; }
         public string Description { get; }
         #endregion
@@ -94,13 +94,21 @@ namespace NoFuture.Rand.Data.Sp
         #endregion
         public void AddTransaction(DateTime dt, Pecuniam amnt, string note = null)
         {
-            if (amnt == Pecuniam.Zero)
+            AddTransaction(dt, amnt, Pecuniam.Zero, note);
+        }
+
+        public void AddTransaction(DateTime dt, INumera amnt, Pecuniam fee, string note = null)
+        {
+            if (amnt == null)
+                return;
+            if (amnt.Amount == Pecuniam.Zero.Amount)
                 return;
             while (_transactions.Any(x => DateTime.Compare(x.AtTime, dt) == 0))
             {
                 dt = dt.AddMilliseconds(10);
             }
-            var t = new Transaction(dt, amnt, note);
+            fee = fee ?? Pecuniam.Zero;
+            var t = new Transaction(dt, amnt, fee, note);
             _transactions.Add(t);
         }
     }

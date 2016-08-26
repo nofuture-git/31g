@@ -8,31 +8,19 @@ using NoFuture.Rand.Domus;
 namespace NoFuture.Rand.Data.Sp //Sequere pecuniam
 {
     [Serializable]
-    public abstract class LoanBase<T> : ReceivableBase, ILoan, ITransactionable, IAccount<Identifier>
+    public abstract class LoanBase<T> : ReceivableBase, ILoan, ITransactionable 
     {
         #region ctors
-        protected LoanBase(DateTime openedDate, float minPaymentRate, Identifier id = null):base(openedDate)
+        protected LoanBase(DateTime openedDate, float minPaymentRate):base(openedDate)
         {
             MinPaymentRate = minPaymentRate;
-            Id = id;
         }
         #endregion
 
         #region properties
-        public Identifier Id { get; }
         public float MinPaymentRate { get; set; }
         public T Rate { get; set; }
         public IFirm Lender { get; set; }
-        public DateTime OpenDate => TradeLine.OpennedDate;
-        public DateTime? ClosedDate
-        {
-            get { return TradeLine.Closure?.ClosedDate; }
-            set
-            {
-                if(value.HasValue)
-                    TradeLine.Closure = new TradelineClosure {ClosedDate = value.Value};
-            }
-        }
         #endregion
 
         #region methods
@@ -79,8 +67,8 @@ namespace NoFuture.Rand.Data.Sp //Sequere pecuniam
     {
         #region ctors
 
-        public FixedRateLoan(DateTime openedDate, float minPaymentRate, Pecuniam amt = null, Identifier id = null)
-            : base(openedDate, minPaymentRate, id)
+        public FixedRateLoan(DateTime openedDate, float minPaymentRate, Pecuniam amt = null)
+            : base(openedDate, minPaymentRate)
         {
             if (amt != null && amt.Amount != 0)
                 _tl.Balance.AddTransaction(openedDate, amt.Abs);
@@ -101,8 +89,8 @@ namespace NoFuture.Rand.Data.Sp //Sequere pecuniam
     {
         #region ctors
 
-        public VariableRateLoan(DateTime openedDate, float minPaymentRate, Pecuniam amt = null, Identifier id = null)
-            : base(openedDate, minPaymentRate, id)
+        public VariableRateLoan(DateTime openedDate, float minPaymentRate, Pecuniam amt = null)
+            : base(openedDate, minPaymentRate)
         {
             if (amt != null && amt.Amount != 0)
                 _tl.Balance.AddTransaction(openedDate, amt.Abs);
@@ -121,9 +109,8 @@ namespace NoFuture.Rand.Data.Sp //Sequere pecuniam
     [Serializable]
     public class SecuredFixedRateLoan : FixedRateLoan
     {
-        public SecuredFixedRateLoan(Identifier property, DateTime openedDate, float minPaymentRate, Pecuniam amt = null,
-            Identifier id = null)
-            : base(openedDate, minPaymentRate, amt, id)
+        public SecuredFixedRateLoan(Identifier property, DateTime openedDate, float minPaymentRate, Pecuniam amt = null)
+            : base(openedDate, minPaymentRate, amt)
         {
             PropertyId = property;
         }

@@ -36,12 +36,12 @@ namespace NoFuture.Rand.Data.Sp
 
         #region properties
         public bool IsJointAcct { get; set; }
-        public Identifier Id { get; set; }
+        public virtual Identifier Id { get; set; }
         public IBalance Balance { get; }
         public FinancialFirm Bank { get; set; }
         public abstract Pecuniam CurrentMarketValue { get; }
-        public DateTime OpenDate { get; }
-        public DateTime? ClosedDate { get; set; }
+        public virtual DateTime OpenDate { get; }
+        public virtual DateTime? ClosedDate { get; set; }
         #endregion
 
         #region methods
@@ -104,7 +104,7 @@ namespace NoFuture.Rand.Data.Sp
 
             foreach (var t in trans)
             {
-                TakeCashOut(t.AtTime.AddMilliseconds(1), t.Cash, t.Description);
+                TakeCashOut(t.AtTime.AddMilliseconds(1), (Pecuniam)t.Cash, t.Description);
             }
         }
 

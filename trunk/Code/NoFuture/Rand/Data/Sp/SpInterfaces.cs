@@ -5,17 +5,6 @@ using NoFuture.Rand.Com;
 namespace NoFuture.Rand.Data.Sp //Sequere pecuniam
 {
     /// <summary>
-    /// Represents a individual finacial agreement in time.
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    public interface IAccount<T> : IAsset
-    {
-        T Id { get; }
-        DateTime OpenDate { get; }
-        DateTime? ClosedDate { get; set; }
-    }
-
-    /// <summary>
     /// Represents something of value which may be sold 
     /// on the open market for cash
     /// </summary>
@@ -28,6 +17,17 @@ namespace NoFuture.Rand.Data.Sp //Sequere pecuniam
         /// <param name="dt"></param>
         /// <returns></returns>
         SpStatus GetStatus(DateTime? dt);
+    }
+
+    /// <summary>
+    /// Represents a individual finacial agreement in time.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    public interface IAccount<T> : IAsset
+    {
+        T Id { get; }
+        DateTime OpenDate { get; }
+        DateTime? ClosedDate { get; set; }
     }
 
     /// <summary>
@@ -165,13 +165,13 @@ namespace NoFuture.Rand.Data.Sp //Sequere pecuniam
         Pecuniam GetBalance(DateTime dt);
     }
     /// <summary>
-    /// Represents a single one-time exchange 
+    /// Represents a single one-time currency exchange 
     /// </summary>
     public interface ITransaction
     {
         Guid UniqueId { get; }
         DateTime AtTime { get; }
-        Pecuniam Cash { get; }
+        INumera Cash { get; }
         Pecuniam Fee { get; }
         string Description { get; }
     }
@@ -191,6 +191,6 @@ namespace NoFuture.Rand.Data.Sp //Sequere pecuniam
     {
         Decimal Amount { get; }
         Identifier Id { get; }
-        INumera Trade(INumera exchange, DateTime? dt);
+        INumera Trade(INumera exchange, DateTime? dt, Pecuniam fee = null, string note = null);
     }
 }

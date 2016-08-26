@@ -32,8 +32,9 @@ namespace NoFuture.Rand.Data.Sp
         public SpStatus CurrentStatus => GetStatus(null);
         #endregion
 
-        public INumera Trade(INumera exchange, DateTime? dt)
+        public INumera Trade(INumera exchange, DateTime? dt, Pecuniam fee = null, string note = null)
         {
+            
             throw new NotImplementedException();
         }
 
