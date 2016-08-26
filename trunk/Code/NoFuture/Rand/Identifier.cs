@@ -26,6 +26,9 @@ namespace NoFuture.Rand
     /// <summary>
     /// Any type which could be given a name.
     /// </summary>
+    /// <remarks>
+    /// Latin for 'be called'
+    /// </remarks>
     public interface IVoca
     {
         List<Tuple<KindsOfNames, string>> Names { get; }

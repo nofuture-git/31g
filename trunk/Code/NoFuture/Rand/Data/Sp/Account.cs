@@ -10,16 +10,6 @@ using NoFuture.Rand.Domus;
 namespace NoFuture.Rand.Data.Sp
 {
     [Serializable]
-    public enum SpStatus
-    {
-        Closed,
-        Current,
-        Late,
-        NoHistory,
-        Overdrawn
-    }
-
-    [Serializable]
     public class AccountId : RIdentifier
     {
         public AccountId(Rchar[] format)

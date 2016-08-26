@@ -3,15 +3,6 @@ using System;
 namespace NoFuture.Rand.Data.Sp
 {
     [Serializable]
-    public enum PastDue
-    {
-        Thirty,
-        Sixty,
-        Ninety,
-        HundredAndEighty
-    }
-
-    [Serializable]
     public abstract class ReceivableBase : IReceivable
     {
         #region fields

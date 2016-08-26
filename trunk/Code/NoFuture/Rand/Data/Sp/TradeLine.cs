@@ -3,34 +3,6 @@
 namespace NoFuture.Rand.Data.Sp
 {
     [Serializable]
-    public enum ClosedCondition
-    {
-        ClosedWithZeroBalance,
-        VoluntarySurrender,
-        ClosureSurrender,
-        Repossession,
-        ChargeOff,
-        Foreclosure
-    }
-
-    [Serializable]
-    public struct TradelineClosure
-    {
-        public DateTime ClosedDate;
-        public ClosedCondition Condition;
-    }
-
-    public interface ITradeLine
-    {
-        FormOfCredit FormOfCredit { get; set; }
-        Pecuniam CreditLimit { get; set; }
-        IBalance Balance { get; }
-        TimeSpan DueFrequency { get; set; }
-        DateTime OpennedDate { get; }
-        TradelineClosure? Closure { get; set; }
-    }
-
-    [Serializable]
     public class TradeLine : Identifier, ITradeLine
     {
         #region constants

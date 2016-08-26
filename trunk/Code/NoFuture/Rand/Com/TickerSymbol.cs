@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using NoFuture.Exceptions;
 using NoFuture.Shared;
 
 namespace NoFuture.Rand.Com
@@ -57,6 +56,7 @@ namespace NoFuture.Rand.Com
         }
     }
 
+    [Serializable]
     public class TickerComparer : IComparer<Ticker>
     {
         private readonly string _companyName;

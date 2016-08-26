@@ -3,12 +3,6 @@ using NoFuture.Exceptions;
 
 namespace NoFuture.Rand.Data.Sp
 {
-    public interface IExchangeRate
-    {
-        CurrencyAbbrev CurrencyOut { get; }
-        Pecuniam Exchange(Pecuniam p);
-    }
-
     /// <summary>
     /// Basic Money object pattern 
     /// </summary>
@@ -16,35 +10,46 @@ namespace NoFuture.Rand.Data.Sp
     /// Is Latin for Money
     /// </remarks>
     [Serializable]
-    public class Pecuniam
+    public sealed class Pecuniam : INumera
     {
         #region fields
         private readonly decimal _amount;
-        private readonly CurrencyAbbrev _currencyAbbrev;
+        private readonly Identifier _currency;
         #endregion
 
         #region ctors
         public Pecuniam(Decimal amount, CurrencyAbbrev c = CurrencyAbbrev.USD)
         {
             _amount = amount;
-            _currencyAbbrev = c;
+            _currency = new Currency(c);
         }
         #endregion
 
         #region properties
         public Decimal Amount => _amount;
-        public CurrencyAbbrev CurrencyAbbrev => _currencyAbbrev;
+        public Identifier Id => _currency;
         public Pecuniam Abs => new Pecuniam(Math.Abs(_amount));
         public Pecuniam Neg => new Pecuniam(-1*Math.Abs(_amount));
         public static Pecuniam Zero => new Pecuniam(0.0M);
         public Pecuniam Round => new Pecuniam(Math.Round(_amount, 2));
         #endregion
 
-        #region overrides
+        #region methods
+        public INumera Trade(INumera exchange, DateTime? dt)
+        {
+            var currency = exchange as Pecuniam;
+            if (currency == null)
+                return this;
+
+            if(!Id.Equals(currency.Id))
+                throw new NotImplementedException("Exchange rate logic not implemented");
+
+            return this;
+        }
 
         public override string ToString()
         {
-            return $"{Amount} {CurrencyAbbrev}";
+            return $"{Amount} {Id}";
         }
 
         public override bool Equals(object obj)
@@ -58,11 +63,27 @@ namespace NoFuture.Rand.Data.Sp
             return Amount.GetHashCode();
         }
 
+        public static Pecuniam GetRandPecuniam(int min = 3, int max = 999, int wholeNumbersOf = 0)
+        {
+            var num = (double)Etx.IntNumber(min, max);
+
+            if (wholeNumbersOf >= 10)
+                num = num - (num % wholeNumbersOf);
+            else
+            {
+                num = Etx.RationalNumber(min, max);
+            }
+
+            return new Pecuniam((decimal)Math.Round(num, 2));
+        }
+        #endregion
+
+        #region operator overloads
         public static Pecuniam operator +(Pecuniam p1, Pecuniam p2)
         {
             var pp1 = p1 ?? Zero;
             var pp2 = p2 ?? Zero;
-            if (pp1.CurrencyAbbrev != pp2.CurrencyAbbrev)
+            if (pp1.Id.Equals(pp2.Id))
                 throw new RahRowRagee("Can only add currencies from the same nation");
 
             return new Pecuniam(pp1.Amount + pp2.Amount);
@@ -73,7 +94,7 @@ namespace NoFuture.Rand.Data.Sp
             var pp1 = p1 ?? Zero;
             var pp2 = p2 ?? Zero;
 
-            if (pp1.CurrencyAbbrev != pp2.CurrencyAbbrev)
+            if (pp1.Id.Equals(pp2.Id))
                 throw new RahRowRagee("Can only add currencies from the same nation");
 
             return new Pecuniam(pp1.Amount - pp2.Amount);
@@ -84,7 +105,7 @@ namespace NoFuture.Rand.Data.Sp
             var pp1 = p1 ?? Zero;
             var pp2 = p2 ?? Zero;
 
-            if (pp1.CurrencyAbbrev != pp2.CurrencyAbbrev)
+            if (pp1.Id.Equals(pp2.Id))
                 throw new RahRowRagee("Can only add currencies from the same nation");
 
             return new Pecuniam(pp1.Amount * pp2.Amount);
@@ -95,7 +116,7 @@ namespace NoFuture.Rand.Data.Sp
             var pp1 = p1 ?? Zero;
             var pp2 = p2 ?? Zero;
 
-            if (pp1.CurrencyAbbrev != pp2.CurrencyAbbrev)
+            if (pp1.Id.Equals(pp2.Id))
                 throw new RahRowRagee("Can only add currencies from the same nation");
 
             return new Pecuniam(pp1.Amount / pp2.Amount);
@@ -106,7 +127,7 @@ namespace NoFuture.Rand.Data.Sp
             var pp1 = p1 ?? Zero;
             var pp2 = p2 ?? Zero;
 
-            if (pp1.CurrencyAbbrev != pp2.CurrencyAbbrev)
+            if (pp1.Id.Equals(pp2.Id))
                 return false;
 
             return pp1.Amount == pp2.Amount;
@@ -122,7 +143,7 @@ namespace NoFuture.Rand.Data.Sp
             var pp1 = p1 ?? Zero;
             var pp2 = p2 ?? Zero;
 
-            if (pp1.CurrencyAbbrev != pp2.CurrencyAbbrev)
+            if (pp1.Id.Equals(pp2.Id))
                 return false;
             return pp1.Amount > pp2.Amount;
         }
@@ -131,7 +152,7 @@ namespace NoFuture.Rand.Data.Sp
         {
             var pp1 = p1 ?? Zero;
             var pp2 = p2 ?? Zero;
-            if (pp1.CurrencyAbbrev != pp2.CurrencyAbbrev)
+            if (pp1.Id.Equals(pp2.Id))
                 return false;
             return pp1.Amount < pp2.Amount;
         }
@@ -141,7 +162,7 @@ namespace NoFuture.Rand.Data.Sp
             var pp1 = p1 ?? Zero;
             var pp2 = p2 ?? Zero;
 
-            if (pp1.CurrencyAbbrev != pp2.CurrencyAbbrev)
+            if (pp1.Id.Equals(pp2.Id))
                 return false;
             return pp1.Amount >= pp2.Amount;
         }
@@ -150,25 +171,16 @@ namespace NoFuture.Rand.Data.Sp
         {
             var pp1 = p1 ?? Zero;
             var pp2 = p2 ?? Zero;
-            if (pp1.CurrencyAbbrev != pp2.CurrencyAbbrev)
+            if (pp1.Id.Equals(pp2.Id))
                 return false;
             return pp1.Amount <= pp2.Amount;
         }
 
-        public static Pecuniam GetRandPecuniam(int min = 3, int max = 999, int wholeNumbersOf = 0)
-        {
-            var num = (double)Etx.IntNumber(min, max);
-
-            if (wholeNumbersOf >= 10)
-                num = num - (num%wholeNumbersOf);
-            else
-            {
-                num = Etx.RationalNumber(min, max);
-            }
-
-            return new Pecuniam((decimal) Math.Round(num,2));
-        }
         #endregion
+
+
+
+
     }
 
     /// <summary>
@@ -189,22 +201,5 @@ namespace NoFuture.Rand.Data.Sp
         {
             return new Pecuniam(x);
         }
-    }
-
-    /// <summary>
-    /// ISO 4217 Currency Codes
-    /// </summary>
-    [Serializable]
-    public enum CurrencyAbbrev
-    {
-        USD,
-        EUR,
-        GBP,
-        JPY,
-        AUD,
-        CAD,
-        BRL,
-        MXN,
-        CNY,
     }
 }
