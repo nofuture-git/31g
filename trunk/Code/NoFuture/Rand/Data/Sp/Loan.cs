@@ -41,7 +41,7 @@ namespace NoFuture.Rand.Data.Sp //Sequere pecuniam
         /// <param name="amt"></param>
         /// <param name="fee"></param>
         /// <param name="note"></param>
-        public void PutCashIn(DateTime dt, Pecuniam amt, Pecuniam fee = null, string note = null)
+        public void Push(DateTime dt, Pecuniam amt, Pecuniam fee = null, string note = null)
         {
             if (amt == Pecuniam.Zero)
                 return;
@@ -56,7 +56,7 @@ namespace NoFuture.Rand.Data.Sp //Sequere pecuniam
         /// <param name="fee"></param>
         /// <param name="note"></param>
         /// <returns></returns>
-        public virtual bool TakeCashOut(DateTime dt, Pecuniam val, Pecuniam fee = null, string note = null)
+        public virtual bool Pop(DateTime dt, Pecuniam val, Pecuniam fee = null, string note = null)
         {
             TradeLine.Balance.AddTransaction(dt, val.Abs, Pecuniam.Zero, note);
             return true;
@@ -162,7 +162,7 @@ namespace NoFuture.Rand.Data.Sp //Sequere pecuniam
             {
                 if (dtIncrement > DateTime.Now.AddYears(termInYears))
                     break;
-                loan.PutCashIn(dtIncrement, minPmt);
+                loan.Push(dtIncrement, minPmt);
                 dtIncrement = dtIncrement.AddMonths(1);
             }
 
@@ -189,7 +189,7 @@ namespace NoFuture.Rand.Data.Sp //Sequere pecuniam
                 if (isPayoff)
                     minPmt = loan.GetBalance(dtIncrement);
 
-                loan.PutCashIn(paidOnDate, minPmt, Pecuniam.Zero, pmtNote);
+                loan.Push(paidOnDate, minPmt, Pecuniam.Zero, pmtNote);
                 if (isPayoff)
                     break;
                 dtIncrement = dtIncrement.AddMonths(1);

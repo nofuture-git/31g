@@ -58,7 +58,7 @@ namespace NoFuture.Rand.Data.Sp //Sequere pecuniam
         /// <param name="amnt"></param>
         /// <param name="fee"></param>
         /// <param name="note"></param>
-        void AddTransaction(DateTime dt, Pecuniam amnt, Pecuniam fee = null, string note = null);
+        Guid AddTransaction(DateTime dt, Pecuniam amnt, Pecuniam fee = null, string note = null);
 
         /// <summary>
         /// Gets transactions which occured on or after <see cref="from"/> up to the <see cref="to"/>
@@ -108,6 +108,13 @@ namespace NoFuture.Rand.Data.Sp //Sequere pecuniam
         /// </param>
         /// <returns></returns>
         Pecuniam GetCurrent(DateTime dt, Dictionary<DateTime, float> variableRate);
+
+        /// <summary>
+        /// Gets the sum of fees for all transactions up-to-and-including <see cref="dt"/>
+        /// </summary>
+        /// <param name="dt"></param>
+        /// <returns></returns>
+        Pecuniam GetFees(DateTime dt);
 
     }
 
@@ -177,12 +184,12 @@ namespace NoFuture.Rand.Data.Sp //Sequere pecuniam
         string Description { get; }
     }
     /// <summary>
-    /// Any finacial type in which currency may be added or removed
+    /// A general type for duality of financial transactions (e.g. Buy\Sell, Long\Short, CashIn\CashOut)
     /// </summary>
     public interface ITransactionable
     {
-        void PutCashIn(DateTime dt, Pecuniam amt, Pecuniam fee = null, string note = null);
-        bool TakeCashOut(DateTime dt, Pecuniam amt, Pecuniam fee = null, string note = null);
+        void Push(DateTime dt, Pecuniam amt, Pecuniam fee = null, string note = null);
+        bool Pop(DateTime dt, Pecuniam amt, Pecuniam fee = null, string note = null);
     }
     /// <summary>
     /// Any type which has a count-of and an identifier

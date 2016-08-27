@@ -92,12 +92,12 @@ namespace NoFuture.Rand.Data.Sp
         public bool IsEmpty => _transactions.Count <= 0;
 
         #endregion
-        public void AddTransaction(DateTime dt, Pecuniam amnt, Pecuniam fee = null, string note = null)
+        public Guid AddTransaction(DateTime dt, Pecuniam amnt, Pecuniam fee = null, string note = null)
         {
             if (amnt == null)
-                return;
+                return Guid.Empty;
             if (amnt.Amount == Pecuniam.Zero.Amount)
-                return;
+                return Guid.Empty;
             while (_transactions.Any(x => DateTime.Compare(x.AtTime, dt) == 0))
             {
                 dt = dt.AddMilliseconds(10);
@@ -105,6 +105,7 @@ namespace NoFuture.Rand.Data.Sp
             fee = fee ?? Pecuniam.Zero;
             var t = new Transaction(dt, amnt, fee, note);
             _transactions.Add(t);
+            return t.UniqueId;
         }
     }
 }

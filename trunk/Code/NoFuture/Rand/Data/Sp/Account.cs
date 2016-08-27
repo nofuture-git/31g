@@ -57,10 +57,10 @@ namespace NoFuture.Rand.Data.Sp
             var ddt = dt ?? DateTime.Now;
 
             var balAtDt = Balance.GetCurrent(ddt, 0F);
-            return balAtDt < Pecuniam.Zero ? SpStatus.Overdrawn : SpStatus.Current;
+            return balAtDt < Pecuniam.Zero ? SpStatus.Short : SpStatus.Current;
         }
 
-        public virtual void PutCashIn(DateTime dt, Pecuniam val, Pecuniam fee = null, string note = null)
+        public virtual void Push(DateTime dt, Pecuniam val, Pecuniam fee = null, string note = null)
         {
             if (val == Pecuniam.Zero)
                 return;
@@ -71,7 +71,7 @@ namespace NoFuture.Rand.Data.Sp
             Balance.AddTransaction(dt, val.Abs, Pecuniam.Zero, note);
         }
 
-        public virtual bool TakeCashOut(DateTime dt, Pecuniam val, Pecuniam fee = null, string note = null)
+        public virtual bool Pop(DateTime dt, Pecuniam val, Pecuniam fee = null, string note = null)
         {
             if (val == Pecuniam.Zero)
                 return true;
@@ -104,7 +104,7 @@ namespace NoFuture.Rand.Data.Sp
 
             foreach (var t in trans)
             {
-                TakeCashOut(t.AtTime.AddMilliseconds(1), (Pecuniam)t.Cash, Pecuniam.Zero, t.Description);
+                Pop(t.AtTime.AddMilliseconds(1), (Pecuniam)t.Cash, Pecuniam.Zero, t.Description);
             }
         }
 
@@ -134,8 +134,8 @@ namespace NoFuture.Rand.Data.Sp
                 if (amt.Amount < 0.01M)
                     break;
             }
-            fromAccount.TakeCashOut(dt, amt, Pecuniam.Zero, Opes.GetPaymentNote(fromAccount.Id));
-            toAccount.PutCashIn(dt.AddMilliseconds(100), amt, Pecuniam.Zero, Opes.GetPaymentNote(toAccount.Id));
+            fromAccount.Pop(dt, amt, Pecuniam.Zero, Opes.GetPaymentNote(fromAccount.Id));
+            toAccount.Push(dt.AddMilliseconds(100), amt, Pecuniam.Zero, Opes.GetPaymentNote(toAccount.Id));
         }
 
         #endregion
@@ -335,14 +335,14 @@ namespace NoFuture.Rand.Data.Sp
         /// the purchase amount <see cref="val"/>
         /// will not cause the total balance to exceed <see cref="Max"/>.
         /// </returns>
-        public override bool TakeCashOut(DateTime dt, Pecuniam val, Pecuniam fee = null, string note = null)
+        public override bool Pop(DateTime dt, Pecuniam val, Pecuniam fee = null, string note = null)
         {
             if (dt > Cc.ExpDate)
                 return false;
             var cBal = GetBalance(dt);
             if (cBal >= Max || cBal + val >= Max)
                 return false;
-            return base.TakeCashOut(dt, val, fee, note);
+            return base.Pop(dt, val, fee, note);
         }
 
         /// <summary>

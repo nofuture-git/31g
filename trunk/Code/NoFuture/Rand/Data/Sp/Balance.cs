@@ -25,6 +25,24 @@ namespace NoFuture.Rand.Data.Sp
             return GetRangeSum(between, _creditOp);
         }
 
+        public Pecuniam GetFees(DateTime dt)
+        {
+            if (!Transactions.Any())
+                return Pecuniam.Zero;
+
+            if (Transactions.All(x => x.AtTime > dt))
+                return Pecuniam.Zero;
+
+            var bal = Pecuniam.Zero;
+            foreach (var t in Transactions)
+            {
+                if (t.AtTime > dt)
+                    break;
+                bal = bal + t.Fee;
+            }
+            return bal;
+        }
+
         public Pecuniam GetCurrent(DateTime dt, float rate)
         {
             if (!Transactions.Any())

@@ -148,7 +148,7 @@ namespace NoFuture.Rand.Domus
                     var chargeAmt = Pecuniam.GetRandPecuniam(5, v * randMaxFactor, isSomeEvenAmt ? 10 : 0);
 
                     //check if account is maxed-out\empty
-                    if (!t.TakeCashOut(randCcDate, chargeAmt))
+                    if (!t.Pop(randCcDate, chargeAmt))
                         return;
 
                     spentSum += chargeAmt;

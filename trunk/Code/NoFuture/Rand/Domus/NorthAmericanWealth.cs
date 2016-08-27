@@ -224,12 +224,12 @@ namespace NoFuture.Rand.Domus
             //set up checking
             var checking = CheckingAccount.GetRandomCheckingAcct(_amer,baseDate);
             var randChecking = GetRandomFactorValue(FactorTables.CheckingAccount, _checkingAcctFactor, stdDevAsPercent);
-            checking.PutCashIn(baseDate.AddDays(-1), randChecking.ToPecuniam(), Pecuniam.Zero, "Init Checking");
+            checking.Push(baseDate.AddDays(-1), randChecking.ToPecuniam(), Pecuniam.Zero, "Init Checking");
 
             //set up a savings
             var randSavings = GetRandomFactorValue(FactorTables.SavingsAccount, _savingAcctFactor, stdDevAsPercent);
             var savings = SavingsAccount.GetRandomSavingAcct(_amer, baseDate);
-            savings.PutCashIn(baseDate.AddDays(-1), randSavings.ToPecuniam(), Pecuniam.Zero, "Init Savings");
+            savings.Push(baseDate.AddDays(-1), randSavings.ToPecuniam(), Pecuniam.Zero, "Init Savings");
             var totalDays = (DateTime.Today - baseDate).TotalDays;
             var friCounter = 0;
             for (var i = 0; i < totalDays; i++)
@@ -241,7 +241,7 @@ namespace NoFuture.Rand.Domus
                 {
                     if (friCounter%2 == 0)
                     {
-                        checking.PutCashIn(loopDtSt.AddSeconds(1), Paycheck.Abs, Pecuniam.Zero, "Pay");
+                        checking.Push(loopDtSt.AddSeconds(1), Paycheck.Abs, Pecuniam.Zero, "Pay");
                     }
                     
                     //replenish savings
@@ -256,7 +256,7 @@ namespace NoFuture.Rand.Domus
                         new DateTime(loopDtSt.Year, _amer.BirthCert.DateOfBirth.Month, _amer.BirthCert.DateOfBirth.Day)) ==
                     0)
                 {
-                    checking.PutCashIn(loopDtSt.AddHours(15), Pecuniam.GetRandPecuniam(10,100,10), Pecuniam.Zero, "b-day money");
+                    checking.Push(loopDtSt.AddHours(15), Pecuniam.GetRandPecuniam(10,100,10), Pecuniam.Zero, "b-day money");
                 }
 
                 //add house pmts
@@ -312,7 +312,7 @@ namespace NoFuture.Rand.Domus
                 {
                     randAmt += Pecuniam.GetRandPecuniam(utilsDfMin, utilsDfMid);
                 }
-                checking.PutCashIn(loopDtSt.AddHours(12), randAmt, Pecuniam.Zero, t.Item1);
+                checking.Push(loopDtSt.AddHours(12), randAmt, Pecuniam.Zero, t.Item1);
             }
         }
 
@@ -471,13 +471,13 @@ namespace NoFuture.Rand.Domus
                 {
                     var fowardDays = Etx.IntNumber(1, 45);
                     var paidDate = loopDt.AddDays(fowardDays);
-                    ccAcct.PutCashIn(paidDate, minDue, Pecuniam.Zero, pmtNote);
+                    ccAcct.Push(paidDate, minDue, Pecuniam.Zero, pmtNote);
                     i += fowardDays;
                 }
                 else
                 {
                     var additionalPaid = Pecuniam.GetRandPecuniam(20, 200, 10);
-                    ccAcct.PutCashIn(loopDt, minDue + additionalPaid, Pecuniam.Zero, pmtNote);
+                    ccAcct.Push(loopDt, minDue + additionalPaid, Pecuniam.Zero, pmtNote);
                 }
             }
 

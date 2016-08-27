@@ -35,7 +35,7 @@ namespace NoFuture.Rand.Data.Sp
         Current,
         Late,
         NoHistory,
-        Overdrawn
+        Short
     }
     [Serializable]
     public enum PastDue

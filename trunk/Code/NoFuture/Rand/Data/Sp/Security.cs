@@ -1,40 +1,45 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace NoFuture.Rand.Data.Sp
 {
     [Serializable]
-    public abstract class Security : Pecuniam, IAccount<Identifier>
+    public abstract class Security : Pecuniam, ITransactionable
     {
         #region fields
-        protected readonly TransactionHistory _history = new TransactionHistory();
+        protected readonly Balance Balance = new Balance();
+        private readonly Dictionary<Guid, Decimal> _trans2Qty;
         #endregion
 
         #region ctor
-        protected Security(string cusip, DateTime? inceptionDate = null, decimal amount = 0M):base(amount)
+        protected Security(string cusip, decimal numOf):base(Math.Abs(numOf))
         {
             Id = new Cusip { Value = cusip };
-            Inception = inceptionDate.GetValueOrDefault(DateTime.Now);
         }
 
-        protected Security(Cusip id, DateTime? inceptionDate = null, decimal amount = 0M) : base(amount)
+        protected Security(Cusip id, decimal numOf) : base(Math.Abs(numOf))
         {
             Id = id;
-            Inception = inceptionDate.GetValueOrDefault(DateTime.Now);
         }
         #endregion
 
         #region properties
         public override Identifier Id { get; }
-        public virtual DateTime Inception { get; }
-        public virtual DateTime? Terminus { get; set; }
-        public virtual Pecuniam CurrentMarketValue => GetMarketValue(null);
-        public virtual SpStatus CurrentStatus => GetStatus(null);
         #endregion
 
         #region methods
-        public abstract SpStatus GetStatus(DateTime? dt);
+        public virtual void Push(DateTime dt, Pecuniam buyPrice, Pecuniam fee = null, string note = null)
+        {
+            var id = Balance.AddTransaction(dt, buyPrice.Neg, fee, note);
+            _trans2Qty.Add(id, Amount);
+        }
 
-        public abstract Pecuniam GetMarketValue(DateTime? dt);
+        public virtual bool Pop(DateTime dt, Pecuniam sellPrice, Pecuniam fee = null, string note = null)
+        {
+            var id = Balance.AddTransaction(dt, sellPrice.Abs, fee, note);
+            _trans2Qty.Add(id, -1*Amount);
+            return true;
+        }
         #endregion
     }
 }
