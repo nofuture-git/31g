@@ -263,6 +263,7 @@
     <Compile Include="Rand\OpesTests.cs" />
     <Compile Include="Rand\CreditCardTests.cs" />
     <Compile Include="Rand\CusipTests.cs" />
+    <Compile Include="Rand\SecurityTests.cs" />
     <Compile Include="Rand\XRefTests.cs" />
     <Compile Include="Rand\UsStateTests.cs" />
     <Compile Include="Shared\TestBindings.cs" />

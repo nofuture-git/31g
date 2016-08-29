@@ -39,7 +39,7 @@ namespace NoFuture.Rand.Data.Sp
         public virtual Identifier Id { get; set; }
         public IBalance Balance { get; }
         public FinancialFirm Bank { get; set; }
-        public abstract Pecuniam CurrentMarketValue { get; }
+        public abstract Pecuniam CurrentValue { get; }
         public virtual DateTime Inception { get; }
         public virtual DateTime? Terminus { get; set; }
         #endregion
@@ -128,7 +128,7 @@ namespace NoFuture.Rand.Data.Sp
                 return;
             amt = amt.Abs;
 
-            while (fromAccount.CurrentMarketValue < amt)
+            while (fromAccount.CurrentValue < amt)
             {
                 amt = amt / 2.ToPecuniam();
                 if (amt.Amount < 0.01M)
@@ -171,7 +171,7 @@ namespace NoFuture.Rand.Data.Sp
         #endregion
 
         #region properties
-        public override Pecuniam CurrentMarketValue => Balance.GetCurrent(DateTime.Now, 0F);
+        public override Pecuniam CurrentValue => Balance.GetCurrent(DateTime.Now, 0F);
         public virtual ICreditCard DebitCard { get; }
         #endregion
 
@@ -245,7 +245,7 @@ namespace NoFuture.Rand.Data.Sp
 
         #region properties
         public float InterestRate { get; set; }
-        public override Pecuniam CurrentMarketValue => Balance.GetCurrent(DateTime.Now, InterestRate);
+        public override Pecuniam CurrentValue => Balance.GetCurrent(DateTime.Now, InterestRate);
         #endregion
 
         #region methods

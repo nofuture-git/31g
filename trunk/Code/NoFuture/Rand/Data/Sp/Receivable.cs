@@ -21,7 +21,7 @@ namespace NoFuture.Rand.Data.Sp
         public string Description { get; set; }
         public SpStatus CurrentStatus => GetStatus(DateTime.Now);
         public PastDue? CurrentDelinquency => GetDelinquency(DateTime.Now);
-        public Pecuniam CurrentMarketValue => GetBalance(DateTime.Now);
+        public Pecuniam CurrentValue => GetBalance(DateTime.Now);
         #endregion
 
         #region methods

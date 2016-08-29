@@ -178,9 +178,9 @@ namespace NoFuture.Rand.Domus
             tlt += _homeEquity.Abs;
             tlt += _vehicleEquity.Abs;
             foreach (var da in CheckingAccounts)
-                tlt += da.CurrentMarketValue.Abs;
+                tlt += da.CurrentValue.Abs;
             foreach (var da in SavingAccounts)
-                tlt += da.CurrentMarketValue.Abs;
+                tlt += da.CurrentValue.Abs;
 
             return tlt;
         }
@@ -245,8 +245,8 @@ namespace NoFuture.Rand.Domus
                     }
                     
                     //replenish savings
-                    if (savings.CurrentMarketValue < randSavings.ToPecuniam())
-                        DepositAccount.TransferFundsInBankAccounts(checking, savings, randSavings.ToPecuniam() - savings.CurrentMarketValue,
+                    if (savings.CurrentValue < randSavings.ToPecuniam())
+                        DepositAccount.TransferFundsInBankAccounts(checking, savings, randSavings.ToPecuniam() - savings.CurrentValue,
                             loopDtSt.AddSeconds(15));
                     friCounter += 1;
                 }
@@ -274,7 +274,7 @@ namespace NoFuture.Rand.Domus
                 //if broke, move funds from savings and no spending
                 if (checking.GetStatus(loopDtSt) != SpStatus.Current)
                 {
-                    DepositAccount.TransferFundsInBankAccounts(savings, checking, randChecking.ToPecuniam() - checking.CurrentMarketValue,
+                    DepositAccount.TransferFundsInBankAccounts(savings, checking, randChecking.ToPecuniam() - checking.CurrentValue,
                         loopDtSt.AddHours(19));
                     continue;
                 }
