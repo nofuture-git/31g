@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 using System.Xml;
 using NoFuture.Rand.Data.Types;
 using NoFuture.Rand.Gov.Sec;
@@ -9,6 +10,19 @@ namespace NoFuture.Rand.Data.NfXml
     public class SecFullTxtSearch : NfDynDataBase
     {
         public SecFullTxtSearch(Uri src):base(src) { }
+
+        public static Uri GetUri(Edgar.FullTextSearch fts)
+        {
+            if (string.IsNullOrWhiteSpace(fts.ToString()))
+                return null;
+            var urlFullText = new StringBuilder();
+
+            urlFullText.Append(Edgar.SEC_ROOT_URL);
+            urlFullText.AppendFormat("/cgi-bin/srch-edgar?text={0}", fts);
+            urlFullText.Append($"&start={fts.PagingStartAt}&count={fts.PagingCount}");
+            urlFullText.Append($"&first={fts.YearStart}&last={fts.YearEnd}&output=atom");
+            return new Uri(urlFullText.ToString());
+        }
 
         public override IEnumerable<dynamic> ParseContent(object content)
         {

@@ -21,7 +21,7 @@ namespace NoFuture.Rand.Data.Sp
         public string Description { get; set; }
         public SpStatus CurrentStatus => GetStatus(DateTime.Now);
         public PastDue? CurrentDelinquency => GetDelinquency(DateTime.Now);
-        public Pecuniam CurrentValue => GetBalance(DateTime.Now);
+        public Pecuniam CurrentValue => GetValueAt(DateTime.Now);
         #endregion
 
         #region methods
@@ -83,7 +83,7 @@ namespace NoFuture.Rand.Data.Sp
                 return SpStatus.NoHistory;
 
             //make sure something is actually owed
-            if (GetBalance(ddt).Amount <= 0)
+            if (GetValueAt(ddt).Amount <= 0)
                 return SpStatus.Current;
 
             var lastPayment =
@@ -95,7 +95,7 @@ namespace NoFuture.Rand.Data.Sp
                 : SpStatus.Current;
         }
 
-        public abstract Pecuniam GetBalance(DateTime dt);
+        public abstract Pecuniam GetValueAt(DateTime dt);
 
         public abstract Pecuniam GetMinPayment(DateTime dt);
 

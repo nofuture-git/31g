@@ -19,6 +19,11 @@ namespace NoFuture.Rand.Data.NfText
             {"SNM", TypeOfBank.StateCharteredNonMember}
         };
 
+        public static Uri GetUri()
+        {
+            return new Uri(RELEASE_URL);
+        }
+
         public override IEnumerable<dynamic> ParseContent(object content)
         {
             DateTime rptDt = DateTime.Today;

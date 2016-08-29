@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 using System.Xml;
 using NoFuture.Rand.Data.Types;
 using NoFuture.Rand.Gov.Sec;
@@ -9,6 +10,15 @@ namespace NoFuture.Rand.Data.NfXml
     public class SecCikSearch : NfDynDataBase
     {
         public SecCikSearch(Uri src):base(src) { }
+
+        public static Uri GetUri(CentralIndexKey cik, string rptType = "10-K")
+        {
+            var urlByCik = new StringBuilder();
+
+            urlByCik.Append(Edgar.EDGAR_ROOT);
+            urlByCik.Append($"?action=getcompany&CIK={cik}&type={rptType}&dateb=&owner=exclude&count=100&output=atom");
+            return new Uri(urlByCik.ToString());
+        }
 
         public override IEnumerable<dynamic> ParseContent(object content)
         {

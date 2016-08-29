@@ -461,7 +461,7 @@ namespace NoFuture.Rand.Domus
 
                 CreateSingleDaysPurchases(_amer.Personality, ccAcct, loopDt, (double)Paycheck.Amount * DF_DAILY_SPEND_PERCENT);
 
-                if (i%30 != 0 || ccAcct.GetBalance(loopDt).Amount < 0.0M)
+                if (i%30 != 0 || ccAcct.GetValueAt(loopDt).Amount < 0.0M)
                     continue;
 
                 var minDue = ccAcct.GetMinPayment(loopDt);

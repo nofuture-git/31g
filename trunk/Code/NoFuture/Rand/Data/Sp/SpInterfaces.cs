@@ -17,6 +17,13 @@ namespace NoFuture.Rand.Data.Sp //Sequere pecuniam
         /// <param name="dt"></param>
         /// <returns></returns>
         SpStatus GetStatus(DateTime? dt);
+
+        /// <summary>
+        /// Get the current balance for the given <see cref="dt"/>
+        /// </summary>
+        /// <param name="dt"></param>
+        /// <returns></returns>
+        Pecuniam GetValueAt(DateTime dt);
     }
 
     /// <summary>
@@ -164,14 +171,8 @@ namespace NoFuture.Rand.Data.Sp //Sequere pecuniam
         /// <param name="dt"></param>
         /// <returns></returns>
         Pecuniam GetMinPayment(DateTime dt);
-
-        /// <summary>
-        /// Get the current balance for the given <see cref="dt"/>
-        /// </summary>
-        /// <param name="dt"></param>
-        /// <returns></returns>
-        Pecuniam GetBalance(DateTime dt);
     }
+
     /// <summary>
     /// Represents a single one-time currency exchange 
     /// </summary>
@@ -183,6 +184,7 @@ namespace NoFuture.Rand.Data.Sp //Sequere pecuniam
         Pecuniam Fee { get; }
         string Description { get; }
     }
+
     /// <summary>
     /// A general type for duality of financial transactions (e.g. Buy\Sell, Long\Short, CashIn\CashOut)
     /// </summary>
@@ -191,6 +193,7 @@ namespace NoFuture.Rand.Data.Sp //Sequere pecuniam
         void Push(DateTime dt, Pecuniam amt, Pecuniam fee = null, string note = null);
         bool Pop(DateTime dt, Pecuniam amt, Pecuniam fee = null, string note = null);
     }
+
     /// <summary>
     /// Any type which has a count-of and an identifier
     /// </summary>

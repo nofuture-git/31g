@@ -28,7 +28,7 @@ namespace NoFuture.Tests.Rand.DomusTests
         public void TestGet30yearBalance()
         {
             var testSubject = new FixedRateLoan(DateTime.Today, 0.0885F, new Pecuniam(150000)) {Rate = 0.05F};
-            var testResult = testSubject.GetBalance(DateTime.Today.AddYears(30));
+            var testResult = testSubject.GetValueAt(DateTime.Today.AddYears(30));
 
             Dbg.WriteLine(testResult);
 

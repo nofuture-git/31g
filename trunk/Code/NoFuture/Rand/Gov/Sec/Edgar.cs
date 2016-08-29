@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Text;
 using System.Web;
 using NoFuture.Rand.Com;
 using NoFuture.Rand.Data.Types;
 using NoFuture.Shared;
-using NoFuture.Util.Binary;
 
 namespace NoFuture.Rand.Gov.Sec
 {
@@ -80,40 +78,6 @@ namespace NoFuture.Rand.Gov.Sec
         #endregion
 
         #region methods
-        public static Uri GetUriFullTextSearch(FullTextSearch fts)
-        {
-            if (string.IsNullOrWhiteSpace(fts.ToString()))
-                return null;
-            var urlFullText = new StringBuilder();
-
-            urlFullText.Append(SEC_ROOT_URL);
-            urlFullText.AppendFormat("/cgi-bin/srch-edgar?text={0}", fts);
-            urlFullText.Append($"&start={fts.PagingStartAt}&count={fts.PagingCount}");
-            urlFullText.Append($"&first={fts.YearStart}&last={fts.YearEnd}&output=atom");
-            return new Uri(urlFullText.ToString());
-        }
-
-        public static Uri GetUriCompanyNameSearch(string companyName)
-        {
-            if (string.IsNullOrWhiteSpace(companyName))
-                return null;
-            companyName = companyName.Trim();
-            var urlbyName = new StringBuilder();
-            urlbyName.Append(EDGAR_ROOT);
-            urlbyName.AppendFormat("?company={0}&owner=exclude&action=getcompany&output=atom", HttpUtility.UrlEncode(companyName));
-            return new Uri(urlbyName.ToString());
-        }
-
-        public static Uri GetUriCikSearch(CentralIndexKey cik, string rptType = "10-K")
-        {
-            var urlByCik = new StringBuilder();
-            
-            urlByCik.Append(EDGAR_ROOT);
-            urlByCik.Append($"?action=getcompany&CIK={cik}&type={rptType}&dateb=&owner=exclude&count=100&output=atom");
-            return new Uri(urlByCik.ToString());
-
-        }
-
         public static PublicCorporation[] ParseFullTextSearch(string rssContent, Uri srcUri)
         {
             if (string.IsNullOrWhiteSpace(rssContent))

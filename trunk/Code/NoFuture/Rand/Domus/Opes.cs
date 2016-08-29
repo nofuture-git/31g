@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using NoFuture.Rand.Data.Sp;
 using NoFuture.Rand.Domus.Pneuma;
-using NoFuture.Rand.Gov.Nhtsa;
 using NoFuture.Util.Math;
 
 namespace NoFuture.Rand.Domus
@@ -26,7 +25,7 @@ namespace NoFuture.Rand.Domus
             var dk = new Pecuniam(0.0M);
             foreach (var cc in CreditCardDebt.Cast<CreditCardAccount>())
             {
-                dk += cc.GetBalance(dt.GetValueOrDefault(DateTime.Now)).Neg;
+                dk += cc.GetValueAt(dt.GetValueOrDefault(DateTime.Now)).Neg;
             }
             return dk;
         }
@@ -35,9 +34,9 @@ namespace NoFuture.Rand.Domus
         {
             var tlt = GetTotalCurrentCcDebt(dt).Neg;
             foreach (var hd in HomeDebt)
-                tlt += hd.GetBalance(dt.GetValueOrDefault(DateTime.Now)).Neg;
+                tlt += hd.GetValueAt(dt.GetValueOrDefault(DateTime.Now)).Neg;
             foreach (var vd in VehicleDebt)
-                tlt += vd.GetBalance(dt.GetValueOrDefault(DateTime.Now)).Neg;
+                tlt += vd.GetValueAt(dt.GetValueOrDefault(DateTime.Now)).Neg;
             return tlt;
         }
 

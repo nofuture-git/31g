@@ -55,6 +55,12 @@ namespace NoFuture.Rand.Data.NfXml
         #endregion
 
         #region methods
+
+        public static Uri GetUri(SecForm secForm)
+        {
+            return secForm?.XmlLink;
+        }
+
         public override IEnumerable<dynamic> ParseContent(object content)
         {
             var xmlContent = content as string;

@@ -17,6 +17,11 @@ namespace NoFuture.Rand.Data.NfHtml
 
         public WikipediaInsCom(Uri src):base(src) { }
 
+        public static Uri GetUri()
+        {
+            return new Uri("http://en.wikipedia.org/wiki/List_of_United_States_insurance_companies");
+        }
+
         public override IEnumerable<dynamic> ParseContent(object content)
         {
             var webResponseBody = GetWebResponseBody(content);

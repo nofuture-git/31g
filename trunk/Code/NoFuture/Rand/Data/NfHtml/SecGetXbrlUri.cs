@@ -14,6 +14,11 @@ namespace NoFuture.Rand.Data.NfHtml
     {
         public SecGetXbrlUri(Uri src):base(src) { }
 
+        public static Uri GetUri(Gov.Sec.SecForm secForm)
+        {
+            return secForm?.HtmlFormLink;
+        }
+
         public override IEnumerable<dynamic> ParseContent(object content)
         {
             var webResponseBody = GetWebResponseBody(content);

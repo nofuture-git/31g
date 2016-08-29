@@ -9,17 +9,7 @@ namespace NoFuture.Rand.Gov.Fed
         public const string SEARCH_URL_BASE = "https://www.ffiec.gov/nicpubweb/nicweb/";
 
         #region methods
-        /// <summary>
-        /// This will produce a URI which upon being requested from FFIEC will return html in 
-        /// which the <see cref="rssd"/> will map to an official name.  This name will
-        /// produce results when used in SEC queries.
-        /// </summary>
-        /// <param name="rssd"></param>
-        /// <returns></returns>
-        public static Uri GetUriSearchByRssd(ResearchStatisticsSupervisionDiscount rssd)
-        {
-            return new Uri(SEARCH_URL_BASE + "InstitutionProfile.aspx?parID_Rssd=" + rssd + "&parDT_END=99991231");
-        }
+
 
         /// <summary>
         /// Attempts to get the ABA number based on RSSD 

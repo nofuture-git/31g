@@ -50,6 +50,11 @@ namespace NoFuture.Rand.Data.Sp
             return string.Join(" ", GetType().Name, Bank, Id);
         }
 
+        public virtual Pecuniam GetValueAt(DateTime dt)
+        {
+            return Balance.GetCurrent(dt, 0.0F);
+        }
+
         public SpStatus GetStatus(DateTime? dt)
         {
             if(Terminus != null && Terminus < dt)
@@ -249,6 +254,12 @@ namespace NoFuture.Rand.Data.Sp
         #endregion
 
         #region methods
+
+        public override Pecuniam GetValueAt(DateTime dt)
+        {
+            return Balance.GetCurrent(dt, InterestRate);
+        }
+
         public static SavingsAccount GetRandomSavingAcct(IPerson p, DateTime? dt = null)
         {
             var dtd = dt.GetValueOrDefault(DateTime.Now);
@@ -320,7 +331,7 @@ namespace NoFuture.Rand.Data.Sp
         /// <returns></returns>
         public bool IsMaxedOut(DateTime dt)
         {
-            return GetBalance(dt) >= Max;
+            return GetValueAt(dt) >= Max;
         }
 
         /// <summary>
@@ -339,7 +350,7 @@ namespace NoFuture.Rand.Data.Sp
         {
             if (dt > Cc.ExpDate)
                 return false;
-            var cBal = GetBalance(dt);
+            var cBal = GetValueAt(dt);
             if (cBal >= Max || cBal + val >= Max)
                 return false;
             return base.Pop(dt, val, fee, note);

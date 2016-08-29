@@ -118,7 +118,7 @@ namespace NoFuture.Tests.Rand
             var testInput = new NoFuture.Rand.Gov.Sec.Edgar.FullTextSearch();
             testInput.CompanyName = "CITIBANK, N.A.";
 
-            var testResult = NoFuture.Rand.Gov.Sec.Edgar.GetUriFullTextSearch(testInput);
+            var testResult = NoFuture.Rand.Data.NfXml.SecFullTxtSearch.GetUri(testInput);
 
             System.Diagnostics.Debug.WriteLine(testResult.ToString());
         }
