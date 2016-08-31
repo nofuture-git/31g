@@ -35,29 +35,31 @@ namespace NoFuture.Rand.Com
             }
             set { _tickerSymbols = value; } //XRef.cs needs this as RW
         }
-        /// <summary>
-        /// Strips periods and comma's and any whole words which 
-        /// do not begin with a letter or digit and encodes these results.
-        /// </summary>
-        public string UrlEncodedName
-        {
-            get
-            {
-                var searchCompanyName = Name.Replace(",", string.Empty);
-                searchCompanyName = searchCompanyName.Replace(".", string.Empty);
-                searchCompanyName = searchCompanyName.ToUpper().Trim();
+        public string UrlEncodedName => Uri.EscapeUriString(GetSearchCompanyName(Name));
 
-                var nameparts = searchCompanyName.Split(' ');
-
-                searchCompanyName = string.Join(" ",
-                    nameparts.Where(x => !string.IsNullOrWhiteSpace(x) && char.IsLetterOrDigit(x.ToCharArray()[0])));
-
-                return Uri.EscapeUriString(searchCompanyName);
-            }
-        }
         #endregion
 
         #region methods
+        /// <summary>
+        /// Strips period's, comma's, whole words which 
+        /// do not begin with a letter or digit and abbreviates
+        /// words using <see cref="Cusip.GetAbbrev"/>.
+        /// </summary>
+        public static string GetSearchCompanyName(string someName)
+        {
+            if (string.IsNullOrWhiteSpace(someName))
+                return string.Empty;
+            var searchCompanyName = someName.Replace(",", string.Empty);
+            searchCompanyName = searchCompanyName.Replace(".", string.Empty);
+            searchCompanyName = searchCompanyName.ToUpper().Trim();
+
+            var nameparts = searchCompanyName.Split(' ');
+
+            searchCompanyName = string.Join(" ",
+                nameparts.Where(x => !string.IsNullOrWhiteSpace(x) && char.IsLetterOrDigit(x.ToCharArray()[0])));
+
+            return Cusip.GetAbbrev(searchCompanyName);
+        }
         /// <summary>
         /// Parses the web response html content from <see cref="SecForm.HtmlFormLink"/> 
         /// locating the .xml Uri therein.

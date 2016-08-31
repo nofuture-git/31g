@@ -1024,7 +1024,7 @@ namespace NoFuture.Tests.Timeline
         [TestMethod]
         public void TestFastPlate()
         {
-            var testSubject = new FastPlate("OAuth 2.0 Authorization Code Flow", "Resource Owner", "User-Agent", "Client", "Auth Server");
+            var testSubject = new FastPlate("OAuth 2.0 Authorization Code Flow", null, "Resource Owner", "User-Agent", "Client", "Auth Server");
 
             testSubject.Blk("Client").Txt("Redirect to Auth Endpoint and a whole bunch of stuff in the request has to go as well").Blk("User-Agent");
             testSubject.Blk("User-Agent").Txt("Redirect to Auth Endpoint").Blk("Auth Server");
@@ -1048,7 +1048,7 @@ namespace NoFuture.Tests.Timeline
         [TestMethod]
         public void TestFastPlateExample()
         {
-            var myFPlate = new FastPlate("Band Practice", "Left side", "Middle side", "Right side");
+            var myFPlate = new FastPlate("Band Practice", null, "Left side", "Middle side", "Right side");
             myFPlate.Blk("Left side").Txt("big meaty claws").Blk("Right side");
             myFPlate.Blk("Right side").Txt("d'er not just for attractin' mates").Blk("Left side");
             myFPlate.Blk("Left side").Txt("yeah - bring it on").Blk("Right side").Blk(null);
@@ -1061,7 +1061,7 @@ namespace NoFuture.Tests.Timeline
         [TestMethod]
         public void TestFastPlateWithListValues()
         {
-            var testSubject = new FastPlate("OAuth 2.0 Authorization Code Flow", "Resource Owner", "User-Agent", "Client", "Auth Server");
+            var testSubject = new FastPlate("OAuth 2.0 Authorization Code Flow", null, "Resource Owner", "User-Agent", "Client", "Auth Server");
             testSubject.Blk("Client").Txt("Redirect to Auth Endpoint").Txt("client id").Txt("request scope").Txt("local state").Txt("redirection endpoint").Blk("User-Agent");
             testSubject.Blk("User-Agent").Txt("Redirect to Auth Endpoint").Blk("Auth Server");
             testSubject.Blk("Auth Server").Txt("Send back login screen").Blk("User-Agent");

@@ -61,9 +61,10 @@ namespace NoFuture.Rand.Gov.Sec
 
                 if (!string.IsNullOrWhiteSpace(CompanyName))
                 {
+                    var searchName = PublicCorporation.GetSearchCompanyName(CompanyName);
                     searchList.Add(CompanyName.ToCharArray().All(char.IsLetterOrDigit)
-                        ? HttpUtility.UrlEncode($"COMPANY-NAME={CompanyName.Trim()}")
-                        : $"COMPANY-NAME=%22{HttpUtility.UrlEncode(CompanyName.Trim(), Encoding.GetEncoding("ISO-8859-1"))}%22");
+                        ? HttpUtility.UrlEncode($"COMPANY-NAME={searchName}")
+                        : $"COMPANY-NAME=%22{HttpUtility.UrlEncode(searchName, Encoding.GetEncoding("ISO-8859-1"))}%22");
                 }
 
                 if(!string.IsNullOrWhiteSpace(ZipCode))

@@ -17,6 +17,23 @@ namespace NoFuture.Rand.Data.NfPdf
 
         public Sec13FCuispList(Uri src) : base(src) { }
 
+        public static Uri GetUri(DateTime? dt)
+        {
+            var currentDate = dt ?? DateTime.Today;
+
+            var yyyy = currentDate.Year;
+            var ddyy = currentDate.DayOfYear;
+
+            if(ddyy < 105)
+                return new Uri($"https://www.sec.gov/divisions/investment/13f/13flist{yyyy-1}q4.pdf");
+            if(ddyy < 195)
+                return new Uri($"https://www.sec.gov/divisions/investment/13f/13flist{yyyy}q1.pdf");
+            if(ddyy < 285)
+                return new Uri($"https://www.sec.gov/divisions/investment/13f/13flist{yyyy}q2.pdf");
+
+            return new Uri($"https://www.sec.gov/divisions/investment/13f/13flist{yyyy}q3.pdf");
+        }
+
         #region methods
         /// <summary>
         /// Parse pdf content from SEC to get CUSIP's

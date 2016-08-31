@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using NoFuture.Rand.Com;
 using NoFuture.Rand.Data.Types;
 using NoFuture.Shared;
 
@@ -9,6 +10,11 @@ namespace NoFuture.Rand.Data.NfHttp
     public class YhooFinSymbolLookup : NfDynDataBase
     {
         public YhooFinSymbolLookup(Uri srcUri):base(srcUri) { }
+
+        public static Uri GetUri(PublicCorporation com)
+        {
+            return new Uri("http://finance.yahoo.com/q?s=" + com.UrlEncodedName + "&ql=1");
+        }
 
         public override IEnumerable<dynamic> ParseContent(object content)
         {

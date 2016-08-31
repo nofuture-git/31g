@@ -1,12 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using NoFuture.Rand.Com;
 
 namespace NoFuture.Rand.Data.NfHtml
 {
     public class BloombergSymbolSearch : NfHtmlDynDataBase
     {
         public BloombergSymbolSearch(Uri srcUri):base(srcUri) { }
+
+        public static Uri GetUri(PublicCorporation com)
+        {
+            return new Uri("http://www.bloomberg.com/markets/symbolsearch?query=" + com.UrlEncodedName + "&commit=Find+Symbols");
+        }
 
         public override IEnumerable<dynamic> ParseContent(object content)
         {

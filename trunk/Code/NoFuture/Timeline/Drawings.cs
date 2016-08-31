@@ -302,15 +302,13 @@ namespace NoFuture.Timeline
         #endregion
 
         #region ctor
-        public FastPlate(string plateTitle, params string[] blockNames)
-            : this(plateTitle, new Rule { StartValue = 1, EndValue = 16, RuleLineSpacing = 3 }, blockNames)
+        public FastPlate(string plateTitle, int? dfWidth, params string[] blockNames)
         {
-        }
-
-        public FastPlate(string plateTitle, Rule ruler, params string[] blockNames)
-        {
+            if (dfWidth != null)
+                Config.Numerics.DefaultWidth = dfWidth.Value;
+            var ruler = new Rule {StartValue = 1, EndValue = 16, RuleLineSpacing = 3};
             if (blockNames == null || blockNames.Length <= 0)
-                throw new ArgumentNullException("blockNames");
+                throw new ArgumentNullException(nameof(blockNames));
 
             Name = string.IsNullOrWhiteSpace(plateTitle) ? "Sequence Diagram" : plateTitle;
             Ruler = ruler;

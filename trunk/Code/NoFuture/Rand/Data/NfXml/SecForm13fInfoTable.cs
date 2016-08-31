@@ -2,12 +2,18 @@
 using System.Collections.Generic;
 using System.Xml;
 using NoFuture.Rand.Data.Types;
+using NoFuture.Rand.Gov.Sec;
 
 namespace NoFuture.Rand.Data.NfXml
 {
     public class SecForm13FInfoTable : NfDynDataBase
     {
         public SecForm13FInfoTable(Uri src) : base(src) { }
+
+        public static Uri GetUri(SecForm secForm)
+        {
+            return secForm?.XmlLink;
+        }
 
         public override IEnumerable<dynamic> ParseContent(object content)
         {

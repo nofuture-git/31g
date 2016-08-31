@@ -9,8 +9,6 @@ namespace NoFuture.Rand.Gov.Fed
         public const string SEARCH_URL_BASE = "https://www.ffiec.gov/nicpubweb/nicweb/";
 
         #region methods
-
-
         /// <summary>
         /// Attempts to get the ABA number based on RSSD 
         /// </summary>
