@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Xml;
 using NoFuture.Rand.Data;
 using NoFuture.Rand.Data.Sp;
 using NoFuture.Rand.Data.Types;
 using NoFuture.Rand.Gov.Sec;
+using NoFuture.Util;
 
 namespace NoFuture.Rand.Com
 {
@@ -35,31 +37,12 @@ namespace NoFuture.Rand.Com
             }
             set { _tickerSymbols = value; } //XRef.cs needs this as RW
         }
-        public string UrlEncodedName => Uri.EscapeUriString(GetSearchCompanyName(Name));
+        public string UrlEncodedName => Uri.EscapeUriString(Cusip.GetSearchCompanyName(Name));
 
         #endregion
 
         #region methods
-        /// <summary>
-        /// Strips period's, comma's, whole words which 
-        /// do not begin with a letter or digit and abbreviates
-        /// words using <see cref="Cusip.GetAbbrev"/>.
-        /// </summary>
-        public static string GetSearchCompanyName(string someName)
-        {
-            if (string.IsNullOrWhiteSpace(someName))
-                return string.Empty;
-            var searchCompanyName = someName.Replace(",", string.Empty);
-            searchCompanyName = searchCompanyName.Replace(".", string.Empty);
-            searchCompanyName = searchCompanyName.ToUpper().Trim();
 
-            var nameparts = searchCompanyName.Split(' ');
-
-            searchCompanyName = string.Join(" ",
-                nameparts.Where(x => !string.IsNullOrWhiteSpace(x) && char.IsLetterOrDigit(x.ToCharArray()[0])));
-
-            return Cusip.GetAbbrev(searchCompanyName);
-        }
         /// <summary>
         /// Parses the web response html content from <see cref="SecForm.HtmlFormLink"/> 
         /// locating the .xml Uri therein.

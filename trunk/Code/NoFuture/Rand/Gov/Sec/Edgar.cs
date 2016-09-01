@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Web;
 using NoFuture.Rand.Com;
+using NoFuture.Rand.Data.Sp;
 using NoFuture.Rand.Data.Types;
 using NoFuture.Shared;
 
@@ -61,10 +62,11 @@ namespace NoFuture.Rand.Gov.Sec
 
                 if (!string.IsNullOrWhiteSpace(CompanyName))
                 {
-                    var searchName = PublicCorporation.GetSearchCompanyName(CompanyName);
+                    var searchName = Cusip.GetSearchCompanyName(CompanyName);
+                    searchName = Uri.EscapeUriString(searchName).Replace("&", "%26");
                     searchList.Add(CompanyName.ToCharArray().All(char.IsLetterOrDigit)
                         ? HttpUtility.UrlEncode($"COMPANY-NAME={searchName}")
-                        : $"COMPANY-NAME=%22{HttpUtility.UrlEncode(searchName, Encoding.GetEncoding("ISO-8859-1"))}%22");
+                        : $"COMPANY-NAME=%22{searchName}%22");
                 }
 
                 if(!string.IsNullOrWhiteSpace(ZipCode))

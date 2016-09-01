@@ -57,6 +57,13 @@ namespace NoFuture.Rand.Data.Sp
     }
 
     [Serializable]
+    public enum SecurityIssueGroup
+    {
+        Equity,
+        FixedIncome,
+    }
+
+    [Serializable]
     public struct TradelineClosure
     {
         public DateTime ClosedDate;

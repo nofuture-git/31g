@@ -1,9 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using NoFuture.Util;
 
 namespace NoFuture.Rand.Data.Sp
 {
     /// <summary>
+    /// Commitee on Uniform Securities Identification Procedures.
     /// A unique id for a financial security.
     /// Ref [https://en.wikipedia.org/wiki/CUSIP]
     /// Lists at [https://www.sec.gov/divisions/investment/13flists.htm]
@@ -13,6 +17,7 @@ namespace NoFuture.Rand.Data.Sp
     {
         #region constants
         public override string Abbrev => "CUSIP";
+        public const string DF_ISSUE = "10";
         #endregion
 
         #region fields
@@ -24,15 +29,44 @@ namespace NoFuture.Rand.Data.Sp
         #region ctor
         public Cusip()
         {
-            var rchars = new List<Rchar>();
-            for(var i = 0; i < 8; i++)
+            CheckDigitFunc = CusipChkDigit;
+            //the unique first chars from https://www.sec.gov/divisions/investment/13f/13flist2016q2.pdf
+            var rchars = new List<Rchar>
+            {
+                new LimitedRchar(0, '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+                    'B', 'C', 'D', 'E', 'F', 'G', 'H', 'L', 'M', 'N', 'P', 'Q', 'U', 'V', 'Y')
+            };
+            for(var i = 1; i < 8; i++)
                 rchars.Add( new AlphaNumericRchar(i));
             format = rchars.ToArray();
-            CheckDigitFunc = CusipChkDigit;
         }
         #endregion
 
         #region properties
+
+        public SecurityIssueGroup IssueGroup
+            =>
+                !string.IsNullOrWhiteSpace(Issue) && Issue.ToCharArray().Any(char.IsLetter)
+                    ? SecurityIssueGroup.FixedIncome
+                    : SecurityIssueGroup.Equity;
+
+        public string Issuer => string.Join("", _value.ToCharArray().Take(5));
+
+        /// <summary>
+        /// Default value is '10' 
+        /// Src [https://www.cusip.com/pdf/CUSIP_Intro_03.14.11.pdf] 
+        /// at Section "Issue Identifiers for Equity Securities"
+        /// </summary>
+        public string Issue => string.Join("", _value.ToCharArray().Skip(6).Take(2));
+
+        public int CheckDigit => CheckDigitFunc(string.Join("", Issuer, Issue));
+
+        public string Name { get; set; }
+
+        /// <summary>
+        /// Src [https://www.cusip.com/pdf/CUSIP_Intro_03.14.11.pdf] 
+        /// @ sub section 'Alpha characters and their equivalent numerical values'
+        /// </summary>
         internal static Dictionary<char, int> Letter2Num
         {
             get
@@ -42,7 +76,7 @@ namespace NoFuture.Rand.Data.Sp
                 for (var i = 0x41; i <= 0x5A; i++)
                 {
                     var letter = Convert.ToChar((byte)i);
-                    var num = i - 0x40;
+                    var num = i - 0x37;
                     _letter2num.Add(letter, num);
                 }
                 return _letter2num;
@@ -70,16 +104,16 @@ namespace NoFuture.Rand.Data.Sp
                 if (_fullWord2Abbrev.Count > 0)
                     return _fullWord2Abbrev;
 
-                _fullWord2Abbrev.Add(" AND", "&");
-                _fullWord2Abbrev.Add(" DOLLAR", "$");
-                _fullWord2Abbrev.Add(" PERCENT", "%");
+                _fullWord2Abbrev.Add(" AND", " &");
+                _fullWord2Abbrev.Add(" DOLLAR", " $");
+                _fullWord2Abbrev.Add(" PERCENT", " %");
                 _fullWord2Abbrev.Add("ACCEPTANCE", "ACCEP ");
                 _fullWord2Abbrev.Add("ACCIDENT", "ACC");
                 _fullWord2Abbrev.Add("ADJUSTED", "ADJ");
                 _fullWord2Abbrev.Add("ADJUSTMENT", "ADJ");
                 _fullWord2Abbrev.Add("ADMINISTRATION", "ADMIN");
                 _fullWord2Abbrev.Add("AGRICULTURAL", "AGRIC");
-                _fullWord2Abbrev.Add("AGY", "AGY");
+                _fullWord2Abbrev.Add("AGENCY", "AGY");
                 _fullWord2Abbrev.Add("AIRLINE", "AIRL");
                 _fullWord2Abbrev.Add("AIRPORT", "ARPT");
                 _fullWord2Abbrev.Add("AIRWAY", "AWY");
@@ -570,7 +604,7 @@ namespace NoFuture.Rand.Data.Sp
         /// <remarks>
         /// Src [https://www.cusip.com/pdf/CUSIP_Intro_03.14.11.pdf]
         /// </remarks>
-        public static string GetAbbrev(string someString)
+        public static string GetNameAbbrev(string someString)
         {
             var ssout = new List<string>();
             foreach (var sp in someString.ToUpper().Trim().Split(' '))
@@ -578,7 +612,56 @@ namespace NoFuture.Rand.Data.Sp
                 ssout.Add(FullWord2Abbrev.ContainsKey(sp) ? FullWord2Abbrev[sp] : sp);
             }
 
-            return string.Join(" ", ssout);
+            var rejoined = string.Join(" ", ssout);
+            foreach (var keyWithSp in FullWord2Abbrev.Keys.Where(x => x.Contains(" ")))
+            {
+                if (!rejoined.Contains(keyWithSp))
+                    continue;
+                var val = FullWord2Abbrev[keyWithSp];
+                rejoined = rejoined.Replace(keyWithSp, val);
+            }
+
+            return rejoined;
+        }
+
+        /// <summary>
+        /// Follows a standard from the CUSIP 
+        /// Src [https://www.cusip.com/pdf/CUSIP_Intro_03.14.11.pdf]
+        /// @ section 'RULES CONCERNING THE ISSUER’S NAME'
+        /// also <see cref="GetNameAbbrev"/>.
+        /// </summary>
+        public static string GetSearchCompanyName(string someName)
+        {
+            if (string.IsNullOrWhiteSpace(someName))
+                return string.Empty;
+            var comName = new StringBuilder();
+
+            //remove all non alpha-num chars except amp
+            foreach (var c in someName.ToCharArray())
+            {
+                if (c == '&' || char.IsLetterOrDigit(c))
+                {
+                    comName.Append(c);
+                    continue;
+                }
+                comName.Append(" ");
+            }
+
+            //only one space between unique words
+            var searchCompanyName = comName.ToString().ToUpper().DistillString();
+
+            //remove stop words 
+            var nameParts = new List<string>();
+            var searchNameWords = searchCompanyName.Split(' ');
+            var stopWords = new[] { "IN", "OF", "THE" };
+            foreach (var iWord in searchNameWords)
+            {
+                if (stopWords.Any(x => iWord == x))
+                    continue;
+                nameParts.Add(iWord);
+            }
+
+            return GetNameAbbrev(string.Join(" ",nameParts));
         }
         #endregion
     }

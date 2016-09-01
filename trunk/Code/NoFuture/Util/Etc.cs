@@ -71,7 +71,7 @@ namespace NoFuture.Util
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
-        public static string DistillString(string value)
+        public static string DistillString(this string value)
         {
             var sb = new StringBuilder();
             var prev = (char)0x0;
