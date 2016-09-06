@@ -8,6 +8,7 @@ using NoFuture.Rand.Gov;
 
 namespace NoFuture.Rand.Domus
 {
+    [Serializable]
     public class NorthAmericanEdu : IEducation
     {
 

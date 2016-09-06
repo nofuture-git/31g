@@ -11,6 +11,7 @@ namespace NoFuture.Rand.Edu
         Uri Website { get; set; }
     }
 
+    [Serializable]
     public class AmericanUniversity : AmericanEduBase, IUniversity
     {
         public const float DF_NATL_AVG = 30.0f;

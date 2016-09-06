@@ -7,6 +7,7 @@ using NoFuture.Util.Math;
 
 namespace NoFuture.Rand.Domus
 {
+    [Serializable]
     public abstract class Opes
     {
         public IList<DepositAccount> SavingAccounts { get; } = new List<DepositAccount>();

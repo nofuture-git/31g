@@ -3,6 +3,7 @@ using NoFuture.Rand.Domus;
 
 namespace NoFuture.Rand.Data.Sp
 {
+    [Serializable]
     public abstract class CreditScore : Identifier
     {
         public const int MAX_FICO = 850;
@@ -25,6 +26,7 @@ namespace NoFuture.Rand.Data.Sp
         }
     }
 
+    [Serializable]
     public class PersonalCreditScore : CreditScore
     {
         #region constants

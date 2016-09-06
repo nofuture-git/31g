@@ -10,6 +10,7 @@ using NoFuture.Util;
 
 namespace NoFuture.Rand.Gov
 {
+    [Serializable]
     public abstract class UsState
     {
         #region constants

@@ -5,6 +5,7 @@ using NoFuture.Util.Math;
 
 namespace NoFuture.Rand.Data.Sp
 {
+    [Serializable]
     public class Rent : ReceivableBase
     {
         #region fields

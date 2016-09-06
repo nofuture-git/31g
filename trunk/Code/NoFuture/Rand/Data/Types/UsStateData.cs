@@ -7,6 +7,7 @@ using NoFuture.Util.Math;
 
 namespace NoFuture.Rand.Data.Types
 {
+    [Serializable]
     public class UsStateData
     {
         #region fields

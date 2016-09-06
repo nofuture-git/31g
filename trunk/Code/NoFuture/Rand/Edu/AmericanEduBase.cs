@@ -1,9 +1,11 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Xml;
 using NoFuture.Rand.Data;
 
 namespace NoFuture.Rand.Edu
 {
+    [Serializable]
     public abstract class AmericanEduBase
     {
         [EditorBrowsable(EditorBrowsableState.Never)]

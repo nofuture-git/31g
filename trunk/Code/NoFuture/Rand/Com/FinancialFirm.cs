@@ -9,12 +9,14 @@ using NoFuture.Rand.Gov.Fed;
 
 namespace NoFuture.Rand.Com
 {
+    [Serializable]
     public enum TypeOfBank
     {
         NationallyChartered,
         StateChartered,
         StateCharteredNonMember
     }
+    [Serializable]
     public class FinancialFirm : PublicCorporation
     {
         public FinancialFirm()
@@ -41,6 +43,7 @@ namespace NoFuture.Rand.Com
     /// <summary>
     /// Represent a bank which is under the auspices of the US Federal Reserve
     /// </summary>
+    [Serializable]
     public class Bank : FinancialFirm
     {
         #region ctor

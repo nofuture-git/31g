@@ -13,6 +13,7 @@ namespace NoFuture.Rand.Domus
     /// For generating the financial state and history of a <see cref="NorthAmerican"/>
     /// at random.
     /// </summary>
+    [Serializable]
     public class NorthAmericanWealth : Opes
     {
         #region innerTypes

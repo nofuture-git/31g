@@ -21,6 +21,7 @@ namespace NoFuture.Rand.Gov.Nhtsa
     /// % Americans with Auto
     /// Src: [https://people.hofstra.edu/geotrans/eng/ch6en/conc6en/USAownershipcars.html]
     /// </remarks>
+    [Serializable]
     public class Vin : Identifier
     {
         #region inner types
@@ -332,6 +333,7 @@ namespace NoFuture.Rand.Gov.Nhtsa
     /// Represents the chars 1-3 of a VIN 
     /// see http://vpic.nhtsa.dot.gov/
     /// </summary>
+    [Serializable]
     public struct WorldManufacturerId
     {
         [VinPosition(1,1)]
@@ -494,6 +496,7 @@ namespace NoFuture.Rand.Gov.Nhtsa
     /// Represents the chars 4-8 of a VIN
     /// see http://vpic.nhtsa.dot.gov/
     /// </summary>
+    [Serializable]
     public struct VehicleDescription
     {
         [VinPosition(4, 1)]
@@ -530,6 +533,7 @@ namespace NoFuture.Rand.Gov.Nhtsa
     /// Represents the chars 10-17 of a VIN 
     /// see http://vpic.nhtsa.dot.gov/
     /// </summary>
+    [Serializable]
     public struct VehicleIdSection
     {
         [VinPosition(10,1)]
@@ -578,6 +582,7 @@ namespace NoFuture.Rand.Gov.Nhtsa
     /// <summary>
     /// Is One based index
     /// </summary>
+    [Serializable]
     [AttributeUsage(AttributeTargets.Property)]
     public class VinPositionAttribute : Attribute
     {

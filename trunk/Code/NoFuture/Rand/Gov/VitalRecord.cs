@@ -8,7 +8,7 @@ namespace NoFuture.Rand.Gov
     {
         
     }
-
+    [Serializable]
     public abstract class VitalRecord : IVitalRecord
     {
         protected VitalRecord(IPerson person)
@@ -19,7 +19,7 @@ namespace NoFuture.Rand.Gov
         public abstract string Abbrev { get; }
         public IPerson Value { get; set; }
     }
-
+    [Serializable]
     public class BirthCert : VitalRecord
     {
         public BirthCert(IPerson person)
@@ -37,7 +37,7 @@ namespace NoFuture.Rand.Gov
             return DateOfBirth.ToString("yyyy-M-dd");
         }
     }
-
+    [Serializable]
     public class AmericanBirthCert : BirthCert
     {
         public AmericanBirthCert(IPerson person) : base(person)

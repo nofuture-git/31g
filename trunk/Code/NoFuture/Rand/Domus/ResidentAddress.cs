@@ -3,6 +3,7 @@ using NoFuture.Rand.Data.Types;
 
 namespace NoFuture.Rand.Domus
 {
+    [Serializable]
     public class ResidentAddress : Identifier
     {
         public DateTime FromDate { get; set; }

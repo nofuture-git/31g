@@ -2,6 +2,7 @@ using System;
 
 namespace NoFuture.Rand.Domus
 {
+    [Serializable]
     public class Spouse : IRelation
     {
         #region fields

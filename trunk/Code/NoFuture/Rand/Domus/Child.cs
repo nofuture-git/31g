@@ -1,5 +1,8 @@
-﻿namespace NoFuture.Rand.Domus
+﻿using System;
+
+namespace NoFuture.Rand.Domus
 {
+    [Serializable]
     public class Child : IRelation
     {
         public Child(IPerson p)

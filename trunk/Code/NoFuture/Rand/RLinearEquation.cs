@@ -1,5 +1,8 @@
-﻿namespace NoFuture.Rand
+﻿using System;
+
+namespace NoFuture.Rand
 {
+    [Serializable]
     public class RLinearEquation : Util.Math.LinearEquation
     {
         public double StdDev { get; set; }

@@ -25,6 +25,7 @@ namespace NoFuture.Rand.Gov.Sec
         /// <summary>
         /// see [http://www.sec.gov/edgar/searchedgar/edgarzones.htm]
         /// </summary>
+        [Serializable]
         public class FullTextSearch
         {
             public string SicCode;

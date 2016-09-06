@@ -33,7 +33,7 @@ namespace NoFuture.Rand
         List<Tuple<KindsOfNames, string>> Names { get; }
         void UpsertName(KindsOfNames k, string name);
     }
-
+    [Serializable]
     public abstract class VocaBase : IVoca
     {
         public List<Tuple<KindsOfNames, string>> Names { get; } = new List<Tuple<KindsOfNames, string>>();
@@ -248,6 +248,7 @@ namespace NoFuture.Rand
         Step = 4098
     }
 
+    [Serializable]
     [Flags]
     public enum OccidentalEdu : short
     {
