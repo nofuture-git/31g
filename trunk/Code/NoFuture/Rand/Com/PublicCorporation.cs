@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Xml;
-using NoFuture.Rand.Data;
 using NoFuture.Rand.Data.Sp;
 using NoFuture.Rand.Data.Types;
+using NoFuture.Rand.Gov.Irs;
 using NoFuture.Rand.Gov.Sec;
-using NoFuture.Util;
 
 namespace NoFuture.Rand.Com
 {
@@ -62,8 +60,12 @@ namespace NoFuture.Rand.Com
                 return false;
 
             var xrblUriStr = myDynDataRslt.First().XrblUri;
-            
+
             pcAnnualRpt.XmlLink = new Uri(xrblUriStr);
+            var irsId = myDynDataRslt.First().IrsId as string;
+            if(!string.IsNullOrWhiteSpace(irsId))
+                pc.EIN = new EmployerIdentificationNumber {Value = irsId};
+
             return true;
         }
 

@@ -20,7 +20,7 @@ namespace NoFuture.Rand.Data.Types
         {
             get
             {
-                if (_city.Contains(","))
+                if (!string.IsNullOrWhiteSpace(_city) && _city.Contains(","))
                     _city = _city.Replace(",", "");
                 return _city;
             }

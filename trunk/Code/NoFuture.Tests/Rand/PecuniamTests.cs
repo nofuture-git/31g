@@ -2,16 +2,31 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NoFuture.Rand;
 using NoFuture.Rand.Data.Sp;
-using NoFuture.Shared;
-using NoFuture.Util;
 
 namespace NoFuture.Tests.Rand
 {
     [TestClass]
     public class PecuniamTests
     {
+        [TestMethod]
+        public void TestOps()
+        {
+            var test00 = Pecuniam.Zero;
+            var test01 = new Pecuniam(1.0M);
+            var testResult = test00 + test01;
+            Assert.AreEqual(1.0M, testResult.Amount);
+
+            Assert.AreEqual(new Pecuniam(2.0M), new Pecuniam(1.0M) + new Pecuniam(1.0M));
+            Assert.AreEqual(new Pecuniam(2.0M), new Pecuniam(4.0M) - new Pecuniam(2.0M));
+            Assert.AreEqual(new Pecuniam(4.0M), new Pecuniam(4.0M) * new Pecuniam(1.0M));
+            Assert.AreEqual(new Pecuniam(4.0M), new Pecuniam(4.0M) / new Pecuniam(1.0M));
+
+            Assert.IsTrue(new Pecuniam(4.0M) > new Pecuniam(3.0M));
+            Assert.IsTrue(new Pecuniam(1.0M) < new Pecuniam(3.0M));
+            Assert.IsTrue(new Pecuniam(1.0M) == new Pecuniam(1.0M));
+            Assert.IsTrue(new Pecuniam(2.0M) != new Pecuniam(1.0M));
+        }
 
         [TestMethod]
         public void TestSort()

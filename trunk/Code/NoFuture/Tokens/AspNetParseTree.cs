@@ -315,7 +315,7 @@ namespace NoFuture.Tokens
 				
 				textContent.Append(markup);
 			}
-            _results.HtmlOnly = textContent + "</html>";
+            _results.HtmlOnly = textContent.ToString();
         }
 
         public override void ExitHtmlElements(HTMLParser.HtmlElementsContext ctx)

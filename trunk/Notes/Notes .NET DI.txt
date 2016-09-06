@@ -575,3 +575,36 @@ Windsor Castle Example : Property Injection
 	}
  }
 ----
+
+----
+12 Antithesis against .NET DI
+
+Why am I so opposed to the use of DI containers – simple answer, it cripples assemblies.  Its whole use has become something out of an Orwellian novel filled with what he coined as “double-speak”.  Where the very problems DI containers were promoting to solve – they made worse.  So how did I develop this distaste for DI containers – at the PowerShell console (of course).
+
+(1) You are just being lazy, not wanting to inject the dependencies of each type – no, I consider myself a consumer of the assembly and its services  and I shouldn’t have to care about how it does its job only what kind of jobs it can do.  
+
+(2) DI allows for mocking dependencies in unit tests – no, interfaces and inheritance allow for mocking dependencies; furthermore, mocks are best suited to handle the difficulties of inter-process functionality, and lastly, unit-test whose setup and mocks are more complex than their target is a sign-post of bad design.
+
+(3) DI presses developers to write types as an interface which is good design – no, interfaces are the Java and .NET way of handling multiple-inheritance (Python solved this problem in a totally different way) they serve little purpose when they are only implemented by one concrete type.
+
+(4) DI facilitates good OO design – no, DI forms an anti-pattern for even simple designs (e.g. abstract-factory) where a developer must use various container registration techniques to accomplish it – in effect having to redefine the whole manifold of OO to the container.
+
+(5) The assembly wasn’t meant to be worked in such a way as being imported directly into PowerShell\C# Interactive\F# Interactive – really, then why did you make it an assembly?  
+
+(6) You are not considering the complexity of our operations and the depth of what these assemblies need to perform their functions – no, I am not considering the depth of complexity you have designed into these assemblies as anything more than ostentation.    
+
+(7) It’s perfectly normal to not be able to use an assembly without its dependent assemblies – no, it’s completely normal to not be able to use an assembly without the runtime having some clue where to find its dependencies.  
+
+(8) Isn’t that same thing –no, DI infused assemblies must be both loaded and have all their types registered with the container which requires detailed knowledge about the assembly and its types.
+
+(9) You just add a static method to any assembly passing in the container and it would register all its types - no, you could just add such a method, but will you, where will it be, what will it be named, will it register all the types? - again more assembly specific knowledge that the DI infused assembly should itself be made to deal with, but it can’t.
+
+(10) You are just mad because you cannot continue in your unhealthy obsession with CLI – no, ad hominin, the facts stand against this design. 
+
+(11) You just hate the whole IoC design pattern on which DI containers are based – no, it is senseless to “hate” a design-pattern since its only measure of worth is how well it solves some particular design problem of some particular system\domain.  Any design pattern may be abused.
+
+(12) DI containers are a standard practice within the industry – yes, and communism was a standard form of government in the 20th century. 
+
+And so we return to the whole double-speak, considering the DI-container dependent code within this organization as well-layered with even and logical coterminous boundaries when you have, in fact, created a monolithic stack of assemblies that can only be used at one end (the one with the container).  While the inconvenience of using software is not comparable to the loss-of-life caused by communist governments – I am pointing out the similarities in mind-set between the two – and the outcome of when highly intelligent people subscribe to delusions.
+
+----

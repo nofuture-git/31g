@@ -71,7 +71,7 @@ namespace NoFuture.Rand.Data.Sp
         {
             var pp1 = p1 ?? Zero;
             var pp2 = p2 ?? Zero;
-            if (pp1.Id.Equals(pp2.Id))
+            if (!pp1.Id.Equals(pp2.Id))
                 throw new RahRowRagee("Can only add currencies from the same nation");
 
             return new Pecuniam(pp1.Amount + pp2.Amount);
@@ -82,7 +82,7 @@ namespace NoFuture.Rand.Data.Sp
             var pp1 = p1 ?? Zero;
             var pp2 = p2 ?? Zero;
 
-            if (pp1.Id.Equals(pp2.Id))
+            if (!pp1.Id.Equals(pp2.Id))
                 throw new RahRowRagee("Can only add currencies from the same nation");
 
             return new Pecuniam(pp1.Amount - pp2.Amount);
@@ -93,7 +93,7 @@ namespace NoFuture.Rand.Data.Sp
             var pp1 = p1 ?? Zero;
             var pp2 = p2 ?? Zero;
 
-            if (pp1.Id.Equals(pp2.Id))
+            if (!pp1.Id.Equals(pp2.Id))
                 throw new RahRowRagee("Can only add currencies from the same nation");
 
             return new Pecuniam(pp1.Amount * pp2.Amount);
@@ -104,7 +104,7 @@ namespace NoFuture.Rand.Data.Sp
             var pp1 = p1 ?? Zero;
             var pp2 = p2 ?? Zero;
 
-            if (pp1.Id.Equals(pp2.Id))
+            if (!pp1.Id.Equals(pp2.Id))
                 throw new RahRowRagee("Can only add currencies from the same nation");
 
             return new Pecuniam(pp1.Amount / pp2.Amount);
@@ -115,7 +115,7 @@ namespace NoFuture.Rand.Data.Sp
             var pp1 = p1 ?? Zero;
             var pp2 = p2 ?? Zero;
 
-            if (pp1.Id.Equals(pp2.Id))
+            if (!pp1.Id.Equals(pp2.Id))
                 return false;
 
             return pp1.Amount == pp2.Amount;
@@ -131,7 +131,7 @@ namespace NoFuture.Rand.Data.Sp
             var pp1 = p1 ?? Zero;
             var pp2 = p2 ?? Zero;
 
-            if (pp1.Id.Equals(pp2.Id))
+            if (!pp1.Id.Equals(pp2.Id))
                 return false;
             return pp1.Amount > pp2.Amount;
         }
@@ -140,7 +140,7 @@ namespace NoFuture.Rand.Data.Sp
         {
             var pp1 = p1 ?? Zero;
             var pp2 = p2 ?? Zero;
-            if (pp1.Id.Equals(pp2.Id))
+            if (!pp1.Id.Equals(pp2.Id))
                 return false;
             return pp1.Amount < pp2.Amount;
         }
@@ -150,7 +150,7 @@ namespace NoFuture.Rand.Data.Sp
             var pp1 = p1 ?? Zero;
             var pp2 = p2 ?? Zero;
 
-            if (pp1.Id.Equals(pp2.Id))
+            if (!pp1.Id.Equals(pp2.Id))
                 return false;
             return pp1.Amount >= pp2.Amount;
         }
@@ -159,7 +159,7 @@ namespace NoFuture.Rand.Data.Sp
         {
             var pp1 = p1 ?? Zero;
             var pp2 = p2 ?? Zero;
-            if (pp1.Id.Equals(pp2.Id))
+            if (!pp1.Id.Equals(pp2.Id))
                 return false;
             return pp1.Amount <= pp2.Amount;
         }

@@ -34,7 +34,8 @@ namespace NoFuture.Tests.Rand.NfHtmlTests
             Assert.IsNotNull(testResultItem);
             Assert.IsInstanceOfType(testResultItem, typeof(Form10K));
             Assert.IsNotNull( ((Form10K)testResultItem).XmlLink);
-
+            Assert.IsNotNull(testSubject.EIN);
+            Assert.AreEqual("371737959", testSubject.EIN.Value);
         }
 
         [TestMethod]
