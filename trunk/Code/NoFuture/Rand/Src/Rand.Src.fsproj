@@ -53,10 +53,12 @@
   <Import Project="$(FSharpTargetsPath)" />
   <ItemGroup>
     <Compile Include="AssemblyInfo.fs" />
+    <Compile Include="KMeans.fs" />
     <None Include="MsaAvgEarningPerYear.fsx" />
     <None Include="ZipCodeXref.fsx" />
     <None Include="CountyAvgEarningPerYear.fsx" />
     <None Include="State2NaiscSuperSector.fsx" />
+    <None Include="FedFrbUsModelData.fsx" />
     <Content Include="packages.config" />
     <None Include="NoFutureRandSrc.ps1" />
   </ItemGroup>

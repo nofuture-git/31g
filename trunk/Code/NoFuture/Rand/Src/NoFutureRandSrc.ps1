@@ -1,7 +1,8 @@
 ﻿<#
-	These data sources are either too big to load at runtime
-	or they require a POST - which the Csv and Json FSharp
-	Providers don't appear to handle.
+	These data sources are either too big to load at runtime,
+	they require a POST - which the Csv and Json FSharp
+	Providers don't appear to handle, or are downloaded as a
+	zip file which must be uncompressed.
 
 	The FBI UCR are .xls format and require alot of manual
 	modification before they are usable tsv.
@@ -91,3 +92,91 @@ $fbiUcr = @(
 "https://www2.fbi.gov/ucr/cius2008/data/documents/08tbl04.xls",
 "https://www2.fbi.gov/ucr/cius2006/data/documents/06tbl04.xls"
 )
+
+<#
+FED data used to apply macroecon theory
+#>
+Add-Type -AssemblyName "System.IO.Compression.FileSystem"
+
+#must assign proxy server elsewhere
+$samplesDir = Join-Path $myScriptLocation "Samples"
+$fedFrbUsData = (Join-Path $samplesDir "data_only_package.zip")
+Invoke-WebRequest -Uri "https://www.federalreserve.gov/econresdata/frbus/files/data_only_package.zip" -Proxy ([NoFuture.Shared.SecurityKeys]::ProxyServer)  -ProxyUseDefaultCredentials -OutFile $fedFrbUsData
+
+[System.IO.Compression.ZipFile]::ExtractToDirectory($fedFrbUsData,$samplesDir)
+$fedFrbUsData = Import-Csv (Join-Path $samplesDir "data_only_package\HISTDATA.TXT")
+$filteredDataFn = Join-Path $samplesDir "data_only_package\filtered.HISTDATA.TXT"
+
+#reduce data to more undergrad levels
+$targetedFedFeatures = @{
+    "CENG"="Energy"
+    "EC"="TotalConsumption";
+    "ECD"="ConsumerDurableGoodsExpend";
+    "ECH"="ConsumerHomeSvcsExpend";
+    "ECO"="ConsumerNonDurableExpend";
+    "EGF"="FedGovtExpend";
+    "EGS"="StateLocalGovtExpend";
+    "EH"="HomeBuyers";
+    "EIN"="ChangeBizInventory";
+    "EM"="Imports";
+    "EMP"="PetroImports";
+    "EPD"="InvestmentEquipment";
+    "EPI"="InvestmentCopyright";
+    "EPS"="InvestmentBuildings";
+    "EX"="Exports";
+    "FCBN"="USCurrentAcct"; #NetExports = EX-EM, NetFactorPmts = GFT /therefore FCBN = (EX-EM)+GFT
+    "FPC"="ForeignPriceLevel";
+    "FPX"="NominalExchangeRate";
+    "FPXR"="RealExchangeRate";
+    "FRL10"="ForeignLongTermInterestRate";
+    "FRS10"="ForeignShortTermInterestRate";
+    "GFT"="FedNetTransferPmts"; #payments made to SS, Medicare, etc.
+    "GST"="StateLocalTransferPmts";
+    "JRCD"="DeprecRateConsumerDurables";
+    "JRH"="DeprecHousing";
+    "JRPD"="DeprecEquipment";
+    "JRPS"="DeprecBuildings";
+    "KI"="PrivateInventoryStock";
+    "KS"="CapitalSvcs";
+    "LF"="TotalLabor";
+    "PCPI"="ConsumerPriceIndex";
+    "PIGDP"="InflationRate";
+    "PL"="Wages";
+    "RFF"="InterestRate";
+    "RSPNIA"="PersonalSavingsRate";
+    "TRFCI"="FedBizTaxRate";
+    "TRFP"="FedHouseholdTaxRate";
+    "TRSCI"="StateLocalBizTaxRate";
+    "TRSP"="StateLocalHouseholdTaxRate";
+    "WPO"="HouseholdPropertyWealth";
+    "WPS"="HouseholdSecuritiesWealth";
+    "XB"="TotalOutput";
+    "YDN"="DisposableIncome";
+    "YH"="HouseholdIncome";
+    "YHSN"="PersonalSavings";
+    "YPN"="PersonalIncome"
+}
+
+
+$dataRow = @()
+$dataRow += "Timeframe"
+
+$targetedFedFeatures.Keys | % {
+    $feature = $_
+    $dataRow += $targetedFedFeatures[$feature]
+}
+[System.IO.File]::WriteAllText($filteredDataFn, [string]::Join("`t", $dataRow))
+[System.IO.File]::AppendAllText($filteredDataFn,"`n")
+
+$fedFrbUsData | % {
+    $row = $_
+    $dataRow = @()
+    $dataRow += $row.OBS
+    $targetedFedFeatures.Keys | % {
+        $feature = $_
+        $dataRow += $row.$feature
+    }
+
+    [System.IO.File]::AppendAllText($filteredDataFn, [string]::Join("`t", $dataRow))
+    [System.IO.File]::AppendAllText($filteredDataFn,"`n")
+}

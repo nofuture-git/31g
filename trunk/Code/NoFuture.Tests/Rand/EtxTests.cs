@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NoFuture.Rand.Domus;
@@ -58,12 +59,37 @@ namespace NoFuture.Tests.Rand
             var mean = 500;
             var stdDev = 100;
 
+            var trCounts = new Dictionary<Tuple<double, double>, int>
+            {
+                {new Tuple<double, double>(0, 100), 0},
+                {new Tuple<double, double>(100, 200), 0},
+                {new Tuple<double, double>(200, 300), 0},
+                {new Tuple<double, double>(300, 400), 0},
+                {new Tuple<double, double>(400, 500), 0},
+                {new Tuple<double, double>(500, 600), 0},
+                {new Tuple<double, double>(600, 700), 0},
+                {new Tuple<double, double>(700, 800), 0},
+                {new Tuple<double, double>(800, 900), 0},
+                {new Tuple<double, double>(900, 1000), 0}
+            };
+
+
             for (var i = 0; i < 256; i++)
             {
                 var testResult = NoFuture.Rand.Etx.RandomValueInNormalDist(mean, stdDev);
 
-                System.Diagnostics.Debug.WriteLine(testResult);
-                
+                var trCat = trCounts.Keys.FirstOrDefault(x => x.Item1 <= testResult && testResult < x.Item2);
+
+                if(trCat == null)
+                    System.Diagnostics.Debug.WriteLine(testResult);
+
+                Assert.IsNotNull(trCat);
+                trCounts[trCat] += 1;
+            }
+
+            foreach (var tr in trCounts.Keys)
+            {
+                System.Diagnostics.Debug.WriteLine($"{tr} {trCounts[tr]}");
             }
         }
 

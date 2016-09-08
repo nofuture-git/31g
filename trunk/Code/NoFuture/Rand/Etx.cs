@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
 using Newtonsoft.Json;
 using NoFuture.Rand.Data;
 using NoFuture.Rand.Data.NfHtml;
-using NoFuture.Rand.Data.NfHttp;
 using NoFuture.Rand.Data.NfText;
 using NoFuture.Rand.Data.NfXml;
 using NoFuture.Rand.Data.Types;
@@ -497,6 +495,12 @@ namespace NoFuture.Rand
             return upperCase ? Char.ToUpper(sa) : sa;
         }
 
+        /// <summary>
+        /// Returns a date as a rational number (e.g. 2016.684476658052) 
+        /// where day of year is divided by <see cref="Constants.DBL_TROPICAL_YEAR"/>
+        /// </summary>
+        /// <param name="d"></param>
+        /// <returns></returns>
         public static double ToDouble(this DateTime d)
         {
             return (d.Year + (d.DayOfYear/Constants.DBL_TROPICAL_YEAR));
@@ -519,7 +523,7 @@ namespace NoFuture.Rand
             if (fromThisDate != null)
                 dt = fromThisDate.Value;
             //plus or minus some random days
-            var randomDaysNear = Etx.IntNumber(1, 360)*PlusOrMinusOne;
+            var randomDaysNear = Etx.IntNumber(1, maxDaysSpread) *PlusOrMinusOne;
             return dt.AddYears(plusOrMinusYears).AddDays(randomDaysNear);
         }
 

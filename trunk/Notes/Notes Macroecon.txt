@@ -1,0 +1,552 @@
+----
+Notes Macroeconomics
+----
+
+----
+Preliminary notes: measurement of the macroeconomic variables.
+ - Expenditure Approach  Y = C + I + G + NX
+  - Y is total output of the economy
+  - C is consumption of 
+   - consumer durables (cars televisions furniture but NOT 
+     houses they are considered investments)
+   - Nondurable goods (food clothing and fuel)
+   - Services (education, health care, financial services and transportation)
+  - I Investment 
+   - Fixed investment ( spending by business on new structures and equipment)
+   - Inventory investment ( increase in the available inputs of a firm to 
+     produce its product)
+  - G Government Purchases 
+   - Gov’t purchases on goods and services ( most of which is spent at 
+     the state and local level)
+   - Transfers which are the money dished out for Social Security, 
+     medical aid, unemployment checks and welfare.
+  - NX Net Exports: exports minus imports
+----
+
+----
+Savings: 
+ - Private disposable income: equal to all the income gathered form 
+   the private sector plus the money transferred from the government.  
+   Amount of money the private sector has to spend.
+  - PVT_DI = Y + NFP + TR + INT – T (NFP: net factor payments, which are 
+    interest and dividends, paid on foreign assets.  TR: transfers from 
+    the government  and INT is interest)
+
+ - Net Government income: this is the amount that is not disposable to 
+   the private sector
+  - NET_GOVT_INCOME = T – TR – INT  (Which is the governments income, taxes, 
+    minus the two major expenditures of the government which is transfers 
+    (TR) and interest (INT)).
+
+ - Private Savings: as would be expected the saving of the private sector is 
+   their income minus the amount of that income that they use for consumption.
+  - S_PVT = PVT_DI – C (Which just states mathematically what was said above)
+  - Note that Investment is not included in this formula because it is not 
+    something that is used to meet current needs, investment is used to increase 
+    productivity in the future.
+
+ - Government Savings: the same principle applies to the government saving as 
+   the private.  The governments saving is its income minus the amount that is 
+   consumes (G).
+  - S_GOVT = (T – TR – INT) – G (note: the first part in parentheses is 
+    government income)
+
+ - National Savings: is the sum of Government and private savings
+  - S = S_PVT + S_GOVT
+  - Note that the above equation reduces to S = Y + NFP – C – G
+  - Uses of private savings: the uses of private savings are found algebraically.  
+    By replacing Y with the identity (C + I + G + NX) and reducing the equation 
+    S = I + (NX + NFP) is found.  With this equation NX + NFP is the Current Account 
+    Balance.  Then by subtracting S_GOVT from both sides the Uses-of-savings identity   
+    S_PVT = I + CA – S_GOVT
+  - I : Investment which is firms borrowing from savers to finance capital investments 
+    and increase inventories. 
+  - S_GOVT : This is the government budget deficit is must borrow money to cover 
+    its spending over its income
+  - CA: Current account balance, this is important to international economics, if the 
+    CA is negative then the ( as it is in the US) then to finance the deficit the 
+    domestic assets must be sold to foreigners in the form of stocks and real assets 
+    or the deficit is financed through domestic citizens borrowing from the other country.
+
+ - National Wealth: this is a stock, it has two parts (1) the stock of capital and land 
+   in the country and (2) the Net Foreign Assets.  NFA is a country’s foreign assets 
+   owned by domestic citizens minus the domestic assets owned by foreigners.  
+  - National Wealth may increase by two ways (1) it may increase by an appreciation or 
+    depreciation of the current stock, or (2) wealth may grow by an increased savings rate.  
+----
+
+----
+Price Index: each year with the expenditure approach the data on total output is in nominal 
+ terms.  There is a need to take out the changes of the output data that are a result of 
+ increasing prices (inflation) from actual real increases in output.
+ - Calculation of real value of output: to get this you must take a base-year’s prices 
+   times the current quantities of production
+ - Price level changes are calculated in two forms, the difference between the two is 
+   in which years output is used. 
+  - Fixed-weight index: with this price index the output that is used is the base year.  
+                        The only thing that changes from year to year is the current prices 
+                        of the market basket
+   - PRICE_LEVEL = Q_B * C_P / Q_B * C_B where Q_B is quantity of the base year, C_P is 
+                   the current price of the market basket and C_B is the price of the market 
+                   basket in the base year.
+  - Variable-weight index: with this index the output changes to reflect current levels 
+   - PRICE_LEVEL = Q_C * C_P / Q_C * C_B where Q_C quantity at current levels
+
+Inflation: this is measured on a year to year basis by taking the change in the price level 
+ of the current year from the previous year and dividing that difference by the previous 
+ years price level.
+----
+
+----
+Productivity, Output and Employment:  
+
+Production Function: this is a general equation that states that the output of 
+ an economy is a function of capital, labor and productivity.  
+ 
+Capital and labor are the exogenous variables and productivity is the efficiency of the two.
+ - The production function is a multivariate function, with both variables showing diminishing 
+   marginal productivity.  From this diminishing productivity the derivatives of the two have 
+   a negative slope.
+ 
+Labor Demand: As with firm specific, labor demand is found by equating the wage to the 
+              marginal product of labor (the derivative of the production function with respect 
+              to labor holding capital constant).
+ - Capital is considered constant in the short run, therefore in the short-run output is a 
+   function of labor alone.
+ - With the labor demand function the wage rate is the exogenous variable.  Since the marginal 
+   product of labor is negative slope as wage decreases labor demand will go up and the 
+   opposite for when the wage goes up.
+ - Shifts in the labor demand will happen when there is a change in productivity and 
+   or a change in the capital stock. Furthermore, the extent of these changes is known 
+   by the values of the production function.  
+ 
+Labor Supply: households and individuals that decide on a tradeoff between labor supply 
+              and leisure determine labor supply. Of course the labor supply curve is upward 
+              sloping since households are willing to supply more at higher wages.  
+ - Wealth: assuming a fixed utility function as wealth increases households will supply 
+           less labor at any given wage rate since they can afford more leisure (WPO [FRB\US]).
+ - Expected future real wage: if a households expects their future real wage to go up 
+                              they will supply less labor now.
+ - Working age population: this is simply a higher aggregate supply at any given wage.  
+                           This effect will shift the labor supply to the left.
+ - Participation Rate: this is assuming that outside the a changing wage rate more people 
+                       want to work (LFPR [FRB\US]).
+ 
+Labor Market Equilibrium: Simple statics analysis, by equating labor supply to labor demand 
+                          the wage rate is found (LF [FRB\US]).  
+ - Full employment output: this is the output that is made when the labor market is in 
+                           equilibrium.  The market determines the equilibrium wage rate and at 
+                           this wage rate a certain value of labor supply is given (known as full 
+                           employment level of employment).By plugging in this labor input with 
+                           constant capital and productivity then the output in the short-run is 
+                           known.
+ - Any shifts that occur due to either supply or demand will change the full employment level.
+----
+
+----
+Consumption Savings and Investment: 
+Consumption and Savings: given a certain income the choice on how much to consume and the how 
+                         much to save are one in the same question.  
+ - Income: given a current income consumers decide on a desired level of consumption and savings 
+  - S_D = Y – C_D – G (where S_D is desired saving and C_D is desired consumption) 
+          XB - EC - (EGF + EGS) [FRB\US]
+  - Note that both saving and consumption will increase with increases in income
+  - As income rises the sum of consumption and saving rises exactly equal.  The proportion 
+    of a rise in income that goes to consumption can be found through a regression of consumption 
+	to output.  Where the beta value is the marginal propensity to consume.
+ - Expected future income: when future expected income rises current income shifts more towards 
+   consumption and away form savings, this is because less saving is needed now to meet consumption 
+   needs in the future.
+ - Wealth: similar to expected future income, when wealth rises there are less liabilities to 
+           assets therefore there is less need to save. 
+ - Expected real interest rate: an ambiguous effect since higher rates now means more money gives 
+                                even more return, however is only a certain value of money is desired 
+                                in the future less savings are needed now to meet that future need.
+ - Taxes on interest rate gains: Since the effect of interest rates is ambiguous on savings so is 
+                                 the taxes on interest rate gains on savings
+ - Government purchases: since the government must finance all expenditures through taxes, if taxes 
+                         remain the same while the government budget increases then this increase must 
+                         be met by higher taxes in the future.  Therefore the aggregate of saving and 
+                         consumption will fall by the equivalent increase in the government budget 
+ - Taxes: same thing. If the budget remains fixed while taxes fall then a tax increase can be expected 
+          in the future. However, if consumers are aware that taxes will need to be raised in the 
+          future to meet the new deficit they will save more if they are unaware of this then their 
+          savings will remained unchanged.
+----
+
+----
+Investment: derived from similar reasoning as labor demand.  By taking the derivative of the production 
+            function with respect to capital while holding labor constant the marginal product of 
+			capital is found. 
+ - The User Cost of Capital is similar to the wage rate in the labor market in that it equates the 
+   desires capital stock that a firm wishes to have.  User cost of capital is determined by 
+  - The price of the capital 
+  - The Depreciation rate of the capital 
+  - The interest rate ( or the rate at which the money must be borrowed at)
+  
+ - The user cost of capital will shift if:
+  - the interest rate changes 
+  - there is a change in productivity.
+  - The user cost of capital must be discounted to the effective tax rate, therefore any increase in 
+    the tax rate will cause the user cost to shift up.
+	
+ - Actual investment is equal to net investment and replacement investment.
+  - Net investment is the difference between the desired capital stock and the current capital stock 
+  - Replacement investment is the amount of investment that is needed to replace the capital that 
+    has depreciated.
+ - Total macroeconomic investment: recall that total investment is the aggregate of fixed investment 
+   (discussed above), inventory investment, and residential investment.  However, the principles 
+   discussed for coming to a conclusion on fixed investment are the same for coming to conclusions 
+   of inventory and residential investment.
+----
+
+----
+Good Market Equilibrium: this is equilibrium when the total amount of goods produces is equal to the 
+                         desired consumption, desired investment and government purchases (which are 
+						 always assumed to equal their desired levels).  Note that this condition is 
+						 different from the expenditure identity, which always hold true.  The 
+						 difference comes from the fact that what is actual and what is desired 
+						 can differ.
+ - Y = C_d + I_d + G  (where C_d is desired consumption and I_d is desired investment).
+ - I_d = Y – C_d – G  (This is the same equation only solved for I_d)
+ - S_d = Y – C_d – G 
+ - Therefore the good market equilibrium can be written as S_d = I_d.
+ - The goods market is brought into equilibrium by the interest rate.  This assumes that as the interest 
+   rate rises households save more, this is not proven theoretically only empirically.
+----
+
+----   
+Savings and Investment in an Open Economy: 
+Balance of Payments Accounting: any transactions that involves a flow of funds into the domestic 
+                                country is a credit and any transaction that involves a flow of 
+								fund out of the domestic country is a debit.
+ - Current account: deals only with 
+  - currently produced goods and services 
+  - investment income such as dividends, interest payments and royalties 
+  - Net unilateral transfers or free money.
+ - Current account balance is all the credits and debits added together.
+ - Capital Account: deals only with existing assets either real of financial and the Official 
+                    Reserve Assets held by the central banks of nation-states.
+ - Capital Account Balance is all the credits and debits added up.
+ 
+Relationship of Current Account and Capital Account: the capital account and current account 
+                                                     must sum to zero.  Since domestic currency 
+													 is no good in a foreign country it must be 
+ - Used to buy domestic goods or services (CA)
+ - Used to buy domestic assets (KA)
+ - Exchanged for foreign currency (Official reserve assets)
+ 
+Net Foreign Assets: this is difference between a country’s holding of foreign assets minus its 
+                    foreign liabilities.  A country’s net foreign assets can increase by:
+ - The value of its current holding appreciating 
+ - Acquire more assets by running a current account surplus.
+ 
+Increases in the net foreign assets are done through increases in the capital account.  The 
+ difference being that net foreign assets is a stock while the capital account is a flow variable.
+
+Goods Market Equilibrium in an Open Economy: the equilibrium is found by having desired national 
+                                             saving equal to desired national investment and the 
+											 current account surplus (or money that can be used 
+											 to increase net foreign assets).
+ - S_d = I_d + CA
+ - S_d = I_d + (NX + NFP)  (note the current account surplus is when exports exceeds imports and 
+                            factor payment paid out (interest, dividend and royalties) is less 
+							than factor payment in).
+ - Furthermore, NFP is always a very small number and is therefore eliminated from the equation 
+   leaving S_d = I_d + NX (where NX is the same a CA)
+
+Savings and Investment is a Small Open Economy: in a small open economy the interest rate is fixed 
+                                                since a small nation cannot effect the world interest 
+												rate. Therefore, given an interest rate if saving is 
+												greater then investment the country will have a current 
+												account surplus, which will be used to increase net 
+												foreign assets. 
+Savings and Investment in a Large Open Economy: in this case the interest rate in not fixed since changes 
+                                                in desired savings and investment will and does effect 
+												the world interest rate.  In this case the equilibrium 
+												rate that bring the goods market equilibrium is one in 
+												which a current account surplus (deficit) in the domestic 
+												country equals the current account deficit (surplus) 
+												for the rest of that country’s trading partners.
+----
+
+----
+Assets Market: 
+Money demand: the demand for money is determined by three parameters.
+ - Price Level: as the price level increases money demand increases in proportion
+ - Real Income: as real income increases money demand increases, however, money demand does not increase 
+                in a 1:1 proportion for increases in real income.  Money demand increases less than the 
+				proportional increase in real income.
+ - Interest Rate: assuming that there is only one interest rate for non-monetary assets then as the 
+                  interest rate increase money demand decreases since the cost of holding money has 
+				  increased.
+
+Other Parameters:
+ - Wealth: as wealth increases more of that wealth will be held as money.
+ - Risk: if risk increases on non-monetary assets then money demand will increase, however if unexpected 
+         inflation increases then money demand will fall.
+ - Liquidity of non-monetary assets: if the liquidity of non-monetary assets increases then money demand 
+                                     will fall, since money is desired for its liquidity as a trade-off 
+									 for a zero return.
+Elasticities of Money Demand: these are the actual strengths of the changes in real income and the 
+                              interest rate on the demand for money.
+ - Income Elasticity of money demand: studies have shown this to be around +.66, which 
+                                      reflects the prediction of the theory.
+ - Interest Elasticity of money demand: studies have shown this to be around -. 15.
+ 
+Note to use these values you must take the percentage increase in one of the variables times 
+ these values to get an expected percentage increase in money demand.
+----
+
+----
+Asset Market Equilibrium: this equilibrium is established by assuming that there are two types 
+                          of assets that the total economy can hold, monetary and non-monetary.  
+						  Therefore, the decision on how much money to hold is the same as the 
+						  decision of how much non-monetary assets to hold.  
+ - Total Money demand plus total non-monetary asset demand equals total wealth of the economy.
+ - The difference between money demand and money supply plus the difference between non-monetary 
+    demand and non-monetary supply should add to zero in an equilibrium.  Furthermore, for both 
+	to sum to zero, each must therefore sum to zero.  Meaning the asset market is in equilibrium 
+	when money supply equals money demand.
+ - Algebraically:
+  - M_d +NM_d = W
+  - M + NM = W
+  - (M_d – M ) + (NM_d + NM) = 0
+  - M_d – M = 0
+
+Asset Market Equilibrium Condition: This is simply the equation for money demand.
+
+M/P = L(Y, r + expected inflation) (where M equals M_d in Asset Market Equilibrium, L means 
+       M/P is a function of Y and expected inflation and M/P is the real money supply ).
+ - M: this is set by the central bank 
+ - Expected inflation is considered a fixed parameter.
+ - Y: is known by the labor market equilibrium condition, namely as full-employment level of output.
+ - r: is known by the asset market equilibrium.
+ 
+Since everything but P is known for the asset market equilibrium, P becomes the endogenous variable 
+ that brings the asset market into equilibrium given the values of all the exogenous variables and 
+ the values of the fixed parameters.
+ 
+P = M / L( Y, r + expected inflation)
+ - This condition states that the price level is equal to the nominal money supply divided by the real 
+   demand for money.  Furthermore the real demand for money is fixed in the long-run since both the 
+   labor market and goods market are in equilibrium.  Therefore the price level is proportional to the 
+   nominal money supply.  Any amount that the nominal money supply increases in the long-run will have 
+   an exact proportional increase in the price level.
+ 
+Money Growth and Inflation: the inflation rate is equal to the difference between the growth in the 
+                            nominal money supply and the growth in the real demand for money.  
+ - Since nominal money growth is decided by the central bank, the focus is on the growth in the real 
+   money demand.  By proving that with a constant growth of money the nominal interest rate will 
+   be constant.
+ - Therefore, inflation can be expected to equal the difference in the growth rate of the nominal 
+   money supply minus the product of the growth rate of real income and the income elasticity of 
+   money demand.
+ - With a constant growth of the nominal money supply the nominal interest rate will be constant.  
+   This is because the nominal interest rate is the sum of the real interest rate and the expected 
+   inflation.  The real interest rate is constant if the goods market is in equilibrium; furthermore, 
+   the expected inflation rate is derived from the increase in the nominal money supply, if it is 
+   increasing at a constant rate then the inflation can also be expected to increase at a constant rate.
+   
+Business Cycles: total market movements a wide array of economic indicators
+ - Fluctuations of aggregate economic activity, not just GDP must be interpreted to see business cycles
+ - Expansions and Contractions are the basic movements of the business cycle 
+ - Comovement is the fact that all the aggregate economic indicators move in the same direction in 
+   a business cycle.
+ - Business cycles are recurrent, but not periodic.
+ 
+Indicators: all economic indicators are sorted by their direction and timing in reference to 
+            the business cycle.
+ - Industrial Production: is a procyclical and coincident variable 
+ - Consumption: is procyclical and coincident variable.
+ - Business Fixed Investment: is procyclical and coincident variable.
+ - Residential Investment: is procyclical and leading variable.
+ - Inventory investment: is procyclical and leading variable.
+ - Average Labor Productivity: is a procyclical and leading variable.
+ - Stock prices are procyclical and a leading variable.
+----
+
+---- 
+IS-LM-FE Macroeconomic Model: with this graph output is on the x-axis and the interest rate is on the y-axis.  
+                              What this model does is make interrelations among the three major markets.  
+							  Furthermore, each of the three lines represents an equilibrium condition of the 
+							  three markets.  Where IS is the equilibrium condition of the goods market 
+							  (namely Investment equals savings).
+
+FE Line: this is the labor market equilibrium line or the total output of the economy holding capital and 
+         productivity constant.  By placing full-employment level of output (Y) on the graph the FE line 
+		 is vertical since the full-level of output is unrelated to the interest rate.
+ - Shifts in the FE line will happen when things that effect the production function change or changes in 
+   labor supply.
+  - Productivity
+  - Capital Stock
+  - Labor Supply
+  
+IS Line: this is the line of goods and services market equilibrium. This line has a negative slope because 
+         as the output increases, income increases, which mean higher savings, holding the propensity to 
+		 consume constant.  However, investment decisions are unrelated to output.  Therefore as output 
+		 increases the savings line in the goods market will shift outward and thereby lower the interest 
+		 rate. Increasing output by a given value will shift the saving curve by a given value and the market 
+		 clearing interest rate will change by a given value.  The IS line show only the affect of the first 
+		 factor on the last, namely the change in output to the change in the goods market clearing interest 
+		 rate.  
+ - Shifts in the IS line:
+  - Expected Future Output (Income) [increase]: shifts the IS curve up (to the right).  This is a change in 
+                                                the Marginal Propensity to Consume given the same output 
+												(income) levels.
+  - Wealth [increase]: shifts the IS curve up.  A reduction in the liabilities and therefore a decrease 
+                       in the marginal propensity to save.
+  - Government Purchases [increase]: shifts the IS curve up.  At a constant output, when government purchases 
+                                     increase the change must be met by a decrease in desired national 
+									 savings (S_d = Y – C_d – G). 
+  - Taxes [increase]: shifts the IS curve down or no change.  If consumers are aware that increased taxes now 
+                      will be met with a proportional tax cut in the future then there is no effect on desired 
+					  national savings.  If consumers do not have such awareness then the tax increase will 
+					  cause the IS curve to shift down (to the left).
+  - Marginal Product of Capital [increase]: shifts the IS curve up.  This caused desired national investment 
+                                            to increase at all levels.
+  - Taxes on Capital [increase]: shift the IS curve down.  This means a higher user cost at all levels 
+                                 of investment.
+								 
+LM Line: this line refers to the asset market equilibrium.  This line has a positive slope meaning that as 
+         output goes up a higher interest rate is needed to clear the market.  
+ - Preliminary: the price of non-monetary assets has a negative correlation to the interest rate.  For example 
+                a zero coupon bond that is worth 1000 in a year and that is trading at 950 now is yielding 5% 
+				if the price falls 925 then the yield goes up to 8%.  Therefore there is negative relation to 
+				the yield of non-monetary assets and the price of those assets.  
+ - Recall that when the Money Supply equals the Money Demand the asset market is in equilibrium.  Furthermore, 
+   the money supply is fixed by the central bank and money demand is a function of output.  So as output rises 
+   the demand for money rises (since more money is needed for transactions).  To satisfy the increased demand 
+   for money consumers and business sell their non-monetary assets.  With the increased supply of non-monetary 
+   assets the prices fall and therefore the yield’s (interest rates) rise.  This brings the money demand equal 
+   to money supply.  
+  
+ - Shifts in the LM Line:
+  - Nominal Money Supply [increase]: shifts the LM curve down (to the right).  This causes the real money supply 
+                                     to increase and lowering the equilibrium interest rate at all levels.
+  - Price Level [increase]: shifts the LM curve up (to the left).  This causes the real money supply to decrease 
+                            and lowers the equilibrium interest rate at all levels.
+  - Expected Inflation [increase]: shifts the LM curve down (to the right).  Business and consumers wish to hold 
+                                   less money do to its depreciating value.
+  - Nominal interest rate on money [increase]: shifts the LM curve up.  Money becomes more attractive relative 
+                                               to non-monetary assets.
+  - Wealth [increase]: shifts the LM curve up. 
+  - Risk on non-monetary assets [increase]: shifts the LM curve up.
+  - Decline in the liquidity of non-monetary assets [increase] shifts the LM curve up.
+  
+Price Adjustment and Attainment of General Equilibrium: with the IS-LM model the short run output occurs were 
+                                                        IS = LM line.
+														
+To come to an analysis of the effects of a changing variable on the state of the economy some basic points 
+ to be looked at first
+  - Desired National Savings [ Goods market supply side]
+  - Desired National Investment [ Goods Market Demand side]
+  - Labor Supply [ Output supply side]
+  - Labor Demand [ Output demand side]
+  - Productivity [ Output]
+  - Money Demand [ Asset market demand side]
+  - Money Supply [ Asset market supply side]
+ - Increases in the real money supply will cause output to rise and the interest rate to fall.  However, in 
+   the long-run, assuming the economy was in a general equilibrium state before the real money supply 
+   increase, desired demand for goods will exceed firm’s desired supply.  From this, firms will begin to 
+   raise price.  Lastly as price rise the LM curve will shift back up and return to the original equilibrium 
+   level and prices will be higher.  Namely prices will increase by the same proportion as the increased 
+   money supply.
+ - In real economies the nominal money supply and the price level always increase by some percentage.  
+   The important fact is an increase that is above what is expected.
+ - Classical Economic and money neutrality: according to the classical economist when the economy is in 
+   disequilibrium the price level adjusts quickly so that monetary policy is ineffective.
+ - Keynesians: believe that prices are slow to adjust.  Therefore when the economy is in disequilibrium, 
+   instead of firms simple raising prices on supply they attempt to produce more, which is above and 
+   beyond the full-employment output.  In the long-run prices and wage will adjust too, and the price 
+   level will rise.
+----
+
+----   
+Exchange Rates: 
+Nominal Exchange Rate: this is the exchange rate quoted in the paper.  It is the amount of domestic 
+                       currency that is needed to buy foreign currency.  Most often the nominal exchange 
+					   rate is quoted in terms of the domestic currency or how much foreign currency can 
+					   be bought for one unit of domestic currency.  Lastly exchange rates are decided 
+					   in foreign exchange markets.
+Real Exchange Rate: this is the exchange rate that relates the amount of foreign goods that can be had with 
+                    a given unit of domestic goods.  The real exchange rate is equal to the product of the 
+					nominal exchange rate to the nominal price divided by the foreign price.
+ - Purchasing Power Parity: this assumes that the goods in one country are identical to that of other countries 
+                            (no monopolistic power) therefore the real exchange rate would be equal to one.  
+							Therefore the nominal exchange rate would equal the ratio of the foreign price to 
+							the domestic price of the one good.
+ - Relative purchasing power parity: this formula build upon the assumptions of the PPP, in that the percentage 
+                                     change in the nominal exchange rate should be equal to the difference of 
+									 the foreign inflation to the domestic inflation. 
+
+Real Exchange Rates and Net Exports: when a country’s real exchange rate fall the economic expectation is that 
+                                     their net exports will rise.  This is due to the fact that importing cost 
+									 more so the domestic nationals import less and that domestic goods are now 
+									 cheaper in foreign countries so foreign nationals demand more and exports 
+									 rise.  Therefore the difference of export to imports goes up with a 
+									 depreciation of the real exchange rate.
+									 
+J Curve: this concept refers to the fact of slow adjustment to a change in the real exchange rate.  If say oil 
+         prices go up then the real exchange rate has depreciated.  According to the previous analysis the 
+		 expectation is that net exports will rise.  However, the J curve states that since the capital stock 
+		 is slow to adjust, meaning it would take awhile for the domestic country to produce its own oil instead, 
+		 the imports fall only slightly.  Meaning the total cost of imports goes up and therefore net exports fall 
+		 with a deprecation of the real exchange rate.  Such cases could only happen when the foreign country has 
+		 monopolistic power over a given good, which is just the case with oil.
+		 
+Exchange Rate Determination: exchange rates are determined by supply and demand analysis.  The exchange rate equals 
+ where demand for the currency equals the supply of the currency.  
+ - Demand for Currency: this is derived from foreigners wish to buy 
+  - Domestic exports [Current Account]
+  - Domestic Assets [Capital Account]
+ - Supply of Currency: this is derived from domestics residents wish to buy
+  - Foreign Imports [Current Account]
+  - Foreign Assets [Capital Account]
+Macroeconomic Determinant of the Exchange Rate
+ Output (Income): If domestic income rises then domestic consumption goes up.  This increased consumption also means 
+                  that the consumption of imports goes up.  In order to pay for the import the domestic residents 
+				  supply more of the domestic currency.  More supply with constant demand means that the domestic 
+				  currency will depreciate. In the case of foreign income rising, foreigners will demand more 
+				  domestic currency and cause the domestic currency to appreciate. 
+Real Interest Rate: with an increase in the real interest rate a country’s assets become more attractive.  Domestic 
+                    nationals supply less domestic currency and foreign nationals demand more domestic currency this 
+					causes the domestic currency to appreciate.  From this net exports fall since imports are now 
+					cheaper for the domestic nationals and exports are more expensive to foreign nationals.
+----
+
+----
+IS-LM Model of the Open Economy: in the open economy model only the IS curve changes both the LM and the FE line 
+                                 remain the same in their derivations.
+Open Economy IS Curve: this curve is derived from a new type of goods market equilibrium.  In an open economy the 
+                       goods market is in equilibrium when the difference between desired national saving and desired 
+					   national investment equal net exports or the current account.  The endogenous variable is still 
+					   the interest rate.
+ - S – I Curve: this is an upward sloping curve because, with output held constant, as the interest rate rises national 
+                saving rises and national investment (both desired) falls.  Note, however, that the S – I curve can 
+				be negative.
+ - NX Line: this curves slopes downward, with constant output, as the interest rate rise the currency appreciates meaning 
+            net exports falls. This line can also be a negative value.
+ - Note that an equilibrium value for the goods market can have a negative value.  If this were the case it would mean 
+   that desired investment is greater than desired savings and that net exports is negative meaning imports are greater 
+   than exports.  
+ - The IS curve is derived by letting output change which has an effect on both the S – I curve and the NX curve.  Namely, 
+   as output increases desired national saving increases while desired national investment remains constant.  This causes 
+   the S – I line to shift out (rightward).  When output increase the NX curve shifts inward because as domestic income 
+   goes up then so does all domestic expenditures including imports.
+   
+ - With the S – I curve shifting outward and the NX curve shifting inward the market clearing interest rate definitely 
+   falls as output increases.  Therefore the open economy IS line is downward sloping. 
+   
+Shift in an Open Economy IS Curve: all the factors that would shift a closed economy IS curve also shifts an open economy 
+                                   IS curve.  However, there are other factors that effect an open economy IS curve.
+ - Foreign Output: when foreign output goes up foreign income goes up meaning all foreign expenditure go up including 
+                   consumption of imports.  This causes the domestic NX curve to shift upward which causes the entire 
+				   open economy IS curve to shift upward.
+ - Foreign Real Interest Rate: when the foreign real interest rate goes up demand for foreign currency increases and 
+                               supply of foreign currency decreases meaning the foreign currency appreciates. This means 
+							   that the domestic nation can now buy more foreign currency per unit domestic currency. 
+							   This causes the domestic net exports to rise.  Again the NX curve shifts upward causing 
+							   the IS curve to shift upward as well.
+ - Demand for Domestic Goods: of course if this happens then net exports rise shifting the IS curve upward.
+---- 

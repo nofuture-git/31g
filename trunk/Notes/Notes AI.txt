@@ -486,7 +486,7 @@ http://archive.ics.uci.edu/ml/
 ----
 
 ----
- Discrete Analysis
+ Discrete Analysis - Classifying Items
  - In practice the steps involve getting the data into 
    memory, dividing it between training and testing
    and then constructing the most rudimentary learning

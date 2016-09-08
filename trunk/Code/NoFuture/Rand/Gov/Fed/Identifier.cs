@@ -4,6 +4,9 @@ using System.Text;
 
 namespace NoFuture.Rand.Gov.Fed
 {
+    //link to the data used by the Fed to apply macroecon theory.
+    //https://www.federalreserve.gov/econresdata/frbus/files/data_only_package.zip
+
     [Serializable]
     public class RiskFreeInterestRate : IIdentifier<float>
     {
