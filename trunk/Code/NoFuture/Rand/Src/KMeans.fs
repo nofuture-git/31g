@@ -1,4 +1,4 @@
-﻿namespace Unsupervised
+﻿namespace NoFuture.Rand.Src
 module KMeans =
     let pickFrom size k =
         let rng =  System.Random ()

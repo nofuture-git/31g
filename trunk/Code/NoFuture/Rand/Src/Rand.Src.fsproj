@@ -54,6 +54,8 @@
   <ItemGroup>
     <Compile Include="AssemblyInfo.fs" />
     <Compile Include="KMeans.fs" />
+    <Compile Include="PCA.fs" />
+    <Compile Include="AkaikeInfoCriterion.fs" />
     <None Include="MsaAvgEarningPerYear.fsx" />
     <None Include="ZipCodeXref.fsx" />
     <None Include="CountyAvgEarningPerYear.fsx" />

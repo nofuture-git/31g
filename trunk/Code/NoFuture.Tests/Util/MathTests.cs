@@ -53,6 +53,38 @@ namespace NoFuture.Tests.Util
             Assert.AreNotEqual(0, myEigenvalues.Count);
             Assert.AreEqual(3,myEigenvalues[0]);
             Assert.AreEqual(-2,myEigenvalues[1]);
+
+
+            
+
+
+        }
+
+        [TestMethod]
+        public void TestEigenVector3X3()
+        {
+            var eigenvalueExpression = MatrixExpressions.EigenvalueExpression(3);
+
+            var eigenvalueFunc = eigenvalueExpression.Compile();
+            System.Diagnostics.Debug.WriteLine(eigenvalueExpression.ToString());
+            var myEigenvalues = new List<double>();
+
+            var threeByThree = new[,]
+            {
+                {-1D, 2D, 2D},
+                {2D, 2D, -1D},
+                {2D, -1D, 2D}
+            };
+            myEigenvalues = new List<double>();
+            for (var i = 10; i >= -10; i--)
+            {
+                if (eigenvalueFunc(threeByThree, i).Equals(0D))
+                    myEigenvalues.Add(i);
+            }
+            foreach (var eigenVal in myEigenvalues)
+            {
+                System.Diagnostics.Debug.WriteLine(eigenVal);
+            }
         }
 
         [TestMethod]

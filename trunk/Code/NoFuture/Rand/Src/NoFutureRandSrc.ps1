@@ -105,65 +105,101 @@ Invoke-WebRequest -Uri "https://www.federalreserve.gov/econresdata/frbus/files/d
 
 [System.IO.Compression.ZipFile]::ExtractToDirectory($fedFrbUsData,$samplesDir)
 $fedFrbUsData = Import-Csv (Join-Path $samplesDir "data_only_package\HISTDATA.TXT")
+$filteredDataFnCd = Join-Path $samplesDir "data_only_package\filtered_comDem.HISTDATA.TXT"
 $filteredDataFn = Join-Path $samplesDir "data_only_package\filtered.HISTDATA.TXT"
 
 #reduce data to more undergrad levels
 $targetedFedFeatures = @{
-    "CENG"="Energy"
-    "EC"="TotalConsumption";
-    "ECD"="ConsumerDurableGoodsExpend";
-    "ECH"="ConsumerHomeSvcsExpend";
-    "ECO"="ConsumerNonDurableExpend";
-    "EGF"="FedGovtExpend";
-    "EGS"="StateLocalGovtExpend";
-    "EH"="HomeBuyers";
-    "EIN"="ChangeBizInventory";
-    "EM"="Imports";
-    "EMP"="PetroImports";
-    "EPD"="InvestmentEquipment";
-    "EPI"="InvestmentCopyright";
-    "EPS"="InvestmentBuildings";
-    "EX"="Exports";
-    "FCBN"="USCurrentAcct"; #NetExports = EX-EM, NetFactorPmts = GFT /therefore FCBN = (EX-EM)+GFT
-    "FPC"="ForeignPriceLevel";
-    "FPX"="NominalExchangeRate";
-    "FPXR"="RealExchangeRate";
-    "FRL10"="ForeignLongTermInterestRate";
-    "FRS10"="ForeignShortTermInterestRate";
-    "GFT"="FedNetTransferPmts"; #payments made to SS, Medicare, etc.
-    "GST"="StateLocalTransferPmts";
-    "JRCD"="DeprecRateConsumerDurables";
-    "JRH"="DeprecHousing";
-    "JRPD"="DeprecEquipment";
-    "JRPS"="DeprecBuildings";
-    "KI"="PrivateInventoryStock";
-    "KS"="CapitalSvcs";
-    "LF"="TotalLabor";
-    "PCPI"="ConsumerPriceIndex";
-    "PIGDP"="InflationRate";
-    "PL"="Wages";
-    "RFF"="InterestRate";
-    "RSPNIA"="PersonalSavingsRate";
-    "TRFCI"="FedBizTaxRate";
-    "TRFP"="FedHouseholdTaxRate";
-    "TRSCI"="StateLocalBizTaxRate";
-    "TRSP"="StateLocalHouseholdTaxRate";
-    "WPO"="HouseholdPropertyWealth";
-    "WPS"="HouseholdSecuritiesWealth";
-    "XB"="TotalOutput";
-    "YDN"="DisposableIncome";
-    "YH"="HouseholdIncome";
-    "YHSN"="PersonalSavings";
-    "YPN"="PersonalIncome"
+    "CENG"=@("Energy",$true)
+    #"EC"=@("TotalConsumption",$true)
+    "ECD"=@("ConsumerDurableGoodsExpend",$true);
+    #"ECH"=@("ConsumerHomeSvcsExpend",$true);
+    #"ECO"=@("ConsumerNonDurableExpend",$true);
+    "EGF"=@("FedGovtExpend",$true);
+    "EGS"=@("StateLocalGovtExpend",$true);
+    #"EH"=@("HomeBuyers", $true);
+    "EI"=@("ChangeBizInventory",$true);
+    "EM"=@("Imports",$true);
+    #"EMP"=@("PetroImports",$true);
+    "EPD"=@("InvestmentEquipment",$true);
+    "EPI"=@("InvestmentCopyright",$true);
+    "EPS"=@("InvestmentBuildings",$true);
+    "EX"=@("Exports",$true);
+    #"FCBN"=@("USCurrentAcct", $true); #NetExports = EX-EM, NetFactorPmts = GFT /therefore FCBN = (EX-EM)+GFT
+    "FPXR"=@("RealExchangeRate",$true);
+    "FRL10"=@("ForeignLongTermInterestRate",$false);
+    "FRS10"=@("ForeignShortTermInterestRate",$false);
+    "GFT"=@("FedNetTransferPmts",$true); #payments made to SS, Medicare, etc.
+    "GST"=@("StateLocalTransferPmts",$true);
+    #"JRCD"=@("DeprecRateConsumerDurables",$false);
+    #"JRH"=@("DeprecHousing",$false);
+    "JRPD"=@("DeprecEquipment",$false);
+    "JRPS"=@("DeprecBuildings",$false);
+    "KI"=@("PrivateInventoryStock",$true);
+    "KS"=@("CapitalSvcs",$true);
+    "LFPR"=@("LaborRate",$false);
+    "PIGDP"=@("InflationRate",$false);
+    "PL"=@("Wages",$true);
+    "RFF"=@("InterestRate",$false);
+    "TRFCI"=@("FedBizTaxRate",$false);
+    "TRFP"=@("FedHouseholdTaxRate",$false);
+    "TRSCI"=@("StateLocalBizTaxRate",$false);
+    "TRSP"=@("StateLocalHouseholdTaxRate",$false);
+    "WPO"=@("HouseholdPropertyWealth",$true);
+    "WPS"=@("HouseholdSecuritiesWealth",$true);
+    "YDN"=@("DisposableIncome",$true);
+    #"YH"=@("HouseholdIncome",$true);
+    "YHSN"=@("PersonalSavings",$true);
+    #"YPN"=@("PersonalIncome",$true)
 }
-
 
 $dataRow = @()
 $dataRow += "Timeframe"
 
 $targetedFedFeatures.Keys | % {
     $feature = $_
-    $dataRow += $targetedFedFeatures[$feature]
+    $dataRow += $targetedFedFeatures[$feature][0]
+}
+[System.IO.File]::WriteAllText($filteredDataFnCd, [string]::Join("`t", $dataRow))
+[System.IO.File]::AppendAllText($filteredDataFnCd,"`n")
+
+$fedFrbUsData | % {
+    $row = $_
+    $dataRow = @()
+    $dataRow += $row.OBS
+   
+    $targetedFedFeatures.Keys | % {
+        $key = $_
+        $vals = $targetedFedFeatures.$key
+        $divBy100 = @("InterestRate", "ForeignShortTermInterestRate", "ForeignLongTermInterestRate", "InflationRate")
+        if($vals[0] -eq "HouseholdPropertyWealth")#this is the highest value of all
+        {
+            $dataRow += ([Convert]::ToDouble($row.$key) / [Convert]::ToDouble($row.XGDO)) / 100
+        }
+        elseif($vals[1]){
+            $dataRow += ([Convert]::ToDouble($row.$key) / [Convert]::ToDouble($row.XGDO))
+        }
+        elseif($divBy100 -contains $vals[0]){
+            $dataRow += ([Convert]::ToDouble($row.$key) / 100)
+        }
+        else{
+            $dataRow += $row.$key
+        }
+    }
+
+    [System.IO.File]::AppendAllText($filteredDataFnCd, [string]::Join("`t", $dataRow))
+    [System.IO.File]::AppendAllText($filteredDataFnCd,"`n")
+}
+
+<#
+not normalized to ratio
+#>
+$dataRow = @()
+$dataRow += "Timeframe"
+
+$targetedFedFeatures.Keys | % {
+    $feature = $_
+    $dataRow += $targetedFedFeatures[$feature][0]
 }
 [System.IO.File]::WriteAllText($filteredDataFn, [string]::Join("`t", $dataRow))
 [System.IO.File]::AppendAllText($filteredDataFn,"`n")
@@ -172,9 +208,10 @@ $fedFrbUsData | % {
     $row = $_
     $dataRow = @()
     $dataRow += $row.OBS
+   
     $targetedFedFeatures.Keys | % {
-        $feature = $_
-        $dataRow += $row.$feature
+        $key = $_
+        $dataRow += $row.$key
     }
 
     [System.IO.File]::AppendAllText($filteredDataFn, [string]::Join("`t", $dataRow))
