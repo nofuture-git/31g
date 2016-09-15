@@ -35,14 +35,14 @@ let estimate (Y:Vec) (X:Mat) =
 
 let headers,observations = 
     let raw =
-        Path.Combine(__SOURCE_DIRECTORY__, """.\Samples\data_only_package\filtered.HISTDATA.TXT""")
+        Path.Combine(__SOURCE_DIRECTORY__, """.\Samples\data_only_package\HISTDATA.TXT""")
         |> File.ReadAllLines
 
-    let headers = (raw.[0].Split '\t').[1..]
+    let headers = (raw.[0].Split ',').[1..]
 
     let observations = 
         raw.[1..]
-        |> Array.map (fun line -> (line.Split '\t').[1..])
+        |> Array.map (fun line -> (line.Split ',').[1..])
         |> Array.map (Array.map float)
 
     headers, observations
@@ -73,7 +73,9 @@ let correlated =
                 correlations.[col,row], headers.[col], headers.[row]
     ]
     |> Seq.sortBy (fun (corr, f1, f2) -> - abs corr)
-    |> Seq.take 20
+    |> Seq.rev
+    |> Seq.filter (fun (corr, f1, f2) -> not (System.Double.IsNaN corr))
+    |> Seq.take 100
     |> Seq.iter (fun (corr, f1, f2) -> 
         printfn "%s %s : %.5f" f1 f2 corr)
 

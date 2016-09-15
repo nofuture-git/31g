@@ -1,0 +1,300 @@
+Notes Linear Algebra
+
+----
+Practical Linear Algebra, 3rd Edition
+By: Gerald Farin; Dianne Hansford
+Publisher: CRC Press
+Pub. Date: August 19, 2013
+Web ISBN-13: 978-1-4822-1128-3
+Web ISBN-13: 978-1-4665-7959-0
+Print ISBN-10: 1-4665-7956-0
+Web ISBN-10: 1-4665-7959-5
+Print ISBN-13: 978-1-4665-7956-9
+Web ISBN-10: 1-4822-1128-9
+Web ISBN-13: 978-1-4665-7958-3
+Pages in Print Edition: 514
+----
+
+----
+https://www.math.uh.edu/~jmorgan/Math6397/day13/LinearAlgebraR-Handout.pdf
+----
+
+----
+R in Action, Second Edition
+Data analysis and graphics with R
+Robert I. Kabacoff
+May 2015 ISBN 9781617291388 608 pages printed in black & white
+----
+
+----
+R Builtins
+ - Numeric functions
+ abs(x)	absolute value
+ sqrt(x)	square root
+ ceiling(x)	ceiling(3.475) is 4
+ floor(x)	floor(3.475) is 3
+ trunc(x)	trunc(5.99) is 5
+ round(x, digits=n)	round(3.475, digits=2) is 3.48
+ signif(x, digits=n)	signif(3.475, digits=2) is 3.5
+ cos(x), sin(x), tan(x)	also acos(x), cosh(x), acosh(x), etc.
+ log(x)	natural logarithm
+ log10(x)	common logarithm
+ exp(x)	e^x
+----
+
+----
+Basics with R
+ #define a vector
+ a = c(1,3,2)
+ b = c(2,8,9)
+ 
+ #transpose 
+ t(a)
+ 
+ #scalar multiplication
+ 7*a
+ 
+ #sum of vectors
+ a+b
+ 
+ #inner product
+ sum(a*b)
+ 
+ #vector length (e.g |a|)
+ sqrt(sum(a*a))
+ 
+ #repeat 0,1 vector
+ rep(0,5)
+ rep(1,5)
+ 
+ #orthogonal vector have inner product of zero
+ v = c(0,5)
+ w = c(3,0)
+ sum(v*w)  #equals zero
+ 
+ #define a matrix
+ #df are read column-by-column 
+ A <- matrix(c(1,3,2,2,8,9), ncol = 3)
+ #set to read row-by-row
+ B <- matrix(c(5, 8, 3, 4, 2, 7), ncol = 3, byrow = T)
+  
+ #scalar multiplication
+ 7*A
+ 
+ #transpose matrix
+ t(A)
+ 
+ #matrix addition
+ A + B
+ 
+ #column-vector multiplication
+ b <- c(5,8)
+ A %*% a
+ 
+ #matrix multiplication
+ #A as r X c and B as c X t, AB is r X t matrix
+ A <- matrix(c(1,3,2,2,8,9), ncol=2)
+ B <- matrix(c(5,8,4,2), ncol = 2)
+ A %*% B
+ 
+ #identity matrix
+ diag(1,3)
+ 
+ #find inverse
+ A <- matrix(c(1,3,2,4), ncol=2, byrow=T)
+ B <- solve(A)
+ A %*% B       #identity matrix
+ 
+ #user defined function
+ # - written in a separate UTF8 file
+ # - then imported into console
+ #  - user function to get vector length
+vLen <- function(a) {
+    sqrt(sum(a*a))
+}
+----
+
+----
+Points & Vectors
+ - most basic 2D a point is two coords
+ - three or more points are collinear when 
+   they all lie on a single line
+ - two points are collinear since it takes 
+   two points to form a line.
+ p = [p1,p2]
+ q = p + v
+ [q1,q2] = [p1,p2] + [v1,v2] = [p1 + v1, p2 + v2]
+ v = q - p
+ [v1,v2] = [q1,q2] - [p1,p2] = [q1 - p1, q2 - p2]
+ 
+ - vector is a difference of two points
+   which describes a direction and distance
+  - the components of v is v1 and v2 which indicate
+    a rise & run from point p
+  - two vectors are equal if they have the same
+    component values just as two points are equal
+	if they have the same coords
+  - a vectors components are called a 'tail' and 'head'
+  
+ - points and vectors are different geometric entities
+  - distinguishing them it to achieve geometric constructs
+    that are coordinate-independent.
+  - coordinate-independent constructs are manipulations 
+    applied to geometric objects that produce the same 
+    result regardless of the location of the coordinate 
+    origin.
+  
+ - in practice:
+  - subtracting to points yields a vector
+  - adding or subtracting two vectors yields another
+    vector
+  - multiplying by a scalar is called scaling.
+    The result s*v adjusts the length by the scaling
+	factor
+	- the direction is unchanged if s is greater-than 0
+	- the direction is reversed if s is less-than 0
+  - adding a vector to a point yields another point
+
+  - a 'well-defined' operation is one which is coordinate 
+    independent
+  - scaling a point (s*p) is not well-defined
+  - scaling a vector (s*v) is well-defined
+  - adding two points (p+q) is not well-defined since
+    it is dependent on the coordinate origin
+  - a vector-field is one where each point is 
+    assigned to a vector 
+  - moving a continuous field into a vector-field
+    is called discretizing - taking some sample of
+	points and assigning each a vector
+----
+
+----
+Vector Length
+ - may represent distance, velocity or acceleration
+ - length of a vector is called magnitude
+ - since a vector's components are the rise & run
+   the vector's length may be assigned as the 
+   hypotenuse of a right triangle
+ - this is named the Euclidean norm  
+   |V|^2 = v1^2 + v2^2
+   |V| = sqrt(v1^2 + v2^2)
+ - a normalized vector has a unit length of one
+   |W| = 1
+  - normalized vectors are also known as unit vectors
+  - not every vector is a normalized one
+ - to normalize a vector is divide each component by 
+   Euclidean norm
+   W = v/|V|
+   
+   - example, not a normalized vector
+   v = [3,7]
+  |V| = sqrt(3^2 + 7^2)
+  |V| = 7.615773106
+   W = [3/7.615773106, 7/7.615773106]
+   W = [0.3939192986, 0.91914503]
+   
+  - example, a normalized vector
+   v = [5,0]
+  |V| = sqrt(5^2,0^2)
+  |V| = 5
+   W = [5/5, 0/5]
+   W = [1, 0]
+   
+ - the distance between two points is the
+   Euclidean norm of the vector of the two points 
+   q = [-1,2]
+   p = [1,0]
+  q-p  = [-1-1, 2-0] = [-2,2]
+ |q-p| = sqrt(-2^2 + 2^2)
+ |q-p| = 2.828427125
+----
+
+----
+Combining Points
+ - although not well-defined there is a way to 
+   combine two points
+  -given two points p and q, v = q-p, t is a scaler
+ r = p + t*v
+ r = p + t*(q-p) 
+ r = p + tq - tp
+ r = p - tp + tq
+ r = (1-t)*p + tq
+      t = |r-p| / (|r-p| + |q-r|) 
+  (1-t) = |q-r| / (|r-p| + |q-r|)
+  
+ - example
+  p = [2,4], r = [6.5,7] q = [8,8]
+  r = (1-t)*p + tq
+  [6.5,7] = (1-t)*[2,4] + t*[8,8]
+  
+  |r-p| = |[6.5 - 2, 7 - 4]|
+  |r-p| = |[4.5, 3]|
+  |r-p| = sqrt(4.5^2 + 3^2)
+  |r-p| = 5.408326913
+  
+  |q-r| = |[8 - 6.5, 8 - 7]|
+  |q-r| = |[1.5, 1]|
+  |q-r| = sqrt(1.5^2 + 1^2)
+  |q-r| = 1.802775638
+  
+  |r-p| + |q-r| = 5.408326913 + 1.802775638
+  |r-p| + |q-r| = 7.211102551
+  
+  t = |r-p| / (|r-p| + |q-r|) 
+  t = 5.408326913 / 7.211102551
+  t = 0.75
+  
+ (1-t) = |q-r| / (|r-p| + |q-r|) 
+ (1-t) = 1.802775638 / 7.211102551
+ (1-t) = 0.25
+----
+
+----
+Dot Product
+ - concerns the two vectors 
+  - are they the same vector
+  - are they perpendicular 
+  - what angle to they form
+ 
+ |v - w|^2 = |v|^2 + |w|^2
+ (v1 - w1)^2 + (v2 - w2)^2 = (v1^2 + v2^2) + (w1^2 + w2^2)
+  -binomial expansion
+ (v1^2 - 2*v1*w1 + w1^2)+(v2^2 - 2*v2*w2 +w2^2) = (v1^2 + v2^2) + (w1^2 + w2^2)
+ (v1^2 - 2*v1*w1 + w1^2)+(v2^2 - 2*v2*w2 +w2^2) - (v1^2 + v2^2) - (w1^2 + w2^2) = 0
+  v1^2 - 2*v1*w1 + w1^2 + v2^2 - 2*v2*w2 +w2^2  + -v1^2 +  -v2^2 + -w1^2 + -w2^2 = 0
+   (v1*w1) + (v2*w2) = 0
+      v * w = 0
+ 
+ - is then used to define the cosine of two vectors
+        w   
+       7
+      /.
+     / .
+    /  .
+   /   .
+  /    .
+ /)____.___> v
+ -solve for the angle by
+  cosθ = v*w / |v|*|w|
+----
+
+----
+Orthogonal projection
+ - the orthogonal project of w onto v is defined as
+ 
+  u = ((v * w)/|v|^2) * v
+ - using this the vector w can be decomposed into 
+   two perpendicular vectors
+  
+  u┴ = w - ((v * w)/|v|^2) * v
+----
+
+----
+Other rules and whatnot
+ - Cauchy-Schwartz inequality
+ - used for the study of more genearl vector spaces
+ (v * w)^2 <= |v|^2 * |w|^2
+ 
+ - triangle inequality
+ |v + w| <= |v| + |w|
+----
