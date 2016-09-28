@@ -350,7 +350,30 @@ Other vector rules
   - interpreting vector v as the diff 
     between points q and p 
  v = q - p	
- ----
+----
+
+----
+Linear Combination
+ - two vectors are parallel they are called
+    linearly dependent
+ - not being the case is called
+    linearly independent
+ 
+ - linear combination is taking two 
+   linearly independent vectors to make 
+   a new vector
+ u = r*v + s*w
+ 
+ a1 <- c(2,1)
+ a2 <- c(-2,4)
+ v <- c(0.5,1)
+  
+ myLinearCombo <- v[1] * a1 + v[2] * a2
+ 
+ - this is easier in using a matrix
+ A <- matrix(c(2,1,-2,4), ncol = 2)
+ myLinearCombo <- A %*% v
+----
 
 ----
 Lines defined
@@ -381,6 +404,7 @@ Lines defined
   p <- t(c(2,2)); q <- t(c(6,4))
   v <- q - p
   # a = [-v2, v1]
+  
   a <- t(c(-1*v[1,2], v[1,1]))
   #a = [-2,4]
    
@@ -463,3 +487,142 @@ Foot of a given point
   t <- (v * (r -p)) / vLen(v)^2
   q <- p + t * v
 ----
+
+----
+Line intersect points
+ - calc form for:
+  - parametric & implicit
+  - both implicit
+  - both parametric
+----
+
+----
+Parametric & Implicit Solve for intersect 
+ line_1: l(t) = p + t * v
+ line_2: a*x1 + b*x2 + c = 0
+ 
+ - find the parameter (t) with respect 
+   to line_1
+ - plug-in line1 into line2
+  a * [p1 + t * v1] + b * [p2 + t * v2] + c = 0
+ - solve for t
+ 
+  t = (-c - a * p1 - b* p2) / (a * v1 + b * v2)
+ - if the denominator is zero the two lines are 
+   parallel and never intersect
+ - check for parallel before solving using 
+   by calc cosine of a * v
+  cosθ = a*v / vLen(a) * vLen(v)
+   - computational tolerance around cos(0.1) 
+     and cos(0.5)
+ - furthermore, these may be the same lines 
+  d = (a*p1 + b*p2 + c) / vLen(a)
+   - are the same line if (d) equals zero
+ 
+  -example
+   line_1: l(t) = [0,3] + t * [-2,-1]
+   line_2: 2*x1 + x2 - 8 = 0
+ 
+  p <- c(0,3)
+  v <- c(-2,-1)
+  ab <- c(2,1)
+  c <- -8
+  
+  myDenom <- sum(ab * v) #no eq zero
+  t <- (-1*c - sum(ab * p)) / myDemon
+  
+  #use t to solve line_1
+  myIntersect <- p + t * v # [2,4]
+----
+
+----
+Both Parametric Solve for intersect 
+ line_1: l1(t) = p + t * v
+ line_2: l2(t) = q + s * w
+ 
+ - need to solve so that
+  p + t * v = q + s * w
+  - rewritten as
+   t*v - s*w = q - p
+  
+ - example:
+  line_1: l1(t) = [0,3] + t * [-2,-1]
+  line_2: l2(t) = [4,0] + s * [-1, 2]
+  
+  p <- c(0,3)
+  v <- c(-2,-1)
+  q <- c(4,0)
+  w <- c(-1,2)
+ 
+  #the text gives no explaination for 
+  # how we arrive at these values
+  t <- -1
+  s <- 2
+----
+
+----
+Both Implicit Solve for intersect 
+ line_1: a0*x1 + b0*x2 + c0 = 0
+ line_2: a1*x1 + b1*x2 + c1 = 0
+ 
+ - example
+ line_1: 1 * x1 - 2 * x2 + 6 = 0
+ line_2: 2 * x1 + 1 * x2 - 8 = 0
+ 
+  #the text gives no explaination for 
+  # how we arrive at these values
+  - intersect x = [2,4]
+----
+
+----
+Convert degrees to radians
+ - R only works in radians, not degrees
+ - Circumference = 2*pi*r 
+    where r is radius
+ - want to work as r = 1
+   C = 2 *pi, which is 360 degrees
+ - so 180 degrees is just pi
+ - conversion is thus where (a)
+   is degrees
+   
+   (a / 1) * (pi / 180)
+----
+
+----
+Matrix Distributive Law
+ - distributive law
+  A*v + B*v = (A + B)*v
+  [A + B]ᵀ = Aᵀ + Bᵀ
+  A*(u + v) = A*u + A*v
+  
+ - symmetric matrix is 
+   A = Aᵀ
+----
+
+----   
+Reflection 
+ - is like flipping & rotating on an axis
+  -example
+   myR <- matrix(c(1,0,0,-1), ncol=2)
+   v <- c(2,4)
+   myR %*% v # [2,-4], flipped along x-axis 
+           # when c(2,4) is thought of as 
+	       # x = 2, y = 4
+   myR <- matrix(c(0,1,1,0), ncol=2)
+   myR %*% v # [4,2], x & y swapped places
+   
+   myR <- matrix(c(-1,0,0,-1), ncol=2)
+   myR %*% v # [-2,-4] 180 rotation
+   
+ - rotation matrix is given as where (a)
+   is the desired angle of rotation
+  
+  R = [ [cos(a), -sin(a)],
+        [sin(a), cos(a) ] ]
+  
+  a <- degrees2Radians(45)
+  myR <- matrix(c(cos(a),sin(a),cos(a),-1*sin(a)),ncol=2)
+----
+   
+  
+  
