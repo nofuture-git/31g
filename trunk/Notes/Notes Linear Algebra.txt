@@ -132,6 +132,10 @@ Basics with R
  B <- solve(A)
  A %*% B       #identity matrix
  
+ #find determinent
+ A <- matrix(c(1,0,5,1), ncol=2)
+ B <- det(A)
+ 
  #find eigen values, vectors
  # - the result is a type with two props
  # - ev$val for eigen values
@@ -589,14 +593,44 @@ Convert degrees to radians
 ----
 
 ----
-Matrix Distributive Law
+Matrix Laws & Names
+ - not commutative multiplication
+   AB != BA
+   
+ - associative multiplication
+  A*(B*C) = (A*B)*C
+  (a*b)*C = a*(b*C)
+  a*(B*C) = (a*B)*C = B*(a*C)
+  
  - distributive law
+  A*(B + C) = A*B + A*C
+  (B + C)*A = B*A + C*A
   A*v + B*v = (A + B)*v
   [A + B]ᵀ = Aᵀ + Bᵀ
   A*(u + v) = A*u + A*v
   
+ - commutative addition
+  A + B = B + A
+  
+ - associative addition
+  A + (B + C) = (A + B) + C
+  
  - symmetric matrix is 
    A = Aᵀ
+ - dyadic matrix
+   A*Aᵀ
+ - idempotent matrix
+   A = A*A
+ 
+ - other multiplication rules
+  (A*B)ᵀ = Bᵀ*Aᵀ
+  det(A * B) = det(A) * det(B)
+ 
+ - exponent rules
+   A^(r+s) = A^r * A^s
+   A^(r*s) = (A^r)^s
+   A^0 = I
+   A^-1 = A inverse
 ----
 
 ----   
@@ -623,6 +657,186 @@ Reflection
   a <- degrees2Radians(45)
   myR <- matrix(c(cos(a),sin(a),cos(a),-1*sin(a)),ncol=2)
 ----
+
+----
+Shears
+ - tilt like how italic fonts look to regular
+ 
+ v' = [ [   1,   0],  * [v1,  = [v1,
+        [-v2/v1, 1] ]    v2]     0]
+		
+ - example
+ v <- c(2,5)
+ vMatrix <- matrix(c(1,(-1*v[2]/v[1]),0,1), ncol=2)
+ vTick = vMatrix %*% v # 2,0
+----
+
+----
+Projections
+ - like sunlight casting shadows
+ - parallel projections are having all vectors
+   projected in a parallel direction
+ - when the angle of incidence is 90 degrees
+   then its an orthogonal projection
+ - otherwise known as an oblique projection
+ 
+ - example
+  # a 45 degree rotation
+  ui <- 1/sqrt(2)
+  u <- matrix(c(ui, ui),ncol=1)
+  #defines projection matrix
+  A <- u %*% t(u)
+  
+  #projection of v by 45 degrees
+  v <- c(1,2)
+  vTick <- A %*% v #1.5, 1.5
+----
+
+----
+Linear Maps and Area
+ - getting the area given two vectors
+  a1 = [2,4]
+  a2 = [6,3]
+  
+   |____________(a1)_________________________
+ 4-|             7_______            T2      |
+   |            /        ---______           |
+   |           /                  -----______|
+ 3-|  T3      /                           __-7(a2)
+   |        /                          _--   |
+   |       /         T            __---      |
+ 2-|      /                    _--           |
+   |     /                __---              |
+   |   /              _---                   |
+ 1-|  /          __---                       |
+   | /    ____---                T1          |
+   |/__---                                   |
+ 0-|-------------------------------------------
+   |      |      |      |      |      |      | 
+   0      1      2      3      4      5      6 
+ 
+  - it is possiable to calc the area of each
+    triange (T, T1, T2, T3)
+   T1 = 1/2*a[1,1]*a[2,1]
+   T2 = 1/2*(a[1,1] - a[1,2])*(a[2,2]-a[2,1])
+   T3 = 1/2*a[1,2]*a[2,2]
    
+   T = a[1,1] *a[2,2] - T1 - T2 - T3
   
+  - determinant is given a 2*T
+----
+
+----
+Linear System (2X2)
+ - defining two linear eq's in 
+   matrix format
   
+  2*u1 + 4*u2 = 4
+    u1 + 6*u2 = 4
+	-as-
+  [ 2 4   [u1    [4
+    1,6 ]* u2] =  4]
+ 
+  - the possiable solutions is named
+    solution space
+  - roughly divided into 
+   (1) exactly on solution vector (u)
+       when det(A) != 0
+   (2) there is no solution whatsoever
+   (3) there are an infinite many solutions
+----
+
+----
+Cramer's rule
+ - based on the geometry of the parallelograms
+   formed by a linear system
+   a <- matrix(c(2,1,4,6),ncol=2)
+   b <- matrix(c(4,4), ncol=1)
+   
+   u1Numer <- matrix(c(b[1,1],b[2,1],a[1,2],a[2,2]), ncol=2)
+   u2Numer <- matrix(c(a[1,1],a[2,1],b[1,1],b[2,1]), ncol=2)
+   uDemon <- matrix(c(a[1,1],a[2,1],a[1,2],a[2,2]), ncol=2)
+   
+   u1 <- det(u1Numer) / det(uDemon)
+   u2 <- det(u2Numer) / det(uDemon)
+----
+
+----
+Gauss Elimination
+ - involves tech terms of 
+ - back substitution: where we solve for 
+   u2 then use its solution-value to solve for u1
+  u1 = b2/a2,2
+  u1 = 1/a1,1 * (b1 - u2*a1,2)
+   
+ - foward elimination: the process of getting a[2,1] to equal 0
+    which is required for back-sub to work.
+ - gauss elimination: the process of foward-elim. followed by
+   back sub.
+  - based on rule that linear maps do not change linear combos.
+    which means applying a linear map to all vectors will not 
+	change u1, u2.
+ 
+ - get a[2,1] to zero can be done using a Shear, defined as
+  - re-write into column form so Algebraically looks like
+               [a[1,1]        [a[1,2]             [b[1,1]
+   shearA*(u1 * a[2,1]] + u2 * a[2,2]] ) = shearA* b[2,1]]
+   
+   a <- matrix(c(2,1,4,6),ncol=2)
+   
+   #break matrix a into two columns
+   aCol1 <- matrix(c(a[1,1],a[2,1]), ncol=1)
+   aCol2 <- matrix(c(a[1,2],a[2,2]), ncol=1)
+   b <- matrix(c(4,4), ncol=1)
+   
+   #calc shear
+   shearA <- matrix(c(1,(-1*a[2,1]/a[1,1]),0,1), ncol=2)
+   
+   #take shear time each column
+   newACol1 <- shearA %*% aCol1
+   newACol2 <- shearA %*% aCol2
+   newB <- shearA %*% b
+   
+   #put it back together as a linear system, completes foward-elim.
+   newA <- matrix(c(newACol1[1,1], newACol1[2,1], newACol2[1,1], newACol2[2,1]), ncol=2)
+   
+   #back sub.
+   u2 = newB[2,1] / newA[2,2]
+   u1 = (1/newA[1,1])*(newB[1,1] - u2*newA[1,2])
+----
+
+----
+Pivoting
+ - idea or rearranging the linear solution so a shear may 
+   be calc'ed and thereby back sub.
+ [0 1    [u1    [1
+  1 0] *  u2] =  1]
+  - a[1,1] is zero and we can't divide by zero
+  - as eq's they would look like
+  0*u1 + 1*u2 = 1
+  1*u1 + 0*u2 = 1
+  - then flip the order of them
+  1*u1 + 0*u2 = 1
+  0*u1 + 1*u2 = 1
+  - and convert back to linear system
+ [1 0    [u1    [1
+  0 1] *  u2] =  1]
+  
+ - there is likewise ability to perform 
+   column pivoting
+ [0 1/2    [u1    [0
+  0  0 ] *  u2] =  0]
+  -to-
+  0*u1 + 1/2*u2 = 0
+  0*u1 +  0*u2  = 0
+  -flipped as
+ 1/2*u2 + 0*u1 = 0
+  0*u2  + 0*u1 = 0
+  -back to linear system
+ [1/2 0    [u2    [0
+   0  0] *  u1] =  0]
+----
+   
+   
+   
+   

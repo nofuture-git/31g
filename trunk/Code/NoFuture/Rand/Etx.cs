@@ -165,14 +165,16 @@ namespace NoFuture.Rand
         /// Gets a random Uri host.
         /// </summary>
         /// <returns></returns>
-        public static string RandomUriHost()
+        public static string RandomUriHost(bool withSubDomain = true)
         {
             var webDomains = ListData.UsWebmailDomains;
             var host = new StringBuilder();
 
-            var subdomain = DiscreteRange(ListData.Subdomains);
-
-            host.Append(subdomain + ".");
+            if (withSubDomain)
+            {
+                var subdomain = DiscreteRange(ListData.Subdomains);
+                host.Append(subdomain + ".");
+            }
 
             if (webDomains != null)
             {
@@ -285,18 +287,78 @@ namespace NoFuture.Rand
         /// Creates a random email address 
         /// </summary>
         /// <returns></returns>
-        public static string RandomEmailUri()
+        public static string RandomEmailUri(string username = "")
         {
+            var host = RandomUriHost(false);
+            if (!string.IsNullOrWhiteSpace(username))
+                return string.Join("@", username, host);
             var bunchOfWords = new List<string>();
             for (var i = 0; i < 4; i++)
             {
                 bunchOfWords.Add(Util.Etc.CapitalizeFirstLetterOfWholeWords(Word(), ' '));
                 bunchOfWords.Add(Domus.NAmerUtil.GetAmericanFirstName(DateTime.Today, CoinToss ? Gender.Male : Gender.Female));
             }
-            var userName = string.Join((CoinToss ? "." : "_"), DiscreteRange(bunchOfWords.ToArray()),
+            username = string.Join((CoinToss ? "." : "_"), DiscreteRange(bunchOfWords.ToArray()),
                 DiscreteRange(bunchOfWords.ToArray()));
-            var host = RandomUriHost();
-            return string.Join("@", userName, host);
+            return string.Join("@", username, host);
+        }
+
+        public static string RandomEmailUri(string[] names, bool isProfessional = false)
+        {
+            if(names == null || !names.Any())
+                return RandomEmailUri();
+
+            //get childish username
+            if (isProfessional)
+            {
+                var shortWords = TreeData.EnglishWords.Where(x => x.Item1.Length <= 3).Select(x => x.Item1).ToArray();
+                var shortWordList = new List<string>();
+                for (var i = 0; i < 3; i++)
+                {
+                    var withUcase = Util.Etc.CapitalizeFirstLetterOfWholeWords(DiscreteRange(shortWords), ' ');
+                    shortWordList.Add(withUcase);
+                }
+                shortWordList.Add((CoinToss ? "_" : "") + IntNumber(100, 9999));
+                return RandomEmailUri(string.Join("", shortWordList));
+            }
+
+            var fname = names.First().ToLower();
+            var lname = names.Last().ToLower();
+            string mi = null;
+            if (names.Length > 2)
+            {
+                mi = names[1].ToLower();
+                mi = CoinToss ? mi.First().ToString() : mi;
+            }
+
+            var unParts = new List<string> {CoinToss ? fname : fname.First().ToString(), mi, lname};
+
+            var un = string.Join(CoinToss ? "." : "_", unParts);
+            if (un.Length <= 7)
+                un = string.Join(CoinToss ? "" : "_", un, IntNumber(100, 9999));
+            return RandomEmailUri(un);
+        }
+
+        /// <summary>
+        /// Fisher-Yates random shuffle
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="vals"></param>
+        /// <returns></returns>
+        public static T[] RandShuffle<T>(T[] vals)
+        {
+            if (vals == null || !vals.Any())
+                return vals;
+            var arr = new T[vals.Length];
+            Array.Copy(vals, arr, vals.Length);
+            for (var i = vals.Length - 1; i > 1; i--)
+            {
+                var temp = arr[i];
+                var j = MyRand.Next(0, i+1);
+                arr[i] = arr[j];
+                arr[j] = temp;
+            }
+            return arr;
         }
 
         /// <summary>

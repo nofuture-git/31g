@@ -136,6 +136,7 @@ namespace NoFuture.Shared
             "scp", //Secure Copy Protocol? (C:\Windows\System32\ras)
             "wsc", //Windows Script Component
             "idl", //present in own C++ project
+            "r",   //R syntax file   
 
         };
 

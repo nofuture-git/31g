@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using NoFuture.Exceptions;
+using NoFuture.Rand.Data;
 using NoFuture.Rand.Data.Sp;
 using NoFuture.Rand.Data.Types;
 using NoFuture.Rand.Domus.Pneuma;
@@ -73,7 +74,9 @@ namespace NoFuture.Rand.Domus
             if(Etx.TryAboveOrAt(6, Etx.Dice.Ten))
                 _phoneNumbers.Add(new Tuple<KindsOfLabels, NorthAmericanPhone>(KindsOfLabels.Home, Phone.American(abbrv)));
 
-            if(GetAgeAt(null) >= 12)
+            var isSmallChild = GetAgeAt(null) < 12;
+
+            if (!isSmallChild)
                 _phoneNumbers.Add(new Tuple<KindsOfLabels, NorthAmericanPhone>(KindsOfLabels.Mobile, Phone.American(abbrv)));
             
             Race = NAmerUtil.GetAmericanRace(csz?.ZipCode);
@@ -82,6 +85,7 @@ namespace NoFuture.Rand.Domus
                 ResolveFamilyState();
             if (withFinanceData)
                 ResolveFinancialState();
+            AddEmailAddress();
         }
 
         /// <summary>
@@ -102,6 +106,7 @@ namespace NoFuture.Rand.Domus
                 return;
             ((AmericanBirthCert) _birthCert).BirthPlace = nAmerMother.GetAddressAt(dob)?.HomeCityArea as UsCityStateZip;
             Race = nAmerMother.Race;
+            AddEmailAddress();
         }
 
         #endregion
@@ -763,6 +768,22 @@ namespace NoFuture.Rand.Domus
         protected internal override bool IsLegalAdult(DateTime? dt)
         {
             return GetAgeAt(dt) > GetMyHomeStatesAgeOfMajority();
+        }
+
+        /// <summary>
+        /// Adds a full URI encoded email address to the <see cref="Person.NetUri"/> list
+        /// when current age appropriate.
+        /// </summary>
+        protected internal void AddEmailAddress()
+        {
+            if (GetAgeAt(null) > 5)
+                _netUris.Add(
+                    new Uri("emailto:" +
+                            Etx.RandomEmailUri(new[]
+                            {
+                                Names.First(x => x.Item1 == KindsOfNames.First).Item2, MiddleName,
+                                Names.First(x => x.Item1 == KindsOfNames.Surname).Item2
+                            }, GetAgeAt(null) < 12)));
         }
 
         //min. age a person could be married at

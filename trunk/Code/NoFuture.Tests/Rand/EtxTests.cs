@@ -181,5 +181,32 @@ namespace NoFuture.Tests.Rand
             var testResultsSum = testResults.Sum();
             Assert.IsTrue(testResultsSum > 0.99D && testResultsSum < 1.01D);
         }
+
+        [TestMethod]
+        public void TestRandShuffle()
+        {
+            var testInput = new[] {"", ".", "-", "_", "+", "=", "--", "__"};
+
+            var testResult = NoFuture.Rand.Etx.RandShuffle(testInput);
+            Assert.IsNotNull(testResult);
+            Assert.AreEqual(testInput.Length, testResult.Length);
+            for (var i = 0; i < testInput.Length - 1; i++)
+            {
+                System.Diagnostics.Debug.WriteLine($"{testInput[i]} {testResult[i]}" );
+            }
+        }
+
+        [TestMethod]
+        public void TestRandomEmailUriPersonal()
+        {
+            var testResult = NoFuture.Rand.Etx.RandomEmailUri(new[] {"Robert", "Edward", "Lee"});
+            Assert.IsNotNull(testResult);
+            Assert.IsTrue(testResult.Contains("lee"));
+            System.Diagnostics.Debug.WriteLine(testResult);
+
+            testResult = NoFuture.Rand.Etx.RandomEmailUri(new[] { "Robert", "Edward", "Lee" }, true);
+            Assert.IsNotNull(testResult);
+            System.Diagnostics.Debug.WriteLine(testResult);
+        }
     }
 }

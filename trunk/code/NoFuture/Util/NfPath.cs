@@ -34,6 +34,36 @@ namespace NoFuture.Util
         }
 
         /// <summary>
+        /// Gets the number of lines in <see cref="fullName"/> file.
+        /// </summary>
+        /// <param name="fullName">Is required to have an extension.</param>
+        /// <param name="runExtDirFilters">
+        /// Filters out known binary files extensions and excludes 
+        /// file in directories defined in <see cref="Constants.ExcludeCodeDirectories"/>
+        /// </param>
+        /// <returns></returns>
+        public static int GetTxtFileLineCount(string fullName, bool runExtDirFilters = true)
+        {
+            if (string.IsNullOrWhiteSpace(fullName))
+                return 0;
+
+            if (string.IsNullOrWhiteSpace(Path.GetExtension(fullName)))
+                return 0;
+
+            if (!File.Exists(fullName))
+                return 0;
+
+            if(!runExtDirFilters)
+                return File.ReadAllLines(fullName).Length;
+
+            //if its a binary file or its in an exclude dir do not read it
+            if (IsBinaryFileExtension(fullName) || ContainsExcludeCodeDirectory(fullName))
+                return 0;
+
+            return File.ReadAllLines(fullName).Length;
+        }
+
+        /// <summary>
         /// Writes the <see cref="content"/> to a temp file in <see cref="TempDirectories.AppData"/>
         /// </summary>
         /// <param name="fileNamePrefix"></param>
