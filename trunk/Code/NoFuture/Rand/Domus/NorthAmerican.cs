@@ -783,7 +783,7 @@ namespace NoFuture.Rand.Domus
                             {
                                 Names.First(x => x.Item1 == KindsOfNames.First).Item2, MiddleName,
                                 Names.First(x => x.Item1 == KindsOfNames.Surname).Item2
-                            }, GetAgeAt(null) < 12)));
+                            }, GetAgeAt(null) > 18)));
         }
 
         //min. age a person could be married at

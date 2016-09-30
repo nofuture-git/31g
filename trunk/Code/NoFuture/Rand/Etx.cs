@@ -303,13 +303,13 @@ namespace NoFuture.Rand
             return string.Join("@", username, host);
         }
 
-        public static string RandomEmailUri(string[] names, bool isProfessional = false)
+        public static string RandomEmailUri(string[] names, bool isProfessional = true)
         {
             if(names == null || !names.Any())
                 return RandomEmailUri();
 
             //get childish username
-            if (isProfessional)
+            if (!isProfessional)
             {
                 var shortWords = TreeData.EnglishWords.Where(x => x.Item1.Length <= 3).Select(x => x.Item1).ToArray();
                 var shortWordList = new List<string>();
@@ -332,11 +332,14 @@ namespace NoFuture.Rand
             }
 
             var unParts = new List<string> {CoinToss ? fname : fname.First().ToString(), mi, lname};
-
-            var un = string.Join(CoinToss ? "." : "_", unParts);
-            if (un.Length <= 7)
-                un = string.Join(CoinToss ? "" : "_", un, IntNumber(100, 9999));
-            return RandomEmailUri(un);
+            var totalLength = unParts.Sum(x => x.Length);
+            if (totalLength <= 7)
+                return RandomEmailUri(string.Join(CoinToss ? "" : "_", string.Join(CoinToss ? "." : "_", unParts),
+                    IntNumber(100, 9999)));
+            return
+                RandomEmailUri(totalLength > 20
+                    ? string.Join(CoinToss ? "." : "_", unParts.Take(2))
+                    : string.Join(CoinToss ? "." : "_", unParts));
         }
 
         /// <summary>

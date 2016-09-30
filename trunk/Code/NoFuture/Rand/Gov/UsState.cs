@@ -87,7 +87,7 @@ namespace NoFuture.Rand.Gov
         public virtual AmericanUniversity[] GetUniversities()
         {
             if (universities != null)
-                return new AmericanUniversity[] {};
+                return universities;
 
             //this will never pass so avoid the exception
             if (TreeData.AmericanUniversityData == null)

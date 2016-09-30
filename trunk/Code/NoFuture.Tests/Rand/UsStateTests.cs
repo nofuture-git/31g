@@ -3,12 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NoFuture.Rand;
 
 namespace NoFuture.Tests.Rand
 {
     [TestClass]
     public class UsStateTests
     {
+        [TestInitialize]
+        public void Init()
+        {
+            BinDirectories.DataRoot = @"C:\Projects\31g\trunk\bin\Data\Source";
+        }
         [TestMethod]
         public void GetStateTest()
         {
@@ -110,6 +116,7 @@ namespace NoFuture.Tests.Rand
             var testResults = testSubject.GetUniversities();
 
             Assert.IsNotNull(testResults);
+            Assert.IsTrue(testResults.Any());
             Assert.AreNotEqual(0, testResults.Length);
             Assert.IsTrue(testResults.Any(univ => univ.Name == "Arizona State University"));
         }
@@ -137,6 +144,16 @@ namespace NoFuture.Tests.Rand
             Assert.AreNotEqual(0, testResult.PercentOfGrads.Count);
             Assert.AreNotEqual(0, testResult.PropertyCrimeRate.Count);
             Assert.AreNotEqual(0, testResult.ViolentCrimeRate.Count);
+            var percentCollegeGrad =
+                testResult.PercentOfGrads.FirstOrDefault(x => x.Item1 == (OccidentalEdu.Bachelor | OccidentalEdu.Grad));
+            Assert.AreNotEqual(0 , percentCollegeGrad);
+            System.Diagnostics.Debug.WriteLine(percentCollegeGrad);
+            for (var i = 0; i < 100; i++)
+            {
+                var attempt = Etx.TryAboveOrAt((int) Math.Round(percentCollegeGrad.Item2*2), Etx.Dice.OneHundred);
+                System.Diagnostics.Debug.WriteLine(attempt);
+            }
+            
         }
     }
 }

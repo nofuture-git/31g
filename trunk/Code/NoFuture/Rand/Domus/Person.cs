@@ -22,7 +22,7 @@ namespace NoFuture.Rand.Domus
         protected internal IPerson _mother;
         protected internal IPerson _father;
         protected internal readonly List<Uri> _netUris = new List<Uri>();
-        protected internal readonly List<Child> _children = new List<Child>();
+        protected internal readonly HashSet<Child> _children = new HashSet<Child>();
         private readonly Personality _personality = new Personality();
         protected internal BirthCert _birthCert;
         protected internal readonly List<ResidentAddress> _addresses = new List<ResidentAddress>();
@@ -55,7 +55,7 @@ namespace NoFuture.Rand.Domus
         public Spouse Spouse => GetSpouseAt(null);
         public int Age => GetAgeAt(null);
         public MaritialStatus MaritialStatus => GetMaritalStatusAt(null);
-        public List<Child> Children => _children;
+        public IEnumerable<Child> Children => _children;
         public List<Tuple<KindsOfNames, Parent>> Parents
         {
             get

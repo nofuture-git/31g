@@ -18,7 +18,7 @@ namespace NoFuture.Rand.Domus
         IEducation Education { get; }
         Spouse Spouse { get; }
         MaritialStatus MaritialStatus { get; }
-        List<Child> Children { get; }
+        IEnumerable<Child> Children { get; }
         List<Tuple<KindsOfNames, Parent>> Parents { get; }
         ResidentAddress Address { get; }
 

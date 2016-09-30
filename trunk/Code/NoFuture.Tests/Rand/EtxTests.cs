@@ -204,7 +204,7 @@ namespace NoFuture.Tests.Rand
             Assert.IsTrue(testResult.Contains("lee"));
             System.Diagnostics.Debug.WriteLine(testResult);
 
-            testResult = NoFuture.Rand.Etx.RandomEmailUri(new[] { "Robert", "Edward", "Lee" }, true);
+            testResult = NoFuture.Rand.Etx.RandomEmailUri(new[] { "Robert", "Edward", "Lee" }, false);
             Assert.IsNotNull(testResult);
             System.Diagnostics.Debug.WriteLine(testResult);
         }
