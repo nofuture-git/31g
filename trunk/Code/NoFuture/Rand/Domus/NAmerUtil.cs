@@ -201,7 +201,7 @@ namespace NoFuture.Rand.Domus
         {
             var dt = dateOfBirth ?? DateTime.Today.AddYears(-18);
             var xmlData = TreeData.AmericanFirstNamesData;
-            XmlElement decadeElem = null;
+            
             if (xmlData == null)
             {
                 return gender == Gender.Male ? "John" : "Jane";
@@ -211,6 +211,7 @@ namespace NoFuture.Rand.Domus
             {
                 return gender == Gender.Male ? "John" : "Jane";
             }
+            var decadeElem = xmlData.SelectSingleNode("//first-name[last()]");
             foreach (var decadeNode in firstNameNodes)
             {
                 var decade = decadeNode as XmlElement;
@@ -654,7 +655,7 @@ namespace NoFuture.Rand.Domus
         /// <returns></returns>
         public static List<Spouse> DumpAllSpouses(NorthAmerican nAmer)
         {
-            return nAmer._spouses;
+            return nAmer._spouses.ToList();
         }
         #endregion
     }

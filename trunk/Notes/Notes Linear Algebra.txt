@@ -218,6 +218,8 @@ Points & Vectors
   - moving a continuous field into a vector-field
     is called discretizing - taking some sample of
 	points and assigning each a vector
+	
+ - a Matrix is a map of vectors to vectors
 ----
 
 ----
@@ -630,7 +632,14 @@ Matrix Laws & Names
    A^(r+s) = A^r * A^s
    A^(r*s) = (A^r)^s
    A^0 = I
-   A^-1 = A inverse
+
+ - inversion rules
+  A^-1*A = I
+  A*A^-1 = I
+  I^-1 = I
+ (A^-1)^-1 = A
+ (A^-1)ᵀ = (Aᵀ)^-1
+   
 ----
 
 ----   
@@ -655,7 +664,7 @@ Reflection
         [sin(a), cos(a) ] ]
   
   a <- degrees2Radians(45)
-  myR <- matrix(c(cos(a),sin(a),cos(a),-1*sin(a)),ncol=2)
+  myR <- matrix(c(cos(a),sin(a),-1*sin(a),cos(a)),ncol=2)
 ----
 
 ----
@@ -730,7 +739,11 @@ Linear Maps and Area
 Linear System (2X2)
  - defining two linear eq's in 
    matrix format
-  
+ - Linear Map is formally defined as
+    v' = A*v 
+   - in that it preserves linear combinations of
+     vectors.   
+	
   2*u1 + 4*u2 = 4
     u1 + 6*u2 = 4
 	-as-
@@ -837,6 +850,98 @@ Pivoting
    0  0] *  u1] =  0]
 ----
    
+----
+Inverse ops & Maps
+ - applying an inverse is a form of undo'ing 
+   a linear map
+ A*u = b
+  -then-
+ u = A^-1*b
+ 
+ - given two vectors which are known to map
+   to two other vectors, solve for the Matrix
+ 
+ A*v1 = v'1
+ A*v2 = v'2
+ A*(v1, v2) = v'1,v'2
+  -shortened as-
+ A*V = V'
+ A = V'*V^-1
+ - insuch a case the application of matrix
+   A is known as "change of basis"
    
+ -example
+  v1 <- c(1,1)
+  v2 <- c(-1,1)
+  
+  vTick1 <- c(-1,-1)
+  vTick2 <- c(1, -1)
+  
+  V <- matrix(c(v1[1],v1[2],v2[1],v2[2]),ncol=2)
+  V2neg1 <- solve(V)
+  
+  VTick <- matrix(c(vTick1[1],vTick1[2],vTick2[1],vTick2[2]),ncol=2)
+  A <- VTick %*% V2neg1
+---- 
+
+----
+Affine maps 
+ - linear map was to map vector to vector
+ - affine is to map points to points
+  - affine maps are to move and orient
+    objects like in visual graphics
+  - are composed of components named
+   - translation (p): an object is moved
+      w/o changing its orientation
+   - linear map (A)
+  - while linear maps are releated to ratios
+    affine maps leave ratios unchanged
    
+  x' = p + x1*a1 + x2*a2
+  x' = p + A*x
+  
+  - the x' has the same coordinates 
+    in the new system that x did in the 
+	former
+
+  - technically the linear map A is 
+    applied to the vector x - o
+	where o is the (0,0) of the 
+	former coordinate system
+  x' = p + A*(x - o)
+  
+ - Translation, as a affine map is written 
+   as  x' = p + I*x
+----
+
+----
+General Affine maps
+ - Rotate: have point r and want to rotate
+   some pt (x) by (a) degrees
+  x' = A*(x - r) + r
+  
+  -example
+  A <- getRotationMatrix(90)
+  r <- c(2,1)
+  x <- c(3,0)
+  
+  A %*% (x - r) + r # (3,2)
+ 
+ - Reflect: have line (l) and point (x)
+   and want to reflect (x) across line (l)
+  - uses the "Foot of a given point" where its
+    value (here called (p)) is the mid-pt 
+	of the reflection
+  p = 1/2*x + 1/2*x'
+  x'= 2p - x
+
+ - Mapping points in triangles
+  - triangle is defined by its vertices
+   a1 <- c(0,1)
+   a2 <- c(-1,-1)
+   a3 <- c(1,-1)
+   
+   aTick1 <- c(0,1)
+   aTick2 <- c(1,3)
+   aTick3 <- c(-1,3)
    

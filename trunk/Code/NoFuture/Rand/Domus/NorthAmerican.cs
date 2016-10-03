@@ -22,7 +22,7 @@ namespace NoFuture.Rand.Domus
     public class NorthAmerican : Person
     {
         #region fields
-        internal readonly List<Spouse> _spouses = new List<Spouse>();
+        internal readonly HashSet<Spouse> _spouses = new HashSet<Spouse>();
         private IEducation _edu;
         internal readonly List<Tuple<KindsOfLabels, NorthAmericanPhone>> _phoneNumbers = 
             new List<Tuple<KindsOfLabels, NorthAmericanPhone>>();
@@ -47,8 +47,12 @@ namespace NoFuture.Rand.Domus
             UpsertName(KindsOfNames.First, fname);
             var lname = NAmerUtil.GetAmericanLastName();
             UpsertName(KindsOfNames.Surname, lname);
-
+            
             MiddleName = NAmerUtil.GetAmericanFirstName(_birthCert.DateOfBirth, _myGender);
+            while (string.Equals(fname, MiddleName, StringComparison.OrdinalIgnoreCase))
+            {
+                MiddleName = NAmerUtil.GetAmericanFirstName(_birthCert.DateOfBirth, _myGender);
+            }
             _ssn = new SocialSecurityNumber();
         }
 

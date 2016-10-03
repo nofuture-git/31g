@@ -26,9 +26,7 @@ namespace NoFuture.Rand
         #endregion
 
         internal static Random MyRand
-        {
-            get { return _myRand ?? (_myRand = new Random(Convert.ToInt32(string.Format("{0:ffffff}", DateTime.Now)))); }
-        }
+            => _myRand ?? (_myRand = new Random(Convert.ToInt32(string.Format("{0:ffffff}", DateTime.Now))));
 
         #region API
 
@@ -303,6 +301,14 @@ namespace NoFuture.Rand
             return string.Join("@", username, host);
         }
 
+        /// <summary>
+        /// Creates a random email address in a typical format
+        /// </summary>
+        /// <param name="names"></param>
+        /// <param name="isProfessional">
+        /// set this to true to have the username look unprofessional
+        /// </param>
+        /// <returns></returns>
         public static string RandomEmailUri(string[] names, bool isProfessional = true)
         {
             if(names == null || !names.Any())
