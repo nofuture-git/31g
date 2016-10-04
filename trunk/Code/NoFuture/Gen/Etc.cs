@@ -19,7 +19,7 @@ namespace NoFuture.Gen
     /// <summary>
     /// Main entry functions for code generation.
     /// </summary>
-    public class Etc
+    public static class Etc
     {
         #region constants
         private const string DF_TYPE_NAME = "System.Object";
@@ -322,9 +322,8 @@ namespace NoFuture.Gen
         }
 
         /// <summary>
-        /// Given the name of some type which is present within the 
-        /// given assembly, the cmdlet will produce a psobject to be 
-        /// used in one of the code generation cmdlets
+        /// Get a custom type specific for Code Gen purposes based on the 
+        /// given <see cref="typeFullName"/>
         /// </summary>
         /// <param name="assembly">A reference to the assembly in which the type is located.</param>
         /// <param name="typeFullName">The type which will produce the cgObject.</param>
@@ -334,20 +333,38 @@ namespace NoFuture.Gen
         public static CgType GetCgOfType(Assembly assembly, string typeFullName, 
             bool valueTypeOnly, bool resolveDependencies = false)
         {
-            if (assembly == null || String.IsNullOrWhiteSpace(typeFullName))
+            if (assembly == null || string.IsNullOrWhiteSpace(typeFullName))
                 return null;
-            var cgType = new CgType();
+           
             var asmType = assembly.NfGetType(typeFullName);
+            var cgType = GetCgOfType(asmType, valueTypeOnly,resolveDependencies);
+            return cgType;
+        }
+
+        /// <summary>
+        /// Converts the .NET type into the custom Code Gen type
+        /// </summary>
+        /// <param name="asmType"></param>
+        /// <param name="valueTypeOnly">
+        /// Will only export Fields and Properties whose base type extends System.ValueType
+        /// </param>
+        /// <param name="resolveDependencies">
+        /// Switch to have the IL of the type parsed and all dependent calls Metadata tokens added.
+        /// </param>
+        /// <returns></returns>
+        public static CgType GetCgOfType(this Type asmType, bool valueTypeOnly, bool resolveDependencies = false)
+        {
+            var cgType = new CgType();
 
             if (asmType == null || NfTypeName.IsIgnoreType(asmType) || NfTypeName.IsClrGeneratedType(asmType))
                 return null;
-
+            
             //use the logic in TypeName to get the namespace and class name so its not tied to having the assembly
             var cgTypeName = new NfTypeName(asmType.AssemblyQualifiedName);
 
             //make sure there is always some kind of namespace
             cgType.Namespace = string.IsNullOrWhiteSpace(cgTypeName.Namespace)
-                ? assembly.GetName().Name
+                ? asmType.Assembly.GetName().Name
                 : cgTypeName.Namespace;
             cgType.IsContrivedNamespace = string.IsNullOrWhiteSpace(cgTypeName.Namespace);
             cgType.Name = cgTypeName.ClassName;
@@ -382,7 +399,7 @@ namespace NoFuture.Gen
                     TypeName = evtHandlerType,
                     MetadataToken = evtInfo.MetadataToken
                 };
-                cgType.Events.Add(cgMem);                
+                cgType.Events.Add(cgMem);
             }
 
             var asmMembers =
@@ -405,7 +422,7 @@ namespace NoFuture.Gen
                         if (resolveDependencies)
                         {
                             var propMi = NfTypeName.GetMethodsForProperty(pi, asmType);
-                            foreach(var pim in propMi)
+                            foreach (var pim in propMi)
                             {
                                 cgm.opCodeCallsAndCallvirtsMetadatTokens.AddRange(Asm.GetCallsMetadataTokens(pim));
                             }
@@ -413,14 +430,14 @@ namespace NoFuture.Gen
                         cgType.Properties.Add(cgm);
                     }
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     Asm.AddLoaderExceptionToLog(null, ex);
 
                     if (!Settings.IgnoreReflectionMissingAsmError)
                         throw;
 
-                    cgType.Properties.Add(new CgMember()
+                    cgType.Properties.Add(new CgMember
                     {
                         Name = mi.Name,
                         TypeName = DF_TYPE_NAME,
@@ -461,7 +478,7 @@ namespace NoFuture.Gen
                     if (!Settings.IgnoreReflectionMissingAsmError)
                         throw;
 
-                    cgType.Fields.Add(new CgMember()
+                    cgType.Fields.Add(new CgMember
                     {
                         Name = mi.Name,
                         TypeName = DF_TYPE_NAME,
@@ -502,7 +519,7 @@ namespace NoFuture.Gen
                     if (!Settings.IgnoreReflectionMissingAsmError)
                         throw;
 
-                    cgType.Methods.Add(new CgMember()
+                    cgType.Methods.Add(new CgMember
                     {
                         Name = mi.Name,
                         TypeName = DF_TYPE_NAME,
@@ -513,7 +530,7 @@ namespace NoFuture.Gen
 
             if (resolveDependencies)
             {
-                ResolveAllMetadataTokens(cgType, assembly.ManifestModule);
+                ResolveAllMetadataTokens(cgType, asmType.Assembly.ManifestModule);
             }
 
             return cgType;
