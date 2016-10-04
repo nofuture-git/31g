@@ -82,7 +82,7 @@ namespace NoFuture.Tests.Gen
                 System.Diagnostics.Debug.WriteLine(string.Format("Replace lines {0} to {1} with the line '{2}'", k.Item1, k.Item2, refactoredTestResults[k]));
             }
 
-            System.Diagnostics.Debug.WriteLine(string.Join("\n",testCgMember.MyCgLines()));
+            System.Diagnostics.Debug.WriteLine(string.Join("\n",testCgMember.GetMyCgLines()));
         }
 
         [TestMethod]
@@ -220,7 +220,7 @@ namespace NoFuture.Tests.Gen
 
             var testMethod00 = testSubject.CgType.Methods.FirstOrDefault(x => x.Name == testMethodName);
             Assert.IsNotNull(testMethod00);
-            var testResult = testMethod00.MyOriginalLines();
+            var testResult = testMethod00.GetMyOriginalLines();
 
             Assert.IsNotNull(testResult);
 

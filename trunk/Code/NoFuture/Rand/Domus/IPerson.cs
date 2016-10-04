@@ -13,13 +13,13 @@ namespace NoFuture.Rand.Domus
         string FirstName { get; set; }
         string LastName { get; set; }
         Gender MyGender { get; set; }
-        List<Uri> NetUri { get; }
+        IEnumerable<Uri> NetUri { get; }
         Pneuma.Personality Personality { get; }
         IEducation Education { get; }
         Spouse Spouse { get; }
         MaritialStatus MaritialStatus { get; }
         IEnumerable<Child> Children { get; }
-        List<Tuple<KindsOfNames, Parent>> Parents { get; }
+        IEnumerable<Tuple<KindsOfNames, Parent>> Parents { get; }
         ResidentAddress Address { get; }
 
         #endregion

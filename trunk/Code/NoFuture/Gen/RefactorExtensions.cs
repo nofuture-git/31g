@@ -131,8 +131,8 @@ namespace NoFuture.Gen
             var byFile =
                 blankOutCgMems.Where(
                     x =>
-                        x != null && x.PdbModuleSymbols != null && !string.IsNullOrWhiteSpace(x.PdbModuleSymbols.file) &&
-                        File.Exists(x.PdbModuleSymbols.file)).ToList();
+                        !string.IsNullOrWhiteSpace(x?.PdbModuleSymbols?.file) && File.Exists(x.PdbModuleSymbols.file))
+                    .ToList();
             if (byFile.Count <= 0)
                 return;
 
@@ -152,9 +152,11 @@ namespace NoFuture.Gen
         }
 
         /// <summary>
-        /// Performs dual operation of, one, moving <see cref="MoveMethodsArgs.MoveMembers"/> out of <see cref="MoveMethodsArgs.SrcFile"/> and into the new 
-        /// <see cref="MoveMethodsArgs.OutFilePath"/> (adjusting thier signatures as needed to accommodate dependencies), and, two,
-        /// modifying the <see cref="MoveMethodsArgs.SrcFile"/> file to call the new.
+        /// Performs dual operation of, one, moving <see cref="MoveMethodsArgs.MoveMembers"/> 
+        /// out of <see cref="MoveMethodsArgs.SrcFile"/> and into the new 
+        /// <see cref="MoveMethodsArgs.OutFilePath"/> (adjusting thier signatures as needed to 
+        /// accommodate dependencies), and, two, modifying the <see cref="MoveMethodsArgs.SrcFile"/> 
+        /// file to call the new.
         /// </summary>
         /// <param name="cgType"></param>
         /// <param name="args"></param>
@@ -360,7 +362,7 @@ namespace NoFuture.Gen
 
             srcLines = CleanSrcFile(srcLines);
 
-            const char blankChar = ' ';
+            const char BLANK_CHAR = ' ';
 
             if (string.IsNullOrWhiteSpace(outputFileName))
                 outputFileName = Path.Combine(TempDirectories.AppData, NfTypeName.GetNfRandomName());
@@ -405,7 +407,7 @@ namespace NoFuture.Gen
                     var newLn = new StringBuilder();
                     for (var k = 0; k < originalSrc[i].Length; k++)
                     {
-                        newLn.Append(lineOn && dil.Contains(k) ? srcLn[k] : blankChar);
+                        newLn.Append(lineOn && dil.Contains(k) ? srcLn[k] : BLANK_CHAR);
                         if (dil.Contains(k))
                         {
                             lineOn = !lineOn;
@@ -414,7 +416,7 @@ namespace NoFuture.Gen
                     srcLinesOut.Add(newLn.ToString());
                     continue;
                 }
-                srcLinesOut.Add(lineOn ? originalSrc[i] : new string(blankChar, originalSrc[i].Length));
+                srcLinesOut.Add(lineOn ? originalSrc[i] : new string(BLANK_CHAR, originalSrc[i].Length));
             }
             File.WriteAllLines(outputFileName, srcLinesOut, Encoding.UTF8);
         }
@@ -440,9 +442,10 @@ namespace NoFuture.Gen
         internal static Dictionary<Tuple<int, int>, string[]> MyRefactoredLines(this CgMember cgMem, string newVariableName,
             Tuple<string, string> namespaceAndTypeName, bool includeVariableDecl = true)
         {
-            if (cgMem.PdbModuleSymbols == null || string.IsNullOrWhiteSpace(cgMem.PdbModuleSymbols.file) ||
-                !File.Exists(cgMem.PdbModuleSymbols.file) || cgMem.PdbModuleSymbols.firstLine == null ||
-                cgMem.PdbModuleSymbols.lastLine == null)
+            if (string.IsNullOrWhiteSpace(cgMem.PdbModuleSymbols?.file) 
+                || !File.Exists(cgMem.PdbModuleSymbols.file) 
+                || cgMem.PdbModuleSymbols.firstLine == null 
+                || cgMem.PdbModuleSymbols.lastLine == null)
                 return null;
 
             if (string.IsNullOrWhiteSpace(newVariableName))
@@ -527,7 +530,8 @@ namespace NoFuture.Gen
             {
                 foreach (var filter in exclude)
                 {
-                    if (filter.Trim().EndsWith("*") && filtered.Contains(filter.Trim().Replace("*", string.Empty)) && filteredStmts.Contains(filtered))
+                    if (filter.Trim().EndsWith("*") && filtered.Contains(filter.Trim().Replace("*", string.Empty)) &&
+                        filteredStmts.Contains(filtered))
                     {
                         filteredStmts.Remove(filtered);
                         continue;

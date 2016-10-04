@@ -1,12 +1,10 @@
-﻿using System;
-using System.Runtime.Serialization;
+﻿using System.Runtime.Serialization;
 
 namespace NoFuture.Shared.DiaSdk.LinesSwitch
 {
     /// <summary>
     /// The result object from Dia2Dump.exe using the <see cref="Dia2DumpAllSwitches.Lines"/> switch
     /// </summary>
-    [Serializable]
     [DataContract]
     public class PdbAllLines : IPdbJsonDeserializedTypes
     {
@@ -17,7 +15,6 @@ namespace NoFuture.Shared.DiaSdk.LinesSwitch
     /// <summary>
     /// The result object from Dia2Dump.exe using the <see cref="Dia2DumpSingleSwitches.TypeFullName"/> switch
     /// </summary>
-    [Serializable]
     [DataContract]
     public class PdbCompiland : IPdbJsonDeserializedTypes
     {
@@ -27,7 +24,6 @@ namespace NoFuture.Shared.DiaSdk.LinesSwitch
         public ModuleSymbols[] moduleSymbols;
     }
 
-    [Serializable]
     [DataContract]
     public class ModuleSymbols
     {
@@ -45,7 +41,6 @@ namespace NoFuture.Shared.DiaSdk.LinesSwitch
         public PdbLineNumber lastLine;
     }
 
-    [Serializable]
     [DataContract]
     public class PdbLineNumber
     {
@@ -73,7 +68,6 @@ namespace NoFuture.Shared.DiaSdk.GlobalsSwtich
     /// <summary>
     /// The result object from Dia2Dump.exe using the <see cref="Dia2DumpAllSwitches.Globals"/> switch
     /// </summary>
-    [Serializable]
     [DataContract]
     public class PdbAllGlobals : IPdbJsonDeserializedTypes
     {
@@ -81,7 +75,6 @@ namespace NoFuture.Shared.DiaSdk.GlobalsSwtich
         public PdbGlobal[] globals;
     }
 
-    [Serializable]
     [DataContract]
     public class PdbGlobal
     {
@@ -103,7 +96,6 @@ namespace NoFuture.Shared.DiaSdk.SectionSwitch
     /// <summary>
     /// The result object from Dia2Dump.exe using the <see cref="Dia2DumpAllSwitches.Sections"/> switch
     /// </summary>
-    [Serializable]
     [DataContract]
     public class PdbAllSections : IPdbJsonDeserializedTypes
     {
@@ -111,7 +103,6 @@ namespace NoFuture.Shared.DiaSdk.SectionSwitch
         public PdbSection[] sectionContribution;
     }
 
-    [Serializable]
     [DataContract]
     public class PdbSection
     {
@@ -133,7 +124,6 @@ namespace NoFuture.Shared.DiaSdk.FilesSwitch
     /// <summary>
     /// The result object from Dia2Dump.exe using the <see cref="Dia2DumpAllSwitches.Files"/> switch
     /// </summary>
-    [Serializable]
     [DataContract]
     public class PdbAllFiles : IPdbJsonDeserializedTypes
     {
@@ -141,7 +131,6 @@ namespace NoFuture.Shared.DiaSdk.FilesSwitch
         public PdbFile[] files;
     }
 
-    [Serializable]
     [DataContract]
     public class PdbFile
     {
@@ -157,7 +146,6 @@ namespace NoFuture.Shared.DiaSdk.SymbolsSwitch
     /// <summary>
     /// The result object from Dia2Dump.exe using the <see cref="Dia2DumpAllSwitches.Symbols"/> switch
     /// </summary>
-    [Serializable]
     [DataContract]
     public class PdbAllSymbols : IPdbJsonDeserializedTypes
     {
@@ -165,7 +153,6 @@ namespace NoFuture.Shared.DiaSdk.SymbolsSwitch
         public PdbModuleName[] symbols;
     }
 
-    [Serializable]
     [DataContract]
     public class PdbModuleName
     {
@@ -175,7 +162,6 @@ namespace NoFuture.Shared.DiaSdk.SymbolsSwitch
         public PdbModuleSymbol[] moduleSymbols;
     }
 
-    [Serializable]
     [DataContract]
     public class PdbModuleSymbol
     {
@@ -189,7 +175,6 @@ namespace NoFuture.Shared.DiaSdk.SymbolsSwitch
         public string undName;
     }
 
-    [Serializable]
     [DataContract]
     public class PdbInMetadata
     {
@@ -207,7 +192,6 @@ namespace NoFuture.Shared.DiaSdk.ModulesSwitch
     /// <summary>
     /// The result object from Dia2Dump.exe using the <see cref="Dia2DumpAllSwitches.Modules"/> switch
     /// </summary>
-    [Serializable]
     [DataContract]
     public class PdbAllModules : IPdbJsonDeserializedTypes
     {
@@ -215,7 +199,6 @@ namespace NoFuture.Shared.DiaSdk.ModulesSwitch
         public PdbModule[] modules;
     }
 
-    [Serializable]
     [DataContract]
     public class PdbModule
     {

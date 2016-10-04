@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using System.Text.RegularExpressions;
-using NoFuture.Shared;
 using NoFuture.Shared.DiaSdk.LinesSwitch;
 using NoFuture.Tokens;
 
@@ -36,7 +34,8 @@ namespace NoFuture.Gen
         }
         #endregion
 
-        #region public properties
+        #region properties
+
         public string TypeName { get; set; }
         public string Name { get; set; }
         public int MetadataToken { get; set; }
@@ -68,10 +67,7 @@ namespace NoFuture.Gen
         /// This represents all the calls being made within this method's body 
         /// out to other type's members.
         /// </remarks>
-        public List<CgMember> OpCodeCallAndCallvirts
-        {
-            get { return _opCodeCallAndCallvirts; }
-        }
+        public List<CgMember> OpCodeCallAndCallvirts => _opCodeCallAndCallvirts;
 
         /// <summary>
         /// Used by calling assembly for whatever reason they want.
@@ -82,19 +78,19 @@ namespace NoFuture.Gen
         /// PDB data bound to this <see cref="CgMember"/>
         /// </summary>
         public ModuleSymbols PdbModuleSymbols { get; set; }
+
+        internal CgType MyCgType { get { return _myCgType; } set { _myCgType = value; } }
+
         #endregion
 
-        #region public api
+        #region methods
 
         /// <summary>
         /// Renders the invocation of this <see cref="CgMember"/> as a regex pattern.
         /// </summary>
         public string AsInvokeRegexPattern(params string[] varNames)
         {
-            if (string.IsNullOrWhiteSpace(Name))
-                return ".";
-
-            return Settings.LangStyle.ToInvokeRegex(this, varNames);
+            return string.IsNullOrWhiteSpace(Name) ? "." : Settings.LangStyle.ToInvokeRegex(this, varNames);
         }
 
         /// <summary>
@@ -103,9 +99,7 @@ namespace NoFuture.Gen
         /// <returns></returns>
         public string AsSignatureRegexPattern()
         {
-            if (string.IsNullOrWhiteSpace(Name))
-                return ".";
-            return Settings.LangStyle.ToSignatureRegex(this);
+            return string.IsNullOrWhiteSpace(Name) ? "." : Settings.LangStyle.ToSignatureRegex(this);
         }
 
         /// <summary>
@@ -113,7 +107,7 @@ namespace NoFuture.Gen
         /// the body of the method contains them otherwise the body will default to 
         /// <see cref="Settings.NoImplementationDefault"/>
         /// </summary>
-        public string[] MyCgLines()
+        public string[] GetMyCgLines()
         {
             if (SkipIt)
                 return new[] { string.Empty };
@@ -134,7 +128,7 @@ namespace NoFuture.Gen
                 return myImplementation.ToArray();
 
             }
-            _myImplementation = MyOriginalLines();
+            _myImplementation = GetMyOriginalLines();
             return _myImplementation;
         }
 
@@ -142,9 +136,9 @@ namespace NoFuture.Gen
         /// Returns the lines, sourced from the PDB, exactly as-is from the original source (null otherwise).
         /// </summary>
         /// <returns></returns>
-        public string[] MyOriginalLines()
+        public string[] GetMyOriginalLines()
         {
-            if (PdbModuleSymbols == null || string.IsNullOrWhiteSpace(PdbModuleSymbols.file) || !File.Exists(PdbModuleSymbols.file))
+            if (string.IsNullOrWhiteSpace(PdbModuleSymbols?.file) || !File.Exists(PdbModuleSymbols.file))
                 return null;
 
             var content = File.ReadAllLines(PdbModuleSymbols.file);
@@ -269,7 +263,7 @@ namespace NoFuture.Gen
             //validate we have everything needed to go foward
             if (srcFile == null || srcFile.Length <= 0)
                 return null;
-            if (PdbModuleSymbols == null || PdbModuleSymbols.firstLine == null || PdbModuleSymbols.lastLine == null)
+            if (PdbModuleSymbols?.firstLine == null || PdbModuleSymbols.lastLine == null)
                 return null;
 
             //set source to pristine for tokens to operate on
@@ -359,9 +353,6 @@ namespace NoFuture.Gen
 
             return GetDefaultEndEnclosure(srcFile);
         }
-        #endregion
-
-        #region internal helpers
 
         internal Tuple<int, int> GetDefaultEndEnclosure(string[] srcFile)
         {
@@ -421,9 +412,6 @@ namespace NoFuture.Gen
             return false;
         }
 
-        internal CgType MyCgType { get { return _myCgType; } set { _myCgType = value; } }
-        #endregion
-
         public virtual bool Equals(CgMember obj)
         {
             var eq = obj.TypeName == TypeName && obj.Name == Name && obj.HasGetter == HasGetter && obj.HasSetter == HasSetter &&
@@ -439,6 +427,7 @@ namespace NoFuture.Gen
             return !myArgs.Any(myArg => compareArgs.All(x => !x.Equals(myArg)));
         }
 
+        #endregion
     }
 
     /// <summary>

@@ -24,9 +24,9 @@ namespace NoFuture.Gen.LangRules
         public const string CONST = "const";
         public const string STMT_TERM = ";";
 
-        public string LineComment { get { return LINE_COMMENT_CHAR_SEQ; } }
-        public string DeclareConstantKeyword { get { return CONST; } }
-        public Dictionary<string, string> ValueTypeToLangAlias { get { return Lexicon.ValueType2Cs; } }
+        public string LineComment => LINE_COMMENT_CHAR_SEQ;
+        public string DeclareConstantKeyword => CONST;
+        public Dictionary<string, string> ValueTypeToLangAlias => Lexicon.ValueType2Cs;
 
         public string GetEnclosureOpenToken(CgMember cgMem)
         {
@@ -118,11 +118,11 @@ namespace NoFuture.Gen.LangRules
                 Settings.LangStyle.TransposeCgAccessModToString(cgClsAccess), otherModifer, cgType.Name));
             splitFileContent.AppendLine("    " + C_OPEN_CURLY);
             foreach (var cg in cgType.Fields)
-                splitFileContent.AppendLine(string.Join(Environment.NewLine, cg.MyCgLines()));
+                splitFileContent.AppendLine(string.Join(Environment.NewLine, cg.GetMyCgLines()));
             foreach (var cg in cgType.Properties)
-                splitFileContent.AppendLine(string.Join(Environment.NewLine, cg.MyCgLines()));
+                splitFileContent.AppendLine(string.Join(Environment.NewLine, cg.GetMyCgLines()));
             foreach (var cg in cgType.Methods)
-                splitFileContent.AppendLine(string.Join(Environment.NewLine, cg.MyCgLines()));
+                splitFileContent.AppendLine(string.Join(Environment.NewLine, cg.GetMyCgLines()));
             splitFileContent.AppendLine("    " + C_CLOSE_CURLY);
 
             if (hasNs)
@@ -188,7 +188,7 @@ namespace NoFuture.Gen.LangRules
                 {
                     regexPattern.Append("(");
                     regexPattern.Append(string.Join(@"\x2e|",
-                        varNames.Select(x => Util.Etc.EscapeString(x, EscapeStringType.REGEX))));
+                        varNames.Select(x => x.EscapeString())));
                     regexPattern.Append(@"\x2e");
                     regexPattern.Append(")");
                 }
@@ -252,7 +252,7 @@ namespace NoFuture.Gen.LangRules
                 cgMem.Args.Select(
                     x =>
                         @"\s*\b" +
-                        Util.Etc.EscapeString(NfTypeName.GetTypeNameWithoutNamespace(x.ArgType), EscapeStringType.REGEX) +
+                        NfTypeName.GetTypeNameWithoutNamespace(x.ArgType).EscapeString() +
                         @"\b\s*([^\,]+?)").ToList();
             regexPattern.AppendFormat(@"\s*\({0}\)", string.Join(@"\,", simpleArgTypes));
 
@@ -282,7 +282,7 @@ namespace NoFuture.Gen.LangRules
 
         public string[] RemoveBlockComments(string[] fileMembers, Tuple<char, char> openningBlockChars, Tuple<char, char> closingBlockChars)
         {
-            const char blankChar = ' ';
+            const char BLANK_CHAR = ' ';
             var inBlock = false;
             var newLines = new List<string>();
             foreach (var ln in fileMembers)
@@ -307,7 +307,7 @@ namespace NoFuture.Gen.LangRules
                         inBlock = false;
                     if (currentChar != null && (inBlock || atBlockEnd))
                     {
-                        newLine.Append(blankChar);
+                        newLine.Append(BLANK_CHAR);
                     }
                     else
                     {
@@ -334,7 +334,7 @@ namespace NoFuture.Gen.LangRules
                 lineCommentSequence = LineComment;
             if (fileMembers == null)
                 return null;
-            const char blankChar = ' ';
+            const char BLANK_CHAR = ' ';
 
             //leverage the logic concering string literals as the logical base
             var irregular = false;
@@ -352,7 +352,7 @@ namespace NoFuture.Gen.LangRules
                 {
                     if (inCommentSection)
                     {
-                        newLine.Append(blankChar);
+                        newLine.Append(BLANK_CHAR);
                         continue;
                     }
                     if (operationFileLine[i] != lineCommentSequence[0])
@@ -368,7 +368,7 @@ namespace NoFuture.Gen.LangRules
                     if (new String(operationFileLine.Skip(i).Take(lineCommentSequence.Length).ToArray()) == lineCommentSequence)
                     {
                         inCommentSection = true;
-                        newLine.Append(blankChar);
+                        newLine.Append(BLANK_CHAR);
                     }
                 }
                 fileMembers[j] = newLine.ToString();
@@ -397,7 +397,7 @@ namespace NoFuture.Gen.LangRules
                 }
 
                 if (inDoubleQuotes)
-                    encodedList.Append(Util.Etc.EscapeString(buffer[j].ToString(CultureInfo.InvariantCulture), replacement));
+                    encodedList.Append(buffer[j].ToString(CultureInfo.InvariantCulture).EscapeString(replacement));
                 else
                     encodedList.Append(buffer[j]);
 
@@ -514,7 +514,7 @@ namespace NoFuture.Gen.LangRules
             }
             if (linesNeedSemicolon.Count <= 0)
                 return new[] {string.Empty};
-            return linesNeedSemicolon.Where(x => !string.IsNullOrWhiteSpace(x)).Select(l => String.Format("{0};", l)).ToArray();
+            return linesNeedSemicolon.Where(x => !string.IsNullOrWhiteSpace(x)).Select(l => $"{l};").ToArray();
         }
 
         public List<char> FlattenCodeToCharStream(string[] fileContent)
@@ -530,7 +530,7 @@ namespace NoFuture.Gen.LangRules
             foreach (var ln in fileContent)
             {
                 //need to perserve keywords, but control chars may be trimmed.
-                var distillLn = Util.Etc.DistillString(ln).ToCharArray();
+                var distillLn = ln.DistillString().ToCharArray();
                 var enclosedInQuotes = false;
                 for (var j = 0; j < distillLn.Length; j++)
                 {

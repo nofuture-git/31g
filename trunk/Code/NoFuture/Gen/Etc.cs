@@ -26,13 +26,15 @@ namespace NoFuture.Gen
         private const string VALUE_TYPE = "ValueType";
         #endregion
 
-        #region private static fields
+        #region fields
         private static ArrayList _objectMembers;
         private static List<string> _ffVTypes;
         #endregion
 
+        #region properties
         public static ArrayList ObjectMembers => _objectMembers ??
-                                                 (_objectMembers = new ArrayList {"Equals", "GetHashCode", "ToString", "GetType"});
+                                                 (_objectMembers =
+                                                     new ArrayList {"Equals", "GetHashCode", "ToString", "GetType"});
 
         public static List<string> ValueTypesList
         {
@@ -49,7 +51,9 @@ namespace NoFuture.Gen
                 return _ffVTypes;
             }
         }
+        #endregion
 
+        #region methods
         /// <summary>
         /// Run its counterpart <see cref="GetClassDiagram"/> in an isolated process
         /// </summary>
@@ -113,7 +117,8 @@ namespace NoFuture.Gen
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        private static string RunGraphViz(string argPath, string argType, string diagramType, int maxWaitInSeconds, params string[] additionalArgs)
+        private static string RunGraphViz(string argPath, string argType, string diagramType, 
+            int maxWaitInSeconds, params string[] additionalArgs)
         {
             var invokeGraphVizPath = CustomTools.InvokeGraphViz;
             if (string.IsNullOrWhiteSpace(invokeGraphVizPath))
@@ -253,7 +258,8 @@ namespace NoFuture.Gen
         /// <param name="resolveDependencies"></param>
         /// <param name="maxWaitInSeconds"></param>
         /// <returns></returns>
-        public static CgType GetIsolatedCgOfType(string assemblyPath, string typeFullName, bool resolveDependencies = false, int maxWaitInSeconds = 60)
+        public static CgType GetIsolatedCgOfType(string assemblyPath, string typeFullName, 
+            bool resolveDependencies = false, int maxWaitInSeconds = 60)
         {
             var invokeGetCgTypePath = CustomTools.InvokeGetCgType;
 
@@ -325,7 +331,8 @@ namespace NoFuture.Gen
         /// <param name="valueTypeOnly">Will only export Fields and Properties whose base type extends System.ValueType</param>
         /// <param name="resolveDependencies">Switch to have the IL of the type parsed and all dependent calls Metadata tokens added.</param>
         /// <returns></returns>
-        public static CgType GetCgOfType(Assembly assembly, string typeFullName, bool valueTypeOnly, bool resolveDependencies = false)
+        public static CgType GetCgOfType(Assembly assembly, string typeFullName, 
+            bool valueTypeOnly, bool resolveDependencies = false)
         {
             if (assembly == null || String.IsNullOrWhiteSpace(typeFullName))
                 return null;
@@ -888,6 +895,7 @@ namespace NoFuture.Gen
             }
             return false;
         }
+        #endregion
     }
 }
 

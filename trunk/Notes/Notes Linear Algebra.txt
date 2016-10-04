@@ -934,14 +934,5 @@ General Affine maps
 	of the reflection
   p = 1/2*x + 1/2*x'
   x'= 2p - x
-
- - Mapping points in triangles
-  - triangle is defined by its vertices
-   a1 <- c(0,1)
-   a2 <- c(-1,-1)
-   a3 <- c(1,-1)
-   
-   aTick1 <- c(0,1)
-   aTick2 <- c(1,3)
-   aTick3 <- c(-1,3)
+----
    

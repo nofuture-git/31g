@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Reflection;
-using NoFuture.Util;
 
 namespace NoFuture.Gen
 {
@@ -20,12 +19,9 @@ namespace NoFuture.Gen
 
         public override string ToString()
         {
-            return string.Format("{0} {1}", ArgType, ArgName);
+            return $"{ArgType} {ArgName}";
         }
 
-        public string AsInvokeRegexPattern
-        {
-            get { return @"([^\,]+?)"; }
-        }
+        public string AsInvokeRegexPattern => @"([^\,]+?)";
     }
 }

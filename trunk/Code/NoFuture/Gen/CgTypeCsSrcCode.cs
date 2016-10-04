@@ -17,7 +17,7 @@ namespace NoFuture.Gen
         #endregion
 
         #region properties
-        public CgType CgType { get { return _cgType; } }
+        public CgType CgType => _cgType;
         public string AssemblyPath { get; set; }
         public List<string> ErrorMessages { get; set; }
 
@@ -28,17 +28,17 @@ namespace NoFuture.Gen
         public CgTypeCsSrcCode(string assemblyPath, string typeFullName)
         {
             if (string.IsNullOrWhiteSpace(assemblyPath))
-                throw new ArgumentNullException("assemblyPath");
+                throw new ArgumentNullException(nameof(assemblyPath));
             AssemblyPath = assemblyPath;
             if (!File.Exists(AssemblyPath))
             {
-                throw new ItsDeadJim(string.Format("No such file '{0}'.", AssemblyPath));
+                throw new ItsDeadJim($"No such file '{AssemblyPath}'.");
             }
 
             var invokeDia2Dump = new InvokeDia2Dump.GetPdbData(assemblyPath);
             var pdbLines = invokeDia2Dump.SingleTypeNamed(typeFullName);
             if(pdbLines == null)
-                throw new ItsDeadJim(string.Format("Dia2Dump.exe did not return anything for the type named '{0}'",typeFullName));
+                throw new ItsDeadJim($"Dia2Dump.exe did not return anything for the type named '{typeFullName}'");
             
             _cgType = Etc.GetIsolatedCgOfType(assemblyPath, typeFullName, true);
 

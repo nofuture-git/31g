@@ -116,7 +116,7 @@ namespace NoFuture.Gen
         }
         #endregion
 
-        #region public api
+        #region methods
         /// <summary>
         /// Returns the field's names of the <see cref="enumTypeName"/>
         /// being that such an enum was encountered while reflecting the type.

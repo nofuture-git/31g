@@ -48,7 +48,7 @@ namespace NoFuture.Rand.Domus
             get { return Names.First(x => x.Item1 == KindsOfNames.Surname).Item2; }
             set { UpsertName(KindsOfNames.Surname, value); }
         }
-        public virtual List<Uri> NetUri => _netUris;
+        public virtual IEnumerable<Uri> NetUri => _netUris;
         public Personality Personality => _personality;
         public virtual IEducation Education => GetEducationAt(null);
         public ResidentAddress Address => GetAddressAt(null);
@@ -56,7 +56,7 @@ namespace NoFuture.Rand.Domus
         public int Age => GetAgeAt(null);
         public MaritialStatus MaritialStatus => GetMaritalStatusAt(null);
         public IEnumerable<Child> Children => _children;
-        public List<Tuple<KindsOfNames, Parent>> Parents
+        public IEnumerable<Tuple<KindsOfNames, Parent>> Parents
         {
             get
             {
