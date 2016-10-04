@@ -16,6 +16,15 @@ Pages in Print Edition: 514
 ----
 
 ----
+Practical Graph Mining with R:
+By: Nagiza Samatova; William Hendrix; John Jenkins; Kanchana Padmanabhan; Arpan Chakraborty
+Publisher: Chapman and Hall/CRC
+Pub. Date: July 15, 2013
+Print ISBN-13: 978-1-4398-6084-7
+Pages in Print Edition: 495
+----
+
+----
 https://www.math.uh.edu/~jmorgan/Math6397/day13/LinearAlgebraR-Handout.pdf
 ----
 
@@ -27,21 +36,22 @@ May 2015 ISBN 9781617291388 608 pages printed in black & white
 ----
 
 ----
-R Builtins
- - Numeric functions
- abs(x)	absolute value
- sqrt(x)	square root
- ceiling(x)	ceiling(3.475) is 4
- floor(x)	floor(3.475) is 3
- trunc(x)	trunc(5.99) is 5
- round(x, digits=n)	round(3.475, digits=2) is 3.48
- signif(x, digits=n)	signif(3.475, digits=2) is 3.5
- cos(x), sin(x), tan(x)	also acos(x), cosh(x), acosh(x), etc.
- log(x)	natural logarithm
- log10(x)	common logarithm
- exp(x)	e^x
+R Summary
+ - is a GNU port of the "S" language where S was a stat lang
+   developed at Bell Labs by John Chambers.
+ - is open-source, dev'ed by Robert Gentlement and Ross Ihaka
+----
+
+----
+R Ops
+ - Assignment
+  <- assignment and scoped globally
+  =  assignment with local socpe
+  -> assignment in reverse where variable is right operand
  
  - Logical 
+  TRUE
+  FALSE
   < 	less than
   <=  	less than or equal to
   > 	greater than
@@ -52,20 +62,38 @@ R Builtins
   x | y	x OR y
   x & y	x AND y 
   isTRUE(x)	test if X is TRUE
-
   isTRUE(2 > 1 | 1/0) #is short-circuit logical ops
   
- -Other  
- seq(start,end[,step]) gen' stepped sequences 
- c(1:10) gen' single sequences
- 
+ -Mathematical Ops
+  +, -, *, /  (arithmatic)
+  ** or ^     (exponent) 
+  %%          (modulus)
+  %*%         (matrix multiplication)
+  ~           (a kind of R specific thing, see help)
+  
+ -Flow Control Ops
+  if(TRUE) x <- 1 else x <- 2 #inline if
+  for(i in c(1:10)) print(i)
+  a <- 0; while(a < 10) a <- a+1
+  apply(x,(1|2),cos) #where, x is a matrix
+                   # 1 is for each row, 2 for each column
+                   # cos is the builtin f(x) cosine
+  lapply(x,cos) #apply cosine builtin to every element
+  
+ - Casting
+  as.data.frame(x)
+  as.matrix(x)
+  as.vector(x)
+  as.list(x)
 ----
 
 ----
-Basics with R
+R Builtins
  #define a vector
  a <- c(1,3,2)
  b <- c(2,8,9)
+ bb <- seq(start,end[,step]) #gen' stepped sequences 
+ cc <- c(1:10) gen' single sequence
  
  #assignment can work both ways
  c(1,3,2) -> a  
@@ -74,9 +102,13 @@ Basics with R
  #multiple statement on single line are ; sep'ed
  c(1,3,2) -> a; b <- c(2,8,9)
  
+ #vector index op
+ a <- c(1,2,3)
+ a[1] 
+ a[-2] #means everything except index 2
+ 
  #transpose 
  t(a)
-
  
  #scalar multiplication
  7*a
@@ -104,7 +136,12 @@ Basics with R
  A <- matrix(c(1,3,2,2,8,9), ncol = 3)
  #set to read row-by-row
  B <- matrix(c(5, 8, 3, 4, 2, 7), ncol = 3, byrow = T)
-  
+ 
+ #matrix index op
+ A[1] #same as A[1,1] 
+ A[1,] #row 1
+ A[,1] #column 1
+ 
  #scalar multiplication
  7*A
  
@@ -142,6 +179,11 @@ Basics with R
  # - ev$vec for eigen vectors
  ev <- eigen(A)
  
+ #IO
+ myData <- read.table("C:/MyR/MyRData/MyData.tsv",header=TRUE)
+ sink("C:/MyR/MyOutput/output.txt") #will route all output to file
+ sink() #sets output back to console.
+ 
  #user defined function (in-line)
  myNormalForm <- function(x1, x2) -2*x1 + 4*x2 - 4
  
@@ -158,14 +200,42 @@ Basics with R
  vLen(c(5,4)) #6.403124
  
  #other usefull builtin
- length(a); mean(a); min(a); max(a); var(a) #var is for variance
  ls()  # display all the variables defined so far in the console.
  rm(a) # gc a variable 
- sink("C:/MyR/MyOutput/output.txt") #will route all output to file
- sink() #sets output back to console.
+
  help("[[") #gets help on builtin symbols (displays in browser)
+ 
+ # Numeric builtins
+ length(a); mean(a); min(a); max(a); var(a)
+ abs(x); sqrt(x); ceiling(x); floor(x)
+ trunc(x); round(x[, n]); signif(x[, n])
+ cos(x); sin(x); tan(x); #use radians not degees
+ log(x); log10(x);
+ 
+ #dynamic types
+ myDyn <- list(name="myType", someProp=11, anotherProp=c(1:10))
+ #access props with '$' instead of c-style dot
+ myDyn$name
+ #can also use an index
+ myDyn[1]
+ 
+ #data frames are dynamic runtime tables
+ a <- c(1, 2, 3)
+ b <- matrix(c(4:15), nrow=3, ncol=4)
+ p <- c("R","is","easy")
+ df <- data.frame(a,b,p)
 ----
 
+----
+R Graphix
+ x <- c(1,3,4,5,8)
+ y <- c(2,4,7,3,9)
+ plot(x,y) #basic, no labels
+ plot(x,y, type="l", col="black", xlab="My X-axis label", 
+           ylab="My Y-axis label", main="My Header label",
+		   font.main=2, font.lab=1,pch=19)
+----
+		   
 ----
 Points & Vectors
  - most basic 2D a point is two coords
@@ -178,6 +248,17 @@ Points & Vectors
  [q1,q2] = [p1,p2] + [v1,v2] = [p1 + v1, p2 + v2]
  v = q - p
  [v1,v2] = [q1,q2] - [p1,p2] = [q1 - p1, q2 - p2]
+ 
+ - Vector Space: consists of a set of vectors 
+   and the operations of scaling and addition.
+   - scaling op is multplicative with operands
+     as a scalar and a vector.
+	- the product is then a scaled vector and
+	  a likewise member of the same vector space
+    - each component (i.e. item) in the vector
+	  is scaled by some multiple
+   - addition op is performed over two operand
+     vectors 
  
  - vector is a difference of two points
    which describes a direction and distance
@@ -220,6 +301,90 @@ Points & Vectors
 	points and assigning each a vector
 	
  - a Matrix is a map of vectors to vectors
+ 
+ - Tensor order: how a value is indexed in a vector
+   e.g. v[1]
+   "tensors of unity order", the nature of indexing 
+   a vector with a single index
+   - scalars may be viewed as zero-order tensors
+   - matrices are second-order tnesors
+----
+
+----
+Formal Def. of Graphs
+ - beyond common use, is a formal abstract concept
+ - is composed of points (also called vertices)
+ - has lines (also called edges) which connect points
+ - represent structured data
+ 
+ Terms
+ - vertices: is the discrete data of the graph 
+ - edges: represent the relation amoung the vertices'
+ - join: formal name for what the edge is doing; namely, joining
+    two vertices.
+ - adjacent: the state between to vertices when there is an edge
+    between them.
+ - connected: when a indirect route connects one vertex to another
+ - loop: the state of an edge connecting a vertex back to itself
+ - multiple edge: when there is another edge which joins the same
+    pair of vertices
+ - simple graph: a graph with no loops or multiple edges
+ - degree: the number of edges being joined to a single vertex
+ - subgraph: a subset of vertices and edges of another graph
+ - induced subgraph: a subgraph where only the vertices or only 
+    the edges are known.
+ - isomorphic graph: when two graphs are drawn the same
+ - bijection: across two sets, in a one-to-one mapping, may be thought
+    of like a function that translates a vertex in G to a vertex in H
+ - automorphic graph: when two graphs are drawn the same
+    and their underlying structured data is the same.
+ - label: by being labeled a vertex or edge becomes definititive 
+    like being an instance.
+ - directed graph (digraph): when the edges are an ordered pair
+ - edge head: the v1 in the ordered pair (v1,v2)
+ - edge tail: the v2 in the ordered pair (v1,v2)
+ - indegree: number of head-edges for a given vertex
+ - outdegree: number of tail-edges for a given vertex
+ - clique: set of connected vertices where beginning at 
+    one vertex you may navigate to any other member of the
+	clique via one edge
+ - complete graph: every vertex is connected to every other 
+    vetex via an edge and is equal to n*(n-1)/2
+ - path: another name for a route, also called a walk
+ - simple path: if the route never visits the same vertex twice
+ - open path: when the first and last vertices are different
+ - closed path: when the first and last vertices are the same
+    also known as a cycle
+ - simple cycle: same as simple closed path except the origin 
+    vertex is the only one visited twice (being the terminus)
+ - tree graph: has an originating root vertex
+ - parent\child: same as used in XML
+ - leaf: a child vertex with not children of its own
+ - descendant: in tree graph, used the same as in a family tree
+ - ancestor: again, tree graph, like a family tree
+ - weighted graph: where the edge is the vertex pair and a weight
+----
+
+----
+Representing a Graph
+ - adjacency list: represent each vertex as a key and the value 
+    as an array of adjacent vetices.
+ [1], [2,3,3]	would mean vertex 1 has one edge connecting it 
+                 to vertex 2 and two edges connecting it to vertex 
+ [2], [1,4]     vertex 2 has one edge connecting it to vertex 1 and 
+                 one edge connecting it to vertex 4
+ 
+ - adjacency matrix: an exhaustive list of propositions concerning 
+    is vertex v_i connected to vertex v_j 
+   - requires alot more memory to represent; namely n^2
+
+	.-         -.
+    | 0 1 1 0 0 |  would mean the same for the first two rows as 
+	| 1 0 0 1 0 |   above
+	| 1 0 0 1 0 |
+	| 0 1 1 0 1 |
+	| 0 0 0 1 1 |
+	`-         -'
 ----
 
 ----
