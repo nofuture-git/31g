@@ -36,6 +36,10 @@ May 2015 ISBN 9781617291388 608 pages printed in black & white
 ----
 
 ----
+https://www.ncbi.nlm.nih.gov/books/NBK253312/
+----
+
+----
 R Summary
  - is a GNU port of the "S" language where S was a stat lang
    developed at Bell Labs by John Chambers.
@@ -210,7 +214,7 @@ R Builtins
  abs(x); sqrt(x); ceiling(x); floor(x)
  trunc(x); round(x[, n]); signif(x[, n])
  cos(x); sin(x); tan(x); #use radians not degees
- log(x); log10(x);
+ log(x); log10(x); log2(x)
  
  #dynamic types
  myDyn <- list(name="myType", someProp=11, anotherProp=c(1:10))
@@ -224,6 +228,11 @@ R Builtins
  b <- matrix(c(4:15), nrow=3, ncol=4)
  p <- c("R","is","easy")
  df <- data.frame(a,b,p)
+ 
+ #get more libs at https://cran.r-project.org/web/packages/available_packages_by_name.html
+ # take the zip (window) and unzip to R install dir named \library
+ # load using 
+ library(sna)
 ----
 
 ----
@@ -318,18 +327,26 @@ Formal Def. of Graphs
  - represent structured data
  
  Terms
- - vertices: is the discrete data of the graph 
- - edges: represent the relation amoung the vertices'
+ - vertices (nodes): is the discrete data of the graph 
+ - edges (links): represent the relation amoung the vertices'
  - join: formal name for what the edge is doing; namely, joining
     two vertices.
  - adjacent: the state between to vertices when there is an edge
     between them.
  - connected: when a indirect route connects one vertex to another
+ - distance: the number of edge traversals required to reach one
+    node from another
+ - geodesic: fancy name for shortest-distance
  - loop: the state of an edge connecting a vertex back to itself
  - multiple edge: when there is another edge which joins the same
     pair of vertices
  - simple graph: a graph with no loops or multiple edges
  - degree: the number of edges being joined to a single vertex
+ - density: the number of edges over the number of possiable edges
+ - connectedness: fraction of all groups of two nodes where there is an 
+    edge between them
+ - betweenness: the number of times some node was passed-through 
+    for every possiable node-pair.
  - subgraph: a subset of vertices and edges of another graph
  - induced subgraph: a subgraph where only the vertices or only 
     the edges are known.
@@ -345,7 +362,7 @@ Formal Def. of Graphs
  - edge tail: the v2 in the ordered pair (v1,v2)
  - indegree: number of head-edges for a given vertex
  - outdegree: number of tail-edges for a given vertex
- - clique: set of connected vertices where beginning at 
+ - clique (egocentric): set of connected vertices where beginning at 
     one vertex you may navigate to any other member of the
 	clique via one edge
  - complete graph: every vertex is connected to every other 
@@ -385,6 +402,98 @@ Representing a Graph
 	| 0 1 1 0 1 |
 	| 0 0 0 1 1 |
 	`-         -'
+  - use the 'sna' R package for application of many graph terms
+    to actual instance of adjacency matrix
+  myAdjGraph <- rgraph(n,m=1,tprob=0.5,mode="(digraph|graph)" [...]) #sna adjancency graph
+   - n is number of vertices, matrix is always square
+   - tprop is the probability of a link
+   - mode is obvious, other default value args see 'help(package="sna")'
+  myIGraph <- graph.adjacency(myAdjGraph, mode="(undirected|directed") #type cast to igraph
+  - applied terms 
+   plot(graph)               #view it as a pic
+   degree(myIGraph)          #degree
+   gden(graph_adj)           #density
+   connectedness(graph_adj)  #connectedness
+   is.connected(graph)       #test if connectedness equal to 1
+   is.isolate(graph,[1-9]+)  #test if node, by index, has no edges
+   betweenness(graph)        #betweenness
+   geodist(graph_adj)        #shorted-dist, calc'ed on whole
+   ego.extract(graph_adj)    #get all the cliques
+----
+
+----
+Data linkage (theory)
+ - links are est. on a record-by-record basis
+ - starts with comparable records
+  - data should be atomic broken down into smallest possiable parts
+  - columns with high covariance should have one of the two removed
+  
+ - methods 
+  - deterministic: the more straight-foward method
+   - takes itself two forms
+    - single-step: exact equality char-for-char by ordinal
+	- iterative: a set of rules taken in steps
+	 - SEER-Medicare linkage algo (each field may be a
+	    hashed value instead of the literal, still works):
+	  1.0 match on SSN AND
+	   1.1 match on Fname & Lname OR
+	   1.2 match on Lname, month-of-dob and gender OR
+	   1.3 match on Fname, month-of-dob and gender
+      2.0 match on Lname, Fname, month-of-dob, gender AND
+	   2.1 8 of 9 SSN digits match OR
+	   2.1 any two of 
+	    2.1.1 year-of-dob
+		2.1.2 day-of-dob
+		2.1.3 middle initial
+		2.1.4 dod (date of death)
+		
+  - probabilistic (aka stochastic, fuzzy): assumes certian 
+     fields\attributes\column\properties have more discriminatory
+	 power than others.
+	- based on Fellegi & Sunter  "A Theory For Record Linkage"
+	- links designated as match, possiable match, non-match
+	- comparison space: the cartesian product to the two
+	  record sets
+	 - each pair in the comparison space is either a 
+	   true match or true non-match
+	- blocking: idea that cartesian product is too big
+	   so reduce fields to most useful or those which
+       are not null (subset).
+	- m-probability: probability that true matches agree 
+	   on a field
+	 - calc'ed by having some informed data where the link
+	    is already est. (thing informed machine learning)
+		then get the prob. of each field actually being equal
+	- u-probability: probability that false matches randomly 
+	   agree on a field
+	 - partial agreement weights: calc'ed in similar manner 
+	    where you have est. the link already and for definite 
+		non-matches fields values are equal.
+    - agreement weight: a per-field weight calc'ed as
+        log2(m/u)
+	- disagreement weight: per-field weight calc'ed as
+        log2(1-m/1-u)
+	- each field is then determined as match\non-match 
+	  and the result is a sum of each fields 
+	  agreement\disagreement weight.
+	- determining if an individual field is a match 
+	   still remains but could be enhanced using the 
+	   Jaro-Winkler String Distance algo.
+	- some threshold is required still to say that 
+	  such-and-such weight means "IsMatch"
+	- calc threshold for "IsMatch" using
+	   E: (guess) the number of expected matches between datasets
+	   P: the desired probability that a record is a match
+	   A: number of records in first dataset
+	   B: number of records in second dataset
+	   thres <- log2(P/(1-P)) - log2(E/((A*B)-E))
+	  
+  - Naive Bayes: this typical AI method could be used
+    when there exist some training data - would probably
+	look like:
+	  S(f1) W(f1) S(f2) W(f2) S(f3) W(f3) ... S(fi) W(fi) IsMatch
+	where S(f1) is field 1 from the first dataset and W(f1) is 
+	field 1 from the second data set.
 ----
 
 ----
