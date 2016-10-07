@@ -320,7 +320,7 @@ Points & Vectors
 ----
 
 ----
-Formal Def. of Graphs
+Graph Theory (Formal)
  - beyond common use, is a formal abstract concept
  - is composed of points (also called vertices)
  - has lines (also called edges) which connect points
@@ -424,6 +424,23 @@ Representing a Graph
 ----
 Data linkage (theory)
  - links are est. on a record-by-record basis
+ - two accuracy errors 
+  - true non-match classified as match
+  - true match classified as non-match
+ - metrix of methods
+  - divide into four groups 
+    Classified-as | True 
+       Match      | Match
+   A     0            0
+   B     0            1
+   C     1            0
+   D	 1            1
+   - Sensitivity = A / (A + B); ability to classify matches
+   - Specificity = C / (C + D); likewise for non-matches
+   - Positive Predictive Value: A / (A + C); ratio of classified matches
+                                             to actual matches
+   - Negative Predictive Value: D / (B + D); likewise for non-matches
+   
  - starts with comparable records
   - data should be atomic broken down into smallest possiable parts
   - columns with high covariance should have one of the two removed
