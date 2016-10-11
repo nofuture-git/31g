@@ -352,6 +352,18 @@ namespace NoFuture.Shared
     }
     #endregion
 
+    #region token page rank
+
+    [Serializable]
+    public class TokenPageRanks
+    {
+        public string Msg;
+        public MetadataTokenStatus St;
+        public Tuple<int, int, double>[] Ranks;
+    }
+    #endregion
+
+
     #region supports tokens
     /// <summary>
     /// A criteria type to send across the wire to a listening socket.

@@ -639,6 +639,13 @@ function Get-DotGraphAssemblyDiagram
             $fileOutPath = [NoFuture.Gen.Etc]::RunIsolatedAsmDiagram($AssemblyPath)
         }
 
+        $graphSz = (Get-Item $fileOutPath).Length
+
+        if($graphSz -gt 65KB){
+            throw "Graph is too big at $graphSz - limit is 65KB"
+            break;
+        }
+
         Write-Progress -Activity ("Creating graph from {0}" -f $asmName.Name) -Status "Working" -PercentComplete 88
 
         $graphFile = Invoke-DotExe -GraphvizFile $fileOutPath

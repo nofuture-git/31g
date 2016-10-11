@@ -4,15 +4,12 @@ using System.Text;
 using Newtonsoft.Json;
 using NoFuture.Exceptions;
 using NoFuture.Shared;
-using NoFuture.Util.NfConsole;
 
 namespace NoFuture.Util.Gia.InvokeCmds
 {
-    public class InvokeGetAsmIndicies : InvokeCmdBase, IInvokeCmd<AsmIndicies>
+    public class InvokeGetAsmIndicies : InvokeGetCmdBase<AsmIndicies>
     {
-        public int SocketPort { get; set; }
-        public int ProcessId { get; set; }
-        public AsmIndicies Receive(object anything)
+        public override AsmIndicies Receive(object anything)
         {
             if(anything == null)
                 throw new ArgumentNullException(nameof(anything));
@@ -37,16 +34,5 @@ namespace NoFuture.Util.Gia.InvokeCmds
             return JsonConvert.DeserializeObject<AsmIndicies>(ConvertJsonFromBuffer(bufferOut),
                 JsonSerializerSettings);
         }
-
-        public AsmIndicies LoadFromDisk(string filePath)
-        {
-            if (String.IsNullOrWhiteSpace(filePath))
-                return null;
-            if (!File.Exists(filePath))
-                return null;
-            var buffer = File.ReadAllBytes(filePath);
-            return JsonConvert.DeserializeObject<AsmIndicies>(ConvertJsonFromBuffer(buffer), JsonSerializerSettings);
-        }
-
     }
 }

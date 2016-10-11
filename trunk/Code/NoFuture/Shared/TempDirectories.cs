@@ -48,5 +48,6 @@ namespace NoFuture
         public static string Calendar { get; set; }
         public static string HttpAppDomain { get; set; }
         public static string Audio { get; set; }
+        public static string TsvCsv { get; set; }
     }
 }

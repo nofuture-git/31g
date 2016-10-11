@@ -22,7 +22,7 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds
 
         public override byte[] Execute(byte[] arg)
         {
-            MyProgram.PrintToConsole("GetTokenIds invoked");
+            MyProgram.PrintToConsole($"{nameof(GetTokenIds)} invoked");
             MyProgram.ProgressMessageState = null;
             try
             {

@@ -83,6 +83,11 @@ namespace NoFuture.Gen.InvokeGraphViz
                         p.GraphText = asmDia.ToGraphVizString();
                         p.OutputFileName = $"{p.Assembly.GetName().Name}AsmDiagram.gv";
                         break;
+                    case Settings.ASM_ADJ_GRAPH:
+                        var asmAdj = new AsmDiagram(p.Assembly);
+                        p.OutputFileName = $"{p.Assembly.GetName().Name}AsmAdj.json";
+                        p.GraphText = asmAdj.GetAdjacencyMatrixJson();
+                        break;
                 }
 
                 p.OutputFileName = Path.Combine(TempDirectories.Graph, p.OutputFileName);
@@ -230,7 +235,7 @@ namespace NoFuture.Gen.InvokeGraphViz
             LimitOn = argHash[Settings.INVOKE_GRAPHVIZ_FLATTENED_LIMIT_TYPE];
             DisplayEnums = argHash.ContainsKey(Settings.INVOKE_GRAPHVIZ_DISPLAY_ENUMS);
             DiagramType = argHash[Settings.INVOKE_GRAPHVIZ_DIAGRAM_TYPE].ToString();
-            if (DiagramType == Settings.ASM_OBJ_GRAPH_DIAGRAM)
+            if (DiagramType == Settings.ASM_OBJ_GRAPH_DIAGRAM || DiagramType == Settings.ASM_ADJ_GRAPH)
             {
                 WithNamespaceOutlines = argHash.ContainsKey(Settings.ASM_OBJ_OUTLINE_NS);
                 return;

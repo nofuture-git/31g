@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -55,6 +56,39 @@ namespace NoFuture.Tests.Util.Gia
             Assert.IsNotNull(f);
 
             Assert.IsTrue(f.AreCounterparts(t));
+        }
+
+        [TestMethod]
+        public void TestGetAdjacencyMatrix()
+        {
+            var testSubject = new NoFuture.Util.Gia.GraphViz.AsmDiagram(GetTestAsm());
+            var testResult = testSubject.GetAdjacencyMatrix();
+            Assert.IsNotNull(testResult.Item1);
+            Assert.AreNotEqual(0, testResult.Item1.Length);
+            Assert.IsNotNull(testResult.Item2);
+            Assert.AreNotEqual(0,testResult.Item2.GetLongLength(0));
+            Assert.AreNotEqual(0L, testResult.Item2.GetLongLength(1));
+            Assert.AreEqual(testResult.Item2.GetLongLength(0), testResult.Item2.GetLongLength(1));
+
+            for(var i = 0; i < testResult.Item2.GetLongLength(0); i++)
+            {
+                var ln = new List<int>();
+                for (var j = 0; j < testResult.Item2.GetLongLength(1); j++)
+                {
+                    ln.Add(testResult.Item2[i,j]);
+                }
+                System.Diagnostics.Debug.WriteLine(string.Join(" ", ln));
+            }
+        }
+
+        [TestMethod]
+        public void TestGetAdjacencyMatrixJson()
+        {
+            var testSubject = new NoFuture.Util.Gia.GraphViz.AsmDiagram(GetTestAsm());
+            var testResult = testSubject.GetAdjacencyMatrixJson();
+            Assert.IsNotNull(testResult);
+            Assert.IsFalse(string.IsNullOrWhiteSpace(testResult));
+            System.Diagnostics.Debug.WriteLine(testResult);
         }
 
     }

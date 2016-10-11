@@ -87,9 +87,11 @@
     <Compile Include="Gia\FlattenAssembly.cs" />
     <Compile Include="Gia\GraphViz\AsmDiagram.cs" />
     <Compile Include="Gia\InvokeCmds\InvokeGetAsmIndicies.cs" />
+    <Compile Include="Gia\InvokeCmds\InvokeGetCmdBase.cs" />
     <Compile Include="Gia\InvokeCmds\InvokeGetFlattenAssembly.cs" />
     <Compile Include="Gia\InvokeCmds\InvokeGetTokenIds.cs" />
     <Compile Include="Gia\InvokeCmds\InvokeGetTokenNames.cs" />
+    <Compile Include="Gia\InvokeCmds\InvokeGetTokenPageRank.cs" />
     <Compile Include="Math\IEquation.cs" />
     <Compile Include="Math\SinusoidEquation.cs" />
     <Compile Include="NfConsole\CmdBase.cs" />

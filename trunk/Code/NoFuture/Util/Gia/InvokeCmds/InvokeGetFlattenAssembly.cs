@@ -3,18 +3,15 @@ using System.IO;
 using System.Text;
 using Newtonsoft.Json;
 using NoFuture.Exceptions;
-using NoFuture.Util.NfConsole;
 
 namespace NoFuture.Util.Gia.InvokeCmds
 {
-    public class InvokeGetFlattenAssembly : InvokeCmdBase, IInvokeCmd<FlattenAssembly>
+    public class InvokeGetFlattenAssembly : InvokeGetCmdBase<FlattenAssembly>
     {
-        public int SocketPort { get; set; }
-        public int ProcessId { get; set; }
-        public FlattenAssembly Receive(object anything)
+        public override FlattenAssembly Receive(object anything)
         {
             if(anything == null)
-                throw new ArgumentNullException("anything");
+                throw new ArgumentNullException(nameof(anything));
 
             if (String.IsNullOrWhiteSpace(anything.ToString()) || !File.Exists(anything.ToString()))
                 throw new ItsDeadJim("This isn't a valid assembly path " + anything);
@@ -33,16 +30,6 @@ namespace NoFuture.Util.Gia.InvokeCmds
                         ProcessId, SocketPort));
 
             return JsonConvert.DeserializeObject<FlattenAssembly>(ConvertJsonFromBuffer(bufferOut), JsonSerializerSettings);
-        }
-
-        public FlattenAssembly LoadFromDisk(string filePath)
-        {
-            if (String.IsNullOrWhiteSpace(filePath))
-                return null;
-            if (!File.Exists(filePath))
-                return null;
-            var buffer = File.ReadAllBytes(filePath);
-            return JsonConvert.DeserializeObject<FlattenAssembly>(ConvertJsonFromBuffer(buffer), JsonSerializerSettings);
         }
     }
 }

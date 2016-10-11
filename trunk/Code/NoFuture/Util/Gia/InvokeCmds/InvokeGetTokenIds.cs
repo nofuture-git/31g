@@ -1,15 +1,13 @@
 ﻿using System;
-using System.IO;
 using System.Linq;
 using System.Text;
 using Newtonsoft.Json;
 using NoFuture.Exceptions;
 using NoFuture.Shared;
-using NoFuture.Util.NfConsole;
 
 namespace NoFuture.Util.Gia.InvokeCmds
 {
-    public class InvokeGetTokenIds : InvokeCmdBase, IInvokeCmd<TokenIds>
+    public class InvokeGetTokenIds : InvokeGetCmdBase<TokenIds>
     {
         private readonly AsmIndicies _asmIndices;
 
@@ -19,11 +17,8 @@ namespace NoFuture.Util.Gia.InvokeCmds
         }
 
         public string RecurseAnyAsmNamedLike { get; set; }
-        public int SocketPort { get; set; }
-        public int ProcessId { get; set; }
-        public TokenIds Receive(object anything)
+        public override TokenIds Receive(object anything)
         {
-
             int asmIdx;
             if(anything == null)
                 throw new ArgumentNullException("anything");
@@ -58,16 +53,6 @@ namespace NoFuture.Util.Gia.InvokeCmds
                         ProcessId, SocketPort));
 
             return JsonConvert.DeserializeObject<TokenIds>(ConvertJsonFromBuffer(bufferOut), JsonSerializerSettings);
-        }
-
-        public TokenIds LoadFromDisk(string filePath)
-        {
-            if (String.IsNullOrWhiteSpace(filePath))
-                return null;
-            if (!File.Exists(filePath))
-                return null;
-            var buffer = File.ReadAllBytes(filePath);
-            return JsonConvert.DeserializeObject<TokenIds>(ConvertJsonFromBuffer(buffer), JsonSerializerSettings);
         }
     }
 }

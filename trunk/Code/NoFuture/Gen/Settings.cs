@@ -18,6 +18,7 @@ namespace NoFuture.Gen
         public const string CLASS_DIAGRAM = "classDia";
         public const string FLATTENED_DIAGRAM = "flattened";
         public const string ASM_OBJ_GRAPH_DIAGRAM = "asmObjGraph";
+        public const string ASM_ADJ_GRAPH = "asmAdjGraph";
         public const string ASM_OBJ_OUTLINE_NS = "withNamespaceOutline";
         #endregion
 

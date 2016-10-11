@@ -412,13 +412,20 @@ Representing a Graph
   - applied terms 
    plot(graph)               #view it as a pic
    degree(myIGraph)          #degree
-   gden(graph_adj)           #density
+   gden(graph,mode="graph")  #density 
    connectedness(graph_adj)  #connectedness
    is.connected(graph)       #test if connectedness equal to 1
    is.isolate(graph,[1-9]+)  #test if node, by index, has no edges
    betweenness(graph)        #betweenness
    geodist(graph_adj)        #shorted-dist, calc'ed on whole
    ego.extract(graph_adj)    #get all the cliques
+ 
+ - import adjacency matrix example
+  library(sna)
+  library(igraph)
+  myData <- read.table("C:/Temp/MyData.tsv",header=FALSE)
+  myMatrix <- as.matrix(myData)
+  myAdj <- graph.adjacency(myMatrix, mode="directed")
 ----
 
 ----

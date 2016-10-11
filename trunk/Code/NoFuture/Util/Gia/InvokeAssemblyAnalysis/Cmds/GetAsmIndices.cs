@@ -16,7 +16,7 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds
 
         public override byte[] Execute(byte[] arg)
         {
-            MyProgram.PrintToConsole("GetAsmIndices invoked");
+            MyProgram.PrintToConsole($"{nameof(GetAsmIndices)} invoked");
             try
             {
                 if (arg == null || arg.Length <= 0)

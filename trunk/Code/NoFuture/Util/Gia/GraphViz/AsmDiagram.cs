@@ -73,17 +73,28 @@ namespace NoFuture.Util.Gia.GraphViz
         [Serializable]
         public class AsmDiagramNode
         {
-            private readonly string _origText;
             private readonly int _edgeCount;
 
             public string NodeNamespace { get; }
+            public string Name { get; }
 
             public AsmDiagramNode(string txt, int countOfEdges)
             {
-                _origText = txt;
+                Name = txt;
                 _edgeCount = countOfEdges;
-                var nameParts = _origText.Split('_');
+                var nameParts = Name.Split('_');
                 NodeNamespace = string.Join("_", nameParts.Take(nameParts.Length - 1));
+            }
+
+            public override bool Equals(object obj)
+            {
+                var adn = obj as AsmDiagramNode;
+                return adn?.Name == Name;
+            }
+
+            public override int GetHashCode()
+            {
+                return Name?.GetHashCode() ?? 1;
             }
 
             public override string ToString()
@@ -93,35 +104,35 @@ namespace NoFuture.Util.Gia.GraphViz
                     case 0:
                     case 1:
                     case 2:
-                        return $"{_origText} [label=\"-¦-\"];";
+                        return $"{Name} [label=\"-¦-\"];";
                     case 3:
-                        return $"{_origText} [label=\"-¦-\", shape=circle, height=0.25, width=0.25, fontsize=6, fixedsize=\"true\"];";
+                        return $"{Name} [label=\"-¦-\", shape=circle, height=0.25, width=0.25, fontsize=6, fixedsize=\"true\"];";
                     case 4:
-                        return $"{_origText} [label=\"-¦-\", shape=circle, height=0.30, width=0.30, fontsize=6, fixedsize=\"true\"];";
+                        return $"{Name} [label=\"-¦-\", shape=circle, height=0.30, width=0.30, fontsize=6, fixedsize=\"true\"];";
                     case 5:
-                        return $"{_origText} [label=\"-¦-\", shape=circle, height=0.35, width=0.35, fontsize=6, fixedsize=\"true\"];";
+                        return $"{Name} [label=\"-¦-\", shape=circle, height=0.35, width=0.35, fontsize=6, fixedsize=\"true\"];";
                     case 6:
-                        return $"{_origText} [label=\"-¦-\", shape=circle, height=0.40, width=0.40, fontsize=10, fixedsize=\"true\"];";
+                        return $"{Name} [label=\"-¦-\", shape=circle, height=0.40, width=0.40, fontsize=10, fixedsize=\"true\"];";
                     case 7:
-                        return $"{_origText} [label=\"-¦-\", shape=circle, height=0.45, width=0.45, fontsize=12, fixedsize=\"true\"];";
+                        return $"{Name} [label=\"-¦-\", shape=circle, height=0.45, width=0.45, fontsize=12, fixedsize=\"true\"];";
                     case 8:
-                        return $"{_origText} [label=\"-¦-\", shape=circle, height=0.5, width=0.5, fontsize=12, fixedsize=\"true\"];";
+                        return $"{Name} [label=\"-¦-\", shape=circle, height=0.5, width=0.5, fontsize=12, fixedsize=\"true\"];";
                     case 9:
-                        return $"{_origText} [label=\"-¦-\", shape=circle, height=0.55, width=0.55, fontsize=12, fixedsize=\"true\"];";
+                        return $"{Name} [label=\"-¦-\", shape=circle, height=0.55, width=0.55, fontsize=12, fixedsize=\"true\"];";
                     case 10:
-                        return $"{_origText} [label=\"-¦-\", shape=circle, height=0.6, width=0.6, fontsize=14, fixedsize=\"true\"];";
+                        return $"{Name} [label=\"-¦-\", shape=circle, height=0.6, width=0.6, fontsize=14, fixedsize=\"true\"];";
                     case 11:
-                        return $"{_origText} [label=\"-¦-\", shape=circle, height=0.7, width=0.7, fontsize=14, fixedsize=\"true\"];";
+                        return $"{Name} [label=\"-¦-\", shape=circle, height=0.7, width=0.7, fontsize=14, fixedsize=\"true\"];";
                     case 12:
-                        return $"{_origText} [label=\"-¦-\", shape=circle, height=0.75, width=0.75, fontsize=16, fixedsize=\"true\"];";
+                        return $"{Name} [label=\"-¦-\", shape=circle, height=0.75, width=0.75, fontsize=16, fixedsize=\"true\"];";
                     case 13:
-                        return $"{_origText} [label=\"-¦-\", shape=circle, height=0.8, width=0.8, fontsize=16, fixedsize=\"true\"];";
+                        return $"{Name} [label=\"-¦-\", shape=circle, height=0.8, width=0.8, fontsize=16, fixedsize=\"true\"];";
                     case 14:
-                        return $"{_origText} [label=\"-¦-\", shape=circle, height=0.85, width=0.85, fontsize=18, fixedsize=\"true\"];";
+                        return $"{Name} [label=\"-¦-\", shape=circle, height=0.85, width=0.85, fontsize=18, fixedsize=\"true\"];";
                     case 15:
-                        return $"{_origText} [label=\"-¦-\", shape=circle, height=0.95, width=0.95, fontsize=20, fixedsize=\"true\"];";
+                        return $"{Name} [label=\"-¦-\", shape=circle, height=0.95, width=0.95, fontsize=20, fixedsize=\"true\"];";
                     default:
-                        return $"{_origText} [label=\"-¦-\", shape=circle, height=1.0, width=1.0, fontsize=22, fixedsize=\"true\"];";
+                        return $"{Name} [label=\"-¦-\", shape=circle, height=1.0, width=1.0, fontsize=22, fixedsize=\"true\"];";
                 }
             }
         }
@@ -214,7 +225,7 @@ namespace NoFuture.Util.Gia.GraphViz
             Edges = RemoveDuplicates(Edges);
 
             var names = Edges.SelectMany(x => x.NodeName).ToList();
-            var uqNames = names.Distinct().ToList();
+            var uqNames = names.Distinct().OrderBy(x => x).ToList();
             _nodes = uqNames.Select(x => new AsmDiagramNode(x, GetCountOfEdgesOn(x))).ToList();
 
             if (_withNsSubgraphs)
@@ -225,11 +236,33 @@ namespace NoFuture.Util.Gia.GraphViz
                     _nsSubGraphs.Add(new AsmDiagramSubGraph(ns, _nodes));
                 }
             }
-
         }
         #endregion
 
         #region methods
+
+        public Tuple<string[], int[,]> GetAdjacencyMatrix()
+        {
+            var uqNodes = Edges.SelectMany(x => new string[] {x.Node1, x.Node2}).ToList();
+            var adj = new int[uqNodes.Count, uqNodes.Count];
+            for (var i = 0; i < adj.GetLongLength(0); i++)
+            {
+                var nodeNameAtI = uqNodes[i];
+                for (var j = 0; j < adj.GetLongLength(1); j++)
+                {
+                    var nodeNameAtJ = uqNodes[j];
+                    adj[i, j] = Edges.Any(x => x.Node1 == nodeNameAtI && x.Node2 == nodeNameAtJ) ? 1 : 0;
+                }
+            }
+            return new Tuple<string[], int[,]>(uqNodes.ToArray(), adj);
+        }
+
+        public string GetAdjacencyMatrixJson()
+        {
+            var adjData = GetAdjacencyMatrix();
+            var json = Newtonsoft.Json.JsonConvert.SerializeObject(adjData);
+            return json;
+        }
         internal List<AsmDiagramEdge> RemoveDuplicates(List<AsmDiagramEdge> dataIn)
         {
             var dupIdx = GetDupIndices();

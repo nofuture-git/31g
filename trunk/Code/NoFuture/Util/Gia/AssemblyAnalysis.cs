@@ -22,6 +22,7 @@ namespace NoFuture.Util.Gia
         public const string GET_TOKEN_IDS_PORT_CMD_SWITCH = "nfDumpAsmTokensPort";
         public const string GET_TOKEN_NAMES_PORT_CMD_SWITCH = "nfResolveTokensPort";
         public const string GET_ASM_INDICES_PORT_CMD_SWITCH = "nfGetAsmIndicies";
+        public const string GET_TOKEN_PAGE_RANK_PORT_CMD_SWITCH = "nfGetTokenPageRank";
         public const string RESOLVE_GAC_ASM_SWITCH = "nfResolveGacAsm";
         public const int DF_START_PORT = NfDefaultPorts.ASSEMBLY_ANALYSIS;
         #endregion
@@ -31,13 +32,15 @@ namespace NoFuture.Util.Gia
         private readonly InvokeGetAsmIndicies _getAsmIndicesCmd;
         private readonly InvokeGetTokenIds _getTokenIdsCmd;
         private readonly InvokeGetTokenNames _getTokenNamesCmd;
+        private readonly InvokeGetTokenPageRank _getTokenPageRankCmd;
         #endregion
 
         #region properties
         /// <summary>
         /// A mapping of index ids to assembly names.
         /// </summary>
-        public AsmIndicies AsmIndicies { get { return _asmIndices; } }
+        public AsmIndicies AsmIndicies => _asmIndices;
+
         #endregion
 
         #region ctors
@@ -137,7 +140,7 @@ namespace NoFuture.Util.Gia
                                      "the global variable at NoFuture.CustomTools.InvokeAssemblyAnalysis.");
 
             var np = DF_START_PORT;
-            var usePorts = new int[3];
+            var usePorts = new int[4];
             for (var i = 0; i < usePorts.Length; i++)
             {
                 usePorts[i] = ports != null && ports.Length >= i + 1 ? ports[i] : np + i;
@@ -149,6 +152,8 @@ namespace NoFuture.Util.Gia
                     usePorts[1].ToString(CultureInfo.InvariantCulture)),
                 ConsoleCmd.ConstructCmdLineArgs(GET_TOKEN_NAMES_PORT_CMD_SWITCH,
                     usePorts[2].ToString(CultureInfo.InvariantCulture)),
+                ConsoleCmd.ConstructCmdLineArgs(GET_TOKEN_PAGE_RANK_PORT_CMD_SWITCH,
+                    usePorts[3].ToString(CultureInfo.InvariantCulture)),
                 ConsoleCmd.ConstructCmdLineArgs(RESOLVE_GAC_ASM_SWITCH, resolveGacAsmNames.ToString()));
 
             MyProcess = StartRemoteProcess(CustomTools.InvokeAssemblyAnalysis, args);
@@ -173,8 +178,11 @@ namespace NoFuture.Util.Gia
                 SocketPort = usePorts[2]
             };
 
-
-
+            _getTokenPageRankCmd = new InvokeGetTokenPageRank
+            {
+                ProcessId = MyProcess.Id,
+                SocketPort = usePorts[3]
+            };
         }
         #endregion
 
@@ -208,6 +216,10 @@ namespace NoFuture.Util.Gia
             return _getTokenNamesCmd.Receive(metadataTokenIds);
         }
 
+        public TokenPageRanks GetTokenPageRank(TokenIds tokenIds)
+        {
+            return _getTokenPageRankCmd.Receive(tokenIds);
+        }
         #endregion
 
         #region token name parsers

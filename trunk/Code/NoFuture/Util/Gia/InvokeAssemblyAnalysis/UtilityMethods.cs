@@ -392,5 +392,10 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
             }
             return names;
         }
+
+        internal Tuple<int,int,double>[] ResolveTokenPageRanks(TokenIds tokens)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
