@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Win32;
 using RDotNet;
 
@@ -45,32 +42,62 @@ namespace NoFuture.Util.Re
             }
         }
 
-        public static void MyExample()
+        /// <summary>
+        /// Uses the R package 'sna' to run the Page Rank algo on 
+        /// the adjacency graph <see cref="adjGraph"/>
+        /// </summary>
+        /// <param name="adjGraph">a square matrix of only 1's and 0's</param>
+        /// <returns></returns>
+        public static double[] GetPageRank(int[,] adjGraph)
         {
-            try
+            //validate input
+            if (adjGraph == null)
+                return null;
+            var numOfRow = adjGraph.GetLongLength(0);
+            var numOfCols = adjGraph.GetLongLength(1);
+            if (adjGraph.GetLongLength(0) != adjGraph.GetLongLength(1))
+                throw new ArgumentException("An adjacency graph will have the same " +
+                                            "number or rows as columns, but this matrix " +
+                                            $"is {numOfRow} by {numOfCols}");
+
+            //write to a temp file to import into R Engine
+            var tempFile = Path.Combine(RTempDir, Path.GetRandomFileName());
+            for (var i = 0; i < numOfRow; i++)
             {
-                var rPath = GetRBinPath();
-                var rHome = GetRInstallPath();
-                REngine.SetEnvironmentVariables(rPath, rHome);
-                using (var engine = REngine.GetInstance(initialize: false))
+                var ln = new List<int>();
+                for (var j = 0; j < numOfCols; j++)
                 {
-                    engine.Initialize();
-
-                    engine.Evaluate("library(sna)");
-                    engine.Evaluate("library(igraph)");
-                    engine.Evaluate("myData <- read.table(\"C:/Temp/TestIO_InR.tsv\",header=FALSE)");
-                    engine.Evaluate("myMatrix <- as.matrix(myData)");
-                    engine.Evaluate("myAdjGraph <- graph.adjacency(myMatrix, mode=\"directed\")");
-                    engine.Evaluate("myPageRank <- page.rank(myAdjGraph)");
-                    var pageRankDf = engine.GetSymbol("myPageRank").AsList()[0].AsNumeric();
-
+                    var item = adjGraph[i, j];
+                    if(item != 0 && item != 1)
+                        throw new ArgumentException("An adjacency graph is made up of " +
+                                                    "only '1's and '0's, but the item at " +
+                                                    $"index ({i},{j}) has a value of {adjGraph[i,j]}");
+                    ln.Add(item);
                 }
-
+                File.AppendAllText(tempFile, string.Join("\t", ln) + Environment.NewLine);
             }
-            catch (Exception ex)
+            var rTempFile = tempFile.Replace(@"\", "/");
+            var rPath = GetRBinPath();
+            var rHome = GetRInstallPath();
+            REngine.SetEnvironmentVariables(rPath, rHome);
+            var pageRank = new List<double>();
+            using (var engine = REngine.GetInstance(initialize: false))
             {
-                System.Console.WriteLine(ex.Message);
+                engine.Initialize();
+
+                engine.Evaluate("library(sna)");
+                engine.Evaluate("library(igraph)");
+                engine.Evaluate($"myData <- read.table(\"{rTempFile}\",header=FALSE)");
+                engine.Evaluate("myMatrix <- as.matrix(myData)");
+                engine.Evaluate("myAdjGraph <- graph.adjacency(myMatrix, mode=\"directed\")");
+                engine.Evaluate("myPageRank <- page.rank(myAdjGraph)");
+                var rSymbol = engine.GetSymbol("myPageRank").AsList()[0].AsNumeric();
+                for (var i = 0; i < rSymbol.Length; i++)
+                {
+                    pageRank.Add(rSymbol[i]);
+                }
             }
+            return pageRank.ToArray();
         }
 
         /// <summary>

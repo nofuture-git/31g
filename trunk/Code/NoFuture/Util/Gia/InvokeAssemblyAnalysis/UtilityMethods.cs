@@ -395,10 +395,23 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
 
         internal Tuple<int,int,double>[] ResolveTokenPageRanks(TokenIds tokens)
         {
+            if (tokens == null)
+                return null;
+            var adjGraph = tokens.GetAdjancencyMatrix(true);
+            var pageRank = Re.Efx.GetPageRank(adjGraph.Item2);
+            var idx = adjGraph.Item1;
+            var valsOut = new List<Tuple<int, int, double>>();
+            for (var i = 0; i < idx.Count; i++)
+            {
+                if (i >= pageRank.Length)
+                    break;
+                var asmIdx = idx[i].RslvAsmIdx;
+                var token = idx[i].Id;
+                var pr = pageRank[i];
+                valsOut.Add(new Tuple<int, int, double>(asmIdx,token,pr));
+            }
 
-
-
-            throw new NotImplementedException();
+            return valsOut.ToArray();
         }
     }
 }
