@@ -2,6 +2,7 @@
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NoFuture.Shared;
+using System.IO;
 using NoFuture.Util.Gia.InvokeAssemblyAnalysis;
 using NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds;
 
@@ -48,7 +49,7 @@ namespace NoFuture.Tests.Util.InvokeAsmTests
 
             var testAsmTypes = testAsm.GetTypes();
 
-            var testTokens = testAsmTypes.Select(x =>  NoFuture.Util.Gia.AssemblyAnalysis.GetMetadataToken(x,0)).ToArray();
+            var testTokens = testAsmTypes.Select(x =>  NoFuture.Util.Gia.AssemblyAnalysis.GetMetadataToken(x)).ToArray();
 
             var dee = testTokens.FirstOrDefault();
             Assert.IsNotNull(dee);
@@ -90,6 +91,118 @@ namespace NoFuture.Tests.Util.InvokeAsmTests
             {
                 System.Diagnostics.Debug.WriteLine(string.Format("{0}.{1} ({2})", tname.RslvAsmIdx,tname.Id.ToString("X4"), tname.Name));
             }
+        }
+
+        [TestMethod]
+        public void TestFlattenToDistinct()
+        {
+            var t0 = new MetadataTokenId
+            {
+                Id = 1,
+                RslvAsmIdx = 0,
+                Items = new[]
+                {
+                    new MetadataTokenId
+                    {
+                        Id = 2,
+                        RslvAsmIdx = 0,
+                        Items = new[]
+                        {
+                            new MetadataTokenId {Id = 3, RslvAsmIdx = 0},
+                            new MetadataTokenId
+                            {
+                                Id = 4,
+                                RslvAsmIdx = 0,
+                                Items = new[]
+                                {
+                                    new MetadataTokenId {Id = 1, RslvAsmIdx = 1},
+                                    new MetadataTokenId {Id = 2, RslvAsmIdx = 1}
+                                }
+                            },
+                            new MetadataTokenId
+                            {
+                                Id = 5,
+                                RslvAsmIdx = 0,
+                                Items = new[] {new MetadataTokenId {Id = 1, RslvAsmIdx = 1}}
+                            }
+                            
+                        },
+                        
+                    },
+                    new MetadataTokenId {Id = 6, RslvAsmIdx = 0},
+                    new MetadataTokenId {Id = 7, RslvAsmIdx = 0}
+                }
+            };
+            var t1 = new MetadataTokenId
+            {
+                Id = 8,
+                RslvAsmIdx = 0,
+                Items = new[]
+                {
+                    new MetadataTokenId
+                    {
+                        Id = 9,
+                        RslvAsmIdx = 0,
+                        Items = new[] {new MetadataTokenId {Id = 1, RslvAsmIdx = 0}}
+                    }
+                }
+            };
+            var testSubject = new TokenIds {Tokens = new[] {t0, t1}};
+            var testResult = testSubject.FlattenToDistinct();
+            Assert.IsNotNull(testResult);
+            Assert.AreNotEqual(0, testResult.Length);
+            Assert.AreEqual(11, testResult.Length);
+
+            testResult = testSubject.FlattenToDistinct(true);
+            Assert.IsNotNull(testResult);
+            Assert.AreNotEqual(0, testResult.Length);
+            Assert.AreEqual(11,testResult.Length);
+
+            var t1x0 = testResult.FirstOrDefault(x => x.Id == 1 && x.RslvAsmIdx == 0);
+            Assert.IsNotNull(t1x0);
+            Assert.IsNotNull(t1x0.Items);
+            Assert.AreNotEqual(0,t1x0.Items.Length);
+            Assert.AreEqual(3, t1x0.Items.Length);
+        }
+
+        [TestMethod]
+        public void TestToAdjancencyMatrix()
+        {
+            var testDataFile = @"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\GetTokenIdsData.json";
+            Assert.IsTrue(System.IO.File.Exists(testDataFile));
+            var testJson =
+                System.IO.File.ReadAllText(testDataFile);
+            Assert.IsFalse(string.IsNullOrWhiteSpace(testJson));
+            var testInput = Newtonsoft.Json.JsonConvert.DeserializeObject<TokenIds>(testJson);
+            Assert.IsNotNull(testInput);
+
+            var testResult = testInput.GetAdjancencyMatrix(true);
+            Assert.IsNotNull(testResult);
+            Assert.IsNotNull(testResult.Item1);
+            Assert.IsNotNull(testResult.Item2);
+            Assert.IsTrue(testResult.Item1.Any());
+            Assert.AreNotEqual(0, testResult.Item2.GetLongLength(0));
+            Assert.AreNotEqual(0, testResult.Item2.GetLongLength(1));
+            Assert.AreEqual(testResult.Item2.GetLongLength(0), testResult.Item2.GetLongLength(1));
+            Assert.AreEqual(testResult.Item1.Keys.Count, testResult.Item2.GetLongLength(1));
+
+            var testResultAdjMatrix = testResult.Item2;
+            var sumOfMatrix = 0;
+            var viewOutputFile = Path.Combine(Path.GetDirectoryName(testDataFile), "AdjacencyMatrixTr.txt");
+            File.WriteAllText(viewOutputFile, "");
+            for (var i = 0; i < testResultAdjMatrix.GetLongLength(0); i++)
+            {
+                var viewLn = new List<int>();
+                for (var j = 0; j < testResultAdjMatrix.GetLongLength(1); j++)
+                {
+                    sumOfMatrix += testResultAdjMatrix[i, j];
+                    viewLn.Add(testResultAdjMatrix[i, j]);
+                }
+                File.AppendAllText(viewOutputFile, string.Join(",",viewLn) + @"
+");
+            }
+
+            Assert.AreNotEqual(0, sumOfMatrix);
         }
     }
 }

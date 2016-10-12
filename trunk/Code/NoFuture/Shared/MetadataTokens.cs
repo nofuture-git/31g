@@ -53,33 +53,48 @@ namespace NoFuture.Shared
         /// <see cref="RslvAsmIdx"/> and <see cref="Id"/> assigned.
         /// </summary>
         /// <param name="token"></param>
+        /// <param name="perserveTopItems">Retains the the direct children Items</param>
         /// <returns></returns>
-        public static MetadataTokenId[] FlattenToDistinct(MetadataTokenId token)
+        public static MetadataTokenId[] FlattenToDistinct(MetadataTokenId token, bool perserveTopItems = false)
         {
             var list = new HashSet<MetadataTokenId>();
 
             if (token == null)
                 return list.ToArray();
 
-            FlattenToDistinct(token, list);
+            FlattenToDistinct(token, list, perserveTopItems);
             return list.ToArray();
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        internal static void FlattenToDistinct(MetadataTokenId token, HashSet<MetadataTokenId> list)
+        internal static void FlattenToDistinct(MetadataTokenId token, HashSet<MetadataTokenId> list,
+            bool perserveTopItems = false)
         {
             if (token == null)
                 return;
-
-            list.Add(new MetadataTokenId { Id = token.Id, RslvAsmIdx = token.RslvAsmIdx });
+            var iToken = new MetadataTokenId {Id = token.Id, RslvAsmIdx = token.RslvAsmIdx};
+            list.Add(iToken);
             if (token.Items == null)
                 return;
-
-            foreach (var iToken in token.Items)
+            if (perserveTopItems)
             {
-                FlattenToDistinct(iToken, list);
+                var i2j = new HashSet<MetadataTokenId>();
+                foreach (var ijToken in token.Items)
+                {
+                    if (ijToken.Equals(iToken))
+                        continue;
+                    i2j.Add(new MetadataTokenId {Id = ijToken.Id, RslvAsmIdx = ijToken.RslvAsmIdx});
+                }
+                if (i2j.Any())
+                    iToken.Items = i2j.ToArray();
+            }
+
+            foreach (var jToken in token.Items)
+            {
+                FlattenToDistinct(jToken, list, perserveTopItems);
             }
         }
+
         [EditorBrowsable(EditorBrowsableState.Never)]
         private static string Print(MetadataTokenId token, ref int currentDepth)
         {
@@ -115,16 +130,73 @@ namespace NoFuture.Shared
         /// Helper method to get all distinct token ids from the current instance.
         /// </summary>
         /// <returns></returns>
-        public MetadataTokenId[] FlattenToDistinct()
+        public MetadataTokenId[] FlattenToDistinct(bool perserveTopItems = false)
         {
             if (St == MetadataTokenStatus.Error || Tokens == null ||  Tokens.Length <= 0)
                 return null;
             var tokenHashset = new HashSet<MetadataTokenId>();
             foreach (var t in Tokens)
             {
-                MetadataTokenId.FlattenToDistinct(t, tokenHashset);
+                MetadataTokenId.FlattenToDistinct(t, tokenHashset, perserveTopItems);
             }
             return tokenHashset.ToArray();
+        }
+
+        /// <summary>
+        /// Gets an adjancency matrix coupled with index-to-id dictionary.
+        /// </summary>
+        /// <returns></returns>
+        public Tuple<Dictionary<int, MetadataTokenId>,  int[,]> GetAdjancencyMatrix(bool rmIsolatedNodes = false)
+        {
+            return GetAdjancencyMatrix(FlattenToDistinct(true).ToList(), rmIsolatedNodes);
+        }
+
+        internal static Tuple<Dictionary<int, MetadataTokenId>, int[,]> GetAdjancencyMatrix(List<MetadataTokenId> uqTokens,
+            bool rmIsolatedNodes)
+        {
+            var adjMatrix = new int[uqTokens.Count, uqTokens.Count];
+            var idxMapping = new Dictionary<int, MetadataTokenId>();
+            for (var i = 0; i < adjMatrix.GetLongLength(0); i++)
+            {
+                var rowToken = uqTokens[i];
+                idxMapping.Add(i, rowToken);
+                for (var j = 0; j < adjMatrix.GetLongLength(1); j++)
+                {
+                    if (i == j)
+                    {
+                        adjMatrix[i, j] = 0;
+                        continue;
+                    }
+
+                    var colToken = uqTokens[j];
+                    var hasOutLink = rowToken?.Items?.Any(x => x.Equals(colToken));
+                    adjMatrix[i, j] = hasOutLink.GetValueOrDefault(false) ? 1 : 0;
+                }
+            }
+
+            if (!rmIsolatedNodes || adjMatrix.GetLongLength(0) <= 0)
+                return new Tuple<Dictionary<int, MetadataTokenId>, int[,]>(idxMapping, adjMatrix);
+
+            //expected a directed graph so when idx's entire row and column is all 0 should it be removed
+            for (var i = 0; i < adjMatrix.GetLongLength(0); i++)
+            {
+                var sum = 0;
+                for (var j = 0; j < adjMatrix.GetLongLength(1); j++)
+                {
+                    sum += adjMatrix[i, j] + adjMatrix[j, i];
+                }
+                if (sum <= 0)
+                {
+                    
+                    var isoToken = uqTokens.FirstOrDefault(x => x.Equals(idxMapping[i]));
+                    if (isoToken != null)
+                    {
+                        System.Diagnostics.Debug.WriteLine($"{isoToken.Id}, {isoToken.RslvAsmIdx}");
+                        uqTokens.Remove(isoToken);
+                    }
+                }
+            }
+            return GetAdjancencyMatrix(uqTokens, false);
         }
     }
     #endregion
@@ -186,7 +258,8 @@ namespace NoFuture.Shared
         /// <returns></returns>
         public bool IsPartialName()
         {
-            return !String.IsNullOrWhiteSpace(Name) && Name.StartsWith(Constants.DEFAULT_TYPE_SEPARATOR.ToString(CultureInfo.InvariantCulture));
+            return !String.IsNullOrWhiteSpace(Name) &&
+                   Name.StartsWith(Constants.DEFAULT_TYPE_SEPARATOR.ToString(CultureInfo.InvariantCulture));
         }
 
         public override bool Equals(object obj)

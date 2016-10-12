@@ -26,8 +26,7 @@ namespace NoFuture.Util.Gia.InvokeCmds
 
             if (bufferOut == null || bufferOut.Length <= 0)
                 throw new ItsDeadJim(
-                    String.Format("The remote process by id [{0}] did not return anything on port [{1}]",
-                        ProcessId, SocketPort));
+                    $"The remote process by id [{ProcessId}] did not return anything on port [{SocketPort}]");
 
             return JsonConvert.DeserializeObject<FlattenAssembly>(ConvertJsonFromBuffer(bufferOut), JsonSerializerSettings);
         }

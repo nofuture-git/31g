@@ -191,7 +191,7 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
             {
                 mi = manifestModule.ResolveMember(tokenId.Id);
             }
-            catch (ArgumentException)//does not resolve the token
+            catch (SystemException)//does not resolve the token
             {
                 if (msgOut != null)
                     msgOut.Append(", Message: 'manifest module could not resolve id'");
@@ -395,6 +395,9 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
 
         internal Tuple<int,int,double>[] ResolveTokenPageRanks(TokenIds tokens)
         {
+
+
+
             throw new NotImplementedException();
         }
     }

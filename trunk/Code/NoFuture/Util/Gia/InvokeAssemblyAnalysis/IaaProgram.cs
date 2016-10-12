@@ -289,7 +289,7 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
             }
             if (argHash.ContainsKey(AssemblyAnalysis.GET_TOKEN_PAGE_RANK_PORT_CMD_SWITCH))
             {
-                _getasmIndicesCmdPort = ResolveInt(argHash[AssemblyAnalysis.GET_TOKEN_PAGE_RANK_PORT_CMD_SWITCH].ToString());
+                _getTokenPageRankCmdPort = ResolveInt(argHash[AssemblyAnalysis.GET_TOKEN_PAGE_RANK_PORT_CMD_SWITCH].ToString());
             }
             if (argHash.ContainsKey(AssemblyAnalysis.RESOLVE_GAC_ASM_SWITCH))
             {

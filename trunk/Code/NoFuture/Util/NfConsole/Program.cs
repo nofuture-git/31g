@@ -189,7 +189,14 @@ namespace NoFuture.Util.NfConsole
                 try
                 {
                     Console.WriteLine();
-                    var msg = $"{DateTime.Now:yyyy-MM-dd HH:mm:ss.fff} {ex.Message}";
+                    var msg = $"{DateTime.Now:yyyy-MM-dd HH:mm:ss.fff} {ex.GetType().FullName}";
+                    File.AppendAllText(LogFile, $"{msg}\n");
+
+                    if (_isVisable)
+                        Console.WriteLine(msg);
+
+                    Console.WriteLine();
+                    msg = $"{DateTime.Now:yyyy-MM-dd HH:mm:ss.fff} {ex.Message}";
                     File.AppendAllText(LogFile, $"{msg}\n");
 
                     if (_isVisable)

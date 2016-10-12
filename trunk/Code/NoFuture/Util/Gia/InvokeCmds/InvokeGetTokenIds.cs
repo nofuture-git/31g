@@ -21,10 +21,10 @@ namespace NoFuture.Util.Gia.InvokeCmds
         {
             int asmIdx;
             if(anything == null)
-                throw new ArgumentNullException("anything");
+                throw new ArgumentNullException( nameof(anything));
 
             if (!IsMyProcessRunning(ProcessId))
-                throw new RahRowRagee(String.Format("The process by id [{0}] has exited", ProcessId));
+                throw new RahRowRagee($"The process by id [{ProcessId}] has exited");
 
             if (!Net.IsValidPortNumber(SocketPort))
                 throw new ItsDeadJim("The assigned socket port is not valids " + SocketPort);
@@ -37,7 +37,7 @@ namespace NoFuture.Util.Gia.InvokeCmds
                                       "an instance of AsmIndices.");
 
             if (_asmIndices.Asms.All(x => x.IndexId != asmIdx))
-                throw new RahRowRagee(String.Format("No matching index found for {0}", asmIdx));
+                throw new RahRowRagee($"No matching index found for {asmIdx}");
 
             var asmName = _asmIndices.Asms.First(x => x.IndexId == asmIdx).AssemblyName;
 
@@ -49,8 +49,7 @@ namespace NoFuture.Util.Gia.InvokeCmds
 
             if (bufferOut == null || bufferOut.Length <= 0)
                 throw new ItsDeadJim(
-                    String.Format("The remote process by id [{0}] did not return anything on port [{1}]",
-                        ProcessId, SocketPort));
+                    $"The remote process by id [{ProcessId}] did not return anything on port [{SocketPort}]");
 
             return JsonConvert.DeserializeObject<TokenIds>(ConvertJsonFromBuffer(bufferOut), JsonSerializerSettings);
         }
