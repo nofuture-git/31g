@@ -53,32 +53,47 @@ namespace NoFuture.Shared
         /// <see cref="RslvAsmIdx"/> and <see cref="Id"/> assigned.
         /// </summary>
         /// <param name="token"></param>
-        /// <param name="perserveTopItems">Retains the the direct children Items</param>
+        /// <param name="perserveDirectChildItems">Retains the the direct children Items</param>
         /// <returns></returns>
-        public static MetadataTokenId[] FlattenToDistinct(MetadataTokenId token, bool perserveTopItems = false)
+        public static MetadataTokenId[] FlattenToDistinct(MetadataTokenId token, bool perserveDirectChildItems = false)
         {
             var list = new HashSet<MetadataTokenId>();
 
             if (token == null)
                 return list.ToArray();
 
-            FlattenToDistinct(token, list, perserveTopItems);
+            FlattenToDistinct(token, list, perserveDirectChildItems);
             return list.ToArray();
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
         internal static void FlattenToDistinct(MetadataTokenId token, HashSet<MetadataTokenId> list,
-            bool perserveTopItems = false)
+            bool perserveDirectChildItems = false)
         {
             if (token == null)
                 return;
-            var iToken = new MetadataTokenId {Id = token.Id, RslvAsmIdx = token.RslvAsmIdx};
-            list.Add(iToken);
+            var iToken = list.FirstOrDefault(x => x.Id == token.Id && x.RslvAsmIdx == token.RslvAsmIdx);
+            var preExisting = iToken != null;
+            iToken = iToken ?? new MetadataTokenId {Id = token.Id, RslvAsmIdx = token.RslvAsmIdx};
+            if(!preExisting)
+                list.Add(iToken);
+
             if (token.Items == null)
                 return;
-            if (perserveTopItems)
+
+            if (perserveDirectChildItems)
             {
                 var i2j = new HashSet<MetadataTokenId>();
+                if (iToken.Items != null)
+                {
+                    foreach (var existingItem in iToken.Items)
+                    {
+                        if (existingItem.Equals(iToken))
+                            continue;
+                        i2j.Add(existingItem);
+                    }
+                }
+                    
                 foreach (var ijToken in token.Items)
                 {
                     if (ijToken.Equals(iToken))
@@ -91,7 +106,7 @@ namespace NoFuture.Shared
 
             foreach (var jToken in token.Items)
             {
-                FlattenToDistinct(jToken, list, perserveTopItems);
+                FlattenToDistinct(jToken, list, perserveDirectChildItems);
             }
         }
 
@@ -130,14 +145,14 @@ namespace NoFuture.Shared
         /// Helper method to get all distinct token ids from the current instance.
         /// </summary>
         /// <returns></returns>
-        public MetadataTokenId[] FlattenToDistinct(bool perserveTopItems = false)
+        public MetadataTokenId[] FlattenToDistinct(bool perserveDirectChildItems = false)
         {
             if (St == MetadataTokenStatus.Error || Tokens == null ||  Tokens.Length <= 0)
                 return null;
             var tokenHashset = new HashSet<MetadataTokenId>();
             foreach (var t in Tokens)
             {
-                MetadataTokenId.FlattenToDistinct(t, tokenHashset, perserveTopItems);
+                MetadataTokenId.FlattenToDistinct(t, tokenHashset, perserveDirectChildItems);
             }
             return tokenHashset.ToArray();
         }
@@ -191,7 +206,6 @@ namespace NoFuture.Shared
                     var isoToken = uqTokens.FirstOrDefault(x => x.Equals(idxMapping[i]));
                     if (isoToken != null)
                     {
-                        System.Diagnostics.Debug.WriteLine($"{isoToken.Id}, {isoToken.RslvAsmIdx}");
                         uqTokens.Remove(isoToken);
                     }
                 }
