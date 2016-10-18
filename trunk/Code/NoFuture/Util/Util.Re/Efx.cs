@@ -47,8 +47,11 @@ namespace NoFuture.Util.Re
         /// the adjacency graph <see cref="adjGraph"/>
         /// </summary>
         /// <param name="adjGraph">a square matrix of only 1's and 0's</param>
+        /// <param name="keepTempFiles">
+        /// Set to true if the temp files created to perform this should be perserved.
+        /// </param>
         /// <returns></returns>
-        public static double[] GetPageRank(int[,] adjGraph)
+        public static double[] GetPageRank(int[,] adjGraph, bool keepTempFiles = false)
         {
             //validate input
             if (adjGraph == null)
@@ -79,6 +82,13 @@ namespace NoFuture.Util.Re
             var rTempFile = tempFile.Replace(@"\", "/");
             var rPath = GetRBinPath();
             var rHome = GetRInstallPath();
+            if(!IsRLibInstalled("sna"))
+                throw new DirectoryNotFoundException("The R package named 'sna' is not installed, " +
+                                                     "locate this package on r-project.org and install it.");
+            if (!IsRLibInstalled("igraph"))
+                throw new DirectoryNotFoundException("The R package named 'igraph' is not installed, " +
+                                                     "locate this package on r-project.org and install it.");
+
             REngine.SetEnvironmentVariables(rPath, rHome);
             var pageRank = new List<double>();
             using (var engine = REngine.GetInstance(initialize: false))
@@ -97,6 +107,11 @@ namespace NoFuture.Util.Re
                     pageRank.Add(rSymbol[i]);
                 }
             }
+            if (!keepTempFiles)
+            {
+                File.Delete(tempFile);
+            }
+
             return pageRank.ToArray();
         }
 
@@ -117,6 +132,22 @@ namespace NoFuture.Util.Re
             if (!Directory.Exists(rPath))
                 throw new DirectoryNotFoundException($"R not bin not found at {rPath}");
             return rPath;
+        }
+
+        /// <summary>
+        /// Determine if the directory named <see cref="libName"/> is present 
+        /// within the library folder of the R install dir.
+        /// </summary>
+        /// <param name="libName"></param>
+        /// <returns></returns>
+        public static bool IsRLibInstalled(string libName)
+        {
+            var rHome = GetRInstallPath();
+            if (string.IsNullOrWhiteSpace(rHome) || !Directory.Exists(rHome))
+                return false;
+
+            var rLib = Path.Combine(rHome, $"library\\{libName}");
+            return Directory.Exists(rLib);
         }
     }
 }

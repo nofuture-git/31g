@@ -295,7 +295,7 @@ namespace NoFuture.Util.Gia
 
             asmName = mi.DeclaringType.Assembly.GetName().Name;
             expandedName = !String.IsNullOrEmpty(asmName)
-                ? mi.DeclaringType.FullName.Replace(String.Format("{0}", asmName), String.Empty)
+                ? mi.DeclaringType.FullName.Replace($"{asmName}", String.Empty)
                 : mi.DeclaringType.FullName;
             if (!String.Equals(expandedName, tokenName.Name, StringComparison.OrdinalIgnoreCase))
                 tokenName.Name = String.Format("{0}{1}{2}", expandedName, Constants.TYPE_METHOD_NAME_SPLIT_ON, tokenName.Name);
@@ -309,7 +309,7 @@ namespace NoFuture.Util.Gia
             var mtiParams = mti.GetParameters();
             if (mtiParams.Length <= 0)
             {
-                tokenName.Name = String.Format("{0}()", tokenName.Name);
+                tokenName.Name = $"{tokenName.Name}()";
                 return tokenName;
             }
 
@@ -336,8 +336,7 @@ namespace NoFuture.Util.Gia
                 paramNames.Add(workingName);
             }
 
-            tokenName.Name = String.Format("{0}({1})", tokenName.Name,
-                String.Join(",", paramNames));
+            tokenName.Name = $"{tokenName.Name}({String.Join(",", paramNames)})";
 
             return tokenName;
         }
@@ -385,13 +384,13 @@ namespace NoFuture.Util.Gia
             //assembly name and namespace being equal will have equal portion removed, add it back
             if (!string.IsNullOrWhiteSpace(owningAsmName) && tokenName.StartsWith(sep))
             {
-                tokenName = String.Format("{0}{1}", owningAsmName, tokenName);
+                tokenName = $"{owningAsmName}{tokenName}";
             }
 
             var ns = Util.NfTypeName.GetNamespaceWithoutTypeName(tokenName);
             var tn = Util.NfTypeName.GetTypeNameWithoutNamespace(tokenName);
 
-            return String.Format("{0}{1}{2}", ns, sep, tn);
+            return $"{ns}{sep}{tn}";
         }
 
         /// <summary>
