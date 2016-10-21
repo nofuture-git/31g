@@ -380,6 +380,8 @@ Graph Theory (Formal)
  - descendant: in tree graph, used the same as in a family tree
  - ancestor: again, tree graph, like a family tree
  - weighted graph: where the edge is the vertex pair and a weight
+ - hub: a vertex having a high outdegree
+ - authority: a vertex having a high indegree
 ----
 
 ----

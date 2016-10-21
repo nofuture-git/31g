@@ -112,6 +112,26 @@ namespace NoFuture.Rand
         }
 
         /// <summary>
+        /// Returns a square matrix of dimension size <see cref="dim"/>
+        /// have all random, less-than 1, double values.
+        /// </summary>
+        /// <param name="dim"></param>
+        /// <returns></returns>
+        public static double[,] Matrix(int dim)
+        {
+
+            var m = new double[dim, dim];
+            for (var i = 0; i < dim; i++)
+            {
+                for (var j = 0; j < dim; j++)
+                {
+                    m[i, j] = MyRand.NextDouble();
+                }
+            }
+            return m;
+        }
+
+        /// <summary>
         /// Picks a key at random from <see cref="tbl"/> where the 
         /// probablity of each is the value over the sum-of-values.
         /// </summary>

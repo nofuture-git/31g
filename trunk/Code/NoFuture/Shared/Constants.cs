@@ -209,6 +209,8 @@ namespace NoFuture.Shared
             @"\_ReSharper",
             @"\_TeamCity",
             @"\.git\",
+            @"\.nuget\",
+            @"\.vs\",
             @"\lib\",
             @"\build\", //common to Java
             @"\dist\",  //common to Java

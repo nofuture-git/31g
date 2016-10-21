@@ -82,12 +82,9 @@ namespace NoFuture.Util.Re
             var rTempFile = tempFile.Replace(@"\", "/");
             var rPath = GetRBinPath();
             var rHome = GetRInstallPath();
-            if(!IsRLibInstalled("sna"))
-                throw new DirectoryNotFoundException("The R package named 'sna' is not installed, " +
-                                                     "locate this package on r-project.org and install it.");
-            if (!IsRLibInstalled("igraph"))
-                throw new DirectoryNotFoundException("The R package named 'igraph' is not installed, " +
-                                                     "locate this package on r-project.org and install it.");
+
+            ThrowOnMissingRPkg("sna");
+            ThrowOnMissingRPkg("igraph");
 
             REngine.SetEnvironmentVariables(rPath, rHome);
             var pageRank = new List<double>();
@@ -148,6 +145,15 @@ namespace NoFuture.Util.Re
 
             var rLib = Path.Combine(rHome, $"library\\{libName}");
             return Directory.Exists(rLib);
+        }
+
+        public static void ThrowOnMissingRPkg(string libName)
+        {
+            if (!IsRLibInstalled(libName))
+                throw new DirectoryNotFoundException($"The R package named '{libName}' is not installed, " +
+                                                     "locate this package on " +
+                                                     "[https://cran.r-project.org/web/packages/available_packages_by_name.html] " +
+                                                     "and install it.");
         }
     }
 }
