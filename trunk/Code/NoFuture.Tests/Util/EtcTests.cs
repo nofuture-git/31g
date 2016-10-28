@@ -298,5 +298,27 @@ namespace NoFuture.Tests.Util
 
             Assert.IsTrue(new DateTime(2010, 1, 1).IsBetween(new DateTime(2009, 1, 1), new DateTime(2010, 1, 2)));
         }
+
+        [TestMethod]
+        public void TestJaroWinklerDistance()
+        {
+            var testResult = Etc.JaroWinklerDistance("test", "test");
+            Assert.AreEqual(1D, Math.Round(testResult));
+        }
+
+        [TestMethod]
+        public void TestLevenshteinDistance()
+        {
+            var testResult = Etc.LevenshteinDistance("kitten", "sitting");
+            Assert.AreEqual(3D,testResult);
+            testResult = Etc.LevenshteinDistance("Saturday", "Sunday");
+            Assert.AreEqual(3D,testResult);
+            testResult = Etc.LevenshteinDistance("Brian", "Brain");
+            Assert.AreEqual(2D, testResult);
+
+            testResult = Etc.LevenshteinDistance("sword", "swath", true);
+            System.Diagnostics.Debug.WriteLine(testResult);
+        }
+
     }
 }

@@ -54,8 +54,10 @@ R Ops
   -> assignment in reverse where variable is right operand
  
  - Logical 
-  TRUE
+  TRUE 
+  or just 'T'
   FALSE
+  or just 'F'
   < 	less than
   <=  	less than or equal to
   > 	greater than
@@ -228,6 +230,24 @@ R Builtins
  b <- matrix(c(4:15), nrow=3, ncol=4)
  p <- c("R","is","easy")
  df <- data.frame(a,b,p)
+ 
+ #get runtime type info
+ str(someDataFrame)
+ 
+ #dataframe with property-style names
+ prop00 <- 11.0
+ prop01 <- TRUE
+ prop02 <- "a string"
+ myDf <- data.frame(prop00, prop01, prop02)
+ 
+ #dataframe indexing
+ myDf[1]       #would get first column, all rows
+ myDf[1,]      #get the first row, all columns
+ myDf[,1]      #get the first column, all rows, as single array
+ myDf[1:5,]    #get first 5 rows, all columns
+ myDf[,1:2]    #get first 2 columns, all rows
+ myDf[1:2]     #same as the last
+ myDf[1:5,1:2] #get first 5 rows first 2 columns
  
  #get more libs at https://cran.r-project.org/web/packages/available_packages_by_name.html
  # take the zip (window) and unzip to R install dir named \library
@@ -1235,4 +1255,4 @@ General Affine maps
   p = 1/2*x + 1/2*x'
   x'= 2p - x
 ----
-   
+ 

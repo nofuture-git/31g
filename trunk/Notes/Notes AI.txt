@@ -8,6 +8,31 @@ ISBN 978-0-13-604259-4 2010 (3rd Edition)
 ----
 
 ----
+Machine Learning Projects for .NET Developers
+By: Mathias Brandewinder
+Publisher: Apress
+Pub. Date: July 6, 2015
+Print ISBN-13: 978-1-4302-6767-6
+Pages in Print Edition: 300
+----
+
+----
+Machine Learning is all about structured data
+test data sets available online
+http://archive.ics.uci.edu/ml/
+----
+
+----
+Mastering Predictive Analytics with R
+By: Rui Miguel Forte
+Publisher: Packt Publishing
+Pub. Date: June 17, 2015
+Web ISBN-13: 978-1-78398-281-3
+Print ISBN-13: 978-1-78398-280-6
+Pages in Print Edition: 414
+----
+
+----
 AI is presented as a kind of API
  - in the broader use of the word its 
    a program plus some kind of ability 
@@ -428,21 +453,6 @@ Nodeterministic Search
     dead-ends arbitrarily.
  - [safely explorable]: goal state is reachable from every 
     reachable state
-----
-
-----
-Machine Learning Projects for .NET Developers
-By: Mathias Brandewinder
-Publisher: Apress
-Pub. Date: July 6, 2015
-Print ISBN-13: 978-1-4302-6767-6
-Pages in Print Edition: 300
-----
-
-----
-Machine Learning is all about structured data
-test data sets available online
-http://archive.ics.uci.edu/ml/
 ----
 
 ----
