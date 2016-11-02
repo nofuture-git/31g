@@ -19,8 +19,9 @@ namespace NoFuture.Util
         #endregion
 
         #region properties
-        public static bool IsReflectionOnlyAssemblyResolve { get { return _addedReflectionOnlyAssemblyHandler; } }
-        public static bool IsAssemblyResolve { get { return _addedAssemblyHandler; } }
+        public static bool IsReflectionOnlyAssemblyResolve => _addedReflectionOnlyAssemblyHandler;
+        public static bool IsAssemblyResolve => _addedAssemblyHandler;
+
         #endregion
 
         #region methods
@@ -74,12 +75,12 @@ namespace NoFuture.Util
         }
 
         /// <summary>
-        /// Adds the NF implementation of SHA512 <see cref="Shared.RSAPKCS1SHA512SigDesc"/> to
+        /// Adds the NF implementation of SHA512 <see cref="RSAPKCS1SHA512SigDesc"/> to
         /// the <see cref="CryptoConfig"/>
         /// </summary>
         public static void AddSHA512ToCryptoConfig()
         {
-            CryptoConfig.AddAlgorithm(typeof (Shared.RSAPKCS1SHA512SigDesc), Shared.RSAPKCS1SHA512SigDesc.XML_NS_SIG);
+            CryptoConfig.AddAlgorithm(typeof (RSAPKCS1SHA512SigDesc), RSAPKCS1SHA512SigDesc.XML_NS_SIG);
         }
 
         /// <summary>

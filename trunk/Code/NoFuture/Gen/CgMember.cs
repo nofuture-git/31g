@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Reflection.Emit;
 using System.Text.RegularExpressions;
 using NoFuture.Shared.DiaSdk.LinesSwitch;
 using NoFuture.Tokens;
@@ -23,6 +24,8 @@ namespace NoFuture.Gen
         private readonly List<CgMember> _opCodeCallAndCallvirts;
         private Tuple<int, int> _myStartEnclosure;
         private Tuple<int, int> _myEndEnclosure;
+
+        private readonly List<OpCode> _opCodes = new List<OpCode>();
         #endregion
 
         #region ctors
@@ -78,6 +81,12 @@ namespace NoFuture.Gen
         /// PDB data bound to this <see cref="CgMember"/>
         /// </summary>
         public ModuleSymbols PdbModuleSymbols { get; set; }
+
+        /// <summary>
+        /// The <see cref="OpCode"/> in the order invoked within
+        /// the method body's IL
+        /// </summary>
+        public List<OpCode> OrderedOpCodes => _opCodes;
 
         internal CgType MyCgType { get { return _myCgType; } set { _myCgType = value; } }
 

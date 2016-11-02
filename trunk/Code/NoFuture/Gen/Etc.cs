@@ -870,7 +870,11 @@ namespace NoFuture.Gen
 
                 cgMem.Args.Add(cgArg);
             }
-            if (!getCallvirtMetadataTokens) return cgMem;
+
+            cgMem.OrderedOpCodes.AddRange(Asm.GetOpCodesList(mti));
+
+            if (!getCallvirtMetadataTokens)
+                return cgMem;
 
             cgMem.opCodeCallsAndCallvirtsMetadatTokens.AddRange(Asm.GetCallsMetadataTokens(mti));
             return cgMem;

@@ -568,6 +568,33 @@ namespace NoFuture.Util.Binary
         }
 
         /// <summary>
+        /// Gets a method's body as a list of IL <see cref="OpCode"/> 
+        /// </summary>
+        /// <param name="mb"></param>
+        /// <returns></returns>
+        public static OpCode[] GetOpCodesList(MethodBase mb)
+        {
+            var codesOut = new List<OpCode>();
+            if (mb == null)
+                return codesOut.ToArray();
+            var il = mb.GetMethodBody()?.GetILAsByteArray();
+            if (il == null || !il.Any())
+                return codesOut.ToArray();
+            for (var i = 0; i < il.Length; i++)
+            {
+                var opCodei = GetOpCodeByValue(il[i]);
+                codesOut.Add(opCodei);
+                var moveBuffer = GetOpCodeOperandByteSize(opCodei);
+                if (il.Length <= i + moveBuffer)
+                {
+                    return codesOut.ToArray();
+                }
+                i = i + moveBuffer;
+            }
+            return codesOut.ToArray();
+        }
+
+        /// <summary>
         /// Helper method for its overload checking 
         /// for nulls down to the <see cref="System.Reflection.MethodBody"/>
         /// </summary>

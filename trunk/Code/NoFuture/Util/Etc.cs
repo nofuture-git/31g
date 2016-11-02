@@ -77,9 +77,9 @@ namespace NoFuture.Util
             var prev = (char)0x0;
             foreach (var c in value.ToCharArray())
             {
-                if ((c == (char)0x20 || c == (char)0x0D || c == (char)0x0A) && prev == (char)0x20)
+                if ((c == (char)0x20 || c == Constants.CR || c == Constants.LF) && prev == (char)0x20)
                     continue;
-                if (c == (char)0x0D || c == (char)0x0A)
+                if (c == Constants.CR || c == Constants.LF)
                 {
                     sb.Append((char)0x20);
                     prev = (char) 0x20;
@@ -127,9 +127,11 @@ namespace NoFuture.Util
         {
             if (fileContent == null)
                 return null;
-            fileContent = fileContent.Replace(new string(new[] { Constants.CR, Constants.LF }), new string(new[] { Constants.LF }));
-            fileContent = fileContent.Replace(new string(new[] { Constants.CR }), new string(new[] { Constants.LF }));
-            fileContent = fileContent.Replace(new string(new[] { Constants.LF }), new string(new[] { Constants.CR, Constants.LF }));
+            fileContent = fileContent.Replace(new string(new[] {Constants.CR, Constants.LF}),
+                new string(new[] {Constants.LF}));
+            fileContent = fileContent.Replace(new string(new[] {Constants.CR}), new string(new[] {Constants.LF}));
+            fileContent = fileContent.Replace(new string(new[] {Constants.LF}),
+                new string(new[] {Constants.CR, Constants.LF}));
             return fileContent;
         }
 
@@ -383,8 +385,8 @@ namespace NoFuture.Util
                 return (char)(Convert.ToInt32(pChar) | Convert.ToInt32(sChar));
             };
 
-            var length = (primaryString == null ? 0 : primaryString.Length) > secondaryString.Length
-                ? (primaryString == null ? 0 : primaryString.Length)
+            var length = (primaryString?.Length ?? 0) > secondaryString.Length
+                ? (primaryString?.Length ?? 0)
                 : secondaryString.Length;
 
             var mergedChars = new char[length];
@@ -999,36 +1001,49 @@ namespace NoFuture.Util
             if (t.Length == 0) return s.Length;
 
             // create two work vectors of integer distances
-            int[] v0 = new int[t.Length + 1];
-            int[] v1 = new int[t.Length + 1];
+            var v0 = new int[t.Length + 1];
+            var v1 = new int[t.Length + 1];
 
             // initialize v0 (the previous row of distances)
             // this row is A[0][i]: edit distance for an empty s
             // the distance is just the number of characters to delete from t
-            for (int i = 0; i < v0.Length; i++)
+            for (var i = 0; i < v0.Length; i++)
                 v0[i] = i;
 
-            for (int i = 0; i < s.Length; i++)
+            var ss = s.ToCharArray();
+            var tt = t.ToCharArray();
+
+            for (var i = 0; i < ss.Length; i++)
             {
                 // calculate v1 (current row distances) from the previous row v0
 
                 // first element of v1 is A[i+1][0]
                 //   edit distance is delete (i+1) chars from s to match empty t
                 v1[0] = i + 1;
-
+                var si = ss[i];
                 // use formula to fill in the rest of the row
-                for (int j = 0; j < t.Length; j++)
+                for (var j = 0; j < tt.Length; j++)
                 {
-                    var cost = s[i] == t[j] ? 0 : 1;
-                    v1[j + 1] = new[] {v1[j] + 1, v0[j + 1] + 1, v0[j] + cost}.Min();
+                    var cost = si == tt[j] ? 0 : 1;
+                    var j1 = v1[j] + 1;
+                    var j2 = v0[j + 1] + 1;
+                    var j3 = v0[j] + cost;
+
+                    if (j1 < j2 && j1 < j3)
+                    {
+                        v1[j + 1] = j1;
+                        continue;
+                    }
+
+                    v1[j + 1] = j2 < j3 ? j2 : j3;
                 }
 
                 // copy v1 (current row) to v0 (previous row) for next iteration
-                for (int j = 0; j < v0.Length; j++)
-                    v0[j] = v1[j];
+                Array.Copy(v1, v0, v0.Length);
+
             }
 
-            if(!asRatioOfMax)
+            if (!asRatioOfMax)
                 return v1[t.Length];
 
             return 1D - (double)v1[t.Length]/new[] {t.Length, s.Length}.Max();
