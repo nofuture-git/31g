@@ -50,7 +50,7 @@ namespace NoFuture.Util.Binary
 
         #region methods
 
-        public AsmAdjancyGraph GetDpxDirectedAdjacencyGraph(int maxWaitInSeconds = 60)
+        public AsmAdjancyGraph RunIsolatedGetDpxAdjGraph(int maxWaitInSeconds = 60)
         {
             MyProcess = StartRemoteProcess(_si);
             var buffer = MyProcess.StandardOutput.ReadToEnd();
@@ -59,7 +59,7 @@ namespace NoFuture.Util.Binary
             return JsonConvert.DeserializeObject<AsmAdjancyGraph>(buffer, JsonSerializerSettings);
         }
 
-        public static Tuple<MetadataTokenAsm[], int[,]> GetDpxDirectedAdjacencyGraph(string binDir)
+        public static Tuple<MetadataTokenAsm[], int[,]> GetDpxAdjGraph(string binDir)
         {
             throw new NotImplementedException();
         }
