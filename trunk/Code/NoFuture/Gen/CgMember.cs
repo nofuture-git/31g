@@ -83,10 +83,9 @@ namespace NoFuture.Gen
         public ModuleSymbols PdbModuleSymbols { get; set; }
 
         /// <summary>
-        /// The <see cref="OpCode"/> in the order invoked within
-        /// the method body's IL
+        /// The method body's IL in base64 encoded string
         /// </summary>
-        public List<OpCode> OrderedOpCodes => _opCodes;
+        public string MethodBodyIL { get; set; }
 
         internal CgType MyCgType { get { return _myCgType; } set { _myCgType = value; } }
 

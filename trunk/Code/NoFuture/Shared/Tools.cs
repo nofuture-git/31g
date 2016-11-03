@@ -66,6 +66,7 @@
         public static string InvokeAssemblyAnalysis { get; set; }
         public static string InvokeFlatten { get; set; }
         public static string UtilPosHost { get; set; }
+        public static string InvokeDpx { get; set; }
     }
 
     public static class NfDefaultPorts

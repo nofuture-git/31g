@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.IO;
 using System.Text;
 using System.Threading;
 using Newtonsoft.Json;
@@ -40,12 +41,22 @@ namespace NoFuture.Util.NfConsole
             si.RedirectStandardOutput = false;
             si.RedirectStandardError = false;
 
+            return StartRemoteProcess(si);
+        }
+
+        protected Process StartRemoteProcess(ProcessStartInfo si)
+        {
+            if (string.IsNullOrWhiteSpace(si?.FileName) || !File.Exists(si.FileName))
+            {
+                throw new ArgumentException(nameof(si));
+            }
             var myProcess = new Process { StartInfo = si };
 
             myProcess.Start();
             Thread.Sleep(NfConfig.ThreadSleepTime);
 
             return myProcess;
+
         }
 
         public bool IsMyProcessRunning

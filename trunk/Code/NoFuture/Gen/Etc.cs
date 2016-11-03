@@ -870,8 +870,7 @@ namespace NoFuture.Gen
 
                 cgMem.Args.Add(cgArg);
             }
-
-            cgMem.OrderedOpCodes.AddRange(Asm.GetOpCodesList(mti));
+            cgMem.MethodBodyIL = Convert.ToBase64String(Asm.GetMethodBody(mti));
 
             if (!getCallvirtMetadataTokens)
                 return cgMem;

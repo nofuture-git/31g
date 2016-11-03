@@ -577,7 +577,7 @@ namespace NoFuture.Util.Binary
             var codesOut = new List<OpCode>();
             if (mb == null)
                 return codesOut.ToArray();
-            var il = mb.GetMethodBody()?.GetILAsByteArray();
+            var il = GetMethodBody(mb);
             if (il == null || !il.Any())
                 return codesOut.ToArray();
             for (var i = 0; i < il.Length; i++)
@@ -595,6 +595,20 @@ namespace NoFuture.Util.Binary
         }
 
         /// <summary>
+        /// Gets the IL byte array of the method.
+        /// </summary>
+        /// <param name="mb"></param>
+        /// <returns></returns>
+        public static byte[] GetMethodBody(MethodBase mb)
+        {
+            var emptyArray = new byte[0];
+            if (mb == null)
+                return emptyArray;
+            var body = mb.GetMethodBody();
+            return body == null ? emptyArray : body.GetILAsByteArray();
+        }
+
+        /// <summary>
         /// Helper method for its overload checking 
         /// for nulls down to the <see cref="System.Reflection.MethodBody"/>
         /// </summary>
@@ -603,14 +617,8 @@ namespace NoFuture.Util.Binary
         /// <returns></returns>
         public static int[] GetOpCodesArgs(MethodBase mb, OpCode[] opCodes)
         {
-            var emptyArray = new List<int>();
-            if (mb == null)
-                return emptyArray.ToArray();
-            var body = mb.GetMethodBody();
-            if (body == null)
-                return emptyArray.ToArray();
-            var il = body.GetILAsByteArray();
-            return il == null ? emptyArray.ToArray() : GetOpCodesArgs(il, opCodes);
+            var il = GetMethodBody(mb);
+            return il == null || !il.Any() ? new int[0] : GetOpCodesArgs(il, opCodes);
         }
 
         /// <summary>

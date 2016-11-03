@@ -450,6 +450,17 @@ namespace NoFuture.Shared
     }
     #endregion
 
+    #region assembly dependecy adjacency
+
+    [Serializable]
+    public class AsmAdjancyGraph
+    {
+        public string Msg;
+        public MetadataTokenStatus St;
+        public MetadataTokenAsm[] Asms;
+        public int[,] Graph;
+    }
+    #endregion
 
     #region supports tokens
     /// <summary>

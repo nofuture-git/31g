@@ -84,6 +84,7 @@
     <Compile Include="Binary\ByteArray.cs" />
     <Compile Include="Binary\Calc.cs" />
     <Compile Include="Binary\Compression.cs" />
+    <Compile Include="Binary\Dpx.cs" />
     <Compile Include="Gia\FlattenAssembly.cs" />
     <Compile Include="Gia\GraphViz\AsmDiagram.cs" />
     <Compile Include="Gia\InvokeCmds\InvokeGetAsmIndicies.cs" />
