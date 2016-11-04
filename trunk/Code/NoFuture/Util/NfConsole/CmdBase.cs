@@ -5,22 +5,29 @@ using Newtonsoft.Json;
 
 namespace NoFuture.Util.NfConsole
 {
+    /// <summary>
+    /// A concrete implementation for command objects on 
+    /// the console\exe side.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public abstract class CmdBase<T>
     {
+        #region fields
         protected byte[] EmptyBytes = {(byte) '\0'};
 
         protected readonly Program MyProgram;
+        #endregion
 
+        #region ctor
         protected CmdBase(Program p)
         {
             MyProgram = p;
         }
 
-        protected CmdBase()
-        {
-            
-        } 
+        protected CmdBase() { }
+        #endregion
 
+        #region methods
         public byte[] JsonEncodedResponse(T rspn)
         {
             try
@@ -51,5 +58,6 @@ namespace NoFuture.Util.NfConsole
             var dir = MyProgram == null ? TempDirectories.AppData : MyProgram.LogDirectory;
             File.WriteAllBytes(Path.Combine(dir, tn + fileExt), bytes);
         }
+        #endregion
     }
 }

@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using Newtonsoft.Json;
 using NoFuture.Exceptions;
@@ -59,9 +61,94 @@ namespace NoFuture.Util.Binary
             return JsonConvert.DeserializeObject<AsmAdjancyGraph>(buffer, JsonSerializerSettings);
         }
 
-        public static Tuple<MetadataTokenAsm[], int[,]> GetDpxAdjGraph(string binDir)
+        public static AsmAdjancyGraph GetDpxAdjGraph(string binDir)
         {
-            throw new NotImplementedException();
+            try
+            {
+                if (string.IsNullOrWhiteSpace(binDir) || !Directory.Exists(binDir))
+                {
+                    var asmAdjGraph = new AsmAdjancyGraph
+                    {
+                        Msg = $"The bin directory {binDir} is null or does not exist.",
+                        St = MetadataTokenStatus.Error
+                    };
+                    return asmAdjGraph;
+                }
+
+                //get all the dll files in the dir
+                var di = new DirectoryInfo(binDir);
+                var dllsFullNames =
+                    di.EnumerateFileSystemInfos("*.dll", SearchOption.TopDirectoryOnly).Select(x => x.FullName).ToArray();
+
+                if (!dllsFullNames.Any())
+                {
+                    var asmAdjGraph = new AsmAdjancyGraph
+                    {
+                        Msg = $"The directory {binDir} does not contain any files with a .dll extension.",
+                        St = MetadataTokenStatus.Error
+                    };
+                    return asmAdjGraph;
+                }
+
+                //get all the assembly names of direct files and each of thier ref's
+                var asmIndxBuffer = new List<Tuple<MetadataTokenAsm, MetadataTokenAsm[]>>();
+                foreach (var dll in dllsFullNames)
+                {
+                    var asmName = AssemblyName.GetAssemblyName(dll);
+                    if (asmName == null)
+                        continue;
+                    var asm = Asm.NfLoadFrom(dll);
+                    var refs = asm.GetReferencedAssemblies().ToArray();
+                    var mdta = new MetadataTokenAsm {AssemblyName = asm.GetName().FullName, IndexId = -1};
+                    asmIndxBuffer.Add(new Tuple<MetadataTokenAsm, MetadataTokenAsm[]>(mdta,
+                        refs.Select(x => new MetadataTokenAsm {AssemblyName = x.FullName, IndexId = -2}).ToArray()));
+                }
+                return GetDpxAdjGraph(asmIndxBuffer);
+
+            }
+            catch (Exception ex)
+            {
+                return new AsmAdjancyGraph {Msg = ex.Message, St = MetadataTokenStatus.Error};
+            }
+        }
+
+        internal static AsmAdjancyGraph GetDpxAdjGraph(List<Tuple<MetadataTokenAsm, MetadataTokenAsm[]>> asmIndxBuffer)
+        {
+            //flatten all of them to a unique list
+            var uqAsmIndices = asmIndxBuffer.Select(x => x.Item1).ToList();
+            uqAsmIndices.AddRange(asmIndxBuffer.SelectMany(x => x.Item2));
+            uqAsmIndices = uqAsmIndices.Distinct().ToList();
+            for (var i = 0; i < uqAsmIndices.Count; i++)
+            {
+                uqAsmIndices[i].IndexId = i;
+            }
+
+            //create adj graph 
+            var adjGraph = new int[uqAsmIndices.Count, uqAsmIndices.Count];
+            for (var i = 0; i < uqAsmIndices.Count; i++)
+            {
+                var iMdta = uqAsmIndices.First(x => x.IndexId == i);
+                var mdtaRefs = asmIndxBuffer.FirstOrDefault(x => x.Item1.Equals(iMdta))?.Item2 ??
+                               new MetadataTokenAsm[0];
+
+                for (var j = 0; j < uqAsmIndices.Count; j++)
+                {
+                    if (i == j)
+                        continue;
+                    var jMdta = uqAsmIndices.First(x => x.IndexId == j);
+                    var hadEdge = mdtaRefs.Any(x => x.Equals(jMdta));
+                    adjGraph[i, j] = hadEdge ? 1 : 0;
+                }
+            }
+            //assign and return
+            var asmAdjGraph = new AsmAdjancyGraph
+            {
+                Asms = uqAsmIndices.ToArray(),
+                Graph = adjGraph,
+                St = MetadataTokenStatus.Ok
+            };
+
+            return asmAdjGraph;
         }
         #endregion
 

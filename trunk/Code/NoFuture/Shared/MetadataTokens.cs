@@ -411,6 +411,16 @@ namespace NoFuture.Shared
     {
         public string AssemblyName;
         public int IndexId;
+        public override bool Equals(object obj)
+        {
+            var mta = obj as MetadataTokenAsm;
+            return mta != null && string.Equals(mta.AssemblyName, AssemblyName, StringComparison.OrdinalIgnoreCase);
+        }
+
+        public override int GetHashCode()
+        {
+            return AssemblyName?.GetHashCode() ?? 1;
+        }
     }
 
     /// <summary>

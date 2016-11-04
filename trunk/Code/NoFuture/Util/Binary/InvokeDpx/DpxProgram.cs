@@ -22,8 +22,7 @@ namespace NoFuture.Util.Binary.InvokeDpx
                 if (p.PrintHelp())
                     return;
                 p.ParseProgramArgs();
-                var dpxAdj = Dpx.GetDpxAdjGraph(p.BinDir);
-                var rspn = new AsmAdjancyGraph { Asms = dpxAdj.Item1, Graph = dpxAdj.Item2, St = MetadataTokenStatus.Ok };
+                var rspn = Dpx.GetDpxAdjGraph(p.BinDir);
                 var json = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(rspn));
                 using (var std = Console.OpenStandardOutput())
                 {

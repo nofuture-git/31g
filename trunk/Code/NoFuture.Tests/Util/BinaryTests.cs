@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using ikvm.extensions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NoFuture.Gen;
+using NoFuture.Shared;
 using Dbg = System.Diagnostics.Debug;
 
 namespace NoFuture.Tests.Util
@@ -114,6 +116,53 @@ namespace NoFuture.Tests.Util
             var testResult =
                 NoFuture.Util.Binary.Compression.Propositions(new[] {true, false, true, true, true, false, false, true});
             Assert.AreEqual(185,testResult);
+        }
+
+        [TestMethod]
+        public void TestGetDpxAdjGraph()
+        {
+            var testInput = new List<Tuple<MetadataTokenAsm, MetadataTokenAsm[]>>();
+
+            var testControl = new[,]
+            {
+                {0, 1, 0, 0},
+                {1, 0, 1, 0},
+                {0, 1, 0, 0},
+                {1, 0, 0, 0}
+            };
+
+            const string ASM_NM_PREFIX = "ASM NAME ";
+            for (var i = 0; i < testControl.GetLongLength(0); i++)
+            {
+                var tt = new MetadataTokenAsm {AssemblyName = $"{ASM_NM_PREFIX} {i:00}"};
+                var ttList = new List<MetadataTokenAsm>();
+                for (var j = 0; j < testControl.GetLongLength(1); j++)
+                {
+                    if (testControl[i, j] == 1)
+                    {
+                        ttList.Add(new MetadataTokenAsm { AssemblyName = $"{ASM_NM_PREFIX} {j:00}" });
+                    }
+                }
+                testInput.Add(new Tuple<MetadataTokenAsm, MetadataTokenAsm[]>(tt, ttList.ToArray()));
+            }
+
+            var testResult = NoFuture.Util.Binary.Dpx.GetDpxAdjGraph(testInput);
+            Assert.IsNotNull(testResult);
+            Assert.AreNotEqual(MetadataTokenStatus.Error, testResult.St);
+            Assert.IsNotNull(testResult.Graph);
+            Assert.IsNotNull(testResult.Asms);
+
+            var trGraph = testResult.Graph;
+            Assert.AreEqual(testResult.Asms.Length, trGraph.GetLongLength(0));
+            Assert.AreEqual(testControl.GetLongLength(0), trGraph.GetLongLength(0));
+            Assert.AreEqual(testControl.GetLongLength(1), trGraph.GetLongLength(1));
+            for (var i = 0; i < testControl.GetLongLength(0); i++)
+            {
+                for (var j = 0; j < testControl.GetLongLength(1); j++)
+                {
+                    Assert.AreEqual(testControl[i,j], trGraph[i,j]);
+                }
+            }
         }
     }
 }

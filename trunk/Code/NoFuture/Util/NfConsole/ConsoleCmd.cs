@@ -8,7 +8,7 @@ using NoFuture.Shared;
 namespace NoFuture.Util.NfConsole
 {
     /// <summary>
-    /// Location of reuseable functionality related to NoFuture console apps.
+    /// Utility functions for some basic routine ops in a Console exe.
     /// </summary>
     public class ConsoleCmd
     {

@@ -4,6 +4,10 @@ using Newtonsoft.Json;
 
 namespace NoFuture.Util.NfConsole
 {
+    /// <summary>
+    /// A concrete implementation of the calling assembly side's
+    /// invocation of a command on a remote console.exe.
+    /// </summary>
     public abstract class InvokeCmdBase
     {
         protected static readonly JsonSerializerSettings JsonSerializerSettings = new JsonSerializerSettings
