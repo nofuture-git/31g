@@ -107,7 +107,13 @@ namespace NoFuture.Util.Binary
                         continue;
                     var asm = Asm.NfLoadFrom(dll);
                     var refs = asm.GetReferencedAssemblies().ToArray();
-                    var mdta = new RankedMetadataTokenAsm { AssemblyName = asm.GetName().FullName, IndexId = -1};
+                    var mdta = new RankedMetadataTokenAsm
+                    {
+                        AssemblyName = asm.GetName().FullName,
+                        IndexId = -1,
+                        DllFullName = dll,
+                        HasPdb = File.Exists(Path.ChangeExtension(dll, "pdb"))
+                    };
                     asmIndxBuffer.Add(new Tuple<RankedMetadataTokenAsm, RankedMetadataTokenAsm[]>(mdta,
                         refs.Select(x => new RankedMetadataTokenAsm { AssemblyName = x.FullName, IndexId = -2}).ToArray()));
                 }

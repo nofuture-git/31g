@@ -466,6 +466,8 @@ namespace NoFuture.Shared
     public class RankedMetadataTokenAsm : MetadataTokenAsm
     {
         public double PageRank;
+        public string DllFullName;
+        public bool HasPdb;
     }
 
     [Serializable]
@@ -482,13 +484,8 @@ namespace NoFuture.Shared
             var ss = new SortedSet<RankedMetadataTokenAsm>(new RankedMetadataTokenAsmComparer());
             if (Asms == null || !Asms.Any())
                 return ss;
-            var idx = 0;
             foreach (var a in Asms)
-            {
-                a.IndexId = idx;
                 ss.Add(a);
-                idx += 1;
-            }
 
             return ss;
         }
@@ -506,8 +503,13 @@ namespace NoFuture.Shared
                 return -1;
             if (y == null)
                 return 1;
-            if (Math.Abs(x.PageRank - y.PageRank) < 0.00000001D)
-                return 0;
+            if (x.PageRank == y.PageRank)
+            {
+                if (x.HasPdb && !y.HasPdb)
+                    return -1;
+                if (!x.HasPdb && y.HasPdb)
+                    return 1;
+            }
             return x.PageRank > y.PageRank ? -1 : 1;
         }
 
