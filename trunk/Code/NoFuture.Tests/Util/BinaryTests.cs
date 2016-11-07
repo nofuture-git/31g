@@ -121,7 +121,7 @@ namespace NoFuture.Tests.Util
         [TestMethod]
         public void TestGetDpxAdjGraph()
         {
-            var testInput = new List<Tuple<MetadataTokenAsm, MetadataTokenAsm[]>>();
+            var testInput = new List<Tuple<RankedMetadataTokenAsm, RankedMetadataTokenAsm[]>>();
 
             var testControl = new[,]
             {
@@ -134,16 +134,16 @@ namespace NoFuture.Tests.Util
             const string ASM_NM_PREFIX = "ASM NAME ";
             for (var i = 0; i < testControl.GetLongLength(0); i++)
             {
-                var tt = new MetadataTokenAsm {AssemblyName = $"{ASM_NM_PREFIX} {i:00}"};
-                var ttList = new List<MetadataTokenAsm>();
+                var tt = new RankedMetadataTokenAsm { AssemblyName = $"{ASM_NM_PREFIX} {i:00}"};
+                var ttList = new List<RankedMetadataTokenAsm>();
                 for (var j = 0; j < testControl.GetLongLength(1); j++)
                 {
                     if (testControl[i, j] == 1)
                     {
-                        ttList.Add(new MetadataTokenAsm { AssemblyName = $"{ASM_NM_PREFIX} {j:00}" });
+                        ttList.Add(new RankedMetadataTokenAsm { AssemblyName = $"{ASM_NM_PREFIX} {j:00}" });
                     }
                 }
-                testInput.Add(new Tuple<MetadataTokenAsm, MetadataTokenAsm[]>(tt, ttList.ToArray()));
+                testInput.Add(new Tuple<RankedMetadataTokenAsm, RankedMetadataTokenAsm[]>(tt, ttList.ToArray()));
             }
 
             var testResult = NoFuture.Util.Binary.Dpx.GetDpxAdjGraph(testInput);

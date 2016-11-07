@@ -463,13 +463,65 @@ namespace NoFuture.Shared
     #region assembly dependecy adjacency
 
     [Serializable]
+    public class RankedMetadataTokenAsm : MetadataTokenAsm
+    {
+        public double PageRank;
+    }
+
+    [Serializable]
     public class AsmAdjancyGraph
     {
         public string Msg;
         public MetadataTokenStatus St;
-        public MetadataTokenAsm[] Asms;
+        public RankedMetadataTokenAsm[] Asms;
+        [NonSerialized]
         public int[,] Graph;
+
+        public SortedSet<RankedMetadataTokenAsm> GetRankedAsms()
+        {
+            var ss = new SortedSet<RankedMetadataTokenAsm>(new RankedMetadataTokenAsmComparer());
+            if (Asms == null || !Asms.Any())
+                return ss;
+            var idx = 0;
+            foreach (var a in Asms)
+            {
+                a.IndexId = idx;
+                ss.Add(a);
+                idx += 1;
+            }
+
+            return ss;
+        }
     }
+
+    [Serializable]
+    public class RankedMetadataTokenAsmComparer : IEqualityComparer<RankedMetadataTokenAsm>,
+        IComparer<RankedMetadataTokenAsm>
+    {
+        public int Compare(RankedMetadataTokenAsm x, RankedMetadataTokenAsm y)
+        {
+            if (x == null && y == null)
+                return 0;
+            if (x == null)
+                return -1;
+            if (y == null)
+                return 1;
+            if (Math.Abs(x.PageRank - y.PageRank) < 0.00000001D)
+                return 0;
+            return x.PageRank > y.PageRank ? -1 : 1;
+        }
+
+        public bool Equals(RankedMetadataTokenAsm x, RankedMetadataTokenAsm y)
+        {
+            return Compare(x, y) == 0;
+        }
+
+        public int GetHashCode(RankedMetadataTokenAsm obj)
+        {
+            return obj?.PageRank.GetHashCode() ?? 1;
+        }
+    }
+
     #endregion
 
     #region supports tokens

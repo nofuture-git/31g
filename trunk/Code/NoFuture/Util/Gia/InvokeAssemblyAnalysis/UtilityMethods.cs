@@ -398,6 +398,7 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
             if (tokens == null)
                 return null;
             var adjGraph = tokens.GetAdjancencyMatrix(true);
+            Re.Efx.RTempDir = _myProgram.LogDirectory;
             var pageRank = Re.Efx.GetPageRank(adjGraph.Item2);
             var idx = adjGraph.Item1;
             var valsOut = new List<Tuple<int, int, double>>();

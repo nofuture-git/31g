@@ -56,7 +56,15 @@ namespace NoFuture.Util.Binary
         {
             MyProcess = StartRemoteProcess(_si);
             var buffer = MyProcess.StandardOutput.ReadToEnd();
-            MyProcess.WaitForExit(maxWaitInSeconds);
+            MyProcess.WaitForExit(maxWaitInSeconds * 1000);
+            if (string.IsNullOrWhiteSpace(buffer))
+            {
+                throw new ItsDeadJim($"The remote process {MyProcess.ProcessName} did not " +
+                                     "return anything on the StandardOutput");
+            }
+
+            //HACK - the std out will have all the banner stuff printed by the R Console w\ JSON at bottom
+            buffer = buffer.Substring(buffer.IndexOf('{'));
 
             return JsonConvert.DeserializeObject<AsmAdjancyGraph>(buffer, JsonSerializerSettings);
         }
@@ -91,7 +99,7 @@ namespace NoFuture.Util.Binary
                 }
 
                 //get all the assembly names of direct files and each of thier ref's
-                var asmIndxBuffer = new List<Tuple<MetadataTokenAsm, MetadataTokenAsm[]>>();
+                var asmIndxBuffer = new List<Tuple<RankedMetadataTokenAsm, RankedMetadataTokenAsm[]>>();
                 foreach (var dll in dllsFullNames)
                 {
                     var asmName = AssemblyName.GetAssemblyName(dll);
@@ -99,9 +107,9 @@ namespace NoFuture.Util.Binary
                         continue;
                     var asm = Asm.NfLoadFrom(dll);
                     var refs = asm.GetReferencedAssemblies().ToArray();
-                    var mdta = new MetadataTokenAsm {AssemblyName = asm.GetName().FullName, IndexId = -1};
-                    asmIndxBuffer.Add(new Tuple<MetadataTokenAsm, MetadataTokenAsm[]>(mdta,
-                        refs.Select(x => new MetadataTokenAsm {AssemblyName = x.FullName, IndexId = -2}).ToArray()));
+                    var mdta = new RankedMetadataTokenAsm { AssemblyName = asm.GetName().FullName, IndexId = -1};
+                    asmIndxBuffer.Add(new Tuple<RankedMetadataTokenAsm, RankedMetadataTokenAsm[]>(mdta,
+                        refs.Select(x => new RankedMetadataTokenAsm { AssemblyName = x.FullName, IndexId = -2}).ToArray()));
                 }
                 return GetDpxAdjGraph(asmIndxBuffer);
 
@@ -112,7 +120,8 @@ namespace NoFuture.Util.Binary
             }
         }
 
-        internal static AsmAdjancyGraph GetDpxAdjGraph(List<Tuple<MetadataTokenAsm, MetadataTokenAsm[]>> asmIndxBuffer)
+        internal static AsmAdjancyGraph GetDpxAdjGraph(
+            List<Tuple<RankedMetadataTokenAsm, RankedMetadataTokenAsm[]>> asmIndxBuffer)
         {
             //flatten all of them to a unique list
             var uqAsmIndices = asmIndxBuffer.Select(x => x.Item1).ToList();
@@ -129,7 +138,7 @@ namespace NoFuture.Util.Binary
             {
                 var iMdta = uqAsmIndices.First(x => x.IndexId == i);
                 var mdtaRefs = asmIndxBuffer.FirstOrDefault(x => x.Item1.Equals(iMdta))?.Item2 ??
-                               new MetadataTokenAsm[0];
+                               new RankedMetadataTokenAsm[0];
 
                 for (var j = 0; j < uqAsmIndices.Count; j++)
                 {
@@ -150,6 +159,7 @@ namespace NoFuture.Util.Binary
 
             return asmAdjGraph;
         }
+
         #endregion
 
     }

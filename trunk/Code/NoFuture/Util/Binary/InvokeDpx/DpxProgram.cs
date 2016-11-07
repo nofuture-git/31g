@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Configuration;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading;
+using System.IO;
 using Newtonsoft.Json;
 using NoFuture.Exceptions;
 using NoFuture.Shared;
@@ -11,6 +14,7 @@ namespace NoFuture.Util.Binary.InvokeDpx
 {
     public class DpxProgram : Program
     {
+        public const string APP_SET_KEY_KEEP_TEMP = "KeepRTempFiles";
         public string BinDir { get; set; }
 
         public static void Main(string[] args)
@@ -23,7 +27,9 @@ namespace NoFuture.Util.Binary.InvokeDpx
                     return;
                 p.ParseProgramArgs();
                 var rspn = Dpx.GetDpxAdjGraph(p.BinDir);
+                p.AssignPageRank(rspn);
                 var json = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(rspn));
+                File.WriteAllBytes(Path.Combine(p.LogDirectory, $"{rspn.GetType().Name}.json"), json);
                 using (var std = Console.OpenStandardOutput())
                 {
                     std.Write(json, 0, json.Length);
@@ -79,5 +85,26 @@ namespace NoFuture.Util.Binary.InvokeDpx
             BinDir = argHash[Dpx.BIN_DIR].ToString();
         }
 
+        public void AssignPageRank(AsmAdjancyGraph g)
+        {
+            if (g.St == MetadataTokenStatus.Error)
+                return;
+            if (g.Asms == null || !g.Asms.Any())
+                return;
+            if (g.Graph == null)
+                return;
+            var keepTemp = ResolveBool(ConfigurationManager.AppSettings[APP_SET_KEY_KEEP_TEMP]) ?? false;
+            Re.Efx.RTempDir = LogDirectory;
+            var pageRank = Re.Efx.GetPageRank(g.Graph, keepTemp);
+            if (pageRank == null || !pageRank.Any())
+                return;
+            for (var i = 0; i < g.Asms.Length; i++)
+            {
+                var asm = g.Asms.FirstOrDefault(x => x.IndexId == i);
+                if (asm == null)
+                    continue;
+                asm.PageRank = pageRank[i];
+            }
+        }
     }
 }

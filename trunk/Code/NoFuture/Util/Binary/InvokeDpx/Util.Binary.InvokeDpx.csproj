@@ -43,13 +43,8 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DpxProgram.cs" />
@@ -70,6 +65,10 @@
     <ProjectReference Include="..\..\Util.csproj">
       <Project>{d7f28538-ba6a-46b4-a080-65124e899317}</Project>
       <Name>Util</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Util.Re\Util.Re.csproj">
+      <Project>{d572d6a3-0b77-451f-a1fe-efee1767bf9c}</Project>
+      <Name>Util.Re</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

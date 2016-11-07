@@ -27,6 +27,7 @@ namespace NoFuture.Util.Re
                         : TempDirectories.TsvCsv);
                 return _rTempDir;
             }
+            set { _rTempDir = value; }
         }
         /// <summary>
         /// Gets the R install path from the registry
