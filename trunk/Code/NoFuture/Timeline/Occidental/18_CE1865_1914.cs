@@ -56,33 +56,56 @@
             engd.AddEntry(new ScienceAdvEntry("cathode rays","Thomson") {StartValue = 1897});
 
             engd.AddEntry(1870, "Suez Canel(1869)");
+            engd.AddEntry(1901, "Boxer Rebellion");
 
             engd.AddEntry(1879, "Anglo-Zulu War(1879)", PrintLocation.Left);
-            engd.AddEntry(1880,"First Boer War(1880\\81)", PrintLocation.Left);
+            engd.AddEntry(1881,"First Boer War(1880\\81)", PrintLocation.Left);
             engd.AddEntry(1899, 1902, "Second Boer War(1899-1902)", PrintLocation.Left);
             engd.AddEntry(1865, 1901, "Queen Victoria (1837-1901)", PrintLocation.Right);
 
-            var fr = new Block { Ruler = rule, Title = "France" };
+            var fr = new Block { Ruler = rule, Title = "France", Width = 44 };
             fr.AddEntry(new ScienceAdvEntry("radioactivity", "Becquerel") {StartValue = 1896});
+            fr.AddEntry(1911, "Second Moroccan Crisis (1911)");
+            fr.AddEntry(new LeaderEntry("Adolphe Thiers", new int?[,] {{1871, 1873}}) {StartValue = 1871});
+            fr.AddEntry(new LeaderEntry("Patrice de MacMahon", new int?[,] {{1873, 1879}}) {StartValue = 1873});
+            fr.AddEntry(new LeaderEntry("Jules Grevy", new int?[,] { {1879,1887} }) {StartValue = 1879});
+            fr.AddEntry(new LeaderEntry("M.F.S. Carnot", new int?[,] {{1887, 1894}}) {StartValue = 1887});
+            fr.AddEntry(new LeaderEntry("Jean Casimir-Perier", new int?[,] {{1894, 1985}}) {StartValue = 1893});
+            fr.AddEntry(new LeaderEntry("Felix Faure", new int?[,] { {1895, 1899} }) {StartValue = 1898});
+            fr.AddEntry(new LeaderEntry("Emile Loubet", new int?[,] { {1899, 1906} }) {StartValue = 1900});
+            fr.AddEntry(new LeaderEntry("Armand Fallieres",new int?[,] { {1906, 1913} }) {StartValue = 1906});
 
-            var de = new Block { Ruler = rule, Title = "Germany" };
+            var de = new Block { Ruler = rule, Title = "Germany", Width = 44 };
             de.AddEntry(new ScienceAdvEntry("x-rays", "Rontgen") {StartValue = 1895});
             de.AddEntry(new ScienceAdvEntry("special relativity","Einstein") {StartValue = 1905});
             de.AddEntry(new ScienceAdvEntry("continental drift", "Wegener") {StartValue = 1912});
+            de.AddEntry(new LeaderEntry("Wilhem I (Monarch)",new int?[,] { {1861, 1888} }) {StartValue = 1867});
+            de.AddEntry(new LeaderEntry("Otto von Bismarck", new int?[,] {{1871, 1890}}) {StartValue = 1872});
+            de.AddEntry(new LeaderEntry("Wilhem II (Monarch)", new int?[,] { {1888,1918} }) {StartValue = 1888});
+            de.AddEntry(new LeaderEntry("Leo von Caprivi", new int?[,] { {1890,1892} }) {StartValue = 1890});
+            de.AddEntry(new LeaderEntry("B. zu Eulenburg", new int?[,] { {1892,1894} }) {StartValue = 1892});
+            de.AddEntry(new LeaderEntry("Chlodwig Carl Viktor", new int?[,] {{1894, 1900}}) {StartValue = 1894});
+            de.AddEntry(new LeaderEntry("Bernhard von Bulow", new int?[,] { {1900,1909} }) {StartValue = 1900});
+            de.AddEntry(new LeaderEntry("T. Bethmann-Hollweg", new int?[,] { {1909, 1917} }) {StartValue = 1909});
+
             de.AddEntry(1884,"Berlin Conference(1884\\85)");
 
+            de.AddEntry(1906, "First Moroccan Crisis (1905-06)");
+
             var aus = new Block { Ruler = rule, Title = "Austrian Empire" };
+            aus.AddEntry(new LeaderEntry("Francis Joseph I", new int?[,] { {1867, 1916} }) {StartValue = 1869});
+            aus.AddEntry(1908,"Bosnian Crisis (1908)");
 
             var ott = new Block { Ruler = rule, Title = "Ottoman Empire" };
+            ott.AddEntry(1911, "Italo-Turkish War(1911-12)");
+            ott.AddEntry(1912, "Balkan Wars (1912-13)");
 
             var rus = new Block { Ruler = rule, Title = "Imperial Russia" };
             rus.AddEntry(new ScienceAdvEntry("perodic table", "Mendeleev") {StartValue = 1869});
-
-            var jpn = new Block {Ruler = rule, Title = "Japan"};
-
-            var zho = new Block {Ruler = rule, Title = "China"};
-
-
+            rus.AddEntry(1904,1905, "Russo-Japanese War (1904-05)");
+            rus.AddEntry(new LeaderEntry("Alexander II", new int?[,] {{1855, 1881}}) {StartValue = 1867});
+            rus.AddEntry(new LeaderEntry("Alexander III", new int?[,] {{1881, 1894}}) {StartValue = 1881});
+            rus.AddEntry(new LeaderEntry("Nicholas II", new int?[,] {{1894, 1917}}) {StartValue = 1894});
 
             var plate = new Plate { Ruler = rule, Name = "New Imperialism" };
             plate.AddBlock(usa);
@@ -92,10 +115,51 @@
             plate.AddBlock(aus);
             plate.AddBlock(ott);
             plate.AddBlock(rus);
-            plate.AddBlock(jpn);
-            plate.AddBlock(zho);
 
             plate.AddArrow(new Arrow(fr, de) { StartValue = 1870, Text = "Franco-Prussian War"});
+            plate.AddArrow(new Arrow(aus, de)
+            {
+                StartValue = 1879,
+                Text = "Dual Alliance (1879)**",
+                FromRightToLeftArrowHead = "+````",
+                ArrowShaft = '`',
+                ArrowTail = "````+"
+            });
+
+            plate.AddArrow(new Arrow(rus, fr)
+            {
+                StartValue = 1892,
+                Text = "Franco-Russian Alliance (1892)",
+                FromRightToLeftArrowHead = "+``",
+                ArrowShaft = '`',
+                ArrowTail = "``+"
+            });
+
+            plate.AddArrow(new Arrow(fr, engd)
+            {
+                StartValue = 1904,
+                Text = "Entente Cordiale (1904)",
+                FromRightToLeftArrowHead = "+```````",
+                ArrowShaft = '`',
+                ArrowTail = "```````+"
+            });
+
+            plate.AddArrow(new Arrow(rus, engd)
+            {
+                StartValue = 1907,
+                Text = "Anglo-Russian Entente (1907)",
+                FromRightToLeftArrowHead = "+``",
+                ArrowShaft = '`',
+                ArrowTail = "``+"
+            });
+            plate.AddArrow(new Arrow(rus, engd)
+            {
+                StartValue = 1880,
+                Text = "Europe-wide Arms Race begins ",
+                ArrowTail = "............]",
+                FromRightToLeftArrowHead = "[.."
+            });
+            plate.Notes.Add(" ** Italy is added in 1882 making it the 'Triple Alliance'.");
 
             return plate;
         }

@@ -19,17 +19,19 @@ namespace NoFuture.Timeline
             rome.AddEntry(117,135,"Hadrian(117-138)",PrintLocation.Right);
             rome.AddEntry(138,"Antoninus Pius(138-161)",PrintLocation.Right);
             rome.AddEntry(144,158, "\"Roman Golden Age\"", PrintLocation.Right);
+            rome.AddEntry(166, "Roman emissaries in China (166)");
             rome.AddEntry(170,"[Meditations(Marcus Aurelius)]");
             rome.AddEntry(161,180,"Marcus Aurelius(161-180)", PrintLocation.Right);
+            rome.AddEntry(169, 180, "Antonine Plague (165-180)");
             rome.AddEntry(107, 191, "Nervan-Antonian Dyn.", PrintLocation.Left);
             rome.AddEntry(224, "(Parthian -> Sassanid Empire (224))");
             rome.AddEntry(193, 235, "Serveran Dyn.", PrintLocation.Left);
             rome.AddEntry(238, "Year of the Five Emperors(238)");
-            rome.AddEntry(240, 282, "Illyrian emperors", PrintLocation.Left);
-            rome.AddEntry(266,"Roman merchents in China(266)");
+            rome.AddEntry(240, 282, "'Crisis of the 3rd Century'**", PrintLocation.Left);
             rome.AddEntry(257, 260, "Valerian persecutions(257-260)", PrintLocation.Right);
+            rome.AddEntry(250, 270, "Cyprian Plague (250-270)");
             rome.AddEntry(303, 313, "Diocletian persecutions(303-313)", PrintLocation.Right);
-            rome.AddEntry(284, 310, "Tetrarchy", PrintLocation.Left);
+            rome.AddEntry(284, 310, "Tetrarchy*", PrintLocation.Left);
             rome.AddEntry(312, 325, "Constantinian Dyn", PrintLocation.Left);
             rome.AddEntry(315,"Battle of the Mulvian Bridge(312)");
             rome.AddEntry(319,"Edict of Milan(313)");
@@ -65,6 +67,7 @@ namespace NoFuture.Timeline
             west.AddEntry(200, "[H] Sabellianism (no trinity)");
             west.AddEntry(312, "[H] Manichaeism (duality, east import)");
             west.AddEntry(250, "[H] Donatist (disallow lapsed)");
+            west.AddEntry(260, 274, "Gallic Empire (260-274)");
 
             var east = new Block { Ruler = rule, Title = "Greek East", Width = 48 };
             east.AddEntry(130,"Justin Martyr(100-165)",PrintLocation.Left);
@@ -76,7 +79,7 @@ namespace NoFuture.Timeline
             east.AddEntry(175, "[H] Docetism (christ w/o body)");
             east.AddEntry(135,"[H] Ophites (serpent worship)");
             east.AddEntry(145,"[H] Egyptian Basilides (non-being creation)");
-
+            east.AddEntry(269, 274, "Palmyrene Empire (269-274)");
             
             var judea = new Block {Ruler = rule, EndValue = 142, Title = "Judea", Width = 64};
             judea.AddEntry(124,142,"Third Jewish-Roman War", PrintLocation.Left);
@@ -91,6 +94,9 @@ namespace NoFuture.Timeline
             plate.AddBlock(west);
             plate.AddBlock(east);
             plate.AddBlock(judea);
+
+            plate.Notes.Add(" * Empire ruled by four different tetrarchs in four different capitals.");
+            plate.Notes.Add(" ** A period in which the empire nearly collapsed by the combined affects of invasion, civil war, plague, hyperinflation.");
 
             return plate;
         }
