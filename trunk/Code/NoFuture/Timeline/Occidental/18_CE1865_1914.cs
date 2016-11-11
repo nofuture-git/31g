@@ -99,6 +99,10 @@
             var ott = new Block { Ruler = rule, Title = "Ottoman Empire" };
             ott.AddEntry(1911, "Italo-Turkish War(1911-12)");
             ott.AddEntry(1912, "Balkan Wars (1912-13)");
+            ott.AddEntry(new LeaderEntry("Abdulaziz", new int?[,] {{1861, 1876}}) {StartValue = 1866});
+            ott.AddEntry(new LeaderEntry("Mehmend Murad V", new int?[,] { {null, 1876} }) {StartValue = 1876});
+            ott.AddEntry(new LeaderEntry("Abdulhamid II", new int?[,] { {1876, 1909} }) {StartValue = 1880});
+            ott.AddEntry(new LeaderEntry("Mehmed V", new int?[,] { {1909,1918} }) {StartValue = 1909});
 
             var rus = new Block { Ruler = rule, Title = "Imperial Russia" };
             rus.AddEntry(new ScienceAdvEntry("perodic table", "Mendeleev") {StartValue = 1869});

@@ -30,6 +30,7 @@ namespace NoFuture.Timeline
             rome.AddEntry(240, 282, "'Crisis of the 3rd Century'**", PrintLocation.Left);
             rome.AddEntry(257, 260, "Valerian persecutions(257-260)", PrintLocation.Right);
             rome.AddEntry(250, 270, "Cyprian Plague (250-270)");
+            rome.AddEntry(270, 275, "Aurelian(270-275)", PrintLocation.Right);
             rome.AddEntry(303, 313, "Diocletian persecutions(303-313)", PrintLocation.Right);
             rome.AddEntry(284, 310, "Tetrarchy*", PrintLocation.Left);
             rome.AddEntry(312, 325, "Constantinian Dyn", PrintLocation.Left);
@@ -66,7 +67,7 @@ namespace NoFuture.Timeline
             west.AddEntry(195, "[H] Adoptionism (christ divine after baptism)");
             west.AddEntry(200, "[H] Sabellianism (no trinity)");
             west.AddEntry(312, "[H] Manichaeism (duality, east import)");
-            west.AddEntry(250, "[H] Donatist (disallow lapsed)");
+            west.AddEntry(280, "[H] Donatist (disallow lapsed)");
             west.AddEntry(260, 274, "Gallic Empire (260-274)");
 
             var east = new Block { Ruler = rule, Title = "Greek East", Width = 48 };
