@@ -160,17 +160,6 @@ namespace NoFuture.Tests.Util
         }
 
         [TestMethod]
-        public void TestFindCountOfCharNotInQuotes()
-        {
-            var testInput = "Intangible assets (amortizable)..	\"4,827,472,371\"	\"3,923,959\"	\"77,931,345\"	\"66,159,637\"	\"23,333,208\"	\"1,707,006,308\"	\"497,845,683\"	\"311,360,015\"	\"186,485,668\"	\"73,174,724\"	\"901,501,338\"	\"415,461,943\"	\"71,073,527\"	\"260,860,340\"	\"384,047,374\"	\"106,072,424\"	\"14,123,668\"	\"98,147,343\"	\"18,055,586\"	\"85,134,982\"	\"23,618,983\"		";
-            var testResult = Etc.FindCountOfCharNotInQuotes(testInput, (char) 0x09);
-
-            Assert.AreNotEqual(0, testResult);
-            Assert.AreEqual(23, testResult);
-            System.Diagnostics.Debug.WriteLine(testResult);
-        }
-
-        [TestMethod]
         public void TestDistillToWholeWords()
         {
             var testResult =
@@ -197,95 +186,11 @@ namespace NoFuture.Tests.Util
             {
                 "S. No:","Screen / Sub Tab","Field Name","Section","Functionality","Type","Functionality","Type","WE Mapping","Required ?","Comments"
             };
-            var testResult = NoFuture.Util.Etc.FormatCsvHeaders(testInput);
+            var testResult = Etc.FormatCsvHeaders(testInput);
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0, testResult.Length);
             foreach(var tr in testResult)
                 System.Diagnostics.Debug.WriteLine(tr);
-        }
-
-        [TestMethod]
-        public void TestReplaceOriginalContent()
-        {
-            var inputString = new String[]
-            {
-                "    public SomeCtor(string anArg)",
-                "    {",
-                "        try",
-                "        { ",
-                "            ddlSecurityQuestion.DataSource = dsGetSecurityQuestions;",
-                "            ddlSecurityQuestion.DataTextField = \"ItemName\";",
-                "            ddlSecurityQuestion.DataValueField = \"ItemAbbreviation\";",
-                "            ddlSecurityQuestion.DataBind();",
-                "            ddlSecurityQuestion.Items.Insert(0, string.Format(\" '{0}'\",\"------------------- Select a question -------------------\");",
-                "        }",
-                "        catch (Exception ex)",
-                "        {",
-                "            MyNamespace.CRM.Common.Utitility.CommonMethods.LogException(\"\",ex);",
-                "            throw ex;",
-                "        }",
-                "    }",
-                "",
-                "    protected internal string SomeProperty {get; set;}",
-                "",
-                "    //comments here ",
-                "    // about our shitty code",
-                "",
-                "    public string SomeMethod(int arg1, string arg2)",
-                "    {",
-                "        try",
-                "        {",
-                "            DataSet dsGetSecurityQuestions = objZuluUIController.GetZuluSecurityQuestions(DropdownConstants.ZuluSECURITYQUESTIONS);",
-                "            ddlSecurityQuestion.DataSource = dsGetSecurityQuestions;",
-                "            ddlSecurityQuestion.DataTextField = \"ItemName\";",
-                "            ddlSecurityQuestion.DataValueField = \"ItemAbbreviation\";",
-                "            ddlSecurityQuestion.DataBind();",
-                "            ddlSecurityQuestion.Items.Insert(0, string.Format(\" '{0}'\",\"------------------- Select a question -------------------\");",
-                "        }",
-                "        catch (Exception ex)",
-                "        {",
-                "            MyNamespace.CRM.Common.Utitility.CommonMethods.LogException(\"\",ex);",
-                "            throw ex;",
-                "        }",
-                "    }",
-                ""
-            };
-
-            //foreach (var i in inputString)
-            //{
-            //    System.Diagnostics.Debug.WriteLine(i);
-            //}
-
-            var testInput00 = new Dictionary<Tuple<int, int>, string[]>();
-            testInput00.Add(new Tuple<int, int>(2, 2), null);
-            testInput00.Add(new Tuple<int, int>(9, 6), new[] { "new line B", "new line C", "new line B" });
-            testInput00.Add(new Tuple<int, int>(26, 0), new[] { "new line D", "new line E" });
-            var testResult = NoFuture.Util.Etc.ReplaceOriginalContent(testInput00, inputString);
-            //foreach (var t in testResult)
-            //    System.Diagnostics.Debug.WriteLine(t);
-
-            testInput00 = new Dictionary<Tuple<int, int>, string[]>();
-            testInput00.Add(new Tuple<int, int>(2, 0), new[] { "const MY_STRING00 = \"string\";", "const MY_STRING01 = \"string\";", "const MY_STRING02 = \"string\";" });
-            testInput00.Add(new Tuple<int, int>(4, 1), new[] { "ddlSecurityQuestion.DataTextField = MY_STRING01;" });
-            testInput00.Add(new Tuple<int, int>(5, 1), new[] { "ddlSecurityQuestion.DataValueField = MY_STRING00;" });
-            testInput00.Add(new Tuple<int, int>(26, 0), new[] { "new line D", "new line E" });
-            testResult = NoFuture.Util.Etc.ReplaceOriginalContent(testInput00, inputString);
-
-
-            testInput00 = new Dictionary<Tuple<int, int>, string[]>();
-            testInput00.Add(new Tuple<int, int>(2, 1), null);
-            testInput00.Add(new Tuple<int, int>(4, 1), null);
-            testInput00.Add(new Tuple<int, int>(5, 1), null);
-            testInput00.Add(new Tuple<int, int>(6, 1), null);
-            testInput00.Add(new Tuple<int, int>(7, 1), null);
-            testInput00.Add(new Tuple<int, int>(8, 1), null);
-            testInput00.Add(new Tuple<int, int>(9, 1), null);
-            testInput00.Add(new Tuple<int, int>(10, 1), null);
-            testInput00.Add(new Tuple<int, int>(11, 1), null);
-            testResult = NoFuture.Util.Etc.ReplaceOriginalContent(testInput00, inputString);
-            foreach (var t in testResult)
-                System.Diagnostics.Debug.WriteLine(t);
-
         }
 
         [TestMethod]

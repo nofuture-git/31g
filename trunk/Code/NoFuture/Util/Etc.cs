@@ -442,56 +442,6 @@ namespace NoFuture.Util
         }
 
         /// <summary>
-        /// Given <see cref="someCsv"/>, being a string which will split on <see cref="delimiter"/>, this
-        /// function will simply pad a space after each comma and replace the last one with " and ".
-        /// </summary>
-        /// <param name="someCsv"></param>
-        /// <param name="delimiter"></param>
-        /// <returns></returns>
-        public static string ToEnglishSentenceCsv(string someCsv, char delimiter)
-        {
-            if (String.IsNullOrEmpty(someCsv))
-                return String.Empty;
-
-            var csvItems = someCsv.Split(delimiter);
-            var csvClean = csvItems.Where(s => !String.IsNullOrWhiteSpace(s)).ToList();
-
-            for (var i = 0; i < csvClean.Count; i++)
-                csvClean[i] = csvClean[i].Trim();
-
-            var series = new StringBuilder();
-
-            if (csvClean.Count == 1)
-            {
-                return csvClean[0];
-            }
-
-            if (csvClean.Count == 2)
-            {
-                series.Append(csvClean[0]);
-                if (!String.IsNullOrEmpty(csvClean[0]) && !String.IsNullOrEmpty(csvClean[1]))
-                    series.Append(" and ");
-                series.Append(csvClean[1]);
-                return series.ToString();
-            }
-
-            for (var i = 0; i < csvClean.Count - 1; i++)
-            {
-                series.Append(csvClean[i]);
-                if (!String.IsNullOrEmpty(csvClean[i]) && i != csvClean.Count - 2) 
-                    series.Append(",");
-
-                series.Append(" ");
-            }
-            if(!String.IsNullOrEmpty(series.ToString()))
-                series.Append("and ");
-
-            series.Append(csvClean[(csvClean.Count - 1)]);
-            return series.ToString();
-
-        }
-
-        /// <summary>
         /// Changes to Upper each character which is either the very first
         /// non-whitespace character in the string and every character which 
         /// appears after the <see cref="separator"/>.
@@ -676,36 +626,6 @@ namespace NoFuture.Util
         }
 
         /// <summary>
-        /// Given some string <see cref="line"/> the function will 
-        /// determine the number of occurances of <see cref="c"/> when 
-        /// it is the case that it is not enclosed in single nor double quotes.
-        /// </summary>
-        /// <param name="line"></param>
-        /// <param name="c"></param>
-        /// <returns></returns>
-        public static int FindCountOfCharNotInQuotes(string line, char? c)
-        {
-            if (c == null)
-                c = Constants.DEFAULT_CHAR_SEPARATOR;
-            var tokenCount = 0;
-            var inDoubleQuotes = false;
-            var inSingleQuotes = false;
-            var buffer = line.ToCharArray();
-
-            for (var j = 0; j < buffer.Length; j++)
-            {
-                //flag entry and exit into string literals
-                if (buffer[j] == '"' && j - 1 > 0 && buffer[j - 1] != '\\')
-                    inDoubleQuotes = !inDoubleQuotes;
-                if (buffer[j] == '\'' && !inDoubleQuotes && j - 1 > 0 && buffer[j - 1] != '\\')
-                    inSingleQuotes = !inSingleQuotes;
-                if (buffer[j] == c && (!inDoubleQuotes || !inSingleQuotes))
-                    tokenCount += 1;
-            }
-            return tokenCount;            
-        }
-
-        /// <summary>
         /// Ref. [http://en.wikipedia.org/wiki/Luhn_algorithm]
         /// </summary>
         /// <param name="somevalue"></param>
@@ -809,81 +729,6 @@ namespace NoFuture.Util
                 }
             }
             return newNames.ToArray();
-        }
-
-        /// <summary>
-        /// Helper method to remove and replace specific line numbers with new content
-        /// </summary>
-        /// <param name="dido">The keys Item pair is the index and length, same as in the common <see cref="System.String.Substring(int, int)"/></param>
-        /// <param name="srcFile"></param>
-        /// <returns></returns>
-        public static string[] ReplaceOriginalContent(Dictionary<Tuple<int, int>, string[]> dido, string[] srcFile)
-        {
-            var buffer = new List<string>();
-            if (srcFile == null || srcFile.Length <= 0)
-                return srcFile;
-
-            var redux = 0;
-
-            var leftPaddingByIdx = new Dictionary<Tuple<int, int>, string>();
-            foreach (var nk in dido.Keys)
-            {
-                if (srcFile.Length <= nk.Item1 || nk.Item1 < 0)
-                    continue;
-                var targetedLine = srcFile[nk.Item1];
-                var firstNonWsChar = targetedLine.ToCharArray().FirstOrDefault(x => !char.IsWhiteSpace(x));
-                var lwsLen = firstNonWsChar != '\0' ? targetedLine.IndexOf(firstNonWsChar) : 8;
-                var lws = new string((char)0x20, lwsLen);
-                leftPaddingByIdx.Add(nk, lws);
-            }
-
-            foreach (var nk in dido.Keys)
-            {
-                //want to get this back to where Item1 would have been prior
-                var topTake = nk.Item1 - redux; 
-                var bottomTake = nk.Item2;
-
-                buffer.AddRange(srcFile.Take(topTake));
-                
-                var lws = leftPaddingByIdx.ContainsKey(nk) ? leftPaddingByIdx[nk] : new string((char) 0x20, 8);
-
-                var newLines = dido[nk];
-                if (newLines != null)
-                    buffer.AddRange(newLines.Select(x => string.Format("{0}{1}", lws, x)));
-                buffer.AddRange(srcFile.Skip(topTake + bottomTake).Take(srcFile.Length - (topTake + bottomTake)));
-                srcFile = buffer.ToArray();
-
-                //this is the sum of all lines removed so far
-                redux += (nk.Item2) //num of line just removed
-                    - (newLines == null ? 0 : newLines.Length); //num of lines added back in
-                buffer = new List<string>();
-            }
-            return srcFile;
-        }
-
-        /// <summary>
-        /// Simple content spliter. Gets the content from the first line containing <see cref="startLnContains"/>
-        /// up to the line containing <see cref="endLnContains"/>
-        /// </summary>
-        /// <param name="content"></param>
-        /// <param name="startLnContains"></param>
-        /// <param name="endLnContains">This line will NOT be included in the results</param>
-        /// <returns></returns>
-        public static string[] GetContentBetweenMarkers(string[] content, string startLnContains, string endLnContains)
-        {
-            var contentBetween = new List<string>();
-            var getContent = false;
-            foreach (var ln in content)
-            {
-                if (ln.Contains(startLnContains))
-                    getContent = true;
-                if (getContent && ln.Contains(endLnContains))
-                    getContent = false;
-                if (getContent)
-                    contentBetween.Add(ln);
-            }
-
-            return contentBetween.ToArray();
         }
 
         public static ChronoCompare ComparedTo(this DateTime t1, DateTime t2)

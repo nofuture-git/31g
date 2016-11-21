@@ -1019,7 +1019,14 @@ namespace NoFuture.Tests.Timeline
 
             testPlate.ToPdf(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\Timeline\CE 1865 to 1914.pdf");
         }
+        [TestMethod]
+        public void TestOccidentalPlate19()
+        {
+            var testSubject = new Occidental();
+            var testPlate = testSubject.CE1914to1945();
 
+            testPlate.ToPdf(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\Timeline\CE 1914 to 1945.pdf");
+        }
 
         [TestMethod]
         public void TestFastPlate()

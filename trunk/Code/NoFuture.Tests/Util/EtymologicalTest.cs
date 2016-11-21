@@ -45,30 +45,6 @@ namespace NoFuture.Tests.Util
         }
 
         [TestMethod]
-        public void TestToEnglishSentenceCsv()
-        {
-            var testInput = "red fish, blue fish, green fish";
-            var testOutput = Etc.ToEnglishSentenceCsv(testInput,',');
-            Assert.AreEqual("red fish, blue fish and green fish",testOutput);
-
-            testInput = "red fish-blue fish";
-            testOutput = Etc.ToEnglishSentenceCsv(testInput, '-');
-            Assert.AreEqual("red fish and blue fish",testOutput);
-
-            testInput = "red fish-";
-            testOutput = Etc.ToEnglishSentenceCsv(testInput, '-');
-            Assert.AreEqual("red fish",testOutput);
-
-            testInput = "red fish -- --";
-            testOutput = Etc.ToEnglishSentenceCsv(testInput, '-');
-            Assert.AreEqual("red fish",testOutput);
-
-            testInput = "red fish-blue fish - - --";
-            testOutput = Etc.ToEnglishSentenceCsv(testInput, '-');
-            Assert.AreEqual("red fish and blue fish", testOutput);
-        }
-
-        [TestMethod]
         public void TestNomenclatureToponyms()
         {
             var testSubject = new NoFuture.Util.Etymological.Biz.Toponyms();
