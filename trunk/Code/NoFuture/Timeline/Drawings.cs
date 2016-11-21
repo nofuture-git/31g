@@ -16,8 +16,8 @@ namespace NoFuture.Timeline
 
     public interface IRuleEntry
     {
-        int StartValue { get; set; }
-        int EndValue { get; set; }
+        double StartValue { get; set; }
+        double EndValue { get; set; }
         int Width { get; set; }
         string Id { get; }
     }//end IRuleEntry
@@ -78,8 +78,8 @@ namespace NoFuture.Timeline
         public List<TextItem> Items { get; set; }
         public int MinIndex { get; set; }
         public int MaxIndex { get; set; }
-        public int StartValue { get; set; }
-        public int EndValue { get; set; }
+        public double StartValue { get; set; }
+        public double EndValue { get; set; }
         public int Width { get; set; }
         public string Id { get; set; }
         #endregion
@@ -637,21 +637,19 @@ namespace NoFuture.Timeline
             }
             set { _countIncrement = value; }
         }
-        public virtual int Length
-        {
-            get { return GetIndexRule().Count; }
-        }
+        public virtual int Length => GetIndexRule().Count;
         #endregion
 
         #region IRuleEntry methods
-        public virtual int StartValue { get; set; }
-        public virtual int EndValue { get; set; }
+        public virtual double StartValue { get; set; }
+        public virtual double EndValue { get; set; }
         public virtual int Width
         {
             get { return _width; }
             set { _width = value; }
         }
-        public virtual string Id { get { return _id; } }
+        public virtual string Id => _id;
+
         #endregion
 
         #region Object overrides
@@ -693,7 +691,7 @@ namespace NoFuture.Timeline
             var item1 = -1;
             var item2 = -1;
 
-            Func<double, int, double> rtOp = (d, i) => Math.Abs(d - i);
+            Func<double, double, double> rtOp = (d, i) => Math.Abs(d - i);
             var startDif = rtOp(ruleIndex[0], entry.StartValue);
             var endDif = rtOp(ruleIndex[0], entry.EndValue);
 
@@ -764,11 +762,11 @@ namespace NoFuture.Timeline
         /// <remarks>
         /// BCE values do NOT have the century removed
         /// </remarks>
-        public virtual string PrintYearsRange(IEnumerable<Tuple<int?, int?>> years)
+        public virtual string PrintYearsRange(IEnumerable<Tuple<double?, double?>> years)
         {
-            Func<Tuple<int?, int?>, string> yearFmt = tuple => string.Format("{0}-{1}", tuple.Item1, tuple.Item2);
+            Func<Tuple<double?, double?>, string> yearFmt = tuple => string.Format("{0}-{1}", tuple.Item1, tuple.Item2);
 
-            Func<int?, int, int?> remCentury;
+            Func<double?, double, double?> remCentury;
             //CE
             if (StartValue < EndValue)
             {
@@ -779,13 +777,13 @@ namespace NoFuture.Timeline
                 remCentury = (y, c) => y;
             }
 
-            years = years ?? new List<Tuple<int?, int?>>();
+            years = years ?? new List<Tuple<double?, double?>>();
 
             //for tuple item 1 in the same century as item 2, we only want last two digits
             var yyyy = years.ToList();
 
-            var pCentury = 0;
-            var yy = new List<Tuple<int?, int?>>();
+            var pCentury = 0D;
+            var yy = new List<Tuple<double?, double?>>();
             for (var i = 0; i < yyyy.Count; i++)
             {
                 var ccyy = yyyy[i].Item1;
@@ -794,7 +792,7 @@ namespace NoFuture.Timeline
                 var yyyy1 = yyyy[i].Item1 == null ? null : remCentury(yyyy[i].Item1, century);
                 var yyyy2 = yyyy[i].Item2 == null ? null : remCentury(yyyy[i].Item2, century);
 
-                yy.Add(new Tuple<int?, int?>(i == 0 || pCentury != century ? yyyy[i].Item1 : yyyy1  , yyyy2));
+                yy.Add(new Tuple<double?, double?>(i == 0 || pCentury != century ? yyyy[i].Item1 : yyyy1  , yyyy2));
 
                 pCentury = century;
             }
@@ -807,11 +805,11 @@ namespace NoFuture.Timeline
         /// </summary>
         /// <param name="printyears"></param>
         /// <returns></returns>
-        public virtual IEnumerable<Tuple<int?, int?>> ParseYearsRange(string printyears)
+        public virtual IEnumerable<Tuple<double?, double?>> ParseYearsRange(string printyears)
         {
             if (string.IsNullOrWhiteSpace(printyears) ||
                 !System.Text.RegularExpressions.Regex.IsMatch(printyears, "[0-9\x5C\x2d]+?"))
-                return new List<Tuple<int?, int?>>();
+                return new List<Tuple<double?, double?>>();
 
             var century = StartValue - StartValue % 100;
 
@@ -819,9 +817,9 @@ namespace NoFuture.Timeline
             var upperBound = StartValue < EndValue ? EndValue : StartValue;
 
             //century is removed from most of the string values for CE years
-            Func<int, bool> inBounds = v => (lowerBound <= v) && (v <= upperBound);
+            Func<double, bool> inBounds = v => (lowerBound <= v) && (v <= upperBound);
 
-            var aYears = new List<Tuple<int?, int?>>();
+            var aYears = new List<Tuple<double?, double?>>();
             //now to transform back to tuples
             foreach (var t in printyears.Split('\\'))//slash separates a tuple, 
             {
@@ -829,25 +827,25 @@ namespace NoFuture.Timeline
                 var tt =
                     t.Split('-')//dash is each item therein
                         .Union(u.Select(y => y)).ToArray();
-                int y1;
-                int y2;
-                int? yy1 = null;
-                int? yy2 = null;
-                if (int.TryParse(tt[0], out y1))
+                double y1;
+                double y2;
+                double? yy1 = null;
+                double? yy2 = null;
+                if (double.TryParse(tt[0], out y1))
                 {
                     if (!inBounds(y1))
                         y1 += century;
                     yy1 = y1;
                     century = y1 - y1%100;
                 }
-                if (int.TryParse(tt[1], out y2))
+                if (double.TryParse(tt[1], out y2))
                 {
                     if (!inBounds(y2))
                         y2 += century;
                     yy2 = y2;
                 }
 
-                aYears.Add(new Tuple<int?, int?>(yy1, yy2));
+                aYears.Add(new Tuple<double?, double?>(yy1, yy2));
             }
             return aYears;
         }//end ParseYearsRange
@@ -862,9 +860,9 @@ namespace NoFuture.Timeline
         protected internal List<Block> _innerBlocks;
         protected internal List<Arrow> _arrows;
         protected internal int _width;
-        protected internal int _startValue;
+        protected internal double _startValue;
         protected internal bool _startValueExplicitlySet;
-        protected internal int _endValue;
+        protected internal double _endValue;
         protected internal bool _endValueExplicitlySet;
         protected internal Rule _myRuler;
         #endregion
@@ -902,7 +900,7 @@ namespace NoFuture.Timeline
         #endregion
 
         #region IRuleEntry methods
-        public virtual int StartValue {
+        public virtual double StartValue {
             get
             {
                 if (!_startValueExplicitlySet && Ruler != null)
@@ -917,7 +915,7 @@ namespace NoFuture.Timeline
                 _startValue = value;
             } 
         }
-        public virtual int EndValue {
+        public virtual double EndValue {
             get
             {
                 if (!_endValueExplicitlySet && Ruler != null)
@@ -941,7 +939,8 @@ namespace NoFuture.Timeline
                 _entries.ForEach(e => e.Width = _width);
             }
         }
-        public virtual string Id { get { return Title; } }
+        public virtual string Id => Title;
+
         #endregion
 
         #region Object overrides
@@ -979,19 +978,19 @@ namespace NoFuture.Timeline
                 Width = reqW;
 
         }
-        public virtual void AddEntry(int startValue, string text)
+        public virtual void AddEntry(double startValue, string text)
         {
             AddEntry(new Entry { StartValue = startValue, Text = text });
         }
-        public virtual void AddEntry(int startValue, string text, PrintLocation location)
+        public virtual void AddEntry(double startValue, string text, PrintLocation location)
         {
             AddEntry(new Entry {StartValue = startValue,Text = text, Location = location});
         }
-        public virtual void AddEntry(int startValue, int endValue, string text)
+        public virtual void AddEntry(double startValue, double endValue, string text)
         {
             AddEntry(new Entry { StartValue = startValue, EndValue = endValue, Text = text });
         }
-        public virtual void AddEntry(int startValue, int endValue, string text, PrintLocation location)
+        public virtual void AddEntry(double startValue, double endValue, string text, PrintLocation location)
         {
             AddEntry(new Entry { StartValue = startValue, EndValue = endValue, Text = text, Location = location });
         }//end AddEntry
@@ -1099,7 +1098,7 @@ namespace NoFuture.Timeline
             var maxWidthReq = Width;
 
             //get a distinct list of entries start values
-            var distinctStartVals = new List<int>();
+            var distinctStartVals = new List<double>();
             foreach (var entry in _entries.Where(entry => !distinctStartVals.Contains(entry.StartValue)))
                 distinctStartVals.Add(entry.StartValue);
 
@@ -1128,7 +1127,7 @@ namespace NoFuture.Timeline
         #region fields
         protected internal int _height;
         protected internal int _width;
-        protected internal int _endValue;
+        protected internal double _endValue;
         protected internal bool _endValueSetExplicitly;
         private readonly string _id;
         #endregion
@@ -1209,8 +1208,8 @@ namespace NoFuture.Timeline
         #endregion
 
         #region IRuleEntry methods
-        public virtual int StartValue { get; set; }
-        public virtual int EndValue 
+        public virtual double StartValue { get; set; }
+        public virtual double EndValue 
         {
             get
             {
@@ -1284,12 +1283,12 @@ namespace NoFuture.Timeline
                 var tValue = value;
                 string tName;
                 string tYear;
-                int iYear;
+                double iYear;
                 if (RegexCatalog.IsRegexMatch(tValue, REGEX_PATTERN, out tName, 1))
                 {
                     _name = tName;
                 }
-                if (RegexCatalog.IsRegexMatch(tValue, REGEX_PATTERN, out tYear, 2) && int.TryParse(tYear, out iYear))
+                if (RegexCatalog.IsRegexMatch(tValue, REGEX_PATTERN, out tYear, 2) && double.TryParse(tYear, out iYear))
                 {
                     StartValue = iYear;
                 }
@@ -1303,20 +1302,20 @@ namespace NoFuture.Timeline
         private const string REGEX_PATTERN = @"\[([a-zA-Z\.\x20\x5B\x5D]+?)\x20([0-9\x5C\x2d]+?)]";
 
         private string _name;
-        private IEnumerable<Tuple<int?, int?>> _years;
+        private IEnumerable<Tuple<double?, double?>> _years;
         public LeaderEntry(string name, int?[,] years)
         {
-            var yy = new List<Tuple<int?, int?>>();
+            var yy = new List<Tuple<double?, double?>>();
             for (var i = 0; i < years.GetLongLength(0); i++)
             {
-                yy.Add(new Tuple<int?, int?>(years[i,0], years[i,1]));
+                yy.Add(new Tuple<double?, double?>(years[i,0], years[i,1]));
             }
             _name = name;
             _years = yy;
         }
 
         public string Name => _name;
-        public IEnumerable<Tuple<int?, int?>> Years => _years;
+        public IEnumerable<Tuple<double?, double?>> Years => _years;
 
         public override string Text
         {
@@ -1367,7 +1366,7 @@ namespace NoFuture.Timeline
             {
                 var tValue = value;
                 string s1;
-                int y1;
+                double y1;
                 if (RegexCatalog.IsRegexMatch(tValue, REGEX_PATTERN, out s1, 1))
                 {
                     _discoveredBy = s1;
@@ -1376,7 +1375,7 @@ namespace NoFuture.Timeline
                 {
                     _name = s1;
                 }
-                if (RegexCatalog.IsRegexMatch(tValue, REGEX_PATTERN, out s1, 3) && int.TryParse(s1, out y1))
+                if (RegexCatalog.IsRegexMatch(tValue, REGEX_PATTERN, out s1, 3) && double.TryParse(s1, out y1))
                 {
                     StartValue = y1;
                 }
@@ -1411,7 +1410,7 @@ namespace NoFuture.Timeline
             {
                 var tValue = value;
                 string s1;
-                int y1;
+                double y1;
                 if (RegexCatalog.IsRegexMatch(tValue, REGEX_PATTERN, out s1, 1))
                 {
                     _title = s1;
@@ -1420,7 +1419,7 @@ namespace NoFuture.Timeline
                 {
                     _author = s1;
                 }
-                if (RegexCatalog.IsRegexMatch(tValue, REGEX_PATTERN, out s1, 3) && int.TryParse(s1, out y1))
+                if (RegexCatalog.IsRegexMatch(tValue, REGEX_PATTERN, out s1, 3) && double.TryParse(s1, out y1))
                 {
                     StartValue = y1;
                 }
@@ -1446,7 +1445,7 @@ namespace NoFuture.Timeline
             {
                 var tValue = value;
                 string s1;
-                int y1;
+                double y1;
                 if (RegexCatalog.IsRegexMatch(tValue, REGEX_PATTERN, out s1, 1))
                 {
                     ExplorerName = s1;
@@ -1455,7 +1454,7 @@ namespace NoFuture.Timeline
                 {
                     Area = s1;
                 }
-                if (RegexCatalog.IsRegexMatch(tValue, REGEX_PATTERN, out s1, 3) && int.TryParse(s1, out y1))
+                if (RegexCatalog.IsRegexMatch(tValue, REGEX_PATTERN, out s1, 3) && double.TryParse(s1, out y1))
                 {
                     StartValue = y1;
                 }
@@ -1501,7 +1500,7 @@ namespace NoFuture.Timeline
         #region fields
         protected Block _fromBlock;
         protected Block _toBlock;
-        protected int _singleValue;
+        protected double _singleValue;
         private readonly string _id;
         private string _fromLeftToRightArrowHead = Config.GraphStrings.ArrowHeadLeft;
         private string _arrowTail = Config.GraphStrings.ArrowTailShaft;
@@ -1560,12 +1559,12 @@ namespace NoFuture.Timeline
         #endregion
 
         #region IRuleEntry methods
-        public virtual int StartValue
+        public virtual double StartValue
         {
             get { return _singleValue; }
             set { _singleValue = value; }
         }
-        public virtual int EndValue
+        public virtual double EndValue
         {
             get { return _singleValue; }
             set { _singleValue = value; }

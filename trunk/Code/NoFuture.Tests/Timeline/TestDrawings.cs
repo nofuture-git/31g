@@ -1093,41 +1093,41 @@ namespace NoFuture.Tests.Timeline
 
             var testSubject = new Rule {StartValue = 700, EndValue = 850};
             var testResult =
-                testSubject.PrintYearsRange(new List<Tuple<int?, int?>>()
+                testSubject.PrintYearsRange(new List<Tuple<double?, double?>>()
                 {
-                    new Tuple<int?, int?>(789, 797),
-                    new Tuple<int?, int?>(804, 816)
+                    new Tuple<double?, double?>(789, 797),
+                    new Tuple<double?, double?>(804, 816)
                 });
             Assert.AreEqual(@"789-97\804-16", testResult);
 
             testSubject = new Rule { StartValue = 1788, EndValue = 1865 };
             testResult =
-                testSubject.PrintYearsRange(new List<Tuple<int?, int?>>()
+                testSubject.PrintYearsRange(new List<Tuple<double?, double?>>()
                 {
-                    new Tuple<int?, int?>(1797, 1803)
+                    new Tuple<double?, double?>(1797, 1803)
                 });
             Assert.AreEqual("1797-1803", testResult);
 
             testSubject = new Rule { StartValue = 788, EndValue = 500 };
             testResult =
-                testSubject.PrintYearsRange(new List<Tuple<int?, int?>>()
+                testSubject.PrintYearsRange(new List<Tuple<double?, double?>>()
                 {
-                    new Tuple<int?, int?>(640, 609)
+                    new Tuple<double?, double?>(640, 609)
                 });
             Assert.AreEqual("640-609", testResult);
 
             testSubject = new Rule { StartValue = 1488, EndValue = 1605 };
             testResult =
-                testSubject.PrintYearsRange(new List<Tuple<int?, int?>>()
+                testSubject.PrintYearsRange(new List<Tuple<double?, double?>>()
                 {
-                    new Tuple<int?, int?>(1588, null)
+                    new Tuple<double?, double?>(1588, null)
                 });
             Assert.AreEqual("1588-", testResult);
 
             testResult =
-                testSubject.PrintYearsRange(new List<Tuple<int?, int?>>()
+                testSubject.PrintYearsRange(new List<Tuple<double?, double?>>()
                 {
-                    new Tuple<int?, int?>(null, 1588)
+                    new Tuple<double?, double?>(null, 1588)
                 });
             Assert.AreEqual("-1588", testResult);
             
