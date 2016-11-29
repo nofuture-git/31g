@@ -29,7 +29,6 @@ namespace NoFuture.Util.Gia
 
         #region fields
         private readonly AsmIndicies _asmIndices;
-        private readonly InvokeGetAsmIndicies _getAsmIndicesCmd;
         private readonly InvokeGetTokenIds _getTokenIdsCmd;
         private readonly InvokeGetTokenNames _getTokenNamesCmd;
         private readonly InvokeGetTokenPageRank _getTokenPageRankCmd;
@@ -132,10 +131,10 @@ namespace NoFuture.Util.Gia
         /// </example>
         public AssemblyAnalysis(string assemblyPath, bool resolveGacAsmNames, params int[] ports)
         {
-            if (String.IsNullOrWhiteSpace(assemblyPath) || !File.Exists(assemblyPath))
+            if (string.IsNullOrWhiteSpace(assemblyPath) || !File.Exists(assemblyPath))
                 throw new ItsDeadJim("This isn't a valid assembly path");
 
-            if (String.IsNullOrWhiteSpace(CustomTools.InvokeAssemblyAnalysis) || !File.Exists(CustomTools.InvokeAssemblyAnalysis))
+            if (string.IsNullOrWhiteSpace(CustomTools.InvokeAssemblyAnalysis) || !File.Exists(CustomTools.InvokeAssemblyAnalysis))
                 throw new ItsDeadJim("Don't know where to locate the NoFuture.Util.Gia.InvokeAssemblyAnalysis, assign " +
                                      "the global variable at NoFuture.CustomTools.InvokeAssemblyAnalysis.");
 
@@ -145,7 +144,7 @@ namespace NoFuture.Util.Gia
             {
                 usePorts[i] = ports != null && ports.Length >= i + 1 ? ports[i] : np + i;
             }
-            var args = String.Join(" ",
+            var args = string.Join(" ",
                 ConsoleCmd.ConstructCmdLineArgs(GET_ASM_INDICES_PORT_CMD_SWITCH,
                     usePorts[0].ToString(CultureInfo.InvariantCulture)),
                 ConsoleCmd.ConstructCmdLineArgs(GET_TOKEN_IDS_PORT_CMD_SWITCH,
@@ -158,13 +157,13 @@ namespace NoFuture.Util.Gia
 
             MyProcess = StartRemoteProcess(CustomTools.InvokeAssemblyAnalysis, args);
 
-            _getAsmIndicesCmd = new InvokeGetAsmIndicies()
+            var getAsmIndicesCmd = new InvokeGetAsmIndicies()
             {
                 ProcessId = MyProcess.Id,
                 SocketPort = usePorts[0]
             };
 
-            _asmIndices = _getAsmIndicesCmd.Receive(assemblyPath);
+            _asmIndices = getAsmIndicesCmd.Receive(assemblyPath);
 
             _getTokenIdsCmd = new InvokeGetTokenIds(_asmIndices)
             {
@@ -269,10 +268,10 @@ namespace NoFuture.Util.Gia
                     return null;
 
                 asmName = type.Assembly.GetName().Name;
-                expandedName = !String.IsNullOrEmpty(asmName)
-                    ? type.FullName.Replace(String.Format("{0}", asmName), String.Empty)
+                expandedName = !string.IsNullOrEmpty(asmName)
+                    ? type.FullName.Replace($"{asmName}", string.Empty)
                     : type.FullName;
-                if (!String.Equals(expandedName, tokenName.Name, StringComparison.OrdinalIgnoreCase))
+                if (!string.Equals(expandedName, tokenName.Name, StringComparison.OrdinalIgnoreCase))
                     tokenName.Name = expandedName;
 
                 tokenName.OwnAsmIdx = t.IndexId;
@@ -288,17 +287,17 @@ namespace NoFuture.Util.Gia
             var f =
                 localIndicies.Asms.FirstOrDefault(
                     x =>
-                        String.Equals(x.AssemblyName, mi.DeclaringType.Assembly.GetName().FullName,
+                        string.Equals(x.AssemblyName, mi.DeclaringType.Assembly.GetName().FullName,
                             StringComparison.OrdinalIgnoreCase));
             if (f == null)
                 return null;
 
             asmName = mi.DeclaringType.Assembly.GetName().Name;
-            expandedName = !String.IsNullOrEmpty(asmName)
-                ? mi.DeclaringType.FullName.Replace($"{asmName}", String.Empty)
+            expandedName = !string.IsNullOrEmpty(asmName)
+                ? mi.DeclaringType.FullName.Replace($"{asmName}", string.Empty)
                 : mi.DeclaringType.FullName;
-            if (!String.Equals(expandedName, tokenName.Name, StringComparison.OrdinalIgnoreCase))
-                tokenName.Name = String.Format("{0}{1}{2}", expandedName, Constants.TYPE_METHOD_NAME_SPLIT_ON, tokenName.Name);
+            if (!string.Equals(expandedName, tokenName.Name, StringComparison.OrdinalIgnoreCase))
+                tokenName.Name = $"{expandedName}{Constants.TYPE_METHOD_NAME_SPLIT_ON}{tokenName.Name}";
 
             tokenName.OwnAsmIdx = f.IndexId;
 
@@ -336,7 +335,7 @@ namespace NoFuture.Util.Gia
                 paramNames.Add(workingName);
             }
 
-            tokenName.Name = $"{tokenName.Name}({String.Join(",", paramNames)})";
+            tokenName.Name = $"{tokenName.Name}({string.Join(",", paramNames)})";
 
             return tokenName;
         }
@@ -362,10 +361,9 @@ namespace NoFuture.Util.Gia
             var argNames = tokenName.Substring(tokenName.IndexOf('('));
             argNames = argNames.Replace(")", string.Empty);
 
-            if (argNames.Length <= 0)
-                return null;
-
-            return argNames.Split(',').Where(x => !String.IsNullOrWhiteSpace(x)).ToArray();
+            return argNames.Length <= 0 
+                ? null 
+                : argNames.Split(',').Where(x => !string.IsNullOrWhiteSpace(x)).ToArray();
         }
 
         /// <summary>
@@ -376,7 +374,7 @@ namespace NoFuture.Util.Gia
         /// <returns></returns>
         public static string ParseTypeNameFromTokenName(string tokenName, string owningAsmName)
         {
-            if (String.IsNullOrWhiteSpace(tokenName))
+            if (string.IsNullOrWhiteSpace(tokenName))
                 return null;
 
             var sep = Constants.DEFAULT_TYPE_SEPARATOR.ToString(CultureInfo.InvariantCulture);
@@ -387,8 +385,8 @@ namespace NoFuture.Util.Gia
                 tokenName = $"{owningAsmName}{tokenName}";
             }
 
-            var ns = Util.NfTypeName.GetNamespaceWithoutTypeName(tokenName);
-            var tn = Util.NfTypeName.GetTypeNameWithoutNamespace(tokenName);
+            var ns = NfTypeName.GetNamespaceWithoutTypeName(tokenName);
+            var tn = NfTypeName.GetTypeNameWithoutNamespace(tokenName);
 
             return $"{ns}{sep}{tn}";
         }
@@ -424,116 +422,6 @@ namespace NoFuture.Util.Gia
         #region static analysis
 
         /// <summary>
-        /// For the given assembly, gets the named being made from itself to itself.
-        /// </summary>
-        /// <param name="asmIdx"></param>
-        /// <param name="tokenMap"></param>
-        /// <param name="tokenNames"></param>
-        /// <returns></returns>
-        public static MetadataTokenName[] InternallyCalled(AsmIndicies asmIdx, TokenIds tokenMap, TokenNames tokenNames)
-        {
-            if(tokenNames == null || tokenNames.Names == null || tokenNames.Names.Length <= 0)
-                return new List<MetadataTokenName>().ToArray();
-            if (tokenMap == null || tokenMap.Tokens == null || tokenMap.Tokens.Length <= 0)
-                return new List<MetadataTokenName>().ToArray();
-            var typeTokens = tokenMap.Tokens;
-
-            if (typeTokens.All(x => x.Items == null || x.Items.Length <= 0))
-                return new List<MetadataTokenName>().ToArray();
-            
-
-            var memberTokens = typeTokens.SelectMany(x => x.Items).ToList();
-
-            //these are all the token Ids one could call on this assembly
-            var memberTokenIds = memberTokens.Select(x => x.Id).ToList();
-
-            //get all the tokenIds, defined in this assembly and being called from this assembly
-            var callsInMembers =
-                memberTokens.SelectMany(x => x.Items)
-                    .Select(x => x.Id)
-                    .Where(x => memberTokenIds.Any(y => x == y))
-                    .ToList();
-
-
-            tokenNames.ApplyFullName(asmIdx);
-
-            return tokenNames.Names.Where(x => callsInMembers.Any(y => y == x.Id)).ToArray();
-        }
-
-        /// <summary>
-        /// Set operation for comparision of two <see cref="TokenNames"/> with
-        /// thier respective <see cref="AsmIndicies"/>
-        /// </summary>
-        /// <param name="leftList"></param>
-        /// <param name="rightList"></param>
-        /// <param name="rightListTopLvlOnly">
-        /// Set to true to have <see cref="rightListTopLvlOnly"/> 
-        /// only those in <see cref="rightList"/> whose <see cref="MetadataTokenName.OwnAsmIdx"/> is '0'.
-        /// </param>
-        /// <returns></returns>
-        public static MetadataTokenName[] RightSetDiff(Tuple<AsmIndicies, TokenNames> leftList,
-            Tuple<AsmIndicies, TokenNames> rightList, bool rightListTopLvlOnly = false)
-        {
-            Func<MetadataTokenName, int> hashCode = x => x.GetNameHashCode();
-
-            if (leftList == null || rightList == null)
-                return new List<MetadataTokenName>().ToArray();
-            if (rightList.Item2 == null || rightList.Item2.Names == null || rightList.Item2.Names.Length <= 0)
-                return new List<MetadataTokenName>().ToArray();
-            if (leftList.Item2 == null || leftList.Item2.Names == null || leftList.Item2.Names.Length <= 0)
-                return rightList.Item2.Names;
-
-            //expand to full names
-            leftList.Item2.ApplyFullName(leftList.Item1);
-            rightList.Item2.ApplyFullName(rightList.Item1);
-
-            var setOp = rightList.Item2.Names.Select(hashCode).Except(leftList.Item2.Names.Select(hashCode));
-
-            var listOut = new List<MetadataTokenName>();
-            foreach (var j in setOp)
-            {
-                var k = rightList.Item2.Names.FirstOrDefault(x => hashCode(x) == j);
-                if (k == null || (rightListTopLvlOnly && k.OwnAsmIdx != 0) || !k.IsMethodName())
-                    continue;
-                listOut.Add(k);
-            }
-            
-            return listOut.ToArray();
-        }
-
-        /// <summary>
-        /// Set operation for the joining of two <see cref="TokenNames"/> with
-        /// thier respective <see cref="AsmIndicies"/>
-        /// </summary>
-        /// <param name="leftList"></param>
-        /// <param name="rightList"></param>
-        /// <returns></returns>
-        public static MetadataTokenName[] Union(Tuple<AsmIndicies, TokenNames> leftList,
-            Tuple<AsmIndicies, TokenNames> rightList)
-        {
-            Func<MetadataTokenName, int> hashCode = x => x.GetNameHashCode();
-
-            if (leftList == null || rightList == null)
-                return new List<MetadataTokenName>().ToArray();
-            if (rightList.Item2 == null)
-                return leftList.Item2.Names;
-            if (leftList.Item2 == null)
-                return rightList.Item2.Names;
-
-            //expand to full names
-            leftList.Item2.ApplyFullName(leftList.Item1);
-            rightList.Item2.ApplyFullName(rightList.Item1);
-
-            var d = rightList.Item2.Names.Distinct(new MetadataTokenNameComparer()).ToDictionary(hashCode);
-            var e = leftList.Item2.Names.Distinct(new MetadataTokenNameComparer()).ToDictionary(hashCode);
-
-            foreach(var key in e.Keys.Where(k => !d.ContainsKey(k)))
-                d.Add(key, e[key]);
-
-            return d.Values.Where(x => x.IsMethodName()).ToArray();
-        }
-
-        /// <summary>
         /// Get the <see cref="System.Reflection.MetadataToken"/> for the <see cref="asmType"/>
         /// and for all its members.
         /// </summary>
@@ -545,9 +433,16 @@ namespace NoFuture.Util.Gia
             if (asmType == null)
                 return new MetadataTokenId { Items = new MetadataTokenId[0] };
 
-            var token = new MetadataTokenId { Id = asmType.MetadataToken, RslvAsmIdx = asmIdx};
-            token.Items =
-                asmType.GetMembers(NfConfig.DefaultFlags).Select(x => GetMetadataToken(x, true, asmIdx)).Distinct().ToArray();
+            var token = new MetadataTokenId
+            {
+                Id = asmType.MetadataToken,
+                RslvAsmIdx = asmIdx,
+                Items =
+                    asmType.GetMembers(NfConfig.DefaultFlags)
+                        .Select(x => GetMetadataToken(x, true, asmIdx))
+                        .Distinct()
+                        .ToArray()
+            };
             return token;
         }
 
@@ -564,7 +459,10 @@ namespace NoFuture.Util.Gia
         {
             if (mi == null)
                 return new MetadataTokenId();
-            var token = new MetadataTokenId { Id = mi.MetadataToken, RslvAsmIdx = asmIdx, Items = new MetadataTokenId[0] };
+            var token = new MetadataTokenId
+            {
+                Id = mi.MetadataToken, RslvAsmIdx = asmIdx, Items = new MetadataTokenId[0]
+            };
             var mti = mi as MethodBase;
             if (mti == null)
                 return token;

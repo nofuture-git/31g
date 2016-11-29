@@ -11,6 +11,8 @@ namespace NoFuture.Util.Gia.InvokeCmds
     {
         private readonly AsmIndicies _asmIndices;
 
+        public InvokeGetTokenIds() { }
+
         public InvokeGetTokenIds(AsmIndicies asmIndicies)
         {
             _asmIndices = asmIndicies;

@@ -10,9 +10,8 @@ namespace NoFuture.Sql.Mssql
     public class Etc
     {
         #region private static fields
-        private static Dictionary<string, string[]> _sqlServers = new Dictionary<string, string[]>();
-        private static List<string> _sqlFilterList = new List<string>();
-        private static List<string> _warnUserIfServerIn = new List<string>();
+        private static readonly Dictionary<string, string[]> _sqlServers = new Dictionary<string, string[]>();
+
         #endregion
 
         /// <summary>
@@ -25,15 +24,15 @@ namespace NoFuture.Sql.Mssql
         public static string MakeSqlCmd(string expression, string server, string dbName)
         {
             if (string.IsNullOrEmpty(expression))
-                throw new ArgumentNullException("expression");
+                throw new ArgumentNullException(nameof(expression));
             if (string.IsNullOrWhiteSpace(server))
-                throw new ArgumentNullException("server");
+                throw new ArgumentNullException(nameof(server));
             if (string.IsNullOrWhiteSpace(dbName))
-                throw new ArgumentNullException("dbName");
+                throw new ArgumentNullException(nameof(dbName));
 
             var sqlParams = new StringBuilder();
             sqlParams.Append("-S ");
-            sqlParams.Append(server);
+            sqlParams.Append("\""+  server + "\"");
             sqlParams.Append(" -d ");
             sqlParams.Append(dbName);
             if (Switches.SqlCmdHeadersOff)
@@ -75,14 +74,14 @@ namespace NoFuture.Sql.Mssql
         public static string MakeInputFilesSqlCmd(string path, string server, string dbName)
         {
             if(string.IsNullOrEmpty(path))
-                throw new ArgumentNullException("path");
+                throw new ArgumentNullException(nameof(path));
             if(string.IsNullOrWhiteSpace(server))
-                throw new ArgumentNullException("server");
+                throw new ArgumentNullException(nameof(server));
             if(string.IsNullOrWhiteSpace(dbName))
-                throw new ArgumentNullException("dbName");
+                throw new ArgumentNullException(nameof(dbName));
 
             if(!File.Exists(path))
-                throw new IOException(string.Format("Bad path or file name at '{0}'",path));
+                throw new IOException($"Bad path or file name at '{path}'");
 
             var sqlCmd = new StringBuilder();
             sqlCmd.Append("sqlcmd.exe");
@@ -98,13 +97,13 @@ namespace NoFuture.Sql.Mssql
                 var fileNames =
                     files.EnumerateFiles("*.sql")
                         .Select(sqlFile => sqlFile.FullName)
-                        .Select(sqlFileName => sqlFileName.Contains(" ") ? string.Format("\"{0}\"", sqlFileName) : path)
+                        .Select(sqlFileName => sqlFileName.Contains(" ") ? $"\"{sqlFileName}\"" : path)
                         .ToList();
                 sqlCmd.Append(string.Join(",", fileNames));
             }
             else
             {
-                var escPath = path.Contains(" ") ? string.Format("\"{0}\"", path) : path;
+                var escPath = path.Contains(" ") ? $"\"{path}\"" : path;
                 sqlCmd.Append(escPath);
             }
 
@@ -178,8 +177,7 @@ namespace NoFuture.Sql.Mssql
             var sqlMatrixConsolePrint = new StringBuilder();
             sqlMatrixConsolePrint.AppendLine("***************");
             sqlMatrixConsolePrint.AppendLine(
-                string.Format("Current setttings:: -Server '{0}' -Database '{1}' -Header Off '{2}' -Filter Off '{3}'",
-                    NfConfig.SqlServer, NfConfig.SqlCatalog, Switches.SqlCmdHeadersOff, Switches.SqlFiltersOff));
+                $"Current setttings:: -Server '{NfConfig.SqlServer}' -Database '{NfConfig.SqlCatalog}' -Header Off '{Switches.SqlCmdHeadersOff}' -Filter Off '{Switches.SqlFiltersOff}'");
             sqlMatrixConsolePrint.AppendLine("***************");
             foreach (var sb in sqlMatrixPrint)
                 sqlMatrixConsolePrint.AppendLine(sb.ToString());
@@ -220,14 +218,14 @@ namespace NoFuture.Sql.Mssql
         /// <summary>
         /// A list of names which should be excluded from the query used with <see cref="Mssql.Qry.Catalog.SelectProcedureString"/>
         /// </summary>
-        public static List<string> SqlFilterList { get { return _sqlFilterList; } }
+        public static List<string> SqlFilterList { get; } = new List<string>();
 
         /// <summary>
         /// An optional list whose contents are compared to the value at <see cref="NfConfig.SqlServer"/>
         /// Intended for use within PowerShell to force the user to choose to continue when
         /// doing some kind of high risk activity.
         /// </summary>
-        public static List<string> WarnUserIfServerIn { get { return _warnUserIfServerIn; } }
+        public static List<string> WarnUserIfServerIn { get; } = new List<string>();
 
         /// <summary>
         /// Filter applied in sql cmd-lets
@@ -241,11 +239,10 @@ namespace NoFuture.Sql.Mssql
 
             Switches.SqlFiltersOff = false;
             var tblFilter = SqlFilterList.Where(x => !string.IsNullOrWhiteSpace(x))
-                .Aggregate("", (current, lo) => current + (string.Format("'{0}',", lo)));
+                .Aggregate("", (current, lo) => current + $"'{lo}',");
             tblFilter +=
                 "'sysobjects','sysindexes','syscolumns','systypes','syscomments','sysusers','sysdepends','sysreferences','sysconstraints','syssegments'";
-            expression = string.Format("{0}{1}", expression,
-                string.Format(Qry.Catalog.FilterStatement, columnName, tblFilter));
+            expression = $"{expression}{string.Format(Qry.Catalog.FilterStatement, columnName, tblFilter)}";
             return expression;
 
         }

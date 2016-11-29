@@ -24,7 +24,8 @@ namespace NoFuture.Sql.Mssql
     /// </summary>
     public class ExportTo
     {
-        private static StringComparison oic = StringComparison.OrdinalIgnoreCase;
+        private const StringComparison Oic = StringComparison.OrdinalIgnoreCase;
+
         /// <summary>
         /// Composes  SQL syntax as an insert, update or merge (based on the <see cref="stmtType"/>) statement given the various inputs.
         /// </summary>
@@ -74,7 +75,7 @@ namespace NoFuture.Sql.Mssql
                     if (string.IsNullOrWhiteSpace(key))
                         continue;
 
-                    if (metaData.AutoNumKeys.Any(x => string.Equals(x, key, oic)) || metaData.IsComputedKeys.Any(x => string.Equals(x, key, oic)))
+                    if (metaData.AutoNumKeys.Any(x => string.Equals(x, key, Oic)) || metaData.IsComputedKeys.Any(x => string.Equals(x, key, Oic)))
                         continue;
 
                     //#eval out all 'DBNull.Value'
@@ -89,10 +90,10 @@ namespace NoFuture.Sql.Mssql
                     {
                         formattedPair = FormatKeyValue(key, val, len + 2, counter++);
 
-                        var uws = string.Format("{0} = {1}", formattedPair.Item1, formattedPair.Item2);
+                        var uws = $"{formattedPair.Item1} = {formattedPair.Item2}";
 
                         //#set a where statement off the primary key if that primary key was present in the select stmt
-                        if (metaData.PkKeys.Keys.Any(x => string.Equals(x, key, oic)))
+                        if (metaData.PkKeys.Keys.Any(x => string.Equals(x, key, Oic)))
                             updateWhere.Add(uws);
                         else
                             setStmt.Add(uws);
@@ -103,8 +104,8 @@ namespace NoFuture.Sql.Mssql
                         formattedPair =  FormatKeyValue(key, val, len + 2, counter++, true);
 
                         //#set the insert values neatly printed into text columns
-                        insertStmt.Add(string.Format("{0}", formattedPair.Item1));
-                        insertVals.Add(string.Format("{0}", formattedPair.Item2));
+                        insertStmt.Add($"{formattedPair.Item1}");
+                        insertVals.Add($"{formattedPair.Item2}");
                     }
 
                     if (stmtType == ExportToStatementType.MERGE)
@@ -132,7 +133,7 @@ namespace NoFuture.Sql.Mssql
 
                 if (stmtType == ExportToStatementType.MERGE)
                 {
-                    mergeDataLine.Add(string.Format("({0})", string.Join(",\n             ", mergeVals)));
+                    mergeDataLine.Add($"({string.Join(",\n             ", mergeVals)})");
                 }
             }
 
@@ -153,20 +154,20 @@ namespace NoFuture.Sql.Mssql
                 if (string.IsNullOrWhiteSpace(key))
                     continue;
 
-                if (metaData.AutoNumKeys.Any(x => string.Equals(x, key, oic)) || metaData.IsComputedKeys.Any(x => string.Equals(x, key, oic)))
+                if (metaData.AutoNumKeys.Any(x => string.Equals(x, key, Oic)) || metaData.IsComputedKeys.Any(x => string.Equals(x, key, Oic)))
                     continue;
-                if (metaData.PkKeys.Keys.Any(x => string.Equals(x, key, oic)))
-                    matchOnColumn.Add(string.Format("[{0}]",key));
+                if (metaData.PkKeys.Keys.Any(x => string.Equals(x, key, Oic)))
+                    matchOnColumn.Add($"[{key}]");
                 else
-                    otherColumn.Add(string.Format("[{0}]", key));
+                    otherColumn.Add($"[{key}]");
             }
 
             var matchOnList = matchOnColumn.Select(matchOn => string.Format("target.{0} = source.{0}", matchOn)).ToList();
             var updateSetList = otherColumn.Select(ot => string.Format("{0} = source.{0}", ot)).ToList();
             var insertNameList = metaData.IsIdentityInsert ? otherColumn : colNames;
             var insertValList = metaData.IsIdentityInsert
-                ? otherColumn.Select(ot => string.Format("source.{0}", ot)).ToList()
-                : colNames.Select(cn => string.Format("source.{0}", cn)).ToList();
+                ? otherColumn.Select(ot => $"source.{ot}").ToList()
+                : colNames.Select(cn => $"source.{cn}").ToList();
 
             var mergeStatementBuilder = new StringBuilder();
             mergeStatementBuilder.AppendFormat("MERGE [{0}].[{1}] AS target\n", tableSchema, tableName);
@@ -203,8 +204,8 @@ namespace NoFuture.Sql.Mssql
                 value = Shared.Constants.SQL_SERVER_TRUE.ToString(CultureInfo.InvariantCulture);
             if (string.Equals(value, bool.FalseString, StringComparison.OrdinalIgnoreCase))
                 value = Shared.Constants.SQL_SERVER_FALSE.ToString(CultureInfo.InvariantCulture);
-            var val = withNameMarker ? string.Format("/*{0:000}-{1}*/ {2}", counter, key, value) : value;
-            key = string.Format("[{0}]", key);
+            var val = withNameMarker ? $"/*{counter:000}-{key}*/ {value}" : value;
+            key = $"[{key}]";
 
             return new Tuple<string, string>(key, val);
         }
@@ -350,17 +351,17 @@ namespace NoFuture.Sql.Mssql
             if (metaData == null)
                 return val;
 
-            if (metaData.AutoNumKeys.Any(x => string.Equals(x, key, oic)) || metaData.IsComputedKeys.Any(x => string.Equals(x, key, oic)))
+            if (metaData.AutoNumKeys.Any(x => string.Equals(x, key, Oic)) || metaData.IsComputedKeys.Any(x => string.Equals(x, key, Oic)))
                 return val;
-            if (!metaData.TickKeys.Any(x => string.Equals(x, key, oic)) || string.Equals(val, "NULL", oic))
+            if (!metaData.TickKeys.Any(x => string.Equals(x, key, Oic)) || string.Equals(val, "NULL", Oic))
                 return val;
 
             if (val.Contains("'"))
                 val = val.Replace("'", "''");
 
             return val.Length > maxLength && maxLength > 0
-                ? string.Format("'{0}'", val.Substring(0, maxLength))
-                : string.Format("'{0}'", val);
+                ? $"'{val.Substring(0, maxLength)}'"
+                : $"'{val}'";
         }
 
         /// <summary>
@@ -372,7 +373,7 @@ namespace NoFuture.Sql.Mssql
         /// <returns></returns>
         public static string TransformSelectStarToLiterals(string sqlStmt, List<Md.Common> metaData)
         {
-            const string marker = " * ";
+            const string MARKER = " * ";
             if (string.IsNullOrWhiteSpace(sqlStmt))
                 return null;
             if (metaData == null || metaData.Count <= 0)
@@ -380,7 +381,7 @@ namespace NoFuture.Sql.Mssql
 
             sqlStmt = sqlStmt.Trim();
 
-            if (!sqlStmt.Contains(marker))
+            if (!sqlStmt.Contains(MARKER))
                 return sqlStmt;
 
             var criterion =
@@ -390,13 +391,13 @@ namespace NoFuture.Sql.Mssql
                             ? string.Format("rtrim(convert(char(34), {0}, 1)) AS {0}", md.ColumnName)
                             : md.ColumnName).ToList();
 
-            var startAt = sqlStmt.ToLower().IndexOf(marker, StringComparison.Ordinal) + marker.Length;
-            if (startAt == 0 || startAt == marker.Length)
+            var startAt = sqlStmt.ToLower().IndexOf(MARKER, StringComparison.Ordinal) + MARKER.Length;
+            if (startAt == 0 || startAt == MARKER.Length)
                 return sqlStmt;
 
             var sqlRight = sqlStmt.Substring(startAt, sqlStmt.Length - startAt);
-            var sqlLeft = sqlStmt.Substring(0, startAt - marker.Length);
-            return string.Format("{0} {1} {2}", sqlLeft,string.Join(", ", criterion),sqlRight);
+            var sqlLeft = sqlStmt.Substring(0, startAt - MARKER.Length);
+            return $"{sqlLeft} {string.Join(", ", criterion)} {sqlRight}";
         }
     }
 }
