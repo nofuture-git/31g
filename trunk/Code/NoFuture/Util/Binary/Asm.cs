@@ -66,7 +66,7 @@ namespace NoFuture.Util.Binary
                 {
                     var logEntry = GetExceptionStrBldr(attemptedResolveType, ex);
                     File.AppendAllText(logFilePath,
-                        String.Format("[{0:yyyy-MM-dd HH:mm:ss.fffff}] {1}\n", DateTime.Now, logEntry));
+                        $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss.fffff}] {logEntry}\n");
 
                     var fnfe = ex as FileNotFoundException;
                     var tle = ex as TypeLoadException;
@@ -80,10 +80,10 @@ namespace NoFuture.Util.Binary
                         for (var i = 0; i < rftl.LoaderExceptions.Length; i++)
                         {
                             var loaderText = GetExceptionStrBldr(null, rftl.LoaderExceptions[i]);
-                            logEntry.Append(String.Format("({0}) {1}", i, loaderText));
+                            logEntry.Append($"({i}) {loaderText}");
                         }
                         File.AppendAllText(logFilePath,
-                            String.Format("[{0:yyyy-MM-dd HH:mm:ss.fffff}] {1}\n", DateTime.Now, logEntry));
+                            $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss.fffff}] {logEntry}\n");
 
                         return;
                     }
@@ -95,7 +95,7 @@ namespace NoFuture.Util.Binary
                         logEntry.AppendFormat("FileName:{0}", fnfe.FileName);
 
                         File.AppendAllText(logFilePath,
-                            String.Format("[{0:yyyy-MM-dd HH:mm:ss.fffff}] {1}\n", DateTime.Now, logEntry));
+                            $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss.fffff}] {logEntry}\n");
 
                         return;
                     }
@@ -104,7 +104,7 @@ namespace NoFuture.Util.Binary
                     {
                         logEntry.AppendFormat("TypeLoaderException causing type: '{0}'", tle.TypeName);
                         File.AppendAllText(logFilePath,
-                            String.Format("[{0:yyyy-MM-dd HH:mm:ss.fffff}] {1}\n", DateTime.Now, logEntry));
+                            $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss.fffff}] {logEntry}\n");
 
                         return;
                     }
@@ -116,7 +116,7 @@ namespace NoFuture.Util.Binary
                         logEntry.AppendFormat("FileName:{0}", fle.FileName);
 
                         File.AppendAllText(logFilePath,
-                            String.Format("[{0:yyyy-MM-dd HH:mm:ss.fffff}] {1}\n", DateTime.Now, logEntry));
+                            $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss.fffff}] {logEntry}\n");
 
                         return;
                     }
@@ -128,7 +128,7 @@ namespace NoFuture.Util.Binary
                     logEntry.AppendFormat("FileName:{0}", bife.FileName);
 
                     File.AppendAllText(logFilePath,
-                        String.Format("[{0:yyyy-MM-dd HH:mm:ss.fffff}] {1}\n", DateTime.Now, logEntry));
+                        $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss.fffff}] {logEntry}\n");
 
                 }
                 catch(Exception e)
@@ -164,13 +164,11 @@ namespace NoFuture.Util.Binary
             //an assembly'esque name is critical to this effort
             if (String.IsNullOrWhiteSpace(asmFullName))
                 throw new ItsDeadJim(
-                    String.Format("There is no way to resolve a assembly dependency with a name of '{0}'", asmFullName));
+                    $"There is no way to resolve a assembly dependency with a name of '{asmFullName}'");
 
 
             File.AppendAllText(ResolveAsmLog,
-                String.Format("[{0:yyyy-MM-dd HH:mm:ss.fffff}] Starting search for the assembly named '{1}' with reflection only set to '{2}'. \n",
-                    DateTime.Now,
-                    asmFullName, reflectionOnly));
+                $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss.fffff}] Starting search for the assembly named '{asmFullName}' with reflection only set to '{reflectionOnly}'. \n");
 
             //if its already in the appdomain then just return it, why are we here in such a case?
             var itsAlreadyHere = AppDomain.CurrentDomain.ReflectionOnlyGetAssemblies()
@@ -643,7 +641,7 @@ namespace NoFuture.Util.Binary
         public static Assembly NfReflectionOnlyLoadFrom(string assemblyPath)
         {
             if(String.IsNullOrWhiteSpace(assemblyPath))
-                throw new ItsDeadJim(String.Format("There is no assembly at the path '{0}'", assemblyPath));
+                throw new ItsDeadJim($"There is no assembly at the path '{assemblyPath}'");
 
             //check our domain for this assembly having been loaded once before
             var asm =
@@ -672,7 +670,7 @@ namespace NoFuture.Util.Binary
         public static Assembly NfLoadFrom(string assemblyPath)
         {
             if (String.IsNullOrWhiteSpace(assemblyPath))
-                throw new ItsDeadJim(String.Format("There is no assembly at the path '{0}'", assemblyPath));
+                throw new ItsDeadJim($"There is no assembly at the path '{assemblyPath}'");
 
             //check our domain for this assembly having been loaded once before
             var asm =
@@ -1620,8 +1618,8 @@ namespace NoFuture.Util.Binary
             var logDir = ResolveAsmLog;
 
             File.AppendAllText(logDir,
-                String.Format("[{0:yyyy-MM-dd HH:mm:ss.fffff}] Searching for '{1}' in '{2}' \n", DateTime.Now,
-                    rqstAsmFullName, directoryLocation));
+                $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss.fffff}] Searching for '{rqstAsmFullName}' " +
+                $"in '{directoryLocation}' \n");
 
             var di = new DirectoryInfo(directoryLocation);
 
@@ -1632,13 +1630,12 @@ namespace NoFuture.Util.Binary
                 if (asmName == null)
                     continue;
 
-                if (AssemblyName.ReferenceMatchesDefinition(asmName, new AssemblyName(rqstAsmFullName)))
-                {
-                    foundOne = reflectionOnly
-                        ? Assembly.ReflectionOnlyLoad(File.ReadAllBytes(d.FullName))
-                        : Assembly.Load(File.ReadAllBytes(d.FullName));
-                    return true;
-                }
+                if (!AssemblyName.ReferenceMatchesDefinition(asmName, new AssemblyName(rqstAsmFullName)))
+                    continue;
+                foundOne = reflectionOnly
+                    ? Assembly.ReflectionOnlyLoad(File.ReadAllBytes(d.FullName))
+                    : Assembly.Load(File.ReadAllBytes(d.FullName));
+                return true;
             }
 
             return false;

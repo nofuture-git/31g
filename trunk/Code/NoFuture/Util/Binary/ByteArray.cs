@@ -5,29 +5,33 @@ namespace NoFuture.Util.Binary
 {
     public static class BitOrderMask
     {
-        public const ulong QWORD_MSB = (ulong)0xFF00000000000000;
-        public const ulong QWORD_7TH = (ulong)0xFF000000000000;
-        public const ulong QWORD_6TH = (ulong)0xFF0000000000;
-        public const ulong QWORD_5TH = (ulong)0xFF00000000;
-        public const uint DWORD_MSB = (uint)0xFF000000;
-        public const uint DWORD_3RD = (uint)0xFF0000;
-        public const ushort WORD_MSB = (ushort)0xFF00;
-        public const byte LSB = (byte)0xFF;
+        public const ulong QWORD_MSB = 0xFF00000000000000;
+        public const ulong QWORD_7TH = 0xFF000000000000;
+        public const ulong QWORD_6TH = 0xFF0000000000;
+        public const ulong QWORD_5TH = 0xFF00000000;
+        public const uint DWORD_MSB = 0xFF000000;
+        public const uint DWORD_3RD = 0xFF0000;
+        public const ushort WORD_MSB = 0xFF00;
+        public const byte LSB = 0xFF;
 
-        public const ulong DWORD_MASK = (ulong)0x00000000FFFFFFFF;
-        public const uint WORD_MASK = (uint) 0x0000FFFF;
+        public const ulong DWORD_MASK = 0x00000000FFFFFFFF;
+        public const uint WORD_MASK = 0x0000FFFF;
     }
     public class BityOrderMarker
     {
-        public static byte[] UTF8 = new byte[] { 0xef, 0xbb, 0xbf };
-        public static byte[] UTF16_BE = new byte[] { 0xfe, 0xff };
-        public static byte[] UTF16_LE = new byte[] { 0xff, 0xfe };
-        public static byte[] UTF32_BE = new byte[] { 0x0, 0x0, 0xfe, 0xff };
-        public static byte[] UTF32_LE = new byte[] { 0xff, 0xfe, 0x0, 0x0 };
+        public static byte[] UTF8 = { 0xef, 0xbb, 0xbf };
+        public static byte[] UTF16_BE = { 0xfe, 0xff };
+        public static byte[] UTF16_LE = { 0xff, 0xfe };
+        public static byte[] UTF32_BE = { 0x0, 0x0, 0xfe, 0xff };
+        public static byte[] UTF32_LE = { 0xff, 0xfe, 0x0, 0x0 };
     }
     public static class ByteArray
     {
-        private static byte[][] _base64_chars = { new byte[] { 0x30, 0x39 }, new byte[] { 0x41, 0x5A }, new byte[] { 0x61, 0x7A }, new byte[] { 0x2F, 0x2B, 0x3D } };
+        private static byte[][] _base64_chars =
+        {
+            new byte[] {0x30, 0x39}, new byte[] {0x41, 0x5A},
+            new byte[] {0x61, 0x7A}, new byte[] {0x2F, 0x2B, 0x3D}
+        };
 
         /// <summary>
         /// Binary utility method to turn a long (64 bit) into a
@@ -160,7 +164,7 @@ namespace NoFuture.Util.Binary
             //pad a zero to odd-number length strings
             if(hexString.Length % 2 == 1)
             {
-                hexString = String.Format("0{0}", hexString);
+                hexString = $"0{hexString}";
             }
 
             var data = new System.Collections.Generic.List<byte>();
@@ -168,7 +172,7 @@ namespace NoFuture.Util.Binary
             {
                 var p = hexString.Substring(i * 2, 2);
                 byte q = 0;
-                if(Byte.TryParse(p,NumberStyles.HexNumber,null as IFormatProvider ,out q))
+                if(byte.TryParse(p,NumberStyles.HexNumber,null as IFormatProvider ,out q))
                 {
                     data.Add(q);
                 }
@@ -183,8 +187,8 @@ namespace NoFuture.Util.Binary
         public static string PrintByteArray(byte[] value)
         {
             var print = new System.Text.StringBuilder();
-            for (var i = 0; i < value.Length; i++)
-                print.Append(value[i].ToString("X2"));
+            foreach (var t in value)
+                print.Append(t.ToString("X2"));
 
             return print.ToString();
         }
@@ -212,9 +216,9 @@ namespace NoFuture.Util.Binary
         /// <returns>The same array as the input but with a zero-byte in front.</returns>
         public static byte[] PadWithZeroInFront(byte[] inputarray)
         {
-            byte[] toadd = inputarray;
-            byte[] zeropad = new byte[toadd.Length + 1];
-            zeropad[0] = (byte)0;
+            var toadd = inputarray;
+            var zeropad = new byte[toadd.Length + 1];
+            zeropad[0] = 0;
             Array.Copy(toadd, 0, zeropad, 1, toadd.Length);
             return zeropad;
         }
@@ -226,7 +230,7 @@ namespace NoFuture.Util.Binary
         /// </param>
         public static void PadAllContainedWithZeroInFront(byte[][] inputarray)
         {
-            for (int i = 0; i < inputarray.Length; i++)
+            for (var i = 0; i < inputarray.Length; i++)
             {
                 inputarray[i] = PadWithZeroInFront(inputarray[i]);
             }
@@ -240,7 +244,7 @@ namespace NoFuture.Util.Binary
         /// <returns></returns>
         public static byte[][] InitializeTapperedArray(long numberofblocks, long blocksize, long remainder)
         {
-            byte[][] toreturn = new byte[numberofblocks][];
+            var toreturn = new byte[numberofblocks][];
             for (var i = 0; i < numberofblocks - 1; i++)
             {
                 toreturn[i] = new byte[blocksize];

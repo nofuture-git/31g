@@ -241,7 +241,8 @@ namespace NoFuture.Sql.Mssql
             var tblFilter = SqlFilterList.Where(x => !string.IsNullOrWhiteSpace(x))
                 .Aggregate("", (current, lo) => current + $"'{lo}',");
             tblFilter +=
-                "'sysobjects','sysindexes','syscolumns','systypes','syscomments','sysusers','sysdepends','sysreferences','sysconstraints','syssegments'";
+                "'sysobjects','sysindexes','syscolumns','systypes','syscomments'," +
+                "'sysusers','sysdepends','sysreferences','sysconstraints','syssegments'";
             expression = $"{expression}{string.Format(Qry.Catalog.FilterStatement, columnName, tblFilter)}";
             return expression;
 

@@ -67,10 +67,10 @@ namespace NoFuture.Util
         {
             get
             {
-                if (String.IsNullOrWhiteSpace(_typeFullName))
-                    return String.Empty;
+                if (string.IsNullOrWhiteSpace(_typeFullName))
+                    return string.Empty;
                 var myparts = new[] {_typeFullName, _assemblyName, _version, _culture, _publicKeyToken,_procArch};
-                return String.Join(", ", myparts.Where(n => !String.IsNullOrWhiteSpace(n)));
+                return string.Join(", ", myparts.Where(n => !string.IsNullOrWhiteSpace(n)));
             }
         }
 
@@ -78,45 +78,27 @@ namespace NoFuture.Util
         /// This the namespace and class name
         /// e.g. ('NoFuture.MyDatabase.Dbo.AccountExecutives')
         /// </summary>
-        public virtual string FullName
-        {
-            get
-            {
-                return string.IsNullOrWhiteSpace(_typeFullName)
-                    ? string.Format("{0}.{1}", _namespace, _className)
-                    : String.Format("{0}", _typeFullName);
-            }
-        }
+        public virtual string FullName => string.IsNullOrWhiteSpace(_typeFullName)
+            ? $"{_namespace}.{_className}"
+            : $"{_typeFullName}";
 
         /// <summary>
         /// This is just the namespace
         /// e.g. ('NoFuture.MyDatabase.Dbo')
         /// </summary>
-        public virtual string Namespace
-        {
-            get { return String.Format("{0}", _namespace); }
-        }
+        public virtual string Namespace => $"{_namespace}";
 
         /// <summary>
         /// This is just the class name, no namespace, no assembly
         /// e.g. ('AccountExecutives')
         /// </summary>
-        public virtual string ClassName
-        {
-            get { return String.Format("{0}", _className); }
-        }
+        public virtual string ClassName => $"{_className}";
 
         /// <summary>
         /// This is just the name part of an assembly's name, no Version, Culture nor PublicKeyToken
         /// e.g. ('NoFuture.MyDatabase') 
         /// </summary>
-        public virtual string AssemblyName
-        {
-            get
-            {
-                return _assemblyName;
-            }
-        }
+        public virtual string AssemblyName => _assemblyName;
 
         /// <summary>
         /// This is the typical fully qualified assembly name having the Version, Culture PublicKeyToken and 
@@ -128,7 +110,7 @@ namespace NoFuture.Util
             get
             {
                 var myparts = new[] { _assemblyName, _version, _culture, _publicKeyToken, _procArch };
-                return String.Join(", ", myparts.Where(n => !String.IsNullOrWhiteSpace(n)));
+                return string.Join(", ", myparts.Where(n => !string.IsNullOrWhiteSpace(n)));
             }
         }
 
@@ -136,42 +118,30 @@ namespace NoFuture.Util
         /// This is just the version part of an assembly name (both key and value)
         /// e.g. ('Version=0.0.0.0')
         /// </summary>
-        public virtual string Version
-        {
-            get { return string.IsNullOrWhiteSpace(_version) ? "Version=0.0.0.0" : _version; }
-        }
+        public virtual string Version => string.IsNullOrWhiteSpace(_version) ? "Version=0.0.0.0" : _version;
 
         /// <summary>
         /// This is just the culture part of an assembly name (both key and value)
         /// e.g. ('Culture=neutral')
         /// </summary>
-        public virtual string Culture
-        {
-            get { return string.IsNullOrWhiteSpace(_culture) ? "Culture=neutral" : _culture; }
-        }
+        public virtual string Culture => string.IsNullOrWhiteSpace(_culture) ? "Culture=neutral" : _culture;
 
         /// <summary>
         /// This is just the PublicKeyToken part of an assembly's name (both key and value)
         /// e.g. ('PublicKeyToken=669e0ddf0bb1aa2a')
         /// </summary>
-        public virtual string PublicKeyToken
-        {
-            get { return string.IsNullOrWhiteSpace(_publicKeyToken) ? "PublicKeyToken=null" : _publicKeyToken; }
-        }
+        public virtual string PublicKeyToken => string.IsNullOrWhiteSpace(_publicKeyToken) ? "PublicKeyToken=null" : _publicKeyToken;
 
         /// <summary>
         /// This is simply the <see cref="AssemblyName"/> with a .dll 
         /// extension added to the end.
         /// </summary>
-        public virtual string AssemblyFileName
-        {
-            get { return DraftCscDllName(_assemblyName); }
-        }
+        public virtual string AssemblyFileName => DraftCscDllName(_assemblyName);
 
         /// <summary>
         /// This is the original string passed to the ctor.
         /// </summary>
-        public string RawString { get { return String.Format("{0}", _ctorString); } }
+        public string RawString => $"{_ctorString}";
 
         #endregion
 
@@ -281,7 +251,7 @@ namespace NoFuture.Util
         /// </remarks>
         public static bool IsFullAssemblyQualTypeName(string name)
         {
-            return !String.IsNullOrWhiteSpace(name) &&
+            return !string.IsNullOrWhiteSpace(name) &&
                    Regex.IsMatch(name, ASSEMBLY_QUALIFIED_CLASS_NAME_REGEX, RegexCatalog.MyRegexOptions);
         }
 
@@ -295,7 +265,7 @@ namespace NoFuture.Util
         /// </remarks>
         public static bool IsAssemblyFullName(string name)
         {
-            return !String.IsNullOrWhiteSpace(name) &&
+            return !string.IsNullOrWhiteSpace(name) &&
                    Regex.IsMatch(name, FULL_ASSEMBLY_NAME_REGEX, RegexCatalog.MyRegexOptions);
         }
 
@@ -383,9 +353,9 @@ namespace NoFuture.Util
             if (String.IsNullOrWhiteSpace(returnTypeToString))
                 return null;
             var r = returnTypeToString;
-            if (r.Contains("[]"))
-                return r.Replace("[]", "");
-            return GetTypeNamesFromGeneric(returnTypeToString, typeDelimiter).FirstOrDefault();
+            return r.Contains("[]")
+                ? r.Replace("[]", "")
+                : GetTypeNamesFromGeneric(returnTypeToString, typeDelimiter).FirstOrDefault();
         }
 
         //this only returns the list of the last inner-most generic (e.g. Tuple`3[List`1[System.String], System.String, Tuple`2[System.Int32, System.String]] -> System.Int32, System.String)

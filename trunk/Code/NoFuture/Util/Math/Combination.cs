@@ -8,7 +8,7 @@ namespace NoFuture.Util.Math
         {
             if (n == 1)
                 return n;
-            return n * (CalcFactorial(n - 1));
+            return n * CalcFactorial(n - 1);
         }
         public static int CalcCombinations(int n, int k)
         {
@@ -24,11 +24,11 @@ namespace NoFuture.Util.Math
         }
 
         //needed at instance-lvl scope because of recursive nature of actual calculations
-        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         private static List<int[]> _combinationMatchs;
 
         //http://www.cs.utexas.edu/users/djimenez/utsa/cs3343/lecture25.html
-        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         internal static void Combinations(int[] v, int start, int n, int k, int maxk)
         {
             if (k > maxk)

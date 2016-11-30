@@ -12,7 +12,7 @@ namespace NoFuture.Read.Vs
     public class ProjFile : BaseXmlDoc
     {
         #region constants
-        public const string DotNetProjXmlNs = "http://schemas.microsoft.com/developer/msbuild/2003";
+        public const string DOT_NET_PROJ_XML_NS = "http://schemas.microsoft.com/developer/msbuild/2003";
         public const string NS = "vs";
         #endregion
 
@@ -38,7 +38,7 @@ namespace NoFuture.Read.Vs
                     if (Node == null || !Node.HasChildNodes)
                         return null;
                     var hintPathNode = _projFile.FirstChildNamed(Node, "HintPath");
-                    return hintPathNode == null ? null : hintPathNode.InnerText;
+                    return hintPathNode?.InnerText;
                 }
             }
         }
@@ -56,7 +56,7 @@ namespace NoFuture.Read.Vs
         public ProjFile(string vsprojPath):base(vsprojPath)
         {
             _nsMgr = new XmlNamespaceManager(_xmlDocument.NameTable);
-            _nsMgr.AddNamespace(NS, DotNetProjXmlNs);
+            _nsMgr.AddNamespace(NS, DOT_NET_PROJ_XML_NS);
 
             ValidateProjFile(vsprojPath);
             _projDir = Path.GetDirectoryName(_fileFullName) ?? TempDirectories.AppData;
@@ -64,9 +64,9 @@ namespace NoFuture.Read.Vs
         #endregion
 
         #region properties
-        public XmlDocument VsProjXml { get { return _xmlDocument; } }
-        public XmlNamespaceManager NsMgr { get { return _nsMgr; } }
-        public bool XmlContentChanged { get { return _isChanged; } }
+        public XmlDocument VsProjXml => _xmlDocument;
+        public XmlNamespaceManager NsMgr => _nsMgr;
+        public bool XmlContentChanged => _isChanged;
 
         public string AssemblyName
         {
@@ -164,21 +164,21 @@ namespace NoFuture.Read.Vs
 
             var projRef = GetSingleRefernceNode(assemblyPath);
 
-            if (projRef == null || string.IsNullOrWhiteSpace(projRef.AssemblyFullName))
+            if (string.IsNullOrWhiteSpace(projRef?.AssemblyFullName))
                 return false;
 
             if (projRef.Node == null)
             {
-                projRef.Node = _xmlDocument.CreateElement("Reference", DotNetProjXmlNs);
+                projRef.Node = _xmlDocument.CreateElement("Reference", DOT_NET_PROJ_XML_NS);
                 var includeAttr = _xmlDocument.CreateAttribute("Include");
                 includeAttr.Value = projRef.AssemblyFullName;
 
-                projRef.Node.Attributes.Append(includeAttr);
+                projRef.Node.Attributes?.Append(includeAttr);
 
-                var specificVerNode = _xmlDocument.CreateElement("SpecificVersion", DotNetProjXmlNs);
+                var specificVerNode = _xmlDocument.CreateElement("SpecificVersion", DOT_NET_PROJ_XML_NS);
                 specificVerNode.InnerText = bool.FalseString;
 
-                var hintPathNode = _xmlDocument.CreateElement("HintPath", DotNetProjXmlNs);
+                var hintPathNode = _xmlDocument.CreateElement("HintPath", DOT_NET_PROJ_XML_NS);
                 hintPathNode.InnerText = tempPath;
 
                 projRef.Node.AppendChild(specificVerNode);
@@ -186,14 +186,17 @@ namespace NoFuture.Read.Vs
 
                 var refItemGroup = GetLastReferenceNode().ParentNode;
 
-                refItemGroup.InsertAfter(projRef.Node, GetLastReferenceNode());
+                refItemGroup?.InsertAfter(projRef.Node, GetLastReferenceNode());
 
                 _isChanged = true;
             }
             else
             {
-                var includeAttr = projRef.Node.Attributes["Include"];
-                includeAttr.Value = projRef.AssemblyFullName;
+                if (projRef.Node.Attributes != null)
+                {
+                    var includeAttr = projRef.Node.Attributes["Include"];
+                    includeAttr.Value = projRef.AssemblyFullName;
+                }
 
                 var specificVerNode =
                     _xmlDocument.SelectSingleNode(string.Format(
@@ -201,7 +204,7 @@ namespace NoFuture.Read.Vs
                         _nsMgr);
                 if (specificVerNode == null)
                 {
-                    specificVerNode = _xmlDocument.CreateElement("SpecificVersion", DotNetProjXmlNs);
+                    specificVerNode = _xmlDocument.CreateElement("SpecificVersion", DOT_NET_PROJ_XML_NS);
                     projRef.Node.AppendChild(specificVerNode);
                 }
 
@@ -213,7 +216,7 @@ namespace NoFuture.Read.Vs
 
                 if (hintPathNode == null)
                 {
-                    hintPathNode = _xmlDocument.CreateElement("HintPath", DotNetProjXmlNs);
+                    hintPathNode = _xmlDocument.CreateElement("HintPath", DOT_NET_PROJ_XML_NS);
                     projRef.Node.AppendChild(hintPathNode);
                 }
 
@@ -236,9 +239,9 @@ namespace NoFuture.Read.Vs
         /// </remarks>
         public bool TryAddSrcCodeFile(string srcCodeFile)
         {
-            const string DependentUpon = "DependentUpon";
-            const string Include = "Include";
-            const string SubType = "SubType";
+            const string DEPENDENT_UPON = "DependentUpon";
+            const string INCLUDE = "Include";
+            const string SUB_TYPE = "SubType";
             if (string.IsNullOrWhiteSpace(srcCodeFile))
                 return false;
 
@@ -265,35 +268,38 @@ namespace NoFuture.Read.Vs
             //add each valid compile item
             foreach (var compItem in compileItems)
             {
-                var newCompileItem = GetSingleCompileItemNode(compItem) ?? _xmlDocument.CreateElement("Compile", DotNetProjXmlNs);
+                var newCompileItem = GetSingleCompileItemNode(compItem) ?? _xmlDocument.CreateElement("Compile", DOT_NET_PROJ_XML_NS);
 
-                var includeAttr = HasExistingIncludeAttr(newCompileItem)
-                    ? newCompileItem.Attributes[Include]
-                    : _xmlDocument.CreateAttribute(Include);
+                if (newCompileItem.Attributes != null)
+                {
+                    var includeAttr = HasExistingIncludeAttr(newCompileItem)
+                        ? newCompileItem.Attributes[INCLUDE]
+                        : _xmlDocument.CreateAttribute(INCLUDE);
 
-                includeAttr.Value = compItem;
-                if(!HasExistingIncludeAttr(newCompileItem))
-                    newCompileItem.Attributes.Append(includeAttr);
+                    includeAttr.Value = compItem;
+                    if(!HasExistingIncludeAttr(newCompileItem))
+                        newCompileItem.Attributes.Append(includeAttr);
+                }
 
                 //asp files have some additional child nodes
                 if (IsAspFile(Path.GetFileNameWithoutExtension(compItem)))
                 {
-                    var dependentUponNode = FirstChildNamed(newCompileItem, DependentUpon) ??
-                                            _xmlDocument.CreateElement(DependentUpon, DotNetProjXmlNs);
+                    var dependentUponNode = FirstChildNamed(newCompileItem, DEPENDENT_UPON) ??
+                                            _xmlDocument.CreateElement(DEPENDENT_UPON, DOT_NET_PROJ_XML_NS);
 
                     dependentUponNode.InnerText = Path.GetFileNameWithoutExtension(compItem);
 
-                    if (!HasChildNodeNamed(newCompileItem, DependentUpon))
+                    if (!HasChildNodeNamed(newCompileItem, DEPENDENT_UPON))
                         newCompileItem.AppendChild(dependentUponNode);
 
                     if (!compItem.Contains(".designer"))
                     {
-                        var subTypeNode = FirstChildNamed(newCompileItem, SubType) ??
-                                          _xmlDocument.CreateElement(SubType, DotNetProjXmlNs);
+                        var subTypeNode = FirstChildNamed(newCompileItem, SUB_TYPE) ??
+                                          _xmlDocument.CreateElement(SUB_TYPE, DOT_NET_PROJ_XML_NS);
 
                         subTypeNode.InnerText = "ASPXCodeBehind";
 
-                        if (!HasChildNodeNamed(newCompileItem, SubType))
+                        if (!HasChildNodeNamed(newCompileItem, SUB_TYPE))
                             newCompileItem.AppendChild(subTypeNode);
                     }
                 }
@@ -329,15 +335,18 @@ namespace NoFuture.Read.Vs
             foreach (var contentItem in contentItems)
             {
                 var newContentItemNode = GetSingleContentItemNode(contentItem) ??
-                                         _xmlDocument.CreateElement("Content", DotNetProjXmlNs);
+                                         _xmlDocument.CreateElement("Content", DOT_NET_PROJ_XML_NS);
 
-                var includeAttr = HasExistingIncludeAttr(newContentItemNode)
-                    ? newContentItemNode.Attributes[Include]
-                    : _xmlDocument.CreateAttribute(Include);
+                if (newContentItemNode.Attributes != null)
+                {
+                    var includeAttr = HasExistingIncludeAttr(newContentItemNode)
+                        ? newContentItemNode.Attributes[INCLUDE]
+                        : _xmlDocument.CreateAttribute(INCLUDE);
 
-                includeAttr.Value = contentItem;
-                if(!HasExistingIncludeAttr(newContentItemNode))
-                    newContentItemNode.Attributes.Append(includeAttr);
+                    includeAttr.Value = contentItem;
+                    if(!HasExistingIncludeAttr(newContentItemNode))
+                        newContentItemNode.Attributes.Append(includeAttr);
+                }
 
                 if (!IsExistingContentItem(contentItem))
                 {
@@ -468,9 +477,7 @@ namespace NoFuture.Read.Vs
         public override string GetInnerText(string xpath)
         {
             var singleNode = _xmlDocument.SelectSingleNode(string.Format(xpath, NS), NsMgr);
-            if (singleNode == null)
-                return null;
-            return singleNode.InnerText;
+            return singleNode?.InnerText;
         }
 
         public override void SetInnerText(string xpath, string theValue)
@@ -496,7 +503,7 @@ namespace NoFuture.Read.Vs
         internal List<XmlElement> GetListCompileItemNodes(string fl)
         {
             var dlk = _xmlDocument.SelectNodes(string.Format("//{0}:ItemGroup/{0}:Compile[contains(@Include,'{1}')]", NS, fl), _nsMgr);
-            return dlk == null ? null : dlk.Cast<XmlElement>().ToList();
+            return dlk?.Cast<XmlElement>().ToList();
         }
 
         internal XmlNode GetSingleContentItemNode(string fl)
@@ -507,17 +514,19 @@ namespace NoFuture.Read.Vs
         internal List<XmlElement> GetListContentItemNodes(string fl)
         {
             var dlk = _xmlDocument.SelectNodes(string.Format("//{0}:ItemGroup/{0}:Content[contains(@Include,'{1}')]", NS, fl), _nsMgr);
-            return dlk == null ? null : dlk.Cast<XmlElement>().ToList();
+            return dlk?.Cast<XmlElement>().ToList();
         }
 
         internal bool HasExistingIncludeAttr(XmlNode n)
         {
-            return n != null && n.Attributes != null && n.Attributes["Include"] != null;
+            return n?.Attributes?["Include"] != null;
         }
 
         internal XmlElement FirstChildNamed(XmlNode n, string childNodeName)
         {
-            return !HasChildNodeNamed(n, childNodeName) ? null : n.ChildNodes.Cast<XmlElement>().First(x => x.Name == childNodeName);
+            return !HasChildNodeNamed(n, childNodeName)
+                ? null
+                : n.ChildNodes.Cast<XmlElement>().First(x => x.Name == childNodeName);
         }
 
         internal bool HasChildNodeNamed(XmlNode n, string childNodeName)
@@ -543,28 +552,28 @@ namespace NoFuture.Read.Vs
         internal XmlNode GetContentItemParent()
         {
             var lastItem = _xmlDocument.SelectSingleNode(string.Format("//{0}:ItemGroup/{0}:Content[last()]", NS), _nsMgr);
-            if (lastItem != null && lastItem.ParentNode != null)
+            if (lastItem?.ParentNode != null)
                 return lastItem.ParentNode;
 
-            var groups = _xmlDocument.SelectNodes(string.Format("//{0}:ItemGroup", NS), _nsMgr);
+            var groups = _xmlDocument.SelectNodes($"//{NS}:ItemGroup", _nsMgr);
             return groups == null ? NewItemGroup() : groups.Cast<XmlElement>().FirstOrDefault(x => !x.HasChildNodes);
         }
 
         internal XmlNode GetCompileItemParent()
         {
             var lastItem = _xmlDocument.SelectSingleNode(string.Format("//{0}:ItemGroup/{0}:Compile[last()]", NS), _nsMgr);
-            if (lastItem != null && lastItem.ParentNode != null)
+            if (lastItem?.ParentNode != null)
                 return lastItem.ParentNode;
 
-            var groups = _xmlDocument.SelectNodes(string.Format("//{0}:ItemGroup", NS), _nsMgr);
+            var groups = _xmlDocument.SelectNodes($"//{NS}:ItemGroup", _nsMgr);
             return groups == null ? NewItemGroup() : groups.Cast<XmlElement>().FirstOrDefault(x => !x.HasChildNodes);
         }
 
         internal XmlElement NewItemGroup()
         {
-            var newGroup = _xmlDocument.CreateElement("ItemGroup", DotNetProjXmlNs);
+            var newGroup = _xmlDocument.CreateElement("ItemGroup", DOT_NET_PROJ_XML_NS);
             var rootNode = _xmlDocument.SelectSingleNode("/");
-            rootNode.AppendChild(newGroup);
+            rootNode?.AppendChild(newGroup);
             return newGroup;
         }
 
@@ -572,18 +581,18 @@ namespace NoFuture.Read.Vs
         {
             s = s.Replace(".designer", string.Empty);
             return !string.IsNullOrWhiteSpace(s) &&
-                    (new[] { ".asax", ".ascx", ".asmx", ".aspx" }).Contains(Path.GetExtension(s));
+                    new[] { ".asax", ".ascx", ".asmx", ".aspx" }.Contains(Path.GetExtension(s));
         }
 
         internal bool IsSrcCodeFile(string x)
         {
-            return !string.IsNullOrWhiteSpace(x) && (new[] { ".vb", ".cs" }).Contains(Path.GetExtension(x));
+            return !string.IsNullOrWhiteSpace(x) && new[] { ".vb", ".cs" }.Contains(Path.GetExtension(x));
         }
 
         internal List<string> SingleFileToManifold(string srcCodeFile)
         {
             if(srcCodeFile == null)
-                throw new ArgumentNullException("srcCodeFile");
+                throw new ArgumentNullException(nameof(srcCodeFile));
             var files = new List<string>();
             
             //when srcCodeFile is not currently present in the xml
@@ -666,11 +675,9 @@ namespace NoFuture.Read.Vs
             xpath = BaseXmlDoc.SpliceInXmlNs(xpath, NS);
 
             var node = _xmlDocument.SelectSingleNode(xpath, NsMgr);
-            if (node == null)
-                return null;
 
             var elem = node as XmlElement;
-            return elem == null ? null : elem.Attributes[attrName];
+            return elem?.Attributes[attrName];
         }
 
         #endregion
@@ -680,13 +687,13 @@ namespace NoFuture.Read.Vs
         internal static void ValidateProjFile(string vsprojPath)
         {
             if (string.IsNullOrWhiteSpace(vsprojPath) || !File.Exists(vsprojPath))
-                throw new ItsDeadJim(string.Format("Cannot find the Vs Project file '{0}'.", vsprojPath));
+                throw new ItsDeadJim($"Cannot find the Vs Project file '{vsprojPath}'.");
 
             if (!Path.HasExtension(vsprojPath))
                 throw new ItsDeadJim("Specify a specific [cs|vb|fs]proj file, not a whole directory");
 
             if (!Regex.IsMatch(Path.GetExtension(vsprojPath), @"\.(vb|cs|fs)proj"))
-                throw new ItsDeadJim(string.Format("The Extension '{0}' was unexpected", Path.GetExtension(vsprojPath)));
+                throw new ItsDeadJim($"The Extension '{Path.GetExtension(vsprojPath)}' was unexpected");
         }
         #endregion
     }

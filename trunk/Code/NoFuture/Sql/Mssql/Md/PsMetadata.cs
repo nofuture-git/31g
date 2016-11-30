@@ -47,7 +47,8 @@ namespace NoFuture.Sql.Mssql.Md
             if(adoData== null || adoData.Length <= 0)
                 return colNameList;//empty list, match the ctor
             colNameList.AddRange(
-                adoData.Select(dr => dr[Qry.Catalog.COLUMN_NAME].ToString()).Where(colName => !string.IsNullOrWhiteSpace(colName)));
+                adoData.Select(dr => dr[Qry.Catalog.COLUMN_NAME].ToString())
+                    .Where(colName => !string.IsNullOrWhiteSpace(colName)));
             return colNameList;
         }
 

@@ -12,7 +12,7 @@ namespace NoFuture.Util.Math
         /// <param name="annualInterestRate"></param>
         /// <param name="numberOfDays"></param>
         /// <returns></returns>
-        public static Decimal PerDiemInterest(this Decimal balance, double annualInterestRate, double numberOfDays)
+        public static decimal PerDiemInterest(this decimal balance, double annualInterestRate, double numberOfDays)
         {
             var pa = Convert.ToDouble(balance);
             var freq = Constants.TropicalYear;

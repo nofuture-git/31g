@@ -75,7 +75,8 @@ namespace NoFuture.Sql.Mssql
                     if (string.IsNullOrWhiteSpace(key))
                         continue;
 
-                    if (metaData.AutoNumKeys.Any(x => string.Equals(x, key, Oic)) || metaData.IsComputedKeys.Any(x => string.Equals(x, key, Oic)))
+                    if (metaData.AutoNumKeys.Any(x => string.Equals(x, key, Oic)) ||
+                        metaData.IsComputedKeys.Any(x => string.Equals(x, key, Oic)))
                         continue;
 
                     //#eval out all 'DBNull.Value'
@@ -351,7 +352,8 @@ namespace NoFuture.Sql.Mssql
             if (metaData == null)
                 return val;
 
-            if (metaData.AutoNumKeys.Any(x => string.Equals(x, key, Oic)) || metaData.IsComputedKeys.Any(x => string.Equals(x, key, Oic)))
+            if (metaData.AutoNumKeys.Any(x => string.Equals(x, key, Oic)) ||
+                metaData.IsComputedKeys.Any(x => string.Equals(x, key, Oic)))
                 return val;
             if (!metaData.TickKeys.Any(x => string.Equals(x, key, Oic)) || string.Equals(val, "NULL", Oic))
                 return val;

@@ -40,7 +40,7 @@ namespace NoFuture.Util.Gia
         /// </remarks>
         public Flatten(params int[] ports)
         {
-            if (String.IsNullOrWhiteSpace(CustomTools.InvokeFlatten) || !File.Exists(CustomTools.InvokeFlatten))
+            if (string.IsNullOrWhiteSpace(CustomTools.InvokeFlatten) || !File.Exists(CustomTools.InvokeFlatten))
                 throw new ItsDeadJim("Don't know where to locate the NoFuture.Util.Gia.InvokeFlatten.exe, assign " +
                                      "the global variable at NoFuture.Tools.CustomTools.InvokeFlatten.");
             var args = string.Empty;

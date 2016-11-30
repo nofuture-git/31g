@@ -40,14 +40,12 @@ namespace NoFuture.Util.Math
 
             if (a.GetLongLength(0) != b.GetLongLength(0)) //equal rows
                 throw new NonConformable(
-                    string.Format(
-                        "The number of rows in matrix 'a' must match the number of rows in matrix 'b' to solve for the {0}.",
-                        asDiff ? "difference" : "sum"));
+                    $"The number of rows in matrix 'a' must match the number of rows in matrix 'b' " +
+                    $"to solve for the {(asDiff ? "difference" : "sum")}.");
             if (a.GetLongLength(1) != b.GetLongLength(1)) //equal columns
                 throw new NonConformable(
-                    string.Format(
-                        "The number of columns in matrix 'a' must match the number of columns in matrix 'b' to solve for the {0}.",
-                        asDiff ? "difference" : "sum"));
+                    $"The number of columns in matrix 'a' must match the number of columns in matrix 'b' " +
+                    $"to solve for the {(asDiff ? "difference" : "sum")}.");
 
             var iLength = a.GetLongLength(0);
             var jLength = a.GetLongLength(1);
@@ -84,7 +82,7 @@ namespace NoFuture.Util.Math
 
         public static double[,] Product(double[,] a, double[,] b)
         {
-            var dimensions = new[,] { { a.GetLongLength(0), a.GetLongLength(1) }, { b.GetLongLength(0), b.GetLongLength(1) } };
+            var dimensions = new[,] {{a.GetLongLength(0), a.GetLongLength(1)}, {b.GetLongLength(0), b.GetLongLength(1)}};
             var m = dimensions[0, 0];
             var n = dimensions[0, 1];
             var p = dimensions[1, 0];
@@ -92,7 +90,8 @@ namespace NoFuture.Util.Math
 
             if (n != p) //equal rows
                 throw new NonConformable(
-                    "The number of columns in matrix 'a' must match the number of rows in matrix 'b' in order to solve for the product of the two.");
+                    "The number of columns in matrix 'a' must match the number of rows in matrix 'b' " +
+                    "in order to solve for the product of the two.");
 
             var product = new double[m,q];
             for (var productRows = 0L; productRows < m; productRows++)

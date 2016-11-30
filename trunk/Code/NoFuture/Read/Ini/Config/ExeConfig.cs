@@ -25,9 +25,9 @@ namespace NoFuture.Read.Config
         {
             var configDir = Path.GetDirectoryName(configFile);
             if (string.IsNullOrEmpty(configDir))
-                throw new ItsDeadJim(string.Format("Bad Path or File Name at '{0}'", configFile));
+                throw new ItsDeadJim($"Bad Path or File Name at '{configFile}'");
 
-            _transformFileOut = Path.Combine(configDir, string.Format("{0:yyyyMMdd-HHmmss}.config", DateTime.Now));
+            _transformFileOut = Path.Combine(configDir, $"{DateTime.Now:yyyyMMdd-HHmmss}.config");
         }
         #endregion
 
@@ -175,7 +175,7 @@ namespace NoFuture.Read.Config
                     continue;
                 }
 
-                if (!Shared.RegexCatalog.AreAnyRegexMatch(appValAttr.Value, regex2Values.Keys.Cast<string>().ToArray()))
+                if (!RegexCatalog.AreAnyRegexMatch(appValAttr.Value, regex2Values.Keys.Cast<string>().ToArray()))
                     continue;
 
                 AppropriateAllRegex(appValAttr, regex2Values);
@@ -206,7 +206,7 @@ namespace NoFuture.Read.Config
                 var conStrVal = conStrAttr.Value;
 
                 if (swapConnStrs ||
-                    !Shared.RegexCatalog.AreAnyRegexMatch(conStrAttr.Value, regex2Values.Keys.Cast<string>().ToArray()))
+                    !RegexCatalog.AreAnyRegexMatch(conStrAttr.Value, regex2Values.Keys.Cast<string>().ToArray()))
                 {
 
                     conStrAttr.Value = NfConfig.SqlServerDotNetConnString;
@@ -235,9 +235,7 @@ namespace NoFuture.Read.Config
             foreach (var node in svcClientNode.ChildNodes)
             {
                 var endPtNode = node as XmlElement;
-                if (endPtNode == null)
-                    continue;
-                var addrAttr = endPtNode.Attributes["address"];
+                var addrAttr = endPtNode?.Attributes["address"];
                 if (addrAttr == null)
                     continue;
 
@@ -245,11 +243,11 @@ namespace NoFuture.Read.Config
                     continue;
 
                 AddEndpointNodeToTransform(
-                    endPtNode.Attributes["address"] == null ? null : endPtNode.Attributes["address"].Value,
-                    endPtNode.Attributes["binding"] == null ? null : endPtNode.Attributes["binding"].Value,
-                    endPtNode.Attributes["bindingConfiguration"] == null ? null : endPtNode.Attributes["bindingConfiguration"].Value,
-                    endPtNode.Attributes["contract"] == null ? null : endPtNode.Attributes["contract"].Value,
-                    endPtNode.Attributes["name"] == null ? null : endPtNode.Attributes["name"].Value);
+                    endPtNode.Attributes["address"]?.Value,
+                    endPtNode.Attributes["binding"]?.Value,
+                    endPtNode.Attributes["bindingConfiguration"]?.Value,
+                    endPtNode.Attributes["contract"]?.Value,
+                    endPtNode.Attributes["name"]?.Value);
 
                 if (!Shared.RegexCatalog.AreAnyRegexMatch(addrAttr.Value, regex2Values.Keys.Cast<string>().ToArray()))
                 {
@@ -281,7 +279,7 @@ namespace NoFuture.Read.Config
                 var behConfigAttr = svcNode.Attributes["behaviorConfiguration"];
                 var nameAttr = svcNode.Attributes["name"];
 
-                if (nameAttr == null || string.IsNullOrWhiteSpace(nameAttr.Value))
+                if (string.IsNullOrWhiteSpace(nameAttr?.Value))
                     continue;
 
 
@@ -289,17 +287,17 @@ namespace NoFuture.Read.Config
 
                 _xmlWriter.WriteAttributeString("name", nameAttr.Value);
 
-                if (behConfigAttr != null && !string.IsNullOrWhiteSpace(behConfigAttr.Value))
+                if (!string.IsNullOrWhiteSpace(behConfigAttr?.Value))
                     _xmlWriter.WriteAttributeString("behaviorConfiguration", behConfigAttr.Value);
 
                 _xmlWriter.WriteAttributeString("Locator", XML_TRANSFORM_NS,
                     "Match(name)");
 
-                var endPtNodes = _xmlDocument.SelectNodes(string.Format(
-                    "//system.serviceModel/services/service[@name='{0}']/endpoint", nameAttr.Value));
+                var endPtNodes = _xmlDocument.SelectNodes(
+                    $"//system.serviceModel/services/service[@name='{nameAttr.Value}']/endpoint");
 
                 var hostNode = _xmlDocument.SelectSingleNode(
-                    string.Format("//system.serviceModel/services/service[@name='{0}']/host/baseAddresses", nameAttr.Value));
+                    $"//system.serviceModel/services/service[@name='{nameAttr.Value}']/host/baseAddresses");
 
                 if ((endPtNodes != null && endPtNodes.Count > 0))
                 {
@@ -337,37 +335,29 @@ namespace NoFuture.Read.Config
         private void WriteEndpointIdDnsClosed(Hashtable regex2Values, XmlElement endPtNode, XmlAttribute nameAttr)
         {
             var endPtContractAttr = endPtNode.Attributes["contract"];
-            if (endPtContractAttr == null || string.IsNullOrWhiteSpace(endPtContractAttr.Value))
+            if (string.IsNullOrWhiteSpace(endPtContractAttr?.Value))
                 return;
 
             //yet another way serviceModel lets you define an address...
             var nodeVii =
                 _xmlDocument.SelectSingleNode(
-                    string.Format("//system.serviceModel/services/service[@name='{0}']/endpoint[@contract='{1}']/identity/dns",
-                        nameAttr.Value,
-                        endPtContractAttr.Value));
+                    $"//system.serviceModel/services/service[@name='{nameAttr.Value}']/endpoint[@contract='{endPtContractAttr.Value}']/identity/dns");
 
-            if (nodeVii == null)
-                return;
             var dnsNode = nodeVii as XmlElement;
-            if (dnsNode == null)
-                return;
 
-            var dnsValueAttr = dnsNode.Attributes["value"];
-            if (dnsValueAttr == null || string.IsNullOrWhiteSpace(dnsValueAttr.Value))
+            var dnsValueAttr = dnsNode?.Attributes["value"];
+            if (string.IsNullOrWhiteSpace(dnsValueAttr?.Value))
                 return;
 
             var origDnsVal = dnsValueAttr.Value;
             AppropriateAllRegex(dnsValueAttr, regex2Values);
 
             WriteEndPointXmlUnclosed(
-                endPtNode.Attributes["address"] == null ? null : endPtNode.Attributes["address"].Value,
-                endPtNode.Attributes["binding"] == null ? null : endPtNode.Attributes["binding"].Value,
-                endPtNode.Attributes["bindingConfiguration"] == null
-                    ? null
-                    : endPtNode.Attributes["bindingConfiguration"].Value,
-                endPtNode.Attributes["contract"] == null ? null : endPtNode.Attributes["contract"].Value,
-                endPtNode.Attributes["name"] == null ? null : endPtNode.Attributes["name"].Value);
+                endPtNode.Attributes["address"]?.Value,
+                endPtNode.Attributes["binding"]?.Value,
+                endPtNode.Attributes["bindingConfiguration"]?.Value,
+                endPtNode.Attributes["contract"]?.Value,
+                endPtNode.Attributes["name"]?.Value);
 
             _xmlWriter.WriteAttributeString("Transform",
                 XML_TRANSFORM_NS,
@@ -387,17 +377,15 @@ namespace NoFuture.Read.Config
             var endPtAddrAttr = endPtNode.Attributes["address"];
 
             //implies the a contract with no end point address whatsoever.
-            if (endPtAddrAttr == null || string.IsNullOrWhiteSpace(endPtAddrAttr.Value))
+            if (string.IsNullOrWhiteSpace(endPtAddrAttr?.Value))
                 return;
 
             AddEndpointNodeToTransform(
                 endPtAddrAttr.Value,
-                endPtNode.Attributes["binding"] == null ? null : endPtNode.Attributes["binding"].Value,
-                endPtNode.Attributes["bindingConfiguration"] == null
-                    ? null
-                    : endPtNode.Attributes["bindingConfiguration"].Value,
-                endPtNode.Attributes["contract"] == null ? null : endPtNode.Attributes["contract"].Value,
-                endPtNode.Attributes["name"] == null ? null : endPtNode.Attributes["name"].Value);
+                endPtNode.Attributes["binding"]?.Value,
+                endPtNode.Attributes["bindingConfiguration"]?.Value,
+                endPtNode.Attributes["contract"]?.Value,
+                endPtNode.Attributes["name"]?.Value);
 
             if (!Shared.RegexCatalog.AreAnyRegexMatch(endPtAddrAttr.Value, regex2Values.Keys.Cast<string>().ToArray()))
             {
@@ -424,7 +412,7 @@ namespace NoFuture.Read.Config
                 if (bAddrNode == null)
                     continue;
                 var baseAddrAttr = bAddrNode.Attributes["baseAddress"];
-                if (baseAddrAttr == null || string.IsNullOrEmpty(baseAddrAttr.Value) ||
+                if (string.IsNullOrEmpty(baseAddrAttr?.Value) ||
                     !Uri.IsWellFormedUriString(baseAddrAttr.Value, UriKind.RelativeOrAbsolute))
                 {
                     _xmlWriter.WriteEndElement();
@@ -467,13 +455,13 @@ namespace NoFuture.Read.Config
                 var nameAttr = appenderNode.Attributes["name"];
                 var typeAttr = appenderNode.Attributes["type"];
 
-                if (nameAttr == null || string.IsNullOrWhiteSpace(nameAttr.Value))
+                if (string.IsNullOrWhiteSpace(nameAttr?.Value))
                     continue;
-                if (typeAttr == null || string.IsNullOrWhiteSpace(typeAttr.Value))
+                if (string.IsNullOrWhiteSpace(typeAttr?.Value))
                     continue;
 
                 var appenderFileNode =
-                    _xmlDocument.SelectSingleNode(string.Format("//log4net/appender[@name='{0}']/file", nameAttr.Value));
+                    _xmlDocument.SelectSingleNode($"//log4net/appender[@name='{nameAttr.Value}']/file");
                 var appenderFileElem = appenderFileNode as XmlElement;
 
                 if (appenderFileElem == null)
@@ -581,15 +569,13 @@ namespace NoFuture.Read.Config
 
         internal static void AppropriateAllRegex(XmlAttribute attr, Hashtable regex2Values)
         {
-            if (attr == null)
-                return;
-            var newAppVal = attr.Value;
+            var newAppVal = attr?.Value;
             if (string.IsNullOrEmpty(newAppVal))
                 return;
             if (regex2Values == null || regex2Values.Count <= 0)
                 return;
 
-            Shared.RegexCatalog.AppropriateAllRegex(ref newAppVal, regex2Values);
+            RegexCatalog.AppropriateAllRegex(ref newAppVal, regex2Values);
             attr.Value = newAppVal;
         }
 

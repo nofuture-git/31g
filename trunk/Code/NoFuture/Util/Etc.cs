@@ -148,7 +148,7 @@ namespace NoFuture.Util
             {
                 linesOut.Append(string.IsNullOrWhiteSpace(ln)
                     ? Environment.NewLine
-                    : string.Format("{0}{1}", ln, Environment.NewLine));
+                    : $"{ln}{Environment.NewLine}");
             }
 
             var value = linesOut.ToString();

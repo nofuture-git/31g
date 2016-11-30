@@ -77,7 +77,7 @@ namespace NoFuture.Sql.Mssql.Md
                 return;
             }
 
-            PsDbType = string.Format("{0}({1})", DEFAULT_PS_DB_TYPE, MaxLength);
+            PsDbType = $"{DEFAULT_PS_DB_TYPE}({MaxLength})";
 
         }
         public string Name { get; set; }
