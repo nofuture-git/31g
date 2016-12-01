@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace NoFuture.Timeline
+﻿namespace NoFuture.Timeline
 {
     public partial class Occidental
     {
@@ -34,9 +29,9 @@ namespace NoFuture.Timeline
             wRome.AddEntry(93, 99, "Pope Clement I(92-99)", PrintLocation.Right);
             wRome.AddEntry(100, 105, "Pope Evaristus(99-107)", PrintLocation.Right);
 
-            wRome.AddEntry(new Entry { StartValue = 69, EndValue = 95, Text = "Flavian Dyn.", Location = PrintLocation.Left });
-            wRome.AddEntry(new Entry { StartValue = 31, EndValue = 68, Text = "Julio-Claudian Dyn.", Location = PrintLocation.Left });
-            wRome.AddEntry(new Entry { StartValue = 96, EndValue = 105, Text = "Nervan-Antonian Dyn.", Location = PrintLocation.Left });
+            wRome.AddEntry(69, 95, "Flavian Dyn.", PrintLocation.Left);
+            wRome.AddEntry(31, 68, "Julio-Claudian Dyn.", PrintLocation.Left);
+            wRome.AddEntry(96, 105, "Nervan-Antonian Dyn.", PrintLocation.Left);
 
             var eRome = new Block { Ruler = rule, Title = "Roman Empire(East)", Width = 48 };
             eRome.AddEntry(34, "Conversion of Saul(34)");

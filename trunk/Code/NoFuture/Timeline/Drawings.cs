@@ -1276,7 +1276,7 @@ namespace NoFuture.Timeline
         {
             get
             {
-                return string.Format("+{0}({1})", Name, StartValue);
+                return string.Format("+{0}({1})", Name, (int)Math.Round(StartValue));
             }
             set
             {
@@ -1360,7 +1360,7 @@ namespace NoFuture.Timeline
         {
             get
             {
-                return string.Format("{0}[{1}]({2})", DiscoveredBy, Name, StartValue);
+                return $"{DiscoveredBy}[{Name}]({(int) Math.Round(StartValue)})";
             }
             set
             {
@@ -1404,7 +1404,7 @@ namespace NoFuture.Timeline
         {
             get
             {
-                return string.Format("'{0}'{1}({2})", Title, Author, StartValue);
+                return $"'{Title}'{Author}({(int) Math.Round(StartValue)})";
             }
             set
             {
@@ -1439,7 +1439,7 @@ namespace NoFuture.Timeline
         {
             get
             {
-                return string.Format("[{0}]-{1}({2})", ExplorerName, Area, StartValue);
+                return $"[{ExplorerName}]-{Area}({(int) Math.Round(StartValue)})";
             }
             set
             {
@@ -1475,7 +1475,7 @@ namespace NoFuture.Timeline
         {
             get
             {
-                return string.Format("[H] {0} ({1})", Name, Description);
+                return $"[H] {Name} ({Description})";
             }
             set
             {
@@ -1519,7 +1519,7 @@ namespace NoFuture.Timeline
         {
             _fromBlock = fromBlock;
             _toBlock = toBlock;
-            _id = string.Format("From={0},To={1}", fromBlock.Id, toBlock.Id);
+            _id = $"From={fromBlock.Id},To={toBlock.Id}";
             Text = string.Empty;
         }
         #endregion

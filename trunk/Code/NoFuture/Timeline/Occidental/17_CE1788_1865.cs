@@ -9,10 +9,10 @@ namespace NoFuture.Timeline
     {
         public Plate CE1788to1865()
         {
-            var rule = new Rule { StartValue = 1785, EndValue = 1867, RuleLineSpacing = 7 };
+            var rule = new Rule {StartValue = 1785, EndValue = 1867, RuleLineSpacing = 7};
 
             var usa = new Block {Ruler = rule, Title = "United States"};
-            usa.AddEntry(1787, "+DE,PA,NJ(1787)",PrintLocation.Right);
+            usa.AddEntry(1787, "+DE,PA,NJ(1787)", PrintLocation.Right);
             usa.AddEntry(1788, "+GA,CT,MA,MD,SC,NH,VA,NY(1788)", PrintLocation.Right);
             usa.AddEntry(1789, "[Washington 1789-1797]", PrintLocation.Left);
             usa.AddEntry(1789, "+NC(1789)", PrintLocation.Right);
@@ -40,7 +40,7 @@ namespace NoFuture.Timeline
             usa.AddEntry(1820, "+ME(1820)", PrintLocation.Right);
             usa.AddEntry(1821, "+MO(1821)", PrintLocation.Right);
             usa.AddEntry(1825, "[John Quincy Adams -1829]", PrintLocation.Left);
-            usa.AddEntry(1826,"'Last of the Mohicans'J.F.Cooper(1826)");
+            usa.AddEntry(1826, "'Last of the Mohicans'J.F.Cooper(1826)");
             usa.AddEntry(1829, "[Andrew Jackson -1837]", PrintLocation.Left);
             usa.AddEntry(1835, "Second Seminole War(1835-1842)");
             usa.AddEntry(1836, "+AR(1836)", PrintLocation.Right);
@@ -54,7 +54,7 @@ namespace NoFuture.Timeline
             usa.AddEntry(1846, "+IA(1846)", PrintLocation.Right);
             usa.AddEntry(1844, "W.Morton[anesthesia](1846)");
             usa.AddEntry(1847, "U.S.-Mexican War(1846-1848)");
-            usa.AddEntry(1848, "+WI(1848)",PrintLocation.Right);
+            usa.AddEntry(1848, "+WI(1848)", PrintLocation.Right);
             usa.AddEntry(1849, "[Zachary Taylor -1850]", PrintLocation.Left);
             usa.AddEntry(1849, "'The Scarlet Letter'N.Hawthorne'", PrintLocation.Right);
             usa.AddEntry(1850, "[Millard Fillmore -1853]", PrintLocation.Left);
@@ -73,16 +73,16 @@ namespace NoFuture.Timeline
             usa.AddEntry(1861, "Ft.Sumter fired on(e.)", PrintLocation.Left);
             usa.AddEntry(1863, "Lee's invasion of PA,", PrintLocation.Left);
             usa.AddEntry(1863, "Siege of Vicksburg, +WV(1863)", PrintLocation.Right);
-            usa.AddEntry(1864, "Siege of Petersburg,",PrintLocation.Left);
+            usa.AddEntry(1864, "Siege of Petersburg,", PrintLocation.Left);
             usa.AddEntry(1864, "Atlanta falls, +NV(1864)", PrintLocation.Right);
-            usa.AddEntry(1865, "Richmond falls,",PrintLocation.Left);
+            usa.AddEntry(1865, "Richmond falls,", PrintLocation.Left);
             usa.AddEntry(1865, "surrender @ Appomattox(1865)(f.)", PrintLocation.Right);
             usa.AddEntry(1866, "Lincoln assassinated(1865)");
 
-            usa.AddEntry(new ScienceAdvEntry("rotary press", "R.M.Hoe") { StartValue = 1843 });
+            usa.AddEntry(new ScienceAdvEntry("rotary press", "R.M.Hoe") {StartValue = 1843});
 
             var engd = new Block {Ruler = rule, Title = "United Kingdom"};
-            engd.AddEntry(1798, "Jenner[vaccination](1798)",PrintLocation.Left);
+            engd.AddEntry(1798, "Jenner[vaccination](1798)", PrintLocation.Left);
             engd.AddEntry(1800, "Volta[battery](1800)");
             engd.AddEntry(1801, "[William Pitt -1801\\-1806]", PrintLocation.Left);
             engd.AddEntry(1803, "Dalton[atomic theory](1803)");
@@ -91,12 +91,12 @@ namespace NoFuture.Timeline
             engd.AddEntry(1807, "[W. Cavendish-Bentinck -1809]", PrintLocation.Left);
             engd.AddEntry(1809, "[Spencer Perceval -1812]", PrintLocation.Left);
             engd.AddEntry(1812, "[R.B Jenkinson -1827]", PrintLocation.Left);
-            engd.AddEntry(1813,"'Pride & Prejudice'J.Austen(1813)",PrintLocation.Right);
+            engd.AddEntry(1813, "'Pride & Prejudice'J.Austen(1813)", PrintLocation.Right);
             engd.AddEntry(1826, "[G. Canning -1827]", PrintLocation.Left);
             engd.AddEntry(1827, "[Viscount Goderich -1828]", PrintLocation.Left);
             engd.AddEntry(1828, "[Arthur Wellesley -1830]", PrintLocation.Left);
             engd.AddEntry(1830, "[Charles Grey -1834]", PrintLocation.Left);
-            engd.AddEntry(1831,"Faraday[law of induction](1831)");
+            engd.AddEntry(1831, "Faraday[law of induction](1831)");
             engd.AddEntry(1836, "[R.Peel & W.Lamb(a.) -1846]", PrintLocation.Left);
             engd.AddEntry(1843, "J.P.Joule[1st law thermodyn](1843)");
             engd.AddEntry(1844, "Franklin's lost expedition(1845)");
@@ -124,9 +124,9 @@ namespace NoFuture.Timeline
             fr.AddEntry(1794, "Robespierre executed(1794)", PrintLocation.Left);
             fr.AddEntry(1795, "Napolean quells insurrection(1795)", PrintLocation.Left);
             fr.AddEntry(1796, "Cuvier[extinction](1796)");
-            fr.AddEntry(1824,"Carnot[heat engine](1824)");
-            fr.AddEntry(1833,"A.Payen[enzymes](1833)");
-            fr.AddEntry(1845,"'Count of Monte Cristo'A.Dumas(1845)");
+            fr.AddEntry(1824, "Carnot[heat engine](1824)");
+            fr.AddEntry(1833, "A.Payen[enzymes](1833)");
+            fr.AddEntry(1845, "'Count of Monte Cristo'A.Dumas(1845)");
             fr.AddEntry(1848, "revolution of 1848 & 2nd Republic ");
             fr.AddEntry(1861, "Pasteur[germ theory](1861)");
             fr.AddEntry(1863, "'Les Miserables'V.Hugo(1862)");
@@ -141,7 +141,7 @@ namespace NoFuture.Timeline
             de.AddEntry(1848, "revolution of 1848");
             de.AddEntry(1789, "[Frederick William II 1786-1797]", PrintLocation.Left);
             de.AddEntry(1795, "[Frederick William III 1797-1840]", PrintLocation.Left);
-            de.AddEntry(1809,"'Faust'Goethe(1808)");
+            de.AddEntry(1809, "'Faust'Goethe(1808)");
             de.AddEntry(1820, "H.C.Orsted[electromagnetism](1820)");
             de.AddEntry(1827, "Ohm[Ohm's law](1827)");
             de.AddEntry(1834, "German free-trade zone(1834)");
@@ -150,46 +150,46 @@ namespace NoFuture.Timeline
             de.AddEntry(1846, "Neptune discovered(1846)");
             de.AddEntry(1862, "Otto V.Bismarck as PM(1862)");
             de.AddEntry(1866, "'Capital' Marx(1867)");
-            de.AddEntry(1865,"Mendel[inheritance](1865)");
+            de.AddEntry(1865, "Mendel[inheritance](1865)");
 
 
-            var aus = new Block { Ruler = rule, Title = "Austrian Empire", Width = 30};
+            var aus = new Block {Ruler = rule, Title = "Austrian Empire", Width = 30};
             aus.AddEntry(1788, "[Joseph II 1765-1790]", PrintLocation.Left);
             aus.AddEntry(1790, "[Leopold VII 1790-1792]", PrintLocation.Left);
             aus.AddEntry(1791, "[Francis II 1792-1804]", PrintLocation.Left);
             aus.AddEntry(1804, "[Francis I 1804-1835]", PrintLocation.Left);
-            aus.AddEntry(1821, "K.V.Metternich PM(1821-1848)",PrintLocation.Left);
+            aus.AddEntry(1821, "K.V.Metternich PM(1821-1848)", PrintLocation.Left);
             aus.AddEntry(1835, "[Ferdinand I 1835-1848]", PrintLocation.Left);
             aus.AddEntry(1847, "[Francis Joseph 1848-1916]", PrintLocation.Left);
-            aus.AddEntry(1815,"Congress of Vienna(1815)");
+            aus.AddEntry(1815, "Congress of Vienna(1815)");
 
             aus.AddEntry(1842, "Doppler[Doppler efct](1842)");
             aus.AddEntry(1848, "revolution of 1848");
 
-            var ott = new Block { Ruler = rule, Title = "Ottoman Empire" };
-            ott.AddEntry(1789,"[Selim III 1789-1807]", PrintLocation.Left);
-            ott.AddEntry(1807,"[Mustafa IV 1807/8]", PrintLocation.Left);
-            ott.AddEntry(1809,"[Mahmud II 1808-1839]", PrintLocation.Left);
+            var ott = new Block {Ruler = rule, Title = "Ottoman Empire"};
+            ott.AddEntry(1789, "[Selim III 1789-1807]", PrintLocation.Left);
+            ott.AddEntry(1807, "[Mustafa IV 1807/8]", PrintLocation.Left);
+            ott.AddEntry(1809, "[Mahmud II 1808-1839]", PrintLocation.Left);
             ott.AddEntry(1839, "[Abdulmecid I 1839-1861]", PrintLocation.Left);
             ott.AddEntry(1852, "Epirus Revolt(1854)");
-            ott.AddEntry(1861, "[Abdulaziz I 1861-1876]",PrintLocation.Left);
+            ott.AddEntry(1861, "[Abdulaziz I 1861-1876]", PrintLocation.Left);
 
-            ott.AddEntry(1821,1832,"Greek War of Independence");
+            ott.AddEntry(1821, 1832, "Greek War of Independence");
 
-            var rus = new Block { Ruler = rule, Title = "Imperial Russia"};
-            rus.AddEntry(1796,"[Paul I 1796-1801]", PrintLocation.Left);
-            rus.AddEntry(1801,"[Alexander I 1801-1825]",PrintLocation.Left);
+            var rus = new Block {Ruler = rule, Title = "Imperial Russia"};
+            rus.AddEntry(1796, "[Paul I 1796-1801]", PrintLocation.Left);
+            rus.AddEntry(1801, "[Alexander I 1801-1825]", PrintLocation.Left);
             rus.AddEntry(1825, "Decembrist revolt(1825)");
             rus.AddEntry(1824, "[Nicholas I 1825-1855]", PrintLocation.Left);
-            rus.AddEntry(1830,"Lobachevsky[Non-Euclidean geo](1830)");
-            rus.AddEntry(1855, "[Alexander II 1855-1881]",PrintLocation.Left);
+            rus.AddEntry(1830, "Lobachevsky[Non-Euclidean geo](1830)");
+            rus.AddEntry(1855, "[Alexander II 1855-1881]", PrintLocation.Left);
 
             rus.AddEntry(1860, "Vladivostok founded(1860)");
             rus.AddEntry(1861, "serfs freed(1861)");
 
-            rus.AddEntry(1852,1856, "Crimean War");
+            rus.AddEntry(1852, 1856, "Crimean War");
 
-            var plate = new Plate { Ruler = rule, Name = "Modern Age(1)" };
+            var plate = new Plate {Ruler = rule, Name = "Modern Age(1)"};
             plate.AddBlock(usa);
             plate.AddBlock(engd);
             plate.AddBlock(fr);
@@ -198,25 +198,33 @@ namespace NoFuture.Timeline
             plate.AddBlock(ott);
             plate.AddBlock(rus);
 
-            plate.AddArrow(new Arrow(aus, ott){Text = "B.of Focsani(1789)", StartValue = 1789});
-            plate.AddArrow(new Arrow(rus, ott) { StartValue = 1789, FromRightToLeftArrowHead = "<......" });
-            plate.AddArrow(new Arrow(aus, fr) {StartValue = 1792 });
-            plate.AddArrow(new Arrow(de, fr) { StartValue = 1793 });
-            plate.AddArrow(new Arrow(fr, aus){StartValue = 1796, Text = "B.of Rivoli(1797)"});
-            plate.AddArrow(new Arrow(fr, ott) {Text = "B.of the Pryamids(1798)(c.)" ,StartValue = 1797});
-            plate.AddArrow(new Arrow(engd, fr){Text = "B.of the Nile(1798)(g.)", StartValue = 1798});
-            plate.AddArrow(new Arrow(fr, aus){Text = "B.of Marengo(1800)", StartValue = 1800});
-            plate.AddArrow(new Arrow(rus, fr){Text = "B.of Leipzig(1813)",StartValue = 1813});
-            plate.AddArrow(new Arrow(engd, usa){Text = "DC sacked(1814)", StartValue = 1814, ArrowTail = ".", FromRightToLeftArrowHead = "<...."});
-            plate.AddArrow(new Arrow(engd, fr){Text = "Waterloo(1815)", StartValue = 1815});
-            plate.AddArrow(new Arrow(fr, rus){StartValue = 1812});
-            plate.AddArrow(new Arrow(rus,ott){StartValue = 1853, Text = "B.of Sinop(1853)"});
-            plate.AddArrow(new Arrow(engd, rus){StartValue = 1854, Text = "B.of Balaclava(1854)"});
+            plate.AddArrow(new Arrow(aus, ott) {Text = "B.of Focsani(1789)", StartValue = 1789});
+            plate.AddArrow(new Arrow(rus, ott) {StartValue = 1789, FromRightToLeftArrowHead = "<......"});
+            plate.AddArrow(new Arrow(aus, fr) {StartValue = 1792});
+            plate.AddArrow(new Arrow(de, fr) {StartValue = 1793});
+            plate.AddArrow(new Arrow(fr, aus) {StartValue = 1796, Text = "B.of Rivoli(1797)"});
+            plate.AddArrow(new Arrow(fr, ott) {Text = "B.of the Pryamids(1798)(c.)", StartValue = 1797});
+            plate.AddArrow(new Arrow(engd, fr) {Text = "B.of the Nile(1798)(g.)", StartValue = 1798});
+            plate.AddArrow(new Arrow(fr, aus) {Text = "B.of Marengo(1800)", StartValue = 1800});
+            plate.AddArrow(new Arrow(rus, fr) {Text = "B.of Leipzig(1813)", StartValue = 1813});
+            plate.AddArrow(new Arrow(engd, usa)
+            {
+                Text = "DC sacked(1814)",
+                StartValue = 1814,
+                ArrowTail = ".",
+                FromRightToLeftArrowHead = "<...."
+            });
+            plate.AddArrow(new Arrow(engd, fr) {Text = "Waterloo(1815)", StartValue = 1815});
+            plate.AddArrow(new Arrow(fr, rus) {StartValue = 1812});
+            plate.AddArrow(new Arrow(rus, ott) {StartValue = 1853, Text = "B.of Sinop(1853)"});
+            plate.AddArrow(new Arrow(engd, rus) {StartValue = 1854, Text = "B.of Balaclava(1854)"});
 
             plate.Notes.Add("(a.)  last Prime Minister dismissed by a king,  (b.) last met in 1614");
-            plate.Notes.Add("(c.)  intended to cut England off from India, (d.) pop. of black slaves goes from 700 thousand to 3 million");
+            plate.Notes.Add(
+                "(c.)  intended to cut England off from India, (d.) pop. of black slaves goes from 700 thousand to 3 million");
             plate.Notes.Add("(e.)  April 12, 1861, (f.) April 9, 1865 (est. 620,000 killed)");
-            plate.Notes.Add("(g.)  Napolean's Navy destroyed,  (h.) Gen. Harrison defeats confederacy of Native Americans");
+            plate.Notes.Add(
+                "(g.)  Napolean's Navy destroyed,  (h.) Gen. Harrison defeats confederacy of Native Americans");
 
             return plate;
         }

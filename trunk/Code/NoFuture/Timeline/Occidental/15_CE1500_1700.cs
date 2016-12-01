@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace NoFuture.Timeline
+﻿namespace NoFuture.Timeline
 {
     public partial class Occidental
     {
@@ -19,7 +17,7 @@ namespace NoFuture.Timeline
             amer.AddEntry(1525, "[Verrazano]East Coast(1525)", PrintLocation.Left);
 
             amer.AddEntry(1534, "[Jacques Cartier]St. Lawrence R.(1534)", PrintLocation.Left);
-            amer.AddEntry(1536, "[Cortes]-California(1536)",PrintLocation.Left);
+            amer.AddEntry(1536, "[Cortes]-California(1536)", PrintLocation.Left);
             amer.AddEntry(1539, "[De Soto]-Alabama(1539)", PrintLocation.Left);
             amer.AddEntry(1542, "[Coronado]-Arizonia, Kansas(1540/41/42)", PrintLocation.Left);
             amer.AddEntry(1576, "[Frobisher]-NW Passage(1576-78)", PrintLocation.Left);
@@ -29,16 +27,16 @@ namespace NoFuture.Timeline
             amer.AddEntry(1603, "French colony in Nova Scotia(1603)");
             amer.AddEntry(1607, "Jamestown, Virginia(1607)(d.)");
             amer.AddEntry(1610, "[H.Hudson]-Hudson Riv.&Bay(1609/10)", PrintLocation.Left);
-            
+
             amer.AddEntry(1619, "1st N.Amer African slaves @ Jamestown(1619)");
-            amer.AddEntry(1623,"Pilgrims @ Plymouth(1620)");
-            amer.AddEntry(1628,"Dutch purchase Manhattan Island(1626)");
-            amer.AddEntry(1631,"Boston, MA founded(1630)");
+            amer.AddEntry(1623, "Pilgrims @ Plymouth(1620)");
+            amer.AddEntry(1628, "Dutch purchase Manhattan Island(1626)");
+            amer.AddEntry(1631, "Boston, MA founded(1630)");
             amer.AddEntry(1636, "Harvard College(1636)");
             amer.AddEntry(1639, "Delaware settled by Finns & Swedes(1638)");
-            amer.AddEntry(1650,"settlment in N.Carolina(1650)");
-            amer.AddEntry(1661,"Charlestown SC(1663)");
-            amer.AddEntry(1664,"English take New Amsterdam-rename New York(1664)");
+            amer.AddEntry(1650, "settlment in N.Carolina(1650)");
+            amer.AddEntry(1661, "Charlestown SC(1663)");
+            amer.AddEntry(1664, "English take New Amsterdam-rename New York(1664)");
             amer.AddEntry(1669, "[La.Salle]-Ohio Riv.&Lake Mich.(1669/70)", PrintLocation.Left);
             amer.AddEntry(1682, "Philadelphia, PA founded(1682)");
             amer.AddEntry(1685, "[La.Salle]-Mid West N.Amer(1681-84)", PrintLocation.Left);
@@ -94,12 +92,12 @@ namespace NoFuture.Timeline
             fr.AddEntry(1654, "O.Guericke[vacuum pump](1654)", PrintLocation.Right);
             fr.AddEntry(1673, "Leeuwenhoek[microscope](1675)", PrintLocation.Right);
             fr.AddEntry(1677, "'Ethics' B.Spinoza(1677)", PrintLocation.Right);
-            
+
             fr.AddEntry(1685, "revocation of Edict of Nantes(1685)", PrintLocation.Left);
             fr.AddEntry(1589, 1792, "Capetian[Bourbon]", PrintLocation.Left);
             fr.AddEntry(1503, 1586, "Capetian[Valois]", PrintLocation.Left);
 
-            var esp = new Block { Ruler = rule, Title = "Spain & Portugal" };
+            var esp = new Block {Ruler = rule, Title = "Spain & Portugal"};
             esp.AddEntry(1516, "[Charles V 1516-1556]", PrintLocation.Left);
             esp.AddEntry(1556, "[Philip II 1556-1598]", PrintLocation.Left);
             esp.AddEntry(1598, "[Philip III 1598-1621]", PrintLocation.Left);
@@ -112,7 +110,14 @@ namespace NoFuture.Timeline
 
             esp.AddEntry(1503, 1700, "Hapsburg Dyn.", PrintLocation.Left);
 
-            var hre = new Block { Ruler = rule, Title = "Holy Roman Empire", Width = 38, StartValue = 1500, EndValue = 1648};
+            var hre = new Block
+            {
+                Ruler = rule,
+                Title = "Holy Roman Empire",
+                Width = 38,
+                StartValue = 1500,
+                EndValue = 1648
+            };
             hre.AddEntry(1511, "[Maximilian I 1486-1519]", PrintLocation.Left);
             hre.AddEntry(1540, "[Ferdinand I 1531-1564]", PrintLocation.Left);
             hre.AddEntry(1564, "[Maximilian II 1564-1576]", PrintLocation.Left);
@@ -132,14 +137,14 @@ namespace NoFuture.Timeline
             hre.AddEntry(1609, "Galileo[telescope](1609)", PrintLocation.Right);
             hre.AddEntry(1643, "Torricelli[barometer](1643)", PrintLocation.Right);
             hre.AddEntry(1648, "Peace of Westphalia(1648)");
-            
+
             hre.AddEntry(1618, 1648, "Thirty Years War(1618-1648)(g.)", PrintLocation.Right);
 
-            var swd = new Block{Ruler = rule, Title = "Swedish Empire", StartValue = 1611};
-            swd.AddEntry(1614, "[Gustavus Adolphus 1611-1632]",PrintLocation.Left);
-            swd.AddEntry(1632, "[Kristina 1632-1654]",PrintLocation.Left);
-            swd.AddEntry(1654, "[Karl X Gustav 1654-1660]",PrintLocation.Left);
-            swd.AddEntry(1660, "[Karl XI 1660-1697]",PrintLocation.Left);
+            var swd = new Block {Ruler = rule, Title = "Swedish Empire", StartValue = 1611};
+            swd.AddEntry(1614, "[Gustavus Adolphus 1611-1632]", PrintLocation.Left);
+            swd.AddEntry(1632, "[Kristina 1632-1654]", PrintLocation.Left);
+            swd.AddEntry(1654, "[Karl X Gustav 1654-1660]", PrintLocation.Left);
+            swd.AddEntry(1660, "[Karl XI 1660-1697]", PrintLocation.Left);
 
             var ott = new Block {Ruler = rule, Title = "Ottoman Empire", Width = 34};
             ott.AddEntry(1503, "[Bayezid II 1481-1512]", PrintLocation.Left);
@@ -176,16 +181,16 @@ namespace NoFuture.Timeline
             plate.Notes.Add("(f.)marks the end of Ottoman expansion into Europe");
             plate.Notes.Add("(g.)300+ German principalities become independent of any central auth.");
 
-            plate.AddArrow(new Arrow(ott, hre){StartValue = 1534, Text = "Siege of Vienna(1529)"});
-            plate.AddArrow(new Arrow(esp, ott){StartValue = 1571, Text = "Battle of Lepanto(1571)(b.)"});
-            plate.AddArrow(new Arrow(esp, amer) { StartValue = 1521, Text = "Aztec Empire conquered(1519-21)(a.)" });
-            plate.AddArrow(new Arrow(esp, amer){StartValue = 1532, Text = "Inca Empire conquered(1532)"});
-            plate.AddArrow(new Arrow(esp, engd){StartValue = 1588, Text = "Spanish Armada(1588)"});
-            plate.AddArrow(new Arrow(ott, hre) { StartValue = 1599, Text = "Battle of Keresztes(1596)" });
+            plate.AddArrow(new Arrow(ott, hre) {StartValue = 1534, Text = "Siege of Vienna(1529)"});
+            plate.AddArrow(new Arrow(esp, ott) {StartValue = 1571, Text = "Battle of Lepanto(1571)(b.)"});
+            plate.AddArrow(new Arrow(esp, amer) {StartValue = 1521, Text = "Aztec Empire conquered(1519-21)(a.)"});
+            plate.AddArrow(new Arrow(esp, amer) {StartValue = 1532, Text = "Inca Empire conquered(1532)"});
+            plate.AddArrow(new Arrow(esp, engd) {StartValue = 1588, Text = "Spanish Armada(1588)"});
+            plate.AddArrow(new Arrow(ott, hre) {StartValue = 1599, Text = "Battle of Keresztes(1596)"});
             plate.AddArrow(new Arrow(esp, hre) {StartValue = 1620, Text = "Battle of White Mountain(1620)"});
             plate.AddArrow(new Arrow(swd, hre) {StartValue = 1631, Text = "Battle of Breitenfeld(1631)"});
             plate.AddArrow(new Arrow(swd, hre) {StartValue = 1634, Text = "Battle of Nordlingen(1634)"});
-            plate.AddArrow(new Arrow(hre, ott) { StartValue = 1664, Text = "Battle of St.Gotthard(1664)" });
+            plate.AddArrow(new Arrow(hre, ott) {StartValue = 1664, Text = "Battle of St.Gotthard(1664)"});
             plate.AddArrow(new Arrow(ott, hre) {StartValue = 1683, Text = "Siege of Vienna(1683)(f.)"});
             plate.AddArrow(new Arrow(hre, ott) {StartValue = 1700, Text = "Battle of Zenta(1697)"});
             return plate;
