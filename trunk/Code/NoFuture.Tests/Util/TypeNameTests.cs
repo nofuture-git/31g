@@ -49,20 +49,20 @@ namespace NoFuture.Tests.Util
             testThree =
                 new NoFuture.Util.NfTypeName(
                     "NoFuture.MyDatabase.Dbo.AccountExecutives, NoFuture.MyDatabase, Version=0.0.0.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a");
-            System.Diagnostics.Debug.WriteLine(string.Format("Original String: '{0}'", testThree.RawString));
-            System.Diagnostics.Debug.WriteLine(string.Format("AssemblyFileName: '{0}'", testThree.AssemblyFileName));
-            System.Diagnostics.Debug.WriteLine(string.Format("AssemblyFullName: '{0}'", testThree.AssemblyFullName));
-            System.Diagnostics.Debug.WriteLine(string.Format("AssemblyName: '{0}'", testThree.AssemblyName));
-            System.Diagnostics.Debug.WriteLine(string.Format("AssemblyQualifiedName: '{0}'", testThree.AssemblyQualifiedName));
-            System.Diagnostics.Debug.WriteLine(string.Format("ClassName: '{0}'", testThree.ClassName));
-            System.Diagnostics.Debug.WriteLine(string.Format("FullName: '{0}'", testThree.FullName));
-            System.Diagnostics.Debug.WriteLine(string.Format("Namespace: '{0}'", testThree.Namespace));
-            System.Diagnostics.Debug.WriteLine(string.Format("Version: '{0}'", testThree.Version));
-            System.Diagnostics.Debug.WriteLine(string.Format("PublicKeyToken: '{0}'", testThree.PublicKeyToken));
-            System.Diagnostics.Debug.WriteLine(string.Format("Culture: '{0}'", testThree.Culture));
+            System.Diagnostics.Debug.WriteLine($"Original String: '{testThree.RawString}'");
+            Assert.AreEqual("NoFuture.MyDatabase.dll", testThree.AssemblyFileName);
+            Assert.AreEqual("NoFuture.MyDatabase, Version=0.0.0.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a", testThree.AssemblyFullName);
+            Assert.AreEqual("NoFuture.MyDatabase",testThree.AssemblyName);
+            Assert.AreEqual(testThree.RawString, testThree.AssemblyQualifiedName);
+            Assert.AreEqual("AccountExecutives", testThree.ClassName);
+            Assert.AreEqual("NoFuture.MyDatabase.Dbo.AccountExecutives", testThree.FullName);
+            Assert.AreEqual("NoFuture.MyDatabase.Dbo",testThree.Namespace);
+            Assert.AreEqual("Version=0.0.0.0", testThree.Version);
+            Assert.AreEqual("PublicKeyToken=669e0ddf0bb1aa2a", testThree.PublicKeyToken);
+            Assert.AreEqual("Culture=neutral", testThree.Culture);
 
             var testSix = new NoFuture.Util.NfTypeName("My_SillyName_NoNamespace_Pos_Class");
-            System.Diagnostics.Debug.WriteLine(string.Format("Shitty Name Result :{0}", testSix.ClassName));
+            Assert.AreEqual("My_SillyName_NoNamespace_Pos_Class", testSix.ClassName);
         }
 
         [TestMethod]

@@ -34,15 +34,16 @@ namespace NoFuture.Util
         #endregion
 
         #region Constants
+        public const string FOUR_PT_VERSION_NUMBER = @"[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+";
+        public const string ASM_VERSION_REGEX = @"\,\s*Version\=" + FOUR_PT_VERSION_NUMBER;
+        public const string ASM_CULTURE_REGEX = @"\,\s*Culture\=[a-z_\-]+";
+        public const string ASM_PRIV_TOKEN_REGEX = @"\,\s*PublicKeyToken\=(null|[a-f0-9]*)";
+        public const string ASM_PROC_ARCH_REGEX = @"\,\s*ProcessorArchitecture\=(MSIL|Arm|Amd64|IA64|None|X86)";
 
         public const string FULL_ASSEMBLY_NAME_REGEX = @"([a-z0-9_\.]*?)\,\s*(Version\=[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+)\,\s*(Culture\=[a-z_\-]*?)\,\s*(PublicKeyToken\=(null|[a-f0-9]*))(\,\s*(ProcessorArchitecture\=(MSIL|Arm|Amd64|IA64|None|X86)))?";
         public const string ASSEMBLY_QUALIFIED_CLASS_NAME_REGEX = @"([a-z0-9_\.]*?)\,\s*" + FULL_ASSEMBLY_NAME_REGEX;
         public const string NAMESPACE_CLASS_NAME_REGEX = @"\W[a-zA-Z_][a-zA-Z0-9_\x3D\x2E\x20\x3A]+";
         public const string ID_REGEX = @"[_a-z][a-z0-9_]+?";
-        public const string ASM_VERSION_REGEX = @"\,\s*Version\=[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+";
-        public const string ASM_CULTURE_REGEX = @"\,\s*Culture\=[a-z_\-]+";
-        public const string ASM_PRIV_TOKEN_REGEX = @"\,\s*PublicKeyToken\=(null|[a-f0-9]*)";
-        public const string ASM_PROC_ARCH_REGEX = @"\,\s*ProcessorArchitecture\=(MSIL|Arm|Amd64|IA64|None|X86)";
         public const string DEFAULT_NAME_PREFIX = "_u0000";
 
         public static class PropertyNamePrefix
@@ -143,6 +144,34 @@ namespace NoFuture.Util
         /// </summary>
         public string RawString => $"{_ctorString}";
 
+        /// <summary>
+        /// Gets the version number as a strongly type .NET <see cref="Version"/>
+        /// </summary>
+        public Version VersionValue
+        {
+            get
+            {
+                string ver;
+                return !RegexCatalog.IsRegexMatch(Version, FOUR_PT_VERSION_NUMBER, out ver)
+                    ? new Version(0, 0, 0, 0)
+                    : new Version(ver);
+            }
+        }
+
+        /// <summary>
+        /// Gets just the value of the <see cref="PublicKeyToken"/>
+        /// </summary>
+        public string PublicKeyTokenValue
+        {
+            get
+            {
+                var pk = PublicKeyToken;
+                if (string.IsNullOrWhiteSpace(pk) || !pk.Contains("="))
+                    return "null";
+                return pk.Split('=')[1];
+            }
+        }
+
         #endregion
 
         public NfTypeName(string name)
@@ -206,8 +235,8 @@ namespace NoFuture.Util
 
             if (String.IsNullOrWhiteSpace(_typeFullName))
             {
-                _className = GetTypeNameWithoutNamespace(_ctorString);
-                _namespace = GetNamespaceWithoutTypeName(_ctorString);
+                _className = GetTypeNameWithoutNamespace(nameLessOthers);
+                _namespace = GetNamespaceWithoutTypeName(nameLessOthers);
             }
             else
             {
@@ -215,6 +244,37 @@ namespace NoFuture.Util
                 _namespace = GetNamespaceWithoutTypeName(_typeFullName);
             }
 
+        }
+
+        /// <summary>
+        /// Factory method to get a <see cref="NfTypeName"/> from an assembly file on disk.
+        /// </summary>
+        /// <param name="filePath">Path to a .NET assembly file</param>
+        /// <param name="nfTn"></param>
+        /// <returns></returns>
+        public static bool TryGetByAsmFile(string filePath, out NfTypeName nfTn)
+        {
+            nfTn = null;
+            if (string.IsNullOrWhiteSpace(filePath))
+                return false;
+            if (!File.Exists(filePath))
+                return false;
+            try
+            {
+                var asmName = System.Reflection.AssemblyName.GetAssemblyName(filePath);
+                if (asmName == null)
+                    return false;
+                nfTn = new NfTypeName(asmName.FullName);
+            }
+            catch (BadImageFormatException)
+            {
+                return false;
+            }
+            catch (FileLoadException)
+            {
+                return false;
+            }
+            return true;
         }
 
         #region Static Utility Methods
