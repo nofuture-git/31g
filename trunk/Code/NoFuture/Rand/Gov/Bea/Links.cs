@@ -7,7 +7,7 @@ namespace NoFuture.Rand.Gov.Bea
     /// </summary>
     public class Links
     {
-        public const string BeaBaseAccessUri = "http://www.bea.gov/api/data";
+        public const string BeaBaseAccessUri = "https://www.bea.gov/api/data";
 
         public static string BeaStdUri
         {

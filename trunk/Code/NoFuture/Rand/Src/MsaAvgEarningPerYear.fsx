@@ -18,7 +18,7 @@ open MathNet.Numerics.Providers.LinearAlgebra.Mkl
 System.Environment.CurrentDirectory <- __SOURCE_DIRECTORY__
 Control.LinearAlgebraProvider <- MklLinearAlgebraProvider()
 
-type BeaCountyData = JsonProvider<"BeaRegionalDataPJEARN_MI.Msa.json">
+type BeaCountyData = JsonProvider<"Samples/BeaRegionalDataPJEARN_MI.Sample.json">
 
 type Vec = Vector<float>
 type Mat = Matrix<float>

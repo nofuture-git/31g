@@ -328,6 +328,20 @@ namespace NoFuture.Rand.Data.Types
             if (matchedNodes.Count == 1)
                 return matchedNodes[0];
 
+            //choose one with a msa-code value if possiable
+            foreach (var matchedNode in matchedNodes)
+            {
+                var matchedElem = matchedNode as XmlElement;
+                if (matchedElem == null)
+                    continue;
+                if(!matchedElem.HasAttributes)
+                    continue;
+                var hasMsaCode = !string.IsNullOrWhiteSpace(matchedElem.GetAttribute("msa-code"));
+                var hasCbsaCode = !string.IsNullOrWhiteSpace(matchedElem.GetAttribute("cbsa-code"));
+                if (hasCbsaCode || hasMsaCode)
+                    return matchedElem;
+            }
+
             var pick = Etx.IntNumber(0, matchedNodes.Count - 1);
             return matchedNodes[pick];
         }
@@ -360,6 +374,7 @@ namespace NoFuture.Rand.Data.Types
                 }
             }
             AverageEarnings = GetAvgEarningsPerYear(cityNode) ?? _myState?.GetStateData()?.AverageEarnings;
+            GetSuburbCityName(cityNode);
         }
 
         protected internal static LinearEquation GetAvgEarningsPerYear(XmlNode someNode)
@@ -380,6 +395,24 @@ namespace NoFuture.Rand.Data.Types
                 return new LinearEquation { Intercept = intercept, Slope = slope };
             }
             return null;
+        }
+
+        protected internal void GetSuburbCityName(XmlNode cityNode)
+        {
+            if (cityNode == null)
+                return;
+            if (!cityNode.HasChildNodes)
+                return;
+            var places =
+                cityNode.ChildNodes.OfType<XmlElement>().Where(x => x.LocalName == "place" && x.HasAttributes).ToList();
+            if (!places.Any())
+                return;
+            var pick = Etx.IntNumber(0, places.Count - 1);
+            var pickedPlace = places[pick];
+            var suburbName = pickedPlace.GetAttribute("name");
+            if (string.IsNullOrWhiteSpace(suburbName))
+                return;
+            data.City = suburbName;
         }
         #endregion
     }

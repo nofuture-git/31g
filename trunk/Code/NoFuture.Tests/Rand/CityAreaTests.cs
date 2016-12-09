@@ -142,5 +142,23 @@ namespace NoFuture.Tests.Rand
             Assert.AreNotEqual("New York", testResult.City);
             System.Diagnostics.Debug.WriteLine(testResult.City);
         }
+        [TestMethod]
+        public void TestUsCityStateZipCtorPickWithMsa()
+        {
+            var addrData = new AddressData { StateAbbrv = "FL", PostalCode = "32701" };
+            var testResult = new UsCityStateZip(addrData);
+            Assert.AreNotEqual("New York", testResult.City);
+            Assert.IsNotNull(testResult.Msa);
+            System.Diagnostics.Debug.WriteLine(testResult.City);
+        }
+        [TestMethod]
+        public void TestUsCityStateZipCtorPickSuburb()
+        {
+            var addrData = new AddressData { StateAbbrv = "FL", PostalCode = "32101" };
+            var testResult = new UsCityStateZip(addrData);
+            Assert.AreNotEqual("New York", testResult.City);
+            Assert.IsNotNull(testResult.Msa);
+            System.Diagnostics.Debug.WriteLine(testResult.City);
+        }
     }
 }
