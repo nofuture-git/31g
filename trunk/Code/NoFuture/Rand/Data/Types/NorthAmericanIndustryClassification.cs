@@ -47,10 +47,11 @@ namespace NoFuture.Rand.Data.Types
         /// <returns></returns>
         public override bool TryThisParseXml(XmlElement elem)
         {
+            const string DESCRIPTION = "Description";
             if (!base.TryThisParseXml(elem))
                 return false;
 
-            var attr = elem.Attributes["Description"];
+            var attr = elem.Attributes[DESCRIPTION];
             if (attr != null)
                 Description = attr.Value;
             return true;

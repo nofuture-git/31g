@@ -9,7 +9,7 @@ namespace NoFuture.Rand.Data
         #endregion
 
         #region
-        private const string WEBMAIL_DOMAINS = "webmailDomains.txt";
+        public const string WEBMAIL_DOMAINS = "webmailDomains.txt";
         #endregion
 
         /// <summary>
@@ -29,6 +29,7 @@ namespace NoFuture.Rand.Data
         };
 
         /// <summary>
+        /// Loads <see cref="WEBMAIL_DOMAINS"/> into an array.
         /// Src [https://github.com/tarr11/Webmail-Domains/blob/master/domains.txt]
         /// </summary>
         public static string[] UsWebmailDomains

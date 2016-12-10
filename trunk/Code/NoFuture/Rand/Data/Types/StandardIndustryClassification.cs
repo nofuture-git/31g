@@ -18,13 +18,15 @@ namespace NoFuture.Rand.Data.Types
 
         public override bool TryThisParseXml(XmlElement elem)
         {
+            const string VALUE = "value";
+            const string SEC_RESULTS = "sec-results";
             if (!base.TryThisParseXml(elem))
                 return false;
 
-            var attr = elem.Attributes["value"];
+            var attr = elem.Attributes[VALUE];
             if (attr != null)
                 Value = attr.Value;
-            attr = elem.Attributes["sec-results"];
+            attr = elem.Attributes[SEC_RESULTS];
             if (attr != null)
             {
                 bool nope;

@@ -11,7 +11,7 @@ namespace NoFuture.Rand.Data
 {
     public class TreeData
     {
-        #region Fields
+        #region fields
         private static XmlDocument _usZipXml;
         private static XmlDocument _usStateData;
         private static XmlDocument _caZipXml;
@@ -33,277 +33,284 @@ namespace NoFuture.Rand.Data
         private static Bank[] _fedReleaseLrgBnkNames;
         #endregion
 
-        #region Constants
+        #region inner types
 
-        private const string CA_AREA_CODE_DATA = "CA_AreaCode.xml";
-        private const string US_ZIP_DATA = "US_Zip.xml";
-        private const string CA_ZIP_DATA = "CA_Zip.xml";
-        private const string US_AREA_CODE_DATA = "US_AreaCode.xml";
-        private const string INS_COMPANY = "US_InsCompanyNames.xml";
-        private const string ECON_SECTOR = "US_EconSectors.xml";
-        private const string US_UNIV = "US_Universities.xml";
-        private const string US_FIRST_NAMES_DATA = "US_FirstNames.xml";
-        private const string US_STATE_DATA = "US_States.xml";
-        private const string US_LAST_NAMES_DATA = "US_LastNames.xml";
-        private const string US_HIGH_SCHOOL_DATA = "US_HighSchools.xml";
-        private const string US_CITY_DATA = "US_City.xml";
-        private const string X_REF_DATA = "XRef.xml";
-        private const string US_ZIP_PROBTABLE = "US_Zip_ProbTable.xml";
-        private const string LRG_BNK_LST = "lrg_bnk_lst.txt";
-        private const string US_PERSON_DEBT = "US_PersonalDebt.xml";
-        private const string US_PERSON_WEALTH = "US_PersonalWealth.xml";
-        private const string VIN_WMI = "Vin_Wmi.xml";
-        private const string ENGLISH_WORDS = "English_Words.xml";
+        public static class DataFiles
+        {
+            public const string CA_AREA_CODE_DATA_FILE = "CA_AreaCode.xml";
+            public const string US_ZIP_DATA_FILE = "US_Zip.xml";
+            public const string CA_ZIP_DATA_FILE = "CA_Zip.xml";
+            public const string US_AREA_CODE_DATA_FILE = "US_AreaCode.xml";
+            public const string INS_COMPANY_DATA_FILE = "US_InsCompanyNames.xml";
+            public const string ECON_SECTOR_DATA_FILE = "US_EconSectors.xml";
+            public const string US_UNIV_DATA_FILE = "US_Universities.xml";
+            public const string US_FIRST_NAMES_DATA_FILE = "US_FirstNames.xml";
+            public const string US_STATE_DATA_FILE = "US_States.xml";
+            public const string US_LAST_NAMES_DATA_FILE = "US_LastNames.xml";
+            public const string US_HIGH_SCHOOL_DATA_FILE = "US_HighSchools.xml";
+            public const string US_CITY_DATA_FILE = "US_City.xml";
+            public const string X_REF_DATA_FILE = "XRef.xml";
+            public const string US_ZIP_PROB_TABLE_DATA_FILE = "US_Zip_ProbTable.xml";
+            public const string LRG_BNK_LST_DATA_FILE = "lrg_bnk_lst.txt";
+            public const string US_PERSON_DEBT_DATA_FILE = "US_PersonalDebt.xml";
+            public const string US_PERSON_WEALTH_DATA_FILE = "US_PersonalWealth.xml";
+            public const string VIN_WMI_DATA_FILE = "Vin_Wmi.xml";
+            public const string ENGLISH_WORDS_DATA_FILE = "English_Words.xml";
+        }
+
         #endregion
 
-        #region API
+        #region methods
         /// <summary>
-        /// Loads the 'US_States.xml' data into a <see cref="System.Xml.XmlDocument"/> document.
+        /// Loads the <see cref="DataFiles.US_STATE_DATA_FILE"/> data into a <see cref="XmlDocument"/> document.
         /// </summary>
         public static XmlDocument UsStateData
         {
             get
             {
                 if (_usStateData == null)
-                    GetXmlDataSource(US_STATE_DATA, ref _usStateData);
+                    GetXmlDataSource(DataFiles.US_STATE_DATA_FILE, ref _usStateData);
                 return _usStateData;
             }
         }
         /// <summary>
-        /// Loads the 'US_FirstNames.xml' data into a <see cref="System.Xml.XmlDocument"/> document.
+        /// Loads the <see cref="DataFiles.US_FIRST_NAMES_DATA_FILE"/> data into a <see cref="XmlDocument"/> document.
         /// </summary>
         public static XmlDocument AmericanFirstNamesData
         {
             get
             {
                 if(_usFnames == null)
-                    GetXmlDataSource(US_FIRST_NAMES_DATA, ref _usFnames);
+                    GetXmlDataSource(DataFiles.US_FIRST_NAMES_DATA_FILE, ref _usFnames);
                 return _usFnames;
             }
         }
 
         /// <summary>
-        /// Loads the 'US_LastNames.xml' data into a <see cref="System.Xml.XmlDocument"/> document.
+        /// Loads the <see cref="DataFiles.US_LAST_NAMES_DATA_FILE"/> data into a <see cref="XmlDocument"/> document.
         /// </summary>
         public static XmlDocument AmericanLastNamesData
         {
             get
             {
                 if (_usLnames == null)
-                    GetXmlDataSource(US_LAST_NAMES_DATA, ref _usLnames);
+                    GetXmlDataSource(DataFiles.US_LAST_NAMES_DATA_FILE, ref _usLnames);
                 return _usLnames;
             }
             
         }
 
         /// <summary>
-        /// Loads the 'US_Zip.xml' data into a <see cref="System.Xml.XmlDocument"/> document.
+        /// Loads the <see cref="DataFiles.US_ZIP_DATA_FILE"/> data into a <see cref="XmlDocument"/> document.
         /// </summary>
         public static XmlDocument AmericanZipCodeData
         {
             get
             {
                 if (_usZipXml == null)
-                    GetXmlDataSource(US_ZIP_DATA, ref _usZipXml);
+                    GetXmlDataSource(DataFiles.US_ZIP_DATA_FILE, ref _usZipXml);
 
                 return _usZipXml;
             }
         }
 
         /// <summary>
-        /// Loads the 'US_HighSchools.xml' data into a <see cref="System.Xml.XmlDocument"/> document.
+        /// Loads the <see cref="DataFiles.US_HIGH_SCHOOL_DATA_FILE"/> data into a <see cref="XmlDocument"/> document.
         /// </summary>
         public static XmlDocument AmericanHighSchoolData
         {
             get
             {
                 if(_usHighSchools == null)
-                    GetXmlDataSource(US_HIGH_SCHOOL_DATA, ref _usHighSchools);
+                    GetXmlDataSource(DataFiles.US_HIGH_SCHOOL_DATA_FILE, ref _usHighSchools);
 
                 return _usHighSchools;
             }
         }
 
         /// <summary>
-        /// Loads the 'US_City.xml' data into a <see cref="System.Xml.XmlDocument"/> document.
+        /// Loads the <see cref="DataFiles.US_CITY_DATA_FILE"/> data into a <see cref="XmlDocument"/> document.
         /// </summary>
         public static XmlDocument AmericanCityData
         {
             get
             {
                 if(_usCities == null)
-                    GetXmlDataSource(US_CITY_DATA, ref _usCities);
+                    GetXmlDataSource(DataFiles.US_CITY_DATA_FILE, ref _usCities);
                 return _usCities;
             }
         }
-        
+
         /// <summary>
-        /// Loads the 'CA_Zip.xml' data into a <see cref="System.Xml.XmlDocument"/> document.
+        /// Loads the <see cref="DataFiles.CA_ZIP_DATA_FILE"/> data into a <see cref="XmlDocument"/> document.
         /// </summary>
         public static XmlDocument CanadianPostalCodeData
         {
             get
             {
                 if (_caZipXml == null)
-                    GetXmlDataSource(CA_ZIP_DATA, ref _caZipXml);
+                    GetXmlDataSource(DataFiles.CA_ZIP_DATA_FILE, ref _caZipXml);
 
                 return _caZipXml;
             }
         }
 
         /// <summary>
-        /// Loads 'US_AreaCode.xml' data into <see cref="System.Xml.XmlDocument"/> document.
+        /// Loads <see cref="DataFiles.US_AREA_CODE_DATA_FILE"/> data into <see cref="XmlDocument"/> document.
         /// </summary>
         public static XmlDocument AmericanAreaCodeData
         {
             get
             {
                 if (_usAreaCodeXml == null)
-                    GetXmlDataSource(US_AREA_CODE_DATA, ref _usAreaCodeXml);
+                    GetXmlDataSource(DataFiles.US_AREA_CODE_DATA_FILE, ref _usAreaCodeXml);
 
                 return _usAreaCodeXml;
             }
         }
 
         /// <summary>
-        /// Loads 'CA_AreaCode.xml' data into <see cref="System.Xml.XmlDocument"/> document.
+        /// Loads <see cref="DataFiles.CA_AREA_CODE_DATA_FILE"/> data into <see cref="XmlDocument"/> document.
         /// </summary>
         public static XmlDocument CanadianAreaCodeData
         {
             get
             {
                 if (_caAreaCodeXml == null)
-                    GetXmlDataSource(CA_AREA_CODE_DATA, ref _caAreaCodeXml);
+                    GetXmlDataSource(DataFiles.CA_AREA_CODE_DATA_FILE, ref _caAreaCodeXml);
 
                 return _caAreaCodeXml;
             }
         }
 
         /// <summary>
-        /// Loads the 'US_InsCompanyNames.xml' data into <see cref="System.Xml.XmlDocument"/> document.
+        /// Loads the <see cref="DataFiles.INS_COMPANY_DATA_FILE"/> data into <see cref="XmlDocument"/> document.
         /// </summary>
         public static XmlDocument InsuranceCompanyNameData
         {
             get
             {
                 if (_usInsComXml == null)
-                    GetXmlDataSource(INS_COMPANY, ref _usInsComXml);
+                    GetXmlDataSource(DataFiles.INS_COMPANY_DATA_FILE, ref _usInsComXml);
 
                 return _usInsComXml;
             }
         }
 
         /// <summary>
-        /// Loads the 'US_EconSectors.xml' data into a <see cref="System.Xml.XmlDocument"/> document.
+        /// Loads the <see cref="DataFiles.ECON_SECTOR_DATA_FILE"/> data into a <see cref="XmlDocument"/> document.
         /// </summary>
         public static XmlDocument EconSectorData
         {
             get
             {
                 if (_econSectorXml == null)
-                    GetXmlDataSource(ECON_SECTOR, ref _econSectorXml);
+                    GetXmlDataSource(DataFiles.ECON_SECTOR_DATA_FILE, ref _econSectorXml);
 
                 return _econSectorXml;
             }
         }
 
         /// <summary>
-        /// Loads the 'US_EconSectors.xml' data into a <see cref="System.Xml.XmlDocument"/> document.
+        /// Loads the <see cref="DataFiles.US_UNIV_DATA_FILE"/> data into a <see cref="XmlDocument"/> document.
         /// </summary>
         public static XmlDocument AmericanUniversityData
         {
             get
             {
                 if (_usUnivXml == null)
-                    GetXmlDataSource(US_UNIV, ref _usUnivXml);
+                    GetXmlDataSource(DataFiles.US_UNIV_DATA_FILE, ref _usUnivXml);
 
                 return _usUnivXml;
             }
         }
 
         /// <summary>
-        /// Loads the 'XRef.xml' data into a <see cref="System.Xml.XmlDocument"/> document.
+        /// Loads the <see cref="DataFiles.X_REF_DATA_FILE"/> data into a <see cref="XmlDocument"/> document.
         /// </summary>
         public static XmlDocument XRefXml
         {
             get
             {
                 if(_xrefData == null)
-                    GetXmlDataSource(X_REF_DATA, ref _xrefData);
+                    GetXmlDataSource(DataFiles.X_REF_DATA_FILE, ref _xrefData);
                 return _xrefData;
             }
         }
 
         /// <summary>
-        /// Loads the 'US_Zip_ProbTable.xml' data into a <see cref="System.Xml.XmlDocument"/> document.
+        /// Loads the <see cref="DataFiles.US_ZIP_PROB_TABLE_DATA_FILE"/> data into a <see cref="XmlDocument"/> document.
         /// </summary>
         public static XmlDocument UsZipProbabilityTable
         {
             get
             {
                 if (_usZipProbTable == null)
-                    GetXmlDataSource(US_ZIP_PROBTABLE, ref _usZipProbTable);
+                    GetXmlDataSource(DataFiles.US_ZIP_PROB_TABLE_DATA_FILE, ref _usZipProbTable);
                 return _usZipProbTable;
             }
         }
 
         /// <summary>
-        /// Loads the 'US_PersonalDebt.xml' data into a <see cref="System.Xml.XmlDocument"/> document.
+        /// Loads the <see cref="DataFiles.US_PERSON_DEBT_DATA_FILE"/> data into a <see cref="XmlDocument"/> document.
         /// </summary>
         public static XmlDocument UsPersonalDebt
         {
             get
             {
                 if(_usPersonalDebt == null)
-                    GetXmlDataSource(US_PERSON_DEBT, ref _usPersonalDebt);
+                    GetXmlDataSource(DataFiles.US_PERSON_DEBT_DATA_FILE, ref _usPersonalDebt);
                 return _usPersonalDebt;
             }
         }
 
         /// <summary>
-        /// Loads the 'US_PersonalWealth.xml' data into a <see cref="System.Xml.XmlDocument"/> document.
+        /// Loads the <see cref="DataFiles.US_PERSON_WEALTH_DATA_FILE"/> data into a <see cref="XmlDocument"/> document.
         /// </summary>
         public static XmlDocument UsPersonalWealth
         {
             get
             {
                 if (_usPersonalWealth == null)
-                    GetXmlDataSource(US_PERSON_WEALTH, ref _usPersonalWealth);
+                    GetXmlDataSource(DataFiles.US_PERSON_WEALTH_DATA_FILE, ref _usPersonalWealth);
                 return _usPersonalWealth;
             }
         }
 
         /// <summary>
-        /// Loads the 'Vin_Wmi.xml' data into a <see cref="System.Xml.XmlDocument"/> document.
+        /// Loads the <see cref="DataFiles.VIN_WMI_DATA_FILE"/> data into a <see cref="XmlDocument"/> document.
         /// </summary>
         public static XmlDocument VinWmi
         {
             get
             {
                 if(_vinWmi == null)
-                    GetXmlDataSource(VIN_WMI, ref _vinWmi);
+                    GetXmlDataSource(DataFiles.VIN_WMI_DATA_FILE, ref _vinWmi);
                 return _vinWmi;
             }
         }
 
         /// <summary>
-        /// Loads the 'English_Words.xml' data into a <see cref="System.Xml.XmlDocument"/> document.
+        /// Loads the <see cref="DataFiles.ENGLISH_WORDS_DATA_FILE"/> data into a <see cref="XmlDocument"/> document.
         /// </summary>
         public static List<Tuple<string, double>> EnglishWords
         {
             get
             {
+                const string WORD = "word";
+                const string LANG = "lang";
+                const string COUNT = "count";
                 try
                 {
                     if (_enWords != null && _enWords.Count > 0)
                         return _enWords;
 
-                    if (!TestDataFileIsPresent(ENGLISH_WORDS))
+                    if (!TestDataFileIsPresent(DataFiles.ENGLISH_WORDS_DATA_FILE))
                         return null;
 
                     XmlDocument enWordsXml = null;
-                    GetXmlDataSource(ENGLISH_WORDS, ref enWordsXml);
-                    var wordNodes = enWordsXml?.SelectNodes("//word[@lang='en']");
+                    GetXmlDataSource(DataFiles.ENGLISH_WORDS_DATA_FILE, ref enWordsXml);
+                    var wordNodes = enWordsXml?.SelectNodes($"//{WORD}[@{LANG}='en']");
                     if (wordNodes == null)
                         return null;
 
@@ -314,7 +321,7 @@ namespace NoFuture.Rand.Data
                         var word = elem?.InnerText;
                         if (string.IsNullOrWhiteSpace(word))
                             continue;
-                        var countStr = elem.Attributes["count"]?.Value;
+                        var countStr = elem.Attributes[COUNT]?.Value;
                         if (string.IsNullOrWhiteSpace(countStr))
                             continue;
                         double count;
@@ -334,9 +341,9 @@ namespace NoFuture.Rand.Data
         }
 
         /// <summary>
-        /// Loads a list of <see cref="FinancialFirm"/> by parsing the data from "lrg_bnk_lst.txt" 
+        /// Loads a list of <see cref="FinancialFirm"/> by parsing the data from <see cref="DataFiles.LRG_BNK_LST_DATA_FILE"/> 
         /// <remarks>
-        /// A path must be set to <see cref="NoFuture.BinDirectories.Root"/> which contains a 'Data\Source' folder
+        /// A path must be set to <see cref="BinDirectories.Root"/> which contains a 'Data\Source' folder
         /// and it is within that folder the method expects to find 'lrg_bnk_lst.txt'.
         /// This function uses the local copy of the doc and does not fetch it from The Fed over the net.
         /// </remarks>
@@ -348,7 +355,7 @@ namespace NoFuture.Rand.Data
                 if (_fedReleaseLrgBnkNames != null && _fedReleaseLrgBnkNames.Length > 0)
                     return _fedReleaseLrgBnkNames;
 
-                var rawData = GetTextDataSource(LRG_BNK_LST);
+                var rawData = GetTextDataSource(DataFiles.LRG_BNK_LST_DATA_FILE);
                 if(string.IsNullOrWhiteSpace(rawData))
                     return new Bank[0];//return empty list for missing data
 
@@ -365,7 +372,6 @@ namespace NoFuture.Rand.Data
             }
         }
 
-        #endregion
 
         [EditorBrowsable(EditorBrowsableState.Never)]
         internal static string GetTextDataSource(string name)
@@ -405,7 +411,7 @@ namespace NoFuture.Rand.Data
             if (!TestDataFileIsPresent(name))
             {
                 throw new InvalidOperationException("Data is stored on the drive in the folder assigned to " +
-                                                    "NoFuture.BinDirectories.DataRoot.  Assign this variable " +
+                                                    $"{nameof(BinDirectories.DataRoot)}.  Assign this variable " +
                                                     "and try again.");
             }
         }
@@ -417,5 +423,7 @@ namespace NoFuture.Rand.Data
                 return false;
             return !string.IsNullOrWhiteSpace(name) && File.Exists(Path.Combine(BinDirectories.DataRoot, name));
         }
+        #endregion
+
     }
 }

@@ -13,6 +13,7 @@ namespace NoFuture.Rand.Data.Types
         public abstract string Notes { get; set; }
         public abstract string Formatted { get; }
         public abstract string Unformatted { get; }
+
         /// <summary>
         /// Gets a <see cref="NorthAmericanPhone"/> whose Area Code, Central Office and 
         /// Subscriber number are all random values.
@@ -25,45 +26,7 @@ namespace NoFuture.Rand.Data.Types
         /// <returns></returns>
         public static NorthAmericanPhone American()
         {
-            var usphone = new NorthAmericanPhone();
-
-            var phstr = new StringBuilder();
-            phstr.Append($"{Etx.MyRand.Next(2, 9)}");
-            phstr.Append($"{Etx.MyRand.Next(12, 99):00}");
-
-            usphone.AreaCode = phstr.ToString();
-
-            //check if randomly selected toll-free number
-            if (usphone.AreaCode == "800" || 
-                usphone.AreaCode == "888" || 
-                usphone.AreaCode == "877" || 
-                usphone.AreaCode == "866" || 
-                usphone.AreaCode == "855" || 
-                usphone.AreaCode == "844")
-            {
-                usphone.AreaCode = (Convert.ToInt32(usphone.AreaCode) - 1).ToString(CultureInfo.InvariantCulture);
-            }
-            phstr.Clear();
-
-            phstr.Append($"{Etx.MyRand.Next(2, 9)}");
-            var subscriberRand = Etx.MyRand.Next(1, 100);
-            switch (subscriberRand)
-            {
-                case 100:
-                    phstr.Append("00");
-                    break;
-                case 1-49:
-                    phstr.Append($"{Etx.MyRand.Next(1, 9)}");
-                    phstr.Append($"{Etx.MyRand.Next(2, 9)}");
-                    break;
-                default:
-                    phstr.Append($"{Etx.MyRand.Next(2, 9)}");
-                    phstr.Append($"{Etx.MyRand.Next(1, 9)}");
-                    break;
-            }
-            usphone.CentralOfficeCode = phstr.ToString();
-            usphone.SubscriberNumber = $"{Etx.MyRand.Next(1, 9999):0000}";
-            return usphone;
+            return new NorthAmericanPhone();
         }
 
         /// <summary>
@@ -74,12 +37,10 @@ namespace NoFuture.Rand.Data.Types
         /// <returns></returns>
         public static NorthAmericanPhone American(string stateCode)
         {
-            var naPhone = American();
-            var areaCode = GetAreaCode("us", stateCode);
-            if (!string.IsNullOrWhiteSpace(areaCode))
-                naPhone.AreaCode = areaCode;
-
-            return naPhone;
+            return
+                new NorthAmericanPhone(
+                    new Tuple<NorthAmericanPhone.PhoneCodes, string>(NorthAmericanPhone.PhoneCodes.AreaCode,
+                        GetAreaCode(Gov.NationCodes.UNITED_STATES, stateCode)));
         }
 
         /// <summary>
@@ -90,27 +51,29 @@ namespace NoFuture.Rand.Data.Types
         /// <returns></returns>
         public static NorthAmericanPhone Canadian(string providenceCode)
         {
-            var naPhone = American();
-            var areaCode = GetAreaCode("ca", providenceCode);
-            if (!string.IsNullOrWhiteSpace(areaCode))
-                naPhone.AreaCode = areaCode;
-
-            return naPhone;
+            return
+                new NorthAmericanPhone(
+                    new Tuple<NorthAmericanPhone.PhoneCodes, string>(NorthAmericanPhone.PhoneCodes.AreaCode,
+                        GetAreaCode(Gov.NationCodes.CANADA, providenceCode)));
         }
 
         //same code only the resource changes
         private static string GetAreaCode(string countryCode, string stateCode)
         {
+            const string AREA_CODE_PLURAL = "area-codes";
+            const string STATE = "state";
+            const string PROVIDENCE = "providence";
+            const string ABBREVIATION = "abbreviation";
             XmlNode state;
             if (string.IsNullOrWhiteSpace(countryCode))
-                countryCode = "us";
+                countryCode = Gov.NationCodes.UNITED_STATES;
 
-            if(countryCode.ToLower() == "ca")
+            if(countryCode.ToLower() == Gov.NationCodes.CANADA)
                 state = TreeData.CanadianAreaCodeData.SelectSingleNode(
-                    $"area-codes/state[@abbreviation='{stateCode}']");
+                    $"{AREA_CODE_PLURAL}/{PROVIDENCE}[@{ABBREVIATION}='{stateCode}']");
             else
                 state = TreeData.AmericanAreaCodeData.SelectSingleNode(
-                    $"area-codes/state[@abbreviation='{stateCode}']");    
+                    $"{AREA_CODE_PLURAL}/{STATE}[@{ABBREVIATION}='{stateCode}']");    
             
             if (state == null)
                 return null;
@@ -126,9 +89,51 @@ namespace NoFuture.Rand.Data.Types
     [Serializable]
     public class NorthAmericanPhone : Phone
     {
-        public string AreaCode { get; set; }
-        public string CentralOfficeCode { get; set; }
-        public string SubscriberNumber { get; set; }
+        #region fields
+        private string _areaCode;
+        private string _centralOfficeCode;
+        private string _subscriberCode;
+        #endregion
+
+        #region inner types
+        [Serializable]
+        public enum PhoneCodes
+        {
+            AreaCode,
+            CentralOfficeCode,
+            SubscriberCode
+        }
+        #endregion
+        #region ctor
+
+        public NorthAmericanPhone(params Tuple<PhoneCodes, string>[] parts)
+        {
+            _areaCode = parts.FirstOrDefault(x => x.Item1 == PhoneCodes.AreaCode)?.Item2 ?? GetRandomAreaCode();
+            _centralOfficeCode = parts.FirstOrDefault(x => x.Item1 == PhoneCodes.CentralOfficeCode)?.Item2 ??
+                      GetRandomCentralOfficeCode();
+            _subscriberCode = parts.FirstOrDefault(x => x.Item1 == PhoneCodes.SubscriberCode)?.Item2 ??
+                     $"{Etx.MyRand.Next(1, 9999):0000}";
+            if (!IsValid(AreaCode, 3))
+                _areaCode = GetRandomAreaCode();
+            if (!IsValid(CentralOfficeCode, 3))
+                _centralOfficeCode = GetRandomCentralOfficeCode();
+            if (!IsValid(SubscriberNumber, 4))
+                _subscriberCode = $"{Etx.MyRand.Next(1, 9999):0000}";
+        }
+        public NorthAmericanPhone()
+        {
+            _areaCode = GetRandomAreaCode();
+            _centralOfficeCode = GetRandomCentralOfficeCode();
+            _subscriberCode = $"{Etx.MyRand.Next(1, 9999):0000}";
+        }
+        #endregion
+
+        #region properties
+        public string AreaCode => _areaCode;
+        public string CentralOfficeCode => _centralOfficeCode;
+        public string SubscriberNumber => _subscriberCode;
+
+        public static IEnumerable<string> TollFreeAreaCodes = new[] { "800", "888", "877", "866", "855", "844" };
 
         public override string Value
         {
@@ -142,9 +147,9 @@ namespace NoFuture.Rand.Data.Types
                 if(!TryParse(value, out phout))
                     throw new InvalidOperationException($"Cannot parse the value '{value}' into " +
                                                         "a North American phone number");
-                AreaCode = phout.AreaCode;
-                CentralOfficeCode = phout.CentralOfficeCode;
-                SubscriberNumber = phout.SubscriberNumber;
+                _areaCode = phout.AreaCode;
+                _centralOfficeCode = phout.CentralOfficeCode;
+                _subscriberCode = phout.SubscriberNumber;
             }
         }
 
@@ -154,12 +159,14 @@ namespace NoFuture.Rand.Data.Types
 
         public override string Unformatted => $"{AreaCode}{CentralOfficeCode}{SubscriberNumber}";
 
+        public override string Notes { get; set; }
+        #endregion
+
+        #region methods
         public virtual Uri ToUri()
         {
             return new Uri("tel:" + Unformatted);
         }
-
-        public override string Notes { get; set; }
 
         public override bool Equals(object obj)
         {
@@ -167,7 +174,7 @@ namespace NoFuture.Rand.Data.Types
             if (ph == null)
                 return false;
 
-            var p = new bool[]
+            var p = new[]
             {
                 string.Equals(ph.AreaCode, AreaCode, StringComparison.OrdinalIgnoreCase),
                 string.Equals(ph.CentralOfficeCode, CentralOfficeCode, StringComparison.OrdinalIgnoreCase),
@@ -185,6 +192,8 @@ namespace NoFuture.Rand.Data.Types
 
         public static bool TryParse(string phNumber, out NorthAmericanPhone phone)
         {
+            string con;
+            string sn;
             if (string.IsNullOrWhiteSpace(phNumber))
             {
                 phone = null;
@@ -207,25 +216,65 @@ namespace NoFuture.Rand.Data.Types
 
             if (numerials.Count == 7)
             {
-                phone = new NorthAmericanPhone
-                        {
-                            CentralOfficeCode = new string(numerials.GetRange(0, 3).ToArray()),
-                            SubscriberNumber = new string(numerials.GetRange(3, 4).ToArray())
-                        };
+                con = new string(numerials.GetRange(0, 3).ToArray());
+                sn = new string(numerials.GetRange(3, 4).ToArray());
+                phone = new NorthAmericanPhone(new Tuple<PhoneCodes, string>(PhoneCodes.CentralOfficeCode, con),
+                    new Tuple<PhoneCodes, string>(PhoneCodes.SubscriberCode, sn));
                 return true;
             }
 
             if (numerials.Count == 11 && numerials[0] == '1')
                 numerials = numerials.GetRange(1, 10);
 
-            phone = new NorthAmericanPhone
-            {
-                AreaCode = new string(numerials.GetRange(0, 3).ToArray()),
-                CentralOfficeCode = new string(numerials.GetRange(3, 3).ToArray()),
-                SubscriberNumber = new string(numerials.GetRange(6, 4).ToArray())
-            };
+            var ac = new string(numerials.GetRange(0, 3).ToArray());
+            con = new string(numerials.GetRange(3, 3).ToArray());
+            sn = new string(numerials.GetRange(6, 4).ToArray());
+            phone = new NorthAmericanPhone(new Tuple<PhoneCodes, string>(PhoneCodes.AreaCode, ac),
+                                           new Tuple<PhoneCodes, string>(PhoneCodes.CentralOfficeCode, con),
+                                           new Tuple<PhoneCodes, string>(PhoneCodes.SubscriberCode, sn));
+
             return true;
 
         }
+
+        protected internal static string GetRandomAreaCode()
+        {
+            var phstr = new StringBuilder();
+            phstr.Append($"{Etx.MyRand.Next(2, 9)}");
+            phstr.Append($"{Etx.MyRand.Next(12, 99):00}");
+            var areaCode = phstr.ToString();
+            if(TollFreeAreaCodes.Any(x => x == areaCode))
+                areaCode = (Convert.ToInt32(areaCode) - 1).ToString(CultureInfo.InvariantCulture);
+
+            return areaCode;
+        }
+
+        protected internal static string GetRandomCentralOfficeCode()
+        {
+            var phstr = new StringBuilder();
+            phstr.Append($"{Etx.MyRand.Next(2, 9)}");
+            var subscriberRand = Etx.MyRand.Next(1, 100);
+            switch (subscriberRand)
+            {
+                case 100:
+                    phstr.Append("00");
+                    break;
+                case 1 - 49:
+                    phstr.Append($"{Etx.MyRand.Next(1, 9)}");
+                    phstr.Append($"{Etx.MyRand.Next(2, 9)}");
+                    break;
+                default:
+                    phstr.Append($"{Etx.MyRand.Next(2, 9)}");
+                    phstr.Append($"{Etx.MyRand.Next(1, 9)}");
+                    break;
+            }
+            return phstr.ToString();
+        }
+
+        private bool IsValid(string v, int len)
+        {
+            return !string.IsNullOrWhiteSpace(v) && v.ToCharArray().All(char.IsDigit) && v.ToCharArray().Length == len;
+        }
+        #endregion
     }
 }

@@ -3,6 +3,12 @@ using System.Collections.Generic;
 
 namespace NoFuture.Rand.Gov
 {
+    public static class NationCodes
+    {
+        public const string UNITED_STATES = "us";
+        public const string CANADA = "ca";
+    }
+
     [Serializable]
     public abstract class GovernmentId : RIdentifier
     {

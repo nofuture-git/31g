@@ -9,6 +9,21 @@ namespace NoFuture.Rand.Data.Types
     [Serializable]
     public class XmlDocXrefIdentifier : XrefIdentifier
     {
+        #region constants
+
+        protected const string X_REF_GROUP = "x-ref-group";
+        protected const string X_REF = "x-ref";
+        protected const string X_DATA_REFERENCE = "x-data-reference";
+        protected const string X_REF_ID = "x-ref-id";
+        protected const string DATA_TYPE = "data-type";
+        protected const string ADD = "add";
+        protected const string NAME = "name";
+        protected const string VALUE = "value";
+        protected const string NODE_NAME = "node-name";
+        protected const string DATA_FILE = "data-file";
+        protected const string ID = "Id";
+        #endregion 
+
         /// <summary>
         /// Looks for an attribute in <see cref="elem"/> whose name is 
         /// 'ID', 'id' or 'Id'
@@ -25,8 +40,7 @@ namespace NoFuture.Rand.Data.Types
                 return false;
             if (elem.LocalName != LocalName)
                 return false;
-
-            var attr = (elem.Attributes["ID"] ?? elem.Attributes["id"]) ?? elem.Attributes["Id"];
+            var attr = (elem.Attributes[ID.ToUpper()] ?? elem.Attributes[ID.ToLower()]) ?? elem.Attributes[ID];
             if (attr != null)
                 Value = attr.Value;
             return true;
@@ -35,15 +49,10 @@ namespace NoFuture.Rand.Data.Types
         /// <summary>
         /// Returns the same value as <see cref="NamedIdentifier.LocalName"/>
         /// </summary>
-        public override string Abbrev
-        {
-            get { return LocalName; }
-        }
+        public override string Abbrev => LocalName;
 
         public override bool Equals(object obj)
         {
-            if (obj == null)
-                return false;
             var xdib = obj as XmlDocXrefIdentifier;
             if (xdib == null)
                 return false;
@@ -54,8 +63,8 @@ namespace NoFuture.Rand.Data.Types
 
         public override int GetHashCode()
         {
-            var d = LocalName == null ? 1 : LocalName.GetHashCode();
-            var id = Value == null ? 0 : Value.GetHashCode();
+            var d = LocalName?.GetHashCode() ?? 1;
+            var id = Value?.GetHashCode() ?? 0;
             return d + id;
         }
     }

@@ -21,7 +21,7 @@ namespace NoFuture.Rand.Com
         #endregion
 
         #region properties
-        public Gov.Irs.EmployerIdentificationNumber EIN { get; set; }
+        public EmployerIdentificationNumber EIN { get; set; }
         public CentralIndexKey CIK { get; set; }
         public List<SecForm> SecReports => _secReports;
         public Gov.UsState UsStateOfIncorporation { get; set; }
@@ -105,7 +105,8 @@ namespace NoFuture.Rand.Com
             var ticker = xbrlDyn.Ticker ??
                          srcUri?.LocalPath.Split('/').LastOrDefault()?.Split('-').FirstOrDefault()?.ToUpper();
 
-            if (ticker!= null && pc.TickerSymbols.All(x => !string.Equals(x.Symbol, ticker, StringComparison.OrdinalIgnoreCase)))
+            if (ticker != null &&
+                pc.TickerSymbols.All(x => !string.Equals(x.Symbol, ticker, StringComparison.OrdinalIgnoreCase)))
             {
                 ticker = ticker.ToUpper();
                 pc.TickerSymbols.Add(new Ticker {Symbol = ticker, Country = "USA"});

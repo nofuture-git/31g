@@ -41,9 +41,8 @@ namespace NoFuture.Tests.Rand
 
             System.Diagnostics.Debug.WriteLine(testResult.City);
             System.Diagnostics.Debug.WriteLine(testResult.ProvidenceAbbrv);
+            System.Diagnostics.Debug.WriteLine(testResult.Providence);
             System.Diagnostics.Debug.WriteLine(testResult.PostalCode);
-
-
         }
 
         [TestMethod]

@@ -13,17 +13,39 @@ namespace NoFuture.Rand.Data.Types
     [Serializable]
     public abstract class CityArea : ICited
     {
+        #region constants
+
+        protected const string ZIP_CODE_SINGULAR = "zip-code";
+        protected const string ZIP_CODE_PLURAL = "zip-codes";
+        protected const string NAME = "name";
+        protected const string PREFIX = "prefix";
+        protected const string STATE = "state";
+        protected const string CITY = "city";
+        protected const string MSA_CODE = "msa-code";
+        protected const string CBSA_CODE = "cbsa-code";
+
+        #endregion
+
+        #region fields
         protected readonly AddressData data;
+        #endregion
+
+        #region ctor
         protected CityArea(AddressData d)
         {
             data = d;
         }
+        #endregion
+
+        #region properties
         public virtual string Src { get; set; }
         public virtual AddressData AddressData => data;
+        #endregion
 
+        #region methods
         public virtual string GetPostalCodePrefix()
         {
-            if (data == null || string.IsNullOrWhiteSpace(data.PostalCode) || data.PostalCode.Length < 3)
+            if (String.IsNullOrWhiteSpace(data?.PostalCode) || data.PostalCode.Length < 3)
                 return null;
             return data.PostalCode.Substring(0, 3);
 
@@ -32,9 +54,7 @@ namespace NoFuture.Rand.Data.Types
         public override bool Equals(object obj)
         {
             var ca = obj as CityArea;
-            if (ca == null)
-                return false;
-            return AddressData.Equals(ca.AddressData);
+            return ca != null && AddressData.Equals(ca.AddressData);
         }
 
         public override int GetHashCode()
@@ -45,7 +65,9 @@ namespace NoFuture.Rand.Data.Types
         /// <summary>
         /// Fetches, at random, a <see cref="UsCityStateZip"/> by zip code prefix
         /// </summary>
-        /// <param name="zipCodePrefix">Optional, will be picked at random with respect to population if whitespace or null.</param>
+        /// <param name="zipCodePrefix">
+        /// Optional, will be picked at random with respect to population if whitespace or null.
+        /// </param>
         /// <returns></returns>
         /// <remarks>
         /// Ranking is by population totals sourced from
@@ -53,6 +75,8 @@ namespace NoFuture.Rand.Data.Types
         /// </remarks>
         public static UsCityStateZip American(string zipCodePrefix = null)
         {
+            const string HAS_HIGH_SCHOOL = "has-high-school";
+            const string VALUE = "value";
             //set defaults
             var ctz = new AddressData
             {
@@ -61,20 +85,20 @@ namespace NoFuture.Rand.Data.Types
             };
 
             //pick a zip code prefix at random
-            if (string.IsNullOrWhiteSpace(zipCodePrefix))
+            if (String.IsNullOrWhiteSpace(zipCodePrefix))
                 zipCodePrefix = NAmerUtil.RandomAmericanZipWithRespectToPop() ?? UsCityStateZip.DF_ZIPCODE_PREFIX;
 
             //x-ref it to the zip code data
             var randZipCode =
-                TreeData.AmericanZipCodeData.SelectSingleNode($"//zip-codes//zip-code[@prefix='{zipCodePrefix}']");
-            if (randZipCode?.ParentNode?.Attributes?["name"] == null)
+                TreeData.AmericanZipCodeData.SelectSingleNode($"//{ZIP_CODE_PLURAL}//{ZIP_CODE_SINGULAR}[@{PREFIX}='{zipCodePrefix}']");
+            if (randZipCode?.ParentNode?.Attributes?[NAME] == null)
             {
                 ctz.City = UsCityStateZip.DF_CITY_NAME;
                 return new UsCityStateZip(ctz);
             }
 
             //get the containing us state
-            ctz.StateName =  randZipCode.ParentNode.Attributes["name"].Value;
+            ctz.StateName =  randZipCode.ParentNode.Attributes[NAME].Value;
             var nfState = UsState.GetStateByName(ctz.StateName) ??
                           UsState.GetStateByPostalCode(UsCityStateZip.DF_STATE_ABBREV);
 
@@ -92,14 +116,13 @@ namespace NoFuture.Rand.Data.Types
                     randZipCode.ChildNodes.Cast<XmlElement>()
                         .Where(
                             x =>
-                                x.Attributes["has-high-school"] != null &&
-                                x.Attributes["has-high-school"].Value == bool.TrueString)
-                        .Select(x => x.Attributes["value"].Value).ToArray();
-                if (zipCodes.Length > 0)
-                {
-                    var pickNum = Etx.IntNumber(0, zipCodes.Length - 1);
-                    ctz.PostalCode = zipCodes[pickNum];
-                }
+                                x.Attributes[HAS_HIGH_SCHOOL] != null &&
+                                x.Attributes[HAS_HIGH_SCHOOL].Value == bool.TrueString)
+                        .Select(x => x.Attributes[VALUE].Value).ToArray();
+                if (zipCodes.Length <= 0)
+                    return new UsCityStateZip(ctz);
+                var pickNum = Etx.IntNumber(0, zipCodes.Length - 1);
+                ctz.PostalCode = zipCodes[pickNum];
             }
             return new UsCityStateZip(ctz);
         }
@@ -112,30 +135,44 @@ namespace NoFuture.Rand.Data.Types
         /// <returns></returns>
         public static CaCityProvidencePost Canadian()
         {
+            const string POSTAL_CODE = "postal-code";
+            const string DF_FIRST_THREE_CHARS = "M5A";
+            const string DF_CITY = "Toronto";
+            const string DF_LAST_THREE_CHARS = "4Z4";
+            const string MUNICIPALITY = "municipality";
+            const string ABBREVIATION = "abbreviation";
+
             var ctz = new AddressData();
-            var zipCodes = Data.TreeData.CanadianPostalCodeData.SelectNodes("//zip-code");
+            var postalCodes = TreeData.CanadianPostalCodeData.SelectNodes($"//{POSTAL_CODE}");
+            var dfReturn = new CaCityProvidencePost(ctz);
+            if (postalCodes == null)
+                return dfReturn;
 
-            if (zipCodes == null) return new CaCityProvidencePost(ctz);
+            var pickOne = Etx.MyRand.Next(0, postalCodes.Count);
 
-            var pickOne = Etx.MyRand.Next(0, zipCodes.Count);
+            var randPostalCode = postalCodes[pickOne] as XmlElement;
+            if(randPostalCode == null)
+                return dfReturn;
 
-            var randZipCode = zipCodes[pickOne];
-            var selectSingleNode = randZipCode.SelectSingleNode("prefix");
-            if (selectSingleNode != null)
-                ctz.PostalCode = $"{selectSingleNode.InnerText} 4Z4";
-            selectSingleNode = randZipCode.SelectSingleNode("state-abbreviation");
-            if (selectSingleNode != null)
-                ctz.StateAbbrv = selectSingleNode.InnerText;
-            selectSingleNode = randZipCode.SelectSingleNode("state-name");
-            if (selectSingleNode != null)
-                ctz.StateName = selectSingleNode.InnerText;
-            selectSingleNode = randZipCode.SelectSingleNode("municipality");
-            if (selectSingleNode != null)
-                ctz.City = selectSingleNode.InnerText.Replace("\n", "").Trim();
+            var providenceElem = randPostalCode.ParentNode as XmlElement;
+            if (providenceElem == null)
+                return dfReturn;
+
+            ctz.StateAbbrv = providenceElem.GetAttribute(ABBREVIATION);
+            ctz.StateName = providenceElem.GetAttribute(NAME);
+            
+            var postalPrefix = randPostalCode.GetAttribute(PREFIX);
+            postalPrefix = string.IsNullOrWhiteSpace(postalPrefix) ? DF_FIRST_THREE_CHARS : postalPrefix;
+            ctz.PostalCode = $"{postalPrefix} {DF_LAST_THREE_CHARS}";
+
+            var municipalityNode = randPostalCode.ChildNodes.OfType<XmlElement>()
+                .FirstOrDefault(x => x.LocalName == MUNICIPALITY && !string.IsNullOrWhiteSpace(x.InnerText));
+
+            ctz.City = municipalityNode?.InnerText ?? DF_CITY;
 
             return new CaCityProvidencePost(ctz);
         }
-
+        #endregion
     }
 
     [Serializable]
@@ -153,6 +190,7 @@ namespace NoFuture.Rand.Data.Types
         public const string DF_ZIPCODE_PREFIX = "100";//new york, new york
         public const string DF_STATE_ABBREV = "NY";
         public const string DF_CITY_NAME = "New York";
+
         #endregion
 
         #region fields
@@ -195,10 +233,11 @@ namespace NoFuture.Rand.Data.Types
         {
             get
             {
+                const string WEIGHT = "weight";
                 if (_zipCodePrefix2Pop.Any()) return _zipCodePrefix2Pop;
                 var usZipsXmlDocument = TreeData.UsZipProbabilityTable;
 
-                var zipCodesElem = usZipsXmlDocument?.SelectSingleNode("//zip-codes");
+                var zipCodesElem = usZipsXmlDocument?.SelectSingleNode($"//{ZIP_CODE_PLURAL}");
 
                 if (zipCodesElem == null || !zipCodesElem.HasChildNodes)
                     return _zipCodePrefix2Pop;
@@ -208,8 +247,8 @@ namespace NoFuture.Rand.Data.Types
                     var zipElem = zipNode as XmlElement;
                     if (zipElem == null)
                         continue;
-                    var key = zipElem.Attributes["prefix"]?.Value;
-                    var strVal = zipElem.Attributes["weight"]?.Value;
+                    var key = zipElem.Attributes[PREFIX]?.Value;
+                    var strVal = zipElem.Attributes[WEIGHT]?.Value;
 
                     if (string.IsNullOrWhiteSpace(key) || string.IsNullOrWhiteSpace(strVal))
                         continue;
@@ -253,39 +292,18 @@ namespace NoFuture.Rand.Data.Types
                                StateAbbrv = string.Empty,
                                City = string.Empty
                            };
-            //zip code
-            var regex = new Regex(ZIP_CODE_REGEX, RegexOptions.IgnoreCase);
-            if (regex.IsMatch(lastLine))
-            {
-                var matches = regex.Match(lastLine);
+            GetZipCode(lastLine, addrData);
 
-                var fiveDigitZip = matches.Groups.Count >= 2 && matches.Groups[1].Success &&
-                                   matches.Groups[1].Captures.Count > 0
-                    ? matches.Groups[1].Captures[0].Value
-                    : string.Empty;
-                var zipPlusFour = matches.Groups.Count >= 3 && matches.Groups[2].Success &&
-                                  matches.Groups[2].Captures.Count > 0
-                    ? matches.Groups[2].Captures[0].Value
-                    : string.Empty;
+            GetState(lastLine, addrData);
 
-                addrData.PostalCode = fiveDigitZip.Trim();
-                addrData.PostalCodeSuffix = zipPlusFour.Replace("-", string.Empty).Trim();
-            }
+            GetCity(lastLine, addrData);
 
-            //state
-            regex = new Regex(STATE_CODE_REGEX,RegexOptions.IgnoreCase);
-            if (regex.IsMatch(lastLine))
-            {
-                var matches = regex.Match(lastLine);
+            cityStateZip = new UsCityStateZip(addrData);
+            return true;
+        }
 
-                var state = matches.Groups.Count >= 1 && matches.Groups[0].Success &&
-                           matches.Groups[0].Captures.Count > 0
-                    ? matches.Groups[0].Captures[0].Value
-                    : string.Empty;
-
-                addrData.StateAbbrv = state.Trim();
-            }
-
+        internal static void GetCity(string lastLine, AddressData addrData)
+        {
             //city
             var city = lastLine;
             if (addrData.PostalCode.Length > 0)
@@ -297,12 +315,50 @@ namespace NoFuture.Rand.Data.Types
             if (addrData.StateAbbrv.Length > 0 && city.Contains("," + addrData.StateAbbrv))
                 city = city.Replace("," + addrData.StateAbbrv, string.Empty);
 
-            addrData.City = city.Replace(",",string.Empty).Trim();
-
-            cityStateZip = new UsCityStateZip(addrData);
-            return true;
+            addrData.City = city.Replace(",", string.Empty).Trim();
         }
 
+        internal static void GetState(string lastLine, AddressData addrData)
+        {
+            var regex = new Regex(STATE_CODE_REGEX, RegexOptions.IgnoreCase);
+            if (!regex.IsMatch(lastLine))
+                return;
+            var matches = regex.Match(lastLine);
+
+            var state = matches.Groups.Count >= 1 && matches.Groups[0].Success &&
+                        matches.Groups[0].Captures.Count > 0
+                ? matches.Groups[0].Captures[0].Value
+                : string.Empty;
+
+            addrData.StateAbbrv = state.Trim();
+        }
+
+        internal static void GetZipCode(string lastLine, AddressData addrData)
+        {
+            //zip code
+            var regex = new Regex(ZIP_CODE_REGEX, RegexOptions.IgnoreCase);
+            if (!regex.IsMatch(lastLine))
+                return;
+            var matches = regex.Match(lastLine);
+
+            var fiveDigitZip = matches.Groups.Count >= 2 && matches.Groups[1].Success &&
+                               matches.Groups[1].Captures.Count > 0
+                ? matches.Groups[1].Captures[0].Value
+                : string.Empty;
+            var zipPlusFour = matches.Groups.Count >= 3 && matches.Groups[2].Success &&
+                              matches.Groups[2].Captures.Count > 0
+                ? matches.Groups[2].Captures[0].Value
+                : string.Empty;
+
+            addrData.PostalCode = fiveDigitZip.Trim();
+            addrData.PostalCodeSuffix = zipPlusFour.Replace("-", string.Empty).Trim();
+        }
+
+        /// <summary>
+        /// Based on the <see cref="ZipCode"/> and <see cref="State"/> are 
+        /// assigned, picks a node, at random, from <see cref="TreeData.AmericanCityData"/>
+        /// </summary>
+        /// <returns></returns>
         protected internal XmlNode GetCityXmlNode()
         {
             if (TreeData.AmericanCityData == null)
@@ -313,12 +369,12 @@ namespace NoFuture.Rand.Data.Types
             {
                 var usState = UsState.GetStateByPostalCode(data.StateAbbrv);
                 var cityName = Util.Etc.CapitalizeFirstLetterOfWholeWords(data.City.ToLower(), ' ');
-                searchCrit = $"//state[@name='{usState}']/city[@name='{cityName}']";
+                searchCrit = $"//{STATE}[@{NAME}='{usState}']/{CITY}[@{NAME}='{cityName}']";
             }
             else if (!string.IsNullOrWhiteSpace(data.PostalCode) && data.PostalCode.Length >= 3)
             {
                 var zipCodePrefix= data.PostalCode.Substring(0, 3);
-                searchCrit = $"//zip-code[@prefix='{zipCodePrefix}']/..";
+                searchCrit = $"//{ZIP_CODE_SINGULAR}[@{PREFIX}='{zipCodePrefix}']/..";
             }
             if (string.IsNullOrWhiteSpace(searchCrit))
                 return null;
@@ -336,8 +392,8 @@ namespace NoFuture.Rand.Data.Types
                     continue;
                 if(!matchedElem.HasAttributes)
                     continue;
-                var hasMsaCode = !string.IsNullOrWhiteSpace(matchedElem.GetAttribute("msa-code"));
-                var hasCbsaCode = !string.IsNullOrWhiteSpace(matchedElem.GetAttribute("cbsa-code"));
+                var hasMsaCode = !string.IsNullOrWhiteSpace(matchedElem.GetAttribute(MSA_CODE));
+                var hasCbsaCode = !string.IsNullOrWhiteSpace(matchedElem.GetAttribute(CBSA_CODE));
                 if (hasCbsaCode || hasMsaCode)
                     return matchedElem;
             }
@@ -346,29 +402,37 @@ namespace NoFuture.Rand.Data.Types
             return matchedNodes[pick];
         }
 
+        /// <summary>
+        /// Parses into this instance the data defined in <see cref="node"/>
+        /// </summary>
+        /// <param name="node"></param>
         protected internal void ParseCityXmlNode(XmlNode node)
         {
-            var cityNode = node as XmlElement;
-            if (cityNode?.Attributes["name"] == null)
-                return;
-            data.City = cityNode.Attributes["name"].Value ?? data.City;
+            const string METRO = "Metro";
+            const string MSA_TYPE = "msa-type";
+            const string CBSA_TYPE = "cbsa-type";
 
-            if (!string.IsNullOrWhiteSpace(cityNode.Attributes["msa-code"]?.Value))
+            var cityNode = node as XmlElement;
+            if (cityNode?.Attributes[NAME] == null)
+                return;
+            data.City = cityNode.Attributes[NAME].Value ?? data.City;
+
+            if (!string.IsNullOrWhiteSpace(cityNode.Attributes[MSA_CODE]?.Value))
             {
-                Msa = new MStatArea { Value = cityNode.Attributes["msa-code"].Value };
-                if (!string.IsNullOrWhiteSpace(cityNode.Attributes["msa-type"]?.Value))
+                Msa = new MStatArea { Value = cityNode.Attributes[MSA_CODE].Value };
+                if (!string.IsNullOrWhiteSpace(cityNode.Attributes[MSA_TYPE]?.Value))
                 {
-                    Msa.MsaType = cityNode.Attributes["msa-type"].Value == "Metro"
+                    Msa.MsaType = cityNode.Attributes[MSA_TYPE].Value == METRO
                         ? UrbanCentric.City | UrbanCentric.Large
                         : UrbanCentric.City | UrbanCentric.Small;
                 }
             }
-            if (!string.IsNullOrWhiteSpace(cityNode.Attributes["cbsa-code"]?.Value))
+            if (!string.IsNullOrWhiteSpace(cityNode.Attributes[CBSA_CODE]?.Value))
             {
-                Msa = new MStatArea { Value = cityNode.Attributes["cbsa-code"].Value };
-                if (!string.IsNullOrWhiteSpace(cityNode.Attributes["cbsa-type"]?.Value))
+                Msa = new MStatArea { Value = cityNode.Attributes[CBSA_CODE].Value };
+                if (!string.IsNullOrWhiteSpace(cityNode.Attributes[CBSA_TYPE]?.Value))
                 {
-                    Msa.MsaType = cityNode.Attributes["cbsa-type"].Value == "Metro"
+                    Msa.MsaType = cityNode.Attributes[CBSA_TYPE].Value == METRO
                         ? UrbanCentric.City | UrbanCentric.Large
                         : UrbanCentric.City | UrbanCentric.Small;
                 }
@@ -377,39 +441,46 @@ namespace NoFuture.Rand.Data.Types
             GetSuburbCityName(cityNode);
         }
 
+        /// <summary>
+        /// Converts the attributes data of the 'avg-earning-per-year' into 
+        /// a <see cref="LinearEquation"/>
+        /// </summary>
+        /// <param name="someNode"></param>
+        /// <returns></returns>
         protected internal static LinearEquation GetAvgEarningsPerYear(XmlNode someNode)
         {
+            const string AVG_EARNINGS_PER_YEAR = "avg-earning-per-year";
             var cityNode = someNode as XmlElement;
-            if (string.IsNullOrWhiteSpace(cityNode?.Attributes["avg-earning-per-year"]?.Value))
+            if (string.IsNullOrWhiteSpace(cityNode?.Attributes[AVG_EARNINGS_PER_YEAR]?.Value))
                 return null;
-            var attrVal = cityNode.Attributes["avg-earning-per-year"].Value;
-            if (!attrVal.Contains(","))
-                return null;
-            var interceptStr = attrVal.Split(',')[0];
-            var slopeStr = attrVal.Split(',')[1];
-
-            double intercept;
-            double slope;
-            if (double.TryParse(interceptStr, out intercept) && double.TryParse(slopeStr, out slope))
-            {
-                return new LinearEquation { Intercept = intercept, Slope = slope };
-            }
-            return null;
+            var attrVal = cityNode.Attributes[AVG_EARNINGS_PER_YEAR].Value;
+            LinearEquation lq;
+            return !LinearEquation.TryParse(attrVal, out lq) ? null : lq;
         }
 
+        /// <summary>
+        /// Picks a 'place' name from the given city node.
+        /// </summary>
+        /// <param name="cityNode"></param>
+        /// <remarks>
+        /// The census.gov data's grouping of MSA\CBSA's are a higher level 
+        /// aggregate of cities.  The census.gov also has another type named
+        /// 'Places' which are the more common city names citizens are used to.
+        /// </remarks>
         protected internal void GetSuburbCityName(XmlNode cityNode)
         {
+            const string PLACE = "place";
             if (cityNode == null)
                 return;
             if (!cityNode.HasChildNodes)
                 return;
             var places =
-                cityNode.ChildNodes.OfType<XmlElement>().Where(x => x.LocalName == "place" && x.HasAttributes).ToList();
+                cityNode.ChildNodes.OfType<XmlElement>().Where(x => x.LocalName == PLACE && x.HasAttributes).ToList();
             if (!places.Any())
                 return;
             var pick = Etx.IntNumber(0, places.Count - 1);
             var pickedPlace = places[pick];
-            var suburbName = pickedPlace.GetAttribute("name");
+            var suburbName = pickedPlace.GetAttribute(NAME);
             if (string.IsNullOrWhiteSpace(suburbName))
                 return;
             data.City = suburbName;

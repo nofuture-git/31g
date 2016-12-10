@@ -10,6 +10,13 @@ namespace NoFuture.Rand.Data.Types
     [Serializable]
     public class UsStateData
     {
+        #region constants
+        protected const string RATE = "rate";
+        protected const string STATE = "state";
+        protected const string NAME = "name";
+        protected const string CRIME = "crime";
+        #endregion
+
         #region fields
         private readonly string _stateName;
         #endregion
@@ -20,17 +27,18 @@ namespace NoFuture.Rand.Data.Types
 
         public UsStateData(string name)
         {
+            const string REGION = "region";
             if (string.IsNullOrWhiteSpace(name))
                 return;
             //need to put the spaces back into state's name (NewYork as New York)
             _stateName = name;
             if (TreeData.UsStateData == null)
                 return;
-            var myNameNode = TreeData.UsStateData.SelectSingleNode($"//state[@name='{_stateName}']") as XmlElement;
+            var myNameNode = TreeData.UsStateData.SelectSingleNode($"//{STATE}[@{NAME}='{_stateName}']") as XmlElement;
             if (myNameNode == null)
                 return;
             AmericanRegion reg;
-            if (Enum.TryParse(myNameNode.Attributes["region"].Value, out reg))
+            if (Enum.TryParse(myNameNode.Attributes[REGION].Value, out reg))
                 Region = reg;
             AverageEarnings = UsCityStateZip.GetAvgEarningsPerYear(myNameNode);
             GetEmploymentSectorData();
@@ -72,6 +80,7 @@ namespace NoFuture.Rand.Data.Types
         #region methods
         protected void GetPropertyCrimeData()
         {
+
             if (string.IsNullOrWhiteSpace(_stateName))
                 return;
             if (TreeData.UsStateData == null)
@@ -79,10 +88,10 @@ namespace NoFuture.Rand.Data.Types
             var xml = TreeData.UsStateData;
             foreach (var propertyCrime in Enum.GetNames(typeof(PropertyCrime)))
             {
-                var crimeNode = xml.SelectSingleNode($"//state[@name='{_stateName}']//crime[@name='{propertyCrime}']");
+                var crimeNode = xml.SelectSingleNode($"//{STATE}[@{NAME}='{_stateName}']//{CRIME}[@{NAME}='{propertyCrime}']");
                 double crimeRate;
-                if (crimeNode?.Attributes?["rate"]?.Value == null ||
-                    !double.TryParse(crimeNode.Attributes?["rate"]?.Value, out crimeRate)) continue;
+                if (crimeNode?.Attributes?[RATE]?.Value == null ||
+                    !double.TryParse(crimeNode.Attributes?[RATE]?.Value, out crimeRate)) continue;
                 PropertyCrime crime;
                 if (!Enum.TryParse(propertyCrime, out crime))
                     continue;
@@ -100,10 +109,10 @@ namespace NoFuture.Rand.Data.Types
 
             foreach (var violentCrime in Enum.GetNames(typeof(ViolentCrime)))
             {
-                var crimeNode = xml.SelectSingleNode($"//state[@name='{_stateName}']//crime[@name='{violentCrime}']");
+                var crimeNode = xml.SelectSingleNode($"//{STATE}[@{NAME}='{_stateName}']//{CRIME}[@{NAME}='{violentCrime}']");
                 double crimeRate;
-                if (crimeNode?.Attributes?["rate"]?.Value == null ||
-                    !double.TryParse(crimeNode?.Attributes?["rate"]?.Value, out crimeRate)) continue;
+                if (crimeNode?.Attributes?[RATE]?.Value == null ||
+                    !double.TryParse(crimeNode?.Attributes?[RATE]?.Value, out crimeRate)) continue;
                 ViolentCrime crime;
                 if (!Enum.TryParse(violentCrime, out crime))
                     continue;
@@ -113,19 +122,22 @@ namespace NoFuture.Rand.Data.Types
 
         protected void GetEduData()
         {
+            const string EDU_DATA = "edu-data";
+            const string PERCENT_HIGHSCHOOL_GRAD = "percent-highschool-grad";
+            const string PERCENT_COLLEGE_GRAD = "percent-college-grad";
             if (string.IsNullOrWhiteSpace(_stateName))
                 return;
             if (TreeData.UsStateData == null)
                 return;
 
-            var eduNode = TreeData.UsStateData.SelectSingleNode($"//state[@name='{_stateName}']/edu-data");
-            var strVal = eduNode?.Attributes?["percent-highschool-grad"]?.Value;
+            var eduNode = TreeData.UsStateData.SelectSingleNode($"//{STATE}[@{NAME}='{_stateName}']/{EDU_DATA}");
+            var strVal = eduNode?.Attributes?[PERCENT_HIGHSCHOOL_GRAD]?.Value;
             double highSchoolGrad;
             if (!string.IsNullOrWhiteSpace(strVal) && double.TryParse(strVal, out highSchoolGrad))
             {
                 PercentOfGrads.Add(new Tuple<OccidentalEdu, double>(OccidentalEdu.HighSchool | OccidentalEdu.Grad, highSchoolGrad));
             }
-            strVal = eduNode?.Attributes?["percent-college-grad"]?.Value;
+            strVal = eduNode?.Attributes?[PERCENT_COLLEGE_GRAD]?.Value;
             double collegeGrad;
             if (!string.IsNullOrWhiteSpace(strVal) && double.TryParse(strVal, out collegeGrad))
             {
@@ -135,6 +147,9 @@ namespace NoFuture.Rand.Data.Types
 
         protected void GetEmploymentSectorData()
         {
+            const string SECTOR = "sector";
+            const string CATEGORY_ID = "category-ID";
+            const string PERCENT_EMPLOYED = "percent-employed";
             if (string.IsNullOrWhiteSpace(_stateName))
                 return;
             if (TreeData.UsStateData == null)
@@ -142,10 +157,10 @@ namespace NoFuture.Rand.Data.Types
             for (var ssId = 10; ssId <= 90; ssId += 10)
             {
                 var emplyData =
-                    TreeData.UsStateData.SelectSingleNode($"//state[@name='{_stateName}']//sector[@category-ID='{ssId}']");
-                if (emplyData?.Attributes?["percent-employed"]?.Value == null)
+                    TreeData.UsStateData.SelectSingleNode($"//{STATE}[@{NAME}='{_stateName}']//{SECTOR}[@{CATEGORY_ID}='{ssId}']");
+                if (emplyData?.Attributes?[PERCENT_EMPLOYED]?.Value == null)
                     continue;
-                var strPercent = emplyData.Attributes["percent-employed"].Value;
+                var strPercent = emplyData.Attributes[PERCENT_EMPLOYED].Value;
                 double percent;
                 if (!double.TryParse(strPercent, out percent))
                     continue;

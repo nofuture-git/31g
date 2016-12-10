@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Xml;
-using NoFuture.Antlr.Grammers;
 using NoFuture.Exceptions;
 
 namespace NoFuture.Rand.Data.Types
@@ -13,7 +11,6 @@ namespace NoFuture.Rand.Data.Types
     public class XRefGroup : XmlDocXrefIdentifier
     {
         #region fields
-        internal const string X_REF_GROUP = "x-ref-group";
         private static XRefGroup[] _allXref;
         #endregion
 
@@ -21,17 +18,6 @@ namespace NoFuture.Rand.Data.Types
         public string NodeName { get; set; }
         public XrefIdentifier[] XRefData { get; set; }
         public override string LocalName => X_REF_GROUP;
-
-        #endregion
-
-        #region ctors 
-
-        public XRefGroup()
-        {
-            _localName = X_REF_GROUP;
-        }
-        #endregion
-
         public static XRefGroup[] AllXrefGroups
         {
             get
@@ -52,7 +38,7 @@ namespace NoFuture.Rand.Data.Types
                     if (elm == null)
                         continue;
                     var xrefGrp = new XRefGroup();
-                    if(xrefGrp.TryThisParseXml(elm))
+                    if (xrefGrp.TryThisParseXml(elm))
                         tempList.Add(xrefGrp);
                 }
 
@@ -60,6 +46,15 @@ namespace NoFuture.Rand.Data.Types
                 return _allXref;
             }
         }
+
+        #endregion
+
+        #region ctor
+        public XRefGroup()
+        {
+            _localName = X_REF_GROUP;
+        }
+        #endregion
 
         #region methods
 
@@ -73,30 +68,31 @@ namespace NoFuture.Rand.Data.Types
         /// </param>
         public static bool AddXrefValues(Tuple<Type, string> xRefId, Identifier id, string propertyName = null)
         {
+            const string SOURCE = "source";
             if (string.IsNullOrWhiteSpace(xRefId?.Item2) || xRefId.Item1 == null)
                 return false;
             if(id == null)
                 return false;
             if (TreeData.XRefXml == null)
                 return false;
-            var xrefSrcNode = TreeData.XRefXml.SelectSingleNode("//source");
+            var xrefSrcNode = TreeData.XRefXml.SelectSingleNode($"//{SOURCE}");
             if (xrefSrcNode == null)
                 return false;
 
             var simpleNameValuePair = new Tuple<string, string>(propertyName ?? id.GetType().Name, id.Value);
 
             //heirarchy of xpaths
-            var xRefGroupXPath = $"//x-ref-group[@data-type='{xRefId.Item1.FullName}']";
-            var xDataReferenceXPath = xRefGroupXPath + $"//x-ref-id[text()='{xRefId.Item2}']/../..";
-            var xRefAddXPath = xDataReferenceXPath + $"/add[@name='{simpleNameValuePair.Item1}']";
-            var xRefAddChildXPath = xRefAddXPath + "/add[@name='Value']";
+            var xRefGroupXPath = $"//{X_REF_GROUP}[@{DATA_TYPE}='{xRefId.Item1.FullName}']";
+            var xDataReferenceXPath = xRefGroupXPath + $"//{X_REF_ID}[text()='{xRefId.Item2}']/../..";
+            var xRefAddXPath = xDataReferenceXPath + $"/{ADD}[@{NAME}='{simpleNameValuePair.Item1}']";
+            var xRefAddChildXPath = xRefAddXPath + $"/{ADD}[@{NAME}='Value']";
 
             //get the x-ref-group node
             var xRefGroupNode = TreeData.XRefXml.SelectSingleNode(xRefGroupXPath) as XmlElement;
             if (xRefGroupNode == null)
             {
-                xRefGroupNode = TreeData.XRefXml.CreateElement("x-ref-group");
-                var xRefGroupAttr = TreeData.XRefXml.CreateAttribute("data-type");
+                xRefGroupNode = TreeData.XRefXml.CreateElement(X_REF_GROUP);
+                var xRefGroupAttr = TreeData.XRefXml.CreateAttribute(DATA_TYPE);
                 xRefGroupAttr.Value = xRefId.Item1.FullName;
                 xRefGroupNode.Attributes.Append(xRefGroupAttr);
                 
@@ -111,9 +107,9 @@ namespace NoFuture.Rand.Data.Types
             var xDataReferenceNode = TreeData.XRefXml.SelectSingleNode(xDataReferenceXPath);
             if (xDataReferenceNode == null)
             {
-                xDataReferenceNode = TreeData.XRefXml.CreateElement("x-data-reference");
-                var xRefNode = TreeData.XRefXml.CreateElement("x-ref");
-                var xRefIdNode = TreeData.XRefXml.CreateElement("x-ref-id");
+                xDataReferenceNode = TreeData.XRefXml.CreateElement(X_DATA_REFERENCE);
+                var xRefNode = TreeData.XRefXml.CreateElement(X_REF);
+                var xRefIdNode = TreeData.XRefXml.CreateElement(X_REF_ID);
                 xRefIdNode.InnerText = xRefId.Item2;
                 xRefNode.AppendChild(xRefIdNode);
                 xDataReferenceNode.AppendChild(xRefNode);
@@ -124,38 +120,38 @@ namespace NoFuture.Rand.Data.Types
             var xrefAdd = TreeData.XRefXml.SelectSingleNode(xRefAddXPath) as XmlElement;
             if (xrefAdd == null)
             {
-                xrefAdd = TreeData.XRefXml.CreateElement("add");
+                xrefAdd = TreeData.XRefXml.CreateElement(ADD);
                 if (!xDataReferenceNode.HasChildNodes)
                     xDataReferenceNode.AppendChild(xrefAdd);
                 else
                     xDataReferenceNode.InsertAfter(xrefAdd, xDataReferenceNode.LastChild);
             }
 
-            var xrefNameAttr = xrefAdd.Attributes["name"] ?? TreeData.XRefXml.CreateAttribute("name");
+            var xrefNameAttr = xrefAdd.Attributes[NAME] ?? TreeData.XRefXml.CreateAttribute(NAME);
             xrefNameAttr.Value = simpleNameValuePair.Item1;
 
-            if (xrefAdd.Attributes["name"] == null)
+            if (xrefAdd.Attributes[NAME] == null)
                 xrefAdd.Attributes.Append(xrefNameAttr);
 
             //get the inner add node
             var childNode = TreeData.XRefXml.SelectSingleNode(xRefAddChildXPath) as XmlElement;
             if (childNode == null)
             {
-                childNode = TreeData.XRefXml.CreateElement("add");
+                childNode = TreeData.XRefXml.CreateElement(ADD);
                 if (!xrefAdd.HasChildNodes)
                     xrefAdd.AppendChild(childNode);
                 else
                     xrefAdd.InsertAfter(childNode, xrefAdd.LastChild);
             }
 
-            var nameAttr = childNode.Attributes["name"] ?? TreeData.XRefXml.CreateAttribute("name");
+            var nameAttr = childNode.Attributes[NAME] ?? TreeData.XRefXml.CreateAttribute(NAME);
             nameAttr.Value = "Value";
-            var valAttr = childNode.Attributes["value"] ?? TreeData.XRefXml.CreateAttribute("value");
+            var valAttr = childNode.Attributes[VALUE] ?? TreeData.XRefXml.CreateAttribute(VALUE);
             valAttr.Value = simpleNameValuePair.Item2;
 
-            if (childNode.Attributes["name"] == null)
+            if (childNode.Attributes[NAME] == null)
                 childNode.Attributes.Append(nameAttr);
-            if (childNode.Attributes["value"] == null)
+            if (childNode.Attributes[VALUE] == null)
                 childNode.Attributes.Append(valAttr);
 
             return true;
@@ -170,7 +166,7 @@ namespace NoFuture.Rand.Data.Types
             var xrefXml = TreeData.XRefXml;
             return
                 xrefXml?.SelectNodes(
-                    $"//x-ref-group[@data-type='{t.FullName}']//x-ref-id[text()='{xrefId}']/../../add");
+                    $"//{X_REF_GROUP}[@{DATA_TYPE}='{t.FullName}']//{X_REF_ID}[text()='{xrefId}']/../../{ADD}");
         }
 
         /// <summary>
@@ -181,7 +177,7 @@ namespace NoFuture.Rand.Data.Types
         /// <param name="rtInstance"></param>
         public static void SetTypeXrefValue(XmlElement elem, object rtInstance)
         {
-            var nameAttr = elem.Attributes["name"];
+            var nameAttr = elem.Attributes[NAME];
             if (string.IsNullOrWhiteSpace(nameAttr?.Value))
                 return;
 
@@ -191,7 +187,7 @@ namespace NoFuture.Rand.Data.Types
             var propertyName = nameAttr.Value;
             var pi = rtInstance.GetType().GetProperty(propertyName);
 
-            var valueAttr = elem.Attributes["value"];
+            var valueAttr = elem.Attributes[VALUE];
             if (!string.IsNullOrWhiteSpace(valueAttr?.Value))
             {
                 pi.SetValue(rtInstance, valueAttr.Value, null);
@@ -249,7 +245,7 @@ namespace NoFuture.Rand.Data.Types
             if (!base.TryThisParseXml(elem))
                 return false;
 
-            if (elem.Attributes["node-name"] != null && elem.Attributes["data-file"] != null)
+            if (elem.Attributes[NODE_NAME] != null && elem.Attributes[DATA_FILE] != null)
                 return TryParseXml2Xml(elem);
 
             return false;
@@ -257,11 +253,11 @@ namespace NoFuture.Rand.Data.Types
 
         protected bool TryParseXml2Xml(XmlElement elem)
         {
-            var dataFileAttr = elem.Attributes["data-file"];
+            var dataFileAttr = elem.Attributes[DATA_FILE];
             if (string.IsNullOrWhiteSpace(dataFileAttr?.Value))
                 throw new InvalidOperationException($"This {LocalName} is not an XML-to-XML kind of cross-reference");
 
-            var nodeNameAttr = elem.Attributes["node-name"];
+            var nodeNameAttr = elem.Attributes[NODE_NAME];
 
             if (string.IsNullOrWhiteSpace(nodeNameAttr?.Value))
                 throw new InvalidOperationException($"This {LocalName} is not an XML-to-XML kind of cross-reference");
@@ -305,25 +301,23 @@ namespace NoFuture.Rand.Data.Types
 
         #region properties
         
-        public string NodeName { get { return _nodeName; } }
-        public override string Abbrev
-        {
-            get { return string.Empty; }
-        }
+        public string NodeName => _nodeName;
+        public override string Abbrev => string.Empty;
+
         #endregion
 
-        #region ctors
+        #region ctor
         public Xml2XmlIdentifier(string dataFileName, string nodeName)
         {
             if(string.IsNullOrWhiteSpace(dataFileName))
-                throw new ArgumentNullException("dataFileName");
+                throw new ArgumentNullException(nameof(dataFileName));
             if(string.IsNullOrWhiteSpace(nodeName))
-                throw new ArgumentNullException("nodeName");
+                throw new ArgumentNullException(nameof(nodeName));
 
             TreeData.GetXmlDataSource(dataFileName, ref _dataFile);
 
             _nodeName = nodeName;
-            _localName = "x-data-reference";
+            _localName = X_DATA_REFERENCE;
         }
         #endregion
 
@@ -343,10 +337,10 @@ namespace NoFuture.Rand.Data.Types
                 if (cElem == null)
                     continue;
 
-                if(string.Equals(cElem.Name,"x-ref", StringComparison.OrdinalIgnoreCase))
+                if(string.Equals(cElem.Name, X_REF, StringComparison.OrdinalIgnoreCase))
                 {
                     if(!cElem.HasChildNodes)
-                        throw new RahRowRagee("The 'x-ref' node must have at least one child " +
+                        throw new RahRowRagee($"The '{X_REF}' node must have at least one child " +
                                               "element to be a valid cross reference");
 
                     foreach (var xRefIdNode in cElem.ChildNodes)
@@ -371,8 +365,8 @@ namespace NoFuture.Rand.Data.Types
                     continue;
                 }
 
-                var nameAttr = cElem.Attributes["name"];
-                var valueAttr = cElem.Attributes["value"];
+                var nameAttr = cElem.Attributes[NAME];
+                var valueAttr = cElem.Attributes[VALUE];
 
                 if (nameAttr == null || valueAttr == null)
                     continue;

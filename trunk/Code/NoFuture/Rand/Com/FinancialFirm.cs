@@ -21,6 +21,7 @@ namespace NoFuture.Rand.Com
     {
         public FinancialFirm()
         {
+            const string FIFTY_TWO = "52";
             var superSectors = NorthAmericanIndustryClassification.AllSectors;
             if (superSectors == null || superSectors.Length <= 0)
                 return;
@@ -28,7 +29,7 @@ namespace NoFuture.Rand.Com
             PrimarySector =
                 superSectors.SelectMany(x => x.Divisions)
                     .Cast<NaicsPrimarySector>()
-                    .FirstOrDefault(x => x.Value == "52");
+                    .FirstOrDefault(x => x.Value == FIFTY_TWO);
         }
 
         public bool IsInternational { get; set; }
@@ -55,6 +56,8 @@ namespace NoFuture.Rand.Com
         /// <param name="li"></param>
         internal Bank(dynamic li)
         {
+            const string COMMA = ",";
+            const string LETTER_Y = "Y";
             UpsertName(KindsOfNames.Legal, li.BankName);
             UpsertName(KindsOfNames.Abbrev, li.BankName);
             Rssd = new ResearchStatisticsSupervisionDiscount { Value = li.BankId };
@@ -66,18 +69,18 @@ namespace NoFuture.Rand.Com
             var assets = new FinancialAssets { Src = FedLrgBnk.RELEASE_URL };
             decimal conAssts = 0;
             decimal domAssts = 0;
-            if (decimal.TryParse(li.ConsolAssets.Replace(",", string.Empty), out conAssts))
+            if (decimal.TryParse(li.ConsolAssets.Replace(COMMA, string.Empty), out conAssts))
                 assets.TotalAssets = new Pecuniam(conAssts * ONE_THOUSAND);
-            if (decimal.TryParse(li.DomesticAssets.Replace(",", string.Empty), out domAssts))
+            if (decimal.TryParse(li.DomesticAssets.Replace(COMMA, string.Empty), out domAssts))
                 assets.DomesticAssets = new Pecuniam(domAssts * ONE_THOUSAND);
             int domBranches = 0;
             int frnBranches = 0;
             int pfo = 0;
-            if (int.TryParse(li.NumOfDomBranches.Replace(",", string.Empty), out domBranches))
+            if (int.TryParse(li.NumOfDomBranches.Replace(COMMA, string.Empty), out domBranches))
                 assets.DomesticBranches = domBranches;
-            if (int.TryParse(li.NumOfFgnBranches.Replace(",", string.Empty), out frnBranches))
+            if (int.TryParse(li.NumOfFgnBranches.Replace(COMMA, string.Empty), out frnBranches))
                 assets.ForeignBranches = frnBranches;
-            IsInternational = li.Ibf == "Y";
+            IsInternational = li.Ibf == LETTER_Y;
             if (int.TryParse(li.PercentFgnOwned, out pfo))
                 assets.PercentForeignOwned = Math.Round((double)pfo / 100, 2);
             Assets = new Dictionary<DateTime, FinancialAssets> { { li.RptDate, assets } };

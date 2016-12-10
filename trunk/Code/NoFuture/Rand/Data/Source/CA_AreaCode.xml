@@ -4,40 +4,40 @@
     <data>
       <source>
         <area-codes>
-          <state name="Newfoundland" abbreviation="NL" >
+          <providence name="Newfoundland" abbreviation="NL" >
             <area-code>339</area-code>
-          </state>
-          <state name="Alberta" abbreviation="AB" >
+          </providence>
+          <providence name="Alberta" abbreviation="AB" >
             <area-code>403</area-code>
             <area-code>587</area-code>
             <area-code>780</area-code>
             <area-code>825</area-code>
-          </state>
-          <state name="British Columbia" abbreviation="BC" >
+          </providence>
+          <providence name="British Columbia" abbreviation="BC" >
             <area-code>236</area-code>
             <area-code>250</area-code>
             <area-code>604</area-code>
             <area-code>672</area-code>
             <area-code>778</area-code>
-          </state>
-          <state name="Manitoba" abbreviation="MB" >
+          </providence>
+          <providence name="Manitoba" abbreviation="MB" >
             <area-code>204</area-code>
             <area-code>431</area-code>
-          </state>
-          <state name="New Brunswick" abbreviation="NB" >
+          </providence>
+          <providence name="New Brunswick" abbreviation="NB" >
             <area-code>506</area-code>
-          </state>
-          <state name="Northwest Territories" abbreviation="NT" >
+          </providence>
+          <providence name="Northwest Territories" abbreviation="NT" >
             <area-code>867</area-code>
-          </state>
-          <state name="Nova Scotia" abbreviation="NS" >
+          </providence>
+          <providence name="Nova Scotia" abbreviation="NS" >
             <area-code>782</area-code>
             <area-code>902</area-code>
-          </state>
-          <state name="Nunavut" abbreviation="NU" >
+          </providence>
+          <providence name="Nunavut" abbreviation="NU" >
             <area-code>867</area-code>
-          </state>
-          <state name="Ontario" abbreviation="ON" >
+          </providence>
+          <providence name="Ontario" abbreviation="ON" >
             <area-code>548</area-code>
             <area-code>249</area-code>
             <area-code>289</area-code>
@@ -53,12 +53,12 @@
             <area-code>742</area-code>
             <area-code>807</area-code>
             <area-code>905</area-code>
-          </state>
-          <state name="Prince Edward Island" abbreviation="PE" >
+          </providence>
+          <providence name="Prince Edward Island" abbreviation="PE" >
             <area-code>782</area-code>
             <area-code>902</area-code>
-          </state>
-          <state name="Quebec" abbreviation="QC" >
+          </providence>
+          <providence name="Quebec" abbreviation="QC" >
             <area-code>418</area-code>
             <area-code>438</area-code>
             <area-code>450</area-code>
@@ -67,14 +67,14 @@
             <area-code>581</area-code>
             <area-code>819</area-code>
             <area-code>873</area-code>
-          </state>
-          <state name="Saskatchewan" abbreviation="SK" >
+          </providence>
+          <providence name="Saskatchewan" abbreviation="SK" >
             <area-code>306</area-code>
             <area-code>639</area-code>
-          </state>
-          <state name="Yukon" abbreviation="YT" >
+          </providence>
+          <providence name="Yukon" abbreviation="YT" >
             <area-code>867</area-code>
-          </state>
+          </providence>
         </area-codes>
       </source>
     </data>

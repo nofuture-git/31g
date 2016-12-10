@@ -31,9 +31,7 @@ namespace NoFuture.Rand.Com
         public override bool Equals(object obj)
         {
             var tkr = obj as Ticker;
-            if (tkr == null)
-                return false;
-            return Equals(tkr);
+            return tkr != null && Equals(tkr);
         }
 
         public override string Value { get{ return Symbol;} set { Symbol = value; } }
@@ -50,10 +48,7 @@ namespace NoFuture.Rand.Com
                    string.Equals(Country, obj.Country, StringComparison.OrdinalIgnoreCase);
         }
 
-        public override string Abbrev
-        {
-            get { return "Ticker"; }
-        }
+        public override string Abbrev => "Ticker";
     }
 
     [Serializable]
@@ -64,30 +59,24 @@ namespace NoFuture.Rand.Com
         public TickerComparer(string companyName)
         {
             if(string.IsNullOrWhiteSpace(companyName))
-                throw new ArgumentNullException("companyName");
+                throw new ArgumentNullException(nameof(companyName));
 
             _companyName = companyName;
             _companyNameRegex = new Regex(RegexCatalog.ToRegexExpression(_companyName), RegexOptions.IgnoreCase);
         }
 
-        protected char FirstCharOfName
-        {
-            get
-            {
-                return string.IsNullOrWhiteSpace(_companyName)
-                    ? '\0'
-                    : _companyName.Trim().ToUpper().ToCharArray().First();
-            }
-        }
+        protected char FirstCharOfName => string.IsNullOrWhiteSpace(_companyName)
+            ? '\0'
+            : _companyName.Trim().ToUpper().ToCharArray().First();
 
         public int Compare(Ticker x, Ticker y)
         {
             const string USA = "USA";
             if (x == null && y == null)
                 return 0;
-            if (y == null || string.IsNullOrWhiteSpace(y.Value))
+            if (string.IsNullOrWhiteSpace(y?.Value))
                 return -1;
-            if (x == null || string.IsNullOrWhiteSpace(x.Value))
+            if (string.IsNullOrWhiteSpace(x?.Value))
                 return 1;
 
             Func<Ticker, bool[]> getProps = ticker => new[]
