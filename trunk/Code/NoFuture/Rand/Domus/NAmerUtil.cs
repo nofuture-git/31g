@@ -5,10 +5,8 @@ using NoFuture.Util.Math;
 using System.Xml;
 using NoFuture.Rand.Data;
 using NoFuture.Rand.Data.Types;
-using System.Xml.Linq;
 using NoFuture.Rand.Edu;
 using NoFuture.Rand.Gov;
-using NoFuture.Util;
 
 namespace NoFuture.Rand.Domus
 {
@@ -31,29 +29,42 @@ namespace NoFuture.Rand.Domus
         /// <summary>
         /// Has no stat validity - just a guess
         /// </summary>
-        public const double PercentDivorced = 0.44;
+        public const double PERCENT_DIVORCED = 0.44;
+
         /// <summary>
         /// Has no stat validity - just a guess
         /// </summary>
-        public const int AvgLengthOfMarriage = 10;
+        public const int AVG_LENGTH_OF_MARRIAGE = 10;
+
         /// <summary>
         /// Has no stat validity - just a guess
         /// </summary>
-        public const double YearsBeforeNextMarriage = 3.857;
+        public const double YEARS_BEFORE_NEXT_MARRIAGE = 3.857;
+        
         /// <summary>
         /// Has no stat validity - just a guess
         /// </summary>
-        public const double PercentUnmarriedWholeLife = 0.054;
+        public const double PERCENT_UNMARRIED_WHOLE_LIFE = 0.054;
 
         /// <summary>
         /// [http://www.pewsocialtrends.org/2014/11/14/four-in-ten-couples-are-saying-i-do-again/st_2014-11-14_remarriage-02/]
         /// </summary>
-        public const double PercentOfMenMarriedOnceNeverAgain = 0.29D;
+        public const double PERCENT_OF_MEN_MARRIED_ONCE_NEVER_AGAIN = 0.29D;
 
         /// <summary>
         /// [http://www.pewsocialtrends.org/2014/11/14/four-in-ten-couples-are-saying-i-do-again/st_2014-11-14_remarriage-02/]
         /// </summary>
-        public const double PercentOfWomenMarriedOnceNeverAgain = 0.15D;
+        public const double PERCENT_OF_WOMEN_MARRIED_ONCE_NEVER_AGAIN = 0.15D;
+
+        /// <summary>
+        /// Has no stat validity - just a guess
+        /// </summary>
+        public const double STD_DEV_MALE_LIFE_EXPECTANCY = 4.9D;
+
+        /// <summary>
+        /// Has no stat validity - just a guess
+        /// </summary>
+        public const double STD_DEV_FEMALE_LIFE_EXPECTANCY = 3.9D;
         #endregion
 
         #region methods
@@ -186,10 +197,9 @@ namespace NoFuture.Rand.Domus
             public static NormalDistEquation LifeExpectancy(Gender mf)
             {
                 return mf == Gender.Male
-                    ? new NormalDistEquation {Mean = 76.9D, StdDev = 4.9}
-                    : new NormalDistEquation {Mean = 81.6, StdDev = 3.9};
+                    ? new NormalDistEquation {Mean = 76.9D, StdDev = STD_DEV_MALE_LIFE_EXPECTANCY}
+                    : new NormalDistEquation {Mean = 81.6, StdDev = STD_DEV_FEMALE_LIFE_EXPECTANCY};
             }
-
         }
 
         /// <summary>
@@ -319,7 +329,7 @@ namespace NoFuture.Rand.Domus
         /// </returns>
         public static NorthAmericanRace GetAmericanRace(string zipCode)
         {
-            var amRace = RandomAmericanRaceWithRespectToZip(zipCode);
+            var amRace = UsCityStateZip.RandomAmericanRaceWithRespectToZip(zipCode);
 
             var raceHashByZip = amRace != null
                 ? new Dictionary<string, double>
@@ -351,7 +361,7 @@ namespace NoFuture.Rand.Domus
         /// <returns></returns>
         public static MaritialStatus GetMaritialStatus(DateTime dob, Gender gender)
         {
-            if (Etx.MyRand.NextDouble() <= PercentUnmarriedWholeLife)
+            if (Etx.MyRand.NextDouble() <= PERCENT_UNMARRIED_WHOLE_LIFE)
                 return MaritialStatus.Single;
 
             var avgAgeMarriage = gender == Gender.Female
@@ -369,25 +379,25 @@ namespace NoFuture.Rand.Domus
                 return MaritialStatus.Widowed;
 
             //young first marriage
-            if (!(currentAge > avgAgeMarriage + AvgLengthOfMarriage)) return MaritialStatus.Married;
+            if (!(currentAge > avgAgeMarriage + AVG_LENGTH_OF_MARRIAGE)) return MaritialStatus.Married;
 
             //spin for divorce
-            var df = Etx.MyRand.NextDouble() <= PercentDivorced;
+            var df = Etx.MyRand.NextDouble() <= PERCENT_DIVORCED;
 
             //have 'separated' (whatever it means) as low probablity
-            if (df && currentAge < avgAgeMarriage + AvgLengthOfMarriage + YearsBeforeNextMarriage)
+            if (df && currentAge < avgAgeMarriage + AVG_LENGTH_OF_MARRIAGE + YEARS_BEFORE_NEXT_MARRIAGE)
                 return Etx.TryBelowOrAt(64, Etx.Dice.OneThousand) ? MaritialStatus.Separated : MaritialStatus.Divorced;
 
             //have prob of never remarry
             if (df && gender == Gender.Male)
             {
-                return Etx.MyRand.NextDouble() <= PercentOfMenMarriedOnceNeverAgain
+                return Etx.MyRand.NextDouble() <= PERCENT_OF_MEN_MARRIED_ONCE_NEVER_AGAIN
                     ? MaritialStatus.Divorced
                     : MaritialStatus.Remarried;
             }
             if (df && gender == Gender.Female)
             {
-                return Etx.MyRand.NextDouble() <= PercentOfWomenMarriedOnceNeverAgain
+                return Etx.MyRand.NextDouble() <= PERCENT_OF_WOMEN_MARRIED_ONCE_NEVER_AGAIN
                     ? MaritialStatus.Divorced
                     : MaritialStatus.Remarried;
             }
@@ -606,46 +616,6 @@ namespace NoFuture.Rand.Domus
             var zip2Wt = UsCityStateZip.ZipCodePrefix2Population;
 
             return !zip2Wt.Any() ? UsCityStateZip.DF_ZIPCODE_PREFIX : Etx.DiscreteRange(zip2Wt);
-        }
-
-        /// <summary>
-        /// Returns a hashtable whose keys as American's call Race based on the given <see cref="zipCode"/>
-        /// </summary>
-        /// <param name="zipCode"></param>
-        public static AmericanRacePercents RandomAmericanRaceWithRespectToZip(string zipCode)
-        {
-
-            var pick = 0;
-            //if calling assembly passed in no-args then return all zeros
-            if (String.IsNullOrWhiteSpace(zipCode))
-                return AmericanRacePercents.GetNatlAvg();
-
-            //get the data for the given zip code
-            var zipStatElem = TreeData.AmericanHighSchoolData.SelectSingleNode($"//zip-stat[@value='{zipCode}']");
-
-            if (zipStatElem == null || !zipStatElem.HasChildNodes)
-            {
-                //try to find on the zip code prefix 
-                var zip3 = zipCode.Substring(0, 3);
-                var zipCodeElem =
-                    TreeData.AmericanHighSchoolData.SelectSingleNode($"//zip-code[@prefix='{zip3}']");
-
-                if (zipCodeElem == null || !zipCodeElem.HasChildNodes)
-                    return AmericanRacePercents.GetNatlAvg();
-
-                pick = Etx.MyRand.Next(0, zipCodeElem.ChildNodes.Count - 1);
-
-                zipStatElem = zipCodeElem.ChildNodes[pick];
-                if (zipStatElem == null)
-                    return AmericanRacePercents.GetNatlAvg();
-            }
-
-            AmericanHighSchool hsOut;
-            pick = Etx.MyRand.Next(0, zipStatElem.ChildNodes.Count - 1);
-            var hsNode = zipStatElem.ChildNodes[pick];
-            if (!AmericanHighSchool.TryParseXml(hsNode as XmlElement, out hsOut))
-                return AmericanRacePercents.GetNatlAvg();
-            return hsOut.RacePercents;
         }
 
         /// <summary>

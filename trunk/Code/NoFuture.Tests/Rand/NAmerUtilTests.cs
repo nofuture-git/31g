@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NoFuture.Rand;
+using NoFuture.Rand.Data.Types;
 using NoFuture.Rand.Domus;
 
 namespace NoFuture.Tests.Rand
@@ -31,7 +32,7 @@ namespace NoFuture.Tests.Rand
         public void AmericanRaceRatioByZipCodeTests()
         {
             const string TEST_ZIP = "92071";
-            var testResult = NAmerUtil.RandomAmericanRaceWithRespectToZip(TEST_ZIP);
+            var testResult = UsCityStateZip.RandomAmericanRaceWithRespectToZip(TEST_ZIP);
             Assert.IsNotNull(testResult);
             System.Diagnostics.Debug.WriteLine(testResult);
 
@@ -55,7 +56,7 @@ namespace NoFuture.Tests.Rand
             foreach (var t in testZipPrefix)
             {
                 System.Diagnostics.Debug.WriteLine(t);
-                testResult = NAmerUtil.RandomAmericanRaceWithRespectToZip(t);
+                testResult = UsCityStateZip.RandomAmericanRaceWithRespectToZip(t);
                 Assert.IsNotNull(testResult);
                 System.Diagnostics.Debug.WriteLine(testResult);
             }

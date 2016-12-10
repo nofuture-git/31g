@@ -494,7 +494,7 @@ namespace NoFuture.Rand.Domus
             else
             {
                 //take date of marriage and add avg length of marriage
-                var separatedDate = Etx.Date(NAmerUtil.AvgLengthOfMarriage, marriedOn);
+                var separatedDate = Etx.Date(NAmerUtil.AVG_LENGTH_OF_MARRIAGE, marriedOn);
 
                 //reset date-range with separated date
                 AddNewSpouseToList(spouse, marriedOn, separatedDate);
@@ -511,7 +511,7 @@ namespace NoFuture.Rand.Domus
                 var secondSpouse = (NorthAmerican)NAmerUtil.SolveForSpouse(_birthCert.DateOfBirth, MyGender, ageSpread);
 
                 //random second marriage date
-                var remarriedOn = Etx.Date(Convert.ToInt32(Math.Round(NAmerUtil.YearsBeforeNextMarriage)),
+                var remarriedOn = Etx.Date(Convert.ToInt32(Math.Round(NAmerUtil.YEARS_BEFORE_NEXT_MARRIAGE)),
                     separatedDate);
 
                 //add second date-range for resolution of children
