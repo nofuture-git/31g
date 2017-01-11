@@ -135,13 +135,13 @@
     <EmbeddedResource Include="LoremIpsum.EightParagraphs.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Shared\Shared.csproj">
-      <Project>{4B77029A-6F3E-48AE-B8E2-C4DD06DCE627}</Project>
-      <Name>Shared</Name>
-    </ProjectReference>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <ProjectReference Include="..\Shared\Shared.csproj">
+      <Project>{4b77029a-6f3e-48ae-b8e2-c4dd06dce627}</Project>
+      <Name>Shared</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

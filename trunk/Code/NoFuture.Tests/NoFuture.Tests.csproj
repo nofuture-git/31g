@@ -303,8 +303,12 @@
     <Compile Include="Util\EquationsTests.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\NoFuture\Domain\Carriage\Domain.Carriage.csproj">
+      <Project>{e48b5e3d-7e4e-4f3f-81ed-a36e9ca90c20}</Project>
+      <Name>Domain.Carriage</Name>
+    </ProjectReference>
     <ProjectReference Include="..\NoFuture\Domain\Engine\Domain.Engine.csproj">
-      <Project>{9DAC506B-CC22-43D2-9E72-A463E0015A03}</Project>
+      <Project>{9dac506b-cc22-43d2-9e72-a463e0015a03}</Project>
       <Name>Domain.Engine</Name>
     </ProjectReference>
     <ProjectReference Include="..\NoFuture\Encryption\Encryption.csproj">
@@ -323,20 +327,12 @@
       <Project>{b48811e5-ccb2-4aae-b4e8-a711fa018460}</Project>
       <Name>Hbm</Name>
     </ProjectReference>
-    <ProjectReference Include="..\NoFuture\Hbm\InvokeStoredProc\Hbm.InvokeStoredProc.csproj">
-      <Project>{cc26246e-1809-4bc4-8ad7-0237e76f8968}</Project>
-      <Name>Hbm.InvokeStoredProc</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\NoFuture\Hbm\Sid\Hbm.Sid.csproj">
-      <Project>{b543f5f2-cf3c-411e-96e6-486d9c790355}</Project>
-      <Name>Hbm.Sid</Name>
-    </ProjectReference>
     <ProjectReference Include="..\NoFuture\Host\Encryption\Host.Encryption.csproj">
-      <Project>{CA799F4D-800A-48B9-92A4-69C728135EB5}</Project>
+      <Project>{ca799f4d-800a-48b9-92a4-69c728135eb5}</Project>
       <Name>Host.Encryption</Name>
     </ProjectReference>
     <ProjectReference Include="..\NoFuture\Rand\Rand.csproj">
-      <Project>{71628E18-D27B-4F4E-B034-4B2AD4479E13}</Project>
+      <Project>{71628e18-d27b-4f4e-b034-4b2ad4479e13}</Project>
       <Name>Rand</Name>
     </ProjectReference>
     <ProjectReference Include="..\NoFuture\Read\Ini\Read.csproj">
@@ -344,7 +340,7 @@
       <Name>Read</Name>
     </ProjectReference>
     <ProjectReference Include="..\NoFuture\Shared\Shared.csproj">
-      <Project>{4B77029A-6F3E-48AE-B8E2-C4DD06DCE627}</Project>
+      <Project>{4b77029a-6f3e-48ae-b8e2-c4dd06dce627}</Project>
       <Name>Shared</Name>
     </ProjectReference>
     <ProjectReference Include="..\NoFuture\Shared\Shared.WcfClient\Shared.WcfClient.csproj">
@@ -368,12 +364,16 @@
       <Name>Util.Gia.InvokeAssemblyAnalysis</Name>
     </ProjectReference>
     <ProjectReference Include="..\NoFuture\Util\Util.csproj">
-      <Project>{D7F28538-BA6A-46B4-A080-65124E899317}</Project>
+      <Project>{d7f28538-ba6a-46b4-a080-65124e899317}</Project>
       <Name>Util</Name>
     </ProjectReference>
     <ProjectReference Include="..\NoFuture\Util\Util.Pos\Util.Pos.csproj">
       <Project>{39627590-0d97-4de2-b598-172b04587550}</Project>
       <Name>Util.Pos</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NoFuture\Util\Util.Re\Util.Re.csproj">
+      <Project>{d572d6a3-0b77-451f-a1fe-efee1767bf9c}</Project>
+      <Name>Util.Re</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

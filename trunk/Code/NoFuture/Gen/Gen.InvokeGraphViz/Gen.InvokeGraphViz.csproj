@@ -50,6 +50,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="favicon.ico" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\..\Shared\Shared.csproj">
       <Project>{4b77029a-6f3e-48ae-b8e2-c4dd06dce627}</Project>
       <Name>Shared</Name>
@@ -62,9 +65,6 @@
       <Project>{96eb903d-a8b1-4a4a-8e68-1e64cd8467ec}</Project>
       <Name>Gen</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="favicon.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

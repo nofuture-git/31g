@@ -130,7 +130,8 @@ namespace NoFuture.Encryption
 
             var b64Encode = enroll.CreatePFX(pwd, PFXExportOptions.PFXExportEEOnly);
 
-            var managedX509Cert = new X509Certificate2(Convert.FromBase64String(b64Encode), pwd, X509KeyStorageFlags.Exportable);
+            var managedX509Cert = new X509Certificate2(Convert.FromBase64String(b64Encode), pwd,
+                X509KeyStorageFlags.Exportable);
 
             return managedX509Cert;
         }
@@ -294,16 +295,16 @@ namespace NoFuture.Encryption
         private static bool TestEnDeCryptInputs(string path, string certCerPath, string certPassword)
         {
             if (string.IsNullOrWhiteSpace(path))
-                throw new ArgumentNullException("path");
+                throw new ArgumentNullException(nameof(path));
             if (string.IsNullOrWhiteSpace(certCerPath))
-                throw new ArgumentNullException("certCerPath");
+                throw new ArgumentNullException(nameof(certCerPath));
             if (certPassword == null)
-                throw new ArgumentNullException("certPassword");
+                throw new ArgumentNullException(nameof(certPassword));
 
             if (!File.Exists(path))
-                throw new ItsDeadJim(string.Format("There is no file at '{0}'", path));
+                throw new ItsDeadJim($"There is no file at '{path}'");
             if (!File.Exists(certCerPath))
-                throw new ItsDeadJim(string.Format("There is no certificate at '{0}'", certCerPath));
+                throw new ItsDeadJim($"There is no certificate at '{certCerPath}'");
             return true;
         }
     }

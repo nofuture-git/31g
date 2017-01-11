@@ -91,20 +91,6 @@
     <Compile Include="SortingContainers\PkItem.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Gen\Gen.csproj">
-      <Project>{96eb903d-a8b1-4a4a-8e68-1e64cd8467ec}</Project>
-      <Name>Gen</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Shared\Shared.csproj">
-      <Project>{4b77029a-6f3e-48ae-b8e2-c4dd06dce627}</Project>
-      <Name>Shared</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Util\Util.csproj">
-      <Project>{D7F28538-BA6A-46B4-A080-65124E899317}</Project>
-      <Name>Util</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="MsSql\AllColumns.sql" />
     <EmbeddedResource Include="MsSql\AllColumns2K.sql" />
     <EmbeddedResource Include="MsSql\AllIndex.sql" />
@@ -146,6 +132,20 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Gen\Gen.csproj">
+      <Project>{96eb903d-a8b1-4a4a-8e68-1e64cd8467ec}</Project>
+      <Name>Gen</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Shared\Shared.csproj">
+      <Project>{4b77029a-6f3e-48ae-b8e2-c4dd06dce627}</Project>
+      <Name>Shared</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Util\Util.csproj">
+      <Project>{d7f28538-ba6a-46b4-a080-65124e899317}</Project>
+      <Name>Util</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

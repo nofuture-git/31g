@@ -76,16 +76,6 @@
   <ItemGroup>
     <Content Include="favicon.ico" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\Shared\Shared.csproj">
-      <Project>{4B77029A-6F3E-48AE-B8E2-C4DD06DCE627}</Project>
-      <Name>Shared</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Util\Util.csproj">
-      <Project>{D7F28538-BA6A-46B4-A080-65124E899317}</Project>
-      <Name>Util</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
