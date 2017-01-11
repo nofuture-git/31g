@@ -8,15 +8,11 @@ namespace NoFuture.Tests.Rand.NfXmlTests
     [TestClass]
     public class SecFullTxtSearchTests
     {
-        [TestInitialize]
-        public void Init()
-        {
-            BinDirectories.DataRoot = @"C:\Projects\31g\trunk\bin\Data\Source";
-        }
+
         [TestMethod]
         public void TestMethod1()
         {
-            var testXmlFile = @"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\srch-edgar.xml";
+            var testXmlFile = TestAssembly.UnitTestsRoot + @"\ExampleDlls\srch-edgar.xml";
             var testSubject = new NoFuture.Rand.Data.NfXml.SecFullTxtSearch(new Uri("http://localhost"));
 
             var testResult = testSubject.ParseContent(System.IO.File.ReadAllText(testXmlFile));

@@ -11,14 +11,14 @@ namespace NoFuture.Tests
     [TestClass]
     public class TestRead
     {
-        public const string TEST_CSPROJ = @"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\AdventureWorks2012\AdventureWorks2012\DoNotUse_VsProjFileTests.csproj";
-        public const string TEST00_EXE_CONFIG = @"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\TestAppConfig00-Copy.xml";
-        public const string TEST01_EXE_CONFIG = @"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\TestAppConfig01-Copy.xml";
-        public const string TEST02_EXE_CONFIG = @"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\TestAppConfig02-Copy.xml";
-        public const string TEST03_EXE_CONFIG = @"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\TestAppConfig03-Copy.xml";
+        public string TEST_CSPROJ = TestAssembly.UnitTestsRoot + @"\ExampleDlls\AdventureWorks2012\AdventureWorks2012\DoNotUse_VsProjFileTests.csproj";
+        public string TEST00_EXE_CONFIG = TestAssembly.UnitTestsRoot + @"\ExampleDlls\TestAppConfig00-Copy.xml";
+        public string TEST01_EXE_CONFIG = TestAssembly.UnitTestsRoot + @"\ExampleDlls\TestAppConfig01-Copy.xml";
+        public string TEST02_EXE_CONFIG = TestAssembly.UnitTestsRoot + @"\ExampleDlls\TestAppConfig02-Copy.xml";
+        public string TEST03_EXE_CONFIG = TestAssembly.UnitTestsRoot + @"\ExampleDlls\TestAppConfig03-Copy.xml";
 
-        public const string TEST_TRANS00_CONFIG =
-            @"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\TestTransformConfig00-Copy.xml";
+        public string TEST_TRANS00_CONFIG =
+           TestAssembly.UnitTestsRoot + @"\ExampleDlls\TestTransformConfig00-Copy.xml";
 
         public string[] RemoveFiles = new[] { "SeeReadMe.aspx", "SeeReadMe.aspx.cs", "SeeReadMe.aspx.designer.cs" };
 
@@ -40,11 +40,11 @@ namespace NoFuture.Tests
                 {regexCatalog.IPv4, "127.0.0.1"},
                 {regexCatalog.UrlClassicAmerican, "localhost"}
             };
-            File.Copy(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\TestAppConfig00.xml", TEST00_EXE_CONFIG, true);
-            File.Copy(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\TestAppConfig01.xml", TEST01_EXE_CONFIG, true);
-            File.Copy(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\TestAppConfig02.xml", TEST02_EXE_CONFIG, true);
-            File.Copy(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\TestAppConfig03.xml", TEST03_EXE_CONFIG, true);
-            File.Copy(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\TestTransformConfig00.xml", TEST_TRANS00_CONFIG, true);
+            File.Copy(TestAssembly.UnitTestsRoot + @"\ExampleDlls\TestAppConfig00.xml", TEST00_EXE_CONFIG, true);
+            File.Copy(TestAssembly.UnitTestsRoot + @"\ExampleDlls\TestAppConfig01.xml", TEST01_EXE_CONFIG, true);
+            File.Copy(TestAssembly.UnitTestsRoot + @"\ExampleDlls\TestAppConfig02.xml", TEST02_EXE_CONFIG, true);
+            File.Copy(TestAssembly.UnitTestsRoot + @"\ExampleDlls\TestAppConfig03.xml", TEST03_EXE_CONFIG, true);
+            File.Copy(TestAssembly.UnitTestsRoot + @"\ExampleDlls\TestTransformConfig00.xml", TEST_TRANS00_CONFIG, true);
 
             System.Threading.Thread.Sleep(500);
             
@@ -97,7 +97,7 @@ namespace NoFuture.Tests
 
             var testProjRef =
                 testSubject.GetSingleRefernceNode(
-                    @"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\NHibernate.dll");
+                    TestAssembly.UnitTestsRoot + @"\ExampleDlls\NHibernate.dll");
 
             Assert.IsNotNull(testProjRef);
             Assert.IsNotNull(testProjRef.SearchPath);
@@ -129,7 +129,7 @@ namespace NoFuture.Tests
             var testAdd = testSubject.TryAddSrcCodeFile("Cw.aspx");
             Assert.IsTrue(testAdd);
 
-            var testNewRef = testSubject.TryAddReferenceEntry(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\NoFuture.Shared.dll");
+            var testNewRef = testSubject.TryAddReferenceEntry(TestAssembly.UnitTestsRoot + @"\ExampleDlls\NoFuture.Shared.dll");
             Assert.IsTrue(testNewRef);
 
             testSubject.Save();

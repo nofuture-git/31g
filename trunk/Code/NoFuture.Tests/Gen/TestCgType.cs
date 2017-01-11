@@ -15,11 +15,11 @@ namespace NoFuture.Tests.Gen
         [TestInitialize]
         public void Init()
         {
-            TempDirectories.Code = @"C:\Projects\31g\trunk\Code\NoFuture.Tests\Gen";
-            TempDirectories.Debug = @"C:\Projects\31g\trunk\Code\NoFuture.Tests\Gen";
-            CustomTools.Dia2Dump = @"C:\Projects\31g\trunk\bin\Dia2Dump.exe";
-            CustomTools.InvokeGetCgType = @"C:\Projects\31g\trunk\bin\NoFuture.Gen.InvokeGetCgOfType.exe";
-            NfConfig.AssemblySearchPaths.Add(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls");
+            TempDirectories.Code = TestAssembly.UnitTestsRoot + @"\Gen";
+            TempDirectories.Debug = TestAssembly.UnitTestsRoot + @"\Gen";
+            CustomTools.Dia2Dump = TestAssembly.RootBin + @"\Dia2Dump.exe";
+            CustomTools.InvokeGetCgType = TestAssembly.RootBin + @"\NoFuture.Gen.InvokeGetCgOfType.exe";
+            NfConfig.AssemblySearchPaths.Add(TestAssembly.UnitTestsRoot + @"\ExampleDlls");
         }
         [TestMethod]
         public void TestToGraphVizString()
@@ -31,11 +31,11 @@ namespace NoFuture.Tests.Gen
             if (testAsm == null)
             {
                 Assembly.Load(
-                    System.IO.File.ReadAllBytes(@"C:\Projects\31g\trunk\bin\NoFuture.Hbm.Sid.dll"));
+                    System.IO.File.ReadAllBytes(TestAssembly.RootBin + @"\NoFuture.Hbm.Sid.dll"));
                 testAsm =
                     Assembly.Load(
                         System.IO.File.ReadAllBytes(
-                            @"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\AdventureWorks.dll"));
+                            TestAssembly.UnitTestsRoot + @"\ExampleDlls\AdventureWorks.dll"));
             }
 
             Assert.IsNotNull(testAsm);
@@ -63,7 +63,7 @@ namespace NoFuture.Tests.Gen
             var testtypeName = "AdventureWorks.VeryBadCode.ViewWankathon";
             var testAsm =
                     NoFuture.Util.Binary.Asm.NfLoadFrom(
-                        @"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\AdventureWorks2012.dll");
+                        TestAssembly.UnitTestsRoot + @"\ExampleDlls\AdventureWorks2012.dll");
 
             Assert.IsNotNull(testAsm);
 
@@ -86,31 +86,31 @@ namespace NoFuture.Tests.Gen
         [TestMethod]
         public void TestFindCgMethodByTokenName()
         {
-            NfConfig.AssemblySearchPaths.Add( @"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\");
+            NfConfig.AssemblySearchPaths.Add(TestAssembly.UnitTestsRoot + @"\ExampleDlls\");
             NfConfig.UseReflectionOnlyLoad = false;
             NoFuture.Util.FxPointers.AddResolveAsmEventHandlerToDomain();
             var testAsm =
                 System.Reflection.Assembly.Load(
                     System.IO.File.ReadAllBytes(
-                        @"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\AdventureWorks2012.dll"));
+                        TestAssembly.UnitTestsRoot + @"\ExampleDlls\AdventureWorks2012.dll"));
             System.Reflection.Assembly.Load(
                     System.IO.File.ReadAllBytes(
-                        @"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\Iesi.Collections.dll"));
+                        TestAssembly.UnitTestsRoot + @"\ExampleDlls\Iesi.Collections.dll"));
             System.Reflection.Assembly.Load(
                     System.IO.File.ReadAllBytes(
-                        @"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\NHibernate.dll"));
+                        TestAssembly.UnitTestsRoot + @"\ExampleDlls\NHibernate.dll"));
             System.Reflection.Assembly.Load(
                     System.IO.File.ReadAllBytes(
-                        @"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\NoFuture.Hbm.Sid.dll"));
+                        TestAssembly.UnitTestsRoot + @"\ExampleDlls\NoFuture.Hbm.Sid.dll"));
             System.Reflection.Assembly.Load(
                     System.IO.File.ReadAllBytes(
-                        @"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\SomeSecondDll.dll"));
+                        TestAssembly.UnitTestsRoot + @"\ExampleDlls\SomeSecondDll.dll"));
             System.Reflection.Assembly.Load(
                     System.IO.File.ReadAllBytes(
-                        @"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\SomethingShared.dll"));
+                        TestAssembly.UnitTestsRoot + @"\ExampleDlls\SomethingShared.dll"));
             System.Reflection.Assembly.Load(
                     System.IO.File.ReadAllBytes(
-                        @"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\ThirdDll.dll"));
+                        TestAssembly.UnitTestsRoot + @"\ExampleDlls\ThirdDll.dll"));
 
             const string testTypeName = "AdventureWorks.VeryBadCode.BasicGenerics";
 

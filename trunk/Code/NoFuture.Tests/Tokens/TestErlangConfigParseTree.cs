@@ -7,7 +7,7 @@ namespace NoFuture.Tests.Tokens
     [TestClass]
     public class TestErlangConfigParseTree
     {
-        public const string ErlangTestConfigFile = @"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\rabbitmq.config";
+        public string ErlangTestConfigFile = TestAssembly.UnitTestsRoot + @"\ExampleDlls\rabbitmq.config";
 
         [TestMethod]
         public void TestInvokeParse()

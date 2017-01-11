@@ -20,11 +20,11 @@ namespace NoFuture.Tests.Util.Gia
             if (testAsm == null)
             {
                 Assembly.Load(
-                    System.IO.File.ReadAllBytes(@"C:\Projects\31g\trunk\bin\NoFuture.Hbm.Sid.dll"));
+                    System.IO.File.ReadAllBytes(TestAssembly.RootBin + @"\NoFuture.Hbm.Sid.dll"));
                 testAsm =
                     Assembly.Load(
                         System.IO.File.ReadAllBytes(
-                            @"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\AdventureWorks.dll"));
+                            TestAssembly.UnitTestsRoot + @"\ExampleDlls\AdventureWorks.dll"));
             }
 
             Assert.IsNotNull(testAsm);
@@ -41,7 +41,7 @@ namespace NoFuture.Tests.Util.Gia
             Assert.IsNotNull(testPrint);
             var printLines = testPrint.PrintLines();
             Assert.IsNotNull(printLines);
-            System.IO.File.WriteAllLines(@"C:\Projects\31g\trunk\temp\FlattenedExample.txt", printLines);
+            System.IO.File.WriteAllLines(TestAssembly.UnitTestsRoot + @"\FlattenedExample.txt", printLines);
             foreach (var p in printLines)
                 System.Diagnostics.Debug.WriteLine(p);
         }
@@ -57,11 +57,11 @@ namespace NoFuture.Tests.Util.Gia
             if (testAsm == null)
             {
                 Assembly.Load(
-                    System.IO.File.ReadAllBytes(@"C:\Projects\31g\trunk\bin\NoFuture.Hbm.Sid.dll"));
+                    System.IO.File.ReadAllBytes(TestAssembly.RootBin + @"\NoFuture.Hbm.Sid.dll"));
                 testAsm =
                     Assembly.Load(
                         System.IO.File.ReadAllBytes(
-                            @"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\AdventureWorks.dll"));
+                            TestAssembly.UnitTestsRoot + @"\ExampleDlls\AdventureWorks.dll"));
             }
 
             Assert.IsNotNull(testAsm);
@@ -79,7 +79,7 @@ namespace NoFuture.Tests.Util.Gia
             Assert.IsNotNull(testPrint);
             var printLines = testPrint.PrintLines();
             Assert.IsNotNull(printLines);
-            System.IO.File.WriteAllLines(@"C:\Projects\31g\trunk\temp\FlattenedExample.txt", printLines);
+            System.IO.File.WriteAllLines(TestAssembly.UnitTestsRoot + @"\FlattenedExample.txt", printLines);
             foreach(var p in printLines)
                 System.Diagnostics.Debug.WriteLine(p);
         }
@@ -94,11 +94,11 @@ namespace NoFuture.Tests.Util.Gia
             if (testAsm == null)
             {
                 Assembly.Load(
-                    System.IO.File.ReadAllBytes(@"C:\Projects\31g\trunk\bin\NoFuture.Hbm.Sid.dll"));
+                    System.IO.File.ReadAllBytes(TestAssembly.RootBin + @"\NoFuture.Hbm.Sid.dll"));
                 testAsm =
                     Assembly.Load(
                         System.IO.File.ReadAllBytes(
-                            @"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\AdventureWorks.dll"));
+                            TestAssembly.UnitTestsRoot + @"\ExampleDlls\AdventureWorks.dll"));
             }
 
             Assert.IsNotNull(testAsm);
@@ -131,11 +131,11 @@ namespace NoFuture.Tests.Util.Gia
             if (testAsm == null)
             {
                 Assembly.Load(
-                    System.IO.File.ReadAllBytes(@"C:\Projects\31g\trunk\bin\NoFuture.Hbm.Sid.dll"));
+                    System.IO.File.ReadAllBytes(TestAssembly.RootBin + @"\NoFuture.Hbm.Sid.dll"));
                 testAsm =
                     Assembly.Load(
                         System.IO.File.ReadAllBytes(
-                            @"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\AdventureWorks.dll"));
+                            TestAssembly.UnitTestsRoot + @"\ExampleDlls\AdventureWorks.dll"));
             }
 
             Assert.IsNotNull(testAsm);
@@ -167,11 +167,11 @@ namespace NoFuture.Tests.Util.Gia
             if (testAsm == null)
             {
                 Assembly.Load(
-                    System.IO.File.ReadAllBytes(@"C:\Projects\31g\trunk\bin\NoFuture.Hbm.Sid.dll"));
+                    System.IO.File.ReadAllBytes(TestAssembly.RootBin + @"\NoFuture.Hbm.Sid.dll"));
                 testAsm =
                     Assembly.Load(
                         System.IO.File.ReadAllBytes(
-                            @"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\AdventureWorks.dll"));
+                            TestAssembly.UnitTestsRoot + @"\ExampleDlls\AdventureWorks.dll"));
             }
 
             Assert.IsNotNull(testAsm);
@@ -189,7 +189,7 @@ namespace NoFuture.Tests.Util.Gia
             var testResult = flattenedType.ToGraphVizString();
 
             Assert.IsFalse(string.IsNullOrWhiteSpace(testResult));
-            System.IO.File.WriteAllText(@"C:\Projects\31g\trunk\temp\TestGraphVizFlatType.gv", testResult);
+            System.IO.File.WriteAllText(TestAssembly.UnitTestsRoot + @"\TestGraphVizFlatType.gv", testResult);
         }
     }
 }

@@ -844,14 +844,14 @@ BLOOMBERG.gpt.render({""ad_description"":""blp.persfin/invest//ticker//lookup"",
         [TestMethod]
         public void TestPreParser()
         {
-            var testFile = @"C:\Projects\31g\trunk\Code\NoFuture.Tests\Rand\BloombergSearchRslt_multiple.html";
+            var testFile = TestAssembly.UnitTestsRoot + @"\Rand\BloombergSearchRslt_multiple.html";
 
             var testInput = System.IO.File.ReadAllText(testFile);
             var testResult = NoFuture.Rand.Data.NfHtml.NfHtmlDynDataBase.PreParser(testInput);
 
             Assert.AreNotEqual(testInput.Length, testResult.Length);
 
-            System.IO.File.WriteAllText(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\Rand\BloombergSearchRslt_tr.html", testResult);
+            System.IO.File.WriteAllText(TestAssembly.UnitTestsRoot + @"\Rand\BloombergSearchRslt_tr.html", testResult);
 
         }
     }

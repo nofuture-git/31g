@@ -10,12 +10,6 @@ namespace NoFuture.Tests.Rand.NfHtmlTests
     [TestClass]
     public class SecGetXbrlUriTests
     {
-        [TestInitialize]
-        public void Init()
-        {
-            BinDirectories.DataRoot = @"C:\Projects\31g\trunk\bin\Data\Source";
-        }
-
         [TestMethod]
         public void TestParseContent()
         {
@@ -23,7 +17,7 @@ namespace NoFuture.Tests.Rand.NfHtmlTests
                 "https://www.sec.gov/Archives/edgar/data/1593936/000155837016004206/0001558370-16-004206-index.htm");
             var testContent =
                 System.IO.File.ReadAllText(
-                    @"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\ExampleSecIndexHtm.html");
+                   TestAssembly.UnitTestsRoot + @"\ExampleDlls\ExampleSecIndexHtm.html");
             var testSubject = new NoFuture.Rand.Com.PublicCorporation { CIK = new CentralIndexKey { Value = "0000768899" }};
             testSubject.UpsertName(KindsOfNames.Legal, "TrueBlue, Inc.");
             testSubject.SecReports.Add(new Form10K {HtmlFormLink = testUri });

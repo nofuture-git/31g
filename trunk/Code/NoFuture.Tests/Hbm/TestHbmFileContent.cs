@@ -7,7 +7,7 @@ namespace NoFuture.Tests.Hbm
     [TestClass]
     public class TestHbmFileContent
     {
-        public const string TestFilePath = @"C:\Projects\31g\trunk\Code\NoFuture.Tests\Hbm\TestFiles\localhost\Whatever";
+        public string TestFilePath = TestAssembly.UnitTestsRoot + @"\Hbm\TestFiles\localhost\Whatever";
         public const string IdHbmXmlTestFile = "Dbo.TableWithVarcharPk.hbm.xml";
         public const string CompositeIdXmlTestFile = "Dbo.TableWithCompositePk.hbm.xml";
         public const string StoredProcXmlTestFile = "Dbo.MyStoredProc.hbm.xml";

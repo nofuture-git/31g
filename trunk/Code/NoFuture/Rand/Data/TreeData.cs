@@ -6,6 +6,7 @@ using System.Linq;
 using System.Xml;
 using NoFuture.Exceptions;
 using NoFuture.Rand.Com;
+using NoFuture.Rand.Data.Source;
 
 namespace NoFuture.Rand.Data
 {
@@ -35,28 +36,7 @@ namespace NoFuture.Rand.Data
 
         #region inner types
 
-        public static class DataFiles
-        {
-            public const string CA_AREA_CODE_DATA_FILE = "CA_AreaCode.xml";
-            public const string US_ZIP_DATA_FILE = "US_Zip.xml";
-            public const string CA_ZIP_DATA_FILE = "CA_Zip.xml";
-            public const string US_AREA_CODE_DATA_FILE = "US_AreaCode.xml";
-            public const string INS_COMPANY_DATA_FILE = "US_InsCompanyNames.xml";
-            public const string ECON_SECTOR_DATA_FILE = "US_EconSectors.xml";
-            public const string US_UNIV_DATA_FILE = "US_Universities.xml";
-            public const string US_FIRST_NAMES_DATA_FILE = "US_FirstNames.xml";
-            public const string US_STATE_DATA_FILE = "US_States.xml";
-            public const string US_LAST_NAMES_DATA_FILE = "US_LastNames.xml";
-            public const string US_HIGH_SCHOOL_DATA_FILE = "US_HighSchools.xml";
-            public const string US_CITY_DATA_FILE = "US_City.xml";
-            public const string X_REF_DATA_FILE = "XRef.xml";
-            public const string US_ZIP_PROB_TABLE_DATA_FILE = "US_Zip_ProbTable.xml";
-            public const string LRG_BNK_LST_DATA_FILE = "lrg_bnk_lst.txt";
-            public const string US_PERSON_DEBT_DATA_FILE = "US_PersonalDebt.xml";
-            public const string US_PERSON_WEALTH_DATA_FILE = "US_PersonalWealth.xml";
-            public const string VIN_WMI_DATA_FILE = "Vin_Wmi.xml";
-            public const string ENGLISH_WORDS_DATA_FILE = "English_Words.xml";
-        }
+
 
         #endregion
 
@@ -305,9 +285,6 @@ namespace NoFuture.Rand.Data
                     if (_enWords != null && _enWords.Count > 0)
                         return _enWords;
 
-                    if (!TestDataFileIsPresent(DataFiles.ENGLISH_WORDS_DATA_FILE))
-                        return null;
-
                     XmlDocument enWordsXml = null;
                     GetXmlDataSource(DataFiles.ENGLISH_WORDS_DATA_FILE, ref enWordsXml);
                     var wordNodes = enWordsXml?.SelectNodes($"//{WORD}[@{LANG}='en']");
@@ -376,52 +353,16 @@ namespace NoFuture.Rand.Data
         [EditorBrowsable(EditorBrowsableState.Never)]
         internal static string GetTextDataSource(string name)
         {
-            ThrowExOnFileNotFound(name);
-
-            return string.IsNullOrWhiteSpace(name)
-                ? null
-                : File.ReadAllText(Path.Combine(BinDirectories.DataRoot, name));
+            return DataFiles.GetByName(name);
         }
         
         [EditorBrowsable(EditorBrowsableState.Never)]
         internal static void GetXmlDataSource(string name, ref XmlDocument assignTo)
         {
-            ThrowExOnFileNotFound(name);
+            var xmlData = DataFiles.GetByName(name);
 
-            if (string.IsNullOrWhiteSpace(name))
-                return;
-
-            if(!File.Exists(Path.Combine(BinDirectories.DataRoot, name)))
-                throw new RahRowRagee($"{name} file is missing from {BinDirectories.DataRoot}");
-
-            var xmlData = File.ReadAllText(Path.Combine(BinDirectories.DataRoot, name));
-            if (string.IsNullOrWhiteSpace(xmlData))
-            {
-                assignTo = null;
-                return;
-            }
-
-            assignTo = new XmlDocument();
+            assignTo = assignTo ?? new XmlDocument();
             assignTo.LoadXml(xmlData);
-        }
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        internal static void ThrowExOnFileNotFound(string name)
-        {
-            if (!TestDataFileIsPresent(name))
-            {
-                throw new InvalidOperationException("Data is stored on the drive in the folder assigned to " +
-                                                    $"{nameof(BinDirectories.DataRoot)}.  Assign this variable " +
-                                                    "and try again.");
-            }
-        }
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        internal static bool TestDataFileIsPresent(string name)
-        {
-            if (string.IsNullOrWhiteSpace(BinDirectories.DataRoot) || !Directory.Exists(BinDirectories.DataRoot))
-                return false;
-            return !string.IsNullOrWhiteSpace(name) && File.Exists(Path.Combine(BinDirectories.DataRoot, name));
         }
         #endregion
 

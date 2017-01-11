@@ -212,11 +212,11 @@ namespace NoFuture.Tests.Tokens
         public void TestGetXDocFrame()
         {
             var testInput =
-                System.IO.File.ReadAllText(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\Tokens\TokensTestFile.txt");
+                System.IO.File.ReadAllText(TestAssembly.UnitTestsRoot + @"\Tokens\TokensTestFile.txt");
             var testSubject = new XDocFrame('{', '}') {MinTokenSpan = 1};
             var testResults = testSubject.GetXDocFrame(testInput);
             var testResultsXml = testResults.ToString();
-            System.IO.File.WriteAllBytes(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\Tokens\GetXDocFrameResults.xml", System.Text.Encoding.UTF8.GetBytes(testResultsXml));
+            System.IO.File.WriteAllBytes(TestAssembly.UnitTestsRoot + @"\Tokens\GetXDocFrameResults.xml", System.Text.Encoding.UTF8.GetBytes(testResultsXml));
 
         }
 
@@ -224,12 +224,12 @@ namespace NoFuture.Tests.Tokens
         public void TestApplyXDocFrame()
         {
             var testInput =
-                System.IO.File.ReadAllText(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\Tokens\TokensTestFile.txt");
+                System.IO.File.ReadAllText(TestAssembly.UnitTestsRoot + @"\Tokens\TokensTestFile.txt");
             var testSubject = new XDocFrame('{', '}') { MinTokenSpan = 1 };
             var testResults = testSubject.GetXDocFrame(testInput);
             testSubject.ApplyXDocFrame(testResults, testInput);
             var testResultsXml = testResults.ToString();
-            System.IO.File.WriteAllBytes(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\Tokens\ApplyXDocFrameResults.xml", System.Text.Encoding.UTF8.GetBytes(testResultsXml));
+            System.IO.File.WriteAllBytes(TestAssembly.UnitTestsRoot + @"\Tokens\ApplyXDocFrameResults.xml", System.Text.Encoding.UTF8.GetBytes(testResultsXml));
             
         }
     }

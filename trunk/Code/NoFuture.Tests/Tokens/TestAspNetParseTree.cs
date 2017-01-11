@@ -9,7 +9,7 @@ namespace NoFuture.Tests.Tokens
         [TestMethod]
         public void TestPoc()
         {
-            var testFile = @"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\AccountEdit.aspx";
+            var testFile = TestAssembly.UnitTestsRoot + @"\ExampleDlls\AccountEdit.aspx";
 
             Assert.IsTrue(System.IO.File.Exists(testFile));
 
@@ -35,7 +35,7 @@ namespace NoFuture.Tests.Tokens
         [TestMethod]
         public void TestCsharpParse()
         {
-            var testFile = @"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\SimpleExample.cs";
+            var testFile = TestAssembly.UnitTestsRoot + @"\ExampleDlls\SimpleExample.cs";
 
             Assert.IsTrue(System.IO.File.Exists(testFile));
 

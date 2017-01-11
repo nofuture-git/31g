@@ -11,7 +11,7 @@ namespace NoFuture.Tests.Util
         [TestMethod]
         public void TestConvertToCrLf()
         {
-            var testFile = @"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\MixLineEndings.xml";
+            var testFile = TestAssembly.UnitTestsRoot + @"\ExampleDlls\MixLineEndings.xml";
             File.Copy(testFile, Path.Combine(Path.GetDirectoryName(testFile),"MixLineEndings.copy.xml"));
 
             System.Threading.Thread.Sleep(500);
@@ -47,9 +47,8 @@ namespace NoFuture.Tests.Util
         [TestMethod]
         public void TestBreakUpFileOverMaxJsonLength()
         {
-            var testPath = @"C:\Projects\31g\trunk\Code\NoFuture.Tests\Util\TestChunkData\diaSdkData.lines.json";// 
+            var testPath = TestAssembly.UnitTestsRoot + @"\Util\TestChunkData\diaSdkData.lines.json";// 
 
-            //var testResults = NoFuture.Util.Etc.TrySplitFileOnMarker(testPath, new Tuple<char?, char?, char?>(null,'}',',') , 1440512);//5762048
             var testResults = NoFuture.Util.NfPath.TrySplitFileOnMarker(testPath, null);//5762048
         }
 

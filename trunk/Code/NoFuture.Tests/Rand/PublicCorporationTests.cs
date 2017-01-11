@@ -10,11 +10,6 @@ namespace NoFuture.Tests.Rand
     [TestClass]
     public class PublicCorporationTests
     {
-        [TestInitialize]
-        public void Init()
-        {
-            BinDirectories.DataRoot = @"C:\Projects\31g\trunk\bin\Data\Source";
-        }
 
         [TestMethod]
         public void TestMergeTickerLookupFromJson()
@@ -41,7 +36,7 @@ namespace NoFuture.Tests.Rand
             testSubject.UpsertName(KindsOfNames.Legal, "TrueBlue, Inc.");
             testSubject.SecReports.Add(new Form10K {XmlLink = testUri});
             var testContent =
-                System.IO.File.ReadAllText(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\ExampleSecXbrl.xml");
+                System.IO.File.ReadAllText(TestAssembly.UnitTestsRoot + @"\ExampleDlls\ExampleSecXbrl.xml");
             var testResult = NoFuture.Rand.Com.PublicCorporation.TryMergeXbrlInto10K(testContent,
                 testUri,
                 ref testSubject);

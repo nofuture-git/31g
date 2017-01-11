@@ -227,7 +227,7 @@ namespace NoFuture.Tests.Sql
             using (var ms = new MemoryStream())
             {
                 binSer.Serialize(ms, testOutput);
-                using (var binWtr = new BinaryWriter(File.Open(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\Sql\DataTable.Person.bin", FileMode.Create)))
+                using (var binWtr = new BinaryWriter(File.Open(TestAssembly.UnitTestsRoot + @"\Sql\DataTable.Person.bin", FileMode.Create)))
                     binWtr.Write(ms.GetBuffer());
             }
         }

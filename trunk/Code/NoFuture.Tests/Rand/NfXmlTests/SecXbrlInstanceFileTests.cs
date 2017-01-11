@@ -8,16 +8,12 @@ namespace NoFuture.Tests.Rand.NfXmlTests
     [TestClass]
     public class SecXbrlInstanceFileTests
     {
-        [TestInitialize]
-        public void Init()
-        {
-            BinDirectories.DataRoot = @"C:\Projects\31g\trunk\bin\Data\Source";
-        }
+
 
         [TestMethod]
         public void TestParseContent()
         {
-            var testXmlFile = @"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\ExampleSecXbrl.xml";
+            var testXmlFile = TestAssembly.UnitTestsRoot + @"\ExampleDlls\ExampleSecXbrl.xml";
             var testSubject = new NoFuture.Rand.Data.NfXml.SecXbrlInstanceFile(new Uri("http://localhost"));
 
             var testResult = testSubject.ParseContent(System.IO.File.ReadAllText(testXmlFile));
@@ -99,7 +95,7 @@ namespace NoFuture.Tests.Rand.NfXmlTests
         public void TestGetXmlAndNsMgr()
         {
             var content =
-                System.IO.File.ReadAllText(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\ExampleSecXbrl.xml");
+                System.IO.File.ReadAllText(TestAssembly.UnitTestsRoot + @"\ExampleDlls\ExampleSecXbrl.xml");
             var testResult = SecXbrlInstanceFile.GetXmlAndNsMgr(content);
             Assert.IsNotNull(testResult);
             Assert.IsNotNull(testResult.Item1);
@@ -111,7 +107,7 @@ namespace NoFuture.Tests.Rand.NfXmlTests
             Assert.AreEqual("http://www.xbrl.org/2003/instance",
                 testResult.Item2.LookupNamespace(SecXbrlInstanceFile.XmlNs.ROOTNS));
 
-            content =System.IO.File.ReadAllText(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\ExampleSecXbrl2.xml");
+            content =System.IO.File.ReadAllText(TestAssembly.UnitTestsRoot + @"\ExampleDlls\ExampleSecXbrl2.xml");
             testResult = SecXbrlInstanceFile.GetXmlAndNsMgr(content);
             Assert.IsNotNull(testResult);
             Assert.IsNotNull(testResult.Item1);
@@ -145,7 +141,7 @@ namespace NoFuture.Tests.Rand.NfXmlTests
         public void TestTryGetYear()
         {
             var content =
-                System.IO.File.ReadAllText(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\ExampleSecXbrl.xml");
+                System.IO.File.ReadAllText(TestAssembly.UnitTestsRoot + @"\ExampleDlls\ExampleSecXbrl.xml");
             var testSubject = SecXbrlInstanceFile.GetXmlAndNsMgr(content);
             int testResultOut;
             var testResult = SecXbrlInstanceFile.TryGetYear("FD2013Q4YTD", testSubject.Item1, testSubject.Item2, out testResultOut);
@@ -153,7 +149,7 @@ namespace NoFuture.Tests.Rand.NfXmlTests
             Assert.AreEqual(2013, testResultOut);
 
             content =
-                System.IO.File.ReadAllText(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\ExampleSecXbrl2.xml");
+                System.IO.File.ReadAllText(TestAssembly.UnitTestsRoot + @"\ExampleDlls\ExampleSecXbrl2.xml");
             testSubject = SecXbrlInstanceFile.GetXmlAndNsMgr(content);
             testResult = SecXbrlInstanceFile.TryGetYear("FYCurrentYearM12", testSubject.Item1, testSubject.Item2, out testResultOut);
             Assert.IsTrue(testResult);
@@ -164,7 +160,7 @@ namespace NoFuture.Tests.Rand.NfXmlTests
         public void TestGetNodeDollarYear()
         {
             var content =
-                System.IO.File.ReadAllText(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\ExampleSecXbrl.xml");
+                System.IO.File.ReadAllText(TestAssembly.UnitTestsRoot + @"\ExampleDlls\ExampleSecXbrl.xml");
             var testSubject = SecXbrlInstanceFile.GetXmlAndNsMgr(content);
             var testResult = SecXbrlInstanceFile.GetNodeDollarYear(testSubject.Item1, "//us-gaap:SalesRevenueServicesNet", testSubject.Item2);
             Assert.IsNotNull(testResult);
@@ -174,7 +170,7 @@ namespace NoFuture.Tests.Rand.NfXmlTests
                 System.Diagnostics.Debug.WriteLine(tr);
 
             content =
-                System.IO.File.ReadAllText(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\ExampleSecXbrl2.xml");
+                System.IO.File.ReadAllText(TestAssembly.UnitTestsRoot + @"\ExampleDlls\ExampleSecXbrl2.xml");
             testSubject = SecXbrlInstanceFile.GetXmlAndNsMgr(content);
             testResult = SecXbrlInstanceFile.GetNodeDollarYear(testSubject.Item1, "//us-gaap:Revenues", testSubject.Item2);
             Assert.IsNotNull(testResult);

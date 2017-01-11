@@ -16,7 +16,7 @@ namespace NoFuture.Tests.Hbm.TestDbQryContainers
         [TestInitialize]
         public void Init()
         {
-            NoFuture.TempDirectories.Hbm = @"C:\Projects\31g\trunk\Code\NoFuture.Tests\Hbm\TestFiles";
+            NoFuture.TempDirectories.Hbm = TestAssembly.UnitTestsRoot + @"\Hbm\TestFiles";
             NfConfig.SqlServer = "localhost";
             NfConfig.SqlCatalog = "Whatever";
         }

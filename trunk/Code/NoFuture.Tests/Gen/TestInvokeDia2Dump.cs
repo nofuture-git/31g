@@ -10,13 +10,13 @@ namespace NoFuture.Tests.Gen
     public class TestInvokeDia2Dump
     {
         private NoFuture.Gen.InvokeDia2Dump.GetPdbData _testSubject;
-        private const string TEST_PDB_FILE = @"C:\Projects\31g\trunk\Code\NoFuture.Tests\Gen\DiaSdkTestOverloadedMethods.pdb";
+        private string TEST_PDB_FILE = TestAssembly.UnitTestsRoot + @"\Gen\DiaSdkTestOverloadedMethods.pdb";
 
         [TestInitialize]
         public void Init()
         {
-            TempDirectories.Code = @"C:\Projects\31g\trunk\Code\NoFuture.Tests\Gen";
-            CustomTools.Dia2Dump = @"C:\Projects\31g\trunk\bin\Dia2Dump.exe";
+            TempDirectories.Code = TestAssembly.UnitTestsRoot + @"\Gen";
+            CustomTools.Dia2Dump = TestAssembly.RootBin + @"\Dia2Dump.exe";
             _testSubject = new GetPdbData(TEST_PDB_FILE);
         }
 
@@ -36,7 +36,7 @@ namespace NoFuture.Tests.Gen
             var testSwitch = "-compiland DiaSdkTestOverloadedMethods.OverloadedMethods";
             //var testSwitch = "-l";
             _testSubject.UsingSwitchInvocation(testSwitch,
-                @"C:\Projects\31g\trunk\Code\NoFuture.Tests\Gen\TestUsingSwitchInvocation.json");
+               TestAssembly.UnitTestsRoot + @"\Gen\TestUsingSwitchInvocation.json");
         }
 
         [TestMethod]

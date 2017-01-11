@@ -858,7 +858,7 @@ namespace NoFuture.Tests.Timeline
             var testSubject = new Occidental();
             var testPlate00 = testSubject.BCE3000to2000();
 
-            testPlate00.ToPdf(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\Timeline\BCE 3000 to 2000.pdf");
+            testPlate00.ToPdf(TestAssembly.UnitTestsRoot + @"\Timeline\BCE 3000 to 2000.pdf");
             
         }
         [TestMethod]
@@ -867,7 +867,7 @@ namespace NoFuture.Tests.Timeline
             var testSubject = new Occidental();
             var testPlate01 = testSubject.BCE2000to1500();
 
-            testPlate01.ToPdf(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\Timeline\BCE 2000 to 1500.pdf");
+            testPlate01.ToPdf(TestAssembly.UnitTestsRoot + @"\Timeline\BCE 2000 to 1500.pdf");
 
 
         }
@@ -877,7 +877,7 @@ namespace NoFuture.Tests.Timeline
             var testSubject = new Occidental();
             var testPlate02 = testSubject.BCE1600to1200();
 
-            testPlate02.ToPdf(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\Timeline\BCE 1600 to 1200.pdf");
+            testPlate02.ToPdf(TestAssembly.UnitTestsRoot + @"\Timeline\BCE 1600 to 1200.pdf");
 
         }
         [TestMethod]
@@ -886,7 +886,7 @@ namespace NoFuture.Tests.Timeline
             var testSubject = new Occidental();
             var testPlate03 = testSubject.BCE1250to900();
 
-            testPlate03.ToPdf(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\Timeline\BCE 1250 to 900.pdf");
+            testPlate03.ToPdf(TestAssembly.UnitTestsRoot + @"\Timeline\BCE 1250 to 900.pdf");
 
         }
         [TestMethod]
@@ -904,7 +904,7 @@ namespace NoFuture.Tests.Timeline
             var testSubject = new Occidental();
             var testPlate05 = testSubject.BCE780to500();
 
-            testPlate05.ToPdf(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\Timeline\BCE 780 to 500.pdf");
+            testPlate05.ToPdf(TestAssembly.UnitTestsRoot + @"\Timeline\BCE 780 to 500.pdf");
 
         }
         [TestMethod]
@@ -913,7 +913,7 @@ namespace NoFuture.Tests.Timeline
             var testSubject = new Occidental();
             var testPlate06 = testSubject.BCE500to325();
 
-            testPlate06.ToPdf(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\Timeline\BCE 500 to 325.pdf");
+            testPlate06.ToPdf(TestAssembly.UnitTestsRoot + @"\Timeline\BCE 500 to 325.pdf");
 
         }
         [TestMethod]
@@ -922,7 +922,7 @@ namespace NoFuture.Tests.Timeline
             var testSubject = new Occidental();
             var testPlate07 = testSubject.BCE325to27();
 
-            testPlate07.ToPdf(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\Timeline\BCE 325 to 27.pdf");
+            testPlate07.ToPdf(TestAssembly.UnitTestsRoot + @"\Timeline\BCE 325 to 27.pdf");
 
         }
         [TestMethod]
@@ -931,7 +931,7 @@ namespace NoFuture.Tests.Timeline
             var testSubject = new Occidental();
             var testPlate08 = testSubject.CE30to105();
 
-            testPlate08.ToPdf(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\Timeline\CE 30 to 105.pdf");
+            testPlate08.ToPdf(TestAssembly.UnitTestsRoot + @"\Timeline\CE 30 to 105.pdf");
         }
 
         [TestMethod]
@@ -940,7 +940,7 @@ namespace NoFuture.Tests.Timeline
             var testSubject = new Occidental();
             var testPlate09 = testSubject.CE105to325();
 
-            testPlate09.ToPdf(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\Timeline\CE 105 to 325.pdf");
+            testPlate09.ToPdf(TestAssembly.UnitTestsRoot + @"\Timeline\CE 105 to 325.pdf");
         }
         [TestMethod]
         public void TestOccidentalPlate10()
@@ -948,7 +948,7 @@ namespace NoFuture.Tests.Timeline
             var testSubject = new Occidental();
             var testPlate10 = testSubject.CE325to550();
 
-            testPlate10.ToPdf(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\Timeline\CE 325 to 550.pdf");
+            testPlate10.ToPdf(TestAssembly.UnitTestsRoot + @"\Timeline\CE 325 to 550.pdf");
         }
         [TestMethod]
         public void TestOccidentalPlate11()
@@ -957,7 +957,7 @@ namespace NoFuture.Tests.Timeline
 
             var testPlate = testSubject.CE550to825();
 
-            testPlate.ToPdf(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\Timeline\CE 550 to 825.pdf");
+            testPlate.ToPdf(TestAssembly.UnitTestsRoot + @"\Timeline\CE 550 to 825.pdf");
         }
         [TestMethod]
         public void TestOccidentalPlate12()
@@ -965,7 +965,7 @@ namespace NoFuture.Tests.Timeline
             var testSubject = new Occidental();
             var testPlate = testSubject.CE825to1075();
 
-            testPlate.ToPdf(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\Timeline\CE 825 to 1075.pdf");
+            testPlate.ToPdf(TestAssembly.UnitTestsRoot + @"\Timeline\CE 825 to 1075.pdf");
         }
         [TestMethod]
         public void TestOccidentalPlate13()
@@ -973,7 +973,7 @@ namespace NoFuture.Tests.Timeline
             var testSubject = new Occidental();
             var testPlate = testSubject.CE1075to1350();
 
-            testPlate.ToPdf(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\Timeline\CE 1075 to 1350.pdf");
+            testPlate.ToPdf(TestAssembly.UnitTestsRoot + @"\Timeline\CE 1075 to 1350.pdf");
         }
         [TestMethod]
         public void TestOccidentalPlate14()
@@ -981,7 +981,7 @@ namespace NoFuture.Tests.Timeline
             var testSubject = new Occidental();
             var testPlate = testSubject.CE1350to1500();
 
-            testPlate.ToPdf(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\Timeline\CE 1350 to 1500.pdf");
+            testPlate.ToPdf(TestAssembly.UnitTestsRoot + @"\Timeline\CE 1350 to 1500.pdf");
 
         }
         [TestMethod]
@@ -990,7 +990,7 @@ namespace NoFuture.Tests.Timeline
             var testSubject = new Occidental();
             var testPlate = testSubject.CE1500to1700();
 
-            testPlate.ToPdf(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\Timeline\CE 1500 to 1700.pdf");
+            testPlate.ToPdf(TestAssembly.UnitTestsRoot + @"\Timeline\CE 1500 to 1700.pdf");
         }
 
         [TestMethod]
@@ -999,7 +999,7 @@ namespace NoFuture.Tests.Timeline
             var testSubject = new Occidental();
             var testPlate = testSubject.CE1700to1788();
 
-            testPlate.ToPdf(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\Timeline\CE 1700 to 1788.pdf");
+            testPlate.ToPdf(TestAssembly.UnitTestsRoot + @"\Timeline\CE 1700 to 1788.pdf");
         }
 
         [TestMethod]
@@ -1008,7 +1008,7 @@ namespace NoFuture.Tests.Timeline
             var testSubject = new Occidental();
             var testPlate = testSubject.CE1788to1865();
 
-            testPlate.ToPdf(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\Timeline\CE 1788 to 1865.pdf");
+            testPlate.ToPdf(TestAssembly.UnitTestsRoot + @"\Timeline\CE 1788 to 1865.pdf");
         }
 
         [TestMethod]
@@ -1017,7 +1017,7 @@ namespace NoFuture.Tests.Timeline
             var testSubject = new Occidental();
             var testPlate = testSubject.CE1865to1914();
 
-            testPlate.ToPdf(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\Timeline\CE 1865 to 1914.pdf");
+            testPlate.ToPdf(TestAssembly.UnitTestsRoot + @"\Timeline\CE 1865 to 1914.pdf");
         }
         [TestMethod]
         public void TestOccidentalPlate19()
@@ -1025,7 +1025,7 @@ namespace NoFuture.Tests.Timeline
             var testSubject = new Occidental();
             var testPlate = testSubject.CE1914to1945();
 
-            testPlate.ToPdf(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\Timeline\CE 1914 to 1945.pdf");
+            testPlate.ToPdf(TestAssembly.UnitTestsRoot + @"\Timeline\CE 1914 to 1945.pdf");
         }
 
         [TestMethod]

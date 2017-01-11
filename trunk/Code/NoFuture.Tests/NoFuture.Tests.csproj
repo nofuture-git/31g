@@ -272,6 +272,7 @@
     <Compile Include="Sql\TestPsTypeInfo.cs" />
     <Compile Include="Sql\TestPsMetadata.cs" />
     <Compile Include="Sql\TestEtc.cs" />
+    <Compile Include="TestsInit.cs" />
     <Compile Include="Timeline\TestDrawings.cs" />
     <Compile Include="Tokens\TestXDocFrame.cs" />
     <Compile Include="Tokens\TestAspNetParseTree.cs" />
@@ -330,6 +331,10 @@
     <ProjectReference Include="..\NoFuture\Host\Encryption\Host.Encryption.csproj">
       <Project>{ca799f4d-800a-48b9-92a4-69c728135eb5}</Project>
       <Name>Host.Encryption</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NoFuture\Rand\Data\Source\Rand.Data.Source.csproj">
+      <Project>{4e011849-d274-4f79-96af-549f67c46d80}</Project>
+      <Name>Rand.Data.Source</Name>
     </ProjectReference>
     <ProjectReference Include="..\NoFuture\Rand\Rand.csproj">
       <Project>{71628e18-d27b-4f4e-b034-4b2ad4479e13}</Project>

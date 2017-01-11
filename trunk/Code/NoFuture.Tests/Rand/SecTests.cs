@@ -9,15 +9,9 @@ namespace NoFuture.Tests.Rand
     public class SecTests
     {
 
-        public const string SEC_BY_SIC_XML_PATH = @"C:\Projects\31g\trunk\Code\NoFuture.Tests\Rand\SecBySIC.xml";
-        public const string SEC_BY_CIK_XML_PATH = @"C:\Projects\31g\trunk\Code\NoFuture.Tests\Rand\SecByCIK.xml";
-        public const string SEC_BY_FULLTEXT_XML_PATH = @"C:\Projects\31g\trunk\Code\NoFuture.Tests\Rand\SecByFullText.xml";
-
-        [TestInitialize]
-        public void Init()
-        {
-            BinDirectories.DataRoot = @"C:\Projects\31g\trunk\bin\Data\Source";
-        }
+        public string SEC_BY_SIC_XML_PATH = TestAssembly.UnitTestsRoot + @"\Rand\SecBySIC.xml";
+        public string SEC_BY_CIK_XML_PATH = TestAssembly.UnitTestsRoot + @"\Rand\SecByCIK.xml";
+        public string SEC_BY_FULLTEXT_XML_PATH = TestAssembly.UnitTestsRoot + @"\Rand\SecByFullText.xml";
 
         [TestMethod]
         public void TestTryGetCorpData()

@@ -10,11 +10,6 @@ namespace NoFuture.Tests.Rand.DomusTests
     [TestClass]
     public class AccountTests
     {
-        [TestInitialize]
-        public void Init()
-        {
-            BinDirectories.DataRoot = @"C:\Projects\31g\trunk\bin\Data\Source";
-        }
         [TestMethod]
         public void TestGetRandomBankAccount()
         {

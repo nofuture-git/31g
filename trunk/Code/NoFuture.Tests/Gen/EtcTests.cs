@@ -671,11 +671,11 @@ namespace NoFuture.Tests.Gen
             if (testAsm == null)
             {
                 Assembly.Load(
-                    System.IO.File.ReadAllBytes(@"C:\Projects\31g\trunk\bin\NoFuture.Hbm.Sid.dll"));
+                    System.IO.File.ReadAllBytes(TestAssembly.RootBin + @"\NoFuture.Hbm.Sid.dll"));
                 testAsm =
                     Assembly.Load(
                         System.IO.File.ReadAllBytes(
-                            @"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\AdventureWorks.dll"));
+                            TestAssembly.UnitTestsRoot + @"\ExampleDlls\AdventureWorks.dll"));
             }
 
             Assert.IsNotNull(testAsm);
@@ -683,7 +683,7 @@ namespace NoFuture.Tests.Gen
             var testResult = NoFuture.Gen.Etc.GetClassDiagram(testAsm, "AdventureWorks.Person.Person");
             Assert.AreNotEqual(string.Empty, testResult);
 
-            System.IO.File.WriteAllText(@"C:\Projects\31g\trunk\temp\GraphVizClassDiagram.gv", testResult);
+            System.IO.File.WriteAllText(TestAssembly.UnitTestsRoot + @"\GraphVizClassDiagram.gv", testResult);
         }
 
         [TestMethod]

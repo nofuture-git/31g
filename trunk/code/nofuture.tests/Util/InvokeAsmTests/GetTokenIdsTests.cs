@@ -14,31 +14,31 @@ namespace NoFuture.Tests.Util.InvokeAsmTests
         [TestMethod]
         public void TestResolveCallOfCall()
         {
-            NfConfig.AssemblySearchPaths.Add(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\");
+            NfConfig.AssemblySearchPaths.Add(TestAssembly.UnitTestsRoot + @"\ExampleDlls\");
             NfConfig.UseReflectionOnlyLoad = false;
             NoFuture.Util.FxPointers.AddResolveAsmEventHandlerToDomain();
             var testAsm =
                 System.Reflection.Assembly.Load(
                     System.IO.File.ReadAllBytes(
-                        @"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\AdventureWorks2012.dll"));
+                        TestAssembly.UnitTestsRoot + @"\ExampleDlls\AdventureWorks2012.dll"));
             System.Reflection.Assembly.Load(
                     System.IO.File.ReadAllBytes(
-                        @"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\Iesi.Collections.dll"));
+                        TestAssembly.UnitTestsRoot + @"\ExampleDlls\Iesi.Collections.dll"));
             System.Reflection.Assembly.Load(
                     System.IO.File.ReadAllBytes(
-                        @"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\NHibernate.dll"));
+                        TestAssembly.UnitTestsRoot + @"\ExampleDlls\NHibernate.dll"));
             System.Reflection.Assembly.Load(
                     System.IO.File.ReadAllBytes(
-                        @"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\NoFuture.Hbm.Sid.dll"));
+                        TestAssembly.UnitTestsRoot + @"\ExampleDlls\NoFuture.Hbm.Sid.dll"));
             System.Reflection.Assembly.Load(
                     System.IO.File.ReadAllBytes(
-                        @"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\SomeSecondDll.dll"));
+                        TestAssembly.UnitTestsRoot + @"\ExampleDlls\SomeSecondDll.dll"));
             System.Reflection.Assembly.Load(
                     System.IO.File.ReadAllBytes(
-                        @"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\SomethingShared.dll"));
+                        TestAssembly.UnitTestsRoot + @"\ExampleDlls\SomethingShared.dll"));
             System.Reflection.Assembly.Load(
                     System.IO.File.ReadAllBytes(
-                        @"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\ThirdDll.dll"));
+                        TestAssembly.UnitTestsRoot + @"\ExampleDlls\ThirdDll.dll"));
             var tp = new IaaProgram(new[] {"noop"})
             {
                 RootAssembly = testAsm,
@@ -168,7 +168,7 @@ namespace NoFuture.Tests.Util.InvokeAsmTests
         [TestMethod]
         public void TestToAdjancencyMatrix()
         {
-            var testDataFile = @"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\GetTokenIdsData.json";
+            var testDataFile = TestAssembly.UnitTestsRoot + @"\ExampleDlls\GetTokenIdsData.json";
             Assert.IsTrue(System.IO.File.Exists(testDataFile));
             var testJson =
                 System.IO.File.ReadAllText(testDataFile);

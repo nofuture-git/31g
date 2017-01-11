@@ -166,12 +166,12 @@ namespace NoFuture.Rand.Data.Sp
         /// </param>
         public CheckingAccount(RIdentifier acctId, DateTime dateOpenned, Tuple<ICreditCard, string> debitCard = null) : base(dateOpenned)
         {
+            Id = acctId;
             if (debitCard?.Item1 == null || !IsPossiablePin(debitCard.Item2) )
                 return;
             DebitCard = debitCard.Item1;
             _pinKey = Encoding.UTF8.GetBytes(Path.GetRandomFileName());
             _pinHash = ComputePinHash(debitCard.Item2);
-            Id = acctId;
         }
         #endregion
 

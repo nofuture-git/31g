@@ -11,9 +11,9 @@ namespace NoFuture.Tests.Encryption
     public class Nfx509Tests
     {
         public const string TEST_PWD = "Test1234";
-        public const string TEST_CERT_PFX_PATH = @"C:\Projects\31g\trunk\Code\NoFuture.Tests\Encryption\MyTestCert01.pfx";
-        public const string TEST_CERT_CER_PATH = @"C:\Projects\31g\trunk\Code\NoFuture.Tests\Encryption\MyTestCert01.cer";
-        public const string TEST_PLAINTEXT = @"C:\Projects\31g\trunk\Code\NoFuture.Tests\Encryption\TestPlainText.txt";
+        public string TEST_CERT_PFX_PATH = TestAssembly.UnitTestsRoot + @"\Encryption\MyTestCert01.pfx";
+        public string TEST_CERT_CER_PATH = TestAssembly.UnitTestsRoot + @"\Encryption\MyTestCert01.cer";
+        public string TEST_PLAINTEXT = TestAssembly.UnitTestsRoot + @"\Encryption\TestPlainText.txt";
 
         [TestInitialize]
         public void Init()

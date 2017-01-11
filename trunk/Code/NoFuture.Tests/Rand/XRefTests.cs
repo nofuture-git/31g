@@ -10,11 +10,6 @@ namespace NoFuture.Tests.Rand
     [TestClass]
     public class XRefTests
     {
-        [TestInitialize]
-        public void Init()
-        {
-            BinDirectories.DataRoot = @"C:\Projects\31g\trunk\bin\Data\Source";
-        }
 
         [TestMethod]
         public void TestXref()
@@ -99,7 +94,7 @@ namespace NoFuture.Tests.Rand
             Assert.IsTrue(testResult);
 
             NoFuture.Util.NfPath.SaveXml(TreeData.XRefXml,
-                @"C:\Projects\31g\trunk\Code\NoFuture.Tests\Rand\XRefTestRslt.xml");
+                TestAssembly.UnitTestsRoot + @"\Rand\XRefTestRslt.xml");
 
         }
     }

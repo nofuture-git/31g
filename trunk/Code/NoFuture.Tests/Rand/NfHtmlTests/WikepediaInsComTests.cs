@@ -7,16 +7,11 @@ namespace NoFuture.Tests.Rand.NfHtmlTests
     [TestClass]
     public class WikepediaInsComTests
     {
-        [TestInitialize]
-        public void Init()
-        {
-            BinDirectories.DataRoot = @"C:\Projects\31g\trunk\bin\Data\Source";
-        }
 
         [TestMethod]
         public void TestParseContent()
         {
-            var testFile = @"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\wikipedia_ListInsComs.html";
+            var testFile = TestAssembly.UnitTestsRoot + @"\ExampleDlls\wikipedia_ListInsComs.html";
             Assert.IsTrue(System.IO.File.Exists(testFile));
             var testContent = System.IO.File.ReadAllText(testFile);
             Assert.IsNotNull(testContent);

@@ -7,16 +7,12 @@ namespace NoFuture.Tests.Rand.NfXmlTests
     [TestClass]
     public class SecForm13fInfoTableTests
     {
-        [TestInitialize]
-        public void Init()
-        {
-            BinDirectories.DataRoot = @"C:\Projects\31g\trunk\bin\Data\Source";
-        }
+
 
         [TestMethod]
         public void TestParseContent()
         {
-            var contentFile = @"C:\Projects\31g\trunk\Code\NoFuture.Tests\Rand\form13fInfoTable.xml";
+            var contentFile = TestAssembly.UnitTestsRoot + @"\Rand\form13fInfoTable.xml";
             var content = System.IO.File.ReadAllText(contentFile);
 
             var testSubject = new NoFuture.Rand.Data.NfXml.SecForm13FInfoTable(null);

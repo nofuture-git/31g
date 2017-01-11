@@ -9,7 +9,7 @@ namespace NoFuture.Tests.Sql
     public class TestEtc
     {
         public const string sqlQry = "SELECT * FROM [AdventureWorks2012].[Production].[Location]";
-        public const string sqlQryFile = @"C:\Projects\31g\trunk\Code\NoFuture.Tests\Sql\TestMakeInputfileSqlCmd.sql";
+        public string sqlQryFile = TestAssembly.UnitTestsRoot + @"\Sql\TestMakeInputfileSqlCmd.sql";
 
         public const string insertQry =
             "INSERT INTO [Person].[Person]([PersonType],[Title],[FirstName],[MiddleName],[LastName]) VALUES ('EM',NULL,'Ken','J','Sánchez')";
@@ -63,7 +63,7 @@ namespace NoFuture.Tests.Sql
             Assert.IsNotNull(testResult);
             System.Diagnostics.Debug.WriteLine(testResult);
 
-            Assert.AreEqual(@"sqlcmd.exe -S localhost -d AdventureWorks2012 -i C:\Projects\31g\trunk\Code\NoFuture.Tests\Sql\TestMakeInputfileSqlCmd.sql",testResult);
+            Assert.AreEqual(@"sqlcmd.exe -S localhost -d AdventureWorks2012 -i " + TestAssembly.UnitTestsRoot + @"\Sql\TestMakeInputfileSqlCmd.sql", testResult);
         }
 
         [TestMethod]

@@ -1371,7 +1371,7 @@ namespace NoFuture.Tests.Gen
         public void TestTryFindFirstLineInClass()
         {
             var testFileContent =
-                File.ReadAllLines(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\Gen\ATestableCsFileContent.txt");
+                File.ReadAllLines(TestAssembly.UnitTestsRoot + @"\Gen\ATestableCsFileContent.txt");
             var testTypeName = "PlummetToxic.DPP.Onss.ViewWankathon";
             int testResultOut;
             var testResult = NoFuture.Gen.Settings.LangStyle.TryFindFirstLineInClass(testTypeName, testFileContent,
@@ -1397,7 +1397,7 @@ namespace NoFuture.Tests.Gen
         public void TestTryFindLastLineInClass()
         {
             var testFileContent =
-                File.ReadAllLines(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\Gen\ATestableCsFileContent.txt");
+                File.ReadAllLines(TestAssembly.UnitTestsRoot + @"\Gen\ATestableCsFileContent.txt");
             var testTypeName = "PlummetToxic.DPP.Onss.ViewWankathon";
             int testResultOut;
             var testResult = NoFuture.Gen.Settings.LangStyle.TryFindLastLineInClass(testTypeName, testFileContent,

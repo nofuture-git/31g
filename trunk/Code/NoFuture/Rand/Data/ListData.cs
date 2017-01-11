@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using System.Linq;
+using NoFuture.Rand.Data.Source;
+using NoFuture.Shared;
 
 namespace NoFuture.Rand.Data
 {
@@ -6,10 +8,6 @@ namespace NoFuture.Rand.Data
     {
         #region fields
         private static string[] _webdomains;
-        #endregion
-
-        #region
-        public const string WEBMAIL_DOMAINS = "webmailDomains.txt";
         #endregion
 
         /// <summary>
@@ -29,7 +27,7 @@ namespace NoFuture.Rand.Data
         };
 
         /// <summary>
-        /// Loads <see cref="WEBMAIL_DOMAINS"/> into an array.
+        /// Loads <see cref="DataFiles.WEBMAIL_DOMAINS"/> into an array.
         /// Src [https://github.com/tarr11/Webmail-Domains/blob/master/domains.txt]
         /// </summary>
         public static string[] UsWebmailDomains
@@ -39,11 +37,9 @@ namespace NoFuture.Rand.Data
                 if(_webdomains != null && _webdomains.Length > 0)
                     return _webdomains;
 
-                if (!TreeData.TestDataFileIsPresent(WEBMAIL_DOMAINS))
-                    return null;
-
-                _webdomains = File.ReadAllLines(Path.Combine(BinDirectories.DataRoot, WEBMAIL_DOMAINS));
+                _webdomains = DataFiles.GetByName(DataFiles.WEBMAIL_DOMAINS).Split(Constants.LF).ToArray();
                 return _webdomains;
+
             }
         }
     }

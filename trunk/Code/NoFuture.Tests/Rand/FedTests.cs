@@ -32,7 +32,7 @@ namespace NoFuture.Tests.Rand
         [TestMethod]
         public void TestTryParseFfiecInstitutionProfileAspxHtml()
         {
-            var testContent = System.IO.File.ReadAllText(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\Rand\ffiecHtml.html");
+            var testContent = System.IO.File.ReadAllText(TestAssembly.UnitTestsRoot + @"\Rand\ffiecHtml.html");
 
             Bank firmOut = new Bank();
             var testResult = Ffiec.TryParseFfiecInstitutionProfileAspxHtml(testContent, new Uri(Ffiec.SEARCH_URL_BASE), 

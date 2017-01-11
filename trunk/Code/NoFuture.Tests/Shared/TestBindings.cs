@@ -8,7 +8,7 @@ namespace NoFuture.Tests.Shared
         [TestMethod]
         public void TestNetTcpBindings()
         {
-            var testInput = @"C:\Projects\31g\trunk\Code\NoFuture.Tests\Shared\NetTcpBindingExample.xml";
+            var testInput = TestAssembly.UnitTestsRoot + @"\Shared\NetTcpBindingExample.xml";
 
             var testResult = NoFuture.Shared.WcfClient.Bindings.GetNetTcpBindings(testInput);
 
@@ -19,7 +19,7 @@ namespace NoFuture.Tests.Shared
         [TestMethod]
         public void TestWsHttpBinding()
         {
-            var testInput = @"C:\Projects\31g\trunk\Code\NoFuture.Tests\Shared\WsHttpBindingExample.xml";
+            var testInput = TestAssembly.UnitTestsRoot + @"\Shared\WsHttpBindingExample.xml";
 
             var testResult = NoFuture.Shared.WcfClient.Bindings.GetWsHttpBindings(testInput);
 
@@ -30,7 +30,7 @@ namespace NoFuture.Tests.Shared
         [TestMethod]
         public void TestNetMsmqBinding()
         {
-            var testInput = @"C:\Projects\31g\trunk\Code\NoFuture.Tests\Shared\MsmqBindingExample.xml";
+            var testInput = TestAssembly.UnitTestsRoot + @"\Shared\MsmqBindingExample.xml";
 
             var testResult = NoFuture.Shared.WcfClient.Bindings.GetNetMsmqBindings(testInput);
 

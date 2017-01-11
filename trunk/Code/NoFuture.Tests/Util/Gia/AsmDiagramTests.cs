@@ -19,11 +19,11 @@ namespace NoFuture.Tests.Util.Gia
             if (testAsm == null)
             {
                 Assembly.Load(
-                    System.IO.File.ReadAllBytes(@"C:\Projects\31g\trunk\bin\NoFuture.Hbm.Sid.dll"));
+                    System.IO.File.ReadAllBytes(TestAssembly.RootBin + @"\NoFuture.Hbm.Sid.dll"));
                 testAsm =
                     Assembly.Load(
                         System.IO.File.ReadAllBytes(
-                            @"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\AdventureWorks.dll"));
+                            TestAssembly.UnitTestsRoot + @"\ExampleDlls\AdventureWorks.dll"));
             }
             return testAsm;
         }
@@ -40,7 +40,7 @@ namespace NoFuture.Tests.Util.Gia
 
             Assert.IsNotNull(testResult);
 
-            System.IO.File.WriteAllText(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\AsmDiagramTest.gv", testResult);
+            System.IO.File.WriteAllText(TestAssembly.UnitTestsRoot + @"\ExampleDlls\AsmDiagramTest.gv", testResult);
         }
 
         [TestMethod]

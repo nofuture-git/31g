@@ -9,11 +9,6 @@ namespace NoFuture.Tests.Rand
     [TestClass]
     public class EtxTests
     {
-        [TestInitialize]
-        public void Init()
-        {
-            BinDirectories.DataRoot = @"C:\Projects\31g\trunk\bin\Data\Source";
-        }
         [TestMethod]
         public void TestExtWord()
         {

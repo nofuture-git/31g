@@ -10,11 +10,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace NoFuture.Tests.Host.Encryption
 {
 
-    /*
-cd C:\Projects\31g\trunk\Code\NoFuture\Host.Encryption\bin\Debug
-
-NoFuture.Host.Encryption.exe -toPlainTextPort=4696 -toCipherTextPort=4697 -hashPort=4698
-     */
     [TestClass]
     public class ProgramTests
     {
@@ -38,8 +33,6 @@ NoFuture.Host.Encryption.exe -toPlainTextPort=4696 -toCipherTextPort=4697 -hashP
             System.Threading.Thread.Sleep(5000);
             Assert.IsNotNull(_testProgram);
             Assert.IsFalse(_testProgram.HasExited);
-            //_testProgram.Close();
-            //_testProgram.Dispose();
         }
 
         [TestMethod]
@@ -142,7 +135,7 @@ NoFuture.Host.Encryption.exe -toPlainTextPort=4696 -toCipherTextPort=4697 -hashP
             _startInfo = new ProcessStartInfo
                              {
                                  FileName =
-                                     @"C:\Projects\31g\trunk\Code\NoFuture\Host.Encryption\bin\Debug\NoFuture.Host.Encryption.exe",
+                                     TestAssembly.RootBin + @"\NoFuture.Host.Encryption.exe",
                                  Arguments =
                                      string.Format(
                                                    "-" + NoFuture.Host.Encryption.SWITCHES.TO_PLAIN_TXT_PORT + "={0} -" +

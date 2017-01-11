@@ -17,25 +17,19 @@ namespace NoFuture.Tests.Gen
         [TestInitialize]
         public void Init()
         {
-            TempDirectories.Code = @"C:\Projects\31g\trunk\Code\NoFuture.Tests\Gen";
-            TempDirectories.Debug = @"C:\Projects\31g\trunk\Code\NoFuture.Tests\Gen";
-            CustomTools.Dia2Dump = @"C:\Projects\31g\trunk\bin\Dia2Dump.exe";
-            CustomTools.InvokeGetCgType = @"C:\Projects\31g\trunk\bin\NoFuture.Gen.InvokeGetCgOfType.exe";
+            TempDirectories.Code = TestAssembly.UnitTestsRoot + @"\Gen";
+            TempDirectories.Debug = TestAssembly.UnitTestsRoot + @"\Gen";
+            CustomTools.Dia2Dump = TestAssembly.RootBin + @"\Dia2Dump.exe";
+            CustomTools.InvokeGetCgType = TestAssembly.RootBin + @"\NoFuture.Gen.InvokeGetCgOfType.exe";
         }
         [TestMethod]
         public void TestCtor()
         {
             NoFuture.Util.FxPointers.AddResolveAsmEventHandlerToDomain();
             var testtypeName = "AdventureWorks.Production.Product";
-            var testAsm = @"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\AdventureWorks2012.dll";
+            var testAsm = TestAssembly.UnitTestsRoot + @"\ExampleDlls\AdventureWorks2012.dll";
 
             var testResult = new NoFuture.Gen.CgTypeCsSrcCode(testAsm, testtypeName);
-
-            //var testtypeName = "ProgramManagement_ClinicSetup_CreateClinic";
-            //var testAsm = @"C:\Projects\Summit\APEX\SummitHealth.CRM.UI.Design\bin\SummitHealth.CRM.UI.Design.dll";
-
-            //var testResult = new NoFuture.Gen.SplitSourceCsFile(testAsm, testtypeName);
-
         }
 
         [TestMethod]
@@ -65,7 +59,7 @@ namespace NoFuture.Tests.Gen
         {
             NoFuture.Util.FxPointers.AddResolveAsmEventHandlerToDomain();
             var testtypeName = "AdventureWorks.VeryBadCode.ViewWankathon";
-            var testAsm = @"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\AdventureWorks2012.dll";
+            var testAsm = TestAssembly.UnitTestsRoot + @"\ExampleDlls\AdventureWorks2012.dll";
 
             var testSubject = new NoFuture.Gen.CgTypeCsSrcCode(testAsm, testtypeName);
 
@@ -90,10 +84,10 @@ namespace NoFuture.Tests.Gen
         {
             NoFuture.Util.FxPointers.AddResolveAsmEventHandlerToDomain();
             var testtypeName = "AdventureWorks.VeryBadCode.ViewWankathon";
-            var testAsm = @"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\AdventureWorks2012.dll";
+            var testAsm = TestAssembly.UnitTestsRoot + @"\ExampleDlls\AdventureWorks2012.dll";
             var testMethodNames = new List<string> { "UsesLocalAndInstanceStuff", "ddlScreeningLocation_SelectedIndexChanged" };
 
-            const string testOutputfile = @"C:\Projects\31g\trunk\Code\NoFuture.Tests\Gen\testRefactorMethods.cs";
+            var testOutputfile = TestAssembly.UnitTestsRoot + @"\Gen\testRefactorMethods.cs";
 
             if(File.Exists(testOutputfile))
                 File.Delete(testOutputfile);
@@ -107,7 +101,7 @@ namespace NoFuture.Tests.Gen
             Assert.IsNotNull(testMethod01);
             testSubject.CgType.MoveMethods(new MoveMethodsArgs
             {
-                SrcFile = @"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\AdventureWorks2012\AdventureWorks2012\VeryBadCode\ViewWankathon.cs",
+                SrcFile = TestAssembly.UnitTestsRoot + @"\ExampleDlls\AdventureWorks2012\AdventureWorks2012\VeryBadCode\ViewWankathon.cs",
                 MoveMembers = new List<CgMember> {testMethod00, testMethod01},
                 NewVariableName = "roeiu",
                 OutFilePath = testOutputfile,
@@ -123,11 +117,11 @@ namespace NoFuture.Tests.Gen
         {
             NoFuture.Util.FxPointers.AddResolveAsmEventHandlerToDomain();
             var testtypeName = "AdventureWorks.VeryBadCode.ViewWankathon";
-            var testAsm = @"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\AdventureWorks2012.dll";
+            var testAsm = TestAssembly.UnitTestsRoot + @"\ExampleDlls\AdventureWorks2012.dll";
             var testMethodNames = new List<string> { "MyReversedString", "UsesLocalAndInstanceStuff", "Page_Load" };
             var testSrcFile =
                 File.ReadAllLines(
-                    @"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\AdventureWorks2012\AdventureWorks2012\VeryBadCode\ViewWankathon.cs");
+                    TestAssembly.UnitTestsRoot + @"\ExampleDlls\AdventureWorks2012\AdventureWorks2012\VeryBadCode\ViewWankathon.cs");
 
             var testSubject = new NoFuture.Gen.CgTypeCsSrcCode(testAsm, testtypeName);
             Assert.IsNotNull(testSubject);
@@ -141,68 +135,8 @@ namespace NoFuture.Tests.Gen
 
             NoFuture.Gen.RefactorExtensions.BlankOutMembers(testSrcFile,
                 new List<CgMember> {testProp00, testMethod00, testMethod01},
-                @"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\AdventureWorks2012\AdventureWorks2012\VeryBadCode\TestBlankOutMethods.cs");
+                TestAssembly.UnitTestsRoot + @"\ExampleDlls\AdventureWorks2012\AdventureWorks2012\VeryBadCode\TestBlankOutMethods.cs");
 
-        }
-
-        [TestMethod]
-        public void TestBlanOutMethods02()
-        {
-            NoFuture.Util.FxPointers.AddResolveAsmEventHandlerToDomain();
-            var testTypeName = "SummitHealth.CRM.Data.Accounting.AccountingDAO";
-            var testAsm = @"C:\Projects\Summit\APEX\SummitHealth.CRM.UI.Design\bin\SummitHealth.CRM.Data.dll";
-
-            var testMethodNames = new List<string>
-            {
-                "Save",
-                "GetAccountNames",
-                "SaveAccountInformationValues",
-                "GetAccountID",
-                "GetAccountInformation",
-                "SaveAccountExecutiveInformationValues",
-                "UpdateAccountExecutiveInformationValues",
-                "UpdateAccountInformationValues",
-                "GetClientDetailInformation",
-                "GetClientContactInformation",
-                "UpdateAccountActiveInformation",
-                "GetAccountExecutiveCount",
-                "GetStaffAssignedToStates",
-                "DeleteStafferFromStafferStateAssigned",
-                "UpdateStafferAssignedStates",
-                "GetUnAssignedStatestoStaffer",
-                "GetStafferStateAllignSearch",
-                "InsertStafferStateAssign",
-                "CheckAccountGroupIdForUpdate",
-                "GetAccountNamesWithStatusAccount",
-                "GetClientNames",
-                "GetClinicTitles",
-                "GetProgramInfo",
-                "GetAllProgramStatus",
-                "GetAllClientNames",
-                "GetAllKitNames",
-                "GetAllKitNamesByParentKitID",
-                "InsertIntoKitsMaster",
-                "GetClinicDeatilsForVerifyInvoice",
-                "GetStafftypeDetailsForVerifyInvoice",
-                "getVendorAddress"
-            };
-
-            var testSubject = new NoFuture.Gen.CgTypeCsSrcCode(testAsm, testTypeName);
-            Assert.IsNotNull(testSubject);
-            Assert.IsNotNull(testSubject.CgType);
-
-            var testCgMems = new List<CgMember>();
-
-            foreach (var mn in testMethodNames)
-            {
-                var cgMem = testSubject.CgType.Methods.FirstOrDefault(x => x.Name == mn);
-                if (cgMem == null)
-                    continue;
-
-                testCgMems.Add(cgMem);
-            }
-
-            NoFuture.Gen.RefactorExtensions.BlankOutMembers(testCgMems);
         }
 
         [TestMethod]
@@ -210,7 +144,7 @@ namespace NoFuture.Tests.Gen
         {
             NoFuture.Util.FxPointers.AddResolveAsmEventHandlerToDomain();
             var testtypeName = "AdventureWorks.VeryBadCode.ViewWankathon";
-            var testAsm = @"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\AdventureWorks2012.dll";
+            var testAsm = TestAssembly.UnitTestsRoot + @"\ExampleDlls\AdventureWorks2012.dll";
 
             var testMethodName = "ddlScreeningLocation_SelectedIndexChanged";
 

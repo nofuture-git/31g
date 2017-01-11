@@ -13,7 +13,7 @@ namespace NoFuture.Tests.Hbm
         [TestInitialize]
         public void Init()
         {
-            NoFuture.TempDirectories.Hbm = @"C:\Projects\31g\trunk\Code\NoFuture.Tests\Hbm\TestFiles";
+            NoFuture.TempDirectories.Hbm = TestAssembly.UnitTestsRoot + @"\Hbm\TestFiles";
             NfConfig.SqlServer = "localhost";
             NfConfig.SqlCatalog = "Whatever";
         }
@@ -75,7 +75,7 @@ namespace NoFuture.Tests.Hbm
                             ds.Tables[0].TableName = "Results";
 
                             ds.WriteXmlSchema(
-                                string.Format(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\Hbm\TestFiles\{0}.xsd",
+                                string.Format(TestAssembly.UnitTestsRoot + @"\Hbm\TestFiles\{0}.xsd",
                                     ti));
                         }
                     }
