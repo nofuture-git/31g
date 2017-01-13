@@ -7,24 +7,25 @@
             var rule = new Rule {StartValue = 1600, EndValue = 1200, RuleLineSpacing = 5};
 
             var egypt = new Block {Ruler = rule, Title = "Egypt"};
-            egypt.AddEntry(new Entry {StartValue = 1306, EndValue = 1200, Text = "XIX Dynasty", Location = PrintLocation.Left });
-            egypt.AddEntry(new Entry {StartValue = 1530, EndValue = 1315, Text = "XVIII Dynasty", Location = PrintLocation.Left });
+            egypt.AddEntry(1306, 1200, "XIX Dynasty", PrintLocation.Left );
+            egypt.AddEntry(1530, 1315, "XVIII Dynasty", PrintLocation.Left);
 
             egypt.AddEntry(1570,"New Kingdom (Empire)" );
-            egypt.AddEntry(1552,"Amosis 1552-1527",PrintLocation.Right);
+
+            egypt.AddEntry(new LeaderEntry("Amosis", new int?[,] { { 1552, 1527 } }) {StartValue = 1552, Location = PrintLocation.Right});
             egypt.AddEntry(1560,"Hyksos expelled",PrintLocation.Left);
-            egypt.AddEntry(1520,"Amenophis I 1527-1507",PrintLocation.Right);
-            egypt.AddEntry(1507,"Thutmosis I 1507-1494",PrintLocation.Right);
-            egypt.AddEntry(1494,"Thutmosis II 1494-1490",PrintLocation.Right);
-            egypt.AddEntry(1490,"Thutmosis III 1490-1436",PrintLocation.Right);
-            egypt.AddEntry(1438,"Amenophis II 1438-1412",PrintLocation.Right);
-            egypt.AddEntry(1412,"Thutmosis IV 1412-1403",PrintLocation.Right);
-            egypt.AddEntry(1390,"Amenophis III 1403-1364",PrintLocation.Right);
-            egypt.AddEntry(1364,"Akhenaten 1364-1347",PrintLocation.Right);
-            egypt.AddEntry(1333,"Haremhab 1333-1306",PrintLocation.Right);
-            egypt.AddEntry(1295,"Sethos I 1305-1290",PrintLocation.Right);
-            egypt.AddEntry(1290,"Ramesses II 1290-1224",PrintLocation.Right);
-            egypt.AddEntry(1224,"Marniptah 1224-1211");
+            egypt.AddEntry(new LeaderEntry("Amenophis I", new int?[,] { { 1527, 1507 } }) { StartValue = 1520, Location = PrintLocation.Right });
+            egypt.AddEntry(new LeaderEntry("Thutmosis I", new int?[,] { { 1507, 1494 } }) { StartValue = 1507, Location = PrintLocation.Right });
+            egypt.AddEntry(new LeaderEntry("Thutmosis II", new int?[,] { { 1494, 1490 } }) { StartValue = 1494, Location = PrintLocation.Right });
+            egypt.AddEntry(new LeaderEntry("Thutmosis III", new int?[,] { { 1490, 1436 } }) { StartValue = 1490, Location = PrintLocation.Right });
+            egypt.AddEntry(new LeaderEntry("Amenophis II", new int?[,] { { 1438, 1412 } }) { StartValue = 1438, Location = PrintLocation.Right });
+            egypt.AddEntry(new LeaderEntry("Thutmosis IV", new int?[,] { { 1412, 1403 } }) { StartValue = 1412, Location = PrintLocation.Right });
+            egypt.AddEntry(new LeaderEntry("Amenophis III", new int?[,] { { 1403, 1364 } }) { StartValue = 1390, Location = PrintLocation.Right });
+            egypt.AddEntry(new LeaderEntry("Akhenaten", new int?[,] { { 1364, 1347 } }) { StartValue = 1364, Location = PrintLocation.Right });
+            egypt.AddEntry(new LeaderEntry("Haremhab", new int?[,] { { 1333, 1306 } }) { StartValue = 1333, Location = PrintLocation.Right });
+            egypt.AddEntry(new LeaderEntry("Sethos I", new int?[,] { { 1305, 1290 } }) { StartValue = 1295, Location = PrintLocation.Right });
+            egypt.AddEntry(new LeaderEntry("Ramesses II", new int?[,] { { 1290, 1224 } }) { StartValue = 1290, Location = PrintLocation.Right });
+            egypt.AddEntry(new LeaderEntry("Marniptah", new int?[,] { { 1224, 1211 } }) { StartValue = 1224, Location = PrintLocation.Right });
             egypt.AddEntry(1211,"(weakness and anarchy)");
 
             egypt.AddEntry(1403,1347,"The Amarna Period",PrintLocation.Center);
@@ -37,34 +38,34 @@
             palestine.AddEntry(1250,1200,"Conquest");
 
             var hittities = new Block { Ruler = rule, Title = "Hittites"};
-            hittities.AddEntry(1530,"Mursilis I");
-            hittities.AddEntry(1375,"Shuppiluliuma 1375-1335");
-            hittities.AddEntry(1306,"Muwattalis 1306-1282");
-            hittities.AddEntry(1280,"Hattusilis III 1275-1250",PrintLocation.Right);
+            hittities.AddEntry(new LeaderEntry("Mursilis I",1530));
+            hittities.AddEntry(new LeaderEntry("Shuppiluliuma", new int?[,] { { 1375, 1335 } }) {StartValue = 1375 });
+            hittities.AddEntry(new LeaderEntry("Muwattalis", new int?[,] { { 1306, 1282 } }) { StartValue = 1306 });
+            hittities.AddEntry(new LeaderEntry("Hattusilis III", new int?[,] { { 1275, 1250 } }) { StartValue = 1280, Location = PrintLocation.Right });
             hittities.AddEntry(1550,1410,"Old Kingdom" );
             hittities.AddEntry(1400,1220,"Hittite Empire" );
 
-            var mitanni = new Block() {Ruler = rule, Title = "Mitanni"};
-            mitanni.AddEntry(new Entry(){StartValue = 1480, Text = "Shuttarna I"});
-            mitanni.AddEntry(new Entry() {StartValue = 1455, Text = "Saushsatar"});
-            mitanni.AddEntry(new Entry() {StartValue = 1420, Text = "Artatama"});
-            mitanni.AddEntry(new Entry() {StartValue = 1400, Text = "Shuttarna II"});
-            mitanni.AddEntry(new Entry() {StartValue = 1380,Text = "Tushratta"});
-            mitanni.AddEntry(new Entry() { StartValue = 1540, EndValue = 1370, Text = "*" });
+            var mitanni = new Block {Ruler = rule, Title = "Mitanni"};
+            mitanni.AddEntry(new LeaderEntry("Shuttarna I", 1480));
+            mitanni.AddEntry(new LeaderEntry("Saushsatar", 1455));
+            mitanni.AddEntry(new LeaderEntry("Artatama", 1420));
+            mitanni.AddEntry(new LeaderEntry("Shuttarna II", 1400));
+            mitanni.AddEntry(new LeaderEntry("Tushratta", 1380));
+            mitanni.AddEntry(new Entry { StartValue = 1540, EndValue = 1370, Text = "*" });
 
-            var assyria = new Block() {Ruler = rule, Title = "Assyria"};
-            assyria.AddEntry(new Entry(){StartValue = 1356, Text = "Asshur-uballit I 1356-1321"});
-            assyria.AddEntry(new Entry(){StartValue = 1297, Text = "Adad-nirari I 1297-1266"});
-            assyria.AddEntry(new Entry() {StartValue = 1265, Text = "Shalmaneser I 1265-1235"});
-            assyria.AddEntry(new Entry() {StartValue = 1234, Text = "Tukulti-ninurata I 1234-1197"});
+            var assyria = new Block {Ruler = rule, Title = "Assyria"};
+            assyria.AddEntry(new LeaderEntry("Asshur-uballit I", new int?[,] { { 1356, 1321 } }) {StartValue = 1356 });
+            assyria.AddEntry(new LeaderEntry("Adad-nirari I", new int?[,] { { 1297, 1266 } }) { StartValue = 1297 });
+            assyria.AddEntry(new LeaderEntry("Shalmaneser I", new int?[,] { { 1265, 1235 } }) { StartValue = 1265 });
+            assyria.AddEntry(new LeaderEntry("Tukulti-ninurata I", new int?[,] { { 1234, 1197 } }) { StartValue = 1234 });
 
             var greece = new Block() {Ruler = rule, Title = "Greece"};
-            greece.AddEntry(new Entry(){StartValue = 1550, Text = "Minoan & Greek first encounter"});
-            greece.AddEntry(new Entry(){StartValue = 1500, Text = "Mt. Thera eruption"});
-            greece.AddEntry(new Entry(){StartValue = 1580, EndValue = 1200, Text = "Mycenaean Period", Location = PrintLocation.Left});
-            greece.AddEntry(new Entry(){StartValue = 1400, Text = "Mycenaean invade Minoan Crete"});
-            greece.AddEntry(new Entry(){StartValue = 1240, Text = "Trojan War"});
-            greece.AddEntry(new Entry(){StartValue = 1210, Text = "migration of Sea Peoples"});
+            greece.AddEntry(1550, "Minoan & Greek first encounter");
+            greece.AddEntry(1500, "Mt. Thera eruption");
+            greece.AddEntry(1580, 1200, "Mycenaean Period", PrintLocation.Left);
+            greece.AddEntry(1400, "Mycenaean invade Minoan Crete");
+            greece.AddEntry(1240, "Trojan War");
+            greece.AddEntry(1210, "migration of Sea Peoples");
 
             var plate = new Plate() {Ruler = rule, Name = "Near East 1600 to 1200 BCE"};
 

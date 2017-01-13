@@ -6,104 +6,192 @@
         {
             var rule = new Rule {StartValue = 780, EndValue = 500, RuleLineSpacing = 7};
             var egypt = new Block {StartValue = 780, EndValue = 528, Ruler = rule, Title = "Egypt"};
-            egypt.AddEntry(705, "Shabako 710/9-696/5");
-            egypt.AddEntry(696, "Shebteko 696/5-685/4");
-            egypt.AddEntry(690, "(Tirhakah coregent 690/89)");
-            egypt.AddEntry(685, "Tirhakah (690) 685/4-664");
-            egypt.AddEntry(655, "Psammetichus I 664-610");
-            egypt.AddEntry(610, "Neco II 610-594");
-            egypt.AddEntry(594, "Psammetichus II 594-589");
-            egypt.AddEntry(589, "Apries (Hophra) 589-570");
+            egypt.AddEntry(new LeaderEntry("Shabako", new int?[,] {{710, 696}}) {StartValue = 705});
+            egypt.AddEntry(new LeaderEntry("Shebteko", new int?[,] {{696, 685}}) {StartValue = 696});
+            egypt.AddEntry(new LeaderEntry("Tirhakah coregent", new int?[,] {{690, 689}}) {StartValue = 690});
+            egypt.AddEntry(new LeaderEntry("Tirhakah", new int?[,] {{685, 664}}) {StartValue = 685});
+            egypt.AddEntry(new LeaderEntry("Psammetichus I", new int?[,] {{664, 610}}) {StartValue = 655});
+            egypt.AddEntry(new LeaderEntry("Neco II", new int?[,] {{610, 594}}) {StartValue = 610});
+            egypt.AddEntry(new LeaderEntry("Psammetichus II", new int?[,] {{594, 589}}) {StartValue = 594});
+            egypt.AddEntry(new LeaderEntry("Apries (Hophra)", new int?[,] {{589, 570}}) {StartValue = 589});
             egypt.AddEntry(759, 716, "Libyian Dyn.(s) 759-715 ", PrintLocation.Right);
             egypt.AddEntry(710, 663, "Nubian Dyn. 715-663 (Kush)", PrintLocation.Right);
             egypt.AddEntry(660, 525, "XXVI Dyn. 664-525", PrintLocation.Right);
-            egypt.AddEntry(570, "Armasis 570-526");
-            egypt.AddEntry(530, "Psammetichus III 526/5");
+            egypt.AddEntry(new LeaderEntry("Armasis", new int?[,] {{570, 526}}) {StartValue = 570});
+            egypt.AddEntry(new LeaderEntry("Psammetichus III", new int?[,] {{526, 525}}) {StartValue = 530});
 
             var judah = new Block {Ruler = rule, Title = "Judah", StartValue = 780, EndValue = 500, Width = 34};
-            judah.AddEntry(750, "(Jotham coregent 750)");
-            judah.AddEntry(742, "Jotham 742-735", PrintLocation.Left);
-            judah.AddEntry(735, "Ahaz 735-715", PrintLocation.Left);
-            judah.AddEntry(715, "Hezekiah 715-687/6", PrintLocation.Left);
-            judah.AddEntry(687, "Manasseh 687/6-642", PrintLocation.Left);
-            judah.AddEntry(642, "Amon 642-640", PrintLocation.Left);
-            judah.AddEntry(638, "Josiah 640-609", PrintLocation.Left);
-            judah.AddEntry(609, "Jehoahaz 609", PrintLocation.Left);
-            judah.AddEntry(604, "Jehoiakim 609-598", PrintLocation.Left);
-            judah.AddEntry(598, "Jehoiachin 598/7", PrintLocation.Left);
-            judah.AddEntry(595, "Zedekiah 597-587", PrintLocation.Left);
+            judah.AddEntry(new LeaderEntry("Jotham coregent", new int?[,] {{null, 750}}) {StartValue = 750});
+            judah.AddEntry(new LeaderEntry("Jotham", new int?[,] {{742, 735}})
+            {
+                StartValue = 742,
+                Location = PrintLocation.Left
+            });
+            judah.AddEntry(new LeaderEntry("Ahaz", new int?[,] {{735, 715}})
+            {
+                StartValue = 735,
+                Location = PrintLocation.Left
+            });
+            judah.AddEntry(new LeaderEntry("Hezekiah", new int?[,] {{715, 687}})
+            {
+                StartValue = 715,
+                Location = PrintLocation.Left
+            });
+            judah.AddEntry(new LeaderEntry("Manasseh", new int?[,] {{687, 642}})
+            {
+                StartValue = 687,
+                Location = PrintLocation.Left
+            });
+            judah.AddEntry(new LeaderEntry("Amon", new int?[,] {{642, 640}})
+            {
+                StartValue = 642,
+                Location = PrintLocation.Left
+            });
+            judah.AddEntry(new LeaderEntry("Josiah", new int?[,] {{640, 609}})
+            {
+                StartValue = 638,
+                Location = PrintLocation.Left
+            });
+            judah.AddEntry(new LeaderEntry("Jehoahaz", new int?[,] {{null, 609}})
+            {
+                StartValue = 609,
+                Location = PrintLocation.Left
+            });
+            judah.AddEntry(new LeaderEntry("Jehoiakim", new int?[,] {{609, 598}})
+            {
+                StartValue = 604,
+                Location = PrintLocation.Left
+            });
+            judah.AddEntry(new LeaderEntry("Jehoiachin", new int?[,] {{598, 597}})
+            {
+                StartValue = 598,
+                Location = PrintLocation.Left
+            });
+            judah.AddEntry(new LeaderEntry("Zedekiah", new int?[,] {{597, 587}})
+            {
+                StartValue = 595,
+                Location = PrintLocation.Left
+            });
             judah.AddEntry(590, "1st dep. 597", PrintLocation.Left);
             judah.AddEntry(587, "2nd dep.", PrintLocation.Left);
             judah.AddEntry(582, "3rd dep. 582", PrintLocation.Left);
-            judah.AddEntry(625, "(Zephaniah)", PrintLocation.Right);
-            judah.AddEntry(619, "(Nahum)", PrintLocation.Right);
-            judah.AddEntry(602, "(Habakkuk)", PrintLocation.Right);
-            judah.AddEntry(735, 701, "(Micah)", PrintLocation.Right);
-            judah.AddEntry(730, 688, "(Isaiah)");
-            judah.AddEntry(630, 587, "(Jeremiah)");
-            judah.AddEntry(595, 575, "(Ezekiel)", PrintLocation.Right);
+            judah.AddEntry(new ProphetEntry("Zephaniah") {StartValue = 625, Location = PrintLocation.Right});
+            judah.AddEntry(new ProphetEntry("Nahum") { StartValue = 619, Location = PrintLocation.Right});
+            judah.AddEntry(new ProphetEntry("Habakkuk") {StartValue = 602, Location = PrintLocation.Right});
+            judah.AddEntry(new ProphetEntry("Micah")
+            {
+                StartValue = 735,
+                EndValue = 701,
+                Location = PrintLocation.Right
+            });
+            judah.AddEntry(new ProphetEntry("Isaiah") { StartValue = 730, EndValue = 688});
+            judah.AddEntry(new ProphetEntry("Jeremiah") {StartValue = 630, EndValue = 587});
+            judah.AddEntry(new ProphetEntry("Ezekiel")
+            {
+                StartValue = 595,
+                EndValue = 575,
+                Location = PrintLocation.Right
+            });
             judah.AddEntry(568, "in exile");
-            judah.AddEntry(545, 525, "(II Isaiah)", PrintLocation.Right);
+            judah.AddEntry(new ProphetEntry("II Isaiah")
+            {
+                StartValue = 545,
+                EndValue = 525,
+                Location = PrintLocation.Right
+            });
             judah.AddEntry(538, "Cyrus' edict(538)");
             judah.AddEntry(528, "Zerubbabel (gov. Judah)");
             judah.AddEntry(520, "The Temple rebuilt 520-515");
-            judah.AddEntry(515, "(Haggai, Zechariah)", PrintLocation.Right);
+            judah.AddEntry(new ProphetEntry("Haggai, Zechariah")
+            {
+                StartValue = 515,
+                Location = PrintLocation.Right
+            });
 
             var israel = new Block {Ruler = rule, Title = "Israel", StartValue = 780, EndValue = 722};
-            israel.AddEntry(746, "Zechariah 746/5", PrintLocation.Left);
-            israel.AddEntry(745, "Shallum 745", PrintLocation.Left);
-            israel.AddEntry(745, "Menahem 745-737", PrintLocation.Right);
-            israel.AddEntry(737, "Pekahiah 737/6", PrintLocation.Left);
-            israel.AddEntry(736, "Pekah 736-732", PrintLocation.Right);
-            israel.AddEntry(732, "Hoshea 732-724", PrintLocation.Left);
-            israel.AddEntry(756, "(Amos)", PrintLocation.Right);
-            israel.AddEntry(750, 736, "(Hosea)", PrintLocation.Right);
+            israel.AddEntry(new LeaderEntry("Zechariah", new int?[,] {{746, 745}})
+            {
+                StartValue = 746,
+                Location = PrintLocation.Left
+            });
+            israel.AddEntry(new LeaderEntry("Shallum", new int?[,] {{null, 745}})
+            {
+                StartValue = 745,
+                Location = PrintLocation.Left
+            });
+            israel.AddEntry(new LeaderEntry("Menahem", new int?[,] {{745, 737}})
+            {
+                StartValue = 745,
+                Location = PrintLocation.Right
+            });
+            israel.AddEntry(new LeaderEntry("Pekahiah", new int?[,] {{737, 736}})
+            {
+                StartValue = 737,
+                Location = PrintLocation.Left
+            });
+            israel.AddEntry(new LeaderEntry("Pekah", new int?[,] {{736, 732}})
+            {
+                StartValue = 736,
+                Location = PrintLocation.Right
+            });
+            israel.AddEntry(new LeaderEntry("Hoshea", new int?[,] {{732, 724}})
+            {
+                StartValue = 732,
+                Location = PrintLocation.Left
+            });
+            israel.AddEntry(new ProphetEntry("Amos") { StartValue = 756, Location = PrintLocation.Right});
+            israel.AddEntry(new ProphetEntry("Hosea")
+            {
+                StartValue = 750,
+                EndValue = 736,
+                Location = PrintLocation.Right
+            });
 
             var assyria = new Block {Ruler = rule, Title = "Assyria", StartValue = 780, EndValue = 604, Width = 29};
             assyria.AddEntry(777, 750, "Assyrian weakness");
-            assyria.AddEntry(746, "Tiglath-pileser III 745-727");
-            assyria.AddEntry(726, "Shalmaneser V 726-722");
-            assyria.AddEntry(721, "Sargon II 721-705");
-            assyria.AddEntry(704, "Sennacherib 704-681");
-            assyria.AddEntry(680, "Esarhaddon 680-669");
-            assyria.AddEntry(668, "Asshurbanapal 668-627");
-            assyria.AddEntry(629, "Sin-shar-ishkun 629-612");
-            assyria.AddEntry(609, "Asshur-uballit II 612-609");
+            assyria.AddEntry(new LeaderEntry("Tiglath-pileser III", new int?[,] {{745, 727}}) {StartValue = 746});
+            assyria.AddEntry(new LeaderEntry("Shalmaneser V", new int?[,] {{726, 722}}) {StartValue = 726});
+            assyria.AddEntry(new LeaderEntry("Sargon II", new int?[,] {{721, 705}}) {StartValue = 721});
+            assyria.AddEntry(new LeaderEntry("Sennacherib", new int?[,] {{704, 681}}) {StartValue = 704});
+            assyria.AddEntry(new LeaderEntry("Esarhaddon", new int?[,] {{680, 669}}) {StartValue = 680});
+            assyria.AddEntry(new LeaderEntry("Asshurbanapal", new int?[,] {{668, 627}}) {StartValue = 668});
+            assyria.AddEntry(new LeaderEntry("Sin-shar-ishkun", new int?[,] {{629, 612}}) {StartValue = 629});
+            assyria.AddEntry(new LeaderEntry("Asshur-uballit II", new int?[,] {{612, 609}}) {StartValue = 609});
 
             var babylon = new Block {Ruler = rule, Title = "Babylon", StartValue = 666, EndValue = 542};
-            babylon.AddEntry(626, "Nabopolassar 626-605");
-            babylon.AddEntry(609, "Nebuchadnezzar 605-562");
-            babylon.AddEntry(562, "Amel-marduk 562-560");
-            babylon.AddEntry(560, "Neriglissar 560-556");
-            babylon.AddEntry(556, "Nabonidus 556-539");
+            babylon.AddEntry(new LeaderEntry("Nabopolassar", new int?[,] {{626, 605}}) {StartValue = 626});
+            babylon.AddEntry(new LeaderEntry("Nebuchadnezzar", new int?[,] {{605, 562}}) {StartValue = 609});
+            babylon.AddEntry(new LeaderEntry("Amel-marduk", new int?[,] {{562, 560}}) {StartValue = 562});
+            babylon.AddEntry(new LeaderEntry("Neriglissar", new int?[,] {{560, 556}}) {StartValue = 560});
+            babylon.AddEntry(new LeaderEntry("Nabonidus", new int?[,] {{556, 539}}) {StartValue = 556});
 
             var persia = new Block {Ruler = rule, Title = "Persia/Media", StartValue = 675, EndValue = 500};
             persia.AddEntry(670, 638, "Medes");
-            persia.AddEntry(625, "Cyaxares 625-585");
-            persia.AddEntry(585, "Astyages 585-550");
-            persia.AddEntry(550, "Cyrus (the Great) 550-530");
-            persia.AddEntry(530, "Cambyses 530-522");
-            persia.AddEntry(520, "Darius I 522-486");
+            persia.AddEntry(new LeaderEntry("Cyaxares", new int?[,] {{625, 585}}) {StartValue = 625});
+            persia.AddEntry(new LeaderEntry("Astyages", new int?[,] {{585, 550}}) {StartValue = 585});
+            persia.AddEntry(new LeaderEntry("Cyrus (the Great)", new int?[,] {{550, 530}}) {StartValue = 550});
+            persia.AddEntry(new LeaderEntry("Cambyses", new int?[,] {{530, 522}}) {StartValue = 530});
+            persia.AddEntry(new LeaderEntry("Darius I", new int?[,] {{522, 486}}) {StartValue = 520});
 
             var greece = new Block {Ruler = rule, Title = "Archaic Greece", Width = 24};
             greece.AddEntry(776, "First Olympic Games");
-            greece.AddEntry(750, "(Homer)", PrintLocation.Right);
+            greece.AddEntry(new PhilosopherEntry("Homer",null,null) {Location = PrintLocation.Right, StartValue = 750});
             greece.AddEntry(710, "Spread of Greek colonies");
-            greece.AddEntry(550, "(Xenophanes)", PrintLocation.Right);
-            greece.AddEntry(540, "(Pythagoras)", PrintLocation.Right);
+            greece.AddEntry(new PhilosopherEntry("Xenophanes", null,null) {Location = PrintLocation.Right, StartValue = 550});
+            greece.AddEntry(new PhilosopherEntry("Pythagoras",null,null) {Location = PrintLocation.Right, StartValue = 540});
             greece.AddEntry(743, 724, "First Messenian War");
             greece.AddEntry(685, 668, "Second Messenian War");
 
             var rome = new Block {Ruler = rule, Title = "Kingdom of Rome"};
             rome.AddEntry(753,
                 new string(Config.GraphChars.Rail, 3) + "Rome founded" + new string(Config.GraphChars.Rail, 3));
-            rome.AddEntry(748, "Romulus 753-716");
-            rome.AddEntry(717, "Numa Pompilius 715-672");
-            rome.AddEntry(674, "Tullus Hostilius 672-640");
-            rome.AddEntry(643, "Ancus Marcius 640-616");
-            rome.AddEntry(616, "Lucius T. Priscus 616-578");
-            rome.AddEntry(578, "Servius Tullius 578-534");
-            rome.AddEntry(534, "Lucius T Superbus 534-510");
+            rome.AddEntry(new LeaderEntry("Romulus", new int?[,] {{753, 716}}) {StartValue = 748});
+            rome.AddEntry(new LeaderEntry("Numa Pompilius", new int?[,] {{715, 672}}) {StartValue = 717});
+            rome.AddEntry(new LeaderEntry("Tullus Hostilius", new int?[,] {{672, 640}}) {StartValue = 674});
+            rome.AddEntry(new LeaderEntry("Ancus Marcius", new int?[,] {{640, 616}}) {StartValue = 643});
+            rome.AddEntry(new LeaderEntry("Lucius T. Priscus", new int?[,] {{616, 578}}) {StartValue = 616});
+            rome.AddEntry(new LeaderEntry("Servius Tullius", new int?[,] {{578, 534}}) {StartValue = 578});
+            rome.AddEntry(new LeaderEntry("Lucius T Superbus", new int?[,] {{534, 510}}) {StartValue = 534});
             rome.AddEntry(509,
                 new string(Config.GraphChars.Rail, 3) + "Republic Founded" + new string(Config.GraphChars.Rail, 3));
 

@@ -980,19 +980,19 @@ namespace NoFuture.Timeline
         }
         public virtual void AddEntry(double startValue, string text)
         {
-            AddEntry(new Entry { StartValue = startValue, Text = text });
+            AddEntry(new SimpleFactEntry { StartValue = startValue, Text = text });
         }
         public virtual void AddEntry(double startValue, string text, PrintLocation location)
         {
-            AddEntry(new Entry {StartValue = startValue,Text = text, Location = location});
+            AddEntry(new SimpleFactEntry { StartValue = startValue,Text = text, Location = location});
         }
         public virtual void AddEntry(double startValue, double endValue, string text)
         {
-            AddEntry(new Entry { StartValue = startValue, EndValue = endValue, Text = text });
+            AddEntry(new PeriodEntry { StartValue = startValue, EndValue = endValue, Text = text });
         }
         public virtual void AddEntry(double startValue, double endValue, string text, PrintLocation location)
         {
-            AddEntry(new Entry { StartValue = startValue, EndValue = endValue, Text = text, Location = location });
+            AddEntry(new PeriodEntry { StartValue = startValue, EndValue = endValue, Text = text, Location = location });
         }//end AddEntry
         public virtual void AddInnerBlock(Block innerBlock)
         {
@@ -1314,6 +1314,10 @@ namespace NoFuture.Timeline
             _years = yy;
         }
 
+        public LeaderEntry(string name, int year):this(name, new int?[,] { {null, year } })
+        {
+        }
+
         public string Name => _name;
         public IEnumerable<Tuple<double?, double?>> Years => _years;
 
@@ -1468,6 +1472,14 @@ namespace NoFuture.Timeline
         private const string REGEX_PATTERN =
             @"\x5BH\x5D\x20([a-zA-Z\x2E\x26\x20\x2C]+)\x20\x28([a-zA-Z\x2E\x26\x20\x2C]+)\x29";
 
+        public HeresyEntry() { }
+
+        public HeresyEntry(string name, string description)
+        {
+            Name = name;
+            Description = description;
+        }
+
         public string Name { get; set; }
         public string Description { get; set; }
 
@@ -1492,6 +1504,91 @@ namespace NoFuture.Timeline
             }
         }
     }//end HeresyEntry
+
+    [Serializable]
+    public class ProphetEntry : Entry
+    {
+        private const string REGEX_PATTERN = @"\x28([A-Za-z\x20\x2C\x3F]+)\x29";
+        public string Name { get; set; }
+
+        public ProphetEntry() { }
+
+        public ProphetEntry(string name)
+        {
+            Name = name;
+        }
+
+        public override string Text
+        {
+            get { return $"({Name})"; }
+            set
+            {
+                var tValue = value;
+                string name;
+                if (RegexCatalog.IsRegexMatch(tValue, REGEX_PATTERN, out name, 1))
+                {
+                    Name = name;
+                }
+            }
+        }
+    }
+
+    [Serializable]
+    public class PhilosopherEntry : Entry
+    {
+        private const string REGEX_PATTERN = @"\x28([A-Za-z\x20\X2C]+)\x20([0-9]+\x2D[0-9]+)?\x29";
+
+        public string Name { get; set; }
+        public int? Yob { get; set; }
+        public int? Yod { get; set; }
+
+        public PhilosopherEntry() { }
+
+        public PhilosopherEntry(string name, int? yob, int? yod)
+        {
+            Name = name;
+            Yob = yob;
+            Yod = yod;
+        }
+
+        public override string Text
+        {
+            get
+            {
+                var v = new StringBuilder();
+                v.Append($"({Name}");
+                var ls = $"{Yob}-{Yod}";
+                if (ls.Length > 1)
+                    v.Append(ls);
+                v.Append(")");
+                return v.ToString();
+            }
+            set
+            {
+                var tValue = value;
+                string name;
+                string ls;
+                int yob;
+                int yod;
+                if (RegexCatalog.IsRegexMatch(tValue, REGEX_PATTERN, out name, 1))
+                {
+                    Name = name;
+                }
+                if (RegexCatalog.IsRegexMatch(tValue, REGEX_PATTERN, out ls, 2) &&
+                    int.TryParse(ls.Split('-')[0], out yob) && int.TryParse(ls.Split('-')[1], out yod))
+                {
+                    Yob = yob;
+                    Yod = yod;
+                }
+            }
+        }
+    }
+
+    [Serializable]
+    public class PeriodEntry : Entry { } 
+
+    [Serializable]
+    public class SimpleFactEntry : Entry { }
     #endregion
 
     [Serializable]

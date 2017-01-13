@@ -19,16 +19,16 @@
 
             var hittities = new Block {Ruler = rule, Title = "Hittites", Width = 20};
             hittities.AddEntry(1700,"Hittite Old Kingdom");
-            hittities.AddEntry(1650,"Labarna I");
-            hittities.AddEntry(1600,"Hattusili I");
-            hittities.AddEntry(1550,"Mursili I");
+            hittities.AddEntry(new LeaderEntry("Labarna I", 1650 ));
+            hittities.AddEntry(new LeaderEntry("Hattusili I",1600 ));
+            hittities.AddEntry(new LeaderEntry("Mursili I",1550 ));
             hittities.AddEntry(1900,1600,"City States");
 
             var mesopotamia = new Block {Ruler = rule, Title = "Mesopotamia"};
 
             var assyria = new Block {Ruler = rule, Title = "Assyria",StartValue = 1950};
             assyria.AddEntry(1900,"Cappadocian Colonies");
-            assyria.AddEntry(1750,"Shamshi-Adad I");
+            assyria.AddEntry(new LeaderEntry("Shamshi-Adad I", 1750));
 
             var mari = new Block {Ruler = rule, Title = "Mari", StartValue = 1950, EndValue = 1700, Width = 16};
             mari.AddEntry(1750,"The 'Mari Age'");
@@ -36,10 +36,10 @@
             var isin = new Block {Ruler = rule, Title = "Isin", StartValue = 1950, EndValue = 1750, Width = 8};
 
             var larsa = new Block {Ruler = rule, Title = "Larsa", StartValue = 1950, EndValue = 1700, Width = 16};
-            larsa.AddEntry(1758,"Rim-Sin I");
+            larsa.AddEntry(new LeaderEntry("Rim-Sin I", 1758));
 
             var babylon = new Block {Ruler = rule, Title = "Babylon", StartValue = 1830, EndValue = 1550, Width = 20};
-            babylon.AddEntry(1700, "Hammurabi");
+            babylon.AddEntry(new LeaderEntry("Hammurabi", 1700));
             babylon.AddEntry(1630, "Kassite Dyn." );
 
             mesopotamia.AddInnerBlock(assyria);

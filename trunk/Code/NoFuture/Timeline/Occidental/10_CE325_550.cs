@@ -7,35 +7,52 @@
             var rule = new Rule {StartValue = 325, EndValue = 550, RuleLineSpacing = 7};
 
             var rome = new Block {Ruler = rule, Title = "Roman Empire", EndValue = 479, Width = 60};
+            rome.AddEntry(new LeaderEntry("Constantine the Great", new int?[,] {{306, 337}}) {StartValue = 327});
             rome.AddEntry(330, "Capital moved to Byzantium(330)");
             rome.AddEntry(341, "Council of Antioch(341)");
             rome.AddEntry(360, "Julian Apostocy(361-363)");
-            rome.AddEntry(405, "Jerome completes Latin Vulgate(405)");
+            rome.AddEntry(new LiteraryWorkEntry("Latin Vulgate", "Jerome") {StartValue = 405});
             rome.AddEntry(380, "Edict of Thessalonica(380)", PrintLocation.Right);
             rome.AddEntry(383, "Legions withdrawn from Britian(383)");
-            rome.AddEntry(397, "[Confessions(Augustine)]");
+            rome.AddEntry(new LiteraryWorkEntry("Confessions", "Augustine") {StartValue = 397});
             rome.AddEntry(415, "Hypatia murdered in Alexandria(415)");
-            rome.AddEntry(420, "[City of God(Augustine)]");
-            rome.AddEntry(379, "Theodosius[E](379-395)", PrintLocation.Left);
-            rome.AddEntry(395, "Honorius[W](395-423)", PrintLocation.Left);
-            rome.AddEntry(408, "Theodosius II[E](408-450)", PrintLocation.Left);
-            rome.AddEntry(425, "Valentinian III[W](425-455)", PrintLocation.Left);
-            rome.AddEntry(476, "Odoacer King of Italy(479-493)");
+            rome.AddEntry(new LiteraryWorkEntry("City of God", "Augustine") {StartValue = 420});
+            rome.AddEntry(new LeaderEntry("Theodosius[E]", new int?[,] {{379, 395}})
+            {
+                StartValue = 379,
+                Location = PrintLocation.Left
+            });
+            rome.AddEntry(new LeaderEntry("Honorius[W]", new int?[,] {{395, 423}})
+            {
+                StartValue = 395,
+                Location = PrintLocation.Left
+            });
+            rome.AddEntry(new LeaderEntry("Theodosius II[E]", new int?[,] {{408, 450}})
+            {
+                StartValue = 408,
+                Location = PrintLocation.Left
+            });
+            rome.AddEntry(new LeaderEntry("Valentinian III[W]", new int?[,] {{425, 455}})
+            {
+                StartValue = 425,
+                Location = PrintLocation.Left
+            });
+            rome.AddEntry(new LeaderEntry("Odoacer King of Italy", new int?[,] {{479, 493}}) {StartValue = 476});
             rome.AddEntry(337, 379, "Arian Controversy(337-381)");
 
             var vis = new Block {Ruler = rule, Title = "Visigoths", StartValue = 390, EndValue = 507};
-            vis.AddEntry(396, 410, "Alaric(395-410)");
-            vis.AddEntry(416, 451, "Theodoric I(418-451)");
+            vis.AddEntry(new LeaderEntry("Alaric", new int?[,] {{395, 410}}) {StartValue = 396});
+            vis.AddEntry(new LeaderEntry("Theodoric I", new int?[,] {{418, 451}}) {StartValue = 416});
 
             var ost = new Block {Ruler = rule, Title = "Ostrogoths", StartValue = 476, Width = 32};
             ost.AddEntry(490, "Odoacer defeated in Italy");
-            ost.AddEntry(493, "Theoderic the Great(493-526)");
-            ost.AddEntry(541, "Totila(541-552)");
+            ost.AddEntry(new LeaderEntry("Theoderic the Great", new int?[,] {{493, 526}}) {StartValue = 493});
+            ost.AddEntry(new LeaderEntry("Totila", new int?[,] {{541, 552}}) {StartValue = 541});
 
             var van = new Block {Ruler = rule, Title = "Vandels", StartValue = 404, EndValue = 533, Width = 36};
             van.AddEntry(430, "Seige of Hippo(430)");
             van.AddEntry(439, "Seige of Carthage(439)");
-            van.AddEntry(426, 477, "Gaiseric(428-477)");
+            van.AddEntry(new LeaderEntry("Gaiseric", new int?[,] {{428, 477}}) {StartValue = 426});
 
             var hun = new Block {Ruler = rule, StartValue = 370, EndValue = 456, Title = "Huns", Width = 44};
             hun.AddEntry(372, "cross Volga(370)");
@@ -46,21 +63,21 @@
             hun.AddEntry(437, "Attila and Bleda co-rulers(437)");
             hun.AddEntry(440, "exact tribute from Constantinople(443)");
             hun.AddEntry(453, "Battle of Nedao(453)[collapse]");
-            hun.AddEntry(444, 451, "Attila(444-453)");
+            hun.AddEntry(new LeaderEntry("Attila", new int?[,] {{444, 453}}) {StartValue = 444});
 
             var byz = new Block {Ruler = rule, StartValue = 476, Title = "Byzantine Empire", Width = 36};
-            byz.AddEntry(480, "Zeno(474-491)");
+            byz.AddEntry(new LeaderEntry("Zeno", new int?[,] {{474, 491}}) {StartValue = 480});
             byz.AddEntry(529, "Nika riots(532)", PrintLocation.Right);
             byz.AddEntry(537, "Hagia Sophia completed(537)", PrintLocation.Right);
-            byz.AddEntry(527, "Justinian I(527-565)");
+            byz.AddEntry(new LeaderEntry("Justinian I", new int?[,] {{527, 565}}) {StartValue = 527});
             byz.AddEntry(532, "capture Carthage(534)", PrintLocation.Right);
             byz.AddEntry(540, "capture Ravenna(540)", PrintLocation.Right);
             byz.AddEntry(542, "retakes Syria [Sasanian Empire]", PrintLocation.Right);
 
             var fnk = new Block {Ruler = rule, StartValue = 482, Title = "Franks"};
             fnk.AddEntry(490, "Paris made as capital");
-            fnk.AddEntry(509, "Clovis I(509-534)");
-            fnk.AddEntry(533, "Sigebert I(535-575)");
+            fnk.AddEntry(new LeaderEntry("Clovis I", new int?[,] {{509, 534}}) {StartValue = 509});
+            fnk.AddEntry(new LeaderEntry("Sigebert I", new int?[,] {{535, 575}}) {StartValue = 533});
 
             var plate = new Plate {Ruler = rule, Name = "Fall of Roman Empire(325-550)"};
 
