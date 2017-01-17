@@ -43,9 +43,14 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Arrow.cs" />
+    <Compile Include="Block.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="Dimensions.cs" />
     <Compile Include="Drawings.cs" />
+    <Compile Include="Entry.cs" />
+    <Compile Include="Exceptions.cs" />
+    <Compile Include="FastPlate.cs" />
     <Compile Include="Occidental\04_BCE925to750.cs" />
     <Compile Include="Occidental\00_BCE3000to2000.cs" />
     <Compile Include="Occidental\01_BCE2000to1500.cs" />
@@ -66,7 +71,12 @@
     <Compile Include="Occidental\17_CE1788_1865.cs" />
     <Compile Include="Occidental\18_CE1865_1914.cs" />
     <Compile Include="Occidental\19_CE1914_1945.cs" />
+    <Compile Include="Plate.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Rule.cs" />
+    <Compile Include="TextCanvas.cs" />
+    <Compile Include="TextItem.cs" />
+    <Compile Include="TimelineExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

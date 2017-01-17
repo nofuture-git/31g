@@ -1116,7 +1116,7 @@ namespace NoFuture.Tests.Timeline
                 });
             Assert.AreEqual("640-609", testResult);
 
-            testSubject = new Rule { StartValue = 1488, EndValue = 1605 };
+            testSubject = new Rule { StartValue = 1488, EndValue = 1688 };
             testResult =
                 testSubject.PrintYearsRange(new List<Tuple<double?, double?>>()
                 {
@@ -1130,7 +1130,14 @@ namespace NoFuture.Tests.Timeline
                     new Tuple<double?, double?>(null, 1588)
                 });
             Assert.AreEqual("-1588", testResult);
-            
+
+            testResult =
+                testSubject.PrintYearsRange(new List<Tuple<double?, double?>>()
+                {
+                    new Tuple<double?, double?>(1609, 1610)
+                });
+
+            Assert.AreEqual("1609\\10", testResult);
         }
 
         [TestMethod]
@@ -1162,7 +1169,7 @@ namespace NoFuture.Tests.Timeline
             Assert.AreEqual(640, testList[0].Item1);
             Assert.AreEqual(609, testList[0].Item2);
 
-            testSubject = new Rule { StartValue = 1488, EndValue = 1605 };
+            testSubject = new Rule { StartValue = 1488, EndValue = 1688 };
             testResult = testSubject.ParseYearsRange("1588-");
             Assert.IsNotNull(testResult);
             testList = testResult.ToList();
@@ -1176,8 +1183,43 @@ namespace NoFuture.Tests.Timeline
             Assert.AreNotEqual(0, testList.Count);
             Assert.IsNull(testList[0].Item1);
             Assert.AreEqual(1588, testList[0].Item2);
+
+            testResult = testSubject.ParseYearsRange("1609/10");
+            Assert.IsNotNull(testResult);
+            testList = testResult.ToList();
+            Assert.AreNotEqual(0, testList.Count);
+            Assert.AreEqual(1609, testList[0].Item1);
+            Assert.AreEqual(1610, testList[0].Item2);
+
+
+            testResult = testSubject.ParseYearsRange("1609\\1610");
+            Assert.IsNotNull(testResult);
+            testList = testResult.ToList();
+            Assert.AreNotEqual(0, testList.Count);
+            Assert.AreEqual(1609, testList[0].Item1);
+            Assert.AreEqual(1610, testList[0].Item2);
         }
 
+        [TestMethod]
+        public void TestPrintStartEndValue()
+        {
+            var testRule = new Rule { StartValue = 510, EndValue = 320 };
+            var testEntry = new SimpleFactEntry() { Ruler = testRule, StartValue = 488, EndValue = 409 };
+            var testResult = testEntry.PrintStartEndValue();
+
+            Assert.AreEqual("488-409", testResult);
+            testEntry = new SimpleFactEntry() { StartValue = 488, EndValue = 409 };
+            testResult = testEntry.PrintStartEndValue();
+            Assert.AreEqual("488-409", testResult);
+
+            testEntry = new SimpleFactEntry();
+            Assert.AreEqual("", testEntry.PrintStartEndValue());
+
+            testEntry = new SimpleFactEntry() { StartValue = 1944 };
+            testResult = testEntry.PrintStartEndValue();
+            Assert.AreEqual("1944", testResult);
+
+        }
         [TestMethod]
         public void TestTerritoryEntry()
         {
@@ -1276,5 +1318,69 @@ namespace NoFuture.Tests.Timeline
             Assert.AreEqual("'Communist Manifesto'(1848)", testResult);
 
         }
+
+        [TestMethod]
+        public void TestPhilosopherEntry()
+        {
+            var testSubject = new PhilosopherEntry("Wittgenstein", 1889, 1951);
+            var testResult = testSubject.Text;
+
+            Assert.AreEqual("(Wittgenstein 1889-1951)", testResult);
+
+            testSubject = new PhilosopherEntry("The Dude", null, null);
+            Assert.AreEqual("(The Dude)", testSubject.Text);
+
+            testSubject = new PhilosopherEntry("", null, null);
+            testSubject.Text = "(Wittgenstein 1889-1951)";
+            Assert.AreEqual("Wittgenstein", testSubject.Name);
+            Assert.AreEqual(1889, testSubject.Yob);
+            Assert.AreEqual(1951, testSubject.Yod);
+
+        }
+
+        [TestMethod]
+        public void TestProphetEntry()
+        {
+            var testSubject = new ProphetEntry("Iggy");
+            Assert.AreEqual("(Iggy)", testSubject.Text);
+
+            testSubject = new ProphetEntry(null);
+            testSubject.Text = "(Haggai, Zechariah)";
+            Assert.AreEqual("Haggai, Zechariah", testSubject.Name);
+        }
+
+        [TestMethod]
+        public void TestHeresyEntry()
+        {
+            var testSubject = new HeresyEntry("Disco", "not cool");
+            Assert.AreEqual("[H] Disco (not cool)", testSubject.Text);
+
+            testSubject = new HeresyEntry(null, null);
+            testSubject.Text = "[H] Manichaeism (duality, east import)";
+
+            Assert.AreEqual("Manichaeism", testSubject.Name);
+            Assert.AreEqual("duality, east import", testSubject.Description);
+
+        }
+
+        [TestMethod]
+        public void TestExplorerEntry()
+        {
+            var testSubject = new ExplorerEntry("H.Hudson", "Hudson Riv.&Bay");
+
+            Assert.AreEqual("[H.Hudson]-Hudson Riv.&Bay", testSubject.Text);
+
+            testSubject = new ExplorerEntry("H.Hudson", "Hudson Riv.&Bay") {StartValue = 1609, EndValue = 1610};
+
+            Assert.AreEqual("[H.Hudson]-Hudson Riv.&Bay(1609\\10)", testSubject.Text);
+
+            testSubject = new ExplorerEntry(null, null);
+            testSubject.Text = "[H.Hudson]-Hudson Riv.&Bay(1609\\10)";
+            Assert.AreEqual("H.Hudson", testSubject.ExplorerName);
+            Assert.AreEqual("Hudson Riv.&Bay", testSubject.Area);
+            Assert.AreEqual(1609,testSubject.StartValue);
+            Assert.AreEqual(1610, testSubject.EndValue);
+        }
+
     }
 }
