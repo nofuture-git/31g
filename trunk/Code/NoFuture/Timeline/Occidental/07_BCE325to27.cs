@@ -26,6 +26,7 @@
             rome.AddEntry(199, "Second Macedonian War(200-197)", PrintLocation.Right);
             rome.AddEntry(171, "Third Macedonian War(171-168)");
             rome.AddEntry(new TerritoryEntry("Greece") {StartValue = 167});
+            rome.AddEntry(new ScienceAdvEntry("concrete","") {StartValue = 155});
             rome.AddEntry(150, "Third Punic War(150-146)");
             rome.AddEntry(146, "Carthage destroyed", PrintLocation.Right);
             rome.AddEntry(new TerritoryEntry("Tusinia") {StartValue = 146});
@@ -34,6 +35,7 @@
             rome.AddEntry(112, "The Jugurthine War(112-105)");
             rome.AddEntry(new TerritoryEntry("Allgeria") {StartValue = 108});
             rome.AddEntry(103, "Second Servile War(103-99)");
+            rome.AddEntry(new ScienceAdvEntry("arch bridge & damn","") {StartValue = 100});
             rome.AddEntry(88, "First Mithridatic War(88-84)");
             rome.AddEntry(83, "Second Mithridatic War(83-81)");
             rome.AddEntry(new TerritoryEntry("Bithynia & Cyrene") {StartValue = 76});
@@ -71,11 +73,13 @@
             ptolemaic.AddEntry(new LeaderEntry("Ptolemy IV Philopator", new int?[,] {{221, 203}}) {StartValue = 221});
             ptolemaic.AddEntry(new LeaderEntry("Ptolemy V Epiphanes", new int?[,] {{203, 181}}) {StartValue = 204});
             ptolemaic.AddEntry(new LeaderEntry("Ptolemy VI Philometor", new int?[,] {{181, 145}}) {StartValue = 181});
+            ptolemaic.AddEntry(new ScienceAdvEntry("astrolabe","") {StartValue = 150});
             ptolemaic.AddEntry(new LeaderEntry("Ptolemy VII Euergetes II", new int?[,] {{145, 116}}) {StartValue = 145});
             ptolemaic.AddEntry(new LiteraryWorkEntry("Septuagint", "") {StartValue = 132 });
             ptolemaic.AddEntry(new LeaderEntry("Cleopatra III", new int?[,] {{116, 101}}) {StartValue = 116});
             ptolemaic.AddEntry(new LeaderEntry("Ptolemy X Alexander", new int?[,] {{107, 88}}) {StartValue = 107});
             ptolemaic.AddEntry(new LeaderEntry("Ptolemy XII Auletes", new int?[,] {{80, 51}}) {StartValue = 80});
+            ptolemaic.AddEntry(new ScienceAdvEntry("watermill","") {StartValue = 71});
             ptolemaic.AddEntry(new LeaderEntry("Cleopatra VII Philopator", new int?[,] {{51, 30}}) {StartValue = 51});
 
             var judea = new Block {Ruler = rule, Title = "Judea", Width = 42};
@@ -102,6 +106,7 @@
             seleucid.AddEntry(new LeaderEntry("Dimetrius", new int?[,] {{162, 150}}) {StartValue = 158});
             seleucid.AddEntry(new LeaderEntry("Demetrius II", new int?[,] {{145, 138}}) {StartValue = 150});
             seleucid.AddEntry(new LeaderEntry("Antiochus VII", new int?[,] {{125, 96}}) {StartValue = 125});
+            seleucid.AddEntry(new ScienceAdvEntry("glass blowing","") {StartValue = 100});
 
             var plate = new Plate {Ruler = rule, Name = "Third to First Centuries BCE"};
             plate.AddArrow(new Arrow(seleucid, ptolemaic) {StartValue = 200, Text = "Battle of Panium"});

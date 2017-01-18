@@ -12,6 +12,7 @@
             egypt.AddEntry(new LeaderEntry("Tirhakah", new int?[,] {{685, 664}}) {StartValue = 685});
             egypt.AddEntry(new LeaderEntry("Psammetichus I", new int?[,] {{664, 610}}) {StartValue = 655});
             egypt.AddEntry(new LeaderEntry("Neco II", new int?[,] {{610, 594}}) {StartValue = 610});
+            egypt.AddEntry(new ScienceAdvEntry("lighthouse","") {StartValue = 600});
             egypt.AddEntry(new LeaderEntry("Psammetichus II", new int?[,] {{594, 589}}) {StartValue = 594});
             egypt.AddEntry(new LeaderEntry("Apries (Hophra)", new int?[,] {{589, 570}}) {StartValue = 589});
             egypt.AddEntry(759, 716, "Libyian Dyn.(s) 759-715 ", PrintLocation.Right);
@@ -181,10 +182,11 @@
             greece.AddEntry(new PhilosopherEntry("Pythagoras",null,null) {Location = PrintLocation.Right, StartValue = 540});
             greece.AddEntry(743, 724, "First Messenian War");
             greece.AddEntry(685, 668, "Second Messenian War");
+            greece.AddEntry(new ScienceAdvEntry("crane","") {StartValue = 515});
 
-            var rome = new Block {Ruler = rule, Title = "Kingdom of Rome"};
+            var rome = new Block {Ruler = rule, Title = "Kingdom of Rome", StartValue = 750};
             rome.AddEntry(753,
-                new string(Config.GraphChars.Rail, 3) + "Rome founded" + new string(Config.GraphChars.Rail, 3));
+                "Rome founded(753)");
             rome.AddEntry(new LeaderEntry("Romulus", new int?[,] {{753, 716}}) {StartValue = 748});
             rome.AddEntry(new LeaderEntry("Numa Pompilius", new int?[,] {{715, 672}}) {StartValue = 717});
             rome.AddEntry(new LeaderEntry("Tullus Hostilius", new int?[,] {{672, 640}}) {StartValue = 674});

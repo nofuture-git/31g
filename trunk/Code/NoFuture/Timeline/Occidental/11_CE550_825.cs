@@ -11,6 +11,7 @@
             byz.AddEntry(new LeaderEntry("Phocas", new int?[,] { { 602, 610 } }) { StartValue = 602 });
             byz.AddEntry(new LeaderEntry("Heraclius", new int?[,] { { 610, 641 } }) { StartValue = 610 });
             byz.AddEntry(680, "Sixth Ecumen. Council(680)");
+            byz.AddEntry(new ScienceAdvEntry("greek fire","") {StartValue = 669});
             byz.AddEntry(692, 717, "Twenty Years Anarchy(695-717)", PrintLocation.Left);
             byz.AddEntry(new LeaderEntry("Leo III", new int?[,] { { 717, 741 } }) { StartValue = 725 });
             byz.AddEntry(new LeaderEntry("Constantine V", new int?[,] { { 741, 775 } }) { StartValue = 746 });
@@ -41,10 +42,12 @@
             mus.AddEntry(new LeaderEntry("Mohammed", new int?[,] { { 569, 632 } }) {StartValue = 569, Location = PrintLocation.Left});
             mus.AddEntry(610, "vision @ Mt. Hira(610)");
             mus.AddEntry(627, "Mohammad takes Mecca(630)");
-            mus.AddEntry(new LiteraryWorkEntry("Quran","Mohammed") {StartValue = 630});
-            mus.AddEntry(new LeaderEntry("Abu Bekr", new int?[,] { { 633, 634 } }) { StartValue = 633, Location = PrintLocation.Left });
+            mus.AddEntry(new LiteraryWorkEntry("Quran","Mohammed") {StartValue = 630, Location = PrintLocation.Left});
+            mus.AddEntry(new ScienceAdvEntry("zero", "Brahmagupta") {StartValue = 630, Location = PrintLocation.Right});
+            mus.AddEntry(new LeaderEntry("Abu Bekr", new int?[,] { { 633, 634 } }) { StartValue = 633});
             mus.AddEntry(new LeaderEntry("Omar", new int?[,] { { 634, 644 } }) { StartValue = 638, Location = PrintLocation.Left });
             mus.AddEntry(new LeaderEntry("Othman", new int?[,] { { 644, 656 } }) { StartValue = 644, Location = PrintLocation.Left });
+            mus.AddEntry(new ScienceAdvEntry("windmill","") {StartValue = 650});
             mus.AddEntry(656, "war of succesion Ali/Muawiya(656-669)");
             mus.AddEntry(new LeaderEntry("Muawiya", new int?[,] { { 669, 680 } }) { StartValue = 669, Location = PrintLocation.Left });
             mus.AddEntry(679, "war of succesion(680-683)");
@@ -61,6 +64,7 @@
             mus.AddEntry(new LeaderEntry("al-Mahdi", new int?[,] { { 775, 784 } }) { StartValue = 775, Location = PrintLocation.Left });
             mus.AddEntry(new LeaderEntry("Abbasid", new int?[,] { { 784, 786 } }) { StartValue = 784, Location = PrintLocation.Left });
             mus.AddEntry(new LeaderEntry("Harun al-Rashid", new int?[,] { { 786, 809 } }) { StartValue = 787, Location = PrintLocation.Left });
+            mus.AddEntry(new ScienceAdvEntry("algebra","") {StartValue = 820});
 
             mus.AddEntry(738, "Battle of Rajasthan(738) [India]");
 

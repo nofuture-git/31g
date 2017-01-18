@@ -16,11 +16,11 @@
             wRome.AddEntry(67, "Martyrdom of Peter & Paul @ Rome(67)", PrintLocation.Right);
             wRome.AddEntry(68, "'Year of Four Emperors'");
             wRome.AddEntry(new LeaderEntry("Vespasian", new int?[,] {{69, 79}}) {StartValue = 70});
-            wRome.AddEntry(new LeaderEntry("Titus", new int?[,] {{79, 81}}) {StartValue = 79});
-            wRome.AddEntry(new LeaderEntry("Domitian", new int?[,] {{81, 96}}) {StartValue = 81});
+            wRome.AddEntry(new LeaderEntry("Titus", new int?[,] {{79, 81}}) {StartValue = 78, Location = PrintLocation.Left});
+            wRome.AddEntry(new LeaderEntry("Domitian", new int?[,] {{81, 96}}) {StartValue = 81, Location =  PrintLocation.Left});
             wRome.AddEntry(new LeaderEntry("Nerva", new int?[,] {{96, 98}}) {StartValue = 97});
             wRome.AddEntry(new LeaderEntry("Trajan", new int?[,] {{98, 117}}) {StartValue = 98});
-            wRome.AddEntry(79, "Pompeii destroyed(79)");
+            wRome.AddEntry(79, "Pompeii destroyed(79)", PrintLocation.Right);
             wRome.AddEntry(80, "Colosseum completed(80)");
             wRome.AddEntry(82, "Arch of Titus erected-for capture of Jerusalem");
             wRome.AddEntry(new LeaderEntry("Pope Linus", new int?[,] {{67, 79}})

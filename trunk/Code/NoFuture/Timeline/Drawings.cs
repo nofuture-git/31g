@@ -90,6 +90,7 @@ namespace NoFuture.Timeline
 
         public LeaderEntry(string name, int year):this(name, new int?[,] { {null, year } })
         {
+            StartValue = year;
         }
 
         public string Name => _name;

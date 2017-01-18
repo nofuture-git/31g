@@ -895,7 +895,7 @@ namespace NoFuture.Tests.Timeline
             var testSubject = new Occidental();
             var testPlate04 = testSubject.BCE922to750();
 
-            testPlate04.ToPdf(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\Timeline\BCE 922 to 750.pdf");
+            testPlate04.ToPdf(TestAssembly.UnitTestsRoot + @"\Timeline\BCE 922 to 750.pdf");
 
         }
         [TestMethod]
@@ -1138,6 +1138,12 @@ namespace NoFuture.Tests.Timeline
                 });
 
             Assert.AreEqual("1609\\10", testResult);
+
+            testSubject = new Rule {StartValue = 922, EndValue = 780};
+            testResult =
+                testSubject.PrintYearsRange(new List<Tuple<double?, double?>>() {new Tuple<double?, double?>(842, 806)});
+
+            Assert.AreEqual("842-806",testResult);
         }
 
         [TestMethod]

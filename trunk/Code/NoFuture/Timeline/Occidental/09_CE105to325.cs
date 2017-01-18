@@ -26,6 +26,7 @@
             rome.AddEntry(257, 260, "Valerian persecutions(257-260)", PrintLocation.Right);
             rome.AddEntry(250, 270, "Cyprian Plague (250-270)");
             rome.AddEntry(new LeaderEntry("Aurelian", new int?[,] { { 270, 275 } }) { StartValue = 270, Location = PrintLocation.Right });
+            rome.AddEntry(new ScienceAdvEntry("crankshaft","") {StartValue = 300});
             rome.AddEntry(303, 313, "Diocletian persecutions(303-313)", PrintLocation.Right);
             rome.AddEntry(284, 310, "Tetrarchy*", PrintLocation.Left);
             rome.AddEntry(312, 325, "Constantinian Dyn", PrintLocation.Left);
@@ -70,6 +71,7 @@
             east.AddEntry(new PhilosopherEntry("Clement of Alexandria", 150, 215) { StartValue = 200, Location = PrintLocation.Left });
             east.AddEntry(new PhilosopherEntry("Origen", 185, 254) { StartValue = 225, Location = PrintLocation.Left });
             east.AddEntry(new LiteraryWorkEntry("Hexapla", "Origen") { StartValue = 0 });
+
             east.AddEntry(new HeresyEntry("Montanism", "frenzy prophets") {StartValue = 165 });
             east.AddEntry(new HeresyEntry("Docetism", "christ w/o body") { StartValue = 175 });
             east.AddEntry(new HeresyEntry("Ophites", "serpent worship") { StartValue = 135 });

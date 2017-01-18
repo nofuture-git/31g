@@ -18,6 +18,7 @@
             mesopotamia.AddEntry(2100, "Guti invasion");
             mesopotamia.AddEntry(2360, 2180, "Empire of Akkad");
             mesopotamia.AddEntry(2850, 2360, "Sumerian City States");
+            mesopotamia.AddEntry(new ScienceAdvEntry("musical notation", "") {StartValue = 2000});
             mesopotamia.AddEntry(2060, 1950, "Ur III");
 
             var plate = new Plate {Name = "Near East 3000-2000 BCE", Ruler = rule};

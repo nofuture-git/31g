@@ -43,7 +43,8 @@
             hittities.AddEntry(new LeaderEntry("Muwattalis", new int?[,] { { 1306, 1282 } }) { StartValue = 1306 });
             hittities.AddEntry(new LeaderEntry("Hattusilis III", new int?[,] { { 1275, 1250 } }) { StartValue = 1280, Location = PrintLocation.Right });
             hittities.AddEntry(1550,1410,"Old Kingdom" );
-            hittities.AddEntry(1400,1220,"Hittite Empire" );
+            hittities.AddEntry(new ScienceAdvEntry("steel","") {StartValue = 1400});
+            hittities.AddEntry(1380,1220,"Hittite Empire" );
 
             var mitanni = new Block {Ruler = rule, Title = "Mitanni"};
             mitanni.AddEntry(new LeaderEntry("Shuttarna I", 1480));
