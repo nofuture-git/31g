@@ -1,0 +1,234 @@
+Notes Damn Small Linux
+----
+Negus Live Linux Series The Official Damn Small Linux Book: The Tiny Adaptable Linux That Runs on Anything
+By: Robert Shingledecker; John Andrews; Christopher Negus
+Publisher: Prentice Hall
+Pub. Date: August 6, 2007
+Print ISBN-10: 0-13-233869-6
+Print ISBN-13: 978-0-13-233869-1
+Pages in Print Edition: 448
+
+companion content files 
+www.informit.com/ebookfiles/9780132338691
+
+forums at
+www.damnsmalllinux.org/cgi-bin/forums/ikonboard.cgi
+
+wiki at
+www.damnsmalllinux.org/wiki
+----
+
+----
+Versions
+ - SYSLINUX for older PCs that require booting via a floppy
+ - ISOLINUX std for booting live CD's
+ - Qema VM for booting an emulator in MS Windows
+ - VMware VM uses VMware to run emulator in MS Windows
+----
+
+----
+Boot Process
+ - preliminary
+  - need DSL on some media 
+   - historically it was a CD-R having the .iso
+     burned at the slowest possiable rate (X4)
+  - BIOS needs to target the form of media for booting from
+  
+ - DSL Boot Process is three stages
+ (1) Boot Prompt, allows for boot configuartion settings
+  - the first screen after computer startup is the boot prompt
+  - pressing Enter will take default and proceed to the next step
+  - pressing nothing, after 60s, will do the same and proceed onward
+  - pressing F2 cancels the 60s timer
+  - pressing F3 displays a help menu of boot prompt options
+  - multiple options are space-delimited 
+  (example)
+   dsl vga=normal noapic nacpi pnpbios=off acpi=off noapm
+  - to use daemons you must include 'secure' command 
+   - you will be prompted to provide a password
+  - common daemons are 
+   nfs: Network File System
+   ssh: Secure Shell
+   host: to assign a host name to the running DSL instance
+   dma: as speed enhancement for hardware (from year 2000 up)
+   lpd: printing service
+   cron: scheduled command exec
+   syslog: system logging
+   monkey: web services
+   ftp: file transfer protocol
+   fuse: file system in user space
+
+ (2) Autoconfig
+  - begins upon pressing Enter in first stage or timer expires
+  - typically ends with init. X Window System - the GUI of DSL desktop
+  
+ (3) DSL X Setup
+  - is optional, typically deals with USB mouse or esoteric hardware
+  - to exit early, having DSL switch back to defaults, press the Tab key 
+    followed by the Enter key
+  - oddity, a two-button mouse may be a three button mouse because pressing
+    both buttons at-the-same-time IS the third button.
+   - the script at /usr/sbin/xsetup.sh is a script to set a two-button
+     mouse to have a 'third' button on combo left-right click
+	 - requires a restart of X server (?)
+----
+
+----
+Using DSL Fluxbox
+ - DSL uses an older graphical toolkit names GTK1.2 instead of current GTK2.0
+  - this is deliberate since the older one is faster and lighter
+ - the default interface is named Fluxbox 
+  - there is a secondary interface named JWM which is more windows-esque
+ - mouse-right click is Windows equivalent to the Start button
+ - there are 4 workspaces (Fluxter), mouse-wheel will move between them
+  - at the bottom-left are four boxes where the highlighted is current 
+    workspace 
+  - will contain a miniture of open apps within said workspace
+ - on hover over app icon - single-left click to run
+ - right-click on title-bar opens a window-specific context menu
+  - the single '.' button at far-left of title bar will cause said
+    app to be present in all four workspaces
+  - title-bar buttons on right are common to windows users
+ - drag is typical left-click-down and move window app within screen
+ - the small tab at the bottom-left of a window's app is for clustering
+   apps together - this requires a three button mouse
+  - think as if multiple windows of the exact same size are stacked atop 
+    each other 
+ - small box in lower right corner of workspace is named Docked.lua
+  - easy access to volume-control and mounted device
+  - click the device name (e.g. hda1, cdrom) to toggle to the next device
+   hda is first IDE drive
+   hdb is second IDE drive
+   sda is first SCSI or USB drive
+   sdb is second SCSI or USB drive
+  - when numbers appear after a drive name its representative of the partition
+  hda1 is first partition of first IDE drive
+----
+
+----
+Using DSL X-Based Apps
+ - X-based on non-terminal apps include many common PC apps
+  - calc, text editor, browser, ftp client, email client, etc.
+  Aterm, terminal emulator
+  AxY FTP, GUI FTP Client app
+  Beaver, text editor 
+  Calcoo, calculator
+  Dillo, light web browser
+  EmelFM, two-panel file browser
+  Firefox,
+  gRun, like Windows Run, access via root menu > Run Program
+  GtkFind, file search, access via root menu > Apps > Tools > Find
+  Gvu, PostScript viewer
+  Ted, rich-text editor
+  Siag, spreadsheet app
+  Slypheed, email client app
+  VNC Viewer, remote desktop app
+  Rdesktop, remote desktop protocol client
+  Xpdf, PDF viewer
+  XMMS, media player
+  Xpaint, image viewer editor
+  xTris, the tetris game
+  ZXGV, thumbnail image viewer
+  Xzoom, screen mangifier
+
+ - Terminal Apps
+ ftp, for file transfer protocol
+ index, database management system
+ CDW, CD burn app
+ Microcom, ultra-timy serial emulator
+ Midnight, file manager
+ Naim, instant msg, IRC client
+ Nano, terminal based text editor
+ Netrik, mini browser, handle html
+ smbclient, for file sharing to windows machine
+ SQLite, database management system
+ Vi(m), advanced terminal text editor 
+ 
+ - Lua based apps
+ MS Word Viewer, allows for viewing .doc files 
+   as PDF or PostScript
+ Calendar, obvious
+ dMix, Mount.lua and Docked, the little app in 
+  bottom right corner of workspace
+  
+ - Daemon based apps
+ ssh, Open Secure Shell
+ FTPd, Ftp hosting
+ nfs-common, network file sharing
+ Monkey Web Server, web hosting
+----
+
+----
+DSL Backup/Restore
+ - DSLpanel > Backup/Restore 
+  - enter a mounted device name in textbox
+  - saves dir\files specified in .filetool.lst
+  - backups are saved to a file that DSL scans for 
+    upon boot named backup.tar.gz
+ 
+ - itemized file-by-file backup selected by line item entries
+   in /home/dsl/.filetool.lst
+ - itemized exclusions are specified in a like-named 
+    /home/dsl/.xfiletool.lst 
+ - itemized lines includes wildcards
+   Cache  (would exclude all files with this name)
+   Cache* (would exclude all files starting with this name)
+ 
+ - to directly control with drive DSL scans for backup.tar.gz
+   use the boot option (hda2 is an example, actual device name)
+     dsl restore=hda2
+----
+
+----
+DSL Desktop Options
+ - desktop options are persisted to the /home/dsl/.xinitrc file
+ - to have terminal apps launched upon startup edit the 
+   /home/dsl/.bash_profile and then add this file to your 
+   backup list at /home/dsl/.filetool.lst
+  
+ - root menu > Desktop > Icon Tool allows for custom setting on
+   how\what click do on the desktop
+  - contains four bottom tabs, 
+  - using Double-Click means should be coupled with 
+    Layout > Use X/Y Coordinates since first click is select icon
+	and second click is open app.
+  - Add tab requires the path to the app and some generic icon 
+  - Remove tab allows for removing icons from your desktop
+  - these settings are persisted to /home/dsl/.xtdesktop
+ - root menu > Desktop > Wallpapers allows for custom desktop backgrounds
+  - radio-button Scale, Emblem are how to display the image 
+  - OK button will temp display it as such
+  - Install button will persist the selected background
+  - Help button shows where image are stored
+ 
+ - DSLpanel > Date/Time
+  - to set the current system time. 
+----
+
+----
+DSL Internet Connections 
+ - DSLpanel > Netcardconfig 
+  - will launch and attempt to connect to wired connection
+  - wired connections will typically be detected automatically
+ 
+ - Wireless connection
+  - first requires the boot option nodhcp
+  - the wireless setup is persisted to the /opt directory
+  http:/www.damnsmalllinux.org/wiki/index.php/Verified_Wireless_Cards
+   - contains a list of wireless network cards that will work with DSL
+  - Iwconfig, Prism2 and Wlanconfig are tools avaliable at the DSLpanel
+    for setup of wireless connection
+  - Ndiswrapper lets you provide a windows driver for your wireless card
+  http://ndiswrapper.sourceforge.net/mediawiki/index.php/List
+   - is a good source for selecting a Windows driver for your wireless card
+  - These apps are for older wireless connections 
+----
+ 
+	
+   
+ 
+ 
+  
+ 
+   
+  
