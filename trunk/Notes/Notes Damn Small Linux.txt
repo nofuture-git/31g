@@ -223,12 +223,161 @@ DSL Internet Connections
    - is a good source for selecting a Windows driver for your wireless card
   - These apps are for older wireless connections 
 ----
- 
-	
-   
- 
- 
+
+----
+DSL Printer Setup
+ root menu > System > Printing/lpd > configure printer
+  - prompts through some boilerplate licx and email stuff- punch through
+  - upon "Checking permissiongs of /usr/share/apsfilter" enter 'y' 
+  - choose 'add' for next screen if this is first time 
+  - typical setup is only first 3 steps 
+   - choosing a driver is printer specific, default options are 
+     gimp-print (opt. 4) and 
+   - choosing how printer is connected (network, direct-USB, etc)
+    - choosing network printer will require IP 
+	- choosing direct-connect requires which parallel port 
+	 - for USB enter /dev/usb/lp0
+   - choosing paper-size
+  - print a test-page to verify the setup
+   - if test page fails go back to main menu, start over and choose
+     different options
+  - name your print or leave as default name 'lp'
+  - DSLpanel > Printing/lpd will start the printing queue
+  - last to specify the printer across the OS use an 
+    enviro var named PRINTER
+   export PRINTER=my_printer_name_here
+----
+
+----
+Getting Config From Web
+ - web backup restore requires access to an FTP server
+ - /home/dsl/.webdata.lst contains what is backed up to the web
+  - this is like .filetool.lst but is sent to a remote location
+    instead of a local drive.
+ - root menu > System > Webdata Backup/Restore
+  - requires the FTP remote location and cred's to it
+  - the Datakey is yours and used to encrypt the content 
+    sent to the remote location
+  - if successful the settings are saved to /home/data.des file
+ - restore is the same as above, having backed up once the 
+   values in the FTP URL:, Login, etc will be present upon launch
+  - click 'Restore'
+ - feature is intended for non-machine specific settings to be 
+   accessed anywhere
+----
+
+----
+Extending Apps with MyDSL
+ - to add app into the live CDs  
+ - using MyDSL extension on desktop - required an internet connection
+  - connects to a MyDSL download mirror
+  - extension types are tar.gz, .dsl, .uci and .unc
+   - tar.gz and .dsl are oldest and should be used only when later
+     types are not avail.
+	 
+  - extension access is available from the desktop MyDSL 
+  - select an item from the list-box to get a description
+   - in description pay attention to the 'Comments:' section 
+     since it should list that extensions prerequisites
+  - choose a download location, typically /tmp
+   - the extension is downloaded, installed and setup automatically
+   - access to extension is contained somewhere under the root menu
+  - if previously downloaded use the MyDSL > Load Local option 
+ - change download location at DSLpanel > Select Mirror
+  - the 'Select' button will show other host available
   
+ - extension access is also available from web browser under 
+   href 'Browse The myDSL repository.'
+  - using browsers 'Save Link As' and save to /ramdisk/tmp
+   - saving to /home will cause the extension to be included in
+     backup making it very slow and problem prown
+  - the shutdown process will check for extension in /ramdisk/tmp
+    and prompt you to save them. Mount some drive and persist them there
+
+ - extension also available via CLI
+  mydsl-wget full-extension-name repository
+  - to persist an extension use 
+  mydsl-wget /full/file/name/path.uci uci 
+  - to load use another CLI tool
+  mydsl-load /full/file/name/path.uci
+	
+ - extensions are persisted in a packaged form and are loaded 
+   automatically or by boot option
+    mydsl=my_location
+	 (example pendrive would be mydsl=sda1)
+  - auto search is conducted in 
+    /KNOPPIX/boot 
+	<any to level directory named> /mydsl
+  - having a unique path of 
+    /mydsl/optional 
+	conducts a special process to not load but allow for 
+	loading at runtime from the root menu
  
-   
+ - to remove an extension just reboot or if its persisted then 
+   remove it from the device
+----
+
+----
+Running from USB Pendrive
+ - of two install forms: USB-ZIP and USB-HDD where one may 
+   work better with such-and-such machine
+  - inconsistencies of USB boot BIOS cause many problems 
+   - BIOS may only use USB ports in the back of the box
+   - USB 2.0 standard may not work with USB 1.1
+   - BIOS may require turning off 'quick boot' option
+ - USB-ZIP emulates the old Iomega external Zip drives from 
+    the 90's
+ - USB-HDD is the more common option
+  - DSL will use Linux style device names for USB as 
+    sd[a-z][1-9] where sda1 is the first partition of the 
+	 first USB 
+ - text recommends running linux util 'cfdisk' 
+  - [http://www.tldp.org/HOWTO/IBM7248-HOWTO/cfdisk.html]
+  - create a single FAT16 partition on the USB stick
+ 
+ - root menu > Apps > Tools > Install to USB Pen Drive > For USB-HDD Pendrive
+  - find a pendrive using linux cmdline tool
+   fdisk -l
+  - will run a script in terminal 
+  - the Pendrive should NOT be mounted
+  - enter the linux-style name of your Pendrive (e.g. sda)
+  - choose the location of the image where Web requires an internet connection
+  - choose specific boot options if needed
+  - choose another lang if needed (blank for English)
+  - choose y twice
+   - script will format the single partition, apply Syslinux to it
+     and then setup a system image within it
+  - at the root of the pendrive create a directory named /mydsl
+   - may need to first mount the device 
+----
+
+----
+Running DSL emulator in MS Windows
+ - most of these instruction are in the readme.txt of the dsl-qemu dir
+ - Qemu is a machine emulator
+  - it is capable of emulating ARM on x86, x64 machines
+ - whole emulator is available for download on file named
+  dsl-embedded.zip
+ - use Ctrl-Alt to allow mouse to move out of emulator  
+ 
+ - to have access to some persited device use the (512 mb)
+  - the name 'harddisk' is required
+   qemu-img.exe create hard disk 512M
+  - or if you cannot navigate to pendrive use
+  C:\> E:\dsl-qemu\qemu\qemu-img.exe create E:\dsl-qemu\harddisk 512M
+  - run the 1st-boot.bat file
+   - ignore errors for now, format the virtual HD using linux command
+  mke2fs /dev/hdb
+  - mount the formatted drive using linux cmd
+  mount /mnt/hdb
+  - create the directories DSL uses within your virtual HD
+  mkdir /mnt/hdb/mydsl
+  mkdir /mnt/hdb/mydsl/modules 
+  - copy the cloop.o file to the newly created modules dir
+  cp /KNOPPIX/lib/modules/2.4.26/kernel/drivers/block/cloop.o \
+      /mnt/hdb/mydsl/modules/
+  - shutdown boot process
+  shutdown -h now
+  - now emulator can be started from dsl-vhd.bat
+----  
   

@@ -45,7 +45,8 @@ FROM    INFORMATION_SCHEMA.TABLES
 WHERE   TABLE_NAME LIKE '%{0}%'";
 
         public const string ColSelectString = @"
-SELECT  TABLE_NAME AS " + TABLE_NAME + @",
+SELECT  TABLE_SCHEMA AS ["+ SCHEMA_NAME + @"],  
+        TABLE_NAME AS " + TABLE_NAME + @",
         COLUMN_NAME AS " + COLUMN_NAME + @",
         ORDINAL_POSITION AS [" + ORDINAL + @"],
         COLUMN_DEFAULT AS [" + DEFAULT_VALUE + @"],
