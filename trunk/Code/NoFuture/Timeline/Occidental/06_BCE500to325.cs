@@ -25,13 +25,13 @@
 
             var persia = new Block {Ruler = rule, Title = "Persian Empire", Width = 22};
             persia.AddEntry(new LeaderEntry("Darius I", new int?[,] {{422, 486}}) {StartValue = 507});
-            persia.AddEntry(new LeaderEntry("Xerxes", new int?[,] {{486, 465}}) {StartValue = 486});
-            persia.AddEntry(new LeaderEntry("Artaxerxes I", new int?[,] {{465, 424}}) {StartValue = 465});
+            persia.AddEntry(new LeaderEntry("Xerxes", new int?[,] {{486, 465}}));
+            persia.AddEntry(new LeaderEntry("Artaxerxes I", new int?[,] {{465, 424}}));
             persia.AddEntry(new LeaderEntry("Xerxes II", new int?[,] {{null, 423}}) {StartValue = 423});
-            persia.AddEntry(new LeaderEntry("Darius II", new int?[,] {{423, 404}}) {StartValue = 419});
-            persia.AddEntry(new LeaderEntry("Artaxerxes II", new int?[,] {{404, 358}}) {StartValue = 404});
-            persia.AddEntry(new LeaderEntry("Artaxerxes III", new int?[,] {{358, 338}}) {StartValue = 358});
-            persia.AddEntry(new LeaderEntry("Arses", new int?[,] {{338, 336}}) {StartValue = 338});
+            persia.AddEntry(new LeaderEntry("Darius II", new int?[,] {{423, 404}}) {StartValue = 421});
+            persia.AddEntry(new LeaderEntry("Artaxerxes II", new int?[,] {{404, 358}}));
+            persia.AddEntry(new LeaderEntry("Artaxerxes III", new int?[,] {{358, 338}}));
+            persia.AddEntry(new LeaderEntry("Arses", new int?[,] {{338, 336}}));
             persia.AddEntry(new LeaderEntry("Darius III", new int?[,] {{336, 331}}) {StartValue = 335});
 
             var greece = new Block {Ruler = rule, Title = "Classical Greece", Width = 36};
@@ -90,7 +90,7 @@
             greece.AddEntry(new LiteraryWorkEntry("Republic", "Plato") {StartValue = 380});
             greece.AddEntry(338, "Battle of Chaeronea(338)");
             greece.AddEntry(336, "Phillip II rules all Greece");
-            greece.AddEntry(new LeaderEntry("Alexander the Great", new int?[,] {{336, 323}}) {StartValue = 330});
+            greece.AddEntry(new LeaderEntry("Alexander the Great", new int?[,] {{336, 323}}) {StartValue = 333});
 
             var rome = new Block {Ruler = rule, Title = "Roman Republic", Width = 32};
             rome.AddEntry(496, "Battle of Lake Regillus");

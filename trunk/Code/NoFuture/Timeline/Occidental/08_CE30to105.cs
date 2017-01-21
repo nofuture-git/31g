@@ -9,17 +9,17 @@
             var wRome = new Block {Ruler = rule, Title = "Roman Empire(West)", Width = 48};
             wRome.AddEntry(new LeaderEntry("Tiberius", new int?[,] {{null, 37}}) {StartValue = 32});
             wRome.AddEntry(new TerritoryEntry("Britain") {StartValue = 46});
-            wRome.AddEntry(new LeaderEntry("Caligula", new int?[,] {{37, 41}}) {StartValue = 37});
-            wRome.AddEntry(new LeaderEntry("Claudius", new int?[,] {{41, 54}}) {StartValue = 41});
-            wRome.AddEntry(new LeaderEntry("Nero", new int?[,] {{54, 68}}) {StartValue = 54});
+            wRome.AddEntry(new LeaderEntry("Caligula", new int?[,] {{37, 41}}));
+            wRome.AddEntry(new LeaderEntry("Claudius", new int?[,] {{41, 54}}));
+            wRome.AddEntry(new LeaderEntry("Nero", new int?[,] {{54, 68}}));
             wRome.AddEntry(64, "Great Fire of Rome");
             wRome.AddEntry(67, "Martyrdom of Peter & Paul @ Rome(67)", PrintLocation.Right);
             wRome.AddEntry(68, "'Year of Four Emperors'");
             wRome.AddEntry(new LeaderEntry("Vespasian", new int?[,] {{69, 79}}) {StartValue = 70});
-            wRome.AddEntry(new LeaderEntry("Titus", new int?[,] {{79, 81}}) {StartValue = 78, Location = PrintLocation.Left});
-            wRome.AddEntry(new LeaderEntry("Domitian", new int?[,] {{81, 96}}) {StartValue = 81, Location =  PrintLocation.Left});
+            wRome.AddEntry(new LeaderEntry("Titus", new int?[,] {{79, 81}}) {StartValue = 78});
+            wRome.AddEntry(new LeaderEntry("Domitian", new int?[,] {{81, 96}}));
             wRome.AddEntry(new LeaderEntry("Nerva", new int?[,] {{96, 98}}) {StartValue = 97});
-            wRome.AddEntry(new LeaderEntry("Trajan", new int?[,] {{98, 117}}) {StartValue = 98});
+            wRome.AddEntry(new LeaderEntry("Trajan", new int?[,] {{98, 117}}));
             wRome.AddEntry(79, "Pompeii destroyed(79)", PrintLocation.Right);
             wRome.AddEntry(80, "Colosseum completed(80)");
             wRome.AddEntry(82, "Arch of Titus erected-for capture of Jerusalem");
@@ -71,83 +71,31 @@
             judea.AddEntry(new LeaderEntry("Pontius Pilate", new int?[,] {{26, 36}})
             {
                 StartValue = 31,
-                Location = PrintLocation.Left
             });
-            judea.AddEntry(new LeaderEntry("Marcellus", new int?[,] {{36, 37}})
-            {
-                StartValue = 36,
-                Location = PrintLocation.Left
-            });
-            judea.AddEntry(new LeaderEntry("Marullus", new int?[,] {{37, 41}})
-            {
-                StartValue = 37,
-                Location = PrintLocation.Left
-            });
-            judea.AddEntry(new LeaderEntry("Herod Agrippa I [king]", new int?[,] {{41, 44}})
-            {
-                StartValue = 41,
-                Location = PrintLocation.Left
-            });
+            judea.AddEntry(new LeaderEntry("Marcellus", new int?[,] {{36, 37}}));
+            judea.AddEntry(new LeaderEntry("Marullus", new int?[,] {{37, 41}}));
+            judea.AddEntry(new LeaderEntry("Herod Agrippa I [king]", new int?[,] {{41, 44}}));
             judea.AddEntry(new LeaderEntry("Cuspius Fadus", new int?[,] {{44, 46}})
             {
                 StartValue = 43,
-                Location = PrintLocation.Left
             });
-            judea.AddEntry(new LeaderEntry("T.Julius Alexander", new int?[,] {{46, 48}})
-            {
-                StartValue = 46,
-                Location = PrintLocation.Left
-            });
-            judea.AddEntry(new LeaderEntry("Ventidius Cumanus", new int?[,] {{48, 52}})
-            {
-                StartValue = 48,
-                Location = PrintLocation.Left
-            });
-            judea.AddEntry(new LeaderEntry("M. Antonius Felixs", new int?[,] {{52, 60}})
-            {
-                StartValue = 52,
-                Location = PrintLocation.Left
-            });
-            judea.AddEntry(new LeaderEntry("Porcius Festus", new int?[,] {{60, 62}})
-            {
-                StartValue = 60,
-                Location = PrintLocation.Left
-            });
-            judea.AddEntry(new LeaderEntry("Lucceius Albinus", new int?[,] {{62, 64}})
-            {
-                StartValue = 62,
-                Location = PrintLocation.Left
-            });
-            judea.AddEntry(new LeaderEntry("Gessius Florus", new int?[,] {{64, 66}})
-            {
-                StartValue = 64,
-                Location = PrintLocation.Left
-            });
+            judea.AddEntry(new LeaderEntry("T.Julius Alexander", new int?[,] {{46, 48}}));
+            judea.AddEntry(new LeaderEntry("Ventidius Cumanus", new int?[,] {{48, 52}}));
+            judea.AddEntry(new LeaderEntry("M. Antonius Felixs", new int?[,] {{52, 60}}));
+            judea.AddEntry(new LeaderEntry("Porcius Festus", new int?[,] {{60, 62}}));
+            judea.AddEntry(new LeaderEntry("Lucceius Albinus", new int?[,] {{62, 64}}));
+            judea.AddEntry(new LeaderEntry("Gessius Florus", new int?[,] {{64, 66}}));
             judea.AddEntry(new LeaderEntry("Lucius Flavius Silva", new int?[,] {{72, 81}})
             {
                 StartValue = 74,
-                Location = PrintLocation.Left
             });
-            judea.AddEntry(new LeaderEntry("M. Salvidenus", new int?[,] {{81, 85}})
-            {
-                StartValue = 81,
-                Location = PrintLocation.Left
-            });
+            judea.AddEntry(new LeaderEntry("M. Salvidenus", new int?[,] {{81, 85}}));
             judea.AddEntry(new LeaderEntry("Cnaeus Pompeius Longinus", new int?[,] {{null, 86}})
             {
                 StartValue = 86,
-                Location = PrintLocation.Left
             });
-            judea.AddEntry(new LeaderEntry("T. Claudius Atticus Herodes", new int?[,] {{99, 102}})
-            {
-                StartValue = 99,
-                Location = PrintLocation.Left
-            });
-            judea.AddEntry(new LeaderEntry("G. Julius Quadratus Bassus", new int?[,] {{102, 104}})
-            {
-                StartValue = 102,
-                Location = PrintLocation.Left
-            });
+            judea.AddEntry(new LeaderEntry("T. Claudius Atticus Herodes", new int?[,] {{99, 102}}));
+            judea.AddEntry(new LeaderEntry("G. Julius Quadratus Bassus", new int?[,] {{102, 104}}));
 
             judea.AddEntry(66, "Battle of Beth Horan - 21st legion defeated(66)");
             judea.AddEntry(67, "Vespasian & Titus: 10th, 5th & 15th legions arrive(67)");

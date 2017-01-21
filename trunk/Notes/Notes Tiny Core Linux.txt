@@ -1,4 +1,35 @@
+Notes Tiny Core Linux
+----
+Into the Core: A look at Tiny Core Linux
+By: Lauri Kasanen et al
+ISBN 978-952-93-3391-2
+Publication date 2013
+Copyright © 2013 Lauri Kasanen
+
+contains an exe to perform easy install to USB from Windows
+http://core2usb.sf.net/
+----
+
+----
+Media dir layout
+ - the top level of the media should only contain two folders
+  *
+  |- boot
+  |- tce (this is where application will be stored)
+ 
+  - apps present at the root of 'tce' will be mounted on boot
+  - in a subdirectory of 'tce' another directory named 'optional'
+    may contain apps to mount on-demand
+
+ 
+  
+  
+-----
 Notes Damn Small Linux
+ - according to Wikipedia Shingledecker was exiled from the project and started Tiny Core Linux, no 
+   updates existed for it for years with the site going on and off alot.  Distro-watch doesn't even 
+   list it anymore.
+
 ----
 Negus Live Linux Series The Official Damn Small Linux Book: The Tiny Adaptable Linux That Runs on Anything
 By: Robert Shingledecker; John Andrews; Christopher Negus

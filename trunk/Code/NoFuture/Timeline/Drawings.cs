@@ -76,12 +76,15 @@ namespace NoFuture.Timeline
         private const string REGEX_PATTERN = @"\[([a-zA-Z\.\x20\x5B\x5D]+?)\x20([0-9\x5C\x2d]+?)]";
 
         private string _name;
+        private PrintLocation _location = PrintLocation.Left;
         private IEnumerable<Tuple<double?, double?>> _years;
         public LeaderEntry(string name, int?[,] years)
         {
             var yy = new List<Tuple<double?, double?>>();
             for (var i = 0; i < years.GetLongLength(0); i++)
             {
+                if (i == 0 && years[i, 0].HasValue)
+                    StartValue = years[i, 0].Value;
                 yy.Add(new Tuple<double?, double?>(years[i,0], years[i,1]));
             }
             _name = name;
@@ -95,6 +98,7 @@ namespace NoFuture.Timeline
 
         public string Name => _name;
         public IEnumerable<Tuple<double?, double?>> Years => _years;
+        public override PrintLocation Location { get {return _location;} set { _location = value; } }
 
         public override string Text
         {
@@ -125,11 +129,17 @@ namespace NoFuture.Timeline
 
         private string _discoveredBy;
         private string _name;
-
+        private string _printyear;
         public ScienceAdvEntry(string name, string discoveredBy)
         {
             _discoveredBy = discoveredBy;
             _name = name;
+        }
+
+        public ScienceAdvEntry(string name, string discoveredBy, int printyear) : this(name, discoveredBy)
+        {
+            if (printyear != 0)
+                _printyear = printyear.ToString();
         }
 
         public string DiscoveredBy => _discoveredBy;
@@ -139,7 +149,7 @@ namespace NoFuture.Timeline
         {
             get
             {
-                return $"{DiscoveredBy}[{Name}]({(int) Math.Round(StartValue)})";
+                return $"{DiscoveredBy}[{Name}]({_printyear ?? ((int) Math.Round(StartValue)).ToString()})";
             }
             set
             {
@@ -169,11 +179,17 @@ namespace NoFuture.Timeline
 
         private string _title;
         private string _author;
-
+        private string _printyear;
         public LiteraryWorkEntry(string title, string author)
         {
             _title = title;
             _author = author;
+        }
+
+        public LiteraryWorkEntry(string title, string author, int printYear) : this(title, author)
+        {
+            if(printYear != 0)
+                _printyear = printYear.ToString();
         }
 
         public string Title => _title;
@@ -183,7 +199,7 @@ namespace NoFuture.Timeline
         {
             get
             {
-                return $"'{Title}'{Author}({(int) Math.Round(StartValue)})";
+                return $"'{Title}'{Author}({_printyear ?? ((int) Math.Round(StartValue)).ToString()})";
             }
             set
             {
@@ -213,18 +229,24 @@ namespace NoFuture.Timeline
 
         public string ExplorerName { get; set; }
         public string Area { get; set; }
-
+        private string _printYear;
         public ExplorerEntry(string explorerName, string area)
         {
             ExplorerName = explorerName;
             Area = area;
         }
 
+        public ExplorerEntry(string explorerName, string area, int year) : this(explorerName, area)
+        {
+            if(year != 0)
+                _printYear = year.ToString();
+        }
+
         public override string Text
         {
             get
             {
-                var dkYear = PrintStartEndValue();
+                var dkYear = _printYear ?? PrintStartEndValue();
                 var txt = $"[{ExplorerName}]-{Area}";
                 if (!string.IsNullOrWhiteSpace(dkYear))
                     txt += $"({dkYear})";

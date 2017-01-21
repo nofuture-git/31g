@@ -853,7 +853,7 @@ namespace NoFuture.Tests.Timeline
         }
 
         [TestMethod]
-        public void TestOccidentalPlate00()
+        public void TestOccidentalPlateBCE3000to2000()
         {
             var testSubject = new Occidental();
             var testPlate00 = testSubject.BCE3000to2000();
@@ -862,7 +862,7 @@ namespace NoFuture.Tests.Timeline
             
         }
         [TestMethod]
-        public void TestOccidentalPlate01()
+        public void TestOccidentalPlateBCE2000to1500()
         {
             var testSubject = new Occidental();
             var testPlate01 = testSubject.BCE2000to1500();
@@ -872,7 +872,7 @@ namespace NoFuture.Tests.Timeline
 
         }
         [TestMethod]
-        public void TestOccidentalPlate02()
+        public void TestOccidentalPlateBCE1600to1200()
         {
             var testSubject = new Occidental();
             var testPlate02 = testSubject.BCE1600to1200();
@@ -881,7 +881,7 @@ namespace NoFuture.Tests.Timeline
 
         }
         [TestMethod]
-        public void TestOccidentalPlate03()
+        public void TestOccidentalPlateBCE1250to900()
         {
             var testSubject = new Occidental();
             var testPlate03 = testSubject.BCE1250to900();
@@ -890,7 +890,7 @@ namespace NoFuture.Tests.Timeline
 
         }
         [TestMethod]
-        public void TestOccidentalPlate04()
+        public void TestOccidentalPlateBCE922to750()
         {
             var testSubject = new Occidental();
             var testPlate04 = testSubject.BCE922to750();
@@ -899,7 +899,7 @@ namespace NoFuture.Tests.Timeline
 
         }
         [TestMethod]
-        public void TestOccidentalPlate05()
+        public void TestOccidentalPlateBCE780to500()
         {
             var testSubject = new Occidental();
             var testPlate05 = testSubject.BCE780to500();
@@ -908,7 +908,7 @@ namespace NoFuture.Tests.Timeline
 
         }
         [TestMethod]
-        public void TestOccidentalPlate06()
+        public void TestOccidentalPlateBCE500to325()
         {
             var testSubject = new Occidental();
             var testPlate06 = testSubject.BCE500to325();
@@ -917,7 +917,7 @@ namespace NoFuture.Tests.Timeline
 
         }
         [TestMethod]
-        public void TestOccidentalPlate07()
+        public void TestOccidentalPlateBCE325to27()
         {
             var testSubject = new Occidental();
             var testPlate07 = testSubject.BCE325to27();
@@ -926,7 +926,7 @@ namespace NoFuture.Tests.Timeline
 
         }
         [TestMethod]
-        public void TestOccidentalPlate08()
+        public void TestOccidentalPlateCE30to105()
         {
             var testSubject = new Occidental();
             var testPlate08 = testSubject.CE30to105();
@@ -935,7 +935,7 @@ namespace NoFuture.Tests.Timeline
         }
 
         [TestMethod]
-        public void TestOccidentalPlate09()
+        public void TestOccidentalPlateCE105to325()
         {
             var testSubject = new Occidental();
             var testPlate09 = testSubject.CE105to325();
@@ -943,7 +943,7 @@ namespace NoFuture.Tests.Timeline
             testPlate09.ToPdf(TestAssembly.UnitTestsRoot + @"\Timeline\CE 105 to 325.pdf");
         }
         [TestMethod]
-        public void TestOccidentalPlate10()
+        public void TestOccidentalPlateCE325to550()
         {
             var testSubject = new Occidental();
             var testPlate10 = testSubject.CE325to550();
@@ -951,7 +951,7 @@ namespace NoFuture.Tests.Timeline
             testPlate10.ToPdf(TestAssembly.UnitTestsRoot + @"\Timeline\CE 325 to 550.pdf");
         }
         [TestMethod]
-        public void TestOccidentalPlate11()
+        public void TestOccidentalPlateCE550to825()
         {
             var testSubject = new Occidental();
 
@@ -960,7 +960,7 @@ namespace NoFuture.Tests.Timeline
             testPlate.ToPdf(TestAssembly.UnitTestsRoot + @"\Timeline\CE 550 to 825.pdf");
         }
         [TestMethod]
-        public void TestOccidentalPlate12()
+        public void TestOccidentalPlateCE825to1075()
         {
             var testSubject = new Occidental();
             var testPlate = testSubject.CE825to1075();
@@ -968,7 +968,7 @@ namespace NoFuture.Tests.Timeline
             testPlate.ToPdf(TestAssembly.UnitTestsRoot + @"\Timeline\CE 825 to 1075.pdf");
         }
         [TestMethod]
-        public void TestOccidentalPlate13()
+        public void TestOccidentalPlateCE1075to1350()
         {
             var testSubject = new Occidental();
             var testPlate = testSubject.CE1075to1350();
@@ -976,7 +976,7 @@ namespace NoFuture.Tests.Timeline
             testPlate.ToPdf(TestAssembly.UnitTestsRoot + @"\Timeline\CE 1075 to 1350.pdf");
         }
         [TestMethod]
-        public void TestOccidentalPlate14()
+        public void TestOccidentalPlateCE1350to1500()
         {
             var testSubject = new Occidental();
             var testPlate = testSubject.CE1350to1500();
@@ -985,7 +985,7 @@ namespace NoFuture.Tests.Timeline
 
         }
         [TestMethod]
-        public void TestOccidentalPlate15()
+        public void TestOccidentalPlateCE1500to1700()
         {
             var testSubject = new Occidental();
             var testPlate = testSubject.CE1500to1700();
@@ -994,7 +994,7 @@ namespace NoFuture.Tests.Timeline
         }
 
         [TestMethod]
-        public void TestOccidentalPlate16()
+        public void TestOccidentalPlateCE1700to1788()
         {
             var testSubject = new Occidental();
             var testPlate = testSubject.CE1700to1788();
@@ -1003,7 +1003,7 @@ namespace NoFuture.Tests.Timeline
         }
 
         [TestMethod]
-        public void TestOccidentalPlate17()
+        public void TestOccidentalPlateCE1788to1865()
         {
             var testSubject = new Occidental();
             var testPlate = testSubject.CE1788to1865();
@@ -1012,7 +1012,7 @@ namespace NoFuture.Tests.Timeline
         }
 
         [TestMethod]
-        public void TestOccidentalPlate18()
+        public void TestOccidentalPlateCE1865to1914()
         {
             var testSubject = new Occidental();
             var testPlate = testSubject.CE1865to1914();
@@ -1020,7 +1020,7 @@ namespace NoFuture.Tests.Timeline
             testPlate.ToPdf(TestAssembly.UnitTestsRoot + @"\Timeline\CE 1865 to 1914.pdf");
         }
         [TestMethod]
-        public void TestOccidentalPlate19()
+        public void TestOccidentalPlateCE1914to1945()
         {
             var testSubject = new Occidental();
             var testPlate = testSubject.CE1914to1945();

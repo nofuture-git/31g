@@ -8,18 +8,18 @@
 
             var engd = new Block {Ruler = rule, Title = "Kingdom of England", Width = 35};
 
-            engd.AddEntry(1087, "William II(1085-1100)", PrintLocation.Left);
-            engd.AddEntry(1100, "Henry I(1100-1135)", PrintLocation.Left);
+            engd.AddEntry(new LeaderEntry("William II", new int?[,] { { 1085, 1100 } }) {StartValue = 1087, Location =  PrintLocation.Left});
+            engd.AddEntry(new LeaderEntry("Henry I", new int?[,] { { 1100, 1135 } }) { StartValue = 1100, Location = PrintLocation.Left });
             engd.AddEntry(1135, 1150, "The Anarchy(1135-1154)");
-            engd.AddEntry(1159, "Henry II(1154-1189)", PrintLocation.Left);
-            engd.AddEntry(1189, "Richard I(1189-1199)", PrintLocation.Left);
-            engd.AddEntry(1199, "John(1199-1216)", PrintLocation.Left);
+            engd.AddEntry(new LeaderEntry("Henry II", new int?[,] { { 1154, 1189 } }) { StartValue = 1159, Location = PrintLocation.Left });
+            engd.AddEntry(new LeaderEntry("Richard I", new int?[,] { { 1189, 1199 } }) { StartValue = 1189, Location = PrintLocation.Left });
+            engd.AddEntry(new LeaderEntry("John", new int?[,] { { 1199, 1216 } }) { StartValue = 1199, Location = PrintLocation.Left });
             engd.AddEntry(1219, "Magna Carta(1215)", PrintLocation.Right);
-            engd.AddEntry(1222, "Henry III(1216-1272)", PrintLocation.Left);
-            engd.AddEntry(1272, "Edward I(1272-1307)", PrintLocation.Left);
-            engd.AddEntry(1300, "[Sentences(Duns Scotus)]", PrintLocation.Right);
-            engd.AddEntry(1307, "Edward II(1307-1327)", PrintLocation.Left);
-            engd.AddEntry(1327, "Edward III(1327-1377)", PrintLocation.Left);
+            engd.AddEntry(new LeaderEntry("Henry III", new int?[,] { { 1216, 1272 } }) { StartValue = 1222, Location = PrintLocation.Left });
+            engd.AddEntry(new LeaderEntry("Edward I", new int?[,] { { 1272, 1307 } }) { StartValue = 1272, Location = PrintLocation.Left });
+            engd.AddEntry(new LiteraryWorkEntry("Sentences", "Duns Scotus") {StartValue = 1300, Location = PrintLocation.Right});
+            engd.AddEntry(new LeaderEntry("Edward II", new int?[,] { { 1307, 1327 } }) { StartValue = 1307, Location = PrintLocation.Left });
+            engd.AddEntry(new LeaderEntry("Edward III", new int?[,] { { 1327, 1377 } }) { StartValue = 1327, Location = PrintLocation.Left });
             engd.AddEntry(1334, 1350, "2nd War Scottish Indep.(1332-1357)");
             engd.AddEntry(1296, 1328, "1st War Scottish Indep.(1296-1328)");
             engd.AddEntry(1337, 1350, "Hundred Years' War(1337-1415)");
@@ -29,17 +29,18 @@
             engd.AddEntry(1219, 1350, "Plantagenet dyn.", PrintLocation.Left);
 
             var hre = new Block {Ruler = rule, Title = "Holy Roman Empire"};
-            hre.AddEntry(1084, "Henry IV(1084-1105)", PrintLocation.Left);
-            hre.AddEntry(1111, "Henry V(1111-1125)", PrintLocation.Left);
-            hre.AddEntry(1133, "Lothair III(1133-1137)", PrintLocation.Left);
-            hre.AddEntry(1155, "Frederick I(1155-1190)", PrintLocation.Left);
-            hre.AddEntry(1191, "Henry VI(1191-1197)", PrintLocation.Left);
-            hre.AddEntry(1209, "Otto IV(1209-1215)", PrintLocation.Left);
-            hre.AddEntry(1220, "Frederick II(1220-1250)", PrintLocation.Left);
+            hre.AddEntry(new LeaderEntry("Henry IV", new int?[,] { { 1084, 1105 } }) {StartValue = 1084, Location = PrintLocation.Left});
+            hre.AddEntry(new LeaderEntry("Henry V", new int?[,] { { 1111, 1125 } }) { StartValue = 1111, Location = PrintLocation.Left });
+            hre.AddEntry(new LeaderEntry("Lothair III", new int?[,] { { 1133, 1137 } }) { StartValue = 1133, Location = PrintLocation.Left });
+            hre.AddEntry(new LeaderEntry("Frederick I", new int?[,] { { 1155, 1190 } }) { StartValue = 1155, Location = PrintLocation.Left });
+            hre.AddEntry(new LeaderEntry("Henry VI", new int?[,] { { 1191, 1197 } }) { StartValue = 1191, Location = PrintLocation.Left });
+            hre.AddEntry(new LeaderEntry("Otto IV", new int?[,] { { 1209, 1215 } }) { StartValue = 1209, Location = PrintLocation.Left });
+            hre.AddEntry(new LeaderEntry("Frederick II", new int?[,] { { 1220, 1250 } }) { StartValue = 1220, Location = PrintLocation.Left });
             hre.AddEntry(1247, "Interregnum(1254-1273)");
-            hre.AddEntry(1312, "Henry VII(1312,3)", PrintLocation.Left);
-            hre.AddEntry(1328, "Louis IV(1328-1347)", PrintLocation.Left);
-            hre.AddEntry(1331, "William of Ockham", PrintLocation.Right);
+            hre.AddEntry(new LeaderEntry("Henry VII", new int?[,] { { 1312, 1313 } }) { StartValue = 1312, Location = PrintLocation.Left });
+            hre.AddEntry(new LeaderEntry("Louis IV", new int?[,] { { 1328, 1347 } }) { StartValue = 1328, Location = PrintLocation.Left });
+            hre.AddEntry(new PhilosopherEntry("William of Ockham", 1285,1347) {StartValue = 1336, Location = PrintLocation.Right });
+            
 
             hre.AddEntry(1078, 1125, "Salian dyn.", PrintLocation.Left);
             hre.AddEntry(1128, 1137, "Supplinburg dyn.", PrintLocation.Left);
@@ -47,74 +48,73 @@
             hre.AddEntry(1215, 1250, "Staufen dyn.(again)", PrintLocation.Left);
 
             var byz = new Block {Ruler = rule, Title = "Byzantine Empire"};
-            byz.AddEntry(1081, "Alexios I(1081-1118)", PrintLocation.Left);
-            byz.AddEntry(1118, "John II(1118-1143)", PrintLocation.Left);
-            byz.AddEntry(1150, "Manuel I(1143-1180)", PrintLocation.Left);
-            byz.AddEntry(1180, "Alexios II(1180-1183)", PrintLocation.Left);
-            byz.AddEntry(1182, "Andronikos I(1183-1185)", PrintLocation.Left);
-            byz.AddEntry(1091, "Isaac II(1185-1195)", PrintLocation.Left);
-            byz.AddEntry(1195, "Alexios III(1195-1203)", PrintLocation.Left);
-            byz.AddEntry(1200, "Alexios IV & Isaac II(1203,4)", PrintLocation.Left);
-            byz.AddEntry(1203, "Alexios V(1204)", PrintLocation.Right);
-            byz.AddEntry(1208, "Theodore I(1205-1222)", PrintLocation.Left);
-            byz.AddEntry(1222, "John III(1222-1254)", PrintLocation.Left);
-            byz.AddEntry(1254, "Theodore II(1254-1258)", PrintLocation.Left);
-            byz.AddEntry(1258, "John IV(1258-1261)", PrintLocation.Left);
-            byz.AddEntry(1268, "Michael VII(1259-1282)", PrintLocation.Left);
-            byz.AddEntry(1282, "Andronikos II(1282-1328)", PrintLocation.Left);
-            byz.AddEntry(1328, "Andronikos III(1328-1341)", PrintLocation.Left);
+            byz.AddEntry(new LeaderEntry("Alexios I", new int?[,] { { 1081, 1118 } }) {StartValue = 1081, Location = PrintLocation.Left});
+            byz.AddEntry(new LeaderEntry("John II", new int?[,] { { 1118, 1143 } }) { StartValue = 1118, Location = PrintLocation.Left });
+            byz.AddEntry(new LeaderEntry("Manuel I", new int?[,] { { 1143, 1180 } }) { StartValue = 1150, Location = PrintLocation.Left });
+            byz.AddEntry(1180, "Latins Massacred", PrintLocation.Right);
+            byz.AddEntry(new LeaderEntry("Alexios II", new int?[,] { { 1180, 1183 } }) { StartValue = 1176, Location = PrintLocation.Left });
+            byz.AddEntry(new LeaderEntry("Andronikos I", new int?[,] { { 1183, 1185 } }) { StartValue = 1182, Location = PrintLocation.Center });
+            byz.AddEntry(new LeaderEntry("Isaac II", new int?[,] { { 1185, 1195 } }) { StartValue = 1091, Location = PrintLocation.Left });
+            byz.AddEntry(new LeaderEntry("Alexios III", new int?[,] { { 1195, 1203 } }) { StartValue = 1195, Location = PrintLocation.Left });
+            byz.AddEntry(new LeaderEntry("Alexios IV & Isaac II", new int?[,] { { 1203, 1204 } }) { StartValue = 1200, Location = PrintLocation.Left });
+            byz.AddEntry(new LeaderEntry("Theodore I", new int?[,] { { 1205, 1222 } }) { StartValue = 1218, Location = PrintLocation.Left });
+            byz.AddEntry(new LeaderEntry("John III", new int?[,] { { 1222, 1254 } }) { StartValue = 1240, Location = PrintLocation.Left });
+            byz.AddEntry(new LeaderEntry("Theodore II", new int?[,] { { 1254, 1258 } }) { StartValue = 1254, Location = PrintLocation.Left });
+            byz.AddEntry(new LeaderEntry("John IV", new int?[,] { { 1258, 1261 } }) { StartValue = 1258, Location = PrintLocation.Left });
+            byz.AddEntry(new LeaderEntry("Michael VII", new int?[,] { { 1259, 1282 } }) { StartValue = 1268, Location = PrintLocation.Left });
+            byz.AddEntry(new LeaderEntry("Andronikos II", new int?[,] { { 1282, 1328 } }) { StartValue = 1282, Location = PrintLocation.Left });
+            byz.AddEntry(new LeaderEntry("Andronikos III", new int?[,] { { 1328, 1341 } }) { StartValue = 1328, Location = PrintLocation.Left });
             byz.AddEntry(1341, 1347, "Civil War");
-
 
             byz.AddEntry(1079, 1183, "Komnenid dyn.", PrintLocation.Left);
             byz.AddEntry(1188, 1203, "Angelid dyn.", PrintLocation.Left);
-            byz.AddEntry(1205, 1259, "Laskarid dyn.", PrintLocation.Left);
+            byz.AddEntry(1205, 1259, "Nicaean Empire", PrintLocation.Right);
             byz.AddEntry(1265, 1350, "Palaiologan dyn.", PrintLocation.Left);
 
 
             var slj = new Block {Ruler = rule, Title = "Rum Seljuks", EndValue = 1307};
-            slj.AddEntry(1077, "Suleyman(1077-1082)", PrintLocation.Left);
-            slj.AddEntry(1092, "Kilij Arslan(1092-1107)", PrintLocation.Left);
-            slj.AddEntry(1110, "Malik Shah(1110-1116)", PrintLocation.Left);
-            slj.AddEntry(1116, "Masud I(1116-1156)", PrintLocation.Left);
-            slj.AddEntry(1156, "Kilij Arslan II(1156-1192)", PrintLocation.Left);
+            slj.AddEntry(new LeaderEntry("Suleyman", new int?[,] { { 1077, 1082 } }) {StartValue = 1077, Location = PrintLocation.Left});
+            slj.AddEntry(new LeaderEntry("Kilij Arslan", new int?[,] { { 1092, 1107 } }) { StartValue = 1092, Location = PrintLocation.Left });
+            slj.AddEntry(new LeaderEntry("Malik Shah", new int?[,] { { 1110, 1116 } }) { StartValue = 1110, Location = PrintLocation.Left });
+            slj.AddEntry(new LeaderEntry("Masud I", new int?[,] { { 1116, 1156 } }) { StartValue = 1116, Location = PrintLocation.Left });
+            slj.AddEntry(new LeaderEntry("Kilij Arslan II", new int?[,] { { 1156, 1192 } }) { StartValue = 1156, Location = PrintLocation.Left });
             slj.AddEntry(1194, 1202, "wars of Ascension");
-            slj.AddEntry(1205, "Kaykhusraw I(1205-1211)", PrintLocation.Left);
-            slj.AddEntry(1211, "Kaykaus I(1211-1220)", PrintLocation.Left);
-            slj.AddEntry(1220, "Kayqubad I(1220-1237)", PrintLocation.Left);
-            slj.AddEntry(1237, "Kaykhusraw II(1237-1246)", PrintLocation.Left);
+            slj.AddEntry(new LeaderEntry("Kaykhusraw I", new int?[,] { { 1205, 1211 } }) { StartValue = 1205, Location = PrintLocation.Left });
+            slj.AddEntry(new LeaderEntry("Kaykaus I", new int?[,] { { 1211, 1220 } }) { StartValue = 1211, Location = PrintLocation.Left });
+            slj.AddEntry(new LeaderEntry("Kayqubad I", new int?[,] { { 1220, 1237 } }) { StartValue = 1220, Location = PrintLocation.Left });
+            slj.AddEntry(new LeaderEntry("Kaykhusraw II", new int?[,] { { 1237, 1246 } }) { StartValue = 1237, Location = PrintLocation.Left });
             slj.AddEntry(1252, 1304, "Mongol admin/intrl dicord");
 
             var ott = new Block {Ruler = rule, Title = "Ottoman Empire", StartValue = 1299};
-            ott.AddEntry(1303, "Osman I(1299-1326)");
-            ott.AddEntry(1328, "Orhan(1327-1359)");
+            ott.AddEntry(new LeaderEntry("Osman I", new int?[,] { { 1299, 1326 } }) {StartValue = 1303 });
+            ott.AddEntry(new LeaderEntry("Orhan", new int?[,] { { 1327, 1359 } }) { StartValue = 1328 });
 
             var mong = new Block {Ruler = rule, Title = "Mongols", StartValue = 1200, Width = 38};
-            mong.AddEntry(1206, "Genghis(1206-1227)", PrintLocation.Left);
+            mong.AddEntry(new LeaderEntry("Genghis", new int?[,] { { 1206, 1227 } }) {StartValue = 1206, Location = PrintLocation.Left});
             mong.AddEntry(1215, "Battle of Zhongdu(1215)[N. China]");
             mong.AddEntry(1225, "Battle of Kalka R.(1223)[Ukraine][+]");
-            mong.AddEntry(1229, "Ogedei(1229-1241)", PrintLocation.Left);
+            mong.AddEntry(new LeaderEntry("Ogedei", new int?[,] { { 1229, 1241 } }) { StartValue = 1229, Location = PrintLocation.Left });
             mong.AddEntry(1233, "Invade Korea(1236)");
             mong.AddEntry(1238, "Battle of Mohi(1241)[Hungary]");
             mong.AddEntry(1241, "Battle of Legnica(1241)[Poland]");
-            mong.AddEntry(1248, "Guyuk(1246-1248)", PrintLocation.Left);
-            mong.AddEntry(1251, "Mongke(1251-1259)", PrintLocation.Left);
+            mong.AddEntry(new LeaderEntry("Guyuk", new int?[,] { { 1246, 1248 } }) { StartValue = 1248, Location = PrintLocation.Left });
+            mong.AddEntry(new LeaderEntry("Mongke", new int?[,] { { 1251, 1259 } }) { StartValue = 1251, Location = PrintLocation.Left });
             mong.AddEntry(1265, "sack Hanio(1257)[Vietnam]");
-            mong.AddEntry(1260, "Kublai(1260-1294)", PrintLocation.Left);
+            mong.AddEntry(new LeaderEntry("Kublai", new int?[,] { { 1260, 1294 } }) { StartValue = 1260, Location = PrintLocation.Left });
             mong.AddEntry(1274, "Battle of Bun'ei(1274)[Japan]");
             mong.AddEntry(1281, "Battle of Koan(1281)[Japan]");
-            mong.AddEntry(1333, "Toghan Temur(1333-1370)", PrintLocation.Left);
+            mong.AddEntry(new LeaderEntry("Toghan Temur", new int?[,] { { 1333, 1370 } }) { StartValue = 1333, Location = PrintLocation.Left });
 
             var ftd = new Block {Ruler = rule, Title = "Fatimid Caliphate", EndValue = 1171};
-            ftd.AddEntry(1078, "Abul-Qasim(1094-1101)", PrintLocation.Left);
-            ftd.AddEntry(1101, "Abu Ali(1101-1130)", PrintLocation.Left);
-            ftd.AddEntry(1130, "Abul-Maymun(1130-1149)", PrintLocation.Left);
-            ftd.AddEntry(1149, "Abu Mansur(1149-1154)", PrintLocation.Left);
-            ftd.AddEntry(1154, "Abul-Qasim(1154-1160)", PrintLocation.Left);
-            ftd.AddEntry(1160, "Abu Muhammad(1160-1171)", PrintLocation.Left);
+            ftd.AddEntry(new LeaderEntry("Abul-Qasim", new int?[,] { { 1094, 1101 } }) {StartValue = 1078, Location = PrintLocation.Left});
+            ftd.AddEntry(new LeaderEntry("Abu Ali", new int?[,] { { 1101, 1130 } }) { StartValue = 1101, Location = PrintLocation.Left });
+            ftd.AddEntry(new LeaderEntry("Abul-Maymun", new int?[,] { { 1130, 1149 } }) { StartValue = 1130, Location = PrintLocation.Left });
+            ftd.AddEntry(new LeaderEntry("Abu Mansur", new int?[,] { { 1149, 1154 } }) { StartValue = 1149, Location = PrintLocation.Left });
+            ftd.AddEntry(new LeaderEntry("Abul-Qasim", new int?[,] { { 1154, 1160 } }) { StartValue = 1154, Location = PrintLocation.Left });
+            ftd.AddEntry(new LeaderEntry("Abu Muhammad", new int?[,] { { 1160, 1171 } }) { StartValue = 1160, Location = PrintLocation.Left });
 
             var ayy = new Block {Ruler = rule, Title = "Ayyubid Sultanates", StartValue = 1171, EndValue = 1260};
-            ayy.AddEntry(1174, "Saladin(1174-1193)", PrintLocation.Left);
+            ayy.AddEntry(new LeaderEntry("Saladin", new int?[,] { { 1174, 1193 } }) {StartValue = 1174, Location = PrintLocation.Left});
             ayy.AddEntry(1194, 1240, "wars of Ascension");
 
             var mam = new Block {Ruler = rule, Title = "Mamluk Sultanate", StartValue = 1250};
@@ -124,25 +124,26 @@
             jrs.AddEntry(1100, 1149, "County of Edessa", PrintLocation.Left);
             jrs.AddEntry(1103, 1268, "Principality of Antioch", PrintLocation.Right);
             jrs.AddEntry(1106, 1288, "Kingdom of Jerusalem");
+            jrs.AddEntry(1205,1261, "Latin Empire",PrintLocation.Left);
             jrs.AddEntry(1291, "Fall of Acre(1291)");
 
             var fr = new Block {Ruler = rule, Title = "Kingdom of France", Width = 28};
-            fr.AddEntry(1096, "Phillip I(1052-1108)", PrintLocation.Left);
-            fr.AddEntry(1108, "Louis VI(1108-1137)", PrintLocation.Left);
-            fr.AddEntry(1137, "Louis VII(1137-1180)", PrintLocation.Left);
-            fr.AddEntry(1167, "[H] Cathars (duality)");
-            fr.AddEntry(1180, "Phillip II(1180-1223)", PrintLocation.Left);
+            fr.AddEntry(new LeaderEntry("Phillip I", new int?[,] { { 1052, 1108 } }) {StartValue = 1096, Location = PrintLocation.Left});
+            fr.AddEntry(new LeaderEntry("Louis VI", new int?[,] { { 1108, 1137 } }) { StartValue = 1108, Location = PrintLocation.Left });
+            fr.AddEntry(new LeaderEntry("Louis VII", new int?[,] { { 1137, 1180 } }) { StartValue = 1137, Location = PrintLocation.Left });
+            fr.AddEntry(new HeresyEntry("Cathars", "duality") {StartValue = 1167});
+            fr.AddEntry(new LeaderEntry("Phillip II", new int?[,] { { 1180, 1223 } }) { StartValue = 1180, Location = PrintLocation.Left });
             fr.AddEntry(1209, "Cathar Crusade(1209-1229)");
-            fr.AddEntry(1223, "Louis VII(1223-1226)", PrintLocation.Left);
-            fr.AddEntry(1226, "Louis IX(1226-1270)", PrintLocation.Left);
-            fr.AddEntry(1270, "Philip III(1270-1285)", PrintLocation.Left);
-            fr.AddEntry(1285, "Philip IV(1285-1314)", PrintLocation.Left);
-            fr.AddEntry(1314, "Louis X(1314-1316)", PrintLocation.Left);
-            fr.AddEntry(1317, "The Divine Comedy(1320)");
-            fr.AddEntry(1320, "Philip V(1316-1322)", PrintLocation.Left);
-            fr.AddEntry(1325, "Charles IV(1322-1328)", PrintLocation.Left);
-            fr.AddEntry(1328, "Philip VI(1328-1350)", PrintLocation.Left);
-            fr.AddEntry(1240, "Thomas Aquinas(1225-1274)", PrintLocation.Right);
+            fr.AddEntry(new LeaderEntry("Louis VII", new int?[,] { { 1223, 1226 } }) { StartValue = 1223, Location = PrintLocation.Left });
+            fr.AddEntry(new LeaderEntry("Louis IX", new int?[,] { { 1226, 1270 } }) { StartValue = 1226, Location = PrintLocation.Left });
+            fr.AddEntry(new LeaderEntry("Philip III", new int?[,] { { 1270, 1285 } }) { StartValue = 1270, Location = PrintLocation.Left });
+            fr.AddEntry(new LeaderEntry("Philip IV", new int?[,] { { 1285, 1314 } }) { StartValue = 1285, Location = PrintLocation.Left });
+            fr.AddEntry(new LeaderEntry("Louis X", new int?[,] { { 1314, 1316 } }) { StartValue = 1314, Location = PrintLocation.Left });
+            fr.AddEntry(new LiteraryWorkEntry("The Divine Comedy", "Dante") {StartValue = 1320});
+            fr.AddEntry(new LeaderEntry("Philip V", new int?[,] { { 1316, 1322 } }) { StartValue = 1317, Location = PrintLocation.Left });
+            fr.AddEntry(new LeaderEntry("Charles IV", new int?[,] { { 1322, 1328 } }) { StartValue = 1325, Location = PrintLocation.Left });
+            fr.AddEntry(new LeaderEntry("Philip VI", new int?[,] { { 1328, 1350 } }) { StartValue = 1328, Location = PrintLocation.Left });
+            fr.AddEntry(new PhilosopherEntry("Thomas Aquinas", 1225,1274) {StartValue = 1240, Location = PrintLocation.Right});
             fr.AddEntry(1079, 1350, "Capetian dyn.", PrintLocation.Left);
             fr.AddEntry(1163, 1340, "Notre Dame ctor(1163-1345)", PrintLocation.Right);
             fr.AddEntry(1309, 1350, "Avignon Papacy(1307-1377)");
@@ -167,7 +168,7 @@
                 ArrowTail = "...",
                 FromLeftToRightArrowHead = ".....>"
             });
-            plate.AddArrow(new Arrow(slj, byz) {StartValue = 1176, Text = "Battle of Myriokephalon(1176)"});
+            plate.AddArrow(new Arrow(slj, byz) {StartValue = 1171, Text = "Battle of Myriokephalon(1176)"});
             plate.AddArrow(new Arrow(fr, slj)
             {
                 StartValue = 1145,
@@ -202,7 +203,7 @@
             {
                 StartValue = 1202,
                 Text = "Fourth Crusade(1202-1204)",
-                FromLeftToRightArrowHead = ".....>"
+                FromLeftToRightArrowHead = ".>"
             });
             plate.AddArrow(new Arrow(hre, ayy) {StartValue = 1213, Text = "Fifth Crusade(1213-1221)"});
             plate.AddArrow(new Arrow(hre, ayy)
