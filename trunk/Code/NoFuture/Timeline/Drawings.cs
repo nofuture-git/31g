@@ -37,11 +37,20 @@ namespace NoFuture.Timeline
         private const string REGEX_PATTERN = @"\+([^\(]*?)\(([0-9]*)\)";
 
         private string _name;
-
+        private string _printYear;
         public TerritoryEntry(string name)
         {
             _name = name;
             Location = PrintLocation.Left;
+        }
+
+        public TerritoryEntry(string name, int printYear) : this(name)
+        {
+            if (printYear != 0)
+            {
+                StartValue = printYear;
+                _printYear = printYear.ToString();
+            }
         }
 
         public string Name => _name;
@@ -50,7 +59,7 @@ namespace NoFuture.Timeline
         {
             get
             {
-                return string.Format("+{0}({1})", Name, (int)Math.Round(StartValue));
+                return string.Format("+{0}({1})", Name, _printYear ?? ((int)Math.Round(StartValue)).ToString());
             }
             set
             {
@@ -139,7 +148,10 @@ namespace NoFuture.Timeline
         public ScienceAdvEntry(string name, string discoveredBy, int printyear) : this(name, discoveredBy)
         {
             if (printyear != 0)
+            {
+                StartValue = printyear;
                 _printyear = printyear.ToString();
+            }
         }
 
         public string DiscoveredBy => _discoveredBy;
@@ -188,8 +200,11 @@ namespace NoFuture.Timeline
 
         public LiteraryWorkEntry(string title, string author, int printYear) : this(title, author)
         {
-            if(printYear != 0)
+            if (printYear != 0)
+            {
+                StartValue = printYear;
                 _printyear = printYear.ToString();
+            }
         }
 
         public string Title => _title;
@@ -230,6 +245,8 @@ namespace NoFuture.Timeline
         public string ExplorerName { get; set; }
         public string Area { get; set; }
         private string _printYear;
+        private PrintLocation _location = PrintLocation.Left;
+
         public ExplorerEntry(string explorerName, string area)
         {
             ExplorerName = explorerName;
@@ -238,9 +255,14 @@ namespace NoFuture.Timeline
 
         public ExplorerEntry(string explorerName, string area, int year) : this(explorerName, area)
         {
-            if(year != 0)
+            if (year != 0)
+            {
+                StartValue = year;
                 _printYear = year.ToString();
+            }
         }
+
+        public override PrintLocation Location { get {return _location;} set { _location = value; } }
 
         public override string Text
         {

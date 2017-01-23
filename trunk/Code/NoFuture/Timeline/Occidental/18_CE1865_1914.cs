@@ -16,20 +16,20 @@
             usa.AddEntry(new TerritoryEntry("OK") {StartValue = 1907});
             usa.AddEntry(new TerritoryEntry("NM,AZ") {StartValue = 1912});
 
-            usa.AddEntry(new LeaderEntry("A.Johnson", new int?[,] {{null, 1869}}) {StartValue = 1869});
-            usa.AddEntry(new LeaderEntry("U.Grant", new int?[,] {{null, 1877}}) {StartValue = 1871});
-            usa.AddEntry(new LeaderEntry("R.Hayes", new int?[,] {{null, 1881}}) {StartValue = 1877});
-            usa.AddEntry(new LeaderEntry("J.Garfield", new int?[,] {{null, 1881}}) {StartValue = 1881});
-            usa.AddEntry(new LeaderEntry("C.Arthur", new int?[,] {{null, 1885}}) {StartValue = 1883});
-            usa.AddEntry(new LeaderEntry("G.Cleveland", new int?[,] {{null, 1889}, {1893, 1897}}) {StartValue = 1888});
-            usa.AddEntry(new LeaderEntry("B.Harrison", new int?[,] {{null, 1893}}) {StartValue = 1891});
+            usa.AddEntry(new LeaderEntry("A.Johnson", new int?[,] {{1865, 1869}}));
+            usa.AddEntry(new LeaderEntry("U.Grant", new int?[,] {{ 1871, 1877}}));
+            usa.AddEntry(new LeaderEntry("R.Hayes", new int?[,] {{ 1877, 1881}}));
+            usa.AddEntry(new LeaderEntry("J.Garfield", new int?[,] {{ null, 1881}}) {StartValue = 1881});
+            usa.AddEntry(new LeaderEntry("C.Arthur", new int?[,] {{ 1881, 1885}}) {StartValue = 1882});
+            usa.AddEntry(new LeaderEntry("G.Cleveland", new int?[,] {{ 1888, 1889}, {1893, 1897}}));
+            usa.AddEntry(new LeaderEntry("B.Harrison", new int?[,] {{ 1891, 1893}}));
             usa.AddEntry(new LeaderEntry("W.McKinley", new int?[,] {{1897, 1901}}) {StartValue = 1899});
-            usa.AddEntry(new LeaderEntry("T.Roosevelt", new int?[,] {{null, 1909}}) {StartValue = 1905});
-            usa.AddEntry(new LeaderEntry("W.Taft", new int?[,] {{null, 1913}}) {StartValue = 1910});
+            usa.AddEntry(new LeaderEntry("T.Roosevelt", new int?[,] {{ 1905, 1909}}));
+            usa.AddEntry(new LeaderEntry("W.Taft", new int?[,] {{ 1910, 1913}}));
 
             usa.AddEntry(1870, "Transcontinental Rail(1869)", PrintLocation.Right);
             usa.AddEntry(1866, 1877, "Reconstruction(1866-1877)", PrintLocation.Right);
-            usa.AddEntry(1882, "Chinese Exclusion Act(1882)", PrintLocation.Right);
+            usa.AddEntry(1882.6, "Chinese Exclusion Act(1882)", PrintLocation.Right);
             usa.AddEntry(1886, "Statue of Liberty(1886)", PrintLocation.Right);
             usa.AddEntry(1898, "Spanish-American War(1898)", PrintLocation.Right);
             usa.AddEntry(1900, "Bison nearly extinct", PrintLocation.Right);
@@ -42,12 +42,12 @@
             usa.AddEntry(new LiteraryWorkEntry("The Call of the Wild", "London") {StartValue = 1904});
 
             //england
-            var engd = new Block {Ruler = rule, Title = "United Kingdom", Width = 44};
+            var engd = new Block {Ruler = rule, Title = "United Kingdom"};
             engd.AddEntry(new LeaderEntry("J.Russel", new int?[,] {{1865, 1866}}) {StartValue = 1866});
             engd.AddEntry(new LeaderEntry("E.Smith-Stanley", new int?[,] {{1866, 1868}}) {StartValue = 1867});
             engd.AddEntry(new LeaderEntry("B.Disraeli", new int?[,] {{null, 1868}, {1874, 1880}}) {StartValue = 1868});
             engd.AddEntry(new LeaderEntry("W.E.Gladstone",
-                new int?[,] {{1868, 1874}, {1880, 1885}, {null, 1886}, {1892, 1894}}) {StartValue = 1869});
+                new int?[,] {{1868, 1874}, {1880, 1885}, {1892, 1894}}) {StartValue = 1869});
             engd.AddEntry(new LeaderEntry("R.Cecil", new int?[,] {{1885, 1886}, {1886, 1892}, {1895, 1902}})
             {
                 StartValue = 1885
@@ -67,7 +67,7 @@
             engd.AddEntry(1899, 1902, "Second Boer War(1899-1902)", PrintLocation.Left);
             engd.AddEntry(1865, 1901, "Queen Victoria (1837-1901)", PrintLocation.Right);
 
-            var fr = new Block {Ruler = rule, Title = "France", Width = 44};
+            var fr = new Block {Ruler = rule, Title = "France"};
             fr.AddEntry(new ScienceAdvEntry("radioactivity", "Becquerel") {StartValue = 1896});
             fr.AddEntry(1911, "Second Moroccan Crisis (1911)");
             fr.AddEntry(new LeaderEntry("Adolphe Thiers", new int?[,] {{1871, 1873}}) {StartValue = 1871});
@@ -79,7 +79,8 @@
             fr.AddEntry(new LeaderEntry("Emile Loubet", new int?[,] {{1899, 1906}}) {StartValue = 1900});
             fr.AddEntry(new LeaderEntry("Armand Fallieres", new int?[,] {{1906, 1913}}) {StartValue = 1906});
 
-            var de = new Block {Ruler = rule, Title = "Germany", Width = 44};
+            var de = new Block {Ruler = rule, Title = "Germany"};
+            de.AddEntry(new ScienceAdvEntry("diesel engine","R.Diesel",1893));
             de.AddEntry(new ScienceAdvEntry("x-rays", "Rontgen") {StartValue = 1895});
             de.AddEntry(new ScienceAdvEntry("special relativity", "Einstein") {StartValue = 1905});
             de.AddEntry(new ScienceAdvEntry("continental drift", "Wegener") {StartValue = 1912});
@@ -98,6 +99,7 @@
 
             var aus = new Block {Ruler = rule, Title = "Austrian Empire"};
             aus.AddEntry(new LeaderEntry("Francis Joseph I", new int?[,] {{1867, 1916}}) {StartValue = 1869});
+            aus.AddEntry(1868, "Hungarian Minority Act(1868)");
             aus.AddEntry(1908, "Bosnian Crisis (1908)");
 
             var ott = new Block {Ruler = rule, Title = "Ottoman Empire"};

@@ -8,49 +8,30 @@
 
             var scdv = new Block {Ruler = rule, Title = "Scandinavia", Width = 40};
             scdv.AddEntry(new ExplorerEntry("Vikings", "Iceland") {StartValue = 830});
-            scdv.AddEntry(new LeaderEntry("Harald Fairhair", new int?[,] {{872, 930}})
-            {
-                Location = PrintLocation.Left,
-                StartValue = 872
-            });
+            scdv.AddEntry(new LeaderEntry("Harald Fairhair", new int?[,] {{872, 930}}));
             scdv.AddEntry(new LeaderEntry("Harold Bluetooth", new int?[,] {{970, 986}})
             {
-                Location = PrintLocation.Left,
                 StartValue = 960
             });
-            scdv.AddEntry(new LeaderEntry("Olaf Tryggvason", new int?[,] {{995, 1000}})
-            {
-                Location = PrintLocation.Left,
-                StartValue = 995
-            });
-            scdv.AddEntry(new LeaderEntry("Sweyn Forkbeard", new int?[,] {{986, 1014}})
-            {
-                Location = PrintLocation.Left,
-                StartValue = 986
-            });
+            scdv.AddEntry(new LeaderEntry("Olaf Tryggvason", new int?[,] {{995, 1000}}));
+            scdv.AddEntry(new LeaderEntry("Sweyn Forkbeard", new int?[,] {{986, 1014}}));
             scdv.AddEntry(new LeaderEntry("Olaf II Haraldsson", new int?[,] {{1015, 1028}})
             {
-                Location = PrintLocation.Left,
                 StartValue = 1011
             });
             scdv.AddEntry(new LeaderEntry("Cnut the Great", new int?[,] {{1016, 1035}})
             {
-                Location = PrintLocation.Left,
                 StartValue = 1018
             });
             scdv.AddEntry(1014, 1035, "North Sea Empire***");
-            scdv.AddEntry(new LeaderEntry("Harald Sigurdsson", new int?[,] {{1046, 1066}})
-            {
-                Location = PrintLocation.Left,
-                StartValue = 1046
-            });
+            scdv.AddEntry(new LeaderEntry("Harald Sigurdsson", new int?[,] {{1046, 1066}}));
             scdv.AddEntry(new ExplorerEntry("Leif Erikson", "N.America") {StartValue = 1000});
 
             var engd = new Block {Ruler = rule, Title = "English Isles", Width = 34};
             engd.AddEntry(853, "Vikings found Dublin(853)");
-            engd.AddEntry(new LeaderEntry("Alfred the Great", new int?[,] {{871, 899}}) {StartValue = 871});
+            engd.AddEntry(new LeaderEntry("Alfred the Great", new int?[,] {{871, 899}}));
             engd.AddEntry(new LeaderEntry("AEthelred", new int?[,] {{1013, 1014}}) {StartValue = 1009});
-            engd.AddEntry(new LeaderEntry("Edward the Confessor", new int?[,] {{1042, 1066}}) {StartValue = 1042});
+            engd.AddEntry(new LeaderEntry("Edward the Confessor", new int?[,] {{1042, 1066}}));
 
             var hre = new Block {Ruler = rule, Title = "Holy Roman Empire", Width = 48};
             hre.AddEntry(831, "Archdiocese of Hamburg founded(831)");
@@ -58,7 +39,7 @@
             hre.AddEntry(843, "Treaty of Verdun(843)");
             hre.AddEntry(846, "Lothair I(Italy);Louis(Germany);Charles(France)");
 
-            hre.AddEntry(new LeaderEntry("Otto I", new int?[,] {{962, 973}}) {StartValue = 936});
+            hre.AddEntry(new LeaderEntry("Otto I", new int?[,] {{962, 973}}) {StartValue = 961});
             hre.AddEntry(963, "Otto has Pope John XII deposed(963)");
             hre.AddEntry(967, "Otto has Pope John XIII restored(966)");
             hre.AddEntry(972, "Otto's son married to Byz. princess(972)");
@@ -66,47 +47,49 @@
             hre.AddEntry(new LeaderEntry("Otto III", new int?[,] {{996, 1002}}) {StartValue = 999});
 
             var norm = new Block {Ruler = rule, Title = "Normandy", Width = 34, StartValue = 904};
-            norm.AddEntry(new LeaderEntry("Rollo", new int?[,] {{911, 927}}) {StartValue = 911});
-            norm.AddEntry(new LeaderEntry("William I", new int?[,] {{927, 942}}) {StartValue = 927});
-            norm.AddEntry(new LeaderEntry("Richard I", new int?[,] {{942, 966}}) {StartValue = 942});
-            norm.AddEntry(new LeaderEntry("Richard II", new int?[,] {{996, 1026}}) {StartValue = 996});
-            norm.AddEntry(new LeaderEntry("Robert I", new int?[,] {{1027, 1035}}) {StartValue = 1027});
-            norm.AddEntry(new LeaderEntry("William III", new int?[,] {{1035, 1087}}) {StartValue = 1035});
+            norm.AddEntry(new LeaderEntry("Rollo", new int?[,] {{911, 927}}));
+            norm.AddEntry(new LeaderEntry("William I", new int?[,] {{927, 942}}));
+            norm.AddEntry(new LeaderEntry("Richard I", new int?[,] {{942, 966}}));
+            norm.AddEntry(new LeaderEntry("Richard II", new int?[,] {{996, 1026}}));
+            norm.AddEntry(new LeaderEntry("Robert I", new int?[,] {{1027, 1035}}));
+            norm.AddEntry(new LeaderEntry("William III", new int?[,] {{1035, 1087}}));
 
 
             var byz = new Block {Ruler = rule, Title = "Byzantine Empire", Width = 32};
-            byz.AddEntry(new LeaderEntry("Michael III", new int?[,] {{842, 867}}) {StartValue = 842});
-            byz.AddEntry(new LeaderEntry("Basil I", new int?[,] {{867, 886}}) {StartValue = 867});
-            byz.AddEntry(new LeaderEntry("Leo VI", new int?[,] {{886, 912}}) {StartValue = 886});
-            byz.AddEntry(new LeaderEntry("Constantine VII", new int?[,] {{913, 959}}) {StartValue = 913});
+            byz.AddEntry(new LeaderEntry("Michael III", new int?[,] {{842, 867}}));
+            byz.AddEntry(new LeaderEntry("Basil I", new int?[,] {{867, 886}}));
+            byz.AddEntry(new LeaderEntry("Leo VI", new int?[,] {{886, 912}}));
+            byz.AddEntry(new LeaderEntry("Constantine VII", new int?[,] {{913, 959}}));
             byz.AddEntry(960, "retake Island of Crete(960)");
-            byz.AddEntry(new LeaderEntry("Nikephoros II Phokas", new int?[,] {{963, 969}}) {StartValue = 963});
+            byz.AddEntry(new LeaderEntry("Nikephoros II Phokas", new int?[,] {{963, 969}}));
             byz.AddEntry(new LeaderEntry("Tzimisces", new int?[,] {{969, 976}}) {StartValue = 976});
             byz.AddEntry(new LeaderEntry("Basil II", new int?[,] {{976, 1025}}) {StartValue = 980});
-            byz.AddEntry(new LeaderEntry("Constantine VIII", new int?[,] {{1025, 1028}}) {StartValue = 1025});
+            byz.AddEntry(new LeaderEntry("Constantine VIII", new int?[,] {{1025, 1028}}));
             byz.AddEntry(new LeaderEntry("Zoe", new int?[,] {{1028, 1050}}) {StartValue = 1030});
-            byz.AddEntry(new LeaderEntry("Constantine IX", new int?[,] {{1042, 1055}}) {StartValue = 1042});
+            byz.AddEntry(new LeaderEntry("Constantine IX", new int?[,] {{1042, 1055}}));
             byz.AddEntry(1045, "rebuild Holy Sepulchre(1042)");
-            byz.AddEntry(new LeaderEntry("Constantine X", new int?[,] {{1059, 1067}}) {StartValue = 1059});
+            byz.AddEntry(new LeaderEntry("Constantine X", new int?[,] {{1059, 1067}}));
             byz.AddEntry(new LeaderEntry("Romanos IV", new int?[,] {{1067, 1071}}) {StartValue = 1068});
 
             var abb = new Block {Ruler = rule, Title = "Abbasid Caliphate", EndValue = 1055, Width = 30};
-            abb.AddEntry(861, 870, "Anarchy at Samarra(861-870)");
-            abb.AddEntry(new LeaderEntry("Al-Mu'tasim", new int?[,] {{833, 842}}) {StartValue = 833});
-            abb.AddEntry(new LeaderEntry("Al-Wathiq", new int?[,] {{842, 847}}) {StartValue = 842});
-            abb.AddEntry(new LeaderEntry("Al-Mutawakkil", new int?[,] {{847, 861}}) {StartValue = 847});
+            abb.AddEntry(new LeaderEntry("Al-Mu'tasim", new int?[,] {{833, 842}}));
+            abb.AddEntry(new LeaderEntry("Al-Wathiq", new int?[,] {{842, 847}}));
+            abb.AddEntry(new LeaderEntry("Al-Mutawakkil", new int?[,] {{847, 861}}));
             abb.AddEntry(new LeaderEntry("Al-Mu'tamid", new int?[,] {{870, 892}}) {StartValue = 874});
-            abb.AddEntry(new LeaderEntry("Al-Mu'tadid", new int?[,] {{892, 902}}) {StartValue = 892});
-            abb.AddEntry(new LeaderEntry("Al-Muktafi", new int?[,] {{902, 908}}) {StartValue = 902});
-            abb.AddEntry(new LeaderEntry("Al-Muqtadir", new int?[,] {{908, 932}}) {StartValue = 908});
-            abb.AddEntry(new LeaderEntry("Al-Qahir", new int?[,] {{932, 934}}) {StartValue = 932});
+            abb.AddEntry(new LeaderEntry("Al-Mu'tadid", new int?[,] {{892, 902}}));
+            abb.AddEntry(new LeaderEntry("Al-Muktafi", new int?[,] {{902, 908}}));
+            abb.AddEntry(new LeaderEntry("Al-Muqtadir", new int?[,] {{908, 932}}));
+            abb.AddEntry(new LeaderEntry("Al-Qahir", new int?[,] {{932, 934}}));
             abb.AddEntry(new LeaderEntry("Al-Radi", new int?[,] {{934, 940}}) {StartValue = 935});
-            abb.AddEntry(new LeaderEntry("Al-Muttaqi", new int?[,] {{904, 944}}) {StartValue = 940});
+            abb.AddEntry(new LeaderEntry("Al-Muttaqi", new int?[,] {{940, 944}}));
             abb.AddEntry(new LeaderEntry("Al-Mustakfi", new int?[,] {{944, 946}}) {StartValue = 944});
             abb.AddEntry(new LeaderEntry("Al-Muti", new int?[,] {{946, 974}}) {StartValue = 947});
-            abb.AddEntry(new LeaderEntry("Al-Ta'i", new int?[,] {{974, 991}}) {StartValue = 974});
-            abb.AddEntry(new LeaderEntry("Al-Qadir", new int?[,] {{991, 1031}}) {StartValue = 991});
-            abb.AddEntry(new LeaderEntry("Al-Qa'im", new int?[,] {{1031, 1075}}) {StartValue = 1031});
+            abb.AddEntry(new LeaderEntry("Al-Ta'i", new int?[,] {{974, 991}}));
+            abb.AddEntry(new LeaderEntry("Al-Qadir", new int?[,] {{991, 1031}}));
+            abb.AddEntry(new LiteraryWorkEntry("Book of Optics","Alhazen",1021));
+            abb.AddEntry(new LeaderEntry("Al-Qa'im", new int?[,] {{1031, 1075}}));
+            abb.AddEntry(829, 856, "\"Islamic golden age\"");
+            abb.AddEntry(861, 870, "Anarchy at Samarra(861-870)");
 
             var ftd = new Block {Ruler = rule, Title = "Fatimid Caliphate", StartValue = 909, Width = 32};
             ftd.AddEntry(972, "Cario est.(969)");
@@ -114,11 +97,12 @@
             ftd.AddEntry(1009, "destroys Holy Sepulchre(1009)");
             ftd.AddEntry(new LeaderEntry("Ali az-Zahir", new int?[,] {{1021, 1036}}) {StartValue = 1021});
             ftd.AddEntry(new LeaderEntry("Al-Mustansir", new int?[,] {{1036, 1094}}) {StartValue = 1036});
+            ftd.AddEntry(new LiteraryWorkEntry("Arabian Nights","",1050));
             ftd.AddEntry(1065, "famine(1065 & 1072)");
 
             var slj = new Block {Ruler = rule, Title = "Seljuk Empire", StartValue = 1037};
             slj.AddEntry(new LeaderEntry("Tughril", new int?[,] {{1037, 1063}}) {StartValue = 1040});
-            slj.AddEntry(new LeaderEntry("Alp Arslan", new int?[,] {{1063, 1072}}) {StartValue = 1063});
+            slj.AddEntry(new LeaderEntry("Alp Arslan", new int?[,] {{1063, 1072}}));
 
             var plate = new Plate {Ruler = rule, Name = "Viking Age"};
             plate.AddBlock(scdv);

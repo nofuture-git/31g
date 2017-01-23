@@ -1027,7 +1027,14 @@ namespace NoFuture.Tests.Timeline
 
             testPlate.ToPdf(TestAssembly.UnitTestsRoot + @"\Timeline\CE 1914 to 1945.pdf");
         }
+        [TestMethod]
+        public void TestOccidentalPlateCE1945to1989()
+        {
+            var testSubject = new Occidental();
+            var testPlate = testSubject.CE1945to1989();
 
+            testPlate.ToPdf(TestAssembly.UnitTestsRoot + @"\Timeline\CE 1945 to 1989.pdf");
+        }
         [TestMethod]
         public void TestFastPlate()
         {

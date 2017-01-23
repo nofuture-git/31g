@@ -18,6 +18,8 @@
 
             var plate = new Plate {Ruler = rule, Name = "The World Wars"};
 
+            plate.AddBlock(zho);
+            plate.AddBlock(jpn);
             plate.AddBlock(usa);
             plate.AddBlock(engd);
             plate.AddBlock(fr);
@@ -25,13 +27,10 @@
             plate.AddBlock(ussr);
             plate.AddBlock(rus);
             plate.AddBlock(ott);
-            plate.AddBlock(zho);
-            plate.AddBlock(jpn);
 
             usa.AddEntry(new LeaderEntry("Woodrow Wilson", new int?[,] {{1913, 1921}}) {StartValue = 1914.6});
             usa.AddEntry(1917, "enters WWI", PrintLocation.Center);
             usa.AddEntry(1920, "Women gain voting rights(1920)");
-            usa.AddEntry(1920.6, 1933, "Prohibition(1920/33)", PrintLocation.Left);
             usa.AddEntry(new LeaderEntry("Warren G.Harding", new int?[,] {{1921, 1923}}) {StartValue = 1921});
             usa.AddEntry(new ScienceAdvEntry("insulin", "F.Banting") {StartValue = 1922});
             usa.AddEntry(new LeaderEntry("Calvin Coolidge", new int?[,] {{1923, 1929}}) {StartValue = 1923});
@@ -49,6 +48,8 @@
             usa.AddEntry(new LiteraryWorkEntry("Of Mice and Men", "J.Steinbeck") {StartValue = 1937});
             usa.AddEntry(new LiteraryWorkEntry("Grapes of Wrath", "J.Steinbeck") {StartValue = 1939});
             usa.AddEntry(new LiteraryWorkEntry("For Whom the Bell Tolls", "E.Hemingway") {StartValue = 1940});
+            usa.AddEntry(1942.6,1945, "Internment Japanese Amer.");
+            usa.AddEntry(1920.6, 1933, "Prohibition(1920/33)", PrintLocation.Left);
             plate.AddArrow(new Arrow(usa, jpn) {StartValue = 1943, Text = "Battle of Midway"});
             plate.AddArrow(new Arrow(usa,jpn) {StartValue = 1945.6, Text = "atomic bombs dropped"});
             plate.AddArrow(new Arrow(usa,de) {StartValue = 1944, Text = "Normandy invasion"});
@@ -102,6 +103,7 @@
             de.AddEntry(new LeaderEntry("Aldof Hitler", new int?[,] {{1933, 1945}}) {StartValue = 1933.3});
             de.AddEntry(1935, "Nuremberg Laws(1935)");
             de.AddEntry(1938, "Sudetenland annexed(1938)");
+            de.AddEntry(1941,1945,"The Holocaust[9]");
             plate.AddArrow(new Arrow(de, fr) {StartValue = 1940, Text = "conquest of France"});
             plate.AddArrow(new Arrow(de, engd) {StartValue = 1940.6, Text = "Battle of Britian"});
             plate.AddArrow(new Arrow(de, ussr) {StartValue = 1942.4, Text = "Operation Barbarossa" });
@@ -134,22 +136,30 @@
             jpn.AddEntry(1925, "General Election Law");
             plate.AddArrow(new Arrow(jpn, zho) {StartValue = 1931, Text = "invasion of Manchuria"});
             jpn.AddEntry(1932, "PM assassinated[6]");
-            jpn.AddEntry(1937,"Marco Polo Bridge Incident[7]");
+            jpn.AddEntry(1937,"Marco Polo Bridge Incident");
             plate.AddArrow(new Arrow(jpn, zho) {StartValue = 1937.6, Text = "Battle of Shanghai"});
             plate.AddArrow(new Arrow(jpn, usa) {StartValue = 1941.9, Text = "Pearl Harbor"});
 
+            zho.AddEntry(1916,1928,"Warlord Era", PrintLocation.Right);
+            zho.AddEntry(new LeaderEntry("Sun Yat-sen", new int?[,] { { 1916, 1925} }));
+            zho.AddEntry(1921,"CPP formed(1921)");
+            zho.AddEntry(new LeaderEntry("Chiang Kai-shek", new int?[,] { {1925,1948} }));
+            zho.AddEntry(1927,"'White Terror'[7]");
+            zho.AddEntry(1934,1935,"The Long March[8]");
+            zho.AddEntry(1937, "Nanking Massacre(1937)");
+            zho.AddEntry(1930.6,1945,"Japanese Occupation.", PrintLocation.Right);
+            zho.AddEntry(1941,"Unit 731 atrocities[10]");
+            plate.AddArrow(new Arrow(zho, jpn) {StartValue = 1940, Text = "Hundred Reg. Offensive"});
 
-            plate.Notes.Add(" [1] First lethal use of chemical weapons.");
-            plate.Notes.Add(" [2] war and famine, millions dead, industry ruined, skilled and edu workers fled");
-            plate.Notes.Add(" [3] 600K-1.2M deaths estimated.");
-            plate.Notes.Add(
-                " [4] East & South European: limited, African: severely limited, Asian and Arab: " +
-                "banned, Latin American: no restriction");
-            plate.Notes.Add(" (#) First technical expo on creating the atomic bomb.");
+
+            plate.Notes.Add(" [1] First lethal use of chemical weapons.  [2] war and famine, millions dead, industry ruined, skilled and edu workers fled");
+            plate.Notes.Add(" [3] 600K-1.2M deaths estimated.            [4] East & South European: limited, African: severely limited, Asian and Arab: banned, Latin American: no restriction");
             plate.Notes.Add(" [5] Ottoman Empire partitioned amoung national groups within it.");
-            plate.Notes.Add(" [6] (Army cadet assassins) seen popularly as having acted out of patriotism and " +
-                            "the atmosphere was set where the military was able to act with little restraint.");
-            plate.Notes.Add(" [7] beginning of WWII in East");
+            plate.Notes.Add(" [6] (Army cadet assassins) enables military to act with little restraint.");
+            plate.Notes.Add(" [7] Chiang Kai-skek turns on CPP and purges as many as 12K in Shanghai.     [8] CPP in retreat, Mao Zedong takes command at this time.");
+            plate.Notes.Add(" [9] 6M Jews murdered (2/3 total Jewish pop. of Euro), another 5M non-Jews likewise murdered");
+            plate.Notes.Add(" [10] human experimentation est. 250K murders");
+            plate.Notes.Add(" (#) First technical expo on creating the atomic bomb.");
             return plate;
         }
     }
