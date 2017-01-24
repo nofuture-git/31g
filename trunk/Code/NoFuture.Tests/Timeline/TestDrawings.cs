@@ -1031,7 +1031,7 @@ namespace NoFuture.Tests.Timeline
         public void TestOccidentalPlateCE1945to1989()
         {
             var testSubject = new Occidental();
-            var testPlate = testSubject.CE1945to1989();
+            var testPlate = testSubject.CE1945to1992();
 
             testPlate.ToPdf(TestAssembly.UnitTestsRoot + @"\Timeline\CE 1945 to 1989.pdf");
         }
