@@ -71,6 +71,7 @@
             engd.AddEntry(new LiteraryWorkEntry("The Hobbit", "Tolkien") {StartValue = 1937.6});
             engd.AddEntry(new LeaderEntry("Winston Churchill", new int?[,] {{1940, 1945}}) {StartValue = 1939});
             engd.AddEntry(new ScienceAdvEntry("Frisch-Peierls memo", "(#)") {StartValue = 1941});
+            engd.AddEntry(new LiteraryWorkEntry("Road.Serfdom","Hayek",1944));
             engd.AddEntry(new LiteraryWorkEntry("Animal Farm", "G.Orwell") {StartValue = 1945.6});
             plate.AddArrow(new Arrow(engd,de) {StartValue = 1943.7, Text = "Invasion of Italy"});
 

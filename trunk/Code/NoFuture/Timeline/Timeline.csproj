@@ -71,7 +71,7 @@
     <Compile Include="Occidental\17_CE1788_1865.cs" />
     <Compile Include="Occidental\18_CE1865_1914.cs" />
     <Compile Include="Occidental\19_CE1914_1945.cs" />
-    <Compile Include="Occidental\20_CE1945_1989.cs" />
+    <Compile Include="Occidental\20_CE1945_1992.cs" />
     <Compile Include="Plate.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Rule.cs" />
