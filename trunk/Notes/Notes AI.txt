@@ -51,13 +51,6 @@ AI is presented as a kind of API
    - in other words, worst algo with 100M training 
      samples does better than best algo with only 1M
  - entity is the thing which makes choices
-   
- - my own observation:
- The problem with the term A.I. is that it is target
- to all the investigations of L.W. - therefore, A.I.
- cannot be defined as a "thing"; rather, it is a catalog
- of computational practices whose effect is something
- we would call "intelligence" in ordinary language.
 ----
 
 ----
@@ -711,3 +704,65 @@ Principal Component Analysis (PCA)
      up and down together (a perfect circle solves 
       to 0 but has a very definite relationship)
 ----   
+
+----
+A Critique on the name Artificial Intelligence.
+
+Artificial Intelligence is a misnomer – a more accurate name would be “predictive analysis” or 
+“data science”.  It’s a difficult phrase because if I simply copy your dance 
+moves motion-for-motion am I now a dancer?  In this case it would seem so 
+since being a dancer is being able to dance.  Now consider my ability to 
+read Hebrew – I am able to enunciate the word because it’s a phonetic 
+alphabet.  If I should read the book of Moses out loud with perfect 
+enunciation do I understand it?  Notice, intelligence and understanding imply some 
+kind of inner meaning.  The problem is that the word intelligence is deeply 
+rooting in our idea of human dignity.   
+
+So what does this mean?  Intelligence implies a dialogue where we can ask 
+of each other, “what do you see in this?”  Let’s do the reverse and ask, “do 
+insects possess intelligence?”, well kinda.  Now imagine bugs aren’t natural, 
+they are man-made.  Being man-made we could flash them with new firmware to make 
+them do something useful, or, on a darker note, install firmware to weaponize 
+them.   Notice how the question of intelligence falls off when we think of bugs 
+as man-made?  They are no longer acting on their own, but rather they are acting according to 
+the program.  Let’s take the bug analogy further and say we upgrade their hardware 
+so we can connect to any one of them remotely and issue them commands in 
+real-time.  This is cool right, we have butterflies to entertain our cats, hornets 
+to patrol our property – you could think of a lot of neat things you could do with 
+so many bugs!   Now imagine the server crashes and the bugs all start acting the way 
+we think of bugs acting, being a part of nature.  Would they then possess 
+intelligence?  Remember these man-made bugs are acting the same way as our real 
+bugs.  And didn’t we answer the question about our real bugs being intelligent 
+as, kinda.  The behavior is the same but the origin is different.  We would call 
+our man-made bugs as acting in some sort of critical-connection-failure-mode program, 
+while our natural bugs are, well, just bugs.  You may say, “well the original 
+programmers could predict how these man-made bugs will behave in such-and-such 
+situation.”  True, but bugs are pretty predictable either way and an entomologist 
+could probably make equally good predictions about our natural bugs.
+
+Ok, lets reverse this again to the more common theme of robots.  This idea has been 
+explored a lot so I’ll just jump ahead and note that the robots are more than machines 
+when they start acting like us, be it either in selfishness or self-sacrificing.  When 
+the robot takes a bullet for our hero character and some dialog ensues between them and 
+the robot contemplates mortality and fate, etc, we are very likely to call that robot 
+intelligent even human.  Now, say the scene plays out where some random robot jumps in 
+front of our character to take a bullet and immediately falls lifeless to the ground, 
+say it’s a really bad movie, and every time there is some gun fired some random robot 
+shows up to take the bullet.  We would likely just ask, “where the hell are all these 
+robots coming from?”  These robots are not human nor intelligent, in this plot they are 
+little more than armor.  
+
+Artificial Intelligence in actual practice tends to be an equal kind of bad-movie disappointment.  You tend 
+to start, thinking, as the name implies, you are doing something very human in a machine 
+environment.  It turns out that Artificial Intelligence is mostly just number crunching.  In fact, unlike 
+imperative programming, you don’t start with a general form, you start with data and 
+that’s typically what you end with too.  Which is fine, think how much more effective the scientific 
+method, constituted by observations (a.k.a. data), has been over philosophers sitting around 
+thinking about forms.  Granted Artificial Intelligence was originally geared toward mechanical 
+entities with various sensors hooked into a computer, but, anymore, its used for anything which 
+is data-driven.  When you actually talk with a data-scientist they will probably tell you that 
+getting the data is where most of the work is, afterwards it tends to follow a pretty standard 
+mathematical model.  A professional programmer shouldn’t neglect to learn the field just 
+because its misnamed – just don’t get the idea that the machine is now thinking because we 
+call it intelligent – that’s something only we humans can do.
+----
