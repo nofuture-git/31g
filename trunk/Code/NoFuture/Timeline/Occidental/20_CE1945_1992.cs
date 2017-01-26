@@ -31,6 +31,7 @@ namespace NoFuture.Timeline
             plate.AddBlock(israel);
             plate.AddBlock(ussr);
             plate.AddBlock(zho);
+            plate.FileName = "20_CE1945_1992";
 
             zho.AddEntry(1946,1949,"Civil War", PrintLocation.Right);
             zho.AddEntry(1949, "KMT flees to Taiwan");

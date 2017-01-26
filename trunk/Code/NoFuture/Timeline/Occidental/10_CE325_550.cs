@@ -63,7 +63,7 @@
             fnk.AddEntry(new LeaderEntry("Clovis I", new int?[,] {{509, 534}}));
             fnk.AddEntry(new LeaderEntry("Sigebert I", new int?[,] {{535, 575}}) {StartValue = 533});
 
-            var plate = new Plate {Ruler = rule, Name = "Fall of Roman Empire(325-550)"};
+            var plate = new Plate {Ruler = rule, Name = "Fall of Roman Empire"};
 
             plate.AddArrow(new Arrow(van, rome) {StartValue = 407, Text = "Vandels x Rhine(407)"});
             plate.AddArrow(new Arrow(vis, rome) {StartValue = 396, Text = "Greece/Italy"});
@@ -85,6 +85,8 @@
             plate.AddBlock(van);
             plate.AddBlock(hun);
             plate.AddBlock(byz);
+            plate.FileName = "10_CE325_550";
+
             plate.Notes.Add("* Valentinian II[W] sudden death 392");
             plate.Notes.Add("  Theodusius[E] installs Flavius Eugenis in [W] who favors old pagan Roman religion 392");
             plate.Notes.Add(

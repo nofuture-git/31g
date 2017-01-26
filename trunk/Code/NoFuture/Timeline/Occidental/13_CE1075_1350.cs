@@ -160,6 +160,7 @@
             plate.AddBlock(ayy);
             plate.AddBlock(mong);
             plate.AddBlock(mam);
+            plate.FileName = "13_CE1075_1350";
 
             plate.AddArrow(new Arrow(fr, slj)
             {

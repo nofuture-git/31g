@@ -113,6 +113,7 @@
             plate.AddBlock(byz);
             plate.AddBlock(slj);
             plate.AddBlock(abb);
+            plate.FileName = "12_CE825_1075";
 
             plate.AddArrow(new Arrow(scdv, engd) {StartValue = 830, Text = "raid Ireland(812-853)"});
             plate.AddArrow(new Arrow(scdv, engd) {StartValue = 839, Text = "end Pict kingdom(839)"});

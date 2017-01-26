@@ -91,6 +91,7 @@
             plate.AddBlock(west);
             plate.AddBlock(east);
             plate.AddBlock(judea);
+            plate.FileName = "09_CE105to325";
 
             plate.Notes.Add(" * Empire ruled by four different tetrarchs in four different capitals.");
             plate.Notes.Add(

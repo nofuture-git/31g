@@ -163,7 +163,7 @@
 
             ott.AddEntry(1517, "Egypt & Arabia conquered(1517/18)");
 
-            var plate = new Plate {Ruler = rule, Name = "Early Modern Age(1)"};
+            var plate = new Plate {Ruler = rule, Name = "Age of Exploration"};
             plate.AddBlock(amer);
             plate.AddBlock(engd);
             plate.AddBlock(esp);
@@ -171,6 +171,8 @@
             plate.AddBlock(swd);
             plate.AddBlock(hre);
             plate.AddBlock(ott);
+            plate.FileName = "15_CE1500_1700";
+
             plate.Notes.Add("(a.)Eurasian disease est. to have killed 90% of W.Hemisphere pop.");
             plate.Notes.Add("(b.)Ottoman naval power limited to the east Mediterranean");
             plate.Notes.Add("(c.)First invention to mech. the textile industry.");

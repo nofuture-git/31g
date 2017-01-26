@@ -77,11 +77,12 @@
             var sas = new Block {Ruler = rule, Title = "Sasanian Empire", EndValue = 642, Width = 30};
             sas.AddEntry(new LeaderEntry("Khosru II", new int?[,] { { 590, 628 } }) {StartValue = 596 });
 
-            var plate = new Plate {Ruler = rule, Name = "The Dark Ages"};
+            var plate = new Plate {Ruler = rule, Name = "Early Middle Age"};
             plate.AddBlock(euro);
             plate.AddBlock(byz);
             plate.AddBlock(mus);
             plate.AddBlock(sas);
+            plate.FileName = "11_CE550_825";
 
             plate.AddArrow(new Arrow(sas, byz) {StartValue = 627, Text = "seige Constantinople(626)"});
             plate.AddArrow(new Arrow(sas, byz) {StartValue = 614, Text = "capture Jerusalem(614)"});

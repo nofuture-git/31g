@@ -19,18 +19,13 @@ namespace NoFuture.Timeline
 
         #region properties
         public Rule Ruler { get; set; }
-        public List<Block> Blocks
-        {
-            get { return _blocks; }
-            
-        }
+        public List<Block> Blocks => _blocks;
         public string Name { get; set; }
         public List<string> Notes { get; set; }
+        public string FileName { get; set; }
 
-        public List<Arrow> Arrows
-        {
-            get { return _arrows; }
-        }
+        public List<Arrow> Arrows => _arrows;
+
         #endregion
 
         #region ctors
@@ -92,12 +87,16 @@ namespace NoFuture.Timeline
             _width = _width - _rulerWidth;
             return tc;
         }//end ToTextCanvas
+
         public virtual void ToPdf(string filePath)
         {
             var content = ToString();
             var doc = DrawingDimensions.ToPdfDoc(content);
-
-            var fs = new System.IO.FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.None);
+            var printSv = Ruler?.StartValue ?? 0;
+            var printEv = Ruler?.EndValue ?? 0;
+            var printEpc = Ruler?.GetEpochName() ?? string.Empty;
+            var printPlateName = Name ?? string.Empty;
+            var fs = new FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.None);
             using (var writer = iTextSharp.text.pdf.PdfWriter.GetInstance(doc, fs))
             {
                 doc.Open();
@@ -116,7 +115,8 @@ namespace NoFuture.Timeline
                 doc.Add(paragraph);
 
                 doc.AddTitle(Name);
-                doc.AddSubject("Timelines");
+                doc.AddAuthor(System.Reflection.Assembly.GetExecutingAssembly().GetName().Name);
+                doc.AddSubject($"{nameof(Occidental)} timeline plate for '{Name}' from {printSv} to {printEv} {printEpc}");
                 doc.AddCreator(System.Reflection.Assembly.GetExecutingAssembly().GetName().Name);
                 doc.AddCreationDate();
                 doc.Close();

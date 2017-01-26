@@ -151,7 +151,7 @@
             rome.AddEntry(509,
                 new string(Config.GraphChars.Rail, 3) + "Republic Founded" + new string(Config.GraphChars.Rail, 3));
 
-            var plate = new Plate {Ruler = rule, Name = "Mid-Eighth to Fifth Centuries BCE"};
+            var plate = new Plate {Ruler = rule, Name = "The Prophesy Fulfilled"};
             plate.AddArrow(new Arrow(assyria, egypt) {StartValue = 663, Text = "Thebes sacked(663)"});
             plate.AddArrow(new Arrow(babylon, egypt) {StartValue = 568, Text = "Nebuchadnezzer invades"});
             plate.AddArrow(new Arrow(persia, babylon) {StartValue = 539, Text = "Fall of Babylon(539)"});
@@ -167,6 +167,7 @@
             plate.AddBlock(persia);
             plate.AddBlock(greece);
             plate.AddBlock(rome);
+            plate.FileName = "05_BCE780to500";
 
             return plate;
 

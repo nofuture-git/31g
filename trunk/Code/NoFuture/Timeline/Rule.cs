@@ -67,10 +67,10 @@ namespace NoFuture.Timeline
 
             while (loopOp(StartValue, EndValue, loopCounter))
             {
-                strBuilder.AppendLine(string.Format("{0,-6}", loopCounter));
+                strBuilder.AppendLine($"{loopCounter,-6}");
                 for (var i = 0; i < RuleLineSpacing - 1; i++)
                 {
-                    strBuilder.AppendLine(string.Format("{0,-6}", " "));
+                    strBuilder.AppendLine($"{" ",-6}");
                 }
                 loopCounter += increment;
             }
@@ -80,6 +80,12 @@ namespace NoFuture.Timeline
         #endregion
 
         #region methods
+
+        public virtual string GetEpochName()
+        {
+            return StartValue < EndValue ? "CE" : "BCE";
+        }
+
         public virtual Tuple<int, int> CalcEntryIndex(IRuleEntry entry)
         {
             var ruleIndex = GetIndexRule();
@@ -114,6 +120,7 @@ namespace NoFuture.Timeline
             }
             return new Tuple<int, int>(item1, item2);
         }//end CalcEntryIndex
+
         public virtual List<double> GetIndexRule()
         {
             //determine edge
@@ -135,6 +142,7 @@ namespace NoFuture.Timeline
 
             return indexRule;
         }//end GetIndexRule
+
         public virtual TextCanvas ToTextCanvas()
         {
             var tc = this.ToTextCanvas(this);
@@ -144,7 +152,6 @@ namespace NoFuture.Timeline
             }
             return tc;
         }//end ToTextCanvas
-
 
         protected internal virtual string PrintYearsRange(IEnumerable<Tuple<double?, double?>> years)
         {

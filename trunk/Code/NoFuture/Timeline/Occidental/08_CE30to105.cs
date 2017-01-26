@@ -116,11 +116,12 @@
             judea.AddEntry(65, 72, "First Jewish-Roman War(66-72)", PrintLocation.Left);
             judea.AddEntry(73, 105, "[legates]");
 
-            var plate = new Plate {Ruler = rule, Name = "First Century CE"};
+            var plate = new Plate {Ruler = rule, Name = "The Roman Empire"};
 
             plate.AddBlock(wRome);
             plate.AddBlock(eRome);
             plate.AddBlock(judea);
+            plate.FileName = "08_CE30to105";
 
             return plate;
         }

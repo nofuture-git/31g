@@ -24,6 +24,7 @@
             var plate = new Plate {Name = "Near East 3000-2000 BCE", Ruler = rule};
             plate.AddBlock(egypt);
             plate.AddBlock(mesopotamia);
+            plate.FileName = "00_BCE3000to2000";
 
             return plate;
         }

@@ -67,6 +67,7 @@
             plate.AddBlock(mesopotamia);
 
             plate.AddArrow(new Arrow(hittities, babylon){StartValue = 1550, Text = "Babylon razed"});
+            plate.FileName = "01_BCE2000to1500";
 
             return plate;
         }

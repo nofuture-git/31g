@@ -51,10 +51,12 @@
             assyria.AddEntry(new LeaderEntry("Asshur-dan II", new int?[,] {{935, 913}}));
             assyria.AddEntry(925, "(Assryia's recovery begins)");
 
-            var plate = new Plate {Ruler = rule, Name = "Near East 1250 to 900 BCE"};
+            var plate = new Plate {Ruler = rule, Name = "Near East 1250 to 900 BCE" };
             plate.AddBlock(egypt);
             plate.AddBlock(palestine);
             plate.AddBlock(assyria);
+            plate.FileName = "03_BCE1250to900";
+
             return plate;
         }
     }

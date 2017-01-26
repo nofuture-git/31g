@@ -113,7 +113,7 @@ namespace NoFuture.Timeline
             rus.AddEntry(1768, 1774, "1st Russio-Turkish War", PrintLocation.Right);
 
 
-            var plate = new Plate {Ruler = rule, Name = "Early Modern Age(2)"};
+            var plate = new Plate {Ruler = rule, Name = "Early Modern Age"};
             plate.AddBlock(amer);
             plate.AddBlock(engd);
             plate.AddBlock(fr);
@@ -121,6 +121,7 @@ namespace NoFuture.Timeline
             plate.AddBlock(aus);
             plate.AddBlock(ott);
             plate.AddBlock(rus);
+            plate.FileName = "16_CE1700_1788";
 
             plate.AddArrow(new Arrow(aus, fr) {StartValue = 1704, Text = "B. of Blenheim(1704)"});
             plate.AddArrow(new Arrow(fr, de) {StartValue = 1706, Text = "B. of Ramilies(1706)"});

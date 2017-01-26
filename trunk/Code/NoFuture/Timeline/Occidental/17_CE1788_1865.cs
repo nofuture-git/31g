@@ -10,7 +10,7 @@ namespace NoFuture.Timeline
         public Plate CE1788to1865()
         {
             var rule = new Rule {StartValue = 1785, EndValue = 1868, RuleLineSpacing = 7};
-            var plate = new Plate { Ruler = rule, Name = "Modern Age(1)" };
+            var plate = new Plate { Ruler = rule, Name = "The Industrial Revolution" };
 
             var usa = new Block {Ruler = rule, Title = "United States"};
             usa.AddEntry(new TerritoryEntry("DE,PA,NJ", 1787) {Location = PrintLocation.Right});
@@ -203,6 +203,7 @@ namespace NoFuture.Timeline
             plate.AddBlock(aus);
             plate.AddBlock(ott);
             plate.AddBlock(rus);
+            plate.FileName = "17_CE1788_1865";
 
             plate.AddArrow(new Arrow(aus, ott) {Text = "B.of Focsani(1789)", StartValue = 1789});
             plate.AddArrow(new Arrow(rus, ott) {StartValue = 1789, FromRightToLeftArrowHead = "<......"});

@@ -125,6 +125,7 @@
             plate.AddBlock(aus);
             plate.AddBlock(ott);
             plate.AddBlock(rus);
+            plate.FileName = "18_CE1865_1914";
 
             plate.AddArrow(new Arrow(fr, de) {StartValue = 1870, Text = "Franco-Prussian War"});
             plate.AddArrow(new Arrow(aus, de)

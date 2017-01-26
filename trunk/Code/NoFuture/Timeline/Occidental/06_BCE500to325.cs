@@ -34,7 +34,7 @@
             persia.AddEntry(new LeaderEntry("Arses", new int?[,] {{338, 336}}));
             persia.AddEntry(new LeaderEntry("Darius III", new int?[,] {{336, 331}}) {StartValue = 335});
 
-            var greece = new Block {Ruler = rule, Title = "Classical Greece", Width = 36};
+            var greece = new Block {Ruler = rule, Title = "Greece", Width = 36};
             greece.AddEntry(499, "Ionian revolt(499)");
             greece.AddEntry(490, "Battle of Marathon(490)");
             greece.AddEntry(480, "Battle of Thermopylae/Salamis(480)");
@@ -106,7 +106,7 @@
             rome.AddEntry(343, "First Samnite War(343-341)");
             rome.AddEntry(327, "Second Samnite War(327-304)");
 
-            var plate = new Plate {Ruler = rule, Name = "Fifth and Forth Centuries BCE"};
+            var plate = new Plate {Ruler = rule, Name = "Classical Age of Greece"};
             plate.AddArrow(new Arrow(persia, greece) {StartValue = 490});
             plate.AddArrow(new Arrow(persia, greece) {StartValue = 483});
             plate.AddArrow(new Arrow(greece, persia) {StartValue = 330, Text = "fall of Persepolis"});
@@ -115,6 +115,7 @@
             plate.AddBlock(persia);
             plate.AddBlock(greece);
             plate.AddBlock(rome);
+            plate.FileName = "06_BCE500to325";
 
             return plate;
         }

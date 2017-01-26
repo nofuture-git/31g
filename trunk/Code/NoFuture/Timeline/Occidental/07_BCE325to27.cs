@@ -109,7 +109,7 @@
             seleucid.AddEntry(new LeaderEntry("Antiochus VII", new int?[,] {{125, 96}}));
             seleucid.AddEntry(new ScienceAdvEntry("glass blowing","") {StartValue = 100});
 
-            var plate = new Plate {Ruler = rule, Name = "Third to First Centuries BCE"};
+            var plate = new Plate {Ruler = rule, Name = "Hellenistic to Roman Republic"};
             plate.AddArrow(new Arrow(seleucid, ptolemaic) {StartValue = 200, Text = "Battle of Panium"});
             plate.AddArrow(new Arrow(rome, seleucid) {StartValue = 188, Text = "Treaty of Apamea"});
             plate.AddArrow(new Arrow(rome, antigonid) {StartValue = 171, Text = "Battle of Pydna"});
@@ -121,6 +121,7 @@
             plate.AddBlock(ptolemaic);
             plate.AddBlock(antigonid);
             plate.AddBlock(attalid);
+            plate.FileName = "07_BCE325to27";
 
             return plate;
         }

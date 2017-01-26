@@ -67,7 +67,7 @@
             assyria.AddEntry(new LeaderEntry("Shamshi-adad V", new int?[,] { { 824, 812 } }));
             assyria.AddEntry(new LeaderEntry("Adad-nirari III", new int?[,] { { 811, 784 } }));
 
-            var plate = new Plate {Ruler = rule, Name = "Schism to Mid-Eighth Century BCE"};
+            var plate = new Plate {Ruler = rule, Name = "Schism to Mid-Eighth Century BCE" };
             plate.AddArrow(new Arrow(egypt, judah) {StartValue = 910});
             plate.AddArrow(new Arrow(assyria, israel)
             {
@@ -80,6 +80,7 @@
             plate.AddBlock(israel);
             plate.AddBlock(damascus);
             plate.AddBlock(assyria);
+            plate.FileName = "04_BCE925to750";
 
             return plate;
 

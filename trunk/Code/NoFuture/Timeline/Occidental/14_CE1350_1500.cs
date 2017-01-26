@@ -97,6 +97,7 @@
             plate.AddBlock(byz);
             plate.AddBlock(rus);
             plate.AddBlock(ott);
+            plate.FileName = "14_CE1350_1500";
 
             plate.AddArrow(new Arrow(fr, ott) {StartValue = 1396, Text = "Crusade of Nicopolis(1396)"});
             plate.AddArrow(new Arrow(engd, fr) {StartValue = 1415, Text = "Battle of Agincourt(1415)"});

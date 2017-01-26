@@ -81,6 +81,8 @@
             plate.AddBlock(mitanni);
             plate.AddBlock(assyria);
             plate.AddBlock(greece);
+            plate.FileName = "02_BCE1600to1200";
+
             return plate;
         }
     }
