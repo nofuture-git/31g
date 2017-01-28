@@ -856,18 +856,18 @@ namespace NoFuture.Tests.Timeline
         public void TestOccidentalPlateBCE3000to2000()
         {
             var testSubject = new Occidental();
-            var testPlate00 = testSubject.BCE3000to2000();
+            var testPlate = testSubject.BCE3000to2000();
 
-            testPlate00.ToPdf(TestAssembly.UnitTestsRoot + @"\Timeline\BCE 3000 to 2000.pdf");
-            
+            testPlate.ToPdf(TestAssembly.UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.pdf");
+
         }
         [TestMethod]
         public void TestOccidentalPlateBCE2000to1500()
         {
             var testSubject = new Occidental();
-            var testPlate01 = testSubject.BCE2000to1500();
+            var testPlate = testSubject.BCE2000to1500();
 
-            testPlate01.ToPdf(TestAssembly.UnitTestsRoot + @"\Timeline\BCE 2000 to 1500.pdf");
+            testPlate.ToPdf(TestAssembly.UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.pdf");
 
 
         }
@@ -875,80 +875,80 @@ namespace NoFuture.Tests.Timeline
         public void TestOccidentalPlateBCE1600to1200()
         {
             var testSubject = new Occidental();
-            var testPlate02 = testSubject.BCE1600to1200();
+            var testPlate = testSubject.BCE1600to1200();
 
-            testPlate02.ToPdf(TestAssembly.UnitTestsRoot + @"\Timeline\BCE 1600 to 1200.pdf");
+            testPlate.ToPdf(TestAssembly.UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.pdf");
 
         }
         [TestMethod]
         public void TestOccidentalPlateBCE1250to900()
         {
             var testSubject = new Occidental();
-            var testPlate03 = testSubject.BCE1250to900();
+            var testPlate = testSubject.BCE1250to900();
 
-            testPlate03.ToPdf(TestAssembly.UnitTestsRoot + @"\Timeline\BCE 1250 to 900.pdf");
+            testPlate.ToPdf(TestAssembly.UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.pdf");
 
         }
         [TestMethod]
         public void TestOccidentalPlateBCE922to750()
         {
             var testSubject = new Occidental();
-            var testPlate04 = testSubject.BCE922to750();
+            var testPlate = testSubject.BCE922to750();
 
-            testPlate04.ToPdf(TestAssembly.UnitTestsRoot + @"\Timeline\BCE 922 to 750.pdf");
+            testPlate.ToPdf(TestAssembly.UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.pdf");
 
         }
         [TestMethod]
         public void TestOccidentalPlateBCE780to500()
         {
             var testSubject = new Occidental();
-            var testPlate05 = testSubject.BCE780to500();
+            var testPlate = testSubject.BCE780to500();
 
-            testPlate05.ToPdf(TestAssembly.UnitTestsRoot + @"\Timeline\BCE 780 to 500.pdf");
+            testPlate.ToPdf(TestAssembly.UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.pdf");
 
         }
         [TestMethod]
         public void TestOccidentalPlateBCE500to325()
         {
             var testSubject = new Occidental();
-            var testPlate06 = testSubject.BCE500to325();
+            var testPlate = testSubject.BCE500to325();
 
-            testPlate06.ToPdf(TestAssembly.UnitTestsRoot + @"\Timeline\BCE 500 to 325.pdf");
+            testPlate.ToPdf(TestAssembly.UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.pdf");
 
         }
         [TestMethod]
         public void TestOccidentalPlateBCE325to27()
         {
             var testSubject = new Occidental();
-            var testPlate07 = testSubject.BCE325to27();
+            var testPlate = testSubject.BCE325to27();
 
-            testPlate07.ToPdf(TestAssembly.UnitTestsRoot + @"\Timeline\BCE 325 to 27.pdf");
+            testPlate.ToPdf(TestAssembly.UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.pdf");
 
         }
         [TestMethod]
         public void TestOccidentalPlateCE30to105()
         {
             var testSubject = new Occidental();
-            var testPlate08 = testSubject.CE30to105();
+            var testPlate = testSubject.CE30to105();
 
-            testPlate08.ToPdf(TestAssembly.UnitTestsRoot + @"\Timeline\CE 30 to 105.pdf");
+            testPlate.ToPdf(TestAssembly.UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.pdf");
         }
 
         [TestMethod]
         public void TestOccidentalPlateCE105to325()
         {
             var testSubject = new Occidental();
-            var testPlate09 = testSubject.CE105to325();
+            var testPlate = testSubject.CE105to325();
 
-            testPlate09.ToPdf(TestAssembly.UnitTestsRoot + @"\Timeline\CE 105 to 325.pdf");
+            testPlate.ToPdf(TestAssembly.UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.pdf");
         }
         [TestMethod]
         public void TestOccidentalPlateCE325to550()
         {
             var testSubject = new Occidental();
-            var testPlate10 = testSubject.CE325to550();
+            var testPlate = testSubject.CE325to550();
 
-            testPlate10.ToPdf(TestAssembly.UnitTestsRoot + @"\Timeline\CE 325 to 550.pdf");
+            testPlate.ToPdf(TestAssembly.UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.pdf");
         }
         [TestMethod]
         public void TestOccidentalPlateCE550to825()
@@ -957,7 +957,7 @@ namespace NoFuture.Tests.Timeline
 
             var testPlate = testSubject.CE550to825();
 
-            testPlate.ToPdf(TestAssembly.UnitTestsRoot + @"\Timeline\CE 550 to 825.pdf");
+            testPlate.ToPdf(TestAssembly.UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.pdf");
         }
         [TestMethod]
         public void TestOccidentalPlateCE825to1075()
@@ -965,7 +965,7 @@ namespace NoFuture.Tests.Timeline
             var testSubject = new Occidental();
             var testPlate = testSubject.CE825to1075();
 
-            testPlate.ToPdf(TestAssembly.UnitTestsRoot + @"\Timeline\CE 825 to 1075.pdf");
+            testPlate.ToPdf(TestAssembly.UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.pdf");
         }
         [TestMethod]
         public void TestOccidentalPlateCE1075to1350()
@@ -973,7 +973,7 @@ namespace NoFuture.Tests.Timeline
             var testSubject = new Occidental();
             var testPlate = testSubject.CE1075to1350();
 
-            testPlate.ToPdf(TestAssembly.UnitTestsRoot + @"\Timeline\CE 1075 to 1350.pdf");
+            testPlate.ToPdf(TestAssembly.UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.pdf");
         }
         [TestMethod]
         public void TestOccidentalPlateCE1350to1500()
@@ -981,7 +981,7 @@ namespace NoFuture.Tests.Timeline
             var testSubject = new Occidental();
             var testPlate = testSubject.CE1350to1500();
 
-            testPlate.ToPdf(TestAssembly.UnitTestsRoot + @"\Timeline\CE 1350 to 1500.pdf");
+            testPlate.ToPdf(TestAssembly.UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.pdf");
 
         }
         [TestMethod]
@@ -990,7 +990,7 @@ namespace NoFuture.Tests.Timeline
             var testSubject = new Occidental();
             var testPlate = testSubject.CE1500to1700();
 
-            testPlate.ToPdf(TestAssembly.UnitTestsRoot + @"\Timeline\CE 1500 to 1700.pdf");
+            testPlate.ToPdf(TestAssembly.UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.pdf");
         }
 
         [TestMethod]
@@ -999,7 +999,7 @@ namespace NoFuture.Tests.Timeline
             var testSubject = new Occidental();
             var testPlate = testSubject.CE1700to1788();
 
-            testPlate.ToPdf(TestAssembly.UnitTestsRoot + @"\Timeline\CE 1700 to 1788.pdf");
+            testPlate.ToPdf(TestAssembly.UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.pdf");
         }
 
         [TestMethod]
@@ -1008,7 +1008,7 @@ namespace NoFuture.Tests.Timeline
             var testSubject = new Occidental();
             var testPlate = testSubject.CE1788to1865();
 
-            testPlate.ToPdf(TestAssembly.UnitTestsRoot + @"\Timeline\CE 1788 to 1865.pdf");
+            testPlate.ToPdf(TestAssembly.UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.pdf");
         }
 
         [TestMethod]
@@ -1017,7 +1017,7 @@ namespace NoFuture.Tests.Timeline
             var testSubject = new Occidental();
             var testPlate = testSubject.CE1865to1914();
 
-            testPlate.ToPdf(TestAssembly.UnitTestsRoot + @"\Timeline\CE 1865 to 1914.pdf");
+            testPlate.ToPdf(TestAssembly.UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.pdf");
         }
         [TestMethod]
         public void TestOccidentalPlateCE1914to1945()
@@ -1025,7 +1025,7 @@ namespace NoFuture.Tests.Timeline
             var testSubject = new Occidental();
             var testPlate = testSubject.CE1914to1945();
 
-            testPlate.ToPdf(TestAssembly.UnitTestsRoot + @"\Timeline\CE 1914 to 1945.pdf");
+            testPlate.ToPdf(TestAssembly.UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.pdf");
         }
         [TestMethod]
         public void TestOccidentalPlateCE1945to1992()
@@ -1033,7 +1033,7 @@ namespace NoFuture.Tests.Timeline
             var testSubject = new Occidental();
             var testPlate = testSubject.CE1945to1992();
 
-            testPlate.ToPdf(TestAssembly.UnitTestsRoot + @"\Timeline\CE 1945 to 1992.pdf");
+            testPlate.ToPdf(TestAssembly.UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.pdf");
         }
         [TestMethod]
         public void TestFastPlate()
@@ -1057,6 +1057,43 @@ namespace NoFuture.Tests.Timeline
             testSubject.Blk("User-Agent").Txt("Stop Dots").Blk("Client");
 
             System.Diagnostics.Debug.WriteLine(testSubject.ToString());
+        }
+
+        [TestMethod]
+        public void TestFastPlateJsonExample()
+        {
+            var myExampleJson = @"
+{
+    'UserAgent':[],
+	'WebLayer': [
+		'Module',
+		'Ctrl',
+		'View'
+	],
+	'AppLayer' : [
+        'Provider',
+		'Adapter',
+		'Dal'
+	],
+	'DbLayer':[]
+}
+";
+            var myFPlate = new FastPlate("CrazyRoutes", 8, new Rule { StartValue = 1, EndValue = 16, RuleLineSpacing = 2 }, myExampleJson);
+            var idx2Nm = myFPlate.GetIndex2Name();
+            foreach (var key in idx2Nm.Keys)
+            {
+                System.Diagnostics.Debug.WriteLine($"{key} {idx2Nm[key]}");
+            }
+
+            myFPlate.Blk(1.1).Txt("GET")
+                .Blk(1.3).Txt("Get")
+                .Blk(3.3)
+                .Blk(4.0);
+
+
+            var myBlk = myFPlate.GetBlockByName("DbLayer");
+            Assert.IsNotNull(myBlk);
+            System.Diagnostics.Debug.WriteLine(myFPlate.ToString());
         }
 
         [TestMethod]

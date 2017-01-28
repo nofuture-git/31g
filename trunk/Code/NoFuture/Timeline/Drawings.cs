@@ -26,6 +26,8 @@ namespace NoFuture.Timeline
         public string Id { get; set; }
         public int StartIndex { get; set; }
         public int Length { get; set; }
+        public List<TextRange> InnerRanges { get; set; } = new List<TextRange>();
+
     }//end TextRange
 
     //end Extensions

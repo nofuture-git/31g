@@ -10,16 +10,9 @@ namespace NoFuture.Timeline
         #region properties
         public int Index { get; set; }
         public double HashMarkValue { get; set; }
-        public List<char> Text { get; set; }
-        public List<TextRange> Ranges { get; set; }
-        #endregion
+        public List<char> Text { get; set; } = new List<char>();
+        public List<TextRange> Ranges { get; set; } = new List<TextRange>();
 
-        #region ctors
-        public TextItem()
-        {
-            Ranges = new List<TextRange>();
-            Text = new List<char>();
-        }
         #endregion
 
         #region methods

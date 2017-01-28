@@ -10,7 +10,7 @@
             rome.AddEntry(new LiteraryWorkEntry("Histories", "Tacitus") {StartValue = 114 });
             rome.AddEntry(new TerritoryEntry("Dacia[Carpathian Mts]") {StartValue = 111 });
             rome.AddEntry(new TerritoryEntry("Arabia Petraea[Sinia]") { StartValue = 135 });
-            rome.AddEntry(new LeaderEntry("Trajan", new int?[,] { { 98, 117 } }) {StartValue = 108});
+            rome.AddEntry(new LeaderEntry("Trajan", new int?[,] { { 98, 117 } }) {StartValue = 108, Location = PrintLocation.Right});
             rome.AddEntry(new LeaderEntry("Hadrian", new int?[,] { { 117, 138 } }));
             rome.AddEntry(new LeaderEntry("Antoninus Pius", new int?[,] { { 138, 161 } }));
             rome.AddEntry(144, 158, "\"Roman Golden Age\"", PrintLocation.Right);
@@ -28,7 +28,7 @@
             rome.AddEntry(250, 270, "Cyprian Plague (250-270)", PrintLocation.Right);
             rome.AddEntry(new ScienceAdvEntry("crankshaft","") {StartValue = 300});
             rome.AddEntry(303, 313, "Diocletian persecutions(303-313)", PrintLocation.Right);
-            rome.AddEntry(284, 310, "Tetrarchy*", PrintLocation.Left);
+            rome.AddEntry(284, 310, "Tetrarchy***", PrintLocation.Left);
             rome.AddEntry(312, 325, "Constantinian Dyn", PrintLocation.Left);
             rome.AddEntry(315, "Battle of the Mulvian Bridge(312)");
             rome.AddEntry(319, "Edict of Milan(313)");
@@ -93,10 +93,9 @@
             plate.AddBlock(judea);
             plate.FileName = "09_CE105to325";
 
-            plate.Notes.Add(" * Empire ruled by four different tetrarchs in four different capitals.");
+            plate.Notes.Add(" *** Empire ruled by four different tetrarchs in four different capitals.");
             plate.Notes.Add(
                 " ** A period in which the empire nearly collapsed by the combined affects of invasion, civil war, plague, hyperinflation.");
-
             return plate;
         }
     }

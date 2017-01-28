@@ -38,15 +38,9 @@ namespace NoFuture.Timeline
 
         #region properties
         public string Text { get; set; }
-        public Block FromBlock
-        {
-            get { return _fromBlock; }
-            
-        }
-        public Block ToBlock
-        {
-            get { return _toBlock; }
-        }
+        public Block FromBlock => _fromBlock;
+
+        public Block ToBlock => _toBlock;
         public string ExcludedRangeId { get; set; }
         public string FromRightToLeftArrowHead
         {
@@ -68,9 +62,6 @@ namespace NoFuture.Timeline
             get { return _arrowShaft; }
             set { _arrowShaft = value; }
         }
-        #endregion
-
-        #region IRuleEntry methods
         public virtual double StartValue
         {
             get { return _singleValue; }
@@ -82,10 +73,12 @@ namespace NoFuture.Timeline
             set { _singleValue = value; }
         }
         public virtual int Width { get; set; }
-        public virtual string Id { get { return _id; } }
+        public virtual string Id => _id;
+
         #endregion
 
         #region methods
+
         public TextCanvas ComposeArrow(Rule ruler, TextCanvas tc)
         {
             if (ruler == null)
@@ -98,8 +91,10 @@ namespace NoFuture.Timeline
                 return tc;
 
             //scope in on the ranges for the located line
-            var fromTr = ti.Ranges.FirstOrDefault(tr => tr.Id == FromBlock.Id);
-            var toTr = ti.Ranges.FirstOrDefault(tr => tr.Id == ToBlock.Id);
+            TextRange fromTr;
+            TryGetTextRange(ti.Ranges, FromBlock.Id, out fromTr);
+            TextRange toTr;
+            TryGetTextRange(ti.Ranges, ToBlock.Id, out toTr);
 
             if (fromTr == null || toTr == null)
                 return tc;
@@ -132,17 +127,35 @@ namespace NoFuture.Timeline
                     new string(tc.Items.First(t => t.Index == arrowIdx.Item1).Text.ToArray())).ToCharArray().ToList();
             
             return tc;
-        }//end ComposeArrow
-        #endregion
+        }
 
-        #region hidden
-        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
+        internal static bool TryGetTextRange(List<TextRange> ranges, string blockId, out TextRange otr)
+        {
+            otr = ranges.FirstOrDefault(tr => tr.Id == blockId);
+            if (otr != null)
+                return true;
+            foreach (var sti in ranges.Where(s => s.InnerRanges.Any()))
+            {
+                var iti = sti.InnerRanges.FirstOrDefault(tr => tr.Id == blockId);
+                if (iti == null)
+                    continue;
+                otr = new TextRange
+                {
+                    Id = iti.Id,
+                    Length = iti.Length,
+                    StartIndex = sti.StartIndex + iti.StartIndex
+                };
+            }
+            return otr != null;
+        }
+
         internal StringBuilder ComposeToRightArrow(int rangeBetwixtLen, int leftAPriorLen, int leftBlockLen, string arrowText, int rightBlockLen = 0)
         {
             System.Diagnostics.Debug.WriteLine(
-                string.Format(
-                    "{0} is ComposeToRightArrow, rangeBetwixtLen={1}, leftAPriorLen = {2}, leftBlockLen = {3}, rightBlockLen = {4}, arrowTailLength = {5}, arrowHeadLength = {6}",
-                    arrowText, rangeBetwixtLen, leftAPriorLen, leftBlockLen, rightBlockLen,ArrowTail.Length, FromLeftToRightArrowHead.Length));
+                $"{arrowText} is ComposeToRightArrow, rangeBetwixtLen={rangeBetwixtLen}, " +
+                $"leftAPriorLen = {leftAPriorLen}, leftBlockLen = {leftBlockLen}, " +
+                $"rightBlockLen = {rightBlockLen}, arrowTailLength = {ArrowTail.Length}, " +
+                $"arrowHeadLength = {FromLeftToRightArrowHead.Length}");
 
             var strBuilder = new StringBuilder();
             strBuilder.Append(new string((char)0x20, (leftAPriorLen - 1 <= 0) ? 0 : leftAPriorLen -1));
@@ -163,11 +176,13 @@ namespace NoFuture.Timeline
             strBuilder.Append(head);
 
             return strBuilder;
-        }//end ComposeToRightArrow
-        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
+        }
+
         internal StringBuilder ComposeToLeftArrow(int rangeBetwixtLen, int leftAPriorLen, int leftBlockLen, string arrowText)
         {
-            System.Diagnostics.Debug.WriteLine(string.Format("{0} is ComposeToLeftArrow", arrowText));
+            System.Diagnostics.Debug.WriteLine($"{arrowText} is ComposeToLeftArrow, rangeBetwixtLen={rangeBetwixtLen}, " +
+                                               $"leftAPriorLen = {leftAPriorLen}, leftBlockLen = {leftBlockLen},  " +
+                                               $"arrowTailLength = {ArrowTail.Length}, arrowHeadLength = {FromLeftToRightArrowHead.Length}");
 
             var strBuilder = new StringBuilder();
             strBuilder.Append(new string((char)0x20, leftAPriorLen + 1));
@@ -195,14 +210,20 @@ namespace NoFuture.Timeline
             strBuilder.Append(ArrowTail);
 
             return strBuilder;
-        }//end ComposeToLeftArrow
-        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
+        }
+
         internal static int GetLeftAPriorLen(string trLeftId, List<TextRange> ranges, string excludedRangeId = "")
         {
             var aPriorLen = 0;
+            if (ranges == null || !ranges.Any())
+                return 0;
             foreach (var range in ranges)
             {
-                
+                if (range.InnerRanges.Any(y => y.Id == trLeftId))
+                {
+                    aPriorLen += GetLeftAPriorLen(trLeftId, range.InnerRanges, excludedRangeId);
+                    break;
+                }
                 if (range.Id == trLeftId)
                     break;
                 if (range.Id == excludedRangeId)
@@ -211,19 +232,22 @@ namespace NoFuture.Timeline
             }
 
             return aPriorLen;
-        }//end GetLeftAPriorLen
-        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
+        }
+
         internal static int GetRangeLenBetwixt(string trLeftId, string trRightId, List<TextRange> ranges)
         {
             var rangeLen = 0;
+            if (ranges == null || !ranges.Any())
+                return 0;
             var inRange = false;
             foreach (var range in ranges)
             {
+                
                 //continue left-to-right until the To's Id is in scope
-                if (range.Id != trLeftId && !inRange)
+                if (range.Id != trLeftId && range.InnerRanges.All(x => x.Id != trLeftId) && !inRange)
                     continue;
 
-                if (range.Id == trLeftId)
+                if (range.Id == trLeftId || range.InnerRanges.Any(x => x.Id == trLeftId))
                 {
                     inRange = true;
                     continue;
@@ -231,26 +255,42 @@ namespace NoFuture.Timeline
                 if (range.Id == trRightId)
                     break;
 
+                if (range.InnerRanges.Any(x => x.Id == trRightId))
+                {
+                    foreach (var innerRange in range.InnerRanges)
+                    {
+                        if (innerRange.Id == trRightId)
+                            break;
+                        rangeLen += innerRange.Length + 2;
+                    }
+                    break;
+                }
+
                 //HACK - testing for Id being a Guid
                 var isGuidId = System.Text.RegularExpressions.Regex.IsMatch(range.Id,
                     @"[a-f0-9]{8}\-[0-9a-f]{4}\-[0-9a-f]{4}\-[0-9a-f]{4}\-[0-9a-f]{12}");
-                if (!isGuidId)
-                    rangeLen += range.Length + 2;//ranges do not encompass the joist between blocks
 
+                if (isGuidId)
+                    continue;
+
+                //ranges do not encompass the joist between blocks
+                rangeLen += range.Length + 2;
             }
             return rangeLen;
-        }//end GetRangeLenBetwixt
-        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
+        }
+
         internal static PrintLocation DetermineArrowDirection(string fromBlockId, string toBlockId, List<TextRange> ranges)
         {
-            var fromTr = ranges.FirstOrDefault(tr => tr.Id == fromBlockId);
-            var toTr = ranges.FirstOrDefault(tr => tr.Id == toBlockId);
+            TextRange fromTr;
+            TryGetTextRange(ranges, fromBlockId, out fromTr);
+            TextRange toTr;
+            TryGetTextRange(ranges, toBlockId, out toTr);
 
             if (fromTr == null || toTr == null)
                 return PrintLocation.Center;
 
             return fromTr.StartIndex > toTr.StartIndex ? PrintLocation.Right : PrintLocation.Left;
-        }//end DetermineArrowDirection
+        }
         #endregion
     }
 }

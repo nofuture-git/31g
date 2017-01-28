@@ -65,7 +65,8 @@
             attalid.AddEntry(new LeaderEntry("Attalus I", new int?[,] {{241, 197}}));
             attalid.AddEntry(new LeaderEntry("Eumenes II", new int?[,] {{197, 159}}));
             attalid.AddEntry(new LeaderEntry("Attalus II", new int?[,] {{159, 138}}));
-            attalid.AddEntry(new LeaderEntry("Attalus III", new int?[,] {{138, 133}}));
+            attalid.AddEntry(new LeaderEntry("Attalus III", new int?[,] {{138, 133}}) {StartValue = 145});
+            attalid.AddEntry(138,"(wills kingdom to Rome)");
 
             var ptolemaic = new Block {Ruler = rule, EndValue = 30, Title = "Ptolemaic(Egypt)", Width = 34};
             ptolemaic.AddEntry(new LeaderEntry("Ptolemy I", new int?[,] {{303, 285}}) {StartValue = 290});
@@ -92,6 +93,7 @@
             judea.AddEntry(110, 68, "Kingdom of Israel");
             judea.AddEntry(66, "Civil War[Pharisees -vs- Sadducees]");
             judea.AddEntry(62, "Rome[Pompey] & Pharisee seige Jerusalem");
+            judea.AddEntry(57,20, "Roman Rule **");
 
             var seleucid = new Block {Ruler = rule, EndValue = 63, Title = "Seleucid(Syria)", Width = 36};
             seleucid.AddEntry(new LeaderEntry("Seleucus I", new int?[,] {{312, 280}}));
@@ -109,11 +111,13 @@
             seleucid.AddEntry(new LeaderEntry("Antiochus VII", new int?[,] {{125, 96}}));
             seleucid.AddEntry(new ScienceAdvEntry("glass blowing","") {StartValue = 100});
 
-            var plate = new Plate {Ruler = rule, Name = "Hellenistic to Roman Republic"};
+            var plate = new Plate {Ruler = rule, Name = "The Rise of Rome"};
             plate.AddArrow(new Arrow(seleucid, ptolemaic) {StartValue = 200, Text = "Battle of Panium"});
             plate.AddArrow(new Arrow(rome, seleucid) {StartValue = 188, Text = "Treaty of Apamea"});
             plate.AddArrow(new Arrow(rome, antigonid) {StartValue = 171, Text = "Battle of Pydna"});
             plate.AddArrow(new Arrow(rome, ptolemaic) {StartValue = 31, Text = "Battle of Actium(31)"});
+            plate.AddArrow(new Arrow(rome, seleucid) {StartValue = 63});
+            plate.AddArrow(new Arrow(rome, judea) {StartValue = 60, ArrowTail = ".", FromLeftToRightArrowHead = "..>"});
 
             plate.AddBlock(rome);
             plate.AddBlock(seleucid);
@@ -122,6 +126,8 @@
             plate.AddBlock(antigonid);
             plate.AddBlock(attalid);
             plate.FileName = "07_BCE325to27";
+
+            plate.Notes.Add(" ** Will be 2000 years before return to self rule.");
 
             return plate;
         }

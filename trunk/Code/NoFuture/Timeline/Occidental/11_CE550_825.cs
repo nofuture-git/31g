@@ -42,7 +42,7 @@
             mus.AddEntry(new LeaderEntry("Mohammed", new int?[,] { { 569, 632 } }));
             mus.AddEntry(610, "vision @ Mt. Hira(610)");
             mus.AddEntry(627, "Mohammad takes Mecca(630)");
-            mus.AddEntry(new LeaderEntry("Abu Bekr", new int?[,] { { 633, 634 } }));
+            mus.AddEntry(new LeaderEntry("Abu Bekr", new int?[,] { { 633, 634 } }) {Location = PrintLocation.Center});
             mus.AddEntry(new LeaderEntry("Omar", new int?[,] { { 634, 644 } }) { StartValue = 638 });
             mus.AddEntry(new LeaderEntry("Othman", new int?[,] { { 644, 656 } }));
             mus.AddEntry(656, "war of succesion Ali/Muawiya(656-669)");

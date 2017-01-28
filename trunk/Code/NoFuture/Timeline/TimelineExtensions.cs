@@ -12,7 +12,8 @@ namespace NoFuture.Timeline
         {
             return stringBuilder.ToString()
                 .Replace(new string(new[] {(char) 0x0D, (char) 0x0A}), new string(new[] {Config.GraphChars.UNIX_NL_CHAR}));
-        }//end ToStringUnixNewline
+        }
+
         public static TextCanvas ToTextCanvas(this IRuleEntry entry, Rule ruler)
         {
             if(ruler == null)
@@ -85,7 +86,8 @@ namespace NoFuture.Timeline
             }
 
             return textCanvas;
-        }//end ToTextCanvas
+        }
+
         public static TextCanvas Merge(this TextCanvas entry1Tc, TextCanvas entry2Tc, Rule ruler)
         {
             //check for null args
@@ -138,7 +140,8 @@ namespace NoFuture.Timeline
 
                     continue;
                 }
-                else if (tti(entry1i))
+
+                if (tti(entry1i))
                 {
                     textCanvas.Items.Add(entry1i.Copy());
                     continue;
@@ -147,7 +150,8 @@ namespace NoFuture.Timeline
 
             }
             return textCanvas;
-        }//end Merge
+        }
+
         public static TextCanvas Concat(this TextCanvas block1Tc, TextCanvas block2Tc, Rule ruler)
         {
             if(ruler == null)
@@ -164,11 +168,15 @@ namespace NoFuture.Timeline
 
             Func<char[], bool> printBar =
                 c =>
-                    new String(c).EndsWith(string.Format("{0}{1}",
-                        Config.GraphChars.Rail,
-                        Config.GraphChars.BarRailIntersect));
+                    new string(c).EndsWith($"{Config.GraphChars.Rail}{Config.GraphChars.BarRailIntersect}");
 
-            var tc = new TextCanvas() { MaxIndex = maxIndex, Ruler = ruler, MinIndex = minIndex, Id = block1Tc.Id + Config.GraphChars.IDSeparator + block2Tc.Id };
+            var tc = new TextCanvas
+            {
+                MaxIndex = maxIndex,
+                Ruler = ruler,
+                MinIndex = minIndex,
+                Id = block1Tc.Id + Config.GraphChars.IDSeparator + block2Tc.Id
+            };
             for (var i = minIndex; i <= maxIndex; i++)
             {
                 var ti1 = block1Tc.GetTextOrEmpty(i, block1Tc.Width);
@@ -186,10 +194,11 @@ namespace NoFuture.Timeline
                 if (printBar(ti1.Text.ToArray()))
                     blockBarCount += 1;
 
-                var txtRng = new TextRange() {Id = block2Tc.Id, Length = ti2.Text.Count, StartIndex = ntxt.Count};
+                var txtRng = new TextRange {Id = block2Tc.Id, Length = ti2.Text.Count, StartIndex = ntxt.Count};
+                txtRng.InnerRanges.AddRange(ti2.Ranges.Where(x => x.Id != block2Tc.Id));
                 ntxt.AddRange(ti2.Text);
 
-                var nti = new TextItem() {HashMarkValue = ti1.HashMarkValue, Index = i, Text = ntxt};
+                var nti = new TextItem {HashMarkValue = ti1.HashMarkValue, Index = i, Text = ntxt};
                 nti.Ranges.AddRange(ti1.Ranges);
                 nti.Ranges.Add(txtRng);
                 tc.Items.Add(nti);
@@ -198,7 +207,7 @@ namespace NoFuture.Timeline
                     tc.Width = ntxt.Count;
             }
             return tc;
-        }//end Concat
+        }
 
         /// <summary>
         /// Examples 

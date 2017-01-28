@@ -94,9 +94,13 @@ namespace NoFuture.Timeline
         }
         public virtual string Id => Title;
 
+        protected internal Block MyOuterBlock { get; set; }
+
+        protected internal bool IsInnerBlock => MyOuterBlock != null;
+
         #endregion
 
-        #region Object overrides
+        #region methods
         public override string ToString()
         {
             if (Ruler == null)
@@ -117,9 +121,7 @@ namespace NoFuture.Timeline
             return strBuilder.ToStringUnixNewline();
 
         }
-        #endregion
 
-        #region public methods
         public virtual void AddEntry(Entry entry)
         {
             entry.Ruler = Ruler;
@@ -131,22 +133,27 @@ namespace NoFuture.Timeline
                 Width = reqW;
 
         }
+
         public virtual void AddEntry(double startValue, string text)
         {
             AddEntry(new SimpleFactEntry { StartValue = startValue, Text = text });
         }
+
         public virtual void AddEntry(double startValue, string text, PrintLocation location)
         {
             AddEntry(new SimpleFactEntry { StartValue = startValue,Text = text, Location = location});
         }
+
         public virtual void AddEntry(double startValue, double endValue, string text)
         {
             AddEntry(new PeriodEntry { StartValue = startValue, EndValue = endValue, Text = text });
         }
+
         public virtual void AddEntry(double startValue, double endValue, string text, PrintLocation location)
         {
             AddEntry(new PeriodEntry { StartValue = startValue, EndValue = endValue, Text = text, Location = location });
-        }//end AddEntry
+        }
+
         public virtual void AddInnerBlock(Block innerBlock)
         {
             if (Ruler == null)
@@ -171,15 +178,17 @@ namespace NoFuture.Timeline
             var innerBlockIdx = Ruler.CalcEntryIndex(innerBlock);
             var valForNextLine = Convert.ToInt32(Math.Floor(Ruler.GetIndexRule()[(innerBlockIdx.Item1 - 1)]));
             innerBlock.StartValue = valForNextLine;
+            innerBlock.MyOuterBlock = this;
             _innerBlocks.Add(innerBlock);
 
-        }//end AddInnerBlock
+        }
 
         public virtual void AddArrow(Arrow arrow)
         {
             arrow.ExcludedRangeId = this.Title;
             _arrows.Add(arrow);
-        }//end AddArrow
+        }
+
         public virtual TextCanvas PrintEntriesOnCanvas()
         {
             if(Ruler == null)
@@ -210,11 +219,8 @@ namespace NoFuture.Timeline
 
             myCanvas.Id = Id;
             return myCanvas;
-        }//end PrintEntriesOnCanvas
-        #endregion
+        }
 
-        #region hidden
-        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
         protected internal virtual string DrawHeader()
         {
             var label = Util.Etc.PrintInCenter(Width, Title);
@@ -227,8 +233,8 @@ namespace NoFuture.Timeline
             }
             strBuilder.AppendLine();
             return strBuilder.ToStringUnixNewline();
-        }//end DrawHeader
-        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
+        }
+
         protected internal virtual string DrawBar()
         {
             var strBuilder = new StringBuilder();
@@ -241,8 +247,8 @@ namespace NoFuture.Timeline
             strBuilder.AppendLine();
 
             return strBuilder.ToStringUnixNewline();
-        }//end DrawBar
-        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
+        }
+
         protected internal virtual int GetRequiredWidth()
         {
             if (_entries.Count <= 0)
@@ -270,7 +276,12 @@ namespace NoFuture.Timeline
                 maxWidthReq = maxInTextLen;
 
             return maxWidthReq;
-        }//end GetRequiredWidth
+        }
+
+        protected internal Block GetInnerBlockByTitle(string title)
+        {
+            return _innerBlocks.FirstOrDefault(x => x.Title == title);
+        }
         #endregion
     }
 }

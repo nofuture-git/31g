@@ -11,7 +11,7 @@ namespace NoFuture.Timeline
     public class Plate
     {
         #region fields
-        protected internal List<Block> _blocks;
+        private List<Block> _blocks;
         protected internal List<Arrow> _arrows;
         private int _width;
         private int _rulerWidth;
@@ -37,7 +37,7 @@ namespace NoFuture.Timeline
         }
         #endregion
 
-        #region Object overrides
+        #region methods
         public override string ToString()
         {
             var tc = ToTextCanvas();
@@ -58,15 +58,14 @@ namespace NoFuture.Timeline
 
             return strBuilder.ToStringUnixNewline();
         }
-        #endregion
 
-        #region methods
         public virtual void AddBlock(Block block)
         {
             block.Ruler = Ruler;
             _blocks.Add(block);
-        }//end AddBlock
-        public virtual void AddArrow(Arrow arrow) { _arrows.Add(arrow); }//end AddArrow
+        }
+
+        public virtual void AddArrow(Arrow arrow) { _arrows.Add(arrow); }
 
         public virtual void AddArrow(Block fromBlock, Block toBlock, int startVal)
         {
@@ -86,7 +85,7 @@ namespace NoFuture.Timeline
             }
             _width = _width - _rulerWidth;
             return tc;
-        }//end ToTextCanvas
+        }
 
         public virtual void ToPdf(string filePath)
         {
@@ -95,7 +94,6 @@ namespace NoFuture.Timeline
             var printSv = Ruler?.StartValue ?? 0;
             var printEv = Ruler?.EndValue ?? 0;
             var printEpc = Ruler?.GetEpochName() ?? string.Empty;
-            var printPlateName = Name ?? string.Empty;
             var fs = new FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.None);
             using (var writer = iTextSharp.text.pdf.PdfWriter.GetInstance(doc, fs))
             {
@@ -121,11 +119,8 @@ namespace NoFuture.Timeline
                 doc.AddCreationDate();
                 doc.Close();
             }
-        }//end ToPdf
-        #endregion
+        }
 
-        #region hidden
-        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
         protected internal string DrawHeader()
         {
             if (_width - 2 <= 0)
@@ -140,7 +135,7 @@ namespace NoFuture.Timeline
             strBuilder.Append(Config.GraphChars.Bar);
             return strBuilder.ToStringUnixNewline();
         }
-        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
+
         protected internal string DrawBar()
         {
             if (_width <= 0)
@@ -153,7 +148,21 @@ namespace NoFuture.Timeline
             strBuilder.Append(Config.GraphChars.BarRailIntersect);
 
             return strBuilder.ToStringUnixNewline();
+        }
 
+        protected internal Block GetBlockByName(string blockName)
+        {
+            var sblk = _blocks.FirstOrDefault(x => x.Title == blockName);
+            if(sblk != null)
+                return sblk;
+            foreach (var blk in _blocks)
+            {
+                sblk = blk.GetInnerBlockByTitle(blockName);
+                if (sblk == null)
+                    continue;
+                return sblk;
+            }
+            return null;
         }
         #endregion
     }

@@ -1,6 +1,8 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Newtonsoft.Json;
 
 namespace NoFuture.Timeline
 {
@@ -25,27 +27,76 @@ namespace NoFuture.Timeline
         #region fields
         private Block _liveBlock;
         private int _lineCounter = 2;
-        private readonly Dictionary<int, string> _blockIdxName = new Dictionary<int, string>();
+        private readonly Dictionary<double, string> _blockIdxName = new Dictionary<double, string>();
         #endregion
 
         #region ctor
-        public FastPlate(string plateTitle, int? dfWidth, params string[] blockNames)
+        public FastPlate(string plateTitle, int? dfWidth, params string[] blockNames):this(plateTitle, dfWidth, null, blockNames)
+        {
+
+        }
+
+        public FastPlate(string plateTitle, int? dfWidth, Rule rule)
         {
             if (dfWidth != null)
                 Config.Numerics.DefaultWidth = dfWidth.Value;
-            var ruler = new Rule {StartValue = 1, EndValue = 16, RuleLineSpacing = 3};
-            if (blockNames == null || blockNames.Length <= 0)
-                throw new ArgumentNullException(nameof(blockNames));
+            var ruler = rule ?? new Rule { StartValue = 1, EndValue = 16, RuleLineSpacing = 3 };
 
             Name = string.IsNullOrWhiteSpace(plateTitle) ? "Sequence Diagram" : plateTitle;
             Ruler = ruler;
+        }
+
+        public FastPlate(string plateTitle, int? dfWidth, Rule rule, params string[] blockNames) : this(plateTitle,dfWidth,rule)
+        {
+
+            if (blockNames == null || blockNames.Length <= 0)
+                throw new ArgumentNullException(nameof(blockNames));
             var c = 0;
             foreach (var blkNm in blockNames)
             {
-                var blk = new Block { Ruler = ruler, Title = blkNm };
-                _blocks.Add(blk);
+                var blk = new Block { Ruler = Ruler, Title = blkNm };
+                Blocks.Add(blk);
                 _blockIdxName.Add(c, blkNm);
                 c += 1;
+            }
+        }
+
+        public FastPlate(string plateTitle, int? dfWidth, Rule rule, string jsonBlockInnerBlocks) : this(plateTitle, dfWidth, rule)
+        {
+            if (string.IsNullOrWhiteSpace(jsonBlockInnerBlocks))
+                return;
+            var myBlocks = JsonConvert.DeserializeObject<Hashtable>(jsonBlockInnerBlocks);
+            var c = 0.0D;
+            foreach (var i in myBlocks.Keys)
+            {
+                var blkNm = i?.ToString();
+                if (blkNm == null)
+                    continue;
+                var blk = new Block {Ruler = Ruler, Title = blkNm };
+                c += 1.0D;
+                c = Math.Floor(c);
+                Blocks.Add(blk);
+                _blockIdxName.Add(c, blkNm);
+
+                var innerBlks = myBlocks[i] as IEnumerable;
+                if (innerBlks == null)
+                    continue;
+                foreach (var j in innerBlks)
+                {
+                    var iBlkNm = j?.ToString();
+                    if (iBlkNm == null)
+                        continue;
+                    var iBlk = new Block
+                    {
+                        Ruler = Ruler,
+                        Title = iBlkNm,
+                        StartValue = Ruler.StartValue + Ruler.RuleLineSpacing
+                    };
+                    blk.AddInnerBlock(iBlk);
+                    c += 0.1D;
+                    c = (double) Math.Round((decimal) c, 1);
+                    _blockIdxName.Add(c, iBlkNm);
+                }
             }
         }
         #endregion
@@ -60,21 +111,32 @@ namespace NoFuture.Timeline
         /// <returns></returns>
         public virtual FastPlate Blk(string blockName)
         {
-            if (string.IsNullOrWhiteSpace(blockName) || _blocks.All(x => x.Title != blockName))
+            if (string.IsNullOrWhiteSpace(blockName) ||
+                GetBlockByName(blockName) == null)
             {
                 _liveBlock = null;
                 return this;
             }
             if (_liveBlock == null)
             {
-                _liveBlock = _blocks.First(x => x.Title == blockName);
+                _liveBlock = GetBlockByName(blockName);
                 return this;
             }
 
-            var searchBlk = _blocks.First(x => x.Title == blockName);
+            var searchBlk = GetBlockByName(blockName);
+
             if (_liveBlock!= null && !searchBlk.Equals(_liveBlock))
             {
-                AddArrow(new Arrow(_liveBlock, searchBlk){StartValue = _lineCounter});
+                var arrow = new Arrow(_liveBlock, searchBlk) {StartValue = _lineCounter};
+                var isInnerArrow = _liveBlock.IsInnerBlock
+                                   && searchBlk.IsInnerBlock
+                                   && _liveBlock.MyOuterBlock.Equals(searchBlk.MyOuterBlock);
+
+                if (isInnerArrow)
+                    _liveBlock.MyOuterBlock.AddArrow(arrow);
+                else
+                    AddArrow(arrow);
+
                 _lineCounter += 1;
             }
 
@@ -82,9 +144,13 @@ namespace NoFuture.Timeline
             return this;
         }
 
-        public virtual FastPlate Blk(int idx)
+        public virtual FastPlate Blk(double idx)
         {
-            if (_blockIdxName.ContainsKey(idx)) return Blk(_blockIdxName[idx]);
+            if (_blockIdxName.ContainsKey(idx))
+            {
+                System.Diagnostics.Debug.WriteLine($"{idx} -> {_blockIdxName[idx]}");
+                return Blk(_blockIdxName[idx]);
+            }
             _liveBlock = null;
             return this;
         }
@@ -122,6 +188,11 @@ namespace NoFuture.Timeline
             return this;
         }
 
+        public Dictionary<double, string> GetIndex2Name()
+        {
+            return _blockIdxName;
+        }
+
         protected internal void AdjustRuler()
         {
             if (_lineCounter + 2 <= Ruler.EndValue) return;
@@ -133,7 +204,7 @@ namespace NoFuture.Timeline
                 RuleLineSpacing = Ruler.RuleLineSpacing
             };
             Ruler = nRule;
-            foreach (var blk in _blocks)
+            foreach (var blk in Blocks)
             {
                 blk.Ruler = nRule;
             }            
