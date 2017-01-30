@@ -55,6 +55,8 @@ namespace NoFuture.Timeline
             #region fields
             private static int _arrowImmediateShaftLen = 4;
             private static int _arrowTailLen = 6;
+            private static string _arrowHeadRight;
+            private static string _arrowHeadLeft;
             #endregion
 
             #region properties
@@ -86,20 +88,24 @@ namespace NoFuture.Timeline
             {
                 get
                 {
-                    return string.Format("{0}{1}",
-                        GraphChars.DirectLeft,
-                        new string(GraphChars.DirectShaft, _arrowImmediateShaftLen));
+                    if(string.IsNullOrWhiteSpace(_arrowHeadRight))
+                        _arrowHeadRight =
+                            $"{GraphChars.DirectLeft}{new string(GraphChars.DirectShaft, _arrowImmediateShaftLen)}";
+                    return _arrowHeadRight;
                 }
+                set { _arrowHeadRight = value; }
             }
 
             public static string ArrowHeadLeft
             {
                 get
                 {
-                    return string.Format("{0}{1}",
-                        new String(GraphChars.DirectShaft, _arrowImmediateShaftLen),
-                        GraphChars.DirectRight);
+                    if(string.IsNullOrWhiteSpace(_arrowHeadLeft))
+                        _arrowHeadLeft =
+                            $"{new String(GraphChars.DirectShaft, _arrowImmediateShaftLen)}{GraphChars.DirectRight}";
+                    return _arrowHeadLeft;
                 }
+                set { _arrowHeadLeft = value; }
             }
             #endregion 
         }

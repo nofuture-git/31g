@@ -127,7 +127,10 @@ namespace NoFuture.Timeline
 
             if (_liveBlock!= null && !searchBlk.Equals(_liveBlock))
             {
-                var arrow = new Arrow(_liveBlock, searchBlk) {StartValue = _lineCounter};
+                var arrow = new Arrow(_liveBlock, searchBlk)
+                {
+                    StartValue = _lineCounter
+                };
                 var isInnerArrow = _liveBlock.IsInnerBlock
                                    && searchBlk.IsInnerBlock
                                    && _liveBlock.MyOuterBlock.Equals(searchBlk.MyOuterBlock);
@@ -148,7 +151,6 @@ namespace NoFuture.Timeline
         {
             if (_blockIdxName.ContainsKey(idx))
             {
-                System.Diagnostics.Debug.WriteLine($"{idx} -> {_blockIdxName[idx]}");
                 return Blk(_blockIdxName[idx]);
             }
             _liveBlock = null;

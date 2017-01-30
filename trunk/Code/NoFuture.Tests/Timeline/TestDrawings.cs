@@ -600,7 +600,7 @@ namespace NoFuture.Tests.Timeline
             var testArrowText = "Thebes sacked";
 
             var testSubject = new Arrow();
-            var testResult = testSubject.ComposeToRightArrow(testRangeBetwixt, testPriorLen, testLeftBlockLen, testArrowText);
+            var testResult = testSubject.ComposeFromLeftToRightArrow(testRangeBetwixt, testPriorLen, testLeftBlockLen, testArrowText);
 
             Assert.IsNotNull(testResult);
 
@@ -617,7 +617,7 @@ namespace NoFuture.Tests.Timeline
             var testArrowText = "Thebes sacked";
 
             var testSubject = new Arrow();
-            var testResult = testSubject.ComposeToLeftArrow(testRangeBetwixt, testPriorLen, testRightBlockLen, testArrowText);
+            var testResult = testSubject.ComposeFromRightToLeftArrow(testRangeBetwixt, testPriorLen, testRightBlockLen, testArrowText);
 
             Assert.IsNotNull(testResult);
 
@@ -1075,7 +1075,15 @@ namespace NoFuture.Tests.Timeline
 		'Adapter',
 		'Dal'
 	],
-	'DbLayer':[]
+    'AuthLayer' : [
+        'Site',
+        'Service'
+    ],
+    'DataLayer' : [
+	    'Db01',
+        'Db02',
+        'Db03'
+    ]
 }
 ";
             var myFPlate = new FastPlate("CrazyRoutes", 8, new Rule { StartValue = 1, EndValue = 16, RuleLineSpacing = 2 }, myExampleJson);
@@ -1085,13 +1093,24 @@ namespace NoFuture.Tests.Timeline
                 System.Diagnostics.Debug.WriteLine($"{key} {idx2Nm[key]}");
             }
 
-            myFPlate.Blk(1.1).Txt("GET")
-                .Blk(1.3).Txt("Get")
+            myFPlate.Blk(2.0)
+                .Txt("GET")
+                .Blk(1.1)
+                .Blk(4.1)
+                .Blk(4.2)
+                .Blk(5.3)
+                .Blk(4.2)
+                .Blk(4.1)
+                .Blk(1.1)
+                .Blk(1.2)
+                .Blk(3.1)
+                .Blk(3.2)
                 .Blk(3.3)
-                .Blk(4.0);
+                .Blk(5.1)
+                ;
 
 
-            var myBlk = myFPlate.GetBlockByName("DbLayer");
+            var myBlk = myFPlate.GetBlockByName("DataLayer");
             Assert.IsNotNull(myBlk);
             System.Diagnostics.Debug.WriteLine(myFPlate.ToString());
         }
