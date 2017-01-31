@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Xml;
 using NoFuture.Exceptions;
+using NoFuture.Util;
 
 namespace NoFuture.Read.Vs
 {
@@ -17,10 +19,10 @@ namespace NoFuture.Read.Vs
         #endregion
 
         #region internal types
-        public class ProjReference
+        public class BinReference
         {
             private readonly ProjFile _projFile;
-            public ProjReference(ProjFile owningFile)
+            public BinReference(ProjFile owningFile)
             {
                 _projFile = owningFile;
             }
@@ -47,8 +49,7 @@ namespace NoFuture.Read.Vs
 
         #region fields
         private readonly XmlNamespaceManager _nsMgr;
-        private readonly string _projDir;
-        private readonly List<ProjReference> _asmRefCache = new List<ProjReference>();
+        private readonly List<BinReference> _asmRefCache = new List<BinReference>();
         private bool _isChanged;
         #endregion
 
@@ -59,7 +60,6 @@ namespace NoFuture.Read.Vs
             _nsMgr.AddNamespace(NS, DOT_NET_PROJ_XML_NS);
 
             ValidateProjFile(vsprojPath);
-            _projDir = Path.GetDirectoryName(_fileFullName) ?? TempDirectories.AppData;
         }
         #endregion
 
@@ -141,28 +141,128 @@ namespace NoFuture.Read.Vs
                 SetInnerText("//{0}:PropertyGroup/{0}:PostBuildEvent", value);
             }
         }
+
+        public string DebugBin
+        {
+            get
+            {
+                var pPath = GetInnerText("//{0}:PropertyGroup[contains(@Condition,'Debug|AnyCPU')]/{0}:OutputPath");
+                return !string.IsNullOrWhiteSpace(pPath) ? Path.Combine(DirectoryName, pPath) : null;
+            }
+        }
         #endregion
 
         #region instance methods
+
+        /// <summary>
+        /// Attempts to replace all 'ProjectReference' with 'Reference'.
+        /// </summary>
+        /// <returns>The number of nodes replaced</returns>
+        /// <remarks>
+        /// Is expecting to find binary copies of each 'ProjectReference' in 
+        /// the <see cref="DebugBin"/> folder.
+        /// </remarks>
+        public int TryReplaceToBinaryRef()
+        {
+            var debugBin = DebugBin;
+            if(string.IsNullOrWhiteSpace(debugBin) || !Directory.Exists(debugBin))
+                throw new ItsDeadJim("Cannot locate a 'bin' folder from which to make .dll copies.");
+
+            var projNode = _xmlDocument.SelectSingleNode($"/{NS}:Project", _nsMgr);
+            if (projNode == null)
+                return 0;
+
+            //find all the proj refs
+            var projRefs = _xmlDocument.SelectNodes($"//{NS}:ItemGroup/{NS}:ProjectReference", _nsMgr);
+            if (projRefs == null)
+                return 0;
+
+            //setup a dir to binary dll's to
+            var destLibDir = Path.Combine(DirectoryName, "lib");
+            if (!Directory.Exists(destLibDir))
+                Directory.CreateDirectory(destLibDir);
+
+            //get a hash of files to proj ref names
+            var binDict = GetProjRefPath2Name();
+            if (!binDict.Any())
+                throw new ItsDeadJim($"There are no .dll files located in {debugBin}.");
+
+            var libBin = new List<string>();
+
+            //set aside mem for container node of all proj refs
+            XmlNode projRefItemGrpNode = null;
+
+            //copy each proj ref from debug bin to lib
+            foreach (var projRefNode in projRefs)
+            {
+                var projRefElem = projRefNode as XmlElement;
+                if (projRefElem == null || !projRefElem.HasAttributes)
+                    continue;
+                //cache this for later, only need it once
+                if(projRefItemGrpNode == null)
+                    projRefItemGrpNode = projRefElem.ParentNode;
+
+                var includeAttr = projRefElem.Attributes["Include"];
+                if (string.IsNullOrWhiteSpace(includeAttr?.Value))
+                    continue;
+                var projPath = Path.Combine(DirectoryName, includeAttr.Value);
+                if(!File.Exists(projPath))
+                    throw new RahRowRagee($"The ProjectReference to '{projPath}' does not exisit.");
+
+                var simpleAsmName =
+                    GetInnerText("//{0}:ItemGroup/{0}:ProjectReference[@Include='" + includeAttr.Value + "']/{0}:Name");
+                var dllTuple = binDict.FirstOrDefault(x => x.Item2 == simpleAsmName);
+                if(dllTuple == null)
+                    throw new RahRowRagee($"Could not find a matching .dll for the ProjectRefernce with the Name of '{simpleAsmName}'");
+
+                var libFullName = Path.Combine(destLibDir, dllTuple.Item1.Name);
+                libBin.Add(libFullName);
+
+                File.Copy(dllTuple.Item1.FullName, libFullName, true);
+            }
+            if (projRefItemGrpNode == null)
+                return 0;
+
+            //drop the entire item group for ProjectReference
+            
+            projNode.RemoveChild(projRefItemGrpNode);
+            _isChanged = true;
+
+            //now add each lib\dll path as a binary ref
+            foreach (var dllLib in libBin)
+            {
+                if (!TryAddReferenceEntry(dllLib, true))
+                    throw new RahRowRagee($"Could not add a Reference node for {dllLib}");
+            }
+            return libBin.Count;
+        }
 
         /// <summary>
         /// Attempts to add the assembly at <see cref="assemblyPath"/>
         /// to the project's references
         /// </summary>
         /// <param name="assemblyPath"></param>
+        /// <param name="resolveToPartialPath">
+        /// Will resolve the hint path to a relative path off the project's root 
+        /// whenever the <see cref="assemblyPath"/> shares the <see cref="BaseXmlDoc.DirectoryName"/>
+        /// </param>
         /// <returns></returns>
         /// <remarks>
         /// MsBuild style environment variables are handled (e.g. $(MY_ENV_VAR) )
         /// </remarks>
-        public bool TryAddReferenceEntry(string assemblyPath)
+        public bool TryAddReferenceEntry(string assemblyPath, bool resolveToPartialPath = false)
         {
             if (string.IsNullOrWhiteSpace(assemblyPath))
                 return false;
 
             //keep local copy to assign hintpath AS-IS 
             var tempPath = assemblyPath;
+            if (resolveToPartialPath)
+            {
+                NfPath.TryGetRelPath(DirectoryName, ref tempPath);
+            }
 
-            var projRef = GetSingleRefernceNode(assemblyPath);
+            var projRef = GetSingleBinRefernceNode(assemblyPath);
 
             if (string.IsNullOrWhiteSpace(projRef?.AssemblyFullName))
                 return false;
@@ -435,7 +535,7 @@ namespace NoFuture.Read.Vs
         /// </summary>
         /// <param name="assemblyPath"></param>
         /// <returns></returns>
-        public ProjReference GetSingleRefernceNode(string assemblyPath)
+        public BinReference GetSingleBinRefernceNode(string assemblyPath)
         {
 
             if (string.IsNullOrWhiteSpace(assemblyPath))
@@ -444,7 +544,7 @@ namespace NoFuture.Read.Vs
             if (_asmRefCache.Any(x => x.SearchPath == assemblyPath))
                 return _asmRefCache.First(x => x.SearchPath == assemblyPath);
 
-            _asmRefCache.Add(new ProjReference(this){SearchPath = assemblyPath});
+            _asmRefCache.Add(new BinReference(this){SearchPath = assemblyPath});
 
             var cache = _asmRefCache.First(x => x.SearchPath == assemblyPath);
 
@@ -491,6 +591,19 @@ namespace NoFuture.Read.Vs
         #endregion
 
         #region internal instance methods
+
+        internal List<Tuple<FileSystemInfo, string>> GetProjRefPath2Name()
+        {
+            var binDict = new List<Tuple<FileSystemInfo, string>>();
+            var directoryInfo = new DirectoryInfo(DebugBin);
+            foreach (var dllFile in directoryInfo.EnumerateFileSystemInfos("*.dll", SearchOption.TopDirectoryOnly))
+            {
+                var asmName = System.Reflection.AssemblyName.GetAssemblyName(dllFile.FullName);
+                binDict.Add(new Tuple<FileSystemInfo, string>(dllFile, asmName.Name));
+            }
+            return binDict;
+        }
+
         internal bool IsExistingCompileItem(string fl) { return GetSingleCompileItemNode(fl) != null; }
 
         internal bool IsExistingContentItem(string fl) { return GetSingleContentItemNode(fl) != null; }
@@ -600,7 +713,7 @@ namespace NoFuture.Read.Vs
             if (allSuchNodes == null || allSuchNodes.Count <= 0)
             {
                 if (!Path.IsPathRooted(srcCodeFile))
-                    srcCodeFile = Path.Combine(_projDir, srcCodeFile);
+                    srcCodeFile = Path.Combine(DirectoryName, srcCodeFile);
 
                 files.Add(srcCodeFile);
 
@@ -641,7 +754,7 @@ namespace NoFuture.Read.Vs
             {
                 var fl = files[i];
                 if (!Path.IsPathRooted(fl))
-                    files[i] = Path.Combine(_projDir, fl);
+                    files[i] = Path.Combine(DirectoryName, fl);
             }
 
             //filter to only those that exist and are distinct
@@ -655,7 +768,7 @@ namespace NoFuture.Read.Vs
             for (var i = 0; i < files.Count; i++)
             {
                 var fli = files[i];
-                if (Util.NfPath.TryGetRelPath(_projDir, ref fli))
+                if (Util.NfPath.TryGetRelPath(DirectoryName, ref fli))
                 {
                     files[i] = fli;
                 }

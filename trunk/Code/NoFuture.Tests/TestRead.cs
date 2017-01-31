@@ -29,6 +29,11 @@ namespace NoFuture.Tests
         [TestInitialize]
         public void Init()
         {
+            //InitConfigs();
+        }
+
+        public void InitConfigs()
+        {
             var regexCatalog = new NoFuture.Shared.RegexCatalog();
             Regex2Values = new Hashtable
             {
@@ -47,7 +52,20 @@ namespace NoFuture.Tests
             File.Copy(TestAssembly.UnitTestsRoot + @"\ExampleDlls\TestTransformConfig00.xml", TEST_TRANS00_CONFIG, true);
 
             System.Threading.Thread.Sleep(500);
-            
+        }
+
+        [TestMethod]
+        public void TestTryReplaceToBinaryRef()
+        {
+            var testSubject = new NoFuture.Read.Vs.ProjFile(TEST_CSPROJ);
+            Assert.IsNotNull(testSubject);
+
+            var testResults = testSubject.TryReplaceToBinaryRef();
+            Assert.AreNotEqual(0, testResults);
+
+            var testRslt = Path.GetDirectoryName(TEST_CSPROJ);
+            testRslt = Path.Combine(testRslt, "DoNotUse_VsProjFileTests-COPY.csproj");
+            testSubject.SaveAs(testRslt);
         }
 
         [TestMethod]
@@ -96,7 +114,7 @@ namespace NoFuture.Tests
             Assert.IsNotNull(testSubject);
 
             var testProjRef =
-                testSubject.GetSingleRefernceNode(
+                testSubject.GetSingleBinRefernceNode(
                     TestAssembly.UnitTestsRoot + @"\ExampleDlls\NHibernate.dll");
 
             Assert.IsNotNull(testProjRef);

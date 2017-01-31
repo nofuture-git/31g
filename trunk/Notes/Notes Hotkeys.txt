@@ -40,7 +40,8 @@
 	"explorer" : "Windows Explorer",
 	"mstsc" : "Remote Desktop",
 	"msinfo32" : "Windows Info",
-	"cleanmgr.exe" : "Disk Cleanup"
+	"cleanmgr.exe" : "Disk Cleanup",
+	"mmc" : "add remove snap ins"
 }
 "windowsKey" : {
 	"win + [left|right] arrow" : "move window over",

@@ -61,24 +61,24 @@ namespace NoFuture.Timeline
             }
         }
 
-        public FastPlate(string plateTitle, int? dfWidth, Rule rule, string jsonBlockInnerBlocks) : this(plateTitle, dfWidth, rule)
+        public FastPlate(string plateTitle, int? dfWidth, Rule rule, Hashtable blocks) : this(plateTitle, dfWidth, rule)
         {
-            if (string.IsNullOrWhiteSpace(jsonBlockInnerBlocks))
+            if (blocks == null)
                 return;
-            var myBlocks = JsonConvert.DeserializeObject<Hashtable>(jsonBlockInnerBlocks);
+
             var c = 0.0D;
-            foreach (var i in myBlocks.Keys)
+            foreach (var i in blocks.Keys)
             {
                 var blkNm = i?.ToString();
                 if (blkNm == null)
                     continue;
-                var blk = new Block {Ruler = Ruler, Title = blkNm };
+                var blk = new Block { Ruler = Ruler, Title = blkNm };
                 c += 1.0D;
                 c = Math.Floor(c);
                 Blocks.Add(blk);
                 _blockIdxName.Add(c, blkNm);
 
-                var innerBlks = myBlocks[i] as IEnumerable;
+                var innerBlks = blocks[i] as IEnumerable;
                 if (innerBlks == null)
                     continue;
                 foreach (var j in innerBlks)
@@ -94,10 +94,16 @@ namespace NoFuture.Timeline
                     };
                     blk.AddInnerBlock(iBlk);
                     c += 0.1D;
-                    c = (double) Math.Round((decimal) c, 1);
+                    c = (double)Math.Round((decimal)c, 1);
                     _blockIdxName.Add(c, iBlkNm);
                 }
             }
+
+        }
+
+        public FastPlate(string plateTitle, int? dfWidth, Rule rule, string jsonBlockInnerBlocks) : this(plateTitle, dfWidth, rule, JsonConvert.DeserializeObject<Hashtable>(jsonBlockInnerBlocks))
+        {
+
         }
         #endregion
 

@@ -1060,6 +1060,37 @@ namespace NoFuture.Tests.Timeline
         }
 
         [TestMethod]
+        public void TestFastPlateHashTableExample()
+        {
+            var myHashTable = new System.Collections.Hashtable()
+            {
+                {"UserAgent", new System.Collections.ArrayList()},
+                {"WebLayer", new System.Collections.ArrayList {"Module", "Ctrl", "View"}},
+                {"AppLayer", new System.Collections.ArrayList { "Provider", "Adapter", "Dal"}},
+                {"AuthLayer", new System.Collections.ArrayList {"Site", "Service"}},
+                {"DataLayer", new System.Collections.ArrayList { "Db01", "Db02", "Db03"}},
+            };
+            var myFPlate = new FastPlate("CrazyRoutes", 8, new Rule {StartValue = 1, EndValue = 16, RuleLineSpacing = 2},
+                myHashTable);
+            myFPlate.Blk(2.0)
+                .Txt("GET")
+                .Blk(1.1)
+                .Blk(4.1)
+                .Blk(4.2)
+                .Blk(5.3)
+                .Blk(4.2)
+                .Blk(4.1)
+                .Blk(1.1)
+                .Blk(1.2)
+                .Blk(3.1)
+                .Blk(3.2)
+                .Blk(3.3)
+                .Blk(5.1)
+                ;
+            System.Diagnostics.Debug.WriteLine(myFPlate.ToString());
+        }
+
+        [TestMethod]
         public void TestFastPlateJsonExample()
         {
             var myExampleJson = @"
