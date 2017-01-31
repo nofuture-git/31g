@@ -162,7 +162,7 @@ namespace NoFuture.Read.Vs
         /// Is expecting to find binary copies of each 'ProjectReference' in 
         /// the <see cref="DebugBin"/> folder.
         /// </remarks>
-        public int TryReplaceToBinaryRef()
+        public int TryReplaceToBinaryRef(bool useExactAsmNameMatch = false)
         {
             var debugBin = DebugBin;
             if(string.IsNullOrWhiteSpace(debugBin) || !Directory.Exists(debugBin))
@@ -224,14 +224,13 @@ namespace NoFuture.Read.Vs
                 return 0;
 
             //drop the entire item group for ProjectReference
-            
             projNode.RemoveChild(projRefItemGrpNode);
             _isChanged = true;
 
             //now add each lib\dll path as a binary ref
             foreach (var dllLib in libBin)
             {
-                if (!TryAddReferenceEntry(dllLib, true))
+                if (!TryAddReferenceEntry(dllLib, useExactAsmNameMatch, true))
                     throw new RahRowRagee($"Could not add a Reference node for {dllLib}");
             }
             return libBin.Count;
@@ -242,6 +241,7 @@ namespace NoFuture.Read.Vs
         /// to the project's references
         /// </summary>
         /// <param name="assemblyPath"></param>
+        /// <param name="useExactAsmNameMatch"></param>
         /// <param name="resolveToPartialPath">
         /// Will resolve the hint path to a relative path off the project's root 
         /// whenever the <see cref="assemblyPath"/> shares the <see cref="BaseXmlDoc.DirectoryName"/>
@@ -250,7 +250,7 @@ namespace NoFuture.Read.Vs
         /// <remarks>
         /// MsBuild style environment variables are handled (e.g. $(MY_ENV_VAR) )
         /// </remarks>
-        public bool TryAddReferenceEntry(string assemblyPath, bool resolveToPartialPath = false)
+        public bool TryAddReferenceEntry(string assemblyPath, bool useExactAsmNameMatch = false, bool resolveToPartialPath = false)
         {
             if (string.IsNullOrWhiteSpace(assemblyPath))
                 return false;
@@ -260,9 +260,11 @@ namespace NoFuture.Read.Vs
             if (resolveToPartialPath)
             {
                 NfPath.TryGetRelPath(DirectoryName, ref tempPath);
+                if (!Path.IsPathRooted(tempPath))
+                    tempPath = ".\\" + tempPath;
             }
 
-            var projRef = GetSingleBinRefernceNode(assemblyPath);
+            var projRef = GetSingleBinRefernceNode(assemblyPath, useExactAsmNameMatch);
 
             if (string.IsNullOrWhiteSpace(projRef?.AssemblyFullName))
                 return false;
@@ -534,8 +536,11 @@ namespace NoFuture.Read.Vs
         /// Gets this <see cref="assemblyPath"/> as a property reference.
         /// </summary>
         /// <param name="assemblyPath"></param>
+        /// <param name="useExactAsmNameMatch">
+        /// Optional, specify that the Assembly Names must be exact matches
+        /// </param>
         /// <returns></returns>
-        public BinReference GetSingleBinRefernceNode(string assemblyPath)
+        public BinReference GetSingleBinRefernceNode(string assemblyPath, bool useExactAsmNameMatch = false)
         {
 
             if (string.IsNullOrWhiteSpace(assemblyPath))
@@ -563,8 +568,37 @@ namespace NoFuture.Read.Vs
                 return null;
 
             var assemblyName = System.Reflection.AssemblyName.GetAssemblyName(assemblyPath);
-            var refNode = _xmlDocument.SelectSingleNode(string.Format(
+
+            XmlNode refNode = null;
+
+            if (useExactAsmNameMatch)
+            {
+                var closeMatches = _xmlDocument.SelectNodes(string.Format(
                     "//{0}:ItemGroup/{0}:Reference[contains(@Include,'{1}')]", NS, assemblyName.Name), _nsMgr);
+                if (closeMatches != null)
+                {
+                    foreach (var cm in closeMatches)
+                    {
+                        var cmElem = cm as XmlElement;
+                        var includeAttr = cmElem?.Attributes["Include"];
+                        if (string.IsNullOrWhiteSpace(includeAttr?.Value))
+                            continue;
+                        var includeAsmName = new AssemblyName(includeAttr.Value);
+                        if (System.Reflection.AssemblyName.ReferenceMatchesDefinition(assemblyName, includeAsmName))
+                        {
+                            refNode = cmElem;
+                            break;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                refNode = _xmlDocument.SelectSingleNode(string.Format(
+                    "//{0}:ItemGroup/{0}:Reference[contains(@Include,'{1}')]", NS, assemblyName.Name), _nsMgr);
+            }
+
+
             cache.AssemblyFullName = assemblyName.FullName;
             cache.AssemblyName = assemblyName.Name;
 
