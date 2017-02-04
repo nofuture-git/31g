@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using NoFuture.Tokens;
+using NoFuture.Tokens.ParseResults;
 
 namespace NoFuture.Rand.Data.NfHtml
 {

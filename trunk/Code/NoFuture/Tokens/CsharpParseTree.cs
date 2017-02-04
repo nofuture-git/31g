@@ -1,16 +1,11 @@
-﻿using System.Collections.Generic;
-using System.Text;
+﻿using System.Text;
 using Antlr4.Runtime;
 using Antlr4.Runtime.Tree;
 using NoFuture.Antlr.Grammers;
+using NoFuture.Tokens.ParseResults;
 
 namespace NoFuture.Tokens
 {
-    public class CsharpParseResults
-    {
-        private readonly List<string>  _catchBlocks = new List<string>();
-        public List<string> CatchBlocks { get { return _catchBlocks; } }
-    }
     public class CsharpParseTree : CSharp4BaseListener
     {
         private readonly CsharpParseResults _parseResults = new CsharpParseResults();

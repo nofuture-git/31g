@@ -1864,7 +1864,29 @@ namespace NoFuture.Tests.Gen
             var testInput = "System.Collections.Generic.List`1[SomeSecondDll.MyFirstMiddleClass]";
             var testResult = Settings.LangStyle.TransformClrTypeSyntax(testInput);
             Assert.IsNotNull(testResult);
+            
             System.Diagnostics.Debug.WriteLine(testResult);
+            Assert.IsTrue(Settings.DefaultLang == CgLangs.Cs);
+            Assert.AreEqual("System.Collections.Generic.List<SomeSecondDll.MyFirstMiddleClass>",testResult);
+        }
+
+        [TestMethod]
+        public void TestTransformClrTypeSyntax_HyperComplex()
+        {
+            var testInput =
+                "NeedItInIl.DomainAdapterBase`2[" +
+                             "[AThirdDll.Whatever, AThirdDll, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]," +
+                             "[System.Tuple`3[" +
+                                   "[System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]," +
+                                   "[System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]," +
+                                   "[System.Collections.Generic.IEnumerable`1[" +
+                                          "[MoreBinaries.DomainObject+MyInnerType, MoreBinaries, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]" +
+                                   "], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]" +
+                             "], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]" +
+                                             "]";
+            Assert.IsTrue(Settings.DefaultLang == CgLangs.Cs);
+            var testResult = NoFuture.Gen.Settings.LangStyle.TransformClrTypeSyntax(testInput);
+            Assert.AreEqual("NeedItInIl.DomainAdapterBase<AThirdDll.Whatever,System.Tuple<string,int,System.Collections.Generic.IEnumerable<MoreBinaries.DomainObject.MyInnerType>>>", testResult);
         }
 
         [TestMethod]

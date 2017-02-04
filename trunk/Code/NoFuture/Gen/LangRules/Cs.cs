@@ -8,6 +8,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using NoFuture.Shared;
 using NoFuture.Tokens;
+using NoFuture.Tokens.ParseResults;
 using NoFuture.Util;
 
 namespace NoFuture.Gen.LangRules
@@ -579,18 +580,18 @@ namespace NoFuture.Gen.LangRules
                 typeName = clsGrpGroups[2].Value;
             }
 
-            if (!nsRegex.IsMatch(buffer)) return !String.IsNullOrWhiteSpace(typeName);
+            if (!nsRegex.IsMatch(buffer)) return !string.IsNullOrWhiteSpace(typeName);
 
             var nsGrps = nsRegex.Matches(buffer);
             if (nsGrps.Count <= 0)
-                return !String.IsNullOrWhiteSpace(typeName);
+                return !string.IsNullOrWhiteSpace(typeName);
             var nsGrpGroups = nsGrps[0].Groups;
             if (nsGrpGroups.Count <= 2)
-                return !String.IsNullOrWhiteSpace(typeName);
+                return !string.IsNullOrWhiteSpace(typeName);
 
-            var nsPart = String.Format("{0}.", nsGrpGroups[2].Value);
-            typeName = String.Format("{0}{1}", nsPart, typeName);
-            return !String.IsNullOrWhiteSpace(typeName);
+            var nsPart = $"{nsGrpGroups[2].Value}.";
+            typeName = $"{nsPart}{typeName}";
+            return !string.IsNullOrWhiteSpace(typeName);
         }
 
         public string[] CleanupPdbLinesCodeBlock(string[] codeBlockLines)
@@ -673,53 +674,14 @@ namespace NoFuture.Gen.LangRules
 
         public string TransformClrTypeSyntax(string typeToString)
         {
-            if (String.IsNullOrWhiteSpace(typeToString))
+            if (string.IsNullOrWhiteSpace(typeToString))
                 return "object";
 
-            if (typeToString.Contains("+"))
-                typeToString = typeToString.Replace("+", ".");//inner types
+            var tnpi = Tokens.Etx.ParseIl(typeToString);
+            var bldr = new StringBuilder();
+            ConvertToCs(tnpi, bldr);
+            return bldr.ToString().Replace("+",".");
 
-            if (Regex.IsMatch(typeToString, @"\x60[1-9]\x5B"))
-            {
-                for (var i = 1; i < 10; i++)
-                {
-                    var ilGenericDecl = String.Format("`{0}[", i);
-                    typeToString = typeToString.Replace(ilGenericDecl, "<");
-                }
-                typeToString = typeToString.Replace("]", ">");
-            }
-
-            //having the il Generic w/o being followed by '['
-            if (Regex.IsMatch(typeToString, "\x60[1-9]"))
-            {
-                if (typeToString.Contains("`1"))
-                    typeToString = typeToString.Replace("`1", "<A>");
-                if (typeToString.Contains("`2"))
-                    typeToString = typeToString.Replace("`2", "<A,B>");
-                if (typeToString.Contains("`3"))
-                    typeToString = typeToString.Replace("`3", "<A,B,C>");
-                if (typeToString.Contains("`4"))
-                    typeToString = typeToString.Replace("`4", "<A,B,C,D>");
-                if (typeToString.Contains("`5"))
-                    typeToString = typeToString.Replace("`5", "<A,B,C,D,E>");
-                if (typeToString.Contains("`6"))
-                    typeToString = typeToString.Replace("`6", "<A,B,C,D,E,F>");
-                if (typeToString.Contains("`7"))
-                    typeToString = typeToString.Replace("`7", "<A,B,C,D,E,F,G>");
-                if (typeToString.Contains("`8"))
-                    typeToString = typeToString.Replace("`8", "<A,B,C,D,E,F,G,H>");
-                if (typeToString.Contains("`9"))
-                    typeToString = typeToString.Replace("`9", "<A,B,C,D,E,F,G,H,I>");
-            }
-
-            typeToString = Lexicon.ValueType2Cs.ContainsKey(typeToString)
-                ? Lexicon.ValueType2Cs[typeToString]
-                : typeToString;
-
-            //use ref instead of out since out requires init before unwind call stack
-            if (typeToString.EndsWith("&"))
-                typeToString = String.Format("ref {0}", typeToString.Replace("&", ""));
-            return typeToString;
         }
 
         public string TransformClrTypeSyntax(Type type)
@@ -777,12 +739,12 @@ namespace NoFuture.Gen.LangRules
         public string GenUseIsNotDefaultValueTest(string someTypeName, string variableName)
         {
             if (String.IsNullOrWhiteSpace(variableName))
-                return String.Empty;
+                return string.Empty;
             if (String.IsNullOrWhiteSpace(someTypeName))
-                return String.Format("{0} != null", variableName);
+                return $"{variableName} != null";
 
             if (someTypeName == "System.String" || someTypeName == "string")
-                return String.Format("!string.IsNullOrWhiteSpace({0})", variableName);
+                return $"!string.IsNullOrWhiteSpace({variableName})";
 
             if (IsPrimitiveTypeName(someTypeName))
             {
@@ -796,11 +758,11 @@ namespace NoFuture.Gen.LangRules
                     case "long":
                     case "double":
                     case "decimal":
-                        return String.Format("{0} != 0", variableName);
+                        return $"{variableName} != 0";
                     case "char":
-                        return String.Format("(byte){0} != 0", variableName);
+                        return $"(byte){variableName} != 0";
                     case "bool":
-                        return String.Format("!{0}", variableName);
+                        return $"!{variableName}";
                 }
             }
             return String.Format("{0} != null", variableName);
@@ -859,7 +821,7 @@ namespace NoFuture.Gen.LangRules
             srcFile = RemoveLineComments(srcFile, LINE_COMMENT_CHAR_SEQ);
             srcFile = RemoveBlockComments(srcFile);
 
-            var joinedContent = String.Join("\n", srcFile);
+            var joinedContent = string.Join("\n", srcFile);
             var myXDocFrame = new XDocFrame(C_OPEN_CURLY, C_CLOSE_CURLY);
 
             var mytokens = myXDocFrame.FindEnclosingTokens(joinedContent);
@@ -883,7 +845,7 @@ namespace NoFuture.Gen.LangRules
             return lastLine < srcFile.Length;
         }
 
-        public string BlockMarker { get { return BLOCK_MARKER; } }
+        public string BlockMarker => BLOCK_MARKER;
 
         public bool IsOddNumberEnclosures(string[] codeBlockLines)
         {
@@ -936,6 +898,45 @@ namespace NoFuture.Gen.LangRules
                     tokenCount -= 1;
             }
             return tokenCount;
+        }
+
+        internal void ConvertToCs(NfTypeNameParseItem tnpi, StringBuilder bldr)
+        {
+            bldr = bldr ?? new StringBuilder();
+            if (tnpi == null)
+                return;
+
+            var fname = tnpi.FullName;
+            if (ValueTypeToLangAlias.ContainsKey(fname))
+                fname = ValueTypeToLangAlias[fname];
+
+            bldr.Append(fname);
+
+            var hasGenCounter = tnpi.GenericCounter != null && tnpi.GenericCounter > 0;
+            var hasGenericItems = tnpi.GenericItems != null && tnpi.GenericItems.Any();
+
+            if (!hasGenCounter && !hasGenericItems)
+                return;
+
+            if (hasGenCounter && !hasGenericItems)
+            {
+                bldr.Append($"<{new string(',', tnpi.GenericCounter.Value)}>");
+                return;
+            }
+
+            var genericItemsCs = new List<string>();
+            foreach (var typeNameParseItem in tnpi.GenericItems)
+            {
+                var iBldr = new StringBuilder();
+                ConvertToCs(typeNameParseItem, iBldr);
+                genericItemsCs.Add(iBldr.ToString());
+            }
+            if (!genericItemsCs.Any())
+                return;
+
+            bldr.Append("<");
+            bldr.Append(string.Join(",", genericItemsCs));
+            bldr.Append(">");
         }
     }
 }

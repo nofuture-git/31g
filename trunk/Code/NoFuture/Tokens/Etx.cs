@@ -11,6 +11,23 @@ namespace NoFuture.Tokens
     public static class Etx
     {
         /// <summary>
+        /// Helper method to get parsed results without having a reference to NoFuture.Antlr
+        /// </summary>
+        /// <param name="typeName"></param>
+        /// <returns></returns>
+        public static ParseResults.NfTypeNameParseItem ParseIl(string typeName)
+        {
+            if (string.IsNullOrWhiteSpace(typeName))
+                return null;
+
+            var rslts = TypeNameParseTree.InvokeParse(typeName);
+            if (rslts == null || !rslts.Any())
+                return null;
+
+            return rslts.First();
+        }
+
+        /// <summary>
         /// Helper method to get <see cref="rawHtml"/> as a <see cref="HtmlDocument"/>
         /// </summary>
         /// <param name="rawHtml"></param>

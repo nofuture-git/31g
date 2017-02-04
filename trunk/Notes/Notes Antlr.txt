@@ -53,6 +53,7 @@ WS : ['\t' '\r' '\n' ' ' ]+ -> skip ; //all empty space chars are getting ignore
  - naming matters:
   - parser rules must be in camel-case, when the 
     rule starts with an upper case letter it will not work
+	 - returns error(99) "grammer ... has no rules"
   - the name of the grammer and the name of the file must match 
     (probably since its made in Java).
 ----

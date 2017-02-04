@@ -58,10 +58,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AspNetParseTree.cs" />
+    <Compile Include="ParseResults\CsharpParseResults.cs" />
     <Compile Include="CsharpParseTree.cs" />
     <Compile Include="Ctor.cs" />
     <Compile Include="ErlangConfigParseTree.cs" />
     <Compile Include="Etx.cs" />
+    <Compile Include="ParseResults\Erlang.cs" />
+    <Compile Include="ParseResults\HtmlParseResults.cs" />
+    <Compile Include="ParseResults\NfTypeNameParseItem.cs" />
+    <Compile Include="TypeNameParseTree.cs" />
     <Compile Include="XDocFrame.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
