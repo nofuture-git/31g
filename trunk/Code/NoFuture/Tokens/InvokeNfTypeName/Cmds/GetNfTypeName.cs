@@ -1,15 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using NoFuture.Util;
+using NoFuture.Exceptions;
 using NoFuture.Util.NfConsole;
-using NoFuture.Util.NfType;
+using NoFuture.Util.NfType.InvokeCmds;
 
 namespace NoFuture.Tokens.InvokeNfTypeName.Cmds
 {
-    public class GetNfTypeName : CmdBase<NfTypeName>, ICmd
+    public class GetNfTypeName : CmdBase<NfTypeNameParseItem>, ICmd
     {
         public GetNfTypeName(Program myProgram):base(myProgram)
         {
@@ -17,7 +14,24 @@ namespace NoFuture.Tokens.InvokeNfTypeName.Cmds
 
         public override byte[] Execute(byte[] arg)
         {
-            throw new NotImplementedException();
+            MyProgram.PrintToConsole("GetNfTypeName invoked");
+
+            try
+            {
+                if(arg == null || arg.Length <= 0)
+                    throw new ItsDeadJim("No Type Name given to parse.");
+
+                var f = Etx.ParseIl(Encoding.UTF8.GetString(arg));
+                return JsonEncodedResponse(f);
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine('\n');
+                MyProgram.PrintToConsole(ex);
+                return JsonEncodedResponse(new NfTypeNameParseItem() {Error = ex});
+            }
+
         }
     }
 }

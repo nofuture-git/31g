@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Text;
 using System.IO;
-using System.Reflection;
 using Antlr4.Runtime;
 using Antlr4.Runtime.Tree;
 using NoFuture.Antlr.Grammers;
-using NoFuture.Tokens.ParseResults;
+using NoFuture.Util.NfType.InvokeCmds;
 
 namespace NoFuture.Tokens
 {
@@ -34,7 +32,11 @@ namespace NoFuture.Tokens
             }
             if (context.dotNetAsmName() != null)
             {
-                var netName = new NfTypeNameParseItem {AssemblyFullName = ConcatDotNetAsmName(context.dotNetAsmName())};
+                var netName = new NfTypeNameParseItem
+                {
+                    AssemblyFullName = ConcatDotNetAsmName(context.dotNetAsmName()),
+                    PublicKeyTokenValue = GetPublicKeyTokenValue(context.dotNetAsmName())
+                };
                 results.Add(netName);
             }
             if (context.dotNetName() != null)
@@ -50,6 +52,7 @@ namespace NoFuture.Tokens
         {
             var netName = MyDotNetNames.RemoveFrom(context) ?? new NfTypeNameParseItem();
             netName.AssemblyFullName = ConcatDotNetAsmName(context.dotNetAsmName());
+            netName.PublicKeyTokenValue = GetPublicKeyTokenValue(context.dotNetAsmName());
             netName.FullName = ConcatDotNetName(context.dotNetName());
             MyDotNetNames.Put(context, netName);
         }
@@ -59,6 +62,7 @@ namespace NoFuture.Tokens
             var netName = MyDotNetNames.RemoveFrom(context) ?? new NfTypeNameParseItem();
             netName.FullName = ConcatDotNetName(context.dotNetName());
             netName.AssemblyFullName = ConcatDotNetAsmName(context.dotNetAsmName());
+            netName.PublicKeyTokenValue = GetPublicKeyTokenValue(context.dotNetAsmName());
             var fk = context.GENERIC_COUNTER().GetText() ?? "0";
             fk = fk.Replace("`", string.Empty);
             byte genCount;
@@ -101,9 +105,16 @@ namespace NoFuture.Tokens
 
         }
 
-        internal static AssemblyName ConcatDotNetAsmName(DotNetIlTypeNameParser.DotNetAsmNameContext context)
+        internal static string GetPublicKeyTokenValue(DotNetIlTypeNameParser.DotNetAsmNameContext context)
         {
-            return context == null ? null : new AssemblyName(context.GetText());
+            if (context?.asmPubToken() == null)
+                return "null";
+            return context.asmPubToken().tokenValue().GetText() ?? "null";
+        }
+
+        internal static string ConcatDotNetAsmName(DotNetIlTypeNameParser.DotNetAsmNameContext context)
+        {
+            return context?.GetText();
         }
 
         internal static string ConcatDotNetName(DotNetIlTypeNameParser.DotNetNameContext context)

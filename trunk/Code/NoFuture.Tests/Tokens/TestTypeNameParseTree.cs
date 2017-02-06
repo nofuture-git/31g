@@ -4,6 +4,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NoFuture.Gen;
 using NoFuture.Tokens;
 using NoFuture.Tokens.ParseResults;
+using NoFuture.Util.NfType.InvokeCmds;
 
 namespace NoFuture.Tests.Tokens
 {
@@ -72,7 +73,7 @@ namespace NoFuture.Tests.Tokens
             }
         }
 
-        internal static void PrintTypeItemContent(NfTypeNameParseItem item, int count)
+        internal static void PrintTypeItemContent(NoFuture.Util.NfType.InvokeCmds.NfTypeNameParseItem item, int count)
         {
             System.Diagnostics.Debug.WriteLine($"{new string('\t', count)}{item.FullName}");
             System.Diagnostics.Debug.WriteLine($"{new string('\t', count)}{item.AssemblyFullName}");

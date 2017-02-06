@@ -11,6 +11,7 @@ using NoFuture.Tokens;
 using NoFuture.Tokens.ParseResults;
 using NoFuture.Util;
 using NoFuture.Util.NfType;
+using NoFuture.Util.NfType.InvokeCmds;
 
 namespace NoFuture.Gen.LangRules
 {

@@ -5,6 +5,7 @@ using System.Text;
 using System.Xml;
 using HtmlAgilityPack;
 using Newtonsoft.Json;
+using NoFuture.Util.NfType.InvokeCmds;
 
 namespace NoFuture.Tokens
 {
@@ -15,7 +16,7 @@ namespace NoFuture.Tokens
         /// </summary>
         /// <param name="typeName"></param>
         /// <returns></returns>
-        public static ParseResults.NfTypeNameParseItem ParseIl(string typeName)
+        public static NfTypeNameParseItem ParseIl(string typeName)
         {
             if (string.IsNullOrWhiteSpace(typeName))
                 return null;

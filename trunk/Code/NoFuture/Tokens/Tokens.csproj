@@ -65,7 +65,6 @@
     <Compile Include="Etx.cs" />
     <Compile Include="ParseResults\Erlang.cs" />
     <Compile Include="ParseResults\HtmlParseResults.cs" />
-    <Compile Include="ParseResults\NfTypeNameParseItem.cs" />
     <Compile Include="TypeNameParseTree.cs" />
     <Compile Include="XDocFrame.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

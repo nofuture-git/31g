@@ -64,7 +64,7 @@ namespace NoFuture.Tokens.InvokeNfTypeName
 
         }
 
-        public NfTypeNameProgram(string[] args) : base(args, false)
+        public NfTypeNameProgram(string[] args) : base(args, true)
         {
         }
 
@@ -74,7 +74,7 @@ namespace NoFuture.Tokens.InvokeNfTypeName
         {
             var help = new StringBuilder();
             help.AppendLine(" ----");
-            help.AppendLine(String.Format(" [{0}] ", Assembly.GetExecutingAssembly().GetName().Name));
+            help.AppendLine(string.Format(" [{0}] ", Assembly.GetExecutingAssembly().GetName().Name));
             help.AppendLine("");
             help.AppendLine(" ");
             help.AppendLine(" This exe will open a socket listeners on the ");
@@ -85,7 +85,7 @@ namespace NoFuture.Tokens.InvokeNfTypeName
             help.AppendLine(" Options:");
             help.AppendLine(" -h | -help             Will print this help.");
             help.AppendLine("");
-            help.AppendLine(String.Format(" {0}{1}{2}[INT]      Optional, cmd line port for the ",
+            help.AppendLine(string.Format(" {0}{1}{2}[INT]      Optional, cmd line port for the ",
                 Constants.CMD_LINE_ARG_SWITCH, NfTypeNameProcess.GET_NF_TYPE_NAME_CMD_SWITCH,
                 Constants.CMD_LINE_ARG_ASSIGN));
             help.AppendLine("                                 the NfTypeNameProgram, defaults to app.config.");
@@ -107,7 +107,7 @@ namespace NoFuture.Tokens.InvokeNfTypeName
             if(!Net.IsValidPortNumber(GetNfTypeNamePort))
                 throw new RahRowRagee("the command's ports are either null or invalid " +
                                       $" GetFlattenAssemblyCmdPort is port [{GetNfTypeNamePort}]");
-
+            _taskFactory = new TaskFactory();
             _taskFactory.StartNew(() => HostCmd(new GetNfTypeName(this), GetNfTypeNamePort.Value));
         }
     }

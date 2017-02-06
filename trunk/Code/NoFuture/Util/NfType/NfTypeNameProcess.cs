@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Linq;
 using NoFuture.Exceptions;
 using NoFuture.Util.NfConsole;
 using NoFuture.Tools;
@@ -8,7 +9,7 @@ namespace NoFuture.Util.NfType
 {
     public class NfTypeNameProcess : InvokeConsoleBase
     {
-        public const string GET_NF_TYPE_NAME_CMD_SWITCH = "";
+        public const string GET_NF_TYPE_NAME_CMD_SWITCH = "getNfTypeName";
         public const int DF_NF_TYPENAME_PORT = NfDefaultPorts.NF_TYPE_NAME_PORT;
 
         private readonly InvokeGetNfTypeName _invokeCmd;
@@ -23,7 +24,9 @@ namespace NoFuture.Util.NfType
             var cmdPort = port.GetValueOrDefault(DF_NF_TYPENAME_PORT);
             var args = ConsoleCmd.ConstructCmdLineArgs(GET_NF_TYPE_NAME_CMD_SWITCH, cmdPort.ToString());
 
-            MyProcess = StartRemoteProcess(CustomTools.InvokeNfTypeName, args);
+            MyProcess =
+                System.Diagnostics.Process.GetProcessesByName("NoFuture.Tokens.InvokeNfTypeName").FirstOrDefault() ??
+                StartRemoteProcess(CustomTools.InvokeNfTypeName, args);
 
             _invokeCmd = new InvokeGetNfTypeName
             {
@@ -32,7 +35,7 @@ namespace NoFuture.Util.NfType
             };
         }
 
-        public NfTypeName GetNfTypeName(string ilTypeName)
+        public NfTypeNameParseItem GetNfTypeName(string ilTypeName)
         {
             return _invokeCmd.Receive(ilTypeName);
         }

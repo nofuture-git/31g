@@ -1,18 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
-using NoFuture.Exceptions;
 using NoFuture.Shared;
-using NoFuture.Tools;
 using NoFuture.Util.Binary;
-using NoFuture.Util.NfConsole;
+using NoFuture.Util.NfType.InvokeCmds;
 
 namespace NoFuture.Util.NfType
 {
@@ -24,20 +21,14 @@ namespace NoFuture.Util.NfType
     /// </summary>
     public class NfTypeName
     {
-
-
         #region Fields
         private readonly string _ctorString;
-        private readonly string _version;
-        private readonly string _assemblyName;
-        private readonly string _typeFullName;
-        private readonly string _culture;
         private readonly string _publicKeyToken;
         private readonly string _namespace;
         private readonly string _className;
-        private readonly string _procArch;
-        private static Process _myProgram;
-
+        private readonly AssemblyName _asmName;
+        private readonly List<NfTypeName> _genericArgs = new List<NfTypeName>();
+        private static NfTypeNameProcess _myProcess;
         #endregion
 
         #region Constants
@@ -75,9 +66,9 @@ namespace NoFuture.Util.NfType
         {
             get
             {
-                if (string.IsNullOrWhiteSpace(_typeFullName))
-                    return string.Empty;
-                var myparts = new[] {_typeFullName, _assemblyName, _version, _culture, _publicKeyToken,_procArch};
+                if (string.IsNullOrWhiteSpace(FullName) || string.IsNullOrWhiteSpace(_asmName?.FullName))
+                    return null;
+                var myparts = new[] {FullName, _asmName?.FullName};
                 return string.Join(", ", myparts.Where(n => !string.IsNullOrWhiteSpace(n)));
             }
         }
@@ -86,9 +77,8 @@ namespace NoFuture.Util.NfType
         /// This the namespace and class name
         /// e.g. ('NoFuture.MyDatabase.Dbo.AccountExecutives')
         /// </summary>
-        public virtual string FullName => string.IsNullOrWhiteSpace(_typeFullName)
-            ? $"{_namespace}.{_className}"
-            : $"{_typeFullName}";
+        public virtual string FullName
+            => string.Join(".", new[] { Namespace, ClassName}.Where(x => !string.IsNullOrWhiteSpace(x)));
 
         /// <summary>
         /// This is just the namespace
@@ -106,45 +96,38 @@ namespace NoFuture.Util.NfType
         /// This is just the name part of an assembly's name, no Version, Culture nor PublicKeyToken
         /// e.g. ('NoFuture.MyDatabase') 
         /// </summary>
-        public virtual string AssemblyName => _assemblyName;
+        public virtual string AssemblySimpleName => _asmName?.Name ?? FullName;
 
         /// <summary>
         /// This is the typical fully qualified assembly name having the Version, Culture PublicKeyToken and 
         /// sometimes ProcessorArchitecture.
         /// e.g. ('log4net, Version=1.2.13.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL')
         /// </summary>
-        public virtual string AssemblyFullName
-        {
-            get
-            {
-                var myparts = new[] { _assemblyName, _version, _culture, _publicKeyToken, _procArch };
-                return string.Join(", ", myparts.Where(n => !string.IsNullOrWhiteSpace(n)));
-            }
-        }
+        public virtual string AssemblyFullName => _asmName?.ToString();
 
         /// <summary>
         /// This is just the version part of an assembly name (both key and value)
         /// e.g. ('Version=0.0.0.0')
         /// </summary>
-        public virtual string Version => string.IsNullOrWhiteSpace(_version) ? "Version=0.0.0.0" : _version;
+        public virtual string Version => _asmName?.Version == null ? "Version=0.0.0.0" :  $"Version={_asmName.Version}";
 
         /// <summary>
         /// This is just the culture part of an assembly name (both key and value)
         /// e.g. ('Culture=neutral')
         /// </summary>
-        public virtual string Culture => string.IsNullOrWhiteSpace(_culture) ? "Culture=neutral" : _culture;
+        public virtual string Culture => string.IsNullOrWhiteSpace(_asmName?.CultureName) ? "Culture=neutral" : $"Culture={_asmName.CultureName}";
 
         /// <summary>
         /// This is just the PublicKeyToken part of an assembly's name (both key and value)
         /// e.g. ('PublicKeyToken=669e0ddf0bb1aa2a')
         /// </summary>
-        public virtual string PublicKeyToken => string.IsNullOrWhiteSpace(_publicKeyToken) ? "PublicKeyToken=null" : _publicKeyToken;
+        public virtual string PublicKeyToken => string.IsNullOrWhiteSpace(_publicKeyToken) ? "PublicKeyToken=null" : $"PublicKeyToken={_publicKeyToken}";
 
         /// <summary>
-        /// This is simply the <see cref="AssemblyName"/> with a .dll 
+        /// This is simply the <see cref="AssemblySimpleName"/> with a .dll 
         /// extension added to the end.
         /// </summary>
-        public virtual string AssemblyFileName => DraftCscDllName(_assemblyName);
+        public virtual string AssemblyFileName => DraftCscDllName(AssemblySimpleName);
 
         /// <summary>
         /// This is the original string passed to the ctor.
@@ -154,115 +137,127 @@ namespace NoFuture.Util.NfType
         /// <summary>
         /// Gets the version number as a strongly type .NET <see cref="Version"/>
         /// </summary>
-        public Version VersionValue
-        {
-            get
-            {
-                string ver;
-                return !RegexCatalog.IsRegexMatch(Version, FOUR_PT_VERSION_NUMBER, out ver)
-                    ? new Version(0, 0, 0, 0)
-                    : new Version(ver);
-            }
-        }
+        public Version VersionValue => _asmName?.Version;
 
         /// <summary>
         /// Gets just the value of the <see cref="PublicKeyToken"/>
         /// </summary>
-        public string PublicKeyTokenValue
-        {
-            get
-            {
-                var pk = PublicKeyToken;
-                if (string.IsNullOrWhiteSpace(pk) || !pk.Contains("="))
-                    return "null";
-                return pk.Split('=')[1];
-            }
-        }
+        public string PublicKeyTokenValue => _publicKeyToken ?? "null";
+
+        public IEnumerable<NfTypeName> GenericArgs => _genericArgs;
 
         #endregion
 
-        protected internal void StartInvokeNfTypeName(int? port)
-        {
-            if (string.IsNullOrWhiteSpace(CustomTools.InvokeNfTypeName) || !File.Exists(CustomTools.InvokeNfTypeName))
-                throw new ItsDeadJim("Don't know where to locate the NoFuture.Tokens.InvokeNfTypeName.exe, assign " +
-                                     "the global variable at NoFuture.Tools.CustomTools.InvokeNfTypeName.");
-
-            
-            var getNfTnPort = port.GetValueOrDefault(NfTypeNameProcess.DF_NF_TYPENAME_PORT);
-            var args = ConsoleCmd.ConstructCmdLineArgs(NfTypeNameProcess.GET_NF_TYPE_NAME_CMD_SWITCH, getNfTnPort.ToString());
-
-        }
-
         public NfTypeName(string name)
         {
-            if(String.IsNullOrWhiteSpace(name))
+            if(string.IsNullOrWhiteSpace(name))
                 return;
 
             _ctorString = name;
 
-            string valOut;
-            if(RegexCatalog.IsRegexMatch(name, ASM_VERSION_REGEX, out valOut))
-                _version = valOut;
-            
-            if (RegexCatalog.IsRegexMatch(name, ASM_CULTURE_REGEX, out valOut))
-                _culture = valOut;
+            if(_myProcess == null || !_myProcess.IsMyProcessRunning)
+                _myProcess = new NfTypeNameProcess(null);
 
-            if (RegexCatalog.IsRegexMatch(name, ASM_PRIV_TOKEN_REGEX, out valOut))
-                _publicKeyToken = valOut;
+            var parseItem = _myProcess.GetNfTypeName(name);
+            if (parseItem == null)
+                return;
+            _className = GetTypeNameWithoutNamespace(parseItem.FullName);
+            _namespace = GetNamespaceWithoutTypeName(parseItem.FullName);
+            _publicKeyToken = parseItem.PublicKeyTokenValue;
+            if(!string.IsNullOrWhiteSpace(parseItem.AssemblyFullName))
+                _asmName = new AssemblyName(parseItem.AssemblyFullName);
 
-            if (RegexCatalog.IsRegexMatch(name, ASM_PROC_ARCH_REGEX, out valOut))
-                _procArch = valOut;
+            if (parseItem.GenericItems == null || !parseItem.GenericItems.Any())
+                return;
 
-            Func<string, string> trimUp = s => s.Replace(",", String.Empty).Trim();
-            
-            var nameLessOthers = name;
-            if (!String.IsNullOrWhiteSpace(_version))
+            foreach (var gi in parseItem.GenericItems)
             {
-                nameLessOthers = nameLessOthers.Replace(_version, String.Empty);
-                _version = trimUp(_version);
+                _genericArgs.Add(new NfTypeName(gi));
             }
 
-            if (!String.IsNullOrWhiteSpace(_culture))
-            {
-                nameLessOthers = nameLessOthers.Replace(_culture, String.Empty);
-                _culture = trimUp(_culture);
-            }
+            //string valOut;
+            //if(RegexCatalog.IsRegexMatch(name, ASM_VERSION_REGEX, out valOut))
+            //    _version = valOut;
 
-            if (!String.IsNullOrWhiteSpace(_publicKeyToken))
-            {
-                nameLessOthers = nameLessOthers.Replace(_publicKeyToken, String.Empty);
-                _publicKeyToken = trimUp(_publicKeyToken);
-            }
+            //if (RegexCatalog.IsRegexMatch(name, ASM_CULTURE_REGEX, out valOut))
+            //    _culture = valOut;
 
-            if (!String.IsNullOrWhiteSpace(_procArch))
-            {
-                nameLessOthers = nameLessOthers.Replace(_procArch, String.Empty);
-                _procArch = trimUp(_procArch);
-            }
+            //if (RegexCatalog.IsRegexMatch(name, ASM_PRIV_TOKEN_REGEX, out valOut))
+            //    _publicKeyToken = valOut;
 
-            if (nameLessOthers.Contains(","))
-            {
-                var asmAndClassName = nameLessOthers.Split(',');
-                _typeFullName = asmAndClassName[0].Trim();
-                _assemblyName = asmAndClassName[1].Trim();
-            }
-            else
-            {
-                _typeFullName = String.Empty;
-                _assemblyName = nameLessOthers;
-            }
+            //if (RegexCatalog.IsRegexMatch(name, ASM_PROC_ARCH_REGEX, out valOut))
+            //    _procArch = valOut;
 
-            if (String.IsNullOrWhiteSpace(_typeFullName))
-            {
-                _className = GetTypeNameWithoutNamespace(nameLessOthers);
-                _namespace = GetNamespaceWithoutTypeName(nameLessOthers);
-            }
-            else
-            {
-                _className = Etc.ExtractLastWholeWord(_typeFullName, null);
-                _namespace = GetNamespaceWithoutTypeName(_typeFullName);
-            }
+            //Func<string, string> trimUp = s => s.Replace(",", String.Empty).Trim();
 
+            //var nameLessOthers = name;
+            //if (!String.IsNullOrWhiteSpace(_version))
+            //{
+            //    nameLessOthers = nameLessOthers.Replace(_version, String.Empty);
+            //    _version = trimUp(_version);
+            //}
+
+            //if (!String.IsNullOrWhiteSpace(_culture))
+            //{
+            //    nameLessOthers = nameLessOthers.Replace(_culture, String.Empty);
+            //    _culture = trimUp(_culture);
+            //}
+
+            //if (!String.IsNullOrWhiteSpace(_publicKeyToken))
+            //{
+            //    nameLessOthers = nameLessOthers.Replace(_publicKeyToken, String.Empty);
+            //    _publicKeyToken = trimUp(_publicKeyToken);
+            //}
+
+            //if (!String.IsNullOrWhiteSpace(_procArch))
+            //{
+            //    nameLessOthers = nameLessOthers.Replace(_procArch, String.Empty);
+            //    _procArch = trimUp(_procArch);
+            //}
+
+            //if (nameLessOthers.Contains(","))
+            //{
+            //    var asmAndClassName = nameLessOthers.Split(',');
+            //    _typeFullName = asmAndClassName[0].Trim();
+            //    _assemblyName = asmAndClassName[1].Trim();
+            //}
+            //else
+            //{
+            //    _typeFullName = String.Empty;
+            //    _assemblyName = nameLessOthers;
+            //}
+
+            //if (String.IsNullOrWhiteSpace(_typeFullName))
+            //{
+            //    _className = GetTypeNameWithoutNamespace(nameLessOthers);
+            //    _namespace = GetNamespaceWithoutTypeName(nameLessOthers);
+            //}
+            //else
+            //{
+            //    _className = Etc.ExtractLastWholeWord(_typeFullName, null);
+            //    _namespace = GetNamespaceWithoutTypeName(_typeFullName);
+            //}
+
+        }
+
+        internal NfTypeName(NfTypeNameParseItem parseItem)
+        {
+
+            if (parseItem == null)
+                return;
+            _className = GetTypeNameWithoutNamespace(parseItem.FullName);
+            _namespace = GetNamespaceWithoutTypeName(parseItem.FullName);
+            _publicKeyToken = parseItem.PublicKeyTokenValue;
+            if (!string.IsNullOrWhiteSpace(parseItem.AssemblyFullName))
+                _asmName = new AssemblyName(parseItem.AssemblyFullName);
+
+            if (parseItem.GenericItems == null || !parseItem.GenericItems.Any())
+                return;
+
+            foreach (var gi in parseItem.GenericItems)
+            {
+                _genericArgs.Add(new NfTypeName(gi));
+            }
         }
 
         /// <summary>
@@ -316,6 +311,7 @@ namespace NoFuture.Util.NfType
         /// <returns></returns>
         public static string DraftCscDllName(string outputNamespace)
         {
+            outputNamespace = outputNamespace ?? Path.GetRandomFileName();
             return $"{outputNamespace}.dll";
         }
 
@@ -357,11 +353,24 @@ namespace NoFuture.Util.NfType
         /// <returns></returns>
         public static string GetNamespaceWithoutTypeName(string name)
         {
-            if(String.IsNullOrWhiteSpace(name))
+            const string ROOT_NS = "global::";
+
+            if(string.IsNullOrWhiteSpace(name))
                 return null;
 
             if(!name.Contains(Constants.DEFAULT_TYPE_SEPARATOR))
                 return null;
+
+            if (name.StartsWith(ROOT_NS))
+            {
+                name = name.Substring(ROOT_NS.Length);
+            }
+
+            string genericCount;
+            if (RegexCatalog.IsRegexMatch(name, @"\x60([1-9])\x5B", out genericCount))
+            {
+                name = name.Substring(0, name.IndexOf("`", StringComparison.Ordinal));
+            }
 
             if (name.Contains(Constants.TYPE_METHOD_NAME_SPLIT_ON))
             {
@@ -394,7 +403,7 @@ namespace NoFuture.Util.NfType
         /// <returns></returns>
         public static string GetTypeNameWithoutNamespace(string simplePropType)
         {
-            if (String.IsNullOrWhiteSpace(simplePropType))
+            if (string.IsNullOrWhiteSpace(simplePropType))
                 return null;
 
             if (!simplePropType.Contains(Constants.DEFAULT_TYPE_SEPARATOR))

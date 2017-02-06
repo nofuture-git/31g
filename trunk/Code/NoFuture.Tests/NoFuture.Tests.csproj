@@ -284,6 +284,7 @@
     <Compile Include="Util\Gia\AssemblyAnalysisTests.cs" />
     <Compile Include="Util\Gia\AsmDiagramTests.cs" />
     <Compile Include="Util\InvokeAsmTests\GetTokenIdsTests.cs" />
+    <Compile Include="Util\NfTypeTests\TypeNameProcessTests.cs" />
     <Compile Include="Util\Pos\PennTreebankTagsetTests.cs" />
     <Compile Include="Util\EtcTests.cs" />
     <Compile Include="Host.Encryption\ProgramTests.cs" />
@@ -296,7 +297,7 @@
     <Compile Include="Util\Pos\TestMtAdapter.cs" />
     <Compile Include="Util\TestFxPointers.cs" />
     <Compile Include="Util\NetTests.cs" />
-    <Compile Include="Util\TypeNameTests.cs" />
+    <Compile Include="Util\NfTypeTests\TypeNameTests.cs" />
     <Compile Include="Util\MathTests.cs" />
     <Compile Include="Util\TestConsoleCmd.cs" />
     <Compile Include="Util\TestVs.cs" />

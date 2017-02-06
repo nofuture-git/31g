@@ -7,14 +7,14 @@ using NoFuture.Util.NfConsole;
 
 namespace NoFuture.Util.NfType.InvokeCmds
 {
-    public class InvokeGetNfTypeName : InvokeGetCmdBase<NfTypeName>
+    public class InvokeGetNfTypeName : InvokeGetCmdBase<NfTypeNameParseItem>
     {
-        public override NfTypeName Receive(object anything)
+        public override NfTypeNameParseItem Receive(object anything)
         {
             if (anything == null)
                 throw new ArgumentNullException(nameof(anything));
 
-            if (string.IsNullOrWhiteSpace(anything.ToString()) || !File.Exists(anything.ToString()))
+            if (string.IsNullOrWhiteSpace(anything.ToString()))
                 throw new ItsDeadJim("This isn't a valid assembly path " + anything);
 
             if (!IsMyProcessRunning(ProcessId))
@@ -29,7 +29,7 @@ namespace NoFuture.Util.NfType.InvokeCmds
                 throw new ItsDeadJim(
                     $"The remote process by id [{ProcessId}] did not return anything on port [{SocketPort}]");
 
-            return JsonConvert.DeserializeObject<NfTypeName>(ConvertJsonFromBuffer(bufferOut), JsonSerializerSettings);
+            return JsonConvert.DeserializeObject<NfTypeNameParseItem>(ConvertJsonFromBuffer(bufferOut), JsonSerializerSettings);
         }
     }
 }
