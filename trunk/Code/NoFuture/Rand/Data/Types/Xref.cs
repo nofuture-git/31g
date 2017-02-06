@@ -4,6 +4,7 @@ using System.IO;
 using System.Reflection;
 using System.Xml;
 using NoFuture.Exceptions;
+using NoFuture.Util.NfType;
 
 namespace NoFuture.Rand.Data.Types
 {
@@ -200,12 +201,12 @@ namespace NoFuture.Rand.Data.Types
             var propertyInstance = Activator.CreateInstance(piType);
 
             //expecting the type to have a getter and setter of generic List<T>
-            if (Util.NfTypeName.IsEnumerableReturnType(piType))
+            if (NfTypeName.IsEnumerableReturnType(piType))
             {
                 var addMi = piType.GetMethod("Add");
                 if (addMi == null)
                     return;
-                var enumerableTypeName = Util.NfTypeName.GetLastTypeNameFromArrayAndGeneric(piType);
+                var enumerableTypeName = NfTypeName.GetLastTypeNameFromArrayAndGeneric(piType);
                 if (string.IsNullOrWhiteSpace(enumerableTypeName))
                     return;
 

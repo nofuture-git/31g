@@ -6,6 +6,7 @@ using System.Text;
 using System.Xml;
 using NoFuture.Exceptions;
 using NoFuture.Util;
+using NoFuture.Util.NfType;
 using HbmXmlNames = NoFuture.Hbm.Globals.HbmXmlNames;
 
 namespace NoFuture.Hbm.SortingContainers

@@ -10,6 +10,7 @@ using NoFuture.Shared;
 using NoFuture.Tokens;
 using NoFuture.Tokens.ParseResults;
 using NoFuture.Util;
+using NoFuture.Util.NfType;
 
 namespace NoFuture.Gen.LangRules
 {

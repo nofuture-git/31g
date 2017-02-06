@@ -7,6 +7,7 @@ using System.Text;
 using CERTENROLLLib;
 using NoFuture.Exceptions;
 using NoFuture.Shared;
+using NoFuture.Util.NfType;
 using X509KeyUsageFlags = CERTENROLLLib.X509KeyUsageFlags;
 
 namespace NoFuture.Encryption
@@ -234,7 +235,7 @@ namespace NoFuture.Encryption
                 throw new ItsDeadJim("The private could not be resolved.");
 
             var plainTextFile = Path.Combine(Path.GetDirectoryName(path) ?? Environment.CurrentDirectory,
-                Path.GetFileNameWithoutExtension(path) ?? Util.NfTypeName.GetNfRandomName());
+                Path.GetFileNameWithoutExtension(path) ?? NfTypeName.GetNfRandomName());
 
             using (var aes = new AesManaged())
             {

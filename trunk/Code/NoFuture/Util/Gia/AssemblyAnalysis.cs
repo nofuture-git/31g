@@ -10,6 +10,7 @@ using NoFuture.Util.Binary;
 using NoFuture.Tools;
 using NoFuture.Util.Gia.InvokeCmds;
 using NoFuture.Util.NfConsole;
+using NoFuture.Util.NfType;
 
 namespace NoFuture.Util.Gia
 {

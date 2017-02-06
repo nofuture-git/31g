@@ -6,6 +6,7 @@ using NoFuture.Shared;
 using NoFuture.Shared.DiaSdk.LinesSwitch;
 using NoFuture.Util;
 using NoFuture.Util.Gia;
+using NoFuture.Util.NfType;
 
 namespace NoFuture.Gen
 {

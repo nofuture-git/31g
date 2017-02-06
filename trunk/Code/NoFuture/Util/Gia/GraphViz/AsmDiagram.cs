@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Text;
 using NoFuture.Shared;
 using NoFuture.Util.Binary;
+using NoFuture.Util.NfType;
 
 namespace NoFuture.Util.Gia.GraphViz
 {

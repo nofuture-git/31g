@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using NoFuture.Exceptions;
+using NoFuture.Util.NfType;
 
 namespace NoFuture.Hbm.SortingContainers
 {
@@ -244,7 +245,7 @@ namespace NoFuture.Hbm.SortingContainers
                 }
 
 
-                if (param.IsUserDefinedType && Util.NfTypeName.IsAssemblyFullName(param.DataType))
+                if (param.IsUserDefinedType && NfTypeName.IsAssemblyFullName(param.DataType))
                     sqlParam.UdtTypeName = param.SqlUdtTypeName;
 
                 sqlParams.Add(sqlParam);

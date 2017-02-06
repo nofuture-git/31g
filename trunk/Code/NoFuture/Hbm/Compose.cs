@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using NoFuture.Shared;
 using NoFuture.Util;
+using NoFuture.Util.NfType;
 
 namespace NoFuture.Hbm
 {
@@ -90,7 +91,7 @@ namespace NoFuture.Hbm
 
         public static string BagPropertyName(string fullAssemblyQualTypeName)
         {
-            var pluralBagName = new Util.NfTypeName(fullAssemblyQualTypeName);
+            var pluralBagName = new NfTypeName(fullAssemblyQualTypeName);
             return Util.Etymological.En.ToPlural(pluralBagName.ClassName, true);
         }
         

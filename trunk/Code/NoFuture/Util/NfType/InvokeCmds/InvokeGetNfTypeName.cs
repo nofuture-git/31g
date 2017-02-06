@@ -5,22 +5,22 @@ using Newtonsoft.Json;
 using NoFuture.Exceptions;
 using NoFuture.Util.NfConsole;
 
-namespace NoFuture.Util.Gia.InvokeCmds
+namespace NoFuture.Util.NfType.InvokeCmds
 {
-    public class InvokeGetFlattenAssembly : InvokeGetCmdBase<FlattenAssembly>
+    public class InvokeGetNfTypeName : InvokeGetCmdBase<NfTypeName>
     {
-        public override FlattenAssembly Receive(object anything)
+        public override NfTypeName Receive(object anything)
         {
-            if(anything == null)
+            if (anything == null)
                 throw new ArgumentNullException(nameof(anything));
 
-            if (String.IsNullOrWhiteSpace(anything.ToString()) || !File.Exists(anything.ToString()))
+            if (string.IsNullOrWhiteSpace(anything.ToString()) || !File.Exists(anything.ToString()))
                 throw new ItsDeadJim("This isn't a valid assembly path " + anything);
 
             if (!IsMyProcessRunning(ProcessId))
-                throw new ItsDeadJim("The NoFuture.Util.Gia.InvokeFlatten.exe is either dead or was never started.");
+                throw new ItsDeadJim("The NoFuture.Tokens.InvokeNfTypeName.exe is either dead or was never started.");
 
-            if(!Net.IsValidPortNumber(SocketPort))
+            if (!Net.IsValidPortNumber(SocketPort))
                 throw new ItsDeadJim("The assigned socket port is not valids " + SocketPort);
 
             var bufferOut = Net.SendToLocalhostSocket(Encoding.UTF8.GetBytes(anything.ToString()), SocketPort);
@@ -29,7 +29,7 @@ namespace NoFuture.Util.Gia.InvokeCmds
                 throw new ItsDeadJim(
                     $"The remote process by id [{ProcessId}] did not return anything on port [{SocketPort}]");
 
-            return JsonConvert.DeserializeObject<FlattenAssembly>(ConvertJsonFromBuffer(bufferOut), JsonSerializerSettings);
+            return JsonConvert.DeserializeObject<NfTypeName>(ConvertJsonFromBuffer(bufferOut), JsonSerializerSettings);
         }
     }
 }

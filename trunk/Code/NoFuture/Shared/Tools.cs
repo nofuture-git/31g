@@ -67,6 +67,7 @@
         public static string InvokeFlatten { get; set; }
         public static string UtilPosHost { get; set; }
         public static string InvokeDpx { get; set; }
+        public static string InvokeNfTypeName { get; set; }
     }
 
     public static class NfDefaultPorts
@@ -79,6 +80,7 @@
         public const int SJCL_TO_PLAIN_TXT = 5064;
         public const int SJCL_TO_CIPHER_TXT = 5065;
         public const int SJCL_HASH_PORT = 5066;
+        public const int NF_TYPE_NAME_PORT = 5067;
         public const int HBM_INVOKE_STORED_PROC_MGR = 45121;
     }
 

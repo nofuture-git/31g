@@ -1128,7 +1128,7 @@ function Export-ExcelWbToCsv
 
         #dump each worksheet to a tab-delimited file
         $dir = [System.IO.Path]::GetDirectoryName($Path)
-        $outFile = [NoFuture.Util.NfTypeName]::SafeDotNetIdentifier(([System.IO.Path]::GetFileNameWithoutExtension($Path)))
+        $outFile = [NoFuture.Util.NfType.NfTypeName]::SafeDotNetIdentifier(([System.IO.Path]::GetFileNameWithoutExtension($Path)))
         $outPath = (Join-Path $dir $outFile)
         $myExcel = New-Object -ComObject Excel.Application
         $myExcel.Application.Visible = $false
@@ -1137,7 +1137,7 @@ function Export-ExcelWbToCsv
         $doNotDisplay = [System.Reflection.Assembly]::LoadWithPartialName("Microsoft.Office.Interop.Excel")
         $excelWb.Sheets | % {
             $wsName = $_.Name
-            $wsFn = ("{0}{1}.txt" -f $outPath, [NoFuture.Util.NfTypeName]::SafeDotNetIdentifier($wsName))
+            $wsFn = ("{0}{1}.txt" -f $outPath, [NoFuture.Util.NfType.NfTypeName]::SafeDotNetIdentifier($wsName))
             $wsFileNames += $wsFn
             #https://msdn.microsoft.com/EN-US/library/office/ff841185.aspx
             $_.SaveAs($wsFn,[Microsoft.Office.Interop.Excel.XlFileFormat]::xlTextWindows)

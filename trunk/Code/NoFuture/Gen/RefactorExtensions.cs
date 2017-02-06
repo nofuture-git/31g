@@ -7,6 +7,7 @@ using System.Text.RegularExpressions;
 using NoFuture.Shared;
 using NoFuture.Shared.DiaSdk.LinesSwitch;
 using NoFuture.Util;
+using NoFuture.Util.NfType;
 
 namespace NoFuture.Gen
 {
@@ -71,7 +72,7 @@ namespace NoFuture.Gen
             foreach (var dpArg in dependencyArgs)
             {
                 if (objMethods.Contains(dpArg.ArgName))
-                    dpArg.ArgName = string.Format("{0}{1}", Util.NfTypeName.DefaultNamePrefix, dpArg.ArgName);
+                    dpArg.ArgName = string.Format("{0}{1}", NfTypeName.DefaultNamePrefix, dpArg.ArgName);
             }
 
             return dependencyArgs;
@@ -283,7 +284,7 @@ namespace NoFuture.Gen
                         pdbData.Where(
                             x =>
                                 x.symbolName ==
-                                string.Format("{0}{1}", Util.NfTypeName.PropertyNamePrefix.GET_PREFIX, cgMem.Name))
+                                string.Format("{0}{1}", NfTypeName.PropertyNamePrefix.GET_PREFIX, cgMem.Name))
                             .Select(x => x)
                             .FirstOrDefault();
                     if (getterMatch != null)
@@ -297,7 +298,7 @@ namespace NoFuture.Gen
                         pdbData.Where(
                             x =>
                                 x.symbolName ==
-                                string.Format("{0}{1}", Util.NfTypeName.PropertyNamePrefix.SET_PREFIX, cgMem.Name))
+                                string.Format("{0}{1}", NfTypeName.PropertyNamePrefix.SET_PREFIX, cgMem.Name))
                             .Select(x => x)
                             .FirstOrDefault();
                     if (setterMatch != null)

@@ -88,7 +88,7 @@
     <Compile Include="Gia\FlattenAssembly.cs" />
     <Compile Include="Gia\GraphViz\AsmDiagram.cs" />
     <Compile Include="Gia\InvokeCmds\InvokeGetAsmIndicies.cs" />
-    <Compile Include="Gia\InvokeCmds\InvokeGetCmdBase.cs" />
+    <Compile Include="NfConsole\InvokeGetCmdBase.cs" />
     <Compile Include="Gia\InvokeCmds\InvokeGetFlattenAssembly.cs" />
     <Compile Include="Gia\InvokeCmds\InvokeGetTokenIds.cs" />
     <Compile Include="Gia\InvokeCmds\InvokeGetTokenNames.cs" />
@@ -128,7 +128,9 @@
     <Compile Include="NfConsole\Program.cs" />
     <Compile Include="NfConsole\SocketConsole.cs" />
     <Compile Include="NfPath.cs" />
-    <Compile Include="NfTypeName.cs" />
+    <Compile Include="NfType\InvokeCmds\InvokeGetNfTypeName.cs" />
+    <Compile Include="NfType\NfTypeName.cs" />
+    <Compile Include="NfType\NfTypeNameProcess.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -1,4 +1,6 @@
-﻿namespace NoFuture.Hbm.Templates
+﻿using NoFuture.Util.NfType;
+
+namespace NoFuture.Hbm.Templates
 {
     public class HbmCommand
     {
@@ -18,9 +20,9 @@
         {
             TypeFullName = typeFullName;
             IdTypeFullName = idTypeFullName;
-            OuputNamespace = Util.NfTypeName.GetTypeNameWithoutNamespace(TypeFullName);
+            OuputNamespace = NfTypeName.GetTypeNameWithoutNamespace(TypeFullName);
             IdTypeTest = Gen.Settings.LangStyle.GenUseIsNotDefaultValueTest(IdTypeFullName, "DataId");
-            ClassName = Util.NfTypeName.GetTypeNameWithoutNamespace(TypeFullName);
+            ClassName = NfTypeName.GetTypeNameWithoutNamespace(TypeFullName);
         }
     }
 }

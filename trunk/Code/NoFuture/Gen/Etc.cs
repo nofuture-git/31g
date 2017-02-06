@@ -13,6 +13,7 @@ using NoFuture.Util;
 using NoFuture.Tools;
 using NoFuture.Util.Binary;
 using NoFuture.Util.NfConsole;
+using NoFuture.Util.NfType;
 
 namespace NoFuture.Gen
 {

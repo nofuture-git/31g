@@ -264,7 +264,7 @@ function Write-CsCodeAssignRand
 
         $recursiveCallsTo = @()
 
-        $typeName = [NoFuture.Util.NfTypeName]::GetTypeNameWithoutNamespace($TypeFullName)
+        $typeName = [NoFuture.Util.NfType.NfTypeName]::GetTypeNameWithoutNamespace($TypeFullName)
 
         $myrand = New-Object System.Random ([Int32][String]::Format("{0:fffffff}",$(get-date)))
 
@@ -373,25 +373,25 @@ function Write-CsCodeAssignRand
         $normalMembers = @{}
 
         $Assembly.GetType($TypeFullName).GetProperties() | % {
-            if($_.CanWrite -and  ([NoFuture.Util.NfTypeName]::IsEnumerableReturnType($_.PropertyType))){
+            if($_.CanWrite -and  ([NoFuture.Util.NfType.NfTypeName]::IsEnumerableReturnType($_.PropertyType))){
                 $listMembers.Add($_.Name,$_.PropertyType)
             }
-            elseif($_.CanWrite -and ([NoFuture.Util.NfTypeName]::IsValueTypeProperty($_))){
+            elseif($_.CanWrite -and ([NoFuture.Util.NfType.NfTypeName]::IsValueTypeProperty($_))){
                 $valueMembers.Add($_.Name,$_.PropertyType)
             }
-            elseif($_.CanWrite -and -not ([NoFuture.Util.NfTypeName]::IsValueTypeProperty($_)) -and -not ([NoFuture.Util.NfTypeName]::IsEnumerableReturnType($_.PropertyType))){
+            elseif($_.CanWrite -and -not ([NoFuture.Util.NfType.NfTypeName]::IsValueTypeProperty($_)) -and -not ([NoFuture.Util.NfType.NfTypeName]::IsEnumerableReturnType($_.PropertyType))){
                 $normalMembers.Add($_.Name,$_.PropertyType)
             }
             
         }
         $Assembly.GetType($TypeFullName).GetFields() | % {
-            if($_.IsPublic -and  ([NoFuture.Util.NfTypeName]::IsEnumerableReturnType($_.FieldType))){
+            if($_.IsPublic -and  ([NoFuture.Util.NfType.NfTypeName]::IsEnumerableReturnType($_.FieldType))){
                 $listMembers.Add($_.Name,$_.FieldType)
             }
-            elseif($_.IsPublic -and ([NoFuture.Util.NfTypeName]::IsValueTypeField($_))){
+            elseif($_.IsPublic -and ([NoFuture.Util.NfType.NfTypeName]::IsValueTypeField($_))){
                 $valueMembers.Add($_.Name,$_.FieldType)
             }
-            elseif($_.IsPublic -and -not ($_.IsLiteral) -and -not ([NoFuture.Util.NfTypeName]::IsValueTypeField($_)) -and -not ([NoFuture.Util.NfTypeName]::IsEnumerableReturnType($_.FieldType))){
+            elseif($_.IsPublic -and -not ($_.IsLiteral) -and -not ([NoFuture.Util.NfType.NfTypeName]::IsValueTypeField($_)) -and -not ([NoFuture.Util.NfType.NfTypeName]::IsEnumerableReturnType($_.FieldType))){
                 $normalMembers.Add($_.Name,$_.FieldType)
             }
             
@@ -400,10 +400,10 @@ function Write-CsCodeAssignRand
         $listMembers.Keys | % {
             $memberName = $_
             $memberType = $listMembers[$_]
-            $enumerableType = [NoFuture.Util.NfTypeName]::GetLastTypeNameFromArrayAndGeneric($memberType)
+            $enumerableType = [NoFuture.Util.NfType.NfTypeName]::GetLastTypeNameFromArrayAndGeneric($memberType)
             $recursiveCallsTo += $enumerableType
             $propertyType = $memberType.ToString()
-            $refFactoryName = "{0}Factory" -f  ([NoFuture.Util.NfTypeName]::GetTypeNameWithoutNamespace($enumerableType))
+            $refFactoryName = "{0}Factory" -f  ([NoFuture.Util.NfType.NfTypeName]::GetTypeNameWithoutNamespace($enumerableType))
             $propName = $memberName;
 
             if($memberType.BaseType.FullName -eq "System.Array"){
@@ -427,7 +427,7 @@ function Write-CsCodeAssignRand
 
         $valueMembers.Keys | % {
             $propName = $_
-            $propType = [NoFuture.Util.NfTypeName]::GetLastTypeNameFromArrayAndGeneric($valueMembers[$_].ToString())
+            $propType = [NoFuture.Util.NfType.NfTypeName]::GetLastTypeNameFromArrayAndGeneric($valueMembers[$_].ToString())
             if($propType -eq "System.Byte"){
                 "`t$instanceName.$propName = ByteFactory();`n"
             }
@@ -500,7 +500,7 @@ function Write-CsCodeAssignRand
 
                 #check that this isn't going to set a infinite recursion into motion...
                 if(-not ($Global:CodeGenAssignRandomValuesCallStack.Contains($propType))){
-                    $refFactoryName = "{0}Factory" -f ([NoFuture.Util.NfTypeName]::GetTypeNameWithoutNamespace($propType))
+                    $refFactoryName = "{0}Factory" -f ([NoFuture.Util.NfType.NfTypeName]::GetTypeNameWithoutNamespace($propType))
                     "`t$instanceName.$propName = $refFactoryName();`n"
                 }
             }

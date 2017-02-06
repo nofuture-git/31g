@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NoFuture.Util.NfType;
 
 namespace NoFuture.Tests.Util
 {
@@ -21,10 +22,10 @@ namespace NoFuture.Tests.Util
 
             var nsClassName = "NoFuture.Util.TypeName";
 
-            var testOne = new NoFuture.Util.NfTypeName(asmFullNameWithProcArch);
-            var testTwo = new NoFuture.Util.NfTypeName(asmFullName);
-            var testThree = new NoFuture.Util.NfTypeName(classAsmQualifiedName);
-            var testFour = new NoFuture.Util.NfTypeName(nsClassName);
+            var testOne = new NfTypeName(asmFullNameWithProcArch);
+            var testTwo = new NfTypeName(asmFullName);
+            var testThree = new NfTypeName(classAsmQualifiedName);
+            var testFour = new NfTypeName(nsClassName);
 
             Assert.IsTrue(string.IsNullOrWhiteSpace(testOne.AssemblyQualifiedName));
             Assert.IsTrue(string.IsNullOrWhiteSpace(testTwo.AssemblyQualifiedName));
@@ -42,12 +43,12 @@ namespace NoFuture.Tests.Util
             Assert.AreEqual(nsClassName, testFour.AssemblyFullName);
 
             var testFive =
-                new NoFuture.Util.NfTypeName(
+                new NfTypeName(
                     "NoFuture.CRM.UI.Controller, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null");
             Assert.AreEqual("NoFuture.CRM.UI.Controller.dll", testFive.AssemblyFileName);
 
             testThree =
-                new NoFuture.Util.NfTypeName(
+                new NfTypeName(
                     "NoFuture.MyDatabase.Dbo.AccountExecutives, NoFuture.MyDatabase, Version=0.0.0.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a");
             System.Diagnostics.Debug.WriteLine($"Original String: '{testThree.RawString}'");
             Assert.AreEqual("NoFuture.MyDatabase.dll", testThree.AssemblyFileName);
@@ -61,38 +62,38 @@ namespace NoFuture.Tests.Util
             Assert.AreEqual("PublicKeyToken=669e0ddf0bb1aa2a", testThree.PublicKeyToken);
             Assert.AreEqual("Culture=neutral", testThree.Culture);
 
-            var testSix = new NoFuture.Util.NfTypeName("My_SillyName_NoNamespace_Pos_Class");
+            var testSix = new NfTypeName("My_SillyName_NoNamespace_Pos_Class");
             Assert.AreEqual("My_SillyName_NoNamespace_Pos_Class", testSix.ClassName);
         }
 
         [TestMethod]
         public void TestSafeDotNetTypeName()
         {
-            var testResult = NoFuture.Util.NfTypeName.SafeDotNetTypeName("dbo.123ProcName");
+            var testResult = NfTypeName.SafeDotNetTypeName("dbo.123ProcName");
             Assert.IsNotNull(testResult);
             Assert.AreEqual("dbo.123ProcName",testResult);
             System.Diagnostics.Debug.WriteLine(testResult);
 
-            testResult = NoFuture.Util.NfTypeName.SafeDotNetTypeName(null);
+            testResult = NfTypeName.SafeDotNetTypeName(null);
             Assert.IsNotNull(testResult);
 
             var testInput = string.Empty;
-            testResult = NoFuture.Util.NfTypeName.SafeDotNetTypeName(testInput);
+            testResult = NfTypeName.SafeDotNetTypeName(testInput);
             Assert.IsNotNull(testResult);
             Assert.IsFalse(string.IsNullOrWhiteSpace(testResult));
             System.Diagnostics.Debug.WriteLine(testResult);
 
             testInput = "     ";
-            testResult = NoFuture.Util.NfTypeName.SafeDotNetTypeName(testInput);
+            testResult = NfTypeName.SafeDotNetTypeName(testInput);
             Assert.IsNotNull(testResult);
             Assert.IsFalse(string.IsNullOrWhiteSpace(testResult));
             System.Diagnostics.Debug.WriteLine(testResult);
 
-            testResult = NoFuture.Util.NfTypeName.SafeDotNetTypeName("dbo.DELETED_LookupDetails");
+            testResult = NfTypeName.SafeDotNetTypeName("dbo.DELETED_LookupDetails");
             System.Diagnostics.Debug.WriteLine(testResult);
             Assert.AreEqual("dbo.DELETED_LookupDetails", testResult);
 
-            testResult = NoFuture.Util.NfTypeName.SafeDotNetTypeName("Â© The End");
+            testResult = NfTypeName.SafeDotNetTypeName("Â© The End");
 
             System.Diagnostics.Debug.WriteLine(testResult);
 
@@ -101,36 +102,36 @@ namespace NoFuture.Tests.Util
         [TestMethod]
         public void TestSafeDotNetIdentifier()
         {
-            var testResult = NoFuture.Util.NfTypeName.SafeDotNetIdentifier("Personal Ph #",true);
+            var testResult = NfTypeName.SafeDotNetIdentifier("Personal Ph #",true);
             Assert.IsNotNull(testResult);
             System.Diagnostics.Debug.WriteLine(testResult);
             Assert.AreEqual("Personal_u0020Ph_u0020_u0023", testResult);
 
-            testResult = NoFuture.Util.NfTypeName.SafeDotNetIdentifier("Personal Ph #");
+            testResult = NfTypeName.SafeDotNetIdentifier("Personal Ph #");
             Assert.IsNotNull(testResult);
             System.Diagnostics.Debug.WriteLine(testResult);
             Assert.AreEqual("PersonalPh",testResult);
 
-            testResult = NoFuture.Util.NfTypeName.SafeDotNetIdentifier("global::Some_Aspx_Page_With_No_Namespace");
+            testResult = NfTypeName.SafeDotNetIdentifier("global::Some_Aspx_Page_With_No_Namespace");
             System.Diagnostics.Debug.WriteLine(testResult);
 
             Assert.AreEqual("globalSome_Aspx_Page_With_No_Namespace", testResult);
 
             testResult =
-                NoFuture.Util.NfTypeName.SafeDotNetIdentifier(
+                NfTypeName.SafeDotNetIdentifier(
                     "<p><font style='font-size:11px;font-family:calibri;text-align:left'>", true);
             System.Diagnostics.Debug.WriteLine(testResult);
 
-            Assert.IsTrue(testResult.StartsWith(NoFuture.Util.NfTypeName.DefaultNamePrefix + "_u003cp_u003e_u003cfont_u0020style"));
+            Assert.IsTrue(testResult.StartsWith(NfTypeName.DefaultNamePrefix + "_u003cp_u003e_u003cfont_u0020style"));
 
             testResult =
-                NoFuture.Util.NfTypeName.SafeDotNetIdentifier("Â© The End Â©", false);
+                NfTypeName.SafeDotNetIdentifier("Â© The End Â©", false);
             System.Diagnostics.Debug.WriteLine(testResult);
 
             Assert.AreEqual("TheEnd",testResult);
 
             testResult =
-                NoFuture.Util.NfTypeName.SafeDotNetIdentifier("Â© The End Â©", true);
+                NfTypeName.SafeDotNetIdentifier("Â© The End Â©", true);
             System.Diagnostics.Debug.WriteLine(testResult);
 
             Assert.AreEqual("_u00c2_u00a9_u0020The_u0020End_u0020_u00c2_u00a9", testResult);
@@ -139,32 +140,32 @@ namespace NoFuture.Tests.Util
         [TestMethod]
         public void TestGetTypeNameFromArrayAndGeneric()
         {
-            var testResult = NoFuture.Util.NfTypeName.GetLastTypeNameFromArrayAndGeneric("int[]");
+            var testResult = NfTypeName.GetLastTypeNameFromArrayAndGeneric("int[]");
             Assert.AreEqual("int",testResult);
-            testResult = NoFuture.Util.NfTypeName.GetLastTypeNameFromArrayAndGeneric("System.Collections.Generic.List`1[System.String]");
+            testResult = NfTypeName.GetLastTypeNameFromArrayAndGeneric("System.Collections.Generic.List`1[System.String]");
             Assert.AreEqual("System.String", testResult);
             testResult =
-                NoFuture.Util.NfTypeName.GetLastTypeNameFromArrayAndGeneric("System.Tuple`2[System.Int32,System.String]");
+                NfTypeName.GetLastTypeNameFromArrayAndGeneric("System.Tuple`2[System.Int32,System.String]");
             Assert.AreEqual("System.Int32",testResult);
 
-            testResult = NoFuture.Util.NfTypeName.GetLastTypeNameFromArrayAndGeneric("System.Tuple`2[System.Collections.Generic.List`1[SomeNamespace.AType],System.String]");
+            testResult = NfTypeName.GetLastTypeNameFromArrayAndGeneric("System.Tuple`2[System.Collections.Generic.List`1[SomeNamespace.AType],System.String]");
             Assert.AreEqual("SomeNamespace.AType",testResult);
 
             //test C# style
             testResult =
-                NoFuture.Util.NfTypeName.GetLastTypeNameFromArrayAndGeneric(
+                NfTypeName.GetLastTypeNameFromArrayAndGeneric(
                     "System.Collections.Generic.List<System.String>", "<");
             Assert.AreEqual("System.String",testResult);
 
             testResult =
-                NoFuture.Util.NfTypeName.GetLastTypeNameFromArrayAndGeneric("System.Tuple<System.Int32, System.String>", "<");
+                NfTypeName.GetLastTypeNameFromArrayAndGeneric("System.Tuple<System.Int32, System.String>", "<");
             Assert.AreEqual("System.Int32", testResult);
 
-            testResult = NoFuture.Util.NfTypeName.GetLastTypeNameFromArrayAndGeneric("System.Tuple<System.Collections.Generic.List<SomeNamespace.AType>,System.String>", "<");
+            testResult = NfTypeName.GetLastTypeNameFromArrayAndGeneric("System.Tuple<System.Collections.Generic.List<SomeNamespace.AType>,System.String>", "<");
             Assert.AreEqual("SomeNamespace.AType", testResult);
 
             var testResults =
-                NoFuture.Util.NfTypeName.GetTypeNamesFromGeneric(
+                NfTypeName.GetTypeNamesFromGeneric(
                     "System.Tuple`3[System.Collections.Generic.List`1[System.String], System.String, System.Tuple`2[System.Int32, System.String]]");
             System.Diagnostics.Debug.WriteLine(string.Join(" | ", testResults));
         }
@@ -172,16 +173,16 @@ namespace NoFuture.Tests.Util
         [TestMethod]
         public void TestGetTypeNameWithoutNamespace()
         {
-            var testResult = NoFuture.Util.NfTypeName.GetTypeNameWithoutNamespace("NoFuture.Asm.Fii.MyType");
+            var testResult = NfTypeName.GetTypeNameWithoutNamespace("NoFuture.Asm.Fii.MyType");
             System.Diagnostics.Debug.WriteLine(testResult);
             Assert.AreEqual("MyType",testResult);
 
-            testResult = NoFuture.Util.NfTypeName.GetTypeNameWithoutNamespace("My_SillyName_NoNamespace_Pos_Class");
+            testResult = NfTypeName.GetTypeNameWithoutNamespace("My_SillyName_NoNamespace_Pos_Class");
             System.Diagnostics.Debug.WriteLine(testResult);
             Assert.AreEqual("My_SillyName_NoNamespace_Pos_Class", testResult);
 
             testResult =
-                NoFuture.Util.NfTypeName.GetNamespaceWithoutTypeName(
+                NfTypeName.GetNamespaceWithoutTypeName(
                     "Wanker.DCF.UI.Controller.Operator.OperatorUIController::set_OperatorContacts(Wanker.DCF.DTO.WankerContact)");
 
             System.Diagnostics.Debug.WriteLine(testResult);
@@ -191,23 +192,23 @@ namespace NoFuture.Tests.Util
         [TestMethod]
         public void TestGetNamespaceWithoutTypeName()
         {
-            var testResult = NoFuture.Util.NfTypeName.GetNamespaceWithoutTypeName("NoFuture.Asm.Fii.MyType");
+            var testResult = NfTypeName.GetNamespaceWithoutTypeName("NoFuture.Asm.Fii.MyType");
             System.Diagnostics.Debug.WriteLine(testResult);
             Assert.AreEqual("NoFuture.Asm.Fii", testResult);
 
-            testResult = NoFuture.Util.NfTypeName.GetNamespaceWithoutTypeName("My_SillyName_NoNamespace_Pos_Class");
+            testResult = NfTypeName.GetNamespaceWithoutTypeName("My_SillyName_NoNamespace_Pos_Class");
             System.Diagnostics.Debug.WriteLine(testResult);
             Assert.IsNull(testResult);
 
             testResult =
-                NoFuture.Util.NfTypeName.GetNamespaceWithoutTypeName(
+                NfTypeName.GetNamespaceWithoutTypeName(
                     "Wanker.DCF.UI.Controller.Operator.OperatorUIController::set_OperatorContacts(Wanker.DCF.DTO.WankerContact)");
 
             System.Diagnostics.Debug.WriteLine(testResult);
             Assert.AreEqual(testResult, "Wanker.DCF.UI.Controller.Operator");
 
             testResult =
-                NoFuture.Util.NfTypeName.GetNamespaceWithoutTypeName(
+                NfTypeName.GetNamespaceWithoutTypeName(
                     ".Controller.Operator.OperatorUIController::set_OperatorContacts(Wanker.DCF.DTO.WankerContact)");
 
             System.Diagnostics.Debug.WriteLine(testResult);
@@ -219,31 +220,31 @@ namespace NoFuture.Tests.Util
         {
             var testInput = "get_MyProperty";
             string testOutput;
-            var testResult = NoFuture.Util.NfTypeName.IsClrMethodForProperty(testInput, out testOutput);
+            var testResult = NfTypeName.IsClrMethodForProperty(testInput, out testOutput);
 
             Assert.IsTrue(testResult);
             Assert.AreEqual("MyProperty",testOutput);
 
             testInput = "set_MyProperty";
-            testResult = NoFuture.Util.NfTypeName.IsClrMethodForProperty(testInput, out testOutput);
+            testResult = NfTypeName.IsClrMethodForProperty(testInput, out testOutput);
 
             Assert.IsTrue(testResult);
             Assert.AreEqual("MyProperty", testOutput);
 
             testInput = "add_MyProperty";
-            testResult = NoFuture.Util.NfTypeName.IsClrMethodForProperty(testInput, out testOutput);
+            testResult = NfTypeName.IsClrMethodForProperty(testInput, out testOutput);
 
             Assert.IsTrue(testResult);
             Assert.AreEqual("MyProperty", testOutput);
 
             testInput = "remove_MyProperty";
-            testResult = NoFuture.Util.NfTypeName.IsClrMethodForProperty(testInput, out testOutput);
+            testResult = NfTypeName.IsClrMethodForProperty(testInput, out testOutput);
 
             Assert.IsTrue(testResult);
             Assert.AreEqual("MyProperty", testOutput);
 
             testInput = "GetMyValues";
-            testResult = NoFuture.Util.NfTypeName.IsClrMethodForProperty(testInput, out testOutput);
+            testResult = NfTypeName.IsClrMethodForProperty(testInput, out testOutput);
 
             Assert.IsFalse(testResult);
             Assert.IsNull(testOutput);

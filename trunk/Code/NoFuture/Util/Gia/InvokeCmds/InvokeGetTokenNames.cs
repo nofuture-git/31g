@@ -3,6 +3,7 @@ using System.Text;
 using Newtonsoft.Json;
 using NoFuture.Exceptions;
 using NoFuture.Shared;
+using NoFuture.Util.NfConsole;
 
 namespace NoFuture.Util.Gia.InvokeCmds
 {
