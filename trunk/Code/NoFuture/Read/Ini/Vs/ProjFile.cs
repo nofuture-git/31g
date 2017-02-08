@@ -219,7 +219,7 @@ namespace NoFuture.Read.Vs
             if (!binDict.Any())
                 throw new ItsDeadJim($"There are no .dll files located in {debugBin}.");
 
-            var libBin = new List<string>();
+            var libBin = new List<Tuple<string,string>>();
 
             //set aside mem for container node of all proj refs
             XmlNode projRefItemGrpNode = null;
@@ -233,6 +233,20 @@ namespace NoFuture.Read.Vs
                 //cache this for later, only need it once
                 if(projRefItemGrpNode == null)
                     projRefItemGrpNode = projRefElem.ParentNode;
+
+                //pass this off so its easier to map assembly-paths back to .[cs|vb|fs]proj files
+                var projGuid = "";
+                foreach (var cn in projRefElem.ChildNodes)
+                {
+                    var cnElem = cn as XmlElement;
+                    if (cnElem == null)
+                        continue;
+                    if (cnElem.Name == "Project")
+                    {
+                        projGuid = cnElem.InnerText;
+                        break;
+                    }
+                }
 
                 var includeAttr = projRefElem.Attributes["Include"];
                 if (string.IsNullOrWhiteSpace(includeAttr?.Value))
@@ -255,7 +269,7 @@ namespace NoFuture.Read.Vs
                     throw new RahRowRagee($"Could not find a matching .dll for the ProjectRefernce with the Name of '{simpleAsmName}'");
 
                 var libFullName = Path.Combine(destLibDir, dllTuple.Item1.Name);
-                libBin.Add(libFullName);
+                libBin.Add(new Tuple<string, string>(libFullName, projGuid));
 
                 File.Copy(dllTuple.Item1.FullName, libFullName, true);
             }
@@ -269,7 +283,7 @@ namespace NoFuture.Read.Vs
             //now add each lib\dll path as a binary ref
             foreach (var dllLib in libBin)
             {
-                if (!TryAddReferenceEntry(dllLib, useExactAsmNameMatch, true))
+                if (!TryAddReferenceEntry(dllLib.Item1, dllLib.Item2, useExactAsmNameMatch, true))
                     throw new RahRowRagee($"Could not add a Reference node for {dllLib}");
             }
             return libBin.Count;
@@ -280,6 +294,10 @@ namespace NoFuture.Read.Vs
         /// to the project's references
         /// </summary>
         /// <param name="assemblyPath"></param>
+        /// <param name="projGuid">
+        /// Optional, will add in a child node Aliases.
+        /// This is helpful if you want to later turn it back into a project reference.
+        /// </param>
         /// <param name="useExactAsmNameMatch"></param>
         /// <param name="resolveToPartialPath">
         /// Will resolve the hint path to a relative path off the project's root 
@@ -289,7 +307,7 @@ namespace NoFuture.Read.Vs
         /// <remarks>
         /// MsBuild style environment variables are handled (e.g. $(MY_ENV_VAR) )
         /// </remarks>
-        public bool TryAddReferenceEntry(string assemblyPath, bool useExactAsmNameMatch = false, bool resolveToPartialPath = false)
+        public bool TryAddReferenceEntry(string assemblyPath, string projGuid = null, bool useExactAsmNameMatch = false, bool resolveToPartialPath = false)
         {
             if (string.IsNullOrWhiteSpace(assemblyPath))
                 return false;
@@ -324,6 +342,13 @@ namespace NoFuture.Read.Vs
 
                 projRef.Node.AppendChild(specificVerNode);
                 projRef.Node.AppendChild(hintPathNode);
+
+                if (!string.IsNullOrWhiteSpace(projGuid))
+                {
+                    var aliasesNode = _xmlDocument.CreateElement("Aliases", DOT_NET_PROJ_XML_NS);
+                    aliasesNode.InnerText = projGuid.ToUpper();
+                    projRef.Node.AppendChild(aliasesNode);
+                }
 
                 var refItemGroup = GetLastReferenceNode().ParentNode;
 

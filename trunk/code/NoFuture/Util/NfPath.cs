@@ -359,12 +359,6 @@ namespace NoFuture.Util
             var p = currentWorkingDir.Split(Path.DirectorySeparatorChar);
             var q = somePathTemp.Split(Path.DirectorySeparatorChar);
 
-            if (q.Length == p.Length && !string.IsNullOrWhiteSpace(somePathFile))
-            {
-                somePath = somePathFile;
-                return true;
-            }
-
             var pathOut = new List<string>();
 
             for (var i = p.Length - 1; i > 0; i--)

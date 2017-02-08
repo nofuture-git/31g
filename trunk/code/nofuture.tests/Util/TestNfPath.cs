@@ -41,6 +41,12 @@ namespace NoFuture.Tests.Util
             testResult = NfPath.TryGetRelPath(@"C:\Projects\MyProject", ref testInput);
             Assert.IsTrue(testResult);
             Assert.AreEqual(@"..\DiffProj\admin\SomeFile.fs", testInput);
+
+            testInput = @"C:\Projects\SomeBigProj\SomeSubProj.WithDots.MoreDots\SomeSubProj.WithDots.MoreDots.fsproj";
+            testResult = NfPath.TryGetRelPath(@"C:\Projects\SomeBigProj\SomeOtherProj.WithDots", ref testInput);
+            Assert.IsTrue(testResult);
+            Assert.AreEqual(@"..\SomeSubProj.WithDots.MoreDots\SomeSubProj.WithDots.MoreDots.fsproj", testInput);
+
         }
 
 
