@@ -222,7 +222,7 @@ namespace NoFuture.Read.Vs
             var libBin = new List<Tuple<string,string>>();
 
             //set aside mem for container node of all proj refs
-            XmlNode projRefItemGrpNode = null;
+            var cacheOfItemGroupParents = new List<XmlNode>();
 
             //copy each proj ref from debug bin to lib
             foreach (var projRefNode in projRefs)
@@ -230,13 +230,14 @@ namespace NoFuture.Read.Vs
                 var projRefElem = projRefNode as XmlElement;
                 if (projRefElem == null || !projRefElem.HasAttributes)
                     continue;
-                //cache this for later, only need it once
-                if(projRefItemGrpNode == null)
-                    projRefItemGrpNode = projRefElem.ParentNode;
+                
+                if(cacheOfItemGroupParents.All(x => !x.Equals(projRefElem.ParentNode)))
+                    cacheOfItemGroupParents.Add(projRefElem.ParentNode);
 
                 var includeAttr = projRefElem.Attributes["Include"];
                 if (string.IsNullOrWhiteSpace(includeAttr?.Value))
                     continue;
+
                 var projPath = Path.Combine(DirectoryName, includeAttr.Value);
                 if(!File.Exists(projPath))
                     throw new RahRowRagee($"The ProjectReference to '{projPath}' does not exisit.");
@@ -256,19 +257,29 @@ namespace NoFuture.Read.Vs
                                  "']/{0}:Project") ?? string.Empty).ToUpper();
 
                 var dllTuple = binDict.FirstOrDefault(x => x.Item2 == simpleAsmName);
-                if(dllTuple == null)
-                    throw new RahRowRagee($"Could not find a matching .dll for the ProjectRefernce with the Name of '{simpleAsmName}'");
+
+                //do a hard search
+                if (dllTuple == null)
+                {
+                    var nfProjFile = new ProjFile(projPath);
+                    simpleAsmName = nfProjFile.AssemblyName;
+                    dllTuple = binDict.FirstOrDefault(x => x.Item2 == simpleAsmName);
+                    if (dllTuple == null)
+                        throw new RahRowRagee($"Could not find a matching .dll for the ProjectRefernce with the Name of '{simpleAsmName}'");
+                }
 
                 var libFullName = Path.Combine(destLibDir, dllTuple.Item1.Name);
                 libBin.Add(new Tuple<string, string>(libFullName, projGuid));
 
                 File.Copy(dllTuple.Item1.FullName, libFullName, true);
-            }
-            if (projRefItemGrpNode == null)
-                return 0;
 
-            //drop the entire item group for ProjectReference
-            projNode.RemoveChild(projRefItemGrpNode);
+                //remove this ProjectReference node
+                projRefElem.ParentNode.RemoveChild(projRefElem);
+            }
+
+            //drop any ItemGroup who has had all child nodes dropped.
+            foreach (var dd in cacheOfItemGroupParents.Where(x => !x.HasChildNodes))
+                projNode.RemoveChild(dd);
             _isChanged = true;
 
             //now add each lib\dll path as a binary ref
