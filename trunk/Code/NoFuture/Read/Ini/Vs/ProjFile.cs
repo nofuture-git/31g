@@ -150,6 +150,38 @@ namespace NoFuture.Read.Vs
                 return !string.IsNullOrWhiteSpace(pPath) ? Path.Combine(DirectoryName, pPath) : null;
             }
         }
+
+        public string ProjectGuid
+        {
+            get
+            {
+                var guidPath = GetInnerText("//{0}:PropertyGroup/{0}:ProjectGuid");
+                return !string.IsNullOrWhiteSpace(guidPath) ? guidPath : null;
+            }
+        }
+
+        public string[] ProjectConfigurations
+        {
+            get
+            {
+                const string REGEX_PATTERN = @"\x27\x20\x3d\x3d\x20\x27([a-zA-Z0-9_\x7c]+)\x27";
+                var buildConfigPropNodes = _xmlDocument.SelectNodes($"//{NS}:PropertyGroup", _nsMgr);
+                if (buildConfigPropNodes == null)
+                    return null;
+                var configurations = new List<string>();
+                foreach (var node in buildConfigPropNodes)
+                {
+                    var elem = node as XmlElement;
+                    if (elem == null || !elem.HasAttributes || !elem.HasAttribute("Condition"))
+                        continue;
+                    var conditionValue = elem.GetAttribute("Condition");
+                    string configOut;
+                    if(Shared.RegexCatalog.IsRegexMatch(conditionValue, REGEX_PATTERN, out configOut, 1))
+                        configurations.Add(configOut);
+                }
+                return configurations.ToArray();
+            }
+        }
         #endregion
 
         #region instance methods
@@ -162,7 +194,7 @@ namespace NoFuture.Read.Vs
         /// Is expecting to find binary copies of each 'ProjectReference' in 
         /// the <see cref="DebugBin"/> folder.
         /// </remarks>
-        public int TryReplaceToBinaryRef(bool useExactAsmNameMatch = false)
+        public int TryReplaceToBinaryRef(bool useExactAsmNameMatch = false, string libDir = null)
         {
             var debugBin = DebugBin;
             if(string.IsNullOrWhiteSpace(debugBin) || !Directory.Exists(debugBin))
@@ -178,7 +210,7 @@ namespace NoFuture.Read.Vs
                 return 0;
 
             //setup a dir to binary dll's to
-            var destLibDir = Path.Combine(DirectoryName, "lib");
+            var destLibDir = libDir ?? Path.Combine(DirectoryName, "lib");
             if (!Directory.Exists(destLibDir))
                 Directory.CreateDirectory(destLibDir);
 
@@ -211,6 +243,13 @@ namespace NoFuture.Read.Vs
 
                 var simpleAsmName =
                     GetInnerText("//{0}:ItemGroup/{0}:ProjectReference[@Include='" + includeAttr.Value + "']/{0}:Name");
+
+                //deal with odd name appearing like "Some.Asm.Name %28SomeDir\SomeOtherDir%29
+                if (simpleAsmName.Contains(" "))
+                {
+                    simpleAsmName = simpleAsmName.Split(' ')[0];
+                }
+
                 var dllTuple = binDict.FirstOrDefault(x => x.Item2 == simpleAsmName);
                 if(dllTuple == null)
                     throw new RahRowRagee($"Could not find a matching .dll for the ProjectRefernce with the Name of '{simpleAsmName}'");
@@ -328,6 +367,74 @@ namespace NoFuture.Read.Vs
             }
 
             return _isChanged;
+        }
+
+        public int ReduceToOnlyBuildConfig(params string[] buildConfigNames)
+        {
+            buildConfigNames = buildConfigNames ?? new[] {"Debug|AnyCPU", "Release|AnyCPU"};
+            var buildConfigPropNodes = _xmlDocument.SelectNodes($"//{NS}:PropertyGroup", _nsMgr);
+            var counter = 0;
+            //remove any that are not on the list
+            if (buildConfigPropNodes != null)
+            {
+                foreach (var node in buildConfigPropNodes)
+                {
+                    var elem = node as XmlElement;
+                    if (elem == null || !elem.HasAttributes || !elem.HasAttribute("Condition"))
+                        continue;
+                    var conditionValue = elem.GetAttribute("Condition");
+                    if (buildConfigNames.All(x => !conditionValue.Contains(x)))
+                    {
+                        _xmlDocument.DocumentElement.RemoveChild(elem);
+                        counter += 1;
+                    }
+                }
+            }
+
+            //add any on the list but not in xml
+            foreach (var config in buildConfigNames)
+            {
+                if (HasBuildConfig(config))
+                    continue;
+                var outputPath = config.Contains("|") ? config.Split('|')[0] : config;
+
+                var buildConfigNode = _xmlDocument.CreateElement("PropertyGroup",DOT_NET_PROJ_XML_NS);
+                var conditionAttr = _xmlDocument.CreateAttribute("Condition");
+                conditionAttr.Value = $" '$(Configuration)|$(Platform)' == '{config}' ";
+                buildConfigNode.Attributes.Append(conditionAttr);
+
+                var debugSymbolsNode = _xmlDocument.CreateElement("DebugSymbols", DOT_NET_PROJ_XML_NS);
+                debugSymbolsNode.InnerText = "true";
+                buildConfigNode.AppendChild(debugSymbolsNode);
+
+                var debugTypeNode = _xmlDocument.CreateElement("DebugType", DOT_NET_PROJ_XML_NS);
+                debugTypeNode.InnerText = "full";
+                buildConfigNode.AppendChild(debugTypeNode);
+
+                var optimizeNode = _xmlDocument.CreateElement("Optimize", DOT_NET_PROJ_XML_NS);
+                optimizeNode.InnerText = "false";
+                buildConfigNode.AppendChild(optimizeNode);
+
+                var outputPathNode = _xmlDocument.CreateElement("OutputPath", DOT_NET_PROJ_XML_NS);
+                outputPathNode.InnerText = $"bin\\{outputPath}";
+                buildConfigNode.AppendChild(outputPathNode);
+
+                var defineConstantsNode = _xmlDocument.CreateElement("DefineConstants", DOT_NET_PROJ_XML_NS);
+                defineConstantsNode.InnerText = "DEBUG;TRACE";
+                buildConfigNode.AppendChild(defineConstantsNode);
+
+                var errorReportNode = _xmlDocument.CreateElement("ErrorReport", DOT_NET_PROJ_XML_NS);
+                errorReportNode.InnerText = "prompt";
+                buildConfigNode.AppendChild(errorReportNode);
+
+                var warningLevelNode = _xmlDocument.CreateElement("WarningLevel", DOT_NET_PROJ_XML_NS);
+                warningLevelNode.InnerText = "4";
+                buildConfigNode.AppendChild(warningLevelNode);
+
+                var firstDocChildNode = _xmlDocument.DocumentElement.FirstChild;
+                _xmlDocument.InsertAfter(buildConfigNode, firstDocChildNode);
+            }
+            return counter;
         }
 
         /// <summary>
@@ -827,6 +934,11 @@ namespace NoFuture.Read.Vs
             return elem?.Attributes[attrName];
         }
 
+        protected internal bool HasBuildConfig(string buildConfigName)
+        {
+            var buildNode = _xmlDocument.SelectSingleNode($"//{NS}:PropertyGroup[contains(@Condition,'{buildConfigName}')]", _nsMgr);
+            return buildNode != null;
+        }
         #endregion
 
         #region static methods

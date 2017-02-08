@@ -1868,6 +1868,18 @@ namespace NoFuture.Tests.Gen
             System.Diagnostics.Debug.WriteLine(testResult);
             Assert.IsTrue(Settings.DefaultLang == CgLangs.Cs);
             Assert.AreEqual("System.Collections.Generic.List<SomeSecondDll.MyFirstMiddleClass>",testResult);
+
+            testInput = "MyDomain.SomeWhere.LowerLib.IRepository`1";
+            testResult = Settings.LangStyle.TransformClrTypeSyntax(testInput);
+            Assert.IsNotNull(testResult);
+            System.Diagnostics.Debug.WriteLine(testResult);
+            Assert.AreEqual("MyDomain.SomeWhere.LowerLib.IRepository<>", testResult);
+
+            testInput = "MyDomain.SomeWhere.LowerLib.IRepository`2";
+            testResult = Settings.LangStyle.TransformClrTypeSyntax(testInput);
+            Assert.IsNotNull(testResult);
+            System.Diagnostics.Debug.WriteLine(testResult);
+            Assert.AreEqual("MyDomain.SomeWhere.LowerLib.IRepository<,>", testResult);
         }
 
         [TestMethod]

@@ -69,6 +69,20 @@ namespace NoFuture.Tests
         }
 
         [TestMethod]
+        public void TestReduceToOnlyBuildConfig()
+        {
+            var testSubject = new NoFuture.Read.Vs.ProjFile(TEST_CSPROJ);
+            Assert.IsNotNull(testSubject);
+
+            var testResults = testSubject.ReduceToOnlyBuildConfig(null);
+            Assert.AreNotEqual(0, testResults);
+
+            var testRslt = Path.GetDirectoryName(TEST_CSPROJ);
+            testRslt = Path.Combine(testRslt, "DoNotUse_VsProjFileTests-COPY.csproj");
+            testSubject.SaveAs(testRslt);
+        }
+
+        [TestMethod]
         public void TestGetListCompileItemNodes()
         {
             var testSubject = new NoFuture.Read.Vs.ProjFile(TEST_CSPROJ);
@@ -77,6 +91,57 @@ namespace NoFuture.Tests
             var testResults = testSubject.GetListCompileItemNodes("HumanResources.");
             Assert.IsNotNull(testResults);
             Assert.AreNotEqual(0, testResults.Count);
+
+        }
+
+        [TestMethod]
+        public void TestGetSlnProjectEntry()
+        {
+            var testSubject = new NoFuture.Read.Vs.ProjFile(TEST_CSPROJ);
+            Assert.IsNotNull(testSubject);
+
+            var testResult = NoFuture.Read.Vs.SlnFile.GetSlnProjectEntry(testSubject, TestAssembly.UnitTestsRoot);
+            Assert.IsNotNull(testResult);
+            System.Diagnostics.Debug.WriteLine(testResult);
+        }
+
+        [TestMethod]
+        public void TestProjectConfigurations()
+        {
+            var testSubject = new NoFuture.Read.Vs.ProjFile(TEST_CSPROJ);
+            Assert.IsNotNull(testSubject);
+
+            var testResults = testSubject.ProjectConfigurations;
+            Assert.IsNotNull(testResults);
+            Assert.AreNotEqual(0,testResults);
+            foreach(var t in testResults)
+                System.Diagnostics.Debug.WriteLine(t);
+        }
+
+        [TestMethod]
+        public void TestProjectGuid()
+        {
+            var testSubject = new NoFuture.Read.Vs.ProjFile(TEST_CSPROJ);
+            Assert.IsNotNull(testSubject);
+
+            var testResult = testSubject.ProjectGuid;
+            Assert.AreEqual("{F5D2874B-B6AB-4FB9-ABF4-0F8B613907D4}", testResult);
+
+        }
+
+        [TestMethod]
+        public void TestSaveSlnVer14()
+        {
+            var testInput = new NoFuture.Read.Vs.ProjFile(TEST_CSPROJ);
+            Assert.IsNotNull(testInput);
+
+            var testResultFile = Path.GetDirectoryName(TEST_CSPROJ);
+            testResultFile = Path.Combine(testResultFile, "TestSaveSlnVer14.sln");
+
+            var testSubject = new NoFuture.Read.Vs.SlnFile(testResultFile);
+
+            var testResult = testSubject.SaveSlnVer14(new[] {testInput});
+            Assert.AreNotEqual(0, testResult);
 
         }
 

@@ -922,7 +922,7 @@ namespace NoFuture.Gen.LangRules
 
             if (hasGenCounter && !hasGenericItems)
             {
-                bldr.Append($"<{new string(',', tnpi.GenericCounter.Value)}>");
+                bldr.Append($"<{new string(',', tnpi.GenericCounter.Value - 1)}>");
                 return;
             }
 

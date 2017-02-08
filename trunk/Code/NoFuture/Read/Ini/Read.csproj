@@ -70,6 +70,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Ini\IniFileName.cs" />
     <Compile Include="Vs\ProjFile.cs" />
+    <Compile Include="Vs\SlnFile.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Shared\Shared.csproj">

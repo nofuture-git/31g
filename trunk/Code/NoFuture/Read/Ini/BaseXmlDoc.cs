@@ -29,16 +29,14 @@ namespace NoFuture.Read
             {
                 throw new ItsDeadJim($"Bad Path or File Name at '{xmlDoc}'");
             }
-            DirectoryName = Path.GetDirectoryName(_fileFullName) ?? TempDirectories.AppData;
-            FileName = Path.GetFileName(_fileFullName);
             _xmlDocument = new XmlDocument();
             _xmlDocument.Load(xmlDoc);
         }
         #endregion
 
         #region base api
-        public virtual string DirectoryName { get; }
-        public virtual string FileName { get; }
+        public virtual string DirectoryName => Path.GetDirectoryName(_fileFullName) ?? TempDirectories.AppData;
+        public virtual string FileName => Path.GetFileName(_fileFullName);
 
         /// <summary>
         /// Writes the current in memory contents to file.
@@ -52,6 +50,7 @@ namespace NoFuture.Read
         {
             if(string.IsNullOrWhiteSpace(fullName))
                 throw new ArgumentNullException(nameof(fullName));
+            _fileFullName = fullName;
             Util.NfPath.SaveXml(_xmlDocument, fullName);
         }
 
