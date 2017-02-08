@@ -312,7 +312,7 @@ namespace NoFuture.Read.Vs
                     tempPath = ".\\" + tempPath;
             }
 
-            var projRef = GetSingleBinRefernceNode(assemblyPath, useExactAsmNameMatch);
+            var projRef = GetBinRefByAsmPath(assemblyPath, useExactAsmNameMatch);
 
             if (string.IsNullOrWhiteSpace(projRef?.AssemblyFullName))
                 return false;
@@ -333,13 +333,6 @@ namespace NoFuture.Read.Vs
 
                 projRef.Node.AppendChild(specificVerNode);
                 projRef.Node.AppendChild(hintPathNode);
-
-                if (!string.IsNullOrWhiteSpace(projGuid))
-                {
-                    var aliasesNode = _xmlDocument.CreateElement("Aliases", DOT_NET_PROJ_XML_NS);
-                    aliasesNode.InnerText = projGuid;
-                    projRef.Node.AppendChild(aliasesNode);
-                }
 
                 var refItemGroup = GetLastReferenceNode().ParentNode;
 
@@ -379,20 +372,13 @@ namespace NoFuture.Read.Vs
 
                 hintPathNode.InnerText = tempPath;
 
-                if (!string.IsNullOrWhiteSpace(projGuid))
-                {
-                    var aliasesNode = _xmlDocument.SelectSingleNode(string.Format(
-                            "//{0}:ItemGroup/{0}:Reference[contains(@Include,'{1}')]/{0}:Aliases", NS, projRef.AssemblyName),
-                            _nsMgr);
-                    if (aliasesNode == null)
-                    {
-                        aliasesNode = _xmlDocument.CreateElement("Aliases", DOT_NET_PROJ_XML_NS);
-                        projRef.Node.AppendChild(aliasesNode);
-                    }
-                    aliasesNode.InnerText = projGuid;
-                }
-
                 _isChanged = true;
+            }
+
+            if (!string.IsNullOrWhiteSpace(projGuid))
+            {
+                var guidComment = _xmlDocument.CreateComment(projGuid);
+                projRef.Node.AppendChild(guidComment);
             }
 
             return _isChanged;
@@ -676,7 +662,7 @@ namespace NoFuture.Read.Vs
         /// Optional, specify that the Assembly Names must be exact matches
         /// </param>
         /// <returns></returns>
-        public BinReference GetSingleBinRefernceNode(string assemblyPath, bool useExactAsmNameMatch = false)
+        public BinReference GetBinRefByAsmPath(string assemblyPath, bool useExactAsmNameMatch = false)
         {
 
             if (string.IsNullOrWhiteSpace(assemblyPath))
@@ -742,6 +728,36 @@ namespace NoFuture.Read.Vs
                 cache.Node = refNode;
 
             return cache;
+        }
+
+        public XmlNode GetRefNodeByGuidComment(string guidValue)
+        {
+            if (string.IsNullOrWhiteSpace(guidValue))
+                return null;
+            var rawGuidValue = guidValue.Replace("{", string.Empty).Replace("}", string.Empty);
+            Guid guid;
+            if(!Guid.TryParse(rawGuidValue, out guid))
+                throw new RahRowRagee($"The value {rawGuidValue} could not be parsed to a Guid.");
+            rawGuidValue = rawGuidValue.ToUpper();
+            var allReferenceNodes = _xmlDocument.SelectNodes($"//{NS}:Reference",_nsMgr);
+            if (allReferenceNodes == null)
+                return null;
+            foreach (var nodeListItem in allReferenceNodes)
+            {
+                var node = nodeListItem as XmlNode;
+                if (node == null || !node.HasChildNodes)
+                    continue;
+                foreach (var childNodeItem in node.ChildNodes)
+                {
+                    var xmlComment = childNodeItem as XmlComment;
+                    if (string.IsNullOrWhiteSpace(xmlComment?.InnerText))
+                        continue;
+                    if (xmlComment.InnerText.ToUpper().Contains(rawGuidValue))
+                        return node;
+                }
+
+            }
+            return null;
         }
 
         public override string GetInnerText(string xpath)

@@ -61,6 +61,7 @@
     <Reference Include="NoFuture.Hbm.Sid, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\NoFuture.Hbm.Sid.dll</HintPath>
+      <!--{FB851E8C-6995-4EEB-9B4D-B7C450C39E5C}-->	  
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

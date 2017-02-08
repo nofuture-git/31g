@@ -69,6 +69,16 @@ namespace NoFuture.Tests
         }
 
         [TestMethod]
+        public void TestGetBinRefByGuidComment()
+        {
+            var testSubject = new NoFuture.Read.Vs.ProjFile(TEST_CSPROJ);
+            Assert.IsNotNull(testSubject);
+
+            var testResult = testSubject.GetRefNodeByGuidComment("FB851E8C-6995-4EEB-9B4D-B7C450C39E5C");
+            Assert.IsNotNull(testResult);
+        }
+
+        [TestMethod]
         public void TestReduceToOnlyBuildConfig()
         {
             var testSubject = new NoFuture.Read.Vs.ProjFile(TEST_CSPROJ);
@@ -179,7 +189,7 @@ namespace NoFuture.Tests
             Assert.IsNotNull(testSubject);
 
             var testProjRef =
-                testSubject.GetSingleBinRefernceNode(
+                testSubject.GetBinRefByAsmPath(
                     TestAssembly.UnitTestsRoot + @"\ExampleDlls\NHibernate.dll");
 
             Assert.IsNotNull(testProjRef);
