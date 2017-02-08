@@ -260,17 +260,23 @@ EndGlobal
 
                     //the binary reference would have to been added by NoFuture to have an Aliases node containing the proj guid
                     var otherProjFile = projFiles[j];
-                    var otherBinRefNode =
+                    var otherBinRefAliasNode =
                         otherProjFile.VsProjXml.SelectSingleNode($"//{ProjFile.NS}:Reference/{ProjFile.NS}:Aliases[contains(text(),'{projGuid}')]",
                             otherProjFile.NsMgr);
 
                     //if the Aliases node was missing then just go to the next
-                    var parentOfOtherBinRefNode = otherBinRefNode?.ParentNode;
+                    if (otherBinRefAliasNode?.ParentNode == null)
+                        continue;
+                    //step up to the whole item group containing this bin ref node
+                    var parentOfOtherBinRefNode =
+                        otherProjFile.VsProjXml.SelectSingleNode(
+                            $"//{ProjFile.NS}:Reference/{ProjFile.NS}:Aliases[contains(text(),'{projGuid}')]/../..",
+                            otherProjFile.NsMgr);
                     if (parentOfOtherBinRefNode == null)
                         continue;
 
                     //drop the binary ref node
-                    parentOfOtherBinRefNode.RemoveChild(otherBinRefNode);
+                    parentOfOtherBinRefNode.RemoveChild(otherBinRefAliasNode.ParentNode);
 
                     var otherProjItemGroup = otherProjFile.VsProjXml.CreateElement("ItemGroup",
                         ProjFile.DOT_NET_PROJ_XML_NS);

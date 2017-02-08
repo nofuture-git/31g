@@ -156,7 +156,7 @@ namespace NoFuture.Read.Vs
             get
             {
                 var guidPath = GetInnerText("//{0}:PropertyGroup/{0}:ProjectGuid");
-                return !string.IsNullOrWhiteSpace(guidPath) ? guidPath : null;
+                return !string.IsNullOrWhiteSpace(guidPath) ? guidPath.ToUpper() : null;
             }
         }
 
@@ -234,20 +234,6 @@ namespace NoFuture.Read.Vs
                 if(projRefItemGrpNode == null)
                     projRefItemGrpNode = projRefElem.ParentNode;
 
-                //pass this off so its easier to map assembly-paths back to .[cs|vb|fs]proj files
-                var projGuid = "";
-                foreach (var cn in projRefElem.ChildNodes)
-                {
-                    var cnElem = cn as XmlElement;
-                    if (cnElem == null)
-                        continue;
-                    if (cnElem.Name == "Project")
-                    {
-                        projGuid = cnElem.InnerText;
-                        break;
-                    }
-                }
-
                 var includeAttr = projRefElem.Attributes["Include"];
                 if (string.IsNullOrWhiteSpace(includeAttr?.Value))
                     continue;
@@ -263,6 +249,11 @@ namespace NoFuture.Read.Vs
                 {
                     simpleAsmName = simpleAsmName.Split(' ')[0];
                 }
+
+                //pass this off so its easier to map assembly-paths back to .[cs|vb|fs]proj files
+                var projGuid =
+                    (GetInnerText("//{0}:ItemGroup/{0}:ProjectReference[@Include='" + includeAttr.Value +
+                                 "']/{0}:Project") ?? string.Empty).ToUpper();
 
                 var dllTuple = binDict.FirstOrDefault(x => x.Item2 == simpleAsmName);
                 if(dllTuple == null)
@@ -346,7 +337,7 @@ namespace NoFuture.Read.Vs
                 if (!string.IsNullOrWhiteSpace(projGuid))
                 {
                     var aliasesNode = _xmlDocument.CreateElement("Aliases", DOT_NET_PROJ_XML_NS);
-                    aliasesNode.InnerText = projGuid.ToUpper();
+                    aliasesNode.InnerText = projGuid;
                     projRef.Node.AppendChild(aliasesNode);
                 }
 
@@ -387,6 +378,19 @@ namespace NoFuture.Read.Vs
                 }
 
                 hintPathNode.InnerText = tempPath;
+
+                if (!string.IsNullOrWhiteSpace(projGuid))
+                {
+                    var aliasesNode = _xmlDocument.SelectSingleNode(string.Format(
+                            "//{0}:ItemGroup/{0}:Reference[contains(@Include,'{1}')]/{0}:Aliases", NS, projRef.AssemblyName),
+                            _nsMgr);
+                    if (aliasesNode == null)
+                    {
+                        aliasesNode = _xmlDocument.CreateElement("Aliases", DOT_NET_PROJ_XML_NS);
+                        projRef.Node.AppendChild(aliasesNode);
+                    }
+                    aliasesNode.InnerText = projGuid;
+                }
 
                 _isChanged = true;
             }
