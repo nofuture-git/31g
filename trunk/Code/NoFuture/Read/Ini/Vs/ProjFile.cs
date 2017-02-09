@@ -340,8 +340,8 @@ namespace NoFuture.Read.Vs
             if (!xmlElem.HasAttribute("Include"))
                 xmlElem.Attributes.Append(includeAttr);
 
-            var xpath2Ref = $"//{NS}:ItemGroup/{NS}:Reference[contains(@Include,'{projRef.AssemblyName}')]";
-
+            var xpath2Ref = $"//{NS}:ItemGroup/{NS}:Reference[contains(@Include," +
+                $"'{(useExactAsmNameMatch ? projRef.AssemblyFullName : projRef.AssemblyName)}')]";
             //assign SpecificVersion inner text
             var specificVerNode = _xmlDocument.SelectSingleNode($"{xpath2Ref}/{NS}:SpecificVersion",_nsMgr);
             var specificVerElem = specificVerNode as XmlElement ??
@@ -362,6 +362,12 @@ namespace NoFuture.Read.Vs
             {
                 var guidComment = _xmlDocument.CreateComment(projGuid);
                 xmlElem.AppendChild(guidComment);
+            }
+
+            if (projRef.Node == null)
+            {
+                var refItemGroup = GetLastReferenceNode().ParentNode;
+                refItemGroup?.InsertAfter(xmlElem, GetLastReferenceNode());
             }
 
             _isChanged = true;
