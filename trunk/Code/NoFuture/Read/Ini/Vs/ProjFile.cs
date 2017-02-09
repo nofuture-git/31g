@@ -14,11 +14,21 @@ namespace NoFuture.Read.Vs
     public class ProjFile : BaseXmlDoc
     {
         #region constants
+        /// <summary>
+        /// The xml namespace VS proj files are decorated with
+        /// </summary>
         public const string DOT_NET_PROJ_XML_NS = "http://schemas.microsoft.com/developer/msbuild/2003";
+        /// <summary>
+        /// The xml namespace alias to be used in all Xpaths
+        /// </summary>
         public const string NS = "vs";
         #endregion
 
         #region internal types
+        /// <summary>
+        /// A wrapper for containing the xml node coupled with 
+        /// dll assembly name and path
+        /// </summary>
         public class BinReference
         {
             private readonly ProjFile _projFile;
@@ -160,6 +170,9 @@ namespace NoFuture.Read.Vs
             }
         }
 
+        /// <summary>
+        /// Gets a list of just the build configuration string in the typical form of 'Debug|AnyCPU'
+        /// </summary>
         public string[] ProjectConfigurations
         {
             get
@@ -209,28 +222,27 @@ namespace NoFuture.Read.Vs
             if (projRefs == null)
                 return 0;
 
-            //setup a dir to binary dll's to
+            //setup a dir to save binary dll's to
             var destLibDir = libDir ?? Path.Combine(DirectoryName, "lib");
             if (!Directory.Exists(destLibDir))
                 Directory.CreateDirectory(destLibDir);
 
-            //get a hash of files to proj ref names
+            //get a hash of files-to-simple asm names
             var binDict = GetProjRefPath2Name();
             if (!binDict.Any())
                 throw new ItsDeadJim($"There are no .dll files located in {debugBin}.");
 
+            //set up containers to hold values found in per-proj-node
             var libBin = new List<Tuple<string,string>>();
-
-            //set aside mem for container node of all proj refs
             var cacheOfItemGroupParents = new List<XmlNode>();
 
-            //copy each proj ref from debug bin to lib
             foreach (var projRefNode in projRefs)
             {
                 var projRefElem = projRefNode as XmlElement;
                 if (projRefElem == null || !projRefElem.HasAttributes)
                     continue;
                 
+                //cache up the parent nodes to drop empty ones later
                 if(cacheOfItemGroupParents.All(x => !x.Equals(projRefElem.ParentNode)))
                     cacheOfItemGroupParents.Add(projRefElem.ParentNode);
 
@@ -238,40 +250,20 @@ namespace NoFuture.Read.Vs
                 if (string.IsNullOrWhiteSpace(includeAttr?.Value))
                     continue;
 
-                var projPath = Path.Combine(DirectoryName, includeAttr.Value);
-                if(!File.Exists(projPath))
-                    throw new RahRowRagee($"The ProjectReference to '{projPath}' does not exisit.");
-
-                var simpleAsmName =
-                    GetInnerText("//{0}:ItemGroup/{0}:ProjectReference[@Include='" + includeAttr.Value + "']/{0}:Name");
-
-                //deal with odd name appearing like "Some.Asm.Name %28SomeDir\SomeOtherDir%29
-                if (simpleAsmName.Contains(" "))
-                {
-                    simpleAsmName = simpleAsmName.Split(' ')[0];
-                }
+                //use Include attr value to find the file-to-simple asm name entry
+                var dllTuple = GetFileSysInfo2AsmNameEntry(includeAttr, binDict);
 
                 //pass this off so its easier to map assembly-paths back to .[cs|vb|fs]proj files
                 var projGuid =
                     (GetInnerText("//{0}:ItemGroup/{0}:ProjectReference[@Include='" + includeAttr.Value +
                                  "']/{0}:Project") ?? string.Empty).ToUpper();
 
-                var dllTuple = binDict.FirstOrDefault(x => x.Item2 == simpleAsmName);
-
-                //do a hard search
-                if (dllTuple == null)
-                {
-                    var nfProjFile = new ProjFile(projPath);
-                    simpleAsmName = nfProjFile.AssemblyName;
-                    dllTuple = binDict.FirstOrDefault(x => x.Item2 == simpleAsmName);
-                    if (dllTuple == null)
-                        throw new RahRowRagee($"Could not find a matching .dll for the ProjectRefernce with the Name of '{simpleAsmName}'");
-                }
-
+                //copy dll from .\debug\bin to new .\lib dir
                 var libFullName = Path.Combine(destLibDir, dllTuple.Item1.Name);
-                libBin.Add(new Tuple<string, string>(libFullName, projGuid));
-
                 File.Copy(dllTuple.Item1.FullName, libFullName, true);
+
+                //add full filePath-to-projGuid to be worked later
+                libBin.Add(new Tuple<string, string>(libFullName, projGuid));
 
                 //remove this ProjectReference node
                 projRefElem.ParentNode.RemoveChild(projRefElem);
@@ -282,13 +274,45 @@ namespace NoFuture.Read.Vs
                 projNode.RemoveChild(dd);
             _isChanged = true;
 
-            //now add each lib\dll path as a binary ref
+            //now add each lib\dll path as a Reference node
             foreach (var dllLib in libBin)
             {
                 if (!TryAddReferenceEntry(dllLib.Item1, dllLib.Item2, useExactAsmNameMatch, true))
                     throw new RahRowRagee($"Could not add a Reference node for {dllLib}");
             }
             return libBin.Count;
+        }
+
+        protected Tuple<FileSystemInfo, string> GetFileSysInfo2AsmNameEntry(XmlAttribute includeAttr, List<Tuple<FileSystemInfo, string>> binDict)
+        {
+            //confirm the path in the Include attr points to an actual file on the drive
+            var projPath = Path.Combine(DirectoryName, includeAttr.Value);
+            if (!File.Exists(projPath))
+                throw new RahRowRagee($"The ProjectReference to '{projPath}' does not exisit.");
+
+            var simpleAsmName =
+                GetInnerText("//{0}:ItemGroup/{0}:ProjectReference[@Include='" + includeAttr.Value + "']/{0}:Name");
+
+            //deal with odd name appearing like "Some.Asm.Name %28SomeDir\SomeOtherDir%29
+            if (simpleAsmName.Contains(" "))
+            {
+                simpleAsmName = simpleAsmName.Split(' ')[0];
+            }
+
+            //do an easy search
+            var dllTuple = binDict.FirstOrDefault(x => x.Item2 == simpleAsmName);
+            
+            if (dllTuple != null)
+                return dllTuple;
+
+            //do a hard search
+            var nfProjFile = new ProjFile(projPath);
+            simpleAsmName = nfProjFile.AssemblyName;
+            dllTuple = binDict.FirstOrDefault(x => x.Item2 == simpleAsmName);
+            if (dllTuple == null)
+                throw new RahRowRagee(
+                    $"Could not find a matching .dll for the ProjectRefernce with the Name of '{simpleAsmName}'");
+            return dllTuple;
         }
 
         /// <summary>
@@ -323,78 +347,60 @@ namespace NoFuture.Read.Vs
                     tempPath = ".\\" + tempPath;
             }
 
+            //get wrapper of node plus path and asm name
             var projRef = GetBinRefByAsmPath(assemblyPath, useExactAsmNameMatch);
 
             if (string.IsNullOrWhiteSpace(projRef?.AssemblyFullName))
                 return false;
 
-            if (projRef.Node == null)
-            {
-                projRef.Node = _xmlDocument.CreateElement("Reference", DOT_NET_PROJ_XML_NS);
-                var includeAttr = _xmlDocument.CreateAttribute("Include");
-                includeAttr.Value = projRef.AssemblyFullName;
+            //get or create Reference xml element
+            var xmlElem = projRef.Node as XmlElement ?? _xmlDocument.CreateElement("Reference", DOT_NET_PROJ_XML_NS);
 
-                projRef.Node.Attributes?.Append(includeAttr);
+            //assign Include attr value 
+            var includeAttr = xmlElem.Attributes["Include"] ?? _xmlDocument.CreateAttribute("Include");
+            includeAttr.Value = projRef.AssemblyFullName;
+            if (!xmlElem.HasAttribute("Include"))
+                xmlElem.Attributes.Append(includeAttr);
 
-                var specificVerNode = _xmlDocument.CreateElement("SpecificVersion", DOT_NET_PROJ_XML_NS);
-                specificVerNode.InnerText = bool.FalseString;
+            var xpath2Ref = $"//{NS}:ItemGroup/{NS}:Reference[contains(@Include,'{projRef.AssemblyName}')]";
 
-                var hintPathNode = _xmlDocument.CreateElement("HintPath", DOT_NET_PROJ_XML_NS);
-                hintPathNode.InnerText = tempPath;
+            //assign SpecificVersion inner text
+            var specificVerNode = _xmlDocument.SelectSingleNode($"{xpath2Ref}/{NS}:SpecificVersion",_nsMgr);
+            var specificVerElem = specificVerNode as XmlElement ??
+                                  _xmlDocument.CreateElement("SpecificVersion", DOT_NET_PROJ_XML_NS);
+            specificVerElem.InnerText = bool.FalseString;
+            if(specificVerNode == null)
+                xmlElem.AppendChild(specificVerElem);
 
-                projRef.Node.AppendChild(specificVerNode);
-                projRef.Node.AppendChild(hintPathNode);
+            //assign HintPath inner text
+            var hintPathNode = _xmlDocument.SelectSingleNode($"{xpath2Ref}/{NS}:HintPath",_nsMgr);
+            var hintPathElem = hintPathNode as XmlElement ?? _xmlDocument.CreateElement("HintPath", DOT_NET_PROJ_XML_NS);
+            hintPathElem.InnerText = tempPath;
+            if (hintPathNode == null)
+                xmlElem.AppendChild(hintPathElem);
 
-                var refItemGroup = GetLastReferenceNode().ParentNode;
-
-                refItemGroup?.InsertAfter(projRef.Node, GetLastReferenceNode());
-
-                _isChanged = true;
-            }
-            else
-            {
-                if (projRef.Node.Attributes != null)
-                {
-                    var includeAttr = projRef.Node.Attributes["Include"];
-                    includeAttr.Value = projRef.AssemblyFullName;
-                }
-
-                var specificVerNode =
-                    _xmlDocument.SelectSingleNode(string.Format(
-                        "//{0}:ItemGroup/{0}:Reference[contains(@Include,'{1}')]/{0}:SpecificVersion", NS, projRef.AssemblyName),
-                        _nsMgr);
-                if (specificVerNode == null)
-                {
-                    specificVerNode = _xmlDocument.CreateElement("SpecificVersion", DOT_NET_PROJ_XML_NS);
-                    projRef.Node.AppendChild(specificVerNode);
-                }
-
-                specificVerNode.InnerText = bool.FalseString;
-
-                var hintPathNode = _xmlDocument.SelectSingleNode(string.Format(
-                        "//{0}:ItemGroup/{0}:Reference[contains(@Include,'{1}')]/{0}:HintPath", NS, projRef.AssemblyName),
-                        _nsMgr);
-
-                if (hintPathNode == null)
-                {
-                    hintPathNode = _xmlDocument.CreateElement("HintPath", DOT_NET_PROJ_XML_NS);
-                    projRef.Node.AppendChild(hintPathNode);
-                }
-
-                hintPathNode.InnerText = tempPath;
-
-                _isChanged = true;
-            }
-
+            //add the project guid for debug\tracing
             if (!string.IsNullOrWhiteSpace(projGuid))
             {
                 var guidComment = _xmlDocument.CreateComment(projGuid);
                 projRef.Node.AppendChild(guidComment);
             }
 
+            _isChanged = true;
             return _isChanged;
         }
 
+        /// <summary>
+        /// Reduces the project's build configurations to only those listed in 
+        /// <see cref="buildConfigNames"/>.
+        /// </summary>
+        /// <param name="buildConfigNames">
+        /// Optional, pass in null to have it default to the VS common "Debug|AnyCPU", "Release|AnyCPU"
+        /// </param>
+        /// <returns></returns>
+        /// <remarks>
+        /// Build config values should appear in the standard VS form as 'name|Cpu'
+        /// </remarks>
         public int ReduceToOnlyBuildConfig(params string[] buildConfigNames)
         {
             buildConfigNames = buildConfigNames ?? new[] {"Debug|AnyCPU", "Release|AnyCPU"};
@@ -679,6 +685,7 @@ namespace NoFuture.Read.Vs
             if (string.IsNullOrWhiteSpace(assemblyPath))
                 return null;
 
+            //if we looked this up before then return it again to save time
             if (_asmRefCache.Any(x => x.SearchPath == assemblyPath))
                 return _asmRefCache.First(x => x.SearchPath == assemblyPath);
 
@@ -690,7 +697,7 @@ namespace NoFuture.Read.Vs
             var tempPath = assemblyPath;
             if (tempPath.Contains("$("))
             {
-                if (!Util.NfPath.TryResolveEnvVar(tempPath, ref assemblyPath))
+                if (!NfPath.TryResolveEnvVar(tempPath, ref assemblyPath))
                 {
                     return null;
                 }
@@ -703,11 +710,12 @@ namespace NoFuture.Read.Vs
             var assemblyName = System.Reflection.AssemblyName.GetAssemblyName(assemblyPath);
 
             XmlNode refNode = null;
-
+            var xpathString = $"//{NS}:ItemGroup/{NS}:Reference[contains(@Include,'{assemblyName.Name}')]";
             if (useExactAsmNameMatch)
             {
-                var closeMatches = _xmlDocument.SelectNodes(string.Format(
-                    "//{0}:ItemGroup/{0}:Reference[contains(@Include,'{1}')]", NS, assemblyName.Name), _nsMgr);
+                //find all nodes which contain the assembly's simple name
+                var closeMatches = _xmlDocument.SelectNodes(xpathString, _nsMgr);
+
                 if (closeMatches != null)
                 {
                     foreach (var cm in closeMatches)
@@ -717,6 +725,8 @@ namespace NoFuture.Read.Vs
                         if (string.IsNullOrWhiteSpace(includeAttr?.Value))
                             continue;
                         var includeAsmName = new AssemblyName(includeAttr.Value);
+
+                        //select the one whose full assembly names are the same.
                         if (System.Reflection.AssemblyName.ReferenceMatchesDefinition(assemblyName, includeAsmName))
                         {
                             refNode = cmElem;
@@ -727,48 +737,19 @@ namespace NoFuture.Read.Vs
             }
             else
             {
-                refNode = _xmlDocument.SelectSingleNode(string.Format(
-                    "//{0}:ItemGroup/{0}:Reference[contains(@Include,'{1}')]", NS, assemblyName.Name), _nsMgr);
+                //take the first node that contains the assembly's simple name
+                refNode = _xmlDocument.SelectSingleNode(xpathString, _nsMgr);
             }
 
-
+            //finish off the BinRef wrapper with extra info
             cache.AssemblyFullName = assemblyName.FullName;
             cache.AssemblyName = assemblyName.Name;
 
+            //and the the actual xml node if available
             if (refNode != null)
                 cache.Node = refNode;
 
             return cache;
-        }
-
-        public XmlNode GetRefNodeByGuidComment(string guidValue)
-        {
-            if (string.IsNullOrWhiteSpace(guidValue))
-                return null;
-            var rawGuidValue = guidValue.Replace("{", string.Empty).Replace("}", string.Empty);
-            Guid guid;
-            if(!Guid.TryParse(rawGuidValue, out guid))
-                throw new RahRowRagee($"The value {rawGuidValue} could not be parsed to a Guid.");
-            rawGuidValue = rawGuidValue.ToUpper();
-            var allReferenceNodes = _xmlDocument.SelectNodes($"//{NS}:Reference",_nsMgr);
-            if (allReferenceNodes == null)
-                return null;
-            foreach (var nodeListItem in allReferenceNodes)
-            {
-                var node = nodeListItem as XmlNode;
-                if (node == null || !node.HasChildNodes)
-                    continue;
-                foreach (var childNodeItem in node.ChildNodes)
-                {
-                    var xmlComment = childNodeItem as XmlComment;
-                    if (string.IsNullOrWhiteSpace(xmlComment?.InnerText))
-                        continue;
-                    if (xmlComment.InnerText.ToUpper().Contains(rawGuidValue))
-                        return node;
-                }
-
-            }
-            return null;
         }
 
         public override string GetInnerText(string xpath)
@@ -789,7 +770,49 @@ namespace NoFuture.Read.Vs
 
         #region internal instance methods
 
-        internal List<Tuple<FileSystemInfo, string>> GetProjRefPath2Name()
+        /// <summary>
+        /// A dependent funtion to find a Reference node which was written <see cref="TryAddReferenceEntry"/>
+        /// when its the case that a value of 'projGuid' was passed in and written 
+        /// as an xml comment at the bottom of the node.
+        /// </summary>
+        /// <param name="guidValue"></param>
+        /// <returns></returns>
+        protected internal XmlNode GetRefNodeByGuidComment(string guidValue)
+        {
+            if (string.IsNullOrWhiteSpace(guidValue))
+                return null;
+            var rawGuidValue = guidValue.Replace("{", string.Empty).Replace("}", string.Empty);
+            Guid guid;
+            if (!Guid.TryParse(rawGuidValue, out guid))
+                throw new RahRowRagee($"The value {rawGuidValue} could not be parsed to a Guid.");
+            rawGuidValue = rawGuidValue.ToUpper();
+            var allReferenceNodes = _xmlDocument.SelectNodes($"//{NS}:Reference", _nsMgr);
+            if (allReferenceNodes == null)
+                return null;
+            foreach (var nodeListItem in allReferenceNodes)
+            {
+                var node = nodeListItem as XmlNode;
+                if (node == null || !node.HasChildNodes)
+                    continue;
+                foreach (var childNodeItem in node.ChildNodes)
+                {
+                    var xmlComment = childNodeItem as XmlComment;
+                    if (string.IsNullOrWhiteSpace(xmlComment?.InnerText))
+                        continue;
+                    if (xmlComment.InnerText.ToUpper().Contains(rawGuidValue))
+                        return node;
+                }
+
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Searches the <see cref="DebugBin"/> getting a mapping of file info to 
+        /// simple assmebly names.
+        /// </summary>
+        /// <returns></returns>
+        protected internal List<Tuple<FileSystemInfo, string>> GetProjRefPath2Name()
         {
             var binDict = new List<Tuple<FileSystemInfo, string>>();
             var directoryInfo = new DirectoryInfo(DebugBin);
@@ -807,23 +830,23 @@ namespace NoFuture.Read.Vs
 
         internal XmlNode GetSingleCompileItemNode(string fl)
         {
-            return _xmlDocument.SelectSingleNode(string.Format("//{0}:ItemGroup/{0}:Compile[@Include='{1}']", NS, fl), _nsMgr);
+            return _xmlDocument.SelectSingleNode($"//{NS}:ItemGroup/{NS}:Compile[@Include='{fl}']", _nsMgr);
         }
 
         internal List<XmlElement> GetListCompileItemNodes(string fl)
         {
-            var dlk = _xmlDocument.SelectNodes(string.Format("//{0}:ItemGroup/{0}:Compile[contains(@Include,'{1}')]", NS, fl), _nsMgr);
+            var dlk = _xmlDocument.SelectNodes($"//{NS}:ItemGroup/{NS}:Compile[contains(@Include,'{fl}')]", _nsMgr);
             return dlk?.Cast<XmlElement>().ToList();
         }
 
         internal XmlNode GetSingleContentItemNode(string fl)
         {
-            return _xmlDocument.SelectSingleNode(string.Format("//{0}:ItemGroup/{0}:Content[@Include='{1}']", NS, fl), _nsMgr);
+            return _xmlDocument.SelectSingleNode($"//{NS}:ItemGroup/{NS}:Content[@Include='{fl}']", _nsMgr);
         }
 
         internal List<XmlElement> GetListContentItemNodes(string fl)
         {
-            var dlk = _xmlDocument.SelectNodes(string.Format("//{0}:ItemGroup/{0}:Content[contains(@Include,'{1}')]", NS, fl), _nsMgr);
+            var dlk = _xmlDocument.SelectNodes($"//{NS}:ItemGroup/{NS}:Content[contains(@Include,'{fl}')]", _nsMgr);
             return dlk?.Cast<XmlElement>().ToList();
         }
 
@@ -846,22 +869,22 @@ namespace NoFuture.Read.Vs
 
         internal XmlNode GetLastCompileItem()
         {
-            return _xmlDocument.SelectSingleNode(string.Format("//{0}:ItemGroup/{0}:Compile[last()]", NS), _nsMgr);
+            return _xmlDocument.SelectSingleNode($"//{NS}:ItemGroup/{NS}:Compile[last()]", _nsMgr);
         }
 
         internal XmlNode GetLastContentItem()
         {
-            return _xmlDocument.SelectSingleNode(string.Format("//{0}:ItemGroup/{0}:Content[last()]", NS), _nsMgr);
+            return _xmlDocument.SelectSingleNode($"//{NS}:ItemGroup/{NS}:Content[last()]", _nsMgr);
         }
 
         internal XmlNode GetLastReferenceNode()
         {
-            return _xmlDocument.SelectSingleNode(string.Format("//{0}:ItemGroup/{0}:Reference[last()]", NS), _nsMgr);
+            return _xmlDocument.SelectSingleNode($"//{NS}:ItemGroup/{NS}:Reference[last()]", _nsMgr);
         }
 
         internal XmlNode GetContentItemParent()
         {
-            var lastItem = _xmlDocument.SelectSingleNode(string.Format("//{0}:ItemGroup/{0}:Content[last()]", NS), _nsMgr);
+            var lastItem = _xmlDocument.SelectSingleNode($"//{NS}:ItemGroup/{NS}:Content[last()]", _nsMgr);
             if (lastItem?.ParentNode != null)
                 return lastItem.ParentNode;
 
@@ -871,7 +894,7 @@ namespace NoFuture.Read.Vs
 
         internal XmlNode GetCompileItemParent()
         {
-            var lastItem = _xmlDocument.SelectSingleNode(string.Format("//{0}:ItemGroup/{0}:Compile[last()]", NS), _nsMgr);
+            var lastItem = _xmlDocument.SelectSingleNode($"//{NS}:ItemGroup/{NS}:Compile[last()]", _nsMgr);
             if (lastItem?.ParentNode != null)
                 return lastItem.ParentNode;
 
