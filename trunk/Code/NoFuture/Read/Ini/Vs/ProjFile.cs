@@ -361,7 +361,7 @@ namespace NoFuture.Read.Vs
             if (!string.IsNullOrWhiteSpace(projGuid))
             {
                 var guidComment = _xmlDocument.CreateComment(projGuid);
-                projRef.Node.AppendChild(guidComment);
+                xmlElem.AppendChild(guidComment);
             }
 
             _isChanged = true;
