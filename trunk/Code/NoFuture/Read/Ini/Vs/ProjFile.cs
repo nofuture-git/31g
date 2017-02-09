@@ -11,6 +11,10 @@ using NoFuture.Util;
 
 namespace NoFuture.Read.Vs
 {
+    /// <summary>
+    /// A NoFuture type for performing the typical .NET developer operations on a 
+    /// common VS project file.
+    /// </summary>
     public class ProjFile : BaseXmlDoc
     {
         #region constants
@@ -171,6 +175,11 @@ namespace NoFuture.Read.Vs
         }
 
         /// <summary>
+        /// The VS project type guid, this is only needed with regards to drafting .sln files
+        /// </summary>
+        public string VsProjectTypeGuid { get; set; }
+
+        /// <summary>
         /// Gets a list of just the build configuration string in the typical form of 'Debug|AnyCPU'
         /// </summary>
         public string[] ProjectConfigurations
@@ -283,41 +292,10 @@ namespace NoFuture.Read.Vs
             return libBin.Count;
         }
 
-        protected Tuple<FileSystemInfo, string> GetFileSysInfo2AsmNameEntry(XmlAttribute includeAttr, List<Tuple<FileSystemInfo, string>> binDict)
-        {
-            //confirm the path in the Include attr points to an actual file on the drive
-            var projPath = Path.Combine(DirectoryName, includeAttr.Value);
-            if (!File.Exists(projPath))
-                throw new RahRowRagee($"The ProjectReference to '{projPath}' does not exisit.");
-
-            var simpleAsmName =
-                GetInnerText("//{0}:ItemGroup/{0}:ProjectReference[@Include='" + includeAttr.Value + "']/{0}:Name");
-
-            //deal with odd name appearing like "Some.Asm.Name %28SomeDir\SomeOtherDir%29
-            if (simpleAsmName.Contains(" "))
-            {
-                simpleAsmName = simpleAsmName.Split(' ')[0];
-            }
-
-            //do an easy search
-            var dllTuple = binDict.FirstOrDefault(x => x.Item2 == simpleAsmName);
-            
-            if (dllTuple != null)
-                return dllTuple;
-
-            //do a hard search
-            var nfProjFile = new ProjFile(projPath);
-            simpleAsmName = nfProjFile.AssemblyName;
-            dllTuple = binDict.FirstOrDefault(x => x.Item2 == simpleAsmName);
-            if (dllTuple == null)
-                throw new RahRowRagee(
-                    $"Could not find a matching .dll for the ProjectRefernce with the Name of '{simpleAsmName}'");
-            return dllTuple;
-        }
-
         /// <summary>
         /// Attempts to add the assembly at <see cref="assemblyPath"/>
-        /// to the project's references
+        /// to the project as a Reference node (NOTE, this differs from the 
+        /// other type of reference called ProjectReference).
         /// </summary>
         /// <param name="assemblyPath"></param>
         /// <param name="projGuid">
@@ -769,6 +747,44 @@ namespace NoFuture.Read.Vs
         #endregion
 
         #region internal instance methods
+
+        /// <summary>
+        /// Dependent function to get back a single entry from the output of <see cref="GetProjRefPath2Name"/>
+        /// </summary>
+        /// <param name="includeAttr"></param>
+        /// <param name="binDict"></param>
+        /// <returns></returns>
+        protected Tuple<FileSystemInfo, string> GetFileSysInfo2AsmNameEntry(XmlAttribute includeAttr, List<Tuple<FileSystemInfo, string>> binDict)
+        {
+            //confirm the path in the Include attr points to an actual file on the drive
+            var projPath = Path.Combine(DirectoryName, includeAttr.Value);
+            if (!File.Exists(projPath))
+                throw new RahRowRagee($"The ProjectReference to '{projPath}' does not exisit.");
+
+            var simpleAsmName =
+                GetInnerText("//{0}:ItemGroup/{0}:ProjectReference[@Include='" + includeAttr.Value + "']/{0}:Name");
+
+            //deal with odd name appearing like "Some.Asm.Name %28SomeDir\SomeOtherDir%29
+            if (simpleAsmName.Contains(" "))
+            {
+                simpleAsmName = simpleAsmName.Split(' ')[0];
+            }
+
+            //do an easy search
+            var dllTuple = binDict.FirstOrDefault(x => x.Item2 == simpleAsmName);
+
+            if (dllTuple != null)
+                return dllTuple;
+
+            //do a hard search
+            var nfProjFile = new ProjFile(projPath);
+            simpleAsmName = nfProjFile.AssemblyName;
+            dllTuple = binDict.FirstOrDefault(x => x.Item2 == simpleAsmName);
+            if (dllTuple == null)
+                throw new RahRowRagee(
+                    $"Could not find a matching .dll for the ProjectRefernce with the Name of '{simpleAsmName}'");
+            return dllTuple;
+        }
 
         /// <summary>
         /// A dependent funtion to find a Reference node which was written <see cref="TryAddReferenceEntry"/>

@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using System.Xml;
 using NoFuture.Exceptions;
 
 namespace NoFuture.Read.Vs
 {
+    /// <summary>
+    /// A NoFuture type for creating a solution file using the NoFuture's <see cref="ProjFile"/> types.
+    /// </summary>
     public class SlnFile
     {
         #region constants
@@ -23,7 +24,7 @@ MinimumVisualStudioVersion = 10.0.40219.1
         #region fields
         private readonly string _fullFileName;
         private readonly string _slnDir;
-        private static Dictionary<string, string> _slnProjGuid2Description = new Dictionary<string, string>();
+        private static readonly Dictionary<string, string> slnProjGuid2Description = new Dictionary<string, string>();
 
         #endregion
 
@@ -46,6 +47,11 @@ MinimumVisualStudioVersion = 10.0.40219.1
         #endregion
 
         #region methods
+        /// <summary>
+        /// The common NuGet entry found within VS .sln files, this entry is what 
+        /// causes the .nuget folder to appear atop the solution explorer in VS.
+        /// </summary>
+        /// <returns></returns>
         internal static string GetNuGetSlnFolderProject()
         {
             var bldr = new StringBuilder();
@@ -61,22 +67,30 @@ MinimumVisualStudioVersion = 10.0.40219.1
         }
 
         /// <summary>
-        /// Contains the common .NET project files to thier project type guid.
+        /// Contains the common .NET project file extensions to thier project type guid.
         /// </summary>
+        /// <remarks>
+        /// Only contains a list for the four common .NET projects (viz. F#, VB.NET, C# and VC) 
+        /// along with the guid for 'solution folder'.  
+        /// An exhuastive list is available on a your machine at either 
+        /// HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\VisualStudio\(version)\Projects 
+        ///  -or-
+        /// HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\VisualStudio\(version)\Projects
+        /// </remarks>
         public static Dictionary<string, string> VisualStudioProjTypeGuids
         {
             get
             {
-                if (_slnProjGuid2Description.Any())
-                    return _slnProjGuid2Description;
+                if (slnProjGuid2Description.Any())
+                    return slnProjGuid2Description;
 
-                _slnProjGuid2Description.Add("solution folder", "{2150E333-8FDC-42A3-9474-1A3956D46DE8}");
-                _slnProjGuid2Description.Add(".csproj", "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}");
-                _slnProjGuid2Description.Add(".vbproj", "{F184B08F-C81C-45F6-A57F-5ABD9991F28F}");
-                _slnProjGuid2Description.Add(".fsproj", "{F2A71F9B-5D33-465A-A702-920D77279786}");
-                _slnProjGuid2Description.Add(".vcproj", "{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}");
+                slnProjGuid2Description.Add("solution folder", "{2150E333-8FDC-42A3-9474-1A3956D46DE8}");
+                slnProjGuid2Description.Add(".csproj", "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}");
+                slnProjGuid2Description.Add(".vbproj", "{F184B08F-C81C-45F6-A57F-5ABD9991F28F}");
+                slnProjGuid2Description.Add(".fsproj", "{F2A71F9B-5D33-465A-A702-920D77279786}");
+                slnProjGuid2Description.Add(".vcproj", "{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}");
 
-                return _slnProjGuid2Description;
+                return slnProjGuid2Description;
             }
         }
 
@@ -196,7 +210,10 @@ EndGlobal
         /// <summary>
         /// Drafts the two typical lines found, per project, in a .sln file.
         /// </summary>
-        /// <param name="projFile"></param>
+        /// <param name="projFile">
+        /// If the projFile has its <see cref="ProjFile.VsProjectTypeGuid"/> property assigned then 
+        /// that value is used; elsewise, a match is looked up in <see cref="VisualStudioProjTypeGuids"/>
+        /// </param>
         /// <param name="slnDir"></param>
         /// <returns></returns>
         public static string GetSlnProjectEntry(ProjFile projFile, string slnDir)
@@ -209,10 +226,12 @@ EndGlobal
             if (string.IsNullOrWhiteSpace(projGuid))
                 return null;
 
-            if (!VisualStudioProjTypeGuids.ContainsKey(projExt))
-                return null;
+            if (string.IsNullOrWhiteSpace(projFile.VsProjectTypeGuid) && !VisualStudioProjTypeGuids.ContainsKey(projExt))
+                throw new NotImplementedException("There is no VS Project Type Guid defined for " +
+                                                  $"a '{projExt}' file type.  Assign the ProjFile's " +
+                                                  "VsProjectTypeGuid directly.");
 
-            var projTypeGuid = VisualStudioProjTypeGuids[projExt];
+            var projTypeGuid = projFile.VsProjectTypeGuid ?? VisualStudioProjTypeGuids[projExt];
 
             var projName = Path.GetFileNameWithoutExtension(projFile.FileName);
 
