@@ -19,13 +19,15 @@ namespace NoFuture.Util
         /// </summary>
         /// <param name="xml"></param>
         /// <param name="fileName"></param>
+        /// <param name="encoding">Optionally define the encoding, defaults to UTF-8</param>
         /// <returns></returns>
-        public static string SaveXml(XmlDocument xml, string fileName)
+        public static string SaveXml(XmlDocument xml, string fileName, Encoding encoding = null)
         {
             if (xml == null)
                 return null;
+            encoding = encoding ?? Encoding.UTF8;
             fileName = fileName ?? GetRandomFileFullName();
-            using (var xmlWriter = new XmlTextWriter(fileName, Encoding.UTF8) { Formatting = Formatting.Indented })
+            using (var xmlWriter = new XmlTextWriter(fileName, encoding) { Formatting = Formatting.Indented })
             {
                 xml.WriteContentTo(xmlWriter);
                 xmlWriter.Flush();
@@ -382,11 +384,43 @@ namespace NoFuture.Util
 
                     somePath = string.Join(Path.DirectorySeparatorChar.ToString(CultureInfo.InvariantCulture), pathOut);
 
+                    somePath = RemoveRedundantPathLeafs(somePath);
+
                     return true;
                 }
             }
 
             return false;
+        }
+
+        /// <summary>
+        /// Deals with the odd path like ..\NotNeeded\..\ActualFolder\somefile.txt
+        /// and ..\Somewhere\.\Andthen\somefile.txt
+        /// which is technically valid.
+        /// </summary>
+        /// <param name="somePath"></param>
+        /// <returns></returns>
+        public static string RemoveRedundantPathLeafs(string somePath)
+        {
+            if (string.IsNullOrWhiteSpace(somePath))
+                return null;
+            const string PATH_SEP = @"\x5c\x2f";
+            const string DOT_DOT = @"\x2e\x2e";
+
+            var invalidPathChars = new string(Path.GetInvalidPathChars()).EscapeString();
+            
+            //anywhere we find a pattern like ..\AnyNameHere\..
+            var regexPattern = "(" + DOT_DOT + "[" + PATH_SEP + "]" +
+                               "[^" + invalidPathChars + PATH_SEP + "]+" +
+                               "[" + PATH_SEP + "])" + DOT_DOT;
+
+            string matchText;
+            if (RegexCatalog.IsRegexMatch(somePath, regexPattern, out matchText, 1))
+                somePath = somePath.Replace(matchText, string.Empty);
+
+            somePath = somePath.Replace(@"\.\", @"\").Replace("/./", "/");
+
+            return somePath;
         }
 
         /// <summary>

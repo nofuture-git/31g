@@ -46,6 +46,28 @@ namespace NoFuture.Util
             }
         }
 
+        /// <summary>
+        /// Iterates each child node looking for a node name which matches <see cref="localName"/>
+        /// </summary>
+        /// <param name="node"></param>
+        /// <param name="localName"></param>
+        /// <param name="compareOptions"></param>
+        /// <returns></returns>
+        public static XmlNode FirstChildNamed(this XmlNode node, string localName, StringComparison compareOptions = StringComparison.Ordinal)
+        {
+            if (node == null || !node.HasChildNodes)
+                return null;
+            var cNode = node.FirstChild;
+            while (cNode != null)
+            {
+                if (string.Equals(cNode.Name, localName, compareOptions))
+                    return cNode;
+                cNode = cNode.NextSibling;
+
+            }
+            return null;
+        }
+
         private const string LOREM_IPSUM_RSC = "NoFuture.Util.LoremIpsum.EightParagraphs.txt";
 
         /// <summary>

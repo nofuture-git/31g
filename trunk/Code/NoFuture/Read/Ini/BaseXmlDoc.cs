@@ -41,17 +41,17 @@ namespace NoFuture.Read
         /// <summary>
         /// Writes the current in memory contents to file.
         /// </summary>
-        public virtual void Save()
+        public virtual void Save(Encoding encoding = null)
         {
-            Util.NfPath.SaveXml(_xmlDocument, _fileFullName);
+            Util.NfPath.SaveXml(_xmlDocument, _fileFullName, encoding);
         }
 
-        public virtual void SaveAs(string fullName)
+        public virtual void SaveAs(string fullName, Encoding encoding = null)
         {
             if(string.IsNullOrWhiteSpace(fullName))
                 throw new ArgumentNullException(nameof(fullName));
             _fileFullName = fullName;
-            Util.NfPath.SaveXml(_xmlDocument, fullName);
+            Util.NfPath.SaveXml(_xmlDocument, fullName, encoding);
         }
 
         /// <summary>

@@ -222,7 +222,7 @@ namespace NoFuture.Tests
             var testAdd = testSubject.TryAddSrcCodeFile("Cw.aspx");
             Assert.IsTrue(testAdd);
 
-            var testNewRef = testSubject.TryAddReferenceEntry(TestAssembly.UnitTestsRoot + @"\ExampleDlls\NoFuture.Shared.dll");
+            var testNewRef = testSubject.AddReferenceNode(TestAssembly.UnitTestsRoot + @"\ExampleDlls\NoFuture.Shared.dll");
             Assert.IsTrue(testNewRef);
 
             testSubject.Save();

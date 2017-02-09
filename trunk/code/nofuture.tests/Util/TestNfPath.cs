@@ -49,6 +49,27 @@ namespace NoFuture.Tests.Util
 
         }
 
+        [TestMethod]
+        public void TestRemoveRedundantPathLeafs()
+        {
+            var testInput = @"..\Ind.BusinessLogic.Provider\..\Ind.Lookup\Ind.Lookup_Bin.csproj";
+            var testResult = NoFuture.Util.NfPath.RemoveRedundantPathLeafs(testInput);
+            Assert.IsNotNull(testResult);
+            System.Diagnostics.Debug.WriteLine(testResult);
+            Assert.AreEqual(@"..\Ind.Lookup\Ind.Lookup_Bin.csproj", testResult);
+
+            testInput = @"..\SomeSubProj.WithDots.MoreDots\SomeSubProj.WithDots.MoreDots.fsproj";
+            testResult = NoFuture.Util.NfPath.RemoveRedundantPathLeafs(testInput);
+            Assert.IsNotNull(testResult);
+            System.Diagnostics.Debug.WriteLine(testResult);
+            Assert.AreEqual(testInput, testResult);
+
+            testInput = @"..\SomeSubProj.WithDots.MoreDots\.\SomeSubProj.WithDots.MoreDots.fsproj";
+            testResult = NoFuture.Util.NfPath.RemoveRedundantPathLeafs(testInput);
+            Assert.IsNotNull(testResult);
+            System.Diagnostics.Debug.WriteLine(testResult);
+            Assert.AreEqual(@"..\SomeSubProj.WithDots.MoreDots\SomeSubProj.WithDots.MoreDots.fsproj", testResult);
+        }
 
         [TestMethod]
         public void TestBreakUpFileOverMaxJsonLength()

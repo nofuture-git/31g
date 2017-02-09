@@ -267,9 +267,7 @@ EndGlobal
                 if (string.IsNullOrWhiteSpace(projGuid))
                     continue;
 
-                var projName = Path.GetFileNameWithoutExtension(projFile.FileName);
                 var projFileFullName = Path.Combine(projFile.DirectoryName, projFile.FileName);
-
 
                 for (var j = 0; j < projFiles.Length; j++)
                 {
@@ -281,47 +279,17 @@ EndGlobal
                     var otherProjFile = projFiles[j];
                     var otherBinRefNode = otherProjFile.GetRefNodeByGuidComment(projGuid);
 
-                    //if the Aliases node was missing then just go to the next
+                    //if the proj guid comment was missing then just go to the next
                     if (otherBinRefNode?.ParentNode == null)
                         continue;
 
                     //drop the binary ref node
                     otherBinRefNode.ParentNode.RemoveChild(otherBinRefNode);
 
-                    var otherProjItemGroup = otherProjFile.VsProjXml.CreateElement("ItemGroup",
-                        ProjFile.DOT_NET_PROJ_XML_NS);
-                    var lastPropertyGroup =
-                        otherProjFile.VsProjXml.SelectSingleNode($"//{ProjFile.NS}:PropertyGroup[last()]",
-                            otherProjFile.NsMgr);
-                    if (lastPropertyGroup?.ParentNode == null)
-                        continue;
-                    lastPropertyGroup.ParentNode.InsertAfter(otherProjItemGroup, lastPropertyGroup);
-
-                    //create the replacement project ref node for the binary ref node we dropped
-                    var newProjRefNode = otherProjFile.VsProjXml.CreateElement("ProjectReference",
-                        ProjFile.DOT_NET_PROJ_XML_NS);
-                    var includeAttr = otherProjFile.VsProjXml.CreateAttribute("Include");
-
-                    //where is 'projFile' in relation to 'otherProjFile'?
-                    var includeAttrValue = projFileFullName;
-                    Util.NfPath.TryGetRelPath(otherProjFile.DirectoryName, ref includeAttrValue);
-
-                    includeAttr.Value = includeAttrValue;
-                    newProjRefNode.Attributes.Append(includeAttr);
-
-                    var newProjRefGuidNode = otherProjFile.VsProjXml.CreateElement("Project",
-                        ProjFile.DOT_NET_PROJ_XML_NS);
-                    newProjRefGuidNode.InnerText = projGuid;
-                    newProjRefNode.AppendChild(newProjRefGuidNode);
-
-                    var newProjNameNode = otherProjFile.VsProjXml.CreateElement("Name", ProjFile.DOT_NET_PROJ_XML_NS);
-                    newProjNameNode.InnerText = projName;
-                    newProjRefNode.AppendChild(newProjNameNode);
-
-                    //add the new project ref node to the new Item Group node
-                    otherProjItemGroup.AppendChild(newProjRefNode);
-                    counter += 1;
-
+                    if (otherProjFile.AddProjectReferenceNode(projFileFullName))
+                    {
+                        counter += 1;
+                    }
                 }
             }
 

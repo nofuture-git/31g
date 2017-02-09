@@ -209,6 +209,70 @@ namespace NoFuture.Read.Vs
         #region instance methods
 
         /// <summary>
+        /// Copies all Reference nodes in this instance over to <see cref="targetProjFile"/>
+        /// </summary>
+        /// <param name="targetProjFile"></param>
+        /// <returns></returns>
+        public int CopyAllReferenceNodesTo(ProjFile targetProjFile)
+        {
+            if (targetProjFile == null)
+                return 0;
+            var allMyReferenceNodes = _xmlDocument.SelectNodes($"//{NS}:ItemGroup/{NS}:Reference", _nsMgr);
+            if (allMyReferenceNodes == null)
+                return 0;
+            var counter = 0;
+            foreach (var projRefNode in allMyReferenceNodes)
+            {
+                var projRefElem = projRefNode as XmlElement;
+                if (projRefElem == null || !projRefElem.HasChildNodes)
+                    continue;
+                var hintPathNode = projRefElem.FirstChildNamed("HintPath");
+                if (string.IsNullOrWhiteSpace(hintPathNode?.InnerText))
+                    continue;
+                //combine my directory to file, target will resolve it to a relative path
+                var fullPath = Path.Combine(DirectoryName, hintPathNode.InnerText);
+                if (targetProjFile.AddReferenceNode(fullPath, null, true, true))
+                {
+                    counter += 1;
+                }
+            }
+            targetProjFile.Save();
+            return counter;
+        }
+
+        /// <summary>
+        /// Copies all ProjectReference nodes from this instance over to <see cref="targetProjFile"/>
+        /// </summary>
+        /// <param name="targetProjFile"></param>
+        /// <returns></returns>
+        public int CopyAllProjectReferenceNodesTo(ProjFile targetProjFile)
+        {
+            if (targetProjFile == null)
+                return 0;
+            var allMyProjRefNodes = _xmlDocument.SelectNodes($"//{NS}:ItemGroup/{NS}:ProjectReference", _nsMgr);
+            if (allMyProjRefNodes == null)
+                return 0;
+            var counter = 0;
+            foreach (var projRefNode in allMyProjRefNodes)
+            {
+                var projRefElem = projRefNode as XmlElement;
+                if (projRefElem == null || !projRefElem.HasAttributes)
+                    continue;
+                var projPathAttr = projRefElem.Attributes["Include"];
+                if (string.IsNullOrWhiteSpace(projPathAttr?.Value))
+                    continue;
+                //combine my directory to file, target will resolve it to a relative path
+                var fullPath = Path.Combine(DirectoryName, projPathAttr.Value);
+                if (targetProjFile.AddProjectReferenceNode(fullPath))
+                {
+                    counter += 1;
+                }
+            }
+            targetProjFile.Save();
+            return counter;
+        }
+
+        /// <summary>
         /// Attempts to replace all 'ProjectReference' with 'Reference'.
         /// </summary>
         /// <returns>The number of nodes replaced</returns>
@@ -237,7 +301,7 @@ namespace NoFuture.Read.Vs
                 Directory.CreateDirectory(destLibDir);
 
             //get a hash of files-to-simple asm names
-            var binDict = GetProjRefPath2Name();
+            var binDict = GetDebugBinAsmPath2Name();
             if (!binDict.Any())
                 throw new ItsDeadJim($"There are no .dll files located in {debugBin}.");
 
@@ -260,12 +324,10 @@ namespace NoFuture.Read.Vs
                     continue;
 
                 //use Include attr value to find the file-to-simple asm name entry
-                var dllTuple = GetFileSysInfo2AsmNameEntry(includeAttr, binDict);
+                var dllTuple = GetFileSysInfo2AsmNameEntry(includeAttr.Value, binDict);
 
                 //pass this off so its easier to map assembly-paths back to .[cs|vb|fs]proj files
-                var projGuid =
-                    (GetInnerText("//{0}:ItemGroup/{0}:ProjectReference[@Include='" + includeAttr.Value +
-                                 "']/{0}:Project") ?? string.Empty).ToUpper();
+                var projGuid = (projRefElem.FirstChildNamed("Project")?.InnerText ?? string.Empty).ToUpper();
 
                 //copy dll from .\debug\bin to new .\lib dir
                 var libFullName = Path.Combine(destLibDir, dllTuple.Item1.Name);
@@ -286,16 +348,63 @@ namespace NoFuture.Read.Vs
             //now add each lib\dll path as a Reference node
             foreach (var dllLib in libBin)
             {
-                if (!TryAddReferenceEntry(dllLib.Item1, dllLib.Item2, useExactAsmNameMatch, true))
+                if (!AddReferenceNode(dllLib.Item1, dllLib.Item2, useExactAsmNameMatch, true))
                     throw new RahRowRagee($"Could not add a Reference node for {dllLib}");
             }
             return libBin.Count;
         }
 
         /// <summary>
-        /// Attempts to add the assembly at <see cref="assemblyPath"/>
-        /// to the project as a Reference node (NOTE, this differs from the 
-        /// other type of reference called ProjectReference).
+        /// Adds a ProjectReference node based the the [vb|fs|cs]proj file at <see cref="projPath"/>
+        /// </summary>
+        /// <param name="projPath"></param>
+        /// <returns></returns>
+        public bool AddProjectReferenceNode(string projPath)
+        {
+            if (string.IsNullOrWhiteSpace(projPath) || !File.Exists(projPath))
+                return false;
+            var nfProjFile = new ProjFile(projPath);
+            var projGuid = nfProjFile.ProjectGuid;
+
+            var tempPath = GetAsRelPathFromMyDirectory(projPath);
+
+            var projFileName = Path.GetFileName(projPath);
+
+            var projRefNode =
+                _xmlDocument.SelectSingleNode(
+                    $"//{NS}:ItemGroup/{NS}:ProjectReference[contains(@Include,'{projFileName}')]", _nsMgr);
+            var xmlElem = projRefNode as XmlElement ??
+                              _xmlDocument.CreateElement("ProjectReference", DOT_NET_PROJ_XML_NS);
+
+            var includeAttr = xmlElem.Attributes["Include"] ?? _xmlDocument.CreateAttribute("Include");
+            includeAttr.Value = tempPath;
+            if (!xmlElem.HasAttribute("Include"))
+                xmlElem.Attributes.Append(includeAttr);
+
+            var projGuidNode = xmlElem.FirstChildNamed("Project");
+            var projGuidElem = projGuidNode as XmlElement ?? _xmlDocument.CreateElement("Project", DOT_NET_PROJ_XML_NS);
+            projGuidElem.InnerText = projGuid;
+            if (projGuidNode == null)
+                xmlElem.AppendChild(projGuidElem);
+
+            var nameNode = xmlElem.FirstChildNamed("Name");
+            var nameElem = nameNode as XmlElement ?? _xmlDocument.CreateElement("Name", DOT_NET_PROJ_XML_NS);
+            nameElem.InnerText = nfProjFile.AssemblyName;
+            if (nameNode == null)
+                xmlElem.AppendChild(nameElem);
+
+            if (projRefNode == null)
+            {
+                var itemGroup = GetLastProjectReferenceNode()?.ParentNode ?? NewItemGroup(true);
+                itemGroup?.InsertAfter(xmlElem, GetLastProjectReferenceNode());
+            }
+
+            _isChanged = true;
+            return true;
+        }
+
+        /// <summary>
+        /// Adds a Reference node based on the assembly located at <see cref="assemblyPath"/> somewhere on the drive.
         /// </summary>
         /// <param name="assemblyPath"></param>
         /// <param name="projGuid">
@@ -311,19 +420,13 @@ namespace NoFuture.Read.Vs
         /// <remarks>
         /// MsBuild style environment variables are handled (e.g. $(MY_ENV_VAR) )
         /// </remarks>
-        public bool TryAddReferenceEntry(string assemblyPath, string projGuid = null, bool useExactAsmNameMatch = false, bool resolveToPartialPath = false)
+        public bool AddReferenceNode(string assemblyPath, string projGuid = null, bool useExactAsmNameMatch = false, bool resolveToPartialPath = false)
         {
             if (string.IsNullOrWhiteSpace(assemblyPath))
                 return false;
 
             //keep local copy to assign hintpath AS-IS 
-            var tempPath = assemblyPath;
-            if (resolveToPartialPath)
-            {
-                NfPath.TryGetRelPath(DirectoryName, ref tempPath);
-                if (!Path.IsPathRooted(tempPath))
-                    tempPath = ".\\" + tempPath;
-            }
+            var tempPath = resolveToPartialPath ? GetAsRelPathFromMyDirectory(assemblyPath) : assemblyPath;
 
             //get wrapper of node plus path and asm name
             var projRef = GetBinRefByAsmPath(assemblyPath, useExactAsmNameMatch);
@@ -340,10 +443,8 @@ namespace NoFuture.Read.Vs
             if (!xmlElem.HasAttribute("Include"))
                 xmlElem.Attributes.Append(includeAttr);
 
-            var xpath2Ref = $"//{NS}:ItemGroup/{NS}:Reference[contains(@Include," +
-                $"'{(useExactAsmNameMatch ? projRef.AssemblyFullName : projRef.AssemblyName)}')]";
             //assign SpecificVersion inner text
-            var specificVerNode = _xmlDocument.SelectSingleNode($"{xpath2Ref}/{NS}:SpecificVersion",_nsMgr);
+            var specificVerNode = xmlElem.FirstChildNamed("SpecificVersion");
             var specificVerElem = specificVerNode as XmlElement ??
                                   _xmlDocument.CreateElement("SpecificVersion", DOT_NET_PROJ_XML_NS);
             specificVerElem.InnerText = bool.FalseString;
@@ -351,7 +452,7 @@ namespace NoFuture.Read.Vs
                 xmlElem.AppendChild(specificVerElem);
 
             //assign HintPath inner text
-            var hintPathNode = _xmlDocument.SelectSingleNode($"{xpath2Ref}/{NS}:HintPath",_nsMgr);
+            var hintPathNode = xmlElem.FirstChildNamed("HintPath");
             var hintPathElem = hintPathNode as XmlElement ?? _xmlDocument.CreateElement("HintPath", DOT_NET_PROJ_XML_NS);
             hintPathElem.InnerText = tempPath;
             if (hintPathNode == null)
@@ -366,7 +467,7 @@ namespace NoFuture.Read.Vs
 
             if (projRef.Node == null)
             {
-                var refItemGroup = GetLastReferenceNode().ParentNode;
+                var refItemGroup = GetLastReferenceNode()?.ParentNode ?? NewItemGroup(true);
                 refItemGroup?.InsertAfter(xmlElem, GetLastReferenceNode());
             }
 
@@ -755,20 +856,21 @@ namespace NoFuture.Read.Vs
         #region internal instance methods
 
         /// <summary>
-        /// Dependent function to get back a single entry from the output of <see cref="GetProjRefPath2Name"/>
+        /// Dependent function to get back a single entry from the output of <see cref="GetDebugBinAsmPath2Name"/>
         /// </summary>
-        /// <param name="includeAttr"></param>
+        /// <param name="relPath"></param>
         /// <param name="binDict"></param>
         /// <returns></returns>
-        protected Tuple<FileSystemInfo, string> GetFileSysInfo2AsmNameEntry(XmlAttribute includeAttr, List<Tuple<FileSystemInfo, string>> binDict)
+        protected internal Tuple<FileSystemInfo, string> GetFileSysInfo2AsmNameEntry(string relPath,
+            List<Tuple<FileSystemInfo, string>> binDict)
         {
             //confirm the path in the Include attr points to an actual file on the drive
-            var projPath = Path.Combine(DirectoryName, includeAttr.Value);
+            var projPath = Path.Combine(DirectoryName, relPath);
             if (!File.Exists(projPath))
                 throw new RahRowRagee($"The ProjectReference to '{projPath}' does not exisit.");
 
             var simpleAsmName =
-                GetInnerText("//{0}:ItemGroup/{0}:ProjectReference[@Include='" + includeAttr.Value + "']/{0}:Name");
+                GetInnerText("//{0}:ItemGroup/{0}:ProjectReference[@Include='" + relPath + "']/{0}:Name");
 
             //deal with odd name appearing like "Some.Asm.Name %28SomeDir\SomeOtherDir%29
             if (simpleAsmName.Contains(" "))
@@ -793,7 +895,7 @@ namespace NoFuture.Read.Vs
         }
 
         /// <summary>
-        /// A dependent funtion to find a Reference node which was written <see cref="TryAddReferenceEntry"/>
+        /// A dependent funtion to find a Reference node which was written <see cref="AddReferenceNode"/>
         /// when its the case that a value of 'projGuid' was passed in and written 
         /// as an xml comment at the bottom of the node.
         /// </summary>
@@ -834,7 +936,7 @@ namespace NoFuture.Read.Vs
         /// simple assmebly names.
         /// </summary>
         /// <returns></returns>
-        protected internal List<Tuple<FileSystemInfo, string>> GetProjRefPath2Name()
+        protected internal List<Tuple<FileSystemInfo, string>> GetDebugBinAsmPath2Name()
         {
             var binDict = new List<Tuple<FileSystemInfo, string>>();
             var directoryInfo = new DirectoryInfo(DebugBin);
@@ -899,6 +1001,11 @@ namespace NoFuture.Read.Vs
             return _xmlDocument.SelectSingleNode($"//{NS}:ItemGroup/{NS}:Content[last()]", _nsMgr);
         }
 
+        internal XmlNode GetLastProjectReferenceNode()
+        {
+            return _xmlDocument.SelectSingleNode($"//{NS}:ItemGroup/{NS}:ProjectReference[last()]", _nsMgr);
+        }
+
         internal XmlNode GetLastReferenceNode()
         {
             return _xmlDocument.SelectSingleNode($"//{NS}:ItemGroup/{NS}:Reference[last()]", _nsMgr);
@@ -924,12 +1031,39 @@ namespace NoFuture.Read.Vs
             return groups == null ? NewItemGroup() : groups.Cast<XmlElement>().FirstOrDefault(x => !x.HasChildNodes);
         }
 
-        internal XmlElement NewItemGroup()
+        internal XmlElement NewItemGroup(bool appendAfterLastPropGroup = false)
         {
             var newGroup = _xmlDocument.CreateElement("ItemGroup", DOT_NET_PROJ_XML_NS);
+            if (appendAfterLastPropGroup)
+            {
+                var lastPropertyGroup =_xmlDocument.SelectSingleNode($"//{ProjFile.NS}:PropertyGroup[last()]",
+                                            NsMgr);
+                if (lastPropertyGroup?.ParentNode == null)
+                {
+                    AppendToRootNode(newGroup);
+                    return newGroup;
+                }
+                lastPropertyGroup.ParentNode.InsertAfter(newGroup, lastPropertyGroup);
+                return newGroup;
+            }
             var rootNode = _xmlDocument.SelectSingleNode("/");
             rootNode?.AppendChild(newGroup);
             return newGroup;
+        }
+
+        internal void AppendToRootNode(XmlElement elem)
+        {
+            var rootNode = _xmlDocument.SelectSingleNode("/");
+            rootNode?.AppendChild(elem);
+        }
+
+        internal string GetAsRelPathFromMyDirectory(string somePath)
+        {
+            var tempPath = somePath;
+            NfPath.TryGetRelPath(DirectoryName, ref tempPath);
+            if (!Path.IsPathRooted(tempPath) && !tempPath.StartsWith(".."))
+                tempPath = ".\\" + tempPath;
+            return tempPath;
         }
 
         internal bool IsAspFile(string s)

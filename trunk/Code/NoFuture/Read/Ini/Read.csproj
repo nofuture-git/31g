@@ -67,6 +67,7 @@
   <ItemGroup>
     <Compile Include="BaseXmlDoc.cs" />
     <Compile Include="Config\ExeConfig.cs" />
+    <Compile Include="Config\PkgConfig.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Ini\IniFileName.cs" />
     <Compile Include="Vs\ProjFile.cs" />
