@@ -411,7 +411,7 @@ namespace NoFuture.Util
             
             //anywhere we find a pattern like ..\AnyNameHere\..
             var regexPattern = "(" + DOT_DOT + "[" + PATH_SEP + "]" +
-                               "[^" + invalidPathChars + PATH_SEP + "]+" +
+                               "[^" + invalidPathChars + "]+" +
                                "[" + PATH_SEP + "])" + DOT_DOT;
 
             string matchText;

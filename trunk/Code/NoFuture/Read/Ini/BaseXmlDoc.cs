@@ -13,13 +13,15 @@ namespace NoFuture.Read
         #region fields
         protected XmlDocument _xmlDocument;
 
-        protected string _fileFullName;
+        private readonly string _originalReadFile;
+        private string _fileFullName;
 
         #endregion
 
         #region ctor
         protected BaseXmlDoc(string xmlDoc)
         {
+            _originalReadFile = xmlDoc;
             _fileFullName = xmlDoc;
             if (string.IsNullOrWhiteSpace(xmlDoc))
             {
@@ -37,7 +39,7 @@ namespace NoFuture.Read
         #region base api
         public virtual string DirectoryName => Path.GetDirectoryName(_fileFullName) ?? TempDirectories.AppData;
         public virtual string FileName => Path.GetFileName(_fileFullName);
-
+        protected internal string OriginalReadFileFullName => _originalReadFile;
         /// <summary>
         /// Writes the current in memory contents to file.
         /// </summary>
@@ -118,6 +120,20 @@ namespace NoFuture.Read
             var elem = node as XmlElement;
             return elem?.Attributes[attrName];
         }
+
+        public override int GetHashCode()
+        {
+            return _originalReadFile.GetHashCode();
+        }
+
+        public override bool Equals(object obj)
+        {
+            var bXml = obj as BaseXmlDoc;
+            if (bXml == null)
+                return false;
+            return bXml.OriginalReadFileFullName == OriginalReadFileFullName;
+        }
+
         #endregion
 
         #region static utilities

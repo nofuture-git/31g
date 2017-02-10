@@ -69,6 +69,13 @@ namespace NoFuture.Tests.Util
             Assert.IsNotNull(testResult);
             System.Diagnostics.Debug.WriteLine(testResult);
             Assert.AreEqual(@"..\SomeSubProj.WithDots.MoreDots\SomeSubProj.WithDots.MoreDots.fsproj", testResult);
+
+            
+            testInput = @"..\Bfw.Scheduling\Bfw.Scheduling.Scaling\..\..\Bfw.BusinessLogic.Manager.Contract\Bfw.BusinessLogic.Manager.Contract_Bin.csproj";
+            testResult = NoFuture.Util.NfPath.RemoveRedundantPathLeafs(testInput);
+            Assert.IsNotNull(testResult);
+            System.Diagnostics.Debug.WriteLine(testResult);
+            Assert.AreEqual(@"..\Bfw.BusinessLogic.Manager.Contract\Bfw.BusinessLogic.Manager.Contract_Bin.csproj", testResult);
         }
 
         [TestMethod]

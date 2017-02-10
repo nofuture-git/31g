@@ -224,8 +224,14 @@ namespace NoFuture.Read.Vs
             foreach (var projRefNode in allMyReferenceNodes)
             {
                 var projRefElem = projRefNode as XmlElement;
-                if (projRefElem == null || !projRefElem.HasChildNodes)
+                if (projRefElem == null)
                     continue;
+                //is it a simple GAC reference
+                if (!projRefElem.HasChildNodes && !string.IsNullOrWhiteSpace(projRefElem.Attributes["Include"]?.Value))
+                {
+                    targetProjFile.AddGacReferenceNode(projRefElem.Attributes["Include"].Value);
+                    continue;
+                }
                 var hintPathNode = projRefElem.FirstChildNamed("HintPath");
                 if (string.IsNullOrWhiteSpace(hintPathNode?.InnerText))
                     continue;
@@ -468,11 +474,35 @@ namespace NoFuture.Read.Vs
             if (projRef.Node == null)
             {
                 var refItemGroup = GetLastReferenceNode()?.ParentNode ?? NewItemGroup(true);
-                refItemGroup?.InsertAfter(xmlElem, GetLastReferenceNode());
+                if (refItemGroup?.InsertAfter(xmlElem, GetLastReferenceNode()) == null)
+                    return false;
             }
 
             _isChanged = true;
             return _isChanged;
+        }
+
+        public bool AddGacReferenceNode(string assemblySimpleName)
+        {
+            if (string.IsNullOrWhiteSpace(assemblySimpleName) || Util.NfType.NfTypeName.IsAssemblyFullName(assemblySimpleName))
+                return false;
+
+            var gacRefNode =
+                _xmlDocument.SelectSingleNode($"//{NS}:ItemGroup/{NS}:Reference[@Include='{assemblySimpleName}']", _nsMgr);
+            var gacRefElem = gacRefNode as XmlElement ?? _xmlDocument.CreateElement("Reference",DOT_NET_PROJ_XML_NS);
+            var includeAttr = gacRefElem.Attributes["Include"] ?? _xmlDocument.CreateAttribute("Include");
+
+            includeAttr.Value = assemblySimpleName;
+            if (!gacRefElem.HasAttribute("Include"))
+                gacRefElem.Attributes.Append(includeAttr);
+
+            if (gacRefNode == null)
+            {
+                var refItemGroup = GetLastReferenceNode()?.ParentNode ?? NewItemGroup(true);
+                if (refItemGroup?.InsertAfter(gacRefElem, GetLastReferenceNode()) == null)
+                    return false;
+            }
+            return true;
         }
 
         /// <summary>
