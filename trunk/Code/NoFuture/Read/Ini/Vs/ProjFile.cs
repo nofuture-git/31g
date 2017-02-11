@@ -382,10 +382,7 @@ namespace NoFuture.Read.Vs
             var xmlElem = projRefNode as XmlElement ??
                               _xmlDocument.CreateElement("ProjectReference", DOT_NET_PROJ_XML_NS);
 
-            var includeAttr = xmlElem.Attributes["Include"] ?? _xmlDocument.CreateAttribute("Include");
-            includeAttr.Value = tempPath;
-            if (!xmlElem.HasAttribute("Include"))
-                xmlElem.Attributes.Append(includeAttr);
+            AddAttribute(xmlElem, "Include", tempPath);
 
             var projGuidNode = xmlElem.FirstChildNamed("Project");
             var projGuidElem = projGuidNode as XmlElement ?? _xmlDocument.CreateElement("Project", DOT_NET_PROJ_XML_NS);
@@ -444,10 +441,7 @@ namespace NoFuture.Read.Vs
             var xmlElem = projRef.Node as XmlElement ?? _xmlDocument.CreateElement("Reference", DOT_NET_PROJ_XML_NS);
 
             //assign Include attr value 
-            var includeAttr = xmlElem.Attributes["Include"] ?? _xmlDocument.CreateAttribute("Include");
-            includeAttr.Value = projRef.AssemblyFullName;
-            if (!xmlElem.HasAttribute("Include"))
-                xmlElem.Attributes.Append(includeAttr);
+            AddAttribute(xmlElem, "Include", projRef.AssemblyFullName);
 
             //assign SpecificVersion inner text
             var specificVerNode = xmlElem.FirstChildNamed("SpecificVersion");
@@ -482,6 +476,11 @@ namespace NoFuture.Read.Vs
             return _isChanged;
         }
 
+        /// <summary>
+        /// Adds a simple Reference node having only the Include value as <see cref="assemblySimpleName"/>
+        /// </summary>
+        /// <param name="assemblySimpleName"></param>
+        /// <returns></returns>
         public bool AddGacReferenceNode(string assemblySimpleName)
         {
             if (string.IsNullOrWhiteSpace(assemblySimpleName) || Util.NfType.NfTypeName.IsAssemblyFullName(assemblySimpleName))

@@ -121,6 +121,17 @@ namespace NoFuture.Read
             return elem?.Attributes[attrName];
         }
 
+        public virtual bool AddAttribute(XmlElement elem, string attrName, string attrValue)
+        {
+            if (elem == null || string.IsNullOrWhiteSpace(attrName))
+                return false;
+            var attr = elem.Attributes[attrName] ?? _xmlDocument.CreateAttribute(attrName);
+            attr.Value = attrValue;
+            if (!elem.HasAttribute(attrName))
+                elem.Attributes.Append(attr);
+            return true;
+        }
+
         public override int GetHashCode()
         {
             return _originalReadFile.GetHashCode();
