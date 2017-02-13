@@ -204,6 +204,8 @@ namespace NoFuture.Read.Vs
                 return configurations.ToArray();
             }
         }
+
+        public string DestLibDirectory { get; set; }
         #endregion
 
         #region instance methods
@@ -286,7 +288,7 @@ namespace NoFuture.Read.Vs
         /// Is expecting to find binary copies of each 'ProjectReference' in 
         /// the <see cref="DebugBin"/> folder.
         /// </remarks>
-        public int TryReplaceToBinaryRef(bool useExactAsmNameMatch = false, string libDir = null)
+        public int TryReplaceToBinaryRef(bool useExactAsmNameMatch = false)
         {
             var debugBin = DebugBin;
             if(string.IsNullOrWhiteSpace(debugBin) || !Directory.Exists(debugBin))
@@ -302,9 +304,9 @@ namespace NoFuture.Read.Vs
                 return 0;
 
             //setup a dir to save binary dll's to
-            var destLibDir = libDir ?? Path.Combine(DirectoryName, "lib");
-            if (!Directory.Exists(destLibDir))
-                Directory.CreateDirectory(destLibDir);
+            DestLibDirectory = DestLibDirectory ?? Path.Combine(DirectoryName, "lib");
+            if (!Directory.Exists(DestLibDirectory))
+                Directory.CreateDirectory(DestLibDirectory);
 
             //get a hash of files-to-simple asm names
             var binDict = GetDebugBinAsmPath2Name();
@@ -336,7 +338,7 @@ namespace NoFuture.Read.Vs
                 var projGuid = (projRefElem.FirstChildNamed("Project")?.InnerText ?? string.Empty).ToUpper();
 
                 //copy dll from .\debug\bin to new .\lib dir
-                var libFullName = Path.Combine(destLibDir, dllTuple.Item1.Name);
+                var libFullName = Path.Combine(DestLibDirectory, dllTuple.Item1.Name);
                 File.Copy(dllTuple.Item1.FullName, libFullName, true);
 
                 //add full filePath-to-projGuid to be worked later
