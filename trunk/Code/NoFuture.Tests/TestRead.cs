@@ -60,7 +60,7 @@ namespace NoFuture.Tests
             var testSubject = new NoFuture.Read.Vs.ProjFile(TEST_CSPROJ);
             Assert.IsNotNull(testSubject);
 
-            var testResults = testSubject.TryReplaceToBinaryRef(true);
+            var testResults = testSubject.SwapAllProjRef2BinRef(true);
             Assert.AreNotEqual(0, testResults);
 
             var testRslt = Path.GetDirectoryName(TEST_CSPROJ);

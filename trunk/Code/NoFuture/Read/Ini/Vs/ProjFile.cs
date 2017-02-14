@@ -33,7 +33,7 @@ namespace NoFuture.Read.Vs
         /// A wrapper for containing the xml node coupled with 
         /// dll assembly name and path
         /// </summary>
-        public class BinReference
+        protected internal class BinReference
         {
             private readonly ProjFile _projFile;
             public BinReference(ProjFile owningFile)
@@ -59,12 +59,28 @@ namespace NoFuture.Read.Vs
             }
         }
 
+        protected internal class ProjectReference
+        {
+            private readonly ProjFile _myProjFile;
+            public ProjectReference(ProjFile myProjFile)
+            {
+                _myProjFile = myProjFile;
+            }
+
+            public Tuple<FileSystemInfo, AssemblyName> DllOnDisk { get; set; }
+            public string ProjectGuid { get; set; }
+            public string ProjectName { get; set; }
+            public XmlNode Node { get; set; }
+            public string ProjectPath { get; set; }
+        }
         #endregion
 
         #region fields
         private readonly XmlNamespaceManager _nsMgr;
         private readonly List<BinReference> _asmRefCache = new List<BinReference>();
+        private readonly List<ProjectReference> _projRefCache = new List<ProjectReference>();
         private bool _isChanged;
+        private readonly List<Tuple<FileSystemInfo, AssemblyName>> _debugBinFsi2AsmName;
         #endregion
 
         #region ctors
@@ -74,6 +90,16 @@ namespace NoFuture.Read.Vs
             _nsMgr.AddNamespace(NS, DOT_NET_PROJ_XML_NS);
 
             ValidateProjFile(vsprojPath);
+
+            _debugBinFsi2AsmName = new List<Tuple<FileSystemInfo, AssemblyName>>();
+            if (string.IsNullOrWhiteSpace(DebugBin) || !Directory.Exists(DebugBin))
+                return;
+            var directoryInfo = new DirectoryInfo(DebugBin);
+            foreach (var dllFile in directoryInfo.EnumerateFileSystemInfos("*.dll", SearchOption.TopDirectoryOnly))
+            {
+                var asmName = System.Reflection.AssemblyName.GetAssemblyName(dllFile.FullName);
+                _debugBinFsi2AsmName.Add(new Tuple<FileSystemInfo, AssemblyName>(dllFile, asmName));
+            }
         }
         #endregion
 
@@ -81,6 +107,7 @@ namespace NoFuture.Read.Vs
         public XmlDocument VsProjXml => _xmlDocument;
         public XmlNamespaceManager NsMgr => _nsMgr;
         public bool XmlContentChanged => _isChanged;
+        public List<Tuple<FileSystemInfo, AssemblyName>> DebugBinFsi2AsmName => _debugBinFsi2AsmName;
 
         public string AssemblyName
         {
@@ -281,6 +308,98 @@ namespace NoFuture.Read.Vs
         }
 
         /// <summary>
+        /// Locates a compiled assembly each of the ProjectReference nodes and
+        /// copies it into <see cref="destDir"/>, defaults to <see cref="DestLibDirectory"/>
+        /// </summary>
+        /// <returns></returns>
+        public int CopyAllProjRefDllTo(string destDir = null)
+        {
+            //setup a dir to save binary dll's to
+            destDir = destDir ?? (DestLibDirectory ?? Path.Combine(DirectoryName, "lib"));
+            if (!Directory.Exists(destDir))
+                Directory.CreateDirectory(destDir);
+
+            var projNode = _xmlDocument.SelectSingleNode($"/{NS}:Project", _nsMgr);
+            if (projNode == null)
+                return 0;
+
+            //find all the proj refs
+            var projRefs = _xmlDocument.SelectNodes($"//{NS}:ItemGroup/{NS}:ProjectReference", _nsMgr);
+            var counter = 0;
+            
+            if (projRefs == null)
+                return counter;
+            foreach (var projRefNode in projRefs)
+            {
+                var projRefElem = projRefNode as XmlElement;
+                if (projRefElem == null || !projRefElem.HasAttributes)
+                    continue;
+
+                var includeAttr = projRefElem.Attributes["Include"];
+                if (string.IsNullOrWhiteSpace(includeAttr?.Value))
+                    continue;
+
+                var projRef = GetProjRefByProjPath(includeAttr.Value);
+                if (projRef?.DllOnDisk?.Item1 == null)
+                    continue;
+
+                //copy dll from .\debug\bin to new .\lib dir
+                var libDestName = Path.Combine(destDir, projRef.DllOnDisk.Item1.Name);
+                var libSrcName = projRef.DllOnDisk.Item1.FullName;
+                CopyFileIfNewer(libSrcName, libDestName);
+                counter += 1;
+            }
+            return counter;
+        }
+
+        /// <summary>
+        /// Locates a compiled assembly each of the Reference nodes and, using the HintPath,
+        /// copies it into <see cref="destDir"/>, defaults to <see cref="DestLibDirectory"/>
+        /// </summary>
+        /// <returns></returns>
+        public int CopyAllBinRefDllTo(string destDir = null)
+        {
+            //setup a dir to save binary dll's to
+            destDir = destDir ?? (DestLibDirectory ?? Path.Combine(DirectoryName, "lib"));
+            if (!Directory.Exists(destDir))
+                Directory.CreateDirectory(destDir);
+
+            var projNode = _xmlDocument.SelectSingleNode($"/{NS}:Project", _nsMgr);
+            if (projNode == null)
+                return 0;
+
+            //find all the bin refs
+            var binRefs = _xmlDocument.SelectNodes($"//{NS}:ItemGroup/{NS}:Reference", _nsMgr);
+            var counter = 0;
+
+            if (binRefs == null)
+                return counter;
+
+            foreach (var binRefNode in binRefs)
+            {
+                var binRefElem = binRefNode as XmlElement;
+                if (binRefElem == null || !binRefElem.HasAttributes)
+                    continue;
+
+                var includeAttr = binRefElem.Attributes["Include"];
+                if (string.IsNullOrWhiteSpace(includeAttr?.Value))
+                    continue;
+
+                var binRef = GetBinRefByAsmPath(includeAttr.Value, true);
+                if (string.IsNullOrWhiteSpace(binRef?.HintPath))
+                    continue;
+
+
+                var libDestName = Path.Combine(destDir, binRef.HintPath);
+                var libSrcName = Path.Combine(DirectoryName, binRef.HintPath);
+                CopyFileIfNewer(libSrcName, libDestName);
+                counter += 1;
+
+            }
+            return counter;
+        }
+
+        /// <summary>
         /// Attempts to replace all 'ProjectReference' with 'Reference'.
         /// </summary>
         /// <returns>The number of nodes replaced</returns>
@@ -288,11 +407,13 @@ namespace NoFuture.Read.Vs
         /// Is expecting to find binary copies of each 'ProjectReference' in 
         /// the <see cref="DebugBin"/> folder.
         /// </remarks>
-        public int TryReplaceToBinaryRef(bool useExactAsmNameMatch = false)
+        public int SwapAllProjRef2BinRef(bool useExactAsmNameMatch = false)
         {
             var debugBin = DebugBin;
             if(string.IsNullOrWhiteSpace(debugBin) || !Directory.Exists(debugBin))
                 throw new ItsDeadJim("Cannot locate a 'bin' folder from which to make .dll copies.");
+
+            CopyAllProjRefDllTo();
 
             var projNode = _xmlDocument.SelectSingleNode($"/{NS}:Project", _nsMgr);
             if (projNode == null)
@@ -302,16 +423,6 @@ namespace NoFuture.Read.Vs
             var projRefs = _xmlDocument.SelectNodes($"//{NS}:ItemGroup/{NS}:ProjectReference", _nsMgr);
             if (projRefs == null)
                 return 0;
-
-            //setup a dir to save binary dll's to
-            DestLibDirectory = DestLibDirectory ?? Path.Combine(DirectoryName, "lib");
-            if (!Directory.Exists(DestLibDirectory))
-                Directory.CreateDirectory(DestLibDirectory);
-
-            //get a hash of files-to-simple asm names
-            var binDict = GetDebugBinAsmPath2Name();
-            if (!binDict.Any())
-                throw new ItsDeadJim($"There are no .dll files located in {debugBin}.");
 
             //set up containers to hold values found in per-proj-node
             var libBin = new List<Tuple<string,string>>();
@@ -331,18 +442,15 @@ namespace NoFuture.Read.Vs
                 if (string.IsNullOrWhiteSpace(includeAttr?.Value))
                     continue;
 
-                //use Include attr value to find the file-to-simple asm name entry
-                var dllTuple = GetFileSysInfo2AsmNameEntry(includeAttr.Value, binDict);
-
-                //pass this off so its easier to map assembly-paths back to .[cs|vb|fs]proj files
-                var projGuid = (projRefElem.FirstChildNamed("Project")?.InnerText ?? string.Empty).ToUpper();
+                var projRef = GetProjRefByProjPath(includeAttr.Value);
+                if (projRef?.DllOnDisk?.Item1 == null)
+                    continue;
 
                 //copy dll from .\debug\bin to new .\lib dir
-                var libFullName = Path.Combine(DestLibDirectory, dllTuple.Item1.Name);
-                File.Copy(dllTuple.Item1.FullName, libFullName, true);
+                var libFullName = Path.Combine(DestLibDirectory, projRef.DllOnDisk.Item1.Name);
 
                 //add full filePath-to-projGuid to be worked later
-                libBin.Add(new Tuple<string, string>(libFullName, projGuid));
+                libBin.Add(new Tuple<string, string>(libFullName, projRef.ProjectGuid));
 
                 //remove this ProjectReference node
                 projRefElem.ParentNode.RemoveChild(projRefElem);
@@ -787,15 +895,32 @@ namespace NoFuture.Read.Vs
             return _isChanged;
         }
 
+        public override string GetInnerText(string xpath)
+        {
+            var singleNode = _xmlDocument.SelectSingleNode(string.Format(xpath, NS), NsMgr);
+            return singleNode?.InnerText;
+        }
+
+        public override void SetInnerText(string xpath, string theValue)
+        {
+            var singleNode = _xmlDocument.SelectSingleNode(string.Format(xpath, NS), NsMgr);
+            if (singleNode == null)
+                return;
+            singleNode.InnerText = theValue;
+        }
+
+        #endregion
+
+        #region internal instance methods
         /// <summary>
-        /// Gets this <see cref="assemblyPath"/> as a property reference.
+        /// Gets this <see cref="assemblyPath"/> as a <see cref="BinReference"/>.
         /// </summary>
         /// <param name="assemblyPath"></param>
         /// <param name="useExactAsmNameMatch">
         /// Optional, specify that the Assembly Names must be exact matches
         /// </param>
         /// <returns></returns>
-        public BinReference GetBinRefByAsmPath(string assemblyPath, bool useExactAsmNameMatch = false)
+        protected internal BinReference GetBinRefByAsmPath(string assemblyPath, bool useExactAsmNameMatch = false)
         {
 
             if (string.IsNullOrWhiteSpace(assemblyPath))
@@ -805,7 +930,7 @@ namespace NoFuture.Read.Vs
             if (_asmRefCache.Any(x => x.SearchPath == assemblyPath))
                 return _asmRefCache.First(x => x.SearchPath == assemblyPath);
 
-            _asmRefCache.Add(new BinReference(this){SearchPath = assemblyPath});
+            _asmRefCache.Add(new BinReference(this) { SearchPath = assemblyPath });
 
             var cache = _asmRefCache.First(x => x.SearchPath == assemblyPath);
 
@@ -868,61 +993,70 @@ namespace NoFuture.Read.Vs
             return cache;
         }
 
-        public override string GetInnerText(string xpath)
-        {
-            var singleNode = _xmlDocument.SelectSingleNode(string.Format(xpath, NS), NsMgr);
-            return singleNode?.InnerText;
-        }
-
-        public override void SetInnerText(string xpath, string theValue)
-        {
-            var singleNode = _xmlDocument.SelectSingleNode(string.Format(xpath, NS), NsMgr);
-            if (singleNode == null)
-                return;
-            singleNode.InnerText = theValue;
-        }
-
-        #endregion
-
-        #region internal instance methods
-
         /// <summary>
-        /// Dependent function to get back a single entry from the output of <see cref="GetDebugBinAsmPath2Name"/>
+        /// Gets this <see cref="relProjPath"/> as a <see cref="ProjectReference"/>.
         /// </summary>
-        /// <param name="relPath"></param>
-        /// <param name="binDict"></param>
+        /// <param name="relProjPath"></param>
         /// <returns></returns>
-        protected internal Tuple<FileSystemInfo, string> GetFileSysInfo2AsmNameEntry(string relPath,
-            List<Tuple<FileSystemInfo, string>> binDict)
+        protected internal ProjectReference GetProjRefByProjPath(string relProjPath)
         {
+            if (string.IsNullOrWhiteSpace(relProjPath))
+                return null;
+
             //confirm the path in the Include attr points to an actual file on the drive
-            var projPath = Path.Combine(DirectoryName, relPath);
+            var projPath = Path.Combine(DirectoryName, relProjPath);
             if (!File.Exists(projPath))
                 throw new RahRowRagee($"The ProjectReference to '{projPath}' does not exisit.");
 
-            var simpleAsmName =
-                GetInnerText("//{0}:ItemGroup/{0}:ProjectReference[@Include='" + relPath + "']/{0}:Name");
+            if (_projRefCache.Any(x => x.ProjectPath == projPath))
+            {
+                return _projRefCache.First(x => x.ProjectPath == projPath);
+            }
+
+            _projRefCache.Add(new ProjectReference(this) {ProjectPath = projPath});
+
+            var projRef = _projRefCache.First(x => x.ProjectPath == projPath);
+
+            projRef.Node =
+                _xmlDocument.SelectSingleNode(
+                    $"//{NS}:ItemGroup/{NS}:ProjectReference[@Include='" + relProjPath + "']", _nsMgr);
+            if (projRef.Node == null)
+                return null;
+
+            projRef.ProjectName = projRef.Node.FirstChildNamed("Name")?.InnerText ?? string.Empty;
+            projRef.ProjectGuid = (projRef.Node.FirstChildNamed("Project")?.InnerText ?? string.Empty).ToUpper();
 
             //deal with odd name appearing like "Some.Asm.Name %28SomeDir\SomeOtherDir%29
-            if (simpleAsmName.Contains(" "))
+            if (projRef.ProjectName.Contains(" "))
             {
-                simpleAsmName = simpleAsmName.Split(' ')[0];
+                projRef.ProjectName = projRef.ProjectName.Split(' ')[0];
             }
 
             //do an easy search
-            var dllTuple = binDict.FirstOrDefault(x => x.Item2 == simpleAsmName);
+            projRef.DllOnDisk = _debugBinFsi2AsmName.FirstOrDefault(x => x.Item2.Name == projRef.ProjectName);
 
-            if (dllTuple != null)
-                return dllTuple;
+            if (projRef.DllOnDisk != null)
+            {
+                return projRef;
+            }
 
             //do a hard search
             var nfProjFile = new ProjFile(projPath);
-            simpleAsmName = nfProjFile.AssemblyName;
-            dllTuple = binDict.FirstOrDefault(x => x.Item2 == simpleAsmName);
-            if (dllTuple == null)
-                throw new RahRowRagee(
-                    $"Could not find a matching .dll for the ProjectRefernce with the Name of '{simpleAsmName}'");
-            return dllTuple;
+            projRef.ProjectName = nfProjFile.AssemblyName;
+            projRef.DllOnDisk = _debugBinFsi2AsmName.FirstOrDefault(x => x.Item2.Name == projRef.ProjectName) ??
+                       nfProjFile.DebugBinFsi2AsmName.FirstOrDefault(x => x.Item2.Name == projRef.ProjectName);
+            return projRef;
+        }
+
+        protected internal void CopyFileIfNewer(string path, string dest)
+        {
+            if (!File.Exists(path) || !File.Exists(dest))
+                return;
+            var pathFs = new FileInfo(path);
+            var destFs = new FileInfo(dest);
+
+            if (pathFs.LastWriteTime > destFs.LastWriteTime)
+                File.Copy(path, dest, true);
         }
 
         /// <summary>
@@ -960,23 +1094,6 @@ namespace NoFuture.Read.Vs
 
             }
             return null;
-        }
-
-        /// <summary>
-        /// Searches the <see cref="DebugBin"/> getting a mapping of file info to 
-        /// simple assmebly names.
-        /// </summary>
-        /// <returns></returns>
-        protected internal List<Tuple<FileSystemInfo, string>> GetDebugBinAsmPath2Name()
-        {
-            var binDict = new List<Tuple<FileSystemInfo, string>>();
-            var directoryInfo = new DirectoryInfo(DebugBin);
-            foreach (var dllFile in directoryInfo.EnumerateFileSystemInfos("*.dll", SearchOption.TopDirectoryOnly))
-            {
-                var asmName = System.Reflection.AssemblyName.GetAssemblyName(dllFile.FullName);
-                binDict.Add(new Tuple<FileSystemInfo, string>(dllFile, asmName.Name));
-            }
-            return binDict;
         }
 
         internal bool IsExistingCompileItem(string fl) { return GetSingleCompileItemNode(fl) != null; }
