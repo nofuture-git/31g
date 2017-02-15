@@ -336,6 +336,9 @@ namespace NoFuture.Util
             {
                 return false;
             }
+            //remove any relative path leafs 
+            somePathTemp = Path.GetFullPath(somePathTemp);
+            currentWorkingDir = Path.GetFullPath(currentWorkingDir);
 
             //remove files from end if present
             if (HasKnownExtension(currentWorkingDir))

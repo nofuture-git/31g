@@ -194,8 +194,8 @@ namespace NoFuture.Tests
 
             Assert.IsNotNull(testProjRef);
             Assert.IsNotNull(testProjRef.SearchPath);
-            Assert.IsNotNull(testProjRef.AssemblyFullName);
-            Assert.IsNotNull(testProjRef.AssemblyName);
+            Assert.IsNotNull(testProjRef.DllOnDisk);
+            Assert.IsNotNull(testProjRef.DllOnDisk.Item2);
             Assert.IsNotNull(testProjRef.HintPath);
 
             var testCompileItem = testSubject.GetSingleCompileItemNode("SeeReadMe.aspx.cs");

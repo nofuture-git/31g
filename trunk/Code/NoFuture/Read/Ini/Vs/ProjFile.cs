@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Reflection;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Xml;
 using NoFuture.Exceptions;
@@ -36,14 +35,14 @@ namespace NoFuture.Read.Vs
         protected internal class BinReference
         {
             private readonly ProjFile _projFile;
+            private string _hintPath;
             public BinReference(ProjFile owningFile)
             {
                 _projFile = owningFile;
             }
 
             public string SearchPath { get; set; }
-            public string AssemblyFullName { get; set; }
-            public string AssemblyName { get; set; }
+            public Tuple<FileSystemInfo, AssemblyName> DllOnDisk { get; set; }
 
             public XmlNode Node { get; set; }
 
@@ -51,10 +50,13 @@ namespace NoFuture.Read.Vs
             {
                 get
                 {
+                    if(!string.IsNullOrWhiteSpace(_hintPath))
+                        return _hintPath;
                     if (Node == null || !Node.HasChildNodes)
                         return null;
                     var hintPathNode = _projFile.FirstChildNamed(Node, "HintPath");
-                    return hintPathNode?.InnerText;
+                    _hintPath =  hintPathNode?.InnerText;
+                    return _hintPath;
                 }
             }
         }
@@ -315,7 +317,8 @@ namespace NoFuture.Read.Vs
         public int CopyAllProjRefDllTo(string destDir = null)
         {
             //setup a dir to save binary dll's to
-            destDir = destDir ?? (DestLibDirectory ?? Path.Combine(DirectoryName, "lib"));
+            destDir = destDir ?? DestLibDirectory;
+            destDir = string.IsNullOrWhiteSpace(destDir) ? Path.Combine(DirectoryName, "lib") : destDir;
             if (!Directory.Exists(destDir))
                 Directory.CreateDirectory(destDir);
 
@@ -360,7 +363,9 @@ namespace NoFuture.Read.Vs
         public int CopyAllBinRefDllTo(string destDir = null)
         {
             //setup a dir to save binary dll's to
-            destDir = destDir ?? (DestLibDirectory ?? Path.Combine(DirectoryName, "lib"));
+            destDir = destDir ?? DestLibDirectory;
+            destDir = string.IsNullOrWhiteSpace(destDir) ? Path.Combine(DirectoryName, "lib") : destDir;
+
             if (!Directory.Exists(destDir))
                 Directory.CreateDirectory(destDir);
 
@@ -385,12 +390,11 @@ namespace NoFuture.Read.Vs
                 if (string.IsNullOrWhiteSpace(includeAttr?.Value))
                     continue;
 
-                var binRef = GetBinRefByAsmPath(includeAttr.Value, true);
+                var binRef = GetBinRefByAsmName(new AssemblyName(includeAttr.Value));
                 if (string.IsNullOrWhiteSpace(binRef?.HintPath))
                     continue;
 
-
-                var libDestName = Path.Combine(destDir, binRef.HintPath);
+                var libDestName = Path.Combine(destDir, Path.GetFileName(binRef.HintPath));
                 var libSrcName = Path.Combine(DirectoryName, binRef.HintPath);
                 CopyFileIfNewer(libSrcName, libDestName);
                 counter += 1;
@@ -474,15 +478,19 @@ namespace NoFuture.Read.Vs
         /// Adds a ProjectReference node based the the [vb|fs|cs]proj file at <see cref="projPath"/>
         /// </summary>
         /// <param name="projPath"></param>
+        /// <param name="resolveToPartialPath">
+        /// Resolves the the full <see cref="projPath"/> to a relative path from <see cref="Directory"/>
+        /// </param>
         /// <returns></returns>
-        public bool AddProjectReferenceNode(string projPath)
+        public bool AddProjectReferenceNode(string projPath, bool resolveToPartialPath = true)
         {
             if (string.IsNullOrWhiteSpace(projPath) || !File.Exists(projPath))
                 return false;
+            projPath = Path.GetFullPath(projPath);
             var nfProjFile = new ProjFile(projPath);
             var projGuid = nfProjFile.ProjectGuid;
 
-            var tempPath = GetAsRelPathFromMyDirectory(projPath);
+            var tempPath = resolveToPartialPath ? GetAsRelPathFromMyDirectory(projPath) : projPath;
 
             var projFileName = Path.GetFileName(projPath);
 
@@ -544,14 +552,14 @@ namespace NoFuture.Read.Vs
             //get wrapper of node plus path and asm name
             var projRef = GetBinRefByAsmPath(assemblyPath, useExactAsmNameMatch);
 
-            if (string.IsNullOrWhiteSpace(projRef?.AssemblyFullName))
+            if (string.IsNullOrWhiteSpace(projRef?.DllOnDisk?.Item2.FullName))
                 return false;
 
             //get or create Reference xml element
             var xmlElem = projRef.Node as XmlElement ?? _xmlDocument.CreateElement("Reference", DOT_NET_PROJ_XML_NS);
 
             //assign Include attr value 
-            AddAttribute(xmlElem, "Include", projRef.AssemblyFullName);
+            AddAttribute(xmlElem, "Include", projRef.DllOnDisk.Item2.FullName);
 
             //assign SpecificVersion inner text
             var specificVerNode = xmlElem.FirstChildNamed("SpecificVersion");
@@ -908,7 +916,6 @@ namespace NoFuture.Read.Vs
                 return;
             singleNode.InnerText = theValue;
         }
-
         #endregion
 
         #region internal instance methods
@@ -922,7 +929,6 @@ namespace NoFuture.Read.Vs
         /// <returns></returns>
         protected internal BinReference GetBinRefByAsmPath(string assemblyPath, bool useExactAsmNameMatch = false)
         {
-
             if (string.IsNullOrWhiteSpace(assemblyPath))
                 return null;
 
@@ -945,35 +951,37 @@ namespace NoFuture.Read.Vs
             }
 
             //test full file path for existence
+            if (!Path.IsPathRooted(assemblyPath))
+            {
+                assemblyPath = Path.Combine(DirectoryName, assemblyPath);
+            }
             if (!File.Exists(assemblyPath))
                 return null;
 
             var assemblyName = System.Reflection.AssemblyName.GetAssemblyName(assemblyPath);
+            var fsi = new FileInfo(assemblyPath);
+            cache.DllOnDisk = new Tuple<FileSystemInfo, AssemblyName>(fsi, assemblyName);
 
             XmlNode refNode = null;
             var xpathString = $"//{NS}:ItemGroup/{NS}:Reference[contains(@Include,'{assemblyName.Name}')]";
-            if (useExactAsmNameMatch)
+            if (useExactAsmNameMatch && _xmlDocument.SelectNodes(xpathString, _nsMgr) != null)
             {
                 //find all nodes which contain the assembly's simple name
-                var closeMatches = _xmlDocument.SelectNodes(xpathString, _nsMgr);
-
-                if (closeMatches != null)
+                foreach (var cm in _xmlDocument.SelectNodes(xpathString, _nsMgr))
                 {
-                    foreach (var cm in closeMatches)
-                    {
-                        var cmElem = cm as XmlElement;
-                        var includeAttr = cmElem?.Attributes["Include"];
-                        if (string.IsNullOrWhiteSpace(includeAttr?.Value))
-                            continue;
-                        var includeAsmName = new AssemblyName(includeAttr.Value);
+                    var cmElem = cm as XmlElement;
+                    var includeAttr = cmElem?.Attributes["Include"];
+                    if (string.IsNullOrWhiteSpace(includeAttr?.Value))
+                        continue;
+                    var includeAsmName = new AssemblyName(includeAttr.Value);
 
-                        //select the one whose full assembly names are the same.
-                        if (System.Reflection.AssemblyName.ReferenceMatchesDefinition(assemblyName, includeAsmName))
-                        {
-                            refNode = cmElem;
-                            break;
-                        }
-                    }
+                    //select the one whose full assembly names are the same.
+                    if (!System.Reflection.AssemblyName.ReferenceMatchesDefinition(assemblyName, includeAsmName))
+                        continue;
+
+                    cache.DllOnDisk = new Tuple<FileSystemInfo, AssemblyName>(new FileInfo(includeAttr.Value), includeAsmName);
+                    refNode = cmElem;
+                    break;
                 }
             }
             else
@@ -982,15 +990,57 @@ namespace NoFuture.Read.Vs
                 refNode = _xmlDocument.SelectSingleNode(xpathString, _nsMgr);
             }
 
-            //finish off the BinRef wrapper with extra info
-            cache.AssemblyFullName = assemblyName.FullName;
-            cache.AssemblyName = assemblyName.Name;
-
             //and the the actual xml node if available
             if (refNode != null)
                 cache.Node = refNode;
 
             return cache;
+        }
+
+        /// <summary>
+        /// Gets this <see cref="asmName"/> as a <see cref="BinReference"/> when such a refernce 
+        /// is present on at least one Reference node.
+        /// </summary>
+        /// <param name="asmName"></param>
+        /// <returns></returns>
+        protected internal BinReference GetBinRefByAsmName(AssemblyName asmName)
+        {
+            if (asmName == null)
+                return null;
+
+            //return what we have already found once before
+            if (
+                _asmRefCache.Any(
+                    x => System.Reflection.AssemblyName.ReferenceMatchesDefinition(x.DllOnDisk?.Item2, asmName)))
+                return
+                    _asmRefCache.First(
+                        x => System.Reflection.AssemblyName.ReferenceMatchesDefinition(x.DllOnDisk?.Item2, asmName));
+
+            //find the Reference node by the assembly's full name
+            var binRef = new BinReference(this);
+            binRef.Node =
+                _xmlDocument.SelectSingleNode(
+                    $"//{NS}:ItemGroup/{NS}:Reference[contains(@Include,'{asmName.FullName}')]", _nsMgr);
+
+            //require that the hint path is present 
+            if (binRef.Node == null || string.IsNullOrWhiteSpace(binRef.HintPath))
+                return null;
+
+            //resolve hint path to full path
+            var dllPath = binRef.HintPath;
+            if (!Path.IsPathRooted(dllPath))
+                dllPath = Path.Combine(DirectoryName, dllPath);
+
+            //require is present on disk
+            if (!File.Exists(dllPath))
+                return null;
+
+            binRef.DllOnDisk = new Tuple<FileSystemInfo, AssemblyName>(new FileInfo(dllPath),
+                System.Reflection.AssemblyName.GetAssemblyName(dllPath));
+            
+            //add to cache to avoid another search
+            _asmRefCache.Add(binRef);
+            return binRef;
         }
 
         /// <summary>
@@ -1048,15 +1098,35 @@ namespace NoFuture.Read.Vs
             return projRef;
         }
 
-        protected internal void CopyFileIfNewer(string path, string dest)
+        protected internal bool CopyFileIfNewer(string path, string dest)
         {
-            if (!File.Exists(path) || !File.Exists(dest))
-                return;
-            var pathFs = new FileInfo(path);
-            var destFs = new FileInfo(dest);
+            if (string.IsNullOrWhiteSpace(path) || string.IsNullOrWhiteSpace(dest))
+                return false;
 
-            if (pathFs.LastWriteTime > destFs.LastWriteTime)
-                File.Copy(path, dest, true);
+            if (!File.Exists(path))
+                return false;
+
+            path = Path.GetFullPath(path);
+            dest = Path.GetFullPath(dest);
+
+            if (Directory.Exists(dest))
+            {
+                dest = Path.Combine(dest, Path.GetFileName(path));
+            }
+
+            if (File.Exists(path) && File.Exists(dest))
+            {
+                var pathFs = new FileInfo(path);
+                var destFs = new FileInfo(dest);
+
+                if (pathFs.LastWriteTime > destFs.LastWriteTime)
+                {
+                    File.Copy(path, dest, true);
+                    return true;
+                }
+            }
+            File.Copy(path,dest,true);
+            return true;
         }
 
         /// <summary>
@@ -1207,6 +1277,8 @@ namespace NoFuture.Read.Vs
 
         internal string GetAsRelPathFromMyDirectory(string somePath)
         {
+            if(string.IsNullOrWhiteSpace( somePath))
+                return somePath;
             var tempPath = somePath;
             NfPath.TryGetRelPath(DirectoryName, ref tempPath);
             if (!Path.IsPathRooted(tempPath) && !tempPath.StartsWith(".."))
