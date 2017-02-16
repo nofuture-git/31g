@@ -55,7 +55,7 @@ namespace NoFuture.Tests
         }
 
         [TestMethod]
-        public void TestTryReplaceToBinaryRef()
+        public void TestSwapAllProjRef2BinRef()
         {
             var testSubject = new NoFuture.Read.Vs.ProjFile(TEST_CSPROJ);
             Assert.IsNotNull(testSubject);
@@ -64,6 +64,19 @@ namespace NoFuture.Tests
             Assert.AreNotEqual(0, testResults);
 
             var testRslt = Path.GetDirectoryName(TEST_CSPROJ);
+            testRslt = Path.Combine(testRslt, "DoNotUse_VsProjFileTests-COPY.csproj");
+            testSubject.SaveAs(testRslt);
+        }
+
+        [TestMethod]
+        public void TestUpdateHintPathTo()
+        {
+            var testSubject = new NoFuture.Read.Vs.ProjFile(TEST_CSPROJ);
+            Assert.IsNotNull(testSubject);
+
+            var testResults = testSubject.UpdateHintPathTo(@"C:\Projects\31g\trunk\bin");
+            var testRslt = Path.GetDirectoryName(TEST_CSPROJ);
+            Assert.AreNotEqual(0, testResults);
             testRslt = Path.Combine(testRslt, "DoNotUse_VsProjFileTests-COPY.csproj");
             testSubject.SaveAs(testRslt);
         }

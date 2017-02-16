@@ -58,6 +58,17 @@ namespace NoFuture.Read.Vs
                     _hintPath =  hintPathNode?.InnerText;
                     return _hintPath;
                 }
+                set
+                {
+                    _hintPath = value;
+                    if (Node == null || !Node.HasChildNodes)
+                        return;
+                    var hintPathNode = _projFile.FirstChildNamed(Node, "HintPath");
+                    if (hintPathNode == null)
+                        return;
+
+                    hintPathNode.InnerText = _hintPath;
+                }
             }
         }
 
@@ -369,38 +380,15 @@ namespace NoFuture.Read.Vs
             if (!Directory.Exists(destDir))
                 Directory.CreateDirectory(destDir);
 
-            var projNode = _xmlDocument.SelectSingleNode($"/{NS}:Project", _nsMgr);
-            if (projNode == null)
-                return 0;
-
-            //find all the bin refs
-            var binRefs = _xmlDocument.SelectNodes($"//{NS}:ItemGroup/{NS}:Reference", _nsMgr);
-            var counter = 0;
-
-            if (binRefs == null)
-                return counter;
-
-            foreach (var binRefNode in binRefs)
+            Action<BinReference> myAction = reference =>
             {
-                var binRefElem = binRefNode as XmlElement;
-                if (binRefElem == null || !binRefElem.HasAttributes)
-                    continue;
-
-                var includeAttr = binRefElem.Attributes["Include"];
-                if (string.IsNullOrWhiteSpace(includeAttr?.Value))
-                    continue;
-
-                var binRef = GetBinRefByAsmName(new AssemblyName(includeAttr.Value));
-                if (string.IsNullOrWhiteSpace(binRef?.HintPath))
-                    continue;
-
-                var libDestName = Path.Combine(destDir, Path.GetFileName(binRef.HintPath));
-                var libSrcName = Path.Combine(DirectoryName, binRef.HintPath);
+                if (string.IsNullOrWhiteSpace(reference?.HintPath))
+                    return;
+                var libDestName = Path.Combine(destDir, Path.GetFileName(reference.HintPath));
+                var libSrcName = Path.Combine(DirectoryName, reference.HintPath);
                 CopyFileIfNewer(libSrcName, libDestName);
-                counter += 1;
-
-            }
-            return counter;
+            };
+            return IterateBinReferences(myAction);
         }
 
         /// <summary>
@@ -413,15 +401,11 @@ namespace NoFuture.Read.Vs
         /// </remarks>
         public int SwapAllProjRef2BinRef(bool useExactAsmNameMatch = false)
         {
-            var debugBin = DebugBin;
-            if(string.IsNullOrWhiteSpace(debugBin) || !Directory.Exists(debugBin))
-                throw new ItsDeadJim("Cannot locate a 'bin' folder from which to make .dll copies.");
-
-            CopyAllProjRefDllTo();
-
             var projNode = _xmlDocument.SelectSingleNode($"/{NS}:Project", _nsMgr);
             if (projNode == null)
                 return 0;
+
+            CopyAllProjRefDllTo();
 
             //find all the proj refs
             var projRefs = _xmlDocument.SelectNodes($"//{NS}:ItemGroup/{NS}:ProjectReference", _nsMgr);
@@ -903,6 +887,55 @@ namespace NoFuture.Read.Vs
             return _isChanged;
         }
 
+        /// <summary>
+        /// Changes all HintPath's to the assmeblies in <see cref="DestLibDirectory"/>
+        /// whenever its LastWriteTime is more recent.
+        /// </summary>
+        /// <param name="destDir"></param>
+        /// <returns></returns>
+        public int UpdateHintPathTo(string destDir = null)
+        {
+            //setup a dir to save binary dll's to
+            destDir = destDir ?? DestLibDirectory;
+            destDir = string.IsNullOrWhiteSpace(destDir) ? Path.Combine(DirectoryName, "lib") : destDir;
+            if (!Directory.Exists(destDir))
+                return 0;
+            Action<BinReference> myAction = reference =>
+            {
+                //verify hint path exist
+                if (string.IsNullOrWhiteSpace(reference?.HintPath))
+                    return;
+                //look for the file name of the hint path in the destDir
+                var fullLibDestName = Path.Combine(destDir, Path.GetFileName(reference.HintPath));
+
+                //compare it to the file the hintpath is currently pointing to 
+                var hintPath = Path.Combine(DirectoryName, reference.HintPath);
+                if (!File.Exists(fullLibDestName) || !File.Exists(hintPath))
+                    return;
+
+                //remove any partial path segments
+                fullLibDestName = Path.GetFullPath(fullLibDestName);
+                hintPath = Path.GetFullPath(hintPath);
+
+                //get file info
+                var fsiDest = new FileInfo(Path.GetFullPath(fullLibDestName));
+                var fsiHint = new FileInfo(Path.GetFullPath(hintPath));
+
+                //if the copy in DestLib is newer then update the hint path to it
+                if (fsiDest.LastWriteTime > fsiHint.LastWriteTime)
+                {
+                    var temp = fsiDest.FullName;
+                    if (NfPath.TryGetRelPath(DirectoryName, ref temp))
+                    {
+                        reference.HintPath = temp;
+                    }
+                }
+                _isChanged = true;
+            };
+
+            return IterateBinReferences(myAction);
+        }
+
         public override string GetInnerText(string xpath)
         {
             var singleNode = _xmlDocument.SelectSingleNode(string.Format(xpath, NS), NsMgr);
@@ -919,6 +952,41 @@ namespace NoFuture.Read.Vs
         #endregion
 
         #region internal instance methods
+
+        protected internal int IterateBinReferences(Action<BinReference> action)
+        {
+            var projNode = _xmlDocument.SelectSingleNode($"/{NS}:Project", _nsMgr);
+            if (projNode == null)
+                return 0;
+
+            //find all the bin refs
+            var binRefs = _xmlDocument.SelectNodes($"//{NS}:ItemGroup/{NS}:Reference", _nsMgr);
+            var counter = 0;
+
+            if (binRefs == null)
+                return counter;
+
+            foreach (var binRefNode in binRefs)
+            {
+                var binRefElem = binRefNode as XmlElement;
+                if (binRefElem == null || !binRefElem.HasAttributes)
+                    continue;
+
+                var includeAttr = binRefElem.Attributes["Include"];
+                if (string.IsNullOrWhiteSpace(includeAttr?.Value) ||
+                    !Util.NfType.NfTypeName.IsAssemblyFullName(includeAttr.Value))
+                    continue;
+
+                var binRef = GetBinRefByAsmName(new AssemblyName(includeAttr.Value));
+                if (binRef == null)
+                    continue;
+                action(binRef);
+                counter += 1;
+
+            }
+            return counter;
+        }
+
         /// <summary>
         /// Gets this <see cref="assemblyPath"/> as a <see cref="BinReference"/>.
         /// </summary>

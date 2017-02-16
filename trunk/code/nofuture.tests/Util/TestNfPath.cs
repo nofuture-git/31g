@@ -20,7 +20,7 @@ namespace NoFuture.Tests.Util
         }
 
         [TestMethod]
-        public void TestToProjRelPath()
+        public void TestTryGetRelPath()
         {
             var testInput = @"admin\SomeFile.fs";
             var testResult = NfPath.TryGetRelPath(@"C:\Projects\MyProject", ref testInput);
@@ -49,9 +49,16 @@ namespace NoFuture.Tests.Util
 
             testInput = @"C:\Projects\QuickView\source\Tam.Vmm2\Tam.Vmm2.Web.Lib\..\Tam.Vmm2.Lib.Config\Tam.Vmm2.Lib.Config.csproj";
             testResult = NfPath.TryGetRelPath(@"C:\Projects\We_Nf\We.Cli.Insurgo", ref testInput);
-            System.Diagnostics.Debug.WriteLine(testInput);
             Assert.IsTrue(testResult);
             Assert.AreEqual(@"..\..\QuickView\source\Tam.Vmm2\Tam.Vmm2.Lib.Config\Tam.Vmm2.Lib.Config.csproj", testInput);
+
+            testInput = @"C:\Projects\31g\trunk\bin\Iesi.Collections.dll";
+            testResult =
+                NfPath.TryGetRelPath(
+                    @"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\AdventureWorks2012\AdventureWorks2012",
+                    ref testInput);
+            System.Diagnostics.Debug.WriteLine(testInput);
+
         }
 
         [TestMethod]

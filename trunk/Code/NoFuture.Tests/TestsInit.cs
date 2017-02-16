@@ -29,5 +29,19 @@ namespace NoFuture.Tests
         public static void AssemblyCleanup()
         {
         }
+        int SumNums(int from, int to)
+        {
+            return
+             (from > to)
+               ? 0
+               : from + SumNums(from + 1, to);
+        }
+
+        [TestMethod]
+        public void TestSumNums()
+        {
+            var testResult = SumNums(5, 10);
+            System.Diagnostics.Debug.WriteLine(testResult);
+        }
     }
 }

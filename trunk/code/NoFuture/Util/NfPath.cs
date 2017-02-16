@@ -360,7 +360,6 @@ namespace NoFuture.Util
 
             if (string.IsNullOrWhiteSpace(currentWorkingDir) || string.IsNullOrWhiteSpace(somePathTemp))
                 return false;
-
             var p = currentWorkingDir.Split(Path.DirectorySeparatorChar);
             var q = somePathTemp.Split(Path.DirectorySeparatorChar);
 
@@ -414,12 +413,15 @@ namespace NoFuture.Util
             
             //anywhere we find a pattern like ..\AnyNameHere\..
             var regexPattern = "(" + DOT_DOT + "[" + PATH_SEP + "]" +
-                               "[^" + invalidPathChars + "]+" +
+                               "[^" + invalidPathChars + DOT_DOT.EscapeString() + "]+?" +
                                "[" + PATH_SEP + "])" + DOT_DOT;
 
             string matchText;
-            if (RegexCatalog.IsRegexMatch(somePath, regexPattern, out matchText, 1))
+            if (RegexCatalog.IsRegexMatch(somePath, regexPattern, out matchText, 1) &&
+                !string.Equals(@"..\..\", matchText))
+            {
                 somePath = somePath.Replace(matchText, string.Empty);
+            }
 
             somePath = somePath.Replace(@"\.\", @"\").Replace("/./", "/");
 
