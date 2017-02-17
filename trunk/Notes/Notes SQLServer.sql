@@ -28,6 +28,8 @@ SELECT DATEPART(year,GETDATE())  --GET JUST THE YEAR
 SELECT DATEPART(month, GETDATE()) --MONTH
 SELECT DATEPART(day, GETDATE())   --DAY
 
+SELECT DATEADD(HOUR, -5, @myDate) --Datetime ops
+
 /*==========
 Common string functions
   ==========*/
@@ -37,6 +39,31 @@ LEN
 LTRIM
 REPLACE
 REPLICATE
+
+/*==========
+Search with dynamic criteria
+  ==========*/
+ DECLARE @someTime AS DATETIME2 = NULL
+ DECLARE @someId AS INT = NULL
+ DECLARE @city AS VARCHAR(60) = NULL
+ DECLARE @state AS VARCHAR(2) = NULL
+ DECLARE @zip AS VARCHAR(10) = NULL
+ 
+ SELECT * 
+ FROM MyTable as tbl
+ LEFT JOIN MyAddr AS addr
+ ON tbl.AddrId = addr.Id
+ WHERE (
+		(tbl.SomeDate BETWEEN DATEADD(HOUR,-24,@someTime) AND DATEADD(HOUR,24,@someTime))
+		 OR
+        (@someTime IS NULL))
+    AND (tbl.Id = @someId OR @someId IS NULL)
+	AND (LOWER(addr.City)=LOWER(@city) OR @city IS NULL)
+	AND (LOWER(addr.State)=LOWER(@state) OR @state IS NULL)
+	AND (LOWER(addr.PostalCode) = LOWER(@zip) OR @zip IS NULL)
+ ORDER BY tbl.Id
+ OPTION  ( RECOMPILE ) --this is needed to keep MSSQL from optimizing
+
 
 /*==========
 Flatten varchar rows to single item

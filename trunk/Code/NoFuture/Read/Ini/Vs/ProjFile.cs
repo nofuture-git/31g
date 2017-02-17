@@ -1101,10 +1101,12 @@ namespace NoFuture.Read.Vs
             //return what we have already found once before
             if (
                 _asmRefCache.Any(
-                    x => System.Reflection.AssemblyName.ReferenceMatchesDefinition(x.DllOnDisk?.Item2, asmName)))
+                    x => x.DllOnDisk?.Item2 != null &&
+                         System.Reflection.AssemblyName.ReferenceMatchesDefinition(x.DllOnDisk?.Item2, asmName)))
                 return
                     _asmRefCache.First(
-                        x => System.Reflection.AssemblyName.ReferenceMatchesDefinition(x.DllOnDisk?.Item2, asmName));
+                        x => x.DllOnDisk?.Item2 != null &&
+                             System.Reflection.AssemblyName.ReferenceMatchesDefinition(x.DllOnDisk?.Item2, asmName));
 
             //find the Reference node by the assembly's full name
             var binRef = new BinReference(this);
