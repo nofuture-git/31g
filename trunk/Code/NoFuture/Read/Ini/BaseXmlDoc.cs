@@ -110,6 +110,30 @@ namespace NoFuture.Read
             attr.Value = newValue;
         }
 
+        /// <summary>
+        /// Simple helper method around DOM RemoveChild
+        /// </summary>
+        /// <param name="someName"></param>
+        /// <returns></returns>
+        public virtual int DropNodesNamed(string someName)
+        {
+            if (string.IsNullOrWhiteSpace(someName))
+                return 0;
+            var nodesByName = _xmlDocument.GetElementsByTagName(someName);
+            if (nodesByName.Count <= 0)
+                return 0;
+            var counter = 0;
+            for (var i = nodesByName.Count-1; i >= 0; i--)
+            {
+                var tNode = nodesByName.Item(i);
+                if (tNode?.ParentNode?.RemoveChild(tNode) != null)
+                {
+                    counter += 1;
+                }
+            }
+            return counter;
+        }
+
         protected virtual XmlAttribute GetAttribute(string xpath, string attrName)
         {
             if (string.IsNullOrWhiteSpace(xpath) || string.IsNullOrWhiteSpace(attrName))

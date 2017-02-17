@@ -211,7 +211,7 @@ EndGlobal
         /// Drafts the two typical lines found, per project, in a .sln file.
         /// </summary>
         /// <param name="projFile">
-        /// If the projFile has its <see cref="ProjFile.VsProjectTypeGuid"/> property assigned then 
+        /// If the projFile has its <see cref="ProjFile.VsProjectTypeGuids"/> property assigned then 
         /// that value is used; elsewise, a match is looked up in <see cref="VisualStudioProjTypeGuids"/>
         /// </param>
         /// <param name="slnDir"></param>
@@ -226,12 +226,12 @@ EndGlobal
             if (string.IsNullOrWhiteSpace(projGuid))
                 return null;
 
-            if (string.IsNullOrWhiteSpace(projFile.VsProjectTypeGuid) && !VisualStudioProjTypeGuids.ContainsKey(projExt))
+            if (string.IsNullOrWhiteSpace(projFile.VsProjectTypeGuids) && !VisualStudioProjTypeGuids.ContainsKey(projExt))
                 throw new NotImplementedException("There is no VS Project Type Guid defined for " +
                                                   $"a '{projExt}' file type.  Assign the ProjFile's " +
-                                                  "VsProjectTypeGuid directly.");
+                                                  "VsProjectTypeGuids directly.");
 
-            var projTypeGuid = projFile.VsProjectTypeGuid ?? VisualStudioProjTypeGuids[projExt];
+            var projTypeGuid = projFile.VsProjectTypeGuids ?? VisualStudioProjTypeGuids[projExt];
 
             var projName = Path.GetFileNameWithoutExtension(projFile.FileName);
 

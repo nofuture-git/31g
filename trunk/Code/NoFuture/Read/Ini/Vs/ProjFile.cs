@@ -94,6 +94,7 @@ namespace NoFuture.Read.Vs
         private readonly List<ProjectReference> _projRefCache = new List<ProjectReference>();
         private bool _isChanged;
         private readonly List<Tuple<FileSystemInfo, AssemblyName>> _debugBinFsi2AsmName;
+        private string _projTypeGuids;
         #endregion
 
         #region ctors
@@ -215,9 +216,30 @@ namespace NoFuture.Read.Vs
         }
 
         /// <summary>
-        /// The VS project type guid, this is only needed with regards to drafting .sln files
+        /// The VS project type guid, these are often not present in project files
+        /// and mostly used by .sln files.  See the markup on <see cref="SlnFile.VisualStudioProjTypeGuids"/>
         /// </summary>
-        public string VsProjectTypeGuid { get; set; }
+        public string VsProjectTypeGuids
+        {
+            get
+            {
+                _projTypeGuids = GetInnerText("//{0}:PropertyGroup/{0}:ProjectTypeGuids") ?? _projTypeGuids;
+                //keep this value to only one proj type guid
+                if (_projTypeGuids != null && _projTypeGuids.Length > ("{" + Guid.Empty + "}").Length)
+                {
+                    var ext = Path.GetExtension(FileName) ?? ".csproj";
+                    _projTypeGuids = SlnFile.VisualStudioProjTypeGuids[ext];
+                    SetInnerText("//{0}:PropertyGroup/{0}:ProjectTypeGuids", _projTypeGuids);
+
+                }
+                return _projTypeGuids;
+            }
+            set
+            {
+                SetInnerText("//{0}:PropertyGroup/{0}:ProjectTypeGuids", value);
+                _projTypeGuids = value;
+            }
+        }
 
         /// <summary>
         /// Gets a list of just the build configuration string in the typical form of 'Debug|AnyCPU'

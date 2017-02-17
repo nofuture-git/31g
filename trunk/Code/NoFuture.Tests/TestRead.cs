@@ -75,10 +75,55 @@ namespace NoFuture.Tests
             Assert.IsNotNull(testSubject);
 
             var testResults = testSubject.UpdateHintPathTo(@"C:\Projects\31g\trunk\bin");
-            var testRslt = Path.GetDirectoryName(TEST_CSPROJ);
             Assert.AreNotEqual(0, testResults);
+            var testRslt = Path.GetDirectoryName(TEST_CSPROJ);
             testRslt = Path.Combine(testRslt, "DoNotUse_VsProjFileTests-COPY.csproj");
             testSubject.SaveAs(testRslt);
+        }
+
+        [TestMethod]
+        public void TestDropNodesNamed()
+        {
+            var testSubject = new NoFuture.Read.Vs.ProjFile(TEST_CSPROJ);
+            Assert.IsNotNull(testSubject);
+
+            var testResults = testSubject.DropNodesNamed("VisualStudio");
+            Assert.AreNotEqual(0, testResults);
+
+            testResults = testSubject.DropNodesNamed("VisualStudio");
+            Assert.AreEqual(0, testResults);
+
+            testResults = testSubject.DropNodesNamed("UseIISExpress");
+            Assert.AreNotEqual(0, testResults);
+            testResults = testSubject.DropNodesNamed("IISExpressSSLPort");
+            Assert.AreNotEqual(0, testResults);
+            testResults = testSubject.DropNodesNamed("IISExpressWindowsAuthentication");
+            Assert.AreNotEqual(0, testResults);
+            testResults = testSubject.DropNodesNamed("IISExpressUseClassicPipelineMode");
+            Assert.AreNotEqual(0, testResults);
+            testResults = testSubject.DropNodesNamed("IISExpressAnonymousAuthentication");
+            Assert.AreNotEqual(0, testResults);
+            testResults = testSubject.DropNodesNamed("WcfConfigValidationEnabled");
+            Assert.AreNotEqual(0, testResults);
+
+            var testRslt = Path.GetDirectoryName(TEST_CSPROJ);
+            testRslt = Path.Combine(testRslt, "DoNotUse_VsProjFileTests-COPY.csproj");
+            testSubject.SaveAs(testRslt);
+
+        }
+
+        [TestMethod]
+        public void TestVsProjectTypeGuids()
+        {
+            var testSubject = new NoFuture.Read.Vs.ProjFile(TEST_CSPROJ);
+            Assert.IsNotNull(testSubject);
+
+            var testResults = testSubject.VsProjectTypeGuids;
+            Assert.AreNotEqual("{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}", testResults);
+            var testRslt = Path.GetDirectoryName(TEST_CSPROJ);
+            testRslt = Path.Combine(testRslt, "DoNotUse_VsProjFileTests-COPY.csproj");
+            testSubject.SaveAs(testRslt);
+
         }
 
         [TestMethod]
