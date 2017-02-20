@@ -144,6 +144,7 @@ namespace NoFuture.Gen.InvokeGraphViz
                     "assign a config file's appSettings for " +
                     "'NoFuture.TempDirectories.Graph' to a valid directory");
             }
+            CustomTools.InvokeNfTypeName = ConfigurationManager.AppSettings[AppSettingKeys.NfTypeName];
         }
 
         protected override string GetHelpText()
@@ -260,6 +261,7 @@ namespace NoFuture.Gen.InvokeGraphViz
         {
             internal const string GraphTempDir = "NoFuture.TempDirectories.Graph";
             internal const string DotExe = "NoFuture.Tools.X86.DotExe";
+            internal const string NfTypeName = "NoFuture.ToolsCustomTools.InvokeNfTypeName";
         }
     }
 }

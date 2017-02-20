@@ -9,6 +9,7 @@ using System.Threading;
 using System.Configuration;
 using NoFuture.Exceptions;
 using NoFuture.Shared;
+using NoFuture.Tools;
 using NoFuture.Util.NfConsole;
 
 namespace NoFuture.Hbm.InvokeStoredProc
@@ -25,6 +26,7 @@ namespace NoFuture.Hbm.InvokeStoredProc
         public static class AppSettingKeyNames
         {
             public const string HBM_STORED_PROC_XSD_TIME_OUT = "Hbm.Settings.HbmStoredProcXsdTimeOut";
+            public const string NF_TYPE_NAME_EXE = "NoFuture.ToolsCustomTools.InvokeNfTypeName";
         }
 
         public static void Main(string[] args)
@@ -192,6 +194,9 @@ namespace NoFuture.Hbm.InvokeStoredProc
                 var msg = $"could not parse cmd line arg \n{string.Join(" ", _args)}";
                 throw new ItsDeadJim(msg);
             }
+
+            CustomTools.InvokeNfTypeName = ConfigurationManager.AppSettings[AppSettingKeyNames.NF_TYPE_NAME_EXE];
+
             if (!argHash.ContainsKey(InvokeStoredProcManager.HBM_STORED_PROX_DIR_SWITCH) ||
                 argHash[InvokeStoredProcManager.HBM_STORED_PROX_DIR_SWITCH] == null)
             {

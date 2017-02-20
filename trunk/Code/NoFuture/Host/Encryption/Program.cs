@@ -8,6 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Cfg = System.Configuration.ConfigurationManager;
 using NoFuture.Host.Encryption.Sjcl;
+using NoFuture.Tools;
 using NoFuture.Util.NfConsole;
 
 namespace NoFuture.Host.Encryption
@@ -376,6 +377,9 @@ namespace NoFuture.Host.Encryption
         {
             var argHash = ConsoleCmd.ArgHash(_args);
             GetFileCmdArgs(argHash);
+
+            CustomTools.InvokeNfTypeName = ConfigurationManager.AppSettings["NoFuture.ToolsCustomTools.InvokeNfTypeName"];
+
             if (MyFileParameters.FileCommand == InvokeKind.HostSjcl)
                 return;
 

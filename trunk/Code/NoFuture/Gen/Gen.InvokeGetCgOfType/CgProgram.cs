@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Configuration;
 using System.IO;
 using System.Text;
 using System.Threading;
 using NoFuture.Exceptions;
 using NoFuture.Shared;
+using NoFuture.Tools;
 using NoFuture.Util.Binary;
 using NoFuture.Util.NfConsole;
 
@@ -86,7 +88,10 @@ namespace NoFuture.Gen.InvokeGetCgOfType
                     $"see the log at '{Asm.ResolveAsmLog}' for more info.");
             }
 
-            TypeName = argHash[Settings.INVOKE_FULL_TYPE_NAME_SWITCH].ToString();            
+            TypeName = argHash[Settings.INVOKE_FULL_TYPE_NAME_SWITCH].ToString();
+
+            CustomTools.InvokeNfTypeName = ConfigurationManager.AppSettings["NoFuture.ToolsCustomTools.InvokeNfTypeName"];
+
         }
 
         protected override string MyName

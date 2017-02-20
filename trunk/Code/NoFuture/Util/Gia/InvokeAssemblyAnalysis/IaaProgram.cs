@@ -8,6 +8,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using NoFuture.Exceptions;
 using NoFuture.Shared;
+using NoFuture.Tools;
 using NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds;
 using NoFuture.Util.NfConsole;
 
@@ -275,6 +276,8 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
         {
             //get and test the cmd line arg key\values
             var argHash = ConsoleCmd.ArgHash(_args);
+
+            CustomTools.InvokeNfTypeName = ConfigurationManager.AppSettings["NoFuture.ToolsCustomTools.InvokeNfTypeName"];
             if (argHash.ContainsKey(AssemblyAnalysis.GET_TOKEN_IDS_PORT_CMD_SWITCH))
             {
                 _getTokenIdsCmdPort = ResolveInt(argHash[AssemblyAnalysis.GET_TOKEN_IDS_PORT_CMD_SWITCH].ToString());

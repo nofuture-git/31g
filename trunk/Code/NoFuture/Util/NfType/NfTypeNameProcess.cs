@@ -17,6 +17,19 @@ namespace NoFuture.Util.NfType
 
         public NfTypeNameProcess(int? port)
         {
+            //is there one already running?
+            MyProcess =
+                System.Diagnostics.Process.GetProcessesByName("NoFuture.Tokens.InvokeNfTypeName").FirstOrDefault();
+            if (MyProcess != null)
+            {
+                _invokeCmd = new InvokeGetNfTypeName
+                {
+                    ProcessId = MyProcess.Id,
+                    SocketPort = port.GetValueOrDefault(DF_NF_TYPENAME_PORT)
+                };
+                return;
+            }
+
             if (string.IsNullOrWhiteSpace(CustomTools.InvokeNfTypeName) || !File.Exists(CustomTools.InvokeNfTypeName))
                 throw new ItsDeadJim("Don't know where to locate the NoFuture.Tokens.InvokeNfTypeName.exe, assign " +
                                      "the global variable at NoFuture.Tools.CustomTools.InvokeNfTypeName.");
@@ -24,9 +37,7 @@ namespace NoFuture.Util.NfType
             var cmdPort = port.GetValueOrDefault(DF_NF_TYPENAME_PORT);
             var args = ConsoleCmd.ConstructCmdLineArgs(GET_NF_TYPE_NAME_CMD_SWITCH, cmdPort.ToString());
 
-            MyProcess =
-                System.Diagnostics.Process.GetProcessesByName("NoFuture.Tokens.InvokeNfTypeName").FirstOrDefault() ??
-                StartRemoteProcess(CustomTools.InvokeNfTypeName, args);
+            MyProcess = StartRemoteProcess(CustomTools.InvokeNfTypeName, args);
 
             _invokeCmd = new InvokeGetNfTypeName
             {
