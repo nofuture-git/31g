@@ -194,6 +194,18 @@ namespace NoFuture.Tests.Util
         }
 
         [TestMethod]
+        public void TestFormatJson()
+        {
+            var testJson =
+                "[{\"ScheduleId\":5849,\"Uuid\":\"20012473\",\"ProgramId\":994564,\"Relation\":\"E\",\"FirstName\":\"Randall\",\"MiddleInitial\":null,\"LastName\":\"Perea's\",\"DateOfBirth\":\"1973-03-06T00:00:00\",\"Gender\":\"Male\",\"PhoneNumber\":\"2395730480\",\"Email\":null,\"AddressLine1\":\"3900 Cedar St\",\"AddressLine2\":null,\"City\":\"Arcadia\",\"State\":\"FL\",\"ZipCode\":\"33809\",\"ScheduledTime\":\"2013-10-30T07:30:00\"}]";
+            var testResult = NoFuture.Util.Etc.FormatJson(testJson);
+            Assert.IsNotNull(testResult);
+
+            testResult = NoFuture.Util.Etc.FormatJson(testJson, true);
+            System.Diagnostics.Debug.WriteLine(testResult);
+        }
+
+        [TestMethod]
         public void TestIsBetween()
         {
             

@@ -9,6 +9,7 @@ using System.Xml;
 using System.Xml.Linq;
 using NoFuture.Shared;
 using NoFuture.Util.NfType;
+using Formatting = Newtonsoft.Json.Formatting;
 
 namespace NoFuture.Util
 {
@@ -752,6 +753,49 @@ namespace NoFuture.Util
                 }
             }
             return newNames.ToArray();
+        }
+
+        /// <summary>
+        /// Formats <see cref="jsonString"/> using Newtonsoft
+        /// </summary>
+        /// <param name="jsonString"></param>
+        /// <param name="replaceDblQuoteToSingle">
+        /// Optional, to have existing single-quotes escaped followed by 
+        /// having all double-quotes replaced to single-quotes.
+        /// </param>
+        /// <returns></returns>
+        public static string FormatJson(string jsonString, bool replaceDblQuoteToSingle = false)
+        {
+            if (string.IsNullOrWhiteSpace(jsonString))
+                return null;
+
+            var hasOpenSqrBrace = jsonString.Contains("[");
+            var hasCloseSqrBrace = jsonString.Contains("]");
+            var hasOpenCurlyBrace = jsonString.Contains("{");
+            var hasCloseCurlyBrace = jsonString.Contains("}");
+
+            //may have in pairs or not at all
+            var isValid = !(hasOpenSqrBrace ^ hasCloseSqrBrace) && !(hasOpenCurlyBrace ^ hasCloseCurlyBrace);
+            if (!isValid)
+                return null;
+
+            var asType = Newtonsoft.Json.JsonConvert.DeserializeObject<dynamic>(jsonString);
+
+            jsonString = Newtonsoft.Json.JsonConvert.SerializeObject(asType, Formatting.Indented);
+
+            if (!replaceDblQuoteToSingle)
+                return jsonString;
+
+            //un-esc single-quote, esc single-quote, replace all dbl-quote to single
+            var replacements = new List<Tuple<string, string>>
+            {
+                new Tuple<string, string>(@"\'", "'"),
+                new Tuple<string, string>("'", @"\'"),
+                new Tuple<string, string>("\"", "'")
+            };
+            foreach (var r in replacements)
+                jsonString = jsonString.Replace(r.Item1, r.Item2);
+            return jsonString;
         }
 
         public static ChronoCompare ComparedTo(this DateTime t1, DateTime t2)
