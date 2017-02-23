@@ -382,7 +382,7 @@ namespace NoFuture.Read.Vs
                 //copy dll from .\debug\bin to new .\lib dir
                 var libDestName = Path.Combine(destDir, projRef.DllOnDisk.Item1.Name);
                 var libSrcName = projRef.DllOnDisk.Item1.FullName;
-                CopyFileIfNewer(libSrcName, libDestName);
+                NfPath.CopyFileIfNewer(libSrcName, libDestName);
                 counter += 1;
             }
             return counter;
@@ -408,7 +408,7 @@ namespace NoFuture.Read.Vs
                     return;
                 var libDestName = Path.Combine(destDir, Path.GetFileName(reference.HintPath));
                 var libSrcName = Path.Combine(DirectoryName, reference.HintPath);
-                CopyFileIfNewer(libSrcName, libDestName);
+                NfPath.CopyFileIfNewer(libSrcName, libDestName);
             };
             return IterateBinReferences(myAction);
         }
@@ -547,7 +547,8 @@ namespace NoFuture.Read.Vs
         /// <remarks>
         /// MsBuild style environment variables are handled (e.g. $(MY_ENV_VAR) )
         /// </remarks>
-        public bool AddReferenceNode(string assemblyPath, string projGuid = null, bool useExactAsmNameMatch = false, bool resolveToPartialPath = false)
+        public bool AddReferenceNode(string assemblyPath, string projGuid = null, bool useExactAsmNameMatch = false,
+            bool resolveToPartialPath = false)
         {
             if (string.IsNullOrWhiteSpace(assemblyPath))
                 return false;
@@ -572,7 +573,7 @@ namespace NoFuture.Read.Vs
             var specificVerElem = specificVerNode as XmlElement ??
                                   _xmlDocument.CreateElement("SpecificVersion", DOT_NET_PROJ_XML_NS);
             specificVerElem.InnerText = bool.FalseString;
-            if(specificVerNode == null)
+            if (specificVerNode == null)
                 xmlElem.AppendChild(specificVerElem);
 
             //assign HintPath inner text
@@ -718,9 +719,6 @@ namespace NoFuture.Read.Vs
         /// </remarks>
         public bool TryAddSrcCodeFile(string srcCodeFile)
         {
-            const string DEPENDENT_UPON = "DependentUpon";
-            const string INCLUDE = "Include";
-            const string SUB_TYPE = "SubType";
             if (string.IsNullOrWhiteSpace(srcCodeFile))
                 return false;
 
@@ -747,57 +745,7 @@ namespace NoFuture.Read.Vs
             //add each valid compile item
             foreach (var compItem in compileItems)
             {
-                var newCompileItem = GetSingleCompileItemNode(compItem) ?? _xmlDocument.CreateElement("Compile", DOT_NET_PROJ_XML_NS);
-
-                if (newCompileItem.Attributes != null)
-                {
-                    var includeAttr = HasExistingIncludeAttr(newCompileItem)
-                        ? newCompileItem.Attributes[INCLUDE]
-                        : _xmlDocument.CreateAttribute(INCLUDE);
-
-                    includeAttr.Value = compItem;
-                    if(!HasExistingIncludeAttr(newCompileItem))
-                        newCompileItem.Attributes.Append(includeAttr);
-                }
-
-                //asp files have some additional child nodes
-                if (IsAspFile(Path.GetFileNameWithoutExtension(compItem)))
-                {
-                    var dependentUponNode = FirstChildNamed(newCompileItem, DEPENDENT_UPON) ??
-                                            _xmlDocument.CreateElement(DEPENDENT_UPON, DOT_NET_PROJ_XML_NS);
-
-                    dependentUponNode.InnerText = Path.GetFileNameWithoutExtension(compItem);
-
-                    if (!HasChildNodeNamed(newCompileItem, DEPENDENT_UPON))
-                        newCompileItem.AppendChild(dependentUponNode);
-
-                    if (!compItem.Contains(".designer"))
-                    {
-                        var subTypeNode = FirstChildNamed(newCompileItem, SUB_TYPE) ??
-                                          _xmlDocument.CreateElement(SUB_TYPE, DOT_NET_PROJ_XML_NS);
-
-                        subTypeNode.InnerText = "ASPXCodeBehind";
-
-                        if (!HasChildNodeNamed(newCompileItem, SUB_TYPE))
-                            newCompileItem.AppendChild(subTypeNode);
-                    }
-                }
-
-                if (!IsExistingCompileItem(compItem))
-                {
-                    var lastCompileItemNode = GetLastCompileItem();
-                    if (lastCompileItemNode != null)
-                    {
-                        parentNode.InsertAfter(newCompileItem, lastCompileItemNode);
-                    }
-                    else
-                    {
-                        parentNode.AppendChild(newCompileItem);
-                    }
-                    
-                }
-                    
-                _isChanged = true;
+                AddNewCompileItem(compItem, parentNode);
             }
 
             //add asp as content
@@ -813,34 +761,7 @@ namespace NoFuture.Read.Vs
 
             foreach (var contentItem in contentItems)
             {
-                var newContentItemNode = GetSingleContentItemNode(contentItem) ??
-                                         _xmlDocument.CreateElement("Content", DOT_NET_PROJ_XML_NS);
-
-                if (newContentItemNode.Attributes != null)
-                {
-                    var includeAttr = HasExistingIncludeAttr(newContentItemNode)
-                        ? newContentItemNode.Attributes[INCLUDE]
-                        : _xmlDocument.CreateAttribute(INCLUDE);
-
-                    includeAttr.Value = contentItem;
-                    if(!HasExistingIncludeAttr(newContentItemNode))
-                        newContentItemNode.Attributes.Append(includeAttr);
-                }
-
-                if (!IsExistingContentItem(contentItem))
-                {
-                    var lastConentItemNode = GetLastContentItem();
-                    if (lastConentItemNode != null)
-                    {
-                        parentNode.InsertAfter(newContentItemNode, lastConentItemNode);
-                    }
-                    else
-                    {
-                        parentNode.AppendChild(newContentItemNode);
-                    }
-                }
-
-                _isChanged = true;
+                AddContentItemNode(contentItem, parentNode);
             }
             return _isChanged;
         }
@@ -974,6 +895,109 @@ namespace NoFuture.Read.Vs
         #endregion
 
         #region internal instance methods
+
+        protected internal void AddNewCompileItem(string compItem, XmlNode parentNode)
+        {
+            var newCompileItem = NewCompileItem(compItem);
+
+            AppendAspCompileItemChildNodes(compItem, newCompileItem);
+
+            if (!IsExistingCompileItem(compItem))
+            {
+                var lastCompileItemNode = GetLastCompileItem();
+                if (lastCompileItemNode != null)
+                {
+                    parentNode.InsertAfter(newCompileItem, lastCompileItemNode);
+                }
+                else
+                {
+                    parentNode.AppendChild(newCompileItem);
+                }
+            }
+
+            _isChanged = true;
+        }
+
+        protected internal void AddContentItemNode(string contentItem, XmlNode parentNode)
+        {
+            var newContentItemNode = NewContentItemNode(contentItem);
+
+            if (!IsExistingContentItem(contentItem))
+            {
+                var lastConentItemNode = GetLastContentItem();
+                if (lastConentItemNode != null)
+                {
+                    parentNode.InsertAfter(newContentItemNode, lastConentItemNode);
+                }
+                else
+                {
+                    parentNode.AppendChild(newContentItemNode);
+                }
+            }
+
+            _isChanged = true;
+        }
+
+        protected internal XmlNode NewContentItemNode(string contentItem)
+        {
+            var newContentItemNode = GetSingleContentItemNode(contentItem) ??
+                                     _xmlDocument.CreateElement("Content", DOT_NET_PROJ_XML_NS);
+
+            if (newContentItemNode.Attributes != null)
+            {
+                var includeAttr = HasExistingIncludeAttr(newContentItemNode)
+                    ? newContentItemNode.Attributes["Include"]
+                    : _xmlDocument.CreateAttribute("Include");
+
+                includeAttr.Value = contentItem;
+                if (!HasExistingIncludeAttr(newContentItemNode))
+                    newContentItemNode.Attributes.Append(includeAttr);
+            }
+            return newContentItemNode;
+        }
+
+        protected internal void AppendAspCompileItemChildNodes(string compItem, XmlNode newCompileItem)
+        {
+            //asp files have some additional child nodes
+            if (!IsAspFile(Path.GetFileNameWithoutExtension(compItem)))
+                return;
+            var dependentUponNode = FirstChildNamed(newCompileItem, "DependentUpon") ??
+                                    _xmlDocument.CreateElement("DependentUpon", DOT_NET_PROJ_XML_NS);
+
+            dependentUponNode.InnerText = Path.GetFileNameWithoutExtension(compItem);
+
+            if (!HasChildNodeNamed(newCompileItem, "DependentUpon"))
+                newCompileItem.AppendChild(dependentUponNode);
+
+            if (!compItem.Contains(".designer"))
+            {
+                var subTypeNode = FirstChildNamed(newCompileItem, "SubType") ??
+                                  _xmlDocument.CreateElement("SubType", DOT_NET_PROJ_XML_NS);
+
+                subTypeNode.InnerText = "ASPXCodeBehind";
+
+                if (!HasChildNodeNamed(newCompileItem, "SubType"))
+                    newCompileItem.AppendChild(subTypeNode);
+            }
+        }
+
+        protected internal XmlNode NewCompileItem(string compItem)
+        {
+            var newCompileItem = GetSingleCompileItemNode(compItem) ??
+                                 _xmlDocument.CreateElement("Compile", DOT_NET_PROJ_XML_NS);
+
+            if (newCompileItem.Attributes != null)
+            {
+                var includeAttr = HasExistingIncludeAttr(newCompileItem)
+                    ? newCompileItem.Attributes["Include"]
+                    : _xmlDocument.CreateAttribute("Include");
+
+                includeAttr.Value = compItem;
+                if (!HasExistingIncludeAttr(newCompileItem))
+                    newCompileItem.Attributes.Append(includeAttr);
+            }
+            return newCompileItem;
+        }
 
         protected internal int IterateBinReferences(Action<BinReference> action)
         {
@@ -1188,37 +1212,6 @@ namespace NoFuture.Read.Vs
             projRef.DllOnDisk = _debugBinFsi2AsmName.FirstOrDefault(x => x.Item2.Name == projRef.ProjectName) ??
                        nfProjFile.DebugBinFsi2AsmName.FirstOrDefault(x => x.Item2.Name == projRef.ProjectName);
             return projRef;
-        }
-
-        protected internal bool CopyFileIfNewer(string path, string dest)
-        {
-            if (string.IsNullOrWhiteSpace(path) || string.IsNullOrWhiteSpace(dest))
-                return false;
-
-            if (!File.Exists(path))
-                return false;
-
-            path = Path.GetFullPath(path);
-            dest = Path.GetFullPath(dest);
-
-            if (Directory.Exists(dest))
-            {
-                dest = Path.Combine(dest, Path.GetFileName(path));
-            }
-
-            if (File.Exists(path) && File.Exists(dest))
-            {
-                var pathFs = new FileInfo(path);
-                var destFs = new FileInfo(dest);
-
-                if (pathFs.LastWriteTime > destFs.LastWriteTime)
-                {
-                    File.Copy(path, dest, true);
-                    return true;
-                }
-            }
-            File.Copy(path,dest,true);
-            return true;
         }
 
         /// <summary>

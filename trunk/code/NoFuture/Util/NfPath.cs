@@ -47,10 +47,10 @@ namespace NoFuture.Util
         /// <returns></returns>
         public static int GetTxtFileLineCount(string fullName, bool runExtDirFilters = true)
         {
-            if (string.IsNullOrWhiteSpace(fullName))
+            if (String.IsNullOrWhiteSpace(fullName))
                 return 0;
 
-            if (string.IsNullOrWhiteSpace(Path.GetExtension(fullName)))
+            if (String.IsNullOrWhiteSpace(Path.GetExtension(fullName)))
                 return 0;
 
             if (!File.Exists(fullName))
@@ -80,6 +80,52 @@ namespace NoFuture.Util
         }
 
         /// <summary>
+        /// Copies the file at <see cref="path"/> to <see cref="dest"/>
+        /// except in the case that there is already a file at <see cref="dest"/>
+        /// AND it has a more recent LastWriteTime.
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="dest"></param>
+        /// <returns></returns>
+        public static bool CopyFileIfNewer(string path, string dest)
+        {
+            //need both paths
+            if (string.IsNullOrWhiteSpace(path) || string.IsNullOrWhiteSpace(dest))
+                return false;
+
+            //src file must be present
+            if (!File.Exists(path))
+                return false;
+
+            //remove any relative path leafs
+            path = Path.GetFullPath(path);
+            dest = Path.GetFullPath(dest);
+
+            //when dest is a directory, resolve to full file name
+            if (Directory.Exists(dest))
+            {
+                dest = Path.Combine(dest, Path.GetFileName(path));
+            }
+
+            //when dest file is present check last write time
+            if (File.Exists(path) && File.Exists(dest))
+            {
+                var pathFs = new FileInfo(path);
+                var destFs = new FileInfo(dest);
+
+                if (pathFs.LastWriteTime > destFs.LastWriteTime)
+                {
+                    File.Copy(path, dest, true);
+                    return true;
+                }
+            }
+
+            //otherwise use std IO
+            File.Copy(path, dest, true);
+            return true;
+        }
+
+        /// <summary>
         /// Gets a full path to a random file name in directory <see cref="TempDirectories.AppData"/>
         /// </summary>
         /// <param name="fileNamePrefix"></param>
@@ -96,7 +142,7 @@ namespace NoFuture.Util
         /// <param name="somePath"></param>
         public static void ConvertToCrLf(string somePath)
         {
-            if (string.IsNullOrWhiteSpace(somePath))
+            if (String.IsNullOrWhiteSpace(somePath))
             {
                 return;
             }
@@ -117,7 +163,7 @@ namespace NoFuture.Util
         /// <param name="encoder"></param>
         public static void ConvertToCrLf(string somePath, Encoding encoder)
         {
-            if (string.IsNullOrWhiteSpace(somePath))
+            if (String.IsNullOrWhiteSpace(somePath))
             {
                 return;
             }
@@ -314,20 +360,20 @@ namespace NoFuture.Util
         /// <returns></returns>
         public static bool TryGetRelPath(string currentWorkingDir, ref string somePath)
         {
-            if (string.IsNullOrWhiteSpace(currentWorkingDir))
+            if (String.IsNullOrWhiteSpace(currentWorkingDir))
                 return false;
 
-            if (string.IsNullOrWhiteSpace(somePath))
+            if (String.IsNullOrWhiteSpace(somePath))
                 return false;
 
             var somePathTemp = somePath;
 
             //resolve envrio vars if present
-            var tempPath = string.Empty;
+            var tempPath = String.Empty;
             if (TryResolveEnvVar(currentWorkingDir, ref tempPath))
                 currentWorkingDir = tempPath;
 
-            tempPath = string.Empty;
+            tempPath = String.Empty;
             if (TryResolveEnvVar(somePathTemp, ref tempPath))
                 somePathTemp = tempPath;
 
@@ -352,13 +398,13 @@ namespace NoFuture.Util
             }
 
             //must share the same drive
-            if (!string.Equals(Path.GetPathRoot(currentWorkingDir), Path.GetPathRoot(somePathTemp),
+            if (!String.Equals(Path.GetPathRoot(currentWorkingDir), Path.GetPathRoot(somePathTemp),
                 StringComparison.OrdinalIgnoreCase))
             {
                 return false;
             }
 
-            if (string.IsNullOrWhiteSpace(currentWorkingDir) || string.IsNullOrWhiteSpace(somePathTemp))
+            if (String.IsNullOrWhiteSpace(currentWorkingDir) || String.IsNullOrWhiteSpace(somePathTemp))
                 return false;
             var p = currentWorkingDir.Split(Path.DirectorySeparatorChar);
             var q = somePathTemp.Split(Path.DirectorySeparatorChar);
@@ -372,7 +418,7 @@ namespace NoFuture.Util
                     var pVal = p[i];
                     var qVal = q[j];
 
-                    if (!string.Equals(pVal, qVal, StringComparison.OrdinalIgnoreCase)) 
+                    if (!String.Equals(pVal, qVal, StringComparison.OrdinalIgnoreCase)) 
                         continue;
 
                     for(var m = (p.Length - 1 - i); m > 0; m--)
@@ -381,10 +427,10 @@ namespace NoFuture.Util
                     for(var k = j + 1; k < q.Length; k++)
                         pathOut.Add(q[k]);
 
-                    if(!string.IsNullOrWhiteSpace(somePathFile))
+                    if(!String.IsNullOrWhiteSpace(somePathFile))
                         pathOut.Add(somePathFile);
 
-                    somePath = string.Join(Path.DirectorySeparatorChar.ToString(CultureInfo.InvariantCulture), pathOut);
+                    somePath = String.Join(Path.DirectorySeparatorChar.ToString(CultureInfo.InvariantCulture), pathOut);
 
                     somePath = RemoveRedundantPathLeafs(somePath);
 
@@ -404,7 +450,7 @@ namespace NoFuture.Util
         /// <returns></returns>
         public static string RemoveRedundantPathLeafs(string somePath)
         {
-            if (string.IsNullOrWhiteSpace(somePath))
+            if (String.IsNullOrWhiteSpace(somePath))
                 return null;
             const string PATH_SEP = @"\x5c\x2f";
             const string DOT_DOT = @"\x2e\x2e";
@@ -418,9 +464,9 @@ namespace NoFuture.Util
 
             string matchText;
             if (RegexCatalog.IsRegexMatch(somePath, regexPattern, out matchText, 1) &&
-                !string.Equals(@"..\..\", matchText))
+                !String.Equals(@"..\..\", matchText))
             {
-                somePath = somePath.Replace(matchText, string.Empty);
+                somePath = somePath.Replace(matchText, String.Empty);
             }
 
             somePath = somePath.Replace(@"\.\", @"\").Replace("/./", "/");
@@ -439,7 +485,7 @@ namespace NoFuture.Util
         public static bool HasKnownExtension(string somePath)
         {
             var ext = Path.GetExtension(somePath);
-            return !string.IsNullOrEmpty(ext) &&
+            return !String.IsNullOrEmpty(ext) &&
                    (Constants.CodeExtensions.Select(x => "." + x).Contains(ext) ||
                     Constants.ConfigExtensions.Select(x => "." + x).Contains(ext) || 
                     Constants.BinaryExtensions.Select(x => "." + x).Contains(ext));
@@ -486,7 +532,7 @@ namespace NoFuture.Util
         /// <returns></returns>
         public static bool ContainsExcludeCodeDirectory(string somePath)
         {
-            if (string.IsNullOrWhiteSpace(somePath))
+            if (String.IsNullOrWhiteSpace(somePath))
                 return false;
             return somePath.Contains(new string(new[] {Path.DirectorySeparatorChar})) &&
                    Constants.ExcludeCodeDirectories.Any(somePath.Contains);
@@ -495,12 +541,12 @@ namespace NoFuture.Util
         [EditorBrowsable(EditorBrowsableState.Never)]
         internal static bool IsExtensionType(string somePath, string[] possiableExtensions)
         {
-            if (string.IsNullOrWhiteSpace(somePath) || possiableExtensions == null)
+            if (String.IsNullOrWhiteSpace(somePath) || possiableExtensions == null)
                 return false;
             if(somePath.StartsWith("."))
                 return possiableExtensions.Any(x => Regex.IsMatch(somePath, x, RegexOptions.IgnoreCase));
             var ext = Path.GetExtension(somePath);
-            return !string.IsNullOrWhiteSpace(ext) &&
+            return !String.IsNullOrWhiteSpace(ext) &&
                    possiableExtensions.Any(x => Regex.IsMatch(ext, x, RegexOptions.IgnoreCase));
         }
 
@@ -518,11 +564,11 @@ namespace NoFuture.Util
         /// </remarks>
         public static bool TryResolveEnvVar(string somePath, ref string pathOut)
         { 
-            if (string.IsNullOrWhiteSpace(somePath) || (!somePath.Contains("$") && !somePath.Contains("%")))
+            if (String.IsNullOrWhiteSpace(somePath) || (!somePath.Contains("$") && !somePath.Contains("%")))
                 return false;
 
             //just invoke the framework if it returns something
-            if (!string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable(somePath)))
+            if (!String.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable(somePath)))
             {
                 pathOut = Environment.GetEnvironmentVariable(somePath);
                 return true;
@@ -562,7 +608,7 @@ namespace NoFuture.Util
         /// <param name="fileFullName"></param>
         public static void RemoveBlankLinesInFile(string fileFullName)
         {
-            if (string.IsNullOrWhiteSpace(fileFullName) || !File.Exists(fileFullName))
+            if (String.IsNullOrWhiteSpace(fileFullName) || !File.Exists(fileFullName))
                 return;
             var redux = Etc.RemoveBlankLines(File.ReadAllLines(fileFullName));
 
