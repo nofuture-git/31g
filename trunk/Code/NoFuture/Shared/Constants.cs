@@ -215,6 +215,7 @@ namespace NoFuture.Shared
             @"\build\", //common to Java
             @"\dist\",  //common to Java
             @"\packages\",
+            @"\__pycache__\" //common to python in VS
         };
 
         #endregion

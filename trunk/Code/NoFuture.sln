@@ -96,6 +96,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tokens", "NoFuture\Tokens\T
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tokens.InvokeNfTypeName", "NoFuture\Tokens\InvokeNfTypeName\Tokens.InvokeNfTypeName.csproj", "{B4BFF295-60D8-4BE3-9B48-4C8E595E1E3F}"
 EndProject
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "testNoFuturePy", "NoFuture.Tests\testNoFuturePy\testNoFuturePy.pyproj", "{F8B3C344-7F6C-4C84-AF9A-77A180FD3F63}"
+EndProject
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "util_py", "NoFuture\Util\util_py.pyproj", "{A6248D90-AED9-42A1-AC13-499693446336}"
+EndProject
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "shared_py", "NoFuture\Shared\shared_py.pyproj", "{2F0F4E03-FD54-4D37-9AE3-18A79BF2F13B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -697,6 +703,36 @@ Global
 		{B4BFF295-60D8-4BE3-9B48-4C8E595E1E3F}.Release|x64.Build.0 = Release|Any CPU
 		{B4BFF295-60D8-4BE3-9B48-4C8E595E1E3F}.Release|x86.ActiveCfg = Release|Any CPU
 		{B4BFF295-60D8-4BE3-9B48-4C8E595E1E3F}.Release|x86.Build.0 = Release|Any CPU
+		{F8B3C344-7F6C-4C84-AF9A-77A180FD3F63}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F8B3C344-7F6C-4C84-AF9A-77A180FD3F63}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{F8B3C344-7F6C-4C84-AF9A-77A180FD3F63}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{F8B3C344-7F6C-4C84-AF9A-77A180FD3F63}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{F8B3C344-7F6C-4C84-AF9A-77A180FD3F63}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{F8B3C344-7F6C-4C84-AF9A-77A180FD3F63}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F8B3C344-7F6C-4C84-AF9A-77A180FD3F63}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{F8B3C344-7F6C-4C84-AF9A-77A180FD3F63}.Release|Win32.ActiveCfg = Release|Any CPU
+		{F8B3C344-7F6C-4C84-AF9A-77A180FD3F63}.Release|x64.ActiveCfg = Release|Any CPU
+		{F8B3C344-7F6C-4C84-AF9A-77A180FD3F63}.Release|x86.ActiveCfg = Release|Any CPU
+		{A6248D90-AED9-42A1-AC13-499693446336}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A6248D90-AED9-42A1-AC13-499693446336}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{A6248D90-AED9-42A1-AC13-499693446336}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{A6248D90-AED9-42A1-AC13-499693446336}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{A6248D90-AED9-42A1-AC13-499693446336}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{A6248D90-AED9-42A1-AC13-499693446336}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A6248D90-AED9-42A1-AC13-499693446336}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{A6248D90-AED9-42A1-AC13-499693446336}.Release|Win32.ActiveCfg = Release|Any CPU
+		{A6248D90-AED9-42A1-AC13-499693446336}.Release|x64.ActiveCfg = Release|Any CPU
+		{A6248D90-AED9-42A1-AC13-499693446336}.Release|x86.ActiveCfg = Release|Any CPU
+		{2F0F4E03-FD54-4D37-9AE3-18A79BF2F13B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2F0F4E03-FD54-4D37-9AE3-18A79BF2F13B}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{2F0F4E03-FD54-4D37-9AE3-18A79BF2F13B}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{2F0F4E03-FD54-4D37-9AE3-18A79BF2F13B}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{2F0F4E03-FD54-4D37-9AE3-18A79BF2F13B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{2F0F4E03-FD54-4D37-9AE3-18A79BF2F13B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2F0F4E03-FD54-4D37-9AE3-18A79BF2F13B}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{2F0F4E03-FD54-4D37-9AE3-18A79BF2F13B}.Release|Win32.ActiveCfg = Release|Any CPU
+		{2F0F4E03-FD54-4D37-9AE3-18A79BF2F13B}.Release|x64.ActiveCfg = Release|Any CPU
+		{2F0F4E03-FD54-4D37-9AE3-18A79BF2F13B}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -729,6 +765,9 @@ Global
 		{FBA7203D-CD5C-4C26-BBE8-C09AB4DB9467} = {7171A716-AA76-4336-981C-C6D2F6CF52F7}
 		{4E81340F-409B-4ADA-B038-BF3F76FFA81E} = {DBFE0A62-EC23-4E10-9A6A-9CD524EEAC75}
 		{B4BFF295-60D8-4BE3-9B48-4C8E595E1E3F} = {DBFE0A62-EC23-4E10-9A6A-9CD524EEAC75}
+		{F8B3C344-7F6C-4C84-AF9A-77A180FD3F63} = {DCD744E4-D218-4B3C-A1E1-4D7C33401CE8}
+		{A6248D90-AED9-42A1-AC13-499693446336} = {77044E09-744B-454C-9C02-E7058ECB2851}
+		{2F0F4E03-FD54-4D37-9AE3-18A79BF2F13B} = {BAF95A25-5D6A-47DF-9B74-0A30D33C073C}
 	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = NoFuture.vsmdi

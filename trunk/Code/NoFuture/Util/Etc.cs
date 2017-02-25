@@ -97,6 +97,8 @@ namespace NoFuture.Util
         /// <returns></returns>
         public static string DistillString(this string value)
         {
+            if (string.IsNullOrWhiteSpace(value))
+                return null;
             var sb = new StringBuilder();
             var prev = (char)0x0;
             foreach (var c in value.ToCharArray())
@@ -130,6 +132,8 @@ namespace NoFuture.Util
         /// </summary>
         public static string DistillTabs(string value)
         {
+            if (string.IsNullOrWhiteSpace(value))
+                return null;
             while (true)
             {
                 if (value.Contains("\t\t"))
@@ -209,12 +213,7 @@ namespace NoFuture.Util
         }
 
         /// <summary>
-        /// Returns string <see cref="value"/> as an escape sequence 
-        /// of various forms found in HTML. 
-        /// Which of these forms is based on <see cref="escapeType"/>.
-        /// The <see cref="value"/> is first encoded to the ISO-8859-1 standard unless the 
-        /// <see cref="escapeType"/> is specified as REGEX in which the <see cref="value"/> is 
-        /// encoded into UTF8.
+        /// Returns string <see cref="value"/> as an escape sequence.
         /// </summary>
         /// <param name="value">Any string which is to be escaped.</param>
         /// <param name="escapeType">
@@ -225,7 +224,7 @@ namespace NoFuture.Util
         /// <![CDATA[
         /// Etc.EscapeString("I am decimal", EscapeStringType.DECIMAL); //"&#73;&#32;&#97;&#109;&#32;&#100;&#101;&#99;&#105;&#109;&#97;&#108;"
         /// 
-        /// Etc.EscapeString("I am unicode", EscapeStringType.HEXDECIMAL_LONG);//"\u2049\u6D61\u7520\u696E\u6F63\u6564"
+        /// Etc.EscapeString("I am unicode", EscapeStringType.UNICODE);//"\u2049\u6D61\u7520\u696E\u6F63\u6564"
         /// 
         /// Etc.EscapeString("[regex]", EscapeStringType.REGEX);//"\x5b\x72\x65\x67\x65\x78\x5d"
         /// 

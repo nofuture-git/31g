@@ -8,8 +8,21 @@ Print ISBN-13: 978-1-4919-3936-9
 Pages in Print Edition: 300
 code examples: http://www.greenteapress.com/thinkpython2/code
 
+The Hitchhiker's Guide to Python
+By: Kenneth Reitz; Tanya Schlusser
+Publisher: O'Reilly Media, Inc.
+Pub. Date: September 14, 2016
+Print ISBN-13: 978-1-4919-3317-6
+Pages in Print Edition: 300
+
 Docx at 
 https://docs.python.org/3.5/reference/index.html
+
+Code Style at 
+https://www.python.org/dev/peps/pep-0008/
+
+Docstring examples
+http://sphinxcontrib-napoleon.readthedocs.io/en/latest/example_google.html
 
 ----
 
@@ -52,6 +65,14 @@ Command line
 
  - python is interpretated and the source code is typically part of the 
    install (%pyInstall%\Lib\*.py) 
+   
+ - the python interactive within visual studio has helpful macros
+   $clear
+   $load "C:\MyDir\MyFile.py" #loads the content directly into interactive
+   $reset #resets the interactive
+   
+ - with Anaconda3 you can add your project using this command at cmd
+  conda develop C:\MyDir\MyProj\
 ----
 
 ----
@@ -86,6 +107,14 @@ Ops,
 	
  - line comment char is bash style pound 0x23
   # here is line comment
+ 
+ - Py interpretor will concat these together since they
+   are nested in parenths
+   my_multilineString = (
+       "some long line here "
+	   "no kind of delimiter at the end "
+	   "of these lines."
+   )
   
  - block comments may be a here-string
  """
@@ -113,11 +142,11 @@ Ops,
  - bitwise
   | ^ & << >> ` 
 
- - sequence assignment
-  
+ - sequence assignment (aka unpacking)
  >>> a, b, c, d = [1,2,3,4]
  >>> a, d
  (1,4)
+ 
  >>> for (a, b, c) in [[1,2,3],[4,5,6]]
  ...    print(a,b,c)
  ...
@@ -130,6 +159,11 @@ Ops,
  1 [2, 3]
  4 [5, 6]
  >>> 
+ - this can splice list 
+ >>> a, *remainder = [1, 2, 3]
+  - 'a' is 1, '*remainder' is a list of 2 and 3
+ >>> a, *middle, z = [1, 2, 3, 4]
+  - 
 
 ----
 
@@ -188,6 +222,7 @@ Literals
   '0o20'
   >>> bin(8)
   '0b1000'
+  >>> hex(ord('\r')) #get hex value of char
 ----
 
 ----
@@ -205,6 +240,9 @@ String Methods
  
  S.split([sep [, maxsplit]) #if sep not given, splits on whitespace
                             # for .NET like ToCharArray(), used global list(S)
+     filename, ext = "my_local_file.txt".rsplit(".",1)
+	 - this would assign 'filename' to "my_local_file" and
+	   'ext' to "txt"
  S.join(iterable)  #like .NET string.Join(S,iterable)
  S.replace(old, new)
  S.splitlines([keepends]) #splits string to array on line breaks
@@ -220,6 +258,61 @@ String Methods
  S.rjust(width [,fill]) #right-justify padded with fill (df is space)
  S.ljust(width [, fill])
  S.center(width [, fill]) #center-justify
+----
+
+----
+String formatting
+ # sprintf sytle
+ '%s %.2f' % ('my string', 1/3.0)
+ '%(n)s %(m)i' % {'n' : 'my string', 'm' : 4}
+ 
+ #.NET style
+ '{0} {1:.2f}'.format('my string', 1/3.0)
+ 
+ #the zero index is optional for single-arg
+ '{:<30}'.format('left aligned')
+ 'left aligned                  '
+ 
+ '{:0>6}'.format(55)
+ '000055'
+ 
+ '{:*^30}'.format("pretty cool")
+ '*********pretty cool**********'
+ 
+ '{0:#x}'.format(42)
+ '0x2a'
+ 
+ '{:,}'.format(1234567890)
+ '1,234,567,890'
+ 
+ #full timestamp
+ import datetime
+ '{:%Y-%m-%d %H:%M:%S}'.format(datetime.datetime.now())
+ '2017-02-24 19:42:01'
+----
+
+----
+Encoding
+ - encoding names
+  LATIN-1
+  ISO-8859-1
+  UTF-8
+  UTF-32
+  UTF-16
+ 
+ - py source code is utf-8 by default
+  - special, very first line comment, can switch 
+    src code files to another encoding
+# -*- coding=latin-1 -*-
+
+ - codecs are in encodings module
+ 
+ import encodings
+ 
+ myCodec = encodings.codecs.lookup("ISO-8859-1")
+ #returns the bytes and len as a tuple
+ myBytes, _ = myCodec.encode("<html>")
+ myString, _ = myCodec.decode(myBytes)
 ----
 
 ----
@@ -280,7 +373,11 @@ List Comprehension
  [x ** 2 for x in range(5) if x % 2 == 0]  #results in [1,4,16]
   - may include another comprehension
  [x + y for x in range(3) for y in [10,20,30]]
- 
+  - may use 'enumerate' to get both the counter and item at that counter
+ a = ['my string', 'my other', 'some third one']
+ for i, item in enumerate(a):
+     print("{i} {item}".format(i=i, item=item))
+  
  - a complicated example from AIMA's py code
  - its in a method def'ed in a class (so their is instance scope)
  
@@ -416,16 +513,6 @@ Sets
  Traceback (most re ...
  >>> E1.discard('z') #no error, nothing returned 
 ----
-
-----
-String formatting
- # sprintf sytle
- '%s %.2f' % ('my string', 1/3.0)
- '%(n)s %(m)i' % {'n' : 'my string', 'm' : 4}
- 
- #.NET style
- '{0} {1:.2f}'.format('my string', 1/3.0)
-----
  
 ----
 File IO
@@ -480,6 +567,8 @@ Syntax Constructs & Conventions
  - here-string may span multiple lines
  - names begining and ending with double-underscore have special meaning (e.g. __iamspecial__)
  - top-module level names with a single underscore are scoped only to that module
+ - there are enough hooks and tools in Py to do almost anything with infinite indirection
+ 
 
  - src code is in UTF8
  - .NET properties = Py attributes
@@ -493,14 +582,28 @@ Syntax Constructs & Conventions
  - exceptions should be suffixed with 'Error'
  - function names are all lowercase with underscore sep.
   - use '_' prefix for non-public fields and methods
+   - this is convention, Py has no private scope
+   - therefore everything is overridable
  - function args
   - use 'self' for first arg of instance method
   - use 'cls' for first arg of class method
- - constants are in all uppercase with underscore sep. 
+ - constants are in all uppercase with underscore sep.
+ - single 'return' statement is preferred being at the 
+   bottom of the functions body.
+   - raising an error is the exception
 ----
 
 ----
-Call Syntax
+Function & Call Syntax
+ - have four possiable ways to declare parameters
+ def my_func(positional, key=valuePair, *args, **kwargs)
+  - first two are obvious
+  - *args 'Arbitrary argument list' as a list or tuple
+  - **kwargs 'Arbitrary Keyword arg dictionary' as a dictionary
+
+ - optional parameters are key=valuePair where value is (None)  
+  def send(msg, to, cc=None, bcc=None)
+  
  - inline function defined using the 'def' construct
   >>> def myfunc(a, b, c, d): print(a, b, c, d)
   
@@ -533,6 +636,9 @@ Typical Constructs Syntax
  [else:
      suite]
 
+ while myExpression:
+     suite
+	 
  - other single statment keywords and ops
  pass     #noop
  ...      #also noop for 3.X
@@ -604,6 +710,15 @@ Module Imports
  from [package.]* module import 
              [(] name [as othername]            
              [, name [as othername]]* [)]
+ 
+ - load a file directly (3.5+)
+ import importlib.util
+ spec = importlib.util.spec_from_file_location("nofuture.util.etc","/Util/util_py/etc.py")
+ toLoad = importlib.util.module_from_spec(spec)
+ spec.loader.exec_module(toLoad)
+ 
+ toLoad.name_of_my_py_function()
+ 
 ----
 
 ----
@@ -659,6 +774,8 @@ Classes
  - 'pass' has similar meaning to 'abstract' in .NET
  - the order-of-inheritance in the parenths is the 
    canon for resolving multi-inheritance 
+ - instantiate a type like
+ myInstance = MyPyClass()
  
  #handling multi inheritance
  class Proot:
@@ -924,3 +1041,16 @@ while
 with
 yield
 ----
+
+----
+Unit Tests
+import unittest
+
+class TestMyPyType(unittest.TestCase):
+    def test_myMethod(self):
+		testSubject = MyPyClass()
+		testResult = testSubject.myPyMethod(" some string maybe")
+		self.assertEqual("some expected result", testResult)
+		
+if __name__ == '__main__'
+    unittest.main()
