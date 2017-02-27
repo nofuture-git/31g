@@ -76,7 +76,7 @@ namespace NoFuture.Hbm.SortingContainers
                 return null;
             var cName = ParamName.StartsWith("@") ? ParamName.Substring(1, ParamName.Length - 1) : ParamName;
             cName = NfTypeName.SafeDotNetIdentifier(cName);
-            cName = Util.Etc.CapitalizeFirstLetterOfWholeWords(cName, null);
+            cName = Util.Etc.CapWords(cName, null);
             if (GetSqlDataType() == SqlDbType.Bit && !cName.StartsWith("Is"))
                 cName = string.Format("Is{0}", cName);
             if (cName.EndsWith("ID"))

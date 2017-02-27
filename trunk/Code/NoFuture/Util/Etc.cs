@@ -121,7 +121,7 @@ namespace NoFuture.Util
         }
 
         /// <summary>
-        /// Reduces all repeating sequence of space-characters to one.
+        /// Reduces all repeating sequence of tab-characters to a single-space.
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
@@ -208,7 +208,7 @@ namespace NoFuture.Util
 
             value = TransformScreamingCapsToCamelCase(value);
             value = TransformCamelCaseToSeparator(value, Constants.DEFAULT_CHAR_SEPARATOR);
-            value = CapitalizeFirstLetterOfWholeWords(value, Constants.DEFAULT_CHAR_SEPARATOR);
+            value = CapWords(value, Constants.DEFAULT_CHAR_SEPARATOR);
             return value.Split(Constants.DEFAULT_CHAR_SEPARATOR).Distinct().ToArray();
         }
 
@@ -475,7 +475,7 @@ namespace NoFuture.Util
         /// <param name="name"></param>
         /// <param name="separator"></param>
         /// <returns></returns>
-        public static string CapitalizeFirstLetterOfWholeWords(string name, char? separator)
+        public static string CapWords(string name, char? separator)
         {
             if (String.IsNullOrWhiteSpace(name))
                 return String.Empty;
@@ -484,7 +484,7 @@ namespace NoFuture.Util
             name =
                 new string(
                     name.ToCharArray()
-                        .Where(c => char.IsLetterOrDigit(c) || char.IsPunctuation(c) || char.IsPunctuation(c))
+                        .Where(c => char.IsLetterOrDigit(c) || char.IsPunctuation(c) )
                         .ToArray());
 
             if (separator == null)
@@ -514,35 +514,57 @@ namespace NoFuture.Util
         }
 
         /// <summary>
-        /// Trims a string then puts to lower case the first letter found there in.
+        /// Transforms a string of mixed case into standard camel-case (e.g. userName)
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
         public static string ToCamelCase(string name)
         {
-            if (String.IsNullOrWhiteSpace(name))
-                return String.Empty;
+            //is empty
+            if (string.IsNullOrWhiteSpace(name))
+                return string.Empty;
 
             name = name.Trim();
 
-            var startAt = 0;
-            while (!Char.IsLetter(name.ToCharArray()[startAt]))
-                startAt += 1;
+            //has no letters at all
+            if (name.ToCharArray().All(x => !char.IsLetter(x)))
+                return name;
 
-            var firstLetter = name.Substring(startAt, 1).ToLower();
-            var restOfString = name.Substring(startAt + 1, name.Length - startAt -1);
-            //if the entire name is upper case then drop everything to lower (e.g. ID we don't want iD).
-            if (restOfString.ToCharArray().All(Char.IsUpper))
-            {
-                restOfString = restOfString.ToLower();
-            }
+            //is all caps
+            if (name.ToCharArray().Where(char.IsLetter).All(char.IsUpper))
+                return name.ToLower();
+
             var nameFormatted = new StringBuilder();
-            if (startAt > 0)
-                nameFormatted.Append(name.ToCharArray(0, startAt));
-            nameFormatted.Append(firstLetter);
-            nameFormatted.Append(restOfString);
-            return nameFormatted.ToString();
+            var markStart = false;
+            var nameChars = name.ToCharArray();
 
+            for (var i = 0; i < nameChars.Length; i++)
+            {
+                var c = nameChars[i];
+
+                if (!char.IsLetter(c))
+                {
+                    nameFormatted.Append(c);
+                    continue;
+                }
+
+                if (!markStart)
+                {
+                    markStart = true;
+                    nameFormatted.Append(c.ToString().ToLower());
+                    continue;
+                }
+
+                if (i>0 &&  char.IsUpper(nameChars[i-1]))
+                {
+                    nameFormatted.Append(c.ToString().ToLower());
+                    continue;
+                }
+
+                nameFormatted.Append(c);
+
+            }
+            return nameFormatted.ToString();
         }
 
         /// <summary>
@@ -582,19 +604,18 @@ namespace NoFuture.Util
         /// <returns></returns>
         public static string TransformCamelCaseToSeparator(string camelCaseString, char separator)
         {
-            if (String.IsNullOrWhiteSpace(camelCaseString))
-                return String.Empty;
+            if (string.IsNullOrWhiteSpace(camelCaseString))
+                return string.Empty;
             var separatorName = new StringBuilder();
             var charArray = camelCaseString.ToCharArray();
             for(var i = 0; i<charArray.Length;i++)
             {
                 separatorName.Append(charArray[i]);
-                if(i+1 < charArray.Length)
+                if (i + 1 >= charArray.Length)
+                    continue;
+                if(char.IsLower(charArray[i]) && char.IsUpper(charArray[i+1]))
                 {
-                    if(Char.IsLower(charArray[i]) && Char.IsUpper(charArray[(i+1)]))
-                    {
-                        separatorName.Append(separator);
-                    }
+                    separatorName.Append(separator);
                 }
             }
             return separatorName.ToString();

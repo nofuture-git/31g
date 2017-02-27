@@ -1,3 +1,4 @@
+import encodings
 import Util.net as nfNet
 import Shared.globals as nfGlobals
 
@@ -22,7 +23,8 @@ def distillString(someString):
     return sb
 
 def distillTabs(someString):
-    """Reduces all repeating sequence of space-characters to one.
+    """Reduces all repeating sequence of tab-characters 
+    to a single-space
 
     Returns a string as a modification of the arg having all 
     sequence of tabs [0x09] reduced to one single space 
@@ -85,13 +87,13 @@ def escapeString(value, escapeType = nfGlobals.EscapeStringType.REGEX):
     elif escapeType == nfGlobals.EscapeStringType.HTML:
         for dex in data:
             if dex in nfNet.htmlEscStrings:
-                dataOut += htmlEscStrings.get(dex)
+                dataOut += nfNet.htmlEscStrings.get(dex)
             else:
                 dataOut += "&#{0};".format(dex)
     elif escapeType == nfGlobals.EscapeStringType.XML:
         for dex in data:
             if dex in nfNet.xmlEscStrings:
-                dataOut += xmlEscStrings.get(dex)
+                dataOut += nfNet.xmlEscStrings.get(dex)
             else:
                 dataOut += chr(dex)
     elif escapeType == nfGlobals.EscapeStringType.BLANK:
@@ -101,5 +103,59 @@ def escapeString(value, escapeType = nfGlobals.EscapeStringType.REGEX):
         dataOut = value
     return dataOut
 
+def toCamelCase(name):
+    """Transforms a string of mixed case into standard 
+    camel-case (e.g. userName)
+    """
+    if name == None or name.isspace():
+        return ""
 
-        
+    name = name.strip()
+    
+    #has no letters at all
+    if len([x for x in name if x.isalpha()]) == 0:
+        return name
+
+    #is all caps
+    if name.isupper():
+        return name.lower()
+
+    nameformatted = ""
+    markStart = False
+    
+    for i, c in enumerate(name):
+        if not c.isalpha():
+            nameformatted += c
+            continue
+
+        if not markStart:
+            markStart = True
+            nameformatted += c.lower()
+            continue
+
+        if i > 0 and name[i-1].isupper():
+            nameformatted += c.lower()
+            continue
+
+        nameformatted += c
+    
+    return nameformatted
+    
+def transformCamelCaseToSeparator(camelCaseString, sep = '_'):
+    """Given a string in the form of camel-case (or Pascal case) - a
+    ``sep`` will be inserted between characters 
+    which are lowercase followed by uppercase.
+    """
+
+    if camelCaseString == None or camelCaseString.isspace():
+        return ""
+
+    separatorName = ""
+    for i, c in enumerate(camelCaseString):
+        separatorName += c
+        if i + 1 > len(camelCaseString)-1:
+            continue
+        if c.islower() and camelCaseString[(i+1)].isupper():
+            separatorName += sep
+
+    return separatorName

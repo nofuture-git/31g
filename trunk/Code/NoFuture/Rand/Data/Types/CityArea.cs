@@ -413,7 +413,7 @@ namespace NoFuture.Rand.Data.Types
                 UsState.GetStateByPostalCode(data.StateAbbrv) != null)
             {
                 var usState = UsState.GetStateByPostalCode(data.StateAbbrv);
-                var cityName = Etc.CapitalizeFirstLetterOfWholeWords(data.City.ToLower(), ' ');
+                var cityName = Etc.CapWords(data.City.ToLower(), ' ');
                 searchCrit = $"//{STATE}[@{NAME}='{usState}']/{CITY}[@{NAME}='{cityName}']";
             }
             else if (!String.IsNullOrWhiteSpace(data.PostalCode) && data.PostalCode.Length >= 3)

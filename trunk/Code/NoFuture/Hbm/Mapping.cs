@@ -341,7 +341,7 @@ namespace NoFuture.Hbm
             xe.Add(classXe);
 
             var hbmXmlOutputPath = Path.Combine(Settings.HbmDirectory,
-                string.Format("{0}.hbm.xml", Util.Etc.CapitalizeFirstLetterOfWholeWords(tbl, '.')));
+                string.Format("{0}.hbm.xml", Util.Etc.CapWords(tbl, '.')));
             var xmlContent = xe.ToString()
                 .Replace("<hibernate-mapping>", "<hibernate-mapping xmlns=\"urn:nhibernate-mapping-2.2\">");
             File.WriteAllText(hbmXmlOutputPath, xmlContent);
@@ -423,7 +423,7 @@ namespace NoFuture.Hbm
             xe.Add(sqlQryXe);
 
             var hbmXmlOutputPath = Path.Combine(Settings.HbmStoredProcsDirectory,
-                string.Format("{0}.hbm.xml", Util.Etc.CapitalizeFirstLetterOfWholeWords(storedProc.Replace(" ", Globals.REPLACE_SPACE_WITH_SEQUENCE), '.')));
+                string.Format("{0}.hbm.xml", Util.Etc.CapWords(storedProc.Replace(" ", Globals.REPLACE_SPACE_WITH_SEQUENCE), '.')));
             var xmlContent = xe.ToString()
                 .Replace("<hibernate-mapping>", "<hibernate-mapping xmlns=\"urn:nhibernate-mapping-2.2\">");
             File.WriteAllText(hbmXmlOutputPath, xmlContent);

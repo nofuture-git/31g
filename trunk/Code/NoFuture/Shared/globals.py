@@ -13,3 +13,16 @@ class EscapeStringType(Enum):
     BLANK = 8
 
 WIN_NEW_LINE = '\r\n'
+
+DOT_NET_EN_PUNCTUATION_CHARS = [
+    '.', '?', "'", 
+    '"', ':', '!', 
+    ',', ';', '{',
+    '}', '[', ']',
+    '(', ')', '_', 
+    '@', '%', '&',
+    '*', '-', '\\'
+    '/'
+]
+
+DEFAULT_TYPE_SEPARATOR = '.'

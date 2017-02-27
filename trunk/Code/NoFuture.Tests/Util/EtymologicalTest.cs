@@ -33,6 +33,11 @@ namespace NoFuture.Tests.Util
             Assert.AreNotEqual("iD",testOutput);
             Assert.AreEqual("id",testOutput);
 
+            testOutput = Etc.ToCamelCase("498375938720");
+            Assert.AreEqual("498375938720", testOutput);
+
+            testOutput = Etc.ToCamelCase("__userNAME_ID");
+            Assert.AreEqual("__userName_Id", testOutput);
         }
 
         [TestMethod]
@@ -41,6 +46,9 @@ namespace NoFuture.Tests.Util
             const string TEST_INPUT = "UserName";
             var testOutput = Etc.TransformCamelCaseToSeparator(TEST_INPUT, '_');
             Assert.AreEqual("User_Name",testOutput);
+
+            testOutput = Etc.TransformCamelCaseToSeparator("user_Name", '_');
+            Assert.AreEqual("user_Name", testOutput);
 
         }
 

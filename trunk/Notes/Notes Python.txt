@@ -237,6 +237,9 @@ String Methods
  S.count(sub [, start[, end] ) #num of times 'sub' is present
  S.startswith(sub) #has same options but why
  S.endswith(sub)
+ S.isspace() #test for all whitespace
+ S.isalpha() #test for all letters
+ S.isdigit() #test for all numbers
  
  S.split([sep [, maxsplit]) #if sep not given, splits on whitespace
                             # for .NET like ToCharArray(), used global list(S)
@@ -353,6 +356,7 @@ Lists
  L.pop([i]) #having list op like stacks, df is last item 
  L.clear()
  L.copy() #returns a shallow copy of L
+ "some value" in L #to test for item in list
 ----
 
 ----

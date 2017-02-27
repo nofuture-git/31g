@@ -24,21 +24,21 @@ namespace NoFuture.Tests.Util
         public void TestCapitalizeFirstLetterOfWholeWords()
         {
             const string typicalTypeName = "noFuture.util.etc";
-            var testResult = NoFuture.Util.Etc.CapitalizeFirstLetterOfWholeWords(typicalTypeName, '.');
+            var testResult = NoFuture.Util.Etc.CapWords(typicalTypeName, '.');
             System.Diagnostics.Debug.WriteLine(testResult);
             Assert.AreEqual("NoFuture.Util.Etc", testResult);
 
             const string allCaps = "KEYCODE";
-            testResult = NoFuture.Util.Etc.CapitalizeFirstLetterOfWholeWords(allCaps, '.');
+            testResult = NoFuture.Util.Etc.CapWords(allCaps, '.');
             System.Diagnostics.Debug.WriteLine(testResult);
             Assert.AreEqual("Keycode", testResult);
 
             const string capsLockOn = "nOFUTURE.uTIL.eTC";
-            testResult = NoFuture.Util.Etc.CapitalizeFirstLetterOfWholeWords(capsLockOn, '.');
+            testResult = NoFuture.Util.Etc.CapWords(capsLockOn, '.');
             System.Diagnostics.Debug.WriteLine(testResult);
             Assert.AreEqual("Nofuture.Util.Etc",testResult);
 
-            testResult = NoFuture.Util.Etc.CapitalizeFirstLetterOfWholeWords("A typical English sentence looks like this.", ' ');
+            testResult = NoFuture.Util.Etc.CapWords("A typical English sentence looks like this.", ' ');
             System.Diagnostics.Debug.WriteLine(testResult);
         }
 

@@ -35,11 +35,11 @@ namespace NoFuture.Hbm
             name = NfTypeName.SafeDotNetTypeName(name);
 
             //capitalize first letter of whole word to avoid conflict with C# reserved words
-            name = Etc.CapitalizeFirstLetterOfWholeWords(name, Constants.DEFAULT_TYPE_SEPARATOR);
+            name = Etc.CapWords(name, Constants.DEFAULT_TYPE_SEPARATOR);
 
             if (!String.IsNullOrWhiteSpace(outputNamespace))
             {
-                outputNamespace = Etc.CapitalizeFirstLetterOfWholeWords(outputNamespace, Constants.DEFAULT_TYPE_SEPARATOR);
+                outputNamespace = Etc.CapWords(outputNamespace, Constants.DEFAULT_TYPE_SEPARATOR);
                 asmQualifiedName.AppendFormat("{0}{1}", outputNamespace,Constants.DEFAULT_TYPE_SEPARATOR);
             }
 
@@ -58,7 +58,7 @@ namespace NoFuture.Hbm
         public static string PropertyName(string name, bool replaceInvalidsWithHexEsc = false)
         {
             name = Etc.ExtractLastWholeWord(name,Constants.DEFAULT_TYPE_SEPARATOR);
-            name = Etc.CapitalizeFirstLetterOfWholeWords(name, null);
+            name = Etc.CapWords(name, null);
             return NfTypeName.SafeDotNetIdentifier(name,replaceInvalidsWithHexEsc);
         }
         public static void ValidSplit(string name, int expectedLength)
@@ -84,7 +84,7 @@ namespace NoFuture.Hbm
             var fkPropertyType = new NfTypeName(fullAssemblyQualTypeName);
 
             var fkPropertyName = fkPropertyType.ClassName;
-            fkColumnNames = fkColumnNames.Select(x => Util.Etc.CapitalizeFirstLetterOfWholeWords(Util.Etc.ExtractLastWholeWord(x, '.'), null)).ToArray();
+            fkColumnNames = fkColumnNames.Select(x => Util.Etc.CapWords(Util.Etc.ExtractLastWholeWord(x, '.'), null)).ToArray();
             return string.Format("{0}By{1}", fkPropertyName,
                 string.Join("And", fkColumnNames));
         }

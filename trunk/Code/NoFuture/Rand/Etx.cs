@@ -313,7 +313,7 @@ namespace NoFuture.Rand
             var bunchOfWords = new List<string>();
             for (var i = 0; i < 4; i++)
             {
-                bunchOfWords.Add(Util.Etc.CapitalizeFirstLetterOfWholeWords(Word(), ' '));
+                bunchOfWords.Add(Util.Etc.CapWords(Word(), ' '));
                 bunchOfWords.Add(Domus.NAmerUtil.GetAmericanFirstName(DateTime.Today, CoinToss ? Gender.Male : Gender.Female));
             }
             username = string.Join((CoinToss ? "." : "_"), DiscreteRange(bunchOfWords.ToArray()),
@@ -341,7 +341,7 @@ namespace NoFuture.Rand
                 var shortWordList = new List<string>();
                 for (var i = 0; i < 3; i++)
                 {
-                    var withUcase = Util.Etc.CapitalizeFirstLetterOfWholeWords(DiscreteRange(shortWords), ' ');
+                    var withUcase = Util.Etc.CapWords(DiscreteRange(shortWords), ' ');
                     shortWordList.Add(withUcase);
                 }
                 shortWordList.Add((CoinToss ? "_" : "") + IntNumber(100, 9999));

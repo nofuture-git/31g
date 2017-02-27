@@ -761,7 +761,7 @@ function Invoke-HbmCsCompile
         $hbmsidDll = (Join-Path $rootBin "NoFuture.Hbm.Sid.dll")
         [NoFuture.Hbm.Settings]::LoadOutputPathCurrentSettings();
         $cscCompiler = (Join-Path $global:net40Path $global:cscExe)
-        $OutputNamespace = [NoFuture.Util.Etc]::CapitalizeFirstLetterOfWholeWords($OutputNamespace,'.')
+        $OutputNamespace = [NoFuture.Util.Etc]::CapWords($OutputNamespace,'.')
         $dllOutputFile = (Join-Path $lhbmDirectory ([NoFuture.Util.NfType.NfTypeName]::DraftCscDllName($OutputNamespace)))
 
         $targetArg = "/t:library"
