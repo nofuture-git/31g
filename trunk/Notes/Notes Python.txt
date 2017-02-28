@@ -357,6 +357,12 @@ Lists
  L.clear()
  L.copy() #returns a shallow copy of L
  "some value" in L #to test for item in list
+ 
+ - to get only distinct elements cast the list 
+   as a set and then back again
+ myList = ['my', 'sentece', 'is', 'is', 'here']
+ myList = list(set(myList)
+ 
 ----
 
 ----

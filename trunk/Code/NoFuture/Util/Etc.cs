@@ -206,8 +206,8 @@ namespace NoFuture.Util
             if (value.Length <= 1)
                 return new[] {value};
 
-            value = TransformScreamingCapsToCamelCase(value);
-            value = TransformCamelCaseToSeparator(value, Constants.DEFAULT_CHAR_SEPARATOR);
+            value = ToPascelCase(value);
+            value = TransformCaseToSeparator(value, Constants.DEFAULT_CHAR_SEPARATOR);
             value = CapWords(value, Constants.DEFAULT_CHAR_SEPARATOR);
             return value.Split(Constants.DEFAULT_CHAR_SEPARATOR).Distinct().ToArray();
         }
@@ -602,7 +602,7 @@ namespace NoFuture.Util
         /// <param name="camelCaseString"></param>
         /// <param name="separator"></param>
         /// <returns></returns>
-        public static string TransformCamelCaseToSeparator(string camelCaseString, char separator)
+        public static string TransformCaseToSeparator(string camelCaseString, char separator)
         {
             if (string.IsNullOrWhiteSpace(camelCaseString))
                 return string.Empty;
@@ -622,49 +622,41 @@ namespace NoFuture.Util
         }
 
         /// <summary>
-        /// Transforms a string which is delimited by a separator 
-        /// transforming into a camel-case string.
+        /// Transforms <see cref="name"/> into Pascel case
         /// </summary>
-        /// <param name="screamingCaps"></param>
-        /// <param name="perserveDot">Set to true to have '.' perserved in results, default is false.</param>a
-        /// <remarks>
-        /// Will work for both screaming-caps as well as all lower-case
-        /// strings.
-        /// </remarks>
+        /// <param name="name"></param>
+        /// <param name="perserveSep">Optional, set to true to have punctuation marks perserved</param>a
         /// <returns></returns>
-        public static string TransformScreamingCapsToCamelCase(string screamingCaps, bool perserveDot = false)
+        public static string ToPascelCase(string name, bool perserveSep = false)
         {
-            if (String.IsNullOrWhiteSpace(screamingCaps))
-                return String.Empty;
+            if (string.IsNullOrWhiteSpace(name))
+                return string.Empty;
             var toCamelCase = new StringBuilder();
-            var charArray = ToCamelCase(screamingCaps).ToCharArray();
-            toCamelCase.Append(charArray[0]);
+            var charArray = ToCamelCase(name).ToCharArray();
+            toCamelCase.Append(char.ToUpper(charArray[0]));
             for(var i=1; i<charArray.Length;i++)
             {
                 //last character
                 if (i + 1 >= charArray.Length)
                 {
-                    toCamelCase.Append(Char.ToLower(charArray[i]));
+                    toCamelCase.Append(char.ToLower(charArray[i]));
                     continue;
                 }
-                    
-                if(Char.IsLetterOrDigit(charArray[i]) || (perserveDot && charArray[i] == '.'))
+                if(perserveSep && char.IsPunctuation(charArray[i]) )
+                    toCamelCase.Append(charArray[i]);
+
+                if (char.IsLetterOrDigit(charArray[i]))
                 {
-                    if (!Char.IsLower(charArray[i]) && Char.IsLower(charArray[i + 1]))
-                    {
+                    if (!char.IsLower(charArray[i]) && char.IsLower(charArray[i + 1]))
                         toCamelCase.Append(charArray[i]);
-                    }
                     else
-                    {
-                        toCamelCase.Append(Char.ToLower(charArray[i]));   
-                    }
+                        toCamelCase.Append(char.ToLower(charArray[i]));   
                     continue;
                 }
-                if(!Char.IsLetterOrDigit(charArray[i]) && Char.IsLetterOrDigit(charArray[(i+1)]))
-                {
-                    toCamelCase.Append(charArray[(i + 1)]);
-                    i += 1;
-                }
+                if (char.IsLetterOrDigit(charArray[i]) || !char.IsLetterOrDigit(charArray[i + 1]))
+                    continue;
+                toCamelCase.Append(charArray[(i + 1)]);
+                i += 1;
             }
             return toCamelCase.ToString();
         }

@@ -1,4 +1,5 @@
 import encodings
+import string
 import Util.net as nfNet
 import Shared.globals as nfGlobals
 
@@ -141,7 +142,7 @@ def toCamelCase(name):
     
     return nameformatted
     
-def transformCamelCaseToSeparator(camelCaseString, sep = '_'):
+def transformCaseToSeparator(camelCaseString, sep = '_'):
     """Given a string in the form of camel-case (or Pascal case) - a
     ``sep`` will be inserted between characters 
     which are lowercase followed by uppercase.
@@ -159,3 +160,98 @@ def transformCamelCaseToSeparator(camelCaseString, sep = '_'):
             separatorName += sep
 
     return separatorName
+
+def toPascelCase(name, perserveSep = False):
+    """Transforms ``name`` into Pascel case"""
+
+    if name == None or name.isspace():
+        return ""
+
+    name = toCamelCase(name)
+    rslt = name[0].upper()
+
+    i = 1
+    while i < len(name):
+
+        if i + 1 >= len(name):
+            rslt += name[i].lower()
+            i += 1
+            continue
+
+        if perserveSep and name[i] in string.punctuation:
+            rslt += name[i]
+            i += 1
+            continue
+
+        if name[i].isalnum():
+            if (not name[i].islower()) and name[i+1].islower():
+                rslt += name[i]
+            else:
+                rslt += name[i].lower()
+            i += 1
+            continue
+        
+        if name[i].isalnum() or (not name[i+1].isalnum()):
+            i += 1
+            continue;
+        rslt += name[i+1]
+        i += 2
+        
+    return rslt
+    
+def distillToWholeWords(value):
+    if value == None or value.isspace():
+        return None
+
+    if len(value) <= 1:
+        return [value]
+
+    value = toPascelCase(value)
+    value = transformCaseToSeparator(value, nfGlobals.DEFAULT_CHAR_SEPARATOR)
+    value = string.capwords(value, nfGlobals.DEFAULT_CHAR_SEPARATOR)
+    #need to perserve order
+    outList = list()
+    for p in value.split(nfGlobals.DEFAULT_CHAR_SEPARATOR):
+        if not p in outList:
+            outList.append(p)
+    
+    return outList
+    
+def calcLuhnCheckDigit(someValue):
+    """Ref. [http://en.wikipedia.org/wiki/Luhn_algorithm]"""
+
+    if someValue == None or someValue.isspace():
+        return -1
+
+    dblEveryOtherSum = 0
+    valueChars = [x for x in someValue if x.isnumeric()]
+    if len(valueChars) <= 0:
+        return -1
+
+    valueChars.reverse()
+    for i, valAti in enumerate(valueChars):
+        if (i+1) % 2 == 0:
+            dblEveryOtherSum += int(valAti)
+            continue
+
+        dblValAti = int(valAti) * 2
+        if dblValAti == 10:
+            dblEveryOtherSum += 1
+        elif dblValAti == 12:
+            dblEveryOtherSum += 3
+        elif dblValAti == 14:
+            dblEveryOtherSum += 5
+        elif dblValAti == 16:
+            dblEveryOtherSum += 7
+        elif dblValAti == 18:
+            dblEveryOtherSum += 9
+        else:
+            dblEveryOtherSum += dblValAti
+
+    calc = 10 - (dblEveryOtherSum % 10)
+    if calc == 10:
+        return 0
+
+    return calc
+
+    

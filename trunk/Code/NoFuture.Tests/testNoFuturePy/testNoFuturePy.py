@@ -55,13 +55,74 @@ class TestNfUtilEtc(unittest.TestCase):
         
         testResult = toTest.toCamelCase("__userNAME_ID")
         self.assertEqual("__userName_Id",testResult)
+
+        testResult = toTest.toCamelCase("user.name")
+        self.assertEqual("user.name",testResult)
         
     def test_transformCamelCaseToSeparator(self):
-        testResult = toTest.transformCamelCaseToSeparator("UserName")
+        testResult = toTest.transformCaseToSeparator("UserName")
         self.assertEqual("User_Name",testResult)
 
-        testResult = toTest.transformCamelCaseToSeparator("user_Name")
+        testResult = toTest.transformCaseToSeparator("user_Name")
         self.assertEqual("user_Name",testResult)
+    
+    def test_transformScreamingCapsToCamelCase(self):
+        testResult = toTest.toPascelCase("dbo.DELETED_LookupDetails")
+        self.assertEqual("DboDeletedLookupDetails",testResult)
+
+        testResult = toTest.toPascelCase("dbo.DELETED_LookupDetails", True)
+        self.assertEqual("Dbo.Deleted_LookupDetails",testResult)
+
+        testResult = toTest.toPascelCase("Test.dbo.SET_OP_lli", True)
+        self.assertEqual("Test.dbo.Set_Op_lli",testResult)
+        
+    def test_distillToWholeWords(self):
+        testResult = toTest.distillToWholeWords("FilmMaster-AccountDetail-ClientDetails-LocationDetails-TimeMasters-IsGolfVoucher")
+        self.assertIsNotNone(testResult)
+        self.assertEqual("Film Master Account Detail Client Details Location Time Masters Is Golf Voucher"," ".join(testResult))
+
+        testResult = toTest.distillToWholeWords("Id")
+        self.assertIsNotNone(testResult)
+        self.assertTrue(len(testResult) == 1)
+        self.assertEqual("Id",testResult[0])
+
+        testResult = toTest.distillToWholeWords("RTDC IR Questions")
+        self.assertIsNotNone(testResult)
+        self.assertEqual("RtdcIrQuestions","".join(testResult))
+
+    def test_calcLuhnCheckDigit(self):
+        testResult = toTest.calcLuhnCheckDigit("455673758689985")
+        self.assertEqual(5,testResult)
+
+        testResult = toTest.calcLuhnCheckDigit("453211001754030")
+        self.assertEqual(9,testResult)
+
+        testResult = toTest.calcLuhnCheckDigit("471604448140316")
+        self.assertEqual(5,testResult)
+
+        testResult = toTest.calcLuhnCheckDigit("554210251648257")
+        self.assertEqual(5,testResult)
+
+        testResult = toTest.calcLuhnCheckDigit("537886423943754")
+        self.assertEqual(6,testResult)
+
+        testResult = toTest.calcLuhnCheckDigit("511329925461278")
+        self.assertEqual(2,testResult)
+
+        testResult = toTest.calcLuhnCheckDigit("37322049976972")
+        self.assertEqual(0,testResult)
+
+        testResult = toTest.calcLuhnCheckDigit("34561114407525")
+        self.assertEqual(4,testResult)
+
+        testResult = toTest.calcLuhnCheckDigit("34831152135173")
+        self.assertEqual(6,testResult)
+
+        testResult = toTest.calcLuhnCheckDigit("601198900163944")
+        self.assertEqual(0,testResult)
+
+        testResult = toTest.calcLuhnCheckDigit("3653092434341")
+        self.assertEqual(5,testResult)
 
 
 if __name__ == '__main__':

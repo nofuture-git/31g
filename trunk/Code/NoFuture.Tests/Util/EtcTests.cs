@@ -146,17 +146,20 @@ namespace NoFuture.Tests.Util
         }
 
         [TestMethod]
-        public void TestTransformScreamingCapsToCamelCase()
+        public void TestToPascelCase()
         {
-            var testResult = NoFuture.Util.Etc.TransformScreamingCapsToCamelCase("dbo.DELETED_LookupDetails");
+            var testResult = NoFuture.Util.Etc.ToPascelCase("dbo.DELETED_LookupDetails");
             Assert.IsNotNull(testResult);
             System.Diagnostics.Debug.WriteLine(testResult);
-            Assert.AreEqual("dboDeletedLookupDetails",testResult);
+            Assert.AreEqual("DboDeletedLookupDetails",testResult);
 
-            testResult = NoFuture.Util.Etc.TransformScreamingCapsToCamelCase("dbo.DELETED_LookupDetails", true);
+            testResult = NoFuture.Util.Etc.ToPascelCase("dbo.DELETED_LookupDetails", true);
             Assert.IsNotNull(testResult);
             System.Diagnostics.Debug.WriteLine(testResult);
-            Assert.AreEqual("dbo.deletedLookupDetails",testResult);
+            Assert.AreEqual("Dbo.Deleted_LookupDetails",testResult);
+
+            testResult = NoFuture.Util.Etc.ToPascelCase("Test.dbo.SET_OP_lli", true);
+            Assert.AreEqual("Test.dbo.Set_Op_lli",testResult);
         }
 
         [TestMethod]
@@ -164,19 +167,21 @@ namespace NoFuture.Tests.Util
         {
             var testResult =
                 NoFuture.Util.Etc.DistillToWholeWords(
-                    "ProgramMaster-AccountDetail-ClientDetails-SiteDetails-ClinicMasters-IsFluVoucher");
+                    "FilmMaster-AccountDetail-ClientDetails-LocationDetails-TimeMasters-IsGolfVoucher");
             Assert.IsNotNull(testResult);
-            System.Diagnostics.Debug.WriteLine(string.Join("", testResult));
+            
+            Assert.AreEqual("Film Master Account Detail Client Details Location Time Masters Is Golf Voucher", string.Join(" ", testResult));
 
             testResult =
                 NoFuture.Util.Etc.DistillToWholeWords("Id");
 
             Assert.IsNotNull(testResult);
-            System.Diagnostics.Debug.WriteLine(string.Join("",testResult));
+            Assert.IsTrue(testResult.Length == 1);
+            Assert.AreEqual("Id",testResult[0]);
 
             testResult = NoFuture.Util.Etc.DistillToWholeWords("RTDC IR Questions");
             Assert.IsNotNull(testResult);
-            System.Diagnostics.Debug.WriteLine(string.Join("", testResult));
+            Assert.AreEqual("RtdcIrQuestions", string.Join("", testResult));
         }
 
         [TestMethod]

@@ -12,7 +12,7 @@ namespace NoFuture.Tests.Util
         public void TestTransformScreamingCapsToCamelCase()
         {
             const string TEST_INPUT = "USER_NAME";
-            var testOutput = Etc.TransformScreamingCapsToCamelCase(TEST_INPUT);
+            var testOutput = Etc.ToPascelCase(TEST_INPUT);
             Assert.AreEqual("userName",testOutput);
         }
 
@@ -44,10 +44,10 @@ namespace NoFuture.Tests.Util
         public void TestTransformCamelCaseToSeparator()
         {
             const string TEST_INPUT = "UserName";
-            var testOutput = Etc.TransformCamelCaseToSeparator(TEST_INPUT, '_');
+            var testOutput = Etc.TransformCaseToSeparator(TEST_INPUT, '_');
             Assert.AreEqual("User_Name",testOutput);
 
-            testOutput = Etc.TransformCamelCaseToSeparator("user_Name", '_');
+            testOutput = Etc.TransformCaseToSeparator("user_Name", '_');
             Assert.AreEqual("user_Name", testOutput);
 
         }
