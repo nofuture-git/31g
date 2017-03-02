@@ -53,22 +53,22 @@ namespace NoFuture.Util.NfConsole
 
                         var client = socket.Accept();
                         PrintToConsole($"Connect from port {cmdPort}");
-                        var data = new byte[Constants.DEFAULT_BLOCK_SIZE];
+                        var data = new byte[NfConfig.DEFAULT_BLOCK_SIZE];
 
                         //park for first data received
                         client.Receive(data, 0, data.Length, SocketFlags.None);
                         buffer.AddRange(data.Where(b => b != (byte)'\0'));
                         while (client.Available > 0)
                         {
-                            if (client.Available < Constants.DEFAULT_BLOCK_SIZE)
+                            if (client.Available < NfConfig.DEFAULT_BLOCK_SIZE)
                             {
                                 data = new byte[client.Available];
                                 client.Receive(data, 0, client.Available, SocketFlags.None);
                             }
                             else
                             {
-                                data = new byte[Constants.DEFAULT_BLOCK_SIZE];
-                                client.Receive(data, 0, (int)Constants.DEFAULT_BLOCK_SIZE, SocketFlags.None);
+                                data = new byte[NfConfig.DEFAULT_BLOCK_SIZE];
+                                client.Receive(data, 0, (int)NfConfig.DEFAULT_BLOCK_SIZE, SocketFlags.None);
                             }
                             buffer.AddRange(data.Where(b => b != (byte)'\0'));
                         }

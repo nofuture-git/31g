@@ -251,15 +251,15 @@ namespace NoFuture.Hbm
                         while (client.Available > 0)
                         {
                             byte[] bytes;
-                            if (client.Available < Shared.Constants.DEFAULT_BLOCK_SIZE)
+                            if (client.Available < Shared.NfConfig.DEFAULT_BLOCK_SIZE)
                             {
                                 bytes = new byte[client.Available];
                                 bytesReceived += client.Receive(bytes, 0, client.Available, 0);
                             }
                             else
                             {
-                                bytes = new byte[Shared.Constants.DEFAULT_BLOCK_SIZE];
-                                bytesReceived += client.Receive(bytes, 0, (int)Shared.Constants.DEFAULT_BLOCK_SIZE, 0);
+                                bytes = new byte[Shared.NfConfig.DEFAULT_BLOCK_SIZE];
+                                bytesReceived += client.Receive(bytes, 0, (int)Shared.NfConfig.DEFAULT_BLOCK_SIZE, 0);
                             }
 
                             received.AddRange(bytes);

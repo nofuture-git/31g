@@ -345,8 +345,8 @@ namespace NoFuture.Util.NfType
         }
 
         /// <summary>
-        /// Returns everything except the last entry after <see cref="Constants.DEFAULT_TYPE_SEPARATOR"/>
-        /// or in the case where <see cref="Constants.DEFAULT_TYPE_SEPARATOR"/> isn't present -
+        /// Returns everything except the last entry after <see cref="NfConfig.DEFAULT_TYPE_SEPARATOR"/>
+        /// or in the case where <see cref="NfConfig.DEFAULT_TYPE_SEPARATOR"/> isn't present -
         /// just returns <see cref="name"/>
         /// </summary>
         /// <param name="name"></param>
@@ -358,7 +358,7 @@ namespace NoFuture.Util.NfType
             if(string.IsNullOrWhiteSpace(name))
                 return null;
 
-            if(!name.Contains(Constants.DEFAULT_TYPE_SEPARATOR))
+            if(!name.Contains(NfConfig.DEFAULT_TYPE_SEPARATOR))
                 return null;
 
             if (name.StartsWith(ROOT_NS))
@@ -377,7 +377,7 @@ namespace NoFuture.Util.NfType
                 name = name.Substring(0, name.IndexOf(Constants.TYPE_METHOD_NAME_SPLIT_ON, StringComparison.Ordinal));
             }
 
-            var nameArray = name.Split(Constants.DEFAULT_TYPE_SEPARATOR);
+            var nameArray = name.Split(NfConfig.DEFAULT_TYPE_SEPARATOR);
             var nsLength = nameArray.Length - 1;
             if (nsLength < 0)
                 return name;
@@ -391,7 +391,7 @@ namespace NoFuture.Util.NfType
                 ns.Append(s);
                 //as long as its not the last entry
                 if (i < nsLength - 1)
-                    ns.Append(Constants.DEFAULT_TYPE_SEPARATOR);
+                    ns.Append(NfConfig.DEFAULT_TYPE_SEPARATOR);
             }
             return ns.ToString();
         }
@@ -406,7 +406,7 @@ namespace NoFuture.Util.NfType
             if (string.IsNullOrWhiteSpace(simplePropType))
                 return null;
 
-            if (!simplePropType.Contains(Constants.DEFAULT_TYPE_SEPARATOR))
+            if (!simplePropType.Contains(NfConfig.DEFAULT_TYPE_SEPARATOR))
                 return simplePropType;
 
             if (simplePropType.Contains(Constants.TYPE_METHOD_NAME_SPLIT_ON))
@@ -415,7 +415,7 @@ namespace NoFuture.Util.NfType
                     simplePropType.IndexOf(Constants.TYPE_METHOD_NAME_SPLIT_ON, StringComparison.Ordinal));
             }
 
-            return Etc.ExtractLastWholeWord(simplePropType, Constants.DEFAULT_TYPE_SEPARATOR);
+            return Etc.ExtractLastWholeWord(simplePropType, NfConfig.DEFAULT_TYPE_SEPARATOR);
         }
 
         /// <summary>

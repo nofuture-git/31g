@@ -175,21 +175,21 @@ namespace NoFuture.Util
 
                 server.Connect(new IPEndPoint(IPAddress.Loopback, port));
                 server.Send(mdt);
-                var data = new byte[Constants.DEFAULT_BLOCK_SIZE];
+                var data = new byte[NfConfig.DEFAULT_BLOCK_SIZE];
 
                 //waits for response
                 server.Receive(data, 0, data.Length, SocketFlags.None);
                 buffer.AddRange(data.Where(b => b != (byte)'\0'));
                 while (server.Available > 0)
                 {
-                    if (server.Available < Constants.DEFAULT_BLOCK_SIZE)
+                    if (server.Available < NfConfig.DEFAULT_BLOCK_SIZE)
                     {
                         data = new byte[server.Available];
                         server.Receive(data, 0, server.Available, SocketFlags.None);
                     }
                     else
                     {
-                        data = new byte[Constants.DEFAULT_BLOCK_SIZE];
+                        data = new byte[NfConfig.DEFAULT_BLOCK_SIZE];
                         server.Receive(data, 0, data.Length, SocketFlags.None);
                     }
 

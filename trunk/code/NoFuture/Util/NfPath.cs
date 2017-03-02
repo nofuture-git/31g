@@ -42,7 +42,7 @@ namespace NoFuture.Util
         /// <param name="fullName">Is required to have an extension.</param>
         /// <param name="runExtDirFilters">
         /// Filters out known binary files extensions and excludes 
-        /// file in directories defined in <see cref="Constants.ExcludeCodeDirectories"/>
+        /// file in directories defined in <see cref="NfConfig.ExcludeCodeDirectories"/>
         /// </param>
         /// <returns></returns>
         public static int GetTxtFileLineCount(string fullName, bool runExtDirFilters = true)
@@ -476,9 +476,9 @@ namespace NoFuture.Util
 
         /// <summary>
         /// Asserts that <see cref="somePath"/> has an extension 
-        /// which is represented by the lists at <see cref="Constants.CodeExtensions"/>
-        /// or <see cref="Constants.ConfigExtensions"/> 
-        /// or <see cref="Constants.BinaryExtensions"/>
+        /// which is represented by the lists at <see cref="NfConfig.CodeExtensions"/>
+        /// or <see cref="NfConfig.ConfigExtensions"/> 
+        /// or <see cref="NfConfig.BinaryExtensions"/>
         /// </summary>
         /// <param name="somePath"></param>
         /// <returns></returns>
@@ -486,47 +486,47 @@ namespace NoFuture.Util
         {
             var ext = Path.GetExtension(somePath);
             return !String.IsNullOrEmpty(ext) &&
-                   (Constants.CodeExtensions.Select(x => "." + x).Contains(ext) ||
-                    Constants.ConfigExtensions.Select(x => "." + x).Contains(ext) || 
-                    Constants.BinaryExtensions.Select(x => "." + x).Contains(ext));
+                   (NfConfig.CodeExtensions.Select(x => "." + x).Contains(ext) ||
+                    NfConfig.ConfigExtensions.Select(x => "." + x).Contains(ext) || 
+                    NfConfig.BinaryExtensions.Select(x => "." + x).Contains(ext));
         }
 
         /// <summary>
         /// Asserts the <see cref="somePath"/> is a file path
-        /// with one of the extensions in <see cref="Constants.CodeExtensions"/>
+        /// with one of the extensions in <see cref="NfConfig.CodeExtensions"/>
         /// </summary>
         /// <param name="somePath"></param>
         /// <returns></returns>
         public static bool IsCodeFileExtension(string somePath)
         {
-            return IsExtensionType(somePath, Constants.CodeExtensions);
+            return IsExtensionType(somePath, NfConfig.CodeExtensions);
         }
 
         /// <summary>
         /// Asserts the <see cref="somePath"/> is a file path
-        /// with one of the extensions in <see cref="Constants.ConfigExtensions"/>
+        /// with one of the extensions in <see cref="NfConfig.ConfigExtensions"/>
         /// </summary>
         /// <param name="somePath"></param>
         /// <returns></returns>
         public static bool IsConfigFileExtension(string somePath)
         {
-            return IsExtensionType(somePath, Constants.ConfigExtensions);
+            return IsExtensionType(somePath, NfConfig.ConfigExtensions);
         }
 
         /// <summary>
         /// Asserts the <see cref="somePath"/> is a file path
-        /// with one of the extensions in <see cref="Constants.BinaryExtensions"/>
+        /// with one of the extensions in <see cref="NfConfig.BinaryExtensions"/>
         /// </summary>
         /// <param name="somePath"></param>
         /// <returns></returns>
         public static bool IsBinaryFileExtension(string somePath)
         {
-            return IsExtensionType(somePath, Constants.BinaryExtensions);
+            return IsExtensionType(somePath, NfConfig.BinaryExtensions);
         }
 
         /// <summary>
         /// Asserts the <see cref="somePath"/> contains at least
-        /// one of the values in <see cref="Constants.ExcludeCodeDirectories"/>
+        /// one of the values in <see cref="NfConfig.ExcludeCodeDirectories"/>
         /// </summary>
         /// <param name="somePath"></param>
         /// <returns></returns>
@@ -535,7 +535,7 @@ namespace NoFuture.Util
             if (String.IsNullOrWhiteSpace(somePath))
                 return false;
             return somePath.Contains(new string(new[] {Path.DirectorySeparatorChar})) &&
-                   Constants.ExcludeCodeDirectories.Any(somePath.Contains);
+                   NfConfig.ExcludeCodeDirectories.Any(somePath.Contains);
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]

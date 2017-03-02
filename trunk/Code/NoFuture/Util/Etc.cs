@@ -207,8 +207,8 @@ namespace NoFuture.Util
                 return new[] {value};
 
             value = ToPascelCase(value);
-            value = TransformCaseToSeparator(value, Constants.DEFAULT_CHAR_SEPARATOR);
-            return value.Split(Constants.DEFAULT_CHAR_SEPARATOR).Distinct().ToArray();
+            value = TransformCaseToSeparator(value, NfConfig.DEFAULT_CHAR_SEPARATOR);
+            return value.Split(NfConfig.DEFAULT_CHAR_SEPARATOR).Distinct().ToArray();
         }
 
         /// <summary>
@@ -487,7 +487,7 @@ namespace NoFuture.Util
                         .ToArray());
 
             if (separator == null)
-                separator = Constants.DEFAULT_TYPE_SEPARATOR;
+                separator = NfConfig.DEFAULT_TYPE_SEPARATOR;
 
             var nameArray = name.Split(separator.Value);
             var nameFormatted = new StringBuilder();
@@ -537,7 +537,7 @@ namespace NoFuture.Util
             var nameFormatted = new StringBuilder();
             var markStart = false;
             var nameChars = name.ToCharArray();
-            var sepChars = Constants.PyPunctuationChars.ToList();
+            var sepChars = NfConfig.PyPunctuationChars.ToList();
             sepChars.Add(' ');
             for (var i = 0; i < nameChars.Length; i++)
             {
@@ -610,7 +610,7 @@ namespace NoFuture.Util
                 return String.Empty;
 
             if (separator == null)
-                separator = Constants.DEFAULT_TYPE_SEPARATOR;
+                separator = NfConfig.DEFAULT_TYPE_SEPARATOR;
 
             if (!name.Contains(separator.ToString()))
                 return name;

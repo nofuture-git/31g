@@ -378,7 +378,7 @@ namespace NoFuture.Util.Gia
             if (string.IsNullOrWhiteSpace(tokenName))
                 return null;
 
-            var sep = Constants.DEFAULT_TYPE_SEPARATOR.ToString(CultureInfo.InvariantCulture);
+            var sep = NfConfig.DEFAULT_TYPE_SEPARATOR.ToString(CultureInfo.InvariantCulture);
 
             //assembly name and namespace being equal will have equal portion removed, add it back
             if (!string.IsNullOrWhiteSpace(owningAsmName) && tokenName.StartsWith(sep))

@@ -1,7 +1,7 @@
 # -*- coding=latin-1 -*-
 import unittest
 import Util.net as nfNet
-import Shared.globals as nfGlobals
+import Shared.constants as nfConstants
 import Util.etc as toTest
 
 
@@ -28,13 +28,13 @@ class TestNfUtilEtc(unittest.TestCase):
 
     def test_escapeString(self):
         testInput = "I am decimal"
-        testResult = toTest.escapeString(testInput, nfGlobals.EscapeStringType.DECIMAL)
+        testResult = toTest.escapeString(testInput, nfConstants.EscapeStringType.DECIMAL)
         self.assertEqual("&#73;&#32;&#97;&#109;&#32;&#100;&#101;&#99;&#105;&#109;&#97;&#108;", testResult)
 
-        testResult = toTest.escapeString("[regex]", nfGlobals.EscapeStringType.REGEX)
+        testResult = toTest.escapeString("[regex]", nfConstants.EscapeStringType.REGEX)
         self.assertEqual("\\x5b\\x72\\x65\\x67\\x65\\x78\\x5d",testResult)
 
-        testResult = toTest.escapeString(" £¡¥§'", nfGlobals.EscapeStringType.HTML)
+        testResult = toTest.escapeString(" £¡¥§'", nfConstants.EscapeStringType.HTML)
         self.assertEqual("&nbsp;&pound;&iexcl;&yen;&sect;&apos;",testResult)
 
     def test_toCamelCase(self):

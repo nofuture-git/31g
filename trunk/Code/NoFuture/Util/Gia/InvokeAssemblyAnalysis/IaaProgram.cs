@@ -311,7 +311,7 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
             {
                 if (string.IsNullOrWhiteSpace(ut))
                     return;
-                if (!ut.StartsWith(Constants.CMD_LINE_ARG_SWITCH))
+                if (!ut.StartsWith(NfConfig.CMD_LINE_ARG_SWITCH))
                     return;
 
                 var cmds = ut.Split(' ');
@@ -422,28 +422,28 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
             help.AppendLine(" -h | -help             Will print this help.");
             help.AppendLine("");
             help.AppendLine(String.Format(" {0}{1}{2}[INT]      Optional, cmd line port for the ",
-                Constants.CMD_LINE_ARG_SWITCH, AssemblyAnalysis.GET_ASM_INDICES_PORT_CMD_SWITCH,
-                Constants.CMD_LINE_ARG_ASSIGN));
+                NfConfig.CMD_LINE_ARG_SWITCH, AssemblyAnalysis.GET_ASM_INDICES_PORT_CMD_SWITCH,
+                NfConfig.CMD_LINE_ARG_ASSIGN));
             help.AppendLine("                                 the GetAsmIndices, defaults to app.config.");
             help.AppendLine("");
             help.AppendLine(String.Format(" {0}{1}{2}[INT]      Optional, cmd line port for the ",
-                Constants.CMD_LINE_ARG_SWITCH, AssemblyAnalysis.GET_TOKEN_IDS_PORT_CMD_SWITCH,
-                Constants.CMD_LINE_ARG_ASSIGN));
+                NfConfig.CMD_LINE_ARG_SWITCH, AssemblyAnalysis.GET_TOKEN_IDS_PORT_CMD_SWITCH,
+                NfConfig.CMD_LINE_ARG_ASSIGN));
             help.AppendLine("                                 the GetTokenIds, defaults to app.config.");
             help.AppendLine("");
             help.AppendLine(String.Format(" {0}{1}{2}[INT]      Optional, cmd line port for the ",
-                Constants.CMD_LINE_ARG_SWITCH, AssemblyAnalysis.GET_TOKEN_NAMES_PORT_CMD_SWITCH,
-                Constants.CMD_LINE_ARG_ASSIGN));
+                NfConfig.CMD_LINE_ARG_SWITCH, AssemblyAnalysis.GET_TOKEN_NAMES_PORT_CMD_SWITCH,
+                NfConfig.CMD_LINE_ARG_ASSIGN));
             help.AppendLine("                                 the GetTokenNames, defaults to app.config.");
             help.AppendLine("");
             help.AppendLine(String.Format(" {0}{1}{2}[INT]      Optional, cmd line port for the ",
-                Constants.CMD_LINE_ARG_SWITCH, AssemblyAnalysis.GET_TOKEN_PAGE_RANK_PORT_CMD_SWITCH,
-                Constants.CMD_LINE_ARG_ASSIGN));
+                NfConfig.CMD_LINE_ARG_SWITCH, AssemblyAnalysis.GET_TOKEN_PAGE_RANK_PORT_CMD_SWITCH,
+                NfConfig.CMD_LINE_ARG_ASSIGN));
             help.AppendLine("                                 the GetTokenPageRank, defaults to app.config.");
             help.AppendLine("");
             help.AppendLine(String.Format(" {0}{1}{2}[BOOL]     Optional, cmd line switch for the ",
-                Constants.CMD_LINE_ARG_SWITCH, AssemblyAnalysis.RESOLVE_GAC_ASM_SWITCH,
-                Constants.CMD_LINE_ARG_ASSIGN));
+                NfConfig.CMD_LINE_ARG_SWITCH, AssemblyAnalysis.RESOLVE_GAC_ASM_SWITCH,
+                NfConfig.CMD_LINE_ARG_ASSIGN));
             help.AppendLine("                                 the GetTokenNames return names from ");
             help.AppendLine("                                 assemblies in GAC, defaults to app.config.");
             help.AppendLine("");
@@ -465,13 +465,13 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
             help.AppendLine(" -h | -help                Will print this help.");
             help.AppendLine("");
             help.AppendLine(String.Format(" {0}{1}{2}[STRING]     Assign a regex pattern for recursive calls.",
-                Constants.CMD_LINE_ARG_SWITCH, ASSIGN_REGEX_PATTERN_RT_CMD,
-                Constants.CMD_LINE_ARG_ASSIGN));
+                NfConfig.CMD_LINE_ARG_SWITCH, ASSIGN_REGEX_PATTERN_RT_CMD,
+                NfConfig.CMD_LINE_ARG_ASSIGN));
             help.AppendLine("                           This will override any value passed through a socket.");
             help.AppendLine("");
             help.AppendLine(String.Format(" {0}{1}{2}[INT].[INT]  Resolve a token name by its id.",
-                Constants.CMD_LINE_ARG_SWITCH, RESOLVE_TOKEN_ID_CMD,
-                Constants.CMD_LINE_ARG_ASSIGN));
+                NfConfig.CMD_LINE_ARG_SWITCH, RESOLVE_TOKEN_ID_CMD,
+                NfConfig.CMD_LINE_ARG_ASSIGN));
             help.AppendLine("");
             help.AppendLine(" ----");
 

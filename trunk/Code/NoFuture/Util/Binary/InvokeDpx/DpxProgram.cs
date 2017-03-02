@@ -66,8 +66,8 @@ namespace NoFuture.Util.Binary.InvokeDpx
             help.AppendLine(" -h | -help             Will print this help.");
             help.AppendLine("");
             help.AppendLine(string.Format(" {0}{1}{2}[STRING]   Path to bin directory ",
-                Constants.CMD_LINE_ARG_SWITCH, Dpx.BIN_DIR,
-                Constants.CMD_LINE_ARG_ASSIGN));
+                NfConfig.CMD_LINE_ARG_SWITCH, Dpx.BIN_DIR,
+                NfConfig.CMD_LINE_ARG_ASSIGN));
             help.AppendLine("");
 
             return help.ToString();

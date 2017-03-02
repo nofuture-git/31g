@@ -19,7 +19,7 @@ namespace NoFuture.Hbm
 
         public static XElement HibernateConfigurationNode(string connectionString, string outputNamespace)
         {
-            outputNamespace = Etc.CapWords(outputNamespace, Constants.DEFAULT_TYPE_SEPARATOR);
+            outputNamespace = Etc.CapWords(outputNamespace, NfConfig.DEFAULT_TYPE_SEPARATOR);
             XNamespace hbmXmlNs = Globals.HBM_XML_NS;
             var hbmConfigNode = new XElement(hbmXmlNs + Nm.HIBERNATE_CONFIGURATION);
             var sessionFactoryNode = new XElement(Nm.SESSION_FACTORY);

@@ -1,7 +1,8 @@
 import encodings
 import string
 import Util.net as nfNet
-import Shared.globals as nfGlobals
+import Shared.constants as nfConstants
+from Shared.globals import nfConfig
 
 def distillString(someString):
     """Distills the continous spaces into a single space and
@@ -44,12 +45,12 @@ def convertToCrLf(fileContent):
     """Converts line endings to CrLf"""
     if fileContent is None:
         return None
-    fileContent = fileContent.replace( nfGlobals.WIN_NEW_LINE,'\n')
+    fileContent = fileContent.replace( nfConstants.WIN_NEW_LINE,'\n')
     fileContent = fileContent.replace('\r','\n')
-    fileContent = fileContent.replace('\n', nfGlobals.WIN_NEW_LINE)
+    fileContent = fileContent.replace('\n', nfConstants.WIN_NEW_LINE)
     return fileContent
 
-def escapeString(value, escapeType = nfGlobals.EscapeStringType.REGEX):
+def escapeString(value, escapeType = nfConstants.EscapeStringType.REGEX):
     """Returns string ``value`` as an escape sequence.
     
     Args:
@@ -68,37 +69,37 @@ def escapeString(value, escapeType = nfGlobals.EscapeStringType.REGEX):
     myCodec = encodings.codecs.lookup("ISO-8859-1")
     data, _ = myCodec.encode(value)
     dataOut = ""
-    if escapeType == nfGlobals.EscapeStringType.DECIMAL:
+    if escapeType == nfConstants.EscapeStringType.DECIMAL:
         for dex in data:
             dataOut += "&#{0};".format(dex)
-    elif escapeType == nfGlobals.EscapeStringType.DECIMAL_LONG:
+    elif escapeType == nfConstants.EscapeStringType.DECIMAL_LONG:
         for dex in data:
             dataOut += "&#{0:0>7}".format(dex)
-    elif escapeType == nfGlobals.EscapeStringType.HEXDECIMAL:
+    elif escapeType == nfConstants.EscapeStringType.HEXDECIMAL:
         for dex in data:
             dataOut += "&#x{0}".format(dex)
-    elif escapeType == nfGlobals.EscapeStringType.REGEX:
+    elif escapeType == nfConstants.EscapeStringType.REGEX:
         #switch back to df utf-8
         myCodec = encodings.codecs.lookup("UTF-8")
         data, _ = myCodec.encode(value)
         for dex in data:
             dataOut += "\\x{0:x}".format(dex)
-    elif escapeType == nfGlobals.EscapeStringType.UNICODE:
+    elif escapeType == nfConstants.EscapeStringType.UNICODE:
         for dex in list(value):
             dataOut += "\\u{:0>4X}".format(ord(dex))
-    elif escapeType == nfGlobals.EscapeStringType.HTML:
+    elif escapeType == nfConstants.EscapeStringType.HTML:
         for dex in data:
             if dex in nfNet.htmlEscStrings:
                 dataOut += nfNet.htmlEscStrings.get(dex)
             else:
                 dataOut += "&#{0};".format(dex)
-    elif escapeType == nfGlobals.EscapeStringType.XML:
+    elif escapeType == nfConstants.EscapeStringType.XML:
         for dex in data:
             if dex in nfNet.xmlEscStrings:
                 dataOut += nfNet.xmlEscStrings.get(dex)
             else:
                 dataOut += chr(dex)
-    elif escapeType == nfGlobals.EscapeStringType.BLANK:
+    elif escapeType == nfConstants.EscapeStringType.BLANK:
         for dex in data:
             dataOut += ' '
     else:
@@ -206,11 +207,10 @@ def distillToWholeWords(value):
         return [value]
 
     value = toPascelCase(value)
-    value = transformCaseToSeparator(value, nfGlobals.DEFAULT_CHAR_SEPARATOR)
-    #value = string.capwords(value, nfGlobals.DEFAULT_CHAR_SEPARATOR)
+    value = transformCaseToSeparator(value, nfConfig.DEFAULT_CHAR_SEPARATOR)
     #need to perserve order
     outList = list()
-    for p in value.split(nfGlobals.DEFAULT_CHAR_SEPARATOR):
+    for p in value.split(nfConfig.DEFAULT_CHAR_SEPARATOR):
         if not p in outList:
             outList.append(p)
     
