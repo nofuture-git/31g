@@ -325,6 +325,10 @@ Lists
  [] #empty list
  [0,1,2,3]
  myList = ['my string', ['my', 'inner', 'list', 3.1415], 1.23, {}, 'more', 'stuff', 'down' ,'here']
+ - to create list of some size init with values
+ myBoolList = [False] * 10
+ myNullList = [None] * 5
+
  
  - list slicing syntax
  myOtherList = myList[1:3] 
@@ -343,7 +347,7 @@ Lists
   - get everything starting at index 2 out to the end
  andMore = myList[:3]
   - get everything up to but not including '3'
- 
+
  L.append(X) 
  L.extend(I) #like .NET .AddRange(I)
  L.sort(key=None, reverse=False) #inline sorting
@@ -357,11 +361,13 @@ Lists
  L.clear()
  L.copy() #returns a shallow copy of L
  "some value" in L #to test for item in list
+ myOtherList = L[:] 
+ - another way to copy a list
  
  - to get only distinct elements cast the list 
    as a set and then back again
  myList = ['my', 'sentece', 'is', 'is', 'here']
- myList = list(set(myList)
+ myList = list(set(myList))
  
 ----
 
@@ -378,6 +384,9 @@ List Comprehension
     is optional
  - always return a value
   
+ v0 = [x for x in range(5)] #results in [0,1,2,3,4]
+ v1 = [0 for x in range(5)] #results in [0,0,0,0,0]
+
  [x ** 2 for x in range(5)] #results in [0,1,4,9,16]
   - may include a test condition
  [x ** 2 for x in range(5) if x % 2 == 0]  #results in [1,4,16]
@@ -450,6 +459,10 @@ Dictionaries
  D.get(K) #get by key
  K in D #test for a key (replaces D.has_key(K) )
  for K in D
+
+ - find max key by value 
+ myDict = {'A':4,'B':10,'C':99,'D':87}
+ myMax = max(myDict, key=myDict.get)
 ----
 
 ----
@@ -1010,6 +1023,9 @@ Top Level Builtin Exception types
  LookupError
  OSError  - for wrapping a lower OS related error
  WindowsError - extends OSError, for windows only
+
+ - throw an exception
+ raise ValueError('an exception message')
 ----
  
 ----
@@ -1064,3 +1080,5 @@ class TestMyPyType(unittest.TestCase):
 		
 if __name__ == '__main__'
     unittest.main()
+	
+----

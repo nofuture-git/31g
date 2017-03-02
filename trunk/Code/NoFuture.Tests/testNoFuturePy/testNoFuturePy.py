@@ -38,25 +38,25 @@ class TestNfUtilEtc(unittest.TestCase):
         self.assertEqual("&nbsp;&pound;&iexcl;&yen;&sect;&apos;",testResult)
 
     def test_toCamelCase(self):
-        testResult = toTest.toCamelCase("UserName")
+        testResult = toTest.toCamelCase("UserName", True)
         self.assertEqual("userName",testResult)
 
-        testResult = toTest.toCamelCase("__UserName")
+        testResult = toTest.toCamelCase("__UserName", True)
         self.assertEqual("__userName",testResult)
 
-        testResult = toTest.toCamelCase("__USERNAME")
+        testResult = toTest.toCamelCase("__USERNAME", True)
         self.assertEqual("__username",testResult)
 
-        testResult = toTest.toCamelCase("ID")
+        testResult = toTest.toCamelCase("ID", True)
         self.assertEqual("id",testResult)
 
-        testResult = toTest.toCamelCase("498375938720")
+        testResult = toTest.toCamelCase("498375938720", True)
         self.assertEqual("498375938720",testResult)
         
-        testResult = toTest.toCamelCase("__userNAME_ID")
+        testResult = toTest.toCamelCase("__userNAME_ID", True)
         self.assertEqual("__userName_Id",testResult)
 
-        testResult = toTest.toCamelCase("user.name")
+        testResult = toTest.toCamelCase("user.name", True)
         self.assertEqual("user.name",testResult)
         
     def test_transformCamelCaseToSeparator(self):
@@ -123,6 +123,38 @@ class TestNfUtilEtc(unittest.TestCase):
 
         testResult = toTest.calcLuhnCheckDigit("3653092434341")
         self.assertEqual(5,testResult)
+
+    def test_levenshteinDistance(self):
+        testResult = toTest.levenshteinDistance("kitten", "sitting")
+        self.assertEqual(3,testResult)
+
+        testResult = toTest.levenshteinDistance("Saturday", "Sunday")
+        self.assertEqual(3,testResult)
+
+        testResult = toTest.levenshteinDistance("Brian", "Brain")
+        self.assertEqual(2,testResult)
+        
+    def test_shortestDistance(self):
+        testResult = toTest.shortestDistance("kitty",["kitten", "cat", "kite", "can", "kool"])
+        self.assertTrue("kitten" in testResult)
+        self.assertTrue("kite" in testResult)
+        
+        testResult = toTest.shortestDistance("LeRoy",["Lee", "Roy", "L.R."])
+        self.assertTrue("Roy" in testResult)
+
+    def test_jaroWinklerDistance(self):
+        testResult = toTest.jaroWinklerDistance("test", "test")
+        self.assertEqual(1,testResult)
+
+        testResult = toTest.jaroWinklerDistance("kitty", "kitten")
+        self.assertTrue(testResult - 0.893 < 0.001)
+
+        testResult = toTest.jaroWinklerDistance("kitty", "kite")
+        self.assertTrue(testResult - 0.848 < 0.001)
+
+        testResult = toTest.jaroWinklerDistance(None, None)
+        self.assertEqual(1,testResult)
+        
 
 
 if __name__ == '__main__':

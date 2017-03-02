@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NoFuture.Rand;
 using NoFuture.Shared;
@@ -144,7 +145,52 @@ namespace NoFuture.Tests.Util
             Assert.AreEqual(" a bcd ef ",testResult);
 
         }
+        [TestMethod]
+        public void TestTransformScreamingCapsToCamelCase()
+        {
+            const string TEST_INPUT = "USER_NAME";
+            var testOutput = Etc.ToPascelCase(TEST_INPUT);
+            Assert.AreEqual("userName", testOutput);
+        }
 
+        [TestMethod]
+        public void TestToCamelCase()
+        {
+            const string TEST_INPUT = "UserName";
+            var testOutput = Etc.ToCamelCase(TEST_INPUT, true);
+            Assert.AreEqual("userName", testOutput);
+
+            testOutput = Etc.ToCamelCase("__" + TEST_INPUT, true);
+            Assert.AreEqual("__userName", testOutput);
+
+            testOutput = Etc.ToCamelCase("__" + TEST_INPUT.ToUpper(), true);
+            Assert.AreEqual("__username", testOutput);
+
+            testOutput = Etc.ToCamelCase("ID", true);
+            Assert.AreNotEqual("iD", testOutput);
+            Assert.AreEqual("id", testOutput);
+
+            testOutput = Etc.ToCamelCase("498375938720", true);
+            Assert.AreEqual("498375938720", testOutput);
+
+            testOutput = Etc.ToCamelCase("__userNAME_ID", true);
+            Assert.AreEqual("__userName_Id", testOutput);
+
+            testOutput = Etc.ToCamelCase("The-VariousThings\\which,AllowYou ToRead=this");
+            Assert.AreEqual("theVariousThingsWhichAllowYouToReadThis", testOutput);
+        }
+
+        [TestMethod]
+        public void TestTransformCamelCaseToSeparator()
+        {
+            const string TEST_INPUT = "UserName";
+            var testOutput = Etc.TransformCaseToSeparator(TEST_INPUT, '_');
+            Assert.AreEqual("User_Name", testOutput);
+
+            testOutput = Etc.TransformCaseToSeparator("user_Name", '_');
+            Assert.AreEqual("user_Name", testOutput);
+
+        }
         [TestMethod]
         public void TestToPascelCase()
         {
@@ -182,6 +228,11 @@ namespace NoFuture.Tests.Util
             testResult = NoFuture.Util.Etc.DistillToWholeWords("RTDC IR Questions");
             Assert.IsNotNull(testResult);
             Assert.AreEqual("RtdcIrQuestions", string.Join("", testResult));
+
+            testResult = NoFuture.Util.Etc.DistillToWholeWords("The-VariousThings\\which,AllowYou ToRead=this");
+            Assert.IsNotNull(testResult);
+            Assert.AreEqual(9, testResult.Length);
+            Assert.AreEqual("TheVariousThingsWhichAllowYouToReadThis", string.Join("",testResult));
         }
 
         [TestMethod]
@@ -226,6 +277,16 @@ namespace NoFuture.Tests.Util
         {
             var testResult = Etc.JaroWinklerDistance("test", "test");
             Assert.AreEqual(1D, Math.Round(testResult));
+
+            testResult = Etc.JaroWinklerDistance("kitty", "kitten");
+            Assert.IsTrue(testResult - 0.893 < 0.001);
+
+            testResult = Etc.JaroWinklerDistance("kitty", "kite");
+            Assert.IsTrue(testResult - 0.848 < 0.001);
+            System.Diagnostics.Debug.WriteLine(testResult);
+
+            testResult = Etc.JaroWinklerDistance(null, null);
+            Assert.AreEqual(1.0, testResult);
         }
 
         [TestMethod]
@@ -234,12 +295,36 @@ namespace NoFuture.Tests.Util
             var testResult = Etc.LevenshteinDistance("kitten", "sitting");
             Assert.AreEqual(3D,testResult);
             testResult = Etc.LevenshteinDistance("Saturday", "Sunday");
-            Assert.AreEqual(3D,testResult);
+            Assert.AreEqual(3D, testResult);
             testResult = Etc.LevenshteinDistance("Brian", "Brain");
             Assert.AreEqual(2D, testResult);
 
-            testResult = Etc.LevenshteinDistance("sword", "swath", true);
-            System.Diagnostics.Debug.WriteLine(testResult);
+            System.Diagnostics.Debug.WriteLine(Etc.LevenshteinDistance("kitty", "kitten"));
+            System.Diagnostics.Debug.WriteLine(Etc.LevenshteinDistance("kitty", "kite"));
+
+            //testResult = Etc.LevenshteinDistance("sword", "swath", true);
+            //System.Diagnostics.Debug.WriteLine(testResult);
+        }
+
+        [TestMethod]
+        public void TestShortestDistance()
+        {
+            var testIn = "kitty";
+            var testCompare = new[] {"kitten", "cat", "kite", "can", "kool"};
+
+            var testResult = Etc.ShortestDistance(testIn, testCompare);
+            Assert.IsNotNull(testResult);
+            Assert.AreEqual(2, testResult.Length);
+            Assert.IsTrue(testResult.Contains("kitten"));
+            Assert.IsTrue(testResult.Contains("kite"));
+
+            testIn = "LeRoy";
+            testCompare = new[] { "Lee", "Roy", "L.R." };
+            testResult = Etc.ShortestDistance(testIn, testCompare);
+            Assert.IsNotNull(testResult);
+            Assert.AreEqual(1,testResult.Length);
+            Assert.AreEqual("Roy",testResult[0]);
+            
         }
 
     }

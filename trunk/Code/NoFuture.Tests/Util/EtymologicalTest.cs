@@ -8,49 +8,7 @@ namespace NoFuture.Tests.Util
     [TestClass]
     public class EtymologicalTest
     {
-        [TestMethod]
-        public void TestTransformScreamingCapsToCamelCase()
-        {
-            const string TEST_INPUT = "USER_NAME";
-            var testOutput = Etc.ToPascelCase(TEST_INPUT);
-            Assert.AreEqual("userName",testOutput);
-        }
 
-        [TestMethod]
-        public void TestToCamelCase()
-        {
-            const string TEST_INPUT = "UserName";
-            var testOutput = Etc.ToCamelCase(TEST_INPUT);
-            Assert.AreEqual("userName", testOutput);
-
-            testOutput = Etc.ToCamelCase("__" + TEST_INPUT);
-            Assert.AreEqual("__userName",testOutput);
-
-            testOutput = Etc.ToCamelCase("__" + TEST_INPUT.ToUpper());
-            Assert.AreEqual("__username", testOutput);
-
-            testOutput = Etc.ToCamelCase("ID");
-            Assert.AreNotEqual("iD",testOutput);
-            Assert.AreEqual("id",testOutput);
-
-            testOutput = Etc.ToCamelCase("498375938720");
-            Assert.AreEqual("498375938720", testOutput);
-
-            testOutput = Etc.ToCamelCase("__userNAME_ID");
-            Assert.AreEqual("__userName_Id", testOutput);
-        }
-
-        [TestMethod]
-        public void TestTransformCamelCaseToSeparator()
-        {
-            const string TEST_INPUT = "UserName";
-            var testOutput = Etc.TransformCaseToSeparator(TEST_INPUT, '_');
-            Assert.AreEqual("User_Name",testOutput);
-
-            testOutput = Etc.TransformCaseToSeparator("user_Name", '_');
-            Assert.AreEqual("user_Name", testOutput);
-
-        }
 
         [TestMethod]
         public void TestNomenclatureToponyms()

@@ -43,6 +43,12 @@ namespace NoFuture.Shared
         [EditorBrowsable(EditorBrowsableState.Never)]
         public const string ENUM = "System.Enum";
 
+        public static char[] PyPunctuationChars = {
+            '!', '"', '#', '$', '%', '&', '\\', '\'', '(', ')',
+            '*', '+', ',', '-', '.', '/', ':', ';', '<', '=', '>',
+            '?','@', '[', ']', '^', '_', '`', '{', '|', '}', '~'
+        };
+
         public const string NF_CRYPTO_EXT = ".nfk"; //nofuture kruptos
         public const char LF = (char)0xA;
         public const char CR = (char)0xD;

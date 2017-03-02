@@ -27,9 +27,10 @@ def distillTabs(someString):
     """Reduces all repeating sequence of tab-characters 
     to a single-space
 
-    Returns a string as a modification of the arg having all 
-    sequence of tabs [0x09] reduced to one single space 
-    char [0x20] regardless of the length of the sequence.
+    Returns:
+        (str): as a modification of the arg having all 
+        sequence of tabs [0x09] reduced to one single space 
+        char [0x20] regardless of the length of the sequence.
     """
     if someString is None:
         return None
@@ -104,7 +105,7 @@ def escapeString(value, escapeType = nfGlobals.EscapeStringType.REGEX):
         dataOut = value
     return dataOut
 
-def toCamelCase(name):
+def toCamelCase(name, perserveSep = False):
     """Transforms a string of mixed case into standard 
     camel-case (e.g. userName)
     """
@@ -123,22 +124,35 @@ def toCamelCase(name):
 
     nameformatted = ""
     markStart = False
-    
-    for i, c in enumerate(name):
-        if not c.isalpha():
-            nameformatted += c
-            continue
+    sepChars = list(string.punctuation)
+    sepChars += " "
+    nameChars = list(name)
+    i = 0
+    while i < len(name):
+        c = nameChars[i]
+        if c in sepChars:
+            if perserveSep:
+                nameformatted += c
+                i += 1
+                continue
+            if i+1 < len(name):
+                nameChars[i+1] = nameChars[i+1].upper()
+                i += 1
+                continue
 
         if not markStart:
             markStart = True
             nameformatted += c.lower()
+            i += 1
             continue
 
-        if i > 0 and name[i-1].isupper():
+        if i > 0 and nameChars[i-1].isupper():
             nameformatted += c.lower()
+            i += 1
             continue
 
         nameformatted += c
+        i += 1
     
     return nameformatted
     
@@ -167,39 +181,24 @@ def toPascelCase(name, perserveSep = False):
     if name == None or name.isspace():
         return ""
 
-    name = toCamelCase(name)
+    name = toCamelCase(name, perserveSep)
     rslt = name[0].upper()
 
     i = 1
     while i < len(name):
-
-        if i + 1 >= len(name):
-            rslt += name[i].lower()
-            i += 1
-            continue
-
-        if perserveSep and name[i] in string.punctuation:
-            rslt += name[i]
-            i += 1
-            continue
-
-        if name[i].isalnum():
-            if (not name[i].islower()) and name[i+1].islower():
-                rslt += name[i]
-            else:
-                rslt += name[i].lower()
-            i += 1
-            continue
-        
-        if name[i].isalnum() or (not name[i+1].isalnum()):
-            i += 1
-            continue;
-        rslt += name[i+1]
-        i += 2
+        rslt += name[i]
+        i += 1
         
     return rslt
     
 def distillToWholeWords(value):
+    """Splits `value` into an array on any readable
+    separator - being both camel-case words or special chars.
+
+    Examples:
+        etc.distillToWholeWords("The-VariousThings\which,AllowYou ToRead=this")
+    """
+
     if value == None or value.isspace():
         return None
 
@@ -208,7 +207,7 @@ def distillToWholeWords(value):
 
     value = toPascelCase(value)
     value = transformCaseToSeparator(value, nfGlobals.DEFAULT_CHAR_SEPARATOR)
-    value = string.capwords(value, nfGlobals.DEFAULT_CHAR_SEPARATOR)
+    #value = string.capwords(value, nfGlobals.DEFAULT_CHAR_SEPARATOR)
     #need to perserve order
     outList = list()
     for p in value.split(nfGlobals.DEFAULT_CHAR_SEPARATOR):
@@ -254,4 +253,152 @@ def calcLuhnCheckDigit(someValue):
 
     return calc
 
+def jaroWinklerDistance(a, b, mWeightThreshold = 0.7, mNumChars = 4):
+    """The Jaro–Winkler distance (Winkler, 1990) is a measure of 
+    similarity between two strings.
+
+    Returns:
+        (float): 1 means a perfect match, 0 means not match what-so-ever
+
+    Links:
+       [http://stackoverflow.com/questions/19123506/jaro-winkler-distance-algorithm-in-c-sharp] 
+    """
+
+    if a == None:
+        a = ""
+    if b == None:
+        b = ""
+    aLen = len(a)
+    bLen = len(b)
+
+    if aLen == 0:
+        if bLen == 0:
+            return 1.0
+        else:
+            return 0.0
+        
+    searchRng = max([0.0, int(max([aLen, bLen])/2) -1])
+
+    aMatched = [False] * aLen
+    bMatched = [False] * bLen
+
+    lNumCommon = 0
+    for i in range(aLen):
+        lStart = max([0, i - searchRng])
+        lEnd = min([i + searchRng + 1, bLen])
+        for j in range(lStart, lEnd):
+            if bMatched[j] == True:
+                continue
+            if a[i] != b[j]:
+                continue
+            aMatched[i] = True
+            bMatched[j] = True
+            lNumCommon += 1
+            break
+
+    if lNumCommon == 0:
+        return 0.0
+
+    lNumHalfTrans = 0
+    k = 0
+    for i in range(aLen):
+        if aMatched[i] == False:
+            continue
+        while bMatched[k] == False:
+            if a[i] != b[k]:
+                lNumHalfTrans += 1
+            k += 1
+        k += 1
     
+    lNumTransposed = lNumHalfTrans/2
+
+    lNumCommonD = lNumCommon
+    xc = lNumCommonD/aLen
+    yc = lNumCommonD/bLen
+    zc = (lNumCommon - lNumTransposed)/lNumCommonD
+    lWeight = (xc + yc + zc)/3.0
+
+    if lWeight <= mWeightThreshold:
+        return lWeight
+
+    lMax = min([mNumChars, min([len(a), len(b)])])
+    lPos = 0
+    while lPos < lMax and a[lPos] == b[lPos]:
+        lPos += 1
+
+    if lPos == 0:
+        return lWeight
+
+    return lWeight + 0.1*lPos*(1.0 -lWeight)
+
+def levenshteinDistance(s, t, asRatioOfMax = False):
+    """A string metric for measuring the difference between two sequences.
+
+    Links:
+        https://en.wikipedia.org/wiki/Levenshtein_distance#Iterative_with_two_matrix_rows
+    """
+
+    if s == None:
+        s = ""
+    if t == None:
+        t = ""
+
+    if t == s:
+        return 0
+    if len(s) == 0:
+        return len(t)
+    if len(t) == 0:
+        return len(s)
+
+    v0 = [x for x in range(len(t)+1)]
+    v1 = [0 for x in range(len(t)+1)]
+
+    for i, si in enumerate(s):
+
+        v1[0] = i + 1
+
+        for j, tj in enumerate(t):
+
+            if si == tj:
+                cost = 0
+            else:
+                cost = 1
+
+            j1 = v1[j] + 1
+            j2 = v0[j + 1] + 1
+            j3 = v0[j] + cost
+            
+            if j1 < j2 and j1 < j3:
+                v1[j + 1] = j1
+                continue
+            
+            if j2 < j3:
+                v1[j+1] = j2
+            else:
+                v1[j+1] = j3
+        
+        v0 = v1.copy()
+
+    if not asRatioOfMax:
+        return v1[len(t)]
+
+    return 1 - v1[len(t)]/max([len(t), len(s)])
+
+def shortestDistance(s, candidates):
+    """Of the possiable `candidates` returns the one with the 
+    shortest distance from `s` using the `levenshteinDistance` algo.
+    """
+
+    if s == None or s.isspace():
+        return None
+    if candidates == None:
+        return None
+    
+    dict = {}
+    for c in candidates:
+        dict[c] = int(levenshteinDistance(s,c))
+    minValue = min(dict.values())
+    return [k for (k,v) in dict.items() if v == minValue]
+    
+    
+        

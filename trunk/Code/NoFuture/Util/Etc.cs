@@ -208,7 +208,6 @@ namespace NoFuture.Util
 
             value = ToPascelCase(value);
             value = TransformCaseToSeparator(value, Constants.DEFAULT_CHAR_SEPARATOR);
-            value = CapWords(value, Constants.DEFAULT_CHAR_SEPARATOR);
             return value.Split(Constants.DEFAULT_CHAR_SEPARATOR).Distinct().ToArray();
         }
 
@@ -517,8 +516,9 @@ namespace NoFuture.Util
         /// Transforms a string of mixed case into standard camel-case (e.g. userName)
         /// </summary>
         /// <param name="name"></param>
+        /// <param name="perserveSep"></param>
         /// <returns></returns>
-        public static string ToCamelCase(string name)
+        public static string ToCamelCase(string name, bool perserveSep = false)
         {
             //is empty
             if (string.IsNullOrWhiteSpace(name))
@@ -537,15 +537,25 @@ namespace NoFuture.Util
             var nameFormatted = new StringBuilder();
             var markStart = false;
             var nameChars = name.ToCharArray();
-
+            var sepChars = Constants.PyPunctuationChars.ToList();
+            sepChars.Add(' ');
             for (var i = 0; i < nameChars.Length; i++)
             {
                 var c = nameChars[i];
 
-                if (!char.IsLetter(c))
+                if (sepChars.Contains(c))
                 {
-                    nameFormatted.Append(c);
-                    continue;
+                    if (perserveSep)
+                    {
+                        nameFormatted.Append(c);
+                        continue;
+                    }
+                    if (i + 1 < nameChars.Length)
+                    {
+                        nameChars[i + 1] = char.ToUpper(nameChars[i + 1]);
+                        continue;
+                    }
+                    
                 }
 
                 if (!markStart)
@@ -565,6 +575,26 @@ namespace NoFuture.Util
 
             }
             return nameFormatted.ToString();
+        }
+
+        /// <summary>
+        /// Transforms <see cref="name"/> into Pascel case
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="perserveSep">Optional, set to true to have punctuation marks perserved</param>a
+        /// <returns></returns>
+        public static string ToPascelCase(string name, bool perserveSep = false)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+                return string.Empty;
+            var toCamelCase = new StringBuilder();
+            var charArray = ToCamelCase(name, perserveSep).ToCharArray();
+            toCamelCase.Append(char.ToUpper(charArray[0]));
+            for (var i = 1; i < charArray.Length; i++)
+            {
+                toCamelCase.Append(charArray[i]);
+            }
+            return toCamelCase.ToString();
         }
 
         /// <summary>
@@ -619,46 +649,6 @@ namespace NoFuture.Util
                 }
             }
             return separatorName.ToString();
-        }
-
-        /// <summary>
-        /// Transforms <see cref="name"/> into Pascel case
-        /// </summary>
-        /// <param name="name"></param>
-        /// <param name="perserveSep">Optional, set to true to have punctuation marks perserved</param>a
-        /// <returns></returns>
-        public static string ToPascelCase(string name, bool perserveSep = false)
-        {
-            if (string.IsNullOrWhiteSpace(name))
-                return string.Empty;
-            var toCamelCase = new StringBuilder();
-            var charArray = ToCamelCase(name).ToCharArray();
-            toCamelCase.Append(char.ToUpper(charArray[0]));
-            for(var i=1; i<charArray.Length;i++)
-            {
-                //last character
-                if (i + 1 >= charArray.Length)
-                {
-                    toCamelCase.Append(char.ToLower(charArray[i]));
-                    continue;
-                }
-                if(perserveSep && char.IsPunctuation(charArray[i]) )
-                    toCamelCase.Append(charArray[i]);
-
-                if (char.IsLetterOrDigit(charArray[i]))
-                {
-                    if (!char.IsLower(charArray[i]) && char.IsLower(charArray[i + 1]))
-                        toCamelCase.Append(charArray[i]);
-                    else
-                        toCamelCase.Append(char.ToLower(charArray[i]));   
-                    continue;
-                }
-                if (char.IsLetterOrDigit(charArray[i]) || !char.IsLetterOrDigit(charArray[i + 1]))
-                    continue;
-                toCamelCase.Append(charArray[(i + 1)]);
-                i += 1;
-            }
-            return toCamelCase.ToString();
         }
 
         /// <summary>
@@ -829,40 +819,43 @@ namespace NoFuture.Util
         /// <summary>
         /// The Jaro–Winkler distance (Winkler, 1990) is a measure of similarity between two strings.
         /// </summary>
-        /// <param name="aString1"></param>
-        /// <param name="aString2"></param>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
         /// <param name="mWeightThreshold"></param>
         /// <param name="mNumChars"></param>
         /// <returns>1 means a perfect match, 0 means not match what-so-ever</returns>
         /// <remarks>
         /// [http://stackoverflow.com/questions/19123506/jaro-winkler-distance-algorithm-in-c-sharp]
         /// </remarks>
-        public static double JaroWinklerDistance(this string aString1, string aString2, double mWeightThreshold = 0.7D,
+        public static double JaroWinklerDistance(this string a, string b, double mWeightThreshold = 0.7D,
             int mNumChars = 4)
         {
-            var lLen1 = aString1.Length;
-            var lLen2 = aString2.Length;
-            if (lLen1 == 0)
-                return lLen2 == 0 ? 1.0 : 0.0;
+            a = a ?? "";
+            b = b ?? "";
+            var aLen = a.Length;
+            var bLen = b.Length;
+            if (aLen == 0)
+                return bLen == 0 ? 1.0 : 0.0;
 
-            var lSearchRange = System.Math.Max(0, System.Math.Max(lLen1, lLen2)/2 - 1);
+            var searchRng = System.Math.Max(0, System.Math.Max(aLen, bLen)/2 - 1);
 
             // default initialized to false
-            var lMatched1 = new bool[lLen1];
-            var lMatched2 = new bool[lLen2];
+            var aMatched = new bool[aLen];
+            var bMatched = new bool[bLen];
 
             var lNumCommon = 0;
-            for (var i = 0; i < lLen1; ++i)
+            for (var i = 0; i < aLen; ++i)
             {
-                var lStart = System.Math.Max(0, i - lSearchRange);
-                var lEnd = System.Math.Min(i + lSearchRange + 1, lLen2);
+                var lStart = System.Math.Max(0, i - searchRng);
+                var lEnd = System.Math.Min(i + searchRng + 1, bLen);
                 for (var j = lStart; j < lEnd; ++j)
                 {
-                    if (lMatched2[j]) continue;
-                    if (aString1[i] != aString2[j])
+                    if (bMatched[j])
                         continue;
-                    lMatched1[i] = true;
-                    lMatched2[j] = true;
+                    if (a[i] != b[j])
+                        continue;
+                    aMatched[i] = true;
+                    bMatched[j] = true;
                     ++lNumCommon;
                     break;
                 }
@@ -870,30 +863,35 @@ namespace NoFuture.Util
             if (lNumCommon == 0)
                 return 0.0;
 
-            var lNumHalfTransposed = 0;
+            var lNumHalfTrans = 0;
             var k = 0;
-            for (var i = 0; i < lLen1; ++i)
+            for (var i = 0; i < aLen; ++i)
             {
-                if (!lMatched1[i]) continue;
-                while (!lMatched2[k]) ++k;
-                if (aString1[i] != aString2[k])
-                    ++lNumHalfTransposed;
+                if (!aMatched[i])
+                    continue;
+                while (!bMatched[k]) ++k;
+                {
+                    if (a[i] != b[k])
+                    {
+                        ++lNumHalfTrans;
+                    }
+                }
                 ++k;
             }
             // System.Diagnostics.Debug.WriteLine("numHalfTransposed=" + numHalfTransposed);
-            var lNumTransposed = lNumHalfTransposed/2;
+            var lNumTransposed = lNumHalfTrans/2;
 
             // System.Diagnostics.Debug.WriteLine("numCommon=" + numCommon + " numTransposed=" + numTransposed);
             double lNumCommonD = lNumCommon;
-            var lWeight = (lNumCommonD/lLen1
-                           + lNumCommonD/lLen2
+            var lWeight = (lNumCommonD/aLen
+                           + lNumCommonD/bLen
                            + (lNumCommon - lNumTransposed)/lNumCommonD)/3.0;
 
             if (lWeight <= mWeightThreshold)
                 return lWeight;
-            var lMax = System.Math.Min(mNumChars, System.Math.Min(aString1.Length, aString2.Length));
+            var lMax = System.Math.Min(mNumChars, System.Math.Min(a.Length, b.Length));
             var lPos = 0;
-            while (lPos < lMax && aString1[lPos] == aString2[lPos])
+            while (lPos < lMax && a[lPos] == b[lPos])
                 ++lPos;
             if (lPos == 0)
                 return lWeight;
@@ -934,13 +932,13 @@ namespace NoFuture.Util
             for (var i = 0; i < v0.Length; i++)
                 v0[i] = i;
 
+
             var ss = s.ToCharArray();
             var tt = t.ToCharArray();
 
             for (var i = 0; i < ss.Length; i++)
             {
                 // calculate v1 (current row distances) from the previous row v0
-
                 // first element of v1 is A[i+1][0]
                 //   edit distance is delete (i+1) chars from s to match empty t
                 v1[0] = i + 1;
@@ -971,6 +969,32 @@ namespace NoFuture.Util
                 return v1[t.Length];
 
             return 1D - (double)v1[t.Length]/new[] {t.Length, s.Length}.Max();
+        }
+
+        /// <summary>
+        /// Of the possiable <see cref="candidates"/> returns those with the 
+        /// shortest distance from <see cref="s"/> using the <see cref="LevenshteinDistance"/>
+        /// algo.
+        /// </summary>
+        /// <param name="s"></param>
+        /// <param name="candidates"></param>
+        /// <returns></returns>
+        public static string[] ShortestDistance(this string s, IEnumerable<string> candidates)
+        {
+            if (String.IsNullOrWhiteSpace(s))
+                return null;
+            if (candidates == null || !candidates.Any())
+                return null;
+            var dict = new Dictionary<string, int>();
+
+            foreach (var c in candidates.Distinct())
+                dict.Add(c, (int)LevenshteinDistance(s, c));
+
+            var minValue = dict.Values.Min();
+
+            var df = dict.Where(x => x.Value == minValue);
+
+            return df.Select(x => x.Key).ToArray();
         }
     }
 }
