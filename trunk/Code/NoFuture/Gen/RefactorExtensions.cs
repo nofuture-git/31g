@@ -184,7 +184,7 @@ namespace NoFuture.Gen
                 newVariableName = NfTypeName.GetNfRandomName();
 
             if (string.IsNullOrWhiteSpace(outFilePath))
-                outFilePath = Path.Combine(TempDirectories.AppData, NfTypeName.GetNfRandomName());
+                outFilePath = Path.Combine(NfConfig.TempDirectories.AppData, NfTypeName.GetNfRandomName());
 
 
             //need to move the existing code to the new file
@@ -366,7 +366,7 @@ namespace NoFuture.Gen
             const char BLANK_CHAR = ' ';
 
             if (string.IsNullOrWhiteSpace(outputFileName))
-                outputFileName = Path.Combine(TempDirectories.AppData, NfTypeName.GetNfRandomName());
+                outputFileName = Path.Combine(NfConfig.TempDirectories.AppData, NfTypeName.GetNfRandomName());
 
             var d = new SortedList<int, List<int>>();
             foreach (var cgMem in blankOutCgMems.Where(x => x != null))

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 using NoFuture.Exceptions;
+using NoFuture.Shared;
 
 namespace NoFuture.Read
 {
@@ -37,7 +38,7 @@ namespace NoFuture.Read
         #endregion
 
         #region base api
-        public virtual string DirectoryName => Path.GetDirectoryName(_fileFullName) ?? TempDirectories.AppData;
+        public virtual string DirectoryName => Path.GetDirectoryName(_fileFullName) ?? NfConfig.TempDirectories.AppData;
         public virtual string FileName => Path.GetFileName(_fileFullName);
         protected internal string OriginalReadFileFullName => _originalReadFile;
         /// <summary>

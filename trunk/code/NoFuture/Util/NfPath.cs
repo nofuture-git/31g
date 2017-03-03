@@ -67,7 +67,7 @@ namespace NoFuture.Util
         }
 
         /// <summary>
-        /// Writes the <see cref="content"/> to a temp file in <see cref="TempDirectories.AppData"/>
+        /// Writes the <see cref="content"/> to a temp file in <see cref="NfConfig.TempDirectories.AppData"/>
         /// </summary>
         /// <param name="fileNamePrefix"></param>
         /// <param name="content"></param>
@@ -126,13 +126,13 @@ namespace NoFuture.Util
         }
 
         /// <summary>
-        /// Gets a full path to a random file name in directory <see cref="TempDirectories.AppData"/>
+        /// Gets a full path to a random file name in directory <see cref="NfConfig.TempDirectories.AppData"/>
         /// </summary>
         /// <param name="fileNamePrefix"></param>
         /// <returns></returns>
         public static string GetRandomFileFullName(string fileNamePrefix = null)
         {
-            return Path.Combine(TempDirectories.AppData,
+            return Path.Combine(NfConfig.TempDirectories.AppData,
                 (fileNamePrefix ?? NfTypeName.DEFAULT_NAME_PREFIX) + Path.GetRandomFileName());
         }
 
@@ -294,7 +294,7 @@ namespace NoFuture.Util
                             break;
                     }
 
-                    var dumpFileName = Path.Combine(fileDir ?? TempDirectories.AppData,
+                    var dumpFileName = Path.Combine(fileDir ?? NfConfig.TempDirectories.AppData,
                         String.Format("{0}.{1:000}{2}", fileBreakCounter >= 0 ? bareFileName : "_" + bareFileName,
                             fileBreakCounter, fileExt));
 
@@ -327,7 +327,7 @@ namespace NoFuture.Util
                 //we still need to drop the head of the file
                 if (fileStream.Position > 0)
                 {
-                    var dumpFileName = Path.Combine(fileDir ?? TempDirectories.AppData,
+                    var dumpFileName = Path.Combine(fileDir ?? NfConfig.TempDirectories.AppData,
                         String.Format("{0}.{1:000}{2}", fileBreakCounter >= 0 ? bareFileName : "_" + bareFileName,
                             fileBreakCounter, fileExt));
 

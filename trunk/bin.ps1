@@ -1,9 +1,9 @@
 ﻿try{
-if(-not [NoFuture.MyFunctions]::FunctionFiles.ContainsValue($MyInvocation.MyCommand))
+if(-not [NoFuture.Shared.NfConfig+MyFunctions]::FunctionFiles.ContainsValue($MyInvocation.MyCommand))
 {
-[NoFuture.MyFunctions]::FunctionFiles.Add("Get-BinaryDump",$MyInvocation.MyCommand)
-[NoFuture.MyFunctions]::FunctionFiles.Add("Invoke-JavaCompiler",$MyInvocation.MyCommand)
-[NoFuture.MyFunctions]::FunctionFiles.Add("Get-JavaClassPath",$MyInvocation.MyCommand)
+[NoFuture.Shared.NfConfig+MyFunctions]::FunctionFiles.Add("Get-BinaryDump",$MyInvocation.MyCommand)
+[NoFuture.Shared.NfConfig+MyFunctions]::FunctionFiles.Add("Invoke-JavaCompiler",$MyInvocation.MyCommand)
+[NoFuture.Shared.NfConfig+MyFunctions]::FunctionFiles.Add("Get-JavaClassPath",$MyInvocation.MyCommand)
 }
 }catch{
     Write-Host "file is being loaded independent of 'start.ps1' - some functions may not be available."
@@ -47,10 +47,10 @@ function Get-BinaryDump
         }
         
         #test for dumpbin.exe being installed
-        if(-not(Test-Path ([NoFuture.Tools.X64]::Dumpbin))){throw ("Expected to find 'dumpbin.exe' at '{0}'." -f ([NoFuture.Tools.X64]::Dumpbin)) }
+        if(-not(Test-Path ([NoFuture.Shared.NfConfig+X64]::Dumpbin))){throw ("Expected to find 'dumpbin.exe' at '{0}'." -f ([NoFuture.Shared.NfConfig+X64]::Dumpbin)) }
         
         #construct command expression
-        $dumpbin = ("`"{0}`"" -f ([NoFuture.Tools.X64]::Dumpbin))
+        $dumpbin = ("`"{0}`"" -f ([NoFuture.Shared.NfConfig+X64]::Dumpbin))
         if($DumpBinSwitches -eq $null -or $DumpBinSwitches -eq "")
         {
             $parameterSwitch = " /EXPORTS"
@@ -109,11 +109,11 @@ function Invoke-JavaCompiler
     )
     Process
     {
-        $javaSrc = [NoFuture.TempDirectories]::JavaSrc 
+        $javaSrc = [NoFuture.Shared.NfConfig+TempDirectories]::JavaSrc 
         $javaRoot = (Split-Path $javaSrc -Parent)
-        $javaBuild = [NoFuture.TempDirectories]::JavaBuild 
-        $javaDist = [NoFuture.TempDirectories]::JavaDist 
-        $javaArchive = [NoFuture.TempDirectories]::JavaArchive 
+        $javaBuild = [NoFuture.Shared.NfConfig+TempDirectories]::JavaBuild 
+        $javaDist = [NoFuture.Shared.NfConfig+TempDirectories]::JavaDist 
+        $javaArchive = [NoFuture.Shared.NfConfig+TempDirectories]::JavaArchive 
 
         #remove .java extension if present
         if($TypeName.EndsWith(".java")){
@@ -140,7 +140,7 @@ function Invoke-JavaCompiler
         $ClassPath = Get-JavaClassPath $ClassPath
 
         #compile
-        . ([NoFuture.Tools.JavaTools]::Javac) -d $javaBuild -cp $ClassPath (Join-Path $javaSrc ("$TypeName.java"))
+        . ([NoFuture.Shared.NfConfig+JavaTools]::Javac) -d $javaBuild -cp $ClassPath (Join-Path $javaSrc ("$TypeName.java"))
 
 
         #place into jar
@@ -155,7 +155,7 @@ function Invoke-JavaCompiler
         }
         
         Push-Location $javaBuild
-        . ([NoFuture.Tools.JavaTools]::Jar) cf $jarFile "*"
+        . ([NoFuture.Shared.NfConfig+JavaTools]::Jar) cf $jarFile "*"
         Pop-Location
 
         return $jarFile

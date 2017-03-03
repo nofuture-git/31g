@@ -280,7 +280,6 @@ namespace NoFuture.Timeline
             {
                 var tValue = value;
                 string s1;
-                double y1;
                 if (RegexCatalog.IsRegexMatch(tValue, REGEX_PATTERN, out s1, 1))
                 {
                     ExplorerName = s1;

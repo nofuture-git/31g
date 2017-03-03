@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 using NoFuture.Exceptions;
-using NoFuture.Tools;
+using NoFuture.Shared;
 using NoFuture.Util.NfConsole;
 
 namespace NoFuture.Util.Pos
@@ -13,22 +13,22 @@ namespace NoFuture.Util.Pos
     public class PosParserHost : InvokeConsoleBase
     {
         private readonly InvokePosParserCmd _myCmd;
-        public const int DF_START_PORT = NfDefaultPorts.PART_OF_SPEECH_PARSER_HOST;
+        public static int DF_START_PORT = NfConfig.NfDefaultPorts.PartOfSpeechPaserHost;
 
         /// <summary>
         /// The ctor will create this instance and launch the remote process.
         /// </summary>
         /// <remarks>
-        /// Requires the <see cref="CustomTools.UtilPosHost"/> to be assigned to 
+        /// Requires the <see cref="NfConfig.CustomTools.UtilPosHost"/> to be assigned to 
         /// some location on the drive.
         /// </remarks>
         public PosParserHost()
         {
-            if (String.IsNullOrWhiteSpace(CustomTools.UtilPosHost) || !File.Exists(CustomTools.UtilPosHost))
+            if (String.IsNullOrWhiteSpace(NfConfig.CustomTools.UtilPosHost) || !File.Exists(NfConfig.CustomTools.UtilPosHost))
                 throw new ItsDeadJim("Don't know where to locate the NoFuture.Util.Pos.Host.exe, assign " +
                                      "the global variable at NoFuture.Tools.CustomTools.UtilPosHost.");
 
-            MyProcess = StartRemoteProcess(CustomTools.UtilPosHost, null);
+            MyProcess = StartRemoteProcess(NfConfig.CustomTools.UtilPosHost, null);
 
             _myCmd = new InvokePosParserCmd { ProcessId = MyProcessId, SocketPort = DF_START_PORT };
         }

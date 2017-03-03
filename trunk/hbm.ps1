@@ -1,17 +1,17 @@
 ﻿try{
-if(-not [NoFuture.MyFunctions]::FunctionFiles.ContainsValue($MyInvocation.MyCommand))
+if(-not [NoFuture.Shared.NfConfig+MyFunctions]::FunctionFiles.ContainsValue($MyInvocation.MyCommand))
 {
-[NoFuture.MyFunctions]::FunctionFiles.Add("Get-HbmDbData",$MyInvocation.MyCommand)
-[NoFuture.MyFunctions]::FunctionFiles.Add("Get-AllHbmXml",$MyInvocation.MyCommand)
-[NoFuture.MyFunctions]::FunctionFiles.Add("Get-EfFluentCs",$MyInvocation.MyCommand)
-[NoFuture.MyFunctions]::FunctionFiles.Add("Write-CsCodeHbmCommand",$MyInvocation.MyCommand)
-[NoFuture.MyFunctions]::FunctionFiles.Add("Get-AllHbmCs",$MyInvocation.MyCommand)
-[NoFuture.MyFunctions]::FunctionFiles.Add("Get-HbmCs",$MyInvocation.MyCommand)
-[NoFuture.MyFunctions]::FunctionFiles.Add("Invoke-HbmCsCompile",$MyInvocation.MyCommand)
-[NoFuture.MyFunctions]::FunctionFiles.Add("New-HbmAppConfig",$MyInvocation.MyCommand)
-[NoFuture.MyFunctions]::FunctionFiles.Add("Import-HbmConfiguration",$MyInvocation.MyCommand)
-[NoFuture.MyFunctions]::FunctionFiles.Add("Import-HbmSessionFactory",$MyInvocation.MyCommand)
-[NoFuture.MyFunctions]::FunctionFiles.Add("Get-HbmSession",$MyInvocation.MyCommand)
+[NoFuture.Shared.NfConfig+MyFunctions]::FunctionFiles.Add("Get-HbmDbData",$MyInvocation.MyCommand)
+[NoFuture.Shared.NfConfig+MyFunctions]::FunctionFiles.Add("Get-AllHbmXml",$MyInvocation.MyCommand)
+[NoFuture.Shared.NfConfig+MyFunctions]::FunctionFiles.Add("Get-EfFluentCs",$MyInvocation.MyCommand)
+[NoFuture.Shared.NfConfig+MyFunctions]::FunctionFiles.Add("Write-CsCodeHbmCommand",$MyInvocation.MyCommand)
+[NoFuture.Shared.NfConfig+MyFunctions]::FunctionFiles.Add("Get-AllHbmCs",$MyInvocation.MyCommand)
+[NoFuture.Shared.NfConfig+MyFunctions]::FunctionFiles.Add("Get-HbmCs",$MyInvocation.MyCommand)
+[NoFuture.Shared.NfConfig+MyFunctions]::FunctionFiles.Add("Invoke-HbmCsCompile",$MyInvocation.MyCommand)
+[NoFuture.Shared.NfConfig+MyFunctions]::FunctionFiles.Add("New-HbmAppConfig",$MyInvocation.MyCommand)
+[NoFuture.Shared.NfConfig+MyFunctions]::FunctionFiles.Add("Import-HbmConfiguration",$MyInvocation.MyCommand)
+[NoFuture.Shared.NfConfig+MyFunctions]::FunctionFiles.Add("Import-HbmSessionFactory",$MyInvocation.MyCommand)
+[NoFuture.Shared.NfConfig+MyFunctions]::FunctionFiles.Add("Get-HbmSession",$MyInvocation.MyCommand)
 }
 }catch{
     Write-Host "file is being loaded independent of 'start.ps1' - some functions may not be available."
@@ -491,7 +491,7 @@ function Get-HbmCs
             $OutputDir = [NoFuture.Hbm.Settings]::HbmDirectory
         }
 
-        $pocoTemplate = Join-Path ([NoFuture.BinDirectories]::T4Templates) "HbmCsClass.tt"
+        $pocoTemplate = Join-Path ([NoFuture.Shared.NfConfig+BinDirectories]::T4Templates) "HbmCsClass.tt"
 
         if(-not (Test-Path $pocoTemplate)){
             Write-Host "couldn't find the T4 template at '$pocoTemplate'" -ForegroundColor Yellow
@@ -507,7 +507,7 @@ function Get-HbmCs
         $hbmXmlContent = New-Object NoFuture.Hbm.SortingContainers.HbmFileContent($hbmXmlPath)
 
         if($hbmXmlContent.IsCompositeKey){
-            $compKeyTemplate = Join-Path ([NoFuture.BinDirectories]::T4Templates) "HbmCompKeyCsClass.tt"
+            $compKeyTemplate = Join-Path ([NoFuture.Shared.NfConfig+BinDirectories]::T4Templates) "HbmCompKeyCsClass.tt"
             if(-not (Test-Path $compKeyTemplate)){
                 Write-Host "couldn't find the T4 template at '$compKeyTemplate'" -ForegroundColor Yellow
                 break;
@@ -560,8 +560,8 @@ function Get-EfFluentCs
             break;
         }
 
-        $mappingTemplate = Join-Path ([NoFuture.BinDirectories]::T4Templates) "Ef6xFluentMapping.tt"
-        $pocoTemplate = Join-Path ([NoFuture.BinDirectories]::T4Templates) "Ef6xPoco.tt"
+        $mappingTemplate = Join-Path ([NoFuture.Shared.NfConfig+BinDirectories]::T4Templates) "Ef6xFluentMapping.tt"
+        $pocoTemplate = Join-Path ([NoFuture.Shared.NfConfig+BinDirectories]::T4Templates) "Ef6xPoco.tt"
         if(-not (Test-Path $mappingTemplate)){
             Write-Host "couldn't find the T4 template at '$mappingTemplate'" -ForegroundColor Yellow
             break;
@@ -623,7 +623,7 @@ function Get-Ef35Cs
             break;
         }
 
-        $mappingTemplate = Join-Path ([NoFuture.BinDirectories]::T4Templates) "Ef35Mapping.tt"
+        $mappingTemplate = Join-Path ([NoFuture.Shared.NfConfig+BinDirectories]::T4Templates) "Ef35Mapping.tt"
         if(-not (Test-Path $mappingTemplate)){
             Write-Host "couldn't find the T4 template at '$mappingTemplate'" -ForegroundColor Yellow
             break;
@@ -696,7 +696,7 @@ function Write-CsCodeHbmCommand
             break;
         }
 
-        $t4Template = Join-Path ([NoFuture.BinDirectories]::T4Templates) "HbmCommand.tt"
+        $t4Template = Join-Path ([NoFuture.Shared.NfConfig+BinDirectories]::T4Templates) "HbmCommand.tt"
         $outputCsFile = Join-Path $OutputDir ("{0}Command.cs" -f $className)
         $idType = $idProp.PropertyType.FullName
 
@@ -754,7 +754,7 @@ function Invoke-HbmCsCompile
         }
 
         #compile all POCO c# 
-        $rootBin = ([NoFuture.BinDirectories]::Root)
+        $rootBin = ([NoFuture.Shared.NfConfig+BinDirectories]::Root)
         $iesiCollections = ("/reference:{0}" -f (Join-Path $rootBin "Iesi.Collections.dll"))
         $nhibDll = ("/reference:{0}" -f (Join-Path $rootBin "NHibernate.dll"))
         $lhbmDirectory = ([NoFuture.Hbm.Settings]::HbmDirectory)

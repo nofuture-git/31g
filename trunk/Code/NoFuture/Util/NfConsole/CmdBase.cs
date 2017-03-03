@@ -2,6 +2,7 @@
 using System.IO;
 using System.Text;
 using Newtonsoft.Json;
+using NoFuture.Shared;
 
 namespace NoFuture.Util.NfConsole
 {
@@ -55,7 +56,7 @@ namespace NoFuture.Util.NfConsole
         public void WriteOutputToDisk(byte[] bytes, string fileExt = ".json")
         {
             var tn = GetType().FullName;
-            var dir = MyProgram == null ? TempDirectories.AppData : MyProgram.LogDirectory;
+            var dir = MyProgram == null ? NfConfig.TempDirectories.AppData : MyProgram.LogDirectory;
             File.WriteAllBytes(Path.Combine(dir, tn + fileExt), bytes);
         }
         #endregion

@@ -14,7 +14,7 @@ namespace NoFuture.Tests.Hbm
         [TestInitialize]
         public void Init()
         {
-            NoFuture.TempDirectories.Hbm = TestAssembly.UnitTestsRoot + @"\Hbm\TestFiles";
+            NfConfig.TempDirectories.Hbm = TestAssembly.UnitTestsRoot + @"\Hbm\TestFiles";
             NfConfig.SqlServer = "localhost";
             NfConfig.SqlCatalog = "Whatever";
         }
@@ -92,10 +92,10 @@ namespace NoFuture.Tests.Hbm
         [TestMethod]
         public void TestGetHbmFksWhichArePks()
         {
-            NoFuture.TempDirectories.Hbm = @"C:\Projects\31g\trunk\temp\code\hbm";
+            NfConfig.TempDirectories.Hbm = @"C:\Projects\31g\trunk\temp\code\hbm";
             NfConfig.SqlServer = "localhost";
             NfConfig.SqlCatalog = "ApexQA01";
-            NoFuture.BinDirectories.Root = @"C:\Projects\31g\trunk\bin";
+            NfConfig.BinDirectories.Root = @"C:\Projects\31g\trunk\bin";
             var tbl = "dbo.ClinicStaffDetails";
             var pkManifold = NoFuture.Hbm.Sorting.GetHbmDistinctPks(tbl);
             var fkManifold = NoFuture.Hbm.Sorting.GetHbmDistinctFks(tbl);

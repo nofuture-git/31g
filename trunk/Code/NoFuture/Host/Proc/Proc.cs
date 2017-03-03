@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
+using NoFuture.Shared;
 
 namespace NoFuture.Host
 {
@@ -111,7 +112,7 @@ namespace NoFuture.Host
 
         #region constants
 
-        public const int DEFAULT_PORT = Tools.NfDefaultPorts.HOST_PROC;
+        public const int DEFAULT_PORT = NfConfig.NfDefaultPorts.HostProc;
         public const int BUFFSIZE = 512;
         public const int DEFAULT_THREAD_WAIT_MS = 50;
         public const int DEFAULT_WAIT_COUNT = 40; //roughly 2 seconds @ 50ms each

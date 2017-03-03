@@ -52,7 +52,7 @@ namespace NoFuture.Util.NfConsole
             {
                 var logDir = ConfigurationManager.AppSettings[TEMP_DIR_DEBUG];
                 if (string.IsNullOrWhiteSpace(logDir))
-                    logDir = TempDirectories.AppData;
+                    logDir = NfConfig.TempDirectories.AppData;
                 var myName = MyName;
                 myName = NfPath.SafeFilename(myName);
                 logDir = string.IsNullOrWhiteSpace(myName) ? logDir : Path.Combine(logDir, myName);

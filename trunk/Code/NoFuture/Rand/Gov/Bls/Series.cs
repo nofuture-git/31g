@@ -21,7 +21,7 @@ namespace NoFuture.Rand.Gov.Bls
         /// JSON string for POST body
         /// </returns>
         /// <remarks>
-        /// The <see cref="SecurityKeys.BlsApiRegistrationKey"/> must be assigned before invocation.
+        /// The <see cref="NfConfig.SecurityKeys.BlsApiRegistrationKey"/> must be assigned before invocation.
         /// See [http://www.bls.gov/developers/api_faqs.htm#register1] concerning the arg-limits.
         /// </remarks>
         public static string GetMultiSeriesPostBody(string[] seriesCodes, int sYear, int eYear)
@@ -52,7 +52,7 @@ namespace NoFuture.Rand.Gov.Bls
                                             "of 50 - the passed in arg has a count " +
                                             $"of {seriesCodes.Length}.");
 
-            if (string.IsNullOrWhiteSpace(SecurityKeys.BlsApiRegistrationKey))
+            if (string.IsNullOrWhiteSpace(NfConfig.SecurityKeys.BlsApiRegistrationKey))
                 throw new Exceptions.RahRowRagee("The 'NoFuture.Globals.SecurityKeys.BlsApiRegistrationKey' " +
                                                  "must be set before calling this property.");
             dynamic payload =
@@ -61,7 +61,7 @@ namespace NoFuture.Rand.Gov.Bls
                     seriesid = seriesCodes,
                     startyear = $"{sYear}",
                     endyear = $"{eYear}",
-                    registrationKey = SecurityKeys.BlsApiRegistrationKey
+                    registrationKey = NfConfig.SecurityKeys.BlsApiRegistrationKey
                 };
             return Newtonsoft.Json.JsonConvert.SerializeObject(payload);
         }

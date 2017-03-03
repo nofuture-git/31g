@@ -1,23 +1,23 @@
 try{
-if(-not [NoFuture.MyFunctions]::FunctionFiles.ContainsValue($MyInvocation.MyCommand))
+if(-not [NoFuture.Shared.NfConfig+MyFunctions]::FunctionFiles.ContainsValue($MyInvocation.MyCommand))
 {
-[NoFuture.MyFunctions]::FunctionFiles.Add("sql",$MyInvocation.MyCommand)
-[NoFuture.MyFunctions]::FunctionFiles.Add("pss",$MyInvocation.MyCommand)
-[NoFuture.MyFunctions]::FunctionFiles.Add("tss",$MyInvocation.MyCommand)
-[NoFuture.MyFunctions]::FunctionFiles.Add("css",$MyInvocation.MyCommand)
-[NoFuture.MyFunctions]::FunctionFiles.Add("proc",$MyInvocation.MyCommand)
-[NoFuture.MyFunctions]::FunctionFiles.Add("ado",$MyInvocation.MyCommand)
+[NoFuture.Shared.NfConfig+MyFunctions]::FunctionFiles.Add("sql",$MyInvocation.MyCommand)
+[NoFuture.Shared.NfConfig+MyFunctions]::FunctionFiles.Add("pss",$MyInvocation.MyCommand)
+[NoFuture.Shared.NfConfig+MyFunctions]::FunctionFiles.Add("tss",$MyInvocation.MyCommand)
+[NoFuture.Shared.NfConfig+MyFunctions]::FunctionFiles.Add("css",$MyInvocation.MyCommand)
+[NoFuture.Shared.NfConfig+MyFunctions]::FunctionFiles.Add("proc",$MyInvocation.MyCommand)
+[NoFuture.Shared.NfConfig+MyFunctions]::FunctionFiles.Add("ado",$MyInvocation.MyCommand)
 
-[NoFuture.MyFunctions]::FunctionFiles.Add("Get-MssqlSettings",$MyInvocation.MyCommand)
-[NoFuture.MyFunctions]::FunctionFiles.Add("ExportTo-UpdateStatement",$MyInvocation.MyCommand)
-[NoFuture.MyFunctions]::FunctionFiles.Add("ExportTo-InsertStatement",$MyInvocation.MyCommand)
-[NoFuture.MyFunctions]::FunctionFiles.Add("ExportTo-MergeStatement",$MyInvocation.MyCommand)
-[NoFuture.MyFunctions]::FunctionFiles.Add("Export-CsvToScriptTempTable",$MyInvocation.MyCommand)
-[NoFuture.MyFunctions]::FunctionFiles.Add("Get-TableMetaData",$MyInvocation.MyCommand)
-[NoFuture.MyFunctions]::FunctionFiles.Add("Get-TableXsd",$MyInvocation.MyCommand)
-[NoFuture.MyFunctions]::FunctionFiles.Add("Get-DatabaseDbml",$MyInvocation.MyCommand)
-[NoFuture.MyFunctions]::FunctionFiles.Add("Import-ExcelWs",$MyInvocation.MyCommand)
-[NoFuture.MyFunctions]::FunctionFiles.Add("Find-StringInDb",$MyInvocation.MyCommand)
+[NoFuture.Shared.NfConfig+MyFunctions]::FunctionFiles.Add("Get-MssqlSettings",$MyInvocation.MyCommand)
+[NoFuture.Shared.NfConfig+MyFunctions]::FunctionFiles.Add("ExportTo-UpdateStatement",$MyInvocation.MyCommand)
+[NoFuture.Shared.NfConfig+MyFunctions]::FunctionFiles.Add("ExportTo-InsertStatement",$MyInvocation.MyCommand)
+[NoFuture.Shared.NfConfig+MyFunctions]::FunctionFiles.Add("ExportTo-MergeStatement",$MyInvocation.MyCommand)
+[NoFuture.Shared.NfConfig+MyFunctions]::FunctionFiles.Add("Export-CsvToScriptTempTable",$MyInvocation.MyCommand)
+[NoFuture.Shared.NfConfig+MyFunctions]::FunctionFiles.Add("Get-TableMetaData",$MyInvocation.MyCommand)
+[NoFuture.Shared.NfConfig+MyFunctions]::FunctionFiles.Add("Get-TableXsd",$MyInvocation.MyCommand)
+[NoFuture.Shared.NfConfig+MyFunctions]::FunctionFiles.Add("Get-DatabaseDbml",$MyInvocation.MyCommand)
+[NoFuture.Shared.NfConfig+MyFunctions]::FunctionFiles.Add("Import-ExcelWs",$MyInvocation.MyCommand)
+[NoFuture.Shared.NfConfig+MyFunctions]::FunctionFiles.Add("Find-StringInDb",$MyInvocation.MyCommand)
 }
 }catch{
     Write-Host "file is being loaded independent of 'start.ps1' - some functions may not be available."
@@ -104,7 +104,7 @@ Set-Alias proc Write-StoredProcedureToHost
     the enviornment's PATH variable. The command makes no check that this is 
     the case.  
     
-    Set the global variable NoFuture.Shared.Switches.SqlCmdHeadersOff to true to get only the results.
+    Set the global variable NoFuture.Shared.NfConfig+Switches.SqlCmdHeadersOff to true to get only the results.
     The delimiter is a bar character (|).  This command is intended for 
     update, delete, insert and scaler selects'.  Use the ADO function for 
     selecting multiple records. 
@@ -164,7 +164,7 @@ function Invoke-SqlCommand
       else{
         $cmd =  ([NoFuture.Sql.Mssql.Etc]::MakeSqlCmd($expression,$ServerName,$CatalogName))
       }
-      if(([NoFuture.Sql.Mssql.Etc]::WarnUserIfServerIn -contains $ServerName) -and ([NoFuture.Shared.Switches]::SupressNpp -eq $false)){
+      if(([NoFuture.Sql.Mssql.Etc]::WarnUserIfServerIn -contains $ServerName) -and ([NoFuture.Shared.NfConfig+Switches]::SupressNpp -eq $false)){
         $message = "WARNING: current settings are pointed to production!`nDo you want to continue this operation?"
         $yes = New-Object System.Management.Automation.Host.ChoiceDescription "&Yes", `
             "Continue operation using SQLCMD.exe."
@@ -420,23 +420,23 @@ function Select-ProcedureString
         if($qryRslts -eq $null -or $qryRslts.Rows.Count -eq 0){return "no results"}
         
         #check for temp spot existing, make if not
-        if(-not (Test-Path ([NoFuture.TempDirectories]::StoredProcedures))){mkdir -Path ([NoFuture.TempDirectories]::StoredProcedures)}
+        if(-not (Test-Path ([NoFuture.Shared.NfConfig+TempDirectories]::StoredProcedures))){mkdir -Path ([NoFuture.Shared.NfConfig+TempDirectories]::StoredProcedures)}
         
         #clear out the contents of the temp spot for every call herein
-        ls -Path ([NoFuture.TempDirectories]::StoredProcedures) | ? {-not $_.PSIsContainer} | % {rm -Path $_.FullName -Force}
+        ls -Path ([NoFuture.Shared.NfConfig+TempDirectories]::StoredProcedures) | ? {-not $_.PSIsContainer} | % {rm -Path $_.FullName -Force}
         
         #iterate the procs looking for a match
         $procs = $qryRslts | % {
             if($_.ProcText -match $pattern){
             
                 #expect repeats so test before wasting time
-                $tempName = join-path ([NoFuture.TempDirectories]::StoredProcedures) ("{0}.sql" -f $_.ProcName)
+                $tempName = join-path ([NoFuture.Shared.NfConfig+TempDirectories]::StoredProcedures) ("{0}.sql" -f $_.ProcName)
                 if(-not (Test-Path $tempName)){
                     $_.ProcText > $tempName
                 }
             } 
         }
-        ssr $pattern ([NoFuture.TempDirectories]::StoredProcedures)
+        ssr $pattern ([NoFuture.Shared.NfConfig+TempDirectories]::StoredProcedures)
     }
 }
 
@@ -504,10 +504,10 @@ function Write-StoredProcedureToHost
 
         #print this to notepad++ since it has syntax highlighter
         
-        $tempName = join-path ([NoFuture.TempDirectories]::StoredProcedures) ("{0}.sql" -f ([NoFuture.Util.NfPath]::SafeFilename($ProcedureName)))
+        $tempName = join-path ([NoFuture.Shared.NfConfig+TempDirectories]::StoredProcedures) ("{0}.sql" -f ([NoFuture.Util.NfPath]::SafeFilename($ProcedureName)))
         
         #check for temp spot existing, make if not
-        if(-not (Test-Path ([NoFuture.TempDirectories]::StoredProcedures))){mkdir -Path ([NoFuture.TempDirectories]::StoredProcedures)}
+        if(-not (Test-Path ([NoFuture.Shared.NfConfig+TempDirectories]::StoredProcedures))){mkdir -Path ([NoFuture.Shared.NfConfig+TempDirectories]::StoredProcedures)}
         
         #remove any previous copies of this stored proc by force
         if(Test-Path $tempName){rm -Path $tempName -Force}
@@ -793,7 +793,7 @@ function ExportTo-SqlScript
 
         $sqlScript = [NoFuture.Sql.Mssql.ExportTo]::ScriptDataBody($Expression,$MaxLength,$ExportType,$metaData,$adoRows);
 
-        $sqlScriptPath = Join-Path ([NoFuture.TempDirectories]::Sql) ([NoFuture.Shared.NfConfig]::SqlServer)
+        $sqlScriptPath = Join-Path ([NoFuture.Shared.NfConfig+TempDirectories]::Sql) ([NoFuture.Shared.NfConfig]::SqlServer)
 
         if(-not (Test-Path ($sqlScriptPath))){$dnd = mkdir -Path $sqlScriptPath -Force}
 
@@ -882,7 +882,7 @@ function Get-TableMetaData
         Write-Progress -Activity ("Unqualified table name calculated as '{0}'" -f $TableName) -Status "OK" -PercentComplete 10
     
         #check that the table is a valid one
-        [NoFuture.Shared.Switches]::SqlCmdHeadersOff = $true
+        [NoFuture.Shared.NfConfig+Switches]::SqlCmdHeadersOff = $true
         $countByTableName = sql ([NoFuture.Sql.Mssql.Qry.Catalog]::CountByTableName -f $TableName)
         if($countByTableName -eq 0){throw ("The table name '{0}' is not present in the current database catalog" -f $Tablename)}
 
@@ -1050,7 +1050,7 @@ function Get-DatabaseDll
     Process
     {
     
-        if(-not(Test-Path ([NoFuture.Tools.X86]::SqlMetal))){throw ("SqlMetal.exe is not found at '{0}'" -f ([NoFuture.Tools.X86]::SqlMetal))}
+        if(-not(Test-Path ([NoFuture.Shared.NfConfig+X86]::SqlMetal))){throw ("SqlMetal.exe is not found at '{0}'" -f ([NoFuture.Shared.NfConfig+X86]::SqlMetal))}
         if([string]::IsNullOrWhiteSpace([NoFuture.Shared.NfConfig]::SqlServer) -or [string]::IsNullOrWhiteSpace([NoFuture.Shared.NfConfig]::SqlCatalog)) {
             Write-Host "The global sqlServer and sqlCatalog variables are not set, assign them and try again."
         }
@@ -1059,9 +1059,9 @@ function Get-DatabaseDll
         $namespace = "NoFuture.Db"
         $codeFile = ("{0}.cs" -f [NoFuture.Shared.NfConfig]::SqlCatalog)
         [System.IO.Path]::InvalidPathChars | % { $codeFile = $codeFile.Replace($_.ToString(),"")}
-        $codeFile = (Join-Path ([NoFuture.TempDirectories]::Code) $codeFile)
+        $codeFile = (Join-Path ([NoFuture.Shared.NfConfig+TempDirectories]::Code) $codeFile)
 
-        $cmd = ("& '{0}' /server:{1} /database:{2} /code:{3} /namespace:{4}" -f ([NoFuture.Tools.X86]::SqlMetal),([NoFuture.Shared.NfConfig]::SqlServer),([NoFuture.Shared.NfConfig]::SqlCatalog),$codeFile,$namespace)
+        $cmd = ("& '{0}' /server:{1} /database:{2} /code:{3} /namespace:{4}" -f ([NoFuture.Shared.NfConfig+X86]::SqlMetal),([NoFuture.Shared.NfConfig]::SqlServer),([NoFuture.Shared.NfConfig]::SqlCatalog),$codeFile,$namespace)
         Invoke-Expression -Command $cmd
         if($Error.Count -gt $errCount) {break;}
 

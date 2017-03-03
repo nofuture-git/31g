@@ -2,11 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NoFuture.Gen;
-using NoFuture.Gen.LangRules;
-using NoFuture.Tools;
+using NoFuture.Shared;
 
 namespace NoFuture.Tests.Gen
 {
@@ -17,10 +15,10 @@ namespace NoFuture.Tests.Gen
         [TestInitialize]
         public void Init()
         {
-            TempDirectories.Code = TestAssembly.UnitTestsRoot + @"\Gen";
-            TempDirectories.Debug = TestAssembly.UnitTestsRoot + @"\Gen";
-            CustomTools.Dia2Dump = TestAssembly.RootBin + @"\Dia2Dump.exe";
-            CustomTools.InvokeGetCgType = TestAssembly.RootBin + @"\NoFuture.Gen.InvokeGetCgOfType.exe";
+            NfConfig.TempDirectories.Code = TestAssembly.UnitTestsRoot + @"\Gen";
+            NfConfig.TempDirectories.Debug = TestAssembly.UnitTestsRoot + @"\Gen";
+            NfConfig.CustomTools.Dia2Dump = TestAssembly.RootBin + @"\Dia2Dump.exe";
+            NfConfig.CustomTools.InvokeGetCgType = TestAssembly.RootBin + @"\NoFuture.Gen.InvokeGetCgOfType.exe";
         }
         [TestMethod]
         public void TestCtor()

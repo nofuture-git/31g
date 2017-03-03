@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NoFuture.Shared;
 using NoFuture.Util.NfType;
 
 namespace NoFuture.Tests.Util.NfTypeTests
@@ -9,7 +10,7 @@ namespace NoFuture.Tests.Util.NfTypeTests
         [TestInitialize]
         public void Init()
         {
-            NoFuture.Tools.CustomTools.InvokeNfTypeName =
+            NfConfig.CustomTools.InvokeNfTypeName =
                 @"C:\Projects\31g\trunk\Code\NoFuture\bin\NoFuture.Tokens.InvokeNfTypeName.exe";
         }
 

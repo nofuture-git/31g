@@ -7,7 +7,6 @@ using System.Text;
 using System.Threading;
 using NoFuture.Exceptions;
 using NoFuture.Shared;
-using NoFuture.Tools;
 using NoFuture.Util.Binary;
 using NoFuture.Util.Gia;
 using NoFuture.Util.Gia.Args;
@@ -90,7 +89,7 @@ namespace NoFuture.Gen.InvokeGraphViz
                         break;
                 }
 
-                p.OutputFileName = Path.Combine(TempDirectories.Graph, p.OutputFileName);
+                p.OutputFileName = Path.Combine(NfConfig.TempDirectories.Graph, p.OutputFileName);
                 File.WriteAllText(p.OutputFileName, p.GraphText);
 
                 using (var sw = new StreamWriter(Console.OpenStandardOutput(), Encoding.UTF8))
@@ -109,13 +108,13 @@ namespace NoFuture.Gen.InvokeGraphViz
 
         protected static void ValidateBinDir()
         {
-            BinDirectories.Root =
+            NfConfig.BinDirectories.Root =
                 ConfigurationManager.AppSettings[ROOT_BIN_DIR];
 
-            if (string.IsNullOrWhiteSpace(BinDirectories.Root) || !Directory.Exists(BinDirectories.Root))
+            if (string.IsNullOrWhiteSpace(NfConfig.BinDirectories.Root) || !Directory.Exists(NfConfig.BinDirectories.Root))
             {
                 throw new ItsDeadJim(
-                    $"the root bin directory is not present at '{BinDirectories.Root}' " +
+                    $"the root bin directory is not present at '{NfConfig.BinDirectories.Root}' " +
                     "- change the config file settings");
             }
 
@@ -127,24 +126,24 @@ namespace NoFuture.Gen.InvokeGraphViz
                     $"- change the config file settings");
             }
 
-            X86.DotExe = Path.Combine(BinDirectories.Root, f);
+            NfConfig.X86.DotExe = Path.Combine(NfConfig.BinDirectories.Root, f);
 
-            if (!File.Exists(X86.DotExe))
+            if (!File.Exists(NfConfig.X86.DotExe))
             {
                 throw new ItsDeadJim(
-                    $"the path to Dot.exe is not present at '{X86.DotExe}' " +
+                    $"the path to Dot.exe is not present at '{NfConfig.X86.DotExe}' " +
                     $"- change the config file settings");
             }
 
-            TempDirectories.Graph = ConfigurationManager.AppSettings[AppSettingKeys.GraphTempDir];
+            NfConfig.TempDirectories.Graph = ConfigurationManager.AppSettings[AppSettingKeys.GraphTempDir];
 
-            if (string.IsNullOrWhiteSpace(TempDirectories.Graph))
+            if (string.IsNullOrWhiteSpace(NfConfig.TempDirectories.Graph))
             {
                 throw new ItsDeadJim(
                     "assign a config file's appSettings for " +
                     "'NoFuture.TempDirectories.Graph' to a valid directory");
             }
-            CustomTools.InvokeNfTypeName = ConfigurationManager.AppSettings[AppSettingKeys.NfTypeName];
+            NfConfig.CustomTools.InvokeNfTypeName = ConfigurationManager.AppSettings[AppSettingKeys.NfTypeName];
         }
 
         protected override string GetHelpText()

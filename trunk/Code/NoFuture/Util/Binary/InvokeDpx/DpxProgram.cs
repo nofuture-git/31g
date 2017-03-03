@@ -8,7 +8,6 @@ using System.IO;
 using Newtonsoft.Json;
 using NoFuture.Exceptions;
 using NoFuture.Shared;
-using NoFuture.Tools;
 using NoFuture.Util.NfConsole;
 
 namespace NoFuture.Util.Binary.InvokeDpx
@@ -77,7 +76,7 @@ namespace NoFuture.Util.Binary.InvokeDpx
         {
             var argHash = ConsoleCmd.ArgHash(_args);
 
-            CustomTools.InvokeNfTypeName = ConfigurationManager.AppSettings["NoFuture.ToolsCustomTools.InvokeNfTypeName"];
+            NfConfig.CustomTools.InvokeNfTypeName = ConfigurationManager.AppSettings["NoFuture.ToolsCustomTools.InvokeNfTypeName"];
 
             if (!argHash.ContainsKey(Dpx.BIN_DIR) ||
                 argHash[Dpx.BIN_DIR] == null)

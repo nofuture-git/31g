@@ -13,7 +13,7 @@ namespace NoFuture.Tests.Hbm
         [TestInitialize]
         public void Init()
         {
-            NoFuture.TempDirectories.Hbm = TestAssembly.UnitTestsRoot + @"\Hbm\TestFiles";
+            NfConfig.TempDirectories.Hbm = TestAssembly.UnitTestsRoot + @"\Hbm\TestFiles";
             NfConfig.SqlServer = "localhost";
             NfConfig.SqlCatalog = "Whatever";
         }

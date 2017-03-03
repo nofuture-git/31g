@@ -1,0 +1,6 @@
+class nfConfig:
+    DEFAULT_TYPE_SEPARATOR = '.'
+    DEFAULT_CHAR_SEPARATOR = ','
+    CMD_LINE_ARG_SWITCH = "-"
+    CMD_LINE_ARG_ASSIGN = '='
+    DEFAULT_BLOCK_SIZE = 256

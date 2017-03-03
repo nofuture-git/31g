@@ -8,6 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Cfg = System.Configuration.ConfigurationManager;
 using NoFuture.Host.Encryption.Sjcl;
+using NoFuture.Shared;
 using NoFuture.Tools;
 using NoFuture.Util.NfConsole;
 
@@ -378,7 +379,7 @@ namespace NoFuture.Host.Encryption
             var argHash = ConsoleCmd.ArgHash(_args);
             GetFileCmdArgs(argHash);
 
-            CustomTools.InvokeNfTypeName = ConfigurationManager.AppSettings["NoFuture.ToolsCustomTools.InvokeNfTypeName"];
+            NfConfig.CustomTools.InvokeNfTypeName = ConfigurationManager.AppSettings["NoFuture.ToolsCustomTools.InvokeNfTypeName"];
 
             if (MyFileParameters.FileCommand == InvokeKind.HostSjcl)
                 return;
@@ -425,9 +426,9 @@ namespace NoFuture.Host.Encryption
                 ? argHash[SWITCHES.HASH_PORT].ToString()
                 : Cfg.AppSettings[SWITCHES.HASH_PORT];
 
-            sjclBkPt = ResolvePort(ptp).GetValueOrDefault(Tools.NfDefaultPorts.SJCL_TO_PLAIN_TXT);
-            sjclBkCt = ResolvePort(ctp).GetValueOrDefault(Tools.NfDefaultPorts.SJCL_TO_CIPHER_TXT);
-            sjclHp = ResolvePort(hp).GetValueOrDefault(Tools.NfDefaultPorts.SJCL_HASH_PORT);
+            sjclBkPt = ResolvePort(ptp).GetValueOrDefault(NfConfig.NfDefaultPorts.SjclToPlainText);
+            sjclBkCt = ResolvePort(ctp).GetValueOrDefault(NfConfig.NfDefaultPorts.SjclToCipherText);
+            sjclHp = ResolvePort(hp).GetValueOrDefault(NfConfig.NfDefaultPorts.SjclHashPort);
 
             if (argHash.ContainsKey(SWITCHES.HASH_SALT))
                 sjclHashSalt = argHash[SWITCHES.HASH_SALT].ToString();

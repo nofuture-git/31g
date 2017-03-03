@@ -10,7 +10,6 @@ using System.Text;
 using NoFuture.Exceptions;
 using NoFuture.Shared;
 using NoFuture.Util;
-using NoFuture.Tools;
 using NoFuture.Util.Binary;
 using NoFuture.Util.NfConsole;
 using NoFuture.Util.NfType;
@@ -135,7 +134,7 @@ namespace NoFuture.Gen
         private static string RunGraphViz(string argPath, string argType, string diagramType, 
             int maxWaitInSeconds, params string[] additionalArgs)
         {
-            var invokeGraphVizPath = CustomTools.InvokeGraphViz;
+            var invokeGraphVizPath = NfConfig.CustomTools.InvokeGraphViz;
             if (string.IsNullOrWhiteSpace(invokeGraphVizPath))
                 throw new RahRowRagee("The constants value at 'NoFuture.CustomTools.InvokeGraphViz' is not assigned.");
             if (!File.Exists(invokeGraphVizPath))
@@ -276,7 +275,7 @@ namespace NoFuture.Gen
         public static CgType GetIsolatedCgOfType(string assemblyPath, string typeFullName, 
             bool resolveDependencies = false, int maxWaitInSeconds = 60)
         {
-            var invokeGetCgTypePath = CustomTools.InvokeGetCgType;
+            var invokeGetCgTypePath = NfConfig.CustomTools.InvokeGetCgType;
 
             if(string.IsNullOrWhiteSpace(typeFullName))
                 throw new ArgumentNullException(nameof(typeFullName));
@@ -322,7 +321,7 @@ namespace NoFuture.Gen
                 throw new ItsDeadJim("The invocation to 'NoFuture.Gen.InvokeGetCgOfType.exe' didn't " +
                                      "return anything on its standard output.");
 
-            File.WriteAllBytes(Path.Combine(TempDirectories.Debug, "GetIsolatedCgType.json"),
+            File.WriteAllBytes(Path.Combine(NfConfig.TempDirectories.Debug, "GetIsolatedCgType.json"),
                 Encoding.UTF8.GetBytes(buffer));
 
             var dcs = new System.Runtime.Serialization.Json.DataContractJsonSerializer(typeof(CgType));

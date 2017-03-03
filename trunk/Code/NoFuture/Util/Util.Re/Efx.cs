@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using Microsoft.Win32;
+using NoFuture.Shared;
 using RDotNet;
 
 namespace NoFuture.Util.Re
@@ -22,9 +23,9 @@ namespace NoFuture.Util.Re
                     return _rTempDir;
 
                 _rTempDir =
-                    Path.Combine(string.IsNullOrWhiteSpace(TempDirectories.TsvCsv)
-                        ? TempDirectories.AppData
-                        : TempDirectories.TsvCsv);
+                    Path.Combine(string.IsNullOrWhiteSpace(NfConfig.TempDirectories.TsvCsv)
+                        ? NfConfig.TempDirectories.AppData
+                        : NfConfig.TempDirectories.TsvCsv);
                 return _rTempDir;
             }
             set { _rTempDir = value; }

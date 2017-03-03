@@ -138,7 +138,7 @@ namespace NoFuture.Shared.DiaSdk
     public abstract class PdbJsonDataFileBase<T> : IPdbJsonDataFile
     {
         protected string fileName;
-        protected string directoryPath = TempDirectories.Code;
+        protected string directoryPath = NfConfig.TempDirectories.Code;
 
         /// <summary>
         /// The concrete implementor must specify a default file name.
@@ -165,7 +165,7 @@ namespace NoFuture.Shared.DiaSdk
         }
 
         /// <summary>
-        /// This will default to <see cref="TempDirectories.Code"/>
+        /// This will default to <see cref="NfConfig.TempDirectories.Code"/>
         /// </summary>
         public virtual string DirectoryPath
         {
@@ -185,7 +185,7 @@ namespace NoFuture.Shared.DiaSdk
                 if(string.IsNullOrWhiteSpace(DirectoryPath))
                     throw new ItsDeadJim("The DirectoryPath has no default value set.");
 
-                return Path.Combine(TempDirectories.Code, FileName);
+                return Path.Combine(NfConfig.TempDirectories.Code, FileName);
             }
         }
 

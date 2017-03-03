@@ -43,9 +43,9 @@ namespace NoFuture.Hbm
         {
             get
             {
-                var baseDir = String.IsNullOrWhiteSpace(TempDirectories.Hbm)
+                var baseDir = String.IsNullOrWhiteSpace(NfConfig.TempDirectories.Hbm)
                     ? Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "NoFutureData")
-                    : TempDirectories.Hbm;
+                    : NfConfig.TempDirectories.Hbm;
 
                 var svrCatalogDir = $@"{NfConfig.SqlServer}\{NfConfig.SqlCatalog}";
                 return Path.Combine(baseDir, svrCatalogDir);

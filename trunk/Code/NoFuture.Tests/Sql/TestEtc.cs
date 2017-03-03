@@ -26,7 +26,7 @@ namespace NoFuture.Tests.Sql
         [TestMethod]
         public void TestMakeSqlCommandHeaderOff()
         {
-            Switches.SqlCmdHeadersOff = true;
+            NfConfig.Switches.SqlCmdHeadersOff = true;
             var expectedResult =
                 "sqlcmd.exe -S localhost -d AdventureWorks2012 -k 2 -h \"-1\" -W -s \"|\" -Q \"SELECT * FROM [AdventureWorks2012].[Production].[Location]\"";
 
@@ -38,7 +38,7 @@ namespace NoFuture.Tests.Sql
         [TestMethod]
         public void TestMakeSqlCommandDdlQry()
         {
-            Switches.SqlCmdHeadersOff = false;
+            NfConfig.Switches.SqlCmdHeadersOff = false;
             var expectedResult =
                 "sqlcmd.exe -S localhost -d AdventureWorks2012 -k 2 -W -s \"|\" -I -Q \"INSERT INTO [Person].[Person]([PersonType],[Title],[FirstName],[MiddleName],[LastName]) VALUES ('EM',NULL,'Ken','J','Sánchez')\"";
 

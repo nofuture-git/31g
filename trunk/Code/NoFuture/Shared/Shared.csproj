@@ -43,6 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Aero.cs" />
+    <Compile Include="NfConfig.cs" />
     <Compile Include="DiaSdk\JsonData\Types.cs" />
     <Compile Include="DiaSdk\PdbData.cs" />
     <Compile Include="CipherText.cs" />
@@ -60,9 +61,6 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="RegexCatalog.cs" />
-    <Compile Include="TempDirectories.cs" />
-    <Compile Include="Temps.cs" />
-    <Compile Include="Tools.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">

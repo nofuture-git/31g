@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using NoFuture.Exceptions;
 using NoFuture.Shared;
-using NoFuture.Tools;
 using NoFuture.Util.Gia.InvokeFlatten.Cmds;
 using NoFuture.Util.NfConsole;
 
@@ -111,7 +110,7 @@ namespace NoFuture.Util.Gia.InvokeFlatten
         protected override void ParseProgramArgs()
         {
             var argHash = ConsoleCmd.ArgHash(_args);
-            CustomTools.InvokeNfTypeName = ConfigurationManager.AppSettings["NoFuture.ToolsCustomTools.InvokeNfTypeName"];
+            NfConfig.CustomTools.InvokeNfTypeName = ConfigurationManager.AppSettings["NoFuture.ToolsCustomTools.InvokeNfTypeName"];
             if (argHash.ContainsKey(Flatten.GET_FLAT_ASM_PORT_CMD_SWITCH))
             {
                 _getFlattenAssemblyCmdPort = ResolveInt(argHash[Flatten.GET_FLAT_ASM_PORT_CMD_SWITCH].ToString());

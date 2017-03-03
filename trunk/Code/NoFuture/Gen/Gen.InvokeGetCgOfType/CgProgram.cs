@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading;
 using NoFuture.Exceptions;
 using NoFuture.Shared;
-using NoFuture.Tools;
 using NoFuture.Util.Binary;
 using NoFuture.Util.NfConsole;
 
@@ -90,7 +89,7 @@ namespace NoFuture.Gen.InvokeGetCgOfType
 
             TypeName = argHash[Settings.INVOKE_FULL_TYPE_NAME_SWITCH].ToString();
 
-            CustomTools.InvokeNfTypeName = ConfigurationManager.AppSettings["NoFuture.ToolsCustomTools.InvokeNfTypeName"];
+            NfConfig.CustomTools.InvokeNfTypeName = ConfigurationManager.AppSettings["NoFuture.ToolsCustomTools.InvokeNfTypeName"];
 
         }
 

@@ -2,7 +2,7 @@ import encodings
 import string
 import Util.net as nfNet
 import Shared.constants as nfConstants
-from Shared.globals import nfConfig
+from Shared.nfConfig import nfConfig
 
 def distillString(someString):
     """Distills the continous spaces into a single space and

@@ -58,7 +58,7 @@ function Invoke-Antlr
     )
     Process
     {
-        $binCopy = [NoFuture.Tools.JavaTools]::Antlr
+        $binCopy = [NoFuture.Shared.NfConfig+JavaTools]::Antlr
         $antlr = Join-Path $env:CLASSPATH.Replace("*","") ([System.IO.Path]::GetFileName($binCopy))
 
         #get a copy prior to any modifications
@@ -128,8 +128,8 @@ function Invoke-AntlrToJavaSrc
     {
         $ms = [NoFuture.Shared.NfConfig]::ThreadSleepTime
         $pushFlag = $false
-        $javaSrc = ([NoFuture.TempDirectories]::JavaSrc)
-        $antlrFilePath = ([NoFuture.Tools.JavaTools]::Antlr)
+        $javaSrc = ([NoFuture.Shared.NfConfig+TempDirectories]::JavaSrc)
+        $antlrFilePath = ([NoFuture.Shared.NfConfig+JavaTools]::Antlr)
 
         $antlrFile = [System.IO.Path]::GetFileName($antlrFilePath)
         $antlr = Join-Path $env:CLASSPATH.Replace("*","") $antlrFile
@@ -194,8 +194,8 @@ function Invoke-AntlrToJavaSrc
 
     To use call it with whatever command is to be passed to the Tool, 
     Ctrl+Shift+P to open a new powershell console, change to the 
-    NoFuture.TempDirectories.JavaDist directory, copy/paste the command 
-    and press Enter.
+    NoFuture.Shared.NfConfig.TempDirectories.JavaDist directory, copy/paste 
+	the command and press Enter.
     
     .PARAMETER Arg
     The command to be passed to the org.antlr.v4.Tool object itself
@@ -256,11 +256,11 @@ function Invoke-Grun
     
     .DESCRIPTION
     Locates the edu.stanford.nlp.tagger.maxent.MaxentTagger at 
-    NoFuture.JavaTools.Stanford.StanfordPostTagger and copies it 
+    NoFuture.Shared.NfConfig+JavaTools.Stanford.StanfordPostTagger and copies it 
     into the Java global CLASSPATH if it is not already present there.
 
     The MaxentTagger requires a model and the cmdlet will choose whatever
-    is the largest one present in NoFuture.JavaTools.StanfordPostTaggerModels.
+    is the largest one present in NoFuture.Shared.NfConfig+JavaTools.StanfordPostTaggerModels.
 
     The JVM is invoked on a separate process.  The MaxentTagger progress is printed
     upon the completion of the JVM.  If an OutPath was sepecified that path 
@@ -313,8 +313,8 @@ function Invoke-StanfordPostTagger
         }
 
         #get path to jar and dependent resources
-        $binCopy = [NoFuture.Tools.JavaTools]::StanfordPostTagger
-        $biggestModel = (ls -Path ([NoFuture.Tools.JavaTools]::StanfordPostTaggerModels) | ? {$_.Extension -eq ".tagger"} | Sort-Object -Property Length -Descending | Select-Object -First 1)
+        $binCopy = [NoFuture.Shared.NfConfig+JavaTools]::StanfordPostTagger
+        $biggestModel = (ls -Path ([NoFuture.Shared.NfConfig+JavaTools]::StanfordPostTaggerModels) | ? {$_.Extension -eq ".tagger"} | Sort-Object -Property Length -Descending | Select-Object -First 1)
         $model = $biggestModel.FullName
 
         #expect jar to be in classpath

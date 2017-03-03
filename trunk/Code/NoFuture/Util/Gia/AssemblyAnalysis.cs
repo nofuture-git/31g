@@ -7,7 +7,6 @@ using System.Reflection;
 using NoFuture.Exceptions;
 using NoFuture.Shared;
 using NoFuture.Util.Binary;
-using NoFuture.Tools;
 using NoFuture.Util.Gia.InvokeCmds;
 using NoFuture.Util.NfConsole;
 using NoFuture.Util.NfType;
@@ -25,7 +24,7 @@ namespace NoFuture.Util.Gia
         public const string GET_ASM_INDICES_PORT_CMD_SWITCH = "nfGetAsmIndicies";
         public const string GET_TOKEN_PAGE_RANK_PORT_CMD_SWITCH = "nfGetTokenPageRank";
         public const string RESOLVE_GAC_ASM_SWITCH = "nfResolveGacAsm";
-        public const int DF_START_PORT = NfDefaultPorts.ASSEMBLY_ANALYSIS;
+        public static int DF_START_PORT = NfConfig.NfDefaultPorts.AssemblyAnalysis;
         #endregion
 
         #region fields
@@ -135,7 +134,7 @@ namespace NoFuture.Util.Gia
             if (string.IsNullOrWhiteSpace(assemblyPath) || !File.Exists(assemblyPath))
                 throw new ItsDeadJim("This isn't a valid assembly path");
 
-            if (string.IsNullOrWhiteSpace(CustomTools.InvokeAssemblyAnalysis) || !File.Exists(CustomTools.InvokeAssemblyAnalysis))
+            if (string.IsNullOrWhiteSpace(NfConfig.CustomTools.InvokeAssemblyAnalysis) || !File.Exists(NfConfig.CustomTools.InvokeAssemblyAnalysis))
                 throw new ItsDeadJim("Don't know where to locate the NoFuture.Util.Gia.InvokeAssemblyAnalysis, assign " +
                                      "the global variable at NoFuture.CustomTools.InvokeAssemblyAnalysis.");
 
@@ -156,7 +155,7 @@ namespace NoFuture.Util.Gia
                     usePorts[3].ToString(CultureInfo.InvariantCulture)),
                 ConsoleCmd.ConstructCmdLineArgs(RESOLVE_GAC_ASM_SWITCH, resolveGacAsmNames.ToString()));
 
-            MyProcess = StartRemoteProcess(CustomTools.InvokeAssemblyAnalysis, args);
+            MyProcess = StartRemoteProcess(NfConfig.CustomTools.InvokeAssemblyAnalysis, args);
 
             var getAsmIndicesCmd = new InvokeGetAsmIndicies()
             {

@@ -2,6 +2,7 @@
 using System.IO.Compression;
 using System.IO;
 using System.Linq;
+using NoFuture.Shared;
 
 namespace NoFuture.Util.Binary
 {
@@ -47,7 +48,7 @@ namespace NoFuture.Util.Binary
                 var dName = fi.DirectoryName;
                 if (string.IsNullOrWhiteSpace(dName))
                 {
-                    dName = TempDirectories.Root;
+                    dName = NfConfig.TempDirectories.Root;
                 }
                 var cName = fi.FullName;
                 var nName = Path.GetFileNameWithoutExtension(cName);

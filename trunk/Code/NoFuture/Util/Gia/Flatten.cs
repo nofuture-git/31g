@@ -9,7 +9,6 @@ using System.Linq;
 using System.Reflection;
 using NoFuture.Exceptions;
 using NoFuture.Shared;
-using NoFuture.Tools;
 using NoFuture.Util.Binary;
 using NoFuture.Util.Gia.Args;
 using NoFuture.Util.Gia.InvokeCmds;
@@ -22,7 +21,7 @@ namespace NoFuture.Util.Gia
     {
         #region constants
         public const string GET_FLAT_ASM_PORT_CMD_SWITCH = "nfGetFlattenAssemblyPort";
-        public const int DF_START_PORT = NfDefaultPorts.FLATTEN_ASSEMBLY;
+        public static int DF_START_PORT = NfConfig.NfDefaultPorts.FlattenAssembly;
         #endregion
 
         #region fields
@@ -41,7 +40,7 @@ namespace NoFuture.Util.Gia
         /// </remarks>
         public Flatten(params int[] ports)
         {
-            if (string.IsNullOrWhiteSpace(CustomTools.InvokeFlatten) || !File.Exists(CustomTools.InvokeFlatten))
+            if (string.IsNullOrWhiteSpace(NfConfig.CustomTools.InvokeFlatten) || !File.Exists(NfConfig.CustomTools.InvokeFlatten))
                 throw new ItsDeadJim("Don't know where to locate the NoFuture.Util.Gia.InvokeFlatten.exe, assign " +
                                      "the global variable at NoFuture.Tools.CustomTools.InvokeFlatten.");
             var args = string.Empty;
@@ -53,7 +52,7 @@ namespace NoFuture.Util.Gia
                     getFlatAsmPort.ToString(CultureInfo.InvariantCulture));
             }
 
-            MyProcess = StartRemoteProcess(CustomTools.InvokeFlatten,args);
+            MyProcess = StartRemoteProcess(NfConfig.CustomTools.InvokeFlatten,args);
 
             _invokeGetFlattenAssemblyCmd = new InvokeGetFlattenAssembly()
             {

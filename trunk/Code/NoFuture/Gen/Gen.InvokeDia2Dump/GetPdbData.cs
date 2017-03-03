@@ -5,7 +5,6 @@ using System.Runtime.Remoting.Messaging;
 using System.Text;
 using NoFuture.Exceptions;
 using NoFuture.Shared;
-using NoFuture.Tools;
 using NoFuture.Shared.DiaSdk;
 using NoFuture.Shared.DiaSdk.LinesSwitch;
 
@@ -137,7 +136,7 @@ namespace NoFuture.Gen.InvokeDia2Dump
         /// </summary>
         /// <param name="outFile">
         /// Optional, if null, empty or invalid the dump file 
-        /// reverts to its default directory at <see cref="TempDirectories.Code"/>
+        /// reverts to its default directory at <see cref="NfConfig.TempDirectories.Code"/>
         /// </param>
         public AllModulesJsonDataFile DumpAllModulesToFile(string outFile)
         {
@@ -146,7 +145,7 @@ namespace NoFuture.Gen.InvokeDia2Dump
                 Activity = string.Format("Getting Pdb Modules for '{0}'", _assemblyFilePath),
                 Status = "OK",
                 ProgressCounter = 16,
-                ProcName = CustomTools.Dia2Dump
+                ProcName = NfConfig.CustomTools.Dia2Dump
             });
             var jsonDataOut = ValidateAssignedOutputFile(outFile)
                 ? new AllModulesJsonDataFile(outFile)
@@ -160,7 +159,7 @@ namespace NoFuture.Gen.InvokeDia2Dump
         /// </summary>
         /// <param name="outFile">
         /// Optional, if null, empty or invalid the dump file 
-        /// reverts to its default directory at <see cref="TempDirectories.Code"/>
+        /// reverts to its default directory at <see cref="NfConfig.TempDirectories.Code"/>
         /// </param>
         /// <returns></returns>
         public AllGlobalsJsonDataFile DumpAllGlobalsToFile(string outFile)
@@ -170,7 +169,7 @@ namespace NoFuture.Gen.InvokeDia2Dump
                 Activity = string.Format("Getting Pdb Globals for '{0}'", _assemblyFilePath),
                 Status = "OK",
                 ProgressCounter = 32,
-                ProcName = CustomTools.Dia2Dump
+                ProcName = NfConfig.CustomTools.Dia2Dump
             });
             var jsonDataOut = ValidateAssignedOutputFile(outFile)
                 ? new AllGlobalsJsonDataFile(outFile)
@@ -184,7 +183,7 @@ namespace NoFuture.Gen.InvokeDia2Dump
         /// </summary>
         /// <param name="outFile">
         /// Optional, if null, empty or invalid the dump file 
-        /// reverts to its default directory at <see cref="TempDirectories.Code"/>
+        /// reverts to its default directory at <see cref="NfConfig.TempDirectories.Code"/>
         /// </param>
         /// <returns></returns>
         public AllFilesJsonDataFile DumpAllFilesToFile(string outFile)
@@ -194,7 +193,7 @@ namespace NoFuture.Gen.InvokeDia2Dump
                 Activity = string.Format("Getting Pdb Files for '{0}'", _assemblyFilePath),
                 Status = "OK",
                 ProgressCounter = 48,
-                ProcName = CustomTools.Dia2Dump
+                ProcName = NfConfig.CustomTools.Dia2Dump
             });
             var jsonDataOut = ValidateAssignedOutputFile(outFile)
                 ? new AllFilesJsonDataFile(outFile)
@@ -208,7 +207,7 @@ namespace NoFuture.Gen.InvokeDia2Dump
         /// </summary>
         /// <param name="outFile">
         /// Optional, if null, empty or invalid the dump file 
-        /// reverts to its default directory at <see cref="TempDirectories.Code"/>
+        /// reverts to its default directory at <see cref="NfConfig.TempDirectories.Code"/>
         /// </param>
         /// <returns></returns>
         public AllLinesJsonDataFile DumpAllLinesToFile(string outFile)
@@ -218,7 +217,7 @@ namespace NoFuture.Gen.InvokeDia2Dump
                 Activity = string.Format("Getting Pdb Lines for '{0}'", _assemblyFilePath),
                 Status = "OK",
                 ProgressCounter = 64,
-                ProcName = CustomTools.Dia2Dump
+                ProcName = NfConfig.CustomTools.Dia2Dump
             });
             var jsonDataOut = ValidateAssignedOutputFile(outFile)
                 ? new AllLinesJsonDataFile(outFile)
@@ -232,7 +231,7 @@ namespace NoFuture.Gen.InvokeDia2Dump
         /// </summary>
         /// <param name="outFile">
         /// Optional, if null, empty or invalid the dump file 
-        /// reverts to its default directory at <see cref="TempDirectories.Code"/>
+        /// reverts to its default directory at <see cref="NfConfig.TempDirectories.Code"/>
         /// </param>
         /// <returns></returns>
         public AllSymbolsJsonDataFile DumpAllSymbolsToFile(string outFile)
@@ -242,7 +241,7 @@ namespace NoFuture.Gen.InvokeDia2Dump
                 Activity = string.Format("Getting Pdb Symbols for '{0}'", _assemblyFilePath),
                 Status = "OK",
                 ProgressCounter = 64,
-                ProcName = CustomTools.Dia2Dump
+                ProcName = NfConfig.CustomTools.Dia2Dump
             });
             var jsonDataOut = ValidateAssignedOutputFile(outFile)
                 ? new AllSymbolsJsonDataFile(outFile)
@@ -256,7 +255,7 @@ namespace NoFuture.Gen.InvokeDia2Dump
         /// </summary>
         /// <param name="outFile">
         /// Optional, if null, empty or invalid the dump file 
-        /// reverts to its default directory at <see cref="TempDirectories.Code"/>
+        /// reverts to its default directory at <see cref="NfConfig.TempDirectories.Code"/>
         /// </param>
         /// <returns></returns>
         public AllSectionsJsonDataFile DumpAllSectionsToFile(string outFile)
@@ -266,7 +265,7 @@ namespace NoFuture.Gen.InvokeDia2Dump
                 Activity = string.Format("Getting Pdb Symbols for '{0}'", _assemblyFilePath),
                 Status = "OK",
                 ProgressCounter = 64,
-                ProcName = CustomTools.Dia2Dump
+                ProcName = NfConfig.CustomTools.Dia2Dump
             });
             var jsonDataOut = ValidateAssignedOutputFile(outFile)
                 ? new AllSectionsJsonDataFile(outFile)
@@ -298,7 +297,7 @@ namespace NoFuture.Gen.InvokeDia2Dump
 
         internal bool InvokeProcessExe(string switchValue)
         {
-            var dia2Dump = CustomTools.Dia2Dump;
+            var dia2Dump = NfConfig.CustomTools.Dia2Dump;
 
             if(string.IsNullOrWhiteSpace(dia2Dump))
                 throw new RahRowRagee("The constants value at 'NoFuture.CustomTools.Dia2Dump' is not assigned.");

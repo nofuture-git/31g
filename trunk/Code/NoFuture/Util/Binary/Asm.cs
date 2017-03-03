@@ -33,9 +33,9 @@ namespace NoFuture.Util.Binary
             {
                 if (!String.IsNullOrWhiteSpace(_resolveAsmLog))
                     return _resolveAsmLog;
-                var logDir = String.IsNullOrWhiteSpace(TempDirectories.Debug) || !Directory.Exists(TempDirectories.Debug)
-                    ? TempDirectories.AppData
-                    : TempDirectories.Debug;
+                var logDir = String.IsNullOrWhiteSpace(NfConfig.TempDirectories.Debug) || !Directory.Exists(NfConfig.TempDirectories.Debug)
+                    ? NfConfig.TempDirectories.AppData
+                    : NfConfig.TempDirectories.Debug;
                 _resolveAsmLog = Path.Combine(logDir, DEFAULT_ASM_LOG_FILE_NAME);
                 return _resolveAsmLog;
             }
@@ -206,9 +206,9 @@ namespace NoFuture.Util.Binary
             }
 
             //check in NoFuture's bin
-            if (!String.IsNullOrWhiteSpace(BinDirectories.Root))
+            if (!String.IsNullOrWhiteSpace(NfConfig.BinDirectories.Root))
             {
-                if (SearchDirectoriesForAssembly(BinDirectories.Root, asmFullName, out foundOne, reflectionOnly))
+                if (SearchDirectoriesForAssembly(NfConfig.BinDirectories.Root, asmFullName, out foundOne, reflectionOnly))
                     return foundOne;
             }
 
@@ -634,7 +634,7 @@ namespace NoFuture.Util.Binary
         /// <summary>
         /// Intended when an assembly is only recognizable by its location and therefore must 
         /// be loaded as such.  The reflection only load-from assemblies are 
-        /// loaded from <see cref="TempDirectories.Binary"/>.
+        /// loaded from <see cref="NfConfig.TempDirectories.Binary"/>.
         /// </summary>
         /// <param name="assemblyPath"></param>
         /// <returns></returns>
@@ -663,7 +663,7 @@ namespace NoFuture.Util.Binary
         /// <summary>
         /// Intended when an assembly is only recognizable by its location and therefore must 
         /// be loaded as such.  The reflection only load-from assemblies are 
-        /// loaded from <see cref="TempDirectories.Binary"/>.
+        /// loaded from <see cref="NfConfig.TempDirectories.Binary"/>.
         /// </summary>
         /// <param name="assemblyPath"></param>
         /// <returns></returns>

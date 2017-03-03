@@ -1,8 +1,6 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NoFuture.Gen.InvokeDia2Dump;
-using NoFuture.Shared.DiaSdk;
-using NoFuture.Tools;
+using NoFuture.Shared;
 
 namespace NoFuture.Tests.Gen
 {
@@ -15,8 +13,8 @@ namespace NoFuture.Tests.Gen
         [TestInitialize]
         public void Init()
         {
-            TempDirectories.Code = TestAssembly.UnitTestsRoot + @"\Gen";
-            CustomTools.Dia2Dump = TestAssembly.RootBin + @"\Dia2Dump.exe";
+            NfConfig.TempDirectories.Code = TestAssembly.UnitTestsRoot + @"\Gen";
+            NfConfig.CustomTools.Dia2Dump = TestAssembly.RootBin + @"\Dia2Dump.exe";
             _testSubject = new GetPdbData(TEST_PDB_FILE);
         }
 
