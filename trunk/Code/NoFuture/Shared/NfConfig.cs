@@ -1,13 +1,239 @@
 ﻿using System;
 using System.IO;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
+using System.Xml;
+using NoFuture.Exceptions;
 
 namespace NoFuture.Shared
 {
 
     public static class NfConfig
     {
+        #region constants
+        public const string FILE_NAME = "nfConfig.cfg.xml";
+        internal const string MY_PS_HOME_VAR_NAME = "myPsHome";
+        #endregion
+
+        #region initialize
+        public static string FindNfConfigFile()
+        {
+            var searchDirs = new[]
+            {
+                Assembly.GetExecutingAssembly().Location,
+                Environment.CurrentDirectory,
+                Environment.CurrentDirectory + "\bin",
+                AppDomain.CurrentDomain.BaseDirectory,
+                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\NoFuture"
+            };
+
+            var nfCfg = "";
+            foreach (var dir in searchDirs)
+            {
+                nfCfg = Path.Combine(dir, FILE_NAME);
+                if (File.Exists(nfCfg))
+                    break;
+            }
+
+            return nfCfg;
+        }
+
+        public static bool Init(string nfCfg)
+        {
+            if (string.IsNullOrWhiteSpace(nfCfg))
+            {
+                nfCfg = FindNfConfigFile();
+                if(string.IsNullOrWhiteSpace(nfCfg))
+                    throw new FileNotFoundException($"Cannot locate a copy of {FILE_NAME}");
+            }
+            var cfgXml = new XmlDocument();
+            if (nfCfg.Trim().StartsWith("<"))
+            {
+                cfgXml.LoadXml(nfCfg);
+            }
+            else
+            {
+                cfgXml.Load(nfCfg);
+            }
+            
+            var idValueHash = GetIdValueHash(cfgXml);
+            ResolveIdValueHash(idValueHash);
+
+            var assignmentHash = new Dictionary<string, Action<string>>
+            {
+                {"certFileNoFutureX509", s => SecurityKeys.NoFutureX509Cert = s},
+                {"tempJsFile", s => TempFiles.JavaScript = s},
+                {"tempHtmlFile", s => TempFiles.Html = s},
+                {"tempCsvFile", s => TempFiles.Csv = s},
+                {"tempStdOutFile", s => TempFiles.StdOut = s},
+                {"tempT4TemplateFile", s => TempFiles.T4Template = s},
+                {"tempNetStatFile", s => TempFiles.NetStat = s},
+                {"tempWmiFile", s => TempFiles.Wmi = s},
+                {"x64SvcUtilTool", s => X64.SvcUtil = s},
+                {"x64IldasmTool", s => X64.Ildasm = s},
+                {"x64WsdlTool", s => X64.Wsdl = s},
+                {"x64ClrVerTool", s => X64.ClrVer = s},
+                {"x64XsdExeTool", s => X64.XsdExe = s},
+                {"x64CdbTool", s => X64.Cdb = s},
+                {"x64TListTool", s => X64.TList = s},
+                {"x64SymChkTool", s => X64.SymChk = s},
+                {"x64DumpbinTool", s => X64.Dumpbin = s},
+                {"x64SqlCmdTool", s => X64.SqlCmd = s},
+                {"x64MdbgTool", s => X64.Mdbg = s},
+                {"x86IldasmTool", s => X86.Ildasm = s},
+                {"x86SqlMetalTool", s => X86.SqlMetal = s},
+                {"x86SvcUtilTool", s => X86.SvcUtil = s},
+                {"x86WsdlTool", s => X86.Wsdl = s},
+                {"x86CdbTool", s => X86.Cdb = s},
+                {"x86DependsTool", s => X86.Depends = s},
+                {"x86DumpbinTool", s => X86.Dumpbin = s},
+                {"x86TextTransformTool", s => X86.TextTransform = s},
+                {"x86DotExeTool", s => X86.DotExe = s},
+                {"javaJavacTool", s => JavaTools.Javac = s},
+                {"javaJavaTool", s => JavaTools.Java = s},
+                {"javaJavaDocTool", s => JavaTools.JavaDoc = s},
+                {"javaJavaRtJarTool", s => JavaTools.JavaRtJar = s},
+                {"javaJarTool", s => JavaTools.Jar = s},
+                {"javaJRunScriptTool", s => JavaTools.JRunScript = s},
+                {"javaAntlrTool", s => JavaTools.Antlr = s},
+                {"javaStanfordPostTaggerTool", s => JavaTools.StanfordPostTagger = s},
+                {"javaStanfordPostTaggerModelsTool", s => JavaTools.StanfordPostTaggerModels = s},
+                {"customDia2DumpTool", s => CustomTools.Dia2Dump = s},
+                {"customInvokeGetCgTypeTool", s => CustomTools.InvokeGetCgType = s},
+                {"customInvokeGraphVizTool", s => CustomTools.InvokeGraphViz = s},
+                {"customInvokeAssemblyAnalysisTool", s => CustomTools.InvokeAssemblyAnalysis = s},
+                {"customInvokeFlattenTool", s => CustomTools.InvokeFlatten = s},
+                {"customUtilPosHostTool", s => CustomTools.UtilPosHost = s},
+                {"customInvokeDpxTool", s => CustomTools.InvokeDpx = s},
+                {"customInvokeNfTypeNameTool", s => CustomTools.InvokeNfTypeName = s},
+                {"binFfmpegTool", s => BinTools.Ffmpeg = s},
+                {"binYoutubeDlTool", s => BinTools.YoutubeDl = s},
+                {"tempRootDir", s => TempDirectories.Root = s},
+                {"tempProcsDir", s => TempDirectories.StoredProcedures = s},
+                {"tempCodeDir", s => TempDirectories.Code = s},
+                {"tempTextDir", s => TempDirectories.Text = s},
+                {"tempDebugsDir", s => TempDirectories.Debug = s},
+                {"tempGraphDir", s => TempDirectories.Graph = s},
+                {"tempSvcUtilDir", s => TempDirectories.SvcUtil = s},
+                {"tempWsdlDir", s => TempDirectories.Wsdl = s},
+                {"tempHbmDir", s => TempDirectories.Hbm = s},
+                {"tempBinDir", s => TempDirectories.Binary = s},
+                {"tempJavaSrcDir", s => TempDirectories.JavaSrc = s},
+                {"tempJavaBuildDir", s => TempDirectories.JavaBuild = s},
+                {"tempJavaDistDir", s => TempDirectories.JavaDist = s},
+                {"tempJavaArchiveDir", s => TempDirectories.JavaArchive = s},
+                {"tempCalendarDir", s => TempDirectories.Calendar = s},
+                {"tempHttpAppDomainDir", s => TempDirectories.HttpAppDomain = s},
+                {"tempTsvCsvDir", s => TempDirectories.TsvCsv = s},
+                {"binRootDir", s => BinDirectories.Root = s},
+                {"binX64RootDir", s => BinDirectories.X64Root = s},
+                {"binX86RootDir", s => BinDirectories.X86Root = s},
+                {"binJavaRootDir", s => BinDirectories.JavaRoot = s},
+                {"binT4TemplatesDir", s => BinDirectories.T4Templates = s},
+                {"binPhpRootDir", s => BinDirectories.PhpRoot = s},
+                {"binDataRootDir", s => BinDirectories.DataRoot = s},
+                {"portNsLookupPort", s => NfDefaultPorts.NsLookupPort = Convert.ToInt32(s)},
+                {"portDomainEngine", s => NfDefaultPorts.DomainEngine = Convert.ToInt32(s)},
+                {"portHostProc", s => NfDefaultPorts.HostProc = Convert.ToInt32(s)},
+                {"portAssemblyAnalysis", s => NfDefaultPorts.AssemblyAnalysis = Convert.ToInt32(s)},
+                {"portFlattenAssembly", s => NfDefaultPorts.FlattenAssembly = Convert.ToInt32(s)},
+                {"portPartOfSpeechPaserHost", s => NfDefaultPorts.PartOfSpeechPaserHost = Convert.ToInt32(s)},
+                {"portSjclToPlainText", s => NfDefaultPorts.SjclToPlainText = Convert.ToInt32(s)},
+                {"portSjclToCipherText", s => NfDefaultPorts.SjclToCipherText = Convert.ToInt32(s)},
+                {"portSjclHashPort", s => NfDefaultPorts.SjclHashPort = Convert.ToInt32(s)},
+                {"portNfTypeNamePort", s => NfDefaultPorts.NfTypeNamePort = Convert.ToInt32(s)},
+                {"portHbmInvokeStoredProcMgr", s => NfDefaultPorts.HbmInvokeStoredProcMgr = Convert.ToInt32(s)},
+                {"switchPrintWebHeaders", s => Switches.PrintWebHeaders = Convert.ToBoolean(s)},
+                {"switchSqlCmdHeadersOff", s => Switches.SqlCmdHeadersOff = Convert.ToBoolean(s)},
+                {"switchSqlFiltersOff", s => Switches.SqlFiltersOff = Convert.ToBoolean(s)},
+                {"switchSupressNpp", s => Switches.SupressNpp = Convert.ToBoolean(s)},
+                {"keyAesEncryptionKey", s => SecurityKeys.AesEncryptionKey = s},
+                {"keyAesIV", s => SecurityKeys.AesIV = s},
+                {"keyHMACSHA1", s => SecurityKeys.HMACSHA1 = s},
+
+            };
+            var assignedSomething = false;
+            var assignmentKeys = assignmentHash.Keys;
+            foreach (var key in assignmentKeys)
+            {
+                if (!idValueHash.ContainsKey(key))
+                    continue;
+                var val = idValueHash[key];
+                var act = assignmentHash[key];
+                act(val);
+                assignedSomething = true;
+            }
+
+            return assignedSomething;
+        }
+
+        internal static void ResolveIdValueHash(Dictionary<string, string> idValueHash)
+        {
+            if(!idValueHash.ContainsKey(MY_PS_HOME_VAR_NAME))
+                idValueHash.Add(MY_PS_HOME_VAR_NAME, Environment.CurrentDirectory);
+
+            var keys = idValueHash.Keys.ToArray();
+            foreach (var id in keys)
+            {
+                idValueHash[id] = ExpandCfgValue(idValueHash, idValueHash[id]);
+            }
+        }
+
+        internal static string ExpandCfgValue(Dictionary<string, string> idValueHash, string value)
+        {
+            var xRefId = "";
+            if (!RegexCatalog.IsRegexMatch(value, @"\x24\x28([a-zA-Z0-9_\-\x25\x28\x29]+)\x29", out xRefId, 1))
+                return value;
+
+            var valueLessXrefId = value.Replace($"$({xRefId})", "");
+
+            if (xRefId.StartsWith("%") && xRefId.EndsWith("%")) 
+            {
+                xRefId = Environment.ExpandEnvironmentVariables(xRefId);
+                return $"{xRefId}{valueLessXrefId}";
+            }
+
+            if (!idValueHash.ContainsKey(xRefId))
+                return $"{Environment.CurrentDirectory}{valueLessXrefId}";
+
+            if (idValueHash[xRefId].Contains("$"))
+            {
+                var rValue = ExpandCfgValue(idValueHash, idValueHash[xRefId]);
+                return $"{rValue}{valueLessXrefId}";
+            }
+
+            return $"{idValueHash[xRefId]}{valueLessXrefId}";
+        }
+
+        internal static Dictionary<string, string> GetIdValueHash(XmlDocument cfgXml)
+        {
+            var idNodes = cfgXml.SelectNodes("//*[@id]");
+            if (idNodes == null)
+                throw new RahRowRagee($"The {FILE_NAME} has no 'id' " +
+                                      $"attributes and is probably not the correct file");
+
+            var idValueHash = new Dictionary<string, string>();
+            foreach (var idNode in idNodes)
+            {
+                var idElem = idNode as XmlElement;
+                if (idElem == null
+                    || !idElem.HasAttributes
+                    || string.IsNullOrWhiteSpace(idElem.Attributes["id"]?.Value)
+                    || string.IsNullOrWhiteSpace(idElem.Attributes["value"]?.Value))
+                    continue;
+                var id = idElem.Attributes["id"].Value;
+                var val = idElem.Attributes["value"].Value;
+                if (idValueHash.ContainsKey(id))
+                    idValueHash[id] = val;
+                else
+                    idValueHash.Add(id, val);
+
+            }
+            return idValueHash;
+        }
+        #endregion
+
         private static int _threadSleepTime;
 
         public static string NfLoggerName { get; set; } = "NfConsoleLogger";
@@ -64,33 +290,33 @@ namespace NoFuture.Shared
         /// </summary>
         public static string SymbolsPath { get; set; } = @"C:\Symbols";
 
-        public const char DEFAULT_TYPE_SEPARATOR = '.';
+        public static char DefaultTypeSeparator { get; set; } = '.';
 
         /// <summary>
         /// The comma is a typical delimiter in many programming constructs.
         /// </summary>
-        public const char DEFAULT_CHAR_SEPARATOR = ',';
+        public static char DefaultCharSeparator { get; set; } = ',';
 
         /// <summary>
         /// Typical char of '-' used to delimit the start of a command line switch.
         /// </summary>
-        public const string CMD_LINE_ARG_SWITCH = "-";
+        public static string CmdLineArgSwitch { get; set; } = "-";
 
         /// <summary>
         /// Not so typical char of '=' used to right of a command line switch 
         /// to represent that said switch's assignment
         /// </summary>
-        public const char CMD_LINE_ARG_ASSIGN = '=';
+        public static char CmdLineArgAssign { get; set; } = '=';
 
-        public const long DEFAULT_BLOCK_SIZE = 256;
+        public static long DefaultBlockSize { get; set; } = 256;
 
-        public static char[] PyPunctuationChars = {
+        public static char[] PyPunctuationChars { get; set; } = {
             '!', '"', '#', '$', '%', '&', '\\', '\'', '(', ')',
             '*', '+', ',', '-', '.', '/', ':', ';', '<', '=', '>',
             '?','@', '[', ']', '^', '_', '`', '{', '|', '}', '~'
         };
 
-        public static string[] CodeExtensions =
+        public static string[] CodeExtensions { get; set; } =
         {
             "asa", "asax", "ascx", "asmx", "asp", "aspx", "bas", "cls", "cpp", "c", "cs", "css", "frm", "h",
             "htm", "html", "java", "js", "master", "ps1", "sql", "vb", "vbs", "wsdl", "wsf", "xsd", "xsl", "xslt", "dsr",
@@ -110,7 +336,7 @@ namespace NoFuture.Shared
 
         };
 
-        public static string[] ConfigExtensions =
+        public static string[] ConfigExtensions { get; set; } =
         {
             "csproj", "vbproj", "fsproj", "vbp", "sln",
             "vdproj", "dsw", "vsmdi", "dtproj",
@@ -136,7 +362,7 @@ namespace NoFuture.Shared
             "psd1", //Powershell Data File 
         };
 
-        public static string[] BinaryExtensions =
+        public static string[] BinaryExtensions { get; set; } =
         {
             "001","002","003","004","005","006","007","008","009","010","7z","aas",
             "acm","addin","adm","am","amx","ani","apk","apl","aps","aux","avi","ax",
@@ -168,7 +394,7 @@ namespace NoFuture.Shared
             "wtv","wwd","x32","xex","xlb","xls","xlsx","zfsendtotarget","zip","pkc"
         };
 
-        public static string[] ExcludeCodeDirectories = new[]
+        public static string[] ExcludeCodeDirectories { get; set; } = new[]
         {
             @"\bin\",
             @"\obj\",

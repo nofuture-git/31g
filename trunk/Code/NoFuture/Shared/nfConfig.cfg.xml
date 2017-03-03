@@ -7,6 +7,7 @@ $(%environmentVar%) means, "resolve this to the environment variable contained i
 <no-future>
   <shared>
     <config>
+      <root id="myPsHome" value="C:\Projects\31g\trunk" />
       <chars>
         <punctuation><![CDATA[. ? ' " : ! , ; { } [ ] ( ) _ @ % & * - \\ /]]></punctuation>
         <default-type-separator><![CDATA[.]]></default-type-separator>

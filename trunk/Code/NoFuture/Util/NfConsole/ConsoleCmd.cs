@@ -19,7 +19,7 @@ namespace NoFuture.Util.NfConsole
         /// <returns></returns>
         public static DictionaryEntry? ParseArgKey2StringHash(String cmdLineArg)
         {
-            if (cmdLineArg.StartsWith(NfConfig.CMD_LINE_ARG_SWITCH))
+            if (cmdLineArg.StartsWith(NfConfig.CmdLineArgSwitch))
                 cmdLineArg = cmdLineArg.Remove(0, 1); //remove dash
 
             var key = new StringBuilder();
@@ -27,7 +27,7 @@ namespace NoFuture.Util.NfConsole
             var switchToVal = false;
             foreach (var c in cmdLineArg.ToCharArray())
             {
-                if (!switchToVal && c == NfConfig.CMD_LINE_ARG_ASSIGN)
+                if (!switchToVal && c == NfConfig.CmdLineArgAssign)
                 {
                     switchToVal = true;
                     continue;
@@ -51,7 +51,7 @@ namespace NoFuture.Util.NfConsole
         /// <summary>
         /// A reusable function for parsing a Main statement's args string
         /// array into a hashtable of key value pairs using the delimiters 
-        /// <see cref="NfConfig.CMD_LINE_ARG_SWITCH"/> and <see cref="NfConfig.CMD_LINE_ARG_ASSIGN"/>
+        /// <see cref="NfConfig.CmdLineArgSwitch"/> and <see cref="NfConfig.CmdLineArgAssign"/>
         /// </summary>
         /// <param name="args"></param>
         /// <returns></returns>
@@ -75,12 +75,12 @@ namespace NoFuture.Util.NfConsole
         public static string ConstructCmdLineArgs(string argName, string argValue)
         {
             var cmdArg = new StringBuilder();
-            cmdArg.Append(NfConfig.CMD_LINE_ARG_SWITCH);
+            cmdArg.Append(NfConfig.CmdLineArgSwitch);
             cmdArg.Append(argName);
             if (string.IsNullOrWhiteSpace(argValue))
                 return cmdArg.ToString();
 
-            cmdArg.Append(NfConfig.CMD_LINE_ARG_ASSIGN);
+            cmdArg.Append(NfConfig.CmdLineArgAssign);
             cmdArg.Append(argValue.Contains(" ")
                 ? $"\"{argValue}\""
                 : $"{argValue}");

@@ -13,7 +13,7 @@ namespace NoFuture.Util.Pos
     public class PosParserHost : InvokeConsoleBase
     {
         private readonly InvokePosParserCmd _myCmd;
-        public static int DF_START_PORT = NfConfig.NfDefaultPorts.PartOfSpeechPaserHost;
+        public static int DefaultPort = NfConfig.NfDefaultPorts.PartOfSpeechPaserHost;
 
         /// <summary>
         /// The ctor will create this instance and launch the remote process.
@@ -30,7 +30,7 @@ namespace NoFuture.Util.Pos
 
             MyProcess = StartRemoteProcess(NfConfig.CustomTools.UtilPosHost, null);
 
-            _myCmd = new InvokePosParserCmd { ProcessId = MyProcessId, SocketPort = DF_START_PORT };
+            _myCmd = new InvokePosParserCmd { ProcessId = MyProcessId, SocketPort = DefaultPort };
         }
 
         /// <summary>

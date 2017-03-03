@@ -86,8 +86,8 @@ namespace NoFuture.Tokens.InvokeNfTypeName
             help.AppendLine(" -h | -help             Will print this help.");
             help.AppendLine("");
             help.AppendLine(string.Format(" {0}{1}{2}[INT]      Optional, cmd line port for the ",
-                NfConfig.CMD_LINE_ARG_SWITCH, NfTypeNameProcess.GET_NF_TYPE_NAME_CMD_SWITCH,
-                NfConfig.CMD_LINE_ARG_ASSIGN));
+                NfConfig.CmdLineArgSwitch, NfTypeNameProcess.GET_NF_TYPE_NAME_CMD_SWITCH,
+                NfConfig.CmdLineArgAssign));
             help.AppendLine("                                 the NfTypeNameProgram, defaults to app.config.");
             help.AppendLine("");
             return help.ToString();

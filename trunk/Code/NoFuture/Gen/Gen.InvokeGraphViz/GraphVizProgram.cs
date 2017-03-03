@@ -166,29 +166,29 @@ namespace NoFuture.Gen.InvokeGraphViz
             help.AppendLine(" -h | -help             Will print this help.");
             help.AppendLine("");
             help.AppendLine(string.Format(" {0}{1}{2}[STRING]      The full directory path ",
-                NfConfig.CMD_LINE_ARG_SWITCH, Settings.INVOKE_ASM_PATH_SWITCH,
-                NfConfig.CMD_LINE_ARG_ASSIGN));
+                NfConfig.CmdLineArgSwitch, Settings.INVOKE_ASM_PATH_SWITCH,
+                NfConfig.CmdLineArgAssign));
             help.AppendLine("                        to a valid .NET assembly. ");
             help.AppendLine("");
             help.AppendLine(string.Format(" {0}{1}{2}[STRING]      The types full name ",
-                NfConfig.CMD_LINE_ARG_SWITCH, Settings.INVOKE_FULL_TYPE_NAME_SWITCH,
-                NfConfig.CMD_LINE_ARG_ASSIGN));
+                NfConfig.CmdLineArgSwitch, Settings.INVOKE_FULL_TYPE_NAME_SWITCH,
+                NfConfig.CmdLineArgAssign));
             help.AppendLine("                        (i.e. the namespace and class name).");
             help.AppendLine("");
             help.AppendLine(string.Format(" [{0}{1}]      Optional switch to have Enum's values displayed",
-                NfConfig.CMD_LINE_ARG_SWITCH, Settings.INVOKE_GRAPHVIZ_DISPLAY_ENUMS));
+                NfConfig.CmdLineArgSwitch, Settings.INVOKE_GRAPHVIZ_DISPLAY_ENUMS));
             help.AppendLine("");
             help.AppendLine(string.Format(" [{0}{1}]      Optional switch to have Assembly Diagram outlined ",
-                NfConfig.CMD_LINE_ARG_SWITCH, Settings.ASM_OBJ_OUTLINE_NS));
+                NfConfig.CmdLineArgSwitch, Settings.ASM_OBJ_OUTLINE_NS));
             help.AppendLine("                        namespaces.");
             help.AppendLine("");
             help.AppendLine(string.Format(" {0}{1}{2}[{3}]      The kind of diagram to create.",
-                NfConfig.CMD_LINE_ARG_SWITCH, Settings.INVOKE_GRAPHVIZ_DIAGRAM_TYPE, NfConfig.CMD_LINE_ARG_ASSIGN,
+                NfConfig.CmdLineArgSwitch, Settings.INVOKE_GRAPHVIZ_DIAGRAM_TYPE, NfConfig.CmdLineArgAssign,
                 string.Join(" | ", _implementedDiagrams)));
             help.AppendLine("");
             help.AppendLine(string.Format(" [{0}{1}{2}[\n  {3}]]              Optional for limiting to kinds of types.",
-                NfConfig.CMD_LINE_ARG_SWITCH, Settings.INVOKE_GRAPHVIZ_FLATTENED_LIMIT_TYPE,
-                NfConfig.CMD_LINE_ARG_ASSIGN,
+                NfConfig.CmdLineArgSwitch, Settings.INVOKE_GRAPHVIZ_FLATTENED_LIMIT_TYPE,
+                NfConfig.CmdLineArgAssign,
                 string.Join("\n| ", Etc.ValueTypesList)));
             help.AppendLine("");
             return help.ToString();

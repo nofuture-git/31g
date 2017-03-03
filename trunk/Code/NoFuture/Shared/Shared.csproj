@@ -49,7 +49,6 @@
     <Compile Include="CipherText.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Exceptions.cs" />
-    <Compile Include="Globals.cs" />
     <Compile Include="ITagset.cs" />
     <Compile Include="MetadataTokens.cs" />
     <Compile Include="Misc.cs" />

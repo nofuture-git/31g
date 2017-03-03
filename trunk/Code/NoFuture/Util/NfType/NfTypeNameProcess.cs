@@ -10,7 +10,7 @@ namespace NoFuture.Util.NfType
     public class NfTypeNameProcess : InvokeConsoleBase
     {
         public const string GET_NF_TYPE_NAME_CMD_SWITCH = "getNfTypeName";
-        public static int DF_NF_TYPENAME_PORT = NfConfig.NfDefaultPorts.NfTypeNamePort;
+        public static int DefaultPort = NfConfig.NfDefaultPorts.NfTypeNamePort;
 
         private readonly InvokeGetNfTypeName _invokeCmd;
 
@@ -25,7 +25,7 @@ namespace NoFuture.Util.NfType
                 _invokeCmd = new InvokeGetNfTypeName
                 {
                     ProcessId = MyProcess.Id,
-                    SocketPort = port.GetValueOrDefault(DF_NF_TYPENAME_PORT)
+                    SocketPort = port.GetValueOrDefault(DefaultPort)
                 };
                 return;
             }
@@ -34,7 +34,7 @@ namespace NoFuture.Util.NfType
                 throw new ItsDeadJim("Don't know where to locate the NoFuture.Tokens.InvokeNfTypeName.exe, assign " +
                                      "the global variable at NoFuture.Tools.CustomTools.InvokeNfTypeName.");
 
-            var cmdPort = port.GetValueOrDefault(DF_NF_TYPENAME_PORT);
+            var cmdPort = port.GetValueOrDefault(DefaultPort);
             var args = ConsoleCmd.ConstructCmdLineArgs(GET_NF_TYPE_NAME_CMD_SWITCH, cmdPort.ToString());
 
             MyProcess = StartRemoteProcess(NfConfig.CustomTools.InvokeNfTypeName, args);

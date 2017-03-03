@@ -102,7 +102,7 @@ namespace NoFuture.Hbm.InvokeStoredProc
                             using (var com = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.IP))
                             {
                                 Settings.WriteToStoredProcLog($"Sent from process '{processMsg}'");
-                                com.Connect(new IPEndPoint(IPAddress.Loopback, InvokeStoredProcManager.SOCKET_COMM_PORT));
+                                com.Connect(new IPEndPoint(IPAddress.Loopback, InvokeStoredProcManager.DefaultPort));
                                 com.Send(Encoding.UTF8.GetBytes(processMsg.ToString()));
                                 com.Close();
                             }
@@ -159,26 +159,26 @@ namespace NoFuture.Hbm.InvokeStoredProc
             help.AppendLine(" -h | -help             Will print this help.");
             help.AppendLine("");
             help.AppendLine(string.Format(" {0}{1}{2}[STRING]      The full directory path ",
-                Shared.NfConfig.CMD_LINE_ARG_SWITCH, InvokeStoredProcManager.HBM_STORED_PROX_DIR_SWITCH,
-                Shared.NfConfig.CMD_LINE_ARG_ASSIGN));
+                Shared.NfConfig.CmdLineArgSwitch, InvokeStoredProcManager.HBM_STORED_PROX_DIR_SWITCH,
+                Shared.NfConfig.CmdLineArgAssign));
             help.AppendLine("                        where the resulting .xsd files are to be ");
             help.AppendLine("                        placed.");
             help.AppendLine("");
             help.AppendLine(string.Format(" {0}{1}{2}[STRING]      Must be a valid connection ",
-                Shared.NfConfig.CMD_LINE_ARG_SWITCH, InvokeStoredProcManager.CONNECTION_STR_SWITCH,
-                Shared.NfConfig.CMD_LINE_ARG_ASSIGN));
+                Shared.NfConfig.CmdLineArgSwitch, InvokeStoredProcManager.CONNECTION_STR_SWITCH,
+                Shared.NfConfig.CmdLineArgAssign));
             help.AppendLine("                        string to an accessable SqlServer");
             help.AppendLine("");
             help.AppendLine(string.Format(" {0}{1}{2}[STRING]   The path to a binary ",
-                Shared.NfConfig.CMD_LINE_ARG_SWITCH, InvokeStoredProcManager.FILE_PATH_SWITCH,
-                Shared.NfConfig.CMD_LINE_ARG_ASSIGN));
+                Shared.NfConfig.CmdLineArgSwitch, InvokeStoredProcManager.FILE_PATH_SWITCH,
+                Shared.NfConfig.CmdLineArgAssign));
             help.AppendLine(string.Format("                        serialization of \n     '{0}' ",
                 typeof (SortingContainers.StoredProcMetadata).FullName));
             help.AppendLine("");
             help.AppendLine(string.Format(" {0}{1}{2}[BOOL]      Tells exe to send messages back  ",
-                Shared.NfConfig.CMD_LINE_ARG_SWITCH, InvokeStoredProcManager.SEND_MESSAGES_BACK_ON_SOCKET,
-                Shared.NfConfig.CMD_LINE_ARG_ASSIGN));
-            help.AppendLine(string.Format("                        on the loopback:{0}",InvokeStoredProcManager.SOCKET_COMM_PORT));
+                Shared.NfConfig.CmdLineArgSwitch, InvokeStoredProcManager.SEND_MESSAGES_BACK_ON_SOCKET,
+                Shared.NfConfig.CmdLineArgAssign));
+            help.AppendLine(string.Format("                        on the loopback:{0}",InvokeStoredProcManager.DefaultPort));
             help.AppendLine("");
 
             return help.ToString();

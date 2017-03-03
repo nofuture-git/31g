@@ -110,7 +110,7 @@ namespace NoFuture.Hbm.Templates
 
         public Ef35PropertyAttr(ColumnMetadata md, bool addUpdateCheckNever)
         {
-            Name = Etc.ExtractLastWholeWord(md.column_name, NfConfig.DEFAULT_TYPE_SEPARATOR);
+            Name = Etc.ExtractLastWholeWord(md.column_name, NfConfig.DefaultTypeSeparator);
             _composedName = Compose.PropertyName(md.column_name);
             DbType = md.data_type.ToUpper();
 

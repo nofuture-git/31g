@@ -118,18 +118,18 @@ namespace NoFuture.Gen.InvokeGetCgOfType
             help.AppendLine(" -h | -help             Will print this help.");
             help.AppendLine("");
             help.AppendLine(string.Format(" {0}{1}{2}[STRING]      The full directory path ",
-                Shared.NfConfig.CMD_LINE_ARG_SWITCH, Settings.INVOKE_ASM_PATH_SWITCH,
-                Shared.NfConfig.CMD_LINE_ARG_ASSIGN));
+                Shared.NfConfig.CmdLineArgSwitch, Settings.INVOKE_ASM_PATH_SWITCH,
+                Shared.NfConfig.CmdLineArgAssign));
             help.AppendLine("                        to a valid .NET assembly. ");
             help.AppendLine("");
             help.AppendLine(string.Format(" {0}{1}{2}[STRING]      The types full name ",
-                Shared.NfConfig.CMD_LINE_ARG_SWITCH, Settings.INVOKE_FULL_TYPE_NAME_SWITCH,
-                Shared.NfConfig.CMD_LINE_ARG_ASSIGN));
+                Shared.NfConfig.CmdLineArgSwitch, Settings.INVOKE_FULL_TYPE_NAME_SWITCH,
+                Shared.NfConfig.CmdLineArgAssign));
             help.AppendLine("                        (i.e. the namespace and class name).");
             help.AppendLine("");
             help.AppendLine(string.Format(" {0}{1}{2}[True|False]      Optional switch to have ",
-                Shared.NfConfig.CMD_LINE_ARG_SWITCH, Settings.INVOKE_RESOLVE_ALL_DEPENDENCIES,
-                Shared.NfConfig.CMD_LINE_ARG_ASSIGN));
+                Shared.NfConfig.CmdLineArgSwitch, Settings.INVOKE_RESOLVE_ALL_DEPENDENCIES,
+                Shared.NfConfig.CmdLineArgAssign));
             help.AppendLine("                        the IL of every member inspected for  ");
             help.AppendLine("                        dependencies to other assemblies.  ");
             help.AppendLine("");

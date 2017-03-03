@@ -146,7 +146,7 @@ namespace NoFuture.Hbm
         /// is - a constant.  The process will send UTF8 string versions of <see cref="InvokeStoredProcExeMessage"/>
         /// across the socket and the manager, listening on the same port, will receive and record them.
         /// </summary>
-        public static int SOCKET_COMM_PORT = NfConfig.NfDefaultPorts.HbmInvokeStoredProcMgr;
+        public static int DefaultPort = NfConfig.NfDefaultPorts.HbmInvokeStoredProcMgr;
         #endregion
 
         #region message communication
@@ -237,7 +237,7 @@ namespace NoFuture.Hbm
             using (
                 var processListeningSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.IP))
             {
-                processListeningSocket.Bind(new IPEndPoint(IPAddress.Loopback, SOCKET_COMM_PORT));
+                processListeningSocket.Bind(new IPEndPoint(IPAddress.Loopback, DefaultPort));
                 processListeningSocket.Listen(5);
 
                 for (; ; )
@@ -251,15 +251,15 @@ namespace NoFuture.Hbm
                         while (client.Available > 0)
                         {
                             byte[] bytes;
-                            if (client.Available < Shared.NfConfig.DEFAULT_BLOCK_SIZE)
+                            if (client.Available < Shared.NfConfig.DefaultBlockSize)
                             {
                                 bytes = new byte[client.Available];
                                 bytesReceived += client.Receive(bytes, 0, client.Available, 0);
                             }
                             else
                             {
-                                bytes = new byte[Shared.NfConfig.DEFAULT_BLOCK_SIZE];
-                                bytesReceived += client.Receive(bytes, 0, (int)Shared.NfConfig.DEFAULT_BLOCK_SIZE, 0);
+                                bytes = new byte[Shared.NfConfig.DefaultBlockSize];
+                                bytesReceived += client.Receive(bytes, 0, (int)Shared.NfConfig.DefaultBlockSize, 0);
                             }
 
                             received.AddRange(bytes);
@@ -298,7 +298,7 @@ namespace NoFuture.Hbm
                     }
                     catch (Exception ex)
                     {
-                        Settings.WriteToStoredProcLog(ex, string.Format("Socket error while listening for external NoFuture.Hbm.InvokeStoredProc.exe on port '{0}'.", SOCKET_COMM_PORT));
+                        Settings.WriteToStoredProcLog(ex, string.Format("Socket error while listening for external NoFuture.Hbm.InvokeStoredProc.exe on port '{0}'.", DefaultPort));
                     }
                 }
             }

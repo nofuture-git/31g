@@ -30,7 +30,6 @@
     <Compile Include="constants.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="globals.py" />
     <Compile Include="nfConfig.py">
       <SubType>Code</SubType>
     </Compile>

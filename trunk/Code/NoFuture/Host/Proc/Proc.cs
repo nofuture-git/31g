@@ -112,7 +112,7 @@ namespace NoFuture.Host
 
         #region constants
 
-        public const int DEFAULT_PORT = NfConfig.NfDefaultPorts.HostProc;
+        public static int DefaultPort = NfConfig.NfDefaultPorts.HostProc;
         public const int BUFFSIZE = 512;
         public const int DEFAULT_THREAD_WAIT_MS = 50;
         public const int DEFAULT_WAIT_COUNT = 40; //roughly 2 seconds @ 50ms each
@@ -226,7 +226,7 @@ namespace NoFuture.Host
                 //start the comm link to the process
                 if (Port == 0)
                 {
-                    Port = DEFAULT_PORT;
+                    Port = DefaultPort;
                 }
                 if (WaitCount == 0)
                 {

@@ -207,8 +207,8 @@ namespace NoFuture.Util
                 return new[] {value};
 
             value = ToPascelCase(value);
-            value = TransformCaseToSeparator(value, NfConfig.DEFAULT_CHAR_SEPARATOR);
-            return value.Split(NfConfig.DEFAULT_CHAR_SEPARATOR).Distinct().ToArray();
+            value = TransformCaseToSeparator(value, NfConfig.DefaultCharSeparator);
+            return value.Split(NfConfig.DefaultCharSeparator).Distinct().ToArray();
         }
 
         /// <summary>
@@ -487,7 +487,7 @@ namespace NoFuture.Util
                         .ToArray());
 
             if (separator == null)
-                separator = NfConfig.DEFAULT_TYPE_SEPARATOR;
+                separator = NfConfig.DefaultTypeSeparator;
 
             var nameArray = name.Split(separator.Value);
             var nameFormatted = new StringBuilder();
@@ -610,7 +610,7 @@ namespace NoFuture.Util
                 return String.Empty;
 
             if (separator == null)
-                separator = NfConfig.DEFAULT_TYPE_SEPARATOR;
+                separator = NfConfig.DefaultTypeSeparator;
 
             if (!name.Contains(separator.ToString()))
                 return name;

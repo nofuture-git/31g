@@ -24,7 +24,7 @@ namespace NoFuture.Util.Gia
         public const string GET_ASM_INDICES_PORT_CMD_SWITCH = "nfGetAsmIndicies";
         public const string GET_TOKEN_PAGE_RANK_PORT_CMD_SWITCH = "nfGetTokenPageRank";
         public const string RESOLVE_GAC_ASM_SWITCH = "nfResolveGacAsm";
-        public static int DF_START_PORT = NfConfig.NfDefaultPorts.AssemblyAnalysis;
+        public static int DefaultPort = NfConfig.NfDefaultPorts.AssemblyAnalysis;
         #endregion
 
         #region fields
@@ -52,7 +52,7 @@ namespace NoFuture.Util.Gia
         /// <param name="resolveGacAsmNames"></param>
         /// <returns></returns>
         /// <remarks>
-        /// The ports used are defaulted to <see cref="DF_START_PORT"/>.
+        /// The ports used are defaulted to <see cref="DefaultPort"/>.
         /// </remarks>
         /// <remarks>
         /// <![CDATA[
@@ -138,7 +138,7 @@ namespace NoFuture.Util.Gia
                 throw new ItsDeadJim("Don't know where to locate the NoFuture.Util.Gia.InvokeAssemblyAnalysis, assign " +
                                      "the global variable at NoFuture.CustomTools.InvokeAssemblyAnalysis.");
 
-            var np = DF_START_PORT;
+            var np = DefaultPort;
             var usePorts = new int[4];
             for (var i = 0; i < usePorts.Length; i++)
             {
@@ -377,7 +377,7 @@ namespace NoFuture.Util.Gia
             if (string.IsNullOrWhiteSpace(tokenName))
                 return null;
 
-            var sep = NfConfig.DEFAULT_TYPE_SEPARATOR.ToString(CultureInfo.InvariantCulture);
+            var sep = NfConfig.DefaultTypeSeparator.ToString(CultureInfo.InvariantCulture);
 
             //assembly name and namespace being equal will have equal portion removed, add it back
             if (!string.IsNullOrWhiteSpace(owningAsmName) && tokenName.StartsWith(sep))

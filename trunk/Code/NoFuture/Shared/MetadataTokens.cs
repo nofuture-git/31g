@@ -273,7 +273,7 @@ namespace NoFuture.Shared
         public bool IsPartialName()
         {
             return !String.IsNullOrWhiteSpace(Name) &&
-                   Name.StartsWith(NfConfig.DEFAULT_TYPE_SEPARATOR.ToString(CultureInfo.InvariantCulture));
+                   Name.StartsWith(NfConfig.DefaultTypeSeparator.ToString(CultureInfo.InvariantCulture));
         }
 
         public override bool Equals(object obj)

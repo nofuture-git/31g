@@ -100,8 +100,8 @@ namespace NoFuture.Util.Gia.InvokeFlatten
             help.AppendLine(" -h | -help             Will print this help.");
             help.AppendLine("");
             help.AppendLine(String.Format(" {0}{1}{2}[INT]      Optional, cmd line port for the ",
-                NfConfig.CMD_LINE_ARG_SWITCH, Flatten.GET_FLAT_ASM_PORT_CMD_SWITCH,
-                NfConfig.CMD_LINE_ARG_ASSIGN));
+                NfConfig.CmdLineArgSwitch, Flatten.GET_FLAT_ASM_PORT_CMD_SWITCH,
+                NfConfig.CmdLineArgAssign));
             help.AppendLine("                                 the GetFlattenAssembly, defaults to app.config.");
             help.AppendLine("");
             return help.ToString();

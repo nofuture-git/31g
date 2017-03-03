@@ -21,7 +21,7 @@ namespace NoFuture.Util.Gia
     {
         #region constants
         public const string GET_FLAT_ASM_PORT_CMD_SWITCH = "nfGetFlattenAssemblyPort";
-        public static int DF_START_PORT = NfConfig.NfDefaultPorts.FlattenAssembly;
+        public static int DefaultPort = NfConfig.NfDefaultPorts.FlattenAssembly;
         #endregion
 
         #region fields
@@ -44,7 +44,7 @@ namespace NoFuture.Util.Gia
                 throw new ItsDeadJim("Don't know where to locate the NoFuture.Util.Gia.InvokeFlatten.exe, assign " +
                                      "the global variable at NoFuture.Tools.CustomTools.InvokeFlatten.");
             var args = string.Empty;
-            var getFlatAsmPort = DF_START_PORT;
+            var getFlatAsmPort = DefaultPort;
             if (ports != null && ports.Length > 0)
             {
                 getFlatAsmPort = ports[0];
