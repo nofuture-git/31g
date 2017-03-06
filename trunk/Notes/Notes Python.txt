@@ -223,6 +223,11 @@ Literals
   >>> bin(8)
   '0b1000'
   >>> hex(ord('\r')) #get hex value of char
+  
+  - conversions 
+   - not as critical as in a strongly type'd lang
+   import distutils.util as pyUtil
+   myString2Bool = bool(pyUtil.strtobool("false"))
 ----
 
 ----
@@ -329,6 +334,95 @@ Regex Module
  pobj = re.compile(pattern [,flags])
  
 ---- 
+
+----
+File IO
+ myFile = open(filename, ('r' | 'rb')
+  - 'r' for text 
+  - 'rb' for binary
+  - 'r+' for read\write
+  
+ myContent = myFile.read() #with 'rb' myContent is a string 
+                           #which would contain non-printables
+ myFile.read(n)  #read 1 to n more bytes
+ myFile.readline() #read upto next newline
+ myFile.readline() #list of strings as content
+ 
+ for ln in myFile #uses line iterator of the file object
+ 
+ myFile = open(filename, ('w' | 'wb'))
+ myFile.write(S) #write string 'S' to myFile
+ myFile.writelines(I) #write iterable I into w/o adding newline at each end
+ myFile.close() #release unmanaged resources
+ myFile.tell() #current cursor position
+ myFile.seek(offset [, 0 | 1 | 2])
+  - 0 is offset from start
+  - 1 is offset from current position
+  - 2 is offset from end
+ myFile.isatty() #bool for if file is connected to a tty-like device
+ myFile.flush() #flush file's stdio buffer 
+ myFile.fileno() #gets id for this file instance
+ 
+ myFile.closed #true | false
+ file.mode # 'r' | 'rb' | 'w' | 'wb' | 'r+'
+ file.name #files name
+ 
+ - recommended use try\finally for closing
+ try:
+     #file used
+ finally:
+     myFile.close()
+	 
+ - or, like .NET using statement
+ with open('temp.txt', 'r') as myfile:
+     #myfile is in scope
+----
+ 
+----
+IO Util
+ os.listdir('C:\\My Documents')
+ os.path.exists(path)
+ os.path.abspath(path)
+ os.path.basename(path)
+ os.path.dirname(path)
+ os.path.getsize(path)
+ os.path.isabs(path)
+ os.path.isfile(path)
+ os.path.isdir(path)
+ os.path.join(path1 [,path2]*)
+ (filepath, filename) = os.path.split(path) #splits dir from filename
+ (fileNameLessExt, fileExtension) = os.path.splittext(path) #splits filename from extension
+ myPath = os.path.join(os.path.expanduser("~"), "AppData\\Roaming")
+ 
+ - get environment variables
+ myEnvVar = os.environ.get("SOME_VAR_NAME")
+ 
+ - get python root dir
+ pyRoot = sys.prefix
+ 
+ - get machine info at
+ import distutils.util as pyUtil
+ myMachine = pyUtil.get_platform()
+ 
+----
+
+----
+Xml
+https://docs.python.org/3/library/xml.etree.elementtree.html#xml.etree.ElementTree.Element.iter
+import xml.etree.ElementTree as pyXml
+
+myData = pyXml.parse("C:\MyDir\MySubDir\MyXml.xml")
+myNodes = myData.findall("//my-x-path/to-some/node")
+myNode = myNodes[0]
+myInnerText = myNode.text
+
+myNodesAttribues = myNode.attrib
+myAttrValue = myNodesAttribues['id'] #raises error if not present
+#use 'get' to test if an attribute is present
+if myNode.get('id') != None:
+	myAttrValue = myNone.get('id')
+
+----
 
 ----
 Lists
@@ -468,6 +562,7 @@ Dictionaries
  D.clear()
  D.copy() #returns shallow copy
  D.update(D2) #union 
+ D.update({"myKey":"MyValue"})
  D.get(K) #get by key
  K in D #test for a key (replaces D.has_key(K) )
  for K in D
@@ -548,76 +643,6 @@ Sets
  Traceback (most re ...
  >>> E1.discard('z') #no error, nothing returned 
 ----
- 
-----
-File IO
- myFile = open(filename, ('r' | 'rb')
-  - 'r' for text 
-  - 'rb' for binary
-  - 'r+' for read\write
-  
- myContent = myFile.read() #with 'rb' myContent is a string 
-                           #which would contain non-printables
- myFile.read(n)  #read 1 to n more bytes
- myFile.readline() #read upto next newline
- myFile.readline() #list of strings as content
- 
- for ln in myFile #uses line iterator of the file object
- 
- myFile = open(filename, ('w' | 'wb'))
- myFile.write(S) #write string 'S' to myFile
- myFile.writelines(I) #write iterable I into w/o adding newline at each end
- myFile.close() #release unmanaged resources
- myFile.tell() #current cursor position
- myFile.seek(offset [, 0 | 1 | 2])
-  - 0 is offset from start
-  - 1 is offset from current position
-  - 2 is offset from end
- myFile.isatty() #bool for if file is connected to a tty-like device
- myFile.flush() #flush file's stdio buffer 
- myFile.fileno() #gets id for this file instance
- 
- myFile.closed #true | false
- file.mode # 'r' | 'rb' | 'w' | 'wb' | 'r+'
- file.name #files name
- 
- - recommended use try\finally for closing
- try:
-     #file used
- finally:
-     myFile.close()
-	 
- - or, like .NET using statement
- with open('temp.txt', 'r') as myfile:
-     #myfile is in scope
-----
- 
-----
-IO Util
- os.path.exists(path)
- os.path.abspath(path)
- os.path.basename(path)
- os.path.dirname(path)
- os.path.getsize(path)
- os.path.isabs(path)
- os.path.isfile(path)
- os.path.isdir(path)
- os.path.join(path1 [,path2]*)
- os.path.split(path) #splits dir from filename
- os.path.splittext(path) #splits filename from extension
-----
-
-----
-Xml
-https://docs.python.org/3/library/xml.etree.elementtree.html#xml.etree.ElementTree.Element.iter
-import xml.etree.ElementTree as pyXml
-
-myData = pyXml.parse("C:\MyDir\MySubDir\MyXml.xml")
-myNodes = myData.findall("//my-x-path/to-some/node")
-myNode = myNodes[0]
-myInnerText = myNode.text
-
-----
 
 ----
 Syntax Constructs & Conventions
@@ -669,6 +694,10 @@ Function & Call Syntax
  - inline function defined using the 'def' construct
   >>> def myfunc(a, b, c, d): print(a, b, c, d)
   
+ - function pointers can be as simple as the assignment op less the parenths
+   myFxToBool = bool
+   myFxToBool("True") #same as invoke of just 'bool("True")'
+  
  - function calls are comma-separated and positional
   - a argname=argvalue is allowed in function invocation
   - var-args are defined with the star or double-star 
@@ -715,6 +744,17 @@ Typical Constructs Syntax
   - what appears before the colon is the variable decls
    - the "(x, y) =>" the 'x' and 'y' in .NET before
      the "goes to"
+
+  - py assignment statements do not return anything and 
+    therefore the expression body cannot be an assignment
+	
+	myCls = MyClass()
+	myCls.myProperty = False
+	#this raises an error
+	lambda: myCls.myProperty = True
+	#use this instead
+	setattr(myCls, 'myProperty', True)
+	
  - and example from AIMA
   fitness_fn = lambda s: - problem.path_cost(0, s, None, s)
    - 's' is the only arg, 
@@ -748,12 +788,6 @@ Typical Constructs Syntax
    - could also be done at runtime like
   F = decor00( decor01( decor02(F)))
 ----
-
-----
-Access Modifiers
- - appear to be only two
- global, nonlocal
----- 
 
 ----
 Module Imports
@@ -855,6 +889,36 @@ Classes
      pass
  myP2 = Pof_11()
  print(myP2.attr) #results in '1'
+----
+
+----
+Access Modifiers
+ - appear to be by convention 
+
+ class MyClass:
+	MyPublicProperty = 1
+	_MyProtectedProperty = 2
+	__MyPrivateProperty = 3
+---- 
+
+----
+Class Properties
+ - quite different from Java & .NET
+ - kind of combo between decorators, implicity variables decl
+   and esoteric functions
+
+ class MyClass:
+	def __init__(self, myPropCtorTimeValue):
+		self.MyProp = myPropCtorTimeValue
+
+	@property
+	def MyProp(self):
+		return self.__MyProp
+
+	@MyProp.setter
+	def MyProp(self, val):
+		#my encapsulating logic is here
+		self.__MyProp = val
 ----
 
 ----

@@ -2,7 +2,7 @@ import encodings
 import string
 import Util.net as nfNet
 import Shared.constants as nfConstants
-from Shared.nfConfig import nfConfig
+import Shared.nfConfig as nfConfig
 
 def distillString(someString):
     """Distills the continous spaces into a single space and
@@ -207,10 +207,10 @@ def distillToWholeWords(value):
         return [value]
 
     value = toPascelCase(value)
-    value = transformCaseToSeparator(value, nfConfig.DEFAULT_CHAR_SEPARATOR)
+    value = transformCaseToSeparator(value, nfConfig.defaultCharSeparator)
     #need to perserve order
     outList = list()
-    for p in value.split(nfConfig.DEFAULT_CHAR_SEPARATOR):
+    for p in value.split(nfConfig.defaultCharSeparator):
         if not p in outList:
             outList.append(p)
     

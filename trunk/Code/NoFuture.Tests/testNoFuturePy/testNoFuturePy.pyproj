@@ -22,7 +22,16 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="testNoFuturePy.py" />
+    <Compile Include="shared_py\testNfConfig.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="util_py\testEtc.py">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="shared_py\" />
+    <Folder Include="util_py\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

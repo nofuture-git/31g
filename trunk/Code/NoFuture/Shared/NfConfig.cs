@@ -84,7 +84,7 @@ namespace NoFuture.Shared
             {"binFfmpegTool", s => BinTools.Ffmpeg = s},
             {"binYoutubeDlTool", s => BinTools.YoutubeDl = s},
             {"tempRootDir", s => TempDirectories.Root = s},
-            {"tempProcsDir", s => TempDirectories.StoredProcedures = s},
+            {"tempProcsDir", s => TempDirectories.StoredProx = s},
             {"tempCodeDir", s => TempDirectories.Code = s},
             {"tempTextDir", s => TempDirectories.Text = s},
             {"tempDebugsDir", s => TempDirectories.Debug = s},
@@ -557,7 +557,7 @@ namespace NoFuture.Shared
 
             public static string Root { get; set; }
             public static string Sql { get; set; }
-            public static string StoredProcedures { get; set; }
+            public static string StoredProx { get; set; }
             public static string Binary { get; set; }
             public static string Code { get; set; }
             public static string Graph { get; set; }

@@ -413,6 +413,7 @@ function Select-ProcedureString
     )
     Process
     {
+        $proxDir = [NoFuture.Shared.NfConfig+TempDirectories]::StoredProx
         #name
         $expression = [NoFuture.Sql.Mssql.Qry.Catalog]::SelectProcedureString
         $expression = [NoFuture.Sql.Mssql.Etc]::FilterSqlExpression($expression, "object_name(id)")
@@ -420,23 +421,23 @@ function Select-ProcedureString
         if($qryRslts -eq $null -or $qryRslts.Rows.Count -eq 0){return "no results"}
         
         #check for temp spot existing, make if not
-        if(-not (Test-Path ([NoFuture.Shared.NfConfig+TempDirectories]::StoredProcedures))){mkdir -Path ([NoFuture.Shared.NfConfig+TempDirectories]::StoredProcedures)}
+        if(-not (Test-Path $proxDir)){mkdir -Path $proxDir}
         
         #clear out the contents of the temp spot for every call herein
-        ls -Path ([NoFuture.Shared.NfConfig+TempDirectories]::StoredProcedures) | ? {-not $_.PSIsContainer} | % {rm -Path $_.FullName -Force}
+        ls -Path $proxDir | ? {-not $_.PSIsContainer} | % {rm -Path $_.FullName -Force}
         
         #iterate the procs looking for a match
         $procs = $qryRslts | % {
             if($_.ProcText -match $pattern){
             
                 #expect repeats so test before wasting time
-                $tempName = join-path ([NoFuture.Shared.NfConfig+TempDirectories]::StoredProcedures) ("{0}.sql" -f $_.ProcName)
+                $tempName = join-path $proxDir ("{0}.sql" -f $_.ProcName)
                 if(-not (Test-Path $tempName)){
                     $_.ProcText > $tempName
                 }
             } 
         }
-        ssr $pattern ([NoFuture.Shared.NfConfig+TempDirectories]::StoredProcedures)
+        ssr $pattern $proxDir
     }
 }
 
@@ -487,6 +488,7 @@ function Write-StoredProcedureToHost
     )
     Process
     {
+        $proxDir = [NoFuture.Shared.NfConfig+TempDirectories]::StoredProx
         $prettyProc = ""
         if([System.String]::IsNullOrWhiteSpace($SchemaName)) 
         { 
@@ -504,10 +506,10 @@ function Write-StoredProcedureToHost
 
         #print this to notepad++ since it has syntax highlighter
         
-        $tempName = join-path ([NoFuture.Shared.NfConfig+TempDirectories]::StoredProcedures) ("{0}.sql" -f ([NoFuture.Util.NfPath]::SafeFilename($ProcedureName)))
+        $tempName = join-path ($proxDir) ("{0}.sql" -f ([NoFuture.Util.NfPath]::SafeFilename($ProcedureName)))
         
         #check for temp spot existing, make if not
-        if(-not (Test-Path ([NoFuture.Shared.NfConfig+TempDirectories]::StoredProcedures))){mkdir -Path ([NoFuture.Shared.NfConfig+TempDirectories]::StoredProcedures)}
+        if(-not (Test-Path $proxDir)){mkdir -Path $proxDir}
         
         #remove any previous copies of this stored proc by force
         if(Test-Path $tempName){rm -Path $tempName -Force}
