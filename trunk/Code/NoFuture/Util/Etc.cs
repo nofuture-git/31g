@@ -537,7 +537,7 @@ namespace NoFuture.Util
             var nameFormatted = new StringBuilder();
             var markStart = false;
             var nameChars = name.ToCharArray();
-            var sepChars = NfConfig.PyPunctuationChars.ToList();
+            var sepChars = NfConfig.PunctuationChars.ToList();
             sepChars.Add(' ');
             for (var i = 0; i < nameChars.Length; i++)
             {

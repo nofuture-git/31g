@@ -360,20 +360,20 @@ namespace NoFuture.Util
         /// <returns></returns>
         public static bool TryGetRelPath(string currentWorkingDir, ref string somePath)
         {
-            if (String.IsNullOrWhiteSpace(currentWorkingDir))
+            if (string.IsNullOrWhiteSpace(currentWorkingDir))
                 return false;
 
-            if (String.IsNullOrWhiteSpace(somePath))
+            if (string.IsNullOrWhiteSpace(somePath))
                 return false;
 
             var somePathTemp = somePath;
 
             //resolve envrio vars if present
-            var tempPath = String.Empty;
+            var tempPath = string.Empty;
             if (TryResolveEnvVar(currentWorkingDir, ref tempPath))
                 currentWorkingDir = tempPath;
 
-            tempPath = String.Empty;
+            tempPath = string.Empty;
             if (TryResolveEnvVar(somePathTemp, ref tempPath))
                 somePathTemp = tempPath;
 
@@ -398,13 +398,13 @@ namespace NoFuture.Util
             }
 
             //must share the same drive
-            if (!String.Equals(Path.GetPathRoot(currentWorkingDir), Path.GetPathRoot(somePathTemp),
+            if (!string.Equals(Path.GetPathRoot(currentWorkingDir), Path.GetPathRoot(somePathTemp),
                 StringComparison.OrdinalIgnoreCase))
             {
                 return false;
             }
 
-            if (String.IsNullOrWhiteSpace(currentWorkingDir) || String.IsNullOrWhiteSpace(somePathTemp))
+            if (string.IsNullOrWhiteSpace(currentWorkingDir) || string.IsNullOrWhiteSpace(somePathTemp))
                 return false;
             var p = currentWorkingDir.Split(Path.DirectorySeparatorChar);
             var q = somePathTemp.Split(Path.DirectorySeparatorChar);
@@ -418,7 +418,7 @@ namespace NoFuture.Util
                     var pVal = p[i];
                     var qVal = q[j];
 
-                    if (!String.Equals(pVal, qVal, StringComparison.OrdinalIgnoreCase)) 
+                    if (!string.Equals(pVal, qVal, StringComparison.OrdinalIgnoreCase)) 
                         continue;
 
                     for(var m = (p.Length - 1 - i); m > 0; m--)
@@ -427,10 +427,10 @@ namespace NoFuture.Util
                     for(var k = j + 1; k < q.Length; k++)
                         pathOut.Add(q[k]);
 
-                    if(!String.IsNullOrWhiteSpace(somePathFile))
+                    if(!string.IsNullOrWhiteSpace(somePathFile))
                         pathOut.Add(somePathFile);
 
-                    somePath = String.Join(Path.DirectorySeparatorChar.ToString(CultureInfo.InvariantCulture), pathOut);
+                    somePath = string.Join(Path.DirectorySeparatorChar.ToString(CultureInfo.InvariantCulture), pathOut);
 
                     somePath = RemoveRedundantPathLeafs(somePath);
 
@@ -476,9 +476,9 @@ namespace NoFuture.Util
 
         /// <summary>
         /// Asserts that <see cref="somePath"/> has an extension 
-        /// which is represented by the lists at <see cref="NfConfig.CodeExtensions"/>
-        /// or <see cref="NfConfig.ConfigExtensions"/> 
-        /// or <see cref="NfConfig.BinaryExtensions"/>
+        /// which is represented by the lists at <see cref="NfConfig.CodeFileExtensions"/>
+        /// or <see cref="NfConfig.ConfigFileExtensions"/> 
+        /// or <see cref="NfConfig.BinaryFileExtensions"/>
         /// </summary>
         /// <param name="somePath"></param>
         /// <returns></returns>
@@ -486,42 +486,42 @@ namespace NoFuture.Util
         {
             var ext = Path.GetExtension(somePath);
             return !String.IsNullOrEmpty(ext) &&
-                   (NfConfig.CodeExtensions.Select(x => "." + x).Contains(ext) ||
-                    NfConfig.ConfigExtensions.Select(x => "." + x).Contains(ext) || 
-                    NfConfig.BinaryExtensions.Select(x => "." + x).Contains(ext));
+                   (NfConfig.CodeFileExtensions.Select(x => "." + x).Contains(ext) ||
+                    NfConfig.ConfigFileExtensions.Select(x => "." + x).Contains(ext) || 
+                    NfConfig.BinaryFileExtensions.Select(x => "." + x).Contains(ext));
         }
 
         /// <summary>
         /// Asserts the <see cref="somePath"/> is a file path
-        /// with one of the extensions in <see cref="NfConfig.CodeExtensions"/>
+        /// with one of the extensions in <see cref="NfConfig.CodeFileExtensions"/>
         /// </summary>
         /// <param name="somePath"></param>
         /// <returns></returns>
         public static bool IsCodeFileExtension(string somePath)
         {
-            return IsExtensionType(somePath, NfConfig.CodeExtensions);
+            return IsExtensionType(somePath, NfConfig.CodeFileExtensions);
         }
 
         /// <summary>
         /// Asserts the <see cref="somePath"/> is a file path
-        /// with one of the extensions in <see cref="NfConfig.ConfigExtensions"/>
+        /// with one of the extensions in <see cref="NfConfig.ConfigFileExtensions"/>
         /// </summary>
         /// <param name="somePath"></param>
         /// <returns></returns>
         public static bool IsConfigFileExtension(string somePath)
         {
-            return IsExtensionType(somePath, NfConfig.ConfigExtensions);
+            return IsExtensionType(somePath, NfConfig.ConfigFileExtensions);
         }
 
         /// <summary>
         /// Asserts the <see cref="somePath"/> is a file path
-        /// with one of the extensions in <see cref="NfConfig.BinaryExtensions"/>
+        /// with one of the extensions in <see cref="NfConfig.BinaryFileExtensions"/>
         /// </summary>
         /// <param name="somePath"></param>
         /// <returns></returns>
         public static bool IsBinaryFileExtension(string somePath)
         {
-            return IsExtensionType(somePath, NfConfig.BinaryExtensions);
+            return IsExtensionType(somePath, NfConfig.BinaryFileExtensions);
         }
 
         /// <summary>

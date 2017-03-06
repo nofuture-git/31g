@@ -8,15 +8,146 @@ using NoFuture.Exceptions;
 
 namespace NoFuture.Shared
 {
-
+    /// <summary>
+    /// Represents a central runtime hub from which all the other parts of the 
+    /// namespace are dependent.
+    /// </summary>
     public static class NfConfig
     {
         #region constants
+        /// <summary>
+        /// The file name from which <see cref="NfConfig"/> receives all its
+        /// values.
+        /// </summary>
         public const string FILE_NAME = "nfConfig.cfg.xml";
+
+        /// <summary>
+        /// A kind of &apos;root&apos; directory from which all the 
+        /// other paths in <see cref="FILE_NAME"/> are leafs.
+        /// </summary>
         internal const string MY_PS_HOME_VAR_NAME = "myPsHome";
         #endregion
 
+        #region fields
+        /// <summary>
+        /// Is the key-value hash which links the id's in <see cref="FILE_NAME"/> 
+        /// to the properties of the <see cref="NfConfig"/> 
+        /// </summary>
+        private static Dictionary<string, Action<string>> _cfgIdName2PropertyAssigment = new Dictionary
+            <string, Action<string>>
+        {
+            {"certFileNoFutureX509", s => SecurityKeys.NoFutureX509Cert = s},
+            {"tempJsFile", s => TempFiles.JavaScript = s},
+            {"tempHtmlFile", s => TempFiles.Html = s},
+            {"tempCsvFile", s => TempFiles.Csv = s},
+            {"tempStdOutFile", s => TempFiles.StdOut = s},
+            {"tempT4TemplateFile", s => TempFiles.T4Template = s},
+            {"tempNetStatFile", s => TempFiles.NetStat = s},
+            {"tempWmiFile", s => TempFiles.Wmi = s},
+            {"x64SvcUtilTool", s => X64.SvcUtil = s},
+            {"x64IldasmTool", s => X64.Ildasm = s},
+            {"x64WsdlTool", s => X64.Wsdl = s},
+            {"x64ClrVerTool", s => X64.ClrVer = s},
+            {"x64XsdExeTool", s => X64.XsdExe = s},
+            {"x64CdbTool", s => X64.Cdb = s},
+            {"x64TListTool", s => X64.TList = s},
+            {"x64SymChkTool", s => X64.SymChk = s},
+            {"x64DumpbinTool", s => X64.Dumpbin = s},
+            {"x64SqlCmdTool", s => X64.SqlCmd = s},
+            {"x64MdbgTool", s => X64.Mdbg = s},
+            {"x86IldasmTool", s => X86.Ildasm = s},
+            {"x86SqlMetalTool", s => X86.SqlMetal = s},
+            {"x86SvcUtilTool", s => X86.SvcUtil = s},
+            {"x86WsdlTool", s => X86.Wsdl = s},
+            {"x86CdbTool", s => X86.Cdb = s},
+            {"x86DependsTool", s => X86.Depends = s},
+            {"x86DumpbinTool", s => X86.Dumpbin = s},
+            {"x86TextTransformTool", s => X86.TextTransform = s},
+            {"x86DotExeTool", s => X86.DotExe = s},
+            {"javaJavacTool", s => JavaTools.Javac = s},
+            {"javaJavaTool", s => JavaTools.Java = s},
+            {"javaJavaDocTool", s => JavaTools.JavaDoc = s},
+            {"javaJavaRtJarTool", s => JavaTools.JavaRtJar = s},
+            {"javaJarTool", s => JavaTools.Jar = s},
+            {"javaJRunScriptTool", s => JavaTools.JRunScript = s},
+            {"javaAntlrTool", s => JavaTools.Antlr = s},
+            {"javaStanfordPostTaggerTool", s => JavaTools.StanfordPostTagger = s},
+            {"javaStanfordPostTaggerModelsTool", s => JavaTools.StanfordPostTaggerModels = s},
+            {"customDia2DumpTool", s => CustomTools.Dia2Dump = s},
+            {"customInvokeGetCgTypeTool", s => CustomTools.InvokeGetCgType = s},
+            {"customInvokeGraphVizTool", s => CustomTools.InvokeGraphViz = s},
+            {"customInvokeAssemblyAnalysisTool", s => CustomTools.InvokeAssemblyAnalysis = s},
+            {"customInvokeFlattenTool", s => CustomTools.InvokeFlatten = s},
+            {"customUtilPosHostTool", s => CustomTools.UtilPosHost = s},
+            {"customInvokeDpxTool", s => CustomTools.InvokeDpx = s},
+            {"customInvokeNfTypeNameTool", s => CustomTools.InvokeNfTypeName = s},
+            {"binFfmpegTool", s => BinTools.Ffmpeg = s},
+            {"binYoutubeDlTool", s => BinTools.YoutubeDl = s},
+            {"tempRootDir", s => TempDirectories.Root = s},
+            {"tempProcsDir", s => TempDirectories.StoredProcedures = s},
+            {"tempCodeDir", s => TempDirectories.Code = s},
+            {"tempTextDir", s => TempDirectories.Text = s},
+            {"tempDebugsDir", s => TempDirectories.Debug = s},
+            {"tempGraphDir", s => TempDirectories.Graph = s},
+            {"tempSvcUtilDir", s => TempDirectories.SvcUtil = s},
+            {"tempWsdlDir", s => TempDirectories.Wsdl = s},
+            {"tempHbmDir", s => TempDirectories.Hbm = s},
+            {"tempBinDir", s => TempDirectories.Binary = s},
+            {"tempJavaSrcDir", s => TempDirectories.JavaSrc = s},
+            {"tempJavaBuildDir", s => TempDirectories.JavaBuild = s},
+            {"tempJavaDistDir", s => TempDirectories.JavaDist = s},
+            {"tempJavaArchiveDir", s => TempDirectories.JavaArchive = s},
+            {"tempCalendarDir", s => TempDirectories.Calendar = s},
+            {"tempHttpAppDomainDir", s => TempDirectories.HttpAppDomain = s},
+            {"tempTsvCsvDir", s => TempDirectories.TsvCsv = s},
+            {"binRootDir", s => BinDirectories.Root = s},
+            {"binX64RootDir", s => BinDirectories.X64Root = s},
+            {"binX86RootDir", s => BinDirectories.X86Root = s},
+            {"binJavaRootDir", s => BinDirectories.JavaRoot = s},
+            {"binT4TemplatesDir", s => BinDirectories.T4Templates = s},
+            {"binPhpRootDir", s => BinDirectories.PhpRoot = s},
+            {"binDataRootDir", s => BinDirectories.DataRoot = s},
+            {"portNsLookupPort", s => NfDefaultPorts.NsLookupPort = Convert.ToInt32(s)},
+            {"portDomainEngine", s => NfDefaultPorts.DomainEngine = Convert.ToInt32(s)},
+            {"portHostProc", s => NfDefaultPorts.HostProc = Convert.ToInt32(s)},
+            {"portAssemblyAnalysis", s => NfDefaultPorts.AssemblyAnalysis = Convert.ToInt32(s)},
+            {"portFlattenAssembly", s => NfDefaultPorts.FlattenAssembly = Convert.ToInt32(s)},
+            {"portPartOfSpeechPaserHost", s => NfDefaultPorts.PartOfSpeechPaserHost = Convert.ToInt32(s)},
+            {"portSjclToPlainText", s => NfDefaultPorts.SjclToPlainText = Convert.ToInt32(s)},
+            {"portSjclToCipherText", s => NfDefaultPorts.SjclToCipherText = Convert.ToInt32(s)},
+            {"portSjclHashPort", s => NfDefaultPorts.SjclHashPort = Convert.ToInt32(s)},
+            {"portNfTypeNamePort", s => NfDefaultPorts.NfTypeNamePort = Convert.ToInt32(s)},
+            {"portHbmInvokeStoredProcMgr", s => NfDefaultPorts.HbmInvokeStoredProcMgr = Convert.ToInt32(s)},
+            {"switchPrintWebHeaders", s => Switches.PrintWebHeaders = Convert.ToBoolean(s)},
+            {"switchSqlCmdHeadersOff", s => Switches.SqlCmdHeadersOff = Convert.ToBoolean(s)},
+            {"switchSqlFiltersOff", s => Switches.SqlFiltersOff = Convert.ToBoolean(s)},
+            {"switchSupressNpp", s => Switches.SupressNpp = Convert.ToBoolean(s)},
+            {"keyAesEncryptionKey", s => SecurityKeys.AesEncryptionKey = s},
+            {"keyAesIV", s => SecurityKeys.AesIV = s},
+            {"keyHMACSHA1", s => SecurityKeys.HMACSHA1 = s},
+            {"code-file-extensions", s => CodeFileExtensions = s.Split(' ')},
+            {"config-file-extensions", s => ConfigFileExtensions = s.Split(' ')},
+            {"binary-file-extensions", s => BinaryFileExtensions = s.Split(' ')},
+            {"search-directory-exclusions", s => ExcludeCodeDirectories = s.Split(' ')},
+            {"default-block-size", s => DefaultBlockSize = Convert.ToInt32(s)},
+            {"default-type-separator", s => DefaultTypeSeparator = Convert.ToChar(s)},
+            {"default-char-separator", s => DefaultCharSeparator = Convert.ToChar(s)},
+            {"cmd-line-arg-switch", s => CmdLineArgSwitch = s},
+            {"cmd-line-arg-assign", s => CmdLineArgAssign = Convert.ToChar(s)},
+            {"punctuation-chars", s => PunctuationChars = s.Split(' ').Select(Convert.ToChar).ToArray()},
+        };
+
+        private static int _threadSleepTime;
+
+        #endregion
+
         #region initialize
+        /// <summary>
+        /// A helper function which looks for the <see cref="FILE_NAME"/> in the 
+        /// normal .NET runtime directories (e.g. Current Domain's base directory, 
+        /// the current working directory, etc).
+        /// </summary>
+        /// <returns></returns>
         public static string FindNfConfigFile()
         {
             var searchDirs = new[]
@@ -39,6 +170,14 @@ namespace NoFuture.Shared
             return nfCfg;
         }
 
+        /// <summary>
+        /// The static ctor of <see cref="NfConfig"/>.
+        /// </summary>
+        /// <param name="nfCfg">
+        /// This may be either a path to <see cref="FILE_NAME"/> 
+        /// or the actual full xml content thereof.
+        /// </param>
+        /// <returns></returns>
         public static bool Init(string nfCfg)
         {
             if (string.IsNullOrWhiteSpace(nfCfg))
@@ -60,99 +199,7 @@ namespace NoFuture.Shared
             var idValueHash = GetIdValueHash(cfgXml);
             ResolveIdValueHash(idValueHash);
 
-            var assignmentHash = new Dictionary<string, Action<string>>
-            {
-                {"certFileNoFutureX509", s => SecurityKeys.NoFutureX509Cert = s},
-                {"tempJsFile", s => TempFiles.JavaScript = s},
-                {"tempHtmlFile", s => TempFiles.Html = s},
-                {"tempCsvFile", s => TempFiles.Csv = s},
-                {"tempStdOutFile", s => TempFiles.StdOut = s},
-                {"tempT4TemplateFile", s => TempFiles.T4Template = s},
-                {"tempNetStatFile", s => TempFiles.NetStat = s},
-                {"tempWmiFile", s => TempFiles.Wmi = s},
-                {"x64SvcUtilTool", s => X64.SvcUtil = s},
-                {"x64IldasmTool", s => X64.Ildasm = s},
-                {"x64WsdlTool", s => X64.Wsdl = s},
-                {"x64ClrVerTool", s => X64.ClrVer = s},
-                {"x64XsdExeTool", s => X64.XsdExe = s},
-                {"x64CdbTool", s => X64.Cdb = s},
-                {"x64TListTool", s => X64.TList = s},
-                {"x64SymChkTool", s => X64.SymChk = s},
-                {"x64DumpbinTool", s => X64.Dumpbin = s},
-                {"x64SqlCmdTool", s => X64.SqlCmd = s},
-                {"x64MdbgTool", s => X64.Mdbg = s},
-                {"x86IldasmTool", s => X86.Ildasm = s},
-                {"x86SqlMetalTool", s => X86.SqlMetal = s},
-                {"x86SvcUtilTool", s => X86.SvcUtil = s},
-                {"x86WsdlTool", s => X86.Wsdl = s},
-                {"x86CdbTool", s => X86.Cdb = s},
-                {"x86DependsTool", s => X86.Depends = s},
-                {"x86DumpbinTool", s => X86.Dumpbin = s},
-                {"x86TextTransformTool", s => X86.TextTransform = s},
-                {"x86DotExeTool", s => X86.DotExe = s},
-                {"javaJavacTool", s => JavaTools.Javac = s},
-                {"javaJavaTool", s => JavaTools.Java = s},
-                {"javaJavaDocTool", s => JavaTools.JavaDoc = s},
-                {"javaJavaRtJarTool", s => JavaTools.JavaRtJar = s},
-                {"javaJarTool", s => JavaTools.Jar = s},
-                {"javaJRunScriptTool", s => JavaTools.JRunScript = s},
-                {"javaAntlrTool", s => JavaTools.Antlr = s},
-                {"javaStanfordPostTaggerTool", s => JavaTools.StanfordPostTagger = s},
-                {"javaStanfordPostTaggerModelsTool", s => JavaTools.StanfordPostTaggerModels = s},
-                {"customDia2DumpTool", s => CustomTools.Dia2Dump = s},
-                {"customInvokeGetCgTypeTool", s => CustomTools.InvokeGetCgType = s},
-                {"customInvokeGraphVizTool", s => CustomTools.InvokeGraphViz = s},
-                {"customInvokeAssemblyAnalysisTool", s => CustomTools.InvokeAssemblyAnalysis = s},
-                {"customInvokeFlattenTool", s => CustomTools.InvokeFlatten = s},
-                {"customUtilPosHostTool", s => CustomTools.UtilPosHost = s},
-                {"customInvokeDpxTool", s => CustomTools.InvokeDpx = s},
-                {"customInvokeNfTypeNameTool", s => CustomTools.InvokeNfTypeName = s},
-                {"binFfmpegTool", s => BinTools.Ffmpeg = s},
-                {"binYoutubeDlTool", s => BinTools.YoutubeDl = s},
-                {"tempRootDir", s => TempDirectories.Root = s},
-                {"tempProcsDir", s => TempDirectories.StoredProcedures = s},
-                {"tempCodeDir", s => TempDirectories.Code = s},
-                {"tempTextDir", s => TempDirectories.Text = s},
-                {"tempDebugsDir", s => TempDirectories.Debug = s},
-                {"tempGraphDir", s => TempDirectories.Graph = s},
-                {"tempSvcUtilDir", s => TempDirectories.SvcUtil = s},
-                {"tempWsdlDir", s => TempDirectories.Wsdl = s},
-                {"tempHbmDir", s => TempDirectories.Hbm = s},
-                {"tempBinDir", s => TempDirectories.Binary = s},
-                {"tempJavaSrcDir", s => TempDirectories.JavaSrc = s},
-                {"tempJavaBuildDir", s => TempDirectories.JavaBuild = s},
-                {"tempJavaDistDir", s => TempDirectories.JavaDist = s},
-                {"tempJavaArchiveDir", s => TempDirectories.JavaArchive = s},
-                {"tempCalendarDir", s => TempDirectories.Calendar = s},
-                {"tempHttpAppDomainDir", s => TempDirectories.HttpAppDomain = s},
-                {"tempTsvCsvDir", s => TempDirectories.TsvCsv = s},
-                {"binRootDir", s => BinDirectories.Root = s},
-                {"binX64RootDir", s => BinDirectories.X64Root = s},
-                {"binX86RootDir", s => BinDirectories.X86Root = s},
-                {"binJavaRootDir", s => BinDirectories.JavaRoot = s},
-                {"binT4TemplatesDir", s => BinDirectories.T4Templates = s},
-                {"binPhpRootDir", s => BinDirectories.PhpRoot = s},
-                {"binDataRootDir", s => BinDirectories.DataRoot = s},
-                {"portNsLookupPort", s => NfDefaultPorts.NsLookupPort = Convert.ToInt32(s)},
-                {"portDomainEngine", s => NfDefaultPorts.DomainEngine = Convert.ToInt32(s)},
-                {"portHostProc", s => NfDefaultPorts.HostProc = Convert.ToInt32(s)},
-                {"portAssemblyAnalysis", s => NfDefaultPorts.AssemblyAnalysis = Convert.ToInt32(s)},
-                {"portFlattenAssembly", s => NfDefaultPorts.FlattenAssembly = Convert.ToInt32(s)},
-                {"portPartOfSpeechPaserHost", s => NfDefaultPorts.PartOfSpeechPaserHost = Convert.ToInt32(s)},
-                {"portSjclToPlainText", s => NfDefaultPorts.SjclToPlainText = Convert.ToInt32(s)},
-                {"portSjclToCipherText", s => NfDefaultPorts.SjclToCipherText = Convert.ToInt32(s)},
-                {"portSjclHashPort", s => NfDefaultPorts.SjclHashPort = Convert.ToInt32(s)},
-                {"portNfTypeNamePort", s => NfDefaultPorts.NfTypeNamePort = Convert.ToInt32(s)},
-                {"portHbmInvokeStoredProcMgr", s => NfDefaultPorts.HbmInvokeStoredProcMgr = Convert.ToInt32(s)},
-                {"switchPrintWebHeaders", s => Switches.PrintWebHeaders = Convert.ToBoolean(s)},
-                {"switchSqlCmdHeadersOff", s => Switches.SqlCmdHeadersOff = Convert.ToBoolean(s)},
-                {"switchSqlFiltersOff", s => Switches.SqlFiltersOff = Convert.ToBoolean(s)},
-                {"switchSupressNpp", s => Switches.SupressNpp = Convert.ToBoolean(s)},
-                {"keyAesEncryptionKey", s => SecurityKeys.AesEncryptionKey = s},
-                {"keyAesIV", s => SecurityKeys.AesIV = s},
-                {"keyHMACSHA1", s => SecurityKeys.HMACSHA1 = s},
-
-            };
+            var assignmentHash = _cfgIdName2PropertyAssigment;
             var assignedSomething = false;
             var assignmentKeys = assignmentHash.Keys;
             foreach (var key in assignmentKeys)
@@ -168,6 +215,11 @@ namespace NoFuture.Shared
             return assignedSomething;
         }
 
+        /// <summary>
+        /// Resolves all the place holders found in the <see cref="FILE_NAME"/> to 
+        /// thier fully-expanded representation.
+        /// </summary>
+        /// <param name="idValueHash"></param>
         internal static void ResolveIdValueHash(Dictionary<string, string> idValueHash)
         {
             if(!idValueHash.ContainsKey(MY_PS_HOME_VAR_NAME))
@@ -180,6 +232,17 @@ namespace NoFuture.Shared
             }
         }
 
+        /// <summary>
+        /// A recursive function to turn the place-holders of <see cref="value"/>
+        /// into their fully expanded form.
+        /// </summary>
+        /// <param name="idValueHash"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        /// <remarks>
+        /// See the xml commment atop of <see cref="FILE_NAME"/> for an explaination 
+        /// of what a placeholder is and how it works.
+        /// </remarks>
         internal static string ExpandCfgValue(Dictionary<string, string> idValueHash, string value)
         {
             var xRefId = "";
@@ -206,12 +269,18 @@ namespace NoFuture.Shared
             return $"{idValueHash[xRefId]}{valueLessXrefId}";
         }
 
+        /// <summary>
+        /// Resolves the contents of <see cref="FILE_NAME"/> into a hashtable of
+        /// id-to-value pairs.
+        /// </summary>
+        /// <param name="cfgXml"></param>
+        /// <returns></returns>
         internal static Dictionary<string, string> GetIdValueHash(XmlDocument cfgXml)
         {
             var idNodes = cfgXml.SelectNodes("//*[@id]");
             if (idNodes == null)
                 throw new RahRowRagee($"The {FILE_NAME} has no 'id' " +
-                                      $"attributes and is probably not the correct file");
+                                      "attributes and is probably not the correct file");
 
             var idValueHash = new Dictionary<string, string>();
             foreach (var idNode in idNodes)
@@ -219,11 +288,33 @@ namespace NoFuture.Shared
                 var idElem = idNode as XmlElement;
                 if (idElem == null
                     || !idElem.HasAttributes
-                    || string.IsNullOrWhiteSpace(idElem.Attributes["id"]?.Value)
-                    || string.IsNullOrWhiteSpace(idElem.Attributes["value"]?.Value))
+                    || string.IsNullOrWhiteSpace(idElem.Attributes["id"]?.Value))
+                    continue;
+
+                var hasValueAttr = idElem.HasAttribute("value");
+                var hasValueAttrWithAssignment = hasValueAttr &&
+                                                 !string.IsNullOrWhiteSpace(idElem.Attributes["value"]?.Value);
+
+                //has value attr assigned to empty string
+                if (hasValueAttr && !hasValueAttrWithAssignment)
                     continue;
                 var id = idElem.Attributes["id"].Value;
-                var val = idElem.Attributes["value"].Value;
+                string val;
+                if (!hasValueAttr)
+                {
+                    //expecting CDATA values
+                    var cDataNode = idElem.FirstChild;
+                    var cDataElem = cDataNode as XmlCDataSection;
+                    if (string.IsNullOrWhiteSpace(cDataElem?.Value))
+                        continue;
+                    val = cDataElem.Value;
+                }
+                else
+                {
+                    //expecting value attr values
+                    val = idElem.Attributes["value"].Value;
+                }
+
                 if (idValueHash.ContainsKey(id))
                     idValueHash[id] = val;
                 else
@@ -232,10 +323,32 @@ namespace NoFuture.Shared
             }
             return idValueHash;
         }
+
+        /// <summary>
+        /// A peripheral function to resolve the value of the id-value pair
+        /// where the value is assigned as Cdata child node instead of the 
+        /// typical 'value' attribute.
+        /// </summary>
+        /// <param name="cfgXml"></param>
+        /// <param name="nodeName"></param>
+        /// <returns></returns>
+        internal static string GetCdataValue(XmlDocument cfgXml, string nodeName)
+        {
+            if (cfgXml == null || string.IsNullOrWhiteSpace(nodeName))
+                return string.Empty;
+
+            var n = cfgXml.SelectSingleNode($"//{nodeName}");
+            var e = n as XmlElement;
+            if (e == null || !e.HasChildNodes)
+                return string.Empty;
+            var cdataNode = e.FirstChild;
+            var cdata = cdataNode as XmlCDataSection;
+
+            return cdata?.Value ?? string.Empty;
+        }
         #endregion
 
-        private static int _threadSleepTime;
-
+        #region properties
         public static string NfLoggerName { get; set; } = "NfConsoleLogger";
 
         /// <summary>
@@ -310,13 +423,13 @@ namespace NoFuture.Shared
 
         public static long DefaultBlockSize { get; set; } = 256;
 
-        public static char[] PyPunctuationChars { get; set; } = {
+        public static char[] PunctuationChars { get; set; } = {
             '!', '"', '#', '$', '%', '&', '\\', '\'', '(', ')',
             '*', '+', ',', '-', '.', '/', ':', ';', '<', '=', '>',
             '?','@', '[', ']', '^', '_', '`', '{', '|', '}', '~'
         };
 
-        public static string[] CodeExtensions { get; set; } =
+        public static string[] CodeFileExtensions { get; set; } =
         {
             "asa", "asax", "ascx", "asmx", "asp", "aspx", "bas", "cls", "cpp", "c", "cs", "css", "frm", "h",
             "htm", "html", "java", "js", "master", "ps1", "sql", "vb", "vbs", "wsdl", "wsf", "xsd", "xsl", "xslt", "dsr",
@@ -336,7 +449,7 @@ namespace NoFuture.Shared
 
         };
 
-        public static string[] ConfigExtensions { get; set; } =
+        public static string[] ConfigFileExtensions { get; set; } =
         {
             "csproj", "vbproj", "fsproj", "vbp", "sln",
             "vdproj", "dsw", "vsmdi", "dtproj",
@@ -362,7 +475,7 @@ namespace NoFuture.Shared
             "psd1", //Powershell Data File 
         };
 
-        public static string[] BinaryExtensions { get; set; } =
+        public static string[] BinaryFileExtensions { get; set; } =
         {
             "001","002","003","004","005","006","007","008","009","010","7z","aas",
             "acm","addin","adm","am","amx","ani","apk","apl","aps","aux","avi","ax",
@@ -413,7 +526,9 @@ namespace NoFuture.Shared
             @"\packages\",
             @"\__pycache__\" //common to python in VS
         };
+        #endregion
 
+        #region inner types
         /// <summary>
         /// Paths to directories used for storing temp results of NoFuture powershell scripts.
         /// </summary>
@@ -473,7 +588,6 @@ namespace NoFuture.Shared
             /// </summary>
             public static Dictionary<string, string> FunctionFiles = new Dictionary<string, string>();
         }
-
 
         /// <summary>
         /// Resuable temp file paths used by various NoFuture powershell scripts.
@@ -619,5 +733,6 @@ namespace NoFuture.Shared
             public static string NoFutureX509Cert { get; set; }
             public static string BlsApiRegistrationKey { get; set; }
         }
+        #endregion
     }
 }

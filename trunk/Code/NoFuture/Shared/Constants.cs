@@ -47,7 +47,6 @@ namespace NoFuture.Shared
         public const char LF = (char)0xA;
         public const char CR = (char)0xD;
         public const string OUTLOOK_APPT_PREFIX = "[shell]";
-        public const char STRING_TERMINATOR = '\0';
         public const int SQL_SERVER_FALSE = 0;
         public const int SQL_SERVER_TRUE = 1;
 

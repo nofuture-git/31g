@@ -26,7 +26,9 @@ namespace NoFuture.Tests.Shared
         {
             NoFuture.Shared.NfConfig.Init(TEST_FILE);
             Assert.AreEqual(@"C:\Projects\31g\trunk\bin", NoFuture.Shared.NfConfig.BinDirectories.Root);
-            
+            var puncChars = @"! # $ % & \ ' ( ) * + , - . / : ; < = > ? @ [ ] ^ _ ` { | } ~";
+            Assert.AreEqual(puncChars, string.Join(" ", NoFuture.Shared.NfConfig.PunctuationChars));
+            Assert.IsFalse(NoFuture.Shared.NfConfig.Switches.PrintWebHeaders);
         }
 
         [TestMethod]
@@ -47,7 +49,7 @@ namespace NoFuture.Tests.Shared
                 System.Diagnostics.Debug.WriteLine($"{k} = {testInput[k]}");
         }
 
-#region testInputs
+        #region testInputs
         private static readonly Dictionary<string, string> testInput = new Dictionary<string, string>
             {
                 {"myPsHome", @"C:\Projects\31g\trunk" },
@@ -140,29 +142,78 @@ namespace NoFuture.Tests.Shared
                 {"keyAesEncryptionKey", @"gb0352wHVco94Gr260BpJzH+N1yrwmt5/BaVhXmPm6s="},
                 {"keyAesIV", @"az9HzsMj6pygMvZyTpRo6g=="},
                 {"keyHMACSHA1", @"eTcmPilTLmtbalRpKjFFJjpMNns="},
+                {"code-file-extensions", @"ada adb adml admx ads as asa asax ascx asm asmx asp aspx bas bat bsh c cbd cbl cc cdb cdc cls cmd cob cpp cs cshtml css cxx dsr dtd f f2k f90 f95 for frm fs fsx fxh g4 gv h hpp hs hta htm html hxx idl inc java js json kml las lhs lisp lsp lua m master ml mli mx nt pas php php3 phtml pl plx pm  ps ps1 psm1 py pyw r rb rbw rpx scm scp sep sh shtm shtml smd sml sql ss st tcl tex thy tt vb vbhtml vbs vrg wsc wsdl wsf xaml xhtml xlf xliff xsd xsl xslt xsml xst xsx"},
+                {"config-file-extensions", @"acl aml cfg config content csproj cva database din dsw dtproj dtsx dun ecf ecf edmx fcc fsproj gpd h1k hkf inf ini isp iss manifest nuspec obe overrideTasks pdm pp props ps1xml psc1 psd1 rsp sam sch sitemap sln stp svc targets tasks testsettings theme user vbp vbproj vdproj vsmdi xbap xml xrm-ms"},
+                {"binary-file-extensions", @"001 002 003 004 005 006 007 008 009 010 7z aas acm addin adm am amx ani apk apl aps aux avi ax bak bcf bcm bin bmp bpd bpl browser bsc btr bud cab cache camp cap cat cch ccu cdf-ms cdmp chk chm chr chs cht clb cmb cmdline cmf com comments compiled compositefont cov cpa cpl cpx crmlog crt csd ctm cty cur cw dat data db dcf dcr default delete dem desklink devicemetadata-ms diagpkg dic dir dll dlm dls dmp dnl doc docx drv ds dts dub dvd dvr-ms dxt ebd edb efi emf err ess etl ev1 ev2 ev3 evm evtx ex_ exe exp fe fon ftl fx gdl gif gmmp grl grm gs_4_0 h1c h1s h1t hdr hex hit hlp hpi hpx iad icc icm ico id idb idx iec if2 ilk imd ime inf_loc ins inx ipa ird jar jmx jnt job jpeg jpg jpn jrs jtp kor ldo lex lg1 lg2 lib library-ms lng lnk log lrc lts lxa mac man map mapimail mdb mdbx mfl mib mid mllr mni mof mp3 mp4 mpg msc msi msm msstyles mst msu mui mum mzz ncb ndx ngr nlp nls nlt ntf nupkg obj ocx olb old opt out pch pdb pdf phn pkc plugin pnf png ppd pptx prm prof propdesc prq prx ps_2_0 ps_4_0 psd ptxml pub que rat rdl reg res resources resx rld rll rom rpo rs rtf s3 sbr scc scr sdb sdi ses shp smp sqm ssm stl swf sys t4 tag tar.gz tbl tbr tha tif tiff tlb tmp toc tpi trie1 tsp ttc ttf tts tx_ txt uaq uce udt uni uninstall unt url vch vdf ver vp vs_1_1 vs_4_0 vsd vspscc wav wdf web wih wim win32manifest wma wmf wmv wmz wtv wwd x32 xex xlb xls xlsx zfsendtotarget zip"},
+                {"search-directory-exclusions", @"bin obj Interop TestResults _svn .svn _ReSharper _TeamCity .git .nuget .vs lib build dist packages __pycache__"},
+                {"default-block-size", "256"},
+                {"default-type-separator", "."},
+                {"default-char-separator", ","},
+                {"cmd-line-arg-switch", "-"},
+                {"cmd-line-arg-assign", "="},
+                {"punctuation-chars", "! \" # $ % & \\ ' ( ) * + , - . / : ; < = > ? @ [ ] ^ _ ` { | } ~"},
+
             };
 
         private const string TEST_FILE = @"
 <!--
 Cdata is space separated
-$(someId) means, 'resolve this value to using which every node has this ID in this file.'
+$(someId) means, 'resolve this value using which every node has this ID in this file.'
 $(%environmentVar%) means, 'resolve this to the environment variable contained in between the two '%''
 -->
 <no-future>
   <shared>
     <config>
       <root id='myPsHome' value='C:\Projects\31g\trunk' />
+      <bools>
+        <add id='switchPrintWebHeaders' value='False' />
+        <add id='switchSqlCmdHeadersOff' value='True' />
+        <add id='switchSqlFiltersOff' value='True' />
+        <add id='switchSupressNpp' value='False' />
+      </bools>
       <chars>
-        <punctuation><![CDATA[. ? : ! , ; { } [ ] ( ) _ @ % & * - \\ /]]></punctuation>
-        <default-type-separator><![CDATA[.]]></default-type-separator>
-        <default-char-separator><![CDATA[,]]></default-char-separator>
-        <cmd-line-arg-switch><![CDATA[-]]></cmd-line-arg-switch>
-        <cmd-line-arg-assign><![CDATA[=]]></cmd-line-arg-assign>
-        <string-terminator><![CDATA[\0]]></string-terminator>
-        <ints>
-          <default-block-size>256</default-block-size>
-        </ints>
+        <add id='punctuation-chars'><![CDATA[! # $ % & \ ' ( ) * + , - . / : ; < = > ? @ [ ] ^ _ ` { | } ~]]></add>
+        <add id='default-type-separator'><![CDATA[.]]></add>
+        <add id='default-char-separator'><![CDATA[,]]></add>
+        <add id='cmd-line-arg-assign'><![CDATA[=]]></add>
       </chars>
+      <ints>
+        <add id='default-block-size'>256</add>
+      </ints>
+      <strings>
+        <add id='cmd-line-arg-switch'><![CDATA[-]]></add>
+      </strings>
+      <ports>
+        <add id='portNsLookupPort' value='799' />
+        <add id='portDomainEngine' value='1138' />
+        <add id='portHostProc' value='780' />
+        <!--will add to this two times-->
+        <add id='portAssemblyAnalysis' value='5059' />
+        <add id='portFlattenAssembly' value='5062' />
+        <add id='portPartOfSpeechPaserHost' value='5063' />
+        <add id='portSjclToPlainText' value='5064' />
+        <add id='portSjclToCipherText' value='5065' />
+        <add id='portSjclHashPort' value='5066' />
+        <add id='portNfTypeNamePort' value='5067' />
+        <add id='portHbmInvokeStoredProcMgr' value='45121' />
+      </ports>
+      <keys>
+        <!--these are just for flippin' bits not indended to provide any security-->
+        <add id='keyAesEncryptionKey' value='gb0352wHVco94Gr260BpJzH+N1yrwmt5/BaVhXmPm6s=' />
+        <add id='keyAesIV' value='az9HzsMj6pygMvZyTpRo6g==' />
+        <add id='keyHMACSHA1' value='eTcmPilTLmtbalRpKjFFJjpMNns=' />
+        <!--
+        deliberately left blank and should be assigned by the runtime from sources not under 
+        any kind of source control.
+        -->
+        <add id='keyGoogleCodeApiKey' value='' />
+        <add id='keyBeaDataApiKey' value='' />
+        <add id='keyCensusDataApiKey' value='' />
+        <add id='keyBlsApiRegistrationKey' value='' />
+      </keys>
+      <uris>
+        <add id='uriProxyServer' value='' />
+      </uris>
       <files>
         <certs>
           <add id='certFileNoFutureX509' value='' />
@@ -229,13 +280,13 @@ $(%environmentVar%) means, 'resolve this to the environment variable contained i
           <favicon value='$(myPsHome)\favicon.ico' />
         </tools>
         <extensions>
-          <code-files><![CDATA[ada adb adml admx ads as asa asax ascx asm asmx asp aspx bas bat bsh c cbd cbl cc cdb cdc cls cmd cob cpp cs cshtml css cxx dsr dtd f f2k f90 f95 for frm fs fsx fxh g4 gv h hpp hs hta htm html hxx idl inc java js json kml las lhs lisp lsp lua m master ml mli mx nt pas php php3 phtml pl plx pm  ps ps1 psm1 py pyw r rb rbw rpx scm scp sep sh shtm shtml smd sml sql ss st tcl tex thy tt vb vbhtml vbs vrg wsc wsdl wsf xaml xhtml xlf xliff xsd xsl xslt xsml xst xsx]]></code-files>
-          <config-files><![CDATA[acl aml cfg config content csproj cva database din dsw dtproj dtsx dun ecf ecf edmx fcc fsproj gpd h1k hkf inf ini isp iss manifest nuspec obe overrideTasks pdm pp props ps1xml psc1 psd1 rsp sam sch sitemap sln stp svc targets tasks testsettings theme user vbp vbproj vdproj vsmdi xbap xml xrm-ms]]></config-files>
-          <binary-files><![CDATA[001 002 003 004 005 006 007 008 009 010 7z aas acm addin adm am amx ani apk apl aps aux avi ax bak bcf bcm bin bmp bpd bpl browser bsc btr bud cab cache camp cap cat cch ccu cdf-ms cdmp chk chm chr chs cht clb cmb cmdline cmf com comments compiled compositefont cov cpa cpl cpx crmlog crt csd ctm cty cur cw dat data db dcf dcr default delete dem desklink devicemetadata-ms diagpkg dic dir dll dlm dls dmp dnl doc docx drv ds dts dub dvd dvr-ms dxt ebd edb efi emf err ess etl ev1 ev2 ev3 evm evtx ex_ exe exp fe fon ftl fx gdl gif gmmp grl grm gs_4_0 h1c h1s h1t hdr hex hit hlp hpi hpx iad icc icm ico id idb idx iec if2 ilk imd ime inf_loc ins inx ipa ird jar jmx jnt job jpeg jpg jpn jrs jtp kor ldo lex lg1 lg2 lib library-ms lng lnk log lrc lts lxa mac man map mapimail mdb mdbx mfl mib mid mllr mni mof mp3 mp4 mpg msc msi msm msstyles mst msu mui mum mzz ncb ndx ngr nlp nls nlt ntf nupkg obj ocx olb old opt out pch pdb pdf phn pkc plugin pnf png ppd pptx prm prof propdesc prq prx ps_2_0 ps_4_0 psd ptxml pub que rat rdl reg res resources resx rld rll rom rpo rs rtf s3 sbr scc scr sdb sdi ses shp smp sqm ssm stl swf sys t4 tag tar.gz tbl tbr tha tif tiff tlb tmp toc tpi trie1 tsp ttc ttf tts tx_ txt uaq uce udt uni uninstall unt url vch vdf ver vp vs_1_1 vs_4_0 vsd vspscc wav wdf web wih wim win32manifest wma wmf wmv wmz wtv wwd x32 xex xlb xls xlsx zfsendtotarget zip]]></binary-files>
+          <add id='code-file-extensions'><![CDATA[ada adb adml admx ads as asa asax ascx asm asmx asp aspx bas bat bsh c cbd cbl cc cdb cdc cls cmd cob cpp cs cshtml css cxx dsr dtd f f2k f90 f95 for frm fs fsx fxh g4 gv h hpp hs hta htm html hxx idl inc java js json kml las lhs lisp lsp lua m master ml mli mx nt pas php php3 phtml pl plx pm  ps ps1 psm1 py pyw r rb rbw rpx scm scp sep sh shtm shtml smd sml sql ss st tcl tex thy tt vb vbhtml vbs vrg wsc wsdl wsf xaml xhtml xlf xliff xsd xsl xslt xsml xst xsx]]></add>
+          <add id='config-file-extensions'><![CDATA[acl aml cfg config content csproj cva database din dsw dtproj dtsx dun ecf ecf edmx fcc fsproj gpd h1k hkf inf ini isp iss manifest nuspec obe overrideTasks pdm pp props ps1xml psc1 psd1 rsp sam sch sitemap sln stp svc targets tasks testsettings theme user vbp vbproj vdproj vsmdi xbap xml xrm-ms]]></add>
+          <add id='binary-file-extensions'><![CDATA[001 002 003 004 005 006 007 008 009 010 7z aas acm addin adm am amx ani apk apl aps aux avi ax bak bcf bcm bin bmp bpd bpl browser bsc btr bud cab cache camp cap cat cch ccu cdf-ms cdmp chk chm chr chs cht clb cmb cmdline cmf com comments compiled compositefont cov cpa cpl cpx crmlog crt csd ctm cty cur cw dat data db dcf dcr default delete dem desklink devicemetadata-ms diagpkg dic dir dll dlm dls dmp dnl doc docx drv ds dts dub dvd dvr-ms dxt ebd edb efi emf err ess etl ev1 ev2 ev3 evm evtx ex_ exe exp fe fon ftl fx gdl gif gmmp grl grm gs_4_0 h1c h1s h1t hdr hex hit hlp hpi hpx iad icc icm ico id idb idx iec if2 ilk imd ime inf_loc ins inx ipa ird jar jmx jnt job jpeg jpg jpn jrs jtp kor ldo lex lg1 lg2 lib library-ms lng lnk log lrc lts lxa mac man map mapimail mdb mdbx mfl mib mid mllr mni mof mp3 mp4 mpg msc msi msm msstyles mst msu mui mum mzz ncb ndx ngr nlp nls nlt ntf nupkg obj ocx olb old opt out pch pdb pdf phn pkc plugin pnf png ppd pptx prm prof propdesc prq prx ps_2_0 ps_4_0 psd ptxml pub que rat rdl reg res resources resx rld rll rom rpo rs rtf s3 sbr scc scr sdb sdi ses shp smp sqm ssm stl swf sys t4 tag tar.gz tbl tbr tha tif tiff tlb tmp toc tpi trie1 tsp ttc ttf tts tx_ txt uaq uce udt uni uninstall unt url vch vdf ver vp vs_1_1 vs_4_0 vsd vspscc wav wdf web wih wim win32manifest wma wmf wmv wmz wtv wwd x32 xex xlb xls xlsx zfsendtotarget zip]]></add>
         </extensions>
       </files>
       <directories>
-        <search-exclusions><![CDATA[bin obj Interop TestResults _svn .svn _ReSharper _TeamCity .git .nuget .vs lib build dist packages __pycache__]]></search-exclusions>
+        <add id='search-directory-exclusions'><![CDATA[bin obj Interop TestResults _svn .svn _ReSharper _TeamCity .git .nuget .vs lib build dist packages __pycache__]]></add>
         <temps>
           <add id='tempRootDir' value='$(myPsHome)\temp' />
           <add id='tempProcsDir' value='$(tempRootDir)\procs' />
@@ -266,49 +317,13 @@ $(%environmentVar%) means, 'resolve this to the environment variable contained i
           <add id='binDataRootDir' value='$(binRootDir)\Data\Source' />
         </bins>
       </directories>
-      <ports>
-        <add id='portNsLookupPort' value='799' />
-        <add id='portDomainEngine' value='1138' />
-        <add id='portHostProc' value='780' />
-        <!--will add to this two times-->
-        <add id='portAssemblyAnalysis' value='5059' />
-        <add id='portFlattenAssembly' value='5062' />
-        <add id='portPartOfSpeechPaserHost' value='5063' />
-        <add id='portSjclToPlainText' value='5064' />
-        <add id='portSjclToCipherText' value='5065' />
-        <add id='portSjclHashPort' value='5066' />
-        <add id='portNfTypeNamePort' value='5067' />
-        <add id='portHbmInvokeStoredProcMgr' value='45121' />
-      </ports>
-      <switches>
-        <add id='switchPrintWebHeaders' value='True' />
-        <add id='switchSqlCmdHeadersOff' value='True' />
-        <add id='switchSqlFiltersOff' value='True' />
-        <add id='switchSupressNpp' value='False' />
-      </switches>
-      <keys>
-        <!--these are just for flippin' bits not indended to provide any security-->
-        <add id='keyAesEncryptionKey' value='gb0352wHVco94Gr260BpJzH+N1yrwmt5/BaVhXmPm6s=' />
-        <add id='keyAesIV' value='az9HzsMj6pygMvZyTpRo6g==' />
-        <add id='keyHMACSHA1' value='eTcmPilTLmtbalRpKjFFJjpMNns=' />
-        <!--
-        deliberately left blank and should be assigned by the runtime from sources not under 
-        any kind of source control.
-        -->
-        <add id='keyGoogleCodeApiKey' value='' />
-        <add id='keyBeaDataApiKey' value='' />
-        <add id='keyCensusDataApiKey' value='' />
-        <add id='keyBlsApiRegistrationKey' value='' />
-      </keys>
-      <uris>
-        <add id='uriProxyServer' value='' />
-      </uris>
+
     </config>
   </shared>
 </no-future>
 
 ";
 
-#endregion
+        #endregion
     }
 }
