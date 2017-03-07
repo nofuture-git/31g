@@ -411,13 +411,12 @@ namespace NoFuture.Shared
         public static char DefaultCharSeparator { get; set; } = ',';
 
         /// <summary>
-        /// Typical char of '-' used to delimit the start of a command line switch.
+        /// The op char used to delimit the start of a command line switch.
         /// </summary>
         public static string CmdLineArgSwitch { get; set; } = "-";
 
         /// <summary>
-        /// Not so typical char of '=' used to right of a command line switch 
-        /// to represent that said switch's assignment
+        /// The op char used in a command line to assign a value to a swtich.
         /// </summary>
         public static char CmdLineArgAssign { get; set; } = '=';
 

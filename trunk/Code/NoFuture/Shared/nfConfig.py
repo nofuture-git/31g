@@ -3,26 +3,34 @@ import os
 import xml.etree.ElementTree as ET
 import re
 
+"""Represents a central runtime hub from which all 
+the other parts of the namespace are dependent.
+"""
+
 FILE_NAME = "nfConfig.cfg.xml"
+"""The file name from which `nfConfig` receives all its values."""
+
 __MY_PS_HOME_VAR_NAME = "myPsHome"
+"""A kind of (root) directory from which all other paths in `FILE_NAME` are leafs """
 
 __cfgIdName2PropertyAssignment = {
-    "certFileNoFutureX509" : lambda s: setattr(NfConfig.SecurityKeys, 'noFutureX509Cert', s),
-    "tempRootDir" : lambda s: setattr(NfConfig.TempDirectories, 'root', s),
-    "tempTsvCsvDir" : lambda s: setattr(NfConfig.TempDirectories, 'tsvCsv', s),
-    "keyAesEncryptionKey" : lambda s: setattr(NfConfig.SecurityKeys, 'aesEncryptionString', s),
-    "keyAesIV" : lambda s: setattr(NfConfig.SecurityKeys, 'aesIv', s),
-    "keyHMACSHA1" : lambda s: setattr(NfConfig.SecurityKeys, 'hmacsha1', s),
-    "code-file-extensions" : lambda s: setattr(self, 'codeFileExtensions', s.split(' ')),
-    "config-file-extensions" : lambda s: setattr(self, 'configFileExtensions', s.split(' ')),
-    "binary-file-extensions" : lambda s: setattr(self, 'binaryFileExtensions', s.split(' ')),
-    "search-directory-exclusions" : lambda s: setattr(self, 'excludeCodeDirectories', s.split(' ')),
-    "default-block-size" : lambda s: setattr(self, 'defaultBlockSize', int(s)),
-    "default-char-separator" : lambda s: setattr(self, 'defaultCharSeparator', s),
-    "cmd-line-arg-switch" : lambda s: setattr(self, 'cmdLineArgSwitch', s),
-    "cmd-line-arg-assign" : lambda s: setattr(self, 'cmdLineArgAssign', s),
-    "punctuation-chars" : lambda s: setattr(self, 'punctuationChars', s.split(' '))
+    "certFileNoFutureX509" : lambda s: setattr(SecurityKeys, 'noFutureX509Cert', s),
+    "tempRootDir" : lambda s: setattr(TempDirectories, 'root', s),
+    "tempTsvCsvDir" : lambda s: setattr(TempDirectories, 'tsvCsv', s),
+    "keyAesEncryptionKey" : lambda s: setattr(SecurityKeys, 'aesEncryptionString', s),
+    "keyAesIV" : lambda s: setattr(SecurityKeys, 'aesIv', s),
+    "keyHMACSHA1" : lambda s: setattr(SecurityKeys, 'hmacsha1', s),
+    "code-file-extensions" : lambda s: setattr(sys.modules[__name__], 'codeFileExtensions', s.split(' ')),
+    "config-file-extensions" : lambda s: setattr(sys.modules[__name__], 'configFileExtensions', s.split(' ')),
+    "binary-file-extensions" : lambda s: setattr(sys.modules[__name__], 'binaryFileExtensions', s.split(' ')),
+    "search-directory-exclusions" : lambda s: setattr(sys.modules[__name__], 'excludeCodeDirectories', s.split(' ')),
+    "default-block-size" : lambda s: setattr(sys.modules[__name__], 'defaultBlockSize', int(s)),
+    "default-char-separator" : lambda s: setattr(sys.modules[__name__], 'defaultCharSeparator', s),
+    "cmd-line-arg-switch" : lambda s: setattr(sys.modules[__name__], 'cmdLineArgSwitch', s),
+    "cmd-line-arg-assign" : lambda s: setattr(sys.modules[__name__], 'cmdLineArgAssign', s),
+    "punctuation-chars" : lambda s: setattr(sys.modules[__name__], 'punctuationChars', s.split(' '))
 }
+"""dict: Is the key-value hash which links the id's in `FILE_NAME` to the properties of the `nfConfig`"""
 
 def findNfConfigFile():
     """A helper function which looks for the `FILE_NAME` in the
@@ -40,12 +48,22 @@ def findNfConfigFile():
     return nfCfg
 
 def init(nfCfg):
-    if nfCfg == None or nfCfg.isspace():
+    """A static ctor of the NfConfig settins
+
+    Args:
+        nfCfg (str): 
+            This may be either a path to `FILE_NAME` 
+            or the actual full xml content thereof.
+    """
+
+    if nfCfg == None:
         nfCfg = FindNfConfigFile()
         if nfCfg == None or nfCfg.isspace():
             raise FileNotFoundError("Cannot locate a copy of " + FILE_NAME)
 
-    if nfCfg.strip().startswith("<"):
+    if isinstance(nfCfg, ET.ElementTree):
+        cfgXml = nfCfg
+    elif isinstance(nfCfg, str) and nfCfg.strip().startswith("<"):
         cfgXml = ET.fromstring(nfCfg)
     else:
         cfgXml = ET.parse(nfCfg)
@@ -134,23 +152,39 @@ def _getIdValueHash(cfgXml):
     return idValueHash
 
 defaultCharSeparator = ','
+"""str: The op char used to delimit the start of a command line switch."""
+
 cmdLineArgSwitch = "-"
+"""str: Typical char of '-' used to delimit the start of a command line switch. """
+
 cmdLineArgAssign = '='
+"""str: The op char used in a command line to assign a value to a swtich."""
+
 defaultBlockSize = 256
+
 punctuationChars = []
+
 codeFileExtensions = []
+
 configFileExtensions = []
+
 binaryFileExtensions = []
+
 excludeCodeDirectories = []
 
 class TempDirectories:
+    """Paths to directories used for storing temp results of NoFuture scripts."""
     root = ''
     tsvCsv = ''
 
 class SecurityKeys:
+    """
+    Various keys, those which are not assigned a value would be real keys externally defined -
+    the rest is just for flippin' bits.
+    """
     aesEncryptionString = 'gb0352wHVco94Gr260BpJzH+N1yrwmt5/BaVhXmPm6s='
-    aesIv = ''
-    hmacsha1 = ''
+    aesIv = 'az9HzsMj6pygMvZyTpRo6g=='
+    hmacsha1 = 'eTcmPilTLmtbalRpKjFFJjpMNns='
     proxyServer = ''
     googleCodeApiKey = ''
     beaDataApiKey = ''

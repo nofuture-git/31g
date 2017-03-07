@@ -20,6 +20,7 @@ https://docs.python.org/3.5/reference/index.html
 
 Code Style at 
 https://www.python.org/dev/peps/pep-0008/
+http://google.github.io/styleguide/pyguide.html
 
 Docstring examples
 http://sphinxcontrib-napoleon.readthedocs.io/en/latest/example_google.html
@@ -163,7 +164,6 @@ Ops,
  >>> a, *remainder = [1, 2, 3]
   - 'a' is 1, '*remainder' is a list of 2 and 3
  >>> a, *middle, z = [1, 2, 3, 4]
-  - 
 
 ----
 
@@ -228,6 +228,14 @@ Literals
    - not as critical as in a strongly type'd lang
    import distutils.util as pyUtil
    myString2Bool = bool(pyUtil.strtobool("false"))
+
+ - "self" is like "this" in C'esque and VB.Net's "Me"
+ - modules are just the file themselves
+  - a module may define functions and variables with no 
+    kind 'class' scope
+  - access the current module using
+  import sys
+  current_module = sys.modules[__name__]
 ----
 
 ----

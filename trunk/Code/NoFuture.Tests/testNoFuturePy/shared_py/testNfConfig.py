@@ -121,17 +121,22 @@ class TestNfConfig(unittest.TestCase):
     def test_expandCfgValue(self):
         testResult = toTest._expandCfgValue(self.testDict, "$(tempRootDir)\\httpAppDomain")
         self.assertIsNotNone(testResult)
-        print(testResult)
+        #print(testResult)
 
     def test_resolveIdValueHash(self):
         testInput = self.testDict
         toTest._resolveIdValueHash(testInput)
         self.assertIsNotNone(testInput)
         self.assertNotEqual(0, len(testInput))
-        for k in testInput:
-            print(k + " = " + testInput[k])
+        #for k in testInput:
+        #    print(k + " = " + testInput[k])
+
+    def test_nfConfigInit(self):
+        toTest.init("C:\\Projects\\31g\\trunk\\Code\\NoFuture.Tests\\testNoFuturePy\\shared_py\\nfConfig.cfg.xml")
+        self.assertEqual("C:\\Projects\\31g\\trunk\\temp", toTest.TempDirectories.root)
+        puncChars = "! # $ % & \\ ( ) * + , - . / : ; < = > ? @ [ ] ^ _ ` { | } ~"
+        self.assertNotEqual(0, len(toTest.punctuationChars))
         
 
 if __name__ == '__main__':
     unittest.main()
-
