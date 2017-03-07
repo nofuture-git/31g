@@ -140,19 +140,20 @@ namespace NoFuture.Shared
         /// the current working directory, etc).
         /// </summary>
         /// <returns></returns>
-        public static string FindNfConfigFile()
+        public static string FindNfConfigFile(string pwd = null)
         {
             var searchDirs = new[]
             {
+                pwd,
                 Assembly.GetExecutingAssembly().Location,
                 Environment.CurrentDirectory,
                 Environment.CurrentDirectory + "\bin",
                 AppDomain.CurrentDomain.BaseDirectory,
-                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\NoFuture"
+                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\NoFuture",
             };
 
             var nfCfg = "";
-            foreach (var dir in searchDirs)
+            foreach (var dir in searchDirs.Where(x => !string.IsNullOrWhiteSpace(x)))
             {
                 nfCfg = Path.Combine(dir, FILE_NAME);
                 if (File.Exists(nfCfg))
