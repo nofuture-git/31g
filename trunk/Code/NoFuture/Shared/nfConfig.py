@@ -1,6 +1,7 @@
 import sys
 import os
 import xml.etree.ElementTree as ET
+import re
 
 FILE_NAME = "nfConfig.cfg.xml"
 __MY_PS_HOME_VAR_NAME = "myPsHome"
@@ -65,12 +66,50 @@ def init(nfCfg):
     return assignedSomething
         
 def _resolveIdValueHash(idValueHash):
-    pass
+    """Resolves all the place holders found in the `FILE_NAME` to 
+    their fully-expanded representation.
+    """
+    if not __MY_PS_HOME_VAR_NAME in idValueHash:
+        idValueHash.update({__MY_PS_HOME_VAR_NAME, os.getcwd()})
+    
+    for key in idValueHash:
+        idValueHash[key] = _expandCfgValue(idValueHash, idValueHash[key])
+    
 
 def _expandCfgValue(idValueHash, value):
-    pass
+    """A recursive function to turn the place-holders of `value`
+    into their fully expanded form.
+
+    See the xml commment atop of `FILE_NAME` for an explanation 
+    of what a placeholder is and how it works.
+    """
+
+    xRefIsMatch = re.search("\\x24\\x28([a-zA-Z0-9_\\-\\x25\\x28\\x29]+)\\x29", value)
+    if xRefIsMatch == None:
+        return value
+    xRefId = xRefIsMatch.group(1)
+
+    valueLessXRefId = value.replace("$(" + xRefId + ")", "")
+
+    if xRefId.startswith("%") and xRefId.endswith("%"):
+        envVar = xRefId.replace("%","")
+        xRefId = os.environ.get(envVar)
+        return xRefId + valueLessXRefId
+
+    if not xRefId in idValueHash:
+        return os.getcwd() + valueLessXRefId
+
+    if idValueHash[xRefId].find("$") > -1:
+        rValue = _expandCfgValue(idValueHash, idValueHash[xRefId])
+        return rValue + valueLessXRefId
+    
+    return idValueHash[xRefId] + valueLessXRefId
 
 def _getIdValueHash(cfgXml):
+    """Resolves the contents of `FILE_NAME` into a hashtable of
+    id-to-value pairs.
+    """
+
     idNodes = cfgXml.findall(".//*[@id]")
     
     if idNodes == None or len(idNodes) == 0:

@@ -329,8 +329,9 @@ Regex Module
 
  re.escape(string) #esc the string for regex matching 
  mobj = re.match(pattern, string [,flags])
- mobj = re.search(pattern, string [,flags])
-
+ myMatch = re.search(pattern, string [,flags])
+ myValue = myMatch.group(1)
+ 
  pobj = re.compile(pattern [,flags])
  
 ---- 
@@ -412,6 +413,9 @@ https://docs.python.org/3/library/xml.etree.elementtree.html#xml.etree.ElementTr
 import xml.etree.ElementTree as pyXml
 
 myData = pyXml.parse("C:\MyDir\MySubDir\MyXml.xml")
+#or directly from a string literal 
+myData = pyXml.fromstring("<my-xml><i-have-nodes>booyah</i-have-nodes></my-xml>")
+
 myNodes = myData.findall("//my-x-path/to-some/node")
 myNode = myNodes[0]
 myInnerText = myNode.text
