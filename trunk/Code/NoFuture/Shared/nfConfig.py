@@ -14,6 +14,7 @@ __MY_PS_HOME_VAR_NAME = "myPsHome"
 """A kind of (root) directory from which all other paths in `FILE_NAME` are leafs """
 
 __cfgIdName2PropertyAssignment = {
+    "favicon" : lambda s: setattr(sys.modules[__name__], "favicon", s),
     "certFileNoFutureX509" : lambda s: setattr(SecurityKeys, 'noFutureX509Cert', s),
     "tempRootDir" : lambda s: setattr(TempDirectories, 'root', s),
     "tempTsvCsvDir" : lambda s: setattr(TempDirectories, 'tsvCsv', s),
@@ -171,6 +172,8 @@ configFileExtensions = []
 binaryFileExtensions = []
 
 excludeCodeDirectories = []
+
+favicon = ''
 
 class TempDirectories:
     """Paths to directories used for storing temp results of NoFuture scripts."""

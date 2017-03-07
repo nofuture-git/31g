@@ -37,29 +37,22 @@ namespace NoFuture.Shared
             <string, Action<string>>
         {
             {"certFileNoFutureX509", s => SecurityKeys.NoFutureX509Cert = s},
-            {"tempJsFile", s => TempFiles.JavaScript = s},
-            {"tempHtmlFile", s => TempFiles.Html = s},
-            {"tempCsvFile", s => TempFiles.Csv = s},
-            {"tempStdOutFile", s => TempFiles.StdOut = s},
+            {"favicon", s => Favicon = s },
             {"tempT4TemplateFile", s => TempFiles.T4Template = s},
             {"tempNetStatFile", s => TempFiles.NetStat = s},
             {"tempWmiFile", s => TempFiles.Wmi = s},
             {"x64SvcUtilTool", s => X64.SvcUtil = s},
-            {"x64IldasmTool", s => X64.Ildasm = s},
             {"x64WsdlTool", s => X64.Wsdl = s},
             {"x64ClrVerTool", s => X64.ClrVer = s},
             {"x64XsdExeTool", s => X64.XsdExe = s},
-            {"x64CdbTool", s => X64.Cdb = s},
             {"x64TListTool", s => X64.TList = s},
             {"x64SymChkTool", s => X64.SymChk = s},
             {"x64DumpbinTool", s => X64.Dumpbin = s},
+            {"x64DependsTool", s => X64.Depends = s},
             {"x64SqlCmdTool", s => X64.SqlCmd = s},
-            {"x64MdbgTool", s => X64.Mdbg = s},
-            {"x86IldasmTool", s => X86.Ildasm = s},
             {"x86SqlMetalTool", s => X86.SqlMetal = s},
             {"x86SvcUtilTool", s => X86.SvcUtil = s},
             {"x86WsdlTool", s => X86.Wsdl = s},
-            {"x86CdbTool", s => X86.Cdb = s},
             {"x86DependsTool", s => X86.Depends = s},
             {"x86DumpbinTool", s => X86.Dumpbin = s},
             {"x86TextTransformTool", s => X86.TextTransform = s},
@@ -84,6 +77,7 @@ namespace NoFuture.Shared
             {"binFfmpegTool", s => BinTools.Ffmpeg = s},
             {"binYoutubeDlTool", s => BinTools.YoutubeDl = s},
             {"tempRootDir", s => TempDirectories.Root = s},
+            {"tempSqlDir", s => TempDirectories.Sql = s },
             {"tempProcsDir", s => TempDirectories.StoredProx = s},
             {"tempCodeDir", s => TempDirectories.Code = s},
             {"tempTextDir", s => TempDirectories.Text = s},
@@ -92,12 +86,12 @@ namespace NoFuture.Shared
             {"tempSvcUtilDir", s => TempDirectories.SvcUtil = s},
             {"tempWsdlDir", s => TempDirectories.Wsdl = s},
             {"tempHbmDir", s => TempDirectories.Hbm = s},
-            {"tempBinDir", s => TempDirectories.Binary = s},
             {"tempJavaSrcDir", s => TempDirectories.JavaSrc = s},
             {"tempJavaBuildDir", s => TempDirectories.JavaBuild = s},
             {"tempJavaDistDir", s => TempDirectories.JavaDist = s},
             {"tempJavaArchiveDir", s => TempDirectories.JavaArchive = s},
             {"tempCalendarDir", s => TempDirectories.Calendar = s},
+            {"tempAudioDir", s => TempDirectories.Audio = s },
             {"tempHttpAppDomainDir", s => TempDirectories.HttpAppDomain = s},
             {"tempTsvCsvDir", s => TempDirectories.TsvCsv = s},
             {"binRootDir", s => BinDirectories.Root = s},
@@ -105,8 +99,6 @@ namespace NoFuture.Shared
             {"binX86RootDir", s => BinDirectories.X86Root = s},
             {"binJavaRootDir", s => BinDirectories.JavaRoot = s},
             {"binT4TemplatesDir", s => BinDirectories.T4Templates = s},
-            {"binPhpRootDir", s => BinDirectories.PhpRoot = s},
-            {"binDataRootDir", s => BinDirectories.DataRoot = s},
             {"portNsLookupPort", s => NfDefaultPorts.NsLookupPort = Convert.ToInt32(s)},
             {"portDomainEngine", s => NfDefaultPorts.DomainEngine = Convert.ToInt32(s)},
             {"portHostProc", s => NfDefaultPorts.HostProc = Convert.ToInt32(s)},
@@ -349,6 +341,8 @@ namespace NoFuture.Shared
         #endregion
 
         #region properties
+        public static string Favicon { get; set; }
+
         public static string NfLoggerName { get; set; } = "NfConsoleLogger";
 
         /// <summary>
@@ -557,7 +551,6 @@ namespace NoFuture.Shared
             public static string Root { get; set; }
             public static string Sql { get; set; }
             public static string StoredProx { get; set; }
-            public static string Binary { get; set; }
             public static string Code { get; set; }
             public static string Graph { get; set; }
             public static string Text { get; set; }
@@ -593,12 +586,8 @@ namespace NoFuture.Shared
         /// </summary>
         public class TempFiles
         {
-            public static string JavaScript { get; set; }
-            public static string Html { get; set; }
-            public static string Csv { get; set; }
             public static string NetStat { get; set; }
             public static string T4Template { get; set; }
-            public static string StdOut { get; set; }
             public static string Wmi { get; set; }
         }
         /// <summary>
@@ -613,8 +602,6 @@ namespace NoFuture.Shared
             public static string X86Root { get; set; }
             public static string JavaRoot { get; set; }
             public static string T4Templates { get; set; }
-            public static string PhpRoot { get; set; }
-            public static string DataRoot { get; set; }
         }
 
         /// <summary>
@@ -623,14 +610,11 @@ namespace NoFuture.Shared
         public class X64
         {
             public static string SvcUtil { get; set; }
-            public static string Cdb { get; set; }
             public static string TList { get; set; }
             public static string Depends { get; set; }
             public static string Dumpbin { get; set; }
-            public static string Ildasm { get; set; }
             public static string SqlCmd { get; set; }
             public static string Wsdl { get; set; }
-            public static string Mdbg { get; set; }
             public static string ClrVer { get; set; }
             public static string SymChk { get; set; }
             public static string XsdExe { get; set; }
@@ -640,10 +624,8 @@ namespace NoFuture.Shared
         /// </summary>
         public class X86
         {
-            public static string Cdb { get; set; }
             public static string Depends { get; set; }
             public static string Dumpbin { get; set; }
-            public static string Ildasm { get; set; }
             public static string SqlMetal { get; set; }
             public static string SvcUtil { get; set; }
             public static string TextTransform { get; set; }
@@ -672,7 +654,6 @@ namespace NoFuture.Shared
         {
             public static string HostProc { get; set; }
             public static string RunTransparent { get; set; }
-            public static string Favicon { get; set; }
             public static string CodeBase { get; set; }
             public static string Dia2Dump { get; set; }
             public static string InvokeGetCgType { get; set; }

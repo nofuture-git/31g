@@ -134,8 +134,8 @@ class TestNfConfig(unittest.TestCase):
     def test_nfConfigInit(self):
         toTest.init("C:\\Projects\\31g\\trunk\\Code\\NoFuture.Tests\\testNoFuturePy\\shared_py\\nfConfig.cfg.xml")
         self.assertEqual("C:\\Projects\\31g\\trunk\\temp", toTest.TempDirectories.root)
-        puncChars = "! # $ % & \\ ( ) * + , - . / : ; < = > ? @ [ ] ^ _ ` { | } ~"
         self.assertNotEqual(0, len(toTest.punctuationChars))
+        self.assertEqual("C:\\Projects\\31g\\trunk\\favicon.ico",toTest.favicon)
         
 
 if __name__ == '__main__':

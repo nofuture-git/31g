@@ -1,7 +1,7 @@
-﻿using System;
-using System.Xml;
+﻿using System.Xml;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using static NoFuture.Shared.NfConfig;
 
 namespace NoFuture.Tests.Shared
 {
@@ -13,7 +13,7 @@ namespace NoFuture.Tests.Shared
         {
             var cfgXml = new XmlDocument();
             cfgXml.LoadXml(TEST_FILE);
-            var idValueHash = NoFuture.Shared.NfConfig.GetIdValueHash(cfgXml);
+            var idValueHash = GetIdValueHash(cfgXml);
 
             Assert.IsNotNull(idValueHash);
             Assert.AreNotEqual(0, idValueHash.Count);
@@ -24,17 +24,107 @@ namespace NoFuture.Tests.Shared
         [TestMethod]
         public void TestInit()
         {
-            NoFuture.Shared.NfConfig.Init(TEST_FILE);
-            Assert.AreEqual(@"C:\Projects\31g\trunk\bin", NoFuture.Shared.NfConfig.BinDirectories.Root);
+            Init(TEST_FILE);
+            Assert.AreEqual(@"C:\Projects\31g\trunk\bin", BinDirectories.Root);
             var puncChars = @"! # $ % & \ ' ( ) * + , - . / : ; < = > ? @ [ ] ^ _ ` { | } ~";
-            Assert.AreEqual(puncChars, string.Join(" ", NoFuture.Shared.NfConfig.PunctuationChars));
-            Assert.IsFalse(NoFuture.Shared.NfConfig.Switches.PrintWebHeaders);
+            Assert.AreEqual(puncChars, string.Join(" ", PunctuationChars));
+
+            Assert.AreEqual(@"C:\Projects\31g\trunk\temp", TempDirectories.Root);
+            Assert.AreEqual(@"C:\Projects\31g\trunk\temp\sql", TempDirectories.Sql);
+            Assert.AreEqual(@"C:\Projects\31g\trunk\temp\prox", TempDirectories.StoredProx);
+            Assert.AreEqual(@"C:\Projects\31g\trunk\temp\code", TempDirectories.Code);
+            Assert.AreEqual(@"C:\Projects\31g\trunk\temp\text", TempDirectories.Text);
+            Assert.AreEqual(@"C:\Projects\31g\trunk\temp\debug", TempDirectories.Debug);
+            Assert.AreEqual(@"C:\Projects\31g\trunk\temp\graph", TempDirectories.Graph);
+            Assert.AreEqual(@"C:\Projects\31g\trunk\temp\code\svcUtil", TempDirectories.SvcUtil);
+            Assert.AreEqual(@"C:\Projects\31g\trunk\temp\code\wsdl", TempDirectories.Wsdl);
+            Assert.AreEqual(@"C:\Projects\31g\trunk\temp\code\hbm", TempDirectories.Hbm);
+            Assert.AreEqual(@"C:\Projects\31g\trunk\temp\code\java\src", TempDirectories.JavaSrc);
+            Assert.AreEqual(@"C:\Projects\31g\trunk\temp\code\java\build", TempDirectories.JavaBuild);
+            Assert.AreEqual(@"C:\Projects\31g\trunk\temp\code\java\dist", TempDirectories.JavaDist);
+            Assert.AreEqual(@"C:\Projects\31g\trunk\temp\code\java\archive", TempDirectories.JavaArchive);
+            Assert.AreEqual(@"C:\Projects\31g\trunk\temp\Calendar", TempDirectories.Calendar);
+            Assert.AreEqual(@"C:\Projects\31g\trunk\temp\httpAppDomain", TempDirectories.HttpAppDomain);
+            Assert.AreEqual(@"C:\Projects\31g\trunk\temp\audio", TempDirectories.Audio);
+            Assert.AreEqual(@"C:\Projects\31g\trunk\temp\tsvCsv", TempDirectories.TsvCsv);
+
+            Assert.AreEqual(@"C:\Projects\31g\trunk\temp\t4Temp.tt", TempFiles.T4Template);
+            Assert.AreEqual(@"C:\Projects\31g\trunk\temp\netstat.txt", TempFiles.NetStat);
+            Assert.AreEqual(@"C:\Projects\31g\trunk\temp\text\wmi.txt", TempFiles.Wmi);
+
+            Assert.AreEqual(@"C:\Projects\31g\trunk\bin\amd64", BinDirectories.X64Root);
+            Assert.AreEqual(@"C:\Projects\31g\trunk\bin\x86", BinDirectories.X86Root);
+            Assert.AreEqual(@"C:\Projects\31g\trunk\bin\java", BinDirectories.JavaRoot);
+            Assert.AreEqual(@"C:\Projects\31g\trunk\bin\Templates", BinDirectories.T4Templates);
+
+            Assert.AreEqual(@"C:\Program Files (x86)\Microsoft SDKs\Windows\v10.0A\bin\NETFX 4.6.1 Tools\x64\svcUtil.exe", X64.SvcUtil);
+            Assert.AreEqual(@"C:\Projects\31g\trunk\bin\amd64\debug\tlist.exe", X64.TList);
+            Assert.AreEqual(@"C:\Projects\31g\trunk\bin\amd64\debug\symChk.exe", X64.SymChk);
+            Assert.AreEqual(@"C:\Projects\31g\trunk\bin\amd64\depends\depends.exe", X64.Depends);
+            Assert.AreEqual(@"C:\Projects\31g\trunk\bin\amd64\vs10\dumpbin.exe", X64.Dumpbin);
+            Assert.AreEqual(@"C:\Projects\31g\trunk\bin\amd64\sqlcmd\SQLCMD.EXE", X64.SqlCmd);
+            Assert.AreEqual(@"C:\Program Files (x86)\Microsoft SDKs\Windows\v10.0A\bin\NETFX 4.6.1 Tools\x64\wsdl.exe", X64.Wsdl);
+            Assert.AreEqual(@"C:\Program Files (x86)\Microsoft SDKs\Windows\v10.0A\bin\NETFX 4.6.1 Tools\x64\clrver.exe", X64.ClrVer);
+            Assert.AreEqual(@"C:\Program Files (x86)\Microsoft SDKs\Windows\v10.0A\bin\NETFX 4.6.1 Tools\x64\xsd.exe", X64.XsdExe);
+
+            Assert.AreEqual(@"C:\Projects\31g\trunk\bin\x86\depends\depends.exe", X86.Depends);
+            Assert.AreEqual(@"C:\Projects\31g\trunk\bin\x86\vs10\dumpbin.exe", X86.Dumpbin);
+            Assert.AreEqual(@"C:\Program Files (x86)\Microsoft SDKs\Windows\v10.0A\bin\NETFX 4.6.1 Tools\sqlmetal.exe", X86.SqlMetal);
+            Assert.AreEqual(@"C:\Program Files (x86)\Microsoft SDKs\Windows\v10.0A\bin\NETFX 4.6.1 Tools\svcUtil.exe", X86.SvcUtil);
+            Assert.AreEqual(@"C:\Projects\31g\trunk\bin\x86\TextTransform.exe", X86.TextTransform);
+            Assert.AreEqual(@"C:\Program Files (x86)\Microsoft SDKs\Windows\v10.0A\bin\NETFX 4.6.1 Tools\wsdl.exe", X86.Wsdl);
+            Assert.AreEqual(@"C:\Projects\31g\trunk\bin\graphviz-2.38\bin\dot.exe", X86.DotExe);
+
+            Assert.AreEqual(799, NfDefaultPorts.NsLookupPort);
+
+            Assert.AreEqual(@"C:\Projects\31g\trunk\bin\java\bin\javac.exe", JavaTools.Javac);
+            Assert.AreEqual(@"C:\Projects\31g\trunk\bin\java\bin\java.exe", JavaTools.Java);
+            Assert.AreEqual(@"C:\Projects\31g\trunk\bin\java\bin\javadoc.exe", JavaTools.JavaDoc);
+            Assert.AreEqual(@"C:\Projects\31g\trunk\bin\java\jre\lib\rt.jar", JavaTools.JavaRtJar);
+            Assert.AreEqual(@"C:\Projects\31g\trunk\bin\java\bin\jar.exe", JavaTools.Jar);
+            Assert.AreEqual(@"C:\Projects\31g\trunk\bin\java\bin\jrunscript.exe", JavaTools.JRunScript);
+            Assert.AreEqual(@"C:\Projects\31g\trunk\bin\antlr-4.1-complete.jar", JavaTools.Antlr);
+            Assert.AreEqual(@"C:\Projects\31g\trunk\bin\stanford-postagger-2015-12-09\stanford-postagger.jar", JavaTools.StanfordPostTagger);
+            Assert.AreEqual(@"C:\Projects\31g\trunk\bin\stanford-postagger-2015-12-09\models\", JavaTools.StanfordPostTaggerModels);
+
+            Assert.AreEqual(@"C:\Projects\31g\trunk\bin\Dia2Dump.exe", CustomTools.Dia2Dump);
+            Assert.AreEqual(@"C:\Projects\31g\trunk\bin\NoFuture.Gen.InvokeGetCgOfType.exe", CustomTools.InvokeGetCgType);
+            Assert.AreEqual(@"C:\Projects\31g\trunk\bin\NoFuture.Gen.InvokeGraphViz.exe", CustomTools.InvokeGraphViz);
+            Assert.AreEqual(@"C:\Projects\31g\trunk\bin\NoFuture.Util.Gia.InvokeAssemblyAnalysis.exe", CustomTools.InvokeAssemblyAnalysis);
+            Assert.AreEqual(@"C:\Projects\31g\trunk\bin\NoFuture.Util.Gia.InvokeFlatten.exe", CustomTools.InvokeFlatten);
+            Assert.AreEqual(@"C:\Projects\31g\trunk\bin\NoFuture.Util.Pos.Host.exe", CustomTools.UtilPosHost);
+            Assert.AreEqual(@"C:\Projects\31g\trunk\bin\NoFuture.Util.Binary.InvokeDpx.exe", CustomTools.InvokeDpx);
+            Assert.AreEqual(@"C:\Projects\31g\trunk\bin\NoFuture.Tokens.InvokeNfTypeName.exe", CustomTools.InvokeNfTypeName);
+
+            Assert.AreEqual(@"C:\Projects\31g\trunk\bin\ffmpeg.exe", BinTools.Ffmpeg);
+            Assert.AreEqual(@"C:\Projects\31g\trunk\bin\youtube-dl.exe", BinTools.YoutubeDl);
+
+            Assert.IsTrue(Switches.SqlFiltersOff);
+            Assert.IsTrue(Switches.PrintWebHeaders);
+
+            Assert.AreEqual(@"C:\Projects\31g\trunk\NoFuture.cer", SecurityKeys.NoFutureX509Cert);
+
+            var codeFiles =
+                "ada adb adml admx ads as asa asax ascx asm asmx asp aspx bas bat bsh c cbd cbl cc cdb cdc cls cmd cob cpp cs cshtml css cxx dsr dtd f f2k f90 f95 for frm fs fsx fxh g4 gv h hpp hs hta htm html hxx idl inc java js json kml las lhs lisp lsp lua m master ml mli mx nt pas php php3 phtml pl plx pm  ps ps1 psm1 py pyw r rb rbw rpx scm scp sep sh shtm shtml smd sml sql ss st tcl tex thy tt vb vbhtml vbs vrg wsc wsdl wsf xaml xhtml xlf xliff xsd xsl xslt xsml xst xsx";
+            var cfgFiles =
+                "acl aml cfg config content csproj cva database din dsw dtproj dtsx dun ecf ecf edmx fcc fsproj gpd h1k hkf inf ini isp iss manifest nuspec obe overrideTasks pdm pp props ps1xml psc1 psd1 rsp sam sch sitemap sln stp svc targets tasks testsettings theme user vbp vbproj vdproj vsmdi xbap xml xrm-ms";
+            var binFiles =
+                "001 002 003 004 005 006 007 008 009 010 7z aas acm addin adm am amx ani apk apl aps aux avi ax bak bcf bcm bin bmp bpd bpl browser bsc btr bud cab cache camp cap cat cch ccu cdf-ms cdmp chk chm chr chs cht clb cmb cmdline cmf com comments compiled compositefont cov cpa cpl cpx crmlog crt csd ctm cty cur cw dat data db dcf dcr default delete dem desklink devicemetadata-ms diagpkg dic dir dll dlm dls dmp dnl doc docx drv ds dts dub dvd dvr-ms dxt ebd edb efi emf err ess etl ev1 ev2 ev3 evm evtx ex_ exe exp fe fon ftl fx gdl gif gmmp grl grm gs_4_0 h1c h1s h1t hdr hex hit hlp hpi hpx iad icc icm ico id idb idx iec if2 ilk imd ime inf_loc ins inx ipa ird jar jmx jnt job jpeg jpg jpn jrs jtp kor ldo lex lg1 lg2 lib library-ms lng lnk log lrc lts lxa mac man map mapimail mdb mdbx mfl mib mid mllr mni mof mp3 mp4 mpg msc msi msm msstyles mst msu mui mum mzz ncb ndx ngr nlp nls nlt ntf nupkg obj ocx olb old opt out pch pdb pdf phn pkc plugin pnf png ppd pptx prm prof propdesc prq prx ps_2_0 ps_4_0 psd ptxml pub que rat rdl reg res resources resx rld rll rom rpo rs rtf s3 sbr scc scr sdb sdi ses shp smp sqm ssm stl swf sys t4 tag tar.gz tbl tbr tha tif tiff tlb tmp toc tpi trie1 tsp ttc ttf tts tx_ txt uaq uce udt uni uninstall unt url vch vdf ver vp vs_1_1 vs_4_0 vsd vspscc wav wdf web wih wim win32manifest wma wmf wmv wmz wtv wwd x32 xex xlb xls xlsx zfsendtotarget zip";
+
+            Assert.AreEqual(codeFiles, string.Join(" ", CodeFileExtensions));
+            Assert.AreEqual(cfgFiles, string.Join(" ", ConfigFileExtensions));
+            Assert.AreEqual(binFiles, string.Join(" ", BinaryFileExtensions));
+
+            var exDirs =
+                "bin obj Interop TestResults _svn .svn _ReSharper _TeamCity .git .nuget .vs lib build dist packages __pycache__";
+            Assert.AreEqual(exDirs, string.Join(" ", ExcludeCodeDirectories));
+
         }
 
         [TestMethod]
         public void TestExpandCfgValue()
         {
-            var testResult = NoFuture.Shared.NfConfig.ExpandCfgValue(testInput, @"$(tempRootDir)\httpAppDomain");
+            var testResult = ExpandCfgValue(testInput, @"$(tempRootDir)\httpAppDomain");
             Assert.IsNotNull(testInput);
             System.Diagnostics.Debug.WriteLine(testResult);
         }
@@ -42,7 +132,7 @@ namespace NoFuture.Tests.Shared
         [TestMethod]
         public void TestResolveIdValueHash()
         {
-            NoFuture.Shared.NfConfig.ResolveIdValueHash(testInput);
+            ResolveIdValueHash(testInput);
             Assert.IsNotNull(testInput);
             Assert.AreNotEqual(0, testInput.Count);
             foreach (var k in testInput.Keys)
@@ -156,17 +246,12 @@ namespace NoFuture.Tests.Shared
             };
 
         private const string TEST_FILE = @"
-<!--
-Cdata is space separated
-$(someId) means, 'resolve this value using which every node has this ID in this file.'
-$(%environmentVar%) means, 'resolve this to the environment variable contained in between the two '%''
--->
 <no-future>
   <shared>
     <config>
       <root id='myPsHome' value='C:\Projects\31g\trunk' />
       <bools>
-        <add id='switchPrintWebHeaders' value='False' />
+        <add id='switchPrintWebHeaders' value='True' />
         <add id='switchSqlCmdHeadersOff' value='True' />
         <add id='switchSqlFiltersOff' value='True' />
         <add id='switchSupressNpp' value='False' />
@@ -216,12 +301,12 @@ $(%environmentVar%) means, 'resolve this to the environment variable contained i
       </uris>
       <files>
         <certs>
-          <add id='certFileNoFutureX509' value='' />
+          <add id='certFileNoFutureX509' value='$(myPsHome)\NoFuture.cer' />
         </certs>
+        <images>
+          <add id='favicon' value='$(myPsHome)\favicon.ico' />
+        </images>
         <temps>
-          <add id='tempJsFile' value='$(tempRootDir)\temp.js' />
-          <add id='tempHtmlFile' value='$(tempRootDir)\temp.html' />
-          <add id='tempCsvFile' value='$(tempRootDir)\temp.csv' />
           <add id='tempStdOutFile' value='$(tempRootDir)\stdout.txt' />
           <add id='tempT4TemplateFile' value='$(tempRootDir)\t4Temp.tt' />
           <add id='tempNetStatFile' value='$(tempRootDir)\netstat.txt' />
@@ -230,23 +315,19 @@ $(%environmentVar%) means, 'resolve this to the environment variable contained i
         <tools>
           <x64>
             <add id='x64SvcUtilTool' value='$(net461SdkTools)\x64\svcUtil.exe' />
-            <add id='x64IldasmTool' value='$(net461SdkTools)\x64\ildasm.exe' />
             <add id='x64WsdlTool' value='$(net461SdkTools)\x64\wsdl.exe' />
             <add id='x64ClrVerTool' value='$(net461SdkTools)\x64\clrver.exe' />
             <add id='x64XsdExeTool' value='$(net461SdkTools)\x64\xsd.exe' />
-            <add id='x64CdbTool' value='$(binX64RootDir)\debug\cdb.exe' />
+            <add id='x64DependsTool' value='$(binX64RootDir)\depends\depends.exe' />
             <add id='x64TListTool' value='$(binX64RootDir)\debug\tlist.exe' />
             <add id='x64SymChkTool' value='$(binX64RootDir)\debug\symChk.exe' />
             <add id='x64DumpbinTool' value='$(binX64RootDir)\vs10\dumpbin.exe' />
             <add id='x64SqlCmdTool' value='$(binX64RootDir)\sqlcmd\SQLCMD.EXE' />
-            <add id='x64MdbgTool' value='$(binX64RootDir)\v4.0\Mdbg.exe' />
           </x64>
           <x86>
-            <add id='x86IldasmTool' value='$(net461SdkTools)\ildasm.exe' />
             <add id='x86SqlMetalTool' value='$(net461SdkTools)\sqlmetal.exe' />
             <add id='x86SvcUtilTool' value='$(net461SdkTools)\svcUtil.exe' />
             <add id='x86WsdlTool' value='$(net461SdkTools)\wsdl.exe' />
-            <add id='x86CdbTool' value='$(binX86RootDir)\debug\cdb.exe' />
             <add id='x86DependsTool' value='$(binX86RootDir)\depends\depends.exe' />
             <add id='x86DumpbinTool' value='$(binX86RootDir)\vs10\dumpbin.exe' />
             <add id='x86TextTransformTool' value='$(binX86RootDir)\TextTransform.exe' />
@@ -277,7 +358,6 @@ $(%environmentVar%) means, 'resolve this to the environment variable contained i
             <add id='binFfmpegTool' value='$(binRootDir)\ffmpeg.exe' />
             <add id='binYoutubeDlTool' value='$(binRootDir)\youtube-dl.exe' />
           </bin>
-          <favicon value='$(myPsHome)\favicon.ico' />
         </tools>
         <extensions>
           <add id='code-file-extensions'><![CDATA[ada adb adml admx ads as asa asax ascx asm asmx asp aspx bas bat bsh c cbd cbl cc cdb cdc cls cmd cob cpp cs cshtml css cxx dsr dtd f f2k f90 f95 for frm fs fsx fxh g4 gv h hpp hs hta htm html hxx idl inc java js json kml las lhs lisp lsp lua m master ml mli mx nt pas php php3 phtml pl plx pm  ps ps1 psm1 py pyw r rb rbw rpx scm scp sep sh shtm shtml smd sml sql ss st tcl tex thy tt vb vbhtml vbs vrg wsc wsdl wsf xaml xhtml xlf xliff xsd xsl xslt xsml xst xsx]]></add>
@@ -289,21 +369,22 @@ $(%environmentVar%) means, 'resolve this to the environment variable contained i
         <add id='search-directory-exclusions'><![CDATA[bin obj Interop TestResults _svn .svn _ReSharper _TeamCity .git .nuget .vs lib build dist packages __pycache__]]></add>
         <temps>
           <add id='tempRootDir' value='$(myPsHome)\temp' />
-          <add id='tempProcsDir' value='$(tempRootDir)\procs' />
+          <add id='tempSqlDir' value='$(tempRootDir)\sql' />
+          <add id='tempProcsDir' value='$(tempRootDir)\prox' />
           <add id='tempCodeDir' value='$(tempRootDir)\code' />
           <add id='tempTextDir' value='$(tempRootDir)\text' />
           <add id='tempDebugsDir' value='$(tempRootDir)\debug' />
           <add id='tempGraphDir' value='$(tempRootDir)\graph' />
-          <add id='tempSvcUtilDir' value='$(tempRootDir)\svcUtil' />
-          <add id='tempWsdlDir' value='$(tempRootDir)\wsdl' />
-          <add id='tempHbmDir' value='$(tempRootDir)\hbm' />
-          <add id='tempBinDir' value='$(tempRootDir)\tempBin' />
-          <add id='tempJavaSrcDir' value='$(tempRootDir)\java\src' />
-          <add id='tempJavaBuildDir' value='$(tempRootDir)\java\build' />
-          <add id='tempJavaDistDir' value='$(tempRootDir)\java\dist' />
-          <add id='tempJavaArchiveDir' value='$(tempRootDir)\java\archive' />
+          <add id='tempSvcUtilDir' value='$(tempCodeDir)\svcUtil' />
+          <add id='tempWsdlDir' value='$(tempCodeDir)\wsdl' />
+          <add id='tempHbmDir' value='$(tempCodeDir)\hbm' />
+          <add id='tempJavaSrcDir' value='$(tempCodeDir)\java\src' />
+          <add id='tempJavaBuildDir' value='$(tempCodeDir)\java\build' />
+          <add id='tempJavaDistDir' value='$(tempCodeDir)\java\dist' />
+          <add id='tempJavaArchiveDir' value='$(tempCodeDir)\java\archive' />
           <add id='tempCalendarDir' value='$(tempRootDir)\Calendar' />
           <add id='tempHttpAppDomainDir' value='$(tempRootDir)\httpAppDomain' />
+          <add id='tempAudioDir' value='$(tempRootDir)\audio' />
           <add id='tempTsvCsvDir' value='$(tempRootDir)\tsvCsv' />
         </temps>
         <bins>
@@ -312,16 +393,12 @@ $(%environmentVar%) means, 'resolve this to the environment variable contained i
           <add id='binX64RootDir' value='$(binRootDir)\amd64' />
           <add id='binX86RootDir' value='$(binRootDir)\x86' />
           <add id='binJavaRootDir' value='$(binRootDir)\java' />
-          <add id='binT4TemplatesDir' value='$(binRootDir)\java' />
-          <add id='binPhpRootDir' value='$(binRootDir)\php' />
-          <add id='binDataRootDir' value='$(binRootDir)\Data\Source' />
+          <add id='binT4TemplatesDir' value='$(binRootDir)\Templates' />
         </bins>
       </directories>
-
     </config>
   </shared>
 </no-future>
-
 ";
 
         #endregion
