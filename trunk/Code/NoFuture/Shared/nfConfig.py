@@ -29,14 +29,16 @@ __cfgIdName2PropertyAssignment = {
     "default-char-separator" : lambda s: setattr(sys.modules[__name__], 'defaultCharSeparator', s),
     "cmd-line-arg-switch" : lambda s: setattr(sys.modules[__name__], 'cmdLineArgSwitch', s),
     "cmd-line-arg-assign" : lambda s: setattr(sys.modules[__name__], 'cmdLineArgAssign', s),
-    "punctuation-chars" : lambda s: setattr(sys.modules[__name__], 'punctuationChars', s.split(' '))
+    "punctuation-chars" : lambda s: setattr(sys.modules[__name__], 'punctuationChars', s.split(' ')),
 }
 """dict: Is the key-value hash which links the id's in `FILE_NAME` to the properties of the `nfConfig`"""
 
-def findNfConfigFile():
+def findNfConfigFile(pwd = None):
     """A helper function which looks for the `FILE_NAME` in the
     normal runtime directories (e.g. current working dir, user dir, etc.)     
     """
+    if pwd != None:
+        searchDirs.append(pwd)
     searchDirs = [os.path.join(x,"bin") for x in sys.path if x.endswith("NoFuture") ]
     searchDirs.append(os.path.join(os.path.expanduser("~"), "AppData\\Roaming\\NoFuture"))
     searchDirs.append(os.getcwd())

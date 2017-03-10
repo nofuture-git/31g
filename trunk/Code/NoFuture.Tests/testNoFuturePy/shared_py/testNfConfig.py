@@ -136,6 +136,11 @@ class TestNfConfig(unittest.TestCase):
         self.assertEqual("C:\\Projects\\31g\\trunk\\temp", toTest.TempDirectories.root)
         self.assertNotEqual(0, len(toTest.punctuationChars))
         self.assertEqual("C:\\Projects\\31g\\trunk\\favicon.ico",toTest.favicon)
+        self.assertEqual(306,len(toTest.binaryFileExtensions))
+        self.assertEqual(116,len(toTest.codeFileExtensions))
+        self.assertEqual(54,len(toTest.configFileExtensions))
+        self.assertEqual(16,len(toTest.excludeCodeDirectories))
+        self.assertEqual("C:\\Projects\\31g\\trunk\\NoFuture.cer",toTest.SecurityKeys.noFutureX509Cert)
         
 
 if __name__ == '__main__':
