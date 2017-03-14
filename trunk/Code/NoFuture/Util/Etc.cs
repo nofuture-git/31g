@@ -800,6 +800,31 @@ namespace NoFuture.Util
             return jsonString;
         }
 
+        /// <summary>
+        /// Formats <see cref="xmlString"/> to the common look with new-lines and tabs.
+        /// </summary>
+        /// <param name="xmlString"></param>
+        /// <returns></returns>
+        public static string FormatXml(string xmlString)
+        {
+            if (string.IsNullOrWhiteSpace(xmlString))
+                return null;
+
+            var xml = new XmlDocument();
+            xml.LoadXml(xmlString);
+            using (var ms = new MemoryStream())
+            {
+                var xmlSettings = new XmlWriterSettings {Encoding = Encoding.UTF8, Indent = true};
+                using (var xmlWriter = XmlWriter.Create(ms, xmlSettings))
+                {
+                    xml.WriteContentTo(xmlWriter);
+                    xmlWriter.Flush();
+                    xmlWriter.Close();
+                }
+                return Encoding.UTF8.GetString(ms.ToArray());
+            }
+        }
+
         public static ChronoCompare ComparedTo(this DateTime t1, DateTime t2)
         {
             var num = DateTime.Compare(t1, t2);

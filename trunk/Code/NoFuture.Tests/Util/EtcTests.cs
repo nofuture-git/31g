@@ -262,6 +262,15 @@ namespace NoFuture.Tests.Util
         }
 
         [TestMethod]
+        public void TestFormatXml()
+        {
+            var testXml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><buildTypes><buildType id=\"Whiskey_Quebec_Motel_Romeo_Whiskey_Alpha\" name=\"API\"><builds><build id=\"9945412\" number=\"0000FF.0A.344D1.2B\" status=\"SUCCESS\"><statusText>Success</statusText></build></builds></buildType></buildTypes>";
+            var testResult = NoFuture.Util.Etc.FormatXml(testXml);
+            Assert.IsNotNull(testResult);
+            System.Diagnostics.Debug.WriteLine(testResult);
+        }
+
+        [TestMethod]
         public void TestIsBetween()
         {
             
