@@ -145,6 +145,58 @@ namespace NoFuture.Read.Config
 
             return new System.ServiceModel.EndpointAddress(svcSection.Client.Endpoints[0].Address, endpointIdentity);
         }
+
+        /// <summary>
+        /// Copies all the sections named <see cref="sectionNames"/> found within <see cref="srcExeCfg"/>
+        /// into <see cref="destExeCfg"/>.  The sections in <see cref="srcExeCfg"/> are NOT removed and 
+        /// the <see cref="destExeCfg"/> will be overwritten if some change occured.
+        /// </summary>
+        /// <param name="srcExeCfg"></param>
+        /// <param name="destExeCfg"></param>
+        /// <param name="sectionNames"></param>
+        public static void CopySections(string srcExeCfg, string destExeCfg, params string[] sectionNames)
+        {
+            if (string.IsNullOrWhiteSpace(srcExeCfg) || string.IsNullOrWhiteSpace(destExeCfg) || sectionNames == null)
+                return;
+
+            if (!File.Exists(srcExeCfg) || !File.Exists(destExeCfg))
+                return;
+
+            var srcCfg = GetExeConfig(srcExeCfg);
+            var destCfg = GetExeConfig(destExeCfg);
+            var count = CopySections(srcCfg, destCfg, sectionNames);
+
+            if(count > 0)
+                destCfg.Save();
+        }
+
+        /// <summary>
+        /// This is similar to its overload; however, this is intended to operate only within 
+        /// some given runtime where the copied sections are not saved to the underlying file.
+        /// </summary>
+        /// <param name="srcCfg"></param>
+        /// <param name="destCfg"></param>
+        /// <param name="sectionNames"></param>
+        public static int CopySections(System.Configuration.Configuration srcCfg,
+            System.Configuration.Configuration destCfg, params string[] sectionNames)
+        {
+            var count = 0;
+            foreach (var section in sectionNames.Where(s => !string.IsNullOrWhiteSpace(s)))
+            {
+                var srcCfgSection = srcCfg.Sections[section];
+                if (srcCfgSection == null)
+                    continue;
+
+                var destCfgSection = destCfg.Sections[section];
+                if (destCfgSection != null)
+                    destCfg.Sections.Remove(section);
+                srcCfg.Sections.Remove(section);
+                destCfg.Sections.Add(section, srcCfgSection);
+                
+            }
+            return count;
+        }
+
         #endregion
 
         #region internal helpers

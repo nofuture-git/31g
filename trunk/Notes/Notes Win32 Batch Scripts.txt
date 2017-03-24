@@ -130,3 +130,11 @@ Windows CLI Reference
  type C:\Projects\MyFile.xml
   - like PowerShell's Get-Content and bash cat
 ----
+
+----
+This works in bash only - make an ISO from disk
+df -aTh #list the mounted drives
+
+# umount /dev/cdrom
+$ dd if=/dev/cdrom of=~/cd_image.iso
+----
