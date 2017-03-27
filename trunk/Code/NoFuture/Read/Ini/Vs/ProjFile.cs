@@ -879,6 +879,116 @@ namespace NoFuture.Read.Vs
             return IterateBinReferences(myAction);
         }
 
+        /// <summary>
+        /// Adds the nodes the given project file which causes NuGet packages to be restored upon build.
+        /// </summary>
+        /// <param name="slnDir"></param>
+        /// <returns></returns>
+        public int AddNugetPkgRestoreNodes(string slnDir = @"..\")
+        {
+            if (_xmlDocument == null || _xmlDocument.DocumentElement == null)
+                return -1;
+
+            slnDir = slnDir ?? @"..\";
+            var rootProjProps = _xmlDocument.SelectSingleNode($"//{NS}:PropertyGroup/{NS}:OutputType/..", _nsMgr);
+            if (rootProjProps == null)
+                return 0;
+
+            var counter = 0;
+
+            //<SolutionDir Condition="$(SolutionDir) == ...
+            var sdNode = rootProjProps.FirstChildNamed("SolutionDir");
+            var sdElem = sdNode as XmlElement ?? _xmlDocument.CreateElement("SolutionDir", DOT_NET_PROJ_XML_NS);
+
+            AddAttribute(sdElem, "Condition", "$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'");
+            sdElem.InnerText = slnDir;
+
+            if (sdNode == null)
+            {
+                rootProjProps.InsertAfter(sdElem, rootProjProps.LastChild);
+                counter += 1;
+            }
+
+            //<RestorePackages>true</RestorePackages>
+            var rpkgNode = rootProjProps.FirstChildNamed("RestorePackages");
+            var rpkgElem = rpkgNode as XmlElement ?? _xmlDocument.CreateElement("RestorePackages", DOT_NET_PROJ_XML_NS);
+            rpkgElem.InnerText = "true";
+            if (rpkgNode == null)
+            {
+                rootProjProps.InsertAfter(rpkgElem, rootProjProps.LastChild);
+                counter += 1;
+            }
+
+            //<Import Project="$(SolutionDir)\.nuget\NuGet.targets" ...
+            var ngImportNode = _xmlDocument.SelectSingleNode($"//{NS}:Import[contains(@Project,'NuGet.targets')]", _nsMgr);
+            var ngImportElem = ngImportNode as XmlElement ??
+                                  _xmlDocument.CreateElement("Import", DOT_NET_PROJ_XML_NS);
+
+            AddAttribute(ngImportElem, "Project", @"$(SolutionDir)\.nuget\NuGet.targets");
+
+            AddAttribute(ngImportElem, "Condition", @"Exists('$(SolutionDir)\.nuget\NuGet.targets')");
+
+            if (ngImportNode == null)
+            {
+                var lastImport = _xmlDocument.SelectSingleNode("//vs:Import[last()]", _nsMgr);
+                if (lastImport != null)
+                    _xmlDocument.DocumentElement.InsertAfter(ngImportElem, lastImport);
+                else
+                    _xmlDocument.DocumentElement.AppendChild(ngImportElem);
+
+                counter += 1;
+            }
+
+            //<Target Name="EnsureNuGetPackageBuildImports" 
+            var ngTargetNode = _xmlDocument.SelectSingleNode($"//{NS}:Target[@Name='EnsureNuGetPackageBuildImports']", _nsMgr);
+            var ngTargetElem = ngTargetNode as XmlElement ?? _xmlDocument.CreateElement("Target", DOT_NET_PROJ_XML_NS);
+
+            AddAttribute(ngTargetElem, "Name", "EnsureNuGetPackageBuildImports");
+            AddAttribute(ngTargetElem, "BeforeTargets", "PrepareForBuild");
+
+            var ngTargetPgChildNode = ngTargetElem.FirstChildNamed("PropertyGroup");
+            var ngTargetPgChildElem = ngTargetPgChildNode as XmlElement ??
+                                      _xmlDocument.CreateElement("PropertyGroup", DOT_NET_PROJ_XML_NS);
+
+            var errTxtNode = ngTargetPgChildElem.FirstChildNamed("ErrorText");
+            var errTxtElem = errTxtNode as XmlElement ?? _xmlDocument.CreateElement("ErrorText", DOT_NET_PROJ_XML_NS);
+            errTxtElem.InnerText = "This project references NuGet package(s) that are missing on this computer. " +
+                                   "Enable NuGet Package Restore to download them.  For more information, " +
+                                   "see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.";
+            if (errTxtNode == null)
+            {
+                ngTargetPgChildElem.AppendChild(errTxtElem);
+                counter += 1;
+            }
+
+            if (ngTargetPgChildNode == null)
+            {
+                ngTargetElem.AppendChild(ngTargetPgChildElem);
+                counter += 1;
+            }
+
+            var ngTargetErrorNode = ngTargetElem.FirstChildNamed("Error");
+            var ngTargetErrorElem = ngTargetErrorNode as XmlElement ??
+                                    _xmlDocument.CreateElement("Error", DOT_NET_PROJ_XML_NS);
+
+            AddAttribute(ngTargetErrorElem, "Condition", @"!Exists('$(SolutionDir)\.nuget\NuGet.targets')");
+            AddAttribute(ngTargetErrorElem, "Text", @"$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))");
+
+            if (ngTargetErrorNode == null)
+            {
+                ngTargetElem.AppendChild(ngTargetErrorElem);
+                counter += 1;
+            }
+
+            if (ngTargetNode != null)
+                return counter;
+
+            _xmlDocument.DocumentElement.InsertAfter(ngTargetElem, ngImportElem);
+            counter += 1;
+
+            return counter;
+        }
+
         public override string GetInnerText(string xpath)
         {
             var singleNode = _xmlDocument.SelectSingleNode(string.Format(xpath, NS), NsMgr);

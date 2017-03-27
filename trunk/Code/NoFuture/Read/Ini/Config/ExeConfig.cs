@@ -76,7 +76,8 @@ namespace NoFuture.Read.Config
 
         /// <summary>
         /// Targets specific attributes of a .NET configuration file replacing any matches
-        /// found in <see cref="regex2Values"/> Keys with the paired value.
+        /// found in <see cref="regex2Values"/> Keys with the paired value, and preserves the 
+        /// original content to the output file as a transformation.
         /// </summary>
         /// <param name="regex2Values"></param>
         /// <param name="swapConnStrs"></param>
@@ -120,9 +121,22 @@ namespace NoFuture.Read.Config
         #endregion
 
         #region static config types
-        //found syntax by disassembling the WcfTestClient application
+        /// <summary>
+        /// Gets an instance of <see cref="System.Configuration.Configuration"/> 
+        /// for the given <see cref="exeConfigPath"/>
+        /// </summary>
+        /// <param name="exeConfigPath"></param>
+        /// <returns></returns>
+        /// <remarks>
+        /// found syntax by disassembling the WcfTestClient application
+        /// </remarks>
         public static System.Configuration.Configuration GetExeConfig(string exeConfigPath)
         {
+            if (string.IsNullOrWhiteSpace(exeConfigPath) || !File.Exists(exeConfigPath))
+            {
+                throw new ArgumentNullException(nameof(exeConfigPath));
+            }
+
             var exeConfigFileMap = new System.Configuration.ExeConfigurationFileMap();
             var machineConfig = System.Configuration.ConfigurationManager.OpenMachineConfiguration();
             exeConfigFileMap.MachineConfigFilename = machineConfig.FilePath;
@@ -131,6 +145,11 @@ namespace NoFuture.Read.Config
                 System.Configuration.ConfigurationUserLevel.None);
         }
 
+        /// <summary>
+        /// Gets the Service Model section group from the <see cref="exeConfigPath"/>
+        /// </summary>
+        /// <param name="exeConfigPath"></param>
+        /// <returns></returns>
         public static System.ServiceModel.Configuration.ServiceModelSectionGroup GetServiceModelSection(
             string exeConfigPath)
         {
@@ -138,6 +157,12 @@ namespace NoFuture.Read.Config
             return System.ServiceModel.Configuration.ServiceModelSectionGroup.GetSectionGroup(svcConfig);
         }
 
+        /// <summary>
+        /// Gets the end-point from the <see cref="exeConfigPath"/>
+        /// </summary>
+        /// <param name="exeConfigPath"></param>
+        /// <param name="upIdentity"></param>
+        /// <returns></returns>
         public static System.ServiceModel.EndpointAddress GetEndpointAddress(string exeConfigPath, string upIdentity)
         {
             var svcSection = GetServiceModelSection(exeConfigPath);
@@ -154,6 +179,11 @@ namespace NoFuture.Read.Config
         /// <param name="srcExeCfg"></param>
         /// <param name="destExeCfg"></param>
         /// <param name="sectionNames"></param>
+        /// <remarks>
+        /// This deals in the strongly typed configuration sections, therefore the types themselves
+        /// must be added to the current app domain.  
+        /// This differs from the Nf typical behavior of dealing in raw XML.
+        /// </remarks>
         public static void CopySections(string srcExeCfg, string destExeCfg, params string[] sectionNames)
         {
             if (string.IsNullOrWhiteSpace(srcExeCfg) || string.IsNullOrWhiteSpace(destExeCfg) || sectionNames == null)
@@ -177,6 +207,11 @@ namespace NoFuture.Read.Config
         /// <param name="srcCfg"></param>
         /// <param name="destCfg"></param>
         /// <param name="sectionNames"></param>
+        /// <remarks>
+        /// This deals in the strongly typed configuration sections, therefore the types themselves
+        /// must be added to the current app domain.  
+        /// This differs from the Nf typical behavior of dealing in raw XML.
+        /// </remarks>
         public static int CopySections(System.Configuration.Configuration srcCfg,
             System.Configuration.Configuration destCfg, params string[] sectionNames)
         {
@@ -617,7 +652,6 @@ namespace NoFuture.Read.Config
             _xmlWriter.WriteEndElement();
             
         }
-
 
         internal static void AppropriateAllRegex(XmlAttribute attr, Hashtable regex2Values)
         {

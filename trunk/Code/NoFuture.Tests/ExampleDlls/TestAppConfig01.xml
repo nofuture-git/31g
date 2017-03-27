@@ -133,7 +133,7 @@
         <endpoint address="mex" binding="mexHttpsBinding" contract="IMetadataExchange" />
         <!--<host>
           <baseAddresses>
-            <add baseAddress="http://10.130.11.40/ProviderDropClinicService_Prod" />
+            <add baseAddress="http://88.42.456.22/WeWillieWankWank" />
           </baseAddresses>
         </host>-->
       </service>	  

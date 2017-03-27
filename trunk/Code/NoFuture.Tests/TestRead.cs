@@ -29,7 +29,7 @@ namespace NoFuture.Tests
         [TestInitialize]
         public void Init()
         {
-            //InitConfigs();
+            InitConfigs();
         }
 
         public void InitConfigs()
@@ -356,6 +356,20 @@ namespace NoFuture.Tests
 
             System.Diagnostics.Debug.WriteLine(testResult);
             Assert.AreEqual("//Wz:docNode/Wz:sectionNode/Wz:listNode/Wz:itemNode[someAttr='applesauce']", testResult);
+        }
+
+        [TestMethod]
+        public void TestAddNugetPkgRestoreNodes()
+        {
+            var testSubject = new NoFuture.Read.Vs.ProjFile(TEST_CSPROJ);
+            Assert.IsNotNull(testSubject);
+
+            var testResults = testSubject.AddNugetPkgRestoreNodes();
+            Assert.AreNotEqual(0, testResults);
+
+            var testRslt = Path.GetDirectoryName(TEST_CSPROJ);
+            testRslt = Path.Combine(testRslt, "DoNotUse_VsProjFileTests-COPY.csproj");
+            testSubject.SaveAs(testRslt);
         }
     }
 }

@@ -124,7 +124,7 @@ $(%environmentVar%) means, 'resolve this to the environment variable contained i
         </extensions>
       </files>
       <directories>
-        <add id='search-directory-exclusions'><![CDATA[\bin\ \obj\ \Interop\ \TestResults\ \_svn\ \.svn\ \_ReSharper \_TeamCity \.git\ \.nuget\ \.vs\ \lib\ \build\ \dist\ \packages\ \__pycache__\]]></add>
+        <add id='search-directory-exclusions'><![CDATA[\bin\ \obj\ \Interop\ \TestResults\ \_svn\ \.svn\ \_ReSharper \_TeamCity \.git\ \.nuget\ \.vs\ \lib\ \build\ \dist\ \packages\ \__pycache__\ \.metadata\]]></add>
         <temps>
           <add id='tempRootDir' value='$(myPsHome)\temp' />
           <add id='tempSqlDir' value='$(tempRootDir)\sql' />

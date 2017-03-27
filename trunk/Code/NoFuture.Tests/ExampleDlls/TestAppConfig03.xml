@@ -27,7 +27,7 @@
               algorithmSuite="Default" establishSecurityContext="true" />
           </security>
         </binding>
-        <binding name="WSHttpBinding_ISHLABErrorMailService" closeTimeout="00:01:00"
+        <binding name="WSHttpBinding_IOhAweWankinsawMailService" closeTimeout="00:01:00"
           openTimeout="00:01:00" receiveTimeout="00:10:00" sendTimeout="00:01:00"
           bypassProxyOnLocal="false" transactionFlow="false" hostNameComparisonMode="StrongWildcard"
           maxBufferPoolSize="2147483647" maxReceivedMessageSize="2147483647"
