@@ -147,6 +147,28 @@ FROM MyTableWithXml
 WHERE ColumnAsXmlType.value('(/standard/XpathRules/here)[1]','NVARCHAR(MAX)') LIKE '%some inner string%'
 
 /*==========
+Get auto-increment ID
+  ==========*/
+--avoid this- it is global to whichever last insert, likely not yours
+DECLARE @myId INT
+SELECT @myId = @@IDENTITY
+
+--is scoped to your TRANSACTION, if insert was attached to a TRIGGER
+-- you may get that id instead of the one you expected.
+SELECT @myId = SCOPE_IDENTITY()
+
+--best practice
+DECLARE @myIds TABLE ( MyInsertedId INT )
+INSERT INTO MySchema.MyTable (
+		 SomeColumn,
+		 SomeOtherColumn)
+OUTPUT Inserted.Id INTO @myIds
+VALUES (
+	N'SomeValue',
+	N'SomeOtherValue'
+)
+
+/*==========
 Branching
   ==========*/
 --example #1
@@ -216,6 +238,8 @@ insert into myTable (myColumn) values ('123')
 --GO is neither SQL nor T-SQL - its a client-thing
 -- telling (probably SSMS or SqlCmd) to send the 
 -- command to the server and return.
+
+
 
 /*==========
 Temp Table

@@ -500,6 +500,16 @@ namespace NoFuture.Read.Vs
 
             var projFileName = Path.GetFileName(projPath);
 
+            //remove it as a binary reference node if present
+            var binRefNode =
+                _xmlDocument.SelectSingleNode(
+                    $"//{NS}:ItemGroup/{NS}:Reference[contains(@Include,'{nfProjFile.AssemblyName}')]", _nsMgr);
+            if (binRefNode?.ParentNode != null)
+            {
+                var binRefItemGrp = binRefNode.ParentNode;
+                binRefItemGrp.RemoveChild(binRefNode);
+            }
+
             var projRefNode =
                 _xmlDocument.SelectSingleNode(
                     $"//{NS}:ItemGroup/{NS}:ProjectReference[contains(@Include,'{projFileName}')]", _nsMgr);
@@ -642,6 +652,9 @@ namespace NoFuture.Read.Vs
         /// </remarks>
         public int ReduceToOnlyBuildConfig(params string[] buildConfigNames)
         {
+            if (_xmlDocument?.DocumentElement == null)
+                return -1;
+
             buildConfigNames = buildConfigNames ?? new[] {"Debug|AnyCPU", "Release|AnyCPU"};
             var buildConfigPropNodes = _xmlDocument.SelectNodes($"//{NS}:PropertyGroup", _nsMgr);
             var counter = 0;
@@ -705,6 +718,9 @@ namespace NoFuture.Read.Vs
                 var firstDocChildNode = _xmlDocument.DocumentElement.FirstChild;
                 _xmlDocument.InsertAfter(buildConfigNode, firstDocChildNode);
             }
+
+            _isChanged = counter > 0;
+
             return counter;
         }
 
@@ -880,13 +896,13 @@ namespace NoFuture.Read.Vs
         }
 
         /// <summary>
-        /// Adds the nodes the given project file which causes NuGet packages to be restored upon build.
+        /// Adds the nodes to the given project file which causes NuGet packages to be restored upon build.
         /// </summary>
         /// <param name="slnDir"></param>
         /// <returns></returns>
         public int AddNugetPkgRestoreNodes(string slnDir = @"..\")
         {
-            if (_xmlDocument == null || _xmlDocument.DocumentElement == null)
+            if (_xmlDocument?.DocumentElement == null)
                 return -1;
 
             slnDir = slnDir ?? @"..\";
@@ -979,6 +995,8 @@ namespace NoFuture.Read.Vs
                 ngTargetElem.AppendChild(ngTargetErrorElem);
                 counter += 1;
             }
+
+            _isChanged = counter > 0;
 
             if (ngTargetNode != null)
                 return counter;
