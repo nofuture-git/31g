@@ -6,6 +6,8 @@ if(-not [NoFuture.Shared.NfConfig+MyFunctions]::FunctionFiles.ContainsValue($MyI
 [NoFuture.Shared.NfConfig+MyFunctions]::FunctionFiles.Add("Get-AesEncryptedValue",$MyInvocation.MyCommand)
 [NoFuture.Shared.NfConfig+MyFunctions]::FunctionFiles.Add("Get-AesDecryptedValue",$MyInvocation.MyCommand)
 [NoFuture.Shared.NfConfig+MyFunctions]::FunctionFiles.Add("Get-HMACSHA1HashString",$MyInvocation.MyCommand)
+[NoFuture.Shared.NfConfig+MyFunctions]::FunctionFiles.Add("Protect-File",$MyInvocation.MyCommand)
+[NoFuture.Shared.NfConfig+MyFunctions]::FunctionFiles.Add("Unprotect-File",$MyInvocation.MyCommand)
 }
 }catch{
     Write-Host "file is being loaded independent of 'start.ps1' - some functions may not be available."
@@ -98,23 +100,31 @@ function Get-HMACSHA1HashString
 }
 
 <#
-    .synopsis
+    .SYNOPSIS
     Encrypts a string using AES 256 and returns its
     base64 value.
     
-    .Description
-    The key and vector are both global variables under $aesM listed
-    within the constants.  Furthermore, the cipher-mode is CBC with 
+    .DESCRIPTION
+    Encrypts a string using AES 256 and returns its
+    base64 value. Furthermore, the cipher-mode is CBC with 
     PKCS7 padding.
     
-    .parameter Value
+    .PARAMETER Value
     Plain text string to be encrypted.
     
-    .example
+    .PARAMETER Key
+    Optional, Base64 encoded key, defaults to the 
+    NfConfig.SecurityKeys.AesEncryptionKey
+
+    .PARAMETER Iv
+    Optional, Base64 encoded init vector, defaults to the
+    NfConfig.SecurityKeys.AesIV
+
+    .EXAMPLE
     C:\PS>Get-AesEncryptedValue -Value "hello from encryption world"
     OSQb8drdNd1FSMuepObOXzPO6K/Tvwhk+fhUjwx8E/U=    
    
-    .outputs
+    .OUTPUTS
     string
     
 #>
@@ -124,15 +134,26 @@ function Get-AesEncryptedValue
     Param
     (
         [Parameter(Mandatory=$true,position=0)]
-        [string] $Value
+        [string] $Value,
+        [Parameter(Mandatory=$false,position=1)]
+        [string] $Key,
+        [Parameter(Mandatory=$false,position=2)]
+        [string] $Iv
+
     )
     Process
     {
         $aesM = [System.Security.Cryptography.AESManaged]::Create()
         $aesM.Mode = [System.Security.Cryptography.CipherMode]::CBC
         $aesM.Padding = [System.Security.Cryptography.PaddingMode]::PKCS7
-        $aesM.Key = [System.Convert]::FromBase64String([NoFuture.Shared.NfConfig+SecurityKeys]::AesEncryptionKey)
-        $aesM.IV = [System.Convert]::FromBase64String([NoFuture.Shared.NfConfig+SecurityKeys]::AesIV)
+        if([string]::IsNullOrWhiteSpace($Key)){
+            $Key = [NoFuture.Shared.NfConfig+SecurityKeys]::AesEncryptionKey
+        }
+        $aesM.Key = [System.Convert]::FromBase64String($Key)
+        if([string]::IsNullOrWhiteSpace($Iv)){
+            $Iv = [NoFuture.Shared.NfConfig+SecurityKeys]::AesIV
+        }
+        $aesM.IV = [System.Convert]::FromBase64String($Iv)
         
         
         $aesMEncrypt = $aesM.CreateEncryptor()
@@ -147,22 +168,30 @@ function Get-AesEncryptedValue
 }
 
 <#
-    .synopsis
+    .SYNOPSIS
     Decrypts a string which was encrypted using AES 256
     
-    .Description
-    The key and vector are both global variables under $aesM listed
-    within the constants.  Furthermore, the cipher-mode is CBC with 
+    .DESCRIPTION
+    Decrypts a string which was encrypted using AES 256.
+    Furthermore, the cipher-mode is CBC with 
     PKCS7 padding.
     
-    .parameter Value
+    .PARAMETER Value
     A base64 encrypted string.
-    
-    .example
+
+    .PARAMETER Key
+    Optional, Base64 encoded key, defaults to the 
+    NfConfig.SecurityKeys.AesEncryptionKey
+
+    .PARAMETER Iv
+    Optional, Base64 encoded init vector, defaults to the
+    NfConfig.SecurityKeys.AesIV
+
+    .EXAMPLE
     C:\PS>Get-AesDecryptedValue -Value "OSQb8drdNd1FSMuepObOXzPO6K/Tvwhk+fhUjwx8E/U="
     hello from encryption world
     
-    .outputs
+    .OUTPUTS
    string
     
 #>
@@ -172,15 +201,25 @@ function Get-AesDecryptedValue
     Param
     (
         [Parameter(Mandatory=$true,position=0)]
-        [string] $Value
+        [string] $Value,
+        [Parameter(Mandatory=$false,position=1)]
+        [string] $Key,
+        [Parameter(Mandatory=$false,position=2)]
+        [string] $Iv
     )
     Process
     {
         $aesM = [System.Security.Cryptography.AESManaged]::Create()
         $aesM.Mode = [System.Security.Cryptography.CipherMode]::CBC
         $aesM.Padding = [System.Security.Cryptography.PaddingMode]::PKCS7
-        $aesM.Key = [System.Convert]::FromBase64String([NoFuture.Shared.NfConfig+SecurityKeys]::AesEncryptionKey)
-        $aesM.IV = [System.Convert]::FromBase64String([NoFuture.Shared.NfConfig+SecurityKeys]::AesIV)
+        if([string]::IsNullOrWhiteSpace($Key)){
+            $Key = [NoFuture.Shared.NfConfig+SecurityKeys]::AesEncryptionKey
+        }
+        $aesM.Key = [System.Convert]::FromBase64String($Key)
+        if([string]::IsNullOrWhiteSpace($Iv)){
+            $Iv = [NoFuture.Shared.NfConfig+SecurityKeys]::AesIV
+        }
+        $aesM.IV = [System.Convert]::FromBase64String($Iv)
         
         $aesMDecrypt = $aesM.CreateDecryptor()
         
