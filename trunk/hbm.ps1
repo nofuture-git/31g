@@ -503,6 +503,8 @@ function Get-HbmCs
         $pocoCsFile = Join-Path $OutputDir ("{0}.cs" -f $fileName) 
 
         $t4ParamName = [NoFuture.Hbm.SortingContainers.HbmFileContent]::T4_PARAM_NAME
+        $p2Name =[NoFuture.Hbm.SortingContainers.HbmFileContent]::INVOKE_NF_TYPE_NAME
+        $p2Val = [NoFuture.Shared.NfConfig+CustomTools]::InvokeNfTypeName
 
         $hbmXmlContent = New-Object NoFuture.Hbm.SortingContainers.HbmFileContent($hbmXmlPath)
 
@@ -513,10 +515,10 @@ function Get-HbmCs
                 break;
             }
             $compKeyCsFile = Join-Path $OutputDir ("{0}{1}.cs" -f $fileName, ([NoFuture.Hbm.Globals]::COMP_KEY_ID_SUFFIX))
-            Get-T4TextTemplate -InputFile $compKeyTemplate -OutputFile $compKeyCsFile -ParamNameValues @{$t4ParamName=$HbmXmlPath}
+            Get-T4TextTemplate -InputFile $compKeyTemplate -OutputFile $compKeyCsFile -ParamNameValues @{$t4ParamName=$HbmXmlPath; $p2Name=$p2Val}
         }
 
-        Get-T4TextTemplate -InputFile $pocoTemplate -OutputFile $pocoCsFile -ParamNameValues @{$t4ParamName=$HbmXmlPath}
+        Get-T4TextTemplate -InputFile $pocoTemplate -OutputFile $pocoCsFile -ParamNameValues @{$t4ParamName=$HbmXmlPath; $p2Name=$p2Val}
     }
 }#end Get-HbmCs
 
@@ -578,9 +580,11 @@ function Get-EfFluentCs
         $pocoCsFile = Join-Path $OutputDir ("{0}.cs" -f $fileName) 
 
         $t4ParamName = [NoFuture.Hbm.SortingContainers.HbmFileContent]::T4_PARAM_NAME
+        $p2Name =[NoFuture.Hbm.SortingContainers.HbmFileContent]::INVOKE_NF_TYPE_NAME
+        $p2Val = [NoFuture.Shared.NfConfig+CustomTools]::InvokeNfTypeName
 
-        Get-T4TextTemplate -InputFile $pocoTemplate -OutputFile $pocoCsFile -ParamNameValues @{$t4ParamName=$HbmXmlPath}
-        Get-T4TextTemplate -InputFile $mappingTemplate -OutputFile $mappingCsFile -ParamNameValues @{$t4ParamName=$HbmXmlPath}
+        Get-T4TextTemplate -InputFile $pocoTemplate -OutputFile $pocoCsFile -ParamNameValues @{$t4ParamName=$HbmXmlPath; $p2Name=$p2Val}
+        Get-T4TextTemplate -InputFile $mappingTemplate -OutputFile $mappingCsFile -ParamNameValues @{$t4ParamName=$HbmXmlPath; $p2Name=$p2Val}
         
     }
 }#end Get-EfFluentCs
@@ -634,8 +638,10 @@ function Get-Ef35Cs
         $mappingCsFile = Join-Path $OutputDir ("{0}.cs" -f $fileName)
 
         $t4ParamName = [NoFuture.Hbm.SortingContainers.HbmFileContent]::T4_PARAM_NAME
+        $p2Name =[NoFuture.Hbm.SortingContainers.HbmFileContent]::INVOKE_NF_TYPE_NAME
+        $p2Val = [NoFuture.Shared.NfConfig+CustomTools]::InvokeNfTypeName
 
-        Get-T4TextTemplate -InputFile $mappingTemplate -OutputFile $mappingCsFile -ParamNameValues @{$t4ParamName=$HbmXmlPath}
+        Get-T4TextTemplate -InputFile $mappingTemplate -OutputFile $mappingCsFile -ParamNameValues @{$t4ParamName=$HbmXmlPath; $p2Name=$p2Val}
         
     }
 }#end Get-Ef35Cs
@@ -702,8 +708,10 @@ function Write-CsCodeHbmCommand
 
         $param1 = [NoFuture.Hbm.Templates.HbmCommand+ParamNames]::TypeFullName
         $param2 = [NoFuture.Hbm.Templates.HbmCommand+ParamNames]::IdTypeFullName
+        $p2Name =[NoFuture.Hbm.SortingContainers.HbmFileContent]::INVOKE_NF_TYPE_NAME
+        $p2Val = [NoFuture.Shared.NfConfig+CustomTools]::InvokeNfTypeName
 
-        Get-T4TextTemplate -InputFile $t4Template -OutputFile $outputCsFile -ParamNameValues @{$param1=$TypeName; $param2=$idType}
+        Get-T4TextTemplate -InputFile $t4Template -OutputFile $outputCsFile -ParamNameValues @{$param1=$TypeName; $param2=$idType; $p2Name=$p2Val}
 
     }
 }# end Write-CsCodeHbmCommand

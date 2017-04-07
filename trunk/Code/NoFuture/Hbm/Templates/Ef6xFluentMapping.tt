@@ -9,6 +9,9 @@
 <#
     var paramName= NoFuture.Hbm.SortingContainers.HbmFileContent.T4_PARAM_NAME;
     var hbmFilePath = this.Host.ResolveParameterValue("","",paramName);
+	var p2Name = NoFuture.Hbm.SortingContainers.HbmFileContent.INVOKE_NF_TYPE_NAME;
+	NoFuture.Shared.NfConfig.CustomTools.InvokeNfTypeName = this.Host.ResolveParameterValue("","",p2Name);
+
     var efStruct= new NoFuture.Hbm.Templates.Ef6XFluentMapping(hbmFilePath);
 #>
 using System;

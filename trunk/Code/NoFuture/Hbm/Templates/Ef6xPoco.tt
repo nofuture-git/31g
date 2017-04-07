@@ -9,6 +9,9 @@
 <#
     var paramName= NoFuture.Hbm.SortingContainers.HbmFileContent.T4_PARAM_NAME;
     var hbmFilePath = this.Host.ResolveParameterValue("","",paramName);
+	var p2Name = NoFuture.Hbm.SortingContainers.HbmFileContent.INVOKE_NF_TYPE_NAME;
+	NoFuture.Shared.NfConfig.CustomTools.InvokeNfTypeName = this.Host.ResolveParameterValue("","",p2Name);
+
     var myhbm = new NoFuture.Hbm.Templates.Ef6XPoco(hbmFilePath);
 #>
 using System;
@@ -55,7 +58,7 @@ namespace <#= myhbm.Namespace #>
     foreach(var fk in myhbm.FkProperties.Keys)
     {
         var fkType= myhbm.FkProperties[fk];
-        var nfFkType = new NoFuture.Util.NfTypeName(fkType);
+        var nfFkType = new NoFuture.Util.NfType.NfTypeName(fkType);
         fkType = nfFkType.FullName;
         var fkName= fk;
 #>
@@ -73,7 +76,7 @@ namespace <#= myhbm.Namespace #>
     {
 
         var bagType= myhbm.ListProperties[bag];
-        var nfBagType= new NoFuture.Util.NfTypeName(bagType);
+        var nfBagType= new NoFuture.Util.NfType.NfTypeName(bagType);
         bagType = nfBagType.FullName;
         var bagName= bag;
 #>

@@ -9,10 +9,12 @@
 <#
 	var paramName= NoFuture.Hbm.SortingContainers.HbmFileContent.T4_PARAM_NAME;
     var hbmFilePath = this.Host.ResolveParameterValue("","",paramName);
+	var p2Name = NoFuture.Hbm.SortingContainers.HbmFileContent.INVOKE_NF_TYPE_NAME;
+	NoFuture.Shared.NfConfig.CustomTools.InvokeNfTypeName = this.Host.ResolveParameterValue("","",p2Name);
 	var compositeIdNode = new NoFuture.Hbm.Templates.HbmCompKeyCsClass(hbmFilePath);
 
-    var compKeyClassName = NoFuture.Util.NfTypeName.GetTypeNameWithoutNamespace(compositeIdNode.IdType);
-    var _namespace = NoFuture.Util.NfTypeName.GetNamespaceWithoutTypeName(compositeIdNode.IdType);
+    var compKeyClassName = NoFuture.Util.NfType.NfTypeName.GetTypeNameWithoutNamespace(compositeIdNode.IdType);
+    var _namespace = NoFuture.Util.NfType.NfTypeName.GetNamespaceWithoutTypeName(compositeIdNode.IdType);
 #>
 using System;
 

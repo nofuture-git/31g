@@ -503,7 +503,7 @@ namespace NoFuture.Read.Vs
             //remove it as a binary reference node if present
             var binRefNode =
                 _xmlDocument.SelectSingleNode(
-                    $"//{NS}:ItemGroup/{NS}:Reference[contains(@Include,'{nfProjFile.AssemblyName}')]", _nsMgr);
+                    $"//{NS}:ItemGroup/{NS}:Reference[contains(@Include,'{nfProjFile.AssemblyName},')]", _nsMgr);
             if (binRefNode?.ParentNode != null)
             {
                 var binRefItemGrp = binRefNode.ParentNode;

@@ -56,7 +56,9 @@
     <EmbeddedResource Include="US_LastNames.xml" />
     <EmbeddedResource Include="US_PersonalDebt.xml" />
     <EmbeddedResource Include="US_PersonalWealth.xml" />
-    <EmbeddedResource Include="US_States.xml" />
+    <EmbeddedResource Include="US_States.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="US_Universities.xml" />
     <EmbeddedResource Include="US_Zip.xml" />
     <EmbeddedResource Include="US_Zip_ProbTable.xml" />

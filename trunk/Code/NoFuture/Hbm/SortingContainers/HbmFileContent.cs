@@ -48,6 +48,7 @@ namespace NoFuture.Hbm.SortingContainers
         #region api
 
         public const string T4_PARAM_NAME = "hbmFilePath";
+        public const string INVOKE_NF_TYPE_NAME = "invokeNfTypeName";
 
         /// <summary>
         /// The full, assembly qualified, type name of the class to which the 

@@ -10,6 +10,9 @@
 <#
     var typeFullName = this.Host.ResolveParameterValue("","",NoFuture.Hbm.Templates.HbmCommand.ParamNames.TypeFullName);
     var idTypeFullName = this.Host.ResolveParameterValue("","",NoFuture.Hbm.Templates.HbmCommand.ParamNames.IdTypeFullName);
+	var p2Name = NoFuture.Hbm.SortingContainers.HbmFileContent.INVOKE_NF_TYPE_NAME;
+	NoFuture.Shared.NfConfig.CustomTools.InvokeNfTypeName = this.Host.ResolveParameterValue("","",p2Name);
+
     var hbmCmd = new NoFuture.Hbm.Templates.HbmCommand(typeFullName, idTypeFullName);
 #>
 using System.Security.Principal;
