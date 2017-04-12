@@ -96,19 +96,19 @@ DECLARE @mySecond int
 
 --or
   
-Declare @myDate datetime, 
-		@myInt int, 
-		@myVarchar varchar(50)
--- declaration in one statement is more efficient 
+DECLARE @myDate DATETIME ,
+    @myInt INT ,
+    @myVarchar VARCHAR(50);
+-- declaration in one statement is more efficient  
 
 /*==========
 Variable Assignment
   ==========*/
-Set @myDate = GetDate()
-Select @myInt = min(an_id) from myTable
+SET @myDate = GETDATE()
+SELECT @myInt = MIN(an_id) FROM myTable
 
 --this is obviously the most efficient assignment syntax
-select @myInt = column1, @myDate = column2 from myTable where ID = 12
+SELECT @myInt = column1, @myDate = column2 FROM myTable WHERE ID = 12
 --GOTCHA, if the select returns no rows the variable will
 -- retain its value, NOT be set to NULL
 
@@ -147,6 +147,40 @@ FROM MyTableWithXml
 WHERE ColumnAsXmlType.value('(/standard/XpathRules/here)[1]','NVARCHAR(MAX)') LIKE '%some inner string%'
 
 /*==========
+XML As Proc Parameter
+  ==========*/
+-- allows for passing in a lot of data on a single param
+CREATE PROCEDURE [dbo].[MyXmlProc] (@MyXmlParam AS XML)
+AS
+BEGIN
+	--is limited in XPath to simple selectors
+	-- be sure the projection reduces to one-value-per-parent 
+	SELECT R.i.value('Value[1]','VARCHAR(256)') --the index '[1]' is always required
+	FROM @MyXmlParam.nodes('/Items/Item') R(i)
+	/*
+	<Items>
+		<Value>123</Value>
+		<Value>456</Value>
+		<Value>789</Value>
+	</Items>
+	 - this fails because 'Value[1]' only gets the first item
+	 - you have to use something like
+	<Items>
+		<Item>
+			<Value>123</Value>
+		</Item>
+		<Item>
+			<Value>456</Value>
+		</Item>
+		<Item>
+			<Value>789</Value>
+		</Item>
+	</Items>
+	*/
+END
+  
+
+/*==========
 Get auto-increment ID
   ==========*/
 --avoid this- it is global to whichever last insert, likely not yours
@@ -172,18 +206,18 @@ VALUES (
 Branching
   ==========*/
 --example #1
-select 
- case when (svc.seen_at =0) then app.home_city
-	 when (svc.seen_at =1) then app.work_city 
-	 when (svc.seen_at =2) then 
-		(select walkinlocation.city
-		from ofc_exa
-		join
-		walkinlocation with (nolock) on (ofc_exa.walkinlocationid = walkinlocation.walkinlocationid)
-		where ofc_exa.ofc_exa_id = @examinerid)
-	 else null
- end as city
-from wwhs_svc svc
+SELECT 
+ CASE WHEN (svc.seen_at =0) THEN app.home_city
+	 WHEN (svc.seen_at =1) THEN app.work_city 
+	 WHEN (svc.seen_at =2) THEN 
+		(SELECT walkinlocation.city
+		FROM ofc_exa
+		JOIN
+		walkinlocation WITH (nolock) ON (ofc_exa.walkinlocationid = walkinlocation.walkinlocationid)
+		WHERE ofc_exa.ofc_exa_id = @examinerid)
+	 ELSE NULL
+ END as city
+FROM wwhs_svc svc
 
 --example #2
 select @exaGender = (case when gender is null then 1 

@@ -135,6 +135,33 @@ Noun Modification
 ----
 
 ----
+https://en.wikipedia.org/wiki/Declension
+----
+
+----
+Declension
+ - inflection, in the form of suffix, prefix and infix on nouns, pronouns,
+   adjectives and articles
+ - they are operators for Noun Modification (see above).
+ - this is used mostly in other languages
+  - English examples are
+   - singular\plural (e.g. book\books)
+   - nominative (he\him, who\whom)
+ - Latin has six kinds, of which only five are common
+  - nominative: some kind of base
+  - vocative: directed a something or someone, 
+  - accusative: for marking the direct object of a verb
+  - genitive: to express possession, measurement or source
+    - in English, the use of the 'of'
+  - dative: for marking the indirect object of a verb
+  - ablative: express separation, indirection or means of 
+     and action, 
+	- in English, use of 'by', 'with', 'from', 'in' and 'on'
+  - locative: the place where an action is performed.
+   - this is the uncommon one
+----
+
+----
 Adjectives 
  - describe or modify a nouns meaning
  - subdivided into four parts
@@ -347,3 +374,4 @@ Subject (Clause) Types
  Restrictive Clause: propostion must remain to have any sense
  Nonrestrictive Clause: proposition's removal allows for sense to remain
 ----
+ 
