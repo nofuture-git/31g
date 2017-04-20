@@ -1,0 +1,106 @@
+----
+Notes SqlCipher Windows Build
+---
+----
+Install Versions of 
+ - ActivePerl 5.24.1.2402
+  - required to build openssl
+ - Netwide Assembler 2.12.02
+  - required to build openssl
+ - Python 3.5.1 :: Anaconda 2.4.1 (64-bit)
+  - needed for its tcl* resources (e.g. header, exe's, dll's, etc)
+ - Git for Windows v2.7.0
+  - needed for its bash resources (e.g. awk)
+ - Visual Studio Pro 2015 ver 14.0.25431.01 Update 3
+----
+
+----
+Src Version of (2017-04-14) on GitHub
+ - OpenSSL 1.1.1-dev
+ - sqlcipher
+----
+
+----
+Misc
+ - I used the README.md of sqlite on GitHub for reference
+   but didn't actually build it or anything
+----
+
+----
+Hacks involved
+ - had to add the following paths the my global PATH variable 
+  C:\Program Files\Git\mingw64\bin 
+  - because I found tclsh.exe and tclsh86.exe in it and it seems 
+    that Makefile.msc needs these for whatever
+  C:\Program Files\Git\usr\bin
+  - because I found it had a copy of awk.exe which I guess is also 
+    needed by Makefile.msc
+  C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin
+  - this has copies of all the MS C toolchain 
+    stuff (e.g. cl.exe, link.exe, lib.exe, etc.)
+  
+ - had to download ActivePerl to run the 
+   'Configure' file for openssl
+ - had to download the zip (Symantec went nuts on the installer) 
+   of Netwide Assembler
+ - had to copy the whole folder at openssl-master/include/openssl 
+   into the ./sqlcipher/src
+ - had to generate a .lib file for %ProgramFiles%/Git/mingw64/tcl86.dll 
+  - used the instructions at https://adrianhenke.wordpress.com/2008/12/05/create-lib-file-from-dll/
+    the linker ended up needing a "tcl86.lib" and "tclstub86.lib" so 
+	I just copied and renamed the first as the latter
+ - had to copy the header files at C:\Anaconda3\Library\include named 
+   tcl.h, tclDecls.h, tclPlatDecls.h into the ./sqlcipher/src folder
+ - hacked the ./sqlcipher/Makefile.msc with the following
+  - inserted new line below 311 as
+   OPT_FEATURE_FLAGS = $(OPT_FEATURE_FLAGS) -DSQLITE_HAS_CODEC=1
+  - reassigned the variable at line 794 (was 793 but I added the line above)
+   TCLLIBDIR="C:\Program Files\Git\mingw64\bin" 
+   - because this is where I fournd the copy of tcl86.dll
+  - reassigned more values at line 869, 870
+   TCC = $(TCC) -DSQLITE_TEMP_STORE=2
+   RCC = $(RCC) -DSQLITE_TEMP_STORE=2
+  - and again at 968, 969
+   LTLINKOPTS = /NOLOGO /MACHINE:X86
+   LTLIBOPTS = /NOLOGO /MACHINE:X86
+  - and I added this hack at line 1059
+   LTLIBS = $(LIBTCL) "C:\Projects\openssl\openssl-bld-32\bin\libcrypto.lib"
+ - last I had to copy the built openssl binaries at openssl-bld-32\bin 
+   and paste them directly into the .\sqlcipher\bld folder to get sqlite3.exe 
+   to work but I think it only needed libcrypto-1_1.dll and libssl-1_1.dll
+----   
+
+----
+Commands for building openssl
+ - downloaded the zip from github
+ - unzipped it to C:\Projects\openssl\openssl-src-32
+ 
+ "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat"
+ cd C:\Projects\openssl\openssl-src-32
+ set PATH=%PATH%;C:\Projects\nasm-2.12.02
+ perl Configure VC-WIN32 --prefix=C:\Projects\openssl\openssl-bld-32
+ nmake
+ REM this takes for.........ev.......er to run
+ nmake test
+ nmake install
+----
+
+----
+Commands for building sqlcipher
+ - dowloaded the zip from github
+ - unzipped it to C:\Projects\sqlcipher\
+ - created the directory C:\Projects\sqlcipher\bld
+ 
+ cd C:\Projects\sqlcipher\
+ "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat"
+ cd bld
+ nmake /f ..\Makefile.msc TOP=..\sqlcipher
+----
+
+----
+Testing sqlite3.exe with an encrypted db
+ C:\Projects\sqlcipher\bld\sqlite3.exe
+ REM notice the foward-slash path-sep's
+ .open "C:/Projects/MySqliteDbs/someSqliteDb.sql"
+ PRAGMA key='FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF';
+----

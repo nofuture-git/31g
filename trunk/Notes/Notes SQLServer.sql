@@ -246,6 +246,12 @@ else
 --example #5, Immediate IF
 DECLARE @a int = 45, @b int = 40;
 SELECT IIF ( @a > @b, 'TRUE', 'FALSE' ) AS Result;	
+
+IF EXISTS(SELECT 1 FROM sys.Tables WHERE  Name = N'MyTableNamed' AND Type = N'U')
+ BEGIN
+      DROP TABLE [dbo].[MyTableNamed]
+ END
+GO
 	
 /*==========
 Labels
