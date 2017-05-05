@@ -11,17 +11,21 @@ namespace NoFuture.Rand.Domus
     [Serializable]
     public class NorthAmericanEdu : IEducation
     {
+        private string _eduLevel;
+        private OccidentalEdu _eduFlag;
 
         #region ctor
         internal NorthAmericanEdu(Tuple<IHighSchool, DateTime?> assignHs)
         {
             HighSchool = assignHs;
+            AssignEduFlagAndLevel();
         }
 
         internal NorthAmericanEdu(Tuple<IUniversity, DateTime?> assignUniv, Tuple<IHighSchool, DateTime?> assignHs)
         {
             HighSchool = assignHs;
             College = assignUniv;
+            AssignEduFlagAndLevel();
         }
 
         /// <summary>
@@ -34,7 +38,7 @@ namespace NoFuture.Rand.Domus
         public NorthAmericanEdu(IPerson p)
         {
             var amer = p as NorthAmerican;
-            ;            if (amer != null && amer.Age < 14)
+            if (amer != null && amer.Age < 14)
                 return;
 
             var dob = amer?.BirthCert?.DateOfBirth ?? NAmerUtil.GetWorkingAdultBirthDate();
@@ -67,6 +71,7 @@ namespace NoFuture.Rand.Domus
             {
                 //assign grad hs but no date
                 HighSchool = new Tuple<IHighSchool, DateTime?>(hs, null);
+                AssignEduFlagAndLevel();
                 return;
             }
 
@@ -89,6 +94,7 @@ namespace NoFuture.Rand.Domus
             //roll for some college
             if (Etx.TryAboveOrAt((int)Math.Round(univGradRate * 2), Etx.Dice.OneHundred))
             {
+                AssignEduFlagAndLevel();
                 return;
             }
 
@@ -104,47 +110,71 @@ namespace NoFuture.Rand.Domus
             //pick a univ 
             IUniversity univ = GetAmericanUniversity(homeState);
             if (univ == null)
+            {
+                AssignEduFlagAndLevel();
                 return;
+            }
             //college grad
             if (Etx.TryBelowOrAt((int)Math.Round(univGradRate), Etx.Dice.OneHundred))
             {
                 College = new Tuple<IUniversity, DateTime?>(univ, univGradDt);
+                AssignEduFlagAndLevel();
                 return;
             }
             //college drop-out
             College = new Tuple<IUniversity, DateTime?>(univ, null);
-
+            AssignEduFlagAndLevel();
         }
         #endregion
 
         #region properties
-        public OccidentalEdu EduLevel
-        {
-            get
-            {
-                var hasHs = HighSchool?.Item1 != null;
-                var isHsGrad = HighSchool?.Item2 != null;
-                var hasCollge = College?.Item1 != null;
-                var isCollegeGrad = College?.Item2 != null;
 
-                if (new[] { hasHs, isHsGrad, hasCollge, isCollegeGrad }.All(x => x == false))
-                    return OccidentalEdu.None;
-                if (hasCollge && isCollegeGrad)
-                    return OccidentalEdu.Bachelor | OccidentalEdu.Grad;
-                if (hasCollge)
-                    return OccidentalEdu.Bachelor | OccidentalEdu.Some;
-                if (hasHs && isHsGrad)
-                    return OccidentalEdu.HighSchool | OccidentalEdu.Grad;
-
-                return OccidentalEdu.HighSchool | OccidentalEdu.Some;
-            }
-        }
-
+        public OccidentalEdu EduFlag => _eduFlag;
+        /// <summary>
+        /// Set to a readable string for JSON serialization.
+        /// </summary>
+        public string EduLevel => _eduLevel;
+        
         public Tuple<IHighSchool, DateTime?> HighSchool { get; }
         public Tuple<IUniversity, DateTime?> College { get; }
         #endregion
 
         #region methods
+
+        protected internal void AssignEduFlagAndLevel()
+        {
+            var hasHs = HighSchool?.Item1 != null;
+            var isHsGrad = HighSchool?.Item2 != null;
+            var hasCollge = College?.Item1 != null;
+            var isCollegeGrad = College?.Item2 != null;
+
+            if (new[] { hasHs, isHsGrad, hasCollge, isCollegeGrad }.All(x => x == false))
+            {
+                _eduLevel = "No Education";
+                _eduFlag = OccidentalEdu.None;
+
+            }
+            if (hasCollge && isCollegeGrad)
+            {
+                _eduLevel = "College Grad";
+                _eduFlag = OccidentalEdu.Bachelor | OccidentalEdu.Grad;
+            }
+            if (hasCollge)
+            {
+                _eduLevel = "Some College";
+                _eduFlag = OccidentalEdu.Bachelor | OccidentalEdu.Some;
+            }
+            if (hasHs && isHsGrad)
+            {
+                _eduLevel = "High School Grad";
+                _eduFlag = OccidentalEdu.HighSchool | OccidentalEdu.Grad;
+            }
+            else
+            {
+                _eduLevel = "High School dropout";
+                _eduFlag = OccidentalEdu.HighSchool | OccidentalEdu.Some;
+            }
+        }
 
         public override string ToString()
         {

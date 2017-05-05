@@ -69,6 +69,28 @@ namespace NoFuture.Util
             return null;
         }
 
+        /// <summary>
+        /// Simple method to convert integer to ordinal 
+        /// 1 goes to 1st, 2 goes to 2nd, 3 goes to 3rd, 4 goes to 4th, etc.
+        /// </summary>
+        /// <param name="v"></param>
+        /// <returns></returns>
+        public static string ToOrdinal(this int v)
+        {
+            var absV = System.Math.Abs(v);
+            switch (absV)
+            {
+                case 1:
+                    return $"{v}st";
+                case 2:
+                    return $"{v}nd";
+                case 3:
+                    return $"{v}rd";
+                default:
+                    return v >= 1000 ? $"{v:n0}th" : $"{v}th";
+            }
+        }
+
         private const string LOREM_IPSUM_RSC = "NoFuture.Util.LoremIpsum.EightParagraphs.txt";
 
         /// <summary>

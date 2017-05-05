@@ -353,6 +353,29 @@ deallocate curMyCursor
 -- remove the table (DEALLOCATE)
 
 /*==========
+DELETE with a join to another table
+  ==========*/
+DECLARE @toDelete TABLE
+(
+	[NameId] INT,
+	[MappedNameId] INT,
+	[Counter] INT
+)
+
+INSERT INTO @toDelete ([NameId],[MappedNameId],[Counter])
+SELECT [NameId],[MappedNameId], COUNT([NameId])
+FROM  [Customer].[NameMapping]
+GROUP BY [NameId],MappedNameId
+HAVING COUNT([NameId]) > 1
+
+DELETE FROM [Customer].[NameMapping]
+FROM [Customer].[NameMapping] AS cnm --this is the same name as above
+INNER JOIN @toDelete AS toDel
+ON toDel.MappedNameId = cnm.MappedNameId
+AND toDel.NameId = cnm.NameId 
+
+
+/*==========
 Array Literal
   ==========*/
 

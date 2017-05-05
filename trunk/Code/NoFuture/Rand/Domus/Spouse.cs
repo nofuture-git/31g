@@ -1,4 +1,6 @@
 using System;
+using NoFuture.Shared;
+using NoFuture.Util;
 
 namespace NoFuture.Rand.Domus
 {
@@ -11,6 +13,7 @@ namespace NoFuture.Rand.Domus
         private readonly DateTime _marriedOn;
         private readonly DateTime? _separatedOn;
         private readonly int _ordinal;
+        private readonly int _totalYears;
         #endregion
 
         #region ctor
@@ -21,14 +24,22 @@ namespace NoFuture.Rand.Domus
             _marriedOn = marriageDt;
             _separatedOn = divorceDt;
             _ordinal = ordinal;
+            var edt = Est.DeathDate ?? SeparatedOn.GetValueOrDefault(DateTime.Today);
+            var rng = (edt - MarriedOn).Days;
+            _totalYears = (int) Math.Round(rng/Constants.DBL_TROPICAL_YEAR);
         }
         #endregion
 
         #region properties
+        /// <summary>
+        /// Added for single-depth JSON serialization
+        /// </summary>
+        public string EstName => ToString();
         public IPerson Est => _est;
         public DateTime MarriedOn => _marriedOn;
         public DateTime? SeparatedOn => _separatedOn;
         public int Ordinal => _ordinal;
+        public int TotalYears => _totalYears;
         #endregion
 
         #region methods
@@ -62,7 +73,10 @@ namespace NoFuture.Rand.Domus
 
         public override string ToString()
         {
-            return string.Join(" ", Est.FirstName, Est.LastName);
+            var soTypeName = Est.MyGender == Gender.Female ? "Wife" : "Husband";
+            var soEnRng = TotalYears <= 0 ? "Newlywed" : $"of {TotalYears} years";
+            var lnData = $"({Ordinal.ToOrdinal()} {soTypeName} {soEnRng})";
+            return string.Join(" ", Est.FirstName, Est.LastName, Est.Age, lnData);
         }
         #endregion
     }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using System.Linq;
 using NoFuture.Util.Etymological;
 
 namespace NoFuture.Rand.Domus.Pneuma
@@ -7,18 +8,18 @@ namespace NoFuture.Rand.Domus.Pneuma
     //some data at http://personality-testing.info/_rawdata/
     public interface IPersonality
     {
-        Guid SoulId { get; }
         Openness Openness { get; }
         Conscientiousness Conscientiousness { get; }
         Extraversion Extraversion { get; }
         Agreeableness Agreeableness { get; }
         Neuroticism Neuroticism { get; }
+
+        bool GetRandomActsIrresponsible();
+        bool GetRandomActsStressed();
     }
     [Serializable]
     public class Personality : IPersonality
     {
-        private readonly Guid _id = Guid.NewGuid();
-        public Guid SoulId => _id;
         public Openness Openness { get; } = new Openness();
         public Conscientiousness Conscientiousness { get; } = new Conscientiousness();
         public Extraversion Extraversion { get; } = new Extraversion();
@@ -47,12 +48,24 @@ namespace NoFuture.Rand.Domus.Pneuma
             var p = obj as IPersonality;
             if (p == null)
                 return false;
-            return _id == p.SoulId;
+            return new[]
+            {
+                p.Openness.Equals(Openness),
+                p.Conscientiousness.Equals(Conscientiousness),
+                p.Extraversion.Equals(Extraversion),
+                p.Agreeableness.Equals(Agreeableness),
+                p.Neuroticism.Equals(Neuroticism)
+            }.All(x => x);
         }
 
         public override int GetHashCode()
         {
-            return _id.GetHashCode();
+            var h = Openness?.GetHashCode() ?? 1;
+            h += Conscientiousness?.GetHashCode() ?? 1;
+            h += Extraversion?.GetHashCode() ?? 1;
+            h += Agreeableness?.GetHashCode() ?? 1;
+            h += Neuroticism?.GetHashCode() ?? 1;
+            return h;
         }
     }
 
@@ -115,6 +128,20 @@ namespace NoFuture.Rand.Domus.Pneuma
             return Abbrev + ":" + Value;
         }
 
+        public override int GetHashCode()
+        {
+            var vh = Value?.GetHashCode() ?? 1;
+            var ah = Abbrev?.GetHashCode() ?? 0;
+            return vh + ah;
+        }
+
+        public override bool Equals(object obj)
+        {
+            var t = obj as ITrait;
+            if (t == null)
+                return false;
+            return t.Abbrev.Equals(Abbrev) && t.Value.Equals(Value);
+        }
     }
     [Serializable]
     public class Openness : Trait

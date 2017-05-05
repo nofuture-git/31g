@@ -242,7 +242,7 @@ namespace NoFuture.Rand.Domus
             if (dt == null)
                 return _edu;
 
-            if(_edu.EduLevel == OccidentalEdu.None)
+            if(_edu.EduFlag == OccidentalEdu.None)
                 return _edu;
 
             var hsGradDt = _edu.HighSchool == null ? dt.Value.AddDays(-1) : _edu.HighSchool.Item2;
@@ -556,7 +556,7 @@ namespace NoFuture.Rand.Domus
             var propTeenagePreg = teenPregEquation.SolveForY(teenageYear);
 
             var propLifetimeChildless = NAmerUtil.SolveForProbabilityChildless(_birthCert.DateOfBirth,
-                Education?.EduLevel ?? OccidentalEdu.None);
+                Education?.EduFlag ?? OccidentalEdu.None);
 
             //far high-end is no children for whole life
             if (Etx.MyRand.NextDouble() <= propLifetimeChildless)

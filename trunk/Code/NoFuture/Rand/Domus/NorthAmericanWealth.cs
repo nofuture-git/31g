@@ -87,7 +87,7 @@ namespace NoFuture.Rand.Domus
             //determine if renting or own
             _isRenting = isRenting || GetIsLeaseResidence(usCityArea);
 
-            var edu = _amer.Education?.EduLevel ?? (OccidentalEdu.HighSchool | OccidentalEdu.Grad);
+            var edu = _amer.Education?.EduFlag ?? (OccidentalEdu.HighSchool | OccidentalEdu.Grad);
             var race = _amer.Race;
             var region = usCityArea.State?.GetStateData()?.Region ?? AmericanRegion.Midwest;
 

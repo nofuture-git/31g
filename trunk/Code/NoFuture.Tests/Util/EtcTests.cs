@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NoFuture.Rand;
 using NoFuture.Shared;
 using NoFuture.Util;
 
@@ -19,6 +17,18 @@ namespace NoFuture.Tests.Util
             var testResult = NoFuture.Util.Etc.DistillString(testInput);
 
             System.Diagnostics.Debug.WriteLine(testResult);
+        }
+
+        [TestMethod]
+        public void TestToOrdinal()
+        {
+            Assert.AreEqual("1st", 1.ToOrdinal());
+            Assert.AreEqual("2nd", 2.ToOrdinal());
+            Assert.AreEqual("3rd", 3.ToOrdinal());
+            Assert.AreEqual("4th", 4.ToOrdinal());
+            Assert.AreEqual("256th", 256.ToOrdinal());
+            Assert.AreEqual("1,000th", 1000.ToOrdinal());
+            
         }
 
         [TestMethod]
