@@ -286,6 +286,7 @@
     <Compile Include="Util\Gia\AsmDiagramTests.cs" />
     <Compile Include="Util\InvokeAsmTests\GetTokenIdsTests.cs" />
     <Compile Include="Util\NfTypeTests\TypeNameProcessTests.cs" />
+    <Compile Include="Util\NfTypeTests\MeasurePropertyDistanceTests.cs" />
     <Compile Include="Util\Pos\PennTreebankTagsetTests.cs" />
     <Compile Include="Util\EtcTests.cs" />
     <Compile Include="Host.Encryption\ProgramTests.cs" />

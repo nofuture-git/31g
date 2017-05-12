@@ -130,6 +130,7 @@
     <Compile Include="NfPath.cs" />
     <Compile Include="NfType\InvokeCmds\InvokeGetNfTypeName.cs" />
     <Compile Include="NfType\InvokeCmds\NfTypeNameParseItem.cs" />
+    <Compile Include="NfType\MeasurePropertyDistance.cs" />
     <Compile Include="NfType\NfTypeName.cs" />
     <Compile Include="NfType\NfTypeNameProcess.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

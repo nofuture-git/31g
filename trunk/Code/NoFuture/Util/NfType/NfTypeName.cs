@@ -580,14 +580,15 @@ namespace NoFuture.Util.NfType
         /// or <see cref="System.ValueType"/>
         /// </summary>
         /// <param name="pi"></param>
+        /// <param name="includingEnums"></param>
         /// <returns></returns>
-        public static bool IsValueTypeProperty(PropertyInfo pi)
+        public static bool IsValueTypeProperty(PropertyInfo pi, bool includingEnums = false)
         {
             if (pi == null)
                 return false;
 
-            return TestIsValueType(pi.PropertyType.FullName) ||
-                   (pi.PropertyType.BaseType != null && TestIsValueType(pi.PropertyType.BaseType.FullName));
+            return TestIsValueType(pi.PropertyType.FullName, includingEnums) ||
+                   (pi.PropertyType.BaseType != null && TestIsValueType(pi.PropertyType.BaseType.FullName, includingEnums));
         }
 
         /// <summary>
@@ -595,23 +596,91 @@ namespace NoFuture.Util.NfType
         /// or <see cref="System.ValueType"/>
         /// </summary>
         /// <param name="fi"></param>
+        /// <param name="includingEnums"></param>
         /// <returns></returns>
-        public static bool IsValueTypeField(FieldInfo fi)
+        public static bool IsValueTypeField(FieldInfo fi, bool includingEnums = false)
         {
             if (fi == null)
                 return false;
             if (fi.IsLiteral)
                 return false;
 
-            return TestIsValueType(fi.FieldType.FullName) ||
-                   (fi.FieldType.BaseType != null && TestIsValueType(fi.FieldType.BaseType.FullName));
+            return TestIsValueType(fi.FieldType.FullName, includingEnums) ||
+                   (fi.FieldType.BaseType != null && TestIsValueType(fi.FieldType.BaseType.FullName, includingEnums));
 
         }
 
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        internal static bool TestIsValueType(string typeFullName)
+        /// <summary>
+        /// Determines if the given <see cref="pi"/> has a property type which is, in some capacity, 
+        /// considered an Enum, being either a simple Enum or a nullable one.
+        /// </summary>
+        /// <param name="pi"></param>
+        /// <returns></returns>
+        public static bool IsPropertyEnum(PropertyInfo pi)
         {
-            return typeFullName == "System.String" || typeFullName == "System.ValueType";
+            if (pi == null)
+                return false;
+
+            if (pi.PropertyType.FullName == Constants.ENUM)
+                return true;
+            if (pi.PropertyType.BaseType != null && pi.PropertyType.BaseType.FullName == Constants.ENUM)
+                return true;
+            if (pi.PropertyType.GenericTypeArguments.Any(x => x.BaseType != null && x.BaseType.FullName == Constants.ENUM))
+                return true;
+
+            return false;
+        }
+
+        /// <summary>
+        /// When <see cref="pi"/> has a property type which is an Enum being either a typical one or a nullable 
+        /// this will return the underlying type which actually extends System.Enum
+        /// </summary>
+        /// <param name="pi"></param>
+        /// <returns></returns>
+        public static Type GetEnumType(PropertyInfo pi)
+        {
+            if (pi == null)
+                return null;
+            if (!IsValueTypeProperty(pi))
+                return pi.PropertyType;
+            if (!IsPropertyEnum(pi))
+                return pi.PropertyType;
+
+            var enumType =
+                pi.PropertyType.GenericTypeArguments.FirstOrDefault(
+                    x => x.BaseType != null && x.BaseType.FullName == Constants.ENUM) ?? pi.PropertyType;
+            return enumType;
+        }
+
+        /// <summary>
+        /// Similar to the invoking PropertyType on <see cref="pi"/> 
+        /// except for nullable value types so instead of getting
+        /// &quot;System.Nullable`1[[System.Int32 ... &quot; it 
+        /// returns just &quot;System.Int32&quot;
+        /// </summary>
+        /// <param name="pi"></param>
+        /// <returns></returns>
+        public static Type GetPropertyValueType(PropertyInfo pi)
+        {
+            if (pi == null)
+                return null;
+            if (!IsValueTypeProperty(pi))
+                return pi.PropertyType;
+
+            var piType =
+                pi.PropertyType.GenericTypeArguments.FirstOrDefault(
+                    x => Lexicon.ValueType2Cs.Keys.Any(v => x.FullName == v)) ??
+                pi.PropertyType;
+            return piType;
+        }
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        internal static bool TestIsValueType(string typeFullName, bool includingEnums = false)
+        {
+            var v = typeFullName == "System.String" || typeFullName == "System.ValueType";
+            if (includingEnums)
+                v = v || typeFullName == Constants.ENUM;
+            return v;
         }
 
         /// <summary>
