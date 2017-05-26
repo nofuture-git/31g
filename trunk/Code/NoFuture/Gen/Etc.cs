@@ -11,6 +11,7 @@ using NoFuture.Exceptions;
 using NoFuture.Shared;
 using NoFuture.Util;
 using NoFuture.Util.Binary;
+using NoFuture.Util.Gia.Args;
 using NoFuture.Util.NfConsole;
 using NoFuture.Util.NfType;
 
@@ -75,12 +76,13 @@ namespace NoFuture.Gen
         /// </summary>
         /// <param name="assemblyPath"></param>
         /// <param name="typeFullName"></param>
+        /// <param name="maxDepth">The max recursive depth.</param>
         /// <param name="onlyPrimitivesNamed"></param>
         /// <param name="displayEnums"></param>
         /// <param name="maxWaitInSeconds"></param>
         /// <returns></returns>
         public static string RunIsolatedFlattenTypeDiagram(string assemblyPath, string typeFullName,
-            string onlyPrimitivesNamed, bool displayEnums, int maxWaitInSeconds = 60)
+            string onlyPrimitivesNamed, bool displayEnums, int maxDepth = FlattenLineArgs.MAX_DEPTH, int maxWaitInSeconds = 60)
         {
             var argPath = ConsoleCmd.ConstructCmdLineArgs(Settings.INVOKE_ASM_PATH_SWITCH, assemblyPath);
             var argType = ConsoleCmd.ConstructCmdLineArgs(Settings.INVOKE_FULL_TYPE_NAME_SWITCH, typeFullName);
@@ -92,7 +94,9 @@ namespace NoFuture.Gen
             var argEn = displayEnums
                 ? ConsoleCmd.ConstructCmdLineArgs(Settings.INVOKE_GRAPHVIZ_DISPLAY_ENUMS, null)
                 : null;
-            return RunGraphViz(argPath, argType, diagramType, maxWaitInSeconds, argP, argEn);
+            var argMaxDepth = ConsoleCmd.ConstructCmdLineArgs(Settings.INVOKE_GRAPHVIZ_FLATTEN_MAX_DEPTH,
+                maxDepth.ToString());
+            return RunGraphViz(argPath, argType, diagramType, maxWaitInSeconds, argP, argEn, argMaxDepth);
         }
 
         /// <summary>

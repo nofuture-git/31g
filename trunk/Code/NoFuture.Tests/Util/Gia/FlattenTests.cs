@@ -191,5 +191,30 @@ namespace NoFuture.Tests.Util.Gia
             Assert.IsFalse(string.IsNullOrWhiteSpace(testResult));
             System.IO.File.WriteAllText(TestAssembly.UnitTestsRoot + @"\TestGraphVizFlatType.gv", testResult);
         }
+
+        [TestMethod]
+        public void TestFlattenType_DeleteMe()
+        {
+            var testAsm =
+                NoFuture.Util.Binary.Asm.NfLoadFrom(
+                    @"C:\Projects\31g\trunk\temp\debug\testAsms\Debug\Bfw.Domain.Model.dll");
+            var testTypeName = "Bfw.Domain.Model.Customer.Participant";
+
+            var startCount = 0;
+            var testResult = NoFuture.Util.Gia.Flatten.FlattenType(testAsm, testTypeName, ref startCount, 16, null,
+                false, null, null);
+
+            var lastItem = testResult.LastOrDefault();
+
+            Assert.IsNotNull(lastItem);
+            System.Diagnostics.Debug.WriteLine(lastItem);
+
+            var lf = lastItem.Items.Count;
+
+            var lastLine = lastItem.Items[lf - 2];
+
+            Assert.IsNotNull(lastLine);
+            System.Diagnostics.Debug.WriteLine(lastLine.TypeFullName);
+        }
     }
 }

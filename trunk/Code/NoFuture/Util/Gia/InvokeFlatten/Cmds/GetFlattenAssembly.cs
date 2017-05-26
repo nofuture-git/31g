@@ -11,9 +11,14 @@ namespace NoFuture.Util.Gia.InvokeFlatten.Cmds
 {
     public class GetFlattenAssembly : CmdBase<FlattenAssembly>, ICmd
     {
-        public GetFlattenAssembly(Program myProgram)
+        private readonly int _maxDepth;
+
+        public GetFlattenAssembly(Program myProgram, int maxDepth)
             : base(myProgram)
         {
+            _maxDepth = maxDepth;
+            if (_maxDepth <= 0)
+                _maxDepth = FlattenLineArgs.MAX_DEPTH;
         }
         public override byte[] Execute(byte[] arg)
         {
@@ -36,7 +41,7 @@ namespace NoFuture.Util.Gia.InvokeFlatten.Cmds
                     ? Binary.Asm.NfReflectionOnlyLoadFrom(asmPath)
                     : Binary.Asm.NfLoadFrom(asmPath);
                 Action<ProgressMessage> myProgress = message => MyProgram.PrintToConsole(message);
-                var flatAsm = Flatten.GetFlattenedAssembly(new FlattenLineArgs {Assembly = asm}, myProgress);
+                var flatAsm = Flatten.GetFlattenedAssembly(new FlattenLineArgs {Assembly = asm, Depth = _maxDepth}, myProgress);
                 flatAsm.Path = asmPath;
 
                 return JsonEncodedResponse(flatAsm);

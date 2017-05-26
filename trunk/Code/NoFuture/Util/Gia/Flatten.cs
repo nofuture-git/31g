@@ -185,8 +185,8 @@ namespace NoFuture.Util.Gia
             };
         }
 
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        internal static List<FlattenedLine> FlattenType(Assembly assembly, string typeFullName,
+        //[EditorBrowsable(EditorBrowsableState.Never)]
+        public static List<FlattenedLine> FlattenType(Assembly assembly, string typeFullName,
             ref int currentDepth, int maxDepth, string limitOnValueType, bool displayEnums, Stack<FlattenedItem> fiValueTypes, Stack typeStack)
         {
             var printList = new List<FlattenedLine>();
@@ -252,9 +252,16 @@ namespace NoFuture.Util.Gia
                     currentType.GetProperties(NfConfig.DefaultFlags)
                         .Where(x => !NfTypeName.IsValueTypeProperty(x)))
             {
+                currentDepth += 1;
+
+                //time to go
+                if (currentDepth >= maxDepth)
+                    return printList;
+
                 var typeIn = NfTypeName.GetLastTypeNameFromArrayAndGeneric(p.PropertyType);
 
-                if (typeIn == null || typeStack.Contains(typeIn)) continue;
+                if (typeIn == null || typeStack.Contains(typeIn))
+                    continue;
 
                 var fi = new FlattenedItem(p.PropertyType) {FlName = p.Name};
                 if (fiValueTypes.ToList().Any(x => x.FlType == p.PropertyType))
@@ -262,11 +269,6 @@ namespace NoFuture.Util.Gia
 
                 fiValueTypes.Push(fi);
                 typeStack.Push(typeIn);
-                currentDepth += 1;
-
-                //time to go
-                if (currentDepth >= maxDepth)
-                    return printList;
 
                 //enum types being handled as limbo between value type and ref type
                 string[] enumVals;

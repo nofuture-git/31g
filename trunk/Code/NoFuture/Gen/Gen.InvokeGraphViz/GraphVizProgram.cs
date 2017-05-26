@@ -36,6 +36,7 @@ namespace NoFuture.Gen.InvokeGraphViz
         public object LimitOn { get; set; }
         public bool DisplayEnums { get; set; }
         public bool WithNamespaceOutlines { get; set; }
+        public int MaxDepth { get; set; }
 
         protected override string MyName => "InvokeGraphViz";
 
@@ -61,7 +62,7 @@ namespace NoFuture.Gen.InvokeGraphViz
                             Flatten.FlattenType(new FlattenTypeArgs
                             {
                                 Assembly = p.Assembly,
-                                Depth = 16,
+                                Depth = p.MaxDepth,
                                 Separator = "-",
                                 UseTypeNames = false,
                                 TypeFullName = p.TypeName,
@@ -249,6 +250,11 @@ namespace NoFuture.Gen.InvokeGraphViz
                     $"be parsed from cmd line arg \n{string.Join(" ", _args)}");
             }
             TypeName = argHash[Settings.INVOKE_FULL_TYPE_NAME_SWITCH].ToString();
+
+            MaxDepth = argHash.ContainsKey(Settings.INVOKE_GRAPHVIZ_FLATTEN_MAX_DEPTH)
+                ? ResolveInt(argHash.ContainsKey(Settings.INVOKE_GRAPHVIZ_FLATTEN_MAX_DEPTH).ToString())
+                    .GetValueOrDefault(FlattenLineArgs.MAX_DEPTH)
+                : FlattenLineArgs.MAX_DEPTH;
 
             if (string.IsNullOrWhiteSpace(DiagramType) || !_implementedDiagrams.Contains(DiagramType))
             {

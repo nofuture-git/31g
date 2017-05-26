@@ -271,6 +271,13 @@ FROM myTable AS a
 FULL OUTER JOIN myOtherTable AS b
 	ON a.myID = b.myID
 
+SELECT a.myColumn, b.myOtherColumn
+FROM myTable AS a
+LEFT JOIN (SELECT iB.myID, iB.myOtherColumn 
+           FROM myOtherTable iB              --columns in 'a' are not in-scope here
+           INNER JOIN yetAnotherTable AS tt
+           ON iB.someColumnOnMyOtherTable = tt.myImportantColumn) AS b
+ON (a.myID = b.myID)                         --but are in-scope here
 
 Old non-standard Left-Join syntax
 --SQL Server

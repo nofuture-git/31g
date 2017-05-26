@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using NoFuture.Exceptions;
 using NoFuture.Shared;
+using NoFuture.Util.Gia.Args;
 using NoFuture.Util.Gia.InvokeFlatten.Cmds;
 using NoFuture.Util.NfConsole;
 
@@ -14,6 +15,16 @@ namespace NoFuture.Util.Gia.InvokeFlatten
     {
         private int? _getFlattenAssemblyCmdPort;
         private TaskFactory _taskFactory;
+
+        protected internal int GetMaxDepth
+        {
+            get
+            {
+                var dk = ConfigurationManager.AppSettings["MaxDepth"];
+                var dfk = ResolveInt(dk);
+                return dfk ?? FlattenLineArgs.MAX_DEPTH;
+            }
+        }
 
         protected internal int? GetFlattenAssemblyCmdPort
         {
@@ -125,7 +136,7 @@ namespace NoFuture.Util.Gia.InvokeFlatten
                                       String.Format(" GetFlattenAssemblyCmdPort is port [{0}]", GetFlattenAssemblyCmdPort));
             _taskFactory = new TaskFactory();
 
-            _taskFactory.StartNew(() => HostCmd(new GetFlattenAssembly(this), GetFlattenAssemblyCmdPort.Value));
+            _taskFactory.StartNew(() => HostCmd(new GetFlattenAssembly(this, GetMaxDepth), GetFlattenAssemblyCmdPort.Value));
         }
     }
 }

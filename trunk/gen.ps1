@@ -697,6 +697,18 @@ function Get-DotGraphAssemblyDiagram
     .PARAMETER TypeFullName
     The fully-qualified types name within the given assembly arg.
 
+    .PARAMETER MaxDepth
+    Optional, the maximum recursive depth - default is 16.
+
+    .PARAMETER LimitOnPrimitive
+    Optional, to force the flatten to only terminate on 
+    primitive types by this name.
+
+    .PARAMETER DisplayEnums
+    Optional, causes those terminal nodes which are Enums
+    to have their members and values printed rather than 
+    just their type's name.
+
     .OUTPUTS
     null
 #>
@@ -710,8 +722,10 @@ function Get-DotGraphFlattenedType
         [Parameter(Mandatory=$true,position=1)]
         [string] $TypeFullName,
         [Parameter(Mandatory=$false,position=2)]
-        [string] $LimitOnPrimitive,
+        [int] $MaxDepth,
         [Parameter(Mandatory=$false,position=3)]
+        [string] $LimitOnPrimitive,
+        [Parameter(Mandatory=$false,position=4)]
         [switch] $DisplayEnums
     )
     Process
@@ -728,7 +742,12 @@ function Get-DotGraphFlattenedType
         $blnDisplayEnums = $false
         if($DisplayEnums){ $blnDisplayEnums = $true}
         #compose all .gv files
-        $fileOutPath = [NoFuture.Gen.Etc]::RunIsolatedFlattenTypeDiagram($AssemblyPath,$TypeFullName, $LimitOnPrimitive, $blnDisplayEnums)
+        if($MaxDepth -le 0){$MaxDepth = [NoFuture.Util.Gia.Args.FlattenLineArgs]::MAX_DEPTH}
+        $fileOutPath = [NoFuture.Gen.Etc]::RunIsolatedFlattenTypeDiagram($AssemblyPath, `
+                                                                         $TypeFullName, `
+                                                                         $LimitOnPrimitive, `
+                                                                         $blnDisplayEnums, `
+                                                                         $MaxDepth)
 
         Write-Progress -Activity "Creating graph from $flattenedType" -Status "Working" -PercentComplete 88
 
