@@ -603,16 +603,35 @@ namespace NoFuture.Util
         }
 
         /// <summary>
-        /// Utility method to remove redundant blank lines
+        /// Utility method to remove redundant blank lines interleaving one blank between 
+        /// each line with content.
         /// </summary>
         /// <param name="fileFullName"></param>
-        public static void RemoveBlankLinesInFile(string fileFullName)
+        public static void ToDoubleSpaced(string fileFullName)
         {
-            if (String.IsNullOrWhiteSpace(fileFullName) || !File.Exists(fileFullName))
+            if (string.IsNullOrWhiteSpace(fileFullName) || !File.Exists(fileFullName))
                 return;
-            var redux = Etc.RemoveBlankLines(File.ReadAllLines(fileFullName));
+            var redux = Etc.ToDoubleSpaceLines(File.ReadAllLines(fileFullName));
 
             File.WriteAllText(fileFullName, redux);
+        }
+
+        /// <summary>
+        /// Utility method to remove all blank lines from the <see cref="fileFullName"/>
+        /// </summary>
+        /// <param name="fileFullName"></param>
+        public static void ToSingleSpaced(string fileFullName)
+        {
+            if (string.IsNullOrWhiteSpace(fileFullName) || !File.Exists(fileFullName))
+                return;
+            var output = new List<string>();
+            foreach (var ln in File.ReadAllLines(fileFullName))
+            {
+                if (string.IsNullOrWhiteSpace(ln))
+                    continue;
+                output.Add(ln);
+            }
+            File.WriteAllLines(fileFullName, output);
         }
     }
 }

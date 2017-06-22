@@ -489,3 +489,8 @@ erudite - having or showing great knowledge or learning
 soiree - an evening party or gathering in a private house for conversation
 weir - a low damn built diagonal to river's flow to raise water level upstream
 precipitous - dangerously high or steep
+modus pones - fancy name for a if-then statement
+axiom - self-evidently true
+metacircular - evaluators written in the same lang that it evaluates
+grammar - a set of rules describing how grammatical elements are 
+  composed from simpler elements

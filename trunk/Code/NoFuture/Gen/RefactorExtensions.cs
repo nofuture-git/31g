@@ -147,7 +147,7 @@ namespace NoFuture.Gen
                 if (removeEmptyLines)
                 {
                     System.Threading.Thread.Sleep(50);
-                    NfPath.RemoveBlankLinesInFile(fl);
+                    NfPath.ToDoubleSpaced(fl);
                 }
             }
         }

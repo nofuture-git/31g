@@ -188,6 +188,10 @@ namespace NoFuture.Tests.Util
 
             testOutput = Etc.ToCamelCase("The-VariousThings\\which,AllowYou ToRead=this");
             Assert.AreEqual("theVariousThingsWhichAllowYouToReadThis", testOutput);
+
+            testOutput = Etc.ToCamelCase("Server Purpose(s); Installed Component(s)");
+            Assert.AreEqual("serverPurposeSInstalledComponentS", testOutput);
+
         }
 
         [TestMethod]

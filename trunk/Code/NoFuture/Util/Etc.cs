@@ -186,11 +186,12 @@ namespace NoFuture.Util
         }
 
         /// <summary>
-        /// Reduces multiple blank lines.
+        /// Reduces multiple blank lines interleaving one blank between 
+        /// each line with content.
         /// </summary>
         /// <param name="lines"></param>
         /// <returns></returns>
-        public static string RemoveBlankLines(string[] lines)
+        public static string ToDoubleSpaceLines(string[] lines)
         {
             var linesOut = new StringBuilder();
 
@@ -575,9 +576,8 @@ namespace NoFuture.Util
                     if (i + 1 < nameChars.Length)
                     {
                         nameChars[i + 1] = char.ToUpper(nameChars[i + 1]);
-                        continue;
                     }
-                    
+                    continue;
                 }
 
                 if (!markStart)
