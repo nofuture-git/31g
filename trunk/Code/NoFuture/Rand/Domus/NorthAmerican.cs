@@ -84,6 +84,8 @@ namespace NoFuture.Rand.Domus
                 _phoneNumbers.Add(new Tuple<KindsOfLabels, NorthAmericanPhone>(KindsOfLabels.Mobile, Phone.American(abbrv)));
             
             Race = NAmerUtil.GetAmericanRace(csz?.ZipCode);
+            if(Race <= 0)
+                Race = NorthAmericanRace.White;
 
             if (withWholeFamily)
                 ResolveFamilyState();
@@ -280,6 +282,7 @@ namespace NoFuture.Rand.Domus
         {
             if (addr == null)
                 return;
+            dt = dt ?? DateTime.Now;
             UpsertAddress(addr);
             var ms = GetMaritalStatusAt(dt);
             if ((ms == MaritialStatus.Married || ms == MaritialStatus.Remarried) && GetSpouseAt(dt) != null)
@@ -359,11 +362,16 @@ namespace NoFuture.Rand.Domus
         /// </summary>
         protected internal void ResolveFinancialState()
         {
-            _opes = new NorthAmericanWealth(this);
-            _opes.CreateRandomAmericanOpes();
-            var sp = Spouse?.Est as NorthAmerican;
-            if (sp == null)
+            if (!IsLegalAdult(null))
                 return;
+            var sp = Spouse?.Est as NorthAmerican;
+            _opes = new NorthAmericanWealth(this);
+            if (sp == null)
+            {
+                _opes.CreateRandomAmericanOpes();
+                return;
+            }
+            _opes.CreateRandomAmericanOpes(2);
             sp._opes = _opes;
             foreach (var ca in _opes.CheckingAccounts)
                 ca.IsJointAcct = true;
@@ -425,7 +433,7 @@ namespace NoFuture.Rand.Domus
             //resolve for siblings
             myMother.ResolveChildren();
 
-            myMother.AlignCohabitantsHomeDataAt(null, GetAddressAt(null));
+            //myMother.AlignCohabitantsHomeDataAt(null, GetAddressAt(null));
 
             //father is whoever was married to mother at time of birth
             var myFather = myMother.GetSpouseAt(_birthCert.DateOfBirth)?.Est as NorthAmerican;
@@ -626,10 +634,11 @@ namespace NoFuture.Rand.Domus
                                 spouseAtChildDob.Est?.MyGender == Gender.Female
                                 ? LastName
                                 : spouseAtChildDob.Est?.LastName;
-
+            var childRace = Race | (spouseAtChildDob?.Est as NorthAmerican)?.Race ?? Race;
             var nAmerChild = new NorthAmerican(myChildDob, myChildGender, this, spouseAtChildDob?.Est)
             {
-                LastName = childLastName
+                LastName = childLastName,
+                Race = childRace
             };
 
             //child has ref to father, father needs ref to child
@@ -645,6 +654,7 @@ namespace NoFuture.Rand.Domus
                 nAmerChild.ResolveSpouse(NAmerUtil.GetMaritialStatus(myChildDob, myChildGender));
                 nAmerChild.AlignCohabitantsHomeDataAt(DateTime.Now, nAmerChild.GetAddressAt(null));
             }
+            
             _children.Add(new Child(nAmerChild));
         }
 
@@ -762,10 +772,11 @@ namespace NoFuture.Rand.Domus
                 if (!string.IsNullOrWhiteSpace(maidenName?.Item2))
                     LastName = maidenName.Item2;
             }
-            _spouses.Add(new Spouse(this, spouse, marriedOn, separatedOn, _spouses.Count + 1));
+            var nAmerSpouse = (NorthAmerican)spouse;
+            nAmerSpouse.Race = nAmerSpouse.Race <= 0 ? Race : nAmerSpouse.Race;
+            _spouses.Add(new Spouse(this, nAmerSpouse, marriedOn, separatedOn, _spouses.Count + 1));
 
             //recepricate to spouse
-            var nAmerSpouse = spouse as NorthAmerican;
             nAmerSpouse?.AddNewSpouseToList(this, marriedOn, separatedOn);
         }
 

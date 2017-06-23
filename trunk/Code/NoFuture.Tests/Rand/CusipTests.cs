@@ -109,5 +109,12 @@ namespace NoFuture.Tests.Rand
             testResult = Cusip.GetSearchCompanyName("Parsons and Company Incorporated");
             Assert.AreEqual("PARSONS & CO INC",testResult);
         }
+
+        [TestMethod]
+        public void TestGetNameFull()
+        {
+            var testResult = Cusip.GetNameFull("BRAND BKG CO");
+            System.Diagnostics.Debug.WriteLine(testResult);
+        }
     }
 }

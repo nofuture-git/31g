@@ -499,31 +499,35 @@ namespace NoFuture.Util
         /// <returns></returns>
         public static string CapWords(string name, char? separator)
         {
-            if (String.IsNullOrWhiteSpace(name))
-                return String.Empty;
+            if (string.IsNullOrWhiteSpace(name))
+                return string.Empty;
+
+            if (separator == null)
+                separator = NfConfig.DefaultTypeSeparator;
 
             name = name.Trim();
             name =
                 new string(
                     name.ToCharArray()
-                        .Where(c => char.IsLetterOrDigit(c) || char.IsPunctuation(c) )
+                        .Where(
+                            c =>
+                                char.IsLetterOrDigit(c) || char.IsPunctuation(c) ||
+                                (char.IsWhiteSpace(c) && char.IsWhiteSpace(separator.Value)))
                         .ToArray());
 
-            if (separator == null)
-                separator = NfConfig.DefaultTypeSeparator;
 
             var nameArray = name.Split(separator.Value);
             var nameFormatted = new StringBuilder();
             for (var i = 0; i < nameArray.Length;i++ )
             {
                 var s = nameArray[i];
-                if (String.IsNullOrWhiteSpace(s) || s.Length <= 1)
+                if (string.IsNullOrWhiteSpace(s) || s.Length <= 1)
                     continue;
 
                 var firstLetter = s.Substring(0, 1).ToUpper();
                 var restOfString = s.Substring(1, s.Length-1);
                 //if the rest of the string is all caps the lower them otherwise leave'em as is
-                if (restOfString.ToCharArray().All(Char.IsUpper))
+                if (restOfString.ToCharArray().All(char.IsUpper))
                     restOfString = restOfString.ToLower();
                 nameFormatted.Append(firstLetter);
                 nameFormatted.Append(restOfString);

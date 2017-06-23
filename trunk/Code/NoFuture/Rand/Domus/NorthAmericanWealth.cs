@@ -123,19 +123,22 @@ namespace NoFuture.Rand.Domus
         #endregion
 
         #region methods
+
         /// <summary>
         /// Creates a full Opes state and history at random.
         /// </summary>
+        /// <param name="possiableVehicles"></param>
         /// <param name="stdDevAsPercent"></param>
-        public void CreateRandomAmericanOpes(double stdDevAsPercent = DF_STD_DEV_PERCENT)
+        public void CreateRandomAmericanOpes(int possiableVehicles = 1, double stdDevAsPercent = DF_STD_DEV_PERCENT)
         {
             //determine residence pmt
             _residencePmt += _isRenting
                 ? AddRent(stdDevAsPercent)
                 : AddMortgage(stdDevAsPercent) ?? Pecuniam.Zero;
 
-            //determin car payment
-            _carPmt += AddVehicleLoan(stdDevAsPercent) ?? Pecuniam.Zero;
+            //determin car payment(s)
+            for(var i=0; i<possiableVehicles; i++)
+                _carPmt += AddVehicleLoan(stdDevAsPercent) ?? Pecuniam.Zero;
 
             //add CC's
             AddTotalCcDebt(stdDevAsPercent);
@@ -500,7 +503,6 @@ namespace NoFuture.Rand.Domus
             //roll for no-car
             if (Etx.TryBelowOrAt(9, Etx.Dice.OneHundred))
                 return Pecuniam.Zero;
-
 
             //calc a rand amount of what is still owed
             var randCarDebt = GetRandomFactorValue(FactorTables.VehicleDebt, _vehicleDebtFactor, stdDevAsPercent);

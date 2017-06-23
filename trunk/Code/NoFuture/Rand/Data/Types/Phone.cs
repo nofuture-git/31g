@@ -70,10 +70,10 @@ namespace NoFuture.Rand.Data.Types
 
             if(countryCode.ToLower() == Gov.NationCodes.CANADA)
                 state = TreeData.CanadianAreaCodeData.SelectSingleNode(
-                    $"{AREA_CODE_PLURAL}/{PROVIDENCE}[@{ABBREVIATION}='{stateCode}']");
+                    $"//{AREA_CODE_PLURAL}/{PROVIDENCE}[@{ABBREVIATION}='{stateCode}']");
             else
                 state = TreeData.AmericanAreaCodeData.SelectSingleNode(
-                    $"{AREA_CODE_PLURAL}/{STATE}[@{ABBREVIATION}='{stateCode}']");    
+                    $"//{AREA_CODE_PLURAL}/{STATE}[@{ABBREVIATION}='{stateCode}']");    
             
             if (state == null)
                 return null;

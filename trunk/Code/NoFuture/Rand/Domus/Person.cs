@@ -145,9 +145,7 @@ namespace NoFuture.Rand.Domus
         /// <returns></returns>
         public int GetAgeAt(DateTime? atTime)
         {
-            var dt = DateTime.Now;
-            if (atTime != null)
-                dt = atTime.Value;
+            var dt = atTime ?? DateTime.Now;
             ThrowOnBirthDateNull(this);
 
             if (DeathDate != null && DateTime.Compare(DeathDate.Value, dt) < 0)

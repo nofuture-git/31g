@@ -597,7 +597,28 @@ namespace NoFuture.Rand.Data.Sp
         }
 
         /// <summary>
-        /// Replaces words in <see cref="someString"/> with their abbreviations.
+        /// Transforms <see cref="someAbbrev"/> into its full name using the
+        /// <see cref="FullWord2Abbrev"/> table.
+        /// </summary>
+        /// <param name="someAbbrev"></param>
+        /// <returns></returns>
+        public static string GetNameFull(string someAbbrev)
+        {
+            var ssout = new List<string>();
+            foreach (var sp in someAbbrev.ToLower().Trim().Split(' '))
+            {
+                var dk =
+                    FullWord2Abbrev.FirstOrDefault(x => string.Equals(x.Value, sp, StringComparison.OrdinalIgnoreCase));
+                var f = dk.Key ?? sp;
+
+                ssout.Add(f);
+            }
+            return Etc.CapWords(string.Join(" ", ssout), ' ');
+        }
+
+        /// <summary>
+        /// Transforms in <see cref="someString"/> into an abbreviated
+        /// value using the <see cref="FullWord2Abbrev"/> table.
         /// </summary>
         /// <param name="someString"></param>
         /// <returns></returns>

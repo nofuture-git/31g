@@ -58,7 +58,7 @@ namespace NoFuture.Rand.Com
         {
             const string COMMA = ",";
             const string LETTER_Y = "Y";
-            UpsertName(KindsOfNames.Legal, li.BankName);
+            UpsertName(KindsOfNames.Legal, Cusip.GetNameFull(li.BankName));
             UpsertName(KindsOfNames.Abbrev, li.BankName);
             Rssd = new ResearchStatisticsSupervisionDiscount { Value = li.BankId };
             UsCityStateZip cityOut;
