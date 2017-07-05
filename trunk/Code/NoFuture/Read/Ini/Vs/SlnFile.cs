@@ -127,6 +127,11 @@ EndGlobal
         /// <returns></returns>
         public int SaveSlnVer14(ProjFile[] projFiles, bool updateToProjRef = false)
         {
+            if (projFiles == null || projFiles.Length <= 0)
+            {
+                CreateEmptySlnVer14(_fullFileName);
+                return 0;
+            }            
             var slnFileContent = CreateSlnVer14Content(projFiles) ?? string.Empty;
             var encoding = new UTF8Encoding(true);
             File.WriteAllText(_fullFileName, slnFileContent, encoding);

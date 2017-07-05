@@ -79,13 +79,22 @@ namespace NoFuture.Read.Config
             {
                 var verAttr = packageElem.Attributes["version"] ?? _xmlDocument.CreateAttribute("version");
 
-                //attempt to retain a higher version
                 Version current;
                 Version passedIn;
                 var existingVer = verAttr.Value ?? "0.0.0.0";
-                if (retainVerIfHigher && Version.TryParse(version, out passedIn) &&
-                    Version.TryParse(existingVer, out current) && passedIn < current)
+
+                var passedinWillParse = Version.TryParse(version, out passedIn);
+                var currentWillParse = Version.TryParse(existingVer, out current);
+
+                if (passedinWillParse ^ currentWillParse)
                 {
+                    //take one that will parse over one that will not
+                    version = passedinWillParse ? passedIn.ToString() : current.ToString();
+                }
+
+                else if (retainVerIfHigher && passedinWillParse && passedIn < current)
+                {
+                    //attempt to retain a higher version
                     version = current.ToString();
                 }
 

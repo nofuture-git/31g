@@ -494,3 +494,4 @@ axiom - self-evidently true
 metacircular - evaluators written in the same lang that it evaluates
 grammar - a set of rules describing how grammatical elements are 
   composed from simpler elements
+anachronism: a thing belonging to some past time period 

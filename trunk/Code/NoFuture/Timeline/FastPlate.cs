@@ -98,7 +98,7 @@ namespace NoFuture.Timeline
                     _blockIdxName.Add(c, iBlkNm);
                 }
             }
-
+            _lineCounter = Ruler.RuleLineSpacing + 1;
         }
 
         public FastPlate(string plateTitle, int? dfWidth, Rule rule, string jsonBlockInnerBlocks) : this(plateTitle, dfWidth, rule, JsonConvert.DeserializeObject<Hashtable>(jsonBlockInnerBlocks))

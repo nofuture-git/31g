@@ -716,7 +716,7 @@ namespace NoFuture.Read.Vs
                 buildConfigNode.AppendChild(warningLevelNode);
 
                 var firstDocChildNode = _xmlDocument.DocumentElement.FirstChild;
-                _xmlDocument.InsertAfter(buildConfigNode, firstDocChildNode);
+                _xmlDocument.DocumentElement.InsertAfter(buildConfigNode, firstDocChildNode);
             }
 
             _isChanged = counter > 0;
