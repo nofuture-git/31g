@@ -72,7 +72,7 @@ namespace NoFuture.Gen
         }
 
         /// <summary>
-        /// Runs <see cref="NoFuture.Util.Gia.Flatten.FlattenType"/>
+        /// Runs <see cref="NoFuture.Util.Gia.Flatten"/>
         /// </summary>
         /// <param name="assemblyPath"></param>
         /// <param name="typeFullName"></param>

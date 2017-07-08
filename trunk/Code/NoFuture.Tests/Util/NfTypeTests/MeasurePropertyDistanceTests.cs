@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -24,11 +25,9 @@ namespace NoFuture.Tests.Util.NfTypeTests
             };
 
             var testOutput = new Entity();
-            var testResult = NoFuture.Util.NfType.MeasurePropertyDistance.TryAssignProperties(testInput, testOutput,
-                "FirstName", "LastName", "Line1", "City", "CountryCode", "Gender", "Email", "EntityId", "AddressId");
-            Assert.IsTrue(testResult);
-            
-            
+            var testResult = NoFuture.Util.NfType.MeasurePropertyDistance.TryAssignValueTypeProperties(testInput, testOutput, null);
+            System.Diagnostics.Debug.WriteLine(testResult);
+
             Assert.IsNotNull(testOutput.Gender);
 
             //test top-level properties are being copied over
@@ -48,6 +47,44 @@ namespace NoFuture.Tests.Util.NfTypeTests
 
             Assert.IsNotNull(testOutput.Contact);
             Assert.AreEqual("e.krabs@bikinibottom.net", testOutput.Contact.Email);
+
+            foreach(var l in NoFuture.Util.NfType.MeasurePropertyDistance.GetAssignPropertiesData("\t"))
+                System.Diagnostics.Debug.WriteLine(l);
+
+        }
+
+        [TestMethod]
+        public void TestTryAssignPropertiesWithNulls()
+        {
+            var testInput = new TestDtoLikeType();
+            var testOutput = new Entity();
+
+            var testResult = NoFuture.Util.NfType.MeasurePropertyDistance.TryAssignProperties(testInput, testOutput);
+            Assert.AreNotEqual(0,testResult);
+            System.Diagnostics.Debug.WriteLine(testResult);
+            foreach (var l in NoFuture.Util.NfType.MeasurePropertyDistance.GetAssignPropertiesData())
+                System.Diagnostics.Debug.WriteLine(l);
+
+        }
+
+        [TestMethod]
+        public void TestTryAssignPropertiesReverse()
+        {
+            var testOutput = new TestDtoLikeType();
+
+            var testInput = new Entity
+            {
+                Address = new Address {City = "Bikini Bottom", Line1 = "123 Anchor Way", CountryCode = "US", Id = 41255 },
+                Name = new PersonName {First = "Eugene", Last = "Krabs" },
+                Gender = Gender.Male,
+                Contact = new Contact { Email = "e.krabs@bikinibottom.net" },
+                Id = 0
+            };
+            var testResult = NoFuture.Util.NfType.MeasurePropertyDistance.TryAssignProperties(testInput, testOutput);
+            System.Diagnostics.Debug.WriteLine(testResult);
+
+            foreach (var l in NoFuture.Util.NfType.MeasurePropertyDistance.GetAssignPropertiesData())
+                System.Diagnostics.Debug.WriteLine(l);
         }
 
         [TestMethod]

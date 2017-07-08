@@ -13,27 +13,17 @@ A function is a object, an object is a function
 ----
 
 ----
-Tools
- - Internet Explorer Developer Toolbar
- - Firefox Web Developer's toolbar extension
- - JsUnit (JavaScript unit testing framework)
- - Alban's Script Editor (text editor)
- - Strong JS (compress JS and replace variable names to gain more space)
-----
-
-----
 Basic Script
- - JavaScript works throught the browser
  - Current standard is ECMA-262
+  - ES5 is short hand for 'ES' means ECMAScript 
+    '5' was changes added in Dec '09
+  - ES6 (aka ES2015) was changes added in Jun '15
+  - TypeScript is superset of Javascript - will "transpile"
+    into standard Javascript.
  - is loosely typed (no variable type declaration required)
- - written with HTML syntax - interpreted by browser
- - write in-line type w/i html body tag
- 
- <script type="text/javascript">
- //<![CDATA[
- 
- //]]>   
- </script>
+ - has a strange history 
+  - originally to support HTML's DOM 
+  - now full lang on its own
 ----
 
 ----

@@ -5,52 +5,148 @@ using System.Reflection;
 
 namespace NoFuture.Util.NfType
 {
+    /// <summary>
+    /// Utility class for measuring properties on one instance to the properties on another.
+    /// </summary>
     public class MeasurePropertyDistance
     {
         private const string STR_FN = "System.String";
+        private const string ERROR_PREFIX = "[ERROR]";
+
         /// <summary>
         /// Reassignable flags for selecting properties
         /// </summary>
         public static BindingFlags DefaultFlags = BindingFlags.DeclaredOnly | BindingFlags.Instance |
                                                   BindingFlags.Public;
 
+        private static readonly List<string[]> assignPiLog = new List<string[]>();
+
         /// <summary>
-        /// Attempts to assign or instantiate then assign the values of <see cref="toObj"/> with 
-        /// the values from <see cref="fromObj"/> choosing the properties whose name&apos;s are the least 
-        /// distance in which only those properties in <see cref="fromObjPropertyNames"/> are selected as targets.
+        /// Gets info from any errors which occured in <see cref="TryAssignProperties"/>
         /// </summary>
-        /// <param name="fromObj">
-        /// Required, the object whose properties act as a source.
-        /// </param>
-        /// <param name="toObj">
-        /// Required, the object whose properties are receiving assignment.
-        /// </param>
-        /// <param name="fromObjPropertyNames">
-        /// Required, the calling assembly must provide 
-        /// an explicit list of property names to target for copying.</param>
-        /// <returns></returns>
-        public static bool TryAssignProperties(object fromObj, object toObj, params string[] fromObjPropertyNames)
+        public static string[] GetAssignPropertiesErrors(string delimiter = "\t")
         {
+            return
+                assignPiLog.Where(x => x != null && x.Any() && x.FirstOrDefault() == ERROR_PREFIX)
+                    .Select(x => string.Join(delimiter, x))
+                    .ToArray();
+        }
 
-            if (fromObj == null || toObj == null || fromObjPropertyNames == null || !fromObjPropertyNames.Any())
-                return false;
-            var flag = false;
+        /// <summary>
+        /// Gets the mapping data from the last call to <see cref="TryAssignProperties"/>
+        /// </summary>
+        /// <param name="delimiter"></param>
+        /// <param name="noHeaders"></param>
+        /// <returns></returns>
+        public static string[] GetAssignPropertiesData(string delimiter = "\t", bool noHeaders = false)
+        {
+            var data = new List<string>();
+            if(!noHeaders)
+                data.Add(string.Join(delimiter, "FromProperty", "ToProperty", "FromToPath", "Score"));
+            var dataAdd =
+                assignPiLog.Where(x => x != null && x.Any() && x.FirstOrDefault() != ERROR_PREFIX)
+                    .Select(x => string.Join(delimiter, x))
+                    .ToList();
+            data.AddRange(dataAdd);
+            return data.ToArray();
+        }
 
+        /// <summary>
+        /// Attempts to assign all the property&apos;s values on <see cref="fromObj"/> to 
+        /// some property on <see cref="toObj"/> based on the closest matching name.
+        /// </summary>
+        /// <param name="fromObj"></param>
+        /// <param name="toObj"></param>
+        /// <returns>1.0 when it was a perfect match</returns>
+        /// <remarks>
+        /// Use the <see cref="GetAssignPropertiesData"/> to see what it ended up choosing.
+        /// </remarks>
+        public static double TryAssignProperties(object fromObj, object toObj)
+        {
+            if (fromObj == null || toObj == null)
+                return 0;
+            var rScores = new List<Tuple<int, int>>();
+            var prevActions = new Dictionary<string, int>();
             try
             {
-                var bpis = toObj.GetType().GetProperties(DefaultFlags);
-                var prevActions = new Dictionary<string, int>();
+                //remove any previous records.
+                assignPiLog.Clear();
+
+                //only fromObj's value-type props
+                rScores.AddRange(TryAssignValueTypeProperties(fromObj, toObj, prevActions));
+
+                //only fromObj's ref-type props
+                foreach (var fromPi in fromObj.GetType().GetProperties(DefaultFlags))
+                {
+                    if (fromPi == null || !fromPi.CanRead)
+                        continue;
+
+                    if (NfTypeName.IsValueTypeProperty(fromPi, true))
+                    {
+                        continue;
+                    }
+
+                    var fromPv = fromPi.GetValue(fromObj);
+                    if (fromPv == null)
+                    {
+                        fromPv = Activator.CreateInstance(fromPi.PropertyType);
+                        fromPi.SetValue(fromObj, fromPv);
+                    }
+                    rScores.AddRange(TryAssignValueTypeProperties(fromPv, toObj, prevActions, fromPi.Name));
+                }
+
+            }
+            catch (Exception ex)
+            {
+                assignPiLog.Add(new[] { ERROR_PREFIX, ex.Message, ex.StackTrace });
+                return 0;
+            }
+
+            return 1D - (double)rScores.Select(x => x.Item1).Sum() / rScores.Select(x => x.Item2).Sum();
+        }
+
+        /// <summary>
+        /// Takes the values of the value-type-only-properties on <see cref="fromObj"/> and finds some
+        /// property, no matter how deep-down in the obj graph, on <see cref="toObj"/> to assign that value to.
+        /// </summary>
+        /// <param name="fromObj"></param>
+        /// <param name="toObj"></param>
+        /// <param name="prevActions"></param>
+        /// <param name="contextName"></param>
+        internal static List<Tuple<int,int>> TryAssignValueTypeProperties(object fromObj, object toObj, Dictionary<string, int> prevActions, string contextName = null)
+        {
+            var df = new List<Tuple<int, int>> {new Tuple<int, int>(int.MaxValue, 0)};
+            if (fromObj == null || toObj == null)
+                return df;
+            var rScores = new List<Tuple<int, int>>();
+            try
+            {
+                var fromObjTypeName = fromObj.GetType().FullName;
+                var fromObjPropertyNames = fromObj.GetType().GetProperties(DefaultFlags).Select(p => p.Name).ToArray();
+
+                //if still nothing found - just leave
+                if (!fromObjPropertyNames.Any())
+                    return df;
+                
+                var toPis = toObj.GetType().GetProperties(DefaultFlags);
+                prevActions = prevActions ?? new Dictionary<string, int>();
 
                 foreach (var pn in fromObjPropertyNames)
                 {
-                    var api = fromObj.GetType().GetProperty(pn);
+                    var fromPi = fromObj.GetType().GetProperty(pn);
 
-                    if (api == null || !api.CanRead)
+                    if (fromPi == null || !fromPi.CanRead || !NfTypeName.IsValueTypeProperty(fromPi,true))
                         continue;
                     //this will get us those closest on name only
-                    var closestMatches = GetClosestMatch(api, fromObj, bpis, toObj);
+                    var closestMatches = GetClosestMatch(fromPi, fromObj, toPis, toObj);
                     if (closestMatches == null || !closestMatches.Any())
                         continue;
+
+                    //have to decide how to break a tie
+                    if (closestMatches.Count > 1)
+                    {
+                        closestMatches = closestMatches.Where(x => x.Item3.Contains(pn)).ToList();
+                    }
                     foreach (var cm in closestMatches)
                     {
                         //its possiable that two different pi names are both attempting to write to the exact same target pi in toObj
@@ -60,8 +156,17 @@ namespace NoFuture.Util.NfType
                             continue;
                         }
 
+                        //exec the assignment on the target
                         cm.Item1();
-                        flag = true;
+
+                        //get this distance as a ratio to the possiable max distance
+                        rScores.Add(new Tuple<int, int>(cm.Item2, pn.Length));
+
+                        //add this to the log 
+                        var logPn = !string.IsNullOrWhiteSpace(contextName) ? string.Join(".", contextName, pn) : pn;
+                        var logPath = !string.IsNullOrWhiteSpace(contextName) ? string.Join("`", fromObjTypeName, cm.Item4) : cm.Item4;
+                        assignPiLog.Add(new[] { logPn, cm.Item3, logPath, cm.Item2.ToString()});
+
                         prevActions.Add(cm.Item3, cm.Item2);
 
                     }
@@ -69,21 +174,22 @@ namespace NoFuture.Util.NfType
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine(ex.Message);
-                System.Diagnostics.Debug.WriteLine(ex.StackTrace);
-                return false;
+                assignPiLog.Add(new[] {ERROR_PREFIX, ex.Message, ex.StackTrace});
+                return df;
             }
-            return flag;
+
+            //return average
+            return  rScores;
         }
 
         /// <summary>
-        /// Get a list of action, string distance measurement, and destintation object path for the properties on <see cref="toObj"/>
-        /// which have the shortest distanct from the <see cref="fromPi"/> by name.  The return value is a list incase of a tie in which
-        /// the calling assembly must decide which ones to execute.
+        /// Get a list of action, string distance measurement, destination object path in dot-notation, and additional info for logging
+        /// for the properties on <see cref="toObj"/> which have the shortest distanct from the <see cref="fromPi"/> by name.  
+        /// The return value is a list incase of a tie in which the calling assembly must decide which ones to execute.
         /// </summary>
         /// <param name="fromPi">The property whose value is to be copied over somewhere onto <see cref="toObj"/></param>
         /// <param name="fromObj">The source object of <see cref="fromPi"/> which is able to resolve it to an actual value.</param>
-        /// <param name="toPi">The list of possiable canidate properties on <see cref="toObj"/>.</param>
+        /// <param name="toPis">The list of possiable canidate properties on <see cref="toObj"/>.</param>
         /// <param name="toObj">The destination object which is receiving property assignment.</param>
         /// <param name="namePrefix">Optional, used internally with <see cref="minLen"/></param>
         /// <param name="minLen">
@@ -93,38 +199,39 @@ namespace NoFuture.Util.NfType
         /// <returns>
         /// The Action (Item1) on the returned results will perform the actual assignment of one property to another.
         /// </returns>
-        public static List<Tuple<Action, int, string>> GetClosestMatch(PropertyInfo fromPi, object fromObj, PropertyInfo[] toPi, object toObj, string namePrefix = null, int minLen = 2)
+        internal static List<Tuple<Action, int, string, string>> GetClosestMatch(PropertyInfo fromPi, object fromObj, PropertyInfo[] toPis, object toObj, string namePrefix = null, int minLen = 2)
         {
 
-            if (fromPi == null || toPi == null || !toPi.Any())
-                return new List<Tuple<Action, int, string>>();
+            if (fromPi == null || toPis == null || !toPis.Any())
+                return new List<Tuple<Action, int, string, string>>();
 
             //we want to map a whole assignment expression to a distance on name
-            var ops2Score = new List<Tuple<Action, int, string>>();
+            var ops2Score = new List<Tuple<Action, int, string, string>>();
 
-            Func<PropertyInfo, bool, string> getMeasureableName = (gmnPi, inReverse) =>
+            Func<PropertyInfo, string, bool, string> getMeasureableName = (gmnPi, prefix, inReverse) =>
             {
                 if (gmnPi.Name.Length <= minLen)
                 {
-                    return inReverse ? string.Join("", gmnPi.Name, namePrefix) : string.Join("", namePrefix, gmnPi.Name);
+                    return inReverse ? string.Join("", gmnPi.Name, prefix) : string.Join("", prefix, gmnPi.Name);
                 }
                 return gmnPi.Name;
             };
 
-            foreach (var cpi in toPi)
+            foreach (var toPi in toPis)
             {
-                if (NfTypeName.IsValueTypeProperty(cpi, true))
+                if (NfTypeName.IsValueTypeProperty(toPi, true))
                 {
-                    Action simpleAssignment = GetSimpleAssignment(cpi, toObj, fromPi, fromObj);
+                    string toFromTns;
+                    Action simpleAssignment = GetSimpleAssignment(toPi, toObj, fromPi, fromObj, out toFromTns);
                     if (string.IsNullOrWhiteSpace(namePrefix))
                     {
                         //for simple value types -to- value types where dest has a very short name 
                         namePrefix = toObj.GetType().Name;
                     }
-                    var fromPiName = getMeasureableName(fromPi, false);
-                    var cpiName = getMeasureableName(cpi,false);
-                    var fromPiReverseName = getMeasureableName(fromPi, true);
-                    var cpiReverseName = getMeasureableName(cpi, true);
+                    var fromPiName = getMeasureableName(fromPi, namePrefix, false);
+                    var cpiName = getMeasureableName(toPi, namePrefix, false);
+                    var fromPiReverseName = getMeasureableName(fromPi, namePrefix, true);
+                    var cpiReverseName = getMeasureableName(toPi, namePrefix, true);
 
                     var score = (int)Etc.LevenshteinDistance(fromPiName, cpiName);
 
@@ -136,16 +243,16 @@ namespace NoFuture.Util.NfType
                             score = revScore;
                     }
 
-                    ops2Score.Add(new Tuple<Action, int, string>(simpleAssignment, score, cpi.Name));
+                    ops2Score.Add(new Tuple<Action, int, string, string>(simpleAssignment, score, toPi.Name, toFromTns));
                 }
                 else
                 {
-                    var toInnerPi = cpi.PropertyType.GetProperties(DefaultFlags);
+                    var toInnerPi = toPi.PropertyType.GetProperties(DefaultFlags);
                     if (!toInnerPi.Any())
                         continue;
                     
-                    var toInnerObj = cpi.GetValue(toObj) ?? Activator.CreateInstance(cpi.PropertyType);
-                    var innerMeasurements = GetClosestMatch(fromPi, fromObj, toInnerPi, toInnerObj, cpi.Name, minLen);
+                    var toInnerObj = toPi.GetValue(toObj) ?? Activator.CreateInstance(toPi.PropertyType);
+                    var innerMeasurements = GetClosestMatch(fromPi, fromObj, toInnerPi, toInnerObj, toPi.Name, minLen);
 
                     if (!innerMeasurements.Any())
                         continue;
@@ -157,12 +264,12 @@ namespace NoFuture.Util.NfType
                         Action complexAction = () =>
                         {
                             innerM.Item1();
-                            if (cpi.GetValue(toObj) == null)
-                                cpi.SetValue(toObj, toInnerObj);
+                            if (toPi.GetValue(toObj) == null)
+                                toPi.SetValue(toObj, toInnerObj);
                         };
-                        var actionId = string.Join(".", cpi.Name, innerM.Item3);
+                        var actionId = string.Join(".", toPi.Name, innerM.Item3);
 
-                        ops2Score.Add(new Tuple<Action, int, string>(complexAction, innerM.Item2, actionId));
+                        ops2Score.Add(new Tuple<Action, int, string, string>(complexAction, innerM.Item2, actionId, string.Join("`", toPi.PropertyType.FullName, innerM.Item4) ));
                     }
                 }
             }
@@ -174,42 +281,45 @@ namespace NoFuture.Util.NfType
         }
 
         /// <summary>
-        /// Performs the assignment of the <see cref="cpi"/> on the instance of <see cref="toObj"/> using 
+        /// Performs the assignment of the <see cref="toPi"/> on the instance of <see cref="toObj"/> using 
         /// the value of <see cref="fromPi"/> on the instance of <see cref="fromObj"/> - attempting to 
         /// perform the needed casting of one kind of value type to another.
         /// </summary>
-        /// <param name="cpi"></param>
+        /// <param name="toPi"></param>
         /// <param name="toObj"></param>
         /// <param name="fromPi"></param>
         /// <param name="fromObj"></param>
+        /// <param name="logInfo"></param>
         /// <returns></returns>
-        public static Action GetSimpleAssignment(PropertyInfo cpi, object toObj, PropertyInfo fromPi, object fromObj)
+        public static Action GetSimpleAssignment(PropertyInfo toPi, object toObj, PropertyInfo fromPi, object fromObj, out string logInfo)
         {
             Action noop = () => { };
-
-            if (cpi == null || toObj == null || fromPi == null || fromObj == null)
+            logInfo = null;
+            if (toPi == null || toObj == null || fromPi == null || fromObj == null)
                 return noop;
 
             //only deal in value types to value types
-            if (!NfTypeName.IsValueTypeProperty(cpi, true) || !NfTypeName.IsValueTypeProperty(fromPi, true))
+            if (!NfTypeName.IsValueTypeProperty(toPi, true) || !NfTypeName.IsValueTypeProperty(fromPi, true))
                 return noop;
 
             //enums require alot of special handling especially when wrapped in Nullable`1[
-            var cpiIsEnum = NfTypeName.IsPropertyEnum(cpi);
+            var cpiIsEnum = NfTypeName.IsPropertyEnum(toPi);
             var fromPiIsEnum = NfTypeName.IsPropertyEnum(fromPi);
 
             //get each pi's type
-            var cpiType = cpiIsEnum ? NfTypeName.GetEnumType(cpi) : NfTypeName.GetPropertyValueType(cpi);
+            var cpiType = cpiIsEnum ? NfTypeName.GetEnumType(toPi) : NfTypeName.GetPropertyValueType(toPi);
             var fromPiType = fromPiIsEnum ? NfTypeName.GetEnumType(fromPi) : NfTypeName.GetPropertyValueType(fromPi);
 
             //get each pi's type's full name
             var cpiTypeFullname = cpiType.FullName;
             var fromPiTypeFullname = fromPiType.FullName;
 
+            logInfo = string.Join("->", fromPiTypeFullname, cpiTypeFullname);
+
             //easy assignment for same types
             if (cpiTypeFullname == fromPiTypeFullname)
             {
-                return () => cpi.SetValue(toObj, fromPi.GetValue(fromObj));
+                return () => toPi.SetValue(toObj, fromPi.GetValue(fromObj));
             }
 
             //going from Enum to a string
@@ -221,7 +331,7 @@ namespace NoFuture.Util.NfType
                     var enumName = Enum.GetName(fromPiType, fromPi.GetValue(fromObj));
                     if (enumName != null)
                     {
-                        cpi.SetValue(toObj, enumName);
+                        toPi.SetValue(toObj, enumName);
                     }
                 };
             }
@@ -237,7 +347,7 @@ namespace NoFuture.Util.NfType
                             .Any(x => string.Equals(x, val.ToString(), StringComparison.OrdinalIgnoreCase)))
                     {
                         var enumVal = Enum.Parse(cpiType, val.ToString(), true);
-                        cpi.SetValue(toObj, enumVal);
+                        toPi.SetValue(toObj, enumVal);
                     }
                 };
             }
@@ -248,14 +358,14 @@ namespace NoFuture.Util.NfType
                 //will this require any cast?
                 return () =>
                 {
-                    cpi.SetValue(toObj, fromPi.GetValue(fromObj));
+                    toPi.SetValue(toObj, fromPi.GetValue(fromObj));
                 };
             }
 
             //going from some value-type to a string
             if (cpiTypeFullname == STR_FN)
             {
-                return () => cpi.SetValue(toObj, fromPi.GetValue(fromObj).ToString());
+                return () => toPi.SetValue(toObj, fromPi.GetValue(fromObj).ToString());
             }
 
             //going from something to value-type
@@ -268,7 +378,7 @@ namespace NoFuture.Util.NfType
                         var bpiv = fromPi.GetValue(fromObj);
                         var byteString = bpiv == null ? "0" : bpiv.ToString();
                         if (byte.TryParse(byteString, out bout))
-                            cpi.SetValue(toObj, bout);
+                            toPi.SetValue(toObj, bout);
                     };
                 case "System.Int16":
                     return () =>
@@ -277,7 +387,7 @@ namespace NoFuture.Util.NfType
                         var piv = fromPi.GetValue(fromObj);
                         var vStr = piv == null ? "0" : piv.ToString();
                         if (short.TryParse(vStr, out vout))
-                            cpi.SetValue(toObj, vout);
+                            toPi.SetValue(toObj, vout);
                     };
                 case "System.Int32":
                     return () =>
@@ -287,7 +397,7 @@ namespace NoFuture.Util.NfType
                         var vStr = piv == null ? "0" : piv.ToString();
                         if (int.TryParse(vStr, out vout))
                         {
-                            cpi.SetValue(toObj, vout);
+                            toPi.SetValue(toObj, vout);
                         }
                     };
                 case "System.DateTime":
@@ -297,7 +407,7 @@ namespace NoFuture.Util.NfType
                         var piv = fromPi.GetValue(fromObj);
                         var vStr = piv == null ? "0" : piv.ToString();
                         if (DateTime.TryParse(vStr, out vout))
-                            cpi.SetValue(toObj, vout);
+                            toPi.SetValue(toObj, vout);
                     };
                 case "System.Decimal":
                     return () =>
@@ -306,7 +416,7 @@ namespace NoFuture.Util.NfType
                         var piv = fromPi.GetValue(fromObj);
                         var vStr = piv == null ? "0" : piv.ToString();
                         if (decimal.TryParse(vStr, out vout))
-                            cpi.SetValue(toObj, vout);
+                            toPi.SetValue(toObj, vout);
                     };
                 case "System.Single":
                     return () =>
@@ -315,7 +425,7 @@ namespace NoFuture.Util.NfType
                         var piv = fromPi.GetValue(fromObj);
                         var vStr = piv == null ? "0" : piv.ToString();
                         if (float.TryParse(vStr, out vout))
-                            cpi.SetValue(toObj, vout);
+                            toPi.SetValue(toObj, vout);
                     };
                 case "System.Double":
                     return () =>
@@ -324,7 +434,7 @@ namespace NoFuture.Util.NfType
                         var piv = fromPi.GetValue(fromObj);
                         var vStr = piv == null ? "0" : piv.ToString();
                         if (double.TryParse(vStr, out vout))
-                            cpi.SetValue(toObj, vout);
+                            toPi.SetValue(toObj, vout);
                     };
             }
 
