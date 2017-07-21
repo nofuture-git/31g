@@ -587,8 +587,11 @@ namespace NoFuture.Util.NfType
             if (pi == null)
                 return false;
 
-            return TestIsValueType(pi.PropertyType.FullName, includingEnums) ||
-                   (pi.PropertyType.BaseType != null && TestIsValueType(pi.PropertyType.BaseType.FullName, includingEnums));
+            var isPiDirectVt = TestIsValueType(pi.PropertyType.FullName, includingEnums);
+            var isPiBaseVt = pi.PropertyType.BaseType != null &&
+                             TestIsValueType(pi.PropertyType.BaseType.FullName, includingEnums);
+
+            return (isPiDirectVt || isPiBaseVt);
         }
 
         /// <summary>
@@ -677,6 +680,8 @@ namespace NoFuture.Util.NfType
         [EditorBrowsable(EditorBrowsableState.Never)]
         internal static bool TestIsValueType(string typeFullName, bool includingEnums = false)
         {
+            if (Lexicon.ValueType2Cs.Keys.Contains(typeFullName))
+                return true;
             var v = typeFullName == "System.String" || typeFullName == "System.ValueType";
             if (includingEnums)
                 v = v || typeFullName == Constants.ENUM;

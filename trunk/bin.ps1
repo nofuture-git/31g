@@ -140,7 +140,10 @@ function Invoke-JavaCompiler
         $ClassPath = Get-JavaClassPath $ClassPath
 
         #compile
-        . ([NoFuture.Shared.NfConfig+JavaTools]::Javac) -d $javaBuild -cp $ClassPath (Join-Path $javaSrc ("$TypeName.java"))
+        $javacCmd = '. {0} -d {1} -cp {2} {3}' -f ([NoFuture.Shared.NfConfig+JavaTools]::Javac),$javaBuild,$ClassPath,(Join-Path $javaSrc ("$TypeName.java"))
+        $javacCmd >> (Join-Path $javaRoot "cmd.log")
+        Invoke-Expression -Command $javacCmd
+        #. ([NoFuture.Shared.NfConfig+JavaTools]::Javac) -d $javaBuild -cp $ClassPath (Join-Path $javaSrc ("$TypeName.java"))
 
 
         #place into jar

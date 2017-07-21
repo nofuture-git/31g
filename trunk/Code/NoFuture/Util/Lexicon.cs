@@ -54,6 +54,7 @@ namespace NoFuture.Util
                                                                  {"System.Boolean", "bool"},
                                                                  {"System.Char", "char"},
                                                                  {"System.Decimal", "decimal"},
+                                                                 {"System.Single", "float"},
                                                                  {"System.String", "string"},
                                                                  {"System.Void", "void"}
                                                              });
