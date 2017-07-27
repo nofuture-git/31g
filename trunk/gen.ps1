@@ -252,11 +252,13 @@ function Write-CsCodeAssignRand
         [Parameter(Mandatory=$true,position=1)]
         [string] $TypeFullName,
         [Parameter(Mandatory=$false,position=2)]
-        [switch] $FromSelf,
-        [Parameter(Mandatory=$false,position=3)]
         [switch] $RandMethods,
+        [Parameter(Mandatory=$false,position=3)]
+        [switch] $Recursion,
         [Parameter(Mandatory=$false,position=4)]
-        [switch] $Recursion
+        [switch] $ValueTypesOnly,
+        [Parameter(Mandatory=$false,position=5)]
+        [switch] $FromSelf
     )
     Process
     {
@@ -269,7 +271,7 @@ function Write-CsCodeAssignRand
         $myrand = New-Object System.Random ([Int32][String]::Format("{0:fffffff}",$(get-date)))
 
         $instanceName = "subject";
-
+        $codeGenAttr = ("[System.CodeDom.Compiler.GeneratedCode(`"Write-CsCodeAssignRand`",`"{0:yyyy.M.dd.HHmmss}`")]" -f $(Get-Date))
         $needsStringConstDefined = $false
 
         if(-not $FromSelf){
@@ -292,12 +294,12 @@ function Write-CsCodeAssignRand
             set {_depth = value;}
         }
         private System.Random _myrand = new System.Random(System.DateTime.Now.Millisecond);
-
+        $codeGenAttr
         internal string StringFactory()
         {
             return StringFactory(STR_START,STR_END,STR_LEN);
         }
-
+        $codeGenAttr
         internal string StringFactory(int asciiStart, int asciiEnd, int length)
         {
 
@@ -310,6 +312,7 @@ function Write-CsCodeAssignRand
             return new string(rtrn);
 
         }
+        $codeGenAttr
         internal System.DateTime DateTimeFactory()
         {
             var oldestyear = System.DateTime.Now.Year - 1;
@@ -317,35 +320,47 @@ function Write-CsCodeAssignRand
 
             return new System.DateTime(_myrand.Next(oldestyear, youngestyear), _myrand.Next(1, 12), _myrand.Next(1, 28));
         }
-
+        $codeGenAttr
         internal byte ByteFactory()
         {
             return System.Convert.ToByte(_myrand.Next(0, byte.MaxValue));
         }
+        $codeGenAttr
         internal System.Int16 Int16Factory()
         {
             return System.Convert.ToInt16(_myrand.Next(0, short.MaxValue));
         }
+        $codeGenAttr
         internal System.Int32 Int32Factory()
         {
             return _myrand.Next(0, int.MaxValue);
         }
+        $codeGenAttr
         internal System.Int64 Int64Factory()
         {
             return System.Convert.ToInt64(_myrand.Next(0, int.MaxValue));
         }
+        $codeGenAttr
         internal System.Decimal DecimalFactory()
         {
             return System.Convert.ToDecimal(_myrand.Next(0, int.MaxValue));
         }
+        $codeGenAttr
         internal System.Double DoubleFactory()
         {
             return System.Convert.ToDouble(_myrand.Next(0, int.MaxValue));
         }
+        $codeGenAttr
         internal char CharFactory()
         {
             return System.Convert.ToChar(StringFactory(0x41, 0x5A, 1));
         }
+        $codeGenAttr
+        internal System.Single SingleFactory()
+        {
+            return System.Convert.ToSingle(_myrand.Next(0, int.MaxValue));
+        }
+        $codeGenAttr
         internal bool BooleanFactory()
         {
             if (_myrand.Next(1, 999) % 2 == 0)
@@ -354,9 +369,31 @@ function Write-CsCodeAssignRand
             }
             return false;
         }
+        $codeGenAttr
         internal System.Guid GuidFactory()
         {
             return System.Guid.NewGuid();
+        }
+        $codeGenAttr
+        internal System.Type TypeFactory()
+        {
+            return typeof(System.String);
+        }
+        $codeGenAttr
+        internal System.Object ObjectFactory()
+        {
+            return new Object();
+        }
+        $codeGenAttr
+        internal void SetProperty<T, TV>(T target, string propertyName, TV value) where T : class
+        {
+            if(target == null)
+                return;
+
+            var pi = target.GetType().GetProperty(propertyName);
+            if (pi == null)
+                return;
+            pi.SetValue(target, value);
         }
         
 "@
@@ -365,26 +402,97 @@ function Write-CsCodeAssignRand
         $Global:CodeGenAssignRandomValuesCompletedType += $TypeFullName;
         $factoryName = "{0}Factory" -f $typeName
 
-        "public $TypeFullName $factoryName()`n{`n`tvar $instanceName = new $TypeFullName();`n`t_depth += 1;`n`tif(_depth > MAX_DEPTH){return $instanceName;}`n"
+        $genType = $Assembly.GetType($TypeFullName)
+        $hasNoArgCtor = ($genType.GetConstructors() | % {$_.GetParameters().Length -eq 0}) -contains $true
+        if(-not $hasNoArgCtor){
+            #take the one with the least number of args
+            $pickCtor = $genType.GetConstructors() | ? {$_.GetParameters().Length -gt 1} | Sort-Object | Select-Object -First 1
+            #have a factory method called 
+            if($pickCtor -ne $null){
+                $ctorArgs = "(" + [string]::Join(", ", ($pickCtor.GetParameters() | % { $_.ParameterType.Name + "Factory()"}) ) + ")"
+            }
+            else{
+                $ctorArgs = "()"
+            }
+            
+        }
+        else{
+            $ctorArgs = "()"
+        }
+        $codeGenAttr
+        "public $TypeFullName $factoryName()`n{`n"
+        #need to find concrete implemenations 
+        if($genType.IsAbstract){
+            $concreteOfGenType = $Assembly.GetTypes() | ? {$_.BaseType -ne $null -and $_.BaseType.FullName -eq $TypeFullName -and -not $_.IsAbstract} | % { $_.FullName }
+            if($concreteOfGenType -ne $null){
+                if($concreteOfGenType -is [string]){
+                    ("`tvar $instanceName = new {0}();`n" -f $concreteOfGenType)
+                }
+                elseif($concreteOfGenType.Length -eq 2){
+                    ("`tvar $instanceName = BooleanFactory()`n`t`t? ({0})new {1}()`n`t`t: new {2}();`n" -f $TypeFullName, $concreteOfGenType[0], $concreteOfGenType[1])
+                }
+                else{
+                    "`t$TypeFullName $instanceName = null;`n"
+                    ("`tvar rolled = _myrand.Next(0,{0});`n" -f ($concreteOfGenType.Length-1))
+                    "`tswitch (rolled)`n`t{`n"
+
+                    for($m=0; $m -lt $concreteOfGenType.Length; $m++){
+                        $cogtAtM = $concreteOfGenType[$m]
+                        if($m -eq $concreteOfGenType.Length-1){
+                            "`t`tdefault:`n`t`t`t$instanceName = new $cogtAtM();`n`t`t`tbreak;`n"
+                        }
+                        else{
+                            "`t`tcase ${m}:`n`t`t`t$instanceName = new $cogtAtM();`n`t`t`tbreak;`n"
+                        }
+                    }
+                    "`t}`n"
+                }
+            }
+        }
+        else{
+            "`tvar $instanceName = new $TypeFullName$ctorArgs;`n"
+        }
+        "`t_depth += 1;`n`tif(_depth > MAX_DEPTH){return $instanceName;}`n"
 
         #get members as name-type pairs
         $listMembers = @{}
         $valueMembers = @{}
         $normalMembers = @{}
 
-        $Assembly.GetType($TypeFullName).GetProperties() | % {
+        $genType.GetProperties() | % {
+            $piSetMethod = $_.SetMethod
             if($_.CanWrite -and  ([NoFuture.Util.NfType.NfTypeName]::IsEnumerableReturnType($_.PropertyType))){
-                $listMembers.Add($_.Name,$_.PropertyType)
+
+                if($piSetMethod -ne $null -and -not $piSetMethod.IsPublic){
+                    $listMembers.Add(("{0}*" -f $_.Name),$_.PropertyType)
+                }
+                else{
+                    $listMembers.Add($_.Name,$_.PropertyType)
+                }
+                
             }
             elseif($_.CanWrite -and ([NoFuture.Util.NfType.NfTypeName]::IsValueTypeProperty($_))){
-                $valueMembers.Add($_.Name,$_.PropertyType)
+                
+                if($piSetMethod -ne $null -and -not $piSetMethod.IsPublic){
+                    $valueMembers.Add(("{0}*" -f $_.Name),$_.PropertyType)
+                }
+                else{
+                    $valueMembers.Add($_.Name,$_.PropertyType)
+                }
             }
             elseif($_.CanWrite -and -not ([NoFuture.Util.NfType.NfTypeName]::IsValueTypeProperty($_)) -and -not ([NoFuture.Util.NfType.NfTypeName]::IsEnumerableReturnType($_.PropertyType))){
-                $normalMembers.Add($_.Name,$_.PropertyType)
+
+                if($piSetMethod -ne $null -and -not $piSetMethod.IsPublic){
+                    $normalMembers.Add(("{0}*" -f $_.Name),$_.PropertyType)
+                }
+                else{
+                    $normalMembers.Add($_.Name,$_.PropertyType)
+                }
+                
             }
             
         }
-        $Assembly.GetType($TypeFullName).GetFields() | % {
+        $genType.GetFields() | % {
             if($_.IsPublic -and  ([NoFuture.Util.NfType.NfTypeName]::IsEnumerableReturnType($_.FieldType))){
                 $listMembers.Add($_.Name,$_.FieldType)
             }
@@ -397,78 +505,15 @@ function Write-CsCodeAssignRand
             
         }
 
-        $listMembers.Keys | % {
-            $memberName = $_
-            $memberType = $listMembers[$_]
-            $enumerableType = [NoFuture.Util.NfType.NfTypeName]::GetLastTypeNameFromArrayAndGeneric($memberType)
-            $recursiveCallsTo += $enumerableType
-            $propertyType = $memberType.ToString()
-            $refFactoryName = "{0}Factory" -f  ([NoFuture.Util.NfType.NfTypeName]::GetTypeNameWithoutNamespace($enumerableType))
-            $propName = $memberName;
-
-            if($memberType.BaseType.FullName -eq "System.Array"){
-                "`t$instanceName.$propName = new []"
-                "`t`t{`n`t`t`t$refFactoryName(),`n`t`t`t$refFactoryName(),`n`t`t`t$refFactoryName()`n`t`t};"
-            }
-            else{
-
-                #change IL syntax to C-sharp syntax
-                if($propertyType -match "\x60[1-9]\x5B"){
-                    $propertyType = $propertyType.Replace($Matches[0],'<').Replace("]",">")
-                }
-                @("IEnumerable","ICollection","IList", "IQueryable") | ? {$propertyType.Contains($_)} | % {
-                    $propertyType = $propertyType.Replace($_,"List")
-                }
-                
-                "`tvar $instanceName$propName = new $propertyType();`n"
-                "`tfor(var i = 0; i<3;i++)`n`t{`n`t`tvar item = $refFactoryName();`n`t`t$instanceName$propName.Add(item);`n`t}`n`t$instanceName.$propName = $instanceName$propName;`n"
-            }
-        }
-
-        $valueMembers.Keys | % {
-            $propName = $_
-            $propType = [NoFuture.Util.NfType.NfTypeName]::GetLastTypeNameFromArrayAndGeneric($valueMembers[$_].ToString())
-            if($propType -eq "System.Byte"){
-                "`t$instanceName.$propName = ByteFactory();`n"
-            }
-            elseif($propType -eq "System.Int16"){
-                "`t$instanceName.$propName = Int16Factory();`n"
-            }
-            elseif($propType -eq "System.Int32"){
-                "`t$instanceName.$propName = Int32Factory();`n"
-            }
-            elseif($propType -eq "System.Int64"){
-                "`t$instanceName.$propName = Int64Factory();`n"
-            }
-            elseif($propType -eq "System.Double"){
-                "`t$instanceName.$propName = DoubleFactory();`n"
-            }
-            elseif($propType -eq "System.Decimal"){
-                "`t$instanceName.$propName = DecimalFactory();`n"
-            }
-            elseif($propType -eq "System.DateTime"){
-                "`t$instanceName.$propName = DateTimeFactory();`n"
-            }
-            elseif($propType -eq "System.Boolean"){
-                "`t$instanceName.$propName = BooleanFactory();`n"
-            }
-            elseif($propType -eq "System.Char"){
-                "`t$instanceName.$propName = CharFactory();`n"
-            }
-            elseif($propType -eq "System.String"){
-                "`t$instanceName.$propName = StringFactory();`n"
-                $needsStringConstDefined = $true
-            }
-            elseif($propType -eq "System.Guid"){
-                "`t$instanceName.$propName = GuidFactory();`n"
-            }
-        }
-
         $normalMembers.Keys | % {
             $propName = $_;
+            $isNotAssignable = $propName.EndsWith("*")
+            if($isNotAssignable){
+                $propName = $propName.Replace("*","")
+            }
             $propType = $normalMembers[$_].ToString()
 
-            if($normalMembers[$_].BaseType.ToString() -eq "System.Enum"){
+            if($normalMembers[$_].BaseType -ne $null -and $normalMembers[$_].BaseType.ToString() -eq "System.Enum"){
                 $randEnumSyntax = ""
 
                 #get the enums names
@@ -485,11 +530,23 @@ function Write-CsCodeAssignRand
                 #its possiable to have an enum with just one name...
                 $randEnumLength = $enumNames.Length
                 if($randEnumLength -le 1) {
-                    $randEnumSyntax += "`t};`n`t$instanceName.$propName = enum$PropName[0];`n"
+                    if($isNotAssignable){
+                        $randEnumSyntax += "`t};`n`tSetProperty($instanceName, `"$propName`", enum$PropName[0]);`n"
+                    }
+                    else{
+                        $randEnumSyntax += "`t};`n`t$instanceName.$propName = enum$PropName[0];`n"
+                    }
+                    
                 }
                 else{
                     $randEnumSyntax += "`t};`n`tvar randEnum$PropName = _myrand.Next(0,(enum$PropName.Length - 1));`n"
-                    $randEnumSyntax += "`t$instanceName.$propName = enum$PropName[randEnum$PropName];`n"
+                    if($isNotAssignable){
+                        $randEnumSyntax += "`tSetProperty($instanceName `"$propName`", enum$PropName[randEnum$PropName]);`n"
+                    }
+                    else{
+                        $randEnumSyntax += "`t$instanceName.$propName = enum$PropName[randEnum$PropName];`n"
+                    }
+                    
                 }
 
                 #print the enum syntax
@@ -499,12 +556,169 @@ function Write-CsCodeAssignRand
                 $recursiveCallsTo += $propType
 
                 #check that this isn't going to set a infinite recursion into motion...
-                if(-not ($Global:CodeGenAssignRandomValuesCallStack.Contains($propType))){
+                if(-not $ValueTypesOnly -and -not ($Global:CodeGenAssignRandomValuesCallStack.Contains($propType))){
                     $refFactoryName = "{0}Factory" -f ([NoFuture.Util.NfType.NfTypeName]::GetTypeNameWithoutNamespace($propType))
-                    "`t$instanceName.$propName = $refFactoryName();`n"
+                    if($isNotAssignable){
+                        "`tSetProperty($instanceName, `"$propName`", $refFactoryName());`n"
+                    }
+                    else{
+                        "`t$instanceName.$propName = $refFactoryName();`n"
+                    }
+                    
                 }
             }
 
+        }
+
+        $valueMembers.Keys | % {
+            $propName = $_
+            $isNotAssignable = $propName.EndsWith("*")
+            if($isNotAssignable){
+                $propName = $propName.Replace("*","")
+            }
+            $propType = [NoFuture.Util.NfType.NfTypeName]::GetLastTypeNameFromArrayAndGeneric($valueMembers[$_].ToString())
+            if($propType -eq "System.Byte"){
+                if($isNotAssignable){
+                    "`tSetProperty($instanceName,`"$propName`",ByteFactory());`n"
+                }
+                else{
+                    "`t$instanceName.$propName = ByteFactory();`n"
+                }
+            }
+            elseif($propType -eq "System.Int16"){
+                if($isNotAssignable){
+                    "`tSetProperty($instanceName,`"$propName`",Int16Factory());`n"
+                }
+                else{
+                    "`t$instanceName.$propName = Int16Factory();`n"
+                }
+            }
+            elseif($propType -eq "System.Int32"){
+                if($isNotAssignable){
+                    "`tSetProperty($instanceName,`"$propName`",Int32Factory());`n"
+                }
+                else{
+                    "`t$instanceName.$propName = Int32Factory();`n"
+                }
+            }
+            elseif($propType -eq "System.Int64"){
+                if($isNotAssignable){
+                    "`tSetProperty($instanceName,`"$propName`",Int64Factory());`n"
+                }
+                else{
+                    "`t$instanceName.$propName = Int64Factory();`n"
+                }
+            }
+            elseif($propType -eq "System.Double"){
+                if($isNotAssignable){
+                    "`tSetProperty($instanceName,`"$propName`",DoubleFactory());`n"
+                }
+                else{
+                    "`t$instanceName.$propName = DoubleFactory();`n"
+                }
+            }
+            elseif($propType -eq "System.Decimal"){
+                if($isNotAssignable){
+                    "`tSetProperty($instanceName,`"$propName`",DecimalFactory());`n"
+                }
+                else{
+                    "`t$instanceName.$propName = DecimalFactory();`n"
+                }
+            }
+            elseif($propType -eq "System.DateTime"){
+                if($isNotAssignable){
+                    "`tSetProperty($instanceName,`"$propName`",DateTimeFactory());`n"
+                }
+                else{
+                    "`t$instanceName.$propName = DateTimeFactory();`n"
+                }
+            }
+            elseif($propType -eq "System.Boolean"){
+                if($isNotAssignable){
+                    "`tSetProperty($instanceName,`"$propName`",BooleanFactory());`n"
+                }
+                else{
+                    "`t$instanceName.$propName = BooleanFactory();`n"
+                }
+            }
+            elseif($propType -eq "System.Char"){
+                if($isNotAssignable){
+                    "`tSetProperty($instanceName,`"$propName`",CharFactory());`n"
+                }
+                else{
+                    "`t$instanceName.$propName = CharFactory();`n"
+                }
+            }
+            elseif($propType -eq "System.String"){
+                if($isNotAssignable){
+                    "`tSetProperty($instanceName,`"$propName`",StringFactory());`n"
+                }
+                else{
+                    "`t$instanceName.$propName = StringFactory();`n"
+                }
+                $needsStringConstDefined = $true
+            }
+            elseif($propType -eq "System.Single"){
+                if($isNotAssignable){
+                    "`tSetProperty($instanceName,`"$propName`",SingleFactory());`n"
+                }
+                else{
+                    "`t$instanceName.$propName = SingleFactory();`n"
+                }
+                $needsStringConstDefined = $true
+            }
+            elseif($propType -eq "System.Guid"){
+                if($isNotAssignable){
+                    "`tSetProperty($instanceName,`"$propName`",GuidFactory());`n"
+                }
+                else{
+                    "`t$instanceName.$propName = GuidFactory();`n"
+                }
+            }
+        }
+
+        $listMembers.Keys | % {
+            $memberName = $_
+            $isNotAssignable = $memberName.EndsWith("*")
+            if($isNotAssignable){
+                $memberName = $memberName.Replace("*","")
+            }
+            $memberType = $listMembers[$_]
+            $enumerableType = [NoFuture.Util.NfType.NfTypeName]::GetLastTypeNameFromArrayAndGeneric($memberType)
+            $recursiveCallsTo += $enumerableType
+            $propertyType = $memberType.ToString()
+            $refFactoryName = "{0}Factory" -f  ([NoFuture.Util.NfType.NfTypeName]::GetTypeNameWithoutNamespace($enumerableType))
+            $propName = $memberName;
+
+            if(-not $ValueTypesOnly){
+                if($memberType.BaseType.FullName -eq "System.Array"){
+                    "`t$instanceName.$propName = new []"
+                    "`t`t{`n`t`t`t$refFactoryName(),`n`t`t`t$refFactoryName(),`n`t`t`t$refFactoryName()`n`t`t};"
+                }
+                else{
+
+                    #change IL syntax to C-sharp syntax
+                    if($propertyType -match "\x60[1-9]\x5B"){
+                        $propertyType = $propertyType.Replace($Matches[0],'<').Replace("]",">")
+                    }
+                    @("IEnumerable","ICollection","IList", "IQueryable") | ? {$propertyType.Contains($_)} | % {
+                        $propertyType = $propertyType.Replace($_,"List")
+                    }
+                    @("ISet") | ? {$propertyType.Contains($_)} | % {
+                        $propertyType = $propertyType.Replace($_,"HashSet")
+                    }
+                
+                    "`tvar $instanceName$propName = new $propertyType();`n"
+                    "`tfor(var i = 0; i<3;i++)`n`t{`n`t`tvar item = $refFactoryName();`n`t`t$instanceName$propName.Add(item);`n`t}`n"
+
+                    if($isNotAssignable){
+                        "`tSetProperty($instanceName, `"$propName`", $instanceName$propName);`n"
+                    }
+                    else{
+                        "`t$instanceName.$propName = $instanceName$propName;`n"
+                    }
+                }
+            }
         }
 
         "`treturn $instanceName;`n}`n"
@@ -514,7 +728,12 @@ function Write-CsCodeAssignRand
                 
                 $Global:CodeGenAssignRandomValuesCallStack.Push($_)
 
-                Write-CsCodeAssignRand -Assembly $Assembly -TypeFullName $_ -FromSelf -Recursion
+                if($ValueTypesOnly){
+                    Write-CsCodeAssignRand -Assembly $Assembly -TypeFullName $_ -FromSelf -Recursion -ValueTypesOnly
+                }
+                else{
+                    Write-CsCodeAssignRand -Assembly $Assembly -TypeFullName $_ -FromSelf -Recursion
+                }
 
                 $doNotDisplay = $Global:CodeGenAssignRandomValuesCallStack.Pop()
             }

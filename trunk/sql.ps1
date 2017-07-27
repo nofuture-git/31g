@@ -916,15 +916,20 @@ function Get-TableMetaData
         $adoRows = (ado ([NoFuture.Sql.Mssql.Qry.Catalog]::QryColumnAutoNum -f $TableName))
         $psMetadata.AutoNumKeys = [NoFuture.Sql.Mssql.Md.PsMetadata]::ColumnNameToList($adoRows);
         
-        Write-Progress -Activity ("Getting all columns in table '{0}' that are foreign keys." -f $TableName) -Status "OK" -PercentComplete 70
+        Write-Progress -Activity ("Getting all columns in table '{0}' that are foreign keys." -f $TableName) -Status "OK" -PercentComplete 65
 
         $adoRows = (ado ([NoFuture.Sql.Mssql.Qry.Catalog]::QryTableKeys -f ([NoFuture.Sql.Mssql.Qry.Catalog]::FOREIGN_KEY_STRING), $TableName,$SchemaName))
         $psMetadata.FkKeys = [NoFuture.Sql.Mssql.Md.PsMetadata]::KeysToDictionary($adoRows);
         
-        Write-Progress -Activity ("Getting all columns in table '{0}'." -f $TableName) -Status "OK" -PercentComplete 80
+        Write-Progress -Activity ("Getting all columns in table '{0}'." -f $TableName) -Status "OK" -PercentComplete 75
 
         $adoRows = (ado ([NoFuture.Sql.Mssql.Qry.Catalog]::QryAllColumnsBySchemaTable -f  $TableName,$SchemaName))
         $psMetadata.AllColumnNames = [NoFuture.Sql.Mssql.Md.PsMetadata]::ColumnNameToList($adoRows);
+
+        Write-Progress -Activity ("Getting all timestamp columns in table '{0}'." -f $TableName) -Status "OK" -PercentComplete 85
+
+        $adoRows = (ado ([NoFuture.Sql.Mssql.Qry.Catalog]::QryTableTimestampColumns -f  $TableName,$SchemaName))
+        $psMetadata.TimestampColumns = [NoFuture.Sql.Mssql.Md.PsMetadata]::ColumnNameToList($adoRows);
 
         Write-Progress -Activity ("Getting truth-value of '{0}' being auto-increment PK." -f $TableName) -Status "OK" -PercentComplete 90
 

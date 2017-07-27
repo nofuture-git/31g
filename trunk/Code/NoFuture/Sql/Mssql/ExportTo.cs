@@ -34,6 +34,9 @@ namespace NoFuture.Sql.Mssql
         /// <param name="stmtType"></param>
         /// <param name="metaData"></param>
         /// <param name="results"></param>
+        /// <param name="binaryData2Literal">
+        /// Optional, have binary data written in the T-SQL format (e.g. 0x00FF), passed over otherwise
+        /// </param>
         /// <returns></returns>
         public static string ScriptDataBody(string sqlStmt, int len, ExportToStatementType stmtType, PsMetadata metaData,
             DataRow[] results)
@@ -58,6 +61,11 @@ namespace NoFuture.Sql.Mssql
 
             var mergeDataLine = new List<string>();
 
+            Func<PsMetadata, string, bool> isSkipColumn =
+                (metadata, key) => metaData.AutoNumKeys.Any(x => string.Equals(x, key, Oic)) ||
+                                   metaData.IsComputedKeys.Any(x => string.Equals(x, key, Oic)) ||
+                                   metaData.TimestampColumns.Any(x => string.Equals(x, key, Oic));
+
             //#for each database record
             foreach (DataRow currec in results)
             {
@@ -75,12 +83,17 @@ namespace NoFuture.Sql.Mssql
                     if (string.IsNullOrWhiteSpace(key))
                         continue;
 
-                    if (metaData.AutoNumKeys.Any(x => string.Equals(x, key, Oic)) ||
-                        metaData.IsComputedKeys.Any(x => string.Equals(x, key, Oic)))
+                    if (isSkipColumn(metaData, key))
                         continue;
 
                     //#eval out all 'DBNull.Value'
                     var val = string.IsNullOrWhiteSpace(currec[key].ToString()) ? "NULL" : currec[key].ToString();
+
+                    //handle byte arrays different since ToString is not a value-literal
+                    if (string.Equals(val, "System.Byte[]", Oic))
+                    {
+                        val = "0x" + Util.Binary.ByteArray.PrintByteArray((byte[]) currec[key]);
+                    }
 
                     //#truncate varcharesque values then wrap them in single quotes
                     val = GetQryValueWrappedWithLimit(metaData, key, val, len);
@@ -154,9 +167,9 @@ namespace NoFuture.Sql.Mssql
             {
                 if (string.IsNullOrWhiteSpace(key))
                     continue;
-
-                if (metaData.AutoNumKeys.Any(x => string.Equals(x, key, Oic)) || metaData.IsComputedKeys.Any(x => string.Equals(x, key, Oic)))
+                if (isSkipColumn(metaData,key))
                     continue;
+
                 if (metaData.PkKeys.Keys.Any(x => string.Equals(x, key, Oic)))
                     matchOnColumn.Add($"[{key}]");
                 else
@@ -169,13 +182,14 @@ namespace NoFuture.Sql.Mssql
             var insertValList = metaData.IsIdentityInsert
                 ? otherColumn.Select(ot => $"source.{ot}").ToList()
                 : colNames.Select(cn => $"source.{cn}").ToList();
+            var mergeSrcList = colNames.Where(c => !string.IsNullOrWhiteSpace(c) && !isSkipColumn(metaData, c));
 
             var mergeStatementBuilder = new StringBuilder();
             mergeStatementBuilder.AppendFormat("MERGE [{0}].[{1}] AS target\n", tableSchema, tableName);
             mergeStatementBuilder.Append("USING (\n");
             mergeStatementBuilder.Append("VALUES\n     ");
             mergeStatementBuilder.Append(mergeData);
-            mergeStatementBuilder.AppendFormat("\n    ) AS source (\n             {0})\n", string.Join(",\n             ", colNames));
+            mergeStatementBuilder.AppendFormat("\n    ) AS source (\n             {0})\n", string.Join(",\n             ", mergeSrcList));
             mergeStatementBuilder.AppendFormat("ON ({0})\n", string.Join(" AND ", matchOnList));
             mergeStatementBuilder.AppendLine("WHEN MATCHED THEN");
             mergeStatementBuilder.AppendFormat("  UPDATE SET {0}\n", string.Join(",\n             ", updateSetList));

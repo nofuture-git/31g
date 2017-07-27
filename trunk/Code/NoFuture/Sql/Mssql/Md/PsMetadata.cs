@@ -33,6 +33,8 @@ namespace NoFuture.Sql.Mssql.Md
         /// </summary>
         public List<string> AllColumnNames { get; set; }
 
+        public List<string> TimestampColumns { get; set; }
+
         public bool IsIdentityInsert { get; set; }
 
         /// <summary>

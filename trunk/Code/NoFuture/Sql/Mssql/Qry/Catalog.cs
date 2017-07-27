@@ -263,6 +263,21 @@ ORDER BY [PROCS].[name] ,
         [PARAMS].[parameter_id]
 ";
 
+        public const string QryTableTimestampColumns = @"
+SELECT  s.name AS " + SCHEMA_NAME + @" ,
+        tbl.name AS " + TABLE_NAME + @" ,
+        sc.name AS " + COLUMN_NAME + @" 
+FROM    dbo.sysobjects AS tbl
+        JOIN syscolumns sc ON sc.id = tbl.id
+        JOIN sys.schemas s ON s.[schema_id] = tbl.[uid]
+        JOIN sys.types TYP ON TYP.user_type_id = sc.xtype
+WHERE   tbl.[type] = 'U'
+        AND TYP.name = 'timestamp'
+        AND tbl.name = '{0}'
+        AND s.name = '{1}'
+ORDER BY sc.colid ASC
+";
+
         public const string FilterStatement = " and {0} not in ({1})";
         public const string AllowDiagrams = @"EXEC [{0}].dbo.sp_changedbowner @loginame = N'sa', @map = false ";
     }
