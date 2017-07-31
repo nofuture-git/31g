@@ -15,32 +15,14 @@ namespace NoFuture.Hbm
     public class Mapping
     {
         #region sorted containers
-        private static SortedKeys _hbmKeys = new SortedKeys();
-        private static SortedBags _hbmBags = new SortedBags();
-        private static SortedOneToMany _hbmOneToMany = new SortedOneToMany();
 
-        public static SortedKeys HbmKeys
-        {
-            get { return _hbmKeys; }
-            set { _hbmKeys = value; }
-        }
-        public static SortedBags HbmBags
-        {
-            get { return _hbmBags; }
-            set { _hbmBags = value; }
-        }
-        public static SortedOneToMany HbmOneToMany
-        {
-            get { return _hbmOneToMany; }
-            set { _hbmOneToMany = value; }
-        }
+        public static SortedKeys HbmKeys { get; set; } = new SortedKeys();
 
-        private static readonly InvokeStoredProcManager _storedProcManager = new InvokeStoredProcManager();
+        public static SortedBags HbmBags { get; set; } = new SortedBags();
 
-        public static InvokeStoredProcManager StoredProcManager
-        {
-            get { return _storedProcManager; }
-        }
+        public static SortedOneToMany HbmOneToMany { get; set; } = new SortedOneToMany();
+
+        public static InvokeStoredProcManager StoredProcManager { get; } = new InvokeStoredProcManager();
 
         #endregion
 
@@ -77,6 +59,43 @@ namespace NoFuture.Hbm
 
             var classXe = XeFactory.ClassNode(className, tableName, schemaName);
 
+            var hasNoPkAtAll = GetPk(outputNamespace, tbl, hbmPk, classXe);
+
+            //having no pk, add the contrived comp-key to the class
+            if (hasNoPkAtAll)
+            {
+                GetAllColumnsAsCompositeKey(tbl, classXe, outputNamespace);
+            }
+            else//simple properties
+            {
+                foreach (var columnName in Sorting.DbContainers.FlatData.Data.Where(x => string.Equals(x.table_name, tbl, Sorting.C)))
+                {
+                    var fullColumnName = columnName.column_name;
+                    Compose.ValidSplit(fullColumnName, 3);
+                    var simplePropXe = GetSimplePropertyHbmXml(columnName, Globals.HbmXmlNames.PROPERTY);
+                    classXe.Add(simplePropXe);
+                }
+            }
+
+            GetFksWhichAreNotPartOfPks(outputNamespace, tbl, hbmFk, classXe);
+
+            GetBags(outputNamespace, tbl, hbmBags, hasNoPkAtAll, className, classXe);
+
+            xe.Add(classXe);
+
+            var hbmXmlOutputPath = Path.Combine(Settings.HbmDirectory,
+                Compose.HbmFileName(tbl));
+            var xmlContent = xe.ToString()
+                .Replace("<hibernate-mapping>", "<hibernate-mapping xmlns=\"urn:nhibernate-mapping-2.2\">");
+            File.WriteAllText(hbmXmlOutputPath, xmlContent);
+
+            //perform rename of any properties which match classname or are duplicated therein
+            CorrectHbmXmlDuplicateNames(hbmXmlOutputPath);
+            return hbmXmlOutputPath;
+        }
+
+        protected static bool GetPk(string outputNamespace, string tbl, Dictionary<string, PkItem> hbmPk, XElement classXe)
+        {
             //----PK
             var pkId = hbmPk.ContainsKey(tbl) ? hbmPk[tbl].Id : null;
             var hasNoPkAtAll = !hbmPk.ContainsKey(tbl);
@@ -124,15 +143,16 @@ namespace NoFuture.Hbm
                                 Compose.ValidSplit(fullColumnName, 3);
 
                                 var keyMtoColumnXe =
-                                    XeFactory.ColumnNode(Util.Etc.ExtractLastWholeWord(fullColumnName, null), kmtoColumn.ToJsonString());
+                                    XeFactory.ColumnNode(Util.Etc.ExtractLastWholeWord(fullColumnName, null),
+                                        kmtoColumn.ToJsonString());
 
                                 keyMtoXe.Add(keyMtoColumnXe);
                             }
 
                             compKeyXe.Add(keyMtoXe);
-                        }//end foreach distinct constraintname
+                        } //end foreach distinct constraintname
                     }
-                }//end key-many-to-one
+                } //end key-many-to-one
 
                 var hbmKeyProperty = hbmPk[tbl].KeyProperty ?? new Dictionary<string, List<ColumnMetadata>>();
 
@@ -140,8 +160,9 @@ namespace NoFuture.Hbm
                 foreach (var reduced in hbmKeyManyToOne.Where(k => Settings.DoNotReference.Contains(k.Key)))
                 {
                     foreach (var redux in reduced.Value)
-                        redux.CopyFrom(Sorting.GetFromAllColumnMetadata(redux));//insure they got everything for being a value type
-                    
+                        redux.CopyFrom(Sorting.GetFromAllColumnMetadata(redux));
+                            //insure they got everything for being a value type
+
                     hbmKeyProperty.Add(reduced.Key, reduced.Value);
                 }
 
@@ -170,7 +191,8 @@ namespace NoFuture.Hbm
                             if (keyPropLen <= 0)
                                 keyPropLen = Globals.MSSQL_MAX_VARCHAR;
                             var keyPropXe = XeFactory.KeyPropertyNode(keyPropPropertyName, keyPropColumn,
-                                keyPropDataType, keyPropLen.ToString(CultureInfo.InvariantCulture), keyPropJsonData.ToJsonString());
+                                keyPropDataType, keyPropLen.ToString(CultureInfo.InvariantCulture),
+                                keyPropJsonData.ToJsonString());
                             compKeyXe.Add(keyPropXe);
                         }
                         else
@@ -186,169 +208,148 @@ namespace NoFuture.Hbm
             else if (pkId != null)
             {
                 GetSimpleId(pkId, classXe);
-            }//end PK
+            } //end PK
+            return hasNoPkAtAll;
+        }
 
-            //having no pk, add the contrived comp-key to the class
-            if (hasNoPkAtAll)
-            {
-                GetAllColumnsAsCompositeKey(tbl, classXe, outputNamespace);
-            }
-            else//simple properties
-            {
-                foreach (var columnName in Sorting.DbContainers.FlatData.Data.Where(x => string.Equals(x.table_name, tbl, Sorting.C)))
-                {
-                    var fullColumnName = columnName.column_name;
-                    Compose.ValidSplit(fullColumnName, 3);
-                    var simplePropXe = GetSimplePropertyHbmXml(columnName, Globals.HbmXmlNames.PROPERTY);
-                    classXe.Add(simplePropXe);
-                }
-            }
-
-            //----fks which are not part of pks
-            if (hbmFk.ContainsKey(tbl))
-            {
-                var tblFks = hbmFk[tbl].ManyToOne;
-                foreach (var fkName in tblFks.Keys)
-                {
-                    //these would be FK ref to another type but its underlying table is excluded so now its just a bunch of value types
-                    if (Settings.DoNotReference.Contains(fkName))
-                    {
-                        foreach (var reducedFk in tblFks[fkName])
-                        {
-                            var reducedFkSimpProp = GetSimplePropertyHbmXml(reducedFk,
-                                Globals.HbmXmlNames.PROPERTY);
-                            classXe.Add(reducedFkSimpProp);
-                        }
-                        continue;//these need representation but not as class types
-                    }
-
-                    var manytoOneColumns = new List<ColumnMetadata>();
-                    if (!HbmOneToMany.GetManyToOneColumns(tbl, ref manytoOneColumns))
-                        continue;
-
-                    var fkColumnsByDistinctConstraintName = manytoOneColumns.Select(x => x.constraint_name).Distinct().ToList();
-                    foreach (var distinctConstraintName in fkColumnsByDistinctConstraintName)
-                    {
-                        var dMtoColumnData = tblFks[fkName].Where(
-                            x =>
-                                string.Equals(x.constraint_name, distinctConstraintName, Sorting.C)).ToList();
-
-                        if (dMtoColumnData.Count <= 0)
-                            continue;
-                        var fkColumnXes = new List<XElement>();
-                        var fkColumnNames = new List<string>();
-                        foreach (var x in dMtoColumnData)
-                        {
-                            x.CopyFrom(Sorting.GetFromAllColumnMetadata(x));
-                            var fullColumnName = x.column_name;
-
-                            Compose.ValidSplit(fullColumnName, 3);
-                            var cn = Util.Etc.ExtractLastWholeWord(fullColumnName, null);
-
-                            //need to store these temp, since we are also drafting thier parent's name
-                            fkColumnXes.Add(XeFactory.ColumnNode(cn,x.ToJsonString()));
-                            fkColumnNames.Add(cn);
-                        }
-
-                        var fkPropertyType = new NfTypeName(Compose.ClassName(fkName, outputNamespace));
-                        var fkPropertyName = Compose.ManyToOnePropertyName(Compose.ClassName(fkName, outputNamespace),
-                            fkColumnNames.ToArray());
-
-                        var manyToOneXe = XeFactory.ManyToOneNode(fkPropertyName, fkPropertyType.AssemblyQualifiedName);
-                        foreach (var fkXe in fkColumnXes)
-                            manyToOneXe.Add(fkXe);
-
-                        classXe.Add(manyToOneXe);
-                    }
-                }
-            }//----end Fk
-
+        protected static void GetBags(string outputNamespace, string tbl, Dictionary<string, List<ColumnMetadata>> hbmBags, bool hasNoPkAtAll,
+            string className, XElement classXe)
+        {
             //----hbm bags
             var hbmBagNames = new List<string>(); //check for duplicates
-            if (!Settings.DoNotReference.Contains(tbl) && hbmBags.ContainsKey(tbl) && !hasNoPkAtAll)
+            if (Settings.DoNotReference.Contains(tbl) || !hbmBags.ContainsKey(tbl) || hasNoPkAtAll)
+                return;
+            var distinctBagConstraintNames = hbmBags[tbl].Select(x => x.constraint_name).Distinct().ToList();
+            foreach (var distinctBagConstraintName in distinctBagConstraintNames)
             {
-                var distinctBagConstraintNames = hbmBags[tbl].Select(x => x.constraint_name).Distinct().ToList();
-                foreach (var distinctBagConstraintName in distinctBagConstraintNames)
+                var hbmBagPropertyName = Compose.PropertyName(distinctBagConstraintName);
+                var hbmBagXe = XeFactory.BagNode(hbmBagPropertyName, Globals.HbmXmlNames.ALL_DELETE_ORPHAN,
+                    bool.TrueString.ToLower(), bool.TrueString.ToLower(),
+                    Globals.REPRESENT_512);
+                var bagColumns =
+                    hbmBags[tbl].Where(x => string.Equals(x.constraint_name, distinctBagConstraintName, Sorting.C))
+                        .Select(x => x.column_name)
+                        .ToList();
+
+                string hbmOneToMany;
+                if (bagColumns.Count > 1)
                 {
-                    var hbmBagPropertyName = Compose.PropertyName(distinctBagConstraintName);
-                    var hbmBagXe = XeFactory.BagNode(hbmBagPropertyName, Globals.HbmXmlNames.ALL_DELETE_ORPHAN, bool.TrueString.ToLower(), bool.TrueString.ToLower(),
-                        Globals.REPRESENT_512);
-                    var bagColumns =
-                        hbmBags[tbl].Where(x => string.Equals(x.constraint_name, distinctBagConstraintName, Sorting.C))
-                            .Select(x => x.column_name)
-                            .ToList();
+                    var hbmBagFirstKey =
+                        hbmBags[tbl].First(
+                            x => string.Equals(x.constraint_name, distinctBagConstraintName, Sorting.C));
+                    if (Settings.DoNotReference.Contains(hbmBagFirstKey.table_name))
+                        continue;
+                    hbmOneToMany = Compose.ClassName((hbmBagFirstKey.table_name), outputNamespace);
+                    var hbmBagFkKeyXe = XeFactory.KeyNodeClassName(className);
 
-                    string hbmOneToMany;
-                    if (bagColumns.Count > 1)
+                    foreach (
+                        var columnData in
+                            hbmBags[tbl].Where(
+                                x => string.Equals(x.constraint_name, distinctBagConstraintName, Sorting.C)).ToList())
                     {
-                        var hbmBagFirstKey =
-                            hbmBags[tbl].First(
-                                x => string.Equals(x.constraint_name, distinctBagConstraintName, Sorting.C));
-                        if (Settings.DoNotReference.Contains(hbmBagFirstKey.table_name))
-                            continue;
-                        hbmOneToMany = Compose.ClassName((hbmBagFirstKey.table_name), outputNamespace);
-                        var hbmBagFkKeyXe = XeFactory.KeyNodeClassName(className);
-
-                        foreach (
-                            var columnData in
-                                hbmBags[tbl].Where(
-                                    x => string.Equals(x.constraint_name, distinctBagConstraintName, Sorting.C)).ToList())
-                        {
-                            columnData.CopyFrom(Sorting.GetFromAllColumnMetadata(columnData));
-                            var fullColumnName = columnData.column_name;
-                            
-                            Compose.ValidSplit(fullColumnName, 3);
-                            var hbmBagKeyColumn = Util.Etc.ExtractLastWholeWord(fullColumnName, null);
-
-                            var hbmBagKeyXe = XeFactory.ColumnNode(hbmBagKeyColumn,columnData.ToJsonString());
-                            hbmBagFkKeyXe.Add(hbmBagKeyXe);
-                        }
-
-                        hbmBagXe.Add(hbmBagFkKeyXe);
-                    }
-                    else
-                    {
-                        var hbmBagFirstKey =
-                            hbmBags[tbl].First(
-                                x => string.Equals(x.constraint_name, distinctBagConstraintName, Sorting.C));
-                        if (Settings.DoNotReference.Contains(hbmBagFirstKey.table_name))
-                            continue;
-
-                        hbmBagFirstKey.CopyFrom(Sorting.GetFromAllColumnMetadata(hbmBagFirstKey));
-                        var fullColumnName = hbmBagFirstKey.column_name;
-                        hbmOneToMany = Compose.ClassName((hbmBagFirstKey.table_name), outputNamespace);
+                        columnData.CopyFrom(Sorting.GetFromAllColumnMetadata(columnData));
+                        var fullColumnName = columnData.column_name;
 
                         Compose.ValidSplit(fullColumnName, 3);
-
                         var hbmBagKeyColumn = Util.Etc.ExtractLastWholeWord(fullColumnName, null);
-                        var hbmBagKeyXe = XeFactory.KeyNodeColumnName(hbmBagKeyColumn, hbmBagFirstKey.ToJsonString());
-                        hbmBagXe.Add(hbmBagKeyXe);
+
+                        var hbmBagKeyXe = XeFactory.ColumnNode(hbmBagKeyColumn, columnData.ToJsonString());
+                        hbmBagFkKeyXe.Add(hbmBagKeyXe);
                     }
 
-                    var hbmOneToManyXe = XeFactory.OneToManyNode(hbmOneToMany);
-                    hbmBagXe.Add(hbmOneToManyXe);
+                    hbmBagXe.Add(hbmBagFkKeyXe);
+                }
+                else
+                {
+                    var hbmBagFirstKey =
+                        hbmBags[tbl].First(
+                            x => string.Equals(x.constraint_name, distinctBagConstraintName, Sorting.C));
+                    if (Settings.DoNotReference.Contains(hbmBagFirstKey.table_name))
+                        continue;
 
-                    //attempt to make the name plural 
-                    var newBagName = Compose.BagPropertyName(hbmOneToMany);
-                    hbmBagXe.FirstAttribute.SetValue(newBagName);
+                    hbmBagFirstKey.CopyFrom(Sorting.GetFromAllColumnMetadata(hbmBagFirstKey));
+                    var fullColumnName = hbmBagFirstKey.column_name;
+                    hbmOneToMany = Compose.ClassName((hbmBagFirstKey.table_name), outputNamespace);
 
-                    classXe.Add(hbmBagXe);
+                    Compose.ValidSplit(fullColumnName, 3);
 
-                    hbmBagNames.Add(hbmBagPropertyName);
+                    var hbmBagKeyColumn = Util.Etc.ExtractLastWholeWord(fullColumnName, null);
+                    var hbmBagKeyXe = XeFactory.KeyNodeColumnName(hbmBagKeyColumn, hbmBagFirstKey.ToJsonString());
+                    hbmBagXe.Add(hbmBagKeyXe);
+                }
+
+                var hbmOneToManyXe = XeFactory.OneToManyNode(hbmOneToMany);
+                hbmBagXe.Add(hbmOneToManyXe);
+
+                //attempt to make the name plural 
+                var newBagName = Compose.BagPropertyName(hbmOneToMany);
+                hbmBagXe.FirstAttribute.SetValue(newBagName);
+
+                classXe.Add(hbmBagXe);
+
+                hbmBagNames.Add(hbmBagPropertyName);
+            }
+        }
+
+        protected static void GetFksWhichAreNotPartOfPks(string outputNamespace, string tbl, Dictionary<string, FkItem> hbmFk, XElement classXe)
+        {
+            //----fks which are not part of pks
+            if (!hbmFk.ContainsKey(tbl))
+                return;
+            var tblFks = hbmFk[tbl].ManyToOne;
+            foreach (var fkName in tblFks.Keys)
+            {
+                //these would be FK ref to another type but its underlying table is excluded so now its just a bunch of value types
+                if (Settings.DoNotReference.Contains(fkName))
+                {
+                    foreach (var reducedFk in tblFks[fkName])
+                    {
+                        var reducedFkSimpProp = GetSimplePropertyHbmXml(reducedFk,
+                            Globals.HbmXmlNames.PROPERTY);
+                        classXe.Add(reducedFkSimpProp);
+                    }
+                    continue; //these need representation but not as class types
+                }
+
+                var manytoOneColumns = new List<ColumnMetadata>();
+                if (!HbmOneToMany.GetManyToOneColumns(tbl, ref manytoOneColumns))
+                    continue;
+
+                var fkColumnsByDistinctConstraintName = manytoOneColumns.Select(x => x.constraint_name).Distinct().ToList();
+                foreach (var distinctConstraintName in fkColumnsByDistinctConstraintName)
+                {
+                    var dMtoColumnData = tblFks[fkName].Where(
+                        x =>
+                            string.Equals(x.constraint_name, distinctConstraintName, Sorting.C)).ToList();
+
+                    if (dMtoColumnData.Count <= 0)
+                        continue;
+                    var fkColumnXes = new List<XElement>();
+                    var fkColumnNames = new List<string>();
+                    foreach (var x in dMtoColumnData)
+                    {
+                        x.CopyFrom(Sorting.GetFromAllColumnMetadata(x));
+                        var fullColumnName = x.column_name;
+
+                        Compose.ValidSplit(fullColumnName, 3);
+                        var cn = Util.Etc.ExtractLastWholeWord(fullColumnName, null);
+
+                        //need to store these temp, since we are also drafting thier parent's name
+                        fkColumnXes.Add(XeFactory.ColumnNode(cn, x.ToJsonString()));
+                        fkColumnNames.Add(cn);
+                    }
+
+                    var fkPropertyType = new NfTypeName(Compose.ClassName(fkName, outputNamespace));
+                    var fkPropertyName = Compose.ManyToOnePropertyName(Compose.ClassName(fkName, outputNamespace),
+                        fkColumnNames.ToArray());
+
+                    var manyToOneXe = XeFactory.ManyToOneNode(fkPropertyName, fkPropertyType.AssemblyQualifiedName);
+                    foreach (var fkXe in fkColumnXes)
+                        manyToOneXe.Add(fkXe);
+
+                    classXe.Add(manyToOneXe);
                 }
             }
-
-            xe.Add(classXe);
-
-            var hbmXmlOutputPath = Path.Combine(Settings.HbmDirectory,
-                string.Format("{0}.hbm.xml", Util.Etc.CapWords(tbl, '.')));
-            var xmlContent = xe.ToString()
-                .Replace("<hibernate-mapping>", "<hibernate-mapping xmlns=\"urn:nhibernate-mapping-2.2\">");
-            File.WriteAllText(hbmXmlOutputPath, xmlContent);
-
-            //perform rename of any properties which match classname or are duplicated therein
-            CorrectHbmXmlDuplicateNames(hbmXmlOutputPath);
-            return hbmXmlOutputPath;
         }
 
         /// <summary>
@@ -423,7 +424,7 @@ namespace NoFuture.Hbm
             xe.Add(sqlQryXe);
 
             var hbmXmlOutputPath = Path.Combine(Settings.HbmStoredProcsDirectory,
-                string.Format("{0}.hbm.xml", Util.Etc.CapWords(storedProc.Replace(" ", Globals.REPLACE_SPACE_WITH_SEQUENCE), '.')));
+                Compose.HbmFileName(storedProc.Replace(" ", Globals.REPLACE_SPACE_WITH_SEQUENCE)));
             var xmlContent = xe.ToString()
                 .Replace("<hibernate-mapping>", "<hibernate-mapping xmlns=\"urn:nhibernate-mapping-2.2\">");
             File.WriteAllText(hbmXmlOutputPath, xmlContent);

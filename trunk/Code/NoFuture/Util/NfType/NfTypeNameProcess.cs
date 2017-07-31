@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using NoFuture.Exceptions;
 using NoFuture.Shared;
@@ -11,6 +12,7 @@ namespace NoFuture.Util.NfType
     {
         public const string GET_NF_TYPE_NAME_CMD_SWITCH = "getNfTypeName";
         public static int DefaultPort = NfConfig.NfDefaultPorts.NfTypeNamePort;
+        private static Dictionary<string, NfTypeNameParseItem> _cacheFromProc = new Dictionary<string, NfTypeNameParseItem>();
 
         private readonly InvokeGetNfTypeName _invokeCmd;
 
@@ -48,7 +50,14 @@ namespace NoFuture.Util.NfType
 
         public NfTypeNameParseItem GetNfTypeName(string ilTypeName)
         {
-            return _invokeCmd.Receive(ilTypeName);
+            if (_cacheFromProc.ContainsKey(ilTypeName) && _cacheFromProc[ilTypeName] != null)
+                return _cacheFromProc[ilTypeName];
+
+            var nftnpi = _invokeCmd.Receive(ilTypeName);
+            
+            _cacheFromProc.Add(ilTypeName, nftnpi);
+                
+            return nftnpi;
         }
     }
 }

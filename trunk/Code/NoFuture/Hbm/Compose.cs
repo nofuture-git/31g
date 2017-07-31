@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Text;
 using NoFuture.Shared;
@@ -93,6 +94,26 @@ namespace NoFuture.Hbm
         {
             var pluralBagName = new NfTypeName(fullAssemblyQualTypeName);
             return Util.Etymological.En.ToPlural(pluralBagName.ClassName, true);
+        }
+
+        public static string HbmFileName(string someName)
+        {
+            if (string.IsNullOrWhiteSpace(someName))
+                return null;
+            someName = Etc.CapWords(someName, '.');
+            return $"{someName}.hbm.xml";
+        }
+
+        public static string HbmFileNameFromAsmQualTypeName(string asmFullName, bool prependDir = false)
+        {
+            if (string.IsNullOrWhiteSpace(asmFullName) || !NfTypeName.IsFullAssemblyQualTypeName(asmFullName))
+                return HbmFileName(asmFullName);
+
+            var nfName = new NfTypeName(asmFullName);
+
+            var tbl = nfName.Namespace.Replace($"{nfName.AssemblySimpleName}.", string.Empty) + "." +  nfName.ClassName;
+            var flNm = HbmFileName(tbl);
+            return prependDir ? Path.Combine(Settings.HbmDirectory, flNm) : flNm;
         }
         
     }

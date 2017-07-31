@@ -352,6 +352,7 @@ function Get-SingleHbmXml
         }
     }
 }
+
 #------------------
 # .cs generation cmdlet
 #------------------

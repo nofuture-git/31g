@@ -75,6 +75,9 @@ namespace NoFuture.Hbm
 
         public const int MSSQL_MAX_VARCHAR = 8000;
 
+        public const string DF_DELIMITER_START = "--Start-Nf.Hbm.Delimiter";
+        public const string DF_DELIMITER_END = "--End-Nf.Hbm.Delimiter";
+
         /// <summary>
         /// The <see cref="NHibernate.Cfg.Configuration"/> will blow outs its stack if you 
         /// just call 'AddXmlFile' one at a time so the PowerShell cmdlets will compile the 

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.IO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NoFuture.Hbm;
+using NoFuture.Shared;
 
 namespace NoFuture.Tests.Hbm
 {

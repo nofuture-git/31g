@@ -146,20 +146,34 @@ namespace NoFuture.Util
                 return _mssql2HbmTypes ?? (_mssql2HbmTypes = new Dictionary<string, string>
                 {
                     {"bigint", "Int64"},
-                    {
-                        "binary",
-                        "NoFuture.Hbm.Sid.SidUserType, NoFuture.Hbm.Sid, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null"
-                    },
                     {"bit", "Boolean"},
+                    {"varchar", "AnsiString"},
+                    {"nvarchar", "AnsiString"},
+                    {"int", "Int32"},
+                    {"double", "Double"},
+                    {"smallint", "Int16"},
+                    {"numeric", "Int32"},
                     {"char", "AnsiString"},
-                    {"cursor", "Int32"},
+                    {"nchar", "AnsiString"},
+                    {"ntext", "AnsiString"},
+                    {"sql_variant", "AnsiString"},
+                    {"sysname", "AnsiString"},
+                    {"text", "AnsiString"},
                     {"date", "DateTime"},
                     {"datetime", "DateTime"},
                     {"datetime2", "DateTime"},
                     {"datetimeoffset", "DateTime"},
+                    {"time", "DateTime"},
+                    {"smalldatetime", "DateTime"},
                     {"decimal", "Decimal"},
-                    {"double", "Double"},
                     {"float", "Decimal"},
+                    {"money", "Decimal"},
+                    {"smallmoney", "Decimal"},
+                    {"real", "Decimal"},
+                    {
+                        "binary",
+                        "NoFuture.Hbm.Sid.SidUserType, NoFuture.Hbm.Sid, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null"
+                    },
                     {
                         "geography",
                         "Microsoft.SqlServer.Types.SqlGeography, Microsoft.SqlServer.Types, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"
@@ -172,28 +186,14 @@ namespace NoFuture.Util
                         "hierarchyid",
                         "Microsoft.SqlServer.Types.SqlHierarchyId, Microsoft.SqlServer.Types, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"
                     },
-                    {"int", "Int32"},
                     {
                         "image",
                         "NoFuture.Hbm.Sid.SidUserType, NoFuture.Hbm.Sid, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null"
                     },
-                    {"money", "Decimal"},
-                    {"nchar", "AnsiString"},
-                    {"ntext", "AnsiString"},
-                    {"numeric", "Int32"},
-                    {"nvarchar", "AnsiString"},
-                    {"real", "Decimal"},
                     {
                         "rowversion",
                         "NoFuture.Hbm.Sid.SidUserType, NoFuture.Hbm.Sid, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null"
                     },
-                    {"smalldatetime", "DateTime"},
-                    {"smallint", "Int16"},
-                    {"smallmoney", "Decimal"},
-                    {"sql_variant", "AnsiString"},
-                    {"sysname", "AnsiString"},
-                    {"text", "AnsiString"},
-                    {"time", "DateTime"},
                     {
                         "timestamp",
                         "NoFuture.Hbm.Sid.SidUserType, NoFuture.Hbm.Sid, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null"
@@ -203,9 +203,9 @@ namespace NoFuture.Util
                         "varbinary",
                         "NoFuture.Hbm.Sid.SidUserType, NoFuture.Hbm.Sid, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null"
                     },
-                    {"varchar", "AnsiString"},
                     {"xml", "AnsiString"},
                     {"uniqueidentifier", "Guid"},
+                    {"cursor", "Int32"},
                 });
             }
         }

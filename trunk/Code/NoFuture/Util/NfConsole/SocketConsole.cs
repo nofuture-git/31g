@@ -42,6 +42,7 @@ namespace NoFuture.Util.NfConsole
             {
                 //this should NOT be reachable from any other machine
                 var endPt = new IPEndPoint(IPAddress.Loopback, cmdPort);
+                PrintToConsole($"Listening on port {cmdPort}");
                 socket.Bind(endPt);
                 socket.Listen(Constants.SOCKET_LISTEN_NUM);
 
@@ -52,7 +53,6 @@ namespace NoFuture.Util.NfConsole
                         var buffer = new List<byte>();
 
                         var client = socket.Accept();
-                        PrintToConsole($"Connect from port {cmdPort}");
                         var data = new byte[NfConfig.DefaultBlockSize];
 
                         //park for first data received

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -11,7 +12,7 @@ using HbmXmlNames = NoFuture.Hbm.Globals.HbmXmlNames;
 
 namespace NoFuture.Hbm.SortingContainers
 {
-    public class HbmFileContent
+    public class HbmFileContent : IComparable<HbmFileContent>
     {
         #region private fields
         private readonly Dictionary<string, string> _simpleProperties;
@@ -19,6 +20,8 @@ namespace NoFuture.Hbm.SortingContainers
         private readonly Dictionary<string, string> _listProperties;
         private readonly Dictionary<string, string> _compositeKeyProperties;
         private readonly List<HbmStoredProxNames> _spConstNames;
+        private readonly List<string> _sqlOnWhichDepends = new List<string>();
+        private string _sqlTbl;
 
         //these are held internally and are only queryable via the GetColumnDataByPropertyName
         private readonly Dictionary<string, ColumnMetadata> _keyColumns;
@@ -54,18 +57,18 @@ namespace NoFuture.Hbm.SortingContainers
         /// The full, assembly qualified, type name of the class to which the 
         /// hbm.xml file pertains.
         /// </summary>
-        public virtual string AssemblyQualifiedTypeName { get { return _asmQualTypeName; } }
+        public virtual string AssemblyQualifiedTypeName => _asmQualTypeName;
 
         /// <summary>
         /// The namespace portion of the class node name attribute value.
         /// </summary>
-        public virtual string Namespace { get { return _namespace; } }
+        public virtual string Namespace => _namespace;
 
         /// <summary>
         /// Just the direct name of the class (no namespace nor assembly qualifier)
         /// portion of the class node name attribute value.
         /// </summary>
-        public virtual string Classname { get { return _className; } }
+        public virtual string Classname => _className;
 
         /// <summary>
         /// The directory from which hbm.xml file was read.
@@ -74,7 +77,7 @@ namespace NoFuture.Hbm.SortingContainers
         /// hbm.xml's derived from stored prox will not have a
         /// schema so this is used to contrive one.
         /// </remarks>
-        public virtual string HbmXmlDirectory { get { return Path.GetDirectoryName(_fileNamePath); } }
+        public virtual string HbmXmlDirectory => Path.GetDirectoryName(_fileNamePath);
 
         /// <summary>
         /// The value of the schema attribute attached to the top-level class node.
@@ -84,12 +87,12 @@ namespace NoFuture.Hbm.SortingContainers
         /// to contrive one based on the <see cref="HbmXmlDirectory"/> otherwise
         /// defaulting to <see cref="Settings.DefaultSchemaName"/>.
         /// </remarks>
-        public virtual string DbSchema { get { return _dbSchema; } }
+        public virtual string DbSchema => _dbSchema;
 
         /// <summary>
         /// The value as-is assigned the class level's attribute of like name.
         /// </summary>
-        public virtual string TableName { get { return _tableName; } }
+        public virtual string TableName => _tableName;
 
         /// <summary>
         /// This is the name of the identity property almost always being equal to <see cref="Globals.HbmXmlNames.ID"/>
@@ -99,12 +102,12 @@ namespace NoFuture.Hbm.SortingContainers
         /// for hbm.xml files derived from stored prox - a stored proc may in fact return 
         /// a column named the same.
         /// </remarks>
-        public virtual string IdName { get { return _idName; } }
-        
+        public virtual string IdName => _idName;
+
         /// <summary>
         /// For Composite types this will be a namespace qualified type name, otherwise a simple value type.
         /// </summary>
-        public virtual string IdType { get { return _idType; } }
+        public virtual string IdType => _idType;
 
         /// <summary>
         /// This is just the PK's underlying columns (as .NET-safe property names).
@@ -112,7 +115,7 @@ namespace NoFuture.Hbm.SortingContainers
         /// <remarks>
         /// This is useless to NHibernate and is intended for EF 6.x code gen.
         /// </remarks>
-        public virtual Dictionary<string, string> IdAsSimpleProperties { get { return _allPkColumns; } }
+        public virtual Dictionary<string, string> IdAsSimpleProperties => _allPkColumns;
 
         /// <summary>
         /// Asserts if the given hbm.xml file uses a composite-id 
@@ -123,28 +126,28 @@ namespace NoFuture.Hbm.SortingContainers
         /// A hash of the composite key's property names-to-types
         /// This is only relevant for <see cref="IsCompositeKey"/> begin true.
         /// </summary>
-        public virtual Dictionary<string, string> CompositeKeyProperties { get { return _compositeKeyProperties; } }
-        
+        public virtual Dictionary<string, string> CompositeKeyProperties => _compositeKeyProperties;
+
         /// <summary>
         /// This is the value-type property names-to-types being those properties which
         /// are not related to any FK nor PK.
         /// </summary>
-        public virtual Dictionary<string, string> SimpleProperties { get { return _simpleProperties; } }
-        
+        public virtual Dictionary<string, string> SimpleProperties => _simpleProperties;
+
         /// <summary>
         /// This is the names-to-types hash for the many-to-one (FKs) nodes.
         /// </summary>
-        public virtual Dictionary<string, string> FkProperties { get { return _fkProperties; } }
+        public virtual Dictionary<string, string> FkProperties => _fkProperties;
 
         /// <summary>
         /// This is the names-to-types 'bag' nodes defined in this hbm.xml file.
         /// </summary>
-        public virtual Dictionary<string, string> ListProperties { get { return _listProperties; } }
+        public virtual Dictionary<string, string> ListProperties => _listProperties;
 
         /// <summary>
         /// This is specific to hbm.xml parsed from stored prox <see cref="StoredProcMetadata.TryParseToHbmSql"/>
         /// </summary>
-        public virtual List<HbmStoredProxNames> SpConstNames { get { return _spConstNames; } }
+        public virtual List<HbmStoredProxNames> SpConstNames => _spConstNames;
 
         /// <summary>
         /// This is a reverse lookup for the underlying column data which spawned this property.
@@ -157,6 +160,8 @@ namespace NoFuture.Hbm.SortingContainers
         {
             if (string.IsNullOrWhiteSpace(propertyName))
                 return null;
+
+            propertyName = propertyName.Trim();
 
             var cmeta = new List<ColumnMetadata>();
 
@@ -185,6 +190,120 @@ namespace NoFuture.Hbm.SortingContainers
             return cmeta.ToArray();
         }
 
+
+        /// <summary>
+        /// Hack method to generate a T-SQL script to get all the depend records which 
+        /// spider out from this particular one.
+        /// </summary>
+        /// <param name="ids"></param>
+        /// <param name="topX"></param>
+        /// <returns></returns>
+        public virtual string WriteDependencySqlScript(string[] ids, int topX = 100)
+        {
+            var sql = new List<string>();
+            var dcl = new List<string> { GetSqlScriptTblVariableDeclare(), GetSqlScriptTblVariableInsert(), $"VALUES ({string.Join(", ", ids)})" };
+            var slct = new List<Tuple<string, string, string>>();
+            var includedTypes = new Dictionary<Tuple<string, string>, HbmFileContent>();
+            GetDependencySqlScriptStmts(includedTypes);
+
+            if (!includedTypes.Any())
+                return string.Join(Environment.NewLine, sql);
+
+            foreach (var dTfn in includedTypes.Keys)
+            {
+                var dHbm = includedTypes[dTfn];
+                if (dHbm == null)
+                    continue;
+                var dHbmName = dHbm.AssemblyQualifiedTypeName;
+                dcl.Add(dHbm.GetSqlScriptTblVariableDeclare());
+                sql.AddRange(dHbm.GetSqlScriptOnWhichDepends());
+                slct.Add(new Tuple<string, string, string>(dHbm.GetSqlScriptPkString(), dHbm.GetSqlScriptTableVariableName(), dHbmName));
+            }
+
+            var finalList = dcl.Distinct().ToList();
+            finalList.AddRange(sql);
+            finalList.Add(Globals.DF_DELIMITER_START);
+
+            foreach (var x in slct)
+            {
+                finalList.Add($"SELECT TOP {topX} '{x.Item2.Substring(1)}' AS table_name, {x.Item1} FROM {x.Item2} --{x.Item3}");
+            }
+            
+            finalList.Add(Globals.DF_DELIMITER_END);
+
+            return string.Join(Environment.NewLine, finalList);
+        }
+
+        /// <summary>
+        /// Asserts that each of this instances <see cref="FkProperties"/> is represented
+        /// on the drive as an hbm.xml file.
+        /// </summary>
+        /// <returns></returns>
+        public bool IsAllFkHbmXmlPresent()
+        {
+            if (FkProperties == null || !FkProperties.Any())
+                return true;
+            foreach (var fk in FkProperties.Keys)
+            {
+                var hbmXml = Compose.HbmFileNameFromAsmQualTypeName(FkProperties[fk], true);
+                if (!File.Exists(hbmXml))
+                    return false;
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Asserts that each of this instances <see cref="ListProperties"/> is represented
+        /// on the drive as an hbm.xml file.
+        /// </summary>
+        /// <returns></returns>
+        public bool IsAllListHbmXmlPresent()
+        {
+            if (ListProperties == null || !ListProperties.Any())
+                return true;
+            foreach (var fk in ListProperties.Keys)
+            {
+                var hbmXml = Compose.HbmFileNameFromAsmQualTypeName(ListProperties[fk], true);
+                if (!File.Exists(hbmXml))
+                    return false;
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Intended for the creation of a SortedList of this type.
+        /// </summary>
+        /// <param name="other"></param>
+        /// <returns></returns>
+        public int CompareTo(HbmFileContent other)
+        {
+            const int THIS_COMES_BEFORE_OTHER = -1;
+            const int THIS_EQUALS_OTHER = 0;
+            const int OTHER_COMES_BEFORE_THIS = 1;
+
+            if (other == null)
+                return THIS_COMES_BEFORE_OTHER;
+
+            var myName = AssemblyQualifiedTypeName;
+            var otherName = other.AssemblyQualifiedTypeName;
+
+            if (otherName == myName)
+                return THIS_EQUALS_OTHER;
+            if (IsCompositeKey && CompositeKeyProperties != null && CompositeKeyProperties.ContainsValue(otherName))
+                return OTHER_COMES_BEFORE_THIS;
+            if (IdAsSimpleProperties != null && IdAsSimpleProperties.ContainsValue(otherName))
+                return OTHER_COMES_BEFORE_THIS;
+
+            if (FkProperties != null && FkProperties.ContainsValue(otherName))
+                return OTHER_COMES_BEFORE_THIS;
+
+            if (ListProperties != null && ListProperties.ContainsKey(otherName))
+                return THIS_COMES_BEFORE_OTHER;
+
+            return THIS_EQUALS_OTHER;
+        }
         #endregion
 
         #region ctor
@@ -739,6 +858,142 @@ namespace NoFuture.Hbm.SortingContainers
                 xpath.Append(p);
             }
             return xpath.ToString();
+        }
+
+        protected internal virtual void GetDependencySqlScriptStmts(Dictionary<Tuple<string, string>, HbmFileContent> includedTypes)
+        {
+            includedTypes = includedTypes ?? new Dictionary<Tuple<string, string>, HbmFileContent>();
+            //determine if moving down or up
+            //var dict = useLists ? ListProperties : FkProperties;
+            foreach (var fk in FkProperties.Keys)
+            {
+                //get a hash of the other type name to this type name
+                var myIncludedTypeKey = new Tuple<string, string>(AssemblyQualifiedTypeName, FkProperties[fk]);
+
+                //test if this has been done already
+                var otherHbmContent = GetHbmFileContentFromDictionary(includedTypes, myIncludedTypeKey);
+                if (otherHbmContent == null)
+                    continue;
+
+                //for a FK this will be one of my columns - for a bag it will be a column on the other table
+                var colData = GetColumnDataByPropertyName(fk);
+
+                var cols = colData.Select(c => c.column_name.Replace(c.table_name, string.Empty).Trim('.')).ToList();
+
+                otherHbmContent.AddSqlScriptOnWhichDepends($"SELECT {string.Join(", ", cols)} FROM {DbSchema}.{TableName} WHERE {GetSqlScriptPkString()} IN ({GetSqlScriptTblVariableSelect()})");
+                otherHbmContent.GetDependencySqlScriptStmts(includedTypes);
+            }
+
+            foreach (var bag in ListProperties.Keys)
+            {
+                var myIncludedTypeKey = new Tuple<string, string>(AssemblyQualifiedTypeName, ListProperties[bag]);
+
+                //test if this has been done already
+                var otherHbmContent = GetHbmFileContentFromDictionary(includedTypes, myIncludedTypeKey);
+                if (otherHbmContent == null)
+                    continue;
+                var colData = GetColumnDataByPropertyName(bag);
+                var cols = colData.Select(c => c.GetDbColumnName()).ToList();
+
+                otherHbmContent.AddSqlScriptOnWhichDepends($"SELECT {otherHbmContent.GetSqlScriptPkString()} FROM {otherHbmContent.DbSchema}.{otherHbmContent.TableName} WHERE {string.Join(", ", cols)} IN ({GetSqlScriptTblVariableSelect()})");
+            }
+        }
+
+        protected internal virtual void AddSqlScriptOnWhichDepends(string stmt)
+        {
+            if (!string.IsNullOrWhiteSpace(stmt))
+                _sqlOnWhichDepends.Add(stmt);
+        }
+
+        protected internal virtual List<string> GetSqlScriptOnWhichDepends()
+        {
+            var moreSql = new List<string>();
+            foreach (var dkk in _sqlOnWhichDepends)
+            {
+                moreSql.Add(GetSqlScriptTblVariableInsert());
+                moreSql.Add(dkk);
+            }
+            return moreSql;
+        }
+
+        protected internal virtual string GetSqlScriptTblVariableDeclare()
+        {
+            var tbl = GetSqlScriptTableVariableName();
+            var pk = GetSqlScriptPkString(true);
+            return $"DECLARE {tbl} TABLE ({pk})";
+        }
+
+        protected internal virtual string GetSqlScriptTblVariableSelect()
+        {
+            var tbl = GetSqlScriptTableVariableName();
+            var pk = GetSqlScriptPkString();
+            return $"SELECT {pk} FROM {tbl}";
+        }
+
+        protected internal virtual string GetSqlScriptTblVariableInsert()
+        {
+            var tbl = GetSqlScriptTableVariableName();
+            var pk = GetSqlScriptPkString();
+            return $"INSERT INTO {tbl} ({pk})";
+        }
+
+        protected internal virtual string GetSqlScriptPkString(bool withAsDcl = false)
+        {
+            var colData = IdAsSimpleProperties.SelectMany(x => GetColumnDataByPropertyName(x.Key));
+
+            if (!withAsDcl)
+                return string.Join(", ", colData.Select(x => x.GetDbColumnName()));
+
+            var ssqlPk = new List<string>();
+            foreach (var ids in colData)
+            {
+                ssqlPk.Add($"{ids.GetDbColumnName()} {ids.data_type.ToUpper()}");
+            }
+            return string.Join(", ", ssqlPk);
+        }
+
+        protected internal virtual string GetSqlScriptTableVariableName()
+        {
+            if (!string.IsNullOrWhiteSpace(_sqlTbl))
+                return _sqlTbl;
+            var sqlSchema = DbSchema.Replace("[", "").Replace("]", "").ToLower();
+            var sqlTbl = TableName.Replace("[", "").Replace("]", "").ToLower();
+            _sqlTbl = $"@{sqlSchema}_{sqlTbl}";
+
+            return _sqlTbl;
+        }
+
+        internal static HbmFileContent GetHbmFileContentFromDictionary(Dictionary<Tuple<string, string>, HbmFileContent> includedTypes, Tuple<string, string> myNameOtherName)
+        {
+            if (includedTypes == null || string.IsNullOrWhiteSpace(myNameOtherName?.Item1) || string.IsNullOrWhiteSpace(myNameOtherName.Item2))
+                return null;
+
+            var otherTypeFullName = myNameOtherName.Item2;
+            var myFullName = myNameOtherName.Item1;
+            var myIncludedTypeKey = new Tuple<string, string>(myFullName, otherTypeFullName);
+
+            //test if this has been done already
+            HbmFileContent otherHbmContent = null;
+            if (includedTypes.ContainsKey(myIncludedTypeKey))
+                return null;
+
+            //imporve performance by looking for hbm file content already parsed when available
+            otherHbmContent =
+                includedTypes.FirstOrDefault(x => includedTypes[x.Key].AssemblyQualifiedTypeName == otherTypeFullName).Value;
+
+            if (otherHbmContent == null)
+            {
+                var fkHbmXml = Compose.HbmFileNameFromAsmQualTypeName(otherTypeFullName, true);
+                if (File.Exists(fkHbmXml))
+                    otherHbmContent = new HbmFileContent(fkHbmXml);
+            }
+
+            //now hove both this hbm file content and the other's in scope
+            if (otherHbmContent == null)
+                return null;
+            includedTypes.Add(myIncludedTypeKey, otherHbmContent);
+
+            return otherHbmContent;
         }
         #endregion
     }

@@ -101,5 +101,10 @@ namespace NoFuture.Hbm.SortingContainers
                 return false;
             }  
         }
+
+        public string GetDbColumnName()
+        {
+            return column_name.Replace(table_name, string.Empty).Trim('.');
+        }
     }
 }

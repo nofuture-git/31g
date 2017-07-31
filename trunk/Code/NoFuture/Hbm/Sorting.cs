@@ -24,25 +24,15 @@ namespace NoFuture.Hbm
         /// </remarks>
         public static class DbContainers
         {
-            private static HbmContraints _fks = new HbmContraints();
-            private static HbmPrimaryKeys _pks = new HbmPrimaryKeys();
-            private static HbmAllKeys _allKeys = new HbmAllKeys();
-            private static HbmAllIndex _allIndex = new HbmAllIndex();
-            private static HbmAllColumns _allColumns = new HbmAllColumns();
-            private static HbmAutoIncrement _autoIncrement = new HbmAutoIncrement();
-            private static HbmFlatData _flatData = new HbmFlatData();
-            private static HbmUniqueClusteredIdxNotPks _uqIdxNotPks = new HbmUniqueClusteredIdxNotPks();
-            private static HbmStoredProcsAndParams _storedProcParams = new HbmStoredProcsAndParams();
-
-            public static HbmContraints Fks { get { return _fks; } set { _fks = value; } }
-            public static HbmPrimaryKeys Pks { get { return _pks; } set { _pks = value; } }
-            public static HbmAllKeys AllKeys { get { return _allKeys; } set { _allKeys = value; } }
-            public static HbmAllIndex AllIndex { get { return _allIndex; } set { _allIndex = value; } }
-            public static HbmAllColumns AllColumns { get { return _allColumns; } set { _allColumns = value; } }
-            public static HbmAutoIncrement AutoIncrement { get { return _autoIncrement; } set { _autoIncrement = value; } }
-            public static HbmFlatData FlatData { get { return _flatData; } set { _flatData = value; } }
-            public static HbmUniqueClusteredIdxNotPks UniqueClusteredIdxNotPks { get { return _uqIdxNotPks; } set { _uqIdxNotPks = value; } }
-            public static HbmStoredProcsAndParams StoredProcsAndParams { get { return _storedProcParams; } set { _storedProcParams = value; } }
+            public static HbmContraints Fks { get; set; } = new HbmContraints();
+            public static HbmPrimaryKeys Pks { get; set; } = new HbmPrimaryKeys();
+            public static HbmAllKeys AllKeys { get; set; } = new HbmAllKeys();
+            public static HbmAllIndex AllIndex { get; set; } = new HbmAllIndex();
+            public static HbmAllColumns AllColumns { get; set; } = new HbmAllColumns();
+            public static HbmAutoIncrement AutoIncrement { get; set; } = new HbmAutoIncrement();
+            public static HbmFlatData FlatData { get; set; } = new HbmFlatData();
+            public static HbmUniqueClusteredIdxNotPks UniqueClusteredIdxNotPks { get; set; } = new HbmUniqueClusteredIdxNotPks();
+            public static HbmStoredProcsAndParams StoredProcsAndParams { get; set; } = new HbmStoredProcsAndParams();
         }
 
         #region internal fields

@@ -14,14 +14,13 @@ namespace NoFuture.Tokens.InvokeNfTypeName.Cmds
 
         public override byte[] Execute(byte[] arg)
         {
-            MyProgram.PrintToConsole("GetNfTypeName invoked");
-
             try
             {
                 if(arg == null || arg.Length <= 0)
                     throw new ItsDeadJim("No Type Name given to parse.");
-
-                var f = Etx.ParseIl(Encoding.UTF8.GetString(arg));
+                var nm = Encoding.UTF8.GetString(arg);
+                MyProgram.PrintToConsole(nm);
+                var f = Etx.ParseIl(nm);
                 return JsonEncodedResponse(f);
 
             }
@@ -29,7 +28,7 @@ namespace NoFuture.Tokens.InvokeNfTypeName.Cmds
             {
                 Console.WriteLine('\n');
                 MyProgram.PrintToConsole(ex);
-                return JsonEncodedResponse(new NfTypeNameParseItem() {Error = ex});
+                return JsonEncodedResponse(new NfTypeNameParseItem {Error = ex});
             }
 
         }
