@@ -9,6 +9,24 @@ Print ISBN-13: 978-1-78528-009-2
 Pages in Print Edition: 248
 Example code at
 https://github.com/NodeJsForDevelopers
+
+RESTful Web API Design with Node.js - Second Edition
+By: Valentin Bojinov
+Publisher: Packt Publishing
+Pub. Date: May 26, 2016
+Web ISBN-13: 978-1-78646-320-3
+Print ISBN-13: 978-1-78646-913-7
+Pages in Print Edition: 148
+Example code at
+https://github.com/PacktPublishing/RESTful-Web-API-Design-with-Node.JS-Second-Edition/tree/master
+----
+
+----
+Any organization that designs a system (defined broadly) 
+will produce a design whose structure is a copy 
+of the organization's communication structure.
+
+-- Melvyn Conway, 1967
 ----
 
 ----
@@ -32,21 +50,44 @@ Overview & History
    - the --save flag cause the package to be added to the 
      app's packages.json file
  - best suited for apps with alot of IO since its non-blocking
- - very easy to setup a http listener on localhost for some port
-  var listener = function(request, response) {response.end('Hello World')}
-  require('http').createServer(listener).listen(3000)
- - the base of an application is the packages.json file
- - typical process is 
-  
-  Push-Location "working dir of app"
-  #sets up the dependencies
-  npm install
-  #starts it
-  npm start
-  # <Ctrl-c> terminates it
-  
  - the link between files and exec is the commands present in 
     the packages.json file 
+----
+
+----
+RESTful Services Digression
+ - Representation State Transfer 
+  - defined by Roy Fielding in '99
+  - everything is a resource
+  - computational identity is a unique URI
+  - comm over HTTP
+  - resource may be represented in multiple ways
+  - stateless
+ - all data has some MIME format
+ - URI's should be readable
+ - intent is bound the the HTTP common verbs
+  - response codes are used as defined in which 
+    there are many more than just 302, 200 and 404
+  - the difference between POST and PUT is that PUT
+    is creating a resource under a specific URI with 
+    and ID provided by the caller
+ - recent popularity likely because SOAP was so 
+    overly complicated.
+  - HTTP verbs and headers already define the various
+    kinds of intent - there was no need to complicate
+    them using internal xml representation
+ - Save & Idempotent applied to HTTP verbs
+  - save is when request has no side effects and
+    has no change in state (like so-called 'pure functions')
+  - idempotent is when a request always results in 
+    the same response no matter how many times its called
+    GET = {safe:true, idempotent:true}
+    POST = {safe:false, idempotent:false}
+    PUT = {safe:false, idempotent:true}
+    DELETE = {safe:false, idempotent:true}
+ - these services scale better since there is no state
+   on which to coordinate in time
+ - like SOAP with its WSDL, RESTful has WADL
 ----
 
 ----
@@ -66,4 +107,113 @@ Node.js Modules
      the engine to look for ./myNamespaceFolder/index.js
   - if there is ./myNamespaceFolder/packages.json present it will 
     be used instead of index.js 
- ----
+----
+
+----
+Setting npm proxy server settings
+ - set the proxy server settings to allow for access to npm
+  - you need a value to set and its the same for both
+  
+  http://YourUserName:YourUserPwd@ProxyServerHostName:port
+  
+  - will save (in clear text) to $env:USERPROFILE\.npmrc
+  npm config set proxy (above value)
+  npm config set https-proxy (above value)
+  
+ - in VSCode you have to do this again at File > Preferences > Settings
+  - again need a value on which to set and is the same for both
+    but not quite the same as the previous one
+  - note that the -gt,-lt chars enclosing the latter URI are required
+  http://YourUserName:YourUserPwd@ProxyServerHostName:port <http://ProxyServerHostName:port> 
+  
+  "http.proxy":"(above value)",
+  "https.proxy":"(above value)",
+  "http.proxyStrictSSL":false,
+  
+ - also while you are in there set the default terminal to Powershell
+ "terminal.integrated.shell.windows": "C:\\Windows\\Sysnative\\WindowsPowerShell\\v1.0\\powershell.exe",
+----
+  
+
+----
+Creating a new proj in VSCode
+ - install node.js using the installer from the web
+ - install VSCode likewise
+  - see the above section on setting the proxy server crap
+ - open VSCode
+ - strike Ctrl+` to open the terminal
+ - move to the directory where the new proj will be
+ Push-Location C:\Projects
+ - create a the directory to house the proj
+ mkdir .\my-new-proj
+ - initialze the proj with whatever
+ npm init
+ - to the needful of getting ref to the node_modules
+ npm install
+ - add the default base file
+ "" | Out-File -FilePath ".\index.js" -Encoding utf8
+  - add simple ps cmdlet to test for open ports
+ function Test-IsPortInUse($portNum) { Invoke-Expression "netstat -an | findstr :$portNum" }
+ Test-IsPortInUse 3000
+ - go to it
+ Ctrl+P index.js
+
+var http = require('http');
+var port = 3000;
+
+function handle_request(request, response) {
+    response.writeHead(200, {
+        'Content-Type' : 'text/plain'
+    });
+    response.end('Hello World, derp');
+    console.log('index.js handle_request invoked');
+}
+
+http.createServer(handle_request).listen(port, '127.0.0.1')
+
+console.log(`Started http server on localhost ${port}`); 
+----
+
+----
+Modules in node.js
+ - seems to be different from the ES6 spec
+ exports.myAdd = function(x, y) {
+    return x + y;
+ }; //notice this semi-colon here, think its required
+ 
+ var myAdd = require('../some/path');
+----
+
+----
+Running unit tests
+ - add reference to the test target with 'require'
+ - use the 'exports' syntax for the test cases
+ var myMath = require('../module/myMath')
+ exports.test_myAdd = function(test){
+    test.equals(myMath.myAdd(1,1), 2);
+    test.done();
+ }
+ 
+ - then run the test with 
+ nodeunit mytest.js
+----
+
+----
+Adding Mock Objects
+ var sinon = require('sinon');
+ exports.test_somethingMocked = function(test) {
+    // need some shell of the testing API
+    var myMathApi = {'myAdd': function(x, y) {} };
+    
+    //create the mock object thereof
+    var mockMyMath = sinon.mock(myMathApi);
+    
+    //set the mock up
+    mockMyMath.expects('myAdd').once().withArgs(1,1);
+    
+    // some test that depended on this
+    
+    mockMyMath.verify();
+    test.done();
+ };
+----
