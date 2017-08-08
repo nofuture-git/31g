@@ -1,0 +1,296 @@
+Notes Game Design
+
+----
+Fundamentals of Game Design, Third Edition
+By: Ernest Adams
+Publisher: New Riders
+Pub. Date: December 17, 2013
+Web ISBN-13: 978-0-13-343572-6
+Web ISBN-10: 0-13-343572-5
+Print ISBN-13: 978-0-321-92967-9
+Print ISBN-10: 0-321-92967-5
+Pages in Print Edition: 576
+----
+
+----
+Technical Terms:
+ - Game Design -vs- Game Development: design is consideration of 
+    the whole while development is typically the technical code-part
+ - Toys, Puzzles, Games - the subject of Play 
+ - Play: wide category of nonessential, and usually recreational,
+         human activities that are often socially significant
+    - Participatory Play: is Play in which one participats meaning
+       one has the freedom to choose how to act 
+    - Passive Play: is Play in which one is an audience member
+ - Pretending: is the mental ability to est. an imaginary reality
+ - Rules: instructions about how to Play
+  - Toys are not bound by rules
+ - Goal: a particular objective of the play
+  - A Toy becomes a Puzzle when a Goal is added
+ - Game: a type of Play, conducted in the context of a 
+    Pretended reality, in which participant(s) try
+    to achieve a Goal in accordance with the Rules
+   - differs from the formal Game Theory of Mathematics
+     because conflict is not essential
+ - Victory Condition: an unambiguous situation in which
+     one or more players are declared the winner.
+ - Termination Condition: a situation in which the game 
+     is over.
+    - in racing games, coming first is the victory while
+      having all players cross finish line is termination 
+      condition
+ - Loss Condition: a kind of victory where the goal is to 
+     continue the longest without losing
+ - Magic Circle: another name for the pretended reality
+     of a game.
+ - Perfect Information: a game that has no hidden info and 
+    no element of chance 
+ - Game Genre: categorization by the particular kinds of 
+    challenge - independent of pretended world
+ - Exclusionary Material: content or features that serve
+    to drive players away from a game the they may otherwise
+    have liked.
+----
+
+----
+Rules Define:
+ - Semiotics: rules est. meaning and relationship amoung 
+    the various symbols used in the game.
+ - Gameplay: the Challenges the game offers a player
+ - Game-Sequence: the progression of activities 
+ - Victory Condition
+ - Termination Condition
+ - Metarules: rules about the rules
+----
+
+----
+Challenges
+ - Any nontrival task set for a player to accomplish.
+ - Must involve some form of effort
+ - Are defined by the Rules
+ - Take three typical forms
+  - Unique: like the Boss fight
+  - Recurring: like recurrent identical enemies
+  - Continuing: like maintaining heath
+----
+
+----
+Actions
+ - The Rules about what a player may do to overcome
+    challenges
+ - Are finite in a game environment since the computer
+    host is a finite machine
+----
+
+----
+Gameplay
+ - composition of Challeges and Actions
+ - Symmetric Gameplay: where the game begins at a state 
+    in which all players have an equal chance of winning
+ - Asymmetric Gameplay: different players may play by different
+    rules to achieve different victory conditions
+ - Competitive Gameplay: players attempting to accomplish 
+     mutually exclusive goals
+ - Cooperative Gameplay: players attempt to achieve the same
+     goal by working together
+----
+
+----
+Fairness
+ - a value judgement of a player on how well the actions
+   address the challenges
+ - of particular importance to video games since players
+   cannot change the rules
+----
+
+----
+Gameplay Categories
+ - Physical Coordination
+   - Speed and Reaction time
+   - Accuracy or percision
+   - Timing and rhythm
+   - Learning combination moves
+ - Formal Logic
+   - Deduction and decoding
+ - Pattern Recognition
+   - Static patterns
+   - Patterns of movement and change
+ - Time Pressure
+   - Beating the clock
+   - Achieving before others do
+ - Memory and Knowledge Challenges
+   - Trivia
+   - Recollection of objects or patterns
+ - Exploration 
+   - Id'ing spatial relationships
+   - Finding keys\unlocking spaces
+   - Finding hidden passages
+   - Mazes
+ - Conflict
+   - Stategy, tactics, and logistics
+   - Survival
+   - Reduction of enemy forces
+   - Defending vulnerable items or units
+   - Stealth
+ - Economic
+   - Accumulating resources
+   - Est. efficient production
+   - Achieving balance and stability
+   - Caring for living things
+ - Conceptual Reasoning
+   - Sifting clues from red herrings
+   - Detecting hidden meanings
+   - Understanding social relationships
+   - Lateral thinking
+ - Creation/Construction
+   - Aesthetic success
+   - Construction with functional goal
+----
+
+----
+Immersion
+ - gameplay in which the player looses track to the 
+   outside world
+ - Tactical: high-speed gameplay made up of many small 
+    and similar challenges
+ - Strategic: deep involvment in winning by making forward
+    thinking optimal choices
+ - Spatial: being involved in a rich 3D world
+ - Narrative: being inside the story
+----
+
+----
+Emotional Resonance
+ - The emotions a designer wants thier players to feel
+  1 Amusement: funny
+  2 Contentment: fullfilling, satisfaction
+  3 Wonderment: amazed
+  4 Excitement: a rush
+  5 Curiosity: 
+  6 Triumph: overcome adversity
+  7 Surprise: startling, frightening
+  8 Naches: happiness at seeing children\students grow
+  9 Relief: survival 
+  10 Bliss: joyfulness
+----
+
+----
+Key Components
+ - Core Mechanics: the compiled code
+ - User Interface: mediates between core mechanics and player
+   - typical software is not supposed to present challenges 
+  - is subdivided into:
+   - Camera Model: the user interface displayed from a particular
+      angle or point-of-view
+   - Interaction Model: turns the players inputs into actions within
+      the game world
+----
+
+----
+Gameplay Modes
+ - Gameplay Modes are typically a graph structure - the 
+    current mode determines what modes may follow (like graph theory's 
+    vertices and edges)
+ - Shell Menus: are the gameplay modes which typically 
+    involve the environment settings (loading, saving, 
+    setting volume\resolution)
+   - Shell Screens: are the noninteractive sequences such
+      as the title screen & credits
+ - Game Structure: the total aggregate of Gameplay Modes and Shell Menus
+ - a video game is always in either a gameplay mode or a shell menu
+----
+
+----
+Game Design
+ - is an abstract concept separate from any particular kind of game
+ - is subdivided into three main stages
+  1 Concept Stage
+  2 Elaboration Stage
+  3 Tuning Stage
+ - text recommendations:
+  - team governence suffers the same problems as all governence 
+   - one designer should have executive authority over desecions 
+   - should be neither autocratic nor democratic
+  - a design decision should be explict to the point that a coder
+    is only left determining the "how" and not the "what"
+----
+
+---- 
+Concept Stage 
+ - a stage whose decisions define all that follows
+ - these decisions are therefore permenant
+ - Game Concept: a general idea of how to entertain through gameplay
+ - Target Audience: given the concept this follows concerning who 
+    would enjoy such gameplay
+ - Player's Role: determining the position of a player in the gameplay's 
+    concept.
+----
+
+----
+Elaboration Stage
+ - this stage is iterative in which the bulk of coding and art 
+    are given form
+ - Preproduction Stage: borrowed concept from film industry where
+    some kind of working example is made which is used to secure 
+    funding from a publisher
+ - Prototyping: another name for the above specifically being the
+    a concrete working example of the concept and gameplay thereof
+   - Paper Prototype: demo'ing the game in terms of a board game 
+ - Primary Gameplay Mode: the gameplay mode in which a player spends
+    the majority of their time.
+ - Protagonist Design: must be defined early to give sense to the 
+    imaginative process of gameplay
+ - Game World Design: the world in which the game takes place
+ - Core Mechanics Design: these only have sense once the challenges\actions
+    have been given some definition
+ - Additional Modes Design: other modes which will be required to connect
+    the Game Structure together
+ - Level Design: the direct platform on which testing is conducted and 
+    from which game progression is made
+ - Iterate: the typical dev cycle of buid-test-repeat
+----
+
+----
+Tuning Stage
+ - the final stage a which no more features are added
+ - consist in fine-tuning the overall balance of the game
+   and defect fixes
+ - is subtractive not additive just as polishing removes 
+   imprefections
+----
+
+----
+Team Roles
+ - industry does not have definitive names for these and may 
+   vary from shop-to-shop
+ - Lead Designer: oversees the overall design and insures it 
+    is complete and coherent
+ - Mechanics Designer: defines and documents the core mechanics
+ - UI Designer: responsible for the layout of a gameplay's screen
+    and the function of the input devices
+ - Level Designer: define the course of the game in terms of
+    the core mechanics, UI and gameplay
+ - Writer: are responsible for intro material, back story, dialogue,
+    cut-scenes - these may be offloaded to a freelance writer
+ - Art Director: manages all visual assets of a game including
+    the models, textures, sprites, animations, UI elements, etc.
+ - Audio Director: manages all the audio assets of a game including
+    the music, ambient sounds, effects, dialogue or narration
+ - Lead Programmer: oversees the coding team, technical design and 
+    software quality
+ - Producer (Product Manager): responsible for the game as a 
+    commercial product
+----
+ 
+----
+VandenBerghe's Five Domains of Play
+ - modeled on the Big Five Personality Trait model in psy
+ - express the reason players play based on personality traits
+ O: is Novelty, wanting new varity over sameness
+ C: is Challenge, require precision to win over fooling around
+ E: is Stimulation, wanting multiplayer games over single player
+ A: is Harmony, particular social harmony over straight competitiveness
+ N: is Threat, seeking games that scare
+----
+
+

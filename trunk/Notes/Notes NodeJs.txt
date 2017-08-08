@@ -1,0 +1,69 @@
+Notes Node.js
+----
+Learning Node.js for .NET Developers
+By: Harry Cummings
+Publisher: Packt Publishing
+Pub. Date: June 24, 2016
+Web ISBN-13: 978-1-78528-751-0
+Print ISBN-13: 978-1-78528-009-2
+Pages in Print Edition: 248
+Example code at
+https://github.com/NodeJsForDevelopers
+----
+
+----
+Overview & History
+ - is Javascript
+ - uses the V8 engine, same as Chrome
+ - is not browser bound 
+ - contains APIs for typical dev (e.g. File system)
+ - is a non-blocking, single-threaded, event-driven
+    exec model
+   - non-blocking: all invocations are async
+   - event-driven: a kernel of sorts decides which
+      code to next exec based on a stream of events
+   - single-threaded: is attainable since its a 
+      non-blocking model
+ - on Windows, lives in $env:ProgramFiles\nodejs
+ - npm is the node.js package manager
+   - has the highest number of packages of any 
+     platform (http://www.modulecounts.com/) [20170807]
+   - global installs are in $env:APPDATA\npm
+   - the --save flag cause the package to be added to the 
+     app's packages.json file
+ - best suited for apps with alot of IO since its non-blocking
+ - very easy to setup a http listener on localhost for some port
+  var listener = function(request, response) {response.end('Hello World')}
+  require('http').createServer(listener).listen(3000)
+ - the base of an application is the packages.json file
+ - typical process is 
+  
+  Push-Location "working dir of app"
+  #sets up the dependencies
+  npm install
+  #starts it
+  npm start
+  # <Ctrl-c> terminates it
+  
+ - the link between files and exec is the commands present in 
+    the packages.json file 
+----
+
+----
+Node.js Modules
+ - each Javascript file is a treated like a module with its own scope
+ - the name of the module is the name of the file
+ - a module's "API" is whatever is added via 'exports'
+ - a module is imported via 'require'
+  - require takes a string as either a name or relative path
+   - name is used for modules in the node_modules folder of app
+    - these are called simply the npm packages of the app
+   - relative paths are for your code
+ - namespaces are simply the containing folder 
+  - a index.js file is added to the root of folder to define whats 
+    in said namespace
+  - using something like require(./myNamespaceFolder) will cause 
+     the engine to look for ./myNamespaceFolder/index.js
+  - if there is ./myNamespaceFolder/packages.json present it will 
+    be used instead of index.js 
+ ----
