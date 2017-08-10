@@ -292,7 +292,7 @@ namespace NoFuture.Util
                 case EscapeStringType.UNICODE:
                     foreach(var c in value.ToCharArray())
                     {
-                        dataOut.AppendFormat(@"\u{0}", Convert.ToUInt16(c).ToString("x4"));
+                        dataOut.AppendFormat(@"\u{0}", Convert.ToUInt16(c).ToString("X4"));
                     }
                     break;
                 case EscapeStringType.HTML:
@@ -324,6 +324,8 @@ namespace NoFuture.Util
                             dataOut.Append(c);
                     }
                     break;
+                case EscapeStringType.URI:
+                    return System.Web.HttpUtility.UrlEncode(value);
                 case EscapeStringType.BLANK:
                     return new string(' ', data.Length);
             }

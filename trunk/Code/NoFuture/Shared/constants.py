@@ -10,7 +10,8 @@ class EscapeStringType(Enum):
     REGEX = 5
     HTML = 6
     XML = 7
-    BLANK = 8
+    URI = 8
+    BLANK = 9
 
 WIN_NEW_LINE = '\r\n'
 

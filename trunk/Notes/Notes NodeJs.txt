@@ -65,6 +65,7 @@ RESTful Services Digression
   - stateless
  - all data has some MIME format
  - URI's should be readable
+ - a resource is specified by a HTTP verb and URI
  - intent is bound the the HTTP common verbs
   - response codes are used as defined in which 
     there are many more than just 302, 200 and 404
@@ -117,6 +118,7 @@ Setting npm proxy server settings
   http://YourUserName:YourUserPwd@ProxyServerHostName:port
   
   - will save (in clear text) to $env:USERPROFILE\.npmrc
+  - you may need to URL Encode the password if it has special chars
   npm config set proxy (above value)
   npm config set https-proxy (above value)
   
@@ -216,4 +218,60 @@ Adding Mock Objects
     mockMyMath.verify();
     test.done();
  };
+----
+
+----
+Quick RESTful API 
+ - install express-generator to setup the folders and basic 
+    structure for a RESTful service
+  - express seems to be some kind of more robust js 
+    framework
+  npm install -g express-generator
+  > $someProjPath = "C:\Projects\my-restful"
+  > mkdir $someProjPath
+  > Invoke-Expression '"C:\Program Files (x86)\Microsoft VS Code\Code.exe" "$someProjPath"'
+  [Ctrl+`]
+  > npm init
+  > express .\
+  > npm install
+  
+  - from here you would split the biz logic from the 
+    RESTful method handlers
+   *
+   |- /modules
+   |  |- myBizLogic.js
+   |  |- etc...
+   |- app.js
+   
+   - in the actual app you use the express object to 
+     define both what resources are present, what HTTP verb 
+     the are assoc. to and the handler thereof
+     
+   var express = require('express');
+   var url = require('url');
+   var app = express();
+   
+   app.get('/someRESTmethod', function(request, response){
+        //my handler here, probably using some logic defined
+        // in modules
+        
+        var something = it_did_alot_of_work();
+        
+        //get the query params with the url node module
+        var qParams = url.parse(request.url, true).query;
+        //the pair is named as (arg, value)
+        
+        response.setHeader('content-type','application/json');
+        response.end(JSON.stringify(something));
+   });
+   
+   app.get('/someOtherSvc/:aUrlLiteral', function (request, response){
+        //:aUrlLiteral is a place holder for some runtime value
+        //access it using
+        var whatIsUrlLiteral = request.params.aUrlLiteral;
+   });
+   
+   http.createServer(app).listen(3000, function(){
+    console.log("Listening on port 3000");
+   });
 ----

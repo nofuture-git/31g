@@ -15,6 +15,7 @@ namespace NoFuture.Shared
         REGEX,
         HTML,
         XML,
+        URI,
         BLANK
     }
 

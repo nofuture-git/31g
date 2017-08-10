@@ -37,6 +37,9 @@ class TestNfUtilEtc(unittest.TestCase):
         testResult = toTest.escapeString("агбез'", nfConstants.EscapeStringType.HTML)
         self.assertEqual("&nbsp;&pound;&iexcl;&yen;&sect;&apos;",testResult)
 
+        testResult = toTest.escapeString("F@r0ut~Du,de=",nfConstants.EscapeStringType.URI)
+        self.assertEqual("F%40r0ut%7EDu%2Cde%3D",testResult)
+
     def test_toCamelCase(self):
         testResult = toTest.toCamelCase("UserName", True)
         self.assertEqual("userName",testResult)

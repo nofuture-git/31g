@@ -68,10 +68,14 @@ namespace NoFuture.Tests.Util
             const string HTML_EXPECT = "&nbsp;&pound;&iexcl;&yen;&sect;";
             var html = NoFuture.Util.Etc.EscapeString(" £¡¥§", EscapeStringType.HTML);
 
+            const string URI_EXPECT = "F%40r0ut%7eDu%2cde%3d";
+            var uri = NoFuture.Util.Etc.EscapeString("F@r0ut~Du,de=", EscapeStringType.URI);
+
             Assert.AreEqual(DEC_EXPECT,dec);
             Assert.AreEqual(UNI_EXPECT,uni);
             Assert.AreEqual(REGEX_EXPECT,regex);
             Assert.AreEqual(HTML_EXPECT,html);
+            Assert.AreEqual(URI_EXPECT, uri);
 
         }
 

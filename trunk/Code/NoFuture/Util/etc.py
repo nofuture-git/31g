@@ -1,5 +1,6 @@
 import encodings
 import string
+import urllib.parse
 import Util.net as nfNet
 import Shared.constants as nfConstants
 import Shared.nfConfig as nfConfig
@@ -99,6 +100,8 @@ def escapeString(value, escapeType = nfConstants.EscapeStringType.REGEX):
                 dataOut += nfNet.xmlEscStrings.get(dex)
             else:
                 dataOut += chr(dex)
+    elif escapeType == nfConstants.EscapeStringType.URI:
+        return urllib.parse.quote(value)
     elif escapeType == nfConstants.EscapeStringType.BLANK:
         for dex in data:
             dataOut += ' '
