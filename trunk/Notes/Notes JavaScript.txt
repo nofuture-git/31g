@@ -88,6 +88,8 @@ Primitives
  - Number
   //- literals may be integer or decimal
   //- value typical limit is 32-bit signed 
+  //- all nubers are double floating point
+  
   var myNum;
   myNum = Number(1);
   myNum = 1.1; 
@@ -127,6 +129,9 @@ Primitives
   typeof(myNan); //"number"
   isNaN(myNan); //true
   
+  //- double floating point nums can get you burned
+  (0.1 + 0.2) === 0.3 //this is false, its actually 0.30000000000000004
+
  - Constants
   //- declared with 'const' syntax
   const myConst = 7; //syntax error in IE, doesn't work in most the rest
@@ -339,7 +344,10 @@ Number Object
  let myOct = 0o101; //65
  
  Number.isSaveInteger(Math.pow(2,31))
-
+ 
+ //be aware that parseInt will return a hex value
+ parseInt("0x16"); //22
+ parseInt("0x16",10) //0
 ----
 
 ----  

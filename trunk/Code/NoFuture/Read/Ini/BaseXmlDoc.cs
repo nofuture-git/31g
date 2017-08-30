@@ -16,7 +16,7 @@ namespace NoFuture.Read
 
         private readonly string _originalReadFile;
         private string _fileFullName;
-
+        public const string LIB = "_lib";
         #endregion
 
         #region ctor

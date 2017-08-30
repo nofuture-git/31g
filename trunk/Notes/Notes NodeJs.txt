@@ -19,6 +19,16 @@ Print ISBN-13: 978-1-78646-913-7
 Pages in Print Edition: 148
 Example code at
 https://github.com/PacktPublishing/RESTful-Web-API-Design-with-Node.JS-Second-Edition/tree/master
+
+Secure Your Node.js Web Application
+By: Karl Duuna
+Publisher: Pragmatic Bookshelf
+Pub. Date: December 28, 2015
+Print ISBN-13: 978-1-68050-085-1
+Pages in Print Edition: 200
+Example code at
+https://pragprog.com/titles/kdnodesec
+
 ----
 
 ----
@@ -42,6 +52,10 @@ Overview & History
       code to next exec based on a stream of events
    - single-threaded: is attainable since its a 
       non-blocking model
+ - main program of Node.js will run in a 
+   single continuous loop thread known as "the event loop"
+    - it passes jobs to a thread pool
+      and handles callbacks
  - on Windows, lives in $env:ProgramFiles\nodejs
  - npm is the node.js package manager
    - has the highest number of packages of any 
@@ -51,9 +65,51 @@ Overview & History
      app's packages.json file
  - best suited for apps with alot of IO since its non-blocking
  - the link between files and exec is the commands present in 
-    the packages.json file 
+    the packages.json file
+ - for security always add 'use strict' as the very first line
+   of your .js code files
+   - disallows global variables (variable decl's without 'var')
 ----
 
+----
+Language Quirks
+ - Number is double floating point
+ (0.1 + 0.2) === 0.3 //this is false, its actually 0.30000000000000004
+ 
+ - auto-conversions
+ 3 + 5 + "6" // "86" (3 + 5) + "6"
+ (4 + 5 + "3") /3  //31 (9 + "3")/3 => 93/3
+ 
+ - hexidecimal parse results
+ parseInt("0x16") //22
+ parseInt("0x16", 10) //0
+ 
+ - may need to check its strongly-typed int
+ (typeof x == 'number' && !isNaN(x)) //both are needed because typeof NaN is 'number'
+ 
+ - loose comparisons
+ Boolean(undefined) == false //is true
+ false == undefined //is false
+ 
+ var myUser = {name: "Dude"}; //forgot to add isAdmin
+ var isAdmin = myUser && user.isAdmin; //is undefined
+ //these look like to expression for the same thing
+ // however they are not 
+ var notTheSameThing = isAdmin == false && !isAdmin;
+ 
+ - avoid these by using === instead
+ "" == "0" //false
+ 0 == "" //true
+ 0 == "0" //true
+ false == "false" //false
+ false == "0" //true
+ null == undefined //true
+ " \t\r\n" == 0 //true
+ 
+ - prototyping inherit both the state and behavior of 
+   the parent class meaning you could change objects
+   with direct access to them.
+ 
 ----
 RESTful Services Digression
  - Representation State Transfer 
@@ -272,6 +328,119 @@ Quick RESTful API
    });
    
    http.createServer(app).listen(3000, function(){
-    console.log("Listening on port 3000");
+    console.log("Listening on port 3000");.
    });
+----
+
+----
+Package Management
+ - in packages.json having a '*' means "install the latest version"
+  - this is problematic since a you invoke this on each individual machine
+    and one environment may end up with a diff version than another
+ - invoke npm install with the --save will preserve the version of 
+   that dependency but not that dependency's dependencies.
+ - npm shrinkwrap is a command to lock-in the entire dependency tree
+  - will output the dependency tree to another file named npm-shrinkwrap.json
+----
+
+----
+Https on Node.js
+ - pretty simple requiring either a cert.pem\key.pem file-pair
+   or a cert.pfx and passphrase pair
+ 'use strict'
+ const fs = require('fs');
+ const https = require('https');
+ const express = require('express');
+ 
+ var app = express();
+ app.get('/myrestmethod', function (request, response){
+    let myJson = {aname: "a value", anothername: "another value"};
+    response.setHeader('content-type','application/json');
+    response.end(JSON.stringify(something));
+ });
+ 
+ //node doesn't auto-redirect http to https so you need this 
+ // boilerplate code added
+ var httpApp = express();
+ httpApp.get('*', function (req, res) {
+    res.redirect('https://' + req.headers.host + req.url);
+ });
+ httpApp.listen(80);
+ 
+ const options = {
+    pfx: fs.readFileSync(__dirname + '/certs/NoFuture.pfx'),
+    passphrase: 'P@s$W0rd'
+ };
+ 
+ https.createServer(options, app).listen(3000);
+----
+
+----
+HTTP logs
+ - recommended is "morgan" 
+ 
+ var express = require('express');
+ var morgan = require('morgan');
+ var fs = require('fs');
+ var path = require('path');
+ var rfs = require('rotating-file-stream');
+
+ var app = express();
+ 
+ var logDir = path.join(__dirname, 'log');
+ var accessLogStream = rft('httpLog.log', {
+    interval: '1d' //rotate daily
+    path: logDir
+ });
+ 
+ /*has handful of predefined formats 
+   - combined: standard apache combined log output
+   - common: standard apache common log
+   - dev: concise colored output for dev
+   - short: 
+   - tiny:
+ */ 
+ app.use(morgan('combined', {stream: accessLogStream});
+----
+
+----
+Error Handling
+ - node.js is single thread so an error could crash the whole app
+  - async nature of node.js means the traditional idea of a 
+    stack is gone
+  - three main groups on error handling, 
+   - exit the process
+   - handle everything
+   - something between
+ - there is a single built-in like ASP.NET's On_ApplicationError
+  - intended as stop-gap
+  - will leak memory and connections over time cause a crash anyway
+ process.on('uncaughtException', function(err) {
+    console.error(err); //error handling here
+ })
+ 
+ - to have multiple child process use the "cluster" module
+  var cluster = require('cluster');
+  var http = require('http');
+  //one cluster per core
+  var numOfCores = require('os').cpus().length;
+  
+  cluster.setupMaster({
+    exec : __dirname + '/index.js'
+  });
+  
+  if(cluster.isMaster){
+    for(let i = 0; i < numOfCores; i++){
+      cluster.fork();
+    }
+    
+    cluster.on('exit', function(worker, code, signal) {
+        console.log('worker' + worker.process.pid + ' has exited.');
+    });
+  }
+  else{
+    http.createServer(function(req, res){
+      //do something
+    }).listen(6541);
+  }
 ----

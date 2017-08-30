@@ -449,14 +449,25 @@ namespace NoFuture.Util.Binary
         /// Returns true if either the Big-Endian or Little-Endian 
         /// byte-order marker is present at the front of the array.
         /// </returns>
-        public static bool CheckForBitOrderMarker(byte[] inputvalue)
+        public static bool CheckForBitOrderMarker(byte[] inputvalue, out int bomLength)
         {
+            bomLength = 0;
             //check that the length to avoid out-of-bounds exception
             if (inputvalue.Length < 2) return false;
             //check if the byte array begins with the big-endian or little-endian unicode marker
-            if ((inputvalue[0] == 0xFE && inputvalue[1] == 0xFF) 
-                 || (inputvalue[0] == 0xFF && inputvalue[1] == 0xFE))
+            if ((inputvalue[0] == 0xFE && inputvalue[1] == 0xFF)
+                || (inputvalue[0] == 0xFF && inputvalue[1] == 0xFE))
+            {
+                bomLength = 2;
                 return true;
+            }
+            if (inputvalue.Length < 3)
+                return false;
+            if (inputvalue[0] == 0xEF && inputvalue[1] == 0xBB && inputvalue[2] == 0xBF)
+            {
+                bomLength = 3;
+                return true;
+            }
             //this line it reached upon first two bytes not being endian marker
             return false;
         }

@@ -95,6 +95,7 @@ namespace NoFuture.Read.Vs
         private bool _isChanged;
         private readonly List<Tuple<FileSystemInfo, AssemblyName>> _debugBinFsi2AsmName;
         private string _projTypeGuids;
+        private string _destLibDirectory;
         #endregion
 
         #region ctors
@@ -267,7 +268,16 @@ namespace NoFuture.Read.Vs
             }
         }
 
-        public string DestLibDirectory { get; set; }
+        public string DestLibDirectory
+        {
+            get
+            {
+                if (string.IsNullOrWhiteSpace(_destLibDirectory) || !Directory.Exists(_destLibDirectory))
+                    _destLibDirectory = Path.Combine(DirectoryName, LIB);
+                return _destLibDirectory;
+            }
+            set { _destLibDirectory = value; }
+        } 
         #endregion
 
         #region instance methods
@@ -350,8 +360,7 @@ namespace NoFuture.Read.Vs
         public int CopyAllProjRefDllTo(string destDir = null)
         {
             //setup a dir to save binary dll's to
-            destDir = destDir ?? DestLibDirectory;
-            destDir = string.IsNullOrWhiteSpace(destDir) ? Path.Combine(DirectoryName, "lib") : destDir;
+            destDir = string.IsNullOrWhiteSpace(destDir) ? DestLibDirectory : destDir;
             if (!Directory.Exists(destDir))
                 Directory.CreateDirectory(destDir);
 
@@ -396,8 +405,7 @@ namespace NoFuture.Read.Vs
         public int CopyAllBinRefDllTo(string destDir = null)
         {
             //setup a dir to save binary dll's to
-            destDir = destDir ?? DestLibDirectory;
-            destDir = string.IsNullOrWhiteSpace(destDir) ? Path.Combine(DirectoryName, "lib") : destDir;
+            destDir = string.IsNullOrWhiteSpace(destDir) ? DestLibDirectory : destDir;
 
             if (!Directory.Exists(destDir))
                 Directory.CreateDirectory(destDir);
@@ -855,8 +863,7 @@ namespace NoFuture.Read.Vs
         public int UpdateHintPathTo(string destDir = null)
         {
             //setup a dir to save binary dll's to
-            destDir = destDir ?? DestLibDirectory;
-            destDir = string.IsNullOrWhiteSpace(destDir) ? Path.Combine(DirectoryName, "lib") : destDir;
+            destDir = string.IsNullOrWhiteSpace(destDir) ? DestLibDirectory : destDir;
             if (!Directory.Exists(destDir))
                 return 0;
             Action<BinReference> myAction = reference =>
