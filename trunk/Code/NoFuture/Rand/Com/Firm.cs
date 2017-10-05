@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using NoFuture.Rand.Data.Types;
 
 namespace NoFuture.Rand.Com
@@ -22,7 +21,7 @@ namespace NoFuture.Rand.Com
     public abstract class Firm : VocaBase, IFirm
     {
         #region constants
-        public const int ONE_THOUSAND = 1000;
+        protected const int ONE_THOUSAND = 1000;
         #endregion
 
         #region fields
@@ -34,7 +33,7 @@ namespace NoFuture.Rand.Com
 
         #region properties
 
-        public string Name => Names.FirstOrDefault(x => x.Item1 == KindsOfNames.Legal)?.Item2;
+        public string Name => GetName(KindsOfNames.Legal);
         public Tuple<UsStreetPo, UsCityStateZip> MailingAddress { get; set; }
         public Tuple<UsStreetPo, UsCityStateZip> BusinessAddress { get; set; }
         public NorthAmericanPhone[] Phone { get; set; }

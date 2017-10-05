@@ -266,9 +266,13 @@ namespace NoFuture.Rand.Domus
         /// <remarks>
         /// The age is limited - generate with family to get other age sets
         /// </remarks>
-        public static DateTime GetWorkingAdultBirthDate()
+        public static DateTime GetWorkingAdultBirthDate(int min = 21, int max = 55)
         {
-            return DateTime.Now.AddYears(-1 * Etx.MyRand.Next(21, 55)).AddDays(Etx.IntNumber(1, 360));
+            if (min < 18)
+                min = 18;
+            if (max > 67)
+                max = 67;
+            return DateTime.Now.AddYears(-1 * Etx.MyRand.Next(min, max)).AddDays(Etx.IntNumber(1, 360));
         }
 
         /// <summary>
@@ -359,17 +363,18 @@ namespace NoFuture.Rand.Domus
         /// <param name="dob"></param>
         /// <param name="gender"></param>
         /// <returns></returns>
-        public static MaritialStatus GetMaritialStatus(DateTime dob, Gender gender)
+        public static MaritialStatus GetMaritialStatus(DateTime? dob, Gender gender)
         {
             if (Etx.MyRand.NextDouble() <= PERCENT_UNMARRIED_WHOLE_LIFE)
                 return MaritialStatus.Single;
+            dob = dob ?? GetWorkingAdultBirthDate();
 
             var avgAgeMarriage = gender == Gender.Female
-                ? Equations.FemaleAge2FirstMarriage.SolveForY(dob.ToDouble())
-                : Equations.MaleAge2FirstMarriage.SolveForY(dob.ToDouble());
+                ? Equations.FemaleAge2FirstMarriage.SolveForY(dob.Value.ToDouble())
+                : Equations.MaleAge2FirstMarriage.SolveForY(dob.Value.ToDouble());
 
             var cdt = DateTime.Now;
-            var currentAge = Person.CalcAge(dob, cdt);
+            var currentAge = Person.CalcAge(dob.Value, cdt);
 
             if (currentAge < avgAgeMarriage)
                 return MaritialStatus.Single;
@@ -413,10 +418,19 @@ namespace NoFuture.Rand.Domus
         /// <param name="eq"></param>
         /// <param name="gender"></param>
         /// <returns></returns>
-        public static IPerson SolveForParent(DateTime childDob, LinearEquation eq, Gender gender)
+        public static IPerson SolveForParent(DateTime? childDob, LinearEquation eq, Gender gender)
         {
+            if (eq == null)
+            {
+                eq = gender == Gender.Male
+                    ? Equations.MaleAge2FirstMarriage
+                    : Equations.FemaleAge2FirstMarriage;
+            }
+
+            childDob = childDob ?? GetWorkingAdultBirthDate();
+
             //move to a date 1 - 6 years prior the Person's dob
-            var dtPm = childDob.AddYears(-1 * Etx.IntNumber(1, 6)).AddDays(Etx.IntNumber(1, 360));
+            var dtPm = childDob.Value.AddYears(-1 * Etx.IntNumber(1, 6)).AddDays(Etx.IntNumber(1, 360));
 
             //calc the age of marriable person at this time
             var avgAgeCouldMarry =
@@ -439,16 +453,18 @@ namespace NoFuture.Rand.Domus
         /// <param name="gender"></param>
         /// <param name="maxAgeDiff">Optional difference in age of spouse.</param>
         /// <returns>return null for <see cref="Rand.Gender.Unknown"/></returns>
-        public static IPerson SolveForSpouse(DateTime myDob, Gender gender, int maxAgeDiff = 4)
+        public static IPerson SolveForSpouse(DateTime? myDob, Gender gender, int maxAgeDiff = 4)
         {
             if (gender == Gender.Unknown)
                 return null;
+
+            myDob = myDob ?? GetWorkingAdultBirthDate();
 
             var ageDiff = Etx.IntNumber(0, maxAgeDiff);
             ageDiff = gender == Gender.Female ? ageDiff * -1 : ageDiff;
 
             //randomize dob of spouse
-            var spouseDob = myDob.AddYears(ageDiff).AddDays(Etx.IntNumber(1, 360) * Etx.PlusOrMinusOne);
+            var spouseDob = myDob.Value.AddYears(ageDiff).AddDays(Etx.IntNumber(1, 360) * Etx.PlusOrMinusOne);
 
             //define spouse
             return new NorthAmerican(spouseDob, gender == Gender.Female ? Gender.Male : Gender.Female);
@@ -461,14 +477,14 @@ namespace NoFuture.Rand.Domus
         /// <param name="dob"></param>
         /// <param name="atDateTime">Optional, will default to current system time to calc Age</param>
         /// <returns></returns>
-        public static int SolveForNumberOfChildren(DateTime dob, DateTime? atDateTime)
+        public static int SolveForNumberOfChildren(DateTime? dob, DateTime? atDateTime)
         {
             //average to be 2.5 
             var vt = DateTime.Now;
             if (atDateTime != null)
                 vt = atDateTime.Value;
-
-            var age = Person.CalcAge(dob, vt);
+            dob = dob ?? GetWorkingAdultBirthDate();
+            var age = Person.CalcAge(dob.Value, vt);
             var randV = Etx.IntNumber(1, 100);
 
             var meanAge = Math.Round(Equations.FemaleAge2ForthChild.SolveForY(vt.Year));
@@ -502,8 +518,10 @@ namespace NoFuture.Rand.Domus
         /// <remarks>
         /// Data regarded women-only and did not incorporate <see cref="NorthAmericanRace"/>
         /// </remarks>
-        public static double SolveForProbabilityChildless(DateTime dob, OccidentalEdu educationLevel)
+        public static double SolveForProbabilityChildless(DateTime? dob,
+            OccidentalEdu educationLevel = OccidentalEdu.HighSchool | OccidentalEdu.Grad)
         {
+            dob = dob ?? GetWorkingAdultBirthDate();
             var eduAdditive = 0.0;
             if (educationLevel == (OccidentalEdu.Bachelor | OccidentalEdu.Grad))
                 eduAdditive = 0.09;
@@ -512,7 +530,7 @@ namespace NoFuture.Rand.Domus
             if (educationLevel == (OccidentalEdu.HighSchool | OccidentalEdu.Grad))
                 eduAdditive = 0.02;
 
-            var probChildless = Math.Round(Equations.FemaleYob2ProbChildless.SolveForY(dob.Year), 2);
+            var probChildless = Math.Round(Equations.FemaleYob2ProbChildless.SolveForY(dob.Value.Year), 2);
 
             probChildless += eduAdditive;
 
@@ -528,8 +546,7 @@ namespace NoFuture.Rand.Domus
         /// <returns></returns>
         public static DateTime? SolveForMarriageDate(DateTime? dob, Gender myGender)
         {
-            if (dob == null)
-                return null;
+            dob = dob ?? GetWorkingAdultBirthDate();
             var dt = DateTime.Now;
             var avgAgeMarriage = myGender == Gender.Female
                 ? Equations.FemaleAge2FirstMarriage.SolveForY(dob.Value.ToDouble())

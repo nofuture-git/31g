@@ -48,7 +48,8 @@ namespace NoFuture.Rand.Gov
                            new SarbanesOxley(),
                            new SecuritiesAct(),
                            new SecuritiesExchangeAct(),
-                           new TrustIndentureAct()
+                           new TrustIndentureAct(),
+                           new TaxReformAct()
                        };
             return statutes.FirstOrDefault(s => System.Text.RegularExpressions.Regex.IsMatch(s.Name, namedLike));
         }
@@ -101,5 +102,11 @@ namespace NoFuture.Rand.Gov
     {
         public override string Name => "Trust Indenture Act of 1939";
         public override int Year => 1939;
+    }
+    [Serializable]
+    public class TaxReformAct : FederalStatute
+    {
+        public override string Name => "Tax Reform Act of 1986";
+        public override int Year => 1986;
     }
 }

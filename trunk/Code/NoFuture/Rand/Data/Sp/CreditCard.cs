@@ -31,7 +31,7 @@ namespace NoFuture.Rand.Data.Sp
     public abstract class CreditCard : ICreditCard
     {
         #region ctor
-        protected CreditCard(IPerson cardholder, DateTime? openedDate, DateTime? expiryDate)
+        protected CreditCard(IVoca cardholder, DateTime? openedDate, DateTime? expiryDate)
         {
             CardHolderSince = openedDate.GetValueOrDefault(DateTime.Now);
 
@@ -44,8 +44,13 @@ namespace NoFuture.Rand.Data.Sp
             {
                 ExpDate = expiryDate.Value;
             }
-
-            CardHolderName = string.Join(" ", cardholder.FirstName.ToUpper(), cardholder.LastName.ToUpper());
+            if (cardholder != null)
+            {
+                var fname = (cardholder.GetName(KindsOfNames.First) ?? string.Empty).ToUpper();
+                var lname = (cardholder.GetName(KindsOfNames.Surname) ?? string.Empty).ToUpper();
+                CardHolderName = string.Join(" ", fname, lname);
+            }
+            
             Cvv = $"{Etx.IntNumber(7, 999),3:D3}";
             Number = GetRandomCardNumber();
         }
@@ -105,7 +110,7 @@ namespace NoFuture.Rand.Data.Sp
     [Serializable]
     public class MasterCardCc : CreditCard
     {
-        public MasterCardCc(IPerson cardholder, DateTime? openedDate, DateTime? expiryDate)
+        public MasterCardCc(IVoca cardholder, DateTime? openedDate, DateTime? expiryDate)
             : base(cardholder, openedDate, expiryDate)
         {
         }
@@ -118,7 +123,7 @@ namespace NoFuture.Rand.Data.Sp
     [Serializable]
     public class VisaCc : CreditCard
     {
-        public VisaCc(IPerson cardholder, DateTime? openedDate, DateTime? expiryDate)
+        public VisaCc(IVoca cardholder, DateTime? openedDate, DateTime? expiryDate)
             : base(cardholder, openedDate, expiryDate)
         {
         }
@@ -131,7 +136,7 @@ namespace NoFuture.Rand.Data.Sp
     [Serializable]
     public class AmexCc : CreditCard
     {
-        public AmexCc(IPerson cardholder, DateTime? openedDate, DateTime? expiryDate)
+        public AmexCc(IVoca cardholder, DateTime? openedDate, DateTime? expiryDate)
             : base(cardholder, openedDate, expiryDate)
         {
         }
@@ -144,7 +149,7 @@ namespace NoFuture.Rand.Data.Sp
     [Serializable]
     public class DiscoverCc : CreditCard
     {
-        public DiscoverCc(IPerson cardholder, DateTime? openedDate, DateTime? expiryDate)
+        public DiscoverCc(IVoca cardholder, DateTime? openedDate, DateTime? expiryDate)
             : base(cardholder, openedDate, expiryDate)
         {
         }

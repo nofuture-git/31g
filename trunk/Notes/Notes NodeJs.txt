@@ -405,6 +405,31 @@ HTTP logs
 
 ----
 Error Handling
+ - an Error object is just an object, upon being thrown it becomes
+   and exception
+ - like performance, security and logging - you can't just "add on" 
+    good error handling
+ - its normal for lower layers to just propagate errors since they
+   can't do anything usefull
+ - try-catch does not work for async anonymous enclosures
+   //this will not work
+   try{
+     comm.doSomething('foo', (err, data) => {
+        //I am on another thread now 
+        // probably only one down the stack 
+        // from crashing the whole process
+     });
+   } catch(err) { 
+     //I catch nothing
+   }
+ - Error is base type and is extended by 
+   - AssertionError, programmatic 
+   - RangeError, arg exceptions
+   - ReferenceError, null-refs
+   - SyntaxError, because its not compiled
+   - TypeError, oh, now we have types...
+   - SystemError, likely a wrapper from an OS error
+   
  - node.js is single thread so an error could crash the whole app
   - async nature of node.js means the traditional idea of a 
     stack is gone
@@ -412,6 +437,14 @@ Error Handling
    - exit the process
    - handle everything
    - something between
+   
+ - typical error propagation
+  - synchronous
+  throw new Error('bad times');
+  - asynchronous
+  callback(new Error('bummer'));
+  connection.on('error', (err) => {console.error(err);});
+  
  - there is a single built-in like ASP.NET's On_ApplicationError
   - intended as stop-gap
   - will leak memory and connections over time cause a crash anyway
@@ -419,28 +452,34 @@ Error Handling
     console.error(err); //error handling here
  })
  
- - to have multiple child process use the "cluster" module
-  var cluster = require('cluster');
-  var http = require('http');
-  //one cluster per core
-  var numOfCores = require('os').cpus().length;
-  
-  cluster.setupMaster({
-    exec : __dirname + '/index.js'
-  });
-  
-  if(cluster.isMaster){
-    for(let i = 0; i < numOfCores; i++){
-      cluster.fork();
-    }
-    
-    cluster.on('exit', function(worker, code, signal) {
-        console.log('worker' + worker.process.pid + ' has exited.');
-    });
-  }
-  else{
-    http.createServer(function(req, res){
-      //do something
-    }).listen(6541);
-  }
+ - its a good idea to wrap the whole node.js program in somekind
+   of "restarter" - this way a process can just crash
 ----
+
+----
+Cryto stuff
+ - two npm packages for hashing passwords
+  bcrypt (lighter, easier)
+  scrypt (heavy, very secure)
+ 
+ - enforce strong password policy with something
+   as simple as a blacklist of unacceptable passwords
+ - add delays to the entic process 
+ - lock-out after failed attempts
+  - this can be abused by someone else to lock up
+    another user
+ - double-up the entic with cell-phone text messages and such
+ - create new session tokens for each login span of time
+ 
+ - session storage packages 
+  express-session
+  connect-sqlite3
+  
+ - use best practice with cookies of 
+  secure (sent on HTTPS only)
+  http-only (cannot access through javascript)
+  expires 
+  domain (explicitly set this)
+  use the Cache-Control header to force browser to 
+    not cache cookies.
+---- 

@@ -193,14 +193,4 @@ namespace NoFuture.Rand.Data.Sp //Sequere pecuniam
         void Push(DateTime dt, Pecuniam amt, Pecuniam fee = null, string note = null);
         bool Pop(DateTime dt, Pecuniam amt, Pecuniam fee = null, string note = null);
     }
-
-    /// <summary>
-    /// Any type which has a count-of and an identifier
-    /// </summary>
-    /// <remarks>Latin for 'be counted'</remarks>
-    public interface INumera
-    {
-        Decimal Amount { get; }
-        Identifier Id { get; }
-    }
 }

@@ -248,8 +248,7 @@ namespace NoFuture.Rand.Gov.Sec
                     var strFnDt = fn.FormerDate ?? string.Empty;
                     var strFnVal = fn.FormerName ?? string.Empty;
 
-                    publicCorporation.Names.Add(new Tuple<KindsOfNames, string>(
-                        KindsOfNames.Former, $"{strFnVal}[{strFnDt}]"));
+                    publicCorporation.UpsertName(KindsOfNames.Former, $"{strFnVal}[{strFnDt}]");
                 }
             }
 

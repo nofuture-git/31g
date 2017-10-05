@@ -40,12 +40,12 @@ namespace NoFuture.Rand.Domus
         public virtual DateTime? DeathDate { get; set; }
         public virtual string FirstName
         {
-            get { return Names.First(x => x.Item1 == KindsOfNames.First).Item2; }
+            get { return GetName(KindsOfNames.First); }
             set { UpsertName(KindsOfNames.First, value); }
         }
         public virtual string LastName
         {
-            get { return Names.First(x => x.Item1 == KindsOfNames.Surname).Item2; }
+            get { return GetName(KindsOfNames.Surname); }
             set { UpsertName(KindsOfNames.Surname, value); }
         }
         public virtual IEnumerable<Uri> NetUri => _netUris;

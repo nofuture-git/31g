@@ -135,8 +135,6 @@ namespace NoFuture.Rand.Data.Sp //Sequere pecuniam
         public static SecuredFixedRateLoan GetRandomLoanWithHistory(IPerson borrower, Identifier property, Pecuniam remainingCost,
             Pecuniam totalCost, float rate, int termInYears, out Pecuniam minPmt)
         {
-            if (borrower == null)
-                throw new ArgumentNullException(nameof(borrower));
             //if no or nonsense values given, change to some default
             if (totalCost == null || totalCost < Pecuniam.Zero)
                 totalCost = new Pecuniam(2000);
@@ -181,7 +179,7 @@ namespace NoFuture.Rand.Data.Sp //Sequere pecuniam
                 if (dtIncrement >= DateTime.Now)
                     break;
                 var paidOnDate = dtIncrement;
-                if (borrower.Personality.GetRandomActsIrresponsible())
+                if (borrower != null && borrower.Personality.GetRandomActsIrresponsible())
                     paidOnDate = paidOnDate.AddDays(Etx.IntNumber(5, 15));
 
                 //is this the payoff
@@ -196,7 +194,9 @@ namespace NoFuture.Rand.Data.Sp //Sequere pecuniam
             }
 
             //assign boilerplate props
-            loan.Lender = Bank.GetRandomBank(borrower?.Address?.HomeCityArea);
+            loan.Lender = borrower == null
+                ? Bank.GetRandomBank(null)
+                : Bank.GetRandomBank(borrower?.Address?.HomeCityArea);
             return loan;
         }
 

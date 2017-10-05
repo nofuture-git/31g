@@ -498,3 +498,4 @@ anachronism: a thing belonging to some past time period
 idempotent: denoting an element of a set that is 
             unchanged in value when multiplied or 
             otherwise operated on by itself. ~(~(x)) == x
+furtively: in a way that attempts to avoid notice or attention            

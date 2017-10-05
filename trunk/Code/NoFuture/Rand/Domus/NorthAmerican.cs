@@ -123,7 +123,7 @@ namespace NoFuture.Rand.Domus
         /// </summary>
         public string MiddleName
         {
-            get { return Names.First(x => x.Item1 == KindsOfNames.Middle).Item2; }
+            get { return GetName(KindsOfNames.Middle); }
             set { UpsertName(KindsOfNames.Middle, value); }
 
         }
@@ -140,6 +140,10 @@ namespace NoFuture.Rand.Domus
                 var hph = _phoneNumbers.FirstOrDefault(x => x.Item1 == KindsOfLabels.Home);
                 return hph?.Item2;
             }
+            set
+            {
+                _phoneNumbers.Add(new Tuple<KindsOfLabels, NorthAmericanPhone>(KindsOfLabels.Home, value));
+            }
         }
 
         /// <summary>
@@ -151,6 +155,10 @@ namespace NoFuture.Rand.Domus
             {
                 var mobilePh = _phoneNumbers.FirstOrDefault(x => x.Item1 == KindsOfLabels.Mobile);
                 return mobilePh?.Item2;
+            }
+            set
+            {
+                _phoneNumbers.Add(new Tuple<KindsOfLabels, NorthAmericanPhone>(KindsOfLabels.Mobile, value));
             }
         }
 
@@ -543,12 +551,6 @@ namespace NoFuture.Rand.Domus
                         continue;
                     nAmerSpouse.ResolveChildren();
 
-                    foreach (var childFrom in nAmerSpouse._children)
-                    {
-                        if (childFrom.Est.LastName != LastName && childFrom.Est.Names.All(x => x.Item2 != LastName))
-                            continue;
-                        _children.Add(childFrom);
-                    }
                 }
                 return;
             }
@@ -632,8 +634,9 @@ namespace NoFuture.Rand.Domus
 
             var childLastName = string.IsNullOrWhiteSpace(spouseAtChildDob?.Est?.LastName) ||
                                 spouseAtChildDob.Est?.MyGender == Gender.Female
-                                ? LastName
+                                ? GetName(KindsOfNames.Maiden) ?? LastName
                                 : spouseAtChildDob.Est?.LastName;
+
             var childRace = Race | (spouseAtChildDob?.Est as NorthAmerican)?.Race ?? Race;
             var nAmerChild = new NorthAmerican(myChildDob, myChildGender, this, spouseAtChildDob?.Est)
             {
@@ -756,7 +759,7 @@ namespace NoFuture.Rand.Domus
                 //when this is the bride
                 if (_myGender == Gender.Female)
                 {
-                    if (LastName != null && Names.All(x => x.Item1 != KindsOfNames.Maiden))
+                    if (LastName != null && !AnyOfKindOfName(KindsOfNames.Maiden))
                         UpsertName(KindsOfNames.Maiden, BirthCert.Father?.LastName ?? LastName);
 
                     LastName = spouse.LastName;
@@ -768,9 +771,9 @@ namespace NoFuture.Rand.Domus
                 UpsertName(KindsOfNames.Former | KindsOfNames.Surname | KindsOfNames.Spouse, spouse.LastName);
 
                 //set back to maiden name
-                var maidenName = Names.FirstOrDefault(x => x.Item1 == KindsOfNames.Maiden);
-                if (!string.IsNullOrWhiteSpace(maidenName?.Item2))
-                    LastName = maidenName.Item2;
+                var maidenName = GetName(KindsOfNames.Maiden);
+                if (!string.IsNullOrWhiteSpace(maidenName))
+                    LastName = maidenName;
             }
             var nAmerSpouse = (NorthAmerican)spouse;
             nAmerSpouse.Race = nAmerSpouse.Race <= 0 ? Race : nAmerSpouse.Race;
@@ -796,8 +799,8 @@ namespace NoFuture.Rand.Domus
                     new Uri("emailto:" +
                             Etx.RandomEmailUri(new[]
                             {
-                                Names.First(x => x.Item1 == KindsOfNames.First).Item2, MiddleName,
-                                Names.First(x => x.Item1 == KindsOfNames.Surname).Item2
+                                GetName(KindsOfNames.First), MiddleName,
+                                GetName(KindsOfNames.Surname)
                             }, GetAgeAt(null) > 18)));
         }
 

@@ -32,13 +32,29 @@ namespace NoFuture.Rand
     {
         List<Tuple<KindsOfNames, string>> Names { get; }
         void UpsertName(KindsOfNames k, string name);
+        string GetName(KindsOfNames k);
+        bool AnyOfKindOfName(KindsOfNames k);
+        bool AnyOfNameAs(string name);
+        bool RemoveNameByKind(KindsOfNames k);
+        int RemoveNameByValue(string name);
     }
+
+    /// <summary>
+    /// Any type which has a count-of and an identifier
+    /// </summary>
+    /// <remarks>Latin for 'be counted'</remarks>
+    public interface INumera
+    {
+        Decimal Amount { get; }
+        Identifier Id { get; }
+    }
+
     [Serializable]
-    public abstract class VocaBase : IVoca
+    public class VocaBase : IVoca
     {
         public List<Tuple<KindsOfNames, string>> Names { get; } = new List<Tuple<KindsOfNames, string>>();
 
-        public void UpsertName(KindsOfNames k, string name)
+        public virtual void UpsertName(KindsOfNames k, string name)
         {
             var cname = Names.FirstOrDefault(x => x.Item1 == k);
 
@@ -47,6 +63,43 @@ namespace NoFuture.Rand
                 Names.Remove(cname);
             }
             Names.Add(new Tuple<KindsOfNames, string>(k, name));
+        }
+
+        public virtual string GetName(KindsOfNames k)
+        {
+            var cname = Names.FirstOrDefault(x => x.Item1 == k);
+            return cname?.Item2;
+        }
+
+        public virtual bool AnyOfKindOfName(KindsOfNames k)
+        {
+            return Names.Any(x => x.Item1 == k);
+        }
+
+        public virtual bool AnyOfNameAs(string name)
+        {
+            return Names.Any(x => string.Equals(x.Item2, name));
+        }
+
+        public bool RemoveNameByKind(KindsOfNames k)
+        {
+            var cname = Names.FirstOrDefault(x => x.Item1 == k);
+            if (cname == null)
+                return false;
+            Names.Remove(cname);
+            return true;
+        }
+
+        public int RemoveNameByValue(string name)
+        {
+            var cnt = 0;
+            var byName = Names.Where(x => string.Equals(x.Item2, name)).ToList();
+            foreach (var cname in byName)
+            {
+                Names.Remove(cname);
+                cnt += 1;
+            }
+            return cnt;
         }
     }
 
@@ -376,4 +429,29 @@ https://nccd.cdc.gov/NPAO_DTM/
 this looks fun
 https://www.treasury.gov/resource-center/sanctions/SDN-List/Pages/default.aspx
 
+#search LOINC
+https://apps.nlm.nih.gov/medlineplus/services/mpconnect_service.cfm?mainSearchCriteria.v.cs=2.16.840.1.113883.6.1&mainSearchCriteria.v.c=2093-3&knowledgeResponseType=application/javascript
+
+#another drug search 
+https://apps.nlm.nih.gov/medlineplus/services/mpconnect_service.cfm?mainSearchCriteria.v.cs=2.16.840.1.113883.6.88?mainSearchCriteria.v.c=637188&knowledgeResponseType=application/javascript
+
+#api docx
+https://rxnav.nlm.nih.gov/RxNormAPIREST.html
+
+#get a list of a bunch of drugs
+https://rxnav.nlm.nih.gov/REST/allconcepts?tty=BN+BPCK
+
+#some kind of standard used to send Rx to pharmacy - requires a membership
+http://www.ncpdp.org/Standards-Development/Standards-Information
+
+#way to lookup the ICD-10 codes - requires a API Key
+# this api is strange - use the api-key to get another token, then use 
+# that token to get yet another token
+https://documentation.uts.nlm.nih.gov/rest/home.html
+
+#.gov domains
+https://inventory.data.gov/dataset/b2c31002-8a5e-4cd0-85bd-6971934f4e59/resource/02706c7b-98e3-4267-8dd8-e3bb2d8c7ce3/download/fed-domains-04212017.csv
+
+#money laundering
+http://www.opensanctions.org/
  */

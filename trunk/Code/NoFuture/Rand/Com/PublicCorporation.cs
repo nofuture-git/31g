@@ -222,7 +222,7 @@ namespace NoFuture.Rand.Com
             var firmName = Name;
             if (GetType() == typeof(Bank))
             {
-                firmName = Names.FirstOrDefault(x => x.Item1 == KindsOfNames.Abbrev)?.Item2 ?? Name;
+                firmName = GetName(KindsOfNames.Abbrev) ?? Name;
             }
             var myAssocNodes = XRefGroup.GetXrefAddNodes(GetType(), firmName);
             if (myAssocNodes == null || myAssocNodes.Count <= 0)
