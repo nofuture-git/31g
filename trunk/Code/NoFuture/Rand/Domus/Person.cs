@@ -148,9 +148,6 @@ namespace NoFuture.Rand.Domus
             var dt = atTime ?? DateTime.Now;
             ThrowOnBirthDateNull(this);
 
-            if (DeathDate != null && DateTime.Compare(DeathDate.Value, dt) < 0)
-                throw new ItsDeadJim("The person is deceased.");
-
             return CalcAge(BirthCert.DateOfBirth, dt);
         }
 

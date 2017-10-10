@@ -13,18 +13,20 @@ namespace NoFuture.Rand.Domus
     {
         private string _eduLevel;
         private OccidentalEdu _eduFlag;
+        private Tuple<IUniversity, DateTime?> _college;
+        private Tuple<IHighSchool, DateTime?> _highSchool;
 
         #region ctor
         internal NorthAmericanEdu(Tuple<IHighSchool, DateTime?> assignHs)
         {
-            HighSchool = assignHs;
+            _highSchool = assignHs;
             AssignEduFlagAndLevel();
         }
 
         internal NorthAmericanEdu(Tuple<IUniversity, DateTime?> assignUniv, Tuple<IHighSchool, DateTime?> assignHs)
         {
-            HighSchool = assignHs;
-            College = assignUniv;
+            _highSchool = assignHs;
+            _college = assignUniv;
             AssignEduFlagAndLevel();
         }
 
@@ -51,39 +53,72 @@ namespace NoFuture.Rand.Domus
             
             var dtAtAge18 = dob.AddYears(18);
 
-            var hca = mother?.GetAddressAt(dtAtAge18)?.HomeCityArea ?? CityArea.American();
-            var homeState = Gov.UsState.GetStateByPostalCode(hca?.AddressData?.StateAbbrv) ??
-                            Gov.UsState.GetStateByPostalCode(UsCityStateZip.DF_STATE_ABBREV);
+            var homeCityArea = mother?.GetAddressAt(dtAtAge18)?.HomeCityArea as UsCityStateZip ?? CityArea.American();
+
+            var isLegalAdult = !(amer?.IsLegalAdult(DateTime.Now) ?? true);
+            DateTime? hsGradDt;
+            if (!AssignRandomHighSchool(homeCityArea, isLegalAdult, dtAtAge18, out hsGradDt))
+                return;
+
+            AssignRandomCollege(homeCityArea.State, hsGradDt);
+        }
+
+        /// <summary>
+        /// Assigns a value to <see cref="HighSchool"/> at random based on the given inputs
+        /// </summary>
+        /// <param name="homeCityArea"></param>
+        /// <param name="isLegalAdult"></param>
+        /// <param name="dtAtAge18"></param>
+        /// <param name="hsGradDt"></param>
+        /// <returns></returns>
+        public bool AssignRandomHighSchool(UsCityStateZip homeCityArea, bool isLegalAdult, DateTime dtAtAge18,
+            out DateTime? hsGradDt)
+        {
+            hsGradDt = null;
+
+            if (homeCityArea == null)
+                return false;
 
             //get hs grad data for state amer lived in when 18
             var hsGradData =
-                homeState.GetStateData()
+                homeCityArea.State.GetStateData()
                     .PercentOfGrads.FirstOrDefault(x => x.Item1 == (OccidentalEdu.HighSchool | OccidentalEdu.Grad));
 
             //determine prob. of having hs grad
             var hsGradRate = hsGradData?.Item2 ?? AmericanHighSchool.DF_NATL_AVG;
 
             //first try city, then state, last natl
-            var hs = GetAmericanHighSchool(homeState, hca);
+            var hs = GetAmericanHighSchool(homeCityArea.State, homeCityArea);
 
             //still in hs or dropped out
-            if (!(amer?.IsLegalAdult(DateTime.Now) ?? true) || Etx.TryAboveOrAt((int)Math.Round(hsGradRate)+1, Etx.Dice.OneHundred))
+            if (isLegalAdult || Etx.TryAboveOrAt((int) Math.Round(hsGradRate) + 1, Etx.Dice.OneHundred))
             {
                 //assign grad hs but no date
-                HighSchool = new Tuple<IHighSchool, DateTime?>(hs, null);
+                _highSchool = new Tuple<IHighSchool, DateTime?>(hs, null);
                 AssignEduFlagAndLevel();
-                return;
+                return false;
             }
 
             //get a date of when amer would be grad'ing from hs
-            var hsGradDt = dtAtAge18;
-            while (hsGradDt.Month != 5)
-                hsGradDt = hsGradDt.AddMonths(1);
-            hsGradDt = new DateTime(hsGradDt.Year, hsGradDt.Month, Etx.IntNumber(12, 28));
+            hsGradDt = dtAtAge18;
+            while (hsGradDt.Value.Month != 5)
+                hsGradDt = hsGradDt.Value.AddMonths(1);
+            hsGradDt = new DateTime(hsGradDt.Value.Year, hsGradDt.Value.Month, Etx.IntNumber(12, 28));
 
             //assign grad hs with grad date
-            HighSchool = new Tuple<IHighSchool, DateTime?>(hs, hsGradDt);
+            _highSchool = new Tuple<IHighSchool, DateTime?>(hs, hsGradDt);
+            return true;
+        }
 
+        /// <summary>
+        /// Assigns a value to <see cref="College"/> at random based on the given values
+        /// </summary>
+        /// <param name="homeState"></param>
+        /// <param name="hsGradDt"></param>
+        public void AssignRandomCollege(UsState homeState, DateTime? hsGradDt)
+        {
+            if (hsGradDt == null)
+                return;
             //get college grad data for same state as hs
             var univGradData =
                 homeState.GetStateData()
@@ -92,7 +127,7 @@ namespace NoFuture.Rand.Domus
             var univGradRate = univGradData?.Item2 ?? AmericanUniversity.DF_NATL_AVG;
 
             //roll for some college
-            if (Etx.TryAboveOrAt((int)Math.Round(univGradRate * 2), Etx.Dice.OneHundred))
+            if (Etx.TryAboveOrAt((int) Math.Round(univGradRate*2), Etx.Dice.OneHundred))
             {
                 AssignEduFlagAndLevel();
                 return;
@@ -102,7 +137,7 @@ namespace NoFuture.Rand.Domus
             var yearsInCollege = Etx.RandomValueInNormalDist(4.67, 1.58);
 
             //get a date for when amer would grad from college
-            var univGradDt = hsGradDt.AddYears((int)Math.Round(yearsInCollege));
+            var univGradDt = hsGradDt.Value.AddYears((int) Math.Round(yearsInCollege));
             while (univGradDt.Month != 5)
                 univGradDt = univGradDt.AddMonths(1);
             univGradDt = new DateTime(univGradDt.Year, univGradDt.Month, Etx.IntNumber(12, 28));
@@ -115,16 +150,17 @@ namespace NoFuture.Rand.Domus
                 return;
             }
             //college grad
-            if (Etx.TryBelowOrAt((int)Math.Round(univGradRate), Etx.Dice.OneHundred))
+            if (Etx.TryBelowOrAt((int) Math.Round(univGradRate), Etx.Dice.OneHundred))
             {
-                College = new Tuple<IUniversity, DateTime?>(univ, univGradDt);
+                _college = new Tuple<IUniversity, DateTime?>(univ, univGradDt);
                 AssignEduFlagAndLevel();
                 return;
             }
             //college drop-out
-            College = new Tuple<IUniversity, DateTime?>(univ, null);
+            _college = new Tuple<IUniversity, DateTime?>(univ, null);
             AssignEduFlagAndLevel();
         }
+
         #endregion
 
         #region properties
@@ -135,8 +171,8 @@ namespace NoFuture.Rand.Domus
         /// </summary>
         public string EduLevel => _eduLevel;
         
-        public Tuple<IHighSchool, DateTime?> HighSchool { get; }
-        public Tuple<IUniversity, DateTime?> College { get; }
+        public Tuple<IHighSchool, DateTime?> HighSchool { get {return _highSchool;} }
+        public Tuple<IUniversity, DateTime?> College { get {return _college;} }
         #endregion
 
         #region methods
