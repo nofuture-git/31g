@@ -691,9 +691,13 @@ namespace NoFuture.Rand.Domus
             {
                 thisPerson._phoneNumbers.Add(livesWithThisOne._phoneNumbers.First(p => p.Item1 == KindsOfLabels.Home));
             }
-            if (thisPerson.GetAgeAt(null) >= 12 && !String.IsNullOrWhiteSpace(addrMatchTo.HomeCityArea?.GetPostalCodePrefix()))
-                thisPerson._phoneNumbers.Add(new Tuple<KindsOfLabels, NorthAmericanPhone>(KindsOfLabels.Mobile,
-                    Phone.American(addrMatchTo.HomeCityArea.GetPostalCodePrefix())));
+            if (thisPerson.GetAgeAt(null) < 12 ||
+                string.IsNullOrWhiteSpace(addrMatchTo.HomeCityArea?.GetPostalCodePrefix()))
+                return;
+
+            var mobilePhone = Phone.American(addrMatchTo.HomeCityArea.GetPostalCodePrefix());
+            thisPerson._phoneNumbers.Add(new Tuple<KindsOfLabels, NorthAmericanPhone>(KindsOfLabels.Mobile,
+                mobilePhone));
         }
 
         /// <summary>

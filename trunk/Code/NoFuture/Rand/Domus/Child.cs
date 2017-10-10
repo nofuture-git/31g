@@ -13,6 +13,8 @@ namespace NoFuture.Rand.Domus
 
         public override string ToString()
         {
+            if (Est == null)
+                return string.Empty;
             var title = Est.MyGender == Gender.Male ? "Son" : "Daughter";
             return string.Join(" ", $"({title})", Est.FirstName, Est.LastName, Est.Age);
         }
@@ -20,7 +22,7 @@ namespace NoFuture.Rand.Domus
         public override bool Equals(object obj)
         {
             var c = obj as Child;
-            if (c == null)
+            if (c?.Est == null || Est == null)
                 return false;
             return c.GetHashCode() == GetHashCode();
         }

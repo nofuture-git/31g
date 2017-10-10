@@ -13,7 +13,7 @@ namespace NoFuture.Rand.Domus
 
         public override string ToString()
         {
-            return string.Join(" ", Est.FirstName, Est.LastName);
+            return string.Join(" ", Est?.FirstName, Est?.LastName);
         }
 
         public override int GetHashCode()
@@ -24,10 +24,10 @@ namespace NoFuture.Rand.Domus
         public override bool Equals(object obj)
         {
             var p = obj as Parent;
-            if (p == null)
+            if (p?.Est == null || Est == null)
                 return false;
 
-            return p.Est == Est;
+            return p.Est.Equals(Est);
         }
     }
 }

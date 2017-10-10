@@ -86,7 +86,7 @@ namespace NoFuture.Rand.Domus
                         new Parent(person.GetSpouseAt(null).Est)));
 
                 Func<IPerson, IPerson, bool> isParentSpouseStepParent =
-                    (p0, p1) => p0 != null && p0.MaritialStatus == MaritialStatus.Remarried && p0.GetSpouseAt(null).Est == p1;
+                    (p0, p1) => p0 != null && p0.MaritialStatus == MaritialStatus.Remarried && p0.GetSpouseAt(null).Est.Equals(p1);
 
                 if(isParentSpouseStepParent(f,m))
                     addStepParent(f);

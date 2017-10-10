@@ -297,17 +297,25 @@ namespace NoFuture.Rand.Domus
                 return;
             dt = dt ?? DateTime.Now;
             UpsertAddress(addr);
+
+            Func<Child, bool> isUnderageChild =
+                child => child?.Est is NorthAmerican && !((NorthAmerican) child.Est).IsLegalAdult(dt);
+
+            var underAgeChildren =_children.Where(x => isUnderageChild(x)).ToList();
+
             var ms = GetMaritalStatusAt(dt);
-            if ((ms == MaritialStatus.Married || ms == MaritialStatus.Remarried) && GetSpouseAt(dt) != null)
+            if ((ms == MaritialStatus.Married || ms == MaritialStatus.Remarried) && GetSpouseAt(dt).Est is NorthAmerican)
             {
-                NAmerUtil.SetNAmerCohabitants((NorthAmerican)GetSpouseAt(dt).Est, this);
+                var spAtDt = (NorthAmerican) GetSpouseAt(dt).Est;
+                NAmerUtil.SetNAmerCohabitants(spAtDt, this);
+                underAgeChildren.AddRange(spAtDt.Children.Where(x => isUnderageChild(x)));
             }
-            var underAgeChildren =
-                _children.Where(
-                    x => x.Est is NorthAmerican && !((NorthAmerican) x.Est).IsLegalAdult(dt))
-                    .ToList();
             if (underAgeChildren.Count <= 0)
                 return;
+
+            //limit it down to just the distinct list of children 
+            underAgeChildren = underAgeChildren.Distinct().ToList();
+
             foreach (var child in underAgeChildren)
                 NAmerUtil.SetNAmerCohabitants((NorthAmerican)child.Est, this);
         }
