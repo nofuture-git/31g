@@ -109,4 +109,11 @@ namespace NoFuture.Rand.Gov
         public override string Name => "Tax Reform Act of 1986";
         public override int Year => 1986;
     }
+    [Serializable]
+    public class BankSecrecyAct : FederalStatute
+    {
+        public override string Name => "Bank Secrecy Act of 1970";
+        public override int Year => 1970;
+    }
+    
 }

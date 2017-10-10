@@ -204,7 +204,7 @@ namespace NoFuture.Rand.Domus
         {
             var mdt = dt ?? DateTime.Now;
 
-            if (!IsLegalAdult(mdt) || !_spouses.Any())
+            if (!IsLegalAdult(mdt) ||!_spouses.Any() || _spouses.All(s => s.MarriedOn > mdt))
                 return MaritialStatus.Single;
 
             var spAtDt = GetSpouseAt(mdt);
@@ -274,6 +274,11 @@ namespace NoFuture.Rand.Domus
 
         }
 
+        /// <summary>
+        /// Get the wealth at the time of <see cref="dt"/> - defaults to now.
+        /// </summary>
+        /// <param name="dt"></param>
+        /// <returns></returns>
         public override Opes GetWealthAt(DateTime? dt)
         {
             return _opes ?? (_opes = new NorthAmericanWealth(this));
@@ -335,10 +340,6 @@ namespace NoFuture.Rand.Domus
             var person = obj as IPerson;
             if (person == null)
                 return false;
-
-            //this depends on a readonly GUID 
-            if (person.Personality.Equals(Personality))
-                return true;
 
             //must be an american
             var amer = obj as NorthAmerican;
@@ -473,19 +474,22 @@ namespace NoFuture.Rand.Domus
         /// Calc' will be based on DOB and <see cref="IPerson.MyGender"/>.
         /// </summary>
         /// <param name="myMaritialStatus"></param>
-        protected internal void ResolveSpouse(MaritialStatus myMaritialStatus)
+        /// <param name="atDate">Optional, defaults to now</param>
+        protected internal void ResolveSpouse(MaritialStatus myMaritialStatus, DateTime? atDate = null)
         {
             if (myMaritialStatus == MaritialStatus.Single || myMaritialStatus == MaritialStatus.Unknown)
                 return;
 
-            var dt = DateTime.Now;
+            var dt = atDate ?? DateTime.Now;
 
             ThrowOnBirthDateNull(this);
 
+            var equationDt = NAmerUtil.Equations.ProtectAgainstDistantTimes(_birthCert.DateOfBirth);
+
             var avgAgeMarriage = MyGender == Gender.Female
-                ? NAmerUtil.Equations.FemaleAge2FirstMarriage.SolveForY(_birthCert.DateOfBirth.ToDouble())
-                : NAmerUtil.Equations.MaleAge2FirstMarriage.SolveForY(_birthCert.DateOfBirth.ToDouble());
-            var currentAge = Person.CalcAge(_birthCert.DateOfBirth, dt);
+                ? NAmerUtil.Equations.FemaleAge2FirstMarriage.SolveForY(equationDt.ToDouble())
+                : NAmerUtil.Equations.MaleAge2FirstMarriage.SolveForY(equationDt.ToDouble());
+            var currentAge = CalcAge(_birthCert.DateOfBirth, dt);
 
             //all other MaritialStatus imply at least one marriage in past
             var yearsMarried = currentAge - Convert.ToInt32(Math.Round(avgAgeMarriage));
@@ -757,7 +761,7 @@ namespace NoFuture.Rand.Domus
             if (separatedOn == null)
             {
                 //when this is the bride
-                if (_myGender == Gender.Female)
+                if (_myGender == Gender.Female && DateTime.Now >= marriedOn)
                 {
                     if (LastName != null && !AnyOfKindOfName(KindsOfNames.Maiden))
                         UpsertName(KindsOfNames.Maiden, BirthCert.Father?.LastName ?? LastName);
@@ -765,7 +769,7 @@ namespace NoFuture.Rand.Domus
                     LastName = spouse.LastName;
                 }
             }
-            else if (MyGender == Gender.Female)
+            else if (MyGender == Gender.Female && DateTime.Now >= separatedOn.Value)
             {
                 //add ex-husband last name to list
                 UpsertName(KindsOfNames.Former | KindsOfNames.Surname | KindsOfNames.Spouse, spouse.LastName);

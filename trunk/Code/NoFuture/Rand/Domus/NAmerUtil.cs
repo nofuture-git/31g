@@ -57,14 +57,32 @@ namespace NoFuture.Rand.Domus
         public const double PERCENT_OF_WOMEN_MARRIED_ONCE_NEVER_AGAIN = 0.15D;
 
         /// <summary>
-        /// Has no stat validity - just a guess
+        /// [https://en.wikipedia.org/wiki/List_of_the_verified_oldest_men]
+        /// Oldest american man was 114 years and 222 days - consider this six sigma from mean
         /// </summary>
-        public const double STD_DEV_MALE_LIFE_EXPECTANCY = 4.9D;
+        /// <remarks>
+        /// (114.61 - 76.9) / 6
+        /// </remarks>
+        public const double STD_DEV_MALE_LIFE_EXPECTANCY = 6.285D;
 
         /// <summary>
-        /// Has no stat validity - just a guess
+        /// [https://en.wikipedia.org/wiki/List_of_the_verified_oldest_women]
+        /// Oldest american woman was 119 years and 97 days - consider this six sigma from mean
         /// </summary>
-        public const double STD_DEV_FEMALE_LIFE_EXPECTANCY = 3.9D;
+        /// <remarks>
+        /// (119.27 - 81.6) / 6
+        /// </remarks>
+        public const double STD_DEV_FEMALE_LIFE_EXPECTANCY = 6.27834D;
+
+        /// <summary>
+        /// Mean is from WHO [http://apps.who.int/gho/data/node.main.688?lang=en]
+        /// </summary>
+        public const double AVG_MAX_AGE_MALE = 76.9D;
+
+        /// <summary>
+        /// Mean is from WHO [http://apps.who.int/gho/data/node.main.688?lang=en]
+        /// </summary>
+        public const double AVG_MAX_AGE_FEMALE = 81.6;
         #endregion
 
         #region methods
@@ -81,6 +99,25 @@ namespace NoFuture.Rand.Domus
         /// </remarks>
         public static class Equations
         {
+
+            internal const int MIN_DOB_YEAR = 1914;
+            internal const int MAX_DOB_YEAR = 2055;
+
+            /// <summary>
+            /// The linear regressions are for the second half of 20th century and cannot 
+            /// be applied to date ranges beyond <see cref="MIN_DOB_YEAR"/> and <see cref="MAX_DOB_YEAR"/>
+            /// </summary>
+            /// <param name="dob"></param>
+            /// <returns></returns>
+            internal static DateTime ProtectAgainstDistantTimes(DateTime dob)
+            {
+                if(dob.Year < MIN_DOB_YEAR)
+                    return new DateTime(MIN_DOB_YEAR, dob.Month, dob.Day);
+                if(dob.Year > MAX_DOB_YEAR)
+                    return new DateTime(MAX_DOB_YEAR, dob.Month, dob.Day);
+                return dob;
+            }
+
             /// <summary>
             /// SolveForY using partial year value (e.g. 12/14/1979 is 1979.952791508)
             /// </summary>
@@ -189,16 +226,16 @@ namespace NoFuture.Rand.Domus
             }
 
             /// <summary>
-            /// Mean is from WHO [http://apps.who.int/gho/data/node.main.688?lang=en],
-            /// the StdDev is made-up.
+            /// Means are <see cref="AVG_MAX_AGE_MALE"/> and <see cref="AVG_MAX_AGE_FEMALE"/>
+            /// StdDev are <see cref="STD_DEV_MALE_LIFE_EXPECTANCY"/> and <see cref="STD_DEV_FEMALE_LIFE_EXPECTANCY"/>
             /// </summary>
             /// <param name="mf"></param>
             /// <returns></returns>
             public static NormalDistEquation LifeExpectancy(Gender mf)
             {
                 return mf == Gender.Male
-                    ? new NormalDistEquation {Mean = 76.9D, StdDev = STD_DEV_MALE_LIFE_EXPECTANCY}
-                    : new NormalDistEquation {Mean = 81.6, StdDev = STD_DEV_FEMALE_LIFE_EXPECTANCY};
+                    ? new NormalDistEquation {Mean = AVG_MAX_AGE_MALE, StdDev = STD_DEV_MALE_LIFE_EXPECTANCY}
+                    : new NormalDistEquation {Mean = AVG_MAX_AGE_FEMALE, StdDev = STD_DEV_FEMALE_LIFE_EXPECTANCY};
             }
         }
 
@@ -261,10 +298,10 @@ namespace NoFuture.Rand.Domus
         }
 
         /// <summary>
-        /// Returns a date being between 21 years ago today back to 55 years ago today.
+        /// Returns a date being between <see cref="min"/> years ago today back to <see cref="max"/> years ago today.
         /// </summary>
         /// <remarks>
-        /// The age is limited - generate with family to get other age sets
+        /// The age is limited to min,max of 18,67 - generate with family to get other age sets
         /// </remarks>
         public static DateTime GetWorkingAdultBirthDate(int min = 21, int max = 55)
         {
@@ -278,6 +315,9 @@ namespace NoFuture.Rand.Domus
         /// <summary>
         /// Generates a random past date based on the <see cref="numberOfSiblings"/> and the Mother's Date of Birth.
         /// </summary>
+        /// <param name="motherDob"></param>
+        /// <param name="numberOfSiblings">this should be the current number of children of the mother</param>
+        /// <param name="atTime">Defaults to the current time</param>
         /// <returns></returns>
         public static DateTime? GetChildBirthDate(DateTime motherDob, int numberOfSiblings, DateTime? atTime)
         {
@@ -288,9 +328,9 @@ namespace NoFuture.Rand.Domus
                 numberOfSiblings = 3;
 
             //default atTime to now
-            var dt = DateTime.Now;
-            if (atTime != null)
-                dt = atTime.Value;
+            var dt = atTime ?? DateTime.Now;
+
+            motherDob = Equations.ProtectAgainstDistantTimes(motherDob);
 
             var motherAge = Person.CalcAge(motherDob, dt);
 
@@ -369,6 +409,8 @@ namespace NoFuture.Rand.Domus
                 return MaritialStatus.Single;
             dob = dob ?? GetWorkingAdultBirthDate();
 
+            dob = Equations.ProtectAgainstDistantTimes(dob.Value);
+
             var avgAgeMarriage = gender == Gender.Female
                 ? Equations.FemaleAge2FirstMarriage.SolveForY(dob.Value.ToDouble())
                 : Equations.MaleAge2FirstMarriage.SolveForY(dob.Value.ToDouble());
@@ -432,6 +474,8 @@ namespace NoFuture.Rand.Domus
             //move to a date 1 - 6 years prior the Person's dob
             var dtPm = childDob.Value.AddYears(-1 * Etx.IntNumber(1, 6)).AddDays(Etx.IntNumber(1, 360));
 
+            dtPm = Equations.ProtectAgainstDistantTimes(dtPm);
+
             //calc the age of marriable person at this time
             var avgAgeCouldMarry =
                 eq.SolveForY(dtPm.ToDouble());
@@ -484,6 +528,7 @@ namespace NoFuture.Rand.Domus
             if (atDateTime != null)
                 vt = atDateTime.Value;
             dob = dob ?? GetWorkingAdultBirthDate();
+            dob = Equations.ProtectAgainstDistantTimes(dob.Value);
             var age = Person.CalcAge(dob.Value, vt);
             var randV = Etx.IntNumber(1, 100);
 
@@ -530,6 +575,8 @@ namespace NoFuture.Rand.Domus
             if (educationLevel == (OccidentalEdu.HighSchool | OccidentalEdu.Grad))
                 eduAdditive = 0.02;
 
+            dob = Equations.ProtectAgainstDistantTimes(dob.Value);
+
             var probChildless = Math.Round(Equations.FemaleYob2ProbChildless.SolveForY(dob.Value.Year), 2);
 
             probChildless += eduAdditive;
@@ -547,6 +594,7 @@ namespace NoFuture.Rand.Domus
         public static DateTime? SolveForMarriageDate(DateTime? dob, Gender myGender)
         {
             dob = dob ?? GetWorkingAdultBirthDate();
+            dob = Equations.ProtectAgainstDistantTimes(dob.Value);
             var dt = DateTime.Now;
             var avgAgeMarriage = myGender == Gender.Female
                 ? Equations.FemaleAge2FirstMarriage.SolveForY(dob.Value.ToDouble())

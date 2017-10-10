@@ -117,16 +117,19 @@ namespace NoFuture.Rand.Data.Sp
             return bal;
         }
 
-        public List<ITransaction> GetTransactionsBetween(DateTime from, DateTime to, bool includeThoseOnToDate = false)
+        public List<ITransaction> GetTransactionsBetween(DateTime? from, DateTime? to, bool includeThoseOnToDate = false)
         {
+            var fromDt = @from ?? First.AtTime;
+            var toDt = @to ?? Last.AtTime;
+
             if (includeThoseOnToDate)
             {
                 return Transactions.Where(
-                    x => DateTime.Compare(x.AtTime, from) >= 0 && DateTime.Compare(x.AtTime, to) <= 0)
+                    x => DateTime.Compare(x.AtTime, fromDt) >= 0 && DateTime.Compare(x.AtTime, toDt) <= 0)
                     .ToList();
             }
             return Transactions.Where(
-                x => DateTime.Compare(x.AtTime, from) >= 0 && DateTime.Compare(x.AtTime, to) < 0)
+                x => DateTime.Compare(x.AtTime, fromDt) >= 0 && DateTime.Compare(x.AtTime, toDt) < 0)
                 .ToList();
         }
 

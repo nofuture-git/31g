@@ -74,7 +74,14 @@ namespace NoFuture.Rand.Domus
         public override string ToString()
         {
             var soTypeName = Est.MyGender == Gender.Female ? "Wife" : "Husband";
-            var soEnRng = TotalYears <= 0 ? "Newlywed" : $"of {TotalYears} years";
+            string soEnRng;
+            if (TotalYears == 0)
+                soEnRng = "Newlywed";
+            else if (TotalYears < 0)
+                soEnRng = "Engaged";
+            else
+                soEnRng = $"of {TotalYears} years";
+            
             var lnData = $"({Ordinal.ToOrdinal()} {soTypeName} {soEnRng})";
             return string.Join(" ", Est.FirstName, Est.LastName, Est.Age, lnData);
         }

@@ -80,7 +80,7 @@ namespace NoFuture.Rand.Data.Sp //Sequere pecuniam
         /// </param>
         /// <param name="includeThoseOnToDate"></param>
         /// <returns></returns>
-        List<ITransaction> GetTransactionsBetween(DateTime from, DateTime to, bool includeThoseOnToDate = false);
+        List<ITransaction> GetTransactionsBetween(DateTime? from, DateTime? to, bool includeThoseOnToDate = false);
 
         /// <summary>
         /// Returns a negative value being the sum of all payments-out between dates in <see cref="between"/>

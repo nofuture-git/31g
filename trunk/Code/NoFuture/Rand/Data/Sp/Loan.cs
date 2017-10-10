@@ -73,7 +73,7 @@ namespace NoFuture.Rand.Data.Sp //Sequere pecuniam
             : base(openedDate, minPaymentRate)
         {
             if (amt != null && amt.Amount != 0)
-                _tl.Balance.AddTransaction(openedDate, Pecuniam.Zero, amt.Abs);
+                _tl.Balance.AddTransaction(openedDate, amt.Abs, Pecuniam.Zero, "Initial Transaction");
         }
 
         #endregion

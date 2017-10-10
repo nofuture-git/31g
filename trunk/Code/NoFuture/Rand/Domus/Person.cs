@@ -135,7 +135,7 @@ namespace NoFuture.Rand.Domus
             //TODO enhance to have previous address
             return dt == null
                 ? _addresses.FirstOrDefault()
-                : (_addresses.FirstOrDefault(x => x.FromDate <= dt.Value) ?? _addresses.FirstOrDefault());
+                : (_addresses.FirstOrDefault(x => x.FromDate != null &&  x.FromDate <= dt.Value) ?? _addresses.FirstOrDefault());
         }
 
         /// <summary>
@@ -149,7 +149,7 @@ namespace NoFuture.Rand.Domus
             ThrowOnBirthDateNull(this);
 
             if (DeathDate != null && DateTime.Compare(DeathDate.Value, dt) < 0)
-                throw new ItsDeadJim("The person has deceased.");
+                throw new ItsDeadJim("The person is deceased.");
 
             return CalcAge(BirthCert.DateOfBirth, dt);
         }

@@ -130,5 +130,48 @@ namespace NoFuture.Tests.Rand
 
             System.Diagnostics.Debug.WriteLine(testSubject.FinancialData.ToString());
         }
+
+        [TestMethod]
+        public void TestGetXmlEduName()
+        {
+            var testResult = NorthAmericanWealth.GetXmlEduName(OccidentalEdu.Bachelor);
+            Assert.AreEqual("Associate",testResult);
+            testResult = NorthAmericanWealth.GetXmlEduName(OccidentalEdu.Bachelor | OccidentalEdu.Grad);
+            Assert.AreEqual("Bachelor", testResult);
+            System.Diagnostics.Debug.WriteLine(testResult.ToString());
+        }
+
+        [TestMethod]
+        public void TestSecuredFixedRateLoan()
+        {
+            var testResult = new SecuredFixedRateLoan(null, new DateTime(DateTime.Today.Year,1,1), 0.016667f, new Pecuniam(12143.06M));
+            Assert.IsNotNull(testResult.TradeLine);
+            Assert.IsNotNull(testResult.TradeLine.Balance);
+            Assert.IsFalse(testResult.TradeLine.Balance.IsEmpty);
+        }
+
+        [TestMethod]
+        public void TestGetRandomLoanWithHistory()
+        {
+            Pecuniam minOut;
+            var testResult = SecuredFixedRateLoan.GetRandomLoanWithHistory(null, null, new Pecuniam(8200.94M),
+                new Pecuniam(8200.94M + 3942.12M), 0.0557f, 5, out minOut);
+            Assert.IsNotNull(testResult);
+            Assert.IsTrue(testResult.MinPaymentRate > 0);
+            Assert.IsTrue(testResult.Rate > 0);
+            Assert.IsNotNull(testResult.TradeLine);
+            Assert.AreNotEqual(SpStatus.NoHistory, testResult.CurrentStatus);
+            Assert.AreNotEqual(Pecuniam.Zero, testResult.CurrentValue);
+            System.Diagnostics.Debug.WriteLine("MinPaymentRate     : {0}", testResult.MinPaymentRate);
+            System.Diagnostics.Debug.WriteLine("Rate               : {0}", testResult.Rate);
+            System.Diagnostics.Debug.WriteLine("TradeLine          : {0}", testResult.TradeLine);
+            System.Diagnostics.Debug.WriteLine("CurrentStatus      : {0}", testResult.CurrentStatus);
+            System.Diagnostics.Debug.WriteLine("CurrentValue       : {0}", testResult.CurrentValue);
+
+            foreach (var t in testResult.TradeLine.Balance.GetTransactionsBetween(null, null, true))
+            {
+                System.Diagnostics.Debug.WriteLine(string.Join(" ", t.AtTime, t.Cash, t.Fee, t.Description));
+            }
+        }
     }
 }

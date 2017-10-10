@@ -94,8 +94,15 @@ namespace NoFuture.Tests.Rand
                 Assert.IsNotNull(testResultYear);
                 Assert.IsTrue(testResultYear.Value <= DateTime.Today.Year);
 
-                System.Diagnostics.Debug.WriteLine(string.Join(" ", testResult.Value, testResult.Description, testResult.GetModelYearYyyy()));
+            }
 
+            for (var i = 0; i < 45; i++)
+            {
+                var byYearTestResult = Vin.GetRandomVin(true, 2014);
+                var testResultYear = byYearTestResult.GetModelYearYyyy();
+                Assert.IsNotNull(testResultYear);
+                Assert.IsTrue(testResultYear.Value <= 2014);
+                System.Diagnostics.Debug.WriteLine(string.Join(" ", byYearTestResult.Value, byYearTestResult.Description, byYearTestResult.GetModelYearYyyy()));
             }
         }
 

@@ -6,7 +6,7 @@ namespace NoFuture.Rand.Domus
     [Serializable]
     public class ResidentAddress : Identifier
     {
-        public DateTime FromDate { get; set; }
+        public DateTime? FromDate { get; set; }
         public DateTime? ToDate { get; set; }
         public StreetPo HomeStreetPo { get; set; }
         public CityArea HomeCityArea { get; set; }

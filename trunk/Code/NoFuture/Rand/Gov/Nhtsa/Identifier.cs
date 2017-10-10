@@ -63,6 +63,8 @@ namespace NoFuture.Rand.Gov.Nhtsa
         public const string PUBLIC_WEB_API_ROOT_URI = "http://vpic.nhtsa.dot.gov/api/vehicles/";
         public const char DF_DIGIT = '0';
         public const char DF_LETTER = 'A';
+        internal const int BASE_YEAR = 1980;
+        internal const int AMENDED_BASE_YEAR = 2010;
         #endregion
 
         #region properties
@@ -206,8 +208,7 @@ namespace NoFuture.Rand.Gov.Nhtsa
         /// <returns></returns>
         public int? GetModelYearYyyy()
         {
-            const int BASE_YEAR = 1980;
-            const int AMENDED_BASE_YEAR = 2010;
+
 
             var baseYear = 0;
 
@@ -234,8 +235,11 @@ namespace NoFuture.Rand.Gov.Nhtsa
         /// <param name="allowForOldModel">
         /// Allow random to produce model years back to 1980
         /// </param>
+        /// <param name="maxYear">
+        /// Allows calling api to specify a max allowable year of make.
+        /// </param>
         /// <returns></returns>
-        public static Vin GetRandomVin(bool allowForOldModel = false)
+        public static Vin GetRandomVin(bool allowForOldModel = false, int? maxYear = null)
         {
             var wmiAndName = WorldManufacturerId.GetRandomManufacturerId();
             var wmiOut = wmiAndName.Item1;
@@ -254,7 +258,7 @@ namespace NoFuture.Rand.Gov.Nhtsa
                 Eight = GetRandomVinChar()
             };
 
-            var vis = VehicleIdSection.GetVehicleIdSection(vds);
+            var vis = VehicleIdSection.GetVehicleIdSection(char.IsNumber(vds.Seven.GetValueOrDefault()), maxYear);
 
             var vin = new Vin {Wmi = wmiOut, Vds = vds, Vis = vis};
 
@@ -559,13 +563,23 @@ namespace NoFuture.Rand.Gov.Nhtsa
             return str.ToString();
         }
 
-        public static VehicleIdSection GetVehicleIdSection(VehicleDescription vds)
+        /// <summary>
+        /// Random gen for the vehicle id section 
+        /// </summary>
+        /// <param name="isLateModel"></param>
+        /// <param name="maxYear"></param>
+        /// <returns></returns>
+        public static VehicleIdSection GetVehicleIdSection(bool isLateModel = false, int? maxYear = null)
         {
-            const int AMENDED_BASE_YEAR = 2010;
 
-            var pick = Etx.IntNumber(0, DateTime.Today.Year - AMENDED_BASE_YEAR); 
+            var yy = maxYear ?? DateTime.Today.Year;
 
-            if (char.IsNumber(vds.Seven.GetValueOrDefault()))
+            if (yy < Vin.BASE_YEAR)
+                yy = Vin.BASE_YEAR;
+
+            var pick = Etx.IntNumber(0, yy - Vin.AMENDED_BASE_YEAR); 
+
+            if (isLateModel)
                 pick = Etx.IntNumber(0, Vin.YearIdx.Length-1);
 
             var vis = new VehicleIdSection

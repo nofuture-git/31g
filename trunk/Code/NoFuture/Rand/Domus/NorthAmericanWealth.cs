@@ -511,12 +511,6 @@ namespace NoFuture.Rand.Domus
             if (Etx.TryBelowOrAt(23, Etx.Dice.OneHundred))
                 randCarDebt = 0.0D;
 
-            var vin = Gov.Nhtsa.Vin.GetRandomVin(randCarDebt <= 2000.0D);
-
-            //this would never happen
-            while (_amer.MyGender == Gender.Male && vin.Description == "Toyota Yaris")
-                vin = Gov.Nhtsa.Vin.GetRandomVin(randCarDebt <= 2000.0D);
-
             //calc rand amount of equity
             var randCarEquity = GetRandomFactorValue(FactorTables.VehicleEquity, _vehicleEquityFactor, stdDevAsPercent);
 
@@ -528,7 +522,13 @@ namespace NoFuture.Rand.Domus
             var totalCost = new Pecuniam((decimal)(randCarDebt + randCarEquity));
 
             Pecuniam minPmt;
-            var loan = SecuredFixedRateLoan.GetRandomLoanWithHistory(_amer, vin, spCost, totalCost, (float)randRate, 5, out minPmt);
+            var loan = SecuredFixedRateLoan.GetRandomLoanWithHistory(_amer, new Gov.Nhtsa.Vin(), spCost, totalCost,
+                (float) randRate, 5, out minPmt);
+
+            //insure that the gen'ed history doesn't start before the year of make
+            var maxYear = loan.TradeLine.OpennedDate.Year;
+            var vin = Gov.Nhtsa.Vin.GetRandomVin(randCarDebt <= 2000.0D, maxYear);
+            loan.PropertyId = vin;
             loan.Description = string.Join(" ", vin.Value, vin.Description, vin.GetModelYearYyyy());
             loan.TradeLine.FormOfCredit = FormOfCredit.Installment;
             VehicleDebt.Add(loan);
@@ -546,7 +546,7 @@ namespace NoFuture.Rand.Domus
         /// the value from <see cref="GetFactorBaseValue"/>
         /// </param>
         /// <returns></returns>
-        protected internal double GetRandomFactorValue(FactorTables factor, double factorMultiplier,
+        public static double GetRandomFactorValue(FactorTables factor, double factorMultiplier,
             double stdDevAsPercent, double? assignedBase = null)
         {
             var baseValue = assignedBase.GetValueOrDefault(GetFactorBaseValue(factor));
@@ -561,6 +561,9 @@ namespace NoFuture.Rand.Domus
         /// defaults to the state.
         /// </summary>
         /// <returns></returns>
+        /// <remarks>
+        /// compiled data from BEA, see <see cref="Gov.Bea.Links.BeaRegionalDataPJEARN_MI"/>
+        /// </remarks>
         protected internal override LinearEquation GetAvgEarningPerYear()
         {
             var ca = _amer.Address?.HomeCityArea as UsCityStateZip;
@@ -577,8 +580,14 @@ namespace NoFuture.Rand.Domus
         /// <param name="age"></param>
         /// <param name="gender"></param>
         /// <param name="maritialStatus"></param>
-        /// <returns></returns>
-        internal static double GetFactor(FactorTables tbl, OccidentalEdu edu, NorthAmericanRace race,
+        /// <returns>
+        /// A scalar factor above or below the national average(s) based on the given criteria
+        /// </returns>
+        /// <remarks>
+        /// src http://www.census.gov/people/wealth/files/Debt_Tables_2011.xlsx
+        ///     http://www.census.gov/people/wealth/files/Wealth_Tables_2011.xlsx
+        /// </remarks>
+        public static double GetFactor(FactorTables tbl, OccidentalEdu edu, NorthAmericanRace race,
             AmericanRegion region, int age, Gender gender, MaritialStatus maritialStatus)
         {
             var xmlDoc = tbl == FactorTables.CreditCardDebt || tbl == FactorTables.HomeDebt ||
@@ -645,7 +654,7 @@ namespace NoFuture.Rand.Domus
         /// </summary>
         /// <param name="tbl"></param>
         /// <returns></returns>
-        internal static double GetFactorBaseValue(FactorTables tbl)
+        public static double GetFactorBaseValue(FactorTables tbl)
         {
             var xmlDoc = tbl == FactorTables.CreditCardDebt || tbl == FactorTables.HomeDebt ||
                         tbl == FactorTables.VehicleDebt

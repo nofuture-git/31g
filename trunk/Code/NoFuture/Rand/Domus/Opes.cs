@@ -160,6 +160,9 @@ namespace NoFuture.Rand.Domus
 
         internal static string GetPaymentNote(Identifier property, string prefix = null)
         {
+            if(property == null)
+                return prefix;
+
             var residenceLoan = property as ResidentAddress;
 
             if (residenceLoan != null)
