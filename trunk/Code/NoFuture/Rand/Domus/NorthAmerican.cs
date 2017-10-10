@@ -502,7 +502,7 @@ namespace NoFuture.Rand.Domus
             if (myMaritialStatus == MaritialStatus.Widowed)
             {
                 var d = Convert.ToInt32(Math.Round(GetAgeAt(null) * 0.15));
-                spouse.DeathDate = Etx.Date(Etx.IntNumber(1, d), null);
+                spouse.DeathDate = Etx.Date(Etx.IntNumber(1, d)*-1, null);
             }
 
             if (myMaritialStatus != MaritialStatus.Divorced && myMaritialStatus != MaritialStatus.Remarried &&

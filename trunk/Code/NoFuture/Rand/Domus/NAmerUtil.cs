@@ -7,6 +7,7 @@ using NoFuture.Rand.Data;
 using NoFuture.Rand.Data.Types;
 using NoFuture.Rand.Edu;
 using NoFuture.Rand.Gov;
+using NoFuture.Shared;
 
 namespace NoFuture.Rand.Domus
 {
@@ -310,6 +311,28 @@ namespace NoFuture.Rand.Domus
             if (max > 67)
                 max = 67;
             return DateTime.Now.AddYears(-1 * Etx.MyRand.Next(min, max)).AddDays(Etx.IntNumber(1, 360));
+        }
+
+        /// <summary>
+        /// Gets a date of death based on the <see cref="Equations.LifeExpectancy"/>
+        /// </summary>
+        /// <param name="dob"></param>
+        /// <param name="gender"></param>
+        /// <returns></returns>
+        public static DateTime GetDeathDate(DateTime dob, Gender gender)
+        {
+            var normDist = Equations.LifeExpectancy(gender);
+            var ageAtDeath = Etx.RandomValueInNormalDist(normDist.Mean, normDist.StdDev);
+            var years = (int)Math.Floor(ageAtDeath);
+            var days = (int)Math.Round((ageAtDeath - years)*Constants.DBL_TROPICAL_YEAR);
+
+            var deathDate =
+                dob.AddYears(years)
+                    .AddDays(days)
+                    .AddHours(Etx.IntNumber(0, 12))
+                    .AddMinutes(Etx.IntNumber(0, 59))
+                    .AddSeconds(Etx.IntNumber(0, 59));
+            return deathDate;
         }
 
         /// <summary>

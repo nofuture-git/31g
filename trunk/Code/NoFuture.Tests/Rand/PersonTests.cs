@@ -364,7 +364,15 @@ namespace NoFuture.Tests.Rand
             Assert.IsNotNull(testResult);
             Assert.IsNotNull(testResult.Est);
             Assert.IsTrue(testResult.Est.Equals(secondSpouse));
+        }
 
+        [TestMethod]
+        public void TestDeathDate()
+        {
+            var dob = NoFuture.Rand.Domus.NAmerUtil.GetWorkingAdultBirthDate();
+            var testResult = NAmerUtil.GetDeathDate(dob, Gender.Female);
+            Assert.AreNotEqual(dob, testResult);
+            System.Diagnostics.Debug.WriteLine("{0} - {1}", dob, testResult);
 
         }
     }
