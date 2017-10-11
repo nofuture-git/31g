@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using NoFuture.Rand.Com;
-using NoFuture.Rand.Data.Types;
 using NoFuture.Shared;
 using NoFuture.Util.Math;
 using NoFuture.Rand.Domus;
@@ -47,7 +46,7 @@ namespace NoFuture.Rand.Data.Sp //Sequere pecuniam
         {
             if (amt == Pecuniam.Zero)
                 return;
-            TradeLine.Balance.AddTransaction(dt, amt.Neg, Pecuniam.Zero, note);
+            TradeLine.Balance.AddTransaction(dt, amt.Neg, fee, note);
         }
 
         /// <summary>
@@ -60,7 +59,9 @@ namespace NoFuture.Rand.Data.Sp //Sequere pecuniam
         /// <returns></returns>
         public virtual bool Pop(DateTime dt, Pecuniam val, Pecuniam fee = null, string note = null)
         {
-            TradeLine.Balance.AddTransaction(dt, val.Abs, Pecuniam.Zero, note);
+            if (val == Pecuniam.Zero)
+                return false;
+            TradeLine.Balance.AddTransaction(dt, val.Abs, fee, note);
             return true;
         }
         #endregion

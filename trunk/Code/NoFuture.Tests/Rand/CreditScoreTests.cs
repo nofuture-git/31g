@@ -46,5 +46,15 @@ namespace NoFuture.Tests.Rand
             Debug.WriteLine(testResult);
 
         }
+
+        [TestMethod]
+        public void TestGetRandomMax()
+        {
+            var testInput = new NorthAmerican(NAmerUtil.GetWorkingAdultBirthDate(), Gender.Female);
+
+            var testSubject = new NoFuture.Rand.Data.Sp.PersonalCreditScore(testInput);
+            var testResult = testSubject.GetRandomMax(null);
+            Debug.WriteLine(testResult);
+        }
     }
 }

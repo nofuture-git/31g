@@ -66,6 +66,10 @@ namespace NoFuture.Rand.Data.Sp
     {
         public int Compare(ITransaction x, ITransaction y)
         {
+            if (x == null)
+                return 1;
+            if (y == null)
+                return -1;
             return DateTime.Compare(x.AtTime, y.AtTime);
         }
     }
@@ -99,7 +103,7 @@ namespace NoFuture.Rand.Data.Sp
         {
             if (amnt == null)
                 return Guid.Empty;
-            if (amnt.Amount == Pecuniam.Zero.Amount)
+            if (amnt == Pecuniam.Zero)
                 return Guid.Empty;
             while (_transactions.Any(x => DateTime.Compare(x.AtTime, dt) == 0))
             {

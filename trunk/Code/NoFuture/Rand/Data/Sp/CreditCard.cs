@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 using NoFuture.Rand.Domus;
 using NoFuture.Util;
 
@@ -104,6 +105,29 @@ namespace NoFuture.Rand.Data.Sp
                     return new VisaCc(p, dt, dt.AddYears(4));
             }
         }
+
+        /// <summary>
+        /// Returns the credit card in a format
+        /// like what is on a receipt.
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString()
+        {
+            var bldr = new StringBuilder();
+            var val = Number?.Value;
+            if (string.IsNullOrWhiteSpace(val))
+                return base.ToString();
+
+            for (var i = 0; i < val.Length - 4; i++)
+            {
+                bldr.Append("X");
+            }
+            var lastFour = val.Substring(val.Length - 4, 4);
+            bldr.Append(lastFour);
+
+            return string.Join(" ", bldr.ToString(), CardHolderName);
+        }
+
         #endregion
     }
 

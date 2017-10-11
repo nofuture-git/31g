@@ -69,11 +69,7 @@ namespace NoFuture.Rand.Data.Sp
         {
             if (val == Pecuniam.Zero)
                 return;
-            var status = GetStatus(dt);
-            if (status != SpStatus.Current)
-                return;
-
-            Balance.AddTransaction(dt, val.Abs, Pecuniam.Zero, note);
+            Balance.AddTransaction(dt, val.Abs, fee, note);
         }
 
         public virtual bool Pop(DateTime dt, Pecuniam val, Pecuniam fee = null, string note = null)
@@ -84,7 +80,7 @@ namespace NoFuture.Rand.Data.Sp
                 return false;
             if (val > Balance.GetCurrent(dt, 0F))
                 return false;
-            Balance.AddTransaction(dt, val.Neg, Pecuniam.Zero, note);
+            Balance.AddTransaction(dt, val.Neg, fee, note);
             return true;
         }
 
@@ -363,19 +359,7 @@ namespace NoFuture.Rand.Data.Sp
         /// <returns></returns>
         public override string ToString()
         {
-            var bldr = new StringBuilder();
-            var val = Cc.Number?.Value;
-            if (string.IsNullOrWhiteSpace(val))
-                return base.ToString();
-
-            for (var i = 0; i < val.Length - 4; i++)
-            {
-                bldr.Append("X");
-            }
-            var lastFour = val.Substring(val.Length - 4, 4);
-            bldr.Append(lastFour);
-
-            return string.Join(" ", bldr.ToString(), Cc.CardHolderName);
+            return Cc?.ToString() ?? base.ToString();
         }
 
         /// <summary>
@@ -397,6 +381,9 @@ namespace NoFuture.Rand.Data.Sp
             float baseInterestRate = 10.1F + Gov.Fed.RiskFreeInterestRate.DF_VALUE,
             float minPmtPercent = DF_MIN_PMT_RATE)
         {
+            if(ccScore == null && p is NorthAmerican)
+                ccScore = new PersonalCreditScore((NorthAmerican) p);
+
             var cc = CreditCard.GetRandomCreditCard(p);
             var max = ccScore == null ? new Pecuniam(1000) : ccScore.GetRandomMax(cc.CardHolderSince);
             var randRate = ccScore?.GetRandomInterestRate(cc.CardHolderSince, baseInterestRate) * 0.01 ?? baseInterestRate;

@@ -33,7 +33,7 @@ namespace NoFuture.Rand.Domus
 
         #region constants
         public const double DF_STD_DEV_PERCENT = 0.1285D;
-        public const double DF_DAILY_SPEND_PERCENT = 0.05D;
+        public const double DF_DAILY_SPEND_PERCENT = 0.1D;
 
         private const string UTIL_ELEC = "Electric";
         private const string UTIL_GAS = "Gas";
@@ -235,9 +235,9 @@ namespace NoFuture.Rand.Domus
             var randSavings = GetRandomFactorValue(FactorTables.SavingsAccount, _savingAcctFactor, stdDevAsPercent);
             var savings = SavingsAccount.GetRandomSavingAcct(_amer, baseDate);
             savings.Push(baseDate.AddDays(-1), randSavings.ToPecuniam(), Pecuniam.Zero, "Init Savings");
-            var totalDays = (DateTime.Today - baseDate).TotalDays;
             var friCounter = 0;
-            for (var i = 0; i < totalDays; i++)
+            var historyTs = DateTime.Today - baseDate;
+            for (var i = 0; i < historyTs.TotalDays; i++)
             {
                 var loopDtSt = baseDate.AddDays(i).Date;
 
@@ -246,7 +246,7 @@ namespace NoFuture.Rand.Domus
                 {
                     if (friCounter%2 == 0)
                     {
-                        checking.Push(loopDtSt.AddSeconds(1), Paycheck.Abs, Pecuniam.Zero, "Pay");
+                        checking.Push(loopDtSt.AddSeconds(1), Paycheck, Pecuniam.Zero, "Pay");
                     }
                     
                     //replenish savings
@@ -276,16 +276,22 @@ namespace NoFuture.Rand.Domus
                 //add utility pmts
                 PayUtilityBills(loopDtSt, checking);
 
+                //create some checking account transactions 
+                var currentBalance = checking.GetValueAt(loopDtSt);
+
                 //if broke, move funds from savings and no spending
-                if (checking.GetStatus(loopDtSt) != SpStatus.Current)
+                if (checking.GetStatus(loopDtSt) != SpStatus.Current || currentBalance <= new Pecuniam(10))
                 {
-                    DepositAccount.TransferFundsInBankAccounts(savings, checking, randChecking.ToPecuniam() - checking.CurrentValue,
+                    DepositAccount.TransferFundsInBankAccounts(savings, checking,
+                        randChecking.ToPecuniam() - checking.CurrentValue,
                         loopDtSt.AddHours(19));
                     continue;
                 }
 
-                //create some checking account transactions 
-                CreateSingleDaysPurchases(_amer.Personality, checking, loopDtSt, (double)Paycheck.Amount * DF_DAILY_SPEND_PERCENT);
+                var factor = currentBalance > Paycheck ? currentBalance : Paycheck;
+
+                CreateSingleDaysPurchases(_amer.Personality, checking, loopDtSt,
+                    (double)factor.Amount*DF_DAILY_SPEND_PERCENT);
             }
             SavingAccounts.Add(savings);
             CheckingAccounts.Add(checking);
@@ -317,7 +323,7 @@ namespace NoFuture.Rand.Domus
                 {
                     randAmt += Pecuniam.GetRandPecuniam(utilsDfMin, utilsDfMid);
                 }
-                checking.Push(loopDtSt.AddHours(12), randAmt, Pecuniam.Zero, t.Item1);
+                checking.Pop(loopDtSt.AddHours(12), randAmt, Pecuniam.Zero, t.Item1);
             }
         }
 
@@ -420,7 +426,6 @@ namespace NoFuture.Rand.Domus
         /// it to the <see cref="Opes.CreditCardDebt"/> collection.
         /// </summary>
         /// <param name="stdDevAsPercent"></param>
-        /// <param name="maxCcDebt"></param>
         protected internal void AddSingleCcDebt(double stdDevAsPercent = DF_STD_DEV_PERCENT)
         {
             //create random cc
@@ -428,36 +433,52 @@ namespace NoFuture.Rand.Domus
 
             var pmtNote = GetPaymentNote(ccAcct.Id);
 
+            //1 year history
+            var baseDate = DateTime.Today.AddYears(-1);
+
             //determine timespan for generated history
-            var historyTs = DateTime.Now - ccAcct.Cc.CardHolderSince;
+            var historyTs = DateTime.Today - baseDate;
+
+            var ccAcctDueDoM = Etx.DiscreteRange(new[] {1, 15, 28});
 
             //create history
             for (var i = 1; i < historyTs.Days; i++)
             {
-                var loopDt = ccAcct.Cc.CardHolderSince.AddDays(i);
+                var loopDt = baseDate.AddDays(i).Date;
                 if (ccAcct.GetStatus(loopDt) == SpStatus.Closed)
                     break;
 
-                CreateSingleDaysPurchases(_amer.Personality, ccAcct, loopDt, (double)Paycheck.Amount * DF_DAILY_SPEND_PERCENT);
+                //payments
+                if (loopDt.Day == ccAcctDueDoM)
+                {
+                    //this is a negative amount
+                    var minDue = ccAcct.GetMinPayment(loopDt);
+                    if (minDue > new Pecuniam(10.0M).Neg)
+                        minDue = new Pecuniam(10.0M).Neg;
+                    if (_amer.Personality.GetRandomActsIrresponsible())
+                    {
+                        var fowardDays = Etx.IntNumber(1, 45);
+                        var paidDate = loopDt.AddDays(fowardDays);
+                        ccAcct.Push(paidDate, minDue, Pecuniam.Zero, pmtNote);
+                    }
+                    else
+                    {
+                        var additionalPaid = Pecuniam.GetRandPecuniam(20, 200, 10);
+                        ccAcct.Push(loopDt, minDue + additionalPaid, Pecuniam.Zero, pmtNote);
+                    }
+                }
 
-                if (i%30 != 0 || ccAcct.GetValueAt(loopDt).Amount < 0.0M)
+                //purchases
+                var remainingCredit = ccAcct.Max - ccAcct.GetValueAt(loopDt);
+
+                if (ccAcct.GetStatus(loopDt) != SpStatus.Current || remainingCredit <= new Pecuniam(10))
                     continue;
 
-                var minDue = ccAcct.GetMinPayment(loopDt);
-                if(minDue < new Pecuniam(10.0M))
-                    minDue = new Pecuniam(10.0M);
-                if (_amer.Personality.GetRandomActsIrresponsible())
-                {
-                    var fowardDays = Etx.IntNumber(1, 45);
-                    var paidDate = loopDt.AddDays(fowardDays);
-                    ccAcct.Push(paidDate, minDue, Pecuniam.Zero, pmtNote);
-                    i += fowardDays;
-                }
-                else
-                {
-                    var additionalPaid = Pecuniam.GetRandPecuniam(20, 200, 10);
-                    ccAcct.Push(loopDt, minDue + additionalPaid, Pecuniam.Zero, pmtNote);
-                }
+                var scaler = remainingCredit > Paycheck ? Paycheck : remainingCredit;
+
+                var factor = (double)scaler.Amount*DF_DAILY_SPEND_PERCENT/2;
+
+                CreateSingleDaysPurchases(_amer.Personality, ccAcct, loopDt,factor);
             }
 
             CreditCardDebt.Add(ccAcct);

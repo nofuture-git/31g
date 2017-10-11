@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using NoFuture.Exceptions;
 using NoFuture.Util.Math;
 
 namespace NoFuture.Rand.Data.Sp
@@ -139,14 +138,14 @@ namespace NoFuture.Rand.Data.Sp
             if (ts.Count <= 0)
                 return Pecuniam.Zero;
 
-            if (between == null)
-                throw new ArgumentNullException(nameof(between));
+            var fromDt = between?.Item1 ?? First.AtTime;
+            var toDt = between?.Item2 ?? Last.AtTime;
 
-            if (between.Item1.Equals(between.Item2))
-                throw new ItsDeadJim("The calculation requires a date range.");
+            if (fromDt.Equals(toDt))
+                return Pecuniam.Zero;
 
-            var olderDate = DateTime.Compare(between.Item1, between.Item2) < 0 ? between.Item1 : between.Item2;
-            var newerDate = DateTime.Compare(between.Item2, between.Item1) > 0 ? between.Item2 : between.Item1;
+            var olderDate = DateTime.Compare(fromDt, toDt) < 0 ? fromDt : toDt;
+            var newerDate = DateTime.Compare(toDt, fromDt) > 0 ? toDt : fromDt;
 
             var paymentsInRange =
                 ts.Where(

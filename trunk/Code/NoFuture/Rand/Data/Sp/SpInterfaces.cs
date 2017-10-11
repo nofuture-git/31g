@@ -122,7 +122,6 @@ namespace NoFuture.Rand.Data.Sp //Sequere pecuniam
         /// <param name="dt"></param>
         /// <returns></returns>
         Pecuniam GetFees(DateTime dt);
-
     }
 
     /// <summary>

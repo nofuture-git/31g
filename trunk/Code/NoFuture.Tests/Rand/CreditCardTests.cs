@@ -50,7 +50,7 @@ namespace NoFuture.Tests.Rand
         {
             var testInput = new NorthAmerican(NoFuture.Rand.Domus.NAmerUtil.GetWorkingAdultBirthDate(), Gender.Female);
             var testSubject = new CreditCardAccount(new VisaCc(testInput, DateTime.Today.AddDays(-15), null), CreditCardAccount.DF_MIN_PMT_RATE, new Pecuniam(1800.0M));
-
+            Assert.IsTrue(testSubject.Max == new Pecuniam(1800.0M));
 
         }
 
