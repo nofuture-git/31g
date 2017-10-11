@@ -167,6 +167,17 @@ namespace NoFuture.Tests.Rand
         }
 
         [TestMethod]
+        public void TestDiscreteRangeEqProb()
+        {
+            var discreteRange = new[] {24, 18, 12, 6};
+            for (var i = 0; i < 12; i++)
+            {
+                var testResult = NoFuture.Rand.Etx.DiscreteRange(discreteRange);
+                Assert.IsTrue(discreteRange.Contains(testResult));
+            }
+        }
+
+        [TestMethod]
         public void TestRandomPortions()
         {
             var testResults = NoFuture.Rand.Etx.RandomPortions(6);

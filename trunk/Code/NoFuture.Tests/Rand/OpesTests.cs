@@ -154,7 +154,7 @@ namespace NoFuture.Tests.Rand
         public void TestGetRandomLoanWithHistory()
         {
             Pecuniam minOut;
-            var testResult = SecuredFixedRateLoan.GetRandomLoanWithHistory(null, null, new Pecuniam(8200.94M),
+            var testResult = SecuredFixedRateLoan.GetRandomLoanWithHistory(null, new Pecuniam(8200.94M),
                 new Pecuniam(8200.94M + 3942.12M), 0.0557f, 5, out minOut);
             Assert.IsNotNull(testResult);
             Assert.IsTrue(testResult.MinPaymentRate > 0);

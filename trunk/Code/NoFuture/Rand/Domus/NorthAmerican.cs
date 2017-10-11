@@ -40,10 +40,14 @@ namespace NoFuture.Rand.Domus
         /// <param name="myGender"></param>
         public NorthAmerican(DateTime dob, Gender myGender) : base(dob)
         {
-            _birthCert = new AmericanBirthCert(this) { DateOfBirth = dob };
+            _birthCert = new AmericanBirthCert(this) { DateOfBirth = dob, BirthPlace = CityArea.American()};
+            
             _myGender = myGender;
 
-            var fname = _myGender != Gender.Unknown ? NAmerUtil.GetAmericanFirstName(_birthCert.DateOfBirth, _myGender) : "Pat";
+            var fname = _myGender != Gender.Unknown
+                ? NAmerUtil.GetAmericanFirstName(_birthCert.DateOfBirth, _myGender)
+                : "Pat";
+
             UpsertName(KindsOfNames.First, fname);
             var lname = NAmerUtil.GetAmericanLastName();
             UpsertName(KindsOfNames.Surname, lname);
@@ -69,9 +73,9 @@ namespace NoFuture.Rand.Domus
         /// </param>
         public NorthAmerican(DateTime dob, Gender myGender, bool withWholeFamily, bool withFinanceData):this(dob,myGender)
         {
-            var csz = CityArea.American();
-            var homeAddr = StreetPo.American();
-            _addresses.Add(new ResidentAddress {HomeStreetPo = homeAddr, HomeCityArea = csz});
+            var homeAddr = ResidentAddress.GetRandomAmericanAddr();
+            _addresses.Add(homeAddr);
+            var csz = homeAddr.HomeCityArea as UsCityStateZip;
 
             var abbrv = csz?.PostalState;
 
@@ -110,7 +114,14 @@ namespace NoFuture.Rand.Domus
             var nAmerMother = _mother as NorthAmerican;
             if (nAmerMother == null)
                 return;
-            ((AmericanBirthCert) _birthCert).BirthPlace = nAmerMother.GetAddressAt(dob)?.HomeCityArea as UsCityStateZip;
+            var americanBirthCert = (AmericanBirthCert) _birthCert;
+            var nAmerFather = _father as NorthAmerican;
+
+            var birthPlace = nAmerMother.GetAddressAt(dob)?.HomeCityArea as UsCityStateZip ??
+                             nAmerFather?.GetAddressAt(dob)?.HomeCityArea as UsCityStateZip ??
+                             CityArea.American();
+
+            americanBirthCert.BirthPlace = birthPlace;
             Race = nAmerMother.Race;
             AddEmailAddress();
         }
@@ -806,7 +817,7 @@ namespace NoFuture.Rand.Domus
         /// </summary>
         protected internal void AddEmailAddress()
         {
-            if (GetAgeAt(null) > 5)
+            if (GetAgeAt(null) > 10)
                 _netUris.Add(
                     new Uri("emailto:" +
                             Etx.RandomEmailUri(new[]

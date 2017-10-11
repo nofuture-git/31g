@@ -602,6 +602,7 @@ namespace NoFuture.Rand.Gov
     {
         public Mississippi() : base("MS")
         {
+            AgeOfMajority = 21;
             dlFormats = new[] { new DriversLicense(Numerics(9), this) };
         }
     }
@@ -635,6 +636,7 @@ namespace NoFuture.Rand.Gov
     {
         public Nebraska() : base("NE")
         {
+            AgeOfMajority = 19;
             var dl = new Rchar[9];
             dl[0] = new UAlphaRchar(0);
             Array.Copy(Numerics(8, 1), 0, dl, 1, 8);

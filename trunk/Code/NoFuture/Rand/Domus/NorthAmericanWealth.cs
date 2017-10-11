@@ -5,6 +5,7 @@ using System.Xml;
 using NoFuture.Rand.Data;
 using NoFuture.Rand.Data.Sp;
 using NoFuture.Rand.Data.Types;
+using NoFuture.Rand.Domus.Pneuma;
 using NoFuture.Util.Math;
 
 namespace NoFuture.Rand.Domus
@@ -376,38 +377,12 @@ namespace NoFuture.Rand.Domus
         {
             if (!_isRenting)
                 return Pecuniam.Zero;
-            //create a rent object
-            var avgRent = (double)Rent.GetAvgAmericanRentByYear(null).Amount;
 
-            var randRent =
-                new Pecuniam(
-                    (decimal) GetRandomFactorValue(FactorTables.HomeDebt, _homeDebtFactor, stdDevAsPercent, avgRent));
-            var term = 12;
-            var randDate = Etx.Date(0, DateTime.Today.AddDays(-2));
-            var rent = new Rent(_amer.Address, randDate, term, randRent, Etx.CoinToss ? new Pecuniam(250) : new Pecuniam(500))
-            {
-                Description = $"{term}-Month Lease"
-            };
-            _amer.Address.IsLeased = true;
-            //create payment history until current
-            var firstPmt = rent.GetMinPayment(randDate);
-            rent.PayRent(randDate.AddDays(1), firstPmt);
+            var homeDebtFactor = _homeDebtFactor;
 
-            var rentDueDate = randDate.Month == 12
-                ? new DateTime(randDate.Year + 1, 1, 1)
-                : new DateTime(randDate.Year, randDate.Month + 1, 1);
+            var rent = Rent.GetRandomRentWithHistory(_amer.Address, homeDebtFactor, _amer.Personality, stdDevAsPercent);
+            var randRent = rent.MonthlyPmt;
 
-            while (rentDueDate < DateTime.Today)
-            {
-                var paidRentOn = rentDueDate;
-                //move the date rent was paid to some late-date when person acts irresponsible
-                if (_amer.Personality.GetRandomActsIrresponsible())
-                    paidRentOn = paidRentOn.AddDays(Etx.IntNumber(5, 15));
-
-                rent.PayRent(paidRentOn, randRent, GetPaymentNote(rent.Id));
-                rentDueDate = rentDueDate.AddMonths(1);
-            }
-            
             HomeDebt.Add(rent);
             return randRent;
         }
@@ -433,7 +408,7 @@ namespace NoFuture.Rand.Domus
 
             //create a loan on current residence
             Pecuniam minPmt;
-            var loan = SecuredFixedRateLoan.GetRandomLoanWithHistory(_amer, _amer.Address, spCost, totalCost, (float) randRate, 30, out minPmt);
+            var loan = SecuredFixedRateLoan.GetRandomLoanWithHistory(_amer.Address, spCost, totalCost, (float) randRate, 30, out minPmt, _amer.Personality);
             loan.Description = "30-Year Mortgage";
             loan.TradeLine.FormOfCredit = FormOfCredit.Mortgage;
             HomeDebt.Add(loan);
@@ -522,8 +497,8 @@ namespace NoFuture.Rand.Domus
             var totalCost = new Pecuniam((decimal)(randCarDebt + randCarEquity));
 
             Pecuniam minPmt;
-            var loan = SecuredFixedRateLoan.GetRandomLoanWithHistory(_amer, new Gov.Nhtsa.Vin(), spCost, totalCost,
-                (float) randRate, 5, out minPmt);
+            var loan = SecuredFixedRateLoan.GetRandomLoanWithHistory(new Gov.Nhtsa.Vin(), spCost, totalCost,
+                (float) randRate, 5, out minPmt, _amer.Personality);
 
             //insure that the gen'ed history doesn't start before the year of make
             var maxYear = loan.TradeLine.OpennedDate.Year;

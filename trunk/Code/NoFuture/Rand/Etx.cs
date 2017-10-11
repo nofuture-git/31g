@@ -137,10 +137,10 @@ namespace NoFuture.Rand
         /// </summary>
         /// <param name="tbl"></param>
         /// <returns></returns>
-        public static string DiscreteRange(Dictionary<string, double> tbl)
+        public static T DiscreteRange<T>(Dictionary<T, double> tbl)
         {
             if (tbl == null)
-                return null;
+                return default(T);
             if (tbl.Count == 1)
                 return tbl.Keys.First();
 
@@ -149,12 +149,15 @@ namespace NoFuture.Rand
             var isSumAsOne = sum < 0.99 && sum > 1.01;
 
             //move the dictionary into an increasing range 
-            var tblCopy = new Dictionary<string, double>();
+            var tblCopy = new Dictionary<T, double>();
             var runningSum = 0.0D;
-            foreach (var k in tbl.Keys)
+            foreach (var kt in tbl.Keys)
             {
-                var val = isSumAsOne ? tbl[k] : tbl[k]/sum;
-                tblCopy[k] = val + runningSum;
+                if (Equals(kt, null))
+                    continue;
+                
+                var val = isSumAsOne ? tbl[kt] : tbl[kt]/sum;
+                tblCopy[kt] = val + runningSum;
                 runningSum += val;
             }
 
@@ -169,10 +172,10 @@ namespace NoFuture.Rand
         /// </summary>
         /// <param name="list"></param>
         /// <returns></returns>
-        public static string DiscreteRange(string[] list)
+        public static T DiscreteRange<T>(T[] list)
         {
             if (list == null || list.Length < 0)
-                return null;
+                return default(T);
             if (list.Length == 1)
                 return list[0];
             var pick = IntNumber(0, list.Length - 1);
@@ -602,19 +605,23 @@ namespace NoFuture.Rand
         /// </summary>
         /// <param name="plusOrMinusYears"></param>
         /// <param name="fromThisDate">Optional, will default to current system time</param>
+        /// <param name="forceInPast"
+        /// >Optional switch to force the random date to only occur in the past from <see cref="fromThisDate"/>
+        /// </param>
         /// <param name="maxDaysSpread">
         /// Additional number of days to further randomize the date where the final date
         /// will be plus or minus one to <see cref="maxDaysSpread"/> days. Setting this to zero 
         /// will result in exactly <see cref="fromThisDate"/> plus <see cref="plusOrMinusYears"/> number of years.
         /// </param>
         /// <returns></returns>
-        public static DateTime Date(int plusOrMinusYears, DateTime? fromThisDate, int maxDaysSpread = 360)
+        public static DateTime Date(int plusOrMinusYears, DateTime? fromThisDate, bool forceInPast = false, int maxDaysSpread = 360)
         {
             var dt = DateTime.Now;
             if (fromThisDate != null)
                 dt = fromThisDate.Value;
             //plus or minus some random days
-            var randomDaysNear = Etx.IntNumber(1, maxDaysSpread) *PlusOrMinusOne;
+            var pom = forceInPast ? -1 : PlusOrMinusOne;
+            var randomDaysNear = Etx.IntNumber(1, maxDaysSpread) * pom;
             return dt.AddYears(plusOrMinusYears).AddDays(randomDaysNear);
         }
 

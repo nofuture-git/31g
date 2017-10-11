@@ -1,4 +1,6 @@
 ﻿using System;
+using NoFuture.Rand.Domus;
+using NoFuture.Rand.Domus.Pneuma;
 using NoFuture.Shared;
 using NoFuture.Util;
 using NoFuture.Util.Math;
@@ -43,12 +45,17 @@ namespace NoFuture.Rand.Data.Sp
             }
             LeaseExpiry = _dtOfFirstFullRentDue.AddMonths(forMonths);
             var fullTermAmt = _proRatedAmt + new Pecuniam(monthlyRent.Amount*forMonths);
-            base.TradeLine.Balance.AddTransaction(signing, fullTermAmt);
+            base.TradeLine.Balance.AddTransaction(signing, fullTermAmt, null, "Lease Signing");
             base.TradeLine.FormOfCredit = FormOfCredit.None;
             LeaseTermInMonths = forMonths;
             Deposit = deposit;
             MonthlyPmt = monthlyRent;
             Id = property;
+            Description = $"{forMonths}-Month Lease";
+            if (property is ResidentAddress)
+            {
+                ((ResidentAddress) property).IsLeased = true;
+            }
         }
         #endregion
 
@@ -128,6 +135,52 @@ namespace NoFuture.Rand.Data.Sp
             }
 
             return countOfMonths;
+        }
+
+        /// <summary>
+        /// Factory method to generate a <see cref="Rent"/> instance at random.
+        /// </summary>
+        /// <param name="property">The property identifier on which is being leased</param>
+        /// <param name="homeDebtFactor">The home debt factor based on the renter's age, gender, edu, etc.</param>
+        /// <param name="renterPersonality">Optional, used when creating a history of payments.</param>
+        /// <param name="stdDevAsPercent">Optional, the stdDev around the mean.</param>
+        /// <returns></returns>
+        public static Rent GetRandomRentWithHistory(Identifier property, double homeDebtFactor, Personality renterPersonality = null,
+            double stdDevAsPercent = NorthAmericanWealth.DF_STD_DEV_PERCENT)
+        {
+            //create a rent object
+            renterPersonality = renterPersonality ?? new Personality();
+            var avgRent = (double) Rent.GetAvgAmericanRentByYear(null).Amount;
+            var randRent = new Pecuniam(
+                (decimal)
+                    NorthAmericanWealth.GetRandomFactorValue(NorthAmericanWealth.FactorTables.HomeDebt, homeDebtFactor,
+                        stdDevAsPercent, avgRent));
+            var randTerm = Etx.DiscreteRange(new[] {24, 18, 12, 6});
+            var randDate = Etx.Date(0, DateTime.Today.AddDays(-2), true);
+            var randDepositAmt = (int) Math.Round((randRent.Amount - randRent.Amount%250)/2);
+            var randDeposit = new Pecuniam(randDepositAmt);
+
+            var rent = new Rent(property, randDate, randTerm, randRent, randDeposit);
+
+            //create payment history until current
+            var firstPmt = rent.GetMinPayment(randDate);
+            rent.PayRent(randDate.AddDays(1), firstPmt, "First Rent Payment");
+
+            var rentDueDate = randDate.Month == 12
+                ? new DateTime(randDate.Year + 1, 1, 1)
+                : new DateTime(randDate.Year, randDate.Month + 1, 1);
+
+            while (rentDueDate < DateTime.Today)
+            {
+                var paidRentOn = rentDueDate;
+                //move the date rent was paid to some late-date when person acts irresponsible
+                if (renterPersonality.GetRandomActsIrresponsible())
+                    paidRentOn = paidRentOn.AddDays(Etx.IntNumber(5, 15));
+
+                rent.PayRent(paidRentOn, randRent, Opes.GetPaymentNote(rent.Id));
+                rentDueDate = rentDueDate.AddMonths(1);
+            }
+            return rent;
         }
 
         /// <summary>

@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using NoFuture.Rand.Com;
+using NoFuture.Rand.Data.Types;
 using NoFuture.Shared;
 using NoFuture.Util.Math;
 using NoFuture.Rand.Domus;
+using NoFuture.Rand.Domus.Pneuma;
 
 namespace NoFuture.Rand.Data.Sp //Sequere pecuniam
 {
@@ -122,18 +124,21 @@ namespace NoFuture.Rand.Data.Sp //Sequere pecuniam
         #region methods
 
         /// <summary>
-        /// Produces a <see cref="SecuredFixedRateLoan"/> with history.
+        /// Produces a random <see cref="SecuredFixedRateLoan"/> with history.
         /// </summary>
-        /// <param name="borrower"></param>
-        /// <param name="property"></param>
-        /// <param name="remainingCost"></param>
-        /// <param name="totalCost"></param>
-        /// <param name="rate"></param>
+        /// <param name="property">The property on which the loan is secured.</param>
+        /// <param name="remainingCost">The balance which currently remains.</param>
+        /// <param name="totalCost">
+        /// The original value of the loan, the difference between 
+        /// this and the <see cref="remainingCost"/> determines how much history is needed.
+        /// </param>
+        /// <param name="rate">The interest rate</param>
         /// <param name="termInYears"></param>
         /// <param name="minPmt"></param>
+        /// <param name="borrowerPersonality">Optional, used when creating a history of payments.</param>
         /// <returns></returns>
-        public static SecuredFixedRateLoan GetRandomLoanWithHistory(IPerson borrower, Identifier property, Pecuniam remainingCost,
-            Pecuniam totalCost, float rate, int termInYears, out Pecuniam minPmt)
+        public static SecuredFixedRateLoan GetRandomLoanWithHistory(Identifier property, Pecuniam remainingCost,
+            Pecuniam totalCost, float rate, int termInYears, out Pecuniam minPmt, IPersonality borrowerPersonality = null)
         {
             //if no or nonsense values given, change to some default
             if (totalCost == null || totalCost < Pecuniam.Zero)
@@ -142,6 +147,12 @@ namespace NoFuture.Rand.Data.Sp //Sequere pecuniam
                 remainingCost = Pecuniam.Zero;
 
             rate = Math.Abs(rate);
+            //handle if caller passes in rate like 5.5 meaning they wanted 0.055
+            if (rate > 1)
+                rate = Convert.ToSingle(Math.Round(rate/100, 4));
+
+            //makes the fake history more colorful
+            borrowerPersonality = borrowerPersonality ?? new Personality();
 
             //calc the monthly payment
             var fv = remainingCost.Amount.PerDiemInterest(rate, Constants.TropicalYear.TotalDays * termInYears);
@@ -179,7 +190,7 @@ namespace NoFuture.Rand.Data.Sp //Sequere pecuniam
                 if (dtIncrement >= DateTime.Now)
                     break;
                 var paidOnDate = dtIncrement;
-                if (borrower != null && borrower.Personality.GetRandomActsIrresponsible())
+                if (borrowerPersonality.GetRandomActsIrresponsible())
                     paidOnDate = paidOnDate.AddDays(Etx.IntNumber(5, 15));
 
                 //is this the payoff
@@ -194,9 +205,10 @@ namespace NoFuture.Rand.Data.Sp //Sequere pecuniam
             }
 
             //assign boilerplate props
-            loan.Lender = borrower == null
+            var propertyAddress = property as ResidentAddress;
+            loan.Lender = propertyAddress == null
                 ? Bank.GetRandomBank(null)
-                : Bank.GetRandomBank(borrower?.Address?.HomeCityArea);
+                : Bank.GetRandomBank(propertyAddress.HomeCityArea);
             return loan;
         }
 

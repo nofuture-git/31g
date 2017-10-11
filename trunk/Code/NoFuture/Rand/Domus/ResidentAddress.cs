@@ -18,5 +18,16 @@ namespace NoFuture.Rand.Domus
         {
             return string.Join(" ", HomeStreetPo, HomeCityArea);
         }
+
+        /// <summary>
+        /// Helper factory method to create an american address in one call.
+        /// </summary>
+        /// <returns></returns>
+        public static ResidentAddress GetRandomAmericanAddr()
+        {
+            var csz = CityArea.American();
+            var homeAddr = StreetPo.American();
+            return new ResidentAddress { HomeStreetPo = homeAddr, HomeCityArea = csz };
+        }
     }
 }
