@@ -147,7 +147,13 @@ namespace NoFuture.Rand.Data.Sp //Sequere pecuniam
             if (remainingCost == null || remainingCost < Pecuniam.Zero)
                 remainingCost = Pecuniam.Zero;
 
+            //remaining must always be less than the total 
+            if (remainingCost > totalCost)
+                totalCost = remainingCost + Pecuniam.GetRandPecuniam(1000, 3000);
+
+            //interest rate must be a positive number
             rate = Math.Abs(rate);
+
             //handle if caller passes in rate like 5.5 meaning they wanted 0.055
             if (rate > 1)
                 rate = Convert.ToSingle(Math.Round(rate/100, 4));
@@ -156,7 +162,7 @@ namespace NoFuture.Rand.Data.Sp //Sequere pecuniam
             borrowerPersonality = borrowerPersonality ?? new Personality();
 
             //calc the monthly payment
-            var fv = remainingCost.Amount.PerDiemInterest(rate, Constants.TropicalYear.TotalDays * termInYears);
+            var fv = totalCost.Amount.PerDiemInterest(rate, Constants.TropicalYear.TotalDays * termInYears);
             minPmt = new Pecuniam(Math.Round(fv / (termInYears * 12), 2));
             var minPmtRate = fv == 0 ? CreditCardAccount.DF_MIN_PMT_RATE : (float)Math.Round(minPmt.Amount / fv, 6);
 

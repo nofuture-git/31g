@@ -29,7 +29,7 @@ namespace NoFuture.Rand.Data.Sp
         public Pecuniam TotalAssets { get; set; }
         public Pecuniam TotalLiabilities { get; set; }
 
-        public Pecuniam GetNetWorthMargin
+        public Pecuniam NetWorthMargin
         {
             get
             {
@@ -53,7 +53,7 @@ namespace NoFuture.Rand.Data.Sp
         public Pecuniam OperatingIncome { get; set; }
         public Pecuniam NetIncome { get; set; }
 
-        public Pecuniam GetProfitMargin
+        public Pecuniam ProfitMargin
         {
             get
             {

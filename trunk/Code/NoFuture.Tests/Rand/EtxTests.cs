@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NoFuture.Rand;
 using NoFuture.Rand.Domus;
 
 namespace NoFuture.Tests.Rand
@@ -213,6 +214,38 @@ namespace NoFuture.Tests.Rand
             testResult = NoFuture.Rand.Etx.RandomEmailUri(new[] { "Robert", "Edward", "Lee" }, false);
             Assert.IsNotNull(testResult);
             System.Diagnostics.Debug.WriteLine(testResult);
+        }
+
+        [TestMethod]
+        public void TestTryAtOrAbove()
+        {
+            var runningCount = new List<int>();
+            var totalCount = 100;
+            for (var i = 0; i < totalCount; i++)
+            {
+                var testRslt = NoFuture.Rand.Etx.TryAboveOrAt(95, Etx.Dice.OneHundred) ? 1 : 0;
+                runningCount.Add(testRslt);
+            }
+
+            var totalTestRslt = runningCount.Sum();
+            System.Diagnostics.Debug.WriteLine(totalTestRslt);
+            Assert.IsTrue(totalTestRslt < 10);
+        }
+
+        [TestMethod]
+        public void TestTryAtOrBelow()
+        {
+            var runningCount = new List<int>();
+            var totalCount = 100;
+            for (var i = 0; i < totalCount; i++)
+            {
+                var testRslt = NoFuture.Rand.Etx.TryBelowOrAt(95, Etx.Dice.OneHundred) ? 1 : 0;
+                runningCount.Add(testRslt);
+            }
+
+            var totalTestRslt = runningCount.Sum();
+            System.Diagnostics.Debug.WriteLine(totalTestRslt);
+            Assert.IsTrue(totalTestRslt > 90);
         }
     }
 }

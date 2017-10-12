@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using NoFuture.Rand.Data.Source;
 using NoFuture.Shared;
 
@@ -7,7 +8,7 @@ namespace NoFuture.Rand.Data
     public class ListData
     {
         #region fields
-        private static string[] _webdomains;
+        private static string[] _webMaildomains;
         #endregion
 
         /// <summary>
@@ -30,17 +31,30 @@ namespace NoFuture.Rand.Data
         /// Loads <see cref="DataFiles.WEBMAIL_DOMAINS"/> into an array.
         /// Src [https://github.com/tarr11/Webmail-Domains/blob/master/domains.txt]
         /// </summary>
-        public static string[] UsWebmailDomains
+        public static string[] WebmailDomains
         {
             get
             {
-                if(_webdomains != null && _webdomains.Length > 0)
-                    return _webdomains;
+                if(_webMaildomains != null && _webMaildomains.Length > 0)
+                    return _webMaildomains;
 
-                _webdomains = DataFiles.GetByName(DataFiles.WEBMAIL_DOMAINS).Split(Constants.LF).ToArray();
-                return _webdomains;
+                _webMaildomains = DataFiles.GetByName(DataFiles.WEBMAIL_DOMAINS).Split(Constants.LF).ToArray();
+                return _webMaildomains;
 
             }
         }
+
+        /// <summary>
+        /// Loads only the common web mail domains in the US
+        /// Src [https://github.com/mailcheck/mailcheck/wiki/List-of-Popular-Domains]
+        /// </summary>
+        public static string[] UsWebmailDomains { get; } = {
+            "aol.com", "att.net", "comcast.net", "facebook.com", "gmail.com",
+            "gmx.com", "googlemail.com","google.com", "hotmail.com", "mac.com",
+            "me.com", "mail.com", "msn.com","live.com", "sbcglobal.net",
+            "verizon.net", "yahoo.com","bellsouth.net", "charter.net", "cox.net",
+            "earthlink.net", "juno.com"
+        };
+
     }
 }

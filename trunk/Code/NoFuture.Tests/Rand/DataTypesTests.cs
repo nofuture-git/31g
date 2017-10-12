@@ -18,7 +18,7 @@ namespace NoFuture.Tests.Rand
         [TestMethod]
         public void TestListData()
         {
-            var testResult = NoFuture.Rand.Data.ListData.UsWebmailDomains;
+            var testResult = NoFuture.Rand.Data.ListData.WebmailDomains;
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0, testResult.Length);
         }

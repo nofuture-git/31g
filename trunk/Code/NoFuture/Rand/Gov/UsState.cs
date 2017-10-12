@@ -86,7 +86,8 @@ namespace NoFuture.Rand.Gov
         /// </summary>
         public virtual AmericanUniversity[] GetUniversities()
         {
-            if (universities != null)
+            //only resolve this once per instance
+            if (universities != null && universities.Any())
                 return universities;
 
             //this will never pass so avoid the exception
@@ -123,13 +124,14 @@ namespace NoFuture.Rand.Gov
         /// </summary>
         public virtual AmericanHighSchool[] GetHighSchools()
         {
-            if (highSchools != null)
-                return new AmericanHighSchool[] {};
+            //only resolve this once per instance
+            if (highSchools != null && highSchools.Any())
+                return highSchools;
 
-            if (Data.TreeData.AmericanHighSchoolData == null)
+            if (TreeData.AmericanHighSchoolData == null)
                 return new AmericanHighSchool[] { };
             var elements =
-                Data.TreeData.AmericanHighSchoolData.SelectNodes($"//state[@name='{GetType().Name}']//high-school");
+                TreeData.AmericanHighSchoolData.SelectNodes($"//state[@name='{GetType().Name}']//high-school");
             if (elements == null || elements.Count <= 0)
                 return new AmericanHighSchool[] { };
 
@@ -602,6 +604,7 @@ namespace NoFuture.Rand.Gov
     {
         public Mississippi() : base("MS")
         {
+            //MS requires this age in order to get married.
             AgeOfMajority = 21;
             dlFormats = new[] { new DriversLicense(Numerics(9), this) };
         }

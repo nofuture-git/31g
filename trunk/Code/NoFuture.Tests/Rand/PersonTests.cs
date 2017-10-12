@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using NoFuture.Rand;
 using NoFuture.Rand.Data.Types;
 using NoFuture.Rand.Domus;
+using NoFuture.Rand.Edu;
 using NoFuture.Rand.Gov;
 using static System.Diagnostics.Debug;
 using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
@@ -63,6 +64,25 @@ namespace NoFuture.Tests.Rand
             Assert.IsNotNull(testResult);
             testResult = NorthAmericanEdu.GetAmericanUniversity(UsState.GetStateByPostalCode("AZ"));
             Assert.IsNotNull(testResult);
+        }
+
+        [TestMethod]
+        public void TestGetAmericanHighSchool()
+        {
+            var addrData = new AddressData()
+            {
+                City = "Ellisville",
+                StateAbbrv = "IL",
+                StateName = "Illinois",
+                PostalCode = "62644"
+            };
+
+            var usHca = new UsCityStateZip(addrData);
+            Assert.IsNotNull(usHca);
+            var hs = NorthAmericanEdu.GetAmericanHighSchool(usHca.State, usHca);
+            Assert.IsNotNull(hs);
+            Assert.IsFalse(hs.Equals(AmericanHighSchool.GetDefaultHs()));
+
         }
 
         [TestMethod]
@@ -373,6 +393,17 @@ namespace NoFuture.Tests.Rand
             var testResult = NAmerUtil.GetDeathDate(dob, Gender.Female);
             Assert.AreNotEqual(dob, testResult);
             System.Diagnostics.Debug.WriteLine("{0} - {1}", dob, testResult);
+
+        }
+
+        [TestMethod]
+        public void TestGetNorthAmericanEdu()
+        {
+            var testSubject = NoFuture.Rand.Domus.Person.American();
+            var testEdu = testSubject.Education;
+            Assert.IsNotNull(testEdu);
+
+            WriteLine(testEdu);
 
         }
     }

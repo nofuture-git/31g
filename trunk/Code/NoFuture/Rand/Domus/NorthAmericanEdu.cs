@@ -16,6 +16,8 @@ namespace NoFuture.Rand.Domus
         private Tuple<IUniversity, DateTime?> _college;
         private Tuple<IHighSchool, DateTime?> _highSchool;
 
+        public const int DF_MIN_AGE_ENTER_HS = 14;
+
         #region ctor
         internal NorthAmericanEdu(Tuple<IHighSchool, DateTime?> assignHs)
         {
@@ -31,16 +33,17 @@ namespace NoFuture.Rand.Domus
         }
 
         /// <summary>
-        /// Ctor using geography, age of <see cref="p"/>
+        /// Instantiates a new instance of <see cref="IEducation"/> using <see cref="p"/>
         /// </summary>
         /// <param name="p">
-        /// Optional, will return random if this is null or 
-        /// not a type of <see cref="NorthAmerican"/>
+        /// Expected to be of type <see cref="NorthAmerican"/>
         /// </param>
         public NorthAmericanEdu(IPerson p)
         {
             var amer = p as NorthAmerican;
-            if (amer != null && amer.Age < 14)
+
+            //only deal with highschool and up
+            if (amer != null && amer.Age < DF_MIN_AGE_ENTER_HS)
                 return;
 
             var dob = amer?.BirthCert?.DateOfBirth ?? NAmerUtil.GetWorkingAdultBirthDate();
@@ -50,12 +53,12 @@ namespace NoFuture.Rand.Domus
                     NAmerUtil.Equations.FemaleAge2FirstMarriage,
                     Gender.Female) as NorthAmerican
                 : amer.GetMother() as NorthAmerican;
-            
-            var dtAtAge18 = dob.AddYears(18);
+
+            var dtAtAge18 = dob.AddYears(UsState.AGE_OF_ADULT);
 
             var homeCityArea = mother?.GetAddressAt(dtAtAge18)?.HomeCityArea as UsCityStateZip ?? CityArea.American();
 
-            var isLegalAdult = !(amer?.IsLegalAdult(DateTime.Now) ?? true);
+            var isLegalAdult = amer?.IsLegalAdult(DateTime.Now) ?? true;
             DateTime? hsGradDt;
             if (!AssignRandomHighSchool(homeCityArea, isLegalAdult, dtAtAge18, out hsGradDt))
                 return;
@@ -91,7 +94,7 @@ namespace NoFuture.Rand.Domus
             var hs = GetAmericanHighSchool(homeCityArea.State, homeCityArea);
 
             //still in hs or dropped out
-            if (isLegalAdult || Etx.TryAboveOrAt((int) Math.Round(hsGradRate) + 1, Etx.Dice.OneHundred))
+            if (!isLegalAdult || Etx.TryAboveOrAt((int) Math.Round(hsGradRate) + 1, Etx.Dice.OneHundred))
             {
                 //assign grad hs but no date
                 _highSchool = new Tuple<IHighSchool, DateTime?>(hs, null);
@@ -260,11 +263,14 @@ namespace NoFuture.Rand.Domus
         {
             //get all hs for the state
             var hshs = homeState.GetHighSchools() ??
-                       Gov.UsState.GetStateByPostalCode(UsCityStateZip.DF_STATE_ABBREV).GetHighSchools();
+                       UsState.GetStateByPostalCode(UsCityStateZip.DF_STATE_ABBREV).GetHighSchools();
 
             //first try city, then state, last natl
             var hs = hshs.FirstOrDefault(x => x.PostalCode == hca?.AddressData?.PostalCode) ??
                          (hshs.Any() ? hshs[Etx.IntNumber(0, hshs.Length - 1)] : AmericanHighSchool.GetDefaultHs());
+
+            //these are on file in all caps
+            hs.Name = Util.Etc.CapWords(hs.Name, ' ');
             return hs;
         }
         #endregion

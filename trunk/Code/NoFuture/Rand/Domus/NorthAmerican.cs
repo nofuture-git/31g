@@ -667,6 +667,13 @@ namespace NoFuture.Rand.Domus
                 Race = childRace
             };
 
+            //check that child does not share the same first name as a sibling
+            while (_children.Any(x => x.Est.FirstName == nAmerChild.FirstName))
+            {
+                nAmerChild.UpsertName(KindsOfNames.First,
+                    NAmerUtil.GetAmericanFirstName(myChildDob, nAmerChild.MyGender));
+            }
+
             //child has ref to father, father needs ref to child
             var nAmerFather = spouseAtChildDob?.Est as NorthAmerican;
             if (nAmerFather != null && nAmerFather.MyGender == Gender.Male 
@@ -808,7 +815,7 @@ namespace NoFuture.Rand.Domus
 
         protected internal override bool IsLegalAdult(DateTime? dt)
         {
-            return GetAgeAt(dt) > GetMyHomeStatesAgeOfMajority();
+            return GetAgeAt(dt) >= GetMyHomeStatesAgeOfMajority();
         }
 
         /// <summary>
@@ -824,7 +831,7 @@ namespace NoFuture.Rand.Domus
                             {
                                 GetName(KindsOfNames.First), MiddleName,
                                 GetName(KindsOfNames.Surname)
-                            }, GetAgeAt(null) > 18)));
+                            }, GetAgeAt(null) >= UsState.AGE_OF_ADULT)));
         }
 
         //min. age a person could be married at

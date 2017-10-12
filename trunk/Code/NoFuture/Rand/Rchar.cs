@@ -3,6 +3,11 @@ using System.Linq;
 
 namespace NoFuture.Rand
 {
+    /// <summary>
+    /// A type for defining a character which is 
+    /// randomized, but also constrained by some kind of rule.
+    /// A string of these creates a highly controlled randomization pattern.
+    /// </summary>
     [Serializable]
     public abstract class Rchar
     {

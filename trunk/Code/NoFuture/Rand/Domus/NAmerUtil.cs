@@ -306,8 +306,8 @@ namespace NoFuture.Rand.Domus
         /// </remarks>
         public static DateTime GetWorkingAdultBirthDate(int min = 21, int max = 55)
         {
-            if (min < 18)
-                min = 18;
+            if (min < UsState.AGE_OF_ADULT)
+                min = UsState.AGE_OF_ADULT;
             if (max > 67)
                 max = 67;
             return DateTime.Now.AddYears(-1 * Etx.MyRand.Next(min, max)).AddDays(Etx.IntNumber(1, 360));

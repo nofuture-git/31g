@@ -39,6 +39,8 @@ namespace NoFuture.Rand.Domus
         private const string UTIL_GAS = "Gas";
         private const string UTIL_TELCO = "Telco";
         private const string UTIL_WATER = "Water";
+        private const string HEALTH_CARE = "Healthcare";
+        private const string INSURANCE = "Insurance";
         #endregion
 
         #region fields
@@ -59,21 +61,24 @@ namespace NoFuture.Rand.Domus
         private Pecuniam _carPmt = Pecuniam.Zero;
         private Pecuniam _homeEquity = Pecuniam.Zero;
         private Pecuniam _vehicleEquity = Pecuniam.Zero;
-        private readonly List<Tuple<string, int>> _utils = new List<Tuple<string, int>>
+        private readonly List<Tuple<string, int, Pecuniam>> _monthlyBills = new List<Tuple<string, int, Pecuniam>>
             {
-                new Tuple<string, int>(UTIL_ELEC, Etx.IntNumber(1, 28)),
-                new Tuple<string, int>(UTIL_GAS, Etx.IntNumber(1, 28)),
-                new Tuple<string, int>(UTIL_WATER, Etx.IntNumber(1, 28)),
-                new Tuple<string, int>(UTIL_TELCO, Etx.IntNumber(1, 28))
+                new Tuple<string, int, Pecuniam>(UTIL_ELEC, Etx.IntNumber(1, 28), null),
+                new Tuple<string, int, Pecuniam>(UTIL_GAS, Etx.IntNumber(1, 28), null),
+                new Tuple<string, int, Pecuniam>(UTIL_WATER, Etx.IntNumber(1, 28), null),
+                new Tuple<string, int, Pecuniam>(UTIL_TELCO, Etx.IntNumber(1, 28), null),
+                new Tuple<string, int, Pecuniam>(HEALTH_CARE, Etx.IntNumber(1,28), null),
             };
         #endregion
 
         #region ctor
         /// <summary>
-        /// Creates random transaction history.
+        /// Create a new Opes for the given <see cref="american"/>
         /// </summary>
         /// <param name="american"></param>
-        /// <param name="isRenting">Optional, force the generated instance as renting (instead of mortgage)</param>
+        /// <param name="isRenting">
+        /// Optional, force the generated instance as renting (instead of mortgage).
+        /// </param>
         public NorthAmericanWealth(NorthAmerican american, bool isRenting = false)
         {
             if(american == null)
@@ -126,7 +131,7 @@ namespace NoFuture.Rand.Domus
         #region methods
 
         /// <summary>
-        /// Creates a full Opes state and history at random.
+        /// Generates the random accounts and history for the given Opes
         /// </summary>
         /// <param name="possiableVehicles"></param>
         /// <param name="stdDevAsPercent"></param>
@@ -148,20 +153,33 @@ namespace NoFuture.Rand.Domus
             AddBankingAccounts(stdDevAsPercent);
         }
 
+        /// <summary>
+        /// Produces the common <see cref="FinancialData"/> for the given date
+        /// </summary>
+        /// <param name="dt">Optional, null will be for all dates</param>
+        /// <returns></returns>
         protected internal override FinancialData GetFinancialState(DateTime? dt = null)
         {
             var endDt = dt.GetValueOrDefault(DateTime.Now).Date.AddDays(1).AddMilliseconds(-1);
-            var startDt = endDt.Date.AddYears(-1);
+            var startDt = CheckingAccounts.Select(x => x.Inception).Min();
+
+            //get all money paid out
             var allPaymentsOut =
-                CheckingAccounts.Select(x => x.Balance.GetDebitSum(new Tuple<DateTime, DateTime>(startDt, endDt)));
+                CheckingAccounts.Select(x => x.Balance.GetDebitSum(new Tuple<DateTime, DateTime>(startDt, endDt)))
+                    .ToList();
+            allPaymentsOut.AddRange(
+                SavingAccounts.Select(x => x.Balance.GetDebitSum(new Tuple<DateTime, DateTime>(startDt, endDt))));
+
+            //get all money paid in
             var allPaymentsIn =
-                CheckingAccounts.Select(x => x.Balance.GetCreditSum(new Tuple<DateTime, DateTime>(startDt, endDt)));
-            var totalIncome = Pecuniam.Zero;
-            var totalExpense = Pecuniam.Zero;
-            foreach (var po in allPaymentsOut)
-                totalExpense += po;
-            foreach(var pi in allPaymentsIn)
-                totalIncome += pi;
+                CheckingAccounts.Select(x => x.Balance.GetCreditSum(new Tuple<DateTime, DateTime>(startDt, endDt)))
+                    .ToList();
+            allPaymentsIn.AddRange(
+                SavingAccounts.Select(x => x.Balance.GetCreditSum(new Tuple<DateTime, DateTime>(startDt, endDt))));
+
+            //sum of income and expense
+            var totalIncome = new Pecuniam(allPaymentsIn.Sum(x => x.Amount));
+            var totalExpense = new Pecuniam(allPaymentsOut.Sum(x => x.Amount));
 
             var netConIncome = new NetConIncome
             {
@@ -177,6 +195,11 @@ namespace NoFuture.Rand.Domus
             return new FinancialData {Assets = netConAssets, Income = netConIncome};
         }
 
+        /// <summary>
+        /// Gets the total value of all assests
+        /// </summary>
+        /// <param name="dt"></param>
+        /// <returns></returns>
         protected internal override Pecuniam GetTotalCurrentWealth(DateTime? dt = null)
         {
             var tlt = Pecuniam.Zero;
@@ -237,6 +260,11 @@ namespace NoFuture.Rand.Domus
             savings.Push(baseDate.AddDays(-1), randSavings.ToPecuniam(), Pecuniam.Zero, "Init Savings");
             var friCounter = 0;
             var historyTs = DateTime.Today - baseDate;
+
+            //have insurance payments show up as same amount each month
+            _monthlyBills.Add(new Tuple<string, int, Pecuniam>(INSURANCE, Etx.IntNumber(1, 28),
+                GetRandomMonthlyBillAmount()));
+
             for (var i = 0; i < historyTs.TotalDays; i++)
             {
                 var loopDtSt = baseDate.AddDays(i).Date;
@@ -273,8 +301,8 @@ namespace NoFuture.Rand.Domus
                 //add cc pmts
                 checking.AddDebitTransactionsByDate(loopDtSt, CreditCardDebt);
 
-                //add utility pmts
-                PayUtilityBills(loopDtSt, checking);
+                //add montly pmts
+                PayMonthlyBills(loopDtSt, checking);
 
                 //create some checking account transactions 
                 var currentBalance = checking.GetValueAt(loopDtSt);
@@ -288,42 +316,33 @@ namespace NoFuture.Rand.Domus
                     continue;
                 }
 
-                var factor = currentBalance > Paycheck ? currentBalance : Paycheck;
+                var myPecuniam = currentBalance > Paycheck ? currentBalance : Paycheck;
+                var dailyMax = (double) myPecuniam.Amount*DF_DAILY_SPEND_PERCENT;
 
-                CreateSingleDaysPurchases(_amer.Personality, checking, loopDtSt,
-                    (double)factor.Amount*DF_DAILY_SPEND_PERCENT);
+                CreateSingleDaysPurchases(_amer.Personality, checking, loopDtSt, dailyMax);
             }
             SavingAccounts.Add(savings);
             CheckingAccounts.Add(checking);
         }
 
         /// <summary>
-        /// Generates some utiltiy bill history for the <see cref="checking"/>.  
+        /// Generates some monthly bill history for the <see cref="checking"/>.  
         /// The dates and amounts routine and random.
         /// </summary>
         /// <param name="loopDtSt"></param>
         /// <param name="checking"></param>
-        protected internal void PayUtilityBills(DateTime loopDtSt, CheckingAccount checking)
+        protected internal void PayMonthlyBills(DateTime loopDtSt, CheckingAccount checking)
         {
-            var utilsDfMin = (int)Math.Round((double)Paycheck.Amount * DF_DAILY_SPEND_PERCENT);
-            var utilsDfMax = (int)Math.Round((double)Paycheck.Amount * DF_DAILY_SPEND_PERCENT*2);
-            var utilsDfMid = (int)Math.Round(((double)utilsDfMax - utilsDfMin) / 2);
-
             //add utility pmts
-            foreach (var t in _utils)
+            if (_monthlyBills == null)
+                return;
+            foreach (var t in _monthlyBills)
             {
-                if (loopDtSt.Day != t.Item2)
+                if (loopDtSt.Day != t?.Item2)
                     continue;
 
-                var randAmt = Pecuniam.GetRandPecuniam(utilsDfMin, utilsDfMax);
-
-                //raise these by season-of-year
-                if (t.Item1 == UTIL_ELEC && new[] { 6, 7, 8 }.Contains(loopDtSt.Month)
-                    || t.Item1 == UTIL_GAS && new[] { 12, 1, 2 }.Contains(loopDtSt.Month))
-                {
-                    randAmt += Pecuniam.GetRandPecuniam(utilsDfMin, utilsDfMid);
-                }
-                checking.Pop(loopDtSt.AddHours(12), randAmt, Pecuniam.Zero, t.Item1);
+                var billAmt = t.Item3 ?? GetRandomMonthlyBillAmount(t.Item1, loopDtSt.Month);
+                checking.Pop(loopDtSt.AddHours(12), billAmt, Pecuniam.Zero, t.Item1);
             }
         }
 
@@ -476,9 +495,9 @@ namespace NoFuture.Rand.Domus
 
                 var scaler = remainingCredit > Paycheck ? Paycheck : remainingCredit;
 
-                var factor = (double)scaler.Amount*DF_DAILY_SPEND_PERCENT/2;
+                var daysMax = (double)scaler.Amount*DF_DAILY_SPEND_PERCENT/2;
 
-                CreateSingleDaysPurchases(_amer.Personality, ccAcct, loopDt,factor);
+                CreateSingleDaysPurchases(_amer.Personality, ccAcct, loopDt,daysMax);
             }
 
             CreditCardDebt.Add(ccAcct);
@@ -529,6 +548,31 @@ namespace NoFuture.Rand.Domus
             loan.TradeLine.FormOfCredit = FormOfCredit.Installment;
             VehicleDebt.Add(loan);
             return minPmt;
+        }
+
+        /// <summary>
+        /// Factory method to get a monthly bill amount at random
+        /// </summary>
+        /// <param name="name">The name of the bill (e.g. Electric, Gas, etc)</param>
+        /// <param name="month">The month (1-12)</param>
+        /// <returns></returns>
+        protected internal Pecuniam GetRandomMonthlyBillAmount(string name = null, int? month = null)
+        {
+            var m = month.GetValueOrDefault(0);
+            const StringComparison OPT = StringComparison.OrdinalIgnoreCase;
+            var utilsDfMin = (int)Math.Round((double)Paycheck.Amount * DF_DAILY_SPEND_PERCENT);
+            var utilsDfMax = (int)Math.Round((double)Paycheck.Amount * DF_DAILY_SPEND_PERCENT * 2);
+            var utilsDfMid = (int)Math.Round(((double)utilsDfMax - utilsDfMin) / 2);
+
+            var randBill = Pecuniam.GetRandPecuniam(utilsDfMin, utilsDfMax);
+
+            //raise these by season-of-year
+            if (string.Equals(name,UTIL_ELEC, OPT) && new[] { 6, 7, 8 }.Contains(m)
+                || string.Equals(UTIL_GAS,name,OPT) && new[] { 12, 1, 2 }.Contains(m))
+            {
+                randBill += Pecuniam.GetRandPecuniam(utilsDfMin, utilsDfMid);
+            }
+            return randBill;
         }
 
         /// <summary>

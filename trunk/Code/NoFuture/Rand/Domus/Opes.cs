@@ -102,7 +102,7 @@ namespace NoFuture.Rand.Domus
         /// will raise every transactions possiable max by a factor of this.
         /// </param>
         public static void CreateSingleDaysPurchases(Personality spender, ITransactionable t, DateTime? dt,
-            double daysMax, int randMaxFactor = 10)
+            double daysMax, int randMaxFactor = 7)
         {
             if (t == null)
                 throw new ArgumentNullException(nameof(t));
