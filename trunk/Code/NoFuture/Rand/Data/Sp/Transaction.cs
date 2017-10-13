@@ -95,8 +95,9 @@ namespace NoFuture.Rand.Data.Sp
 
         public bool IsEmpty => _transactions.Count <= 0;
 
-        public ITransaction First => Transactions.FirstOrDefault();
-        public ITransaction Last => Transactions.LastOrDefault();
+        public ITransaction FirstTransaction => Transactions.FirstOrDefault();
+        public ITransaction LastTransaction => Transactions.LastOrDefault();
+        public int TransactionCount => Transactions.Count;
 
         #endregion
         public Guid AddTransaction(DateTime dt, Pecuniam amnt, Pecuniam fee = null, string note = null)

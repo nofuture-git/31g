@@ -50,19 +50,40 @@ namespace NoFuture.Rand.Data.Sp
             if (Transactions.All(x => x.AtTime > dt))
                 return Pecuniam.Zero;
 
-            var prev = Transactions[0];
+            var prev = FirstTransaction;
             var rest = Transactions.Skip(1);
 
             var bal = prev.Cash.Amount;
             foreach (var t in rest)
             {
+                var tAtTime = t.AtTime;
+
+                //does dt fall between this transaction and the last
                 if (t.AtTime > dt)
-                    break;
-                var days = (t.AtTime - prev.AtTime).TotalDays;
+                {
+                    tAtTime = dt;
+                }
+                //the interest from prev to next
+                var days = (tAtTime - prev.AtTime).TotalDays;
                 bal = bal.PerDiemInterest(rate, days);
+
+                //the current transaction is after the dt so we just want the interest
+                if (tAtTime == dt)
+                {
+                    break;
+                }
                 bal = bal + t.Cash.Amount;
                 prev = t;
             }
+
+            //is there a gap in time between last recorded transaction and query dt
+            if (LastTransaction.AtTime < dt)
+            {
+                //calc the interest for that number of days
+                var days = (dt - LastTransaction.AtTime).TotalDays;
+                bal = bal.PerDiemInterest(rate, days);
+            }
+
             return new Pecuniam(bal);
         }
 
@@ -118,8 +139,8 @@ namespace NoFuture.Rand.Data.Sp
 
         public List<ITransaction> GetTransactionsBetween(DateTime? from, DateTime? to, bool includeThoseOnToDate = false)
         {
-            var fromDt = @from ?? First.AtTime;
-            var toDt = @to ?? Last.AtTime;
+            var fromDt = @from ?? FirstTransaction.AtTime;
+            var toDt = @to ?? LastTransaction.AtTime;
 
             if (includeThoseOnToDate)
             {
@@ -138,8 +159,8 @@ namespace NoFuture.Rand.Data.Sp
             if (ts.Count <= 0)
                 return Pecuniam.Zero;
 
-            var fromDt = between?.Item1 ?? First.AtTime;
-            var toDt = between?.Item2 ?? Last.AtTime;
+            var fromDt = between?.Item1 ?? FirstTransaction.AtTime;
+            var toDt = between?.Item2 ?? LastTransaction.AtTime;
 
             if (fromDt.Equals(toDt))
                 return Pecuniam.Zero;

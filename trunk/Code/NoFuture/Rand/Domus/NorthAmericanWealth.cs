@@ -37,7 +37,7 @@ namespace NoFuture.Rand.Domus
 
         private const string UTIL_ELEC = "Electric";
         private const string UTIL_GAS = "Gas";
-        private const string UTIL_TELCO = "Telco";
+        private const string TELCO = "Telco";
         private const string UTIL_WATER = "Water";
         private const string HEALTH_CARE = "Healthcare";
         private const string INSURANCE = "Insurance";
@@ -66,7 +66,7 @@ namespace NoFuture.Rand.Domus
                 new Tuple<string, int, Pecuniam>(UTIL_ELEC, Etx.IntNumber(1, 28), null),
                 new Tuple<string, int, Pecuniam>(UTIL_GAS, Etx.IntNumber(1, 28), null),
                 new Tuple<string, int, Pecuniam>(UTIL_WATER, Etx.IntNumber(1, 28), null),
-                new Tuple<string, int, Pecuniam>(UTIL_TELCO, Etx.IntNumber(1, 28), null),
+                new Tuple<string, int, Pecuniam>(TELCO, Etx.IntNumber(1, 28), null),
                 new Tuple<string, int, Pecuniam>(HEALTH_CARE, Etx.IntNumber(1,28), null),
             };
         #endregion
@@ -555,20 +555,37 @@ namespace NoFuture.Rand.Domus
         /// </summary>
         /// <param name="name">The name of the bill (e.g. Electric, Gas, etc)</param>
         /// <param name="month">The month (1-12)</param>
+        /// <param name="dailyPercent">
+        /// The base percentage of the <see cref="Paycheck"/> around which 
+        /// the random amounts are created.
+        /// </param>
         /// <returns></returns>
-        protected internal Pecuniam GetRandomMonthlyBillAmount(string name = null, int? month = null)
+        protected internal Pecuniam GetRandomMonthlyBillAmount(string name = null, int? month = null,
+            double dailyPercent = DF_DAILY_SPEND_PERCENT)
         {
             var m = month.GetValueOrDefault(0);
             const StringComparison OPT = StringComparison.OrdinalIgnoreCase;
-            var utilsDfMin = (int)Math.Round((double)Paycheck.Amount * DF_DAILY_SPEND_PERCENT);
-            var utilsDfMax = (int)Math.Round((double)Paycheck.Amount * DF_DAILY_SPEND_PERCENT * 2);
-            var utilsDfMid = (int)Math.Round(((double)utilsDfMax - utilsDfMin) / 2);
+            var isUtilityBill = new[] {UTIL_ELEC, UTIL_GAS, UTIL_WATER}.Any(x => string.Equals(x, name, OPT));
+
+            //reduce these 
+            if (isUtilityBill)
+            {
+                dailyPercent = Math.Round(dailyPercent/4, 4);
+            }
+            if (string.Equals(name, TELCO, OPT))
+            {
+                dailyPercent = Math.Round(dailyPercent/3, 4);
+            }
+
+            var utilsDfMin = (int) Math.Round((double) Paycheck.Amount*dailyPercent);
+            var utilsDfMax = (int) Math.Round((double) Paycheck.Amount*dailyPercent*2);
+            var utilsDfMid = (int) Math.Round(((double) utilsDfMax - utilsDfMin)/2);
 
             var randBill = Pecuniam.GetRandPecuniam(utilsDfMin, utilsDfMax);
 
             //raise these by season-of-year
-            if (string.Equals(name,UTIL_ELEC, OPT) && new[] { 6, 7, 8 }.Contains(m)
-                || string.Equals(UTIL_GAS,name,OPT) && new[] { 12, 1, 2 }.Contains(m))
+            if (string.Equals(name, UTIL_ELEC, OPT) && new[] {6, 7, 8}.Contains(m)
+                || string.Equals(UTIL_GAS, name, OPT) && new[] {12, 1, 2}.Contains(m))
             {
                 randBill += Pecuniam.GetRandPecuniam(utilsDfMin, utilsDfMid);
             }

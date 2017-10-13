@@ -46,6 +46,7 @@ namespace NoFuture.Rand.Data.Sp //Sequere pecuniam
         {
             if (amt == Pecuniam.Zero)
                 return;
+            fee = fee == null ? Pecuniam.Zero : fee.Neg;
             TradeLine.Balance.AddTransaction(dt, amt.Neg, fee, note);
         }
 
@@ -61,6 +62,7 @@ namespace NoFuture.Rand.Data.Sp //Sequere pecuniam
         {
             if (val == Pecuniam.Zero)
                 return false;
+            fee = fee == null ? Pecuniam.Zero : fee.Abs;
             TradeLine.Balance.AddTransaction(dt, val.Abs, fee, note);
             return true;
         }
@@ -98,7 +100,7 @@ namespace NoFuture.Rand.Data.Sp //Sequere pecuniam
             : base(openedDate, minPaymentRate)
         {
             if (amt != null && amt.Amount != 0)
-                _tl.Balance.AddTransaction(openedDate, amt.Abs);
+                _tl.Balance.AddTransaction(openedDate, amt.Abs, Pecuniam.Zero, "Initial Transaction");
         }
 
         #endregion
@@ -201,13 +203,22 @@ namespace NoFuture.Rand.Data.Sp //Sequere pecuniam
                     paidOnDate = paidOnDate.AddDays(Etx.IntNumber(5, 15));
 
                 //is this the payoff
-                var isPayoff = loan.GetValueAt(dtIncrement) <= minPmt;
+                var isPayoff = loan.GetValueAt(paidOnDate) <= minPmt;
                 if (isPayoff)
-                    minPmt = loan.GetValueAt(dtIncrement);
+                {
+                    minPmt = loan.GetValueAt(paidOnDate);
+                }
 
                 loan.Push(paidOnDate, minPmt, Pecuniam.Zero, pmtNote);
                 if (isPayoff)
+                {
+                    loan.TradeLine.Closure = new TradelineClosure
+                    {
+                        ClosedDate = paidOnDate,
+                        Condition = ClosedCondition.ClosedWithZeroBalance
+                    };
                     break;
+                }
                 dtIncrement = dtIncrement.AddMonths(1);
             }
 
