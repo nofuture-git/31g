@@ -71,8 +71,24 @@ namespace NoFuture.Rand.Data.Types
     }
 
     [Serializable]
-    public class SocDetailedOccupation : StandardOccupationalClassification
+    public class SocDetailedOccupation : ClassificationBase<ClassificationOfInstructionalPrograms>
     {
         public override string LocalName => "ternary-group";
+    }
+
+    /// <summary>
+    /// The Classification of Instructional Programs (CIP) provides a taxonomic scheme 
+    /// that supports the accurate tracking and reporting of fields of study 
+    /// and program completions activity.
+    /// </summary>
+    /// <remarks>
+    /// [https://nces.ed.gov/ipeds/cipcode/Default.aspx?y=55]
+    /// </remarks>
+    [Serializable]
+    public class ClassificationOfInstructionalPrograms : StandardOccupationalClassification
+    {
+        public override string LocalName => "cip-code";
+
+        public override string Abbrev => "CIP";
     }
 }
