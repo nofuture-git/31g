@@ -37,7 +37,7 @@ namespace NoFuture.Rand.Domus
             set { _myGender = value; }
         }
         public virtual BirthCert BirthCert => _birthCert;
-        public virtual DateTime? DeathDate { get; set; }
+        public virtual DeathCert DeathCert { get; set; }
         public virtual string FirstName
         {
             get { return GetName(KindsOfNames.First); }
@@ -168,7 +168,7 @@ namespace NoFuture.Rand.Domus
         /// this instance's history of addresses.
         /// </summary>
         /// <param name="addr"></param>
-        protected internal void UpsertAddress(ResidentAddress addr)
+        protected internal void AddAddress(ResidentAddress addr)
         {
             if (addr == null)
                 return;
@@ -215,7 +215,7 @@ namespace NoFuture.Rand.Domus
             var canadian = American();
             var cpp = CityArea.Canadian();
             var str = canadian.GetAddressAt(null)?.HomeStreetPo;
-            canadian.UpsertAddress(new ResidentAddress { HomeCityArea = cpp, HomeStreetPo = str });
+            canadian.AddAddress(new ResidentAddress { HomeCityArea = cpp, HomeStreetPo = str });
 
             return canadian;
         }

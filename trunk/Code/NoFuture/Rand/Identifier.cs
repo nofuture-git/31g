@@ -45,7 +45,7 @@ namespace NoFuture.Rand
     /// <remarks>Latin for 'be counted'</remarks>
     public interface INumera
     {
-        Decimal Amount { get; }
+        decimal Amount { get; }
         Identifier Id { get; }
     }
 

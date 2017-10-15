@@ -24,7 +24,7 @@ namespace NoFuture.Rand.Domus
             _marriedOn = marriageDt;
             _separatedOn = divorceDt;
             _ordinal = ordinal;
-            var edt = Est.DeathDate ?? SeparatedOn.GetValueOrDefault(DateTime.Today);
+            var edt = Est.DeathCert?.DateOfDeath ?? SeparatedOn.GetValueOrDefault(DateTime.Today);
             var rng = (edt - MarriedOn).Days;
             _totalYears = (int) Math.Round(rng/Constants.DBL_TROPICAL_YEAR);
         }

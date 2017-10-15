@@ -84,6 +84,12 @@ namespace NoFuture.Rand.Domus
         /// Mean is from WHO [http://apps.who.int/gho/data/node.main.688?lang=en]
         /// </summary>
         public const double AVG_MAX_AGE_FEMALE = 81.6;
+
+        /// <summary>
+        /// source seems questionable - does not cite its source
+        /// https://www.mckinleyirvin.com/Family-Law-Blog/2012/October/32-Shocking-Divorce-Statistics.aspx
+        /// </summary>
+        public const int PERCENT_DIVORCED_CHILDREN_LIVE_WITH_MOTHER = 75;
         #endregion
 
         #region methods
@@ -685,7 +691,7 @@ namespace NoFuture.Rand.Domus
             var addrMatchTo = livesWithThisOne.GetAddressAt(null);
             if (addrMatchTo == null)
                 return;
-            thisPerson.UpsertAddress(addrMatchTo);
+            thisPerson.AddAddress(addrMatchTo);
             thisPerson._phoneNumbers.Clear();
             if (livesWithThisOne._phoneNumbers.Any(p => p.Item1 == KindsOfLabels.Home))
             {

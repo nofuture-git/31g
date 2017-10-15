@@ -349,10 +349,10 @@ namespace NoFuture.Tests.Rand
             var testPerson = new NorthAmerican(new DateTime((DateTime.Today.Year - 42), 6, 20), Gender.Female);
             var firstSpouse = new NorthAmerican(new DateTime((DateTime.Today.Year - 46), 4, 4), Gender.Male);
 
-            testPerson.AddNewSpouseToList(firstSpouse, firstMarriageDate, firstDivorceDate);
+            testPerson.AddSpouse(firstSpouse, firstMarriageDate, firstDivorceDate);
 
             var secondSpouse = new NorthAmerican(new DateTime((DateTime.Today.Year - 43), 12, 16), Gender.Male);
-            testPerson.AddNewSpouseToList(secondSpouse, secondMarriageDate);
+            testPerson.AddSpouse(secondSpouse, secondMarriageDate);
 
             //expect true when on day-of-wedding
             var testResult = testPerson.GetSpouseAt(firstMarriageDate);

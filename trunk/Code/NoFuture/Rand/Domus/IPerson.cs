@@ -9,7 +9,7 @@ namespace NoFuture.Rand.Domus
         #region properties
         int Age { get; }
         BirthCert BirthCert { get; }
-        DateTime? DeathDate { get; set; }
+        DeathCert DeathCert { get; set; }
         string FirstName { get; set; }
         string LastName { get; set; }
         Gender MyGender { get; set; }

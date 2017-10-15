@@ -129,15 +129,11 @@ namespace NoFuture.Rand.Domus
         #endregion
 
         #region properties
-        /// <summary>
-        /// Helper method to get the middle name which is mostly a North American thing.
-        /// </summary>
-        public string MiddleName
-        {
-            get { return GetName(KindsOfNames.Middle); }
-            set { UpsertName(KindsOfNames.Middle, value); }
 
-        }
+        /// <summary>
+        /// Helper property to get the an American&apos;s full name.
+        /// </summary>
+        public string FullName => string.Join(" ", FirstName, MiddleName, LastName);
 
         /// <summary>
         /// Helper method to get a home phone.
@@ -203,6 +199,16 @@ namespace NoFuture.Rand.Domus
         /// Get a list of vehicles which currently have payments.
         /// </summary>
         public IList<IReceivable> Vehicles => _opes?.VehicleDebt;
+
+        /// <summary>
+        /// Helper method to get the middle name which is mostly a North American thing.
+        /// </summary>
+        public string MiddleName
+        {
+            get { return GetName(KindsOfNames.Middle); }
+            set { UpsertName(KindsOfNames.Middle, value); }
+
+        }
         #endregion
 
         #region public methods
@@ -222,7 +228,7 @@ namespace NoFuture.Rand.Domus
             if (spAtDt == null)
                 return MaritialStatus.Divorced;
 
-            if(spAtDt.Est?.DeathDate != null && mdt >= spAtDt.Est.DeathDate.Value)
+            if(spAtDt.Est?.DeathCert?.DateOfDeath != null && mdt >= spAtDt.Est?.DeathCert?.DateOfDeath)
                 return  MaritialStatus.Widowed;
 
             return spAtDt.Ordinal > 1 ? MaritialStatus.Remarried : MaritialStatus.Married;
@@ -307,7 +313,7 @@ namespace NoFuture.Rand.Domus
             if (addr == null)
                 return;
             dt = dt ?? DateTime.Now;
-            UpsertAddress(addr);
+            AddAddress(addr);
 
             Func<Child, bool> isUnderageChild =
                 child => child?.Est is NorthAmerican && !((NorthAmerican) child.Est).IsLegalAdult(dt);
@@ -328,7 +334,27 @@ namespace NoFuture.Rand.Domus
             underAgeChildren = underAgeChildren.Distinct().ToList();
 
             foreach (var child in underAgeChildren)
-                NAmerUtil.SetNAmerCohabitants((NorthAmerican)child.Est, this);
+            {
+                var namerChild = child.Est as NorthAmerican;
+                if (namerChild == null)
+                    continue;
+
+                var livesWith = MyGender == Gender.Male &&
+                                Etx.TryAboveOrAt(NAmerUtil.PERCENT_DIVORCED_CHILDREN_LIVE_WITH_MOTHER+1,
+                                    Etx.Dice.OneHundred)
+                    ? namerChild.GetFather()
+                    : namerChild.GetMother();
+
+                var namerLivesWith = livesWith as NorthAmerican;
+                if (namerLivesWith == null)
+                    continue;
+
+                if (namerLivesWith.Address == null)
+                    namerLivesWith.AddAddress(
+                        ResidentAddress.GetRandomAmericanAddr(Address.HomeCityArea.GetPostalCodePrefix()));
+
+                NAmerUtil.SetNAmerCohabitants(namerChild, namerLivesWith);
+            }
         }
 
         /// <summary>
@@ -521,14 +547,17 @@ namespace NoFuture.Rand.Domus
             if (myMaritialStatus == MaritialStatus.Widowed)
             {
                 var d = Convert.ToInt32(Math.Round(GetAgeAt(null) * 0.15));
-                spouse.DeathDate = Etx.Date(Etx.IntNumber(1, d)*-1, null);
+                spouse.DeathCert = new AmericanDeathCert(AmericanDeathCert.MannerOfDeath.Natural, spouse)
+                {
+                    DateOfDeath = Etx.Date(Etx.IntNumber(1, d)*-1, null)
+                };
             }
 
             if (myMaritialStatus != MaritialStatus.Divorced && myMaritialStatus != MaritialStatus.Remarried &&
                 myMaritialStatus != MaritialStatus.Separated)
             {
                 //add internal date-range for resolution of children
-                AddNewSpouseToList(spouse, marriedOn);
+                AddSpouse(spouse, marriedOn);
             }
             else
             {
@@ -536,7 +565,7 @@ namespace NoFuture.Rand.Domus
                 var separatedDate = Etx.Date(NAmerUtil.AVG_LENGTH_OF_MARRIAGE, marriedOn);
 
                 //reset date-range with separated date
-                AddNewSpouseToList(spouse, marriedOn, separatedDate);
+                AddSpouse(spouse, marriedOn, separatedDate);
 
                 //leave when no second spouse applicable
                 if (myMaritialStatus != MaritialStatus.Remarried)
@@ -554,7 +583,7 @@ namespace NoFuture.Rand.Domus
                     separatedDate);
 
                 //add second date-range for resolution of children
-                AddNewSpouseToList(secondSpouse, remarriedOn);
+                AddSpouse(secondSpouse, remarriedOn);
             }
         }
 
@@ -599,7 +628,7 @@ namespace NoFuture.Rand.Domus
             if (Etx.MyRand.NextDouble() <= propTeenagePreg)
             {
                 var teenPregChildDob = Etx.Date(teenageAge, _birthCert.DateOfBirth);
-                AddNewChildToList(teenPregChildDob);
+                AddChild(teenPregChildDob);
                 currentNumChildren += 1;
             }
             
@@ -615,7 +644,7 @@ namespace NoFuture.Rand.Domus
                 if (childDob == null)
                     continue;
 
-                AddNewChildToList(childDob.Value);
+                AddChild(childDob.Value);
             }
         }
 
@@ -626,7 +655,7 @@ namespace NoFuture.Rand.Domus
         /// This will be adusted up by when the Birth Date would occur during the pregnancy 
         /// of a sibling unless it is the exact same date (twins).
         /// </param>
-        protected internal void AddNewChildToList(DateTime myChildDob)
+        protected internal void AddChild(DateTime myChildDob)
         {
             if (MyGender == Gender.Male)
                 return;
@@ -778,7 +807,7 @@ namespace NoFuture.Rand.Domus
         /// <param name="spouse"></param>
         /// <param name="marriedOn"></param>
         /// <param name="separatedOn"></param>
-        protected internal void AddNewSpouseToList(IPerson spouse, DateTime marriedOn, DateTime? separatedOn = null)
+        protected internal void AddSpouse(IPerson spouse, DateTime marriedOn, DateTime? separatedOn = null)
         {
             //we need this or will will blow out the stack 
             if (_spouses.Any(x => DateTime.Compare(x.MarriedOn.Date, marriedOn.Date) == 0))
@@ -810,7 +839,7 @@ namespace NoFuture.Rand.Domus
             _spouses.Add(new Spouse(this, nAmerSpouse, marriedOn, separatedOn, _spouses.Count + 1));
 
             //recepricate to spouse
-            nAmerSpouse?.AddNewSpouseToList(this, marriedOn, separatedOn);
+            nAmerSpouse?.AddSpouse(this, marriedOn, separatedOn);
         }
 
         protected internal override bool IsLegalAdult(DateTime? dt)
