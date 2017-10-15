@@ -29,5 +29,21 @@ namespace NoFuture.Tests.Rand
             }
         }
 
+        [TestMethod]
+        public void TestSocMajorGroups()
+        {
+            var testResult = StandardOccupationalClassification.AllGroups;
+            Assert.IsNotNull(testResult);
+            Assert.AreNotEqual(0, testResult.Length);
+            foreach (var ss in testResult)
+            {
+                Assert.IsInstanceOfType(ss, typeof(SocMajorGroup));
+                System.Diagnostics.Debug.WriteLine($"{ss.Value} {ss.Description}");
+                foreach (var s in ss.Divisions)
+                {
+                    System.Diagnostics.Debug.WriteLine($"\t\t{s.Description}");
+                }
+            }
+        }
     }
 }

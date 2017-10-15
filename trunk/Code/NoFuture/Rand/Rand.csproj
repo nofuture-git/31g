@@ -95,8 +95,10 @@
     <Compile Include="Data\Sp\Rent.cs" />
     <Compile Include="Data\Sp\Security.cs" />
     <Compile Include="Data\Sp\TradeLine.cs" />
+    <Compile Include="Data\Types\ClassificationBase.cs" />
     <Compile Include="Data\Types\NfDynDataBase.cs" />
     <Compile Include="Data\Types\RandXref.cs" />
+    <Compile Include="Data\Types\StandardOccupationalClassification.cs" />
     <Compile Include="Data\Types\StreetPo.cs" />
     <Compile Include="Data\Types\CityArea.cs" />
     <Compile Include="Data\Types\JsonTypes.cs" />

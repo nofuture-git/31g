@@ -30,6 +30,7 @@ namespace NoFuture.Rand.Data
         private static XmlDocument _usPersonalDebt;
         private static XmlDocument _usPersonalWealth;
         private static XmlDocument _vinWmi;
+        private static XmlDocument _usOccupations;
         private static List<Tuple<string, double>> _enWords;
         private static Bank[] _fedReleaseLrgBnkNames;
         #endregion
@@ -267,6 +268,19 @@ namespace NoFuture.Rand.Data
                 if(_vinWmi == null)
                     GetXmlDataSource(DataFiles.VIN_WMI_DATA_FILE, ref _vinWmi);
                 return _vinWmi;
+            }
+        }
+
+        /// <summary>
+        /// Loads the <see cref="DataFiles.US_OCCUPATIONS"/> data into a <see cref="XmlDocument"/> document.
+        /// </summary>
+        public static XmlDocument UsOccupations
+        {
+            get
+            {
+                if (_usOccupations == null)
+                    GetXmlDataSource(DataFiles.US_OCCUPATIONS, ref _usOccupations);
+                return _usOccupations;
             }
         }
 

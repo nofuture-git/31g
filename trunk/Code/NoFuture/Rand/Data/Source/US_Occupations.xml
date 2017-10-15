@@ -1,0 +1,2853 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<nofuture>
+  <rand>
+    <data>
+      <source>
+        <occupations src="https://www.bls.gov/soc/soc_structure_2010.xls">
+          <category ID="11-0000" Description="Management Occupations">
+            <primary-group ID="11-1000" Description="Top Executives">
+              <secondary-group ID="11-1010" Description="Chief Executives">
+                <ternary-group ID="11-1011" Description="Chief Executives">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="11-1020" Description="General and Operations Managers">
+                <ternary-group ID="11-1021" Description="General and Operations Managers">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="11-1030" Description="Legislators">
+                <ternary-group ID="11-1031" Description="Legislators">
+                </ternary-group>
+              </secondary-group>
+            </primary-group>
+            <primary-group ID="11-2000" Description="Advertising, Marketing, Promotions, Public Relations, and Sales Managers">
+              <secondary-group ID="11-2010" Description="Advertising and Promotions Managers">
+                <ternary-group ID="11-2011" Description="Advertising and Promotions Managers">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="11-2020" Description="Marketing and Sales Managers">
+                <ternary-group ID="11-2021" Description="Marketing Managers">
+                </ternary-group>
+                <ternary-group ID="11-2022" Description="Sales Managers">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="11-2030" Description="Public Relations and Fundraising Managers">
+                <ternary-group ID="11-2031" Description="Public Relations and Fundraising Managers">
+                </ternary-group>
+              </secondary-group>
+            </primary-group>
+            <primary-group ID="11-3000" Description="Operations Specialties Managers">
+              <secondary-group ID="11-3010" Description="Administrative Services Managers">
+                <ternary-group ID="11-3011" Description="Administrative Services Managers">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="11-3020" Description="Computer and Information Systems Managers">
+                <ternary-group ID="11-3021" Description="Computer and Information Systems Managers">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="11-3030" Description="Financial Managers">
+                <ternary-group ID="11-3031" Description="Financial Managers">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="11-3050" Description="Industrial Production Managers">
+                <ternary-group ID="11-3051" Description="Industrial Production Managers">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="11-3060" Description="Purchasing Managers">
+                <ternary-group ID="11-3061" Description="Purchasing Managers">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="11-3070" Description="Transportation, Storage, and Distribution Managers">
+                <ternary-group ID="11-3071" Description="Transportation, Storage, and Distribution Managers">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="11-3110" Description="Compensation and Benefits Managers">
+                <ternary-group ID="11-3111" Description="Compensation and Benefits Managers">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="11-3120" Description="Human Resources Managers">
+                <ternary-group ID="11-3121" Description="Human Resources Managers">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="11-3130" Description="Training and Development Managers">
+                <ternary-group ID="11-3131" Description="Training and Development Managers">
+                </ternary-group>
+              </secondary-group>
+            </primary-group>
+            <primary-group ID="11-9000" Description="Other Management Occupations">
+              <secondary-group ID="11-9010" Description="Farmers, Ranchers, and Other Agricultural Managers">
+                <ternary-group ID="11-9013" Description="Farmers, Ranchers, and Other Agricultural Managers">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="11-9020" Description="Construction Managers">
+                <ternary-group ID="11-9021" Description="Construction Managers">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="11-9030" Description="Education Administrators">
+                <ternary-group ID="11-9031" Description="Education Administrators, Preschool and Childcare Center/Program">
+                </ternary-group>
+                <ternary-group ID="11-9032" Description="Education Administrators, Elementary and Secondary School">
+                </ternary-group>
+                <ternary-group ID="11-9033" Description="Education Administrators, Postsecondary">
+                </ternary-group>
+                <ternary-group ID="11-9039" Description="Education Administrators, All Other">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="11-9040" Description="Architectural and Engineering Managers">
+                <ternary-group ID="11-9041" Description="Architectural and Engineering Managers">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="11-9050" Description="Food Service Managers">
+                <ternary-group ID="11-9051" Description="Food Service Managers">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="11-9060" Description="Funeral Service Managers">
+                <ternary-group ID="11-9061" Description="Funeral Service Managers">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="11-9070" Description="Gaming Managers">
+                <ternary-group ID="11-9071" Description="Gaming Managers">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="11-9080" Description="Lodging Managers">
+                <ternary-group ID="11-9081" Description="Lodging Managers">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="11-9110" Description="Medical and Health Services Managers">
+                <ternary-group ID="11-9111" Description="Medical and Health Services Managers">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="11-9120" Description="Natural Sciences Managers">
+                <ternary-group ID="11-9121" Description="Natural Sciences Managers">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="11-9130" Description="Postmasters and Mail Superintendents">
+                <ternary-group ID="11-9131" Description="Postmasters and Mail Superintendents">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="11-9140" Description="Property, Real Estate, and Community Association Managers">
+                <ternary-group ID="11-9141" Description="Property, Real Estate, and Community Association Managers">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="11-9150" Description="Social and Community Service Managers">
+                <ternary-group ID="11-9151" Description="Social and Community Service Managers">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="11-9160" Description="Emergency Management Directors">
+                <ternary-group ID="11-9161" Description="Emergency Management Directors">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="11-9190" Description="Miscellaneous Managers">
+                <ternary-group ID="11-9199" Description="Managers, All Other">
+                </ternary-group>
+              </secondary-group>
+            </primary-group>
+          </category>
+          <category ID="13-0000" Description="Business and Financial Operations Occupations">
+            <primary-group ID="13-1000" Description="Business Operations Specialists">
+              <secondary-group ID="13-1010" Description="Agents and Business Managers of Artists, Performers, and Athletes">
+                <ternary-group ID="13-1011" Description="Agents and Business Managers of Artists, Performers, and Athletes">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="13-1020" Description="Buyers and Purchasing Agents">
+                <ternary-group ID="13-1021" Description="Buyers and Purchasing Agents, Farm Products">
+                </ternary-group>
+                <ternary-group ID="13-1022" Description="Wholesale and Retail Buyers, Except Farm Products">
+                </ternary-group>
+                <ternary-group ID="13-1023" Description="Purchasing Agents, Except Wholesale, Retail, and Farm Products">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="13-1030" Description="Claims Adjusters, Appraisers, Examiners, and Investigators">
+                <ternary-group ID="13-1031" Description="Claims Adjusters, Examiners, and Investigators">
+                </ternary-group>
+                <ternary-group ID="13-1032" Description="Insurance Appraisers, Auto Damage">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="13-1040" Description="Compliance Officers">
+                <ternary-group ID="13-1041" Description="Compliance Officers">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="13-1050" Description="Cost Estimators">
+                <ternary-group ID="13-1051" Description="Cost Estimators">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="13-1070" Description="Human Resources Workers">
+                <ternary-group ID="13-1071" Description="Human Resources Specialists">
+                </ternary-group>
+                <ternary-group ID="13-1074" Description="Farm Labor Contractors">
+                </ternary-group>
+                <ternary-group ID="13-1075" Description="Labor Relations Specialists">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="13-1080" Description="Logisticians">
+                <ternary-group ID="13-1081" Description="Logisticians">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="13-1110" Description="Management Analysts">
+                <ternary-group ID="13-1111" Description="Management Analysts">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="13-1120" Description="Meeting, Convention, and Event Planners">
+                <ternary-group ID="13-1121" Description="Meeting, Convention, and Event Planners">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="13-1130" Description="Fundraisers">
+                <ternary-group ID="13-1131" Description="Fundraisers">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="13-1140" Description="Compensation, Benefits, and Job Analysis Specialists">
+                <ternary-group ID="13-1141" Description="Compensation, Benefits, and Job Analysis Specialists">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="13-1150" Description="Training and Development Specialists">
+                <ternary-group ID="13-1151" Description="Training and Development Specialists">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="13-1160" Description="Market Research Analysts and Marketing Specialists">
+                <ternary-group ID="13-1161 " Description="Market Research Analysts and Marketing Specialists">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="13-1190" Description="Miscellaneous Business Operations Specialists">
+                <ternary-group ID="13-1199" Description="Business Operations Specialists, All Other">
+                </ternary-group>
+              </secondary-group>
+            </primary-group>
+            <primary-group ID="13-2000" Description="Financial Specialists">
+              <secondary-group ID="13-2010" Description="Accountants and Auditors">
+                <ternary-group ID="13-2011" Description="Accountants and Auditors">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="13-2020" Description="Appraisers and Assessors of Real Estate">
+                <ternary-group ID="13-2021" Description="Appraisers and Assessors of Real Estate">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="13-2030" Description="Budget Analysts">
+                <ternary-group ID="13-2031" Description="Budget Analysts">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="13-2040" Description="Credit Analysts">
+                <ternary-group ID="13-2041" Description="Credit Analysts">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="13-2050" Description="Financial Analysts and Advisors">
+                <ternary-group ID="13-2051" Description="Financial Analysts">
+                </ternary-group>
+                <ternary-group ID="13-2052" Description="Personal Financial Advisors">
+                </ternary-group>
+                <ternary-group ID="13-2053" Description="Insurance Underwriters">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="13-2060" Description="Financial Examiners">
+                <ternary-group ID="13-2061" Description="Financial Examiners">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="13-2070" Description="Credit Counselors and Loan Officers">
+                <ternary-group ID="13-2071" Description="Credit Counselors">
+                </ternary-group>
+                <ternary-group ID="13-2072" Description="Loan Officers">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="13-2080" Description="Tax Examiners, Collectors and Preparers, and Revenue Agents">
+                <ternary-group ID="13-2081" Description="Tax Examiners and Collectors, and Revenue Agents">
+                </ternary-group>
+                <ternary-group ID="13-2082" Description="Tax Preparers">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="13-2090" Description="Miscellaneous Financial Specialists">
+                <ternary-group ID="13-2099" Description="Financial Specialists, All Other">
+                </ternary-group>
+              </secondary-group>
+            </primary-group>
+          </category>
+          <category ID="15-0000" Description="Computer and Mathematical Occupations">
+            <primary-group ID="15-1100" Description="Computer Occupations">
+              <secondary-group ID="15-1110" Description="Computer and Information Research Scientists">
+                <ternary-group ID="15-1111" Description="Computer and Information Research Scientists">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="15-1120" Description="Computer and Information Analysts">
+                <ternary-group ID="15-1121" Description="Computer Systems Analysts">
+                </ternary-group>
+                <ternary-group ID="15-1122" Description="Information Security Analysts">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="15-1130" Description="Software Developers and Programmers">
+                <ternary-group ID="15-1131" Description="Computer Programmers">
+                </ternary-group>
+                <ternary-group ID="15-1132" Description="Software Developers, Applications">
+                </ternary-group>
+                <ternary-group ID="15-1133" Description="Software Developers, Systems Software">
+                </ternary-group>
+                <ternary-group ID="15-1134" Description="Web Developers">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="15-1140" Description="Database and Systems Administrators and Network Architects">
+                <ternary-group ID="15-1141" Description="Database Administrators">
+                </ternary-group>
+                <ternary-group ID="15-1142" Description="Network and Computer Systems Administrators">
+                </ternary-group>
+                <ternary-group ID="15-1143" Description="Computer Network Architects">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="15-1150" Description="Computer Support Specialists">
+                <ternary-group ID="15-1151" Description="Computer User Support Specialists">
+                </ternary-group>
+                <ternary-group ID="15-1152" Description="Computer Network Support Specialists">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="15-1190" Description="Miscellaneous Computer Occupations">
+                <ternary-group ID="15-1199" Description="Computer Occupations, All Other">
+                </ternary-group>
+              </secondary-group>
+            </primary-group>
+            <primary-group ID="15-2000" Description="Mathematical Science Occupations">
+              <secondary-group ID="15-2010" Description="Actuaries">
+                <ternary-group ID="15-2011" Description="Actuaries">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="15-2020" Description="Mathematicians">
+                <ternary-group ID="15-2021" Description="Mathematicians">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="15-2030" Description="Operations Research Analysts">
+                <ternary-group ID="15-2031" Description="Operations Research Analysts">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="15-2040" Description="Statisticians">
+                <ternary-group ID="15-2041" Description="Statisticians">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="15-2090" Description="Miscellaneous Mathematical Science Occupations">
+                <ternary-group ID="15-2091" Description="Mathematical Technicians">
+                </ternary-group>
+                <ternary-group ID="15-2099" Description="Mathematical Science Occupations, All Other">
+                </ternary-group>
+              </secondary-group>
+            </primary-group>
+          </category>
+          <category ID="17-0000" Description="Architecture and Engineering Occupations">
+            <primary-group ID="17-1000" Description="Architects, Surveyors, and Cartographers">
+              <secondary-group ID="17-1010" Description="Architects, Except Naval">
+                <ternary-group ID="17-1011" Description="Architects, Except Landscape and Naval">
+                </ternary-group>
+                <ternary-group ID="17-1012" Description="Landscape Architects">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="17-1020" Description="Surveyors, Cartographers, and Photogrammetrists">
+                <ternary-group ID="17-1021" Description="Cartographers and Photogrammetrists">
+                </ternary-group>
+                <ternary-group ID="17-1022" Description="Surveyors">
+                </ternary-group>
+              </secondary-group>
+            </primary-group>
+            <primary-group ID="17-2000" Description="Engineers">
+              <secondary-group ID="17-2010" Description="Aerospace Engineers">
+                <ternary-group ID="17-2011" Description="Aerospace Engineers">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="17-2020" Description="Agricultural Engineers">
+                <ternary-group ID="17-2021" Description="Agricultural Engineers">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="17-2030" Description="Biomedical Engineers">
+                <ternary-group ID="17-2031" Description="Biomedical Engineers">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="17-2040" Description="Chemical Engineers">
+                <ternary-group ID="17-2041" Description="Chemical Engineers">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="17-2050" Description="Civil Engineers">
+                <ternary-group ID="17-2051" Description="Civil Engineers">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="17-2060" Description="Computer Hardware Engineers">
+                <ternary-group ID="17-2061" Description="Computer Hardware Engineers">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="17-2070" Description="Electrical and Electronics Engineers">
+                <ternary-group ID="17-2071" Description="Electrical Engineers">
+                </ternary-group>
+                <ternary-group ID="17-2072" Description="Electronics Engineers, Except Computer">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="17-2080" Description="Environmental Engineers">
+                <ternary-group ID="17-2081" Description="Environmental Engineers">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="17-2110" Description="Industrial Engineers, Including Health and Safety">
+                <ternary-group ID="17-2111" Description="Health and Safety Engineers, Except Mining Safety Engineers and Inspectors">
+                </ternary-group>
+                <ternary-group ID="17-2112" Description="Industrial Engineers">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="17-2120" Description="Marine Engineers and Naval Architects">
+                <ternary-group ID="17-2121" Description="Marine Engineers and Naval Architects">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="17-2130" Description="Materials Engineers">
+                <ternary-group ID="17-2131" Description="Materials Engineers">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="17-2140" Description="Mechanical Engineers">
+                <ternary-group ID="17-2141" Description="Mechanical Engineers">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="17-2150" Description="Mining and Geological Engineers, Including Mining Safety Engineers">
+                <ternary-group ID="17-2151" Description="Mining and Geological Engineers, Including Mining Safety Engineers">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="17-2160" Description="Nuclear Engineers">
+                <ternary-group ID="17-2161" Description="Nuclear Engineers">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="17-2170" Description="Petroleum Engineers">
+                <ternary-group ID="17-2171" Description="Petroleum Engineers">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="17-2190" Description="Miscellaneous Engineers">
+                <ternary-group ID="17-2199" Description="Engineers, All Other">
+                </ternary-group>
+              </secondary-group>
+            </primary-group>
+            <primary-group ID="17-3000" Description="Drafters, Engineering Technicians, and Mapping Technicians">
+              <secondary-group ID="17-3010" Description="Drafters">
+                <ternary-group ID="17-3011" Description="Architectural and Civil Drafters">
+                </ternary-group>
+                <ternary-group ID="17-3012" Description="Electrical and Electronics Drafters">
+                </ternary-group>
+                <ternary-group ID="17-3013" Description="Mechanical Drafters">
+                </ternary-group>
+                <ternary-group ID="17-3019" Description="Drafters, All Other">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="17-3020" Description="Engineering Technicians, Except Drafters">
+                <ternary-group ID="17-3021" Description="Aerospace Engineering and Operations Technicians">
+                </ternary-group>
+                <ternary-group ID="17-3022" Description="Civil Engineering Technicians">
+                </ternary-group>
+                <ternary-group ID="17-3023" Description="Electrical and Electronics Engineering Technicians">
+                </ternary-group>
+                <ternary-group ID="17-3024" Description="Electro-Mechanical Technicians">
+                </ternary-group>
+                <ternary-group ID="17-3025" Description="Environmental Engineering Technicians">
+                </ternary-group>
+                <ternary-group ID="17-3026" Description="Industrial Engineering Technicians">
+                </ternary-group>
+                <ternary-group ID="17-3027" Description="Mechanical Engineering Technicians">
+                </ternary-group>
+                <ternary-group ID="17-3029" Description="Engineering Technicians, Except Drafters, All Other">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="17-3030" Description="Surveying and Mapping Technicians">
+                <ternary-group ID="17-3031" Description="Surveying and Mapping Technicians">
+                </ternary-group>
+              </secondary-group>
+            </primary-group>
+          </category>
+          <category ID="19-0000" Description="Life, Physical, and Social Science Occupations">
+            <primary-group ID="19-1000" Description="Life Scientists">
+              <secondary-group ID="19-1010" Description="Agricultural and Food Scientists">
+                <ternary-group ID="19-1011" Description="Animal Scientists">
+                </ternary-group>
+                <ternary-group ID="19-1012" Description="Food Scientists and Technologists">
+                </ternary-group>
+                <ternary-group ID="19-1013" Description="Soil and Plant Scientists">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="19-1020" Description="Biological Scientists">
+                <ternary-group ID="19-1021" Description="Biochemists and Biophysicists">
+                </ternary-group>
+                <ternary-group ID="19-1022" Description="Microbiologists">
+                </ternary-group>
+                <ternary-group ID="19-1023" Description="Zoologists and Wildlife Biologists">
+                </ternary-group>
+                <ternary-group ID="19-1029" Description="Biological Scientists, All Other">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="19-1030" Description="Conservation Scientists and Foresters">
+                <ternary-group ID="19-1031" Description="Conservation Scientists">
+                </ternary-group>
+                <ternary-group ID="19-1032" Description="Foresters">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="19-1040" Description="Medical Scientists">
+                <ternary-group ID="19-1041" Description="Epidemiologists">
+                </ternary-group>
+                <ternary-group ID="19-1042" Description="Medical Scientists, Except Epidemiologists">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="19-1090" Description="Miscellaneous Life Scientists">
+                <ternary-group ID="19-1099" Description="Life Scientists, All Other">
+                </ternary-group>
+              </secondary-group>
+            </primary-group>
+            <primary-group ID="19-2000" Description="Physical Scientists">
+              <secondary-group ID="19-2010" Description="Astronomers and Physicists">
+                <ternary-group ID="19-2011" Description="Astronomers">
+                </ternary-group>
+                <ternary-group ID="19-2012" Description="Physicists">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="19-2020" Description="Atmospheric and Space Scientists">
+                <ternary-group ID="19-2021" Description="Atmospheric and Space Scientists">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="19-2030" Description="Chemists and Materials Scientists">
+                <ternary-group ID="19-2031" Description="Chemists">
+                </ternary-group>
+                <ternary-group ID="19-2032" Description="Materials Scientists">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="19-2040" Description="Environmental Scientists and Geoscientists">
+                <ternary-group ID="19-2041" Description="Environmental Scientists and Specialists, Including Health">
+                </ternary-group>
+                <ternary-group ID="19-2042" Description="Geoscientists, Except Hydrologists and Geographers">
+                </ternary-group>
+                <ternary-group ID="19-2043" Description="Hydrologists">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="19-2090" Description="Miscellaneous Physical Scientists">
+                <ternary-group ID="19-2099" Description="Physical Scientists, All Other">
+                </ternary-group>
+              </secondary-group>
+            </primary-group>
+            <primary-group ID="19-3000" Description="Social Scientists and Related Workers">
+              <secondary-group ID="19-3010" Description="Economists">
+                <ternary-group ID="19-3011" Description="Economists">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="19-3020" Description="Survey Researchers">
+                <ternary-group ID="19-3022" Description="Survey Researchers">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="19-3030" Description="Psychologists">
+                <ternary-group ID="19-3031" Description="Clinical, Counseling, and School Psychologists">
+                </ternary-group>
+                <ternary-group ID="19-3032" Description="Industrial-Organizational Psychologists">
+                </ternary-group>
+                <ternary-group ID="19-3039" Description="Psychologists, All Other">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="19-3040" Description="Sociologists">
+                <ternary-group ID="19-3041" Description="Sociologists">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="19-3050" Description="Urban and Regional Planners">
+                <ternary-group ID="19-3051" Description="Urban and Regional Planners">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="19-3090" Description="Miscellaneous Social Scientists and Related Workers">
+                <ternary-group ID="19-3091" Description="Anthropologists and Archeologists">
+                </ternary-group>
+                <ternary-group ID="19-3092" Description="Geographers">
+                </ternary-group>
+                <ternary-group ID="19-3093" Description="Historians">
+                </ternary-group>
+                <ternary-group ID="19-3094" Description="Political Scientists">
+                </ternary-group>
+                <ternary-group ID="19-3099" Description="Social Scientists and Related Workers, All Other">
+                </ternary-group>
+              </secondary-group>
+            </primary-group>
+            <primary-group ID="19-4000" Description="Life, Physical, and Social Science Technicians">
+              <secondary-group ID="19-4010" Description="Agricultural and Food Science Technicians">
+                <ternary-group ID="19-4011" Description="Agricultural and Food Science Technicians">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="19-4020" Description="Biological Technicians">
+                <ternary-group ID="19-4021" Description="Biological Technicians">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="19-4030" Description="Chemical Technicians">
+                <ternary-group ID="19-4031" Description="Chemical Technicians">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="19-4040" Description="Geological and Petroleum Technicians">
+                <ternary-group ID="19-4041" Description="Geological and Petroleum Technicians">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="19-4050" Description="Nuclear Technicians">
+                <ternary-group ID="19-4051" Description="Nuclear Technicians">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="19-4060" Description="Social Science Research Assistants">
+                <ternary-group ID="19-4061" Description="Social Science Research Assistants">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="19-4090" Description="Miscellaneous Life, Physical, and Social Science Technicians">
+                <ternary-group ID="19-4091" Description="Environmental Science and Protection Technicians, Including Health">
+                </ternary-group>
+                <ternary-group ID="19-4092" Description="Forensic Science Technicians">
+                </ternary-group>
+                <ternary-group ID="19-4093" Description="Forest and Conservation Technicians">
+                </ternary-group>
+                <ternary-group ID="19-4099" Description="Life, Physical, and Social Science Technicians, All Other">
+                </ternary-group>
+              </secondary-group>
+            </primary-group>
+          </category>
+          <category ID="21-0000" Description="Community and Social Service Occupations">
+            <primary-group ID="21-1000" Description="Counselors, Social Workers, and Other Community and Social Service Specialists">
+              <secondary-group ID="21-1010" Description="Counselors">
+                <ternary-group ID="21-1011" Description="Substance Abuse and Behavioral Disorder Counselors">
+                </ternary-group>
+                <ternary-group ID="21-1012" Description="Educational, Guidance, School, and Vocational Counselors">
+                </ternary-group>
+                <ternary-group ID="21-1013" Description="Marriage and Family Therapists">
+                </ternary-group>
+                <ternary-group ID="21-1014" Description="Mental Health Counselors">
+                </ternary-group>
+                <ternary-group ID="21-1015" Description="Rehabilitation Counselors">
+                </ternary-group>
+                <ternary-group ID="21-1019" Description="Counselors, All Other">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="21-1020" Description="Social Workers">
+                <ternary-group ID="21-1021" Description="Child, Family, and School Social Workers">
+                </ternary-group>
+                <ternary-group ID="21-1022" Description="Healthcare Social Workers">
+                </ternary-group>
+                <ternary-group ID="21-1023" Description="Mental Health and Substance Abuse Social Workers">
+                </ternary-group>
+                <ternary-group ID="21-1029" Description="Social Workers, All Other">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="21-1090" Description="Miscellaneous Community and Social Service Specialists">
+                <ternary-group ID="21-1091" Description="Health Educators ">
+                </ternary-group>
+                <ternary-group ID="21-1092" Description="Probation Officers and Correctional Treatment Specialists">
+                </ternary-group>
+                <ternary-group ID="21-1093" Description="Social and Human Service Assistants">
+                </ternary-group>
+                <ternary-group ID="21-1094" Description="Community Health Workers">
+                </ternary-group>
+                <ternary-group ID="21-1099" Description="Community and Social Service Specialists, All Other">
+                </ternary-group>
+              </secondary-group>
+            </primary-group>
+            <primary-group ID="21-2000" Description="Religious Workers">
+              <secondary-group ID="21-2010" Description="Clergy">
+                <ternary-group ID="21-2011" Description="Clergy">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="21-2020" Description="Directors, Religious Activities and Education">
+                <ternary-group ID="21-2021" Description="Directors, Religious Activities and Education">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="21-2090" Description="Miscellaneous Religious Workers">
+                <ternary-group ID="21-2099" Description="Religious Workers, All Other">
+                </ternary-group>
+              </secondary-group>
+            </primary-group>
+          </category>
+          <category ID="23-0000" Description="Legal Occupations">
+            <primary-group ID="23-1000" Description="Lawyers, Judges, and Related Workers">
+              <secondary-group ID="23-1010" Description="Lawyers and Judicial Law Clerks">
+                <ternary-group ID="23-1011" Description="Lawyers">
+                </ternary-group>
+                <ternary-group ID="23-1012" Description="Judicial Law Clerks">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="23-1020" Description="Judges, Magistrates, and Other Judicial Workers">
+                <ternary-group ID="23-1021" Description="Administrative Law Judges, Adjudicators, and Hearing Officers">
+                </ternary-group>
+                <ternary-group ID="23-1022" Description="Arbitrators, Mediators, and Conciliators">
+                </ternary-group>
+                <ternary-group ID="23-1023" Description="Judges, Magistrate Judges, and Magistrates">
+                </ternary-group>
+              </secondary-group>
+            </primary-group>
+            <primary-group ID="23-2000" Description="Legal Support Workers">
+              <secondary-group ID="23-2010" Description="Paralegals and Legal Assistants">
+                <ternary-group ID="23-2011" Description="Paralegals and Legal Assistants">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="23-2090" Description="Miscellaneous Legal Support Workers">
+                <ternary-group ID="23-2091" Description="Court Reporters">
+                </ternary-group>
+                <ternary-group ID="23-2093" Description="Title Examiners, Abstractors, and Searchers">
+                </ternary-group>
+                <ternary-group ID="23-2099" Description="Legal Support Workers, All Other">
+                </ternary-group>
+              </secondary-group>
+            </primary-group>
+          </category>
+          <category ID="25-0000" Description="Education, Training, and Library Occupations">
+            <primary-group ID="25-1000" Description="Postsecondary Teachers">
+              <secondary-group ID="25-1010" Description="Business Teachers, Postsecondary">
+                <ternary-group ID="25-1011" Description="Business Teachers, Postsecondary">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="25-1020" Description="Math and Computer Teachers, Postsecondary">
+                <ternary-group ID="25-1021" Description="Computer Science Teachers, Postsecondary">
+                </ternary-group>
+                <ternary-group ID="25-1022" Description="Mathematical Science Teachers, Postsecondary">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="25-1030" Description="Engineering and Architecture Teachers, Postsecondary">
+                <ternary-group ID="25-1031" Description="Architecture Teachers, Postsecondary">
+                </ternary-group>
+                <ternary-group ID="25-1032" Description="Engineering Teachers, Postsecondary">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="25-1040" Description="Life Sciences Teachers, Postsecondary">
+                <ternary-group ID="25-1041" Description="Agricultural Sciences Teachers, Postsecondary">
+                </ternary-group>
+                <ternary-group ID="25-1042" Description="Biological Science Teachers, Postsecondary">
+                </ternary-group>
+                <ternary-group ID="25-1043" Description="Forestry and Conservation Science Teachers, Postsecondary">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="25-1050" Description="Physical Sciences Teachers, Postsecondary">
+                <ternary-group ID="25-1051" Description="Atmospheric, Earth, Marine, and Space Sciences Teachers, Postsecondary">
+                </ternary-group>
+                <ternary-group ID="25-1052" Description="Chemistry Teachers, Postsecondary">
+                </ternary-group>
+                <ternary-group ID="25-1053" Description="Environmental Science Teachers, Postsecondary">
+                </ternary-group>
+                <ternary-group ID="25-1054" Description="Physics Teachers, Postsecondary">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="25-1060" Description="Social Sciences Teachers, Postsecondary">
+                <ternary-group ID="25-1061" Description="Anthropology and Archeology Teachers, Postsecondary">
+                </ternary-group>
+                <ternary-group ID="25-1062" Description="Area, Ethnic, and Cultural Studies Teachers, Postsecondary">
+                </ternary-group>
+                <ternary-group ID="25-1063" Description="Economics Teachers, Postsecondary">
+                </ternary-group>
+                <ternary-group ID="25-1064" Description="Geography Teachers, Postsecondary">
+                </ternary-group>
+                <ternary-group ID="25-1065" Description="Political Science Teachers, Postsecondary">
+                </ternary-group>
+                <ternary-group ID="25-1066" Description="Psychology Teachers, Postsecondary">
+                </ternary-group>
+                <ternary-group ID="25-1067" Description="Sociology Teachers, Postsecondary">
+                </ternary-group>
+                <ternary-group ID="25-1069" Description="Social Sciences Teachers, Postsecondary, All Other">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="25-1070" Description="Health Teachers, Postsecondary">
+                <ternary-group ID="25-1071" Description="Health Specialties Teachers, Postsecondary">
+                </ternary-group>
+                <ternary-group ID="25-1072" Description="Nursing Instructors and Teachers, Postsecondary">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="25-1080" Description="Education and Library Science Teachers, Postsecondary">
+                <ternary-group ID="25-1081" Description="Education Teachers, Postsecondary">
+                </ternary-group>
+                <ternary-group ID="25-1082" Description="Library Science Teachers, Postsecondary">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="25-1110" Description="Law, Criminal Justice, and Social Work Teachers, Postsecondary">
+                <ternary-group ID="25-1111" Description="Criminal Justice and Law Enforcement Teachers, Postsecondary">
+                </ternary-group>
+                <ternary-group ID="25-1112" Description="Law Teachers, Postsecondary">
+                </ternary-group>
+                <ternary-group ID="25-1113" Description="Social Work Teachers, Postsecondary">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="25-1120" Description="Arts, Communications, and Humanities Teachers, Postsecondary">
+                <ternary-group ID="25-1121" Description="Art, Drama, and Music Teachers, Postsecondary">
+                </ternary-group>
+                <ternary-group ID="25-1122" Description="Communications Teachers, Postsecondary">
+                </ternary-group>
+                <ternary-group ID="25-1123" Description="English Language and Literature Teachers, Postsecondary">
+                </ternary-group>
+                <ternary-group ID="25-1124" Description="Foreign Language and Literature Teachers, Postsecondary">
+                </ternary-group>
+                <ternary-group ID="25-1125" Description="History Teachers, Postsecondary">
+                </ternary-group>
+                <ternary-group ID="25-1126" Description="Philosophy and Religion Teachers, Postsecondary">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="25-1190" Description="Miscellaneous Postsecondary Teachers">
+                <ternary-group ID="25-1191" Description="Graduate Teaching Assistants">
+                </ternary-group>
+                <ternary-group ID="25-1192" Description="Home Economics Teachers, Postsecondary">
+                </ternary-group>
+                <ternary-group ID="25-1193" Description="Recreation and Fitness Studies Teachers, Postsecondary">
+                </ternary-group>
+                <ternary-group ID="25-1194" Description="Vocational Education Teachers, Postsecondary">
+                </ternary-group>
+                <ternary-group ID="25-1199" Description="Postsecondary Teachers, All Other">
+                </ternary-group>
+              </secondary-group>
+            </primary-group>
+            <primary-group ID="25-2000" Description="Preschool, Primary, Secondary, and Special Education School Teachers">
+              <secondary-group ID="25-2010" Description="Preschool and Kindergarten Teachers">
+                <ternary-group ID="25-2011" Description="Preschool Teachers, Except Special Education">
+                </ternary-group>
+                <ternary-group ID="25-2012" Description="Kindergarten Teachers, Except Special Education">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="25-2020" Description="Elementary and Middle School Teachers">
+                <ternary-group ID="25-2021" Description="Elementary School Teachers, Except Special Education">
+                </ternary-group>
+                <ternary-group ID="25-2022" Description="Middle School Teachers, Except Special and Career/Technical Education">
+                </ternary-group>
+                <ternary-group ID="25-2023" Description="Career/Technical Education Teachers, Middle School">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="25-2030" Description="Secondary School Teachers">
+                <ternary-group ID="25-2031" Description="Secondary School Teachers, Except Special and Career/Technical Education">
+                </ternary-group>
+                <ternary-group ID="25-2032" Description="Career/Technical Education Teachers, Secondary School">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="25-2050" Description="Special Education Teachers">
+                <ternary-group ID="25-2051" Description="Special Education Teachers, Preschool">
+                </ternary-group>
+                <ternary-group ID="25-2052" Description="Special Education Teachers, Kindergarten and Elementary School">
+                </ternary-group>
+                <ternary-group ID="25-2053" Description="Special Education Teachers, Middle School">
+                </ternary-group>
+                <ternary-group ID="25-2054" Description="Special Education Teachers, Secondary School">
+                </ternary-group>
+                <ternary-group ID="25-2059" Description="Special Education Teachers, All Other">
+                </ternary-group>
+              </secondary-group>
+            </primary-group>
+            <primary-group ID="25-3000" Description="Other Teachers and Instructors">
+              <secondary-group ID="25-3010" Description="Adult Basic and Secondary Education and Literacy Teachers and Instructors ">
+                <ternary-group ID="25-3011" Description="Adult Basic and Secondary Education and Literacy Teachers and Instructors ">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="25-3020" Description="Self-Enrichment Education Teachers">
+                <ternary-group ID="25-3021" Description="Self-Enrichment Education Teachers">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="25-3090" Description="Miscellaneous Teachers and Instructors">
+                <ternary-group ID="25-3099" Description="Teachers and Instructors, All Other">
+                </ternary-group>
+              </secondary-group>
+            </primary-group>
+            <primary-group ID="25-4000" Description="Librarians, Curators, and Archivists">
+              <secondary-group ID="25-4010" Description="Archivists, Curators, and Museum Technicians">
+                <ternary-group ID="25-4011" Description="Archivists">
+                </ternary-group>
+                <ternary-group ID="25-4012" Description="Curators">
+                </ternary-group>
+                <ternary-group ID="25-4013" Description="Museum Technicians and Conservators">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="25-4020" Description="Librarians">
+                <ternary-group ID="25-4021" Description="Librarians">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="25-4030" Description="Library Technicians">
+                <ternary-group ID="25-4031" Description="Library Technicians">
+                </ternary-group>
+              </secondary-group>
+            </primary-group>
+            <primary-group ID="25-9000" Description="Other Education, Training, and Library Occupations">
+              <secondary-group ID="25-9010" Description="Audio-Visual and Multimedia Collections Specialists">
+                <ternary-group ID="25-9011" Description="Audio-Visual and Multimedia Collections Specialists">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="25-9020" Description="Farm and Home Management Advisors">
+                <ternary-group ID="25-9021" Description="Farm and Home Management Advisors">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="25-9030" Description="Instructional Coordinators">
+                <ternary-group ID="25-9031" Description="Instructional Coordinators">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="25-9040" Description="Teacher Assistants">
+                <ternary-group ID="25-9041" Description="Teacher Assistants">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="25-9090" Description="Miscellaneous Education, Training, and Library Workers">
+                <ternary-group ID="25-9099" Description="Education, Training, and Library Workers, All Other">
+                </ternary-group>
+              </secondary-group>
+            </primary-group>
+          </category>
+          <category ID="27-0000" Description="Arts, Design, Entertainment, Sports, and Media Occupations">
+            <primary-group ID="27-1000" Description="Art and Design Workers">
+              <secondary-group ID="27-1010" Description="Artists and Related Workers">
+                <ternary-group ID="27-1011" Description="Art Directors">
+                </ternary-group>
+                <ternary-group ID="27-1012" Description="Craft Artists">
+                </ternary-group>
+                <ternary-group ID="27-1013" Description="Fine Artists, Including Painters, Sculptors, and Illustrators">
+                </ternary-group>
+                <ternary-group ID="27-1014" Description="Multimedia Artists and Animators">
+                </ternary-group>
+                <ternary-group ID="27-1019" Description="Artists and Related Workers, All Other">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="27-1020" Description="Designers">
+                <ternary-group ID="27-1021" Description="Commercial and Industrial Designers">
+                </ternary-group>
+                <ternary-group ID="27-1022" Description="Fashion Designers">
+                </ternary-group>
+                <ternary-group ID="27-1023" Description="Floral Designers">
+                </ternary-group>
+                <ternary-group ID="27-1024" Description="Graphic Designers">
+                </ternary-group>
+                <ternary-group ID="27-1025" Description="Interior Designers">
+                </ternary-group>
+                <ternary-group ID="27-1026" Description="Merchandise Displayers and Window Trimmers">
+                </ternary-group>
+                <ternary-group ID="27-1027" Description="Set and Exhibit Designers">
+                </ternary-group>
+                <ternary-group ID="27-1029" Description="Designers, All Other">
+                </ternary-group>
+              </secondary-group>
+            </primary-group>
+            <primary-group ID="27-2000" Description="Entertainers and Performers, Sports and Related Workers">
+              <secondary-group ID="27-2010" Description="Actors, Producers, and Directors">
+                <ternary-group ID="27-2011" Description="Actors">
+                </ternary-group>
+                <ternary-group ID="27-2012" Description="Producers and Directors">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="27-2020" Description="Athletes, Coaches, Umpires, and Related Workers">
+                <ternary-group ID="27-2021" Description="Athletes and Sports Competitors">
+                </ternary-group>
+                <ternary-group ID="27-2022" Description="Coaches and Scouts">
+                </ternary-group>
+                <ternary-group ID="27-2023" Description="Umpires, Referees, and Other Sports Officials">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="27-2030" Description="Dancers and Choreographers">
+                <ternary-group ID="27-2031" Description="Dancers">
+                </ternary-group>
+                <ternary-group ID="27-2032" Description="Choreographers">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="27-2040" Description="Musicians, Singers, and Related Workers">
+                <ternary-group ID="27-2041" Description="Music Directors and Composers">
+                </ternary-group>
+                <ternary-group ID="27-2042" Description="Musicians and Singers">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="27-2090" Description="Miscellaneous Entertainers and Performers, Sports and Related Workers">
+                <ternary-group ID="27-2099" Description="Entertainers and Performers, Sports and Related Workers, All Other">
+                </ternary-group>
+              </secondary-group>
+            </primary-group>
+            <primary-group ID="27-3000" Description="Media and Communication Workers">
+              <secondary-group ID="27-3010" Description="Announcers">
+                <ternary-group ID="27-3011" Description="Radio and Television Announcers">
+                </ternary-group>
+                <ternary-group ID="27-3012" Description="Public Address System and Other Announcers">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="27-3020" Description="News Analysts, Reporters and Correspondents">
+                <ternary-group ID="27-3021" Description="Broadcast News Analysts">
+                </ternary-group>
+                <ternary-group ID="27-3022" Description="Reporters and Correspondents">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="27-3030" Description="Public Relations Specialists">
+                <ternary-group ID="27-3031" Description="Public Relations Specialists">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="27-3040" Description="Writers and Editors">
+                <ternary-group ID="27-3041" Description="Editors">
+                </ternary-group>
+                <ternary-group ID="27-3042" Description="Technical Writers">
+                </ternary-group>
+                <ternary-group ID="27-3043" Description="Writers and Authors">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="27-3090" Description="Miscellaneous Media and Communication Workers">
+                <ternary-group ID="27-3091" Description="Interpreters and Translators">
+                </ternary-group>
+                <ternary-group ID="27-3099" Description="Media and Communication Workers, All Other">
+                </ternary-group>
+              </secondary-group>
+            </primary-group>
+            <primary-group ID="27-4000" Description="Media and Communication Equipment Workers">
+              <secondary-group ID="27-4010" Description="Broadcast and Sound Engineering Technicians and Radio Operators">
+                <ternary-group ID="27-4011" Description="Audio and Video Equipment Technicians">
+                </ternary-group>
+                <ternary-group ID="27-4012" Description="Broadcast Technicians">
+                </ternary-group>
+                <ternary-group ID="27-4013" Description="Radio Operators">
+                </ternary-group>
+                <ternary-group ID="27-4014" Description="Sound Engineering Technicians">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="27-4020" Description="Photographers">
+                <ternary-group ID="27-4021" Description="Photographers">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="27-4030" Description="Television, Video, and Motion Picture Camera Operators and Editors">
+                <ternary-group ID="27-4031" Description="Camera Operators, Television, Video, and Motion Picture">
+                </ternary-group>
+                <ternary-group ID="27-4032" Description="Film and Video Editors">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="27-4090" Description="Miscellaneous Media and Communication Equipment Workers">
+                <ternary-group ID="27-4099" Description="Media and Communication Equipment Workers, All Other">
+                </ternary-group>
+              </secondary-group>
+            </primary-group>
+          </category>
+          <category ID="29-0000" Description="Healthcare Practitioners and Technical Occupations">
+            <primary-group ID="29-1000" Description="Health Diagnosing and Treating Practitioners">
+              <secondary-group ID="29-1010" Description="Chiropractors">
+                <ternary-group ID="29-1011" Description="Chiropractors">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="29-1020" Description="Dentists">
+                <ternary-group ID="29-1021" Description="Dentists, General">
+                </ternary-group>
+                <ternary-group ID="29-1022" Description="Oral and Maxillofacial Surgeons">
+                </ternary-group>
+                <ternary-group ID="29-1023" Description="Orthodontists">
+                </ternary-group>
+                <ternary-group ID="29-1024" Description="Prosthodontists">
+                </ternary-group>
+                <ternary-group ID="29-1029" Description="Dentists, All Other Specialists">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="29-1030" Description="Dietitians and Nutritionists">
+                <ternary-group ID="29-1031" Description="Dietitians and Nutritionists">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="29-1040" Description="Optometrists">
+                <ternary-group ID="29-1041" Description="Optometrists">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="29-1050" Description="Pharmacists">
+                <ternary-group ID="29-1051" Description="Pharmacists">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="29-1060" Description="Physicians and Surgeons">
+                <ternary-group ID="29-1061" Description="Anesthesiologists">
+                </ternary-group>
+                <ternary-group ID="29-1062" Description="Family and General Practitioners">
+                </ternary-group>
+                <ternary-group ID="29-1063" Description="Internists, General">
+                </ternary-group>
+                <ternary-group ID="29-1064" Description="Obstetricians and Gynecologists">
+                </ternary-group>
+                <ternary-group ID="29-1065" Description="Pediatricians, General">
+                </ternary-group>
+                <ternary-group ID="29-1066" Description="Psychiatrists">
+                </ternary-group>
+                <ternary-group ID="29-1067" Description="Surgeons">
+                </ternary-group>
+                <ternary-group ID="29-1069" Description="Physicians and Surgeons, All Other">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="29-1070" Description="Physician Assistants">
+                <ternary-group ID="29-1071" Description="Physician Assistants">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="29-1080" Description="Podiatrists">
+                <ternary-group ID="29-1081" Description="Podiatrists">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="29-1120" Description="Therapists">
+                <ternary-group ID="29-1122" Description="Occupational Therapists">
+                </ternary-group>
+                <ternary-group ID="29-1123" Description="Physical Therapists">
+                </ternary-group>
+                <ternary-group ID="29-1124" Description="Radiation Therapists">
+                </ternary-group>
+                <ternary-group ID="29-1125" Description="Recreational Therapists">
+                </ternary-group>
+                <ternary-group ID="29-1126" Description="Respiratory Therapists">
+                </ternary-group>
+                <ternary-group ID="29-1127" Description="Speech-Language Pathologists">
+                </ternary-group>
+                <ternary-group ID="29-1128" Description="Exercise Physiologists">
+                </ternary-group>
+                <ternary-group ID="29-1129" Description="Therapists, All Other">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="29-1130" Description="Veterinarians">
+                <ternary-group ID="29-1131" Description="Veterinarians">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="29-1140" Description="Registered Nurses">
+                <ternary-group ID="29-1141" Description="Registered Nurses">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="29-1150" Description="Nurse Anesthetists">
+                <ternary-group ID="29-1151" Description="Nurse Anesthetists">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="29-1160" Description="Nurse Midwives">
+                <ternary-group ID="29-1161" Description="Nurse Midwives">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="29-1170" Description="Nurse Practitioners">
+                <ternary-group ID="29-1171" Description="Nurse Practitioners">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="29-1180" Description="Audiologists">
+                <ternary-group ID="29-1181" Description="Audiologists">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="29-1190" Description="Miscellaneous Health Diagnosing and Treating Practitioners">
+                <ternary-group ID="29-1199" Description="Health Diagnosing and Treating Practitioners, All Other">
+                </ternary-group>
+              </secondary-group>
+            </primary-group>
+            <primary-group ID="29-2000" Description="Health Technologists and Technicians">
+              <secondary-group ID="29-2010" Description="Clinical Laboratory Technologists and Technicians">
+                <ternary-group ID="29-2011" Description="Medical and Clinical Laboratory Technologists">
+                </ternary-group>
+                <ternary-group ID="29-2012" Description="Medical and Clinical Laboratory Technicians">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="29-2020" Description="Dental Hygienists">
+                <ternary-group ID="29-2021" Description="Dental Hygienists">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="29-2030" Description="Diagnostic Related Technologists and Technicians">
+                <ternary-group ID="29-2031" Description="Cardiovascular Technologists and Technicians">
+                </ternary-group>
+                <ternary-group ID="29-2032" Description="Diagnostic Medical Sonographers">
+                </ternary-group>
+                <ternary-group ID="29-2033" Description="Nuclear Medicine Technologists">
+                </ternary-group>
+                <ternary-group ID="29-2034" Description="Radiologic Technologists ">
+                </ternary-group>
+                <ternary-group ID="29-2035 " Description="Magnetic Resonance Imaging Technologists">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="29-2040" Description="Emergency Medical Technicians and Paramedics">
+                <ternary-group ID="29-2041" Description="Emergency Medical Technicians and Paramedics">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="29-2050" Description="Health Practitioner Support Technologists and Technicians">
+                <ternary-group ID="29-2051" Description="Dietetic Technicians">
+                </ternary-group>
+                <ternary-group ID="29-2052" Description="Pharmacy Technicians">
+                </ternary-group>
+                <ternary-group ID="29-2053" Description="Psychiatric Technicians">
+                </ternary-group>
+                <ternary-group ID="29-2054" Description="Respiratory Therapy Technicians">
+                </ternary-group>
+                <ternary-group ID="29-2055" Description="Surgical Technologists">
+                </ternary-group>
+                <ternary-group ID="29-2056" Description="Veterinary Technologists and Technicians">
+                </ternary-group>
+                <ternary-group ID="29-2057" Description="Ophthalmic Medical Technicians">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="29-2060" Description="Licensed Practical and Licensed Vocational Nurses">
+                <ternary-group ID="29-2061" Description="Licensed Practical and Licensed Vocational Nurses">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="29-2070" Description="Medical Records and Health Information Technicians">
+                <ternary-group ID="29-2071" Description="Medical Records and Health Information Technicians">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="29-2080" Description="Opticians, Dispensing">
+                <ternary-group ID="29-2081" Description="Opticians, Dispensing">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="29-2090" Description="Miscellaneous Health Technologists and Technicians">
+                <ternary-group ID="29-2091" Description="Orthotists and Prosthetists">
+                </ternary-group>
+                <ternary-group ID="29-2092" Description="Hearing Aid Specialists">
+                </ternary-group>
+                <ternary-group ID="29-2099" Description="Health Technologists and Technicians, All Other">
+                </ternary-group>
+              </secondary-group>
+            </primary-group>
+            <primary-group ID="29-9000" Description="Other Healthcare Practitioners and Technical Occupations">
+              <secondary-group ID="29-9010" Description="Occupational Health and Safety Specialists and Technicians">
+                <ternary-group ID="29-9011" Description="Occupational Health and Safety Specialists">
+                </ternary-group>
+                <ternary-group ID="29-9012" Description="Occupational Health and Safety Technicians">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="29-9090" Description="Miscellaneous Health Practitioners and Technical Workers">
+                <ternary-group ID="29-9091" Description="Athletic Trainers">
+                </ternary-group>
+                <ternary-group ID="29-9092" Description="Genetic Counselors">
+                </ternary-group>
+                <ternary-group ID="29-9099" Description="Healthcare Practitioners and Technical Workers, All Other">
+                </ternary-group>
+              </secondary-group>
+            </primary-group>
+          </category>
+          <category ID="31-0000" Description="Healthcare Support Occupations">
+            <primary-group ID="31-1000" Description="Nursing, Psychiatric, and Home Health Aides">
+              <secondary-group ID="31-1010" Description="Nursing, Psychiatric, and Home Health Aides">
+                <ternary-group ID="31-1011" Description="Home Health Aides">
+                </ternary-group>
+                <ternary-group ID="31-1013" Description="Psychiatric Aides">
+                </ternary-group>
+                <ternary-group ID="31-1014" Description="Nursing Assistants">
+                </ternary-group>
+                <ternary-group ID="31-1015" Description="Orderlies">
+                </ternary-group>
+              </secondary-group>
+            </primary-group>
+            <primary-group ID="31-2000" Description="Occupational Therapy and Physical Therapist Assistants and Aides">
+              <secondary-group ID="31-2010" Description="Occupational Therapy Assistants and Aides">
+                <ternary-group ID="31-2011" Description="Occupational Therapy Assistants">
+                </ternary-group>
+                <ternary-group ID="31-2012" Description="Occupational Therapy Aides">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="31-2020" Description="Physical Therapist Assistants and Aides">
+                <ternary-group ID="31-2021" Description="Physical Therapist Assistants">
+                </ternary-group>
+                <ternary-group ID="31-2022" Description="Physical Therapist Aides">
+                </ternary-group>
+              </secondary-group>
+            </primary-group>
+            <primary-group ID="31-9000" Description="Other Healthcare Support Occupations">
+              <secondary-group ID="31-9010" Description="Massage Therapists">
+                <ternary-group ID="31-9011" Description="Massage Therapists">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="31-9090" Description="Miscellaneous Healthcare Support Occupations">
+                <ternary-group ID="31-9091" Description="Dental Assistants">
+                </ternary-group>
+                <ternary-group ID="31-9092" Description="Medical Assistants">
+                </ternary-group>
+                <ternary-group ID="31-9093" Description="Medical Equipment Preparers">
+                </ternary-group>
+                <ternary-group ID="31-9094" Description="Medical Transcriptionists">
+                </ternary-group>
+                <ternary-group ID="31-9095" Description="Pharmacy Aides">
+                </ternary-group>
+                <ternary-group ID="31-9096" Description="Veterinary Assistants and Laboratory Animal Caretakers">
+                </ternary-group>
+                <ternary-group ID="31-9097" Description="Phlebotomists">
+                </ternary-group>
+                <ternary-group ID="31-9099" Description="Healthcare Support Workers, All Other">
+                </ternary-group>
+              </secondary-group>
+            </primary-group>
+          </category>
+          <category ID="33-0000" Description="Protective Service Occupations">
+            <primary-group ID="33-1000" Description="Supervisors of Protective Service Workers">
+              <secondary-group ID="33-1010" Description="First-Line Supervisors of Law Enforcement Workers">
+                <ternary-group ID="33-1011" Description="First-Line Supervisors of Correctional Officers">
+                </ternary-group>
+                <ternary-group ID="33-1012" Description="First-Line Supervisors of Police and Detectives">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="33-1020" Description="First-Line Supervisors of Fire Fighting and Prevention Workers">
+                <ternary-group ID="33-1021" Description="First-Line Supervisors of Fire Fighting and Prevention Workers">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="33-1090" Description="Miscellaneous First-Line Supervisors, Protective Service Workers">
+                <ternary-group ID="33-1099" Description="First-Line Supervisors of Protective Service Workers, All Other">
+                </ternary-group>
+              </secondary-group>
+            </primary-group>
+            <primary-group ID="33-2000" Description="Fire Fighting and Prevention Workers">
+              <secondary-group ID="33-2010" Description="Firefighters">
+                <ternary-group ID="33-2011" Description="Firefighters">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="33-2020" Description="Fire Inspectors">
+                <ternary-group ID="33-2021" Description="Fire Inspectors and Investigators">
+                </ternary-group>
+                <ternary-group ID="33-2022" Description="Forest Fire Inspectors and Prevention Specialists">
+                </ternary-group>
+              </secondary-group>
+            </primary-group>
+            <primary-group ID="33-3000" Description="Law Enforcement Workers">
+              <secondary-group ID="33-3010" Description="Bailiffs, Correctional Officers, and Jailers">
+                <ternary-group ID="33-3011" Description="Bailiffs">
+                </ternary-group>
+                <ternary-group ID="33-3012" Description="Correctional Officers and Jailers">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="33-3020" Description="Detectives and Criminal Investigators">
+                <ternary-group ID="33-3021" Description="Detectives and Criminal Investigators">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="33-3030" Description="Fish and Game Wardens">
+                <ternary-group ID="33-3031" Description="Fish and Game Wardens">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="33-3040" Description="Parking Enforcement Workers">
+                <ternary-group ID="33-3041" Description="Parking Enforcement Workers">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="33-3050" Description="Police Officers">
+                <ternary-group ID="33-3051" Description="Police and Sheriff's Patrol Officers">
+                </ternary-group>
+                <ternary-group ID="33-3052" Description="Transit and Railroad Police">
+                </ternary-group>
+              </secondary-group>
+            </primary-group>
+            <primary-group ID="33-9000" Description="Other Protective Service Workers">
+              <secondary-group ID="33-9010" Description="Animal Control Workers">
+                <ternary-group ID="33-9011" Description="Animal Control Workers">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="33-9020" Description="Private Detectives and Investigators">
+                <ternary-group ID="33-9021" Description="Private Detectives and Investigators">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="33-9030" Description="Security Guards and Gaming Surveillance Officers">
+                <ternary-group ID="33-9031" Description="Gaming Surveillance Officers and Gaming Investigators">
+                </ternary-group>
+                <ternary-group ID="33-9032" Description="Security Guards">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="33-9090" Description="Miscellaneous Protective Service Workers">
+                <ternary-group ID="33-9091" Description="Crossing Guards">
+                </ternary-group>
+                <ternary-group ID="33-9092" Description="Lifeguards, Ski Patrol, and Other Recreational Protective Service Workers">
+                </ternary-group>
+                <ternary-group ID="33-9093 " Description="Transportation Security Screeners">
+                </ternary-group>
+                <ternary-group ID="33-9099" Description="Protective Service Workers, All Other">
+                </ternary-group>
+              </secondary-group>
+            </primary-group>
+          </category>
+          <category ID="35-0000" Description="Food Preparation and Serving Related Occupations">
+            <primary-group ID="35-1000" Description="Supervisors of Food Preparation and Serving Workers">
+              <secondary-group ID="35-1010" Description="Supervisors of Food Preparation and Serving Workers">
+                <ternary-group ID="35-1011" Description="Chefs and Head Cooks">
+                </ternary-group>
+                <ternary-group ID="35-1012" Description="First-Line Supervisors of Food Preparation and Serving Workers">
+                </ternary-group>
+              </secondary-group>
+            </primary-group>
+            <primary-group ID="35-2000" Description="Cooks and Food Preparation Workers">
+              <secondary-group ID="35-2010" Description="Cooks">
+                <ternary-group ID="35-2011" Description="Cooks, Fast Food">
+                </ternary-group>
+                <ternary-group ID="35-2012" Description="Cooks, Institution and Cafeteria">
+                </ternary-group>
+                <ternary-group ID="35-2013" Description="Cooks, Private Household">
+                </ternary-group>
+                <ternary-group ID="35-2014" Description="Cooks, Restaurant">
+                </ternary-group>
+                <ternary-group ID="35-2015" Description="Cooks, Short Order">
+                </ternary-group>
+                <ternary-group ID="35-2019" Description="Cooks, All Other">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="35-2020" Description="Food Preparation Workers">
+                <ternary-group ID="35-2021" Description="Food Preparation Workers">
+                </ternary-group>
+              </secondary-group>
+            </primary-group>
+            <primary-group ID="35-3000" Description="Food and Beverage Serving Workers">
+              <secondary-group ID="35-3010" Description="Bartenders">
+                <ternary-group ID="35-3011" Description="Bartenders">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="35-3020" Description="Fast Food and Counter Workers">
+                <ternary-group ID="35-3021" Description="Combined Food Preparation and Serving Workers, Including Fast Food">
+                </ternary-group>
+                <ternary-group ID="35-3022" Description="Counter Attendants, Cafeteria, Food Concession, and Coffee Shop">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="35-3030" Description="Waiters and Waitresses">
+                <ternary-group ID="35-3031" Description="Waiters and Waitresses">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="35-3040" Description="Food Servers, Nonrestaurant">
+                <ternary-group ID="35-3041" Description="Food Servers, Nonrestaurant">
+                </ternary-group>
+              </secondary-group>
+            </primary-group>
+            <primary-group ID="35-9000" Description="Other Food Preparation and Serving Related Workers">
+              <secondary-group ID="35-9010" Description="Dining Room and Cafeteria Attendants and Bartender Helpers">
+                <ternary-group ID="35-9011" Description="Dining Room and Cafeteria Attendants and Bartender Helpers">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="35-9020" Description="Dishwashers">
+                <ternary-group ID="35-9021" Description="Dishwashers">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="35-9030" Description="Hosts and Hostesses, Restaurant, Lounge, and Coffee Shop">
+                <ternary-group ID="35-9031" Description="Hosts and Hostesses, Restaurant, Lounge, and Coffee Shop">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="35-9090" Description="Miscellaneous Food Preparation and Serving Related Workers">
+                <ternary-group ID="35-9099" Description="Food Preparation and Serving Related Workers, All Other">
+                </ternary-group>
+              </secondary-group>
+            </primary-group>
+          </category>
+          <category ID="37-0000" Description="Building and Grounds Cleaning and Maintenance Occupations">
+            <primary-group ID="37-1000" Description="Supervisors of Building and Grounds Cleaning and Maintenance Workers">
+              <secondary-group ID="37-1010" Description="First-Line Supervisors of Building and Grounds Cleaning and Maintenance Workers">
+                <ternary-group ID="37-1011" Description="First-Line Supervisors of Housekeeping and Janitorial Workers">
+                </ternary-group>
+                <ternary-group ID="37-1012" Description="First-Line Supervisors of Landscaping, Lawn Service, and Groundskeeping Workers">
+                </ternary-group>
+              </secondary-group>
+            </primary-group>
+            <primary-group ID="37-2000" Description="Building Cleaning and Pest Control Workers">
+              <secondary-group ID="37-2010" Description="Building Cleaning Workers">
+                <ternary-group ID="37-2011" Description="Janitors and Cleaners, Except Maids and Housekeeping Cleaners">
+                </ternary-group>
+                <ternary-group ID="37-2012" Description="Maids and Housekeeping Cleaners">
+                </ternary-group>
+                <ternary-group ID="37-2019" Description="Building Cleaning Workers, All Other">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="37-2020" Description="Pest Control Workers">
+                <ternary-group ID="37-2021" Description="Pest Control Workers">
+                </ternary-group>
+              </secondary-group>
+            </primary-group>
+            <primary-group ID="37-3000" Description="Grounds Maintenance Workers">
+              <secondary-group ID="37-3010" Description="Grounds Maintenance Workers">
+                <ternary-group ID="37-3011" Description="Landscaping and Groundskeeping Workers">
+                </ternary-group>
+                <ternary-group ID="37-3012" Description="Pesticide Handlers, Sprayers, and Applicators, Vegetation">
+                </ternary-group>
+                <ternary-group ID="37-3013" Description="Tree Trimmers and Pruners">
+                </ternary-group>
+                <ternary-group ID="37-3019" Description="Grounds Maintenance Workers, All Other">
+                </ternary-group>
+              </secondary-group>
+            </primary-group>
+          </category>
+          <category ID="39-0000" Description="Personal Care and Service Occupations">
+            <primary-group ID="39-1000" Description="Supervisors of Personal Care and Service Workers">
+              <secondary-group ID="39-1010" Description="First-Line Supervisors of Gaming Workers">
+                <ternary-group ID="39-1011" Description="Gaming Supervisors">
+                </ternary-group>
+                <ternary-group ID="39-1012" Description="Slot Supervisors">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="39-1020" Description="First-Line Supervisors of Personal Service Workers">
+                <ternary-group ID="39-1021" Description="First-Line Supervisors of Personal Service Workers">
+                </ternary-group>
+              </secondary-group>
+            </primary-group>
+            <primary-group ID="39-2000" Description="Animal Care and Service Workers">
+              <secondary-group ID="39-2010" Description="Animal Trainers">
+                <ternary-group ID="39-2011" Description="Animal Trainers">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="39-2020" Description="Nonfarm Animal Caretakers">
+                <ternary-group ID="39-2021" Description="Nonfarm Animal Caretakers">
+                </ternary-group>
+              </secondary-group>
+            </primary-group>
+            <primary-group ID="39-3000" Description="Entertainment Attendants and Related Workers">
+              <secondary-group ID="39-3010" Description="Gaming Services Workers">
+                <ternary-group ID="39-3011" Description="Gaming Dealers">
+                </ternary-group>
+                <ternary-group ID="39-3012" Description="Gaming and Sports Book Writers and Runners">
+                </ternary-group>
+                <ternary-group ID="39-3019" Description="Gaming Service Workers, All Other">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="39-3020" Description="Motion Picture Projectionists">
+                <ternary-group ID="39-3021" Description="Motion Picture Projectionists">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="39-3030" Description="Ushers, Lobby Attendants, and Ticket Takers">
+                <ternary-group ID="39-3031" Description="Ushers, Lobby Attendants, and Ticket Takers">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="39-3090" Description="Miscellaneous Entertainment Attendants and Related Workers">
+                <ternary-group ID="39-3091" Description="Amusement and Recreation Attendants">
+                </ternary-group>
+                <ternary-group ID="39-3092" Description="Costume Attendants">
+                </ternary-group>
+                <ternary-group ID="39-3093" Description="Locker Room, Coatroom, and Dressing Room Attendants">
+                </ternary-group>
+                <ternary-group ID="39-3099" Description="Entertainment Attendants and Related Workers, All Other">
+                </ternary-group>
+              </secondary-group>
+            </primary-group>
+            <primary-group ID="39-4000" Description="Funeral Service Workers">
+              <secondary-group ID="39-4010" Description="Embalmers">
+                <ternary-group ID="39-4011" Description="Embalmers">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="39-4020" Description="Funeral Attendants">
+                <ternary-group ID="39-4021" Description="Funeral Attendants">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="39-4030" Description="Morticians, Undertakers, and Funeral Directors">
+                <ternary-group ID="39-4031" Description="Morticians, Undertakers, and Funeral Directors">
+                </ternary-group>
+              </secondary-group>
+            </primary-group>
+            <primary-group ID="39-5000" Description="Personal Appearance Workers">
+              <secondary-group ID="39-5010" Description="Barbers, Hairdressers, Hairstylists and Cosmetologists">
+                <ternary-group ID="39-5011" Description="Barbers">
+                </ternary-group>
+                <ternary-group ID="39-5012" Description="Hairdressers, Hairstylists, and Cosmetologists">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="39-5090" Description="Miscellaneous Personal Appearance Workers">
+                <ternary-group ID="39-5091" Description="Makeup Artists, Theatrical and Performance">
+                </ternary-group>
+                <ternary-group ID="39-5092" Description="Manicurists and Pedicurists">
+                </ternary-group>
+                <ternary-group ID="39-5093" Description="Shampooers">
+                </ternary-group>
+                <ternary-group ID="39-5094" Description="Skincare Specialists">
+                </ternary-group>
+              </secondary-group>
+            </primary-group>
+            <primary-group ID="39-6000" Description="Baggage Porters, Bellhops, and Concierges">
+              <secondary-group ID="39-6010" Description="Baggage Porters, Bellhops, and Concierges">
+                <ternary-group ID="39-6011" Description="Baggage Porters and Bellhops">
+                </ternary-group>
+                <ternary-group ID="39-6012" Description="Concierges">
+                </ternary-group>
+              </secondary-group>
+            </primary-group>
+            <primary-group ID="39-7000" Description="Tour and Travel Guides">
+              <secondary-group ID="39-7010" Description="Tour and Travel Guides">
+                <ternary-group ID="39-7011" Description="Tour Guides and Escorts">
+                </ternary-group>
+                <ternary-group ID="39-7012" Description="Travel Guides">
+                </ternary-group>
+              </secondary-group>
+            </primary-group>
+            <primary-group ID="39-9000" Description="Other Personal Care and Service Workers">
+              <secondary-group ID="39-9010" Description="Childcare Workers">
+                <ternary-group ID="39-9011" Description="Childcare Workers">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="39-9020" Description="Personal Care Aides">
+                <ternary-group ID="39-9021" Description="Personal Care Aides">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="39-9030" Description="Recreation and Fitness Workers">
+                <ternary-group ID="39-9031" Description="Fitness Trainers and Aerobics Instructors">
+                </ternary-group>
+                <ternary-group ID="39-9032" Description="Recreation Workers">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="39-9040" Description="Residential Advisors">
+                <ternary-group ID="39-9041" Description="Residential Advisors">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="39-9090" Description="Miscellaneous Personal Care and Service Workers">
+                <ternary-group ID="39-9099" Description="Personal Care and Service Workers, All Other">
+                </ternary-group>
+              </secondary-group>
+            </primary-group>
+          </category>
+          <category ID="41-0000" Description="Sales and Related Occupations">
+            <primary-group ID="41-1000" Description="Supervisors of Sales Workers">
+              <secondary-group ID="41-1010" Description="First-Line Supervisors of Sales Workers">
+                <ternary-group ID="41-1011" Description="First-Line Supervisors of Retail Sales Workers">
+                </ternary-group>
+                <ternary-group ID="41-1012" Description="First-Line Supervisors of Non-Retail Sales Workers">
+                </ternary-group>
+              </secondary-group>
+            </primary-group>
+            <primary-group ID="41-2000" Description="Retail Sales Workers">
+              <secondary-group ID="41-2010" Description="Cashiers">
+                <ternary-group ID="41-2011" Description="Cashiers">
+                </ternary-group>
+                <ternary-group ID="41-2012" Description="Gaming Change Persons and Booth Cashiers">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="41-2020" Description="Counter and Rental Clerks and Parts Salespersons">
+                <ternary-group ID="41-2021" Description="Counter and Rental Clerks">
+                </ternary-group>
+                <ternary-group ID="41-2022" Description="Parts Salespersons">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="41-2030" Description="Retail Salespersons">
+                <ternary-group ID="41-2031" Description="Retail Salespersons">
+                </ternary-group>
+              </secondary-group>
+            </primary-group>
+            <primary-group ID="41-3000" Description="Sales Representatives, Services">
+              <secondary-group ID="41-3010" Description="Advertising Sales Agents">
+                <ternary-group ID="41-3011" Description="Advertising Sales Agents">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="41-3020" Description="Insurance Sales Agents">
+                <ternary-group ID="41-3021" Description="Insurance Sales Agents">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="41-3030" Description="Securities, Commodities, and Financial Services Sales Agents">
+                <ternary-group ID="41-3031" Description="Securities, Commodities, and Financial Services Sales Agents">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="41-3040" Description="Travel Agents">
+                <ternary-group ID="41-3041" Description="Travel Agents">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="41-3090" Description="Miscellaneous Sales Representatives, Services">
+                <ternary-group ID="41-3099" Description="Sales Representatives, Services, All Other">
+                </ternary-group>
+              </secondary-group>
+            </primary-group>
+            <primary-group ID="41-4000" Description="Sales Representatives, Wholesale and Manufacturing">
+              <secondary-group ID="41-4010" Description="Sales Representatives, Wholesale and Manufacturing">
+                <ternary-group ID="41-4011" Description="Sales Representatives, Wholesale and Manufacturing, Technical and Scientific Products">
+                </ternary-group>
+                <ternary-group ID="41-4012" Description="Sales Representatives, Wholesale and Manufacturing, Except Technical and Scientific Products">
+                </ternary-group>
+              </secondary-group>
+            </primary-group>
+            <primary-group ID="41-9000" Description="Other Sales and Related Workers">
+              <secondary-group ID="41-9010" Description="Models, Demonstrators, and Product Promoters">
+                <ternary-group ID="41-9011" Description="Demonstrators and Product Promoters">
+                </ternary-group>
+                <ternary-group ID="41-9012" Description="Models">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="41-9020" Description="Real Estate Brokers and Sales Agents">
+                <ternary-group ID="41-9021" Description="Real Estate Brokers">
+                </ternary-group>
+                <ternary-group ID="41-9022" Description="Real Estate Sales Agents">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="41-9030" Description="Sales Engineers">
+                <ternary-group ID="41-9031" Description="Sales Engineers">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="41-9040" Description="Telemarketers">
+                <ternary-group ID="41-9041" Description="Telemarketers">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="41-9090" Description="Miscellaneous Sales and Related Workers">
+                <ternary-group ID="41-9091" Description="Door-to-Door Sales Workers, News and Street Vendors, and Related Workers">
+                </ternary-group>
+                <ternary-group ID="41-9099" Description="Sales and Related Workers, All Other">
+                </ternary-group>
+              </secondary-group>
+            </primary-group>
+          </category>
+          <category ID="43-0000" Description="Office and Administrative Support Occupations">
+            <primary-group ID="43-1000" Description="Supervisors of Office and Administrative Support Workers">
+              <secondary-group ID="43-1010" Description="First-Line Supervisors of Office and Administrative Support Workers">
+                <ternary-group ID="43-1011" Description="First-Line Supervisors of Office and Administrative Support Workers">
+                </ternary-group>
+              </secondary-group>
+            </primary-group>
+            <primary-group ID="43-2000" Description="Communications Equipment Operators">
+              <secondary-group ID="43-2010" Description="Switchboard Operators, Including Answering Service">
+                <ternary-group ID="43-2011" Description="Switchboard Operators, Including Answering Service">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="43-2020" Description="Telephone Operators">
+                <ternary-group ID="43-2021" Description="Telephone Operators">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="43-2090" Description="Miscellaneous Communications Equipment Operators">
+                <ternary-group ID="43-2099" Description="Communications Equipment Operators, All Other">
+                </ternary-group>
+              </secondary-group>
+            </primary-group>
+            <primary-group ID="43-3000" Description="Financial Clerks">
+              <secondary-group ID="43-3010" Description="Bill and Account Collectors">
+                <ternary-group ID="43-3011" Description="Bill and Account Collectors">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="43-3020" Description="Billing and Posting Clerks">
+                <ternary-group ID="43-3021" Description="Billing and Posting Clerks">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="43-3030" Description="Bookkeeping, Accounting, and Auditing Clerks">
+                <ternary-group ID="43-3031" Description="Bookkeeping, Accounting, and Auditing Clerks">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="43-3040" Description="Gaming Cage Workers">
+                <ternary-group ID="43-3041" Description="Gaming Cage Workers">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="43-3050" Description="Payroll and Timekeeping Clerks">
+                <ternary-group ID="43-3051" Description="Payroll and Timekeeping Clerks">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="43-3060" Description="Procurement Clerks">
+                <ternary-group ID="43-3061" Description="Procurement Clerks">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="43-3070" Description="Tellers">
+                <ternary-group ID="43-3071" Description="Tellers">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="43-3090" Description="Miscellaneous Financial Clerks">
+                <ternary-group ID="43-3099 " Description="Financial Clerks, All Other">
+                </ternary-group>
+              </secondary-group>
+            </primary-group>
+            <primary-group ID="43-4000" Description="Information and Record Clerks">
+              <secondary-group ID="43-4010" Description="Brokerage Clerks">
+                <ternary-group ID="43-4011" Description="Brokerage Clerks">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="43-4020" Description="Correspondence Clerks">
+                <ternary-group ID="43-4021" Description="Correspondence Clerks">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="43-4030" Description="Court, Municipal, and License Clerks">
+                <ternary-group ID="43-4031" Description="Court, Municipal, and License Clerks">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="43-4040" Description="Credit Authorizers, Checkers, and Clerks">
+                <ternary-group ID="43-4041" Description="Credit Authorizers, Checkers, and Clerks">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="43-4050" Description="Customer Service Representatives">
+                <ternary-group ID="43-4051" Description="Customer Service Representatives">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="43-4060" Description="Eligibility Interviewers, Government Programs">
+                <ternary-group ID="43-4061" Description="Eligibility Interviewers, Government Programs">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="43-4070" Description="File Clerks">
+                <ternary-group ID="43-4071" Description="File Clerks">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="43-4080" Description="Hotel, Motel, and Resort Desk Clerks">
+                <ternary-group ID="43-4081" Description="Hotel, Motel, and Resort Desk Clerks">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="43-4110" Description="Interviewers, Except Eligibility and Loan">
+                <ternary-group ID="43-4111" Description="Interviewers, Except Eligibility and Loan">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="43-4120" Description="Library Assistants, Clerical">
+                <ternary-group ID="43-4121" Description="Library Assistants, Clerical">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="43-4130" Description="Loan Interviewers and Clerks">
+                <ternary-group ID="43-4131" Description="Loan Interviewers and Clerks">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="43-4140" Description="New Accounts Clerks">
+                <ternary-group ID="43-4141" Description="New Accounts Clerks">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="43-4150" Description="Order Clerks">
+                <ternary-group ID="43-4151" Description="Order Clerks">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="43-4160" Description="Human Resources Assistants, Except Payroll and Timekeeping">
+                <ternary-group ID="43-4161" Description="Human Resources Assistants, Except Payroll and Timekeeping">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="43-4170" Description="Receptionists and Information Clerks">
+                <ternary-group ID="43-4171" Description="Receptionists and Information Clerks">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="43-4180" Description="Reservation and Transportation Ticket Agents and Travel Clerks">
+                <ternary-group ID="43-4181" Description="Reservation and Transportation Ticket Agents and Travel Clerks">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="43-4190" Description="Miscellaneous Information and Record Clerks">
+                <ternary-group ID="43-4199" Description="Information and Record Clerks, All Other">
+                </ternary-group>
+              </secondary-group>
+            </primary-group>
+            <primary-group ID="43-5000" Description="Material Recording, Scheduling, Dispatching, and Distributing Workers">
+              <secondary-group ID="43-5010" Description="Cargo and Freight Agents">
+                <ternary-group ID="43-5011" Description="Cargo and Freight Agents">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="43-5020" Description="Couriers and Messengers">
+                <ternary-group ID="43-5021" Description="Couriers and Messengers">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="43-5030" Description="Dispatchers">
+                <ternary-group ID="43-5031" Description="Police, Fire, and Ambulance Dispatchers">
+                </ternary-group>
+                <ternary-group ID="43-5032" Description="Dispatchers, Except Police, Fire, and Ambulance">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="43-5040" Description="Meter Readers, Utilities">
+                <ternary-group ID="43-5041" Description="Meter Readers, Utilities">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="43-5050" Description="Postal Service Workers">
+                <ternary-group ID="43-5051" Description="Postal Service Clerks">
+                </ternary-group>
+                <ternary-group ID="43-5052" Description="Postal Service Mail Carriers">
+                </ternary-group>
+                <ternary-group ID="43-5053" Description="Postal Service Mail Sorters, Processors, and Processing Machine Operators">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="43-5060" Description="Production, Planning, and Expediting Clerks">
+                <ternary-group ID="43-5061" Description="Production, Planning, and Expediting Clerks">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="43-5070" Description="Shipping, Receiving, and Traffic Clerks">
+                <ternary-group ID="43-5071" Description="Shipping, Receiving, and Traffic Clerks">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="43-5080" Description="Stock Clerks and Order Fillers">
+                <ternary-group ID="43-5081" Description="Stock Clerks and Order Fillers">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="43-5110" Description="Weighers, Measurers, Checkers, and Samplers, Recordkeeping">
+                <ternary-group ID="43-5111" Description="Weighers, Measurers, Checkers, and Samplers, Recordkeeping">
+                </ternary-group>
+              </secondary-group>
+            </primary-group>
+            <primary-group ID="43-6000" Description="Secretaries and Administrative Assistants">
+              <secondary-group ID="43-6010" Description="Secretaries and Administrative Assistants">
+                <ternary-group ID="43-6011" Description="Executive Secretaries and Executive Administrative Assistants">
+                </ternary-group>
+                <ternary-group ID="43-6012" Description="Legal Secretaries">
+                </ternary-group>
+                <ternary-group ID="43-6013" Description="Medical Secretaries">
+                </ternary-group>
+                <ternary-group ID="43-6014" Description="Secretaries and Administrative Assistants, Except Legal, Medical, and Executive">
+                </ternary-group>
+              </secondary-group>
+            </primary-group>
+            <primary-group ID="43-9000" Description="Other Office and Administrative Support Workers">
+              <secondary-group ID="43-9010" Description="Computer Operators">
+                <ternary-group ID="43-9011" Description="Computer Operators">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="43-9020" Description="Data Entry and Information Processing Workers">
+                <ternary-group ID="43-9021" Description="Data Entry Keyers">
+                </ternary-group>
+                <ternary-group ID="43-9022" Description="Word Processors and Typists">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="43-9030" Description="Desktop Publishers">
+                <ternary-group ID="43-9031" Description="Desktop Publishers">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="43-9040" Description="Insurance Claims and Policy Processing Clerks">
+                <ternary-group ID="43-9041" Description="Insurance Claims and Policy Processing Clerks">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="43-9050" Description="Mail Clerks and Mail Machine Operators, Except Postal Service">
+                <ternary-group ID="43-9051" Description="Mail Clerks and Mail Machine Operators, Except Postal Service">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="43-9060" Description="Office Clerks, General">
+                <ternary-group ID="43-9061" Description="Office Clerks, General">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="43-9070" Description="Office Machine Operators, Except Computer">
+                <ternary-group ID="43-9071" Description="Office Machine Operators, Except Computer">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="43-9080" Description="Proofreaders and Copy Markers">
+                <ternary-group ID="43-9081" Description="Proofreaders and Copy Markers">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="43-9110" Description="Statistical Assistants">
+                <ternary-group ID="43-9111" Description="Statistical Assistants">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="43-9190" Description="Miscellaneous Office and Administrative Support Workers">
+                <ternary-group ID="43-9199" Description="Office and Administrative Support Workers, All Other">
+                </ternary-group>
+              </secondary-group>
+            </primary-group>
+          </category>
+          <category ID="45-0000" Description="Farming, Fishing, and Forestry Occupations">
+            <primary-group ID="45-1000" Description="Supervisors of Farming, Fishing, and Forestry Workers">
+              <secondary-group ID="45-1010" Description="First-Line Supervisors of Farming, Fishing, and Forestry Workers">
+                <ternary-group ID="45-1011" Description="First-Line Supervisors of Farming, Fishing, and Forestry Workers">
+                </ternary-group>
+              </secondary-group>
+            </primary-group>
+            <primary-group ID="45-2000" Description="Agricultural Workers">
+              <secondary-group ID="45-2010" Description="Agricultural Inspectors">
+                <ternary-group ID="45-2011" Description="Agricultural Inspectors">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="45-2020" Description="Animal Breeders">
+                <ternary-group ID="45-2021" Description="Animal Breeders">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="45-2040" Description="Graders and Sorters, Agricultural Products">
+                <ternary-group ID="45-2041" Description="Graders and Sorters, Agricultural Products">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="45-2090" Description="Miscellaneous Agricultural Workers">
+                <ternary-group ID="45-2091" Description="Agricultural Equipment Operators">
+                </ternary-group>
+                <ternary-group ID="45-2092" Description="Farmworkers and Laborers, Crop, Nursery, and Greenhouse">
+                </ternary-group>
+                <ternary-group ID="45-2093" Description="Farmworkers, Farm, Ranch, and Aquacultural Animals">
+                </ternary-group>
+                <ternary-group ID="45-2099" Description="Agricultural Workers, All Other">
+                </ternary-group>
+              </secondary-group>
+            </primary-group>
+            <primary-group ID="45-3000" Description="Fishing and Hunting Workers">
+              <secondary-group ID="45-3010" Description="Fishers and Related Fishing Workers">
+                <ternary-group ID="45-3011" Description="Fishers and Related Fishing Workers">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="45-3020" Description="Hunters and Trappers">
+                <ternary-group ID="45-3021" Description="Hunters and Trappers">
+                </ternary-group>
+              </secondary-group>
+            </primary-group>
+            <primary-group ID="45-4000" Description="Forest, Conservation, and Logging Workers">
+              <secondary-group ID="45-4010" Description="Forest and Conservation Workers">
+                <ternary-group ID="45-4011" Description="Forest and Conservation Workers">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="45-4020" Description="Logging Workers">
+                <ternary-group ID="45-4021" Description="Fallers">
+                </ternary-group>
+                <ternary-group ID="45-4022" Description="Logging Equipment Operators">
+                </ternary-group>
+                <ternary-group ID="45-4023" Description="Log Graders and Scalers">
+                </ternary-group>
+                <ternary-group ID="45-4029" Description="Logging Workers, All Other">
+                </ternary-group>
+              </secondary-group>
+            </primary-group>
+          </category>
+          <category ID="47-0000" Description="Construction and Extraction Occupations">
+            <primary-group ID="47-1000" Description="Supervisors of Construction and Extraction Workers">
+              <secondary-group ID="47-1010" Description="First-Line Supervisors of Construction Trades and Extraction Workers">
+                <ternary-group ID="47-1011" Description="First-Line Supervisors of Construction Trades and Extraction Workers">
+                </ternary-group>
+              </secondary-group>
+            </primary-group>
+            <primary-group ID="47-2000" Description="Construction Trades Workers">
+              <secondary-group ID="47-2010" Description="Boilermakers">
+                <ternary-group ID="47-2011" Description="Boilermakers">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="47-2020" Description="Brickmasons, Blockmasons, and Stonemasons">
+                <ternary-group ID="47-2021" Description="Brickmasons and Blockmasons">
+                </ternary-group>
+                <ternary-group ID="47-2022" Description="Stonemasons">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="47-2030" Description="Carpenters">
+                <ternary-group ID="47-2031" Description="Carpenters">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="47-2040" Description="Carpet, Floor, and Tile Installers and Finishers">
+                <ternary-group ID="47-2041" Description="Carpet Installers">
+                </ternary-group>
+                <ternary-group ID="47-2042" Description="Floor Layers, Except Carpet, Wood, and Hard Tiles">
+                </ternary-group>
+                <ternary-group ID="47-2043" Description="Floor Sanders and Finishers">
+                </ternary-group>
+                <ternary-group ID="47-2044" Description="Tile and Marble Setters">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="47-2050" Description="Cement Masons, Concrete Finishers, and Terrazzo Workers">
+                <ternary-group ID="47-2051" Description="Cement Masons and Concrete Finishers">
+                </ternary-group>
+                <ternary-group ID="47-2053" Description="Terrazzo Workers and Finishers">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="47-2060" Description="Construction Laborers">
+                <ternary-group ID="47-2061" Description="Construction Laborers">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="47-2070" Description="Construction Equipment Operators">
+                <ternary-group ID="47-2071" Description="Paving, Surfacing, and Tamping Equipment Operators">
+                </ternary-group>
+                <ternary-group ID="47-2072" Description="Pile-Driver Operators">
+                </ternary-group>
+                <ternary-group ID="47-2073" Description="Operating Engineers and Other Construction Equipment Operators">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="47-2080" Description="Drywall Installers, Ceiling Tile Installers, and Tapers">
+                <ternary-group ID="47-2081" Description="Drywall and Ceiling Tile Installers">
+                </ternary-group>
+                <ternary-group ID="47-2082" Description="Tapers">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="47-2110" Description="Electricians">
+                <ternary-group ID="47-2111" Description="Electricians">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="47-2120" Description="Glaziers">
+                <ternary-group ID="47-2121" Description="Glaziers">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="47-2130" Description="Insulation Workers">
+                <ternary-group ID="47-2131" Description="Insulation Workers, Floor, Ceiling, and Wall">
+                </ternary-group>
+                <ternary-group ID="47-2132" Description="Insulation Workers, Mechanical">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="47-2140" Description="Painters and Paperhangers">
+                <ternary-group ID="47-2141" Description="Painters, Construction and Maintenance">
+                </ternary-group>
+                <ternary-group ID="47-2142" Description="Paperhangers">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="47-2150" Description="Pipelayers, Plumbers, Pipefitters, and Steamfitters">
+                <ternary-group ID="47-2151" Description="Pipelayers">
+                </ternary-group>
+                <ternary-group ID="47-2152" Description="Plumbers, Pipefitters, and Steamfitters">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="47-2160" Description="Plasterers and Stucco Masons">
+                <ternary-group ID="47-2161" Description="Plasterers and Stucco Masons">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="47-2170" Description="Reinforcing Iron and Rebar Workers">
+                <ternary-group ID="47-2171" Description="Reinforcing Iron and Rebar Workers">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="47-2180" Description="Roofers">
+                <ternary-group ID="47-2181" Description="Roofers">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="47-2210" Description="Sheet Metal Workers">
+                <ternary-group ID="47-2211" Description="Sheet Metal Workers">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="47-2220" Description="Structural Iron and Steel Workers">
+                <ternary-group ID="47-2221" Description="Structural Iron and Steel Workers">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="47-2230" Description="Solar Photovoltaic Installers">
+                <ternary-group ID="47-2231" Description="Solar Photovoltaic Installers">
+                </ternary-group>
+              </secondary-group>
+            </primary-group>
+            <primary-group ID="47-3000" Description="Helpers, Construction Trades">
+              <secondary-group ID="47-3010" Description="Helpers, Construction Trades">
+                <ternary-group ID="47-3011" Description="Helpers--Brickmasons, Blockmasons, Stonemasons, and Tile and Marble Setters">
+                </ternary-group>
+                <ternary-group ID="47-3012" Description="Helpers--Carpenters">
+                </ternary-group>
+                <ternary-group ID="47-3013" Description="Helpers--Electricians">
+                </ternary-group>
+                <ternary-group ID="47-3014" Description="Helpers--Painters, Paperhangers, Plasterers, and Stucco Masons">
+                </ternary-group>
+                <ternary-group ID="47-3015" Description="Helpers--Pipelayers, Plumbers, Pipefitters, and Steamfitters">
+                </ternary-group>
+                <ternary-group ID="47-3016" Description="Helpers--Roofers">
+                </ternary-group>
+                <ternary-group ID="47-3019" Description="Helpers, Construction Trades, All Other">
+                </ternary-group>
+              </secondary-group>
+            </primary-group>
+            <primary-group ID="47-4000" Description="Other Construction and Related Workers">
+              <secondary-group ID="47-4010" Description="Construction and Building Inspectors">
+                <ternary-group ID="47-4011" Description="Construction and Building Inspectors">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="47-4020" Description="Elevator Installers and Repairers">
+                <ternary-group ID="47-4021" Description="Elevator Installers and Repairers">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="47-4030" Description="Fence Erectors">
+                <ternary-group ID="47-4031" Description="Fence Erectors">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="47-4040" Description="Hazardous Materials Removal Workers">
+                <ternary-group ID="47-4041" Description="Hazardous Materials Removal Workers">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="47-4050" Description="Highway Maintenance Workers">
+                <ternary-group ID="47-4051" Description="Highway Maintenance Workers">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="47-4060" Description="Rail-Track Laying and Maintenance Equipment Operators">
+                <ternary-group ID="47-4061" Description="Rail-Track Laying and Maintenance Equipment Operators">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="47-4070" Description="Septic Tank Servicers and Sewer Pipe Cleaners">
+                <ternary-group ID="47-4071" Description="Septic Tank Servicers and Sewer Pipe Cleaners">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="47-4090" Description="Miscellaneous Construction and Related Workers">
+                <ternary-group ID="47-4091" Description="Segmental Pavers">
+                </ternary-group>
+                <ternary-group ID="47-4099" Description="Construction and Related Workers, All Other">
+                </ternary-group>
+              </secondary-group>
+            </primary-group>
+            <primary-group ID="47-5000" Description="Extraction Workers">
+              <secondary-group ID="47-5010" Description="Derrick, Rotary Drill, and Service Unit Operators, Oil, Gas, and Mining">
+                <ternary-group ID="47-5011" Description="Derrick Operators, Oil and Gas">
+                </ternary-group>
+                <ternary-group ID="47-5012" Description="Rotary Drill Operators, Oil and Gas">
+                </ternary-group>
+                <ternary-group ID="47-5013" Description="Service Unit Operators, Oil, Gas, and Mining">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="47-5020" Description="Earth Drillers, Except Oil and Gas">
+                <ternary-group ID="47-5021" Description="Earth Drillers, Except Oil and Gas">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="47-5030" Description="Explosives Workers, Ordnance Handling Experts, and Blasters">
+                <ternary-group ID="47-5031" Description="Explosives Workers, Ordnance Handling Experts, and Blasters">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="47-5040" Description="Mining Machine Operators">
+                <ternary-group ID="47-5041" Description="Continuous Mining Machine Operators">
+                </ternary-group>
+                <ternary-group ID="47-5042" Description="Mine Cutting and Channeling Machine Operators">
+                </ternary-group>
+                <ternary-group ID="47-5049" Description="Mining Machine Operators, All Other">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="47-5050" Description="Rock Splitters, Quarry">
+                <ternary-group ID="47-5051" Description="Rock Splitters, Quarry">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="47-5060" Description="Roof Bolters, Mining">
+                <ternary-group ID="47-5061" Description="Roof Bolters, Mining">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="47-5070" Description="Roustabouts, Oil and Gas">
+                <ternary-group ID="47-5071" Description="Roustabouts, Oil and Gas">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="47-5080" Description="Helpers--Extraction Workers">
+                <ternary-group ID="47-5081" Description="Helpers--Extraction Workers">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="47-5090" Description="Miscellaneous Extraction Workers">
+                <ternary-group ID="47-5099" Description="Extraction Workers, All Other">
+                </ternary-group>
+              </secondary-group>
+            </primary-group>
+          </category>
+          <category ID="49-0000" Description="Installation, Maintenance, and Repair Occupations">
+            <primary-group ID="49-1000" Description="Supervisors of Installation, Maintenance, and Repair Workers">
+              <secondary-group ID="49-1010" Description="First-Line Supervisors of Mechanics, Installers, and Repairers">
+                <ternary-group ID="49-1011" Description="First-Line Supervisors of Mechanics, Installers, and Repairers">
+                </ternary-group>
+              </secondary-group>
+            </primary-group>
+            <primary-group ID="49-2000" Description="Electrical and Electronic Equipment Mechanics, Installers, and Repairers">
+              <secondary-group ID="49-2010" Description="Computer, Automated Teller, and Office Machine Repairers">
+                <ternary-group ID="49-2011" Description="Computer, Automated Teller, and Office Machine Repairers">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="49-2020" Description="Radio and Telecommunications Equipment Installers and Repairers">
+                <ternary-group ID="49-2021" Description="Radio, Cellular, and Tower Equipment Installers and Repairs">
+                </ternary-group>
+                <ternary-group ID="49-2022" Description="Telecommunications Equipment Installers and Repairers, Except Line Installers">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="49-2090" Description="Miscellaneous Electrical and Electronic Equipment Mechanics, Installers, and Repairers">
+                <ternary-group ID="49-2091" Description="Avionics Technicians">
+                </ternary-group>
+                <ternary-group ID="49-2092" Description="Electric Motor, Power Tool, and Related Repairers">
+                </ternary-group>
+                <ternary-group ID="49-2093" Description="Electrical and Electronics Installers and Repairers, Transportation Equipment">
+                </ternary-group>
+                <ternary-group ID="49-2094" Description="Electrical and Electronics Repairers, Commercial and Industrial Equipment">
+                </ternary-group>
+                <ternary-group ID="49-2095" Description="Electrical and Electronics Repairers, Powerhouse, Substation, and Relay">
+                </ternary-group>
+                <ternary-group ID="49-2096" Description="Electronic Equipment Installers and Repairers, Motor Vehicles">
+                </ternary-group>
+                <ternary-group ID="49-2097" Description="Electronic Home Entertainment Equipment Installers and Repairers">
+                </ternary-group>
+                <ternary-group ID="49-2098" Description="Security and Fire Alarm Systems Installers">
+                </ternary-group>
+              </secondary-group>
+            </primary-group>
+            <primary-group ID="49-3000" Description="Vehicle and Mobile Equipment Mechanics, Installers, and Repairers">
+              <secondary-group ID="49-3010" Description="Aircraft Mechanics and Service Technicians">
+                <ternary-group ID="49-3011" Description="Aircraft Mechanics and Service Technicians">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="49-3020" Description="Automotive Technicians and Repairers">
+                <ternary-group ID="49-3021" Description="Automotive Body and Related Repairers">
+                </ternary-group>
+                <ternary-group ID="49-3022" Description="Automotive Glass Installers and Repairers">
+                </ternary-group>
+                <ternary-group ID="49-3023" Description="Automotive Service Technicians and Mechanics">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="49-3030" Description="Bus and Truck Mechanics and Diesel Engine Specialists">
+                <ternary-group ID="49-3031" Description="Bus and Truck Mechanics and Diesel Engine Specialists">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="49-3040" Description="Heavy Vehicle and Mobile Equipment Service Technicians and Mechanics">
+                <ternary-group ID="49-3041" Description="Farm Equipment Mechanics and Service Technicians">
+                </ternary-group>
+                <ternary-group ID="49-3042" Description="Mobile Heavy Equipment Mechanics, Except Engines">
+                </ternary-group>
+                <ternary-group ID="49-3043" Description="Rail Car Repairers">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="49-3050" Description="Small Engine Mechanics">
+                <ternary-group ID="49-3051" Description="Motorboat Mechanics and Service Technicians">
+                </ternary-group>
+                <ternary-group ID="49-3052" Description="Motorcycle Mechanics">
+                </ternary-group>
+                <ternary-group ID="49-3053" Description="Outdoor Power Equipment and Other Small Engine Mechanics">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="49-3090" Description="Miscellaneous Vehicle and Mobile Equipment Mechanics, Installers, and Repairers">
+                <ternary-group ID="49-3091" Description="Bicycle Repairers">
+                </ternary-group>
+                <ternary-group ID="49-3092" Description="Recreational Vehicle Service Technicians">
+                </ternary-group>
+                <ternary-group ID="49-3093" Description="Tire Repairers and Changers">
+                </ternary-group>
+              </secondary-group>
+            </primary-group>
+            <primary-group ID="49-9000" Description="Other Installation, Maintenance, and Repair Occupations">
+              <secondary-group ID="49-9010" Description="Control and Valve Installers and Repairers">
+                <ternary-group ID="49-9011" Description="Mechanical Door Repairers">
+                </ternary-group>
+                <ternary-group ID="49-9012" Description="Control and Valve Installers and Repairers, Except Mechanical Door">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="49-9020" Description="Heating, Air Conditioning, and Refrigeration Mechanics and Installers">
+                <ternary-group ID="49-9021" Description="Heating, Air Conditioning, and Refrigeration Mechanics and Installers">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="49-9030" Description="Home Appliance Repairers">
+                <ternary-group ID="49-9031" Description="Home Appliance Repairers">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="49-9040" Description="Industrial Machinery Installation, Repair, and Maintenance Workers">
+                <ternary-group ID="49-9041" Description="Industrial Machinery Mechanics">
+                </ternary-group>
+                <ternary-group ID="49-9043" Description="Maintenance Workers, Machinery">
+                </ternary-group>
+                <ternary-group ID="49-9044" Description="Millwrights">
+                </ternary-group>
+                <ternary-group ID="49-9045" Description="Refractory Materials Repairers, Except Brickmasons">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="49-9050" Description="Line Installers and Repairers">
+                <ternary-group ID="49-9051" Description="Electrical Power-Line Installers and Repairers">
+                </ternary-group>
+                <ternary-group ID="49-9052" Description="Telecommunications Line Installers and Repairers">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="49-9060" Description="Precision Instrument and Equipment Repairers">
+                <ternary-group ID="49-9061" Description="Camera and Photographic Equipment Repairers">
+                </ternary-group>
+                <ternary-group ID="49-9062" Description="Medical Equipment Repairers">
+                </ternary-group>
+                <ternary-group ID="49-9063" Description="Musical Instrument Repairers and Tuners">
+                </ternary-group>
+                <ternary-group ID="49-9064" Description="Watch Repairers">
+                </ternary-group>
+                <ternary-group ID="49-9069" Description="Precision Instrument and Equipment Repairers, All Other">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="49-9070" Description="Maintenance and Repair Workers, General">
+                <ternary-group ID="49-9071" Description="Maintenance and Repair Workers, General">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="49-9080" Description="Wind Turbine Service Technicians">
+                <ternary-group ID="49-9081" Description="Wind Turbine Service Technicians">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="49-9090" Description="Miscellaneous Installation, Maintenance, and Repair Workers">
+                <ternary-group ID="49-9091" Description="Coin, Vending, and Amusement Machine Servicers and Repairers">
+                </ternary-group>
+                <ternary-group ID="49-9092" Description="Commercial Divers">
+                </ternary-group>
+                <ternary-group ID="49-9093" Description="Fabric Menders, Except Garment">
+                </ternary-group>
+                <ternary-group ID="49-9094" Description="Locksmiths and Safe Repairers">
+                </ternary-group>
+                <ternary-group ID="49-9095" Description="Manufactured Building and Mobile Home Installers">
+                </ternary-group>
+                <ternary-group ID="49-9096" Description="Riggers">
+                </ternary-group>
+                <ternary-group ID="49-9097" Description="Signal and Track Switch Repairers">
+                </ternary-group>
+                <ternary-group ID="49-9098" Description="Helpers--Installation, Maintenance, and Repair Workers">
+                </ternary-group>
+                <ternary-group ID="49-9099" Description="Installation, Maintenance, and Repair Workers, All Other">
+                </ternary-group>
+              </secondary-group>
+            </primary-group>
+          </category>
+          <category ID="51-0000" Description="Production Occupations">
+            <primary-group ID="51-1000" Description="Supervisors of Production Workers">
+              <secondary-group ID="51-1010" Description="First-Line Supervisors of Production and Operating Workers">
+                <ternary-group ID="51-1011" Description="First-Line Supervisors of Production and Operating Workers">
+                </ternary-group>
+              </secondary-group>
+            </primary-group>
+            <primary-group ID="51-2000" Description="Assemblers and Fabricators">
+              <secondary-group ID="51-2010" Description="Aircraft Structure, Surfaces, Rigging, and Systems Assemblers">
+                <ternary-group ID="51-2011" Description="Aircraft Structure, Surfaces, Rigging, and Systems Assemblers">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="51-2020" Description="Electrical, Electronics, and Electromechanical Assemblers">
+                <ternary-group ID="51-2021" Description="Coil Winders, Tapers, and Finishers">
+                </ternary-group>
+                <ternary-group ID="51-2022" Description="Electrical and Electronic Equipment Assemblers">
+                </ternary-group>
+                <ternary-group ID="51-2023" Description="Electromechanical Equipment Assemblers">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="51-2030" Description="Engine and Other Machine Assemblers">
+                <ternary-group ID="51-2031" Description="Engine and Other Machine Assemblers">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="51-2040" Description="Structural Metal Fabricators and Fitters">
+                <ternary-group ID="51-2041" Description="Structural Metal Fabricators and Fitters">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="51-2090" Description="Miscellaneous Assemblers and Fabricators">
+                <ternary-group ID="51-2091" Description="Fiberglass Laminators and Fabricators">
+                </ternary-group>
+                <ternary-group ID="51-2092" Description="Team Assemblers">
+                </ternary-group>
+                <ternary-group ID="51-2093" Description="Timing Device Assemblers and Adjusters">
+                </ternary-group>
+                <ternary-group ID="51-2099" Description="Assemblers and Fabricators, All Other">
+                </ternary-group>
+              </secondary-group>
+            </primary-group>
+            <primary-group ID="51-3000" Description="Food Processing Workers">
+              <secondary-group ID="51-3010" Description="Bakers">
+                <ternary-group ID="51-3011" Description="Bakers">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="51-3020" Description="Butchers and Other Meat, Poultry, and Fish Processing Workers">
+                <ternary-group ID="51-3021" Description="Butchers and Meat Cutters">
+                </ternary-group>
+                <ternary-group ID="51-3022" Description="Meat, Poultry, and Fish Cutters and Trimmers">
+                </ternary-group>
+                <ternary-group ID="51-3023" Description="Slaughterers and Meat Packers">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="51-3090" Description="Miscellaneous Food Processing Workers">
+                <ternary-group ID="51-3091" Description="Food and Tobacco Roasting, Baking, and Drying Machine Operators and Tenders">
+                </ternary-group>
+                <ternary-group ID="51-3092" Description="Food Batchmakers">
+                </ternary-group>
+                <ternary-group ID="51-3093" Description="Food Cooking Machine Operators and Tenders">
+                </ternary-group>
+                <ternary-group ID="51-3099" Description="Food Processing Workers, All Other">
+                </ternary-group>
+              </secondary-group>
+            </primary-group>
+            <primary-group ID="51-4000" Description="Metal Workers and Plastic Workers">
+              <secondary-group ID="51-4010" Description="Computer Control Programmers and Operators">
+                <ternary-group ID="51-4011" Description="Computer-Controlled Machine Tool Operators, Metal and Plastic">
+                </ternary-group>
+                <ternary-group ID="51-4012" Description="Computer Numerically Controlled Machine Tool Programmers, Metal and Plastic">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="51-4020" Description="Forming Machine Setters, Operators, and Tenders, Metal and Plastic">
+                <ternary-group ID="51-4021" Description="Extruding and Drawing Machine Setters, Operators, and Tenders, Metal and Plastic">
+                </ternary-group>
+                <ternary-group ID="51-4022" Description="Forging Machine Setters, Operators, and Tenders, Metal and Plastic">
+                </ternary-group>
+                <ternary-group ID="51-4023" Description="Rolling Machine Setters, Operators, and Tenders, Metal and Plastic">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="51-4030" Description="Machine Tool Cutting Setters, Operators, and Tenders, Metal and Plastic">
+                <ternary-group ID="51-4031" Description="Cutting, Punching, and Press Machine Setters, Operators, and Tenders, Metal and Plastic">
+                </ternary-group>
+                <ternary-group ID="51-4032" Description="Drilling and Boring Machine Tool Setters, Operators, and Tenders, Metal and Plastic">
+                </ternary-group>
+                <ternary-group ID="51-4033" Description="Grinding, Lapping, Polishing, and Buffing Machine Tool Setters, Operators, and Tenders, Metal and Plastic">
+                </ternary-group>
+                <ternary-group ID="51-4034" Description="Lathe and Turning Machine Tool Setters, Operators, and Tenders, Metal and Plastic">
+                </ternary-group>
+                <ternary-group ID="51-4035" Description="Milling and Planing Machine Setters, Operators, and Tenders, Metal and Plastic">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="51-4040" Description="Machinists">
+                <ternary-group ID="51-4041" Description="Machinists">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="51-4050" Description="Metal Furnace Operators, Tenders, Pourers, and Casters">
+                <ternary-group ID="51-4051" Description="Metal-Refining Furnace Operators and Tenders">
+                </ternary-group>
+                <ternary-group ID="51-4052" Description="Pourers and Casters, Metal">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="51-4060" Description="Model Makers and Patternmakers, Metal and Plastic">
+                <ternary-group ID="51-4061" Description="Model Makers, Metal and Plastic">
+                </ternary-group>
+                <ternary-group ID="51-4062" Description="Patternmakers, Metal and Plastic">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="51-4070" Description="Molders and Molding Machine Setters, Operators, and Tenders, Metal and Plastic">
+                <ternary-group ID="51-4071" Description="Foundry Mold and Coremakers">
+                </ternary-group>
+                <ternary-group ID="51-4072" Description="Molding, Coremaking, and Casting Machine Setters, Operators, and Tenders, Metal and Plastic">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="51-4080" Description="Multiple Machine Tool Setters, Operators, and Tenders, Metal and Plastic">
+                <ternary-group ID="51-4081" Description="Multiple Machine Tool Setters, Operators, and Tenders, Metal and Plastic">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="51-4110" Description="Tool and Die Makers">
+                <ternary-group ID="51-4111" Description="Tool and Die Makers">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="51-4120" Description="Welding, Soldering, and Brazing Workers">
+                <ternary-group ID="51-4121" Description="Welders, Cutters, Solderers, and Brazers">
+                </ternary-group>
+                <ternary-group ID="51-4122" Description="Welding, Soldering, and Brazing Machine Setters, Operators, and Tenders">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="51-4190" Description="Miscellaneous Metal Workers and Plastic Workers">
+                <ternary-group ID="51-4191" Description="Heat Treating Equipment Setters, Operators, and Tenders, Metal and Plastic">
+                </ternary-group>
+                <ternary-group ID="51-4192" Description="Layout Workers, Metal and Plastic">
+                </ternary-group>
+                <ternary-group ID="51-4193" Description="Plating and Coating Machine Setters, Operators, and Tenders, Metal and Plastic">
+                </ternary-group>
+                <ternary-group ID="51-4194" Description="Tool Grinders, Filers, and Sharpeners">
+                </ternary-group>
+                <ternary-group ID="51-4199" Description="Metal Workers and Plastic Workers, All Other">
+                </ternary-group>
+              </secondary-group>
+            </primary-group>
+            <primary-group ID="51-5100" Description="Printing Workers">
+              <secondary-group ID="51-5110" Description="Printing Workers">
+                <ternary-group ID="51-5111" Description="Prepress Technicians and Workers">
+                </ternary-group>
+                <ternary-group ID="51-5112" Description="Printing Press Operators">
+                </ternary-group>
+                <ternary-group ID="51-5113" Description="Print Binding and Finishing Workers">
+                </ternary-group>
+              </secondary-group>
+            </primary-group>
+            <primary-group ID="51-6000" Description="Textile, Apparel, and Furnishings Workers">
+              <secondary-group ID="51-6010" Description="Laundry and Dry-Cleaning Workers">
+                <ternary-group ID="51-6011" Description="Laundry and Dry-Cleaning Workers">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="51-6020" Description="Pressers, Textile, Garment, and Related Materials">
+                <ternary-group ID="51-6021" Description="Pressers, Textile, Garment, and Related Materials">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="51-6030" Description="Sewing Machine Operators">
+                <ternary-group ID="51-6031" Description="Sewing Machine Operators">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="51-6040" Description="Shoe and Leather Workers">
+                <ternary-group ID="51-6041" Description="Shoe and Leather Workers and Repairers">
+                </ternary-group>
+                <ternary-group ID="51-6042" Description="Shoe Machine Operators and Tenders">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="51-6050" Description="Tailors, Dressmakers, and Sewers">
+                <ternary-group ID="51-6051" Description="Sewers, Hand">
+                </ternary-group>
+                <ternary-group ID="51-6052" Description="Tailors, Dressmakers, and Custom Sewers">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="51-6060" Description="Textile Machine Setters, Operators, and Tenders">
+                <ternary-group ID="51-6061" Description="Textile Bleaching and Dyeing Machine Operators and Tenders">
+                </ternary-group>
+                <ternary-group ID="51-6062" Description="Textile Cutting Machine Setters, Operators, and Tenders">
+                </ternary-group>
+                <ternary-group ID="51-6063" Description="Textile Knitting and Weaving Machine Setters, Operators, and Tenders">
+                </ternary-group>
+                <ternary-group ID="51-6064" Description="Textile Winding, Twisting, and Drawing Out Machine Setters, Operators, and Tenders">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="51-6090" Description="Miscellaneous Textile, Apparel, and Furnishings Workers">
+                <ternary-group ID="51-6091" Description="Extruding and Forming Machine Setters, Operators, and Tenders, Synthetic and Glass Fibers">
+                </ternary-group>
+                <ternary-group ID="51-6092" Description="Fabric and Apparel Patternmakers">
+                </ternary-group>
+                <ternary-group ID="51-6093" Description="Upholsterers">
+                </ternary-group>
+                <ternary-group ID="51-6099" Description="Textile, Apparel, and Furnishings Workers, All Other">
+                </ternary-group>
+              </secondary-group>
+            </primary-group>
+            <primary-group ID="51-7000" Description="Woodworkers">
+              <secondary-group ID="51-7010" Description="Cabinetmakers and Bench Carpenters">
+                <ternary-group ID="51-7011" Description="Cabinetmakers and Bench Carpenters">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="51-7020" Description="Furniture Finishers">
+                <ternary-group ID="51-7021" Description="Furniture Finishers">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="51-7030" Description="Model Makers and Patternmakers, Wood">
+                <ternary-group ID="51-7031" Description="Model Makers, Wood">
+                </ternary-group>
+                <ternary-group ID="51-7032" Description="Patternmakers, Wood">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="51-7040" Description="Woodworking Machine Setters, Operators, and Tenders">
+                <ternary-group ID="51-7041" Description="Sawing Machine Setters, Operators, and Tenders, Wood">
+                </ternary-group>
+                <ternary-group ID="51-7042" Description="Woodworking Machine Setters, Operators, and Tenders, Except Sawing">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="51-7090" Description="Miscellaneous Woodworkers">
+                <ternary-group ID="51-7099" Description="Woodworkers, All Other">
+                </ternary-group>
+              </secondary-group>
+            </primary-group>
+            <primary-group ID="51-8000" Description="Plant and System Operators">
+              <secondary-group ID="51-8010" Description="Power Plant Operators, Distributors, and Dispatchers">
+                <ternary-group ID="51-8011" Description="Nuclear Power Reactor Operators">
+                </ternary-group>
+                <ternary-group ID="51-8012" Description="Power Distributors and Dispatchers">
+                </ternary-group>
+                <ternary-group ID="51-8013" Description="Power Plant Operators">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="51-8020" Description="Stationary Engineers and Boiler Operators">
+                <ternary-group ID="51-8021" Description="Stationary Engineers and Boiler Operators">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="51-8030" Description="Water and Wastewater Treatment Plant and System Operators">
+                <ternary-group ID="51-8031" Description="Water and Wastewater Treatment Plant and System Operators">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="51-8090" Description="Miscellaneous Plant and System Operators">
+                <ternary-group ID="51-8091" Description="Chemical Plant and System Operators">
+                </ternary-group>
+                <ternary-group ID="51-8092" Description="Gas Plant Operators">
+                </ternary-group>
+                <ternary-group ID="51-8093" Description="Petroleum Pump System Operators, Refinery Operators, and Gaugers">
+                </ternary-group>
+                <ternary-group ID="51-8099" Description="Plant and System Operators, All Other">
+                </ternary-group>
+              </secondary-group>
+            </primary-group>
+            <primary-group ID="51-9000" Description="Other Production Occupations">
+              <secondary-group ID="51-9010" Description="Chemical Processing Machine Setters, Operators, and Tenders">
+                <ternary-group ID="51-9011" Description="Chemical Equipment Operators and Tenders">
+                </ternary-group>
+                <ternary-group ID="51-9012" Description="Separating, Filtering, Clarifying, Precipitating, and Still Machine Setters, Operators, and Tenders">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="51-9020" Description="Crushing, Grinding, Polishing, Mixing, and Blending Workers">
+                <ternary-group ID="51-9021" Description="Crushing, Grinding, and Polishing Machine Setters, Operators, and Tenders">
+                </ternary-group>
+                <ternary-group ID="51-9022" Description="Grinding and Polishing Workers, Hand">
+                </ternary-group>
+                <ternary-group ID="51-9023" Description="Mixing and Blending Machine Setters, Operators, and Tenders">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="51-9030" Description="Cutting Workers">
+                <ternary-group ID="51-9031" Description="Cutters and Trimmers, Hand">
+                </ternary-group>
+                <ternary-group ID="51-9032" Description="Cutting and Slicing Machine Setters, Operators, and Tenders">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="51-9040" Description="Extruding, Forming, Pressing, and Compacting Machine Setters, Operators, and Tenders">
+                <ternary-group ID="51-9041" Description="Extruding, Forming, Pressing, and Compacting Machine Setters, Operators, and Tenders">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="51-9050" Description="Furnace, Kiln, Oven, Drier, and Kettle Operators and Tenders">
+                <ternary-group ID="51-9051" Description="Furnace, Kiln, Oven, Drier, and Kettle Operators and Tenders">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="51-9060" Description="Inspectors, Testers, Sorters, Samplers, and Weighers">
+                <ternary-group ID="51-9061" Description="Inspectors, Testers, Sorters, Samplers, and Weighers">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="51-9070" Description="Jewelers and Precious Stone and Metal Workers">
+                <ternary-group ID="51-9071" Description="Jewelers and Precious Stone and Metal Workers">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="51-9080" Description="Medical, Dental, and Ophthalmic Laboratory Technicians">
+                <ternary-group ID="51-9081" Description="Dental Laboratory Technicians">
+                </ternary-group>
+                <ternary-group ID="51-9082" Description="Medical Appliance Technicians">
+                </ternary-group>
+                <ternary-group ID="51-9083" Description="Ophthalmic Laboratory Technicians">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="51-9110" Description="Packaging and Filling Machine Operators and Tenders">
+                <ternary-group ID="51-9111" Description="Packaging and Filling Machine Operators and Tenders">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="51-9120" Description="Painting Workers">
+                <ternary-group ID="51-9121" Description="Coating, Painting, and Spraying Machine Setters, Operators, and Tenders">
+                </ternary-group>
+                <ternary-group ID="51-9122" Description="Painters, Transportation Equipment">
+                </ternary-group>
+                <ternary-group ID="51-9123" Description="Painting, Coating, and Decorating Workers">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="51-9140" Description="Semiconductor Processors">
+                <ternary-group ID="51-9141" Description="Semiconductor Processors">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="51-9150" Description="Photographic Process Workers and Processing Machine Operators">
+                <ternary-group ID="51-9151" Description="Photographic Process Workers and Processing Machine Operators">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="51-9190" Description="Miscellaneous Production Workers">
+                <ternary-group ID="51-9191" Description="Adhesive Bonding Machine Operators and Tenders">
+                </ternary-group>
+                <ternary-group ID="51-9192" Description="Cleaning, Washing, and Metal Pickling Equipment Operators and Tenders">
+                </ternary-group>
+                <ternary-group ID="51-9193" Description="Cooling and Freezing Equipment Operators and Tenders">
+                </ternary-group>
+                <ternary-group ID="51-9194" Description="Etchers and Engravers">
+                </ternary-group>
+                <ternary-group ID="51-9195" Description="Molders, Shapers, and Casters, Except Metal and Plastic">
+                </ternary-group>
+                <ternary-group ID="51-9196" Description="Paper Goods Machine Setters, Operators, and Tenders">
+                </ternary-group>
+                <ternary-group ID="51-9197" Description="Tire Builders">
+                </ternary-group>
+                <ternary-group ID="51-9198" Description="Helpers--Production Workers">
+                </ternary-group>
+                <ternary-group ID="51-9199" Description="Production Workers, All Other">
+                </ternary-group>
+              </secondary-group>
+            </primary-group>
+          </category>
+          <category ID="53-0000" Description="Transportation and Material Moving Occupations">
+            <primary-group ID="53-1000" Description="Supervisors of Transportation and Material Moving Workers">
+              <secondary-group ID="53-1010" Description="Aircraft Cargo Handling Supervisors">
+                <ternary-group ID="53-1011" Description="Aircraft Cargo Handling Supervisors">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="53-1020" Description="First-Line Supervisors of Helpers, Laborers, and Material Movers, Hand">
+                <ternary-group ID="53-1021" Description="First-Line Supervisors of Helpers, Laborers, and Material Movers, Hand">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="53-1030" Description="First-Line Supervisors of Transportation and Material-Moving Machine and Vehicle Operators">
+                <ternary-group ID="53-1031" Description="First-Line Supervisors of Transportation and Material-Moving Machine and Vehicle Operators">
+                </ternary-group>
+              </secondary-group>
+            </primary-group>
+            <primary-group ID="53-2000" Description="Air Transportation Workers">
+              <secondary-group ID="53-2010" Description="Aircraft Pilots and Flight Engineers">
+                <ternary-group ID="53-2011" Description="Airline Pilots, Copilots, and Flight Engineers">
+                </ternary-group>
+                <ternary-group ID="53-2012" Description="Commercial Pilots">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="53-2020" Description="Air Traffic Controllers and Airfield Operations Specialists">
+                <ternary-group ID="53-2021" Description="Air Traffic Controllers">
+                </ternary-group>
+                <ternary-group ID="53-2022" Description="Airfield Operations Specialists">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="53-2030" Description="Flight Attendants">
+                <ternary-group ID="53-2031" Description="Flight Attendants">
+                </ternary-group>
+              </secondary-group>
+            </primary-group>
+            <primary-group ID="53-3000" Description="Motor Vehicle Operators">
+              <secondary-group ID="53-3010" Description="Ambulance Drivers and Attendants, Except Emergency Medical Technicians">
+                <ternary-group ID="53-3011" Description="Ambulance Drivers and Attendants, Except Emergency Medical Technicians">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="53-3020" Description="Bus Drivers">
+                <ternary-group ID="53-3021" Description="Bus Drivers, Transit and Intercity ">
+                </ternary-group>
+                <ternary-group ID="53-3022" Description="Bus Drivers, School or Special Client ">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="53-3030" Description="Driver/Sales Workers and Truck Drivers">
+                <ternary-group ID="53-3031" Description="Driver/Sales Workers">
+                </ternary-group>
+                <ternary-group ID="53-3032" Description="Heavy and Tractor-Trailer Truck Drivers">
+                </ternary-group>
+                <ternary-group ID="53-3033" Description="Light Truck or Delivery Services Drivers">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="53-3040" Description="Taxi Drivers and Chauffeurs">
+                <ternary-group ID="53-3041" Description="Taxi Drivers and Chauffeurs">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="53-3090" Description="Miscellaneous Motor Vehicle Operators">
+                <ternary-group ID="53-3099" Description="Motor Vehicle Operators, All Other">
+                </ternary-group>
+              </secondary-group>
+            </primary-group>
+            <primary-group ID="53-4000" Description="Rail Transportation Workers">
+              <secondary-group ID="53-4010" Description="Locomotive Engineers and Operators">
+                <ternary-group ID="53-4011" Description="Locomotive Engineers">
+                </ternary-group>
+                <ternary-group ID="53-4012" Description="Locomotive Firers">
+                </ternary-group>
+                <ternary-group ID="53-4013" Description="Rail Yard Engineers, Dinkey Operators, and Hostlers">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="53-4020" Description="Railroad Brake, Signal, and Switch Operators">
+                <ternary-group ID="53-4021" Description="Railroad Brake, Signal, and Switch Operators">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="53-4030" Description="Railroad Conductors and Yardmasters">
+                <ternary-group ID="53-4031" Description="Railroad Conductors and Yardmasters">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="53-4040" Description="Subway and Streetcar Operators">
+                <ternary-group ID="53-4041" Description="Subway and Streetcar Operators">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="53-4090" Description="Miscellaneous Rail Transportation Workers">
+                <ternary-group ID="53-4099" Description="Rail Transportation Workers, All Other">
+                </ternary-group>
+              </secondary-group>
+            </primary-group>
+            <primary-group ID="53-5000" Description="Water Transportation Workers">
+              <secondary-group ID="53-5010" Description="Sailors and Marine Oilers">
+                <ternary-group ID="53-5011" Description="Sailors and Marine Oilers">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="53-5020" Description="Ship and Boat Captains and Operators">
+                <ternary-group ID="53-5021" Description="Captains, Mates, and Pilots of Water Vessels">
+                </ternary-group>
+                <ternary-group ID="53-5022" Description="Motorboat Operators">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="53-5030" Description="Ship Engineers">
+                <ternary-group ID="53-5031" Description="Ship Engineers">
+                </ternary-group>
+              </secondary-group>
+            </primary-group>
+            <primary-group ID="53-6000" Description="Other Transportation Workers">
+              <secondary-group ID="53-6010" Description="Bridge and Lock Tenders">
+                <ternary-group ID="53-6011" Description="Bridge and Lock Tenders">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="53-6020" Description="Parking Lot Attendants">
+                <ternary-group ID="53-6021" Description="Parking Lot Attendants">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="53-6030" Description="Automotive and Watercraft Service Attendants">
+                <ternary-group ID="53-6031" Description="Automotive and Watercraft Service Attendants">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="53-6040" Description="Traffic Technicians">
+                <ternary-group ID="53-6041" Description="Traffic Technicians">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="53-6050" Description="Transportation Inspectors">
+                <ternary-group ID="53-6051" Description="Transportation Inspectors">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="53-6060" Description="Transportation Attendants, Except Flight Attendants">
+                <ternary-group ID="53-6061" Description="Transportation Attendants, Except Flight Attendants ">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="53-6090" Description="Miscellaneous Transportation Workers">
+                <ternary-group ID="53-6099" Description="Transportation Workers, All Other">
+                </ternary-group>
+              </secondary-group>
+            </primary-group>
+            <primary-group ID="53-7000" Description="Material Moving Workers">
+              <secondary-group ID="53-7010" Description="Conveyor Operators and Tenders">
+                <ternary-group ID="53-7011" Description="Conveyor Operators and Tenders">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="53-7020" Description="Crane and Tower Operators">
+                <ternary-group ID="53-7021" Description="Crane and Tower Operators">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="53-7030" Description="Dredge, Excavating, and Loading Machine Operators">
+                <ternary-group ID="53-7031" Description="Dredge Operators">
+                </ternary-group>
+                <ternary-group ID="53-7032" Description="Excavating and Loading Machine and Dragline Operators">
+                </ternary-group>
+                <ternary-group ID="53-7033" Description="Loading Machine Operators, Underground Mining">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="53-7040" Description="Hoist and Winch Operators">
+                <ternary-group ID="53-7041" Description="Hoist and Winch Operators">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="53-7050" Description="Industrial Truck and Tractor Operators">
+                <ternary-group ID="53-7051" Description="Industrial Truck and Tractor Operators">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="53-7060" Description="Laborers and Material Movers, Hand">
+                <ternary-group ID="53-7061" Description="Cleaners of Vehicles and Equipment">
+                </ternary-group>
+                <ternary-group ID="53-7062" Description="Laborers and Freight, Stock, and Material Movers, Hand">
+                </ternary-group>
+                <ternary-group ID="53-7063" Description="Machine Feeders and Offbearers">
+                </ternary-group>
+                <ternary-group ID="53-7064" Description="Packers and Packagers, Hand">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="53-7070" Description="Pumping Station Operators">
+                <ternary-group ID="53-7071" Description="Gas Compressor and Gas Pumping Station Operators">
+                </ternary-group>
+                <ternary-group ID="53-7072" Description="Pump Operators, Except Wellhead Pumpers">
+                </ternary-group>
+                <ternary-group ID="53-7073" Description="Wellhead Pumpers">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="53-7080" Description="Refuse and Recyclable Material Collectors">
+                <ternary-group ID="53-7081" Description="Refuse and Recyclable Material Collectors">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="53-7110" Description="Mine Shuttle Car Operators">
+                <ternary-group ID="53-7111" Description="Mine Shuttle Car Operators">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="53-7120" Description="Tank Car, Truck, and Ship Loaders">
+                <ternary-group ID="53-7121" Description="Tank Car, Truck, and Ship Loaders">
+                </ternary-group>
+              </secondary-group>
+              <secondary-group ID="53-7190" Description="Miscellaneous Material Moving Workers">
+                <ternary-group ID="53-7199" Description="Material Moving Workers, All Other">
+                </ternary-group>
+              </secondary-group>
+            </primary-group>
+          </category>
+          <category ID="55-0000" Description="Military Specific Occupations">
+            <primary-group ID="55-1000" Description="Military Officer Special and Tactical Operations Leaders">
+              <secondary-group ID="55-1010" Description="Military Officer Special and Tactical Operations Leaders">
+                <ternary-group ID="55-1011" Description="Air Crew Officers">
+                </ternary-group>
+                <ternary-group ID="55-1012" Description="Aircraft Launch and Recovery Officers">
+                </ternary-group>
+                <ternary-group ID="55-1013" Description="Armored Assault Vehicle Officers">
+                </ternary-group>
+                <ternary-group ID="55-1014" Description="Artillery and Missile Officers">
+                </ternary-group>
+                <ternary-group ID="55-1015" Description="Command and Control Center Officers">
+                </ternary-group>
+                <ternary-group ID="55-1016" Description="Infantry Officers">
+                </ternary-group>
+                <ternary-group ID="55-1017" Description="Special Forces Officers">
+                </ternary-group>
+                <ternary-group ID="55-1019" Description="Military Officer Special and Tactical Operations Leaders, All Other">
+                </ternary-group>
+              </secondary-group>
+            </primary-group>
+            <primary-group ID="55-2000" Description="First-Line Enlisted Military Supervisors">
+              <secondary-group ID="55-2010" Description="First-Line Enlisted Military Supervisors">
+                <ternary-group ID="55-2011" Description="First-Line Supervisors of Air Crew Members">
+                </ternary-group>
+                <ternary-group ID="55-2012" Description="First-Line Supervisors of Weapons Specialists/Crew Members">
+                </ternary-group>
+                <ternary-group ID="55-2013" Description="First-Line Supervisors of All Other Tactical Operations Specialists">
+                </ternary-group>
+              </secondary-group>
+            </primary-group>
+            <primary-group ID="55-3000" Description="Military Enlisted Tactical Operations and Air/Weapons Specialists and Crew Members">
+              <secondary-group ID="55-3010" Description="Military Enlisted Tactical Operations and Air/Weapons Specialists and Crew Members">
+                <ternary-group ID="55-3011" Description="Air Crew Members">
+                </ternary-group>
+                <ternary-group ID="55-3012" Description="Aircraft Launch and Recovery Specialists">
+                </ternary-group>
+                <ternary-group ID="55-3013" Description="Armored Assault Vehicle Crew Members">
+                </ternary-group>
+                <ternary-group ID="55-3014" Description="Artillery and Missile Crew Members">
+                </ternary-group>
+                <ternary-group ID="55-3015" Description="Command and Control Center Specialists">
+                </ternary-group>
+                <ternary-group ID="55-3016" Description="Infantry">
+                </ternary-group>
+                <ternary-group ID="55-3017" Description="Radar and Sonar Technicians">
+                </ternary-group>
+                <ternary-group ID="55-3018" Description="Special Forces">
+                </ternary-group>
+                <ternary-group ID="55-3019" Description="Military Enlisted Tactical Operations and Air/Weapons Specialists and Crew Members, All Other">
+                </ternary-group>
+              </secondary-group>
+            </primary-group>
+          </category>
+        </occupations>
+      </source>
+    </data>
+  </rand>
+</nofuture>

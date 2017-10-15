@@ -27,6 +27,7 @@ namespace NoFuture.Rand.Data.Source
         public const string VIN_WMI_DATA_FILE = "Vin_Wmi.xml";
         public const string ENGLISH_WORDS_DATA_FILE = "English_Words.xml";
         public const string WEBMAIL_DOMAINS = "webmailDomains.txt";
+        public const string US_OCCUPATIONS = "US_Occupations.xml";
 
         public static string GetByName(string name)
         {

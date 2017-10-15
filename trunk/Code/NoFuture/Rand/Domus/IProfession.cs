@@ -17,6 +17,7 @@ namespace NoFuture.Rand.Domus
         DateTime? ToDate { get; set; }
         IFirm Biz { get; set; }
         bool IsOwner { get; set; }
+        StandardOccupationalClassification Occupation { get; set; }
     }
 
 }
