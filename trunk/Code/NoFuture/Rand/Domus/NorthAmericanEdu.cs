@@ -12,12 +12,14 @@ namespace NoFuture.Rand.Domus
     [Serializable]
     public class NorthAmericanEdu : IEducation
     {
+        #region fields
         private string _eduLevel;
         private OccidentalEdu _eduFlag;
         private Tuple<IHighSchool, DateTime?> _highSchool;
         private readonly List<Tuple<IUniversity, DateTime?>> _colleges = new List<Tuple<IUniversity, DateTime?>>();
 
         public const int DF_MIN_AGE_ENTER_HS = 14;
+        #endregion
 
         #region ctor
         internal NorthAmericanEdu(Tuple<IHighSchool, DateTime?> assignHs)
@@ -68,6 +70,32 @@ namespace NoFuture.Rand.Domus
             AssignRandomCollege(homeCityArea.State, hsGradDt);
         }
 
+        #endregion
+
+        #region properties
+
+        public OccidentalEdu EduFlag => _eduFlag;
+        /// <summary>
+        /// Set to a readable string for JSON serialization.
+        /// </summary>
+        public string EduLevel => _eduLevel;
+        
+        public Tuple<IHighSchool, DateTime?> HighSchool { get {return _highSchool;} }
+
+        public Tuple<IUniversity, DateTime?> College
+        {
+            get
+            {
+                return _colleges.Any(x => x?.Item2 != null)
+                    ? _colleges.Where(x => x?.Item2 != null).OrderByDescending(x => x.Item2).FirstOrDefault()
+                    : _colleges.FirstOrDefault();
+            }
+        }
+
+        #endregion
+
+        #region methods
+
         /// <summary>
         /// Assigns a value to <see cref="HighSchool"/> at random based on the given inputs
         /// </summary>
@@ -96,7 +124,7 @@ namespace NoFuture.Rand.Domus
             var hs = GetAmericanHighSchool(homeCityArea.State, homeCityArea);
 
             //still in hs or dropped out
-            if (!isLegalAdult || Etx.TryAboveOrAt((int) Math.Round(hsGradRate) + 1, Etx.Dice.OneHundred))
+            if (!isLegalAdult || Etx.TryAboveOrAt((int)Math.Round(hsGradRate) + 1, Etx.Dice.OneHundred))
             {
                 //assign grad hs but no date
                 _highSchool = new Tuple<IHighSchool, DateTime?>(hs, null);
@@ -135,7 +163,7 @@ namespace NoFuture.Rand.Domus
                                    x => x.Key == (OccidentalEdu.Bachelor | OccidentalEdu.Grad)).Value;
 
             //roll for some college
-            if (Etx.TryAboveOrAt((int) Math.Round(bachelorGradRate*2), Etx.Dice.OneHundred))
+            if (Etx.TryAboveOrAt((int)Math.Round(bachelorGradRate * 2), Etx.Dice.OneHundred))
             {
                 AssignEduFlagAndLevel();
                 return;
@@ -149,7 +177,7 @@ namespace NoFuture.Rand.Domus
                 return;
             }
 
-            if (!Etx.TryBelowOrAt((int) Math.Round(bachelorGradRate*10), Etx.Dice.OneThousand))
+            if (!Etx.TryBelowOrAt((int)Math.Round(bachelorGradRate * 10), Etx.Dice.OneThousand))
             {
                 //dropped out of college
                 _colleges.Add(new Tuple<IUniversity, DateTime?>(univ, null));
@@ -177,32 +205,6 @@ namespace NoFuture.Rand.Domus
 
             AssignEduFlagAndLevel();
         }
-
-        #endregion
-
-        #region properties
-
-        public OccidentalEdu EduFlag => _eduFlag;
-        /// <summary>
-        /// Set to a readable string for JSON serialization.
-        /// </summary>
-        public string EduLevel => _eduLevel;
-        
-        public Tuple<IHighSchool, DateTime?> HighSchool { get {return _highSchool;} }
-
-        public Tuple<IUniversity, DateTime?> College
-        {
-            get
-            {
-                return _colleges.Any(x => x?.Item2 != null)
-                    ? _colleges.Where(x => x?.Item2 != null).OrderByDescending(x => x.Item2).FirstOrDefault()
-                    : _colleges.FirstOrDefault();
-            }
-        }
-
-        #endregion
-
-        #region methods
 
         /// <summary>
         /// Gets a date around a semester&apos;s end moving 
