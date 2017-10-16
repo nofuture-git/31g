@@ -78,6 +78,9 @@ namespace NoFuture.Rand.Domus
         /// </param>
         public NorthAmerican(DateTime dob, Gender myGender, bool withWholeFamily, bool withFinanceData):this(dob,myGender)
         {
+            var isDead = _deathCert != null;
+            if (isDead)
+                return;
             var homeAddr = ResidentAddress.GetRandomAmericanAddr();
             _addresses.Add(homeAddr);
             var csz = homeAddr.HomeCityArea as UsCityStateZip;
@@ -96,11 +99,9 @@ namespace NoFuture.Rand.Domus
             if (Race <= 0)
                 Race = Etx.DiscreteRange(NAmerUtil.Tables.NorthAmericanRaceAvgs);
 
-            var isDead = _deathCert != null;
-
             if (withWholeFamily)
                 ResolveFamilyState();
-            if (withFinanceData && !isDead)
+            if (withFinanceData)
                 ResolveFinancialState();
             AddEmailAddress();
         }

@@ -150,6 +150,9 @@ namespace NoFuture.Rand.Domus
             var dt = atTime ?? DateTime.Now;
             ThrowOnBirthDateNull(this);
 
+            if (DeathCert != null && dt > DeathCert.DateOfDeath)
+                dt = DeathCert.DateOfDeath;
+
             return CalcAge(BirthCert.DateOfBirth, dt);
         }
 
