@@ -5,13 +5,13 @@ using NoFuture.Util;
 namespace NoFuture.Rand.Domus
 {
     [Serializable]
-    public class Spouse : IRelation
+    public class Spouse : DiachronIdentifier, IRelation
     {
         #region fields
         private readonly IPerson _est;
         private readonly IPerson _me;
-        private readonly DateTime _marriedOn;
-        private readonly DateTime? _separatedOn;
+        private DateTime _marriedOn;
+        private DateTime? _separatedOn;
         private readonly int _ordinal;
         private readonly int _totalYears;
         #endregion
@@ -24,8 +24,8 @@ namespace NoFuture.Rand.Domus
             _marriedOn = marriageDt;
             _separatedOn = divorceDt;
             _ordinal = ordinal;
-            var edt = Est.DeathCert?.DateOfDeath ?? SeparatedOn.GetValueOrDefault(DateTime.Today);
-            var rng = (edt - MarriedOn).Days;
+            var edt = Est?.DeathCert?.DateOfDeath ?? _separatedOn.GetValueOrDefault(DateTime.Today);
+            var rng = (edt - _marriedOn).Days;
             _totalYears = (int) Math.Round(rng/Constants.DBL_TROPICAL_YEAR);
         }
         #endregion
@@ -36,10 +36,28 @@ namespace NoFuture.Rand.Domus
         /// </summary>
         public string EstName => ToString();
         public IPerson Est => _est;
-        public DateTime MarriedOn => _marriedOn;
-        public DateTime? SeparatedOn => _separatedOn;
         public int Ordinal => _ordinal;
         public int TotalYears => _totalYears;
+
+        /// <summary>
+        /// Attempting to set to a null value is ignored.
+        /// </summary>
+        public override DateTime? FromDate
+        {
+            get { return _marriedOn; }
+            set
+            {
+                if (value != null)
+                    _marriedOn = value.Value;
+            }
+        }
+
+        public override DateTime? ToDate
+        {
+            get { return _separatedOn; }
+            set { _separatedOn = value; }
+        }
+
         #endregion
 
         #region methods
@@ -54,8 +72,8 @@ namespace NoFuture.Rand.Domus
             if (sd == null)
                 return false;
 
-            var so = DateTime.Compare(SeparatedOn.GetValueOrDefault(MarriedOn.Date).Date,
-                sd.SeparatedOn.GetValueOrDefault(sd.MarriedOn.Date)) == 0;
+            var so = DateTime.Compare(ToDate.GetValueOrDefault(FromDate.Value.Date).Date,
+                sd.ToDate.GetValueOrDefault(sd.FromDate.Value.Date)) == 0;
 
             return so && sd.Est == _me;
         }
@@ -71,9 +89,19 @@ namespace NoFuture.Rand.Domus
             return me + sh + mo + so + o;
         }
 
+        public override string Abbrev
+        {
+            get
+            {
+                if (Est == null)
+                    return "Spouse";
+                return Est.MyGender == Gender.Female ? "Wife" : "Husband";
+            }
+        }
+
         public override string ToString()
         {
-            var soTypeName = Est.MyGender == Gender.Female ? "Wife" : "Husband";
+            var soTypeName = Abbrev;
             string soEnRng;
             if (TotalYears == 0)
                 soEnRng = "Newlywed";
@@ -83,7 +111,7 @@ namespace NoFuture.Rand.Domus
                 soEnRng = $"of {TotalYears} years";
             
             var lnData = $"({Ordinal.ToOrdinal()} {soTypeName} {soEnRng})";
-            return string.Join(" ", Est.FirstName, Est.LastName, Est.Age, lnData);
+            return Est == null ? lnData : string.Join(" ", Est.FirstName, Est.LastName, Est.Age, lnData);
         }
         #endregion
     }

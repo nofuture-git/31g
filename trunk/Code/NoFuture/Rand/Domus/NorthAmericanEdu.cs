@@ -15,8 +15,10 @@ namespace NoFuture.Rand.Domus
         #region fields
         private string _eduLevel;
         private OccidentalEdu _eduFlag;
-        private Tuple<IHighSchool, DateTime?> _highSchool;
-        private readonly List<Tuple<IUniversity, DateTime?>> _colleges = new List<Tuple<IUniversity, DateTime?>>();
+
+        private readonly List<AmericanHighSchoolStudent> _highSchools = new List<AmericanHighSchoolStudent>();
+        private readonly List<AmericanCollegeStudent> _universities = new List<AmericanCollegeStudent>();
+        private readonly IComparer<DiachronIdentifier> _comparer = new DiachronIdComparer();
 
         public const int DF_MIN_AGE_ENTER_HS = 14;
         #endregion
@@ -24,15 +26,30 @@ namespace NoFuture.Rand.Domus
         #region ctor
         internal NorthAmericanEdu(Tuple<IHighSchool, DateTime?> assignHs)
         {
-            _highSchool = assignHs;
+            if (assignHs?.Item1 is AmericanHighSchool)
+                _highSchools.Add(new AmericanHighSchoolStudent((AmericanHighSchool)assignHs.Item1)
+                {
+                    Graduation = assignHs.Item2
+                });
             AssignEduFlagAndLevel();
         }
 
         internal NorthAmericanEdu(Tuple<IUniversity, DateTime?> assignUniv, Tuple<IHighSchool, DateTime?> assignHs)
         {
-            _highSchool = assignHs;
-            if(assignUniv != null)
-                _colleges.Add(assignUniv);
+            if (assignHs?.Item1 is AmericanHighSchool)
+            {
+                _highSchools.Add(new AmericanHighSchoolStudent((AmericanHighSchool) assignHs.Item1)
+                {
+                    Graduation = assignHs.Item2
+                });
+            }
+            if (assignUniv?.Item1 is AmericanUniversity)
+            {
+                _universities.Add(new AmericanCollegeStudent((AmericanUniversity) assignUniv.Item1)
+                {
+                    Graduation = assignUniv.Item2
+                });
+            }
             AssignEduFlagAndLevel();
         }
 
@@ -79,16 +96,50 @@ namespace NoFuture.Rand.Domus
         /// Set to a readable string for JSON serialization.
         /// </summary>
         public string EduLevel => _eduLevel;
-        
-        public Tuple<IHighSchool, DateTime?> HighSchool { get {return _highSchool;} }
 
+        /// <summary>
+        /// Gets highest High School attended.
+        /// </summary>
+        public Tuple<IHighSchool, DateTime?> HighSchool
+        {
+            get
+            {
+                var hs = HighSchools.LastOrDefault(x => x.Graduation != null) ?? HighSchools.LastOrDefault();
+                return hs == null
+                    ? new Tuple<IHighSchool, DateTime?>(null, null)
+                    : new Tuple<IHighSchool, DateTime?>(hs.School, hs.Graduation);
+            }
+        }
+
+        /// <summary>
+        /// Gets highest college attended
+        /// </summary>
         public Tuple<IUniversity, DateTime?> College
         {
             get
             {
-                return _colleges.Any(x => x?.Item2 != null)
-                    ? _colleges.Where(x => x?.Item2 != null).OrderByDescending(x => x.Item2).FirstOrDefault()
-                    : _colleges.FirstOrDefault();
+                var univ = Universities.LastOrDefault(x => x.Graduation != null) ?? Universities.LastOrDefault();
+                return univ == null
+                    ? new Tuple<IUniversity, DateTime?>(null, null)
+                    : new Tuple<IUniversity, DateTime?>(univ.School, univ.Graduation);
+            }
+        }
+
+        protected internal List<AmericanHighSchoolStudent> HighSchools
+        {
+            get
+            {
+                _highSchools.Sort(_comparer);
+                return _highSchools;
+            }
+        }
+
+        protected internal List<AmericanCollegeStudent> Universities
+        {
+            get
+            {
+                _universities.Sort(_comparer);
+                return _universities;
             }
         }
 
@@ -127,7 +178,7 @@ namespace NoFuture.Rand.Domus
             if (!isLegalAdult || Etx.TryAboveOrAt((int)Math.Round(hsGradRate) + 1, Etx.Dice.OneHundred))
             {
                 //assign grad hs but no date
-                _highSchool = new Tuple<IHighSchool, DateTime?>(hs, null);
+                _highSchools.Add(new AmericanHighSchoolStudent(hs));
                 AssignEduFlagAndLevel();
                 return false;
             }
@@ -139,7 +190,7 @@ namespace NoFuture.Rand.Domus
             hsGradDt = new DateTime(hsGradDt.Value.Year, hsGradDt.Value.Month, Etx.IntNumber(12, 28));
 
             //assign grad hs with grad date
-            _highSchool = new Tuple<IHighSchool, DateTime?>(hs, hsGradDt);
+            _highSchools.Add(new AmericanHighSchoolStudent(hs) {Graduation = hsGradDt});
             return true;
         }
 
@@ -170,7 +221,7 @@ namespace NoFuture.Rand.Domus
             }
 
             //pick a univ 
-            IUniversity univ = GetAmericanUniversity(homeState);
+            var univ = GetAmericanUniversity(homeState);
             if (univ == null)
             {
                 AssignEduFlagAndLevel();
@@ -180,7 +231,7 @@ namespace NoFuture.Rand.Domus
             if (!Etx.TryBelowOrAt((int)Math.Round(bachelorGradRate * 10), Etx.Dice.OneThousand))
             {
                 //dropped out of college
-                _colleges.Add(new Tuple<IUniversity, DateTime?>(univ, null));
+                _universities.Add(new AmericanCollegeStudent(univ));
                 AssignEduFlagAndLevel();
                 return;
             }
@@ -189,7 +240,7 @@ namespace NoFuture.Rand.Domus
             //get a date for when amer would grad from college
             var univGradDt = GetRandomGraduationDate(hsGradDt.Value, NAmerUtil.Equations.YearsInUndergradCollege);
 
-            _colleges.Add(new Tuple<IUniversity, DateTime?>(univ, univGradDt));
+            _universities.Add(new AmericanCollegeStudent(univ) {Graduation = univGradDt});
 
             //try for post-grad
             var postGradRate = AmericanUniversity.DefaultNationalAvgs.First(
@@ -200,7 +251,7 @@ namespace NoFuture.Rand.Domus
                 var postGradDt = GetRandomGraduationDate(univGradDt, NAmerUtil.Equations.YearsInPostgradCollege);
                 var postGradUniv = GetAmericanUniversity(homeState);
 
-                _colleges.Add(new Tuple<IUniversity, DateTime?>(postGradUniv, postGradDt));
+                _universities.Add(new AmericanCollegeStudent(postGradUniv) {Graduation = postGradDt});
             }
 
             AssignEduFlagAndLevel();
@@ -230,26 +281,28 @@ namespace NoFuture.Rand.Domus
         /// </summary>
         protected internal void AssignEduFlagAndLevel()
         {
-            //order colleges where grad date desc
-            var orderedColleges = _colleges.Where(x => x?.Item2 != null).OrderByDescending(x => x.Item2.Value);
-
             //determine predicates
             var hasHs = HighSchool?.Item1 != null;
             var isHsGrad = HighSchool?.Item2 != null;
-            var hasUndergradCollege = _colleges.Any();
-            var isCollegeGrad = orderedColleges.LastOrDefault()?.Item2 != null;
-            var hasPostgradCollege = isCollegeGrad && orderedColleges.Count(x => x.Item2 != null) > 1;
+            var hasUndergradCollege = Universities.Any(x => x.School != null);
+            var isCollegeGrad = Universities.Any(x => x.Graduation != null);
+            var isCollegePostgrad = Universities.Count(x => x.Graduation != null) > 1;
+            var isDocGrad = false;
 
             //determine number of years in post-grad
-            var numYearsPostGrad = hasPostgradCollege
-                ? (orderedColleges.First().Item2.Value - orderedColleges.Last().Item2.Value).TotalDays/
-                  Shared.Constants.DBL_TROPICAL_YEAR
-                : 0;
+            if (isCollegePostgrad)
+            {
+                var firstGradDate = Universities.First(x => x.Graduation != null).Graduation.Value;
+                var lastGradDate = Universities.Last(x => x.Graduation != null).Graduation.Value;
+                var numYearsPostGrad =
+                    Math.Abs((firstGradDate - lastGradDate).TotalDays)/Shared.Constants.DBL_TROPICAL_YEAR;
+    
+                //consider doctorate as right-side second sigma of postgrad years
+                isDocGrad = numYearsPostGrad >
+                                NAmerUtil.Equations.YearsInPostgradCollege.Mean +
+                                NAmerUtil.Equations.YearsInPostgradCollege.StdDev;
+            }
 
-            //consider doctorate as right-side second sigma of postgrad years
-            var isDocGrad = numYearsPostGrad >
-                            NAmerUtil.Equations.YearsInPostgradCollege.Mean +
-                            NAmerUtil.Equations.YearsInPostgradCollege.StdDev;
 
             //assign flag and name based on the above
             if (new[] { hasHs, isHsGrad, hasUndergradCollege, isCollegeGrad }.All(x => x == false))
@@ -258,7 +311,7 @@ namespace NoFuture.Rand.Domus
                 _eduFlag = OccidentalEdu.None;
                 return;
             }
-            if (hasPostgradCollege)
+            if (isCollegePostgrad)
             {
                 _eduLevel = isDocGrad ? "Doctorate" : "Masters Grad";
                 _eduFlag = isDocGrad
@@ -295,6 +348,11 @@ namespace NoFuture.Rand.Domus
             return string.Join(" ", HighSchool, College);
         }
 
+        /// <summary>
+        /// Factory method to get an instance of <see cref="AmericanUniversity"/> at random.
+        /// </summary>
+        /// <param name="homeState">Will likely be used but may be randomly ignored.</param>
+        /// <returns></returns>
         public static AmericanUniversity GetAmericanUniversity(UsState homeState)
         {
             //pick a univ 
@@ -349,5 +407,37 @@ namespace NoFuture.Rand.Domus
             return hs;
         }
         #endregion
+    }
+
+    [Serializable]
+    public abstract class NorthAmericanStudent<T> : DiachronIdentifier, IStudent<T>
+    {
+        public T School { get; }
+        public DateTime? Graduation { get; set; }
+
+        protected NorthAmericanStudent(T school)
+        {
+            School = school;
+        }
+    }
+
+    [Serializable]
+    public class AmericanHighSchoolStudent : NorthAmericanStudent<AmericanHighSchool>
+    {
+        public override string Abbrev => "HighSchool";
+
+        public AmericanHighSchoolStudent(AmericanHighSchool school) : base(school)
+        {
+        }
+    }
+
+    [Serializable]
+    public class AmericanCollegeStudent : NorthAmericanStudent<AmericanUniversity>
+    {
+        public AmericanCollegeStudent(AmericanUniversity school) : base(school)
+        {
+        }
+
+        public override string Abbrev => "College";
     }
 }

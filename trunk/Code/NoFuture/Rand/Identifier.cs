@@ -143,6 +143,39 @@ namespace NoFuture.Rand
     }
 
     /// <summary>
+    /// A base identifier which is tied to some span of time
+    /// </summary>
+    [Serializable]
+    public abstract class DiachronIdentifier : Identifier
+    {
+        public virtual DateTime? FromDate { get; set; }
+        public virtual DateTime? ToDate { get; set; }
+
+        protected internal bool IsInRange(DateTime dt)
+        {
+            var afterOrOnFromDt = FromDate == null || FromDate <= dt;
+            var beforeOrOnToDt = ToDate == null || ToDate.Value >= dt;
+            return afterOrOnFromDt && beforeOrOnToDt;
+        }
+    }
+
+    /// <summary>
+    /// An implementation to order <see cref="DiachronIdentifier"/>
+    /// </summary>
+    [Serializable]
+    public class DiachronIdComparer : IComparer<DiachronIdentifier>
+    {
+        public int Compare(DiachronIdentifier x, DiachronIdentifier y)
+        {
+            if (x?.FromDate == null)
+                return 1;
+            if (y?.FromDate == null)
+                return -1;
+            return DateTime.Compare(x.FromDate.Value, y.FromDate.Value);
+        }
+    }
+
+    /// <summary>
     /// Base type to couple a local name with an identity
     /// </summary>
     [Serializable]

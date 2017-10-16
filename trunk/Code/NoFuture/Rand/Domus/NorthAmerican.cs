@@ -221,7 +221,7 @@ namespace NoFuture.Rand.Domus
         {
             var mdt = dt ?? DateTime.Now;
 
-            if (!IsLegalAdult(mdt) ||!_spouses.Any() || _spouses.All(s => s.MarriedOn > mdt))
+            if (!IsLegalAdult(mdt) ||!_spouses.Any() || _spouses.All(s => s.FromDate > mdt))
                 return MaritialStatus.Single;
 
             var spAtDt = GetSpouseAt(mdt);
@@ -251,8 +251,8 @@ namespace NoFuture.Rand.Domus
             var spouseData =
                 _spouses.FirstOrDefault(
                     x =>
-                        x.MarriedOn.Date <= dt &&
-                        (x.SeparatedOn == null || x.SeparatedOn.Value.Date > dt));
+                        x.FromDate.Value.Date <= dt &&
+                        (x.ToDate == null || x.ToDate.Value.Date > dt));
             return spouseData;
         }
 
@@ -810,7 +810,7 @@ namespace NoFuture.Rand.Domus
         protected internal void AddSpouse(IPerson spouse, DateTime marriedOn, DateTime? separatedOn = null)
         {
             //we need this or will will blow out the stack 
-            if (_spouses.Any(x => DateTime.Compare(x.MarriedOn.Date, marriedOn.Date) == 0))
+            if (_spouses.Any(x => DateTime.Compare(x.FromDate.Value.Date, marriedOn.Date) == 0))
                 return;
 
             if (separatedOn == null)

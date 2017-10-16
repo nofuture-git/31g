@@ -4,10 +4,8 @@ using NoFuture.Rand.Data.Types;
 namespace NoFuture.Rand.Domus
 {
     [Serializable]
-    public class ResidentAddress : Identifier
+    public class ResidentAddress : DiachronIdentifier
     {
-        public DateTime? FromDate { get; set; }
-        public DateTime? ToDate { get; set; }
         public StreetPo HomeStreetPo { get; set; }
         public CityArea HomeCityArea { get; set; }
         public bool IsLeased { get; set; }
