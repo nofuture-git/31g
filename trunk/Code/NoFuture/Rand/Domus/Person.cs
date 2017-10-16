@@ -111,6 +111,8 @@ namespace NoFuture.Rand.Domus
 
         public abstract Spouse GetSpouseAt(DateTime? dt);
 
+        public abstract Spouse GetSpouseNear(DateTime? dt);
+
         public virtual List<Child> GetChildrenAt(DateTime? dt)
         {
             var ddt = dt.GetValueOrDefault(DateTime.Now);

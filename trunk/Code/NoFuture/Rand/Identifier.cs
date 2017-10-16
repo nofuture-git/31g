@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using NoFuture.Rand.Domus;
 
 namespace NoFuture.Rand
 {
@@ -167,6 +168,8 @@ namespace NoFuture.Rand
     {
         public int Compare(DiachronIdentifier x, DiachronIdentifier y)
         {
+            if (x?.FromDate == null && y?.FromDate == null)
+                return 0;
             if (x?.FromDate == null)
                 return 1;
             if (y?.FromDate == null)
@@ -400,16 +403,8 @@ namespace NoFuture.Rand
 
         public static Dictionary<string, double> GetNatlAvgAsDict()
         {
-            return new Dictionary<string, double>
-            {
-                {_w, 61.0D},
-                {_b, 12.0D},
-                {_h, 18.0D},
-                {_a, 6.0D},
-                {_m, 2.0D},
-                {_p, 1.0D},
-                {_ai, 1.0D}
-            };
+            var tbl = NAmerUtil.Tables.NorthAmericanRaceAvgs;
+            return tbl.ToDictionary(k => k.Key.ToString(), k => tbl[k.Key]);
         }
     }
 

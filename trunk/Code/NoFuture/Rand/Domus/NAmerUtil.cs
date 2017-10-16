@@ -4,6 +4,7 @@ using System.Linq;
 using NoFuture.Util.Math;
 using System.Xml;
 using NoFuture.Rand.Data;
+using NoFuture.Rand.Data.Source;
 using NoFuture.Rand.Data.Types;
 using NoFuture.Rand.Edu;
 using NoFuture.Rand.Gov;
@@ -90,9 +91,15 @@ namespace NoFuture.Rand.Domus
         /// https://www.mckinleyirvin.com/Family-Law-Blog/2012/October/32-Shocking-Divorce-Statistics.aspx
         /// </summary>
         public const int PERCENT_DIVORCED_CHILDREN_LIVE_WITH_MOTHER = 75;
+
+        /// <summary>
+        /// src [https://www.cdc.gov/nchs/data/nvsr/nvsr65/nvsr65_04.pdf] Table B.
+        /// </summary>
+        public const double PERCENT_ACCIDENT_DEATH = 0.05175;
         #endregion
 
-        #region methods
+        #region inner types
+
         /// <summary>
         /// Marriage Source [https://www.census.gov/population/socdemo/hh-fam/ms2.xls] (1947-2011)
         /// Age of Birth Sources (1970-2014)
@@ -118,9 +125,9 @@ namespace NoFuture.Rand.Domus
             /// <returns></returns>
             internal static DateTime ProtectAgainstDistantTimes(DateTime dob)
             {
-                if(dob.Year < MIN_DOB_YEAR)
+                if (dob.Year < MIN_DOB_YEAR)
                     return new DateTime(MIN_DOB_YEAR, dob.Month, dob.Day);
-                if(dob.Year > MAX_DOB_YEAR)
+                if (dob.Year > MAX_DOB_YEAR)
                     return new DateTime(MAX_DOB_YEAR, dob.Month, dob.Day);
                 return dob;
             }
@@ -241,21 +248,61 @@ namespace NoFuture.Rand.Domus
             public static NormalDistEquation LifeExpectancy(Gender mf)
             {
                 return mf == Gender.Male
-                    ? new NormalDistEquation {Mean = AVG_MAX_AGE_MALE, StdDev = STD_DEV_MALE_LIFE_EXPECTANCY}
-                    : new NormalDistEquation {Mean = AVG_MAX_AGE_FEMALE, StdDev = STD_DEV_FEMALE_LIFE_EXPECTANCY};
+                    ? new NormalDistEquation { Mean = AVG_MAX_AGE_MALE, StdDev = STD_DEV_MALE_LIFE_EXPECTANCY }
+                    : new NormalDistEquation { Mean = AVG_MAX_AGE_FEMALE, StdDev = STD_DEV_FEMALE_LIFE_EXPECTANCY };
             }
+
+            /// <summary>
+            /// Common knowledge values of 4 years in high school
+            /// </summary>
+            public static NormalDistEquation YearsInHighSchool = new NormalDistEquation { Mean = 4, StdDev = 0.25 };
 
             /// <summary>
             /// [https://nscresearchcenter.org/signaturereport11/] has weighted average where Mean is 5.469 and StdDev is 0.5145
             /// however, these are current 21st century values not the averages for all post-war years.
             /// </summary>
-            public static NormalDistEquation YearsInUndergradCollege = new NormalDistEquation {Mean = 4.469, StdDev = 0.5145};
+            public static NormalDistEquation YearsInUndergradCollege = new NormalDistEquation { Mean = 4.469, StdDev = 0.5145 };
 
             /// <summary>
             /// Can't seem to find a straight answer on this cause post-grad can mean alot of different things
             /// </summary>
-            public static NormalDistEquation YearsInPostgradCollege = new NormalDistEquation {Mean = 3.913, StdDev = 0.378};
+            public static NormalDistEquation YearsInPostgradCollege = new NormalDistEquation { Mean = 3.913, StdDev = 0.378 };
         }
+
+        public static class Tables
+        {
+            /// <summary>
+            /// Based on <see cref="DataFiles.US_HIGH_SCHOOL_DATA_FILE"/>
+            /// </summary>
+            public static Dictionary<NorthAmericanRace, double> NorthAmericanRaceAvgs = new Dictionary
+                <NorthAmericanRace, double>
+            {
+                {NorthAmericanRace.AmericanIndian, 1.0D },
+                {NorthAmericanRace.Asian, 6.0D },
+                {NorthAmericanRace.Hispanic, 18.0D },
+                {NorthAmericanRace.Black, 12.0D },
+                {NorthAmericanRace.White, 61.0D },
+                {NorthAmericanRace.Pacific, 1.0D },
+                {NorthAmericanRace.Mixed, 2.0D }
+            };
+
+            /// <summary>
+            /// src [https://www.cdc.gov/nchs/data/nvsr/nvsr65/nvsr65_04.pdf] Table B.
+            /// "National Vital Statistics Reports, Vol 65 No 4, June 30, 2016"
+            /// [https://www.cdc.gov/nchs/fastats/homicide.htm] number of homicides (15872/2626418)
+            /// </summary>
+            public static Dictionary<AmericanDeathCert.MannerOfDeath, double> MannerOfDeathAvgs =
+                new Dictionary<AmericanDeathCert.MannerOfDeath, double>
+                {
+                    {AmericanDeathCert.MannerOfDeath.Accident, 5.175 },
+                    {AmericanDeathCert.MannerOfDeath.Suicide, 1.63 },
+                    {AmericanDeathCert.MannerOfDeath.Homicide, 0.604 },
+                    {AmericanDeathCert.MannerOfDeath.Natural, 92.591 }
+                };
+        }
+        #endregion
+
+        #region methods
 
         /// <summary>
         /// Returns one entry at random selecting by <see cref="Person.MyGender"/> and <see cref="Person"/>

@@ -6,6 +6,7 @@ using NoFuture.Rand.Data;
 using NoFuture.Rand.Data.Types;
 using NoFuture.Rand.Edu;
 using NoFuture.Rand.Gov;
+using NoFuture.Util.Math;
 
 namespace NoFuture.Rand.Domus
 {
@@ -92,6 +93,7 @@ namespace NoFuture.Rand.Domus
         #region properties
 
         public OccidentalEdu EduFlag => _eduFlag;
+
         /// <summary>
         /// Set to a readable string for JSON serialization.
         /// </summary>
@@ -172,7 +174,7 @@ namespace NoFuture.Rand.Domus
             var hsGradRate = hsGradData?.Item2 ?? AmericanHighSchool.DF_NATL_AVG;
 
             //first try city, then state, last natl
-            var hs = GetAmericanHighSchool(homeCityArea.State, homeCityArea);
+            var hs = GetAmericanHighSchool(homeCityArea);
 
             //still in hs or dropped out
             if (!isLegalAdult || Etx.TryAboveOrAt((int)Math.Round(hsGradRate) + 1, Etx.Dice.OneHundred))
@@ -184,10 +186,7 @@ namespace NoFuture.Rand.Domus
             }
 
             //get a date of when amer would be grad'ing from hs
-            hsGradDt = dtAtAge18;
-            while (hsGradDt.Value.Month != 5)
-                hsGradDt = hsGradDt.Value.AddMonths(1);
-            hsGradDt = new DateTime(hsGradDt.Value.Year, hsGradDt.Value.Month, Etx.IntNumber(12, 28));
+            hsGradDt = GetRandomGraduationDate(dtAtAge18.AddYears(-4), NAmerUtil.Equations.YearsInHighSchool, true);
 
             //assign grad hs with grad date
             _highSchools.Add(new AmericanHighSchoolStudent(hs) {Graduation = hsGradDt});
@@ -263,13 +262,15 @@ namespace NoFuture.Rand.Domus
         /// </summary>
         /// <param name="fromHere"></param>
         /// <param name="eq">Normal dist which determines (x) mentioned above.</param>
+        /// <param name="mayOnly">Force the random date to occur only in the month of May</param>
         /// <returns></returns>
-        public static DateTime GetRandomGraduationDate(DateTime fromHere, Util.Math.NormalDistEquation eq)
+        public static DateTime GetRandomGraduationDate(DateTime fromHere, NormalDistEquation eq, bool mayOnly = false)
         {
             var years = Etx.RandomValueInNormalDist(eq);
 
             var gradDt = fromHere.AddYears((int)Math.Round(years));
-            while (gradDt.Month != 5 && gradDt.Month != 12)
+            var validMonths = mayOnly ? new[] {5} : new[] {5, 12};
+            while (!validMonths.Contains(gradDt.Month))
                 gradDt = gradDt.AddMonths(1);
             gradDt = new DateTime(gradDt.Year, gradDt.Month, Etx.IntNumber(12, 28));
             return gradDt;
@@ -302,7 +303,6 @@ namespace NoFuture.Rand.Domus
                                 NAmerUtil.Equations.YearsInPostgradCollege.Mean +
                                 NAmerUtil.Equations.YearsInPostgradCollege.StdDev;
             }
-
 
             //assign flag and name based on the above
             if (new[] { hasHs, isHsGrad, hasUndergradCollege, isCollegeGrad }.All(x => x == false))
@@ -338,7 +338,7 @@ namespace NoFuture.Rand.Domus
             }
             else
             {
-                _eduLevel = "High School dropout";
+                _eduLevel = "Some High School";
                 _eduFlag = OccidentalEdu.HighSchool | OccidentalEdu.Some;
             }
         }
@@ -392,14 +392,17 @@ namespace NoFuture.Rand.Domus
             return (AmericanUniversity)univ;
         }
 
-        public static AmericanHighSchool GetAmericanHighSchool(UsState homeState, CityArea hca)
+        public static AmericanHighSchool GetAmericanHighSchool(UsCityStateZip hca)
         {
+            if (hca == null)
+                return AmericanHighSchool.GetDefaultHs();
+
             //get all hs for the state
-            var hshs = homeState.GetHighSchools() ??
+            var hshs = hca.State?.GetHighSchools() ??
                        UsState.GetStateByPostalCode(UsCityStateZip.DF_STATE_ABBREV).GetHighSchools();
 
             //first try city, then state, last natl
-            var hs = hshs.FirstOrDefault(x => x.PostalCode == hca?.AddressData?.PostalCode) ??
+            var hs = hshs.FirstOrDefault(x => x.PostalCode == hca.AddressData?.PostalCode) ??
                          (hshs.Any() ? hshs[Etx.IntNumber(0, hshs.Length - 1)] : AmericanHighSchool.GetDefaultHs());
 
             //these are on file in all caps

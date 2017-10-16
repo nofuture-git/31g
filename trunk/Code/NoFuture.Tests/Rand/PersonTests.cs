@@ -79,7 +79,7 @@ namespace NoFuture.Tests.Rand
 
             var usHca = new UsCityStateZip(addrData);
             Assert.IsNotNull(usHca);
-            var hs = NorthAmericanEdu.GetAmericanHighSchool(usHca.State, usHca);
+            var hs = NorthAmericanEdu.GetAmericanHighSchool(usHca);
             Assert.IsNotNull(hs);
             Assert.IsFalse(hs.Equals(AmericanHighSchool.GetDefaultHs()));
 

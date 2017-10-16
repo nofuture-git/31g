@@ -29,6 +29,7 @@ namespace NoFuture.Rand.Domus
         private SocialSecurityNumber _ssn;
         protected internal NorthAmericanWealth _opes;
         private DriversLicense _dl;
+        private DeathCert _deathCert;
         #endregion
 
         #region ctors
@@ -41,7 +42,9 @@ namespace NoFuture.Rand.Domus
         public NorthAmerican(DateTime dob, Gender myGender) : base(dob)
         {
             _birthCert = new AmericanBirthCert(this) { DateOfBirth = dob, BirthPlace = CityArea.American()};
-            
+
+            //almost always returns null
+            _deathCert = AmericanDeathCert.GetRandomDeathCert(this);
             _myGender = myGender;
 
             var fname = _myGender != Gender.Unknown
@@ -58,6 +61,8 @@ namespace NoFuture.Rand.Domus
                 MiddleName = NAmerUtil.GetAmericanFirstName(_birthCert.DateOfBirth, _myGender);
             }
             _ssn = new SocialSecurityNumber();
+            if (Race <= 0)
+                Race = Etx.DiscreteRange(NAmerUtil.Tables.NorthAmericanRaceAvgs);
         }
 
         /// <summary>
@@ -88,12 +93,14 @@ namespace NoFuture.Rand.Domus
                 _phoneNumbers.Add(new Tuple<KindsOfLabels, NorthAmericanPhone>(KindsOfLabels.Mobile, Phone.American(abbrv)));
             
             Race = NAmerUtil.GetAmericanRace(csz?.ZipCode);
-            if(Race <= 0)
-                Race = NorthAmericanRace.White;
+            if (Race <= 0)
+                Race = Etx.DiscreteRange(NAmerUtil.Tables.NorthAmericanRaceAvgs);
+
+            var isDead = _deathCert != null;
 
             if (withWholeFamily)
                 ResolveFamilyState();
-            if (withFinanceData)
+            if (withFinanceData && !isDead)
                 ResolveFinancialState();
             AddEmailAddress();
         }
@@ -209,6 +216,9 @@ namespace NoFuture.Rand.Domus
             set { UpsertName(KindsOfNames.Middle, value); }
 
         }
+
+        public override DeathCert DeathCert { get {return _deathCert;} set { _deathCert = value; } }
+
         #endregion
 
         #region public methods
@@ -221,7 +231,7 @@ namespace NoFuture.Rand.Domus
         {
             var mdt = dt ?? DateTime.Now;
 
-            if (!IsLegalAdult(mdt) ||!_spouses.Any() || _spouses.All(s => s.FromDate > mdt))
+            if (!IsLegalAdult(mdt) ||!_spouses.Any() || _spouses.All(s => s.MarriedOn > mdt))
                 return MaritialStatus.Single;
 
             var spAtDt = GetSpouseAt(mdt);
@@ -251,9 +261,24 @@ namespace NoFuture.Rand.Domus
             var spouseData =
                 _spouses.FirstOrDefault(
                     x =>
-                        x.FromDate.Value.Date <= dt &&
+                        x.MarriedOn.Date <= dt &&
                         (x.ToDate == null || x.ToDate.Value.Date > dt));
             return spouseData;
+        }
+
+        /// <summary>
+        /// Gets the <see cref="Spouse"/> at 
+        /// <see cref="dt"/>, or 308 days befor or after <see cref="dt"/>
+        /// </summary>
+        /// <param name="dt">Null for the current time</param>
+        /// <returns></returns>
+        public override Spouse GetSpouseNear(DateTime? dt)
+        {
+            var ddt = (dt ?? DateTime.Now).Date;
+
+            return GetSpouseAt(ddt) ??
+                   GetSpouseAt(ddt.AddDays(-1*(PREG_DAYS + MS_DAYS))) ??
+                   GetSpouseAt(ddt.AddDays(PREG_DAYS + MS_DAYS));
         }
 
         /// <summary>
@@ -487,10 +512,8 @@ namespace NoFuture.Rand.Domus
             //resolve for siblings
             myMother.ResolveChildren();
 
-            //myMother.AlignCohabitantsHomeDataAt(null, GetAddressAt(null));
-
-            //father is whoever was married to mother at time of birth
-            var myFather = myMother.GetSpouseAt(_birthCert.DateOfBirth)?.Est as NorthAmerican;
+            //father is whoever was married to mother around time of birth
+            var myFather = myMother.GetSpouseNear(_birthCert.DateOfBirth)?.Est as NorthAmerican;
 
             //mother not married at time of birth
             if (motherMaritalStatus == MaritialStatus.Single || myFather == null)
@@ -510,8 +533,11 @@ namespace NoFuture.Rand.Domus
             _birthCert.Father = _father;
 
             //last name assigned from birth father
-            if(_father != null)
+            if (_father != null)
+            {
                 UpsertName(KindsOfNames.Surname, _father.LastName);
+                ((NorthAmerican) _father)._children.Add(new Child(this));
+            }
         }
 
         /// <summary>
@@ -544,13 +570,15 @@ namespace NoFuture.Rand.Domus
             var spouse = (NorthAmerican)NAmerUtil.SolveForSpouse(_birthCert.DateOfBirth, MyGender);
 
             //set death date if widowed
-            if (myMaritialStatus == MaritialStatus.Widowed)
+            if (myMaritialStatus == MaritialStatus.Widowed || spouse.DeathCert != null)
             {
                 var d = Convert.ToInt32(Math.Round(GetAgeAt(null) * 0.15));
-                spouse.DeathCert = new AmericanDeathCert(AmericanDeathCert.MannerOfDeath.Natural, spouse)
-                {
-                    DateOfDeath = Etx.Date(Etx.IntNumber(1, d)*-1, null)
-                };
+                myMaritialStatus = MaritialStatus.Widowed;
+                spouse.DeathCert = spouse.DeathCert ??
+                                   new AmericanDeathCert(AmericanDeathCert.MannerOfDeath.Natural, spouse)
+                                   {
+                                       DateOfDeath = Etx.Date(Etx.IntNumber(1, d)*-1, null)
+                                   };
             }
 
             if (myMaritialStatus != MaritialStatus.Divorced && myMaritialStatus != MaritialStatus.Remarried &&
@@ -660,6 +688,10 @@ namespace NoFuture.Rand.Domus
             if (MyGender == Gender.Male)
                 return;
             
+            //check is alive
+            if(DeathCert != null && myChildDob > DeathCert.DateOfDeath)
+                return;
+
             var dt = DateTime.Now;
             DateTime dtOut;
             if (IsTwin(myChildDob, out dtOut) && DateTime.Compare(dtOut, DateTime.MinValue) != 0)
@@ -680,9 +712,7 @@ namespace NoFuture.Rand.Domus
             var isChildAdult = myChildeAge >= GetMyHomeStatesAgeOfMajority();
 
             //look for spouse at and around Dob
-            var spouseAtChildDob = GetSpouseAt(myChildDob) ??
-                                   GetSpouseAt(myChildDob.AddDays(-1*(PREG_DAYS + MS_DAYS))) ??
-                                   GetSpouseAt(myChildDob.AddDays(PREG_DAYS + MS_DAYS));
+            var spouseAtChildDob = GetSpouseNear(myChildDob);
 
             var childLastName = string.IsNullOrWhiteSpace(spouseAtChildDob?.Est?.LastName) ||
                                 spouseAtChildDob.Est?.MyGender == Gender.Female
@@ -810,7 +840,14 @@ namespace NoFuture.Rand.Domus
         protected internal void AddSpouse(IPerson spouse, DateTime marriedOn, DateTime? separatedOn = null)
         {
             //we need this or will will blow out the stack 
-            if (_spouses.Any(x => DateTime.Compare(x.FromDate.Value.Date, marriedOn.Date) == 0))
+            if (_spouses.Any(x => DateTime.Compare(x.MarriedOn.Date, marriedOn.Date) == 0))
+                return;
+
+            //check that everyone is alive
+            if (DeathCert != null && marriedOn > DeathCert.DateOfDeath)
+                return;
+
+            if (spouse.DeathCert != null && marriedOn > spouse.DeathCert.DateOfDeath)
                 return;
 
             if (separatedOn == null)

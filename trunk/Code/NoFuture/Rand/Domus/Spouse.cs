@@ -40,6 +40,11 @@ namespace NoFuture.Rand.Domus
         public int TotalYears => _totalYears;
 
         /// <summary>
+        /// Convenience method which is more straight-foward than <see cref="FromDate"/>
+        /// </summary>
+        public DateTime MarriedOn => _marriedOn;
+
+        /// <summary>
         /// Attempting to set to a null value is ignored.
         /// </summary>
         public override DateTime? FromDate
@@ -72,8 +77,8 @@ namespace NoFuture.Rand.Domus
             if (sd == null)
                 return false;
 
-            var so = DateTime.Compare(ToDate.GetValueOrDefault(FromDate.Value.Date).Date,
-                sd.ToDate.GetValueOrDefault(sd.FromDate.Value.Date)) == 0;
+            var so = DateTime.Compare(ToDate.GetValueOrDefault(MarriedOn.Date).Date,
+                sd.ToDate.GetValueOrDefault(sd.MarriedOn.Date)) == 0;
 
             return so && sd.Est == _me;
         }

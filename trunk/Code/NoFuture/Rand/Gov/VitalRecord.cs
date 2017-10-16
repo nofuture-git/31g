@@ -99,11 +99,6 @@ namespace NoFuture.Rand.Gov
         /// <summary>
         /// 32. PART I. Enter the chain of events--diseases, injuries, or 
         /// complications--that directly caused the death. 
-        /// DO NOT enter terminal events such as cardiac
-        /// arrest, respiratory arrest, or ventricular fibrillation 
-        /// without showing the etiology.DO NOT ABBREVIATE. Enter 
-        /// only one cause on a line.Add additional
-        /// lines if necessary.
         /// </summary>
         public Stack<string> CauseOfDeath { get; }
 
@@ -112,6 +107,29 @@ namespace NoFuture.Rand.Gov
         public override string ToString()
         {
             return string.Join(" ", base.ToString(), Category);
+        }
+
+        /// <summary>
+        /// Generates a <see cref="DeathCert"/> at random based on the given <see cref="p"/>
+        /// </summary>
+        /// <param name="p"></param>
+        /// <param name="nullOnFutureDate">
+        /// Switch parameter to have null returned whenever the random date-of-death is 
+        /// in the future.  
+        /// </param>
+        /// <returns></returns>
+        public static DeathCert GetRandomDeathCert(IPerson p, bool nullOnFutureDate = true)
+        {
+            if (p?.BirthCert == null)
+                return null;
+
+            var deathDate = NAmerUtil.GetDeathDate(p.BirthCert.DateOfBirth, p.MyGender);
+
+            if (nullOnFutureDate && deathDate > DateTime.Now)
+                return null;
+
+            var manner = Etx.DiscreteRange(NAmerUtil.Tables.MannerOfDeathAvgs);
+            return new AmericanDeathCert(manner, p) {DateOfDeath = deathDate};
         }
     }
 }
