@@ -311,7 +311,8 @@ namespace NoFuture.Rand
         HighSchool = 16,
         Assoc = 32,
         Bachelor = 64,
-        Post = 128,
+        Master = 128,
+        Doctorate = 256
     }
 
     [Serializable]

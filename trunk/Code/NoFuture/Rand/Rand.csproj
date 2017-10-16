@@ -121,6 +121,7 @@
     <Compile Include="Domus\NAmerUtil.cs" />
     <Compile Include="Domus\NorthAmerican.cs" />
     <Compile Include="Domus\NorthAmericanEdu.cs" />
+    <Compile Include="Domus\NorthAmericanProfession.cs" />
     <Compile Include="Domus\NorthAmericanWealth.cs" />
     <Compile Include="Domus\Opes.cs" />
     <Compile Include="Domus\Parent.cs" />

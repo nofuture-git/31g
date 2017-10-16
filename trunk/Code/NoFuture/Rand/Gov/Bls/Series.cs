@@ -22,7 +22,7 @@ namespace NoFuture.Rand.Gov.Bls
         /// </returns>
         /// <remarks>
         /// The <see cref="NfConfig.SecurityKeys.BlsApiRegistrationKey"/> must be assigned before invocation.
-        /// See [http://www.bls.gov/developers/api_faqs.htm#register1] concerning the arg-limits.
+        /// See [https://www.bls.gov/developers/api_faqs.htm#register1] concerning the arg-limits.
         /// </remarks>
         public static string GetMultiSeriesPostBody(string[] seriesCodes, int sYear, int eYear)
         {
@@ -68,7 +68,7 @@ namespace NoFuture.Rand.Gov.Bls
     }
     public class ConsumerPriceIndex : ISeries
     {
-        public Uri ApiLink { get { return new Uri("http://www.bls.gov/help/hlpforma.htm#CU"); } }
+        public Uri ApiLink { get { return new Uri("https://www.bls.gov/help/hlpforma.htm#CU"); } }
         public string Prefix { get { return "CU"; }}
 
         public char? SeasonalAdjustment { get; set; }
@@ -96,7 +96,7 @@ namespace NoFuture.Rand.Gov.Bls
 
     public class EmploymentCostIndex : ISeries
     {
-        public Uri ApiLink { get { return new Uri("http://www.bls.gov/help/hlpforma.htm#EC"); } }
+        public Uri ApiLink { get { return new Uri("https://www.bls.gov/help/hlpforma.htm#EC"); } }
         public string Prefix { get { return "EC"; } }
 
         public char? SeasonalAdjustment { get; set; }
@@ -122,7 +122,7 @@ namespace NoFuture.Rand.Gov.Bls
 
     public class IndustryProductivity : ISeries
     {
-        public Uri ApiLink { get { return new Uri("http://www.bls.gov/help/hlpforma.htm#IP"); } }
+        public Uri ApiLink { get { return new Uri("https://www.bls.gov/help/hlpforma.htm#IP"); } }
         public string Prefix { get { return "IP"; } }
 
         public char? SeasonalAdjustment { get; set; }
@@ -148,7 +148,7 @@ namespace NoFuture.Rand.Gov.Bls
 
     public class ProducerPriceIndex : ISeries
     {
-        public Uri ApiLink { get { return new Uri("http://www.bls.gov/help/hlpforma.htm#WP"); } }
+        public Uri ApiLink { get { return new Uri("https://www.bls.gov/help/hlpforma.htm#WP"); } }
         public string Prefix { get { return "WP"; } }
 
         public char? SeasonalAdjustment { get; set; }
@@ -170,7 +170,7 @@ namespace NoFuture.Rand.Gov.Bls
 
     public class NatlEmployment : ISeries
     {
-        public Uri ApiLink { get { return new Uri("http://www.bls.gov/help/hlpforma.htm#CE"); } }
+        public Uri ApiLink { get { return new Uri("https://www.bls.gov/help/hlpforma.htm#CE"); } }
         public string Prefix { get { return "CE"; } }
         public char? SeasonalAdjustment { get; set; }
 

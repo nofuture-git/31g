@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using NoFuture.Rand.Data;
 
 namespace NoFuture.Rand.Edu
@@ -14,7 +15,19 @@ namespace NoFuture.Rand.Edu
     [Serializable]
     public class AmericanUniversity : AmericanEduBase, IUniversity
     {
-        public const float DF_NATL_AVG = 30.0f;
+
+        public const double DF_NATL_BACHELORS_AVG = 33.0;
+
+        /// <summary>
+        /// src https://en.wikipedia.org/wiki/Educational_attainment_in_the_United_States
+        /// </summary>
+        public static Dictionary<OccidentalEdu, double> DefaultNationalAvgs = new Dictionary<OccidentalEdu, double>
+        {
+            {OccidentalEdu.Assoc | OccidentalEdu.Grad, 42.985},
+            {OccidentalEdu.Bachelor | OccidentalEdu.Grad, DF_NATL_BACHELORS_AVG},
+            {OccidentalEdu.Master | OccidentalEdu.Grad,  9.67 },
+            {OccidentalEdu.Doctorate | OccidentalEdu.Grad, 2.485 }
+        };
 
         #region properties
         public Gov.UsState State { get; set; }
@@ -38,7 +51,7 @@ namespace NoFuture.Rand.Edu
         /// <returns></returns>
         public static AmericanRacePercents NatlGradRate()
         {
-            return GetNatlGradRates(TreeData.AmericanUniversityData, DF_NATL_AVG);
+            return GetNatlGradRates(TreeData.AmericanUniversityData, DF_NATL_BACHELORS_AVG);
         }
 
         public static bool TryParseXml(System.Xml.XmlElement node, out AmericanUniversity univ)

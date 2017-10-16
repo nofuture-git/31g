@@ -740,9 +740,9 @@ namespace NoFuture.Rand.Domus
                 (short)edu < (short)(OccidentalEdu.Bachelor | OccidentalEdu.Grad))
                 eduName = "Associate";
             if ((short)edu >= (short)(OccidentalEdu.Bachelor | OccidentalEdu.Grad) &&
-                (short)edu < (short)(OccidentalEdu.Post | OccidentalEdu.Grad))
+                (short)edu < (short)(OccidentalEdu.Master | OccidentalEdu.Grad))
                 eduName = "Bachelor";
-            if ((short)edu >= (short)(OccidentalEdu.Post | OccidentalEdu.Grad))
+            if ((short)edu >= (short)(OccidentalEdu.Master | OccidentalEdu.Grad))
                 eduName = "PostGrad";
             return eduName;
         }

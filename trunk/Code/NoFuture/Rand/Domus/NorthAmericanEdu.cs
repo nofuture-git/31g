@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
 using NoFuture.Rand.Data;
@@ -13,8 +14,8 @@ namespace NoFuture.Rand.Domus
     {
         private string _eduLevel;
         private OccidentalEdu _eduFlag;
-        private Tuple<IUniversity, DateTime?> _college;
         private Tuple<IHighSchool, DateTime?> _highSchool;
+        private readonly List<Tuple<IUniversity, DateTime?>> _colleges = new List<Tuple<IUniversity, DateTime?>>();
 
         public const int DF_MIN_AGE_ENTER_HS = 14;
 
@@ -28,7 +29,8 @@ namespace NoFuture.Rand.Domus
         internal NorthAmericanEdu(Tuple<IUniversity, DateTime?> assignUniv, Tuple<IHighSchool, DateTime?> assignHs)
         {
             _highSchool = assignHs;
-            _college = assignUniv;
+            if(assignUniv != null)
+                _colleges.Add(assignUniv);
             AssignEduFlagAndLevel();
         }
 
@@ -122,28 +124,22 @@ namespace NoFuture.Rand.Domus
         {
             if (hsGradDt == null)
                 return;
+
             //get college grad data for same state as hs
             var univGradData =
                 homeState.GetStateData()
                     .PercentOfGrads.FirstOrDefault(x => x.Item1 == (OccidentalEdu.Bachelor | OccidentalEdu.Grad));
 
-            var univGradRate = univGradData?.Item2 ?? AmericanUniversity.DF_NATL_AVG;
+            var bachelorGradRate = univGradData?.Item2 ??
+                               AmericanUniversity.DefaultNationalAvgs.First(
+                                   x => x.Key == (OccidentalEdu.Bachelor | OccidentalEdu.Grad)).Value;
 
             //roll for some college
-            if (Etx.TryAboveOrAt((int) Math.Round(univGradRate*2), Etx.Dice.OneHundred))
+            if (Etx.TryAboveOrAt((int) Math.Round(bachelorGradRate*2), Etx.Dice.OneHundred))
             {
                 AssignEduFlagAndLevel();
                 return;
             }
-
-            //get random num of years as undergrad
-            var yearsInCollege = Etx.RandomValueInNormalDist(4.67, 1.58);
-
-            //get a date for when amer would grad from college
-            var univGradDt = hsGradDt.Value.AddYears((int) Math.Round(yearsInCollege));
-            while (univGradDt.Month != 5)
-                univGradDt = univGradDt.AddMonths(1);
-            univGradDt = new DateTime(univGradDt.Year, univGradDt.Month, Etx.IntNumber(12, 28));
 
             //pick a univ 
             IUniversity univ = GetAmericanUniversity(homeState);
@@ -152,15 +148,33 @@ namespace NoFuture.Rand.Domus
                 AssignEduFlagAndLevel();
                 return;
             }
-            //college grad
-            if (Etx.TryBelowOrAt((int) Math.Round(univGradRate), Etx.Dice.OneHundred))
+
+            if (!Etx.TryBelowOrAt((int) Math.Round(bachelorGradRate*10), Etx.Dice.OneThousand))
             {
-                _college = new Tuple<IUniversity, DateTime?>(univ, univGradDt);
+                //dropped out of college
+                _colleges.Add(new Tuple<IUniversity, DateTime?>(univ, null));
                 AssignEduFlagAndLevel();
                 return;
             }
-            //college drop-out
-            _college = new Tuple<IUniversity, DateTime?>(univ, null);
+
+            //college grad
+            //get a date for when amer would grad from college
+            var univGradDt = GetRandomGraduationDate(hsGradDt.Value, NAmerUtil.Equations.YearsInUndergradCollege);
+
+            _colleges.Add(new Tuple<IUniversity, DateTime?>(univ, univGradDt));
+
+            //try for post-grad
+            var postGradRate = AmericanUniversity.DefaultNationalAvgs.First(
+                               x => x.Key == (OccidentalEdu.Master | OccidentalEdu.Grad)).Value;
+
+            if (Etx.TryBelowOrAt((int)postGradRate * 10, Etx.Dice.OneThousand))
+            {
+                var postGradDt = GetRandomGraduationDate(univGradDt, NAmerUtil.Equations.YearsInPostgradCollege);
+                var postGradUniv = GetAmericanUniversity(homeState);
+
+                _colleges.Add(new Tuple<IUniversity, DateTime?>(postGradUniv, postGradDt));
+            }
+
             AssignEduFlagAndLevel();
         }
 
@@ -175,33 +189,92 @@ namespace NoFuture.Rand.Domus
         public string EduLevel => _eduLevel;
         
         public Tuple<IHighSchool, DateTime?> HighSchool { get {return _highSchool;} }
-        public Tuple<IUniversity, DateTime?> College { get {return _college;} }
+
+        public Tuple<IUniversity, DateTime?> College
+        {
+            get
+            {
+                return _colleges.Any(x => x?.Item2 != null)
+                    ? _colleges.Where(x => x?.Item2 != null).OrderByDescending(x => x.Item2).FirstOrDefault()
+                    : _colleges.FirstOrDefault();
+            }
+        }
+
         #endregion
 
         #region methods
 
+        /// <summary>
+        /// Gets a date around a semester&apos;s end moving 
+        /// out (x) number of years, at random, from <see cref="fromHere"/>
+        /// </summary>
+        /// <param name="fromHere"></param>
+        /// <param name="eq">Normal dist which determines (x) mentioned above.</param>
+        /// <returns></returns>
+        public static DateTime GetRandomGraduationDate(DateTime fromHere, Util.Math.NormalDistEquation eq)
+        {
+            var years = Etx.RandomValueInNormalDist(eq);
+
+            var gradDt = fromHere.AddYears((int)Math.Round(years));
+            while (gradDt.Month != 5 && gradDt.Month != 12)
+                gradDt = gradDt.AddMonths(1);
+            gradDt = new DateTime(gradDt.Year, gradDt.Month, Etx.IntNumber(12, 28));
+            return gradDt;
+        }
+
+        /// <summary>
+        /// Helper method to assign the <see cref="EduLevel"/> and <see cref="EduFlag"/>
+        /// by this instances current fields.
+        /// </summary>
         protected internal void AssignEduFlagAndLevel()
         {
+            //order colleges where grad date desc
+            var orderedColleges = _colleges.Where(x => x?.Item2 != null).OrderByDescending(x => x.Item2.Value);
+
+            //determine predicates
             var hasHs = HighSchool?.Item1 != null;
             var isHsGrad = HighSchool?.Item2 != null;
-            var hasCollge = College?.Item1 != null;
-            var isCollegeGrad = College?.Item2 != null;
+            var hasUndergradCollege = _colleges.Any();
+            var isCollegeGrad = orderedColleges.LastOrDefault()?.Item2 != null;
+            var hasPostgradCollege = isCollegeGrad && orderedColleges.Count(x => x.Item2 != null) > 1;
 
-            if (new[] { hasHs, isHsGrad, hasCollge, isCollegeGrad }.All(x => x == false))
+            //determine number of years in post-grad
+            var numYearsPostGrad = hasPostgradCollege
+                ? (orderedColleges.First().Item2.Value - orderedColleges.Last().Item2.Value).TotalDays/
+                  Shared.Constants.DBL_TROPICAL_YEAR
+                : 0;
+
+            //consider doctorate as right-side second sigma of postgrad years
+            var isDocGrad = numYearsPostGrad >
+                            NAmerUtil.Equations.YearsInPostgradCollege.Mean +
+                            NAmerUtil.Equations.YearsInPostgradCollege.StdDev;
+
+            //assign flag and name based on the above
+            if (new[] { hasHs, isHsGrad, hasUndergradCollege, isCollegeGrad }.All(x => x == false))
             {
                 _eduLevel = "No Education";
                 _eduFlag = OccidentalEdu.None;
-
+                return;
             }
-            if (hasCollge && isCollegeGrad)
+            if (hasPostgradCollege)
+            {
+                _eduLevel = isDocGrad ? "Doctorate" : "Masters Grad";
+                _eduFlag = isDocGrad
+                    ? OccidentalEdu.Doctorate | OccidentalEdu.Grad
+                    : OccidentalEdu.Master | OccidentalEdu.Grad;
+                return;
+            }
+            if (hasUndergradCollege && isCollegeGrad)
             {
                 _eduLevel = "College Grad";
                 _eduFlag = OccidentalEdu.Bachelor | OccidentalEdu.Grad;
+                return;
             }
-            if (hasCollge)
+            if (hasUndergradCollege)
             {
                 _eduLevel = "Some College";
                 _eduFlag = OccidentalEdu.Bachelor | OccidentalEdu.Some;
+                return;
             }
             if (hasHs && isHsGrad)
             {

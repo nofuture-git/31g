@@ -632,19 +632,19 @@ namespace NoFuture.Rand
         /// <summary>
         /// Gets a random value contrained to the normal distribution.
         /// </summary>
-        /// <param name="mean"></param>
-        /// <param name="stdDev"></param>
+        /// <param name="eq"></param>
         /// <param name="sigma">The z-score table only goes up to the 3rd sigma</param>
         /// <returns></returns>
-        public static double RandomValueInNormalDist(double mean, double stdDev, int sigma = 3)
+        public static double RandomValueInNormalDist(Util.Math.NormalDistEquation eq, int sigma = 3)
         {
-            var minRand = mean - (stdDev * sigma);
-            var maxRand = mean + (stdDev * sigma);
+           if(eq == null)
+                throw new ArgumentNullException(nameof(eq));
 
-            if(minRand < int.MinValue || maxRand > int.MaxValue)
+            var minRand = eq.Mean - (eq.StdDev * sigma);
+            var maxRand = eq.Mean + (eq.StdDev * sigma);
+
+            if (minRand < int.MinValue || maxRand > int.MaxValue)
                 throw new ArgumentException("The random number generator is limited to int max 2^31 value.");
-
-            var eq = new Util.Math.NormalDistEquation {Mean = mean, StdDev = stdDev};
 
             for (var i = 0; i < 1024; i++)
             {
@@ -655,7 +655,7 @@ namespace NoFuture.Rand
                 var zscore = eq.GetZScoreFor(someValue);
 
                 //zscore
-                var attempt = Etx.RationalNumber(0, 5)*0.1;
+                var attempt = Etx.RationalNumber(0, 5) * 0.1;
 
                 //try getting a value with that probability
                 var isGe = attempt >= zscore;
@@ -664,7 +664,19 @@ namespace NoFuture.Rand
                 if (isGe)
                     return someValue;
             }
-            return mean;
+            return eq.Mean;
+        }
+
+        /// <summary>
+        /// Gets a random value contrained to the normal distribution.
+        /// </summary>
+        /// <param name="mean"></param>
+        /// <param name="stdDev"></param>
+        /// <param name="sigma">The z-score table only goes up to the 3rd sigma</param>
+        /// <returns></returns>
+        public static double RandomValueInNormalDist(double mean, double stdDev, int sigma = 3)
+        {
+           return RandomValueInNormalDist(new Util.Math.NormalDistEquation { Mean = mean, StdDev = stdDev }, sigma);
         }
 
         /// <summary>

@@ -1,4 +1,4 @@
-﻿$blsGovRoot = "http://download.bls.gov/pub/time.series/"
+﻿$blsGovRoot = "https://download.bls.gov/pub/time.series/"
 $targetCodes = @(
     "ip/ip.sector",
     "ip/ip.industry",
