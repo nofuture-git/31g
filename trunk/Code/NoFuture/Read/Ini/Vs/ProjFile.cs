@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
 using NoFuture.Exceptions;
@@ -25,6 +26,7 @@ namespace NoFuture.Read.Vs
         /// The xml namespace alias to be used in all Xpaths
         /// </summary>
         public const string NS = "vs";
+
         #endregion
 
         #region internal types
@@ -85,6 +87,7 @@ namespace NoFuture.Read.Vs
             public string ProjectName { get; set; }
             public XmlNode Node { get; set; }
             public string ProjectPath { get; set; }
+            public string MyOriginalRelPath { get; set; }
         }
         #endregion
 
@@ -277,7 +280,115 @@ namespace NoFuture.Read.Vs
                 return _destLibDirectory;
             }
             set { _destLibDirectory = value; }
-        } 
+        }
+
+        /// <summary>
+        /// Gets full file names of all compile items present in the project file
+        /// </summary>
+        public string[] CompileItems
+        {
+            get
+            {
+                var codeFilePaths = new List<string>();
+
+                Action<List<string>, string> addCodeFiles = (list, ext) =>
+                {
+                    var compileItems = GetListCompileItemNodes(ext);
+                    if (compileItems == null)
+                        return;
+
+                    foreach (var compileItem in compileItems)
+                    {
+                        var s = compileItem.Attributes["Include"].Value;
+                        s = Path.Combine(DirectoryName, s);
+                        s = Path.GetFullPath(s);
+                        if(list.All(x => !string.Equals(s, x, StringComparison.OrdinalIgnoreCase)))
+                            list.Add(s);
+                    }
+                };
+
+                addCodeFiles(codeFilePaths, ".cs");
+                addCodeFiles(codeFilePaths, ".fs");
+                addCodeFiles(codeFilePaths, ".vb");
+
+                return codeFilePaths.ToArray();
+            }
+        }
+
+        /// <summary>
+        /// Gets full file names of all content items present in the project file
+        /// </summary>
+        public string[] ContentItems
+        {
+            get
+            {
+                var contentItemPaths = new List<string>();
+
+                var contentNodes = _xmlDocument.SelectNodes($"//{NS}:ItemGroup/{NS}:Content", _nsMgr);
+                if (contentNodes == null)
+                    return contentItemPaths.ToArray();
+
+                foreach (var node in contentNodes)
+                {
+                    var elem = node as XmlElement;
+                    if (elem == null || !elem.HasAttributes || !elem.HasAttribute("Include"))
+                        continue;
+
+                    var s = elem.Attributes["Include"].Value;
+                    s = Path.Combine(DirectoryName, s);
+                    s = Path.GetFullPath(s);
+                    if (contentItemPaths.All(x => !string.Equals(x, s, StringComparison.OrdinalIgnoreCase)))
+                        contentItemPaths.Add(s);
+                }
+                return contentItemPaths.ToArray();
+            }
+        }
+
+        /// <summary>
+        /// Gets the full path to all binary references of this project file
+        /// </summary>
+        public string[] BinaryReferences
+        {
+            get
+            {
+                var binPaths = new List<string>();
+
+                Action<BinReference> myAction = reference =>
+                {
+                    if (string.IsNullOrWhiteSpace(reference?.HintPath))
+                        return;
+                    
+                    var libSrcName = Path.Combine(DirectoryName, reference.HintPath);
+                    libSrcName = Path.GetFullPath(libSrcName);
+                    if(binPaths.All(x => !string.Equals(x, libSrcName, StringComparison.OrdinalIgnoreCase)))
+                        binPaths.Add(libSrcName);
+                };
+
+                IterateBinReferences(myAction);
+
+                return binPaths.ToArray();
+            }
+        }
+
+        /// <summary>
+        /// Gets the full path as it would be if this project file is built.
+        /// </summary>
+        public string OutputFileName
+        {
+            get
+            {
+                var ext = OutputType != "Library" ? ".exe" : ".dll";
+                var path = Path.Combine(DebugBin, $"{AssemblyName}{ext}");
+                path = Path.GetFullPath(path);
+                return path;
+            }
+        }
+
+        /// <summary>
+        /// Used internally from within the <see cref="GetProjectReferences"/>
+        /// </summary>
+        internal List<string> CmdLineProjRef { get; } = new List<string>();
+
         #endregion
 
         #region instance methods
@@ -371,7 +482,7 @@ namespace NoFuture.Read.Vs
             //find all the proj refs
             var projRefs = _xmlDocument.SelectNodes($"//{NS}:ItemGroup/{NS}:ProjectReference", _nsMgr);
             var counter = 0;
-            
+
             if (projRefs == null)
                 return counter;
             foreach (var projRefNode in projRefs)
@@ -1014,6 +1125,52 @@ namespace NoFuture.Read.Vs
             return counter;
         }
 
+        /// <summary>
+        /// Gets a left-recursive queue of the project dependencies
+        /// </summary>
+        /// <param name="projFileQueue">
+        /// Pass in null if you are the root calling assembly.
+        /// </param>
+        /// <returns></returns>
+        public Queue<ProjFile> GetProjectReferences(Queue<ProjFile> projFileQueue)
+        {
+            projFileQueue = projFileQueue ?? new Queue<ProjFile>();
+
+            //only add unique items
+            if(projFileQueue.Any(x => x.Equals(this)))
+                return projFileQueue;
+
+            var projRefs = _xmlDocument.SelectNodes($"//{NS}:ItemGroup/{NS}:ProjectReference", _nsMgr);
+
+            //these are the leafs
+            if (projRefs != null)
+            {
+                //these are the branches
+                foreach (var projRefNode in projRefs)
+                {
+                    var projRefElem = projRefNode as XmlElement;
+                    if (projRefElem == null || !projRefElem.HasAttributes)
+                        continue;
+                    var includeAttr = projRefElem.Attributes["Include"];
+                    if (string.IsNullOrWhiteSpace(includeAttr?.Value))
+                        continue;
+                    var projFilePath = includeAttr.Value;
+
+                    if (!Path.IsPathRooted(includeAttr.Value))
+                    {
+                        projFilePath = Path.Combine(DirectoryName, projFilePath);
+                    }
+                    var projRef = new ProjFile(projFilePath);
+                    CmdLineProjRef.Add(projRef.OutputFileName);
+                    projRef.GetProjectReferences(projFileQueue);
+                }
+            }
+
+            //add left recursive
+            projFileQueue.Enqueue(this);
+            return projFileQueue;
+        }
+
         public override string GetInnerText(string xpath)
         {
             var singleNode = _xmlDocument.SelectSingleNode(string.Format(xpath, NS), NsMgr);
@@ -1314,7 +1471,7 @@ namespace NoFuture.Read.Vs
                 return _projRefCache.First(x => x.ProjectPath == projPath);
             }
 
-            _projRefCache.Add(new ProjectReference(this) {ProjectPath = projPath});
+            _projRefCache.Add(new ProjectReference(this) {ProjectPath = projPath, MyOriginalRelPath = relProjPath});
 
             var projRef = _projRefCache.First(x => x.ProjectPath == projPath);
 
@@ -1628,6 +1785,52 @@ namespace NoFuture.Read.Vs
 
             if (!Regex.IsMatch(Path.GetExtension(vsprojPath), @"\.(vb|cs|fs)proj"))
                 throw new ItsDeadJim($"The Extension '{Path.GetExtension(vsprojPath)}' was unexpected");
+        }
+
+        public static string[] GetAsCompileCmd(string vsprojPath, string compilerPath = @"C:\Windows\Microsoft.NET\Framework64\v4.0.30319\csc.exe")
+        {
+
+            var dblQuote = new string(new[] { '"' });
+            ValidateProjFile(vsprojPath);
+
+            Func<string, string> wrapAsNeeded = s => s.Contains(" ") ? $"{dblQuote}{s}{dblQuote}" : s;
+
+            var cmds = new List<string>();
+
+            var proj = new ProjFile(vsprojPath);
+
+            var orderedDependencies = proj.GetProjectReferences(null);
+
+            while (orderedDependencies.Count > 0)
+            {
+                var tProj = orderedDependencies.Dequeue();
+                var cmdBldr = new StringBuilder();
+                cmdBldr.Append(compilerPath);
+                cmdBldr.Append($" /target:{tProj.OutputType.ToLower()}");
+                cmdBldr.Append($" /out:{wrapAsNeeded(tProj.OutputFileName)}");
+                cmdBldr.Append(" /debug:pdbonly");
+                foreach (var binRef in tProj.BinaryReferences)
+                {
+                    cmdBldr.Append($" /reference:{wrapAsNeeded(binRef)}");
+                }
+                foreach (var projRef in tProj.CmdLineProjRef)
+                {
+                    cmdBldr.Append($" /reference:{wrapAsNeeded(projRef)}");
+                }
+                foreach (var res in tProj.ContentItems)
+                {
+                    cmdBldr.Append($" /res:{wrapAsNeeded(res)}");
+                }
+                foreach (var compile in tProj.CompileItems)
+                {
+                    cmdBldr.Append($" {wrapAsNeeded(compile)}");
+                }
+                cmdBldr.AppendLine();
+                cmds.Add(cmdBldr.ToString());
+
+
+            }
+            return cmds.ToArray();
         }
         #endregion
     }

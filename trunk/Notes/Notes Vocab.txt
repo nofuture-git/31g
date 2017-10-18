@@ -376,7 +376,7 @@ raison d etre
 recalcitrant - trait of being unmanagable
 refulgence - being bright sending out rays of light
 regal
-semblance
+semblance - outward appearance especially when in reality is different
 succinctly
 symphonic - relating to or having the form of a symphony
 terseness
@@ -500,3 +500,97 @@ idempotent: denoting an element of a set that is
             otherwise operated on by itself. ~(~(x)) == x
 furtively: in a way that attempts to avoid notice or attention
 deus ex machina - god from the machine
+augment - make greater by adding to it
+transmogrify - same as transform except it involves magic
+modify - to make a partial or minor change
+transform - make a thorough or dramatic change in form and appearance
+shift - to move especially over small distances
+morph - distinct to images being changed by small steps
+adapter - a third thing which allows for one thing to be connected 
+          to another
+chart & map - charts are detailed regarding coastlines (water); 
+              maps are for land.
+map (graph theory) - the edges (lines between the dots) don't overlap
+data abstraction: isolating the parts of a program with how data 
+  objects are represented from the parts of a program that deal 
+  with how data objects are used
+abstraction barrier: separates programs that use data abstraction
+  from programs the implement the data abstraction
+generic procedures: procedures that can operate on data that
+  may be represented in more than one way.
+aliasing: a single computational object being accessed by more than
+  one name.
+first-class types: types with the fewest restrictions on the ways in 
+  which computational elements can be manipulated.
+ - named as variables
+ - passed as args
+ - returned as results
+ - included in data structures
+sets: mutable unordered collection of unique and immutable objects.
+tuples: immutable sequences of object references accessed by offset
+dictionaries: mutable mappings of object references accessed by key
+lists: mutable sequences of object references accessed by offset
+parser: recognize grammatical structures in a token stream
+ - parsers differ from compilers & interpreters because they only 
+   consider the 'form' and not the 'meaning' of the symbols
+lexers: recognize grammatical structures in a character stream
+identity: idea that a computational object is something
+  different from the pieces & properties of which it is composed.
+authentication: assurance for the claimed identity
+claimant: a person, program or device whose identity is being verified
+principal: the actual owner of an identity
+authorization: establishes what the given identity is allowed to do
+runtime: the actual execution of a program over some span of time
+  typically within some specific enviromental context
+process: an ostentive definition of a runtime
+substitution model -vs- environment model:
+ the substitution model is like classical mathematical notation
+ the environment model is involved with time and thereby has 
+ state being time-dependent but identity being time independent
+pure functions: functions which do not change any state and treat 
+ their args as read-only.
+propositional logic: concerns the truth-value of a sentence (aka clause).
+free variable: a kind of substitution of a sentence's subject (replace 
+ the subject with say 'X').
+open formula: what a sentence (aka clause) becomes when its
+ subject is replaced by an free variable.
+logic quantifier: the kinds of predicates which are applicable to
+ an open formula (e.g. All, Any)
+predicate logic: concerns the truth-value of logic quantifier on 
+ an open formula.
+stream: a way of modeling state as sequence in time (similar to how 
+ a linear equation is one thing but is infinite when graphed)
+tableau: a stream of streams
+event loop -vs- game loop: event loops only continue upon user input
+ while game loops continue regardless of user input
+partial application: partial application is when the number of args 
+ of a function expression are reduced.  For example in going from 
+ "let pow x x = x^x" to "let sqr x = pow x 2"
+monand: a computational structure which statisfies three rules:
+  left identity: bind(unit(e),k) = k(e)
+  right identity: bind(m,unit) = m
+  associative: bind(m,x => bind(k(x),y => h(y))) 
+                   = bind(bind(m,x => k(x)),y => h(y))
+point -vs- vector [Linear Algebra]: 
+  - are two different geometric entities
+  - a point is a position on a 2d coordinate plane
+  - a vector is a difference of two points which describes 
+    a direction and distance
+  - a vector is coordinate-independent a point is not
+compiler -vs- transpiler: 
+ - a compiler results in a direct executable artifact 
+   while a transpiler results in further code which 
+   must be itself either compiled or interpretated
+pascel case -vs- camel case -vs- kabab case -vs- snake-case
+ Pascel case: MyVariable
+ Camel case:  MyVariable | myVariable
+ Kabab case:  my-variable
+ Snake case:  my_variable
+lint: the name give to a program which scans a code 
+ base in order to report suspicious and non-portable
+ constructs
+duck typing -vs- normal typing:
+ both regard idea of suitability of a runtime obj passed
+ to a f(x).  duck-typing suitability is determined by presence
+ of expected methods and properties. normal-typing suitability 
+ is determined by the objects type.

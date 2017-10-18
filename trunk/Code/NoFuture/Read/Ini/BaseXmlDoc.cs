@@ -12,11 +12,12 @@ namespace NoFuture.Read
     public abstract class BaseXmlDoc
     {
         #region fields
-        protected XmlDocument _xmlDocument;
+        protected readonly XmlDocument _xmlDocument;
 
         private readonly string _originalReadFile;
         private string _fileFullName;
         public const string LIB = "_lib";
+        private readonly System.Security.Cryptography.MD5 _chkSum = System.Security.Cryptography.MD5.Create();
         #endregion
 
         #region ctor
@@ -41,6 +42,7 @@ namespace NoFuture.Read
         public virtual string DirectoryName => Path.GetDirectoryName(_fileFullName) ?? NfConfig.TempDirectories.AppData;
         public virtual string FileName => Path.GetFileName(_fileFullName);
         protected internal string OriginalReadFileFullName => _originalReadFile;
+        internal XmlDocument Xml => _xmlDocument;
         /// <summary>
         /// Writes the current in memory contents to file.
         /// </summary>
@@ -167,7 +169,19 @@ namespace NoFuture.Read
             var bXml = obj as BaseXmlDoc;
             if (bXml == null)
                 return false;
-            return bXml.OriginalReadFileFullName == OriginalReadFileFullName;
+
+            return bXml.GetMd5ChkSum() == GetMd5ChkSum();
+        }
+
+        public string GetMd5ChkSum()
+        {
+            var bytes = Encoding.UTF8.GetBytes(_xmlDocument.OuterXml);
+            var hash = "";
+            foreach (var b in _chkSum.ComputeHash(bytes))
+            {
+                hash += b.ToString("x2");
+            }
+            return hash;
         }
 
         #endregion

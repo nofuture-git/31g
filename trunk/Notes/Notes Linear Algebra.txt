@@ -351,7 +351,7 @@ Graph Theory (Formal)
  - edges (links): represent the relation amoung the vertices'
  - join: formal name for what the edge is doing; namely, joining
     two vertices.
- - adjacent: the state between to vertices when there is an edge
+ - adjacent: the state between to vertices when there is one edge
     between them.
  - connected: when a indirect route connects one vertex to another
  - distance: the number of edge traversals required to reach one
@@ -370,9 +370,18 @@ Graph Theory (Formal)
  - subgraph: a subset of vertices and edges of another graph
  - induced subgraph: a subgraph where only the vertices or only 
     the edges are known.
+ - bijection: ("by Jove its a perfect match") one and 
+      only one girl for every boy and nobody is alone.
+ - surjective: ("sure we can share") one girl 
+      for every boy but some boys have to 
+      share the same girl, but at least 
+      no one is alone
+ - injective: ("intense feelings of loneness") one girl 
+      for every boy and no boy ever shares the same 
+      girl, but some girls are all alone
+ - non-surjective & non-injective: ("no! no!") state of 
+      some girls being all alone and some girls sharing boys
  - isomorphic graph: when two graphs are drawn the same
- - bijection: across two sets, in a one-to-one mapping, may be thought
-    of like a function that translates a vertex in G to a vertex in H
  - automorphic graph: when two graphs are drawn the same
     and their underlying structured data is the same.
  - label: by being labeled a vertex or edge becomes definititive 
@@ -402,6 +411,15 @@ Graph Theory (Formal)
  - weighted graph: where the edge is the vertex pair and a weight
  - hub: a vertex having a high outdegree
  - authority: a vertex having a high indegree
+ - morphism: specific to directed graphs being another general name
+    for an edge but differs by having some edges labeled and then 
+    expressing others edges as label-of-labels or combinations of 
+    other edge labels 
+    (in DOT syntax where the '[label="blah"]' is how to label an edge)
+    X -> Y [label="f"]
+    Y -> Z [label="g"]
+    X -> Z [label="g & f"] //named in terms of the other two
+
 ----
 
 ----

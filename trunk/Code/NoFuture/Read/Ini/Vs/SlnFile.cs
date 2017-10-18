@@ -19,6 +19,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 ";
+        private const string SLN_EXT = ".sln";
         #endregion
 
         #region fields
@@ -40,6 +41,11 @@ MinimumVisualStudioVersion = 10.0.40219.1
             if (string.IsNullOrWhiteSpace(slnFullFileName))
             {
                 throw new ArgumentNullException(nameof(slnFullFileName));
+            }
+            if (!Path.HasExtension(slnFullFileName) ||
+                !string.Equals(Path.GetExtension(slnFullFileName), SLN_EXT, StringComparison.OrdinalIgnoreCase))
+            {
+                slnFullFileName += SLN_EXT;
             }
             _fullFileName = slnFullFileName;
             _slnDir = Path.GetDirectoryName(_fullFileName);

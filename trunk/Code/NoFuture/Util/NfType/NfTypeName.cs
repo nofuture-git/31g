@@ -38,7 +38,7 @@ namespace NoFuture.Util.NfType
         public const string ASM_PRIV_TOKEN_REGEX = @"\,\s*PublicKeyToken\=(null|[a-f0-9]*)";
         public const string ASM_PROC_ARCH_REGEX = @"\,\s*ProcessorArchitecture\=(MSIL|Arm|Amd64|IA64|None|X86)";
 
-        public const string FULL_ASSEMBLY_NAME_REGEX = @"([a-z0-9_\.]*?)\,\s*(Version\=[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+)\,\s*(Culture\=[a-z_\-]*?)\,\s*(PublicKeyToken\=(null|[a-f0-9]*))(\,\s*(ProcessorArchitecture\=(MSIL|Arm|Amd64|IA64|None|X86)))?";
+        public const string FULL_ASSEMBLY_NAME_REGEX = @"([a-z0-9_\.]*?)\,\s*(Version\=[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+)\,\s*(Culture\=[a-z_\-]*?)\,\s*(PublicKeyToken\=(null|[a-f0-9]*))?(\,\s*(ProcessorArchitecture\=(MSIL|Arm|Amd64|IA64|None|X86)))?";
         public const string ASSEMBLY_QUALIFIED_CLASS_NAME_REGEX = @"([a-z0-9_\.]*?)\,\s*" + FULL_ASSEMBLY_NAME_REGEX;
         public const string NAMESPACE_CLASS_NAME_REGEX = @"\W[a-zA-Z_][a-zA-Z0-9_\x3D\x2E\x20\x3A]+";
         public const string ID_REGEX = @"[_a-z][a-z0-9_]+?";

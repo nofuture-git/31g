@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NoFuture.Read;
@@ -370,6 +371,89 @@ namespace NoFuture.Tests
             var testRslt = Path.GetDirectoryName(TEST_CSPROJ);
             testRslt = Path.Combine(testRslt, "DoNotUse_VsProjFileTests-COPY.csproj");
             testSubject.SaveAs(testRslt);
+        }
+
+        [TestMethod]
+        public void TestGetProjectReferences()
+        {
+            var testSubject = new NoFuture.Read.Vs.ProjFile(@"C:\Projects\We\source\Bfw.Dal.Transform\Bfw.Dal.Transform.csproj");
+            Assert.IsNotNull(testSubject);
+
+            var bldScript = "";
+            var testResult = testSubject.GetProjectReferences(null);
+            Assert.IsNotNull(testResult);
+            Assert.AreNotEqual(0, testResult.Count);
+
+
+            while (testResult.Count > 0)
+            {
+                var testResultI = testResult.Dequeue();
+                System.Diagnostics.Debug.WriteLine(testResultI.AssemblyName);
+            }
+
+            System.Diagnostics.Debug.WriteLine(bldScript);
+        }
+
+        [TestMethod]
+        public void TestGetCompileItems()
+        {
+            var testSubject = new NoFuture.Read.Vs.ProjFile(TEST_CSPROJ);
+            Assert.IsNotNull(testSubject);
+
+            var testResults = testSubject.CompileItems;
+            Assert.IsNotNull(testResults);
+
+            Assert.IsTrue(testResults.Any());
+
+            foreach (var t in testResults)
+            {
+                System.Diagnostics.Debug.WriteLine(t);
+            }
+        }
+
+        [TestMethod]
+        public void TestGetContentItems()
+        {
+            var testSubject = new NoFuture.Read.Vs.ProjFile(TEST_CSPROJ);
+            Assert.IsNotNull(testSubject);
+
+            var testResults = testSubject.ContentItems;
+            Assert.IsNotNull(testResults);
+
+            Assert.IsTrue(testResults.Any());
+
+            foreach (var t in testResults)
+            {
+                System.Diagnostics.Debug.WriteLine(t);
+            }
+        }
+
+        [TestMethod]
+        public void TestGetBinaryReferences()
+        {
+            var testSubject = new NoFuture.Read.Vs.ProjFile(TEST_CSPROJ);
+            Assert.IsNotNull(testSubject);
+
+            var testResults = testSubject.BinaryReferences;
+            Assert.IsNotNull(testResults);
+
+            Assert.IsTrue(testResults.Any());
+
+            foreach (var t in testResults)
+            {
+                System.Diagnostics.Debug.WriteLine(t);
+            }
+        }
+
+        [TestMethod]
+        public void TestGetAsCompileCmd()
+        {
+            var testResult = NoFuture.Read.Vs.ProjFile.GetAsCompileCmd(TEST_CSPROJ);
+            Assert.IsNotNull(testResult);
+            
+            System.IO.File.WriteAllLines(TestAssembly.UnitTestsRoot + @"\TestGetAsCompileCmd.txt", testResult);
+
+
         }
     }
 }
