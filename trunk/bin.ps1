@@ -143,6 +143,7 @@ function Install-DotNetRoslyn
         . .\build\scripts\build.ps1 -build -release -restore
 
         Write-Host "Build Complete, assigning NoFuture config values" -ForegroundColor Yellow
+        Pop-Location
 
         if([string]::IsNullOrWhiteSpace([NoFuture.Shared.NfConfig+DotNet]::CscCompiler)){
             [NoFuture.Shared.NfConfig+DotNet]::CscCompiler = Join-Path $outRoslynMaster "Binaries\Release\Exes\csc\net46\csc.exe"

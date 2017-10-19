@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
@@ -355,8 +356,13 @@ namespace NoFuture.Read.Vs
 
                 Action<BinReference> myAction = reference =>
                 {
-                    if (string.IsNullOrWhiteSpace(reference?.HintPath))
+                    if (reference == null)
                         return;
+                    if (string.IsNullOrWhiteSpace(reference.HintPath))
+                    {
+                        binPaths.Add(reference.SearchPath);
+                        return;
+                    }
                     
                     var libSrcName = Path.Combine(DirectoryName, reference.HintPath);
                     libSrcName = Path.GetFullPath(libSrcName);
@@ -1311,11 +1317,24 @@ namespace NoFuture.Read.Vs
                     continue;
 
                 var includeAttr = binRefElem.Attributes["Include"];
-                if (string.IsNullOrWhiteSpace(includeAttr?.Value) ||
-                    !Util.NfType.NfTypeName.IsAssemblyFullName(includeAttr.Value))
+                if (string.IsNullOrWhiteSpace(includeAttr?.Value))
                     continue;
-
-                var binRef = GetBinRefByAsmName(new AssemblyName(includeAttr.Value));
+                BinReference binRef = null;
+                if (!Util.NfType.NfTypeName.IsAssemblyFullName(includeAttr.Value))
+                {
+                    var refPath = GetReferenceAssembliesPath();
+                    if (string.IsNullOrWhiteSpace(refPath))
+                        continue;
+                    refPath = Path.Combine(refPath, $"{includeAttr.Value}.dll");
+                    if (!File.Exists(refPath))
+                        continue;
+                    binRef = GetBinRefByAsmPath(refPath, true);
+                }
+                else
+                {
+                    binRef = GetBinRefByAsmName(new AssemblyName(includeAttr.Value));
+                }
+                
                 if (binRef == null)
                     continue;
                 action(binRef);
@@ -1323,6 +1342,17 @@ namespace NoFuture.Read.Vs
 
             }
             return counter;
+        }
+
+        protected internal string GetReferenceAssembliesPath()
+        {
+            var programFiles = Environment.GetEnvironmentVariable("ProgramFiles(x86)") ??
+                               Environment.GetEnvironmentVariable("ProgramFiles") ??
+                               @"C:\Program Files (x86)";
+            
+            const string MIDDLE_PATH = @"Reference Assemblies\Microsoft\Framework\.NETFramework";
+            var refDir = Path.Combine(programFiles, MIDDLE_PATH);
+            return Path.Combine(refDir, TargetFrameworkVersion);
         }
 
         /// <summary>
@@ -1414,21 +1444,19 @@ namespace NoFuture.Read.Vs
             if (asmName == null)
                 return null;
 
+            var binRef = _asmRefCache.FirstOrDefault(
+                x => x.DllOnDisk?.Item2 != null &&
+                     System.Reflection.AssemblyName.ReferenceMatchesDefinition(x.DllOnDisk?.Item2, asmName));
             //return what we have already found once before
-            if (
-                _asmRefCache.Any(
-                    x => x.DllOnDisk?.Item2 != null &&
-                         System.Reflection.AssemblyName.ReferenceMatchesDefinition(x.DllOnDisk?.Item2, asmName)))
-                return
-                    _asmRefCache.First(
-                        x => x.DllOnDisk?.Item2 != null &&
-                             System.Reflection.AssemblyName.ReferenceMatchesDefinition(x.DllOnDisk?.Item2, asmName));
+            if (binRef != null)
+                return binRef;
 
             //find the Reference node by the assembly's full name
-            var binRef = new BinReference(this);
-            binRef.Node =
-                _xmlDocument.SelectSingleNode(
-                    $"//{NS}:ItemGroup/{NS}:Reference[contains(@Include,'{asmName.FullName}')]", _nsMgr);
+            binRef = new BinReference(this)
+            {
+                Node = _xmlDocument.SelectSingleNode(
+                    $"//{NS}:ItemGroup/{NS}:Reference[contains(@Include,'{asmName.FullName}')]", _nsMgr)
+            };
 
             //require that the hint path is present 
             if (binRef.Node == null || string.IsNullOrWhiteSpace(binRef.HintPath))
@@ -1787,7 +1815,21 @@ namespace NoFuture.Read.Vs
                 throw new ItsDeadJim($"The Extension '{Path.GetExtension(vsprojPath)}' was unexpected");
         }
 
-        public static string[] GetAsCompileCmd(string vsprojPath, string compilerPath = null)
+        /// <summary>
+        /// Factory method to derive an array of PowerShell script commands 
+        /// from the given <see cref="vsprojPath"/> which when executed would
+        /// result in the project being compiled.
+        /// </summary>
+        /// <param name="vsprojPath"></param>
+        /// <param name="compilerPath"></param>
+        /// <param name="useRecurseForCodeFiles">
+        /// Optional, setting to false will have each and every compile items full path
+        /// included, otherwise it will use the /recurse: option of the compiler
+        /// </param>
+        /// <returns>
+        /// Each entry is a multilined string of a PowerShell commands
+        /// </returns>
+        public static string[] GetAsPsCompileCmd(string vsprojPath, string compilerPath = null, bool useRecurseForCodeFiles = true)
         {
             if (string.IsNullOrWhiteSpace(compilerPath))
             {
@@ -1803,35 +1845,63 @@ namespace NoFuture.Read.Vs
             var proj = new ProjFile(vsprojPath);
 
             var orderedDependencies = proj.GetProjectReferences(null);
-            
+
             while (orderedDependencies.Count > 0)
             {
                 var tProj = orderedDependencies.Dequeue();
                 var cmdBldr = new StringBuilder();
-                cmdBldr.Append(compilerPath);
-                cmdBldr.Append($" /target:{tProj.OutputType.ToLower()}");
-                cmdBldr.Append($" /out:{wrapAsNeeded(tProj.OutputFileName)}");
-                cmdBldr.Append(" /debug:pdbonly");
+
+                cmdBldr.AppendLine($"# {tProj.AssemblyName}");
+                cmdBldr.AppendLine($"Push-Location {wrapAsNeeded(Path.GetFullPath(tProj.DirectoryName))}");
+
+                var exprBldr = new StringBuilder();
+
+                exprBldr.AppendLine($"{compilerPath} `");
+                exprBldr.AppendLine($" /target:{tProj.OutputType.ToLower()} `");
+                exprBldr.AppendLine($" /out:{wrapAsNeeded(tProj.OutputFileName)} `");
+                exprBldr.AppendLine(" /debug:pdbonly `");
                 foreach (var binRef in tProj.BinaryReferences)
                 {
-                    cmdBldr.Append($" /reference:{wrapAsNeeded(binRef)}");
+                    exprBldr.AppendLine($" /reference:{wrapAsNeeded(binRef)} `");
                 }
                 foreach (var projRef in tProj.CmdLineProjRef)
                 {
-                    cmdBldr.Append($" /reference:{wrapAsNeeded(projRef)}");
+                    exprBldr.AppendLine($" /reference:{wrapAsNeeded(projRef)} `");
                 }
                 foreach (var res in tProj.ContentItems)
                 {
-                    cmdBldr.Append($" /res:{wrapAsNeeded(res)}");
+                    exprBldr.AppendLine($" /res:{wrapAsNeeded(res)} `");
                 }
+                
+                var codeFiles = new List<string>();
                 foreach (var compile in tProj.CompileItems)
                 {
-                    cmdBldr.Append($" {wrapAsNeeded(compile)}");
+                    if (useRecurseForCodeFiles)
+                    {
+                        var ext = Path.GetExtension(compile);
+                        if (codeFiles.Contains(ext))
+                            continue;
+                        codeFiles.Add(ext);
+                    }
+                    else
+                    {
+                        codeFiles.Add(wrapAsNeeded(compile));
+                    }
                 }
-                cmdBldr.AppendLine();
+                if (useRecurseForCodeFiles)
+                {
+                    foreach (var ext in codeFiles)
+                    {
+                        exprBldr.Append($" /recurse:*{ext}");
+                    }
+                }
+                else
+                {
+                    exprBldr.Append(string.Join(" `\n", codeFiles));
+                }
+                cmdBldr.AppendLine($"Invoke-Expression -Command '{exprBldr}'" );
+                cmdBldr.AppendLine("Pop-Location");
                 cmds.Add(cmdBldr.ToString());
-
-
             }
             return cmds.ToArray();
         }

@@ -448,9 +448,10 @@ namespace NoFuture.Tests
         [TestMethod]
         public void TestGetAsCompileCmd()
         {
-            var testResult = NoFuture.Read.Vs.ProjFile.GetAsCompileCmd(TEST_CSPROJ);
+            NoFuture.Shared.NfConfig.DotNet.CscCompiler =
+                @"C:\Projects\31g\trunk\bin\roslyn-master\Binaries\Release\Exes\csc\net46\csc.exe";
+            var testResult = NoFuture.Read.Vs.ProjFile.GetAsPsCompileCmd(TEST_CSPROJ, null, false);
             Assert.IsNotNull(testResult);
-            
             System.IO.File.WriteAllLines(TestAssembly.UnitTestsRoot + @"\TestGetAsCompileCmd.txt", testResult);
 
 
