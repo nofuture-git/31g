@@ -91,6 +91,10 @@ $(%environmentVar%) means, 'resolve this to the environment variable contained i
             <add id='x86TextTransformTool' value='$(binX86RootDir)\TextTransform.exe' />
             <add id='x86DotExeTool' value='$(binRootDir)\graphviz-2.38\bin\dot.exe' />
           </x86>
+          <dotnet>
+            <add id='cscExe' value='$(binRootDir)\roslyn-master\Binaries\Release\Exes\csc\net46\csc.exe' />
+            <add id='vbcExe' value='$(binRootDir)\roslyn-master\Binaries\Release\Exes\vbc\net46\vbc.exe' />
+          </dotnet>
           <java>
             <add id='javaJavacTool' value='$(binJavaRootDir)\bin\javac.exe' />
             <add id='javaJavaTool' value='$(binJavaRootDir)\bin\java.exe' />

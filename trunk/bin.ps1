@@ -4,6 +4,8 @@ if(-not [NoFuture.Shared.NfConfig+MyFunctions]::FunctionFiles.ContainsValue($MyI
 [NoFuture.Shared.NfConfig+MyFunctions]::FunctionFiles.Add("Get-BinaryDump",$MyInvocation.MyCommand)
 [NoFuture.Shared.NfConfig+MyFunctions]::FunctionFiles.Add("Invoke-JavaCompiler",$MyInvocation.MyCommand)
 [NoFuture.Shared.NfConfig+MyFunctions]::FunctionFiles.Add("Get-JavaClassPath",$MyInvocation.MyCommand)
+[NoFuture.Shared.NfConfig+MyFunctions]::FunctionFiles.Add("Get-NuGetExe",$MyInvocation.MyCommand)
+[NoFuture.Shared.NfConfig+MyFunctions]::FunctionFiles.Add("Install-DotNetRoslyn",$MyInvocation.MyCommand)
 }
 }catch{
     Write-Host "file is being loaded independent of 'start.ps1' - some functions may not be available."
@@ -65,6 +67,133 @@ function Get-BinaryDump
         #run it
         Invoke-Expression -Command $cmd
     }
+}
+
+<#
+    .SYNOPSIS
+    Downloads, unzips and builds rosyln-master from GitHub
+    
+    .DESCRIPTION
+    Downloads the rosyln-master.zip from GitHub, unzips it 
+    (as a top-level folder named 'roslyn-master') to the Path 
+    directory then invokes the build script.
+    
+    .PARAMETER Path
+    Path to where the roslyn-master.zip is unzipped 
+    and build.  The directory name of 'roslyn-master' is 
+    prefixed to this path. The default is 
+    Shared.NfConfig.BinDirectories.Root.
+
+    .LINK
+    https://github.com/dotnet/roslyn
+
+#>
+function Install-DotNetRoslyn
+{
+    [CmdletBinding()]
+    Param
+    (
+        [Parameter(Mandatory=$false,Position=0)]
+        [string] $Path
+    )
+    Process
+    {
+        Add-Type -AssemblyName "System.IO.Compression.FileSystem"
+
+        #set download dir to temp if not specified
+        $tempPath = [NoFuture.Shared.NfConfig+TempDirectories]::Root
+
+        if([string]::IsNullOrWhiteSpace($tempPath) -or -not (Test-Path $tempPath)){
+            $tempPath = [System.Environment]::GetFolderPath([System.Environment+SpecialFolder]::ApplicationData)
+        }
+        
+        #set location of src-code
+        if([string]::IsNullOrEmpty($Path)){
+            $Path = [NoFuture.Shared.NfConfig+BinDirectories]::Root
+        }
+
+        if([string]::IsNullOrWhiteSpace($Path) -or -not (Test-Path $Path)){
+            throw "Invalid path at $Path"
+            break;
+        }
+
+        #download the zip file to a temp dir
+        $rosylnZipUri = "https://github.com/dotnet/roslyn/archive/master.zip"
+        $rosylnOutFile = Join-Path $tempPath "roslyn-master.zip"
+        Write-Host "Downloading rosyln zip from GitHub to local $rosylnOutFile" -ForegroundColor Yellow
+        $zipFile = Invoke-WebRequest $rosylnZipUri -UseDefaultCredentials -OutFile $rosylnOutFile
+
+        $outRoslynMaster = Join-Path $Path "roslyn-master"
+
+        #the directory is not expected to exist 
+        #https://docs.microsoft.com/en-us/dotnet/api/system.io.compression.zipfile.extracttodirectory?view=netframework-4.7 @ "IOException"
+        if(Test-Path $outRoslynMaster){
+            Write-Host "The $outRoslynMaster directory already exist and will be removed." -ForegroundColor Yellow
+            $dnd = Remove-Item $outRoslynMaster -Recurse -Force
+        }
+
+        Write-Host "Decompressing $rosylnOutFile to $Path" -ForegroundColor Yellow
+        [System.IO.Compression.ZipFile]::ExtractToDirectory($zipFile, $outRoslynMaster)
+
+        Push-Location $outRoslynMaster
+        #this is particular to the roslyn build script
+        $env:PLATFORM = "Any CPU"
+
+        Write-Host "Building rosyln-master..." -ForegroundColor Yellow
+        . .\build\scripts\build.ps1 -build -release -restore
+
+        Write-Host "Build Complete, assigning NoFuture config values" -ForegroundColor Yellow
+
+        if([string]::IsNullOrWhiteSpace([NoFuture.Shared.NfConfig+DotNet]::CscCompiler)){
+            [NoFuture.Shared.NfConfig+DotNet]::CscCompiler = Join-Path $outRoslynMaster "Binaries\Release\Exes\csc\net46\csc.exe"
+        }
+        if([string]::IsNullOrWhiteSpace([NoFuture.Shared.NfConfig+DotNet]::VbcCompiler)){
+            [NoFuture.Shared.NfConfig+DotNet]::VbcCompiler = Join-Path $outRoslynMaster "Binaries\Release\Exes\vbc\net46\vbc.exe"
+        }
+
+    }
+}
+
+<#
+    .SYNOPSIS
+    Downloads a copy of NuGet.exe from the web
+    
+    .DESCRIPTION
+    Downloads a copy of NuGet.exe from the web
+    using the current user's default creds.
+
+    .PARAMETER OutPath
+    Optional, specify a directory to have the downloaded
+    copy of NuGet.exe placed in.  Defaults to this
+    scripts directory.
+    
+#>
+function Get-NuGetExe
+{
+    [CmdletBinding()]
+    Param
+    (
+        [Parameter(Mandatory=$false,position=0)]
+        [string] $OutPath
+    )
+    Process
+    {
+        if([String]::IsNullOrWhiteSpace($OutPath)){
+            $OutPath = [NoFuture.Shared.NfConfig+BinDirectories]::Root
+        }
+        
+        if([string]::IsNullOrWhiteSpace($OutPath) -or -not (Test-Path $OutPath)){
+            throw "Invalid path at $OutPath"
+            break;
+        }
+
+        $nugetExeUri = "https://dist.nuget.org/win-x86-commandline/latest/nuget.exe"
+        Write-Host "Downloading NuGet.exe from $nugetExeUri" -ForegroundColor Yellow
+        $nuGetExeOutFile = (Join-Path $OutPath "NuGet.exe")
+        $nuGetExe = Invoke-WebRequest $nugetExeUri -UseDefaultCredentials -OutFile $nuGetExeOutFile
+        return $nuGetExeOutFile
+    }
+
 }
 
 <#

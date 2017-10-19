@@ -1787,9 +1787,12 @@ namespace NoFuture.Read.Vs
                 throw new ItsDeadJim($"The Extension '{Path.GetExtension(vsprojPath)}' was unexpected");
         }
 
-        public static string[] GetAsCompileCmd(string vsprojPath, string compilerPath = @"C:\Windows\Microsoft.NET\Framework64\v4.0.30319\csc.exe")
+        public static string[] GetAsCompileCmd(string vsprojPath, string compilerPath = null)
         {
-
+            if (string.IsNullOrWhiteSpace(compilerPath))
+            {
+                compilerPath = Shared.NfConfig.DotNet.CscCompiler;
+            }
             var dblQuote = new string(new[] { '"' });
             ValidateProjFile(vsprojPath);
 
@@ -1800,7 +1803,7 @@ namespace NoFuture.Read.Vs
             var proj = new ProjFile(vsprojPath);
 
             var orderedDependencies = proj.GetProjectReferences(null);
-
+            
             while (orderedDependencies.Count > 0)
             {
                 var tProj = orderedDependencies.Dequeue();

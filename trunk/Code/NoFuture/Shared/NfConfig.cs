@@ -127,6 +127,8 @@ namespace NoFuture.Shared
             {"cmd-line-arg-switch", s => CmdLineArgSwitch = s},
             {"cmd-line-arg-assign", s => CmdLineArgAssign = Convert.ToChar(s)},
             {"punctuation-chars", s => PunctuationChars = s.Split(' ').Select(Convert.ToChar).ToArray()},
+            {"cscExe", s => DotNet.CscCompiler = s},
+            {"vbcExe", s => DotNet.VbcCompiler = s},
         };
 
         private static int _threadSleepTime;
@@ -633,6 +635,13 @@ namespace NoFuture.Shared
             public static string Wsdl { get; set; }
             public static string DotExe { get; set; }
         }
+
+        public class DotNet
+        {
+            public static string CscCompiler { get; set; }
+            public static string VbcCompiler { get; set; }
+        }
+
         /// <summary>
         /// The file path to exe's, and java JAR files referenced by NoFuture powershell scripts
         /// </summary>
