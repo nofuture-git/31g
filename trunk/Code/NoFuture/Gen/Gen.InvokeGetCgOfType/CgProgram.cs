@@ -89,7 +89,7 @@ namespace NoFuture.Gen.InvokeGetCgOfType
 
             TypeName = argHash[Settings.INVOKE_FULL_TYPE_NAME_SWITCH].ToString();
 
-            NfConfig.CustomTools.InvokeNfTypeName = ConfigurationManager.AppSettings["NoFuture.ToolsCustomTools.InvokeNfTypeName"];
+            NfConfig.CustomTools.InvokeNfTypeName = NoFuture.Util.NfPath.GetAppCfgSetting("NoFuture.ToolsCustomTools.InvokeNfTypeName");
 
         }
 

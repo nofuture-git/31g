@@ -212,7 +212,7 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
             {
                 if (_maxRecursionDepth > 0)
                     return _maxRecursionDepth;
-                var t = ResolveInt(ConfigurationManager.AppSettings["MaxRecursionDepth"]);
+                var t = ResolveInt(NoFuture.Util.NfPath.GetAppCfgSetting("MaxRecursionDepth"));
                 if (t == null)
                     return 0;
                 _maxRecursionDepth = t.Value;
@@ -231,7 +231,7 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
                 if (_resolveGacAsms != null)
                     return _resolveGacAsms.Value;
 
-                _resolveGacAsms = ResolveBool(ConfigurationManager.AppSettings["AreGacAssembliesResolved"]);
+                _resolveGacAsms = ResolveBool(NoFuture.Util.NfPath.GetAppCfgSetting("AreGacAssembliesResolved"));
 
                 return _resolveGacAsms != null && _resolveGacAsms.Value;
             }
@@ -276,7 +276,7 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
             //get and test the cmd line arg key\values
             var argHash = ConsoleCmd.ArgHash(_args);
 
-            NfConfig.CustomTools.InvokeNfTypeName = ConfigurationManager.AppSettings["NoFuture.ToolsCustomTools.InvokeNfTypeName"];
+            NfConfig.CustomTools.InvokeNfTypeName = NoFuture.Util.NfPath.GetAppCfgSetting("NoFuture.ToolsCustomTools.InvokeNfTypeName");
             if (argHash.ContainsKey(AssemblyAnalysis.GET_TOKEN_IDS_PORT_CMD_SWITCH))
             {
                 _getTokenIdsCmdPort = ResolveInt(argHash[AssemblyAnalysis.GET_TOKEN_IDS_PORT_CMD_SWITCH].ToString());

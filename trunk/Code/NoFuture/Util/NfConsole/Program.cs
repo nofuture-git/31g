@@ -50,7 +50,7 @@ namespace NoFuture.Util.NfConsole
         {
             get
             {
-                var logDir = ConfigurationManager.AppSettings[TEMP_DIR_DEBUG];
+                var logDir = NoFuture.Util.NfPath.GetAppCfgSetting(TEMP_DIR_DEBUG);
                 if (string.IsNullOrWhiteSpace(logDir))
                     logDir = NfConfig.TempDirectories.AppData;
                 var myName = MyName;
@@ -270,7 +270,7 @@ namespace NoFuture.Util.NfConsole
         protected internal void SetReflectionOnly()
         {
             var useReflectionOnly =
-                ResolveBool(ConfigurationManager.AppSettings[USE_REFLX_LOAD]);
+                ResolveBool(NoFuture.Util.NfPath.GetAppCfgSetting(USE_REFLX_LOAD));
             NfConfig.UseReflectionOnlyLoad = useReflectionOnly != null && useReflectionOnly.Value;
         }
 

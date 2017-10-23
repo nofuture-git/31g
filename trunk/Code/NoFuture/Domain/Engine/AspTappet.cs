@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-using System.Configuration;
 using System.Collections.Generic;
 
 namespace NoFuture.Domain
@@ -69,19 +68,7 @@ namespace NoFuture.Domain
         public static List<string>  GetGlobalWebConfigAspExtensions()
         {
             var extensions = new List<string>();
-            var machineConfigFile = ConfigurationManager.OpenMachineConfiguration();
-            if (machineConfigFile.HasFile == false)
-                return null;
-
-            var machineConfigPath = Path.GetDirectoryName(machineConfigFile.FilePath);
-            if (string.IsNullOrWhiteSpace(machineConfigPath))
-                return null;
-
-            var globalWebConfigPath = Path.Combine(machineConfigPath, "web.config");
-
-            var configFile = new System.Xml.XmlDocument();
-            var buffer = File.ReadAllText(globalWebConfigPath);
-            configFile.LoadXml(buffer);
+            var configFile = NoFuture.Util.NfPath.GetAspNetWebCfg();
 
             var httpHandlersNodes = configFile.SelectNodes("//httpHandlers/add");
             if(httpHandlersNodes == null || httpHandlersNodes.Count == 0)

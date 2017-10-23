@@ -79,7 +79,7 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
         /// <returns></returns>
         internal int? ResolvePort(string appKey)
         {
-            var cval = ConfigurationManager.AppSettings[appKey];
+            var cval = NoFuture.Util.NfPath.GetAppCfgSetting(appKey);
             return ResolveInt(cval);
         }
 

@@ -27,7 +27,7 @@ namespace NoFuture.Util.NfConsole
         /// <returns></returns>
         protected internal int? ResolvePort(string appKey)
         {
-            var cval = ConfigurationManager.AppSettings[appKey];
+            var cval = NoFuture.Util.NfPath.GetAppCfgSetting(appKey);
             return ResolveInt(cval);
         }
 

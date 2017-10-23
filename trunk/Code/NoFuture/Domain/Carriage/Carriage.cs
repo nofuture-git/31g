@@ -21,10 +21,10 @@ namespace NoFuture.Domain
 
         #region properties
         public string ConfigFileAppDomain
-            => System.Configuration.ConfigurationManager.AppSettings[Engine.APP_DOMAIN_SWITCH];
+            => NoFuture.Util.NfPath.GetAppCfgSetting(Engine.APP_DOMAIN_SWITCH);
 
         public string ConfigFileAspHttp
-            => System.Configuration.ConfigurationManager.AppSettings[Engine.ASP_LISTENER_SWITCH];
+            => NoFuture.Util.NfPath.GetAppCfgSetting(Engine.ASP_LISTENER_SWITCH);
 
         public DomainParameters MyParameters { get; private set; }
 

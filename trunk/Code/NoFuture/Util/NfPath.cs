@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Configuration;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -632,6 +633,32 @@ namespace NoFuture.Util
                 output.Add(ln);
             }
             File.WriteAllLines(fileFullName, output);
+        }
+
+        public static string GetAppCfgSetting(string name, string file = null)
+        {
+            //TODO: .NET Core doesn't have Configuration Manager
+            return ConfigurationManager.AppSettings[name];
+        }
+
+        public static XmlDocument GetAspNetWebCfg()
+        {
+            //TODO: .NET Core doesn't have Configuration Manager
+            var machineConfigFile = ConfigurationManager.OpenMachineConfiguration();
+            if (machineConfigFile.HasFile == false)
+                return null;
+
+            var machineConfigPath = Path.GetDirectoryName(machineConfigFile.FilePath);
+            if (string.IsNullOrWhiteSpace(machineConfigPath))
+                return null;
+
+            var globalWebConfigPath = Path.Combine(machineConfigPath, "web.config");
+
+            var configFile = new System.Xml.XmlDocument();
+            var buffer = File.ReadAllText(globalWebConfigPath);
+            configFile.LoadXml(buffer);
+
+            return configFile;
         }
     }
 }

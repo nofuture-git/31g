@@ -76,7 +76,7 @@ namespace NoFuture.Util.Binary.InvokeDpx
         {
             var argHash = ConsoleCmd.ArgHash(_args);
 
-            NfConfig.CustomTools.InvokeNfTypeName = ConfigurationManager.AppSettings["NoFuture.ToolsCustomTools.InvokeNfTypeName"];
+            NfConfig.CustomTools.InvokeNfTypeName = NoFuture.Util.NfPath.GetAppCfgSetting("NoFuture.ToolsCustomTools.InvokeNfTypeName");
 
             if (!argHash.ContainsKey(Dpx.BIN_DIR) ||
                 argHash[Dpx.BIN_DIR] == null)
@@ -96,7 +96,7 @@ namespace NoFuture.Util.Binary.InvokeDpx
                 return;
             if (g.Graph == null)
                 return;
-            var keepTemp = ResolveBool(ConfigurationManager.AppSettings[APP_SET_KEY_KEEP_TEMP]) ?? false;
+            var keepTemp = ResolveBool(NoFuture.Util.NfPath.GetAppCfgSetting(APP_SET_KEY_KEEP_TEMP)) ?? false;
             Re.Efx.RTempDir = LogDirectory;
             var pageRank = Re.Efx.GetPageRank(g.Graph, keepTemp);
             if (pageRank == null || !pageRank.Any())

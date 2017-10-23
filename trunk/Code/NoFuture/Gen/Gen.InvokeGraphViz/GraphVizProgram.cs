@@ -110,7 +110,7 @@ namespace NoFuture.Gen.InvokeGraphViz
         protected static void ValidateBinDir()
         {
             NfConfig.BinDirectories.Root =
-                ConfigurationManager.AppSettings[ROOT_BIN_DIR];
+                NoFuture.Util.NfPath.GetAppCfgSetting(ROOT_BIN_DIR);
 
             if (string.IsNullOrWhiteSpace(NfConfig.BinDirectories.Root) || !Directory.Exists(NfConfig.BinDirectories.Root))
             {
@@ -119,7 +119,7 @@ namespace NoFuture.Gen.InvokeGraphViz
                     "- change the config file settings");
             }
 
-            var f = ConfigurationManager.AppSettings[AppSettingKeys.DotExe];
+            var f = NoFuture.Util.NfPath.GetAppCfgSetting(AppSettingKeys.DotExe);
             if (string.IsNullOrWhiteSpace(f))
             {
                 throw new ItsDeadJim(
@@ -136,7 +136,7 @@ namespace NoFuture.Gen.InvokeGraphViz
                     $"- change the config file settings");
             }
 
-            NfConfig.TempDirectories.Graph = ConfigurationManager.AppSettings[AppSettingKeys.GraphTempDir];
+            NfConfig.TempDirectories.Graph = NoFuture.Util.NfPath.GetAppCfgSetting(AppSettingKeys.GraphTempDir);
 
             if (string.IsNullOrWhiteSpace(NfConfig.TempDirectories.Graph))
             {
@@ -144,7 +144,7 @@ namespace NoFuture.Gen.InvokeGraphViz
                     "assign a config file's appSettings for " +
                     "'NoFuture.TempDirectories.Graph' to a valid directory");
             }
-            NfConfig.CustomTools.InvokeNfTypeName = ConfigurationManager.AppSettings[AppSettingKeys.NfTypeName];
+            NfConfig.CustomTools.InvokeNfTypeName = NoFuture.Util.NfPath.GetAppCfgSetting(AppSettingKeys.NfTypeName);
         }
 
         protected override string GetHelpText()
