@@ -1128,7 +1128,7 @@ function Import-HbmSessionFactory
         }#end tableNames
 
         try{
-            #[NoFuture.Hbm.Globals]::HbmSessionFactory = [NoFuture.Hbm.Globals]::HbmCfg.BuildSessionFactory();
+            [NoFuture.Hbm.Globals]::HbmSessionFactory = [NoFuture.Hbm.Globals]::HbmCfg.BuildSessionFactory();
             $noop = $true
         }
         catch [System.Exception]

@@ -17,7 +17,10 @@ $dotNet2ReleaseNum = @{
 460798 = ".NET Framework 4.7";
 461308 = ".NET Framework 4.7.1";
 }
-Get-ChildItem "hklm:SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full\" | Get-ItemPropertyValue -Name Release | % {$installedDotNetFrameworks += $dotNet2ReleaseNum[$_]}
+Get-ChildItem "hklm:SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full\" | Get-ItemPropertyValue -Name Release | % {
+ $installedDotNetFrameworks += $dotNet2ReleaseNum[$_]
+}
+
 
 Write-Host "The following .NET framework version (4.5 and up) where found." -ForegroundColor Yellow
 $installedDotNetFrameworks | % {
@@ -42,6 +45,15 @@ if(-not $isMsBuildInstalled){
     $errors += "MSBuild ver. $currentMsBuildVer.0 was not found."
 }
 
+#test for .NET core install
+Write-Host "Testing for .NET Core install" -ForegroundColor Yellow
+$isDotNetCoreInstalled = ($installedPrograms | ? {$_.Name -like "Microsoft .NET Core SDK*"}).Length -gt 0 `
+                         -or  ($env:Path.Split(";") | ? {$_ -eq "C:\Program Files\dotnet\"}).Length -gt 0
+
+if(-not $isDotNetCoreInstalled){
+    $errors += "The Microsoft .NET Core SDK was not found"
+}
+
 #test for Java and JAVA_HOME -required for NoFuture.Antlr
 Write-Host "Testing for Java install (version 7 or higher)." -ForegroundColor Yellow
 $isJavaInstalled = $installedPrograms | ? {$_.Name -match "Java\(TM\) SE Development Kit [7-9]" -or `
@@ -50,10 +62,6 @@ $isJavaInstalled = $installedPrograms | ? {$_.Name -match "Java\(TM\) SE Develop
 Write-Host "Testing if the JAVA_HOME environment variable is set to a valid location." -ForegroundColor Yellow
 $javaHomeAssigned = [System.Environment]::GetEnvironmentVariable("JAVA_HOME","Machine")
 $isJavahomeAssigned = $javaHomeAssigned -ne $null -and (Test-Path $javaHomeAssigned)
-
-Write-Host "Testing if the CLASSPATH environment variable is set to a valid location." -ForegroundColor Yellow
-$javaCp = [System.Environment]::GetEnvironmentVariable("CLASSPATH","Machine")
-$isJavaCpAssigned = $javaCp -ne $null -and (Test-Path $javaCp)
 
 Write-Host "Testing if Java's \bin folder is present in the PATH environment variable." -ForegroundColor Yellow
 $isJavaInPath = ($env:Path.Split(";") | ? {$_ -like "*\java\bin*"}).Length -gt 0
@@ -64,14 +72,11 @@ if(-not $isJavaInstalled){
 if(-not $isJavahomeAssigned){
     $errors += "JAVA_HOME environment variable is not set."
 }
-if(-not $isJavaCpAssigned){
-    $errors += "Java's CLASSPATH environment variable is not set."
-}
 if(-not $isJavaInPath){
     $errors += "Java's \bin folder is not added to the global PATH environment variable."
 }
 
-if(-not $isJavaInstalled -or -not $isJavahomeAssigned-or -not $isJavaCpAssigned -or -not $isJavaInPath){
+if(-not $isJavaInstalled -or -not $isJavahomeAssigned-or -not $isJavaInPath){
     $errors += "`t`tThis is required to build NoFuture.Antlr (used to parse files and IL tokens)."
     $errors += "`t`tThe rest of the NoFuture projects will work without this, but runtime errors are possible."
 }
