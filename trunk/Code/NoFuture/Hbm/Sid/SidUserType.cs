@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Data;
+using System.Data.Common;
 using NHibernate;
+using NHibernate.Engine;
 using NHibernate.SqlTypes;
 using NHibernate.UserTypes;
 
@@ -28,9 +30,9 @@ namespace NoFuture.Hbm.Sid
             return x.GetHashCode();
         }
 
-        public object NullSafeGet(IDataReader rs, string[] names, object owner)
+        public object NullSafeGet(DbDataReader rs, string[] names, ISessionImplementor session, object owner)
         {
-            var obj = NHibernateUtil.Binary.NullSafeGet(rs, names[0]);
+            var obj = NHibernateUtil.Binary.NullSafeGet(rs, names[0], session);
             if (obj == null)
             {
                 return null;
@@ -39,17 +41,17 @@ namespace NoFuture.Hbm.Sid
             return new BinaryId(sidData);
         }
 
-        public void NullSafeSet(IDbCommand cmd, object value, int index)
+        public void NullSafeSet(DbCommand cmd, object value, int index, ISessionImplementor session)
         {
             if (value == null)
             {
-                ((IDbDataParameter)cmd.Parameters[index]).Value = DBNull.Value;
+                (cmd.Parameters[index] as IDbDataParameter).Value = DBNull.Value;
             }
             else
             {
                 var sid = (BinaryId)value;
-                ((IDbDataParameter)cmd.Parameters[index]).DbType = DbType.Binary;
-                ((IDbDataParameter)cmd.Parameters[index]).Value = (byte[])sid.Data;
+                (cmd.Parameters[index] as IDbDataParameter).DbType = DbType.Binary;
+                (cmd.Parameters[index] as IDbDataParameter).Value = (byte[])sid.Data;
             }
         }
 
@@ -73,8 +75,8 @@ namespace NoFuture.Hbm.Sid
             return value;
         }
 
-        public SqlType[] SqlTypes { get { return SQL_TYPES; } }
-        public Type ReturnedType { get { return typeof(BinaryId); } }
-        public bool IsMutable { get { return false; } }
+        public SqlType[] SqlTypes => SQL_TYPES;
+        public Type ReturnedType => typeof(BinaryId);
+        public bool IsMutable => false;
     }
 }
