@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using ikvm.extensions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NoFuture.Gen;
 using NoFuture.Shared;
 using Dbg = System.Diagnostics.Debug;
 
@@ -77,7 +75,7 @@ namespace NoFuture.Tests.Util
             var testResult = NoFuture.Util.Binary.ByteArray.ToDWord((byte)0xF5, (byte)0xFF, (byte)0xFF, (byte)0xEB);
             Assert.AreEqual(-167772181, testResult);
             System.Diagnostics.Debug.WriteLine(testResult.ToString("X4"));
-            System.Diagnostics.Debug.WriteLine(testResult.toString());
+            System.Diagnostics.Debug.WriteLine(testResult.ToString());
 
             testResult = NoFuture.Util.Binary.ByteArray.ToDWord(0xA, 0, 0, 0x15);
             Assert.AreEqual(167772181, testResult);
