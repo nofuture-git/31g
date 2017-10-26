@@ -56,7 +56,6 @@
     <Compile Include="AspNetParseTree.cs" />
     <Compile Include="ParseResults\CsharpParseResults.cs" />
     <Compile Include="CsharpParseTree.cs" />
-    <Compile Include="Ctor.cs" />
     <Compile Include="ErlangConfigParseTree.cs" />
     <Compile Include="Etx.cs" />
     <Compile Include="ParseResults\Erlang.cs" />

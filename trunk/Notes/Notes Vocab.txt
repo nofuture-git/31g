@@ -594,3 +594,23 @@ duck typing -vs- normal typing:
  to a f(x).  duck-typing suitability is determined by presence
  of expected methods and properties. normal-typing suitability 
  is determined by the objects type.
+stare decisis: doctrine of precedent is abbrev. for full latin
+  "stare decisis et non quieta mvere" to stand by decided matters
+  and not to distrub settled matters.  Is only concerned with
+  the what was decided not why
+stare dictis: to stand by or keep to what was said
+stare rationibus decidendi: to stand by the rational decisions 
+  of past cases
+sua sponte: of his, her, its or their own accord
+Ratio decidendi: the rationale for the decision
+common law (aka case law): is practice of each case forming an 
+  interpretation of a statutes meaning and said meaning being a 
+  kind of fuller explaination of a statute
+civil law: is strict interpretation of statute where its meaning
+  is considered obvious, exposition of law is done by professors
+  and said exposition is called doctrine
+obiter dicta: by the way
+statutory law: case law applied to legislative statutes
+regulatory law: case law applied to executive regulations under 
+  the delegation of a legislature
+primae impressionis: in case law, the first precedent

@@ -1,7 +1,11 @@
-﻿The Visual Studio ANTLR Language Support is a required extension.
-Any grammer (.g4) files included in the Grammers folder will
-have thier .cs files generated at build time and placed into the
-\obj folder.  The build will then include these and the resulting
-binary will have all the ANTLR generated types present.
-In other words, the ANTLR Language Support extension makes it so 
-that the only source code files are the grammer files themselves.
+﻿You can re-generate any of the .cs files by invoking the included 
+GenAntlrV4CSharpCodeFile from within Powershell and pass in just the 
+name of one of the .g4 files included in the .\Grammers folder of this
+project.
+
+EXAMPLE single .g4 file
+.\GenAntlrV4CSharpCodeFile.ps1 -GrammerFileName DotNetIlTypeName.g4
+
+EXAMPLE lexer, parser split
+.\GenAntlrV4CSharpCodeFile.ps1 -GrammerFileName HTMLLexer.g4
+.\GenAntlrV4CSharpCodeFile.ps1 -GrammerFileName HTMLParser.g4

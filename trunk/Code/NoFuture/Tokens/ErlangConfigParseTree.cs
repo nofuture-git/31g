@@ -71,14 +71,14 @@ namespace NoFuture.Tokens
         {
             if (context.IsEmpty)
                 return;
-            if (context.erlAtomValue() != null && context.erlAtomValue().Count > 0)
+            if (context.erlAtomValue() != null && context.erlAtomValue().Any())
             {
                 var k = context.erlAtomValue().Select(f => f.GetText()).ToList();
 
                 _arrayOfAtomValue.Put(context, k.ToArray());
 
             }
-            if (context.erlNameValuePair() != null && context.erlNameValuePair().Count > 0)
+            if (context.erlNameValuePair() != null && context.erlNameValuePair().Any())
             {
                 var nvs = context.erlNameValuePair().Select(fc => _erlNvAtomValue.Get(fc)).Where(ff => ff != null).ToList();
                 _arrayOfNameValues.Put(context, nvs);
