@@ -1,21 +1,13 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.27004.2005
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Read", "NoFuture\Read\Ini\Read.csproj", "{335212C4-7F96-4647-8D9B-F1A4E61B735B}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoFuture.Tests", "NoFuture.Tests\NoFuture.Tests.csproj", "{798FE4C9-8323-4370-BE74-68681C4A2041}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_Tests", "_Tests", "{DCD744E4-D218-4B3C-A1E1-4D7C33401CE8}"
 	ProjectSection(SolutionItems) = preProject
 		Local.testsettings = Local.testsettings
 		NoFuture.vsmdi = NoFuture.vsmdi
 		TraceAndTestImpact.testsettings = TraceAndTestImpact.testsettings
 	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Encryption", "NoFuture\Encryption\Encryption.csproj", "{E7AD99CE-F93A-4844-92D1-1D544D83364F}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Dia2Dump", "DIA SDK\Samples\DIA2Dump\Dia2Dump.vcxproj", "{5950D092-E050-43E2-8FA0-F293DE81C5A8}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{A18BF978-7283-4166-84C6-83D489F04169}"
 	ProjectSection(SolutionItems) = preProject
@@ -26,6 +18,32 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{A18BF9
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Hbm", "Hbm", "{18149E32-A530-466F-A449-2FE04711A93F}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Domain", "Domain", "{EE5EFDA9-4EEC-4C9C-B2A5-CC70DE8E7A8E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Gen", "Gen", "{87A23DE3-3506-484E-BE30-8BCE86D958FB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Host", "Host", "{CC7DB63D-A675-4ACD-BDD2-6D184225EA33}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Rand", "Rand", "{D913E613-6FAB-4D9D-8206-7B58C0641295}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Util", "Util", "{77044E09-744B-454C-9C02-E7058ECB2851}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{BAF95A25-5D6A-47DF-9B74-0A30D33C073C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Timeline", "Timeline", "{7171A716-AA76-4336-981C-C6D2F6CF52F7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tokens", "Tokens", "{DBFE0A62-EC23-4E10-9A6A-9CD524EEAC75}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sql", "Sql", "{2282CC71-824F-461C-95E4-D8FFCFAC34E1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Read", "NoFuture\Read\Ini\Read.csproj", "{335212C4-7F96-4647-8D9B-F1A4E61B735B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoFuture.Tests", "NoFuture.Tests\NoFuture.Tests.csproj", "{798FE4C9-8323-4370-BE74-68681C4A2041}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Encryption", "NoFuture\Encryption\Encryption.csproj", "{E7AD99CE-F93A-4844-92D1-1D544D83364F}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Dia2Dump", "DIA SDK\Samples\DIA2Dump\Dia2Dump.vcxproj", "{5950D092-E050-43E2-8FA0-F293DE81C5A8}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hbm", "NoFuture\Hbm\Hbm.csproj", "{B48811E5-CCB2-4AAE-B4E8-A711FA018460}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hbm.Command", "NoFuture\Hbm\Hbm.Command\Hbm.Command.csproj", "{DEF64325-02A2-4208-B250-9446E8BF73AC}"
@@ -34,13 +52,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hbm.InvokeStoredProc", "NoF
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hbm.Sid", "NoFuture\Hbm\Sid\Hbm.Sid.csproj", "{B543F5F2-CF3C-411E-96E6-486D9C790355}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Domain", "Domain", "{EE5EFDA9-4EEC-4C9C-B2A5-CC70DE8E7A8E}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain.Carriage", "NoFuture\Domain\Carriage\Domain.Carriage.csproj", "{E48B5E3D-7E4E-4F3F-81ED-A36E9CA90C20}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain.Engine", "NoFuture\Domain\Engine\Domain.Engine.csproj", "{9DAC506B-CC22-43D2-9E72-A463E0015A03}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Gen", "Gen", "{87A23DE3-3506-484E-BE30-8BCE86D958FB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gen", "NoFuture\Gen\Gen.csproj", "{96EB903D-A8B1-4A4A-8E68-1E64CD8467EC}"
 EndProject
@@ -50,17 +64,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gen.InvokeGetCgOfType", "No
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gen.InvokeDia2Dump", "NoFuture\Gen\Gen.InvokeDia2Dump\Gen.InvokeDia2Dump.csproj", "{B10C4D03-5F40-4362-B43A-ADA8E1F690D5}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Host", "Host", "{CC7DB63D-A675-4ACD-BDD2-6D184225EA33}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Host.Encryption", "NoFuture\Host\Encryption\Host.Encryption.csproj", "{CA799F4D-800A-48B9-92A4-69C728135EB5}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Rand", "Rand", "{D913E613-6FAB-4D9D-8206-7B58C0641295}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rand", "NoFuture\Rand\Rand.csproj", "{71628E18-D27B-4F4E-B034-4B2AD4479E13}"
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Rand.Src", "NoFuture\Rand\Src\Rand.Src.fsproj", "{E98E53E8-DB34-4BC7-841D-24E79AE073A9}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Util", "Util", "{77044E09-744B-454C-9C02-E7058ECB2851}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Util", "NoFuture\Util\Util.csproj", "{D7F28538-BA6A-46B4-A080-65124E899317}"
 EndProject
@@ -74,19 +82,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Util.Pos", "NoFuture\Util\U
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Util.Re", "NoFuture\Util\Util.Re\Util.Re.csproj", "{D572D6A3-0B77-451F-A1FE-EFEE1767BF9C}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{BAF95A25-5D6A-47DF-9B74-0A30D33C073C}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared", "NoFuture\Shared\Shared.csproj", "{4B77029A-6F3E-48AE-B8E2-C4DD06DCE627}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared.WcfClient", "NoFuture\Shared\Shared.WcfClient\Shared.WcfClient.csproj", "{60950656-8311-44EA-A075-4DD70D3D00FF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rand.Data.Source", "NoFuture\Rand\Data\Source\Rand.Data.Source.csproj", "{4E011849-D274-4F79-96AF-549F67C46D80}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Timeline", "Timeline", "{7171A716-AA76-4336-981C-C6D2F6CF52F7}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Timeline", "NoFuture\Timeline\Timeline.csproj", "{FBA7203D-CD5C-4C26-BBE8-C09AB4DB9467}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tokens", "Tokens", "{DBFE0A62-EC23-4E10-9A6A-9CD524EEAC75}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tokens", "NoFuture\Tokens\Tokens.csproj", "{4E81340F-409B-4ADA-B038-BF3F76FFA81E}"
 EndProject
@@ -97,8 +99,6 @@ EndProject
 Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "util_py", "NoFuture\Util\util_py.pyproj", "{A6248D90-AED9-42A1-AC13-499693446336}"
 EndProject
 Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "shared_py", "NoFuture\Shared\shared_py.pyproj", "{2F0F4E03-FD54-4D37-9AE3-18A79BF2F13B}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sql", "Sql", "{2282CC71-824F-461C-95E4-D8FFCFAC34E1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sql", "NoFuture\Sql\Sql.csproj", "{4BF4D796-D9B0-4BFC-9EBA-5369F45BC498}"
 EndProject
@@ -780,6 +780,9 @@ Global
 		{2F0F4E03-FD54-4D37-9AE3-18A79BF2F13B} = {BAF95A25-5D6A-47DF-9B74-0A30D33C073C}
 		{4BF4D796-D9B0-4BFC-9EBA-5369F45BC498} = {2282CC71-824F-461C-95E4-D8FFCFAC34E1}
 		{ECC8C5B3-A36F-40D5-9DDF-7A286B92C998} = {DBFE0A62-EC23-4E10-9A6A-9CD524EEAC75}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F5CFF5DF-D475-4389-8A55-500295E3A426}
 	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = NoFuture.vsmdi
