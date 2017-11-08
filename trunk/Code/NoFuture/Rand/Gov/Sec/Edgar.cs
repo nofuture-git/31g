@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Web;
 using NoFuture.Rand.Com;
+using NoFuture.Rand.Core;
+using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Data;
 using NoFuture.Rand.Data.Sp;
 using NoFuture.Rand.Data.Types;

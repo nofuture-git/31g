@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Text;
+using NoFuture.Rand.Core;
 
 namespace NoFuture.Rand.Gov.Fed
 {

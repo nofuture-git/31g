@@ -1,4 +1,5 @@
 ﻿using System;
+using NoFuture.Rand.Core;
 using NoFuture.Rand.Domus;
 
 namespace NoFuture.Rand.Data.Sp

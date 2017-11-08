@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NoFuture.Rand;
+using NoFuture.Rand.Core;
 using NoFuture.Rand.Data;
 using NoFuture.Rand.Domus;
 
@@ -73,7 +74,7 @@ namespace NoFuture.Tests.Rand
 
             for (var i = 0; i < 256; i++)
             {
-                var testResult = NoFuture.Rand.Etx.RandomValueInNormalDist(mean, stdDev);
+                var testResult = Etx.RandomValueInNormalDist(mean, stdDev);
 
                 var trCat = trCounts.Keys.FirstOrDefault(x => x.Item1 <= testResult && testResult < x.Item2);
 
@@ -93,7 +94,7 @@ namespace NoFuture.Tests.Rand
         [TestMethod]
         public void TestGetRandomRChars()
         {
-            var testResult = NoFuture.Rand.Etx.GetRandomRChars();
+            var testResult = Etx.GetRandomRChars();
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0, testResult.Length);
             Assert.IsTrue(testResult.Length >= 5);
@@ -105,7 +106,7 @@ namespace NoFuture.Tests.Rand
 
             System.Diagnostics.Debug.WriteLine(example);
 
-            testResult = NoFuture.Rand.Etx.GetRandomRChars(true);
+            testResult = Etx.GetRandomRChars(true);
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0, testResult.Length);
             Assert.IsTrue(testResult.Length >= 5);
@@ -124,7 +125,7 @@ namespace NoFuture.Tests.Rand
         [TestMethod]
         public void TestRandomDouble()
         {
-            var testResult = NoFuture.Rand.Etx.RationalNumber(0, 3);
+            var testResult = Etx.RationalNumber(0, 3);
             Assert.IsTrue(testResult >= 0);
             Assert.IsTrue(testResult < 4);
             System.Diagnostics.Debug.WriteLine(testResult);
@@ -134,7 +135,7 @@ namespace NoFuture.Tests.Rand
         public void TestDiscreteRange()
         {
             //handles only one thing
-            var testResult = NoFuture.Rand.Etx.DiscreteRange(new Dictionary<string, double> {{"onlyOne", 12}});
+            var testResult = Etx.DiscreteRange(new Dictionary<string, double> {{"onlyOne", 12}});
             Assert.AreEqual("onlyOne", testResult);
 
             var testInput = new Dictionary<string, double>()
@@ -148,7 +149,7 @@ namespace NoFuture.Tests.Rand
             var testRsltCount = 0.0D;
             for (var i = 0; i < 100; i++)
             {
-                testResult = NoFuture.Rand.Etx.DiscreteRange(testInput);
+                testResult = Etx.DiscreteRange(testInput);
                 if (testResult == "expected")
                     testRsltCount += 1;
             }
@@ -164,7 +165,7 @@ namespace NoFuture.Tests.Rand
                 {".edu", 1.0},
                 {".org", 1.0}
             };
-            testResult = NoFuture.Rand.Etx.DiscreteRange(testInput);
+            testResult = Etx.DiscreteRange(testInput);
             Assert.IsTrue(new[] { ".com" , ".net", ".edu", ".org" }.Contains(testResult));
         }
 
@@ -174,7 +175,7 @@ namespace NoFuture.Tests.Rand
             var discreteRange = new[] {24, 18, 12, 6};
             for (var i = 0; i < 12; i++)
             {
-                var testResult = NoFuture.Rand.Etx.DiscreteRange(discreteRange);
+                var testResult = Etx.DiscreteRange(discreteRange);
                 Assert.IsTrue(discreteRange.Contains(testResult));
             }
         }
@@ -182,7 +183,7 @@ namespace NoFuture.Tests.Rand
         [TestMethod]
         public void TestRandomPortions()
         {
-            var testResults = NoFuture.Rand.Etx.RandomPortions(6);
+            var testResults = Etx.RandomPortions(6);
 
             Assert.IsNotNull(testResults);
             Assert.AreEqual(6, testResults.Length);
@@ -195,7 +196,7 @@ namespace NoFuture.Tests.Rand
         {
             var testInput = new[] {"", ".", "-", "_", "+", "=", "--", "__"};
 
-            var testResult = NoFuture.Rand.Etx.RandShuffle(testInput);
+            var testResult = Etx.RandShuffle(testInput);
             Assert.IsNotNull(testResult);
             Assert.AreEqual(testInput.Length, testResult.Length);
             for (var i = 0; i < testInput.Length - 1; i++)
@@ -224,7 +225,7 @@ namespace NoFuture.Tests.Rand
             var totalCount = 100;
             for (var i = 0; i < totalCount; i++)
             {
-                var testRslt = NoFuture.Rand.Etx.TryAboveOrAt(95, Etx.Dice.OneHundred) ? 1 : 0;
+                var testRslt = Etx.TryAboveOrAt(95, Etx.Dice.OneHundred) ? 1 : 0;
                 runningCount.Add(testRslt);
             }
 
@@ -240,7 +241,7 @@ namespace NoFuture.Tests.Rand
             var totalCount = 100;
             for (var i = 0; i < totalCount; i++)
             {
-                var testRslt = NoFuture.Rand.Etx.TryBelowOrAt(95, Etx.Dice.OneHundred) ? 1 : 0;
+                var testRslt = Etx.TryBelowOrAt(95, Etx.Dice.OneHundred) ? 1 : 0;
                 runningCount.Add(testRslt);
             }
 

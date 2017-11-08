@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Xml;
+using NoFuture.Rand.Core;
 
 namespace NoFuture.Rand.Data.Types
 {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NoFuture.Rand
+namespace NoFuture.Rand.Core
 {
     [Serializable]
     public class RLinearEquation : Util.Math.LinearEquation

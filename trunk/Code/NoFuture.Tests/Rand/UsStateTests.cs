@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NoFuture.Rand;
+using NoFuture.Rand.Core;
+using NoFuture.Rand.Core.Enums;
 
 namespace NoFuture.Tests.Rand
 {

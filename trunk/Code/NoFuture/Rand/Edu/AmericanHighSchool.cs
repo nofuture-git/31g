@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Xml;
+using NoFuture.Rand.Core;
+using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Data;
 using NoFuture.Rand.Gov;
 

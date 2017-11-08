@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using NoFuture.Rand.Core;
 using NoFuture.Shared;
 
 namespace NoFuture.Rand.Com

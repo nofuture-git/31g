@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using NoFuture.Exceptions;
+using NoFuture.Rand.Core;
 using NoFuture.Rand.Domus;
 
 namespace NoFuture.Rand.Gov

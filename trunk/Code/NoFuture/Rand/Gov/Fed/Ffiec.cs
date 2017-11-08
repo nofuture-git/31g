@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Linq;
 using NoFuture.Rand.Com;
+using NoFuture.Rand.Core;
+using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Data;
 
 namespace NoFuture.Rand.Gov.Fed

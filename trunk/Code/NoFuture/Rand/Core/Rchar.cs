@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace NoFuture.Rand
+namespace NoFuture.Rand.Core
 {
     /// <summary>
     /// A type for defining a character which is 

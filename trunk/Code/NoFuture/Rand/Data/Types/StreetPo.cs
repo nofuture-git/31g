@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.Text.RegularExpressions;
+using NoFuture.Rand.Core;
 
 namespace NoFuture.Rand.Data.Types
 {

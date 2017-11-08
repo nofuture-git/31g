@@ -4,6 +4,7 @@ using System.IO;
 using System.Reflection;
 using System.Xml;
 using NoFuture.Exceptions;
+using NoFuture.Rand.Core;
 using NoFuture.Util.NfType;
 
 namespace NoFuture.Rand.Data.Types

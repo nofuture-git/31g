@@ -5,7 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace NoFuture.Rand
+namespace NoFuture.Rand.Core
 {
     /// <summary>
     /// Represents basic 'etc' like functions for generating random data.

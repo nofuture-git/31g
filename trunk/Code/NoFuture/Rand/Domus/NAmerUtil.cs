@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using NoFuture.Util.Math;
 using System.Xml;
+using NoFuture.Rand.Core;
+using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Data;
 using NoFuture.Rand.Data.Source;
 using NoFuture.Rand.Data.Types;
@@ -584,7 +586,7 @@ namespace NoFuture.Rand.Domus
         /// </param>
         /// <param name="gender"></param>
         /// <param name="maxAgeDiff">Optional difference in age of spouse.</param>
-        /// <returns>return null for <see cref="Rand.Gender.Unknown"/></returns>
+        /// <returns>return null for <see cref="Gender.Unknown"/></returns>
         public static IPerson SolveForSpouse(DateTime? myDob, Gender gender, int maxAgeDiff = 4)
         {
             if (gender == Gender.Unknown)

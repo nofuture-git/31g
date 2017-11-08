@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Xml;
+using NoFuture.Rand.Core;
 using NoFuture.Rand.Data;
 using NoFuture.Rand.Data.Types;
 using NoFuture.Rand.Edu;

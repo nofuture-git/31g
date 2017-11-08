@@ -1,4 +1,6 @@
 ﻿using System;
+using NoFuture.Rand.Core;
+using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Data.Types;
 
 namespace NoFuture.Rand.Com

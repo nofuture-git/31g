@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using NoFuture.Rand.Com;
+using NoFuture.Rand.Core;
 using NoFuture.Rand.Data.Types;
 
 namespace NoFuture.Rand.Domus

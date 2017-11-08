@@ -2,6 +2,8 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using NoFuture.Rand;
+using NoFuture.Rand.Core;
+using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Data.Types;
 using NoFuture.Rand.Domus;
 using NoFuture.Rand.Edu;
@@ -123,7 +125,7 @@ namespace NoFuture.Tests.Rand
         public void TestAmericanFemaleFirstName()
         {
             var testDob = new DateTime(1980, 10, 1);
-            var testResult = NAmerUtil.GetAmericanFirstName(testDob, NoFuture.Rand.Gender.Female);
+            var testResult = NAmerUtil.GetAmericanFirstName(testDob, Gender.Female);
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0, testResult.Length);
             WriteLine(testResult);
@@ -133,7 +135,7 @@ namespace NoFuture.Tests.Rand
         public void TestAmericanMaleFirstName()
         {
             var testDob = new DateTime(1980, 10, 1);
-            var testResult = NAmerUtil.GetAmericanFirstName(testDob, NoFuture.Rand.Gender.Male);
+            var testResult = NAmerUtil.GetAmericanFirstName(testDob, Gender.Male);
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0, testResult.Length);
             WriteLine(testResult);

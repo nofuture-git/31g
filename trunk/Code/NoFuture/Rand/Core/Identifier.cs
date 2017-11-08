@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using NoFuture.Rand.Core.Enums;
 
-namespace NoFuture.Rand
+namespace NoFuture.Rand.Core
 {
     /// <summary>
     /// A preeminent identity type.
@@ -291,108 +292,6 @@ namespace NoFuture.Rand
             var calcChkDigit = CheckDigitFunc(lessChk);
             return chkDigit == calcChkDigit;
         }
-    }
-
-    [Serializable]
-    public enum MaritialStatus
-    {
-        Unknown,
-        Single,
-        Married,
-        Divorced,
-        Separated,
-        Remarried,
-        Widowed
-    }
-
-    [Serializable]
-    [Flags]
-    public enum KindsOfLabels :byte
-    {
-        None = 0,
-        Home = 1,
-        Work = 2,
-        Mobile = 4,
-    }
-
-    [Serializable]
-    public enum Gender
-    {
-        Unknown,
-        Male,
-        Female
-    }
-
-    [Serializable]
-    [Flags]
-    public enum KindsOfNames : short
-    {
-        None = 0,
-        Former = 1,
-        First = 2,
-        Surname = 4,
-        Abbrev = 8,
-        Maiden = 16,
-        Mother = 32,
-        Father = 64,
-        Adopted = 128,
-        Biological = 264,
-        Spouse = 512,
-        Middle = 1024,
-        Legal = 2048,
-        Step = 4098
-    }
-
-    [Serializable]
-    [Flags]
-    public enum OccidentalEdu : short
-    {
-        None = 0,
-        Some = 1,
-        Grad = 2,
-        HighSchool = 16,
-        Assoc = 32,
-        Bachelor = 64,
-        Master = 128,
-        Doctorate = 256
-    }
-
-    [Flags]
-    [Serializable]
-    public enum NorthAmericanRace : byte
-    {
-        White = 1,
-        Hispanic = 2,
-        Black = 4,
-        Asian = 8,
-        AmericanIndian = 16,
-        Pacific = 32,
-        Mixed = 64
-    }
-
-    [Flags]
-    [Serializable]
-    public enum UrbanCentric : short
-    {
-        City = 0,
-        Suburb = 1,
-        Town = 2,
-        Rural = 4,
-        Large = 8,
-        Midsize = 16,
-        Small = 32,
-        Distant = 64,
-        Fringe = 128,
-        Remote = 256
-    }
-
-    [Serializable]
-    public enum AmericanRegion
-    {
-        Northeast,
-        South,
-        Midwest,
-        West
     }
 }
 

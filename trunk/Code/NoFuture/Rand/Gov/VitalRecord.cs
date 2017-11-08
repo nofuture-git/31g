@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using NoFuture.Rand.Core;
 using NoFuture.Rand.Data.Types;
 using NoFuture.Rand.Domus;
 

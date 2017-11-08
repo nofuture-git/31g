@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using NoFuture.Rand.Core;
 using NoFuture.Util;
 
 namespace NoFuture.Rand.Data.Sp

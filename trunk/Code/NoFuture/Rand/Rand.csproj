@@ -74,6 +74,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\Enums\AmericanRegion.cs" />
+    <Compile Include="Core\Enums\Gender.cs" />
+    <Compile Include="Core\Enums\KindsOfLabels.cs" />
+    <Compile Include="Core\Enums\KindsOfNames.cs" />
+    <Compile Include="Core\Enums\MaritialStatus.cs" />
+    <Compile Include="Core\Enums\NorthAmericanRace.cs" />
+    <Compile Include="Core\Enums\OccidentalEdu.cs" />
+    <Compile Include="Core\Enums\UrbanCentric.cs" />
     <Compile Include="Gov\AmericanRacePercents.cs" />
     <Compile Include="Com\Firm.cs" />
     <Compile Include="Com\FinancialFirm.cs" />
@@ -226,6 +234,7 @@
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using NoFuture.Rand.Core;
 using NoFuture.Rand.Data.Sp;
 using NoFuture.Util.Binary;
 

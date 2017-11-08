@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using NoFuture.Rand.Com;
+using NoFuture.Rand.Core;
 using NoFuture.Shared;
 using NoFuture.Util.Math;
 using NoFuture.Rand.Domus;

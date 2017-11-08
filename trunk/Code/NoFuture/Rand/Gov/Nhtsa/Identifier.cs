@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 using NoFuture.Exceptions;
+using NoFuture.Rand.Core;
 using NoFuture.Rand.Data;
 
 namespace NoFuture.Rand.Gov.Nhtsa
