@@ -74,14 +74,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Core\Enums\AmericanRegion.cs" />
-    <Compile Include="Core\Enums\Gender.cs" />
-    <Compile Include="Core\Enums\KindsOfLabels.cs" />
-    <Compile Include="Core\Enums\KindsOfNames.cs" />
-    <Compile Include="Core\Enums\MaritialStatus.cs" />
-    <Compile Include="Core\Enums\NorthAmericanRace.cs" />
-    <Compile Include="Core\Enums\OccidentalEdu.cs" />
-    <Compile Include="Core\Enums\UrbanCentric.cs" />
     <Compile Include="Gov\AmericanRacePercents.cs" />
     <Compile Include="Com\Firm.cs" />
     <Compile Include="Com\FinancialFirm.cs" />
@@ -158,7 +150,6 @@
     <Compile Include="Data\Sp\Pecuniam.cs" />
     <Compile Include="Edu\AmericanHighSchool.cs" />
     <Compile Include="Edu\AmericanUniversity.cs" />
-    <Compile Include="Core\Etx.cs" />
     <Compile Include="Gov\Bea\BeaDataset.cs" />
     <Compile Include="Gov\Bea\IBeaData.cs" />
     <Compile Include="Gov\Bea\Globals.cs" />
@@ -200,12 +191,9 @@
     <Compile Include="Gov\SocialSecurityNumber.cs" />
     <Compile Include="Gov\Statute.cs" />
     <Compile Include="Gov\UsState.cs" />
-    <Compile Include="Core\Identifier.cs" />
     <Compile Include="Org\Naic.cs" />
     <Compile Include="Domus\Person.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Core\Rchar.cs" />
-    <Compile Include="Core\RLinearEquation.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Shared\Shared.csproj">
@@ -219,6 +207,10 @@
     <ProjectReference Include="..\Util\Util.csproj">
       <Project>{d7f28538-ba6a-46b4-a080-65124e899317}</Project>
       <Name>Util</Name>
+    </ProjectReference>
+    <ProjectReference Include="Core\Rand.Core.csproj">
+      <Project>{3c5df49d-ae94-431c-85a5-7f5b71ac777f}</Project>
+      <Name>Rand.Core</Name>
     </ProjectReference>
     <ProjectReference Include="Data\Source\Rand.Data.Source.csproj">
       <Project>{4e011849-d274-4f79-96af-549f67c46d80}</Project>

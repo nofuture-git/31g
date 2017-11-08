@@ -152,7 +152,7 @@ namespace NoFuture.Rand.Core
         public virtual DateTime? FromDate { get; set; }
         public virtual DateTime? ToDate { get; set; }
 
-        protected internal bool IsInRange(DateTime dt)
+        public bool IsInRange(DateTime dt)
         {
             var afterOrOnFromDt = FromDate == null || FromDate <= dt;
             var beforeOrOnToDt = ToDate == null || ToDate.Value >= dt;
