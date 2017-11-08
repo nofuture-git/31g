@@ -61,6 +61,20 @@ Query by Criteria
       //criteria expressions here
 */
 
+/*
+GOTCHA
+
+ - when ever NHibernate blows out with a:
+ "the length of the string value exceeds the length configured in the mapping/parameter."
+ and the mapping is to an AnsiString type its because its past the 8000 char limit of 
+ AnsiString.  You have to change the mapping to something like this:
+ 
+ <property name="DebugMessage" type="StringClob">
+   <column name="DebugMessage" sql-type="VARCHAR(max)" not-null="false" />
+ </property>
+
+*/
+
 //the 'entity' class does not implement any specific kind of NHibernate interface/class
 using NHibernate;
 using NHibernate.Cfg;

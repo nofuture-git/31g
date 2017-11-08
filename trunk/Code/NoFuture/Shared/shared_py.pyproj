@@ -25,6 +25,11 @@
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
   </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Pkg' ">
+    <DebugSymbols>true</DebugSymbols>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+    <OutputPath>bin\Pkg\</OutputPath>
+  </PropertyGroup>
   <ItemGroup>
     <Compile Include="constants.py">
       <SubType>Code</SubType>
