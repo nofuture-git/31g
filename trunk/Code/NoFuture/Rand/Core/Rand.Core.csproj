@@ -33,14 +33,10 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DiachronIdComparer.cs" />
+    <Compile Include="DiachronIdentifier.cs" />
     <Compile Include="Enums\AmericanRegion.cs" />
     <Compile Include="Enums\Gender.cs" />
     <Compile Include="Enums\KindsOfLabels.cs" />
@@ -50,16 +46,21 @@
     <Compile Include="Enums\OccidentalEdu.cs" />
     <Compile Include="Enums\UrbanCentric.cs" />
     <Compile Include="Etx.cs" />
+    <Compile Include="ICited.cs" />
     <Compile Include="Identifier.cs" />
+    <Compile Include="IIdentifier.cs" />
+    <Compile Include="INumera.cs" />
+    <Compile Include="IVoca.cs" />
+    <Compile Include="NamedIdentifier.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Rchar.cs" />
+    <Compile Include="RIdentifier.cs" />
+    <Compile Include="RIdentifierWithChkDigit.cs" />
     <Compile Include="RLinearEquation.cs" />
+    <Compile Include="VocaBase.cs" />
+    <Compile Include="XrefIdentifier.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Shared\Shared.csproj">
-      <Project>{4b77029a-6f3e-48ae-b8e2-c4dd06dce627}</Project>
-      <Name>Shared</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Util\Util.csproj">
       <Project>{d7f28538-ba6a-46b4-a080-65124e899317}</Project>
       <Name>Util</Name>
