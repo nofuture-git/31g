@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using NoFuture.Rand.Com;
+using NoFuture.Rand.Data;
 
 namespace NoFuture.Rand.Gov.Fed
 {
@@ -23,7 +24,7 @@ namespace NoFuture.Rand.Gov.Fed
             if (firmOut == null)
                 return false;
 
-            var myDynData = Etx.DynamicDataFactory(srcUri);
+            var myDynData = Facit.DynamicDataFactory(srcUri);
             var myDynDataRslt = myDynData.ParseContent(rawHtmlContent);
 
             if (myDynDataRslt == null || !myDynDataRslt.Any())

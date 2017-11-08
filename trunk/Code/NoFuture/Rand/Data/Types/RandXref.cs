@@ -356,7 +356,7 @@ namespace NoFuture.Rand.Data.Types
 
                         var dataFileXrefElem = dataFileXrefNode as XmlElement;
 
-                        var xmlDocId = new XmlDocXrefIdentifier {_localName = _nodeName};
+                        var xmlDocId = new XmlDocXrefIdentifier(_nodeName);
                         if (xmlDocId.TryThisParseXml(dataFileXrefElem))
                         {
                             tempIdList.Add(xmlDocId);

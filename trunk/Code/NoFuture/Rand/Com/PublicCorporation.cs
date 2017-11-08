@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
+using NoFuture.Rand.Data;
 using NoFuture.Rand.Data.Sp;
 using NoFuture.Rand.Data.Types;
 using NoFuture.Rand.Gov.Irs;
@@ -54,7 +55,7 @@ namespace NoFuture.Rand.Com
             var pcAnnualRpt = pc.SecReports?.FirstOrDefault(x => x.HtmlFormLink == srcUri);
             if (pcAnnualRpt == null)
                 return false;
-            var myDynData = Etx.DynamicDataFactory(srcUri);
+            var myDynData = Facit.DynamicDataFactory(srcUri);
             var myDynDataRslt = myDynData.ParseContent(webResponseBody);
             if (myDynDataRslt == null || !myDynDataRslt.Any())
                 return false;
@@ -83,7 +84,7 @@ namespace NoFuture.Rand.Com
             if (rptTenK == null)
                 return false;
 
-            var myDynData = Etx.DynamicDataFactory(srcUri);
+            var myDynData = Facit.DynamicDataFactory(srcUri);
             var myDynDataRslt = myDynData.ParseContent(webResponseBody);
             if (myDynDataRslt == null || !myDynDataRslt.Any())
                 return false;
@@ -186,7 +187,7 @@ namespace NoFuture.Rand.Com
         {
             try
             {
-                var myDynData = Etx.DynamicDataFactory(srcUri);
+                var myDynData = Facit.DynamicDataFactory(srcUri);
                 var myDynDataRslt = myDynData.ParseContent(webResponseBody);
                 if (myDynDataRslt == null)
                     return false;

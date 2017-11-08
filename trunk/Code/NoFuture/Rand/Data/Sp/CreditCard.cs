@@ -77,7 +77,7 @@ namespace NoFuture.Rand.Data.Sp
             var prefixRChars = new List<Rchar>();
             for (var i = 0; i < prefixValLen; i++)
             {
-                prefixRChars.Add(new LimitedRchar(i, prefixVal.ToString().ToCharArray()[i]));
+                prefixRChars.Add(new RcharLimited(i, prefixVal.ToString().ToCharArray()[i]));
             }
             prefixRChars.AddRange(Etx.GetRandomRChars(true, CardNumLen - 1 - prefixValLen, prefixValLen));
             return new CreditCardNumber(prefixRChars.ToArray());

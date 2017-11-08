@@ -4,15 +4,6 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
-using Newtonsoft.Json;
-using NoFuture.Rand.Data;
-using NoFuture.Rand.Data.NfHtml;
-using NoFuture.Rand.Data.NfText;
-using NoFuture.Rand.Data.NfXml;
-using NoFuture.Rand.Data.Types;
-using NoFuture.Rand.Gov.Fed;
-using NoFuture.Rand.Gov.Sec;
-using NoFuture.Shared;
 
 namespace NoFuture.Rand
 {
@@ -25,7 +16,7 @@ namespace NoFuture.Rand
         private static Random _myRand;
         #endregion
 
-        internal static Random MyRand
+        public static Random MyRand
             => _myRand ?? (_myRand = new Random(Convert.ToInt32(string.Format("{0:ffffff}", DateTime.Now))));
 
         #region API
@@ -182,97 +173,6 @@ namespace NoFuture.Rand
             return list[pick];
         }
 
-        /// <summary>
-        /// Gets a random Uri host.
-        /// </summary>
-        /// <returns></returns>
-        public static string RandomUriHost(bool withSubDomain = true, bool usCommonOnly = false)
-        {
-            var webDomains = usCommonOnly ? ListData.UsWebmailDomains : ListData.WebmailDomains;
-            var host = new StringBuilder();
-
-            if (withSubDomain)
-            {
-                var subdomain = DiscreteRange(ListData.Subdomains);
-                host.Append(subdomain + ".");
-            }
-
-            if (webDomains != null)
-            {
-                host.Append(webDomains[IntNumber(0, webDomains.Length - 1)]);
-            }
-            else
-            {
-                host.Append(Word());
-                host.Append(DiscreteRange(new[] { ".com", ".net", ".edu", ".org" }));
-            }
-            return host.ToString();
-        }
-
-        /// <summary>
-        /// Create a random http scheme uri with optional query string.
-        /// </summary>
-        /// <param name="useHttps"></param>
-        /// <param name="addQry"></param>
-        /// <returns></returns>
-        public static Uri RandomHttpUri(bool useHttps = false, bool addQry = false)
-        {
-            
-            var pathSeg = new List<string>();
-            var pathSegLen = IntNumber(0, 5);
-            for (var i = 0; i < pathSegLen; i++)
-            {
-                DiscreteRange(new Dictionary<string, double>()
-                {
-                    {Word(), 72},
-                    {Consonant(false).ToString(), 11},
-                    {IntNumber(1, 9999).ToString(), 17}
-                });
-                pathSeg.Add(Word());
-            }
-
-            if (CoinToss)
-            {
-                pathSeg.Add(Word() + DiscreteRange(new [] { ".php",".aspx",".html",".txt", ".asp"}));
-            }
-
-            var uri = new UriBuilder
-            {
-                Scheme = useHttps ? "https" : "http",
-                Host = RandomUriHost(),
-                Path =  string.Join("/", pathSeg.ToArray())
-            };
-
-            if (!addQry)
-                return uri.Uri;
-
-            var qry = new List<string>();
-            var qryParms = IntNumber(1, 5);
-            for (var i = 0; i < qryParms; i++)
-            {
-                var len = IntNumber(1, 4);
-                var qryParam = new List<string>();
-                for (var j = 0; j < len; j++)
-                {
-                    if (CoinToss)
-                    {
-                        qryParam.Add(Word());
-                        continue;
-                    }
-                    if (CoinToss)
-                    {
-                        qryParam.Add(IntNumber(0,99999).ToString());
-                        continue;
-                    }
-                    qryParam.Add(Consonant(CoinToss).ToString());
-
-                }
-                qry.Add(string.Join("_", qryParam) + "=" + SupriseMe());
-            }
-
-            uri.Query = string.Join("&", qry);
-            return uri.Uri;
-        }
 
         /// <summary>
         /// Returns some string taking various forms from the other
@@ -294,85 +194,10 @@ namespace NoFuture.Rand
                     return Word(IntNumber(5, 10));
                 case 4:
                     return Consonant(CoinToss).ToString();
-                case 5:
-                    return Vowel(CoinToss).ToString();
-                case 6:
-                    return JsonConvert.SerializeObject(Etx.Date(-1*IntNumber(0, 4), null));
                 default:
-                    return Word();
+                    return Vowel(CoinToss).ToString();
 
             }
-        }
-
-        /// <summary>
-        /// Creates a random email address 
-        /// </summary>
-        /// <returns></returns>
-        public static string RandomEmailUri(string username = "", bool usCommonOnly = false)
-        {
-            var host = RandomUriHost(false, usCommonOnly);
-            if (!string.IsNullOrWhiteSpace(username))
-                return string.Join("@", username, host);
-            var bunchOfWords = new List<string>();
-            for (var i = 0; i < 4; i++)
-            {
-                bunchOfWords.Add(Util.Etc.CapWords(Word(), ' '));
-                bunchOfWords.Add(Domus.NAmerUtil.GetAmericanFirstName(DateTime.Today, CoinToss ? Gender.Male : Gender.Female));
-            }
-            username = string.Join((CoinToss ? "." : "_"), DiscreteRange(bunchOfWords.ToArray()),
-                DiscreteRange(bunchOfWords.ToArray()));
-            return string.Join("@", username, host);
-        }
-
-        /// <summary>
-        /// Creates a random email address in a typical format
-        /// </summary>
-        /// <param name="names"></param>
-        /// <param name="isProfessional">
-        /// set this to true to have the username look unprofessional
-        /// </param>
-        /// <param name="usCommonOnly">
-        /// true uses <see cref="NoFuture.Rand.Data.ListData.UsWebmailDomains"/>
-        /// false uses <see cref="NoFuture.Rand.Data.ListData.WebmailDomains"/>
-        /// </param>
-        /// <returns></returns>
-        public static string RandomEmailUri(string[] names, bool isProfessional = true, bool usCommonOnly = true)
-        {
-            if(names == null || !names.Any())
-                return RandomEmailUri();
-
-            //get childish username
-            if (!isProfessional)
-            {
-                var shortWords = TreeData.EnglishWords.Where(x => x.Item1.Length <= 3).Select(x => x.Item1).ToArray();
-                var shortWordList = new List<string>();
-                for (var i = 0; i < 3; i++)
-                {
-                    var withUcase = Util.Etc.CapWords(DiscreteRange(shortWords), ' ');
-                    shortWordList.Add(withUcase);
-                }
-                shortWordList.Add((CoinToss ? "_" : "") + IntNumber(100, 9999));
-                return RandomEmailUri(string.Join("", shortWordList), usCommonOnly);
-            }
-
-            var fname = names.First().ToLower();
-            var lname = names.Last().ToLower();
-            string mi = null;
-            if (names.Length > 2)
-            {
-                mi = names[1].ToLower();
-                mi = CoinToss ? mi.First().ToString() : mi;
-            }
-
-            var unParts = new List<string> {CoinToss ? fname : fname.First().ToString(), mi, lname};
-            var totalLength = unParts.Sum(x => x.Length);
-            if (totalLength <= 7)
-                return RandomEmailUri(string.Join(CoinToss ? "" : "_", string.Join(CoinToss ? "." : "_", unParts),
-                    IntNumber(100, 9999)),usCommonOnly);
-            return
-                RandomEmailUri(totalLength > 20
-                    ? string.Join(CoinToss ? "." : "_", unParts.Take(2))
-                    : string.Join(CoinToss ? "." : "_", unParts), usCommonOnly);
         }
 
         /// <summary>
@@ -462,23 +287,6 @@ namespace NoFuture.Rand
             return word.ToString();
         }
 
-        /// <summary>
-        /// Attempts to return a valid english word using 
-        /// 'English_Words.xml' at <see cref="BinDirectories.DataRoot"/>,
-        /// failing that defaults back to its overload.
-        /// </summary>
-        /// <returns></returns>
-        public static string Word()
-        {
-            var enWords = TreeData.EnglishWords;
-            if (enWords == null || enWords.Count <= 0)
-                return Word(8);
-            var pick = IntNumber(0, enWords.Count - 1);
-            var enWord = enWords[pick]?.Item1;
-            return !string.IsNullOrWhiteSpace(enWord)
-                ? enWord
-                : Word(8);
-        }
 
         /// <summary>
         /// Returns at random one of the five english vowels characters.
@@ -594,17 +402,6 @@ namespace NoFuture.Rand
         }
 
         /// <summary>
-        /// Returns a date as a rational number (e.g. 2016.684476658052) 
-        /// where day of year is divided by <see cref="Constants.DBL_TROPICAL_YEAR"/>
-        /// </summary>
-        /// <param name="d"></param>
-        /// <returns></returns>
-        public static double ToDouble(this DateTime d)
-        {
-            return (d.Year + (d.DayOfYear/Constants.DBL_TROPICAL_YEAR));
-        }
-
-        /// <summary>
         /// Returns a random date near <see cref="plusOrMinusYears"/> years ago.
         /// </summary>
         /// <param name="plusOrMinusYears"></param>
@@ -692,7 +489,7 @@ namespace NoFuture.Rand
             {
                 if (numbersOnly)
                 {
-                    rcharsOut.Add(new NumericRchar(i));
+                    rcharsOut.Add(new RcharNumeric(i));
                     continue;
                 }
 
@@ -701,22 +498,22 @@ namespace NoFuture.Rand
                 {
                     case 0:
                     case 1:
-                        rcharsOut.Add(new AlphaNumericRchar(i));
+                        rcharsOut.Add(new RcharAlphaNumeric(i));
                         break;
                     case 2:
-                        rcharsOut.Add(new UAlphaRchar(i));
+                        rcharsOut.Add(new RcharUAlpha(i));
                         break;
                     case 3:
                         rcharsOut.Add(new LAlphaRchar(i));
                         break;
                     case 4:
-                        rcharsOut.Add(new NumericRchar(i));
+                        rcharsOut.Add(new RcharNumeric(i));
                         break;
                     case 5:
-                        rcharsOut.Add(new LimitedRchar(i, Consonant(true), Consonant(true), Consonant(true), Vowel(false)));
+                        rcharsOut.Add(new RcharLimited(i, Consonant(true), Consonant(true), Consonant(true), Vowel(false)));
                         break;
                     case 6:
-                        rcharsOut.Add(new LimitedRchar(i, '-', '.', ' '));
+                        rcharsOut.Add(new RcharLimited(i, '-', '.', ' '));
                         break;
                 }
             }
@@ -724,50 +521,6 @@ namespace NoFuture.Rand
             return rcharsOut.ToArray();
         }
 
-        /// <summary>
-        /// Factory method to get a concrete implementation of <see cref="INfDynData"/>
-        /// based on a Uri
-        /// </summary>
-        /// <param name="uri"></param>
-        /// <returns></returns>
-        public static INfDynData DynamicDataFactory(Uri uri)
-        {
-            if (uri == null)
-                throw new ArgumentNullException(nameof(uri));
-
-            if (uri.Host == "www.bloomberg.com")
-            {
-                return new BloombergSymbolSearch(uri);
-            }
-            if (uri.Host == Edgar.SEC_HOST)
-            {
-                if (uri.LocalPath == "/cgi-bin/srch-edgar")
-                {
-                    return new SecFullTxtSearch(uri);
-                }
-                if (uri.LocalPath == "/cgi-bin/browse-edgar" && uri.Query.StartsWith("?action=getcompany&CIK="))
-                {
-                    return new SecCikSearch(uri);
-                }
-                if (uri.LocalPath.StartsWith("/Archives/edgar/data"))
-                {
-                    if(uri.LocalPath.EndsWith("index.htm"))
-                        return new SecGetXbrlUri(uri);
-                    if(uri.LocalPath.EndsWith(".xml"))
-                        return new SecXbrlInstanceFile(uri);
-                }
-            }
-            if (uri.Host == new Uri(FedLrgBnk.RELEASE_URL).Host)
-            {
-                return new FedLrgBnk();
-            }
-            if (uri.Host == new Uri(Ffiec.SEARCH_URL_BASE).Host)
-            {
-                return new FfiecInstitProfile(uri);
-            }
-
-            throw new NotImplementedException();
-        }
         #endregion
 
         [EditorBrowsable(EditorBrowsableState.Never)]
@@ -797,6 +550,5 @@ namespace NoFuture.Rand
                     throw new ArgumentOutOfRangeException(nameof(die), die, @"No implementation for this dice");
             }
         }
-
     }
 }

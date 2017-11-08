@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Web;
 using NoFuture.Rand.Com;
+using NoFuture.Rand.Data;
 using NoFuture.Rand.Data.Sp;
 using NoFuture.Rand.Data.Types;
 using NoFuture.Shared;
@@ -87,7 +88,7 @@ namespace NoFuture.Rand.Gov.Sec
             if (string.IsNullOrWhiteSpace(rssContent))
                 return null;
 
-            var myDynData = Etx.DynamicDataFactory(srcUri);
+            var myDynData = Facit.DynamicDataFactory(srcUri);
             var myDynDataRslts = myDynData.ParseContent(rssContent);
 
             if (myDynDataRslts == null || !myDynDataRslts.Any())
@@ -154,7 +155,7 @@ namespace NoFuture.Rand.Gov.Sec
             if (string.IsNullOrWhiteSpace(xmlContent))
                 return false;
 
-            var myDynData = Etx.DynamicDataFactory(srcUri);
+            var myDynData = Facit.DynamicDataFactory(srcUri);
             var myDynDataRslt = myDynData.ParseContent(xmlContent);
 
             if (myDynDataRslt == null || !myDynDataRslt.Any())

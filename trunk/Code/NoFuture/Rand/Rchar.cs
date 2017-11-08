@@ -27,9 +27,9 @@ namespace NoFuture.Rand
     }
 
     [Serializable]
-    public class AlphaNumericRchar : Rchar
+    public class RcharAlphaNumeric : Rchar
     {
-        public AlphaNumericRchar(int indexValue) : base(indexValue) { }
+        public RcharAlphaNumeric(int indexValue) : base(indexValue) { }
 
         public override char Rand
         {
@@ -50,9 +50,9 @@ namespace NoFuture.Rand
     }
 
     [Serializable]
-    public class UAlphaRchar : Rchar
+    public class RcharUAlpha : Rchar
     {
-        public UAlphaRchar(int indexValue) : base(indexValue) { }
+        public RcharUAlpha(int indexValue) : base(indexValue) { }
 
         public override char Rand => (char) Etx.MyRand.Next(0x41, 0x5A);
 
@@ -76,11 +76,11 @@ namespace NoFuture.Rand
     }
 
     [Serializable]
-    public class LimitedRchar : Rchar
+    public class RcharLimited : Rchar
     {
         private readonly char[] _limitedTo;
 
-        public LimitedRchar(int indexValue, params char[] limitedTo) : base(indexValue)
+        public RcharLimited(int indexValue, params char[] limitedTo) : base(indexValue)
         {
             _limitedTo = limitedTo;
         }
@@ -108,9 +108,9 @@ namespace NoFuture.Rand
     }
 
     [Serializable]
-    public class NumericRchar : Rchar
+    public class RcharNumeric : Rchar
     {
-        public NumericRchar(int indexValue) : base(indexValue) { }
+        public RcharNumeric(int indexValue) : base(indexValue) { }
         public override char Rand => (char)Etx.MyRand.Next(0x30, 0x39);
 
         public override bool Valid(string dlValue)

@@ -5,8 +5,10 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Web;
 using System.Xml;
 using System.Xml.Linq;
+using Newtonsoft.Json;
 using NoFuture.Shared;
 using NoFuture.Util.NfType;
 using Formatting = Newtonsoft.Json.Formatting;
@@ -61,7 +63,7 @@ namespace NoFuture.Util
             var cNode = node.FirstChild;
             while (cNode != null)
             {
-                if (string.Equals(cNode.Name, localName, compareOptions))
+                if (String.Equals(cNode.Name, localName, compareOptions))
                     return cNode;
                 cNode = cNode.NextSibling;
 
@@ -89,6 +91,17 @@ namespace NoFuture.Util
                 default:
                     return v >= 1000 ? $"{v:n0}th" : $"{v}th";
             }
+        }
+
+        /// <summary>
+        /// Returns a date as a rational number (e.g. 2016.684476658052) 
+        /// where day of year is divided by <see cref="Constants.DBL_TROPICAL_YEAR"/>
+        /// </summary>
+        /// <param name="d"></param>
+        /// <returns></returns>
+        public static double ToDouble(this DateTime d)
+        {
+            return (d.Year + (d.DayOfYear / Constants.DBL_TROPICAL_YEAR));
         }
 
         private const string LOREM_IPSUM_RSC = "NoFuture.Util.LoremIpsum.EightParagraphs.txt";
@@ -119,7 +132,7 @@ namespace NoFuture.Util
         /// <returns></returns>
         public static string DistillString(this string value)
         {
-            if (string.IsNullOrWhiteSpace(value))
+            if (String.IsNullOrWhiteSpace(value))
                 return null;
             var sb = new StringBuilder();
             var prev = (char)0x0;
@@ -154,7 +167,7 @@ namespace NoFuture.Util
         /// </summary>
         public static string DistillTabs(string value)
         {
-            if (string.IsNullOrWhiteSpace(value))
+            if (String.IsNullOrWhiteSpace(value))
                 return null;
             while (true)
             {
@@ -197,7 +210,7 @@ namespace NoFuture.Util
 
             foreach (var ln in lines)
             {
-                linesOut.Append(string.IsNullOrWhiteSpace(ln)
+                linesOut.Append(String.IsNullOrWhiteSpace(ln)
                     ? Environment.NewLine
                     : $"{ln}{Environment.NewLine}");
             }
@@ -259,8 +272,8 @@ namespace NoFuture.Util
             var data = Encoding.GetEncoding("ISO-8859-1").GetBytes(value);
             var dataOut = new StringBuilder();
 
-            if (string.IsNullOrEmpty(value))
-                return string.Empty;
+            if (String.IsNullOrEmpty(value))
+                return String.Empty;
 
             switch (escapeType)
             {
@@ -325,7 +338,7 @@ namespace NoFuture.Util
                     }
                     break;
                 case EscapeStringType.URI:
-                    return System.Web.HttpUtility.UrlEncode(value);
+                    return HttpUtility.UrlEncode(value);
                 case EscapeStringType.BLANK:
                     return new string(' ', data.Length);
             }
@@ -501,8 +514,8 @@ namespace NoFuture.Util
         /// <returns></returns>
         public static string CapWords(string name, char? separator)
         {
-            if (string.IsNullOrWhiteSpace(name))
-                return string.Empty;
+            if (String.IsNullOrWhiteSpace(name))
+                return String.Empty;
 
             if (separator == null)
                 separator = NfConfig.DefaultTypeSeparator;
@@ -513,8 +526,8 @@ namespace NoFuture.Util
                     name.ToCharArray()
                         .Where(
                             c =>
-                                char.IsLetterOrDigit(c) || char.IsPunctuation(c) ||
-                                (char.IsWhiteSpace(c) && char.IsWhiteSpace(separator.Value)))
+                                Char.IsLetterOrDigit(c) || Char.IsPunctuation(c) ||
+                                (Char.IsWhiteSpace(c) && Char.IsWhiteSpace(separator.Value)))
                         .ToArray());
 
 
@@ -523,13 +536,13 @@ namespace NoFuture.Util
             for (var i = 0; i < nameArray.Length;i++ )
             {
                 var s = nameArray[i];
-                if (string.IsNullOrWhiteSpace(s) || s.Length <= 1)
+                if (String.IsNullOrWhiteSpace(s) || s.Length <= 1)
                     continue;
 
                 var firstLetter = s.Substring(0, 1).ToUpper();
                 var restOfString = s.Substring(1, s.Length-1);
                 //if the rest of the string is all caps the lower them otherwise leave'em as is
-                if (restOfString.ToCharArray().All(char.IsUpper))
+                if (restOfString.ToCharArray().All(Char.IsUpper))
                     restOfString = restOfString.ToLower();
                 nameFormatted.Append(firstLetter);
                 nameFormatted.Append(restOfString);
@@ -550,17 +563,17 @@ namespace NoFuture.Util
         public static string ToCamelCase(string name, bool perserveSep = false)
         {
             //is empty
-            if (string.IsNullOrWhiteSpace(name))
-                return string.Empty;
+            if (String.IsNullOrWhiteSpace(name))
+                return String.Empty;
 
             name = name.Trim();
 
             //has no letters at all
-            if (name.ToCharArray().All(x => !char.IsLetter(x)))
+            if (name.ToCharArray().All(x => !Char.IsLetter(x)))
                 return name;
 
             //is all caps
-            if (name.ToCharArray().Where(char.IsLetter).All(char.IsUpper))
+            if (name.ToCharArray().Where(Char.IsLetter).All(Char.IsUpper))
                 return name.ToLower();
 
             var nameFormatted = new StringBuilder();
@@ -581,7 +594,7 @@ namespace NoFuture.Util
                     }
                     if (i + 1 < nameChars.Length)
                     {
-                        nameChars[i + 1] = char.ToUpper(nameChars[i + 1]);
+                        nameChars[i + 1] = Char.ToUpper(nameChars[i + 1]);
                     }
                     continue;
                 }
@@ -593,7 +606,7 @@ namespace NoFuture.Util
                     continue;
                 }
 
-                if (i>0 &&  char.IsUpper(nameChars[i-1]))
+                if (i>0 &&  Char.IsUpper(nameChars[i-1]))
                 {
                     nameFormatted.Append(c.ToString().ToLower());
                     continue;
@@ -613,11 +626,11 @@ namespace NoFuture.Util
         /// <returns></returns>
         public static string ToPascelCase(string name, bool perserveSep = false)
         {
-            if (string.IsNullOrWhiteSpace(name))
-                return string.Empty;
+            if (String.IsNullOrWhiteSpace(name))
+                return String.Empty;
             var toCamelCase = new StringBuilder();
             var charArray = ToCamelCase(name, perserveSep).ToCharArray();
-            toCamelCase.Append(char.ToUpper(charArray[0]));
+            toCamelCase.Append(Char.ToUpper(charArray[0]));
             for (var i = 1; i < charArray.Length; i++)
             {
                 toCamelCase.Append(charArray[i]);
@@ -662,8 +675,8 @@ namespace NoFuture.Util
         /// <returns></returns>
         public static string TransformCaseToSeparator(string camelCaseString, char separator)
         {
-            if (string.IsNullOrWhiteSpace(camelCaseString))
-                return string.Empty;
+            if (String.IsNullOrWhiteSpace(camelCaseString))
+                return String.Empty;
             var separatorName = new StringBuilder();
             var charArray = camelCaseString.ToCharArray();
             for(var i = 0; i<charArray.Length;i++)
@@ -671,7 +684,7 @@ namespace NoFuture.Util
                 separatorName.Append(charArray[i]);
                 if (i + 1 >= charArray.Length)
                     continue;
-                if(char.IsLower(charArray[i]) && char.IsUpper(charArray[i+1]))
+                if(Char.IsLower(charArray[i]) && Char.IsUpper(charArray[i+1]))
                 {
                     separatorName.Append(separator);
                 }
@@ -694,7 +707,7 @@ namespace NoFuture.Util
             if (valueChars.Length <= 0)
                 return -1;
             valueChars = valueChars.Reverse().ToArray();
-            Debug.WriteLine($"Value passed into ChkDigit Fx in Reverse {string.Join("", valueChars)}");
+            Debug.WriteLine($"Value passed into ChkDigit Fx in Reverse {String.Join("", valueChars)}");
             for (var i = 0; i < valueChars.Length; i++)
             {
                 int valAti;
@@ -774,7 +787,7 @@ namespace NoFuture.Util
                 {
                     for (var i = 0; i < names2Count[k]; i++)
                     {
-                        newNames.Add(string.Format("{0}{1:00}", newName, i + 1));
+                        newNames.Add(String.Format("{0}{1:00}", newName, i + 1));
                     }
                 }
                 else
@@ -796,7 +809,7 @@ namespace NoFuture.Util
         /// <returns></returns>
         public static string FormatJson(string jsonString, bool replaceDblQuoteToSingle = false)
         {
-            if (string.IsNullOrWhiteSpace(jsonString))
+            if (String.IsNullOrWhiteSpace(jsonString))
                 return null;
 
             var hasOpenSqrBrace = jsonString.Contains("[");
@@ -809,9 +822,9 @@ namespace NoFuture.Util
             if (!isValid)
                 return null;
 
-            var asType = Newtonsoft.Json.JsonConvert.DeserializeObject<dynamic>(jsonString);
+            var asType = JsonConvert.DeserializeObject<dynamic>(jsonString);
 
-            jsonString = Newtonsoft.Json.JsonConvert.SerializeObject(asType, Formatting.Indented);
+            jsonString = JsonConvert.SerializeObject(asType, Formatting.Indented);
 
             if (!replaceDblQuoteToSingle)
                 return jsonString;
@@ -835,7 +848,7 @@ namespace NoFuture.Util
         /// <returns></returns>
         public static string FormatXml(string xmlString)
         {
-            if (string.IsNullOrWhiteSpace(xmlString))
+            if (String.IsNullOrWhiteSpace(xmlString))
                 return null;
 
             var xml = new XmlDocument();
@@ -967,8 +980,8 @@ namespace NoFuture.Util
         /// </remarks>
         public static double LevenshteinDistance(string s, string t, bool asRatioOfMax = false)
         {
-            s = s ?? string.Empty;
-            t = t ?? string.Empty;
+            s = s ?? String.Empty;
+            t = t ?? String.Empty;
 
             // degenerate cases
             if (s == t) return 0;

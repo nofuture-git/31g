@@ -894,7 +894,7 @@ namespace NoFuture.Rand.Domus
             if (GetAgeAt(null) > 10)
                 _netUris.Add(
                     new Uri("emailto:" +
-                            Etx.RandomEmailUri(new[]
+                            Facit.RandomEmailUri(new[]
                             {
                                 GetName(KindsOfNames.First), MiddleName,
                                 GetName(KindsOfNames.Surname)

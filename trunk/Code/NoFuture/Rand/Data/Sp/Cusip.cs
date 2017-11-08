@@ -33,11 +33,11 @@ namespace NoFuture.Rand.Data.Sp
             //the unique first chars from https://www.sec.gov/divisions/investment/13f/13flist2016q2.pdf
             var rchars = new List<Rchar>
             {
-                new LimitedRchar(0, '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+                new RcharLimited(0, '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
                     'B', 'C', 'D', 'E', 'F', 'G', 'H', 'L', 'M', 'N', 'P', 'Q', 'U', 'V', 'Y')
             };
             for(var i = 1; i < 8; i++)
-                rchars.Add( new AlphaNumericRchar(i));
+                rchars.Add( new RcharAlphaNumeric(i));
             format = rchars.ToArray();
         }
         #endregion

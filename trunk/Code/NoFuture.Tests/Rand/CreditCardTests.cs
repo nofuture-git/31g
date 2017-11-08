@@ -14,7 +14,7 @@ namespace NoFuture.Tests.Rand
         public void TestCreditCardNumber()
         {
             var testInput = new List<Rchar>();
-            testInput.Add(new LimitedRchar(0, 'U'));
+            testInput.Add(new RcharLimited(0, 'U'));
             testInput.AddRange(Etx.GetRandomRChars(true, 8, 1));
             var testSubject = new CreditCardNumber(testInput.ToArray())
             {

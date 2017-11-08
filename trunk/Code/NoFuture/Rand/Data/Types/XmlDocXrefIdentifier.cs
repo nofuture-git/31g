@@ -9,6 +9,9 @@ namespace NoFuture.Rand.Data.Types
     [Serializable]
     public class XmlDocXrefIdentifier : XrefIdentifier
     {
+        public XmlDocXrefIdentifier() { }
+        public XmlDocXrefIdentifier(string localName) : base(localName) { }
+
         #region constants
 
         protected const string X_REF_GROUP = "x-ref-group";

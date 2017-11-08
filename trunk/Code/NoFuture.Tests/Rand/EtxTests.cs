@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NoFuture.Rand;
+using NoFuture.Rand.Data;
 using NoFuture.Rand.Domus;
 
 namespace NoFuture.Tests.Rand
@@ -13,7 +14,7 @@ namespace NoFuture.Tests.Rand
         [TestMethod]
         public void TestExtWord()
         {
-            var testResult = NoFuture.Rand.Etx.Word();
+            var testResult = Facit.Word();
             Assert.AreNotEqual(string.Empty, testResult);
 
             System.Diagnostics.Debug.WriteLine(testResult);
@@ -24,7 +25,7 @@ namespace NoFuture.Tests.Rand
         {
             for (var i = 0; i < 10; i++)
             {
-                var testResult = NoFuture.Rand.Etx.RandomHttpUri();
+                var testResult = Facit.RandomHttpUri();
                 Assert.IsNotNull(testResult);
                 Assert.IsFalse(string.IsNullOrWhiteSpace(testResult.ToString()));
                 System.Diagnostics.Debug.WriteLine(testResult);
@@ -32,7 +33,7 @@ namespace NoFuture.Tests.Rand
 
             for (var i = 0; i < 10; i++)
             {
-                var testResult = NoFuture.Rand.Etx.RandomHttpUri(false, true);
+                var testResult = Facit.RandomHttpUri(false, true);
                 Assert.IsNotNull(testResult);
                 Assert.IsFalse(string.IsNullOrWhiteSpace(testResult.ToString()));
                 System.Diagnostics.Debug.WriteLine(testResult);
@@ -42,7 +43,7 @@ namespace NoFuture.Tests.Rand
         [TestMethod]
         public void TestRandomEmailUri()
         {
-            var testResult = NoFuture.Rand.Etx.RandomEmailUri();
+            var testResult = Facit.RandomEmailUri();
             Assert.IsNotNull(testResult);
             Assert.IsFalse(string.IsNullOrWhiteSpace(testResult));
             System.Diagnostics.Debug.WriteLine( new System.Uri("mailto:" + testResult));
@@ -206,12 +207,12 @@ namespace NoFuture.Tests.Rand
         [TestMethod]
         public void TestRandomEmailUriPersonal()
         {
-            var testResult = NoFuture.Rand.Etx.RandomEmailUri(new[] {"Robert", "Edward", "Lee"});
+            var testResult = Facit.RandomEmailUri(new[] {"Robert", "Edward", "Lee"});
             Assert.IsNotNull(testResult);
             Assert.IsTrue(testResult.Contains("lee"));
             System.Diagnostics.Debug.WriteLine(testResult);
 
-            testResult = NoFuture.Rand.Etx.RandomEmailUri(new[] { "Robert", "Edward", "Lee" }, false);
+            testResult = Facit.RandomEmailUri(new[] { "Robert", "Edward", "Lee" }, false);
             Assert.IsNotNull(testResult);
             System.Diagnostics.Debug.WriteLine(testResult);
         }

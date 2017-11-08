@@ -350,7 +350,7 @@ namespace NoFuture.Rand.Data
                 if(string.IsNullOrWhiteSpace(rawData))
                     return new Bank[0];//return empty list for missing data
 
-                var myDynData = Etx.DynamicDataFactory(new Uri(NfText.FedLrgBnk.RELEASE_URL));
+                var myDynData = Facit.DynamicDataFactory(new Uri(NfText.FedLrgBnk.RELEASE_URL));
                 var myDynDataRslt = myDynData.ParseContent(rawData);
 
 

@@ -226,12 +226,12 @@ namespace NoFuture.Rand.Gov
         /// <param name="startAt"></param>
         /// <returns></returns>
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
-        internal static NumericRchar[] Numerics(int lenth,int startAt = 0)
+        internal static RcharNumeric[] Numerics(int lenth,int startAt = 0)
         {
-            var someNumerics = new List<NumericRchar>();
+            var someNumerics = new List<RcharNumeric>();
             for (var i = startAt; i < lenth + startAt; i++)
             {
-                someNumerics.Add(new NumericRchar(i));
+                someNumerics.Add(new RcharNumeric(i));
             }
             return someNumerics.ToArray();
         }
@@ -316,7 +316,7 @@ namespace NoFuture.Rand.Gov
         public Arizona() : base("AZ")
         {
             var dl = new Rchar[9];
-            dl[0] = new LimitedRchar(0, 'A', 'B', 'D', 'Y');
+            dl[0] = new RcharLimited(0, 'A', 'B', 'D', 'Y');
             Array.Copy(Numerics(8,1), 0, dl, 1, 8);
 
             dlFormats = new[] { new DriversLicense(dl, this), new DriversLicense(Numerics(9), this) };
@@ -336,7 +336,7 @@ namespace NoFuture.Rand.Gov
         public California() : base("CA")
         {
             var dl = new Rchar[8];
-            dl[0] = new UAlphaRchar(0);
+            dl[0] = new RcharUAlpha(0);
             Array.Copy(Numerics(7,1), 0, dl, 1, 7);
             dlFormats = new[] { new DriversLicense(dl, this) };
         }
@@ -347,8 +347,8 @@ namespace NoFuture.Rand.Gov
         public Colorado() : base("CO")
         {
             var dl = new Rchar[8];
-            dl[0] = new UAlphaRchar(0);
-            dl[1] = new UAlphaRchar(1);
+            dl[0] = new RcharUAlpha(0);
+            dl[1] = new RcharUAlpha(1);
             Array.Copy(Numerics(6, 2), 0, dl, 2, 6);
 
             dlFormats = new[] { new DriversLicense(dl, this), new DriversLicense(Numerics(9), this) };
@@ -360,19 +360,19 @@ namespace NoFuture.Rand.Gov
         public Connecticut() : base("CT")
         {
             var dl = new Rchar[9];
-            dl[0] = new LimitedRchar(0,'0');
-            dl[1] = new LimitedRchar(1, '1', '2', '3', '4', '5', '6', '7', '8', '9');
+            dl[0] = new RcharLimited(0,'0');
+            dl[1] = new RcharLimited(1, '1', '2', '3', '4', '5', '6', '7', '8', '9');
             Array.Copy(Numerics(7, 2), 0, dl, 2, 7);
             var dlf00 = new DriversLicense(dl, this);
 
             dl = new Rchar[9];
-            dl[0] = new LimitedRchar(0, '1');
+            dl[0] = new RcharLimited(0, '1');
             Array.Copy(Numerics(8, 1), 0, dl, 1, 8);
             var dlf01 = new DriversLicense(dl, this);
 
             dl = new Rchar[9];
-            dl[0] = new LimitedRchar(0, '2');
-            dl[1] = new LimitedRchar(1, '0', '1', '2', '3', '4');
+            dl[0] = new RcharLimited(0, '2');
+            dl[1] = new RcharLimited(1, '0', '1', '2', '3', '4');
             Array.Copy(Numerics(7, 2), 0, dl, 2, 7);
             var dlf02 = new DriversLicense(dl, this);
 
@@ -393,8 +393,8 @@ namespace NoFuture.Rand.Gov
         public DistrictOfColumbia() : base("DC")
         {
             var dl = new Rchar[10];
-            dl[0] = new UAlphaRchar(0);
-            dl[1] = new UAlphaRchar(1);
+            dl[0] = new RcharUAlpha(0);
+            dl[1] = new RcharUAlpha(1);
             Array.Copy(Numerics(8, 2), 0, dl, 2, 8);
             dlFormats = new[] { new DriversLicense(dl, this) };
         }
@@ -405,7 +405,7 @@ namespace NoFuture.Rand.Gov
         public Florida() : base("FL")
         {
             var dl = new Rchar[12];
-            dl[0] = new UAlphaRchar(0);
+            dl[0] = new RcharUAlpha(0);
             Array.Copy(Numerics(11, 1), 0, dl, 1, 11);
 
             dlFormats = new[] {new DriversLicense(dl, this) };
@@ -425,7 +425,7 @@ namespace NoFuture.Rand.Gov
         public Hawaii() : base("HI")
         {
             var dl = new Rchar[9];
-            dl[0] = new LimitedRchar(0,'H');
+            dl[0] = new RcharLimited(0,'H');
             Array.Copy(Numerics(8, 1), 0, dl, 1, 8);
 
             dlFormats = new[] { new DriversLicense(dl, this), new DriversLicense(Numerics(9), this) };
@@ -437,10 +437,10 @@ namespace NoFuture.Rand.Gov
         public Idaho() : base("ID")
         {
             var dl = new Rchar[9];
-            dl[0] = new UAlphaRchar(0);
-            dl[1] = new UAlphaRchar(1);
+            dl[0] = new RcharUAlpha(0);
+            dl[1] = new RcharUAlpha(1);
             Array.Copy(Numerics(6, 2), 0, dl, 2, 6);
-            dl[8] = new UAlphaRchar(8);
+            dl[8] = new RcharUAlpha(8);
 
             dlFormats = new[] { new DriversLicense(dl, this), new DriversLicense(Numerics(9), this) };
         }
@@ -451,7 +451,7 @@ namespace NoFuture.Rand.Gov
         public Illinois() : base("IL")
         {
             var dl = new Rchar[12];
-            dl[0] = new UAlphaRchar(0);
+            dl[0] = new RcharUAlpha(0);
             Array.Copy(Numerics(11, 1), 0, dl, 1, 11);
 
             dlFormats = new[] { new DriversLicense(dl, this) };
@@ -463,7 +463,7 @@ namespace NoFuture.Rand.Gov
         public Indiana() : base("IN")
         {
             var dl = new Rchar[10];
-            dl[0] = new UAlphaRchar(0);
+            dl[0] = new RcharUAlpha(0);
             Array.Copy(Numerics(9, 1), 0, dl, 1, 9);
 
             dlFormats = new[] { new DriversLicense(dl, this), new DriversLicense(Numerics(10), this) };
@@ -477,7 +477,7 @@ namespace NoFuture.Rand.Gov
             var dl = new Rchar[9];
             for (var i = 0; i < dl.Length; i++)
             {
-                dl[i] = new AlphaNumericRchar(i);
+                dl[i] = new RcharAlphaNumeric(i);
             }
 
             dlFormats = new[] {new DriversLicense(dl, this), new DriversLicense(Numerics(9), this) };
@@ -489,7 +489,7 @@ namespace NoFuture.Rand.Gov
         public Kansas() : base("KS")
         {
             var dl = new Rchar[9];
-            dl[0] = new UAlphaRchar(0);
+            dl[0] = new RcharUAlpha(0);
             Array.Copy(Numerics(8, 1), 0, dl, 1, 8);
 
             dlFormats = new[] { new DriversLicense(dl, this) };
@@ -501,7 +501,7 @@ namespace NoFuture.Rand.Gov
         public Kentucky() : base("KY")
         {
             var dl = new Rchar[9];
-            dl[0] = new UAlphaRchar(0);
+            dl[0] = new RcharUAlpha(0);
             Array.Copy(Numerics(8, 1), 0, dl, 1, 8);
 
             dlFormats = new[] { new DriversLicense(dl, this) };
@@ -529,7 +529,7 @@ namespace NoFuture.Rand.Gov
         public Maryland() : base("MD")
         {
             var dl = new Rchar[13];
-            dl[0] = new UAlphaRchar(0);
+            dl[0] = new RcharUAlpha(0);
             Array.Copy(Numerics(12, 1), 0, dl, 1, 12);
 
             dlFormats = new[] { new DriversLicense(dl, this) };
@@ -541,7 +541,7 @@ namespace NoFuture.Rand.Gov
         public Massachusetts() : base("MA")
         {
             var dl = new Rchar[9];
-            dl[0] = new LimitedRchar(0,
+            dl[0] = new RcharLimited(0,
                 'A',
                 'B',
                 'C',
@@ -578,10 +578,10 @@ namespace NoFuture.Rand.Gov
         public Michigan() : base("MI")
         {
             var dl = new Rchar[13];
-            dl[0] = new UAlphaRchar(0);
-            dl[1] = new LimitedRchar(1, '1', '2', '3', '4', '5', '6');
-            dl[2] = new LimitedRchar(1, '1', '2', '3', '4', '5', '6');
-            dl[3] = new LimitedRchar(1, '1', '2', '3', '4', '5', '6');
+            dl[0] = new RcharUAlpha(0);
+            dl[1] = new RcharLimited(1, '1', '2', '3', '4', '5', '6');
+            dl[2] = new RcharLimited(1, '1', '2', '3', '4', '5', '6');
+            dl[3] = new RcharLimited(1, '1', '2', '3', '4', '5', '6');
             Array.Copy(Numerics(9, 4), 0, dl, 4, 9);
 
             dlFormats = new[] { new DriversLicense(dl, this) };
@@ -593,7 +593,7 @@ namespace NoFuture.Rand.Gov
         public Minnesota() : base("MN")
         {
             var dl = new Rchar[13];
-            dl[0] = new UAlphaRchar(0);
+            dl[0] = new RcharUAlpha(0);
             Array.Copy(Numerics(12, 1), 0, dl, 1, 12);
 
             dlFormats = new[] { new DriversLicense(dl, this) };
@@ -615,7 +615,7 @@ namespace NoFuture.Rand.Gov
         public Missouri() : base("MO")
         {
             var dl = new Rchar[9];
-            dl[0] = new UAlphaRchar(0);
+            dl[0] = new RcharUAlpha(0);
             Array.Copy(Numerics(8, 1), 0, dl, 1, 8);
 
             dlFormats = new[] { new DriversLicense(dl, this) };
@@ -627,9 +627,9 @@ namespace NoFuture.Rand.Gov
         public Montana() : base("MT")
         {
             var dl = new Rchar[9];
-            dl[0] = new UAlphaRchar(0);
-            dl[1] = new NumericRchar(1);
-            dl[2] = new AlphaNumericRchar(2);
+            dl[0] = new RcharUAlpha(0);
+            dl[1] = new RcharNumeric(1);
+            dl[2] = new RcharAlphaNumeric(2);
             Array.Copy(Numerics(6, 3), 0, dl, 3, 6);
             dlFormats = new[] { new DriversLicense(dl, this) };
         }
@@ -641,7 +641,7 @@ namespace NoFuture.Rand.Gov
         {
             AgeOfMajority = 19;
             var dl = new Rchar[9];
-            dl[0] = new UAlphaRchar(0);
+            dl[0] = new RcharUAlpha(0);
             Array.Copy(Numerics(8, 1), 0, dl, 1, 8);
 
             dlFormats = new[] { new DriversLicense(dl, this) };
@@ -661,13 +661,13 @@ namespace NoFuture.Rand.Gov
         public NewHampshire() : base("NH")
         {
             var dl = new Rchar[10];
-            dl[0] = new NumericRchar(0);
-            dl[1] = new NumericRchar(1);
-            dl[2] = new UAlphaRchar(2);
-            dl[3] = new UAlphaRchar(3);
-            dl[4] = new UAlphaRchar(4);
+            dl[0] = new RcharNumeric(0);
+            dl[1] = new RcharNumeric(1);
+            dl[2] = new RcharUAlpha(2);
+            dl[3] = new RcharUAlpha(3);
+            dl[4] = new RcharUAlpha(4);
             Array.Copy(Numerics(4, 5), 0, dl, 5, 4);
-            dl[9] = new LimitedRchar(9,'1','2','3','4','5','6','7','8','9');//no zero
+            dl[9] = new RcharLimited(9,'1','2','3','4','5','6','7','8','9');//no zero
 
             dlFormats = new[] {new DriversLicense(dl, this) };
         }
@@ -678,7 +678,7 @@ namespace NoFuture.Rand.Gov
         public NewJersey() : base("NJ")
         {
             var dl = new Rchar[15];
-            dl[0] = new UAlphaRchar(0);
+            dl[0] = new RcharUAlpha(0);
             Array.Copy(Numerics(14,1),0,dl,1,14);
             dlFormats = new[] {new DriversLicense(dl, this) };
         }
@@ -697,7 +697,7 @@ namespace NoFuture.Rand.Gov
         public NewYork() : base("NY")
         {
             var dl = new Rchar[15];//actual length is 16 but last digit is check-digit
-            dl[0] = new UAlphaRchar(0);
+            dl[0] = new RcharUAlpha(0);
             Array.Copy(Numerics(14, 1), 0, dl, 1, 14);
             dlFormats = new[] {new DriversLicense(dl, this) };
         }
@@ -746,9 +746,9 @@ namespace NoFuture.Rand.Gov
         public NorthDakota() : base("ND")
         {
             var dl = new Rchar[9];
-            dl[0] = new UAlphaRchar(0);
-            dl[1] = new UAlphaRchar(1);
-            dl[2] = new UAlphaRchar(2);
+            dl[0] = new RcharUAlpha(0);
+            dl[1] = new RcharUAlpha(1);
+            dl[2] = new RcharUAlpha(2);
             Array.Copy(Numerics(6,3),0,dl,3,6);
 
             dlFormats = new[] { new DriversLicense(dl, this), new DriversLicense(Numerics(9), this) };
@@ -760,8 +760,8 @@ namespace NoFuture.Rand.Gov
         public Ohio() : base("OH")
         {
             var dl = new Rchar[9];
-            dl[0] = new UAlphaRchar(0);
-            dl[1] = new UAlphaRchar(1);
+            dl[0] = new RcharUAlpha(0);
+            dl[1] = new RcharUAlpha(1);
             Array.Copy(Numerics(7, 2), 0, dl, 2, 7);
             dlFormats = new[] {new DriversLicense(dl, this) };
         }
@@ -772,7 +772,7 @@ namespace NoFuture.Rand.Gov
         public Oklahoma() : base("OK")
         {
             var dl = new Rchar[10];
-            dl[0] = new LimitedRchar(0,
+            dl[0] = new RcharLimited(0,
                 'A',
                 'B',
                 'C',
@@ -821,7 +821,7 @@ namespace NoFuture.Rand.Gov
         public RhodeIsland() : base("RI")
         {
             var dl = new Rchar[7];
-            dl[0] = new LimitedRchar(0, 'V');
+            dl[0] = new RcharLimited(0, 'V');
             Array.Copy(Numerics(6,1),0,dl,1,6);
             dlFormats = new[] {new DriversLicense(dl, this), new DriversLicense(Numerics(7), this) };
         }
@@ -873,7 +873,7 @@ namespace NoFuture.Rand.Gov
         {
             var dl = new Rchar[8];
             Array.Copy(Numerics(7),0,dl,0,7);
-            dl[7] = new LimitedRchar(7,'A');
+            dl[7] = new RcharLimited(7,'A');
 
             dlFormats = new[] {new DriversLicense(dl, this), new DriversLicense(Numerics(8), this) };
         }
@@ -884,7 +884,7 @@ namespace NoFuture.Rand.Gov
         public Virginia() : base("VA")
         {
             var dl = new Rchar[9];
-            dl[0] = new UAlphaRchar(0);
+            dl[0] = new RcharUAlpha(0);
             Array.Copy(Numerics(8,1),0,dl,1,8);
 
             dlFormats = new[] {new DriversLicense(dl, this), new DriversLicense(Numerics(12), this) };
@@ -896,18 +896,18 @@ namespace NoFuture.Rand.Gov
         public Washington() : base("WA")
         {
             var dl = new Rchar[12];
-            dl[0] = new UAlphaRchar(0);
-            dl[1] = new UAlphaRchar(1);
-            dl[2] = new UAlphaRchar(2);
-            dl[3] = new UAlphaRchar(3);
-            dl[4] = new UAlphaRchar(4);
-            dl[5] = new UAlphaRchar(5);
-            dl[6] = new UAlphaRchar(6);
-            dl[7] = new AlphaNumericRchar(7);
-            dl[8] = new NumericRchar(8);
-            dl[9] = new LimitedRchar(9,'*');
-            dl[10] = new AlphaNumericRchar(10);
-            dl[11] = new AlphaNumericRchar(11);
+            dl[0] = new RcharUAlpha(0);
+            dl[1] = new RcharUAlpha(1);
+            dl[2] = new RcharUAlpha(2);
+            dl[3] = new RcharUAlpha(3);
+            dl[4] = new RcharUAlpha(4);
+            dl[5] = new RcharUAlpha(5);
+            dl[6] = new RcharUAlpha(6);
+            dl[7] = new RcharAlphaNumeric(7);
+            dl[8] = new RcharNumeric(8);
+            dl[9] = new RcharLimited(9,'*');
+            dl[10] = new RcharAlphaNumeric(10);
+            dl[11] = new RcharAlphaNumeric(11);
 
             dlFormats = new[] {new DriversLicense(dl, this) };
         }
@@ -918,7 +918,7 @@ namespace NoFuture.Rand.Gov
         public WestVirginia() : base("WV")
         {
             var dl = new Rchar[7];
-            dl[0] = new LimitedRchar(0,'A','B','C','D','E','F','I','S','0','1','X');
+            dl[0] = new RcharLimited(0,'A','B','C','D','E','F','I','S','0','1','X');
             Array.Copy(Numerics(6,1),0,dl,1,6);
 
             dlFormats = new[] {new DriversLicense(dl, this) };
@@ -930,7 +930,7 @@ namespace NoFuture.Rand.Gov
         public Wisconsin() : base("WI")
         {
             var dl = new Rchar[13];
-            dl[0] = new UAlphaRchar(0);
+            dl[0] = new RcharUAlpha(0);
             Array.Copy(Numerics(12,1),0,dl,1,12);
             dlFormats = new[] {new DriversLicense(dl, this) };
         }
