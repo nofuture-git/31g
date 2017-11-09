@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NoFuture.Rand.Com;
+using NoFuture.Rand.Com.NfXml;
 using NoFuture.Rand.Gov.Sec;
 
 namespace NoFuture.Tests.Rand
@@ -19,7 +20,7 @@ namespace NoFuture.Tests.Rand
             var xmlContent = System.IO.File.ReadAllText(SEC_BY_CIK_XML_PATH);
 
             var testResultOut = new PublicCorporation();
-            var testResult = NoFuture.Rand.Gov.Sec.Edgar.TryParseCorpData(xmlContent,
+            var testResult = PublicCorporation.TryParseSecEdgarCikSearch(xmlContent,
                 new Uri(
                     "http://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=041215216456&type=10-K&dateb=&owner=exclude&count=100&output=atom"),
                 ref testResultOut);
@@ -61,7 +62,7 @@ namespace NoFuture.Tests.Rand
         public void TestParseCompanyFullTextSearch()
         {
             var xmlContent = System.IO.File.ReadAllText(SEC_BY_FULLTEXT_XML_PATH);
-            var testResult = NoFuture.Rand.Gov.Sec.Edgar.ParseFullTextSearch(xmlContent, new Uri("http://www.sec.gov/cgi-bin/srch-edgar"));
+            var testResult = PublicCorporation.ParseSecEdgarFullTextSearch(xmlContent, new Uri("http://www.sec.gov/cgi-bin/srch-edgar"));
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0, testResult.Length);
 
@@ -87,7 +88,7 @@ namespace NoFuture.Tests.Rand
         public void TestParseAccessionNumFromSummary()
         {
             var testResult =
-                Edgar.ParseAccessionNumFromSummary(
+                PublicCorporation.ParseAccessionNumFromSummary(
                     "<b>Filed Date:</b> 04/15/2015 <b>Accession Number:</b> 0001549727-15-000033 <b>Size:</b> 3 MB");
             Assert.IsNotNull(testResult);
             Assert.AreEqual("0001549727-15-000033", testResult);
@@ -112,7 +113,7 @@ namespace NoFuture.Tests.Rand
             var testInput = new NoFuture.Rand.Gov.Sec.Edgar.FullTextSearch();
             testInput.CompanyName = "CITIBANK, N.A.";
 
-            var testResult = NoFuture.Rand.Data.NfXml.SecFullTxtSearch.GetUri(testInput);
+            var testResult = SecFullTxtSearch.GetUri(testInput);
 
             System.Diagnostics.Debug.WriteLine(testResult.ToString());
         }
@@ -121,7 +122,7 @@ namespace NoFuture.Tests.Rand
         public void TestTryGetDayOfYearFiscalEnd()
         {
             int testResultOut;
-            var testResult = Edgar.TryGetDayOfYearFiscalEnd("--12-25", out testResultOut);
+            var testResult = PublicCorporation.TryGetDayOfYearFiscalEnd("--12-25", out testResultOut);
             System.Diagnostics.Debug.WriteLine(testResultOut);
             Assert.IsTrue(testResult);
         }
@@ -129,11 +130,11 @@ namespace NoFuture.Tests.Rand
         [TestMethod]
         public void TestParseNameFromTitle()
         {
-            var testResult = Edgar.ParseNameFromTitle("10-K - 1347 Property Insurance Holdings, Inc.");
+            var testResult = PublicCorporation.ParseNameFromTitle("10-K - 1347 Property Insurance Holdings, Inc.");
             System.Diagnostics.Debug.WriteLine(testResult.Item2);
             Assert.IsInstanceOfType(testResult.Item1, typeof(Form10K));
             Assert.AreEqual("1347 Property Insurance Holdings, Inc.", testResult.Item2);
-            testResult = Edgar.ParseNameFromTitle("13F-HR - 10-15 ASSOCIATES, INC.");
+            testResult = PublicCorporation.ParseNameFromTitle("13F-HR - 10-15 ASSOCIATES, INC.");
             Assert.IsInstanceOfType(testResult.Item1, typeof(Form13Fhr));
             Assert.AreEqual("10-15 ASSOCIATES, INC.", testResult.Item2);
             System.Diagnostics.Debug.WriteLine(testResult.Item2);

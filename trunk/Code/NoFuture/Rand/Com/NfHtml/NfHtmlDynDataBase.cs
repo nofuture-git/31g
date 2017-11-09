@@ -2,7 +2,7 @@
 using System.Text.RegularExpressions;
 using NoFuture.Rand.Data.Types;
 
-namespace NoFuture.Rand.Data.NfHtml
+namespace NoFuture.Rand.Com.NfHtml
 {
     [Serializable]
     public abstract class NfHtmlDynDataBase : NfDynDataBase

@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using NoFuture.Rand.Com;
 using NoFuture.Rand.Data.Types;
-using NoFuture.Shared;
 using NoFuture.Shared.Core;
 
-namespace NoFuture.Rand.Data.NfText
+namespace NoFuture.Rand.Com.NfText
 {
     public class FedLrgBnk : NfDynDataBase
     {

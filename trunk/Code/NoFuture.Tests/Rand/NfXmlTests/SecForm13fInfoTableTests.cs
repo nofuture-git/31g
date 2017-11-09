@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NoFuture.Rand.Com.NfXml;
 
 namespace NoFuture.Tests.Rand.NfXmlTests
 {
@@ -15,7 +16,7 @@ namespace NoFuture.Tests.Rand.NfXmlTests
             var contentFile = TestAssembly.UnitTestsRoot + @"\Rand\form13fInfoTable.xml";
             var content = System.IO.File.ReadAllText(contentFile);
 
-            var testSubject = new NoFuture.Rand.Data.NfXml.SecForm13FInfoTable(null);
+            var testSubject = new SecForm13FInfoTable(null);
             var testResult = testSubject.ParseContent(content);
             Assert.IsNotNull(testResult);
             Assert.IsTrue(testResult.Any());

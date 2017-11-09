@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NoFuture.Rand.Com.NfHtml;
 
 namespace NoFuture.Tests.Rand.NfHtmlTests
 {
@@ -833,7 +834,7 @@ BLOOMBERG.gpt.render({""ad_description"":""blp.persfin/invest//ticker//lookup"",
         [TestMethod]
         public void TestMethod1()
         {
-            var testSubject = new NoFuture.Rand.Data.NfHtml.BloombergSymbolSearch(null);
+            var testSubject = new BloombergSymbolSearch(null);
             var testResult = testSubject.ParseContent(_testData);
 
             Assert.IsNotNull(testResult);
@@ -847,7 +848,7 @@ BLOOMBERG.gpt.render({""ad_description"":""blp.persfin/invest//ticker//lookup"",
             var testFile = TestAssembly.UnitTestsRoot + @"\Rand\BloombergSearchRslt_multiple.html";
 
             var testInput = System.IO.File.ReadAllText(testFile);
-            var testResult = NoFuture.Rand.Data.NfHtml.NfHtmlDynDataBase.PreParser(testInput);
+            var testResult = NfHtmlDynDataBase.PreParser(testInput);
 
             Assert.AreNotEqual(testInput.Length, testResult.Length);
 

@@ -5,7 +5,7 @@ using System.Xml;
 using NoFuture.Rand.Data.Types;
 using NoFuture.Rand.Gov.Sec;
 
-namespace NoFuture.Rand.Data.NfXml
+namespace NoFuture.Rand.Com.NfXml
 {
     public class SecCikSearch : NfDynDataBase
     {

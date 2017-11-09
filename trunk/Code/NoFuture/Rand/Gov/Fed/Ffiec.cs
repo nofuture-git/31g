@@ -26,7 +26,7 @@ namespace NoFuture.Rand.Gov.Fed
             if (firmOut == null)
                 return false;
 
-            var myDynData = Facit.DynamicDataFactory(srcUri);
+            var myDynData = DynamicDataFactory.GetDataParser(srcUri);
             var myDynDataRslt = myDynData.ParseContent(rawHtmlContent);
 
             if (myDynDataRslt == null || !myDynDataRslt.Any())

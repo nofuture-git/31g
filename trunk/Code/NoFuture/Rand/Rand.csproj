@@ -73,23 +73,24 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Com\DynamicDataFactory.cs" />
     <Compile Include="Gov\AmericanRacePercents.cs" />
     <Compile Include="Com\Firm.cs" />
     <Compile Include="Com\FinancialFirm.cs" />
     <Compile Include="Data\Facit.cs" />
-    <Compile Include="Data\NfHtml\BloombergSymbolSearch.cs" />
-    <Compile Include="Data\NfHtml\FfiecInstitProfile.cs" />
-    <Compile Include="Data\NfHtml\FidelitySymbolSearch.cs" />
-    <Compile Include="Data\NfHtml\NfHtmlDynDataBase.cs" />
-    <Compile Include="Data\NfHtml\SecGetXbrlUri.cs" />
-    <Compile Include="Data\NfHtml\WikipediaInsCom.cs" />
-    <Compile Include="Data\NfHttp\YhooFinSymbolLookup.cs" />
-    <Compile Include="Data\NfPdf\Sec13fCuispList.cs" />
-    <Compile Include="Data\NfText\FedLrgBnk.cs" />
-    <Compile Include="Data\NfXml\SecCikSearch.cs" />
-    <Compile Include="Data\NfXml\SecForm13fInfoTable.cs" />
-    <Compile Include="Data\NfXml\SecFullTxtSearch.cs" />
-    <Compile Include="Data\NfXml\SecXbrlInstanceFile.cs" />
+    <Compile Include="Com\NfHtml\BloombergSymbolSearch.cs" />
+    <Compile Include="Com\NfHtml\FfiecInstitProfile.cs" />
+    <Compile Include="Com\NfHtml\FidelitySymbolSearch.cs" />
+    <Compile Include="Com\NfHtml\NfHtmlDynDataBase.cs" />
+    <Compile Include="Com\NfHtml\SecGetXbrlUri.cs" />
+    <Compile Include="Com\NfHtml\WikipediaInsCom.cs" />
+    <Compile Include="Com\NfHttp\YhooFinSymbolLookup.cs" />
+    <Compile Include="Com\NfPdf\Sec13fCuispList.cs" />
+    <Compile Include="Com\NfText\FedLrgBnk.cs" />
+    <Compile Include="Com\NfXml\SecCikSearch.cs" />
+    <Compile Include="Com\NfXml\SecForm13fInfoTable.cs" />
+    <Compile Include="Com\NfXml\SecFullTxtSearch.cs" />
+    <Compile Include="Com\NfXml\SecXbrlInstanceFile.cs" />
     <Compile Include="Data\Sp\Account.cs" />
     <Compile Include="Data\Sp\Balance.cs" />
     <Compile Include="Data\Sp\Currency.cs" />
@@ -178,7 +179,6 @@
     <Compile Include="Gov\Bls\Globals.cs" />
     <Compile Include="Gov\Bls\ISeries.cs" />
     <Compile Include="Gov\Bls\Series.cs" />
-    <Compile Include="Gov\Census\Links.cs" />
     <Compile Include="Gov\DriversLicense.cs" />
     <Compile Include="Gov\Fed\Identifier.cs" />
     <Compile Include="Gov\Identifier.cs" />
@@ -190,7 +190,6 @@
     <Compile Include="Gov\SocialSecurityNumber.cs" />
     <Compile Include="Gov\Statute.cs" />
     <Compile Include="Gov\UsState.cs" />
-    <Compile Include="Org\Naic.cs" />
     <Compile Include="Domus\Person.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

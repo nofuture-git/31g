@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NoFuture.Rand.Com.NfHtml;
 
 namespace NoFuture.Tests.Rand.NfHtmlTests
 {
@@ -16,7 +17,7 @@ namespace NoFuture.Tests.Rand.NfHtmlTests
             var testContent = System.IO.File.ReadAllText(testFile);
             Assert.IsNotNull(testContent);
 
-            var testSubject = new NoFuture.Rand.Data.NfHtml.WikipediaInsCom(new Uri("http://localhost"));
+            var testSubject = new WikipediaInsCom(new Uri("http://localhost"));
             var testResults = testSubject.ParseContent(testContent);
             Assert.IsNotNull(testResults);
             Assert.IsTrue(testResults.Any());

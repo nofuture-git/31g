@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NoFuture.Rand.Com.NfPdf;
 
 namespace NoFuture.Tests.Rand.NfPdfTests
 {
@@ -14,7 +15,7 @@ namespace NoFuture.Tests.Rand.NfPdfTests
         public void TestTryParseCusipLine()
         {
             var testInput = "989701 13 1 ZIONS BANCORPORATION *W EXP 11/14/201";
-            var testSubject = new NoFuture.Rand.Data.NfPdf.Sec13FCuispList(null);
+            var testSubject = new Sec13FCuispList(null);
             string[] testResultOut = null;
             var testResult = testSubject.TryParseCusipLine(testInput, out testResultOut);
             Assert.IsTrue(testResult);
@@ -32,7 +33,7 @@ namespace NoFuture.Tests.Rand.NfPdfTests
             Assert.IsTrue(System.IO.File.Exists(testFile));
             var testInput = System.IO.File.ReadAllBytes(testFile);
             Assert.AreNotEqual(0,testInput.Length);
-            var testSubject = new NoFuture.Rand.Data.NfPdf.Sec13FCuispList(null);
+            var testSubject = new Sec13FCuispList(null);
             var testResult = testSubject.ParseContent(testInput);
             Assert.IsNotNull(testResult);
             Assert.IsTrue(testResult.Any());

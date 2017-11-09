@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NoFuture.Rand.Com.NfXml;
 
 namespace NoFuture.Tests.Rand.NfXmlTests
 {
@@ -13,7 +14,7 @@ namespace NoFuture.Tests.Rand.NfXmlTests
         public void TestMethod1()
         {
             var testXmlFile = TestAssembly.UnitTestsRoot + @"\ExampleDlls\srch-edgar.xml";
-            var testSubject = new NoFuture.Rand.Data.NfXml.SecFullTxtSearch(new Uri("http://localhost"));
+            var testSubject = new SecFullTxtSearch(new Uri("http://localhost"));
 
             var testResult = testSubject.ParseContent(System.IO.File.ReadAllText(testXmlFile));
             Assert.IsNotNull(testResult);

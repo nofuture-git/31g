@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 
-namespace NoFuture.Rand.Data.NfHtml
+namespace NoFuture.Rand.Com.NfHtml
 {
     public class WikipediaInsCom : NfHtmlDynDataBase
     {

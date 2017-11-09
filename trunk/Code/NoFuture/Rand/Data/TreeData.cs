@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Xml;
 using NoFuture.Rand.Com;
+using NoFuture.Rand.Com.NfText;
 using NoFuture.Rand.Data.Source;
 
 namespace NoFuture.Rand.Data
@@ -349,7 +350,7 @@ namespace NoFuture.Rand.Data
                 if(string.IsNullOrWhiteSpace(rawData))
                     return new Bank[0];//return empty list for missing data
 
-                var myDynData = Facit.DynamicDataFactory(new Uri(NfText.FedLrgBnk.RELEASE_URL));
+                var myDynData = DynamicDataFactory.GetDataParser(new Uri(FedLrgBnk.RELEASE_URL));
                 var myDynDataRslt = myDynData.ParseContent(rawData);
 
 

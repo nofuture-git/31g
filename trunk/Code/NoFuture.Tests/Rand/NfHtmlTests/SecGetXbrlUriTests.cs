@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NoFuture.Rand;
+using NoFuture.Rand.Com.NfHtml;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Gov.Sec;
@@ -64,7 +65,7 @@ namespace NoFuture.Tests.Rand.NfHtmlTests
                 "href=\"/cgi-bin/browse-edgar?action=getcompany&amp;SIC=5945&amp;owner=include\""
             };
 
-            var testResult = NoFuture.Rand.Data.NfHtml.SecGetXbrlUri.GetXbrlXmlPartialUri(testInput);
+            var testResult = SecGetXbrlUri.GetXbrlXmlPartialUri(testInput);
             Assert.AreEqual("/Archives/edgar/data/1593936/000155837015000377/mik-20150131.xml", testResult);
         }
     }

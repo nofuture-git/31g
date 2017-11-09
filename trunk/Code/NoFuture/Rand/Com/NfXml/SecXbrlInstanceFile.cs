@@ -5,10 +5,9 @@ using System.Text.RegularExpressions;
 using System.Xml;
 using NoFuture.Rand.Data.Types;
 using NoFuture.Rand.Gov.Sec;
-using NoFuture.Shared;
 using NoFuture.Shared.Core;
 
-namespace NoFuture.Rand.Data.NfXml
+namespace NoFuture.Rand.Com.NfXml
 {
     public class SecXbrlInstanceFile : NfDynDataBase
     {
@@ -82,7 +81,7 @@ namespace NoFuture.Rand.Data.NfXml
             var endOfYear = 0;
             var endOfYearStr = xml.SelectSingleNode($"//{XmlNs.DEI}:CurrentFiscalYearEndDate", _nsMgr)?.InnerText ??
                                string.Empty;
-            Edgar.TryGetDayOfYearFiscalEnd(endOfYearStr,out endOfYear);
+            PublicCorporation.TryGetDayOfYearFiscalEnd(endOfYearStr,out endOfYear);
 
             var cik = xml.SelectSingleNode($"//{XmlNs.DEI}:EntityCentralIndexKey", _nsMgr)?.InnerText;
             var numOfShares = 0;

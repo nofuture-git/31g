@@ -2,7 +2,8 @@
 using System.Linq;
 using System.Xml;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NoFuture.Rand.Data.NfXml;
+using NoFuture.Rand.Com.NfXml;
+
 namespace NoFuture.Tests.Rand.NfXmlTests
 {
     [TestClass]
@@ -14,7 +15,7 @@ namespace NoFuture.Tests.Rand.NfXmlTests
         public void TestParseContent()
         {
             var testXmlFile = TestAssembly.UnitTestsRoot + @"\ExampleDlls\ExampleSecXbrl.xml";
-            var testSubject = new NoFuture.Rand.Data.NfXml.SecXbrlInstanceFile(new Uri("http://localhost"));
+            var testSubject = new SecXbrlInstanceFile(new Uri("http://localhost"));
 
             var testResult = testSubject.ParseContent(System.IO.File.ReadAllText(testXmlFile));
             Assert.IsNotNull(testResult);

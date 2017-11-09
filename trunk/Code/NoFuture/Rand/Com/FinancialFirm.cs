@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using NoFuture.Rand.Com.NfText;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Data;
-using NoFuture.Rand.Data.NfText;
 using NoFuture.Rand.Data.Sp;
 using NoFuture.Rand.Data.Types;
 using NoFuture.Rand.Gov.Fed;
