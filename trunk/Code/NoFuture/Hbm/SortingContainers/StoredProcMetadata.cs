@@ -5,7 +5,7 @@ using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
 using System.Text;
-using NoFuture.Exceptions;
+using NoFuture.Shared.Core;
 using NoFuture.Util.NfType;
 
 namespace NoFuture.Hbm.SortingContainers

@@ -2,6 +2,7 @@
 using System.IO;
 using System.Xml.Linq;
 using NoFuture.Shared;
+using NoFuture.Shared.Core;
 using NoFuture.Util;
 using NoFuture.Util.NfType;
 using Nm = NoFuture.Hbm.Globals.HbmXmlNames;

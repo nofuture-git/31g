@@ -7,6 +7,7 @@ using NoFuture.Hbm.DbQryContainers;
 using NoFuture.Hbm.SortingContainers;
 using NoFuture.Rand.Data;
 using NoFuture.Shared;
+using NoFuture.Shared.Core;
 
 namespace NoFuture.Tests.Hbm.TestDbQryContainers
 {

@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using NoFuture.Shared.Core;
 
 namespace NoFuture.Shared
 {

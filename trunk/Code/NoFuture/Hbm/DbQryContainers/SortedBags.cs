@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using NoFuture.Hbm.SortingContainers;
 using NoFuture.Shared;
+using NoFuture.Shared.Core;
 
 namespace NoFuture.Hbm.DbQryContainers
 {

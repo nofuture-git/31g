@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NoFuture.Shared;
+using NoFuture.Shared.Core;
 
 namespace NoFuture.Tests.Util
 {
@@ -11,7 +12,7 @@ namespace NoFuture.Tests.Util
     {
         private const string TEMPDIR = @"C:\TEMP";
         [TestMethod]
-        [ExpectedException(typeof(NoFuture.Exceptions.ItsDeadJim))]
+        [ExpectedException(typeof(ItsDeadJim))]
         public void TestResolveAssemblyEventHandler_BadAsmName()
         {
             var arg = new ResolveEventArgs("this-is-not an assembly name",

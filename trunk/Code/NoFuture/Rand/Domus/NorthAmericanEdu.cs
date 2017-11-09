@@ -8,6 +8,7 @@ using NoFuture.Rand.Data;
 using NoFuture.Rand.Data.Types;
 using NoFuture.Rand.Edu;
 using NoFuture.Rand.Gov;
+using NoFuture.Shared.Core;
 using NoFuture.Util.Math;
 
 namespace NoFuture.Rand.Domus
@@ -298,7 +299,7 @@ namespace NoFuture.Rand.Domus
                 var firstGradDate = Universities.First(x => x.Graduation != null).Graduation.Value;
                 var lastGradDate = Universities.Last(x => x.Graduation != null).Graduation.Value;
                 var numYearsPostGrad =
-                    Math.Abs((firstGradDate - lastGradDate).TotalDays)/Shared.Constants.DBL_TROPICAL_YEAR;
+                    Math.Abs((firstGradDate - lastGradDate).TotalDays)/Constants.DBL_TROPICAL_YEAR;
     
                 //consider doctorate as right-side second sigma of postgrad years
                 isDocGrad = numYearsPostGrad >

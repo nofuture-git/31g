@@ -3,6 +3,7 @@ using NoFuture.Rand.Core;
 using NoFuture.Rand.Domus;
 using NoFuture.Rand.Domus.Pneuma;
 using NoFuture.Shared;
+using NoFuture.Shared.Core;
 using NoFuture.Util;
 using NoFuture.Util.Math;
 

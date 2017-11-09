@@ -5,6 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NoFuture.Hbm;
 using NoFuture.Hbm.SortingContainers;
 using NoFuture.Shared;
+using NoFuture.Shared.Core;
 
 namespace NoFuture.Tests.Hbm
 {

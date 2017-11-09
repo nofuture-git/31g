@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using System.Runtime.Serialization.Json;
 using System.Text;
-using NoFuture.Exceptions;
+using NoFuture.Shared.Core;
 
 namespace NoFuture.Shared.DiaSdk
 {

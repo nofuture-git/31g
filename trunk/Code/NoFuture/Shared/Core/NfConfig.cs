@@ -1,12 +1,11 @@
 ﻿using System;
-using System.IO;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Xml;
-using NoFuture.Exceptions;
 
-namespace NoFuture.Shared
+namespace NoFuture.Shared.Core
 {
     /// <summary>
     /// Represents a central runtime hub from which all the other parts of the 

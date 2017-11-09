@@ -6,13 +6,13 @@ using System.Net.Mime;
 using System.Text.RegularExpressions;
 using System.Text;
 using System.Threading;
-using NoFuture.Exceptions;
 using System.ComponentModel;
 using System.Net;
 using System.Net.Sockets;
 using System.Security.Principal;
 using Newtonsoft.Json;
 using NoFuture.Shared;
+using NoFuture.Shared.Core;
 
 namespace NoFuture.Util
 {

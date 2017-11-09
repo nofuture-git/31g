@@ -9,6 +9,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
 using NoFuture.Shared;
+using NoFuture.Shared.Core;
 using NoFuture.Util.NfType;
 
 namespace NoFuture.Util

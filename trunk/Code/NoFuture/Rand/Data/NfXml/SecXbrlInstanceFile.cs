@@ -6,6 +6,7 @@ using System.Xml;
 using NoFuture.Rand.Data.Types;
 using NoFuture.Rand.Gov.Sec;
 using NoFuture.Shared;
+using NoFuture.Shared.Core;
 
 namespace NoFuture.Rand.Data.NfXml
 {

@@ -9,10 +9,10 @@ using System.Runtime.Remoting.Messaging;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using NoFuture.Exceptions;
 using NoFuture.Hbm.SortingContainers;
 using NoFuture.Util;
 using NoFuture.Shared;
+using NoFuture.Shared.Core;
 using NoFuture.Util.NfConsole;
 
 namespace NoFuture.Hbm
@@ -251,15 +251,15 @@ namespace NoFuture.Hbm
                         while (client.Available > 0)
                         {
                             byte[] bytes;
-                            if (client.Available < Shared.NfConfig.DefaultBlockSize)
+                            if (client.Available < NfConfig.DefaultBlockSize)
                             {
                                 bytes = new byte[client.Available];
                                 bytesReceived += client.Receive(bytes, 0, client.Available, 0);
                             }
                             else
                             {
-                                bytes = new byte[Shared.NfConfig.DefaultBlockSize];
-                                bytesReceived += client.Receive(bytes, 0, (int)Shared.NfConfig.DefaultBlockSize, 0);
+                                bytes = new byte[NfConfig.DefaultBlockSize];
+                                bytesReceived += client.Receive(bytes, 0, (int)NfConfig.DefaultBlockSize, 0);
                             }
 
                             received.AddRange(bytes);

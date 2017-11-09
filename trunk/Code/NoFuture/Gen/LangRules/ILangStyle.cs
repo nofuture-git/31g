@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using NoFuture.Shared.Core;
 
 namespace NoFuture.Gen.LangRules
 {
@@ -133,7 +134,7 @@ namespace NoFuture.Gen.LangRules
         /// out variable for detecting that the string is part of a verbatim string
         /// </param>
         /// <returns></returns>
-        string EscStringLiterals(string lineIn, Shared.EscapeStringType replacement, ref bool endedIrregular);
+        string EscStringLiterals(string lineIn, EscapeStringType replacement, ref bool endedIrregular);
 
         /// <summary>
         /// The dictionary key is the index of the double-quote while its

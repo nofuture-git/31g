@@ -4,6 +4,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NoFuture.Shared;
+using NoFuture.Shared.Core;
 
 namespace NoFuture.Tests.Encryption
 {

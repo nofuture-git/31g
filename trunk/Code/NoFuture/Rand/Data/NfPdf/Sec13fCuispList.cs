@@ -6,6 +6,7 @@ using iTextSharp.text.pdf;
 using iTextSharp.text.pdf.parser;
 using NoFuture.Rand.Data.Types;
 using NoFuture.Shared;
+using NoFuture.Shared.Core;
 
 namespace NoFuture.Rand.Data.NfPdf
 {

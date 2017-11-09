@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Diagnostics;
 using System.Linq;
 using NoFuture.Shared;
+using NoFuture.Shared.Core;
 
 
 namespace NoFuture.Util.NfConsole

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NoFuture.Read;
+using NoFuture.Shared.Core;
 using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 
 namespace NoFuture.Tests
@@ -35,7 +36,7 @@ namespace NoFuture.Tests
 
         public void InitConfigs()
         {
-            var regexCatalog = new NoFuture.Shared.RegexCatalog();
+            var regexCatalog = new RegexCatalog();
             Regex2Values = new Hashtable
             {
                 {regexCatalog.WindowsRootedPath, @"C:\Projects\"},
@@ -448,7 +449,7 @@ namespace NoFuture.Tests
         [TestMethod]
         public void TestGetAsCompileCmd()
         {
-            NoFuture.Shared.NfConfig.DotNet.CscCompiler =
+            NfConfig.DotNet.CscCompiler =
                 @"C:\Projects\31g\trunk\bin\roslyn-master\Binaries\Release\Exes\csc\net46\csc.exe";
             var testResult = NoFuture.Read.Vs.ProjFile.GetAsPsCompileCmd(TEST_CSPROJ, null, false);
             Assert.IsNotNull(testResult);

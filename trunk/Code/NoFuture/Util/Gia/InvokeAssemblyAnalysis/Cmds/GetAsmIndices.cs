@@ -2,6 +2,7 @@
 using System.IO;
 using System.Text;
 using NoFuture.Shared;
+using NoFuture.Shared.Core;
 using NoFuture.Util.NfConsole;
 
 namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds

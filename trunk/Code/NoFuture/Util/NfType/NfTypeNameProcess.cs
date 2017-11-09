@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using NoFuture.Exceptions;
 using NoFuture.Shared;
+using NoFuture.Shared.Core;
 using NoFuture.Util.NfConsole;
 using NoFuture.Util.NfType.InvokeCmds;
 

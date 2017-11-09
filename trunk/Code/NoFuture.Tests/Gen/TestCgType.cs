@@ -4,6 +4,7 @@ using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NoFuture.Gen;
 using NoFuture.Shared;
+using NoFuture.Shared.Core;
 
 namespace NoFuture.Tests.Gen
 {

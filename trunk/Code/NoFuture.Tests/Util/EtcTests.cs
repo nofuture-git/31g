@@ -2,6 +2,7 @@
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NoFuture.Shared;
+using NoFuture.Shared.Core;
 using NoFuture.Util;
 
 namespace NoFuture.Tests.Util

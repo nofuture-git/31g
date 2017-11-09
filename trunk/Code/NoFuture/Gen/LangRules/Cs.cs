@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using NoFuture.Shared;
+using NoFuture.Shared.Core;
 using NoFuture.Tokens;
 using NoFuture.Tokens.ParseResults;
 using NoFuture.Util;
@@ -381,7 +382,7 @@ namespace NoFuture.Gen.LangRules
             return fileMembers;
         }
 
-        public string EscStringLiterals(string lineIn, Shared.EscapeStringType replacement, ref bool endedIrregular)
+        public string EscStringLiterals(string lineIn, EscapeStringType replacement, ref bool endedIrregular)
         {
             var encodedList = new StringBuilder();
             var inDoubleQuotes = endedIrregular;

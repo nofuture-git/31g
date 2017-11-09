@@ -2,6 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NoFuture.Hbm.DbQryContainers;
 using NoFuture.Shared;
+using NoFuture.Shared.Core;
 
 namespace NoFuture.Tests.Hbm
 {
@@ -70,7 +71,7 @@ namespace NoFuture.Tests.Hbm
         }
         
         [TestMethod]
-        [ExpectedException(typeof(Exceptions.ItsDeadJim))]
+        [ExpectedException(typeof(ItsDeadJim))]
         public void TestGetSingleHbmXml8()
         {
             var testResult = NoFuture.Hbm.Mapping.GetSingleHbmXml("NoFuture.TestHbm", "dbo.TableIncompatiableWithOrm");

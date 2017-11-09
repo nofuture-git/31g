@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Xml.Linq;
 using System.Collections.Generic;
-using NoFuture.Exceptions;
+using NoFuture.Shared.Core;
 
 namespace NoFuture.Tokens
 {
@@ -91,7 +91,7 @@ namespace NoFuture.Tokens
         {
             if (string.IsNullOrWhiteSpace(inputString))
             {
-                throw new Exceptions.ItsDeadJim("The input string arg is empty.");
+                throw new ItsDeadJim("The input string arg is empty.");
             }
 
             inputString = Util.Etc.DistillString(inputString);
@@ -121,12 +121,12 @@ namespace NoFuture.Tokens
         {
             if (string.IsNullOrWhiteSpace(inputString))
             {
-                throw new Exceptions.ItsDeadJim("The input string arg is empty.");
+                throw new ItsDeadJim("The input string arg is empty.");
             }
 
             if (xDoc == null)
             {
-                throw new Exceptions.ItsDeadJim("a XElement must be supplied, call GetXDocFrame prior to calling this member");
+                throw new ItsDeadJim("a XElement must be supplied, call GetXDocFrame prior to calling this member");
             }
 
             //crit - the indices must match the original so process like frame f(x) did

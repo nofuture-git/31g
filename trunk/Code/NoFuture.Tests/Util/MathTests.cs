@@ -4,6 +4,7 @@ using System.Linq.Expressions;
 using System.Runtime.InteropServices;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NoFuture.Rand.Data;
+using NoFuture.Shared.Core;
 using NoFuture.Timeline;
 using NoFuture.Util.Math;
 
@@ -332,13 +333,13 @@ namespace NoFuture.Tests.Util
             var testResult = 1541M.PerDiemInterest(0.13f, 30);
             Assert.AreEqual(1557.54M,testResult);
 
-            testResult = 36000M.PerDiemInterest(0.035f, NoFuture.Shared.Constants.TropicalYear.TotalDays*5);
+            testResult = 36000M.PerDiemInterest(0.035f, Constants.TropicalYear.TotalDays*5);
             Assert.AreEqual(42884.5M, testResult);
 
-            testResult = 36000M.PerDiemInterest(0f, NoFuture.Shared.Constants.TropicalYear.TotalDays*5);
+            testResult = 36000M.PerDiemInterest(0f, Constants.TropicalYear.TotalDays*5);
             Assert.AreEqual(36000M, testResult);
 
-            testResult = 48000M.PerDiemInterest(-0.15f, NoFuture.Shared.Constants.TropicalYear.TotalDays*20);
+            testResult = 48000M.PerDiemInterest(-0.15f, Constants.TropicalYear.TotalDays*20);
 
             System.Diagnostics.Debug.WriteLine(testResult);
 

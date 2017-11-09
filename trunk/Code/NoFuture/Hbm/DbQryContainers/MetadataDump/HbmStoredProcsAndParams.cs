@@ -3,6 +3,7 @@ using System.Linq;
 using System.Reflection;
 using NoFuture.Hbm.SortingContainers;
 using NoFuture.Shared;
+using NoFuture.Shared.Core;
 
 namespace NoFuture.Hbm.DbQryContainers.MetadataDump
 {

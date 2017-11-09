@@ -1,9 +1,9 @@
 ﻿using System;
 using System.IO;
 using System.Collections.Generic;
-using NoFuture.Exceptions;
 using NoFuture.Shared;
 using System.Linq;
+using NoFuture.Shared.Core;
 
 namespace NoFuture.Hbm
 {

@@ -1,5 +1,6 @@
 ﻿using System;
 using NoFuture.Shared;
+using NoFuture.Shared.Core;
 
 namespace NoFuture.Util.Math
 {

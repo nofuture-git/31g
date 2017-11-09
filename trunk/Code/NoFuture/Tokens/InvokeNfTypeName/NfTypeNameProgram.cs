@@ -2,8 +2,8 @@
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using NoFuture.Exceptions;
 using NoFuture.Shared;
+using NoFuture.Shared.Core;
 using NoFuture.Tokens.InvokeNfTypeName.Cmds;
 using NoFuture.Util;
 using NoFuture.Util.Gia;

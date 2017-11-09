@@ -6,8 +6,8 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Reflection.Emit;
-using NoFuture.Exceptions;
 using NoFuture.Shared;
+using NoFuture.Shared.Core;
 
 namespace NoFuture.Util.Binary
 {

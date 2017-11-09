@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NoFuture.Rand.Gov.Fed;
 using NoFuture.Shared;
+using NoFuture.Shared.Core;
 
 namespace NoFuture.Rand.Data.NfHtml
 {

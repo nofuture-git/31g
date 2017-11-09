@@ -2,7 +2,7 @@
 using System.IO;
 using System.Text;
 using Newtonsoft.Json;
-using NoFuture.Exceptions;
+using NoFuture.Shared.Core;
 using NoFuture.Util.NfConsole;
 
 namespace NoFuture.Util.Gia.InvokeCmds

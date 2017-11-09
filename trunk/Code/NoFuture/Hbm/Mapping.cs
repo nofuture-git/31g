@@ -5,9 +5,9 @@ using System.IO;
 using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
-using NoFuture.Exceptions;
 using NoFuture.Hbm.DbQryContainers;
 using NoFuture.Hbm.SortingContainers;
+using NoFuture.Shared.Core;
 using NoFuture.Util.NfType;
 
 namespace NoFuture.Hbm

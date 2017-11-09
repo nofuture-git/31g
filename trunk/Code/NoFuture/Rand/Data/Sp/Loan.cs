@@ -6,6 +6,7 @@ using NoFuture.Shared;
 using NoFuture.Util.Math;
 using NoFuture.Rand.Domus;
 using NoFuture.Rand.Domus.Pneuma;
+using NoFuture.Shared.Core;
 
 namespace NoFuture.Rand.Data.Sp //Sequere pecuniam
 {

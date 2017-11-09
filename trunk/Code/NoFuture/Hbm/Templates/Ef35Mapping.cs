@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using NoFuture.Hbm.SortingContainers;
 using NoFuture.Shared;
+using NoFuture.Shared.Core;
 using NoFuture.Util;
 
 namespace NoFuture.Hbm.Templates

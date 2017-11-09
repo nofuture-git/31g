@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using NoFuture.Shared.Core;
 
 namespace NoFuture.Util.Binary
 {
@@ -265,7 +266,7 @@ namespace NoFuture.Util.Binary
         public static byte[][] BreakByteArray(byte[] sourceByteArray, long blocksize)
         {
             if (blocksize == 0)
-                blocksize = Shared.NfConfig.DefaultBlockSize;
+                blocksize = NfConfig.DefaultBlockSize;
             byte[][] returnArray;
             var numberofblocks = Calc.NumberOfInclusiveBlocks(sourceByteArray.Length, blocksize);
             //get the crap at the tail of the array first so the loop can skip it

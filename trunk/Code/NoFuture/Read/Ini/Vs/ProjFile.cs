@@ -7,7 +7,7 @@ using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
-using NoFuture.Exceptions;
+using NoFuture.Shared.Core;
 using NoFuture.Util;
 
 namespace NoFuture.Read.Vs
@@ -265,7 +265,7 @@ namespace NoFuture.Read.Vs
                         continue;
                     var conditionValue = elem.GetAttribute("Condition");
                     string configOut;
-                    if(Shared.RegexCatalog.IsRegexMatch(conditionValue, REGEX_PATTERN, out configOut, 1))
+                    if(RegexCatalog.IsRegexMatch(conditionValue, REGEX_PATTERN, out configOut, 1))
                         configurations.Add(configOut);
                 }
                 return configurations.ToArray();
@@ -1833,7 +1833,7 @@ namespace NoFuture.Read.Vs
         {
             if (string.IsNullOrWhiteSpace(compilerPath))
             {
-                compilerPath = Shared.NfConfig.DotNet.CscCompiler;
+                compilerPath = NfConfig.DotNet.CscCompiler;
             }
             var dblQuote = new string(new[] { '"' });
             ValidateProjFile(vsprojPath);

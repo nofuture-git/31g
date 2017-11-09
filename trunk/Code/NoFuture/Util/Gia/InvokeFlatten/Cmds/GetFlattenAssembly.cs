@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using NoFuture.Exceptions;
 using NoFuture.Shared;
+using NoFuture.Shared.Core;
 using NoFuture.Util.Gia.Args;
 using NoFuture.Util.NfConsole;
 

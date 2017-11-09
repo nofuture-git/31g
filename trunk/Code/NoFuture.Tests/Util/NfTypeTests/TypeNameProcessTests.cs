@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NoFuture.Shared;
+using NoFuture.Shared.Core;
 using NoFuture.Util.NfType;
 
 namespace NoFuture.Tests.Util.NfTypeTests

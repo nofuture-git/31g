@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading;
 using Newtonsoft.Json;
 using NoFuture.Shared;
+using NoFuture.Shared.Core;
 
 namespace NoFuture.Util.NfConsole
 {

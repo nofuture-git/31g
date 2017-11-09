@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
-using NoFuture.Exceptions;
 using NoFuture.Shared;
+using NoFuture.Shared.Core;
 using NoFuture.Util.NfConsole;
 
 namespace NoFuture.Util.Pos

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using Microsoft.Win32;
 using NoFuture.Shared;
+using NoFuture.Shared.Core;
 using RDotNet;
 
 namespace NoFuture.Util.Re

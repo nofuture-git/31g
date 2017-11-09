@@ -69,9 +69,9 @@
     <Content Include="favicon.ico" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Shared\Shared.csproj">
-      <Project>{4b77029a-6f3e-48ae-b8e2-c4dd06dce627}</Project>
-      <Name>Shared</Name>
+    <ProjectReference Include="..\..\Shared\Core\Shared.Core.csproj">
+      <Project>{6eca48dc-fdb4-4660-9914-3b74d5975ff9}</Project>
+      <Name>Shared.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Util\Util.csproj">
       <Project>{d7f28538-ba6a-46b4-a080-65124e899317}</Project>

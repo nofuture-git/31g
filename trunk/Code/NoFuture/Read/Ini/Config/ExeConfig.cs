@@ -4,8 +4,8 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Xml;
-using NoFuture.Exceptions;
 using NoFuture.Shared;
+using NoFuture.Shared.Core;
 
 namespace NoFuture.Read.Config
 {
@@ -336,7 +336,7 @@ namespace NoFuture.Read.Config
                     endPtNode.Attributes["contract"]?.Value,
                     endPtNode.Attributes["name"]?.Value);
 
-                if (!Shared.RegexCatalog.AreAnyRegexMatch(addrAttr.Value, regex2Values.Keys.Cast<string>().ToArray()))
+                if (!RegexCatalog.AreAnyRegexMatch(addrAttr.Value, regex2Values.Keys.Cast<string>().ToArray()))
                 {
                     var addUri = new UriBuilder(addrAttr.Value) { Host = "localhost" };
 
@@ -474,7 +474,7 @@ namespace NoFuture.Read.Config
                 endPtNode.Attributes["contract"]?.Value,
                 endPtNode.Attributes["name"]?.Value);
 
-            if (!Shared.RegexCatalog.AreAnyRegexMatch(endPtAddrAttr.Value, regex2Values.Keys.Cast<string>().ToArray()))
+            if (!RegexCatalog.AreAnyRegexMatch(endPtAddrAttr.Value, regex2Values.Keys.Cast<string>().ToArray()))
             {
                 var addUri = new UriBuilder(endPtAddrAttr.Value) {Host = "localhost"};
 
@@ -511,7 +511,7 @@ namespace NoFuture.Read.Config
                 _xmlWriter.WriteAttributeString("baseAddress", baseAddrAttr.Value);
 
 
-                if (!Shared.RegexCatalog.AreAnyRegexMatch(baseAddrAttr.Value, regex2Values.Keys.Cast<string>().ToArray()))
+                if (!RegexCatalog.AreAnyRegexMatch(baseAddrAttr.Value, regex2Values.Keys.Cast<string>().ToArray()))
                 {
                     var bAddrUri = new UriBuilder(baseAddrAttr.Value) {Host = "localhost"};
                     baseAddrAttr.Value = bAddrUri.ToString();

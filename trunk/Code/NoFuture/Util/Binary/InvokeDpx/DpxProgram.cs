@@ -6,8 +6,8 @@ using System.Text;
 using System.Threading;
 using System.IO;
 using Newtonsoft.Json;
-using NoFuture.Exceptions;
 using NoFuture.Shared;
+using NoFuture.Shared.Core;
 using NoFuture.Util.NfConsole;
 
 namespace NoFuture.Util.Binary.InvokeDpx

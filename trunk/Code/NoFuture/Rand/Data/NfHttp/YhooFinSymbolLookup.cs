@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using NoFuture.Rand.Com;
 using NoFuture.Rand.Data.Types;
 using NoFuture.Shared;
+using NoFuture.Shared.Core;
 
 namespace NoFuture.Rand.Data.NfHttp
 {

@@ -2,6 +2,7 @@ using System;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
 using NoFuture.Shared;
+using NoFuture.Shared.Core;
 using NoFuture.Util;
 
 namespace NoFuture.Rand.Domus

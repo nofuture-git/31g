@@ -1,6 +1,6 @@
 ﻿using System;
-using NoFuture.Exceptions;
 using NoFuture.Rand.Core;
+using NoFuture.Shared.Core;
 
 namespace NoFuture.Rand.Data.Sp
 {

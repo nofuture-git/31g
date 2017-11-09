@@ -3,6 +3,7 @@ using System.Collections;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NoFuture.Shared;
+using NoFuture.Shared.Core;
 
 namespace NoFuture.Tests.Shared
 {
@@ -10,7 +11,7 @@ namespace NoFuture.Tests.Shared
     public class TestRegexCatalog
     {
         public Hashtable Regex2Values;
-        private NoFuture.Shared.RegexCatalog _testSubject = new RegexCatalog();
+        private RegexCatalog _testSubject = new RegexCatalog();
 
         private const string _hardCodedIpV4 = "10.130.55.36";
 
@@ -36,18 +37,18 @@ namespace NoFuture.Tests.Shared
         public void TestIsRegexMatch()
         {
             string testResultOut;
-            var testResult = NoFuture.Shared.RegexCatalog.IsRegexMatch("10.130.55.36", _testSubject.IPv4,
+            var testResult = RegexCatalog.IsRegexMatch("10.130.55.36", _testSubject.IPv4,
                 out testResultOut);
             Assert.IsTrue(testResult);
 
             testResultOut = null;
-            testResult = NoFuture.Shared.RegexCatalog.IsRegexMatch("net.tcp://10.130.55.36/MyService.svc", _testSubject.IPv4,
+            testResult = RegexCatalog.IsRegexMatch("net.tcp://10.130.55.36/MyService.svc", _testSubject.IPv4,
                 out testResultOut);
             Assert.IsTrue(testResult);
             Assert.AreEqual("10.130.55.36", testResultOut);
 
             testResultOut = null;
-            testResult = NoFuture.Shared.RegexCatalog.IsRegexMatch("https://www.TheDomainName.com/MyService.svc", _testSubject.UrlClassicAmerican,
+            testResult = RegexCatalog.IsRegexMatch("https://www.TheDomainName.com/MyService.svc", _testSubject.UrlClassicAmerican,
                 out testResultOut);
             Assert.IsTrue(testResult);
             Assert.AreEqual("www.TheDomainName.com", testResultOut);
@@ -57,7 +58,7 @@ namespace NoFuture.Tests.Shared
         [TestMethod]
         public void TestAreAnyRegexMatch()
         {
-            var testResult = NoFuture.Shared.RegexCatalog.AreAnyRegexMatch("www.TheDomainName.com",
+            var testResult = RegexCatalog.AreAnyRegexMatch("www.TheDomainName.com",
                 Regex2Values.Keys.Cast<string>().ToArray());
             Assert.IsTrue(testResult);
 
@@ -74,7 +75,7 @@ namespace NoFuture.Tests.Shared
         public void TestAppropriateAllRegex()
         {
             var testResultOut = _hardCodedIpV4;
-            NoFuture.Shared.RegexCatalog.AppropriateAllRegex(ref testResultOut, Regex2Values);
+            RegexCatalog.AppropriateAllRegex(ref testResultOut, Regex2Values);
             Assert.AreEqual(Regex2Values[_hardCodedIpV4],testResultOut);
         }
 
@@ -82,7 +83,7 @@ namespace NoFuture.Tests.Shared
         public void TestToRegexExpression()
         {
             var testInput = "Dependent (18 yrs +)";
-            var testResult = NoFuture.Shared.RegexCatalog.ToRegexExpression(testInput);
+            var testResult = RegexCatalog.ToRegexExpression(testInput);
 
             Assert.IsNotNull(testResult);
             System.Text.RegularExpressions.Regex.IsMatch("Dependents", testResult);

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text;
 using NoFuture.Shared;
+using NoFuture.Shared.Core;
 
 namespace NoFuture.Rand.Gov.Bls
 {
@@ -53,7 +54,7 @@ namespace NoFuture.Rand.Gov.Bls
                                             $"of {seriesCodes.Length}.");
 
             if (string.IsNullOrWhiteSpace(NfConfig.SecurityKeys.BlsApiRegistrationKey))
-                throw new Exceptions.RahRowRagee("The 'NoFuture.Globals.SecurityKeys.BlsApiRegistrationKey' " +
+                throw new RahRowRagee("The 'NoFuture.Globals.SecurityKeys.BlsApiRegistrationKey' " +
                                                  "must be set before calling this property.");
             dynamic payload =
                 new

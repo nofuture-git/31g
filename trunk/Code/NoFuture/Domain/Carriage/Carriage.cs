@@ -1,6 +1,6 @@
 using System;
 using System.Text;
-using NoFuture.Exceptions;
+using NoFuture.Shared.Core;
 using NoFuture.Util.NfConsole;
 
 namespace NoFuture.Domain

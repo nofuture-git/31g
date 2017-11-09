@@ -4,7 +4,7 @@ using System.Data;
 using System.Globalization;
 using System.Linq;
 using System.Text;
-using NoFuture.Exceptions;
+using NoFuture.Shared.Core;
 using NoFuture.Sql.Mssql.Md;
 
 namespace NoFuture.Sql.Mssql
@@ -216,9 +216,9 @@ namespace NoFuture.Sql.Mssql
         internal static Tuple<string,string> FormatKeyValue(string key, string value, int len, int counter, bool withNameMarker = false)
         {
             if (string.Equals(value, bool.TrueString, StringComparison.OrdinalIgnoreCase))
-                value = Shared.Constants.SQL_SERVER_TRUE.ToString(CultureInfo.InvariantCulture);
+                value = Constants.SQL_SERVER_TRUE.ToString(CultureInfo.InvariantCulture);
             if (string.Equals(value, bool.FalseString, StringComparison.OrdinalIgnoreCase))
-                value = Shared.Constants.SQL_SERVER_FALSE.ToString(CultureInfo.InvariantCulture);
+                value = Constants.SQL_SERVER_FALSE.ToString(CultureInfo.InvariantCulture);
             var val = withNameMarker ? $"/*{counter:000}-{key}*/ {value}" : value;
             key = $"[{key}]";
 

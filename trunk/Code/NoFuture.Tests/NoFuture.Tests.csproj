@@ -229,6 +229,10 @@
       <Project>{335212c4-7f96-4647-8d9b-f1a4e61b735b}</Project>
       <Name>Read</Name>
     </ProjectReference>
+    <ProjectReference Include="..\NoFuture\Shared\Core\Shared.Core.csproj">
+      <Project>{6eca48dc-fdb4-4660-9914-3b74d5975ff9}</Project>
+      <Name>Shared.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\NoFuture\Shared\Shared.csproj">
       <Project>{4b77029a-6f3e-48ae-b8e2-c4dd06dce627}</Project>
       <Name>Shared</Name>

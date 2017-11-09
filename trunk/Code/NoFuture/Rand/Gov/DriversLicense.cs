@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using NoFuture.Exceptions;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Domus;
+using NoFuture.Shared.Core;
 
 namespace NoFuture.Rand.Gov
 {

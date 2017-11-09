@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using NoFuture.Exceptions;
 using NoFuture.Rand.Core;
+using NoFuture.Shared.Core;
 
 namespace NoFuture.Rand.Gov
 {
@@ -22,7 +22,7 @@ namespace NoFuture.Rand.Gov
             GroupNumber = string.Format("{0:00}", Etx.MyRand.Next(1, 99));
             SerialNumber = string.Format("{0:0000}", Etx.MyRand.Next(1, 9999));
             _value = string.Format("{0}-{1}-{2}", AreaNumber, GroupNumber, SerialNumber);
-            var regexCatalog = new Shared.RegexCatalog();
+            var regexCatalog = new RegexCatalog();
             _regexPattern = regexCatalog.SSN;
 
         }

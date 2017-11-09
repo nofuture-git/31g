@@ -1,4 +1,5 @@
 ﻿using NoFuture.Shared;
+using NoFuture.Shared.Core;
 
 namespace NoFuture.Rand.Gov.Bea
 {
@@ -14,7 +15,7 @@ namespace NoFuture.Rand.Gov.Bea
             get
             {
                 if (string.IsNullOrWhiteSpace(NfConfig.SecurityKeys.BeaDataApiKey))
-                    throw new Exceptions.RahRowRagee(
+                    throw new RahRowRagee(
                         "The 'NoFuture.Globals.SecurityKeys.BeaDataApiKey' must be set before calling this property.");
                 return string.Format("{0}?&UserID={1}&", BeaBaseAccessUri, NfConfig.SecurityKeys.BeaDataApiKey);
             }

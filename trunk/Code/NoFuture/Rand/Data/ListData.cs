@@ -2,6 +2,7 @@
 using System.Linq;
 using NoFuture.Rand.Data.Source;
 using NoFuture.Shared;
+using NoFuture.Shared.Core;
 
 namespace NoFuture.Rand.Data
 {

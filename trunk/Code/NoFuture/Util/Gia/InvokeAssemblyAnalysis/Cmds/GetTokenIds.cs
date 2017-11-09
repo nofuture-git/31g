@@ -5,9 +5,9 @@ using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using Newtonsoft.Json;
-using NoFuture.Exceptions;
 using NoFuture.Shared;
 using System.Diagnostics;
+using NoFuture.Shared.Core;
 using NoFuture.Util.Binary;
 using NoFuture.Util.NfConsole;
 

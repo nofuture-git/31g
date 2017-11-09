@@ -10,6 +10,7 @@ using System.Xml;
 using System.Xml.Linq;
 using Newtonsoft.Json;
 using NoFuture.Shared;
+using NoFuture.Shared.Core;
 using NoFuture.Util.NfType;
 using Formatting = Newtonsoft.Json.Formatting;
 

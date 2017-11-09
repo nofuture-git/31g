@@ -5,8 +5,8 @@ using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using CERTENROLLLib;
-using NoFuture.Exceptions;
 using NoFuture.Shared;
+using NoFuture.Shared.Core;
 using NoFuture.Util.NfType;
 using X509KeyUsageFlags = CERTENROLLLib.X509KeyUsageFlags;
 

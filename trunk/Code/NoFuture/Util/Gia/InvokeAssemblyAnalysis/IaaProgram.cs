@@ -6,8 +6,8 @@ using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using NoFuture.Exceptions;
 using NoFuture.Shared;
+using NoFuture.Shared.Core;
 using NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds;
 using NoFuture.Util.NfConsole;
 

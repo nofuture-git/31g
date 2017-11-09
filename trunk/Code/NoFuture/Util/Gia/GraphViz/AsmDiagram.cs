@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using NoFuture.Shared;
+using NoFuture.Shared.Core;
 using NoFuture.Util.Binary;
 using NoFuture.Util.NfType;
 

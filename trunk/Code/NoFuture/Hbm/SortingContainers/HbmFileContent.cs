@@ -5,7 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Xml;
-using NoFuture.Exceptions;
+using NoFuture.Shared.Core;
 using NoFuture.Util;
 using NoFuture.Util.NfType;
 using HbmXmlNames = NoFuture.Hbm.Globals.HbmXmlNames;

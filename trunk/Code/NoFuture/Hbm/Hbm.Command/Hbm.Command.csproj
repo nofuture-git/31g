@@ -87,20 +87,6 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\Shared\Shared.csproj">
-      <Project>{4b77029a-6f3e-48ae-b8e2-c4dd06dce627}</Project>
-      <Name>Shared</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Util\Util.csproj">
-      <Project>{d7f28538-ba6a-46b4-a080-65124e899317}</Project>
-      <Name>Util</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Hbm.csproj">
-      <Project>{b48811e5-ccb2-4aae-b4e8-a711fa018460}</Project>
-      <Name>Hbm</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

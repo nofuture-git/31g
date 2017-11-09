@@ -3,6 +3,7 @@ using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NoFuture.Shared;
 using System.IO;
+using NoFuture.Shared.Core;
 using NoFuture.Util.Gia.InvokeAssemblyAnalysis;
 using NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds;
 
