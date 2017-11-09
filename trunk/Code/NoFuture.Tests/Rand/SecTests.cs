@@ -20,7 +20,7 @@ namespace NoFuture.Tests.Rand
             var xmlContent = System.IO.File.ReadAllText(SEC_BY_CIK_XML_PATH);
 
             var testResultOut = new PublicCorporation();
-            var testResult = PublicCorporation.TryParseSecEdgarCikSearch(xmlContent,
+            var testResult = Copula.TryParseSecEdgarCikSearch(xmlContent,
                 new Uri(
                     "http://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=041215216456&type=10-K&dateb=&owner=exclude&count=100&output=atom"),
                 ref testResultOut);
@@ -62,7 +62,7 @@ namespace NoFuture.Tests.Rand
         public void TestParseCompanyFullTextSearch()
         {
             var xmlContent = System.IO.File.ReadAllText(SEC_BY_FULLTEXT_XML_PATH);
-            var testResult = PublicCorporation.ParseSecEdgarFullTextSearch(xmlContent, new Uri("http://www.sec.gov/cgi-bin/srch-edgar"));
+            var testResult = Copula.ParseSecEdgarFullTextSearch(xmlContent, new Uri("http://www.sec.gov/cgi-bin/srch-edgar"));
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0, testResult.Length);
 
@@ -88,7 +88,7 @@ namespace NoFuture.Tests.Rand
         public void TestParseAccessionNumFromSummary()
         {
             var testResult =
-                PublicCorporation.ParseAccessionNumFromSummary(
+                Copula.ParseAccessionNumFromSummary(
                     "<b>Filed Date:</b> 04/15/2015 <b>Accession Number:</b> 0001549727-15-000033 <b>Size:</b> 3 MB");
             Assert.IsNotNull(testResult);
             Assert.AreEqual("0001549727-15-000033", testResult);
@@ -122,7 +122,7 @@ namespace NoFuture.Tests.Rand
         public void TestTryGetDayOfYearFiscalEnd()
         {
             int testResultOut;
-            var testResult = PublicCorporation.TryGetDayOfYearFiscalEnd("--12-25", out testResultOut);
+            var testResult = Copula.TryGetDayOfYearFiscalEnd("--12-25", out testResultOut);
             System.Diagnostics.Debug.WriteLine(testResultOut);
             Assert.IsTrue(testResult);
         }
@@ -130,11 +130,11 @@ namespace NoFuture.Tests.Rand
         [TestMethod]
         public void TestParseNameFromTitle()
         {
-            var testResult = PublicCorporation.ParseNameFromTitle("10-K - 1347 Property Insurance Holdings, Inc.");
+            var testResult = Copula.ParseNameFromTitle("10-K - 1347 Property Insurance Holdings, Inc.");
             System.Diagnostics.Debug.WriteLine(testResult.Item2);
             Assert.IsInstanceOfType(testResult.Item1, typeof(Form10K));
             Assert.AreEqual("1347 Property Insurance Holdings, Inc.", testResult.Item2);
-            testResult = PublicCorporation.ParseNameFromTitle("13F-HR - 10-15 ASSOCIATES, INC.");
+            testResult = Copula.ParseNameFromTitle("13F-HR - 10-15 ASSOCIATES, INC.");
             Assert.IsInstanceOfType(testResult.Item1, typeof(Form13Fhr));
             Assert.AreEqual("10-15 ASSOCIATES, INC.", testResult.Item2);
             System.Diagnostics.Debug.WriteLine(testResult.Item2);

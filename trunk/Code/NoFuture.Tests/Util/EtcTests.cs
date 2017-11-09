@@ -38,20 +38,17 @@ namespace NoFuture.Tests.Util
         {
             const string typicalTypeName = "noFuture.util.etc";
             var testResult = Etc.CapWords(typicalTypeName, '.');
-            System.Diagnostics.Debug.WriteLine(testResult);
             Assert.AreEqual("NoFuture.Util.Etc", testResult);
 
             const string allCaps = "KEYCODE";
             testResult = Etc.CapWords(allCaps, '.');
-            System.Diagnostics.Debug.WriteLine(testResult);
             Assert.AreEqual("Keycode", testResult);
 
             const string capsLockOn = "nOFUTURE.uTIL.eTC";
             testResult = Etc.CapWords(capsLockOn, '.');
-            System.Diagnostics.Debug.WriteLine(testResult);
             Assert.AreEqual("Nofuture.Util.Etc",testResult);
 
-            testResult = Etc.CapWords("A typical English sentence looks like this.", ' ');
+            testResult = Etc.CapWords("NEW YORK".ToLower(), ' ');
             System.Diagnostics.Debug.WriteLine(testResult);
         }
 

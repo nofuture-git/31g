@@ -7,6 +7,7 @@ using System.Xml;
 using NoFuture.Rand.Com;
 using NoFuture.Rand.Com.NfText;
 using NoFuture.Rand.Data.Source;
+using NoFuture.Shared.Core;
 
 namespace NoFuture.Rand.Data
 {
@@ -31,14 +32,9 @@ namespace NoFuture.Rand.Data
         private static XmlDocument _usPersonalWealth;
         private static XmlDocument _vinWmi;
         private static XmlDocument _usOccupations;
+        private static XmlDocument _usBanks;
         private static List<Tuple<string, double>> _enWords;
         private static Bank[] _fedReleaseLrgBnkNames;
-        #endregion
-
-        #region inner types
-
-
-
         #endregion
 
         #region methods
@@ -285,6 +281,19 @@ namespace NoFuture.Rand.Data
         }
 
         /// <summary>
+        /// Loads the <see cref="DataFiles.US_BANKS"/> data into a <see cref="XmlDocument"/> document.
+        /// </summary>
+        public static XmlDocument UsBanks
+        {
+            get
+            {
+                if (_usBanks == null)
+                    GetXmlDataSource(DataFiles.US_BANKS, ref _usBanks);
+                return _usBanks;
+            }
+        }
+
+        /// <summary>
         /// Loads the <see cref="DataFiles.ENGLISH_WORDS_DATA_FILE"/> data into a <see cref="XmlDocument"/> document.
         /// </summary>
         public static List<Tuple<string, double>> EnglishWords
@@ -333,11 +342,6 @@ namespace NoFuture.Rand.Data
 
         /// <summary>
         /// Loads a list of <see cref="FinancialFirm"/> by parsing the data from <see cref="DataFiles.LRG_BNK_LST_DATA_FILE"/> 
-        /// <remarks>
-        /// A path must be set to <see cref="BinDirectories.Root"/> which contains a 'Data\Source' folder
-        /// and it is within that folder the method expects to find 'lrg_bnk_lst.txt'.
-        /// This function uses the local copy of the doc and does not fetch it from The Fed over the net.
-        /// </remarks>
         /// </summary>
         public static Bank[] CommercialBankData
         {

@@ -60,7 +60,9 @@ namespace NoFuture.Rand.Com
         {
             const string COMMA = ",";
             const string LETTER_Y = "Y";
-            UpsertName(KindsOfNames.Legal, Cusip.GetNameFull(li.BankName));
+            var unfoldedName = GetBankFullName(li.BankName);
+
+            UpsertName(KindsOfNames.Legal, unfoldedName);
             UpsertName(KindsOfNames.Abbrev, li.BankName);
             Rssd = new ResearchStatisticsSupervisionDiscount { Value = li.BankId };
             UsCityStateZip cityOut;
@@ -97,6 +99,50 @@ namespace NoFuture.Rand.Com
         #endregion
 
         #region methods
+
+        public static string GetBankFullName(string abbrev)
+        {
+            var unfoldedName = Cusip.GetNameFull(abbrev);
+
+            if (unfoldedName.EndsWith(" Na"))
+            {
+                //national association is part of the legal name
+                unfoldedName = unfoldedName.Substring(0, unfoldedName.Length - 3) + ", N.A.";
+            }
+            //cusip uses COML so this one gets missed
+            if (unfoldedName.Contains(" Cmrl "))
+                unfoldedName = unfoldedName.Replace(" Cmrl ", " Commercial ");
+
+            if (unfoldedName.Contains(" Cty "))
+                unfoldedName = unfoldedName.Replace(" Cty ", " City ");
+
+
+            if(unfoldedName.EndsWith(" Nb"))
+                unfoldedName = unfoldedName.Substring(0, unfoldedName.Length - 3) + " National Bank";
+
+            if (unfoldedName.Contains(" Nb "))
+                unfoldedName = unfoldedName.Replace(" Nb ", " National Bank ");
+
+            if (unfoldedName.Contains(" Bkg&"))
+                unfoldedName = unfoldedName.Replace(" Bkg&", " Bank &");
+
+            if(unfoldedName.EndsWith(" Tc"))
+                unfoldedName = unfoldedName.Substring(0, unfoldedName.Length - 3) + " Trust Company";
+            if (unfoldedName.Contains(" Tc "))
+                unfoldedName = unfoldedName.Replace(" Tc ", " Trust Company ");
+
+            if (unfoldedName.EndsWith(" B&tc"))
+                unfoldedName = unfoldedName.Substring(0, unfoldedName.Length - 5) + " Bank & Trust Company";
+
+            if (unfoldedName.Contains(" Fncl "))
+                unfoldedName = unfoldedName.Replace(" Fncl ", " Financial ");
+
+            if (unfoldedName.Contains(" Mrch "))
+                unfoldedName = unfoldedName.Replace(" Mrch ", " Merchent ");
+
+            return unfoldedName;
+        }
+
         public static Bank GetRandomBank(CityArea ca)
         {
             Bank bank = null;

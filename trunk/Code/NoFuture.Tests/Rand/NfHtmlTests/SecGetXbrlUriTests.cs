@@ -24,7 +24,7 @@ namespace NoFuture.Tests.Rand.NfHtmlTests
             var testSubject = new NoFuture.Rand.Com.PublicCorporation { CIK = new CentralIndexKey { Value = "0000768899" }};
             testSubject.UpsertName(KindsOfNames.Legal, "TrueBlue, Inc.");
             testSubject.SecReports.Add(new Form10K {HtmlFormLink = testUri });
-            var testResult = NoFuture.Rand.Com.PublicCorporation.TryGetXmlLink(testContent,testUri,ref testSubject);
+            var testResult = NoFuture.Rand.Com.Copula.TryGetXmlLink(testContent,testUri,ref testSubject);
 
             Assert.IsTrue(testResult);
             var testResultItem = testSubject.SecReports.FirstOrDefault(x =>x is Form10K && ((Form10K)x).HtmlFormLink == testUri);

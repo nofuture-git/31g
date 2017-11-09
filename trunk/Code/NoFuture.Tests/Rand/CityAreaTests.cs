@@ -134,15 +134,16 @@ namespace NoFuture.Tests.Rand
         {
             var addrData = new AddressData {StateAbbrv = "NV", PostalCode = "89421"};
             var testResult = new UsCityStateZip(addrData);
-            Assert.AreNotEqual("New York", testResult.City);
+            Assert.AreNotEqual("New York City", testResult.City);
             System.Diagnostics.Debug.WriteLine(testResult.City);
+
         }
         [TestMethod]
         public void TestUsCityStateZipCtorPickWithMsa()
         {
             var addrData = new AddressData { StateAbbrv = "FL", PostalCode = "32701" };
             var testResult = new UsCityStateZip(addrData);
-            Assert.AreNotEqual("New York", testResult.City);
+            Assert.AreNotEqual("New York City", testResult.City);
             Assert.IsNotNull(testResult.Msa);
             System.Diagnostics.Debug.WriteLine(testResult.City);
         }
@@ -151,7 +152,17 @@ namespace NoFuture.Tests.Rand
         {
             var addrData = new AddressData { StateAbbrv = "FL", PostalCode = "32101" };
             var testResult = new UsCityStateZip(addrData);
-            Assert.AreNotEqual("New York", testResult.City);
+            Assert.AreNotEqual("New York City", testResult.City);
+            Assert.IsNotNull(testResult.Msa);
+            System.Diagnostics.Debug.WriteLine(testResult.City);
+        }
+
+        [TestMethod]
+        public void TestUsCityStateZipCtorStateAndCityOnly()
+        {
+            var addrData = new AddressData {StateAbbrv = "NC", City = "CHARLOTTE"};
+            var testResult = new UsCityStateZip(addrData);
+            Assert.AreNotEqual("New York City", testResult.City);
             Assert.IsNotNull(testResult.Msa);
             System.Diagnostics.Debug.WriteLine(testResult.City);
         }

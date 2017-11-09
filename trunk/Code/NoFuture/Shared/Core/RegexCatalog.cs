@@ -1,5 +1,9 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -7,32 +11,67 @@ namespace NoFuture.Shared.Core
 {
     public class RegexCatalog
     {
+        private const string REGEX_LITERALS = "NoFuture.Shared.Core.Properties.RegexLiterals.txt";
+        private static Dictionary<string, string> _regexLiterals = new Dictionary<string, string>();
+
         public static RegexOptions MyRegexOptions { get; set; } = RegexOptions.IgnoreCase;
 
-        public string CppClassMember => Properties.Resources.CppClassMember;
-        public string CsClass => Properties.Resources.CsClass;
-        public string CsClassMember => Properties.Resources.CsClassMember;
-        public string CsFunction => Properties.Resources.CsFunction;
-        public string EmailAddress => Properties.Resources.EmailAddress;
-        public string EmbeddedHtml => Properties.Resources.EmbeddedHtml;
-        public string IPv4 => Properties.Resources.IPv4;
-        public string JsFunction => Properties.Resources.JsFunction;
-        public string PhoneNumber01 => Properties.Resources.PhoneNumber01;
-        public string PhoneNumber02 => Properties.Resources.PhoneNumber02;
-        public string SqlSelectValues => Properties.Resources.SqlSelectValues;
-        public string SqlServerTableName => Properties.Resources.SqlServerTableName;
-        public string SSN => Properties.Resources.SSN;
-        public string StringIsRegex => Properties.Resources.StringIsRegex;
-        public string StringLiteral => Properties.Resources.StringLiteral;
-        public string TimeValue => Properties.Resources.TimeValue;
-        public string Uri => Properties.Resources.Uri;
-        public string Url => Properties.Resources.Url;
-        public string USD => Properties.Resources.USD;
-        public string UsZipcode => Properties.Resources.UsZipcode;
-        public string VbClassMember => Properties.Resources.VbClassMember;
-        public string WindowsRootedPath => Properties.Resources.WindowsRootedPath;
-        public string LongDate => Properties.Resources.LongDate;
-        public string UrlClassicAmerican => Properties.Resources.UrlClassicAmerican;
+        public string CppClassMember => GetRegexLiteral("CppClassMember");
+        public string CsClass => GetRegexLiteral("CsClass");
+        public string CsClassMember => GetRegexLiteral("CsClassMember");
+        public string CsFunction => GetRegexLiteral("CsFunction");
+        public string EmailAddress => GetRegexLiteral("EmailAddress");
+        public string EmbeddedHtml => GetRegexLiteral("EmbeddedHtml");
+        public string IPv4 => GetRegexLiteral("IPv4");
+        public string JsFunction => GetRegexLiteral("JsFunction");
+        public string PhoneNumber01 => GetRegexLiteral("PhoneNumber01");
+        public string PhoneNumber02 => GetRegexLiteral("PhoneNumber02");
+        public string SqlSelectValues => GetRegexLiteral("SqlSelectValues");
+        public string SqlServerTableName => GetRegexLiteral("SqlServerTableName");
+        public string SSN => GetRegexLiteral("SSN");
+        public string StringIsRegex => GetRegexLiteral("StringIsRegex");
+        public string StringLiteral => GetRegexLiteral("StringLiteral");
+        public string TimeValue => GetRegexLiteral("TimeValue");
+        public string Uri => GetRegexLiteral("Uri");
+        public string Url => GetRegexLiteral("Url");
+        public string USD => GetRegexLiteral("USD");
+        public string UsZipcode => GetRegexLiteral("UsZipcode");
+        public string VbClassMember => GetRegexLiteral("VbClassMember");
+        public string WindowsRootedPath => GetRegexLiteral("WindowsRootedPath");
+        public string LongDate => GetRegexLiteral("LongDate");
+        public string UrlClassicAmerican => GetRegexLiteral("UrlClassicAmerican");
+
+        internal static string GetRegexLiteral(string name)
+        {
+            if (_regexLiterals.Any())
+                return _regexLiterals.FirstOrDefault(x => x.Key == name).Value ?? "";
+
+            var liSteam = Assembly.GetExecutingAssembly().GetManifestResourceStream(REGEX_LITERALS);
+            if (liSteam == null)
+            {
+                return string.Empty;
+            }
+            var txtSr = new StreamReader(liSteam);
+            var content = txtSr.ReadToEnd();
+
+            var lines = content.Split(Constants.LF);
+            foreach (var ln in lines)
+            {
+                var keyValue = ln.Split('\t');
+                if (keyValue.Length < 2)
+                    continue;
+                var key = keyValue[0]?.Trim() ?? "";
+                var value = keyValue[1]?.Trim() ?? "";
+                if (string.IsNullOrWhiteSpace(key) || string.IsNullOrWhiteSpace(value))
+                    continue;
+                if (_regexLiterals.ContainsKey(key))
+                    continue;
+                _regexLiterals.Add(key, value);
+            }
+
+            return _regexLiterals.FirstOrDefault(x => x.Key == name).Value ?? "";
+            
+        }
 
         /// <summary>
         /// A global container for assigning idiosyncratic pattern-value pairs.

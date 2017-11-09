@@ -28,6 +28,7 @@ namespace NoFuture.Rand.Data.Source
         public const string ENGLISH_WORDS_DATA_FILE = "English_Words.xml";
         public const string WEBMAIL_DOMAINS = "webmailDomains.txt";
         public const string US_OCCUPATIONS = "US_Occupations.xml";
+        public const string US_BANKS = "US_Banks.xml";
 
         public static string GetByName(string name)
         {

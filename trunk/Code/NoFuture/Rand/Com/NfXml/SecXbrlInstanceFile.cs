@@ -81,7 +81,7 @@ namespace NoFuture.Rand.Com.NfXml
             var endOfYear = 0;
             var endOfYearStr = xml.SelectSingleNode($"//{XmlNs.DEI}:CurrentFiscalYearEndDate", _nsMgr)?.InnerText ??
                                string.Empty;
-            PublicCorporation.TryGetDayOfYearFiscalEnd(endOfYearStr,out endOfYear);
+            Copula.TryGetDayOfYearFiscalEnd(endOfYearStr,out endOfYear);
 
             var cik = xml.SelectSingleNode($"//{XmlNs.DEI}:EntityCentralIndexKey", _nsMgr)?.InnerText;
             var numOfShares = 0;
