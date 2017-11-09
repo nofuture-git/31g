@@ -1,11 +1,11 @@
 ﻿try{
-if(-not [NoFuture.Shared.NfConfig+MyFunctions]::FunctionFiles.ContainsValue($MyInvocation.MyCommand))
+if(-not [NoFuture.Shared.Core.NfConfig+MyFunctions]::FunctionFiles.ContainsValue($MyInvocation.MyCommand))
 {
-[NoFuture.Shared.NfConfig+MyFunctions]::FunctionFiles.Add("Get-BinaryDump",$MyInvocation.MyCommand)
-[NoFuture.Shared.NfConfig+MyFunctions]::FunctionFiles.Add("Invoke-JavaCompiler",$MyInvocation.MyCommand)
-[NoFuture.Shared.NfConfig+MyFunctions]::FunctionFiles.Add("Get-JavaClassPath",$MyInvocation.MyCommand)
-[NoFuture.Shared.NfConfig+MyFunctions]::FunctionFiles.Add("Get-NuGetExe",$MyInvocation.MyCommand)
-[NoFuture.Shared.NfConfig+MyFunctions]::FunctionFiles.Add("Install-DotNetRoslyn",$MyInvocation.MyCommand)
+[NoFuture.Shared.Core.NfConfig+MyFunctions]::FunctionFiles.Add("Get-BinaryDump",$MyInvocation.MyCommand)
+[NoFuture.Shared.Core.NfConfig+MyFunctions]::FunctionFiles.Add("Invoke-JavaCompiler",$MyInvocation.MyCommand)
+[NoFuture.Shared.Core.NfConfig+MyFunctions]::FunctionFiles.Add("Get-JavaClassPath",$MyInvocation.MyCommand)
+[NoFuture.Shared.Core.NfConfig+MyFunctions]::FunctionFiles.Add("Get-NuGetExe",$MyInvocation.MyCommand)
+[NoFuture.Shared.Core.NfConfig+MyFunctions]::FunctionFiles.Add("Install-DotNetRoslyn",$MyInvocation.MyCommand)
 }
 }catch{
     Write-Host "file is being loaded independent of 'start.ps1' - some functions may not be available."
@@ -49,10 +49,10 @@ function Get-BinaryDump
         }
         
         #test for dumpbin.exe being installed
-        if(-not(Test-Path ([NoFuture.Shared.NfConfig+X64]::Dumpbin))){throw ("Expected to find 'dumpbin.exe' at '{0}'." -f ([NoFuture.Shared.NfConfig+X64]::Dumpbin)) }
+        if(-not(Test-Path ([NoFuture.Shared.Core.NfConfig+X64]::Dumpbin))){throw ("Expected to find 'dumpbin.exe' at '{0}'." -f ([NoFuture.Shared.Core.NfConfig+X64]::Dumpbin)) }
         
         #construct command expression
-        $dumpbin = ("`"{0}`"" -f ([NoFuture.Shared.NfConfig+X64]::Dumpbin))
+        $dumpbin = ("`"{0}`"" -f ([NoFuture.Shared.Core.NfConfig+X64]::Dumpbin))
         if($DumpBinSwitches -eq $null -or $DumpBinSwitches -eq "")
         {
             $parameterSwitch = " /EXPORTS"
@@ -101,7 +101,7 @@ function Install-DotNetRoslyn
         Add-Type -AssemblyName "System.IO.Compression.FileSystem"
 
         #set download dir to temp if not specified
-        $tempPath = [NoFuture.Shared.NfConfig+TempDirectories]::Root
+        $tempPath = [NoFuture.Shared.Core.NfConfig+TempDirectories]::Root
 
         if([string]::IsNullOrWhiteSpace($tempPath) -or -not (Test-Path $tempPath)){
             $tempPath = [System.Environment]::GetFolderPath([System.Environment+SpecialFolder]::ApplicationData)
@@ -109,7 +109,7 @@ function Install-DotNetRoslyn
         
         #set location of src-code
         if([string]::IsNullOrEmpty($Path)){
-            $Path = [NoFuture.Shared.NfConfig+BinDirectories]::Root
+            $Path = [NoFuture.Shared.Core.NfConfig+BinDirectories]::Root
         }
 
         if([string]::IsNullOrWhiteSpace($Path) -or -not (Test-Path $Path)){
@@ -145,11 +145,11 @@ function Install-DotNetRoslyn
         Write-Host "Build Complete, assigning NoFuture config values" -ForegroundColor Yellow
         Pop-Location
 
-        if([string]::IsNullOrWhiteSpace([NoFuture.Shared.NfConfig+DotNet]::CscCompiler)){
-            [NoFuture.Shared.NfConfig+DotNet]::CscCompiler = Join-Path $outRoslynMaster "Binaries\Release\Exes\csc\net46\csc.exe"
+        if([string]::IsNullOrWhiteSpace([NoFuture.Shared.Core.NfConfig+DotNet]::CscCompiler)){
+            [NoFuture.Shared.Core.NfConfig+DotNet]::CscCompiler = Join-Path $outRoslynMaster "Binaries\Release\Exes\csc\net46\csc.exe"
         }
         if([string]::IsNullOrWhiteSpace([NoFuture.Shared.NfConfig+DotNet]::VbcCompiler)){
-            [NoFuture.Shared.NfConfig+DotNet]::VbcCompiler = Join-Path $outRoslynMaster "Binaries\Release\Exes\vbc\net46\vbc.exe"
+            [NoFuture.Shared.Core.NfConfig+DotNet]::VbcCompiler = Join-Path $outRoslynMaster "Binaries\Release\Exes\vbc\net46\vbc.exe"
         }
 
     }
@@ -180,7 +180,7 @@ function Get-NuGetExe
     Process
     {
         if([String]::IsNullOrWhiteSpace($OutPath)){
-            $OutPath = [NoFuture.Shared.NfConfig+BinDirectories]::Root
+            $OutPath = [NoFuture.Shared.Core.NfConfig+BinDirectories]::Root
         }
         
         if([string]::IsNullOrWhiteSpace($OutPath) -or -not (Test-Path $OutPath)){
@@ -239,11 +239,11 @@ function Invoke-JavaCompiler
     )
     Process
     {
-        $javaSrc = [NoFuture.Shared.NfConfig+TempDirectories]::JavaSrc 
+        $javaSrc = [NoFuture.Shared.Core.NfConfig+TempDirectories]::JavaSrc 
         $javaRoot = (Split-Path $javaSrc -Parent)
-        $javaBuild = [NoFuture.Shared.NfConfig+TempDirectories]::JavaBuild 
-        $javaDist = [NoFuture.Shared.NfConfig+TempDirectories]::JavaDist 
-        $javaArchive = [NoFuture.Shared.NfConfig+TempDirectories]::JavaArchive 
+        $javaBuild = [NoFuture.Shared.Core.NfConfig+TempDirectories]::JavaBuild 
+        $javaDist = [NoFuture.Shared.Core.NfConfig+TempDirectories]::JavaDist 
+        $javaArchive = [NoFuture.Shared.Core.NfConfig+TempDirectories]::JavaArchive 
 
         #remove .java extension if present
         if($TypeName.EndsWith(".java")){
@@ -270,7 +270,7 @@ function Invoke-JavaCompiler
         $ClassPath = Get-JavaClassPath $ClassPath
 
         #compile
-        $javacCmd = '. {0} -d {1} -cp {2} {3}' -f ([NoFuture.Shared.NfConfig+JavaTools]::Javac),$javaBuild,$ClassPath,(Join-Path $javaSrc ("$TypeName.java"))
+        $javacCmd = '. {0} -d {1} -cp {2} {3}' -f ([NoFuture.Shared.Core.NfConfig+JavaTools]::Javac),$javaBuild,$ClassPath,(Join-Path $javaSrc ("$TypeName.java"))
         $javacCmd >> (Join-Path $javaRoot "cmd.log")
         Invoke-Expression -Command $javacCmd
         #. ([NoFuture.Shared.NfConfig+JavaTools]::Javac) -d $javaBuild -cp $ClassPath (Join-Path $javaSrc ("$TypeName.java"))
@@ -288,7 +288,7 @@ function Invoke-JavaCompiler
         }
         
         Push-Location $javaBuild
-        . ([NoFuture.Shared.NfConfig+JavaTools]::Jar) cf $jarFile "*"
+        . ([NoFuture.Shared.Core.NfConfig+JavaTools]::Jar) cf $jarFile "*"
         Pop-Location
 
         return $jarFile

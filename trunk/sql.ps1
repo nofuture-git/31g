@@ -1,23 +1,23 @@
 try{
-if(-not [NoFuture.Shared.NfConfig+MyFunctions]::FunctionFiles.ContainsValue($MyInvocation.MyCommand))
+if(-not [NoFuture.Shared.Core.NfConfig+MyFunctions]::FunctionFiles.ContainsValue($MyInvocation.MyCommand))
 {
-[NoFuture.Shared.NfConfig+MyFunctions]::FunctionFiles.Add("sql",$MyInvocation.MyCommand)
-[NoFuture.Shared.NfConfig+MyFunctions]::FunctionFiles.Add("pss",$MyInvocation.MyCommand)
-[NoFuture.Shared.NfConfig+MyFunctions]::FunctionFiles.Add("tss",$MyInvocation.MyCommand)
-[NoFuture.Shared.NfConfig+MyFunctions]::FunctionFiles.Add("css",$MyInvocation.MyCommand)
-[NoFuture.Shared.NfConfig+MyFunctions]::FunctionFiles.Add("proc",$MyInvocation.MyCommand)
-[NoFuture.Shared.NfConfig+MyFunctions]::FunctionFiles.Add("ado",$MyInvocation.MyCommand)
+[NoFuture.Shared.Core.NfConfig+MyFunctions]::FunctionFiles.Add("sql",$MyInvocation.MyCommand)
+[NoFuture.Shared.Core.NfConfig+MyFunctions]::FunctionFiles.Add("pss",$MyInvocation.MyCommand)
+[NoFuture.Shared.Core.NfConfig+MyFunctions]::FunctionFiles.Add("tss",$MyInvocation.MyCommand)
+[NoFuture.Shared.Core.NfConfig+MyFunctions]::FunctionFiles.Add("css",$MyInvocation.MyCommand)
+[NoFuture.Shared.Core.NfConfig+MyFunctions]::FunctionFiles.Add("proc",$MyInvocation.MyCommand)
+[NoFuture.Shared.Core.NfConfig+MyFunctions]::FunctionFiles.Add("ado",$MyInvocation.MyCommand)
 
-[NoFuture.Shared.NfConfig+MyFunctions]::FunctionFiles.Add("Get-MssqlSettings",$MyInvocation.MyCommand)
-[NoFuture.Shared.NfConfig+MyFunctions]::FunctionFiles.Add("ExportTo-UpdateStatement",$MyInvocation.MyCommand)
-[NoFuture.Shared.NfConfig+MyFunctions]::FunctionFiles.Add("ExportTo-InsertStatement",$MyInvocation.MyCommand)
-[NoFuture.Shared.NfConfig+MyFunctions]::FunctionFiles.Add("ExportTo-MergeStatement",$MyInvocation.MyCommand)
-[NoFuture.Shared.NfConfig+MyFunctions]::FunctionFiles.Add("Export-CsvToScriptTempTable",$MyInvocation.MyCommand)
-[NoFuture.Shared.NfConfig+MyFunctions]::FunctionFiles.Add("Get-TableMetaData",$MyInvocation.MyCommand)
-[NoFuture.Shared.NfConfig+MyFunctions]::FunctionFiles.Add("Get-TableXsd",$MyInvocation.MyCommand)
-[NoFuture.Shared.NfConfig+MyFunctions]::FunctionFiles.Add("Get-DatabaseDbml",$MyInvocation.MyCommand)
-[NoFuture.Shared.NfConfig+MyFunctions]::FunctionFiles.Add("Import-ExcelWs",$MyInvocation.MyCommand)
-[NoFuture.Shared.NfConfig+MyFunctions]::FunctionFiles.Add("Find-StringInDb",$MyInvocation.MyCommand)
+[NoFuture.Shared.Core.NfConfig+MyFunctions]::FunctionFiles.Add("Get-MssqlSettings",$MyInvocation.MyCommand)
+[NoFuture.Shared.Core.NfConfig+MyFunctions]::FunctionFiles.Add("ExportTo-UpdateStatement",$MyInvocation.MyCommand)
+[NoFuture.Shared.Core.NfConfig+MyFunctions]::FunctionFiles.Add("ExportTo-InsertStatement",$MyInvocation.MyCommand)
+[NoFuture.Shared.Core.NfConfig+MyFunctions]::FunctionFiles.Add("ExportTo-MergeStatement",$MyInvocation.MyCommand)
+[NoFuture.Shared.Core.NfConfig+MyFunctions]::FunctionFiles.Add("Export-CsvToScriptTempTable",$MyInvocation.MyCommand)
+[NoFuture.Shared.Core.NfConfig+MyFunctions]::FunctionFiles.Add("Get-TableMetaData",$MyInvocation.MyCommand)
+[NoFuture.Shared.Core.NfConfig+MyFunctions]::FunctionFiles.Add("Get-TableXsd",$MyInvocation.MyCommand)
+[NoFuture.Shared.Core.NfConfig+MyFunctions]::FunctionFiles.Add("Get-DatabaseDbml",$MyInvocation.MyCommand)
+[NoFuture.Shared.Core.NfConfig+MyFunctions]::FunctionFiles.Add("Import-ExcelWs",$MyInvocation.MyCommand)
+[NoFuture.Shared.Core.NfConfig+MyFunctions]::FunctionFiles.Add("Find-StringInDb",$MyInvocation.MyCommand)
 }
 }catch{
     Write-Host "file is being loaded independent of 'start.ps1' - some functions may not be available."
@@ -155,8 +155,8 @@ function Invoke-SqlCommand
     )
     Process
     {
-      if([System.String]::IsNullOrWhiteSpace($ServerName)){$ServerName = ([NoFuture.Shared.NfConfig]::SqlServer)}
-      if([System.String]::IsNullOrWhiteSpace($CatalogName)){$CatalogName = ([NoFuture.Shared.NfConfig]::SqlCatalog)}
+      if([System.String]::IsNullOrWhiteSpace($ServerName)){$ServerName = ([NoFuture.Shared.Core.NfConfig]::SqlServer)}
+      if([System.String]::IsNullOrWhiteSpace($CatalogName)){$CatalogName = ([NoFuture.Shared.Core.NfConfig]::SqlCatalog)}
 
       if($IsPath){
         $cmd =  ([NoFuture.Sql.Mssql.Etc]::MakeInputFilesSqlCmd($expression,$ServerName,$CatalogName))
@@ -164,7 +164,7 @@ function Invoke-SqlCommand
       else{
         $cmd =  ([NoFuture.Sql.Mssql.Etc]::MakeSqlCmd($expression,$ServerName,$CatalogName))
       }
-      if(([NoFuture.Sql.Mssql.Etc]::WarnUserIfServerIn -contains $ServerName) -and ([NoFuture.Shared.NfConfig+Switches]::SupressNpp -eq $false)){
+      if(([NoFuture.Sql.Mssql.Etc]::WarnUserIfServerIn -contains $ServerName) -and ([NoFuture.Shared.Core.NfConfig+Switches]::SupressNpp -eq $false)){
         $message = "WARNING: current settings are pointed to production!`nDo you want to continue this operation?"
         $yes = New-Object System.Management.Automation.Host.ChoiceDescription "&Yes", `
             "Continue operation using SQLCMD.exe."
@@ -243,7 +243,7 @@ function Get-DataTable
             $connStr = "Server=$ServerName;Database=$CatalogName;Trusted_Connection=True;"
         }
         else{
-            $connStr = [NoFuture.Shared.NfConfig]::SqlServerDotNetConnString
+            $connStr = [NoFuture.Shared.Core.NfConfig]::SqlServerDotNetConnString
         }
         
     	$sqlCon = New-Object System.Data.SqlClient.SqlConnection $connStr
@@ -361,8 +361,8 @@ function Select-ColumnName
     Process
     {
         if(-not [System.String]::IsNullOrWhiteSpace($ServerName) -and -not [System.String]::IsNullOrWhiteSpace($CatalogName)){
-            [NoFuture.Shared.NfConfig]::SqlServer = $ServerName
-            [NoFuture.Shared.NfConfig]::SqlCatalog = $CatalogName
+            [NoFuture.Shared.Core.NfConfig]::SqlServer = $ServerName
+            [NoFuture.Shared.Core.NfConfig]::SqlCatalog = $CatalogName
         }
 
         $expression = ([NoFuture.Sql.Mssql.Qry.Catalog]::ColSelectString -f $ColumnName,$TableName,$SchemaName)
@@ -413,7 +413,7 @@ function Select-ProcedureString
     )
     Process
     {
-        $proxDir = [NoFuture.Shared.NfConfig+TempDirectories]::StoredProx
+        $proxDir = [NoFuture.Shared.Core.NfConfig+TempDirectories]::StoredProx
         #name
         $expression = [NoFuture.Sql.Mssql.Qry.Catalog]::SelectProcedureString
         $expression = [NoFuture.Sql.Mssql.Etc]::FilterSqlExpression($expression, "object_name(id)")
@@ -488,7 +488,7 @@ function Write-StoredProcedureToHost
     )
     Process
     {
-        $proxDir = [NoFuture.Shared.NfConfig+TempDirectories]::StoredProx
+        $proxDir = [NoFuture.Shared.Core.NfConfig+TempDirectories]::StoredProx
         $prettyProc = ""
         if([System.String]::IsNullOrWhiteSpace($SchemaName)) 
         { 
@@ -506,7 +506,7 @@ function Write-StoredProcedureToHost
 
         #print this to notepad++ since it has syntax highlighter
         
-        $tempName = join-path ($proxDir) ("{0}.sql" -f ([NoFuture.Util.NfPath]::SafeFilename($ProcedureName)))
+        $tempName = join-path ($proxDir) ("{0}.sql" -f ([NoFuture.Util.Core.NfPath]::SafeFilename($ProcedureName)))
         
         #check for temp spot existing, make if not
         if(-not (Test-Path $proxDir)){mkdir -Path $proxDir}
@@ -770,8 +770,8 @@ function ExportTo-SqlScript
     )
     Process
     {
-        if([string]::IsNullOrWhiteSpace([NoFuture.Shared.NfConfig]::SqlServer) -or 
-           [string]::IsNullOrWhiteSpace([NoFuture.Shared.NfConfig]::SqlCatalog)){
+        if([string]::IsNullOrWhiteSpace([NoFuture.Shared.Core.NfConfig]::SqlServer) -or 
+           [string]::IsNullOrWhiteSpace([NoFuture.Shared.Core.NfConfig]::SqlCatalog)){
 
             Write-Host "Set the connection first using Mssql-Settings cmdlet" -ForegroundColor Yellow
             break;
@@ -795,11 +795,11 @@ function ExportTo-SqlScript
 
         $sqlScript = [NoFuture.Sql.Mssql.ExportTo]::ScriptDataBody($Expression,$MaxLength,$ExportType,$metaData,$adoRows);
 
-        $sqlScriptPath = Join-Path ([NoFuture.Shared.NfConfig+TempDirectories]::Sql) ([NoFuture.Shared.NfConfig]::SqlServer)
+        $sqlScriptPath = Join-Path ([NoFuture.Shared.Core.NfConfig+TempDirectories]::Sql) ([NoFuture.Shared.Core.NfConfig]::SqlServer)
 
         if(-not (Test-Path ($sqlScriptPath))){$dnd = mkdir -Path $sqlScriptPath -Force}
 
-        $sqlScriptPath = Join-Path $sqlScriptPath ([NoFuture.Shared.NfConfig]::SqlCatalog)
+        $sqlScriptPath = Join-Path $sqlScriptPath ([NoFuture.Shared.Core.NfConfig]::SqlCatalog)
 
         if(-not (Test-Path ($sqlScriptPath))){$dnd = mkdir -Path $sqlScriptPath -Force}
 
@@ -864,8 +864,8 @@ function Get-TableMetaData
     Process
     {
         if(-not [System.String]::IsNullOrWhiteSpace($ServerName) -and -not [System.String]::IsNullOrWhiteSpace($CatalogName)){
-            [NoFuture.Shared.NfConfig]::SqlServer = $ServerName
-            [NoFuture.Shared.NfConfig]::SqlCatalog = $CatalogName
+            [NoFuture.Shared.Core.NfConfig]::SqlServer = $ServerName
+            [NoFuture.Shared.Core.NfConfig]::SqlCatalog = $CatalogName
         }
 
         if($TableName.Contains(".")){
@@ -884,7 +884,7 @@ function Get-TableMetaData
         Write-Progress -Activity ("Unqualified table name calculated as '{0}'" -f $TableName) -Status "OK" -PercentComplete 10
     
         #check that the table is a valid one
-        [NoFuture.Shared.NfConfig+Switches]::SqlCmdHeadersOff = $true
+        [NoFuture.Shared.Core.NfConfig+Switches]::SqlCmdHeadersOff = $true
         $countByTableName = sql ([NoFuture.Sql.Mssql.Qry.Catalog]::CountByTableName -f $TableName)
         if($countByTableName -eq 0){throw ("The table name '{0}' is not present in the current database catalog" -f $Tablename)}
 
@@ -1000,7 +1000,7 @@ function Get-TableXsd
 
         $OutputPath = (Join-Path $xsdDir $xsdFn)
 
-        [System.Data.SqlClient.SqlConnection]$conn = New-Object System.Data.SqlClient.SqlConnection([NoFuture.Shared.NfConfig]::SqlServerDotNetConnString);
+        [System.Data.SqlClient.SqlConnection]$conn = New-Object System.Data.SqlClient.SqlConnection([NoFuture.Shared.Core.NfConfig]::SqlServerDotNetConnString);
         [System.Data.SqlClient.SqlCommand]$cmd = $conn.CreateCommand();
         $cmd.CommandText = $("select top 1 * from " + $TableName)
         [System.Data.SqlClient.SqlDataAdapter]$da = New-Object System.Data.SqlClient.SqlDataAdapter
@@ -1057,18 +1057,18 @@ function Get-DatabaseDll
     Process
     {
     
-        if(-not(Test-Path ([NoFuture.Shared.NfConfig+X86]::SqlMetal))){throw ("SqlMetal.exe is not found at '{0}'" -f ([NoFuture.Shared.NfConfig+X86]::SqlMetal))}
-        if([string]::IsNullOrWhiteSpace([NoFuture.Shared.NfConfig]::SqlServer) -or [string]::IsNullOrWhiteSpace([NoFuture.Shared.NfConfig]::SqlCatalog)) {
+        if(-not(Test-Path ([NoFuture.Shared.Core.NfConfig+X86]::SqlMetal))){throw ("SqlMetal.exe is not found at '{0}'" -f ([NoFuture.Shared.Core.NfConfig+X86]::SqlMetal))}
+        if([string]::IsNullOrWhiteSpace([NoFuture.Shared.Core.NfConfig]::SqlServer) -or [string]::IsNullOrWhiteSpace([NoFuture.Shared.Core.NfConfig]::SqlCatalog)) {
             Write-Host "The global sqlServer and sqlCatalog variables are not set, assign them and try again."
         }
         $errCount = $Error.Count;
 
         $namespace = "NoFuture.Db"
-        $codeFile = ("{0}.cs" -f [NoFuture.Shared.NfConfig]::SqlCatalog)
+        $codeFile = ("{0}.cs" -f [NoFuture.Shared.Core.NfConfig]::SqlCatalog)
         [System.IO.Path]::InvalidPathChars | % { $codeFile = $codeFile.Replace($_.ToString(),"")}
-        $codeFile = (Join-Path ([NoFuture.Shared.NfConfig+TempDirectories]::Code) $codeFile)
+        $codeFile = (Join-Path ([NoFuture.Shared.Core.NfConfig+TempDirectories]::Code) $codeFile)
 
-        $cmd = ("& '{0}' /server:{1} /database:{2} /code:{3} /namespace:{4}" -f ([NoFuture.Shared.NfConfig+X86]::SqlMetal),([NoFuture.Shared.NfConfig]::SqlServer),([NoFuture.Shared.NfConfig]::SqlCatalog),$codeFile,$namespace)
+        $cmd = ("& '{0}' /server:{1} /database:{2} /code:{3} /namespace:{4}" -f ([NoFuture.Shared.Core.NfConfig+X86]::SqlMetal),([NoFuture.Shared.Core.NfConfig]::SqlServer),([NoFuture.Shared.Core.NfConfig]::SqlCatalog),$codeFile,$namespace)
         Invoke-Expression -Command $cmd
         if($Error.Count -gt $errCount) {break;}
 
@@ -1160,7 +1160,7 @@ function Export-ExcelWbToCsv
             $allLines = [System.IO.File]::ReadAllLines($txtFileName)
             $firstLine = $allLines[0]
             $csvHeader = $firstLine.Split([char]0x09)
-            $csvHeader = [NoFuture.Util.Etc]::FormatCsvHeaders($csvHeader)
+            $csvHeader = [NoFuture.Util.Core.Etc]::FormatCsvHeaders($csvHeader)
             $csvHeader = [string]::Join("`t", $csvHeader)
             
             $newContent = @()
@@ -1288,10 +1288,10 @@ function Export-CsvToScriptTempTable
             }
             elseif($_.PsDbType -eq "bit"){
                 if(($line.($_.Name)).ToLower() -eq "false"){
-                    $lineInsert +=  ",{0}" -f [NoFuture.Shared.Constants]::SQL_SERVER_FALSE
+                    $lineInsert +=  ",{0}" -f [NoFuture.Shared.Core.Constants]::SQL_SERVER_FALSE
                 }
                 elseif(($line.($_.Name)).ToLower() -eq "true"){
-                    $lineInsert +=  ",{0}" -f [NoFuture.Shared.Constants]::SQL_SERVER_TRUE
+                    $lineInsert +=  ",{0}" -f [NoFuture.Shared.Core.Constants]::SQL_SERVER_TRUE
                 }
                 else{
                     $lineInsert +=  ",{0}" -f $line.($_.Name)
@@ -1347,8 +1347,8 @@ function Find-StringInDb
         if([string]::IsNullOrWhiteSpace($SearchString)){
             return;
         }
-        if([string]::IsNullOrWhiteSpace([NoFuture.Shared.NfConfig]::SqlServer) -or 
-           [string]::IsNullOrWhiteSpace([NoFuture.Shared.NfConfig]::SqlCatalog)){
+        if([string]::IsNullOrWhiteSpace([NoFuture.Shared.Core.NfConfig]::SqlServer) -or 
+           [string]::IsNullOrWhiteSpace([NoFuture.Shared.Core.NfConfig]::SqlCatalog)){
 
             Write-Host "Set the connection first using Mssql-Settings cmdlet" -ForegroundColor Yellow
             break;
@@ -1373,7 +1373,7 @@ function Find-StringInDb
             $counter += 1
             $tblName = $tbl.TableName
             $escTableName = "[" + [string]::Join("].[", $tblName.Split(".")) + "]"
-            Write-Progress -Activity "Working $tblName" -Status "Searching..." -PercentComplete ([NoFuture.Util.Etc]::CalcProgressCounter($counter, $total))
+            Write-Progress -Activity "Working $tblName" -Status "Searching..." -PercentComplete ([NoFuture.Util.Core.Etc]::CalcProgressCounter($counter, $total))
 
             if([string]::IsNullOrWhiteSpace($tblName)){
                 continue nextTbl;

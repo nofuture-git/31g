@@ -1,17 +1,17 @@
 ﻿try{
-if(-not [NoFuture.Shared.NfConfig+MyFunctions]::FunctionFiles.ContainsValue($MyInvocation.MyCommand))
+if(-not [NoFuture.Shared.Core.NfConfig+MyFunctions]::FunctionFiles.ContainsValue($MyInvocation.MyCommand))
 {
-[NoFuture.Shared.NfConfig+MyFunctions]::FunctionFiles.Add("Get-HbmDbData",$MyInvocation.MyCommand)
-[NoFuture.Shared.NfConfig+MyFunctions]::FunctionFiles.Add("Get-AllHbmXml",$MyInvocation.MyCommand)
-[NoFuture.Shared.NfConfig+MyFunctions]::FunctionFiles.Add("Get-EfFluentCs",$MyInvocation.MyCommand)
-[NoFuture.Shared.NfConfig+MyFunctions]::FunctionFiles.Add("Write-CsCodeHbmCommand",$MyInvocation.MyCommand)
-[NoFuture.Shared.NfConfig+MyFunctions]::FunctionFiles.Add("Get-AllHbmCs",$MyInvocation.MyCommand)
-[NoFuture.Shared.NfConfig+MyFunctions]::FunctionFiles.Add("Get-HbmCs",$MyInvocation.MyCommand)
-[NoFuture.Shared.NfConfig+MyFunctions]::FunctionFiles.Add("Invoke-HbmCsCompile",$MyInvocation.MyCommand)
-[NoFuture.Shared.NfConfig+MyFunctions]::FunctionFiles.Add("New-HbmAppConfig",$MyInvocation.MyCommand)
-[NoFuture.Shared.NfConfig+MyFunctions]::FunctionFiles.Add("Import-HbmConfiguration",$MyInvocation.MyCommand)
-[NoFuture.Shared.NfConfig+MyFunctions]::FunctionFiles.Add("Import-HbmSessionFactory",$MyInvocation.MyCommand)
-[NoFuture.Shared.NfConfig+MyFunctions]::FunctionFiles.Add("Get-HbmSession",$MyInvocation.MyCommand)
+[NoFuture.Shared.Core.NfConfig+MyFunctions]::FunctionFiles.Add("Get-HbmDbData",$MyInvocation.MyCommand)
+[NoFuture.Shared.Core.NfConfig+MyFunctions]::FunctionFiles.Add("Get-AllHbmXml",$MyInvocation.MyCommand)
+[NoFuture.Shared.Core.NfConfig+MyFunctions]::FunctionFiles.Add("Get-EfFluentCs",$MyInvocation.MyCommand)
+[NoFuture.Shared.Core.NfConfig+MyFunctions]::FunctionFiles.Add("Write-CsCodeHbmCommand",$MyInvocation.MyCommand)
+[NoFuture.Shared.Core.NfConfig+MyFunctions]::FunctionFiles.Add("Get-AllHbmCs",$MyInvocation.MyCommand)
+[NoFuture.Shared.Core.NfConfig+MyFunctions]::FunctionFiles.Add("Get-HbmCs",$MyInvocation.MyCommand)
+[NoFuture.Shared.Core.NfConfig+MyFunctions]::FunctionFiles.Add("Invoke-HbmCsCompile",$MyInvocation.MyCommand)
+[NoFuture.Shared.Core.NfConfig+MyFunctions]::FunctionFiles.Add("New-HbmAppConfig",$MyInvocation.MyCommand)
+[NoFuture.Shared.Core.NfConfig+MyFunctions]::FunctionFiles.Add("Import-HbmConfiguration",$MyInvocation.MyCommand)
+[NoFuture.Shared.Core.NfConfig+MyFunctions]::FunctionFiles.Add("Import-HbmSessionFactory",$MyInvocation.MyCommand)
+[NoFuture.Shared.Core.NfConfig+MyFunctions]::FunctionFiles.Add("Get-HbmSession",$MyInvocation.MyCommand)
 }
 }catch{
     Write-Host "file is being loaded independent of 'start.ps1' - some functions may not be available."
@@ -73,7 +73,7 @@ function Get-HbmDbData
         }
         Get-HbmMetadataDump $numOfSteps
 
-        $sleepTimerMs = [NoFuture.Shared.NfConfig]::ThreadSleepTime
+        $sleepTimerMs = [NoFuture.Shared.Core.NfConfig]::ThreadSleepTime
         [System.Threading.Thread]::Sleep($sleepTimerMs)
 
         $dnd = [NoFuture.Hbm.Settings]::AddNoPkAllNonNullableToBlockedNameList()
@@ -110,7 +110,7 @@ function Get-HbmDbData
             [NoFuture.Hbm.Sorting]::NoDatasetReturnedProx.Clear()
 
             Write-Host "This runs in the background. At anytime, use the 'Write-SpResultSetXsdProgress' cmdlet so see its current state." -ForegroundColor Yellow
-            [NoFuture.Hbm.Mapping]::StoredProcManager.BeginGetSpResultSetXsd($null, ([NoFuture.Shared.NfConfig]::SqlServerDotNetConnString))
+            [NoFuture.Hbm.Mapping]::StoredProcManager.BeginGetSpResultSetXsd($null, ([NoFuture.Shared.Core.NfConfig]::SqlServerDotNetConnString))
 
         }
     }
@@ -132,7 +132,7 @@ function Get-HbmMetadataDump(){
         $counter = 0
         $allHbmItems | % {
             
-            $pcount = ([NoFuture.Util.Etc]::CalcProgressCounter($counter, $allHbmItems.Count)) 
+            $pcount = ([NoFuture.Util.Core.Etc]::CalcProgressCounter($counter, $allHbmItems.Count)) 
             Write-Progress -Activity ("Saving data to '{0}'" -f $_.OutputPath) -Status "Metadata Dump: Fetching Metadata [Step 1 of $script:numOfSteps]" -PercentComplete $pcount
             $doNotDisplay = (Get-SingleHbmMetadataDump $_)
             $counter += 1
@@ -240,7 +240,7 @@ function Get-AllHbmXml
 
         #per table, generate hbm.xml
         $allTables | % {
-            Write-Progress -Status "drafting xml..." -Activity "Creating xml [has PK] for $_" -PercentComplete ([NoFuture.Util.Etc]::CalcProgressCounter($counter, $allTables.Count))
+            Write-Progress -Status "drafting xml..." -Activity "Creating xml [has PK] for $_" -PercentComplete ([NoFuture.Util.Core.Etc]::CalcProgressCounter($counter, $allTables.Count))
 
             $dnd = [NoFuture.Hbm.Mapping]::GetSingleHbmXml($OutputNamespace, $_)
 
@@ -256,7 +256,7 @@ function Get-AllHbmXml
 
             #gen the hbm.xml for each within the difference
             $missingTables | % {
-                Write-Progress -Status "drafting xml..." -Activity "Creating xml [PK missing] for $_" -PercentComplete ([NoFuture.Util.Etc]::CalcProgressCounter($counter, $missingTables.Count)) 
+                Write-Progress -Status "drafting xml..." -Activity "Creating xml [PK missing] for $_" -PercentComplete ([NoFuture.Util.Core.Etc]::CalcProgressCounter($counter, $missingTables.Count)) 
                 $dnd = [NoFuture.Hbm.Mapping]::GetSingleHbmXml($OutputNamespace, $_)
                 $counter += 1
             }
@@ -288,7 +288,7 @@ function Get-AllHbmXml
             $xsdFiles | % {
                
                $searchName = [System.IO.Path]::GetFileNameWithoutExtension($_.Name)
-               Write-Progress -Status "drafting xml..." -Activity "Creating xml [stored prox] for $searchName" -PercentComplete ([NoFuture.Util.Etc]::CalcProgressCounter($counter,$xsdFiles.Count)) 
+               Write-Progress -Status "drafting xml..." -Activity "Creating xml [stored prox] for $searchName" -PercentComplete ([NoFuture.Util.Core.Etc]::CalcProgressCounter($counter,$xsdFiles.Count)) 
                $dnd = [NoFuture.Hbm.Mapping]::GetHbmNamedQueryXml($OutputNamespace, $searchName)
                $counter += 1
             }
@@ -342,7 +342,7 @@ function Get-SingleHbmXml
         if([NoFuture.Hbm.Sorting]::AllStoredProcNames -contains $DbObjectName){
             $searchCrit = New-Object NoFuture.Hbm.StoredProxSearchCriteria -Property @{ExactName = $DbObjectName}
             Write-Progress -Activity "Invoking stored proc $DbObjectName" -Status "Working"
-            [NoFuture.Hbm.Mapping]::StoredProcManager.GetSpResultSetXsd($searchCrit, ([NoFuture.Shared.NfConfig]::SqlServerDotNetConnString))
+            [NoFuture.Hbm.Mapping]::StoredProcManager.GetSpResultSetXsd($searchCrit, ([NoFuture.Shared.Core.NfConfig]::SqlServerDotNetConnString))
             $hbmXml = [NoFuture.Hbm.Mapping]::GetHbmNamedQueryXml($OutputNamespace, $DbObjectName)
             return New-Object NoFuture.Hbm.SortingContainers.HbmFileContent($hbmXml)
         }
@@ -409,7 +409,7 @@ function Get-AllHbmCs
         Write-Progress -Status "drafting cs..." -Activity "Generating a Composite Key Classes"
         #go through entire list and get all composite-ids out of the way first
         $allhbmXml | % {
-           $progCount = ([NoFuture.Util.Etc]::CalcProgressCounter($counter,$allhbmXml.Count))
+           $progCount = ([NoFuture.Util.Core.Etc]::CalcProgressCounter($counter,$allhbmXml.Count))
            Write-Progress -Status "drafting cs..." -Activity "Creating C# code-file [Has PK] for $_" -PercentComplete $progCount
            Get-HbmCs -HbmXmlPath $_;
 
@@ -426,7 +426,7 @@ function Get-AllHbmCs
 
             #gen the hbm.xml for each within the difference
             $missingTables | ? {-not [string]::IsNullOrWhiteSpace($_) -and (Test-Path (Join-Path ([NoFuture.Hbm.Settings]::HbmDirectory) ("{0}.hbm.xml" -f $_)))} | % {
-                $progCount = ([NoFuture.Util.Etc]::CalcProgressCounter($counter,$missingTables.Count))
+                $progCount = ([NoFuture.Util.Core.Etc]::CalcProgressCounter($counter,$missingTables.Count))
                 Write-Progress -Status "drafting cs..." -Activity "Creating C# code-file [PK missing] for $_" -PercentComplete $progCount
                 Get-HbmCs -HbmXmlPath (Join-Path ([NoFuture.Hbm.Settings]::HbmDirectory) ("{0}.hbm.xml" -f $_))
                 $counter += 1
@@ -442,7 +442,7 @@ function Get-AllHbmCs
 
             $hbmXmlFiles | % {
                $searchName = [System.IO.Path]::GetFileNameWithoutExtension($_.Name)
-               $progcount = ([NoFuture.Util.Etc]::CalcProgressCounter($counter, $hbmXmlFiles.Count))
+               $progcount = ([NoFuture.Util.Core.Etc]::CalcProgressCounter($counter, $hbmXmlFiles.Count))
                Write-Progress -Status "drafting cs..." -Activity "Creating C# code-file [Stored Proc] for $searchName" -PercentComplete $progcount
                Get-HbmCs -HbmXmlPath ($_.FullName)
                $counter += 1
@@ -492,7 +492,7 @@ function Get-HbmCs
             $OutputDir = [NoFuture.Hbm.Settings]::HbmDirectory
         }
 
-        $pocoTemplate = Join-Path ([NoFuture.Shared.NfConfig+BinDirectories]::T4Templates) "HbmCsClass.tt"
+        $pocoTemplate = Join-Path ([NoFuture.Shared.Core.NfConfig+BinDirectories]::T4Templates) "HbmCsClass.tt"
 
         if(-not (Test-Path $pocoTemplate)){
             Write-Host "couldn't find the T4 template at '$pocoTemplate'" -ForegroundColor Yellow
@@ -505,12 +505,12 @@ function Get-HbmCs
 
         $t4ParamName = [NoFuture.Hbm.SortingContainers.HbmFileContent]::T4_PARAM_NAME
         $p2Name =[NoFuture.Hbm.SortingContainers.HbmFileContent]::INVOKE_NF_TYPE_NAME
-        $p2Val = [NoFuture.Shared.NfConfig+CustomTools]::InvokeNfTypeName
+        $p2Val = [NoFuture.Shared.Core.NfConfig+CustomTools]::InvokeNfTypeName
 
         $hbmXmlContent = New-Object NoFuture.Hbm.SortingContainers.HbmFileContent($hbmXmlPath)
 
         if($hbmXmlContent.IsCompositeKey){
-            $compKeyTemplate = Join-Path ([NoFuture.Shared.NfConfig+BinDirectories]::T4Templates) "HbmCompKeyCsClass.tt"
+            $compKeyTemplate = Join-Path ([NoFuture.Shared.Core.NfConfig+BinDirectories]::T4Templates) "HbmCompKeyCsClass.tt"
             if(-not (Test-Path $compKeyTemplate)){
                 Write-Host "couldn't find the T4 template at '$compKeyTemplate'" -ForegroundColor Yellow
                 break;
@@ -563,8 +563,8 @@ function Get-EfFluentCs
             break;
         }
 
-        $mappingTemplate = Join-Path ([NoFuture.Shared.NfConfig+BinDirectories]::T4Templates) "Ef6xFluentMapping.tt"
-        $pocoTemplate = Join-Path ([NoFuture.Shared.NfConfig+BinDirectories]::T4Templates) "Ef6xPoco.tt"
+        $mappingTemplate = Join-Path ([NoFuture.Shared.Core.NfConfig+BinDirectories]::T4Templates) "Ef6xFluentMapping.tt"
+        $pocoTemplate = Join-Path ([NoFuture.Shared.Core.NfConfig+BinDirectories]::T4Templates) "Ef6xPoco.tt"
         if(-not (Test-Path $mappingTemplate)){
             Write-Host "couldn't find the T4 template at '$mappingTemplate'" -ForegroundColor Yellow
             break;
@@ -582,7 +582,7 @@ function Get-EfFluentCs
 
         $t4ParamName = [NoFuture.Hbm.SortingContainers.HbmFileContent]::T4_PARAM_NAME
         $p2Name =[NoFuture.Hbm.SortingContainers.HbmFileContent]::INVOKE_NF_TYPE_NAME
-        $p2Val = [NoFuture.Shared.NfConfig+CustomTools]::InvokeNfTypeName
+        $p2Val = [NoFuture.Shared.Core.NfConfig+CustomTools]::InvokeNfTypeName
 
         Get-T4TextTemplate -InputFile $pocoTemplate -OutputFile $pocoCsFile -ParamNameValues @{$t4ParamName=$HbmXmlPath; $p2Name=$p2Val}
         Get-T4TextTemplate -InputFile $mappingTemplate -OutputFile $mappingCsFile -ParamNameValues @{$t4ParamName=$HbmXmlPath; $p2Name=$p2Val}
@@ -628,7 +628,7 @@ function Get-Ef35Cs
             break;
         }
 
-        $mappingTemplate = Join-Path ([NoFuture.Shared.NfConfig+BinDirectories]::T4Templates) "Ef35Mapping.tt"
+        $mappingTemplate = Join-Path ([NoFuture.Shared.Core.NfConfig+BinDirectories]::T4Templates) "Ef35Mapping.tt"
         if(-not (Test-Path $mappingTemplate)){
             Write-Host "couldn't find the T4 template at '$mappingTemplate'" -ForegroundColor Yellow
             break;
@@ -640,7 +640,7 @@ function Get-Ef35Cs
 
         $t4ParamName = [NoFuture.Hbm.SortingContainers.HbmFileContent]::T4_PARAM_NAME
         $p2Name =[NoFuture.Hbm.SortingContainers.HbmFileContent]::INVOKE_NF_TYPE_NAME
-        $p2Val = [NoFuture.Shared.NfConfig+CustomTools]::InvokeNfTypeName
+        $p2Val = [NoFuture.Shared.Core.NfConfig+CustomTools]::InvokeNfTypeName
 
         Get-T4TextTemplate -InputFile $mappingTemplate -OutputFile $mappingCsFile -ParamNameValues @{$t4ParamName=$HbmXmlPath; $p2Name=$p2Val}
         
@@ -703,14 +703,14 @@ function Write-CsCodeHbmCommand
             break;
         }
 
-        $t4Template = Join-Path ([NoFuture.Shared.NfConfig+BinDirectories]::T4Templates) "HbmCommand.tt"
+        $t4Template = Join-Path ([NoFuture.Shared.Core.NfConfig+BinDirectories]::T4Templates) "HbmCommand.tt"
         $outputCsFile = Join-Path $OutputDir ("{0}Command.cs" -f $className)
         $idType = $idProp.PropertyType.FullName
 
         $param1 = [NoFuture.Hbm.Templates.HbmCommand+ParamNames]::TypeFullName
         $param2 = [NoFuture.Hbm.Templates.HbmCommand+ParamNames]::IdTypeFullName
         $p2Name =[NoFuture.Hbm.SortingContainers.HbmFileContent]::INVOKE_NF_TYPE_NAME
-        $p2Val = [NoFuture.Shared.NfConfig+CustomTools]::InvokeNfTypeName
+        $p2Val = [NoFuture.Shared.Core.NfConfig+CustomTools]::InvokeNfTypeName
 
         Get-T4TextTemplate -InputFile $t4Template -OutputFile $outputCsFile -ParamNameValues @{$param1=$TypeName; $param2=$idType; $p2Name=$p2Val}
 
@@ -763,14 +763,14 @@ function Invoke-HbmCsCompile
         }
 
         #compile all POCO c# 
-        $rootBin = ([NoFuture.Shared.NfConfig+BinDirectories]::Root)
+        $rootBin = ([NoFuture.Shared.Core.NfConfig+BinDirectories]::Root)
         $iesiCollections = ("/reference:{0}" -f (Join-Path $rootBin "Iesi.Collections.dll"))
         $nhibDll = ("/reference:{0}" -f (Join-Path $rootBin "NHibernate.dll"))
         $lhbmDirectory = ([NoFuture.Hbm.Settings]::HbmDirectory)
         $hbmsidDll = (Join-Path $rootBin "NoFuture.Hbm.Sid.dll")
         [NoFuture.Hbm.Settings]::LoadOutputPathCurrentSettings();
         $cscCompiler = (Join-Path $global:net40Path $global:cscExe)
-        $OutputNamespace = [NoFuture.Util.Etc]::CapWords($OutputNamespace,'.')
+        $OutputNamespace = [NoFuture.Util.Core.Etc]::CapWords($OutputNamespace,'.')
         $dllOutputFile = (Join-Path $lhbmDirectory ([NoFuture.Util.NfType.NfTypeName]::DraftCscDllName($OutputNamespace)))
 
         $targetArg = "/t:library"
@@ -820,7 +820,7 @@ function Invoke-HbmCsCompile
                 #build it 
                 if($kbCounter -gt (1KB * ([NoFuture.Hbm.Settings]::CompileHbmXmlDllOfKbSize))){
                     $outDllName = "{0}.{1}{2:000}.dll" -f $OutputNamespace,$middleSpace,$asmCounter
-                    Write-Progress -Activity "'$outDllName'" -Status "Compile Hbm Xml" -PercentComplete ([NoFuture.Util.Etc]::CalcProgressCounter($progressCounter,$totalCount))
+                    Write-Progress -Activity "'$outDllName'" -Status "Compile Hbm Xml" -PercentComplete ([NoFuture.Util.Core.Etc]::CalcProgressCounter($progressCounter,$totalCount))
                     $outArg = "/out:$outDllName"
                     $iexCmd = (". $cscCompiler $outArg $targetArg $nowarnArg /nologo $resSwitch")
 
@@ -843,7 +843,7 @@ function Invoke-HbmCsCompile
             #compile the tail end
             if($kbCounter -gt 0){
                 $outDllName = "{0}.{1}{2:000}.dll" -f $OutputNamespace,$middleSpace,$asmCounter
-                Write-Progress -Activity "'$outDllName'" -Status "Compile Hbm Xml" -PercentComplete ([NoFuture.Util.Etc]::CalcProgressCounter($progressCounter,$totalCount))
+                Write-Progress -Activity "'$outDllName'" -Status "Compile Hbm Xml" -PercentComplete ([NoFuture.Util.Core.Etc]::CalcProgressCounter($progressCounter,$totalCount))
                 $outArg = "/out:$outDllName"
                 $iexCmd = (". $cscCompiler $outArg $targetArg $nowarnArg /nologo $resSwitch")
 
@@ -920,7 +920,7 @@ function New-HbmAppConfig
             }
         }
         
-		$hibernateconfiguration = [NoFuture.Hbm.XeFactory]::HibernateConfigurationNode(([NoFuture.Shared.NfConfig]::SqlServerDotNetConnString), 
+		$hibernateconfiguration = [NoFuture.Hbm.XeFactory]::HibernateConfigurationNode(([NoFuture.Shared.Core.NfConfig]::SqlServerDotNetConnString), 
 																						$OutputNamespace)
 
         $configuration.Add($configSections)
@@ -1199,8 +1199,8 @@ function Get-HbmDb
     Process
     {
         
-        if([System.String]::IsNullOrWhiteSpace([NoFuture.Shared.NfConfig]::SqlServer)){Write-Host "set the MSSQL server global variables."; break;}
-        if([System.String]::IsNullOrWhiteSpace([NoFuture.Shared.NfConfig]::SqlCatalog)){Write-Host "set the MSSQL server global variables."; break;}
+        if([System.String]::IsNullOrWhiteSpace([NoFuture.Shared.Core.NfConfig]::SqlServer)){Write-Host "set the MSSQL server global variables."; break;}
+        if([System.String]::IsNullOrWhiteSpace([NoFuture.Shared.Core.NfConfig]::SqlCatalog)){Write-Host "set the MSSQL server global variables."; break;}
 
         $mappingAssemblyPath = (Join-Path ([NoFuture.Hbm.Settings]::HbmDirectory) $OutputDllName)
         if(-not (Test-Path $mappingAssemblyPath) -or $Force){
