@@ -85,6 +85,10 @@
       <Project>{6eca48dc-fdb4-4660-9914-3b74d5975ff9}</Project>
       <Name>Shared.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Util\Core\Util.Core.csproj">
+      <Project>{349a1c91-ca14-4d04-946d-8b257a863ce0}</Project>
+      <Name>Util.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Util\Util.csproj">
       <Project>{d7f28538-ba6a-46b4-a080-65124e899317}</Project>
       <Name>Util</Name>

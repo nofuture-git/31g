@@ -5,6 +5,7 @@ using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Domus;
 using NoFuture.Util;
+using NoFuture.Util.Core;
 
 namespace NoFuture.Rand.Data.Sp
 {

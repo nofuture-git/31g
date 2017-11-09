@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace NoFuture.Util.Math
+namespace NoFuture.Util.Core.Math
 {
     public class NormalDistEquation : IEquation
     {

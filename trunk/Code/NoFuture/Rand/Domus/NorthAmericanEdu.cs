@@ -9,7 +9,8 @@ using NoFuture.Rand.Data.Types;
 using NoFuture.Rand.Edu;
 using NoFuture.Rand.Gov;
 using NoFuture.Shared.Core;
-using NoFuture.Util.Math;
+using NoFuture.Util.Core;
+using NoFuture.Util.Core.Math;
 
 namespace NoFuture.Rand.Domus
 {
@@ -409,7 +410,7 @@ namespace NoFuture.Rand.Domus
                          (hshs.Any() ? hshs[Etx.IntNumber(0, hshs.Length - 1)] : AmericanHighSchool.GetDefaultHs());
 
             //these are on file in all caps
-            hs.Name = Util.Etc.CapWords(hs.Name, ' ');
+            hs.Name = Etc.CapWords(hs.Name, ' ');
             return hs;
         }
         #endregion

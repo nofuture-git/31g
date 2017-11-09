@@ -8,7 +8,7 @@ using CERTENROLLLib;
 using NoFuture.Shared;
 using NoFuture.Shared.Core;
 using NoFuture.Util;
-using NoFuture.Util.NfType;
+using NoFuture.Util.Core;
 using X509KeyUsageFlags = CERTENROLLLib.X509KeyUsageFlags;
 
 namespace NoFuture.Encryption

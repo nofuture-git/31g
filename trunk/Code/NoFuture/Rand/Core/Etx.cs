@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
+using NoFuture.Util.Core.Math;
 
 namespace NoFuture.Rand.Core
 {
@@ -432,7 +433,7 @@ namespace NoFuture.Rand.Core
         /// <param name="eq"></param>
         /// <param name="sigma">The z-score table only goes up to the 3rd sigma</param>
         /// <returns></returns>
-        public static double RandomValueInNormalDist(Util.Math.NormalDistEquation eq, int sigma = 3)
+        public static double RandomValueInNormalDist(NormalDistEquation eq, int sigma = 3)
         {
            if(eq == null)
                 throw new ArgumentNullException(nameof(eq));
@@ -473,7 +474,7 @@ namespace NoFuture.Rand.Core
         /// <returns></returns>
         public static double RandomValueInNormalDist(double mean, double stdDev, int sigma = 3)
         {
-           return RandomValueInNormalDist(new Util.Math.NormalDistEquation { Mean = mean, StdDev = stdDev }, sigma);
+           return RandomValueInNormalDist(new NormalDistEquation { Mean = mean, StdDev = stdDev }, sigma);
         }
 
         /// <summary>

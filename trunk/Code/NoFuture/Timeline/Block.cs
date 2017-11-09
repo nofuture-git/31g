@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using NoFuture.Util.Core;
 
 namespace NoFuture.Timeline
 {
@@ -223,7 +224,7 @@ namespace NoFuture.Timeline
 
         protected internal virtual string DrawHeader()
         {
-            var label = Util.Etc.PrintInCenter(Width, Title);
+            var label = Etc.PrintInCenter(Width, Title);
             var bar = DrawBar();
             var strBuilder = new StringBuilder();
             for (var i = 0; i < Width; i++)

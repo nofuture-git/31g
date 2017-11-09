@@ -5,6 +5,7 @@ using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NoFuture.Shared;
 using NoFuture.Shared.Core;
+using NoFuture.Util.Core;
 
 namespace NoFuture.Tests.Encryption
 {
@@ -48,7 +49,7 @@ namespace NoFuture.Tests.Encryption
         {
             
             //a file to encrypts
-            var someText = NoFuture.Util.Etc.LoremIpsumEightParagraphs;
+            var someText = Etc.LoremIpsumEightParagraphs;
             File.WriteAllText(TEST_PLAINTEXT, someText);
             Thread.Sleep(1000);
 
@@ -77,7 +78,7 @@ namespace NoFuture.Tests.Encryption
 
             var content = File.ReadAllText(TEST_PLAINTEXT);
 
-            Assert.AreEqual(NoFuture.Util.Etc.LoremIpsumEightParagraphs, content);
+            Assert.AreEqual(Etc.LoremIpsumEightParagraphs, content);
         }
     }
 }

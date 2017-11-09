@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data;
 using NoFuture.Util;
+using NoFuture.Util.Core;
 using NoFuture.Util.NfType;
 
 namespace NoFuture.Hbm.SortingContainers
@@ -76,7 +77,7 @@ namespace NoFuture.Hbm.SortingContainers
                 return null;
             var cName = ParamName.StartsWith("@") ? ParamName.Substring(1, ParamName.Length - 1) : ParamName;
             cName = Etc.SafeDotNetIdentifier(cName);
-            cName = Util.Etc.CapWords(cName, null);
+            cName = Etc.CapWords(cName, null);
             if (GetSqlDataType() == SqlDbType.Bit && !cName.StartsWith("Is"))
                 cName = string.Format("Is{0}", cName);
             if (cName.EndsWith("ID"))

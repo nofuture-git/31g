@@ -5,7 +5,8 @@ using NoFuture.Rand.Domus.Pneuma;
 using NoFuture.Shared;
 using NoFuture.Shared.Core;
 using NoFuture.Util;
-using NoFuture.Util.Math;
+using NoFuture.Util.Core;
+using NoFuture.Util.Core.Math;
 
 namespace NoFuture.Rand.Data.Sp
 {

@@ -9,6 +9,7 @@ using NoFuture.Shared;
 using System.Diagnostics;
 using NoFuture.Shared.Core;
 using NoFuture.Util.Binary;
+using NoFuture.Util.Core;
 using NoFuture.Util.NfConsole;
 
 namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds

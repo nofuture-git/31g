@@ -1,9 +1,10 @@
 ﻿using System;
+using NoFuture.Util.Core.Math;
 
 namespace NoFuture.Rand.Core
 {
     [Serializable]
-    public class RLinearEquation : Util.Math.LinearEquation
+    public class RLinearEquation : LinearEquation
     {
         public double StdDev { get; set; }
 

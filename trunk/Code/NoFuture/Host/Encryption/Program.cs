@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using NoFuture.Host.Encryption.Sjcl;
 using NoFuture.Shared;
 using NoFuture.Shared.Core;
+using NoFuture.Util;
 using NoFuture.Util.NfConsole;
 
 namespace NoFuture.Host.Encryption
@@ -283,10 +284,10 @@ namespace NoFuture.Host.Encryption
         internal bool AssignKeys()
         {
             if (String.IsNullOrWhiteSpace(_bulkKey))
-                _bulkKey = NoFuture.Util.NfPath.GetAppCfgSetting(APPCONFIG.BULK_KEY);
+                _bulkKey = SysCfg.GetAppCfgSetting(APPCONFIG.BULK_KEY);
 
             if (String.IsNullOrWhiteSpace(_hashSalt))
-                _hashSalt = NoFuture.Util.NfPath.GetAppCfgSetting(APPCONFIG.SALT);
+                _hashSalt = SysCfg.GetAppCfgSetting(APPCONFIG.SALT);
 
             return String.IsNullOrWhiteSpace(_bulkKey) || String.IsNullOrWhiteSpace(_hashSalt);
         }
@@ -377,7 +378,7 @@ namespace NoFuture.Host.Encryption
             var argHash = ConsoleCmd.ArgHash(_args);
             GetFileCmdArgs(argHash);
 
-            NfConfig.CustomTools.InvokeNfTypeName = NoFuture.Util.NfPath.GetAppCfgSetting("NoFuture.ToolsCustomTools.InvokeNfTypeName");
+            NfConfig.CustomTools.InvokeNfTypeName = SysCfg.GetAppCfgSetting("NoFuture.ToolsCustomTools.InvokeNfTypeName");
 
             if (MyFileParameters.FileCommand == InvokeKind.HostSjcl)
                 return;
@@ -416,13 +417,13 @@ namespace NoFuture.Host.Encryption
 
             var ptp = argHash.ContainsKey(SWITCHES.TO_PLAIN_TXT_PORT)
                 ? argHash[SWITCHES.TO_PLAIN_TXT_PORT].ToString()
-                : NoFuture.Util.NfPath.GetAppCfgSetting(SWITCHES.TO_PLAIN_TXT_PORT);
+                : SysCfg.GetAppCfgSetting(SWITCHES.TO_PLAIN_TXT_PORT);
             var ctp = argHash.ContainsKey(SWITCHES.TO_CIPHER_TEXT_PORT)
                 ? argHash[SWITCHES.TO_CIPHER_TEXT_PORT].ToString()
-                : NoFuture.Util.NfPath.GetAppCfgSetting(SWITCHES.TO_CIPHER_TEXT_PORT);
+                : SysCfg.GetAppCfgSetting(SWITCHES.TO_CIPHER_TEXT_PORT);
             var hp = argHash.ContainsKey(SWITCHES.HASH_PORT)
                 ? argHash[SWITCHES.HASH_PORT].ToString()
-                : NoFuture.Util.NfPath.GetAppCfgSetting(SWITCHES.HASH_PORT);
+                : SysCfg.GetAppCfgSetting(SWITCHES.HASH_PORT);
 
             sjclBkPt = ResolvePort(ptp).GetValueOrDefault(NfConfig.NfDefaultPorts.SjclToPlainText);
             sjclBkCt = ResolvePort(ctp).GetValueOrDefault(NfConfig.NfDefaultPorts.SjclToCipherText);

@@ -6,6 +6,7 @@ using System.Text;
 using System.Xml;
 using NoFuture.Shared;
 using NoFuture.Shared.Core;
+using NoFuture.Util.Core;
 
 namespace NoFuture.Read
 {
@@ -48,7 +49,7 @@ namespace NoFuture.Read
         /// </summary>
         public virtual void Save(Encoding encoding = null)
         {
-            Util.NfPath.SaveXml(_xmlDocument, _fileFullName, encoding);
+            NfPath.SaveXml(_xmlDocument, _fileFullName, encoding);
         }
 
         public virtual void SaveAs(string fullName, Encoding encoding = null)
@@ -56,7 +57,7 @@ namespace NoFuture.Read
             if(string.IsNullOrWhiteSpace(fullName))
                 throw new ArgumentNullException(nameof(fullName));
             _fileFullName = fullName;
-            Util.NfPath.SaveXml(_xmlDocument, fullName, encoding);
+            NfPath.SaveXml(_xmlDocument, fullName, encoding);
         }
 
         /// <summary>

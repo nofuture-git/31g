@@ -1,4 +1,4 @@
-﻿namespace NoFuture.Util.Math
+﻿namespace NoFuture.Util.Core.Math
 {
     public interface IEquation
     {

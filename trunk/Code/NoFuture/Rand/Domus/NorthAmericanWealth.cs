@@ -8,7 +8,7 @@ using NoFuture.Rand.Data;
 using NoFuture.Rand.Data.Sp;
 using NoFuture.Rand.Data.Types;
 using NoFuture.Rand.Domus.Pneuma;
-using NoFuture.Util.Math;
+using NoFuture.Util.Core.Math;
 
 namespace NoFuture.Rand.Domus
 {

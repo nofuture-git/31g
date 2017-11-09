@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NoFuture.Rand.Data;
 using NoFuture.Shared.Core;
 using NoFuture.Timeline;
-using NoFuture.Util.Math;
+using NoFuture.Util.Core.Math;
 
 namespace NoFuture.Tests.Util
 {
@@ -171,7 +171,7 @@ namespace NoFuture.Tests.Util
         [TestMethod]
         public void TestGetaAllOnesMatrix()
         {
-            var testResult = NoFuture.Util.Math.Matrix.GetAllOnesMatrix(2, 1);
+            var testResult = Matrix.GetAllOnesMatrix(2, 1);
             var numOfRows = testResult.GetLongLength(0);
             var numOfColumns = testResult.GetLongLength(1);
 
@@ -188,7 +188,7 @@ namespace NoFuture.Tests.Util
         {
             var col = new double[,] {{1}, {1}};
             var row = new double[,] {{1, 1}};
-            var testResult = NoFuture.Util.Math.Matrix.Product(col, row);
+            var testResult = Matrix.Product(col, row);
 
             var lenTop = testResult.GetLongLength(0);
             var lenBottom = testResult.GetLongLength(1);
@@ -351,7 +351,7 @@ namespace NoFuture.Tests.Util
         [TestMethod]
         public void TestLnEq()
         {
-            var testSubject = new NoFuture.Util.Math.NaturalLogEquation { Slope = 7.123, Intercept = -55.44 };
+            var testSubject = new NaturalLogEquation { Slope = 7.123, Intercept = -55.44 };
             const double X_IN = 1985;
             var solveY = testSubject.SolveForY(X_IN);
 
@@ -362,7 +362,7 @@ namespace NoFuture.Tests.Util
         [TestMethod]
         public void TestNormalDist()
         {
-            var testSubject = new NoFuture.Util.Math.NormalDistEquation() {Mean = 0, StdDev = 1};
+            var testSubject = new NormalDistEquation() {Mean = 0, StdDev = 1};
             System.Diagnostics.Debug.WriteLine(string.Format("{0}\t{1}","x","f(x)"));
             for (var i = 0; i <= 30; i++)
             {
@@ -381,7 +381,7 @@ namespace NoFuture.Tests.Util
         [TestMethod]
         public void TestNormalDistGetZScore()
         {
-            var testSubject = new NoFuture.Util.Math.NormalDistEquation { Mean = 0, StdDev = 1 };
+            var testSubject = new NormalDistEquation { Mean = 0, StdDev = 1 };
 
             var testResult = testSubject.GetZScoreFor(0);
             Assert.IsTrue(testResult >= 0.499);

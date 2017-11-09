@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Linq;
 using NoFuture.Shared;
 using NoFuture.Shared.Core;
+using NoFuture.Util.Core;
 
 
 namespace NoFuture.Util.NfConsole
@@ -51,7 +52,7 @@ namespace NoFuture.Util.NfConsole
         {
             get
             {
-                var logDir = NoFuture.Util.NfPath.GetAppCfgSetting(TEMP_DIR_DEBUG);
+                var logDir = SysCfg.GetAppCfgSetting(TEMP_DIR_DEBUG);
                 if (string.IsNullOrWhiteSpace(logDir))
                     logDir = NfConfig.TempDirectories.AppData;
                 var myName = MyName;
@@ -271,7 +272,7 @@ namespace NoFuture.Util.NfConsole
         protected internal void SetReflectionOnly()
         {
             var useReflectionOnly =
-                ResolveBool(NoFuture.Util.NfPath.GetAppCfgSetting(USE_REFLX_LOAD));
+                ResolveBool(SysCfg.GetAppCfgSetting(USE_REFLX_LOAD));
             NfConfig.UseReflectionOnlyLoad = useReflectionOnly != null && useReflectionOnly.Value;
         }
 

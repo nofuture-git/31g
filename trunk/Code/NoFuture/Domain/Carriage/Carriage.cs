@@ -1,6 +1,7 @@
 using System;
 using System.Text;
 using NoFuture.Shared.Core;
+using NoFuture.Util;
 using NoFuture.Util.NfConsole;
 
 namespace NoFuture.Domain
@@ -21,10 +22,10 @@ namespace NoFuture.Domain
 
         #region properties
         public string ConfigFileAppDomain
-            => NoFuture.Util.NfPath.GetAppCfgSetting(Engine.APP_DOMAIN_SWITCH);
+            => SysCfg.GetAppCfgSetting(Engine.APP_DOMAIN_SWITCH);
 
         public string ConfigFileAspHttp
-            => NoFuture.Util.NfPath.GetAppCfgSetting(Engine.ASP_LISTENER_SWITCH);
+            => SysCfg.GetAppCfgSetting(Engine.ASP_LISTENER_SWITCH);
 
         public DomainParameters MyParameters { get; private set; }
 

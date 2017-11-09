@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using NoFuture.Shared.Core;
+using NoFuture.Util.Core;
 
 namespace NoFuture.Read.Vs
 {
@@ -248,7 +249,7 @@ EndGlobal
 
             var projFileFullName = Path.Combine(projFile.DirectoryName, projFile.FileName);
             var projRelFullName = projFileFullName;
-            Util.NfPath.TryGetRelPath(slnDir, ref projRelFullName);
+            NfPath.TryGetRelPath(slnDir, ref projRelFullName);
 
             var projBldr = new StringBuilder();
             projBldr.AppendLine(

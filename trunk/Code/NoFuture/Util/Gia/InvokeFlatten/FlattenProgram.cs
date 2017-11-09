@@ -20,7 +20,7 @@ namespace NoFuture.Util.Gia.InvokeFlatten
         {
             get
             {
-                var dk = NoFuture.Util.NfPath.GetAppCfgSetting("MaxDepth");
+                var dk = SysCfg.GetAppCfgSetting("MaxDepth");
                 var dfk = ResolveInt(dk);
                 return dfk ?? FlattenLineArgs.MAX_DEPTH;
             }
@@ -121,7 +121,7 @@ namespace NoFuture.Util.Gia.InvokeFlatten
         protected override void ParseProgramArgs()
         {
             var argHash = ConsoleCmd.ArgHash(_args);
-            NfConfig.CustomTools.InvokeNfTypeName = NoFuture.Util.NfPath.GetAppCfgSetting("NoFuture.ToolsCustomTools.InvokeNfTypeName");
+            NfConfig.CustomTools.InvokeNfTypeName = SysCfg.GetAppCfgSetting("NoFuture.ToolsCustomTools.InvokeNfTypeName");
             if (argHash.ContainsKey(Flatten.GET_FLAT_ASM_PORT_CMD_SWITCH))
             {
                 _getFlattenAssemblyCmdPort = ResolveInt(argHash[Flatten.GET_FLAT_ASM_PORT_CMD_SWITCH].ToString());

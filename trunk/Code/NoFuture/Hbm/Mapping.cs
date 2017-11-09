@@ -9,6 +9,7 @@ using NoFuture.Hbm.DbQryContainers;
 using NoFuture.Hbm.SortingContainers;
 using NoFuture.Shared.Core;
 using NoFuture.Util;
+using NoFuture.Util.Core;
 using NoFuture.Util.NfType;
 
 namespace NoFuture.Hbm
@@ -53,7 +54,7 @@ namespace NoFuture.Hbm
             //not having the naming pattern is exceptional
             Compose.ValidSplit(tbl, 2);
 
-            var tableName = Util.Etc.ExtractLastWholeWord(tbl, null);
+            var tableName = Etc.ExtractLastWholeWord(tbl, null);
             var schemaName = tbl.Replace(string.Format(".{0}", tableName), string.Empty);
 
             var xe = XeFactory.HibernateMappingNode();
@@ -144,7 +145,7 @@ namespace NoFuture.Hbm
                                 Compose.ValidSplit(fullColumnName, 3);
 
                                 var keyMtoColumnXe =
-                                    XeFactory.ColumnNode(Util.Etc.ExtractLastWholeWord(fullColumnName, null),
+                                    XeFactory.ColumnNode(Etc.ExtractLastWholeWord(fullColumnName, null),
                                         kmtoColumn.ToJsonString());
 
                                 keyMtoXe.Add(keyMtoColumnXe);
@@ -184,7 +185,7 @@ namespace NoFuture.Hbm
                         Compose.ValidSplit(fullcolumnName, 3);
 
                         var keyPropDataType = Util.Lexicon.Mssql2HbmTypes[(keyPropJsonData.data_type)];
-                        var keyPropColumn = Util.Etc.ExtractLastWholeWord(fullcolumnName, null);
+                        var keyPropColumn = Etc.ExtractLastWholeWord(fullcolumnName, null);
                         var keyPropLen = keyPropJsonData.string_length ?? Globals.MSSQL_MAX_VARCHAR;
 
                         if (string.Equals(keyPropDataType, Globals.HbmXmlNames.ANSI_STRING))
@@ -252,7 +253,7 @@ namespace NoFuture.Hbm
                         var fullColumnName = columnData.column_name;
 
                         Compose.ValidSplit(fullColumnName, 3);
-                        var hbmBagKeyColumn = Util.Etc.ExtractLastWholeWord(fullColumnName, null);
+                        var hbmBagKeyColumn = Etc.ExtractLastWholeWord(fullColumnName, null);
 
                         var hbmBagKeyXe = XeFactory.ColumnNode(hbmBagKeyColumn, columnData.ToJsonString());
                         hbmBagFkKeyXe.Add(hbmBagKeyXe);
@@ -274,7 +275,7 @@ namespace NoFuture.Hbm
 
                     Compose.ValidSplit(fullColumnName, 3);
 
-                    var hbmBagKeyColumn = Util.Etc.ExtractLastWholeWord(fullColumnName, null);
+                    var hbmBagKeyColumn = Etc.ExtractLastWholeWord(fullColumnName, null);
                     var hbmBagKeyXe = XeFactory.KeyNodeColumnName(hbmBagKeyColumn, hbmBagFirstKey.ToJsonString());
                     hbmBagXe.Add(hbmBagKeyXe);
                 }
@@ -333,7 +334,7 @@ namespace NoFuture.Hbm
                         var fullColumnName = x.column_name;
 
                         Compose.ValidSplit(fullColumnName, 3);
-                        var cn = Util.Etc.ExtractLastWholeWord(fullColumnName, null);
+                        var cn = Etc.ExtractLastWholeWord(fullColumnName, null);
 
                         //need to store these temp, since we are also drafting thier parent's name
                         fkColumnXes.Add(XeFactory.ColumnNode(cn, x.ToJsonString()));
@@ -405,7 +406,7 @@ namespace NoFuture.Hbm
             foreach (var cMeta in returnedData[returnedData.Keys.First()])
             {
                 var simplePropName = Compose.PropertyName(cMeta.column_name,true);
-                var simplePropColumn = Util.Etc.ExtractLastWholeWord(cMeta.column_name, null);
+                var simplePropColumn = Etc.ExtractLastWholeWord(cMeta.column_name, null);
                 var simplePropDataType = Util.Lexicon.DotNet2HbmTypes[cMeta.data_type];
 
                 classXe.Add(XeFactory.PropertyNode(Globals.HbmXmlNames.PROPERTY, simplePropName, null, simplePropDataType,
@@ -579,7 +580,7 @@ namespace NoFuture.Hbm
             var fullColumnName = pkId.column_name;
 
             Compose.ValidSplit(fullColumnName, 3);
-            var columnName = Util.Etc.ExtractLastWholeWord(fullColumnName, null);
+            var columnName = Etc.ExtractLastWholeWord(fullColumnName, null);
             const string propertyName = Globals.HbmXmlNames.ID;
             var type = Util.Lexicon.Mssql2HbmTypes[(pkId.data_type)];
             var length = pkId.string_length ?? Globals.MSSQL_MAX_VARCHAR;
@@ -632,7 +633,7 @@ namespace NoFuture.Hbm
             }
 
             var simplePropName = Compose.PropertyName(entry.column_name);
-            var simplePropColumn = Util.Etc.ExtractLastWholeWord(entry.column_name, null);
+            var simplePropColumn = Etc.ExtractLastWholeWord(entry.column_name, null);
 
             var simplePropDataType = Globals.HbmXmlNames.ANSI_STRING;
 

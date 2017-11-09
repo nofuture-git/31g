@@ -6,6 +6,7 @@ using System.Text;
 using NoFuture.Shared;
 using NoFuture.Shared.Core;
 using NoFuture.Util;
+using NoFuture.Util.Core;
 using NoFuture.Util.NfType;
 
 namespace NoFuture.Hbm
@@ -86,7 +87,7 @@ namespace NoFuture.Hbm
             var fkPropertyType = new NfTypeName(fullAssemblyQualTypeName);
 
             var fkPropertyName = fkPropertyType.ClassName;
-            fkColumnNames = fkColumnNames.Select(x => Util.Etc.CapWords(Util.Etc.ExtractLastWholeWord(x, '.'), null)).ToArray();
+            fkColumnNames = fkColumnNames.Select(x => Etc.CapWords(Etc.ExtractLastWholeWord(x, '.'), null)).ToArray();
             return string.Format("{0}By{1}", fkPropertyName,
                 string.Join("And", fkColumnNames));
         }

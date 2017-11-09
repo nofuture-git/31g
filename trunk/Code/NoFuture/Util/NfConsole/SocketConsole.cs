@@ -6,6 +6,7 @@ using System.Net;
 using System.Net.Sockets;
 using NoFuture.Shared;
 using NoFuture.Shared.Core;
+using NoFuture.Util.Core;
 
 namespace NoFuture.Util.NfConsole
 {
@@ -28,7 +29,7 @@ namespace NoFuture.Util.NfConsole
         /// <returns></returns>
         protected internal int? ResolvePort(string appKey)
         {
-            var cval = NoFuture.Util.NfPath.GetAppCfgSetting(appKey);
+            var cval = SysCfg.GetAppCfgSetting(appKey);
             return ResolveInt(cval);
         }
 

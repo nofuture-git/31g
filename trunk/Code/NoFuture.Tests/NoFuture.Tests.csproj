@@ -253,6 +253,10 @@
       <Project>{4e81340f-409b-4ada-b038-bf3f76ffa81e}</Project>
       <Name>Tokens</Name>
     </ProjectReference>
+    <ProjectReference Include="..\NoFuture\Util\Core\Util.Core.csproj">
+      <Project>{349a1c91-ca14-4d04-946d-8b257a863ce0}</Project>
+      <Name>Util.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\NoFuture\Util\Gia\InvokeAssemblyAnalysis\Util.Gia.InvokeAssemblyAnalysis.csproj">
       <Project>{f2b8ca61-2257-44f4-b921-ff35b5f10146}</Project>
       <Name>Util.Gia.InvokeAssemblyAnalysis</Name>

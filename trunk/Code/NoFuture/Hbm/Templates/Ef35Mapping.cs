@@ -6,6 +6,7 @@ using NoFuture.Hbm.SortingContainers;
 using NoFuture.Shared;
 using NoFuture.Shared.Core;
 using NoFuture.Util;
+using NoFuture.Util.Core;
 
 namespace NoFuture.Hbm.Templates
 {

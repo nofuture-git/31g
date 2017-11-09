@@ -9,6 +9,7 @@ using NoFuture.Rand.Domus;
 using NoFuture.Rand.Edu;
 using NoFuture.Rand.Gov;
 using NoFuture.Util;
+using NoFuture.Util.Core;
 using static System.Diagnostics.Debug;
 using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 using Dbg = System.Diagnostics.Debug;

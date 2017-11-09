@@ -9,6 +9,7 @@ using System.Text.RegularExpressions;
 using System.Xml;
 using NoFuture.Shared.Core;
 using NoFuture.Util;
+using NoFuture.Util.Core;
 
 namespace NoFuture.Read.Vs
 {
@@ -1769,7 +1770,7 @@ namespace NoFuture.Read.Vs
             for (var i = 0; i < files.Count; i++)
             {
                 var fli = files[i];
-                if (Util.NfPath.TryGetRelPath(DirectoryName, ref fli))
+                if (NfPath.TryGetRelPath(DirectoryName, ref fli))
                 {
                     files[i] = fli;
                 }

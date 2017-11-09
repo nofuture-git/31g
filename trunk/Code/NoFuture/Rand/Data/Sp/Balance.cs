@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using NoFuture.Util.Math;
+using NoFuture.Util.Core.Math;
 
 namespace NoFuture.Rand.Data.Sp
 {

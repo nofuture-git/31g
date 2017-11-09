@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using NoFuture.Shared;
 using NoFuture.Shared.Core;
+using NoFuture.Util.Core;
 
 namespace NoFuture.Sql.Mssql
 {
@@ -92,7 +93,7 @@ namespace NoFuture.Sql.Mssql
             sqlCmd.Append(dbName);
 
             sqlCmd.Append(" -i "); 
-            if (!Util.NfPath.HasKnownExtension(path) && Directory.Exists(path))
+            if (!NfPath.HasKnownExtension(path) && Directory.Exists(path))
             {
                 var files = new DirectoryInfo(path);
                 var fileNames =

@@ -2,6 +2,7 @@
 using System.IO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NoFuture.Util;
+using NoFuture.Util.Core;
 
 namespace NoFuture.Tests.Util
 {
@@ -15,7 +16,7 @@ namespace NoFuture.Tests.Util
             File.Copy(testFile, Path.Combine(Path.GetDirectoryName(testFile),"MixLineEndings.copy.xml"));
 
             System.Threading.Thread.Sleep(500);
-            NoFuture.Util.NfPath.ConvertToCrLf(testFile);
+            NfPath.ConvertToCrLf(testFile);
 
         }
 
@@ -65,26 +66,26 @@ namespace NoFuture.Tests.Util
         public void TestRemoveRedundantPathLeafs()
         {
             var testInput = @"..\Ind.BusinessLogic.Provider\..\Ind.Lookup\Ind.Lookup_Bin.csproj";
-            var testResult = NoFuture.Util.NfPath.RemoveRedundantPathLeafs(testInput);
+            var testResult = NfPath.RemoveRedundantPathLeafs(testInput);
             Assert.IsNotNull(testResult);
             System.Diagnostics.Debug.WriteLine(testResult);
             Assert.AreEqual(@"..\Ind.Lookup\Ind.Lookup_Bin.csproj", testResult);
 
             testInput = @"..\SomeSubProj.WithDots.MoreDots\SomeSubProj.WithDots.MoreDots.fsproj";
-            testResult = NoFuture.Util.NfPath.RemoveRedundantPathLeafs(testInput);
+            testResult = NfPath.RemoveRedundantPathLeafs(testInput);
             Assert.IsNotNull(testResult);
             System.Diagnostics.Debug.WriteLine(testResult);
             Assert.AreEqual(testInput, testResult);
 
             testInput = @"..\SomeSubProj.WithDots.MoreDots\.\SomeSubProj.WithDots.MoreDots.fsproj";
-            testResult = NoFuture.Util.NfPath.RemoveRedundantPathLeafs(testInput);
+            testResult = NfPath.RemoveRedundantPathLeafs(testInput);
             Assert.IsNotNull(testResult);
             System.Diagnostics.Debug.WriteLine(testResult);
             Assert.AreEqual(@"..\SomeSubProj.WithDots.MoreDots\SomeSubProj.WithDots.MoreDots.fsproj", testResult);
 
             
             testInput = @"..\Bfw.Scheduling\Bfw.Scheduling.Scaling\..\..\Bfw.BusinessLogic.Manager.Contract\Bfw.BusinessLogic.Manager.Contract_Bin.csproj";
-            testResult = NoFuture.Util.NfPath.RemoveRedundantPathLeafs(testInput);
+            testResult = NfPath.RemoveRedundantPathLeafs(testInput);
             Assert.IsNotNull(testResult);
             System.Diagnostics.Debug.WriteLine(testResult);
             Assert.AreEqual(@"..\Bfw.BusinessLogic.Manager.Contract\Bfw.BusinessLogic.Manager.Contract_Bin.csproj", testResult);
@@ -95,7 +96,7 @@ namespace NoFuture.Tests.Util
         {
             var testPath = TestAssembly.UnitTestsRoot + @"\Util\TestChunkData\diaSdkData.lines.json";// 
 
-            var testResults = NoFuture.Util.NfPath.TrySplitFileOnMarker(testPath, null);//5762048
+            var testResults = NfPath.TrySplitFileOnMarker(testPath, null);//5762048
         }
 
         [TestMethod]
@@ -115,27 +116,27 @@ namespace NoFuture.Tests.Util
 
             var testInput = "$(" + testEnvVar + ")" + @"\Microsoft.NET\Framework";
             var testResultOut = string.Empty;
-            var testResult = NoFuture.Util.NfPath.TryResolveEnvVar(testInput, ref testResultOut);
+            var testResult = NfPath.TryResolveEnvVar(testInput, ref testResultOut);
 
             Assert.IsTrue(testResult);
             Assert.IsTrue(string.Equals(expectedResult, testResultOut, StringComparison.OrdinalIgnoreCase));
 
             testInput = "$env:" + testEnvVar + @"\Microsoft.NET\Framework";
             testResultOut = string.Empty;
-            testResult = NoFuture.Util.NfPath.TryResolveEnvVar(testInput, ref testResultOut);
+            testResult = NfPath.TryResolveEnvVar(testInput, ref testResultOut);
 
             Assert.IsTrue(testResult);
             Assert.IsTrue(string.Equals(expectedResult, testResultOut, StringComparison.OrdinalIgnoreCase));
 
             testInput = "%" + testEnvVar + "%" + @"\Microsoft.NET\Framework";
             testResultOut = string.Empty;
-            testResult = NoFuture.Util.NfPath.TryResolveEnvVar(testInput, ref testResultOut);
+            testResult = NfPath.TryResolveEnvVar(testInput, ref testResultOut);
 
             Assert.IsTrue(testResult);
             Assert.IsTrue(string.Equals(expectedResult, testResultOut, StringComparison.OrdinalIgnoreCase));
 
             testResultOut = string.Empty;
-            testResult = NoFuture.Util.NfPath.TryResolveEnvVar(System.IO.Path.Combine(System.Environment.GetEnvironmentVariable("windir"), @"\Microsoft.NET\Framework"), ref testResultOut);
+            testResult = NfPath.TryResolveEnvVar(System.IO.Path.Combine(System.Environment.GetEnvironmentVariable("windir"), @"\Microsoft.NET\Framework"), ref testResultOut);
             Assert.IsFalse(testResult);
 
         }
@@ -144,7 +145,7 @@ namespace NoFuture.Tests.Util
         public void TestHasKnownExtension()
         {
             var testResult =
-                NoFuture.Util.NfPath.HasKnownExtension(@"C:\Projects\MyProject\AnotherFolder\admin\SomeFile.fs");
+                NfPath.HasKnownExtension(@"C:\Projects\MyProject\AnotherFolder\admin\SomeFile.fs");
             Assert.IsTrue(testResult);
         }
 

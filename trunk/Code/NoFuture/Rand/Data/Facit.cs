@@ -10,6 +10,7 @@ using NoFuture.Rand.Data.NfXml;
 using NoFuture.Rand.Data.Types;
 using NoFuture.Rand.Gov.Fed;
 using NoFuture.Rand.Gov.Sec;
+using NoFuture.Util.Core;
 
 namespace NoFuture.Rand.Data
 {
@@ -119,7 +120,7 @@ namespace NoFuture.Rand.Data
             var bunchOfWords = new List<string>();
             for (var i = 0; i < 4; i++)
             {
-                bunchOfWords.Add(Util.Etc.CapWords(Word(), ' '));
+                bunchOfWords.Add(Etc.CapWords(Word(), ' '));
                 bunchOfWords.Add(Domus.NAmerUtil.GetAmericanFirstName(DateTime.Today, Etx.CoinToss ? Gender.Male : Gender.Female));
             }
             username = String.Join((Etx.CoinToss ? "." : "_"), Etx.DiscreteRange(bunchOfWords.ToArray()),
@@ -151,7 +152,7 @@ namespace NoFuture.Rand.Data
                 var shortWordList = new List<string>();
                 for (var i = 0; i < 3; i++)
                 {
-                    var withUcase = Util.Etc.CapWords(Etx.DiscreteRange(shortWords), ' ');
+                    var withUcase = Etc.CapWords(Etx.DiscreteRange(shortWords), ' ');
                     shortWordList.Add(withUcase);
                 }
                 shortWordList.Add((Etx.CoinToss ? "_" : "") + Etx.IntNumber(100, 9999));

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using NoFuture.Util.Math;
 using System.Xml;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
@@ -13,6 +12,8 @@ using NoFuture.Rand.Gov;
 using NoFuture.Shared;
 using NoFuture.Shared.Core;
 using NoFuture.Util;
+using NoFuture.Util.Core;
+using NoFuture.Util.Core.Math;
 
 namespace NoFuture.Rand.Domus
 {

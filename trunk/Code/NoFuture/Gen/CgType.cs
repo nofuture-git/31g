@@ -59,7 +59,7 @@ namespace NoFuture.Gen
                 if (!string.IsNullOrWhiteSpace(Namespace))
                 {
                     regexPattern.Append("(");
-                    regexPattern.Append(Util.Etc.EscapeString(Namespace, EscapeStringType.REGEX));
+                    regexPattern.Append(Util.Core.Etc.EscapeString(Namespace, EscapeStringType.REGEX));
                     regexPattern.Append(")?");
                 }
                 regexPattern.Append(Name);

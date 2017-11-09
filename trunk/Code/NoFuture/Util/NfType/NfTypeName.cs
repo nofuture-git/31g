@@ -8,6 +8,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using NoFuture.Shared.Core;
 using NoFuture.Util.Binary;
+using NoFuture.Util.Core;
 using NoFuture.Util.NfType.InvokeCmds;
 
 namespace NoFuture.Util.NfType

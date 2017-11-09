@@ -8,6 +8,7 @@ using NoFuture.Rand.Data;
 using NoFuture.Rand.Data.Types;
 using NoFuture.Rand.Edu;
 using NoFuture.Util;
+using NoFuture.Util.Core;
 
 namespace NoFuture.Rand.Gov
 {
@@ -66,7 +67,7 @@ namespace NoFuture.Rand.Gov
 
         public override string ToString()
         {
-            return string.Join(" ", Util.Etc.DistillToWholeWords(GetType().Name));
+            return string.Join(" ", Etc.DistillToWholeWords(GetType().Name));
         }
 
         /// <summary>

@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using System.Collections.Generic;
+using NoFuture.Util;
 
 namespace NoFuture.Domain
 {
@@ -68,7 +69,7 @@ namespace NoFuture.Domain
         public static List<string>  GetGlobalWebConfigAspExtensions()
         {
             var extensions = new List<string>();
-            var configFile = NoFuture.Util.NfPath.GetAspNetWebCfg();
+            var configFile = SysCfg.GetAspNetWebCfg();
 
             var httpHandlersNodes = configFile.SelectNodes("//httpHandlers/add");
             if(httpHandlersNodes == null || httpHandlersNodes.Count == 0)

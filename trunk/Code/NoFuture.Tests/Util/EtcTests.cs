@@ -4,6 +4,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NoFuture.Shared;
 using NoFuture.Shared.Core;
 using NoFuture.Util;
+using NoFuture.Util.Core;
 
 namespace NoFuture.Tests.Util
 {
@@ -15,7 +16,7 @@ namespace NoFuture.Tests.Util
         {
             var testInput = @"    He has refused his Assent to Laws, the most wholesome and necessary for the public good.
     He has forbidden his Governors to pass Laws of immediate and pressing importance, ";
-            var testResult = NoFuture.Util.Etc.DistillString(testInput);
+            var testResult = Etc.DistillString(testInput);
 
             System.Diagnostics.Debug.WriteLine(testResult);
         }
@@ -36,21 +37,21 @@ namespace NoFuture.Tests.Util
         public void TestCapitalizeFirstLetterOfWholeWords()
         {
             const string typicalTypeName = "noFuture.util.etc";
-            var testResult = NoFuture.Util.Etc.CapWords(typicalTypeName, '.');
+            var testResult = Etc.CapWords(typicalTypeName, '.');
             System.Diagnostics.Debug.WriteLine(testResult);
             Assert.AreEqual("NoFuture.Util.Etc", testResult);
 
             const string allCaps = "KEYCODE";
-            testResult = NoFuture.Util.Etc.CapWords(allCaps, '.');
+            testResult = Etc.CapWords(allCaps, '.');
             System.Diagnostics.Debug.WriteLine(testResult);
             Assert.AreEqual("Keycode", testResult);
 
             const string capsLockOn = "nOFUTURE.uTIL.eTC";
-            testResult = NoFuture.Util.Etc.CapWords(capsLockOn, '.');
+            testResult = Etc.CapWords(capsLockOn, '.');
             System.Diagnostics.Debug.WriteLine(testResult);
             Assert.AreEqual("Nofuture.Util.Etc",testResult);
 
-            testResult = NoFuture.Util.Etc.CapWords("A typical English sentence looks like this.", ' ');
+            testResult = Etc.CapWords("A typical English sentence looks like this.", ' ');
             System.Diagnostics.Debug.WriteLine(testResult);
         }
 
@@ -58,19 +59,19 @@ namespace NoFuture.Tests.Util
         public void TestEscapeString()
         {
             const string DEC_EXPECT = "&#73;&#32;&#97;&#109;&#32;&#100;&#101;&#99;&#105;&#109;&#97;&#108;";
-            var dec = NoFuture.Util.Etc.EscapeString("I am decimal", EscapeStringType.DECIMAL);
+            var dec = Etc.EscapeString("I am decimal", EscapeStringType.DECIMAL);
 
             const string UNI_EXPECT = @"\u00C0\u00C8\u00CC\u00D2\u00D9\u00E0\u00E8\u00EC\u00F2\u00F9\u00C1\u00C9\u00CD\u00D3\u00DA\u00DD\u00E1\u00E9\u00ED\u00F3\u00FA\u00FD\u00C2\u00CA\u00CE\u00D4\u00DB\u00E2\u00EA\u00EE\u00F4\u00FB\u00C3\u00D1\u00D5\u00E3\u00F1\u00F5\u00C4\u00CB\u00CF\u00D6\u00DC\u00E4\u00EB\u00EF\u00F6\u00FC\u00E7\u00C7\u00DF\u00D8\u00F8\u00C5\u00E5\u00C6\u00E6\u00DE\u00FE\u00D0\u00F0\u0152\u0153\u0178\u00FF\u0160\u0161";
-            var uni = NoFuture.Util.Etc.EscapeString("ÀÈÌÒÙàèìòùÁÉÍÓÚÝáéíóúýÂÊÎÔÛâêîôûÃÑÕãñõÄËÏÖÜäëïöüçÇßØøÅåÆæÞþÐðŒœŸÿŠš", EscapeStringType.UNICODE);
+            var uni = Etc.EscapeString("ÀÈÌÒÙàèìòùÁÉÍÓÚÝáéíóúýÂÊÎÔÛâêîôûÃÑÕãñõÄËÏÖÜäëïöüçÇßØøÅåÆæÞþÐðŒœŸÿŠš", EscapeStringType.UNICODE);
 
             const string REGEX_EXPECT = @"\x5b\x72\x65\x67\x65\x78\x5d";
-            var regex = NoFuture.Util.Etc.EscapeString("[regex]", EscapeStringType.REGEX);
+            var regex = Etc.EscapeString("[regex]", EscapeStringType.REGEX);
 
             const string HTML_EXPECT = "&nbsp;&pound;&iexcl;&yen;&sect;";
-            var html = NoFuture.Util.Etc.EscapeString(" £¡¥§", EscapeStringType.HTML);
+            var html = Etc.EscapeString(" £¡¥§", EscapeStringType.HTML);
 
             const string URI_EXPECT = "F%40r0ut%7eDu%2cde%3d";
-            var uri = NoFuture.Util.Etc.EscapeString("F@r0ut~Du,de=", EscapeStringType.URI);
+            var uri = Etc.EscapeString("F@r0ut~Du,de=", EscapeStringType.URI);
 
             Assert.AreEqual(DEC_EXPECT,dec);
             Assert.AreEqual(UNI_EXPECT,uni);
@@ -213,17 +214,17 @@ namespace NoFuture.Tests.Util
         [TestMethod]
         public void TestToPascelCase()
         {
-            var testResult = NoFuture.Util.Etc.ToPascelCase("dbo.DELETED_LookupDetails");
+            var testResult = Etc.ToPascelCase("dbo.DELETED_LookupDetails");
             Assert.IsNotNull(testResult);
             System.Diagnostics.Debug.WriteLine(testResult);
             Assert.AreEqual("DboDeletedLookupDetails",testResult);
 
-            testResult = NoFuture.Util.Etc.ToPascelCase("dbo.DELETED_LookupDetails", true);
+            testResult = Etc.ToPascelCase("dbo.DELETED_LookupDetails", true);
             Assert.IsNotNull(testResult);
             System.Diagnostics.Debug.WriteLine(testResult);
             Assert.AreEqual("Dbo.Deleted_LookupDetails",testResult);
 
-            testResult = NoFuture.Util.Etc.ToPascelCase("Test.dbo.SET_OP_lli", true);
+            testResult = Etc.ToPascelCase("Test.dbo.SET_OP_lli", true);
             Assert.AreEqual("Test.dbo.Set_Op_lli",testResult);
         }
 
@@ -231,24 +232,24 @@ namespace NoFuture.Tests.Util
         public void TestDistillToWholeWords()
         {
             var testResult =
-                NoFuture.Util.Etc.DistillToWholeWords(
+                Etc.DistillToWholeWords(
                     "FilmMaster-AccountDetail-ClientDetails-LocationDetails-TimeMasters-IsGolfVoucher");
             Assert.IsNotNull(testResult);
             
             Assert.AreEqual("Film Master Account Detail Client Details Location Time Masters Is Golf Voucher", string.Join(" ", testResult));
 
             testResult =
-                NoFuture.Util.Etc.DistillToWholeWords("Id");
+                Etc.DistillToWholeWords("Id");
 
             Assert.IsNotNull(testResult);
             Assert.IsTrue(testResult.Length == 1);
             Assert.AreEqual("Id",testResult[0]);
 
-            testResult = NoFuture.Util.Etc.DistillToWholeWords("RTDC IR Questions");
+            testResult = Etc.DistillToWholeWords("RTDC IR Questions");
             Assert.IsNotNull(testResult);
             Assert.AreEqual("RtdcIrQuestions", string.Join("", testResult));
 
-            testResult = NoFuture.Util.Etc.DistillToWholeWords("The-VariousThings\\which,AllowYou ToRead=this");
+            testResult = Etc.DistillToWholeWords("The-VariousThings\\which,AllowYou ToRead=this");
             Assert.IsNotNull(testResult);
             Assert.AreEqual(9, testResult.Length);
             Assert.AreEqual("TheVariousThingsWhichAllowYouToReadThis", string.Join("",testResult));
@@ -273,10 +274,10 @@ namespace NoFuture.Tests.Util
         {
             var testJson =
                 "[{\"ScheduleId\":5849,\"Uuid\":\"20012473\",\"ProgramId\":994564,\"Relation\":\"E\",\"FirstName\":\"Randall\",\"MiddleInitial\":null,\"LastName\":\"Perea's\",\"DateOfBirth\":\"1973-03-06T00:00:00\",\"Gender\":\"Male\",\"PhoneNumber\":\"2395730480\",\"Email\":null,\"AddressLine1\":\"3900 Cedar St\",\"AddressLine2\":null,\"City\":\"Arcadia\",\"State\":\"FL\",\"ZipCode\":\"33809\",\"ScheduledTime\":\"2013-10-30T07:30:00\"}]";
-            var testResult = NoFuture.Util.Etc.FormatJson(testJson);
+            var testResult = Etc.FormatJson(testJson);
             Assert.IsNotNull(testResult);
 
-            testResult = NoFuture.Util.Etc.FormatJson(testJson, true);
+            testResult = Etc.FormatJson(testJson, true);
             System.Diagnostics.Debug.WriteLine(testResult);
         }
 
@@ -284,7 +285,7 @@ namespace NoFuture.Tests.Util
         public void TestFormatXml()
         {
             var testXml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><buildTypes><buildType id=\"Whiskey_Quebec_Motel_Romeo_Whiskey_Alpha\" name=\"API\"><builds><build id=\"9945412\" number=\"0000FF.0A.344D1.2B\" status=\"SUCCESS\"><statusText>Success</statusText></build></builds></buildType></buildTypes>";
-            var testResult = NoFuture.Util.Etc.FormatXml(testXml);
+            var testResult = Etc.FormatXml(testXml);
             Assert.IsNotNull(testResult);
             System.Diagnostics.Debug.WriteLine(testResult);
         }

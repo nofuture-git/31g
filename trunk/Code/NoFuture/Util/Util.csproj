@@ -111,11 +111,8 @@
     <Compile Include="Gia\InvokeCmds\InvokeGetTokenIds.cs" />
     <Compile Include="Gia\InvokeCmds\InvokeGetTokenNames.cs" />
     <Compile Include="Gia\InvokeCmds\InvokeGetTokenPageRank.cs" />
-    <Compile Include="Math\IEquation.cs" />
-    <Compile Include="Math\SinusoidEquation.cs" />
     <Compile Include="NfConsole\CmdBase.cs" />
     <Compile Include="NfConsole\ConsoleCmd.cs" />
-    <Compile Include="Etc.cs" />
     <Compile Include="Etymological\Biz\Nomenclature.cs" />
     <Compile Include="Etymological\En.cs" />
     <Compile Include="Etymological\INomenclature.cs" />
@@ -130,14 +127,6 @@
     <Compile Include="Gia\GraphViz\FlattenMrecord.cs" />
     <Compile Include="Gsm.cs" />
     <Compile Include="Lexicon.cs" />
-    <Compile Include="Math\Combination.cs" />
-    <Compile Include="Math\ExponentialEquation.cs" />
-    <Compile Include="Math\Extensions.cs" />
-    <Compile Include="Math\Econ.cs" />
-    <Compile Include="Math\LinearEquation.cs" />
-    <Compile Include="Math\Matrix.cs" />
-    <Compile Include="Math\NaturalLogEquation.cs" />
-    <Compile Include="Math\NormalDistEquation.cs" />
     <Compile Include="Net.cs" />
     <Compile Include="NfConsole\ICmd.cs" />
     <Compile Include="NfConsole\IInvokeCmd.cs" />
@@ -145,16 +134,13 @@
     <Compile Include="NfConsole\InvokeConsoleBase.cs" />
     <Compile Include="NfConsole\Program.cs" />
     <Compile Include="NfConsole\SocketConsole.cs" />
-    <Compile Include="NfPath.cs" />
     <Compile Include="NfType\InvokeCmds\InvokeGetNfTypeName.cs" />
     <Compile Include="NfType\InvokeCmds\NfTypeNameParseItem.cs" />
     <Compile Include="NfType\MeasurePropertyDistance.cs" />
     <Compile Include="NfType\NfTypeName.cs" />
     <Compile Include="NfType\NfTypeNameProcess.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="LoremIpsum.EightParagraphs.txt" />
+    <Compile Include="SysCfg.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Shared\Core\Shared.Core.csproj">
@@ -165,10 +151,15 @@
       <Project>{4b77029a-6f3e-48ae-b8e2-c4dd06dce627}</Project>
       <Name>Shared</Name>
     </ProjectReference>
+    <ProjectReference Include="Core\Util.Core.csproj">
+      <Project>{349a1c91-ca14-4d04-946d-8b257a863ce0}</Project>
+      <Name>Util.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

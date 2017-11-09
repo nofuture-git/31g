@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using NoFuture.Hbm.SortingContainers;
+using NoFuture.Util.Core;
 
 namespace NoFuture.Hbm.Templates
 {
@@ -122,7 +123,7 @@ namespace NoFuture.Hbm.Templates
             var efsprop = new EfSimpleProp { IsString = isString };
 
             efsprop.IsUnicode = efsprop.IsString && propColMetadata.data_type.StartsWith("n");
-            efsprop.ColumnName = Util.Etc.ExtractLastWholeWord(propColMetadata.column_name.Replace("[", string.Empty).Replace("]", string.Empty), null);
+            efsprop.ColumnName = Etc.ExtractLastWholeWord(propColMetadata.column_name.Replace("[", string.Empty).Replace("]", string.Empty), null);
             efsprop.RequiresPrecision = Globals.MssqlTypesWithPrecision.Contains(propColMetadata.data_type);
             //this exports doubled when it is unicode
             efsprop.StringLength = GetStringLength(propColMetadata.string_length, efsprop.IsUnicode);

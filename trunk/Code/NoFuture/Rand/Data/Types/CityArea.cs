@@ -8,9 +8,10 @@ using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Domus;
 using NoFuture.Rand.Gov;
 using NoFuture.Rand.Gov.Census;
-using NoFuture.Util.Math;
 using NoFuture.Rand.Edu;
 using NoFuture.Util;
+using NoFuture.Util.Core;
+using NoFuture.Util.Core.Math;
 
 namespace NoFuture.Rand.Data.Types
 {

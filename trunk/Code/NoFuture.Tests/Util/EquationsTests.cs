@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NoFuture.Util.Core.Math;
 
 namespace NoFuture.Tests.Util
 {
@@ -9,7 +10,7 @@ namespace NoFuture.Tests.Util
         [TestMethod]
         public void TestLinearEquation()
         {
-            var testSubject = new NoFuture.Util.Math.LinearEquation {Intercept = 4, Slope = 2};
+            var testSubject = new LinearEquation {Intercept = 4, Slope = 2};
 
             var x = 8;
             var testResultY = testSubject.SolveForY(x);
@@ -21,14 +22,14 @@ namespace NoFuture.Tests.Util
         [TestMethod]
         public void TestExponentialEquation()
         {
-            var testSubject = new NoFuture.Util.Math.ExponentialEquation() {ConstantValue = 4, Power = 3.5};
+            var testSubject = new ExponentialEquation() {ConstantValue = 4, Power = 3.5};
             var x = 5;
             var testResultY = testSubject.SolveForY(x);
             var testResultX = testSubject.SolveForX(testResultY);
 
             Assert.AreEqual(x, testResultX);
 
-            testSubject = new NoFuture.Util.Math.ExponentialEquation
+            testSubject = new ExponentialEquation
             {
                 ConstantValue = System.Math.Pow(10, -13),
                 Power = 6.547
@@ -42,7 +43,7 @@ namespace NoFuture.Tests.Util
         [TestMethod]
         public void TestNaturalLogEquation()
         {
-            var testSubject = new NoFuture.Util.Math.NaturalLogEquation {Intercept = 2, Slope = 1.2};
+            var testSubject = new NaturalLogEquation {Intercept = 2, Slope = 1.2};
 
             var x = 11.0D;
             var testResultY = testSubject.SolveForY(x);

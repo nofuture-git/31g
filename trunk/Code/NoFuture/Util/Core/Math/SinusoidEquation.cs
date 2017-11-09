@@ -1,4 +1,4 @@
-﻿namespace NoFuture.Util.Math
+﻿namespace NoFuture.Util.Core.Math
 {
     public class SinusoidEquation : IEquation
     {

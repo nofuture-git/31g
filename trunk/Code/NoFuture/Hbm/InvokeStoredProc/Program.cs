@@ -9,6 +9,7 @@ using System.Threading;
 using System.Configuration;
 using NoFuture.Shared;
 using NoFuture.Shared.Core;
+using NoFuture.Util;
 using NoFuture.Util.NfConsole;
 
 namespace NoFuture.Hbm.InvokeStoredProc
@@ -123,7 +124,7 @@ namespace NoFuture.Hbm.InvokeStoredProc
         {
             get
             {
-                var appSet = NoFuture.Util.NfPath.GetAppCfgSetting(AppSettingKeyNames.HBM_STORED_PROC_XSD_TIME_OUT);
+                var appSet = SysCfg.GetAppCfgSetting(AppSettingKeyNames.HBM_STORED_PROC_XSD_TIME_OUT);
                 if (string.IsNullOrWhiteSpace(appSet))
                     return Settings.HbmStoredProcXsdTimeOut;
 
@@ -194,7 +195,7 @@ namespace NoFuture.Hbm.InvokeStoredProc
                 throw new ItsDeadJim(msg);
             }
 
-            NfConfig.CustomTools.InvokeNfTypeName = NoFuture.Util.NfPath.GetAppCfgSetting(AppSettingKeyNames.NF_TYPE_NAME_EXE);
+            NfConfig.CustomTools.InvokeNfTypeName = SysCfg.GetAppCfgSetting(AppSettingKeyNames.NF_TYPE_NAME_EXE);
 
             if (!argHash.ContainsKey(InvokeStoredProcManager.HBM_STORED_PROX_DIR_SWITCH) ||
                 argHash[InvokeStoredProcManager.HBM_STORED_PROX_DIR_SWITCH] == null)

@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using NoFuture.Util;
+using NoFuture.Util.Core;
 
 namespace NoFuture.Timeline
 {

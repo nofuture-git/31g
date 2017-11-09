@@ -2,6 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NoFuture.Rand;
 using NoFuture.Rand.Data.Sp;
+using NoFuture.Util.Core.Math;
 using Dbg = System.Diagnostics.Debug;
 
 namespace NoFuture.Tests.Rand.DomusTests
@@ -32,7 +33,7 @@ namespace NoFuture.Tests.Rand.DomusTests
 
             Dbg.WriteLine(testResult);
 
-            var fv = NoFuture.Util.Math.Econ.PerDiemInterest(150000M, 0.03F,
+            var fv = Econ.PerDiemInterest(150000M, 0.03F,
                 (DateTime.Today.AddYears(30) - DateTime.Today).TotalDays);
 
             System.Diagnostics.Debug.WriteLine(fv);

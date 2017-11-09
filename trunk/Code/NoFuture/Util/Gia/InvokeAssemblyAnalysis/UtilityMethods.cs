@@ -7,6 +7,7 @@ using System.Text;
 using NoFuture.Shared;
 using NoFuture.Shared.Core;
 using NoFuture.Util.Binary;
+using NoFuture.Util.Core;
 
 namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
 {
@@ -80,7 +81,7 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
         /// <returns></returns>
         internal int? ResolvePort(string appKey)
         {
-            var cval = NoFuture.Util.NfPath.GetAppCfgSetting(appKey);
+            var cval = SysCfg.GetAppCfgSetting(appKey);
             return ResolveInt(cval);
         }
 

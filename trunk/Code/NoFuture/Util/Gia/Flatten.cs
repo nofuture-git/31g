@@ -10,6 +10,7 @@ using System.Reflection;
 using NoFuture.Shared;
 using NoFuture.Shared.Core;
 using NoFuture.Util.Binary;
+using NoFuture.Util.Core;
 using NoFuture.Util.Gia.Args;
 using NoFuture.Util.Gia.InvokeCmds;
 using NoFuture.Util.NfConsole;

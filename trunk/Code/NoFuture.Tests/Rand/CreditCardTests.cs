@@ -6,6 +6,7 @@ using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Data.Sp;
 using NoFuture.Rand.Domus;
+using NoFuture.Util.Core;
 
 namespace NoFuture.Tests.Rand
 {
@@ -20,7 +21,7 @@ namespace NoFuture.Tests.Rand
             testInput.AddRange(Etx.GetRandomRChars(true, 8, 1));
             var testSubject = new CreditCardNumber(testInput.ToArray())
             {
-                CheckDigitFunc = NoFuture.Util.Etc.CalcLuhnCheckDigit
+                CheckDigitFunc = Etc.CalcLuhnCheckDigit
             };
 
             var testResult00 = testSubject.Value;

@@ -4,6 +4,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NoFuture.Rand;
 using NoFuture.Rand.Data;
 using NoFuture.Rand.Gov.Fed;
+using NoFuture.Util.Core;
 
 namespace NoFuture.Tests.Rand
 {
@@ -93,7 +94,7 @@ namespace NoFuture.Tests.Rand
             testResult = NoFuture.Rand.Data.Types.XRefGroup.AddXrefValues(testXrefId, testValues, "RoutingNumber");
             Assert.IsTrue(testResult);
 
-            NoFuture.Util.NfPath.SaveXml(TreeData.XRefXml,
+            NfPath.SaveXml(TreeData.XRefXml,
                 TestAssembly.UnitTestsRoot + @"\Rand\XRefTestRslt.xml");
 
         }
