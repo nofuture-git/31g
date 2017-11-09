@@ -29,12 +29,12 @@ namespace NoFuture.Hbm
             {
                 var nameParts = name.Split(NfConfig.DefaultTypeSeparator);
                 var actualClassName = nameParts[(nameParts.Length - 1)].Replace(" ",Globals.REPLACE_SPACE_WITH_SEQUENCE);
-                nameParts[(nameParts.Length - 1)] = NfTypeName.SafeDotNetTypeName(actualClassName);
+                nameParts[(nameParts.Length - 1)] = Etc.SafeDotNetTypeName(actualClassName);
                 name = string.Join(NfConfig.DefaultTypeSeparator.ToString(CultureInfo.InvariantCulture), nameParts);
             }
 
             //remove any chars not allowed in C# ids
-            name = NfTypeName.SafeDotNetTypeName(name);
+            name = Etc.SafeDotNetTypeName(name);
 
             //capitalize first letter of whole word to avoid conflict with C# reserved words
             name = Etc.CapWords(name, NfConfig.DefaultTypeSeparator);
@@ -61,7 +61,7 @@ namespace NoFuture.Hbm
         {
             name = Etc.ExtractLastWholeWord(name,NfConfig.DefaultTypeSeparator);
             name = Etc.CapWords(name, null);
-            return NfTypeName.SafeDotNetIdentifier(name,replaceInvalidsWithHexEsc);
+            return Etc.SafeDotNetIdentifier(name,replaceInvalidsWithHexEsc);
         }
         public static void ValidSplit(string name, int expectedLength)
         {

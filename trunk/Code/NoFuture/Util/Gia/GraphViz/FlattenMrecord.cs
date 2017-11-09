@@ -23,7 +23,7 @@ namespace NoFuture.Util.Gia.GraphViz
 
         public static string MrecordName(string labelName)
         {
-            var safeLabelName = NfTypeName.SafeDotNetIdentifier(labelName);
+            var safeLabelName = Etc.SafeDotNetIdentifier(labelName);
             return string.Format("{0}", safeLabelName);
         }
 

@@ -1,9 +1,35 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace NoFuture.Util.Math
 {
     public static class Extensions
     {
+        /// <summary>
+        /// Dictionary for Roman Numerial (e.g. MCXX) to its integer value
+        /// </summary>
+        public static Dictionary<char, short> RomanNumerial2ArabicDigit
+        {
+            get
+            {
+                return new Dictionary<char, short>
+                {
+                    {'M', 1000},
+                    {'C', 100},
+                    {'L', 50},
+                    {'X', 10},
+                    {'V', 5},
+                    {'I', 1},
+                    {'m', 1000},
+                    {'c', 100},
+                    {'l', 50},
+                    {'x', 10},
+                    {'v', 5},
+                    {'i', 1}
+                };
+            }
+        }
+
         /// <summary>
         /// Calculates the integer value from its Roman numerical representation (e.g. XLIX is 49).
         /// </summary>
@@ -20,7 +46,7 @@ namespace NoFuture.Util.Math
                 return 0;
             
             var roman = someRomanNumerials.Trim().ToCharArray();
-            var lookup = Lexicon.RomanNumerial2ArabicDigit;
+            var lookup = RomanNumerial2ArabicDigit;
 
             var arabic = 0;
 

@@ -8,9 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
-using NoFuture.Shared;
 using NoFuture.Shared.Core;
-using NoFuture.Util.NfType;
 
 namespace NoFuture.Util
 {
@@ -92,7 +90,7 @@ namespace NoFuture.Util
         public static bool CopyFileIfNewer(string path, string dest)
         {
             //need both paths
-            if (string.IsNullOrWhiteSpace(path) || string.IsNullOrWhiteSpace(dest))
+            if (String.IsNullOrWhiteSpace(path) || String.IsNullOrWhiteSpace(dest))
                 return false;
 
             //src file must be present
@@ -135,7 +133,7 @@ namespace NoFuture.Util
         public static string GetRandomFileFullName(string fileNamePrefix = null)
         {
             return Path.Combine(NfConfig.TempDirectories.AppData,
-                (fileNamePrefix ?? NfTypeName.DEFAULT_NAME_PREFIX) + Path.GetRandomFileName());
+                (fileNamePrefix ?? Etc.DEFAULT_NAME_PREFIX) + Path.GetRandomFileName());
         }
 
         /// <summary>
@@ -362,20 +360,20 @@ namespace NoFuture.Util
         /// <returns></returns>
         public static bool TryGetRelPath(string currentWorkingDir, ref string somePath)
         {
-            if (string.IsNullOrWhiteSpace(currentWorkingDir))
+            if (String.IsNullOrWhiteSpace(currentWorkingDir))
                 return false;
 
-            if (string.IsNullOrWhiteSpace(somePath))
+            if (String.IsNullOrWhiteSpace(somePath))
                 return false;
 
             var somePathTemp = somePath;
 
             //resolve envrio vars if present
-            var tempPath = string.Empty;
+            var tempPath = String.Empty;
             if (TryResolveEnvVar(currentWorkingDir, ref tempPath))
                 currentWorkingDir = tempPath;
 
-            tempPath = string.Empty;
+            tempPath = String.Empty;
             if (TryResolveEnvVar(somePathTemp, ref tempPath))
                 somePathTemp = tempPath;
 
@@ -400,13 +398,13 @@ namespace NoFuture.Util
             }
 
             //must share the same drive
-            if (!string.Equals(Path.GetPathRoot(currentWorkingDir), Path.GetPathRoot(somePathTemp),
+            if (!String.Equals(Path.GetPathRoot(currentWorkingDir), Path.GetPathRoot(somePathTemp),
                 StringComparison.OrdinalIgnoreCase))
             {
                 return false;
             }
 
-            if (string.IsNullOrWhiteSpace(currentWorkingDir) || string.IsNullOrWhiteSpace(somePathTemp))
+            if (String.IsNullOrWhiteSpace(currentWorkingDir) || String.IsNullOrWhiteSpace(somePathTemp))
                 return false;
             var p = currentWorkingDir.Split(Path.DirectorySeparatorChar);
             var q = somePathTemp.Split(Path.DirectorySeparatorChar);
@@ -420,7 +418,7 @@ namespace NoFuture.Util
                     var pVal = p[i];
                     var qVal = q[j];
 
-                    if (!string.Equals(pVal, qVal, StringComparison.OrdinalIgnoreCase)) 
+                    if (!String.Equals(pVal, qVal, StringComparison.OrdinalIgnoreCase)) 
                         continue;
 
                     for(var m = (p.Length - 1 - i); m > 0; m--)
@@ -429,10 +427,10 @@ namespace NoFuture.Util
                     for(var k = j + 1; k < q.Length; k++)
                         pathOut.Add(q[k]);
 
-                    if(!string.IsNullOrWhiteSpace(somePathFile))
+                    if(!String.IsNullOrWhiteSpace(somePathFile))
                         pathOut.Add(somePathFile);
 
-                    somePath = string.Join(Path.DirectorySeparatorChar.ToString(CultureInfo.InvariantCulture), pathOut);
+                    somePath = String.Join(Path.DirectorySeparatorChar.ToString(CultureInfo.InvariantCulture), pathOut);
 
                     somePath = RemoveRedundantPathLeafs(somePath);
 
@@ -611,7 +609,7 @@ namespace NoFuture.Util
         /// <param name="fileFullName"></param>
         public static void ToDoubleSpaced(string fileFullName)
         {
-            if (string.IsNullOrWhiteSpace(fileFullName) || !File.Exists(fileFullName))
+            if (String.IsNullOrWhiteSpace(fileFullName) || !File.Exists(fileFullName))
                 return;
             var redux = Etc.ToDoubleSpaceLines(File.ReadAllLines(fileFullName));
 
@@ -624,12 +622,12 @@ namespace NoFuture.Util
         /// <param name="fileFullName"></param>
         public static void ToSingleSpaced(string fileFullName)
         {
-            if (string.IsNullOrWhiteSpace(fileFullName) || !File.Exists(fileFullName))
+            if (String.IsNullOrWhiteSpace(fileFullName) || !File.Exists(fileFullName))
                 return;
             var output = new List<string>();
             foreach (var ln in File.ReadAllLines(fileFullName))
             {
-                if (string.IsNullOrWhiteSpace(ln))
+                if (String.IsNullOrWhiteSpace(ln))
                     continue;
                 output.Add(ln);
             }
@@ -650,16 +648,32 @@ namespace NoFuture.Util
                 return null;
 
             var machineConfigPath = Path.GetDirectoryName(machineConfigFile.FilePath);
-            if (string.IsNullOrWhiteSpace(machineConfigPath))
+            if (String.IsNullOrWhiteSpace(machineConfigPath))
                 return null;
 
             var globalWebConfigPath = Path.Combine(machineConfigPath, "web.config");
 
-            var configFile = new System.Xml.XmlDocument();
+            var configFile = new XmlDocument();
             var buffer = File.ReadAllText(globalWebConfigPath);
             configFile.LoadXml(buffer);
 
             return configFile;
+        }
+
+        /// <summary>
+        /// Removes the <see cref="Path.GetInvalidPathChars"/> from <see cref="outFile"/>
+        /// </summary>
+        /// <param name="outFile"></param>
+        /// <returns></returns>
+        public static string RemoveInvalidPathChars(string outFile)
+        {
+            if (String.IsNullOrWhiteSpace(outFile))
+                return outFile;
+
+            return Path.GetInvalidPathChars().Aggregate(outFile,
+                (current, invalidChar) =>
+                    current.Replace(invalidChar.ToString(CultureInfo.InvariantCulture), String.Empty));
+
         }
     }
 }

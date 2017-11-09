@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
-using NoFuture.Shared;
 using NoFuture.Shared.Core;
 using NoFuture.Util.Binary;
 using NoFuture.Util.NfType.InvokeCmds;
@@ -43,7 +41,6 @@ namespace NoFuture.Util.NfType
         public const string ASSEMBLY_QUALIFIED_CLASS_NAME_REGEX = @"([a-z0-9_\.]*?)\,\s*" + FULL_ASSEMBLY_NAME_REGEX;
         public const string NAMESPACE_CLASS_NAME_REGEX = @"\W[a-zA-Z_][a-zA-Z0-9_\x3D\x2E\x20\x3A]+";
         public const string ID_REGEX = @"[_a-z][a-z0-9_]+?";
-        public const string DEFAULT_NAME_PREFIX = "_u0000";
 
         public static class PropertyNamePrefix
         {
@@ -53,7 +50,6 @@ namespace NoFuture.Util.NfType
             public const string REMOVE_PREFIX = "remove_";
         }
 
-        public static string DefaultNamePrefix { get; set; } = DEFAULT_NAME_PREFIX;
 
         #endregion
 
@@ -470,111 +466,6 @@ namespace NoFuture.Util.NfType
             
         }
 
-        /// <summary>
-        /// Uses <see cref="name"/> allowing for only '.', '_', numbers and letters where the 
-        /// first char must be '_' or a letter.
-        /// </summary>
-        /// <param name="name"></param>
-        /// <returns></returns>
-        public static string SafeDotNetTypeName(string name)
-        {
-            if (String.IsNullOrWhiteSpace(name))
-                return GetNfRandomName();
-
-            var nameArray = name.ToCharArray();
-            var csId = new StringBuilder();
-
-            if (!Char.IsLetter(nameArray[0]) || Convert.ToUInt16(nameArray[0]) > 0x7F)
-                csId.Append(DefaultNamePrefix);
-
-            if (Char.IsNumber(nameArray[0]) || nameArray[0] == '_' ||
-                (Char.IsLetter(nameArray[0]) && Convert.ToUInt16(nameArray[0]) <= 0x7F))
-                csId.Append(nameArray[0]);
-
-            for(var i = 1; i< nameArray.Length; i++)
-            {
-                char cChar = nameArray[i];
-                if ((Char.IsLetter(cChar) && Convert.ToUInt16(cChar) <= 0x7F) || Char.IsNumber(cChar) ||
-                    cChar == '_' || cChar == '.') //expecting ns qualified ids
-                    csId.Append(cChar);
-            }
-
-            return csId.ToString();
-        }
-
-        /// <summary>
-        /// Uses <see cref="someString"/> allowing for only '_', numbers and letters where the 
-        /// first char must be or a letter (the prefix 'nf' is used should that not be the case).
-        /// </summary>
-        /// <param name="someString"></param>
-        /// <param name="replaceInvalidsWithUnicodeEsc">
-        /// Set this to true if you want, for example, the <see cref="someString"/> 
-        /// with a value of say 'Personal Ph #' to be returned as 'Personal_u0020Ph_u0020_u0023'
-        /// </param>
-        /// <param name="maxLen">
-        /// A max length of the output, if the input string will 
-        /// clearly exceed this then some random text will be added as the last 11 chars
-        /// </param>
-        /// <returns></returns>
-        public static string SafeDotNetIdentifier(string someString, bool replaceInvalidsWithUnicodeEsc = false, int maxLen = 80)
-        {
-            if (String.IsNullOrWhiteSpace(someString))
-                return GetNfRandomName();
-
-            var strChars = someString.ToCharArray();
-            var strOut = new StringBuilder();
-            if (!Char.IsLetter(strChars[0]) || (Char.IsLetter(strChars[0]) && Convert.ToUInt16(strChars[0]) > 0x7F))
-                strOut.Append(DefaultNamePrefix);
-            var iequals = 0;
-            if (!replaceInvalidsWithUnicodeEsc &&
-                (Char.IsNumber(strChars[0]) || strChars[0] == '_' ||
-                 (Char.IsLetter(strChars[0]) && Convert.ToUInt16(strChars[0]) <= 0x7F)))
-            {
-                strOut.Append(strChars[0]);
-                iequals = 1;
-            }
-
-            var randSuffix = "_" + GetNfRandomName();
-
-            for (var i = iequals; i < strChars.Length; i++)
-            {
-                if (strOut.Length + randSuffix.Length >= maxLen - 1)
-                {
-                    strOut.Append(randSuffix);
-                    break;
-
-                }
-                if ((Char.IsLetterOrDigit(strChars[i]) && Convert.ToUInt16(strChars[i]) <= 0x7F) ||
-                    (strChars[i] == '_' && !replaceInvalidsWithUnicodeEsc))
-                {
-                    strOut.Append(strChars[i]);
-                    continue;
-                }
-
-                if (!replaceInvalidsWithUnicodeEsc)
-                    continue;
-
-                strOut.Append($"_u{Convert.ToUInt16(strChars[i]).ToString("x4")}");
-            }
-
-            return strOut.ToString();
-        }
-
-        /// <summary>
-        /// Removes the <see cref="Path.GetInvalidPathChars"/> from <see cref="outFile"/>
-        /// </summary>
-        /// <param name="outFile"></param>
-        /// <returns></returns>
-        public static string RemoveInvalidPathChars(string outFile)
-        {
-            if (String.IsNullOrWhiteSpace(outFile))
-                return outFile;
-
-            return Path.GetInvalidPathChars().Aggregate(outFile,
-                (current, invalidChar) =>
-                    current.Replace(invalidChar.ToString(CultureInfo.InvariantCulture), String.Empty));
-
-        }
 
         /// <summary>
         /// Test if <see cref="pi"/> type extends either <see cref="System.String"/>
@@ -914,11 +805,7 @@ namespace NoFuture.Util.NfType
             return false;
         }
 
-        public static string GetNfRandomName()
-        {
-            var randchars = Path.GetRandomFileName().Replace(".", "_");
-            return $"{DefaultNamePrefix}_{randchars}";
-        }
+
 
         #endregion
     }

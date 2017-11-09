@@ -8,6 +8,7 @@ using System.Xml.Linq;
 using NoFuture.Hbm.DbQryContainers;
 using NoFuture.Hbm.SortingContainers;
 using NoFuture.Shared.Core;
+using NoFuture.Util;
 using NoFuture.Util.NfType;
 
 namespace NoFuture.Hbm
@@ -398,7 +399,7 @@ namespace NoFuture.Hbm
             var classXe = XeFactory.ClassNode(className, null, null);
             classXe.Add(XeFactory.IdNode(null));
 
-            var sqlQryName = NfTypeName.SafeDotNetIdentifier(storedProc);
+            var sqlQryName = Etc.SafeDotNetIdentifier(storedProc);
             var returnsXe = XeFactory.ReturnNode(sqlQryName, className);
 
             foreach (var cMeta in returnedData[returnedData.Keys.First()])
@@ -655,8 +656,8 @@ namespace NoFuture.Hbm
 
             if (simplePropDataType == typeof (Boolean).Name)
             {
-                if (simplePropName.StartsWith(NfTypeName.DefaultNamePrefix))
-                    simplePropName = simplePropName.Remove(0, NfTypeName.DefaultNamePrefix.Length);
+                if (simplePropName.StartsWith(Etc.DefaultNamePrefix))
+                    simplePropName = simplePropName.Remove(0, Etc.DefaultNamePrefix.Length);
                 simplePropName = "Is" + simplePropName;
             }
 

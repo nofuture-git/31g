@@ -146,7 +146,7 @@ namespace NoFuture.Hbm
         public static XElement IdNode(string name)
         {
             if (String.IsNullOrWhiteSpace(name))
-                name = String.Format("{0}__{1}", Globals.HbmXmlNames.ID, NfTypeName.GetNfRandomName());
+                name = String.Format("{0}__{1}", Globals.HbmXmlNames.ID, Etc.GetNfRandomName());
             return new XElement(Globals.HbmXmlNames.ID.ToLower(),
                 new XAttribute(Globals.HbmXmlNames.NAME, name),
                 new XAttribute(Globals.HbmXmlNames.TYPE, "Guid"),

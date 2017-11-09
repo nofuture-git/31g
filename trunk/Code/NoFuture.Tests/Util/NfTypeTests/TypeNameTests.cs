@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NoFuture.Shared;
 using NoFuture.Shared.Core;
+using NoFuture.Util;
 using NoFuture.Util.NfType;
 
 namespace NoFuture.Tests.Util.NfTypeTests
@@ -76,31 +77,31 @@ namespace NoFuture.Tests.Util.NfTypeTests
         [TestMethod]
         public void TestSafeDotNetTypeName()
         {
-            var testResult = NfTypeName.SafeDotNetTypeName("dbo.123ProcName");
+            var testResult = Etc.SafeDotNetTypeName("dbo.123ProcName");
             Assert.IsNotNull(testResult);
             Assert.AreEqual("dbo.123ProcName",testResult);
             System.Diagnostics.Debug.WriteLine(testResult);
 
-            testResult = NfTypeName.SafeDotNetTypeName(null);
+            testResult = Etc.SafeDotNetTypeName(null);
             Assert.IsNotNull(testResult);
 
             var testInput = string.Empty;
-            testResult = NfTypeName.SafeDotNetTypeName(testInput);
+            testResult = Etc.SafeDotNetTypeName(testInput);
             Assert.IsNotNull(testResult);
             Assert.IsFalse(string.IsNullOrWhiteSpace(testResult));
             System.Diagnostics.Debug.WriteLine(testResult);
 
             testInput = "     ";
-            testResult = NfTypeName.SafeDotNetTypeName(testInput);
+            testResult = Etc.SafeDotNetTypeName(testInput);
             Assert.IsNotNull(testResult);
             Assert.IsFalse(string.IsNullOrWhiteSpace(testResult));
             System.Diagnostics.Debug.WriteLine(testResult);
 
-            testResult = NfTypeName.SafeDotNetTypeName("dbo.DELETED_LookupDetails");
+            testResult = Etc.SafeDotNetTypeName("dbo.DELETED_LookupDetails");
             System.Diagnostics.Debug.WriteLine(testResult);
             Assert.AreEqual("dbo.DELETED_LookupDetails", testResult);
 
-            testResult = NfTypeName.SafeDotNetTypeName("Â© The End");
+            testResult = Etc.SafeDotNetTypeName("Â© The End");
 
             System.Diagnostics.Debug.WriteLine(testResult);
 
@@ -109,36 +110,36 @@ namespace NoFuture.Tests.Util.NfTypeTests
         [TestMethod]
         public void TestSafeDotNetIdentifier()
         {
-            var testResult = NfTypeName.SafeDotNetIdentifier("Personal Ph #",true);
+            var testResult = Etc.SafeDotNetIdentifier("Personal Ph #",true);
             Assert.IsNotNull(testResult);
             System.Diagnostics.Debug.WriteLine(testResult);
             Assert.AreEqual("Personal_u0020Ph_u0020_u0023", testResult);
 
-            testResult = NfTypeName.SafeDotNetIdentifier("Personal Ph #");
+            testResult = Etc.SafeDotNetIdentifier("Personal Ph #");
             Assert.IsNotNull(testResult);
             System.Diagnostics.Debug.WriteLine(testResult);
             Assert.AreEqual("PersonalPh",testResult);
 
-            testResult = NfTypeName.SafeDotNetIdentifier("global::Some_Aspx_Page_With_No_Namespace");
+            testResult = Etc.SafeDotNetIdentifier("global::Some_Aspx_Page_With_No_Namespace");
             System.Diagnostics.Debug.WriteLine(testResult);
 
             Assert.AreEqual("globalSome_Aspx_Page_With_No_Namespace", testResult);
 
             testResult =
-                NfTypeName.SafeDotNetIdentifier(
+                Etc.SafeDotNetIdentifier(
                     "<p><font style='font-size:11px;font-family:calibri;text-align:left'>", true);
             System.Diagnostics.Debug.WriteLine(testResult);
 
-            Assert.IsTrue(testResult.StartsWith(NfTypeName.DefaultNamePrefix + "_u003cp_u003e_u003cfont_u0020style"));
+            Assert.IsTrue(testResult.StartsWith(Etc.DefaultNamePrefix + "_u003cp_u003e_u003cfont_u0020style"));
 
             testResult =
-                NfTypeName.SafeDotNetIdentifier("Â© The End Â©", false);
+                Etc.SafeDotNetIdentifier("Â© The End Â©", false);
             System.Diagnostics.Debug.WriteLine(testResult);
 
             Assert.AreEqual("TheEnd",testResult);
 
             testResult =
-                NfTypeName.SafeDotNetIdentifier("Â© The End Â©", true);
+                Etc.SafeDotNetIdentifier("Â© The End Â©", true);
             System.Diagnostics.Debug.WriteLine(testResult);
 
             Assert.AreEqual("_u00c2_u00a9_u0020The_u0020End_u0020_u00c2_u00a9", testResult);

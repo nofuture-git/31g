@@ -75,7 +75,7 @@ namespace NoFuture.Hbm.SortingContainers
             if (string.IsNullOrWhiteSpace(ParamName))
                 return null;
             var cName = ParamName.StartsWith("@") ? ParamName.Substring(1, ParamName.Length - 1) : ParamName;
-            cName = NfTypeName.SafeDotNetIdentifier(cName);
+            cName = Etc.SafeDotNetIdentifier(cName);
             cName = Util.Etc.CapWords(cName, null);
             if (GetSqlDataType() == SqlDbType.Bit && !cName.StartsWith("Is"))
                 cName = string.Format("Is{0}", cName);

@@ -73,7 +73,7 @@ namespace NoFuture.Gen
             foreach (var dpArg in dependencyArgs)
             {
                 if (objMethods.Contains(dpArg.ArgName))
-                    dpArg.ArgName = string.Format("{0}{1}", NfTypeName.DefaultNamePrefix, dpArg.ArgName);
+                    dpArg.ArgName = string.Format("{0}{1}", Util.Etc.DefaultNamePrefix, dpArg.ArgName);
             }
 
             return dependencyArgs;
@@ -182,16 +182,16 @@ namespace NoFuture.Gen
 
             //need this to be the same for the whole batch of refactored lines
             if (string.IsNullOrWhiteSpace(newVariableName))
-                newVariableName = NfTypeName.GetNfRandomName();
+                newVariableName = Util.Etc.GetNfRandomName();
 
             if (string.IsNullOrWhiteSpace(outFilePath))
-                outFilePath = Path.Combine(NfConfig.TempDirectories.AppData, NfTypeName.GetNfRandomName());
+                outFilePath = Path.Combine(NfConfig.TempDirectories.AppData, Util.Etc.GetNfRandomName());
 
 
             //need to move the existing code to the new file
-            var newNs =  NfTypeName.SafeDotNetTypeName(outFileNamespaceAndTypeName.Item1);
+            var newNs =  Util.Etc.SafeDotNetTypeName(outFileNamespaceAndTypeName.Item1);
 
-            var newTn =  NfTypeName.SafeDotNetIdentifier(outFileNamespaceAndTypeName.Item2);
+            var newTn =  Util.Etc.SafeDotNetIdentifier(outFileNamespaceAndTypeName.Item2);
 
             var idxRefactor = new Dictionary<Tuple<int, int>, string[]>();
             var newCgType = new CgType { Namespace = newNs, Name = newTn };
@@ -367,7 +367,7 @@ namespace NoFuture.Gen
             const char BLANK_CHAR = ' ';
 
             if (string.IsNullOrWhiteSpace(outputFileName))
-                outputFileName = Path.Combine(NfConfig.TempDirectories.AppData, NfTypeName.GetNfRandomName());
+                outputFileName = Path.Combine(NfConfig.TempDirectories.AppData, Util.Etc.GetNfRandomName());
 
             var d = new SortedList<int, List<int>>();
             foreach (var cgMem in blankOutCgMems.Where(x => x != null))
@@ -451,7 +451,7 @@ namespace NoFuture.Gen
                 return null;
 
             if (string.IsNullOrWhiteSpace(newVariableName))
-                newVariableName = NfTypeName.GetNfRandomName();
+                newVariableName = Util.Etc.GetNfRandomName();
 
             int lnNumOut;
             Settings.LangStyle.TryFindFirstLineInClass(cgMem.MyCgType.FullName, File.ReadAllLines(cgMem.PdbModuleSymbols.file),
