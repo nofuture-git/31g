@@ -47,7 +47,7 @@ namespace NoFuture.Rand.Data.Exo.NfText
                 bank.BusinessAddress = new Tuple<UsStreetPo, UsCityStateZip>(null, cityOut);
             if (TypeOfBankAbbrev3Enum.ContainsKey(li.Chtr))
                 bank.BankType = TypeOfBankAbbrev3Enum[li.Chtr];
-            var assets = new FinancialAssets { Src = FedLrgBnk.RELEASE_URL };
+            var assets = new BankAssets { Src = FedLrgBnk.RELEASE_URL };
             if (decimal.TryParse(li.ConsolAssets.Replace(COMMA, string.Empty), out decimal conAssts))
                 assets.TotalAssets = new Pecuniam(conAssts * 1000);
             if (decimal.TryParse(li.DomesticAssets.Replace(COMMA, string.Empty), out decimal domAssts))
@@ -59,7 +59,7 @@ namespace NoFuture.Rand.Data.Exo.NfText
             bank.IsInternational = li.Ibf == LETTER_Y;
             if (int.TryParse(li.PercentFgnOwned, out int pfo))
                 assets.PercentForeignOwned = Math.Round((double)pfo / 100, 2);
-            bank.Assets = new Dictionary<DateTime, FinancialAssets> { { li.RptDate, assets } };
+            bank.Assets = new Dictionary<DateTime, BankAssets> { { li.RptDate, assets } };
             return bank;
         }
 

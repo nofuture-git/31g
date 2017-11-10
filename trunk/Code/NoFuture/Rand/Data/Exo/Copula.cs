@@ -123,7 +123,7 @@ namespace NoFuture.Rand.Data.Exo
                 pc.TickerSymbols.All(x => !String.Equals(x.Symbol, ticker, StringComparison.OrdinalIgnoreCase)))
             {
                 ticker = ticker.ToUpper();
-                pc.TickerSymbols.Add(new Ticker { Symbol = ticker, Country = "USA" });
+                pc.TickerSymbols.Add(new TickerSymbol { Symbol = ticker, Country = "USA" });
             }
 
             var legalName = xbrlDyn.Name;
@@ -214,7 +214,7 @@ namespace NoFuture.Rand.Data.Exo
                         existing.InstrumentType = dd.InstrumentType;
                         continue;
                     }
-                    pc.TickerSymbols.Add(new Ticker
+                    pc.TickerSymbols.Add(new TickerSymbol
                     {
                         Symbol = dd.Symbol,
                         InstrumentType = dd.InstrumentType,

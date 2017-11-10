@@ -17,14 +17,14 @@ namespace NoFuture.Rand.Com
     public class PublicCorporation : Firm
     {
         private readonly List<SecForm> _secReports = new List<SecForm>();
-        private List<Ticker> _tickerSymbols = new List<Ticker>();
+        private List<TickerSymbol> _tickerSymbols = new List<TickerSymbol>();
 
         public EmployerIdentificationNumber EIN { get; set; }
         public CentralIndexKey CIK { get; set; }
         public List<SecForm> SecReports => _secReports;
         public UsState UsStateOfIncorporation { get; set; }
         public Uri[] WebDomains { get; set; }
-        public List<Ticker> TickerSymbols
+        public List<TickerSymbol> TickerSymbols
         {
             get
             {

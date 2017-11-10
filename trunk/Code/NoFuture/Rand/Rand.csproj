@@ -54,6 +54,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Com\Bank.cs" />
+    <Compile Include="Com\BankAssets.cs" />
+    <Compile Include="Com\IFirm.cs" />
+    <Compile Include="Com\TickerComparer.cs" />
+    <Compile Include="Com\TypeOfBank.cs" />
     <Compile Include="Data\Endo\CaCityProvidencePost.cs" />
     <Compile Include="Data\Endo\Grps\ClassificationOfInstructionalPrograms.cs" />
     <Compile Include="Data\Endo\Grps\NaicsMarket.cs" />
