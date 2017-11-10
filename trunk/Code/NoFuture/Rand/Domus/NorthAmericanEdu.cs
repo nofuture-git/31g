@@ -415,36 +415,4 @@ namespace NoFuture.Rand.Domus
         }
         #endregion
     }
-
-    [Serializable]
-    public abstract class NorthAmericanStudent<T> : DiachronIdentifier, IStudent<T>
-    {
-        public T School { get; }
-        public DateTime? Graduation { get; set; }
-
-        protected NorthAmericanStudent(T school)
-        {
-            School = school;
-        }
-    }
-
-    [Serializable]
-    public class AmericanHighSchoolStudent : NorthAmericanStudent<AmericanHighSchool>
-    {
-        public override string Abbrev => "HighSchool";
-
-        public AmericanHighSchoolStudent(AmericanHighSchool school) : base(school)
-        {
-        }
-    }
-
-    [Serializable]
-    public class AmericanCollegeStudent : NorthAmericanStudent<AmericanUniversity>
-    {
-        public AmericanCollegeStudent(AmericanUniversity school) : base(school)
-        {
-        }
-
-        public override string Abbrev => "College";
-    }
 }

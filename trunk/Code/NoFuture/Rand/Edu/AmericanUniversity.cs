@@ -1,20 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Data;
 using NoFuture.Rand.Gov;
 
 namespace NoFuture.Rand.Edu
 {
-    public interface IUniversity
-    {
-        string Name { get; set; }
-        string CampusName { get; set; }
-        float? CrimeRate { get; set; }
-        Uri Website { get; set; }
-    }
-
     [Serializable]
     public class AmericanUniversity : AmericanEduBase, IUniversity
     {
@@ -101,7 +92,4 @@ namespace NoFuture.Rand.Edu
         }
         #endregion
     }
-
-    public class PublicAmericanUniversity : AmericanUniversity { }
-    public class PrivateAmericanUniversity : AmericanUniversity { }
 }

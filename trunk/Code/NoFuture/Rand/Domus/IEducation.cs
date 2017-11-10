@@ -11,10 +11,4 @@ namespace NoFuture.Rand.Domus
         Tuple<IHighSchool, DateTime?> HighSchool { get; }
         Tuple<IUniversity, DateTime?> College { get; }
     }
-
-    public interface IStudent<T>
-    {
-        T School { get; }
-        DateTime? Graduation { get; set; }
-    }
 }

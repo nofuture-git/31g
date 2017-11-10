@@ -1,20 +1,11 @@
 ﻿using System;
 using System.Xml;
-using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Data;
 using NoFuture.Rand.Gov;
 
 namespace NoFuture.Rand.Edu
 {
-    public interface IHighSchool
-    {
-        string Name { get; set; }
-        UrbanCentric UrbanCentric { get; set; }
-        double TotalTeachers { get; set; }
-        int TotalStudents { get; set; }
-    }
-
     [Serializable]
     public class AmericanHighSchool : AmericanEduBase, IHighSchool
     {

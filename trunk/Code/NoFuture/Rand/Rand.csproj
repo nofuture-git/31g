@@ -54,6 +54,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Domus\AmericanCollegeStudent.cs" />
+    <Compile Include="Domus\AmericanHighSchoolStudent.cs" />
+    <Compile Include="Domus\IEmployment.cs" />
+    <Compile Include="Domus\IStudent.cs" />
+    <Compile Include="Domus\NorthAmericanEmployment.cs" />
+    <Compile Include="Domus\NorthAmericanStudent.cs" />
+    <Compile Include="Domus\Pneuma\Agreeableness.cs" />
+    <Compile Include="Domus\Pneuma\Conscientiousness.cs" />
+    <Compile Include="Domus\Pneuma\Dimension.cs" />
+    <Compile Include="Domus\Pneuma\Extraversion.cs" />
+    <Compile Include="Domus\Pneuma\IPersonality.cs" />
+    <Compile Include="Domus\Pneuma\ITrait.cs" />
+    <Compile Include="Domus\Pneuma\Neuroticism.cs" />
+    <Compile Include="Domus\Pneuma\Openness.cs" />
+    <Compile Include="Domus\Pneuma\Trait.cs" />
+    <Compile Include="Edu\IHighSchool.cs" />
+    <Compile Include="Edu\IUniversity.cs" />
     <Compile Include="Gov\Census\ComboMStatArea.cs" />
     <Compile Include="Gov\Census\MStatArea.cs" />
     <Compile Include="Gov\Fed\FdicNum.cs" />
