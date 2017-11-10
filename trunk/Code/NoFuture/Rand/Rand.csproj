@@ -116,7 +116,6 @@
     <Compile Include="Gov\Irs\Identifier.cs" />
     <Compile Include="Gov\Sec\Identifier.cs" />
     <Compile Include="Gov\SocialSecurityNumber.cs" />
-    <Compile Include="Gov\Statute.cs" />
     <Compile Include="Gov\UsState.cs" />
     <Compile Include="Domus\Person.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -140,9 +139,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Data\Scripts\Get-BeaGovParameters.ps1" />
-    <None Include="Data\Scripts\Get-BlsGovCodes.ps1" />
-    <None Include="Data\Scripts\Get-FedLrgBnkListData.ps1" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>

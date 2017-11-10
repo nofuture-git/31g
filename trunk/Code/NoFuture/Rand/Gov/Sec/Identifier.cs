@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Data.Sp;
-//using NoFuture.Util.Binary;
 
 namespace NoFuture.Rand.Gov.Sec
 {
@@ -31,17 +29,18 @@ namespace NoFuture.Rand.Gov.Sec
         public override string Abbrev => secFormNumber;
         public override string Value { get; set; }
         public DateTime FilingDate { get; set; }
-        public virtual FederalStatute Statute => new SecuritiesExchangeAct();
+
         /// <summary>
         /// This html will contain, when available from the SEC, the uri to the XBRL xml
         /// </summary>
         public Uri HtmlFormLink { get; set; }
+        
         /// <summary>
         /// Reports prefixed with <see cref="NotificationOfInabilityToTimelyFile"/> will 
         /// have this set to true.
         /// </summary>
         public bool IsLate { get; set; }
-        public string AccessionNumber { get { return Value; } set { Value = value; } }
+        public string AccessionNumber { get => Value; set => Value = value; }
         public Uri XmlLink { get; set; }
         #endregion
 
