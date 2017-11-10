@@ -54,6 +54,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Data\Endo\CaCityProvidencePost.cs" />
+    <Compile Include="Data\Endo\Grps\ClassificationOfInstructionalPrograms.cs" />
+    <Compile Include="Data\Endo\Grps\NaicsMarket.cs" />
+    <Compile Include="Data\Endo\Grps\NaicsPrimarySector.cs" />
+    <Compile Include="Data\Endo\Grps\NaicsSector.cs" />
+    <Compile Include="Data\Endo\Grps\NaicsSuperSector.cs" />
+    <Compile Include="Data\Endo\NorthAmericanPhone.cs" />
+    <Compile Include="Data\Endo\Grps\SocBoardGroup.cs" />
+    <Compile Include="Data\Endo\Grps\SocDetailedOccupation.cs" />
+    <Compile Include="Data\Endo\Grps\SocMajorGroup.cs" />
+    <Compile Include="Data\Endo\Grps\SocMinorGroup.cs" />
+    <Compile Include="Data\Endo\UsCityStateZip.cs" />
+    <Compile Include="Data\Endo\UsStreetPo.cs" />
+    <Compile Include="Data\Endo\Xml2XmlIdentifier.cs" />
+    <Compile Include="Data\Endo\XRefGroup.cs" />
     <Compile Include="Data\Sp\AccountId.cs" />
     <Compile Include="Data\Sp\Cc\AmexCc.cs" />
     <Compile Include="Data\Sp\CheckingAccount.cs" />
@@ -146,15 +161,14 @@
     <Compile Include="Data\Sp\Rent.cs" />
     <Compile Include="Data\Sp\Security.cs" />
     <Compile Include="Data\Sp\TradeLine.cs" />
-    <Compile Include="Data\Endo\ClassificationBase.cs" />
-    <Compile Include="Data\Endo\RandXref.cs" />
-    <Compile Include="Data\Endo\StandardOccupationalClassification.cs" />
+    <Compile Include="Data\Endo\Grps\ClassificationBase.cs" />
+    <Compile Include="Data\Endo\Grps\StandardOccupationalClassification.cs" />
     <Compile Include="Data\Endo\StreetPo.cs" />
     <Compile Include="Data\Endo\CityArea.cs" />
-    <Compile Include="Data\Endo\NorthAmericanIndustryClassification.cs" />
+    <Compile Include="Data\Endo\Grps\NorthAmericanIndustryClassification.cs" />
     <Compile Include="Com\PublicCorporation.cs" />
     <Compile Include="Data\Endo\Phone.cs" />
-    <Compile Include="Data\Endo\StandardIndustryClassification.cs" />
+    <Compile Include="Data\Endo\Grps\StandardIndustryClassification.cs" />
     <Compile Include="Com\TickerSymbol.cs" />
     <Compile Include="Data\ListData.cs" />
     <Compile Include="Data\TreeData.cs" />

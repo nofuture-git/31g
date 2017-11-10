@@ -67,31 +67,4 @@ namespace NoFuture.Rand.Data.Endo
         }
         #endregion
     }
-
-    [Serializable]
-    public class NaicsSuperSector : ClassificationBase<NaicsPrimarySector>
-    {
-        public override string LocalName => "category";
-    }
-
-    /// <summary>
-    /// This represents the primary grouping level of the NAICS 
-    /// </summary>
-    [Serializable]
-    public class NaicsPrimarySector : ClassificationBase<NaicsSector>
-    {
-        public override string LocalName => "primary-sector";
-    }
-
-    [Serializable]
-    public class NaicsSector : ClassificationBase<NaicsMarket>
-    {
-        public override string LocalName => "secondary-sector";
-    }
-
-    [Serializable]
-    public class NaicsMarket : ClassificationBase<StandardIndustryClassification>
-    {
-        public override string LocalName => "ternary-sector";
-    }
 }
