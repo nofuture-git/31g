@@ -2573,7 +2573,7 @@
               <place name="Willimantic" place-code="85810" />
             </city>
           </state>
-          <state name="WashingtonDC">
+          <state name="Washington DC">
             <city name="Washington" msa-code="47900" msa-type="Metro" fips-code="50000" avg-earning-per-year="-3207206.46,1629.77">
               <zip-code prefix="200" />
               <zip-code prefix="202" />
@@ -10538,7 +10538,7 @@
               <place name="Wye" place-code="81980" />
             </city>
           </state>
-          <state name="NorthCarolina">
+          <state name="North Carolina">
             <city name="Albemarle" msa-code="10620" msa-type="Micro" fips-code="00680" avg-earning-per-year="-1547952.42,788.04">
               <zip-code prefix="280" />
               <zip-code prefix="281" />
@@ -10692,7 +10692,7 @@
               <zip-code prefix="271" />
             </city>
           </state>
-          <state name="NorthDakota">
+          <state name="North Dakota">
             <city name="Bismarck" msa-code="13900" msa-type="Metro" fips-code="07200" avg-earning-per-year="-1748793.4,889.91">
               <zip-code prefix="584" />
               <zip-code prefix="585" />
@@ -10990,7 +10990,7 @@
               <place name="Terry" place-code="48585" />
             </city>
           </state>
-          <state name="NewHampshire">
+          <state name="New Hampshire">
             <city name="Claremont" msa-code="17200" msa-type="Micro" fips-code="12900" avg-earning-per-year="-2307532.77,1172.06">
               <zip-code prefix="032" />
               <zip-code prefix="034" />
@@ -11033,7 +11033,7 @@
               <zip-code prefix="036" />
             </city>
           </state>
-          <state name="NewJersey">
+          <state name="New Jersey">
             <city name="Atlantic City" msa-code="12100" msa-type="Metro" fips-code="02080" avg-earning-per-year="-2171470.36,1105.6">
               <zip-code prefix="080" />
               <zip-code prefix="082" />
@@ -11088,7 +11088,7 @@
               <zip-code prefix="079" />
             </city>
           </state>
-          <state name="NewMexico">
+          <state name="New Mexico">
             <city name="Alamogordo" msa-code="10460" msa-type="Micro" fips-code="01780" avg-earning-per-year="-1611095.43,821.14">
               <zip-code prefix="880" />
               <zip-code prefix="883" />
@@ -11274,7 +11274,7 @@
               <place name="Wadsworth" place-code="81000" />
             </city>
           </state>
-          <state name="NewYork">
+          <state name="New York">
             <city name="Albany" msa-code="10580" msa-type="Metro" fips-code="01000" avg-earning-per-year="-2399597.78,1220.61">
               <zip-code prefix="120" />
               <zip-code prefix="121" />
@@ -14706,7 +14706,7 @@
               <place name="York Haven" place-code="87080" />
             </city>
           </state>
-          <state name="Pennsylvania">
+          <state name="Puerto Rico">
             <city name="Adjuntas" msa-code="" msa-type="">
               <zip-code prefix="006" />
             </city>
@@ -14739,13 +14739,13 @@
               <zip-code prefix="007" />
             </city>
           </state>
-          <state name="RhodeIsland">
+          <state name="Rhode Island">
             <city name="Providence" msa-code="39300" msa-type="Metro" fips-code="59000" avg-earning-per-year="-2253576.07,1145.64">
               <zip-code prefix="028" />
               <zip-code prefix="029" />
             </city>
           </state>
-          <state name="SouthCarolina">
+          <state name="South Carolina">
             <city name="Anderson" msa-code="11340" msa-type="Metro" cbsa-code="24860" fips-code="01360">
               <zip-code prefix="296" />
             </city>
@@ -14836,7 +14836,7 @@
               <zip-code prefix="299" />
             </city>
           </state>
-          <state name="SouthDakota">
+          <state name="South Dakota">
             <city name="Aberdeen" msa-code="10100" msa-type="Micro" fips-code="00100" avg-earning-per-year="-1929166.66,980.49">
               <zip-code prefix="574" />
               <zip-code prefix="584" />
@@ -18092,7 +18092,7 @@
               <place name="Williams Bay" place-code="87200" />
             </city>
           </state>
-          <state name="WestVirginia">
+          <state name="West Virginia">
             <city name="Beckley" msa-code="13220" msa-type="Micro" cbsa-type="Metro" fips-code="05332" avg-earning-per-year="-1699829.56,866.02">
               <zip-code prefix="250" />
               <zip-code prefix="251" />

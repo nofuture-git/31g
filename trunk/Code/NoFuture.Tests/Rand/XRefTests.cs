@@ -2,6 +2,7 @@
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NoFuture.Rand;
+using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Data;
 using NoFuture.Rand.Gov.Fed;
 using NoFuture.Util.Core;
@@ -42,10 +43,10 @@ namespace NoFuture.Tests.Rand
         [TestMethod]
         public void TestXrefOnTypes()
         {
-            var testInput = NoFuture.Rand.Data.TreeData.CommercialBankData;
+            var testInput = NoFuture.Rand.Com.NfText.FedLrgBnk.CommercialBankData;
             Assert.AreNotEqual(0, testInput.Length);
 
-            var testTarget = testInput.FirstOrDefault(x => x.Name == "JPMORGAN CHASE BK NA");
+            var testTarget = testInput.FirstOrDefault(x => x.GetName(KindsOfNames.Abbrev) == "JPMORGAN CHASE BK NA");
 
             Assert.IsNotNull(testTarget);
 
@@ -64,7 +65,7 @@ namespace NoFuture.Tests.Rand
             System.Diagnostics.Debug.WriteLine(testTarget.SIC.ToString());
 
             //test nothing found - no problems and no change
-            testTarget = testInput.FirstOrDefault(x => x.Name == "STATE STREET B&TC");
+            testTarget = testInput.FirstOrDefault(x => x.GetName(KindsOfNames.Abbrev) == "STATE STREET B&TC");
 
             Assert.IsNotNull(testTarget);
             Assert.IsNull(testTarget.CIK);

@@ -69,23 +69,20 @@ namespace NoFuture.Tests.Rand
                                 };
             foreach (var testAddr in testAddresses)
             {
-                UsCityStateZip testResultOut;
-                var testResult = UsCityStateZip.TryParse(testAddr, out testResultOut);
+                var testResult = UsCityStateZip.TryParse(testAddr, out var testResultOut);
                 Assert.IsTrue(testResult);
                 Assert.AreNotEqual(string.Empty,testResultOut.City);
-                //Console.WriteLine(testResultOut.City);
                 Assert.AreNotEqual(string.Empty, testResultOut.PostalState);
-                //Console.WriteLine(testResultOut.PostalState);
                 Assert.AreNotEqual(string.Empty, testResultOut.ZipCode);
-                //Console.WriteLine(testResultOut.ZipCode);
             }
 
-            UsCityStateZip testResultOut2;
-            var anotherTest = UsCityStateZip.TryParse("OKLAHOMA CITY, OK", out testResultOut2);
+            var anotherTest = UsCityStateZip.TryParse("EL CAMPO, TX", out var usCityStateZip, false);
             Assert.IsTrue(anotherTest);
-
-            Console.WriteLine(testResultOut2.City);
-            Console.WriteLine(testResultOut2.PostalState);
+            Assert.AreEqual("El Campo", usCityStateZip.City);
+            Assert.AreEqual("TX", usCityStateZip.State.StateAbbrv);
+            Console.WriteLine(usCityStateZip.City);
+            Console.WriteLine(usCityStateZip.PostalState);
+            //BRIDGEPORT, CT
         }
 
         [TestMethod]
@@ -165,6 +162,67 @@ namespace NoFuture.Tests.Rand
             Assert.AreNotEqual("New York City", testResult.City);
             Assert.IsNotNull(testResult.Msa);
             System.Diagnostics.Debug.WriteLine(testResult.City);
+
+            addrData = new AddressData { StateAbbrv = "CA", City = "Westhaven-Moonstone" };
+            testResult = new UsCityStateZip(addrData);
+            Assert.IsNotNull(testResult.Msa);
+        }
+
+        [TestMethod]
+        public void TestGetZipCode()
+        {
+            var addrData = new AddressData();
+            UsCityStateZip.GetZipCode("OKLAHOMA CITY, OK", addrData);
+            Assert.IsNull(addrData.PostalCode);
+            //Washington DC 20006
+            UsCityStateZip.GetZipCode("Washington DC 20006", addrData);
+            Assert.AreEqual("20006", addrData.PostalCode);
+        }
+
+        [TestMethod]
+        public void TestGetState()
+        {
+            var addrData = new AddressData();
+            UsCityStateZip.GetState("OKLAHOMA CITY, OK", addrData);
+            Assert.IsNotNull(addrData.StateAbbrv);
+            Assert.AreEqual("OK", addrData.StateAbbrv);
+            //Washington DC 20006
+            UsCityStateZip.GetState("Washington DC 20006", addrData);
+            Assert.IsNotNull(addrData.StateAbbrv);
+            Assert.AreEqual("DC", addrData.StateAbbrv);
+        }
+
+        [TestMethod]
+        public void TestGetCity()
+        {
+            var addrData = new AddressData();
+            var ln = "EL CAMPO, TX";
+            UsCityStateZip.GetState(ln, addrData);
+            UsCityStateZip.GetCity(ln, addrData);
+            Assert.IsNotNull(addrData.City);
+            Assert.AreEqual("TX", addrData.StateAbbrv);
+            Assert.AreEqual("EL CAMPO", addrData.City);
+            System.Diagnostics.Debug.WriteLine($"{addrData.City} {addrData.StateAbbrv}");
+            //Washington DC 20006
+            ln = "Washington DC 20006";
+            UsCityStateZip.GetZipCode(ln, addrData);
+            UsCityStateZip.GetState(ln, addrData);
+            UsCityStateZip.GetCity(ln, addrData);
+            Assert.IsNotNull(addrData.City);
+            Assert.AreEqual("DC",addrData.StateAbbrv);
+            Assert.AreEqual("Washington", addrData.City);
+            System.Diagnostics.Debug.WriteLine($"{addrData.City} {addrData.StateAbbrv}");
+        }
+
+        [TestMethod]
+        public void TestFinesseCityName()
+        {
+            var testOutput = UsCityStateZip.FinesseCityName("CANDLER-MCAFEE");
+            Assert.AreEqual("Candler-McAfee", testOutput);
+            System.Diagnostics.Debug.WriteLine(testOutput);
+            testOutput = UsCityStateZip.FinesseCityName("MC LEAN");
+            Assert.AreEqual("McLean", testOutput);
+            System.Diagnostics.Debug.WriteLine(testOutput);
         }
     }
 }

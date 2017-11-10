@@ -48,7 +48,7 @@ namespace NoFuture.Tests.Util
             testResult = Etc.CapWords(capsLockOn, '.');
             Assert.AreEqual("Nofuture.Util.Etc",testResult);
 
-            testResult = Etc.CapWords("NEW YORK".ToLower(), ' ');
+            testResult = Etc.CapWords("WINSTON SALEM".ToLower(), ' ');
             System.Diagnostics.Debug.WriteLine(testResult);
         }
 
@@ -352,6 +352,5 @@ namespace NoFuture.Tests.Util
             Assert.AreEqual("Roy",testResult[0]);
             
         }
-
     }
 }

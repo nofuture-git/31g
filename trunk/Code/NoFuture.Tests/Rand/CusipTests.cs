@@ -114,7 +114,8 @@ namespace NoFuture.Tests.Rand
         public void TestGetNameFull()
         {
             var testResult = Cusip.GetNameFull("BRAND BKG CO");
-            System.Diagnostics.Debug.WriteLine(testResult);
+            Assert.AreEqual("Brand Banking Company", testResult);
+
         }
     }
 }

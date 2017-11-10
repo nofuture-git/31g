@@ -1,13 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.IO;
-using System.Linq;
 using System.Xml;
-using NoFuture.Rand.Com;
-using NoFuture.Rand.Com.NfText;
 using NoFuture.Rand.Data.Source;
-using NoFuture.Shared.Core;
 
 namespace NoFuture.Rand.Data
 {
@@ -34,7 +29,7 @@ namespace NoFuture.Rand.Data
         private static XmlDocument _usOccupations;
         private static XmlDocument _usBanks;
         private static List<Tuple<string, double>> _enWords;
-        private static Bank[] _fedReleaseLrgBnkNames;
+
         #endregion
 
         #region methods
@@ -339,34 +334,6 @@ namespace NoFuture.Rand.Data
                 return null;
             }
         }
-
-        /// <summary>
-        /// Loads a list of <see cref="FinancialFirm"/> by parsing the data from <see cref="DataFiles.LRG_BNK_LST_DATA_FILE"/> 
-        /// </summary>
-        public static Bank[] CommercialBankData
-        {
-            get
-            {
-                if (_fedReleaseLrgBnkNames != null && _fedReleaseLrgBnkNames.Length > 0)
-                    return _fedReleaseLrgBnkNames;
-
-                var rawData = GetTextDataSource(DataFiles.LRG_BNK_LST_DATA_FILE);
-                if(string.IsNullOrWhiteSpace(rawData))
-                    return new Bank[0];//return empty list for missing data
-
-                var myDynData = DynamicDataFactory.GetDataParser(new Uri(FedLrgBnk.RELEASE_URL));
-                var myDynDataRslt = myDynData.ParseContent(rawData);
-
-
-                //take each line data structure and compose a full object
-                var tempList = myDynDataRslt.Select(pd => new Bank(pd)).ToList();
-
-                if (tempList.Count > 0)
-                    _fedReleaseLrgBnkNames = tempList.ToArray();
-                return _fedReleaseLrgBnkNames;
-            }
-        }
-
 
         [EditorBrowsable(EditorBrowsableState.Never)]
         internal static string GetTextDataSource(string name)

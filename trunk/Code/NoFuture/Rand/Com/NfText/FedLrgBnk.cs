@@ -1,13 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using NoFuture.Rand.Core.Enums;
+using NoFuture.Rand.Data.Source;
+using NoFuture.Rand.Data.Sp;
 using NoFuture.Rand.Data.Types;
+using NoFuture.Rand.Gov.Fed;
 using NoFuture.Shared.Core;
 
 namespace NoFuture.Rand.Com.NfText
 {
     public class FedLrgBnk : NfDynDataBase
     {
+        private static Bank[] _fedReleaseLrgBnkNames;
         public const string RELEASE_URL = "http://www.federalreserve.gov/releases/lbr/current/lrg_bnk_lst.txt";
         public FedLrgBnk():base(new Uri(RELEASE_URL)) { }
 
@@ -21,6 +26,40 @@ namespace NoFuture.Rand.Com.NfText
         public static Uri GetUri()
         {
             return new Uri(RELEASE_URL);
+        }
+
+        /// <summary>
+        /// Ctor is based on single line from the fed's text report
+        /// </summary>
+        /// <param name="li"></param>
+        public static Bank GetBankFromDynData(dynamic li)
+        {
+            var bank = new Bank();
+            const string COMMA = ",";
+            const string LETTER_Y = "Y";
+            var unfoldedName = Bank.GetBankFullName(li.BankName);
+
+            bank.UpsertName(KindsOfNames.Legal, unfoldedName);
+            bank.UpsertName(KindsOfNames.Abbrev, li.BankName);
+            bank.Rssd = new ResearchStatisticsSupervisionDiscount { Value = li.BankId };
+            if (UsCityStateZip.TryParse(li.Location, out UsCityStateZip cityOut, false))
+                bank.BusinessAddress = new Tuple<UsStreetPo, UsCityStateZip>(null, cityOut);
+            if (TypeOfBankAbbrev3Enum.ContainsKey(li.Chtr))
+                bank.BankType = TypeOfBankAbbrev3Enum[li.Chtr];
+            var assets = new FinancialAssets { Src = FedLrgBnk.RELEASE_URL };
+            if (decimal.TryParse(li.ConsolAssets.Replace(COMMA, string.Empty), out decimal conAssts))
+                assets.TotalAssets = new Pecuniam(conAssts * 1000);
+            if (decimal.TryParse(li.DomesticAssets.Replace(COMMA, string.Empty), out decimal domAssts))
+                assets.DomesticAssets = new Pecuniam(domAssts * 1000);
+            if (int.TryParse(li.NumOfDomBranches.Replace(COMMA, string.Empty), out int domBranches))
+                assets.DomesticBranches = domBranches;
+            if (int.TryParse(li.NumOfFgnBranches.Replace(COMMA, string.Empty), out int frnBranches))
+                assets.ForeignBranches = frnBranches;
+            bank.IsInternational = li.Ibf == LETTER_Y;
+            if (int.TryParse(li.PercentFgnOwned, out int pfo))
+                assets.PercentForeignOwned = Math.Round((double)pfo / 100, 2);
+            bank.Assets = new Dictionary<DateTime, FinancialAssets> { { li.RptDate, assets } };
+            return bank;
         }
 
         public override IEnumerable<dynamic> ParseContent(object content)
@@ -141,6 +180,33 @@ namespace NoFuture.Rand.Com.NfText
             };
             return charIdx.Select(idx => lrgBnkLstLine.Substring(idx.Item1, idx.Item2).Trim()).ToList();
 
+        }
+
+        /// <summary>
+        /// Loads a list of <see cref="FinancialFirm"/> by parsing the data from <see cref="DataFiles.LRG_BNK_LST_DATA_FILE"/> 
+        /// </summary>
+        public static Bank[] CommercialBankData
+        {
+            get
+            {
+                if (_fedReleaseLrgBnkNames != null && _fedReleaseLrgBnkNames.Length > 0)
+                    return _fedReleaseLrgBnkNames;
+
+                var rawData = DataFiles.GetByName(DataFiles.LRG_BNK_LST_DATA_FILE);
+                if (string.IsNullOrWhiteSpace(rawData))
+                    return new Bank[0];//return empty list for missing data
+
+                var myDynData = DynamicDataFactory.GetDataParser(new Uri(RELEASE_URL));
+                var myDynDataRslt = myDynData.ParseContent(rawData);
+
+
+                //take each line data structure and compose a full object
+                var tempList = myDynDataRslt.Select(pd => GetBankFromDynData(pd)).Cast<Bank>().ToList();
+
+                if (tempList.Count > 0)
+                    _fedReleaseLrgBnkNames = tempList.ToArray();
+                return _fedReleaseLrgBnkNames;
+            }
         }
     }
 }

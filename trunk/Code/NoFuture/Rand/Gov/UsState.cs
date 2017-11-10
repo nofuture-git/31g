@@ -7,7 +7,6 @@ using NoFuture.Rand.Core;
 using NoFuture.Rand.Data;
 using NoFuture.Rand.Data.Types;
 using NoFuture.Rand.Edu;
-using NoFuture.Util;
 using NoFuture.Util.Core;
 
 namespace NoFuture.Rand.Gov
