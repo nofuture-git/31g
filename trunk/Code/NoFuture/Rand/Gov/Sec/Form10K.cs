@@ -12,8 +12,8 @@ namespace NoFuture.Rand.Gov.Sec
         public override string Value { get; set; }
 
         public int FiscalYear => FinancialData?.FiscalYear ?? 0;
-        public ComFinancialData FinancialData { get; set; }
-        public SummaryOfBusiness Summary { get; set; }
+        public CommercialFinancialData FinancialData { get; set; }
+        public string Summary { get; set; }
 
         /// <summary>
         /// Returns the link to the SEC's interative version of the report.

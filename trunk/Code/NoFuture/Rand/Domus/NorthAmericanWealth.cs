@@ -7,6 +7,8 @@ using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Data;
 using NoFuture.Rand.Data.Endo;
 using NoFuture.Rand.Data.Sp;
+using NoFuture.Rand.Data.Sp.Cc;
+using NoFuture.Rand.Data.Sp.Enums;
 using NoFuture.Rand.Domus.Pneuma;
 using NoFuture.Util.Core.Math;
 
@@ -183,12 +185,12 @@ namespace NoFuture.Rand.Domus
             var totalIncome = new Pecuniam(allPaymentsIn.Sum(x => x.Amount));
             var totalExpense = new Pecuniam(allPaymentsOut.Sum(x => x.Amount));
 
-            var netConIncome = new NetConIncome
+            var netConIncome = new SpIncome
             {
                 Revenue = totalIncome.Round,
                 NetIncome = totalIncome.Abs.Round - totalExpense.Abs.Round
             };
-            var netConAssets = new NetConAssets
+            var netConAssets = new SpAssets
             {
                 TotalAssets = GetTotalCurrentWealth(endDt).Abs.Round,
                 TotalLiabilities = GetTotalCurrentDebt(endDt).Abs.Round

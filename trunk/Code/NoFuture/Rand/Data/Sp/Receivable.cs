@@ -1,4 +1,5 @@
 using System;
+using NoFuture.Rand.Data.Sp.Enums;
 
 namespace NoFuture.Rand.Data.Sp
 {

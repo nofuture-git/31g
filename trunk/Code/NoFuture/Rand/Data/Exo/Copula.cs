@@ -103,10 +103,10 @@ namespace NoFuture.Rand.Data.Exo
                 return false;
 
             if (rptTenK.FinancialData == null)
-                rptTenK.FinancialData = new ComFinancialData
+                rptTenK.FinancialData = new CommercialFinancialData
                 {
-                    Assets = new NetConAssets(),
-                    Income = new NetConIncome()
+                    Assets = new SpAssets(),
+                    Income = new SpIncome()
                 };
 
             var xbrlDyn = myDynDataRslt.First<dynamic>();

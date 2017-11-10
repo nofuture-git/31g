@@ -224,7 +224,7 @@ namespace NoFuture.Rand.Com
         #endregion
     }
 
-    public class FinancialAssets : NetConAssets
+    public class FinancialAssets : SpAssets
     {
         public double PercentForeignOwned { get; set; }
         public int DomesticBranches { get; set; }

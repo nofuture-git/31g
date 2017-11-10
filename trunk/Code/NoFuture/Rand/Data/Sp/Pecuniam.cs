@@ -1,5 +1,6 @@
 ﻿using System;
 using NoFuture.Rand.Core;
+using NoFuture.Rand.Data.Sp.Enums;
 using NoFuture.Shared.Core;
 
 namespace NoFuture.Rand.Data.Sp
@@ -166,25 +167,5 @@ namespace NoFuture.Rand.Data.Sp
         }
 
         #endregion
-    }
-
-    /// <summary>
-    /// Nf money type extension methods
-    /// </summary>
-    public static class PecuniamExtensions
-    {
-        public static Pecuniam ToPecuniam(this double x)
-        {
-            return new Pecuniam((decimal)x);
-        }
-        public static Pecuniam ToPecuniam(this int x)
-        {
-            return new Pecuniam(x);
-        }
-
-        public static Pecuniam ToPecuniam(this decimal x)
-        {
-            return new Pecuniam(x);
-        }
     }
 }

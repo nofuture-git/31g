@@ -4,29 +4,9 @@ using System.Text;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Domus;
-using NoFuture.Util;
-using NoFuture.Util.Core;
 
-namespace NoFuture.Rand.Data.Sp
+namespace NoFuture.Rand.Data.Sp.Cc
 {
-    /// <summary>
-    /// Represents a credit card number with algo for check digit
-    /// </summary>
-    /// <remarks>
-    /// Given the format as an ordered-array of <see cref="Rchar"/>
-    /// this type can both create random values and validate them.
-    /// </remarks>
-    [Serializable]
-    public class CreditCardNumber : RIdentifierWithChkDigit
-    {
-        public CreditCardNumber(Rchar[] format)
-        {
-            CheckDigitFunc = Etc.CalcLuhnCheckDigit;
-            this.format = format;
-        }
-        public override string Abbrev => "CC Num";
-    }
-
     /// <summary>
     /// Creates new instance with properties randomly assigned, 
     /// All date-time fields are converted to UTC
@@ -132,57 +112,5 @@ namespace NoFuture.Rand.Data.Sp
         }
 
         #endregion
-    }
-
-    [Serializable]
-    public class MasterCardCc : CreditCard
-    {
-        public MasterCardCc(IVoca cardholder, DateTime? openedDate, DateTime? expiryDate)
-            : base(cardholder, openedDate, expiryDate)
-        {
-        }
-
-        protected override int CardNumLen => 16;
-        protected override int CardNumPrefix => Etx.IntNumber(51, 55);
-        protected override string CcName => "MC";
-    }
-
-    [Serializable]
-    public class VisaCc : CreditCard
-    {
-        public VisaCc(IVoca cardholder, DateTime? openedDate, DateTime? expiryDate)
-            : base(cardholder, openedDate, expiryDate)
-        {
-        }
-
-        protected override int CardNumLen => 16;
-        protected override int CardNumPrefix => 4;
-        protected override string CcName => "VISA";
-    }
-
-    [Serializable]
-    public class AmexCc : CreditCard
-    {
-        public AmexCc(IVoca cardholder, DateTime? openedDate, DateTime? expiryDate)
-            : base(cardholder, openedDate, expiryDate)
-        {
-        }
-
-        protected override int CardNumLen => 15;
-        protected override int CardNumPrefix => Etx.CoinToss ? 34 : 37;
-        protected override string CcName => "AMEX";
-    }
-
-    [Serializable]
-    public class DiscoverCc : CreditCard
-    {
-        public DiscoverCc(IVoca cardholder, DateTime? openedDate, DateTime? expiryDate)
-            : base(cardholder, openedDate, expiryDate)
-        {
-        }
-
-        protected override int CardNumLen => 16;
-        protected override int CardNumPrefix => 6011;
-        protected override string CcName => "DC";
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NoFuture.Rand.Data.Sp;
+using NoFuture.Rand.Data.Sp.Enums;
 using Dbg = System.Diagnostics.Debug;
 
 namespace NoFuture.Tests.Rand
