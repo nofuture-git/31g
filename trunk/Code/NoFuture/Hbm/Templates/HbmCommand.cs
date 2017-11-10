@@ -1,4 +1,5 @@
-﻿using NoFuture.Util.NfType;
+﻿using NoFuture.Util.Core;
+using NoFuture.Util.NfType;
 
 namespace NoFuture.Hbm.Templates
 {
@@ -20,9 +21,9 @@ namespace NoFuture.Hbm.Templates
         {
             TypeFullName = typeFullName;
             IdTypeFullName = idTypeFullName;
-            OuputNamespace = NfTypeName.GetTypeNameWithoutNamespace(TypeFullName);
+            OuputNamespace = NfReflect.GetTypeNameWithoutNamespace(TypeFullName);
             IdTypeTest = Gen.Settings.LangStyle.GenUseIsNotDefaultValueTest(IdTypeFullName, "DataId");
-            ClassName = NfTypeName.GetTypeNameWithoutNamespace(TypeFullName);
+            ClassName = NfReflect.GetTypeNameWithoutNamespace(TypeFullName);
         }
     }
 }

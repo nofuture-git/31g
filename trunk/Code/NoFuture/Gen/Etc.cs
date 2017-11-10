@@ -11,6 +11,7 @@ using NoFuture.Shared;
 using NoFuture.Shared.Core;
 using NoFuture.Util;
 using NoFuture.Util.Binary;
+using NoFuture.Util.Core;
 using NoFuture.Util.Gia.Args;
 using NoFuture.Util.NfConsole;
 using NoFuture.Util.NfType;
@@ -44,10 +45,10 @@ namespace NoFuture.Gen
                 if (_ffVTypes == null)
                 {
                     _ffVTypes = new List<string>();
-                    _ffVTypes = Lexicon.ValueType2Cs.Keys.ToList();
+                    _ffVTypes = NfReflect.ValueType2Cs.Keys.ToList();
                     _ffVTypes.Add("System.DateTime");
                     _ffVTypes.Add(Constants.ENUM);
-                    _ffVTypes.AddRange(Lexicon.ValueType2Cs.Values);
+                    _ffVTypes.AddRange(NfReflect.ValueType2Cs.Values);
                 }
                 return _ffVTypes;
             }
@@ -374,7 +375,7 @@ namespace NoFuture.Gen
         {
             var cgType = new CgType();
 
-            if (asmType == null || NfTypeName.IsIgnoreType(asmType) || NfTypeName.IsClrGeneratedType(asmType))
+            if (asmType == null || NfReflect.IsIgnoreType(asmType) || NfReflect.IsClrGeneratedType(asmType))
                 return null;
             
             //use the logic in TypeName to get the namespace and class name so its not tied to having the assembly
@@ -387,7 +388,7 @@ namespace NoFuture.Gen
             cgType.IsContrivedNamespace = string.IsNullOrWhiteSpace(cgTypeName.Namespace);
             cgType.Name = cgTypeName.ClassName;
             cgType.AssemblyQualifiedName = asmType.AssemblyQualifiedName;
-            cgType.IsEnum = NfTypeName.IsEnumType(asmType);
+            cgType.IsEnum = NfReflect.IsEnumType(asmType);
 
             var cgTypesInterfaces = asmType.GetInterfaces();
             cgType.MetadataToken = asmType.MetadataToken;
@@ -439,7 +440,7 @@ namespace NoFuture.Gen
                             continue;
                         if (resolveDependencies)
                         {
-                            var propMi = NfTypeName.GetMethodsForProperty(pi, asmType);
+                            var propMi = NfReflect.GetMethodsForProperty(pi, asmType);
                             foreach (var pim in propMi)
                             {
                                 cgm.opCodeCallsAndCallvirtsMetadatTokens.AddRange(Asm.GetCallsMetadataTokens(pim));
@@ -711,7 +712,7 @@ namespace NoFuture.Gen
             var cgMem = new CgMember
             {
                 TypeName = Settings.LangStyle.TransformClrTypeSyntax(piType),
-                IsEnumerableType = NfTypeName.IsEnumerableReturnType(piType),
+                IsEnumerableType = NfReflect.IsEnumerableReturnType(piType),
                 Name = pi.Name,
                 MetadataToken = pi.MetadataToken
             };
@@ -730,10 +731,10 @@ namespace NoFuture.Gen
             }
 
             string[] enumVals;
-            if (NfTypeName.IsEnumType(piType, out enumVals) && enumValueDictionary != null)
+            if (NfReflect.IsEnumType(piType, out enumVals) && enumValueDictionary != null)
             {
                 cgMem.IsEnum = true;
-                var clearName = NfTypeName.GetLastTypeNameFromArrayAndGeneric(cgMem.TypeName, "<");
+                var clearName = NfReflect.GetLastTypeNameFromArrayAndGeneric(cgMem.TypeName, "<");
                 if (!enumValueDictionary.ContainsKey(clearName))
                 {
                     enumValueDictionary.Add(clearName, enumVals);
@@ -756,7 +757,7 @@ namespace NoFuture.Gen
             if (fi == null)
                 return null;
 
-            if (NfTypeName.IsClrGeneratedType(fi.Name))
+            if (NfReflect.IsClrGeneratedType(fi.Name))
                 return null;
 
             var fiType = fi.NfFieldType();
@@ -767,17 +768,17 @@ namespace NoFuture.Gen
             var cgMem = new CgMember
             {
                 TypeName = Settings.LangStyle.TransformClrTypeSyntax(fiType),
-                IsEnumerableType = NfTypeName.IsEnumerableReturnType(fiType),
+                IsEnumerableType = NfReflect.IsEnumerableReturnType(fiType),
                 Name = fi.Name,
                 IsStatic = fi.IsStatic,
                 MetadataToken = fi.MetadataToken
             };
 
             string[] enumVals;
-            if (NfTypeName.IsEnumType(fiType, out enumVals) && enumValueDictionary != null)
+            if (NfReflect.IsEnumType(fiType, out enumVals) && enumValueDictionary != null)
             {
                 cgMem.IsEnum = true;
-                var clearName = NfTypeName.GetLastTypeNameFromArrayAndGeneric(cgMem.TypeName, "<");
+                var clearName = NfReflect.GetLastTypeNameFromArrayAndGeneric(cgMem.TypeName, "<");
                 if (!enumValueDictionary.ContainsKey(clearName))
                 {
                     enumValueDictionary.Add(clearName, enumVals);
@@ -834,9 +835,9 @@ namespace NoFuture.Gen
             if (mti == null)
                 return null;
             string propName;
-            if (NfTypeName.IsClrMethodForProperty(mti.Name, out propName))
+            if (NfReflect.IsClrMethodForProperty(mti.Name, out propName))
                 return null;
-            if (NfTypeName.IsClrGeneratedType(mti.Name))
+            if (NfReflect.IsClrGeneratedType(mti.Name))
                 //these appear as '<SomeNameOfMethodAlreadyAdded>b__kifkj(...)'
                 return null;
 
@@ -848,7 +849,7 @@ namespace NoFuture.Gen
                 TypeName = Settings.LangStyle.TransformClrTypeSyntax(miReturnType),
                 IsStatic = mti.IsStatic,
                 IsGeneric = mti.IsGenericMethod,
-                IsEnumerableType = NfTypeName.IsEnumerableReturnType(miReturnType),
+                IsEnumerableType = NfReflect.IsEnumerableReturnType(miReturnType),
                 IsMethod = true,
                 MetadataToken = mti.MetadataToken
             };

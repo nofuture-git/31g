@@ -64,7 +64,7 @@ namespace NoFuture.Rand.Com
         /// </summary>
         /// <param name="abbrev"></param>
         /// <returns></returns>
-        internal static string GetBankFullName(string abbrev)
+        public static string GetBankFullName(string abbrev)
         {
             var bankNameReplacements = new List<Tuple<string, string>>
             {

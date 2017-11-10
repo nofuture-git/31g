@@ -7,6 +7,7 @@ using System.Text;
 using System.Xml;
 using NoFuture.Shared.Core;
 using NoFuture.Util;
+using NoFuture.Util.Core;
 using NoFuture.Util.NfType;
 using HbmXmlNames = NoFuture.Hbm.Globals.HbmXmlNames;
 
@@ -352,7 +353,7 @@ namespace NoFuture.Hbm.SortingContainers
                 _tableName = tableNameAttr.Value;
 
             var attrTypeName = GetAttrVal(CreateXpath(HbmXmlNames.HIBERNATE_MAPPING, HbmXmlNames.CLASS), HbmXmlNames.NAME);
-            if (NfTypeName.IsFullAssemblyQualTypeName(attrTypeName))
+            if (NfReflect.IsFullAssemblyQualTypeName(attrTypeName))
             {
                 _asmQualTypeName = attrTypeName;
                 var nfName = new NfTypeName(attrTypeName);
@@ -361,8 +362,8 @@ namespace NoFuture.Hbm.SortingContainers
             }
             else
             {
-                _className = NfTypeName.GetTypeNameWithoutNamespace(attrTypeName);
-                _namespace = NfTypeName.GetNamespaceWithoutTypeName(attrTypeName);
+                _className = NfReflect.GetTypeNameWithoutNamespace(attrTypeName);
+                _namespace = NfReflect.GetNamespaceWithoutTypeName(attrTypeName);
                 _asmQualTypeName = Compose.ClassName(_className, _namespace);
             }
 
@@ -687,7 +688,7 @@ namespace NoFuture.Hbm.SortingContainers
 
             if (IsCompositeKey)
             {
-                _idType = NfTypeName.IsFullAssemblyQualTypeName(IdType)
+                _idType = NfReflect.IsFullAssemblyQualTypeName(IdType)
                     ? (new NfTypeName(IdType)).FullName
                     : IdType;
             }

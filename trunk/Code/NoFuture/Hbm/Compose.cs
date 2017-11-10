@@ -49,7 +49,7 @@ namespace NoFuture.Hbm
             asmQualifiedName.Append(name);
 
             if (!String.IsNullOrWhiteSpace(outputNamespace))
-                asmQualifiedName.AppendFormat(", {0}", NfTypeName.DraftCscExeAsmName(outputNamespace));
+                asmQualifiedName.AppendFormat(", {0}", NfReflect.DraftCscExeAsmName(outputNamespace));
 
             var typeName = new NfTypeName(asmQualifiedName.ToString());
 
@@ -108,7 +108,7 @@ namespace NoFuture.Hbm
 
         public static string HbmFileNameFromAsmQualTypeName(string asmFullName, bool prependDir = false)
         {
-            if (string.IsNullOrWhiteSpace(asmFullName) || !NfTypeName.IsFullAssemblyQualTypeName(asmFullName))
+            if (string.IsNullOrWhiteSpace(asmFullName) || !NfReflect.IsFullAssemblyQualTypeName(asmFullName))
                 return HbmFileName(asmFullName);
 
             var nfName = new NfTypeName(asmFullName);

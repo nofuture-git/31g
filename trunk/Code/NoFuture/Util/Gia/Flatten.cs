@@ -138,7 +138,7 @@ namespace NoFuture.Util.Gia
                     if (!string.IsNullOrWhiteSpace(fla.LimitOnThisType) &&
                         !string.Equals(fla.LimitOnThisType, line.ValueType, StringComparison.OrdinalIgnoreCase) &&
                         !string.Equals(fla.LimitOnThisType,
-                            NfTypeName.GetLastTypeNameFromArrayAndGeneric(line.ValueType),
+                            NfReflect.GetLastTypeNameFromArrayAndGeneric(line.ValueType),
                             StringComparison.OrdinalIgnoreCase))
                         continue;
 
@@ -198,9 +198,9 @@ namespace NoFuture.Util.Gia
                 (info, s) =>
                     string.IsNullOrWhiteSpace(s) ||
                     string.Equals($"{info.PropertyType}", s, StringComparison.OrdinalIgnoreCase) ||
-                    string.Equals(NfTypeName.GetLastTypeNameFromArrayAndGeneric(info.PropertyType), s,
+                    string.Equals(NfReflect.GetLastTypeNameFromArrayAndGeneric(info.PropertyType), s,
                         StringComparison.OrdinalIgnoreCase) ||
-                    (s == Constants.ENUM && NfTypeName.IsEnumType(info.PropertyType));
+                    (s == Constants.ENUM && NfReflect.IsEnumType(info.PropertyType));
 
             var currentType = assembly.NfGetType(typeFullName);
             if (currentType == null)
@@ -216,7 +216,7 @@ namespace NoFuture.Util.Gia
                 fiValueTypes = new Stack<FlattenedItem>();
                 fiValueTypes.Push(new FlattenedItem(currentType)
                 {
-                    FlName = NfTypeName.GetTypeNameWithoutNamespace(typeFullName)
+                    FlName = NfReflect.GetTypeNameWithoutNamespace(typeFullName)
                 });
             }
 
@@ -224,7 +224,7 @@ namespace NoFuture.Util.Gia
                 currentType.GetProperties(NfConfig.DefaultFlags)
                     .Where(
                         x =>
-                            (NfTypeName.IsValueTypeProperty(x) && limitOnPi(x, limitOnValueType)
+                            (NfReflect.IsValueTypeProperty(x) && limitOnPi(x, limitOnValueType)
                              || (limitOnValueType == Constants.ENUM && limitOnPi(x, limitOnValueType)))
                     //more limbo branching for enums
                     )
@@ -251,7 +251,7 @@ namespace NoFuture.Util.Gia
             foreach (
                 var p in
                     currentType.GetProperties(NfConfig.DefaultFlags)
-                        .Where(x => !NfTypeName.IsValueTypeProperty(x)))
+                        .Where(x => !NfReflect.IsValueTypeProperty(x)))
             {
                 currentDepth += 1;
 
@@ -259,7 +259,7 @@ namespace NoFuture.Util.Gia
                 if (currentDepth >= maxDepth)
                     return printList;
 
-                var typeIn = NfTypeName.GetLastTypeNameFromArrayAndGeneric(p.PropertyType);
+                var typeIn = NfReflect.GetLastTypeNameFromArrayAndGeneric(p.PropertyType);
 
                 if (typeIn == null || typeStack.Contains(typeIn))
                     continue;
@@ -273,7 +273,7 @@ namespace NoFuture.Util.Gia
 
                 //enum types being handled as limbo between value type and ref type
                 string[] enumVals;
-                if (displayEnums && NfTypeName.IsEnumType(p.PropertyType, out enumVals))
+                if (displayEnums && NfReflect.IsEnumType(p.PropertyType, out enumVals))
                 {
                     foreach (var ev in enumVals)
                     {

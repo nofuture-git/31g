@@ -45,53 +45,19 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Antlr4.Runtime, Version=4.6.0.0, Culture=neutral, PublicKeyToken=09abb75b9ed49849, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Antlr4.Runtime.4.6.4\lib\net45\Antlr4.Runtime.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="HtmlAgilityPack, Version=2.0.20.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\HtmlAgilityPack.Net45.2.0.20\lib\net45\HtmlAgilityPack.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="itextsharp, Version=5.5.12.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\iTextSharp.5.5.12\lib\itextsharp.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="NoFuture.Antlr, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\bin\NoFuture.Antlr.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Web" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Data\Exo\Copula.cs" />
-    <Compile Include="Data\Exo\DynamicDataFactory.cs" />
     <Compile Include="Gov\AmericanRacePercents.cs" />
     <Compile Include="Com\Firm.cs" />
     <Compile Include="Com\FinancialFirm.cs" />
     <Compile Include="Data\Facit.cs" />
-    <Compile Include="Data\Exo\NfHtml\BloombergSymbolSearch.cs" />
-    <Compile Include="Data\Exo\NfHtml\FfiecInstitProfile.cs" />
-    <Compile Include="Data\Exo\NfHtml\FidelitySymbolSearch.cs" />
-    <Compile Include="Data\Exo\NfHtml\NfHtmlDynDataBase.cs" />
-    <Compile Include="Data\Exo\NfHtml\SecGetXbrlUri.cs" />
-    <Compile Include="Data\Exo\NfHtml\WikipediaInsCom.cs" />
-    <Compile Include="Data\Exo\NfHttp\YhooFinSymbolLookup.cs" />
-    <Compile Include="Data\Exo\NfPdf\Sec13fCuispList.cs" />
-    <Compile Include="Data\Exo\NfText\FedLrgBnk.cs" />
-    <Compile Include="Data\Exo\NfXml\SecCikSearch.cs" />
-    <Compile Include="Data\Exo\NfXml\SecForm13fInfoTable.cs" />
-    <Compile Include="Data\Exo\NfXml\SecFullTxtSearch.cs" />
-    <Compile Include="Data\Exo\NfXml\SecXbrlInstanceFile.cs" />
     <Compile Include="Data\Sp\Account.cs" />
     <Compile Include="Data\Sp\Balance.cs" />
     <Compile Include="Data\Sp\Currency.cs" />
@@ -108,12 +74,10 @@
     <Compile Include="Data\Sp\Security.cs" />
     <Compile Include="Data\Sp\TradeLine.cs" />
     <Compile Include="Data\Endo\ClassificationBase.cs" />
-    <Compile Include="Data\Exo\NfDynDataBase.cs" />
     <Compile Include="Data\Endo\RandXref.cs" />
     <Compile Include="Data\Endo\StandardOccupationalClassification.cs" />
     <Compile Include="Data\Endo\StreetPo.cs" />
     <Compile Include="Data\Endo\CityArea.cs" />
-    <Compile Include="Data\Exo\INfDynData.cs" />
     <Compile Include="Data\Endo\NorthAmericanIndustryClassification.cs" />
     <Compile Include="Com\PublicCorporation.cs" />
     <Compile Include="Data\Endo\Phone.cs" />
@@ -184,7 +148,6 @@
     <Compile Include="Gov\Identifier.cs" />
     <Compile Include="Gov\Irs\Identifier.cs" />
     <Compile Include="Gov\Irs\Soi.cs" />
-    <Compile Include="Gov\Sec\Edgar.cs" />
     <Compile Include="Gov\Sec\Iapd.cs" />
     <Compile Include="Gov\Sec\Identifier.cs" />
     <Compile Include="Gov\SocialSecurityNumber.cs" />
@@ -198,21 +161,9 @@
       <Project>{6eca48dc-fdb4-4660-9914-3b74d5975ff9}</Project>
       <Name>Shared.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Shared\Shared.csproj">
-      <Project>{4b77029a-6f3e-48ae-b8e2-c4dd06dce627}</Project>
-      <Name>Shared</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Tokens\Tokens.csproj">
-      <Project>{4e81340f-409b-4ada-b038-bf3f76ffa81e}</Project>
-      <Name>Tokens</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Util\Core\Util.Core.csproj">
       <Project>{349a1c91-ca14-4d04-946d-8b257a863ce0}</Project>
       <Name>Util.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Util\Util.csproj">
-      <Project>{d7f28538-ba6a-46b4-a080-65124e899317}</Project>
-      <Name>Util</Name>
     </ProjectReference>
     <ProjectReference Include="Core\Rand.Core.csproj">
       <Project>{3c5df49d-ae94-431c-85a5-7f5b71ac777f}</Project>

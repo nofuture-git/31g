@@ -30,9 +30,9 @@ namespace NoFuture.Rand.Gov
         public string PrincipalResidence { get; set; }
 
         [Newtonsoft.Json.JsonIgnore]
-        public System.Drawing.Bitmap FrontFacingPhoto { get; set; }
+        public byte[] FrontFacingPhoto { get; set; }
         [Newtonsoft.Json.JsonIgnore]
-        public System.Drawing.Bitmap Signature { get; set; }
+        public byte[] Signature { get; set; }
 
     }
 

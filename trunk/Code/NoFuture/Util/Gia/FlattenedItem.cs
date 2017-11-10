@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using NoFuture.Util.Core;
 using NoFuture.Util.Gia.GraphViz;
 using NoFuture.Util.NfType;
 
@@ -20,7 +21,7 @@ namespace NoFuture.Util.Gia
                 if (_ffVTypes == null)
                 {
                     _ffVTypes = new List<string>();
-                    _ffVTypes = Lexicon.ValueType2Cs.Keys.ToList();
+                    _ffVTypes = NfReflect.ValueType2Cs.Keys.ToList();
                     _ffVTypes.Add("System.DateTime");
                     _ffVTypes.Add("System.Enum");
                     _ffVTypes.Add("System.Guid");
@@ -32,8 +33,8 @@ namespace NoFuture.Util.Gia
         public FlattenedItem(Type flType)
         {
             FlType = flType;
-            IsEnumerable = NfTypeName.IsEnumerableReturnType(flType);
-            TypeFullName = NfTypeName.GetLastTypeNameFromArrayAndGeneric(flType);
+            IsEnumerable = NfReflect.IsEnumerableReturnType(flType);
+            TypeFullName = NfReflect.GetLastTypeNameFromArrayAndGeneric(flType);
             MetadataToken = flType?.MetadataToken ?? 0;
         }
 
@@ -43,7 +44,7 @@ namespace NoFuture.Util.Gia
         public bool IsEnumerable { get; set; }
         public string FlName { get; set; }
         public string TypeFullName { get; set; }
-        public string SimpleTypeName => NfTypeName.GetTypeNameWithoutNamespace(TypeFullName);
+        public string SimpleTypeName => NfReflect.GetTypeNameWithoutNamespace(TypeFullName);
         public bool IsTerminalNode => ValueTypesList.Contains(TypeFullName);
         public int MetadataToken { get; set; }
 

@@ -104,7 +104,7 @@ namespace NoFuture.Tests.Rand
             var expectedRslt =
                 new Uri("http://www.sec.gov/cgi-bin/viewer?action=view&cik=" + cik + "&accession_number=" + acc +
                         "&xbrl_type=v");
-            var testResult = Edgar.CtorInteractiveLink(cik, acc);
+            var testResult = Form10K.CtorInteractiveLink(cik, acc);
             Assert.AreEqual(expectedRslt, testResult);
         }
 

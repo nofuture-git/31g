@@ -744,7 +744,7 @@ namespace NoFuture.Read.Vs
         /// <returns></returns>
         public bool AddGacReferenceNode(string assemblySimpleName)
         {
-            if (string.IsNullOrWhiteSpace(assemblySimpleName) || Util.NfType.NfTypeName.IsAssemblyFullName(assemblySimpleName))
+            if (string.IsNullOrWhiteSpace(assemblySimpleName) || NfReflect.IsAssemblyFullName(assemblySimpleName))
                 return false;
 
             var gacRefNode =
@@ -1321,7 +1321,7 @@ namespace NoFuture.Read.Vs
                 if (string.IsNullOrWhiteSpace(includeAttr?.Value))
                     continue;
                 BinReference binRef = null;
-                if (!Util.NfType.NfTypeName.IsAssemblyFullName(includeAttr.Value))
+                if (!NfReflect.IsAssemblyFullName(includeAttr.Value))
                 {
                     var refPath = GetReferenceAssembliesPath();
                     if (string.IsNullOrWhiteSpace(refPath))

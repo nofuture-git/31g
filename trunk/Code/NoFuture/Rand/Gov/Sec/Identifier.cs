@@ -2,9 +2,10 @@
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Data.Sp;
-using NoFuture.Util.Binary;
+//using NoFuture.Util.Binary;
 
 namespace NoFuture.Rand.Gov.Sec
 {
@@ -61,8 +62,8 @@ namespace NoFuture.Rand.Gov.Sec
             if (string.IsNullOrWhiteSpace(reportAbbrev))
                 return null;
             var secFormTypes = Assembly.GetExecutingAssembly()
-                .NfGetTypes()
-                .Where(x => x.NfBaseType() == typeof(SecForm)).ToList();
+                .GetTypes()
+                .Where(x => x.BaseType == typeof(SecForm)).ToList();
 
             Type secFormType = null;
             foreach (var mt in secFormTypes)
@@ -97,6 +98,7 @@ namespace NoFuture.Rand.Gov.Sec
         public int FiscalYear => FinancialData?.FiscalYear ?? 0;
         public ComFinancialData FinancialData { get; set; }
         public SummaryOfBusiness Summary { get; set; }
+
         /// <summary>
         /// Returns the link to the SEC's interative version of the report.
         /// </summary>
@@ -105,10 +107,21 @@ namespace NoFuture.Rand.Gov.Sec
             get
             {
                 if (!string.IsNullOrWhiteSpace(CIK?.Value) && !string.IsNullOrWhiteSpace(AccessionNumber) && XmlLink != null)
-                    return Edgar.CtorInteractiveLink(CIK.Value, AccessionNumber);
+                    return CtorInteractiveLink(CIK.Value, AccessionNumber);
 
                 return null;
             }
+        }
+
+        internal static Uri CtorInteractiveLink(string cik, string accessionNum)
+        {
+            var qry = new StringBuilder();
+            qry.Append("?action=view&");
+            qry.AppendFormat("cik={0}&", cik);
+            qry.AppendFormat("accession_number={0}&", accessionNum);
+            qry.Append("xbrl_type=v");
+
+            return new Uri("https://www.sec.gov/cgi-bin/viewer" + qry);
         }
     }
 

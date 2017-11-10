@@ -56,8 +56,8 @@ namespace NoFuture.Rand.Gov.Bls
             if (string.IsNullOrWhiteSpace(NfConfig.SecurityKeys.BlsApiRegistrationKey))
                 throw new RahRowRagee("The 'NoFuture.Globals.SecurityKeys.BlsApiRegistrationKey' " +
                                                  "must be set before calling this property.");
-            dynamic payload =
-                new
+            var payload =
+                new Payload
                 {
                     seriesid = seriesCodes,
                     startyear = $"{sYear}",
@@ -65,6 +65,14 @@ namespace NoFuture.Rand.Gov.Bls
                     registrationKey = NfConfig.SecurityKeys.BlsApiRegistrationKey
                 };
             return Newtonsoft.Json.JsonConvert.SerializeObject(payload);
+        }
+
+        internal class Payload
+        {
+            internal string[] seriesid;
+            internal string startyear;
+            internal string endyear;
+            internal string registrationKey;
         }
     }
     public class ConsumerPriceIndex : ISeries

@@ -82,7 +82,7 @@ namespace NoFuture.Util.NfType
                     if (fromPi == null || !fromPi.CanRead)
                         continue;
 
-                    if (NfTypeName.IsValueTypeProperty(fromPi, true))
+                    if (NfReflect.IsValueTypeProperty(fromPi, true))
                     {
                         continue;
                     }
@@ -136,7 +136,7 @@ namespace NoFuture.Util.NfType
                 {
                     var fromPi = fromObj.GetType().GetProperty(pn);
 
-                    if (fromPi == null || !fromPi.CanRead || !NfTypeName.IsValueTypeProperty(fromPi,true))
+                    if (fromPi == null || !fromPi.CanRead || !NfReflect.IsValueTypeProperty(fromPi,true))
                         continue;
                     //this will get us those closest on name only
                     var closestMatches = GetClosestMatch(fromPi, fromObj, toPis, toObj);
@@ -220,7 +220,7 @@ namespace NoFuture.Util.NfType
 
             foreach (var toPi in toPis)
             {
-                if (NfTypeName.IsValueTypeProperty(toPi, true))
+                if (NfReflect.IsValueTypeProperty(toPi, true))
                 {
                     string toFromTns;
                     Action simpleAssignment = GetSimpleAssignment(toPi, toObj, fromPi, fromObj, out toFromTns);
@@ -300,16 +300,16 @@ namespace NoFuture.Util.NfType
                 return noop;
 
             //only deal in value types to value types
-            if (!NfTypeName.IsValueTypeProperty(toPi, true) || !NfTypeName.IsValueTypeProperty(fromPi, true))
+            if (!NfReflect.IsValueTypeProperty(toPi, true) || !NfReflect.IsValueTypeProperty(fromPi, true))
                 return noop;
 
             //enums require alot of special handling especially when wrapped in Nullable`1[
-            var cpiIsEnum = NfTypeName.IsPropertyEnum(toPi);
-            var fromPiIsEnum = NfTypeName.IsPropertyEnum(fromPi);
+            var cpiIsEnum = NfReflect.IsPropertyEnum(toPi);
+            var fromPiIsEnum = NfReflect.IsPropertyEnum(fromPi);
 
             //get each pi's type
-            var cpiType = cpiIsEnum ? NfTypeName.GetEnumType(toPi) : NfTypeName.GetPropertyValueType(toPi);
-            var fromPiType = fromPiIsEnum ? NfTypeName.GetEnumType(fromPi) : NfTypeName.GetPropertyValueType(fromPi);
+            var cpiType = cpiIsEnum ? NfReflect.GetEnumType(toPi) : NfReflect.GetPropertyValueType(toPi);
+            var fromPiType = fromPiIsEnum ? NfReflect.GetEnumType(fromPi) : NfReflect.GetPropertyValueType(fromPi);
 
             //get each pi's type's full name
             var cpiTypeFullname = cpiType.FullName;

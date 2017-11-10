@@ -286,7 +286,7 @@ namespace NoFuture.Gen
                         pdbData.Where(
                             x =>
                                 x.symbolName ==
-                                string.Format("{0}{1}", NfTypeName.PropertyNamePrefix.GET_PREFIX, cgMem.Name))
+                                string.Format("{0}{1}", NfReflect.PropertyNamePrefix.GET_PREFIX, cgMem.Name))
                             .Select(x => x)
                             .FirstOrDefault();
                     if (getterMatch != null)
@@ -300,7 +300,7 @@ namespace NoFuture.Gen
                         pdbData.Where(
                             x =>
                                 x.symbolName ==
-                                string.Format("{0}{1}", NfTypeName.PropertyNamePrefix.SET_PREFIX, cgMem.Name))
+                                string.Format("{0}{1}", NfReflect.PropertyNamePrefix.SET_PREFIX, cgMem.Name))
                             .Select(x => x)
                             .FirstOrDefault();
                     if (setterMatch != null)

@@ -2,7 +2,6 @@
 using System.Globalization;
 using System.Linq;
 using NoFuture.Rand.Core;
-using NoFuture.Util.Etymological;
 
 namespace NoFuture.Rand.Domus.Pneuma
 {
@@ -72,7 +71,7 @@ namespace NoFuture.Rand.Domus.Pneuma
 
     public interface ITrait : IIdentifier<Dimension>
     {
-        INomenclature GetDescription();
+        
     }
 
     [Serializable]
@@ -114,14 +113,12 @@ namespace NoFuture.Rand.Domus.Pneuma
     [Serializable]
     public abstract class Trait : ITrait
     {
-        protected INomenclature _nom;
 
         protected Trait()
         {
             Value = new Dimension();
         }
         public virtual string Src { get; set; }
-        public abstract INomenclature GetDescription();
         public abstract string Abbrev { get; }
         public Dimension Value { get; set; }
         public override string ToString()
@@ -149,50 +146,30 @@ namespace NoFuture.Rand.Domus.Pneuma
     {
         public override string Abbrev => "O";
 
-        public override INomenclature GetDescription()
-        {
-            return _nom ?? (_nom = new Util.Etymological.Psy.Openness());
-        }
     }
     [Serializable]
     public class Conscientiousness : Trait
     {
         public override string Abbrev => "C";
 
-        public override INomenclature GetDescription()
-        {
-            return _nom ?? (_nom = new Util.Etymological.Psy.Conscientiousness());
-        }
     }
     [Serializable]
     public class Extraversion : Trait
     {
         public override string Abbrev => "E";
 
-        public override INomenclature GetDescription()
-        {
-            return _nom ?? (_nom = new Util.Etymological.Psy.Extraversion());
-        }
     }
     [Serializable]
     public class Agreeableness : Trait
     {
         public override string Abbrev => "A";
 
-        public override INomenclature GetDescription()
-        {
-            return _nom ?? (_nom = new Util.Etymological.Psy.Agreeableness());
-        }
     }
     [Serializable]
     public class Neuroticism : Trait
     {
         public override string Abbrev => "N";
 
-        public override INomenclature GetDescription()
-        {
-            return _nom ?? (_nom = new Util.Etymological.Psy.Neuroticism());
-        }
     }
 
 }

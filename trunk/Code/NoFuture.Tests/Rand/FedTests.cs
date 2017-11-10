@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NoFuture.Rand.Com;
+using NoFuture.Rand.Data.Exo;
 using NoFuture.Rand.Gov.Fed;
 
 namespace NoFuture.Tests.Rand
@@ -35,7 +36,7 @@ namespace NoFuture.Tests.Rand
             var testContent = System.IO.File.ReadAllText(TestAssembly.UnitTestsRoot + @"\Rand\ffiecHtml.html");
 
             Bank firmOut = new Bank();
-            var testResult = Ffiec.TryParseFfiecInstitutionProfileAspxHtml(testContent, new Uri(Ffiec.SEARCH_URL_BASE), 
+            var testResult = Copula.TryParseFfiecInstitutionProfileAspxHtml(testContent, new Uri(Ffiec.SEARCH_URL_BASE), 
                 ref firmOut);
             System.Diagnostics.Debug.WriteLine(firmOut.RoutingNumber);
             Assert.IsTrue(testResult);

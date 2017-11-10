@@ -51,7 +51,7 @@ namespace NoFuture.Hbm
 
             sessionFactoryNode.Add(propertyNode);
 
-            var mappingNode = new XElement(Nm.MAPPING, new XAttribute(Nm.ASSEMBLY, NfTypeName.DraftCscExeAsmName(outputNamespace)));
+            var mappingNode = new XElement(Nm.MAPPING, new XAttribute(Nm.ASSEMBLY, NfReflect.DraftCscExeAsmName(outputNamespace)));
             sessionFactoryNode.Add(mappingNode);
 
             hbmConfigNode.Add(sessionFactoryNode);

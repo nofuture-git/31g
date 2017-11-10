@@ -200,7 +200,7 @@ namespace NoFuture.Util.Gia.GraphViz
                         .Where(x => !string.IsNullOrWhiteSpace(x.Namespace) && x.Namespace.StartsWith(_targetedNs)))
             {
                 var item1 = new FlattenedItem(asmType) {FlName = asmType.Name};
-                if (item1.IsTerminalNode || NfTypeName.IsEnumType(asmType))
+                if (item1.IsTerminalNode || NfReflect.IsEnumType(asmType))
                     continue;
 
                 foreach (
@@ -212,7 +212,7 @@ namespace NoFuture.Util.Gia.GraphViz
                                     x.PropertyType.Namespace.StartsWith(_targetedNs))
                     )
                 {
-                    if (NfTypeName.IsEnumType(p.PropertyType))
+                    if (NfReflect.IsEnumType(p.PropertyType))
                         continue;
                     var item2 = new FlattenedItem(p.PropertyType) {FlName = p.Name};
                     if (item2.IsTerminalNode)

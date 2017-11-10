@@ -5,7 +5,7 @@ using System.Reflection;
 using System.Xml;
 using NoFuture.Rand.Core;
 using NoFuture.Shared.Core;
-using NoFuture.Util.NfType;
+using NoFuture.Util.Core;
 
 namespace NoFuture.Rand.Data.Endo
 {
@@ -202,12 +202,12 @@ namespace NoFuture.Rand.Data.Endo
             var propertyInstance = Activator.CreateInstance(piType);
 
             //expecting the type to have a getter and setter of generic List<T>
-            if (NfTypeName.IsEnumerableReturnType(piType))
+            if (NfReflect.IsEnumerableReturnType(piType))
             {
                 var addMi = piType.GetMethod("Add");
                 if (addMi == null)
                     return;
-                var enumerableTypeName = NfTypeName.GetLastTypeNameFromArrayAndGeneric(piType);
+                var enumerableTypeName = NfReflect.GetLastTypeNameFromArrayAndGeneric(piType);
                 if (string.IsNullOrWhiteSpace(enumerableTypeName))
                     return;
 

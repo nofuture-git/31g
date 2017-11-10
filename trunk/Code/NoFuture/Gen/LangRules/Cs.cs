@@ -31,7 +31,7 @@ namespace NoFuture.Gen.LangRules
 
         public string LineComment => LINE_COMMENT_CHAR_SEQ;
         public string DeclareConstantKeyword => CONST;
-        public Dictionary<string, string> ValueTypeToLangAlias => Lexicon.ValueType2Cs;
+        public Dictionary<string, string> ValueTypeToLangAlias => NfReflect.ValueType2Cs;
 
         public string GetEnclosureOpenToken(CgMember cgMem)
         {
@@ -60,7 +60,7 @@ namespace NoFuture.Gen.LangRules
             var cgSig = string.Join(",", cgArgs);
             var tn = cgMem.IsCtor ? string.Empty : cgMem.TypeName;
             var n = cgMem.IsCtor
-                ? NfTypeName.GetTypeNameWithoutNamespace(cgMem.TypeName)
+                ? NfReflect.GetTypeNameWithoutNamespace(cgMem.TypeName)
                 : string.Format(" {0}", cgMem.Name);
 
             cgSig = cgSig.Length > 0 || cgMem.IsCtor || cgMem.IsMethod
@@ -257,7 +257,7 @@ namespace NoFuture.Gen.LangRules
                 cgMem.Args.Select(
                     x =>
                         @"\s*\b" +
-                        NfTypeName.GetTypeNameWithoutNamespace(x.ArgType).EscapeString() +
+                        NfReflect.GetTypeNameWithoutNamespace(x.ArgType).EscapeString() +
                         @"\b\s*([^\,]+?)").ToList();
             regexPattern.AppendFormat(@"\s*\({0}\)", string.Join(@"\,", simpleArgTypes));
 
@@ -794,7 +794,7 @@ namespace NoFuture.Gen.LangRules
             var mytokens = myXDocFrame.FindEnclosingTokens(joinedContent);
             if (mytokens == null || mytokens.Count < 1)
                 return false;
-            var targetToken = NfTypeName.GetTypeNameWithoutNamespace(typename) == typename ? mytokens[0] : mytokens[1];
+            var targetToken = NfReflect.GetTypeNameWithoutNamespace(typename) == typename ? mytokens[0] : mytokens[1];
 
             var joinedContentAsChars = joinedContent.ToCharArray();
             //need to count the number of newlines up to the token's start
@@ -831,7 +831,7 @@ namespace NoFuture.Gen.LangRules
             var mytokens = myXDocFrame.FindEnclosingTokens(joinedContent);
             if (mytokens == null || mytokens.Count < 1)
                 return false;
-            var targetToken = NfTypeName.GetTypeNameWithoutNamespace(typename) == typename ? mytokens[0] : mytokens[1];
+            var targetToken = NfReflect.GetTypeNameWithoutNamespace(typename) == typename ? mytokens[0] : mytokens[1];
 
             var joinedContentAsChars = joinedContent.ToCharArray();
 

@@ -6,6 +6,7 @@ using NoFuture.Shared;
 using NoFuture.Shared.Core;
 using NoFuture.Shared.DiaSdk.LinesSwitch;
 using NoFuture.Util;
+using NoFuture.Util.Core;
 using NoFuture.Util.Gia;
 using NoFuture.Util.NfType;
 
@@ -101,7 +102,7 @@ namespace NoFuture.Gen
             get
             {
                 return
-                    Properties.Select(property => NfTypeName.GetLastTypeNameFromArrayAndGeneric(property.TypeName, "<"))
+                    Properties.Select(property => NfReflect.GetLastTypeNameFromArrayAndGeneric(property.TypeName, "<"))
                         .Where(x => !Etc.ValueTypesList.Contains(x.Trim()))
                         .ToList();
             }
@@ -132,13 +133,13 @@ namespace NoFuture.Gen
             var vals = EnumValueDictionary.ContainsKey(enumTypeName) ? EnumValueDictionary[enumTypeName] : null;
             if (vals != null) return vals;
 
-            var clearName = NfTypeName.GetLastTypeNameFromArrayAndGeneric(enumTypeName);
+            var clearName = NfReflect.GetLastTypeNameFromArrayAndGeneric(enumTypeName);
             vals = EnumValueDictionary.ContainsKey(clearName) ? EnumValueDictionary[clearName] : null;
             
             if (vals != null) return vals;
 
             //try one last time for cs style generics
-            clearName = NfTypeName.GetLastTypeNameFromArrayAndGeneric(enumTypeName, "<");
+            clearName = NfReflect.GetLastTypeNameFromArrayAndGeneric(enumTypeName, "<");
             vals = EnumValueDictionary.ContainsKey(clearName) ? EnumValueDictionary[clearName] : null;
             return vals;
         }
@@ -193,7 +194,7 @@ namespace NoFuture.Gen
             if (string.IsNullOrWhiteSpace(methodName))
                 return null;
             string isPropName;
-            if (NfTypeName.IsClrMethodForProperty(tokenName.Name, out isPropName))
+            if (NfReflect.IsClrMethodForProperty(tokenName.Name, out isPropName))
             {
                 methodName = isPropName;
                 var propMatches = Properties.Where(p => string.Equals(p.Name, methodName)).ToArray();

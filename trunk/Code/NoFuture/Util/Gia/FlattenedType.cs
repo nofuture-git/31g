@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using NoFuture.Util.Core;
 using NoFuture.Util.Gia.GraphViz;
 using NoFuture.Util.NfType;
 
@@ -15,8 +16,8 @@ namespace NoFuture.Util.Gia
         public string Separator { get; set; }
         public bool UseTypeNames { get; set; }
 
-        public string TypeFullName => NfTypeName.GetLastTypeNameFromArrayAndGeneric(RootType);
-        public string SimpleTypeName => NfTypeName.GetTypeNameWithoutNamespace(TypeFullName);
+        public string TypeFullName => NfReflect.GetLastTypeNameFromArrayAndGeneric(RootType);
+        public string SimpleTypeName => NfReflect.GetTypeNameWithoutNamespace(TypeFullName);
 
         public Type RootType { get; set; }
         public List<FlattenedLine> Lines { get; set; }

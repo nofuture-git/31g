@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NoFuture.Util.Core;
 
 namespace NoFuture.Tests.Util.NfTypeTests
 {
@@ -92,7 +93,7 @@ namespace NoFuture.Tests.Util.NfTypeTests
         {
             var testContext = new Address();
             var testInput = testContext.GetType().GetProperty("Id");
-            var testResult = NoFuture.Util.NfType.NfTypeName.GetPropertyValueType(testInput);
+            var testResult = NfReflect.GetPropertyValueType(testInput);
 
             Assert.IsNotNull(testResult);
             Assert.AreEqual("System.Int32", testResult.FullName);

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using NoFuture.Util;
+using NoFuture.Util.Core;
 using NoFuture.Util.NfType;
 
 namespace NoFuture.Gen
@@ -20,7 +21,7 @@ namespace NoFuture.Gen
             graphViz.Append("<tr><td align=\"left\">");
             graphViz.Append(cgMem.Name);
             graphViz.Append(" ");
-            var typeColor = Etc.ValueTypesList.Contains(NfTypeName.GetLastTypeNameFromArrayAndGeneric(cgMem.TypeName.Trim(), "<")) ? "blue" : "grey";
+            var typeColor = Etc.ValueTypesList.Contains(NfReflect.GetLastTypeNameFromArrayAndGeneric(cgMem.TypeName.Trim(), "<")) ? "blue" : "grey";
             if (cgMem.HasGetter || cgMem.HasSetter)
             {
                 graphViz.Append("(");
@@ -30,7 +31,7 @@ namespace NoFuture.Gen
             graphViz.Append(": <font color=\"");
             graphViz.Append(typeColor);
             graphViz.Append("\">");
-            graphViz.Append(NfTypeName.GetLastTypeNameFromArrayAndGeneric(cgMem.TypeName, "<"));
+            graphViz.Append(NfReflect.GetLastTypeNameFromArrayAndGeneric(cgMem.TypeName, "<"));
             if (cgMem.IsEnumerableType)
                 graphViz.Append("[*]");
             graphViz.Append("</font></td></tr>");
@@ -50,11 +51,11 @@ namespace NoFuture.Gen
             foreach (
                 var property in
                     cgType.Properties.Where(
-                        x => !Etc.ValueTypesList.Contains(NfTypeName.GetLastTypeNameFromArrayAndGeneric(x.TypeName, "<")))
+                        x => !Etc.ValueTypesList.Contains(NfReflect.GetLastTypeNameFromArrayAndGeneric(x.TypeName, "<")))
                 )
             {
                 var toName =
-                    Util.Core.Etc.SafeDotNetIdentifier(NfTypeName.GetLastTypeNameFromArrayAndGeneric(property.TypeName, "<"));
+                    Util.Core.Etc.SafeDotNetIdentifier(NfReflect.GetLastTypeNameFromArrayAndGeneric(property.TypeName, "<"));
                 var edg = new StringBuilder();
                 edg.AppendFormat("{0} -> {1}", myName, toName);
                 edg.Append(property.IsEnumerableType ? " [arrowhead=odiamond]" : " [arrowhead=vee]");
@@ -96,7 +97,7 @@ namespace NoFuture.Gen
 
         public static string ToGraphVizString(this CgArg cgArg)
         {
-            return NfTypeName.GetTypeNameWithoutNamespace(cgArg.ArgType);
+            return NfReflect.GetTypeNameWithoutNamespace(cgArg.ArgType);
         }
 
         /// <summary>
@@ -108,8 +109,8 @@ namespace NoFuture.Gen
         /// <returns></returns>
         public static string EmptyGraphVizClassNode(string typeFullName, string[] enumValues)
         {
-            var className = NfTypeName.GetTypeNameWithoutNamespace(typeFullName);
-            var ns = NfTypeName.GetNamespaceWithoutTypeName(typeFullName);
+            var className = NfReflect.GetTypeNameWithoutNamespace(typeFullName);
+            var ns = NfReflect.GetNamespaceWithoutTypeName(typeFullName);
             var fullName = string.Format("{0}{1}", string.IsNullOrWhiteSpace(ns) ? string.Empty : ns + ".", className);
             var graphViz = new StringBuilder();
             graphViz.Append(Util.Core.Etc.SafeDotNetIdentifier(fullName));

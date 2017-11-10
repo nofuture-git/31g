@@ -7,6 +7,7 @@ using System.Reflection;
 using NoFuture.Shared;
 using NoFuture.Shared.Core;
 using NoFuture.Util.Binary;
+using NoFuture.Util.Core;
 using NoFuture.Util.Gia.InvokeCmds;
 using NoFuture.Util.NfConsole;
 using NoFuture.Util.NfType;
@@ -385,8 +386,8 @@ namespace NoFuture.Util.Gia
                 tokenName = $"{owningAsmName}{tokenName}";
             }
 
-            var ns = NfTypeName.GetNamespaceWithoutTypeName(tokenName);
-            var tn = NfTypeName.GetTypeNameWithoutNamespace(tokenName);
+            var ns = NfReflect.GetNamespaceWithoutTypeName(tokenName);
+            var tn = NfReflect.GetTypeNameWithoutNamespace(tokenName);
 
             return $"{ns}{sep}{tn}";
         }

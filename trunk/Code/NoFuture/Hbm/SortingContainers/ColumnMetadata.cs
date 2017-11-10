@@ -2,6 +2,7 @@
 using System.IO;
 using System.Runtime.Serialization.Json;
 using System.Text;
+using NoFuture.Util.Core;
 using NoFuture.Util.NfType;
 
 namespace NoFuture.Hbm.SortingContainers
@@ -30,7 +31,7 @@ namespace NoFuture.Hbm.SortingContainers
                 column_ordinal = col.Ordinal;
             if (col.DataType != null && !string.IsNullOrWhiteSpace(col.DataType.FullName))
             {
-                data_type = NfTypeName.GetLastTypeNameFromArrayAndGeneric(col.DataType.FullName);
+                data_type = NfReflect.GetLastTypeNameFromArrayAndGeneric(col.DataType.FullName);
                 if (data_type == "System.String")
                     string_length = Globals.MSSQL_MAX_VARCHAR;
             }

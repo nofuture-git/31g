@@ -4,37 +4,10 @@ namespace NoFuture.Util
 {
     public class Lexicon
     {
-        private static Dictionary<string,string> _valueType2Cs;
         private static Dictionary<string,string> _hbm2NetTypes;
         private static Dictionary<string, string> _mssql2HbmTypes;
         private static Dictionary<string, string> _dotnet2HbmTypes;
 
-        /// <summary>
-        /// Lexicon of .NET value types to the C# equivalent (e.g. System.Int32 = int)
-        /// </summary>
-        /// <remarks>
-        /// Includes System.String
-        /// </remarks>
-        public static Dictionary<string, string> ValueType2Cs
-        {
-            get
-            {
-                return _valueType2Cs ?? (_valueType2Cs = new Dictionary<string, string>
-                                                             {
-                                                                 {"System.Byte", "byte"},
-                                                                 {"System.Int16", "short"},
-                                                                 {"System.Int32", "int"},
-                                                                 {"System.Int64", "long"},
-                                                                 {"System.Double", "double"},
-                                                                 {"System.Boolean", "bool"},
-                                                                 {"System.Char", "char"},
-                                                                 {"System.Decimal", "decimal"},
-                                                                 {"System.Single", "float"},
-                                                                 {"System.String", "string"},
-                                                                 {"System.Void", "void"}
-                                                             });
-            }
-        }
 
         /// <summary>
         /// Lexicon for NHibernate types to C# type (or .NET type when not applicable).

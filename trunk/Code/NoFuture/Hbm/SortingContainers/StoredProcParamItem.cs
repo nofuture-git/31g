@@ -67,7 +67,7 @@ namespace NoFuture.Hbm.SortingContainers
 
         public bool IsDataTable()
         {
-            return !string.IsNullOrWhiteSpace(DataType) && NfTypeName.IsAssemblyFullName(DataType) &&
+            return !string.IsNullOrWhiteSpace(DataType) && NfReflect.IsAssemblyFullName(DataType) &&
                    DataType.StartsWith("System.Data.DataTable");
         }
 
@@ -88,12 +88,12 @@ namespace NoFuture.Hbm.SortingContainers
 
         public SqlDbType GetSqlDataType()
         {
-            if (IsUserDefinedType && NfTypeName.IsAssemblyFullName(DataType))
+            if (IsUserDefinedType && NfReflect.IsAssemblyFullName(DataType))
             {
                 return SqlDbType.Udt;
             }
 
-            if(NfTypeName.IsAssemblyFullName(DataType))
+            if(NfReflect.IsAssemblyFullName(DataType))
                 return SqlDbType.NVarChar;
 
             SqlDbType dbTypeOut;

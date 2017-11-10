@@ -75,6 +75,5 @@ namespace NoFuture.Rand.Data.Sp
     public class SummaryOfBusiness
     {
         public string PlainText { get; set; }
-        public Util.Pos.ITagset[] TaggedText { get; set; }
     }
 }

@@ -149,32 +149,32 @@ namespace NoFuture.Tests.Util.NfTypeTests
         [TestMethod]
         public void TestGetTypeNameFromArrayAndGeneric()
         {
-            var testResult = NfTypeName.GetLastTypeNameFromArrayAndGeneric("int[]");
+            var testResult = NfReflect.GetLastTypeNameFromArrayAndGeneric("int[]");
             Assert.AreEqual("int",testResult);
-            testResult = NfTypeName.GetLastTypeNameFromArrayAndGeneric("System.Collections.Generic.List`1[System.String]");
+            testResult = NfReflect.GetLastTypeNameFromArrayAndGeneric("System.Collections.Generic.List`1[System.String]");
             Assert.AreEqual("System.String", testResult);
             testResult =
-                NfTypeName.GetLastTypeNameFromArrayAndGeneric("System.Tuple`2[System.Int32,System.String]");
+                NfReflect.GetLastTypeNameFromArrayAndGeneric("System.Tuple`2[System.Int32,System.String]");
             Assert.AreEqual("System.Int32",testResult);
 
-            testResult = NfTypeName.GetLastTypeNameFromArrayAndGeneric("System.Tuple`2[System.Collections.Generic.List`1[SomeNamespace.AType],System.String]");
+            testResult = NfReflect.GetLastTypeNameFromArrayAndGeneric("System.Tuple`2[System.Collections.Generic.List`1[SomeNamespace.AType],System.String]");
             Assert.AreEqual("SomeNamespace.AType",testResult);
 
             //test C# style
             testResult =
-                NfTypeName.GetLastTypeNameFromArrayAndGeneric(
+                NfReflect.GetLastTypeNameFromArrayAndGeneric(
                     "System.Collections.Generic.List<System.String>", "<");
             Assert.AreEqual("System.String",testResult);
 
             testResult =
-                NfTypeName.GetLastTypeNameFromArrayAndGeneric("System.Tuple<System.Int32, System.String>", "<");
+                NfReflect.GetLastTypeNameFromArrayAndGeneric("System.Tuple<System.Int32, System.String>", "<");
             Assert.AreEqual("System.Int32", testResult);
 
-            testResult = NfTypeName.GetLastTypeNameFromArrayAndGeneric("System.Tuple<System.Collections.Generic.List<SomeNamespace.AType>,System.String>", "<");
+            testResult = NfReflect.GetLastTypeNameFromArrayAndGeneric("System.Tuple<System.Collections.Generic.List<SomeNamespace.AType>,System.String>", "<");
             Assert.AreEqual("SomeNamespace.AType", testResult);
 
             var testResults =
-                NfTypeName.GetTypeNamesFromGeneric(
+                NfReflect.GetTypeNamesFromGeneric(
                     "System.Tuple`3[System.Collections.Generic.List`1[System.String], System.String, System.Tuple`2[System.Int32, System.String]]");
             System.Diagnostics.Debug.WriteLine(string.Join(" | ", testResults));
         }
@@ -182,16 +182,16 @@ namespace NoFuture.Tests.Util.NfTypeTests
         [TestMethod]
         public void TestGetTypeNameWithoutNamespace()
         {
-            var testResult = NfTypeName.GetTypeNameWithoutNamespace("NoFuture.Asm.Fii.MyType");
+            var testResult = NfReflect.GetTypeNameWithoutNamespace("NoFuture.Asm.Fii.MyType");
             System.Diagnostics.Debug.WriteLine(testResult);
             Assert.AreEqual("MyType",testResult);
 
-            testResult = NfTypeName.GetTypeNameWithoutNamespace("My_SillyName_NoNamespace_Pos_Class");
+            testResult = NfReflect.GetTypeNameWithoutNamespace("My_SillyName_NoNamespace_Pos_Class");
             System.Diagnostics.Debug.WriteLine(testResult);
             Assert.AreEqual("My_SillyName_NoNamespace_Pos_Class", testResult);
 
             testResult =
-                NfTypeName.GetNamespaceWithoutTypeName(
+                NfReflect.GetNamespaceWithoutTypeName(
                     "Wanker.DCF.UI.Controller.Operator.OperatorUIController::set_OperatorContacts(Wanker.DCF.DTO.WankerContact)");
 
             System.Diagnostics.Debug.WriteLine(testResult);
@@ -202,21 +202,21 @@ namespace NoFuture.Tests.Util.NfTypeTests
         [TestMethod]
         public void TestGetNamespaceWithoutTypeName()
         {
-            var testResult = NfTypeName.GetNamespaceWithoutTypeName("NoFuture.Asm.Fii.MyType");
+            var testResult = NfReflect.GetNamespaceWithoutTypeName("NoFuture.Asm.Fii.MyType");
             System.Diagnostics.Debug.WriteLine(testResult);
             Assert.AreEqual("NoFuture.Asm.Fii", testResult);
 
-            var testResult2 = NfTypeName.GetNamespaceWithoutTypeName("My_SillyName_NoNamespace_Pos_Class");
+            var testResult2 = NfReflect.GetNamespaceWithoutTypeName("My_SillyName_NoNamespace_Pos_Class");
             
             Assert.IsNull(testResult2);
 
             testResult =
-                NfTypeName.GetNamespaceWithoutTypeName(
+                NfReflect.GetNamespaceWithoutTypeName(
                     "global::Wanker.DCF.UI.Controller.Operator.OperatorUIController::set_OperatorContacts(Wanker.DCF.DTO.WankerContact)");
             System.Diagnostics.Debug.WriteLine(testResult);
             Assert.AreEqual("Wanker.DCF.UI.Controller.Operator",testResult);
 
-            testResult = NfTypeName.GetNamespaceWithoutTypeName("NeedItInIl.DomainAdapterBase`2[[AThirdDll.Whatever, AThirdDll, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]," +
+            testResult = NfReflect.GetNamespaceWithoutTypeName("NeedItInIl.DomainAdapterBase`2[[AThirdDll.Whatever, AThirdDll, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]," +
                                                                 "[System.Tuple`3[[System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]," +
                                                                 "[System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]," +
                                                                 "[System.Collections.Generic.IEnumerable`1[[MoreBinaries.DomainObject+MyInnerType, MoreBinaries, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]," +
@@ -228,14 +228,14 @@ namespace NoFuture.Tests.Util.NfTypeTests
             Assert.AreEqual("NeedItInIl", testResult);
 
             testResult =
-                NfTypeName.GetNamespaceWithoutTypeName(
+                NfReflect.GetNamespaceWithoutTypeName(
                     "Wanker.DCF.UI.Controller.Operator.OperatorUIController::set_OperatorContacts(Wanker.DCF.DTO.WankerContact)");
 
             System.Diagnostics.Debug.WriteLine(testResult);
             Assert.AreEqual(testResult, "Wanker.DCF.UI.Controller.Operator");
 
             testResult =
-                NfTypeName.GetNamespaceWithoutTypeName(
+                NfReflect.GetNamespaceWithoutTypeName(
                     ".Controller.Operator.OperatorUIController::set_OperatorContacts(Wanker.DCF.DTO.WankerContact)");
 
             System.Diagnostics.Debug.WriteLine(testResult);
@@ -247,31 +247,31 @@ namespace NoFuture.Tests.Util.NfTypeTests
         {
             var testInput = "get_MyProperty";
             string testOutput;
-            var testResult = NfTypeName.IsClrMethodForProperty(testInput, out testOutput);
+            var testResult = NfReflect.IsClrMethodForProperty(testInput, out testOutput);
 
             Assert.IsTrue(testResult);
             Assert.AreEqual("MyProperty",testOutput);
 
             testInput = "set_MyProperty";
-            testResult = NfTypeName.IsClrMethodForProperty(testInput, out testOutput);
+            testResult = NfReflect.IsClrMethodForProperty(testInput, out testOutput);
 
             Assert.IsTrue(testResult);
             Assert.AreEqual("MyProperty", testOutput);
 
             testInput = "add_MyProperty";
-            testResult = NfTypeName.IsClrMethodForProperty(testInput, out testOutput);
+            testResult = NfReflect.IsClrMethodForProperty(testInput, out testOutput);
 
             Assert.IsTrue(testResult);
             Assert.AreEqual("MyProperty", testOutput);
 
             testInput = "remove_MyProperty";
-            testResult = NfTypeName.IsClrMethodForProperty(testInput, out testOutput);
+            testResult = NfReflect.IsClrMethodForProperty(testInput, out testOutput);
 
             Assert.IsTrue(testResult);
             Assert.AreEqual("MyProperty", testOutput);
 
             testInput = "GetMyValues";
-            testResult = NfTypeName.IsClrMethodForProperty(testInput, out testOutput);
+            testResult = NfReflect.IsClrMethodForProperty(testInput, out testOutput);
 
             Assert.IsFalse(testResult);
             Assert.IsNull(testOutput);

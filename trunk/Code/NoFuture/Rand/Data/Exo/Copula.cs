@@ -6,6 +6,7 @@ using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Data.Endo;
 using NoFuture.Rand.Data.Sp;
 using NoFuture.Rand.Gov;
+using NoFuture.Rand.Gov.Fed;
 using NoFuture.Rand.Gov.Irs;
 using NoFuture.Rand.Gov.Sec;
 using NoFuture.Shared.Core;
@@ -17,6 +18,43 @@ namespace NoFuture.Rand.Data.Exo
     /// </summary>
     public static class Copula
     {
+        /// <summary>
+        /// Attempts to get the ABA number based on RSSD 
+        /// </summary>
+        /// <param name="rawHtmlContent"></param>
+        /// <param name="srcUri"></param>
+        /// <param name="firmOut"></param>
+        /// <returns></returns>
+        public static bool TryParseFfiecInstitutionProfileAspxHtml(string rawHtmlContent, Uri srcUri, ref Bank firmOut)
+        {
+            if (string.IsNullOrWhiteSpace(rawHtmlContent))
+                return false;
+            if (firmOut == null)
+                return false;
+
+            var myDynData = DynamicDataFactory.GetDataParser(srcUri);
+            var myDynDataRslt = myDynData.ParseContent(rawHtmlContent);
+
+            if (myDynDataRslt == null || !myDynDataRslt.Any())
+                return false;
+
+            var pd = myDynDataRslt.First();
+
+            firmOut.RoutingNumber = new RoutingTransitNumber
+            {
+                Value = pd.RoutingNumber,
+                Src = myDynData.SourceUri.ToString()
+            };
+            if (string.IsNullOrWhiteSpace(firmOut.Rssd?.ToString()))
+                firmOut.Rssd = new ResearchStatisticsSupervisionDiscount { Value = pd.Rssd };
+
+            firmOut.UpsertName(KindsOfNames.Legal, pd.BankName);
+            if (string.IsNullOrWhiteSpace(firmOut.FdicNumber?.ToString()))
+                firmOut.FdicNumber = new FdicNum { Value = pd.FdicCert, Src = myDynData.SourceUri.ToString() };
+
+            return !string.IsNullOrWhiteSpace(pd.RoutingNumber);
+        }
+
         /// <summary>
         /// Parses the web response html content from <see cref="SecForm.HtmlFormLink"/> 
         /// locating the .xml Uri therein.

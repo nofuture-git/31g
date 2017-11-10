@@ -95,7 +95,6 @@
     <Reference Include="System.Management" />
     <Reference Include="System.Web" />
     <Reference Include="System.XML" />
-    <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Binary\Asm.cs" />
