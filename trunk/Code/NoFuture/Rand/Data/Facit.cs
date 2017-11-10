@@ -4,9 +4,6 @@ using System.Linq;
 using System.Text;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
-using NoFuture.Rand.Data.Types;
-using NoFuture.Rand.Gov.Fed;
-using NoFuture.Rand.Gov.Sec;
 using NoFuture.Util.Core;
 
 namespace NoFuture.Rand.Data
