@@ -26,7 +26,7 @@ namespace NoFuture.Tests.Util.NfTypeTests
             };
 
             var testOutput = new Entity();
-            var testResult = NoFuture.Util.NfType.MeasurePropertyDistance.TryAssignValueTypeProperties(testInput, testOutput, null);
+            var testResult = NfReflect.TryAssignValueTypeProperties(testInput, testOutput, null);
             System.Diagnostics.Debug.WriteLine(testResult);
 
             Assert.IsNotNull(testOutput.Gender);
@@ -49,7 +49,7 @@ namespace NoFuture.Tests.Util.NfTypeTests
             Assert.IsNotNull(testOutput.Contact);
             Assert.AreEqual("e.krabs@bikinibottom.net", testOutput.Contact.Email);
 
-            foreach(var l in NoFuture.Util.NfType.MeasurePropertyDistance.GetAssignPropertiesData("\t"))
+            foreach(var l in NfReflect.GetAssignPropertiesData("\t"))
                 System.Diagnostics.Debug.WriteLine(l);
 
         }
@@ -60,10 +60,10 @@ namespace NoFuture.Tests.Util.NfTypeTests
             var testInput = new TestDtoLikeType();
             var testOutput = new Entity();
 
-            var testResult = NoFuture.Util.NfType.MeasurePropertyDistance.TryAssignProperties(testInput, testOutput);
+            var testResult = NfReflect.TryAssignProperties(testInput, testOutput);
             Assert.AreNotEqual(0,testResult);
             System.Diagnostics.Debug.WriteLine(testResult);
-            foreach (var l in NoFuture.Util.NfType.MeasurePropertyDistance.GetAssignPropertiesData())
+            foreach (var l in NfReflect.GetAssignPropertiesData())
                 System.Diagnostics.Debug.WriteLine(l);
 
         }
@@ -81,10 +81,10 @@ namespace NoFuture.Tests.Util.NfTypeTests
                 Contact = new Contact { Email = "e.krabs@bikinibottom.net" },
                 Id = 0
             };
-            var testResult = NoFuture.Util.NfType.MeasurePropertyDistance.TryAssignProperties(testInput, testOutput);
+            var testResult = NfReflect.TryAssignProperties(testInput, testOutput);
             System.Diagnostics.Debug.WriteLine(testResult);
 
-            foreach (var l in NoFuture.Util.NfType.MeasurePropertyDistance.GetAssignPropertiesData())
+            foreach (var l in NfReflect.GetAssignPropertiesData())
                 System.Diagnostics.Debug.WriteLine(l);
         }
 

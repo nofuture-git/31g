@@ -61,7 +61,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="LoremIpsum.EightParagraphs.txt" />
+    <EmbeddedResource Include="Properties\LoremIpsum.EightParagraphs.txt" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Shared\Core\Shared.Core.csproj">

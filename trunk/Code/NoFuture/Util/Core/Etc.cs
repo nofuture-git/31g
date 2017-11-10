@@ -111,7 +111,7 @@ namespace NoFuture.Util.Core
             return (d.Year + (d.DayOfYear / Constants.DBL_TROPICAL_YEAR));
         }
 
-        private const string LOREM_IPSUM_RSC = "NoFuture.Util.Core.LoremIpsum.EightParagraphs.txt";
+        private const string LOREM_IPSUM_RSC = "NoFuture.Util.Core.Properties.LoremIpsum.EightParagraphs.txt";
 
         /// <summary>
         /// Utility function to get eight paragraphs of classic filler text.
