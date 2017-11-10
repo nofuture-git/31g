@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using NoFuture.Rand.Com;
 
-namespace NoFuture.Rand.Com.NfHtml
+namespace NoFuture.Rand.Data.Exo.NfHtml
 {
     public class BloombergSymbolSearch : NfHtmlDynDataBase
     {

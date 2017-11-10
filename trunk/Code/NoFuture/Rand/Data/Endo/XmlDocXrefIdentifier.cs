@@ -2,7 +2,7 @@
 using System.Xml;
 using NoFuture.Rand.Core;
 
-namespace NoFuture.Rand.Data.Types
+namespace NoFuture.Rand.Data.Endo
 {
     /// <summary>
     /// Type coupled to XML's ID attribute

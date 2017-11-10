@@ -7,13 +7,13 @@ using System.Xml;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Domus;
+using NoFuture.Rand.Edu;
 using NoFuture.Rand.Gov;
 using NoFuture.Rand.Gov.Census;
-using NoFuture.Rand.Edu;
 using NoFuture.Util.Core;
 using NoFuture.Util.Core.Math;
 
-namespace NoFuture.Rand.Data.Types
+namespace NoFuture.Rand.Data.Endo
 {
     [Serializable]
     public abstract class CityArea : ICited

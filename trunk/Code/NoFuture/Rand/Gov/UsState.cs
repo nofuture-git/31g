@@ -5,7 +5,7 @@ using System.Text;
 using System.Xml;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Data;
-using NoFuture.Rand.Data.Types;
+using NoFuture.Rand.Data.Endo;
 using NoFuture.Rand.Edu;
 using NoFuture.Util.Core;
 

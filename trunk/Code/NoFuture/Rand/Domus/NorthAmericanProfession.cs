@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NoFuture.Rand.Com;
 using NoFuture.Rand.Core;
-using NoFuture.Rand.Data.Types;
+using NoFuture.Rand.Data.Endo;
 
 namespace NoFuture.Rand.Domus
 {

@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using NoFuture.Rand.Com;
 using NoFuture.Rand.Core.Enums;
+using NoFuture.Rand.Data.Endo;
 using NoFuture.Rand.Data.Source;
 using NoFuture.Rand.Data.Sp;
-using NoFuture.Rand.Data.Types;
 using NoFuture.Rand.Gov.Fed;
 using NoFuture.Shared.Core;
 
-namespace NoFuture.Rand.Com.NfText
+namespace NoFuture.Rand.Data.Exo.NfText
 {
     public class FedLrgBnk : NfDynDataBase
     {

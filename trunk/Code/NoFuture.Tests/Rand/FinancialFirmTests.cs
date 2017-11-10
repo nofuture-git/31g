@@ -2,7 +2,8 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using NoFuture.Rand.Core.Enums;
-using NoFuture.Rand.Data.Types;
+using NoFuture.Rand.Data.Endo;
+using NoFuture.Rand.Data.Exo.NfText;
 
 namespace NoFuture.Tests.Rand
 {
@@ -12,7 +13,7 @@ namespace NoFuture.Tests.Rand
         [TestMethod]
         public void TestCommercialBankData()
         {
-            var testResults = NoFuture.Rand.Com.NfText.FedLrgBnk.CommercialBankData;
+            var testResults = FedLrgBnk.CommercialBankData;
             Assert.IsNotNull(testResults);
             Assert.AreNotEqual(0, testResults);
 

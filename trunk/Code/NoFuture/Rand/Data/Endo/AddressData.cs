@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace NoFuture.Rand.Data.Types
+namespace NoFuture.Rand.Data.Endo
 {
     [Serializable]
     public class AddressData

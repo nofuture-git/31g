@@ -3,7 +3,7 @@ using System.Globalization;
 using System.Text.RegularExpressions;
 using NoFuture.Rand.Core;
 
-namespace NoFuture.Rand.Data.Types
+namespace NoFuture.Rand.Data.Endo
 {
     [Serializable]
     public abstract class StreetPo : ICited

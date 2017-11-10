@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NoFuture.Rand.Data.Endo;
 
 namespace NoFuture.Tests.Rand
 {
@@ -10,7 +11,7 @@ namespace NoFuture.Tests.Rand
         [TestMethod]
         public void TestRandomSic()
         {
-            var testResult = NoFuture.Rand.Data.Types.StandardIndustryClassification.RandomSic();
+            var testResult = StandardIndustryClassification.RandomSic();
             Assert.IsNotNull(testResult);
             System.Diagnostics.Debug.WriteLine(testResult.Value);
         }

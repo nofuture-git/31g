@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NoFuture.Rand.Com.NfHtml;
+using NoFuture.Rand.Data.Exo.NfHtml;
 
 namespace NoFuture.Tests.Rand.NfHtmlTests
 {

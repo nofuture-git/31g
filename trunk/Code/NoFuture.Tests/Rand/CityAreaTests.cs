@@ -1,8 +1,8 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NoFuture.Rand;
-using NoFuture.Rand.Data.Types;
 using System.IO;
+using NoFuture.Rand.Data.Endo;
 
 namespace NoFuture.Tests.Rand
 {

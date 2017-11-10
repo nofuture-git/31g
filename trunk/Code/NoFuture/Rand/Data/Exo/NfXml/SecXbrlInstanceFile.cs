@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Xml;
-using NoFuture.Rand.Data.Types;
+using NoFuture.Rand.Com;
 using NoFuture.Rand.Gov.Sec;
 using NoFuture.Shared.Core;
 
-namespace NoFuture.Rand.Com.NfXml
+namespace NoFuture.Rand.Data.Exo.NfXml
 {
     public class SecXbrlInstanceFile : NfDynDataBase
     {

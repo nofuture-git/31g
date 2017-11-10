@@ -4,6 +4,7 @@ using NoFuture.Rand.Com;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Data;
+using NoFuture.Rand.Data.Exo;
 
 namespace NoFuture.Rand.Gov.Fed
 {

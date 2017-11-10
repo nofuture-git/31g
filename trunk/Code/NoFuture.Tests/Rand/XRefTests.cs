@@ -4,6 +4,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NoFuture.Rand;
 using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Data;
+using NoFuture.Rand.Data.Endo;
+using NoFuture.Rand.Data.Exo.NfText;
 using NoFuture.Rand.Gov.Fed;
 using NoFuture.Util.Core;
 
@@ -16,7 +18,7 @@ namespace NoFuture.Tests.Rand
         [TestMethod]
         public void TestXref()
         {
-            var testResults = NoFuture.Rand.Data.Types.XRefGroup.AllXrefGroups;
+            var testResults = XRefGroup.AllXrefGroups;
             Assert.IsNotNull(testResults);
 
             Assert.AreNotEqual(0, testResults.Length);
@@ -43,7 +45,7 @@ namespace NoFuture.Tests.Rand
         [TestMethod]
         public void TestXrefOnTypes()
         {
-            var testInput = NoFuture.Rand.Com.NfText.FedLrgBnk.CommercialBankData;
+            var testInput = FedLrgBnk.CommercialBankData;
             Assert.AreNotEqual(0, testInput.Length);
 
             var testTarget = testInput.FirstOrDefault(x => x.GetName(KindsOfNames.Abbrev) == "JPMORGAN CHASE BK NA");
@@ -87,12 +89,12 @@ namespace NoFuture.Tests.Rand
         {
             var testXrefId = new Tuple<Type, string>(typeof(NoFuture.Rand.Com.Bank), "BANK OF AMER NA");
             var testValues = new RoutingTransitNumber {Value = "000015421"};
-            var testResult = NoFuture.Rand.Data.Types.XRefGroup.AddXrefValues(testXrefId,testValues, "RoutingNumber");
+            var testResult = XRefGroup.AddXrefValues(testXrefId,testValues, "RoutingNumber");
             Assert.IsTrue(testResult);
 
             testXrefId = new Tuple<Type, string>(typeof(NoFuture.Rand.Com.Bank), "A new bank entry");
             testValues = new RoutingTransitNumber { Value = "787454541" };
-            testResult = NoFuture.Rand.Data.Types.XRefGroup.AddXrefValues(testXrefId, testValues, "RoutingNumber");
+            testResult = XRefGroup.AddXrefValues(testXrefId, testValues, "RoutingNumber");
             Assert.IsTrue(testResult);
 
             NfPath.SaveXml(TreeData.XRefXml,

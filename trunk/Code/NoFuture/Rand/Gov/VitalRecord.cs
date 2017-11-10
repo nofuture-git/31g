@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using NoFuture.Rand.Core;
-using NoFuture.Rand.Data.Types;
+using NoFuture.Rand.Data.Endo;
 using NoFuture.Rand.Domus;
 
 namespace NoFuture.Rand.Gov

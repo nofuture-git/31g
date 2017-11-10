@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Xml;
 using NoFuture.Rand.Core.Enums;
+using NoFuture.Rand.Data.Endo;
 using NoFuture.Rand.Data.Sp;
-using NoFuture.Rand.Data.Types;
 using NoFuture.Rand.Gov.Irs;
 using NoFuture.Rand.Gov.Sec;
 using NoFuture.Rand.Gov;

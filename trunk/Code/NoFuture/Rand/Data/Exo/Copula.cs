@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using NoFuture.Rand.Com;
 using NoFuture.Rand.Core.Enums;
+using NoFuture.Rand.Data.Endo;
 using NoFuture.Rand.Data.Sp;
-using NoFuture.Rand.Data.Types;
 using NoFuture.Rand.Gov;
 using NoFuture.Rand.Gov.Irs;
 using NoFuture.Rand.Gov.Sec;
 using NoFuture.Shared.Core;
 
-namespace NoFuture.Rand.Com
+namespace NoFuture.Rand.Data.Exo
 {
     /// <summary>
     /// Joins dynamic data from source to the Nf Rand type

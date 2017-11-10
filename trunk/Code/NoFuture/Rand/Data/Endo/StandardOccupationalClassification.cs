@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Xml;
 
-namespace NoFuture.Rand.Data.Types
+namespace NoFuture.Rand.Data.Endo
 {
     /// <summary>
     /// The 2010 Standard Occupational Classification (SOC) system is used by 

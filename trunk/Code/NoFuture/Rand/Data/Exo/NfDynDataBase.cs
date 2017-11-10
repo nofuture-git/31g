@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace NoFuture.Rand.Data.Types
+namespace NoFuture.Rand.Data.Exo
 {
     public abstract class NfDynDataBase: INfDynData
     {

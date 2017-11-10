@@ -6,7 +6,7 @@ using System.Text;
 using System.Xml;
 using NoFuture.Rand.Core;
 
-namespace NoFuture.Rand.Data.Types
+namespace NoFuture.Rand.Data.Endo
 {
     [Serializable]
     public abstract class Phone : Identifier

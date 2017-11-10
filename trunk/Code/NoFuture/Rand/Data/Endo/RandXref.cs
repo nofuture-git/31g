@@ -7,7 +7,7 @@ using NoFuture.Rand.Core;
 using NoFuture.Shared.Core;
 using NoFuture.Util.NfType;
 
-namespace NoFuture.Rand.Data.Types
+namespace NoFuture.Rand.Data.Endo
 {
     [Serializable]
     public class XRefGroup : XmlDocXrefIdentifier

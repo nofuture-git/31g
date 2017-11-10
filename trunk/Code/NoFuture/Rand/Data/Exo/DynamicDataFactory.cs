@@ -1,12 +1,11 @@
 ﻿using System;
-using NoFuture.Rand.Com.NfHtml;
-using NoFuture.Rand.Com.NfText;
-using NoFuture.Rand.Com.NfXml;
-using NoFuture.Rand.Data.Types;
+using NoFuture.Rand.Data.Exo.NfHtml;
+using NoFuture.Rand.Data.Exo.NfText;
+using NoFuture.Rand.Data.Exo.NfXml;
 using NoFuture.Rand.Gov.Fed;
 using NoFuture.Rand.Gov.Sec;
 
-namespace NoFuture.Rand.Com
+namespace NoFuture.Rand.Data.Exo
 {
     public static class DynamicDataFactory
     {

@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using iTextSharp.text.pdf;
 using iTextSharp.text.pdf.parser;
-using NoFuture.Rand.Data.Types;
 using NoFuture.Shared.Core;
 
-namespace NoFuture.Rand.Com.NfPdf
+namespace NoFuture.Rand.Data.Exo.NfPdf
 {
     public class Sec13FCuispList : NfDynDataBase
     {

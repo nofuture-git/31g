@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NoFuture.Rand.Com.NfPdf;
+using NoFuture.Rand.Data.Exo.NfPdf;
 
 namespace NoFuture.Tests.Rand.NfPdfTests
 {

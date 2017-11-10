@@ -1,7 +1,7 @@
 ﻿using System;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
-using NoFuture.Rand.Data.Types;
+using NoFuture.Rand.Data.Endo;
 
 namespace NoFuture.Rand.Com
 {

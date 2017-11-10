@@ -6,7 +6,7 @@ using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Gov;
 using NoFuture.Util.Core.Math;
 
-namespace NoFuture.Rand.Data.Types
+namespace NoFuture.Rand.Data.Endo
 {
     [Serializable]
     public class UsStateData

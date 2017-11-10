@@ -4,7 +4,7 @@ using System.Linq;
 using System.Xml;
 using NoFuture.Rand.Core;
 
-namespace NoFuture.Rand.Data.Types
+namespace NoFuture.Rand.Data.Endo
 {
     /// <summary>
     /// This is an older economic grouping model which is still in use by the SEC.

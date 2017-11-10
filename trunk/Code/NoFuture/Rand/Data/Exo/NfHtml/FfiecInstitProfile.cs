@@ -4,7 +4,7 @@ using System.Linq;
 using NoFuture.Rand.Gov.Fed;
 using NoFuture.Shared.Core;
 
-namespace NoFuture.Rand.Com.NfHtml
+namespace NoFuture.Rand.Data.Exo.NfHtml
 {
     public class FfiecInstitProfile : NfHtmlDynDataBase
     {

@@ -7,7 +7,7 @@ using System.Text.RegularExpressions;
 using NoFuture.Tokens;
 using NoFuture.Tokens.ParseResults;
 
-namespace NoFuture.Rand.Com.NfHtml
+namespace NoFuture.Rand.Data.Exo.NfHtml
 {
     /// <summary>
     /// The uri to an individual XBRL xml file is embedded inside the
