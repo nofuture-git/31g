@@ -46,7 +46,7 @@ namespace NoFuture.Rand.Data.Exo
             {
                 return new FedLrgBnk();
             }
-            if (uri.Host == new Uri(Ffiec.SEARCH_URL_BASE).Host)
+            if (uri.Host == new Uri(UsGov.Links.Ffiec.SEARCH_URL_BASE).Host)
             {
                 return new FfiecInstitProfile(uri);
             }

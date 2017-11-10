@@ -36,7 +36,7 @@ namespace NoFuture.Tests.Rand
             var testContent = System.IO.File.ReadAllText(TestAssembly.UnitTestsRoot + @"\Rand\ffiecHtml.html");
 
             Bank firmOut = new Bank();
-            var testResult = Copula.TryParseFfiecInstitutionProfileAspxHtml(testContent, new Uri(Ffiec.SEARCH_URL_BASE), 
+            var testResult = Copula.TryParseFfiecInstitutionProfileAspxHtml(testContent, new Uri(NoFuture.Rand.Data.Exo.UsGov.Links.Ffiec.SEARCH_URL_BASE), 
                 ref firmOut);
             System.Diagnostics.Debug.WriteLine(firmOut.RoutingNumber);
             Assert.IsTrue(testResult);

@@ -1,0 +1,145 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{5B142ECB-4A49-427A-8086-B4E9C717D651}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>NoFuture.Rand.Data.Exo</RootNamespace>
+    <AssemblyName>NoFuture.Rand.Data.Exo</AssemblyName>
+    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Antlr4.Runtime, Version=4.6.0.0, Culture=neutral, PublicKeyToken=09abb75b9ed49849, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\packages\Antlr4.Runtime.4.6.4\lib\net45\Antlr4.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="HtmlAgilityPack, Version=2.0.20.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\packages\HtmlAgilityPack.Net45.2.0.20\lib\net45\HtmlAgilityPack.dll</HintPath>
+    </Reference>
+    <Reference Include="itextsharp, Version=5.5.12.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\packages\iTextSharp.5.5.12\lib\itextsharp.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Copula.cs" />
+    <Compile Include="DynamicDataFactory.cs" />
+    <Compile Include="UsGov\Bea\BeaDataset.cs" />
+    <Compile Include="UsGov\Bea\Globals.cs" />
+    <Compile Include="UsGov\Bea\IBeaData.cs" />
+    <Compile Include="UsGov\Bea\Links.cs" />
+    <Compile Include="UsGov\Bea\Parameters\GDPbyIndustry\Industry.cs" />
+    <Compile Include="UsGov\Bea\Parameters\GDPbyIndustry\TableID.cs" />
+    <Compile Include="UsGov\Bea\Parameters\Iip\Component.cs" />
+    <Compile Include="UsGov\Bea\Parameters\Iip\TypeOfInvestment.cs" />
+    <Compile Include="UsGov\Bea\Parameters\Ita\AreaOrCountry.cs" />
+    <Compile Include="UsGov\Bea\Parameters\Ita\Indicator.cs" />
+    <Compile Include="UsGov\Bea\Parameters\Nipa\TableID.cs" />
+    <Compile Include="UsGov\Bea\Parameters\NIUnderlyingDetail\TableID.cs" />
+    <Compile Include="UsGov\Bea\Parameters\RegionalData\GeoFips.cs" />
+    <Compile Include="UsGov\Bea\Parameters\RegionalData\KeyCode.cs" />
+    <Compile Include="UsGov\Bls\Codes\CeDatatype.cs" />
+    <Compile Include="UsGov\Bls\Codes\CeIndustry.cs" />
+    <Compile Include="UsGov\Bls\Codes\CeSupersector.cs" />
+    <Compile Include="UsGov\Bls\Codes\CuArea.cs" />
+    <Compile Include="UsGov\Bls\Codes\CuItem.cs" />
+    <Compile Include="UsGov\Bls\Codes\EcCompensation.cs" />
+    <Compile Include="UsGov\Bls\Codes\EcGroup.cs" />
+    <Compile Include="UsGov\Bls\Codes\EcOwnership.cs" />
+    <Compile Include="UsGov\Bls\Codes\EcPeriod.cs" />
+    <Compile Include="UsGov\Bls\Codes\IpDuration.cs" />
+    <Compile Include="UsGov\Bls\Codes\IpIndustry.cs" />
+    <Compile Include="UsGov\Bls\Codes\IpMeasure.cs" />
+    <Compile Include="UsGov\Bls\Codes\IpSector.cs" />
+    <Compile Include="UsGov\Bls\Codes\WpGroup.cs" />
+    <Compile Include="UsGov\Bls\Codes\WpItem.cs" />
+    <Compile Include="UsGov\Bls\Globals.cs" />
+    <Compile Include="UsGov\Bls\ISeries.cs" />
+    <Compile Include="UsGov\Bls\Series.cs" />
+    <Compile Include="UsGov\Links.cs" />
+    <Compile Include="INfDynData.cs" />
+    <Compile Include="NfDynDataBase.cs" />
+    <Compile Include="NfHtml\BloombergSymbolSearch.cs" />
+    <Compile Include="NfHtml\FfiecInstitProfile.cs" />
+    <Compile Include="NfHtml\FidelitySymbolSearch.cs" />
+    <Compile Include="NfHtml\NfHtmlDynDataBase.cs" />
+    <Compile Include="NfHtml\SecGetXbrlUri.cs" />
+    <Compile Include="NfHtml\WikipediaInsCom.cs" />
+    <Compile Include="NfHttp\YhooFinSymbolLookup.cs" />
+    <Compile Include="NfPdf\Sec13fCuispList.cs" />
+    <Compile Include="NfText\FedLrgBnk.cs" />
+    <Compile Include="NfXml\Edgar.cs" />
+    <Compile Include="NfXml\SecCikSearch.cs" />
+    <Compile Include="NfXml\SecForm13fInfoTable.cs" />
+    <Compile Include="NfXml\SecFullTxtSearch.cs" />
+    <Compile Include="NfXml\SecXbrlInstanceFile.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+    <None Include="UsGov\Bea\bea_web_service_api_user_guide.pdf" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Antlr\Antlr.csproj">
+      <Project>{ecc8c5b3-a36f-40d5-9ddf-7a286b92c998}</Project>
+      <Name>Antlr</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Shared\Core\Shared.Core.csproj">
+      <Project>{6eca48dc-fdb4-4660-9914-3b74d5975ff9}</Project>
+      <Name>Shared.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Tokens\Tokens.csproj">
+      <Project>{4e81340f-409b-4ada-b038-bf3f76ffa81e}</Project>
+      <Name>Tokens</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Util\Core\Util.Core.csproj">
+      <Project>{349a1c91-ca14-4d04-946d-8b257a863ce0}</Project>
+      <Name>Util.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Core\Rand.Core.csproj">
+      <Project>{3c5df49d-ae94-431c-85a5-7f5b71ac777f}</Project>
+      <Name>Rand.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Rand.csproj">
+      <Project>{71628e18-d27b-4f4e-b034-4b2ad4479e13}</Project>
+      <Name>Rand</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Source\Rand.Data.Source.csproj">
+      <Project>{4e011849-d274-4f79-96af-549f67c46d80}</Project>
+      <Name>Rand.Data.Source</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

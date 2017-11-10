@@ -19,7 +19,7 @@ namespace NoFuture.Rand.Data.Exo.NfHtml
         /// <returns></returns>
         public static Uri GetUri(ResearchStatisticsSupervisionDiscount rssd)
         {
-            return new Uri(Ffiec.SEARCH_URL_BASE + "InstitutionProfile.aspx?parID_Rssd=" + rssd + "&parDT_END=99991231");
+            return new Uri(UsGov.Links.Ffiec.SEARCH_URL_BASE + "InstitutionProfile.aspx?parID_Rssd=" + rssd + "&parDT_END=99991231");
         }
 
         public override IEnumerable<dynamic> ParseContent(object content)

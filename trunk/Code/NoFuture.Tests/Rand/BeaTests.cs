@@ -10,7 +10,7 @@ namespace NoFuture.Tests.Rand
         [TestMethod]
         public void TestBeaParameterToString()
         {
-            var testSubject = NoFuture.Rand.Gov.Bea.Parameters.RegionalData.GeoFips.Values.FirstOrDefault(gf => gf.Val == "STATE");
+            var testSubject = NoFuture.Rand.Data.Exo.UsGov.Bea.Parameters.RegionalData.GeoFips.Values.FirstOrDefault(gf => gf.Val == "STATE");
             Assert.IsNotNull(testSubject);
            
             System.Diagnostics.Debug.WriteLine(testSubject.ToString());
