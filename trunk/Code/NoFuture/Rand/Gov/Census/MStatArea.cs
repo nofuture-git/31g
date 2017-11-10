@@ -10,10 +10,4 @@ namespace NoFuture.Rand.Gov.Census
         public override string Abbrev => "MSA";
         public UrbanCentric MsaType { get; set; }
     }
-
-    [Serializable]
-    public class ComboMStatArea : MStatArea
-    {
-        public override string Abbrev => "CBSA";
-    }
 }

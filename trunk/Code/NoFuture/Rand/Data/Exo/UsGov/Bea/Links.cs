@@ -27,10 +27,7 @@ namespace NoFuture.Rand.Data.Exo.UsGov.Bea
                 $"{BeaStdUri}&method=GetData&datasetname=RegionalData&KeyCode=PJEARN_CI&Year=ALL&GeoFips={geo}&ResultFormat=json";
         }
 
-        public static string BeaGetDatasetListUri
-        {
-            get { return string.Format("{0}method=GETDATASETLIST&", BeaStdUri); }
-        }
+        public static string BeaGetDatasetListUri => $"{BeaStdUri}method=GETDATASETLIST&";
 
         public static string GetBeaParameterListUri(string dataSetName)
         {

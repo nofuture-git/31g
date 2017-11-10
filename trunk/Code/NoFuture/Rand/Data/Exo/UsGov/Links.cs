@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NoFuture.Rand.Data.Exo.UsGov
 {
@@ -44,6 +40,12 @@ namespace NoFuture.Rand.Data.Exo.UsGov
         public class Ffiec
         {
             public const string SEARCH_URL_BASE = "https://www.ffiec.gov/nicpubweb/nicweb/";
+        }
+
+        public static class FederalReserve
+        {
+            public const string MACRO_ECON_DATA =
+                "https://www.federalreserve.gov/econresdata/frbus/files/data_only_package.zip";
         }
     }
 }

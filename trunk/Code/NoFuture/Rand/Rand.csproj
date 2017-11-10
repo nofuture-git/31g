@@ -54,6 +54,25 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Gov\Census\ComboMStatArea.cs" />
+    <Compile Include="Gov\Census\MStatArea.cs" />
+    <Compile Include="Gov\Fed\FdicNum.cs" />
+    <Compile Include="Gov\Fed\ResearchStatisticsSupervisionDiscount.cs" />
+    <Compile Include="Gov\Fed\RiskFreeInterestRate.cs" />
+    <Compile Include="Gov\Fed\RoutingTransitNumber.cs" />
+    <Compile Include="Gov\Irs\EmployerIdentificationNumber.cs" />
+    <Compile Include="Gov\Irs\IndividualTaxId.cs" />
+    <Compile Include="Gov\Irs\PreparerTaxIdNumber.cs" />
+    <Compile Include="Gov\Irs\TaxpayerIdentificationNumber.cs" />
+    <Compile Include="Gov\Nhtsa\VehicleDescription.cs" />
+    <Compile Include="Gov\Nhtsa\VehicleIdSection.cs" />
+    <Compile Include="Gov\Nhtsa\Vin.cs" />
+    <Compile Include="Gov\Nhtsa\VinPositionAttribute.cs" />
+    <Compile Include="Gov\Nhtsa\WorldManufacturerId.cs" />
+    <Compile Include="Gov\Sec\CentralIndexKey.cs" />
+    <Compile Include="Gov\Sec\Form10K.cs" />
+    <Compile Include="Gov\Sec\Form13Fhr.cs" />
+    <Compile Include="Gov\Sec\SecForm.cs" />
     <Compile Include="Gov\TheStates\Alabama.cs" />
     <Compile Include="Gov\TheStates\Alaska.cs" />
     <Compile Include="Gov\AmericanBirthCert.cs" />
@@ -112,7 +131,6 @@
     <Compile Include="Gov\TheStates\Arkansas.cs" />
     <Compile Include="Gov\BirthCert.cs" />
     <Compile Include="Gov\TheStates\California.cs" />
-    <Compile Include="Gov\Census\Identifier.cs" />
     <Compile Include="Gov\TheStates\Colorado.cs" />
     <Compile Include="Gov\TheStates\Connecticut.cs" />
     <Compile Include="Gov\DeathCert.cs" />
@@ -145,7 +163,6 @@
     <Compile Include="Gov\TheStates\NewJersey.cs" />
     <Compile Include="Gov\TheStates\NewMexico.cs" />
     <Compile Include="Gov\TheStates\NewYork.cs" />
-    <Compile Include="Gov\Nhtsa\Identifier.cs" />
     <Compile Include="Gov\TheStates\NorthCarolina.cs" />
     <Compile Include="Gov\TheStates\NorthDakota.cs" />
     <Compile Include="Gov\TheStates\Ohio.cs" />
@@ -166,9 +183,6 @@
     <Compile Include="Edu\AmericanHighSchool.cs" />
     <Compile Include="Edu\AmericanUniversity.cs" />
     <Compile Include="Gov\DriversLicense.cs" />
-    <Compile Include="Gov\Fed\Identifier.cs" />
-    <Compile Include="Gov\Irs\Identifier.cs" />
-    <Compile Include="Gov\Sec\Identifier.cs" />
     <Compile Include="Gov\SocialSecurityNumber.cs" />
     <Compile Include="Gov\UsState.cs" />
     <Compile Include="Domus\Person.cs" />
