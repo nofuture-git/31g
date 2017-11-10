@@ -4282,6 +4282,71 @@
               <zip-stat value="19955" percent-of-population="0.000198" has-high-school="False" />
             </zip-code>
           </state>
+          <state name="District Of Columbia">
+            <zip-code prefix="200">
+              <zip-stat value="20011" percent-of-population="0.097615" has-high-school="True" />
+              <zip-stat value="20019" percent-of-population="0.090648" has-high-school="True" />
+              <zip-stat value="20002" percent-of-population="0.087333" has-high-school="True" />
+              <zip-stat value="20020" percent-of-population="0.083154" has-high-school="True" />
+              <zip-stat value="20009" percent-of-population="0.080032" has-high-school="True" />
+              <zip-stat value="20001" percent-of-population="0.064288" has-high-school="True" />
+              <zip-stat value="20032" percent-of-population="0.059455" has-high-school="True" />
+              <zip-stat value="20016" percent-of-population="0.054229" has-high-school="True" />
+              <zip-stat value="20010" percent-of-population="0.050258" has-high-school="True" />
+              <zip-stat value="20008" percent-of-population="0.045901" has-high-school="False" />
+              <zip-stat value="20007" percent-of-population="0.044802" has-high-school="True" />
+              <zip-stat value="20003" percent-of-population="0.044115" has-high-school="True" />
+              <zip-stat value="20017" percent-of-population="0.029575" has-high-school="True" />
+              <zip-stat value="20018" percent-of-population="0.028173" has-high-school="False" />
+              <zip-stat value="20015" percent-of-population="0.025568" has-high-school="False" />
+              <zip-stat value="20037" percent-of-population="0.024417" has-high-school="True" />
+              <zip-stat value="20012" percent-of-population="0.022369" has-high-school="False" />
+              <zip-stat value="20005" percent-of-population="0.021304" has-high-school="False" />
+              <zip-stat value="20024" percent-of-population="0.019194" has-high-school="False" />
+              <zip-stat value="20036" percent-of-population="0.009063" has-high-school="False" />
+              <zip-stat value="20057" percent-of-population="0.006484" has-high-school="False" />
+              <zip-stat value="20006" percent-of-population="0.005381" has-high-school="False" />
+              <zip-stat value="20064" percent-of-population="0.003152" has-high-school="False" />
+              <zip-stat value="20004" percent-of-population="0.002705" has-high-school="True" />
+              <zip-stat value="20052" percent-of-population="0.000784" has-high-school="False" />
+              <zip-stat value="20053" percent-of-population="0" has-high-school="False" />
+              <zip-stat value="20045" percent-of-population="0" has-high-school="False" />
+            </zip-code>
+            <zip-code prefix="202">
+              <zip-stat value="20202" percent-of-population="0.000000" has-high-school="False" />
+              <zip-stat value="20204" percent-of-population="0.000000" has-high-school="False" />
+              <zip-stat value="20228" percent-of-population="0.000000" has-high-school="False" />
+              <zip-stat value="20230" percent-of-population="0.000000" has-high-school="False" />
+              <zip-stat value="20240" percent-of-population="0.000000" has-high-school="False" />
+              <zip-stat value="20245" percent-of-population="0.000000" has-high-school="False" />
+              <zip-stat value="20260" percent-of-population="0.000000" has-high-school="False" />
+            </zip-code>
+            <zip-code prefix="203">
+              <zip-stat value="20317" percent-of-population="0.439416" has-high-school="False" />
+              <zip-stat value="20390" percent-of-population="0.284185" has-high-school="False" />
+              <zip-stat value="20307" percent-of-population="0.171776" has-high-school="False" />
+              <zip-stat value="20373" percent-of-population="0.063747" has-high-school="False" />
+              <zip-stat value="20319" percent-of-population="0.040876" has-high-school="False" />
+            </zip-code>
+            <zip-code prefix="204">
+              <zip-stat value="20405" percent-of-population="0.000000" has-high-school="False" />
+              <zip-stat value="20418" percent-of-population="0.000000" has-high-school="False" />
+              <zip-stat value="20427" percent-of-population="0.000000" has-high-school="False" />
+            </zip-code>
+            <zip-code prefix="205">
+              <zip-stat value="20535" percent-of-population="1" has-high-school="False" />
+              <zip-stat value="20540" percent-of-population="0" has-high-school="False" />
+              <zip-stat value="20551" percent-of-population="0" has-high-school="False" />
+              <zip-stat value="20553" percent-of-population="0" has-high-school="False" />
+              <zip-stat value="20560" percent-of-population="0" has-high-school="False" />
+              <zip-stat value="20565" percent-of-population="0" has-high-school="False" />
+              <zip-stat value="20566" percent-of-population="0" has-high-school="False" />
+              <zip-stat value="20593" percent-of-population="0" has-high-school="False" />
+              <zip-stat value="20506" percent-of-population="0" has-high-school="False" />
+              <zip-stat value="20510" percent-of-population="0" has-high-school="False" />
+              <zip-stat value="20520" percent-of-population="0" has-high-school="False" />
+            </zip-code>
+          </state>          
           <state name="Florida">
             <zip-code prefix="320">
               <zip-stat value="32068" percent-of-population="0.103675" has-high-school="True" />
@@ -29023,71 +29088,6 @@
               <zip-stat value="99403" percent-of-population="0.900661" has-high-school="True" />
               <zip-stat value="99402" percent-of-population="0.086713" has-high-school="True" />
               <zip-stat value="99401" percent-of-population="0.012625" has-high-school="False" />
-            </zip-code>
-          </state>
-          <state name="Washington, D.C.">
-            <zip-code prefix="200">
-              <zip-stat value="20011" percent-of-population="0.097615" has-high-school="True" />
-              <zip-stat value="20019" percent-of-population="0.090648" has-high-school="True" />
-              <zip-stat value="20002" percent-of-population="0.087333" has-high-school="True" />
-              <zip-stat value="20020" percent-of-population="0.083154" has-high-school="True" />
-              <zip-stat value="20009" percent-of-population="0.080032" has-high-school="True" />
-              <zip-stat value="20001" percent-of-population="0.064288" has-high-school="True" />
-              <zip-stat value="20032" percent-of-population="0.059455" has-high-school="True" />
-              <zip-stat value="20016" percent-of-population="0.054229" has-high-school="True" />
-              <zip-stat value="20010" percent-of-population="0.050258" has-high-school="True" />
-              <zip-stat value="20008" percent-of-population="0.045901" has-high-school="False" />
-              <zip-stat value="20007" percent-of-population="0.044802" has-high-school="True" />
-              <zip-stat value="20003" percent-of-population="0.044115" has-high-school="True" />
-              <zip-stat value="20017" percent-of-population="0.029575" has-high-school="True" />
-              <zip-stat value="20018" percent-of-population="0.028173" has-high-school="False" />
-              <zip-stat value="20015" percent-of-population="0.025568" has-high-school="False" />
-              <zip-stat value="20037" percent-of-population="0.024417" has-high-school="True" />
-              <zip-stat value="20012" percent-of-population="0.022369" has-high-school="False" />
-              <zip-stat value="20005" percent-of-population="0.021304" has-high-school="False" />
-              <zip-stat value="20024" percent-of-population="0.019194" has-high-school="False" />
-              <zip-stat value="20036" percent-of-population="0.009063" has-high-school="False" />
-              <zip-stat value="20057" percent-of-population="0.006484" has-high-school="False" />
-              <zip-stat value="20006" percent-of-population="0.005381" has-high-school="False" />
-              <zip-stat value="20064" percent-of-population="0.003152" has-high-school="False" />
-              <zip-stat value="20004" percent-of-population="0.002705" has-high-school="True" />
-              <zip-stat value="20052" percent-of-population="0.000784" has-high-school="False" />
-              <zip-stat value="20053" percent-of-population="0" has-high-school="False" />
-              <zip-stat value="20045" percent-of-population="0" has-high-school="False" />
-            </zip-code>
-            <zip-code prefix="202">
-              <zip-stat value="20202" percent-of-population="0.000000" has-high-school="False" />
-              <zip-stat value="20204" percent-of-population="0.000000" has-high-school="False" />
-              <zip-stat value="20228" percent-of-population="0.000000" has-high-school="False" />
-              <zip-stat value="20230" percent-of-population="0.000000" has-high-school="False" />
-              <zip-stat value="20240" percent-of-population="0.000000" has-high-school="False" />
-              <zip-stat value="20245" percent-of-population="0.000000" has-high-school="False" />
-              <zip-stat value="20260" percent-of-population="0.000000" has-high-school="False" />
-            </zip-code>
-            <zip-code prefix="203">
-              <zip-stat value="20317" percent-of-population="0.439416" has-high-school="False" />
-              <zip-stat value="20390" percent-of-population="0.284185" has-high-school="False" />
-              <zip-stat value="20307" percent-of-population="0.171776" has-high-school="False" />
-              <zip-stat value="20373" percent-of-population="0.063747" has-high-school="False" />
-              <zip-stat value="20319" percent-of-population="0.040876" has-high-school="False" />
-            </zip-code>
-            <zip-code prefix="204">
-              <zip-stat value="20405" percent-of-population="0.000000" has-high-school="False" />
-              <zip-stat value="20418" percent-of-population="0.000000" has-high-school="False" />
-              <zip-stat value="20427" percent-of-population="0.000000" has-high-school="False" />
-            </zip-code>
-            <zip-code prefix="205">
-              <zip-stat value="20535" percent-of-population="1" has-high-school="False" />
-              <zip-stat value="20540" percent-of-population="0" has-high-school="False" />
-              <zip-stat value="20551" percent-of-population="0" has-high-school="False" />
-              <zip-stat value="20553" percent-of-population="0" has-high-school="False" />
-              <zip-stat value="20560" percent-of-population="0" has-high-school="False" />
-              <zip-stat value="20565" percent-of-population="0" has-high-school="False" />
-              <zip-stat value="20566" percent-of-population="0" has-high-school="False" />
-              <zip-stat value="20593" percent-of-population="0" has-high-school="False" />
-              <zip-stat value="20506" percent-of-population="0" has-high-school="False" />
-              <zip-stat value="20510" percent-of-population="0" has-high-school="False" />
-              <zip-stat value="20520" percent-of-population="0" has-high-school="False" />
             </zip-code>
           </state>
           <state name="West Virginia">

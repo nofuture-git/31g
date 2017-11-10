@@ -89,7 +89,7 @@ namespace NoFuture.Rand.Com
                 new Tuple<string, string>("Ca", "California"),
                 new Tuple<string, string>("Az", "Arizona"),
                 new Tuple<string, string>("Nc", "North Carolina"),
-                new Tuple<string, string>("Wv", "West Virgina"),
+                new Tuple<string, string>("Wv", "West Virginia"),
                 new Tuple<string, string>("Mi", "Michigan"),
                 new Tuple<string, string>("Ks", "Kansas"),
                 new Tuple<string, string>("Tn", "Tennessee"),

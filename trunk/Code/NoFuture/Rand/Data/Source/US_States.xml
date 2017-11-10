@@ -188,7 +188,7 @@
               <crime type="Property" name="GTA" rate="0.2206605" />
             </crime-data>
           </state>
-          <state name="District of Columbia" avg-earning-per-year="-4330505.15874176,2199.23441258091" region="South">
+          <state name="District Of Columbia" avg-earning-per-year="-4330505.15874176,2199.23441258091" region="South">
             <econ-data>
               <sector category-ID="10" percent-employed="0" />
               <sector category-ID="20" percent-employed="0" />

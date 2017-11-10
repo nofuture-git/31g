@@ -8,7 +8,7 @@
             <avg-graduation-rate natl-percent="30.0" american-indian="12.0" asian="54.0" hispanic="16.4" black="16.5" white="30.7" pacific="54.0" mixed-race="30.0"/>
           </national>
           <states>
-          <state name="ALABAMA" percent-of-all-students="1.2335">
+          <state name="Alabama" percent-of-all-students="1.2335">
             <college-univ name="Alabama A&amp;M University" campus="" percent-of-state-students="4.8228" crime-rate="4.0829" />
             <college-univ name="Jacksonville State University" campus="" percent-of-state-students="9.2987" crime-rate="0.8956" />
             <college-univ name="Samford University" campus="" percent-of-state-students="4.6621" crime-rate="2.0382" />
@@ -18,11 +18,11 @@
             <college-univ name="University of North Alabama" campus="" percent-of-state-students="7.0872" crime-rate="0.8571" />
             <college-univ name="University of South Alabama" campus="" percent-of-state-students="14.4713" crime-rate="1.0697" />
           </state>
-          <state name="ALASKA" percent-of-all-students="0.3365">
+          <state name="Alaska" percent-of-all-students="0.3365">
             <college-univ name="University of Alaska" campus="Anchorage" percent-of-state-students="65.1149" crime-rate="0.5075" />
             <college-univ name="University of Alaska" campus="Fairbanks" percent-of-state-students="34.8851" crime-rate="0.906" />
           </state>
-          <state name="ARIZONA" percent-of-all-students="2.2855">
+          <state name="Arizona" percent-of-all-students="2.2855">
             <college-univ name="Arizona State University" campus="Main Campus" percent-of-state-students="38.21" crime-rate="1.7701" />
             <college-univ name="Central Arizona College" campus="" percent-of-state-students="3.9355" crime-rate="0.3628" />
             <college-univ name="Northern Arizona University" campus="" percent-of-state-students="13.4106" crime-rate="1.1711" />
@@ -30,7 +30,7 @@
             <college-univ name="University of Arizona" campus="" percent-of-state-students="20.7491" crime-rate="2.4671" />
             <college-univ name="Yavapai College" campus="" percent-of-state-students="4.1444" crime-rate="0.1021" />
           </state>
-          <state name="ARKANSAS" percent-of-all-students="1.0357">
+          <state name="Arkansas" percent-of-all-students="1.0357">
             <college-univ name="Arkansas State University" campus="Jonesboro" percent-of-state-students="16.2215" crime-rate="0.928" />
             <college-univ name="Arkansas Tech University" campus="" percent-of-state-students="12.2116" crime-rate="1.204" />
             <college-univ name="Henderson State University" campus="" percent-of-state-students="4.4043" crime-rate="1.9603" />
@@ -41,7 +41,7 @@
             <college-univ name="University of Arkansas" campus="Monticello" percent-of-state-students="4.5747" crime-rate="1.0457" />
             <college-univ name="University of Central Arkansas" campus="" percent-of-state-students="13.0273" crime-rate="1.469" />
           </state>
-          <state name="CALIFORNIA" percent-of-all-students="11.5547">
+          <state name="California" percent-of-all-students="11.5547">
             <college-univ name="Allan Hancock College" campus="" percent-of-state-students="1.1459" crime-rate="0.5294" />
             <college-univ name="California State Polytechnic University" campus="Pomona" percent-of-state-students="2.2079" crime-rate="0.848" />
             <college-univ name="California State Polytechnic University" campus="San Luis Obispo" percent-of-state-students="1.9626" crime-rate="0.8687" />
@@ -92,7 +92,7 @@
             <college-univ name="Ventura County Community College District" campus="" percent-of-state-students="1.4391" crime-rate="0.7123" />
             <college-univ name="West Valley-Mission College" campus="" percent-of-state-students="2.1951" crime-rate="0.324" />
           </state>
-          <state name="COLORADO" percent-of-all-students="1.8527">
+          <state name="Colorado" percent-of-all-students="1.8527">
             <college-univ name="Aims Community College" campus="" percent-of-state-students="3.451" crime-rate="0.0756" />
             <college-univ name="Arapahoe Community College" campus="" percent-of-state-students="7.2725" crime-rate="0.0987" />
             <college-univ name="Colorado State University" campus="Fort Collins" percent-of-state-students="19.8755" crime-rate="1.477" />
@@ -104,18 +104,18 @@
             <college-univ name="University of Colorado" campus="Denver" percent-of-state-students="14.6749" crime-rate="0.3867" />
             <college-univ name="University of Northern Colorado" campus="" percent-of-state-students="8.5055" crime-rate="1.3115" />
           </state>
-          <state name="CONNECTICUT" percent-of-all-students="0.5792">
+          <state name="Connecticut" percent-of-all-students="0.5792">
             <college-univ name="Central Connecticut State University" campus="" percent-of-state-students="26.1279" crime-rate="0.3913" />
             <college-univ name="Eastern Connecticut State University" campus="" percent-of-state-students="11.6564" crime-rate="1.3782" />
             <college-univ name="Southern Connecticut State University" campus="" percent-of-state-students="24.0662" crime-rate="0.6242" />
             <college-univ name="Western Connecticut State University" campus="" percent-of-state-students="13.3696" crime-rate="0.6242" />
             <college-univ name="Yale University" campus="" percent-of-state-students="24.7799" crime-rate="2.5345" />
           </state>
-          <state name="DELAWARE" percent-of-all-students="0.3099">
+          <state name="Delaware" percent-of-all-students="0.3099">
             <college-univ name="Delaware State University" campus="" percent-of-state-students="16.1994" crime-rate="1.781" />
             <college-univ name="University of Delaware" campus="" percent-of-state-students="83.8006" crime-rate="1.0656" />
           </state>
-          <state name="FLORIDA" percent-of-all-students="4.6051">
+          <state name="Florida" percent-of-all-students="4.6051">
             <college-univ name="Edison State College" campus="" percent-of-state-students="4.4899" crime-rate="0.1578" />
             <college-univ name="Florida A&amp;M University" campus="" percent-of-state-students="3.4655" crime-rate="1.4919" />
             <college-univ name="Florida Atlantic University" campus="" percent-of-state-students="7.6759" crime-rate="0.9847" />
@@ -133,7 +133,7 @@
             <college-univ name="University of South Florida" campus="Tampa" percent-of-state-students="10.3924" crime-rate="1.0354" />
             <college-univ name="University of West Florida" campus="" percent-of-state-students="3.1448" crime-rate="0.9347" />
           </state>
-          <state name="GEORGIA" percent-of-all-students="4.2205">
+          <state name="Georgia" percent-of-all-students="4.2205">
             <college-univ name="Abraham Baldwin Agricultural College" campus="" percent-of-state-students="0.9307" crime-rate="1.1689" />
             <college-univ name="Agnes Scott College" campus="" percent-of-state-students="0.2494" crime-rate="2.1789" />
             <college-univ name="Albany State University" campus="" percent-of-state-students="1.3354" crime-rate="1.4794" />
@@ -178,7 +178,7 @@
             <college-univ name="West Georgia Technical College" campus="" percent-of-state-students="2.0994" crime-rate="0.2864" />
             <college-univ name="Young Harris College" campus="" percent-of-state-students="0.2537" crime-rate="2.0293" />
           </state>
-          <state name="ILLINOIS" percent-of-all-students="4.8904">
+          <state name="Illinois" percent-of-all-students="4.8904">
             <college-univ name="Benedictine University" campus="Lisle" percent-of-state-students="1.7333" crime-rate="0.3849" />
             <college-univ name="Black Hawk College" campus="Moline" percent-of-state-students="1.5825" crime-rate="0.1405" />
             <college-univ name="Chicago State University" campus="" percent-of-state-students="1.7009" crime-rate="0.77" />
@@ -210,7 +210,7 @@
             <college-univ name="University of Illinois" campus="Urbana" percent-of-state-students="10.9752" crime-rate="0.8782" />
             <college-univ name="Western Illinois University" campus="" percent-of-state-students="3.1027" crime-rate="1.585" />
           </state>
-          <state name="INDIANA" percent-of-all-students="1.5171">
+          <state name="Indiana" percent-of-all-students="1.5171">
             <college-univ name="Ball State University" campus="" percent-of-state-students="17.6441" crime-rate="1.5442" />
             <college-univ name="Butler University" campus="" percent-of-state-students="3.6854" crime-rate="3.0473" />
             <college-univ name="Indiana State University" campus="" percent-of-state-students="9.1841" crime-rate="2.2205" />
@@ -220,12 +220,12 @@
             <college-univ name="Marian University" campus="" percent-of-state-students="2.0315" crime-rate="1.2936" />
             <college-univ name="Purdue University" campus="" percent-of-state-students="32.5436" crime-rate="1.2093" />
           </state>
-          <state name="IOWA" percent-of-all-students="0.8774">
+          <state name="Iowa" percent-of-all-students="0.8774">
             <college-univ name="Iowa State University" campus="" percent-of-state-students="40.7927" crime-rate="0.8949" />
             <college-univ name="University of Iowa" campus="" percent-of-state-students="41.0668" crime-rate="0.6776" />
             <college-univ name="University of Northern Iowa" campus="" percent-of-state-students="18.1405" crime-rate="0.7973" />
           </state>
-          <state name="KANSAS" percent-of-all-students="1.3008">
+          <state name="Kansas" percent-of-all-students="1.3008">
             <college-univ name="Emporia State University" campus="" percent-of-state-students="5.5528" crime-rate="0.3513" />
             <college-univ name="Fort Hays State University" campus="" percent-of-state-students="11.8953" crime-rate="0.2578" />
             <college-univ name="Kansas City Kansas Community College" campus="" percent-of-state-students="7.0199" crime-rate="0.7147" />
@@ -235,7 +235,7 @@
             <college-univ name="Washburn University" campus="" percent-of-state-students="6.7858" crime-rate="0.9173" />
             <college-univ name="Wichita State University" campus="" percent-of-state-students="13.8531" crime-rate="0.8719" />
           </state>
-          <state name="KENTUCKY" percent-of-all-students="1.5173">
+          <state name="Kentucky" percent-of-all-students="1.5173">
             <college-univ name="Eastern Kentucky University" campus="" percent-of-state-students="12.7946" crime-rate="1.5003" />
             <college-univ name="Kentucky State University" campus="" percent-of-state-students="2.1874" crime-rate="3.5311" />
             <college-univ name="Morehead State University" campus="" percent-of-state-students="8.7369" crime-rate="0.7384" />
@@ -245,7 +245,7 @@
             <college-univ name="University of Louisville" campus="" percent-of-state-students="16.8492" crime-rate="1.4797" />
             <college-univ name="Western Kentucky University" campus="" percent-of-state-students="16.7568" crime-rate="1.0315" />
           </state>
-          <state name="LOUISIANA" percent-of-all-students="1.8248">
+          <state name="Louisiana" percent-of-all-students="1.8248">
             <college-univ name="Delgado Community College" campus="" percent-of-state-students="13.5359" crime-rate="0.0636" />
             <college-univ name="Louisiana State University" campus="Baton Rouge" percent-of-state-students="19.6839" crime-rate="1.5781" />
             <college-univ name="Louisiana State University" campus="Eunice" percent-of-state-students="1.9751" crime-rate="0" />
@@ -263,12 +263,12 @@
             <college-univ name="University of Louisiana" campus="Monroe" percent-of-state-students="5.685" crime-rate="0.466" />
             <college-univ name="University of New Orleans" campus="" percent-of-state-students="7.2217" crime-rate="0.5686" />
           </state>
-          <state name="MAINE" percent-of-all-students="0.2753">
+          <state name="Maine" percent-of-all-students="0.2753">
             <college-univ name="University of Maine" campus="Farmington" percent-of-state-students="10.1409" crime-rate="0.8222" />
             <college-univ name="University of Maine" campus="Orono" percent-of-state-students="49.0276" crime-rate="1.6116" />
             <college-univ name="University of Southern Maine" campus="" percent-of-state-students="40.8315" crime-rate="0.5268" />
           </state>
-          <state name="MARYLAND" percent-of-all-students="1.5445">
+          <state name="Maryland" percent-of-all-students="1.5445">
             <college-univ name="Bowie State University" campus="" percent-of-state-students="4.3887" crime-rate="1.8898" />
             <college-univ name="Coppin State University" campus="" percent-of-state-students="2.9839" crime-rate="2.4908" />
             <college-univ name="Frostburg State University" campus="" percent-of-state-students="4.2486" crime-rate="1.2339" />
@@ -283,7 +283,7 @@
             <college-univ name="University of Maryland" campus="College Park" percent-of-state-students="29.4489" crime-rate="1.1772" />
             <college-univ name="University of Maryland" campus="Eastern Shore" percent-of-state-students="3.5286" crime-rate="2.1729" />
           </state>
-          <state name="MASSACHUSETTS" percent-of-all-students="3.4818">
+          <state name="Massachusetts" percent-of-all-students="3.4818">
             <college-univ name="Bentley University" campus="" percent-of-state-students="1.9349" crime-rate="1.4888" />
             <college-univ name="Boston College" campus="" percent-of-state-students="5.1217" crime-rate="1.0302" />
             <college-univ name="Boston University" campus="" percent-of-state-students="11.2608" crime-rate="1.1375" />
@@ -317,7 +317,7 @@
             <college-univ name="Westfield State University" campus="" percent-of-state-students="2.1148" crime-rate="0.8042" />
             <college-univ name="Worcester Polytechnic Institute" campus="" percent-of-state-students="2.0058" crime-rate="0.7614" />
           </state>
-          <state name="MICHIGAN" percent-of-all-students="4.7544">
+          <state name="Michigan" percent-of-all-students="4.7544">
             <college-univ name="Central Michigan University" campus="" percent-of-state-students="7.1674" crime-rate="0.6739" />
             <college-univ name="Delta College" campus="" percent-of-state-students="2.9179" crime-rate="0.3659" />
             <college-univ name="Eastern Michigan University" campus="" percent-of-state-students="5.9535" crime-rate="1.0376" />
@@ -339,12 +339,12 @@
             <college-univ name="University of Michigan" campus="Flint" percent-of-state-students="2.1003" crime-rate="1.2949" />
             <college-univ name="Western Michigan University" campus="" percent-of-state-students="6.3773" crime-rate="0.5222" />
           </state>
-          <state name="MINNESOTA" percent-of-all-students="0.8013">
+          <state name="Minnesota" percent-of-all-students="0.8013">
             <college-univ name="University of Minnesota" campus="Duluth" percent-of-state-students="17.8083" crime-rate="0.4658" />
             <college-univ name="University of Minnesota" campus="Morris" percent-of-state-students="2.9142" crime-rate="0.3104" />
             <college-univ name="University of Minnesota" campus="Twin Cities" percent-of-state-students="79.2775" crime-rate="1.0065" />
           </state>
-          <state name="MISSISSIPPI" percent-of-all-students="0.6793">
+          <state name="Mississippi" percent-of-all-students="0.6793">
             <college-univ name="Coahoma Community College" campus="" percent-of-state-students="5.3364" crime-rate="0.2" />
             <college-univ name="Jackson State University" campus="" percent-of-state-students="15.8419" crime-rate="2.8077" />
             <college-univ name="Mississippi State University" campus="" percent-of-state-students="36.3423" crime-rate="1.2093" />
@@ -352,7 +352,7 @@
             <college-univ name="University of Mississippi" campus="Medical Center" percent-of-state-students="3.5873" crime-rate="7.6351" />
             <college-univ name="University of Mississippi" campus="Oxford" percent-of-state-students="32.4276" crime-rate="1.5583" />
           </state>
-          <state name="MISSOURI" percent-of-all-students="2.4896">
+          <state name="Missouri" percent-of-all-students="2.4896">
             <college-univ name="Lincoln University" campus="" percent-of-state-students="1.6448" crime-rate="1.5934" />
             <college-univ name="Metropolitan Community College" campus="" percent-of-state-students="10.3335" crime-rate="0.4416" />
             <college-univ name="Mineral Area College" campus="" percent-of-state-students="1.9589" crime-rate="0.1239" />
@@ -371,24 +371,24 @@
             <college-univ name="University of Missouri" campus="St. Louis" percent-of-state-students="8.1605" crime-rate="0.6663" />
             <college-univ name="Washington University" campus="" percent-of-state-students="6.7521" crime-rate="0.7046" />
           </state>
-          <state name="MONTANA" percent-of-all-students="0.3546">
+          <state name="Montana" percent-of-all-students="0.3546">
             <college-univ name="Montana State University" campus="" percent-of-state-students="46.5951" crime-rate="1.7115" />
             <college-univ name="University Of Montana" campus="" percent-of-state-students="53.4049" crime-rate="0.6126" />
           </state>
-          <state name="NEBRASKA" percent-of-all-students="0.6069">
+          <state name="Nebraska" percent-of-all-students="0.6069">
             <college-univ name="Metropolitan Community College" campus="Douglas County" percent-of-state-students="36.8804" crime-rate="0.243" />
             <college-univ name="University of Nebraska" campus="Kearney" percent-of-state-students="14.1403" crime-rate="0.9294" />
             <college-univ name="University of Nebraska" campus="Lincoln" percent-of-state-students="48.9793" crime-rate="1.0368" />
           </state>
-          <state name="NEVADA" percent-of-all-students="0.6829">
+          <state name="Nevada" percent-of-all-students="0.6829">
             <college-univ name="Truckee Meadows Community College" campus="" percent-of-state-students="19.7012" crime-rate="0.1168" />
             <college-univ name="University of Nevada" campus="Las Vegas" percent-of-state-students="48.4327" crime-rate="1.0415" />
             <college-univ name="University of Nevada" campus="Reno" percent-of-state-students="31.8661" crime-rate="0.9553" />
           </state>
-          <state name="NEW HAMPSHIRE" percent-of-all-students="0.1828">
+          <state name="New Hampshire" percent-of-all-students="0.1828">
             <college-univ name="University of New Hampshire" campus="" percent-of-state-students="100" crime-rate="1.2625" />
           </state>
-          <state name="NEW JERSEY" percent-of-all-students="2.4237">
+          <state name="New Jersey" percent-of-all-students="2.4237">
             <college-univ name="Brookdale Community College" campus="" percent-of-state-students="7.4563" crime-rate="0.2006" />
             <college-univ name="Essex County College" campus="" percent-of-state-students="6.2495" crime-rate="0.766" />
             <college-univ name="Kean University" campus="" percent-of-state-students="8.0722" crime-rate="0.7969" />
@@ -406,11 +406,11 @@
             <college-univ name="University of Medicine and Dentistry" campus="Newark" percent-of-state-students="3.5965" crime-rate="2.2875" />
             <college-univ name="William Paterson University" campus="" percent-of-state-students="5.7438" crime-rate="0.6771" />
           </state>
-          <state name="NEW MEXICO" percent-of-all-students="0.0897">
+          <state name="New Mexico" percent-of-all-students="0.0897">
             <college-univ name="Eastern New Mexico University" campus="" percent-of-state-students="74.963" crime-rate="1.1496" />
             <college-univ name="New Mexico Institute of Mining and Technology" campus="" percent-of-state-students="25.037" crime-rate="1.6129" />
           </state>
-          <state name="NEW YORK" percent-of-all-students="2.5032">
+          <state name="New York" percent-of-all-students="2.5032">
             <college-univ name="Cornell University" campus="" percent-of-state-students="10.203" crime-rate="1.3013" />
             <college-univ name="Ithaca College" campus="" percent-of-state-students="3.264" crime-rate="1.5234" />
             <college-univ name="Rensselaer Polytechnic Institute" campus="" percent-of-state-students="3.1569" crime-rate="1.4222" />
@@ -439,7 +439,7 @@
             <college-univ name="State University of New York College" campus="Technology" percent-of-state-students="1.5688" crime-rate="1.7231" />
             <college-univ name="United States Merchant Marine Academy" campus="" percent-of-state-students="0.4993" crime-rate="0.7729" />
           </state>
-          <state name="NORTH CAROLINA" percent-of-all-students="2.704">
+          <state name="North Carolina" percent-of-all-students="2.704">
             <college-univ name="Appalachian State University" campus="" percent-of-state-students="7.7525" crime-rate="0.4728" />
             <college-univ name="Duke University" campus="" percent-of-state-students="6.8956" crime-rate="4.1677" />
             <college-univ name="East Carolina University" campus="" percent-of-state-students="12.2411" crime-rate="0.7339" />
@@ -459,12 +459,12 @@
             <college-univ name="Western Carolina University" campus="" percent-of-state-students="4.1802" crime-rate="1.005" />
             <college-univ name="Winston-Salem State University" campus="" percent-of-state-students="2.7548" crime-rate="1.1032" />
           </state>
-          <state name="NORTH DAKOTA" percent-of-all-students="0.3895">
+          <state name="North Dakota" percent-of-all-students="0.3895">
             <college-univ name="North Dakota State College of Science" campus="" percent-of-state-students="9.7042" crime-rate="0.9591" />
             <college-univ name="North Dakota State University" campus="" percent-of-state-students="44.6855" crime-rate="0.5694" />
             <college-univ name="University of North Dakota" campus="" percent-of-state-students="45.6103" crime-rate="1.1362" />
           </state>
-          <state name="OHIO" percent-of-all-students="4.6592">
+          <state name="Ohio" percent-of-all-students="4.6592">
             <college-univ name="Bowling Green State University" campus="" percent-of-state-students="4.5597" crime-rate="1.0923" />
             <college-univ name="Capital University" campus="" percent-of-state-students="0.9209" crime-rate="1.1546" />
             <college-univ name="Central State University" campus="" percent-of-state-students="0.6493" crime-rate="2.8355" />
@@ -485,7 +485,7 @@
             <college-univ name="Wright State University" campus="" percent-of-state-students="4.7483" crime-rate="0.8795" />
             <college-univ name="Youngstown State University" campus="" percent-of-state-students="3.7571" crime-rate="0.9942" />
           </state>
-          <state name="OKLAHOMA" percent-of-all-students="1.6942">
+          <state name="Oklahoma" percent-of-all-students="1.6942">
             <college-univ name="Cameron University" campus="" percent-of-state-students="4.6109" crime-rate="0.2939" />
             <college-univ name="East Central University" campus="" percent-of-state-students="3.4608" crime-rate="0.2473" />
             <college-univ name="Northeastern Oklahoma A&amp;M College" campus="" percent-of-state-students="1.8135" crime-rate="2.556" />
@@ -503,10 +503,10 @@
             <college-univ name="University of Oklahoma" campus="Health Sciences Center" percent-of-state-students="2.5612" crime-rate="6.0707" />
             <college-univ name="University of Oklahoma" campus="Norman" percent-of-state-students="19.3611" crime-rate="1.0133" />
           </state>
-          <state name="OREGON" percent-of-all-students="0.3455">
+          <state name="Oregon" percent-of-all-students="0.3455">
             <college-univ name="Portland State University" campus="" percent-of-state-students="100" crime-rate="0.976" />
           </state>
-          <state name="PENNSYLVANIA" percent-of-all-students="2.8051">
+          <state name="Pennsylvania" percent-of-all-students="2.8051">
             <college-univ name="Bloomsburg University" campus="" percent-of-state-students="4.3773" crime-rate="0.8563" />
             <college-univ name="California University" campus="" percent-of-state-students="4.086" crime-rate="0.2741" />
             <college-univ name="Cheyney University" campus="" percent-of-state-students="0.5171" crime-rate="6.4946" />
@@ -540,11 +540,11 @@
             <college-univ name="University of Pittsburgh" campus="Titusville" percent-of-state-students="0.193" crime-rate="2.0045" />
             <college-univ name="West Chester University" campus="" percent-of-state-students="6.5063" crime-rate="0.788" />
           </state>
-          <state name="RHODE ISLAND" percent-of-all-students="0.3032">
+          <state name="Rhode Island" percent-of-all-students="0.3032">
             <college-univ name="Brown University" campus="" percent-of-state-students="34.9532" crime-rate="1.5965" />
             <college-univ name="University of Rhode Island" campus="" percent-of-state-students="65.0468" crime-rate="1.0969" />
           </state>
-          <state name="SOUTH CAROLINA" percent-of-all-students="1.9151">
+          <state name="South Carolina" percent-of-all-students="1.9151">
             <college-univ name="Benedict College" campus="" percent-of-state-students="2.0277" crime-rate="7.7785" />
             <college-univ name="Bob Jones University" campus="" percent-of-state-students="2.2915" crime-rate="1.0738" />
             <college-univ name="Clemson University" campus="" percent-of-state-students="12.5678" crime-rate="1.2604" />
@@ -567,10 +567,10 @@
             <college-univ name="University of South Carolina" campus="Upstate" percent-of-state-students="3.4667" crime-rate="0.6007" />
             <college-univ name="Winthrop University" campus="" percent-of-state-students="3.7317" crime-rate="1.0145" />
           </state>
-          <state name="SOUTH DAKOTA" percent-of-all-students="0.1538">
+          <state name="South Dakota" percent-of-all-students="0.1538">
             <college-univ name="South Dakota State University" campus="" percent-of-state-students="100" crime-rate="0.3615" />
           </state>
-          <state name="TENNESSEE" percent-of-all-students="2.3585">
+          <state name="Tennessee" percent-of-all-students="2.3585">
             <college-univ name="Austin Peay State University" campus="" percent-of-state-students="5.5722" crime-rate="1.2139" />
             <college-univ name="Christian Brothers University" campus="" percent-of-state-students="0.8681" crime-rate="2.0059" />
             <college-univ name="East Tennessee State University" campus="" percent-of-state-students="7.8153" crime-rate="0.7737" />
@@ -587,7 +587,7 @@
             <college-univ name="Volunteer State Community College" campus="" percent-of-state-students="4.4411" crime-rate="0.0692" />
             <college-univ name="Walters State Community College" campus="" percent-of-state-students="3.4505" crime-rate="0.1782" />
           </state>
-          <state name="TEXAS" percent-of-all-students="11.5684">
+          <state name="Texas" percent-of-all-students="11.5684">
             <college-univ name="Abilene Christian University" campus="" percent-of-state-students="0.4762" crime-rate="1.689" />
             <college-univ name="Alamo Community College District" campus="" percent-of-state-students="6.4262" crime-rate="0.5934" />
             <college-univ name="Alvin Community College" campus="" percent-of-state-students="0.5359" crime-rate="0.2144" />
@@ -656,7 +656,7 @@
             <college-univ name="University of Texas" campus="Tyler" percent-of-state-students="0.6996" crime-rate="0.5226" />
             <college-univ name="West Texas A&amp;M University" campus="" percent-of-state-students="0.8239" crime-rate="0.8368" />
           </state>
-          <state name="UTAH" percent-of-all-students="2.0034">
+          <state name="Utah" percent-of-all-students="2.0034">
             <college-univ name="Brigham Young University" campus="" percent-of-state-students="20.5735" crime-rate="0.7008" />
             <college-univ name="College of Eastern Utah" campus="" percent-of-state-students="1.4015" crime-rate="0.3442" />
             <college-univ name="Snow College" campus="" percent-of-state-students="2.6938" crime-rate="0.5598" />
@@ -666,10 +666,10 @@
             <college-univ name="Utah Valley University" campus="" percent-of-state-students="20.1476" crime-rate="0.2695" />
             <college-univ name="Weber State University" campus="" percent-of-state-students="15.2644" crime-rate="0.2055" />
           </state>
-          <state name="VERMONT" percent-of-all-students="0.1629">
+          <state name="Vermont" percent-of-all-students="0.1629">
             <college-univ name="University of Vermont" campus="" percent-of-state-students="100" crime-rate="0.7345" />
           </state>
-          <state name="VIRGINIA" percent-of-all-students="3.8414">
+          <state name="Virginia" percent-of-all-students="3.8414">
             <college-univ name="Christopher Newport University" campus="" percent-of-state-students="1.57" crime-rate="3.2458" />
             <college-univ name="College of William and Mary" campus="" percent-of-state-students="2.58" crime-rate="2.5729" />
             <college-univ name="Emory and Henry College" campus="" percent-of-state-students="0.309" crime-rate="0.1017" />
@@ -696,7 +696,7 @@
             <college-univ name="Virginia State University" campus="" percent-of-state-students="1.8532" crime-rate="2.1049" />
             <college-univ name="Virginia Western Community College" campus="" percent-of-state-students="2.6923" crime-rate="0.0701" />
           </state>
-          <state name="WASHINGTON" percent-of-all-students="1.364">
+          <state name="Washington" percent-of-all-students="1.364">
             <college-univ name="Central Washington University" campus="" percent-of-state-students="10.0306" crime-rate="1.4398" />
             <college-univ name="Eastern Washington University" campus="" percent-of-state-students="10.7448" crime-rate="0.9483" />
             <college-univ name="Evergreen State College" campus="" percent-of-state-students="4.2479" crime-rate="2.0855" />
@@ -704,7 +704,7 @@
             <college-univ name="Washington State University" campus="Pullman" percent-of-state-students="24.216" crime-rate="0.7757" />
             <college-univ name="Western Washington University" campus="" percent-of-state-students="13.1514" crime-rate="0.9095" />
           </state>
-          <state name="WEST VIRGINIA" percent-of-all-students="0.7033">
+          <state name="West Virginia" percent-of-all-students="0.7033">
             <college-univ name="Concord University" campus="" percent-of-state-students="4.8066" crime-rate="0.2859" />
             <college-univ name="Marshall University" campus="" percent-of-state-students="24.0003" crime-rate="0.7017" />
             <college-univ name="Potomac State College" campus="" percent-of-state-students="3.0967" crime-rate="0.7765" />
@@ -713,7 +713,7 @@
             <college-univ name="West Virginia State University" campus="" percent-of-state-students="4.8581" crime-rate="0.9901" />
             <college-univ name="West Virginia University" campus="" percent-of-state-students="50.8962" crime-rate="0.7394" />
           </state>
-          <state name="WISCONSIN" percent-of-all-students="2.0092">
+          <state name="Wisconsin" percent-of-all-students="2.0092">
             <college-univ name="University of Wisconsin" campus="Eau Claire" percent-of-state-students="6.7976" crime-rate="0.6548" />
             <college-univ name="University of Wisconsin" campus="Green Bay" percent-of-state-students="4.013" crime-rate="0.3297" />
             <college-univ name="University of Wisconsin" campus="La Crosse" percent-of-state-students="6.1864" crime-rate="0" />
@@ -728,7 +728,7 @@
             <college-univ name="University of Wisconsin" campus="Superior" percent-of-state-students="1.6928" crime-rate="0.8881" />
             <college-univ name="University of Wisconsin" campus="Whitewater" percent-of-state-students="6.9955" crime-rate="0.4901" />
           </state>
-          <state name="WYOMING" percent-of-all-students="0.2081">
+          <state name="Wyoming" percent-of-all-students="0.2081">
             <college-univ name="Northern Wyoming Community College District" campus="" percent-of-state-students="24.9463" crime-rate="0.0233" />
             <college-univ name="University of Wyoming" campus="" percent-of-state-students="75.0537" crime-rate="1.292" />
           </state>

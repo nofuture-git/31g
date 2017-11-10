@@ -2573,7 +2573,7 @@
               <place name="Willimantic" place-code="85810" />
             </city>
           </state>
-          <state name="Washington DC">
+          <state name="District Of Columbia">
             <city name="Washington" msa-code="47900" msa-type="Metro" fips-code="50000" avg-earning-per-year="-3207206.46,1629.77">
               <zip-code prefix="200" />
               <zip-code prefix="202" />

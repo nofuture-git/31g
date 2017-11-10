@@ -38,8 +38,7 @@ namespace NoFuture.Rand.Data.Endo
             var myNameNode = TreeData.UsStateData.SelectSingleNode($"//{STATE}[@{NAME}='{_stateName}']") as XmlElement;
             if (myNameNode == null)
                 return;
-            AmericanRegion reg;
-            if (Enum.TryParse(myNameNode.Attributes[REGION].Value, out reg))
+            if (Enum.TryParse(myNameNode.Attributes[REGION].Value, out AmericanRegion reg))
                 Region = reg;
             AverageEarnings = UsCityStateZip.GetAvgEarningsPerYear(myNameNode);
             GetEmploymentSectorData();

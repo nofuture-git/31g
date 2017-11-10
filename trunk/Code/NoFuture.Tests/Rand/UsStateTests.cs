@@ -6,6 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NoFuture.Rand;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
+using NoFuture.Rand.Gov.TheStates;
 
 namespace NoFuture.Tests.Rand
 {
@@ -18,7 +19,7 @@ namespace NoFuture.Tests.Rand
             var testState = "AZ";
             var testResult = NoFuture.Rand.Gov.UsState.GetStateByPostalCode(testState);
             Assert.IsNotNull(testResult);
-            Assert.IsInstanceOfType(testResult, typeof(NoFuture.Rand.Gov.Arizona));
+            Assert.IsInstanceOfType(testResult, typeof(Arizona));
 
             Assert.AreEqual(testState,testResult.StateAbbrv);
 
@@ -34,7 +35,7 @@ namespace NoFuture.Tests.Rand
             testState = "AR";
             testResult = NoFuture.Rand.Gov.UsState.GetStateByPostalCode(testState);
             Assert.IsNotNull(testResult);
-            Assert.IsInstanceOfType(testResult, typeof(NoFuture.Rand.Gov.Arkansas));
+            Assert.IsInstanceOfType(testResult, typeof(Arkansas));
 
             Assert.AreEqual(testState, testResult.StateAbbrv);
 
@@ -50,7 +51,7 @@ namespace NoFuture.Tests.Rand
             testState = "CA";
             testResult = NoFuture.Rand.Gov.UsState.GetStateByPostalCode(testState);
             Assert.IsNotNull(testResult);
-            Assert.IsInstanceOfType(testResult, typeof(NoFuture.Rand.Gov.California));
+            Assert.IsInstanceOfType(testResult, typeof(California));
 
             Assert.AreEqual(testState, testResult.StateAbbrv);
 
@@ -65,7 +66,7 @@ namespace NoFuture.Tests.Rand
             testState = "CT";
             testResult = NoFuture.Rand.Gov.UsState.GetStateByPostalCode(testState);
             Assert.IsNotNull(testResult);
-            Assert.IsInstanceOfType(testResult, typeof(NoFuture.Rand.Gov.Connecticut));
+            Assert.IsInstanceOfType(testResult, typeof(Connecticut));
 
             Assert.AreEqual(testState, testResult.StateAbbrv);
 
