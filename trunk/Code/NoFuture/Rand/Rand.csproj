@@ -54,6 +54,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Gov\AmericanBirthCert.cs" />
+    <Compile Include="Gov\AmericanDeathCert.cs" />
     <Compile Include="Gov\AmericanRacePercents.cs" />
     <Compile Include="Com\Firm.cs" />
     <Compile Include="Com\FinancialFirm.cs" />
@@ -104,15 +106,20 @@
     <Compile Include="Domus\ResidentAddress.cs" />
     <Compile Include="Domus\Spouse.cs" />
     <Compile Include="Edu\AmericanEduBase.cs" />
+    <Compile Include="Gov\BirthCert.cs" />
     <Compile Include="Gov\Census\Identifier.cs" />
+    <Compile Include="Gov\DeathCert.cs" />
+    <Compile Include="Gov\GovernmentId.cs" />
+    <Compile Include="Gov\IVitalRecord.cs" />
+    <Compile Include="Gov\NationCodes.cs" />
     <Compile Include="Gov\Nhtsa\Identifier.cs" />
+    <Compile Include="Gov\StateIssuedId.cs" />
     <Compile Include="Gov\VitalRecord.cs" />
     <Compile Include="Data\Sp\Pecuniam.cs" />
     <Compile Include="Edu\AmericanHighSchool.cs" />
     <Compile Include="Edu\AmericanUniversity.cs" />
     <Compile Include="Gov\DriversLicense.cs" />
     <Compile Include="Gov\Fed\Identifier.cs" />
-    <Compile Include="Gov\Identifier.cs" />
     <Compile Include="Gov\Irs\Identifier.cs" />
     <Compile Include="Gov\Sec\Identifier.cs" />
     <Compile Include="Gov\SocialSecurityNumber.cs" />

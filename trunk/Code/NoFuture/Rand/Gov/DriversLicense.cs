@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Domus;
@@ -10,7 +9,6 @@ namespace NoFuture.Rand.Gov
     [Serializable]
     public class DriversLicense : StateIssuedId
     {
-        private readonly List<Anomaly> _anomalies = new List<Anomaly>();
         
         public DriversLicense(Rchar[] format)
         {
@@ -50,7 +48,6 @@ namespace NoFuture.Rand.Gov
 
         public override string Abbrev => "DL";
 
-        public override List<Anomaly> Anomalies => _anomalies;
     }
 
 }

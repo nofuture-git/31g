@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using NoFuture.Rand.Core;
 using NoFuture.Shared.Core;
 
@@ -9,7 +7,6 @@ namespace NoFuture.Rand.Gov
     [Serializable]
     public class SocialSecurityNumber : GovernmentId
     {
-        private readonly List<SsnAnomaly> _anomalies = new List<SsnAnomaly>();
         private readonly string _regexPattern;
 
         public SocialSecurityNumber()
@@ -74,55 +71,5 @@ namespace NoFuture.Rand.Gov
                    System.Text.RegularExpressions.Regex.IsMatch(value, _regexPattern);
         }
 
-        /// <summary>
-        /// List of <see cref="SsnAnomaly"/> attached to this <see cref="SocialSecurityNumber"/>
-        /// </summary>
-        public override List<Anomaly> Anomalies => _anomalies.Cast<Anomaly>().ToList();
     }
-
-    #region Ssn anomalies
-
-    /// <summary>
-    /// Derived from Equifax document
-    /// [Equifax_Fall_2014_Release_Guide.pdf]
-    /// </summary>
-    [Serializable]
-    public abstract class SsnAnomaly : Anomaly { }
-
-    [Serializable]
-    public class SsnAssociatedWithDeceasedPerson : SsnAnomaly {
-        public override string Abbrev => "I";
-    }
-    [Serializable]
-    public class SsnMaybeTaxId : SsnAnomaly
-    {
-        public override string Abbrev => "4";
-    }
-    [Serializable]
-    public class SsnInvalid : SsnAnomaly
-    {
-        public override string Abbrev => "9";
-    }
-    [Serializable]
-    public class SsnNeverIssued : SsnAnomaly
-    {
-        public override string Abbrev => "A";
-    }
-    [Serializable]
-    public class SsnRecentIssued : SsnAnomaly
-    {
-        public override string Abbrev => "M";
-    }
-    [Serializable]
-    public class SsnIssuedPriorToDob : SsnAnomaly
-    {
-        public override string Abbrev => "O";
-    }
-    [Serializable]
-    public class SsnReportedAsMisused : SsnAnomaly
-    {
-        public override string Abbrev => "B";
-    }
-
-    #endregion
 }
