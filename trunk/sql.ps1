@@ -104,7 +104,7 @@ Set-Alias proc Write-StoredProcedureToHost
     the enviornment's PATH variable. The command makes no check that this is 
     the case.  
     
-    Set the global variable NoFuture.Shared.NfConfig+Switches.SqlCmdHeadersOff to true to get only the results.
+    Set the global variable NoFuture.Shared.Core.NfConfig+Switches.SqlCmdHeadersOff to true to get only the results.
     The delimiter is a bar character (|).  This command is intended for 
     update, delete, insert and scaler selects'.  Use the ADO function for 
     selecting multiple records. 
@@ -1024,7 +1024,7 @@ function Get-TableXsd
     it to this ps appdomain
     
     .DESCRIPTION
-    Calls SqlMetal.exe using the NoFuture.Shared.NfConfig.SqlServer 
+    Calls SqlMetal.exe using the NoFuture.Shared.Core.NfConfig.SqlServer 
 	and NoFuture.Shared.Constants.SqlCatalog using the /code whose value is given by 
 	the NoFuture.Shared.Constants.SqlCatalog less any invalid path characters.
     Upon SqlMetal successfully generating a code file, the C# compiler is called
@@ -1135,7 +1135,7 @@ function Export-ExcelWbToCsv
 
         #dump each worksheet to a tab-delimited file
         $dir = [System.IO.Path]::GetDirectoryName($Path)
-        $outFile = [NoFuture.Util.NfType.NfTypeName]::SafeDotNetIdentifier(([System.IO.Path]::GetFileNameWithoutExtension($Path)))
+        $outFile = [NoFuture.Util.Core.Etc]::SafeDotNetIdentifier(([System.IO.Path]::GetFileNameWithoutExtension($Path)))
         $outPath = (Join-Path $dir $outFile)
         $myExcel = New-Object -ComObject Excel.Application
         $myExcel.Application.Visible = $false
@@ -1144,7 +1144,7 @@ function Export-ExcelWbToCsv
         $doNotDisplay = [System.Reflection.Assembly]::LoadWithPartialName("Microsoft.Office.Interop.Excel")
         $excelWb.Sheets | % {
             $wsName = $_.Name
-            $wsFn = ("{0}{1}.txt" -f $outPath, [NoFuture.Util.NfType.NfTypeName]::SafeDotNetIdentifier($wsName))
+            $wsFn = ("{0}{1}.txt" -f $outPath, [NoFuture.Util.Core.Etc]::SafeDotNetIdentifier($wsName))
             $wsFileNames += $wsFn
             #https://msdn.microsoft.com/EN-US/library/office/ff841185.aspx
             $_.SaveAs($wsFn,[Microsoft.Office.Interop.Excel.XlFileFormat]::xlTextWindows)

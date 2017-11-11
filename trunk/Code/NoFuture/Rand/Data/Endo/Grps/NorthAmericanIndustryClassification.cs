@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Xml;
 
-namespace NoFuture.Rand.Data.Endo
+namespace NoFuture.Rand.Data.Endo.Grps
 {
     /// <summary>
     /// The NAICS is a model of economic sector groupings used by the US Census Bureau 

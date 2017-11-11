@@ -5,6 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NoFuture.Rand;
 using NoFuture.Rand.Com;
 using NoFuture.Rand.Data.Endo;
+using NoFuture.Rand.Data.Endo.Grps;
 
 namespace NoFuture.Tests.Rand
 {

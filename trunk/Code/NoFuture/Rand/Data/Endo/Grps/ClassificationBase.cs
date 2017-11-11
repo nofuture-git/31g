@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Xml;
 
-namespace NoFuture.Rand.Data.Endo
+namespace NoFuture.Rand.Data.Endo.Grps
 {
     /// <summary>
     /// An intermediate base type to keep from having alot of redundant code for the TryThisParseXml

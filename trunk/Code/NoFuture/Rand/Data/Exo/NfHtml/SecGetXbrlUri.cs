@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using NoFuture.Rand.Data.Exo.NfXml;
 using NoFuture.Tokens;
 using NoFuture.Tokens.ParseResults;
 
@@ -43,7 +44,7 @@ namespace NoFuture.Rand.Data.Exo.NfHtml
             {
                 new
                 {
-                    XrblUri = Gov.Sec.Edgar.SEC_ROOT_URL + xrblUri,
+                    XrblUri = Edgar.SEC_ROOT_URL + xrblUri,
                     IrsId = irsId
                 }
             };

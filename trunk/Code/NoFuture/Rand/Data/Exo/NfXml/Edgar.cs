@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Web;
 using NoFuture.Rand.Data.Sp;
+using NoFuture.Rand.Gov.Sec;
 
-namespace NoFuture.Rand.Gov.Sec
+namespace NoFuture.Rand.Data.Exo.NfXml
 {
     public class Edgar
     {

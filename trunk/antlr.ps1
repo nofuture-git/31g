@@ -194,7 +194,7 @@ function Invoke-AntlrToJavaSrc
 
     To use call it with whatever command is to be passed to the Tool, 
     Ctrl+Shift+P to open a new powershell console, change to the 
-    NoFuture.Shared.NfConfig.TempDirectories.JavaDist directory, copy/paste 
+    NoFuture.Shared.Core.NfConfig.TempDirectories.JavaDist directory, copy/paste 
 	the command and press Enter.
     
     .PARAMETER Arg
@@ -256,11 +256,11 @@ function Invoke-Grun
     
     .DESCRIPTION
     Locates the edu.stanford.nlp.tagger.maxent.MaxentTagger at 
-    NoFuture.Shared.NfConfig+JavaTools.Stanford.StanfordPostTagger and copies it 
+    NoFuture.Shared.Core.NfConfig+JavaTools.Stanford.StanfordPostTagger and copies it 
     into the Java global CLASSPATH if it is not already present there.
 
     The MaxentTagger requires a model and the cmdlet will choose whatever
-    is the largest one present in NoFuture.Shared.NfConfig+JavaTools.StanfordPostTaggerModels.
+    is the largest one present in NoFuture.Shared.Core.NfConfig+JavaTools.StanfordPostTaggerModels.
 
     The JVM is invoked on a separate process.  The MaxentTagger progress is printed
     upon the completion of the JVM.  If an OutPath was sepecified that path 

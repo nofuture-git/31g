@@ -148,7 +148,7 @@ function Install-DotNetRoslyn
         if([string]::IsNullOrWhiteSpace([NoFuture.Shared.Core.NfConfig+DotNet]::CscCompiler)){
             [NoFuture.Shared.Core.NfConfig+DotNet]::CscCompiler = Join-Path $outRoslynMaster "Binaries\Release\Exes\csc\net46\csc.exe"
         }
-        if([string]::IsNullOrWhiteSpace([NoFuture.Shared.NfConfig+DotNet]::VbcCompiler)){
+        if([string]::IsNullOrWhiteSpace([NoFuture.Shared.Core.NfConfig+DotNet]::VbcCompiler)){
             [NoFuture.Shared.Core.NfConfig+DotNet]::VbcCompiler = Join-Path $outRoslynMaster "Binaries\Release\Exes\vbc\net46\vbc.exe"
         }
 
@@ -273,8 +273,6 @@ function Invoke-JavaCompiler
         $javacCmd = '. {0} -d {1} -cp {2} {3}' -f ([NoFuture.Shared.Core.NfConfig+JavaTools]::Javac),$javaBuild,$ClassPath,(Join-Path $javaSrc ("$TypeName.java"))
         $javacCmd >> (Join-Path $javaRoot "cmd.log")
         Invoke-Expression -Command $javacCmd
-        #. ([NoFuture.Shared.NfConfig+JavaTools]::Javac) -d $javaBuild -cp $ClassPath (Join-Path $javaSrc ("$TypeName.java"))
-
 
         #place into jar
         if(-not [System.String]::IsNullOrWhiteSpace($Package))

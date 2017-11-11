@@ -690,7 +690,7 @@ function Write-CsCodeHbmCommand
     )
     Process
     {
-        $className = [NoFuture.Util.NfType.NfTypeName]::GetTypeNameWithoutNamespace($TypeName)
+        $className = [NoFuture.Util.Core.NfReflect]::GetTypeNameWithoutNamespace($TypeName)
         $idPropName = [NoFuture.Hbm.Globals+HbmXmlNames]::ID
         $typeNameType = $Assembly.GetType($TypeName)
         if($typeNameType -eq $null){
@@ -771,7 +771,7 @@ function Invoke-HbmCsCompile
         [NoFuture.Hbm.Settings]::LoadOutputPathCurrentSettings();
         $cscCompiler = (Join-Path $global:net40Path $global:cscExe)
         $OutputNamespace = [NoFuture.Util.Core.Etc]::CapWords($OutputNamespace,'.')
-        $dllOutputFile = (Join-Path $lhbmDirectory ([NoFuture.Util.NfType.NfTypeName]::DraftCscDllName($OutputNamespace)))
+        $dllOutputFile = (Join-Path $lhbmDirectory ([NoFuture.Util.Core.NfReflect]::DraftCscDllName($OutputNamespace)))
 
         $targetArg = "/t:library"
         $outArg = "/out:$dllOutputFile"
@@ -1107,7 +1107,7 @@ function Import-HbmSessionFactory
             if(Test-Path $hbmXml)
             {
                 try{
-                    $hbmXmlAsmFullName = [NoFuture.Util.NfType.NfTypeName]::DraftCscExeAsmName(([System.IO.Path]::GetFileNameWithoutExtension($hbmXml)))
+                    $hbmXmlAsmFullName = [NoFuture.Util.Core.NfReflect]::DraftCscExeAsmName(([System.IO.Path]::GetFileNameWithoutExtension($hbmXml)))
                     if($currentAppDomainAsm -notcontains $hbmXmlAsmFullName){
                        $hbmXmlAsm = [System.Reflection.Assembly]::Load([System.IO.File]::ReadAllBytes($hbmXml))
                     }

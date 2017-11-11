@@ -111,7 +111,7 @@ namespace NoFuture.Tests.Rand
         [TestMethod]
         public void TestGetUriFullTextSearch()
         {
-            var testInput = new NoFuture.Rand.Gov.Sec.Edgar.FullTextSearch();
+            var testInput = new Edgar.FullTextSearch();
             testInput.CompanyName = "CITIBANK, N.A.";
 
             var testResult = SecFullTxtSearch.GetUri(testInput);

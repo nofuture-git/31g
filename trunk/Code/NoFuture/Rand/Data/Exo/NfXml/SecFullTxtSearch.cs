@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Xml;
-using NoFuture.Rand.Gov.Sec;
 
 namespace NoFuture.Rand.Data.Exo.NfXml
 {

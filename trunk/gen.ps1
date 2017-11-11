@@ -71,7 +71,7 @@ function Convert-CsvToCsCode
 
     .PARAMETER OutputDir
     Optional, the location where the generated C# file will be deposited.
-    When omitted, the file will be placed into NoFuture.Shared.NfConfig+TempDirectories.Root
+    When omitted, the file will be placed into NoFuture.Shared.Core.NfConfig+TempDirectories.Root
 
     .PARAMETER Namespace
     Optional, a namespace to contain the newly defined type.
@@ -266,7 +266,7 @@ function Write-CsCodeAssignRand
 
         $recursiveCallsTo = @()
 
-        $typeName = [NoFuture.Util.NfType.NfTypeName]::GetTypeNameWithoutNamespace($TypeFullName)
+        $typeName = [NoFuture.Util.Core.NfReflect]::GetTypeNameWithoutNamespace($TypeFullName)
 
         $myrand = New-Object System.Random ([Int32][String]::Format("{0:fffffff}",$(get-date)))
 
@@ -461,7 +461,7 @@ function Write-CsCodeAssignRand
 
         $genType.GetProperties() | % {
             $piSetMethod = $_.SetMethod
-            if($_.CanWrite -and  ([NoFuture.Util.NfType.NfTypeName]::IsEnumerableReturnType($_.PropertyType))){
+            if($_.CanWrite -and  ([NoFuture.Util.Core.NfReflect]::IsEnumerableReturnType($_.PropertyType))){
 
                 if($piSetMethod -ne $null -and -not $piSetMethod.IsPublic){
                     $listMembers.Add(("{0}*" -f $_.Name),$_.PropertyType)
@@ -471,7 +471,7 @@ function Write-CsCodeAssignRand
                 }
                 
             }
-            elseif($_.CanWrite -and ([NoFuture.Util.NfType.NfTypeName]::IsValueTypeProperty($_))){
+            elseif($_.CanWrite -and ([NoFuture.Util.Core.NfReflect]::IsValueTypeProperty($_))){
                 
                 if($piSetMethod -ne $null -and -not $piSetMethod.IsPublic){
                     $valueMembers.Add(("{0}*" -f $_.Name),$_.PropertyType)
@@ -480,7 +480,8 @@ function Write-CsCodeAssignRand
                     $valueMembers.Add($_.Name,$_.PropertyType)
                 }
             }
-            elseif($_.CanWrite -and -not ([NoFuture.Util.NfType.NfTypeName]::IsValueTypeProperty($_)) -and -not ([NoFuture.Util.NfType.NfTypeName]::IsEnumerableReturnType($_.PropertyType))){
+            elseif($_.CanWrite -and -not ([NoFuture.Util.Core.NfReflect]::IsValueTypeProperty($_)) -and `
+                   -not ([NoFuture.Util.Core.NfReflect]::IsEnumerableReturnType($_.PropertyType))){
 
                 if($piSetMethod -ne $null -and -not $piSetMethod.IsPublic){
                     $normalMembers.Add(("{0}*" -f $_.Name),$_.PropertyType)
@@ -493,13 +494,14 @@ function Write-CsCodeAssignRand
             
         }
         $genType.GetFields() | % {
-            if($_.IsPublic -and  ([NoFuture.Util.NfType.NfTypeName]::IsEnumerableReturnType($_.FieldType))){
+            if($_.IsPublic -and  ([NoFuture.Util.Core.NfReflect]::IsEnumerableReturnType($_.FieldType))){
                 $listMembers.Add($_.Name,$_.FieldType)
             }
-            elseif($_.IsPublic -and ([NoFuture.Util.NfType.NfTypeName]::IsValueTypeField($_))){
+            elseif($_.IsPublic -and ([NoFuture.Util.Core.NfReflect]::IsValueTypeField($_))){
                 $valueMembers.Add($_.Name,$_.FieldType)
             }
-            elseif($_.IsPublic -and -not ($_.IsLiteral) -and -not ([NoFuture.Util.NfType.NfTypeName]::IsValueTypeField($_)) -and -not ([NoFuture.Util.NfType.NfTypeName]::IsEnumerableReturnType($_.FieldType))){
+            elseif($_.IsPublic -and -not ($_.IsLiteral) -and -not ([NoFuture.Util.Core.NfReflect]::IsValueTypeField($_)) -and `
+                    -not ([NoFuture.Util.Core.NfReflect]::IsEnumerableReturnType($_.FieldType))){
                 $normalMembers.Add($_.Name,$_.FieldType)
             }
             
@@ -557,7 +559,7 @@ function Write-CsCodeAssignRand
 
                 #check that this isn't going to set a infinite recursion into motion...
                 if(-not $ValueTypesOnly -and -not ($Global:CodeGenAssignRandomValuesCallStack.Contains($propType))){
-                    $refFactoryName = "{0}Factory" -f ([NoFuture.Util.NfType.NfTypeName]::GetTypeNameWithoutNamespace($propType))
+                    $refFactoryName = "{0}Factory" -f ([NoFuture.Util.Core.NfReflect]::GetTypeNameWithoutNamespace($propType))
                     if($isNotAssignable){
                         "`tSetProperty($instanceName, `"$propName`", $refFactoryName());`n"
                     }
@@ -576,7 +578,7 @@ function Write-CsCodeAssignRand
             if($isNotAssignable){
                 $propName = $propName.Replace("*","")
             }
-            $propType = [NoFuture.Util.NfType.NfTypeName]::GetLastTypeNameFromArrayAndGeneric($valueMembers[$_].ToString())
+            $propType = [NoFuture.Util.Core.NfReflect]::GetLastTypeNameFromArrayAndGeneric($valueMembers[$_].ToString())
             if($propType -eq "System.Byte"){
                 if($isNotAssignable){
                     "`tSetProperty($instanceName,`"$propName`",ByteFactory());`n"
@@ -684,10 +686,10 @@ function Write-CsCodeAssignRand
                 $memberName = $memberName.Replace("*","")
             }
             $memberType = $listMembers[$_]
-            $enumerableType = [NoFuture.Util.NfType.NfTypeName]::GetLastTypeNameFromArrayAndGeneric($memberType)
+            $enumerableType = [NoFuture.Util.Core.NfReflect]::GetLastTypeNameFromArrayAndGeneric($memberType)
             $recursiveCallsTo += $enumerableType
             $propertyType = $memberType.ToString()
-            $refFactoryName = "{0}Factory" -f  ([NoFuture.Util.NfType.NfTypeName]::GetTypeNameWithoutNamespace($enumerableType))
+            $refFactoryName = "{0}Factory" -f  ([NoFuture.Util.Core.NfReflect]::GetTypeNameWithoutNamespace($enumerableType))
             $propName = $memberName;
 
             if(-not $ValueTypesOnly){
@@ -839,7 +841,7 @@ function Get-DotGraphAssemblyDiagram
         $graphDir = ([NoFuture.Shared.Core.NfConfig+TempDirectories]::Graph)
 
         if([string]::IsNullOrWhiteSpace($graphDir)){
-            Write-Host "Assign a directory to the global NoFuture.Shared.NfConfig+TempDirectories.Graph variable" -ForegroundColor Yellow
+            Write-Host "Assign a directory to the global NoFuture.Shared.Core.NfConfig+TempDirectories.Graph variable" -ForegroundColor Yellow
             break;
         }
         if(-not (Test-Path $AssemblyPath)){
@@ -953,7 +955,7 @@ function Get-DotGraphFlattenedType
         $graphDir = ([NoFuture.Shared.Core.NfConfig+TempDirectories]::Graph)
 
         if([string]::IsNullOrWhiteSpace($graphDir)){
-            Write-Host "Assign a directory to the global NoFuture.Shared.NfConfig+TempDirectories.Graph variable" -ForegroundColor Yellow
+            Write-Host "Assign a directory to the global NoFuture.Shared.Core.NfConfig+TempDirectories.Graph variable" -ForegroundColor Yellow
             break;
         }
 
@@ -1012,7 +1014,7 @@ function Get-DotGraphClassDiagram
         $graphDir = ([NoFuture.Shared.Core.NfConfig+TempDirectories]::Graph)
 
         if([string]::IsNullOrWhiteSpace($graphDir)){
-            Write-Host "Assign a directory to the global NoFuture.Shared.NfConfig.TempDirectories.Graph variable" -ForegroundColor Yellow
+            Write-Host "Assign a directory to the global NoFuture.Shared.Core.NfConfig+TempDirectories.Graph variable" -ForegroundColor Yellow
             break;
         }
 

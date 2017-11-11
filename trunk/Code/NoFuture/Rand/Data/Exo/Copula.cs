@@ -4,6 +4,8 @@ using System.Linq;
 using NoFuture.Rand.Com;
 using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Data.Endo;
+using NoFuture.Rand.Data.Endo.Grps;
+using NoFuture.Rand.Data.Exo.NfXml;
 using NoFuture.Rand.Data.Sp;
 using NoFuture.Rand.Gov;
 using NoFuture.Rand.Gov.Fed;
