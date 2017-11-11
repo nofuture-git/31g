@@ -505,7 +505,7 @@ namespace NoFuture.Rand.Core
                         rcharsOut.Add(new RcharUAlpha(i));
                         break;
                     case 3:
-                        rcharsOut.Add(new LAlphaRchar(i));
+                        rcharsOut.Add(new RcharLAlpha(i));
                         break;
                     case 4:
                         rcharsOut.Add(new RcharNumeric(i));

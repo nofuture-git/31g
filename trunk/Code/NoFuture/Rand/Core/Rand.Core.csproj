@@ -56,6 +56,11 @@
     <Compile Include="NamedIdentifier.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Rchar.cs" />
+    <Compile Include="RcharAlphaNumeric.cs" />
+    <Compile Include="RcharLAlpha.cs" />
+    <Compile Include="RcharLimited.cs" />
+    <Compile Include="RcharNumeric.cs" />
+    <Compile Include="RcharUAlpha.cs" />
     <Compile Include="RIdentifier.cs" />
     <Compile Include="RIdentifierWithChkDigit.cs" />
     <Compile Include="RLinearEquation.cs" />
