@@ -35,7 +35,7 @@ namespace NoFuture.Rand.Data.Sp
         #region methods
         public override string ToString()
         {
-            return string.Join(" ", GetType().Name, Bank, Id);
+            return string.Join(" ", GetType().Name, Bank, Id.ValueLastFour());
         }
 
         public virtual Pecuniam GetValueAt(DateTime dt)
@@ -123,8 +123,8 @@ namespace NoFuture.Rand.Data.Sp
                 if (amt.Amount < 0.01M)
                     break;
             }
-            fromAccount.Pop(dt, amt, Pecuniam.Zero, Opes.GetPaymentNote(fromAccount.Id));
-            toAccount.Push(dt.AddMilliseconds(100), amt, Pecuniam.Zero, Opes.GetPaymentNote(toAccount.Id));
+            fromAccount.Pop(dt, amt, Pecuniam.Zero, WealthBase.GetPaymentNote(fromAccount.Id));
+            toAccount.Push(dt.AddMilliseconds(100), amt, Pecuniam.Zero, WealthBase.GetPaymentNote(toAccount.Id));
         }
 
         #endregion

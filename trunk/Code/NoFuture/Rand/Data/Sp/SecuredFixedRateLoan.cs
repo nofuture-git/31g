@@ -88,7 +88,7 @@ namespace NoFuture.Rand.Data.Sp
                 Rate = rate
             };
 
-            var pmtNote = Opes.GetPaymentNote(property);
+            var pmtNote = WealthBase.GetPaymentNote(property);
 
             dtIncrement = calcPurchaseDt.AddMonths(1);
             while (loan.GetValueAt(dtIncrement) > remainingCost)

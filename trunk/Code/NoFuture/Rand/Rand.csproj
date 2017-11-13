@@ -190,7 +190,7 @@
     <Compile Include="Domus\NorthAmericanEdu.cs" />
     <Compile Include="Domus\NorthAmericanProfession.cs" />
     <Compile Include="Domus\NorthAmericanWealth.cs" />
-    <Compile Include="Domus\Opes.cs" />
+    <Compile Include="Domus\WealthBase.cs" />
     <Compile Include="Domus\Parent.cs" />
     <Compile Include="Domus\Pneuma\Personality.cs" />
     <Compile Include="Domus\ResidentAddress.cs" />

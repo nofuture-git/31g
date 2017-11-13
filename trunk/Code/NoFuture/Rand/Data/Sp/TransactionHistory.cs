@@ -33,6 +33,7 @@ namespace NoFuture.Rand.Data.Sp
         public int TransactionCount => Transactions.Count;
 
         #endregion
+
         public Guid AddTransaction(DateTime dt, Pecuniam amnt, Pecuniam fee = null, string note = null)
         {
             if (amnt == null)

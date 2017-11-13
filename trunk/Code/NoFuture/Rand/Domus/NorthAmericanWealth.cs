@@ -18,7 +18,7 @@ namespace NoFuture.Rand.Domus
     /// at random.
     /// </summary>
     [Serializable]
-    public class NorthAmericanWealth : Opes
+    public class NorthAmericanWealth : WealthBase
     {
         #region innerTypes
         public enum FactorTables
@@ -240,7 +240,7 @@ namespace NoFuture.Rand.Domus
 
         /// <summary>
         /// Creates random checking and savings accounts with a history which is intertwined with 
-        /// other <see cref="Opes"/> history.
+        /// other <see cref="WealthBase"/> history.
         /// </summary>
         /// <param name="stdDevAsPercent"></param>
         protected internal void AddBankingAccounts(double stdDevAsPercent = DF_STD_DEV_PERCENT)
@@ -394,7 +394,7 @@ namespace NoFuture.Rand.Domus
 
         /// <summary>
         /// Creates random <see cref="Rent"/> instance with a history and adds
-        /// it to the <see cref="Opes.HomeDebt"/> collection.
+        /// it to the <see cref="WealthBase.HomeDebt"/> collection.
         /// </summary>
         /// <param name="stdDevAsPercent"></param>
         /// <remarks>
@@ -416,7 +416,7 @@ namespace NoFuture.Rand.Domus
 
         /// <summary>
         /// Creates random <see cref="FixedRateLoan"/> instance with a history and adds
-        /// it to the <see cref="Opes.HomeDebt"/> collection.
+        /// it to the <see cref="WealthBase.HomeDebt"/> collection.
         /// </summary>
         /// <param name="stdDevAsPercent"></param>
         protected internal Pecuniam AddMortgage(double stdDevAsPercent = DF_STD_DEV_PERCENT)
@@ -444,7 +444,7 @@ namespace NoFuture.Rand.Domus
 
         /// <summary>
         /// Creates random <see cref="CreditCardAccount"/> instances with a history and adds
-        /// it to the <see cref="Opes.CreditCardDebt"/> collection.
+        /// it to the <see cref="WealthBase.CreditCardDebt"/> collection.
         /// </summary>
         /// <param name="stdDevAsPercent"></param>
         protected internal void AddSingleCcDebt(double stdDevAsPercent = DF_STD_DEV_PERCENT)
@@ -507,7 +507,7 @@ namespace NoFuture.Rand.Domus
 
         /// <summary>
         /// Creates a random <see cref="FixedRateLoan"/> instance with a history and adds it to the 
-        /// <see cref="Opes.VehicleDebt"/> collection.
+        /// <see cref="WealthBase.VehicleDebt"/> collection.
         /// </summary>
         /// <param name="stdDevAsPercent"></param>
         /// <returns></returns>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Text;
 
 namespace NoFuture.Rand.Core
 {
@@ -39,11 +40,9 @@ namespace NoFuture.Rand.Core
                 }
                 return _value;
             }
-            set
-            {
-                _value = value;
-            }
+            set => _value = value;
         }
+
         public virtual bool Validate(string value)
         {
             return format.All(rc => rc.Valid(value));

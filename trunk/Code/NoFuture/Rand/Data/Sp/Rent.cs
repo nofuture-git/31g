@@ -182,7 +182,7 @@ namespace NoFuture.Rand.Data.Sp
                 if (renterPersonality.GetRandomActsIrresponsible())
                     paidRentOn = paidRentOn.AddDays(Etx.IntNumber(5, 15));
 
-                rent.PayRent(paidRentOn, randRent, Opes.GetPaymentNote(rent.Id));
+                rent.PayRent(paidRentOn, randRent, WealthBase.GetPaymentNote(rent.Id));
                 rentDueDate = rentDueDate.AddMonths(1);
             }
             return rent;

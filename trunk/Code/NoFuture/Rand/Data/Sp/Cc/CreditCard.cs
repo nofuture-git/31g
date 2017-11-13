@@ -96,19 +96,7 @@ namespace NoFuture.Rand.Data.Sp.Cc
         /// <returns></returns>
         public override string ToString()
         {
-            var bldr = new StringBuilder();
-            var val = Number?.Value;
-            if (string.IsNullOrWhiteSpace(val))
-                return base.ToString();
-
-            for (var i = 0; i < val.Length - 4; i++)
-            {
-                bldr.Append("X");
-            }
-            var lastFour = val.Substring(val.Length - 4, 4);
-            bldr.Append(lastFour);
-
-            return string.Join(" ", bldr.ToString(), CardHolderName);
+            return string.Join(" ", Number.ValueLastFour(), CardHolderName);
         }
 
         #endregion

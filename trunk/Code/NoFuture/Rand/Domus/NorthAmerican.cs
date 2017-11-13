@@ -73,7 +73,7 @@ namespace NoFuture.Rand.Domus
         /// When set to true the ctor will assign parents, children and spouse at random.
         /// </param>
         /// <param name="withFinanceData">
-        /// When set to true will ctor will create and assign <see cref="Opes"/>
+        /// When set to true will ctor will create and assign <see cref="WealthBase"/>
         /// </param>
         public NorthAmerican(DateTime dob, Gender myGender, bool withWholeFamily, bool withFinanceData):this(dob,myGender)
         {
@@ -322,7 +322,7 @@ namespace NoFuture.Rand.Domus
         /// </summary>
         /// <param name="dt"></param>
         /// <returns></returns>
-        public override Opes GetWealthAt(DateTime? dt)
+        public override WealthBase GetWealthAt(DateTime? dt)
         {
             return _opes ?? (_opes = new NorthAmericanWealth(this));
         }

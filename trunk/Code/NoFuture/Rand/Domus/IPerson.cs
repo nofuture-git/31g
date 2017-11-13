@@ -64,7 +64,7 @@ namespace NoFuture.Rand.Domus
         /// </summary>
         /// <param name="dt"></param>
         /// <returns></returns>
-        Opes GetWealthAt(DateTime? dt);
+        WealthBase GetWealthAt(DateTime? dt);
 
         #endregion
     }

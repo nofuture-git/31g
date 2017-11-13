@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 
 namespace NoFuture.Rand.Core
 {
@@ -38,6 +39,27 @@ namespace NoFuture.Rand.Core
         public override int GetHashCode()
         {
             return Value?.GetHashCode() ?? 0;
+        }
+
+        /// <summary>
+        /// Gets the value where only the last four chars are displayed
+        /// the other chars are replaced with &apos;X&apos;
+        /// </summary>
+        /// <returns></returns>
+        public virtual string ValueLastFour()
+        {
+            var bldr = new StringBuilder();
+            var val = Value;
+            if (string.IsNullOrWhiteSpace(val))
+                return ToString();
+
+            for (var i = 0; i < val.Length - 4; i++)
+            {
+                bldr.Append("X");
+            }
+            var lastFour = val.Substring(val.Length - 4, 4);
+            bldr.Append(lastFour);
+            return bldr.ToString();
         }
     }
 }
