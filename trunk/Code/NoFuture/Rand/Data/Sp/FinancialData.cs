@@ -5,12 +5,12 @@ namespace NoFuture.Rand.Data.Sp
     [Serializable]
     public class FinancialData
     {
-        public SpIncome Income { get; set; }
-        public SpAssets Assets { get; set; }
+        public IncomeSummary IncomeSummary { get; set; }
+        public AssetsSummary AssetsSummary { get; set; }
         public override string ToString()
         {
-            var i = Income?.ToString() ?? "0";
-            var w = Assets?.ToString() ?? "0";
+            var i = IncomeSummary?.ToString() ?? "0";
+            var w = AssetsSummary?.ToString() ?? "0";
             return $"{w} {i}";
         }
     }

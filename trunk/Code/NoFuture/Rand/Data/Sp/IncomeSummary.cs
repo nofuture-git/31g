@@ -7,7 +7,7 @@ namespace NoFuture.Rand.Data.Sp
     /// An aggregate type to represent a summary of income in terms of <see cref="Pecuniam"/>
     /// </summary>
     [Serializable]
-    public class SpIncome : ICited
+    public class IncomeSummary : ICited
     {
         public string Src { get; set; }
         public Pecuniam Revenue { get; set; }

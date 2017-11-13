@@ -4,6 +4,9 @@ using NoFuture.Rand.Data.Endo;
 
 namespace NoFuture.Rand.Domus
 {
+    /// <summary>
+    /// A composition type to contain a home address.
+    /// </summary>
     [Serializable]
     public class ResidentAddress : DiachronIdentifier
     {

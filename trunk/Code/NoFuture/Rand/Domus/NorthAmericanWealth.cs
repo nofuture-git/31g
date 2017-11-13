@@ -184,18 +184,18 @@ namespace NoFuture.Rand.Domus
             var totalIncome = new Pecuniam(allPaymentsIn.Sum(x => x.Amount));
             var totalExpense = new Pecuniam(allPaymentsOut.Sum(x => x.Amount));
 
-            var netConIncome = new SpIncome
+            var netConIncome = new IncomeSummary
             {
                 Revenue = totalIncome.Round,
                 NetIncome = totalIncome.Abs.Round - totalExpense.Abs.Round
             };
-            var netConAssets = new SpAssets
+            var netConAssets = new AssetsSummary
             {
                 TotalAssets = GetTotalCurrentWealth(endDt).Abs.Round,
                 TotalLiabilities = GetTotalCurrentDebt(endDt).Abs.Round
             };
 
-            return new FinancialData {Assets = netConAssets, Income = netConIncome};
+            return new FinancialData {AssetsSummary = netConAssets, IncomeSummary = netConIncome};
         }
 
         /// <summary>

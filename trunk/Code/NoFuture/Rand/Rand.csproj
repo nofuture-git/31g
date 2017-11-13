@@ -55,7 +55,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Com\Bank.cs" />
-    <Compile Include="Com\BankAssets.cs" />
+    <Compile Include="Com\BankAssetsSummary.cs" />
     <Compile Include="Com\IFirm.cs" />
     <Compile Include="Com\TickerComparer.cs" />
     <Compile Include="Com\TypeOfBank.cs" />
@@ -104,8 +104,8 @@
     <Compile Include="Data\Sp\Enums\SecurityIssueGroup.cs" />
     <Compile Include="Data\Sp\Enums\SpStatus.cs" />
     <Compile Include="Data\Sp\SecuredFixedRateLoan.cs" />
-    <Compile Include="Data\Sp\SpAssets.cs" />
-    <Compile Include="Data\Sp\SpIncome.cs" />
+    <Compile Include="Data\Sp\AssetsSummary.cs" />
+    <Compile Include="Data\Sp\IncomeSummary.cs" />
     <Compile Include="Data\Sp\TradelineClosure.cs" />
     <Compile Include="Data\Sp\Cc\VisaCc.cs" />
     <Compile Include="Data\Sp\TransactionComparer.cs" />

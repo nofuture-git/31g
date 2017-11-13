@@ -7,7 +7,7 @@ namespace NoFuture.Rand.Data.Sp
     /// An aggregate type to represent a summary of assets in terms of <see cref="Pecuniam"/>
     /// </summary>
     [Serializable]
-    public class SpAssets : ICited
+    public class AssetsSummary : ICited
     {
         public string Src { get; set; }
         public Pecuniam DomesticAssets { get; set; }

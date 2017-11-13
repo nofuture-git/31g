@@ -24,7 +24,7 @@ namespace NoFuture.Rand.Com
         }
 
         public bool IsInternational { get; set; }
-        public Dictionary<DateTime, BankAssets> Assets { get; set; }
+        public Dictionary<DateTime, BankAssetsSummary> Assets { get; set; }
 
         public override string ToString()
         {
