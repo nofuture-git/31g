@@ -7,6 +7,7 @@ using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Data.Exo;
 using NoFuture.Rand.Data.Exo.NfHtml;
+using NoFuture.Rand.Exo.Tests;
 using NoFuture.Rand.Gov.Sec;
 
 namespace NoFuture.Tests.Rand.NfHtmlTests

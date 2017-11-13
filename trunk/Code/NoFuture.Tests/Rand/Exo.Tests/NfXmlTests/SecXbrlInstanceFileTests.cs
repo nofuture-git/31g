@@ -3,6 +3,7 @@ using System.Linq;
 using System.Xml;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NoFuture.Rand.Data.Exo.NfXml;
+using NoFuture.Rand.Exo.Tests;
 
 namespace NoFuture.Tests.Rand.NfXmlTests
 {

@@ -2,10 +2,10 @@
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NoFuture.Rand;
+using NoFuture.Rand.Com;
 using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Data;
 using NoFuture.Rand.Data.Endo;
-using NoFuture.Rand.Data.Exo.NfText;
 using NoFuture.Rand.Gov.Fed;
 using NoFuture.Util.Core;
 
@@ -45,10 +45,12 @@ namespace NoFuture.Tests.Rand
         [TestMethod]
         public void TestXrefOnTypes()
         {
-            var testInput = FedLrgBnk.CommercialBankData;
-            Assert.AreNotEqual(0, testInput.Length);
 
-            var testTarget = testInput.FirstOrDefault(x => x.GetName(KindsOfNames.Abbrev) == "JPMORGAN CHASE BK NA");
+            var testTarget = new Bank();
+            testTarget.UpsertName(KindsOfNames.Legal, "JPMorgan Chase Bank, N.A.");
+            testTarget.UpsertName(KindsOfNames.Abbrev, "JPMORGAN CHASE BK NA");
+            testTarget.Rssd = new ResearchStatisticsSupervisionDiscount {Value = "852218" };
+
 
             Assert.IsNotNull(testTarget);
 
@@ -67,7 +69,10 @@ namespace NoFuture.Tests.Rand
             System.Diagnostics.Debug.WriteLine(testTarget.SIC.ToString());
 
             //test nothing found - no problems and no change
-            testTarget = testInput.FirstOrDefault(x => x.GetName(KindsOfNames.Abbrev) == "STATE STREET B&TC");
+            testTarget = new Bank();
+            testTarget.UpsertName(KindsOfNames.Legal, "Pacific Western Bank");
+            testTarget.UpsertName(KindsOfNames.Abbrev, "PACIFIC WESTERN BK");
+            testTarget.Rssd = new ResearchStatisticsSupervisionDiscount { Value = "494261" };
 
             Assert.IsNotNull(testTarget);
             Assert.IsNull(testTarget.CIK);
@@ -96,9 +101,6 @@ namespace NoFuture.Tests.Rand
             testValues = new RoutingTransitNumber { Value = "787454541" };
             testResult = XRefGroup.AddXrefValues(testXrefId, testValues, "RoutingNumber");
             Assert.IsTrue(testResult);
-
-            NfPath.SaveXml(TreeData.XRefXml,
-                TestAssembly.UnitTestsRoot + @"\Rand\XRefTestRslt.xml");
 
         }
     }
