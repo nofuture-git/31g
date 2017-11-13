@@ -56,7 +56,6 @@
     <EmbeddedResource Include="CA_AreaCode.xml" />
     <EmbeddedResource Include="CA_Zip.xml" />
     <EmbeddedResource Include="English_Words.xml" />
-    <EmbeddedResource Include="lrg_bnk_lst.txt" />
     <EmbeddedResource Include="US_AreaCode.xml" />
     <EmbeddedResource Include="US_City.xml" />
     <EmbeddedResource Include="US_EconSectors.xml" />

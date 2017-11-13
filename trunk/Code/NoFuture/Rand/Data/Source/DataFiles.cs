@@ -21,7 +21,6 @@ namespace NoFuture.Rand.Data.Source
         public const string US_CITY_DATA_FILE = "US_City.xml";
         public const string X_REF_DATA_FILE = "XRef.xml";
         public const string US_ZIP_PROB_TABLE_DATA_FILE = "US_Zip_ProbTable.xml";
-        public const string LRG_BNK_LST_DATA_FILE = "lrg_bnk_lst.txt";
         public const string US_PERSON_DEBT_DATA_FILE = "US_PersonalDebt.xml";
         public const string US_PERSON_WEALTH_DATA_FILE = "US_PersonalWealth.xml";
         public const string VIN_WMI_DATA_FILE = "Vin_Wmi.xml";
