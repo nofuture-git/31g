@@ -88,7 +88,9 @@ namespace NoFuture.Rand.Domus
             if(american == null)
                 throw new ArgumentNullException(nameof(american));
             _amer = american;
-            var usCityArea = _amer.Address.HomeCityArea as UsCityStateZip;
+            if(_amer.Address == null)
+                _amer.AddAddress(ResidentAddress.GetRandomAmericanAddr());
+            var usCityArea = _amer?.Address?.HomeCityArea as UsCityStateZip;
             if (usCityArea == null)
                 return;
 

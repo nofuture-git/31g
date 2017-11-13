@@ -56,7 +56,7 @@ namespace NoFuture.Tests.Rand
 
             //verify the properties have no value prior to test
             Assert.IsNull(testTarget.CIK);
-            Assert.IsNull(testTarget.TickerSymbols);
+            Assert.IsTrue(!testTarget.TickerSymbols.Any());
 
             testTarget.LoadXrefXmlData();
 
@@ -76,18 +76,12 @@ namespace NoFuture.Tests.Rand
 
             Assert.IsNotNull(testTarget);
             Assert.IsNull(testTarget.CIK);
-            Assert.IsNull(testTarget.TickerSymbols);
+            Assert.IsTrue(!testTarget.TickerSymbols.Any());
 
             testTarget.LoadXrefXmlData();
 
-            Assert.IsNotNull(testTarget.CIK);
-            Assert.IsNotNull(testTarget.TickerSymbols);
-
-            System.Diagnostics.Debug.WriteLine(testTarget.CIK.ToString());
-            System.Diagnostics.Debug.WriteLine(testTarget.TickerSymbols[0].Symbol);
-            System.Diagnostics.Debug.WriteLine(testTarget.TickerSymbols[0].Exchange);
-            System.Diagnostics.Debug.WriteLine(testTarget.SIC.ToString());
-
+            Assert.IsNull(testTarget.CIK);
+            Assert.IsTrue(!testTarget.TickerSymbols.Any());
         }
         [TestMethod]
         public void TestAddXrefValues()

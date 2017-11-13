@@ -13,7 +13,7 @@ namespace NoFuture.Tests.Rand
         public void TestVinNoValues()
         {
             var testSubject = new NoFuture.Rand.Gov.Nhtsa.Vin();
-            Assert.AreEqual("00000000000000000", testSubject.ToString());
+            Assert.AreEqual("000000A0200000000", testSubject.ToString());
         }
 
         [TestMethod]

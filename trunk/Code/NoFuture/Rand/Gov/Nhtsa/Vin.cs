@@ -175,10 +175,7 @@ namespace NoFuture.Rand.Gov.Nhtsa
             return GetVinWithChkDigit(_chkDigit);
         }
 
-        public override string Abbrev
-        {
-            get { return "VIN"; }
-        }
+        public override string Abbrev => "VIN";
 
         protected internal virtual bool ContainsInvalidChars(string s)
         {

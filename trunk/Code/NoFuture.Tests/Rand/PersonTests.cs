@@ -30,13 +30,6 @@ namespace NoFuture.Tests.Rand
             Assert.IsFalse(string.IsNullOrWhiteSpace(testResult.LastName));
             Assert.IsFalse(string.IsNullOrWhiteSpace(testResult.FirstName));
             Assert.IsNotNull(testResult.BirthCert);
-            Assert.IsNotNull(testResult.Address);
-            Assert.IsNotNull(testResult.Address.HomeCityArea);
-            Assert.IsInstanceOfType(testResult.Address.HomeCityArea, typeof(UsCityStateZip));
-            Assert.IsNotNull(((UsCityStateZip)testResult.Address.HomeCityArea).State);
-            Assert.IsNotNull(testResult.DriversLicense);
-            //Assert.IsNotNull(testResult.GetMother());
-            //Assert.AreNotEqual(0, testResult.GetMother().GetChildrenAt(null));
         }
 
         [TestMethod]
@@ -95,6 +88,7 @@ namespace NoFuture.Tests.Rand
             var testResult = new NorthAmericanEdu(p);
             Assert.IsNotNull(testResult);
             Assert.IsNotNull(testResult.HighSchool);
+            Assert.IsNotNull(testResult.HighSchool.Item1);
             WriteLine(testResult.HighSchool);
             WriteLine(testResult.College);
         }
@@ -105,8 +99,10 @@ namespace NoFuture.Tests.Rand
             var amer = new NorthAmerican(DateTime.Now.AddYears(-9), Gender.Female);
             var testResult = new NorthAmericanEdu(amer);
             Assert.IsNotNull(testResult);
-            Assert.IsNull(testResult.HighSchool);
-            Assert.IsNull(testResult.College);
+            Assert.IsNotNull(testResult.HighSchool);
+            Assert.IsNull(testResult.HighSchool.Item1);
+            Assert.IsNotNull(testResult.College);
+            Assert.IsNull(testResult.College.Item1);
         }
 
         [TestMethod]

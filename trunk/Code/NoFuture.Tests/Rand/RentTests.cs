@@ -78,7 +78,7 @@ namespace NoFuture.Tests.Rand
             Assert.AreEqual(new Pecuniam(-700), testResult);
 
             //pay first month at exact same time only as another transaction
-            testSubject.PayRent(new DateTime(DateTime.Today.Year - 1, 12, 31), new Pecuniam(-700));
+            testSubject.PayRent(new DateTime(DateTime.Today.Year - 1, 12, 30), new Pecuniam(-700));
 
             //since rent is not due until tommorrow - there is a 700 credit 
             testResult = testSubject.GetMinPayment(new DateTime(DateTime.Today.Year - 1, 12, 31));

@@ -44,10 +44,10 @@ namespace NoFuture.Tests.Rand
         public void TestCusipChkDigit()
         {
             Assert.AreEqual(0, Cusip.CusipChkDigit("03783310"));
-            Assert.AreEqual(7, Cusip.CusipChkDigit("17275R10"));
-            Assert.AreEqual(3, Cusip.CusipChkDigit("38259P50"));
+            Assert.AreEqual(2, Cusip.CusipChkDigit("17275R10"));
+            Assert.AreEqual(9, Cusip.CusipChkDigit("38259P50"));
             Assert.AreEqual(4, Cusip.CusipChkDigit("59491810"));
-            Assert.AreEqual(0, Cusip.CusipChkDigit("68389X10"));
+            Assert.AreEqual(5, Cusip.CusipChkDigit("68389X10"));
         }
 
         [TestMethod]

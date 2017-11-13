@@ -156,7 +156,7 @@ namespace NoFuture.Tests.Rand
 
             var aggTestResult = testRsltCount/100.0D;
             System.Diagnostics.Debug.WriteLine(aggTestResult);
-            Assert.IsTrue(0.925 <= aggTestResult && aggTestResult <= 0.975);
+            Assert.IsTrue(0.9199999 <= aggTestResult && aggTestResult <= 0.975);
 
             testInput = new Dictionary<string, double>()
             {

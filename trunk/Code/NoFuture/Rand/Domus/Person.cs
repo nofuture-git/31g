@@ -174,7 +174,7 @@ namespace NoFuture.Rand.Domus
         /// this instance's history of addresses.
         /// </summary>
         /// <param name="addr"></param>
-        protected internal void AddAddress(ResidentAddress addr)
+        public void AddAddress(ResidentAddress addr)
         {
             if (addr == null)
                 return;
