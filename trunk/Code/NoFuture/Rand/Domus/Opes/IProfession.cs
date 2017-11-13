@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NoFuture.Rand.Domus
+namespace NoFuture.Rand.Domus.Opes
 {
     public interface IProfession
     {

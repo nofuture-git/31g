@@ -2,7 +2,7 @@
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Data.Endo.Grps;
 
-namespace NoFuture.Rand.Domus
+namespace NoFuture.Rand.Domus.Opes
 {
     public class NorthAmericanEmployment : DiachronIdentifier,  IEmployment
     {

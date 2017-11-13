@@ -113,9 +113,9 @@
     <Compile Include="Data\Sp\VariableRateLoan.cs" />
     <Compile Include="Domus\AmericanCollegeStudent.cs" />
     <Compile Include="Domus\AmericanHighSchoolStudent.cs" />
-    <Compile Include="Domus\IEmployment.cs" />
+    <Compile Include="Domus\Opes\IEmployment.cs" />
     <Compile Include="Domus\IStudent.cs" />
-    <Compile Include="Domus\NorthAmericanEmployment.cs" />
+    <Compile Include="Domus\Opes\NorthAmericanEmployment.cs" />
     <Compile Include="Domus\NorthAmericanStudent.cs" />
     <Compile Include="Domus\Opes\IIncome.cs" />
     <Compile Include="Domus\Opes\IncomeInterval.cs" />
@@ -185,12 +185,12 @@
     <Compile Include="Domus\Child.cs" />
     <Compile Include="Domus\IEducation.cs" />
     <Compile Include="Domus\IPerson.cs" />
-    <Compile Include="Domus\IProfession.cs" />
+    <Compile Include="Domus\Opes\IProfession.cs" />
     <Compile Include="Domus\IRelation.cs" />
     <Compile Include="Domus\NAmerUtil.cs" />
     <Compile Include="Domus\NorthAmerican.cs" />
     <Compile Include="Domus\NorthAmericanEdu.cs" />
-    <Compile Include="Domus\NorthAmericanProfession.cs" />
+    <Compile Include="Domus\Opes\NorthAmericanProfession.cs" />
     <Compile Include="Domus\Opes\NorthAmericanWealth.cs" />
     <Compile Include="Domus\Opes\WealthBase.cs" />
     <Compile Include="Domus\Parent.cs" />

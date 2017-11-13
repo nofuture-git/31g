@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NoFuture.Rand.Core;
 
-namespace NoFuture.Rand.Domus
+namespace NoFuture.Rand.Domus.Opes
 {
     public class NorthAmericanProfession : IProfession
     {
