@@ -11,7 +11,7 @@ using NoFuture.Rand.Data.Sp.Cc;
 using NoFuture.Rand.Data.Sp.Enums;
 using NoFuture.Util.Core.Math;
 
-namespace NoFuture.Rand.Domus
+namespace NoFuture.Rand.Domus.Opes
 {
     /// <summary>
     /// For generating the financial state and history of a <see cref="NorthAmerican"/>

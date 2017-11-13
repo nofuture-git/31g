@@ -8,7 +8,7 @@ using NoFuture.Rand.Domus.Pneuma;
 using NoFuture.Util.Core;
 using NoFuture.Util.Core.Math;
 
-namespace NoFuture.Rand.Domus
+namespace NoFuture.Rand.Domus.Opes
 {
     [Serializable]
     public abstract class WealthBase

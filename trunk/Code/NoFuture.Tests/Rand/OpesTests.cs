@@ -6,6 +6,7 @@ using NoFuture.Rand.Data.Sp;
 using NoFuture.Rand.Data.Sp.Cc;
 using NoFuture.Rand.Data.Sp.Enums;
 using NoFuture.Rand.Domus;
+using NoFuture.Rand.Domus.Opes;
 
 namespace NoFuture.Rand.Tests
 {
