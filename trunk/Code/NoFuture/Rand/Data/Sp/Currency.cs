@@ -16,10 +16,7 @@ namespace NoFuture.Rand.Data.Sp
 
         public override string Value
         {
-            get
-            {
-                return Abbrev;
-            }
+            get => Abbrev;
             set
             {
                 if (!Enum.TryParse(value, true, out _abbrev))

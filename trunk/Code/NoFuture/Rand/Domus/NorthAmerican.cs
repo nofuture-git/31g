@@ -1,18 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Data;
 using NoFuture.Rand.Data.Endo;
 using NoFuture.Rand.Data.Sp;
-using NoFuture.Rand.Domus.Pneuma;
 using NoFuture.Rand.Edu;
 using NoFuture.Rand.Gov;
-using NoFuture.Shared;
 using NoFuture.Shared.Core;
-using NoFuture.Util;
 using NoFuture.Util.Core;
 
 namespace NoFuture.Rand.Domus
@@ -158,10 +154,7 @@ namespace NoFuture.Rand.Domus
                 var hph = _phoneNumbers.FirstOrDefault(x => x.Item1 == KindsOfLabels.Home);
                 return hph?.Item2;
             }
-            set
-            {
-                _phoneNumbers.Add(new Tuple<KindsOfLabels, NorthAmericanPhone>(KindsOfLabels.Home, value));
-            }
+            set => _phoneNumbers.Add(new Tuple<KindsOfLabels, NorthAmericanPhone>(KindsOfLabels.Home, value));
         }
 
         /// <summary>
@@ -174,17 +167,18 @@ namespace NoFuture.Rand.Domus
                 var mobilePh = _phoneNumbers.FirstOrDefault(x => x.Item1 == KindsOfLabels.Mobile);
                 return mobilePh?.Item2;
             }
-            set
-            {
-                _phoneNumbers.Add(new Tuple<KindsOfLabels, NorthAmericanPhone>(KindsOfLabels.Mobile, value));
-            }
+            set => _phoneNumbers.Add(new Tuple<KindsOfLabels, NorthAmericanPhone>(KindsOfLabels.Mobile, value));
         }
 
         /// <summary>
         /// Get or sets the United States <see cref="SocialSecurityNumber"/> 
         /// of this instance.
         /// </summary>
-        public virtual SocialSecurityNumber Ssn { get {return _ssn;} set { _ssn = value; } }
+        public virtual SocialSecurityNumber Ssn
+        {
+            get => _ssn;
+            set => _ssn = value;
+        }
 
         /// <summary>
         /// Gets or sets the <see cref="NorthAmericanRace"/> of this instance.
@@ -216,12 +210,15 @@ namespace NoFuture.Rand.Domus
         /// </summary>
         public string MiddleName
         {
-            get { return GetName(KindsOfNames.Middle); }
-            set { UpsertName(KindsOfNames.Middle, value); }
-
+            get => GetName(KindsOfNames.Middle);
+            set => UpsertName(KindsOfNames.Middle, value);
         }
 
-        public override DeathCert DeathCert { get {return _deathCert;} set { _deathCert = value; } }
+        public override DeathCert DeathCert
+        {
+            get => _deathCert;
+            set => _deathCert = value;
+        }
 
         #endregion
 
@@ -546,7 +543,7 @@ namespace NoFuture.Rand.Domus
 
         /// <summary>
         /// Will create a current and, possiably, past spouses for this instance.
-        /// Calc' will be based on DOB and <see cref="IPerson.MyGender"/>.
+        /// Calc will be based on DOB and <see cref="IPerson.MyGender"/>.
         /// </summary>
         /// <param name="myMaritialStatus"></param>
         /// <param name="atDate">Optional, defaults to now</param>
@@ -631,10 +628,7 @@ namespace NoFuture.Rand.Domus
                 foreach (var s in _spouses.Where(x => x.Est != null && x.Est.MyGender == Gender.Female))
                 {
                     var nAmerSpouse = s.Est as NorthAmerican;
-                    if (nAmerSpouse == null)
-                        continue;
-                    nAmerSpouse.ResolveChildren();
-
+                    nAmerSpouse?.ResolveChildren();
                 }
                 return;
             }
@@ -697,8 +691,7 @@ namespace NoFuture.Rand.Domus
                 return;
 
             var dt = DateTime.Now;
-            DateTime dtOut;
-            if (IsTwin(myChildDob, out dtOut) && DateTime.Compare(dtOut, DateTime.MinValue) != 0)
+            if (IsTwin(myChildDob, out var dtOut) && DateTime.Compare(dtOut, DateTime.MinValue) != 0)
             {
                 myChildDob = dtOut;
             }
@@ -880,7 +873,7 @@ namespace NoFuture.Rand.Domus
             _spouses.Add(new Spouse(this, nAmerSpouse, marriedOn, separatedOn, _spouses.Count + 1));
 
             //recepricate to spouse
-            nAmerSpouse?.AddSpouse(this, marriedOn, separatedOn);
+            nAmerSpouse.AddSpouse(this, marriedOn, separatedOn);
         }
 
         protected internal override bool IsLegalAdult(DateTime? dt)

@@ -18,6 +18,5 @@ namespace NoFuture.Rand.Gov.Nhtsa
             Position1Base = position;
             Len = length;
         }
-
     }
 }

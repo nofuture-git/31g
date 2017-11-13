@@ -77,7 +77,11 @@ namespace NoFuture.Rand.Gov.Fed
         public string FedDistrict { get; set; }
         public string CheckProcCenter { get; set; }
         public string AbaInstitutionId { get; set; }
-        public int CheckDigit { get { return _checkDigit; } set { _checkDigit = value; } }
+        public int CheckDigit
+        {
+            get => _checkDigit;
+            set => _checkDigit = value;
+        }
         public override string Value
         {
             get

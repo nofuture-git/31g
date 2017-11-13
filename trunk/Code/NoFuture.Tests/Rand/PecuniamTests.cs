@@ -5,7 +5,7 @@ using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NoFuture.Rand.Data.Sp;
 
-namespace NoFuture.Tests.Rand
+namespace NoFuture.Rand.Tests
 {
     [TestClass]
     public class PecuniamTests
@@ -144,7 +144,7 @@ namespace NoFuture.Tests.Rand
             var testResult = testBalance.GetCurrent(DateTime.Now, 0.0875f);
 
             Assert.IsTrue(testResult.Amount <= 4723.45M || testResult.Amount >= 4723.46M);
-            System.Diagnostics.Debug.WriteLine(testResult.Amount);
+            Debug.WriteLine(testResult.Amount);
 
         }
 

@@ -1,10 +1,8 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NoFuture.Rand.Data.Endo;
 using NoFuture.Rand.Data.Endo.Grps;
 
-namespace NoFuture.Tests.Rand
+namespace NoFuture.Rand.Tests
 {
     [TestClass]
     public class DataTypesTests
@@ -20,7 +18,7 @@ namespace NoFuture.Tests.Rand
         [TestMethod]
         public void TestListData()
         {
-            var testResult = NoFuture.Rand.Data.ListData.WebmailDomains;
+            var testResult = Data.ListData.WebmailDomains;
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0, testResult.Length);
         }
@@ -28,7 +26,7 @@ namespace NoFuture.Tests.Rand
         [TestMethod]
         public void TestEnglishWords()
         {
-            var testResult = NoFuture.Rand.Data.TreeData.EnglishWords;
+            var testResult = Data.TreeData.EnglishWords;
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0,testResult.Count);
             var testResultItem = testResult.FirstOrDefault(x => x.Item1 == "it");

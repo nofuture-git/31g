@@ -36,7 +36,7 @@ namespace NoFuture.Rand.Data.Sp.Cc
 
         public DateTime? Terminus
         {
-            get { return TradeLine.Closure?.ClosedDate; }
+            get => TradeLine.Closure?.ClosedDate;
             set
             {
                 if (value.HasValue)

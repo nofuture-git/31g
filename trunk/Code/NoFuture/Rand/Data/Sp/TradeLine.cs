@@ -4,6 +4,9 @@ using NoFuture.Rand.Data.Sp.Enums;
 
 namespace NoFuture.Rand.Data.Sp
 {
+    /// <summary>
+    /// Represents the item reported to a Credit Bureau
+    /// </summary>
     [Serializable]
     public class TradeLine : Identifier, ITradeLine
     {
@@ -27,7 +30,12 @@ namespace NoFuture.Rand.Data.Sp
         public FormOfCredit FormOfCredit { get; set; }
         public Pecuniam CreditLimit { get; set; }
         public IBalance Balance => _balance;
-        public TimeSpan DueFrequency { get { return _dueFrequency; } set { _dueFrequency = value; }}
+
+        public TimeSpan DueFrequency
+        {
+            get => _dueFrequency;
+            set => _dueFrequency = value;
+        }
         public DateTime OpennedDate => _openDate;
         public TradelineClosure? Closure { get; set; }
         #endregion

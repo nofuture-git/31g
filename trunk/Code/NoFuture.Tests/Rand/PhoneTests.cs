@@ -1,13 +1,11 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NoFuture.Rand.Data.Endo;
 
-namespace NoFuture.Tests.Rand
+namespace NoFuture.Rand.Tests
 {
     [TestClass]
     public class PhoneTests
     {
-
-
         [TestMethod]
         public void AmericanPhoneTests()
         {
@@ -70,8 +68,7 @@ namespace NoFuture.Tests.Rand
         public void TestTryParse()
         {
             var testInput = "5184154299";
-            NorthAmericanPhone testResultOut;
-            var testResult = NorthAmericanPhone.TryParse(testInput, out testResultOut);
+            var testResult = NorthAmericanPhone.TryParse(testInput, out var testResultOut);
             Assert.IsTrue(testResult);
             Assert.IsNotNull(testResultOut);
             Assert.AreEqual("518",testResultOut.AreaCode);

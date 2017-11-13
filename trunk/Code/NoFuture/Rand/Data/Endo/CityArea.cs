@@ -86,8 +86,9 @@ namespace NoFuture.Rand.Data.Endo
                 zipCodePrefix = NAmerUtil.RandomAmericanZipWithRespectToPop() ?? UsCityStateZip.DF_ZIPCODE_PREFIX;
 
             //x-ref it to the zip code data
+            var xpathString = $"//{ZIP_CODE_PLURAL}//{ZIP_CODE_SINGULAR}[@{PREFIX}='{zipCodePrefix}']";
             var randZipCode =
-                TreeData.AmericanZipCodeData.SelectSingleNode($"//{ZIP_CODE_PLURAL}//{ZIP_CODE_SINGULAR}[@{PREFIX}='{zipCodePrefix}']");
+                TreeData.AmericanZipCodeData.SelectSingleNode(xpathString);
             if (randZipCode?.ParentNode?.Attributes?[NAME] == null)
             {
                 ctz.City = UsCityStateZip.DF_CITY_NAME;

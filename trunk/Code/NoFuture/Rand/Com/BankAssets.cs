@@ -3,6 +3,9 @@ using NoFuture.Rand.Data.Sp;
 
 namespace NoFuture.Rand.Com
 {
+    /// <summary>
+    /// Additional data on a bank in the US Fed
+    /// </summary>
     [Serializable]
     public class BankAssets : SpAssets
     {

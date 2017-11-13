@@ -3,13 +3,22 @@ using System.Linq;
 
 namespace NoFuture.Rand.Data.Endo
 {
+    /// <summary>
+    /// An underlying data store which allows for a postal address 
+    /// to be expressed in various forms
+    /// </summary>
     [Serializable]
     public class AddressData
     {
         private string _city;
 
+        /// <summary>
+        /// Typical American address 
+        /// as &apos;1600 Pennsylvania Ave NW, Washington, DC 20500&apos;
+        /// this is the &apos;1600&apos;
+        /// </summary>
         public string AddressNumber { get; set; }
-        public string StreetNamePreDirectional { get; set; }
+        public string StreetNameDirectional { get; set; }
         public string StreetName { get; set; }
         public string StreetType { get; set; }
         public string SecondaryUnitDesignator { get; set; }
@@ -24,7 +33,7 @@ namespace NoFuture.Rand.Data.Endo
                     _city = _city.Replace(",", "");
                 return _city;
             }
-            set { _city = value; }
+            set => _city = value;
         }
         public string StateAbbrv { get; set; }
         public string StateName { get; set; }
@@ -42,7 +51,7 @@ namespace NoFuture.Rand.Data.Endo
             var p = new[]
             {
                 string.Equals(ad.AddressNumber, AddressNumber, StringComparison.OrdinalIgnoreCase),
-                string.Equals(ad.StreetNamePreDirectional, StreetNamePreDirectional, StringComparison.OrdinalIgnoreCase),
+                string.Equals(ad.StreetNameDirectional, StreetNameDirectional, StringComparison.OrdinalIgnoreCase),
                 string.Equals(ad.StreetName, StreetName, StringComparison.OrdinalIgnoreCase),
                 string.Equals(ad.StreetType, StreetType, StringComparison.OrdinalIgnoreCase),
                 string.Equals(ad.SecondaryUnitDesignator, SecondaryUnitDesignator, StringComparison.OrdinalIgnoreCase),
@@ -63,7 +72,7 @@ namespace NoFuture.Rand.Data.Endo
         {
 
             return (AddressNumber?.ToLower().GetHashCode() ?? 0) +
-                   (StreetNamePreDirectional?.ToLower().GetHashCode() ?? 0) +
+                   (StreetNameDirectional?.ToLower().GetHashCode() ?? 0) +
                    (StreetName?.ToLower().GetHashCode() ?? 0) +
                    (StreetType?.ToLower().GetHashCode() ?? 0) +
                    (SecondaryUnitDesignator?.ToLower().GetHashCode() ?? 0) +

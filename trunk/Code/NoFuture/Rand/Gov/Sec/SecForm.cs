@@ -9,7 +9,7 @@ namespace NoFuture.Rand.Gov.Sec
     public abstract class SecForm : Identifier
     {
         #region constants
-        public const string NotificationOfInabilityToTimelyFile = "NT";
+        public const string NOTIFICATION_OF_INABILITY_TO_TIMELY_FILE = "NT";
         #endregion
 
         #region fields
@@ -28,7 +28,7 @@ namespace NoFuture.Rand.Gov.Sec
         public Uri HtmlFormLink { get; set; }
         
         /// <summary>
-        /// Reports prefixed with <see cref="NotificationOfInabilityToTimelyFile"/> will 
+        /// Reports prefixed with <see cref="NOTIFICATION_OF_INABILITY_TO_TIMELY_FILE"/> will 
         /// have this set to true.
         /// </summary>
         public bool IsLate { get; set; }

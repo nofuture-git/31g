@@ -7,6 +7,12 @@ using NoFuture.Rand.Core;
 
 namespace NoFuture.Rand.Data.Endo
 {
+    /// <summary>
+    /// Telephone numbers in North America based on the  North American Numbering Plan
+    /// </summary>
+    /// <remarks>
+    /// see [https://en.wikipedia.org/wiki/North_American_Numbering_Plan]
+    /// </remarks>
     [Serializable]
     public class NorthAmericanPhone : Phone
     {
@@ -25,6 +31,7 @@ namespace NoFuture.Rand.Data.Endo
             SubscriberCode
         }
         #endregion
+
         #region ctor
 
         public NorthAmericanPhone(params Tuple<PhoneCodes, string>[] parts)
@@ -50,22 +57,29 @@ namespace NoFuture.Rand.Data.Endo
         #endregion
 
         #region properties
+        /// <summary>
+        /// The first 3 digits of a telephone number
+        /// </summary>
         public string AreaCode => _areaCode;
+
+        /// <summary>
+        /// The middle 3 digits of a telephone number
+        /// </summary>
         public string CentralOfficeCode => _centralOfficeCode;
+
+        /// <summary>
+        /// The last 4 digits of a telephone number
+        /// </summary>
         public string SubscriberNumber => _subscriberCode;
 
         public static IEnumerable<string> TollFreeAreaCodes = new[] { "800", "888", "877", "866", "855", "844" };
 
         public override string Value
         {
-            get
-            {
-                return Formatted;
-            }
+            get => Formatted;
             set
             {
-                NorthAmericanPhone phout;
-                if(!TryParse(value, out phout))
+                if(!TryParse(value, out var phout))
                     throw new InvalidOperationException($"Cannot parse the value '{value}' into " +
                                                         "a North American phone number");
                 _areaCode = phout.AreaCode;
@@ -76,8 +90,15 @@ namespace NoFuture.Rand.Data.Endo
 
         public override string Abbrev => "PH";
 
+        /// <summary>
+        /// Formatted as (###) ###-####
+        /// the typical &apos;1&apos; before the area code is never included
+        /// </summary>
         public override string Formatted => $"({AreaCode}) {CentralOfficeCode}-{SubscriberNumber}";
 
+        /// <summary>
+        /// All 10 digits of the telephone number with no additional chars
+        /// </summary>
         public override string Unformatted => $"{AreaCode}{CentralOfficeCode}{SubscriberNumber}";
 
         public override string Notes { get; set; }
@@ -111,6 +132,12 @@ namespace NoFuture.Rand.Data.Endo
                    (SubscriberNumber?.ToLower().GetHashCode() ?? 0);
         }
 
+        /// <summary>
+        /// Attempts to parse a string into a <see cref="NorthAmericanPhone"/>
+        /// </summary>
+        /// <param name="phNumber"></param>
+        /// <param name="phone"></param>
+        /// <returns></returns>
         public static bool TryParse(string phNumber, out NorthAmericanPhone phone)
         {
             string con;
@@ -158,6 +185,12 @@ namespace NoFuture.Rand.Data.Endo
 
         }
 
+        /// <summary>
+        /// Creates a random Area Code.
+        /// Does not return any value ending in &apos;11&apos; nor
+        /// any value in the <see cref="TollFreeAreaCodes"/>
+        /// </summary>
+        /// <returns></returns>
         protected internal static string GetRandomAreaCode()
         {
             var phstr = new StringBuilder();
@@ -170,6 +203,11 @@ namespace NoFuture.Rand.Data.Endo
             return areaCode;
         }
 
+        /// <summary>
+        /// Creates a random Central Office Code.
+        /// Does not return any value ending in &apos;11&apos;
+        /// </summary>
+        /// <returns></returns>
         protected internal static string GetRandomCentralOfficeCode()
         {
             var phstr = new StringBuilder();

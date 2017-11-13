@@ -5,6 +5,9 @@ using NoFuture.Rand.Data.Endo.Grps;
 
 namespace NoFuture.Rand.Com
 {
+    /// <summary>
+    /// A public corporation which is in the Finacial sector
+    /// </summary>
     [Serializable]
     public class FinancialFirm : PublicCorporation
     {
@@ -17,7 +20,6 @@ namespace NoFuture.Rand.Com
 
             PrimarySector =
                 superSectors.SelectMany(x => x.Divisions)
-                    .Cast<NaicsPrimarySector>()
                     .FirstOrDefault(x => x.Value == FIFTY_TWO);
         }
 

@@ -6,6 +6,9 @@ using NoFuture.Rand.Data.Endo.Grps;
 
 namespace NoFuture.Rand.Com
 {
+    /// <summary>
+    /// A base implementation of <see cref="IFirm"/>
+    /// </summary>
     [Serializable]
     public abstract class Firm : VocaBase, IFirm
     {
@@ -35,7 +38,7 @@ namespace NoFuture.Rand.Com
                     ResolveNaicsOnSic();
                 return _primarySector;
             }
-            set { _primarySector = value; }
+            set => _primarySector = value;
         }
 
         public NaicsSector Sector
@@ -46,7 +49,7 @@ namespace NoFuture.Rand.Com
                     ResolveNaicsOnSic();
                 return _sector;
             }
-            set { _sector = value; }
+            set => _sector = value;
         }
 
         public NaicsMarket Market
@@ -57,10 +60,14 @@ namespace NoFuture.Rand.Com
                     ResolveNaicsOnSic();
                 return _market;
             }
-            set { _market = value; }
+            set => _market = value;
         }
 
-        public int FiscalYearEndDay { get { return _fiscalYearEndDay; } set { _fiscalYearEndDay = value; } }
+        public int FiscalYearEndDay
+        {
+            get => _fiscalYearEndDay;
+            set => _fiscalYearEndDay = value;
+        }
         #endregion
 
         #region methods

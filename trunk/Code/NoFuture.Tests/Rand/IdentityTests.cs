@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NoFuture.Rand;
-using NoFuture.Rand.Com;
-using NoFuture.Rand.Data.Endo;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NoFuture.Rand.Data.Endo.Grps;
 
-namespace NoFuture.Tests.Rand
+namespace NoFuture.Rand.Tests
 {
     [TestClass]
     public class IdentityTests

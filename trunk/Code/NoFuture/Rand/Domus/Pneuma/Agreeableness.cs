@@ -6,6 +6,5 @@ namespace NoFuture.Rand.Domus.Pneuma
     public class Agreeableness : Trait
     {
         public override string Abbrev => "A";
-
     }
 }

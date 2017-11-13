@@ -93,7 +93,7 @@ namespace NoFuture.Rand.Data.Sp
 
             foreach (var t in trans)
             {
-                Pop(t.AtTime.AddMilliseconds(1), (Pecuniam)t.Cash, Pecuniam.Zero, t.Description);
+                Pop(t.AtTime.AddMilliseconds(1), t.Cash, Pecuniam.Zero, t.Description);
             }
         }
 

@@ -3,6 +3,9 @@ using NoFuture.Rand.Core;
 
 namespace NoFuture.Rand.Data.Sp
 {
+    /// <summary>
+    /// An aggregate type to represent a summary of assets in terms of <see cref="Pecuniam"/>
+    /// </summary>
     [Serializable]
     public class SpAssets : ICited
     {

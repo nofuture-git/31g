@@ -3,6 +3,9 @@ using NoFuture.Rand.Core;
 
 namespace NoFuture.Rand.Data.Sp
 {
+    /// <summary>
+    /// Represents a tradable security of high liquidity
+    /// </summary>
     [Serializable]
     public class Security : Pecuniam
     {

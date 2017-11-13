@@ -9,9 +9,7 @@ using NoFuture.Rand.Data.Endo;
 using NoFuture.Rand.Data.Source;
 using NoFuture.Rand.Edu;
 using NoFuture.Rand.Gov;
-using NoFuture.Shared;
 using NoFuture.Shared.Core;
-using NoFuture.Util;
 using NoFuture.Util.Core;
 using NoFuture.Util.Core.Math;
 
@@ -482,8 +480,7 @@ namespace NoFuture.Rand.Domus
 
             var randPick = Etx.DiscreteRange(raceHashByZip);
 
-            NorthAmericanRace pickOut;
-            Enum.TryParse(randPick, out pickOut);
+            Enum.TryParse(randPick, out NorthAmericanRace pickOut);
 
             return pickOut;
 

@@ -1,15 +1,12 @@
 ﻿using System;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NoFuture.Rand;
 using NoFuture.Rand.Com;
 using NoFuture.Rand.Core.Enums;
-using NoFuture.Rand.Data;
 using NoFuture.Rand.Data.Endo;
 using NoFuture.Rand.Gov.Fed;
-using NoFuture.Util.Core;
 
-namespace NoFuture.Tests.Rand
+namespace NoFuture.Rand.Tests
 {
     [TestClass]
     public class XRefTests

@@ -31,7 +31,7 @@ namespace NoFuture.Rand.Com
                 _tickerSymbols.Sort(new TickerComparer(Name));
                 return _tickerSymbols;
             }
-            set { _tickerSymbols = value; } //XRef.cs needs this as RW
+            set => _tickerSymbols = value;
         }
         public string UrlEncodedName => Uri.EscapeUriString(Cusip.GetSearchCompanyName(Name));
 

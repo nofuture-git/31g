@@ -4,6 +4,9 @@ using NoFuture.Rand.Core;
 
 namespace NoFuture.Rand.Data.Endo
 {
+    /// <summary>
+    /// Base type to represent a telephone number
+    /// </summary>
     [Serializable]
     public abstract class Phone : Identifier
     {

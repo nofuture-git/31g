@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Data.Sp.Enums;
-using NoFuture.Util;
 using NoFuture.Util.Core;
 
 namespace NoFuture.Rand.Data.Sp

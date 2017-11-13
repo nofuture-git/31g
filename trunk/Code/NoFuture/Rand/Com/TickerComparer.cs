@@ -6,6 +6,9 @@ using NoFuture.Shared.Core;
 
 namespace NoFuture.Rand.Com
 {
+    /// <summary>
+    /// For sorting <see cref="TickerSymbol"/>
+    /// </summary>
     [Serializable]
     public class TickerComparer : IComparer<TickerSymbol>
     {

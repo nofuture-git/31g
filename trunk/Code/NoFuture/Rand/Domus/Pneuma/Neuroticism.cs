@@ -6,6 +6,5 @@ namespace NoFuture.Rand.Domus.Pneuma
     public class Neuroticism : Trait
     {
         public override string Abbrev => "N";
-
     }
 }

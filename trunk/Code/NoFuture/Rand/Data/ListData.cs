@@ -4,6 +4,11 @@ using NoFuture.Shared.Core;
 
 namespace NoFuture.Rand.Data
 {
+    /// <summary>
+    /// A container class which exposes all the various
+    /// data present in Rand.Data.Source which takes some 
+    /// kind of simple list form.
+    /// </summary>
     public class ListData
     {
         #region fields

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NoFuture.Rand;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Data.Sp;
@@ -9,7 +8,7 @@ using NoFuture.Rand.Data.Sp.Cc;
 using NoFuture.Rand.Domus;
 using NoFuture.Util.Core;
 
-namespace NoFuture.Tests.Rand
+namespace NoFuture.Rand.Tests
 {
     [TestClass]
     public class CreditCardTests
@@ -38,7 +37,7 @@ namespace NoFuture.Tests.Rand
         [TestMethod]
         public void TestCreditCardCtor()
         {
-            var testInput = new NorthAmerican(NoFuture.Rand.Domus.NAmerUtil.GetWorkingAdultBirthDate(), Gender.Female);
+            var testInput = new NorthAmerican(NAmerUtil.GetWorkingAdultBirthDate(), Gender.Female);
             var testSubject = new VisaCc(testInput, DateTime.Today, null);
 
             Assert.IsNotNull(testSubject.Number);
@@ -52,7 +51,7 @@ namespace NoFuture.Tests.Rand
         [TestMethod]
         public void TestMakePayment()
         {
-            var testInput = new NorthAmerican(NoFuture.Rand.Domus.NAmerUtil.GetWorkingAdultBirthDate(), Gender.Female);
+            var testInput = new NorthAmerican(NAmerUtil.GetWorkingAdultBirthDate(), Gender.Female);
             var testSubject = new CreditCardAccount(new VisaCc(testInput, DateTime.Today.AddDays(-15), null), CreditCardAccount.DF_MIN_PMT_RATE, new Pecuniam(1800.0M));
             Assert.IsTrue(testSubject.Max == new Pecuniam(1800.0M));
 
@@ -61,7 +60,7 @@ namespace NoFuture.Tests.Rand
         [TestMethod]
         public void TestGetMinPayment()
         {
-            var testInput = new NorthAmerican(NoFuture.Rand.Domus.NAmerUtil.GetWorkingAdultBirthDate(), Gender.Female);
+            var testInput = new NorthAmerican(NAmerUtil.GetWorkingAdultBirthDate(), Gender.Female);
             var testSubject = new CreditCardAccount(new VisaCc(testInput, new DateTime(2014,1,11), null), CreditCardAccount.DF_MIN_PMT_RATE, new Pecuniam(1800.0M));
 
             testSubject.Pop(new DateTime(2014, 1, 11), new Pecuniam(63.32M));

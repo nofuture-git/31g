@@ -8,6 +8,10 @@ using NoFuture.Util.Core;
 
 namespace NoFuture.Rand.Data
 {
+    /// <summary>
+    /// A factory for various values whose randomness is dependent of 
+    /// Data contained within Rand.Data.Source
+    /// </summary>
     public static class Facit
     {
         /// <summary>
@@ -31,7 +35,7 @@ namespace NoFuture.Rand.Data
             }
             else
             {
-                host.Append((string) Word());
+                host.Append(Word());
                 host.Append(Etx.DiscreteRange(new[] { ".com", ".net", ".edu", ".org" }));
             }
             return host.ToString();
@@ -61,14 +65,14 @@ namespace NoFuture.Rand.Data
 
             if (Etx.CoinToss)
             {
-                pathSeg.Add(Word() + Etx.DiscreteRange(new[] { ".php", ".aspx", ".html", ".txt", ".asp" }));
+                pathSeg.Add(Word() + Etx.DiscreteRange(new[] {".php", ".aspx", ".html", ".txt", ".asp"}));
             }
 
             var uri = new UriBuilder
             {
                 Scheme = useHttps ? "https" : "http",
                 Host = RandomUriHost(),
-                Path = String.Join("/", pathSeg.ToArray())
+                Path = string.Join("/", pathSeg.ToArray())
             };
 
             if (!addQry)
@@ -95,10 +99,10 @@ namespace NoFuture.Rand.Data
                     qryParam.Add(Etx.Consonant(Etx.CoinToss).ToString());
 
                 }
-                qry.Add(String.Join("_", qryParam) + "=" + Etx.SupriseMe());
+                qry.Add(string.Join("_", qryParam) + "=" + Etx.SupriseMe());
             }
 
-            uri.Query = String.Join("&", qry);
+            uri.Query = string.Join("&", qry);
             return uri.Uri;
         }
 
@@ -109,17 +113,18 @@ namespace NoFuture.Rand.Data
         public static string RandomEmailUri(string username = "", bool usCommonOnly = false)
         {
             var host = RandomUriHost(false, usCommonOnly);
-            if (!String.IsNullOrWhiteSpace(username))
-                return String.Join("@", username, host);
+            if (!string.IsNullOrWhiteSpace(username))
+                return string.Join("@", username, host);
             var bunchOfWords = new List<string>();
             for (var i = 0; i < 4; i++)
             {
                 bunchOfWords.Add(Etc.CapWords(Word(), ' '));
-                bunchOfWords.Add(Domus.NAmerUtil.GetAmericanFirstName(DateTime.Today, Etx.CoinToss ? Gender.Male : Gender.Female));
+                bunchOfWords.Add(Domus.NAmerUtil.GetAmericanFirstName(DateTime.Today,
+                    Etx.CoinToss ? Gender.Male : Gender.Female));
             }
-            username = String.Join((Etx.CoinToss ? "." : "_"), Etx.DiscreteRange(bunchOfWords.ToArray()),
+            username = string.Join((Etx.CoinToss ? "." : "_"), Etx.DiscreteRange(bunchOfWords.ToArray()),
                 Etx.DiscreteRange(bunchOfWords.ToArray()));
-            return String.Join("@", username, host);
+            return string.Join("@", username, host);
         }
 
         /// <summary>
@@ -130,8 +135,8 @@ namespace NoFuture.Rand.Data
         /// set this to true to have the username look unprofessional
         /// </param>
         /// <param name="usCommonOnly">
-        /// true uses <see cref="NoFuture.Rand.Data.ListData.UsWebmailDomains"/>
-        /// false uses <see cref="NoFuture.Rand.Data.ListData.WebmailDomains"/>
+        /// true uses <see cref="ListData.UsWebmailDomains"/>
+        /// false uses <see cref="ListData.WebmailDomains"/>
         /// </param>
         /// <returns></returns>
         public static string RandomEmailUri(string[] names, bool isProfessional = true, bool usCommonOnly = true)
@@ -150,7 +155,7 @@ namespace NoFuture.Rand.Data
                     shortWordList.Add(withUcase);
                 }
                 shortWordList.Add((Etx.CoinToss ? "_" : "") + Etx.IntNumber(100, 9999));
-                return RandomEmailUri(String.Join("", shortWordList), usCommonOnly);
+                return RandomEmailUri(string.Join("", shortWordList), usCommonOnly);
             }
 
             var fname = names.First().ToLower();
@@ -165,11 +170,11 @@ namespace NoFuture.Rand.Data
             var unParts = new List<string> { Etx.CoinToss ? fname : fname.First().ToString(), mi, lname };
             var totalLength = unParts.Sum(x => x.Length);
             if (totalLength <= 7)
-                return RandomEmailUri(String.Join(Etx.CoinToss ? "" : "_", String.Join(Etx.CoinToss ? "." : "_", unParts),
+                return RandomEmailUri(String.Join(Etx.CoinToss ? "" : "_", string.Join(Etx.CoinToss ? "." : "_", unParts),
                     Etx.IntNumber(100, 9999)), usCommonOnly);
             return RandomEmailUri(totalLength > 20
-                ? String.Join(Etx.CoinToss ? "." : "_", unParts.Take(2))
-                : String.Join(Etx.CoinToss ? "." : "_", unParts), usCommonOnly);
+                ? string.Join(Etx.CoinToss ? "." : "_", unParts.Take(2))
+                : string.Join(Etx.CoinToss ? "." : "_", unParts), usCommonOnly);
         }
 
         /// <summary>
@@ -183,7 +188,7 @@ namespace NoFuture.Rand.Data
                 return Etx.Word(8);
             var pick = Etx.IntNumber(0, enWords.Count - 1);
             var enWord = enWords[pick]?.Item1;
-            return !String.IsNullOrWhiteSpace(enWord)
+            return !string.IsNullOrWhiteSpace(enWord)
                 ? enWord
                 : Etx.Word(8);
         }

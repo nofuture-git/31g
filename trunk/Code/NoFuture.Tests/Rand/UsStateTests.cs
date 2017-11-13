@@ -1,14 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NoFuture.Rand;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Gov.TheStates;
 
-namespace NoFuture.Tests.Rand
+namespace NoFuture.Rand.Tests
 {
     [TestClass]
     public class UsStateTests
@@ -17,7 +14,7 @@ namespace NoFuture.Tests.Rand
         public void GetStateTest()
         {
             var testState = "AZ";
-            var testResult = NoFuture.Rand.Gov.UsState.GetStateByPostalCode(testState);
+            var testResult = Gov.UsState.GetStateByPostalCode(testState);
             Assert.IsNotNull(testResult);
             Assert.IsInstanceOfType(testResult, typeof(Arizona));
 
@@ -33,7 +30,7 @@ namespace NoFuture.Tests.Rand
             Assert.IsFalse(testResult.ValidDriversLicense("68655307"));
 
             testState = "AR";
-            testResult = NoFuture.Rand.Gov.UsState.GetStateByPostalCode(testState);
+            testResult = Gov.UsState.GetStateByPostalCode(testState);
             Assert.IsNotNull(testResult);
             Assert.IsInstanceOfType(testResult, typeof(Arkansas));
 
@@ -49,7 +46,7 @@ namespace NoFuture.Tests.Rand
             Assert.IsTrue(testResult.ValidDriversLicense("68655307"));
 
             testState = "CA";
-            testResult = NoFuture.Rand.Gov.UsState.GetStateByPostalCode(testState);
+            testResult = Gov.UsState.GetStateByPostalCode(testState);
             Assert.IsNotNull(testResult);
             Assert.IsInstanceOfType(testResult, typeof(California));
 
@@ -64,7 +61,7 @@ namespace NoFuture.Tests.Rand
             Assert.IsFalse(testResult.ValidDriversLicense("686553072"));
 
             testState = "CT";
-            testResult = NoFuture.Rand.Gov.UsState.GetStateByPostalCode(testState);
+            testResult = Gov.UsState.GetStateByPostalCode(testState);
             Assert.IsNotNull(testResult);
             Assert.IsInstanceOfType(testResult, typeof(Connecticut));
 
@@ -79,13 +76,13 @@ namespace NoFuture.Tests.Rand
         [TestMethod]
         public void TestGetStateByName()
         {
-            var testResult = NoFuture.Rand.Gov.UsState.GetStateByName("New York");
+            var testResult = Gov.UsState.GetStateByName("New York");
             Assert.IsNotNull(testResult);
 
-            testResult = NoFuture.Rand.Gov.UsState.GetStateByName("NewYork");
+            testResult = Gov.UsState.GetStateByName("NewYork");
             Assert.IsNotNull(testResult);
 
-            testResult = NoFuture.Rand.Gov.UsState.GetStateByName("Kansas");
+            testResult = Gov.UsState.GetStateByName("Kansas");
             Assert.IsNotNull(testResult);
 
         }
@@ -93,8 +90,8 @@ namespace NoFuture.Tests.Rand
         [TestMethod]
         public void TestGetStateAll()
         {
-            var noUse = NoFuture.Rand.Gov.UsState.GetStateByPostalCode("AZ");//the internal member is a singleton, this gets it pop'ed
-            var theStates = NoFuture.Rand.Gov.UsState._theStates;
+            var noUse = Gov.UsState.GetStateByPostalCode("AZ");//the internal member is a singleton, this gets it pop'ed
+            var theStates = Gov.UsState._theStates;
 
             foreach (var state in theStates)
             {
@@ -110,7 +107,7 @@ namespace NoFuture.Tests.Rand
         [TestMethod]
         public void TestGetUniversities()
         {
-            var testSubject = NoFuture.Rand.Gov.UsState.GetStateByPostalCode("AZ");
+            var testSubject = Gov.UsState.GetStateByPostalCode("AZ");
             var testResults = testSubject.GetUniversities();
 
             Assert.IsNotNull(testResults);
@@ -122,7 +119,7 @@ namespace NoFuture.Tests.Rand
         [TestMethod]
         public void TestGetHighSchools()
         {
-            var testSubject = NoFuture.Rand.Gov.UsState.GetStateByPostalCode("AZ");
+            var testSubject = Gov.UsState.GetStateByPostalCode("AZ");
             var testResults = testSubject.GetHighSchools();
 
             Assert.IsNotNull(testResults);
@@ -134,7 +131,7 @@ namespace NoFuture.Tests.Rand
         public void TestGetStateData()
         {
             var testStateName = "Maryland";
-            var testState = NoFuture.Rand.Gov.UsState.GetStateByName(testStateName);
+            var testState = Gov.UsState.GetStateByName(testStateName);
             var testResult = testState.GetStateData();
             Assert.IsNotNull(testResult);
             Assert.IsNotNull(testResult.AverageEarnings);

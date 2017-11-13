@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NoFuture.Rand;
-using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Data.Sp;
 using NoFuture.Rand.Data.Sp.Cc;
 using NoFuture.Rand.Data.Sp.Enums;
 using NoFuture.Rand.Domus;
 
-namespace NoFuture.Tests.Rand
+namespace NoFuture.Rand.Tests
 {
     [TestClass]
     public class OpesTests
@@ -139,7 +137,7 @@ namespace NoFuture.Tests.Rand
             Assert.AreEqual("Associate",testResult);
             testResult = NorthAmericanWealth.GetXmlEduName(OccidentalEdu.Bachelor | OccidentalEdu.Grad);
             Assert.AreEqual("Bachelor", testResult);
-            System.Diagnostics.Debug.WriteLine(testResult.ToString());
+            System.Diagnostics.Debug.WriteLine(testResult);
         }
 
         [TestMethod]

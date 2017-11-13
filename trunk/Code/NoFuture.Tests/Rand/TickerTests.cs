@@ -1,9 +1,8 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NoFuture.Rand.Com;
 
-namespace NoFuture.Tests.Rand
+namespace NoFuture.Rand.Tests
 {
     [TestClass]
     public class TickerTests
@@ -20,7 +19,7 @@ namespace NoFuture.Tests.Rand
         [TestMethod]
         public void TestTickerCompare()
         {
-            var testTickers = new TickerSymbol[]
+            var testTickers = new[]
             {
                 new TickerSymbol {InstrumentType = "Common Stock", Symbol = "NFLX:US", Country = "USA"},
                 new TickerSymbol {InstrumentType = "BDR", Symbol = "NFLX34:BZ", Country = "Brazil"},

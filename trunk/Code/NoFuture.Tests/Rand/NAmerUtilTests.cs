@@ -1,12 +1,9 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NoFuture.Rand;
-using NoFuture.Rand.Core;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Data.Endo;
 using NoFuture.Rand.Domus;
 
-namespace NoFuture.Tests.Rand
+namespace NoFuture.Rand.Tests
 {
     [TestClass]
     public class NAmerUtilTests
@@ -96,7 +93,6 @@ namespace NoFuture.Tests.Rand
             //
             //asian="54.0" natl-percent="30.0"
             // 54.0 - 30.0 = 24, 23.9+24 = 47.9
-            //black="16.5"
             Assert.AreEqual(47.9, testResult);
         }
     }

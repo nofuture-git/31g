@@ -34,20 +34,20 @@ namespace NoFuture.Rand.Domus
         #region properties
         public virtual Gender MyGender
         {
-            get { return _myGender; }
-            set { _myGender = value; }
+            get => _myGender;
+            set => _myGender = value;
         }
         public virtual BirthCert BirthCert => _birthCert;
         public virtual DeathCert DeathCert { get; set; }
         public virtual string FirstName
         {
-            get { return GetName(KindsOfNames.First); }
-            set { UpsertName(KindsOfNames.First, value); }
+            get => GetName(KindsOfNames.First);
+            set => UpsertName(KindsOfNames.First, value);
         }
         public virtual string LastName
         {
-            get { return GetName(KindsOfNames.Surname); }
-            set { UpsertName(KindsOfNames.Surname, value); }
+            get => GetName(KindsOfNames.Surname);
+            set => UpsertName(KindsOfNames.Surname, value);
         }
         public virtual IEnumerable<Uri> NetUri => _netUris;
         public Personality Personality => _personality;

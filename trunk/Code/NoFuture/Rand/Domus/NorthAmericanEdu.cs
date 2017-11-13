@@ -73,6 +73,7 @@ namespace NoFuture.Rand.Domus
                 return;
 
             var dob = amer?.BirthCert?.DateOfBirth ?? NAmerUtil.GetWorkingAdultBirthDate();
+
             //determine where amer lived when they were 18
             var mother = amer?.BirthCert == null
                 ? NAmerUtil.SolveForParent(dob,
@@ -85,8 +86,7 @@ namespace NoFuture.Rand.Domus
             var homeCityArea = mother?.GetAddressAt(dtAtAge18)?.HomeCityArea as UsCityStateZip ?? CityArea.American();
 
             var isLegalAdult = amer?.IsLegalAdult(DateTime.Now) ?? true;
-            DateTime? hsGradDt;
-            if (!AssignRandomHighSchool(homeCityArea, isLegalAdult, dtAtAge18, out hsGradDt))
+            if (!AssignRandomHighSchool(homeCityArea, isLegalAdult, dtAtAge18, out var hsGradDt))
                 return;
 
             AssignRandomCollege(homeCityArea.State, hsGradDt);

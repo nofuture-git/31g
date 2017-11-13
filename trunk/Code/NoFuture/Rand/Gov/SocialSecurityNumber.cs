@@ -46,7 +46,7 @@ namespace NoFuture.Rand.Gov
         /// </summary>
         public override string Value
         {
-            get { return _value; }
+            get => _value;
             set
             {
                 if(!Validate(value))

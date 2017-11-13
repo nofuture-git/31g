@@ -24,8 +24,6 @@ namespace NoFuture.Rand.Edu
         };
 
         #region properties
-        public Gov.UsState State { get; set; }
-        public string Name { get; set; }
         public string CampusName { get; set; }
         public float? PercentOfStateStudents { get; set; }
         public float? CrimeRate { get; set; }
@@ -69,16 +67,14 @@ namespace NoFuture.Rand.Edu
 
                 if (attr != null)
                 {
-                    float percentStudents;
-                    if (float.TryParse(attr.Value, out percentStudents))
+                    if (float.TryParse(attr.Value, out var percentStudents))
                         univ.PercentOfStateStudents = percentStudents;
                 }
 
                 attr = node.Attributes["crime-rate"];
                 if (attr != null)
                 {
-                    float crimeRate;
-                    if (float.TryParse(attr.Value, out crimeRate))
+                    if (float.TryParse(attr.Value, out var crimeRate))
                         univ.CrimeRate = crimeRate;
                 }
 

@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace NoFuture.Rand.Data.Sp
 {
+    /// <summary>
+    /// A loan whose rate changes in time
+    /// </summary>
     [Serializable]
     public class VariableRateLoan : LoanBase<Dictionary<DateTime, float>>
     {

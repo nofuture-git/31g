@@ -48,7 +48,7 @@ namespace NoFuture.Rand.Data.Sp
                 }
                 return _ficoScore;
             }
-            set { _ficoScore = value; }
+            set => _ficoScore = value;
         }
 
         #endregion

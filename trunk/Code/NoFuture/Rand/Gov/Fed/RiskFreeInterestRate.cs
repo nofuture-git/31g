@@ -10,6 +10,10 @@ namespace NoFuture.Rand.Gov.Fed
         public const float DF_VALUE = 1.5F;
         public string Src { get; set; }
         public string Abbrev => "RFIR";
-        public float Value { get {return _val;} set { _val = value; } }
+        public float Value
+        {
+            get => _val;
+            set => _val = value;
+        }
     }
 }

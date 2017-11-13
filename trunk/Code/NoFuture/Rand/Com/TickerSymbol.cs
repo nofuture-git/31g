@@ -3,6 +3,9 @@ using NoFuture.Rand.Core;
 
 namespace NoFuture.Rand.Com
 {
+    /// <summary>
+    /// Another kind of security identifier used is stock exchanges around the world.
+    /// </summary>
     [Serializable]
     public class TickerSymbol : Identifier
     {
@@ -16,10 +19,7 @@ namespace NoFuture.Rand.Com
                     _symbol = _symbol.Split(':')[0];
                 return _symbol;
             }
-            set
-            {
-                _symbol = value;
-            }
+            set => _symbol = value;
         }
 
         public string Exchange { get; set; }
@@ -31,7 +31,11 @@ namespace NoFuture.Rand.Com
             return tkr != null && Equals(tkr);
         }
 
-        public override string Value { get{ return Symbol;} set { Symbol = value; } }
+        public override string Value
+        {
+            get => Symbol;
+            set => Symbol = value;
+        }
 
         public override int GetHashCode()
         {

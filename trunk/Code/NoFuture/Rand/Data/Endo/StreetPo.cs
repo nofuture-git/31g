@@ -4,6 +4,9 @@ using NoFuture.Rand.Core;
 
 namespace NoFuture.Rand.Data.Endo
 {
+    /// <summary>
+    /// Base type representing the first half of a typical Postal Address
+    /// </summary>
     [Serializable]
     public abstract class StreetPo : ICited
     {
@@ -20,7 +23,7 @@ namespace NoFuture.Rand.Data.Endo
         /// <returns></returns>
         public override string ToString()
         {
-            return string.Join(" ", data.AddressNumber, data.StreetName, 
+            return string.Join(" ", data.AddressNumber, data.StreetNameDirectional, data.StreetName, 
                 data.StreetType, data.SecondaryUnitDesignator,
                 data.SecondaryUnitId).Trim();
         }

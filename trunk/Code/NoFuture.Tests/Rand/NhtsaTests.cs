@@ -2,7 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NoFuture.Rand.Gov.Nhtsa;
 
-namespace NoFuture.Tests.Rand
+namespace NoFuture.Rand.Tests
 {
     [TestClass]
     public class NhtsaTests
@@ -12,14 +12,14 @@ namespace NoFuture.Tests.Rand
         [TestMethod]
         public void TestVinNoValues()
         {
-            var testSubject = new NoFuture.Rand.Gov.Nhtsa.Vin();
+            var testSubject = new Vin();
             Assert.AreEqual("000000A0200000000", testSubject.ToString());
         }
 
         [TestMethod]
         public void TestGetChkDigit()
         {
-            var testSubject = new NoFuture.Rand.Gov.Nhtsa.Vin
+            var testSubject = new Vin
             {
                 Wmi = new WorldManufacturerId {Country = '1', RegionMaker = '1', VehicleType = '1'},
                 Vds = new VehicleDescription {Four = '1', Five = '1', Six = '1', Seven = '1', Eight = '1'},

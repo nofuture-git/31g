@@ -2,6 +2,9 @@
 
 namespace NoFuture.Rand.Data.Endo
 {
+    /// <summary>
+    /// Postal address for Canada
+    /// </summary>
     [Serializable]
     public class CaCityProvidencePost : CityArea
     {

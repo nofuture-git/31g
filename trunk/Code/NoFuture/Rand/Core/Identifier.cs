@@ -14,8 +14,8 @@ namespace NoFuture.Rand.Core
 
         public virtual string Value
         {
-            get { return _value; }
-            set { _value = value; }
+            get => _value;
+            set => _value = value;
         }
 
         public virtual string Src { get; set; }

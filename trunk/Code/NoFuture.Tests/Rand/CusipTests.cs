@@ -3,7 +3,7 @@ using NoFuture.Rand.Data.Sp;
 using NoFuture.Rand.Data.Sp.Enums;
 using Dbg = System.Diagnostics.Debug;
 
-namespace NoFuture.Tests.Rand
+namespace NoFuture.Rand.Tests
 {
     [TestClass]
     public class CusipTests

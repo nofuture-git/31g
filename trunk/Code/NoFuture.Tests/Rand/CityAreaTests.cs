@@ -1,10 +1,9 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NoFuture.Rand;
 using System.IO;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NoFuture.Rand.Data.Endo;
 
-namespace NoFuture.Tests.Rand
+namespace NoFuture.Rand.Tests
 {
     [TestClass]
     public class CityAreaTests
@@ -13,7 +12,7 @@ namespace NoFuture.Tests.Rand
         [TestMethod]
         public void AmericanTest()
         {
-            var testResult = CityArea.American(null);
+            var testResult = CityArea.American();
             Assert.IsNotNull(testResult);
             Assert.IsFalse(string.IsNullOrWhiteSpace(testResult.City));
             Assert.IsFalse(string.IsNullOrWhiteSpace(testResult.ZipCode));
@@ -69,7 +68,7 @@ namespace NoFuture.Tests.Rand
                                 };
             foreach (var testAddr in testAddresses)
             {
-                var testResult = UsCityStateZip.TryParse(testAddr, out var testResultOut);
+                var testResult = UsCityStateZip.TryParse(testAddr, out var testResultOut, true);
                 Assert.IsTrue(testResult);
                 Assert.AreNotEqual(string.Empty,testResultOut.City);
                 Assert.AreNotEqual(string.Empty, testResultOut.PostalState);
@@ -82,7 +81,6 @@ namespace NoFuture.Tests.Rand
             Assert.AreEqual("TX", usCityStateZip.State.StateAbbrv);
             Console.WriteLine(usCityStateZip.City);
             Console.WriteLine(usCityStateZip.PostalState);
-            //BRIDGEPORT, CT
         }
 
         [TestMethod]
@@ -186,7 +184,6 @@ namespace NoFuture.Tests.Rand
             UsCityStateZip.GetState("OKLAHOMA CITY, OK", addrData);
             Assert.IsNotNull(addrData.StateAbbrv);
             Assert.AreEqual("OK", addrData.StateAbbrv);
-            //Washington DC 20006
             UsCityStateZip.GetState("Washington DC 20006", addrData);
             Assert.IsNotNull(addrData.StateAbbrv);
             Assert.AreEqual("DC", addrData.StateAbbrv);
@@ -203,7 +200,6 @@ namespace NoFuture.Tests.Rand
             Assert.AreEqual("TX", addrData.StateAbbrv);
             Assert.AreEqual("EL CAMPO", addrData.City);
             System.Diagnostics.Debug.WriteLine($"{addrData.City} {addrData.StateAbbrv}");
-            //Washington DC 20006
             ln = "Washington DC 20006";
             UsCityStateZip.GetZipCode(ln, addrData);
             UsCityStateZip.GetState(ln, addrData);

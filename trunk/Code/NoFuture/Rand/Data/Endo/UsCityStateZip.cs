@@ -14,6 +14,9 @@ using NoFuture.Util.Core.Math;
 
 namespace NoFuture.Rand.Data.Endo
 {
+    /// <summary>
+    /// A type to represent the typical City, State and ZIP code of a US Postal Address
+    /// </summary>
     [Serializable]
     public class UsCityStateZip : CityArea
     {
@@ -41,7 +44,7 @@ namespace NoFuture.Rand.Data.Endo
         #region ctor
 
         /// <summary>
-        /// Creates a new instance by query of the <see cref="DataFiles.US_CITY_DATA_FILE"/>
+        /// Creates a new instance by query of the <see cref="TreeData.AmericanCityData"/>
         /// </summary>
         /// <param name="d">
         /// The criteria which on this this instance is situated.
@@ -62,6 +65,9 @@ namespace NoFuture.Rand.Data.Endo
 
         #region properties
 
+        /// <summary>
+        /// The two letter code used by the USPS (e.g. California is CA)
+        /// </summary>
         public string PostalState => data.StateAbbrv;
 
         public UsState State => _myState ??
@@ -70,13 +76,17 @@ namespace NoFuture.Rand.Data.Endo
 
         public string City => data.City;
         public string ZipCode => data.PostalCode;
+
+        /// <summary>
+        /// The additional 4 digits appearing after the 5 digit ZZIP Code
+        /// </summary>
         public string PostalCodeAddonFour => data.PostalCodeSuffix;
         public MStatArea Msa { get; set; }
         public ComboMStatArea CbsaCode { get; set; }
         public LinearEquation AverageEarnings { get; set; }
 
         /// <summary>
-        /// Dictionary parsed from 'US_Zip_ProbTable.xml'
+        /// Dictionary parsed from <see cref="TreeData.UsZipProbabilityTable"/>
         /// </summary>
         public static Dictionary<string, double> ZipCodePrefix2Population
         {
@@ -99,11 +109,10 @@ namespace NoFuture.Rand.Data.Endo
                     var key = zipElem.Attributes[PREFIX]?.Value;
                     var strVal = zipElem.Attributes[WEIGHT]?.Value;
 
-                    if (String.IsNullOrWhiteSpace(key) || String.IsNullOrWhiteSpace(strVal))
+                    if (string.IsNullOrWhiteSpace(key) || string.IsNullOrWhiteSpace(strVal))
                         continue;
 
-                    double val;
-                    if (!Double.TryParse(strVal, out val))
+                    if (!double.TryParse(strVal, out var val))
                         continue;
 
                     if (_zipCodePrefix2Pop.ContainsKey(key))
@@ -125,7 +134,6 @@ namespace NoFuture.Rand.Data.Endo
         /// <param name="zipCode"></param>
         public static AmericanRacePercents RandomAmericanRaceWithRespectToZip(string zipCode)
         {
-
             var pick = 0;
             //if calling assembly passed in no-args then return all zeros
             if (String.IsNullOrWhiteSpace(zipCode))
@@ -151,10 +159,9 @@ namespace NoFuture.Rand.Data.Endo
                     return AmericanRacePercents.GetNatlAvg();
             }
 
-            AmericanHighSchool hsOut;
             pick = Etx.MyRand.Next(0, zipStatElem.ChildNodes.Count - 1);
             var hsNode = zipStatElem.ChildNodes[pick];
-            if (!AmericanHighSchool.TryParseXml(hsNode as XmlElement, out hsOut))
+            if (!AmericanHighSchool.TryParseXml(hsNode as XmlElement, out var hsOut))
                 return AmericanRacePercents.GetNatlAvg();
             return hsOut.RacePercents;
         }
@@ -180,9 +187,9 @@ namespace NoFuture.Rand.Data.Endo
         /// city proper.
         /// </param>
         /// <returns></returns>
-        public static bool TryParse(string lastLine, out UsCityStateZip cityStateZip, bool pickSuburbAtRandom = true)
+        public static bool TryParse(string lastLine, out UsCityStateZip cityStateZip, bool pickSuburbAtRandom = false)
         {
-            if (String.IsNullOrWhiteSpace(lastLine))
+            if (string.IsNullOrWhiteSpace(lastLine))
             {
                 cityStateZip = null;
                 return false;
@@ -191,10 +198,10 @@ namespace NoFuture.Rand.Data.Endo
 
             var addrData = new AddressData
             {
-                PostalCode = String.Empty,
-                PostalCodeSuffix = String.Empty,
-                StateAbbrv = String.Empty,
-                City = String.Empty
+                PostalCode = string.Empty,
+                PostalCodeSuffix = string.Empty,
+                StateAbbrv = string.Empty,
+                City = string.Empty
             };
             GetZipCode(lastLine, addrData);
 
@@ -211,15 +218,15 @@ namespace NoFuture.Rand.Data.Endo
             //city
             var city = lastLine ?? "";
             if (!string.IsNullOrEmpty(addrData.PostalCode))
-                city = city.Replace(addrData.PostalCode, String.Empty);
+                city = city.Replace(addrData.PostalCode, string.Empty);
             if (!string.IsNullOrEmpty(addrData.PostalCodeSuffix))
-                city = city.Replace($"-{addrData.PostalCodeSuffix}", String.Empty);
+                city = city.Replace($"-{addrData.PostalCodeSuffix}", string.Empty);
             if (!string.IsNullOrEmpty(addrData.StateAbbrv) && city.Contains(" " + addrData.StateAbbrv))
-                city = city.Replace(" " + addrData.StateAbbrv, String.Empty);
+                city = city.Replace(" " + addrData.StateAbbrv, string.Empty);
             if (!string.IsNullOrEmpty(addrData.StateAbbrv) && city.Contains("," + addrData.StateAbbrv))
-                city = city.Replace("," + addrData.StateAbbrv, String.Empty);
+                city = city.Replace("," + addrData.StateAbbrv, string.Empty);
 
-            city = city.Replace(",", String.Empty).Trim();
+            city = city.Replace(",", string.Empty).Trim();
 
             //need to deal with oddities 
             if (string.Equals("new york", city, StringComparison.OrdinalIgnoreCase))
@@ -238,7 +245,7 @@ namespace NoFuture.Rand.Data.Endo
             var state = matches.Groups.Count >= 1 && matches.Groups[0].Success &&
                         matches.Groups[0].Captures.Count > 0
                 ? matches.Groups[0].Captures[0].Value
-                : String.Empty;
+                : string.Empty;
 
             addrData.StateAbbrv = state.Trim();
         }
@@ -254,14 +261,14 @@ namespace NoFuture.Rand.Data.Endo
             var fiveDigitZip = matches.Groups.Count >= 2 && matches.Groups[1].Success &&
                                matches.Groups[1].Captures.Count > 0
                 ? matches.Groups[1].Captures[0].Value
-                : String.Empty;
+                : string.Empty;
             var zipPlusFour = matches.Groups.Count >= 3 && matches.Groups[2].Success &&
                               matches.Groups[2].Captures.Count > 0
                 ? matches.Groups[2].Captures[0].Value
-                : String.Empty;
+                : string.Empty;
 
             addrData.PostalCode = fiveDigitZip.Trim();
-            addrData.PostalCodeSuffix = zipPlusFour.Replace("-", String.Empty).Trim();
+            addrData.PostalCodeSuffix = zipPlusFour.Replace("-", string.Empty).Trim();
         }
 
         /// <summary>
@@ -341,14 +348,16 @@ namespace NoFuture.Rand.Data.Endo
                 return null;
             string searchCrit;
             XmlNodeList matchedNodes = null;
+
             //search by city-state
-            if (!String.IsNullOrWhiteSpace(data.StateAbbrv) && !String.IsNullOrWhiteSpace(data.City) &&
+            if (!string.IsNullOrWhiteSpace(data.StateAbbrv) && !string.IsNullOrWhiteSpace(data.City) &&
                 UsState.GetStateByPostalCode(data.StateAbbrv) != null)
             {
                 var usState = UsState.GetStateByPostalCode(data.StateAbbrv);
                 var cityName = FinesseCityName(data.City);
                 searchCrit = $"//state[@name='{usState}']/city[@name='{cityName}']";
                 matchedNodes = TreeData.AmericanCityData.SelectNodes(searchCrit);
+
                 //try again on place names
                 if (matchedNodes == null || matchedNodes.Count <= 0)
                 {
@@ -357,7 +366,7 @@ namespace NoFuture.Rand.Data.Endo
                 }
             }
             //search by first 3 of Zip Code
-            else if (!String.IsNullOrWhiteSpace(data.PostalCode) && data.PostalCode.Length >= 3)
+            else if (!string.IsNullOrWhiteSpace(data.PostalCode) && data.PostalCode.Length >= 3)
             {
                 var zipCodePrefix= data.PostalCode.Substring(0, 3);
                 searchCrit = $"//{ZIP_CODE_SINGULAR}[@{PREFIX}='{zipCodePrefix}']/..";
@@ -377,8 +386,8 @@ namespace NoFuture.Rand.Data.Endo
                     continue;
                 if(!matchedElem.HasAttributes)
                     continue;
-                var hasMsaCode = !String.IsNullOrWhiteSpace(matchedElem.GetAttribute(MSA_CODE));
-                var hasCbsaCode = !String.IsNullOrWhiteSpace(matchedElem.GetAttribute(CBSA_CODE));
+                var hasMsaCode = !string.IsNullOrWhiteSpace(matchedElem.GetAttribute(MSA_CODE));
+                var hasCbsaCode = !string.IsNullOrWhiteSpace(matchedElem.GetAttribute(CBSA_CODE));
                 if (hasCbsaCode || hasMsaCode)
                     return matchedElem;
             }
@@ -403,20 +412,20 @@ namespace NoFuture.Rand.Data.Endo
                 return;
             data.City = cityNode.Attributes[NAME].Value ?? data.City;
 
-            if (!String.IsNullOrWhiteSpace(cityNode.Attributes[MSA_CODE]?.Value))
+            if (!string.IsNullOrWhiteSpace(cityNode.Attributes[MSA_CODE]?.Value))
             {
                 Msa = new MStatArea { Value = cityNode.Attributes[MSA_CODE].Value };
-                if (!String.IsNullOrWhiteSpace(cityNode.Attributes[MSA_TYPE]?.Value))
+                if (!string.IsNullOrWhiteSpace(cityNode.Attributes[MSA_TYPE]?.Value))
                 {
                     Msa.MsaType = cityNode.Attributes[MSA_TYPE].Value == METRO
                         ? UrbanCentric.City | UrbanCentric.Large
                         : UrbanCentric.City | UrbanCentric.Small;
                 }
             }
-            if (!String.IsNullOrWhiteSpace(cityNode.Attributes[CBSA_CODE]?.Value))
+            if (!string.IsNullOrWhiteSpace(cityNode.Attributes[CBSA_CODE]?.Value))
             {
                 Msa = new MStatArea { Value = cityNode.Attributes[CBSA_CODE].Value };
-                if (!String.IsNullOrWhiteSpace(cityNode.Attributes[CBSA_TYPE]?.Value))
+                if (!string.IsNullOrWhiteSpace(cityNode.Attributes[CBSA_TYPE]?.Value))
                 {
                     Msa.MsaType = cityNode.Attributes[CBSA_TYPE].Value == METRO
                         ? UrbanCentric.City | UrbanCentric.Large
@@ -438,11 +447,10 @@ namespace NoFuture.Rand.Data.Endo
         {
             const string AVG_EARNINGS_PER_YEAR = "avg-earning-per-year";
             var cityNode = someNode as XmlElement;
-            if (String.IsNullOrWhiteSpace(cityNode?.Attributes[AVG_EARNINGS_PER_YEAR]?.Value))
+            if (string.IsNullOrWhiteSpace(cityNode?.Attributes[AVG_EARNINGS_PER_YEAR]?.Value))
                 return null;
             var attrVal = cityNode.Attributes[AVG_EARNINGS_PER_YEAR].Value;
-            LinearEquation lq;
-            return !LinearEquation.TryParse(attrVal, out lq) ? null : lq;
+            return !LinearEquation.TryParse(attrVal, out var lq) ? null : lq;
         }
 
         /// <summary>
@@ -468,7 +476,7 @@ namespace NoFuture.Rand.Data.Endo
             var pick = Etx.IntNumber(0, places.Count - 1);
             var pickedPlace = places[pick];
             var suburbName = pickedPlace.GetAttribute(NAME);
-            if (String.IsNullOrWhiteSpace(suburbName))
+            if (string.IsNullOrWhiteSpace(suburbName))
                 return;
             data.City = suburbName;
         }

@@ -9,6 +9,9 @@ namespace NoFuture.Rand.Edu
     [Serializable]
     public abstract class AmericanEduBase
     {
+        public UsState State { get; set; }
+        public string Name { get; set; }
+
         [EditorBrowsable(EditorBrowsableState.Never)]
         internal static AmericanRacePercents GetNatlGradRates(XmlDocument src, double avg)
         {

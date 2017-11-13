@@ -13,8 +13,7 @@ namespace NoFuture.Rand.Data.Sp
 
         public Pecuniam GetRandomMax(DateTime? dt)
         {
-            int ccScore;
-            if(!int.TryParse(Value, out ccScore))
+            if(!int.TryParse(Value, out var ccScore))
                 return new Pecuniam(1000);
 
             if (ccScore >= 800)

@@ -4,6 +4,9 @@ using System.Linq;
 
 namespace NoFuture.Rand.Data.Sp
 {
+    /// <summary>
+    /// Represent an ordered set of <see cref="Transaction"/> in time.
+    /// </summary>
     [Serializable]
     public class TransactionHistory
     {

@@ -14,9 +14,7 @@ namespace NoFuture.Rand.Edu
         private static AmericanHighSchool _dfHs;
 
         #region properties
-        public Gov.UsState State { get; set; }
         public string PostalCode { get; set; }
-        public string Name { get; set; }
         public UrbanCentric UrbanCentric { get; set; }
         public double TotalTeachers { get; set; }
         public int TotalStudents { get; set; }
@@ -112,15 +110,13 @@ namespace NoFuture.Rand.Edu
                 attr = node.Attributes["teachers"];
                 if (attr != null)
                 {
-                    double dblOut;
-                    if (double.TryParse(attr.Value, out dblOut))
+                    if (double.TryParse(attr.Value, out var dblOut))
                         hs.TotalTeachers = dblOut;
                 }
                 attr = node.Attributes["total-students"];
                 if (attr != null)
                 {
-                    int intOut;
-                    if (int.TryParse(attr.Value, out intOut))
+                    if (int.TryParse(attr.Value, out var intOut))
                         hs.TotalStudents = intOut;
                 }
 
@@ -128,50 +124,43 @@ namespace NoFuture.Rand.Edu
                 attr = node.Attributes["american-indian"];
                 if (attr != null)
                 {
-                    double dblOut;
-                    if (double.TryParse(attr.Value, out dblOut))
+                    if (double.TryParse(attr.Value, out var dblOut))
                         hs.RacePercents.AmericanIndian = dblOut;
                 }
                 attr = node.Attributes["asian"];
                 if (attr != null)
                 {
-                    double dblOut;
-                    if (double.TryParse(attr.Value, out dblOut))
+                    if (double.TryParse(attr.Value, out var dblOut))
                         hs.RacePercents.Asian = dblOut;
                 }
                 attr = node.Attributes["hispanic"];
                 if (attr != null)
                 {
-                    double dblOut;
-                    if (double.TryParse(attr.Value, out dblOut))
+                    if (double.TryParse(attr.Value, out var dblOut))
                         hs.RacePercents.Hispanic = dblOut;
                 }
                 attr = node.Attributes["black"];
                 if (attr != null)
                 {
-                    double dblOut;
-                    if (double.TryParse(attr.Value, out dblOut))
+                    if (double.TryParse(attr.Value, out var dblOut))
                         hs.RacePercents.Black = dblOut;
                 }
                 attr = node.Attributes["white"];
                 if (attr != null)
                 {
-                    double dblOut;
-                    if (double.TryParse(attr.Value, out dblOut))
+                    if (double.TryParse(attr.Value, out var dblOut))
                         hs.RacePercents.White = dblOut;
                 }
                 attr = node.Attributes["pacific"];
                 if (attr != null)
                 {
-                    double dblOut;
-                    if (double.TryParse(attr.Value, out dblOut))
+                    if (double.TryParse(attr.Value, out var dblOut))
                         hs.RacePercents.Pacific = dblOut;
                 }
                 attr = node.Attributes["mixed-race"];
                 if (attr != null)
                 {
-                    double dblOut;
-                    if (double.TryParse(attr.Value, out dblOut))
+                    if (double.TryParse(attr.Value, out var dblOut))
                         hs.RacePercents.Mixed = dblOut;
                 }
 
@@ -192,6 +181,4 @@ namespace NoFuture.Rand.Edu
         }
         #endregion
     }
-
-
 }

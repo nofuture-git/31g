@@ -30,8 +30,7 @@ namespace NoFuture.Rand.Data.Endo.Grps
             attr = elem.Attributes[SEC_RESULTS];
             if (attr != null)
             {
-                bool nope;
-                if (bool.TryParse(attr.Value, out nope))
+                if (bool.TryParse(attr.Value, out var nope))
                     SecResults = nope;
             }
 
@@ -66,15 +65,15 @@ namespace NoFuture.Rand.Data.Endo.Grps
                         return null;
                     _allSics.AddRange(AllSectors.SelectMany(
                         s =>
-                            s.Divisions.Cast<NaicsPrimarySector>()
+                            s.Divisions
                                 .SelectMany(
                                     ps =>
-                                        ps.Divisions.Cast<NaicsSector>()
+                                        ps.Divisions
                                             .SelectMany(
                                                 ns =>
-                                                    ns.Divisions.Cast<NaicsMarket>()
+                                                    ns.Divisions
                                                         .SelectMany(
-                                                            mk => mk.Divisions.Cast<StandardIndustryClassification>())
+                                                            mk => mk.Divisions)
                                             )
                                 )));
                 }
@@ -97,13 +96,13 @@ namespace NoFuture.Rand.Data.Endo.Grps
                 return null;
             foreach (var s in AllSectors)
             {
-                foreach (var ps in s.Divisions.Cast<NaicsPrimarySector>())
+                foreach (var ps in s.Divisions)
                 {
-                    foreach (var ns in ps.Divisions.Cast<NaicsSector>())
+                    foreach (var ns in ps.Divisions)
                     {
-                        foreach (var mk in ns.Divisions.Cast<NaicsMarket>())
+                        foreach (var mk in ns.Divisions)
                         {
-                            var ssic = mk.Divisions.Cast<StandardIndustryClassification>()
+                            var ssic = mk.Divisions
                                 .FirstOrDefault(x => x.Equals(sic));
                             if (ssic == null)
                                 continue;

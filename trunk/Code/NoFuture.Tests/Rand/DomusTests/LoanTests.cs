@@ -1,12 +1,11 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NoFuture.Rand;
 using NoFuture.Rand.Data.Sp;
 using NoFuture.Rand.Data.Sp.Enums;
 using NoFuture.Util.Core.Math;
 using Dbg = System.Diagnostics.Debug;
 
-namespace NoFuture.Tests.Rand.DomusTests
+namespace NoFuture.Rand.Tests.DomusTests
 {
     [TestClass]
     public class LoanTests

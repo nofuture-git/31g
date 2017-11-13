@@ -1,9 +1,7 @@
-﻿using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NoFuture.Rand.Core.Enums;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NoFuture.Rand.Data.Endo;
 
-namespace NoFuture.Tests.Rand
+namespace NoFuture.Rand.Tests
 {
     [TestClass]
     public class FinancialFirmTests

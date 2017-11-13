@@ -1,9 +1,7 @@
 using System;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
-using NoFuture.Shared;
 using NoFuture.Shared.Core;
-using NoFuture.Util;
 using NoFuture.Util.Core;
 
 namespace NoFuture.Rand.Domus
@@ -53,7 +51,7 @@ namespace NoFuture.Rand.Domus
         /// </summary>
         public override DateTime? FromDate
         {
-            get { return _marriedOn; }
+            get => _marriedOn;
             set
             {
                 if (value != null)
@@ -63,8 +61,8 @@ namespace NoFuture.Rand.Domus
 
         public override DateTime? ToDate
         {
-            get { return _separatedOn; }
-            set { _separatedOn = value; }
+            get => _separatedOn;
+            set => _separatedOn = value;
         }
 
         #endregion

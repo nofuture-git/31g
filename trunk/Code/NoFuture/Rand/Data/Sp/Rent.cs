@@ -3,14 +3,15 @@ using NoFuture.Rand.Core;
 using NoFuture.Rand.Data.Sp.Enums;
 using NoFuture.Rand.Domus;
 using NoFuture.Rand.Domus.Pneuma;
-using NoFuture.Shared;
 using NoFuture.Shared.Core;
-using NoFuture.Util;
 using NoFuture.Util.Core;
 using NoFuture.Util.Core.Math;
 
 namespace NoFuture.Rand.Data.Sp
 {
+    /// <summary>
+    /// Represents a Rent or Lease
+    /// </summary>
     [Serializable]
     public class Rent : ReceivableBase
     {

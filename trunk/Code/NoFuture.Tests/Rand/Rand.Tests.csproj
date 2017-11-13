@@ -83,17 +83,9 @@
       <Project>{3c5df49d-ae94-431c-85a5-7f5b71ac777f}</Project>
       <Name>Rand.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\NoFuture\Rand\Data\Source\Rand.Data.Source.csproj">
-      <Project>{4e011849-d274-4f79-96af-549f67c46d80}</Project>
-      <Name>Rand.Data.Source</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\NoFuture\Rand\Rand.csproj">
       <Project>{71628e18-d27b-4f4e-b034-4b2ad4479e13}</Project>
       <Name>Rand</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\NoFuture\Shared\Core\Shared.Core.csproj">
-      <Project>{6eca48dc-fdb4-4660-9914-3b74d5975ff9}</Project>
-      <Name>Shared.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\NoFuture\Util\Core\Util.Core.csproj">
       <Project>{349a1c91-ca14-4d04-946d-8b257a863ce0}</Project>

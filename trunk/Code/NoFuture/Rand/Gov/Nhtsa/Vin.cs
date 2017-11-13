@@ -53,7 +53,7 @@ namespace NoFuture.Rand.Gov.Nhtsa
             8, 7, 6, 5, 4, 3, 2, 10, 0, 9, 8, 7, 6, 5, 4, 3, 2
         };
 
-        private const string _allZeros = "00000000000000000";
+        private const string AllZeros = "00000000000000000";
 
         private char? _chkDigit;
         #endregion
@@ -76,7 +76,7 @@ namespace NoFuture.Rand.Gov.Nhtsa
 
         public override string Value
         {
-            get { return ToString(); }
+            get => ToString();
             set
             {
                 var vinIn = value;
@@ -88,7 +88,7 @@ namespace NoFuture.Rand.Gov.Nhtsa
                     return;
                 }
 
-                vinIn = Etc.BinaryMergeString(vinIn, _allZeros);
+                vinIn = Etc.BinaryMergeString(vinIn, AllZeros);
 
                 var vinChars = vinIn.ToCharArray();
                 Wmi = new WorldManufacturerId
@@ -208,9 +208,9 @@ namespace NoFuture.Rand.Gov.Nhtsa
 
             var baseYear = 0;
 
-            if (Char.IsNumber(Vds.Seven.GetValueOrDefault()))
+            if (char.IsNumber(Vds.Seven.GetValueOrDefault()))
                 baseYear = BASE_YEAR;
-            if (Char.IsLetter(Vds.Seven.GetValueOrDefault()))
+            if (char.IsLetter(Vds.Seven.GetValueOrDefault()))
                 baseYear = AMENDED_BASE_YEAR;
 
             if (baseYear == 0)
@@ -266,8 +266,6 @@ namespace NoFuture.Rand.Gov.Nhtsa
 
         public override bool Equals(object obj)
         {
-            if (obj == null)
-                return false;
             var vin = obj as Vin;
             if (vin == null)
                 return false;

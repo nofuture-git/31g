@@ -9,7 +9,6 @@ using NoFuture.Rand.Data.Endo;
 using NoFuture.Rand.Data.Sp;
 using NoFuture.Rand.Data.Sp.Cc;
 using NoFuture.Rand.Data.Sp.Enums;
-using NoFuture.Rand.Domus.Pneuma;
 using NoFuture.Util.Core.Math;
 
 namespace NoFuture.Rand.Domus
@@ -85,9 +84,7 @@ namespace NoFuture.Rand.Domus
         /// </param>
         public NorthAmericanWealth(NorthAmerican american, bool isRenting = false)
         {
-            if(american == null)
-                throw new ArgumentNullException(nameof(american));
-            _amer = american;
+            _amer = american ?? throw new ArgumentNullException(nameof(american));
             if(_amer.Address == null)
                 _amer.AddAddress(ResidentAddress.GetRandomAmericanAddr());
             var usCityArea = _amer?.Address?.HomeCityArea as UsCityStateZip;
@@ -245,7 +242,6 @@ namespace NoFuture.Rand.Domus
         /// Creates random checking and savings accounts with a history which is intertwined with 
         /// other <see cref="Opes"/> history.
         /// </summary>
-        /// <param name="paycheck"></param>
         /// <param name="stdDevAsPercent"></param>
         protected internal void AddBankingAccounts(double stdDevAsPercent = DF_STD_DEV_PERCENT)
         {
@@ -438,8 +434,8 @@ namespace NoFuture.Rand.Domus
             var totalCost = new Pecuniam((decimal)(randHouseDebt + randHouseEquity));
 
             //create a loan on current residence
-            Pecuniam minPmt;
-            var loan = SecuredFixedRateLoan.GetRandomLoanWithHistory(_amer.Address, spCost, totalCost, (float) randRate, 30, out minPmt, _amer.Personality);
+            var loan = SecuredFixedRateLoan.GetRandomLoanWithHistory(_amer.Address, spCost, totalCost, (float) randRate,
+                30, out var minPmt, _amer.Personality);
             loan.Description = "30-Year Mortgage";
             loan.TradeLine.FormOfCredit = FormOfCredit.Mortgage;
             HomeDebt.Add(loan);
@@ -542,9 +538,8 @@ namespace NoFuture.Rand.Domus
             var spCost = new Pecuniam((decimal)randCarDebt);
             var totalCost = new Pecuniam((decimal)(randCarDebt + randCarEquity));
 
-            Pecuniam minPmt;
             var loan = SecuredFixedRateLoan.GetRandomLoanWithHistory(new Gov.Nhtsa.Vin(), spCost, totalCost,
-                (float) randRate, 5, out minPmt, _amer.Personality);
+                (float) randRate, 5, out var minPmt, _amer.Personality);
 
             //insure that the gen'ed history doesn't start before the year of make
             var maxYear = loan.TradeLine.OpennedDate.Year;
@@ -625,7 +620,7 @@ namespace NoFuture.Rand.Domus
         /// </summary>
         /// <returns></returns>
         /// <remarks>
-        /// compiled data from BEA, see <see cref="Gov.Bea.Links.BeaRegionalDataPJEARN_MI"/>
+        /// compiled data from BEA
         /// </remarks>
         protected internal override LinearEquation GetAvgEarningPerYear()
         {
@@ -675,7 +670,9 @@ namespace NoFuture.Rand.Domus
 
             foreach (var factor in hash.Keys)
             {
-                var xmlElem = xmlDoc.SelectSingleNode($"{tblXPath}/factor[@name='{factor}']/add[@name='{hash[factor]}']") as XmlElement;
+                var xmlElem =
+                    xmlDoc.SelectSingleNode($"{tblXPath}/factor[@name='{factor}']/add[@name='{hash[factor]}']") as
+                        XmlElement;
                 var factorVal = xmlElem?.Attributes["value"]?.Value;
                 if (string.IsNullOrWhiteSpace(factorVal))
                     continue;
@@ -698,15 +695,13 @@ namespace NoFuture.Rand.Domus
                 var maxAge = ageElem.Attributes["max"]?.Value;
                 if (string.IsNullOrWhiteSpace(minAge) || string.IsNullOrWhiteSpace(maxAge))
                     continue;
-                int min, max;
-                if (!int.TryParse(minAge, out min) || !int.TryParse(maxAge, out max))
+                if (!int.TryParse(minAge, out var min) || !int.TryParse(maxAge, out var max))
                     continue;
                 var isInRange = age >= min && age <= max;
                 if (!isInRange || string.IsNullOrWhiteSpace(ageElem.Attributes["value"]?.Value))
                     continue;
                 var factorVal = ageElem.Attributes["value"].Value;
-                double dblOut;
-                if (double.TryParse(factorVal, out dblOut))
+                if (double.TryParse(factorVal, out var dblOut))
                     sum += dblOut;
             }
             return sum;
@@ -728,8 +723,7 @@ namespace NoFuture.Rand.Domus
             var tblNode = xmlDoc.SelectSingleNode(tblXPath) as XmlElement;
             if (string.IsNullOrWhiteSpace(tblNode?.Attributes?["value"]?.Value))
                 return 0.0D;
-            double dblOut;
-            if (!double.TryParse(tblNode.Attributes["value"].Value, out dblOut))
+            if (!double.TryParse(tblNode.Attributes["value"].Value, out var dblOut))
                 return 0.0D;
             return dblOut;
         }

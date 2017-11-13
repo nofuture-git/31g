@@ -5,7 +5,6 @@ namespace NoFuture.Rand.Domus.Pneuma
     [Serializable]
     public abstract class Trait : ITrait
     {
-
         protected Trait()
         {
             Value = new Dimension();

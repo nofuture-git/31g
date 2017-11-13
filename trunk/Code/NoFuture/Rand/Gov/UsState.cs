@@ -139,8 +139,7 @@ namespace NoFuture.Rand.Gov
             var tempList = new List<AmericanHighSchool>();
             foreach (var elem in elements)
             {
-                AmericanHighSchool hsOut;
-                if (AmericanHighSchool.TryParseXml(elem as XmlElement, out hsOut))
+                if (AmericanHighSchool.TryParseXml(elem as XmlElement, out var hsOut))
                 {
                     hsOut.State = this;
                     tempList.Add(hsOut);
@@ -226,7 +225,7 @@ namespace NoFuture.Rand.Gov
         /// <param name="lenth"></param>
         /// <param name="startAt"></param>
         /// <returns></returns>
-        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         internal static RcharNumeric[] Numerics(int lenth,int startAt = 0)
         {
             var someNumerics = new List<RcharNumeric>();
@@ -237,7 +236,7 @@ namespace NoFuture.Rand.Gov
             return someNumerics.ToArray();
         }
 
-        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         internal static void InitAllUsStates()
         {
             _theStates.Add(new Alabama());

@@ -6,6 +6,11 @@ using NoFuture.Rand.Data.Source;
 
 namespace NoFuture.Rand.Data
 {
+    /// <summary>
+    /// A container class which exposes all the various
+    /// data present in Rand.Data.Source which takes some 
+    /// kind of parent-child node form.
+    /// </summary>
     public class TreeData
     {
         #region fields
