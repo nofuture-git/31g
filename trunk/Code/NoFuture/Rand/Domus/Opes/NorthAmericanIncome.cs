@@ -9,7 +9,7 @@ namespace NoFuture.Rand.Domus.Opes
     public class NorthAmericanIncome : IReditus
     {
         private readonly List<NorthAmericanEmployment> _employment = new List<NorthAmericanEmployment>();
-        protected internal IComparer<DiachronIdentifier> Comparer { get; } = new DiachronIdComparer();
+        protected internal IComparer<DiachronIdentifier> Comparer { get; } = new ITemporeComparer();
 
         protected internal List<NorthAmericanEmployment> Employment
         {

@@ -23,7 +23,7 @@ namespace NoFuture.Rand.Domus
 
         private readonly List<AmericanHighSchoolStudent> _highSchools = new List<AmericanHighSchoolStudent>();
         private readonly List<AmericanCollegeStudent> _universities = new List<AmericanCollegeStudent>();
-        private readonly IComparer<DiachronIdentifier> _comparer = new DiachronIdComparer();
+        private readonly IComparer<DiachronIdentifier> _comparer = new ITemporeComparer();
 
         public const int DF_MIN_AGE_ENTER_HS = 14;
         #endregion

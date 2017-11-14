@@ -1,7 +1,6 @@
 ﻿using System;
 using NoFuture.Rand.Com;
 using NoFuture.Rand.Data.Endo.Grps;
-using NoFuture.Rand.Data.Sp;
 
 namespace NoFuture.Rand.Domus.Opes
 {
@@ -13,7 +12,8 @@ namespace NoFuture.Rand.Domus.Opes
         DateTime? FromDate { get; set; }
         DateTime? ToDate { get; set; }
         bool IsInRange(DateTime dt);
+        Pondus GetPayAt(DateTime? dt);
+        Pondus CurrentPay { get; }
 
-        Pondus Pay { get; }
     }
 }

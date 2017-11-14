@@ -193,7 +193,7 @@
     <Compile Include="Domus\NAmerUtil.cs" />
     <Compile Include="Domus\NorthAmerican.cs" />
     <Compile Include="Domus\NorthAmericanEdu.cs" />
-    <Compile Include="Domus\Opes\NorthAmericanReditus.cs" />
+    <Compile Include="Domus\Opes\NorthAmericanIncome.cs" />
     <Compile Include="Domus\Opes\NorthAmericanWealth.cs" />
     <Compile Include="Domus\Opes\WealthBase.cs" />
     <Compile Include="Domus\Parent.cs" />

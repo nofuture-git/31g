@@ -6,7 +6,7 @@ namespace NoFuture.Rand.Core
     /// A base identifier which is tied to some span of time
     /// </summary>
     [Serializable]
-    public abstract class DiachronIdentifier : Identifier
+    public abstract class DiachronIdentifier : Identifier, ITempore
     {
         private Tuple<DateTime?, DateTime?> _dateRange;
 

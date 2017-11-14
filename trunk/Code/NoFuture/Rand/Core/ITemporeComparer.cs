@@ -4,12 +4,12 @@ using System.Collections.Generic;
 namespace NoFuture.Rand.Core
 {
     /// <summary>
-    /// An implementation to order <see cref="DiachronIdentifier"/>
+    /// An implementation to order <see cref="ITempore"/>
     /// </summary>
     [Serializable]
-    public class DiachronIdComparer : IComparer<DiachronIdentifier>
+    public class ITemporeComparer : IComparer<ITempore>
     {
-        public int Compare(DiachronIdentifier x, DiachronIdentifier y)
+        public int Compare(ITempore x, ITempore y)
         {
             if (x?.FromDate == null && y?.FromDate == null)
                 return 0;
