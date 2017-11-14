@@ -1,18 +1,21 @@
 ﻿using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Data.Sp.Enums;
-using NoFuture.Rand.Domus.Opes;
 
 namespace NoFuture.Rand.Data.Sp
 {
     /// <summary>
     /// Base implementation of a household income item.
     /// </summary>
-    public abstract class MereoBase : VocaBase, IMereo
+    public class Mereo : VocaBase, IMereo
     {
+        public Mereo(string name)
+        {
+            Name = name;
+        }
+
         public string Src { get; set; }
         public string Abbrev => GetName(KindsOfNames.Abbrev);
-        public Pecuniam Value { get; set; }
         public IncomeInterval Interval { get; set; }
 
         public virtual string Name
@@ -27,15 +30,13 @@ namespace NoFuture.Rand.Data.Sp
             if(ic == null)
                 return base.Equals(obj);
 
-            return ic.Value == Value
-                   && ic.Interval == ic.Interval
+            return ic.Interval == ic.Interval
                    && ic.Name == ic.Name;
         }
 
         public override int GetHashCode()
         {
-            return Value?.GetHashCode() ?? 1 +
-                   Name?.GetHashCode() ?? 1 +
+            return Name?.GetHashCode() ?? 1 +
                    Interval.GetHashCode();
         }
     }

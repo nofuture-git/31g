@@ -9,13 +9,13 @@ namespace NoFuture.Rand.Data.Sp
     public class Transaction : ITransaction
     {
         #region ctor
-        public Transaction(DateTime atTime, Pecuniam amt, string description = null)
+        public Transaction(DateTime atTime, Pecuniam amt, IMereo description = null)
         {
             AtTime = atTime;
             Cash = amt;
             Description = description;
         }
-        public Transaction(DateTime atTime, Pecuniam amt, Pecuniam fee, string description = null)
+        public Transaction(DateTime atTime, Pecuniam amt, Pecuniam fee, IMereo description = null)
         {
             AtTime = atTime;
             Cash = amt;
@@ -29,7 +29,7 @@ namespace NoFuture.Rand.Data.Sp
         public DateTime AtTime { get; }
         public Pecuniam Cash { get; }
         public Pecuniam Fee { get; }
-        public string Description { get; }
+        public IMereo Description { get; }
         #endregion
 
         #region overrides

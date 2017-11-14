@@ -161,31 +161,31 @@ namespace NoFuture.Rand.Domus.Opes
             }
         }
 
-        internal static string GetPaymentNote(Identifier property, string prefix = null)
+        internal static IMereo GetPaymentNote(Identifier property, string prefix = null)
         {
             if(property == null)
-                return prefix;
+                return new Mereo(prefix);
 
             var residenceLoan = property as ResidentAddress;
 
             if (residenceLoan != null)
             {
                 return residenceLoan.IsLeased
-                    ? string.Join(" ", prefix, "Rent Payment")
-                    : string.Join(" ", prefix, "Mortgage Payment");
+                    ? new Mereo(string.Join(" ", prefix, "Rent Payment"))
+                    : new Mereo(string.Join(" ", prefix, "Mortgage Payment"));
             }
             var carloan = property as Gov.Nhtsa.Vin;
             if (carloan != null)
-                return string.Join(" ", prefix, "Vehicle Payment");
+                return new Mereo(string.Join(" ", prefix, "Vehicle Payment"));
             var ccNum = property as CreditCardNumber;
             if (ccNum != null)
-                return string.Join(" ", prefix, "Cc Payment");
+                return new Mereo(string.Join(" ", prefix, "Cc Payment"));
 
             var acctNum = property as AccountId;
             if (acctNum != null)
-                return string.Join(" ", prefix, "Bank Account Transfer");
+                return new Mereo(string.Join(" ", prefix, "Bank Account Transfer"));
 
-            return prefix;
+            return new Mereo(prefix);
         }
     }
 }

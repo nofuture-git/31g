@@ -51,13 +51,13 @@ namespace NoFuture.Rand.Data.Sp
             }
             LeaseExpiry = _dtOfFirstFullRentDue.AddMonths(forMonths);
             var fullTermAmt = _proRatedAmt + new Pecuniam(monthlyRent.Amount*forMonths);
-            base.TradeLine.Balance.AddTransaction(signing, fullTermAmt, null, "Lease Signing");
+            base.TradeLine.Balance.AddTransaction(signing, fullTermAmt, null, Domus.Opes.WealthBase.GetPaymentNote(property,"Lease Signing"));
             base.TradeLine.FormOfCredit = FormOfCredit.None;
             LeaseTermInMonths = forMonths;
             Deposit = deposit;
             MonthlyPmt = monthlyRent;
             Id = property;
-            Description = $"{forMonths}-Month Lease";
+            Description = WealthBase.GetPaymentNote(property, $"{forMonths}-Month Lease");
             if (property is ResidentAddress)
             {
                 ((ResidentAddress) property).IsLeased = true;
@@ -86,7 +86,7 @@ namespace NoFuture.Rand.Data.Sp
             return new Pecuniam(e - pd.Amount);
         }
 
-        public void PayRent(DateTime dt, Pecuniam amt, string note = "")
+        public void PayRent(DateTime dt, Pecuniam amt, IMereo note = null)
         {
             TradeLine.Balance.AddTransaction(dt, amt.Neg, Pecuniam.Zero, note);
         }
@@ -170,7 +170,7 @@ namespace NoFuture.Rand.Data.Sp
 
             //create payment history until current
             var firstPmt = rent.GetMinPayment(randDate);
-            rent.PayRent(randDate.AddDays(1), firstPmt, "First Rent Payment");
+            rent.PayRent(randDate.AddDays(1), firstPmt, WealthBase.GetPaymentNote(property, "First Rent Payment"));
 
             var rentDueDate = randDate.Month == 12
                 ? new DateTime(randDate.Year + 1, 1, 1)

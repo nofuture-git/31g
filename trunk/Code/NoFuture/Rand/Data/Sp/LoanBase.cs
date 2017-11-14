@@ -37,7 +37,7 @@ namespace NoFuture.Rand.Data.Sp
         /// <param name="amt"></param>
         /// <param name="fee"></param>
         /// <param name="note"></param>
-        public void Push(DateTime dt, Pecuniam amt, Pecuniam fee = null, string note = null)
+        public void Push(DateTime dt, Pecuniam amt, Pecuniam fee = null, IMereo note = null)
         {
             if (amt == Pecuniam.Zero)
                 return;
@@ -53,7 +53,7 @@ namespace NoFuture.Rand.Data.Sp
         /// <param name="fee"></param>
         /// <param name="note"></param>
         /// <returns></returns>
-        public virtual bool Pop(DateTime dt, Pecuniam val, Pecuniam fee = null, string note = null)
+        public virtual bool Pop(DateTime dt, Pecuniam val, Pecuniam fee = null, IMereo note = null)
         {
             if (val == Pecuniam.Zero)
                 return false;

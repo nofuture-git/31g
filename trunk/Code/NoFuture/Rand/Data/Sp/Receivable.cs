@@ -19,7 +19,7 @@ namespace NoFuture.Rand.Data.Sp
 
         #region properties
         public virtual ITradeLine TradeLine => _tl;
-        public string Description { get; set; }
+        public IMereo Description { get; set; }
         public SpStatus CurrentStatus => GetStatus(DateTime.Now);
         public PastDue? CurrentDelinquency => GetDelinquency(DateTime.Now);
         public Pecuniam CurrentValue => GetValueAt(DateTime.Now);
@@ -102,7 +102,7 @@ namespace NoFuture.Rand.Data.Sp
 
         public override string ToString()
         {
-            return !string.IsNullOrWhiteSpace(Description) ? Description : base.ToString();
+            return !string.IsNullOrWhiteSpace(Description.Name) ? Description.Name : base.ToString();
         }
 
         #endregion  

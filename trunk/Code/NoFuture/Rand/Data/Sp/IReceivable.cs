@@ -8,7 +8,7 @@ namespace NoFuture.Rand.Data.Sp
     /// </summary>
     public interface IReceivable : IAsset
     {
-        string Description { get; set; }
+        IMereo Description { get; set; }
         ITradeLine TradeLine { get; }
 
         /// <summary>

@@ -53,14 +53,14 @@ namespace NoFuture.Rand.Data.Sp
             return balAtDt < Pecuniam.Zero ? SpStatus.Short : SpStatus.Current;
         }
 
-        public virtual void Push(DateTime dt, Pecuniam val, Pecuniam fee = null, string note = null)
+        public virtual void Push(DateTime dt, Pecuniam val, Pecuniam fee = null, IMereo note = null)
         {
             if (val == Pecuniam.Zero)
                 return;
             Balance.AddTransaction(dt, val.Abs, fee, note);
         }
 
-        public virtual bool Pop(DateTime dt, Pecuniam val, Pecuniam fee = null, string note = null)
+        public virtual bool Pop(DateTime dt, Pecuniam val, Pecuniam fee = null, IMereo note = null)
         {
             if (val == Pecuniam.Zero)
                 return true;

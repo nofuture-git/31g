@@ -116,7 +116,7 @@
     <Compile Include="Domus\Opes\FactorTables.cs" />
     <Compile Include="Domus\Opes\IEmployment.cs" />
     <Compile Include="Domus\IStudent.cs" />
-    <Compile Include="Data\Sp\MereoBase.cs" />
+    <Compile Include="Data\Sp\Mereo.cs" />
     <Compile Include="Domus\Opes\NorthAmericanEmployment.cs" />
     <Compile Include="Domus\NorthAmericanStudent.cs" />
     <Compile Include="Data\Sp\IMereo.cs" />

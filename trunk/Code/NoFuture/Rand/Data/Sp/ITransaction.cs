@@ -11,6 +11,6 @@ namespace NoFuture.Rand.Data.Sp
         DateTime AtTime { get; }
         Pecuniam Cash { get; }
         Pecuniam Fee { get; }
-        string Description { get; }
+        IMereo Description { get; }
     }
 }

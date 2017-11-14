@@ -81,7 +81,7 @@ namespace NoFuture.Rand.Data.Sp.Cc
         /// the purchase amount <see cref="val"/>
         /// will not cause the total balance to exceed <see cref="Max"/>.
         /// </returns>
-        public override bool Pop(DateTime dt, Pecuniam val, Pecuniam fee = null, string note = null)
+        public override bool Pop(DateTime dt, Pecuniam val, Pecuniam fee = null, IMereo note = null)
         {
             if (dt > Cc.ExpDate)
                 return false;
