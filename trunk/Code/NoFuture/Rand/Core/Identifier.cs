@@ -25,7 +25,7 @@ namespace NoFuture.Rand.Core
             return Value ?? string.Empty;
         }
 
-        public bool Equals(Identifier obj)
+        public virtual bool Equals(Identifier obj)
         {
             return string.Equals(obj.Value, Value);
         }

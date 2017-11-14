@@ -23,7 +23,7 @@ namespace NoFuture.Rand.Data.Sp
         #endregion
 
         #region properties
-        public Pecuniam Deposit { get; private set; }
+        public Pecuniam Deposit { get; }
         public int LeaseTermInMonths { get; }
         public Pecuniam MonthlyPmt { get; }
         public DateTime LeaseExpiry { get; }
@@ -159,7 +159,7 @@ namespace NoFuture.Rand.Data.Sp
             var avgRent = (double) Rent.GetAvgAmericanRentByYear(null).Amount;
             var randRent = new Pecuniam(
                 (decimal)
-                    NorthAmericanWealth.GetRandomFactorValue(NorthAmericanWealth.FactorTables.HomeDebt, homeDebtFactor,
+                    NorthAmericanWealth.GetRandomFactorValue(FactorTables.HomeDebt, homeDebtFactor,
                         stdDevAsPercent, avgRent));
             var randTerm = Etx.DiscreteRange(new[] {24, 18, 12, 6});
             var randDate = Etx.Date(0, DateTime.Today.AddDays(-2), true);

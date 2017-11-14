@@ -21,17 +21,7 @@ namespace NoFuture.Rand.Domus.Opes
     public class NorthAmericanWealth : WealthBase
     {
         #region innerTypes
-        public enum FactorTables
-        {
-            HomeDebt,
-            VehicleDebt,
-            CreditCardDebt,
-            CheckingAccount,
-            SavingsAccount,
-            NetWorth,
-            VehicleEquity,
-            HomeEquity
-        }
+
         #endregion
 
         #region constants
@@ -85,11 +75,7 @@ namespace NoFuture.Rand.Domus.Opes
         public NorthAmericanWealth(NorthAmerican american, bool isRenting = false)
         {
             _amer = american ?? throw new ArgumentNullException(nameof(american));
-            if(_amer.Address == null)
-                _amer.AddAddress(ResidentAddress.GetRandomAmericanAddr());
             var usCityArea = _amer?.Address?.HomeCityArea as UsCityStateZip;
-            if (usCityArea == null)
-                return;
 
             CreditScore = new PersonalCreditScore(american);
 
@@ -98,7 +84,7 @@ namespace NoFuture.Rand.Domus.Opes
 
             var edu = _amer.Education?.EduFlag ?? (OccidentalEdu.HighSchool | OccidentalEdu.Grad);
             var race = _amer.Race;
-            var region = usCityArea.State?.GetStateData()?.Region ?? AmericanRegion.Midwest;
+            var region = usCityArea?.State?.GetStateData()?.Region ?? AmericanRegion.Midwest;
 
             _homeDebtFactor = GetFactor(FactorTables.HomeDebt, edu, race, region, _amer.Age, _amer.MyGender,
                 _amer.MaritialStatus);
@@ -120,7 +106,11 @@ namespace NoFuture.Rand.Domus.Opes
             var payBase = new Pecuniam(2000);
             Func<Pecuniam, double> calcMonthlyPay =
                 pecuniam => Math.Round((double)GetYearlyIncome(pecuniam, _netWorthFactor).Amount / 12, 2);
-            Paycheck = Math.Round(calcMonthlyPay(payBase) / 2, 2).ToPecuniam();
+            Paycheck = new NorthAmericanIncome
+            {
+                Value = Math.Round(calcMonthlyPay(payBase) / 2, 2).ToPecuniam(),
+                Interval = IncomeInterval.SemiMonthly
+            };
         }
         #endregion
 
@@ -128,7 +118,7 @@ namespace NoFuture.Rand.Domus.Opes
         public CreditScore CreditScore { get; }
         public Pecuniam ResidencePayment => _residencePmt;
         public Pecuniam CarPayment => _carPmt;
-        public Pecuniam Paycheck { get; }
+        public IIncome Paycheck { get; }
         #endregion
 
         #region methods
@@ -223,6 +213,9 @@ namespace NoFuture.Rand.Domus.Opes
         /// <returns></returns>
         protected internal bool GetIsLeaseResidence(UsCityStateZip usCityArea)
         {
+            if (usCityArea == null)
+                return true;
+
             var cannotGetFinanced = CreditScore.GetRandomInterestRate(null, Gov.Fed.RiskFreeInterestRate.DF_VALUE) > 8.5;
             if (cannotGetFinanced)
                 return true;
@@ -276,7 +269,7 @@ namespace NoFuture.Rand.Domus.Opes
                 {
                     if (friCounter%2 == 0)
                     {
-                        checking.Push(loopDtSt.AddSeconds(1), Paycheck, Pecuniam.Zero, "Pay");
+                        checking.Push(loopDtSt.AddSeconds(1), Paycheck.Value, Pecuniam.Zero, "Pay");
                     }
                     
                     //replenish savings
@@ -318,7 +311,7 @@ namespace NoFuture.Rand.Domus.Opes
                     continue;
                 }
 
-                var myPecuniam = currentBalance > Paycheck ? currentBalance : Paycheck;
+                var myPecuniam = currentBalance > Paycheck.Value ? currentBalance : Paycheck.Value;
                 var dailyMax = (double) myPecuniam.Amount*DF_DAILY_SPEND_PERCENT;
 
                 CreateSingleDaysPurchases(_amer.Personality, checking, loopDtSt, dailyMax);
@@ -495,7 +488,7 @@ namespace NoFuture.Rand.Domus.Opes
                 if (ccAcct.GetStatus(loopDt) != SpStatus.Current || remainingCredit <= new Pecuniam(10))
                     continue;
 
-                var scaler = remainingCredit > Paycheck ? Paycheck : remainingCredit;
+                var scaler = remainingCredit > Paycheck.Value ? Paycheck.Value : remainingCredit;
 
                 var daysMax = (double)scaler.Amount*DF_DAILY_SPEND_PERCENT/2;
 
@@ -578,8 +571,8 @@ namespace NoFuture.Rand.Domus.Opes
                 dailyPercent = Math.Round(dailyPercent/3, 4);
             }
 
-            var utilsDfMin = (int) Math.Round((double) Paycheck.Amount*dailyPercent);
-            var utilsDfMax = (int) Math.Round((double) Paycheck.Amount*dailyPercent*2);
+            var utilsDfMin = (int) Math.Round((double) Paycheck.Value.Amount*dailyPercent);
+            var utilsDfMax = (int) Math.Round((double) Paycheck.Value.Amount*dailyPercent*2);
             var utilsDfMid = (int) Math.Round(((double) utilsDfMax - utilsDfMin)/2);
 
             var randBill = Pecuniam.GetRandPecuniam(utilsDfMin, utilsDfMax);
@@ -625,7 +618,7 @@ namespace NoFuture.Rand.Domus.Opes
         protected internal override LinearEquation GetAvgEarningPerYear()
         {
             var ca = _amer.Address?.HomeCityArea as UsCityStateZip;
-            return ca?.AverageEarnings ?? ca?.State?.GetStateData()?.AverageEarnings;
+            return (ca?.AverageEarnings ?? ca?.State?.GetStateData()?.AverageEarnings) ?? NAmerUtil.Equations.NatlAverageEarnings;
         }
 
         /// <summary>

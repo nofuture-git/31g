@@ -270,6 +270,11 @@ namespace NoFuture.Rand.Domus
             /// Can't seem to find a straight answer on this cause post-grad can mean alot of different things
             /// </summary>
             public static NormalDistEquation YearsInPostgradCollege = new NormalDistEquation { Mean = 3.913, StdDev = 0.378 };
+
+            /// <summary>
+            /// TODO, this is the value for OH, need to get an averages for all data
+            /// </summary>
+            public static LinearEquation NatlAverageEarnings = new LinearEquation(-2046735.65519574, 1042.04539007091);
         }
 
         public static class Tables

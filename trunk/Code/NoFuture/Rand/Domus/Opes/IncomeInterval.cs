@@ -2,7 +2,7 @@
 {
     public enum IncomeInterval
     {
-        Unknown,
+        OnceOnly,
         Hourly,
         Daily,
         Weekly,
