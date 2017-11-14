@@ -116,12 +116,11 @@
     <Compile Include="Domus\Opes\FactorTables.cs" />
     <Compile Include="Domus\Opes\IEmployment.cs" />
     <Compile Include="Domus\IStudent.cs" />
-    <Compile Include="Domus\Opes\IncomeBase.cs" />
+    <Compile Include="Data\Sp\MereoBase.cs" />
     <Compile Include="Domus\Opes\NorthAmericanEmployment.cs" />
     <Compile Include="Domus\NorthAmericanStudent.cs" />
-    <Compile Include="Domus\Opes\IIncome.cs" />
-    <Compile Include="Domus\Opes\IncomeInterval.cs" />
-    <Compile Include="Domus\Opes\NorthAmericanIncome.cs" />
+    <Compile Include="Data\Sp\IMereo.cs" />
+    <Compile Include="Data\Sp\Enums\IncomeInterval.cs" />
     <Compile Include="Domus\Pneuma\Agreeableness.cs" />
     <Compile Include="Domus\Pneuma\Conscientiousness.cs" />
     <Compile Include="Domus\Pneuma\Dimension.cs" />

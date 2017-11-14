@@ -106,11 +106,7 @@ namespace NoFuture.Rand.Domus.Opes
             var payBase = new Pecuniam(2000);
             Func<Pecuniam, double> calcMonthlyPay =
                 pecuniam => Math.Round((double)GetYearlyIncome(pecuniam, _netWorthFactor).Amount / 12, 2);
-            Paycheck = new NorthAmericanIncome
-            {
-                Value = Math.Round(calcMonthlyPay(payBase) / 2, 2).ToPecuniam(),
-                Interval = IncomeInterval.SemiMonthly
-            };
+            Paycheck = Math.Round(calcMonthlyPay(payBase) / 2, 2).ToPecuniam();
         }
         #endregion
 
@@ -118,7 +114,7 @@ namespace NoFuture.Rand.Domus.Opes
         public CreditScore CreditScore { get; }
         public Pecuniam ResidencePayment => _residencePmt;
         public Pecuniam CarPayment => _carPmt;
-        public IIncome Paycheck { get; }
+        public Pecuniam Paycheck { get; }
         #endregion
 
         #region methods
@@ -269,7 +265,7 @@ namespace NoFuture.Rand.Domus.Opes
                 {
                     if (friCounter%2 == 0)
                     {
-                        checking.Push(loopDtSt.AddSeconds(1), Paycheck.Value, Pecuniam.Zero, "Pay");
+                        checking.Push(loopDtSt.AddSeconds(1), Paycheck, Pecuniam.Zero, "Pay");
                     }
                     
                     //replenish savings
@@ -311,7 +307,7 @@ namespace NoFuture.Rand.Domus.Opes
                     continue;
                 }
 
-                var myPecuniam = currentBalance > Paycheck.Value ? currentBalance : Paycheck.Value;
+                var myPecuniam = currentBalance > Paycheck ? currentBalance : Paycheck;
                 var dailyMax = (double) myPecuniam.Amount*DF_DAILY_SPEND_PERCENT;
 
                 CreateSingleDaysPurchases(_amer.Personality, checking, loopDtSt, dailyMax);
@@ -488,7 +484,7 @@ namespace NoFuture.Rand.Domus.Opes
                 if (ccAcct.GetStatus(loopDt) != SpStatus.Current || remainingCredit <= new Pecuniam(10))
                     continue;
 
-                var scaler = remainingCredit > Paycheck.Value ? Paycheck.Value : remainingCredit;
+                var scaler = remainingCredit > Paycheck ? Paycheck : remainingCredit;
 
                 var daysMax = (double)scaler.Amount*DF_DAILY_SPEND_PERCENT/2;
 
@@ -571,8 +567,8 @@ namespace NoFuture.Rand.Domus.Opes
                 dailyPercent = Math.Round(dailyPercent/3, 4);
             }
 
-            var utilsDfMin = (int) Math.Round((double) Paycheck.Value.Amount*dailyPercent);
-            var utilsDfMax = (int) Math.Round((double) Paycheck.Value.Amount*dailyPercent*2);
+            var utilsDfMin = (int) Math.Round((double) Paycheck.Amount*dailyPercent);
+            var utilsDfMax = (int) Math.Round((double) Paycheck.Amount*dailyPercent*2);
             var utilsDfMid = (int) Math.Round(((double) utilsDfMax - utilsDfMin)/2);
 
             var randBill = Pecuniam.GetRandPecuniam(utilsDfMin, utilsDfMax);

@@ -1,4 +1,4 @@
-﻿namespace NoFuture.Rand.Domus.Opes
+﻿namespace NoFuture.Rand.Data.Sp.Enums
 {
     public enum IncomeInterval
     {

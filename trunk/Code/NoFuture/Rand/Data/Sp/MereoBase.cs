@@ -1,13 +1,14 @@
 ﻿using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
-using NoFuture.Rand.Data.Sp;
+using NoFuture.Rand.Data.Sp.Enums;
+using NoFuture.Rand.Domus.Opes;
 
-namespace NoFuture.Rand.Domus.Opes
+namespace NoFuture.Rand.Data.Sp
 {
     /// <summary>
     /// Base implementation of a household income item.
     /// </summary>
-    public abstract class IncomeBase : VocaBase, IIncome
+    public abstract class MereoBase : VocaBase, IMereo
     {
         public string Src { get; set; }
         public string Abbrev => GetName(KindsOfNames.Abbrev);
@@ -22,7 +23,7 @@ namespace NoFuture.Rand.Domus.Opes
 
         public override bool Equals(object obj)
         {
-            var ic = obj as IIncome;
+            var ic = obj as IMereo;
             if(ic == null)
                 return base.Equals(obj);
 
