@@ -51,13 +51,13 @@ namespace NoFuture.Rand.Data.Sp
             }
             LeaseExpiry = _dtOfFirstFullRentDue.AddMonths(forMonths);
             var fullTermAmt = _proRatedAmt + new Pecuniam(monthlyRent.Amount*forMonths);
-            base.TradeLine.Balance.AddTransaction(signing, fullTermAmt, null, Domus.Opes.WealthBase.GetPaymentNote(property,"Lease Signing"));
+            base.TradeLine.Balance.AddTransaction(signing, fullTermAmt, Mereo.GetMereoById(property,"Lease Signing"), null);
             base.TradeLine.FormOfCredit = FormOfCredit.None;
             LeaseTermInMonths = forMonths;
             Deposit = deposit;
             MonthlyPmt = monthlyRent;
             Id = property;
-            Description = WealthBase.GetPaymentNote(property, $"{forMonths}-Month Lease");
+            Description = Mereo.GetMereoById(property, $"{forMonths}-Month Lease");
             if (property is ResidentAddress)
             {
                 ((ResidentAddress) property).IsLeased = true;
@@ -88,7 +88,7 @@ namespace NoFuture.Rand.Data.Sp
 
         public void PayRent(DateTime dt, Pecuniam amt, IMereo note = null)
         {
-            TradeLine.Balance.AddTransaction(dt, amt.Neg, Pecuniam.Zero, note);
+            TradeLine.Balance.AddTransaction(dt, amt.Neg, note, Pecuniam.Zero);
         }
 
         protected internal Pecuniam GetExpectedTotalRent(DateTime dt)
@@ -170,7 +170,7 @@ namespace NoFuture.Rand.Data.Sp
 
             //create payment history until current
             var firstPmt = rent.GetMinPayment(randDate);
-            rent.PayRent(randDate.AddDays(1), firstPmt, WealthBase.GetPaymentNote(property, "First Rent Payment"));
+            rent.PayRent(randDate.AddDays(1), firstPmt, Mereo.GetMereoById(property, "First Rent Payment"));
 
             var rentDueDate = randDate.Month == 12
                 ? new DateTime(randDate.Year + 1, 1, 1)
@@ -183,7 +183,7 @@ namespace NoFuture.Rand.Data.Sp
                 if (renterPersonality.GetRandomActsIrresponsible())
                     paidRentOn = paidRentOn.AddDays(Etx.IntNumber(5, 15));
 
-                rent.PayRent(paidRentOn, randRent, WealthBase.GetPaymentNote(rent.Id));
+                rent.PayRent(paidRentOn, randRent, Mereo.GetMereoById(rent.Id));
                 rentDueDate = rentDueDate.AddMonths(1);
             }
             return rent;

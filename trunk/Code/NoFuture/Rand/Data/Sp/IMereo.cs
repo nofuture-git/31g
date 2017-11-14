@@ -4,7 +4,7 @@ using NoFuture.Rand.Data.Sp.Enums;
 namespace NoFuture.Rand.Data.Sp
 {
     /// <summary>
-    /// Represents single item household income in any form.
+    /// Represents a name of any kind of money entry
     /// </summary>
     public interface IMereo : IVoca
     {

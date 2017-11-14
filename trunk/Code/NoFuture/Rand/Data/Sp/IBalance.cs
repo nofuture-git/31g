@@ -16,9 +16,9 @@ namespace NoFuture.Rand.Data.Sp
         /// </summary>
         /// <param name="dt"></param>
         /// <param name="amnt"></param>
-        /// <param name="fee"></param>
         /// <param name="note"></param>
-        Guid AddTransaction(DateTime dt, Pecuniam amnt, Pecuniam fee = null, IMereo note = null);
+        /// <param name="fee"></param>
+        Guid AddTransaction(DateTime dt, Pecuniam amnt, IMereo note = null, Pecuniam fee = null);
 
         /// <summary>
         /// Gets transactions which occured on or after <see cref="from"/> up to the <see cref="to"/>

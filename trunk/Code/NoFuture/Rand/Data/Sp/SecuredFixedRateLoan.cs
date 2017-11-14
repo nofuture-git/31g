@@ -89,7 +89,7 @@ namespace NoFuture.Rand.Data.Sp
                 Rate = rate
             };
 
-            var pmtNote = WealthBase.GetPaymentNote(property);
+            var pmtNote = Mereo.GetMereoById(property);
 
             dtIncrement = calcPurchaseDt.AddMonths(1);
             while (loan.GetValueAt(dtIncrement) > remainingCost)
@@ -107,7 +107,7 @@ namespace NoFuture.Rand.Data.Sp
                     minPmt = loan.GetValueAt(paidOnDate);
                 }
 
-                loan.Push(paidOnDate, minPmt, Pecuniam.Zero, pmtNote);
+                loan.Push(paidOnDate, minPmt, pmtNote, Pecuniam.Zero);
                 if (isPayoff)
                 {
                     loan.TradeLine.Closure = new TradelineClosure

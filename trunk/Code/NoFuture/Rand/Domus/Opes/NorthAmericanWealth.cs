@@ -243,12 +243,12 @@ namespace NoFuture.Rand.Domus.Opes
             //set up checking
             var checking = CheckingAccount.GetRandomCheckingAcct(_amer,baseDate);
             var randChecking = GetRandomFactorValue(FactorTables.CheckingAccount, _checkingAcctFactor, stdDevAsPercent);
-            checking.Push(baseDate.AddDays(-1), randChecking.ToPecuniam(), Pecuniam.Zero, GetPaymentNote(null, "Init Checking"));
+            checking.Push(baseDate.AddDays(-1), randChecking.ToPecuniam(), Mereo.GetMereoById(null, "Init Checking"), Pecuniam.Zero);
 
             //set up a savings
             var randSavings = GetRandomFactorValue(FactorTables.SavingsAccount, _savingAcctFactor, stdDevAsPercent);
             var savings = SavingsAccount.GetRandomSavingAcct(_amer, baseDate);
-            savings.Push(baseDate.AddDays(-1), randSavings.ToPecuniam(), Pecuniam.Zero, GetPaymentNote(null, "Init Savings"));
+            savings.Push(baseDate.AddDays(-1), randSavings.ToPecuniam(), Mereo.GetMereoById(null, "Init Savings"), Pecuniam.Zero);
             var friCounter = 0;
             var historyTs = DateTime.Today - baseDate;
 
@@ -265,7 +265,7 @@ namespace NoFuture.Rand.Domus.Opes
                 {
                     if (friCounter%2 == 0)
                     {
-                        checking.Push(loopDtSt.AddSeconds(1), Paycheck, Pecuniam.Zero, GetPaymentNote(null, "Pay"));
+                        checking.Push(loopDtSt.AddSeconds(1), Paycheck, Mereo.GetMereoById(null, "Pay"), Pecuniam.Zero);
                     }
                     
                     //replenish savings
@@ -280,7 +280,7 @@ namespace NoFuture.Rand.Domus.Opes
                         new DateTime(loopDtSt.Year, _amer.BirthCert.DateOfBirth.Month, _amer.BirthCert.DateOfBirth.Day)) ==
                     0)
                 {
-                    checking.Push(loopDtSt.AddHours(15), Pecuniam.GetRandPecuniam(10,100,10), Pecuniam.Zero, WealthBase.GetPaymentNote(null, "b-day money"));
+                    checking.Push(loopDtSt.AddHours(15), Pecuniam.GetRandPecuniam(10,100,10), Mereo.GetMereoById(null, "b-day money"), Pecuniam.Zero);
                 }
 
                 //add house pmts
@@ -333,7 +333,7 @@ namespace NoFuture.Rand.Domus.Opes
                     continue;
 
                 var billAmt = t.Item3 ?? GetRandomMonthlyBillAmount(t.Item1, loopDtSt.Month);
-                checking.Pop(loopDtSt.AddHours(12), billAmt, Pecuniam.Zero, WealthBase.GetPaymentNote(null, t.Item1));
+                checking.Pop(loopDtSt.AddHours(12), billAmt, Mereo.GetMereoById(null, t.Item1), Pecuniam.Zero);
             }
         }
 
@@ -425,7 +425,7 @@ namespace NoFuture.Rand.Domus.Opes
             //create a loan on current residence
             var loan = SecuredFixedRateLoan.GetRandomLoanWithHistory(_amer.Address, spCost, totalCost, (float) randRate,
                 30, out var minPmt, _amer.Personality);
-            loan.Description = WealthBase.GetPaymentNote(null, "30-Year Mortgage");
+            loan.Description = Mereo.GetMereoById(null, "30-Year Mortgage");
             loan.TradeLine.FormOfCredit = FormOfCredit.Mortgage;
             HomeDebt.Add(loan);
             return minPmt;
@@ -441,7 +441,7 @@ namespace NoFuture.Rand.Domus.Opes
             //create random cc
             var ccAcct = CreditCardAccount.GetRandomCcAcct(_amer, CreditScore);
 
-            var pmtNote = GetPaymentNote(ccAcct.Id);
+            var pmtNote = Mereo.GetMereoById(ccAcct.Id);
 
             //1 year history
             var baseDate = DateTime.Today.AddYears(-1);
@@ -469,12 +469,12 @@ namespace NoFuture.Rand.Domus.Opes
                     {
                         var fowardDays = Etx.IntNumber(1, 45);
                         var paidDate = loopDt.AddDays(fowardDays);
-                        ccAcct.Push(paidDate, minDue, Pecuniam.Zero, pmtNote);
+                        ccAcct.Push(paidDate, minDue, pmtNote, Pecuniam.Zero);
                     }
                     else
                     {
                         var additionalPaid = Pecuniam.GetRandPecuniam(20, 200, 10);
-                        ccAcct.Push(loopDt, minDue + additionalPaid, Pecuniam.Zero, pmtNote);
+                        ccAcct.Push(loopDt, minDue + additionalPaid, pmtNote, Pecuniam.Zero);
                     }
                 }
 
@@ -534,7 +534,7 @@ namespace NoFuture.Rand.Domus.Opes
             var maxYear = loan.TradeLine.OpennedDate.Year;
             var vin = Gov.Nhtsa.Vin.GetRandomVin(randCarDebt <= 2000.0D, maxYear);
             loan.PropertyId = vin;
-            loan.Description = WealthBase.GetPaymentNote(null, string.Join(" ", vin.Value, vin.Description, vin.GetModelYearYyyy()));
+            loan.Description = Mereo.GetMereoById(null, string.Join(" ", vin.Value, vin.Description, vin.GetModelYearYyyy()));
             loan.TradeLine.FormOfCredit = FormOfCredit.Installment;
             VehicleDebt.Add(loan);
             return minPmt;

@@ -35,14 +35,14 @@ namespace NoFuture.Rand.Data.Sp
         /// </summary>
         /// <param name="dt"></param>
         /// <param name="amt"></param>
-        /// <param name="fee"></param>
         /// <param name="note"></param>
-        public void Push(DateTime dt, Pecuniam amt, Pecuniam fee = null, IMereo note = null)
+        /// <param name="fee"></param>
+        public void Push(DateTime dt, Pecuniam amt, IMereo note = null, Pecuniam fee = null)
         {
             if (amt == Pecuniam.Zero)
                 return;
             fee = fee == null ? Pecuniam.Zero : fee.Neg;
-            TradeLine.Balance.AddTransaction(dt, amt.Neg, fee, note);
+            TradeLine.Balance.AddTransaction(dt, amt.Neg, note, fee);
         }
 
         /// <summary>
@@ -50,15 +50,15 @@ namespace NoFuture.Rand.Data.Sp
         /// </summary>
         /// <param name="dt"></param>
         /// <param name="val"></param>
-        /// <param name="fee"></param>
         /// <param name="note"></param>
+        /// <param name="fee"></param>
         /// <returns></returns>
-        public virtual bool Pop(DateTime dt, Pecuniam val, Pecuniam fee = null, IMereo note = null)
+        public virtual bool Pop(DateTime dt, Pecuniam val, IMereo note = null, Pecuniam fee = null)
         {
             if (val == Pecuniam.Zero)
                 return false;
             fee = fee == null ? Pecuniam.Zero : fee.Abs;
-            TradeLine.Balance.AddTransaction(dt, val.Abs, fee, note);
+            TradeLine.Balance.AddTransaction(dt, val.Abs, note, fee);
             return true;
         }
         #endregion

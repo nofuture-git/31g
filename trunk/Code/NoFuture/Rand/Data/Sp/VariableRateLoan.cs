@@ -15,7 +15,7 @@ namespace NoFuture.Rand.Data.Sp
             : base(openedDate, minPaymentRate)
         {
             if (amt != null && amt.Amount != 0)
-                _tl.Balance.AddTransaction(openedDate, amt.Abs, Pecuniam.Zero, Domus.Opes.WealthBase.GetPaymentNote(null,"Initial Transaction"));
+                _tl.Balance.AddTransaction(openedDate, amt.Abs, Mereo.GetMereoById(null,"Initial Transaction"), Pecuniam.Zero);
         }
 
         #endregion

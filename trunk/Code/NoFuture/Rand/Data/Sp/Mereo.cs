@@ -1,11 +1,21 @@
 ﻿using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Data.Sp.Enums;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using NoFuture.Rand.Data.Sp;
+using NoFuture.Rand.Data.Sp.Cc;
+using NoFuture.Rand.Domus.Pneuma;
+using NoFuture.Util.Core;
+using NoFuture.Util.Core.Math;
+using NoFuture.Rand.Domus;
+using NoFuture.Rand.Gov.Nhtsa;
 
 namespace NoFuture.Rand.Data.Sp
 {
     /// <summary>
-    /// Base implementation of a household income item.
+    /// Base implementation a name of any kind of money entry
     /// </summary>
     public class Mereo : VocaBase, IMereo
     {
@@ -38,6 +48,32 @@ namespace NoFuture.Rand.Data.Sp
         {
             return Name?.GetHashCode() ?? 1 +
                    Interval.GetHashCode();
+        }
+
+        public override string ToString()
+        {
+            return Name;
+        }
+
+        public static IMereo GetMereoById(Identifier property, string prefix = null)
+        {
+            switch (property)
+            {
+                case null:
+                    return new Mereo(prefix);
+                case ResidentAddress residenceLoan:
+                    return residenceLoan.IsLeased
+                        ? new Mereo(String.Join(" ", prefix, "Rent Payment"))
+                        : new Mereo(String.Join(" ", prefix, "Mortgage Payment"));
+                case Vin _:
+                    return new Mereo(String.Join(" ", prefix, "Vehicle Payment"));
+                case CreditCardNumber _:
+                    return new Mereo(String.Join(" ", prefix, "Cc Payment"));
+                case AccountId _:
+                    return new Mereo(String.Join(" ", prefix, "Bank Account Transfer"));
+            }
+
+            return new Mereo(prefix);
         }
     }
 }

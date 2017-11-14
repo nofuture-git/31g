@@ -34,7 +34,7 @@ namespace NoFuture.Rand.Data.Sp
 
         #endregion
 
-        public Guid AddTransaction(DateTime dt, Pecuniam amnt, Pecuniam fee = null, IMereo note = null)
+        public Guid AddTransaction(DateTime dt, Pecuniam amnt, IMereo note = null, Pecuniam fee = null)
         {
             if (amnt == null)
                 return Guid.Empty;

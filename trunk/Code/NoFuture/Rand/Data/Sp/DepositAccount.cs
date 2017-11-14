@@ -53,14 +53,14 @@ namespace NoFuture.Rand.Data.Sp
             return balAtDt < Pecuniam.Zero ? SpStatus.Short : SpStatus.Current;
         }
 
-        public virtual void Push(DateTime dt, Pecuniam val, Pecuniam fee = null, IMereo note = null)
+        public virtual void Push(DateTime dt, Pecuniam val, IMereo note = null, Pecuniam fee = null)
         {
             if (val == Pecuniam.Zero)
                 return;
-            Balance.AddTransaction(dt, val.Abs, fee, note);
+            Balance.AddTransaction(dt, val.Abs, note, fee);
         }
 
-        public virtual bool Pop(DateTime dt, Pecuniam val, Pecuniam fee = null, IMereo note = null)
+        public virtual bool Pop(DateTime dt, Pecuniam val, IMereo note = null, Pecuniam fee = null)
         {
             if (val == Pecuniam.Zero)
                 return true;
@@ -68,7 +68,7 @@ namespace NoFuture.Rand.Data.Sp
                 return false;
             if (val > Balance.GetCurrent(dt, 0F))
                 return false;
-            Balance.AddTransaction(dt, val.Neg, fee, note);
+            Balance.AddTransaction(dt, val.Neg, note, fee);
             return true;
         }
 
@@ -93,7 +93,7 @@ namespace NoFuture.Rand.Data.Sp
 
             foreach (var t in trans)
             {
-                Pop(t.AtTime.AddMilliseconds(1), t.Cash, Pecuniam.Zero, t.Description);
+                Pop(t.AtTime.AddMilliseconds(1), t.Cash, t.Description, Pecuniam.Zero);
             }
         }
 
@@ -123,8 +123,8 @@ namespace NoFuture.Rand.Data.Sp
                 if (amt.Amount < 0.01M)
                     break;
             }
-            fromAccount.Pop(dt, amt, Pecuniam.Zero, WealthBase.GetPaymentNote(fromAccount.Id));
-            toAccount.Push(dt.AddMilliseconds(100), amt, Pecuniam.Zero, WealthBase.GetPaymentNote(toAccount.Id));
+            fromAccount.Pop(dt, amt, Mereo.GetMereoById(fromAccount.Id), Pecuniam.Zero);
+            toAccount.Push(dt.AddMilliseconds(100), amt, Mereo.GetMereoById(toAccount.Id), Pecuniam.Zero);
         }
 
         #endregion

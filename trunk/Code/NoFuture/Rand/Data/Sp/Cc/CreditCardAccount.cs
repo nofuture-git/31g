@@ -74,21 +74,21 @@ namespace NoFuture.Rand.Data.Sp.Cc
         /// </summary>
         /// <param name="dt"></param>
         /// <param name="val"></param>
-        /// <param name="fee"></param>
         /// <param name="note"></param>
+        /// <param name="fee"></param>
         /// <returns>
         /// True when the card is not expired and
         /// the purchase amount <see cref="val"/>
         /// will not cause the total balance to exceed <see cref="Max"/>.
         /// </returns>
-        public override bool Pop(DateTime dt, Pecuniam val, Pecuniam fee = null, IMereo note = null)
+        public override bool Pop(DateTime dt, Pecuniam val, IMereo note = null, Pecuniam fee = null)
         {
             if (dt > Cc.ExpDate)
                 return false;
             var cBal = GetValueAt(dt);
             if (cBal >= Max || cBal + val >= Max)
                 return false;
-            return base.Pop(dt, val, fee, note);
+            return base.Pop(dt, val, note, fee);
         }
 
         /// <summary>
