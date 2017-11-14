@@ -12,7 +12,8 @@ namespace NoFuture.Rand.Domus.Opes
         StandardOccupationalClassification Occupation { get; set; }
         DateTime? FromDate { get; set; }
         DateTime? ToDate { get; set; }
-        IMereo Pay { get; set; }
         bool IsInRange(DateTime dt);
+
+        Pondus Pay { get; }
     }
 }

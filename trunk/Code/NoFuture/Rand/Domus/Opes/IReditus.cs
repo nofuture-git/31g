@@ -2,7 +2,7 @@
 
 namespace NoFuture.Rand.Domus.Opes
 {
-    public interface IProfession
+    public interface IReditus
     {
         IEmployment[] GetEmployment(DateTime? dt);
     }

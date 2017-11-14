@@ -1,14 +1,8 @@
-﻿using NoFuture.Rand.Core;
+﻿using System;
+using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Data.Sp.Enums;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using NoFuture.Rand.Data.Sp;
 using NoFuture.Rand.Data.Sp.Cc;
-using NoFuture.Rand.Domus.Pneuma;
-using NoFuture.Util.Core;
-using NoFuture.Util.Core.Math;
 using NoFuture.Rand.Domus;
 using NoFuture.Rand.Gov.Nhtsa;
 
@@ -17,6 +11,7 @@ namespace NoFuture.Rand.Data.Sp
     /// <summary>
     /// Base implementation a name of any kind of money entry
     /// </summary>
+    [Serializable]
     public class Mereo : VocaBase, IMereo
     {
         public Mereo(string name)

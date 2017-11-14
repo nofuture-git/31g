@@ -121,6 +121,7 @@
     <Compile Include="Domus\NorthAmericanStudent.cs" />
     <Compile Include="Data\Sp\IMereo.cs" />
     <Compile Include="Data\Sp\Enums\IncomeInterval.cs" />
+    <Compile Include="Domus\Opes\Pondus.cs" />
     <Compile Include="Domus\Pneuma\Agreeableness.cs" />
     <Compile Include="Domus\Pneuma\Conscientiousness.cs" />
     <Compile Include="Domus\Pneuma\Dimension.cs" />
@@ -187,12 +188,12 @@
     <Compile Include="Domus\Child.cs" />
     <Compile Include="Domus\IEducation.cs" />
     <Compile Include="Domus\IPerson.cs" />
-    <Compile Include="Domus\Opes\IProfession.cs" />
+    <Compile Include="Domus\Opes\IReditus.cs" />
     <Compile Include="Domus\IRelation.cs" />
     <Compile Include="Domus\NAmerUtil.cs" />
     <Compile Include="Domus\NorthAmerican.cs" />
     <Compile Include="Domus\NorthAmericanEdu.cs" />
-    <Compile Include="Domus\Opes\NorthAmericanProfession.cs" />
+    <Compile Include="Domus\Opes\NorthAmericanReditus.cs" />
     <Compile Include="Domus\Opes\NorthAmericanWealth.cs" />
     <Compile Include="Domus\Opes\WealthBase.cs" />
     <Compile Include="Domus\Parent.cs" />

@@ -5,7 +5,8 @@ using NoFuture.Rand.Core;
 
 namespace NoFuture.Rand.Domus.Opes
 {
-    public class NorthAmericanProfession : IProfession
+    [Serializable]
+    public class NorthAmericanReditus : IReditus
     {
         private readonly List<NorthAmericanEmployment> _employment = new List<NorthAmericanEmployment>();
         protected internal IComparer<DiachronIdentifier> Comparer { get; } = new DiachronIdComparer();
