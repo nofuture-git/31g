@@ -11,9 +11,11 @@ namespace NoFuture.Rand.Domus.Opes
         StandardOccupationalClassification Occupation { get; set; }
         DateTime? FromDate { get; set; }
         DateTime? ToDate { get; set; }
-        bool IsInRange(DateTime dt);
-        Pondus GetPayAt(DateTime? dt);
+        Pondus[] CurrentDeductions { get; }
         Pondus CurrentPay { get; }
 
+        bool IsInRange(DateTime dt);
+        Pondus GetPayAt(DateTime? dt);
+        Pondus[] GetDeductionsAt(DateTime? dt);
     }
 }

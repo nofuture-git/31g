@@ -1,7 +1,6 @@
 ﻿using System;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
-using NoFuture.Rand.Data.Sp.Enums;
 using NoFuture.Rand.Data.Sp.Cc;
 using NoFuture.Rand.Domus;
 using NoFuture.Rand.Gov.Nhtsa;
@@ -21,7 +20,6 @@ namespace NoFuture.Rand.Data.Sp
 
         public string Src { get; set; }
         public string Abbrev => GetName(KindsOfNames.Abbrev);
-        public IncomeInterval Interval { get; set; }
 
         public virtual string Name
         {
@@ -35,14 +33,12 @@ namespace NoFuture.Rand.Data.Sp
             if(ic == null)
                 return base.Equals(obj);
 
-            return ic.Interval == ic.Interval
-                   && ic.Name == ic.Name;
+            return ic.Name == ic.Name;
         }
 
         public override int GetHashCode()
         {
-            return Name?.GetHashCode() ?? 1 +
-                   Interval.GetHashCode();
+            return Name?.GetHashCode() ?? 1;
         }
 
         public override string ToString()

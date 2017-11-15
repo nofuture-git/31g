@@ -6,7 +6,7 @@ namespace NoFuture.Rand.Domus
     [Serializable]
     public class AmericanHighSchoolStudent : NorthAmericanStudent<AmericanHighSchool>
     {
-        public override string Abbrev => "HighSchool";
+        public override string Abbrev => "HS";
 
         public AmericanHighSchoolStudent(AmericanHighSchool school) : base(school)
         {

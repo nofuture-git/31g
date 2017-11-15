@@ -21,9 +21,9 @@ namespace NoFuture.Rand.Domus
         private string _eduLevel;
         private OccidentalEdu _eduFlag;
 
-        private readonly List<AmericanHighSchoolStudent> _highSchools = new List<AmericanHighSchoolStudent>();
-        private readonly List<AmericanCollegeStudent> _universities = new List<AmericanCollegeStudent>();
-        private readonly IComparer<DiachronIdentifier> _comparer = new ITemporeComparer();
+        private readonly HashSet<AmericanHighSchoolStudent> _highSchools = new HashSet<AmericanHighSchoolStudent>();
+        private readonly HashSet<AmericanCollegeStudent> _universities = new HashSet<AmericanCollegeStudent>();
+        private readonly IComparer<DiachronIdentifier> _comparer = new TemporeComparer();
 
         public const int DF_MIN_AGE_ENTER_HS = 14;
         #endregion
@@ -135,8 +135,9 @@ namespace NoFuture.Rand.Domus
         {
             get
             {
-                _highSchools.Sort(_comparer);
-                return _highSchools;
+                var h = _highSchools.ToList();
+                h.Sort(_comparer);
+                return h;
             }
         }
 
@@ -144,8 +145,9 @@ namespace NoFuture.Rand.Domus
         {
             get
             {
-                _universities.Sort(_comparer);
-                return _universities;
+                var u =  _universities.ToList();
+                u.Sort(_comparer);
+                return u;
             }
         }
 

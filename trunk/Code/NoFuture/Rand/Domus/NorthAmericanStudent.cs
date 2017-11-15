@@ -13,5 +13,30 @@ namespace NoFuture.Rand.Domus
         {
             School = school;
         }
+
+        public override bool Equals(Identifier obj)
+        {
+            var student = obj as NorthAmericanStudent<T>;
+            if (student == null)
+                return base.Equals(obj);
+
+            return base.Equals(student)
+                   && student.School.Equals(School)
+                   && student.Graduation == Graduation;
+        }
+
+        public override bool Equals(object obj)
+        {
+            var student = obj as Identifier;
+            return Equals(student);
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode() +
+                   School?.GetHashCode() ?? 1 +
+                   Graduation?.GetHashCode() ?? 1;
+
+        }
     }
 }

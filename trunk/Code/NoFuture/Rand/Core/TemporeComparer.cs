@@ -7,7 +7,7 @@ namespace NoFuture.Rand.Core
     /// An implementation to order <see cref="ITempore"/>
     /// </summary>
     [Serializable]
-    public class ITemporeComparer : IComparer<ITempore>
+    public class TemporeComparer : IComparer<ITempore>
     {
         public int Compare(ITempore x, ITempore y)
         {
