@@ -23,6 +23,7 @@ namespace NoFuture.Rand.Data.Sp
         public string Abbrev => GetName(KindsOfNames.Abbrev);
 
         public Interval Interval { get; set; }
+        public Classification Classification { get; set; }
 
         public virtual string Name
         {

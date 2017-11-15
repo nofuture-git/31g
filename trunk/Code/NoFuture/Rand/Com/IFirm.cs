@@ -11,7 +11,7 @@ namespace NoFuture.Rand.Com
     /// </summary>
     public interface IFirm : IVoca
     {
-        string Name { get;}
+        string Name { get; set; }
         Tuple<UsStreetPo, UsCityStateZip> MailingAddress { get; set; }
         Tuple<UsStreetPo, UsCityStateZip> BusinessAddress { get; set; }
         NorthAmericanPhone[] Phone { get; set; }

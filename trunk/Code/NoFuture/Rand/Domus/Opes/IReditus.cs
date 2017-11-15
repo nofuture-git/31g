@@ -4,6 +4,13 @@ namespace NoFuture.Rand.Domus.Opes
 {
     public interface IReditus
     {
-        IEmployment[] GetEmployment(DateTime? dt);
+        IEmployment[] CurrentEmployment { get; }
+        IEmployment[] GetEmploymentAt(DateTime? dt);
+
+        Pondus[] GetOtherIncomeAt(DateTime? dt);
+        Pondus[] CurrentOtherIncome { get; }
+
+        Pondus[] GetExpensesAt(DateTime? dt);
+        Pondus[] GetCurrentExpenses { get; }
     }
 }

@@ -20,10 +20,6 @@ namespace NoFuture.Rand.Domus.Opes
     [Serializable]
     public class NorthAmericanWealth : WealthBase
     {
-        #region innerTypes
-
-        #endregion
-
         #region constants
         public const double DF_STD_DEV_PERCENT = 0.1285D;
         public const double DF_DAILY_SPEND_PERCENT = 0.1D;

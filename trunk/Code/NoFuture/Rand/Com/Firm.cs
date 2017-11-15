@@ -25,7 +25,11 @@ namespace NoFuture.Rand.Com
 
         #region properties
 
-        public string Name => GetName(KindsOfNames.Legal);
+        public string Name
+        {
+            get => GetName(KindsOfNames.Legal);
+            set => UpsertName(KindsOfNames.Legal, value);
+        }
         public Tuple<UsStreetPo, UsCityStateZip> MailingAddress { get; set; }
         public Tuple<UsStreetPo, UsCityStateZip> BusinessAddress { get; set; }
         public NorthAmericanPhone[] Phone { get; set; }

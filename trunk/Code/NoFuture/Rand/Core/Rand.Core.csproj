@@ -35,6 +35,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Enums\Classification.cs" />
     <Compile Include="TemporeComparer.cs" />
     <Compile Include="DiachronIdentifier.cs" />
     <Compile Include="Enums\KindsOfLabels.cs" />

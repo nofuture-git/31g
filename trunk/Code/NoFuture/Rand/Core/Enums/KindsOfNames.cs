@@ -4,21 +4,25 @@ namespace NoFuture.Rand.Core.Enums
 {
     [Serializable]
     [Flags]
-    public enum KindsOfNames : short
+    public enum KindsOfNames : UInt32
     {
         None = 0,
-        Former = 1,
+        Legal = 1,
         First = 2,
         Surname = 4,
         Abbrev = 8,
-        Maiden = 16,
-        Mother = 32,
-        Father = 64,
-        Adopted = 128,
-        Biological = 264,
-        Spouse = 512,
-        Middle = 1024,
-        Legal = 2048,
-        Step = 4098
+        Group = 16,
+        Colloquial = 32,
+        Mother = 64,
+        Father = 128,
+        Adopted = 256,
+        Biological = 512,
+        Spouse = 1024,
+        Middle = 2048,
+        Former = 4096,
+        Step = 8192,
+        Maiden = 16384,
+        Technical = 32768,
+        Aka = 65536,
     }
 }
