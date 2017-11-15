@@ -2,6 +2,7 @@
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Data.Sp.Cc;
+using NoFuture.Rand.Data.Sp.Enums;
 using NoFuture.Rand.Domus;
 using NoFuture.Rand.Gov.Nhtsa;
 
@@ -20,6 +21,8 @@ namespace NoFuture.Rand.Data.Sp
 
         public string Src { get; set; }
         public string Abbrev => GetName(KindsOfNames.Abbrev);
+
+        public Interval Interval { get; set; }
 
         public virtual string Name
         {

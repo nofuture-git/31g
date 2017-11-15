@@ -32,10 +32,7 @@ namespace NoFuture.Rand.Domus
         internal NorthAmericanEdu(Tuple<IHighSchool, DateTime?> assignHs)
         {
             if (assignHs?.Item1 is AmericanHighSchool)
-                _highSchools.Add(new AmericanHighSchoolStudent((AmericanHighSchool)assignHs.Item1)
-                {
-                    Graduation = assignHs.Item2
-                });
+                AddHighSchool((AmericanHighSchool)assignHs.Item1, assignHs.Item2);
             AssignEduFlagAndLevel();
         }
 
@@ -43,17 +40,11 @@ namespace NoFuture.Rand.Domus
         {
             if (assignHs?.Item1 is AmericanHighSchool)
             {
-                _highSchools.Add(new AmericanHighSchoolStudent((AmericanHighSchool) assignHs.Item1)
-                {
-                    Graduation = assignHs.Item2
-                });
+                AddHighSchool((AmericanHighSchool)assignHs.Item1, assignHs.Item2);
             }
             if (assignUniv?.Item1 is AmericanUniversity)
             {
-                _universities.Add(new AmericanCollegeStudent((AmericanUniversity) assignUniv.Item1)
-                {
-                    Graduation = assignUniv.Item2
-                });
+                AddUniversity((AmericanUniversity)assignUniv.Item1, assignUniv.Item2);
             }
             AssignEduFlagAndLevel();
         }
@@ -236,7 +227,7 @@ namespace NoFuture.Rand.Domus
             if (!Etx.TryBelowOrAt((int)Math.Round(bachelorGradRate * 10), Etx.Dice.OneThousand))
             {
                 //dropped out of college
-                _universities.Add(new AmericanCollegeStudent(univ));
+                AddUniversity(univ, null);
                 AssignEduFlagAndLevel();
                 return;
             }
@@ -245,7 +236,7 @@ namespace NoFuture.Rand.Domus
             //get a date for when amer would grad from college
             var univGradDt = GetRandomGraduationDate(hsGradDt.Value, NAmerUtil.Equations.YearsInUndergradCollege);
 
-            _universities.Add(new AmericanCollegeStudent(univ) {Graduation = univGradDt});
+            AddUniversity(univ, univGradDt);
 
             //try for post-grad
             var postGradRate = AmericanUniversity.DefaultNationalAvgs.First(
@@ -256,7 +247,7 @@ namespace NoFuture.Rand.Domus
                 var postGradDt = GetRandomGraduationDate(univGradDt, NAmerUtil.Equations.YearsInPostgradCollege);
                 var postGradUniv = GetAmericanUniversity(homeState);
 
-                _universities.Add(new AmericanCollegeStudent(postGradUniv) {Graduation = postGradDt});
+                AddUniversity(postGradUniv, postGradDt);
             }
 
             AssignEduFlagAndLevel();
@@ -352,6 +343,16 @@ namespace NoFuture.Rand.Domus
         public override string ToString()
         {
             return string.Join(" ", HighSchool, College);
+        }
+
+        protected internal void AddHighSchool(AmericanHighSchool hs, DateTime? gradDt)
+        {
+            _highSchools.Add(new AmericanHighSchoolStudent(hs) { Graduation = gradDt });
+        }
+
+        protected internal void AddUniversity(AmericanUniversity univ, DateTime? gradDt)
+        {
+            _universities.Add(new AmericanCollegeStudent(univ) { Graduation = gradDt });
         }
 
         /// <summary>

@@ -1,4 +1,5 @@
 ﻿using NoFuture.Rand.Core;
+using NoFuture.Rand.Data.Sp.Enums;
 
 namespace NoFuture.Rand.Data.Sp
 {
@@ -7,6 +8,7 @@ namespace NoFuture.Rand.Data.Sp
     /// </summary>
     public interface IMereo : IVoca
     {
+        Interval Interval { get; set; }
         string Name { get; set; }
     }
 }

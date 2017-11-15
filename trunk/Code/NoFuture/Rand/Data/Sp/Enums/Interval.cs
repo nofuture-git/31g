@@ -3,7 +3,7 @@
 namespace NoFuture.Rand.Data.Sp.Enums
 {
     [Serializable]
-    public enum IncomeInterval
+    public enum Interval
     {
         OnceOnly,
         Hourly,

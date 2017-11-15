@@ -2,7 +2,6 @@
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Data.Sp;
-using NoFuture.Rand.Data.Sp.Enums;
 
 namespace NoFuture.Rand.Domus.Opes
 {
@@ -15,7 +14,6 @@ namespace NoFuture.Rand.Domus.Opes
         private Tuple<DateTime?, DateTime?> _dateRange;
 
         public IMereo Description { get; set; }
-        public IncomeInterval Interval { get; set; }
         public string Src { get; set; }
         public string Abbrev => Description?.GetName(KindsOfNames.Abbrev);
         public Pecuniam Value { get; set; }

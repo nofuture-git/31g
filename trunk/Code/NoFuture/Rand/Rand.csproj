@@ -128,7 +128,7 @@
     <Compile Include="Domus\Opes\NorthAmericanEmployment.cs" />
     <Compile Include="Domus\NorthAmericanStudent.cs" />
     <Compile Include="Data\Sp\IMereo.cs" />
-    <Compile Include="Data\Sp\Enums\IncomeInterval.cs" />
+    <Compile Include="Data\Sp\Enums\Interval.cs" />
     <Compile Include="Domus\Opes\Pondus.cs" />
     <Compile Include="Domus\Pneuma\Agreeableness.cs" />
     <Compile Include="Domus\Pneuma\Conscientiousness.cs" />
