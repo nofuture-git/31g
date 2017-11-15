@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NoFuture.Rand.Core.Enums
+namespace NoFuture.Rand.Data.Endo
 {
     [Flags]
     [Serializable]

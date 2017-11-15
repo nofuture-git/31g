@@ -1,5 +1,6 @@
 ﻿using System;
 using NoFuture.Rand.Core.Enums;
+using NoFuture.Rand.Data.Endo;
 using NoFuture.Rand.Edu;
 
 namespace NoFuture.Rand.Domus

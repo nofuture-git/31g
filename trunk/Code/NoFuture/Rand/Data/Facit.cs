@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
+using NoFuture.Rand.Data.Endo;
 using NoFuture.Util.Core;
 
 namespace NoFuture.Rand.Data

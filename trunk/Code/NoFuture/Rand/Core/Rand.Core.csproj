@@ -37,16 +37,8 @@
   <ItemGroup>
     <Compile Include="TemporeComparer.cs" />
     <Compile Include="DiachronIdentifier.cs" />
-    <Compile Include="Enums\AmericanRegion.cs" />
-    <Compile Include="Enums\Gender.cs" />
     <Compile Include="Enums\KindsOfLabels.cs" />
     <Compile Include="Enums\KindsOfNames.cs" />
-    <Compile Include="Enums\MaritialStatus.cs" />
-    <Compile Include="Enums\NorthAmericanRace.cs" />
-    <Compile Include="Enums\OccidentalEdu.cs" />
-    <Compile Include="Enums\PropertyCrime.cs" />
-    <Compile Include="Enums\UrbanCentric.cs" />
-    <Compile Include="Enums\ViolentCrime.cs" />
     <Compile Include="Etx.cs" />
     <Compile Include="ICited.cs" />
     <Compile Include="Identifier.cs" />
