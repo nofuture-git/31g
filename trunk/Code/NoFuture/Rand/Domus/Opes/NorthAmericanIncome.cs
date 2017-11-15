@@ -8,29 +8,30 @@ namespace NoFuture.Rand.Domus.Opes
     [Serializable]
     public class NorthAmericanIncome : IReditus
     {
-        private readonly HashSet<NorthAmericanEmployment> _employment = new HashSet<NorthAmericanEmployment>();
-        protected internal IComparer<DiachronIdentifier> Comparer { get; } = new TemporeComparer();
+        private readonly HashSet<IEmployment> _employment = new HashSet<IEmployment>();
+        protected internal IComparer<IEmployment> Comparer { get; } = new TemporeComparer();
 
-        protected internal List<NorthAmericanEmployment> Employment
+        protected internal List<IEmployment> Employment
         {
             get
             {
                 var e = _employment.ToList();
                 e.Sort(Comparer);
-                return e;
+                return e.ToList();
             }
         }
 
         public IEmployment[] GetEmployment(DateTime? dt)
         {
             return dt == null
-                ? new[] {(IEmployment)Employment.LastOrDefault()}
-                : Employment.Where(x => x.IsInRange(dt.Value)).Cast<IEmployment>().ToArray();
+                ? new[] {Employment.LastOrDefault()}
+                : Employment.Where(x => x.IsInRange(dt.Value)).ToArray();
         }
 
-        protected internal void AddEmployment()
+        protected internal void AddEmployment(IEmployment employment)
         {
-            
+            if (employment != null)
+                _employment.Add(employment);
         }
     }
 }

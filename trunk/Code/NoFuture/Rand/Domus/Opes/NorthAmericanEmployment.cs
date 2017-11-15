@@ -9,30 +9,55 @@ using NoFuture.Rand.Data.Sp;
 namespace NoFuture.Rand.Domus.Opes
 {
     [Serializable]
-    public class NorthAmericanEmployment : DiachronIdentifier,  IEmployment
+    public class NorthAmericanEmployment : IEmployment
     {
+        private Tuple<DateTime?, DateTime?> _dateRange;
         protected internal IComparer<Pondus> Comparer { get; } = new TemporeComparer();
         private readonly HashSet<Pondus> _pay = new HashSet<Pondus>();
         private readonly HashSet<Pondus> _deductions = new HashSet<Pondus>();
 
         public NorthAmericanEmployment() {}
-        public NorthAmericanEmployment(DateTime? startDate, DateTime? endDate) :base (startDate, endDate) { }
 
-        public override string Abbrev => "Employer";
-        public IFirm Biz { get; set; }
-        public bool IsOwner { get; set; }
-        public StandardOccupationalClassification Occupation { get; set; }
-        public Pondus[] CurrentDeductions => GetDeductionsAt(null);
-        public Pondus CurrentPay => Pay.LastOrDefault();
+        public NorthAmericanEmployment(DateTime? startDate, DateTime? endDate)
+        {
+            _dateRange = new Tuple<DateTime?, DateTime?>(startDate, endDate);
+        }
 
-        public Pondus GetPayAt(DateTime? dt)
+        public virtual string Src { get; set; }
+        public virtual string Abbrev => "Employer";
+        public virtual IFirm Value { get; set; }
+        public virtual bool IsOwner { get; set; }
+        public virtual StandardOccupationalClassification Occupation { get; set; }
+        public virtual Pondus[] CurrentDeductions => GetDeductionsAt(null);
+        public virtual Pondus CurrentPay => Pay.LastOrDefault();
+
+        public virtual DateTime? FromDate
+        {
+            get => _dateRange.Item1;
+            set => _dateRange = new Tuple<DateTime?, DateTime?>(value, _dateRange.Item2);
+        }
+
+        public virtual DateTime? ToDate
+        {
+            get => _dateRange.Item2;
+            set => _dateRange = new Tuple<DateTime?, DateTime?>(_dateRange.Item1, value);
+        }
+
+        public virtual bool IsInRange(DateTime dt)
+        {
+            var afterOrOnFromDt = FromDate == null || FromDate <= dt;
+            var beforeOrOnToDt = ToDate == null || ToDate.Value >= dt;
+            return afterOrOnFromDt && beforeOrOnToDt;
+        }
+
+        public virtual Pondus GetPayAt(DateTime? dt)
         {
             return dt == null
                 ? CurrentPay
                 : Pay.FirstOrDefault(x => x.IsInRange(dt.Value));
         }
 
-        public Pondus[] GetDeductionsAt(DateTime? dt)
+        public virtual Pondus[] GetDeductionsAt(DateTime? dt)
         {
             if (dt == null)
             {
@@ -46,7 +71,7 @@ namespace NoFuture.Rand.Domus.Opes
             return md.ToArray();
         }
 
-        protected internal List<Pondus> Deductions
+        protected internal virtual List<Pondus> Deductions
         {
             get
             {
@@ -56,7 +81,7 @@ namespace NoFuture.Rand.Domus.Opes
             }
         }
 
-        protected internal List<Pondus> Pay
+        protected internal virtual List<Pondus> Pay
         {
             get
             {
@@ -66,7 +91,7 @@ namespace NoFuture.Rand.Domus.Opes
             }
         }
 
-        protected internal void AddPay(Pecuniam amt, IMereo description, DateTime? startDate, DateTime? endDate = null)
+        protected internal virtual void AddPay(Pecuniam amt, IMereo description, DateTime? startDate, DateTime? endDate = null)
         {
             _pay.Add(new Pondus
             {
@@ -77,7 +102,7 @@ namespace NoFuture.Rand.Domus.Opes
             });
         }
 
-        protected internal void AddDeduction(Pecuniam amt, IMereo description, DateTime? startDate,
+        protected internal virtual void AddDeduction(Pecuniam amt, IMereo description, DateTime? startDate,
             DateTime? endDate = null)
         {
             _deductions.Add(new Pondus
@@ -87,6 +112,25 @@ namespace NoFuture.Rand.Domus.Opes
                 ToDate = endDate,
                 FromDate = startDate
             });
+        }
+
+        public override bool Equals(object obj)
+        {
+            var e = obj as IEmployment;
+            if (e == null)
+                return base.Equals(obj);
+
+            return e.Value != null 
+                   && Value != null
+                   && e.Value.Equals(Value)
+                   && e.FromDate == FromDate
+                   && e.ToDate == ToDate;
+        }
+
+        public override int GetHashCode()
+        {
+            return (Value?.GetHashCode() ?? 1) +
+                   _dateRange?.GetHashCode() ?? 1;
         }
     }
 }

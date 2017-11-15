@@ -5,9 +5,8 @@ using NoFuture.Rand.Data.Endo.Grps;
 
 namespace NoFuture.Rand.Domus.Opes
 {
-    public interface IEmployment : ITempore
+    public interface IEmployment : IIdentifier<IFirm>, ITempore
     {
-        IFirm Biz { get; set; }
         bool IsOwner { get; set; }
         StandardOccupationalClassification Occupation { get; set; }
         Pondus[] CurrentDeductions { get; }
