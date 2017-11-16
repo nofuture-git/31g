@@ -15,5 +15,8 @@ namespace NoFuture.Rand.Data.Sp
         Classification Classification { get; set; }
         string Name { get; set; }
         IEnumerable<string> ExempliGratia { get; }
+        IEnumerable<string> Akas { get; }
+        string Instructions { get; set; }
+        string Definition { get; set; }
     }
 }

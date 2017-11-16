@@ -22,7 +22,6 @@ namespace NoFuture.Rand.Core.Enums
         Former = 4096,
         Step = 8192,
         Maiden = 16384,
-        Technical = 32768,
-        Aka = 65536,
+        Technical = 32768
     }
 }

@@ -17,6 +17,8 @@ namespace NoFuture.Rand.Data.Sp
     public class Mereo : VocaBase, IMereo
     {
         private readonly List<string> _eg = new List<string>();
+        private readonly List<string> _aka = new List<string>();
+        private string _definition;
 
         public Mereo(string name)
         {
@@ -41,6 +43,14 @@ namespace NoFuture.Rand.Data.Sp
         }
 
         public IEnumerable<string> ExempliGratia => _eg;
+        public IEnumerable<string> Akas => _aka;
+        public string Instructions { get; set; }
+
+        public string Definition
+        {
+            get => _definition;
+            set => _definition = value;
+        }
 
         public override string ToString()
         {
