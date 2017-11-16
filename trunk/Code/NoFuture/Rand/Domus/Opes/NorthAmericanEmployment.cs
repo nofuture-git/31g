@@ -91,23 +91,23 @@ namespace NoFuture.Rand.Domus.Opes
             }
         }
 
-        protected internal virtual void AddPay(Pecuniam amt, IMereo description, DateTime? startDate, DateTime? endDate = null)
+        protected internal virtual void AddPay(Pecuniam amt, string name, DateTime? startDate, DateTime? endDate = null)
         {
-            _pay.Add(new Pondus
+            _pay.Add(new Pondus(name)
             {
-                Description = description,
+                //Description = description,
                 Value = amt?.Abs,
                 FromDate = startDate,
                 ToDate = endDate
             });
         }
 
-        protected internal virtual void AddDeduction(Pecuniam amt, IMereo description, DateTime? startDate,
+        protected internal virtual void AddDeduction(Pecuniam amt, string name, DateTime? startDate,
             DateTime? endDate = null)
         {
-            _deductions.Add(new Pondus
+            _deductions.Add(new Pondus(name)
             {
-                Description = description,
+                //Description = description,
                 Value = amt?.Neg,
                 ToDate = endDate,
                 FromDate = startDate

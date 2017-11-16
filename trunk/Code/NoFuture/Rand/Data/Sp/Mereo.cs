@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Data.Sp.Cc;
@@ -8,15 +9,23 @@ using NoFuture.Rand.Gov.Nhtsa;
 
 namespace NoFuture.Rand.Data.Sp
 {
+    /// <inheritdoc cref="IMereo"/>
     /// <summary>
     /// Base implementation a name of any kind of money entry
     /// </summary>
     [Serializable]
     public class Mereo : VocaBase, IMereo
     {
+        private readonly List<string> _eg = new List<string>();
+
         public Mereo(string name)
         {
-            Name = name;
+            Names.Add(new Tuple<KindsOfNames, string>(KindsOfNames.Legal, name));
+        }
+
+        public Mereo(IVoca names)
+        {
+            CopyFrom(names);
         }
 
         public string Src { get; set; }
@@ -31,19 +40,7 @@ namespace NoFuture.Rand.Data.Sp
             set => UpsertName(KindsOfNames.Legal, value);
         }
 
-        public override bool Equals(object obj)
-        {
-            var ic = obj as IMereo;
-            if(ic == null)
-                return base.Equals(obj);
-
-            return ic.Name == ic.Name;
-        }
-
-        public override int GetHashCode()
-        {
-            return Name?.GetHashCode() ?? 1;
-        }
+        public IEnumerable<string> ExempliGratia => _eg;
 
         public override string ToString()
         {

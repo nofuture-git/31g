@@ -2,6 +2,7 @@
 using NoFuture.Rand.Com;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Data.Endo.Grps;
+using NoFuture.Rand.Data.Sp;
 
 namespace NoFuture.Rand.Domus.Opes
 {

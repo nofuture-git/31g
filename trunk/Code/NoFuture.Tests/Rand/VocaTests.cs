@@ -135,5 +135,23 @@ namespace NoFuture.Rand.Tests
             Assert.AreEqual("TestCorporation", testEntry.Item2);
 
         }
+
+        [TestMethod]
+        public void TestEquals()
+        {
+            var testSubject = new PublicCorporation();
+            testSubject.Names.Add(new Tuple<KindsOfNames, string>(KindsOfNames.Legal | KindsOfNames.Technical, "TestCorporation"));
+            testSubject.Names.Add(new Tuple<KindsOfNames, string>(KindsOfNames.Legal, "TestCorporation"));
+
+            var testSubject2 = new PublicCorporation();
+            testSubject2.Names.Add(new Tuple<KindsOfNames, string>(KindsOfNames.Legal | KindsOfNames.Technical, "TestCorporation"));
+            testSubject2.Names.Add(new Tuple<KindsOfNames, string>(KindsOfNames.Legal, "TestCorporation"));
+
+            Assert.IsTrue(testSubject.Equals(testSubject2));
+
+            testSubject2.Names.Add(new Tuple<KindsOfNames, string>(KindsOfNames.Former, "Machina"));
+
+            Assert.IsFalse(testSubject.Equals(testSubject2));
+        }
     }
 }

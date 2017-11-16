@@ -99,12 +99,11 @@ namespace NoFuture.Rand.Domus.Opes
                 _otherIncome.Add(otherIncome);
         }
 
-        protected internal virtual void AddOtherIncome(Pecuniam amt, IMereo description, DateTime? startDate,
+        protected internal virtual void AddOtherIncome(Pecuniam amt, string name, DateTime? startDate,
             DateTime? endDate = null)
         {
-            AddOtherIncome(new Pondus
+            AddOtherIncome(new Pondus(name)
             {
-                Description = description,
                 Value = amt?.Neg,
                 ToDate = endDate,
                 FromDate = startDate
@@ -115,17 +114,14 @@ namespace NoFuture.Rand.Domus.Opes
         {
             if (expense == null)
                 return;
-
-
             _expenses.Add(expense);
         }
 
-        protected internal virtual void AddExpense(Pecuniam amt, IMereo description, DateTime? startDate,
+        protected internal virtual void AddExpense(Pecuniam amt, string name, DateTime? startDate,
             DateTime? endDate = null)
         {
-            AddExpense(new Pondus
+            AddExpense(new Pondus(name)
             {
-                Description = description,
                 Value = amt?.Neg,
                 ToDate = endDate,
                 FromDate = startDate

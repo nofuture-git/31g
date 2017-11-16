@@ -5,13 +5,16 @@ using NoFuture.Rand.Core.Enums;
 
 namespace NoFuture.Rand.Core
 {
+    /// <inheritdoc />
     /// <summary>
-    /// Base implemenation of <see cref="IVoca"/>
+    /// Base implemenation of <see cref="T:NoFuture.Rand.Core.IVoca" />
     /// </summary>
     [Serializable]
     public class VocaBase : IVoca
     {
         protected internal List<Tuple<KindsOfNames, string>> Names { get; } = new List<Tuple<KindsOfNames, string>>();
+
+        public int Count => Names.Count;
 
         public virtual void UpsertName(KindsOfNames k, string name)
         {
@@ -78,7 +81,7 @@ namespace NoFuture.Rand.Core
         public override bool Equals(object obj)
         {
             var voca = obj as IVoca;
-            if(voca == null)
+            if(voca == null || Count != voca.Count)
                 return base.Equals(obj);
 
             return Names.All(v => voca.AnyOfKindAndValue(v.Item1, v.Item2));
@@ -87,6 +90,20 @@ namespace NoFuture.Rand.Core
         public override int GetHashCode()
         {
             return Names.GetHashCode();
+        }
+
+        public KindsOfNames[] GetCurrentKindsOfNames()
+        {
+            return Names.Select(n => n.Item1).ToArray();
+        }
+
+        protected internal void CopyFrom(IVoca voca)
+        {
+            if (voca == null)
+                return;
+
+            foreach(var k in voca.GetCurrentKindsOfNames())
+                UpsertName(k, voca.GetName(k));
         }
     }
 }

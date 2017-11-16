@@ -71,5 +71,16 @@ namespace NoFuture.Rand.Core
         /// <param name="name"></param>
         /// <returns></returns>
         bool RemoveNameByKindAndValue(KindsOfNames k, string name);
+
+        /// <summary>
+        /// Gets the count of <see cref="KindsOfNames"/> to value pairs
+        /// </summary>
+        int Count { get; }
+
+        /// <summary>
+        /// Gets an array of all the <see cref="KindsOfNames"/> currently present/
+        /// </summary>
+        /// <returns></returns>
+        KindsOfNames[] GetCurrentKindsOfNames();
     }
 }
