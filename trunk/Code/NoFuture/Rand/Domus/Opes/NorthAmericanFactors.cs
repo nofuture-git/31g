@@ -4,6 +4,7 @@ using System.Xml;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Data;
 using NoFuture.Rand.Data.Endo;
+using NoFuture.Rand.Data.Endo.Enums;
 
 namespace NoFuture.Rand.Domus.Opes
 {

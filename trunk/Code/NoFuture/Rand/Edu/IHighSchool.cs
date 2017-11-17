@@ -1,5 +1,6 @@
 ﻿using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Data.Endo;
+using NoFuture.Rand.Data.Endo.Enums;
 
 namespace NoFuture.Rand.Edu
 {
