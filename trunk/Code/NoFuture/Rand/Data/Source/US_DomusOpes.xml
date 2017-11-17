@@ -16,10 +16,8 @@
           <income>
             <group name="Judgments">
               <mereo name="Alimony">
-                <akas>
-                  <aka name="Maintenance" />
-                  <aka name="Spousal Maintenance" />
-                </akas>
+                <eg name="Maintenance" />
+                <eg name="Spousal Maintenance" />
               </mereo>
               <mereo name="Child Support" />
               <mereo name="Injury Payments" />
@@ -69,10 +67,8 @@
             <group name="Public Benefits">
               <mereo name="Veterans Benefits" />
               <mereo name="Housing Choice Voucher Program Section 8" abbrev="HUD">
-                <akas>
-                  <aka name="Housing Assistance" />
-                  <aka name="Section 8" />
-                </akas>
+                <eg name="Housing Assistance" />
+                <eg name="Section 8" />
                 <definition src="https://www.hud.gov/topics/housing_choice_voucher_program_section_8">
                   <![CDATA[
                     is the federal government's major program for assisting very low-income families, 
@@ -92,10 +88,8 @@
                 </definition>
               </mereo>
               <mereo name="Unemployment">
-                <akas>
-                  <aka name="Unemployment Insurance Benefits" />
-                  <aka name="Unemployment Benefits" />
-                </akas>
+                <eg name="Unemployment Insurance Benefits" />
+                <eg name="Unemployment Benefits" />
                 <definition src="https://workforcesecurity.doleta.gov/unemploy/uifactsheet.asp">
                   <![CDATA[
                      The Federal-State Unemployment Insurance Program provides unemployment benefits 
@@ -106,9 +100,7 @@
                 </definition>
               </mereo>
               <mereo name="Supplemental Nutrition Assistance Program" abbrev="SNAP">
-                <akas>
-                  <aka name="Food Stamps" />
-                </akas>
+                <eg name="Food Stamps" />
                 <definition src="https://www.fns.usda.gov/snap/supplemental-nutrition-assistance-program-snap">
                   <![CDATA[
                      SNAP offers nutrition assistance to millions of eligible, low-income 
@@ -117,9 +109,7 @@
                 </definition>
               </mereo>
               <mereo name="Temporary Assistance for Needy Families" abbrev="TANF">
-                <akas>
-                  <aka name="TFA payments" />
-                </akas>
+                <eg name="TFA payments" />
                 <definition src="https://www.hhs.gov/answers/programs-for-families-and-children/what-is-tanf/index.html">
                   <![CDATA[
                      assists families with children when the parents or other responsible 
@@ -127,11 +117,8 @@
                     ]]>
                 </definition>
               </mereo>
-
               <mereo name="Social Security Disability Insurance" abbrev="SSDI">
-                <akas>
-                  <aka name="SSD" />
-                </akas>
+                <eg name="SSD" />
                 <definition src="https://www.disabilitysecrets.com/page5-13.html">
                   <![CDATA[
                     Social Security Disability Insurance is funded through payroll taxes. 
@@ -145,9 +132,7 @@
                 </definition>
               </mereo>
               <mereo name="Supplemental Security Income" abbrev="SSI">
-                <akas>
-                  <aka name="Welfare" />
-                </akas>
+                <eg name="Welfare" />
                 <definition src="https://www.disabilitysecrets.com/page5-13.html">
                   <![CDATA[
                     Supplemental Security Income is a program that is strictly need-based, 

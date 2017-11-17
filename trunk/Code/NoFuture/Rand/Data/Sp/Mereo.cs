@@ -42,8 +42,8 @@ namespace NoFuture.Rand.Data.Sp
             set => UpsertName(KindsOfNames.Legal, value);
         }
 
-        public IEnumerable<string> ExempliGratia => _eg;
-        public IEnumerable<string> Akas => _aka;
+        public List<string> ExempliGratia => _eg;
+        public List<string> Akas => _aka;
         public string Instructions { get; set; }
 
         public string Definition

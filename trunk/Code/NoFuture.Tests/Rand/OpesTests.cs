@@ -175,5 +175,49 @@ namespace NoFuture.Rand.Tests
                 System.Diagnostics.Debug.WriteLine(string.Join(" ", t.AtTime, t.Cash, t.Fee, t.Description));
             }
         }
+
+        [TestMethod]
+        public void TestGetIncomeItemNames()
+        {
+            var testResult = NoFuture.Rand.Domus.Opes.WealthBase.GetIncomeItemNames();
+            Assert.IsNotNull(testResult);
+            Assert.AreNotEqual(0, testResult.Length);
+
+            foreach(var i in testResult)
+                System.Diagnostics.Debug.WriteLine(i);
+        }
+
+        [TestMethod]
+        public void TestGetDeductionItemNames()
+        {
+            var testResult = NoFuture.Rand.Domus.Opes.WealthBase.GetDeductionItemNames();
+            Assert.IsNotNull(testResult);
+            Assert.AreNotEqual(0, testResult.Length);
+
+            foreach (var i in testResult)
+                System.Diagnostics.Debug.WriteLine(i);
+        }
+
+        [TestMethod]
+        public void TestGetExpenseItemNames()
+        {
+            var testResult = NoFuture.Rand.Domus.Opes.WealthBase.GetExpenseItemNames();
+            Assert.IsNotNull(testResult);
+            Assert.AreNotEqual(0, testResult.Length);
+
+            foreach (var i in testResult)
+                System.Diagnostics.Debug.WriteLine(i);
+        }
+
+        [TestMethod]
+        public void TestGetAssetItemNames()
+        {
+            var testResult = NoFuture.Rand.Domus.Opes.WealthBase.GetAssetItemNames();
+            Assert.IsNotNull(testResult);
+            Assert.AreNotEqual(0, testResult.Length);
+
+            foreach (var i in testResult)
+                System.Diagnostics.Debug.WriteLine(i);
+        }
     }
 }
