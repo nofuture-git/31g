@@ -36,16 +36,7 @@ namespace NoFuture.Rand.Domus.Opes
         private readonly NorthAmerican _amer;
         private readonly bool _isRenting;
 
-        private readonly double _homeDebtFactor;
-        private readonly double _vehicleDebtFactor;
-        private readonly double _ccDebtFactor;
-        private readonly double _netWorthFactor;
-        private readonly double _homeEquityFactor;
-        private readonly double _vehicleEquityFactor;
-
-        private readonly double _checkingAcctFactor;
-        private readonly double _savingAcctFactor;
-
+        private readonly NorthAmericanFactors _factors;
         private Pecuniam _residencePmt = Pecuniam.Zero;
         private Pecuniam _carPmt = Pecuniam.Zero;
         private Pecuniam _homeEquity = Pecuniam.Zero;
@@ -77,31 +68,11 @@ namespace NoFuture.Rand.Domus.Opes
 
             //determine if renting or own
             _isRenting = isRenting || GetIsLeaseResidence(usCityArea);
-
-            var edu = _amer.Education?.EduFlag ?? (OccidentalEdu.HighSchool | OccidentalEdu.Grad);
-            var race = _amer.Race;
-            var region = usCityArea?.State?.GetStateData()?.Region ?? AmericanRegion.Midwest;
-
-            _homeDebtFactor = GetFactor(FactorTables.HomeDebt, edu, race, region, _amer.Age, _amer.MyGender,
-                _amer.MaritialStatus);
-            _vehicleDebtFactor = GetFactor(FactorTables.VehicleDebt, edu, race, region, _amer.Age, _amer.MyGender,
-                _amer.MaritialStatus);
-            _ccDebtFactor = GetFactor(FactorTables.CreditCardDebt, edu, race, region, _amer.Age, _amer.MyGender,
-                _amer.MaritialStatus);
-            _savingAcctFactor = GetFactor(FactorTables.SavingsAccount, edu, race, region, _amer.Age, _amer.MyGender,
-                _amer.MaritialStatus);
-            _checkingAcctFactor = GetFactor(FactorTables.CheckingAccount, edu, race, region, _amer.Age, _amer.MyGender,
-                _amer.MaritialStatus);
-            _netWorthFactor = GetFactor(FactorTables.NetWorth, edu, race, region, _amer.Age, _amer.MyGender,
-                _amer.MaritialStatus);
-            _homeEquityFactor = GetFactor(FactorTables.HomeEquity, edu, race, region, _amer.Age, _amer.MyGender,
-                _amer.MaritialStatus);
-            _vehicleEquityFactor = GetFactor(FactorTables.VehicleEquity, edu, race, region, _amer.Age, _amer.MyGender,
-                _amer.MaritialStatus);
+            _factors = new NorthAmericanFactors(_amer);
 
             var payBase = new Pecuniam(2000);
             Func<Pecuniam, double> calcMonthlyPay =
-                pecuniam => Math.Round((double)GetYearlyIncome(pecuniam, _netWorthFactor).Amount / 12, 2);
+                pecuniam => Math.Round((double)GetYearlyIncome(pecuniam, _factors.NetWorthFactor).Amount / 12, 2);
             Paycheck = Math.Round(calcMonthlyPay(payBase) / 2, 2).ToPecuniam();
         }
         #endregion
@@ -238,11 +209,11 @@ namespace NoFuture.Rand.Domus.Opes
 
             //set up checking
             var checking = CheckingAccount.GetRandomCheckingAcct(_amer,baseDate);
-            var randChecking = GetRandomFactorValue(FactorTables.CheckingAccount, _checkingAcctFactor, stdDevAsPercent);
+            var randChecking = NorthAmericanFactors.GetRandomFactorValue(FactorTables.CheckingAccount, _factors.CheckingAcctFactor, stdDevAsPercent);
             checking.Push(baseDate.AddDays(-1), randChecking.ToPecuniam(), Mereo.GetMereoById(null, "Init Checking"), Pecuniam.Zero);
 
             //set up a savings
-            var randSavings = GetRandomFactorValue(FactorTables.SavingsAccount, _savingAcctFactor, stdDevAsPercent);
+            var randSavings = NorthAmericanFactors.GetRandomFactorValue(FactorTables.SavingsAccount, _factors.SavingsAcctFactor, stdDevAsPercent);
             var savings = SavingsAccount.GetRandomSavingAcct(_amer, baseDate);
             savings.Push(baseDate.AddDays(-1), randSavings.ToPecuniam(), Mereo.GetMereoById(null, "Init Savings"), Pecuniam.Zero);
             var friCounter = 0;
@@ -344,7 +315,7 @@ namespace NoFuture.Rand.Domus.Opes
                 return;
 
             //get random total cc debt
-            var randCcValue = GetRandomFactorValue(FactorTables.CreditCardDebt, _ccDebtFactor, stdDevAsPercent);
+            var randCcValue = NorthAmericanFactors.GetRandomFactorValue(FactorTables.CreditCardDebt, _factors.CreditCardDebtFactor, stdDevAsPercent);
 
             //get number of cc's to divide total cc debt into
             var numOfCc = 1;
@@ -390,7 +361,7 @@ namespace NoFuture.Rand.Domus.Opes
             if (!_isRenting)
                 return Pecuniam.Zero;
 
-            var homeDebtFactor = _homeDebtFactor;
+            var homeDebtFactor = _factors.HomeDebtFactor;
 
             var rent = Rent.GetRandomRentWithHistory(_amer.Address, homeDebtFactor, _amer.Personality, stdDevAsPercent);
             var randRent = rent.MonthlyPmt;
@@ -407,10 +378,10 @@ namespace NoFuture.Rand.Domus.Opes
         protected internal Pecuniam AddMortgage(double stdDevAsPercent = DF_STD_DEV_PERCENT)
         {
             //calc a rand amount of what is still owed
-            var randHouseDebt = GetRandomFactorValue(FactorTables.HomeDebt, _homeDebtFactor, stdDevAsPercent);
+            var randHouseDebt = NorthAmericanFactors.GetRandomFactorValue(FactorTables.HomeDebt, _factors.HomeDebtFactor, stdDevAsPercent);
 
             //calc rand amount of equity accrued
-            var randHouseEquity = GetRandomFactorValue(FactorTables.HomeEquity, _homeEquityFactor, stdDevAsPercent);
+            var randHouseEquity = NorthAmericanFactors.GetRandomFactorValue(FactorTables.HomeEquity, _factors.HomeEquityFactor, stdDevAsPercent);
             _homeEquity += randHouseEquity.ToPecuniam();
 
             //get rand interest rate weighted by score
@@ -507,14 +478,14 @@ namespace NoFuture.Rand.Domus.Opes
                 return Pecuniam.Zero;
 
             //calc a rand amount of what is still owed
-            var randCarDebt = GetRandomFactorValue(FactorTables.VehicleDebt, _vehicleDebtFactor, stdDevAsPercent);
+            var randCarDebt = NorthAmericanFactors.GetRandomFactorValue(FactorTables.VehicleDebt, _factors.VehicleDebtFactor, stdDevAsPercent);
 
             //allow for car to be paid off
             if (Etx.TryBelowOrAt(23, Etx.Dice.OneHundred))
                 randCarDebt = 0.0D;
 
             //calc rand amount of equity
-            var randCarEquity = GetRandomFactorValue(FactorTables.VehicleEquity, _vehicleEquityFactor, stdDevAsPercent);
+            var randCarEquity = NorthAmericanFactors.GetRandomFactorValue(FactorTables.VehicleEquity, _factors.VehicleEquityFactor, stdDevAsPercent);
 
             _vehicleEquity += randCarEquity.ToPecuniam();
 
@@ -578,26 +549,6 @@ namespace NoFuture.Rand.Domus.Opes
             return randBill;
         }
 
-        /// <summary>
-        /// Get a random value for the given <see cref="factor"/> table.
-        /// </summary>
-        /// <param name="factor"></param>
-        /// <param name="factorMultiplier"></param>
-        /// <param name="stdDevAsPercent"></param>
-        /// <param name="assignedBase">
-        /// Optional value to directly assign a factor table's base value, defaults to 
-        /// the value from <see cref="GetFactorBaseValue"/>
-        /// </param>
-        /// <returns></returns>
-        public static double GetRandomFactorValue(FactorTables factor, double factorMultiplier,
-            double stdDevAsPercent, double? assignedBase = null)
-        {
-            var baseValue = assignedBase.GetValueOrDefault(GetFactorBaseValue(factor));
-            baseValue = Math.Round(baseValue + baseValue*factorMultiplier, 2);
-            var randValue = Math.Round(
-                Etx.RandomValueInNormalDist(Math.Round(baseValue, 0), Math.Round(baseValue*stdDevAsPercent, 0)), 2);
-            return randValue;
-        }
 
         /// <summary>
         /// Get the linear eq of the city if its found otherwise
@@ -611,125 +562,6 @@ namespace NoFuture.Rand.Domus.Opes
         {
             var ca = _amer.Address?.HomeCityArea as UsCityStateZip;
             return (ca?.AverageEarnings ?? ca?.State?.GetStateData()?.AverageEarnings) ?? NAmerUtil.Equations.NatlAverageEarnings;
-        }
-
-        /// <summary>
-        /// Gets the sum of the factors based on the criteria.
-        /// </summary>
-        /// <param name="tbl"></param>
-        /// <param name="edu"></param>
-        /// <param name="race"></param>
-        /// <param name="region"></param>
-        /// <param name="age"></param>
-        /// <param name="gender"></param>
-        /// <param name="maritialStatus"></param>
-        /// <returns>
-        /// A scalar factor above or below the national average(s) based on the given criteria
-        /// </returns>
-        /// <remarks>
-        /// src http://www.census.gov/people/wealth/files/Debt_Tables_2011.xlsx
-        ///     http://www.census.gov/people/wealth/files/Wealth_Tables_2011.xlsx
-        /// </remarks>
-        public static double GetFactor(FactorTables tbl, OccidentalEdu edu, NorthAmericanRace race,
-            AmericanRegion region, int age, Gender gender, MaritialStatus maritialStatus)
-        {
-            var xmlDoc = tbl == FactorTables.CreditCardDebt || tbl == FactorTables.HomeDebt ||
-                         tbl == FactorTables.VehicleDebt
-                ? TreeData.UsPersonalDebt
-                : TreeData.UsPersonalWealth;
-            var tblName = Enum.GetName(typeof(FactorTables), tbl);
-            var eduName = GetXmlEduName(edu);
-            var raceName = Enum.GetName(typeof(NorthAmericanRace), race);
-            var regionName = Enum.GetName(typeof(AmericanRegion), region);
-            var genderName = Enum.GetName(typeof(Gender), gender);
-
-            var tblXPath = $"//table[@name='{tblName}']";
-
-            var sum = 0.0D;
-            var hash = new Dictionary<string, string>
-            {
-                {"Edu", eduName},
-                {"Race", raceName},
-                {"Region", regionName},
-            };
-
-            foreach (var factor in hash.Keys)
-            {
-                var xmlElem =
-                    xmlDoc.SelectSingleNode($"{tblXPath}/factor[@name='{factor}']/add[@name='{hash[factor]}']") as
-                        XmlElement;
-                var factorVal = xmlElem?.Attributes["value"]?.Value;
-                if (string.IsNullOrWhiteSpace(factorVal))
-                    continue;
-                double dblOut;
-                if (double.TryParse(factorVal, out dblOut))
-                    sum += dblOut;
-            }
-
-            var ageNode = maritialStatus == MaritialStatus.Remarried || maritialStatus == MaritialStatus.Remarried
-                ? xmlDoc.SelectSingleNode($"{tblXPath}/factor[@name='Age']/factor[@name='Married']")
-                : xmlDoc.SelectSingleNode($"{tblXPath}/factor[@name='Age']/factor[@name='{genderName}']");
-            if (ageNode == null)
-                return sum;
-            foreach (var anode in ageNode.ChildNodes)
-            {
-                var ageElem = anode as XmlElement;
-                if (ageElem == null)
-                    continue;
-                var minAge = ageElem.Attributes["min"]?.Value;
-                var maxAge = ageElem.Attributes["max"]?.Value;
-                if (string.IsNullOrWhiteSpace(minAge) || string.IsNullOrWhiteSpace(maxAge))
-                    continue;
-                if (!int.TryParse(minAge, out var min) || !int.TryParse(maxAge, out var max))
-                    continue;
-                var isInRange = age >= min && age <= max;
-                if (!isInRange || string.IsNullOrWhiteSpace(ageElem.Attributes["value"]?.Value))
-                    continue;
-                var factorVal = ageElem.Attributes["value"].Value;
-                if (double.TryParse(factorVal, out var dblOut))
-                    sum += dblOut;
-            }
-            return sum;
-        }
-
-        /// <summary>
-        /// Gets the base dollar value of the given factor
-        /// </summary>
-        /// <param name="tbl"></param>
-        /// <returns></returns>
-        public static double GetFactorBaseValue(FactorTables tbl)
-        {
-            var xmlDoc = tbl == FactorTables.CreditCardDebt || tbl == FactorTables.HomeDebt ||
-                        tbl == FactorTables.VehicleDebt
-               ? TreeData.UsPersonalDebt
-               : TreeData.UsPersonalWealth;
-            var tblName = Enum.GetName(typeof(FactorTables), tbl);
-            var tblXPath = $"//table[@name='{tblName}']";
-            var tblNode = xmlDoc.SelectSingleNode(tblXPath) as XmlElement;
-            if (string.IsNullOrWhiteSpace(tblNode?.Attributes?["value"]?.Value))
-                return 0.0D;
-            if (!double.TryParse(tblNode.Attributes["value"].Value, out var dblOut))
-                return 0.0D;
-            return dblOut;
-        }
-
-        internal static string GetXmlEduName(OccidentalEdu edu)
-        {
-            var eduName = "High School";
-            if ((short)edu < (short)(OccidentalEdu.HighSchool | OccidentalEdu.Some))
-                eduName = "DropOut";
-            if ((short)edu > (short)(OccidentalEdu.HighSchool | OccidentalEdu.Grad) &&
-                (short)edu < (short)(OccidentalEdu.Assoc | OccidentalEdu.Grad))
-                eduName = "Some College, No Degree";
-            if ((short)edu >= (short)(OccidentalEdu.Assoc | OccidentalEdu.Grad) &&
-                (short)edu < (short)(OccidentalEdu.Bachelor | OccidentalEdu.Grad))
-                eduName = "Associate";
-            if ((short)edu >= (short)(OccidentalEdu.Bachelor | OccidentalEdu.Grad) &&
-                (short)edu < (short)(OccidentalEdu.Master | OccidentalEdu.Grad))
-                eduName = "Bachelor";
-            if ((short)edu >= (short)(OccidentalEdu.Master | OccidentalEdu.Grad))
-                eduName = "PostGrad";
-            return eduName;
         }
         #endregion
     }

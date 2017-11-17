@@ -159,7 +159,7 @@ namespace NoFuture.Rand.Data.Sp
             var avgRent = (double) Rent.GetAvgAmericanRentByYear(null).Amount;
             var randRent = new Pecuniam(
                 (decimal)
-                    NorthAmericanWealth.GetRandomFactorValue(FactorTables.HomeDebt, homeDebtFactor,
+                    NorthAmericanFactors.GetRandomFactorValue(FactorTables.HomeDebt, homeDebtFactor,
                         stdDevAsPercent, avgRent));
             var randTerm = Etx.DiscreteRange(new[] {24, 18, 12, 6});
             var randDate = Etx.Date(0, DateTime.Today.AddDays(-2), true);

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using NoFuture.Rand.Core;
 
 namespace NoFuture.Rand.Data.Sp
@@ -39,6 +41,31 @@ namespace NoFuture.Rand.Data.Sp
             var afterOrOnFromDt = FromDate == null || FromDate <= dt;
             var beforeOrOnToDt = ToDate == null || ToDate.Value >= dt;
             return afterOrOnFromDt && beforeOrOnToDt;
+        }
+
+        public static Pecuniam operator +(Pondus a, Pondus b)
+        {
+            var ap = a?.Value ?? Pecuniam.Zero;
+            var bp = b?.Value ?? Pecuniam.Zero;
+            return ap + bp;
+        }
+
+        public static Pecuniam operator -(Pondus a, Pondus b)
+        {
+            var ap = a?.Value ?? Pecuniam.Zero;
+            var bp = b?.Value ?? Pecuniam.Zero;
+            return ap - bp;
+        }
+
+        public static Pecuniam GetSum(IEnumerable<Pondus> items)
+        {
+            if(items == null || !items.Any())
+                return Pecuniam.Zero;
+
+            var p = Pecuniam.Zero;
+            foreach (var i in items)
+                p += i?.Value ?? Pecuniam.Zero;
+            return p;
         }
     }
 }

@@ -5,8 +5,8 @@ namespace NoFuture.Rand.Data.Sp.Enums
     [Serializable]
     public enum SpStatus
     {
-        Closed,
         Current,
+        Closed,
         Late,
         NoHistory,
         Short

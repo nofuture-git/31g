@@ -1,4 +1,7 @@
-﻿namespace NoFuture.Rand.Data.Sp
+﻿using System.Collections.Generic;
+using System.Linq;
+
+namespace NoFuture.Rand.Data.Sp
 {
     /// <summary>
     /// Nf money type extension methods
@@ -17,6 +20,11 @@
         public static Pecuniam ToPecuniam(this decimal x)
         {
             return new Pecuniam(x);
+        }
+
+        public static Pecuniam GetSum(this IEnumerable<Pecuniam> x)
+        {
+            return x == null ? Pecuniam.Zero : x.Aggregate(Pecuniam.Zero, (current, i) => current + i);
         }
     }
 }

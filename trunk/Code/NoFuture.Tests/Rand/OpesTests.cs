@@ -18,7 +18,7 @@ namespace NoFuture.Rand.Tests
         [TestMethod]
         public void TestGetFactor()
         {
-            var testResult = NorthAmericanWealth.GetFactor(FactorTables.HomeDebt,
+            var testResult = NorthAmericanFactors.GetFactor(FactorTables.HomeDebt,
                 (OccidentalEdu.Bachelor | OccidentalEdu.Grad), NorthAmericanRace.Asian, AmericanRegion.West, 38,
                 Gender.Male, MaritialStatus.Single);
             Assert.AreNotEqual(0.0D, testResult);
@@ -28,10 +28,10 @@ namespace NoFuture.Rand.Tests
         [TestMethod]
         public void TestGetFactorBaseValue()
         {
-            var testResult = NorthAmericanWealth.GetFactorBaseValue(FactorTables.VehicleDebt);
+            var testResult = NorthAmericanFactors.GetFactorBaseValue(FactorTables.VehicleDebt);
             Assert.AreEqual(10000.0D, testResult);
 
-            testResult = NorthAmericanWealth.GetFactorBaseValue(FactorTables.HomeEquity);
+            testResult = NorthAmericanFactors.GetFactorBaseValue(FactorTables.HomeEquity);
             Assert.AreEqual(80000.0D, testResult);
         }
 
@@ -135,9 +135,9 @@ namespace NoFuture.Rand.Tests
         [TestMethod]
         public void TestGetXmlEduName()
         {
-            var testResult = NorthAmericanWealth.GetXmlEduName(OccidentalEdu.Bachelor);
+            var testResult = NorthAmericanFactors.GetXmlEduName(OccidentalEdu.Bachelor);
             Assert.AreEqual("Associate",testResult);
-            testResult = NorthAmericanWealth.GetXmlEduName(OccidentalEdu.Bachelor | OccidentalEdu.Grad);
+            testResult = NorthAmericanFactors.GetXmlEduName(OccidentalEdu.Bachelor | OccidentalEdu.Grad);
             Assert.AreEqual("Bachelor", testResult);
             System.Diagnostics.Debug.WriteLine(testResult);
         }

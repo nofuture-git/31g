@@ -6,6 +6,9 @@ using NoFuture.Rand.Data.Sp;
 
 namespace NoFuture.Rand.Domus.Opes
 {
+    /// <inheritdoc />
+    /// <summary>
+    /// </summary>
     [Serializable]
     public class NorthAmericanIncome : IReditus
     {
@@ -35,7 +38,9 @@ namespace NoFuture.Rand.Domus.Opes
             }
         }
         public virtual Pondus[] CurrentOtherIncome => GetCurrent(OtherIncome);
-        public Pondus[] GetCurrentExpenses => GetCurrent(Expenses);
+        public Pondus[] CurrentExpenses => GetCurrent(Expenses);
+        public Pecuniam TotalExpenses => Pondus.GetSum(CurrentExpenses);
+        public Pecuniam TotalIncome => Pondus.GetSum(_otherIncome) + CurrentEmployment.Select(e => e.CurrentNetPay).GetSum();
 
         protected internal virtual List<IEmployment> Employment
         {

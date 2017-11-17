@@ -8,6 +8,9 @@ using NoFuture.Rand.Data.Sp;
 
 namespace NoFuture.Rand.Domus.Opes
 {
+    /// <inheritdoc />
+    /// <summary>
+    /// </summary>
     [Serializable]
     public class NorthAmericanEmployment : IEmployment
     {
@@ -70,6 +73,9 @@ namespace NoFuture.Rand.Domus.Opes
             md.Sort(Comparer);
             return md.ToArray();
         }
+
+        public Pecuniam CurrentNetPay => (CurrentPay?.Value ?? Pecuniam.Zero) - Pondus.GetSum(CurrentDeductions).Abs;
+
 
         protected internal virtual List<Pondus> Deductions
         {
