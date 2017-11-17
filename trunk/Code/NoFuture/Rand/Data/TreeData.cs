@@ -33,6 +33,7 @@ namespace NoFuture.Rand.Data
         private static XmlDocument _vinWmi;
         private static XmlDocument _usOccupations;
         private static XmlDocument _usBanks;
+        private static XmlDocument _usDomusOpes;
         private static List<Tuple<string, double>> _enWords;
 
         #endregion
@@ -290,6 +291,19 @@ namespace NoFuture.Rand.Data
                 if (_usBanks == null)
                     GetXmlDataSource(DataFiles.US_BANKS, ref _usBanks);
                 return _usBanks;
+            }
+        }
+
+        /// <summary>
+        /// Loads the <see cref="DataFiles.US_DOMUS_OPES"/> data into a <see cref="XmlDocument"/> document.
+        /// </summary>
+        public static XmlDocument UsDomusOpes
+        {
+            get
+            {
+                if (_usDomusOpes == null)
+                    GetXmlDataSource(DataFiles.US_DOMUS_OPES, ref _usDomusOpes);
+                return _usDomusOpes;
             }
         }
 
