@@ -13,6 +13,10 @@ namespace NoFuture.Rand.Domus.Opes
     {
         private readonly HashSet<Pondus> _assets = new HashSet<Pondus>();
 
+        public NorthAmericanAssets(NorthAmerican american, bool isRenting = false) : base(american, isRenting)
+        {
+        }
+
         public Pondus[] CurrentAssets => GetCurrent(Assets);
 
         #region methods
@@ -41,5 +45,6 @@ namespace NoFuture.Rand.Domus.Opes
         }
 
         #endregion
+
     }
 }

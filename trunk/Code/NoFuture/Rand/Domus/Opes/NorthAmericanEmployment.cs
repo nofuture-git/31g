@@ -21,12 +21,21 @@ namespace NoFuture.Rand.Domus.Opes
         #endregion
 
         #region ctors
-        public NorthAmericanEmployment() {}
 
-        public NorthAmericanEmployment(DateTime? startDate, DateTime? endDate)
+        public NorthAmericanEmployment(NorthAmerican american, bool isRenting = false) : base(american, isRenting)
+        {
+
+        }
+
+        public NorthAmericanEmployment(
+            DateTime? startDate, 
+            DateTime? endDate, 
+            NorthAmerican american,
+            bool isRenting = false) : base(american, isRenting)
         {
             _dateRange = new Tuple<DateTime?, DateTime?>(startDate, endDate);
         }
+
         #endregion
 
         #region properties

@@ -20,7 +20,7 @@ namespace NoFuture.Rand.Domus.Opes
 
         #region ctors
 
-        public NorthAmericanIncome()
+        public NorthAmericanIncome(NorthAmerican american, bool isRenting = false): base(american, isRenting)
         {
             
         }

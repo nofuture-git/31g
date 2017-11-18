@@ -4,6 +4,8 @@ using System.Linq;
 using System.Xml;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
+using NoFuture.Rand.Data.Endo;
+using NoFuture.Rand.Data.Endo.Enums;
 using NoFuture.Rand.Data.Sp;
 
 namespace NoFuture.Rand.Domus.Opes
@@ -11,6 +13,24 @@ namespace NoFuture.Rand.Domus.Opes
     public abstract class WealthBase
     {
         protected internal IComparer<ITempore> Comparer { get; } = new TemporeComparer();
+        private readonly NorthAmerican _amer;
+        private readonly bool _isRenting;
+        private readonly NorthAmericanFactors _factors;
+
+
+        protected WealthBase(NorthAmerican american, bool isRenting = false)
+        {
+            _amer = american ?? throw new ArgumentNullException(nameof(american));
+            var usCityArea = _amer?.Address?.HomeCityArea as UsCityStateZip;
+
+            CreditScore = new PersonalCreditScore(american);
+
+            //determine if renting or own
+            _isRenting = isRenting || GetIsLeaseResidence(usCityArea);
+            _factors = new NorthAmericanFactors(_amer);
+        }
+
+        public CreditScore CreditScore { get; }
 
         protected internal virtual Pondus[] GetCurrent(List<Pondus> items)
         {
@@ -144,6 +164,31 @@ namespace NoFuture.Rand.Domus.Opes
                     names.Add(nameOut);
             }
             return names.ToArray();
+        }
+
+        /// <summary>
+        /// Determine if the given <see cref="NorthAmerican"/> is renting or has a mortgage
+        /// </summary>
+        /// <param name="usCityArea"></param>
+        /// <returns></returns>
+        protected internal bool GetIsLeaseResidence(UsCityStateZip usCityArea)
+        {
+            if (usCityArea == null)
+                return true;
+
+            var cannotGetFinanced = CreditScore.GetRandomInterestRate(null, Gov.Fed.RiskFreeInterestRate.DF_VALUE) > 8.5;
+            if (cannotGetFinanced)
+                return true;
+
+            var livesInDenseUrbanArea = usCityArea.Msa?.MsaType == (UrbanCentric.City | UrbanCentric.Large);
+            var isYoung = _amer.GetAgeAt(null) < 32;
+            var roll = 65;
+            if (livesInDenseUrbanArea)
+                roll -= 23;
+            //is scaled where 29 year-old loses 3 while 21 year-old loses 11
+            if (isYoung)
+                roll -= 32 - _amer.GetAgeAt(null);
+            return Etx.TryBelowOrAt(roll, Etx.Dice.OneHundred);
         }
     }
 }
