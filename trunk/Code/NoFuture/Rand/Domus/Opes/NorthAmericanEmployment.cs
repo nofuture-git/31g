@@ -2,37 +2,41 @@
 using System.Collections.Generic;
 using System.Linq;
 using NoFuture.Rand.Com;
-using NoFuture.Rand.Core;
 using NoFuture.Rand.Data.Endo.Grps;
 using NoFuture.Rand.Data.Sp;
 
 namespace NoFuture.Rand.Domus.Opes
 {
-    /// <inheritdoc />
+    /// <inheritdoc cref="IEmployment" />
+    /// <inheritdoc cref="WealthBase" />
     /// <summary>
     /// </summary>
     [Serializable]
-    public class NorthAmericanEmployment : IEmployment
+    public class NorthAmericanEmployment : WealthBase, IEmployment
     {
+        #region fields
         private Tuple<DateTime?, DateTime?> _dateRange;
-        protected internal IComparer<Pondus> Comparer { get; } = new TemporeComparer();
         private readonly HashSet<Pondus> _pay = new HashSet<Pondus>();
         private readonly HashSet<Pondus> _deductions = new HashSet<Pondus>();
+        #endregion
 
+        #region ctors
         public NorthAmericanEmployment() {}
 
         public NorthAmericanEmployment(DateTime? startDate, DateTime? endDate)
         {
             _dateRange = new Tuple<DateTime?, DateTime?>(startDate, endDate);
         }
+        #endregion
 
+        #region properties
         public virtual string Src { get; set; }
         public virtual string Abbrev => "Employer";
         public virtual IFirm Value { get; set; }
         public virtual bool IsOwner { get; set; }
         public virtual StandardOccupationalClassification Occupation { get; set; }
         public virtual Pondus[] CurrentDeductions => GetDeductionsAt(null);
-        public virtual Pondus CurrentPay => Pay.LastOrDefault();
+        public virtual Pondus CurrentPay => GetPayAt(null);
 
         public virtual DateTime? FromDate
         {
@@ -46,6 +50,12 @@ namespace NoFuture.Rand.Domus.Opes
             set => _dateRange = new Tuple<DateTime?, DateTime?>(_dateRange.Item1, value);
         }
 
+        public Pecuniam CurrentNetPay => (CurrentPay?.Value ?? Pecuniam.Zero) - Pondus.GetSum(CurrentDeductions).Abs;
+
+        #endregion
+
+        #region methods
+
         public virtual bool IsInRange(DateTime dt)
         {
             var afterOrOnFromDt = FromDate == null || FromDate <= dt;
@@ -55,27 +65,14 @@ namespace NoFuture.Rand.Domus.Opes
 
         public virtual Pondus GetPayAt(DateTime? dt)
         {
-            return dt == null
-                ? CurrentPay
-                : Pay.FirstOrDefault(x => x.IsInRange(dt.Value));
+            var pay = GetAt(dt, Pay);
+            return pay.LastOrDefault();
         }
 
         public virtual Pondus[] GetDeductionsAt(DateTime? dt)
         {
-            if (dt == null)
-            {
-                var ld = Deductions.Where(x => x.ToDate == null).ToList();
-                ld.Sort(Comparer);
-                return ld.ToArray();
-            }
-
-            var md = Deductions.Where(d => d.IsInRange(dt.Value)).ToList();
-            md.Sort(Comparer);
-            return md.ToArray();
+            return GetAt(dt, Deductions);
         }
-
-        public Pecuniam CurrentNetPay => (CurrentPay?.Value ?? Pecuniam.Zero) - Pondus.GetSum(CurrentDeductions).Abs;
-
 
         protected internal virtual List<Pondus> Deductions
         {
@@ -101,7 +98,6 @@ namespace NoFuture.Rand.Domus.Opes
         {
             _pay.Add(new Pondus(name)
             {
-                //Description = description,
                 Value = amt?.Abs,
                 FromDate = startDate,
                 ToDate = endDate
@@ -113,7 +109,6 @@ namespace NoFuture.Rand.Domus.Opes
         {
             _deductions.Add(new Pondus(name)
             {
-                //Description = description,
                 Value = amt?.Neg,
                 ToDate = endDate,
                 FromDate = startDate
@@ -122,8 +117,7 @@ namespace NoFuture.Rand.Domus.Opes
 
         public override bool Equals(object obj)
         {
-            var e = obj as IEmployment;
-            if (e == null)
+            if (!(obj is IEmployment e))
                 return base.Equals(obj);
 
             return e.Value != null 
@@ -138,5 +132,7 @@ namespace NoFuture.Rand.Domus.Opes
             return (Value?.GetHashCode() ?? 1) +
                    _dateRange?.GetHashCode() ?? 1;
         }
+
+        #endregion
     }
 }

@@ -126,6 +126,7 @@
     <Compile Include="Domus\IStudent.cs" />
     <Compile Include="Data\Sp\Mereo.cs" />
     <Compile Include="Domus\Opes\IRebus.cs" />
+    <Compile Include="Domus\Opes\NorthAmericanAssets.cs" />
     <Compile Include="Domus\Opes\NorthAmericanEmployment.cs" />
     <Compile Include="Domus\NorthAmericanStudent.cs" />
     <Compile Include="Data\Sp\IMereo.cs" />

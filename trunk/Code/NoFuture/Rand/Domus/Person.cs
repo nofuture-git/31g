@@ -127,7 +127,7 @@ namespace NoFuture.Rand.Domus
 
         public abstract IEducation GetEducationAt(DateTime? dt);
 
-        public abstract WealthBase GetWealthAt(DateTime? dt);
+        public abstract RenameMe GetWealthAt(DateTime? dt);
 
         /// <summary>
         /// Resolves the <see cref="ResidentAddress"/> which was current 

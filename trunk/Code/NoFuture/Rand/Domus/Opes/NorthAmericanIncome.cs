@@ -1,22 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using NoFuture.Rand.Core;
 using NoFuture.Rand.Data.Sp;
 
 namespace NoFuture.Rand.Domus.Opes
 {
-    /// <inheritdoc />
+    /// <inheritdoc cref="IReditus" />
+    /// <inheritdoc cref="WealthBase" />
     /// <summary>
     /// </summary>
     [Serializable]
-    public class NorthAmericanIncome : IReditus
+    public class NorthAmericanIncome : WealthBase, IReditus
     {
         #region fields
         private readonly HashSet<IEmployment> _employment = new HashSet<IEmployment>();
         private readonly HashSet<Pondus> _otherIncome = new HashSet<Pondus>();
         private readonly HashSet<Pondus> _expenses = new HashSet<Pondus>();
-        protected internal IComparer<ITempore> Comparer { get; } = new TemporeComparer();
         #endregion
 
         #region ctors
@@ -132,25 +131,7 @@ namespace NoFuture.Rand.Domus.Opes
                 FromDate = startDate
             });
         }
-
-        protected internal virtual Pondus[] GetCurrent(List<Pondus> items)
-        {
-            if (items == null)
-                return null;
-            var o = items.Where(x => x.ToDate == null).ToList();
-            o.Sort(Comparer);
-            return o.ToArray();
-        }
-
-        protected internal virtual Pondus[] GetAt(DateTime? dt, List<Pondus> items)
-        {
-            if (items == null)
-                return null;
-            return dt == null
-                ? new[] { items.LastOrDefault() }
-                : items.Where(x => x.IsInRange(dt.Value)).ToArray();
-        }
-
         #endregion
     }
+
 }
