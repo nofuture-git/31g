@@ -1,5 +1,4 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Data.Endo;
 using NoFuture.Rand.Data.Endo.Enums;
 using NoFuture.Rand.Domus;
@@ -13,12 +12,12 @@ namespace NoFuture.Rand.Tests
         [TestMethod]
         public void RandomUsZipWithRespectToPopTest()
         {
-            var testResult = NAmerUtil.RandomAmericanZipWithRespectToPop();
+            var testResult = UsCityStateZip.RandomAmericanZipWithRespectToPop();
             Assert.IsNotNull(testResult);
 
             for (var i = 0; i < 100; i++)
             {
-                testResult = NAmerUtil.RandomAmericanZipWithRespectToPop();
+                testResult = UsCityStateZip.RandomAmericanZipWithRespectToPop();
                 Assert.IsNotNull(testResult);
                 System.Diagnostics.Debug.WriteLine(testResult);
             }

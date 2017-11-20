@@ -85,8 +85,13 @@
     <Compile Include="UsGov\Bls\Codes\IpSector.cs" />
     <Compile Include="UsGov\Bls\Codes\WpGroup.cs" />
     <Compile Include="UsGov\Bls\Codes\WpItem.cs" />
+    <Compile Include="UsGov\Bls\ConsumerPriceIndex.cs" />
+    <Compile Include="UsGov\Bls\EmploymentCostIndex.cs" />
     <Compile Include="UsGov\Bls\Globals.cs" />
+    <Compile Include="UsGov\Bls\IndustryProductivity.cs" />
     <Compile Include="UsGov\Bls\ISeries.cs" />
+    <Compile Include="UsGov\Bls\NatlEmployment.cs" />
+    <Compile Include="UsGov\Bls\ProducerPriceIndex.cs" />
     <Compile Include="UsGov\Bls\Series.cs" />
     <Compile Include="UsGov\Links.cs" />
     <Compile Include="INfDynData.cs" />

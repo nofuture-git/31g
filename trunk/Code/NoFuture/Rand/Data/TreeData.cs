@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Xml;
 using NoFuture.Rand.Data.Source;
 
@@ -34,6 +35,7 @@ namespace NoFuture.Rand.Data
         private static XmlDocument _usOccupations;
         private static XmlDocument _usBanks;
         private static XmlDocument _usDomusOpes;
+        private static XmlDocument _usOccupationPropTable;
         private static List<Tuple<string, double>> _enWords;
 
         #endregion
@@ -306,6 +308,18 @@ namespace NoFuture.Rand.Data
                 return _usDomusOpes;
             }
         }
+        /// <summary>
+        /// Loads the <see cref="DataFiles.US_OCCUPATIONS_PROBTABLE"/> data into a <see cref="XmlDocument"/> document.
+        /// </summary>
+        public static XmlDocument UsOccupationProbTable
+        {
+            get
+            {
+                if (_usOccupationPropTable == null)
+                    GetXmlDataSource(DataFiles.US_OCCUPATIONS_PROBTABLE, ref _usOccupationPropTable);
+                return _usOccupationPropTable;
+            }
+        }
 
         /// <summary>
         /// Loads the <see cref="DataFiles.ENGLISH_WORDS_DATA_FILE"/> data into a <see cref="XmlDocument"/> document.
@@ -368,6 +382,46 @@ namespace NoFuture.Rand.Data
             assignTo = assignTo ?? new XmlDocument();
             assignTo.LoadXml(xmlData);
         }
+
+        /// <summary>
+        /// Helper method to get a cumulative probability table from XML
+        /// </summary>
+        /// <param name="xml"></param>
+        /// <param name="parentNodeName"></param>
+        /// <param name="entryNodeName"></param>
+        /// <returns></returns>
+        internal static Dictionary<string, double> GetProbTable(XmlDocument xml, string parentNodeName,
+            string entryNodeName)
+        {
+            const string WEIGHT = "prob";
+            var dictOut = new Dictionary<string, double>();
+            var elems = xml?.SelectSingleNode($"//{parentNodeName}");
+
+            if (elems == null || !elems.HasChildNodes)
+                return dictOut;
+
+            foreach (var node in elems.ChildNodes)
+            {
+                var elem = node as XmlElement;
+                if (elem == null)
+                    continue;
+                var key = elem.Attributes[entryNodeName]?.Value;
+                var strVal = elem.Attributes[WEIGHT]?.Value;
+
+                if (string.IsNullOrWhiteSpace(key) || string.IsNullOrWhiteSpace(strVal))
+                    continue;
+
+                if (!double.TryParse(strVal, out var val))
+                    continue;
+
+                if (dictOut.ContainsKey(key))
+                    dictOut[key] = val;
+                else
+                    dictOut.Add(key, val);
+            }
+            return dictOut;
+        }
+
         #endregion
 
     }

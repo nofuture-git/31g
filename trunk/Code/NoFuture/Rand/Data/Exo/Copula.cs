@@ -107,8 +107,8 @@ namespace NoFuture.Rand.Data.Exo
             if (rptTenK.FinancialData == null)
                 rptTenK.FinancialData = new CommercialFinancialData
                 {
-                    Assets = new SpAssets(),
-                    Income = new SpIncome()
+                    AssetsSummary = new AssetsSummary(),
+                    IncomeSummary = new IncomeSummary()
                 };
 
             var xbrlDyn = myDynDataRslt.First<dynamic>();
@@ -139,7 +139,7 @@ namespace NoFuture.Rand.Data.Exo
             var rptVal = assets?.OrderByDescending(x => x.Item1).FirstOrDefault();
             if (rptVal != null)
             {
-                rptTenK.FinancialData.Assets.TotalAssets = new Pecuniam(rptVal.Item2);
+                rptTenK.FinancialData.AssetsSummary.TotalAssets = new Pecuniam(rptVal.Item2);
                 rptTenK.FinancialData.FiscalYear = rptTenK.FinancialData.FiscalYear < rptVal.Item1
                     ? rptVal.Item1
                     : rptTenK.FinancialData.FiscalYear;
@@ -149,7 +149,7 @@ namespace NoFuture.Rand.Data.Exo
             rptVal = lias?.OrderByDescending(x => x.Item1).FirstOrDefault();
             if (rptVal != null)
             {
-                rptTenK.FinancialData.Assets.TotalLiabilities = new Pecuniam(rptVal.Item2);
+                rptTenK.FinancialData.AssetsSummary.TotalLiabilities = new Pecuniam(rptVal.Item2);
                 rptTenK.FinancialData.FiscalYear = rptTenK.FinancialData.FiscalYear < rptVal.Item1
                     ? rptVal.Item1
                     : rptTenK.FinancialData.FiscalYear;
@@ -159,7 +159,7 @@ namespace NoFuture.Rand.Data.Exo
             rptVal = nis?.OrderByDescending(x => x.Item1).FirstOrDefault();
             if (rptVal != null)
             {
-                rptTenK.FinancialData.Income.NetIncome = new Pecuniam(rptVal.Item2);
+                rptTenK.FinancialData.IncomeSummary.NetIncome = new Pecuniam(rptVal.Item2);
                 rptTenK.FinancialData.FiscalYear = rptTenK.FinancialData.FiscalYear < rptVal.Item1
                     ? rptVal.Item1
                     : rptTenK.FinancialData.FiscalYear;
@@ -169,7 +169,7 @@ namespace NoFuture.Rand.Data.Exo
             rptVal = ois?.OrderByDescending(x => x.Item1).FirstOrDefault();
             if (rptVal != null)
             {
-                rptTenK.FinancialData.Income.OperatingIncome = new Pecuniam(rptVal.Item2);
+                rptTenK.FinancialData.IncomeSummary.OperatingIncome = new Pecuniam(rptVal.Item2);
                 rptTenK.FinancialData.FiscalYear = rptTenK.FinancialData.FiscalYear < rptVal.Item1
                     ? rptVal.Item1
                     : rptTenK.FinancialData.FiscalYear;
@@ -179,14 +179,14 @@ namespace NoFuture.Rand.Data.Exo
             rptVal = revs?.OrderByDescending(x => x.Item1).FirstOrDefault();
             if (rptVal != null)
             {
-                rptTenK.FinancialData.Income.Revenue = new Pecuniam(rptVal.Item2);
+                rptTenK.FinancialData.IncomeSummary.Revenue = new Pecuniam(rptVal.Item2);
                 rptTenK.FinancialData.FiscalYear = rptTenK.FinancialData.FiscalYear < rptVal.Item1
                     ? rptVal.Item1
                     : rptTenK.FinancialData.FiscalYear;
             }
 
-            rptTenK.FinancialData.Income.Src = srcUri.ToString();
-            rptTenK.FinancialData.Assets.Src = srcUri.ToString();
+            rptTenK.FinancialData.IncomeSummary.Src = srcUri.ToString();
+            rptTenK.FinancialData.AssetsSummary.Src = srcUri.ToString();
 
             return true;
         }
@@ -271,7 +271,7 @@ namespace NoFuture.Rand.Data.Exo
                 //annual report
                 var secForm = nameData?.Item1 ?? new Form10K { Src = myDynData.SourceUri.ToString() };
 
-                if (titleNode.StartsWith(SecForm.NotificationOfInabilityToTimelyFile))
+                if (titleNode.StartsWith(SecForm.NOTIFICATION_OF_INABILITY_TO_TIMELY_FILE))
                     secForm.IsLate = true;
 
                 var parseRslt = DateTime.Now;

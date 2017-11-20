@@ -1,9 +1,9 @@
 ﻿#I @"../../../packages/"
-#r "FSharp.Data.2.3.0/lib/net40/FSharp.Data.dll"
-#load "FSharp.Charting.0.90.14/FSharp.Charting.fsx"
-#load "MathNet.Numerics.FSharp.3.11.1/MathNet.Numerics.fsx"
-#r "MathNet.Numerics.3.11.1/lib/net40/MathNet.Numerics.dll"
-#r "MathNet.Numerics.FSharp.3.11.1/lib/net40/MathNet.Numerics.FSharp.dll"
+#r "FSharp.Data.2.4.2/lib/net45/FSharp.Data.dll"
+#load "FSharp.Charting.0.91.1/lib/net45/FSharp.Charting.fsx"
+#load "MathNet.Numerics.FSharp.3.20.0/MathNet.Numerics.fsx"
+#r "MathNet.Numerics.3.20.0/lib/net40/MathNet.Numerics.dll"
+#r "MathNet.Numerics.FSharp.3.20.0/lib/net40/MathNet.Numerics.FSharp.dll"
 
 open System
 open System.Text.RegularExpressions

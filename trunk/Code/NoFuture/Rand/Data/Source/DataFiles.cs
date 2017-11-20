@@ -29,6 +29,7 @@ namespace NoFuture.Rand.Data.Source
         public const string US_OCCUPATIONS = "US_Occupations.xml";
         public const string US_BANKS = "US_Banks.xml";
         public const string US_DOMUS_OPES = "US_DomusOpes.xml";
+        public const string US_OCCUPATIONS_PROBTABLE = "US_Occupations_ProbTable.xml";
 
         public static string GetByName(string name)
         {

@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Xml;
 using NoFuture.Rand.Core;
-using NoFuture.Rand.Domus;
 using NoFuture.Rand.Gov;
 
 namespace NoFuture.Rand.Data.Endo
@@ -83,7 +82,7 @@ namespace NoFuture.Rand.Data.Endo
 
             //pick a zip code prefix at random
             if (String.IsNullOrWhiteSpace(zipCodePrefix))
-                zipCodePrefix = NAmerUtil.RandomAmericanZipWithRespectToPop() ?? UsCityStateZip.DF_ZIPCODE_PREFIX;
+                zipCodePrefix = UsCityStateZip.RandomAmericanZipWithRespectToPop() ?? UsCityStateZip.DF_ZIPCODE_PREFIX;
 
             //x-ref it to the zip code data
             var xpathString = $"//{ZIP_CODE_PLURAL}//{ZIP_CODE_SINGULAR}[@{PREFIX}='{zipCodePrefix}']";

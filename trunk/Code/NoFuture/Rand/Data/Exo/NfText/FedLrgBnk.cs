@@ -4,7 +4,6 @@ using System.Linq;
 using NoFuture.Rand.Com;
 using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Data.Endo;
-using NoFuture.Rand.Data.Source;
 using NoFuture.Rand.Data.Sp;
 using NoFuture.Rand.Gov.Fed;
 using NoFuture.Shared.Core;
@@ -13,7 +12,6 @@ namespace NoFuture.Rand.Data.Exo.NfText
 {
     public class FedLrgBnk : NfDynDataBase
     {
-        private static Bank[] _fedReleaseLrgBnkNames;
         public const string RELEASE_URL = "http://www.federalreserve.gov/releases/lbr/current/lrg_bnk_lst.txt";
         public FedLrgBnk():base(new Uri(RELEASE_URL)) { }
 
@@ -47,7 +45,7 @@ namespace NoFuture.Rand.Data.Exo.NfText
                 bank.BusinessAddress = new Tuple<UsStreetPo, UsCityStateZip>(null, cityOut);
             if (TypeOfBankAbbrev3Enum.ContainsKey(li.Chtr))
                 bank.BankType = TypeOfBankAbbrev3Enum[li.Chtr];
-            var assets = new BankAssets { Src = FedLrgBnk.RELEASE_URL };
+            var assets = new BankAssetsSummary { Src = FedLrgBnk.RELEASE_URL };
             if (decimal.TryParse(li.ConsolAssets.Replace(COMMA, string.Empty), out decimal conAssts))
                 assets.TotalAssets = new Pecuniam(conAssts * 1000);
             if (decimal.TryParse(li.DomesticAssets.Replace(COMMA, string.Empty), out decimal domAssts))
@@ -59,7 +57,7 @@ namespace NoFuture.Rand.Data.Exo.NfText
             bank.IsInternational = li.Ibf == LETTER_Y;
             if (int.TryParse(li.PercentFgnOwned, out int pfo))
                 assets.PercentForeignOwned = Math.Round((double)pfo / 100, 2);
-            bank.Assets = new Dictionary<DateTime, BankAssets> { { li.RptDate, assets } };
+            bank.Assets = new Dictionary<DateTime, BankAssetsSummary> { { li.RptDate, assets } };
             return bank;
         }
 
@@ -181,33 +179,6 @@ namespace NoFuture.Rand.Data.Exo.NfText
             };
             return charIdx.Select(idx => lrgBnkLstLine.Substring(idx.Item1, idx.Item2).Trim()).ToList();
 
-        }
-
-        /// <summary>
-        /// Loads a list of <see cref="FinancialFirm"/> by parsing the data from <see cref="DataFiles.LRG_BNK_LST_DATA_FILE"/> 
-        /// </summary>
-        public static Bank[] CommercialBankData
-        {
-            get
-            {
-                if (_fedReleaseLrgBnkNames != null && _fedReleaseLrgBnkNames.Length > 0)
-                    return _fedReleaseLrgBnkNames;
-
-                var rawData = DataFiles.GetByName(DataFiles.LRG_BNK_LST_DATA_FILE);
-                if (string.IsNullOrWhiteSpace(rawData))
-                    return new Bank[0];//return empty list for missing data
-
-                var myDynData = DynamicDataFactory.GetDataParser(new Uri(RELEASE_URL));
-                var myDynDataRslt = myDynData.ParseContent(rawData);
-
-
-                //take each line data structure and compose a full object
-                var tempList = myDynDataRslt.Select(pd => GetBankFromDynData(pd)).Cast<Bank>().ToList();
-
-                if (tempList.Count > 0)
-                    _fedReleaseLrgBnkNames = tempList.ToArray();
-                return _fedReleaseLrgBnkNames;
-            }
         }
     }
 }

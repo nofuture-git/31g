@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Xml;
+using NoFuture.Rand.Core;
 
 namespace NoFuture.Rand.Data.Endo.Grps
 {
@@ -16,6 +18,10 @@ namespace NoFuture.Rand.Data.Endo.Grps
     [Serializable]
     public abstract class StandardOccupationalClassification : ClassificationBase<SocMajorGroup>
     {
+        private const string DF_OCCUPATION = "41-2031";
+
+        private static Dictionary<string, double> _soc2Prob = new Dictionary<string, double>();
+        private static List<SocDetailedOccupation> _socs = new List<SocDetailedOccupation>();
         private static SocMajorGroup[] _majorGroups;
 
         public override string Abbrev => "SOC";
@@ -49,6 +55,24 @@ namespace NoFuture.Rand.Data.Endo.Grps
                 _majorGroups = tempList.ToArray();
                 return _majorGroups;
             }
+        }
+
+        /// <summary>
+        /// Selects one <see cref="SocDetailedOccupation"/> at random
+        /// </summary>
+        /// <returns></returns>
+        public static SocDetailedOccupation RandomOccupation()
+        {
+            var nm = new SocDetailedOccupation().LocalName;
+            _soc2Prob = _soc2Prob ?? TreeData.GetProbTable(TreeData.UsOccupationProbTable, "occupations", nm);
+
+            var pickOne = Etx.DiscreteRange(_soc2Prob) ?? DF_OCCUPATION;
+
+            if (!_socs.Any())
+                _socs.AddRange(AllGroups.SelectMany(g =>
+                    g.Divisions.SelectMany(two => two.Divisions.SelectMany(three => three.Divisions))));
+
+            return _socs.FirstOrDefault(s => s.Value == pickOne);
         }
     }
 }

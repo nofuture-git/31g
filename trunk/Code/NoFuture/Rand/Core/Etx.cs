@@ -155,6 +155,8 @@ namespace NoFuture.Rand.Core
 
             var pick = MyRand.NextDouble();
 
+            tblCopy = tblCopy.OrderBy(x => x.Value).ToDictionary(pair => pair.Key, pair => pair.Value);
+
             return tblCopy.FirstOrDefault(x => x.Value >= pick).Key;
         }
 

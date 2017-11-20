@@ -773,16 +773,6 @@ namespace NoFuture.Rand.Domus
         }
 
         /// <summary>
-        /// Selects a US Zip Code prefix at random taking into respect the population pertinent to that zip code prefix.
-        /// </summary>
-        public static string RandomAmericanZipWithRespectToPop()
-        {
-            var zip2Wt = UsCityStateZip.ZipCodePrefix2Population;
-
-            return !zip2Wt.Any() ? UsCityStateZip.DF_ZIPCODE_PREFIX : Etx.DiscreteRange(zip2Wt);
-        }
-
-        /// <summary>
         /// Utility method to dump all the spouse data on an instance of <see cref="NorthAmerican"/>
         /// </summary>
         /// <param name="nAmer"></param>

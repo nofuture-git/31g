@@ -1,5 +1,5 @@
 ﻿#I @"../../../packages/"
-#r "FSharp.Data.2.3.0/lib/net40/FSharp.Data.dll"
+#r "FSharp.Data.2.4.2/lib/net45/FSharp.Data.dll"
 
 open System
 open System.Runtime.InteropServices

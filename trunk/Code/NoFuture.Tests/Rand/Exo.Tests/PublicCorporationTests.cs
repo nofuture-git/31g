@@ -55,15 +55,15 @@ namespace NoFuture.Tests.Rand
 
             Assert.AreEqual(42029009, tenK2015.FinancialData.NumOfShares);
 
-            Assert.AreEqual(new Pecuniam(1266835M), tenK2015.FinancialData.Assets.TotalAssets);
+            Assert.AreEqual(new Pecuniam(1266835M), tenK2015.FinancialData.AssetsSummary.TotalAssets);
 
-            Assert.AreEqual(new Pecuniam(731262M), tenK2015.FinancialData.Assets.TotalLiabilities);
+            Assert.AreEqual(new Pecuniam(731262M), tenK2015.FinancialData.AssetsSummary.TotalLiabilities);
 
-            Assert.AreEqual(new Pecuniam(71247M), tenK2015.FinancialData.Income.NetIncome);
+            Assert.AreEqual(new Pecuniam(71247M), tenK2015.FinancialData.IncomeSummary.NetIncome);
 
-            Assert.AreEqual(new Pecuniam(97842M), tenK2015.FinancialData.Income.OperatingIncome);
+            Assert.AreEqual(new Pecuniam(97842M), tenK2015.FinancialData.IncomeSummary.OperatingIncome);
 
-            Assert.AreEqual(new Pecuniam(2695680M), tenK2015.FinancialData.Income.Revenue);
+            Assert.AreEqual(new Pecuniam(2695680M), tenK2015.FinancialData.IncomeSummary.Revenue);
 
         }
     }
