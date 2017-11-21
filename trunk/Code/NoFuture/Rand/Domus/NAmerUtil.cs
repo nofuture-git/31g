@@ -215,6 +215,27 @@ namespace NoFuture.Rand.Domus
             };
 
             /// <summary>
+            /// Calculated as (&apos;National Health Expenditures (Amount in Billions)&apos; * 1000) / &apos;U.S. Population (Millions)) per year
+            /// https://www.cms.gov/Research-Statistics-Data-and-Systems/Statistics-Trends-and-Reports/NationalHealthExpendData/Downloads/NHEGDP15.zip
+            /// </summary>
+            public static SecondDegreePolynomial HealthInsuranceCostPerPerson = new SecondDegreePolynomial
+            {
+                SecondCoefficient = 3.8555,
+                Slope = -15145.0D,
+                Intercept = 14873062.18D
+            };
+
+            /// <summary>
+            /// https://www.irs.com/articles/2016-federal-tax-rates-personal-exemptions-and-standard-deductions
+            /// </summary>
+            public static SecondDegreePolynomial FederalIncomeTaxRate = new SecondDegreePolynomial
+            {
+                SecondCoefficient = -0.000000000004D,
+                Slope = 0.0000021,
+                Intercept = 0.0813D
+            };
+
+            /// <summary>
             /// [http://www.hhs.gov/ash/oah/adolescent-health-topics/reproductive-health/teen-pregnancy/trends.html]
             /// </summary>
             /// <param name="race"></param>

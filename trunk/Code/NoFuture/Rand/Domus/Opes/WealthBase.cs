@@ -29,7 +29,10 @@ namespace NoFuture.Rand.Domus.Opes
         protected WealthBase(NorthAmerican american, bool isRenting = false)
         {
             if (american == null)
+            {
+                _factors = new NorthAmericanFactors(null);
                 return;
+            }
             _amer = american;
             var usCityArea = _amer?.Address?.HomeCityArea as UsCityStateZip;
 
@@ -40,7 +43,6 @@ namespace NoFuture.Rand.Domus.Opes
             _factors = new NorthAmericanFactors(_amer);
         }
         #endregion
-
 
         public CreditScore CreditScore { get; }
 
@@ -54,12 +56,12 @@ namespace NoFuture.Rand.Domus.Opes
         /// <summary>
         /// Calculate a yearly income at random.
         /// </summary>
-        /// <param name="min">
-        /// Optional, absolute minimum value where results should always be this value or higher.
-        /// </param>
         /// <param name="dt">
         /// Optional, date used for solving the <see cref="GetAvgEarningPerYear"/> equation, 
         /// the default is the current system time.
+        /// </param>
+        /// <param name="min">
+        /// Optional, absolute minimum value where results should always be this value or higher.
         /// </param>
         /// <param name="factorCalc">
         /// Optional, allows caller to specify how <see cref="NorthAmericanFactors.NetWorthFactor"/>
@@ -70,7 +72,7 @@ namespace NoFuture.Rand.Domus.Opes
         /// Optional, a randomizes the calculated value around a mean.
         /// </param>
         /// <returns></returns>
-        public Pecuniam GetYearlyIncome(Pecuniam min = null, DateTime? dt = null,
+        public Pecuniam GetYearlyIncome(DateTime? dt = null, Pecuniam min = null,
             Func<double, double> factorCalc = null,
             double stdDevInUsd = 2000)
         {
@@ -111,7 +113,7 @@ namespace NoFuture.Rand.Domus.Opes
         /// </remarks>
         protected internal virtual LinearEquation GetAvgEarningPerYear()
         {
-            var ca = _amer.Address?.HomeCityArea as UsCityStateZip;
+            var ca = _amer?.Address?.HomeCityArea as UsCityStateZip;
             return (ca?.AverageEarnings ?? ca?.State?.GetStateData()?.AverageEarnings) ?? NAmerUtil.Equations.NatlAverageEarnings;
         }
 
@@ -195,7 +197,7 @@ namespace NoFuture.Rand.Domus.Opes
 
             var egs = new List<string>();
 
-            var groupName = xmlElem.ParentNode is XmlElement groupElem && !groupElem.HasAttributes
+            var groupName = xmlElem.ParentNode is XmlElement groupElem && groupElem.HasAttributes
                 ? groupElem.GetAttribute("name")
                 : "";
             var itemName = xmlElem.GetAttribute("name");

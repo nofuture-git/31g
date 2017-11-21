@@ -164,6 +164,8 @@
               <mereo name="State tax" />
               <mereo name="FICA" />
               <mereo name="Medicare" />
+            </group>
+            <group name="Judgments">
               <mereo name="Child Support" />
               <mereo name="Alimony" />
               <mereo name="Foster Care" />

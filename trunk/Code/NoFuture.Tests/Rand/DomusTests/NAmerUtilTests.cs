@@ -1,7 +1,9 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NoFuture.Rand.Data.Endo;
 using NoFuture.Rand.Data.Endo.Enums;
 using NoFuture.Rand.Domus;
+using NoFuture.Util.Core;
 
 namespace NoFuture.Rand.Tests
 {
@@ -94,6 +96,25 @@ namespace NoFuture.Rand.Tests
             //asian="54.0" natl-percent="30.0"
             // 54.0 - 30.0 = 24, 23.9+24 = 47.9
             Assert.AreEqual(47.9, testResult);
+        }
+
+        [TestMethod]
+        public void TestHealthInsuranceCostPerPerson()
+        {
+            var testSubject = NoFuture.Rand.Domus.NAmerUtil.Equations.HealthInsuranceCostPerPerson;
+            var testResult = testSubject.SolveForY(2015);
+            Assert.AreEqual(10084.6675, testResult);
+            System.Diagnostics.Debug.WriteLine(testSubject);
+        }
+
+        [TestMethod]
+        public void TestFederalIncomeTaxRate()
+        {
+            var testSubject = NoFuture.Rand.Domus.NAmerUtil.Equations.FederalIncomeTaxRate;
+            var testResult = testSubject.SolveForY(115725D);
+            Assert.AreEqual(0.27075D, testResult);
+            System.Diagnostics.Debug.WriteLine(testSubject);
+
         }
     }
 }

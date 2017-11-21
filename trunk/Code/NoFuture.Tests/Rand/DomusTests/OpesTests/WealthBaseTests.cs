@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Data.Endo.Enums;
 using NoFuture.Rand.Data.Sp;
 using NoFuture.Rand.Data.Sp.Cc;
@@ -182,7 +183,7 @@ namespace NoFuture.Rand.Tests
             Assert.AreNotEqual(0, testResult.Length);
 
             foreach(var i in testResult)
-                System.Diagnostics.Debug.WriteLine(i);
+                System.Diagnostics.Debug.WriteLine($"{i.Name} {i.GetName(KindsOfNames.Group)}");
         }
 
         [TestMethod]

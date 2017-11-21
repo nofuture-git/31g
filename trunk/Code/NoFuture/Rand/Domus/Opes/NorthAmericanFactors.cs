@@ -61,7 +61,20 @@ namespace NoFuture.Rand.Domus.Opes
         /// <param name="american"></param>
         public NorthAmericanFactors(NorthAmerican american)
         {
-            var amer = american ?? throw new ArgumentNullException(nameof(american));
+            if (american == null)
+            {
+                HomeDebtFactor = 1;
+                VehicleDebtFactor = 1;
+                CreditCardDebtFactor = 1;
+                SavingsAcctFactor = 1;
+                CheckingAcctFactor = 1;
+                NetWorthFactor = 1;
+                HomeEquityFactor = 1;
+                VehicleEquityFactor = 1;
+                return;
+            }
+
+            var amer = american;
             var usCityArea = amer?.Address?.HomeCityArea as UsCityStateZip;
             var edu = amer.Education?.EduFlag ?? (OccidentalEdu.HighSchool | OccidentalEdu.Grad);
             var race = amer.Race;

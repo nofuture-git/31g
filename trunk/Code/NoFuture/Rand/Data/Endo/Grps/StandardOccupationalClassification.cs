@@ -18,6 +18,7 @@ namespace NoFuture.Rand.Data.Endo.Grps
     [Serializable]
     public abstract class StandardOccupationalClassification : ClassificationBase<SocMajorGroup>
     {
+        //the highest percent 
         private const string DF_OCCUPATION = "41-2031";
 
         private static Dictionary<string, double> _soc2Prob = new Dictionary<string, double>();
@@ -124,6 +125,15 @@ namespace NoFuture.Rand.Data.Endo.Grps
         public static bool IsTips(SocDetailedOccupation soc)
         {
             return new[] { "35-301", "35-303", "35-304", "39-30" }.Any(s => soc.Value.StartsWith(s));
+        }
+
+        public static bool IsLaborUnion(SocDetailedOccupation soc)
+        {
+            return new[]
+            {
+                "25", "27-20", "29-11", "29-20", "47-20", "47-50", "49-30",
+                "51-2", "51", "53-3", "53-4"
+            }.Any(s => soc.Value.StartsWith(s));
         }
     }
 }

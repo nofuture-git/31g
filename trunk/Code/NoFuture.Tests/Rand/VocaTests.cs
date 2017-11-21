@@ -3,6 +3,7 @@ using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NoFuture.Rand.Com;
 using NoFuture.Rand.Core.Enums;
+using NoFuture.Rand.Data.Sp;
 
 namespace NoFuture.Rand.Tests
 {
@@ -152,6 +153,20 @@ namespace NoFuture.Rand.Tests
             testSubject2.Names.Add(new Tuple<KindsOfNames, string>(KindsOfNames.Former, "Machina"));
 
             Assert.IsFalse(testSubject.Equals(testSubject2));
+        }
+
+        [TestMethod]
+        public void TestCopyFrom()
+        {
+            var testSubject = new Pondus("TestCorporation");
+            testSubject.Names.Add(new Tuple<KindsOfNames, string>(KindsOfNames.Group, "Company"));
+
+            var testSubject2 = new Pondus(testSubject);
+            Assert.AreEqual(testSubject.Name, testSubject2.Name);
+            var groupName = testSubject2.GetName(KindsOfNames.Group);
+            Assert.IsNotNull(groupName);
+
+            Assert.AreEqual("Company", groupName);
         }
     }
 }
