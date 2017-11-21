@@ -6,6 +6,11 @@ namespace NoFuture.Rand.Core.Enums
     public enum Classification
     {
         /// <summary>
+        /// Activity which may or may not be done.
+        /// </summary>
+        Mandatory,
+
+        /// <summary>
         /// Permits, forbids, and\or regulates all activity.
         /// </summary>
         Pervasive,
@@ -19,10 +24,5 @@ namespace NoFuture.Rand.Core.Enums
         /// Activity which must be done.
         /// </summary>
         Permissive,
-
-        /// <summary>
-        /// Activity which may or may not be done.
-        /// </summary>
-        Mandatory,
     }
 }

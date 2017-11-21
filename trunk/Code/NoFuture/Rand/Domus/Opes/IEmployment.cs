@@ -19,7 +19,7 @@ namespace NoFuture.Rand.Domus.Opes
         /// <summary>
         /// The occupation associated to this term of employment
         /// </summary>
-        StandardOccupationalClassification Occupation { get; set; }
+        SocDetailedOccupation Occupation { get; set; }
 
         /// <summary>
         /// List of the current deductions on this employment

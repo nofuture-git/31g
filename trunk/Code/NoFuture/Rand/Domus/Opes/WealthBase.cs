@@ -7,20 +7,30 @@ using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Data.Endo;
 using NoFuture.Rand.Data.Endo.Enums;
 using NoFuture.Rand.Data.Sp;
+using NoFuture.Util.Core;
+using NoFuture.Util.Core.Math;
 
 namespace NoFuture.Rand.Domus.Opes
 {
     public abstract class WealthBase
     {
+        #region fields
         protected internal IComparer<ITempore> Comparer { get; } = new TemporeComparer();
         private readonly NorthAmerican _amer;
         private readonly bool _isRenting;
         private readonly NorthAmericanFactors _factors;
+        private static IMereo[] _incomeItemNames;
+        private static IMereo[] _deductionItemNames;
+        private static IMereo[] _expenseItemNames;
+        private static IMereo[] _assetItemNames;
+        #endregion
 
-
+        #region ctors
         protected WealthBase(NorthAmerican american, bool isRenting = false)
         {
-            _amer = american ?? throw new ArgumentNullException(nameof(american));
+            if (american == null)
+                return;
+            _amer = american;
             var usCityArea = _amer?.Address?.HomeCityArea as UsCityStateZip;
 
             CreditScore = new PersonalCreditScore(american);
@@ -29,8 +39,81 @@ namespace NoFuture.Rand.Domus.Opes
             _isRenting = isRenting || GetIsLeaseResidence(usCityArea);
             _factors = new NorthAmericanFactors(_amer);
         }
+        #endregion
+
 
         public CreditScore CreditScore { get; }
+
+        /// <summary>
+        /// Exposes the calculated factors using the <see cref="NorthAmerican"/> passed into 
+        /// the ctor.
+        /// </summary>
+        public NorthAmericanFactors Factors => _factors;
+
+        #region methods
+        /// <summary>
+        /// Calculate a yearly income at random.
+        /// </summary>
+        /// <param name="min">
+        /// Optional, absolute minimum value where results should always be this value or higher.
+        /// </param>
+        /// <param name="dt">
+        /// Optional, date used for solving the <see cref="GetAvgEarningPerYear"/> equation, 
+        /// the default is the current system time.
+        /// </param>
+        /// <param name="factorCalc">
+        /// Optional, allows caller to specify how <see cref="NorthAmericanFactors.NetWorthFactor"/>
+        /// is applied to the calculated base yearly income amount.  
+        /// The default is a simple product of the two (i.e. basePay * netWorthFactor).
+        /// </param>
+        /// <param name="stdDevInUsd">
+        /// Optional, a randomizes the calculated value around a mean.
+        /// </param>
+        /// <returns></returns>
+        public Pecuniam GetYearlyIncome(Pecuniam min = null, DateTime? dt = null,
+            Func<double, double> factorCalc = null,
+            double stdDevInUsd = 2000)
+        {
+            if (min == null)
+                min = Pecuniam.Zero;
+
+            //get linear eq for earning 
+            var eq = GetAvgEarningPerYear();
+            if (eq == null)
+                return Pecuniam.Zero;
+            var baseValue = Math.Round(eq.SolveForY(dt.GetValueOrDefault(DateTime.Today).ToDouble()), 2);
+            if (baseValue <= 0)
+                return Pecuniam.Zero;
+
+            factorCalc = factorCalc ?? (d => d * _factors.NetWorthFactor);
+
+            var factorValue = factorCalc(baseValue);
+
+            baseValue = Math.Round(factorValue, 2);
+
+            stdDevInUsd = Math.Abs(stdDevInUsd);
+
+            var randValue = Math.Round(
+                Etx.RandomValueInNormalDist(Math.Round(baseValue, 0), stdDevInUsd), 2);
+
+            //honor the promise to never let the value go below the 'min' if caller gave one.
+            if (min > Pecuniam.Zero && randValue < 0)
+                randValue = 0;
+            return new Pecuniam((decimal) randValue) + min;
+        }
+
+        /// <summary>
+        /// Get the linear eq of the city if its found otherwise defaults to the state, and failing that to the national
+        /// </summary>
+        /// <returns></returns>
+        /// <remarks>
+        /// compiled data from BEA
+        /// </remarks>
+        protected internal virtual LinearEquation GetAvgEarningPerYear()
+        {
+            var ca = _amer.Address?.HomeCityArea as UsCityStateZip;
+            return (ca?.AverageEarnings ?? ca?.State?.GetStateData()?.AverageEarnings) ?? NAmerUtil.Equations.NatlAverageEarnings;
+        }
 
         protected internal virtual Pondus[] GetCurrent(List<Pondus> items)
         {
@@ -59,7 +142,7 @@ namespace NoFuture.Rand.Domus.Opes
         /// <returns></returns>
         public static IMereo[] GetIncomeItemNames()
         {
-            return GetDomusOpesItemNames("//income//mereo");
+            return _incomeItemNames = _incomeItemNames ??  GetDomusOpesItemNames("//income//mereo");
         }
 
         /// <summary>
@@ -69,7 +152,7 @@ namespace NoFuture.Rand.Domus.Opes
         /// <returns></returns>
         public static IMereo[] GetDeductionItemNames()
         {
-            return GetDomusOpesItemNames("//deduction//mereo");
+            return _deductionItemNames = _deductionItemNames ?? GetDomusOpesItemNames("//deduction//mereo");
         }
 
         /// <summary>
@@ -79,7 +162,7 @@ namespace NoFuture.Rand.Domus.Opes
         /// <returns></returns>
         public static IMereo[] GetExpenseItemNames()
         {
-            return GetDomusOpesItemNames("//expense//mereo");
+            return _expenseItemNames = _expenseItemNames ?? GetDomusOpesItemNames("//expense//mereo");
         }
 
         /// <summary>
@@ -90,7 +173,7 @@ namespace NoFuture.Rand.Domus.Opes
         /// <returns></returns>
         public static IMereo[] GetAssetItemNames()
         {
-            return GetDomusOpesItemNames("//assets//mereo");
+            return _assetItemNames = _assetItemNames ?? GetDomusOpesItemNames("//assets//mereo");
         }
 
         /// <summary>
@@ -190,5 +273,7 @@ namespace NoFuture.Rand.Domus.Opes
                 roll -= 32 - _amer.GetAgeAt(null);
             return Etx.TryBelowOrAt(roll, Etx.Dice.OneHundred);
         }
+
+        #endregion
     }
 }

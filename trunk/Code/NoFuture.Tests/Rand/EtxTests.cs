@@ -90,6 +90,17 @@ namespace NoFuture.Rand.Tests
         }
 
         [TestMethod]
+        public void TestRandomValueInNormalDist_SmallRange()
+        {
+            for (var i = 0; i < 256; i++)
+            {
+                var smallDblRng = Etx.RandomValueInNormalDist(0.7889, 0.025);
+                System.Diagnostics.Debug.WriteLine(smallDblRng);
+                Assert.IsTrue(smallDblRng < 0.87);
+            }
+        }
+
+        [TestMethod]
         public void TestGetRandomRChars()
         {
             var testResult = Etx.GetRandomRChars();
@@ -126,6 +137,15 @@ namespace NoFuture.Rand.Tests
             var testResult = Etx.RationalNumber(0, 3);
             Assert.IsTrue(testResult >= 0);
             Assert.IsTrue(testResult < 4);
+            System.Diagnostics.Debug.WriteLine(testResult);
+        }
+
+        [TestMethod]
+        public void TestRandomDouble_WithDoubles()
+        {
+            var testResult = Etx.RationalNumber(0.7139, 0.7889);
+            Assert.IsTrue(testResult >= 0.7139);
+            Assert.IsTrue(testResult <= 0.7889);
             System.Diagnostics.Debug.WriteLine(testResult);
         }
 

@@ -796,8 +796,7 @@ namespace NoFuture.Rand.Domus
             var maxDate = BirthCert.DateOfBirth.AddYears(55);
             var minDate = BirthCert.DateOfBirth.AddYears(13);
 
-            if (childDob.ComparedTo(minDate) == ChronoCompare.Before ||
-                childDob.ComparedTo(maxDate) == ChronoCompare.After)
+            if (childDob < minDate || childDob > maxDate)
             {
                 throw new RahRowRagee(
                     $"The Child Date-of-Birth, {childDob}, does not fall " +

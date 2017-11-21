@@ -122,7 +122,7 @@ namespace NoFuture.Rand.Domus
 
             return
                 _children.Where(
-                    x => x.Est.BirthCert != null && ddt.ComparedTo(x.Est.BirthCert.DateOfBirth) == ChronoCompare.After).ToList();
+                    x => x.Est.BirthCert != null && ddt > x.Est.BirthCert.DateOfBirth).ToList();
         }
 
         public abstract IEducation GetEducationAt(DateTime? dt);

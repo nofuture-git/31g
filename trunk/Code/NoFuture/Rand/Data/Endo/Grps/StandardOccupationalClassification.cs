@@ -74,5 +74,36 @@ namespace NoFuture.Rand.Data.Endo.Grps
 
             return _socs.FirstOrDefault(s => s.Value == pickOne);
         }
+
+        /// <summary>
+        /// Asserts if the given occupation is likely paid in wages
+        /// </summary>
+        /// <param name="soc"></param>
+        /// <returns></returns>
+        public static bool IsWages(SocDetailedOccupation soc)
+        {
+            return new[] {"27-10", "27-20", "27-402", "37", "35-20", "35-302", "35-9", "43", "49", "51", "53"}.Any(s =>
+                soc.Value.StartsWith(s));
+        }
+
+        /// <summary>
+        /// Asserts if the given occupation is likely paid in commission
+        /// </summary>
+        /// <param name="soc"></param>
+        /// <returns></returns>
+        public static bool IsCommissions(SocDetailedOccupation soc)
+        {
+            return new[] { "41-203", "41-30", "41-40", "41-90" }.Any(s => soc.Value.StartsWith(s));
+        }
+
+        /// <summary>
+        /// Asserts if the given occupation is likely paid in tips
+        /// </summary>
+        /// <param name="soc"></param>
+        /// <returns></returns>
+        public static bool IsTips(SocDetailedOccupation soc)
+        {
+            return new[] { "35-301", "35-303", "35-304" }.Any(s => soc.Value.StartsWith(s));
+        }
     }
 }

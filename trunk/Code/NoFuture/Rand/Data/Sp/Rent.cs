@@ -70,7 +70,7 @@ namespace NoFuture.Rand.Data.Sp
         public override Pecuniam GetValueAt(DateTime dt)
         {
             //when date is prior to signing 
-            return dt.ComparedTo(TradeLine.OpennedDate) == ChronoCompare.Before
+            return dt < TradeLine.OpennedDate
                 ? Pecuniam.Zero
                 : TradeLine.Balance.GetCurrent(dt, 0);
         }
@@ -78,7 +78,7 @@ namespace NoFuture.Rand.Data.Sp
         public override Pecuniam GetMinPayment(DateTime dt)
         {
             var e = -1*GetExpectedTotalRent(dt).Amount;
-            dt = dt.ComparedTo(TradeLine.OpennedDate) == ChronoCompare.SameTime 
+            dt = dt == TradeLine.OpennedDate
                 ? dt.AddDays(1) 
                 : dt;
             var pd = TradeLine.Balance.GetDebitSum(
@@ -94,11 +94,11 @@ namespace NoFuture.Rand.Data.Sp
         protected internal Pecuniam GetExpectedTotalRent(DateTime dt)
         {
             //when date is prior to signing 
-            if (dt.ComparedTo(TradeLine.OpennedDate) == ChronoCompare.Before)
+            if (dt < TradeLine.OpennedDate)
                 return Pecuniam.Zero;
 
             //when between signing and first months rent
-            if(dt.ComparedTo(_dtOfFirstFullRentDue) == ChronoCompare.Before)
+            if(dt < _dtOfFirstFullRentDue)
                 return _proRatedAmt;
 
             var numOfRentPmts = CountOfWholeCalendarMonthsBetween(TradeLine.OpennedDate, dt, _dayOfMonthRentDue);
@@ -111,12 +111,12 @@ namespace NoFuture.Rand.Data.Sp
 
         public static int CountOfWholeCalendarMonthsBetween(DateTime d1, DateTime d2, int dayOfMonthRentDue = 1)
         {
-            if (d1.Date.ComparedTo(d2.Date) == ChronoCompare.SameTime)
+            if (d1.Date == d2.Date)
                 return 0;
 
             DateTime olderDt;
             DateTime newerDt;
-            if (d1.ComparedTo(d2) == ChronoCompare.Before)
+            if (d1 < d2)
             {
                 olderDt = d1;
                 newerDt = d2;
@@ -130,13 +130,12 @@ namespace NoFuture.Rand.Data.Sp
             newerDt = new DateTime(newerDt.Year, newerDt.Month, dayOfMonthRentDue);
 
             var countOfMonths = 0;
-            while (newerDt.ComparedTo(olderDt) == ChronoCompare.After)
+            while (newerDt > olderDt)
             {
                 newerDt = newerDt.Month == 1
                     ? new DateTime(newerDt.Year - 1, 12, dayOfMonthRentDue)
                     : new DateTime(newerDt.Year, newerDt.Month - 1, dayOfMonthRentDue);
-                if (newerDt.ComparedTo(olderDt) == ChronoCompare.After 
-                    || newerDt.ComparedTo(olderDt) == ChronoCompare.SameTime)
+                if (newerDt > olderDt || newerDt == olderDt)
                     countOfMonths += 1;
             }
 

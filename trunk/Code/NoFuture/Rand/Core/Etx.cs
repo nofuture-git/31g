@@ -104,6 +104,29 @@ namespace NoFuture.Rand.Core
         }
 
         /// <summary>
+        /// Returns a random <see cref="Double"/>
+        /// </summary>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <returns></returns>
+        public static double RationalNumber(double from, double to)
+        {
+            const int FACTOR = 1000000;
+            var fromWholeNum = Convert.ToInt32(Math.Truncate(from));
+            var toWholeNum = Convert.ToInt32(Math.Truncate(to));
+
+            if (fromWholeNum > 0 && toWholeNum > 0)
+                return RationalNumber(Convert.ToInt32(from), Convert.ToInt32(to));
+
+            var fromRationNum = Convert.ToInt32(Math.Abs((from - fromWholeNum)* FACTOR));
+            var toRationNum = Convert.ToInt32(Math.Abs((to - toWholeNum) * FACTOR));
+
+            var rimex = IntNumber(fromRationNum, toRationNum);
+
+            return Math.Round((double)rimex / FACTOR, 8);
+        }
+
+        /// <summary>
         /// Returns a square matrix of dimension size <see cref="dim"/>
         /// have all random, less-than 1, double values.
         /// </summary>
@@ -449,7 +472,7 @@ namespace NoFuture.Rand.Core
             for (var i = 0; i < 1024; i++)
             {
                 //guess some value w/i 3 std dev's
-                var someValue = Etx.RationalNumber(Convert.ToInt32(minRand), Convert.ToInt32(maxRand));
+                var someValue = Etx.RationalNumber(minRand, maxRand);
 
                 //get the probability of that guess
                 var zscore = eq.GetZScoreFor(someValue);
