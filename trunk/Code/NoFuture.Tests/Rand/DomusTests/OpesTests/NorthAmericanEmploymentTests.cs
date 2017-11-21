@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NoFuture.Rand.Data.Endo.Grps;
+using NoFuture.Rand.Data.Sp;
 
 namespace NoFuture.Rand.Tests.DomusTests.OpesTests
 {
@@ -31,6 +34,31 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
 
             Assert.AreEqual(3, testResult.Count);
 
+        }
+
+        [TestMethod]
+        public void TestGetPayItemsForRange()
+        {
+            var testSubject = new NoFuture.Rand.Domus.Opes.NorthAmericanEmployment(new DateTime(2011, 10, 5), null, null);
+            testSubject.Occupation = StandardOccupationalClassification.GetById("39-3011");
+
+            var testResult = testSubject.GetPayItemsForRange(55000D.ToPecuniam(), testSubject.FromDate,
+                testSubject.FromDate.Value.AddYears(1));
+
+            Assert.IsNotNull(testResult);
+            Assert.AreNotEqual(0, testResult.Length);
+
+            var testPondus = testResult.FirstOrDefault(p => p.Name == "Wages");
+            Assert.IsNotNull(testPondus);
+            Assert.AreNotEqual(Pecuniam.Zero, testPondus.Value);
+
+            testSubject.Occupation = StandardOccupationalClassification.GetById("41-2031");
+            testResult = testSubject.GetPayItemsForRange(55000D.ToPecuniam(), testSubject.FromDate,
+                testSubject.FromDate.Value.AddYears(1));
+
+            testPondus = testResult.FirstOrDefault(p => p.Name == "Commissions");
+            Assert.IsNotNull(testPondus);
+            Assert.AreNotEqual(Pecuniam.Zero, testPondus.Value);
         }
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using NoFuture.Rand.Com;
+using NoFuture.Rand.Core;
 using NoFuture.Rand.Data.Endo.Grps;
 using NoFuture.Rand.Data.Sp;
 using NoFuture.Rand.Data.Sp.Enums;
@@ -185,15 +186,71 @@ namespace NoFuture.Rand.Domus.Opes
         {
             var itemsout = new List<Pondus>();
 
-            //TODO want to have this come in with just the dollar amount
-            //TODO   and a date range and come out as a manifold of Pondus
+            //need to spilt amt across various Income items
+            var commissionScaler = _isCommission ? Etx.RandomValueInNormalDist(0.667, 0.081) : 0;
+            var tipsScaler = _isTips ? Etx.RandomValueInNormalDist(0.7889D, 0.025) : 0;
+            var bonusScaler = Etx.TryBelowOrAt(1, Etx.Dice.Ten) ? Etx.RandomValueInNormalDist(0.02, 0.001) : 0D;
+            var tipsAndCommission = commissionScaler + tipsScaler > 1D ? 1D : commissionScaler + tipsScaler;
+            var wageScaler = _isWages ? (1D - tipsAndCommission) : 0;
+            var salaryScaler = _isWages ? 0 : 1;
+            var otScaler = _isWages && Etx.TryBelowOrAt(3, Etx.Dice.Ten)
+                ? Etx.RandomValueInNormalDist(0.05, 0.009)
+                : 0D;
+            var shiftDiffScaler = _isWages && Etx.TryBelowOrAt(3, Etx.Dice.Ten)
+                ? Etx.RandomValueInNormalDist(0.03, 0.0076)
+                : 0D;
+            var selfEmplyScaler = Etx.TryBelowOrAt(7, Etx.Dice.OneHundred)
+                ? Etx.RandomValueInNormalDist(0.072, 0.0088)
+                : 0D;
+            var emplrPaidScaler = Etx.TryBelowOrAt(13, Etx.Dice.OneHundred)
+                ? Etx.RandomValueInNormalDist(0.012, 0.008)
+                : 0D;
+            var inKindScaler = Etx.TryBelowOrAt(9, Etx.Dice.OneThousand)
+                ? Etx.RandomValueInNormalDist(0.022, 0.0077)
+                : 0D;
+            var sevrcScaler =
+                !_isWages 
+                && !_isTips 
+                && _dateRange?.Item2.GetValueOrDefault(DateTime.Today) < DateTime.Today 
+                && Etx.TryBelowOrAt(7, Etx.Dice.OneHundred)
+                    ? Etx.RandomValueInNormalDist(0.072, 0.0025)
+                    : 0D;
+            var incomeName2Scaler = new Dictionary<string, Tuple<double, Interval>>
+            {
+
+                {"Salary", new Tuple<double, Interval>(salaryScaler, Interval.BiWeekly) },
+                {"Wages", new Tuple<double, Interval>(wageScaler, Interval.Weekly)},
+                {"Employer Paid Expenses", new Tuple<double, Interval>(emplrPaidScaler, Interval.Monthly)},
+                {"Shift Differential", new Tuple<double, Interval>(shiftDiffScaler, Interval.Weekly)},
+                {"Severance Pay", new Tuple<double, Interval>(sevrcScaler, Interval.OnceOnly) },
+                {"Overtime", new Tuple<double, Interval>(otScaler, Interval.Weekly) },
+                {"Self-employment", new Tuple<double, Interval>(selfEmplyScaler, Interval.OnceOnly)},
+                {"Tips", new Tuple<double, Interval>(tipsScaler, Interval.Daily)},
+                {"Commissions", new Tuple<double, Interval>(commissionScaler, Interval.BiWeekly)},
+                {"Bonuses", new Tuple<double, Interval>(bonusScaler, Interval.OnceOnly)},
+                {"In-Kind",new Tuple<double, Interval>(inKindScaler, Interval.OnceOnly) }
+            };
+
+            Pecuniam CalcValue
+                (Pecuniam pecuniam, double d) => (Convert.ToDouble(pecuniam.Amount) * d).ToPecuniam();
 
             var incomeItems = GetIncomeItemNames();
             foreach (var incomeItem in incomeItems)
             {
-            }
+                if (!incomeName2Scaler.ContainsKey(incomeItem.Name))
+                    continue;
+                var incomeScaler = incomeName2Scaler[incomeItem.Name];
+                var p = new Pondus(incomeItem)
+                {
+                    FromDate = startDate,
+                    ToDate = endDate,
+                    Value = CalcValue(amt, incomeScaler.Item1),
+                    Interval = incomeScaler.Item2
+                };
 
-            throw new NotImplementedException();
+                itemsout.Add(p);
+            }
+            return itemsout.ToArray();
         }
 
         protected internal virtual void AddPay(Pecuniam amt, string name, DateTime? startDate, DateTime? endDate = null)

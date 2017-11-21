@@ -11,7 +11,7 @@ using NoFuture.Rand.Domus.Opes;
 namespace NoFuture.Rand.Tests
 {
     [TestClass]
-    public class OpesTests
+    public class WealthBaseTests
     {
 
         [TestMethod]

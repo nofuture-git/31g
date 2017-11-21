@@ -63,8 +63,9 @@ namespace NoFuture.Rand.Data.Endo.Grps
         /// <returns></returns>
         public static SocDetailedOccupation RandomOccupation()
         {
-            var nm = new SocDetailedOccupation().LocalName;
-            _soc2Prob = _soc2Prob ?? TreeData.GetProbTable(TreeData.UsOccupationProbTable, "occupations", nm);
+            _soc2Prob = _soc2Prob == null || !_soc2Prob.Any()
+                ? TreeData.GetProbTable(TreeData.UsOccupationProbTable, "occupations", "ID")
+                : _soc2Prob;
 
             var pickOne = Etx.DiscreteRange(_soc2Prob) ?? DF_OCCUPATION;
 
@@ -76,13 +77,32 @@ namespace NoFuture.Rand.Data.Endo.Grps
         }
 
         /// <summary>
+        /// Gets the occupation by its SOC id (e.g. 41-3011)
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public static SocDetailedOccupation GetById(string id)
+        {
+            if (!_socs.Any())
+                _socs.AddRange(AllGroups.SelectMany(g =>
+                    g.Divisions.SelectMany(two => two.Divisions.SelectMany(three => three.Divisions))));
+
+            return _socs.FirstOrDefault(s => s.Value == id);
+        }
+
+        /// <summary>
         /// Asserts if the given occupation is likely paid in wages
         /// </summary>
         /// <param name="soc"></param>
         /// <returns></returns>
         public static bool IsWages(SocDetailedOccupation soc)
         {
-            return new[] {"27-10", "27-20", "27-402", "37", "35-20", "35-302", "35-9", "43", "49", "51", "53"}.Any(s =>
+            return new[]
+            {
+                "27-10", "27-20", "27-402", "37", "35-20",
+                "35-302", "35-9", "39-30", "39-50", "39-60","39-70",
+                "39-90", "41", "43", "47", "49", "51", "53"
+            }.Any(s =>
                 soc.Value.StartsWith(s));
         }
 
@@ -103,7 +123,7 @@ namespace NoFuture.Rand.Data.Endo.Grps
         /// <returns></returns>
         public static bool IsTips(SocDetailedOccupation soc)
         {
-            return new[] { "35-301", "35-303", "35-304" }.Any(s => soc.Value.StartsWith(s));
+            return new[] { "35-301", "35-303", "35-304", "39-30" }.Any(s => soc.Value.StartsWith(s));
         }
     }
 }

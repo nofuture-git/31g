@@ -26,14 +26,14 @@ namespace NoFuture.Rand.Data.Sp
 
         public virtual DateTime? FromDate
         {
-            get => _dateRange.Item1;
-            set => _dateRange = new Tuple<DateTime?, DateTime?>(value, _dateRange.Item2);
+            get => _dateRange?.Item1;
+            set => _dateRange = new Tuple<DateTime?, DateTime?>(value, _dateRange?.Item2);
         }
 
         public virtual DateTime? ToDate
         {
-            get => _dateRange.Item2;
-            set => _dateRange = new Tuple<DateTime?, DateTime?>(_dateRange.Item1, value);
+            get => _dateRange?.Item2;
+            set => _dateRange = new Tuple<DateTime?, DateTime?>(_dateRange?.Item1, value);
         }
 
         public virtual bool IsInRange(DateTime dt)
@@ -66,6 +66,31 @@ namespace NoFuture.Rand.Data.Sp
             foreach (var i in items)
                 p += i?.Value ?? Pecuniam.Zero;
             return p;
+        }
+
+        /// <summary>
+        /// Consider equality as being the same name at the same time
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public override bool Equals(object obj)
+        {
+            //asserts the names equal
+            var baseEq = base.Equals(obj);
+            var p = obj as Pondus;
+
+            if (p == null || !baseEq)
+                return base.Equals(obj);
+
+            var sDtEq = FromDate == p.FromDate;
+            var eDtEq = ToDate == p.ToDate;
+
+            return sDtEq && eDtEq;
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode() + _dateRange?.GetHashCode() ?? 1;
         }
     }
 }
