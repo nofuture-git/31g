@@ -48,16 +48,16 @@ namespace NoFuture.Rand.Domus.Opes
         /// <summary>
         /// The monetary sum of all current income items
         /// </summary>
-        Pecuniam TotalPay { get; }
+        Pecuniam TotalAnnualPay { get; }
 
         /// <summary>
         /// The monetary sum of all current deduction items
         /// </summary>
-        Pecuniam TotalDeductions { get; }
+        Pecuniam TotalAnnualDeductions { get; }
 
         /// <summary>
         /// The monetary difference between pay and deductions
         /// </summary>
-        Pecuniam TotalNetPay { get; }
+        Pecuniam TotalAnnualNetPay { get; }
     }
 }

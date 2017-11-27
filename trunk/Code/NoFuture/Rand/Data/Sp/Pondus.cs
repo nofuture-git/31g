@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using NoFuture.Rand.Core;
+using NoFuture.Rand.Data.Sp.Enums;
+using NoFuture.Rand.Domus;
 
 namespace NoFuture.Rand.Data.Sp
 {
@@ -66,6 +68,24 @@ namespace NoFuture.Rand.Data.Sp
             foreach (var i in items)
                 p += i?.Value ?? Pecuniam.Zero;
             return p;
+        }
+
+        /// <summary>
+        /// Helper method to get an annual sum based on each items interval
+        /// </summary>
+        /// <param name="items"></param>
+        /// <returns></returns>
+        public static Pecuniam GetAnnualSum(IEnumerable<Pondus> items)
+        {
+            var sum = 0M;
+            foreach (var item in items)
+            {
+                if (item?.Value == null ||
+                    !NAmerUtil.Tables.Interval2AnnualPayMultiplier.ContainsKey(item.Interval))
+                    continue;
+                sum += item.Value.Amount * NAmerUtil.Tables.Interval2AnnualPayMultiplier[item.Interval];
+            }
+            return new Pecuniam(sum);
         }
 
         /// <summary>

@@ -20,7 +20,7 @@
                 <eg name="Spousal Maintenance" />
               </mereo>
               <mereo name="Child Support" />
-              <mereo name="Injury Payments" />
+              <mereo name="Injury" />
             </group>
             <group name="Subito">
               <mereo name="Gifts" />
@@ -48,21 +48,6 @@
               <mereo name="Commissions" />
               <mereo name="Bonuses" />
               <mereo name="In-Kind" />
-            </group>
-            <group name="Ownership">
-              <mereo name="Capital Gains" />
-              <mereo name="Royalties" />
-              <mereo name="Rental income" />
-              <mereo name="Dividends" />
-              <mereo name="Interest" />
-              <mereo name="Pensions" />
-              <mereo name="Retirement" />
-              <mereo name="Partnerships" />
-              <mereo name="Estates" />
-              <mereo name="Fellowships" />
-              <mereo name="Stipends" />
-              <mereo name="Trusts" />
-              <mereo name="Annuities" />
             </group>
             <group name="Public Benefits">
               <mereo name="Veterans Benefits" />
@@ -146,6 +131,28 @@
                 </definition>
               </mereo>
             </group>
+            <group name="Real Property">
+              <mereo name="Real Estate" />
+            </group>
+            <group name="Securities">
+              <mereo name="Stock"/>
+              <mereo name="Bond"/>
+              <mereo name="Funds" />
+              <mereo name="Derivatives" />
+            </group>
+            <group name="Institutional">
+              <mereo name="Partnerships"/>
+              <mereo name="Trusts"/>
+              <mereo name="Fellowships"/>
+              <mereo name="Stipends"/>
+              <mereo name="Retirement Plans" />
+              <mereo name="Savings"/>
+              <mereo name="Certificate of Deposit" abbrev="COD"/>
+              <mereo name="Money Market"/>
+              <mereo name="Annuity"/>
+              <mereo name="Profit Sharing"/>
+              <mereo name="Royalties"/>
+            </group>            
           </income>
           <deduction>
             <group name="Insurance">
@@ -311,8 +318,7 @@
             </group>            
           </expense>
           <assets>
-            <group name="Property">
-              <mereo name="Business Interest" />
+            <group name="Real Property">
               <mereo name="Real Estate">
                 <eg name="house" />
                 <eg name="land" />
@@ -320,6 +326,8 @@
                 <eg name="time shares" />
                 <eg name="mineral rights" />
               </mereo>
+            </group>
+            <group name="Personal Property">
               <mereo name="Motor Vehicles">
                 <eg name="cars" />
                 <eg name="boats" />
@@ -327,43 +335,6 @@
                 <eg name="motorcycles" />
                 <eg name="aircrafts" />
               </mereo>
-            </group>
-            <group name="Securities">
-              <mereo name="Stock" />
-              <mereo name="Bond" />
-              <mereo name="Funds">
-                <eg name="mutual funds" />
-                <eg name="bond funds" />
-              </mereo>
-              <mereo name="Derivatives">
-                <eg name="options" />
-                <eg name="swaps" />
-                <eg name="fututes" />
-                <eg name="fowards" />
-              </mereo>
-            </group>
-            <group name="Institutional">
-              <mereo name="Insurance Policies" />
-              <mereo name="Retirement Plans">
-                <eg name="pensions" />
-                <eg name="annuity" />
-                <eg name="IRA" />
-                <eg name="401(k)" />
-                <eg name="403(b)" />
-                <eg name="SEP" />
-              </mereo>
-              <mereo name="Checking" />
-              <mereo name="Savings" />
-              <mereo name="Certificate of Deposit" />
-              <mereo name="Money Market" />
-              <mereo name="Credit Union" />
-              <mereo name="Annuity" />
-              <mereo name="Cash in Brokerage" />
-              <mereo name="Funds in Escrow" />
-              <mereo name="Profit Sharing" />
-              <mereo name="Safe Deposit Box" />
-            </group>
-            <group name="Other Assets">
               <mereo name="Cash">
                 <eg name="dollars" />
                 <eg name="euros" />
@@ -396,8 +367,46 @@
                 <eg name="campers" />
                 <eg name="electronics" />
               </mereo>
-              <mereo name="Inheritances" />
-              <group name="Judgments" />
+            </group>
+            <group name="Securities">
+              <mereo name="Stock"/>
+              <mereo name="Bond"/>
+              <mereo name="Funds">
+                <eg name="mutual funds" />
+                <eg name="bond funds" />
+              </mereo>
+              <mereo name="Derivatives">
+                <eg name="options" />
+                <eg name="swaps" />
+                <eg name="fututes" />
+                <eg name="fowards" />
+              </mereo>
+            </group>
+            <group name="Institutional">
+              <mereo name="Partnerships"/>
+              <mereo name="Trusts"/>
+              <mereo name="Fellowships"/>
+              <mereo name="Stipends"/>
+              <mereo name="Insurance Policies" />
+              <mereo name="Retirement Plans">
+                <eg name="pensions" />
+                <eg name="annuity" />
+                <eg name="IRA" />
+                <eg name="401(k)" />
+                <eg name="403(b)" />
+                <eg name="SEP" />
+              </mereo>
+              <mereo name="Checking" />
+              <mereo name="Savings"/>
+              <mereo name="Certificate of Deposit" abbrev="COD"/>
+              <mereo name="Money Market"/>
+              <mereo name="Credit Union" />
+              <mereo name="Annuity"/>
+              <mereo name="Brokerage" />
+              <mereo name="Escrow" />
+              <mereo name="Profit Sharing"/>
+              <mereo name="Safe Deposit Box" />
+              <mereo name="Royalties"/>
             </group>
           </assets>          
         </domus-opes>

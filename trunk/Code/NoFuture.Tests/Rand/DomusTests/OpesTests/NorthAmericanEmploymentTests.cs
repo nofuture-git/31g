@@ -111,5 +111,44 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
                 System.Diagnostics.Debug.WriteLine($"{t.Value} {t.Name} {t.FromDate}-{t.ToDate}");
 
         }
+
+        [TestMethod]
+        public void TestGetIncomeName2RandomRates()
+        {
+            var testSubject = new Domus.Opes.NorthAmericanEmployment(new DateTime(2011, 10, 5), null);
+            testSubject.Occupation = StandardOccupationalClassification.GetById("41-2031");
+            var testResult = testSubject.GetIncomeName2RandomRates();
+
+            Assert.IsNotNull(testResult);
+            Assert.AreNotEqual(0, testResult.Count);
+
+            var sumOfRates = 0D;
+            foreach (var item in testResult)
+            {
+                sumOfRates += item.Value;
+            }
+
+            Assert.AreEqual(1D, sumOfRates);
+        }
+
+        [TestMethod]
+        public void TestGetDeductionNames2RandomRates()
+        {
+            var testSubject = new Domus.Opes.NorthAmericanEmployment(new DateTime(2011, 10, 5), null);
+            testSubject.Occupation = StandardOccupationalClassification.GetById("41-2031");
+            var testResult = testSubject.GetDeductionNames2RandomRates(55000D.ToPecuniam(), null);
+
+            Assert.IsNotNull(testResult);
+            Assert.AreNotEqual(0, testResult.Count);
+
+            var sumOfRates = 0D;
+            foreach (var item in testResult)
+            {
+                sumOfRates += item.Value;
+                System.Diagnostics.Debug.WriteLine(string.Join(" - ", item.Key, item.Value));
+            }
+            System.Diagnostics.Debug.WriteLine(sumOfRates);
+            Assert.AreNotEqual(1D, sumOfRates);
+        }
     }
 }

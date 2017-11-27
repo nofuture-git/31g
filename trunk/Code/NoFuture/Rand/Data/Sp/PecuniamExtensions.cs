@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace NoFuture.Rand.Data.Sp
@@ -10,7 +11,7 @@ namespace NoFuture.Rand.Data.Sp
     {
         public static Pecuniam ToPecuniam(this double x)
         {
-            return new Pecuniam((decimal)x);
+            return new Pecuniam((decimal)Math.Round(x,2));
         }
         public static Pecuniam ToPecuniam(this int x)
         {

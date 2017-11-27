@@ -1,4 +1,6 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NoFuture.Rand.Data.Sp;
 using NoFuture.Rand.Domus.Opes;
 using NoFuture.Rand.Domus.Pneuma;
 
@@ -10,7 +12,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         [TestMethod]
         public void TestGetEmploymentRanges()
         {
-            var testSubject = new NorthAmericanIncome();
+            var testSubject = new NorthAmericanIncome(null);
             var testResult = testSubject.GetEmploymentRanges(null);
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0, testResult.Count);
@@ -34,7 +36,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         [TestMethod]
         public void TestResolveEmployment()
         {
-            var testSubject = new NorthAmericanIncome();
+            var testSubject = new NorthAmericanIncome(null);
             var testResult = testSubject.ResolveEmployment(null);
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0, testResult.Count);
@@ -49,6 +51,31 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             {
                 System.Diagnostics.Debug.WriteLine(emply);
             }
+        }
+
+        [TestMethod]
+        public void TestGetMinDate()
+        {
+            var testSubject = new NorthAmericanIncome(null);
+            var testResult = testSubject.GetMinDate();
+            Assert.IsTrue((DateTime.Today - testResult).Days > 365);
+
+            //given only employment - gets its min date
+            var emply = new NorthAmericanEmployment(DateTime.Today.AddYears(-3), null);
+            testSubject.AddEmployment(emply);
+            testResult = testSubject.GetMinDate();
+            Assert.AreEqual(DateTime.Today.AddYears(-3), testResult);
+
+            //given other more recent items - employment still the oldest
+            var expense = new Pondus("Expense") {FromDate = DateTime.Today.AddYears(-1)};
+            var otIncome = new Pondus("Other Income") { FromDate = DateTime.Today.AddYears(-2) };
+
+            testSubject.AddOtherIncome(otIncome);
+            testSubject.AddExpense(expense);
+
+            testResult = testSubject.GetMinDate();
+            Assert.AreEqual(DateTime.Today.AddYears(-3), testResult);
+
         }
     }
 }

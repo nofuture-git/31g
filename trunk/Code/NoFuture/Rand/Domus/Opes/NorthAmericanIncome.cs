@@ -5,7 +5,10 @@ using NoFuture.Rand.Core;
 using NoFuture.Rand.Data.Endo.Enums;
 using NoFuture.Rand.Data.Endo.Grps;
 using NoFuture.Rand.Data.Sp;
+using NoFuture.Rand.Data.Sp.Enums;
 using NoFuture.Rand.Domus.Pneuma;
+using NoFuture.Rand.Gov;
+using NoFuture.Util.Core;
 
 namespace NoFuture.Rand.Domus.Opes
 {
@@ -20,19 +23,13 @@ namespace NoFuture.Rand.Domus.Opes
         private readonly HashSet<IEmployment> _employment = new HashSet<IEmployment>();
         private readonly HashSet<Pondus> _otherIncome = new HashSet<Pondus>();
         private readonly HashSet<Pondus> _expenses = new HashSet<Pondus>();
+
         #endregion
 
         #region ctors
 
         public NorthAmericanIncome(NorthAmerican american, bool isRenting = false): base(american, isRenting)
         {
-            
-        }
-
-        internal NorthAmericanIncome() : base(null)
-        {
-            
-            
         }
         #endregion
 
@@ -46,10 +43,13 @@ namespace NoFuture.Rand.Domus.Opes
                 return e.ToArray();
             }
         }
+
         public virtual Pondus[] CurrentOtherIncome => GetCurrent(OtherIncome);
-        public Pondus[] CurrentExpenses => GetCurrent(Expenses);
-        public Pecuniam TotalExpenses => Pondus.GetSum(CurrentExpenses);
-        public Pecuniam TotalIncome => Pondus.GetSum(_otherIncome) + CurrentEmployment.Select(e => e.TotalNetPay).GetSum();
+        public virtual Pondus[] CurrentExpenses => GetCurrent(Expenses);
+        public virtual Pecuniam TotalAnnualExpenses => Pondus.GetAnnualSum(CurrentExpenses);
+        public virtual Pecuniam TotalAnnualIncome => Pondus.GetAnnualSum(CurrentOtherIncome) + TotalAnnualNetEmploymentIncome;
+        public virtual Pecuniam TotalAnnualNetEmploymentIncome => CurrentEmployment.Select(e => e.TotalAnnualNetPay).GetSum();
+        public virtual Pecuniam TotalAnnualGrossEmploymentIncome => CurrentEmployment.Select(e => e.TotalAnnualPay).GetSum();
 
         protected internal virtual List<IEmployment> Employment
         {
@@ -96,7 +96,7 @@ namespace NoFuture.Rand.Domus.Opes
             return GetAt(dt, OtherIncome);
         }
 
-        public Pondus[] GetExpensesAt(DateTime? dt)
+        public virtual Pondus[] GetExpensesAt(DateTime? dt)
         {
             return GetAt(dt, Expenses);
         }
@@ -140,6 +140,121 @@ namespace NoFuture.Rand.Domus.Opes
                 ToDate = endDate,
                 FromDate = startDate
             });
+        }
+
+        /// <summary>
+        /// Gets the minimum date amoung all income, employment and expense items
+        /// </summary>
+        /// <returns></returns>
+        protected internal virtual DateTime GetMinDate()
+        {
+            var sdt = Etx.Date(-3, null, true, 60).Date;
+            var minOtherIncome = OtherIncome.FirstOrDefault()?.FromDate;
+            var minEmply = Employment.FirstOrDefault()?.FromDate;
+            var minExpense = Expenses.FirstOrDefault()?.FromDate;
+
+            
+            if (new[] { minOtherIncome, minEmply, minExpense }.All(dt => dt == null))
+                return sdt;
+
+            var mins = new[]
+            {
+                minOtherIncome.GetValueOrDefault(DateTime.Today),
+                minEmply.GetValueOrDefault(DateTime.Today),
+                minExpense.GetValueOrDefault(DateTime.Today)
+            };
+
+            return mins.Min();
+        }
+
+
+        protected internal virtual Pondus[] GetOtherIncomeItemsForRange(Pecuniam amt, DateTime? startDate,
+            DateTime? endDate = null, Interval interval = Interval.Annually)
+        {
+            startDate = startDate ?? GetMinDate();
+
+            throw new NotImplementedException();
+        }
+
+        protected internal virtual Pondus[] GetPublicBenefitIncomeItemsForRange(Pecuniam amt, DateTime? startDate,
+            DateTime? endDate = null)
+        {
+            var itemsout = new List<Pondus>();
+            startDate = startDate ?? GetMinDate();
+            var isPoor = IsBelowFedPovertyAt(startDate);
+            var hudAmt = isPoor ? GetHudMonthlyAmount(startDate) : Pecuniam.Zero;
+            var snapAmt = isPoor ? GetFoodStampsMonthlyAmount(startDate) : Pecuniam.Zero;
+
+            var incomeItems = GetIncomeItemNames();
+            foreach (var incomeItem in incomeItems)
+            {
+                var p = new Pondus(incomeItem)
+                {
+                    FromDate = startDate,
+                    ToDate = endDate,
+                    Interval = Interval.Monthly
+                };
+
+                switch (incomeItem.Name)
+                {
+                    case "Supplemental Nutrition Assistance Program":
+                        p.Value = snapAmt;
+                        break;
+                    case "Housing Choice Voucher Program Section 8":
+                        p.Value = hudAmt;
+                        break;
+                    //TODO implement the other welfare programs
+                    default:
+                        p.Value = Pecuniam.Zero;
+                        break;
+                }
+
+                itemsout.Add(p);
+            }
+            return itemsout.ToArray();
+        }
+
+        /// <summary>
+        /// Src https://www.hud.gov/sites/documents/DOC_11750.PDF
+        /// </summary>
+        /// <returns></returns>
+        protected internal virtual Pecuniam GetHudMonthlyAmount(DateTime? atTime)
+        {
+            var thirtyPercentAdjIncome = GetAnnualNetEmploymentIncomeAt(atTime).ToDouble() / 12 * 0.3;
+            var tenPercentGrossIncome =  GetAnnualGrossEmploymentIncomeAt(atTime).ToDouble() / 12 * 0.1;
+
+            var sum = thirtyPercentAdjIncome + tenPercentGrossIncome + 25.0D;
+            return sum.ToPecuniam();
+        }
+
+        /// <summary>
+        /// Src https://www.fns.usda.gov/snap/how-much-could-i-receive
+        /// </summary>
+        /// <returns></returns>
+        protected internal virtual Pecuniam GetFoodStampsMonthlyAmount(DateTime? atTime)
+        {
+            var thirtyPercentAdjIncome = GetAnnualNetEmploymentIncomeAt(atTime).ToDouble() / 12 * 0.3;
+            return thirtyPercentAdjIncome.ToPecuniam();
+        }
+
+        /// <summary>
+        /// Determines of the given annual gross income at time <see cref="dt"/> is below 
+        /// the federal poverty level for that year
+        /// </summary>
+        /// <param name="dt"></param>
+        /// <param name="numHouseholdMembers"></param>
+        /// <returns></returns>
+        protected internal virtual bool IsBelowFedPovertyAt(DateTime? dt, int numHouseholdMembers = 1)
+        {
+            var povertyLevel = NAmerUtil.Equations.GetFederalPovertyLevel(dt);
+
+            var payAtDt = GetEmploymentAt(dt);
+            if(payAtDt == null || !payAtDt.Any())
+                return false;
+
+            numHouseholdMembers = numHouseholdMembers <= 0 ? 1 : numHouseholdMembers;
+
+            return GetAnnualGrossEmploymentIncomeAt(dt).ToDouble() <= povertyLevel.SolveForY(numHouseholdMembers);
         }
 
         /// <summary>
@@ -206,6 +321,24 @@ namespace NoFuture.Rand.Domus.Opes
             var e = empls.ToList();
             e.Sort(Comparer);
             return e;
+        }
+
+        private Pecuniam GetAnnualGrossEmploymentIncomeAt(DateTime? dt)
+        {
+            var payAtDt = GetEmploymentAt(dt);
+            if (payAtDt == null || !payAtDt.Any())
+                return Pecuniam.Zero;
+
+            return payAtDt.Select(e => e.TotalAnnualPay).GetSum();
+        }
+
+        private Pecuniam GetAnnualNetEmploymentIncomeAt(DateTime? dt)
+        {
+            var payAtDt = GetEmploymentAt(dt);
+            if (payAtDt == null || !payAtDt.Any())
+                return Pecuniam.Zero;
+
+            return payAtDt.Select(e => e.TotalAnnualNetPay).GetSum();
         }
 
         #endregion

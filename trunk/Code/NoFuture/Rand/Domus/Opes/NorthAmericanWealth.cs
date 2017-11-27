@@ -75,7 +75,7 @@ namespace NoFuture.Rand.Domus.Opes
 
             var payBase = new Pecuniam(2000);
             Func<Pecuniam, double> calcMonthlyPay =
-                pecuniam => Math.Round((double)GetYearlyIncome(pecuniam, _factors.NetWorthFactor).Amount / 12, 2);
+                pecuniam => Math.Round(GetYearlyIncome(pecuniam, _factors.NetWorthFactor).ToDouble() / 12, 2);
             Paycheck = Math.Round(calcMonthlyPay(payBase) / 2, 2).ToPecuniam();
         }
         #endregion
@@ -537,8 +537,8 @@ namespace NoFuture.Rand.Domus.Opes
                 dailyPercent = Math.Round(dailyPercent/3, 4);
             }
 
-            var utilsDfMin = (int) Math.Round((double) Paycheck.Amount*dailyPercent);
-            var utilsDfMax = (int) Math.Round((double) Paycheck.Amount*dailyPercent*2);
+            var utilsDfMin = (int) Math.Round(Paycheck.ToDouble()*dailyPercent);
+            var utilsDfMax = (int) Math.Round(Paycheck.ToDouble() * dailyPercent*2);
             var utilsDfMid = (int) Math.Round(((double) utilsDfMax - utilsDfMin)/2);
 
             var randBill = Pecuniam.GetRandPecuniam(utilsDfMin, utilsDfMax);

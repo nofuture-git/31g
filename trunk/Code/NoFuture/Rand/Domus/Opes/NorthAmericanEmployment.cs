@@ -83,9 +83,9 @@ namespace NoFuture.Rand.Domus.Opes
             set => _dateRange = new Tuple<DateTime?, DateTime?>(_dateRange.Item1, value);
         }
 
-        public Pecuniam TotalDeductions => Pondus.GetSum(CurrentDeductions).Neg;
-        public Pecuniam TotalPay => Pondus.GetSum(CurrentPay).Abs;
-        public Pecuniam TotalNetPay => TotalPay - TotalDeductions;
+        public Pecuniam TotalAnnualDeductions => Pondus.GetAnnualSum(CurrentDeductions).Neg;
+        public Pecuniam TotalAnnualPay => Pondus.GetAnnualSum(CurrentPay).Abs;
+        public Pecuniam TotalAnnualNetPay => TotalAnnualPay - TotalAnnualDeductions;
 
         #endregion
 
@@ -255,61 +255,8 @@ namespace NoFuture.Rand.Domus.Opes
         {
             var itemsout = new List<Pondus>();
             amt = amt ?? Pecuniam.Zero;
-            
-            var salaryScaler = _isWages ? 0 : 1;
-            var commissionRate = _isCommission 
-                ? Etx.RandomValueInNormalDist(0.667, 0.081) 
-                : 0;
-            var tipsRate = _isTips 
-                ? Etx.RandomValueInNormalDist(0.7889D, 0.025) 
-                : 0;
-            var bonusRate = Etx.TryBelowOrAt(1, Etx.Dice.Ten) 
-                ? Etx.RandomValueInNormalDist(0.02, 0.001) 
-                : 0D;
-            var tipsAndCommission = commissionRate + tipsRate > 1D 
-                ? 1D 
-                : commissionRate + tipsRate;
-            var wageRate = _isWages 
-                ? (1D - tipsAndCommission) 
-                : 0;
-            var overtimeRate = _isWages && Etx.TryBelowOrAt(3, Etx.Dice.Ten)
-                ? Etx.RandomValueInNormalDist(0.05, 0.009)
-                : 0D;
-            var shiftDiffRate = _isWages && Etx.TryBelowOrAt(3, Etx.Dice.Ten)
-                ? Etx.RandomValueInNormalDist(0.03, 0.0076)
-                : 0D;
-            var selfEmplyRate = Etx.TryBelowOrAt(7, Etx.Dice.OneHundred)
-                ? Etx.RandomValueInNormalDist(0.072, 0.0088)
-                : 0D;
-            var emplrPaidRate = Etx.TryBelowOrAt(17, Etx.Dice.OneHundred)
-                ? Etx.RandomValueInNormalDist(0.012, 0.008)
-                : 0D;
-            var inKindRate = Etx.TryBelowOrAt(9, Etx.Dice.OneThousand)
-                ? Etx.RandomValueInNormalDist(0.022, 0.0077)
-                : 0D;
-            var sevrcRate =
-                !_isWages 
-                && !_isTips 
-                && _dateRange?.Item2.GetValueOrDefault(DateTime.Today) < DateTime.Today 
-                && Etx.TryBelowOrAt(7, Etx.Dice.OneHundred)
-                    ? Etx.RandomValueInNormalDist(0.072, 0.0025)
-                    : 0D;
-            var incomeName2Scaler = new Dictionary<string, double>
-            {
 
-                {"Salary", salaryScaler },
-                {"Wages", wageRate},
-                {"Employer Paid Expenses", emplrPaidRate},
-                {"Shift Differential", shiftDiffRate},
-                {"Severance Pay", sevrcRate },
-                {"Overtime", overtimeRate },
-                {"Self-employment", selfEmplyRate},
-                {"Tips", tipsRate},
-                {"Commissions", commissionRate},
-                {"Bonuses", bonusRate},
-                {"In-Kind",inKindRate}
-            };
-
+            var incomeName2Scaler = GetIncomeName2RandomRates();
             var incomeItems = GetIncomeItemNames();
             foreach (var incomeItem in incomeItems)
             {
@@ -330,6 +277,77 @@ namespace NoFuture.Rand.Domus.Opes
         }
 
         /// <summary>
+        /// Produces a dictionary of income item names to random rates where the sum of 
+        /// all the rates equals 1
+        /// </summary>
+        /// <returns></returns>
+        protected internal virtual Dictionary<string, double> GetIncomeName2RandomRates()
+        {
+            var bonusRate = Etx.TryBelowOrAt(1, Etx.Dice.Ten)
+                ? Etx.RandomValueInNormalDist(0.02, 0.001)
+                : 0D;
+            var overtimeRate = _isWages && Etx.TryBelowOrAt(3, Etx.Dice.Ten)
+                ? Etx.RandomValueInNormalDist(0.05, 0.009)
+                : 0D;
+            var shiftDiffRate = _isWages && Etx.TryBelowOrAt(3, Etx.Dice.Ten)
+                ? Etx.RandomValueInNormalDist(0.03, 0.0076)
+                : 0D;
+            var selfEmplyRate = Etx.TryBelowOrAt(7, Etx.Dice.OneHundred)
+                ? Etx.RandomValueInNormalDist(0.072, 0.0088)
+                : 0D;
+            var emplrPaidRate = Etx.TryBelowOrAt(17, Etx.Dice.OneHundred)
+                ? Etx.RandomValueInNormalDist(0.012, 0.008)
+                : 0D;
+            var inKindRate = Etx.TryBelowOrAt(9, Etx.Dice.OneThousand)
+                ? Etx.RandomValueInNormalDist(0.022, 0.0077)
+                : 0D;
+            var sevrcRate =
+                !_isWages
+                && !_isTips
+                && _dateRange?.Item2.GetValueOrDefault(DateTime.Today) < DateTime.Today
+                && Etx.TryBelowOrAt(7, Etx.Dice.OneHundred)
+                    ? Etx.RandomValueInNormalDist(0.072, 0.0025)
+                    : 0D;
+
+
+            var commissionRate = _isCommission && !_isTips
+                ? Etx.RandomValueInNormalDist(0.667, 0.081)
+                : 0;
+            var tipsRate = _isTips && !_isCommission
+                ? Etx.RandomValueInNormalDist(0.7889, 0.025)
+                : 0;
+
+            var sumOfRate = bonusRate + overtimeRate + shiftDiffRate + selfEmplyRate +
+                            emplrPaidRate + inKindRate + sevrcRate + commissionRate +
+                            tipsRate;
+
+            var wageRate = _isWages
+                ? 1D - sumOfRate
+                : 0D;
+
+            var salaryRate = !_isWages
+                ? 1D - sumOfRate
+                : 0D;
+
+            var incomeName2Rate = new Dictionary<string, double>
+            {
+
+                {"Salary", salaryRate },
+                {"Wages", wageRate},
+                {"Employer Paid Expenses", emplrPaidRate},
+                {"Shift Differential", shiftDiffRate},
+                {"Severance Pay", sevrcRate },
+                {"Overtime", overtimeRate },
+                {"Self-employment", selfEmplyRate},
+                {"Tips", tipsRate},
+                {"Commissions", commissionRate},
+                {"Bonuses", bonusRate},
+                {"In-Kind",inKindRate}
+            };
+            return incomeName2Rate;
+        }
+
+        /// <summary>
         /// Gets a manifold of <see cref="Pondus"/> items based on the 
         /// names from GetDeductionItemNames assigning random values as 
         /// a portion of <see cref="amt"/>
@@ -344,62 +362,8 @@ namespace NoFuture.Rand.Domus.Opes
         {
             var itemsout = new List<Pondus>();
             amt = amt ?? Pecuniam.Zero;
-            
-            //https://www.cdc.gov/nchs/fastats/health-insurance.htm
-            var isInsCovered = Etx.TryAboveOrAt(124, Etx.Dice.OneThousand);
-            var healthCareCost = isInsCovered
-                ? GetHealthInsCost(startDate)
-                : 0D;
 
-            var healthInsRate = Math.Round(healthCareCost / Convert.ToDouble(amt.Amount), 5);
-            var lifeInsRate = Etx.CoinToss ? GetRandomizeRateOf(healthInsRate, 13) : 0D;
-            var supplementalLifeInsRate = Etx.TryBelowOrAt(3, Etx.Dice.Ten) ? GetRandomizeRateOf(healthInsRate, 21) : 0D;
-            var dependentInsRate = Etx.TryBelowOrAt(1, Etx.Dice.Four) ? GetRandomizeRateOf(healthInsRate, 21) : 0D;
-            var adAndDInsRate = Etx.TryBelowOrAt(1, Etx.Dice.Four) ? GetRandomizeRateOf(healthInsRate, 34) : 0D;
-            var dentalInsRate = GetRandomizeRateOf(healthInsRate, 5);
-            var visionInsRate = GetRandomizeRateOf(healthInsRate, 8);
-            var stDisabilityRate = Etx.TryBelowOrAt(1, Etx.Dice.Four) ? GetRandomizeRateOf(healthInsRate, 13) : 0D;
-            var ltDisabilityRate = Etx.TryBelowOrAt(1, Etx.Dice.Four) ? GetRandomizeRateOf(healthInsRate, 13) : 0D;
-
-            var fedTaxRate = NAmerUtil.Equations.FederalIncomeTaxRate.SolveForY(Convert.ToDouble(amt.Amount));
-            var stateTaxRate = GetRandomizeRateOf(fedTaxRate, 5);
-
-            //https://www.irs.gov/taxtopics/tc751
-            var ficaRate = 0.062D;
-            var medicareRate = 0.0145D;
-
-            var retirementRate = Etx.CoinToss ? Etx.DiscreteRange(new[] {0D, 0.01D, 0.02D, 0.03D, 0.04D, 0.05D}) : 0D;
-            var profitShareRate = Etx.TryBelowOrAt(13, Etx.Dice.OneHundred) ? GetRandomizeRateOf(0.06) : 0D;
-            var pensionRate = Etx.TryBelowOrAt(9, Etx.Dice.OneHundred) ? GetRandomizeRateOf(0.03) : 0D;
-
-            var unionDueRate = StandardOccupationalClassification.IsLaborUnion(_occupation) ? GetRandomizeRateOf(0.04) : 0D;
-            var hraRate = Etx.CoinToss ? GetRandomizeRateOf(healthInsRate, 13) : 0D;
-            var fsaRate = Etx.CoinToss ? GetRandomizeRateOf(healthInsRate, 13) : 0D;
-            var creditUnionRate = Etx.TryBelowOrAt(3, Etx.Dice.OneHundred) ? GetRandomizeRateOf(0.01) : 0D;
-
-            var deductionName2Scaler = new Dictionary<string, double>
-            {
-                {"Health", healthInsRate },
-                {"Life", lifeInsRate},
-                {"Supplemental Life", supplementalLifeInsRate},
-                {"Dependent Life", dependentInsRate},
-                {"Accidental Death & Dismemberment", adAndDInsRate },
-                {"Dental", dentalInsRate },
-                {"Vision", visionInsRate},
-                {"Short-term Disability", stDisabilityRate},
-                {"Long-term Disability", ltDisabilityRate},
-                {"Federal tax", fedTaxRate},
-                {"State tax", stateTaxRate},
-                {"FICA", ficaRate},
-                {"Medicare", medicareRate},
-                {"Registered Retirement Savings Plan", retirementRate},
-                {"Profit Sharing", profitShareRate},
-                {"Pension", pensionRate},
-                {"Union Dues", unionDueRate},
-                {"Health Savings Account", hraRate},
-                {"Flexible Spending Account", fsaRate},
-                {"Credit Union Loan", creditUnionRate},
-            };
+            var deductionName2Scaler = GetDeductionNames2RandomRates(amt, startDate);
             var deductionItems = GetDeductionItemNames();
             foreach (var deduction in deductionItems)
             {
@@ -417,7 +381,101 @@ namespace NoFuture.Rand.Domus.Opes
                 itemsout.Add(p);
             }
             return itemsout.ToArray();
-         }
+        }
+
+        /// <summary>
+        /// Produces a dictionary of deduction item names to random rates.
+        /// </summary>
+        /// <param name="annualIncomeAmount">Needed to calculate Health Insurance cost</param>
+        /// <param name="startDate">Needed to calculate Health Insurance cost</param>
+        /// <returns></returns>
+        protected internal virtual Dictionary<string, double> GetDeductionNames2RandomRates(Pecuniam annualIncomeAmount,
+            DateTime? startDate)
+        {
+            //https://www.cdc.gov/nchs/fastats/health-insurance.htm
+            var isInsCovered = Etx.TryAboveOrAt(124, Etx.Dice.OneThousand);
+            var healthCareCost = isInsCovered
+                ? GetHealthInsCost(startDate)
+                : 0D;
+
+            var totalHealthInsRate = healthCareCost / annualIncomeAmount.ToDouble();
+            var employeeHealthInsRate = Math.Round(totalHealthInsRate * 0.17855D, 5);
+            var dentalInsRate = GetRandomizeRateOf(employeeHealthInsRate, 8);
+            var visionInsRate = GetRandomizeRateOf(employeeHealthInsRate, 13);
+
+            var lifeInsRate = Etx.CoinToss
+                ? GetRandomizeRateOf(employeeHealthInsRate, 13)
+                : 0D;
+            var supplementalLifeInsRate = Etx.TryBelowOrAt(3, Etx.Dice.Ten)
+                ? GetRandomizeRateOf(employeeHealthInsRate, 21)
+                : 0D;
+            var dependentInsRate = Etx.TryBelowOrAt(1, Etx.Dice.Four)
+                ? GetRandomizeRateOf(employeeHealthInsRate, 21)
+                : 0D;
+            var adAndDInsRate = Etx.TryBelowOrAt(1, Etx.Dice.Four)
+                ? GetRandomizeRateOf(employeeHealthInsRate, 34)
+                : 0D;
+            var stDisabilityRate = Etx.TryBelowOrAt(1, Etx.Dice.Four)
+                ? GetRandomizeRateOf(employeeHealthInsRate, 13)
+                : 0D;
+            var ltDisabilityRate = Etx.TryBelowOrAt(1, Etx.Dice.Four)
+                ? GetRandomizeRateOf(employeeHealthInsRate, 13)
+                : 0D;
+
+            var fedTaxRate = NAmerUtil.Equations.FederalIncomeTaxRate.SolveForY(annualIncomeAmount.ToDouble());
+            var stateTaxRate = GetRandomizeRateOf(fedTaxRate, 5);
+
+            //https://www.irs.gov/taxtopics/tc751
+            var ficaRate = 0.062D;
+            var medicareRate = 0.0145D;
+
+            var retirementRate = Etx.CoinToss
+                ? Etx.DiscreteRange(new[] {0D, 0.01D, 0.02D, 0.03D, 0.04D, 0.05D})
+                : 0D;
+            var profitShareRate = Etx.TryBelowOrAt(13, Etx.Dice.OneHundred)
+                ? GetRandomizeRateOf(0.03)
+                : 0D;
+            var pensionRate = Etx.TryBelowOrAt(9, Etx.Dice.OneHundred)
+                ? GetRandomizeRateOf(0.03)
+                : 0D;
+
+            var unionDueRate = StandardOccupationalClassification.IsLaborUnion(_occupation)
+                ? GetRandomizeRateOf(0.04)
+                : 0D;
+            var hraRate = Etx.CoinToss
+                ? GetRandomizeRateOf(employeeHealthInsRate, 21)
+                : 0D;
+            var fsaRate = Etx.CoinToss
+                ? GetRandomizeRateOf(employeeHealthInsRate, 21)
+                : 0D;
+            var creditUnionRate = Etx.TryBelowOrAt(3, Etx.Dice.OneHundred)
+                ? GetRandomizeRateOf(0.01)
+                : 0D;
+
+            return new Dictionary<string, double>
+            {
+                {"Health", employeeHealthInsRate},
+                {"Life", lifeInsRate},
+                {"Supplemental Life", supplementalLifeInsRate},
+                {"Dependent Life", dependentInsRate},
+                {"Accidental Death & Dismemberment", adAndDInsRate},
+                {"Dental", dentalInsRate},
+                {"Vision", visionInsRate},
+                {"Short-term Disability", stDisabilityRate},
+                {"Long-term Disability", ltDisabilityRate},
+                {"Federal tax", fedTaxRate},
+                {"State tax", stateTaxRate},
+                {"FICA", ficaRate},
+                {"Medicare", medicareRate},
+                {"Registered Retirement Savings Plan", retirementRate},
+                {"Profit Sharing", profitShareRate},
+                {"Pension", pensionRate},
+                {"Union Dues", unionDueRate},
+                {"Health Savings Account", hraRate},
+                {"Flexible Spending Account", fsaRate},
+                {"Credit Union Loan", creditUnionRate},
+            };
+        }
 
         protected internal virtual void AddIncome(Pondus p)
         {
@@ -477,7 +535,7 @@ namespace NoFuture.Rand.Domus.Opes
 
         private Pecuniam CalcValue(Pecuniam pecuniam, double d)
         {
-            return Math.Round(Convert.ToDouble(pecuniam.Amount) * d, 2).ToPecuniam();
+            return Math.Round(pecuniam.ToDouble() * d, 2).ToPecuniam();
         }
 
         public override bool Equals(object obj)
@@ -501,7 +559,7 @@ namespace NoFuture.Rand.Domus.Opes
         public override string ToString()
         {
             var t = new Tuple<string, string, DateTime?, DateTime?, Pecuniam>(Value?.ToString(), Occupation?.ToString(),
-                FromDate, ToDate, TotalPay);
+                FromDate, ToDate, TotalAnnualPay);
             return t.ToString();
         }
 

@@ -51,11 +51,21 @@ namespace NoFuture.Rand.Domus.Opes
         /// <summary>
         /// A monetary sum of all current expenses
         /// </summary>
-        Pecuniam TotalExpenses { get; }
+        Pecuniam TotalAnnualExpenses { get; }
 
         /// <summary>
         /// A monetary sum of all income
         /// </summary>
-        Pecuniam TotalIncome { get; }
+        Pecuniam TotalAnnualIncome { get; }
+
+        /// <summary>
+        /// The monetary sum of just employment income less all employment deductions
+        /// </summary>
+        Pecuniam TotalAnnualNetEmploymentIncome { get; }
+
+        /// <summary>
+        /// The gross monetary sum of employment income 
+        /// </summary>
+        Pecuniam TotalAnnualGrossEmploymentIncome { get; }
     }
 }

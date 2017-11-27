@@ -8,6 +8,7 @@ using NoFuture.Rand.Data;
 using NoFuture.Rand.Data.Endo;
 using NoFuture.Rand.Data.Endo.Enums;
 using NoFuture.Rand.Data.Source;
+using NoFuture.Rand.Data.Sp.Enums;
 using NoFuture.Rand.Edu;
 using NoFuture.Rand.Gov;
 using NoFuture.Shared.Core;
@@ -297,24 +298,43 @@ namespace NoFuture.Rand.Domus
             /// TODO, this is the value for OH, need to get an averages for all data
             /// </summary>
             public static LinearEquation NatlAverageEarnings = new LinearEquation(-2046735.65519574, 1042.04539007091);
+
+            /// <summary>
+            /// This is an attempt to have a way to calculate the federal poverty level over a range of years.
+            /// Given the 2017 slope of 4180 (per person) - this is the polynomial of a 1.5% decrease per year (assumed GDP growth).
+            /// https://aspe.hhs.gov/poverty-guidelines
+            /// </summary>
+            /// <param name="atDate"></param>
+            /// <returns></returns>
+            public static LinearEquation GetFederalPovertyLevel(DateTime? atDate)
+            {
+                var dt = atDate.GetValueOrDefault(DateTime.Today);
+                var estSlope =
+                    new SecondDegreePolynomial {Intercept = 1164674, Slope = -1211.034, SecondCoefficient = 0.31516}
+                    .SolveForY(dt.ToDouble());
+
+                return new LinearEquation(7880, estSlope);
+            }
         }
 
         public static class Tables
         {
+            private static Dictionary<Interval, int> _interval2Multiplier;
+
             /// <summary>
             /// Based on <see cref="DataFiles.US_HIGH_SCHOOL_DATA_FILE"/>
             /// </summary>
-            public static Dictionary<NorthAmericanRace, double> NorthAmericanRaceAvgs = new Dictionary
+            public static Dictionary<NorthAmericanRace, double> NorthAmericanRaceAvgs { get; } = new Dictionary
                 <NorthAmericanRace, double>
-            {
-                {NorthAmericanRace.AmericanIndian, 1.0D },
-                {NorthAmericanRace.Asian, 6.0D },
-                {NorthAmericanRace.Hispanic, 18.0D },
-                {NorthAmericanRace.Black, 12.0D },
-                {NorthAmericanRace.White, 61.0D },
-                {NorthAmericanRace.Pacific, 1.0D },
-                {NorthAmericanRace.Mixed, 2.0D }
-            };
+                {
+                    {NorthAmericanRace.AmericanIndian, 1.0D },
+                    {NorthAmericanRace.Asian, 6.0D },
+                    {NorthAmericanRace.Hispanic, 18.0D },
+                    {NorthAmericanRace.Black, 12.0D },
+                    {NorthAmericanRace.White, 61.0D },
+                    {NorthAmericanRace.Pacific, 1.0D },
+                    {NorthAmericanRace.Mixed, 2.0D }
+                };
 
             /// <summary>
             /// src [https://www.cdc.gov/nchs/data/nvsr/nvsr65/nvsr65_04.pdf] Table B.
@@ -329,6 +349,35 @@ namespace NoFuture.Rand.Domus
                     {AmericanDeathCert.MannerOfDeath.Homicide, 0.604 },
                     {AmericanDeathCert.MannerOfDeath.Natural, 92.591 }
                 };
+
+            /// <summary>
+            /// A general table to align an interval to some annual multiplier
+            /// (e.g. Hourly means 52 weeks * 40 hours per week = 2080)
+            /// </summary>
+            public static Dictionary<Interval, int> Interval2AnnualPayMultiplier
+            {
+                get
+                {
+                    if (_interval2Multiplier != null)
+                        return _interval2Multiplier;
+
+                    _interval2Multiplier = new Dictionary<Interval, int>
+                    {
+                        {Interval.OnceOnly, 1},
+                        {Interval.Hourly, 2080},
+                        {Interval.Daily, 260},
+                        {Interval.Weekly, 52},
+                        {Interval.BiWeekly, 26},
+                        {Interval.SemiMonthly, 24},
+                        {Interval.Monthly, 12},
+                        {Interval.Quarterly, 4},
+                        {Interval.SemiAnnually, 2},
+                        {Interval.Annually, 1},
+                    };
+
+                    return _interval2Multiplier;
+                }
+            }
         }
         #endregion
 

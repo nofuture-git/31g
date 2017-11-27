@@ -37,6 +37,12 @@ namespace NoFuture.Rand.Data.Sp
         #endregion
 
         #region methods
+
+        public virtual double ToDouble()
+        {
+            return Convert.ToDouble(Amount);
+        }
+
         public override string ToString()
         {
             return $"{Amount} {Id}";

@@ -213,7 +213,7 @@ namespace NoFuture.Rand.Domus.Opes
                     if (childElem.LocalName != "eg" || !childElem.HasAttributes)
                         continue;
                     var eg = childElem.GetAttribute("name");
-                    if (String.IsNullOrWhiteSpace(eg))
+                    if (string.IsNullOrWhiteSpace(eg))
                         continue;
                     egs.Add(eg);
                 }
