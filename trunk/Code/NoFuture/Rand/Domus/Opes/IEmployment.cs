@@ -29,14 +29,14 @@ namespace NoFuture.Rand.Domus.Opes
         /// <summary>
         /// The current pay for this employment
         /// </summary>
-        Pondus CurrentPay { get; }
+        Pondus[] CurrentPay { get; }
 
         /// <summary>
         /// The pay as it was at time <see cref="dt"/>
         /// </summary>
         /// <param name="dt"></param>
         /// <returns></returns>
-        Pondus GetPayAt(DateTime? dt);
+        Pondus[] GetPayAt(DateTime? dt);
 
         /// <summary>
         /// The list of deductions as it was at time <see cref="dt"/>
@@ -46,8 +46,18 @@ namespace NoFuture.Rand.Domus.Opes
         Pondus[] GetDeductionsAt(DateTime? dt);
 
         /// <summary>
+        /// The monetary sum of all current income items
+        /// </summary>
+        Pecuniam TotalPay { get; }
+
+        /// <summary>
+        /// The monetary sum of all current deduction items
+        /// </summary>
+        Pecuniam TotalDeductions { get; }
+
+        /// <summary>
         /// The monetary difference between pay and deductions
         /// </summary>
-        Pecuniam CurrentNetPay { get; }
+        Pecuniam TotalNetPay { get; }
     }
 }

@@ -1,7 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using NoFuture.Rand.Core;
+using NoFuture.Rand.Data.Endo.Enums;
+using NoFuture.Rand.Data.Endo.Grps;
 using NoFuture.Rand.Data.Sp;
+using NoFuture.Rand.Domus.Pneuma;
 
 namespace NoFuture.Rand.Domus.Opes
 {
@@ -24,6 +28,12 @@ namespace NoFuture.Rand.Domus.Opes
         {
             
         }
+
+        internal NorthAmericanIncome() : base(null)
+        {
+            
+            
+        }
         #endregion
 
         #region properties
@@ -39,7 +49,7 @@ namespace NoFuture.Rand.Domus.Opes
         public virtual Pondus[] CurrentOtherIncome => GetCurrent(OtherIncome);
         public Pondus[] CurrentExpenses => GetCurrent(Expenses);
         public Pecuniam TotalExpenses => Pondus.GetSum(CurrentExpenses);
-        public Pecuniam TotalIncome => Pondus.GetSum(_otherIncome) + CurrentEmployment.Select(e => e.CurrentNetPay).GetSum();
+        public Pecuniam TotalIncome => Pondus.GetSum(_otherIncome) + CurrentEmployment.Select(e => e.TotalNetPay).GetSum();
 
         protected internal virtual List<IEmployment> Employment
         {
@@ -131,6 +141,73 @@ namespace NoFuture.Rand.Domus.Opes
                 FromDate = startDate
             });
         }
+
+        /// <summary>
+        /// Gets a list of time ranges over the last three years where each block is assumed as a 
+        /// span of employment
+        /// </summary>
+        /// <param name="personality"></param>
+        /// <returns></returns>
+        protected internal virtual List<Tuple<DateTime, DateTime?>> GetEmploymentRanges(IPersonality personality)
+        {
+            var emply = new List<Tuple<DateTime, DateTime?>>();
+            var sdt = Etx.Date(-3, null, true, 60).Date;
+            if (personality == null)
+            {
+                emply.Add(new Tuple<DateTime, DateTime?>(sdt, null));
+                return emply;
+            }
+
+            var lpDt = sdt;
+            while (lpDt < DateTime.Today)
+            {
+
+                var randDays = Etx.IntNumber(0, 21);
+                lpDt = lpDt.AddMonths(3).AddDays(randDays);
+                if (personality.GetRandomActsSpontaneous())
+                {
+                    emply.Add(new Tuple<DateTime, DateTime?>(sdt, lpDt < DateTime.Today ? new DateTime?(lpDt) : null));
+                    sdt = lpDt;
+                }
+            }
+            if(!emply.Any())
+                emply.Add(new Tuple<DateTime, DateTime?>(Etx.Date(-3, null, true, 60).Date, null));
+            return emply;
+        }
+
+        /// <summary>
+        /// Get an ordered list of employment for the last three years at random
+        /// </summary>
+        /// <param name="personality"></param>
+        /// <param name="eduLevel"></param>
+        /// <returns></returns>
+        protected internal virtual List<IEmployment> ResolveEmployment(IPersonality personality,
+            OccidentalEdu eduLevel = OccidentalEdu.None)
+        {
+            var empls = new HashSet<IEmployment>();
+            var emplyRanges = GetEmploymentRanges(personality);
+            var occ = StandardOccupationalClassification.RandomOccupation();
+
+            //limit result to those which match the edu level
+            Predicate<SocDetailedOccupation> filter = s => true;
+            if (eduLevel < (OccidentalEdu.Bachelor | OccidentalEdu.Grad))
+                filter = s => !StandardOccupationalClassification.IsDegreeRequired(s);
+
+            foreach (var range in emplyRanges)
+            {
+                var emply = new NorthAmericanEmployment(range.Item1, range.Item2, Person) {Occupation = occ};
+                if (personality?.GetRandomActsSpontaneous() ?? false)
+                {
+                    occ = StandardOccupationalClassification.RandomOccupation(filter);
+                }
+                empls.Add(emply);
+            }
+
+            var e = empls.ToList();
+            e.Sort(Comparer);
+            return e;
+        }
+
         #endregion
     }
 

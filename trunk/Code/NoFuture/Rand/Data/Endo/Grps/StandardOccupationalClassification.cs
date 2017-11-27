@@ -61,20 +61,29 @@ namespace NoFuture.Rand.Data.Endo.Grps
         /// <summary>
         /// Selects one <see cref="SocDetailedOccupation"/> at random
         /// </summary>
+        /// <param name="filterBy">Optional predicate to limit the choices by something (e.g. Degree required).</param>
         /// <returns></returns>
-        public static SocDetailedOccupation RandomOccupation()
+        public static SocDetailedOccupation RandomOccupation(Predicate<SocDetailedOccupation> filterBy = null)
         {
             _soc2Prob = _soc2Prob == null || !_soc2Prob.Any()
                 ? TreeData.GetProbTable(TreeData.UsOccupationProbTable, "occupations", "ID")
                 : _soc2Prob;
 
-            var pickOne = Etx.DiscreteRange(_soc2Prob) ?? DF_OCCUPATION;
-
             if (!_socs.Any())
                 _socs.AddRange(AllGroups.SelectMany(g =>
                     g.Divisions.SelectMany(two => two.Divisions.SelectMany(three => three.Divisions))));
 
-            return _socs.FirstOrDefault(s => s.Value == pickOne);
+            var pickOne = Etx.DiscreteRange(_soc2Prob) ?? DF_OCCUPATION;
+            if(filterBy == null)
+                return _socs.FirstOrDefault(s => s.Value == pickOne);
+
+            var occ = _socs.FirstOrDefault(s => s.Value == pickOne);
+            while (!filterBy(occ))
+            {
+                pickOne = Etx.DiscreteRange(_soc2Prob) ?? DF_OCCUPATION;
+                occ = _socs.FirstOrDefault(s => s.Value == pickOne);
+            }
+            return occ;
         }
 
         /// <summary>
@@ -133,6 +142,16 @@ namespace NoFuture.Rand.Data.Endo.Grps
             {
                 "25", "27-20", "29-11", "29-20", "47-20", "47-50", "49-30",
                 "51-2", "51", "53-3", "53-4"
+            }.Any(s => soc.Value.StartsWith(s));
+        }
+
+        public static bool IsDegreeRequired(SocDetailedOccupation soc)
+        {
+            return new[]
+            {
+                "11-903", "11-904", "11-911", "11-912", "13-201", "15-20", "17-20", "17-21", "17-1011", "19-102",
+                "19-104", "19-20", "19-303", "19-304", "19-309", "21-201", "23-101", "25-1", "25-2", "25-402", "29-102",
+                "29-104", "29-105", "29-106", "29-113", "29-114"
             }.Any(s => soc.Value.StartsWith(s));
         }
     }

@@ -52,6 +52,8 @@ namespace NoFuture.Rand.Domus.Opes
         /// </summary>
         public NorthAmericanFactors Factors => _factors;
 
+        protected internal virtual NorthAmerican Person => _amer;
+
         #region methods
         /// <summary>
         /// Calculate a yearly income at random.
@@ -131,7 +133,7 @@ namespace NoFuture.Rand.Domus.Opes
             if (items == null)
                 return null;
             var atDateItems = dt == null
-                ? items.Where(x => x.ToDate == null).ToList()
+                ? items.ToList()
                 : items.Where(x => x.IsInRange(dt.Value)).ToList();
             atDateItems.Sort(Comparer);
             return atDateItems.ToArray();

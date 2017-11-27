@@ -14,7 +14,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         public void TestGetYearsOfServiceInDates()
         {
             //still employed
-            var testSubject = new NoFuture.Rand.Domus.Opes.NorthAmericanEmployment(new DateTime(2011,10,5),null);
+            var testSubject = new Domus.Opes.NorthAmericanEmployment(new DateTime(2011,10,5),null);
 
             var testResult = testSubject.GetYearsOfServiceInDates();
             Assert.IsNotNull(testResult);
@@ -25,7 +25,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
 
             Assert.AreEqual(6, testResult.Count);
 
-            testSubject = new NoFuture.Rand.Domus.Opes.NorthAmericanEmployment(new DateTime(2013, 5, 16), new DateTime(2017,8,1));
+            testSubject = new Domus.Opes.NorthAmericanEmployment(new DateTime(2013, 5, 16), new DateTime(2017,8,1));
             testResult = testSubject.GetYearsOfServiceInDates();
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0, testResult.Count);
@@ -40,7 +40,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         [TestMethod]
         public void TestGetPayItemsForRange()
         {
-            var testSubject = new NoFuture.Rand.Domus.Opes.NorthAmericanEmployment(new DateTime(2011, 10, 5), null);
+            var testSubject = new Domus.Opes.NorthAmericanEmployment(new DateTime(2011, 10, 5), null);
             testSubject.Occupation = StandardOccupationalClassification.GetById("39-3011");
 
             var testResult = testSubject.GetPayItemsForRange(55000D.ToPecuniam(), testSubject.FromDate,
@@ -75,7 +75,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         [TestMethod]
         public void TestGetDeductionItemsForRange()
         {
-            var testSubject = new NoFuture.Rand.Domus.Opes.NorthAmericanEmployment(new DateTime(2011, 10, 5), null);
+            var testSubject = new Domus.Opes.NorthAmericanEmployment(new DateTime(2011, 10, 5), null);
             var testResult = testSubject.GetDeductionItemsForRange(55000D.ToPecuniam(), testSubject.FromDate,
                 testSubject.FromDate.Value.AddYears(1));
 
@@ -100,7 +100,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         [TestMethod]
         public void TestResolveIncomeAndDeductions()
         {
-            var testSubject = new NoFuture.Rand.Domus.Opes.NorthAmericanEmployment(new DateTime(2011, 10, 5), null);
+            var testSubject = new Domus.Opes.NorthAmericanEmployment(new DateTime(2011, 10, 5), null);
             testSubject.ResolveIncomeAndDeductions();
 
             var testResults = testSubject.AllItems;

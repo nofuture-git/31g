@@ -9,7 +9,6 @@ using NoFuture.Rand.Domus.Opes;
 using NoFuture.Rand.Domus.Pneuma;
 using NoFuture.Rand.Gov;
 using NoFuture.Shared.Core;
-using NoFuture.Util.Core;
 
 namespace NoFuture.Rand.Domus
 {

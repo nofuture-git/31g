@@ -7,7 +7,7 @@ namespace NoFuture.Rand.Data.Sp
 {
     /// <inheritdoc cref="Mereo" />
     /// <summary>
-    /// A composition type to bind a time-range and an income money amount to a name
+    /// A composition type to bind a time-range and an money amount to a name
     /// </summary>
     [Serializable]
     public class Pondus : Mereo, IIdentifier<Pecuniam>, ITempore

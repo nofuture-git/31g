@@ -16,5 +16,6 @@
 
         bool GetRandomActsIrresponsible();
         bool GetRandomActsStressed();
+        bool GetRandomActsSpontaneous();
     }
 }

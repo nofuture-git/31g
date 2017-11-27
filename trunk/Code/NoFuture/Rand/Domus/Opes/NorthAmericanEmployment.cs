@@ -69,7 +69,7 @@ namespace NoFuture.Rand.Domus.Opes
         }
 
         public virtual Pondus[] CurrentDeductions => GetDeductionsAt(null);
-        public virtual Pondus CurrentPay => GetPayAt(null);
+        public virtual Pondus[] CurrentPay => GetPayAt(null);
 
         public virtual DateTime? FromDate
         {
@@ -83,7 +83,9 @@ namespace NoFuture.Rand.Domus.Opes
             set => _dateRange = new Tuple<DateTime?, DateTime?>(_dateRange.Item1, value);
         }
 
-        public Pecuniam CurrentNetPay => (CurrentPay?.Value ?? Pecuniam.Zero) - Pondus.GetSum(CurrentDeductions).Abs;
+        public Pecuniam TotalDeductions => Pondus.GetSum(CurrentDeductions).Neg;
+        public Pecuniam TotalPay => Pondus.GetSum(CurrentPay).Abs;
+        public Pecuniam TotalNetPay => TotalPay - TotalDeductions;
 
         #endregion
 
@@ -96,10 +98,9 @@ namespace NoFuture.Rand.Domus.Opes
             return afterOrOnFromDt && beforeOrOnToDt;
         }
 
-        public virtual Pondus GetPayAt(DateTime? dt)
+        public virtual Pondus[] GetPayAt(DateTime? dt)
         {
-            var pay = GetAt(dt, Income);
-            return pay.LastOrDefault();
+            return GetAt(dt, Income);
         }
 
         public virtual Pondus[] GetDeductionsAt(DateTime? dt)
@@ -119,6 +120,11 @@ namespace NoFuture.Rand.Domus.Opes
             }
             var isCurrentEmployee = _dateRange.Item2 == null;
             var yearsOfService = GetYearsOfServiceInDates();
+            if (yearsOfService.Count <= 0)
+            {
+                AddPondusForGivenRange(_dateRange?.Item1, _dateRange?.Item2);
+                return;
+            }
             for (var i = 0; i < yearsOfService.Count; i++)
             {
                 var range = yearsOfService[i];
@@ -490,6 +496,13 @@ namespace NoFuture.Rand.Domus.Opes
         {
             return (Value?.GetHashCode() ?? 1) +
                    _dateRange?.GetHashCode() ?? 1;
+        }
+
+        public override string ToString()
+        {
+            var t = new Tuple<string, string, DateTime?, DateTime?, Pecuniam>(Value?.ToString(), Occupation?.ToString(),
+                FromDate, ToDate, TotalPay);
+            return t.ToString();
         }
 
         #endregion

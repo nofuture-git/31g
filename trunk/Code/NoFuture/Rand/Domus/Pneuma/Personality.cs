@@ -30,6 +30,11 @@ namespace NoFuture.Rand.Domus.Pneuma
             return Etx.RandomValueInNormalDist(Neuroticism.Value.Zscore, Neuroticism.Value.StdDev) > 0;
         }
 
+        public bool GetRandomActsSpontaneous()
+        {
+            return Etx.RandomValueInNormalDist(Openness.Value.Zscore, Openness.Value.StdDev) > 0;
+        }
+
         public override bool Equals(object obj)
         {
             var p = obj as IPersonality;

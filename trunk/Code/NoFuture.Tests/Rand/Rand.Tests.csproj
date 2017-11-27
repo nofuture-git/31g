@@ -59,6 +59,7 @@
     <Compile Include="DomusTests\AccountTests.cs" />
     <Compile Include="DomusTests\LoanTests.cs" />
     <Compile Include="DomusTests\OpesTests\NorthAmericanEmploymentTests.cs" />
+    <Compile Include="DomusTests\OpesTests\NorthAmericanIncomeTests.cs" />
     <Compile Include="DomusTests\TradeLineTests.cs" />
     <Compile Include="EtxTests.cs" />
     <Compile Include="GovTests\FedTests.cs" />
