@@ -225,41 +225,7 @@ namespace NoFuture.Rand.Domus.Opes
             //get all the names of income items which are not employment nor welfare
             var grps = new[] {"Employment", "Public Benefits", "Judgments", "Subito" };
             var otherIncomeItemNames = GetIncomeItemNames().Where(i => !grps.Contains(i.GetName(KindsOfNames.Group)));
-
-            //get just an array of rates
-            var rates = new double[otherIncomeItemNames.Count()];
-
-            var rMax = sumOfRates;
-            double DfRandRateFunc() => Etx.RationalNumber(0.01, rMax);
-
-            randRateFunc = randRateFunc ?? DfRandRateFunc;
-            
-            var l = rates.Sum();
-            sumOfRates = sumOfRates < 0D ? 0D : sumOfRates;
-            while (l < sumOfRates)
-            {
-                //pick a random index 
-                var idx = Etx.IntNumber(0, rates.Length-1);
-
-                //get random amount
-                var randRate = randRateFunc();
-                if (randRate + rates.Sum() > sumOfRates)
-                {
-                    randRate = sumOfRates - rates.Sum();
-                }
-                rates[idx] += randRate;
-
-                l = rates.Sum();
-            }
-
-            //assign the values over to the dictionary
-            var d = new Dictionary<string, double>();
-            var c = 0;
-            foreach (var otName in otherIncomeItemNames)
-            {
-                d.Add(otName.Name, Math.Round(rates[c], 6));
-                c += 1;
-            }
+            var d = GetRandomRates(otherIncomeItemNames, sumOfRates, randRateFunc);
 
             //add these back in but always at zero
             var otherGroups = new[] {"Judgments", "Subito" };

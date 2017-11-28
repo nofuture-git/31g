@@ -278,11 +278,53 @@ namespace NoFuture.Rand.Domus.Opes
             return Etx.TryBelowOrAt(roll, Etx.Dice.OneHundred);
         }
 
-        #endregion
-
         protected Pecuniam CalcValue(Pecuniam pecuniam, double d)
         {
             return Math.Round(pecuniam.ToDouble() * d, 2).ToPecuniam();
         }
+
+        protected internal virtual Dictionary<string, double> GetRandomRates(IEnumerable<IMereo> names,
+            double sumOfRates = 0.999999D, Func<double> randRateFunc = null)
+        {
+            //get just an array of rates
+            var rates = new double[names.Count()];
+
+            var rMax = sumOfRates;
+            double DfRandRateFunc() => Etx.RationalNumber(0.01, rMax);
+
+            randRateFunc = randRateFunc ?? DfRandRateFunc;
+
+            var l = rates.Sum();
+            sumOfRates = sumOfRates < 0D ? 0D : sumOfRates;
+            while (l < sumOfRates)
+            {
+                //pick a random index 
+                var idx = Etx.IntNumber(0, rates.Length - 1);
+
+                //get random amount
+                var randRate = randRateFunc();
+                if (randRate + rates.Sum() > sumOfRates)
+                {
+                    randRate = sumOfRates - rates.Sum();
+                }
+                rates[idx] += randRate;
+
+                l = rates.Sum();
+            }
+
+            //assign the values over to the dictionary
+            var d = new Dictionary<string, double>();
+            var c = 0;
+            foreach (var otName in names)
+            {
+                d.Add(otName.Name, Math.Round(rates[c], 6));
+                c += 1;
+            }
+
+            return d;
+        }
+
+        #endregion
+
     }
 }
