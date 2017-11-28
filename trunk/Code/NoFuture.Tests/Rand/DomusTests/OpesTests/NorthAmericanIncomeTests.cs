@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Data.Sp;
 using NoFuture.Rand.Domus.Opes;
 using NoFuture.Rand.Domus.Pneuma;
@@ -18,7 +20,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             Assert.AreNotEqual(0, testResult.Count);
             Assert.IsNotNull(testResult[0]?.Item1);
 
-            var testInput = new NoFuture.Rand.Domus.Pneuma.Personality();
+            var testInput = new Personality();
             testInput.Openness.Value = new Dimension(0.99, 0.10);
 
             testResult = testSubject.GetEmploymentRanges(testInput);
@@ -76,6 +78,43 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             testResult = testSubject.GetMinDate();
             Assert.AreEqual(DateTime.Today.AddYears(-3), testResult);
 
+        }
+
+        [TestMethod]
+        public void TestGetOtherIncomeName2RandomeRates()
+        {
+            var testSubject = new NorthAmericanIncome(null);
+            var testResult = testSubject.GetOtherIncomeName2RandomeRates(0);
+
+            Assert.IsNotNull(testResult);
+            Assert.AreNotEqual(0, testResult.Count);
+
+            Assert.AreEqual(0D, testResult.Values.Sum());
+
+            testResult = testSubject.GetOtherIncomeName2RandomeRates(0.25);
+
+            Assert.IsNotNull(testResult);
+            Assert.AreNotEqual(0, testResult.Count);
+            Assert.AreEqual(0.25, Math.Round(testResult.Values.Sum(),2));
+
+            foreach(var item in testResult)
+                System.Diagnostics.Debug.WriteLine(string.Join(" - ", item.Key, item.Value.ToString() ));
+        }
+
+        [TestMethod]
+        public void TestGetOtherIncomeItemsForRange()
+        {
+            var testSubject = new NorthAmericanIncome(null);
+            var testResult = testSubject.GetOtherIncomeItemsForRange(5660.0D.ToPecuniam(), DateTime.Today.AddYears(-1));
+
+            Assert.IsNotNull(testResult);
+            Assert.AreNotEqual(0, testResult.Length);
+
+            foreach(var t in testResult)
+                System.Diagnostics.Debug.WriteLine($"{t.Value} {t.Name} {t.Interval} {t.GetName(KindsOfNames.Group)}");
+
+            var sumResult = Pondus.GetAnnualSum(testResult);
+            Assert.IsTrue(sumResult.ToDouble() >= 5659.99 && sumResult.ToDouble() <= 5660.01);
         }
     }
 }

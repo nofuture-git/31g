@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NoFuture.Rand.Com;
 using NoFuture.Rand.Core;
+using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Data.Endo.Grps;
 using NoFuture.Rand.Data.Sp;
 using NoFuture.Rand.Data.Sp.Enums;
@@ -242,8 +243,8 @@ namespace NoFuture.Rand.Domus.Opes
 
         /// <summary>
         /// Gets a manifold of <see cref="Pondus"/> items based on the 
-        /// names from GetIncomeItemNames assigning random values as 
-        /// a portion of <see cref="amt"/>
+        /// names from GetIncomeItemNames in the Employment group assigning 
+        /// random values as a portion of <see cref="amt"/>
         /// </summary>
         /// <param name="amt"></param>
         /// <param name="startDate"></param>
@@ -256,18 +257,18 @@ namespace NoFuture.Rand.Domus.Opes
             var itemsout = new List<Pondus>();
             amt = amt ?? Pecuniam.Zero;
 
-            var incomeName2Scaler = GetIncomeName2RandomRates();
+            var incomeName2Rates = GetIncomeName2RandomRates();
             var incomeItems = GetIncomeItemNames();
-            foreach (var incomeItem in incomeItems)
+            foreach (var incomeItem in incomeItems.Where(i => i.GetName(KindsOfNames.Group) == "Employment"))
             {
-                if (!incomeName2Scaler.ContainsKey(incomeItem.Name))
-                    continue;
-                var incomeScaler = incomeName2Scaler[incomeItem.Name];
+                var incomeRate = !incomeName2Rates.ContainsKey(incomeItem.Name) 
+                    ? 0D 
+                    : incomeName2Rates[incomeItem.Name];
                 var p = new Pondus(incomeItem)
                 {
                     FromDate = startDate,
                     ToDate = endDate,
-                    Value = CalcValue(amt, incomeScaler),
+                    Value = CalcValue(amt, incomeRate),
                     Interval = interval
                 };
 
@@ -308,7 +309,6 @@ namespace NoFuture.Rand.Domus.Opes
                 && Etx.TryBelowOrAt(7, Etx.Dice.OneHundred)
                     ? Etx.RandomValueInNormalDist(0.072, 0.0025)
                     : 0D;
-
 
             var commissionRate = _isCommission && !_isTips
                 ? Etx.RandomValueInNormalDist(0.667, 0.081)
@@ -363,18 +363,18 @@ namespace NoFuture.Rand.Domus.Opes
             var itemsout = new List<Pondus>();
             amt = amt ?? Pecuniam.Zero;
 
-            var deductionName2Scaler = GetDeductionNames2RandomRates(amt, startDate);
+            var deductionNames2Rates = GetDeductionNames2RandomRates(amt, startDate);
             var deductionItems = GetDeductionItemNames();
             foreach (var deduction in deductionItems)
             {
-                if (!deductionName2Scaler.ContainsKey(deduction.Name))
-                    continue;
-                var incomeScaler = deductionName2Scaler[deduction.Name];
+                var deductionRate = !deductionNames2Rates.ContainsKey(deduction.Name) 
+                    ? 0D 
+                    : deductionNames2Rates[deduction.Name];
                 var p = new Pondus(deduction)
                 {
                     FromDate = startDate,
                     ToDate = endDate,
-                    Value = CalcValue(amt, incomeScaler),
+                    Value = CalcValue(amt, deductionRate),
                     Interval = interval
                 };
 
@@ -531,11 +531,6 @@ namespace NoFuture.Rand.Domus.Opes
             var mean = baseRate / (dividedby == 0 ? 1 : dividedby);
             var stdDev = Math.Round(mean * 0.155, 5);
             return Etx.RandomValueInNormalDist(mean, stdDev);
-        }
-
-        private Pecuniam CalcValue(Pecuniam pecuniam, double d)
-        {
-            return Math.Round(pecuniam.ToDouble() * d, 2).ToPecuniam();
         }
 
         public override bool Equals(object obj)

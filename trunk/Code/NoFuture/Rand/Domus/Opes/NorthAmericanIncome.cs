@@ -2,13 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using NoFuture.Rand.Core;
+using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Data.Endo.Enums;
 using NoFuture.Rand.Data.Endo.Grps;
 using NoFuture.Rand.Data.Sp;
 using NoFuture.Rand.Data.Sp.Enums;
 using NoFuture.Rand.Domus.Pneuma;
-using NoFuture.Rand.Gov;
-using NoFuture.Util.Core;
 
 namespace NoFuture.Rand.Domus.Opes
 {
@@ -152,7 +151,6 @@ namespace NoFuture.Rand.Domus.Opes
             var minOtherIncome = OtherIncome.FirstOrDefault()?.FromDate;
             var minEmply = Employment.FirstOrDefault()?.FromDate;
             var minExpense = Expenses.FirstOrDefault()?.FromDate;
-
             
             if (new[] { minOtherIncome, minEmply, minExpense }.All(dt => dt == null))
                 return sdt;
@@ -167,16 +165,119 @@ namespace NoFuture.Rand.Domus.Opes
             return mins.Min();
         }
 
-
+        /// <summary>
+        /// Gets a manifold of <see cref="Pondus"/> items based on the 
+        /// names from GetIncomeItemNames which are not in the Employment group 
+        /// assigning random values as a portion of <see cref="amt"/>
+        /// </summary>
+        /// <param name="amt"></param>
+        /// <param name="startDate"></param>
+        /// <param name="endDate"></param>
+        /// <param name="interval"></param>
+        /// <returns></returns>
         protected internal virtual Pondus[] GetOtherIncomeItemsForRange(Pecuniam amt, DateTime? startDate,
             DateTime? endDate = null, Interval interval = Interval.Annually)
         {
             startDate = startDate ?? GetMinDate();
+            var itemsout = new List<Pondus>();
+            amt = amt ?? Pecuniam.Zero;
 
-            throw new NotImplementedException();
+            //add in welfare
+            itemsout.AddRange(GetPublicBenefitIncomeItemsForRange(startDate, endDate));
+
+            var grps = new[] {"Employment", "Public Benefits"};
+            var incomeItems = GetIncomeItemNames().Where(i => !grps.Contains(i.GetName(KindsOfNames.Group)));
+
+            var incomeName2Rates = GetOtherIncomeName2RandomeRates(0.999999D);
+            foreach (var incomeItem in incomeItems)
+            {
+                var incomeRate = !incomeName2Rates.ContainsKey(incomeItem.Name)
+                    ? 0D
+                    : incomeName2Rates[incomeItem.Name];
+                var p = new Pondus(incomeItem)
+                {
+                    FromDate = startDate,
+                    ToDate = endDate,
+                    Value = CalcValue(amt, incomeRate),
+                    Interval = interval
+                };
+
+                itemsout.Add(p);
+            }
+
+            return itemsout.ToArray();
         }
 
-        protected internal virtual Pondus[] GetPublicBenefitIncomeItemsForRange(Pecuniam amt, DateTime? startDate,
+        /// <summary>
+        /// Produces a dictionary of other income items by names to a portion of <see cref="sumOfRates"/>
+        /// </summary>
+        /// <param name="sumOfRates">
+        /// A positive number, typically either very small or zero. Negative values are ignored - place those in 
+        /// Expenses.
+        /// </param>
+        /// <param name="randRateFunc">
+        /// Optional, allows the calling assembly to specify how to generate random rates, the default is to pick a 
+        /// random value between 0.01 and the <see cref="sumOfRates"/> 
+        /// </param>
+        /// <returns></returns>
+        protected internal virtual Dictionary<string, double> GetOtherIncomeName2RandomeRates(double sumOfRates = 0, Func<double> randRateFunc = null)
+        {
+            //get all the names of income items which are not employment nor welfare
+            var grps = new[] {"Employment", "Public Benefits", "Judgments", "Subito" };
+            var otherIncomeItemNames = GetIncomeItemNames().Where(i => !grps.Contains(i.GetName(KindsOfNames.Group)));
+
+            //get just an array of rates
+            var rates = new double[otherIncomeItemNames.Count()];
+
+            var rMax = sumOfRates;
+            double DfRandRateFunc() => Etx.RationalNumber(0.01, rMax);
+
+            randRateFunc = randRateFunc ?? DfRandRateFunc;
+            
+            var l = rates.Sum();
+            sumOfRates = sumOfRates < 0D ? 0D : sumOfRates;
+            while (l < sumOfRates)
+            {
+                //pick a random index 
+                var idx = Etx.IntNumber(0, rates.Length-1);
+
+                //get random amount
+                var randRate = randRateFunc();
+                if (randRate + rates.Sum() > sumOfRates)
+                {
+                    randRate = sumOfRates - rates.Sum();
+                }
+                rates[idx] += randRate;
+
+                l = rates.Sum();
+            }
+
+            //assign the values over to the dictionary
+            var d = new Dictionary<string, double>();
+            var c = 0;
+            foreach (var otName in otherIncomeItemNames)
+            {
+                d.Add(otName.Name, Math.Round(rates[c], 6));
+                c += 1;
+            }
+
+            //add these back in but always at zero
+            var otherGroups = new[] {"Judgments", "Subito" };
+            otherIncomeItemNames = GetIncomeItemNames().Where(i => otherGroups.Contains(i.GetName(KindsOfNames.Group)));
+            foreach(var otName in otherIncomeItemNames)
+                d.Add(otName.Name, 0D);
+
+            return d;
+        }
+
+        /// <summary>
+        /// Composes the items for Public Benefits (a.k.a. welfare) for whenever the current person
+        /// has an inome below the federal poverty level at time <see cref="startDate"/>
+        /// </summary>
+        /// <param name="startDate"></param>
+        /// <param name="endDate"></param>
+        /// <returns></returns>
+        protected internal virtual Pondus[] GetPublicBenefitIncomeItemsForRange(DateTime? startDate,
             DateTime? endDate = null)
         {
             var itemsout = new List<Pondus>();
@@ -185,7 +286,7 @@ namespace NoFuture.Rand.Domus.Opes
             var hudAmt = isPoor ? GetHudMonthlyAmount(startDate) : Pecuniam.Zero;
             var snapAmt = isPoor ? GetFoodStampsMonthlyAmount(startDate) : Pecuniam.Zero;
 
-            var incomeItems = GetIncomeItemNames();
+            var incomeItems = GetIncomeItemNames().Where(i => i.GetName(KindsOfNames.Group) == "Public Benefits");
             foreach (var incomeItem in incomeItems)
             {
                 var p = new Pondus(incomeItem)

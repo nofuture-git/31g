@@ -279,5 +279,10 @@ namespace NoFuture.Rand.Domus.Opes
         }
 
         #endregion
+
+        protected Pecuniam CalcValue(Pecuniam pecuniam, double d)
+        {
+            return Math.Round(pecuniam.ToDouble() * d, 2).ToPecuniam();
+        }
     }
 }
