@@ -1,7 +1,8 @@
 ﻿using System;
 using NoFuture.Rand.Core;
+using NoFuture.Rand.Data.Sp;
 
-namespace NoFuture.Rand.Data.Sp
+namespace NoFuture.Rand.Com
 {
     /// <summary>
     /// An aggregate type to represent a summary of assets in terms of <see cref="Pecuniam"/>

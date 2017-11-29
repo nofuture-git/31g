@@ -85,7 +85,7 @@
     <Compile Include="Data\Sp\AccountId.cs" />
     <Compile Include="Data\Sp\Cc\AmexCc.cs" />
     <Compile Include="Data\Sp\CheckingAccount.cs" />
-    <Compile Include="Data\Sp\CommercialFinancialData.cs" />
+    <Compile Include="Com\CommercialFinancialData.cs" />
     <Compile Include="Data\Sp\Enums\ClosedCondition.cs" />
     <Compile Include="Data\Sp\Cc\CreditCardAccount.cs" />
     <Compile Include="Data\Sp\Cc\CreditCardNumber.cs" />
@@ -112,8 +112,8 @@
     <Compile Include="Data\Sp\Enums\SecurityIssueGroup.cs" />
     <Compile Include="Data\Sp\Enums\SpStatus.cs" />
     <Compile Include="Data\Sp\SecuredFixedRateLoan.cs" />
-    <Compile Include="Data\Sp\AssetsSummary.cs" />
-    <Compile Include="Data\Sp\IncomeSummary.cs" />
+    <Compile Include="Com\AssetsSummary.cs" />
+    <Compile Include="Com\IncomeSummary.cs" />
     <Compile Include="Data\Sp\TradelineClosure.cs" />
     <Compile Include="Data\Sp\Cc\VisaCc.cs" />
     <Compile Include="Data\Sp\TransactionComparer.cs" />
@@ -177,7 +177,7 @@
     <Compile Include="Data\Sp\Cc\CreditCard.cs" />
     <Compile Include="Data\Sp\CreditScore.cs" />
     <Compile Include="Data\Sp\Cusip.cs" />
-    <Compile Include="Data\Sp\FinancialData.cs" />
+    <Compile Include="Com\FinancialData.cs" />
     <Compile Include="Data\Sp\Receivable.cs" />
     <Compile Include="Data\Sp\Rent.cs" />
     <Compile Include="Data\Sp\Security.cs" />
