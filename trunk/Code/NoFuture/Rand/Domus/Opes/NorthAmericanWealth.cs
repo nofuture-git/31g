@@ -120,7 +120,7 @@ namespace NoFuture.Rand.Domus.Opes
         protected internal override FinancialData GetFinancialState(DateTime? dt = null)
         {
             var endDt = dt.GetValueOrDefault(DateTime.Now).Date.AddDays(1).AddMilliseconds(-1);
-            var startDt = CheckingAccounts.Select(x => x.Inception).Min();
+            var startDt = CheckingAccounts.Select(x => x.Inception.GetValueOrDefault(DateTime.MinValue)).Min();
 
             //get all money paid out
             var allPaymentsOut =
@@ -165,9 +165,9 @@ namespace NoFuture.Rand.Domus.Opes
             tlt += _homeEquity.Abs;
             tlt += _vehicleEquity.Abs;
             foreach (var da in CheckingAccounts)
-                tlt += da.CurrentValue.Abs;
+                tlt += da.Value.Abs;
             foreach (var da in SavingAccounts)
-                tlt += da.CurrentValue.Abs;
+                tlt += da.Value.Abs;
 
             return tlt;
         }
@@ -239,8 +239,8 @@ namespace NoFuture.Rand.Domus.Opes
                     }
                     
                     //replenish savings
-                    if (savings.CurrentValue < randSavings.ToPecuniam())
-                        DepositAccount.TransferFundsInBankAccounts(checking, savings, randSavings.ToPecuniam() - savings.CurrentValue,
+                    if (savings.Value < randSavings.ToPecuniam())
+                        DepositAccount.TransferFundsInBankAccounts(checking, savings, randSavings.ToPecuniam() - savings.Value,
                             loopDtSt.AddSeconds(15));
                     friCounter += 1;
                 }
@@ -272,7 +272,7 @@ namespace NoFuture.Rand.Domus.Opes
                 if (checking.GetStatus(loopDtSt) != SpStatus.Current || currentBalance <= new Pecuniam(10))
                 {
                     DepositAccount.TransferFundsInBankAccounts(savings, checking,
-                        randChecking.ToPecuniam() - checking.CurrentValue,
+                        randChecking.ToPecuniam() - checking.Value,
                         loopDtSt.AddHours(19));
                     continue;
                 }

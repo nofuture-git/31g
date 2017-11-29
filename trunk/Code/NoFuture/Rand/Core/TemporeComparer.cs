@@ -11,13 +11,13 @@ namespace NoFuture.Rand.Core
     {
         public int Compare(ITempore x, ITempore y)
         {
-            if (x?.FromDate == null && y?.FromDate == null)
+            if (x?.Inception == null && y?.Inception == null)
                 return 0;
-            if (x?.FromDate == null)
+            if (x?.Inception == null)
                 return 1;
-            if (y?.FromDate == null)
+            if (y?.Inception == null)
                 return -1;
-            return DateTime.Compare(x.FromDate.Value, y.FromDate.Value);
+            return DateTime.Compare(x.Inception.Value, y.Inception.Value);
         }
     }
 }

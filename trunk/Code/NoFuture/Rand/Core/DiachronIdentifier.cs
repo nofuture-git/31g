@@ -19,13 +19,13 @@ namespace NoFuture.Rand.Core
             _dateRange = new Tuple<DateTime?, DateTime?>(startDate, endDate);
         }
 
-        public virtual DateTime? FromDate
+        public virtual DateTime? Inception
         {
             get => _dateRange.Item1;
             set => _dateRange = new Tuple<DateTime?, DateTime?>(value, _dateRange.Item2);
         }
 
-        public virtual DateTime? ToDate
+        public virtual DateTime? Terminus
         {
             get => _dateRange.Item2;
             set => _dateRange = new Tuple<DateTime?, DateTime?>(_dateRange.Item1, value);
@@ -33,8 +33,8 @@ namespace NoFuture.Rand.Core
 
         public bool IsInRange(DateTime dt)
         {
-            var afterOrOnFromDt = FromDate == null || FromDate <= dt;
-            var beforeOrOnToDt = ToDate == null || ToDate.Value >= dt;
+            var afterOrOnFromDt = Inception == null || Inception <= dt;
+            var beforeOrOnToDt = Terminus == null || Terminus.Value >= dt;
             return afterOrOnFromDt && beforeOrOnToDt;
         }
 
@@ -45,8 +45,8 @@ namespace NoFuture.Rand.Core
                 return base.Equals(obj);
 
             var vEq = Value == dId.Value;
-            var sDt = dId.FromDate == FromDate;
-            var eDt = dId.ToDate == ToDate;
+            var sDt = dId.Inception == Inception;
+            var eDt = dId.Terminus == Terminus;
             return vEq && sDt && eDt;
         }
 

@@ -112,14 +112,15 @@ namespace NoFuture.Rand.Core
         public static double RationalNumber(double from, double to)
         {
             const int FACTOR = 1000000;
+            
             var fromWholeNum = Convert.ToInt32(Math.Truncate(from));
             var toWholeNum = Convert.ToInt32(Math.Truncate(to));
 
             if (fromWholeNum > 0 && toWholeNum > 0)
                 return RationalNumber(Convert.ToInt32(from), Convert.ToInt32(to));
 
-            var fromRationNum = Convert.ToInt32(Math.Abs((from - fromWholeNum)* FACTOR));
-            var toRationNum = Convert.ToInt32(Math.Abs((to - toWholeNum) * FACTOR));
+            var fromRationNum = Convert.ToInt32((from - fromWholeNum)* FACTOR);
+            var toRationNum = Convert.ToInt32((to - toWholeNum) * FACTOR);
 
             var rimex = IntNumber(fromRationNum, toRationNum);
 

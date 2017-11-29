@@ -32,7 +32,7 @@ namespace NoFuture.Rand.Data.Sp.Cc
         public Pecuniam Max => TradeLine.CreditLimit;
         public ICreditCard Cc { get; }
         public Identifier Id => Cc.Number;
-        public DateTime Inception => TradeLine.OpennedDate;
+        public DateTime? Inception {get { return TradeLine.OpennedDate; } set{ } }
 
         public DateTime? Terminus
         {
@@ -46,6 +46,13 @@ namespace NoFuture.Rand.Data.Sp.Cc
         #endregion
 
         #region methods
+        public virtual bool IsInRange(DateTime dt)
+        {
+            var afterOrOnFromDt = Inception == null || Inception <= dt;
+            var beforeOrOnToDt = Terminus == null || Terminus.Value >= dt;
+            return afterOrOnFromDt && beforeOrOnToDt;
+        }
+
         /// <summary>
         /// Public API method to allow the <see cref="Max"/> to 
         /// be increased and only increased.

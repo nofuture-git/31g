@@ -43,14 +43,14 @@ namespace NoFuture.Rand.Domus
         public int TotalYears => _totalYears;
 
         /// <summary>
-        /// Convenience method which is more straight-foward than <see cref="FromDate"/>
+        /// Convenience method which is more straight-foward than <see cref="Inception"/>
         /// </summary>
         public DateTime MarriedOn => _marriedOn;
 
         /// <summary>
         /// Attempting to set to a null value is ignored.
         /// </summary>
-        public override DateTime? FromDate
+        public override DateTime? Inception
         {
             get => _marriedOn;
             set
@@ -60,7 +60,7 @@ namespace NoFuture.Rand.Domus
             }
         }
 
-        public override DateTime? ToDate
+        public override DateTime? Terminus
         {
             get => _separatedOn;
             set => _separatedOn = value;
@@ -80,8 +80,8 @@ namespace NoFuture.Rand.Domus
             if (sd == null)
                 return false;
 
-            var so = DateTime.Compare(ToDate.GetValueOrDefault(MarriedOn.Date).Date,
-                sd.ToDate.GetValueOrDefault(sd.MarriedOn.Date)) == 0;
+            var so = DateTime.Compare(Terminus.GetValueOrDefault(MarriedOn.Date).Date,
+                sd.Terminus.GetValueOrDefault(sd.MarriedOn.Date)) == 0;
 
             return so && sd.Est == _me;
         }

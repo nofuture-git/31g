@@ -37,7 +37,7 @@ namespace NoFuture.Rand.Domus.Opes
         {
             get
             {
-                var e = Employment.Where(x => x.ToDate == null).ToList();
+                var e = Employment.Where(x => x.Terminus == null).ToList();
                 e.Sort(Comparer);
                 return e.ToArray();
             }
@@ -118,8 +118,8 @@ namespace NoFuture.Rand.Domus.Opes
             AddOtherIncome(new Pondus(name)
             {
                 Value = amt?.Neg,
-                ToDate = endDate,
-                FromDate = startDate
+                Terminus = endDate,
+                Inception = startDate
             });
         }
 
@@ -136,8 +136,8 @@ namespace NoFuture.Rand.Domus.Opes
             AddExpense(new Pondus(name)
             {
                 Value = amt?.Neg,
-                ToDate = endDate,
-                FromDate = startDate
+                Terminus = endDate,
+                Inception = startDate
             });
         }
 
@@ -148,9 +148,9 @@ namespace NoFuture.Rand.Domus.Opes
         protected internal virtual DateTime GetMinDate()
         {
             var sdt = Etx.Date(-3, null, true, 60).Date;
-            var minOtherIncome = OtherIncome.FirstOrDefault()?.FromDate;
-            var minEmply = Employment.FirstOrDefault()?.FromDate;
-            var minExpense = Expenses.FirstOrDefault()?.FromDate;
+            var minOtherIncome = OtherIncome.FirstOrDefault()?.Inception;
+            var minEmply = Employment.FirstOrDefault()?.Inception;
+            var minExpense = Expenses.FirstOrDefault()?.Inception;
             
             if (new[] { minOtherIncome, minEmply, minExpense }.All(dt => dt == null))
                 return sdt;
@@ -196,8 +196,8 @@ namespace NoFuture.Rand.Domus.Opes
                     : incomeName2Rates[incomeItem.Name];
                 var p = new Pondus(incomeItem)
                 {
-                    FromDate = startDate,
-                    ToDate = endDate,
+                    Inception = startDate,
+                    Terminus = endDate,
                     Value = CalcValue(amt, incomeRate),
                     Interval = interval
                 };
@@ -257,8 +257,8 @@ namespace NoFuture.Rand.Domus.Opes
             {
                 var p = new Pondus(incomeItem)
                 {
-                    FromDate = startDate,
-                    ToDate = endDate,
+                    Inception = startDate,
+                    Terminus = endDate,
                     Interval = Interval.Monthly
                 };
 

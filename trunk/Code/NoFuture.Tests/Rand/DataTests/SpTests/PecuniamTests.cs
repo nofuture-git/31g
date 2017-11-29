@@ -166,7 +166,7 @@ namespace NoFuture.Rand.Tests
             var payoff = testLoan.GetValueAt(lastPmtDate);
             testLoan.Push(lastPmtDate, payoff, Mereo.GetMereoById(null, "payoff"), Pecuniam.Zero);
             
-            Assert.AreEqual(Pecuniam.Zero, testLoan.CurrentValue);
+            Assert.AreEqual(Pecuniam.Zero, testLoan.Value);
 
             var fv = testLoan.GetValueAt(new DateTime(2028, 12, 15));
             Debug.WriteLine(fv);

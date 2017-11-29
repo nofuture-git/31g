@@ -69,8 +69,8 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             Assert.AreEqual(DateTime.Today.AddYears(-3), testResult);
 
             //given other more recent items - employment still the oldest
-            var expense = new Pondus("Expense") {FromDate = DateTime.Today.AddYears(-1)};
-            var otIncome = new Pondus("Other Income") { FromDate = DateTime.Today.AddYears(-2) };
+            var expense = new Pondus("Expense") {Inception = DateTime.Today.AddYears(-1)};
+            var otIncome = new Pondus("Other Income") { Inception = DateTime.Today.AddYears(-2) };
 
             testSubject.AddOtherIncome(otIncome);
             testSubject.AddExpense(expense);

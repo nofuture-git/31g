@@ -123,7 +123,7 @@ namespace NoFuture.Rand.Domus.Opes
         {
             if (items == null)
                 return null;
-            var o = items.Where(x => x.ToDate == null).ToList();
+            var o = items.Where(x => x.Terminus == null).ToList();
             o.Sort(Comparer);
             return o.ToArray();
         }

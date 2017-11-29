@@ -4,7 +4,6 @@ using System.Linq;
 using NoFuture.Rand.Com;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Data.Sp.Enums;
-using NoFuture.Rand.Domus.Opes;
 
 namespace NoFuture.Rand.Data.Sp
 {
@@ -14,11 +13,12 @@ namespace NoFuture.Rand.Data.Sp
     [Serializable]
     public abstract class DepositAccount : IAccount<Identifier>, ITransactionable
     {
+        private readonly DateTime _inceptionDate;
         #region ctor
         protected DepositAccount(DateTime dateOpenned)
         {
             Balance = new Balance();
-            Inception = dateOpenned;
+            _inceptionDate = dateOpenned;
         }
         #endregion 
 
@@ -27,8 +27,8 @@ namespace NoFuture.Rand.Data.Sp
         public virtual Identifier Id { get; set; }
         public IBalance Balance { get; }
         public FinancialFirm Bank { get; set; }
-        public abstract Pecuniam CurrentValue { get; }
-        public virtual DateTime Inception { get; }
+        public abstract Pecuniam Value { get; }
+        public virtual DateTime? Inception { get { return _inceptionDate; } set {} }
         public virtual DateTime? Terminus { get; set; }
         #endregion
 
@@ -42,7 +42,12 @@ namespace NoFuture.Rand.Data.Sp
         {
             return Balance.GetCurrent(dt, 0.0F);
         }
-
+        public virtual bool IsInRange(DateTime dt)
+        {
+            var afterOrOnFromDt = Inception == null || Inception <= dt;
+            var beforeOrOnToDt = Terminus == null || Terminus.Value >= dt;
+            return afterOrOnFromDt && beforeOrOnToDt;
+        }
         public SpStatus GetStatus(DateTime? dt)
         {
             if(Terminus != null && Terminus < dt)
@@ -113,11 +118,12 @@ namespace NoFuture.Rand.Data.Sp
             if (fromAccount.GetStatus(dt) != SpStatus.Current && toAccount.GetStatus(dt) != SpStatus.Current)
                 return;
 
-            if (fromAccount.Inception < dt || toAccount.Inception < dt)
+            if (fromAccount.Inception.GetValueOrDefault(DateTime.MinValue) < dt 
+                || toAccount.Inception.GetValueOrDefault(DateTime.MinValue) < dt)
                 return;
             amt = amt.Abs;
 
-            while (fromAccount.CurrentValue < amt)
+            while (fromAccount.Value < amt)
             {
                 amt = amt / 2.ToPecuniam();
                 if (amt.Amount < 0.01M)

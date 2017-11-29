@@ -1,4 +1,4 @@
-﻿using System;
+﻿using NoFuture.Rand.Core;
 
 namespace NoFuture.Rand.Data.Sp
 {
@@ -6,10 +6,8 @@ namespace NoFuture.Rand.Data.Sp
     /// Represents a individual finacial agreement in time.
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public interface IAccount<T> : IAsset
+    public interface IAccount<T> : IAsset, ITempore
     {
         T Id { get; }
-        DateTime Inception { get; }
-        DateTime? Terminus { get; set; }
     }
 }

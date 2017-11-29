@@ -265,7 +265,7 @@ namespace NoFuture.Rand.Domus
                 _spouses.FirstOrDefault(
                     x =>
                         x.MarriedOn.Date <= dt &&
-                        (x.ToDate == null || x.ToDate.Value.Date > dt));
+                        (x.Terminus == null || x.Terminus.Value.Date > dt));
             return spouseData;
         }
 

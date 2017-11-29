@@ -22,7 +22,7 @@ namespace NoFuture.Rand.Data.Sp
         public IMereo Description { get; set; }
         public SpStatus CurrentStatus => GetStatus(DateTime.Now);
         public PastDue? CurrentDelinquency => GetDelinquency(DateTime.Now);
-        public Pecuniam CurrentValue => GetValueAt(DateTime.Now);
+        public Pecuniam Value => GetValueAt(DateTime.Now);
         #endregion
 
         #region methods

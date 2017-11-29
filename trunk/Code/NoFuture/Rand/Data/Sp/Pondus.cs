@@ -8,11 +8,13 @@ using NoFuture.Rand.Domus;
 namespace NoFuture.Rand.Data.Sp
 {
     /// <inheritdoc cref="Mereo" />
+    /// <inheritdoc cref="ITempore" />
+    /// <inheritdoc cref="IAsset" />
     /// <summary>
     /// A composition type to bind a time-range and an money amount to a name
     /// </summary>
     [Serializable]
-    public class Pondus : Mereo, IIdentifier<Pecuniam>, ITempore
+    public class Pondus : Mereo, IIdentifier<Pecuniam>, ITempore, IAsset
     {
         private Tuple<DateTime?, DateTime?> _dateRange;
 
@@ -26,13 +28,23 @@ namespace NoFuture.Rand.Data.Sp
 
         public Pecuniam Value { get; set; }
 
-        public virtual DateTime? FromDate
+        public SpStatus GetStatus(DateTime? dt)
+        {
+            return SpStatus.NoHistory;
+        }
+
+        public Pecuniam GetValueAt(DateTime dt)
+        {
+            return IsInRange(dt) ? Value : Pecuniam.Zero;
+        }
+
+        public virtual DateTime? Inception
         {
             get => _dateRange?.Item1;
             set => _dateRange = new Tuple<DateTime?, DateTime?>(value, _dateRange?.Item2);
         }
 
-        public virtual DateTime? ToDate
+        public virtual DateTime? Terminus
         {
             get => _dateRange?.Item2;
             set => _dateRange = new Tuple<DateTime?, DateTime?>(_dateRange?.Item1, value);
@@ -40,8 +52,8 @@ namespace NoFuture.Rand.Data.Sp
 
         public virtual bool IsInRange(DateTime dt)
         {
-            var afterOrOnFromDt = FromDate == null || FromDate <= dt;
-            var beforeOrOnToDt = ToDate == null || ToDate.Value >= dt;
+            var afterOrOnFromDt = Inception == null || Inception <= dt;
+            var beforeOrOnToDt = Terminus == null || Terminus.Value >= dt;
             return afterOrOnFromDt && beforeOrOnToDt;
         }
 
@@ -102,8 +114,8 @@ namespace NoFuture.Rand.Data.Sp
             if (p == null || !baseEq)
                 return base.Equals(obj);
 
-            var sDtEq = FromDate == p.FromDate;
-            var eDtEq = ToDate == p.ToDate;
+            var sDtEq = Inception == p.Inception;
+            var eDtEq = Terminus == p.Terminus;
 
             return sDtEq && eDtEq;
         }

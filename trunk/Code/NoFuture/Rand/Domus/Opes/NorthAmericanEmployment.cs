@@ -72,13 +72,13 @@ namespace NoFuture.Rand.Domus.Opes
         public virtual Pondus[] CurrentDeductions => GetDeductionsAt(null);
         public virtual Pondus[] CurrentPay => GetPayAt(null);
 
-        public virtual DateTime? FromDate
+        public virtual DateTime? Inception
         {
             get => _dateRange.Item1;
             set => _dateRange = new Tuple<DateTime?, DateTime?>(value, _dateRange.Item2);
         }
 
-        public virtual DateTime? ToDate
+        public virtual DateTime? Terminus
         {
             get => _dateRange.Item2;
             set => _dateRange = new Tuple<DateTime?, DateTime?>(_dateRange.Item1, value);
@@ -94,8 +94,8 @@ namespace NoFuture.Rand.Domus.Opes
 
         public virtual bool IsInRange(DateTime dt)
         {
-            var afterOrOnFromDt = FromDate == null || FromDate <= dt;
-            var beforeOrOnToDt = ToDate == null || ToDate.Value >= dt;
+            var afterOrOnFromDt = Inception == null || Inception <= dt;
+            var beforeOrOnToDt = Terminus == null || Terminus.Value >= dt;
             return afterOrOnFromDt && beforeOrOnToDt;
         }
 
@@ -266,8 +266,8 @@ namespace NoFuture.Rand.Domus.Opes
                     : incomeName2Rates[incomeItem.Name];
                 var p = new Pondus(incomeItem)
                 {
-                    FromDate = startDate,
-                    ToDate = endDate,
+                    Inception = startDate,
+                    Terminus = endDate,
                     Value = CalcValue(amt, incomeRate),
                     Interval = interval
                 };
@@ -372,8 +372,8 @@ namespace NoFuture.Rand.Domus.Opes
                     : deductionNames2Rates[deduction.Name];
                 var p = new Pondus(deduction)
                 {
-                    FromDate = startDate,
-                    ToDate = endDate,
+                    Inception = startDate,
+                    Terminus = endDate,
                     Value = CalcValue(amt, deductionRate),
                     Interval = interval
                 };
@@ -499,14 +499,14 @@ namespace NoFuture.Rand.Domus.Opes
         {
             if (item == null)
                 return false;
-            var itemEndDt = item.ToDate;
+            var itemEndDt = item.Terminus;
             var rangeStartDt = _dateRange?.Item1;
             
             //item ended before this instance even started
             if (itemEndDt != null && rangeStartDt != null && itemEndDt.Value < rangeStartDt.Value)
                 return false;
 
-            var itemStartDt = item.FromDate;
+            var itemStartDt = item.Inception;
             var rangeEndDt = _dateRange?.Item2;
 
             //instance ended before this item even started
@@ -541,8 +541,8 @@ namespace NoFuture.Rand.Domus.Opes
             return e.Value != null 
                    && Value != null
                    && e.Value.Equals(Value)
-                   && e.FromDate == FromDate
-                   && e.ToDate == ToDate;
+                   && e.Inception == Inception
+                   && e.Terminus == Terminus;
         }
 
         public override int GetHashCode()
@@ -554,7 +554,7 @@ namespace NoFuture.Rand.Domus.Opes
         public override string ToString()
         {
             var t = new Tuple<string, string, DateTime?, DateTime?, Pecuniam>(Value?.ToString(), Occupation?.ToString(),
-                FromDate, ToDate, TotalAnnualPay);
+                Inception, Terminus, TotalAnnualPay);
             return t.ToString();
         }
 

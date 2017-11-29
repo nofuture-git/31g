@@ -20,6 +20,26 @@ namespace NoFuture.Rand.Tests
         }
 
         [TestMethod]
+        public void TestIntNumber()
+        {
+            //handles in a range
+            for (var i = 0; i < 100; i++)
+            {
+                var testResult = Etx.IntNumber(10, 20);
+                Assert.IsTrue(testResult >= 10);
+                Assert.IsTrue(testResult <= 20);
+            }
+
+            //handles negative numbers
+            for (var i = 0; i < 16; i++)
+            {
+                var testResult = Etx.IntNumber(-90, -1);
+                Assert.IsTrue(testResult < 0);
+                System.Diagnostics.Debug.WriteLine(testResult);
+            }
+        }
+
+        [TestMethod]
         public void TestRandomHttpUri()
         {
             for (var i = 0; i < 10; i++)
@@ -146,7 +166,11 @@ namespace NoFuture.Rand.Tests
             var testResult = Etx.RationalNumber(0.7139, 0.7889);
             Assert.IsTrue(testResult >= 0.7139);
             Assert.IsTrue(testResult <= 0.7889);
+
+            //handles negative numbers
+            testResult = Etx.RationalNumber(-0.99, -0.01);
             System.Diagnostics.Debug.WriteLine(testResult);
+            Assert.IsTrue(testResult < 0);
         }
 
         [TestMethod]

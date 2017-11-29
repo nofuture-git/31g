@@ -39,7 +39,7 @@ namespace NoFuture.Rand.Data.Sp
         #endregion
 
         #region properties
-        public override Pecuniam CurrentValue => Balance.GetCurrent(DateTime.Now, 0F);
+        public override Pecuniam Value => Balance.GetCurrent(DateTime.Now, 0F);
         public virtual ICreditCard DebitCard { get; }
         #endregion
 

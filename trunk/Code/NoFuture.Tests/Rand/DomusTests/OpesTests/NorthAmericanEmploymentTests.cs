@@ -43,8 +43,8 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             var testSubject = new Domus.Opes.NorthAmericanEmployment(new DateTime(2011, 10, 5), null);
             testSubject.Occupation = StandardOccupationalClassification.GetById("39-3011");
 
-            var testResult = testSubject.GetPayItemsForRange(55000D.ToPecuniam(), testSubject.FromDate,
-                testSubject.FromDate.Value.AddYears(1));
+            var testResult = testSubject.GetPayItemsForRange(55000D.ToPecuniam(), testSubject.Inception,
+                testSubject.Inception.Value.AddYears(1));
 
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0, testResult.Length);
@@ -54,8 +54,8 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             Assert.AreNotEqual(Pecuniam.Zero, testPondus.Value);
 
             testSubject.Occupation = StandardOccupationalClassification.GetById("41-2031");
-            testResult = testSubject.GetPayItemsForRange(55000D.ToPecuniam(), testSubject.FromDate,
-                testSubject.FromDate.Value.AddYears(1));
+            testResult = testSubject.GetPayItemsForRange(55000D.ToPecuniam(), testSubject.Inception,
+                testSubject.Inception.Value.AddYears(1));
 
             testPondus = testResult.FirstOrDefault(p => p.Name == "Commissions");
             Assert.IsNotNull(testPondus);
@@ -76,8 +76,8 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         public void TestGetDeductionItemsForRange()
         {
             var testSubject = new Domus.Opes.NorthAmericanEmployment(new DateTime(2011, 10, 5), null);
-            var testResult = testSubject.GetDeductionItemsForRange(55000D.ToPecuniam(), testSubject.FromDate,
-                testSubject.FromDate.Value.AddYears(1));
+            var testResult = testSubject.GetDeductionItemsForRange(55000D.ToPecuniam(), testSubject.Inception,
+                testSubject.Inception.Value.AddYears(1));
 
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0, testResult.Length);
@@ -93,7 +93,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             Assert.AreNotEqual(0, testResult.Length);
 
             foreach (var t in testResult)
-                System.Diagnostics.Debug.WriteLine($"{t.Value} {t.Name} {t.FromDate}-{t.ToDate}");
+                System.Diagnostics.Debug.WriteLine($"{t.Value} {t.Name} {t.Inception}-{t.Terminus}");
 
         }
 
@@ -108,7 +108,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             Assert.AreNotEqual(0, testResults.Count);
 
             foreach (var t in testResults.Where(c => c.Value != Pecuniam.Zero))
-                System.Diagnostics.Debug.WriteLine($"{t.Value} {t.Name} {t.FromDate}-{t.ToDate}");
+                System.Diagnostics.Debug.WriteLine($"{t.Value} {t.Name} {t.Inception}-{t.Terminus}");
 
         }
 

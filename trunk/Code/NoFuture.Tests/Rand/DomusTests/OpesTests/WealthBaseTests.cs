@@ -162,12 +162,12 @@ namespace NoFuture.Rand.Tests
             Assert.IsTrue(testResult.Rate > 0);
             Assert.IsNotNull(testResult.TradeLine);
             Assert.AreNotEqual(SpStatus.NoHistory, testResult.CurrentStatus);
-            Assert.AreNotEqual(Pecuniam.Zero, testResult.CurrentValue);
+            Assert.AreNotEqual(Pecuniam.Zero, testResult.Value);
             System.Diagnostics.Debug.WriteLine("MinPaymentRate     : {0}", testResult.MinPaymentRate);
             System.Diagnostics.Debug.WriteLine("Rate               : {0}", testResult.Rate);
             System.Diagnostics.Debug.WriteLine("TradeLine          : {0}", testResult.TradeLine);
             System.Diagnostics.Debug.WriteLine("CurrentStatus      : {0}", testResult.CurrentStatus);
-            System.Diagnostics.Debug.WriteLine("CurrentValue       : {0}", testResult.CurrentValue);
+            System.Diagnostics.Debug.WriteLine("CurrentValue       : {0}", testResult.Value);
 
             foreach (var t in testResult.TradeLine.Balance.GetTransactionsBetween(null, null, true))
             {
