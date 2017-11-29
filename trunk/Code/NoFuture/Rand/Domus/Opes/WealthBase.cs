@@ -17,7 +17,7 @@ namespace NoFuture.Rand.Domus.Opes
     {
         #region fields
         protected internal IComparer<ITempore> Comparer { get; } = new TemporeComparer();
-        protected readonly NorthAmerican Amer;
+        private readonly NorthAmerican _amer;
         protected readonly bool IsRenting;
         private readonly NorthAmericanFactors _factors;
         private static IMereo[] _incomeItemNames;
@@ -34,14 +34,14 @@ namespace NoFuture.Rand.Domus.Opes
                 _factors = new NorthAmericanFactors(null);
                 return;
             }
-            Amer = american;
-            var usCityArea = Amer?.Address?.HomeCityArea as UsCityStateZip;
+            _amer = american;
+            var usCityArea = _amer?.Address?.HomeCityArea as UsCityStateZip;
 
             CreditScore = new PersonalCreditScore(american);
 
             //determine if renting or own
             IsRenting = isRenting || GetIsLeaseResidence(usCityArea);
-            _factors = new NorthAmericanFactors(Amer);
+            _factors = new NorthAmericanFactors(_amer);
         }
         #endregion
 
@@ -53,7 +53,7 @@ namespace NoFuture.Rand.Domus.Opes
         /// </summary>
         public NorthAmericanFactors Factors => _factors;
 
-        protected internal virtual NorthAmerican Person => Amer;
+        protected internal virtual NorthAmerican Person => _amer;
 
         #region methods
         /// <summary>
@@ -116,7 +116,7 @@ namespace NoFuture.Rand.Domus.Opes
         /// </remarks>
         protected internal virtual LinearEquation GetAvgEarningPerYear()
         {
-            var ca = Amer?.Address?.HomeCityArea as UsCityStateZip;
+            var ca = _amer?.Address?.HomeCityArea as UsCityStateZip;
             return (ca?.AverageEarnings ?? ca?.State?.GetStateData()?.AverageEarnings) ?? NAmerUtil.Equations.NatlAverageEarnings;
         }
 
@@ -269,13 +269,13 @@ namespace NoFuture.Rand.Domus.Opes
                 return true;
 
             var livesInDenseUrbanArea = usCityArea.Msa?.MsaType == (UrbanCentric.City | UrbanCentric.Large);
-            var isYoung = Amer.GetAgeAt(null) < 32;
+            var isYoung = _amer.GetAgeAt(null) < 32;
             var roll = 65;
             if (livesInDenseUrbanArea)
                 roll -= 23;
             //is scaled where 29 year-old loses 3 while 21 year-old loses 11
             if (isYoung)
-                roll -= 32 - Amer.GetAgeAt(null);
+                roll -= 32 - _amer.GetAgeAt(null);
             return Etx.TryBelowOrAt(roll, Etx.Dice.OneHundred);
         }
 

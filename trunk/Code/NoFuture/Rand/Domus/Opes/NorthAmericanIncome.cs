@@ -363,7 +363,7 @@ namespace NoFuture.Rand.Domus.Opes
         /// <param name="personality"></param>
         /// <param name="eduLevel"></param>
         /// <returns></returns>
-        protected internal virtual List<IEmployment> ResolveEmployment(IPersonality personality,
+        protected internal virtual List<IEmployment> GetRandomEmployment(IPersonality personality,
             OccidentalEdu eduLevel = OccidentalEdu.None)
         {
             var empls = new HashSet<IEmployment>();

@@ -54,6 +54,7 @@
     <Compile Include="Math\NormalDistEquation.cs" />
     <Compile Include="Math\SecondDegreePolynomial.cs" />
     <Compile Include="Math\SinusoidEquation.cs" />
+    <Compile Include="Math\ThirdDegreePolynomial.cs" />
     <Compile Include="NfPath.cs" />
     <Compile Include="NfReflect.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

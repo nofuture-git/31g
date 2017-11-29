@@ -19,7 +19,7 @@ namespace NoFuture.Util.Core.Math
 
         public override string ToString()
         {
-            return $"f(x) = {SecondCoefficient}x² {Slope}x + {Intercept}";
+            return $"f(x) = {SecondCoefficient}x² + {Slope}x + {Intercept}";
         }
     }
 }

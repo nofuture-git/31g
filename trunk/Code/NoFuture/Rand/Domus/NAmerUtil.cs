@@ -315,6 +315,19 @@ namespace NoFuture.Rand.Domus
 
                 return new LinearEquation(7880, estSlope);
             }
+
+            /// <summary>
+            /// This is an assumed graph for the age of an american.
+            /// Its asymetric where age 44 is 0.0, age 21 is 0.14 but 
+            /// age 67 (being likewise 23 years difference from 44) is 0.36 - reaches 1.0 at 80
+            /// </summary>
+            public static ThirdDegreePolynomial ClassicHook = new ThirdDegreePolynomial
+            {
+                Intercept = 0.205625,
+                Slope = 0.005986,
+                SecondCoefficient = -0.0005986,
+                ThirdCoefficient = 0.0000081
+            };
         }
 
         public static class Tables

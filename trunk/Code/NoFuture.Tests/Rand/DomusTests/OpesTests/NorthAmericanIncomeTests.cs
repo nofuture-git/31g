@@ -39,14 +39,14 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         public void TestResolveEmployment()
         {
             var testSubject = new NorthAmericanIncome(null);
-            var testResult = testSubject.ResolveEmployment(null);
+            var testResult = testSubject.GetRandomEmployment(null);
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0, testResult.Count);
 
             var testInput = new NoFuture.Rand.Domus.Pneuma.Personality();
             testInput.Openness.Value = new Dimension(0.99, 0.10);
 
-            testResult = testSubject.ResolveEmployment(testInput);
+            testResult = testSubject.GetRandomEmployment(testInput);
             Assert.IsNotNull(testResult);
             Assert.IsTrue(testResult.Count > 1);
             foreach (var emply in testResult)

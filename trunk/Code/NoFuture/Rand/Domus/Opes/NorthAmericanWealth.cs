@@ -1,18 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Xml;
 using NoFuture.Rand.Core;
-using NoFuture.Rand.Core.Enums;
-using NoFuture.Rand.Data;
-using NoFuture.Rand.Data.Endo;
-using NoFuture.Rand.Data.Endo.Enums;
 using NoFuture.Rand.Data.Sp;
 using NoFuture.Rand.Data.Sp.Cc;
 using NoFuture.Rand.Data.Sp.Enums;
-using NoFuture.Rand.Domus.Pneuma;
-using NoFuture.Util.Core;
-using NoFuture.Util.Core.Math;
 
 namespace NoFuture.Rand.Domus.Opes
 {
@@ -119,13 +111,13 @@ namespace NoFuture.Rand.Domus.Opes
             var baseDate = DateTime.Today.AddYears(-1);
 
             //set up checking
-            var checking = CheckingAccount.GetRandomCheckingAcct(Amer,baseDate);
+            var checking = CheckingAccount.GetRandomCheckingAcct(Person,baseDate);
             var randChecking = NorthAmericanFactors.GetRandomFactorValue(FactorTables.CheckingAccount, Factors.CheckingAcctFactor, stdDevAsPercent);
             checking.Push(baseDate.AddDays(-1), randChecking.ToPecuniam(), Mereo.GetMereoById(null, "Init Checking"), Pecuniam.Zero);
 
             //set up a savings
             var randSavings = NorthAmericanFactors.GetRandomFactorValue(FactorTables.SavingsAccount, Factors.SavingsAcctFactor, stdDevAsPercent);
-            var savings = SavingsAccount.GetRandomSavingAcct(Amer, baseDate);
+            var savings = SavingsAccount.GetRandomSavingAcct(Person, baseDate);
             savings.Push(baseDate.AddDays(-1), randSavings.ToPecuniam(), Mereo.GetMereoById(null, "Init Savings"), Pecuniam.Zero);
             var friCounter = 0;
             var historyTs = DateTime.Today - baseDate;
@@ -155,7 +147,7 @@ namespace NoFuture.Rand.Domus.Opes
 
                 //b-day money
                 if (DateTime.Compare(loopDtSt,
-                        new DateTime(loopDtSt.Year, Amer.BirthCert.DateOfBirth.Month, Amer.BirthCert.DateOfBirth.Day)) ==
+                        new DateTime(loopDtSt.Year, Person.BirthCert.DateOfBirth.Month, Person.BirthCert.DateOfBirth.Day)) ==
                     0)
                 {
                     checking.Push(loopDtSt.AddHours(15), Pecuniam.GetRandPecuniam(10,100,10), Mereo.GetMereoById(null, "b-day money"), Pecuniam.Zero);
@@ -188,7 +180,7 @@ namespace NoFuture.Rand.Domus.Opes
                 var myPecuniam = currentBalance > Paycheck ? currentBalance : Paycheck;
                 var dailyMax = (double) myPecuniam.Amount*DF_DAILY_SPEND_PERCENT;
 
-                CreateSingleDaysPurchases(Amer.Personality, checking, loopDtSt, dailyMax);
+                CreateSingleDaysPurchases(Person.Personality, checking, loopDtSt, dailyMax);
             }
             SavingAccounts.Add(savings);
             CheckingAccounts.Add(checking);
@@ -222,7 +214,7 @@ namespace NoFuture.Rand.Domus.Opes
         protected internal void AddTotalCcDebt(double stdDevAsPercent = DF_STD_DEV_PERCENT)
         {
             //~ 25% americans have no CC
-            if (!(Amer.Personality.Conscientiousness.Value.Zscore < 0.5D))
+            if (!(Person.Personality.Conscientiousness.Value.Zscore < 0.5D))
                 return;
 
             //get random total cc debt
@@ -231,12 +223,12 @@ namespace NoFuture.Rand.Domus.Opes
             //get number of cc's to divide total cc debt into
             var numOfCc = 1;
             var roll = 100;
-            if (Amer.Age >= 30)
+            if (Person.Age >= 30)
             {
                 numOfCc += 1;
                 roll = 13;
             }
-            if (Amer.Age >= 47 && Amer.Age < 66)
+            if (Person.Age >= 47 && Person.Age < 66)
                 roll = 66;
 
             if (Etx.TryBelowOrAt(roll, Etx.Dice.OneHundred))
@@ -274,7 +266,7 @@ namespace NoFuture.Rand.Domus.Opes
 
             var homeDebtFactor = Factors.HomeDebtFactor;
 
-            var rent = Rent.GetRandomRentWithHistory(Amer.Address, homeDebtFactor, Amer.Personality, stdDevAsPercent);
+            var rent = Rent.GetRandomRentWithHistory(Person.Address, homeDebtFactor, Person.Personality, stdDevAsPercent);
             var randRent = rent.MonthlyPmt;
 
             HomeDebt.Add(rent);
@@ -301,8 +293,8 @@ namespace NoFuture.Rand.Domus.Opes
             var totalCost = new Pecuniam((decimal)(randHouseDebt + randHouseEquity));
 
             //create a loan on current residence
-            var loan = SecuredFixedRateLoan.GetRandomLoanWithHistory(Amer.Address, spCost, totalCost, (float) randRate,
-                30, out var minPmt, Amer.Personality);
+            var loan = SecuredFixedRateLoan.GetRandomLoanWithHistory(Person.Address, spCost, totalCost, (float) randRate,
+                30, out var minPmt, Person.Personality);
             loan.Description = Mereo.GetMereoById(null, "30-Year Mortgage");
             loan.TradeLine.FormOfCredit = FormOfCredit.Mortgage;
             HomeDebt.Add(loan);
@@ -317,7 +309,7 @@ namespace NoFuture.Rand.Domus.Opes
         protected internal void AddSingleCcDebt(double stdDevAsPercent = DF_STD_DEV_PERCENT)
         {
             //create random cc
-            var ccAcct = CreditCardAccount.GetRandomCcAcct(Amer, CreditScore);
+            var ccAcct = CreditCardAccount.GetRandomCcAcct(Person, CreditScore);
 
             var pmtNote = Mereo.GetMereoById(ccAcct.Id);
 
@@ -343,7 +335,7 @@ namespace NoFuture.Rand.Domus.Opes
                     var minDue = ccAcct.GetMinPayment(loopDt);
                     if (minDue > new Pecuniam(10.0M).Neg)
                         minDue = new Pecuniam(10.0M).Neg;
-                    if (Amer.Personality.GetRandomActsIrresponsible())
+                    if (Person.Personality.GetRandomActsIrresponsible())
                     {
                         var fowardDays = Etx.IntNumber(1, 45);
                         var paidDate = loopDt.AddDays(fowardDays);
@@ -368,7 +360,7 @@ namespace NoFuture.Rand.Domus.Opes
 
                 var daysMax = (double)scaler.Amount*DF_DAILY_SPEND_PERCENT/2;
 
-                CreateSingleDaysPurchases(Amer.Personality, ccAcct, loopDt,daysMax);
+                CreateSingleDaysPurchases(Person.Personality, ccAcct, loopDt,daysMax);
             }
 
             CreditCardDebt.Add(ccAcct);
@@ -408,7 +400,7 @@ namespace NoFuture.Rand.Domus.Opes
             var totalCost = new Pecuniam((decimal)(randCarDebt + randCarEquity));
 
             var loan = SecuredFixedRateLoan.GetRandomLoanWithHistory(new Gov.Nhtsa.Vin(), spCost, totalCost,
-                (float) randRate, 5, out var minPmt, Amer.Personality);
+                (float) randRate, 5, out var minPmt, Person.Personality);
 
             //insure that the gen'ed history doesn't start before the year of make
             var maxYear = loan.TradeLine.OpennedDate.Year;
