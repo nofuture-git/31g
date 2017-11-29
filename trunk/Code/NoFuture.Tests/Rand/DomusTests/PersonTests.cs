@@ -35,7 +35,6 @@ namespace NoFuture.Rand.Tests
             var testResult = new NorthAmerican(DateTime.Now.AddYears(-36), Gender.Female, true, true);
             Assert.IsNotNull(testResult.GetMother());
             Assert.AreNotEqual(0, testResult.GetMother().GetChildrenAt(null));
-            Assert.IsNotNull(testResult.GetWealthAt(null));
         }
 
         [TestMethod]

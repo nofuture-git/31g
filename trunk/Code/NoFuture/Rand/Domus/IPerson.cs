@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
-using NoFuture.Rand.Data.Endo;
 using NoFuture.Rand.Data.Endo.Enums;
-using NoFuture.Rand.Domus.Opes;
 using NoFuture.Rand.Gov;
 
 namespace NoFuture.Rand.Domus
@@ -60,14 +58,6 @@ namespace NoFuture.Rand.Domus
         /// <param name="dt">Null for the current time right now.</param>
         /// <returns></returns>
         IEducation GetEducationAt(DateTime? dt);
-
-        /// <summary>
-        /// Resolves the financial state and history of the person
-        /// at time <see cref="dt"/>
-        /// </summary>
-        /// <param name="dt"></param>
-        /// <returns></returns>
-        RenameMe GetWealthAt(DateTime? dt);
 
         #endregion
     }

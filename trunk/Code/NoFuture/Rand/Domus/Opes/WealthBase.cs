@@ -7,6 +7,7 @@ using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Data.Endo;
 using NoFuture.Rand.Data.Endo.Enums;
 using NoFuture.Rand.Data.Sp;
+using NoFuture.Rand.Domus.Pneuma;
 using NoFuture.Util.Core;
 using NoFuture.Util.Core.Math;
 
@@ -16,8 +17,8 @@ namespace NoFuture.Rand.Domus.Opes
     {
         #region fields
         protected internal IComparer<ITempore> Comparer { get; } = new TemporeComparer();
-        private readonly NorthAmerican _amer;
-        private readonly bool _isRenting;
+        protected readonly NorthAmerican Amer;
+        protected readonly bool IsRenting;
         private readonly NorthAmericanFactors _factors;
         private static IMereo[] _incomeItemNames;
         private static IMereo[] _deductionItemNames;
@@ -33,18 +34,18 @@ namespace NoFuture.Rand.Domus.Opes
                 _factors = new NorthAmericanFactors(null);
                 return;
             }
-            _amer = american;
-            var usCityArea = _amer?.Address?.HomeCityArea as UsCityStateZip;
+            Amer = american;
+            var usCityArea = Amer?.Address?.HomeCityArea as UsCityStateZip;
 
             CreditScore = new PersonalCreditScore(american);
 
             //determine if renting or own
-            _isRenting = isRenting || GetIsLeaseResidence(usCityArea);
-            _factors = new NorthAmericanFactors(_amer);
+            IsRenting = isRenting || GetIsLeaseResidence(usCityArea);
+            _factors = new NorthAmericanFactors(Amer);
         }
         #endregion
 
-        public CreditScore CreditScore { get; }
+        public CreditScore CreditScore { get; protected set; }
 
         /// <summary>
         /// Exposes the calculated factors using the <see cref="NorthAmerican"/> passed into 
@@ -52,7 +53,7 @@ namespace NoFuture.Rand.Domus.Opes
         /// </summary>
         public NorthAmericanFactors Factors => _factors;
 
-        protected internal virtual NorthAmerican Person => _amer;
+        protected internal virtual NorthAmerican Person => Amer;
 
         #region methods
         /// <summary>
@@ -115,7 +116,7 @@ namespace NoFuture.Rand.Domus.Opes
         /// </remarks>
         protected internal virtual LinearEquation GetAvgEarningPerYear()
         {
-            var ca = _amer?.Address?.HomeCityArea as UsCityStateZip;
+            var ca = Amer?.Address?.HomeCityArea as UsCityStateZip;
             return (ca?.AverageEarnings ?? ca?.State?.GetStateData()?.AverageEarnings) ?? NAmerUtil.Equations.NatlAverageEarnings;
         }
 
@@ -268,13 +269,13 @@ namespace NoFuture.Rand.Domus.Opes
                 return true;
 
             var livesInDenseUrbanArea = usCityArea.Msa?.MsaType == (UrbanCentric.City | UrbanCentric.Large);
-            var isYoung = _amer.GetAgeAt(null) < 32;
+            var isYoung = Amer.GetAgeAt(null) < 32;
             var roll = 65;
             if (livesInDenseUrbanArea)
                 roll -= 23;
             //is scaled where 29 year-old loses 3 while 21 year-old loses 11
             if (isYoung)
-                roll -= 32 - _amer.GetAgeAt(null);
+                roll -= 32 - Amer.GetAgeAt(null);
             return Etx.TryBelowOrAt(roll, Etx.Dice.OneHundred);
         }
 
@@ -324,6 +325,73 @@ namespace NoFuture.Rand.Domus.Opes
             return d;
         }
 
+        /// <summary>
+        /// Creates purchase transactions on <see cref="t"/> at random for the given <see cref="dt"/>.
+        /// </summary>
+        /// <param name="spender"></param>
+        /// <param name="t"></param>
+        /// <param name="dt"></param>
+        /// <param name="daysMax"></param>
+        /// <param name="randMaxFactor">
+        /// The multiplier used for the rand dollar's max, raising this value 
+        /// will raise every transactions possiable max by a factor of this.
+        /// </param>
+        public static void CreateSingleDaysPurchases(Personality spender, ITransactionable t, DateTime? dt,
+            double daysMax, int randMaxFactor = 7)
+        {
+            if (t == null)
+                throw new ArgumentNullException(nameof(t));
+            if (daysMax <= 0)
+                return;
+            var ccDate = dt ?? DateTime.Today;
+
+            //build charges history
+            var keepSpending = true;
+            var spentSum = new Pecuniam(0);
+
+            while (keepSpending) //want possiable multiple transactions per day
+            {
+                //if we reached target then exit 
+                if (spentSum >= new Pecuniam((decimal)daysMax))
+                    return;
+
+                var isXmasSeason = ccDate.Month >= 11 && ccDate.Day >= 20;
+                var isWeekend = ccDate.DayOfWeek == DayOfWeek.Friday ||
+                                ccDate.DayOfWeek == DayOfWeek.Saturday ||
+                                ccDate.DayOfWeek == DayOfWeek.Sunday;
+                var actingIrresp = spender?.GetRandomActsIrresponsible() ?? false;
+                var isbigTicketItem = Etx.TryAboveOrAt(96, Etx.Dice.OneHundred);
+                var isSomeEvenAmt = Etx.TryBelowOrAt(3, Etx.Dice.Ten);
+
+                //keep times during normal waking hours
+                var randCcDate =
+                    ccDate.Date.AddHours(Etx.IntNumber(6, isWeekend ? 23 : 19))
+                        .AddMinutes(Etx.IntNumber(0, 59))
+                        .AddSeconds(Etx.IntNumber(0, 59))
+                        .AddMilliseconds(Etx.IntNumber(0, 999));
+
+                //make purchase based various factors
+                var v = 2;
+                v = isXmasSeason ? v + 1 : v;
+                v = isWeekend ? v + 2 : v;
+                v = actingIrresp ? v + 3 : v;
+                randMaxFactor = isbigTicketItem ? randMaxFactor * 10 : randMaxFactor;
+
+                if (Etx.TryBelowOrAt(v, Etx.Dice.Ten))
+                {
+                    //create some random purchase amount
+                    var chargeAmt = Pecuniam.GetRandPecuniam(5, v * randMaxFactor, isSomeEvenAmt ? 10 : 0);
+
+                    //check if account is maxed-out\empty
+                    if (!t.Pop(randCcDate, chargeAmt))
+                        return;
+
+                    spentSum += chargeAmt;
+                }
+                //determine if more transactions for this day
+                keepSpending = Etx.CoinToss;
+            }
+        }
         #endregion
 
     }

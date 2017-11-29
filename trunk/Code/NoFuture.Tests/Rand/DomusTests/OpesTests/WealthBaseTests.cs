@@ -86,7 +86,7 @@ namespace NoFuture.Rand.Tests
             var testSubject = new NorthAmericanWealth(amer);
             System.Diagnostics.Debug.WriteLine(string.Join(" ", amer.Age, amer.MaritialStatus, amer.Education, amer.Race));
 
-            var testResult = testSubject.GetYearlyIncome(null,1.0);
+            var testResult = testSubject.GetYearlyIncome(null, 1.0.ToPecuniam());
             System.Diagnostics.Debug.WriteLine(testResult);
             Assert.IsNotNull(testResult);
             Assert.IsTrue(testResult.Amount > 0.0M);
@@ -126,10 +126,6 @@ namespace NoFuture.Rand.Tests
 
             Assert.IsTrue(testSubject.HomeDebt.Any());
 
-            Assert.IsTrue(testSubject.CheckingAccounts.Any());
-            Assert.IsTrue(testSubject.SavingAccounts.Any());
-
-            System.Diagnostics.Debug.WriteLine(testSubject.FinancialData.ToString());
         }
 
         [TestMethod]

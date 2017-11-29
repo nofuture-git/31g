@@ -198,11 +198,6 @@ namespace NoFuture.Rand.Domus
         public CreditScore CreditScore => _opes?.CreditScore;
 
         /// <summary>
-        /// Get the current finacial data.
-        /// </summary>
-        public FinancialData CurrentFinances => _opes?.FinancialData;
-
-        /// <summary>
         /// Get a list of vehicles which currently have payments.
         /// </summary>
         public IList<IReceivable> Vehicles => _opes?.VehicleDebt;
@@ -317,16 +312,6 @@ namespace NoFuture.Rand.Domus
 
             return _edu;
 
-        }
-
-        /// <summary>
-        /// Get the wealth at the time of <see cref="dt"/> - defaults to now.
-        /// </summary>
-        /// <param name="dt"></param>
-        /// <returns></returns>
-        public override RenameMe GetWealthAt(DateTime? dt)
-        {
-            return _opes ?? (_opes = new NorthAmericanWealth(this));
         }
 
         /// <summary>
