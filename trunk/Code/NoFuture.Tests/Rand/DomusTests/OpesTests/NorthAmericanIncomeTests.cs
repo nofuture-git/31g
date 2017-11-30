@@ -116,5 +116,20 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             var sumResult = Pondus.GetAnnualSum(testResult);
             Assert.IsTrue(sumResult.ToDouble() >= 5659.99 && sumResult.ToDouble() <= 5660.01);
         }
+
+        [TestMethod]
+        public void TestGetRandomIncomeAmount()
+        {
+            //no args test
+            var testSubject = new NorthAmericanIncome(null);
+            var testResult = testSubject.GetRandomIncomeAmount(null);
+
+            Assert.IsNotNull(testResult);
+
+            testResult = testSubject.GetRandomIncomeAmount(null, 69);
+            Assert.IsNotNull(testResult);
+            Assert.IsFalse(testResult == Pecuniam.Zero);
+            System.Diagnostics.Debug.WriteLine(testResult);
+        }
     }
 }

@@ -214,5 +214,19 @@ namespace NoFuture.Rand.Tests
             foreach (var i in testResult)
                 System.Diagnostics.Debug.WriteLine(i);
         }
+
+        [TestMethod]
+        public void TestGetRandomRateFromClassicHook()
+        {
+            var testSubject = new NorthAmericanIncome(null);
+            var testResult = testSubject.GetRandomRateFromClassicHook();
+
+            Assert.IsTrue(testResult >= 0D);
+
+            testResult = testSubject.GetRandomRateFromClassicHook(69);
+            Assert.IsTrue(testResult > 0D);
+            System.Diagnostics.Debug.WriteLine(testResult);
+
+        }
     }
 }

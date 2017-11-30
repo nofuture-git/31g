@@ -101,6 +101,11 @@ namespace NoFuture.Rand.Domus
         /// src [https://www.cdc.gov/nchs/data/nvsr/nvsr65/nvsr65_04.pdf] Table B.
         /// </summary>
         public const double PERCENT_ACCIDENT_DEATH = 0.05175;
+
+        /// <summary>
+        /// https://en.wikipedia.org/wiki/List_of_countries_by_median_age
+        /// </summary>
+        public const double AVG_AGE_AMERICAN = 37.9;
         #endregion
 
         #region inner types

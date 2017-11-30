@@ -22,14 +22,18 @@ namespace NoFuture.Rand.Domus.Opes
         private readonly HashSet<IEmployment> _employment = new HashSet<IEmployment>();
         private readonly HashSet<Pondus> _otherIncome = new HashSet<Pondus>();
         private readonly HashSet<Pondus> _expenses = new HashSet<Pondus>();
-
+        private readonly DateTime _startDate;
         #endregion
 
         #region ctors
 
-        public NorthAmericanIncome(NorthAmerican american, bool isRenting = false): base(american, isRenting)
+        public NorthAmericanIncome(NorthAmerican american, bool isRenting = false, DateTime? startDate = null) : base(
+            american, isRenting)
         {
+            var emply = GetRandomEmployment(american?.Personality, american?.Education?.EduFlag ?? OccidentalEdu.None);
+            _startDate = startDate ?? Etx.Date(-3, null, true, 60).Date;
         }
+
         #endregion
 
         #region properties
@@ -157,9 +161,9 @@ namespace NoFuture.Rand.Domus.Opes
 
             var mins = new[]
             {
-                minOtherIncome.GetValueOrDefault(DateTime.Today),
-                minEmply.GetValueOrDefault(DateTime.Today),
-                minExpense.GetValueOrDefault(DateTime.Today)
+                minOtherIncome.GetValueOrDefault(_startDate),
+                minEmply.GetValueOrDefault(_startDate),
+                minExpense.GetValueOrDefault(_startDate)
             };
 
             return mins.Min();
@@ -287,8 +291,8 @@ namespace NoFuture.Rand.Domus.Opes
         /// <returns></returns>
         protected internal virtual Pecuniam GetHudMonthlyAmount(DateTime? atTime)
         {
-            var thirtyPercentAdjIncome = GetAnnualNetEmploymentIncomeAt(atTime).ToDouble() / 12 * 0.3;
-            var tenPercentGrossIncome =  GetAnnualGrossEmploymentIncomeAt(atTime).ToDouble() / 12 * 0.1;
+            var thirtyPercentAdjIncome = GetExpectedAnnualEmplyNetIncome(atTime).ToDouble() / 12 * 0.3;
+            var tenPercentGrossIncome =  GetExpectedAnnualEmplyGrossIncome(atTime).ToDouble() / 12 * 0.1;
 
             var sum = thirtyPercentAdjIncome + tenPercentGrossIncome + 25.0D;
             return sum.ToPecuniam();
@@ -300,7 +304,7 @@ namespace NoFuture.Rand.Domus.Opes
         /// <returns></returns>
         protected internal virtual Pecuniam GetFoodStampsMonthlyAmount(DateTime? atTime)
         {
-            var thirtyPercentAdjIncome = GetAnnualNetEmploymentIncomeAt(atTime).ToDouble() / 12 * 0.3;
+            var thirtyPercentAdjIncome = GetExpectedAnnualEmplyNetIncome(atTime).ToDouble() / 12 * 0.3;
             return thirtyPercentAdjIncome.ToPecuniam();
         }
 
@@ -321,7 +325,7 @@ namespace NoFuture.Rand.Domus.Opes
 
             numHouseholdMembers = numHouseholdMembers <= 0 ? 1 : numHouseholdMembers;
 
-            return GetAnnualGrossEmploymentIncomeAt(dt).ToDouble() <= povertyLevel.SolveForY(numHouseholdMembers);
+            return GetExpectedAnnualEmplyGrossIncome(dt).ToDouble() <= povertyLevel.SolveForY(numHouseholdMembers);
         }
 
         /// <summary>
@@ -333,7 +337,7 @@ namespace NoFuture.Rand.Domus.Opes
         protected internal virtual List<Tuple<DateTime, DateTime?>> GetEmploymentRanges(IPersonality personality)
         {
             var emply = new List<Tuple<DateTime, DateTime?>>();
-            var sdt = Etx.Date(-3, null, true, 60).Date;
+            var sdt = _startDate;
             if (personality == null)
             {
                 emply.Add(new Tuple<DateTime, DateTime?>(sdt, null));
@@ -343,7 +347,6 @@ namespace NoFuture.Rand.Domus.Opes
             var lpDt = sdt;
             while (lpDt < DateTime.Today)
             {
-
                 var randDays = Etx.IntNumber(0, 21);
                 lpDt = lpDt.AddMonths(3).AddDays(randDays);
                 if (personality.GetRandomActsSpontaneous())
@@ -390,7 +393,40 @@ namespace NoFuture.Rand.Domus.Opes
             return e;
         }
 
-        private Pecuniam GetAnnualGrossEmploymentIncomeAt(DateTime? dt)
+
+        /// <summary>
+        /// Gets a money amount at random based on the age and location of the 
+        /// <see cref="NorthAmerican"/>
+        /// </summary>
+        /// <param name="dt"></param>
+        /// <param name="age">Optional, allows for some control over the randomness</param>
+        /// <returns></returns>
+        protected internal virtual Pecuniam GetRandomIncomeAmount(DateTime? dt, int? age = null)
+        {
+            dt = dt ?? DateTime.Today;
+
+            age = age ?? Person?.GetAgeAt(dt);
+
+            //average age https://en.wikipedia.org/wiki/List_of_countries_by_median_age
+            var ageAtDt = age == null || age <= 0 ? 38 : age.Value;
+
+            //get something randome near this value
+            var randRate = GetRandomRateFromClassicHook(ageAtDt);
+
+            //its income so it shouldn't be negative by definition
+            if(randRate <= 0D)
+                return Pecuniam.Zero;
+
+            //get some base to calc the product 
+            var someBase = Employment.Any() 
+                           ? GetExpectedAnnualEmplyGrossIncome(dt) 
+                           : GetYearlyIncome(dt);
+
+            var randAmt = someBase.ToDouble() * randRate;
+            return randAmt.ToPecuniam();
+        }
+
+        private Pecuniam GetExpectedAnnualEmplyGrossIncome(DateTime? dt)
         {
             var payAtDt = GetEmploymentAt(dt);
             if (payAtDt == null || !payAtDt.Any())
@@ -399,7 +435,7 @@ namespace NoFuture.Rand.Domus.Opes
             return payAtDt.Select(e => e.TotalAnnualPay).GetSum();
         }
 
-        private Pecuniam GetAnnualNetEmploymentIncomeAt(DateTime? dt)
+        private Pecuniam GetExpectedAnnualEmplyNetIncome(DateTime? dt)
         {
             var payAtDt = GetEmploymentAt(dt);
             if (payAtDt == null || !payAtDt.Any())

@@ -394,5 +394,31 @@ namespace NoFuture.Rand.Domus.Opes
         }
         #endregion
 
+        /// <summary>
+        /// Gets a rate, at random, using the <see cref="NAmerUtil.Equations.ClassicHook"/>
+        /// </summary>
+        /// <param name="age">
+        /// Optional, will use the Person&apos;s Age or the mean age of the United States.
+        /// </param>
+        /// <returns></returns>
+        protected internal virtual double GetRandomRateFromClassicHook(double? age = null)
+        {
+            //we want age to have an effect on the randomness
+            var hookEquation = NAmerUtil.Equations.ClassicHook;
+            age = age ?? Person?.Age;
+
+            var ageAtDt = age == null || age <= 0 
+                ? NAmerUtil.AVG_AGE_AMERICAN 
+                : age.Value;
+
+            //some asymetric percentage based on age
+            var yVal = hookEquation.SolveForY(ageAtDt);
+
+            //get something randome near this value
+            var randRate = Etx.RandomValueInNormalDist(yVal, 0.01921);
+
+            //its income so it shouldn't be negative by definition
+            return randRate <= 0D ? 0D : randRate;
+        }
     }
 }

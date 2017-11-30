@@ -43,6 +43,22 @@ namespace NoFuture.Rand.Domus.Opes
             ResolveIncomeAndDeductions();
         }
 
+        /// <summary>
+        /// Creates a new instance of <see cref="NorthAmericanEmployment"/> at 
+        /// random with the specified <see cref="annualIncome"/>
+        /// </summary>
+        /// <param name="annualIncome"></param>
+        /// <param name="startDate"></param>
+        /// <param name="endDate"></param>
+        /// <param name="american"></param>
+        public NorthAmericanEmployment(Pecuniam annualIncome, DateTime? startDate, DateTime? endDate,
+            NorthAmerican american) : base(american)
+        {
+            _dateRange = new Tuple<DateTime?, DateTime?>(startDate, endDate);
+            Occupation = StandardOccupationalClassification.RandomOccupation();
+            ResolveIncomeAndDeductions(annualIncome);
+        }
+
         internal NorthAmericanEmployment(DateTime? startDate, DateTime? endDate) : base(null)
         {
             _dateRange = new Tuple<DateTime?, DateTime?>(startDate, endDate);
@@ -112,18 +128,19 @@ namespace NoFuture.Rand.Domus.Opes
         /// <summary>
         /// Resolves all income and deduction items for this Employment
         /// </summary>
-        protected internal virtual void ResolveIncomeAndDeductions()
+        /// <param name="annualIncome"></param>
+        protected internal virtual void ResolveIncomeAndDeductions(Pecuniam annualIncome = null)
         {
             if (_dateRange?.Item1 == null)
             {
-                AddPondusForGivenRange(null, null);
+                AddPondusForGivenRange(null, null, annualIncome);
                 return;
             }
             var isCurrentEmployee = _dateRange.Item2 == null;
             var yearsOfService = GetYearsOfServiceInDates();
             if (yearsOfService.Count <= 0)
             {
-                AddPondusForGivenRange(_dateRange?.Item1, _dateRange?.Item2);
+                AddPondusForGivenRange(_dateRange?.Item1, _dateRange?.Item2, annualIncome);
                 return;
             }
             for (var i = 0; i < yearsOfService.Count; i++)
@@ -131,7 +148,7 @@ namespace NoFuture.Rand.Domus.Opes
                 var range = yearsOfService[i];
                 if(i == yearsOfService.Count-1 && isCurrentEmployee)
                     range = new Tuple<DateTime, DateTime?>(range.Item1, null);
-                AddPondusForGivenRange(range.Item1, range.Item2);
+                AddPondusForGivenRange(range.Item1, range.Item2, annualIncome);
                     
             }
         }
@@ -140,9 +157,10 @@ namespace NoFuture.Rand.Domus.Opes
         /// </summary>
         /// <param name="startDt"></param>
         /// <param name="endDt"></param>
-        protected internal void AddPondusForGivenRange(DateTime? startDt, DateTime? endDt)
+        /// <param name="annualIncome"></param>
+        protected internal void AddPondusForGivenRange(DateTime? startDt, DateTime? endDt, Pecuniam annualIncome = null)
         {
-            var annualIncome = GetYearlyIncome(startDt.GetValueOrDefault(DateTime.Today));
+            annualIncome = annualIncome ?? GetYearlyIncome(startDt.GetValueOrDefault(DateTime.Today));
             var incomeItems = GetPayItemsForRange(annualIncome, startDt, endDt);
             foreach (var income in incomeItems)
                 AddIncome(income);
