@@ -9,7 +9,7 @@ using NoFuture.Rand.Data.Sp.Enums;
 using NoFuture.Rand.Domus;
 using NoFuture.Rand.Domus.Opes;
 
-namespace NoFuture.Rand.Tests
+namespace NoFuture.Rand.Tests.DomusTests.OpesTests
 {
     [TestClass]
     public class WealthBaseTests
@@ -86,7 +86,7 @@ namespace NoFuture.Rand.Tests
             var testSubject = new NorthAmericanWealth(amer);
             System.Diagnostics.Debug.WriteLine(string.Join(" ", amer.Age, amer.MaritialStatus, amer.Education, amer.Race));
 
-            var testResult = testSubject.GetYearlyIncome(null, 1.0.ToPecuniam());
+            var testResult = testSubject.GetRandomYearlyIncome(null, 1.0.ToPecuniam());
             System.Diagnostics.Debug.WriteLine(testResult);
             Assert.IsNotNull(testResult);
             Assert.IsTrue(testResult.Amount > 0.0M);
@@ -227,6 +227,15 @@ namespace NoFuture.Rand.Tests
             Assert.IsTrue(testResult > 0D);
             System.Diagnostics.Debug.WriteLine(testResult);
 
+        }
+
+        [TestMethod]
+        public void TestGetYearNeg3()
+        {
+            var testSubject = new NorthAmericanIncome(null);
+            var testResult = testSubject.GetYearNeg3();
+
+            System.Diagnostics.Debug.WriteLine(testResult);
         }
     }
 }

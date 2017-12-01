@@ -55,7 +55,6 @@ namespace NoFuture.Rand.Domus.Opes
 
         protected internal virtual NorthAmerican Person => _amer;
 
-        #region methods
         /// <summary>
         /// Calculate a yearly income at random.
         /// </summary>
@@ -75,7 +74,7 @@ namespace NoFuture.Rand.Domus.Opes
         /// Optional, a randomizes the calculated value around a mean.
         /// </param>
         /// <returns></returns>
-        public Pecuniam GetYearlyIncome(DateTime? dt = null, Pecuniam min = null,
+        public Pecuniam GetRandomYearlyIncome(DateTime? dt = null, Pecuniam min = null,
             Func<double, double> factorCalc = null,
             double stdDevInUsd = 2000)
         {
@@ -284,7 +283,19 @@ namespace NoFuture.Rand.Domus.Opes
             return Math.Round(pecuniam.ToDouble() * d, 2).ToPecuniam();
         }
 
-        protected internal virtual Dictionary<string, double> GetRandomRates(IEnumerable<IMereo> names,
+        /// <summary>
+        /// Helper method to get a bunch of random rates mapped to some names
+        /// </summary>
+        /// <param name="names"></param>
+        /// <param name="sumOfRates">
+        /// Optional, expected sum of all generated rates to approach 1 (a.k.a. 100 percent)
+        /// </param>
+        /// <param name="randRateFunc">
+        /// Optional, allows calling assembly to control how a random rate is generated.
+        /// Default is to generated anywhere between 0.01 and <see cref="sumOfRates"/>
+        /// </param>
+        /// <returns></returns>
+        protected internal virtual Dictionary<string, double> GetNames2RandomRates(IEnumerable<IMereo> names,
             double sumOfRates = 0.999999D, Func<double> randRateFunc = null)
         {
             //get just an array of rates
@@ -392,13 +403,12 @@ namespace NoFuture.Rand.Domus.Opes
                 keepSpending = Etx.CoinToss;
             }
         }
-        #endregion
 
         /// <summary>
         /// Gets a rate, at random, using the <see cref="NAmerUtil.Equations.ClassicHook"/>
         /// </summary>
         /// <param name="age">
-        /// Optional, will use the Person&apos;s Age or the mean age of the United States.
+        /// Optional, will use the Person&apos;s Age or the mean age of Americans.
         /// </param>
         /// <returns></returns>
         protected internal virtual double GetRandomRateFromClassicHook(double? age = null)
@@ -419,6 +429,19 @@ namespace NoFuture.Rand.Domus.Opes
 
             //its income so it shouldn't be negative by definition
             return randRate <= 0D ? 0D : randRate;
+        }
+
+        /// <summary>
+        /// Gets January 1st date from -3 years from this year&apos; January 1st
+        /// </summary>
+        /// <returns></returns>
+        protected internal virtual DateTime GetYearNeg3()
+        {
+            //current year is year 0
+            var year0 = DateTime.Today.Year;
+
+            var startYear0 = new DateTime(year0, 1, 1);
+            return startYear0.AddYears(-3);
         }
     }
 }

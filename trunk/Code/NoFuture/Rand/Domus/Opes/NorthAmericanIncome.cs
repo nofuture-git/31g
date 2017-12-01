@@ -30,8 +30,8 @@ namespace NoFuture.Rand.Domus.Opes
         public NorthAmericanIncome(NorthAmerican american, bool isRenting = false, DateTime? startDate = null) : base(
             american, isRenting)
         {
+            _startDate = startDate ?? GetYearNeg3();
             var emply = GetRandomEmployment(american?.Personality, american?.Education?.EduFlag ?? OccidentalEdu.None);
-            _startDate = startDate ?? Etx.Date(-3, null, true, 60).Date;
         }
 
         #endregion
@@ -47,12 +47,12 @@ namespace NoFuture.Rand.Domus.Opes
             }
         }
 
-        public virtual Pondus[] CurrentOtherIncome => GetCurrent(OtherIncome);
-        public virtual Pondus[] CurrentExpenses => GetCurrent(Expenses);
-        public virtual Pecuniam TotalAnnualExpenses => Pondus.GetAnnualSum(CurrentExpenses);
-        public virtual Pecuniam TotalAnnualIncome => Pondus.GetAnnualSum(CurrentOtherIncome) + TotalAnnualNetEmploymentIncome;
-        public virtual Pecuniam TotalAnnualNetEmploymentIncome => CurrentEmployment.Select(e => e.TotalAnnualNetPay).GetSum();
-        public virtual Pecuniam TotalAnnualGrossEmploymentIncome => CurrentEmployment.Select(e => e.TotalAnnualPay).GetSum();
+        public virtual Pondus[] CurrentExpectedOtherIncome => GetCurrent(ExpectedOtherIncome);
+        public virtual Pondus[] CurrentExpectedExpenses => GetCurrent(ExpectedExpenses);
+        public virtual Pecuniam TotalAnnualExpectedExpenses => Pondus.GetAnnualSum(CurrentExpectedExpenses);
+        public virtual Pecuniam TotalAnnualExpectedIncome => Pondus.GetAnnualSum(CurrentExpectedOtherIncome) + TotalAnnualExpectedNetEmploymentIncome;
+        public virtual Pecuniam TotalAnnualExpectedNetEmploymentIncome => CurrentEmployment.Select(e => e.TotalAnnualNetPay).GetSum();
+        public virtual Pecuniam TotalAnnualExpectedGrossEmploymentIncome => CurrentEmployment.Select(e => e.TotalAnnualPay).GetSum();
 
         protected internal virtual List<IEmployment> Employment
         {
@@ -64,7 +64,7 @@ namespace NoFuture.Rand.Domus.Opes
             }
         }
 
-        protected internal virtual List<Pondus> OtherIncome
+        protected internal virtual List<Pondus> ExpectedOtherIncome
         {
             get
             {
@@ -74,7 +74,7 @@ namespace NoFuture.Rand.Domus.Opes
             }
         }
 
-        protected internal virtual List<Pondus> Expenses
+        protected internal virtual List<Pondus> ExpectedExpenses
         {
             get
             {
@@ -94,14 +94,14 @@ namespace NoFuture.Rand.Domus.Opes
                 : Employment.Where(x => x.IsInRange(dt.Value)).ToArray();
         }
 
-        public virtual Pondus[] GetOtherIncomeAt(DateTime? dt)
+        public virtual Pondus[] GetExpectedOtherIncomeAt(DateTime? dt)
         {
-            return GetAt(dt, OtherIncome);
+            return GetAt(dt, ExpectedOtherIncome);
         }
 
-        public virtual Pondus[] GetExpensesAt(DateTime? dt)
+        public virtual Pondus[] GetExpectedExpensesAt(DateTime? dt)
         {
-            return GetAt(dt, Expenses);
+            return GetAt(dt, ExpectedExpenses);
         }
 
         protected internal virtual void AddEmployment(IEmployment employment)
@@ -110,16 +110,16 @@ namespace NoFuture.Rand.Domus.Opes
                 _employment.Add(employment);
         }
 
-        protected internal virtual void AddOtherIncome(Pondus otherIncome)
+        protected internal virtual void AddExpectedOtherIncome(Pondus otherIncome)
         {
             if (otherIncome != null)
                 _otherIncome.Add(otherIncome);
         }
 
-        protected internal virtual void AddOtherIncome(Pecuniam amt, string name, DateTime? startDate,
+        protected internal virtual void AddExpectedOtherIncome(Pecuniam amt, string name, DateTime? startDate,
             DateTime? endDate = null)
         {
-            AddOtherIncome(new Pondus(name)
+            AddExpectedOtherIncome(new Pondus(name)
             {
                 Value = amt?.Neg,
                 Terminus = endDate,
@@ -127,17 +127,17 @@ namespace NoFuture.Rand.Domus.Opes
             });
         }
 
-        protected internal virtual void AddExpense(Pondus expense)
+        protected internal virtual void AddExpectedExpense(Pondus expense)
         {
             if (expense == null)
                 return;
             _expenses.Add(expense);
         }
 
-        protected internal virtual void AddExpense(Pecuniam amt, string name, DateTime? startDate,
+        protected internal virtual void AddExpectedExpense(Pecuniam amt, string name, DateTime? startDate,
             DateTime? endDate = null)
         {
-            AddExpense(new Pondus(name)
+            AddExpectedExpense(new Pondus(name)
             {
                 Value = amt?.Neg,
                 Terminus = endDate,
@@ -149,12 +149,12 @@ namespace NoFuture.Rand.Domus.Opes
         /// Gets the minimum date amoung all income, employment and expense items
         /// </summary>
         /// <returns></returns>
-        protected internal virtual DateTime GetMinDate()
+        protected internal virtual DateTime GetMinDateAmongExpectations()
         {
             var sdt = Etx.Date(-3, null, true, 60).Date;
-            var minOtherIncome = OtherIncome.FirstOrDefault()?.Inception;
+            var minOtherIncome = ExpectedOtherIncome.FirstOrDefault()?.Inception;
             var minEmply = Employment.FirstOrDefault()?.Inception;
-            var minExpense = Expenses.FirstOrDefault()?.Inception;
+            var minExpense = ExpectedExpenses.FirstOrDefault()?.Inception;
             
             if (new[] { minOtherIncome, minEmply, minExpense }.All(dt => dt == null))
                 return sdt;
@@ -182,7 +182,7 @@ namespace NoFuture.Rand.Domus.Opes
         protected internal virtual Pondus[] GetOtherIncomeItemsForRange(Pecuniam amt, DateTime? startDate,
             DateTime? endDate = null, Interval interval = Interval.Annually)
         {
-            startDate = startDate ?? GetMinDate();
+            startDate = startDate ?? GetMinDateAmongExpectations();
             var itemsout = new List<Pondus>();
             amt = amt ?? Pecuniam.Zero;
 
@@ -224,17 +224,18 @@ namespace NoFuture.Rand.Domus.Opes
         /// random value between 0.01 and the <see cref="sumOfRates"/> 
         /// </param>
         /// <returns></returns>
-        protected internal virtual Dictionary<string, double> GetOtherIncomeName2RandomeRates(double sumOfRates = 0, Func<double> randRateFunc = null)
+        protected internal virtual Dictionary<string, double> GetOtherIncomeName2RandomeRates(double sumOfRates = 0,
+            Func<double> randRateFunc = null)
         {
             //get all the names of income items which are not employment nor welfare
-            var grps = new[] {"Employment", "Public Benefits", "Judgments", "Subito" };
+            var grps = new[] {"Employment", "Public Benefits", "Judgments", "Subito"};
             var otherIncomeItemNames = GetIncomeItemNames().Where(i => !grps.Contains(i.GetName(KindsOfNames.Group)));
-            var d = GetRandomRates(otherIncomeItemNames, sumOfRates, randRateFunc);
+            var d = GetNames2RandomRates(otherIncomeItemNames, sumOfRates, randRateFunc);
 
             //add these back in but always at zero
-            var otherGroups = new[] {"Judgments", "Subito" };
+            var otherGroups = new[] {"Judgments", "Subito"};
             otherIncomeItemNames = GetIncomeItemNames().Where(i => otherGroups.Contains(i.GetName(KindsOfNames.Group)));
-            foreach(var otName in otherIncomeItemNames)
+            foreach (var otName in otherIncomeItemNames)
                 d.Add(otName.Name, 0D);
 
             return d;
@@ -251,7 +252,7 @@ namespace NoFuture.Rand.Domus.Opes
             DateTime? endDate = null)
         {
             var itemsout = new List<Pondus>();
-            startDate = startDate ?? GetMinDate();
+            startDate = startDate ?? GetMinDateAmongExpectations();
             var isPoor = IsBelowFedPovertyAt(startDate);
             var hudAmt = isPoor ? GetHudMonthlyAmount(startDate) : Pecuniam.Zero;
             var snapAmt = isPoor ? GetFoodStampsMonthlyAmount(startDate) : Pecuniam.Zero;
@@ -329,15 +330,20 @@ namespace NoFuture.Rand.Domus.Opes
         }
 
         /// <summary>
-        /// Gets a list of time ranges over the last three years where each block is assumed as a 
-        /// span of employment
+        /// Gets a list of time ranges over for all the years of this income&apos;s start date 
+        /// Each block is assumed as a span of employment
         /// </summary>
         /// <param name="personality"></param>
         /// <returns></returns>
         protected internal virtual List<Tuple<DateTime, DateTime?>> GetEmploymentRanges(IPersonality personality)
         {
             var emply = new List<Tuple<DateTime, DateTime?>>();
+            //income always starts an even -3 years from the start of this year - employment almost never follows this
             var sdt = _startDate;
+            sdt = sdt == DateTime.MinValue
+                ? Etx.Date(-4, DateTime.Today, true).Date
+                : sdt.AddDays(Etx.IntNumber(0, 360) * -1);
+
             if (personality == null)
             {
                 emply.Add(new Tuple<DateTime, DateTime?>(sdt, null));
@@ -356,7 +362,7 @@ namespace NoFuture.Rand.Domus.Opes
                 }
             }
             if(!emply.Any())
-                emply.Add(new Tuple<DateTime, DateTime?>(Etx.Date(-3, null, true, 60).Date, null));
+                emply.Add(new Tuple<DateTime, DateTime?>(Etx.Date(-4, DateTime.Today, true).Date, null));
             return emply;
         }
 
@@ -401,7 +407,7 @@ namespace NoFuture.Rand.Domus.Opes
         /// <param name="dt"></param>
         /// <param name="age">Optional, allows for some control over the randomness</param>
         /// <returns></returns>
-        protected internal virtual Pecuniam GetRandomIncomeAmount(DateTime? dt, int? age = null)
+        protected internal virtual Pecuniam GetRandomExpectedIncomeAmount(DateTime? dt, int? age = null)
         {
             dt = dt ?? DateTime.Today;
 
@@ -420,7 +426,7 @@ namespace NoFuture.Rand.Domus.Opes
             //get some base to calc the product 
             var someBase = Employment.Any() 
                            ? GetExpectedAnnualEmplyGrossIncome(dt) 
-                           : GetYearlyIncome(dt);
+                           : GetRandomYearlyIncome(dt);
 
             var randAmt = someBase.ToDouble() * randRate;
             return randAmt.ToPecuniam();

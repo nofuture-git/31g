@@ -92,6 +92,17 @@ namespace NoFuture.Rand.Domus
         public const double AVG_MAX_AGE_FEMALE = 81.6;
 
         /// <summary>
+        /// The male average max age plus the standard deviation times 3
+        /// </summary>
+        public const double MAX_AGE_MALE = AVG_MAX_AGE_MALE + STD_DEV_MALE_LIFE_EXPECTANCY * 3;
+
+
+        /// <summary>
+        /// The female average max age plus the standard deviation times 3
+        /// </summary>
+        public const double MAX_AGE_FEMALE = AVG_MAX_AGE_FEMALE + STD_DEV_FEMALE_LIFE_EXPECTANCY * 3;
+
+        /// <summary>
         /// source seems questionable - does not cite its source
         /// https://www.mckinleyirvin.com/Family-Law-Blog/2012/October/32-Shocking-Divorce-Statistics.aspx
         /// </summary>

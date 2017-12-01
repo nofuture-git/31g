@@ -31,41 +31,41 @@ namespace NoFuture.Rand.Domus.Opes
         /// <summary>
         /// Returns all non-employment forms of income right Now
         /// </summary>
-        Pondus[] CurrentOtherIncome { get; }
+        Pondus[] CurrentExpectedOtherIncome { get; }
 
         /// <summary>
         /// Returns all non-employment forms of income at the time of <see cref="dt"/>
         /// </summary>
-        Pondus[] GetOtherIncomeAt(DateTime? dt);
+        Pondus[] GetExpectedOtherIncomeAt(DateTime? dt);
 
         /// <summary>
         /// Returns all current expenses right Now
         /// </summary>
-        Pondus[] CurrentExpenses { get; }
+        Pondus[] CurrentExpectedExpenses { get; }
 
         /// <summary>
         /// Returns all current expenses at the time of <see cref="dt"/>
         /// </summary>
-        Pondus[] GetExpensesAt(DateTime? dt);
+        Pondus[] GetExpectedExpensesAt(DateTime? dt);
 
         /// <summary>
         /// A monetary sum of all current expenses
         /// </summary>
-        Pecuniam TotalAnnualExpenses { get; }
+        Pecuniam TotalAnnualExpectedExpenses { get; }
 
         /// <summary>
         /// A monetary sum of all income
         /// </summary>
-        Pecuniam TotalAnnualIncome { get; }
+        Pecuniam TotalAnnualExpectedIncome { get; }
 
         /// <summary>
         /// The monetary sum of just employment income less all employment deductions
         /// </summary>
-        Pecuniam TotalAnnualNetEmploymentIncome { get; }
+        Pecuniam TotalAnnualExpectedNetEmploymentIncome { get; }
 
         /// <summary>
         /// The gross monetary sum of employment income 
         /// </summary>
-        Pecuniam TotalAnnualGrossEmploymentIncome { get; }
+        Pecuniam TotalAnnualExpectedGrossEmploymentIncome { get; }
     }
 }

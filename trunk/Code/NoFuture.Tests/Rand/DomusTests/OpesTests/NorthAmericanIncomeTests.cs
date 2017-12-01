@@ -59,23 +59,23 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         public void TestGetMinDate()
         {
             var testSubject = new NorthAmericanIncome(null);
-            var testResult = testSubject.GetMinDate();
+            var testResult = testSubject.GetMinDateAmongExpectations();
             Assert.IsTrue((DateTime.Today - testResult).Days > 365);
 
             //given only employment - gets its min date
             var emply = new NorthAmericanEmployment(DateTime.Today.AddYears(-3), null);
             testSubject.AddEmployment(emply);
-            testResult = testSubject.GetMinDate();
+            testResult = testSubject.GetMinDateAmongExpectations();
             Assert.AreEqual(DateTime.Today.AddYears(-3), testResult);
 
             //given other more recent items - employment still the oldest
             var expense = new Pondus("Expense") {Inception = DateTime.Today.AddYears(-1)};
             var otIncome = new Pondus("Other Income") { Inception = DateTime.Today.AddYears(-2) };
 
-            testSubject.AddOtherIncome(otIncome);
-            testSubject.AddExpense(expense);
+            testSubject.AddExpectedOtherIncome(otIncome);
+            testSubject.AddExpectedExpense(expense);
 
-            testResult = testSubject.GetMinDate();
+            testResult = testSubject.GetMinDateAmongExpectations();
             Assert.AreEqual(DateTime.Today.AddYears(-3), testResult);
 
         }
@@ -122,11 +122,11 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         {
             //no args test
             var testSubject = new NorthAmericanIncome(null);
-            var testResult = testSubject.GetRandomIncomeAmount(null);
+            var testResult = testSubject.GetRandomExpectedIncomeAmount(null);
 
             Assert.IsNotNull(testResult);
 
-            testResult = testSubject.GetRandomIncomeAmount(null, 69);
+            testResult = testSubject.GetRandomExpectedIncomeAmount(null, 69);
             Assert.IsNotNull(testResult);
             Assert.IsFalse(testResult == Pecuniam.Zero);
             System.Diagnostics.Debug.WriteLine(testResult);

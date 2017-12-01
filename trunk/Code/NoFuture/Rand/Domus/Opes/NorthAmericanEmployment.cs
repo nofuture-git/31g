@@ -7,6 +7,8 @@ using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Data.Endo.Grps;
 using NoFuture.Rand.Data.Sp;
 using NoFuture.Rand.Data.Sp.Enums;
+using NoFuture.Rand.Gov;
+using NoFuture.Shared.Core;
 using NoFuture.Util.Core;
 
 namespace NoFuture.Rand.Domus.Opes
@@ -38,6 +40,7 @@ namespace NoFuture.Rand.Domus.Opes
         /// <param name="american"></param>
         public NorthAmericanEmployment(DateTime? startDate, DateTime? endDate, NorthAmerican american) : base(american)
         {
+            startDate = startDate == DateTime.MinValue ? null : startDate;
             _dateRange = new Tuple<DateTime?, DateTime?>(startDate, endDate);
             Occupation = StandardOccupationalClassification.RandomOccupation();
             ResolveIncomeAndDeductions();
@@ -131,7 +134,7 @@ namespace NoFuture.Rand.Domus.Opes
         /// <param name="annualIncome"></param>
         protected internal virtual void ResolveIncomeAndDeductions(Pecuniam annualIncome = null)
         {
-            if (_dateRange?.Item1 == null)
+            if (_dateRange?.Item1 == null || _dateRange.Item1.Value == DateTime.MinValue)
             {
                 AddPondusForGivenRange(null, null, annualIncome);
                 return;
@@ -155,12 +158,18 @@ namespace NoFuture.Rand.Domus.Opes
         /// <summary>
         /// Adds both income and deduction items for the given date range at random
         /// </summary>
-        /// <param name="startDt"></param>
-        /// <param name="endDt"></param>
-        /// <param name="annualIncome"></param>
-        protected internal void AddPondusForGivenRange(DateTime? startDt, DateTime? endDt, Pecuniam annualIncome = null)
+        /// <param name="startDt">Optional, defaults to the instances startdate if null</param>
+        /// <param name="endDt">Optional, defaults to the instances enddate if null</param>
+        /// <param name="annualIncome">Optional, will be generated at random if this is null or Zero</param>
+        protected internal void AddPondusForGivenRange(DateTime? startDt = null , DateTime? endDt = null, Pecuniam annualIncome = null)
         {
-            annualIncome = annualIncome ?? GetYearlyIncome(startDt.GetValueOrDefault(DateTime.Today));
+            startDt = startDt ?? _dateRange?.Item1;
+
+            startDt = startDt.GetValueOrDefault() == DateTime.MinValue ? null : startDt;
+
+            annualIncome = annualIncome == null || annualIncome == Pecuniam.Zero
+                ? GetRandomYearlyIncome(startDt)
+                : annualIncome;
             var incomeItems = GetPayItemsForRange(annualIncome, startDt, endDt);
             foreach (var income in incomeItems)
                 AddIncome(income);
@@ -170,7 +179,8 @@ namespace NoFuture.Rand.Domus.Opes
         }
         
         /// <summary>
-        /// Breaks the employment date range into annual blocks of time.
+        /// Breaks the employment date range into annual blocks of time attempting 
+        /// to capture the discrete time-ranges where wage\salary do not change.
         /// </summary>
         /// <returns></returns>
         protected internal virtual List<Tuple<DateTime, DateTime?>> GetYearsOfServiceInDates()
@@ -178,7 +188,7 @@ namespace NoFuture.Rand.Domus.Opes
             var ranges = new List<Tuple<DateTime, DateTime?>>();
 
             var yearsOfService = GetYearsOfService();
-            if (yearsOfService <= 0 || _dateRange?.Item1 == null)
+            if (yearsOfService <= 0 || _dateRange?.Item1 == null || _dateRange?.Item1.Value == DateTime.MinValue)
                 return ranges;
 
             var employerFiscalYearEnd = Value?.FiscalYearEndDay ?? 1;
@@ -225,7 +235,14 @@ namespace NoFuture.Rand.Domus.Opes
             var endDt = _dateRange.Item2.GetValueOrDefault(DateTime.Today);
 
             var numYears = endDt.Year - stDt.Year;
-            return numYears <= 0 ? 0 : numYears;
+            numYears = numYears <= 0 ? 0 : numYears;
+            var maxAge = new[] {NAmerUtil.MAX_AGE_FEMALE, NAmerUtil.MAX_AGE_MALE}.Max();
+            maxAge -= UsState.AGE_OF_ADULT;
+            if(numYears > maxAge)
+                throw new RahRowRagee($"the years of employment was calculated at {numYears} " +
+                                      $"but the absolute max number of working years for an american is {maxAge} - " +
+                                      "check your date ranges and try again");
+            return numYears;
         }
 
         protected internal virtual List<Pondus> AllItems
