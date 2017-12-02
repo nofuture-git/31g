@@ -33,6 +33,12 @@ namespace NoFuture.Rand.Domus
     public static class NAmerUtil
     {
         #region constants
+
+        /// <summary>
+        /// Src https://data.worldbank.org/indicator/NY.GDP.MKTP.KD 1960-2016
+        /// </summary>
+        public const double AVG_GDP_GROWTH_RATE = 0.031046655;
+
         /// <summary>
         /// Has no stat validity - just a guess
         /// </summary>
@@ -317,7 +323,7 @@ namespace NoFuture.Rand.Domus
 
             /// <summary>
             /// This is an attempt to have a way to calculate the federal poverty level over a range of years.
-            /// Given the 2017 slope of 4180 (per person) - this is the polynomial of a 1.5% decrease per year (assumed GDP growth).
+            /// The returned equation is solved-for-Y by number of members in the household.
             /// https://aspe.hhs.gov/poverty-guidelines
             /// </summary>
             /// <param name="atDate"></param>
@@ -326,7 +332,7 @@ namespace NoFuture.Rand.Domus
             {
                 var dt = atDate.GetValueOrDefault(DateTime.Today);
                 var estSlope =
-                    new SecondDegreePolynomial {Intercept = 1164674, Slope = -1211.034, SecondCoefficient = 0.31516}
+                    new SecondDegreePolynomial {Intercept = 3532449.338,Slope = -3610.7, SecondCoefficient = 0.9229 }
                     .SolveForY(dt.ToDouble());
 
                 return new LinearEquation(7880, estSlope);

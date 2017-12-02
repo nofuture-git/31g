@@ -273,7 +273,7 @@ namespace NoFuture.Rand.Tests
 
             var totalTestRslt = runningCount.Sum();
             System.Diagnostics.Debug.WriteLine(totalTestRslt);
-            Assert.IsTrue(totalTestRslt < 10);
+            Assert.IsTrue(totalTestRslt < 15);
         }
 
         [TestMethod]

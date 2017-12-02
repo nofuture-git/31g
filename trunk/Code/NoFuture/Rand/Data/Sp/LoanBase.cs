@@ -4,18 +4,24 @@ using NoFuture.Rand.Com;
 namespace NoFuture.Rand.Data.Sp
 {
     [Serializable]
-    public abstract class LoanBase<T> : ReceivableBase, ILoan, ITransactionable 
+    public abstract class LoanBase<T> : ReceivableBase, ILoan, ITransactionable
     {
+        private float _minPaymentRate;
+
         #region ctors
         protected LoanBase(DateTime openedDate, float minPaymentRate):base(openedDate)
         {
-            MinPaymentRate = minPaymentRate;
+            _minPaymentRate = minPaymentRate;
         }
         #endregion
 
         #region properties
-        public float MinPaymentRate { get; set; }
-        public T Rate { get; set; }
+        public virtual float MinPaymentRate
+        {
+            get => _minPaymentRate;
+            set => _minPaymentRate = value;
+        }
+        public virtual T Rate { get; set; }
         public IFirm Lender { get; set; }
         #endregion
 

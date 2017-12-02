@@ -106,6 +106,7 @@
     <Compile Include="Data\Sp\ITransaction.cs" />
     <Compile Include="Data\Sp\ITransactionable.cs" />
     <Compile Include="Data\Sp\LoanBase.cs" />
+    <Compile Include="Data\Sp\Mortgage.cs" />
     <Compile Include="Data\Sp\PecuniamExtensions.cs" />
     <Compile Include="Data\Sp\PersonalCreditScore.cs" />
     <Compile Include="Data\Sp\SavingsAccount.cs" />

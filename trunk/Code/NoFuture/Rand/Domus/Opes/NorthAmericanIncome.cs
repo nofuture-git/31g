@@ -23,6 +23,7 @@ namespace NoFuture.Rand.Domus.Opes
         private readonly HashSet<Pondus> _otherIncome = new HashSet<Pondus>();
         private readonly HashSet<Pondus> _expenses = new HashSet<Pondus>();
         private readonly DateTime _startDate;
+
         #endregion
 
         #region ctors
@@ -31,6 +32,7 @@ namespace NoFuture.Rand.Domus.Opes
             american, isRenting)
         {
             _startDate = startDate ?? GetYearNeg3();
+            //TODO - finish this
             var emply = GetRandomEmployment(american?.Personality, american?.Education?.EduFlag ?? OccidentalEdu.None);
         }
 
@@ -161,9 +163,9 @@ namespace NoFuture.Rand.Domus.Opes
 
             var mins = new[]
             {
-                minOtherIncome.GetValueOrDefault(_startDate),
-                minEmply.GetValueOrDefault(_startDate),
-                minExpense.GetValueOrDefault(_startDate)
+                minOtherIncome.GetValueOrDefault(DateTime.Today),
+                minEmply.GetValueOrDefault(DateTime.Today),
+                minExpense.GetValueOrDefault(DateTime.Today)
             };
 
             return mins.Min();
@@ -243,7 +245,7 @@ namespace NoFuture.Rand.Domus.Opes
 
         /// <summary>
         /// Composes the items for Public Benefits (a.k.a. welfare) for whenever the current person
-        /// has an inome below the federal poverty level at time <see cref="startDate"/>
+        /// has an income below the federal poverty level at time <see cref="startDate"/>
         /// </summary>
         /// <param name="startDate"></param>
         /// <param name="endDate"></param>
@@ -310,7 +312,7 @@ namespace NoFuture.Rand.Domus.Opes
         }
 
         /// <summary>
-        /// Determines of the given annual gross income at time <see cref="dt"/> is below 
+        /// Determines if the given annual gross income at time <see cref="dt"/> is below 
         /// the federal poverty level for that year
         /// </summary>
         /// <param name="dt"></param>
@@ -330,7 +332,7 @@ namespace NoFuture.Rand.Domus.Opes
         }
 
         /// <summary>
-        /// Gets a list of time ranges over for all the years of this income&apos;s start date 
+        /// Gets a list of time ranges over for all the years of this income&apos;s start date (and then some). 
         /// Each block is assumed as a span of employment
         /// </summary>
         /// <param name="personality"></param>
@@ -371,12 +373,15 @@ namespace NoFuture.Rand.Domus.Opes
         /// </summary>
         /// <param name="personality"></param>
         /// <param name="eduLevel"></param>
+        /// <param name="emplyRanges">
+        /// Optional, allows calling assembly to set this directly, defaults to <see cref="GetEmploymentRanges"/>
+        /// </param>
         /// <returns></returns>
         protected internal virtual List<IEmployment> GetRandomEmployment(IPersonality personality,
-            OccidentalEdu eduLevel = OccidentalEdu.None)
+            OccidentalEdu eduLevel = OccidentalEdu.None, List<Tuple<DateTime, DateTime?>> emplyRanges = null)
         {
             var empls = new HashSet<IEmployment>();
-            var emplyRanges = GetEmploymentRanges(personality);
+            emplyRanges = emplyRanges ?? GetEmploymentRanges(personality);
             var occ = StandardOccupationalClassification.RandomOccupation();
 
             //limit result to those which match the edu level
@@ -401,11 +406,14 @@ namespace NoFuture.Rand.Domus.Opes
 
 
         /// <summary>
-        /// Gets a money amount at random based on the age and location of the 
-        /// <see cref="NorthAmerican"/>
+        /// Gets a money amount at random based on the age and either the 
+        /// employment history or location of the <see cref="NorthAmerican"/>
         /// </summary>
         /// <param name="dt"></param>
-        /// <param name="age">Optional, allows for some control over the randomness</param>
+        /// <param name="age">
+        /// Optional, allows for some control over the randomness, it rises 
+        /// quickly after age 50
+        /// </param>
         /// <returns></returns>
         protected internal virtual Pecuniam GetRandomExpectedIncomeAmount(DateTime? dt, int? age = null)
         {
@@ -413,8 +421,7 @@ namespace NoFuture.Rand.Domus.Opes
 
             age = age ?? Person?.GetAgeAt(dt);
 
-            //average age https://en.wikipedia.org/wiki/List_of_countries_by_median_age
-            var ageAtDt = age == null || age <= 0 ? 38 : age.Value;
+            var ageAtDt = age == null || age <= 0 ? NAmerUtil.AVG_AGE_AMERICAN : age.Value;
 
             //get something randome near this value
             var randRate = GetRandomRateFromClassicHook(ageAtDt);

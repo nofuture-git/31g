@@ -435,7 +435,7 @@ namespace NoFuture.Rand.Domus.Opes
         /// Gets January 1st date from -3 years from this year&apos; January 1st
         /// </summary>
         /// <returns></returns>
-        protected internal virtual DateTime GetYearNeg3()
+        protected internal DateTime GetYearNeg3()
         {
             //current year is year 0
             var year0 = DateTime.Today.Year;
