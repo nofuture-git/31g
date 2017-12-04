@@ -23,17 +23,37 @@ namespace NoFuture.Rand.Domus.Opes
         private readonly HashSet<Pondus> _otherIncome = new HashSet<Pondus>();
         private readonly HashSet<Pondus> _expenses = new HashSet<Pondus>();
         private readonly DateTime _startDate;
+        private readonly IncomeOptions _options;
 
         #endregion
 
         #region ctors
 
-        public NorthAmericanIncome(NorthAmerican american, bool isRenting = false, DateTime? startDate = null) : base(
-            american, isRenting)
+        public NorthAmericanIncome(NorthAmerican american, IncomeOptions options = null, DateTime? startDate = null) : base(
+            american, options?.IsRenting ?? false)
         {
             _startDate = startDate ?? GetYearNeg3();
+            _options = options ?? new IncomeOptions();
             //TODO - finish this
             var emply = GetRandomEmployment(american?.Personality, american?.Education?.EduFlag ?? OccidentalEdu.None);
+        }
+
+        #endregion
+
+        #region inner types
+
+        /// <summary>
+        /// A ctor-time options object for a <see cref="NorthAmericanIncome"/>
+        /// </summary>
+        public class IncomeOptions
+        {
+            public bool HasVehicle { get; set; }
+            public bool IsVehiclePaidOff { get; set; }
+            public bool IsRenting { get; set; }
+
+            public bool HasChildren => ChildrenAges != null && ChildrenAges.Any();
+
+            public int[] ChildrenAges { get; set; }
         }
 
         #endregion
@@ -194,7 +214,7 @@ namespace NoFuture.Rand.Domus.Opes
             var grps = new[] {"Employment", "Public Benefits"};
             var incomeItems = GetIncomeItemNames().Where(i => !grps.Contains(i.GetName(KindsOfNames.Group)));
 
-            var incomeName2Rates = GetOtherIncomeName2RandomeRates(0.999999D);
+            var incomeName2Rates = GetOtherIncomeName2RandomRates(0.999999D);
             foreach (var incomeItem in incomeItems)
             {
                 var incomeRate = !incomeName2Rates.ContainsKey(incomeItem.Name)
@@ -215,23 +235,44 @@ namespace NoFuture.Rand.Domus.Opes
         }
 
         /// <summary>
+        /// Gets a manifold of <see cref="Pondus"/> items based on the 
+        /// names from GetExpenseItemNames assigning random values as a portion of <see cref="amt"/>
+        /// </summary>
+        /// <param name="amt"></param>
+        /// <param name="startDate"></param>
+        /// <param name="endDate"></param>
+        /// <param name="interval"></param>
+        /// <returns></returns>
+        protected internal virtual Pondus[] GetExpenseItemsForRange(Pecuniam amt, DateTime? startDate,
+            DateTime? endDate = null, Interval interval = Interval.Annually)
+        {
+            startDate = startDate ?? GetMinDateAmongExpectations();
+            var itemsout = new List<Pondus>();
+            amt = amt ?? Pecuniam.Zero;
+
+            //TODO - need to make a portions split
+
+
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
         /// Produces a dictionary of other income items by names to a portion of <see cref="sumOfRates"/>
         /// </summary>
         /// <param name="sumOfRates">
-        /// A positive number, typically either very small or zero. Negative values are ignored - place those in 
-        /// Expenses.
+        /// A positive number, typically either very small or zero. Negative values are ignored are converted to positive.
         /// </param>
         /// <param name="randRateFunc">
         /// Optional, allows the calling assembly to specify how to generate random rates, the default is to pick a 
         /// random value between 0.01 and the <see cref="sumOfRates"/> 
         /// </param>
         /// <returns></returns>
-        protected internal virtual Dictionary<string, double> GetOtherIncomeName2RandomeRates(double sumOfRates = 0,
+        protected internal virtual Dictionary<string, double> GetOtherIncomeName2RandomRates(double sumOfRates = 0,
             Func<double> randRateFunc = null)
         {
             //get all the names of income items which are not employment nor welfare
-            var grps = new[] {"Employment", "Public Benefits", "Judgments", "Subito"};
-            var otherIncomeItemNames = GetIncomeItemNames().Where(i => !grps.Contains(i.GetName(KindsOfNames.Group)));
+            var excludeGrps = new[] {"Employment", "Public Benefits", "Judgments", "Subito"};
+            var otherIncomeItemNames = GetIncomeItemNames().Where(i => !excludeGrps.Contains(i.GetName(KindsOfNames.Group)));
             var d = GetNames2RandomRates(otherIncomeItemNames, sumOfRates, randRateFunc);
 
             //add these back in but always at zero
@@ -241,6 +282,211 @@ namespace NoFuture.Rand.Domus.Opes
                 d.Add(otName.Name, 0D);
 
             return d;
+        }
+
+        /// <summary>
+        /// Produces a dictionary of Transportation expense items by names to a portion of <see cref="sumOfRates"/>
+        /// </summary>
+        /// <param name="sumOfRates"></param>
+        /// <returns></returns>
+        protected internal virtual Dictionary<string, double> GetHomeExpenseNames2RandomRates(
+            double sumOfRates = 0.333)
+        {
+            var dk = GetExpenseNames2RandomRates("Home", sumOfRates, null, "Association Fees");
+
+            var zeroOuts = new List<string> { "Other Lein" };
+            if (!IsRenting)
+            {
+                zeroOuts.Add("Rent");
+            }
+            else
+            {
+                zeroOuts.Add("Mortgage");
+                zeroOuts.Add("Maintenance");
+                zeroOuts.Add("Property Tax");
+                zeroOuts.Add("Association Fees");
+            }
+
+            dk = ZeroOutRates(dk, zeroOuts.ToArray());
+            return dk;
+        }
+
+        /// <summary>
+        /// Produces a dictionary of Utilities expense items by names to a portion of <see cref="sumOfRates"/>
+        /// </summary>
+        /// <param name="sumOfRates">
+        /// </param>
+        /// <returns></returns>
+        protected internal virtual Dictionary<string, double> GetUtilityExpenseNames2RandomRates(
+            double sumOfRates = 0.1)
+        {
+            return IsRenting
+                ? GetExpenseNames2RandomRates("Utilities", sumOfRates, null, "Gas", "Water", "Sewer", "Trash")
+                : GetExpenseNames2RandomRates("Utilities", sumOfRates, null);
+        }
+
+        /// <summary>
+        /// Produces a dictionary of Transportation expense items by names to a portion of <see cref="sumOfRates"/>
+        /// </summary>
+        /// <param name="sumOfRates"></param>
+        /// <returns></returns>
+        protected internal virtual Dictionary<string, double> GetTransportationExpenseNames2RandomRates(
+            double sumOfRates = 0.125)
+        {
+            var dk = GetExpenseNames2RandomRates("Transportation", sumOfRates, null, "Parking");
+
+            var zeroOuts = new List<string>();
+            if (_options.HasVehicle)
+            {
+                if (_options.IsVehiclePaidOff)
+                    zeroOuts.Add("Loan Payments");
+                zeroOuts.Add("Public Transportation");
+            }
+            else
+            {
+                zeroOuts.Add("Loan Payments");
+                zeroOuts.Add("Fuel");
+                zeroOuts.Add("Maintenance");
+                zeroOuts.Add("Property Tax");
+                zeroOuts.Add("Registration Fees");
+                zeroOuts.Add("Parking");
+            }
+
+            dk = ZeroOutRates(dk, zeroOuts.ToArray());
+            return dk;
+        }
+
+        /// <summary>
+        /// Produces a dictionary of Health expense items by names to a portion of <see cref="sumOfRates"/>
+        /// </summary>
+        /// <param name="sumOfRates"></param>
+        /// <returns></returns>
+        protected internal virtual Dictionary<string, double> GetInsuranceExpenseNames2RandomRates(
+            double sumOfRates = 0.05)
+        {
+            //these have 
+            var dk = GetExpenseNames2RandomRates("Insurance Premiums", sumOfRates, null, "Pet", "Vision", "Dental", "Health",
+                "Disability", "Life");
+
+            var zeroOuts = new List<string> { IsRenting ? "Home" : "Renters" };
+
+            if (!_options.HasVehicle)
+                zeroOuts.Add("Vehicle");
+
+            dk = ZeroOutRates(dk, zeroOuts.ToArray());
+
+            return dk;
+        }
+
+        /// <summary>
+        /// Produces a dictionary of Personal expense items by names to a portion of <see cref="sumOfRates"/>
+        /// </summary>
+        /// <param name="sumOfRates"></param>
+        /// <returns></returns>
+        protected internal virtual Dictionary<string, double> GetPersonalExpenseNames2RandomRates(
+            double sumOfRates = 0.333)
+        {
+            return GetExpenseNames2RandomRates("Personal", sumOfRates, null, "Dues", "Subscriptions", "Gifts", "Vice",
+                "Clothing");
+        }
+
+        /// <summary>
+        /// Produces a dictionary of Transportation expense items by names to a portion of <see cref="sumOfRates"/>
+        /// </summary>
+        /// <param name="sumOfRates"></param>
+        /// <returns></returns>
+        protected internal virtual Dictionary<string, double> GetChildrenExpenseNames2RandomRates(
+            double sumOfRates = 0.125)
+        {
+            if (!_options.HasChildren)
+            {
+                var d = new Dictionary<string, double>();
+                foreach (var name in GetExpenseItemNames().Where(e =>
+                    string.Equals(e.GetName(KindsOfNames.Group), "Children", StringComparison.OrdinalIgnoreCase)))
+                {
+                    d.Add(name.Name, 0D);
+                }
+                return d;
+            }
+
+            var dk = GetExpenseNames2RandomRates("Children", sumOfRates, null, "Lunch Money", "Extracurricular", "Camp",
+                "Transportation", "Allowance");
+
+            var zeroOuts = new List<string> {"Education"};
+            if (_options.HasChildren && _options.ChildrenAges.All(x => x < NAmerUtil.AVG_AGE_CHILD_ENTER_SCHOOL))
+            {
+                zeroOuts.Add("Transportation");
+                zeroOuts.Add("School Supplies");
+                zeroOuts.Add("Lunch Money");
+                zeroOuts.Add("Extracurricular");
+                zeroOuts.Add("Camp");
+                zeroOuts.Add("Allowance");
+            }
+
+            dk = ZeroOutRates(dk, zeroOuts.ToArray());
+            return dk;
+        }
+
+        /// <summary>
+        /// Produces a dictionary of Debts expense items by names to a portion of <see cref="sumOfRates"/>
+        /// </summary>
+        /// <param name="sumOfRates"></param>
+        /// <returns></returns>
+        protected internal virtual Dictionary<string, double> GetDebtExpenseNames2RandomRates(double sumOfRates = 0.078)
+        {
+            var dk = GetExpenseNames2RandomRates("Debts", sumOfRates, null, "Health Care", "Other Consumer", "Student",
+                "Tax", "Other");
+
+            return dk;
+        }
+
+        /// <summary>
+        /// Produces a dictionary of Health expense items by names to a portion of <see cref="sumOfRates"/>
+        /// </summary>
+        /// <param name="sumOfRates"></param>
+        /// <returns></returns>
+        protected internal virtual Dictionary<string, double> GetHealthExpenseNames2RandomRates(
+            double sumOfRates = 0.03)
+        {
+            return GetExpenseNames2RandomRates("Health", sumOfRates, null, "Therapy", "Hospital", "Optical", "Dental",
+                "Physician", "Supplements");
+        }
+
+        /// <summary>
+        /// Helper method to get expense items by <see cref="expenseGroupName"/> items by names 
+        /// to a portion of <see cref="sumOfRates"/>
+        /// </summary>
+        /// <param name="expenseGroupName"></param>
+        /// <param name="sumOfRates"></param>
+        /// <param name="probability">
+        /// Allows calling assembly to control the probability of an expense being zero-ed out.
+        /// The default is a 75% chance.
+        /// </param>
+        /// <param name="possiablyZeroNames"></param>
+        /// <returns></returns>
+        protected internal virtual Dictionary<string, double> GetExpenseNames2RandomRates(string expenseGroupName,
+            double sumOfRates,
+            Func<int, Etx.Dice, bool> probability,
+            params string[] possiablyZeroNames)
+        {
+            var expenses = GetExpenseItemNames().Where(e =>
+                    string.Equals(e.GetName(KindsOfNames.Group), expenseGroupName, StringComparison.OrdinalIgnoreCase))
+                .ToList();
+
+            probability = probability ?? Etx.TryBelowOrAt;
+
+            var p2r = GetNames2DiminishingRates(expenses, sumOfRates);
+
+            var randZeros = new List<string>();
+
+            foreach (var item in possiablyZeroNames)
+            {
+                if (probability(1, Etx.Dice.Four))
+                    continue;
+                randZeros.Add(item);
+            }
+
+            return ZeroOutRates(p2r, randZeros.ToArray());
         }
 
         /// <summary>

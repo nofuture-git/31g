@@ -123,6 +123,11 @@ namespace NoFuture.Rand.Domus
         /// https://en.wikipedia.org/wiki/List_of_countries_by_median_age
         /// </summary>
         public const double AVG_AGE_AMERICAN = 37.9;
+
+        /// <summary>
+        /// Common knowledge value
+        /// </summary>
+        public const double AVG_AGE_CHILD_ENTER_SCHOOL = 5.0D;
         #endregion
 
         #region inner types

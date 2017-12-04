@@ -32,6 +32,7 @@ namespace NoFuture.Rand.Domus.Opes
             if (american == null)
             {
                 _factors = new NorthAmericanFactors(null);
+                IsRenting = isRenting;
                 return;
             }
             _amer = american;
@@ -300,6 +301,7 @@ namespace NoFuture.Rand.Domus.Opes
         {
             //get just an array of rates
             var rates = new double[names.Count()];
+            var d = new Dictionary<string, double>();
 
             var rMax = sumOfRates;
             double DfRandRateFunc() => Etx.RationalNumber(0.01, rMax);
@@ -307,7 +309,7 @@ namespace NoFuture.Rand.Domus.Opes
             randRateFunc = randRateFunc ?? DfRandRateFunc;
 
             var l = rates.Sum();
-            sumOfRates = sumOfRates < 0D ? 0D : sumOfRates;
+            sumOfRates = Math.Abs(sumOfRates);
             while (l < sumOfRates)
             {
                 //pick a random index 
@@ -325,7 +327,6 @@ namespace NoFuture.Rand.Domus.Opes
             }
 
             //assign the values over to the dictionary
-            var d = new Dictionary<string, double>();
             var c = 0;
             foreach (var otName in names)
             {
@@ -334,6 +335,73 @@ namespace NoFuture.Rand.Domus.Opes
             }
 
             return d;
+        }
+
+        /// <summary>
+        /// Helper method to get a bunch of diminishing random rates mapped to some names.
+        /// This differs from the counterpart <see cref="GetNames2RandomRates"/> because 
+        /// every item in <see cref="names"/> will get &apos;something&apos; - no matter how small.
+        /// </summary>
+        /// <param name="names"></param>
+        /// <param name="sumOfRates"></param>
+        /// <returns></returns>
+        protected internal virtual Dictionary<string, double> GetNames2DiminishingRates(IEnumerable<IMereo> names,
+            double sumOfRates)
+        {
+            var nms = names.ToList();
+
+            var diminishing = Etx.DiminishingPortions(nms.Count);
+            var p2r = new Dictionary<string, double>();
+            for (var i = 0; i < diminishing.Length; i++)
+            {
+                p2r.Add(nms[i].Name, sumOfRates * diminishing[i]);
+            }
+
+            return p2r;
+        }
+
+
+        /// <summary>
+        /// Takes the rates away from <see cref="zeroOutNames"/> and adds the rate to 
+        /// one of the other entries in <see cref="names2Rates"/> whose name is not in <see cref="zeroOutNames"/>
+        /// </summary>
+        /// <param name="names2Rates"></param>
+        /// <param name="zeroOutNames"></param>
+        protected internal Dictionary<string, double> ZeroOutRates(Dictionary<string, double> names2Rates, params string[] zeroOutNames)
+        {
+            if (names2Rates == null || !names2Rates.Any() || zeroOutNames == null || !zeroOutNames.Any())
+                return names2Rates;
+
+            var relocateRates = new List<double>();
+            var idxNames = new List<string>();
+
+            var n2r = new Dictionary<string, double>();
+
+            //make temp copies of all the zero'ed out values
+            foreach (var k in names2Rates.Keys)
+            {
+                if (zeroOutNames.Any(x => string.Equals(x, k, StringComparison.OrdinalIgnoreCase)))
+                {
+                    relocateRates.Add(names2Rates[k]);
+                    n2r.Add(k, 0D);
+                }
+                else
+                {
+                    idxNames.Add(k);
+                    n2r.Add(k, names2Rates[k]);
+                }
+            }
+
+            if (!relocateRates.Any() || !idxNames.Any())
+                return names2Rates;
+
+            foreach (var relocate in relocateRates)
+            {
+                var randKey = Etx.DiscreteRange(idxNames.ToArray());
+                n2r[randKey] += relocate;
+            }
+
+            return n2r;
         }
 
         /// <summary>

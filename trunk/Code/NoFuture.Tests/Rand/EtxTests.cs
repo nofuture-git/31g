@@ -232,7 +232,24 @@ namespace NoFuture.Rand.Tests
             var testResultsSum = testResults.Sum();
             Assert.IsTrue(testResultsSum > 0.99D && testResultsSum < 1.01D);
         }
+        [TestMethod]
+        public void TestDiminishingPortions()
+        {
+            var testResults = Etx.DiminishingPortions(12);
 
+            Assert.IsNotNull(testResults);
+            Assert.AreEqual(12, testResults.Length);
+            var testResultsSum = testResults.Sum();
+            Assert.IsTrue(testResultsSum > 0.99D && testResultsSum < 1.01D);
+
+            Assert.IsTrue(testResults.Last() == testResults.Min());
+
+            Assert.IsTrue(testResults.First() == testResults.Max());
+
+            foreach(var t in testResults)
+                System.Diagnostics.Debug.WriteLine(t);
+
+        }
         [TestMethod]
         public void TestRandShuffle()
         {

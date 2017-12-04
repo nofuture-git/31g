@@ -270,6 +270,31 @@ namespace NoFuture.Rand.Core
         }
 
         /// <summary>
+        /// Like its counterpart <see cref="RandomPortions"/> being ordered and 
+        /// having an exponential drop-off within the first 3 to 4 entries.
+        /// </summary>
+        /// <param name="numOfDiv"></param>
+        /// <returns></returns>
+        public static double[] DiminishingPortions(int numOfDiv)
+        {
+            numOfDiv = Math.Abs(numOfDiv);
+            var df = new[] { 1.0D };
+            if (numOfDiv == 0 || numOfDiv == 1)
+                return df;
+
+            var someNums = new List<int>();
+            for (var i = 0; i < numOfDiv; i++)
+            {
+                var u = (int) Math.Round(99999D / (i + 1));
+                var l = (int) Math.Round(99999D / (i + 2));
+
+                someNums.Add(IntNumber(l,u));
+            }
+
+            return someNums.Select(num => Math.Round((double)num / someNums.Sum(), 8)).ToArray();
+        }
+
+        /// <summary>
         /// Get a random string of characters within ASCII (256) range.
         /// </summary>
         /// <param name="asciiStart"></param>

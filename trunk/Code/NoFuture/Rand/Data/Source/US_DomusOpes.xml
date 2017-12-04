@@ -190,9 +190,9 @@
           </deduction>
           <expense>
             <group name="Home">
-              <mereo name="Rent" />
               <mereo name="Mortgage" />
               <mereo name="Other Lein" />
+              <mereo name="Rent" />
               <mereo name="Property Tax" />
               <mereo name="Maintenance">
                 <eg name="appliance" />
@@ -203,15 +203,17 @@
               <mereo name="Association Fees" />
             </group>
             <group name="Utilities">
+              <mereo name="Telecommunications">
+                <eg name="mobile phone" />
+                <eg name="internet" />
+                <eg name="cable TV" />
+                <eg name="plain-old-telephone service" />
+              </mereo>
               <mereo name="Electricity" />
               <mereo name="Gas" />
               <mereo name="Water" />
               <mereo name="Sewer" />
               <mereo name="Trash" />
-              <mereo name="Telephone" />
-              <mereo name="Cellular" />
-              <mereo name="TV" />
-              <mereo name="Internet" />
             </group>
             <group name="Transportation">
               <mereo name="Loan Payments" />
@@ -221,13 +223,14 @@
                 <eg name="tires" />
                 <eg name="brake pads" />
               </mereo>
+              <mereo name="Public Transportation" />
               <mereo name="Property Tax" />
               <mereo name="Registration Fees" />
-              <mereo name="Public Transportation" />
               <mereo name="Parking" />
             </group>
             <group name="Insurance Premiums">
               <mereo name="Home" />
+              <mereo name="Vehicle" />
               <mereo name="Life" />
               <mereo name="Renters" />
               <mereo name="Disability" />
@@ -235,32 +238,31 @@
               <mereo name="Dental" />
               <mereo name="Vision" />
               <mereo name="Pet" />
-              <mereo name="Vehicle" />
             </group>
             <group name="Personal">
-              <mereo name="Grooming">
-                <eg name="hair" />
-                <eg name="nails" />
-                <eg name="spa" />
+              <mereo name="Groceries">
+                <eg name="toiletries" />
+                <eg name="bread" />
+                <eg name="paper plates" />
+                <eg name="soap" />
               </mereo>
-              <mereo name="Clothing" />
               <mereo name="Entertainment">
                 <eg name="movie tickets" />
                 <eg name="bowling" />
                 <eg name="video games" />
                 <eg name="dining out" />
               </mereo>
+              <mereo name="Savings" />
+              <mereo name="Grooming">
+                <eg name="hair" />
+                <eg name="nails" />
+                <eg name="spa" />
+              </mereo>
+              <mereo name="Clothing" />
               <mereo name="Vice">
                 <eg name="tobacco" />
                 <eg name="alcohol" />
                 <eg name="gambling" />
-              </mereo>
-              <mereo name="Savings" />
-              <mereo name="Groceries">
-                <eg name="toiletries" />
-                <eg name="bread" />
-                <eg name="paper plates" />
-                <eg name="soap" />
               </mereo>
               <mereo name="Gifts">
                 <eg name="church" />
@@ -280,16 +282,9 @@
               </mereo>
             </group>
             <group name="Children">
-              <mereo name="Allowance" />
               <mereo name="Childcare" />
               <mereo name="School Supplies" />
               <mereo name="Lunch Money" />
-              <mereo name="Education">
-                <eg name="elementary" />
-                <eg name="secondary" />
-                <eg name="college" />
-                <eg name="occupational" />
-              </mereo>
               <mereo name="Extracurricular">
                 <eg name="lessons" />
                 <eg name="sports" />
@@ -297,24 +292,31 @@
               </mereo>
               <mereo name="Camp" />
               <mereo name="Transportation" />
+              <mereo name="Allowance" />
+              <mereo name="Education">
+                <eg name="elementary" />
+                <eg name="secondary" />
+                <eg name="college" />
+                <eg name="occupational" />
+              </mereo>
             </group>
             <group name="Debts">
               <mereo name="Credit Card" />
-              <mereo name="Other Consumer" />
-              <mereo name="Tax" />
               <mereo name="Health Care" />
-              <mereo name="Other" />
+              <mereo name="Other Consumer" />
               <mereo name="Student" />
+              <mereo name="Tax" />
+              <mereo name="Other" />
             </group>
             <group name="Health">
+              <mereo name="Prescriptions" />
+              <mereo name="OTC Medicine" />
+              <mereo name="Supplements" />
               <mereo name="Physician" />
-              <mereo name="Hospital" />
-              <mereo name="Therapy" />
               <mereo name="Dental" />
               <mereo name="Optical" />
-              <mereo name="OTC Medicine" />
-              <mereo name="Prescriptions" />
-              <mereo name="Supplements" />
+              <mereo name="Therapy" />
+              <mereo name="Hospital" />
             </group>            
           </expense>
           <assets>

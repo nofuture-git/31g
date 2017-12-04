@@ -84,14 +84,14 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         public void TestGetOtherIncomeName2RandomeRates()
         {
             var testSubject = new NorthAmericanIncome(null);
-            var testResult = testSubject.GetOtherIncomeName2RandomeRates(0);
+            var testResult = testSubject.GetOtherIncomeName2RandomRates(0);
 
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0, testResult.Count);
 
             Assert.AreEqual(0D, testResult.Values.Sum());
 
-            testResult = testSubject.GetOtherIncomeName2RandomeRates(0.25);
+            testResult = testSubject.GetOtherIncomeName2RandomRates(0.25);
 
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0, testResult.Count);
@@ -130,6 +130,149 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             Assert.IsNotNull(testResult);
             Assert.IsFalse(testResult == Pecuniam.Zero);
             System.Diagnostics.Debug.WriteLine(testResult);
+        }
+
+        [TestMethod]
+        public void TestGetUtilitiesNames2RandomRates()
+        {
+            var testSubject = new NorthAmericanIncome(null);
+            var testResult = testSubject.GetUtilityExpenseNames2RandomRates();
+
+            Assert.IsNotNull(testResult);
+            Assert.AreNotEqual(0, testResult.Count);
+
+            //try it on rental
+            testSubject = new NorthAmericanIncome(null, new NorthAmericanIncome.IncomeOptions{IsRenting = true});
+            testResult = testSubject.GetUtilityExpenseNames2RandomRates();
+
+            Assert.IsNotNull(testResult);
+            Assert.AreNotEqual(0, testResult.Count);
+        }
+
+        [TestMethod]
+        public void TestGetPersonalExpenseNames2RandomRates()
+        {
+            var testSubject = new NorthAmericanIncome(null);
+            var testResult = testSubject.GetPersonalExpenseNames2RandomRates();
+
+            Assert.IsNotNull(testResult);
+            Assert.AreNotEqual(0, testResult.Count);
+        }
+
+        [TestMethod]
+        public void TestGetInsuranceExpenseNames2RandomRates()
+        {
+            var testSubject = new NorthAmericanIncome(null);
+            var testResult = testSubject.GetInsuranceExpenseNames2RandomRates();
+
+            Assert.IsNotNull(testResult);
+            Assert.AreNotEqual(0, testResult.Count);
+
+            Assert.IsTrue(testResult.ContainsKey("Home"));
+            Assert.IsTrue(testResult["Home"] > 0D);
+
+            Assert.IsTrue(testResult.ContainsKey("Vehicle"));
+            Assert.IsTrue(testResult["Vehicle"] == 0D);
+
+            Assert.IsTrue(testResult.ContainsKey("Renters"));
+            Assert.IsTrue(testResult["Renters"] == 0D);
+
+            testSubject = new NorthAmericanIncome(null, new NorthAmericanIncome.IncomeOptions { IsRenting = true, HasVehicle = true});
+            testResult = testSubject.GetInsuranceExpenseNames2RandomRates();
+
+            Assert.IsNotNull(testResult);
+            Assert.AreNotEqual(0, testResult.Count);
+
+            Assert.IsTrue(testResult.ContainsKey("Home"));
+            Assert.IsTrue(testResult["Home"] == 0D);
+
+            Assert.IsTrue(testResult.ContainsKey("Vehicle"));
+            Assert.IsTrue(testResult["Vehicle"] > 0D);
+
+            Assert.IsTrue(testResult.ContainsKey("Renters"));
+            Assert.IsTrue(testResult["Renters"] > 0D);
+
+
+        }
+
+        [TestMethod]
+        public void TestGetTransportationExpenseNames2RandomRates()
+        {
+            var testSubject = new NorthAmericanIncome(null);
+            var testResult = testSubject.GetTransportationExpenseNames2RandomRates();
+
+            Assert.IsNotNull(testResult);
+            Assert.AreNotEqual(0, testResult.Count);
+
+            Assert.IsTrue(testResult.ContainsKey("Public Transportation"));
+            Assert.IsTrue(testResult["Public Transportation"] > 0D);
+
+            testSubject = new NorthAmericanIncome(null, new NorthAmericanIncome.IncomeOptions { IsRenting = true, HasVehicle = true });
+            testResult = testSubject.GetTransportationExpenseNames2RandomRates();
+
+            Assert.IsNotNull(testResult);
+            Assert.AreNotEqual(0, testResult.Count);
+
+            Assert.IsTrue(testResult.ContainsKey("Public Transportation"));
+            Assert.IsTrue(testResult["Public Transportation"] == 0D);
+
+            foreach (var u in testResult)
+                System.Diagnostics.Debug.WriteLine($"{u.Key} -> {u.Value}");
+
+        }
+
+        [TestMethod]
+        public void TestGetHomeExpenseNames2RandomRates()
+        {
+            var testSubject = new NorthAmericanIncome(null);
+            var testResult = testSubject.GetHomeExpenseNames2RandomRates();
+
+            Assert.IsNotNull(testResult);
+            Assert.AreNotEqual(0, testResult.Count);
+
+            Assert.IsTrue(testResult.ContainsKey("Rent"));
+            Assert.IsTrue(testResult["Rent"] == 0D);
+
+            testSubject = new NorthAmericanIncome(null, new NorthAmericanIncome.IncomeOptions { IsRenting = true });
+            testResult = testSubject.GetHomeExpenseNames2RandomRates();
+
+            Assert.IsNotNull(testResult);
+            Assert.AreNotEqual(0, testResult.Count);
+
+            Assert.IsTrue(testResult.ContainsKey("Rent"));
+            Assert.IsTrue(testResult["Rent"] > 0D);
+        }
+
+        [TestMethod]
+        public void TestGetChildrenExpenseNames2RandomRates()
+        {
+            var testSubject = new NorthAmericanIncome(null);
+            var testResult = testSubject.GetChildrenExpenseNames2RandomRates();
+
+            Assert.IsNotNull(testResult);
+            Assert.AreNotEqual(0, testResult.Count);
+
+            testSubject = new NorthAmericanIncome(null, new NorthAmericanIncome.IncomeOptions { ChildrenAges = new []{2,4}});
+            testResult = testSubject.GetChildrenExpenseNames2RandomRates();
+
+            Assert.IsTrue(testResult.ContainsKey("Extracurricular"));
+            Assert.IsTrue(testResult["Extracurricular"] == 0D);
+
+            foreach (var u in testResult)
+                System.Diagnostics.Debug.WriteLine($"{u.Key} -> {u.Value}");
+        }
+
+        [TestMethod]
+        public void TestGetDebtExpenseNames2RandomRates()
+        {
+            var testSubject = new NorthAmericanIncome(null);
+            var testResult = testSubject.GetDebtExpenseNames2RandomRates();
+
+            Assert.IsNotNull(testResult);
+            Assert.AreNotEqual(0, testResult.Count);
+
+            foreach (var u in testResult)
+                System.Diagnostics.Debug.WriteLine($"{u.Key} -> {u.Value}");
         }
     }
 }
