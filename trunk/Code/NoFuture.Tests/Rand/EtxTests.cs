@@ -246,10 +246,12 @@ namespace NoFuture.Rand.Tests
 
             Assert.IsTrue(testResults.First() == testResults.Max());
 
-            foreach(var t in testResults)
-                System.Diagnostics.Debug.WriteLine(t);
+            testResults = Etx.DiminishingPortions(12, -0.2);
 
+            foreach (var t in testResults)
+                System.Diagnostics.Debug.WriteLine(t);
         }
+
         [TestMethod]
         public void TestRandShuffle()
         {

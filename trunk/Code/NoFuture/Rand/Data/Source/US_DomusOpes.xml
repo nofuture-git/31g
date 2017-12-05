@@ -202,43 +202,6 @@
               </mereo>
               <mereo name="Association Fees" />
             </group>
-            <group name="Utilities">
-              <mereo name="Telecommunications">
-                <eg name="mobile phone" />
-                <eg name="internet" />
-                <eg name="cable TV" />
-                <eg name="plain-old-telephone service" />
-              </mereo>
-              <mereo name="Electricity" />
-              <mereo name="Gas" />
-              <mereo name="Water" />
-              <mereo name="Sewer" />
-              <mereo name="Trash" />
-            </group>
-            <group name="Transportation">
-              <mereo name="Loan Payments" />
-              <mereo name="Fuel" />
-              <mereo name="Maintenance">
-                <eg name="oil change" />
-                <eg name="tires" />
-                <eg name="brake pads" />
-              </mereo>
-              <mereo name="Public Transportation" />
-              <mereo name="Property Tax" />
-              <mereo name="Registration Fees" />
-              <mereo name="Parking" />
-            </group>
-            <group name="Insurance Premiums">
-              <mereo name="Home" />
-              <mereo name="Vehicle" />
-              <mereo name="Life" />
-              <mereo name="Renters" />
-              <mereo name="Disability" />
-              <mereo name="Health" />
-              <mereo name="Dental" />
-              <mereo name="Vision" />
-              <mereo name="Pet" />
-            </group>
             <group name="Personal">
               <mereo name="Groceries">
                 <eg name="toiletries" />
@@ -281,6 +244,32 @@
                 <eg name="clubs" />
               </mereo>
             </group>
+            <group name="Transportation">
+              <mereo name="Loan Payments" />
+              <mereo name="Fuel" />
+              <mereo name="Maintenance">
+                <eg name="oil change" />
+                <eg name="tires" />
+                <eg name="brake pads" />
+              </mereo>
+              <mereo name="Public Transportation" />
+              <mereo name="Property Tax" />
+              <mereo name="Registration Fees" />
+              <mereo name="Parking" />
+            </group>
+            <group name="Utilities">
+              <mereo name="Telecommunications">
+                <eg name="mobile phone" />
+                <eg name="internet" />
+                <eg name="cable TV" />
+                <eg name="plain-old-telephone service" />
+              </mereo>
+              <mereo name="Electricity" />
+              <mereo name="Gas" />
+              <mereo name="Water" />
+              <mereo name="Sewer" />
+              <mereo name="Trash" />
+            </group>
             <group name="Children">
               <mereo name="Childcare" />
               <mereo name="School Supplies" />
@@ -307,6 +296,17 @@
               <mereo name="Student" />
               <mereo name="Tax" />
               <mereo name="Other" />
+            </group>
+            <group name="Insurance Premiums">
+              <mereo name="Home" />
+              <mereo name="Vehicle" />
+              <mereo name="Life" />
+              <mereo name="Renters" />
+              <mereo name="Disability" />
+              <mereo name="Health" />
+              <mereo name="Dental" />
+              <mereo name="Vision" />
+              <mereo name="Pet" />
             </group>
             <group name="Health">
               <mereo name="Prescriptions" />

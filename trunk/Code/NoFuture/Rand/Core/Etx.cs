@@ -274,24 +274,37 @@ namespace NoFuture.Rand.Core
         /// having an exponential drop-off within the first 3 to 4 entries.
         /// </summary>
         /// <param name="numOfDiv"></param>
+        /// <param name="derivativeSlope">
+        /// Controls &apos;speed&apos; of the exponential drop-off - the closer to zero
+        /// it gets the faster it drops off
+        /// </param>
         /// <returns></returns>
-        public static double[] DiminishingPortions(int numOfDiv)
+        public static double[] DiminishingPortions(int numOfDiv, double derivativeSlope = -1.0D)
         {
             numOfDiv = Math.Abs(numOfDiv);
-            var df = new[] { 1.0D };
             if (numOfDiv == 0 || numOfDiv == 1)
-                return df;
+                return new[] { 1.0D };
+
+            //make sure this is always negative despite what the calling assembly gave
+            derivativeSlope = Math.Abs(derivativeSlope) * -1;
 
             var someNums = new List<int>();
             for (var i = 0; i < numOfDiv; i++)
             {
-                var u = (int) Math.Round(99999D / (i + 1));
-                var l = (int) Math.Round(99999D / (i + 2));
+                var uDenom = Math.Abs(i - derivativeSlope);
+                var lDenom = Math.Abs(i - derivativeSlope) * 2;
+                var u = (int) Math.Round(99999D / uDenom);
+                var l = (int) Math.Round(99999D / lDenom);
 
                 someNums.Add(IntNumber(l,u));
             }
 
-            return someNums.Select(num => Math.Round((double)num / someNums.Sum(), 8)).ToArray();
+            var listOut = someNums.Select(num => Math.Round((double)num / someNums.Sum(), 8)).ToList();
+
+            listOut.Sort();
+            listOut.Reverse();
+
+            return listOut.ToArray();
         }
 
         /// <summary>

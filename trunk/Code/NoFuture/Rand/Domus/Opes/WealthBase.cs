@@ -344,13 +344,16 @@ namespace NoFuture.Rand.Domus.Opes
         /// </summary>
         /// <param name="names"></param>
         /// <param name="sumOfRates"></param>
+        /// <param name="derivativeSlope">
+        /// Is passed into the <see cref="Etx.DiminishingPortions"/> - see its annotation.
+        /// </param>
         /// <returns></returns>
         protected internal virtual Dictionary<string, double> GetNames2DiminishingRates(IEnumerable<IMereo> names,
-            double sumOfRates)
+            double sumOfRates, double derivativeSlope = -1.0)
         {
             var nms = names.ToList();
 
-            var diminishing = Etx.DiminishingPortions(nms.Count);
+            var diminishing = Etx.DiminishingPortions(nms.Count, derivativeSlope);
             var p2r = new Dictionary<string, double>();
             for (var i = 0; i < diminishing.Length; i++)
             {
@@ -363,11 +366,16 @@ namespace NoFuture.Rand.Domus.Opes
 
         /// <summary>
         /// Takes the rates away from <see cref="zeroOutNames"/> and adds the rate to 
-        /// one of the other entries in <see cref="names2Rates"/> whose name is not in <see cref="zeroOutNames"/>
+        /// one of the other entries in <see cref="names2Rates"/> whose name is not in <see cref="zeroOutNames"/>.
         /// </summary>
         /// <param name="names2Rates"></param>
         /// <param name="zeroOutNames"></param>
-        protected internal Dictionary<string, double> ZeroOutRates(Dictionary<string, double> names2Rates, params string[] zeroOutNames)
+        /// <param name="derivativeSlope">
+        /// Is passed into the <see cref="Etx.DiminishingPortions"/> - see its annotation.  Which entries
+        /// receive the re-located rates is based on a diminishing probability.
+        /// </param>
+        protected internal Dictionary<string, double> ZeroOutRates(Dictionary<string, double> names2Rates,
+            string[] zeroOutNames, double derivativeSlope = -1.0D)
         {
             if (names2Rates == null || !names2Rates.Any() || zeroOutNames == null || !zeroOutNames.Any())
                 return names2Rates;
@@ -395,9 +403,16 @@ namespace NoFuture.Rand.Domus.Opes
             if (!relocateRates.Any() || !idxNames.Any())
                 return names2Rates;
 
+            var diminishing = Etx.DiminishingPortions(idxNames.Count, derivativeSlope);
+            var idxName2DiminishingRate = new Dictionary<string, double>();
+            for (var i = 0; i < idxNames.Count; i++)
+            {
+                idxName2DiminishingRate.Add(idxNames[i], diminishing[i]);
+            }
+
             foreach (var relocate in relocateRates)
             {
-                var randKey = Etx.DiscreteRange(idxNames.ToArray());
+                var randKey = Etx.DiscreteRange(idxName2DiminishingRate);
                 n2r[randKey] += relocate;
             }
 

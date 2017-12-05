@@ -18,6 +18,18 @@ namespace NoFuture.Rand.Domus.Opes
     [Serializable]
     public class NorthAmericanIncome : WealthBase, IReditus
     {
+        #region constants
+
+        internal const string EXPENSE_GRP_HOME = "Home";
+        internal const string EXPENSE_GRP_UTILITIES = "Utilities";
+        internal const string EXPENSE_GRP_TRANSPORTATION = "Transportation";
+        internal const string EXPENSE_GRP_INSURANCE = "Insurance Premiums";
+        internal const string EXPENSE_GRP_PERSONAL = "Personal";
+        internal const string EXPENSE_GRP_CHILDREN = "Children";
+        internal const string EXPENSE_GRP_DEBT = "Debts";
+        internal const string EXPENSE_GRP_HEALTH = "Health";
+        #endregion
+
         #region fields
         private readonly HashSet<IEmployment> _employment = new HashSet<IEmployment>();
         private readonly HashSet<Pondus> _otherIncome = new HashSet<Pondus>();
@@ -227,7 +239,7 @@ namespace NoFuture.Rand.Domus.Opes
                     Value = CalcValue(amt, incomeRate),
                     Interval = interval
                 };
-
+                p.UpsertName(KindsOfNames.Group, incomeItem.GetName(KindsOfNames.Group));
                 itemsout.Add(p);
             }
 
@@ -250,10 +262,63 @@ namespace NoFuture.Rand.Domus.Opes
             var itemsout = new List<Pondus>();
             amt = amt ?? Pecuniam.Zero;
 
-            //TODO - need to make a portions split
+            var expenseGrps = GetExpenseItemNames().Select(x => x.GetName(KindsOfNames.Group)).Distinct().ToList();
 
+            var expenseGrpCount = _options.HasChildren ? expenseGrps.Count : expenseGrps.Count - 1;
 
-            throw new NotImplementedException();
+            var portions =
+                Etx.DiminishingPortions(expenseGrpCount,-0.7);
+
+            var name2Op = new Dictionary<string, Func<double, double, Dictionary<string, double>>>
+            {
+                {EXPENSE_GRP_HOME, GetHomeExpenseNames2RandomRates},
+                {EXPENSE_GRP_UTILITIES, GetUtilityExpenseNames2RandomRates},
+                {EXPENSE_GRP_TRANSPORTATION, GetTransportationExpenseNames2RandomRates},
+                {EXPENSE_GRP_INSURANCE, GetInsuranceExpenseNames2RandomRates},
+                {EXPENSE_GRP_PERSONAL, GetPersonalExpenseNames2RandomRates},
+                {EXPENSE_GRP_CHILDREN, GetChildrenExpenseNames2RandomRates},
+                {EXPENSE_GRP_DEBT, GetDebtExpenseNames2RandomRates},
+                {EXPENSE_GRP_HEALTH, GetHealthExpenseNames2RandomRates}
+            };
+
+            //this controls forcing large portions of amt to go to Mortgage\Rent and Groceries
+            var name2Slope = new Dictionary<string, double>
+            {
+                {EXPENSE_GRP_HOME, -0.2D},
+                {EXPENSE_GRP_PERSONAL, -0.4D},
+            };
+
+            var count = 0;
+            foreach (var grp in expenseGrps)
+            {
+                if (grp == EXPENSE_GRP_CHILDREN && !_options.HasChildren)
+                    continue;
+
+                var portion = portions[count];
+
+                var derivativeSlope = name2Slope.ContainsKey(grp) ? name2Slope[grp] : -1.0D;
+
+                //use explicit def if present - otherwise default to just diminishing with no zero-outs
+                var grpRates = name2Op.ContainsKey(grp)
+                    ? name2Op[grp](portion, derivativeSlope)
+                    : GetExpenseNames2RandomRates(grp, portion, null);
+
+                foreach (var item in grpRates.Keys)
+                {
+                    var p = new Pondus(item)
+                    {
+                        Inception = startDate,
+                        Terminus = endDate,
+                        Value = CalcValue(amt, grpRates[item]),
+                        Interval = interval
+                    };
+                    p.UpsertName(KindsOfNames.Group, grp);
+                    itemsout.Add(p);
+                }
+
+                count += 1;
+            }
+            return itemsout.ToArray();
         }
 
         /// <summary>
@@ -288,11 +353,12 @@ namespace NoFuture.Rand.Domus.Opes
         /// Produces a dictionary of Transportation expense items by names to a portion of <see cref="sumOfRates"/>
         /// </summary>
         /// <param name="sumOfRates"></param>
+        /// <param name="derivativeSlope"></param>
         /// <returns></returns>
         protected internal virtual Dictionary<string, double> GetHomeExpenseNames2RandomRates(
-            double sumOfRates = 0.333)
+            double sumOfRates = 0.333, double derivativeSlope = -0.2D)
         {
-            var dk = GetExpenseNames2RandomRates("Home", sumOfRates, null, "Association Fees");
+            var dk = GetExpenseNames2RandomRates(EXPENSE_GRP_HOME, sumOfRates, null, derivativeSlope, "Association Fees");
 
             var zeroOuts = new List<string> { "Other Lein" };
             if (!IsRenting)
@@ -306,8 +372,8 @@ namespace NoFuture.Rand.Domus.Opes
                 zeroOuts.Add("Property Tax");
                 zeroOuts.Add("Association Fees");
             }
-
-            dk = ZeroOutRates(dk, zeroOuts.ToArray());
+            //we want almost all the relocated rates of the zero-outs to go to mortgage or rent
+            dk = ZeroOutRates(dk, zeroOuts.ToArray(), derivativeSlope);
             return dk;
         }
 
@@ -316,24 +382,26 @@ namespace NoFuture.Rand.Domus.Opes
         /// </summary>
         /// <param name="sumOfRates">
         /// </param>
+        /// <param name="derivativeSlope"></param>
         /// <returns></returns>
         protected internal virtual Dictionary<string, double> GetUtilityExpenseNames2RandomRates(
-            double sumOfRates = 0.1)
+            double sumOfRates = 0.1, double derivativeSlope = -1.0D)
         {
             return IsRenting
-                ? GetExpenseNames2RandomRates("Utilities", sumOfRates, null, "Gas", "Water", "Sewer", "Trash")
-                : GetExpenseNames2RandomRates("Utilities", sumOfRates, null);
+                ? GetExpenseNames2RandomRates(EXPENSE_GRP_UTILITIES, sumOfRates, null, derivativeSlope, "Gas", "Water", "Sewer", "Trash")
+                : GetExpenseNames2RandomRates(EXPENSE_GRP_UTILITIES, sumOfRates, null, derivativeSlope);
         }
 
         /// <summary>
         /// Produces a dictionary of Transportation expense items by names to a portion of <see cref="sumOfRates"/>
         /// </summary>
         /// <param name="sumOfRates"></param>
+        /// <param name="derivativeSlope"></param>
         /// <returns></returns>
         protected internal virtual Dictionary<string, double> GetTransportationExpenseNames2RandomRates(
-            double sumOfRates = 0.125)
+            double sumOfRates = 0.125, double derivativeSlope = -1.0D)
         {
-            var dk = GetExpenseNames2RandomRates("Transportation", sumOfRates, null, "Parking");
+            var dk = GetExpenseNames2RandomRates(EXPENSE_GRP_TRANSPORTATION, sumOfRates, null, derivativeSlope, "Parking");
 
             var zeroOuts = new List<string>();
             if (_options.HasVehicle)
@@ -360,12 +428,13 @@ namespace NoFuture.Rand.Domus.Opes
         /// Produces a dictionary of Health expense items by names to a portion of <see cref="sumOfRates"/>
         /// </summary>
         /// <param name="sumOfRates"></param>
+        /// <param name="derivativeSlope"></param>
         /// <returns></returns>
         protected internal virtual Dictionary<string, double> GetInsuranceExpenseNames2RandomRates(
-            double sumOfRates = 0.05)
+            double sumOfRates = 0.05, double derivativeSlope = -1.0D)
         {
             //these have 
-            var dk = GetExpenseNames2RandomRates("Insurance Premiums", sumOfRates, null, "Pet", "Vision", "Dental", "Health",
+            var dk = GetExpenseNames2RandomRates(EXPENSE_GRP_INSURANCE, sumOfRates, null, derivativeSlope, "Pet", "Vision", "Dental", "Health",
                 "Disability", "Life");
 
             var zeroOuts = new List<string> { IsRenting ? "Home" : "Renters" };
@@ -382,11 +451,12 @@ namespace NoFuture.Rand.Domus.Opes
         /// Produces a dictionary of Personal expense items by names to a portion of <see cref="sumOfRates"/>
         /// </summary>
         /// <param name="sumOfRates"></param>
+        /// <param name="derivativeSlope"></param>
         /// <returns></returns>
         protected internal virtual Dictionary<string, double> GetPersonalExpenseNames2RandomRates(
-            double sumOfRates = 0.333)
+            double sumOfRates = 0.333, double derivativeSlope = -1.0D)
         {
-            return GetExpenseNames2RandomRates("Personal", sumOfRates, null, "Dues", "Subscriptions", "Gifts", "Vice",
+            return GetExpenseNames2RandomRates(EXPENSE_GRP_PERSONAL, sumOfRates, null, derivativeSlope, "Dues", "Subscriptions", "Gifts", "Vice",
                 "Clothing");
         }
 
@@ -394,9 +464,10 @@ namespace NoFuture.Rand.Domus.Opes
         /// Produces a dictionary of Transportation expense items by names to a portion of <see cref="sumOfRates"/>
         /// </summary>
         /// <param name="sumOfRates"></param>
+        /// <param name="derivativeSlope"></param>
         /// <returns></returns>
         protected internal virtual Dictionary<string, double> GetChildrenExpenseNames2RandomRates(
-            double sumOfRates = 0.125)
+            double sumOfRates = 0.125, double derivativeSlope = -1.0D)
         {
             if (!_options.HasChildren)
             {
@@ -409,7 +480,7 @@ namespace NoFuture.Rand.Domus.Opes
                 return d;
             }
 
-            var dk = GetExpenseNames2RandomRates("Children", sumOfRates, null, "Lunch Money", "Extracurricular", "Camp",
+            var dk = GetExpenseNames2RandomRates(EXPENSE_GRP_CHILDREN, sumOfRates, null, derivativeSlope, "Lunch Money", "Extracurricular", "Camp",
                 "Transportation", "Allowance");
 
             var zeroOuts = new List<string> {"Education"};
@@ -431,10 +502,11 @@ namespace NoFuture.Rand.Domus.Opes
         /// Produces a dictionary of Debts expense items by names to a portion of <see cref="sumOfRates"/>
         /// </summary>
         /// <param name="sumOfRates"></param>
+        /// <param name="derivativeSlope"></param>
         /// <returns></returns>
-        protected internal virtual Dictionary<string, double> GetDebtExpenseNames2RandomRates(double sumOfRates = 0.078)
+        protected internal virtual Dictionary<string, double> GetDebtExpenseNames2RandomRates(double sumOfRates = 0.078, double derivativeSlope = -1.0D)
         {
-            var dk = GetExpenseNames2RandomRates("Debts", sumOfRates, null, "Health Care", "Other Consumer", "Student",
+            var dk = GetExpenseNames2RandomRates(EXPENSE_GRP_DEBT, sumOfRates, null, derivativeSlope, "Health Care", "Other Consumer", "Student",
                 "Tax", "Other");
 
             return dk;
@@ -444,11 +516,12 @@ namespace NoFuture.Rand.Domus.Opes
         /// Produces a dictionary of Health expense items by names to a portion of <see cref="sumOfRates"/>
         /// </summary>
         /// <param name="sumOfRates"></param>
+        /// <param name="derivativeSlope"></param>
         /// <returns></returns>
         protected internal virtual Dictionary<string, double> GetHealthExpenseNames2RandomRates(
-            double sumOfRates = 0.03)
+            double sumOfRates = 0.03, double derivativeSlope = -1.0D)
         {
-            return GetExpenseNames2RandomRates("Health", sumOfRates, null, "Therapy", "Hospital", "Optical", "Dental",
+            return GetExpenseNames2RandomRates(EXPENSE_GRP_HEALTH, sumOfRates, null, derivativeSlope, "Therapy", "Hospital", "Optical", "Dental",
                 "Physician", "Supplements");
         }
 
@@ -462,11 +535,15 @@ namespace NoFuture.Rand.Domus.Opes
         /// Allows calling assembly to control the probability of an expense being zero-ed out.
         /// The default is a 75% chance.
         /// </param>
+        /// <param name="derivativeSlope">
+        /// Is passed into the <see cref="Etx.DiminishingPortions"/> - see its annotation.
+        /// </param>
         /// <param name="possiablyZeroNames"></param>
         /// <returns></returns>
         protected internal virtual Dictionary<string, double> GetExpenseNames2RandomRates(string expenseGroupName,
             double sumOfRates,
             Func<int, Etx.Dice, bool> probability,
+            double derivativeSlope = -1.0,
             params string[] possiablyZeroNames)
         {
             var expenses = GetExpenseItemNames().Where(e =>
@@ -475,7 +552,7 @@ namespace NoFuture.Rand.Domus.Opes
 
             probability = probability ?? Etx.TryBelowOrAt;
 
-            var p2r = GetNames2DiminishingRates(expenses, sumOfRates);
+            var p2r = GetNames2DiminishingRates(expenses, sumOfRates, derivativeSlope);
 
             var randZeros = new List<string>();
 

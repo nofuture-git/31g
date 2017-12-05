@@ -274,5 +274,21 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             foreach (var u in testResult)
                 System.Diagnostics.Debug.WriteLine($"{u.Key} -> {u.Value}");
         }
+
+        [TestMethod]
+        public void TestGetExpenseItemsForRange()
+        {
+            var testSubject = new NorthAmericanIncome(null);
+            var testResult = testSubject.GetExpenseItemsForRange(55000.ToPecuniam(), null);
+
+            Assert.IsNotNull(testResult);
+            Assert.AreNotEqual(0, testResult.Length);
+
+            var d = Pondus.GetSum(testResult);
+            System.Diagnostics.Debug.WriteLine(d);
+
+            foreach(var t in testResult)
+                System.Diagnostics.Debug.WriteLine($"{t.Value} {t.GetName(KindsOfNames.Group)} {t.Name} {t.Inception}-{t.Terminus}");
+        }
     }
 }
