@@ -337,23 +337,6 @@
                 <eg name="motorcycles" />
                 <eg name="aircrafts" />
               </mereo>
-              <mereo name="Cash">
-                <eg name="dollars" />
-                <eg name="euros" />
-                <eg name="prepaid debit cards" />
-                <eg name="store credits" />
-              </mereo>
-              <mereo name="Art" />
-              <mereo name="Antiques" />
-              <mereo name="Collections">
-                <eg name="coins" />
-                <eg name="stamps" />
-                <eg name="comic books" />
-                <eg name="cards" />
-              </mereo>
-              <mereo name="Crops" />
-              <mereo name="Livestock" />
-              <mereo name="Firearms" />
               <mereo name="Home Furnishings">
                 <eg name="furniture" />
                 <eg name="appliances" />
@@ -369,7 +352,49 @@
                 <eg name="campers" />
                 <eg name="electronics" />
               </mereo>
+              <mereo name="Cash">
+                <eg name="dollars" />
+                <eg name="prepaid debit cards" />
+                <eg name="store credits" />
+              </mereo>
+              <mereo name="Antiques" />
+              <mereo name="Collections">
+                <eg name="coins" />
+                <eg name="stamps" />
+                <eg name="comic books" />
+                <eg name="cards" />
+              </mereo>
+              <mereo name="Firearms" />
+              <mereo name="Art" />
+              <mereo name="Crops" />
+              <mereo name="Livestock" />
             </group>
+            <group name="Institutional">
+              <mereo name="Checking" />
+              <mereo name="Savings"/>
+              <mereo name="Retirement Plans">
+                <eg name="pensions" />
+                <eg name="annuity" />
+                <eg name="IRA" />
+                <eg name="401(k)" />
+                <eg name="403(b)" />
+                <eg name="SEP" />
+              </mereo>
+              <mereo name="Certificate of Deposit" abbrev="COD"/>
+              <mereo name="Credit Union" />
+              <mereo name="Insurance Policies" />
+              <mereo name="Money Market"/>
+              <mereo name="Annuity"/>
+              <mereo name="Profit Sharing"/>
+              <mereo name="Safe Deposit Box" />
+              <mereo name="Trusts"/>
+              <mereo name="Brokerage" />
+              <mereo name="Partnerships"/>
+              <mereo name="Fellowships"/>
+              <mereo name="Escrow" />
+              <mereo name="Stipends"/>
+              <mereo name="Royalties"/>
+            </group>            
             <group name="Securities">
               <mereo name="Stock"/>
               <mereo name="Bond"/>
@@ -380,35 +405,9 @@
               <mereo name="Derivatives">
                 <eg name="options" />
                 <eg name="swaps" />
-                <eg name="fututes" />
+                <eg name="futures" />
                 <eg name="fowards" />
               </mereo>
-            </group>
-            <group name="Institutional">
-              <mereo name="Partnerships"/>
-              <mereo name="Trusts"/>
-              <mereo name="Fellowships"/>
-              <mereo name="Stipends"/>
-              <mereo name="Insurance Policies" />
-              <mereo name="Retirement Plans">
-                <eg name="pensions" />
-                <eg name="annuity" />
-                <eg name="IRA" />
-                <eg name="401(k)" />
-                <eg name="403(b)" />
-                <eg name="SEP" />
-              </mereo>
-              <mereo name="Checking" />
-              <mereo name="Savings"/>
-              <mereo name="Certificate of Deposit" abbrev="COD"/>
-              <mereo name="Money Market"/>
-              <mereo name="Credit Union" />
-              <mereo name="Annuity"/>
-              <mereo name="Brokerage" />
-              <mereo name="Escrow" />
-              <mereo name="Profit Sharing"/>
-              <mereo name="Safe Deposit Box" />
-              <mereo name="Royalties"/>
             </group>
           </assets>          
         </domus-opes>

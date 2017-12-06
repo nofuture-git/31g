@@ -377,7 +377,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         public void TestGetIncomeYearsInDates()
         {
             var testSubject = new NorthAmericanIncome(null);
-            var testResult = testSubject.GetIncomeYearsInDates();
+            var testResult = testSubject.GetIncomeYearsInDates(testSubject.GetYearNeg3());
 
             Assert.IsNotNull(testResult);
             Assert.AreEqual(4, testResult.Count);

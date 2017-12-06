@@ -209,7 +209,7 @@ namespace NoFuture.Rand.Domus.Opes
                 AddEmployment(emp);
             }
 
-            foreach (var dtRange in GetIncomeYearsInDates())
+            foreach (var dtRange in GetIncomeYearsInDates(_startDate))
             {
                 var stDt = dtRange.Item1;
                 var endDt = dtRange.Item2;
@@ -229,40 +229,6 @@ namespace NoFuture.Rand.Domus.Opes
                     AddExpectedExpense(expense);
 
             }
-        }
-
-        /// <summary>
-        /// Breaks the whole span of time for this instance into yearly blocks.
-        /// </summary>
-        /// <returns></returns>
-        protected internal List<Tuple<DateTime, DateTime?>> GetIncomeYearsInDates()
-        {
-            var stDt = _startDate;
-            if(stDt.Day!=1 || stDt.Month != 1)
-                stDt = new DateTime(stDt.Year, 1, 1);
-
-            var datesOut = new List<Tuple<DateTime, DateTime?>>();
-
-            if (stDt.Year == DateTime.Today.Year)
-            {
-                datesOut.Add(new Tuple<DateTime, DateTime?>(stDt, null));
-                return datesOut;
-            }
-
-            var endDt = new DateTime(stDt.Year, 12, 31);
-
-            for (var i = 0; i <= DateTime.Today.Year - stDt.Year; i++)
-            {
-                if (stDt.Year + i >= DateTime.Today.Year)
-                {
-                    datesOut.Add(new Tuple<DateTime, DateTime?>(stDt.AddYears(i), null));
-                    continue;
-                }
-
-                datesOut.Add(new Tuple<DateTime, DateTime?>(stDt.AddYears(i), endDt.AddYears(i)));
-            }
-
-            return datesOut;
         }
 
         /// <summary>
@@ -416,7 +382,7 @@ namespace NoFuture.Rand.Domus.Opes
                 //use explicit def if present - otherwise default to just diminishing with no zero-outs
                 var grpRates = name2Op.ContainsKey(grp)
                     ? name2Op[grp](portion, derivativeSlope, directAssignRates)
-                    : GetExpenseNames2RandomRates(grp, portion, null);
+                    : GetNames2RandomRates(DomusOpesDivisions.Expense, grp, portion, null);
 
                 foreach (var item in grpRates.Keys)
                 {
@@ -480,8 +446,8 @@ namespace NoFuture.Rand.Domus.Opes
         {
             ReconcileDiffsInSums(ref sumOfRates, directAssignNames2Rates);
 
-            var dk = GetExpenseNames2RandomRates(EXPENSE_GRP_HOME, sumOfRates, null, derivativeSlope,
-                "Association Fees");
+            var dk = GetNames2RandomRates(DomusOpesDivisions.Expense, EXPENSE_GRP_HOME, sumOfRates,
+                null, derivativeSlope, "Association Fees");
 
             var zeroOuts = new List<string> {"Other Lein"};
             if (!IsRenting)
@@ -521,9 +487,9 @@ namespace NoFuture.Rand.Domus.Opes
             ReconcileDiffsInSums(ref sumOfRates, directAssignNames2Rates);
 
             var dk = IsRenting
-                ? GetExpenseNames2RandomRates(EXPENSE_GRP_UTILITIES, sumOfRates, null, derivativeSlope, "Gas", "Water",
-                    "Sewer", "Trash")
-                : GetExpenseNames2RandomRates(EXPENSE_GRP_UTILITIES, sumOfRates, null, derivativeSlope);
+                ? GetNames2RandomRates(DomusOpesDivisions.Expense, EXPENSE_GRP_UTILITIES, sumOfRates, null, derivativeSlope,
+                    "Gas", "Water", "Sewer", "Trash")
+                : GetNames2RandomRates(DomusOpesDivisions.Expense, EXPENSE_GRP_UTILITIES, sumOfRates, null, derivativeSlope);
 
             if (directAssignNames2Rates != null && directAssignNames2Rates.Any())
                 dk = ReassignRates(dk, directAssignNames2Rates, derivativeSlope);
@@ -546,8 +512,8 @@ namespace NoFuture.Rand.Domus.Opes
         {
             ReconcileDiffsInSums(ref sumOfRates, directAssignNames2Rates);
 
-            var dk = GetExpenseNames2RandomRates(EXPENSE_GRP_TRANSPORTATION, sumOfRates, null, derivativeSlope,
-                "Parking", "Registration Fees");
+            var dk = GetNames2RandomRates(DomusOpesDivisions.Expense, EXPENSE_GRP_TRANSPORTATION, sumOfRates,
+                null, derivativeSlope, "Parking", "Registration Fees");
 
             var zeroOuts = new List<string>();
             if (_options.HasVehicle)
@@ -588,9 +554,9 @@ namespace NoFuture.Rand.Domus.Opes
         {
             ReconcileDiffsInSums(ref sumOfRates, directAssignNames2Rates);
 
-            var dk = GetExpenseNames2RandomRates(EXPENSE_GRP_INSURANCE, sumOfRates, null, derivativeSlope, "Pet",
-                "Vision", "Dental", "Health",
-                "Disability", "Life");
+            var dk = GetNames2RandomRates(DomusOpesDivisions.Expense, EXPENSE_GRP_INSURANCE, sumOfRates, null,
+                derivativeSlope, "Pet", "Vision",
+                "Dental", "Health", "Disability", "Life");
 
             var zeroOuts = new List<string> {IsRenting ? "Home" : "Renters"};
 
@@ -620,9 +586,9 @@ namespace NoFuture.Rand.Domus.Opes
         {
             ReconcileDiffsInSums(ref sumOfRates, directAssignNames2Rates);
 
-            var dk = GetExpenseNames2RandomRates(EXPENSE_GRP_PERSONAL, sumOfRates, null, derivativeSlope, "Dues",
-                "Subscriptions", "Gifts", "Vice",
-                "Clothing");
+            var dk = GetNames2RandomRates(DomusOpesDivisions.Expense, EXPENSE_GRP_PERSONAL, sumOfRates, null,
+                derivativeSlope, "Dues", "Subscriptions",
+                "Gifts", "Vice", "Clothing");
 
             if (directAssignNames2Rates != null && directAssignNames2Rates.Any())
                 dk = ReassignRates(dk, directAssignNames2Rates, derivativeSlope);
@@ -656,9 +622,9 @@ namespace NoFuture.Rand.Domus.Opes
                 return d;
             }
 
-            var dk = GetExpenseNames2RandomRates(EXPENSE_GRP_CHILDREN, sumOfRates, null, derivativeSlope, "Lunch Money",
-                "Extracurricular", "Camp",
-                "Transportation", "Allowance");
+            var dk = GetNames2RandomRates(DomusOpesDivisions.Expense, EXPENSE_GRP_CHILDREN, sumOfRates, null,
+                derivativeSlope, "Lunch Money",
+                "Extracurricular", "Camp", "Transportation", "Allowance");
 
             var zeroOuts = new List<string> {"Education"};
             if (_options.HasChildren && _options.ChildrenAges.All(x => x < NAmerUtil.AVG_AGE_CHILD_ENTER_SCHOOL))
@@ -693,9 +659,9 @@ namespace NoFuture.Rand.Domus.Opes
         {
             ReconcileDiffsInSums(ref sumOfRates, directAssignNames2Rates);
 
-            var dk = GetExpenseNames2RandomRates(EXPENSE_GRP_DEBT, sumOfRates, null, derivativeSlope, "Health Care",
-                "Other Consumer", "Student",
-                "Tax", "Other");
+            var dk = GetNames2RandomRates(DomusOpesDivisions.Expense, EXPENSE_GRP_DEBT, sumOfRates, null,
+                derivativeSlope, "Health Care",
+                "Other Consumer", "Student", "Tax", "Other");
 
             if (directAssignNames2Rates != null && directAssignNames2Rates.Any())
                 dk = ReassignRates(dk, directAssignNames2Rates, derivativeSlope);
@@ -718,55 +684,14 @@ namespace NoFuture.Rand.Domus.Opes
         {
             ReconcileDiffsInSums(ref sumOfRates, directAssignNames2Rates);
 
-            var dk = GetExpenseNames2RandomRates(EXPENSE_GRP_HEALTH, sumOfRates, null, derivativeSlope, "Therapy",
-                "Hospital", "Optical", "Dental",
-                "Physician", "Supplements");
+            var dk = GetNames2RandomRates(DomusOpesDivisions.Expense, EXPENSE_GRP_HEALTH, sumOfRates, null,
+                derivativeSlope, "Therapy", "Hospital",
+                "Optical", "Dental", "Physician", "Supplements");
 
             if (directAssignNames2Rates != null && directAssignNames2Rates.Any())
                 dk = ReassignRates(dk, directAssignNames2Rates, derivativeSlope);
 
             return dk;
-        }
-
-        /// <summary>
-        /// Helper method to get expense items by <see cref="expenseGroupName"/> items by names 
-        /// to a portion of <see cref="sumOfRates"/>
-        /// </summary>
-        /// <param name="expenseGroupName"></param>
-        /// <param name="sumOfRates"></param>
-        /// <param name="probability">
-        /// Allows calling assembly to control the probability of an expense being zero-ed out.
-        /// The default is a 75% chance.
-        /// </param>
-        /// <param name="derivativeSlope">
-        /// Is passed into the <see cref="Etx.DiminishingPortions"/> - see its annotation.
-        /// </param>
-        /// <param name="possiablyZeroNames"></param>
-        /// <returns></returns>
-        protected internal virtual Dictionary<string, double> GetExpenseNames2RandomRates(string expenseGroupName,
-            double sumOfRates,
-            Func<int, Etx.Dice, bool> probability,
-            double derivativeSlope = -1.0,
-            params string[] possiablyZeroNames)
-        {
-            var expenses = GetExpenseItemNames().Where(e =>
-                    string.Equals(e.GetName(KindsOfNames.Group), expenseGroupName, StringComparison.OrdinalIgnoreCase))
-                .ToList();
-
-            probability = probability ?? Etx.TryBelowOrAt;
-
-            var p2r = GetNames2DiminishingRates(expenses, sumOfRates, derivativeSlope);
-
-            var randZeros = new List<string>();
-
-            foreach (var item in possiablyZeroNames)
-            {
-                if (probability(1, Etx.Dice.Four))
-                    continue;
-                randZeros.Add(item);
-            }
-
-            return ZeroOutRates(p2r, randZeros.ToArray());
         }
 
         /// <summary>
@@ -996,15 +921,6 @@ namespace NoFuture.Rand.Domus.Opes
             }
 
             return sum;
-        }
-
-        private void ReconcileDiffsInSums(ref double sumOfRates, Dictionary<string, double> directAssignments)
-        {
-            if (directAssignments == null || !directAssignments.Any())
-                return;
-            var sumOfDirectAssigns = directAssignments.Select(kv => kv.Value).Sum();
-            if (sumOfDirectAssigns > sumOfRates)
-                sumOfRates = sumOfDirectAssigns;
         }
 
         #endregion

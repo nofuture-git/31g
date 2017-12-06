@@ -128,6 +128,12 @@ namespace NoFuture.Rand.Domus
         /// Common knowledge value
         /// </summary>
         public const double AVG_AGE_CHILD_ENTER_SCHOOL = 5.0D;
+
+        /// <summary>
+        /// https://people.hofstra.edu/geotrans/eng/ch6en/conc6en/USAownershipcars.html
+        /// </summary>
+        public const double PERCENT_WITH_NO_CAR = 0.09D;
+
         #endregion
 
         #region inner types

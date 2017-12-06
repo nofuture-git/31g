@@ -16,7 +16,7 @@ namespace NoFuture.Rand.Domus.Opes
     public class NorthAmericanWealth : WealthBase
     {
         #region constants
-        public const double DF_STD_DEV_PERCENT = 0.1285D;
+
         public const double DF_DAILY_SPEND_PERCENT = 0.1D;
 
         private const string UTIL_ELEC = "Electric";

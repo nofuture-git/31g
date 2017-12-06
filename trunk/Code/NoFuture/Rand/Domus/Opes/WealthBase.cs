@@ -16,6 +16,8 @@ namespace NoFuture.Rand.Domus.Opes
 {
     public abstract class WealthBase
     {
+        public const double DF_STD_DEV_PERCENT = 0.1285D;
+
         #region fields
         protected internal IComparer<ITempore> Comparer { get; } = new TemporeComparer();
         private readonly NorthAmerican _amer;
@@ -25,6 +27,21 @@ namespace NoFuture.Rand.Domus.Opes
         private static IMereo[] _deductionItemNames;
         private static IMereo[] _expenseItemNames;
         private static IMereo[] _assetItemNames;
+        #endregion
+
+        #region inner types
+
+        /// <summary>
+        /// The four major divisions of wealth
+        /// </summary>
+        public enum DomusOpesDivisions
+        {
+            Income,
+            Deduction,
+            Expense,
+            Asset
+        }
+
         #endregion
 
         #region ctors
@@ -339,7 +356,7 @@ namespace NoFuture.Rand.Domus.Opes
 
         /// <summary>
         /// Helper method to get a bunch of diminishing random rates mapped to some names.
-        /// This differs from the counterpart <see cref="GetNames2RandomRates"/> because 
+        /// This differs from the counterpart <see cref="GetNames2RandomRates(System.Collections.Generic.IEnumerable{NoFuture.Rand.Data.Sp.IMereo},double,System.Func{double})"/> because 
         /// every item in <see cref="names"/> will get &apos;something&apos; - no matter how small.
         /// </summary>
         /// <param name="names"></param>
@@ -583,6 +600,115 @@ namespace NoFuture.Rand.Domus.Opes
 
             var startYear0 = new DateTime(year0, 1, 1);
             return startYear0.AddYears(-3);
+        }
+
+        protected internal void ReconcileDiffsInSums(ref double sumOfRates, Dictionary<string, double> directAssignments)
+        {
+            if (directAssignments == null || !directAssignments.Any())
+                return;
+            var sumOfDirectAssigns = directAssignments.Select(kv => kv.Value).Sum();
+            if (sumOfDirectAssigns > sumOfRates)
+                sumOfRates = sumOfDirectAssigns;
+        }
+
+        /// <summary>
+        /// Breaks the whole span of time for this instance into yearly blocks.
+        /// </summary>
+        /// <returns></returns>
+        protected internal List<Tuple<DateTime, DateTime?>> GetIncomeYearsInDates(DateTime startDate)
+        {
+            var stDt = startDate;
+            if(stDt.Day!=1 || stDt.Month != 1)
+                stDt = new DateTime(stDt.Year, 1, 1);
+
+            var datesOut = new List<Tuple<DateTime, DateTime?>>();
+
+            if (stDt.Year == DateTime.Today.Year)
+            {
+                datesOut.Add(new Tuple<DateTime, DateTime?>(stDt, null));
+                return datesOut;
+            }
+
+            var endDt = new DateTime(stDt.Year, 12, 31);
+
+            for (var i = 0; i <= DateTime.Today.Year - stDt.Year; i++)
+            {
+                if (stDt.Year + i >= DateTime.Today.Year)
+                {
+                    datesOut.Add(new Tuple<DateTime, DateTime?>(stDt.AddYears(i), null));
+                    continue;
+                }
+
+                datesOut.Add(new Tuple<DateTime, DateTime?>(stDt.AddYears(i), endDt.AddYears(i)));
+            }
+
+            return datesOut;
+        }
+
+        /// <summary>
+        /// Helper method to get items by <see cref="groupName"/> items by names 
+        /// to a portion of <see cref="sumOfRates"/>
+        /// </summary>
+        /// <param name="division"></param>
+        /// <param name="groupName"></param>
+        /// <param name="sumOfRates"></param>
+        /// <param name="probability">
+        /// Allows calling assembly to control the probability of an expense being zero-ed out.
+        /// The default is a 75% chance.
+        /// </param>
+        /// <param name="derivativeSlope">
+        /// Is passed into the <see cref="Etx.DiminishingPortions"/> - see its annotation.
+        /// </param>
+        /// <param name="possiablyZeroNames"></param>
+        /// <returns></returns>
+        protected internal virtual Dictionary<string, double> GetNames2RandomRates(DomusOpesDivisions division,
+            string groupName, double sumOfRates, Func<int, Etx.Dice, bool> probability,
+            double derivativeSlope = -1.0, params string[] possiablyZeroNames)
+        {
+            List<IMereo> names = null;
+
+            switch (division)
+            {
+                case DomusOpesDivisions.Income:
+                    names = GetIncomeItemNames().Where(e =>
+                            string.Equals(e.GetName(KindsOfNames.Group), groupName,
+                                StringComparison.OrdinalIgnoreCase))
+                        .ToList();
+                    break;
+                case DomusOpesDivisions.Asset:
+                    names = GetAssetItemNames().Where(e =>
+                            string.Equals(e.GetName(KindsOfNames.Group), groupName,
+                                StringComparison.OrdinalIgnoreCase))
+                        .ToList();
+                    break;
+                case DomusOpesDivisions.Deduction:
+                    names = GetDeductionItemNames().Where(e =>
+                            string.Equals(e.GetName(KindsOfNames.Group), groupName,
+                                StringComparison.OrdinalIgnoreCase))
+                        .ToList();
+                    break;
+                case DomusOpesDivisions.Expense:
+                    names = GetExpenseItemNames().Where(e =>
+                            string.Equals(e.GetName(KindsOfNames.Group), groupName,
+                                StringComparison.OrdinalIgnoreCase))
+                        .ToList();
+                    break;
+            }
+
+            probability = probability ?? Etx.TryBelowOrAt;
+
+            var p2r = GetNames2DiminishingRates(names, sumOfRates, derivativeSlope);
+
+            var randZeros = new List<string>();
+
+            foreach (var item in possiablyZeroNames)
+            {
+                if (probability(1, Etx.Dice.Four))
+                    continue;
+                randZeros.Add(item);
+            }
+
+            return ZeroOutRates(p2r, randZeros.ToArray());
         }
     }
 }
