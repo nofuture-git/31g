@@ -25,6 +25,12 @@ namespace NoFuture.Rand.Data.Sp
             Names.Add(new Tuple<KindsOfNames, string>(KindsOfNames.Legal, name));
         }
 
+        public Mereo(string name, string groupName)
+        {
+            Names.Add(new Tuple<KindsOfNames, string>(KindsOfNames.Legal, name));
+            Names.Add(new Tuple<KindsOfNames, string>(KindsOfNames.Group, groupName));
+        }
+
         public Mereo(IVoca names)
         {
             CopyFrom(names);

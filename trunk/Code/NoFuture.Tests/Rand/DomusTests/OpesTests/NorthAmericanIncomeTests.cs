@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Data.Sp;
+using NoFuture.Rand.Data.Sp.Enums;
 using NoFuture.Rand.Domus.Opes;
 using NoFuture.Rand.Domus.Pneuma;
 
@@ -277,6 +279,32 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         }
 
         [TestMethod]
+        public void TestGetHomeExpenseNames2RandomRates_WithAssign()
+        {
+            var testSubject = new NorthAmericanIncome(null,
+                new NorthAmericanIncome.IncomeOptions
+                {
+                    ChildrenAges = new[] { 2, 4 },
+                    IsRenting = false,
+                    HasVehicle = true,
+                    IsVehiclePaidOff = false
+                });
+            var testResult = testSubject.GetHomeExpenseNames2RandomRates(0.33, -0.2D, new Dictionary<string, double>{{"Mortgage",0.1377D }} );
+            Assert.IsNotNull(testResult);
+            Assert.AreNotEqual(0, testResult.Count);
+
+            Assert.IsTrue(testResult.ContainsKey("Mortgage"));
+            Assert.IsTrue(testResult["Mortgage"] == 0.1377D);
+
+            var sum = testResult.Select(kv => kv.Value).Sum();
+            System.Diagnostics.Debug.WriteLine(sum);
+            var diffInSum = Math.Round(Math.Abs(0.33D - sum),3);
+            Assert.IsTrue(diffInSum <= 0.001);
+            Assert.IsTrue(diffInSum >= -0.001);
+        }
+
+
+        [TestMethod]
         public void TestGetExpenseItemsForRange()
         {
             var testSubject = new NorthAmericanIncome(null,
@@ -299,6 +327,52 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
                 System.Diagnostics.Debug.WriteLine($"{Math.Round(t.Value.ToDouble()/12D)} {t.GetName(KindsOfNames.Group)} {t.Name}");
         }
 
+
+        [TestMethod]
+        public void TestGetExpenseItemsForRange_WithDirectAssign()
+        {
+            var testSubject = new NorthAmericanIncome(null, new NorthAmericanIncome.IncomeOptions
+            {
+                ChildrenAges = new[] { 2, 4 },
+                IsRenting = false,
+                HasVehicle = true,
+                IsVehiclePaidOff = false
+            });
+            var directAssigns = new Dictionary<IVoca, Pecuniam>();
+
+            directAssigns.Add(new Mereo("Mortgage", "Home"), 13476.0D.ToPecuniam());
+            directAssigns.Add(new Mereo("Loan Payments", "Transportation"), 3750.0D.ToPecuniam());
+            directAssigns.Add(new Mereo("Credit Card", "Debts"), 2728.44D.ToPecuniam());
+
+            var testResult = testSubject.GetExpenseItemsForRange(97860.0D.ToPecuniam(), DateTime.Today.AddYears(-1), null, Interval.Annually, directAssigns);
+            Assert.IsNotNull(testResult);
+            Assert.AreNotEqual(0, testResult.Length);
+
+            var testPondus =
+                testResult.FirstOrDefault(p => p.Name == "Mortgage" && p.GetName(KindsOfNames.Group) == "Home");
+            Assert.IsNotNull(testPondus);
+            System.Diagnostics.Debug.WriteLine(testPondus);
+            var testAmt = testPondus.Value;
+            Assert.IsNotNull(testAmt);
+            Assert.AreEqual(13476.0D, testAmt.ToDouble());
+
+            testPondus = testResult.FirstOrDefault(p =>
+                p.Name == "Loan Payments" && p.GetName(KindsOfNames.Group) == "Transportation");
+            Assert.IsNotNull(testPondus);
+            System.Diagnostics.Debug.WriteLine(testPondus);
+            testAmt = testPondus.Value;
+            Assert.IsNotNull(testAmt);
+            Assert.AreEqual(3750.0D, testAmt.ToDouble());
+
+            testPondus = testResult.FirstOrDefault(p =>
+                p.Name == "Credit Card" && p.GetName(KindsOfNames.Group) == "Debts");
+            Assert.IsNotNull(testPondus);
+            System.Diagnostics.Debug.WriteLine(testPondus);
+            testAmt = testPondus.Value;
+            Assert.IsNotNull(testAmt);
+            Assert.AreEqual(2728.44D, testAmt.ToDouble());
+        }
+
         [TestMethod]
         public void TestGetIncomeYearsInDates()
         {
@@ -316,7 +390,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         public void TestResolveIncomeAndExpenses()
         {
             var testSubject = new NorthAmericanIncome(null);
-            testSubject.ResolveIncomeAndExpenses();
+            testSubject.ResolveExpectedIncomeAndExpenses();
 
             var emplyTr = testSubject.Employment;
             Assert.IsNotNull(emplyTr);

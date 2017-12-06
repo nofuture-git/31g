@@ -24,7 +24,7 @@ namespace NoFuture.Rand.Data.Sp
         #region methods
 
         /// <summary>
-        /// Produces a random <see cref="SecuredFixedRateLoan"/> with history.
+        /// Same as its counterpart <see cref="GetRandomLoan"/> only it also produces a history of transactions.
         /// </summary>
         /// <param name="property">The property on which the loan is secured.</param>
         /// <param name="remainingCost">The balance which currently remains.</param>
@@ -39,6 +39,61 @@ namespace NoFuture.Rand.Data.Sp
         /// <returns></returns>
         public static SecuredFixedRateLoan GetRandomLoanWithHistory(Identifier property, Pecuniam remainingCost,
             Pecuniam totalCost, float rate, int termInYears, out Pecuniam minPmt, IPersonality borrowerPersonality = null)
+        {
+            
+            var loan = GetRandomLoan(property, remainingCost, totalCost, rate, termInYears, out minPmt);
+
+            var pmtNote = Mereo.GetMereoById(property);
+            //makes the fake history more colorful
+            borrowerPersonality = borrowerPersonality ?? new Personality();
+
+            var dtIncrement = loan.TradeLine.OpennedDate.AddMonths(1);
+            while (loan.GetValueAt(dtIncrement) > remainingCost)
+            {
+                if (dtIncrement >= DateTime.Now)
+                    break;
+                var paidOnDate = dtIncrement;
+                if (borrowerPersonality.GetRandomActsIrresponsible())
+                    paidOnDate = paidOnDate.AddDays(Etx.IntNumber(5, 15));
+
+                //is this the payoff
+                var isPayoff = loan.GetValueAt(paidOnDate) <= minPmt;
+                if (isPayoff)
+                {
+                    minPmt = loan.GetValueAt(paidOnDate);
+                }
+
+                loan.Push(paidOnDate, minPmt, pmtNote, Pecuniam.Zero);
+                if (isPayoff)
+                {
+                    loan.TradeLine.Closure = new TradelineClosure
+                    {
+                        ClosedDate = paidOnDate,
+                        Condition = ClosedCondition.ClosedWithZeroBalance
+                    };
+                    break;
+                }
+                dtIncrement = dtIncrement.AddMonths(1);
+            }
+            return loan;
+        }
+
+        /// <summary>
+        /// Produces a random <see cref="SecuredFixedRateLoan"/>.
+        /// </summary>
+        /// <param name="property">The property on which the loan is secured.</param>
+        /// <param name="remainingCost">The balance which currently remains.</param>
+        /// <param name="totalCost">
+        /// The original value of the loan, the difference between 
+        /// this and the <see cref="remainingCost"/> determines how far in the past the loan would
+        /// have been openned.
+        /// </param>
+        /// <param name="rate">The interest rate</param>
+        /// <param name="termInYears"></param>
+        /// <param name="minPmt"></param>
+        /// <returns></returns>
+        public static SecuredFixedRateLoan GetRandomLoan(Identifier property, Pecuniam remainingCost,
+            Pecuniam totalCost, float rate, int termInYears, out Pecuniam minPmt)
         {
             //if no or nonsense values given, change to some default
             if (totalCost == null || totalCost < Pecuniam.Zero)
@@ -55,10 +110,7 @@ namespace NoFuture.Rand.Data.Sp
 
             //handle if caller passes in rate like 5.5 meaning they wanted 0.055
             if (rate > 1)
-                rate = Convert.ToSingle(Math.Round(rate/100, 4));
-
-            //makes the fake history more colorful
-            borrowerPersonality = borrowerPersonality ?? new Personality();
+                rate = Convert.ToSingle(Math.Round(rate / 100, 4));
 
             //calc the monthly payment
             var fv = totalCost.Amount.PerDiemInterest(rate, Constants.TropicalYear.TotalDays * termInYears);
@@ -88,40 +140,8 @@ namespace NoFuture.Rand.Data.Sp
                 Rate = rate
             };
 
-            var pmtNote = Mereo.GetMereoById(property);
-
-            dtIncrement = calcPurchaseDt.AddMonths(1);
-            while (loan.GetValueAt(dtIncrement) > remainingCost)
-            {
-                if (dtIncrement >= DateTime.Now)
-                    break;
-                var paidOnDate = dtIncrement;
-                if (borrowerPersonality.GetRandomActsIrresponsible())
-                    paidOnDate = paidOnDate.AddDays(Etx.IntNumber(5, 15));
-
-                //is this the payoff
-                var isPayoff = loan.GetValueAt(paidOnDate) <= minPmt;
-                if (isPayoff)
-                {
-                    minPmt = loan.GetValueAt(paidOnDate);
-                }
-
-                loan.Push(paidOnDate, minPmt, pmtNote, Pecuniam.Zero);
-                if (isPayoff)
-                {
-                    loan.TradeLine.Closure = new TradelineClosure
-                    {
-                        ClosedDate = paidOnDate,
-                        Condition = ClosedCondition.ClosedWithZeroBalance
-                    };
-                    break;
-                }
-                dtIncrement = dtIncrement.AddMonths(1);
-            }
-
             //assign boilerplate props
-            var propertyAddress = property as ResidentAddress;
-            loan.Lender = propertyAddress == null
+            loan.Lender = !(property is ResidentAddress propertyAddress)
                 ? Bank.GetRandomBank(null)
                 : Bank.GetRandomBank(propertyAddress.HomeCityArea);
             return loan;

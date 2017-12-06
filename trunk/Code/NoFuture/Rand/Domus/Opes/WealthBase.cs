@@ -390,6 +390,23 @@ namespace NoFuture.Rand.Domus.Opes
         /// </summary>
         /// <param name="names2Rates"></param>
         /// <param name="reassignNames2Rates"></param>
+        /// <param name="derivativeSlope"></param>
+        /// <returns></returns>
+        protected internal Dictionary<string, double> ReassignRates(Dictionary<string, double> names2Rates,
+            Dictionary<string, double> reassignNames2Rates, double derivativeSlope = -1.0D)
+        {
+            if (reassignNames2Rates == null)
+                return names2Rates;
+            var listOfTuples = reassignNames2Rates.Select(kv => new Tuple<string, double>(kv.Key, kv.Value)).ToList();
+            return ReassignRates(names2Rates, listOfTuples, derivativeSlope);
+        }
+
+        /// <summary>
+        /// Reassigns the rates in <see cref="names2Rates"/> to the Item2 of the matched tuple in <see cref="reassignNames2Rates"/>
+        /// preserving the sum total of <see cref="names2Rates"/> values.
+        /// </summary>
+        /// <param name="names2Rates"></param>
+        /// <param name="reassignNames2Rates"></param>
         /// <param name="derivativeSlope">
         /// Is passed into the <see cref="Etx.DiminishingPortions"/> - see its annotation.  Which entries
         /// receive the re-located rates is based on a diminishing probability.
