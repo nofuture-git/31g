@@ -27,6 +27,8 @@ namespace NoFuture.Rand.Data.Sp
         public Pecuniam MonthlyPmt { get; }
         public DateTime LeaseExpiry { get; }
         public Identifier Id { get; }
+        public DateTime SigningDate => TradeLine.OpennedDate;
+
         #endregion
 
         #region ctors
@@ -142,7 +144,7 @@ namespace NoFuture.Rand.Data.Sp
         }
 
         /// <summary>
-        /// Factory method to generate a <see cref="Rent"/> instance at random.
+        /// Factory method to generate a <see cref="Rent"/> instance at random with a payment history.
         /// </summary>
         /// <param name="property">The property identifier on which is being leased</param>
         /// <param name="homeDebtFactor">The home debt factor based on the renter's age, gender, edu, etc.</param>
@@ -154,18 +156,10 @@ namespace NoFuture.Rand.Data.Sp
         {
             //create a rent object
             renterPersonality = renterPersonality ?? new Personality();
-            var avgRent = (double) Rent.GetAvgAmericanRentByYear(null).Amount;
-            var randRent = new Pecuniam(
-                (decimal)
-                    NorthAmericanFactors.GetRandomFactorValue(FactorTables.HomeDebt, homeDebtFactor,
-                        stdDevAsPercent, avgRent));
-            var randTerm = Etx.DiscreteRange(new[] {24, 18, 12, 6});
-            var randDate = Etx.Date(0, DateTime.Today.AddDays(-2), true);
-            var randDepositAmt = (int) Math.Round((randRent.Amount - randRent.Amount%250)/2);
-            var randDeposit = new Pecuniam(randDepositAmt);
 
-            var rent = new Rent(property, randDate, randTerm, randRent, randDeposit);
-
+            var rent = GetRandomRent(property, homeDebtFactor, stdDevAsPercent);
+            var randDate = rent.SigningDate;
+            var randRent = rent.MonthlyPmt;
             //create payment history until current
             var firstPmt = rent.GetMinPayment(randDate);
             rent.PayRent(randDate.AddDays(1), firstPmt, Mereo.GetMereoById(property, "First Rent Payment"));
@@ -184,6 +178,34 @@ namespace NoFuture.Rand.Data.Sp
                 rent.PayRent(paidRentOn, randRent, Mereo.GetMereoById(rent.Id));
                 rentDueDate = rentDueDate.AddMonths(1);
             }
+            return rent;
+        }
+
+        /// <summary>
+        /// Factory method to generate a <see cref="Rent"/> instance at random.
+        /// </summary>
+        /// <param name="property">The property identifier on which is being leased</param>
+        /// <param name="homeDebtFactor">The home debt factor based on the renter's age, gender, edu, etc.</param>
+        /// <param name="stdDevAsPercent">Optional, the stdDev around the mean.</param>
+        /// <param name="totalYearlyRent">
+        /// Optional, allows the calling assembly to specify this, default 
+        /// is calculated from <see cref="GetAvgAmericanRentByYear"/>
+        /// </param>
+        /// <returns></returns>
+        public static Rent GetRandomRent(Identifier property, double homeDebtFactor,
+            double stdDevAsPercent = NorthAmericanWealth.DF_STD_DEV_PERCENT, double? totalYearlyRent = null)
+        {
+            var avgRent = totalYearlyRent ?? (double)GetAvgAmericanRentByYear(null).Amount;
+            var randRent = new Pecuniam(
+                (decimal)
+                NorthAmericanFactors.GetRandomFactorValue(FactorTables.HomeDebt, homeDebtFactor,
+                    stdDevAsPercent, avgRent));
+            var randTerm = Etx.DiscreteRange(new[] { 24, 18, 12, 6 });
+            var randDate = Etx.Date(0, DateTime.Today.AddDays(-2), true);
+            var randDepositAmt = (int)Math.Round((randRent.Amount - randRent.Amount % 250) / 2);
+            var randDeposit = new Pecuniam(randDepositAmt);
+
+            var rent = new Rent(property, randDate, randTerm, randRent, randDeposit);
             return rent;
         }
 

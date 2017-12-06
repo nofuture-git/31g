@@ -101,7 +101,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         public void TestResolveIncomeAndDeductions()
         {
             var testSubject = new Domus.Opes.NorthAmericanEmployment(new DateTime(2011, 10, 5), null);
-            testSubject.ResolveIncomeAndDeductions();
+            testSubject.ResolvePayAndDeductions();
 
             var testResults = testSubject.AllItems;
             Assert.IsNotNull(testResults);
@@ -128,7 +128,8 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
                 sumOfRates += item.Value;
             }
 
-            Assert.AreEqual(1D, sumOfRates);
+            Assert.IsTrue(Math.Abs(1D - sumOfRates) < 0.001);
+            Assert.IsTrue(Math.Abs(1D - sumOfRates) > -0.001);
         }
 
         [TestMethod]

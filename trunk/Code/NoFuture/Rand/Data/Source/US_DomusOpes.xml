@@ -193,13 +193,13 @@
               <mereo name="Mortgage" />
               <mereo name="Other Lein" />
               <mereo name="Rent" />
-              <mereo name="Property Tax" />
               <mereo name="Maintenance">
                 <eg name="appliance" />
                 <eg name="lawn care" />
                 <eg name="house cleaning service" />
                 <eg name="building materials" />
               </mereo>
+              <mereo name="Property Tax" />
               <mereo name="Association Fees" />
             </group>
             <group name="Personal">

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using NoFuture.Rand.Core;
+using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Data.Sp.Enums;
 using NoFuture.Rand.Domus;
 
@@ -124,5 +125,13 @@ namespace NoFuture.Rand.Data.Sp
         {
             return base.GetHashCode() + _dateRange?.GetHashCode() ?? 1;
         }
+
+        public override string ToString()
+        {
+            var d = new Tuple<string, string, string, string, DateTime?, DateTime?>(Value.ToString(), Name,
+                GetName(KindsOfNames.Group), Interval.ToString(), Inception, Terminus);
+            return d.ToString();
+        }
+
     }
 }

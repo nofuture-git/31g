@@ -52,7 +52,7 @@ namespace NoFuture.Rand.Data.Sp
         /// value of the real-estate is 
         /// expected to grow (default is <see cref="NAmerUtil.AVG_GDP_GROWTH_RATE"/>).
         /// </summary>
-        public double ExpectedValueGrowthRate { get; set; } = NAmerUtil.AVG_GDP_GROWTH_RATE;
+        public double ExpectedAppreciationRate { get; set; } = NAmerUtil.AVG_GDP_GROWTH_RATE;
 
         /// <summary>
         /// The monthly mortgage payment.
@@ -120,7 +120,7 @@ namespace NoFuture.Rand.Data.Sp
 
         /// <summary>
         /// Calculates an estimated market value as the purchase price grown at 
-        /// the <see cref="ExpectedValueGrowthRate"/>
+        /// the <see cref="ExpectedAppreciationRate"/>
         /// </summary>
         /// <param name="dt">
         /// The date of query
@@ -137,7 +137,7 @@ namespace NoFuture.Rand.Data.Sp
             var numDays = (qDt - pDt).TotalDays;
 
             var marketValue =
-                PurchasePrice.Abs.Amount.PerDiemInterest(ExpectedValueGrowthRate,numDays);
+                PurchasePrice.Abs.Amount.PerDiemInterest(ExpectedAppreciationRate,numDays);
 
             return marketValue.ToPecuniam();
         }
@@ -146,10 +146,10 @@ namespace NoFuture.Rand.Data.Sp
         /// The future value of the mortgage note.
         /// </summary>
         /// <returns></returns>
-        protected internal virtual decimal GetMortgageNoteFutureValue()
+        protected internal virtual decimal GetFutureValue(double numOfDays)
         {
             ValidateRate();
-            var fv = PurchasePrice.Amount.PerDiemInterest(_rate, Constants.TropicalYear.TotalDays * _termInYears);
+            var fv = PurchasePrice.Amount.PerDiemInterest(_rate, numOfDays);
             return fv;
         }
 
@@ -173,7 +173,7 @@ namespace NoFuture.Rand.Data.Sp
         /// </summary>
         protected internal void CalcFromRate()
         {
-            var fv = GetMortgageNoteFutureValue();
+            var fv = GetFutureValue(Constants.TropicalYear.TotalDays * _termInYears);
             _monthlyPayment = new Pecuniam(Math.Round(fv / (_termInYears * 12), 2));
             _minPayRate = fv == 0
                 ? CreditCardAccount.DF_MIN_PMT_RATE

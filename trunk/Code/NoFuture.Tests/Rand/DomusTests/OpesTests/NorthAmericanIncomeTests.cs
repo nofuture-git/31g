@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NoFuture.Rand.Core.Enums;
@@ -278,7 +279,14 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         [TestMethod]
         public void TestGetExpenseItemsForRange()
         {
-            var testSubject = new NorthAmericanIncome(null);
+            var testSubject = new NorthAmericanIncome(null,
+                new NorthAmericanIncome.IncomeOptions
+                {
+                    ChildrenAges = new[] {2, 4},
+                    IsRenting = false,
+                    HasVehicle = true,
+                    IsVehiclePaidOff = false
+                });
             var testResult = testSubject.GetExpenseItemsForRange(55000.ToPecuniam(), null);
 
             Assert.IsNotNull(testResult);
@@ -288,7 +296,81 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             System.Diagnostics.Debug.WriteLine(d);
 
             foreach(var t in testResult)
-                System.Diagnostics.Debug.WriteLine($"{t.Value} {t.GetName(KindsOfNames.Group)} {t.Name} {t.Inception}-{t.Terminus}");
+                System.Diagnostics.Debug.WriteLine($"{Math.Round(t.Value.ToDouble()/12D)} {t.GetName(KindsOfNames.Group)} {t.Name}");
+        }
+
+        [TestMethod]
+        public void TestGetIncomeYearsInDates()
+        {
+            var testSubject = new NorthAmericanIncome(null);
+            var testResult = testSubject.GetIncomeYearsInDates();
+
+            Assert.IsNotNull(testResult);
+            Assert.AreEqual(4, testResult.Count);
+
+            foreach(var t in testResult)
+                System.Diagnostics.Debug.WriteLine(t);
+        }
+
+        [TestMethod]
+        public void TestResolveIncomeAndExpenses()
+        {
+            var testSubject = new NorthAmericanIncome(null);
+            testSubject.ResolveIncomeAndExpenses();
+
+            var emplyTr = testSubject.Employment;
+            Assert.IsNotNull(emplyTr);
+            Assert.AreNotEqual(0, emplyTr.Count);
+
+            var otTr = testSubject.ExpectedOtherIncome;
+            Assert.IsNotNull(otTr);
+            Assert.AreNotEqual(0, otTr.Count);
+
+            var expenseTr = testSubject.ExpectedExpenses;
+            Assert.IsNotNull(expenseTr);
+            Assert.AreNotEqual(0, expenseTr.Count);
+
+            var printMe = new List<Pondus>();
+
+            printMe.AddRange(otTr.Take(3).ToList());
+            printMe.AddRange(expenseTr.Take(3).ToList());
+            foreach(var p in printMe)
+                System.Diagnostics.Debug.WriteLine(p);
+
+        }
+
+        [TestMethod]
+        public void TestReassignRates()
+        {
+            var testSubject = new NorthAmericanIncome(null);
+
+            var testInput00 = new Dictionary<string, double>
+            {
+                {"Item1", 0.25},
+                {"Item2", 0.25},
+                {"Item3", 0.25},
+                {"Item4", 0.25},
+            };
+
+            var testInput01 = new List<Tuple<string, double>>
+            {
+                new Tuple<string, double>("Item1", 0.33D)
+            };
+
+            var testResult = testSubject.ReassignRates(testInput00, testInput01);
+
+            //test is gave something back
+            Assert.IsNotNull(testResult);
+            Assert.AreNotEqual(0, testResult.Count);
+
+            //test that the reassignment worked
+            Assert.IsTrue(testResult.ContainsKey("Item1"));
+            Assert.AreEqual(0.33D, testResult["Item1"]);
+
+            //test that the sum total is preserved
+            var sum = testResult.Select(kv => kv.Value).Sum();
+            Assert.IsTrue(sum >= 0.99D && sum <= 1.01D);
+
         }
     }
 }

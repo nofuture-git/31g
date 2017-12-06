@@ -246,7 +246,7 @@ namespace NoFuture.Rand.Tests
 
             Assert.IsTrue(testResults.First() == testResults.Max());
 
-            testResults = Etx.DiminishingPortions(12, -0.2);
+            testResults = Etx.DiminishingPortions(12, -10.0);
 
             foreach (var t in testResults)
                 System.Diagnostics.Debug.WriteLine(t);

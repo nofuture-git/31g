@@ -8,6 +8,7 @@ using NoFuture.Rand.Data.Endo;
 using NoFuture.Rand.Data.Endo.Enums;
 using NoFuture.Rand.Data.Sp;
 using NoFuture.Rand.Domus.Pneuma;
+using NoFuture.Shared.Core;
 using NoFuture.Util.Core;
 using NoFuture.Util.Core.Math;
 
@@ -67,9 +68,8 @@ namespace NoFuture.Rand.Domus.Opes
         /// Optional, absolute minimum value where results should always be this value or higher.
         /// </param>
         /// <param name="factorCalc">
-        /// Optional, allows caller to specify how <see cref="NorthAmericanFactors.NetWorthFactor"/>
-        /// is applied to the calculated base yearly income amount.  
-        /// The default is a simple product of the two (i.e. basePay * netWorthFactor).
+        /// Optional, allows calling assembly to control the base value around which 
+        /// the random value is generated
         /// </param>
         /// <param name="stdDevInUsd">
         /// Optional, a randomizes the calculated value around a mean.
@@ -380,18 +380,53 @@ namespace NoFuture.Rand.Domus.Opes
             if (names2Rates == null || !names2Rates.Any() || zeroOutNames == null || !zeroOutNames.Any())
                 return names2Rates;
 
+            var reassignNames2Rates = zeroOutNames.Select(n => new Tuple<string, double>(n, 0D)).ToList();
+            return ReassignRates(names2Rates, reassignNames2Rates, derivativeSlope);
+        }
+
+        /// <summary>
+        /// Reassigns the rates in <see cref="names2Rates"/> to the Item2 of the matched tuple in <see cref="reassignNames2Rates"/>
+        /// preserving the sum total of <see cref="names2Rates"/> values.
+        /// </summary>
+        /// <param name="names2Rates"></param>
+        /// <param name="reassignNames2Rates"></param>
+        /// <param name="derivativeSlope">
+        /// Is passed into the <see cref="Etx.DiminishingPortions"/> - see its annotation.  Which entries
+        /// receive the re-located rates is based on a diminishing probability.
+        /// </param>
+        /// <returns></returns>
+        protected internal Dictionary<string, double> ReassignRates(Dictionary<string, double> names2Rates,
+            List<Tuple<string, double>> reassignNames2Rates, double derivativeSlope = -1.0D)
+        {
+            if (names2Rates == null || !names2Rates.Any() || reassignNames2Rates == null || !reassignNames2Rates.Any())
+                return names2Rates;
+
+            var originalSum = names2Rates.Select(kv => kv.Value).Sum();
+
             var relocateRates = new List<double>();
             var idxNames = new List<string>();
 
             var n2r = new Dictionary<string, double>();
 
+            bool IsMatch(Tuple<string, double> tuple, string s) =>
+                tuple.Item1 != null && string.Equals(tuple.Item1, s, StringComparison.OrdinalIgnoreCase);
+
             //make temp copies of all the zero'ed out values
             foreach (var k in names2Rates.Keys)
             {
-                if (zeroOutNames.Any(x => string.Equals(x, k, StringComparison.OrdinalIgnoreCase)))
+                if (reassignNames2Rates.Any(x => IsMatch(x,k)))
                 {
-                    relocateRates.Add(names2Rates[k]);
-                    n2r.Add(k, 0D);
+                    foreach (var reassign in reassignNames2Rates.Where(x => IsMatch(x, k)))
+                    {
+                        var currentRate = names2Rates[k];
+                        var diffInRate = currentRate - reassign.Item2;
+
+                        relocateRates.Add(diffInRate);
+                        if (n2r.ContainsKey(k))
+                            n2r[k] = reassign.Item2;
+                        else
+                            n2r.Add(k, reassign.Item2);
+                    }
                 }
                 else
                 {
@@ -416,9 +451,15 @@ namespace NoFuture.Rand.Domus.Opes
                 n2r[randKey] += relocate;
             }
 
+            //blow out if caller passed in values that changes the sum-of-rates
+            var newSum = n2r.Select(kv => kv.Value).Sum();
+            var diffInSum = Math.Abs(newSum - originalSum);
+            if(diffInSum >= 0.001 || diffInSum <= -0.001)
+                throw new RahRowRagee("Could not preserve the sum-of-rates, " +
+                                      $"the original sum was {originalSum} while the new sum is {newSum}");
+
             return n2r;
         }
-
         /// <summary>
         /// Creates purchase transactions on <see cref="t"/> at random for the given <see cref="dt"/>.
         /// </summary>

@@ -43,7 +43,7 @@ namespace NoFuture.Rand.Domus.Opes
             startDate = startDate == DateTime.MinValue ? null : startDate;
             _dateRange = new Tuple<DateTime?, DateTime?>(startDate, endDate);
             Occupation = StandardOccupationalClassification.RandomOccupation();
-            ResolveIncomeAndDeductions();
+            ResolvePayAndDeductions();
         }
 
         /// <summary>
@@ -59,7 +59,7 @@ namespace NoFuture.Rand.Domus.Opes
         {
             _dateRange = new Tuple<DateTime?, DateTime?>(startDate, endDate);
             Occupation = StandardOccupationalClassification.RandomOccupation();
-            ResolveIncomeAndDeductions(annualIncome);
+            ResolvePayAndDeductions(annualIncome);
         }
 
         internal NorthAmericanEmployment(DateTime? startDate, DateTime? endDate) : base(null)
@@ -76,7 +76,7 @@ namespace NoFuture.Rand.Domus.Opes
         public virtual IFirm Value { get; set; }
         public virtual bool IsOwner { get; set; }
 
-        public virtual SocDetailedOccupation Occupation
+        public SocDetailedOccupation Occupation
         {
             get => _occupation;
             set
@@ -129,10 +129,10 @@ namespace NoFuture.Rand.Domus.Opes
         }
 
         /// <summary>
-        /// Resolves all income and deduction items for this Employment
+        /// Resolves all salary\wage and deduction items for this Employment
         /// </summary>
         /// <param name="annualIncome"></param>
-        protected internal virtual void ResolveIncomeAndDeductions(Pecuniam annualIncome = null)
+        protected internal void ResolvePayAndDeductions(Pecuniam annualIncome = null)
         {
             if (_dateRange?.Item1 == null || _dateRange.Item1.Value == DateTime.MinValue)
             {
