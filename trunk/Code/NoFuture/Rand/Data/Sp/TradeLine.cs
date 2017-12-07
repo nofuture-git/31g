@@ -1,5 +1,4 @@
 ﻿using System;
-using NoFuture.Rand.Core;
 using NoFuture.Rand.Data.Sp.Enums;
 
 namespace NoFuture.Rand.Data.Sp
@@ -8,7 +7,7 @@ namespace NoFuture.Rand.Data.Sp
     /// Represents the item reported to a Credit Bureau
     /// </summary>
     [Serializable]
-    public class TradeLine : Identifier, ITradeLine
+    public class TradeLine : ITradeLine
     {
         #region constants
         public static TimeSpan DefaultDueFrequency = new TimeSpan(30,0,0,0);
@@ -17,7 +16,8 @@ namespace NoFuture.Rand.Data.Sp
         #region fields
         private readonly Guid _uniqueId = Guid.NewGuid();
         private readonly Balance _balance = new Balance();
-        private readonly DateTime _openDate;
+        private DateTime _openDate;
+        private DateTime? _closeDate;
         private TimeSpan _dueFrequency = DefaultDueFrequency;
         #endregion
 
@@ -35,13 +35,31 @@ namespace NoFuture.Rand.Data.Sp
             get => _dueFrequency;
             set => _dueFrequency = value;
         }
-        public DateTime OpennedDate => _openDate;
-        public TradelineClosure? Closure { get; set; }
+
+        public DateTime Inception
+        {
+            get => _openDate;
+            set => _openDate = value;
+        }
+
+        public DateTime? Terminus
+        {
+            get => _closeDate;
+            set => _closeDate = value;
+        }
+
+        public ClosedCondition Closure { get; set; }
+
         #endregion
 
         #region methods
 
-        public override string Abbrev => "Tradeline";
+        public virtual bool IsInRange(DateTime dt)
+        {
+            var afterOrOnFromDt = Inception <= dt;
+            var beforeOrOnToDt = Terminus == null || Terminus.Value >= dt;
+            return afterOrOnFromDt && beforeOrOnToDt;
+        }
 
         public override string ToString()
         {

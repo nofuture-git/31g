@@ -78,7 +78,7 @@ namespace NoFuture.Rand.Tests.DataTests.SpTests
         {
             var remainingCost = 155504.04;
             var monthlyPayment = 1990.59;
-            var dtIncrement = testSubject.TradeLine.OpennedDate.AddMonths(1);
+            var dtIncrement = testSubject.Inception.AddMonths(1);
             while (testSubject.GetValueAt(dtIncrement) > remainingCost.ToPecuniam())
             {
                 if (dtIncrement > DateTime.Now.AddYears(30))

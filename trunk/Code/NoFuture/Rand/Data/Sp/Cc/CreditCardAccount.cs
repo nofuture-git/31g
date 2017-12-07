@@ -25,8 +25,8 @@ namespace NoFuture.Rand.Data.Sp.Cc
         {
             Cc = cc;
             _ccMax = ccMax ?? new Pecuniam(1000);
-            base.TradeLine.FormOfCredit = FormOfCredit.Revolving;
-            base.TradeLine.DueFrequency = new TimeSpan(30, 0, 0, 0);
+            FormOfCredit = FormOfCredit.Revolving;
+            DueFrequency = new TimeSpan(30, 0, 0, 0);
         }
         #endregion
 
@@ -34,26 +34,9 @@ namespace NoFuture.Rand.Data.Sp.Cc
         public Pecuniam Max => _ccMax;
         public ICreditCard Cc { get; }
         public Identifier Id => Cc.Number;
-        public DateTime Inception {get { return TradeLine.OpennedDate; } set{ } }
-
-        public DateTime? Terminus
-        {
-            get => TradeLine.Closure?.ClosedDate;
-            set
-            {
-                if (value.HasValue)
-                    TradeLine.Closure = new TradelineClosure {ClosedDate = value.Value};
-            }
-        }
         #endregion
 
         #region methods
-        public virtual bool IsInRange(DateTime dt)
-        {
-            var afterOrOnFromDt = Inception <= dt;
-            var beforeOrOnToDt = Terminus == null || Terminus.Value >= dt;
-            return afterOrOnFromDt && beforeOrOnToDt;
-        }
 
         /// <summary>
         /// Public API method to allow the <see cref="Max"/> to 

@@ -6,9 +6,9 @@ namespace NoFuture.Rand.Data.Sp
     /// <summary>
     /// Represents money owed by debtors
     /// </summary>
-    public interface IReceivable : IAsset, IMereo
+    public interface IReceivable : IAsset, ITradeLine
     {
-        ITradeLine TradeLine { get; }
+        //ITradeLine TradeLine { get; }
 
         /// <summary>
         /// Determins the deliquency for the given <see cref="dt"/>

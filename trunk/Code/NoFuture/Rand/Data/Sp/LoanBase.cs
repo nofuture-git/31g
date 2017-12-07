@@ -48,7 +48,7 @@ namespace NoFuture.Rand.Data.Sp
             if (amt == Pecuniam.Zero)
                 return;
             fee = fee == null ? Pecuniam.Zero : fee.Neg;
-            TradeLine.Balance.AddTransaction(dt, amt.Neg, note, fee);
+            Balance.AddTransaction(dt, amt.Neg, note, fee);
         }
 
         /// <summary>
@@ -64,7 +64,7 @@ namespace NoFuture.Rand.Data.Sp
             if (val == Pecuniam.Zero)
                 return false;
             fee = fee == null ? Pecuniam.Zero : fee.Abs;
-            TradeLine.Balance.AddTransaction(dt, val.Abs, note, fee);
+            Balance.AddTransaction(dt, val.Abs, note, fee);
             return true;
         }
         #endregion

@@ -94,7 +94,7 @@ namespace NoFuture.Rand.Data.Sp
             if (Terminus != null && stDt > Terminus.Value.Date)
                 return;
 
-            var trans = receivables.SelectMany(x => x.TradeLine.Balance.GetTransactionsBetween(stDt, endDt, true));
+            var trans = receivables.SelectMany(x => x.Balance.GetTransactionsBetween(stDt, endDt, true));
 
             foreach (var t in trans)
             {

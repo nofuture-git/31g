@@ -11,15 +11,17 @@ namespace NoFuture.Rand.Data.Sp
             : base(openedDate, minPaymentRate)
         {
             if (amt != null && amt.Amount != 0)
-                _tl.Balance.AddTransaction(openedDate, amt.Abs, Mereo.GetMereoById(null, "Initial Transaction"), Pecuniam.Zero);
+                Balance.AddTransaction(openedDate, amt.Abs, Mereo.GetMereoById(null, "Initial Transaction"), Pecuniam.Zero);
         }
 
         #endregion
 
+        public override Pecuniam Value => Balance.GetCurrent(DateTime.Now, Rate);
+
         #region methods
         public override Pecuniam GetValueAt(DateTime dt)
         {
-            return TradeLine.Balance.GetCurrent(dt, Rate);
+            return Balance.GetCurrent(dt, Rate);
         }
         #endregion
     }

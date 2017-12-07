@@ -296,7 +296,7 @@ namespace NoFuture.Rand.Domus.Opes
             //create a loan on current residence
             var loan = SecuredFixedRateLoan.GetRandomLoanWithHistory(Person.Address, spCost, totalCost, (float) randRate,
                 30, out var minPmt, Person.Personality);
-            loan.TradeLine.FormOfCredit = FormOfCredit.Mortgage;
+            loan.FormOfCredit = FormOfCredit.Mortgage;
             HomeDebt.Add(loan);
             return minPmt;
         }
@@ -404,10 +404,10 @@ namespace NoFuture.Rand.Domus.Opes
                 (float) randRate, 5, out var minPmt, Person.Personality);
 
             //insure that the gen'ed history doesn't start before the year of make
-            var maxYear = loan.TradeLine.OpennedDate.Year;
+            var maxYear = loan.Inception.Year;
             var vin = Gov.Nhtsa.Vin.GetRandomVin(randCarDebt <= 2000.0D, maxYear);
             loan.PropertyId = vin;
-            loan.TradeLine.FormOfCredit = FormOfCredit.Installment;
+            loan.FormOfCredit = FormOfCredit.Installment;
             VehicleDebt.Add(loan);
             return minPmt;
         }

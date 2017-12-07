@@ -18,16 +18,14 @@ namespace NoFuture.Rand.Tests.DataTests.SpTests
             Assert.IsNotNull(testResult);
             Assert.IsTrue(testResult.MinPaymentRate > 0);
             Assert.IsTrue(testResult.Rate > 0);
-            Assert.IsNotNull(testResult.TradeLine);
             Assert.AreNotEqual(SpStatus.NoHistory, testResult.CurrentStatus);
             Assert.AreNotEqual(Pecuniam.Zero, testResult.Value);
             System.Diagnostics.Debug.WriteLine("MinPaymentRate     : {0}", testResult.MinPaymentRate);
             System.Diagnostics.Debug.WriteLine("Rate               : {0}", testResult.Rate);
-            System.Diagnostics.Debug.WriteLine("TradeLine          : {0}", testResult.TradeLine);
             System.Diagnostics.Debug.WriteLine("CurrentStatus      : {0}", testResult.CurrentStatus);
             System.Diagnostics.Debug.WriteLine("CurrentValue       : {0}", testResult.Value);
 
-            foreach (var t in testResult.TradeLine.Balance.GetTransactionsBetween(null, null, true))
+            foreach (var t in testResult.Balance.GetTransactionsBetween(null, null, true))
             {
                 System.Diagnostics.Debug.WriteLine(string.Join(" ", t.AtTime, t.Cash, t.Fee, t.Description));
             }
@@ -37,9 +35,9 @@ namespace NoFuture.Rand.Tests.DataTests.SpTests
         public void TestSecuredFixedRateLoan()
         {
             var testResult = new SecuredFixedRateLoan(null, new DateTime(DateTime.Today.Year, 1, 1), 0.016667f, new Pecuniam(12143.06M));
-            Assert.IsNotNull(testResult.TradeLine);
-            Assert.IsNotNull(testResult.TradeLine.Balance);
-            Assert.IsFalse(testResult.TradeLine.Balance.IsEmpty);
+            Assert.IsNotNull(testResult);
+            Assert.IsNotNull(testResult.Balance);
+            Assert.IsFalse(testResult.Balance.IsEmpty);
         }
 
         [TestMethod]
@@ -51,7 +49,6 @@ namespace NoFuture.Rand.Tests.DataTests.SpTests
             Assert.IsNotNull(testResult);
             Assert.IsTrue(testResult.MinPaymentRate > 0);
             Assert.IsTrue(testResult.Rate > 0);
-            Assert.IsNotNull(testResult.TradeLine);
             Assert.AreNotEqual(SpStatus.NoHistory, testResult.CurrentStatus);
             Assert.AreNotEqual(Pecuniam.Zero, testResult.Value);
         }

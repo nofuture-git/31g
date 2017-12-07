@@ -27,7 +27,7 @@ namespace NoFuture.Rand.Data.Sp
         public Pecuniam MonthlyPmt { get; }
         public DateTime LeaseExpiry { get; }
         public Identifier Id { get; }
-        public DateTime SigningDate => TradeLine.OpennedDate;
+        public DateTime SigningDate => Inception;
 
         #endregion
 
@@ -52,8 +52,8 @@ namespace NoFuture.Rand.Data.Sp
             }
             LeaseExpiry = _dtOfFirstFullRentDue.AddMonths(forMonths);
             var fullTermAmt = _proRatedAmt + new Pecuniam(monthlyRent.Amount*forMonths);
-            base.TradeLine.Balance.AddTransaction(signing, fullTermAmt, Mereo.GetMereoById(property,"Lease Signing"), null);
-            base.TradeLine.FormOfCredit = FormOfCredit.None;
+            Balance.AddTransaction(signing, fullTermAmt, Mereo.GetMereoById(property,"Lease Signing"), null);
+            FormOfCredit = FormOfCredit.None;
             LeaseTermInMonths = forMonths;
             Deposit = deposit;
             MonthlyPmt = monthlyRent;
@@ -70,38 +70,38 @@ namespace NoFuture.Rand.Data.Sp
         public override Pecuniam GetValueAt(DateTime dt)
         {
             //when date is prior to signing 
-            return dt < TradeLine.OpennedDate
+            return dt < Inception
                 ? Pecuniam.Zero
-                : TradeLine.Balance.GetCurrent(dt, 0);
+                : Balance.GetCurrent(dt, 0);
         }
 
         public override Pecuniam GetMinPayment(DateTime dt)
         {
             var e = -1*GetExpectedTotalRent(dt).Amount;
-            dt = dt == TradeLine.OpennedDate
+            dt = dt == Inception
                 ? dt.AddDays(1) 
                 : dt;
-            var pd = TradeLine.Balance.GetDebitSum(
-                new Tuple<DateTime, DateTime>(TradeLine.OpennedDate, dt));
+            var pd = Balance.GetDebitSum(
+                new Tuple<DateTime, DateTime>(Inception, dt));
             return new Pecuniam(e - pd.Amount);
         }
 
         public void PayRent(DateTime dt, Pecuniam amt, IMereo note = null)
         {
-            TradeLine.Balance.AddTransaction(dt, amt.Neg, note, Pecuniam.Zero);
+            Balance.AddTransaction(dt, amt.Neg, note, Pecuniam.Zero);
         }
 
         protected internal Pecuniam GetExpectedTotalRent(DateTime dt)
         {
             //when date is prior to signing 
-            if (dt < TradeLine.OpennedDate)
+            if (dt < Inception)
                 return Pecuniam.Zero;
 
             //when between signing and first months rent
             if(dt < _dtOfFirstFullRentDue)
                 return _proRatedAmt;
 
-            var numOfRentPmts = CountOfWholeCalendarMonthsBetween(TradeLine.OpennedDate, dt, _dayOfMonthRentDue);
+            var numOfRentPmts = CountOfWholeCalendarMonthsBetween(Inception, dt, _dayOfMonthRentDue);
 
             //don't let calc exceed contract limit
             numOfRentPmts = numOfRentPmts > LeaseTermInMonths ? LeaseTermInMonths : numOfRentPmts;

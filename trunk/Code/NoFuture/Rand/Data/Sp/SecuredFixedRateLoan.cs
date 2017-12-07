@@ -47,7 +47,7 @@ namespace NoFuture.Rand.Data.Sp
             //makes the fake history more colorful
             borrowerPersonality = borrowerPersonality ?? new Personality();
 
-            var dtIncrement = loan.TradeLine.OpennedDate.AddMonths(1);
+            var dtIncrement = loan.Inception.AddMonths(1);
             while (loan.GetValueAt(dtIncrement) > remainingCost)
             {
                 if (dtIncrement >= DateTime.Now)
@@ -66,11 +66,8 @@ namespace NoFuture.Rand.Data.Sp
                 loan.Push(paidOnDate, minPmt, pmtNote, Pecuniam.Zero);
                 if (isPayoff)
                 {
-                    loan.TradeLine.Closure = new TradelineClosure
-                    {
-                        ClosedDate = paidOnDate,
-                        Condition = ClosedCondition.ClosedWithZeroBalance
-                    };
+                    loan.Terminus = paidOnDate;
+                    loan.Closure = ClosedCondition.ClosedWithZeroBalance;
                     break;
                 }
                 dtIncrement = dtIncrement.AddMonths(1);

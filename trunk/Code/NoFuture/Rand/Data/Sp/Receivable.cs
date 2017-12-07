@@ -4,24 +4,20 @@ using NoFuture.Rand.Data.Sp.Enums;
 namespace NoFuture.Rand.Data.Sp
 {
     [Serializable]
-    public abstract class ReceivableBase : Mereo, IReceivable
+    public abstract class ReceivableBase : TradeLine, IReceivable
     {
-        #region fields
-        protected internal TradeLine _tl;
-        #endregion
-
         #region ctor
-        protected ReceivableBase(DateTime openedDate)
+        protected ReceivableBase(DateTime openedDate):base(openedDate)
         {
-            _tl = new TradeLine(openedDate);
         }
         #endregion
 
         #region properties
-        public virtual ITradeLine TradeLine => _tl;
+        //public virtual ITradeLine TradeLine => _tl;
         public SpStatus CurrentStatus => GetStatus(DateTime.Now);
         public PastDue? CurrentDelinquency => GetDelinquency(DateTime.Now);
-        public Pecuniam Value => GetValueAt(DateTime.Now);
+        public virtual Pecuniam Value => Balance.GetCurrent(DateTime.Now, 0f);
+
         #endregion
 
         #region methods
@@ -31,43 +27,43 @@ namespace NoFuture.Rand.Data.Sp
                 return null;
 
             //30 days past due when last payment was normal billing cycle plus 30 days
-            var billingCycleDays = TradeLine.DueFrequency.TotalDays;
+            var billingCycleDays = DueFrequency.TotalDays;
 
             var justLate = new Tuple<DateTime, DateTime>(dt.AddDays(-29 - billingCycleDays),
                 dt.AddDays(billingCycleDays*-1));
 
-            if ((TradeLine.Balance.GetDebitSum(justLate)).Amount < 0)
+            if ((Balance.GetDebitSum(justLate)).Amount < 0)
                 return null;
 
             //the line was openned some time before 30DPD
-            if (DateTime.Compare(TradeLine.OpennedDate, dt.AddDays(-30 - billingCycleDays)) > 0)
+            if (DateTime.Compare(Inception, dt.AddDays(-30 - billingCycleDays)) > 0)
                 return null;
 
             var thirtyDpd = new Tuple<DateTime, DateTime>(dt.AddDays(-59 - billingCycleDays),
                 dt.AddDays(-30 - billingCycleDays));
 
-            if ((TradeLine.Balance.GetDebitSum(thirtyDpd)).Amount < 0)
+            if ((Balance.GetDebitSum(thirtyDpd)).Amount < 0)
                 return PastDue.Thirty;
 
-            if (DateTime.Compare(TradeLine.OpennedDate, dt.AddDays(-60 - billingCycleDays)) > 1)
+            if (DateTime.Compare(Inception, dt.AddDays(-60 - billingCycleDays)) > 1)
                 return PastDue.Thirty;
 
             var sixtyDpd = new Tuple<DateTime, DateTime>(dt.AddDays(-89 - billingCycleDays),
                 dt.AddDays(-60 - billingCycleDays));
 
-            if ((TradeLine.Balance.GetDebitSum(sixtyDpd)).Amount < 0)
+            if ((Balance.GetDebitSum(sixtyDpd)).Amount < 0)
                 return PastDue.Sixty;
 
-            if (DateTime.Compare(TradeLine.OpennedDate, dt.AddDays(-90 - billingCycleDays)) > 1)
+            if (DateTime.Compare(Inception, dt.AddDays(-90 - billingCycleDays)) > 1)
                 return PastDue.Sixty;
 
             var nintyDpd = new Tuple<DateTime, DateTime>(dt.AddDays(-179 - billingCycleDays),
                 dt.AddDays(-90 - billingCycleDays));
 
-            if ((TradeLine.Balance.GetDebitSum(nintyDpd)).Amount < 0)
+            if ((Balance.GetDebitSum(nintyDpd)).Amount < 0)
                 return PastDue.Ninety;
 
-            if (DateTime.Compare(TradeLine.OpennedDate, dt.AddDays(-180 - billingCycleDays)) > 1)
+            if (DateTime.Compare(Inception, dt.AddDays(-180 - billingCycleDays)) > 1)
                 return PastDue.Ninety;
 
             return PastDue.HundredAndEighty;
@@ -76,10 +72,10 @@ namespace NoFuture.Rand.Data.Sp
         public virtual SpStatus GetStatus(DateTime? dt)
         {
             var ddt = dt ?? DateTime.Now;
-            if (TradeLine.Closure != null && DateTime.Compare(TradeLine.Closure.Value.ClosedDate, ddt) < 0)
+            if (Terminus != null && DateTime.Compare(Terminus.Value, ddt) < 0)
                 return SpStatus.Closed;
 
-            if (TradeLine.Balance.IsEmpty)
+            if (Balance.IsEmpty)
                 return SpStatus.NoHistory;
 
             //make sure something is actually owed
@@ -87,8 +83,8 @@ namespace NoFuture.Rand.Data.Sp
                 return SpStatus.Current;
 
             var lastPayment =
-                TradeLine.Balance.GetDebitSum(
-                    new Tuple<DateTime, DateTime>(ddt.AddDays(TradeLine.DueFrequency.TotalDays*-1), ddt));
+                Balance.GetDebitSum(
+                    new Tuple<DateTime, DateTime>(ddt.AddDays(DueFrequency.TotalDays*-1), ddt));
 
             return lastPayment.Abs < GetMinPayment(ddt).Abs
                 ? SpStatus.Late

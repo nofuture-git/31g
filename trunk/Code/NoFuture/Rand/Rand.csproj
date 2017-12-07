@@ -115,7 +115,6 @@
     <Compile Include="Data\Sp\SecuredFixedRateLoan.cs" />
     <Compile Include="Com\AssetsSummary.cs" />
     <Compile Include="Com\IncomeSummary.cs" />
-    <Compile Include="Data\Sp\TradelineClosure.cs" />
     <Compile Include="Data\Sp\Cc\VisaCc.cs" />
     <Compile Include="Data\Sp\TransactionComparer.cs" />
     <Compile Include="Data\Sp\TransactionHistory.cs" />

@@ -44,7 +44,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             var rent = testSubject.HomeDebt.FirstOrDefault() as Rent;
             Assert.IsNotNull(rent);
 
-            System.Diagnostics.Debug.WriteLine(rent.TradeLine.Balance.ToString());
+            System.Diagnostics.Debug.WriteLine(rent.Balance.ToString());
         }
 
         [TestMethod]
@@ -57,7 +57,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             var homeLoan = testSubject.HomeDebt.FirstOrDefault() as FixedRateLoan;
             Assert.IsNotNull(homeLoan);
 
-            System.Diagnostics.Debug.WriteLine(homeLoan.TradeLine.Balance.ToString());
+            System.Diagnostics.Debug.WriteLine(homeLoan.Balance.ToString());
         }
 
         [TestMethod]
@@ -75,7 +75,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             System.Diagnostics.Debug.WriteLine(testResult.Cc.CardHolderSince);
             System.Diagnostics.Debug.WriteLine(testResult.Max);
 
-            System.Diagnostics.Debug.WriteLine(testResult.TradeLine.Balance.ToString());
+            System.Diagnostics.Debug.WriteLine(testResult.Balance.ToString());
 
         }
 

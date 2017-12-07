@@ -89,7 +89,7 @@ namespace NoFuture.Rand.Data.Sp
         /// <summary>
         /// The original purchase price of the real-estate.
         /// </summary>
-        public Pecuniam PurchasePrice => GetValueAt(TradeLine.OpennedDate);
+        public Pecuniam PurchasePrice => GetValueAt(Inception);
 
         #endregion
 
@@ -110,7 +110,7 @@ namespace NoFuture.Rand.Data.Sp
         {
             var qDt = dt ?? DateTime.Today;
 
-            if(qDt < TradeLine.OpennedDate)
+            if(qDt < Inception)
                 return Pecuniam.Zero;
 
             var qRemaining = GetValueAt(qDt).Abs;
@@ -129,7 +129,7 @@ namespace NoFuture.Rand.Data.Sp
         public Pecuniam GetEstimatedMarketValueAt(DateTime? dt)
         {
             var qDt = dt ?? DateTime.Today;
-            var pDt = TradeLine.OpennedDate;
+            var pDt = Inception;
 
             if(qDt < pDt)
                 return PurchasePrice;
