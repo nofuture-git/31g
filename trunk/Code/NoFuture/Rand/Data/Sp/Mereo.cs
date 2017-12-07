@@ -20,6 +20,11 @@ namespace NoFuture.Rand.Data.Sp
         private readonly List<string> _aka = new List<string>();
         private string _definition;
 
+        public Mereo()
+        {
+            
+        }
+
         public Mereo(string name)
         {
             Names.Add(new Tuple<KindsOfNames, string>(KindsOfNames.Legal, name));

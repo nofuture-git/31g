@@ -58,7 +58,6 @@ namespace NoFuture.Rand.Data.Sp
             Deposit = deposit;
             MonthlyPmt = monthlyRent;
             Id = property;
-            Description = Mereo.GetMereoById(property, $"{forMonths}-Month Lease");
             if (property is ResidentAddress)
             {
                 ((ResidentAddress) property).IsLeased = true;
@@ -152,7 +151,7 @@ namespace NoFuture.Rand.Data.Sp
         /// <param name="stdDevAsPercent">Optional, the stdDev around the mean.</param>
         /// <returns></returns>
         public static Rent GetRandomRentWithHistory(Identifier property, double homeDebtFactor, Personality renterPersonality = null,
-            double stdDevAsPercent = NorthAmericanWealth.DF_STD_DEV_PERCENT)
+            double stdDevAsPercent = WealthBase.DF_STD_DEV_PERCENT)
         {
             //create a rent object
             renterPersonality = renterPersonality ?? new Personality();
@@ -193,7 +192,7 @@ namespace NoFuture.Rand.Data.Sp
         /// </param>
         /// <returns></returns>
         public static Rent GetRandomRent(Identifier property, double homeDebtFactor,
-            double stdDevAsPercent = NorthAmericanWealth.DF_STD_DEV_PERCENT, double? totalYearlyRent = null)
+            double stdDevAsPercent = WealthBase.DF_STD_DEV_PERCENT, double? totalYearlyRent = null)
         {
             var avgRent = totalYearlyRent ?? (double)GetAvgAmericanRentByYear(null).Amount;
             var randRent = new Pecuniam(

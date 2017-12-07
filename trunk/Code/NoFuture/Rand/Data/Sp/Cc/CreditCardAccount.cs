@@ -19,7 +19,7 @@ namespace NoFuture.Rand.Data.Sp.Cc
 
         #region ctor
         public CreditCardAccount(ICreditCard cc, float minPaymentRate, Pecuniam ccMax = null)
-            : base(cc.CardHolderSince, minPaymentRate <= 0 ? DF_MIN_PMT_RATE : minPaymentRate, null)
+            : base(cc.CardHolderSince, minPaymentRate <= 0 ? DF_MIN_PMT_RATE : minPaymentRate)
         {
             Cc = cc;
             base.TradeLine.CreditLimit = ccMax ?? new Pecuniam(1000);

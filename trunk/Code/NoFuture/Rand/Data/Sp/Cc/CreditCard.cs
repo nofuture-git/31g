@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Domus;
@@ -70,22 +69,23 @@ namespace NoFuture.Rand.Data.Sp.Cc
         /// Returs a new, randomly gen'ed, concrete instance of <see cref="ICreditCard"/>
         /// </summary>
         /// <param name="p"></param>
+        /// <param name="opennedDate"></param>
         /// <returns></returns>
-        public static ICreditCard GetRandomCreditCard(IPerson p)
+        public static ICreditCard GetRandomCreditCard(IPerson p, DateTime? opennedDate = null)
         {
             var fk = Etx.IntNumber(0, 3);
-            var dt = Etx.Date(-2, null);
+            var dt = opennedDate ?? Etx.Date(-3, null);
 
             switch (fk)
             {
                 case 0:
-                    return new MasterCardCc(p, dt, dt.AddYears(4));
+                    return new MasterCardCc(p, dt, dt.AddYears(3));
                 case 2:
-                    return new AmexCc(p, dt, dt.AddYears(4));
+                    return new AmexCc(p, dt, dt.AddYears(3));
                 case 3:
-                    return new DiscoverCc(p, dt, dt.AddYears(4));
+                    return new DiscoverCc(p, dt, dt.AddYears(3));
                 default:
-                    return new VisaCc(p, dt, dt.AddYears(4));
+                    return new VisaCc(p, dt, dt.AddYears(3));
             }
         }
 

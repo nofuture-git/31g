@@ -4,7 +4,7 @@ using NoFuture.Rand.Data.Sp.Enums;
 namespace NoFuture.Rand.Data.Sp
 {
     [Serializable]
-    public abstract class ReceivableBase : IReceivable
+    public abstract class ReceivableBase : Mereo, IReceivable
     {
         #region fields
         protected internal TradeLine _tl;
@@ -19,7 +19,6 @@ namespace NoFuture.Rand.Data.Sp
 
         #region properties
         public virtual ITradeLine TradeLine => _tl;
-        public IMereo Description { get; set; }
         public SpStatus CurrentStatus => GetStatus(DateTime.Now);
         public PastDue? CurrentDelinquency => GetDelinquency(DateTime.Now);
         public Pecuniam Value => GetValueAt(DateTime.Now);
@@ -99,11 +98,6 @@ namespace NoFuture.Rand.Data.Sp
         public abstract Pecuniam GetValueAt(DateTime dt);
 
         public abstract Pecuniam GetMinPayment(DateTime dt);
-
-        public override string ToString()
-        {
-            return !string.IsNullOrWhiteSpace(Description.Name) ? Description.Name : base.ToString();
-        }
 
         #endregion  
     }

@@ -57,6 +57,7 @@
     <Compile Include="DataTests\SpTests\PondusTests.cs" />
     <Compile Include="DataTests\DataTypesTests.cs" />
     <Compile Include="DataTests\SpTests\MortgageTests.cs" />
+    <Compile Include="DataTests\SpTests\SecuredFixedRateLoanTests.cs" />
     <Compile Include="DomusTests\AccountTests.cs" />
     <Compile Include="DomusTests\LoanTests.cs" />
     <Compile Include="DomusTests\OpesTests\NorthAmericanEmploymentTests.cs" />

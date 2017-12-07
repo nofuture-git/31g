@@ -13,6 +13,7 @@ namespace NoFuture.Rand.Domus.Opes
     /// </summary>
     public class NorthAmericanAssets : WealthBase, IRebus
     {
+        #region fields
         private readonly HashSet<Pondus> _assets = new HashSet<Pondus>();
         private readonly DateTime _startDate;
 
@@ -28,38 +29,75 @@ namespace NoFuture.Rand.Domus.Opes
         private readonly double _randNetWorth;
         private readonly double _diffInNetWorth;
 
-        public NorthAmericanAssets(NorthAmerican american, bool isRenting = false, DateTime? startDate = null) : base(
-            american, isRenting)
+        #endregion
+
+        #region ctors
+        public NorthAmericanAssets(NorthAmerican american, AssestOptions options, DateTime? startDate = null) : base(
+            american, options?.IsRenting ?? false)
         {
+            options = options ?? new AssestOptions();
+
             _startDate = startDate ?? GetYearNeg3();
             _randCheckingAcctAmt = NorthAmericanFactors.GetRandomFactorValue(FactorTables.CheckingAccount,
                 Factors.CheckingAcctFactor, DF_STD_DEV_PERCENT);
             _randSavingsAcctAmt = NorthAmericanFactors.GetRandomFactorValue(FactorTables.SavingsAccount,
                 Factors.SavingsAcctFactor, DF_STD_DEV_PERCENT);
-            _randHomeEquity = NorthAmericanFactors.GetRandomFactorValue(FactorTables.HomeEquity,
-                Factors.HomeEquityFactor, DF_STD_DEV_PERCENT);
-            _randCarEquity = NorthAmericanFactors.GetRandomFactorValue(FactorTables.VehicleEquity,
-                Factors.VehicleEquityFactor, DF_STD_DEV_PERCENT);
 
-            _randCcDebt = NorthAmericanFactors.GetRandomFactorValue(FactorTables.CreditCardDebt,
-                Factors.CreditCardDebtFactor, DF_STD_DEV_PERCENT);
-            _randHomeDebt =
-                NorthAmericanFactors.GetRandomFactorValue(FactorTables.HomeDebt, Factors.HomeDebtFactor,
-                    DF_STD_DEV_PERCENT);
-            _randCarDebt = NorthAmericanFactors.GetRandomFactorValue(FactorTables.VehicleDebt,
-                Factors.VehicleDebtFactor, DF_STD_DEV_PERCENT);
+            _randHomeEquity = options.IsRenting
+                    ? 0D
+                    : NorthAmericanFactors.GetRandomFactorValue(FactorTables.HomeEquity, Factors.HomeEquityFactor,
+                        DF_STD_DEV_PERCENT);
+
+            _randCarEquity = options.HasVehicles
+                    ? NorthAmericanFactors.GetRandomFactorValue(FactorTables.VehicleEquity,
+                        Factors.VehicleEquityFactor, DF_STD_DEV_PERCENT)
+                    : 0D;
+
+            _randCcDebt = options.HasCreditCards
+                    ? NorthAmericanFactors.GetRandomFactorValue(FactorTables.CreditCardDebt,
+                        Factors.CreditCardDebtFactor,
+                        DF_STD_DEV_PERCENT)
+                    : 0D;
+
+            _randHomeDebt = options.IsRenting
+                    ? 0D
+                    : NorthAmericanFactors.GetRandomFactorValue(FactorTables.HomeDebt, Factors.HomeDebtFactor,
+                        DF_STD_DEV_PERCENT);
+
+            _randCarDebt = options.HasVehicles
+                    ? NorthAmericanFactors.GetRandomFactorValue(FactorTables.VehicleDebt,
+                        Factors.VehicleDebtFactor, DF_STD_DEV_PERCENT)
+                    : 0D;
 
             _randNetWorth =
                 NorthAmericanFactors.GetRandomFactorValue(FactorTables.NetWorth, Factors.NetWorthFactor,
                     DF_STD_DEV_PERCENT);
-            var calcNetWorth = (_randCheckingAcctAmt + _randSavingsAcctAmt + _randHomeEquity + _randCarEquity) -
+
+            var calcNetWorth = _randCheckingAcctAmt + _randSavingsAcctAmt + _randHomeEquity + _randCarEquity -
                                Math.Abs(_randCcDebt + _randHomeDebt + _randCarDebt);
 
             //this is what would be spread across other assets
             _diffInNetWorth = _randNetWorth - calcNetWorth;
         }
+        #endregion
+
+        #region inner types
+        public class AssestOptions
+        {
+            public bool IsRenting { get; set; }
+            public int NumberOfVehicles { get; set; }
+            public int NumberOfCreditCards { get; set; }
+
+            public bool HasCreditCards => NumberOfCreditCards > 0;
+            public bool HasVehicles => NumberOfCreditCards > 0;
+        }
+        #endregion
+
+        #region properties
 
         public Pondus[] CurrentAssets => GetCurrent(Assets);
+
+        #endregion
 
         #region methods
 

@@ -5,6 +5,7 @@ using NoFuture.Rand.Core;
 using NoFuture.Rand.Data.Sp;
 using NoFuture.Rand.Data.Sp.Cc;
 using NoFuture.Rand.Data.Sp.Enums;
+using NoFuture.Rand.Domus.Pneuma;
 
 namespace NoFuture.Rand.Domus.Opes
 {
@@ -295,7 +296,6 @@ namespace NoFuture.Rand.Domus.Opes
             //create a loan on current residence
             var loan = SecuredFixedRateLoan.GetRandomLoanWithHistory(Person.Address, spCost, totalCost, (float) randRate,
                 30, out var minPmt, Person.Personality);
-            loan.Description = Mereo.GetMereoById(null, "30-Year Mortgage");
             loan.TradeLine.FormOfCredit = FormOfCredit.Mortgage;
             HomeDebt.Add(loan);
             return minPmt;
@@ -320,6 +320,7 @@ namespace NoFuture.Rand.Domus.Opes
             var historyTs = DateTime.Today - baseDate;
 
             var ccAcctDueDoM = Etx.DiscreteRange(new[] {1, 15, 28});
+            var borrowerPersonality = Person?.Personality ?? new Personality();
 
             //create history
             for (var i = 1; i < historyTs.Days; i++)
@@ -335,7 +336,7 @@ namespace NoFuture.Rand.Domus.Opes
                     var minDue = ccAcct.GetMinPayment(loopDt);
                     if (minDue > new Pecuniam(10.0M).Neg)
                         minDue = new Pecuniam(10.0M).Neg;
-                    if (Person.Personality.GetRandomActsIrresponsible())
+                    if (borrowerPersonality.GetRandomActsIrresponsible())
                     {
                         var fowardDays = Etx.IntNumber(1, 45);
                         var paidDate = loopDt.AddDays(fowardDays);
@@ -360,7 +361,7 @@ namespace NoFuture.Rand.Domus.Opes
 
                 var daysMax = (double)scaler.Amount*DF_DAILY_SPEND_PERCENT/2;
 
-                CreateSingleDaysPurchases(Person.Personality, ccAcct, loopDt,daysMax);
+                CreateSingleDaysPurchases(borrowerPersonality, ccAcct, loopDt,daysMax);
             }
 
             CreditCardDebt.Add(ccAcct);
@@ -406,7 +407,6 @@ namespace NoFuture.Rand.Domus.Opes
             var maxYear = loan.TradeLine.OpennedDate.Year;
             var vin = Gov.Nhtsa.Vin.GetRandomVin(randCarDebt <= 2000.0D, maxYear);
             loan.PropertyId = vin;
-            loan.Description = Mereo.GetMereoById(null, string.Join(" ", vin.Value, vin.Description, vin.GetModelYearYyyy()));
             loan.TradeLine.FormOfCredit = FormOfCredit.Installment;
             VehicleDebt.Add(loan);
             return minPmt;
