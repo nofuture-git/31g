@@ -96,10 +96,10 @@ namespace NoFuture.Rand.Domus.Opes
 
         public virtual Pondus[] CurrentExpectedExpenses => GetCurrent(ExpectedExpenses);
 
-        public virtual Pecuniam TotalAnnualExpectedExpenses => Pondus.GetAnnualSum(CurrentExpectedExpenses);
+        public virtual Pecuniam TotalAnnualExpectedExpenses => Pondus.GetExpectedAnnualSum(CurrentExpectedExpenses);
 
         public virtual Pecuniam TotalAnnualExpectedIncome =>
-            Pondus.GetAnnualSum(CurrentExpectedOtherIncome) + TotalAnnualExpectedNetEmploymentIncome;
+            Pondus.GetExpectedAnnualSum(CurrentExpectedOtherIncome) + TotalAnnualExpectedNetEmploymentIncome;
 
         public virtual Pecuniam TotalAnnualExpectedNetEmploymentIncome =>
             CurrentEmployment.Select(e => e.TotalAnnualNetPay).GetSum();
@@ -896,7 +896,7 @@ namespace NoFuture.Rand.Domus.Opes
             foreach (var emp in payAtDt)
             {
                 var payAt = emp.GetPayAt(dt);
-                var f = Pondus.GetAnnualSum(payAt);
+                var f = Pondus.GetExpectedAnnualSum(payAt);
                 sum += f;
             }
 
@@ -912,8 +912,8 @@ namespace NoFuture.Rand.Domus.Opes
             var sum = Pecuniam.Zero;
             foreach (var emp in payAtDt)
             {
-                var pay = Pondus.GetAnnualSum(emp.GetPayAt(dt));
-                var ded = Pondus.GetAnnualSum(emp.GetDeductionsAt(dt));
+                var pay = Pondus.GetExpectedAnnualSum(emp.GetPayAt(dt));
+                var ded = Pondus.GetExpectedAnnualSum(emp.GetDeductionsAt(dt));
                 sum += pay - ded;
             }
 

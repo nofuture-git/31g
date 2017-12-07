@@ -66,15 +66,15 @@ namespace NoFuture.Rand.Data.Sp
         /// </summary>
         /// <param name="items"></param>
         /// <returns></returns>
-        public static Pecuniam GetAnnualSum(IEnumerable<Pondus> items)
+        public static Pecuniam GetExpectedAnnualSum(IEnumerable<Pondus> items)
         {
             var sum = 0M;
             foreach (var item in items)
             {
-                if (item?.Value == null ||
+                if (item?.ExpectedValue == null ||
                     !NAmerUtil.Tables.Interval2AnnualPayMultiplier.ContainsKey(item.Id.Interval))
                     continue;
-                sum += item.Value.Amount * NAmerUtil.Tables.Interval2AnnualPayMultiplier[item.Id.Interval];
+                sum += item.ExpectedValue.Amount * NAmerUtil.Tables.Interval2AnnualPayMultiplier[item.Id.Interval];
             }
             return new Pecuniam(sum);
         }
@@ -87,21 +87,21 @@ namespace NoFuture.Rand.Data.Sp
         public override bool Equals(object obj)
         {
             //asserts the names equal
-            var baseEq = base.Equals(obj);
             var p = obj as Pondus;
 
-            if (p == null || !baseEq)
+            if (p == null)
                 return base.Equals(obj);
+            var namesEqual = p.Id.Equals(Id);
 
             var sDtEq = Inception == p.Inception;
             var eDtEq = Terminus == p.Terminus;
 
-            return sDtEq && eDtEq;
+            return namesEqual && sDtEq && eDtEq;
         }
 
         public override int GetHashCode()
         {
-            return base.GetHashCode() + ExpectedValue?.GetHashCode() ?? 1;
+            return Inception.GetHashCode() + Terminus?.GetHashCode() ?? 1 + Id?.GetHashCode() ?? 1;
         }
 
         public override string ToString()

@@ -103,8 +103,8 @@ namespace NoFuture.Rand.Domus.Opes
             set => _dateRange = new Tuple<DateTime, DateTime?>(_dateRange.Item1, value);
         }
 
-        public Pecuniam TotalAnnualDeductions => Pondus.GetAnnualSum(CurrentDeductions).Neg;
-        public Pecuniam TotalAnnualPay => Pondus.GetAnnualSum(CurrentPay).Abs;
+        public Pecuniam TotalAnnualDeductions => Pondus.GetExpectedAnnualSum(CurrentDeductions).Neg;
+        public Pecuniam TotalAnnualPay => Pondus.GetExpectedAnnualSum(CurrentPay).Abs;
         public Pecuniam TotalAnnualNetPay => TotalAnnualPay - TotalAnnualDeductions;
 
         #endregion

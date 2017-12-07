@@ -114,9 +114,9 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             Assert.AreNotEqual(0, testResult.Length);
 
             foreach(var t in testResult)
-                System.Diagnostics.Debug.WriteLine($"{t.Value} {t.Id.Name} {t.Id.Interval} {t.Id.GetName(KindsOfNames.Group)}");
+                System.Diagnostics.Debug.WriteLine($"{t.ExpectedValue} {t.Id.Name} {t.Id.Interval} {t.Id.GetName(KindsOfNames.Group)}");
 
-            var sumResult = Pondus.GetAnnualSum(testResult);
+            var sumResult = Pondus.GetExpectedAnnualSum(testResult);
             Assert.IsTrue(sumResult.ToDouble() >= 5659.99 && sumResult.ToDouble() <= 5660.01);
         }
 
@@ -352,7 +352,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
                 testResult.FirstOrDefault(p => p.Id.Name == "Mortgage" && p.Id.GetName(KindsOfNames.Group) == "Home");
             Assert.IsNotNull(testPondus);
             System.Diagnostics.Debug.WriteLine(testPondus);
-            var testAmt = testPondus.Value;
+            var testAmt = testPondus.ExpectedValue;
             Assert.IsNotNull(testAmt);
             Assert.AreEqual(13476.0D, testAmt.ToDouble());
 
@@ -360,7 +360,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
                 p.Id.Name == "Loan Payments" && p.Id.GetName(KindsOfNames.Group) == "Transportation");
             Assert.IsNotNull(testPondus);
             System.Diagnostics.Debug.WriteLine(testPondus);
-            testAmt = testPondus.Value;
+            testAmt = testPondus.ExpectedValue;
             Assert.IsNotNull(testAmt);
             Assert.AreEqual(3750.0D, testAmt.ToDouble());
 
@@ -368,7 +368,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
                 p.Id.Name == "Credit Card" && p.Id.GetName(KindsOfNames.Group) == "Debts");
             Assert.IsNotNull(testPondus);
             System.Diagnostics.Debug.WriteLine(testPondus);
-            testAmt = testPondus.Value;
+            testAmt = testPondus.ExpectedValue;
             Assert.IsNotNull(testAmt);
             Assert.AreEqual(2728.44D, testAmt.ToDouble());
         }
