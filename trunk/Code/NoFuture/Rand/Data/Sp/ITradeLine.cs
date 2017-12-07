@@ -7,7 +7,7 @@ namespace NoFuture.Rand.Data.Sp
     /// <summary>
     /// Represents the item reported to a Credit Bureau
     /// </summary>
-    public interface ITradeLine : ITempore
+    public interface ITradeLine : ITempore, ITransactionable
     {
         FormOfCredit FormOfCredit { get; set; }
         IBalance Balance { get; }

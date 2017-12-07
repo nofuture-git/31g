@@ -8,8 +8,6 @@ namespace NoFuture.Rand.Data.Sp
     /// </summary>
     public interface IReceivable : IAsset, ITradeLine
     {
-        //ITradeLine TradeLine { get; }
-
         /// <summary>
         /// Determins the deliquency for the given <see cref="dt"/>
         /// </summary>

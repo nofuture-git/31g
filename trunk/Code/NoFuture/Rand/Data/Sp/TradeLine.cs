@@ -79,6 +79,37 @@ namespace NoFuture.Rand.Data.Sp
             return _uniqueId.GetHashCode();
         }
 
+        /// <summary>
+        /// Applied a negative valued transaction against the balance.
+        /// </summary>
+        /// <param name="dt"></param>
+        /// <param name="amt"></param>
+        /// <param name="note"></param>
+        /// <param name="fee"></param>
+        public virtual void Push(DateTime dt, Pecuniam amt, IMereo note = null, Pecuniam fee = null)
+        {
+            if (amt == Pecuniam.Zero)
+                return;
+            fee = fee == null ? Pecuniam.Zero : fee.Neg;
+            Balance.AddTransaction(dt, amt.Neg, note, fee);
+        }
+
+        /// <summary>
+        /// Applies a positive valued transaction against the balance
+        /// </summary>
+        /// <param name="dt"></param>
+        /// <param name="val"></param>
+        /// <param name="note"></param>
+        /// <param name="fee"></param>
+        /// <returns></returns>
+        public virtual bool Pop(DateTime dt, Pecuniam val, IMereo note = null, Pecuniam fee = null)
+        {
+            if (val == Pecuniam.Zero)
+                return false;
+            fee = fee == null ? Pecuniam.Zero : fee.Abs;
+            Balance.AddTransaction(dt, val.Abs, note, fee);
+            return true;
+        }
         #endregion
     }
 }

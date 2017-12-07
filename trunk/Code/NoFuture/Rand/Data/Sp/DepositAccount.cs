@@ -11,25 +11,18 @@ namespace NoFuture.Rand.Data.Sp
     /// Base type for a depository account held at a commercial bank.
     /// </summary>
     [Serializable]
-    public abstract class DepositAccount : IAccount<Identifier>, ITransactionable
+    public abstract class DepositAccount : ReceivableBase, IAccount<Identifier>
     {
-        private readonly DateTime _inceptionDate;
         #region ctor
-        protected DepositAccount(DateTime dateOpenned)
+        protected DepositAccount(DateTime dateOpenned):base(dateOpenned)
         {
-            Balance = new Balance();
-            _inceptionDate = dateOpenned;
         }
         #endregion 
 
         #region properties
         public bool IsJointAcct { get; set; }
         public virtual Identifier Id { get; set; }
-        public IBalance Balance { get; }
         public FinancialFirm Bank { get; set; }
-        public abstract Pecuniam Value { get; }
-        public virtual DateTime Inception { get { return _inceptionDate; } set {} }
-        public virtual DateTime? Terminus { get; set; }
         #endregion
 
         #region methods
@@ -38,43 +31,15 @@ namespace NoFuture.Rand.Data.Sp
             return string.Join(" ", GetType().Name, Bank, Id.ValueLastFour());
         }
 
-        public virtual Pecuniam GetValueAt(DateTime dt)
+        public override Pecuniam GetValueAt(DateTime dt)
         {
             return Balance.GetCurrent(dt, 0.0F);
         }
-        public virtual bool IsInRange(DateTime dt)
-        {
-            var afterOrOnFromDt = Inception <= dt;
-            var beforeOrOnToDt = Terminus == null || Terminus.Value >= dt;
-            return afterOrOnFromDt && beforeOrOnToDt;
-        }
-        public SpStatus GetStatus(DateTime? dt)
-        {
-            if(Terminus != null && Terminus < dt)
-                return SpStatus.Closed;
-            var ddt = dt ?? DateTime.Now;
 
-            var balAtDt = Balance.GetCurrent(ddt, 0F);
-            return balAtDt < Pecuniam.Zero ? SpStatus.Short : SpStatus.Current;
-        }
-
-        public virtual void Push(DateTime dt, Pecuniam val, IMereo note = null, Pecuniam fee = null)
+        public override Pecuniam GetMinPayment(DateTime dt)
         {
-            if (val == Pecuniam.Zero)
-                return;
-            Balance.AddTransaction(dt, val.Abs, note, fee);
-        }
-
-        public virtual bool Pop(DateTime dt, Pecuniam val, IMereo note = null, Pecuniam fee = null)
-        {
-            if (val == Pecuniam.Zero)
-                return true;
-            if (GetStatus(dt) != SpStatus.Current)
-                return false;
-            if (val > Balance.GetCurrent(dt, 0F))
-                return false;
-            Balance.AddTransaction(dt, val.Neg, note, fee);
-            return true;
+            var d = Balance.GetCurrent(dt, 0.0F);
+            return d < Pecuniam.Zero ? d.Abs : Pecuniam.Zero;
         }
 
         /// <summary>
