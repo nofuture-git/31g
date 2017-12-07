@@ -13,6 +13,14 @@ namespace NoFuture.Rand.Domus.Opes
     /// </summary>
     public class NorthAmericanAssets : WealthBase, IRebus
     {
+        #region constants
+
+        internal const string ASSET_GRP_REAL_PROPERTY = "Real Property";
+        internal const string ASSET_GRP_PERSONAL_PROPERTY = "Personal Property";
+        internal const string ASSET_GRP_INSTITUTIONAL = "Institutional";
+        internal const string ASSET_GRP_SECURITIES = "Securities";
+        #endregion
+
         #region fields
         private readonly HashSet<Pondus> _assets = new HashSet<Pondus>();
         private readonly DateTime _startDate;
@@ -37,7 +45,7 @@ namespace NoFuture.Rand.Domus.Opes
         {
             options = options ?? new AssestOptions();
 
-            _startDate = startDate ?? GetYearNeg3();
+            _startDate = startDate ?? GetYearNeg(-1);
             _randCheckingAcctAmt = NorthAmericanFactors.GetRandomFactorValue(FactorTables.CheckingAccount,
                 Factors.CheckingAcctFactor, DF_STD_DEV_PERCENT);
             _randSavingsAcctAmt = NorthAmericanFactors.GetRandomFactorValue(FactorTables.SavingsAccount,

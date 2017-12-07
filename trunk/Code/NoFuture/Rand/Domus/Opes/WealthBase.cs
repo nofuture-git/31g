@@ -64,6 +64,16 @@ namespace NoFuture.Rand.Domus.Opes
         }
         #endregion
 
+        #region inner types
+
+        protected internal class RatesDictionaryArgs
+        {
+            internal double? SumOfRates { get; set; }
+            internal double? DerivativeSlope { get; set; }
+            internal Dictionary<string, double> DirectAssignNames2Rates { get; set; }
+        }
+        #endregion 
+
         public CreditScore CreditScore { get; protected set; }
 
         /// <summary>
@@ -590,18 +600,24 @@ namespace NoFuture.Rand.Domus.Opes
         }
 
         /// <summary>
-        /// Gets January 1st date from -3 years from this year&apos; January 1st
+        /// Gets January 1st date from negative <see cref="back"/> years from this year&apos; January 1st
         /// </summary>
         /// <returns></returns>
-        protected internal DateTime GetYearNeg3()
+        protected internal DateTime GetYearNeg(int back)
         {
             //current year is year 0
             var year0 = DateTime.Today.Year;
 
             var startYear0 = new DateTime(year0, 1, 1);
-            return startYear0.AddYears(-3);
+            return startYear0.AddYears(-1 * Math.Abs(back));
         }
 
+        /// <summary>
+        /// When the Sum of <see cref="directAssignments"/> exceeds <see cref="sumOfRates"/> then <see cref="sumOfRates"/>
+        /// is reassigned to this greater sum.
+        /// </summary>
+        /// <param name="sumOfRates"></param>
+        /// <param name="directAssignments"></param>
         protected internal void ReconcileDiffsInSums(ref double sumOfRates, Dictionary<string, double> directAssignments)
         {
             if (directAssignments == null || !directAssignments.Any())

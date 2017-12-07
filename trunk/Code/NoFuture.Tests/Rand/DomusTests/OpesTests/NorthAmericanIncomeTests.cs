@@ -289,7 +289,13 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
                     HasVehicle = true,
                     IsVehiclePaidOff = false
                 });
-            var testResult = testSubject.GetHomeExpenseNames2RandomRates(0.33, -0.2D, new Dictionary<string, double>{{"Mortgage",0.1377D }} );
+            var testInput = new WealthBase.RatesDictionaryArgs()
+            {
+                SumOfRates = 0.33D,
+                DerivativeSlope = -0.2D,
+                DirectAssignNames2Rates = new Dictionary<string, double> {{"Mortgage", 0.1377D}}
+            };
+            var testResult = testSubject.GetHomeExpenseNames2RandomRates(testInput);
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0, testResult.Count);
 
@@ -377,7 +383,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         public void TestGetIncomeYearsInDates()
         {
             var testSubject = new NorthAmericanIncome(null);
-            var testResult = testSubject.GetIncomeYearsInDates(testSubject.GetYearNeg3());
+            var testResult = testSubject.GetIncomeYearsInDates(testSubject.GetYearNeg(-3));
 
             Assert.IsNotNull(testResult);
             Assert.AreEqual(4, testResult.Count);
