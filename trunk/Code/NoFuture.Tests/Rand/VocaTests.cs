@@ -159,11 +159,11 @@ namespace NoFuture.Rand.Tests
         public void TestCopyFrom()
         {
             var testSubject = new Pondus("TestCorporation");
-            testSubject.Names.Add(new Tuple<KindsOfNames, string>(KindsOfNames.Group, "Company"));
+            testSubject.Id.UpsertName(KindsOfNames.Group, "Company");
 
-            var testSubject2 = new Pondus(testSubject);
-            Assert.AreEqual(testSubject.Name, testSubject2.Name);
-            var groupName = testSubject2.GetName(KindsOfNames.Group);
+            var testSubject2 = new Pondus(testSubject.Id);
+            Assert.AreEqual(testSubject.Id.Name, testSubject2.Id.Name);
+            var groupName = testSubject2.Id.GetName(KindsOfNames.Group);
             Assert.IsNotNull(groupName);
 
             Assert.AreEqual("Company", groupName);

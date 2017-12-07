@@ -14,7 +14,7 @@ namespace NoFuture.Rand.Core
     {
         protected internal List<Tuple<KindsOfNames, string>> Names { get; } = new List<Tuple<KindsOfNames, string>>();
 
-        public int Count => Names.Count;
+        public int CountOfNames => Names.Count;
 
         public virtual void UpsertName(KindsOfNames k, string name)
         {
@@ -81,7 +81,7 @@ namespace NoFuture.Rand.Core
         public override bool Equals(object obj)
         {
             var voca = obj as IVoca;
-            if(voca == null || Count != voca.Count)
+            if(voca == null || CountOfNames != voca.CountOfNames)
                 return base.Equals(obj);
 
             return Names.All(v => voca.AnyOfKindAndValue(v.Item1, v.Item2));

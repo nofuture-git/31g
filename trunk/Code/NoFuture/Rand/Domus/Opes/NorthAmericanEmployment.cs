@@ -297,13 +297,13 @@ namespace NoFuture.Rand.Domus.Opes
                 var incomeRate = !incomeName2Rates.ContainsKey(incomeItem.Name) 
                     ? 0D 
                     : incomeName2Rates[incomeItem.Name];
-                var p = new Pondus(incomeItem)
+                var p = new Pondus(incomeItem, interval)
                 {
                     Inception = startDate,
                     Terminus = endDate,
-                    Value = CalcValue(amt, incomeRate),
-                    Interval = interval
+                    ExpectedValue = CalcValue(amt, incomeRate),
                 };
+                p.Id.Interval = interval;
 
                 itemsout.Add(p);
             }
@@ -403,12 +403,11 @@ namespace NoFuture.Rand.Domus.Opes
                 var deductionRate = !deductionNames2Rates.ContainsKey(deduction.Name) 
                     ? 0D 
                     : deductionNames2Rates[deduction.Name];
-                var p = new Pondus(deduction)
+                var p = new Pondus(deduction, interval)
                 {
                     Inception = startDate,
                     Terminus = endDate,
-                    Value = CalcValue(amt, deductionRate),
-                    Interval = interval
+                    ExpectedValue = CalcValue(amt, deductionRate)
                 };
 
                 itemsout.Add(p);
@@ -514,7 +513,7 @@ namespace NoFuture.Rand.Domus.Opes
         {
             if (IsInRange(p))
             {
-                p.Value = p.Value.Abs;
+                p.ExpectedValue = p.Value.Abs;
                 _pay.Add(p);
             }
         }
@@ -523,7 +522,7 @@ namespace NoFuture.Rand.Domus.Opes
         {
             if (IsInRange(d))
             {
-                d.Value = d.Value.Neg;
+                d.ExpectedValue = d.Value.Neg;
                 _deductions.Add(d);
             }
         }

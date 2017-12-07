@@ -11,7 +11,7 @@ namespace NoFuture.Rand.Data.Sp
     /// Base type for a depository account held at a commercial bank.
     /// </summary>
     [Serializable]
-    public abstract class DepositAccount : ReceivableBase, IAccount<Identifier>
+    public abstract class DepositAccount : Receivable, IAccount<Identifier>
     {
         #region ctor
         protected DepositAccount(DateTime dateOpenned):base(dateOpenned)

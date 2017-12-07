@@ -4,7 +4,7 @@ using NoFuture.Rand.Com;
 namespace NoFuture.Rand.Data.Sp
 {
     [Serializable]
-    public abstract class LoanBase<T> : ReceivableBase, ILoan
+    public abstract class LoanBase<T> : Receivable, ILoan
     {
         private float _minPaymentRate;
 

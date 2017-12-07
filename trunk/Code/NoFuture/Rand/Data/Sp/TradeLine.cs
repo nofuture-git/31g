@@ -21,6 +21,8 @@ namespace NoFuture.Rand.Data.Sp
         private TimeSpan _dueFrequency = DefaultDueFrequency;
         #endregion
 
+        public TradeLine(){ }
+
         public TradeLine(DateTime openDate)
         {
             _openDate = openDate;

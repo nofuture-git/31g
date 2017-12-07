@@ -4,12 +4,14 @@ using NoFuture.Rand.Data.Sp.Enums;
 namespace NoFuture.Rand.Data.Sp
 {
     [Serializable]
-    public abstract class ReceivableBase : TradeLine, IReceivable
+    public abstract class Receivable : TradeLine, IReceivable
     {
         #region ctor
-        protected ReceivableBase(DateTime openedDate):base(openedDate)
+        protected Receivable(DateTime openedDate):base(openedDate)
         {
+
         }
+        protected Receivable(){ }
         #endregion
 
         #region properties
@@ -91,9 +93,15 @@ namespace NoFuture.Rand.Data.Sp
                 : SpStatus.Current;
         }
 
-        public abstract Pecuniam GetValueAt(DateTime dt);
+        public virtual Pecuniam GetValueAt(DateTime dt)
+        {
+            return Balance.GetCurrent(dt, 0.0F);
+        }
 
-        public abstract Pecuniam GetMinPayment(DateTime dt);
+        public virtual Pecuniam GetMinPayment(DateTime dt)
+        {
+            return Pecuniam.Zero;
+        }
 
         #endregion  
     }

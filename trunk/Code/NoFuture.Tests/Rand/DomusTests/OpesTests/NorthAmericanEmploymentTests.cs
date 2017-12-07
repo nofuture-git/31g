@@ -49,7 +49,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0, testResult.Length);
 
-            var testPondus = testResult.FirstOrDefault(p => p.Name == "Wages");
+            var testPondus = testResult.FirstOrDefault(p => p.Id.Name == "Wages");
             Assert.IsNotNull(testPondus);
             Assert.AreNotEqual(Pecuniam.Zero, testPondus.Value);
 
@@ -57,7 +57,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             testResult = testSubject.GetPayItemsForRange(55000D.ToPecuniam(), testSubject.Inception,
                 testSubject.Inception.AddYears(1));
 
-            testPondus = testResult.FirstOrDefault(p => p.Name == "Commissions");
+            testPondus = testResult.FirstOrDefault(p => p.Id.Name == "Commissions");
             Assert.IsNotNull(testPondus);
             Assert.AreNotEqual(Pecuniam.Zero, testPondus.Value);
 
@@ -68,8 +68,6 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0, testResult.Length);
 
-            foreach (var t in testResult)
-                System.Diagnostics.Debug.WriteLine($"{t.Value} {t.Name} {t.Interval} {t.GetName(KindsOfNames.Group)}");
         }
 
         [TestMethod]
@@ -82,7 +80,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0, testResult.Length);
 
-            var testPondus = testResult.FirstOrDefault(p => p.Name == "Federal tax");
+            var testPondus = testResult.FirstOrDefault(p => p.Id.Name == "Federal tax");
             Assert.IsNotNull(testPondus);
             Assert.AreNotEqual(Pecuniam.Zero, testPondus.Value);
 
@@ -91,9 +89,6 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
 
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0, testResult.Length);
-
-            foreach (var t in testResult)
-                System.Diagnostics.Debug.WriteLine($"{t.Value} {t.Name} {t.Inception}-{t.Terminus}");
 
         }
 
@@ -106,9 +101,6 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             var testResults = testSubject.AllItems;
             Assert.IsNotNull(testResults);
             Assert.AreNotEqual(0, testResults.Count);
-
-            foreach (var t in testResults.Where(c => c.Value != Pecuniam.Zero))
-                System.Diagnostics.Debug.WriteLine($"{t.Value} {t.Name} {t.Inception}-{t.Terminus}");
 
         }
 

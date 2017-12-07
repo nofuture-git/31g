@@ -8,55 +8,33 @@ using NoFuture.Rand.Domus;
 
 namespace NoFuture.Rand.Data.Sp
 {
-    /// <inheritdoc cref="Mereo" />
-    /// <inheritdoc cref="ITempore" />
-    /// <inheritdoc cref="IAsset" />
     /// <summary>
     /// A composition type to bind a time-range and an money amount to a name
     /// </summary>
     [Serializable]
-    public class Pondus : Mereo, IIdentifier<Pecuniam>, ITempore, IAsset
+    public class Pondus : Receivable, IAccount<IMereo>
     {
-        private Tuple<DateTime, DateTime?> _dateRange;
-
-        public Pondus(string name) : base(name)
+        public Pondus(string name)
         {
+            Id = new Mereo(name);
+        }
+        public Pondus(string name, Interval interval)
+        {
+            Id = new Mereo(name) {Interval = interval};
+        }
+        public Pondus(IVoca names)
+        {
+            Id = new Mereo(names);
         }
 
-        public Pondus(IVoca names) : base(names)
+        public Pondus(IVoca names, Interval interval)
         {
+            Id = new Mereo(names) {Interval = interval};
         }
 
-        public Pecuniam Value { get; set; }
+        public Pecuniam ExpectedValue { get; set; }
 
-        public SpStatus GetStatus(DateTime? dt)
-        {
-            return SpStatus.NoHistory;
-        }
-
-        public Pecuniam GetValueAt(DateTime dt)
-        {
-            return IsInRange(dt) ? Value : Pecuniam.Zero;
-        }
-
-        public virtual DateTime Inception
-        {
-            get => _dateRange.Item1;
-            set => _dateRange = new Tuple<DateTime, DateTime?>(value, _dateRange?.Item2);
-        }
-
-        public virtual DateTime? Terminus
-        {
-            get => _dateRange?.Item2;
-            set => _dateRange = new Tuple<DateTime, DateTime?>(_dateRange.Item1, value);
-        }
-
-        public virtual bool IsInRange(DateTime dt)
-        {
-            var afterOrOnFromDt =  Inception <= dt;
-            var beforeOrOnToDt = Terminus == null || Terminus.Value >= dt;
-            return afterOrOnFromDt && beforeOrOnToDt;
-        }
+        public IMereo Id { get; }
 
         public static Pecuniam operator +(Pondus a, Pondus b)
         {
@@ -94,9 +72,9 @@ namespace NoFuture.Rand.Data.Sp
             foreach (var item in items)
             {
                 if (item?.Value == null ||
-                    !NAmerUtil.Tables.Interval2AnnualPayMultiplier.ContainsKey(item.Interval))
+                    !NAmerUtil.Tables.Interval2AnnualPayMultiplier.ContainsKey(item.Id.Interval))
                     continue;
-                sum += item.Value.Amount * NAmerUtil.Tables.Interval2AnnualPayMultiplier[item.Interval];
+                sum += item.Value.Amount * NAmerUtil.Tables.Interval2AnnualPayMultiplier[item.Id.Interval];
             }
             return new Pecuniam(sum);
         }
@@ -123,15 +101,14 @@ namespace NoFuture.Rand.Data.Sp
 
         public override int GetHashCode()
         {
-            return base.GetHashCode() + _dateRange?.GetHashCode() ?? 1;
+            return base.GetHashCode() + ExpectedValue?.GetHashCode() ?? 1;
         }
 
         public override string ToString()
         {
-            var d = new Tuple<string, string, string, string, DateTime?, DateTime?>(Value.ToString(), Name,
-                GetName(KindsOfNames.Group), Interval.ToString(), Inception, Terminus);
+            var d = new Tuple<string, string, string, string, DateTime?, DateTime?>(Value.ToString(), Id.Name,
+                Id.GetName(KindsOfNames.Group), Id.Interval.ToString(), Inception, Terminus);
             return d.ToString();
         }
-
     }
 }

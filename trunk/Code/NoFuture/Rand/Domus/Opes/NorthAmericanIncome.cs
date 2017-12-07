@@ -174,7 +174,7 @@ namespace NoFuture.Rand.Domus.Opes
         {
             AddExpectedOtherIncome(new Pondus(name)
             {
-                Value = amt?.Neg,
+                ExpectedValue = amt?.Neg,
                 Terminus = endDate,
                 Inception = startDate
             });
@@ -192,7 +192,7 @@ namespace NoFuture.Rand.Domus.Opes
         {
             AddExpectedExpense(new Pondus(name)
             {
-                Value = amt?.Neg,
+                ExpectedValue = amt?.Neg,
                 Terminus = endDate,
                 Inception = startDate
             });
@@ -284,14 +284,13 @@ namespace NoFuture.Rand.Domus.Opes
                 var incomeRate = !incomeName2Rates.ContainsKey(incomeItem.Name)
                     ? 0D
                     : incomeName2Rates[incomeItem.Name];
-                var p = new Pondus(incomeItem)
+                var p = new Pondus(incomeItem, interval)
                 {
                     Inception = startDate,
                     Terminus = endDate,
-                    Value = CalcValue(amt, incomeRate),
-                    Interval = interval
+                    ExpectedValue = CalcValue(amt, incomeRate)
                 };
-                p.UpsertName(KindsOfNames.Group, incomeItem.GetName(KindsOfNames.Group));
+                p.Id.UpsertName(KindsOfNames.Group, incomeItem.GetName(KindsOfNames.Group));
                 itemsout.Add(p);
             }
 
@@ -386,14 +385,13 @@ namespace NoFuture.Rand.Domus.Opes
 
                 foreach (var item in grpRates.Keys)
                 {
-                    var p = new Pondus(item)
+                    var p = new Pondus(item, interval)
                     {
                         Inception = startDate,
                         Terminus = endDate,
-                        Value = CalcValue(amt, grpRates[item]),
-                        Interval = interval
+                        ExpectedValue = CalcValue(amt, grpRates[item])
                     };
-                    p.UpsertName(KindsOfNames.Group, grp);
+                    p.Id.UpsertName(KindsOfNames.Group, grp);
                     itemsout.Add(p);
                 }
 
@@ -713,24 +711,23 @@ namespace NoFuture.Rand.Domus.Opes
             var incomeItems = GetIncomeItemNames().Where(i => i.GetName(KindsOfNames.Group) == "Public Benefits");
             foreach (var incomeItem in incomeItems)
             {
-                var p = new Pondus(incomeItem)
+                var p = new Pondus(incomeItem, Interval.Monthly)
                 {
                     Inception = startDate,
-                    Terminus = endDate,
-                    Interval = Interval.Monthly
+                    Terminus = endDate
                 };
 
                 switch (incomeItem.Name)
                 {
                     case "Supplemental Nutrition Assistance Program":
-                        p.Value = snapAmt;
+                        p.ExpectedValue = snapAmt;
                         break;
                     case "Housing Choice Voucher Program Section 8":
-                        p.Value = hudAmt;
+                        p.ExpectedValue = hudAmt;
                         break;
                     //TODO implement the other welfare programs
                     default:
-                        p.Value = Pecuniam.Zero;
+                        p.ExpectedValue = Pecuniam.Zero;
                         break;
                 }
 
