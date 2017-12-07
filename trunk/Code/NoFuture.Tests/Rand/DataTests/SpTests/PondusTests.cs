@@ -40,13 +40,6 @@ namespace NoFuture.Rand.Tests.DataTests.SpTests
 
             Assert.IsFalse(testSubject.Equals(testCompare));
 
-            //no dates - defaults back to Mereo equality
-            testSubject.Inception = null;
-            testSubject.Terminus = null;
-            testCompare.Inception = null;
-            testCompare.Terminus = null;
-
-            Assert.IsTrue(testSubject.Equals(testCompare));
         }
     }
 }

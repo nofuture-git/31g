@@ -28,7 +28,6 @@ namespace NoFuture.Rand.Data.Sp
 
         #region properties
         public FormOfCredit FormOfCredit { get; set; }
-        public Pecuniam CreditLimit { get; set; }
         public IBalance Balance => _balance;
 
         public TimeSpan DueFrequency

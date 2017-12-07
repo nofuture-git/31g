@@ -9,7 +9,6 @@ namespace NoFuture.Rand.Data.Sp
     public interface ITradeLine
     {
         FormOfCredit FormOfCredit { get; set; }
-        Pecuniam CreditLimit { get; set; }
         IBalance Balance { get; }
         TimeSpan DueFrequency { get; set; }
         DateTime OpennedDate { get; }

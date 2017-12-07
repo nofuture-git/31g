@@ -169,7 +169,7 @@ namespace NoFuture.Rand.Domus.Opes
                 _otherIncome.Add(otherIncome);
         }
 
-        protected internal virtual void AddExpectedOtherIncome(Pecuniam amt, string name, DateTime? startDate,
+        protected internal virtual void AddExpectedOtherIncome(Pecuniam amt, string name, DateTime startDate,
             DateTime? endDate = null)
         {
             AddExpectedOtherIncome(new Pondus(name)
@@ -187,7 +187,7 @@ namespace NoFuture.Rand.Domus.Opes
             _expenses.Add(expense);
         }
 
-        protected internal virtual void AddExpectedExpense(Pecuniam amt, string name, DateTime? startDate,
+        protected internal virtual void AddExpectedExpense(Pecuniam amt, string name, DateTime startDate,
             DateTime? endDate = null)
         {
             AddExpectedExpense(new Pondus(name)
@@ -265,10 +265,10 @@ namespace NoFuture.Rand.Domus.Opes
         /// <param name="endDate"></param>
         /// <param name="interval"></param>
         /// <returns></returns>
-        protected internal virtual Pondus[] GetOtherIncomeItemsForRange(Pecuniam amt, DateTime? startDate,
+        protected internal virtual Pondus[] GetOtherIncomeItemsForRange(Pecuniam amt, DateTime startDate,
             DateTime? endDate = null, Interval interval = Interval.Annually)
         {
-            startDate = startDate ?? GetMinDateAmongExpectations();
+            startDate = startDate == DateTime.MinValue ? GetMinDateAmongExpectations() : startDate;
             var itemsout = new List<Pondus>();
             amt = amt ?? Pecuniam.Zero;
 
@@ -310,12 +310,12 @@ namespace NoFuture.Rand.Domus.Opes
         /// Allows calling assembly direct control over the created rates.
         /// </param>
         /// <returns></returns>
-        protected internal virtual Pondus[] GetExpenseItemsForRange(Pecuniam amt, DateTime? startDate,
+        protected internal virtual Pondus[] GetExpenseItemsForRange(Pecuniam amt, DateTime startDate,
             DateTime? endDate = null, Interval interval = Interval.Annually, 
             Dictionary<IVoca, Pecuniam> explicitAmounts = null)
         {
             const StringComparison OPT = StringComparison.OrdinalIgnoreCase;
-            startDate = startDate ?? GetMinDateAmongExpectations();
+            startDate = startDate == DateTime.MinValue ? GetMinDateAmongExpectations() : startDate;
             var itemsout = new List<Pondus>();
             amt = amt ?? Pecuniam.Zero;
             explicitAmounts = explicitAmounts ?? new Dictionary<IVoca, Pecuniam>();
@@ -701,11 +701,11 @@ namespace NoFuture.Rand.Domus.Opes
         /// <param name="startDate"></param>
         /// <param name="endDate"></param>
         /// <returns></returns>
-        protected internal virtual Pondus[] GetPublicBenefitIncomeItemsForRange(DateTime? startDate,
+        protected internal virtual Pondus[] GetPublicBenefitIncomeItemsForRange(DateTime startDate,
             DateTime? endDate = null)
         {
             var itemsout = new List<Pondus>();
-            startDate = startDate ?? GetMinDateAmongExpectations();
+            startDate = startDate == DateTime.MinValue ? GetMinDateAmongExpectations() : startDate;
             var isPoor = IsBelowFedPovertyAt(startDate);
             var hudAmt = isPoor ? GetHudMonthlyAmount(startDate) : Pecuniam.Zero;
             var snapAmt = isPoor ? GetFoodStampsMonthlyAmount(startDate) : Pecuniam.Zero;

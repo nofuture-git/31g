@@ -28,7 +28,7 @@ namespace NoFuture.Rand.Data.Sp
         public IBalance Balance { get; }
         public FinancialFirm Bank { get; set; }
         public abstract Pecuniam Value { get; }
-        public virtual DateTime? Inception { get { return _inceptionDate; } set {} }
+        public virtual DateTime Inception { get { return _inceptionDate; } set {} }
         public virtual DateTime? Terminus { get; set; }
         #endregion
 
@@ -44,7 +44,7 @@ namespace NoFuture.Rand.Data.Sp
         }
         public virtual bool IsInRange(DateTime dt)
         {
-            var afterOrOnFromDt = Inception == null || Inception <= dt;
+            var afterOrOnFromDt = Inception <= dt;
             var beforeOrOnToDt = Terminus == null || Terminus.Value >= dt;
             return afterOrOnFromDt && beforeOrOnToDt;
         }
@@ -118,8 +118,8 @@ namespace NoFuture.Rand.Data.Sp
             if (fromAccount.GetStatus(dt) != SpStatus.Current && toAccount.GetStatus(dt) != SpStatus.Current)
                 return;
 
-            if (fromAccount.Inception.GetValueOrDefault(DateTime.MinValue) < dt 
-                || toAccount.Inception.GetValueOrDefault(DateTime.MinValue) < dt)
+            if (fromAccount.Inception < dt 
+                || toAccount.Inception < dt)
                 return;
             amt = amt.Abs;
 

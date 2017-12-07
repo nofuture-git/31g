@@ -21,7 +21,7 @@ namespace NoFuture.Rand.Domus.Opes
     public class NorthAmericanEmployment : WealthBase, IEmployment
     {
         #region fields
-        private Tuple<DateTime?, DateTime?> _dateRange;
+        private Tuple<DateTime, DateTime?> _dateRange;
         private readonly HashSet<Pondus> _pay = new HashSet<Pondus>();
         private readonly HashSet<Pondus> _deductions = new HashSet<Pondus>();
         private SocDetailedOccupation _occupation;
@@ -38,10 +38,10 @@ namespace NoFuture.Rand.Domus.Opes
         /// <param name="startDate"></param>
         /// <param name="endDate"></param>
         /// <param name="american"></param>
-        public NorthAmericanEmployment(DateTime? startDate, DateTime? endDate, NorthAmerican american) : base(american)
+        public NorthAmericanEmployment(DateTime startDate, DateTime? endDate, NorthAmerican american) : base(american)
         {
-            startDate = startDate == DateTime.MinValue ? null : startDate;
-            _dateRange = new Tuple<DateTime?, DateTime?>(startDate, endDate);
+            
+            _dateRange = new Tuple<DateTime, DateTime?>(startDate, endDate);
             Occupation = StandardOccupationalClassification.RandomOccupation();
             ResolvePayAndDeductions();
         }
@@ -54,17 +54,17 @@ namespace NoFuture.Rand.Domus.Opes
         /// <param name="startDate"></param>
         /// <param name="endDate"></param>
         /// <param name="american"></param>
-        public NorthAmericanEmployment(Pecuniam annualIncome, DateTime? startDate, DateTime? endDate,
+        public NorthAmericanEmployment(Pecuniam annualIncome, DateTime startDate, DateTime? endDate,
             NorthAmerican american) : base(american)
         {
-            _dateRange = new Tuple<DateTime?, DateTime?>(startDate, endDate);
+            _dateRange = new Tuple<DateTime, DateTime?>(startDate, endDate);
             Occupation = StandardOccupationalClassification.RandomOccupation();
             ResolvePayAndDeductions(annualIncome);
         }
 
-        internal NorthAmericanEmployment(DateTime? startDate, DateTime? endDate) : base(null)
+        internal NorthAmericanEmployment(DateTime startDate, DateTime? endDate) : base(null)
         {
-            _dateRange = new Tuple<DateTime?, DateTime?>(startDate, endDate);
+            _dateRange = new Tuple<DateTime, DateTime?>(startDate, endDate);
             Occupation = StandardOccupationalClassification.RandomOccupation();
         }
 
@@ -91,16 +91,16 @@ namespace NoFuture.Rand.Domus.Opes
         public virtual Pondus[] CurrentDeductions => GetDeductionsAt(null);
         public virtual Pondus[] CurrentPay => GetPayAt(null);
 
-        public virtual DateTime? Inception
+        public virtual DateTime Inception
         {
             get => _dateRange.Item1;
-            set => _dateRange = new Tuple<DateTime?, DateTime?>(value, _dateRange.Item2);
+            set => _dateRange = new Tuple<DateTime, DateTime?>(value, _dateRange.Item2);
         }
 
         public virtual DateTime? Terminus
         {
             get => _dateRange.Item2;
-            set => _dateRange = new Tuple<DateTime?, DateTime?>(_dateRange.Item1, value);
+            set => _dateRange = new Tuple<DateTime, DateTime?>(_dateRange.Item1, value);
         }
 
         public Pecuniam TotalAnnualDeductions => Pondus.GetAnnualSum(CurrentDeductions).Neg;
@@ -134,16 +134,16 @@ namespace NoFuture.Rand.Domus.Opes
         /// <param name="annualIncome"></param>
         protected internal void ResolvePayAndDeductions(Pecuniam annualIncome = null)
         {
-            if (_dateRange?.Item1 == null || _dateRange.Item1.Value == DateTime.MinValue)
+            if (_dateRange?.Item1 == null || _dateRange.Item1 == DateTime.MinValue)
             {
-                AddPondusForGivenRange(null, null, annualIncome);
+                AddPondusForGivenRange(DateTime.Today, null, annualIncome);
                 return;
             }
             var isCurrentEmployee = _dateRange.Item2 == null;
             var yearsOfService = GetYearsOfServiceInDates();
             if (yearsOfService.Count <= 0)
             {
-                AddPondusForGivenRange(_dateRange?.Item1, _dateRange?.Item2, annualIncome);
+                AddPondusForGivenRange(_dateRange.Item1, _dateRange?.Item2, annualIncome);
                 return;
             }
             for (var i = 0; i < yearsOfService.Count; i++)
@@ -161,11 +161,9 @@ namespace NoFuture.Rand.Domus.Opes
         /// <param name="startDt">Optional, defaults to the instances startdate if null</param>
         /// <param name="endDt">Optional, defaults to the instances enddate if null</param>
         /// <param name="annualIncome">Optional, will be generated at random if this is null or Zero</param>
-        protected internal void AddPondusForGivenRange(DateTime? startDt = null , DateTime? endDt = null, Pecuniam annualIncome = null)
+        protected internal void AddPondusForGivenRange(DateTime startDt , DateTime? endDt = null, Pecuniam annualIncome = null)
         {
-            startDt = startDt ?? _dateRange?.Item1;
-
-            startDt = startDt.GetValueOrDefault() == DateTime.MinValue ? null : startDt;
+            startDt = startDt == DateTime.MinValue ? _dateRange.Item1 : startDt;
 
             annualIncome = annualIncome == null || annualIncome == Pecuniam.Zero
                 ? GetRandomYearlyIncome(startDt)
@@ -188,7 +186,7 @@ namespace NoFuture.Rand.Domus.Opes
             var ranges = new List<Tuple<DateTime, DateTime?>>();
 
             var yearsOfService = GetYearsOfService();
-            if (yearsOfService <= 0 || _dateRange?.Item1 == null || _dateRange?.Item1.Value == DateTime.MinValue)
+            if (yearsOfService <= 0 || _dateRange?.Item1 == null || _dateRange?.Item1 == DateTime.MinValue)
                 return ranges;
 
             var employerFiscalYearEnd = Value?.FiscalYearEndDay ?? 1;
@@ -196,7 +194,7 @@ namespace NoFuture.Rand.Domus.Opes
             //assume merit increases 90 days after fiscal year end
             var annualReviewDays = employerFiscalYearEnd + 90;
             var maxEndDt = _dateRange.Item2.GetValueOrDefault(DateTime.Today);
-            var prevDt = _dateRange.Item1.Value.Date;
+            var prevDt = _dateRange.Item1.Date;
             for (var i = 0; i <= yearsOfService; i++)
             {
                 var stDt = i == 0 ? prevDt : prevDt.AddDays(1);
@@ -231,7 +229,7 @@ namespace NoFuture.Rand.Domus.Opes
             if (!hasStartDate)
                 return 0;
 
-            var stDt = _dateRange.Item1.Value;
+            var stDt = _dateRange.Item1;
             var endDt = _dateRange.Item2.GetValueOrDefault(DateTime.Today);
 
             var numYears = endDt.Year - stDt.Year;
@@ -286,7 +284,7 @@ namespace NoFuture.Rand.Domus.Opes
         /// <param name="endDate"></param>
         /// <param name="interval"></param>
         /// <returns></returns>
-        protected internal virtual Pondus[] GetPayItemsForRange(Pecuniam amt, DateTime? startDate, 
+        protected internal virtual Pondus[] GetPayItemsForRange(Pecuniam amt, DateTime startDate, 
             DateTime? endDate = null, Interval interval = Interval.Annually)
         {
             var itemsout = new List<Pondus>();
@@ -392,7 +390,7 @@ namespace NoFuture.Rand.Domus.Opes
         /// <param name="endDate"></param>
         /// <param name="interval"></param>
         /// <returns></returns>
-        protected internal virtual Pondus[] GetDeductionItemsForRange(Pecuniam amt, DateTime? startDate,
+        protected internal virtual Pondus[] GetDeductionItemsForRange(Pecuniam amt, DateTime startDate,
             DateTime? endDate = null, Interval interval = Interval.Annually)
         {
             var itemsout = new List<Pondus>();
@@ -545,7 +543,7 @@ namespace NoFuture.Rand.Domus.Opes
             var rangeEndDt = _dateRange?.Item2;
 
             //instance ended before this item even started
-            if (itemStartDt != null && rangeEndDt != null && itemStartDt.Value > rangeEndDt.Value)
+            if (itemStartDt != null && rangeEndDt != null && itemStartDt > rangeEndDt.Value)
                 return false;
             return true;
         }

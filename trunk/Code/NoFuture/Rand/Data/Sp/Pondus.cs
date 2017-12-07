@@ -17,7 +17,7 @@ namespace NoFuture.Rand.Data.Sp
     [Serializable]
     public class Pondus : Mereo, IIdentifier<Pecuniam>, ITempore, IAsset
     {
-        private Tuple<DateTime?, DateTime?> _dateRange;
+        private Tuple<DateTime, DateTime?> _dateRange;
 
         public Pondus(string name) : base(name)
         {
@@ -39,21 +39,21 @@ namespace NoFuture.Rand.Data.Sp
             return IsInRange(dt) ? Value : Pecuniam.Zero;
         }
 
-        public virtual DateTime? Inception
+        public virtual DateTime Inception
         {
-            get => _dateRange?.Item1;
-            set => _dateRange = new Tuple<DateTime?, DateTime?>(value, _dateRange?.Item2);
+            get => _dateRange.Item1;
+            set => _dateRange = new Tuple<DateTime, DateTime?>(value, _dateRange?.Item2);
         }
 
         public virtual DateTime? Terminus
         {
             get => _dateRange?.Item2;
-            set => _dateRange = new Tuple<DateTime?, DateTime?>(_dateRange?.Item1, value);
+            set => _dateRange = new Tuple<DateTime, DateTime?>(_dateRange.Item1, value);
         }
 
         public virtual bool IsInRange(DateTime dt)
         {
-            var afterOrOnFromDt = Inception == null || Inception <= dt;
+            var afterOrOnFromDt =  Inception <= dt;
             var beforeOrOnToDt = Terminus == null || Terminus.Value >= dt;
             return afterOrOnFromDt && beforeOrOnToDt;
         }

@@ -7,7 +7,7 @@ namespace NoFuture.Rand.Core
     /// </summary>
     public interface ITempore
     {
-        DateTime? Inception { get; set; }
+        DateTime Inception { get; set; }
         DateTime? Terminus { get; set; }
         bool IsInRange(DateTime dt);
     }

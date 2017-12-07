@@ -17,22 +17,24 @@ namespace NoFuture.Rand.Data.Sp.Cc
         public const float DF_MIN_PMT_RATE = 0.0125F;
         #endregion
 
+        private Pecuniam _ccMax;
+
         #region ctor
         public CreditCardAccount(ICreditCard cc, float minPaymentRate, Pecuniam ccMax = null)
             : base(cc.CardHolderSince, minPaymentRate <= 0 ? DF_MIN_PMT_RATE : minPaymentRate)
         {
             Cc = cc;
-            base.TradeLine.CreditLimit = ccMax ?? new Pecuniam(1000);
+            _ccMax = ccMax ?? new Pecuniam(1000);
             base.TradeLine.FormOfCredit = FormOfCredit.Revolving;
             base.TradeLine.DueFrequency = new TimeSpan(30, 0, 0, 0);
         }
         #endregion
 
         #region properties
-        public Pecuniam Max => TradeLine.CreditLimit;
+        public Pecuniam Max => _ccMax;
         public ICreditCard Cc { get; }
         public Identifier Id => Cc.Number;
-        public DateTime? Inception {get { return TradeLine.OpennedDate; } set{ } }
+        public DateTime Inception {get { return TradeLine.OpennedDate; } set{ } }
 
         public DateTime? Terminus
         {
@@ -48,7 +50,7 @@ namespace NoFuture.Rand.Data.Sp.Cc
         #region methods
         public virtual bool IsInRange(DateTime dt)
         {
-            var afterOrOnFromDt = Inception == null || Inception <= dt;
+            var afterOrOnFromDt = Inception <= dt;
             var beforeOrOnToDt = Terminus == null || Terminus.Value >= dt;
             return afterOrOnFromDt && beforeOrOnToDt;
         }
@@ -60,9 +62,9 @@ namespace NoFuture.Rand.Data.Sp.Cc
         /// <param name="val"></param>
         public void IncreaseMaxTo(Pecuniam val)
         {
-            if (Max != null && Max > val)
+            if (_ccMax != null && _ccMax > val)
                 return;
-            base.TradeLine.CreditLimit = val;
+            _ccMax = val;
         }
 
         /// <summary>

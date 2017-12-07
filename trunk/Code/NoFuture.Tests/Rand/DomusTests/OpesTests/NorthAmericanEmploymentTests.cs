@@ -44,7 +44,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             testSubject.Occupation = StandardOccupationalClassification.GetById("39-3011");
 
             var testResult = testSubject.GetPayItemsForRange(55000D.ToPecuniam(), testSubject.Inception,
-                testSubject.Inception.Value.AddYears(1));
+                testSubject.Inception.AddYears(1));
 
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0, testResult.Length);
@@ -55,7 +55,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
 
             testSubject.Occupation = StandardOccupationalClassification.GetById("41-2031");
             testResult = testSubject.GetPayItemsForRange(55000D.ToPecuniam(), testSubject.Inception,
-                testSubject.Inception.Value.AddYears(1));
+                testSubject.Inception.AddYears(1));
 
             testPondus = testResult.FirstOrDefault(p => p.Name == "Commissions");
             Assert.IsNotNull(testPondus);
@@ -63,7 +63,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
 
             testSubject.Occupation = StandardOccupationalClassification.GetById("29-2021");
             //handles not date range
-            testResult = testSubject.GetPayItemsForRange(55000D.ToPecuniam(), null);
+            testResult = testSubject.GetPayItemsForRange(55000D.ToPecuniam(), DateTime.MinValue);
 
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0, testResult.Length);
@@ -77,7 +77,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         {
             var testSubject = new Domus.Opes.NorthAmericanEmployment(new DateTime(2011, 10, 5), null);
             var testResult = testSubject.GetDeductionItemsForRange(55000D.ToPecuniam(), testSubject.Inception,
-                testSubject.Inception.Value.AddYears(1));
+                testSubject.Inception.AddYears(1));
 
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0, testResult.Length);
@@ -87,7 +87,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             Assert.AreNotEqual(Pecuniam.Zero, testPondus.Value);
 
             //handles no date range
-            testResult = testSubject.GetDeductionItemsForRange(55000D.ToPecuniam(), null);
+            testResult = testSubject.GetDeductionItemsForRange(55000D.ToPecuniam(), DateTime.MinValue);
 
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0, testResult.Length);

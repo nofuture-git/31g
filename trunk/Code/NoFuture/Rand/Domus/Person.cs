@@ -136,7 +136,7 @@ namespace NoFuture.Rand.Domus
             //TODO enhance to have previous address
             return dt == null
                 ? _addresses.FirstOrDefault()
-                : (_addresses.FirstOrDefault(x => x.Inception != null &&  x.Inception <= dt.Value) ?? _addresses.FirstOrDefault());
+                : (_addresses.FirstOrDefault(x => x.Inception <= dt.Value) ?? _addresses.FirstOrDefault());
         }
 
         /// <summary>

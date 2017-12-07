@@ -17,7 +17,7 @@ namespace NoFuture.Rand.Core
                 return 1;
             if (y?.Inception == null)
                 return -1;
-            return DateTime.Compare(x.Inception.Value, y.Inception.Value);
+            return DateTime.Compare(x.Inception, y.Inception);
         }
     }
 }

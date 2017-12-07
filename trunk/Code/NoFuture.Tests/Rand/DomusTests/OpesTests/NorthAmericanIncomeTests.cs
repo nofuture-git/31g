@@ -315,7 +315,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
                     HasVehicle = true,
                     IsVehiclePaidOff = false
                 });
-            var testResult = testSubject.GetExpenseItemsForRange(55000.ToPecuniam(), null);
+            var testResult = testSubject.GetExpenseItemsForRange(55000.ToPecuniam(), DateTime.MinValue);
 
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0, testResult.Length);

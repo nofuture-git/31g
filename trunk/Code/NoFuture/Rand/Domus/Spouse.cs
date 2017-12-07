@@ -50,14 +50,10 @@ namespace NoFuture.Rand.Domus
         /// <summary>
         /// Attempting to set to a null value is ignored.
         /// </summary>
-        public override DateTime? Inception
+        public override DateTime Inception
         {
             get => _marriedOn;
-            set
-            {
-                if (value != null)
-                    _marriedOn = value.Value;
-            }
+            set => _marriedOn = value;
         }
 
         public override DateTime? Terminus
