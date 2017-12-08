@@ -49,7 +49,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0, testResult.Length);
 
-            var testPondus = testResult.FirstOrDefault(p => p.Id.Name == "Wages");
+            var testPondus = testResult.FirstOrDefault(p => p.My.Name == "Wages");
             Assert.IsNotNull(testPondus);
             Assert.AreNotEqual(Pecuniam.Zero, testPondus.ExpectedValue);
 
@@ -57,7 +57,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             testResult = testSubject.GetPayItemsForRange(55000D.ToPecuniam(), testSubject.Inception,
                 testSubject.Inception.AddYears(1));
 
-            testPondus = testResult.FirstOrDefault(p => p.Id.Name == "Commissions");
+            testPondus = testResult.FirstOrDefault(p => p.My.Name == "Commissions");
             Assert.IsNotNull(testPondus);
             Assert.AreNotEqual(Pecuniam.Zero, testPondus.ExpectedValue);
 
@@ -80,7 +80,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0, testResult.Length);
 
-            var testPondus = testResult.FirstOrDefault(p => p.Id.Name == "Federal tax");
+            var testPondus = testResult.FirstOrDefault(p => p.My.Name == "Federal tax");
             Assert.IsNotNull(testPondus);
             Assert.AreNotEqual(Pecuniam.Zero, testPondus.ExpectedValue);
 

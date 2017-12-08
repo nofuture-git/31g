@@ -30,12 +30,12 @@ namespace NoFuture.Rand.Tests.DataTests.SpTests
 
             //same dates, diff name
             testCompare.Terminus = DateTime.Today.AddDays(1);
-            testCompare.Id.Name = "test2";
+            testCompare.My.Name = "test2";
 
             Assert.IsFalse(testSubject.Equals(testCompare));
 
             //null date is diff date
-            testCompare.Id.Name = "test";
+            testCompare.My.Name = "test";
             testCompare.Terminus = null;
 
             Assert.IsFalse(testSubject.Equals(testCompare));

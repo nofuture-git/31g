@@ -289,7 +289,7 @@ namespace NoFuture.Rand.Domus.Opes
                     Terminus = endDate,
                     ExpectedValue = CalcValue(amt, incomeRate)
                 };
-                p.Id.UpsertName(KindsOfNames.Group, incomeItem.GetName(KindsOfNames.Group));
+                p.My.UpsertName(KindsOfNames.Group, incomeItem.GetName(KindsOfNames.Group));
                 itemsout.Add(p);
             }
 
@@ -395,7 +395,7 @@ namespace NoFuture.Rand.Domus.Opes
                         Terminus = endDate,
                         ExpectedValue = CalcValue(amt, grpRates[item])
                     };
-                    p.Id.UpsertName(KindsOfNames.Group, grp);
+                    p.My.UpsertName(KindsOfNames.Group, grp);
                     itemsout.Add(p);
                 }
 

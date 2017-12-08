@@ -114,7 +114,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             Assert.AreNotEqual(0, testResult.Length);
 
             foreach(var t in testResult)
-                System.Diagnostics.Debug.WriteLine($"{t.ExpectedValue} {t.Id.Name} {t.Id.Interval} {t.Id.GetName(KindsOfNames.Group)}");
+                System.Diagnostics.Debug.WriteLine($"{t.ExpectedValue} {t.My.Name} {t.My.Interval} {t.My.GetName(KindsOfNames.Group)}");
 
             var sumResult = Pondus.GetExpectedAnnualSum(testResult);
             Assert.IsTrue(sumResult.ToDouble() >= 5659.99 && sumResult.ToDouble() <= 5660.01);
@@ -330,7 +330,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             System.Diagnostics.Debug.WriteLine(d);
 
             foreach(var t in testResult)
-                System.Diagnostics.Debug.WriteLine($"{Math.Round(t.Value.ToDouble()/12D)} {t.Id.GetName(KindsOfNames.Group)} {t.Id.Name}");
+                System.Diagnostics.Debug.WriteLine($"{Math.Round(t.Value.ToDouble()/12D)} {t.My.GetName(KindsOfNames.Group)} {t.My.Name}");
         }
 
 
@@ -355,7 +355,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             Assert.AreNotEqual(0, testResult.Length);
 
             var testPondus =
-                testResult.FirstOrDefault(p => p.Id.Name == "Mortgage" && p.Id.GetName(KindsOfNames.Group) == "Home");
+                testResult.FirstOrDefault(p => p.My.Name == "Mortgage" && p.My.GetName(KindsOfNames.Group) == "Home");
             Assert.IsNotNull(testPondus);
             System.Diagnostics.Debug.WriteLine(testPondus);
             var testAmt = testPondus.ExpectedValue;
@@ -363,7 +363,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             Assert.AreEqual(13476.0D, testAmt.ToDouble());
 
             testPondus = testResult.FirstOrDefault(p =>
-                p.Id.Name == "Loan Payments" && p.Id.GetName(KindsOfNames.Group) == "Transportation");
+                p.My.Name == "Loan Payments" && p.My.GetName(KindsOfNames.Group) == "Transportation");
             Assert.IsNotNull(testPondus);
             System.Diagnostics.Debug.WriteLine(testPondus);
             testAmt = testPondus.ExpectedValue;
@@ -371,7 +371,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             Assert.AreEqual(3750.0D, testAmt.ToDouble());
 
             testPondus = testResult.FirstOrDefault(p =>
-                p.Id.Name == "Credit Card" && p.Id.GetName(KindsOfNames.Group) == "Debts");
+                p.My.Name == "Credit Card" && p.My.GetName(KindsOfNames.Group) == "Debts");
             Assert.IsNotNull(testPondus);
             System.Diagnostics.Debug.WriteLine(testPondus);
             testAmt = testPondus.ExpectedValue;

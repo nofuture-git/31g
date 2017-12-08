@@ -303,7 +303,7 @@ namespace NoFuture.Rand.Domus.Opes
                     Terminus = endDate,
                     ExpectedValue = CalcValue(amt, incomeRate),
                 };
-                p.Id.Interval = interval;
+                p.My.Interval = interval;
 
                 itemsout.Add(p);
             }
