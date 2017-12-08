@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Xml;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Data.Endo.Enums;
@@ -203,6 +205,30 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             var testResult = testSubject.GetYearNeg(-3);
 
             System.Diagnostics.Debug.WriteLine(testResult);
+        }
+
+        public static List<Tuple<string, string>> GetExpectedNamesFromXml(string sectionName)
+        {
+            var grpsAndNames = new List<Tuple<string, string>>();
+            var srcXml = Rand.Data.TreeData.UsDomusOpes;
+            var incomeNode = srcXml.SelectSingleNode($"//{sectionName}");
+
+            foreach (var grpNode in incomeNode.ChildNodes)
+            {
+                var grpElem = grpNode as XmlElement;
+                if (grpElem == null)
+                    continue;
+                var grpName = grpElem.GetAttribute("name");
+                foreach (var mereoNode in grpElem.ChildNodes)
+                {
+                    var mereoElem = mereoNode as XmlElement;
+                    if (mereoElem == null)
+                        continue;
+                    var name = mereoElem.GetAttribute("name");
+                    grpsAndNames.Add(new Tuple<string, string>(grpName, name));
+                }
+            }
+            return grpsAndNames;
         }
     }
 }

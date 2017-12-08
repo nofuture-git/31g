@@ -18,6 +18,7 @@ namespace NoFuture.Rand.Data.Sp
         #endregion
 
         #region ctors
+
         /// <summary>
         /// Creates a new mortgage with the given data
         /// </summary>
@@ -26,7 +27,8 @@ namespace NoFuture.Rand.Data.Sp
         /// <param name="rate"></param>
         /// <param name="purchasePrice"></param>
         /// <param name="termInYears"></param>
-        public Mortgage(Identifier property, DateTime openedDate, float rate, Pecuniam purchasePrice, int termInYears = 30) : base(property, openedDate,
+        public Mortgage(Identifier property, DateTime openedDate, float rate, Pecuniam purchasePrice,
+            int termInYears = 30) : base(property, openedDate,
             CreditCardAccount.DF_MIN_PMT_RATE, purchasePrice)
         {
             _rate = rate;
@@ -36,13 +38,14 @@ namespace NoFuture.Rand.Data.Sp
             if (openedDate == DateTime.MinValue)
                 throw new ArgumentException($"The opened date {openedDate} is invalid");
 
-            if(purchasePrice == null || purchasePrice <= Pecuniam.Zero)
+            if (purchasePrice == null || purchasePrice <= Pecuniam.Zero)
                 throw new ArgumentException($"The purchase price {purchasePrice} is invalid");
 
             _termInYears = termInYears < 0 ? 30 : termInYears;
 
             CalcFromRate();
         }
+
         #endregion
 
         #region properties
@@ -179,7 +182,6 @@ namespace NoFuture.Rand.Data.Sp
                 ? CreditCardAccount.DF_MIN_PMT_RATE
                 : (float) Math.Round(_monthlyPayment.Amount / fv, 6);
         }
-
         #endregion
     }
 }

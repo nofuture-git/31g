@@ -27,11 +27,13 @@ namespace NoFuture.Rand.Data.Sp
         #region ctor
         public PersonalCreditScore(NorthAmerican american)
         {
-            if (american == null)
-                return;
-            _american = american;
             //need this to stay same for object lifecycle so repeated calls return same result.
             FicoBaseValue = Etx.RandomValueInNormalDist(AVG_AMERICAN_FICO_SCORE, STD_DEV_FICO_SCORE);
+            if (american == null)
+            {
+                return;
+            }
+            _american = american;
         }
         #endregion
 
@@ -101,18 +103,18 @@ namespace NoFuture.Rand.Data.Sp
         protected internal double GetAgePenalty(DateTime? dt)
         {
             Func<double, double> ageCalc = d => Math.Pow(Math.E, (d - 9.5)/-9.5);
-
-            return ageCalc(_american.GetAgeAt(dt)) * (STD_DEV_FICO_SCORE * -1);
+            return _american == null ? 0D : ageCalc(_american.GetAgeAt(dt)) * (STD_DEV_FICO_SCORE * -1);
         }
 
         protected internal double GetUndisciplinedPenalty()
         {
-            return _american.Personality.Conscientiousness.Value.Zscore * STD_DEV_FICO_SCORE;
+
+            return _american?.Personality?.Conscientiousness?.Value?.Zscore * STD_DEV_FICO_SCORE ?? 0D;
         }
 
         protected internal double GetInconsistentPenalty()
         {
-            return _american.Personality.Openness.Value.Zscore * (STD_DEV_FICO_SCORE * -1);
+            return _american?.Personality?.Openness?.Value?.Zscore * (STD_DEV_FICO_SCORE * -1) ?? 0D;
         }
         #endregion
     }

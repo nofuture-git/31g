@@ -14,18 +14,23 @@ namespace NoFuture.Rand.Data.Sp
     public abstract class DepositAccount : Pondus, IAccount<Identifier>
     {
         #region ctor
-        protected DepositAccount(DateTime dateOpenned):base(dateOpenned)
+
+        protected DepositAccount(DateTime dateOpenned) : base(dateOpenned)
         {
         }
-        #endregion 
+
+        #endregion
 
         #region properties
+
         public bool IsJointAcct { get; set; }
         public virtual Identifier Id { get; set; }
         public FinancialFirm Bank { get; set; }
+
         #endregion
 
         #region methods
+
         public override string ToString()
         {
             return string.Join(" ", GetType().Name, Bank, Id.ValueLastFour());
@@ -76,14 +81,15 @@ namespace NoFuture.Rand.Data.Sp
         /// <param name="toAccount"></param>
         /// <param name="amt"></param>
         /// <param name="dt"></param>
-        public static void TransferFundsInBankAccounts(DepositAccount fromAccount, DepositAccount toAccount, Pecuniam amt, DateTime dt)
+        public static void TransferFundsInBankAccounts(DepositAccount fromAccount, DepositAccount toAccount,
+            Pecuniam amt, DateTime dt)
         {
             if (fromAccount == null || toAccount == null || amt == null || amt == Pecuniam.Zero)
                 return;
             if (fromAccount.GetStatus(dt) != SpStatus.Current && toAccount.GetStatus(dt) != SpStatus.Current)
                 return;
 
-            if (fromAccount.Inception < dt 
+            if (fromAccount.Inception < dt
                 || toAccount.Inception < dt)
                 return;
             amt = amt.Abs;

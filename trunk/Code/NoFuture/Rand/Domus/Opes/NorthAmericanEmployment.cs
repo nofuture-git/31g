@@ -72,7 +72,7 @@ namespace NoFuture.Rand.Domus.Opes
 
         #region properties
         public virtual string Src { get; set; }
-        public virtual string Abbrev => "Employer";
+        public virtual string Abbrev => IncomeGroupNames.EMPLOYMENT;
         public virtual IFirm Value { get; set; }
         public virtual bool IsOwner { get; set; }
 
@@ -288,11 +288,12 @@ namespace NoFuture.Rand.Domus.Opes
             DateTime? endDate = null, Interval interval = Interval.Annually)
         {
             var itemsout = new List<Pondus>();
+            startDate = startDate == DateTime.MinValue ? _dateRange.Item1 : startDate;
             amt = amt ?? Pecuniam.Zero;
 
             var incomeName2Rates = GetIncomeName2RandomRates();
             var incomeItems = GetIncomeItemNames();
-            foreach (var incomeItem in incomeItems.Where(i => i.GetName(KindsOfNames.Group) == "Employment"))
+            foreach (var incomeItem in incomeItems.Where(i => i.GetName(KindsOfNames.Group) == IncomeGroupNames.EMPLOYMENT))
             {
                 var incomeRate = !incomeName2Rates.ContainsKey(incomeItem.Name) 
                     ? 0D 
@@ -303,7 +304,6 @@ namespace NoFuture.Rand.Domus.Opes
                     Terminus = endDate,
                     ExpectedValue = CalcValue(amt, incomeRate),
                 };
-                p.My.Interval = interval;
 
                 itemsout.Add(p);
             }
@@ -395,6 +395,7 @@ namespace NoFuture.Rand.Domus.Opes
         {
             var itemsout = new List<Pondus>();
             amt = amt ?? Pecuniam.Zero;
+            startDate = startDate == DateTime.MinValue ? _dateRange.Item1 : startDate;
 
             var deductionNames2Rates = GetDeductionNames2RandomRates(amt, startDate);
             var deductionItems = GetDeductionItemNames();
@@ -409,7 +410,7 @@ namespace NoFuture.Rand.Domus.Opes
                     Terminus = endDate,
                     ExpectedValue = CalcValue(amt, deductionRate)
                 };
-
+                
                 itemsout.Add(p);
             }
             return itemsout.ToArray();
@@ -513,7 +514,7 @@ namespace NoFuture.Rand.Domus.Opes
         {
             if (IsInRange(p))
             {
-                p.ExpectedValue = p.Value.Abs;
+                p.ExpectedValue = p.ExpectedValue.Abs;
                 _pay.Add(p);
             }
         }
@@ -522,7 +523,7 @@ namespace NoFuture.Rand.Domus.Opes
         {
             if (IsInRange(d))
             {
-                d.ExpectedValue = d.Value.Neg;
+                d.ExpectedValue = d.ExpectedValue.Neg;
                 _deductions.Add(d);
             }
         }

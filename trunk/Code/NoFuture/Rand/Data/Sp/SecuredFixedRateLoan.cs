@@ -72,6 +72,14 @@ namespace NoFuture.Rand.Data.Sp
                 }
                 dtIncrement = dtIncrement.AddMonths(1);
             }
+
+            //insure that the gen'ed history doesn't start before the year of make
+            if (property is Gov.Nhtsa.Vin)
+            {
+                var maxYear = loan.Inception.Year;
+                loan.PropertyId = Gov.Nhtsa.Vin.GetRandomVin(remainingCost.ToDouble() <= 2000.0D, maxYear);
+            }
+
             return loan;
         }
 
@@ -92,6 +100,8 @@ namespace NoFuture.Rand.Data.Sp
         public static SecuredFixedRateLoan GetRandomLoan(Identifier property, Pecuniam remainingCost,
             Pecuniam totalCost, float rate, int termInYears, out Pecuniam minPmt)
         {
+            var isMortgage = property is ResidentAddress;
+
             //if no or nonsense values given, change to some default
             if (totalCost == null || totalCost < Pecuniam.Zero)
                 totalCost = new Pecuniam(2000);
@@ -132,15 +142,22 @@ namespace NoFuture.Rand.Data.Sp
 
             //repeat process from calc'ed past date to create a history
             var calcPurchaseDt = DateTime.Today.AddDays(-1 * (dtIncrement - firstOfYear).Days);
-            loan = new SecuredFixedRateLoan(property, calcPurchaseDt, minPmtRate, totalCost)
-            {
-                Rate = rate
-            };
+            loan = isMortgage
+                ? new Mortgage(property, calcPurchaseDt, rate, totalCost)
+                : new SecuredFixedRateLoan(property, calcPurchaseDt, minPmtRate, totalCost)
+                {
+                    Rate = rate
+                };
 
             //assign boilerplate props
             loan.Lender = !(property is ResidentAddress propertyAddress)
                 ? Bank.GetRandomBank(null)
                 : Bank.GetRandomBank(propertyAddress.HomeCityArea);
+
+            loan.FormOfCredit = property is ResidentAddress
+                ? FormOfCredit.Mortgage
+                : FormOfCredit.Installment;
+
             return loan;
         }
 

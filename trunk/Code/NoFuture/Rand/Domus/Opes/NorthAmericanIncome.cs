@@ -6,6 +6,7 @@ using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Data.Endo.Enums;
 using NoFuture.Rand.Data.Endo.Grps;
 using NoFuture.Rand.Data.Sp;
+using NoFuture.Rand.Data.Sp.Cc;
 using NoFuture.Rand.Data.Sp.Enums;
 using NoFuture.Rand.Domus.Pneuma;
 
@@ -20,18 +21,6 @@ namespace NoFuture.Rand.Domus.Opes
     [Serializable]
     public class NorthAmericanIncome : WealthBase, IReditus
     {
-        #region constants
-
-        internal const string EXPENSE_GRP_HOME = "Home";
-        internal const string EXPENSE_GRP_UTILITIES = "Utilities";
-        internal const string EXPENSE_GRP_TRANSPORTATION = "Transportation";
-        internal const string EXPENSE_GRP_INSURANCE = "Insurance Premiums";
-        internal const string EXPENSE_GRP_PERSONAL = "Personal";
-        internal const string EXPENSE_GRP_CHILDREN = "Children";
-        internal const string EXPENSE_GRP_DEBT = "Debts";
-        internal const string EXPENSE_GRP_HEALTH = "Health";
-        #endregion
-
         #region fields
         private readonly HashSet<IEmployment> _employment = new HashSet<IEmployment>();
         private readonly HashSet<Pondus> _otherIncome = new HashSet<Pondus>();
@@ -43,8 +32,9 @@ namespace NoFuture.Rand.Domus.Opes
 
         #region ctors
 
-        public NorthAmericanIncome(NorthAmerican american, IncomeOptions options = null, DateTime? startDate = null) : base(
-            american, options?.IsRenting ?? false)
+        public NorthAmericanIncome(NorthAmerican american, IncomeOptions options = null, DateTime? startDate = null) :
+            base(
+                american, options?.IsRenting ?? false)
         {
             _startDate = startDate ?? GetYearNeg(-3);
             _options = options ?? new IncomeOptions();
@@ -312,70 +302,56 @@ namespace NoFuture.Rand.Domus.Opes
             DateTime? endDate = null, Interval interval = Interval.Annually,
             Dictionary<IVoca, Pecuniam> explicitAmounts = null)
         {
-            const StringComparison OPT = StringComparison.OrdinalIgnoreCase;
+            var name2Op = new Dictionary<string, Func<RatesDictionaryArgs, Dictionary<string, double>>>
+            {
+                {ExpenseGroupNames.HOME, GetHomeExpenseNames2RandomRates},
+                {ExpenseGroupNames.UTILITIES, GetUtilityExpenseNames2RandomRates},
+                {ExpenseGroupNames.TRANSPORTATION, GetTransportationExpenseNames2RandomRates},
+                {ExpenseGroupNames.INSURANCE, GetInsuranceExpenseNames2RandomRates},
+                {ExpenseGroupNames.PERSONAL, GetPersonalExpenseNames2RandomRates},
+                {ExpenseGroupNames.CHILDREN, GetChildrenExpenseNames2RandomRates},
+                {ExpenseGroupNames.DEBT, GetDebtExpenseNames2RandomRates},
+                {ExpenseGroupNames.HEALTH, GetHealthExpenseNames2RandomRates}
+            };
+
+            var name2Slope = new Dictionary<string, double>
+            {
+                //concentrate portion on rent\mortgage payment
+                {ExpenseGroupNames.HOME, -0.2D},
+
+                //concentrate portion on grociers
+                {ExpenseGroupNames.PERSONAL, -0.4D},
+
+                //flatten utilities across the board
+                {ExpenseGroupNames.UTILITIES, -3.0D}
+            };
+
+            if (_options.HasVehicle && !_options.IsVehiclePaidOff)
+            {
+                //concentrate portion on car payment
+                name2Slope.Add(ExpenseGroupNames.TRANSPORTATION, -0.25D);
+            }
+
+            
             startDate = startDate == DateTime.MinValue ? GetMinDateAmongExpectations() : startDate;
             var itemsout = new List<Pondus>();
             amt = amt ?? Pecuniam.Zero;
             explicitAmounts = explicitAmounts ?? new Dictionary<IVoca, Pecuniam>();
             var expenseGrps = GetExpenseItemNames().Select(x => x.GetName(KindsOfNames.Group)).Distinct().ToList();
 
-            var expenseGrpCount = _options.HasChildren ? expenseGrps.Count : expenseGrps.Count - 1;
-
             //move this value down more to "flatten" the diminishing rate, 
             var portions =
-                Etx.DiminishingPortions(expenseGrpCount, -1.3);
-
-            var name2Op = new Dictionary<string, Func<RatesDictionaryArgs, Dictionary<string, double>>>
-            {
-                {EXPENSE_GRP_HOME, GetHomeExpenseNames2RandomRates},
-                {EXPENSE_GRP_UTILITIES, GetUtilityExpenseNames2RandomRates},
-                {EXPENSE_GRP_TRANSPORTATION, GetTransportationExpenseNames2RandomRates},
-                {EXPENSE_GRP_INSURANCE, GetInsuranceExpenseNames2RandomRates},
-                {EXPENSE_GRP_PERSONAL, GetPersonalExpenseNames2RandomRates},
-                {EXPENSE_GRP_CHILDREN, GetChildrenExpenseNames2RandomRates},
-                {EXPENSE_GRP_DEBT, GetDebtExpenseNames2RandomRates},
-                {EXPENSE_GRP_HEALTH, GetHealthExpenseNames2RandomRates}
-            };
-
-            var name2Slope = new Dictionary<string, double>
-            {
-                //concentrate portion on rent\mortgage payment
-                {EXPENSE_GRP_HOME, -0.2D},
-
-                //concentrate portion on grociers
-                {EXPENSE_GRP_PERSONAL, -0.4D},
-
-                //flatten utilities across the board
-                {EXPENSE_GRP_UTILITIES, -3.0D}
-            };
-
-            if (_options.HasVehicle && !_options.IsVehiclePaidOff)
-            {
-                //concentrate portion on car payment
-                name2Slope.Add(EXPENSE_GRP_TRANSPORTATION, -0.25D);
-            }
+                Etx.DiminishingPortions(expenseGrps.Count, -1.3);
 
             var count = 0;
             foreach (var grp in expenseGrps)
             {
-                if (grp == EXPENSE_GRP_CHILDREN && !_options.HasChildren)
-                    continue;
-
                 var portion = portions[count];
 
                 var derivativeSlope = name2Slope.ContainsKey(grp) ? name2Slope[grp] : -1.0D;
 
-                //integrate any direct amount assignments as a portion of total amount
-                var directAssignRates = new Dictionary<string, double>();
-                if (explicitAmounts.Any(x => string.Equals(x.Key.GetName(KindsOfNames.Group), grp, OPT)))
-                {
-                    foreach (var n in explicitAmounts.Where(x =>
-                        string.Equals(x.Key.GetName(KindsOfNames.Group), grp, OPT)))
-                    {
-                        var directAssignRate = Math.Round(n.Value.ToDouble() / amt.ToDouble(), 8);
-                        directAssignRates.Add(n.Key.GetName(KindsOfNames.Legal), directAssignRate);
-                    }
-                }
+                //need to convert the actual amount into a ratio
+                var directAssignRates = ConvertToExplicitRates(amt, explicitAmounts, grp);
 
                 //use explicit def if present - otherwise default to just diminishing with no zero-outs
                 var grpRates = name2Op.ContainsKey(grp)
@@ -389,19 +365,41 @@ namespace NoFuture.Rand.Domus.Opes
 
                 foreach (var item in grpRates.Keys)
                 {
-                    var p = new Pondus(item, interval)
-                    {
-                        Inception = startDate,
-                        Terminus = endDate,
-                        ExpectedValue = CalcValue(amt, grpRates[item])
-                    };
-                    p.My.UpsertName(KindsOfNames.Group, grp);
+                    var p = GetPondusForItemAndGroup(item, grp, startDate, endDate, interval);
+                    p.ExpectedValue = CalcValue(amt, grpRates[item]);
                     itemsout.Add(p);
                 }
 
                 count += 1;
             }
             return itemsout.ToArray();
+        }
+
+        /// <summary>
+        /// Factory method to create a <see cref="Pondus"/> based on the given values
+        /// </summary>
+        /// <param name="item"></param>
+        /// <param name="grp"></param>
+        /// <param name="startDate"></param>
+        /// <param name="endDate"></param>
+        /// <param name="interval"></param>
+        /// <returns></returns>
+        protected Pondus GetPondusForItemAndGroup(string item, string grp, DateTime startDate, DateTime? endDate,
+            Interval interval = Interval.Annually)
+        {
+            const StringComparison OPT = StringComparison.OrdinalIgnoreCase;
+            var isCreditCard = string.Equals(grp, "Debts", OPT) && string.Equals(item, "Credit Card", OPT);
+
+            var p = isCreditCard
+                ? CreditCardAccount.GetRandomCcAcct(Person, CreditScore)
+                : new Pondus(item, interval)
+                {
+                    Inception = startDate,
+                    Terminus = endDate,
+                };
+            p.My.Name = item;
+            p.My.UpsertName(KindsOfNames.Group, grp);
+            return p;
         }
 
         /// <summary>
@@ -434,11 +432,13 @@ namespace NoFuture.Rand.Domus.Opes
         }
 
         /// <summary>
-        /// Produces a dictionary of Transportation expense items by names to a portion of the total sum.
+        /// Produces a dictionary of Transportation <see cref="WealthBase.DomusOpesDivisions.Expense"/> 
+        ///  items by names to a portion of the total sum.
         /// </summary>
         /// <param name="args"></param>
         /// <returns></returns>
-        protected internal virtual Dictionary<string, double> GetHomeExpenseNames2RandomRates(RatesDictionaryArgs args = null)
+        protected internal virtual Dictionary<string, double> GetHomeExpenseNames2RandomRates(
+            RatesDictionaryArgs args = null)
         {
             var sumOfRates = args?.SumOfRates ?? 0.333D;
             var derivativeSlope = args?.DerivativeSlope ?? -0.2D;
@@ -446,7 +446,7 @@ namespace NoFuture.Rand.Domus.Opes
 
             ReconcileDiffsInSums(ref sumOfRates, directAssignNames2Rates);
 
-            var dk = GetNames2RandomRates(DomusOpesDivisions.Expense, EXPENSE_GRP_HOME, sumOfRates,
+            var dk = GetNames2RandomRates(DomusOpesDivisions.Expense, ExpenseGroupNames.HOME, sumOfRates,
                 null, derivativeSlope, "Association Fees");
 
             var zeroOuts = new List<string> {"Other Lein"};
@@ -471,11 +471,13 @@ namespace NoFuture.Rand.Domus.Opes
         }
 
         /// <summary>
-        /// Produces a dictionary of Utilities expense items by names to a portion of the total sum.
+        /// Produces a dictionary of Utilities <see cref="WealthBase.DomusOpesDivisions.Expense"/> 
+        ///  items by names to a portion of the total sum.
         /// </summary>
         /// <param name="args"></param>
         /// <returns></returns>
-        protected internal virtual Dictionary<string, double> GetUtilityExpenseNames2RandomRates(RatesDictionaryArgs args = null)
+        protected internal virtual Dictionary<string, double> GetUtilityExpenseNames2RandomRates(
+            RatesDictionaryArgs args = null)
         {
             var sumOfRates = args?.SumOfRates ?? 0.1D;
             var derivativeSlope = args?.DerivativeSlope ?? -1.0D;
@@ -484,10 +486,10 @@ namespace NoFuture.Rand.Domus.Opes
             ReconcileDiffsInSums(ref sumOfRates, directAssignNames2Rates);
 
             var dk = IsRenting
-                ? GetNames2RandomRates(DomusOpesDivisions.Expense, EXPENSE_GRP_UTILITIES, sumOfRates, null,
+                ? GetNames2RandomRates(DomusOpesDivisions.Expense, ExpenseGroupNames.UTILITIES, sumOfRates, null,
                     derivativeSlope,
                     "Gas", "Water", "Sewer", "Trash")
-                : GetNames2RandomRates(DomusOpesDivisions.Expense, EXPENSE_GRP_UTILITIES, sumOfRates, null,
+                : GetNames2RandomRates(DomusOpesDivisions.Expense, ExpenseGroupNames.UTILITIES, sumOfRates, null,
                     derivativeSlope);
 
             if (directAssignNames2Rates != null && directAssignNames2Rates.Any())
@@ -497,11 +499,13 @@ namespace NoFuture.Rand.Domus.Opes
         }
 
         /// <summary>
-        /// Produces a dictionary of Transportation expense items by names to a portion of the total sum.
+        /// Produces a dictionary of Transportation <see cref="WealthBase.DomusOpesDivisions.Expense"/> 
+        ///  items by names to a portion of the total sum.
         /// </summary>
         /// <param name="args"></param>
         /// <returns></returns>
-        protected internal virtual Dictionary<string, double> GetTransportationExpenseNames2RandomRates(RatesDictionaryArgs args = null)
+        protected internal virtual Dictionary<string, double> GetTransportationExpenseNames2RandomRates(
+            RatesDictionaryArgs args = null)
         {
             var sumOfRates = args?.SumOfRates ?? 0.125D;
             var derivativeSlope = args?.DerivativeSlope ?? -1.0D;
@@ -509,7 +513,7 @@ namespace NoFuture.Rand.Domus.Opes
 
             ReconcileDiffsInSums(ref sumOfRates, directAssignNames2Rates);
 
-            var dk = GetNames2RandomRates(DomusOpesDivisions.Expense, EXPENSE_GRP_TRANSPORTATION, sumOfRates,
+            var dk = GetNames2RandomRates(DomusOpesDivisions.Expense, ExpenseGroupNames.TRANSPORTATION, sumOfRates,
                 null, derivativeSlope, "Parking", "Registration Fees");
 
             var zeroOuts = new List<string>();
@@ -537,11 +541,13 @@ namespace NoFuture.Rand.Domus.Opes
         }
 
         /// <summary>
-        /// Produces a dictionary of Health expense items by names to a portion of the total sum.
+        /// Produces a dictionary of Health <see cref="WealthBase.DomusOpesDivisions.Expense"/> 
+        ///  items by names to a portion of the total sum.
         /// </summary>
         /// <param name="args"></param>
         /// <returns></returns>
-        protected internal virtual Dictionary<string, double> GetInsuranceExpenseNames2RandomRates(RatesDictionaryArgs args = null)
+        protected internal virtual Dictionary<string, double> GetInsuranceExpenseNames2RandomRates(
+            RatesDictionaryArgs args = null)
         {
             var sumOfRates = args?.SumOfRates ?? 0.05D;
             var derivativeSlope = args?.DerivativeSlope ?? -1.0D;
@@ -549,7 +555,7 @@ namespace NoFuture.Rand.Domus.Opes
 
             ReconcileDiffsInSums(ref sumOfRates, directAssignNames2Rates);
 
-            var dk = GetNames2RandomRates(DomusOpesDivisions.Expense, EXPENSE_GRP_INSURANCE, sumOfRates, null,
+            var dk = GetNames2RandomRates(DomusOpesDivisions.Expense, ExpenseGroupNames.INSURANCE, sumOfRates, null,
                 derivativeSlope, "Pet", "Vision",
                 "Dental", "Health", "Disability", "Life");
 
@@ -567,11 +573,13 @@ namespace NoFuture.Rand.Domus.Opes
         }
 
         /// <summary>
-        /// Produces a dictionary of Personal expense items by names to a portion of the total sum.
+        /// Produces a dictionary of Personal <see cref="WealthBase.DomusOpesDivisions.Expense"/> 
+        /// items by names to a portion of the total sum.
         /// </summary>
         /// <param name="args"></param>
         /// <returns></returns>
-        protected internal virtual Dictionary<string, double> GetPersonalExpenseNames2RandomRates(RatesDictionaryArgs args = null)
+        protected internal virtual Dictionary<string, double> GetPersonalExpenseNames2RandomRates(
+            RatesDictionaryArgs args = null)
         {
             var sumOfRates = args?.SumOfRates ?? 0.333D;
             var derivativeSlope = args?.DerivativeSlope ?? -1.0D;
@@ -579,7 +587,7 @@ namespace NoFuture.Rand.Domus.Opes
 
             ReconcileDiffsInSums(ref sumOfRates, directAssignNames2Rates);
 
-            var dk = GetNames2RandomRates(DomusOpesDivisions.Expense, EXPENSE_GRP_PERSONAL, sumOfRates, null,
+            var dk = GetNames2RandomRates(DomusOpesDivisions.Expense, ExpenseGroupNames.PERSONAL, sumOfRates, null,
                 derivativeSlope, "Dues", "Subscriptions",
                 "Gifts", "Vice", "Clothing");
 
@@ -590,11 +598,13 @@ namespace NoFuture.Rand.Domus.Opes
         }
 
         /// <summary>
-        /// Produces a dictionary of Transportation expense items by names to a portion of the total sum.
+        /// Produces a dictionary of Transportation <see cref="WealthBase.DomusOpesDivisions.Expense"/> 
+        ///  items by names to a portion of the total sum.
         /// </summary>
         /// <param name="args"></param>
         /// <returns></returns>
-        protected internal virtual Dictionary<string, double> GetChildrenExpenseNames2RandomRates(RatesDictionaryArgs args = null)
+        protected internal virtual Dictionary<string, double> GetChildrenExpenseNames2RandomRates(
+            RatesDictionaryArgs args = null)
         {
             var sumOfRates = args?.SumOfRates ?? 0.125D;
             var derivativeSlope = args?.DerivativeSlope ?? -1.0D;
@@ -606,14 +616,15 @@ namespace NoFuture.Rand.Domus.Opes
             {
                 var d = new Dictionary<string, double>();
                 foreach (var name in GetExpenseItemNames().Where(e =>
-                    string.Equals(e.GetName(KindsOfNames.Group), "Children", StringComparison.OrdinalIgnoreCase)))
+                    string.Equals(e.GetName(KindsOfNames.Group), ExpenseGroupNames.CHILDREN,
+                        StringComparison.OrdinalIgnoreCase)))
                 {
                     d.Add(name.Name, 0D);
                 }
                 return d;
             }
 
-            var dk = GetNames2RandomRates(DomusOpesDivisions.Expense, EXPENSE_GRP_CHILDREN, sumOfRates, null,
+            var dk = GetNames2RandomRates(DomusOpesDivisions.Expense, ExpenseGroupNames.CHILDREN, sumOfRates, null,
                 derivativeSlope, "Lunch Money",
                 "Extracurricular", "Camp", "Transportation", "Allowance");
 
@@ -637,11 +648,13 @@ namespace NoFuture.Rand.Domus.Opes
         }
 
         /// <summary>
-        /// Produces a dictionary of Debts expense items by names to a portion of the total sum.
+        /// Produces a dictionary of Debts <see cref="WealthBase.DomusOpesDivisions.Expense"/> 
+        ///  items by names to a portion of the total sum.
         /// </summary>
         /// <param name="args"></param>
         /// <returns></returns>
-        protected internal virtual Dictionary<string, double> GetDebtExpenseNames2RandomRates(RatesDictionaryArgs args = null)
+        protected internal virtual Dictionary<string, double> GetDebtExpenseNames2RandomRates(
+            RatesDictionaryArgs args = null)
         {
             var sumOfRates = args?.SumOfRates ?? 0.078D;
             var derivativeSlope = args?.DerivativeSlope ?? -1.0D;
@@ -649,7 +662,7 @@ namespace NoFuture.Rand.Domus.Opes
 
             ReconcileDiffsInSums(ref sumOfRates, directAssignNames2Rates);
 
-            var dk = GetNames2RandomRates(DomusOpesDivisions.Expense, EXPENSE_GRP_DEBT, sumOfRates, null,
+            var dk = GetNames2RandomRates(DomusOpesDivisions.Expense, ExpenseGroupNames.DEBT, sumOfRates, null,
                 derivativeSlope, "Health Care",
                 "Other Consumer", "Student", "Tax", "Other");
 
@@ -660,11 +673,13 @@ namespace NoFuture.Rand.Domus.Opes
         }
 
         /// <summary>
-        /// Produces a dictionary of Health expense items by names to a portion of the total sum.
+        /// Produces a dictionary of Health <see cref="WealthBase.DomusOpesDivisions.Expense"/> 
+        ///  items by names to a portion of the total sum.
         /// </summary>
         /// <param name="args"></param>
         /// <returns></returns>
-        protected internal virtual Dictionary<string, double> GetHealthExpenseNames2RandomRates(RatesDictionaryArgs args = null)
+        protected internal virtual Dictionary<string, double> GetHealthExpenseNames2RandomRates(
+            RatesDictionaryArgs args = null)
         {
             var sumOfRates = args?.SumOfRates ?? 0.03D;
             var derivativeSlope = args?.DerivativeSlope ?? -1.0D;
@@ -672,7 +687,7 @@ namespace NoFuture.Rand.Domus.Opes
 
             ReconcileDiffsInSums(ref sumOfRates, directAssignNames2Rates);
 
-            var dk = GetNames2RandomRates(DomusOpesDivisions.Expense, EXPENSE_GRP_HEALTH, sumOfRates, null,
+            var dk = GetNames2RandomRates(DomusOpesDivisions.Expense, ExpenseGroupNames.HEALTH, sumOfRates, null,
                 derivativeSlope, "Therapy", "Hospital",
                 "Optical", "Dental", "Physician", "Supplements");
 

@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Xml;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Data.Endo.Grps;
@@ -102,6 +104,60 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             Assert.IsNotNull(testResults);
             Assert.AreNotEqual(0, testResults.Count);
 
+            var sumOfIncomeDeductions = Pondus.GetExpectedSum(testResults);
+
+            Assert.AreNotEqual(Pecuniam.Zero, sumOfIncomeDeductions);
+
+        }
+
+        [TestMethod]
+        public void TestIncome()
+        {
+            var testSubject = new Domus.Opes.NorthAmericanEmployment(new DateTime(2011, 10, 5), null);
+            testSubject.ResolvePayAndDeductions();
+
+            var testResults = testSubject.Income;
+            Assert.IsNotNull(testResults);
+            Assert.AreNotEqual(0, testResults.Count);
+
+            var sumOfIncomeDeductions = Pondus.GetExpectedSum(testResults);
+
+            Assert.AreNotEqual(Pecuniam.Zero, sumOfIncomeDeductions);
+
+            var expectations = WealthBaseTests.GetExpectedNamesFromXml("income");
+
+            //expect every item in the Employment group to be in the Employment's income list
+            foreach (var expect in expectations.Where(e => e.Item1 == "Employment"))
+            {
+                System.Diagnostics.Debug.WriteLine(expect);
+                Assert.IsTrue(testResults.Any(x =>
+                    x.My.Name == expect.Item2 && x.My.GetName(KindsOfNames.Group) == expect.Item1));
+            }
+        }
+
+        [TestMethod]
+        public void TestDeductions()
+        {
+            var testSubject = new Domus.Opes.NorthAmericanEmployment(new DateTime(2011, 10, 5), null);
+            testSubject.ResolvePayAndDeductions();
+
+            var testResults = testSubject.Deductions;
+            Assert.IsNotNull(testResults);
+            Assert.AreNotEqual(0, testResults.Count);
+
+            var sumOfIncomeDeductions = Pondus.GetExpectedSum(testResults);
+
+            Assert.AreNotEqual(Pecuniam.Zero, sumOfIncomeDeductions);
+
+            var expectations = WealthBaseTests.GetExpectedNamesFromXml("deduction");
+
+            //expect every item in the deductions to be in the list
+            foreach (var expect in expectations)
+            {
+                System.Diagnostics.Debug.WriteLine(expect);
+                Assert.IsTrue(testResults.Any(x =>
+                    x.My.Name == expect.Item2 && x.My.GetName(KindsOfNames.Group) == expect.Item1));
+            }
         }
 
         [TestMethod]

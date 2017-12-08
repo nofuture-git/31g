@@ -34,35 +34,21 @@ namespace NoFuture.Rand.Data.Sp
 
         public Pondus(DateTime startDate) : base(startDate)
         {
-            
+            My = new Mereo();
         }
 
-        public Pecuniam ExpectedValue { get; set; }
+        public virtual Pecuniam ExpectedValue { get; set; }
 
-        public IMereo My { get; }
+        public virtual IMereo My { get; }
 
-        public static Pecuniam operator +(Pondus a, Pondus b)
-        {
-            var ap = a?.Value ?? Pecuniam.Zero;
-            var bp = b?.Value ?? Pecuniam.Zero;
-            return ap + bp;
-        }
-
-        public static Pecuniam operator -(Pondus a, Pondus b)
-        {
-            var ap = a?.Value ?? Pecuniam.Zero;
-            var bp = b?.Value ?? Pecuniam.Zero;
-            return ap - bp;
-        }
-
-        public static Pecuniam GetSum(IEnumerable<Pondus> items)
+        public static Pecuniam GetExpectedSum(IEnumerable<Pondus> items)
         {
             if(items == null || !items.Any())
                 return Pecuniam.Zero;
 
             var p = Pecuniam.Zero;
             foreach (var i in items)
-                p += i?.Value ?? Pecuniam.Zero;
+                p += i?.ExpectedValue ?? Pecuniam.Zero;
             return p;
         }
 
@@ -111,7 +97,7 @@ namespace NoFuture.Rand.Data.Sp
 
         public override string ToString()
         {
-            var d = new Tuple<string, string, string, string, DateTime?, DateTime?>(Value.ToString(), My.Name,
+            var d = new Tuple<string, string, string, string, DateTime?, DateTime?>(ExpectedValue.ToString(), My.Name,
                 My.GetName(KindsOfNames.Group), My.Interval.ToString(), Inception, Terminus);
             return d.ToString();
         }

@@ -4,10 +4,12 @@ using System.Linq;
 using System.Xml;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
+using NoFuture.Rand.Data;
 using NoFuture.Rand.Data.Endo;
 using NoFuture.Rand.Data.Endo.Enums;
 using NoFuture.Rand.Data.Sp;
 using NoFuture.Rand.Domus.Pneuma;
+using NoFuture.Rand.Gov.Fed;
 using NoFuture.Shared.Core;
 using NoFuture.Util.Core;
 using NoFuture.Util.Core.Math;
@@ -16,7 +18,10 @@ namespace NoFuture.Rand.Domus.Opes
 {
     public abstract class WealthBase
     {
+        #region constants
         public const double DF_STD_DEV_PERCENT = 0.1285D;
+
+        #endregion
 
         #region fields
         protected internal IComparer<ITempore> Comparer { get; } = new TemporeComparer();
@@ -39,7 +44,48 @@ namespace NoFuture.Rand.Domus.Opes
             Income,
             Deduction,
             Expense,
-            Asset
+            Assets
+        }
+
+        internal static class AssetGroupNames
+        {
+            internal const string REAL_PROPERTY = "Real Property";
+            internal const string PERSONAL_PROPERTY = "Personal Property";
+            internal const string SECURITIES = "Securities";
+            internal const string INSTITUTIONAL = "Institutional";
+        }
+
+        internal static class ExpenseGroupNames
+        {
+            internal const string HOME = "Home";
+            internal const string UTILITIES = "Utilities";
+            internal const string TRANSPORTATION = "Transportation";
+            internal const string INSURANCE = "Insurance Premiums";
+            internal const string PERSONAL = "Personal";
+            internal const string CHILDREN = "Children";
+            internal const string DEBT = "Debts";
+            internal const string HEALTH = "Health";
+        }
+
+        internal static class IncomeGroupNames
+        {
+            internal const string JUDGMENTS = "Judgments";
+            internal const string SUBITO = "Subito";
+            internal const string EMPLOYMENT = "Employment";
+            internal const string PUBLIC_BENEFITS = "Public Benefits";
+            internal const string REAL_PROPERTY = AssetGroupNames.REAL_PROPERTY;
+            internal const string SECURITIES = AssetGroupNames.SECURITIES;
+            internal const string INSTITUTIONAL = AssetGroupNames.INSTITUTIONAL;
+            internal const string DEBT = "Debts";
+            internal const string HEALTH = ExpenseGroupNames.HEALTH;
+        }
+
+        internal static class DeductionGroupNames
+        {
+            internal const string INSURANCE = "Insurance";
+            internal const string GOVERNMENT = "Government";
+            internal const string JUDGMENTS = IncomeGroupNames.JUDGMENTS;
+            internal const string EMPLOYMENT = IncomeGroupNames.EMPLOYMENT;
         }
 
         #endregion
@@ -49,6 +95,7 @@ namespace NoFuture.Rand.Domus.Opes
         {
             if (american == null)
             {
+                CreditScore = new PersonalCreditScore(null);
                 _factors = new NorthAmericanFactors(null);
                 IsRenting = isRenting;
                 return;
@@ -174,7 +221,8 @@ namespace NoFuture.Rand.Domus.Opes
         /// <returns></returns>
         public static IMereo[] GetIncomeItemNames()
         {
-            return _incomeItemNames = _incomeItemNames ??  GetDomusOpesItemNames("//income//mereo");
+            var xpath = $"//{DomusOpesDivisions.Income.ToString().ToLower()}//mereo";
+            return _incomeItemNames = _incomeItemNames ?? GetDomusOpesItemNames(xpath);
         }
 
         /// <summary>
@@ -184,7 +232,8 @@ namespace NoFuture.Rand.Domus.Opes
         /// <returns></returns>
         public static IMereo[] GetDeductionItemNames()
         {
-            return _deductionItemNames = _deductionItemNames ?? GetDomusOpesItemNames("//deduction//mereo");
+            var xpath = $"//{DomusOpesDivisions.Deduction.ToString().ToLower()}//mereo";
+            return _deductionItemNames = _deductionItemNames ?? GetDomusOpesItemNames(xpath);
         }
 
         /// <summary>
@@ -194,7 +243,8 @@ namespace NoFuture.Rand.Domus.Opes
         /// <returns></returns>
         public static IMereo[] GetExpenseItemNames()
         {
-            return _expenseItemNames = _expenseItemNames ?? GetDomusOpesItemNames("//expense//mereo");
+            var xpath = $"//{DomusOpesDivisions.Expense.ToString().ToLower()}//mereo";
+            return _expenseItemNames = _expenseItemNames ?? GetDomusOpesItemNames(xpath);
         }
 
         /// <summary>
@@ -205,7 +255,8 @@ namespace NoFuture.Rand.Domus.Opes
         /// <returns></returns>
         public static IMereo[] GetAssetItemNames()
         {
-            return _assetItemNames = _assetItemNames ?? GetDomusOpesItemNames("//assets//mereo");
+            var xpath = $"//{DomusOpesDivisions.Assets.ToString().ToLower()}//mereo";
+            return _assetItemNames = _assetItemNames ?? GetDomusOpesItemNames(xpath);
         }
 
         /// <summary>
@@ -241,16 +292,16 @@ namespace NoFuture.Rand.Domus.Opes
                     if (childElem.LocalName != "eg" || !childElem.HasAttributes)
                         continue;
                     var eg = childElem.GetAttribute("name");
-                    if (string.IsNullOrWhiteSpace(eg))
+                    if (String.IsNullOrWhiteSpace(eg))
                         continue;
                     egs.Add(eg);
                 }
             }
 
             mereo = new Mereo(itemName);
-            if (!string.IsNullOrWhiteSpace(abbrev))
+            if (!String.IsNullOrWhiteSpace(abbrev))
                 mereo.UpsertName(KindsOfNames.Abbrev, abbrev);
-            if (!string.IsNullOrWhiteSpace(groupName))
+            if (!String.IsNullOrWhiteSpace(groupName))
                 mereo.UpsertName(KindsOfNames.Group, groupName);
             if (egs.Any())
             {
@@ -258,15 +309,15 @@ namespace NoFuture.Rand.Domus.Opes
                     mereo.ExempliGratia.Add(eg);
             }
 
-            return !string.IsNullOrWhiteSpace(itemName);
+            return !String.IsNullOrWhiteSpace(itemName);
         }
 
         internal static IMereo[] GetDomusOpesItemNames(string xPath)
         {
-            if (string.IsNullOrWhiteSpace(xPath))
+            if (String.IsNullOrWhiteSpace(xPath))
                 return null;
 
-            var xml = Data.TreeData.UsDomusOpes;
+            var xml = TreeData.UsDomusOpes;
             var nodes = xml.SelectNodes(xPath);
             if (nodes == null || nodes.Count <= 0)
                 return null;
@@ -291,7 +342,7 @@ namespace NoFuture.Rand.Domus.Opes
             if (usCityArea == null)
                 return true;
 
-            var cannotGetFinanced = CreditScore.GetRandomInterestRate(null, Gov.Fed.RiskFreeInterestRate.DF_VALUE) > 8.5;
+            var cannotGetFinanced = CreditScore.GetRandomInterestRate(null, RiskFreeInterestRate.DF_VALUE) > 8.5;
             if (cannotGetFinanced)
                 return true;
 
@@ -453,7 +504,7 @@ namespace NoFuture.Rand.Domus.Opes
             var n2r = new Dictionary<string, double>();
 
             bool IsMatch(Tuple<string, double> tuple, string s) =>
-                tuple.Item1 != null && string.Equals(tuple.Item1, s, StringComparison.OrdinalIgnoreCase);
+                tuple.Item1 != null && String.Equals(tuple.Item1, s, StringComparison.OrdinalIgnoreCase);
 
             //make temp copies of all the zero'ed out values
             foreach (var k in names2Rates.Keys)
@@ -687,25 +738,25 @@ namespace NoFuture.Rand.Domus.Opes
             {
                 case DomusOpesDivisions.Income:
                     names = GetIncomeItemNames().Where(e =>
-                            string.Equals(e.GetName(KindsOfNames.Group), groupName,
+                            String.Equals(e.GetName(KindsOfNames.Group), groupName,
                                 StringComparison.OrdinalIgnoreCase))
                         .ToList();
                     break;
-                case DomusOpesDivisions.Asset:
+                case DomusOpesDivisions.Assets:
                     names = GetAssetItemNames().Where(e =>
-                            string.Equals(e.GetName(KindsOfNames.Group), groupName,
+                            String.Equals(e.GetName(KindsOfNames.Group), groupName,
                                 StringComparison.OrdinalIgnoreCase))
                         .ToList();
                     break;
                 case DomusOpesDivisions.Deduction:
                     names = GetDeductionItemNames().Where(e =>
-                            string.Equals(e.GetName(KindsOfNames.Group), groupName,
+                            String.Equals(e.GetName(KindsOfNames.Group), groupName,
                                 StringComparison.OrdinalIgnoreCase))
                         .ToList();
                     break;
                 case DomusOpesDivisions.Expense:
                     names = GetExpenseItemNames().Where(e =>
-                            string.Equals(e.GetName(KindsOfNames.Group), groupName,
+                            String.Equals(e.GetName(KindsOfNames.Group), groupName,
                                 StringComparison.OrdinalIgnoreCase))
                         .ToList();
                     break;
@@ -725,6 +776,30 @@ namespace NoFuture.Rand.Domus.Opes
             }
 
             return ZeroOutRates(p2r, randZeros.ToArray());
+        }
+
+        /// <summary>
+        /// Converts explicit amount into a rate of <see cref="amt"/>
+        /// </summary>
+        /// <param name="amt"></param>
+        /// <param name="explicitAmounts"></param>
+        /// <param name="grp"></param>
+        /// <returns></returns>
+        protected internal static Dictionary<string, double> ConvertToExplicitRates(Pecuniam amt,
+            Dictionary<IVoca, Pecuniam> explicitAmounts, string grp)
+        {
+            const StringComparison OPT = StringComparison.OrdinalIgnoreCase;
+            var directAssignRates = new Dictionary<string, double>();
+            if (!explicitAmounts.Any(x => String.Equals(x.Key.GetName(KindsOfNames.Group), grp, OPT)))
+                return directAssignRates;
+
+            foreach (var n in explicitAmounts.Where(x =>
+                String.Equals(x.Key.GetName(KindsOfNames.Group), grp, OPT)))
+            {
+                var directAssignRate = Math.Round(n.Value.ToDouble() / amt.ToDouble(), 8);
+                directAssignRates.Add(n.Key.GetName(KindsOfNames.Legal), directAssignRate);
+            }
+            return directAssignRates;
         }
     }
 }
