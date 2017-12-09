@@ -23,17 +23,24 @@ namespace NoFuture.Rand.Domus.Opes
         private readonly double _randSavingsAcctAmt;
         private readonly double _randHomeEquity;
         private readonly double _randCarEquity;
+        private readonly double _allOtherAssetEquity;
 
         private readonly double _randCcDebt;
         private readonly double _randHomeDebt;
         private readonly double _randCarDebt;
 
-        private readonly double _randNetWorth;
-        private readonly double _diffInNetWorth;
+        private readonly double _totalEquity;
         private readonly AssestOptions _options;
 
         private Pecuniam _carPayment;
         private Pecuniam _housePayment;
+        private readonly double _homeEquityRate;
+        private readonly double _carEquityRate;
+        private readonly double _checkingAccountRate;
+        private readonly double _savingsAccountRate;
+        private readonly double _homeDebtRate;
+        private readonly double _carDebtRate;
+
         #endregion
 
         #region ctors
@@ -43,6 +50,8 @@ namespace NoFuture.Rand.Domus.Opes
             _options = options ?? new AssestOptions();
 
             _startDate = startDate ?? GetYearNeg(-1);
+
+
             _randCheckingAcctAmt = NorthAmericanFactors.GetRandomFactorValue(FactorTables.CheckingAccount,
                 Factors.CheckingAcctFactor, DF_STD_DEV_PERCENT);
             _randSavingsAcctAmt = NorthAmericanFactors.GetRandomFactorValue(FactorTables.SavingsAccount,
@@ -64,18 +73,24 @@ namespace NoFuture.Rand.Domus.Opes
             _randCarDebt = NorthAmericanFactors.GetRandomFactorValue(FactorTables.VehicleDebt,
                         Factors.VehicleDebtFactor, DF_STD_DEV_PERCENT);
 
-            _randNetWorth =
-                NorthAmericanFactors.GetRandomFactorValue(FactorTables.NetWorth, Factors.NetWorthFactor,
-                    DF_STD_DEV_PERCENT);
+            _totalEquity = _randCheckingAcctAmt + _randSavingsAcctAmt + _randHomeEquity + _randCarEquity;
 
-            //this is often a denominator so make sure its never zero
-            _randNetWorth = _randNetWorth == 0 ? 50000.0D : _randNetWorth;
 
-            var calcNetWorth = _randCheckingAcctAmt + _randSavingsAcctAmt + _randHomeEquity + _randCarEquity -
-                               Math.Abs(_randCcDebt + _randHomeDebt + _randCarDebt);
+            var randNetWorth = NorthAmericanFactors.GetRandomFactorValue(FactorTables.NetWorth,
+                Factors.NetWorthFactor, DF_STD_DEV_PERCENT);
 
-            //this is what would be spread across other assets
-            _diffInNetWorth = _randNetWorth - calcNetWorth;
+            _allOtherAssetEquity = _totalEquity - randNetWorth;
+
+            _totalEquity += _allOtherAssetEquity;
+
+            _homeEquityRate = _randHomeEquity / _totalEquity;
+            _carEquityRate = _randCarEquity / _totalEquity;
+            _checkingAccountRate = _randCheckingAcctAmt / _totalEquity;
+            _savingsAccountRate = _randSavingsAcctAmt / _totalEquity;
+
+            var totalDebt = _randHomeDebt + _randCarDebt + _randCcDebt;
+            _homeDebtRate = _randHomeDebt / totalDebt;
+            _carDebtRate = _randCarDebt / totalDebt;
         }
         #endregion
 
@@ -141,32 +156,21 @@ namespace NoFuture.Rand.Domus.Opes
             var itemsout = new List<Pondus>();
 
             startDate = startDate == DateTime.MinValue ? _startDate : startDate;
-            amt = amt ?? Pecuniam.Zero;
+            amt = amt ?? _totalEquity.ToPecuniam();
 
             //get just the group names of assets
             var grpNames = GetAssetItemNames().Select(x => x.GetName(KindsOfNames.Group)).Distinct().ToList();
 
             //determine a portion or each group
-            var portions = Etx.DiminishingPortions(grpNames.Count);
+            var portions = Etx.DiminishingPortions(grpNames.Count, -0.2D);
+            var grp2Rates = grpNames.Zip(portions, (n, v) => new Tuple<string, double>(n, v)).ToList();
 
             //when calling assembly doesn't define exact amounts the use the values from the Factor Tables
             explicitAmounts = explicitAmounts ?? new Dictionary<IVoca, Pecuniam>();
             if (!explicitAmounts.Any())
             {
-                if (!IsRenting)
-                    explicitAmounts.Add(new Mereo("Real Estate", AssetGroupNames.REAL_PROPERTY),
-                        _randHomeEquity.ToPecuniam());
-
-                if (_options.HasVehicles)
-                    explicitAmounts.Add(new Mereo("Motor Vehicles", AssetGroupNames.PERSONAL_PROPERTY),
-                        _randCarEquity.ToPecuniam());
-
-                explicitAmounts.Add(new Mereo("Checking", AssetGroupNames.INSTITUTIONAL),
-                    _randCheckingAcctAmt.ToPecuniam());
-                explicitAmounts.Add(new Mereo("Savings", AssetGroupNames.INSTITUTIONAL),
-                    _randSavingsAcctAmt.ToPecuniam());
+                grp2Rates = GetGroupPortionsFromByFactorTables(amt, explicitAmounts);
             }
-
             //map the groups name to a function 
             var name2Op = new Dictionary<string, Func<RatesDictionaryArgs, Dictionary<string, double>>>
             {
@@ -176,13 +180,15 @@ namespace NoFuture.Rand.Domus.Opes
                 {AssetGroupNames.SECURITIES, GetSecuritiesName2Rates}
             };
 
-            var count = 0;
-            foreach (var grp in grpNames)
+            foreach (var g2r in grp2Rates)
             {
-                var portion = portions[count];
+                var grp = g2r.Item1;
+                var portion = g2r.Item2;
 
                 //convert explicit amount into rates
                 var directAssignRates = ConvertToExplicitRates(amt, explicitAmounts, grp);
+
+                System.Diagnostics.Debug.WriteLine($"{directAssignRates.Select(kv => kv.Value).Sum()}\t{portion}");
 
                 //get the name-to-rates dictionary
                 var grpRates = name2Op.ContainsKey(grp)
@@ -200,13 +206,62 @@ namespace NoFuture.Rand.Domus.Opes
                     //create the pondus for this group\name pa
                     var p = GetPondusForItemAndGroup(item, grp, startDate, endDate, interval);
                     p.ExpectedValue = CalcValue(amt, grpRates[item]);
-
+                    p.My.Interval = Interval.Annually;
                     itemsout.Add(p);
                 }
-
-                count += 1;
             }
             return itemsout.ToArray();
+        }
+
+        /// <summary>
+        /// Creates a groupName-to-Portion list which matches the factor table values of the given instance.
+        /// </summary>
+        /// <param name="amt"></param>
+        /// <param name="explicitAmounts"></param>
+        /// <returns></returns>
+        protected internal List<Tuple<string, double>> GetGroupPortionsFromByFactorTables(Pecuniam amt, Dictionary<IVoca, Pecuniam> explicitAmounts)
+        {
+            explicitAmounts = explicitAmounts ?? new Dictionary<IVoca, Pecuniam>();
+            if (!IsRenting)
+            {
+                explicitAmounts.Add(new Mereo("Real Estate", AssetGroupNames.REAL_PROPERTY),
+                    (_homeEquityRate * amt.ToDouble()).ToPecuniam());
+            }
+
+            if (_options.HasVehicles)
+            {
+                explicitAmounts.Add(new Mereo("Motor Vehicles", AssetGroupNames.PERSONAL_PROPERTY),
+                    (_carEquityRate * amt.ToDouble()).ToPecuniam());
+            }
+
+            explicitAmounts.Add(new Mereo("Checking", AssetGroupNames.INSTITUTIONAL),
+                (_checkingAccountRate * amt.ToDouble()).ToPecuniam());
+            explicitAmounts.Add(new Mereo("Savings", AssetGroupNames.INSTITUTIONAL),
+                (_savingsAccountRate * amt.ToDouble()).ToPecuniam());
+
+            //get all the group names
+            var grpNames = GetAssetItemNames().Select(x => x.GetName(KindsOfNames.Group)).Distinct().ToList();
+
+            //get a portion for each
+            var randPortions = Etx.DiminishingPortions(grpNames.Count, -0.2D);
+
+            //put the two together
+            var randMap = grpNames.Zip(randPortions, (n, v) => new Tuple<string, double>(n, v));
+
+            //convert it to a dictionary
+            var randDict = new Dictionary<string, double>();
+            foreach (var rm in randMap)
+                randDict.Add(rm.Item1, rm.Item2);
+
+            //get the factor table portions 
+            var calcPortions = new[] {_homeEquityRate, _carEquityRate, (_checkingAccountRate + _savingsAccountRate), 0D};
+
+            //put it together with group names as well
+            var calcMap = grpNames.Zip(calcPortions, (n, v) => new Tuple<string, double>(n, v)).ToList();
+
+            //reconcile the two so it still sum's to 1
+            return ReassignRates(randDict, calcMap).Select(kv => new Tuple<string, double>(kv.Key, kv.Value)).ToList();
+
         }
 
         /// <summary>
@@ -217,9 +272,12 @@ namespace NoFuture.Rand.Domus.Opes
         /// <param name="startDate"></param>
         /// <param name="endDate"></param>
         /// <param name="interval"></param>
+        /// <param name="amt">
+        /// Optional, forces the actual amounts used when generating a random history to scale and fit this amount
+        /// </param>
         /// <returns></returns>
         protected Pondus GetPondusForItemAndGroup(string item, string grp, DateTime startDate, DateTime? endDate,
-            Interval interval = Interval.Annually)
+            Interval interval = Interval.Annually, Pecuniam amt = null)
         {
             const StringComparison OPT = StringComparison.OrdinalIgnoreCase;
             const float FED_RATE = Gov.Fed.RiskFreeInterestRate.DF_VALUE;
@@ -236,16 +294,23 @@ namespace NoFuture.Rand.Domus.Opes
             Pondus p;
             if (isCheckingAccount)
             {
+                var checkingAmt = amt == null ? _randCheckingAcctAmt : _checkingAccountRate * amt.ToDouble();
                 p = CheckingAccount.GetRandomCheckingAcct(Person, startDate, $"{Etx.IntNumber(1, 9999):0000}");
-                p.Push(startDate.AddDays(-1), _randCheckingAcctAmt.ToPecuniam());
+                p.Push(startDate.AddDays(-1), checkingAmt.ToPecuniam());
             }
             else if (isSavingsAccount)
             {
+                var savingAmt = amt == null ? _randSavingsAcctAmt : _savingsAccountRate * amt.ToDouble();
                 p = SavingsAccount.GetRandomSavingAcct(Person, startDate);
-                p.Push(startDate.AddDays(-1), _randSavingsAcctAmt.ToPecuniam());
+                p.Push(startDate.AddDays(-1), savingAmt.ToPecuniam());
             }
             else if (isMortgage || isCarLoan)
             {
+                var homeDebtAmt = amt == null ? _randHomeDebt : _homeDebtRate * amt.ToDouble();
+                var homeEquityAmt = amt == null ? _randHomeEquity : _homeEquityRate * amt.ToDouble();
+                var carDebtAmt = amt == null ? _randCarDebt : _carDebtRate * amt.ToDouble();
+                var carEquityAmt = amt == null ? _randCarEquity : _carEquityRate * amt.ToDouble();
+
                 var baseRate = isMortgage ? FED_RATE : FED_RATE + 3.2;
                 var randRate =
                     (float) CreditScore.GetRandomInterestRate(null, baseRate) * 0.01f;
@@ -255,12 +320,12 @@ namespace NoFuture.Rand.Domus.Opes
                     : (Identifier) new Gov.Nhtsa.Vin();
 
                 var remainingCost = isMortgage
-                    ? _randHomeDebt.ToPecuniam()
-                    : _randCarDebt.ToPecuniam();
+                    ? homeDebtAmt.ToPecuniam()
+                    : carDebtAmt.ToPecuniam();
 
                 var totalValue = isMortgage
-                    ? (_randHomeDebt + _randHomeEquity).ToPecuniam()
-                    : (_randCarDebt + _randCarEquity).ToPecuniam();
+                    ? (homeDebtAmt + homeEquityAmt).ToPecuniam()
+                    : (carDebtAmt + carEquityAmt).ToPecuniam();
 
                 var buyer = Person?.Personality;
 
@@ -303,7 +368,7 @@ namespace NoFuture.Rand.Domus.Opes
         protected internal virtual Dictionary<string, double> GetRealPropertyName2RandomRates(
         RatesDictionaryArgs args = null)
         {
-            var sumOfRates = args?.SumOfRates ?? Math.Round(Math.Abs(_randHomeEquity / _randNetWorth), 5);
+            var sumOfRates = args?.SumOfRates ?? Math.Round(Math.Abs(_randHomeEquity / _totalEquity), 5);
             var derivativeSlope = args?.DerivativeSlope ?? -0.2D;
             var directAssignNames2Rates = args?.DirectAssignNames2Rates;
 
@@ -340,7 +405,7 @@ namespace NoFuture.Rand.Domus.Opes
             RatesDictionaryArgs args = null)
         {
 
-            var sumOfRates = args?.SumOfRates ?? Math.Round(Math.Abs(_randCarDebt / _randNetWorth), 5);
+            var sumOfRates = args?.SumOfRates ?? Math.Round(Math.Abs(_randCarDebt / _totalEquity), 5);
             var derivativeSlope = args?.DerivativeSlope ?? -0.4D;
             var directAssignNames2Rates = args?.DirectAssignNames2Rates;
 
@@ -357,10 +422,11 @@ namespace NoFuture.Rand.Domus.Opes
 
             ReconcileDiffsInSums(ref sumOfRates, directAssignNames2Rates);
 
-            var dk = GetNames2RandomRates(DomusOpesDivisions.Assets, AssetGroupNames.PERSONAL_PROPERTY, sumOfRates, null,
+            var dk = GetNames2RandomRates(DomusOpesDivisions.Assets, AssetGroupNames.PERSONAL_PROPERTY, sumOfRates,
+                null,
                 derivativeSlope, "Art", "Firearms", "Collections", "Antiques");
 
-            var zeroOuts = new List<string> { "Crops", "Livestock" };
+            var zeroOuts = new List<string> {"Crops", "Livestock"};
 
             dk = ZeroOutRates(dk, zeroOuts.ToArray());
 
@@ -380,7 +446,7 @@ namespace NoFuture.Rand.Domus.Opes
             RatesDictionaryArgs args = null)
         {
             //half of the diff half there
-            var sumOfRates = args?.SumOfRates ?? Math.Round(Math.Abs(_diffInNetWorth / 2 / _randNetWorth), 5);
+            var sumOfRates = args?.SumOfRates ?? Math.Round(Math.Abs(_allOtherAssetEquity / 2 / _totalEquity), 5);
             var derivativeSlope = args?.DerivativeSlope ?? -0.2D;
             var directAssignNames2Rates = args?.DirectAssignNames2Rates;
 
@@ -406,7 +472,7 @@ namespace NoFuture.Rand.Domus.Opes
         protected internal virtual Dictionary<string, double> GetSecuritiesName2Rates(RatesDictionaryArgs args = null)
         {
             //half of the diff half there
-            var sumOfRates = args?.SumOfRates ?? Math.Round(Math.Abs(_diffInNetWorth / 2 / _randNetWorth), 5);
+            var sumOfRates = args?.SumOfRates ?? Math.Round(Math.Abs(_allOtherAssetEquity / 2 / _totalEquity), 5);
             var derivativeSlope = args?.DerivativeSlope ?? -0.4D;
             var directAssignNames2Rates = args?.DirectAssignNames2Rates;
 

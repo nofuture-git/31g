@@ -198,7 +198,7 @@ namespace NoFuture.Rand.Domus.Opes
                 AddEmployment(emp);
             }
 
-            foreach (var dtRange in GetIncomeYearsInDates(_startDate))
+            foreach (var dtRange in GetYearsInDates(_startDate))
             {
                 var stDt = dtRange.Item1;
                 var endDt = dtRange.Item2;
@@ -342,11 +342,12 @@ namespace NoFuture.Rand.Domus.Opes
             //move this value down more to "flatten" the diminishing rate, 
             var portions =
                 Etx.DiminishingPortions(expenseGrps.Count, -1.3);
+            var grp2Portion = expenseGrps.Zip(portions, (n, v) => new Tuple<string, double>(n, v));
 
-            var count = 0;
-            foreach (var grp in expenseGrps)
+            foreach (var g2p in grp2Portion)
             {
-                var portion = portions[count];
+                var grp = g2p.Item1;
+                var portion = g2p.Item2;
 
                 var derivativeSlope = name2Slope.ContainsKey(grp) ? name2Slope[grp] : -1.0D;
 
@@ -370,7 +371,6 @@ namespace NoFuture.Rand.Domus.Opes
                     itemsout.Add(p);
                 }
 
-                count += 1;
             }
             return itemsout.ToArray();
         }

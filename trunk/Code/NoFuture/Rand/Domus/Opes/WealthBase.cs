@@ -19,7 +19,7 @@ namespace NoFuture.Rand.Domus.Opes
     public abstract class WealthBase
     {
         #region constants
-        public const double DF_STD_DEV_PERCENT = 0.1285D;
+        public const double DF_STD_DEV_PERCENT = 0.0485D;
 
         #endregion
 
@@ -682,7 +682,7 @@ namespace NoFuture.Rand.Domus.Opes
         /// Breaks the whole span of time for this instance into yearly blocks.
         /// </summary>
         /// <returns></returns>
-        protected internal List<Tuple<DateTime, DateTime?>> GetIncomeYearsInDates(DateTime startDate)
+        protected internal List<Tuple<DateTime, DateTime?>> GetYearsInDates(DateTime startDate)
         {
             var stDt = startDate;
             if(stDt.Day!=1 || stDt.Month != 1)
