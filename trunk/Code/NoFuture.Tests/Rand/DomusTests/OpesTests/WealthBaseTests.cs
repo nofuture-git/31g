@@ -207,6 +207,34 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             System.Diagnostics.Debug.WriteLine(testResult);
         }
 
+        [TestMethod]
+        public void TestGetGroupNames2Portions()
+        {
+            var testInput = new Domus.Opes.Options.OpesOptions();
+            testInput.GivenDirectly.Add(new Mereo("Real Estate","Real Property"){ExpectedValue = 7800.ToPecuniam()});
+            testInput.GivenDirectly.Add(new Mereo("Stocks", "Securities"){ExpectedValue = 1000.ToPecuniam()});
+            testInput.SumTotal = 12000.ToPecuniam();
+
+            var testResult = WealthBase.GetGroupNames2Portions(WealthBase.DomusOpesDivisions.Assets, testInput);
+            Assert.IsNotNull(testResult);
+            Assert.AreNotEqual(0, testResult.Count);
+
+            var testResultSum = testResult.Select(i => i.Item2).Sum();
+            Assert.IsTrue(Math.Round(testResultSum) == 1.0D);
+
+            var testResult00 = testResult.FirstOrDefault(k => k.Item1 == "Real Property");
+            Assert.IsNotNull(testResult00);
+            var testResult01 = testResult.FirstOrDefault(k => k.Item1 == "Securities");
+            Assert.IsNotNull(testResult01);
+
+            Assert.AreEqual(Math.Round(7800.0D/12000, 3), Math.Round(testResult00.Item2,3));
+            Assert.AreEqual(Math.Round(1000.0D / 12000, 3), Math.Round(testResult01.Item2, 3));
+
+            foreach (var tr in testResult)
+                System.Diagnostics.Debug.WriteLine(tr);
+
+        }
+
         public static List<Tuple<string, string>> GetExpectedNamesFromXml(string sectionName)
         {
             var grpsAndNames = new List<Tuple<string, string>>();

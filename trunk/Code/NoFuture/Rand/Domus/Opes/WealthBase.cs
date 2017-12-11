@@ -8,6 +8,7 @@ using NoFuture.Rand.Data;
 using NoFuture.Rand.Data.Endo;
 using NoFuture.Rand.Data.Endo.Enums;
 using NoFuture.Rand.Data.Sp;
+using NoFuture.Rand.Domus.Opes.Options;
 using NoFuture.Rand.Domus.Pneuma;
 using NoFuture.Rand.Gov.Fed;
 using NoFuture.Shared.Core;
@@ -32,6 +33,7 @@ namespace NoFuture.Rand.Domus.Opes
         private static IMereo[] _deductionItemNames;
         private static IMereo[] _expenseItemNames;
         private static IMereo[] _assetItemNames;
+        protected internal OpesOptions _myOptions;
         #endregion
 
         #region inner types
@@ -93,6 +95,7 @@ namespace NoFuture.Rand.Domus.Opes
         #region ctors
         protected WealthBase(NorthAmerican american, bool isRenting = false)
         {
+            _myOptions = new OpesOptions();
             if (american == null)
             {
                 CreditScore = new PersonalCreditScore(null);
@@ -109,6 +112,27 @@ namespace NoFuture.Rand.Domus.Opes
             IsRenting = isRenting || GetIsLeaseResidence(usCityArea);
             _factors = new NorthAmericanFactors(_amer);
         }
+
+        protected WealthBase(NorthAmerican american, OpesOptions options)
+        {
+            _myOptions = options ?? new OpesOptions();
+            if (american == null)
+            {
+                CreditScore = new PersonalCreditScore(null);
+                _factors = new NorthAmericanFactors(null);
+                IsRenting = MyOptions.IsRenting;
+                return;
+            }
+            _amer = american;
+            var usCityArea = _amer?.Address?.HomeCityArea as UsCityStateZip;
+
+            CreditScore = new PersonalCreditScore(american);
+
+            //determine if renting or own
+            IsRenting = MyOptions.IsRenting || GetIsLeaseResidence(usCityArea);
+            _factors = new NorthAmericanFactors(_amer);
+
+        }
         #endregion
 
         #region inner types
@@ -120,6 +144,12 @@ namespace NoFuture.Rand.Domus.Opes
             internal Dictionary<string, double> DirectAssignNames2Rates { get; set; }
         }
         #endregion 
+
+        protected internal OpesOptions MyOptions
+        {
+            get => _myOptions;
+            set => _myOptions = value;
+        }
 
         public CreditScore CreditScore { get; protected set; }
 
@@ -221,7 +251,7 @@ namespace NoFuture.Rand.Domus.Opes
         /// <returns></returns>
         public static IMereo[] GetIncomeItemNames()
         {
-            var xpath = $"//{DomusOpesDivisions.Income.ToString().ToLower()}//mereo";
+            var xpath = $"//{DomusOpesDivisions.Income.ToString().ToLower()}//item";
             return _incomeItemNames = _incomeItemNames ?? GetDomusOpesItemNames(xpath);
         }
 
@@ -232,7 +262,7 @@ namespace NoFuture.Rand.Domus.Opes
         /// <returns></returns>
         public static IMereo[] GetDeductionItemNames()
         {
-            var xpath = $"//{DomusOpesDivisions.Deduction.ToString().ToLower()}//mereo";
+            var xpath = $"//{DomusOpesDivisions.Deduction.ToString().ToLower()}//item";
             return _deductionItemNames = _deductionItemNames ?? GetDomusOpesItemNames(xpath);
         }
 
@@ -243,7 +273,7 @@ namespace NoFuture.Rand.Domus.Opes
         /// <returns></returns>
         public static IMereo[] GetExpenseItemNames()
         {
-            var xpath = $"//{DomusOpesDivisions.Expense.ToString().ToLower()}//mereo";
+            var xpath = $"//{DomusOpesDivisions.Expense.ToString().ToLower()}//item";
             return _expenseItemNames = _expenseItemNames ?? GetDomusOpesItemNames(xpath);
         }
 
@@ -255,8 +285,98 @@ namespace NoFuture.Rand.Domus.Opes
         /// <returns></returns>
         public static IMereo[] GetAssetItemNames()
         {
-            var xpath = $"//{DomusOpesDivisions.Assets.ToString().ToLower()}//mereo";
+            var xpath = $"//{DomusOpesDivisions.Assets.ToString().ToLower()}//item";
             return _assetItemNames = _assetItemNames ?? GetDomusOpesItemNames(xpath);
+        }
+
+        /// <summary>
+        /// Get the Domus Opes group names for the given division
+        /// </summary>
+        /// <param name="division"></param>
+        /// <returns></returns>
+        public static List<string> GetGroupNames(DomusOpesDivisions division)
+        {
+            var grpNames = new List<string>();
+            switch (division)
+            {
+                case DomusOpesDivisions.Assets:
+                    grpNames.AddRange(GetAssetItemNames().Select(x => x.GetName(KindsOfNames.Group)));
+                    break;
+                case DomusOpesDivisions.Deduction:
+                    grpNames.AddRange(GetDeductionItemNames().Select(x => x.GetName(KindsOfNames.Group)));
+                    break;
+                case DomusOpesDivisions.Expense:
+                    grpNames.AddRange(GetExpenseItemNames().Select(x => x.GetName(KindsOfNames.Group)));
+                    break;
+                case DomusOpesDivisions.Income:
+                    grpNames.AddRange(GetIncomeItemNames().Select(x => x.GetName(KindsOfNames.Group)));
+                    break;
+            }
+            return grpNames.Distinct().ToList();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="division"></param>
+        /// <param name="options"></param>
+        /// <returns></returns>
+        public static List<Tuple<string, double>> GetGroupNames2Portions(DomusOpesDivisions division,
+            OpesOptions options)
+        {
+            options = options ?? new OpesOptions();
+
+            var grpNames = GetGroupNames(division);
+
+            //get a portion for each
+            var randPortions = Etx.DiminishingPortions(grpNames.Count, options.DerivativeSlope);
+
+            //put the two together
+            var randMap = grpNames.Zip(randPortions, (n, v) => new Tuple<string, double>(n, v)).ToList();
+
+            //to get a rate we need both numerator and denominator
+            if (options.SumTotal == null || options.SumTotal == Pecuniam.Zero || !options.GivenDirectly.Any())
+                return randMap;
+
+            //get a dict of group names to all 0.0D
+            var calcDict = new Dictionary<string, double>();
+
+            //get the sum of given options by group only
+            foreach (var d in options.GivenDirectly)
+            {
+                var dGrp = d.GetName(KindsOfNames.Group);
+                if (string.IsNullOrWhiteSpace(dGrp) || d.ExpectedValue == null || d.ExpectedValue == Pecuniam.Zero)
+                    continue;
+                if (calcDict.ContainsKey(dGrp))
+                    calcDict[dGrp] += d.ExpectedValue.ToDouble();
+                else
+                    calcDict.Add(dGrp, d.ExpectedValue.ToDouble());
+            }
+
+            var calcMap = new List<Tuple<string, double>>();
+
+            //get the group sum as a ratio of the total
+            foreach (var k in grpNames)
+            {
+                //we only want to reassign when value was explicity given in options
+                if (!calcDict.ContainsKey(k))
+                {
+                    continue;
+                }
+
+                var rate = calcDict[k] / options.SumTotal.ToDouble();
+                calcMap.Add(new Tuple<string, double>(k, rate));
+            }
+
+            //convert it to a dictionary
+            var randDict = new Dictionary<string, double>();
+            foreach (var t in randMap)
+            {
+                randDict.Add(t.Item1, t.Item2);
+            }
+
+            //convert it to a dictionary 
+            return ReassignRates(randDict, calcMap).Select(kv => new Tuple<string, double>(kv.Key, kv.Value)).ToList();
         }
 
         /// <summary>
@@ -417,7 +537,7 @@ namespace NoFuture.Rand.Domus.Opes
 
         /// <summary>
         /// Helper method to get a bunch of diminishing random rates mapped to some names.
-        /// This differs from the counterpart <see cref="GetNames2RandomRates(System.Collections.Generic.IEnumerable{NoFuture.Rand.Data.Sp.IMereo},double,System.Func{double})"/> because 
+        /// This differs from the counterpart GetNames2RandomRates because 
         /// every item in <see cref="names"/> will get &apos;something&apos; - no matter how small.
         /// </summary>
         /// <param name="names"></param>
@@ -440,7 +560,6 @@ namespace NoFuture.Rand.Domus.Opes
 
             return p2r;
         }
-
 
         /// <summary>
         /// Takes the rates away from <see cref="zeroOutNames"/> and adds the rate to 
@@ -490,7 +609,7 @@ namespace NoFuture.Rand.Domus.Opes
         /// receive the re-located rates is based on a diminishing probability.
         /// </param>
         /// <returns></returns>
-        protected internal Dictionary<string, double> ReassignRates(Dictionary<string, double> names2Rates,
+        public static Dictionary<string, double> ReassignRates(Dictionary<string, double> names2Rates,
             List<Tuple<string, double>> reassignNames2Rates, double derivativeSlope = -1.0D)
         {
             if (names2Rates == null || !names2Rates.Any() || reassignNames2Rates == null || !reassignNames2Rates.Any())
@@ -786,18 +905,18 @@ namespace NoFuture.Rand.Domus.Opes
         /// <param name="grp"></param>
         /// <returns></returns>
         protected internal static Dictionary<string, double> ConvertToExplicitRates(Pecuniam amt,
-            Dictionary<IVoca, Pecuniam> explicitAmounts, string grp)
+            List<IMereo> explicitAmounts, string grp)
         {
             const StringComparison OPT = StringComparison.OrdinalIgnoreCase;
             var directAssignRates = new Dictionary<string, double>();
-            if (!explicitAmounts.Any(x => String.Equals(x.Key.GetName(KindsOfNames.Group), grp, OPT)))
+            if (!explicitAmounts.Any(x => String.Equals(x.GetName(KindsOfNames.Group), grp, OPT)))
                 return directAssignRates;
 
             foreach (var n in explicitAmounts.Where(x =>
-                String.Equals(x.Key.GetName(KindsOfNames.Group), grp, OPT)))
+                String.Equals(x.GetName(KindsOfNames.Group), grp, OPT)))
             {
-                var directAssignRate = Math.Round(n.Value.ToDouble() / amt.ToDouble(), 8);
-                directAssignRates.Add(n.Key.GetName(KindsOfNames.Legal), directAssignRate);
+                var directAssignRate = Math.Round(n.ExpectedValue.ToDouble() / amt.ToDouble(), 8);
+                directAssignRates.Add(n.GetName(KindsOfNames.Legal), directAssignRate);
             }
             return directAssignRates;
         }

@@ -15,43 +15,43 @@
         <domus-opes>
           <income>
             <group name="Judgments">
-              <mereo name="Alimony">
+              <item name="Alimony">
                 <eg name="Maintenance" />
                 <eg name="Spousal Maintenance" />
-              </mereo>
-              <mereo name="Child Support" />
-              <mereo name="Injury" />
+              </item>
+              <item name="Child Support" />
+              <item name="Injury" />
             </group>
             <group name="Subito">
-              <mereo name="Gifts" />
-              <mereo name="Lottery Winnings" />
-              <mereo name="Gambling Winnings" />
-              <mereo name="Inheritance" />
-              <mereo name="Family" />
+              <item name="Gifts" />
+              <item name="Lottery Winnings" />
+              <item name="Gambling Winnings" />
+              <item name="Inheritance" />
+              <item name="Family" />
             </group>
             <group name="Employment">
-              <mereo name="Salary" />
-              <mereo name="Wages" />
-              <mereo name="Employer Paid Expenses">
+              <item name="Salary" />
+              <item name="Wages" />
+              <item name="Employer Paid Expenses">
                 <eg name="cell phone" />
                 <eg name="car" />
                 <eg name="housing allowance" />
                 <eg name="meals" />
                 <eg name="military allowances" />
                 <eg name="vacation/holiday pay" />
-              </mereo>
-              <mereo name="Shift Differential" />
-              <mereo name="Severance Pay" />
-              <mereo name="Overtime" />
-              <mereo name="Self-employment" />
-              <mereo name="Tips" />
-              <mereo name="Commissions" />
-              <mereo name="Bonuses" />
-              <mereo name="In-Kind" />
+              </item>
+              <item name="Shift Differential" />
+              <item name="Severance Pay" />
+              <item name="Overtime" />
+              <item name="Self-employment" />
+              <item name="Tips" />
+              <item name="Commissions" />
+              <item name="Bonuses" />
+              <item name="In-Kind" />
             </group>
             <group name="Public Benefits">
-              <mereo name="Veterans Benefits" />
-              <mereo name="Housing Choice Voucher Program Section 8" abbrev="HUD">
+              <item name="Veterans Benefits" />
+              <item name="Housing Choice Voucher Program Section 8" abbrev="HUD">
                 <eg name="Housing Assistance" />
                 <eg name="Section 8" />
                 <definition src="https://www.hud.gov/topics/housing_choice_voucher_program_section_8">
@@ -61,8 +61,8 @@
                     in the private market.
                     ]]>
                 </definition>
-              </mereo>
-              <mereo name="Worker&apos;s compensation">
+              </item>
+              <item name="Worker&apos;s compensation">
                 <definition src="https://en.wikipedia.org/wiki/Workers%27_compensation">
                   <![CDATA[
                     Is a form of insurance providing wage replacement and medical benefits to 
@@ -71,8 +71,8 @@
                     tort of negligence.
                     ]]>
                 </definition>
-              </mereo>
-              <mereo name="Unemployment">
+              </item>
+              <item name="Unemployment">
                 <eg name="Unemployment Insurance Benefits" />
                 <eg name="Unemployment Benefits" />
                 <definition src="https://workforcesecurity.doleta.gov/unemploy/uifactsheet.asp">
@@ -83,8 +83,8 @@
                      requirements of State law.
                     ]]>
                 </definition>
-              </mereo>
-              <mereo name="Supplemental Nutrition Assistance Program" abbrev="SNAP">
+              </item>
+              <item name="Supplemental Nutrition Assistance Program" abbrev="SNAP">
                 <eg name="Food Stamps" />
                 <definition src="https://www.fns.usda.gov/snap/supplemental-nutrition-assistance-program-snap">
                   <![CDATA[
@@ -92,8 +92,8 @@
                      individuals and families and provides economic benefits to communities.
                     ]]>
                 </definition>
-              </mereo>
-              <mereo name="Temporary Assistance for Needy Families" abbrev="TANF">
+              </item>
+              <item name="Temporary Assistance for Needy Families" abbrev="TANF">
                 <eg name="TFA payments" />
                 <definition src="https://www.hhs.gov/answers/programs-for-families-and-children/what-is-tanf/index.html">
                   <![CDATA[
@@ -101,8 +101,8 @@
                      relatives cannot provide for the family's basic needs.
                     ]]>
                 </definition>
-              </mereo>
-              <mereo name="Social Security Disability Insurance" abbrev="SSDI">
+              </item>
+              <item name="Social Security Disability Insurance" abbrev="SSDI">
                 <eg name="SSD" />
                 <definition src="https://www.disabilitysecrets.com/page5-13.html">
                   <![CDATA[
@@ -115,8 +115,8 @@
                     a disabled person will become eligible for Medicare.
                     ]]>
                 </definition>
-              </mereo>
-              <mereo name="Supplemental Security Income" abbrev="SSI">
+              </item>
+              <item name="Supplemental Security Income" abbrev="SSI">
                 <eg name="Welfare" />
                 <definition src="https://www.disabilitysecrets.com/page5-13.html">
                   <![CDATA[
@@ -129,226 +129,226 @@
                     and a very limited income.
                     ]]>
                 </definition>
-              </mereo>
+              </item>
             </group>
             <group name="Real Property">
-              <mereo name="Real Estate" />
+              <item name="Real Estate" />
             </group>
             <group name="Securities">
-              <mereo name="Stock"/>
-              <mereo name="Bond"/>
-              <mereo name="Funds" />
-              <mereo name="Derivatives" />
+              <item name="Stock"/>
+              <item name="Bond"/>
+              <item name="Funds" />
+              <item name="Derivatives" />
             </group>
             <group name="Institutional">
-              <mereo name="Partnerships"/>
-              <mereo name="Trusts"/>
-              <mereo name="Fellowships"/>
-              <mereo name="Stipends"/>
-              <mereo name="Retirement Plans" />
-              <mereo name="Savings"/>
-              <mereo name="Certificate of Deposit" abbrev="COD"/>
-              <mereo name="Money Market"/>
-              <mereo name="Annuity"/>
-              <mereo name="Profit Sharing"/>
-              <mereo name="Royalties"/>
+              <item name="Partnerships"/>
+              <item name="Trusts"/>
+              <item name="Fellowships"/>
+              <item name="Stipends"/>
+              <item name="Retirement Plans" />
+              <item name="Savings"/>
+              <item name="Certificate of Deposit" abbrev="COD"/>
+              <item name="Money Market"/>
+              <item name="Annuity"/>
+              <item name="Profit Sharing"/>
+              <item name="Royalties"/>
             </group>            
           </income>
           <deduction>
             <group name="Insurance">
-              <mereo name="Health" />
-              <mereo name="Life" />
-              <mereo name="Supplemental Life" />
-              <mereo name="Dependent Life" />
-              <mereo name="Accidental Death &amp; Dismemberment" abbrev="AD&amp;D" />
-              <mereo name="Dental" />
-              <mereo name="Vision" />
-              <mereo name="Short-term Disability" />
-              <mereo name="Long-term Disability" />
+              <item name="Health" />
+              <item name="Life" />
+              <item name="Supplemental Life" />
+              <item name="Dependent Life" />
+              <item name="Accidental Death &amp; Dismemberment" abbrev="AD&amp;D" />
+              <item name="Dental" />
+              <item name="Vision" />
+              <item name="Short-term Disability" />
+              <item name="Long-term Disability" />
             </group>
             <group name="Government">
-              <mereo name="Federal tax" />
-              <mereo name="State tax" />
-              <mereo name="FICA" />
-              <mereo name="Medicare" />
+              <item name="Federal tax" />
+              <item name="State tax" />
+              <item name="FICA" />
+              <item name="Medicare" />
             </group>
             <group name="Judgments">
-              <mereo name="Child Support" />
-              <mereo name="Alimony" />
-              <mereo name="Foster Care" />
-              <mereo name="Student Loans" />
+              <item name="Child Support" />
+              <item name="Alimony" />
+              <item name="Foster Care" />
+              <item name="Student Loans" />
             </group>
             <group name="Employment">
-              <mereo name="Registered Retirement Savings Plan" abbrev="401(k)" />
-              <mereo name="Profit Sharing" />
-              <mereo name="Pension" />
-              <mereo name="Union Dues" />
-              <mereo name="Health Savings Account" abbrev="HRA" />
-              <mereo name="Flexible Spending Account" abbrev="FSA" />
-              <mereo name="Credit Union Loan" />
+              <item name="Registered Retirement Savings Plan" abbrev="401(k)" />
+              <item name="Profit Sharing" />
+              <item name="Pension" />
+              <item name="Union Dues" />
+              <item name="Health Savings Account" abbrev="HRA" />
+              <item name="Flexible Spending Account" abbrev="FSA" />
+              <item name="Credit Union Loan" />
             </group>
           </deduction>
           <expense>
             <group name="Home">
-              <mereo name="Mortgage" />
-              <mereo name="Other Lein" />
-              <mereo name="Rent" />
-              <mereo name="Maintenance">
+              <item name="Mortgage" />
+              <item name="Other Lein" />
+              <item name="Rent" />
+              <item name="Maintenance">
                 <eg name="appliance" />
                 <eg name="lawn care" />
                 <eg name="house cleaning service" />
                 <eg name="building materials" />
-              </mereo>
-              <mereo name="Property Tax" />
-              <mereo name="Association Fees" />
+              </item>
+              <item name="Property Tax" />
+              <item name="Association Fees" />
             </group>
             <group name="Personal">
-              <mereo name="Groceries">
+              <item name="Groceries">
                 <eg name="toiletries" />
                 <eg name="bread" />
                 <eg name="paper plates" />
                 <eg name="soap" />
-              </mereo>
-              <mereo name="Entertainment">
+              </item>
+              <item name="Entertainment">
                 <eg name="movie tickets" />
                 <eg name="bowling" />
                 <eg name="video games" />
                 <eg name="dining out" />
-              </mereo>
-              <mereo name="Savings" />
-              <mereo name="Grooming">
+              </item>
+              <item name="Savings" />
+              <item name="Grooming">
                 <eg name="hair" />
                 <eg name="nails" />
                 <eg name="spa" />
-              </mereo>
-              <mereo name="Clothing" />
-              <mereo name="Vice">
+              </item>
+              <item name="Clothing" />
+              <item name="Vice">
                 <eg name="tobacco" />
                 <eg name="alcohol" />
                 <eg name="gambling" />
-              </mereo>
-              <mereo name="Gifts">
+              </item>
+              <item name="Gifts">
                 <eg name="church" />
                 <eg name="charity" />
                 <eg name="birthday" />
                 <eg name="holiday" />
                 <eg name="anniversary" />
-              </mereo>
-              <mereo name="Subscriptions">
+              </item>
+              <item name="Subscriptions">
                 <eg name="internet" />
                 <eg name="magazines" />
                 <eg name="newspaper" />
-              </mereo>
-              <mereo name="Dues">
+              </item>
+              <item name="Dues">
                 <eg name="professional" />
                 <eg name="clubs" />
-              </mereo>
+              </item>
             </group>
             <group name="Transportation">
-              <mereo name="Loan Payments" />
-              <mereo name="Fuel" />
-              <mereo name="Maintenance">
+              <item name="Loan Payments" />
+              <item name="Fuel" />
+              <item name="Maintenance">
                 <eg name="oil change" />
                 <eg name="tires" />
                 <eg name="brake pads" />
-              </mereo>
-              <mereo name="Public Transportation" />
-              <mereo name="Property Tax" />
-              <mereo name="Registration Fees" />
-              <mereo name="Parking" />
+              </item>
+              <item name="Public Transportation" />
+              <item name="Property Tax" />
+              <item name="Registration Fees" />
+              <item name="Parking" />
             </group>
             <group name="Utilities">
-              <mereo name="Telecommunications">
+              <item name="Telecommunications">
                 <eg name="mobile phone" />
                 <eg name="internet" />
                 <eg name="cable TV" />
                 <eg name="plain-old-telephone service" />
-              </mereo>
-              <mereo name="Electricity" />
-              <mereo name="Gas" />
-              <mereo name="Water" />
-              <mereo name="Sewer" />
-              <mereo name="Trash" />
+              </item>
+              <item name="Electricity" />
+              <item name="Gas" />
+              <item name="Water" />
+              <item name="Sewer" />
+              <item name="Trash" />
             </group>
             <group name="Children">
-              <mereo name="Childcare" />
-              <mereo name="School Supplies" />
-              <mereo name="Lunch Money" />
-              <mereo name="Extracurricular">
+              <item name="Childcare" />
+              <item name="School Supplies" />
+              <item name="Lunch Money" />
+              <item name="Extracurricular">
                 <eg name="lessons" />
                 <eg name="sports" />
                 <eg name="music equipment" />
-              </mereo>
-              <mereo name="Camp" />
-              <mereo name="Transportation" />
-              <mereo name="Allowance" />
-              <mereo name="Education">
+              </item>
+              <item name="Camp" />
+              <item name="Transportation" />
+              <item name="Allowance" />
+              <item name="Education">
                 <eg name="elementary" />
                 <eg name="secondary" />
                 <eg name="college" />
                 <eg name="occupational" />
-              </mereo>
+              </item>
             </group>
             <group name="Debts">
-              <mereo name="Credit Card" />
-              <mereo name="Health Care" />
-              <mereo name="Other Consumer" />
-              <mereo name="Student" />
-              <mereo name="Tax" />
-              <mereo name="Other" />
+              <item name="Credit Card" />
+              <item name="Health Care" />
+              <item name="Other Consumer" />
+              <item name="Student" />
+              <item name="Tax" />
+              <item name="Other" />
             </group>
             <group name="Insurance Premiums">
-              <mereo name="Home" />
-              <mereo name="Vehicle" />
-              <mereo name="Life" />
-              <mereo name="Renters" />
-              <mereo name="Disability" />
-              <mereo name="Health" />
-              <mereo name="Dental" />
-              <mereo name="Vision" />
-              <mereo name="Pet" />
+              <item name="Home" />
+              <item name="Vehicle" />
+              <item name="Life" />
+              <item name="Renters" />
+              <item name="Disability" />
+              <item name="Health" />
+              <item name="Dental" />
+              <item name="Vision" />
+              <item name="Pet" />
             </group>
             <group name="Health">
-              <mereo name="Prescriptions" />
-              <mereo name="OTC Medicine" />
-              <mereo name="Supplements" />
-              <mereo name="Physician" />
-              <mereo name="Dental" />
-              <mereo name="Optical" />
-              <mereo name="Therapy" />
-              <mereo name="Hospital" />
+              <item name="Prescriptions" />
+              <item name="OTC Medicine" />
+              <item name="Supplements" />
+              <item name="Physician" />
+              <item name="Dental" />
+              <item name="Optical" />
+              <item name="Therapy" />
+              <item name="Hospital" />
             </group>            
           </expense>
           <assets>
             <group name="Real Property">
-              <mereo name="Real Estate">
+              <item name="Real Estate">
                 <eg name="house" />
                 <eg name="land" />
                 <eg name="rental property" />
                 <eg name="time shares" />
                 <eg name="mineral rights" />
-              </mereo>
+              </item>
             </group>
             <group name="Personal Property">
-              <mereo name="Motor Vehicles">
+              <item name="Motor Vehicles">
                 <eg name="cars" />
                 <eg name="boats" />
                 <eg name="trailers" />
                 <eg name="motorcycles" />
                 <eg name="aircrafts" />
-              </mereo>
-              <mereo name="Home Furnishings">
+              </item>
+              <item name="Home Furnishings">
                 <eg name="furniture" />
                 <eg name="appliances" />
-              </mereo>
-              <mereo name="Cash">
+              </item>
+              <item name="Cash">
                 <eg name="dollars" />
                 <eg name="prepaid debit cards" />
                 <eg name="store credits" />
-              </mereo>              
-              <mereo name="Jewelry" />
-              <mereo name="Tools" />
-              <mereo name="Equipment">
+              </item>              
+              <item name="Jewelry" />
+              <item name="Tools" />
+              <item name="Equipment">
                 <eg name="sporting" />
                 <eg name="construction" />
                 <eg name="music intruments" />
@@ -356,58 +356,58 @@
                 <eg name="boats" />
                 <eg name="campers" />
                 <eg name="electronics" />
-              </mereo>
-              <mereo name="Antiques" />
-              <mereo name="Collections">
+              </item>
+              <item name="Antiques" />
+              <item name="Collections">
                 <eg name="coins" />
                 <eg name="stamps" />
                 <eg name="comic books" />
                 <eg name="cards" />
-              </mereo>
-              <mereo name="Firearms" />
-              <mereo name="Art" />
-              <mereo name="Crops" />
-              <mereo name="Livestock" />
+              </item>
+              <item name="Firearms" />
+              <item name="Art" />
+              <item name="Crops" />
+              <item name="Livestock" />
             </group>
             <group name="Institutional">
-              <mereo name="Checking" />
-              <mereo name="Savings"/>
-              <mereo name="Retirement Plans">
+              <item name="Checking" />
+              <item name="Savings"/>
+              <item name="Retirement Plans">
                 <eg name="pensions" />
                 <eg name="annuity" />
                 <eg name="IRA" />
                 <eg name="401(k)" />
                 <eg name="403(b)" />
                 <eg name="SEP" />
-              </mereo>
-              <mereo name="Certificate of Deposit" abbrev="COD"/>
-              <mereo name="Insurance Policies" />
-              <mereo name="Money Market"/>
-              <mereo name="Annuity"/>
-              <mereo name="Credit Union" />
-              <mereo name="Profit Sharing"/>
-              <mereo name="Safe Deposit Box" />
-              <mereo name="Trusts"/>
-              <mereo name="Brokerage" />
-              <mereo name="Partnerships"/>
-              <mereo name="Fellowships"/>
-              <mereo name="Escrow" />
-              <mereo name="Stipends"/>
-              <mereo name="Royalties"/>
+              </item>
+              <item name="Certificate of Deposit" abbrev="COD"/>
+              <item name="Insurance Policies" />
+              <item name="Money Market"/>
+              <item name="Annuity"/>
+              <item name="Credit Union" />
+              <item name="Profit Sharing"/>
+              <item name="Safe Deposit Box" />
+              <item name="Trusts"/>
+              <item name="Brokerage" />
+              <item name="Partnerships"/>
+              <item name="Fellowships"/>
+              <item name="Escrow" />
+              <item name="Stipends"/>
+              <item name="Royalties"/>
             </group>            
             <group name="Securities">
-              <mereo name="Stocks"/>
-              <mereo name="Bonds"/>
-              <mereo name="Funds">
+              <item name="Stocks"/>
+              <item name="Bonds"/>
+              <item name="Funds">
                 <eg name="mutual funds" />
                 <eg name="bond funds" />
-              </mereo>
-              <mereo name="Derivatives">
+              </item>
+              <item name="Derivatives">
                 <eg name="options" />
                 <eg name="swaps" />
                 <eg name="futures" />
                 <eg name="fowards" />
-              </mereo>
+              </item>
             </group>
           </assets>          
         </domus-opes>

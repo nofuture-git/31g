@@ -19,5 +19,10 @@ namespace NoFuture.Rand.Domus.Opes
         /// Gets the current list of assets
         /// </summary>
         Pondus[] CurrentAssets { get; }
+
+        /// <summary>
+        /// Gets the money sum of all assets for the current time
+        /// </summary>
+        Pecuniam TotalCurrentExpectedValue { get; }
     }
 }

@@ -7,6 +7,7 @@ using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Data.Sp;
 using NoFuture.Rand.Data.Sp.Enums;
 using NoFuture.Rand.Domus.Opes;
+using NoFuture.Rand.Domus.Opes.Options;
 using NoFuture.Rand.Domus.Pneuma;
 
 namespace NoFuture.Rand.Tests.DomusTests.OpesTests
@@ -114,7 +115,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             Assert.AreNotEqual(0, testResult.Length);
 
             foreach(var t in testResult)
-                System.Diagnostics.Debug.WriteLine($"{t.ExpectedValue} {t.My.Name} {t.My.Interval} {t.My.GetName(KindsOfNames.Group)}");
+                System.Diagnostics.Debug.WriteLine($"{t.My.ExpectedValue} {t.My.Name} {t.My.Interval} {t.My.GetName(KindsOfNames.Group)}");
 
             var sumResult = Pondus.GetExpectedAnnualSum(testResult);
             Assert.IsTrue(sumResult.ToDouble() >= 5659.99 && sumResult.ToDouble() <= 5660.01);
@@ -145,7 +146,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             Assert.AreNotEqual(0, testResult.Count);
 
             //try it on rental
-            testSubject = new NorthAmericanIncome(null, new NorthAmericanIncome.IncomeOptions{IsRenting = true});
+            testSubject = new NorthAmericanIncome(null, new OpesOptions{IsRenting = true});
             testResult = testSubject.GetUtilityExpenseNames2RandomRates();
 
             Assert.IsNotNull(testResult);
@@ -180,7 +181,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             Assert.IsTrue(testResult.ContainsKey("Renters"));
             Assert.IsTrue(testResult["Renters"] == 0D);
 
-            testSubject = new NorthAmericanIncome(null, new NorthAmericanIncome.IncomeOptions { IsRenting = true, HasVehicle = true});
+            testSubject = new NorthAmericanIncome(null, new OpesOptions{ IsRenting = true, HasVehicle = true});
             testResult = testSubject.GetInsuranceExpenseNames2RandomRates();
 
             Assert.IsNotNull(testResult);
@@ -210,7 +211,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             Assert.IsTrue(testResult.ContainsKey("Public Transportation"));
             Assert.IsTrue(testResult["Public Transportation"] > 0D);
 
-            testSubject = new NorthAmericanIncome(null, new NorthAmericanIncome.IncomeOptions { IsRenting = true, HasVehicle = true });
+            testSubject = new NorthAmericanIncome(null, new OpesOptions{ IsRenting = true, HasVehicle = true });
             testResult = testSubject.GetTransportationExpenseNames2RandomRates();
 
             Assert.IsNotNull(testResult);
@@ -236,7 +237,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             Assert.IsTrue(testResult.ContainsKey("Rent"));
             Assert.IsTrue(testResult["Rent"] == 0D);
 
-            testSubject = new NorthAmericanIncome(null, new NorthAmericanIncome.IncomeOptions { IsRenting = true });
+            testSubject = new NorthAmericanIncome(null, new OpesOptions { IsRenting = true });
             testResult = testSubject.GetHomeExpenseNames2RandomRates();
 
             Assert.IsNotNull(testResult);
@@ -254,8 +255,10 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
 
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0, testResult.Count);
-
-            testSubject = new NorthAmericanIncome(null, new NorthAmericanIncome.IncomeOptions { ChildrenAges = new []{2,4}});
+            var options = new OpesOptions();
+            options.ChildrenAges.Add(2);
+            options.ChildrenAges.Add(4);
+            testSubject = new NorthAmericanIncome(null, options);
             testResult = testSubject.GetChildrenExpenseNames2RandomRates();
 
             Assert.IsTrue(testResult.ContainsKey("Extracurricular"));
@@ -281,14 +284,15 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         [TestMethod]
         public void TestGetHomeExpenseNames2RandomRates_WithAssign()
         {
-            var testSubject = new NorthAmericanIncome(null,
-                new NorthAmericanIncome.IncomeOptions
-                {
-                    ChildrenAges = new[] { 2, 4 },
-                    IsRenting = false,
-                    HasVehicle = true,
-                    IsVehiclePaidOff = false
-                });
+            var options = new OpesOptions()
+            {
+                IsRenting = false,
+                HasVehicle = true,
+                IsVehiclePaidOff = false
+            };
+            options.ChildrenAges.Add(2);
+            options.ChildrenAges.Add(4);
+            var testSubject = new NorthAmericanIncome(null,options);
             var testInput = new WealthBase.RatesDictionaryArgs()
             {
                 SumOfRates = 0.33D,
@@ -313,14 +317,15 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         [TestMethod]
         public void TestGetExpenseItemsForRange()
         {
-            var testSubject = new NorthAmericanIncome(null,
-                new NorthAmericanIncome.IncomeOptions
-                {
-                    ChildrenAges = new[] {2, 4},
-                    IsRenting = false,
-                    HasVehicle = true,
-                    IsVehiclePaidOff = false
-                });
+            var options = new OpesOptions()
+            {
+                IsRenting = false,
+                HasVehicle = true,
+                IsVehiclePaidOff = false
+            };
+            options.ChildrenAges.Add(2);
+            options.ChildrenAges.Add(4);
+            var testSubject = new NorthAmericanIncome(null, options);
             var testResult = testSubject.GetExpenseItemsForRange(55000.ToPecuniam(), DateTime.MinValue);
 
             Assert.IsNotNull(testResult);
@@ -337,20 +342,21 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         [TestMethod]
         public void TestGetExpenseItemsForRange_WithDirectAssign()
         {
-            var testSubject = new NorthAmericanIncome(null, new NorthAmericanIncome.IncomeOptions
+            var options = new OpesOptions()
             {
-                ChildrenAges = new[] { 2, 4 },
                 IsRenting = false,
                 HasVehicle = true,
                 IsVehiclePaidOff = false
-            });
-            var directAssigns = new Dictionary<IVoca, Pecuniam>();
+            };
+            options.ChildrenAges.Add(2);
+            options.ChildrenAges.Add(4);
+            var testSubject = new NorthAmericanIncome(null, options);
 
-            directAssigns.Add(new Mereo("Mortgage", "Home"), 13476.0D.ToPecuniam());
-            directAssigns.Add(new Mereo("Loan Payments", "Transportation"), 3750.0D.ToPecuniam());
-            directAssigns.Add(new Mereo("Credit Card", "Debts"), 2728.44D.ToPecuniam());
+            testSubject.MyOptions.GivenDirectly.Add(new Mereo("Mortgage", "Home") {ExpectedValue = 13476.0D.ToPecuniam() });
+            testSubject.MyOptions.GivenDirectly.Add(new Mereo("Loan Payments", "Transportation") {ExpectedValue = 3750.0D.ToPecuniam()});
+            testSubject.MyOptions.GivenDirectly.Add(new Mereo("Credit Card", "Debts") {ExpectedValue = 2728.44D.ToPecuniam()});
 
-            var testResult = testSubject.GetExpenseItemsForRange(97860.0D.ToPecuniam(), DateTime.Today.AddYears(-1), null, Interval.Annually, directAssigns);
+            var testResult = testSubject.GetExpenseItemsForRange(97860.0D.ToPecuniam(), DateTime.Today.AddYears(-1), null, Interval.Annually);
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0, testResult.Length);
 
@@ -358,7 +364,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
                 testResult.FirstOrDefault(p => p.My.Name == "Mortgage" && p.My.GetName(KindsOfNames.Group) == "Home");
             Assert.IsNotNull(testPondus);
             System.Diagnostics.Debug.WriteLine(testPondus);
-            var testAmt = testPondus.ExpectedValue;
+            var testAmt = testPondus.My.ExpectedValue;
             Assert.IsNotNull(testAmt);
             Assert.AreEqual(13476.0D, testAmt.ToDouble());
 
@@ -366,7 +372,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
                 p.My.Name == "Loan Payments" && p.My.GetName(KindsOfNames.Group) == "Transportation");
             Assert.IsNotNull(testPondus);
             System.Diagnostics.Debug.WriteLine(testPondus);
-            testAmt = testPondus.ExpectedValue;
+            testAmt = testPondus.My.ExpectedValue;
             Assert.IsNotNull(testAmt);
             Assert.AreEqual(3750.0D, testAmt.ToDouble());
 
@@ -374,7 +380,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
                 p.My.Name == "Credit Card" && p.My.GetName(KindsOfNames.Group) == "Debts");
             Assert.IsNotNull(testPondus);
             System.Diagnostics.Debug.WriteLine(testPondus);
-            testAmt = testPondus.ExpectedValue;
+            testAmt = testPondus.My.ExpectedValue;
             Assert.IsNotNull(testAmt);
             Assert.AreEqual(2728.44D, testAmt.ToDouble());
         }
@@ -437,7 +443,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
                 new Tuple<string, double>("Item1", 0.33D)
             };
 
-            var testResult = testSubject.ReassignRates(testInput00, testInput01);
+            var testResult = WealthBase.ReassignRates(testInput00, testInput01);
 
             //test is gave something back
             Assert.IsNotNull(testResult);

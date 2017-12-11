@@ -8,6 +8,7 @@ using NoFuture.Rand.Data.Endo.Grps;
 using NoFuture.Rand.Data.Sp;
 using NoFuture.Rand.Data.Sp.Cc;
 using NoFuture.Rand.Data.Sp.Enums;
+using NoFuture.Rand.Domus.Opes.Options;
 using NoFuture.Rand.Domus.Pneuma;
 
 namespace NoFuture.Rand.Domus.Opes
@@ -26,43 +27,15 @@ namespace NoFuture.Rand.Domus.Opes
         private readonly HashSet<Pondus> _otherIncome = new HashSet<Pondus>();
         private readonly HashSet<Pondus> _expenses = new HashSet<Pondus>();
         private readonly DateTime _startDate;
-        private readonly IncomeOptions _options;
-
         #endregion
 
         #region ctors
 
-        public NorthAmericanIncome(NorthAmerican american, IncomeOptions options = null, DateTime? startDate = null) :
+        public NorthAmericanIncome(NorthAmerican american, OpesOptions options = null, DateTime? startDate = null) :
             base(
-                american, options?.IsRenting ?? false)
+                american, options)
         {
             _startDate = startDate ?? GetYearNeg(-3);
-            _options = options ?? new IncomeOptions();
-        }
-
-        #endregion
-
-        #region inner types
-
-        /// <summary>
-        /// A ctor-time options object for a <see cref="NorthAmericanIncome"/>
-        /// which allows for some control over the randomness
-        /// </summary>
-        public class IncomeOptions
-        {
-            public bool HasVehicle { get; set; }
-            public bool IsVehiclePaidOff { get; set; }
-            public bool IsRenting { get; set; }
-
-            public bool HasChildren => ChildrenAges != null && ChildrenAges.Any();
-
-            public int[] ChildrenAges { get; set; }
-
-            /// <summary>
-            /// Optional, allows for direct control over the 
-            /// expenses of the given names instead of randomness
-            /// </summary>
-            public Dictionary<IVoca, Pecuniam> DirectExpenseAssignments { get; set; }
         }
 
         #endregion
@@ -161,12 +134,13 @@ namespace NoFuture.Rand.Domus.Opes
         protected internal virtual void AddExpectedOtherIncome(Pecuniam amt, string name, DateTime startDate,
             DateTime? endDate = null)
         {
-            AddExpectedOtherIncome(new Pondus(name)
+            var p = new Pondus(name)
             {
-                ExpectedValue = amt?.Neg,
                 Terminus = endDate,
                 Inception = startDate
-            });
+            };
+            p.My.ExpectedValue = amt?.Neg;
+            AddExpectedOtherIncome(p);
         }
 
         protected internal virtual void AddExpectedExpense(Pondus expense)
@@ -179,12 +153,14 @@ namespace NoFuture.Rand.Domus.Opes
         protected internal virtual void AddExpectedExpense(Pecuniam amt, string name, DateTime startDate,
             DateTime? endDate = null)
         {
-            AddExpectedExpense(new Pondus(name)
+            var p = new Pondus(name)
             {
-                ExpectedValue = amt?.Neg,
                 Terminus = endDate,
                 Inception = startDate
-            });
+            };
+
+            p.My.ExpectedValue = amt?.Neg;
+            AddExpectedExpense(p);
         }
 
         /// <summary>
@@ -209,8 +185,7 @@ namespace NoFuture.Rand.Domus.Opes
                 var totalIncome = otIncome + payIncome;
 
                 var otPondus = GetOtherIncomeItemsForRange(otIncome, stDt, endDt);
-                var expenses = GetExpenseItemsForRange(totalIncome, stDt, endDt, Interval.Annually,
-                    _options?.DirectExpenseAssignments);
+                var expenses = GetExpenseItemsForRange(totalIncome, stDt, endDt);
 
                 foreach(var otPon in otPondus)
                     AddExpectedOtherIncome(otPon);
@@ -277,8 +252,8 @@ namespace NoFuture.Rand.Domus.Opes
                 {
                     Inception = startDate,
                     Terminus = endDate,
-                    ExpectedValue = CalcValue(amt, incomeRate)
                 };
+                p.My.ExpectedValue = CalcValue(amt, incomeRate);
                 p.My.UpsertName(KindsOfNames.Group, incomeItem.GetName(KindsOfNames.Group));
                 itemsout.Add(p);
             }
@@ -294,13 +269,9 @@ namespace NoFuture.Rand.Domus.Opes
         /// <param name="startDate"></param>
         /// <param name="endDate"></param>
         /// <param name="interval"></param>
-        /// <param name="explicitAmounts">
-        /// Allows calling assembly direct control over the created rates.
-        /// </param>
         /// <returns></returns>
         protected internal virtual Pondus[] GetExpenseItemsForRange(Pecuniam amt, DateTime startDate,
-            DateTime? endDate = null, Interval interval = Interval.Annually,
-            Dictionary<IVoca, Pecuniam> explicitAmounts = null)
+            DateTime? endDate = null, Interval interval = Interval.Annually)
         {
             var name2Op = new Dictionary<string, Func<RatesDictionaryArgs, Dictionary<string, double>>>
             {
@@ -326,7 +297,7 @@ namespace NoFuture.Rand.Domus.Opes
                 {ExpenseGroupNames.UTILITIES, -3.0D}
             };
 
-            if (_options.HasVehicle && !_options.IsVehiclePaidOff)
+            if (MyOptions.HasVehicle && !MyOptions.IsVehiclePaidOff)
             {
                 //concentrate portion on car payment
                 name2Slope.Add(ExpenseGroupNames.TRANSPORTATION, -0.25D);
@@ -336,7 +307,6 @@ namespace NoFuture.Rand.Domus.Opes
             startDate = startDate == DateTime.MinValue ? GetMinDateAmongExpectations() : startDate;
             var itemsout = new List<Pondus>();
             amt = amt ?? Pecuniam.Zero;
-            explicitAmounts = explicitAmounts ?? new Dictionary<IVoca, Pecuniam>();
             var expenseGrps = GetExpenseItemNames().Select(x => x.GetName(KindsOfNames.Group)).Distinct().ToList();
 
             //move this value down more to "flatten" the diminishing rate, 
@@ -352,7 +322,7 @@ namespace NoFuture.Rand.Domus.Opes
                 var derivativeSlope = name2Slope.ContainsKey(grp) ? name2Slope[grp] : -1.0D;
 
                 //need to convert the actual amount into a ratio
-                var directAssignRates = ConvertToExplicitRates(amt, explicitAmounts, grp);
+                var directAssignRates = ConvertToExplicitRates(amt, MyOptions.GivenDirectly, grp);
 
                 //use explicit def if present - otherwise default to just diminishing with no zero-outs
                 var grpRates = name2Op.ContainsKey(grp)
@@ -367,7 +337,7 @@ namespace NoFuture.Rand.Domus.Opes
                 foreach (var item in grpRates.Keys)
                 {
                     var p = GetPondusForItemAndGroup(item, grp, startDate, endDate, interval);
-                    p.ExpectedValue = CalcValue(amt, grpRates[item]);
+                    p.My.ExpectedValue = CalcValue(amt, grpRates[item]);
                     itemsout.Add(p);
                 }
 
@@ -517,9 +487,9 @@ namespace NoFuture.Rand.Domus.Opes
                 null, derivativeSlope, "Parking", "Registration Fees");
 
             var zeroOuts = new List<string>();
-            if (_options.HasVehicle)
+            if (MyOptions.HasVehicle)
             {
-                if (_options.IsVehiclePaidOff)
+                if (MyOptions.IsVehiclePaidOff)
                     zeroOuts.Add("Loan Payments");
                 zeroOuts.Add("Public Transportation");
             }
@@ -561,7 +531,7 @@ namespace NoFuture.Rand.Domus.Opes
 
             var zeroOuts = new List<string> {IsRenting ? "Home" : "Renters"};
 
-            if (!_options.HasVehicle)
+            if (!MyOptions.HasVehicle)
                 zeroOuts.Add("Vehicle");
 
             dk = ZeroOutRates(dk, zeroOuts.ToArray());
@@ -612,7 +582,7 @@ namespace NoFuture.Rand.Domus.Opes
 
             ReconcileDiffsInSums(ref sumOfRates, directAssignNames2Rates);
 
-            if (!_options.HasChildren)
+            if (!MyOptions.HasChildren)
             {
                 var d = new Dictionary<string, double>();
                 foreach (var name in GetExpenseItemNames().Where(e =>
@@ -629,7 +599,7 @@ namespace NoFuture.Rand.Domus.Opes
                 "Extracurricular", "Camp", "Transportation", "Allowance");
 
             var zeroOuts = new List<string> {"Education"};
-            if (_options.HasChildren && _options.ChildrenAges.All(x => x < NAmerUtil.AVG_AGE_CHILD_ENTER_SCHOOL))
+            if (MyOptions.HasChildren && MyOptions.ChildrenAges.All(x => x < NAmerUtil.AVG_AGE_CHILD_ENTER_SCHOOL))
             {
                 zeroOuts.Add("Transportation");
                 zeroOuts.Add("School Supplies");
@@ -725,14 +695,14 @@ namespace NoFuture.Rand.Domus.Opes
                 switch (incomeItem.Name)
                 {
                     case "Supplemental Nutrition Assistance Program":
-                        p.ExpectedValue = snapAmt;
+                        p.My.ExpectedValue = snapAmt;
                         break;
                     case "Housing Choice Voucher Program Section 8":
-                        p.ExpectedValue = hudAmt;
+                        p.My.ExpectedValue = hudAmt;
                         break;
                     //TODO implement the other welfare programs
                     default:
-                        p.ExpectedValue = Pecuniam.Zero;
+                        p.My.ExpectedValue = Pecuniam.Zero;
                         break;
                 }
 

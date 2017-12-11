@@ -5,6 +5,7 @@ using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Data.Sp;
 using NoFuture.Rand.Data.Sp.Enums;
+using NoFuture.Rand.Domus.Opes.Options;
 
 namespace NoFuture.Rand.Domus.Opes
 {
@@ -13,6 +14,7 @@ namespace NoFuture.Rand.Domus.Opes
     /// <summary>
     /// Represents the assets of a North American over some span of time
     /// </summary>
+    [Serializable]
     public class NorthAmericanAssets : WealthBase, IRebus
     {
         #region fields
@@ -30,10 +32,9 @@ namespace NoFuture.Rand.Domus.Opes
         private readonly double _randCarDebt;
 
         private readonly double _totalEquity;
-        private readonly AssestOptions _options;
 
-        private Pecuniam _carPayment;
-        private Pecuniam _housePayment;
+        private IMereo _carPayment;
+        private IMereo _housePayment;
         private readonly double _homeEquityRate;
         private readonly double _carEquityRate;
         private readonly double _checkingAccountRate;
@@ -44,11 +45,9 @@ namespace NoFuture.Rand.Domus.Opes
         #endregion
 
         #region ctors
-        public NorthAmericanAssets(NorthAmerican american, AssestOptions options, DateTime? startDate = null) : base(
-            american, options?.IsRenting ?? false)
+        public NorthAmericanAssets(NorthAmerican american, OpesOptions options, DateTime? startDate = null) : base(
+            american, options)
         {
-            _options = options ?? new AssestOptions();
-
             _startDate = startDate ?? GetYearNeg(-1);
 
 
@@ -94,21 +93,24 @@ namespace NoFuture.Rand.Domus.Opes
         }
         #endregion
 
-        #region inner types
-        public class AssestOptions
-        {
-            public bool IsRenting { get; set; }
-            public int NumberOfVehicles { get; set; }
-            public int NumberOfCreditCards { get; set; }
-
-            public bool HasCreditCards => NumberOfCreditCards > 0;
-            public bool HasVehicles => NumberOfVehicles > 0;
-        }
-        #endregion
-
         #region properties
 
         public Pondus[] CurrentAssets => GetCurrent(Assets);
+
+        public Pecuniam TotalCurrentExpectedValue => Pondus.GetExpectedSum(CurrentAssets);
+
+        public IMereo HousePayment => _housePayment;
+        public IMereo CarPayment => _carPayment;
+
+        protected internal virtual List<Pondus> Assets
+        {
+            get
+            {
+                var e = _assets.ToList();
+                e.Sort(Comparer);
+                return e.ToList();
+            }
+        }
 
         #endregion
 
@@ -127,14 +129,15 @@ namespace NoFuture.Rand.Domus.Opes
             _assets.Add(asset);
         }
 
-        protected virtual List<Pondus> Assets
+        /// <summary>
+        /// Resolves all assets for last year and this year
+        /// </summary>
+        protected internal void ResolveAssets()
         {
-            get
-            {
-                var e = _assets.ToList();
-                e.Sort(Comparer);
-                return e.ToList();
-            }
+            var amt = MyOptions.SumTotal ?? _totalEquity.ToPecuniam();
+            var pondus = GetAssetItemsForRange(amt, _startDate);
+            foreach(var p in pondus)
+                AddAsset(p);
         }
 
         /// <summary>
@@ -150,8 +153,7 @@ namespace NoFuture.Rand.Domus.Opes
         /// </param>
         /// <returns></returns>
         protected internal virtual Pondus[] GetAssetItemsForRange(Pecuniam amt, DateTime startDate,
-            DateTime? endDate = null, Interval interval = Interval.Annually,
-            Dictionary<IVoca, Pecuniam> explicitAmounts = null)
+            DateTime? endDate = null, Interval interval = Interval.Annually)
         {
             var itemsout = new List<Pondus>();
 
@@ -166,10 +168,9 @@ namespace NoFuture.Rand.Domus.Opes
             var grp2Rates = grpNames.Zip(portions, (n, v) => new Tuple<string, double>(n, v)).ToList();
 
             //when calling assembly doesn't define exact amounts the use the values from the Factor Tables
-            explicitAmounts = explicitAmounts ?? new Dictionary<IVoca, Pecuniam>();
-            if (!explicitAmounts.Any())
+            if (!MyOptions.GivenDirectly.Any())
             {
-                grp2Rates = GetGroupPortionsFromByFactorTables(amt, explicitAmounts);
+                grp2Rates = GetGroupPortionsByFactorTables(amt);
             }
             //map the groups name to a function 
             var name2Op = new Dictionary<string, Func<RatesDictionaryArgs, Dictionary<string, double>>>
@@ -186,7 +187,7 @@ namespace NoFuture.Rand.Domus.Opes
                 var portion = g2r.Item2;
 
                 //convert explicit amount into rates
-                var directAssignRates = ConvertToExplicitRates(amt, explicitAmounts, grp);
+                var directAssignRates = ConvertToExplicitRates(amt, MyOptions.GivenDirectly, grp);
 
                 System.Diagnostics.Debug.WriteLine($"{directAssignRates.Select(kv => kv.Value).Sum()}\t{portion}");
 
@@ -205,7 +206,7 @@ namespace NoFuture.Rand.Domus.Opes
                 {
                     //create the pondus for this group\name pa
                     var p = GetPondusForItemAndGroup(item, grp, startDate, endDate, interval);
-                    p.ExpectedValue = CalcValue(amt, grpRates[item]);
+                    p.My.ExpectedValue = CalcValue(amt, grpRates[item]);
                     p.My.Interval = Interval.Annually;
                     itemsout.Add(p);
                 }
@@ -219,49 +220,38 @@ namespace NoFuture.Rand.Domus.Opes
         /// <param name="amt"></param>
         /// <param name="explicitAmounts"></param>
         /// <returns></returns>
-        protected internal List<Tuple<string, double>> GetGroupPortionsFromByFactorTables(Pecuniam amt, Dictionary<IVoca, Pecuniam> explicitAmounts)
+        protected internal List<Tuple<string, double>> GetGroupPortionsByFactorTables(Pecuniam amt)
         {
-            explicitAmounts = explicitAmounts ?? new Dictionary<IVoca, Pecuniam>();
+            var givenDirectly = new List<IMereo>();
             if (!IsRenting)
             {
-                explicitAmounts.Add(new Mereo("Real Estate", AssetGroupNames.REAL_PROPERTY),
-                    (_homeEquityRate * amt.ToDouble()).ToPecuniam());
+                givenDirectly.Add(new Mereo("Real Estate", AssetGroupNames.REAL_PROPERTY)
+                {
+                    ExpectedValue = (_homeEquityRate * amt.ToDouble()).ToPecuniam()
+                });
             }
 
-            if (_options.HasVehicles)
+            if (MyOptions.HasVehicles)
             {
-                explicitAmounts.Add(new Mereo("Motor Vehicles", AssetGroupNames.PERSONAL_PROPERTY),
-                    (_carEquityRate * amt.ToDouble()).ToPecuniam());
+                givenDirectly.Add(new Mereo("Motor Vehicles", AssetGroupNames.PERSONAL_PROPERTY)
+                {
+                    ExpectedValue = (_carEquityRate * amt.ToDouble()).ToPecuniam()
+                });
             }
 
-            explicitAmounts.Add(new Mereo("Checking", AssetGroupNames.INSTITUTIONAL),
-                (_checkingAccountRate * amt.ToDouble()).ToPecuniam());
-            explicitAmounts.Add(new Mereo("Savings", AssetGroupNames.INSTITUTIONAL),
-                (_savingsAccountRate * amt.ToDouble()).ToPecuniam());
+            givenDirectly.Add(new Mereo("Checking", AssetGroupNames.INSTITUTIONAL)
+            {
+                ExpectedValue = (_checkingAccountRate * amt.ToDouble()).ToPecuniam()
+            });
+            givenDirectly.Add(new Mereo("Savings", AssetGroupNames.INSTITUTIONAL)
+            {
+                ExpectedValue = (_savingsAccountRate * amt.ToDouble()).ToPecuniam()
+            });
 
-            //get all the group names
-            var grpNames = GetAssetItemNames().Select(x => x.GetName(KindsOfNames.Group)).Distinct().ToList();
-
-            //get a portion for each
-            var randPortions = Etx.DiminishingPortions(grpNames.Count, -0.2D);
-
-            //put the two together
-            var randMap = grpNames.Zip(randPortions, (n, v) => new Tuple<string, double>(n, v));
-
-            //convert it to a dictionary
-            var randDict = new Dictionary<string, double>();
-            foreach (var rm in randMap)
-                randDict.Add(rm.Item1, rm.Item2);
-
-            //get the factor table portions 
-            var calcPortions = new[] {_homeEquityRate, _carEquityRate, (_checkingAccountRate + _savingsAccountRate), 0D};
-
-            //put it together with group names as well
-            var calcMap = grpNames.Zip(calcPortions, (n, v) => new Tuple<string, double>(n, v)).ToList();
-
-            //reconcile the two so it still sum's to 1
-            return ReassignRates(randDict, calcMap).Select(kv => new Tuple<string, double>(kv.Key, kv.Value)).ToList();
-
+            var opesOptions = new OpesOptions {SumTotal = _totalEquity.ToPecuniam(), DerivativeSlope = -0.2D};
+            opesOptions.GivenDirectly.AddRange(givenDirectly);
+            MyOptions = opesOptions;
+            return GetGroupNames2Portions(DomusOpesDivisions.Assets, opesOptions);
         }
 
         /// <summary>
@@ -341,9 +331,13 @@ namespace NoFuture.Rand.Domus.Opes
                     buyer);
 
                 if (isMortgage)
-                    _housePayment = outPayment;
+                {
+                    _housePayment = new Mereo(item, grp) {ExpectedValue = outPayment, Interval = Interval.Monthly};
+                }
                 else
-                    _carPayment = outPayment;
+                    _carPayment = new Mereo(item, grp) { ExpectedValue = outPayment, Interval = Interval.Monthly };
+
+
             }
             else
             {
@@ -372,7 +366,7 @@ namespace NoFuture.Rand.Domus.Opes
             var derivativeSlope = args?.DerivativeSlope ?? -0.2D;
             var directAssignNames2Rates = args?.DirectAssignNames2Rates;
 
-            ReconcileDiffsInSums(ref sumOfRates, directAssignNames2Rates);
+            //ReconcileDiffsInSums(ref sumOfRates, directAssignNames2Rates);
 
             if (IsRenting)
             {
@@ -409,7 +403,7 @@ namespace NoFuture.Rand.Domus.Opes
             var derivativeSlope = args?.DerivativeSlope ?? -0.4D;
             var directAssignNames2Rates = args?.DirectAssignNames2Rates;
 
-            if (!_options.HasVehicles)
+            if (!MyOptions.HasVehicles)
             {
                 //now we have to have this
                 directAssignNames2Rates = directAssignNames2Rates ?? new Dictionary<string, double>();

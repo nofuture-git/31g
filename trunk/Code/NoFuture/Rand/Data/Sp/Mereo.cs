@@ -19,7 +19,7 @@ namespace NoFuture.Rand.Data.Sp
         private readonly List<string> _eg = new List<string>();
         private readonly List<string> _aka = new List<string>();
         private string _definition;
-
+        private Pecuniam _expectedValue = Pecuniam.Zero;
         public Mereo()
         {
             
@@ -63,9 +63,15 @@ namespace NoFuture.Rand.Data.Sp
             set => _definition = value;
         }
 
+        public Pecuniam ExpectedValue
+        {
+            get => _expectedValue ?? (_expectedValue = Pecuniam.Zero);
+            set => _expectedValue = value;
+        }
+
         public override string ToString()
         {
-            return Name;
+            return new Tuple<string, string, Pecuniam>(Name, GetName(KindsOfNames.Group), ExpectedValue).ToString();
         }
 
         public static IMereo GetMereoById(Identifier property, string prefix = null)

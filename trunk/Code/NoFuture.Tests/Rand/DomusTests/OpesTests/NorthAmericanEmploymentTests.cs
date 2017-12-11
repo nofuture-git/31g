@@ -53,7 +53,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
 
             var testPondus = testResult.FirstOrDefault(p => p.My.Name == "Wages");
             Assert.IsNotNull(testPondus);
-            Assert.AreNotEqual(Pecuniam.Zero, testPondus.ExpectedValue);
+            Assert.AreNotEqual(Pecuniam.Zero, testPondus.My.ExpectedValue);
 
             testSubject.Occupation = StandardOccupationalClassification.GetById("41-2031");
             testResult = testSubject.GetPayItemsForRange(55000D.ToPecuniam(), testSubject.Inception,
@@ -61,7 +61,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
 
             testPondus = testResult.FirstOrDefault(p => p.My.Name == "Commissions");
             Assert.IsNotNull(testPondus);
-            Assert.AreNotEqual(Pecuniam.Zero, testPondus.ExpectedValue);
+            Assert.AreNotEqual(Pecuniam.Zero, testPondus.My.ExpectedValue);
 
             testSubject.Occupation = StandardOccupationalClassification.GetById("29-2021");
             //handles not date range
@@ -84,7 +84,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
 
             var testPondus = testResult.FirstOrDefault(p => p.My.Name == "Federal tax");
             Assert.IsNotNull(testPondus);
-            Assert.AreNotEqual(Pecuniam.Zero, testPondus.ExpectedValue);
+            Assert.AreNotEqual(Pecuniam.Zero, testPondus.My.ExpectedValue);
 
             //handles no date range
             testResult = testSubject.GetDeductionItemsForRange(55000D.ToPecuniam(), DateTime.MinValue);

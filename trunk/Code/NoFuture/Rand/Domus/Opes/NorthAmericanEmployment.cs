@@ -107,6 +107,37 @@ namespace NoFuture.Rand.Domus.Opes
         public Pecuniam TotalAnnualPay => Pondus.GetExpectedAnnualSum(CurrentPay).Abs;
         public Pecuniam TotalAnnualNetPay => TotalAnnualPay - TotalAnnualDeductions;
 
+        protected internal virtual List<Pondus> AllItems
+        {
+            get
+            {
+                var i = _pay.ToList();
+                i.AddRange(_deductions);
+                i.Sort(Comparer);
+                return i;
+            }
+        }
+
+        protected internal virtual List<Pondus> Deductions
+        {
+            get
+            {
+                var d = _deductions.ToList();
+                d.Sort(Comparer);
+                return d;
+            }
+        }
+
+        protected internal virtual List<Pondus> Income
+        {
+            get
+            {
+                var p = _pay.ToList();
+                p.Sort(Comparer);
+                return p;
+            }
+        }
+
         #endregion
 
         #region methods
@@ -155,6 +186,7 @@ namespace NoFuture.Rand.Domus.Opes
                     
             }
         }
+
         /// <summary>
         /// Adds both income and deduction items for the given date range at random
         /// </summary>
@@ -243,37 +275,6 @@ namespace NoFuture.Rand.Domus.Opes
             return numYears;
         }
 
-        protected internal virtual List<Pondus> AllItems
-        {
-            get
-            {
-                var i = _pay.ToList();
-                i.AddRange(_deductions);
-                i.Sort(Comparer);
-                return i;
-            }
-        }
-
-        protected internal virtual List<Pondus> Deductions
-        {
-            get
-            {
-                var d = _deductions.ToList();
-                d.Sort(Comparer);
-                return d;
-            }
-        }
-
-        protected internal virtual List<Pondus> Income
-        {
-            get
-            {
-                var p = _pay.ToList();
-                p.Sort(Comparer);
-                return p;
-            }
-        }
-
         /// <summary>
         /// Gets a manifold of <see cref="Pondus"/> items based on the 
         /// names from GetIncomeItemNames in the Employment group assigning 
@@ -301,10 +302,9 @@ namespace NoFuture.Rand.Domus.Opes
                 var p = new Pondus(incomeItem, interval)
                 {
                     Inception = startDate,
-                    Terminus = endDate,
-                    ExpectedValue = CalcValue(amt, incomeRate),
+                    Terminus = endDate
                 };
-
+                p.My.ExpectedValue = CalcValue(amt, incomeRate);
                 itemsout.Add(p);
             }
             return itemsout.ToArray();
@@ -408,9 +408,8 @@ namespace NoFuture.Rand.Domus.Opes
                 {
                     Inception = startDate,
                     Terminus = endDate,
-                    ExpectedValue = CalcValue(amt, deductionRate)
                 };
-                
+                p.My.ExpectedValue = CalcValue(amt, deductionRate);
                 itemsout.Add(p);
             }
             return itemsout.ToArray();
@@ -514,7 +513,7 @@ namespace NoFuture.Rand.Domus.Opes
         {
             if (IsInRange(p))
             {
-                p.ExpectedValue = p.ExpectedValue.Abs;
+                p.My.ExpectedValue = p.My.ExpectedValue.Abs;
                 _pay.Add(p);
             }
         }
@@ -523,7 +522,7 @@ namespace NoFuture.Rand.Domus.Opes
         {
             if (IsInRange(d))
             {
-                d.ExpectedValue = d.ExpectedValue.Neg;
+                d.My.ExpectedValue = d.My.ExpectedValue.Neg;
                 _deductions.Add(d);
             }
         }

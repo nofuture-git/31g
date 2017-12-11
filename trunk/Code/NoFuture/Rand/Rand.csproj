@@ -133,6 +133,7 @@
     <Compile Include="Data\Sp\Enums\Interval.cs" />
     <Compile Include="Data\Sp\Pondus.cs" />
     <Compile Include="Domus\Opes\NorthAmericanFactors.cs" />
+    <Compile Include="Domus\Opes\OpesOptions.cs" />
     <Compile Include="Domus\Pneuma\Agreeableness.cs" />
     <Compile Include="Domus\Pneuma\Conscientiousness.cs" />
     <Compile Include="Domus\Pneuma\Dimension.cs" />

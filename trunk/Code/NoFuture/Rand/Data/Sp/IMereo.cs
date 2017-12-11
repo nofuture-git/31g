@@ -18,5 +18,6 @@ namespace NoFuture.Rand.Data.Sp
         List<string> Akas { get; }
         string Instructions { get; set; }
         string Definition { get; set; }
+        Pecuniam ExpectedValue { get; set; }
     }
 }

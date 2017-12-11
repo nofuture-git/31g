@@ -37,8 +37,6 @@ namespace NoFuture.Rand.Data.Sp
             My = new Mereo();
         }
 
-        public virtual Pecuniam ExpectedValue { get; set; }
-
         public virtual IMereo My { get; }
 
         public static Pecuniam GetExpectedSum(IEnumerable<Pondus> items)
@@ -48,7 +46,7 @@ namespace NoFuture.Rand.Data.Sp
 
             var p = Pecuniam.Zero;
             foreach (var i in items)
-                p += i?.ExpectedValue ?? Pecuniam.Zero;
+                p += i?.My?.ExpectedValue ?? Pecuniam.Zero;
             return p;
         }
 
@@ -62,10 +60,10 @@ namespace NoFuture.Rand.Data.Sp
             var sum = 0M;
             foreach (var item in items)
             {
-                if (item?.ExpectedValue == null ||
+                if (item?.My?.ExpectedValue == null ||
                     !NAmerUtil.Tables.Interval2AnnualPayMultiplier.ContainsKey(item.My.Interval))
                     continue;
-                sum += item.ExpectedValue.Amount * NAmerUtil.Tables.Interval2AnnualPayMultiplier[item.My.Interval];
+                sum += item.My.ExpectedValue.Amount * NAmerUtil.Tables.Interval2AnnualPayMultiplier[item.My.Interval];
             }
             return new Pecuniam(sum);
         }
@@ -97,7 +95,7 @@ namespace NoFuture.Rand.Data.Sp
 
         public override string ToString()
         {
-            var d = new Tuple<string, string, string, string, DateTime?, DateTime?>(ExpectedValue.ToString(), My.Name,
+            var d = new Tuple<string, string, string, string, DateTime?, DateTime?>(My?.ExpectedValue.ToString(), My.Name,
                 My.GetName(KindsOfNames.Group), My.Interval.ToString(), Inception, Terminus);
             return d.ToString();
         }
