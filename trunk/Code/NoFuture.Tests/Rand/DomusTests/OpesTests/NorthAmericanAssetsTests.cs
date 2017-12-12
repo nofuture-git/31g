@@ -4,7 +4,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Data.Sp;
 using NoFuture.Rand.Domus.Opes;
-using NoFuture.Rand.Domus.Opes.Options;
 
 namespace NoFuture.Rand.Tests.DomusTests.OpesTests
 {

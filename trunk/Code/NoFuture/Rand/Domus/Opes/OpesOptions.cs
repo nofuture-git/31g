@@ -1,13 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using NoFuture.Rand.Core;
 using NoFuture.Rand.Data.Sp;
+using NoFuture.Rand.Data.Sp.Enums;
+using NoFuture.Shared.Core;
 
-namespace NoFuture.Rand.Domus.Opes.Options
+namespace NoFuture.Rand.Domus.Opes
 {
     public class OpesOptions
     {
         private double _derivativeSlope;
+
+        public OpesOptions()
+        {
+            Probability = Etx.TryBelowOrAt;
+        }
 
         public bool HasVehicle { get; set; }
         public bool IsVehiclePaidOff { get; set; }
@@ -21,12 +29,12 @@ namespace NoFuture.Rand.Domus.Opes.Options
 
         public DateTime StartDate { get; set; }
         public DateTime? EndDate { get; set; }
-
         public Pecuniam SumTotal { get; set; }
+
         public List<IMereo> GivenDirectly { get; } = new List<IMereo>();
 
         public List<int> ChildrenAges { get; set; } = new List<int>();
-
+        public Interval Interval { get; set; }
         public double DerivativeSlope
         {
             get
@@ -37,6 +45,24 @@ namespace NoFuture.Rand.Domus.Opes.Options
                 return _derivativeSlope;
             }
             set => _derivativeSlope = value;
+        }
+
+        public Func<int, Etx.Dice, bool> Probability { get; set; }
+
+        public List<string> PossiableZeroOuts { get; } = new List<string>();
+
+        public OpesOptions GetClone()
+        {
+            var o = new OpesOptions();
+
+            var pi = GetType().GetProperties(NfConfig.DefaultFlags).Where(p => p.CanWrite).ToList();
+            foreach (var p in pi)
+            {
+                var gVal = p.GetValue(this);
+                p.SetValue(o, gVal);
+            }
+
+            return o;
         }
     }
 }

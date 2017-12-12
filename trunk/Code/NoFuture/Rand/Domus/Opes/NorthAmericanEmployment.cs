@@ -7,7 +7,6 @@ using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Data.Endo.Grps;
 using NoFuture.Rand.Data.Sp;
 using NoFuture.Rand.Data.Sp.Enums;
-using NoFuture.Rand.Domus.Opes.Options;
 using NoFuture.Rand.Gov;
 using NoFuture.Shared.Core;
 using NoFuture.Util.Core;
@@ -178,6 +177,17 @@ namespace NoFuture.Rand.Domus.Opes
             }
         }
 
+        protected internal override Dictionary<string, Func<double, OpesOptions, Dictionary<string, double>>> GetItems2Functions()
+        {
+            return new Dictionary<string, Func<double, OpesOptions, Dictionary<string, double>>>
+            {
+                {"Employment", GetPayName2RandRates},
+                {"Insurance", GetInsuranceDeductionName2RandRates},
+                {"Government", GetGovernmentDeductionName2Rates},
+                {"Employment", GetEmploymentDeductionName2Rates}
+            };
+        }
+
         /// <summary>
         /// Adds both income and deduction items for the given date range at random
         /// </summary>
@@ -283,7 +293,7 @@ namespace NoFuture.Rand.Domus.Opes
             startDate = startDate == DateTime.MinValue ? MyOptions.StartDate : startDate;
             amt = amt ?? Pecuniam.Zero;
 
-            var incomeName2Rates = GetIncomeName2RandomRates();
+            var incomeName2Rates = GetPayName2RandRates(0.0D, null);
             var incomeItems = GetIncomeItemNames();
             foreach (var incomeItem in incomeItems.Where(i => i.GetName(KindsOfNames.Group) == IncomeGroupNames.EMPLOYMENT))
             {
@@ -306,7 +316,7 @@ namespace NoFuture.Rand.Domus.Opes
         /// all the rates equals 1
         /// </summary>
         /// <returns></returns>
-        protected internal virtual Dictionary<string, double> GetIncomeName2RandomRates()
+        protected internal virtual Dictionary<string, double> GetPayName2RandRates(double portion, OpesOptions options)
         {
             var bonusRate = Etx.TryBelowOrAt(1, Etx.Dice.Ten)
                 ? Etx.RandomValueInNormalDist(0.02, 0.001)
@@ -388,7 +398,7 @@ namespace NoFuture.Rand.Domus.Opes
             amt = amt ?? Pecuniam.Zero;
             startDate = startDate == DateTime.MinValue ? MyOptions.StartDate : startDate;
 
-            var deductionNames2Rates = GetDeductionNames2RandomRates(amt, startDate);
+            var deductionNames2Rates = GetDeductionNames2RandomRates(0.0D, new OpesOptions {SumTotal = amt, StartDate = startDate});
             var deductionItems = GetDeductionItemNames();
             foreach (var deduction in deductionItems)
             {
@@ -406,23 +416,9 @@ namespace NoFuture.Rand.Domus.Opes
             return itemsout.ToArray();
         }
 
-        /// <summary>
-        /// Produces a dictionary of deduction item names to random rates.
-        /// </summary>
-        /// <param name="annualIncomeAmount">Needed to calculate Health Insurance cost</param>
-        /// <param name="startDate">Needed to calculate Health Insurance cost</param>
-        /// <returns></returns>
-        protected internal virtual Dictionary<string, double> GetDeductionNames2RandomRates(Pecuniam annualIncomeAmount,
-            DateTime? startDate)
+        protected internal Dictionary<string, double> GetInsuranceDeductionName2RandRates(double portion, OpesOptions options)
         {
-            //https://www.cdc.gov/nchs/fastats/health-insurance.htm
-            var isInsCovered = Etx.TryAboveOrAt(124, Etx.Dice.OneThousand);
-            var healthCareCost = isInsCovered
-                ? GetHealthInsCost(startDate)
-                : 0D;
-
-            var totalHealthInsRate = healthCareCost / annualIncomeAmount.ToDouble();
-            var employeeHealthInsRate = Math.Round(totalHealthInsRate * 0.17855D, 5);
+            var employeeHealthInsRate = GetEmployeeHealthInsRate(options);
             var dentalInsRate = GetRandomizeRateOf(employeeHealthInsRate, 8);
             var visionInsRate = GetRandomizeRateOf(employeeHealthInsRate, 13);
 
@@ -445,7 +441,123 @@ namespace NoFuture.Rand.Domus.Opes
                 ? GetRandomizeRateOf(employeeHealthInsRate, 13)
                 : 0D;
 
+            return new Dictionary<string, double>
+            {
+                {"Health", employeeHealthInsRate},
+                {"Life", lifeInsRate},
+                {"Supplemental Life", supplementalLifeInsRate},
+                {"Dependent Life", dependentInsRate},
+                {"Accidental Death & Dismemberment", adAndDInsRate},
+                {"Dental", dentalInsRate},
+                {"Vision", visionInsRate},
+                {"Short-term Disability", stDisabilityRate},
+                {"Long-term Disability", ltDisabilityRate},
+            };
+        }
+
+        protected internal Dictionary<string, double> GetGovernmentDeductionName2Rates(double portion,
+            OpesOptions options)
+        {
+            var annualIncomeAmount = options.SumTotal;
             var fedTaxRate = NAmerUtil.Equations.FederalIncomeTaxRate.SolveForY(annualIncomeAmount.ToDouble());
+            var stateTaxRate = GetRandomizeRateOf(fedTaxRate, 5);
+
+            //https://www.irs.gov/taxtopics/tc751
+            var ficaRate = 0.062D;
+            var medicareRate = 0.0145D;
+
+            return new Dictionary<string, double>
+            {
+                {"Federal tax", fedTaxRate},
+                {"State tax", stateTaxRate},
+                {"FICA", ficaRate},
+                {"Medicare", medicareRate},
+            };
+        }
+
+        protected internal Dictionary<string, double> GetEmploymentDeductionName2Rates(double portion,
+            OpesOptions options)
+        {
+            var startDate = options.StartDate;
+            var annualIncomeAmount = options.SumTotal;
+
+            //https://www.cdc.gov/nchs/fastats/health-insurance.htm
+            var isInsCovered = Etx.TryAboveOrAt(124, Etx.Dice.OneThousand);
+
+            var healthCareCost = isInsCovered
+                ? GetHealthInsCost(startDate)
+                : 0D;
+
+            var totalHealthInsRate = healthCareCost / annualIncomeAmount.ToDouble();
+            var employeeHealthInsRate = Math.Round(totalHealthInsRate * 0.17855D, DF_ROUND_DECIMAL_PLACES);
+
+            var retirementRate = Etx.CoinToss
+                ? Etx.DiscreteRange(new[] { 0D, 0.01D, 0.02D, 0.03D, 0.04D, 0.05D })
+                : 0D;
+            var profitShareRate = Etx.TryBelowOrAt(13, Etx.Dice.OneHundred)
+                ? GetRandomizeRateOf(0.03)
+                : 0D;
+            var pensionRate = Etx.TryBelowOrAt(9, Etx.Dice.OneHundred)
+                ? GetRandomizeRateOf(0.03)
+                : 0D;
+
+            var unionDueRate = StandardOccupationalClassification.IsLaborUnion(_occupation)
+                ? GetRandomizeRateOf(0.04)
+                : 0D;
+            var hraRate = Etx.CoinToss
+                ? GetRandomizeRateOf(employeeHealthInsRate, 21)
+                : 0D;
+            var fsaRate = Etx.CoinToss
+                ? GetRandomizeRateOf(employeeHealthInsRate, 21)
+                : 0D;
+            var creditUnionRate = Etx.TryBelowOrAt(3, Etx.Dice.OneHundred)
+                ? GetRandomizeRateOf(0.01)
+                : 0D;
+
+            return new Dictionary<string, double>
+            {
+                {"Registered Retirement Savings Plan", retirementRate},
+                {"Profit Sharing", profitShareRate},
+                {"Pension", pensionRate},
+                {"Union Dues", unionDueRate},
+                {"Health Savings Account", hraRate},
+                {"Flexible Spending Account", fsaRate},
+                {"Credit Union Loan", creditUnionRate},
+            };
+        }
+
+        /// <summary>
+        /// Produces a dictionary of deduction item names to random rates.
+        /// </summary>
+        /// <param name="portion"></param>
+        /// <param name="options"></param>
+        /// <returns></returns>
+        protected internal virtual Dictionary<string, double> GetDeductionNames2RandomRates(double portion, OpesOptions options)
+        {
+            var employeeHealthInsRate = GetEmployeeHealthInsRate(options);
+            var dentalInsRate = GetRandomizeRateOf(employeeHealthInsRate, 8);
+            var visionInsRate = GetRandomizeRateOf(employeeHealthInsRate, 13);
+
+            var lifeInsRate = Etx.CoinToss
+                ? GetRandomizeRateOf(employeeHealthInsRate, 13)
+                : 0D;
+            var supplementalLifeInsRate = Etx.TryBelowOrAt(3, Etx.Dice.Ten)
+                ? GetRandomizeRateOf(employeeHealthInsRate, 21)
+                : 0D;
+            var dependentInsRate = Etx.TryBelowOrAt(1, Etx.Dice.Four)
+                ? GetRandomizeRateOf(employeeHealthInsRate, 21)
+                : 0D;
+            var adAndDInsRate = Etx.TryBelowOrAt(1, Etx.Dice.Four)
+                ? GetRandomizeRateOf(employeeHealthInsRate, 34)
+                : 0D;
+            var stDisabilityRate = Etx.TryBelowOrAt(1, Etx.Dice.Four)
+                ? GetRandomizeRateOf(employeeHealthInsRate, 13)
+                : 0D;
+            var ltDisabilityRate = Etx.TryBelowOrAt(1, Etx.Dice.Four)
+                ? GetRandomizeRateOf(employeeHealthInsRate, 13)
+                : 0D;
+
+            var fedTaxRate = NAmerUtil.Equations.FederalIncomeTaxRate.SolveForY(options.SumTotal.ToDouble());
             var stateTaxRate = GetRandomizeRateOf(fedTaxRate, 5);
 
             //https://www.irs.gov/taxtopics/tc751
@@ -554,6 +666,21 @@ namespace NoFuture.Rand.Domus.Opes
             var mean = baseRate / (dividedby == 0 ? 1 : dividedby);
             var stdDev = Math.Round(mean * 0.155, 5);
             return Etx.RandomValueInNormalDist(mean, stdDev);
+        }
+
+        private double GetEmployeeHealthInsRate(OpesOptions options)
+        {
+            var startDate = options.StartDate;
+            var annualIncomeAmount = options.SumTotal;
+
+            //https://www.cdc.gov/nchs/fastats/health-insurance.htm
+            var isInsCovered = Etx.TryAboveOrAt(124, Etx.Dice.OneThousand);
+            var healthCareCost = isInsCovered
+                ? GetHealthInsCost(startDate)
+                : 0D;
+
+            var totalHealthInsRate = healthCareCost / annualIncomeAmount.ToDouble();
+            return Math.Round(totalHealthInsRate * 0.17855D, DF_ROUND_DECIMAL_PLACES);
         }
 
         public override bool Equals(object obj)

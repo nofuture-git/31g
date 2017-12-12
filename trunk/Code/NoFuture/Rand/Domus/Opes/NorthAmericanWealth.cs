@@ -5,7 +5,6 @@ using NoFuture.Rand.Core;
 using NoFuture.Rand.Data.Sp;
 using NoFuture.Rand.Data.Sp.Cc;
 using NoFuture.Rand.Data.Sp.Enums;
-using NoFuture.Rand.Domus.Opes.Options;
 using NoFuture.Rand.Domus.Pneuma;
 
 namespace NoFuture.Rand.Domus.Opes

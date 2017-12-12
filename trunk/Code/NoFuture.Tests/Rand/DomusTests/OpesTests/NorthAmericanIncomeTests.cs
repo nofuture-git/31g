@@ -7,7 +7,6 @@ using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Data.Sp;
 using NoFuture.Rand.Data.Sp.Enums;
 using NoFuture.Rand.Domus.Opes;
-using NoFuture.Rand.Domus.Opes.Options;
 using NoFuture.Rand.Domus.Pneuma;
 
 namespace NoFuture.Rand.Tests.DomusTests.OpesTests
@@ -428,8 +427,6 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         [TestMethod]
         public void TestReassignRates()
         {
-            var testSubject = new NorthAmericanIncome(null);
-
             var testInput00 = new Dictionary<string, double>
             {
                 {"Item1", 0.25},
@@ -457,6 +454,28 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             var sum = testResult.Select(kv => kv.Value).Sum();
             Assert.IsTrue(sum >= 0.99D && sum <= 1.01D);
 
+
+            //test it will zero out as requested
+            var testInput02 = new List<Tuple<string, double>>
+            {
+                new Tuple<string, double>("Item1", 0.0D),
+                new Tuple<string, double>("Item3", 0.0D)
+            };
+
+            testResult = WealthBase.ReassignRates(testInput00, testInput02);
+
+            Assert.IsNotNull(testResult);
+            Assert.AreNotEqual(0, testResult.Count);
+
+            Assert.IsTrue(testResult.ContainsKey("Item1"));
+            Assert.AreEqual(0.0D, testResult["Item1"]);
+
+            Assert.IsTrue(testResult.ContainsKey("Item3"));
+            Assert.AreEqual(0.0D, testResult["Item3"]);
+
+            var testResultSum = testResult.Select(kv => kv.Value).Sum();
+
+            System.Diagnostics.Debug.WriteLine(testResultSum);
         }
 
         [TestMethod]

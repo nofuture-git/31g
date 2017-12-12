@@ -8,7 +8,6 @@ using NoFuture.Rand.Data.Endo.Grps;
 using NoFuture.Rand.Data.Sp;
 using NoFuture.Rand.Data.Sp.Cc;
 using NoFuture.Rand.Data.Sp.Enums;
-using NoFuture.Rand.Domus.Opes.Options;
 using NoFuture.Rand.Domus.Pneuma;
 
 namespace NoFuture.Rand.Domus.Opes
@@ -193,6 +192,11 @@ namespace NoFuture.Rand.Domus.Opes
                     AddExpectedExpense(expense);
 
             }
+        }
+
+        protected internal override Dictionary<string, Func<double, OpesOptions, Dictionary<string, double>>> GetItems2Functions()
+        {
+            return base.GetItems2Functions();
         }
 
         /// <summary>
@@ -640,6 +644,12 @@ namespace NoFuture.Rand.Domus.Opes
                 dk = ReassignRates(dk, directAssignNames2Rates, derivativeSlope);
 
             return dk;
+        }
+
+        protected internal Dictionary<string, double> GetDebtExpenseNames2RandRates(double portion, OpesOptions options)
+        {
+
+            throw new NotImplementedException();
         }
 
         /// <summary>

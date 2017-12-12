@@ -210,7 +210,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         [TestMethod]
         public void TestGetGroupNames2Portions()
         {
-            var testInput = new Domus.Opes.Options.OpesOptions();
+            var testInput = new OpesOptions();
             testInput.GivenDirectly.Add(new Mereo("Real Estate","Real Property"){ExpectedValue = 7800.ToPecuniam()});
             testInput.GivenDirectly.Add(new Mereo("Stocks", "Securities"){ExpectedValue = 1000.ToPecuniam()});
             testInput.SumTotal = 12000.ToPecuniam();
@@ -233,6 +233,63 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             foreach (var tr in testResult)
                 System.Diagnostics.Debug.WriteLine(tr);
 
+        }
+
+        [TestMethod]
+        public void TestGetItemNames2Portions()
+        {
+            var testInput = new OpesOptions();
+            var grpName = "Employment";
+            testInput.GivenDirectly.Add(new Mereo("Wages", grpName) { ExpectedValue = 7800.ToPecuniam() });
+            testInput.GivenDirectly.Add(new Mereo("Overtime", grpName) { ExpectedValue = 1000.ToPecuniam() });
+            testInput.GivenDirectly.Add(new Mereo("Bonuses", grpName) { ExpectedValue = 1000.ToPecuniam() });
+            testInput.SumTotal = 15000.ToPecuniam();
+
+            var testResults =
+                WealthBase.GetItemNames2Portions(WealthBase.DomusOpesDivisions.Income, grpName, testInput);
+
+            Assert.IsNotNull(testResults);
+            Assert.AreNotEqual(0, testResults.Count);
+
+            var testResultSum = testResults.Select(kv => kv.Item2).Sum();
+            System.Diagnostics.Debug.WriteLine(testResultSum);
+            Assert.IsTrue(Math.Round(testResultSum) == 1.0D);
+
+            //expect that when SumTotal is unassigned the ratios align exactly with assigned values
+            testInput = new OpesOptions();
+            testInput.GivenDirectly.Add(new Mereo("Wages", grpName) { ExpectedValue = 7800.ToPecuniam() });
+            testInput.GivenDirectly.Add(new Mereo("Overtime", grpName) { ExpectedValue = 1000.ToPecuniam() });
+            testInput.GivenDirectly.Add(new Mereo("Bonuses", grpName) { ExpectedValue = 1000.ToPecuniam() });
+
+            testResults =
+                WealthBase.GetItemNames2Portions(WealthBase.DomusOpesDivisions.Income, grpName, testInput);
+
+            Assert.IsNotNull(testResults);
+            Assert.AreNotEqual(0, testResults.Count);
+
+            testResultSum = testResults.Select(kv => kv.Item2).Sum();
+            System.Diagnostics.Debug.WriteLine(testResultSum);
+
+            var trWages = testResults.FirstOrDefault(kv => kv.Item1 == "Wages");
+            var trOt = testResults.FirstOrDefault(kv => kv.Item1 == "Overtime");
+            var trBonus = testResults.FirstOrDefault(kv => kv.Item1 == "Bonuses");
+
+            Assert.IsNotNull(trWages);
+            Assert.IsNotNull(trOt);
+            Assert.IsNotNull(trBonus);
+
+            Assert.AreEqual(0.796D, Math.Round(trWages.Item2, 3));
+            Assert.AreEqual(0.102D, Math.Round(trOt.Item2,3));
+            Assert.AreEqual(0.102D, Math.Round(trBonus.Item2, 3));
+
+            foreach (var tr in testResults)
+                System.Diagnostics.Debug.WriteLine(tr);
+        }
+
+        [TestMethod]
+        public void TestGetItemsForRange()
+        {
+            
         }
 
         public static List<Tuple<string, string>> GetExpectedNamesFromXml(string sectionName)

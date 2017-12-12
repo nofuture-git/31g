@@ -5,7 +5,6 @@ using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Data.Sp;
 using NoFuture.Rand.Data.Sp.Enums;
-using NoFuture.Rand.Domus.Opes.Options;
 
 namespace NoFuture.Rand.Domus.Opes
 {
@@ -161,7 +160,7 @@ namespace NoFuture.Rand.Domus.Opes
             amt = amt ?? _totalEquity.ToPecuniam();
 
             //get just the group names of assets
-            var grpNames = GetAssetItemNames().Select(x => x.GetName(KindsOfNames.Group)).Distinct().ToList();
+            var grpNames = GetGroupNames(DomusOpesDivisions.Assets);
 
             //determine a portion or each group
             var portions = Etx.DiminishingPortions(grpNames.Count, -0.2D);
@@ -362,7 +361,7 @@ namespace NoFuture.Rand.Domus.Opes
         protected internal virtual Dictionary<string, double> GetRealPropertyName2RandomRates(
         RatesDictionaryArgs args = null)
         {
-            var sumOfRates = args?.SumOfRates ?? Math.Round(Math.Abs(_randHomeEquity / _totalEquity), 5);
+            var sumOfRates = args?.SumOfRates ?? Math.Round(Math.Abs(_randHomeEquity / _totalEquity), DF_ROUND_DECIMAL_PLACES);
             var derivativeSlope = args?.DerivativeSlope ?? -0.2D;
             var directAssignNames2Rates = args?.DirectAssignNames2Rates;
 
@@ -399,7 +398,7 @@ namespace NoFuture.Rand.Domus.Opes
             RatesDictionaryArgs args = null)
         {
 
-            var sumOfRates = args?.SumOfRates ?? Math.Round(Math.Abs(_randCarDebt / _totalEquity), 5);
+            var sumOfRates = args?.SumOfRates ?? Math.Round(Math.Abs(_randCarDebt / _totalEquity), DF_ROUND_DECIMAL_PLACES);
             var derivativeSlope = args?.DerivativeSlope ?? -0.4D;
             var directAssignNames2Rates = args?.DirectAssignNames2Rates;
 
@@ -440,7 +439,7 @@ namespace NoFuture.Rand.Domus.Opes
             RatesDictionaryArgs args = null)
         {
             //half of the diff half there
-            var sumOfRates = args?.SumOfRates ?? Math.Round(Math.Abs(_allOtherAssetEquity / 2 / _totalEquity), 5);
+            var sumOfRates = args?.SumOfRates ?? Math.Round(Math.Abs(_allOtherAssetEquity / 2 / _totalEquity), DF_ROUND_DECIMAL_PLACES);
             var derivativeSlope = args?.DerivativeSlope ?? -0.2D;
             var directAssignNames2Rates = args?.DirectAssignNames2Rates;
 
@@ -466,7 +465,7 @@ namespace NoFuture.Rand.Domus.Opes
         protected internal virtual Dictionary<string, double> GetSecuritiesName2Rates(RatesDictionaryArgs args = null)
         {
             //half of the diff half there
-            var sumOfRates = args?.SumOfRates ?? Math.Round(Math.Abs(_allOtherAssetEquity / 2 / _totalEquity), 5);
+            var sumOfRates = args?.SumOfRates ?? Math.Round(Math.Abs(_allOtherAssetEquity / 2 / _totalEquity), DF_ROUND_DECIMAL_PLACES);
             var derivativeSlope = args?.DerivativeSlope ?? -0.4D;
             var directAssignNames2Rates = args?.DirectAssignNames2Rates;
 
