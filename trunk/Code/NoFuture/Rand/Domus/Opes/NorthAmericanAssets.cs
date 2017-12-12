@@ -19,7 +19,7 @@ namespace NoFuture.Rand.Domus.Opes
     {
         #region fields
         private readonly HashSet<Pondus> _assets = new HashSet<Pondus>();
-        private readonly DateTime _startDate;
+        //private readonly DateTime _startDate;
 
         private readonly double _randCheckingAcctAmt;
         private readonly double _randSavingsAcctAmt;
@@ -45,11 +45,11 @@ namespace NoFuture.Rand.Domus.Opes
         #endregion
 
         #region ctors
-        public NorthAmericanAssets(NorthAmerican american, OpesOptions options, DateTime? startDate = null) : base(
+        public NorthAmericanAssets(NorthAmerican american, OpesOptions options) : base(
             american, options)
         {
-            _startDate = startDate ?? GetYearNeg(-1);
-
+            if(MyOptions.StartDate == DateTime.MinValue)
+                MyOptions.StartDate = GetYearNeg(-1);
 
             _randCheckingAcctAmt = NorthAmericanFactors.GetRandomFactorValue(FactorTables.CheckingAccount,
                 Factors.CheckingAcctFactor, DF_STD_DEV_PERCENT);
@@ -135,7 +135,7 @@ namespace NoFuture.Rand.Domus.Opes
         protected internal void ResolveAssets()
         {
             var amt = MyOptions.SumTotal ?? _totalEquity.ToPecuniam();
-            var pondus = GetAssetItemsForRange(amt, _startDate);
+            var pondus = GetAssetItemsForRange(amt, MyOptions.StartDate);
             foreach(var p in pondus)
                 AddAsset(p);
         }
@@ -157,7 +157,7 @@ namespace NoFuture.Rand.Domus.Opes
         {
             var itemsout = new List<Pondus>();
 
-            startDate = startDate == DateTime.MinValue ? _startDate : startDate;
+            startDate = startDate == DateTime.MinValue ? MyOptions.StartDate : startDate;
             amt = amt ?? _totalEquity.ToPecuniam();
 
             //get just the group names of assets

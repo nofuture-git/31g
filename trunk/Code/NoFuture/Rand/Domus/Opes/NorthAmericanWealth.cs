@@ -5,6 +5,7 @@ using NoFuture.Rand.Core;
 using NoFuture.Rand.Data.Sp;
 using NoFuture.Rand.Data.Sp.Cc;
 using NoFuture.Rand.Data.Sp.Enums;
+using NoFuture.Rand.Domus.Opes.Options;
 using NoFuture.Rand.Domus.Pneuma;
 
 namespace NoFuture.Rand.Domus.Opes
@@ -60,7 +61,10 @@ namespace NoFuture.Rand.Domus.Opes
         /// </param>
         public NorthAmericanWealth(NorthAmerican american, bool isRenting = false): base(american, isRenting)
         {
-            CreditScore = new PersonalCreditScore(american);
+        }
+
+        public NorthAmericanWealth(NorthAmerican american, OpesOptions options) : base(american, options)
+        {
         }
         #endregion
 

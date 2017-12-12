@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using NoFuture.Rand.Data.Sp;
 
@@ -17,6 +18,9 @@ namespace NoFuture.Rand.Domus.Opes.Options
         public bool HasCreditCards => NumberOfCreditCards > 0;
         public bool HasVehicles => NumberOfVehicles > 0;
         public bool HasChildren => ChildrenAges != null && ChildrenAges.Any();
+
+        public DateTime StartDate { get; set; }
+        public DateTime? EndDate { get; set; }
 
         public Pecuniam SumTotal { get; set; }
         public List<IMereo> GivenDirectly { get; } = new List<IMereo>();

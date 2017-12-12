@@ -26,16 +26,16 @@ namespace NoFuture.Rand.Domus.Opes
         private readonly HashSet<IEmployment> _employment = new HashSet<IEmployment>();
         private readonly HashSet<Pondus> _otherIncome = new HashSet<Pondus>();
         private readonly HashSet<Pondus> _expenses = new HashSet<Pondus>();
-        private readonly DateTime _startDate;
         #endregion
 
         #region ctors
 
-        public NorthAmericanIncome(NorthAmerican american, OpesOptions options = null, DateTime? startDate = null) :
+        public NorthAmericanIncome(NorthAmerican american, OpesOptions options = null) :
             base(
                 american, options)
         {
-            _startDate = startDate ?? GetYearNeg(-3);
+            if(MyOptions.StartDate == DateTime.MinValue)
+                MyOptions.StartDate = GetYearNeg(-3);
         }
 
         #endregion
@@ -174,7 +174,7 @@ namespace NoFuture.Rand.Domus.Opes
                 AddEmployment(emp);
             }
 
-            foreach (var dtRange in GetYearsInDates(_startDate))
+            foreach (var dtRange in GetYearsInDates(MyOptions.StartDate))
             {
                 var stDt = dtRange.Item1;
                 var endDt = dtRange.Item2;
@@ -764,7 +764,7 @@ namespace NoFuture.Rand.Domus.Opes
         {
             var emply = new List<Tuple<DateTime, DateTime?>>();
             //income always starts an even -3 years from the start of this year - employment almost never follows this
-            var sdt = _startDate;
+            var sdt = MyOptions.StartDate;
             sdt = sdt == DateTime.MinValue
                 ? Etx.Date(-4, DateTime.Today, true).Date
                 : sdt.AddDays(Etx.IntNumber(0, 360) * -1);
@@ -814,7 +814,7 @@ namespace NoFuture.Rand.Domus.Opes
 
             foreach (var range in emplyRanges)
             {
-                var emply = new NorthAmericanEmployment(range.Item1, range.Item2, Person) {Occupation = occ};
+                var emply = new NorthAmericanEmployment(Person, range.Item1, range.Item2) {Occupation = occ};
                 if (personality?.GetRandomActsSpontaneous() ?? false)
                 {
                     occ = StandardOccupationalClassification.RandomOccupation(filter);
