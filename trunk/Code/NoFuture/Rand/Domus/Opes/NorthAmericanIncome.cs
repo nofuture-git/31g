@@ -24,7 +24,6 @@ namespace NoFuture.Rand.Domus.Opes
         #region fields
         private readonly HashSet<IEmployment> _employment = new HashSet<IEmployment>();
         private readonly HashSet<Pondus> _otherIncome = new HashSet<Pondus>();
-        private readonly HashSet<Pondus> _expenses = new HashSet<Pondus>();
         #endregion
 
         #region ctors
@@ -55,9 +54,6 @@ namespace NoFuture.Rand.Domus.Opes
 
         public virtual Pondus[] CurrentExpectedOtherIncome => GetCurrent(ExpectedOtherIncome);
 
-        public virtual Pondus[] CurrentExpectedExpenses => GetCurrent(ExpectedExpenses);
-
-        public virtual Pecuniam TotalAnnualExpectedExpenses => Pondus.GetExpectedAnnualSum(CurrentExpectedExpenses);
 
         public virtual Pecuniam TotalAnnualExpectedIncome =>
             Pondus.GetExpectedAnnualSum(CurrentExpectedOtherIncome) + TotalAnnualExpectedNetEmploymentIncome;
@@ -88,16 +84,6 @@ namespace NoFuture.Rand.Domus.Opes
             }
         }
 
-        protected internal virtual List<Pondus> ExpectedExpenses
-        {
-            get
-            {
-                var e = _expenses.ToList();
-                e.Sort(Comparer);
-                return e.ToList();
-            }
-        }
-
         #endregion
 
         #region methods
@@ -113,10 +99,6 @@ namespace NoFuture.Rand.Domus.Opes
             return GetAt(dt, ExpectedOtherIncome);
         }
 
-        public virtual Pondus[] GetExpectedExpensesAt(DateTime? dt)
-        {
-            return GetAt(dt, ExpectedExpenses);
-        }
 
         protected internal virtual void AddEmployment(IEmployment employment)
         {
@@ -142,25 +124,6 @@ namespace NoFuture.Rand.Domus.Opes
             AddExpectedOtherIncome(p);
         }
 
-        protected internal virtual void AddExpectedExpense(Pondus expense)
-        {
-            if (expense == null)
-                return;
-            _expenses.Add(expense);
-        }
-
-        protected internal virtual void AddExpectedExpense(Pecuniam amt, string name, DateTime startDate,
-            DateTime? endDate = null)
-        {
-            var p = new Pondus(name)
-            {
-                Terminus = endDate,
-                Inception = startDate
-            };
-
-            p.My.ExpectedValue = amt?.Neg;
-            AddExpectedExpense(p);
-        }
 
         /// <summary>
         /// Resolves all expected income and expense items for this instance&apos;s year(s)
@@ -188,11 +151,12 @@ namespace NoFuture.Rand.Domus.Opes
 
                 foreach(var otPon in otPondus)
                     AddExpectedOtherIncome(otPon);
-                foreach(var expense in expenses)
-                    AddExpectedExpense(expense);
+                //foreach(var expense in expenses)
+                //    AddExpectedExpense(expense);
 
             }
         }
+        
 
         /// <summary>
         /// Gets the minimum date amoung all income, employment and expense items
@@ -203,16 +167,16 @@ namespace NoFuture.Rand.Domus.Opes
             var sdt = Etx.Date(-3, null, true, 60).Date;
             var minOtherIncome = ExpectedOtherIncome.FirstOrDefault()?.Inception;
             var minEmply = Employment.FirstOrDefault()?.Inception;
-            var minExpense = ExpectedExpenses.FirstOrDefault()?.Inception;
+            //var minExpense = ExpectedExpenses.FirstOrDefault()?.Inception;
             
-            if (new[] { minOtherIncome, minEmply, minExpense }.All(dt => dt == null))
+            if (new[] { minOtherIncome, minEmply }.All(dt => dt == null))
                 return sdt;
 
             var mins = new[]
             {
                 minOtherIncome.GetValueOrDefault(DateTime.Today),
                 minEmply.GetValueOrDefault(DateTime.Today),
-                minExpense.GetValueOrDefault(DateTime.Today)
+                //minExpense.GetValueOrDefault(DateTime.Today)
             };
 
             return mins.Min();
@@ -400,6 +364,63 @@ namespace NoFuture.Rand.Domus.Opes
             return d;
         }
 
+        protected internal override Dictionary<string, Func<OpesOptions, Dictionary<string, double>>> GetItems2Functions()
+        {
+            return new Dictionary<string, Func<OpesOptions, Dictionary<string, double>>>
+            {
+                {IncomeGroupNames.JUDGMENTS, GetJudgementIncomeNames2RandomRates},
+                {IncomeGroupNames.SUBITO, GetSubitoIncomeNames2RandomRates},
+                {IncomeGroupNames.REAL_PROPERTY,GetRealPropertyIncomeNames2RandomRates},
+                {IncomeGroupNames.SECURITIES, GetSecuritiesIncomeNames2RandomRates},
+                {IncomeGroupNames.INSTITUTIONAL, GetInstitutionalIncomeNames2RandomRates},
+            };
+        }
+
+        protected internal Dictionary<string, double> GetJudgementIncomeNames2RandomRates(OpesOptions options)
+        {
+            options = (options ?? MyOptions) ?? new OpesOptions();
+            var tOptions = options.GetClone();
+            var d = GetItemNames2Portions(DomusOpesDivisions.Expense, IncomeGroupNames.JUDGMENTS, tOptions);
+            return d.ToDictionary(t => t.Item1, t => t.Item2);
+        }
+
+        protected internal Dictionary<string, double> GetSubitoIncomeNames2RandomRates(OpesOptions options)
+        {
+            options = (options ?? MyOptions) ?? new OpesOptions();
+            var tOptions = options.GetClone();
+            var d = GetItemNames2Portions(DomusOpesDivisions.Expense, IncomeGroupNames.SUBITO, tOptions);
+            return d.ToDictionary(t => t.Item1, t => t.Item2);
+        }
+
+        protected internal Dictionary<string, double> GetRealPropertyIncomeNames2RandomRates(OpesOptions options)
+        {
+            options = (options ?? MyOptions) ?? new OpesOptions();
+            var tOptions = options.GetClone();
+            var d = GetItemNames2Portions(DomusOpesDivisions.Expense, IncomeGroupNames.REAL_PROPERTY, tOptions);
+            return d.ToDictionary(t => t.Item1, t => t.Item2);
+        }
+
+        protected internal Dictionary<string, double> GetSecuritiesIncomeNames2RandomRates(OpesOptions options)
+        {
+            options = (options ?? MyOptions) ?? new OpesOptions();
+            var tOptions = options.GetClone();
+            var d = GetItemNames2Portions(DomusOpesDivisions.Expense, IncomeGroupNames.SECURITIES, tOptions);
+            return d.ToDictionary(t => t.Item1, t => t.Item2);
+        }
+
+        protected internal Dictionary<string, double> GetInstitutionalIncomeNames2RandomRates(OpesOptions options)
+        {
+            options = (options ?? MyOptions) ?? new OpesOptions();
+            var tOptions = options.GetClone();
+            var d = GetItemNames2Portions(DomusOpesDivisions.Expense, IncomeGroupNames.INSTITUTIONAL, tOptions);
+            return d.ToDictionary(t => t.Item1, t => t.Item2);
+        }
+
+
+        /*
+         ==========================
+             */
+
         /// <summary>
         /// Produces a dictionary of Transportation <see cref="WealthBase.DomusOpesDivisions.Expense"/> 
         ///  items by names to a portion of the total sum.
@@ -440,44 +461,6 @@ namespace NoFuture.Rand.Domus.Opes
         }
 
         /// <summary>
-        /// Produces a dictionary of Expense-Home names to rates whose sum equals 1
-        /// </summary>
-        /// <param name="options"></param>
-        /// <returns></returns>
-        protected internal virtual Dictionary<string, double> GetHomeExpenseNames2RandomRates(OpesOptions options)
-        {
-            options = (options ?? MyOptions) ?? new OpesOptions();
-            var tOptions = options.GetClone();
-
-            //TODO - integrate ability to have multiple mortgages in options
-            tOptions.GivenDirectly.Add(new Mereo("Other Lein", ExpenseGroupNames.HOME) {ExpectedValue = Pecuniam.Zero});
-
-            if (tOptions.IsRenting)
-            {
-                tOptions.GivenDirectly.Add(
-                    new Mereo("Mortgage", ExpenseGroupNames.HOME) { ExpectedValue = Pecuniam.Zero });
-
-                tOptions.GivenDirectly.Add(
-                    new Mereo("Maintenance", ExpenseGroupNames.HOME) { ExpectedValue = Pecuniam.Zero });
-
-                tOptions.GivenDirectly.Add(
-                    new Mereo("Property Tax", ExpenseGroupNames.HOME) { ExpectedValue = Pecuniam.Zero });
-
-                tOptions.GivenDirectly.Add(
-                    new Mereo("Association Fees", ExpenseGroupNames.HOME) { ExpectedValue = Pecuniam.Zero });
-            }
-            else
-            {
-                tOptions.GivenDirectly.Add(
-                    new Mereo("Rent", ExpenseGroupNames.HOME) { ExpectedValue = Pecuniam.Zero });
-                tOptions.PossiableZeroOuts.Add("Association Fees");
-            }
-
-            var d = GetItemNames2Portions(DomusOpesDivisions.Expense, ExpenseGroupNames.HOME, tOptions);
-            return d.ToDictionary(t => t.Item1, t => t.Item2);
-        }
-
-        /// <summary>
         /// Produces a dictionary of Utilities <see cref="WealthBase.DomusOpesDivisions.Expense"/> 
         ///  items by names to a portion of the total sum.
         /// </summary>
@@ -503,22 +486,6 @@ namespace NoFuture.Rand.Domus.Opes
                 dk = ReassignRates(dk, directAssignNames2Rates, derivativeSlope);
 
             return dk;
-        }
-
-        /// <summary>
-        /// Produces a dictionary of Expense-Utilities names to rates whose sum equals 1
-        /// </summary>
-        /// <param name="options"></param>
-        /// <returns></returns>
-        protected internal Dictionary<string, double> GetUtilityExpenseNames2RandomRates(OpesOptions options)
-        {
-            options = (options ?? MyOptions) ?? new OpesOptions();
-            var tOptions = options.GetClone();
-            if(tOptions.IsRenting)
-                tOptions.PossiableZeroOuts.AddRange(new[] { "Gas", "Water", "Sewer", "Trash" });
-
-            var d = GetItemNames2Portions(DomusOpesDivisions.Expense, ExpenseGroupNames.UTILITIES, tOptions);
-            return d.ToDictionary(t => t.Item1, t => t.Item2);
         }
 
         /// <summary>
@@ -564,52 +531,6 @@ namespace NoFuture.Rand.Domus.Opes
         }
 
         /// <summary>
-        /// Produces a dictionary of Expense-Transportation names to rates whose sum equals 1
-        /// </summary>
-        /// <param name="options"></param>
-        /// <returns></returns>
-        protected internal virtual Dictionary<string, double> GetTransportationExpenseNames2RandomRates(
-            OpesOptions options)
-        {
-            options = (options ?? MyOptions) ?? new OpesOptions();
-            var tOptions = options.GetClone();
-            tOptions.PossiableZeroOuts.AddRange(new[] { "Parking", "Registration Fees" });
-
-            if (tOptions.HasVehicles)
-            {
-                if (tOptions.IsVehiclePaidOff)
-                    tOptions.GivenDirectly.Add(
-                        new Mereo("Loan Payments", ExpenseGroupNames.TRANSPORTATION) {ExpectedValue = Pecuniam.Zero});
-
-                tOptions.GivenDirectly.Add(
-                    new Mereo("Public Transportation", ExpenseGroupNames.TRANSPORTATION)
-                    {
-                        ExpectedValue = Pecuniam.Zero
-                    });
-            }
-            else
-            {
-                tOptions.GivenDirectly.Add(
-                    new Mereo("Loan Payments", ExpenseGroupNames.TRANSPORTATION) {ExpectedValue = Pecuniam.Zero});
-
-                tOptions.GivenDirectly.Add(
-                    new Mereo("Fuel", ExpenseGroupNames.TRANSPORTATION) { ExpectedValue = Pecuniam.Zero });
-
-                tOptions.GivenDirectly.Add(
-                    new Mereo("Maintenance", ExpenseGroupNames.TRANSPORTATION) { ExpectedValue = Pecuniam.Zero });
-
-                tOptions.GivenDirectly.Add(
-                    new Mereo("Property Tax", ExpenseGroupNames.TRANSPORTATION) { ExpectedValue = Pecuniam.Zero });
-
-                tOptions.GivenDirectly.Add(
-                    new Mereo("Parking", ExpenseGroupNames.TRANSPORTATION) { ExpectedValue = Pecuniam.Zero });
-            }
-
-            var d = GetItemNames2Portions(DomusOpesDivisions.Expense, ExpenseGroupNames.TRANSPORTATION, tOptions);
-            return d.ToDictionary(t => t.Item1, t => t.Item2);
-        }
-
-        /// <summary>
         /// Produces a dictionary of Health <see cref="WealthBase.DomusOpesDivisions.Expense"/> 
         ///  items by names to a portion of the total sum.
         /// </summary>
@@ -642,30 +563,6 @@ namespace NoFuture.Rand.Domus.Opes
         }
 
         /// <summary>
-        /// Produces a dictionary of Expense-Insurance names to rates whose sum equals 1
-        /// </summary>
-        /// <param name="options"></param>
-        /// <returns></returns>
-        protected internal virtual Dictionary<string, double> GetInsuranceExpenseNames2RandomRates(OpesOptions options)
-        {
-            options = (options ?? MyOptions) ?? new OpesOptions();
-            var tOptions = options.GetClone();
-            tOptions.PossiableZeroOuts.AddRange(new[] { "Pet", "Vision",
-                "Dental", "Health", "Disability", "Life" });
-
-            tOptions.GivenDirectly.Add(
-                tOptions.IsRenting
-                    ? new Mereo("Home", ExpenseGroupNames.INSURANCE) {ExpectedValue = Pecuniam.Zero}
-                    : new Mereo("Renters", ExpenseGroupNames.INSURANCE) {ExpectedValue = Pecuniam.Zero});
-
-            if(tOptions.HasVehicles)
-                tOptions.GivenDirectly.Add(new Mereo("Vehicle", ExpenseGroupNames.INSURANCE){ExpectedValue = Pecuniam.Zero});
-
-            var d = GetItemNames2Portions(DomusOpesDivisions.Expense, ExpenseGroupNames.INSURANCE, tOptions);
-            return d.ToDictionary(t => t.Item1, t => t.Item2);
-        }
-
-        /// <summary>
         /// Produces a dictionary of Personal <see cref="WealthBase.DomusOpesDivisions.Expense"/> 
         /// items by names to a portion of the total sum.
         /// </summary>
@@ -688,21 +585,6 @@ namespace NoFuture.Rand.Domus.Opes
                 dk = ReassignRates(dk, directAssignNames2Rates, derivativeSlope);
 
             return dk;
-        }
-
-        /// <summary>
-        /// Produces a dictionary of Expense-Personal names to rates whose sum equals 1
-        /// </summary>
-        /// <param name="options"></param>
-        /// <returns></returns>
-        protected internal Dictionary<string, double> GetPersonalExpenseNames2RandomRates(OpesOptions options)
-        {
-            options = (options ?? MyOptions) ?? new OpesOptions();
-            var tOptions = options.GetClone();
-            tOptions.PossiableZeroOuts.AddRange(new[] { "Dues", "Subscriptions",
-                "Gifts", "Vice", "Clothing" });
-            var d = GetItemNames2Portions(DomusOpesDivisions.Expense, ExpenseGroupNames.PERSONAL, tOptions);
-            return d.ToDictionary(t => t.Item1, t => t.Item2);
         }
 
         /// <summary>
@@ -756,42 +638,6 @@ namespace NoFuture.Rand.Domus.Opes
         }
 
         /// <summary>
-        /// Produces a dictionary of Expense-Children names to rates whose sum equals 1
-        /// </summary>
-        /// <param name="options"></param>
-        /// <returns></returns>
-        protected internal Dictionary<string, double> GetChildrenExpenseNames2RandomRates(OpesOptions options)
-        {
-            options = (options ?? MyOptions) ?? new OpesOptions();
-            var tOptions = options.GetClone();
-
-            //when children are young we want to reflect that
-            if (MyOptions.HasChildren && MyOptions.ChildrenAges.All(x => x < NAmerUtil.AVG_AGE_CHILD_ENTER_SCHOOL))
-            {
-                tOptions.GivenDirectly.Add(
-                    new Mereo("Transportation", ExpenseGroupNames.CHILDREN) {ExpectedValue = Pecuniam.Zero});
-                tOptions.GivenDirectly.Add(
-                    new Mereo("School Supplies", ExpenseGroupNames.CHILDREN) {ExpectedValue = Pecuniam.Zero});
-                tOptions.GivenDirectly.Add(
-                    new Mereo("Lunch Money", ExpenseGroupNames.CHILDREN) {ExpectedValue = Pecuniam.Zero});
-                tOptions.GivenDirectly.Add(
-                    new Mereo("Extracurricular", ExpenseGroupNames.CHILDREN) {ExpectedValue = Pecuniam.Zero});
-                tOptions.GivenDirectly.Add(
-                    new Mereo("Camp", ExpenseGroupNames.CHILDREN) {ExpectedValue = Pecuniam.Zero});
-                tOptions.GivenDirectly.Add(
-                    new Mereo("Allowance", ExpenseGroupNames.CHILDREN) {ExpectedValue = Pecuniam.Zero});
-            }
-            else
-            {
-                tOptions.PossiableZeroOuts.AddRange(new []{"Lunch Money",
-                    "Extracurricular", "Camp", "Transportation", "Allowance"});
-            }
-
-            var d = GetItemNames2Portions(DomusOpesDivisions.Expense, ExpenseGroupNames.CHILDREN, tOptions);
-            return d.ToDictionary(t => t.Item1, t => t.Item2);
-        }
-
-        /// <summary>
         /// Produces a dictionary of Debts <see cref="WealthBase.DomusOpesDivisions.Expense"/> 
         ///  items by names to a portion of the total sum.
         /// </summary>
@@ -814,20 +660,6 @@ namespace NoFuture.Rand.Domus.Opes
                 dk = ReassignRates(dk, directAssignNames2Rates, derivativeSlope);
 
             return dk;
-        }
-
-        /// <summary>
-        /// Produces a dictionary of Expense-Debt names to rates whose sum equals 1
-        /// </summary>
-        /// <param name="options"></param>
-        /// <returns></returns>
-        protected internal Dictionary<string, double> GetDebtExpenseNames2RandomRates(OpesOptions options)
-        {
-            options = (options ?? MyOptions) ?? new OpesOptions();
-            var tOptions = options.GetClone();
-            tOptions.PossiableZeroOuts.AddRange(new []{"Health Care", "Other Consumer", "Student", "Tax", "Other"});
-            var d = GetItemNames2Portions(DomusOpesDivisions.Expense, ExpenseGroupNames.DEBT, tOptions);
-            return d.ToDictionary(t => t.Item1, t => t.Item2);
         }
 
         /// <summary>
@@ -856,21 +688,6 @@ namespace NoFuture.Rand.Domus.Opes
         }
 
         /// <summary>
-        /// Produces a dictionary of Expense-Health names to rates whose sum is equal to 1
-        /// </summary>
-        /// <param name="options"></param>
-        /// <returns></returns>
-        protected internal Dictionary<string, double> GetHealthExpenseNames2RandomRates(OpesOptions options)
-        {
-            options = (options ?? MyOptions) ?? new OpesOptions();
-            var tOptions = options.GetClone();
-            tOptions.PossiableZeroOuts.AddRange(new[] { "Therapy", "Hospital",
-                "Optical", "Dental", "Physician", "Supplements" });
-            var d = GetItemNames2Portions(DomusOpesDivisions.Expense, ExpenseGroupNames.HEALTH, tOptions);
-            return d.ToDictionary(t => t.Item1, t => t.Item2);
-        }
-
-        /// <summary>
         /// Composes the items for Public Benefits (a.k.a. welfare) for whenever the current person
         /// has an income below the federal poverty level at time <see cref="startDate"/>
         /// </summary>
@@ -883,8 +700,10 @@ namespace NoFuture.Rand.Domus.Opes
             var itemsout = new List<Pondus>();
             startDate = startDate == DateTime.MinValue ? GetMinDateAmongExpectations() : startDate;
             var isPoor = IsBelowFedPovertyAt(startDate);
-            var hudAmt = isPoor ? GetHudMonthlyAmount(startDate) : Pecuniam.Zero;
-            var snapAmt = isPoor ? GetFoodStampsMonthlyAmount(startDate) : Pecuniam.Zero;
+            var grossIncome = GetExpectedAnnualEmplyGrossIncome(startDate);
+            var netIncome = GetExpectedAnnualEmplyNetIncome(startDate);
+            var hudAmt = isPoor ? GetHudMonthlyAmount(grossIncome, netIncome) : Pecuniam.Zero;
+            var snapAmt = isPoor ? GetFoodStampsMonthlyAmount(netIncome) : Pecuniam.Zero;
 
             var incomeItems = GetIncomeItemNames().Where(i => i.GetName(KindsOfNames.Group) == "Public Benefits");
             foreach (var incomeItem in incomeItems)
@@ -918,10 +737,12 @@ namespace NoFuture.Rand.Domus.Opes
         /// Src https://www.hud.gov/sites/documents/DOC_11750.PDF
         /// </summary>
         /// <returns></returns>
-        protected internal virtual Pecuniam GetHudMonthlyAmount(DateTime? atTime)
+        protected internal virtual Pecuniam GetHudMonthlyAmount(Pecuniam grossAnnualIncome, Pecuniam netAnnualIncome)
         {
-            var thirtyPercentAdjIncome = GetExpectedAnnualEmplyNetIncome(atTime).ToDouble() / 12 * 0.3;
-            var tenPercentGrossIncome =  GetExpectedAnnualEmplyGrossIncome(atTime).ToDouble() / 12 * 0.1;
+            if(grossAnnualIncome == null || netAnnualIncome == null)
+                return Pecuniam.Zero;
+            var thirtyPercentAdjIncome = grossAnnualIncome.ToDouble() / 12 * 0.3;
+            var tenPercentGrossIncome = netAnnualIncome.ToDouble() / 12 * 0.1;
 
             var sum = thirtyPercentAdjIncome + tenPercentGrossIncome + 25.0D;
             return sum.ToPecuniam();
@@ -931,9 +752,11 @@ namespace NoFuture.Rand.Domus.Opes
         /// Src https://www.fns.usda.gov/snap/how-much-could-i-receive
         /// </summary>
         /// <returns></returns>
-        protected internal virtual Pecuniam GetFoodStampsMonthlyAmount(DateTime? atTime)
+        protected internal virtual Pecuniam GetFoodStampsMonthlyAmount(Pecuniam netAnnualIncome)
         {
-            var thirtyPercentAdjIncome = GetExpectedAnnualEmplyNetIncome(atTime).ToDouble() / 12 * 0.3;
+            if(netAnnualIncome == null)
+                return Pecuniam.Zero;
+            var thirtyPercentAdjIncome = netAnnualIncome.ToDouble() / 12 * 0.3;
             return thirtyPercentAdjIncome.ToPecuniam();
         }
 

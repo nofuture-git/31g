@@ -5,7 +5,7 @@ namespace NoFuture.Rand.Domus.Opes
 {
 
     /// <summary>
-    /// Expresses a personal income in time as a combination of income and expense
+    /// Expresses a personal income in time
     /// </summary>
     public interface IReditus
     {
@@ -37,21 +37,6 @@ namespace NoFuture.Rand.Domus.Opes
         /// Returns all non-employment forms of income at the time of <see cref="dt"/>
         /// </summary>
         Pondus[] GetExpectedOtherIncomeAt(DateTime? dt);
-
-        /// <summary>
-        /// Returns all current expenses right Now
-        /// </summary>
-        Pondus[] CurrentExpectedExpenses { get; }
-
-        /// <summary>
-        /// Returns all current expenses at the time of <see cref="dt"/>
-        /// </summary>
-        Pondus[] GetExpectedExpensesAt(DateTime? dt);
-
-        /// <summary>
-        /// A monetary sum of all current expenses
-        /// </summary>
-        Pecuniam TotalAnnualExpectedExpenses { get; }
 
         /// <summary>
         /// A monetary sum of all income

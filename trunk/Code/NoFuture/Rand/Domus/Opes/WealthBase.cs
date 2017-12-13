@@ -337,7 +337,8 @@ namespace NoFuture.Rand.Domus.Opes
         }
 
         /// <summary>
-        /// 
+        /// Factory method to get a list of group-name to group-rate using 
+        /// the given <see cref="options"/>
         /// </summary>
         /// <param name="division"></param>
         /// <param name="options"></param>
@@ -349,61 +350,12 @@ namespace NoFuture.Rand.Domus.Opes
 
             var grpNames = GetGroupNames(division);
 
-            //get a portion for each
-            var randPortions = Etx.DiminishingPortions(grpNames.Count, options.DerivativeSlope);
-
-            //put the two together
-            var randMap = grpNames.Zip(randPortions, (n, v) => new Tuple<string, double>(n, v)).ToList();
-
-            //to get a rate we need both numerator and denominator
-            if (options.SumTotal == null || options.SumTotal == Pecuniam.Zero || !options.GivenDirectly.Any())
-                return randMap;
-
-            //get a dict of group names to all 0.0D
-            var calcDict = new Dictionary<string, double>();
-
-            //get the sum of given options by group only
-            foreach (var d in options.GivenDirectly)
-            {
-                var dGrp = d.GetName(KindsOfNames.Group);
-                if (string.IsNullOrWhiteSpace(dGrp) || d.ExpectedValue == null || d.ExpectedValue == Pecuniam.Zero)
-                    continue;
-                if (calcDict.ContainsKey(dGrp))
-                    calcDict[dGrp] += d.ExpectedValue.ToDouble();
-                else
-                    calcDict.Add(dGrp, d.ExpectedValue.ToDouble());
-            }
-
-            var calcMap = new List<Tuple<string, double>>();
-
-            //get the group sum as a ratio of the total
-            foreach (var k in grpNames)
-            {
-                //we only want to reassign when value was explicity given in options
-                if (!calcDict.ContainsKey(k))
-                {
-                    continue;
-                }
-
-                var rate = calcDict[k] / options.SumTotal.ToDouble();
-                calcMap.Add(new Tuple<string, double>(k, rate));
-            }
-
-            //convert it to a dictionary
-            var randDict = new Dictionary<string, double>();
-            foreach (var t in randMap)
-            {
-                randDict.Add(t.Item1, t.Item2);
-            }
-
-            //convert it to a dictionary 
-            return ReassignRates(randDict, calcMap).Select(kv => new Tuple<string, double>(kv.Key, kv.Value)).ToList();
+            return GetNames2Portions(options, grpNames.ToArray());
         }
 
-
         /// <summary>
-        /// Factory method to get a list of item-name to item-rate  which 
-        /// integrates any <see cref="OpesOptions.GivenDirectly"/> values.
+        /// Factory method to get a list of item-name to item-rate using
+        /// the given <see cref="options"/>
         /// </summary>
         /// <param name="division"></param>
         /// <param name="groupName"></param>
@@ -418,12 +370,25 @@ namespace NoFuture.Rand.Domus.Opes
             var itemNames = GetItemNames(division).Where(x =>
                 string.Equals(x.GetName(KindsOfNames.Group), groupName, StringComparison.OrdinalIgnoreCase)).ToArray();
 
+            return GetNames2Portions(options, itemNames.Select(k => k.Name).ToArray());
+        }
+
+        /// <summary>
+        /// General form of its counterparts <see cref="GetGroupNames2Portions"/> and <see cref="GetItemNames2Portions"/>
+        /// </summary>
+        /// <param name="options"></param>
+        /// <param name="itemNames"></param>
+        /// <returns></returns>
+        public static List<Tuple<string, double>> GetNames2Portions(OpesOptions options, string[] itemNames)
+        {
+            options = options ?? new OpesOptions();
+
             //get a portion for each
             var randPortions = Etx.DiminishingPortions(itemNames.Length, options.DerivativeSlope);
 
             //put the two together
             var randMap = itemNames
-                .Zip(randPortions, (n, v) => new Tuple<string, double>(n.Name, v)).ToList();
+                .Zip(randPortions, (n, v) => new Tuple<string, double>(n, v)).ToList();
 
             //convert it to a dictionary
             var randDict = new Dictionary<string, double>();
@@ -439,7 +404,7 @@ namespace NoFuture.Rand.Domus.Opes
             {
                 foreach (var pzo in options.PossiableZeroOuts)
                 {
-                    if(options.DiceRoll(3,Etx.Dice.Four) && zeroOuts.All(z => z.Item1 != pzo))
+                    if (options.DiceRoll(3, Etx.Dice.Four) && zeroOuts.All(z => z.Item1 != pzo))
                         zeroOuts.Add(new Tuple<string, double>(pzo, 0.0D));
                 }
             }
@@ -447,7 +412,7 @@ namespace NoFuture.Rand.Domus.Opes
             //apply any GivenDirectly's of zero like PossiableZeroOuts
             foreach (var dr in options.GivenDirectly.Where(o => o.ExpectedValue == Pecuniam.Zero))
             {
-                if(zeroOuts.All(z => z.Item1 != dr.Name))
+                if (zeroOuts.All(z => z.Item1 != dr.Name))
                     zeroOuts.Add(new Tuple<string, double>(dr.Name, 0.0D));
             }
 
@@ -455,7 +420,7 @@ namespace NoFuture.Rand.Domus.Opes
             if (zeroOuts.Any())
             {
                 //make one last check that we aren't zero'ing out everything
-                if(zeroOuts.Count == itemNames.Length)
+                if (zeroOuts.Count == itemNames.Length)
                     throw new RahRowRagee("A sum total of 1 cannot be perserved when " +
                                           "all items have been directly assigned to 0.");
 
@@ -486,8 +451,8 @@ namespace NoFuture.Rand.Domus.Opes
             foreach (var d in options.GivenDirectly)
             {
                 var dName = d.Name;
-                if (string.IsNullOrWhiteSpace(dName) 
-                    || d.ExpectedValue == null 
+                if (string.IsNullOrWhiteSpace(dName)
+                    || d.ExpectedValue == null
                     || d.ExpectedValue == Pecuniam.Zero)
                     continue;
                 if (calcDict.ContainsKey(dName))
@@ -502,13 +467,13 @@ namespace NoFuture.Rand.Domus.Opes
             foreach (var k in itemNames)
             {
                 //we only want to reassign when value was explicity given in options
-                if (!calcDict.ContainsKey(k.Name))
+                if (!calcDict.ContainsKey(k))
                 {
                     continue;
                 }
 
-                var rate = Math.Round(calcDict[k.Name] / total, DF_ROUND_DECIMAL_PLACES);
-                calcMap.Add(new Tuple<string, double>(k.Name, rate));
+                var rate = Math.Round(calcDict[k] / total, DF_ROUND_DECIMAL_PLACES);
+                calcMap.Add(new Tuple<string, double>(k, rate));
             }
 
             //if the calc map doesn't leave any room for reassignment then we are done
@@ -518,9 +483,9 @@ namespace NoFuture.Rand.Domus.Opes
                 //still need to add in the 0.0 items since calcMap has only the directly assigned values
                 foreach (var k in itemNames)
                 {
-                    if (calcMap.Any(t => string.Equals(t.Item1, k.Name, StringComparison.OrdinalIgnoreCase)))
+                    if (calcMap.Any(t => string.Equals(t.Item1, k, StringComparison.OrdinalIgnoreCase)))
                         continue;
-                    calcMap.Add(new Tuple<string, double>(k.Name, 0.0D));
+                    calcMap.Add(new Tuple<string, double>(k, 0.0D));
                 }
                 return calcMap;
             }
@@ -1085,15 +1050,16 @@ namespace NoFuture.Rand.Domus.Opes
             return directAssignRates;
         }
 
-        protected internal Pondus[] GetItemsForRange(DomusOpesDivisions division, OpesOptions options = null)
+        protected internal Pondus[] GetItemsForRange(DomusOpesDivisions division, OpesOptions grpOptions = null, OpesOptions itemOptions = null)
         {
-            options = options ?? MyOptions;
+            grpOptions = grpOptions ?? MyOptions;
+            itemOptions = itemOptions ?? MyOptions;
 
             var itemsout = new List<Pondus>();
 
-            var amt = options.SumTotal;
+            var amt = grpOptions.SumTotal;
 
-            var grp2Rates = GetGroupNames2Portions(division, options);
+            var grp2Rates = GetGroupNames2Portions(division, grpOptions);
 
             var name2Op = GetItems2Functions();
 
@@ -1102,20 +1068,20 @@ namespace NoFuture.Rand.Domus.Opes
                 var grp = g2r.Item1;
                 var portion = g2r.Item2;
 
-                var useFxMapping = !name2Op.ContainsKey(grp) || options.GivenDirectly.Any(m =>
+                var useFxMapping = !name2Op.ContainsKey(grp) || itemOptions.GivenDirectly.Any(m =>
                                        string.Equals(m.GetName(KindsOfNames.Group), grp,
                                            StringComparison.OrdinalIgnoreCase));
 
                 var grpRates = useFxMapping
-                    ? name2Op[grp](options)
-                    : GetItemNames2Portions(division, grp, options)
+                    ? name2Op[grp](itemOptions)
+                    : GetItemNames2Portions(division, grp, itemOptions)
                         .ToDictionary(k => k.Item1, k => k.Item2);
 
                 foreach (var item in grpRates.Keys)
                 {
-                    var p = GetPondusForItemAndGroup(item, grp, options);
+                    var p = GetPondusForItemAndGroup(item, grp, itemOptions);
                     p.My.ExpectedValue = CalcValue(amt, grpRates[item] * portion);
-                    p.My.Interval = options.Interval;
+                    p.My.Interval = itemOptions.Interval;
                     itemsout.Add(p);
                 }
             }

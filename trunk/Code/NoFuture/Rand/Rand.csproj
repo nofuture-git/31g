@@ -125,6 +125,7 @@
     <Compile Include="Domus\Opes\IEmployment.cs" />
     <Compile Include="Domus\IStudent.cs" />
     <Compile Include="Data\Sp\Mereo.cs" />
+    <Compile Include="Domus\Opes\IExpense.cs" />
     <Compile Include="Domus\Opes\IRebus.cs" />
     <Compile Include="Domus\Opes\NorthAmericanAssets.cs" />
     <Compile Include="Domus\Opes\NorthAmericanEmployment.cs" />
@@ -132,6 +133,7 @@
     <Compile Include="Data\Sp\IMereo.cs" />
     <Compile Include="Data\Sp\Enums\Interval.cs" />
     <Compile Include="Data\Sp\Pondus.cs" />
+    <Compile Include="Domus\Opes\NorthAmericanExpenses.cs" />
     <Compile Include="Domus\Opes\NorthAmericanFactors.cs" />
     <Compile Include="Domus\Opes\OpesOptions.cs" />
     <Compile Include="Domus\Pneuma\Agreeableness.cs" />

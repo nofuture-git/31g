@@ -211,10 +211,10 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         public void TestGetGroupNames2Portions()
         {
             var testInput = new OpesOptions();
-            testInput.GivenDirectly.Add(new Mereo("Real Estate","Real Property"){ExpectedValue = 7800.ToPecuniam()});
-            testInput.GivenDirectly.Add(new Mereo("Stocks", "Securities"){ExpectedValue = 1000.ToPecuniam()});
+            testInput.GivenDirectly.Add(new Mereo("Real Property"){ExpectedValue = 7800.ToPecuniam()});
+            testInput.GivenDirectly.Add(new Mereo("Securities"){ExpectedValue = 1000.ToPecuniam()});
             testInput.SumTotal = 12000.ToPecuniam();
-
+            var testSubject = new NorthAmericanIncome(null);
             var testResult = WealthBase.GetGroupNames2Portions(WealthBase.DomusOpesDivisions.Assets, testInput);
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0, testResult.Count);
@@ -227,11 +227,12 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             var testResult01 = testResult.FirstOrDefault(k => k.Item1 == "Securities");
             Assert.IsNotNull(testResult01);
 
+            foreach (var tr in testResult)
+                System.Diagnostics.Debug.WriteLine(tr);
+
             Assert.AreEqual(Math.Round(7800.0D/12000, 3), Math.Round(testResult00.Item2,3));
             Assert.AreEqual(Math.Round(1000.0D / 12000, 3), Math.Round(testResult01.Item2, 3));
 
-            foreach (var tr in testResult)
-                System.Diagnostics.Debug.WriteLine(tr);
 
         }
 
@@ -289,7 +290,12 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         [TestMethod]
         public void TestGetItemsForRange()
         {
-            
+            var testSubject = new NorthAmericanIncome(null);
+            var grpOptions = new OpesOptions {StartDate = DateTime.Today.AddYears(-1)};
+            var itemOptions = grpOptions.GetClone();
+
+
+
         }
 
         public static List<Tuple<string, string>> GetExpectedNamesFromXml(string sectionName)
