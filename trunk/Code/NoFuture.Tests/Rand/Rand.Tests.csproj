@@ -64,6 +64,7 @@
     <Compile Include="DomusTests\OpesTests\NorthAmericanAssetsTests.cs" />
     <Compile Include="DomusTests\OpesTests\NorthAmericanEmploymentTests.cs" />
     <Compile Include="DomusTests\OpesTests\NorthAmericanIncomeTests.cs" />
+    <Compile Include="DomusTests\OpesTests\OpesOptionsTests.cs" />
     <Compile Include="DomusTests\TradeLineTests.cs" />
     <Compile Include="EtxTests.cs" />
     <Compile Include="GovTests\FedTests.cs" />
@@ -94,6 +95,10 @@
     <ProjectReference Include="..\..\NoFuture\Rand\Rand.csproj">
       <Project>{71628e18-d27b-4f4e-b034-4b2ad4479e13}</Project>
       <Name>Rand</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\NoFuture\Shared\Core\Shared.Core.csproj">
+      <Project>{6eca48dc-fdb4-4660-9914-3b74d5975ff9}</Project>
+      <Name>Shared.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\NoFuture\Util\Core\Util.Core.csproj">
       <Project>{349a1c91-ca14-4d04-946d-8b257a863ce0}</Project>

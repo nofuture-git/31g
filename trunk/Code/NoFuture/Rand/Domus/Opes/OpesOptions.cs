@@ -12,12 +12,6 @@ namespace NoFuture.Rand.Domus.Opes
     {
         private double _derivativeSlope;
 
-        public OpesOptions()
-        {
-            Probability = Etx.TryBelowOrAt;
-        }
-
-        public bool HasVehicle { get; set; }
         public bool IsVehiclePaidOff { get; set; }
         public bool IsRenting { get; set; }
         public int NumberOfVehicles { get; set; }
@@ -47,7 +41,7 @@ namespace NoFuture.Rand.Domus.Opes
             set => _derivativeSlope = value;
         }
 
-        public Func<int, Etx.Dice, bool> Probability { get; set; }
+        public Func<int, Etx.Dice, bool> DiceRoll { get; set; } = Etx.TryBelowOrAt;
 
         public List<string> PossiableZeroOuts { get; } = new List<string>();
 
@@ -61,6 +55,12 @@ namespace NoFuture.Rand.Domus.Opes
                 var gVal = p.GetValue(this);
                 p.SetValue(o, gVal);
             }
+
+            foreach (var zo in PossiableZeroOuts)
+                o.PossiableZeroOuts.Add(zo);
+
+            foreach (var me in GivenDirectly)
+                o.GivenDirectly.Add(new Mereo(me));
 
             return o;
         }

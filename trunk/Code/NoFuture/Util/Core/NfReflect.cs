@@ -668,8 +668,10 @@ namespace NoFuture.Util.Core
                 assignPiLog.Add(new[] {ERROR_PREFIX, ex.Message, ex.StackTrace });
                 return 0;
             }
-
-            return 1D - (double)rScores.Select(x => x.Item1).Sum() / rScores.Select(x => x.Item2).Sum();
+            var num = rScores.Select(x => (double)x.Item2).Sum();
+            var den = rScores.Select(x => (double)x.Item1).Sum();
+            var ratio = den == 0.0D ? 0.0D : num / den;
+            return 1D - ratio;
         }
 
         /// <summary>

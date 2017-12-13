@@ -41,6 +41,12 @@ namespace NoFuture.Rand.Data.Sp
             CopyFrom(names);
         }
 
+        public Mereo(IMereo mereo) : this((IVoca)mereo)
+        {
+            ExpectedValue = mereo.ExpectedValue;
+            //TODO - get the rest of it
+        }
+
         public string Src { get; set; }
         public string Abbrev => GetName(KindsOfNames.Abbrev);
 

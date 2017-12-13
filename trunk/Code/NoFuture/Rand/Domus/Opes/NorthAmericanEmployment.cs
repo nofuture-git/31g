@@ -177,9 +177,9 @@ namespace NoFuture.Rand.Domus.Opes
             }
         }
 
-        protected internal override Dictionary<string, Func<double, OpesOptions, Dictionary<string, double>>> GetItems2Functions()
+        protected internal override Dictionary<string, Func<OpesOptions, Dictionary<string, double>>> GetItems2Functions()
         {
-            return new Dictionary<string, Func<double, OpesOptions, Dictionary<string, double>>>
+            return new Dictionary<string, Func<OpesOptions, Dictionary<string, double>>>
             {
                 {"Employment", GetPayName2RandRates},
                 {"Insurance", GetInsuranceDeductionName2RandRates},
@@ -293,7 +293,7 @@ namespace NoFuture.Rand.Domus.Opes
             startDate = startDate == DateTime.MinValue ? MyOptions.StartDate : startDate;
             amt = amt ?? Pecuniam.Zero;
 
-            var incomeName2Rates = GetPayName2RandRates(0.0D, null);
+            var incomeName2Rates = GetPayName2RandRates(null);
             var incomeItems = GetIncomeItemNames();
             foreach (var incomeItem in incomeItems.Where(i => i.GetName(KindsOfNames.Group) == IncomeGroupNames.EMPLOYMENT))
             {
@@ -316,7 +316,7 @@ namespace NoFuture.Rand.Domus.Opes
         /// all the rates equals 1
         /// </summary>
         /// <returns></returns>
-        protected internal virtual Dictionary<string, double> GetPayName2RandRates(double portion, OpesOptions options)
+        protected internal virtual Dictionary<string, double> GetPayName2RandRates(OpesOptions options)
         {
             var bonusRate = Etx.TryBelowOrAt(1, Etx.Dice.Ten)
                 ? Etx.RandomValueInNormalDist(0.02, 0.001)
@@ -398,7 +398,7 @@ namespace NoFuture.Rand.Domus.Opes
             amt = amt ?? Pecuniam.Zero;
             startDate = startDate == DateTime.MinValue ? MyOptions.StartDate : startDate;
 
-            var deductionNames2Rates = GetDeductionNames2RandomRates(0.0D, new OpesOptions {SumTotal = amt, StartDate = startDate});
+            var deductionNames2Rates = GetDeductionNames2RandomRates(new OpesOptions {SumTotal = amt, StartDate = startDate});
             var deductionItems = GetDeductionItemNames();
             foreach (var deduction in deductionItems)
             {
@@ -416,7 +416,7 @@ namespace NoFuture.Rand.Domus.Opes
             return itemsout.ToArray();
         }
 
-        protected internal Dictionary<string, double> GetInsuranceDeductionName2RandRates(double portion, OpesOptions options)
+        protected internal Dictionary<string, double> GetInsuranceDeductionName2RandRates(OpesOptions options)
         {
             var employeeHealthInsRate = GetEmployeeHealthInsRate(options);
             var dentalInsRate = GetRandomizeRateOf(employeeHealthInsRate, 8);
@@ -455,8 +455,7 @@ namespace NoFuture.Rand.Domus.Opes
             };
         }
 
-        protected internal Dictionary<string, double> GetGovernmentDeductionName2Rates(double portion,
-            OpesOptions options)
+        protected internal Dictionary<string, double> GetGovernmentDeductionName2Rates(OpesOptions options)
         {
             var annualIncomeAmount = options.SumTotal;
             var fedTaxRate = NAmerUtil.Equations.FederalIncomeTaxRate.SolveForY(annualIncomeAmount.ToDouble());
@@ -475,8 +474,7 @@ namespace NoFuture.Rand.Domus.Opes
             };
         }
 
-        protected internal Dictionary<string, double> GetEmploymentDeductionName2Rates(double portion,
-            OpesOptions options)
+        protected internal Dictionary<string, double> GetEmploymentDeductionName2Rates(OpesOptions options)
         {
             var startDate = options.StartDate;
             var annualIncomeAmount = options.SumTotal;
@@ -532,7 +530,7 @@ namespace NoFuture.Rand.Domus.Opes
         /// <param name="portion"></param>
         /// <param name="options"></param>
         /// <returns></returns>
-        protected internal virtual Dictionary<string, double> GetDeductionNames2RandomRates(double portion, OpesOptions options)
+        protected internal virtual Dictionary<string, double> GetDeductionNames2RandomRates(OpesOptions options)
         {
             var employeeHealthInsRate = GetEmployeeHealthInsRate(options);
             var dentalInsRate = GetRandomizeRateOf(employeeHealthInsRate, 8);

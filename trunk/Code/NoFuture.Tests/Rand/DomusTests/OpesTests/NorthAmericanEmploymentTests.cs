@@ -166,7 +166,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         {
             var testSubject = new Domus.Opes.NorthAmericanEmployment(new DateTime(2011, 10, 5), null);
             testSubject.Occupation = StandardOccupationalClassification.GetById("41-2031");
-            var testResult = testSubject.GetPayName2RandRates(0.0D, testSubject.MyOptions);
+            var testResult = testSubject.GetPayName2RandRates(testSubject.MyOptions);
 
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0, testResult.Count);
@@ -187,7 +187,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             var testSubject = new Domus.Opes.NorthAmericanEmployment(new DateTime(2011, 10, 5), null);
             testSubject.Occupation = StandardOccupationalClassification.GetById("41-2031");
             var options = new OpesOptions {SumTotal = 55000D.ToPecuniam()};
-            var testResult = testSubject.GetDeductionNames2RandomRates(0.0D, options);
+            var testResult = testSubject.GetDeductionNames2RandomRates(options);
 
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0, testResult.Count);
