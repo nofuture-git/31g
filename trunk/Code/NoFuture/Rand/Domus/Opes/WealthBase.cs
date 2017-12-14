@@ -27,14 +27,13 @@ namespace NoFuture.Rand.Domus.Opes
         #region fields
         protected internal IComparer<ITempore> Comparer { get; } = new TemporeComparer();
         private readonly NorthAmerican _amer;
-        protected readonly bool IsRenting;
         private readonly NorthAmericanFactors _factors;
         private static IMereo[] _incomeItemNames;
         private static IMereo[] _deductionItemNames;
         private static IMereo[] _expenseItemNames;
         private static IMereo[] _assetItemNames;
         private static IMereo[] _employmentItemNames;
-        protected internal OpesOptions _myOptions;
+
         #endregion
 
         #region inner types
@@ -106,12 +105,11 @@ namespace NoFuture.Rand.Domus.Opes
 
         protected WealthBase(NorthAmerican american, OpesOptions options)
         {
-            _myOptions = options ?? new OpesOptions();
+            MyOptions = options ?? new OpesOptions();
             if (american == null)
             {
                 CreditScore = new PersonalCreditScore(null);
                 _factors = new NorthAmericanFactors(null);
-                IsRenting = MyOptions.IsRenting;
                 return;
             }
             _amer = american;
@@ -119,28 +117,15 @@ namespace NoFuture.Rand.Domus.Opes
 
             CreditScore = new PersonalCreditScore(american);
 
-            //determine if renting or own
-            IsRenting = MyOptions.IsRenting || GetIsLeaseResidence(usCityArea);
+            //TODO this should be decided by calling assemlby
+            MyOptions.IsRenting = GetIsLeaseResidence(usCityArea);
             _factors = new NorthAmericanFactors(_amer);
 
         }
         #endregion
 
-        #region inner types
-
-        protected internal class RatesDictionaryArgs
-        {
-            internal double? SumOfRates { get; set; }
-            internal double? DerivativeSlope { get; set; }
-            internal Dictionary<string, double> DirectAssignNames2Rates { get; set; }
-        }
-        #endregion 
-
-        protected internal OpesOptions MyOptions
-        {
-            get => _myOptions;
-            set => _myOptions = value;
-        }
+        #region properties
+        protected internal OpesOptions MyOptions { get; set; }
 
         public CreditScore CreditScore { get; protected set; }
 
@@ -156,7 +141,14 @@ namespace NoFuture.Rand.Domus.Opes
 
         protected internal abstract List<Pondus> MyItems { get; }
 
+        #endregion
+
+        #region methods
         protected internal abstract void AddItem(Pondus item);
+
+        protected abstract Dictionary<string, Func<OpesOptions, Dictionary<string, double>>> GetItems2Functions();
+
+        protected internal abstract void ResolveItems(OpesOptions options);
 
         /// <summary>
         /// Calculate a yearly income at random.
@@ -218,7 +210,8 @@ namespace NoFuture.Rand.Domus.Opes
         protected internal virtual LinearEquation GetAvgEarningPerYear()
         {
             var ca = _amer?.Address?.HomeCityArea as UsCityStateZip;
-            return (ca?.AverageEarnings ?? ca?.State?.GetStateData()?.AverageEarnings) ?? NAmerUtil.Equations.NatlAverageEarnings;
+            return (ca?.AverageEarnings ?? ca?.State?.GetStateData()?.AverageEarnings) ??
+                   NAmerUtil.Equations.NatlAverageEarnings;
         }
 
         protected internal virtual Pondus[] GetCurrent(List<Pondus> items)
@@ -570,9 +563,9 @@ namespace NoFuture.Rand.Domus.Opes
             }
 
             mereo = new Mereo(itemName);
-            if (!String.IsNullOrWhiteSpace(abbrev))
+            if (!string.IsNullOrWhiteSpace(abbrev))
                 mereo.UpsertName(KindsOfNames.Abbrev, abbrev);
-            if (!String.IsNullOrWhiteSpace(groupName))
+            if (!string.IsNullOrWhiteSpace(groupName))
                 mereo.UpsertName(KindsOfNames.Group, groupName);
             if (egs.Any())
             {
@@ -580,7 +573,7 @@ namespace NoFuture.Rand.Domus.Opes
                     mereo.ExempliGratia.Add(eg);
             }
 
-            return !String.IsNullOrWhiteSpace(itemName);
+            return !string.IsNullOrWhiteSpace(itemName);
         }
 
         public static bool IsCloseEnoughToOne(double testValue)
@@ -591,7 +584,7 @@ namespace NoFuture.Rand.Domus.Opes
 
         internal static IMereo[] GetDomusOpesItemNames(string xPath)
         {
-            if (String.IsNullOrWhiteSpace(xPath))
+            if (string.IsNullOrWhiteSpace(xPath))
                 return null;
 
             var xml = TreeData.UsDomusOpes;
@@ -638,122 +631,6 @@ namespace NoFuture.Rand.Domus.Opes
         {
             pecuniam = pecuniam ?? Pecuniam.Zero;
             return Math.Round(pecuniam.ToDouble() * d, 2).ToPecuniam();
-        }
-
-        /// <summary>
-        /// Helper method to get a bunch of random rates mapped to some names
-        /// </summary>
-        /// <param name="names"></param>
-        /// <param name="sumOfRates">
-        /// Optional, expected sum of all generated rates to approach 1 (a.k.a. 100 percent)
-        /// </param>
-        /// <param name="randRateFunc">
-        /// Optional, allows calling assembly to control how a random rate is generated.
-        /// Default is to generated anywhere between 0.01 and <see cref="sumOfRates"/>
-        /// </param>
-        /// <returns></returns>
-        protected internal virtual Dictionary<string, double> GetNames2RandomRates(IEnumerable<IMereo> names,
-            double sumOfRates = 0.999999D, Func<double> randRateFunc = null)
-        {
-            //get just an array of rates
-            var rates = new double[names.Count()];
-            var d = new Dictionary<string, double>();
-
-            var rMax = sumOfRates;
-            double DfRandRateFunc() => Etx.RationalNumber(0.01, rMax);
-
-            randRateFunc = randRateFunc ?? DfRandRateFunc;
-
-            var l = rates.Sum();
-            sumOfRates = Math.Abs(sumOfRates);
-            while (l < sumOfRates)
-            {
-                //pick a random index 
-                var idx = Etx.IntNumber(0, rates.Length - 1);
-
-                //get random amount
-                var randRate = randRateFunc();
-                if (randRate + rates.Sum() > sumOfRates)
-                {
-                    randRate = sumOfRates - rates.Sum();
-                }
-                rates[idx] += randRate;
-
-                l = rates.Sum();
-            }
-
-            //assign the values over to the dictionary
-            var c = 0;
-            foreach (var otName in names)
-            {
-                d.Add(otName.Name, Math.Round(rates[c], DF_ROUND_DECIMAL_PLACES));
-                c += 1;
-            }
-
-            return d;
-        }
-
-        /// <summary>
-        /// Helper method to get a bunch of diminishing random rates mapped to some names.
-        /// This differs from the counterpart GetNames2RandomRates because 
-        /// every item in <see cref="names"/> will get &apos;something&apos; - no matter how small.
-        /// </summary>
-        /// <param name="names"></param>
-        /// <param name="sumOfRates"></param>
-        /// <param name="derivativeSlope">
-        /// Is passed into the <see cref="Etx.DiminishingPortions"/> - see its annotation.
-        /// </param>
-        /// <returns></returns>
-        protected internal virtual Dictionary<string, double> GetNames2DiminishingRates(IEnumerable<IMereo> names,
-            double sumOfRates, double derivativeSlope = -1.0)
-        {
-            var nms = names.ToList();
-
-            var diminishing = Etx.DiminishingPortions(nms.Count, derivativeSlope);
-            var p2r = new Dictionary<string, double>();
-            for (var i = 0; i < diminishing.Length; i++)
-            {
-                p2r.Add(nms[i].Name, sumOfRates * diminishing[i]);
-            }
-
-            return p2r;
-        }
-
-        /// <summary>
-        /// Takes the rates away from <see cref="zeroOutNames"/> and adds the rate to 
-        /// one of the other entries in <see cref="names2Rates"/> whose name is not in <see cref="zeroOutNames"/>.
-        /// </summary>
-        /// <param name="names2Rates"></param>
-        /// <param name="zeroOutNames"></param>
-        /// <param name="derivativeSlope">
-        /// Is passed into the <see cref="Etx.DiminishingPortions"/> - see its annotation.  Which entries
-        /// receive the re-located rates is based on a diminishing probability.
-        /// </param>
-        protected internal Dictionary<string, double> ZeroOutRates(Dictionary<string, double> names2Rates,
-            string[] zeroOutNames, double derivativeSlope = -1.0D)
-        {
-            if (names2Rates == null || !names2Rates.Any() || zeroOutNames == null || !zeroOutNames.Any())
-                return names2Rates;
-
-            var reassignNames2Rates = zeroOutNames.Select(n => new Tuple<string, double>(n, 0D)).ToList();
-            return ReassignRates(names2Rates, reassignNames2Rates, derivativeSlope);
-        }
-
-        /// <summary>
-        /// Reassigns the rates in <see cref="names2Rates"/> to the Item2 of the matched tuple in <see cref="reassignNames2Rates"/>
-        /// preserving the sum total of <see cref="names2Rates"/> values.
-        /// </summary>
-        /// <param name="names2Rates"></param>
-        /// <param name="reassignNames2Rates"></param>
-        /// <param name="derivativeSlope"></param>
-        /// <returns></returns>
-        protected internal Dictionary<string, double> ReassignRates(Dictionary<string, double> names2Rates,
-            Dictionary<string, double> reassignNames2Rates, double derivativeSlope = -1.0D)
-        {
-            if (reassignNames2Rates == null)
-                return names2Rates;
-            var listOfTuples = reassignNames2Rates.Select(kv => new Tuple<string, double>(kv.Key, kv.Value)).ToList();
-            return ReassignRates(names2Rates, listOfTuples, derivativeSlope);
         }
 
         /// <summary>
@@ -855,73 +732,6 @@ namespace NoFuture.Rand.Domus.Opes
             n2r = n2r.ToDictionary(kv => kv.Key, kv => Math.Round(kv.Value, DF_ROUND_DECIMAL_PLACES-1));
             return n2r;
         }
-        /// <summary>
-        /// Creates purchase transactions on <see cref="t"/> at random for the given <see cref="dt"/>.
-        /// </summary>
-        /// <param name="spender"></param>
-        /// <param name="t"></param>
-        /// <param name="dt"></param>
-        /// <param name="daysMax"></param>
-        /// <param name="randMaxFactor">
-        /// The multiplier used for the rand dollar's max, raising this value 
-        /// will raise every transactions possiable max by a factor of this.
-        /// </param>
-        public static void CreateSingleDaysPurchases(Personality spender, ITransactionable t, DateTime? dt,
-            double daysMax, int randMaxFactor = 7)
-        {
-            if (t == null)
-                throw new ArgumentNullException(nameof(t));
-            if (daysMax <= 0)
-                return;
-            var ccDate = dt ?? DateTime.Today;
-
-            //build charges history
-            var keepSpending = true;
-            var spentSum = new Pecuniam(0);
-
-            while (keepSpending) //want possiable multiple transactions per day
-            {
-                //if we reached target then exit 
-                if (spentSum >= new Pecuniam((decimal)daysMax))
-                    return;
-
-                var isXmasSeason = ccDate.Month >= 11 && ccDate.Day >= 20;
-                var isWeekend = ccDate.DayOfWeek == DayOfWeek.Friday ||
-                                ccDate.DayOfWeek == DayOfWeek.Saturday ||
-                                ccDate.DayOfWeek == DayOfWeek.Sunday;
-                var actingIrresp = spender?.GetRandomActsIrresponsible() ?? false;
-                var isbigTicketItem = Etx.TryAboveOrAt(96, Etx.Dice.OneHundred);
-                var isSomeEvenAmt = Etx.TryBelowOrAt(3, Etx.Dice.Ten);
-
-                //keep times during normal waking hours
-                var randCcDate =
-                    ccDate.Date.AddHours(Etx.IntNumber(6, isWeekend ? 23 : 19))
-                        .AddMinutes(Etx.IntNumber(0, 59))
-                        .AddSeconds(Etx.IntNumber(0, 59))
-                        .AddMilliseconds(Etx.IntNumber(0, 999));
-
-                //make purchase based various factors
-                var v = 2;
-                v = isXmasSeason ? v + 1 : v;
-                v = isWeekend ? v + 2 : v;
-                v = actingIrresp ? v + 3 : v;
-                randMaxFactor = isbigTicketItem ? randMaxFactor * 10 : randMaxFactor;
-
-                if (Etx.TryBelowOrAt(v, Etx.Dice.Ten))
-                {
-                    //create some random purchase amount
-                    var chargeAmt = Pecuniam.GetRandPecuniam(5, v * randMaxFactor, isSomeEvenAmt ? 10 : 0);
-
-                    //check if account is maxed-out\empty
-                    if (!t.Pop(randCcDate, chargeAmt))
-                        return;
-
-                    spentSum += chargeAmt;
-                }
-                //determine if more transactions for this day
-                keepSpending = Etx.CoinToss;
-            }
-        }
 
         /// <summary>
         /// Gets a rate, at random, using the <see cref="NAmerUtil.Equations.ClassicHook"/>
@@ -964,21 +774,6 @@ namespace NoFuture.Rand.Domus.Opes
         }
 
         /// <summary>
-        /// When the Sum of <see cref="directAssignments"/> exceeds <see cref="sumOfRates"/> then <see cref="sumOfRates"/>
-        /// is reassigned to this greater sum.
-        /// </summary>
-        /// <param name="sumOfRates"></param>
-        /// <param name="directAssignments"></param>
-        protected internal void ReconcileDiffsInSums(ref double sumOfRates, Dictionary<string, double> directAssignments)
-        {
-            if (directAssignments == null || !directAssignments.Any())
-                return;
-            var sumOfDirectAssigns = directAssignments.Select(kv => kv.Value).Sum();
-            if (sumOfDirectAssigns > sumOfRates)
-                sumOfRates = sumOfDirectAssigns;
-        }
-
-        /// <summary>
         /// Breaks the whole span of time for this instance into yearly blocks.
         /// </summary>
         /// <returns></returns>
@@ -1012,96 +807,6 @@ namespace NoFuture.Rand.Domus.Opes
             return datesOut;
         }
 
-        /// <summary>
-        /// Helper method to get items by <see cref="groupName"/> items by names 
-        /// to a portion of <see cref="sumOfRates"/>
-        /// </summary>
-        /// <param name="division"></param>
-        /// <param name="groupName"></param>
-        /// <param name="sumOfRates"></param>
-        /// <param name="probability">
-        /// Allows calling assembly to control the probability of an expense being zero-ed out.
-        /// The default is a 75% chance.
-        /// </param>
-        /// <param name="derivativeSlope">
-        /// Is passed into the <see cref="Etx.DiminishingPortions"/> - see its annotation.
-        /// </param>
-        /// <param name="possiablyZeroNames"></param>
-        /// <returns></returns>
-        protected internal virtual Dictionary<string, double> GetNames2RandomRates(DomusOpesDivisions division,
-            string groupName, double sumOfRates, Func<int, Etx.Dice, bool> probability,
-            double derivativeSlope = -1.0, params string[] possiablyZeroNames)
-        {
-            List<IMereo> names = null;
-
-            switch (division)
-            {
-                case DomusOpesDivisions.Income:
-                    names = GetIncomeItemNames().Where(e =>
-                            String.Equals(e.GetName(KindsOfNames.Group), groupName,
-                                StringComparison.OrdinalIgnoreCase))
-                        .ToList();
-                    break;
-                case DomusOpesDivisions.Assets:
-                    names = GetAssetItemNames().Where(e =>
-                            String.Equals(e.GetName(KindsOfNames.Group), groupName,
-                                StringComparison.OrdinalIgnoreCase))
-                        .ToList();
-                    break;
-                case DomusOpesDivisions.Deduction:
-                    names = GetDeductionItemNames().Where(e =>
-                            String.Equals(e.GetName(KindsOfNames.Group), groupName,
-                                StringComparison.OrdinalIgnoreCase))
-                        .ToList();
-                    break;
-                case DomusOpesDivisions.Expense:
-                    names = GetExpenseItemNames().Where(e =>
-                            String.Equals(e.GetName(KindsOfNames.Group), groupName,
-                                StringComparison.OrdinalIgnoreCase))
-                        .ToList();
-                    break;
-            }
-
-            probability = probability ?? Etx.TryBelowOrAt;
-
-            var p2r = GetNames2DiminishingRates(names, sumOfRates, derivativeSlope);
-
-            var randZeros = new List<string>();
-
-            foreach (var item in possiablyZeroNames)
-            {
-                if (probability(1, Etx.Dice.Four))
-                    continue;
-                randZeros.Add(item);
-            }
-
-            return ZeroOutRates(p2r, randZeros.ToArray());
-        }
-
-        /// <summary>
-        /// Converts explicit amount into a rate of <see cref="amt"/>
-        /// </summary>
-        /// <param name="amt"></param>
-        /// <param name="explicitAmounts"></param>
-        /// <param name="grp"></param>
-        /// <returns></returns>
-        protected internal static Dictionary<string, double> ConvertToExplicitRates(Pecuniam amt,
-            List<IMereo> explicitAmounts, string grp)
-        {
-            const StringComparison OPT = StringComparison.OrdinalIgnoreCase;
-            var directAssignRates = new Dictionary<string, double>();
-            if (!explicitAmounts.Any(x => String.Equals(x.GetName(KindsOfNames.Group), grp, OPT)))
-                return directAssignRates;
-
-            foreach (var n in explicitAmounts.Where(x =>
-                String.Equals(x.GetName(KindsOfNames.Group), grp, OPT)))
-            {
-                var directAssignRate = Math.Round(n.ExpectedValue.ToDouble() / amt.ToDouble(), DF_ROUND_DECIMAL_PLACES);
-                directAssignRates.Add(n.GetName(KindsOfNames.Legal), directAssignRate);
-            }
-            return directAssignRates;
-        }
-
         protected internal virtual Pondus[] GetItemsForRange(OpesOptions options = null)
         {
             options = options ?? MyOptions;
@@ -1130,11 +835,6 @@ namespace NoFuture.Rand.Domus.Opes
 
             var useFxMapping = name2Op.ContainsKey(grpName);
 
-            //TODO - why was this here?
-            //|| itemOptions.GivenDirectly.Any(m =>
-            //                   string.Equals(m.GetName(KindsOfNames.Group), grp,
-            //                       StringComparison.OrdinalIgnoreCase));
-
             var grpRates = useFxMapping
                 ? name2Op[grpName](options)
                 : GetItemNames2Portions(grpName, options)
@@ -1151,10 +851,6 @@ namespace NoFuture.Rand.Domus.Opes
             return itemsout.ToArray();
         }
 
-        protected abstract Dictionary<string, Func<OpesOptions, Dictionary<string, double>>> GetItems2Functions();
-
-        protected internal abstract void ResolveItems(OpesOptions options);
-
         protected internal virtual Pondus GetPondusForItemAndGroup(string itemName, string grpName, OpesOptions options)
         {
             options = options ?? new OpesOptions();
@@ -1167,7 +863,6 @@ namespace NoFuture.Rand.Domus.Opes
             return p;
         }
 
-
         protected internal double GetRandomValueFrom(double baseRate, double dividedby = 1)
         {
             if (baseRate == 0)
@@ -1175,22 +870,6 @@ namespace NoFuture.Rand.Domus.Opes
             var mean = baseRate / (dividedby == 0 ? 1 : dividedby);
             var stdDev = Math.Round(mean * 0.155, 5);
             return Etx.RandomValueInNormalDist(mean, stdDev);
-        }
-
-
-        protected internal double GetEmployeeHealthInsRate(OpesOptions options)
-        {
-            var startDate = options.StartDate;
-            var annualIncomeAmount = options.SumTotal;
-
-            //https://www.cdc.gov/nchs/fastats/health-insurance.htm
-            var isInsCovered = Etx.TryAboveOrAt(124, Etx.Dice.OneThousand);
-            var healthCareCost = isInsCovered
-                ? GetRandomHealthInsCost(startDate)
-                : 0D;
-
-            var totalHealthInsRate = healthCareCost / annualIncomeAmount.ToDouble();
-            return Math.Round(totalHealthInsRate * 0.17855D, DF_ROUND_DECIMAL_PLACES);
         }
 
         protected internal double GetRandomEmployeeHealthInsCost(DateTime? atDate)
@@ -1208,13 +887,6 @@ namespace NoFuture.Rand.Domus.Opes
             return Etx.RandomValueInNormalDist(mean, stdDev);
         }
 
-        /// <summary>
-        /// https://www.cdc.gov/nchs/fastats/health-insurance.htm
-        /// </summary>
-        /// <returns></returns>
-        public bool GetRandomHasMedicalInsurance()
-        {
-            return Etx.TryAboveOrAt(124, Etx.Dice.OneThousand);
-        }
+        #endregion
     }
 }

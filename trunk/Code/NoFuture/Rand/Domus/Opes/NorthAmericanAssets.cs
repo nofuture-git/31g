@@ -144,96 +144,26 @@ namespace NoFuture.Rand.Domus.Opes
 
         protected internal override void ResolveItems(OpesOptions options)
         {
-            throw new NotImplementedException();
-        }
+            options = options ?? MyOptions;
+            var stDt = options.StartDate == DateTime.MinValue ? GetYearNeg(-1) : options.StartDate;
+            var ranges = GetYearsInDates(stDt);
 
-        /// <summary>
-        /// Resolves all assets for last year and this year
-        /// </summary>
-        protected internal void ResolveAssets()
-        {
-            var amt = MyOptions.SumTotal ?? _totalEquity.ToPecuniam();
-            var pondus = GetAssetItemsForRange(amt, MyOptions.StartDate);
-            foreach(var p in pondus)
-                AddItem(p);
-        }
-
-        /// <summary>
-        /// Gets a manifold of <see cref="Pondus"/> items based on the 
-        /// names from GetAssetItemNames assigning random values as a portion of <see cref="amt"/>
-        /// </summary>
-        /// <param name="amt"></param>
-        /// <param name="startDate"></param>
-        /// <param name="endDate"></param>
-        /// <param name="interval"></param>
-        /// <param name="explicitAmounts">
-        /// Allows calling assembly direct control over the created rates.
-        /// </param>
-        /// <returns></returns>
-        protected internal virtual Pondus[] GetAssetItemsForRange(Pecuniam amt, DateTime startDate,
-            DateTime? endDate = null, Interval interval = Interval.Annually)
-        {
-            var itemsout = new List<Pondus>();
-
-            startDate = startDate == DateTime.MinValue ? MyOptions.StartDate : startDate;
-            amt = amt ?? _totalEquity.ToPecuniam();
-
-            //get just the group names of assets
-            var grpNames = GetGroupNames(DomusOpesDivisions.Assets);
-
-            //determine a portion or each group
-            var portions = Etx.DiminishingPortions(grpNames.Count, -0.2D);
-            var grp2Rates = grpNames.Zip(portions, (n, v) => new Tuple<string, double>(n, v)).ToList();
-
-            //when calling assembly doesn't define exact amounts the use the values from the Factor Tables
-            if (!MyOptions.GivenDirectly.Any())
+            foreach (var range in ranges)
             {
-                grp2Rates = GetGroupNames2Portions(MyOptions);
+                var cloneOptions = options.GetClone();
+                cloneOptions.StartDate = range.Item1;
+                cloneOptions.EndDate = range.Item2;
+                cloneOptions.Interval = Interval.Annually;
+
+                var items = GetItemsForRange(cloneOptions);
+                foreach(var item in items)
+                    AddItem(item);
             }
-            //map the groups name to a function 
-            var name2Op = new Dictionary<string, Func<RatesDictionaryArgs, Dictionary<string, double>>>
-            {
-                {AssetGroupNames.REAL_PROPERTY, GetRealPropertyName2RandomRates},
-                {AssetGroupNames.PERSONAL_PROPERTY, GetPersonalPropertyName2Rates},
-                {AssetGroupNames.INSTITUTIONAL, GetInstitutionalName2Rates},
-                {AssetGroupNames.SECURITIES, GetSecuritiesName2Rates}
-            };
-
-            foreach (var g2r in grp2Rates)
-            {
-                var grp = g2r.Item1;
-                var portion = g2r.Item2;
-
-                //convert explicit amount into rates
-                var directAssignRates = ConvertToExplicitRates(amt, MyOptions.GivenDirectly, grp);
-
-                System.Diagnostics.Debug.WriteLine($"{directAssignRates.Select(kv => kv.Value).Sum()}\t{portion}");
-
-                //get the name-to-rates dictionary
-                var grpRates = name2Op.ContainsKey(grp)
-                    ? name2Op[grp](new RatesDictionaryArgs
-                    {
-                        SumOfRates = portion,
-                        DerivativeSlope = -1.0D,
-                        DirectAssignNames2Rates = directAssignRates
-                    })
-                    : GetNames2RandomRates(DomusOpesDivisions.Assets, grp, portion, null);
-
-                //each item of this group
-                foreach (var item in grpRates.Keys)
-                {
-                    //create the pondus for this group\name pa
-                    var p = GetPondusForItemAndGroup(item, grp, MyOptions);
-                    p.My.ExpectedValue = CalcValue(amt, grpRates[item]);
-                    p.My.Interval = Interval.Annually;
-                    itemsout.Add(p);
-                }
-            }
-            return itemsout.ToArray();
         }
 
         public override List<Tuple<string, double>> GetGroupNames2Portions(OpesOptions options)
         {
+            const StringComparison OPT = StringComparison.OrdinalIgnoreCase;
             options = options ?? MyOptions;
 
             if (options.GivenDirectly.Any())
@@ -241,7 +171,22 @@ namespace NoFuture.Rand.Domus.Opes
 
             var amt = options.SumTotal ?? _totalEquity.ToPecuniam();
             var givenDirectly = new List<IMereo>();
-            if (!IsRenting)
+            var assignedRealEstateDirectly = options.GivenDirectly.Any(g =>
+                string.Equals(g.Name, "Real Estate", OPT) && string.Equals(g.GetName(KindsOfNames.Group),
+                    AssetGroupNames.REAL_PROPERTY, OPT));
+            var assignedVehicleDirectly = options.GivenDirectly.Any(g =>
+                string.Equals(g.Name, "Motor Vehicles", OPT) && string.Equals(g.GetName(KindsOfNames.Group),
+                    AssetGroupNames.PERSONAL_PROPERTY, OPT));
+
+            var assignedCheckingDirectly = options.GivenDirectly.Any(g =>
+                string.Equals(g.Name, "Checking", OPT) && string.Equals(g.GetName(KindsOfNames.Group),
+                    AssetGroupNames.INSTITUTIONAL, OPT));
+
+            var assignedSavingDirectly = options.GivenDirectly.Any(g =>
+                string.Equals(g.Name, "Savings", OPT) && string.Equals(g.GetName(KindsOfNames.Group),
+                    AssetGroupNames.INSTITUTIONAL, OPT));
+
+            if (!options.IsRenting && !assignedRealEstateDirectly)
             {
                 givenDirectly.Add(new Mereo("Real Estate", AssetGroupNames.REAL_PROPERTY)
                 {
@@ -249,27 +194,36 @@ namespace NoFuture.Rand.Domus.Opes
                 });
             }
 
-            if (MyOptions.HasVehicles)
+            if (MyOptions.HasVehicles && !assignedVehicleDirectly)
             {
                 givenDirectly.Add(new Mereo("Motor Vehicles", AssetGroupNames.PERSONAL_PROPERTY)
                 {
                     ExpectedValue = (_carEquityRate * amt.ToDouble()).ToPecuniam()
                 });
             }
-
-            givenDirectly.Add(new Mereo("Checking", AssetGroupNames.INSTITUTIONAL)
+            if (!assignedCheckingDirectly)
             {
-                ExpectedValue = (_checkingAccountRate * amt.ToDouble()).ToPecuniam()
-            });
-            givenDirectly.Add(new Mereo("Savings", AssetGroupNames.INSTITUTIONAL)
+                givenDirectly.Add(new Mereo("Checking", AssetGroupNames.INSTITUTIONAL)
+                {
+                    ExpectedValue = (_checkingAccountRate * amt.ToDouble()).ToPecuniam()
+                });
+            }
+            if (!assignedSavingDirectly)
             {
-                ExpectedValue = (_savingsAccountRate * amt.ToDouble()).ToPecuniam()
-            });
+                givenDirectly.Add(new Mereo("Savings", AssetGroupNames.INSTITUTIONAL)
+                {
+                    ExpectedValue = (_savingsAccountRate * amt.ToDouble()).ToPecuniam()
+                });
+            }
 
-            var opesOptions = new OpesOptions {SumTotal = _totalEquity.ToPecuniam(), DerivativeSlope = -0.2D};
-            opesOptions.GivenDirectly.AddRange(givenDirectly);
-            MyOptions = opesOptions;
-            return base.GetGroupNames2Portions(opesOptions);
+            if (options.SumTotal == Pecuniam.Zero)
+            {
+                options.SumTotal = _totalEquity.ToPecuniam();
+                options.DerivativeSlope = -0.2D;
+                options.GivenDirectly.AddRange(givenDirectly);
+                MyOptions = options;
+            }
+            return base.GetGroupNames2Portions(options);
         }
 
         /// <summary>
@@ -370,178 +324,54 @@ namespace NoFuture.Rand.Domus.Opes
             return p;
         }
 
-        /// <summary>
-        /// Produces a dictionary of Real Property <see cref="WealthBase.DomusOpesDivisions.Assets"/> 
-        /// items by names to a portion of the total sum.
-        /// </summary>
-        /// <param name="args"></param>
-        /// <returns></returns>
-        protected internal virtual Dictionary<string, double> GetRealPropertyName2RandomRates(
-        RatesDictionaryArgs args = null)
-        {
-            var sumOfRates = args?.SumOfRates ?? Math.Round(Math.Abs(_randHomeEquity / _totalEquity), DF_ROUND_DECIMAL_PLACES);
-            var derivativeSlope = args?.DerivativeSlope ?? -0.2D;
-            var directAssignNames2Rates = args?.DirectAssignNames2Rates;
-
-            //ReconcileDiffsInSums(ref sumOfRates, directAssignNames2Rates);
-
-            if (IsRenting)
-            {
-                var d = new Dictionary<string, double>();
-                foreach (var name in GetAssetItemNames().Where(e =>
-                    string.Equals(e.GetName(KindsOfNames.Group), AssetGroupNames.REAL_PROPERTY,
-                        StringComparison.OrdinalIgnoreCase)))
-                {
-                    d.Add(name.Name, 0D);
-                }
-                return d;
-            }
-
-            var dk = GetNames2RandomRates(DomusOpesDivisions.Assets, AssetGroupNames.REAL_PROPERTY, sumOfRates, null,
-                derivativeSlope);
-
-            if (directAssignNames2Rates != null && directAssignNames2Rates.Any())
-                dk = ReassignRates(dk, directAssignNames2Rates, derivativeSlope);
-
-            return dk;
-        }
-
         protected internal virtual Dictionary<string, double> GetRealPropertyName2RandomRates(OpesOptions options)
         {
             options = (options ?? MyOptions) ?? new OpesOptions();
-            var tOptions = options.GetClone();
 
-            if (tOptions.IsRenting)
+            options.DerivativeSlope = -0.2D;
+
+            if (options.IsRenting)
             {
-                tOptions.GivenDirectly.Add(
+                options.GivenDirectly.Add(
                     new Mereo("Home Ownership", AssetGroupNames.REAL_PROPERTY) { ExpectedValue = Pecuniam.Zero });
             }
-            tOptions.PossiableZeroOuts.AddRange(new []{ "Time Shares", "Land", "Mineral Right" });
-            var d = GetItemNames2Portions(AssetGroupNames.REAL_PROPERTY, tOptions);
+            options.PossiableZeroOuts.AddRange(new []{ "Time Shares", "Land", "Mineral Right" });
+            var d = GetItemNames2Portions(AssetGroupNames.REAL_PROPERTY, options);
             return d.ToDictionary(t => t.Item1, t => t.Item2);
-        }
-
-        /// <summary>
-        /// Produces a dictionary of Personal Property <see cref="WealthBase.DomusOpesDivisions.Assets"/>
-        ///  items by names to a portion of the total sum.
-        /// </summary>
-        /// <param name="args"></param>
-        /// <returns></returns>
-        protected internal virtual Dictionary<string, double> GetPersonalPropertyName2Rates(
-            RatesDictionaryArgs args = null)
-        {
-
-            var sumOfRates = args?.SumOfRates ?? Math.Round(Math.Abs(_randCarDebt / _totalEquity), DF_ROUND_DECIMAL_PLACES);
-            var derivativeSlope = args?.DerivativeSlope ?? -0.4D;
-            var directAssignNames2Rates = args?.DirectAssignNames2Rates;
-
-            if (!MyOptions.HasVehicles)
-            {
-                //now we have to have this
-                directAssignNames2Rates = directAssignNames2Rates ?? new Dictionary<string, double>();
-
-                if (!directAssignNames2Rates.ContainsKey("Motor Vehicles"))
-                {
-                    directAssignNames2Rates.Add("Motor Vehicles", 0D);
-                }
-            }
-
-            ReconcileDiffsInSums(ref sumOfRates, directAssignNames2Rates);
-
-            var dk = GetNames2RandomRates(DomusOpesDivisions.Assets, AssetGroupNames.PERSONAL_PROPERTY, sumOfRates,
-                null,
-                derivativeSlope, "Art", "Firearms", "Collections", "Antiques");
-
-            var zeroOuts = new List<string> {"Crops", "Livestock"};
-
-            dk = ZeroOutRates(dk, zeroOuts.ToArray());
-
-            if (directAssignNames2Rates != null && directAssignNames2Rates.Any())
-                dk = ReassignRates(dk, directAssignNames2Rates, derivativeSlope);
-
-            return dk;
         }
 
         protected internal virtual Dictionary<string, double> GetPersonalPropertyAssetNames2Rates(OpesOptions options)
         {
             options = (options ?? MyOptions) ?? new OpesOptions();
-            var tOptions = options.GetClone();
-            tOptions.PossiableZeroOuts.AddRange(new[] { "Art", "Firearms", "Collections", "Antiques" });
+            options.PossiableZeroOuts.AddRange(new[] { "Art", "Firearms", "Collections", "Antiques" });
 
             //remove these for everyone except those who are way out in the country
-            if (Person?.Address?.HomeCityArea is UsCityStateZip usCityState && usCityState.Msa?.MsaType >= UrbanCentric.Fringe)
+            var livesInCountry = Person?.Address?.HomeCityArea is UsCityStateZip usCityState &&
+                                 usCityState.Msa?.MsaType >= UrbanCentric.Fringe;
+            if (!livesInCountry)
             {
-                tOptions.GivenDirectly.Add(
+                options.GivenDirectly.Add(
                     new Mereo("Crops", AssetGroupNames.PERSONAL_PROPERTY) { ExpectedValue = Pecuniam.Zero });
 
-                tOptions.GivenDirectly.Add(
+                options.GivenDirectly.Add(
                     new Mereo("Livestock", AssetGroupNames.PERSONAL_PROPERTY) { ExpectedValue = Pecuniam.Zero });
             }
 
-            var d = GetItemNames2Portions(AssetGroupNames.PERSONAL_PROPERTY, tOptions);
+            var d = GetItemNames2Portions(AssetGroupNames.PERSONAL_PROPERTY, options);
             return d.ToDictionary(t => t.Item1, t => t.Item2);
-        }
-
-        /// <summary>
-        /// Produces a dictionary of Institutional <see cref="WealthBase.DomusOpesDivisions.Assets"/> 
-        /// items by names to a portion of the total sum.
-        /// </summary>
-        /// <param name="args"></param>
-        /// <returns></returns>
-        protected internal virtual Dictionary<string, double> GetInstitutionalName2Rates(
-            RatesDictionaryArgs args = null)
-        {
-            //half of the diff half there
-            var sumOfRates = args?.SumOfRates ?? Math.Round(Math.Abs(_allOtherAssetEquity / 2 / _totalEquity), DF_ROUND_DECIMAL_PLACES);
-            var derivativeSlope = args?.DerivativeSlope ?? -0.2D;
-            var directAssignNames2Rates = args?.DirectAssignNames2Rates;
-
-            ReconcileDiffsInSums(ref sumOfRates, directAssignNames2Rates);
-
-            var dk = GetNames2RandomRates(DomusOpesDivisions.Assets, AssetGroupNames.INSTITUTIONAL, sumOfRates, null,
-                derivativeSlope, "Certificate of Deposit", "Insurance Policies", "Money Market", "Annuity",
-                "Credit Union", "Profit Sharing", "Safe Deposit Box", "Trusts", "Brokerage", "Partnerships",
-                "Fellowships", "Escrow", "Stipends", "Royalties");
-
-            if (directAssignNames2Rates != null && directAssignNames2Rates.Any())
-                dk = ReassignRates(dk, directAssignNames2Rates, derivativeSlope);
-
-            return dk;
         }
 
         protected internal Dictionary<string, double> GetInstitutionalAssetName2Rates(OpesOptions options)
         {
             options = (options ?? MyOptions) ?? new OpesOptions();
-            var tOptions = options.GetClone();
-            tOptions.PossiableZeroOuts.AddRange(new[] { "Certificate of Deposit", "Insurance Policies", "Money Market", "Annuity",
+            options.PossiableZeroOuts.AddRange(new[]
+            {
+                "Certificate of Deposit", "Insurance Policies", "Money Market", "Annuity",
                 "Credit Union", "Profit Sharing", "Safe Deposit Box", "Trusts", "Brokerage", "Partnerships",
-                "Fellowships", "Escrow", "Stipends", "Royalties" });
-            var d = GetItemNames2Portions(AssetGroupNames.INSTITUTIONAL, tOptions);
+                "Fellowships", "Escrow", "Stipends", "Royalties"
+            });
+            var d = GetItemNames2Portions(AssetGroupNames.INSTITUTIONAL, options);
             return d.ToDictionary(t => t.Item1, t => t.Item2);
-        }
-
-        /// <summary>
-        /// Produces a dictionary of Securities <see cref="WealthBase.DomusOpesDivisions.Assets"/> 
-        /// items by names to a portion of the total sum.
-        /// </summary>
-        /// <param name="args"></param>
-        /// <returns></returns>
-        protected internal virtual Dictionary<string, double> GetSecuritiesName2Rates(RatesDictionaryArgs args = null)
-        {
-            //half of the diff half there
-            var sumOfRates = args?.SumOfRates ?? Math.Round(Math.Abs(_allOtherAssetEquity / 2 / _totalEquity), DF_ROUND_DECIMAL_PLACES);
-            var derivativeSlope = args?.DerivativeSlope ?? -0.4D;
-            var directAssignNames2Rates = args?.DirectAssignNames2Rates;
-
-            ReconcileDiffsInSums(ref sumOfRates, directAssignNames2Rates);
-
-            var dk = GetNames2RandomRates(DomusOpesDivisions.Assets, AssetGroupNames.SECURITIES, sumOfRates, null,
-                derivativeSlope, "Derivatives");
-
-            if (directAssignNames2Rates != null && directAssignNames2Rates.Any())
-                dk = ReassignRates(dk, directAssignNames2Rates, derivativeSlope);
-
-            return dk;
         }
 
         protected internal Dictionary<string, double> GetSecuritiesAssetNames2RandomRates(OpesOptions options)

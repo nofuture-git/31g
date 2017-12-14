@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Data.Sp;
 using NoFuture.Rand.Domus.Opes;
 
@@ -10,19 +9,6 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
     [TestClass]
     public class NorthAmericanAssetsTests
     {
-        [TestMethod]
-        public void TestGetAssetItemsForRange()
-        {
-            var testSubject = new NorthAmericanAssets(null,
-                new OpesOptions() {IsRenting = false, NumberOfVehicles = 1});
-
-            var testResults = testSubject.GetAssetItemsForRange(75000.ToPecuniam(), DateTime.Today.AddYears(-1));
-
-            Assert.IsNotNull(testResults);
-            Assert.AreNotEqual(0, testResults.Length);
-
-            System.Diagnostics.Debug.WriteLine(Pondus.GetExpectedSum(testResults));
-        }
 
         [TestMethod]
         public void TestGetGroupPortionsFromByFactorTables()
@@ -41,61 +27,116 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         }
 
         [TestMethod]
-        public void TestResolveAssets()
+        public void TestGetRealPropertyName2RandomRates()
         {
-            var testSubject = new NorthAmericanAssets(null,
-                new OpesOptions() { IsRenting = false, NumberOfVehicles = 1, SumTotal = 75000.ToPecuniam()});
-            testSubject.ResolveAssets();
+            var testSubject = new NorthAmericanAssets(null, null);
 
-            Assert.IsNotNull(testSubject.MyItems);
-            Assert.AreNotEqual(0, testSubject.MyItems.Count);
+            var testResult = testSubject.GetRealPropertyName2RandomRates(testSubject.MyOptions);
 
-            System.Diagnostics.Debug.WriteLine(testSubject.TotalCurrentExpectedValue);
+            Assert.IsNotNull(testResult);
+            Assert.AreNotEqual(0, testResult.Count);
 
-            testSubject = new NorthAmericanAssets(null,
-                new OpesOptions() { IsRenting = true, NumberOfVehicles = 1, SumTotal = 75000.ToPecuniam() });
-            testSubject.ResolveAssets();
+            var testResultSum = testResult.Select(kv => kv.Value).Sum();
+            Assert.AreEqual(1D, Math.Round(testResultSum));
 
-            Assert.IsNotNull(testSubject.MyItems);
-            Assert.AreNotEqual(0, testSubject.MyItems.Count);
-
-            System.Diagnostics.Debug.WriteLine(testSubject.TotalCurrentExpectedValue);
-
+            foreach (var rate in testResult)
+                System.Diagnostics.Debug.WriteLine(rate);
         }
 
         [TestMethod]
-        public void TestAssets()
+        public void TestGetPersonalPropertyAssetNames2Rates()
         {
-            var testSubject = new NorthAmericanAssets(null,
-                new OpesOptions() { IsRenting = false, NumberOfVehicles = 1 });
-            testSubject.ResolveAssets();
+            var testSubject = new NorthAmericanAssets(null, null);
 
-            var testResults = testSubject.MyItems;
+            var testResult = testSubject.GetPersonalPropertyAssetNames2Rates(testSubject.MyOptions);
 
-            Assert.IsNotNull(testResults);
-            Assert.AreNotEqual(0, testResults.Count);
+            Assert.IsNotNull(testResult);
+            Assert.AreNotEqual(0, testResult.Count);
 
-            var expectations = WealthBaseTests.GetExpectedNamesFromXml("assets");
-            
-            foreach (var expect in expectations)
+            var testResultSum = testResult.Select(kv => kv.Value).Sum();
+            Assert.AreEqual(1D, Math.Round(testResultSum));
+
+            foreach (var rate in testResult)
+                System.Diagnostics.Debug.WriteLine(rate);
+        }
+
+        [TestMethod]
+        public void TestGetInstitutionalAssetName2Rates()
+        {
+            var testSubject = new NorthAmericanAssets(null, null);
+
+            var testResult = testSubject.GetInstitutionalAssetName2Rates(testSubject.MyOptions);
+
+            Assert.IsNotNull(testResult);
+            Assert.AreNotEqual(0, testResult.Count);
+
+            var testResultSum = testResult.Select(kv => kv.Value).Sum();
+            Assert.AreEqual(1D, Math.Round(testResultSum));
+
+            foreach (var rate in testResult)
+                System.Diagnostics.Debug.WriteLine(rate);
+        }
+
+
+        [TestMethod]
+        public void TestGetSecuritiesAssetNames2RandomRates()
+        {
+            var testSubject = new NorthAmericanAssets(null, null);
+
+            var testResult = testSubject.GetSecuritiesAssetNames2RandomRates(testSubject.MyOptions);
+
+            Assert.IsNotNull(testResult);
+            Assert.AreNotEqual(0, testResult.Count);
+
+            var testResultSum = testResult.Select(kv => kv.Value).Sum();
+            Assert.AreEqual(1D, Math.Round(testResultSum));
+
+            foreach (var rate in testResult)
+                System.Diagnostics.Debug.WriteLine(rate);
+        }
+
+
+        [TestMethod]
+        public void TestGetGroupNames()
+        {
+            var testNames = WealthBase.GetGroupNames(WealthBase.DomusOpesDivisions.Assets);
+            var allNames = WealthBaseTests.GetExpectedNamesFromXml("assets");
+            var expectations = allNames.Select(n => n.Item1).Distinct();
+
+            foreach (var tn in testNames)
             {
-                System.Diagnostics.Debug.WriteLine(expect);
-                Assert.IsTrue(testResults.Any(x =>
-                    x.My.Name == expect.Item2 && x.My.GetName(KindsOfNames.Group) == expect.Item1));
+                Assert.IsTrue(expectations.Any(e => string.Equals(e, tn, StringComparison.OrdinalIgnoreCase)));
+                System.Diagnostics.Debug.WriteLine(tn);
             }
         }
 
         [TestMethod]
-        public void TestCarPayment()
+        public void TestGetItemNames()
         {
-            var testSubject = new NorthAmericanAssets(null,
-                new OpesOptions() { IsRenting = false, NumberOfVehicles = 1 });
+            var testNames = WealthBase.GetItemNames(WealthBase.DomusOpesDivisions.Assets);
+            var allNames = WealthBaseTests.GetExpectedNamesFromXml("assets");
+            var expectations = allNames.Select(n => n.Item2).Distinct();
 
-            testSubject.ResolveAssets();
+            foreach (var tn in testNames)
+            {
+                Assert.IsTrue(expectations.Any(e => string.Equals(e, tn.Name, StringComparison.OrdinalIgnoreCase)));
+                System.Diagnostics.Debug.WriteLine(tn);
+            }
+        }
 
-            Assert.IsNotNull(testSubject.CarPayment);
-            Assert.AreNotEqual(Pecuniam.Zero, testSubject.CarPayment.ExpectedValue);
-            System.Diagnostics.Debug.WriteLine(testSubject.CarPayment);
+
+        [TestMethod]
+        public void TestResolveItems()
+        {
+            var testSubject = new NorthAmericanAssets(null, null);
+
+            testSubject.ResolveItems(null);
+
+            Assert.IsNotNull(testSubject.MyItems);
+            Assert.AreNotEqual(0, testSubject.MyItems.Count);
+
+            foreach (var item in testSubject.MyItems)
+                System.Diagnostics.Debug.WriteLine(item);
         }
     }
 }

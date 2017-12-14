@@ -10,6 +10,8 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
     [TestClass]
     public class NorthAmericanExpenseTests
     {
+        #region FAQ
+
         [TestMethod]
         public void TestGetDebtExpenseNames2RandRates_NoOptions()
         {
@@ -311,7 +313,222 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
 
             foreach (var u in testResult)
                 System.Diagnostics.Debug.WriteLine($"{u.Key} -> {u.Value}");
+        }
 
+        #endregion
+
+        [TestMethod]
+        public void TestGetHomeExpenseNames2RandomRates()
+        {
+            var testSubject = new NorthAmericanExpenses(null);
+
+            var testResult = testSubject.GetHomeExpenseNames2RandomRates(null);
+
+            Assert.IsNotNull(testResult);
+            Assert.AreNotEqual(0, testResult.Count);
+
+            var testResultSum = testResult.Select(kv => kv.Value).Sum();
+            Assert.AreEqual(1D, Math.Round(testResultSum));
+
+            System.Diagnostics.Debug.WriteLine("Owns");
+            foreach (var rate in testResult)
+                System.Diagnostics.Debug.WriteLine(rate);
+
+            testResult = testSubject.GetHomeExpenseNames2RandomRates(new OpesOptions(){IsRenting = true});
+
+            Assert.IsNotNull(testResult);
+            Assert.AreNotEqual(0, testResult.Count);
+
+            testResultSum = testResult.Select(kv => kv.Value).Sum();
+            Assert.AreEqual(1D, Math.Round(testResultSum));
+
+            System.Diagnostics.Debug.WriteLine("Rents");
+            foreach (var rate in testResult)
+                System.Diagnostics.Debug.WriteLine(rate);
+        }
+
+        [TestMethod]
+        public void TestGetUtilityExpenseNames2RandomRates()
+        {
+            var testSubject = new NorthAmericanExpenses(null);
+
+            var testResult = testSubject.GetUtilityExpenseNames2RandomRates(null);
+
+            Assert.IsNotNull(testResult);
+            Assert.AreNotEqual(0, testResult.Count);
+
+            var testResultSum = testResult.Select(kv => kv.Value).Sum();
+            Assert.AreEqual(1D, Math.Round(testResultSum));
+
+            foreach (var rate in testResult)
+                System.Diagnostics.Debug.WriteLine(rate);
+        }
+
+        [TestMethod]
+        public void TestGetTransportationExpenseNames2RandomRates()
+        {
+            var testSubject = new NorthAmericanExpenses(null);
+
+            var testResult = testSubject.GetTransportationExpenseNames2RandomRates(null);
+
+            Assert.IsNotNull(testResult);
+            Assert.AreNotEqual(0, testResult.Count);
+
+            var testResultSum = testResult.Select(kv => kv.Value).Sum();
+            Assert.AreEqual(1D, Math.Round(testResultSum));
+            System.Diagnostics.Debug.WriteLine("No Car");
+            foreach (var rate in testResult)
+                System.Diagnostics.Debug.WriteLine(rate);
+
+            Assert.IsTrue(testResult.ContainsKey("Public Transportation"));
+            Assert.AreEqual(1D, Math.Round(testResult["Public Transportation"]));
+
+            testResult = testSubject.GetTransportationExpenseNames2RandomRates(new OpesOptions{NumberOfVehicles = 1});
+
+            Assert.IsNotNull(testResult);
+            Assert.AreNotEqual(0, testResult.Count);
+
+            testResultSum = testResult.Select(kv => kv.Value).Sum();
+            Assert.AreEqual(1D, Math.Round(testResultSum));
+
+            Assert.IsTrue(testResult.ContainsKey("Public Transportation"));
+            Assert.AreEqual(0D, testResult["Public Transportation"]);
+
+            System.Diagnostics.Debug.WriteLine("Has Car");
+            foreach (var rate in testResult)
+                System.Diagnostics.Debug.WriteLine(rate);
+        }
+
+        [TestMethod]
+        public void TestGetInsuranceExpenseNames2RandomRates()
+        {
+            var testSubject = new NorthAmericanExpenses(null);
+
+            var testResult = testSubject.GetInsuranceExpenseNames2RandomRates(null);
+
+            Assert.IsNotNull(testResult);
+            Assert.AreNotEqual(0, testResult.Count);
+
+            var testResultSum = testResult.Select(kv => kv.Value).Sum();
+            Assert.AreEqual(1D, Math.Round(testResultSum));
+
+            Assert.IsTrue(testResult.ContainsKey("Renters"));
+            Assert.AreEqual(0D, Math.Round(testResult["Renters"]));
+
+            System.Diagnostics.Debug.WriteLine("Owns");
+            foreach (var rate in testResult)
+                System.Diagnostics.Debug.WriteLine(rate);
+
+            testResult = testSubject.GetInsuranceExpenseNames2RandomRates(new OpesOptions{IsRenting = true});
+
+            Assert.IsNotNull(testResult);
+            Assert.AreNotEqual(0, testResult.Count);
+
+            testResultSum = testResult.Select(kv => kv.Value).Sum();
+            Assert.AreEqual(1D, Math.Round(testResultSum));
+
+            Assert.IsTrue(testResult.ContainsKey("Renters"));
+            Assert.IsTrue(testResult["Renters"] > 0.0D);
+
+            System.Diagnostics.Debug.WriteLine("Rents");
+            foreach (var rate in testResult)
+                System.Diagnostics.Debug.WriteLine(rate);
+        }
+
+        [TestMethod]
+        public void TestGetPersonalExpenseNames2RandomRates()
+        {
+            var testSubject = new NorthAmericanExpenses(null);
+
+            var testResult = testSubject.GetPersonalExpenseNames2RandomRates(null);
+
+            Assert.IsNotNull(testResult);
+            Assert.AreNotEqual(0, testResult.Count);
+
+            var testResultSum = testResult.Select(kv => kv.Value).Sum();
+            Assert.AreEqual(1D, Math.Round(testResultSum));
+
+            foreach (var rate in testResult)
+                System.Diagnostics.Debug.WriteLine(rate);
+        }
+
+
+        [TestMethod]
+        public void TestGetChildrenExpenseNames2RandomRates()
+        {
+            var testSubject = new NorthAmericanExpenses(null);
+
+            var testResult = testSubject.GetChildrenExpenseNames2RandomRates(null);
+
+            Assert.IsNotNull(testResult);
+            Assert.AreNotEqual(0, testResult.Count);
+
+            var testResultSum = testResult.Select(kv => kv.Value).Sum();
+            Assert.AreEqual(1D, Math.Round(testResultSum));
+
+            foreach (var rate in testResult)
+                System.Diagnostics.Debug.WriteLine(rate);
+        }
+
+        [TestMethod]
+        public void TestGetHealthExpenseNames2RandomRates()
+        {
+            var testSubject = new NorthAmericanExpenses(null);
+
+            var testResult = testSubject.GetHealthExpenseNames2RandomRates(null);
+
+            Assert.IsNotNull(testResult);
+            Assert.AreNotEqual(0, testResult.Count);
+
+            var testResultSum = testResult.Select(kv => kv.Value).Sum();
+            Assert.AreEqual(1D, Math.Round(testResultSum));
+
+            foreach (var rate in testResult)
+                System.Diagnostics.Debug.WriteLine(rate);
+        }
+
+
+        [TestMethod]
+        public void TestGetGroupNames()
+        {
+            var testNames = WealthBase.GetGroupNames(WealthBase.DomusOpesDivisions.Expense);
+            var allNames = WealthBaseTests.GetExpectedNamesFromXml("expense");
+            var expectations = allNames.Select(n => n.Item1).Distinct();
+
+            foreach (var tn in testNames)
+            {
+                Assert.IsTrue(expectations.Any(e => string.Equals(e, tn, StringComparison.OrdinalIgnoreCase)));
+                System.Diagnostics.Debug.WriteLine(tn);
+            }
+        }
+
+        [TestMethod]
+        public void TestGetItemNames()
+        {
+            var testNames = WealthBase.GetItemNames(WealthBase.DomusOpesDivisions.Expense);
+            var allNames = WealthBaseTests.GetExpectedNamesFromXml("expense");
+            var expectations = allNames.Select(n => n.Item2).Distinct();
+
+            foreach (var tn in testNames)
+            {
+                Assert.IsTrue(expectations.Any(e => string.Equals(e, tn.Name, StringComparison.OrdinalIgnoreCase)));
+                System.Diagnostics.Debug.WriteLine(tn);
+            }
+        }
+
+        [TestMethod]
+        public void TestResolveItems()
+        {
+            var testOptions = new OpesOptions {SumTotal = 10000.0D.ToPecuniam()};
+            var testSubject = new NorthAmericanExpenses(null, testOptions);
+
+            testSubject.ResolveItems(null);
+
+            Assert.IsNotNull(testSubject.MyItems);
+            Assert.AreNotEqual(0, testSubject.MyItems.Count);
+
+            foreach (var item in testSubject.MyItems)
+                System.Diagnostics.Debug.WriteLine(item);
         }
     }
 }

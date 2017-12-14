@@ -149,6 +149,11 @@ namespace NoFuture.Rand.Domus
         /// </summary>
         public const double MEDICARE_DEDUCTION_TAX_RATE = 0.0145D;
 
+        /// <summary>
+        /// https://www.cdc.gov/nchs/fastats/health-insurance.htm
+        /// </summary>
+        public const double PERCENT_AMERICANS_WITH_INSURANCE = 0.876D;
+
         #endregion
 
         #region inner types

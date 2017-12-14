@@ -90,7 +90,7 @@ namespace NoFuture.Rand.Domus.Opes
         public void CreateRandomAmericanOpes(int possiableVehicles = 1, double stdDevAsPercent = DF_STD_DEV_PERCENT)
         {
             //determine residence pmt
-            _residencePmt += IsRenting
+            _residencePmt += MyOptions.IsRenting
                 ? AddRent(stdDevAsPercent)
                 : AddMortgage(stdDevAsPercent) ?? Pecuniam.Zero;
 
@@ -272,7 +272,7 @@ namespace NoFuture.Rand.Domus.Opes
         /// </remarks>
         protected internal Pecuniam AddRent(double stdDevAsPercent = DF_STD_DEV_PERCENT)
         {
-            if (!IsRenting)
+            if (!MyOptions.IsRenting)
                 return Pecuniam.Zero;
 
             var homeDebtFactor = Factors.HomeDebtFactor;
@@ -493,7 +493,73 @@ namespace NoFuture.Rand.Domus.Opes
         {
             throw new NotImplementedException();
         }
+        /// <summary>
+        /// Creates purchase transactions on <see cref="t"/> at random for the given <see cref="dt"/>.
+        /// </summary>
+        /// <param name="spender"></param>
+        /// <param name="t"></param>
+        /// <param name="dt"></param>
+        /// <param name="daysMax"></param>
+        /// <param name="randMaxFactor">
+        /// The multiplier used for the rand dollar's max, raising this value 
+        /// will raise every transactions possiable max by a factor of this.
+        /// </param>
+        public static void CreateSingleDaysPurchases(Personality spender, ITransactionable t, DateTime? dt,
+            double daysMax, int randMaxFactor = 7)
+        {
+            if (t == null)
+                throw new ArgumentNullException(nameof(t));
+            if (daysMax <= 0)
+                return;
+            var ccDate = dt ?? DateTime.Today;
 
+            //build charges history
+            var keepSpending = true;
+            var spentSum = new Pecuniam(0);
+
+            while (keepSpending) //want possiable multiple transactions per day
+            {
+                //if we reached target then exit 
+                if (spentSum >= new Pecuniam((decimal)daysMax))
+                    return;
+
+                var isXmasSeason = ccDate.Month >= 11 && ccDate.Day >= 20;
+                var isWeekend = ccDate.DayOfWeek == DayOfWeek.Friday ||
+                                ccDate.DayOfWeek == DayOfWeek.Saturday ||
+                                ccDate.DayOfWeek == DayOfWeek.Sunday;
+                var actingIrresp = spender?.GetRandomActsIrresponsible() ?? false;
+                var isbigTicketItem = Etx.TryAboveOrAt(96, Etx.Dice.OneHundred);
+                var isSomeEvenAmt = Etx.TryBelowOrAt(3, Etx.Dice.Ten);
+
+                //keep times during normal waking hours
+                var randCcDate =
+                    ccDate.Date.AddHours(Etx.IntNumber(6, isWeekend ? 23 : 19))
+                        .AddMinutes(Etx.IntNumber(0, 59))
+                        .AddSeconds(Etx.IntNumber(0, 59))
+                        .AddMilliseconds(Etx.IntNumber(0, 999));
+
+                //make purchase based various factors
+                var v = 2;
+                v = isXmasSeason ? v + 1 : v;
+                v = isWeekend ? v + 2 : v;
+                v = actingIrresp ? v + 3 : v;
+                randMaxFactor = isbigTicketItem ? randMaxFactor * 10 : randMaxFactor;
+
+                if (Etx.TryBelowOrAt(v, Etx.Dice.Ten))
+                {
+                    //create some random purchase amount
+                    var chargeAmt = Pecuniam.GetRandPecuniam(5, v * randMaxFactor, isSomeEvenAmt ? 10 : 0);
+
+                    //check if account is maxed-out\empty
+                    if (!t.Pop(randCcDate, chargeAmt))
+                        return;
+
+                    spentSum += chargeAmt;
+                }
+                //determine if more transactions for this day
+                keepSpending = Etx.CoinToss;
+            }
+        }
         #endregion
     }
 }
