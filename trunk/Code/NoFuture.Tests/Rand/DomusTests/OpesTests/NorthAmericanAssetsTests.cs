@@ -28,9 +28,9 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         public void TestGetGroupPortionsFromByFactorTables()
         {
             var testSubject = new NorthAmericanAssets(null,
-                new OpesOptions() { IsRenting = false, NumberOfVehicles = 1 });
+                new OpesOptions() { IsRenting = false, NumberOfVehicles = 1, SumTotal = 75000.ToPecuniam() });
 
-            var testResult = testSubject.GetGroupPortionsByFactorTables(75000.ToPecuniam());
+            var testResult = testSubject.GetGroupNames2Portions(null);
 
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0, testResult.Count);
@@ -47,8 +47,8 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
                 new OpesOptions() { IsRenting = false, NumberOfVehicles = 1, SumTotal = 75000.ToPecuniam()});
             testSubject.ResolveAssets();
 
-            Assert.IsNotNull(testSubject.Assets);
-            Assert.AreNotEqual(0, testSubject.Assets.Count);
+            Assert.IsNotNull(testSubject.MyItems);
+            Assert.AreNotEqual(0, testSubject.MyItems.Count);
 
             System.Diagnostics.Debug.WriteLine(testSubject.TotalCurrentExpectedValue);
 
@@ -56,8 +56,8 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
                 new OpesOptions() { IsRenting = true, NumberOfVehicles = 1, SumTotal = 75000.ToPecuniam() });
             testSubject.ResolveAssets();
 
-            Assert.IsNotNull(testSubject.Assets);
-            Assert.AreNotEqual(0, testSubject.Assets.Count);
+            Assert.IsNotNull(testSubject.MyItems);
+            Assert.AreNotEqual(0, testSubject.MyItems.Count);
 
             System.Diagnostics.Debug.WriteLine(testSubject.TotalCurrentExpectedValue);
 
@@ -70,7 +70,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
                 new OpesOptions() { IsRenting = false, NumberOfVehicles = 1 });
             testSubject.ResolveAssets();
 
-            var testResults = testSubject.Assets;
+            var testResults = testSubject.MyItems;
 
             Assert.IsNotNull(testResults);
             Assert.AreNotEqual(0, testResults.Count);

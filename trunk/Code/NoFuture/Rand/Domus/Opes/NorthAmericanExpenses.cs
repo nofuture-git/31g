@@ -11,7 +11,7 @@ namespace NoFuture.Rand.Domus.Opes
     {
         private readonly HashSet<Pondus> _expenses = new HashSet<Pondus>();
 
-        public NorthAmericanExpenses(NorthAmerican american, bool isRenting = false) : base(american, isRenting)
+        public NorthAmericanExpenses(NorthAmerican american) : base(american)
         {
         }
 
@@ -19,16 +19,18 @@ namespace NoFuture.Rand.Domus.Opes
         {
         }
 
-        public virtual Pondus[] CurrentExpectedExpenses => GetCurrent(ExpectedExpenses);
+        public virtual Pondus[] CurrentExpectedExpenses => GetCurrent(MyItems);
 
         public virtual Pecuniam TotalAnnualExpectedExpenses => Pondus.GetExpectedAnnualSum(CurrentExpectedExpenses);
 
+        protected override DomusOpesDivisions Division => DomusOpesDivisions.Expense;
+
         public virtual Pondus[] GetExpectedExpensesAt(DateTime? dt)
         {
-            return GetAt(dt, ExpectedExpenses);
+            return GetAt(dt, MyItems);
         }
 
-        protected internal virtual List<Pondus> ExpectedExpenses
+        protected internal override List<Pondus> MyItems
         {
             get
             {
@@ -38,27 +40,14 @@ namespace NoFuture.Rand.Domus.Opes
             }
         }
 
-        protected internal virtual void AddExpectedExpense(Pondus expense)
+        protected internal override void AddItem(Pondus expense)
         {
             if (expense == null)
                 return;
             _expenses.Add(expense);
         }
 
-        protected internal virtual void AddExpectedExpense(Pecuniam amt, string name, DateTime startDate,
-            DateTime? endDate = null)
-        {
-            var p = new Pondus(name)
-            {
-                Terminus = endDate,
-                Inception = startDate
-            };
-
-            p.My.ExpectedValue = amt?.Neg;
-            AddExpectedExpense(p);
-        }
-
-        protected internal override Dictionary<string, Func<OpesOptions, Dictionary<string, double>>> GetItems2Functions()
+        protected override Dictionary<string, Func<OpesOptions, Dictionary<string, double>>> GetItems2Functions()
         {
             return new Dictionary<string, Func<OpesOptions, Dictionary<string, double>>>
             {
@@ -71,6 +60,11 @@ namespace NoFuture.Rand.Domus.Opes
                 {ExpenseGroupNames.DEBT, GetDebtExpenseNames2RandomRates},
                 {ExpenseGroupNames.HEALTH, GetHealthExpenseNames2RandomRates},
             };
+        }
+
+        protected internal override void ResolveItems(OpesOptions options)
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -107,7 +101,7 @@ namespace NoFuture.Rand.Domus.Opes
                 tOptions.PossiableZeroOuts.Add("Association Fees");
             }
 
-            var d = GetItemNames2Portions(DomusOpesDivisions.Expense, ExpenseGroupNames.HOME, tOptions);
+            var d = GetItemNames2Portions(ExpenseGroupNames.HOME, tOptions);
             return d.ToDictionary(t => t.Item1, t => t.Item2);
         }
 
@@ -123,7 +117,7 @@ namespace NoFuture.Rand.Domus.Opes
             if (tOptions.IsRenting)
                 tOptions.PossiableZeroOuts.AddRange(new[] { "Gas", "Water", "Sewer", "Trash" });
 
-            var d = GetItemNames2Portions(DomusOpesDivisions.Expense, ExpenseGroupNames.UTILITIES, tOptions);
+            var d = GetItemNames2Portions(ExpenseGroupNames.UTILITIES, tOptions);
             return d.ToDictionary(t => t.Item1, t => t.Item2);
         }
 
@@ -169,7 +163,7 @@ namespace NoFuture.Rand.Domus.Opes
                     new Mereo("Parking", ExpenseGroupNames.TRANSPORTATION) { ExpectedValue = Pecuniam.Zero });
             }
 
-            var d = GetItemNames2Portions(DomusOpesDivisions.Expense, ExpenseGroupNames.TRANSPORTATION, tOptions);
+            var d = GetItemNames2Portions(ExpenseGroupNames.TRANSPORTATION, tOptions);
             return d.ToDictionary(t => t.Item1, t => t.Item2);
         }
 
@@ -193,7 +187,7 @@ namespace NoFuture.Rand.Domus.Opes
             if (tOptions.HasVehicles)
                 tOptions.GivenDirectly.Add(new Mereo("Vehicle", ExpenseGroupNames.INSURANCE) { ExpectedValue = Pecuniam.Zero });
 
-            var d = GetItemNames2Portions(DomusOpesDivisions.Expense, ExpenseGroupNames.INSURANCE, tOptions);
+            var d = GetItemNames2Portions(ExpenseGroupNames.INSURANCE, tOptions);
             return d.ToDictionary(t => t.Item1, t => t.Item2);
         }
 
@@ -208,7 +202,7 @@ namespace NoFuture.Rand.Domus.Opes
             var tOptions = options.GetClone();
             tOptions.PossiableZeroOuts.AddRange(new[] { "Dues", "Subscriptions",
                 "Gifts", "Vice", "Clothing" });
-            var d = GetItemNames2Portions(DomusOpesDivisions.Expense, ExpenseGroupNames.PERSONAL, tOptions);
+            var d = GetItemNames2Portions(ExpenseGroupNames.PERSONAL, tOptions);
             return d.ToDictionary(t => t.Item1, t => t.Item2);
         }
 
@@ -244,7 +238,7 @@ namespace NoFuture.Rand.Domus.Opes
                     "Extracurricular", "Camp", "Transportation", "Allowance"});
             }
 
-            var d = GetItemNames2Portions(DomusOpesDivisions.Expense, ExpenseGroupNames.CHILDREN, tOptions);
+            var d = GetItemNames2Portions(ExpenseGroupNames.CHILDREN, tOptions);
             return d.ToDictionary(t => t.Item1, t => t.Item2);
         }
 
@@ -258,7 +252,7 @@ namespace NoFuture.Rand.Domus.Opes
             options = (options ?? MyOptions) ?? new OpesOptions();
             var tOptions = options.GetClone();
             tOptions.PossiableZeroOuts.AddRange(new[] { "Health Care", "Other Consumer", "Student", "Tax", "Other" });
-            var d = GetItemNames2Portions(DomusOpesDivisions.Expense, ExpenseGroupNames.DEBT, tOptions);
+            var d = GetItemNames2Portions(ExpenseGroupNames.DEBT, tOptions);
             return d.ToDictionary(t => t.Item1, t => t.Item2);
         }
 
@@ -273,7 +267,7 @@ namespace NoFuture.Rand.Domus.Opes
             var tOptions = options.GetClone();
             tOptions.PossiableZeroOuts.AddRange(new[] { "Therapy", "Hospital",
                 "Optical", "Dental", "Physician", "Supplements" });
-            var d = GetItemNames2Portions(DomusOpesDivisions.Expense, ExpenseGroupNames.HEALTH, tOptions);
+            var d = GetItemNames2Portions(ExpenseGroupNames.HEALTH, tOptions);
             return d.ToDictionary(t => t.Item1, t => t.Item2);
         }
     }

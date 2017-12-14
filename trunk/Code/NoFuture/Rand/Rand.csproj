@@ -122,12 +122,14 @@
     <Compile Include="Domus\AmericanCollegeStudent.cs" />
     <Compile Include="Domus\AmericanHighSchoolStudent.cs" />
     <Compile Include="Domus\Opes\FactorTables.cs" />
+    <Compile Include="Domus\Opes\IDeductions.cs" />
     <Compile Include="Domus\Opes\IEmployment.cs" />
     <Compile Include="Domus\IStudent.cs" />
     <Compile Include="Data\Sp\Mereo.cs" />
     <Compile Include="Domus\Opes\IExpense.cs" />
     <Compile Include="Domus\Opes\IRebus.cs" />
     <Compile Include="Domus\Opes\NorthAmericanAssets.cs" />
+    <Compile Include="Domus\Opes\NorthAmericanDeductions.cs" />
     <Compile Include="Domus\Opes\NorthAmericanEmployment.cs" />
     <Compile Include="Domus\NorthAmericanStudent.cs" />
     <Compile Include="Data\Sp\IMereo.cs" />

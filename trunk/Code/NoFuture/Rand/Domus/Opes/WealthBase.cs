@@ -33,6 +33,7 @@ namespace NoFuture.Rand.Domus.Opes
         private static IMereo[] _deductionItemNames;
         private static IMereo[] _expenseItemNames;
         private static IMereo[] _assetItemNames;
+        private static IMereo[] _employmentItemNames;
         protected internal OpesOptions _myOptions;
         #endregion
 
@@ -43,6 +44,7 @@ namespace NoFuture.Rand.Domus.Opes
         /// </summary>
         public enum DomusOpesDivisions
         {
+            Employment,
             Income,
             Deduction,
             Expense,
@@ -90,27 +92,16 @@ namespace NoFuture.Rand.Domus.Opes
             internal const string EMPLOYMENT = IncomeGroupNames.EMPLOYMENT;
         }
 
+        internal static class EmploymentGroupNames
+        {
+            internal const string PAY = "Pay";
+        }
+
         #endregion
 
         #region ctors
-        protected WealthBase(NorthAmerican american, bool isRenting = false)
+        protected WealthBase(NorthAmerican american) : this(american, new OpesOptions())
         {
-            _myOptions = new OpesOptions();
-            if (american == null)
-            {
-                CreditScore = new PersonalCreditScore(null);
-                _factors = new NorthAmericanFactors(null);
-                IsRenting = isRenting;
-                return;
-            }
-            _amer = american;
-            var usCityArea = _amer?.Address?.HomeCityArea as UsCityStateZip;
-
-            CreditScore = new PersonalCreditScore(american);
-
-            //determine if renting or own
-            IsRenting = isRenting || GetIsLeaseResidence(usCityArea);
-            _factors = new NorthAmericanFactors(_amer);
         }
 
         protected WealthBase(NorthAmerican american, OpesOptions options)
@@ -160,6 +151,12 @@ namespace NoFuture.Rand.Domus.Opes
         public NorthAmericanFactors Factors => _factors;
 
         protected internal virtual NorthAmerican Person => _amer;
+
+        protected abstract DomusOpesDivisions Division { get; }
+
+        protected internal abstract List<Pondus> MyItems { get; }
+
+        protected internal abstract void AddItem(Pondus item);
 
         /// <summary>
         /// Calculate a yearly income at random.
@@ -290,6 +287,18 @@ namespace NoFuture.Rand.Domus.Opes
         }
 
         /// <summary>
+        /// Gets the <see cref="IMereo"/> Expense items 
+        /// (i.e. real and private property) 
+        /// from <see cref="Data.TreeData.UsDomusOpes"/>
+        /// </summary>
+        /// <returns></returns>
+        public static IMereo[] GetEmploymentItemNames()
+        {
+            var xpath = $"//{DomusOpesDivisions.Employment.ToString().ToLower()}//item";
+            return _employmentItemNames = _employmentItemNames ?? GetDomusOpesItemNames(xpath);
+        }
+
+        /// <summary>
         /// Get the Domus Opes group names for the given division
         /// </summary>
         /// <param name="division"></param>
@@ -310,6 +319,9 @@ namespace NoFuture.Rand.Domus.Opes
                     break;
                 case DomusOpesDivisions.Income:
                     grpNames.AddRange(GetIncomeItemNames().Select(x => x.GetName(KindsOfNames.Group)));
+                    break;
+                case DomusOpesDivisions.Employment:
+                    grpNames.AddRange(GetEmploymentItemNames().Select(x => x.GetName(KindsOfNames.Group)));
                     break;
             }
             return grpNames.Distinct().ToList();
@@ -343,12 +355,11 @@ namespace NoFuture.Rand.Domus.Opes
         /// <param name="division"></param>
         /// <param name="options"></param>
         /// <returns></returns>
-        public static List<Tuple<string, double>> GetGroupNames2Portions(DomusOpesDivisions division,
-            OpesOptions options)
+        public virtual List<Tuple<string, double>> GetGroupNames2Portions(OpesOptions options)
         {
             options = options ?? new OpesOptions();
 
-            var grpNames = GetGroupNames(division);
+            var grpNames = GetGroupNames(Division);
 
             return GetNames2Portions(options, grpNames.ToArray());
         }
@@ -361,13 +372,12 @@ namespace NoFuture.Rand.Domus.Opes
         /// <param name="groupName"></param>
         /// <param name="options"></param>
         /// <returns></returns>
-        public static List<Tuple<string, double>> GetItemNames2Portions(DomusOpesDivisions division, string groupName,
-            OpesOptions options)
+        public virtual List<Tuple<string, double>> GetItemNames2Portions(string groupName,OpesOptions options)
         {
             options = options ?? new OpesOptions();
 
             //get all the item names we are targeting
-            var itemNames = GetItemNames(division).Where(x =>
+            var itemNames = GetItemNames(Division).Where(x =>
                 string.Equals(x.GetName(KindsOfNames.Group), groupName, StringComparison.OrdinalIgnoreCase)).ToArray();
 
             return GetNames2Portions(options, itemNames.Select(k => k.Name).ToArray());
@@ -594,6 +604,7 @@ namespace NoFuture.Rand.Domus.Opes
 
         protected Pecuniam CalcValue(Pecuniam pecuniam, double d)
         {
+            pecuniam = pecuniam ?? Pecuniam.Zero;
             return Math.Round(pecuniam.ToDouble() * d, 2).ToPecuniam();
         }
 
@@ -1050,16 +1061,15 @@ namespace NoFuture.Rand.Domus.Opes
             return directAssignRates;
         }
 
-        protected internal Pondus[] GetItemsForRange(DomusOpesDivisions division, OpesOptions grpOptions = null, OpesOptions itemOptions = null)
+        protected internal virtual Pondus[] GetItemsForRange(OpesOptions options = null)
         {
-            grpOptions = grpOptions ?? MyOptions;
-            itemOptions = itemOptions ?? MyOptions;
+            options = options ?? MyOptions;
 
             var itemsout = new List<Pondus>();
 
-            var amt = grpOptions.SumTotal;
+            var amt = options.SumTotal;
 
-            var grp2Rates = GetGroupNames2Portions(division, grpOptions);
+            var grp2Rates = GetGroupNames2Portions(options);
 
             var name2Op = GetItems2Functions();
 
@@ -1068,32 +1078,32 @@ namespace NoFuture.Rand.Domus.Opes
                 var grp = g2r.Item1;
                 var portion = g2r.Item2;
 
-                var useFxMapping = !name2Op.ContainsKey(grp) || itemOptions.GivenDirectly.Any(m =>
-                                       string.Equals(m.GetName(KindsOfNames.Group), grp,
-                                           StringComparison.OrdinalIgnoreCase));
+                var useFxMapping = name2Op.ContainsKey(grp);
+                 
+                //TODO - why was this here?
+                    //|| itemOptions.GivenDirectly.Any(m =>
+                    //                   string.Equals(m.GetName(KindsOfNames.Group), grp,
+                    //                       StringComparison.OrdinalIgnoreCase));
 
                 var grpRates = useFxMapping
-                    ? name2Op[grp](itemOptions)
-                    : GetItemNames2Portions(division, grp, itemOptions)
+                    ? name2Op[grp](options)
+                    : GetItemNames2Portions(grp, options)
                         .ToDictionary(k => k.Item1, k => k.Item2);
 
                 foreach (var item in grpRates.Keys)
                 {
-                    var p = GetPondusForItemAndGroup(item, grp, itemOptions);
+                    var p = GetPondusForItemAndGroup(item, grp, options);
                     p.My.ExpectedValue = CalcValue(amt, grpRates[item] * portion);
-                    p.My.Interval = itemOptions.Interval;
+                    p.My.Interval = options.Interval;
                     itemsout.Add(p);
                 }
             }
             return itemsout.ToArray();
         }
 
-        protected internal virtual Dictionary<string, Func<OpesOptions, Dictionary<string, double>>> GetItems2Functions()
-        {
-            //TODO - this needs to be abstract and each 
-            
-            throw new NotImplementedException();
-        }
+        protected abstract Dictionary<string, Func<OpesOptions, Dictionary<string, double>>> GetItems2Functions();
+
+        protected internal abstract void ResolveItems(OpesOptions options);
 
         protected internal virtual Pondus GetPondusForItemAndGroup(string itemName, string grpName, OpesOptions options)
         {
@@ -1105,6 +1115,42 @@ namespace NoFuture.Rand.Domus.Opes
             };
             p.My.UpsertName(KindsOfNames.Group, grpName);
             return p;
+        }
+
+
+        protected internal double GetRandomizeRateOf(double baseRate, double dividedby = 1)
+        {
+            if (baseRate == 0)
+                return 0;
+            var mean = baseRate / (dividedby == 0 ? 1 : dividedby);
+            var stdDev = Math.Round(mean * 0.155, 5);
+            return Etx.RandomValueInNormalDist(mean, stdDev);
+        }
+
+
+        protected internal double GetEmployeeHealthInsRate(OpesOptions options)
+        {
+            var startDate = options.StartDate;
+            var annualIncomeAmount = options.SumTotal;
+
+            //https://www.cdc.gov/nchs/fastats/health-insurance.htm
+            var isInsCovered = Etx.TryAboveOrAt(124, Etx.Dice.OneThousand);
+            var healthCareCost = isInsCovered
+                ? GetHealthInsCost(startDate)
+                : 0D;
+
+            var totalHealthInsRate = healthCareCost / annualIncomeAmount.ToDouble();
+            return Math.Round(totalHealthInsRate * 0.17855D, DF_ROUND_DECIMAL_PLACES);
+        }
+
+
+        protected internal double GetHealthInsCost(DateTime? atDate)
+        {
+            var dt = atDate.GetValueOrDefault(DateTime.Now);
+            var mean = NAmerUtil.Equations.HealthInsuranceCostPerPerson.SolveForY(dt.ToDouble());
+            var stdDev = Math.Round(mean * 0.155, 2);
+
+            return Etx.RandomValueInNormalDist(mean, stdDev);
         }
     }
 }

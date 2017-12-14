@@ -52,8 +52,7 @@ namespace NoFuture.Rand.Domus.Opes
             }
         }
 
-        public virtual Pondus[] CurrentExpectedOtherIncome => GetCurrent(ExpectedOtherIncome);
-
+        public virtual Pondus[] CurrentExpectedOtherIncome => GetCurrent(MyItems);
 
         public virtual Pecuniam TotalAnnualExpectedIncome =>
             Pondus.GetExpectedAnnualSum(CurrentExpectedOtherIncome) + TotalAnnualExpectedNetEmploymentIncome;
@@ -74,7 +73,7 @@ namespace NoFuture.Rand.Domus.Opes
             }
         }
 
-        protected internal virtual List<Pondus> ExpectedOtherIncome
+        protected internal override List<Pondus> MyItems
         {
             get
             {
@@ -83,6 +82,8 @@ namespace NoFuture.Rand.Domus.Opes
                 return o.ToList();
             }
         }
+
+        protected override DomusOpesDivisions Division => DomusOpesDivisions.Income;
 
         #endregion
 
@@ -96,9 +97,8 @@ namespace NoFuture.Rand.Domus.Opes
 
         public virtual Pondus[] GetExpectedOtherIncomeAt(DateTime? dt)
         {
-            return GetAt(dt, ExpectedOtherIncome);
+            return GetAt(dt, MyItems);
         }
-
 
         protected internal virtual void AddEmployment(IEmployment employment)
         {
@@ -106,24 +106,11 @@ namespace NoFuture.Rand.Domus.Opes
                 _employment.Add(employment);
         }
 
-        protected internal virtual void AddExpectedOtherIncome(Pondus otherIncome)
+        protected internal override void AddItem(Pondus otherIncome)
         {
             if (otherIncome != null)
                 _otherIncome.Add(otherIncome);
         }
-
-        protected internal virtual void AddExpectedOtherIncome(Pecuniam amt, string name, DateTime startDate,
-            DateTime? endDate = null)
-        {
-            var p = new Pondus(name)
-            {
-                Terminus = endDate,
-                Inception = startDate
-            };
-            p.My.ExpectedValue = amt?.Neg;
-            AddExpectedOtherIncome(p);
-        }
-
 
         /// <summary>
         /// Resolves all expected income and expense items for this instance&apos;s year(s)
@@ -142,18 +129,13 @@ namespace NoFuture.Rand.Domus.Opes
                 var endDt = dtRange.Item2;
 
                 var otIncome = GetRandomExpectedIncomeAmount(stDt, Person?.GetAgeAt(stDt));
-                var payIncome = GetExpectedAnnualEmplyGrossIncome(stDt);
 
-                var totalIncome = otIncome + payIncome;
+                var otOptions = new OpesOptions {StartDate = stDt, EndDate = endDt, SumTotal = otIncome};
 
-                var otPondus = GetOtherIncomeItemsForRange(otIncome, stDt, endDt);
-                var expenses = GetExpenseItemsForRange(totalIncome, stDt, endDt);
+                var otPondus = GetOtherIncomeItemsForRange(otOptions);
 
                 foreach(var otPon in otPondus)
-                    AddExpectedOtherIncome(otPon);
-                //foreach(var expense in expenses)
-                //    AddExpectedExpense(expense);
-
+                    AddItem(otPon);
             }
         }
         
@@ -165,7 +147,7 @@ namespace NoFuture.Rand.Domus.Opes
         protected internal virtual DateTime GetMinDateAmongExpectations()
         {
             var sdt = Etx.Date(-3, null, true, 60).Date;
-            var minOtherIncome = ExpectedOtherIncome.FirstOrDefault()?.Inception;
+            var minOtherIncome = MyItems.FirstOrDefault()?.Inception;
             var minEmply = Employment.FirstOrDefault()?.Inception;
             //var minExpense = ExpectedExpenses.FirstOrDefault()?.Inception;
             
@@ -222,6 +204,13 @@ namespace NoFuture.Rand.Domus.Opes
             }
 
             return itemsout.ToArray();
+        }
+
+        protected internal Pondus[] GetOtherIncomeItemsForRange(OpesOptions options)
+        {
+            options = (options ?? MyOptions) ?? new OpesOptions();
+
+            return GetItemsForRange(options);
         }
 
         /// <summary>
@@ -364,7 +353,7 @@ namespace NoFuture.Rand.Domus.Opes
             return d;
         }
 
-        protected internal override Dictionary<string, Func<OpesOptions, Dictionary<string, double>>> GetItems2Functions()
+        protected override Dictionary<string, Func<OpesOptions, Dictionary<string, double>>> GetItems2Functions()
         {
             return new Dictionary<string, Func<OpesOptions, Dictionary<string, double>>>
             {
@@ -376,11 +365,16 @@ namespace NoFuture.Rand.Domus.Opes
             };
         }
 
+        protected internal override void ResolveItems(OpesOptions options)
+        {
+            throw new NotImplementedException();
+        }
+
         protected internal Dictionary<string, double> GetJudgementIncomeNames2RandomRates(OpesOptions options)
         {
             options = (options ?? MyOptions) ?? new OpesOptions();
             var tOptions = options.GetClone();
-            var d = GetItemNames2Portions(DomusOpesDivisions.Expense, IncomeGroupNames.JUDGMENTS, tOptions);
+            var d = GetItemNames2Portions(IncomeGroupNames.JUDGMENTS, tOptions);
             return d.ToDictionary(t => t.Item1, t => t.Item2);
         }
 
@@ -388,7 +382,7 @@ namespace NoFuture.Rand.Domus.Opes
         {
             options = (options ?? MyOptions) ?? new OpesOptions();
             var tOptions = options.GetClone();
-            var d = GetItemNames2Portions(DomusOpesDivisions.Expense, IncomeGroupNames.SUBITO, tOptions);
+            var d = GetItemNames2Portions(IncomeGroupNames.SUBITO, tOptions);
             return d.ToDictionary(t => t.Item1, t => t.Item2);
         }
 
@@ -396,7 +390,7 @@ namespace NoFuture.Rand.Domus.Opes
         {
             options = (options ?? MyOptions) ?? new OpesOptions();
             var tOptions = options.GetClone();
-            var d = GetItemNames2Portions(DomusOpesDivisions.Expense, IncomeGroupNames.REAL_PROPERTY, tOptions);
+            var d = GetItemNames2Portions(IncomeGroupNames.REAL_PROPERTY, tOptions);
             return d.ToDictionary(t => t.Item1, t => t.Item2);
         }
 
@@ -404,7 +398,7 @@ namespace NoFuture.Rand.Domus.Opes
         {
             options = (options ?? MyOptions) ?? new OpesOptions();
             var tOptions = options.GetClone();
-            var d = GetItemNames2Portions(DomusOpesDivisions.Expense, IncomeGroupNames.SECURITIES, tOptions);
+            var d = GetItemNames2Portions(IncomeGroupNames.SECURITIES, tOptions);
             return d.ToDictionary(t => t.Item1, t => t.Item2);
         }
 
@@ -412,7 +406,7 @@ namespace NoFuture.Rand.Domus.Opes
         {
             options = (options ?? MyOptions) ?? new OpesOptions();
             var tOptions = options.GetClone();
-            var d = GetItemNames2Portions(DomusOpesDivisions.Expense, IncomeGroupNames.INSTITUTIONAL, tOptions);
+            var d = GetItemNames2Portions(IncomeGroupNames.INSTITUTIONAL, tOptions);
             return d.ToDictionary(t => t.Item1, t => t.Item2);
         }
 
@@ -914,7 +908,7 @@ namespace NoFuture.Rand.Domus.Opes
             foreach (var emp in payAtDt)
             {
                 var pay = Pondus.GetExpectedAnnualSum(emp.GetPayAt(dt));
-                var ded = Pondus.GetExpectedAnnualSum(emp.GetDeductionsAt(dt));
+                var ded = Pondus.GetExpectedAnnualSum(emp.Deductions.GetDeductionsAt(dt));
                 sum += pay - ded;
             }
 

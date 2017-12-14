@@ -249,5 +249,22 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             //this is actually exceptional and so an exception is thrown
             var testResult = testSubject.GetDebtExpenseNames2RandomRates(testOptions);
         }
+
+        [TestMethod]
+        public void TestGetDebtExpenseNames2RandRates_SumTotalIsZero()
+        {
+            var testSubject = new NorthAmericanExpenses(null);
+            var testOptions = new OpesOptions();
+
+            //so what is going to happen if the only thing I give is a SumTotal of zero?
+            testOptions.StartDate = DateTime.Today;
+            testOptions.SumTotal = Pecuniam.Zero;
+
+            var testResult = testSubject.GetDebtExpenseNames2RandomRates(testOptions);
+
+            //nothing - its just the random ratios since the SumTotal is zero by default
+            foreach (var u in testResult)
+                System.Diagnostics.Debug.WriteLine($"{u.Key} -> {u.Value}");
+        }
     }
 }

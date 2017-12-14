@@ -76,7 +76,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             //var expense = new Pondus("Expense") {Inception = DateTime.Today.AddYears(-1)};
             var otIncome = new Pondus("Other Income") { Inception = DateTime.Today.AddYears(-2) };
 
-            testSubject.AddExpectedOtherIncome(otIncome);
+            testSubject.AddItem(otIncome);
             //testSubject.AddExpectedExpense(expense);
 
             testResult = testSubject.GetMinDateAmongExpectations();
@@ -302,78 +302,6 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             Assert.IsTrue(diffInSum >= -0.001);
         }
 
-
-        [TestMethod]
-        public void TestGetExpenseItemsForRange()
-        {
-            var options = new OpesOptions()
-            {
-                IsRenting = false,
-                NumberOfVehicles = 1,
-                IsVehiclePaidOff = false
-            };
-            options.ChildrenAges.Add(2);
-            options.ChildrenAges.Add(4);
-            var testSubject = new NorthAmericanIncome(null, options);
-            var testResult = testSubject.GetExpenseItemsForRange(55000.ToPecuniam(), DateTime.MinValue);
-
-            Assert.IsNotNull(testResult);
-            Assert.AreNotEqual(0, testResult.Length);
-
-            var d = Pondus.GetExpectedSum(testResult);
-            System.Diagnostics.Debug.WriteLine(d);
-
-            foreach(var t in testResult)
-                System.Diagnostics.Debug.WriteLine($"{Math.Round(t.Value.ToDouble()/12D)} {t.My.GetName(KindsOfNames.Group)} {t.My.Name}");
-        }
-
-
-        [TestMethod]
-        public void TestGetExpenseItemsForRange_WithDirectAssign()
-        {
-            var options = new OpesOptions()
-            {
-                IsRenting = false,
-                NumberOfVehicles = 1,
-                IsVehiclePaidOff = false
-            };
-            options.ChildrenAges.Add(2);
-            options.ChildrenAges.Add(4);
-            var testSubject = new NorthAmericanIncome(null, options);
-
-            testSubject.MyOptions.GivenDirectly.Add(new Mereo("Mortgage", "Home") {ExpectedValue = 13476.0D.ToPecuniam() });
-            testSubject.MyOptions.GivenDirectly.Add(new Mereo("Loan Payments", "Transportation") {ExpectedValue = 3750.0D.ToPecuniam()});
-            testSubject.MyOptions.GivenDirectly.Add(new Mereo("Credit Card", "Debts") {ExpectedValue = 2728.44D.ToPecuniam()});
-
-            var testResult = testSubject.GetExpenseItemsForRange(97860.0D.ToPecuniam(), DateTime.Today.AddYears(-1), null, Interval.Annually);
-            Assert.IsNotNull(testResult);
-            Assert.AreNotEqual(0, testResult.Length);
-
-            var testPondus =
-                testResult.FirstOrDefault(p => p.My.Name == "Mortgage" && p.My.GetName(KindsOfNames.Group) == "Home");
-            Assert.IsNotNull(testPondus);
-            System.Diagnostics.Debug.WriteLine(testPondus);
-            var testAmt = testPondus.My.ExpectedValue;
-            Assert.IsNotNull(testAmt);
-            Assert.AreEqual(13476.0D, testAmt.ToDouble());
-
-            testPondus = testResult.FirstOrDefault(p =>
-                p.My.Name == "Loan Payments" && p.My.GetName(KindsOfNames.Group) == "Transportation");
-            Assert.IsNotNull(testPondus);
-            System.Diagnostics.Debug.WriteLine(testPondus);
-            testAmt = testPondus.My.ExpectedValue;
-            Assert.IsNotNull(testAmt);
-            Assert.AreEqual(3750.0D, testAmt.ToDouble());
-
-            testPondus = testResult.FirstOrDefault(p =>
-                p.My.Name == "Credit Card" && p.My.GetName(KindsOfNames.Group) == "Debts");
-            Assert.IsNotNull(testPondus);
-            System.Diagnostics.Debug.WriteLine(testPondus);
-            testAmt = testPondus.My.ExpectedValue;
-            Assert.IsNotNull(testAmt);
-            Assert.AreEqual(2728.44D, testAmt.ToDouble());
-        }
-
         [TestMethod]
         public void TestGetIncomeYearsInDates()
         {
@@ -397,18 +325,13 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             Assert.IsNotNull(emplyTr);
             Assert.AreNotEqual(0, emplyTr.Count);
 
-            var otTr = testSubject.ExpectedOtherIncome;
+            var otTr = testSubject.MyItems;
             Assert.IsNotNull(otTr);
             Assert.AreNotEqual(0, otTr.Count);
-
-            //var expenseTr = testSubject.ExpectedExpenses;
-            //Assert.IsNotNull(expenseTr);
-            //Assert.AreNotEqual(0, expenseTr.Count);
 
             var printMe = new List<Pondus>();
 
             printMe.AddRange(otTr.Take(3).ToList());
-            //printMe.AddRange(expenseTr.Take(3).ToList());
             foreach(var p in printMe)
                 System.Diagnostics.Debug.WriteLine(p);
 
@@ -474,7 +397,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             var testSubject = new NorthAmericanIncome(null);
             testSubject.ResolveExpectedIncomeAndExpenses();
 
-            var testResults = testSubject.ExpectedOtherIncome;
+            var testResults = testSubject.MyItems;
             Assert.IsNotNull(testResults);
             Assert.AreNotEqual(0, testResults.Count);
 

@@ -58,7 +58,7 @@ namespace NoFuture.Rand.Domus.Opes
         /// <param name="isRenting">
         /// Optional, force the generated instance as renting (instead of mortgage).
         /// </param>
-        public NorthAmericanWealth(NorthAmerican american, bool isRenting = false): base(american, isRenting)
+        public NorthAmericanWealth(NorthAmerican american): base(american)
         {
         }
 
@@ -71,6 +71,13 @@ namespace NoFuture.Rand.Domus.Opes
         public Pecuniam ResidencePayment => _residencePmt;
         public Pecuniam CarPayment => _carPmt;
         public Pecuniam Paycheck { get; }
+        protected override DomusOpesDivisions Division { get { return DomusOpesDivisions.Assets; } }
+        protected internal override List<Pondus> MyItems { get; }
+        protected internal override void AddItem(Pondus item)
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
 
         #region methods
@@ -476,6 +483,17 @@ namespace NoFuture.Rand.Domus.Opes
                 tlt += vd.GetValueAt(dt.GetValueOrDefault(DateTime.Now)).Neg;
             return tlt;
         }
+
+        protected override Dictionary<string, Func<OpesOptions, Dictionary<string, double>>> GetItems2Functions()
+        {
+            throw new NotImplementedException();
+        }
+
+        protected internal override void ResolveItems(OpesOptions options)
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
     }
 }

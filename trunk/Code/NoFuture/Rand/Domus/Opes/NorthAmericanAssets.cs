@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
+using NoFuture.Rand.Data.Endo;
+using NoFuture.Rand.Data.Endo.Enums;
 using NoFuture.Rand.Data.Sp;
 using NoFuture.Rand.Data.Sp.Enums;
 
@@ -94,14 +96,14 @@ namespace NoFuture.Rand.Domus.Opes
 
         #region properties
 
-        public Pondus[] CurrentAssets => GetCurrent(Assets);
+        public Pondus[] CurrentAssets => GetCurrent(MyItems);
 
         public Pecuniam TotalCurrentExpectedValue => Pondus.GetExpectedSum(CurrentAssets);
 
         public IMereo HousePayment => _housePayment;
         public IMereo CarPayment => _carPayment;
 
-        protected internal virtual List<Pondus> Assets
+        protected internal override List<Pondus> MyItems
         {
             get
             {
@@ -111,21 +113,38 @@ namespace NoFuture.Rand.Domus.Opes
             }
         }
 
+        protected override DomusOpesDivisions Division => DomusOpesDivisions.Assets;
         #endregion
 
         #region methods
 
         public Pondus[] GetAssetsAt(DateTime? dt)
         {
-            return GetAt(dt, Assets);
+            return GetAt(dt, MyItems);
         }
 
-        protected virtual void AddAsset(Pondus asset)
+        protected internal override void AddItem(Pondus item)
         {
-            if (asset == null)
+            if (item == null)
                 return;
 
-            _assets.Add(asset);
+            _assets.Add(item);
+        }
+
+        protected override Dictionary<string, Func<OpesOptions, Dictionary<string, double>>> GetItems2Functions()
+        {
+            return new Dictionary<string, Func<OpesOptions, Dictionary<string, double>>>
+            {
+                {AssetGroupNames.REAL_PROPERTY, GetRealPropertyName2RandomRates},
+                {AssetGroupNames.PERSONAL_PROPERTY, GetPersonalPropertyAssetNames2Rates},
+                {AssetGroupNames.INSTITUTIONAL, GetInstitutionalAssetName2Rates},
+                {AssetGroupNames.SECURITIES, GetSecuritiesAssetNames2RandomRates}
+            };
+        }
+
+        protected internal override void ResolveItems(OpesOptions options)
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -136,7 +155,7 @@ namespace NoFuture.Rand.Domus.Opes
             var amt = MyOptions.SumTotal ?? _totalEquity.ToPecuniam();
             var pondus = GetAssetItemsForRange(amt, MyOptions.StartDate);
             foreach(var p in pondus)
-                AddAsset(p);
+                AddItem(p);
         }
 
         /// <summary>
@@ -169,7 +188,7 @@ namespace NoFuture.Rand.Domus.Opes
             //when calling assembly doesn't define exact amounts the use the values from the Factor Tables
             if (!MyOptions.GivenDirectly.Any())
             {
-                grp2Rates = GetGroupPortionsByFactorTables(amt);
+                grp2Rates = GetGroupNames2Portions(MyOptions);
             }
             //map the groups name to a function 
             var name2Op = new Dictionary<string, Func<RatesDictionaryArgs, Dictionary<string, double>>>
@@ -204,7 +223,7 @@ namespace NoFuture.Rand.Domus.Opes
                 foreach (var item in grpRates.Keys)
                 {
                     //create the pondus for this group\name pa
-                    var p = GetPondusForItemAndGroup(item, grp, startDate, endDate, interval);
+                    var p = GetPondusForItemAndGroup(item, grp, MyOptions);
                     p.My.ExpectedValue = CalcValue(amt, grpRates[item]);
                     p.My.Interval = Interval.Annually;
                     itemsout.Add(p);
@@ -213,14 +232,14 @@ namespace NoFuture.Rand.Domus.Opes
             return itemsout.ToArray();
         }
 
-        /// <summary>
-        /// Creates a groupName-to-Portion list which matches the factor table values of the given instance.
-        /// </summary>
-        /// <param name="amt"></param>
-        /// <param name="explicitAmounts"></param>
-        /// <returns></returns>
-        protected internal List<Tuple<string, double>> GetGroupPortionsByFactorTables(Pecuniam amt)
+        public override List<Tuple<string, double>> GetGroupNames2Portions(OpesOptions options)
         {
+            options = options ?? MyOptions;
+
+            if (options.GivenDirectly.Any())
+                return base.GetGroupNames2Portions(options);
+
+            var amt = options.SumTotal ?? _totalEquity.ToPecuniam();
             var givenDirectly = new List<IMereo>();
             if (!IsRenting)
             {
@@ -250,7 +269,7 @@ namespace NoFuture.Rand.Domus.Opes
             var opesOptions = new OpesOptions {SumTotal = _totalEquity.ToPecuniam(), DerivativeSlope = -0.2D};
             opesOptions.GivenDirectly.AddRange(givenDirectly);
             MyOptions = opesOptions;
-            return GetGroupNames2Portions(DomusOpesDivisions.Assets, opesOptions);
+            return base.GetGroupNames2Portions(opesOptions);
         }
 
         /// <summary>
@@ -258,18 +277,17 @@ namespace NoFuture.Rand.Domus.Opes
         /// </summary>
         /// <param name="item"></param>
         /// <param name="grp"></param>
-        /// <param name="startDate"></param>
-        /// <param name="endDate"></param>
-        /// <param name="interval"></param>
-        /// <param name="amt">
-        /// Optional, forces the actual amounts used when generating a random history to scale and fit this amount
-        /// </param>
+        /// <param name="options"></param>
         /// <returns></returns>
-        protected Pondus GetPondusForItemAndGroup(string item, string grp, DateTime startDate, DateTime? endDate,
-            Interval interval = Interval.Annually, Pecuniam amt = null)
+        protected internal override Pondus GetPondusForItemAndGroup(string item, string grp, OpesOptions options)
         {
             const StringComparison OPT = StringComparison.OrdinalIgnoreCase;
             const float FED_RATE = Gov.Fed.RiskFreeInterestRate.DF_VALUE;
+
+            options = (options ?? MyOptions) ?? new OpesOptions();
+
+            var startDate = options.StartDate;
+            var amt = options.SumTotal;
 
             var isCheckingAccount =
                 string.Equals(grp, AssetGroupNames.INSTITUTIONAL, OPT) && string.Equals(item, "Checking", OPT);
@@ -340,10 +358,10 @@ namespace NoFuture.Rand.Domus.Opes
             }
             else
             {
-                p = new Pondus(item, interval)
+                p = new Pondus(item, options.Interval)
                 {
                     Inception = startDate,
-                    Terminus = endDate,
+                    Terminus = options.EndDate,
                 };
             }
 
@@ -388,6 +406,21 @@ namespace NoFuture.Rand.Domus.Opes
             return dk;
         }
 
+        protected internal virtual Dictionary<string, double> GetRealPropertyName2RandomRates(OpesOptions options)
+        {
+            options = (options ?? MyOptions) ?? new OpesOptions();
+            var tOptions = options.GetClone();
+
+            if (tOptions.IsRenting)
+            {
+                tOptions.GivenDirectly.Add(
+                    new Mereo("Home Ownership", AssetGroupNames.REAL_PROPERTY) { ExpectedValue = Pecuniam.Zero });
+            }
+            tOptions.PossiableZeroOuts.AddRange(new []{ "Time Shares", "Land", "Mineral Right" });
+            var d = GetItemNames2Portions(AssetGroupNames.REAL_PROPERTY, tOptions);
+            return d.ToDictionary(t => t.Item1, t => t.Item2);
+        }
+
         /// <summary>
         /// Produces a dictionary of Personal Property <see cref="WealthBase.DomusOpesDivisions.Assets"/>
         ///  items by names to a portion of the total sum.
@@ -429,6 +462,26 @@ namespace NoFuture.Rand.Domus.Opes
             return dk;
         }
 
+        protected internal virtual Dictionary<string, double> GetPersonalPropertyAssetNames2Rates(OpesOptions options)
+        {
+            options = (options ?? MyOptions) ?? new OpesOptions();
+            var tOptions = options.GetClone();
+            tOptions.PossiableZeroOuts.AddRange(new[] { "Art", "Firearms", "Collections", "Antiques" });
+
+            //remove these for everyone except those who are way out in the country
+            if (Person?.Address?.HomeCityArea is UsCityStateZip usCityState && usCityState.Msa?.MsaType >= UrbanCentric.Fringe)
+            {
+                tOptions.GivenDirectly.Add(
+                    new Mereo("Crops", AssetGroupNames.PERSONAL_PROPERTY) { ExpectedValue = Pecuniam.Zero });
+
+                tOptions.GivenDirectly.Add(
+                    new Mereo("Livestock", AssetGroupNames.PERSONAL_PROPERTY) { ExpectedValue = Pecuniam.Zero });
+            }
+
+            var d = GetItemNames2Portions(AssetGroupNames.PERSONAL_PROPERTY, tOptions);
+            return d.ToDictionary(t => t.Item1, t => t.Item2);
+        }
+
         /// <summary>
         /// Produces a dictionary of Institutional <see cref="WealthBase.DomusOpesDivisions.Assets"/> 
         /// items by names to a portion of the total sum.
@@ -456,6 +509,17 @@ namespace NoFuture.Rand.Domus.Opes
             return dk;
         }
 
+        protected internal Dictionary<string, double> GetInstitutionalAssetName2Rates(OpesOptions options)
+        {
+            options = (options ?? MyOptions) ?? new OpesOptions();
+            var tOptions = options.GetClone();
+            tOptions.PossiableZeroOuts.AddRange(new[] { "Certificate of Deposit", "Insurance Policies", "Money Market", "Annuity",
+                "Credit Union", "Profit Sharing", "Safe Deposit Box", "Trusts", "Brokerage", "Partnerships",
+                "Fellowships", "Escrow", "Stipends", "Royalties" });
+            var d = GetItemNames2Portions(AssetGroupNames.INSTITUTIONAL, tOptions);
+            return d.ToDictionary(t => t.Item1, t => t.Item2);
+        }
+
         /// <summary>
         /// Produces a dictionary of Securities <see cref="WealthBase.DomusOpesDivisions.Assets"/> 
         /// items by names to a portion of the total sum.
@@ -479,6 +543,16 @@ namespace NoFuture.Rand.Domus.Opes
 
             return dk;
         }
+
+        protected internal Dictionary<string, double> GetSecuritiesAssetNames2RandomRates(OpesOptions options)
+        {
+            options = (options ?? MyOptions) ?? new OpesOptions();
+            var tOptions = options.GetClone();
+            tOptions.PossiableZeroOuts.AddRange(new[] { "Derivatives" });
+            var d = GetItemNames2Portions(AssetGroupNames.SECURITIES, tOptions);
+            return d.ToDictionary(t => t.Item1, t => t.Item2);
+        }
+
         #endregion
 
     }

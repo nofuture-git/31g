@@ -13,23 +13,8 @@
         https://www.georgialegalaid.org/files/6FCBD72D-B465-109D-9EC1-5A4F52A74EE9/attachments/46DD1022-7567-419A-9901-2652A796296C/financial-affidavit.pdf
         -->
         <domus-opes>
-          <income>
-            <group name="Judgments">
-              <item name="Alimony">
-                <eg name="Maintenance" />
-                <eg name="Spousal Maintenance" />
-              </item>
-              <item name="Child Support" />
-              <item name="Injury" />
-            </group>
-            <group name="Subito">
-              <item name="Gifts" />
-              <item name="Lottery Winnings" />
-              <item name="Gambling Winnings" />
-              <item name="Inheritance" />
-              <item name="Family" />
-            </group>
-            <group name="Employment">
+          <employment>
+            <group name="Pay">
               <item name="Salary" />
               <item name="Wages" />
               <item name="Employer Paid Expenses">
@@ -48,6 +33,23 @@
               <item name="Commissions" />
               <item name="Bonuses" />
               <item name="In-Kind" />
+            </group>            
+          </employment>
+          <income>
+            <group name="Judgments">
+              <item name="Alimony">
+                <eg name="Maintenance" />
+                <eg name="Spousal Maintenance" />
+              </item>
+              <item name="Child Support" />
+              <item name="Injury" />
+            </group>
+            <group name="Subito">
+              <item name="Gifts" />
+              <item name="Lottery Winnings" />
+              <item name="Gambling Winnings" />
+              <item name="Inheritance" />
+              <item name="Family" />
             </group>
             <group name="Public Benefits">
               <item name="Veterans Benefits" />
@@ -321,13 +323,11 @@
           </expense>
           <assets>
             <group name="Real Property">
-              <item name="Real Estate">
-                <eg name="house" />
-                <eg name="land" />
-                <eg name="rental property" />
-                <eg name="time shares" />
-                <eg name="mineral rights" />
-              </item>
+              <item name="Home Ownership" />
+              <item name="Rental Property" />
+              <item name="Land" />
+              <item name="Time Shares"/>
+              <item name="Mineral Rights"/>
             </group>
             <group name="Personal Property">
               <item name="Motor Vehicles">

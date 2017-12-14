@@ -41,7 +41,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         public void TestGetRandomRent()
         {
             var amer = new NorthAmerican(NAmerUtil.GetWorkingAdultBirthDate(), Gender.Female);
-            var testSubject = new NorthAmericanWealth(amer, true);
+            var testSubject = new NorthAmericanWealth(amer, new OpesOptions(){IsRenting = true});
             testSubject.AddRent();
             var rent = testSubject.HomeDebt.FirstOrDefault() as Rent;
             Assert.IsNotNull(rent);
@@ -214,8 +214,8 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             testInput.GivenDirectly.Add(new Mereo("Real Property"){ExpectedValue = 7800.ToPecuniam()});
             testInput.GivenDirectly.Add(new Mereo("Securities"){ExpectedValue = 1000.ToPecuniam()});
             testInput.SumTotal = 12000.ToPecuniam();
-            var testSubject = new NorthAmericanIncome(null);
-            var testResult = WealthBase.GetGroupNames2Portions(WealthBase.DomusOpesDivisions.Assets, testInput);
+            var testSubject = new NorthAmericanAssets(null, testInput);
+            var testResult = testSubject.GetGroupNames2Portions(testInput);
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0, testResult.Count);
 
@@ -246,8 +246,10 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             testInput.GivenDirectly.Add(new Mereo("Bonuses", grpName) { ExpectedValue = 1000.ToPecuniam() });
             testInput.SumTotal = 15000.ToPecuniam();
 
+            var testSubject = new NorthAmericanIncome(null, testInput);
+
             var testResults =
-                WealthBase.GetItemNames2Portions(WealthBase.DomusOpesDivisions.Income, grpName, testInput);
+                testSubject.GetItemNames2Portions(grpName, testInput);
 
             Assert.IsNotNull(testResults);
             Assert.AreNotEqual(0, testResults.Count);
@@ -261,9 +263,9 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             testInput.GivenDirectly.Add(new Mereo("Wages", grpName) { ExpectedValue = 7800.ToPecuniam() });
             testInput.GivenDirectly.Add(new Mereo("Overtime", grpName) { ExpectedValue = 1000.ToPecuniam() });
             testInput.GivenDirectly.Add(new Mereo("Bonuses", grpName) { ExpectedValue = 1000.ToPecuniam() });
-
+            testSubject = new NorthAmericanIncome(null, testInput);
             testResults =
-                WealthBase.GetItemNames2Portions(WealthBase.DomusOpesDivisions.Income, grpName, testInput);
+                testSubject.GetItemNames2Portions(grpName, testInput);
 
             Assert.IsNotNull(testResults);
             Assert.AreNotEqual(0, testResults.Count);
@@ -285,17 +287,6 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
 
             foreach (var tr in testResults)
                 System.Diagnostics.Debug.WriteLine(tr);
-        }
-
-        [TestMethod]
-        public void TestGetItemsForRange()
-        {
-            var testSubject = new NorthAmericanIncome(null);
-            var grpOptions = new OpesOptions {StartDate = DateTime.Today.AddYears(-1)};
-            var itemOptions = grpOptions.GetClone();
-
-
-
         }
 
         public static List<Tuple<string, string>> GetExpectedNamesFromXml(string sectionName)

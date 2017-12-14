@@ -23,12 +23,14 @@ namespace NoFuture.Rand.Domus.Opes
 
         public DateTime StartDate { get; set; }
         public DateTime? EndDate { get; set; }
-        public Pecuniam SumTotal { get; set; }
-
-        public List<IMereo> GivenDirectly { get; } = new List<IMereo>();
 
         public List<int> ChildrenAges { get; set; } = new List<int>();
         public Interval Interval { get; set; }
+
+        public Pecuniam SumTotal { get; set; }
+        public List<IMereo> GivenDirectly { get; } = new List<IMereo>();
+        public List<string> PossiableZeroOuts { get; } = new List<string>();
+
         public double DerivativeSlope
         {
             get
@@ -42,8 +44,6 @@ namespace NoFuture.Rand.Domus.Opes
         }
 
         public Func<int, Etx.Dice, bool> DiceRoll { get; set; } = Etx.TryBelowOrAt;
-
-        public List<string> PossiableZeroOuts { get; } = new List<string>();
 
         public OpesOptions GetClone()
         {
