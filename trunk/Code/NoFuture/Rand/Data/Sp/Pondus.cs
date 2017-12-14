@@ -57,6 +57,8 @@ namespace NoFuture.Rand.Data.Sp
         /// <returns></returns>
         public static Pecuniam GetExpectedAnnualSum(IEnumerable<Pondus> items)
         {
+            if(items == null || !items.Any())
+                return Pecuniam.Zero;
             var sum = 0M;
             foreach (var item in items)
             {

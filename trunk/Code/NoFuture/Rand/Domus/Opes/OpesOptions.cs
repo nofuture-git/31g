@@ -16,6 +16,7 @@ namespace NoFuture.Rand.Domus.Opes
         public bool IsRenting { get; set; }
         public int NumberOfVehicles { get; set; }
         public int NumberOfCreditCards { get; set; }
+        public int TotalNumberOfHouseholdMembers { get; set; }
 
         public bool HasCreditCards => NumberOfCreditCards > 0;
         public bool HasVehicles => NumberOfVehicles > 0;

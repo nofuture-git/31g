@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using NoFuture.Rand.Core;
+using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Data.Endo.Grps;
 using NoFuture.Rand.Data.Sp;
 using NoFuture.Rand.Data.Sp.Enums;
@@ -87,14 +88,21 @@ namespace NoFuture.Rand.Domus.Opes
 
         public override List<Tuple<string, double>> GetGroupNames2Portions(OpesOptions options)
         {
-            return new List<Tuple<string, double>>
+            var grps = new List<Tuple<string, double>>
             {
                 new Tuple<string, double>(DeductionGroupNames.INSURANCE, 1),
                 new Tuple<string, double>(DeductionGroupNames.EMPLOYMENT, 1),
                 new Tuple<string, double>(DeductionGroupNames.GOVERNMENT, 1),
-                //TODO - enhance OpesOptions to pass this down
-                new Tuple<string, double>(DeductionGroupNames.JUDGMENTS, 0),
             };
+
+            if (options.GivenDirectly.All(x => !string.Equals(x.GetName(KindsOfNames.Group),
+                DeductionGroupNames.JUDGMENTS, StringComparison.OrdinalIgnoreCase)))
+            {
+                //TODO - enhance OpesOptions to pass this down
+                grps.Add(new Tuple<string, double>(DeductionGroupNames.JUDGMENTS, 0));
+            }
+
+            return grps;
         }
 
         protected internal Dictionary<string, double> GetInsuranceDeductionName2RandRates(OpesOptions options)
