@@ -174,12 +174,6 @@
               <item name="FICA" />
               <item name="Medicare" />
             </group>
-            <group name="Judgments">
-              <item name="Child Support" />
-              <item name="Alimony" />
-              <item name="Foster Care" />
-              <item name="Student Loans" />
-            </group>
             <group name="Employment">
               <item name="Registered Retirement Savings Plan" abbrev="401(k)" />
               <item name="Profit Sharing" />
@@ -188,6 +182,12 @@
               <item name="Health Savings Account" abbrev="HRA" />
               <item name="Flexible Spending Account" abbrev="FSA" />
               <item name="Credit Union Loan" />
+            </group>
+            <group name="Judgments">
+              <item name="Child Support" />
+              <item name="Alimony" />
+              <item name="Foster Care" />
+              <item name="Student Loans" />
             </group>
           </deduction>
           <expense>

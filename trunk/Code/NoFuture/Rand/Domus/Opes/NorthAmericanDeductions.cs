@@ -4,6 +4,7 @@ using System.Linq;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Data.Endo.Grps;
 using NoFuture.Rand.Data.Sp;
+using NoFuture.Rand.Data.Sp.Enums;
 
 namespace NoFuture.Rand.Domus.Opes
 {
@@ -64,29 +65,36 @@ namespace NoFuture.Rand.Domus.Opes
         {
             options = options ?? MyOptions;
 
-            var ranges = new List<Tuple<DateTime, DateTime?>>();
+            var minDate = _employment.MyItems.Any()
+                ? _employment.MyItems.Select(e => e.Inception).Min()
+                : options.StartDate;
 
-            if (!_employment.MyItems.Any())
-            {
-                ranges.Add(new Tuple<DateTime, DateTime?>(options.StartDate, options.EndDate));
-            }
-            else
-            {
-                foreach (var emplyPondus in _employment.MyItems)
-                {
-                    ranges.Add(new Tuple<DateTime, DateTime?>(emplyPondus.Inception, emplyPondus.Terminus));
-                }
-            }
+            var ranges = GetYearsInDates(minDate);
 
-            foreach (var range in ranges)
+            foreach (var range in ranges.Distinct())
             {
                 var cloneOptions = options.GetClone();
+                cloneOptions.Interval = Interval.Annually;
+               
                 cloneOptions.StartDate = range.Item1;
                 cloneOptions.EndDate = range.Item2;
+
                 var items = GetItemsForRange(cloneOptions);
-                foreach(var item in items)
+                foreach (var item in items)
                     AddItem(item);
             }
+        }
+
+        public override List<Tuple<string, double>> GetGroupNames2Portions(OpesOptions options)
+        {
+            return new List<Tuple<string, double>>
+            {
+                new Tuple<string, double>(DeductionGroupNames.INSURANCE, 1),
+                new Tuple<string, double>(DeductionGroupNames.EMPLOYMENT, 1),
+                new Tuple<string, double>(DeductionGroupNames.GOVERNMENT, 1),
+                //TODO - enhance OpesOptions to pass this down
+                new Tuple<string, double>(DeductionGroupNames.JUDGMENTS, 0),
+            };
         }
 
         protected internal Dictionary<string, double> GetInsuranceDeductionName2RandRates(OpesOptions options)
@@ -248,6 +256,7 @@ namespace NoFuture.Rand.Domus.Opes
             options = options ?? MyOptions;
             var tOptions = options.GetClone();
             var d = GetItemNames2Portions(DeductionGroupNames.JUDGMENTS, tOptions);
+
             return d.ToDictionary(t => t.Item1, t => t.Item2);
         }
         #endregion

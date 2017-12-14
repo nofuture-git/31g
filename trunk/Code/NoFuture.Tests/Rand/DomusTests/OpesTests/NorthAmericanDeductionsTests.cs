@@ -142,7 +142,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             Assert.IsNotNull(testSubject.MyItems);
             Assert.AreNotEqual(0, testSubject.MyItems.Count);
 
-            foreach(var p in testSubject.MyItems)
+            foreach (var p in testSubject.MyItems)
                 System.Diagnostics.Debug.WriteLine(p);
         }
     }

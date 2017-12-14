@@ -5,6 +5,7 @@ using NoFuture.Rand.Com;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Data.Endo.Grps;
 using NoFuture.Rand.Data.Sp;
+using NoFuture.Rand.Data.Sp.Enums;
 using NoFuture.Rand.Gov;
 using NoFuture.Shared.Core;
 
@@ -35,6 +36,7 @@ namespace NoFuture.Rand.Domus.Opes
         public NorthAmericanEmployment(NorthAmerican american, OpesOptions options) : base(american, options)
         {
             MyOptions.StartDate = GetYearNeg(-1);
+            MyOptions.Interval = Interval.Annually;
             Occupation = StandardOccupationalClassification.RandomOccupation();
         }
 
@@ -42,6 +44,7 @@ namespace NoFuture.Rand.Domus.Opes
         {
             MyOptions.StartDate = startDate;
             MyOptions.EndDate = endDate;
+            MyOptions.Interval = Interval.Annually;
             Occupation = StandardOccupationalClassification.RandomOccupation();
         }
 
@@ -49,6 +52,7 @@ namespace NoFuture.Rand.Domus.Opes
         {
             MyOptions.StartDate = startDate;
             MyOptions.EndDate = endDate;
+            MyOptions.Interval = Interval.Annually;
             Occupation = StandardOccupationalClassification.RandomOccupation();
         }
 
@@ -89,7 +93,7 @@ namespace NoFuture.Rand.Domus.Opes
         }
 
         public Pecuniam TotalAnnualPay => Pondus.GetExpectedAnnualSum(CurrentPay).Abs;
-        public Pecuniam TotalAnnualNetPay => TotalAnnualPay - Deductions.TotalAnnualDeductions;
+        public Pecuniam TotalAnnualNetPay => TotalAnnualPay - Deductions.TotalAnnualDeductions.Abs;
 
         protected internal override List<Pondus> MyItems
         {
@@ -146,7 +150,9 @@ namespace NoFuture.Rand.Domus.Opes
                     AddItem(item);
 
             }
-            Deductions = new NorthAmericanDeductions(this);
+            var deductions = new NorthAmericanDeductions(this);
+            deductions.ResolveItems(options);
+            Deductions = deductions;
         }
         
         /// <summary>
@@ -225,6 +231,8 @@ namespace NoFuture.Rand.Domus.Opes
         /// <returns></returns>
         protected internal virtual Dictionary<string, double> GetPayName2RandRates(OpesOptions options)
         {
+            options = options ?? MyOptions;
+
             var bonusRate = Etx.TryBelowOrAt(1, Etx.Dice.Ten)
                 ? Etx.RandomValueInNormalDist(0.02, 0.001)
                 : 0D;
@@ -269,6 +277,12 @@ namespace NoFuture.Rand.Domus.Opes
             var salaryRate = !_isWages
                 ? 1D - sumOfRate
                 : 0D;
+
+            if (options.SumTotal == null || options.SumTotal == Pecuniam.Zero)
+            {
+                options.SumTotal = GetRandomYearlyIncome(options.StartDate);
+                options.Interval = Interval.Annually;
+            }
 
             var incomeName2Rate = new Dictionary<string, double>
             {

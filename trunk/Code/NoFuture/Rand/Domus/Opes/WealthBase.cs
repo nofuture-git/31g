@@ -1108,7 +1108,7 @@ namespace NoFuture.Rand.Domus.Opes
 
             var itemsout = new List<Pondus>();
 
-            var grp2Rates = GetGroupNames(Division);
+            var grp2Rates = GetGroupNames2Portions(options);
 
             foreach (var grp in grp2Rates)
             {
@@ -1117,7 +1117,7 @@ namespace NoFuture.Rand.Domus.Opes
             return itemsout.ToArray();
         }
 
-        protected internal virtual Pondus[] GetItemsForRange(string grp, OpesOptions options = null)
+        protected internal virtual Pondus[] GetItemsForRange(Tuple<string,double> grp2Rate, OpesOptions options = null)
         {
             options = options ?? MyOptions;
 
@@ -1125,7 +1125,10 @@ namespace NoFuture.Rand.Domus.Opes
 
             var name2Op = GetItems2Functions();
 
-            var useFxMapping = name2Op.ContainsKey(grp);
+            var grpName = grp2Rate.Item1;
+            var grpRate = grp2Rate.Item2;
+
+            var useFxMapping = name2Op.ContainsKey(grpName);
 
             //TODO - why was this here?
             //|| itemOptions.GivenDirectly.Any(m =>
@@ -1133,14 +1136,14 @@ namespace NoFuture.Rand.Domus.Opes
             //                       StringComparison.OrdinalIgnoreCase));
 
             var grpRates = useFxMapping
-                ? name2Op[grp](options)
-                : GetItemNames2Portions(grp, options)
+                ? name2Op[grpName](options)
+                : GetItemNames2Portions(grpName, options)
                     .ToDictionary(k => k.Item1, k => k.Item2);
 
             foreach (var item in grpRates.Keys)
             {
-                var p = GetPondusForItemAndGroup(item, grp, options);
-                p.My.ExpectedValue = CalcValue(options.SumTotal, grpRates[item]);
+                var p = GetPondusForItemAndGroup(item, grpName, options);
+                p.My.ExpectedValue = CalcValue(options.SumTotal, grpRates[item] * grpRate);
                 p.My.Interval = options.Interval;
                 itemsout.Add(p);
             }
@@ -1209,7 +1212,7 @@ namespace NoFuture.Rand.Domus.Opes
         /// https://www.cdc.gov/nchs/fastats/health-insurance.htm
         /// </summary>
         /// <returns></returns>
-        public bool CoinTossHasMedicalInsurance()
+        public bool GetRandomHasMedicalInsurance()
         {
             return Etx.TryAboveOrAt(124, Etx.Dice.OneThousand);
         }
