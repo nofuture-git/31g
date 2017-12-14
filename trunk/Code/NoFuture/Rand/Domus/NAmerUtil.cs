@@ -134,6 +134,21 @@ namespace NoFuture.Rand.Domus
         /// </summary>
         public const double PERCENT_WITH_NO_CAR = 0.09D;
 
+        /// <summary>
+        /// https://www.zanebenefits.com/blog/what-percent-of-health-insurance-is-paid-by-employers
+        /// </summary>
+        public const double PERCENT_EMPLY_INS_COST_PAID_BY_EMPLOYER = 0.83D;
+
+        /// <summary>
+        /// https://www.irs.gov/taxtopics/tc751
+        /// </summary>
+        public const double FICA_DEDUCTION_TAX_RATE = 0.062D;
+
+        /// <summary>
+        /// https://www.irs.gov/taxtopics/tc751
+        /// </summary>
+        public const double MEDICARE_DEDUCTION_TAX_RATE = 0.0145D;
+
         #endregion
 
         #region inner types

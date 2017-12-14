@@ -15,6 +15,7 @@ namespace NoFuture.Rand.Domus.Opes
         internal NorthAmericanDeductions(NorthAmericanEmployment employment) : base(employment?.Person, employment?.MyOptions)
         {
             _employment = employment ?? throw new ArgumentNullException(nameof(employment));
+
         }
 
         #region properties
@@ -61,125 +62,194 @@ namespace NoFuture.Rand.Domus.Opes
 
         protected internal override void ResolveItems(OpesOptions options)
         {
-            throw new NotImplementedException();
+            options = options ?? MyOptions;
+
+            var ranges = new List<Tuple<DateTime, DateTime?>>();
+
+            if (!_employment.MyItems.Any())
+            {
+                ranges.Add(new Tuple<DateTime, DateTime?>(options.StartDate, options.EndDate));
+            }
+            else
+            {
+                foreach (var emplyPondus in _employment.MyItems)
+                {
+                    ranges.Add(new Tuple<DateTime, DateTime?>(emplyPondus.Inception, emplyPondus.Terminus));
+                }
+            }
+
+            foreach (var range in ranges)
+            {
+                var cloneOptions = options.GetClone();
+                cloneOptions.StartDate = range.Item1;
+                cloneOptions.EndDate = range.Item2;
+                var items = GetItemsForRange(cloneOptions);
+                foreach(var item in items)
+                    AddItem(item);
+            }
         }
 
         protected internal Dictionary<string, double> GetInsuranceDeductionName2RandRates(OpesOptions options)
         {
-            var employeeHealthInsRate = GetEmployeeHealthInsRate(options);
-            var dentalInsRate = GetRandomizeRateOf(employeeHealthInsRate, 8);
-            var visionInsRate = GetRandomizeRateOf(employeeHealthInsRate, 13);
+            options = options ?? MyOptions;
 
-            var lifeInsRate = Etx.CoinToss
-                ? GetRandomizeRateOf(employeeHealthInsRate, 13)
-                : 0D;
-            var supplementalLifeInsRate = Etx.TryBelowOrAt(3, Etx.Dice.Ten)
-                ? GetRandomizeRateOf(employeeHealthInsRate, 21)
-                : 0D;
-            var dependentInsRate = Etx.TryBelowOrAt(1, Etx.Dice.Four)
-                ? GetRandomizeRateOf(employeeHealthInsRate, 21)
-                : 0D;
-            var adAndDInsRate = Etx.TryBelowOrAt(1, Etx.Dice.Four)
-                ? GetRandomizeRateOf(employeeHealthInsRate, 34)
-                : 0D;
-            var stDisabilityRate = Etx.TryBelowOrAt(1, Etx.Dice.Four)
-                ? GetRandomizeRateOf(employeeHealthInsRate, 13)
-                : 0D;
-            var ltDisabilityRate = Etx.TryBelowOrAt(1, Etx.Dice.Four)
-                ? GetRandomizeRateOf(employeeHealthInsRate, 13)
-                : 0D;
-
-            return new Dictionary<string, double>
+            options.PossiableZeroOuts.AddRange(new[]
             {
-                {"Health", employeeHealthInsRate},
-                {"Life", lifeInsRate},
-                {"Supplemental Life", supplementalLifeInsRate},
-                {"Dependent Life", dependentInsRate},
-                {"Accidental Death & Dismemberment", adAndDInsRate},
-                {"Dental", dentalInsRate},
-                {"Vision", visionInsRate},
-                {"Short-term Disability", stDisabilityRate},
-                {"Long-term Disability", ltDisabilityRate},
-            };
+                "Life", "Supplemental Life", "Dependent Life", "Accidental Death & Dismemberment",
+                "Short-term Disability", "Long-term Disability"
+            });
+
+            //if the caller has assign values themselves - then just use those and leave
+            if (options.GivenDirectly.Any())
+            {
+                return GetItemNames2Portions(DeductionGroupNames.INSURANCE, options)
+                    .ToDictionary(t => t.Item1, t => t.Item2);
+            }
+
+            var expectedHealthInsCost = GetRandomEmployeeHealthInsCost(options.StartDate);
+            var expectedDentalInsCost = GetRandomValueFrom(expectedHealthInsCost, 8);
+            var expectedVisionInsCost = GetRandomValueFrom(expectedHealthInsCost, 13);
+
+            options.GivenDirectly.Add(
+                new Mereo("Health", DeductionGroupNames.INSURANCE)
+                {
+                    ExpectedValue = expectedHealthInsCost.ToPecuniam()
+                });
+
+            options.GivenDirectly.Add(
+                new Mereo("Dental", DeductionGroupNames.INSURANCE)
+                {
+                    ExpectedValue = expectedDentalInsCost.ToPecuniam()
+                });
+
+            options.GivenDirectly.Add(
+                new Mereo("Vision", DeductionGroupNames.INSURANCE)
+                {
+                    ExpectedValue = expectedVisionInsCost.ToPecuniam()
+                });
+            var someRandRate = GetRandomRateFromClassicHook(Person?.GetAgeAt(options.StartDate));
+
+            //we will use to force the SumTotal to exceed current GivenDirectly's sum
+            var currentTotal = expectedHealthInsCost + expectedDentalInsCost + expectedVisionInsCost;
+            var otherInsCost = currentTotal * someRandRate;
+
+            //this will be used later to create Pondus so only overwrite it if is unassigned
+            if(options.SumTotal == null || options.SumTotal == Pecuniam.Zero)
+                options.SumTotal = (otherInsCost + currentTotal).ToPecuniam();
+
+            var d = GetItemNames2Portions(DeductionGroupNames.INSURANCE, options);
+            return d.ToDictionary(t => t.Item1, t => t.Item2);
         }
 
         protected internal Dictionary<string, double> GetGovernmentDeductionName2Rates(OpesOptions options)
         {
-            var annualIncomeAmount = options.SumTotal;
-            var fedTaxRate = NAmerUtil.Equations.FederalIncomeTaxRate.SolveForY(annualIncomeAmount.ToDouble());
-            var stateTaxRate = GetRandomizeRateOf(fedTaxRate, 5);
+            options = options ?? MyOptions;
 
-            //https://www.irs.gov/taxtopics/tc751
-            var ficaRate = 0.062D;
-            var medicareRate = 0.0145D;
-
-            return new Dictionary<string, double>
+            //if the caller has assign values themselves - then just use those and leave
+            if (options.GivenDirectly.Any())
             {
-                {"Federal tax", fedTaxRate},
-                {"State tax", stateTaxRate},
-                {"FICA", ficaRate},
-                {"Medicare", medicareRate},
-            };
+                return GetItemNames2Portions(DeductionGroupNames.GOVERNMENT, options)
+                    .ToDictionary(t => t.Item1, t => t.Item2);
+            }
+
+            var pPay = Pondus.GetExpectedAnnualSum(_employment.GetPayAt(options.StartDate)) ?? Pecuniam.Zero;
+            var pay = pPay == Pecuniam.Zero ? GetRandomYearlyIncome(options.StartDate).ToDouble() : pPay.ToDouble();
+
+            var fedTaxRate = NAmerUtil.Equations.FederalIncomeTaxRate.SolveForY(pay);
+            var stateTaxRate = GetRandomValueFrom(fedTaxRate, 5);
+
+            var fedTaxAmt = pay * fedTaxRate;
+            var stateTaxAmt = pay * stateTaxRate;
+            var ficaTaxAmt = pay * NAmerUtil.FICA_DEDUCTION_TAX_RATE;
+            var medicareTaxAmt = pay * NAmerUtil.MEDICARE_DEDUCTION_TAX_RATE;
+
+            options.GivenDirectly.Add(
+                new Mereo("Federal tax", DeductionGroupNames.INSURANCE)
+                {
+                    ExpectedValue = fedTaxAmt.ToPecuniam()
+                });
+            options.GivenDirectly.Add(
+                new Mereo("State tax", DeductionGroupNames.INSURANCE)
+                {
+                    ExpectedValue = stateTaxAmt.ToPecuniam()
+                });
+            options.GivenDirectly.Add(
+                new Mereo("FICA", DeductionGroupNames.INSURANCE)
+                {
+                    ExpectedValue = ficaTaxAmt.ToPecuniam()
+                });
+            options.GivenDirectly.Add(
+                new Mereo("Medicare", DeductionGroupNames.INSURANCE)
+                {
+                    ExpectedValue = medicareTaxAmt.ToPecuniam()
+                });
+
+            //this will be used later to create Pondus so only overwrite it if is unassigned
+            if (options.SumTotal == null || options.SumTotal == Pecuniam.Zero)
+                options.SumTotal = (fedTaxAmt + stateTaxAmt + ficaTaxAmt + medicareTaxAmt).ToPecuniam();
+
+            return GetItemNames2Portions(DeductionGroupNames.GOVERNMENT, options)
+                .ToDictionary(t => t.Item1, t => t.Item2);
         }
 
         protected internal Dictionary<string, double> GetEmploymentDeductionName2Rates(OpesOptions options)
         {
-            var startDate = options.StartDate;
-            var annualIncomeAmount = options.SumTotal;
+            options = options ?? MyOptions;
 
-            //https://www.cdc.gov/nchs/fastats/health-insurance.htm
-            var isInsCovered = Etx.TryAboveOrAt(124, Etx.Dice.OneThousand);
-
-            var healthCareCost = isInsCovered
-                ? GetHealthInsCost(startDate)
-                : 0D;
-
-            var totalHealthInsRate = healthCareCost / annualIncomeAmount.ToDouble();
-            var employeeHealthInsRate = Math.Round(totalHealthInsRate * 0.17855D, DF_ROUND_DECIMAL_PLACES);
-
-            var retirementRate = Etx.CoinToss
-                ? Etx.DiscreteRange(new[] { 0D, 0.01D, 0.02D, 0.03D, 0.04D, 0.05D })
-                : 0D;
-            var profitShareRate = Etx.TryBelowOrAt(13, Etx.Dice.OneHundred)
-                ? GetRandomizeRateOf(0.03)
-                : 0D;
-            var pensionRate = Etx.TryBelowOrAt(9, Etx.Dice.OneHundred)
-                ? GetRandomizeRateOf(0.03)
-                : 0D;
-
-            var unionDueRate = StandardOccupationalClassification.IsLaborUnion(_employment.Occupation)
-                ? GetRandomizeRateOf(0.04)
-                : 0D;
-            var hraRate = Etx.CoinToss
-                ? GetRandomizeRateOf(employeeHealthInsRate, 21)
-                : 0D;
-            var fsaRate = Etx.CoinToss
-                ? GetRandomizeRateOf(employeeHealthInsRate, 21)
-                : 0D;
-            var creditUnionRate = Etx.TryBelowOrAt(3, Etx.Dice.OneHundred)
-                ? GetRandomizeRateOf(0.01)
-                : 0D;
-
-            return new Dictionary<string, double>
+            options.PossiableZeroOuts.AddRange(new[]
             {
-                {"Registered Retirement Savings Plan", retirementRate},
-                {"Profit Sharing", profitShareRate},
-                {"Pension", pensionRate},
-                {"Union Dues", unionDueRate},
-                {"Health Savings Account", hraRate},
-                {"Flexible Spending Account", fsaRate},
-                {"Credit Union Loan", creditUnionRate},
-            };
+                "Profit Sharing", "Pension", "Health Savings Account", "Credit Union Loan", "Flexible Spending Account"
+            });
+
+            //if the caller has assign values themselves - then just use those and leave
+            if (options.GivenDirectly.Any())
+            {
+                return GetItemNames2Portions(DeductionGroupNames.EMPLOYMENT, options)
+                    .ToDictionary(t => t.Item1, t => t.Item2);
+            }
+
+            var pPay = Pondus.GetExpectedAnnualSum(_employment.GetPayAt(options.StartDate)) ?? Pecuniam.Zero;
+            var pay = pPay == Pecuniam.Zero ? GetRandomYearlyIncome(options.StartDate).ToDouble() : pPay.ToDouble();
+
+            var retirementRate = Etx.DiscreteRange(new[] {0.01D, 0.02D, 0.03D, 0.04D, 0.05D});
+            var retirementAmt = pay * retirementRate;
+            options.GivenDirectly.Add(
+                new Mereo("Registered Retirement Savings Plan", DeductionGroupNames.INSURANCE)
+                {
+                    ExpectedValue = retirementAmt.ToPecuniam()
+                });
+            var unionDuesAmt = StandardOccupationalClassification.IsLaborUnion(_employment.Occupation)
+                ? pay * GetRandomValueFrom(0.04)
+                : 0.0D;
+
+            options.GivenDirectly.Add(
+                new Mereo("Union Dues", DeductionGroupNames.INSURANCE)
+                {
+                    ExpectedValue = unionDuesAmt.ToPecuniam()
+                });
+
+            //we need to have a SumTotal exceeding the current GivenDirectly's sum to have any of the others show up at random
+            var someRandRate = GetRandomRateFromClassicHook(Person?.GetAgeAt(options.StartDate));
+
+            //we will use to force the SumTotal to exceed current GivenDirectly's sum
+            var currentTotal = retirementAmt + unionDuesAmt;
+            var someRandAmount = currentTotal * someRandRate;
+
+            //this will be used later to create Pondus so only overwrite it if is unassigned
+            if (options.SumTotal == null || options.SumTotal == Pecuniam.Zero)
+                options.SumTotal = (currentTotal + someRandAmount).ToPecuniam();
+
+            return GetItemNames2Portions(DeductionGroupNames.EMPLOYMENT, options)
+                .ToDictionary(t => t.Item1, t => t.Item2);
         }
 
         protected internal Dictionary<string, double> GetJudgementDeductionName2RandomRates(OpesOptions options)
         {
-            options = (options ?? MyOptions) ?? new OpesOptions();
+            options = options ?? MyOptions;
             var tOptions = options.GetClone();
             var d = GetItemNames2Portions(DeductionGroupNames.JUDGMENTS, tOptions);
             return d.ToDictionary(t => t.Item1, t => t.Item2);
         }
-
         #endregion
     }
 }

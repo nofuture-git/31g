@@ -352,7 +352,6 @@ namespace NoFuture.Rand.Domus.Opes
         /// Factory method to get a list of group-name to group-rate using 
         /// the given <see cref="options"/>
         /// </summary>
-        /// <param name="division"></param>
         /// <param name="options"></param>
         /// <returns></returns>
         public virtual List<Tuple<string, double>> GetGroupNames2Portions(OpesOptions options)
@@ -368,7 +367,6 @@ namespace NoFuture.Rand.Domus.Opes
         /// Factory method to get a list of item-name to item-rate using
         /// the given <see cref="options"/>
         /// </summary>
-        /// <param name="division"></param>
         /// <param name="groupName"></param>
         /// <param name="options"></param>
         /// <returns></returns>
@@ -391,12 +389,31 @@ namespace NoFuture.Rand.Domus.Opes
         /// <returns></returns>
         public static List<Tuple<string, double>> GetNames2Portions(OpesOptions options, string[] itemNames)
         {
+            const StringComparison STR_OPT = StringComparison.OrdinalIgnoreCase;
+
+            //make this required
+            if (itemNames == null || !itemNames.Any())
+                throw new ArgumentNullException(nameof(itemNames));
+
             options = options ?? new OpesOptions();
 
-            //get a portion for each
+            var givenDirectlyItems = options.GivenDirectly ?? new List<IMereo>();
+
+            //immediately reduce this to only the items present in 'itemNames'
+            givenDirectlyItems = givenDirectlyItems.Where(gd =>
+                itemNames.Any(n => string.Equals(gd.Name, n, STR_OPT))).ToList();
+
+            //get the direct assign's total
+            var givenDirectTotal = givenDirectlyItems
+                .Select(x => Math.Round(x.ExpectedValue?.Abs.ToDouble() ?? 0.0D, DF_ROUND_DECIMAL_PLACES)).Sum();
+
+            //get total given by the caller if any
+            var sumTotal = (options.SumTotal ?? Pecuniam.Zero).ToDouble();
+
+            //get a random rate for all item names
             var randPortions = Etx.DiminishingPortions(itemNames.Length, options.DerivativeSlope);
 
-            //put the two together
+            //put this random rate together with each item name
             var randMap = itemNames
                 .Zip(randPortions, (n, v) => new Tuple<string, double>(n, v)).ToList();
 
@@ -407,39 +424,49 @@ namespace NoFuture.Rand.Domus.Opes
                 randDict.Add(t.Item1, t.Item2);
             }
 
-            //apply any possiable zero outs
-            var zeroOuts = new List<Tuple<string, double>>();
+            //filter zero out's down, likewise, to only what's actually in itemNames
+            var possibleZeroOuts = options.PossiableZeroOuts.Distinct().ToList();
+            possibleZeroOuts = possibleZeroOuts
+                .Where(p => itemNames.Any(i => string.Equals(p, i, STR_OPT))).ToList();
 
-            if (options.PossiableZeroOuts.Any())
+            //zero outs will get applied just like any other ReassignRates
+            var actualZeroOuts = new List<Tuple<string, double>>();
+
+            //select actual zero outs from the possiable zero outs
+            if (possibleZeroOuts.Any())
             {
-                foreach (var pzo in options.PossiableZeroOuts)
+                foreach (var pzo in possibleZeroOuts)
                 {
-                    if (options.DiceRoll(3, Etx.Dice.Four) && zeroOuts.All(z => z.Item1 != pzo))
-                        zeroOuts.Add(new Tuple<string, double>(pzo, 0.0D));
+                    //this is the only random part in actual zero-outs
+                    var diceRoll = options.DiceRoll(3, Etx.Dice.Four);
+
+                    //these predicates are filters
+                    var isAlreadyPresent = actualZeroOuts.Any(z => z.Item1 == pzo);
+                    var isInGivenDirectly = givenDirectlyItems.Any(x =>
+                        string.Equals(x.Name, pzo, STR_OPT));
+                    
+                    if (diceRoll && !isAlreadyPresent && !isInGivenDirectly)
+                        actualZeroOuts.Add(new Tuple<string, double>(pzo, 0.0D));
                 }
             }
 
             //apply any GivenDirectly's of zero like PossiableZeroOuts
-            foreach (var dr in options.GivenDirectly.Where(o => o.ExpectedValue == Pecuniam.Zero))
+            foreach (var dr in givenDirectlyItems.Where(o => o.ExpectedValue == Pecuniam.Zero))
             {
-                if (zeroOuts.All(z => z.Item1 != dr.Name))
-                    zeroOuts.Add(new Tuple<string, double>(dr.Name, 0.0D));
+                if (actualZeroOuts.All(z => z.Item1 != dr.Name))
+                    actualZeroOuts.Add(new Tuple<string, double>(dr.Name, 0.0D));
             }
 
             //zero out all the select names
-            if (zeroOuts.Any())
+            if (actualZeroOuts.Any())
             {
                 //make one last check that we aren't zero'ing out everything
-                if (zeroOuts.Count == itemNames.Length)
+                if (actualZeroOuts.Count == itemNames.Length)
                     throw new RahRowRagee("A sum total of 1 cannot be perserved when " +
                                           "all items have been directly assigned to 0.");
 
-                randDict = ReassignRates(randDict, zeroOuts, options.DerivativeSlope);
+                randDict = ReassignRates(randDict, actualZeroOuts, options.DerivativeSlope);
             }
-
-            //check that at least one GivenDirectly is set to a positive value
-            var givenDirectTotal = options.GivenDirectly
-                .Select(x => Math.Round(x.ExpectedValue?.Abs.ToDouble() ?? 0.0D, DF_ROUND_DECIMAL_PLACES)).Sum();
 
             //there is nothing left to do so leave
             if (givenDirectTotal == 0.0D)
@@ -448,9 +475,9 @@ namespace NoFuture.Rand.Domus.Opes
             }
 
             //we will need a denominator if the caller didn't give one use the sum what they did give
-            var total = options.SumTotal?.ToDouble() ?? givenDirectTotal;
+            var total = sumTotal;
 
-            //if caller gives a sumtotal in which all the GivenDirectly wou't fit, up the total to fit
+            //if caller gives a sumtotal in which all the GivenDirectly won't fit then up the total to make it fit
             if (total < givenDirectTotal)
                 total = givenDirectTotal;
 
@@ -458,7 +485,7 @@ namespace NoFuture.Rand.Domus.Opes
             var calcDict = new Dictionary<string, double>();
 
             //get the sum of each given directly item
-            foreach (var d in options.GivenDirectly)
+            foreach (var d in givenDirectlyItems)
             {
                 var dName = d.Name;
                 if (string.IsNullOrWhiteSpace(dName)
@@ -487,13 +514,12 @@ namespace NoFuture.Rand.Domus.Opes
             }
 
             //if the calc map doesn't leave any room for reassignment then we are done
-            var calcMapSumRemainder = 1 - Math.Abs(Math.Round(calcMap.Select(t => t.Item2).Sum(), DF_ROUND_DECIMAL_PLACES));
-            if (calcMapSumRemainder <= 0.00001 && calcMapSumRemainder >= -0.00001)
+            if (IsCloseEnoughToOne(Math.Round(calcMap.Select(t => t.Item2).Sum(), DF_ROUND_DECIMAL_PLACES)))
             {
                 //still need to add in the 0.0 items since calcMap has only the directly assigned values
                 foreach (var k in itemNames)
                 {
-                    if (calcMap.Any(t => string.Equals(t.Item1, k, StringComparison.OrdinalIgnoreCase)))
+                    if (calcMap.Any(t => string.Equals(t.Item1, k, STR_OPT)))
                         continue;
                     calcMap.Add(new Tuple<string, double>(k, 0.0D));
                 }
@@ -555,6 +581,12 @@ namespace NoFuture.Rand.Domus.Opes
             }
 
             return !String.IsNullOrWhiteSpace(itemName);
+        }
+
+        public static bool IsCloseEnoughToOne(double testValue)
+        {
+            var calcMapSumRemainder = 1 - Math.Abs(testValue);
+            return calcMapSumRemainder <= 0.00001 && calcMapSumRemainder >= -0.00001;
         }
 
         internal static IMereo[] GetDomusOpesItemNames(string xPath)
@@ -740,6 +772,15 @@ namespace NoFuture.Rand.Domus.Opes
         {
             if (names2Rates == null || !names2Rates.Any() || reassignNames2Rates == null || !reassignNames2Rates.Any())
                 return names2Rates;
+
+            //first check that the reassign isn't already perfectly ordered and sum to 1
+            var reassignHasEveryKey = names2Rates.All(kv =>
+                reassignNames2Rates.Any(rkv => string.Equals(rkv.Item1, kv.Key, StringComparison.OrdinalIgnoreCase)));
+            var reassignIsSumOfOne = IsCloseEnoughToOne(Math.Round(reassignNames2Rates.Select(kv => kv.Item2).Sum(),
+                DF_ROUND_DECIMAL_PLACES-1));
+
+            if (reassignHasEveryKey && reassignIsSumOfOne)
+                return reassignNames2Rates.ToDictionary(t => t.Item1, t => t.Item2);
 
             var relocateRates = new List<double>();
             var idxNames = new List<string>();
@@ -1067,37 +1108,43 @@ namespace NoFuture.Rand.Domus.Opes
 
             var itemsout = new List<Pondus>();
 
-            var amt = options.SumTotal;
+            var grp2Rates = GetGroupNames(Division);
 
-            var grp2Rates = GetGroupNames2Portions(options);
+            foreach (var grp in grp2Rates)
+            {
+                itemsout.AddRange(GetItemsForRange(grp, options));
+            }
+            return itemsout.ToArray();
+        }
+
+        protected internal virtual Pondus[] GetItemsForRange(string grp, OpesOptions options = null)
+        {
+            options = options ?? MyOptions;
+
+            var itemsout = new List<Pondus>();
 
             var name2Op = GetItems2Functions();
 
-            foreach (var g2r in grp2Rates)
+            var useFxMapping = name2Op.ContainsKey(grp);
+
+            //TODO - why was this here?
+            //|| itemOptions.GivenDirectly.Any(m =>
+            //                   string.Equals(m.GetName(KindsOfNames.Group), grp,
+            //                       StringComparison.OrdinalIgnoreCase));
+
+            var grpRates = useFxMapping
+                ? name2Op[grp](options)
+                : GetItemNames2Portions(grp, options)
+                    .ToDictionary(k => k.Item1, k => k.Item2);
+
+            foreach (var item in grpRates.Keys)
             {
-                var grp = g2r.Item1;
-                var portion = g2r.Item2;
-
-                var useFxMapping = name2Op.ContainsKey(grp);
-                 
-                //TODO - why was this here?
-                    //|| itemOptions.GivenDirectly.Any(m =>
-                    //                   string.Equals(m.GetName(KindsOfNames.Group), grp,
-                    //                       StringComparison.OrdinalIgnoreCase));
-
-                var grpRates = useFxMapping
-                    ? name2Op[grp](options)
-                    : GetItemNames2Portions(grp, options)
-                        .ToDictionary(k => k.Item1, k => k.Item2);
-
-                foreach (var item in grpRates.Keys)
-                {
-                    var p = GetPondusForItemAndGroup(item, grp, options);
-                    p.My.ExpectedValue = CalcValue(amt, grpRates[item] * portion);
-                    p.My.Interval = options.Interval;
-                    itemsout.Add(p);
-                }
+                var p = GetPondusForItemAndGroup(item, grp, options);
+                p.My.ExpectedValue = CalcValue(options.SumTotal, grpRates[item]);
+                p.My.Interval = options.Interval;
+                itemsout.Add(p);
             }
+
             return itemsout.ToArray();
         }
 
@@ -1118,7 +1165,7 @@ namespace NoFuture.Rand.Domus.Opes
         }
 
 
-        protected internal double GetRandomizeRateOf(double baseRate, double dividedby = 1)
+        protected internal double GetRandomValueFrom(double baseRate, double dividedby = 1)
         {
             if (baseRate == 0)
                 return 0;
@@ -1136,21 +1183,35 @@ namespace NoFuture.Rand.Domus.Opes
             //https://www.cdc.gov/nchs/fastats/health-insurance.htm
             var isInsCovered = Etx.TryAboveOrAt(124, Etx.Dice.OneThousand);
             var healthCareCost = isInsCovered
-                ? GetHealthInsCost(startDate)
+                ? GetRandomHealthInsCost(startDate)
                 : 0D;
 
             var totalHealthInsRate = healthCareCost / annualIncomeAmount.ToDouble();
             return Math.Round(totalHealthInsRate * 0.17855D, DF_ROUND_DECIMAL_PLACES);
         }
 
+        protected internal double GetRandomEmployeeHealthInsCost(DateTime? atDate)
+        {
+            var totalCost = GetRandomHealthInsCost(atDate);
+            return totalCost * (1 - NAmerUtil.PERCENT_EMPLY_INS_COST_PAID_BY_EMPLOYER);
+        }
 
-        protected internal double GetHealthInsCost(DateTime? atDate)
+        protected internal double GetRandomHealthInsCost(DateTime? atDate)
         {
             var dt = atDate.GetValueOrDefault(DateTime.Now);
             var mean = NAmerUtil.Equations.HealthInsuranceCostPerPerson.SolveForY(dt.ToDouble());
             var stdDev = Math.Round(mean * 0.155, 2);
 
             return Etx.RandomValueInNormalDist(mean, stdDev);
+        }
+
+        /// <summary>
+        /// https://www.cdc.gov/nchs/fastats/health-insurance.htm
+        /// </summary>
+        /// <returns></returns>
+        public bool CoinTossHasMedicalInsurance()
+        {
+            return Etx.TryAboveOrAt(124, Etx.Dice.OneThousand);
         }
     }
 }

@@ -266,5 +266,52 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             foreach (var u in testResult)
                 System.Diagnostics.Debug.WriteLine($"{u.Key} -> {u.Value}");
         }
+
+        [TestMethod]
+        public void TestGetDebtExpenseNames2RandRates_GivenDirectlyOverlapZeroOuts()
+        {
+            var testSubject = new NorthAmericanExpenses(null);
+            var testOptions = new OpesOptions();
+
+            //how do the PossiableZero outs play with explict values on GivenDirectly?
+            testOptions.StartDate = DateTime.Today;
+            testOptions.GivenDirectly.Add(new Mereo("Credit Card", WealthBase.ExpenseGroupNames.DEBT) { ExpectedValue = 1000D.ToPecuniam() });
+            testOptions.GivenDirectly.Add(new Mereo("Health Care", WealthBase.ExpenseGroupNames.DEBT) { ExpectedValue = 1000D.ToPecuniam() });
+            testOptions.GivenDirectly.Add(new Mereo("Other Consumer", WealthBase.ExpenseGroupNames.DEBT) { ExpectedValue = 1000D.ToPecuniam() });
+            testOptions.GivenDirectly.Add(new Mereo("Student", WealthBase.ExpenseGroupNames.DEBT) { ExpectedValue = 1000D.ToPecuniam() });
+            testOptions.GivenDirectly.Add(new Mereo("Tax", WealthBase.ExpenseGroupNames.DEBT) { ExpectedValue = 1000D.ToPecuniam() });
+            testOptions.GivenDirectly.Add(new Mereo("Other", WealthBase.ExpenseGroupNames.DEBT) { ExpectedValue = 1000D.ToPecuniam() });
+
+            testOptions.PossiableZeroOuts.AddRange(new []{ "Credit Card", "Health Care", "Other Consumer", "Student", "Tax", "Other" });
+
+            //the PossiableZeroOuts are only considered when they are not present in the GivenDirectly 
+            // so the results are the same as if PossiableZeroOuts had nothing in it at all
+            var testResult = testSubject.GetDebtExpenseNames2RandomRates(testOptions);
+
+            foreach (var u in testResult)
+                System.Diagnostics.Debug.WriteLine($"{u.Key} -> {u.Value}");
+        }
+
+        [TestMethod]
+        public void TestGetDebtExpenseNames2RandRates_SumTotalExceedsAndZeroOuts()
+        {
+            var testSubject = new NorthAmericanExpenses(null);
+            var testOptions = new OpesOptions();
+
+            //what if the SumTotal exceeds the GivenDirectly's sum but all the other options are present in the PossiablyZeroOut's?
+            // and it just so happens that they all, in fact do, get selected to be zero'ed out
+            testOptions.StartDate = DateTime.Today;
+            testOptions.GivenDirectly.Add(new Mereo("Credit Card", WealthBase.ExpenseGroupNames.DEBT) { ExpectedValue = 1000D.ToPecuniam() });
+            testOptions.DiceRoll = (i, dice) => true;
+            testOptions.PossiableZeroOuts.AddRange(new[] { "Health Care", "Other Consumer", "Student", "Tax", "Other" });
+            testOptions.SumTotal = 2000D.ToPecuniam(); //1000 above
+
+            //it leaves one to receive the excess - in effect forcing the dice role to be false for at least one item in this case
+            var testResult = testSubject.GetDebtExpenseNames2RandomRates(testOptions);
+
+            foreach (var u in testResult)
+                System.Diagnostics.Debug.WriteLine($"{u.Key} -> {u.Value}");
+
+        }
     }
 }
