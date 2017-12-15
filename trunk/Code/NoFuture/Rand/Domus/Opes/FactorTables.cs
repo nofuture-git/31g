@@ -3,14 +3,14 @@
 namespace NoFuture.Rand.Domus.Opes
 {
     /// <summary>
-    /// src http://www.census.gov/people/wealth/files/Debt_Tables_2011.xlsx
-    ///     http://www.census.gov/people/wealth/files/Wealth_Tables_2011.xlsx
+    /// Defines the kinds of factors effecting wealth.
     /// </summary>
     [Serializable]
     public enum FactorTables
     {
         HomeDebt,
         VehicleDebt,
+        OtherDebt,
         CreditCardDebt,
         CheckingAccount,
         SavingsAccount,

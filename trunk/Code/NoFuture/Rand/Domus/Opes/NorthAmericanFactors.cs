@@ -26,6 +26,11 @@ namespace NoFuture.Rand.Domus.Opes
         public double VehicleDebtFactor { get; }
 
         /// <summary>
+        /// Other unsecured debts scalar factor above or below the national average(s)
+        /// </summary>
+        public double OtherDebtFactor { get; }
+
+        /// <summary>
         /// Credit Card Debt scalar factor above or below the national average(s)
         /// </summary>
         public double CreditCardDebtFactor { get; }
@@ -71,6 +76,7 @@ namespace NoFuture.Rand.Domus.Opes
                 NetWorthFactor = 1;
                 HomeEquityFactor = 1;
                 VehicleEquityFactor = 1;
+                OtherDebtFactor = 1;
                 return;
             }
 
@@ -96,6 +102,8 @@ namespace NoFuture.Rand.Domus.Opes
                 amer.MaritialStatus);
             VehicleEquityFactor = GetFactor(FactorTables.VehicleEquity, edu, race, region, amer.Age, amer.MyGender,
                 amer.MaritialStatus);
+            OtherDebtFactor = GetFactor(FactorTables.OtherDebt, edu, race, region, amer.Age, amer.MyGender,
+                amer.MaritialStatus);
         }
 
         /// <summary>
@@ -120,7 +128,7 @@ namespace NoFuture.Rand.Domus.Opes
         }
 
         /// <summary>
-        /// Gets the sum of the factors based on the criteria.
+        /// Gets the mean of the factors based on the criteria.
         /// </summary>
         /// <param name="tbl"></param>
         /// <param name="edu"></param>
@@ -133,8 +141,8 @@ namespace NoFuture.Rand.Domus.Opes
         /// A scalar factor above or below the national average(s) based on the given criteria
         /// </returns>
         /// <remarks>
-        /// src http://www.census.gov/people/wealth/files/Debt_Tables_2011.xlsx
-        ///     http://www.census.gov/people/wealth/files/Wealth_Tables_2011.xlsx
+        /// src https://www2.census.gov/programs-surveys/demo/tables/wealth/2013/wealth-asset-ownership/wealth-tables-2013.xlsx
+        ///     https://www2.census.gov/programs-surveys/demo/tables/wealth/2011/wealth-asset-ownership/debt-tables-2011.xlsx
         /// </remarks>
         public static double GetFactor(FactorTables tbl, OccidentalEdu edu, NorthAmericanRace race,
             AmericanRegion region, int age, Gender gender, MaritialStatus maritialStatus)
@@ -150,7 +158,7 @@ namespace NoFuture.Rand.Domus.Opes
             var genderName = Enum.GetName(typeof(Gender), gender);
 
             var tblXPath = $"//table[@name='{tblName}']";
-
+            var factorCount = 0D;
             var sum = 0.0D;
             var hash = new Dictionary<string, string>
             {
@@ -167,16 +175,19 @@ namespace NoFuture.Rand.Domus.Opes
                 var factorVal = xmlElem?.Attributes["value"]?.Value;
                 if (string.IsNullOrWhiteSpace(factorVal))
                     continue;
-                double dblOut;
-                if (double.TryParse(factorVal, out dblOut))
+                if (double.TryParse(factorVal, out var dblOut))
+                {
                     sum += dblOut;
+                    factorCount += 1;
+                }
             }
 
-            var ageNode = maritialStatus == MaritialStatus.Remarried || maritialStatus == MaritialStatus.Remarried
+            var ageNode = maritialStatus == MaritialStatus.Married || maritialStatus == MaritialStatus.Remarried
                 ? xmlDoc.SelectSingleNode($"{tblXPath}/factor[@name='Age']/factor[@name='Married']")
                 : xmlDoc.SelectSingleNode($"{tblXPath}/factor[@name='Age']/factor[@name='{genderName}']");
+            factorCount = factorCount <= 0 ? 1 : factorCount;
             if (ageNode == null)
-                return sum;
+                return Math.Round(sum/factorCount,5);
             foreach (var anode in ageNode.ChildNodes)
             {
                 var ageElem = anode as XmlElement;
@@ -193,9 +204,12 @@ namespace NoFuture.Rand.Domus.Opes
                     continue;
                 var factorVal = ageElem.Attributes["value"].Value;
                 if (double.TryParse(factorVal, out var dblOut))
+                {
                     sum += dblOut;
+                    factorCount += 1;
+                }
             }
-            return sum;
+            return Math.Round(sum/factorCount,5);
         }
 
         /// <summary>
@@ -206,7 +220,7 @@ namespace NoFuture.Rand.Domus.Opes
         public static double GetFactorBaseValue(FactorTables tbl)
         {
             var xmlDoc = tbl == FactorTables.CreditCardDebt || tbl == FactorTables.HomeDebt ||
-                         tbl == FactorTables.VehicleDebt
+                         tbl == FactorTables.VehicleDebt || tbl == FactorTables.OtherDebt
                 ? TreeData.UsPersonalDebt
                 : TreeData.UsPersonalWealth;
             var tblName = Enum.GetName(typeof(FactorTables), tbl);

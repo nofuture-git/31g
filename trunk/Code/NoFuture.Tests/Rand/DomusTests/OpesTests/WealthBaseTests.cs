@@ -240,10 +240,10 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         public void TestGetItemNames2Portions()
         {
             var testInput = new OpesOptions();
-            var grpName = "Employment";
-            testInput.GivenDirectly.Add(new Mereo("Wages", grpName) { ExpectedValue = 7800.ToPecuniam() });
-            testInput.GivenDirectly.Add(new Mereo("Overtime", grpName) { ExpectedValue = 1000.ToPecuniam() });
-            testInput.GivenDirectly.Add(new Mereo("Bonuses", grpName) { ExpectedValue = 1000.ToPecuniam() });
+            var grpName = "Institutional";
+            testInput.GivenDirectly.Add(new Mereo("Partnerships", grpName) { ExpectedValue = 7800.ToPecuniam() });
+            testInput.GivenDirectly.Add(new Mereo("Fellowships", grpName) { ExpectedValue = 1000.ToPecuniam() });
+            testInput.GivenDirectly.Add(new Mereo("Annuity", grpName) { ExpectedValue = 1000.ToPecuniam() });
             testInput.SumTotal = 15000.ToPecuniam();
 
             var testSubject = new NorthAmericanIncome(null, testInput);
@@ -260,9 +260,9 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
 
             //expect that when SumTotal is unassigned the ratios align exactly with assigned values
             testInput = new OpesOptions();
-            testInput.GivenDirectly.Add(new Mereo("Wages", grpName) { ExpectedValue = 7800.ToPecuniam() });
-            testInput.GivenDirectly.Add(new Mereo("Overtime", grpName) { ExpectedValue = 1000.ToPecuniam() });
-            testInput.GivenDirectly.Add(new Mereo("Bonuses", grpName) { ExpectedValue = 1000.ToPecuniam() });
+            testInput.GivenDirectly.Add(new Mereo("Partnerships", grpName) { ExpectedValue = 7800.ToPecuniam() });
+            testInput.GivenDirectly.Add(new Mereo("Fellowships", grpName) { ExpectedValue = 1000.ToPecuniam() });
+            testInput.GivenDirectly.Add(new Mereo("Annuity", grpName) { ExpectedValue = 1000.ToPecuniam() });
             testSubject = new NorthAmericanIncome(null, testInput);
             testResults =
                 testSubject.GetItemNames2Portions(grpName, testInput);
@@ -273,9 +273,9 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             testResultSum = testResults.Select(kv => kv.Item2).Sum();
             System.Diagnostics.Debug.WriteLine(testResultSum);
 
-            var trWages = testResults.FirstOrDefault(kv => kv.Item1 == "Wages");
-            var trOt = testResults.FirstOrDefault(kv => kv.Item1 == "Overtime");
-            var trBonus = testResults.FirstOrDefault(kv => kv.Item1 == "Bonuses");
+            var trWages = testResults.FirstOrDefault(kv => kv.Item1 == "Partnerships");
+            var trOt = testResults.FirstOrDefault(kv => kv.Item1 == "Fellowships");
+            var trBonus = testResults.FirstOrDefault(kv => kv.Item1 == "Annuity");
 
             Assert.IsNotNull(trWages);
             Assert.IsNotNull(trOt);

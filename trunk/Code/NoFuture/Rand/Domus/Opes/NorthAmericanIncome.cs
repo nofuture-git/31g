@@ -252,7 +252,7 @@ namespace NoFuture.Rand.Domus.Opes
             var tenPercentGrossIncome = netAnnualIncome.ToDouble() / 12 * 0.1;
 
             var sum = thirtyPercentAdjIncome + tenPercentGrossIncome + 25.0D;
-            return sum.ToPecuniam();
+            return sum.ToPecuniam().Abs;
         }
 
         /// <summary>
@@ -264,7 +264,7 @@ namespace NoFuture.Rand.Domus.Opes
             if(netAnnualIncome == null)
                 return Pecuniam.Zero;
             var thirtyPercentAdjIncome = netAnnualIncome.ToDouble() / 12 * 0.3;
-            return thirtyPercentAdjIncome.ToPecuniam();
+            return thirtyPercentAdjIncome.ToPecuniam().Abs;
         }
 
         /// <summary>

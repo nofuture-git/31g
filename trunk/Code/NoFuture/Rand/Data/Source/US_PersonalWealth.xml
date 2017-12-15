@@ -3,238 +3,231 @@
   <rand>
     <data>
       <source>
-        <wealth src="http://www.census.gov/people/wealth/files/Wealth_Tables_2011.xlsx">
-          <comments>
-            <![CDATA[
-            =B7/B$5-1 for net worth
-            =D7/D$5-1 for savings account
-            =F7/F$5-1 for checking account
-            =I7/I$5-1 for Vehicle equity
-            =J7/J$5-1 for home equity
-            ]]>
-          </comments>
-          <table name="CheckingAccount" value="600.0">
+        <wealth src="https://www2.census.gov/programs-surveys/demo/tables/wealth/2013/wealth-asset-ownership/wealth-tables-2013.xlsx">
+          <table name="CheckingAccount" value="1000.0">
             <factor name="Edu">
-              <add name="DropOut" value="-0.53333" />
-              <add name="High School" value="-0.33333" />
-              <add name="Some College, No Degree" value="-0.16667" />
-              <add name="Associate" value="-0.16667" />
-              <add name="Bachelor" value="0.66667" />
-              <add name="PostGrad" value="1.50000" />
+              <add name="DropOut" value="0.3" />
+              <add name="High School" value="0.5" />
+              <add name="Some College, No Degree" value="0.5" />
+              <add name="Associate" value="0.8" />
+              <add name="Bachelor" value="1.4" />
+              <add name="PostGrad" value="2.0" />
             </factor>
             <factor name="Race">
-              <add name="White" value="0.16667" />
-              <add name="Black" value="-0.59667" />
-              <add name="Asian" value="0.50000" />
-              <add name="Mixed" value="-0.52500" />
-              <add name="AmericanIndian" value="-0.52500" />
-              <add name="Pacific" value="-0.52500" />
-              <add name="Hispanic" value="-0.50000" />
+              <add name="White" value="1.0" />
+              <add name="Black" value="0.45" />
+              <add name="Asian" value="2.0" />
+              <add name="Mixed" value="0.4" />
+              <add name="AmericanIndian" value="0.4" />
+              <add name="Pacific" value="0.4" />
+              <add name="Hispanic" value="0.6" />
             </factor>
             <factor name="Region">
-              <add name="Northeast" value="0.15000" />
-              <add name="Midwest" value="0.00000" />
-              <add name="South" value="-0.16667" />
-              <add name="West" value="0.13000" />
+              <add name="Northeast" value="1.0" />
+              <add name="Midwest" value="0.905" />
+              <add name="South" value="0.8" />
+              <add name="West" value="1.0" />
             </factor>
             <factor name="Age">
               <factor name="Married">
-                <add min="18" max="34" value="0.16667" />
-                <add min="35" max="54" value="0.33333" />
-                <add min="55" max="64" value="0.66667" />
-                <add min="65" max="99" value="1.00000" />
+                <add min="18" max="34" value="1.0" />
+                <add min="35" max="54" value="1.0" />
+                <add min="55" max="64" value="1.15" />
+                <add min="65" max="99" value="1.8" />
               </factor>
               <factor name="Male">
-                <add min="18" max="34" value="0.16667" />
-                <add min="35" max="54" value="-0.16667" />
-                <add min="55" max="64" value="-0.16667" />
-                <add min="65" max="99" value="0.66667" />
+                <add min="18" max="34" value="1.0" />
+                <add min="35" max="54" value="0.7" />
+                <add min="55" max="64" value="0.67" />
+                <add min="65" max="99" value="1.0" />
               </factor>
               <factor name="Female">
-                <add min="18" max="34" value="-0.66333" />
-                <add min="35" max="54" value="-0.53333" />
-                <add min="55" max="64" value="-0.33333" />
-                <add min="65" max="99" value="-0.16667" />
+                <add min="18" max="34" value="0.5" />
+                <add min="35" max="54" value="0.39" />
+                <add min="55" max="64" value="0.4" />
+                <add min="65" max="99" value="0.725" />
               </factor>
             </factor>
           </table>
-          <table name="SavingsAccount" value="2450.0">
+          <!-- Assets at Financial Institutions, Interest Earning  -->
+          <table name="SavingsAccount" value="4625.0">
             <factor name="Edu">
-              <add name="DropOut" value="-0.71429" />
-              <add name="High School" value="-0.41469" />
-              <add name="Some College, No Degree" value="-0.38776" />
-              <add name="Associate" value="-0.36204" />
-              <add name="Bachelor" value="0.91837" />
-              <add name="PostGrad" value="1.85714" />
+              <add name="DropOut" value="0.19459" />
+              <add name="High School" value="0.43243" />
+              <add name="Some College, No Degree" value="0.38919" />
+              <add name="Associate" value="0.63784" />
+              <add name="Bachelor" value="1.47027" />
+              <add name="PostGrad" value="3.24324" />
             </factor>
             <factor name="Race">
-              <add name="White" value="0.22449" />
-              <add name="Black" value="-0.79592" />
-              <add name="Asian" value="0.83673" />
-              <add name="Mixed" value="-0.69388" />
-              <add name="Pacific" value="-0.69388" />
-              <add name="AmericanIndian" value="-0.69388" />
-              <add name="Hispanic" value="-0.71429" />
+              <add name="White" value="1.16757" />
+              <add name="Black" value="0.21622" />
+              <add name="Asian" value="1.55676" />
+              <add name="Mixed" value="0.3187" />
+              <add name="Pacific" value="0.3187" />
+              <add name="AmericanIndian" value="0.3187" />
+              <add name="Hispanic" value="0.23784" />
             </factor>
             <factor name="Region">
-              <add name="Northeast" value="0.22449" />
-              <add name="Midwest" value="0.22449" />
-              <add name="South" value="-0.18367" />
-              <add name="West" value="0.02041" />
+              <add name="Northeast" value="1.51351" />
+              <add name="Midwest" value="1.08108" />
+              <add name="South" value="0.75676" />
+              <add name="West" value="0.97297" />
             </factor>
             <factor name="Age">
               <factor name="Married">
-                <add min="18" max="34" value="-0.22449" />
-                <add min="35" max="54" value="0.35510" />
-                <add min="55" max="64" value="1.44898" />
-                <add min="65" max="99" value="2.26531" />
+                <add min="18" max="34" value="0.59784" />
+                <add min="35" max="54" value="1.18054" />
+                <add min="55" max="64" value="2.24865" />
+                <add min="65" max="99" value="3.89405" />
               </factor>
               <factor name="Male">
-                <add min="18" max="34" value="-0.67347" />
-                <add min="35" max="54" value="-0.59184" />
-                <add min="55" max="64" value="-0.30612" />
-                <add min="65" max="99" value="1.04082" />
+                <add min="18" max="34" value="0.43243" />
+                <add min="35" max="54" value="0.43243" />
+                <add min="55" max="64" value="0.64865" />
+                <add min="65" max="99" value="1.72973" />
               </factor>
               <factor name="Female">
-                <add min="18" max="34" value="-0.79592" />
-                <add min="35" max="54" value="-0.75510" />
-                <add min="55" max="64" value="-0.55102" />
-                <add min="65" max="99" value="0.02041" />
+                <add min="18" max="34" value="0.21643" />
+                <add min="35" max="54" value="0.22162" />
+                <add min="55" max="64" value="0.52454" />
+                <add min="65" max="99" value="1.72973" />
               </factor>
             </factor>
           </table>
-          <table name="NetWorth" value="68828.0">
+          <!--Excluding Equity in Own Home-->
+          <table name="NetWorth" value="25116.0">
             <factor name="Edu">
-              <add name="DropOut" value="-0.85762" />
-              <add name="High School" value="-0.36152" />
-              <add name="Some College, No Degree" value="-0.28689" />
-              <add name="Associate" value="-0.17894" />
-              <add name="Bachelor" value="1.13791" />
-              <add name="PostGrad" value="2.49785" />
+              <add name="DropOut" value="0.07167" />
+              <add name="High School" value="0.37347" />
+              <add name="Some College, No Degree" value="0.48252" />
+              <add name="Associate" value="0.91197" />
+              <add name="Bachelor" value="2.79901" />
+              <add name="PostGrad" value="7.96588" />
             </factor>
             <factor name="Race">
-              <add name="White" value="0.30088" />
-              <add name="Black" value="-0.90826" />
-              <add name="Asian" value="0.29800" />
-              <add name="Mixed" value="-0.72362" />
-              <add name="AmericanIndian" value="-0.72362" />
-              <add name="Pacific" value="-0.72362" />
-              <add name="Hispanic" value="-0.88837" />
+              <add name="White" value="1.38378" />
+              <add name="Black" value="0.10850" />
+              <add name="Asian" value="1.65261" />
+              <add name="Mixed" value="0.17001" />
+              <add name="AmericanIndian" value="0.17001" />
+              <add name="Pacific" value="0.17001" />
+              <add name="Hispanic" value="0.23192" />
             </factor>
             <factor name="Region">
-              <add name="Northeast" value="0.32250" />
-              <add name="Midwest" value="0.17756" />
-              <add name="South" value="-0.11809" />
-              <add name="West" value="-0.13653" />
+              <add name="Northeast" value="1.38585" />
+              <add name="Midwest" value="1.17507" />
+              <add name="South" value="0.71942" />
+              <add name="West" value="1.19697" />
             </factor>
             <factor name="Age">
               <factor name="Married">
-                <add min="18" max="34" value="-0.71631" />
-                <add min="35" max="54" value="0.68783" />
-                <add min="55" max="64" value="2.48473" />
-                <add min="65" max="99" value="3.13771" />
+                <add min="18" max="34" value="0.46962" />
+                <add min="35" max="54" value="2.79670" />
+                <add min="55" max="64" value="6.11662" />
+                <add min="65" max="99" value="5.92543" />
               </factor>
               <factor name="Male">
-                <add min="18" max="34" value="-0.90992" />
-                <add min="35" max="54" value="-0.63949" />
-                <add min="55" max="64" value="-0.19047" />
-                <add min="65" max="99" value="0.88877" />
+                <add min="18" max="34" value="0.20270" />
+                <add min="35" max="54" value="0.48029" />
+                <add min="55" max="64" value="0.60240" />
+                <add min="65" max="99" value="1.05809" />
               </factor>
               <factor name="Female">
-                <add min="18" max="34" value="-0.97978" />
-                <add min="35" max="54" value="-0.85994" />
-                <add min="55" max="64" value="-0.10096" />
-                <add min="65" max="99" value="0.51101" />
+                <add min="18" max="34" value="0.02289" />
+                <add min="35" max="54" value="0.19908" />
+                <add min="55" max="64" value="0.52031" />
+                <add min="65" max="99" value="0.81243" />
               </factor>
             </factor>
           </table>
-          <table name="VehicleEquity" value="6824.0">
+          <table name="VehicleEquity" value="6988.0">
             <factor name="Edu">
-              <add name="DropOut" value="-0.38072" />
-              <add name="High School" value="-0.13936" />
-              <add name="Some College, No Degree" value="-0.12163" />
-              <add name="Associate" value="-0.07576" />
-              <add name="Bachelor" value="0.08104" />
-              <add name="PostGrad" value="0.32386" />
+              <add name="DropOut" value="0.51674" />
+              <add name="High School" value="0.70120" />
+              <add name="Some College, No Degree" value="0.78105" />
+              <add name="Associate" value="0.99428" />
+              <add name="Bachelor" value="1.23741" />
+              <add name="PostGrad" value="1.65555" />
             </factor>
             <factor name="Race">
-              <add name="White" value="0.04235" />
-              <add name="Black" value="-0.42614" />
-              <add name="Asian" value="0.14874" />
-              <add name="Mixed" value="-0.23007" />
-              <add name="AmericanIndian" value="-0.23007" />
-              <add name="Pacific" value="-0.23007" />
-              <add name="Hispanic" value="-0.22817" />
+              <add name="White" value="1.06025" />
+              <add name="Black" value="0.60976" />
+              <add name="Asian" value="1.29536" />
+              <add name="Mixed" value="0.59302" />
+              <add name="AmericanIndian" value="0.59302" />
+              <add name="Pacific" value="0.59302" />
+              <add name="Hispanic" value="0.75959" />
             </factor>
             <factor name="Region">
-              <add name="Northeast" value="0.04235" />
-              <add name="Midwest" value="-0.01890" />
-              <add name="South" value="-0.01480" />
-              <add name="West" value="-0.02096" />
+              <add name="Northeast" value="1.07327" />
+              <add name="Midwest" value="0.89940" />
+              <add name="South" value="0.98769" />
+              <add name="West" value="1.08157" />
             </factor>
             <factor name="Age">
               <factor name="Married">
-                <add min="18" max="34" value="-0.12280" />
-                <add min="35" max="54" value="0.26861" />
-                <add min="55" max="64" value="0.49853" />
-                <add min="65" max="99" value="0.38409" />
+                <add min="18" max="34" value="0.86463" />
+                <add min="35" max="54" value="1.44605" />
+                <add min="55" max="64" value="1.75859" />
+                <add min="65" max="99" value="1.63495" />
               </factor>
               <factor name="Male">
-                <add min="18" max="34" value="-0.38775" />
-                <add min="35" max="54" value="-0.30261" />
-                <add min="55" max="64" value="-0.19402" />
-                <add min="65" max="99" value="-0.07122" />
+                <add min="18" max="34" value="0.65985" />
+                <add min="35" max="54" value="0.78105" />
+                <add min="55" max="64" value="0.78105" />
+                <add min="65" max="99" value="0.86291" />
               </factor>
               <factor name="Female">
-                <add min="18" max="34" value="-0.50425" />
-                <add min="35" max="54" value="-0.40050" />
-                <add min="55" max="64" value="-0.29294" />
-                <add min="65" max="99" value="-0.35302" />
+                <add min="18" max="34" value="0.47982" />
+                <add min="35" max="54" value="0.53663" />
+                <add min="55" max="64" value="0.65827" />
+                <add min="65" max="99" value="0.63323" />
               </factor>
             </factor>
           </table>
-          <table name="HomeEquity" value="80000.0">
+          <table name="HomeEquity" value="81000.0">
             <factor name="Edu">
-              <add name="DropOut" value="-0.20000" />
-              <add name="High School" value="-0.07500" />
-              <add name="Some College, No Degree" value="-0.11250" />
-              <add name="Associate" value="-0.16250" />
-              <add name="Bachelor" value="0.10000" />
-              <add name="PostGrad" value="0.56250" />
+              <add name="DropOut" value="0.74074" />
+              <add name="High School" value="0.86420" />
+              <add name="Some College, No Degree" value="0.82716" />
+              <add name="Associate" value="0.74074" />
+              <add name="Bachelor" value="1.16049" />
+              <add name="PostGrad" value="1.66667" />
             </factor>
             <factor name="Race">
-              <add name="White" value="0.00000" />
-              <add name="Black" value="-0.37500" />
-              <add name="Asian" value="0.50000" />
-              <add name="Mixed" value="-0.31743" />
-              <add name="Pacific" value="-0.31743" />
-              <add name="AmericanIndian" value="-0.31743" />
-              <add name="Hispanic" value="-0.41250" />
+              <add name="White" value="1.04938" />
+              <add name="Black" value="0.69136" />
+              <add name="Asian" value="1.85185" />
+              <add name="Mixed" value="0.72840" />
+              <add name="Pacific" value="0.72840" />
+              <add name="AmericanIndian" value="0.728403" />
+              <add name="Hispanic" value="0.617280" />
             </factor>
             <factor name="Region">
-              <add name="Northeast" value="0.50000" />
-              <add name="Midwest" value="-0.18750" />
-              <add name="South" value="-0.12500" />
-              <add name="West" value="0.15000" />
+              <add name="Northeast" value="1.51852" />
+              <add name="Midwest" value="0.76515" />
+              <add name="South" value="0.86420" />
+              <add name="West" value="1.55556" />
             </factor>
             <factor name="Age">
               <factor name="Married">
-                <add min="18" max="34" value="-0.75000" />
-                <add min="35" max="54" value="-0.13750" />
-                <add min="55" max="64" value="0.47500" />
-                <add min="65" max="99" value="0.87500" />
+                <add min="18" max="34" value="0.37037" />
+                <add min="35" max="54" value="0.86420" />
+                <add min="55" max="64" value="1.44470" />
+                <add min="65" max="99" value="1.85185" />
               </factor>
               <factor name="Male">
-                <add min="18" max="34" value="-0.68750" />
-                <add min="35" max="54" value="-0.50000" />
-                <add min="55" max="64" value="-0.08750" />
-                <add min="65" max="99" value="0.37500" />
+                <add min="18" max="34" value="0.37037" />
+                <add min="35" max="54" value="0.53086" />
+                <add min="55" max="64" value="0.98765" />
+                <add min="65" max="99" value="1.23457" />
               </factor>
               <factor name="Female">
-                <add min="18" max="34" value="-0.81250" />
-                <add min="35" max="54" value="-0.46250" />
-                <add min="55" max="64" value="-0.10000" />
-                <add min="65" max="99" value="0.43750" />
+                <add min="18" max="34" value="0.28395" />
+                <add min="35" max="54" value="0.55556" />
+                <add min="55" max="64" value="0.98765" />
+                <add min="65" max="99" value="1.39460" />
               </factor>
             </factor>
           </table>          
