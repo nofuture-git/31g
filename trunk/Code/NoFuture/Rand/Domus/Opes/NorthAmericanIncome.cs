@@ -32,7 +32,7 @@ namespace NoFuture.Rand.Domus.Opes
                 american, options)
         {
             if(MyOptions.StartDate == DateTime.MinValue)
-                MyOptions.StartDate = GetYearNeg(-3);
+                MyOptions.StartDate = GetYearNeg(-1);
         }
 
         #endregion
@@ -142,17 +142,25 @@ namespace NoFuture.Rand.Domus.Opes
                 cloneOptions.Interval = Interval.Annually;
                 cloneOptions.StartDate = range.Item1;
                 cloneOptions.EndDate = range.Item2;
-                cloneOptions.SumTotal = GetRandomExpectedIncomeAmount(range.Item1, Person?.GetAgeAt(range.Item1));
+                if(cloneOptions.SumTotal == null || cloneOptions.SumTotal == Pecuniam.Zero)
+                    cloneOptions.SumTotal = GetRandomExpectedIncomeAmount(range.Item1, Person?.GetAgeAt(range.Item1));
+
+                //there aren't ever random but calculated off gross and net income(s)
+                cloneOptions.GivenDirectly.Add(new Mereo(IncomeGroupNames.PUBLIC_BENEFITS){ExpectedValue = Pecuniam.Zero});
 
                 var items = GetItemsForRange(cloneOptions);
-                foreach(var item in items)
+                foreach (var item in items)
+                {
                     AddItem(item);
+                }
 
                 var welfareItems = GetPublicBenefitIncomeItemsForRange(cloneOptions);
                 if (welfareItems.Any())
                 {
-                    foreach(var welfareItem in welfareItems)
+                    foreach (var welfareItem in welfareItems)
+                    {
                         AddItem(welfareItem);
+                    }
                 }
             }
         }
@@ -167,6 +175,7 @@ namespace NoFuture.Rand.Domus.Opes
         protected internal Dictionary<string, double> GetSubitoIncomeNames2RandomRates(OpesOptions options)
         {
             options = (options ?? MyOptions) ?? new OpesOptions();
+            options.PossiableZeroOuts.AddRange(new[] { "Lottery Winnings", "Gambling Winnings", "Gifts" });
             var d = GetItemNames2Portions(IncomeGroupNames.SUBITO, options);
             return d.ToDictionary(t => t.Item1, t => t.Item2);
         }
@@ -181,6 +190,7 @@ namespace NoFuture.Rand.Domus.Opes
         protected internal Dictionary<string, double> GetSecuritiesIncomeNames2RandomRates(OpesOptions options)
         {
             options = (options ?? MyOptions) ?? new OpesOptions();
+            options.PossiableZeroOuts.AddRange(new []{ "Derivatives" });
             var d = GetItemNames2Portions(IncomeGroupNames.SECURITIES, options);
             return d.ToDictionary(t => t.Item1, t => t.Item2);
         }
@@ -188,6 +198,13 @@ namespace NoFuture.Rand.Domus.Opes
         protected internal Dictionary<string, double> GetInstitutionalIncomeNames2RandomRates(OpesOptions options)
         {
             options = (options ?? MyOptions) ?? new OpesOptions();
+            options.PossiableZeroOuts.AddRange(new[]
+            {
+                "Royalties", "Stipends", "Fellowships", "Partnerships",
+                "Trusts", "Money Market", "Profit Sharing", "Annuity",
+                "Certificate of Deposit"
+            });
+
             var d = GetItemNames2Portions(IncomeGroupNames.INSTITUTIONAL, options);
             return d.ToDictionary(t => t.Item1, t => t.Item2);
         }

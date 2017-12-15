@@ -75,7 +75,6 @@ namespace NoFuture.Rand.Domus
         /// When set to true the ctor will assign parents, children and spouse at random.
         /// </param>
         /// <param name="withFinanceData">
-        /// When set to true will ctor will create and assign <see cref="RenameMe"/>
         /// </param>
         public NorthAmerican(DateTime dob, Gender myGender, bool withWholeFamily, bool withFinanceData):this(dob,myGender)
         {

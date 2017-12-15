@@ -513,7 +513,7 @@ namespace NoFuture.Rand.Domus
         /// <remarks>
         /// The age is limited to min,max of 18,67 - generate with family to get other age sets
         /// </remarks>
-        public static DateTime GetWorkingAdultBirthDate(int min = 21, int max = 55)
+        public static DateTime GetWorkingAdultBirthDate(int min = 21, int max = 67)
         {
             if (min < UsState.AGE_OF_ADULT)
                 min = UsState.AGE_OF_ADULT;

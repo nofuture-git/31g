@@ -41,6 +41,8 @@ namespace NoFuture.Rand.Domus.Opes
         {
             if (expense == null)
                 return;
+            if (expense.My?.ExpectedValue != null)
+                expense.My.ExpectedValue = expense.My.ExpectedValue.Neg;
             _expenses.Add(expense);
         }
 

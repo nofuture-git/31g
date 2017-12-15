@@ -300,7 +300,9 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
                 StartDate = new DateTime(2017, 1, 1)
             };
             var testIncome = new NorthAmericanIncome(myAmerican, myIncomeOptions);
-            testIncome.ResolveItems(null);
+            myIncomeOptions.SumTotal = 10000D.ToPecuniam();
+            myIncomeOptions.GivenDirectly.Add(new Mereo("Judgments"){ExpectedValue = Pecuniam.Zero});
+            testIncome.ResolveItems(myIncomeOptions);
             var netIncome = testIncome.TotalAnnualExpectedNetEmploymentIncome;
             var myExpenseOptions = new OpesOptions
             {
@@ -332,6 +334,30 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             foreach (var item in testAssets.MyItems)
                 System.IO.File.AppendAllText(@"C:\Temp\TestAssets.txt", item + "\n");
 
+            System.IO.File.WriteAllText(@"C:\Temp\TestEmployment.txt", "");
+            System.IO.File.WriteAllText(@"C:\Temp\TestDeductions.txt", "");
+            
+            foreach (var item in testIncome.Employment)
+            {
+                var namerEmply = item as NorthAmericanEmployment;
+                if(namerEmply == null)
+                    continue;
+
+                foreach (var emplyItem in namerEmply.MyItems)
+                {
+                    System.IO.File.AppendAllText(@"C:\Temp\TestEmployment.txt", emplyItem + "\n");
+                }
+                var nAmerDeductions = namerEmply.Deductions as NorthAmericanDeductions;
+                if (nAmerDeductions == null)
+                    continue;
+
+                System.IO.File.AppendAllText(@"C:\Temp\TestDeductions.txt", "======" + "\n");
+
+                foreach (var ded in nAmerDeductions.MyItems)
+                {
+                    System.IO.File.AppendAllText(@"C:\Temp\TestDeductions.txt", ded + "\n");
+                }
+            }
         }
 
         public static List<Tuple<string, string>> GetExpectedNamesFromXml(string sectionName)

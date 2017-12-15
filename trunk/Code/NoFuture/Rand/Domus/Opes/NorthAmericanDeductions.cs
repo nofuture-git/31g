@@ -66,11 +66,9 @@ namespace NoFuture.Rand.Domus.Opes
         {
             options = options ?? MyOptions;
 
-            var minDate = _employment.MyItems.Any()
-                ? _employment.MyItems.Select(e => e.Inception).Min()
-                : options.StartDate;
-
-            var ranges = GetYearsInDates(minDate);
+            var ranges = _employment.MyItems.Any()
+                ? _employment.MyItems.Select(e => new Tuple<DateTime, DateTime?>(e.Inception, e.Terminus))
+                : GetYearsInDates(options.StartDate);
 
             foreach (var range in ranges.Distinct())
             {

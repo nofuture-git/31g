@@ -35,7 +35,8 @@ namespace NoFuture.Rand.Domus.Opes
         /// <param name="options"></param>
         public NorthAmericanEmployment(NorthAmerican american, OpesOptions options) : base(american, options)
         {
-            MyOptions.StartDate = GetYearNeg(-1);
+            if(MyOptions.StartDate == DateTime.MinValue)
+                MyOptions.StartDate = GetYearNeg(-1);
             MyOptions.Interval = Interval.Annually;
             Occupation = StandardOccupationalClassification.RandomOccupation();
         }

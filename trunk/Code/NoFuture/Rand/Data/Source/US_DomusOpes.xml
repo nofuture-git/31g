@@ -36,6 +36,28 @@
             </group>            
           </employment>
           <income>
+            <group name="Securities">
+              <item name="Stock"/>
+              <item name="Bond"/>
+              <item name="Funds" />
+              <item name="Derivatives" />
+            </group>
+            <group name="Institutional">
+              <item name="Retirement Plans" />
+              <item name="Savings Interest"/>
+              <item name="Certificate of Deposit" abbrev="COD"/>
+              <item name="Annuity"/>
+              <item name="Profit Sharing"/>
+              <item name="Money Market"/>
+              <item name="Trusts"/>
+              <item name="Partnerships"/>
+              <item name="Fellowships"/>
+              <item name="Stipends"/>
+              <item name="Royalties"/>
+            </group>
+            <group name="Real Property">
+              <item name="Real Estate" />
+            </group>
             <group name="Judgments">
               <item name="Alimony">
                 <eg name="Maintenance" />
@@ -133,28 +155,6 @@
                 </definition>
               </item>
             </group>
-            <group name="Real Property">
-              <item name="Real Estate" />
-            </group>
-            <group name="Securities">
-              <item name="Stock"/>
-              <item name="Bond"/>
-              <item name="Funds" />
-              <item name="Derivatives" />
-            </group>
-            <group name="Institutional">
-              <item name="Partnerships"/>
-              <item name="Trusts"/>
-              <item name="Fellowships"/>
-              <item name="Stipends"/>
-              <item name="Retirement Plans" />
-              <item name="Savings"/>
-              <item name="Certificate of Deposit" abbrev="COD"/>
-              <item name="Money Market"/>
-              <item name="Annuity"/>
-              <item name="Profit Sharing"/>
-              <item name="Royalties"/>
-            </group>            
           </income>
           <deduction>
             <group name="Insurance">
