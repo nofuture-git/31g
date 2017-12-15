@@ -113,7 +113,7 @@ namespace NoFuture.Rand.Domus.Opes
             double stdDevAsPercent, double? assignedBase = null)
         {
             var baseValue = assignedBase.GetValueOrDefault(GetFactorBaseValue(factor));
-            baseValue = Math.Round(baseValue + baseValue * factorMultiplier, 2);
+            baseValue = Math.Round(baseValue * factorMultiplier, 2);
             var randValue = Math.Round(
                 Etx.RandomValueInNormalDist(Math.Round(baseValue, 0), Math.Round(baseValue * stdDevAsPercent, 0)), 2);
             return randValue;

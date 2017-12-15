@@ -289,6 +289,51 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
                 System.Diagnostics.Debug.WriteLine(tr);
         }
 
+        [TestMethod]
+        public void TestAllFiveDivisions()
+        {
+            var myAmerican = Domus.Person.American();
+            var myIncomeOptions = new OpesOptions
+            {
+                NumberOfVehicles = 1,
+                IsRenting = false,
+                StartDate = new DateTime(2017, 1, 1)
+            };
+            var testIncome = new NorthAmericanIncome(myAmerican, myIncomeOptions);
+            testIncome.ResolveItems(null);
+            var netIncome = testIncome.TotalAnnualExpectedNetEmploymentIncome;
+            var myExpenseOptions = new OpesOptions
+            {
+                NumberOfVehicles = 1,
+                IsRenting = false,
+                StartDate = new DateTime(2017, 1, 1),
+                SumTotal = netIncome
+            };
+            var testExpense = new NorthAmericanExpenses(myAmerican, myExpenseOptions);
+            testExpense.ResolveItems(null);
+            var assetOptions = new OpesOptions
+            {
+                NumberOfVehicles = 1,
+                IsRenting = false,
+                StartDate = new DateTime(2017, 1, 1)
+            };
+            var testAssets = new NorthAmericanAssets(myAmerican, assetOptions);
+            testAssets.ResolveItems(null);
+
+            System.IO.File.WriteAllText(@"C:\Temp\TestIncome.txt", "");
+            foreach (var item in testIncome.MyItems)
+                System.IO.File.AppendAllText(@"C:\Temp\TestIncome.txt", item+"\n");
+
+            System.IO.File.WriteAllText(@"C:\Temp\TestExpense.txt", "");
+            foreach (var item in testExpense.MyItems)
+                System.IO.File.AppendAllText(@"C:\Temp\TestExpense.txt", item + "\n");
+
+            System.IO.File.WriteAllText(@"C:\Temp\TestAssets.txt", "");
+            foreach (var item in testAssets.MyItems)
+                System.IO.File.AppendAllText(@"C:\Temp\TestAssets.txt", item + "\n");
+
+        }
+
         public static List<Tuple<string, string>> GetExpectedNamesFromXml(string sectionName)
         {
             var grpsAndNames = new List<Tuple<string, string>>();

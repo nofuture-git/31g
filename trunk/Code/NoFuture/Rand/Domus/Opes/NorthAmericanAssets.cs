@@ -19,8 +19,13 @@ namespace NoFuture.Rand.Domus.Opes
     public class NorthAmericanAssets : WealthBase, IRebus
     {
         #region fields
+
+        internal const string REAL_PROPERTY_HOME_OWNERSHIP = "Home Ownership";
+        internal const string PERSONAL_PROPERTY_MOTOR_VEHICLES = "Motor Vehicles";
+        internal const string INSTITUTIONAL_CHECKING = "Checking";
+        internal const string INSTITUTIONAL_SAVINGS = "Savings";
+
         private readonly HashSet<Pondus> _assets = new HashSet<Pondus>();
-        //private readonly DateTime _startDate;
 
         private readonly double _randCheckingAcctAmt;
         private readonly double _randSavingsAcctAmt;
@@ -34,64 +39,59 @@ namespace NoFuture.Rand.Domus.Opes
 
         private readonly double _totalEquity;
 
-        private IMereo _carPayment;
-        private IMereo _housePayment;
-        private readonly double _homeEquityRate;
-        private readonly double _carEquityRate;
-        private readonly double _checkingAccountRate;
-        private readonly double _savingsAccountRate;
-        private readonly double _homeDebtRate;
-        private readonly double _carDebtRate;
-
         #endregion
 
         #region ctors
-        public NorthAmericanAssets(NorthAmerican american, OpesOptions options) : base(
+
+        public NorthAmericanAssets(NorthAmerican american, OpesOptions options, double stdDev = DF_STD_DEV_PERCENT) : base(
             american, options)
         {
-            if(MyOptions.StartDate == DateTime.MinValue)
+            if (MyOptions.StartDate == DateTime.MinValue)
                 MyOptions.StartDate = GetYearNeg(-1);
 
             _randCheckingAcctAmt = NorthAmericanFactors.GetRandomFactorValue(FactorTables.CheckingAccount,
-                Factors.CheckingAcctFactor, DF_STD_DEV_PERCENT);
+                Factors.CheckingAcctFactor, stdDev);
             _randSavingsAcctAmt = NorthAmericanFactors.GetRandomFactorValue(FactorTables.SavingsAccount,
-                Factors.SavingsAcctFactor, DF_STD_DEV_PERCENT);
+                Factors.SavingsAcctFactor, stdDev);
 
-            _randHomeEquity  = NorthAmericanFactors.GetRandomFactorValue(FactorTables.HomeEquity, Factors.HomeEquityFactor,
-                        DF_STD_DEV_PERCENT);
+            _randHomeEquity = NorthAmericanFactors.GetRandomFactorValue(FactorTables.HomeEquity,
+                Factors.HomeEquityFactor,
+                DF_STD_DEV_PERCENT);
 
             _randCarEquity = NorthAmericanFactors.GetRandomFactorValue(FactorTables.VehicleEquity,
-                        Factors.VehicleEquityFactor, DF_STD_DEV_PERCENT);
+                Factors.VehicleEquityFactor, stdDev);
 
             _randCcDebt = NorthAmericanFactors.GetRandomFactorValue(FactorTables.CreditCardDebt,
-                        Factors.CreditCardDebtFactor,
-                        DF_STD_DEV_PERCENT);
+                Factors.CreditCardDebtFactor,
+                DF_STD_DEV_PERCENT);
 
             _randHomeDebt = NorthAmericanFactors.GetRandomFactorValue(FactorTables.HomeDebt, Factors.HomeDebtFactor,
-                        DF_STD_DEV_PERCENT);
+                DF_STD_DEV_PERCENT);
 
             _randCarDebt = NorthAmericanFactors.GetRandomFactorValue(FactorTables.VehicleDebt,
-                        Factors.VehicleDebtFactor, DF_STD_DEV_PERCENT);
+                Factors.VehicleDebtFactor, stdDev);
 
             _totalEquity = _randCheckingAcctAmt + _randSavingsAcctAmt + _randHomeEquity + _randCarEquity;
 
-
             var randNetWorth = NorthAmericanFactors.GetRandomFactorValue(FactorTables.NetWorth,
-                Factors.NetWorthFactor, DF_STD_DEV_PERCENT);
+                Factors.NetWorthFactor, stdDev);
 
             _allOtherAssetEquity = _totalEquity - randNetWorth;
 
             _totalEquity += _allOtherAssetEquity;
-
-            _homeEquityRate = _randHomeEquity / _totalEquity;
-            _carEquityRate = _randCarEquity / _totalEquity;
-            _checkingAccountRate = _randCheckingAcctAmt / _totalEquity;
-            _savingsAccountRate = _randSavingsAcctAmt / _totalEquity;
+            if (_totalEquity == 0.0D)
+                _totalEquity = 1.0D;
+            HomeEquityRate = Math.Round(_randHomeEquity / _totalEquity, DF_ROUND_DECIMAL_PLACES);
+            CarEquityRate = Math.Round(_randCarEquity / _totalEquity, DF_ROUND_DECIMAL_PLACES);
+            CheckingAccountRate = Math.Round(_randCheckingAcctAmt / _totalEquity, DF_ROUND_DECIMAL_PLACES);
+            SavingsAccountRate = Math.Round(_randSavingsAcctAmt / _totalEquity, DF_ROUND_DECIMAL_PLACES);
 
             var totalDebt = _randHomeDebt + _randCarDebt + _randCcDebt;
-            _homeDebtRate = _randHomeDebt / totalDebt;
-            _carDebtRate = _randCarDebt / totalDebt;
+            HomeDebtRate = Math.Round(_randHomeDebt / totalDebt, DF_ROUND_DECIMAL_PLACES);
+            CarDebtRate = Math.Round(_randCarDebt / totalDebt, DF_ROUND_DECIMAL_PLACES);
+            CcDebtRate = Math.Round(_randCcDebt / totalDebt, DF_ROUND_DECIMAL_PLACES);
         }
+
         #endregion
 
         #region properties
@@ -100,8 +100,9 @@ namespace NoFuture.Rand.Domus.Opes
 
         public Pecuniam TotalCurrentExpectedValue => Pondus.GetExpectedSum(CurrentAssets);
 
-        public IMereo HousePayment => _housePayment;
-        public IMereo CarPayment => _carPayment;
+        public IMereo HousePayment { get; private set; }
+
+        public IMereo CarPayment { get; private set; }
 
         protected internal override List<Pondus> MyItems
         {
@@ -114,6 +115,21 @@ namespace NoFuture.Rand.Domus.Opes
         }
 
         protected override DomusOpesDivisions Division => DomusOpesDivisions.Assets;
+
+        protected internal double CheckingAccountRate { get; }
+
+        protected internal double SavingsAccountRate { get; }
+
+        protected internal double HomeEquityRate { get; }
+
+        protected internal double CarEquityRate { get; }
+
+        protected internal double HomeDebtRate { get; }
+
+        protected internal double CarDebtRate { get; }
+
+        protected internal double CcDebtRate { get; }
+
         #endregion
 
         #region methods
@@ -166,59 +182,59 @@ namespace NoFuture.Rand.Domus.Opes
             const StringComparison OPT = StringComparison.OrdinalIgnoreCase;
             options = options ?? MyOptions;
 
-            if (options.GivenDirectly.Any())
-                return base.GetGroupNames2Portions(options);
+            var amt = options.SumTotal == null || options.SumTotal == Pecuniam.Zero
+                ? _totalEquity.ToPecuniam()
+                : options.SumTotal;
 
-            var amt = options.SumTotal ?? _totalEquity.ToPecuniam();
             var givenDirectly = new List<IMereo>();
             var assignedRealEstateDirectly = options.GivenDirectly.Any(g =>
-                string.Equals(g.Name, "Real Estate", OPT) && string.Equals(g.GetName(KindsOfNames.Group),
+                string.Equals(g.Name, REAL_PROPERTY_HOME_OWNERSHIP, OPT) && string.Equals(g.GetName(KindsOfNames.Group),
                     AssetGroupNames.REAL_PROPERTY, OPT));
+
             var assignedVehicleDirectly = options.GivenDirectly.Any(g =>
-                string.Equals(g.Name, "Motor Vehicles", OPT) && string.Equals(g.GetName(KindsOfNames.Group),
+                string.Equals(g.Name, PERSONAL_PROPERTY_MOTOR_VEHICLES, OPT) && string.Equals(g.GetName(KindsOfNames.Group),
                     AssetGroupNames.PERSONAL_PROPERTY, OPT));
 
             var assignedCheckingDirectly = options.GivenDirectly.Any(g =>
-                string.Equals(g.Name, "Checking", OPT) && string.Equals(g.GetName(KindsOfNames.Group),
+                string.Equals(g.Name, INSTITUTIONAL_CHECKING, OPT) && string.Equals(g.GetName(KindsOfNames.Group),
                     AssetGroupNames.INSTITUTIONAL, OPT));
 
             var assignedSavingDirectly = options.GivenDirectly.Any(g =>
-                string.Equals(g.Name, "Savings", OPT) && string.Equals(g.GetName(KindsOfNames.Group),
+                string.Equals(g.Name, INSTITUTIONAL_SAVINGS, OPT) && string.Equals(g.GetName(KindsOfNames.Group),
                     AssetGroupNames.INSTITUTIONAL, OPT));
 
             if (!options.IsRenting && !assignedRealEstateDirectly)
             {
-                givenDirectly.Add(new Mereo("Real Estate", AssetGroupNames.REAL_PROPERTY)
+                givenDirectly.Add(new Mereo(REAL_PROPERTY_HOME_OWNERSHIP, AssetGroupNames.REAL_PROPERTY)
                 {
-                    ExpectedValue = (_homeEquityRate * amt.ToDouble()).ToPecuniam()
+                    ExpectedValue = (HomeEquityRate * amt.ToDouble()).ToPecuniam()
                 });
             }
 
             if (MyOptions.HasVehicles && !assignedVehicleDirectly)
             {
-                givenDirectly.Add(new Mereo("Motor Vehicles", AssetGroupNames.PERSONAL_PROPERTY)
+                givenDirectly.Add(new Mereo(PERSONAL_PROPERTY_MOTOR_VEHICLES, AssetGroupNames.PERSONAL_PROPERTY)
                 {
-                    ExpectedValue = (_carEquityRate * amt.ToDouble()).ToPecuniam()
+                    ExpectedValue = (CarEquityRate * amt.ToDouble()).ToPecuniam()
                 });
             }
             if (!assignedCheckingDirectly)
             {
-                givenDirectly.Add(new Mereo("Checking", AssetGroupNames.INSTITUTIONAL)
+                givenDirectly.Add(new Mereo(INSTITUTIONAL_CHECKING, AssetGroupNames.INSTITUTIONAL)
                 {
-                    ExpectedValue = (_checkingAccountRate * amt.ToDouble()).ToPecuniam()
+                    ExpectedValue = (CheckingAccountRate * amt.ToDouble()).ToPecuniam()
                 });
             }
             if (!assignedSavingDirectly)
             {
-                givenDirectly.Add(new Mereo("Savings", AssetGroupNames.INSTITUTIONAL)
+                givenDirectly.Add(new Mereo(INSTITUTIONAL_SAVINGS, AssetGroupNames.INSTITUTIONAL)
                 {
-                    ExpectedValue = (_savingsAccountRate * amt.ToDouble()).ToPecuniam()
+                    ExpectedValue = (SavingsAccountRate * amt.ToDouble()).ToPecuniam()
                 });
             }
 
-            if (options.SumTotal == Pecuniam.Zero)
+            if (options.SumTotal == null || options.SumTotal == Pecuniam.Zero)
             {
-                options.SumTotal = _totalEquity.ToPecuniam();
                 options.DerivativeSlope = -0.2D;
                 options.GivenDirectly.AddRange(givenDirectly);
                 MyOptions = options;
@@ -243,34 +259,48 @@ namespace NoFuture.Rand.Domus.Opes
             var startDate = options.StartDate;
             var amt = options.SumTotal;
 
-            var isCheckingAccount =
-                string.Equals(grp, AssetGroupNames.INSTITUTIONAL, OPT) && string.Equals(item, "Checking", OPT);
-            var isSavingsAccount =
-                string.Equals(grp, AssetGroupNames.INSTITUTIONAL, OPT) && string.Equals(item, "Savings", OPT);
+            var isCheckingAccount = string.Equals(grp, AssetGroupNames.INSTITUTIONAL, OPT) &&
+                                    string.Equals(item, INSTITUTIONAL_CHECKING, OPT);
+            var isSavingsAccount = string.Equals(grp, AssetGroupNames.INSTITUTIONAL, OPT) &&
+                                   string.Equals(item, INSTITUTIONAL_SAVINGS, OPT);
             var isMortgage = string.Equals(grp, AssetGroupNames.REAL_PROPERTY, OPT) &&
-                             string.Equals(item, "Real Estate", OPT);
+                             string.Equals(item, REAL_PROPERTY_HOME_OWNERSHIP, OPT);
             var isCarLoan = string.Equals(grp, AssetGroupNames.PERSONAL_PROPERTY, OPT) &&
-                            string.Equals(item, "Motor Vehicles", OPT);
+                            string.Equals(item, PERSONAL_PROPERTY_MOTOR_VEHICLES, OPT);
 
             Pondus p;
             if (isCheckingAccount)
             {
-                var checkingAmt = amt == null ? _randCheckingAcctAmt : _checkingAccountRate * amt.ToDouble();
+                var checkingAmt = amt == null || amt == Pecuniam.Zero
+                    ? _randCheckingAcctAmt
+                    : CheckingAccountRate * amt.ToDouble();
                 p = CheckingAccount.GetRandomCheckingAcct(Person, startDate, $"{Etx.IntNumber(1, 9999):0000}");
                 p.Push(startDate.AddDays(-1), checkingAmt.ToPecuniam());
+                p.My.ExpectedValue = checkingAmt.ToPecuniam();
             }
             else if (isSavingsAccount)
             {
-                var savingAmt = amt == null ? _randSavingsAcctAmt : _savingsAccountRate * amt.ToDouble();
+                var savingAmt = amt == null || amt == Pecuniam.Zero
+                    ? _randSavingsAcctAmt
+                    : SavingsAccountRate * amt.ToDouble();
                 p = SavingsAccount.GetRandomSavingAcct(Person, startDate);
                 p.Push(startDate.AddDays(-1), savingAmt.ToPecuniam());
+                p.My.ExpectedValue = savingAmt.ToPecuniam();
             }
             else if (isMortgage || isCarLoan)
             {
-                var homeDebtAmt = amt == null ? _randHomeDebt : _homeDebtRate * amt.ToDouble();
-                var homeEquityAmt = amt == null ? _randHomeEquity : _homeEquityRate * amt.ToDouble();
-                var carDebtAmt = amt == null ? _randCarDebt : _carDebtRate * amt.ToDouble();
-                var carEquityAmt = amt == null ? _randCarEquity : _carEquityRate * amt.ToDouble();
+                var homeDebtAmt = amt == null || amt == Pecuniam.Zero 
+                    ? _randHomeDebt 
+                    : HomeDebtRate * amt.ToDouble();
+                var homeEquityAmt = amt == null || amt == Pecuniam.Zero
+                    ? _randHomeEquity
+                    : HomeEquityRate * amt.ToDouble();
+                var carDebtAmt = amt == null || amt == Pecuniam.Zero 
+                    ? _randCarDebt 
+                    : CarDebtRate * amt.ToDouble();
+                var carEquityAmt = amt == null || amt == Pecuniam.Zero
+                    ? _randCarEquity
+                    : CarEquityRate * amt.ToDouble();
 
                 var baseRate = isMortgage ? FED_RATE : FED_RATE + 3.2;
                 var randRate =
@@ -303,12 +333,14 @@ namespace NoFuture.Rand.Domus.Opes
 
                 if (isMortgage)
                 {
-                    _housePayment = new Mereo(item, grp) {ExpectedValue = outPayment, Interval = Interval.Monthly};
+                    p.My.ExpectedValue = homeEquityAmt.ToPecuniam();
+                    HousePayment = new Mereo(item, grp) {ExpectedValue = outPayment, Interval = Interval.Monthly};
                 }
                 else
-                    _carPayment = new Mereo(item, grp) { ExpectedValue = outPayment, Interval = Interval.Monthly };
-
-
+                {
+                    p.My.ExpectedValue = carEquityAmt.ToPecuniam();
+                    CarPayment = new Mereo(item, grp) {ExpectedValue = outPayment, Interval = Interval.Monthly};
+                }
             }
             else
             {
@@ -333,9 +365,9 @@ namespace NoFuture.Rand.Domus.Opes
             if (options.IsRenting)
             {
                 options.GivenDirectly.Add(
-                    new Mereo("Home Ownership", AssetGroupNames.REAL_PROPERTY) { ExpectedValue = Pecuniam.Zero });
+                    new Mereo(REAL_PROPERTY_HOME_OWNERSHIP, AssetGroupNames.REAL_PROPERTY) { ExpectedValue = Pecuniam.Zero });
             }
-            options.PossiableZeroOuts.AddRange(new []{ "Time Shares", "Land", "Mineral Right" });
+            options.PossiableZeroOuts.AddRange(new []{ "Time Shares", "Land", "Mineral Rights" });
             var d = GetItemNames2Portions(AssetGroupNames.REAL_PROPERTY, options);
             return d.ToDictionary(t => t.Item1, t => t.Item2);
         }
@@ -366,9 +398,13 @@ namespace NoFuture.Rand.Domus.Opes
             options = (options ?? MyOptions) ?? new OpesOptions();
             options.PossiableZeroOuts.AddRange(new[]
             {
-                "Certificate of Deposit", "Insurance Policies", "Money Market", "Annuity",
-                "Credit Union", "Profit Sharing", "Safe Deposit Box", "Trusts", "Brokerage", "Partnerships",
-                "Fellowships", "Escrow", "Stipends", "Royalties"
+                "Certificate of Deposit", "Insurance Policies",
+                "Money Market", "Annuity",
+                "Credit Union", "Profit Sharing",
+                "Safe Deposit Box", "Trusts",
+                "Brokerage", "Partnerships",
+                "Fellowships", "Escrow",
+                "Stipends", "Royalties"
             });
             var d = GetItemNames2Portions(AssetGroupNames.INSTITUTIONAL, options);
             return d.ToDictionary(t => t.Item1, t => t.Item2);

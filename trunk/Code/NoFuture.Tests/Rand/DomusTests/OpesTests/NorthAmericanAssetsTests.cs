@@ -124,16 +124,29 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             }
         }
 
-
         [TestMethod]
         public void TestResolveItems()
         {
             var testSubject = new NorthAmericanAssets(null, null);
 
-            testSubject.ResolveItems(null);
+            testSubject.ResolveItems(new OpesOptions(){StartDate = new DateTime(DateTime.Today.Year, 1,1)});
 
             Assert.IsNotNull(testSubject.MyItems);
             Assert.AreNotEqual(0, testSubject.MyItems.Count);
+
+            System.Diagnostics.Debug.WriteLine($"CheckingAccountRate {testSubject.CheckingAccountRate}");
+
+            System.Diagnostics.Debug.WriteLine($"SavingsAccountRate {testSubject.SavingsAccountRate}");
+
+            System.Diagnostics.Debug.WriteLine($"HomeEquityRate {testSubject.HomeEquityRate}");
+
+            System.Diagnostics.Debug.WriteLine($"CarEquityRate {testSubject.CarEquityRate}");
+
+            System.Diagnostics.Debug.WriteLine($"HomeDebtRate {testSubject.HomeDebtRate}");
+
+            System.Diagnostics.Debug.WriteLine($"CarDebtRate {testSubject.CarDebtRate}");
+
+            System.Diagnostics.Debug.WriteLine($"CcDebtRate {testSubject.CcDebtRate}");
 
             foreach (var item in testSubject.MyItems)
                 System.Diagnostics.Debug.WriteLine(item);

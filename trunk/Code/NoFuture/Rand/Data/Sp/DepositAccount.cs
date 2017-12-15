@@ -33,7 +33,10 @@ namespace NoFuture.Rand.Data.Sp
 
         public override string ToString()
         {
-            return string.Join(" ", GetType().Name, Bank, Id.ValueLastFour());
+            var s = string.Join(" ", GetType().Name, Bank, Id.ValueLastFour());
+            if (My?.ExpectedValue != null && My.ExpectedValue != Pecuniam.Zero)
+                s = string.Join(" ",s, base.ToString());
+            return s;
         }
 
         public override Pecuniam GetValueAt(DateTime dt)

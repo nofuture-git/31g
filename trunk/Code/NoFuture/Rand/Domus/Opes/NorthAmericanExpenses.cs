@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using NoFuture.Rand.Data.Sp;
 using NoFuture.Rand.Data.Sp.Enums;
 
@@ -80,7 +78,7 @@ namespace NoFuture.Rand.Domus.Opes
                 cloneOptions.EndDate = range.Item2;
                 cloneOptions.Interval = Interval.Annually;
 
-                var items = GetItemsForRange(options);
+                var items = GetItemsForRange(cloneOptions);
                 foreach (var item in items)
                     AddItem(item);
             }

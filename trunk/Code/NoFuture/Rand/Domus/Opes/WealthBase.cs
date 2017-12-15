@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Xml;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
@@ -9,7 +8,6 @@ using NoFuture.Rand.Data;
 using NoFuture.Rand.Data.Endo;
 using NoFuture.Rand.Data.Endo.Enums;
 using NoFuture.Rand.Data.Sp;
-using NoFuture.Rand.Domus.Pneuma;
 using NoFuture.Rand.Gov.Fed;
 using NoFuture.Shared.Core;
 using NoFuture.Util.Core;
@@ -20,7 +18,7 @@ namespace NoFuture.Rand.Domus.Opes
     public abstract class WealthBase
     {
         #region constants
-        public const double DF_STD_DEV_PERCENT = 0.0485D;
+        public const double DF_STD_DEV_PERCENT = 0.0885D;
         protected internal const int DF_ROUND_DECIMAL_PLACES = 5;
         #endregion
 
@@ -843,7 +841,8 @@ namespace NoFuture.Rand.Domus.Opes
             foreach (var item in grpRates.Keys)
             {
                 var p = GetPondusForItemAndGroup(item, grpName, options);
-                p.My.ExpectedValue = CalcValue(options.SumTotal, grpRates[item] * grpRate);
+                if (p.My.ExpectedValue == null || p.My.ExpectedValue == Pecuniam.Zero)
+                    p.My.ExpectedValue = CalcValue(options.SumTotal, grpRates[item] * grpRate);
                 p.My.Interval = options.Interval;
                 itemsout.Add(p);
             }
