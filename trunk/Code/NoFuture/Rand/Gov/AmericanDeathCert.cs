@@ -57,12 +57,12 @@ namespace NoFuture.Rand.Gov
             if (p?.BirthCert == null)
                 return null;
 
-            var deathDate = NAmerUtil.GetDeathDate(p.BirthCert.DateOfBirth, p.MyGender);
+            var deathDate = AmericanUtil.GetDeathDate(p.BirthCert.DateOfBirth, p.MyGender);
 
             if (nullOnFutureDate && deathDate > DateTime.Now)
                 return null;
 
-            var manner = Etx.DiscreteRange(NAmerUtil.Tables.MannerOfDeathAvgs);
+            var manner = Etx.DiscreteRange(AmericanData.MannerOfDeathAvgs);
             return new AmericanDeathCert(manner, p) {DateOfDeath = deathDate};
         }
     }

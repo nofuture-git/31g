@@ -25,7 +25,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
                 IsVehiclePaidOff = true,
                 NumberOfCreditCards = 3,
                 NumberOfVehicles = 2,
-                PossiableZeroOuts = {"abc", "xyz"},
+                PossibleZeroOuts = {"abc", "xyz"},
                 IsRenting = true
             };
 
@@ -49,8 +49,8 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             Assert.AreEqual(testInput.NumberOfVehicles, testResult.NumberOfVehicles);
             Assert.AreEqual(testInput.IsRenting, testResult.IsRenting);
 
-            Assert.IsNotNull(testResult.PossiableZeroOuts);
-            Assert.AreEqual(2, testResult.PossiableZeroOuts.Count);
+            Assert.IsNotNull(testResult.PossibleZeroOuts);
+            Assert.AreEqual(2, testResult.PossibleZeroOuts.Count);
 
             Assert.IsNotNull(testResult.ChildrenAges);
             Assert.AreEqual(2, testResult.ChildrenAges.Count);

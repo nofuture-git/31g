@@ -146,7 +146,7 @@ namespace NoFuture.Rand.Domus.Opes
 
         protected abstract Dictionary<string, Func<OpesOptions, Dictionary<string, double>>> GetItems2Functions();
 
-        protected internal abstract void ResolveItems(OpesOptions options);
+        protected internal abstract void ResolveItems(OpesOptions options = null);
 
         /// <summary>
         /// Calculate a yearly income at random.
@@ -209,7 +209,7 @@ namespace NoFuture.Rand.Domus.Opes
         {
             var ca = _amer?.Address?.HomeCityArea as UsCityStateZip;
             return (ca?.AverageEarnings ?? ca?.State?.GetStateData()?.AverageEarnings) ??
-                   NAmerUtil.Equations.NatlAverageEarnings;
+                   AmericanEquations.NatlAverageEarnings;
         }
 
         protected internal virtual Pondus[] GetCurrent(List<Pondus> items)
@@ -416,7 +416,7 @@ namespace NoFuture.Rand.Domus.Opes
             }
 
             //filter zero out's down, likewise, to only what's actually in itemNames
-            var possibleZeroOuts = options.PossiableZeroOuts.Distinct().ToList();
+            var possibleZeroOuts = options.PossibleZeroOuts.Distinct().ToList();
             possibleZeroOuts = possibleZeroOuts
                 .Where(p => itemNames.Any(i => string.Equals(p, i, STR_OPT))).ToList();
 
@@ -732,7 +732,7 @@ namespace NoFuture.Rand.Domus.Opes
         }
 
         /// <summary>
-        /// Gets a rate, at random, using the <see cref="NAmerUtil.Equations.ClassicHook"/>
+        /// Gets a rate, at random, using the <see cref="AmericanUtil.Equations.ClassicHook"/>
         /// </summary>
         /// <param name="age">
         /// Optional, will use the Person&apos;s Age or the mean age of Americans.
@@ -741,11 +741,11 @@ namespace NoFuture.Rand.Domus.Opes
         protected internal virtual double GetRandomRateFromClassicHook(double? age = null)
         {
             //we want age to have an effect on the randomness
-            var hookEquation = NAmerUtil.Equations.ClassicHook;
+            var hookEquation = AmericanEquations.ClassicHook;
             age = age ?? Person?.Age;
 
             var ageAtDt = age == null || age <= 0 
-                ? NAmerUtil.AVG_AGE_AMERICAN 
+                ? AmericanData.AVG_AGE_AMERICAN 
                 : age.Value;
 
             //some asymetric percentage based on age
@@ -874,13 +874,13 @@ namespace NoFuture.Rand.Domus.Opes
         protected internal double GetRandomEmployeeHealthInsCost(DateTime? atDate)
         {
             var totalCost = GetRandomHealthInsCost(atDate);
-            return totalCost * (1 - NAmerUtil.PERCENT_EMPLY_INS_COST_PAID_BY_EMPLOYER);
+            return totalCost * (1 - AmericanData.PERCENT_EMPLY_INS_COST_PAID_BY_EMPLOYER);
         }
 
         protected internal double GetRandomHealthInsCost(DateTime? atDate)
         {
             var dt = atDate.GetValueOrDefault(DateTime.Now);
-            var mean = NAmerUtil.Equations.HealthInsuranceCostPerPerson.SolveForY(dt.ToDouble());
+            var mean = AmericanEquations.HealthInsuranceCostPerPerson.SolveForY(dt.ToDouble());
             var stdDev = Math.Round(mean * 0.155, 2);
 
             return Etx.RandomValueInNormalDist(mean, stdDev);

@@ -15,7 +15,7 @@ namespace NoFuture.Rand.Tests
         [TestMethod]
         public void TestGetScore()
         {
-            var testInput = new NorthAmerican(NAmerUtil.GetWorkingAdultBirthDate(), Gender.Female);
+            var testInput = new NorthAmerican(AmericanUtil.GetWorkingAdultBirthDate(), Gender.Female);
 
             var testSubject = new Data.Sp.PersonalCreditScore(testInput);
 
@@ -39,7 +39,7 @@ namespace NoFuture.Rand.Tests
         [TestMethod]
         public void TestGetRandomInterestRate()
         {
-            var testInput = new NorthAmerican(NAmerUtil.GetWorkingAdultBirthDate(), Gender.Female);
+            var testInput = new NorthAmerican(AmericanUtil.GetWorkingAdultBirthDate(), Gender.Female);
 
             var testSubject = new Data.Sp.PersonalCreditScore(testInput);
             Debug.WriteLine(testSubject.GetScore(new DateTime(DateTime.Today.Year, 1, 1)));
@@ -52,7 +52,7 @@ namespace NoFuture.Rand.Tests
         [TestMethod]
         public void TestGetRandomMax()
         {
-            var testInput = new NorthAmerican(NAmerUtil.GetWorkingAdultBirthDate(), Gender.Female);
+            var testInput = new NorthAmerican(AmericanUtil.GetWorkingAdultBirthDate(), Gender.Female);
 
             var testSubject = new Data.Sp.PersonalCreditScore(testInput);
             var testResult = testSubject.GetRandomMax(null);

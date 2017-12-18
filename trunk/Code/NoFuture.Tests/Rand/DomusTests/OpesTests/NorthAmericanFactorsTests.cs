@@ -67,7 +67,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             var age = 52;//0.86420
 
             var testResult = NorthAmericanFactors.GetFactor(testFactor, edu, race, region, age, Gender.Male,
-                MaritialStatus.Married);
+                maritalStatus);
 
             var expectedResult = Math.Round((1.16049D + 0.61728D + 0.76515D + 0.8642D)/4, 5);
 

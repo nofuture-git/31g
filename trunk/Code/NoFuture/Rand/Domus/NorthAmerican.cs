@@ -49,21 +49,21 @@ namespace NoFuture.Rand.Domus
             _myGender = myGender;
 
             var fname = _myGender != Gender.Unknown
-                ? NAmerUtil.GetAmericanFirstName(_birthCert.DateOfBirth, _myGender)
+                ? AmericanUtil.GetAmericanFirstName(_birthCert.DateOfBirth, _myGender)
                 : "Pat";
 
             UpsertName(KindsOfNames.First, fname);
-            var lname = NAmerUtil.GetAmericanLastName();
+            var lname = AmericanUtil.GetAmericanLastName();
             UpsertName(KindsOfNames.Surname, lname);
             
-            MiddleName = NAmerUtil.GetAmericanFirstName(_birthCert.DateOfBirth, _myGender);
+            MiddleName = AmericanUtil.GetAmericanFirstName(_birthCert.DateOfBirth, _myGender);
             while (string.Equals(fname, MiddleName, StringComparison.OrdinalIgnoreCase))
             {
-                MiddleName = NAmerUtil.GetAmericanFirstName(_birthCert.DateOfBirth, _myGender);
+                MiddleName = AmericanUtil.GetAmericanFirstName(_birthCert.DateOfBirth, _myGender);
             }
             _ssn = new SocialSecurityNumber();
             if (Race <= 0)
-                Race = Etx.DiscreteRange(NAmerUtil.Tables.NorthAmericanRaceAvgs);
+                Race = Etx.DiscreteRange(AmericanData.NorthAmericanRaceAvgs);
         }
 
         /// <summary>
@@ -95,9 +95,9 @@ namespace NoFuture.Rand.Domus
             if (!isSmallChild)
                 _phoneNumbers.Add(new Tuple<KindsOfLabels, NorthAmericanPhone>(KindsOfLabels.Mobile, Phone.American(abbrv)));
             
-            Race = NAmerUtil.GetAmericanRace(csz?.ZipCode);
+            Race = AmericanUtil.GetAmericanRace(csz?.ZipCode);
             if (Race <= 0)
-                Race = Etx.DiscreteRange(NAmerUtil.Tables.NorthAmericanRaceAvgs);
+                Race = Etx.DiscreteRange(AmericanData.NorthAmericanRaceAvgs);
 
             if (withWholeFamily)
                 ResolveFamilyState();
@@ -336,7 +336,7 @@ namespace NoFuture.Rand.Domus
             if ((ms == MaritialStatus.Married || ms == MaritialStatus.Remarried) && GetSpouseAt(dt).Est is NorthAmerican)
             {
                 var spAtDt = (NorthAmerican) GetSpouseAt(dt).Est;
-                NAmerUtil.SetNAmerCohabitants(spAtDt, this);
+                AmericanUtil.SetNAmerCohabitants(spAtDt, this);
                 underAgeChildren.AddRange(spAtDt.Children.Where(x => isUnderageChild(x)));
             }
             if (underAgeChildren.Count <= 0)
@@ -352,7 +352,7 @@ namespace NoFuture.Rand.Domus
                     continue;
 
                 var livesWith = MyGender == Gender.Male &&
-                                Etx.TryAboveOrAt(NAmerUtil.PERCENT_DIVORCED_CHILDREN_LIVE_WITH_MOTHER+1,
+                                Etx.TryAboveOrAt(AmericanData.PERCENT_DIVORCED_CHILDREN_LIVE_WITH_MOTHER+1,
                                     Etx.Dice.OneHundred)
                     ? namerChild.GetFather()
                     : namerChild.GetMother();
@@ -365,7 +365,7 @@ namespace NoFuture.Rand.Domus
                     namerLivesWith.AddAddress(
                         ResidentAddress.GetRandomAmericanAddr(Address.HomeCityArea.GetPostalCodePrefix()));
 
-                NAmerUtil.SetNAmerCohabitants(namerChild, namerLivesWith);
+                AmericanUtil.SetNAmerCohabitants(namerChild, namerLivesWith);
             }
         }
 
@@ -456,7 +456,7 @@ namespace NoFuture.Rand.Domus
                 ResolveParents();
 
             //resolve spouse to each other
-            ResolveSpouse(NAmerUtil.GetMaritialStatus(_birthCert.DateOfBirth, MyGender));
+            ResolveSpouse(AmericanUtil.GetMaritialStatus(_birthCert.DateOfBirth, MyGender));
             //to solve for childern when gender -eq Male
             ResolveChildren();
             AlignCohabitantsHomeDataAt(dt, GetAddressAt(null));
@@ -476,7 +476,7 @@ namespace NoFuture.Rand.Domus
 
             //create current instance mother
             _mother = _mother ??
-                      NAmerUtil.SolveForParent(_birthCert.DateOfBirth, NAmerUtil.Equations.FemaleAge2FirstMarriage,
+                      AmericanUtil.SolveForParent(_birthCert.DateOfBirth, AmericanEquations.FemaleAge2FirstMarriage,
                           Gender.Female);
             //line mothers last name with child
             UpsertName(KindsOfNames.Surname, _mother.LastName);
@@ -493,7 +493,7 @@ namespace NoFuture.Rand.Domus
                 myMother.GetAddressAt(_birthCert.DateOfBirth)?.HomeCityArea as UsCityStateZip;
 
             //resolve mother's spouse(s)
-            var motherMaritalStatus = NAmerUtil.GetMaritialStatus(_mother.BirthCert.DateOfBirth, Gender.Female);
+            var motherMaritalStatus = AmericanUtil.GetMaritialStatus(_mother.BirthCert.DateOfBirth, Gender.Female);
             myMother.ResolveSpouse(motherMaritalStatus);
             
             //resolve for siblings
@@ -510,7 +510,7 @@ namespace NoFuture.Rand.Domus
                     return;
                 _father =
                     _father ??
-                    NAmerUtil.SolveForParent(_birthCert.DateOfBirth, NAmerUtil.Equations.MaleAge2FirstMarriage,
+                    AmericanUtil.SolveForParent(_birthCert.DateOfBirth, AmericanEquations.MaleAge2FirstMarriage,
                         Gender.Male);
                 return;
             }
@@ -542,11 +542,11 @@ namespace NoFuture.Rand.Domus
 
             ThrowOnBirthDateNull(this);
 
-            var equationDt = NAmerUtil.Equations.ProtectAgainstDistantTimes(_birthCert.DateOfBirth);
+            var equationDt = AmericanEquations.ProtectAgainstDistantTimes(_birthCert.DateOfBirth);
 
             var avgAgeMarriage = MyGender == Gender.Female
-                ? NAmerUtil.Equations.FemaleAge2FirstMarriage.SolveForY(equationDt.ToDouble())
-                : NAmerUtil.Equations.MaleAge2FirstMarriage.SolveForY(equationDt.ToDouble());
+                ? AmericanEquations.FemaleAge2FirstMarriage.SolveForY(equationDt.ToDouble())
+                : AmericanEquations.MaleAge2FirstMarriage.SolveForY(equationDt.ToDouble());
             var currentAge = CalcAge(_birthCert.DateOfBirth, dt);
 
             //all other MaritialStatus imply at least one marriage in past
@@ -554,7 +554,7 @@ namespace NoFuture.Rand.Domus
 
             var marriedOn = Etx.Date(-1*yearsMarried, dt).Date.AddHours(12);
 
-            var spouse = (NorthAmerican)NAmerUtil.SolveForSpouse(_birthCert.DateOfBirth, MyGender);
+            var spouse = (NorthAmerican)AmericanUtil.SolveForSpouse(_birthCert.DateOfBirth, MyGender);
 
             //set death date if widowed
             if (myMaritialStatus == MaritialStatus.Widowed || spouse.DeathCert != null)
@@ -577,7 +577,7 @@ namespace NoFuture.Rand.Domus
             else
             {
                 //take date of marriage and add avg length of marriage
-                var separatedDate = Etx.Date(NAmerUtil.AVG_LENGTH_OF_MARRIAGE, marriedOn);
+                var separatedDate = Etx.Date(AmericanData.AVG_LENGTH_OF_MARRIAGE, marriedOn);
 
                 //reset date-range with separated date
                 AddSpouse(spouse, marriedOn, separatedDate);
@@ -591,10 +591,10 @@ namespace NoFuture.Rand.Domus
                     ageSpread = 10;
 
                 //get a second spouse
-                var secondSpouse = (NorthAmerican)NAmerUtil.SolveForSpouse(_birthCert.DateOfBirth, MyGender, ageSpread);
+                var secondSpouse = (NorthAmerican)AmericanUtil.SolveForSpouse(_birthCert.DateOfBirth, MyGender, ageSpread);
 
                 //random second marriage date
-                var remarriedOn = Etx.Date(Convert.ToInt32(Math.Round(NAmerUtil.YEARS_BEFORE_NEXT_MARRIAGE)),
+                var remarriedOn = Etx.Date(Convert.ToInt32(Math.Round(AmericanData.YEARS_BEFORE_NEXT_MARRIAGE)),
                     separatedDate);
 
                 //add second date-range for resolution of children
@@ -624,12 +624,12 @@ namespace NoFuture.Rand.Domus
             var currentNumChildren = 0;
 
             //two extremes
-            var teenPregEquation = NAmerUtil.Equations.GetProbTeenPregnancyByRace(Race);
+            var teenPregEquation = AmericanEquations.GetProbTeenPregnancyByRace(Race);
             var teenageAge = Etx.IntNumber(15, 19);
             var teenageYear = _birthCert.DateOfBirth.AddYears(teenageAge).Year;
             var propTeenagePreg = teenPregEquation.SolveForY(teenageYear);
 
-            var propLifetimeChildless = NAmerUtil.SolveForProbabilityChildless(_birthCert.DateOfBirth,
+            var propLifetimeChildless = AmericanUtil.SolveForProbabilityChildless(_birthCert.DateOfBirth,
                 Education?.EduFlag ?? OccidentalEdu.None);
 
             //far high-end is no children for whole life
@@ -645,14 +645,14 @@ namespace NoFuture.Rand.Domus
             }
             
             //last is averages
-            var numOfChildren = NAmerUtil.SolveForNumberOfChildren(_birthCert.DateOfBirth, null);
+            var numOfChildren = AmericanUtil.SolveForNumberOfChildren(_birthCert.DateOfBirth, null);
 
             if (numOfChildren <= 0)
                 return;
 
             for (var i = currentNumChildren; i < numOfChildren; i++)
             {
-                var childDob = NAmerUtil.GetChildBirthDate(_birthCert.DateOfBirth, i, null);
+                var childDob = AmericanUtil.GetChildBirthDate(_birthCert.DateOfBirth, i, null);
                 if (childDob == null)
                     continue;
 
@@ -713,7 +713,7 @@ namespace NoFuture.Rand.Domus
             while (_children.Any(x => x.Est.FirstName == nAmerChild.FirstName))
             {
                 nAmerChild.UpsertName(KindsOfNames.First,
-                    NAmerUtil.GetAmericanFirstName(myChildDob, nAmerChild.MyGender));
+                    AmericanUtil.GetAmericanFirstName(myChildDob, nAmerChild.MyGender));
             }
 
             //child has ref to father, father needs ref to child
@@ -726,7 +726,7 @@ namespace NoFuture.Rand.Domus
             //resolve spouse, no grand-children
             if (isChildAdult)
             {
-                nAmerChild.ResolveSpouse(NAmerUtil.GetMaritialStatus(myChildDob, myChildGender));
+                nAmerChild.ResolveSpouse(AmericanUtil.GetMaritialStatus(myChildDob, myChildGender));
                 nAmerChild.AlignCohabitantsHomeDataAt(DateTime.Now, nAmerChild.GetAddressAt(null));
             }
             

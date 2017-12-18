@@ -61,7 +61,7 @@ namespace NoFuture.Rand.Domus.Opes
             };
         }
 
-        protected internal override void ResolveItems(OpesOptions options)
+        protected internal override void ResolveItems(OpesOptions options = null)
         {
             options = options ?? MyOptions;
             var stDt = options.StartDate == DateTime.MinValue ? GetYearNeg(-1) : options.StartDate;
@@ -119,7 +119,7 @@ namespace NoFuture.Rand.Domus.Opes
             {
                 options.GivenDirectly.Add(
                     new Mereo("Rent", ExpenseGroupNames.HOME) { ExpectedValue = Pecuniam.Zero });
-                options.PossiableZeroOuts.Add("Association Fees");
+                options.PossibleZeroOuts.Add("Association Fees");
             }
 
             var d = GetItemNames2Portions(ExpenseGroupNames.HOME, options);
@@ -136,7 +136,7 @@ namespace NoFuture.Rand.Domus.Opes
             options = (options ?? MyOptions) ?? new OpesOptions();
 
             if (options.IsRenting)
-                options.PossiableZeroOuts.AddRange(new[] { "Gas", "Water", "Sewer", "Trash" });
+                options.PossibleZeroOuts.AddRange(new[] { "Gas", "Water", "Sewer", "Trash" });
 
             var d = GetItemNames2Portions(ExpenseGroupNames.UTILITIES, options);
             return d.ToDictionary(t => t.Item1, t => t.Item2);
@@ -152,7 +152,7 @@ namespace NoFuture.Rand.Domus.Opes
         {
             options = (options ?? MyOptions) ?? new OpesOptions();
 
-            options.PossiableZeroOuts.AddRange(new[] { "Parking", "Registration Fees" });
+            options.PossibleZeroOuts.AddRange(new[] { "Parking", "Registration Fees" });
 
             //focus most-of-it on Loan Payments or fuel
             options.DerivativeSlope = -0.33D;
@@ -200,7 +200,7 @@ namespace NoFuture.Rand.Domus.Opes
         {
             options = (options ?? MyOptions) ?? new OpesOptions();
 
-            options.PossiableZeroOuts.AddRange(new[] { "Pet", "Vision",
+            options.PossibleZeroOuts.AddRange(new[] { "Pet", "Vision",
                 "Dental", "Health", "Disability", "Life" });
 
             options.GivenDirectly.Add(
@@ -224,7 +224,7 @@ namespace NoFuture.Rand.Domus.Opes
         {
             options = (options ?? MyOptions) ?? new OpesOptions();
 
-            options.PossiableZeroOuts.AddRange(new[] { "Dues", "Subscriptions",
+            options.PossibleZeroOuts.AddRange(new[] { "Dues", "Subscriptions",
                 "Gifts", "Vice", "Clothing" });
             var d = GetItemNames2Portions(ExpenseGroupNames.PERSONAL, options);
             return d.ToDictionary(t => t.Item1, t => t.Item2);
@@ -240,7 +240,7 @@ namespace NoFuture.Rand.Domus.Opes
             options = (options ?? MyOptions) ?? new OpesOptions();
 
             //when children are young we want to reflect that
-            if (MyOptions.HasChildren && MyOptions.ChildrenAges.All(x => x < NAmerUtil.AVG_AGE_CHILD_ENTER_SCHOOL))
+            if (MyOptions.HasChildren && MyOptions.ChildrenAges.All(x => x < AmericanData.AVG_AGE_CHILD_ENTER_SCHOOL))
             {
                 options.GivenDirectly.Add(
                     new Mereo("Transportation", ExpenseGroupNames.CHILDREN) { ExpectedValue = Pecuniam.Zero });
@@ -257,7 +257,7 @@ namespace NoFuture.Rand.Domus.Opes
             }
             else
             {
-                options.PossiableZeroOuts.AddRange(new[]{"Lunch Money",
+                options.PossibleZeroOuts.AddRange(new[]{"Lunch Money",
                     "Extracurricular", "Camp", "Transportation", "Allowance"});
             }
 
@@ -274,7 +274,7 @@ namespace NoFuture.Rand.Domus.Opes
         {
             options = (options ?? MyOptions) ?? new OpesOptions();
 
-            options.PossiableZeroOuts.AddRange(new[] { "Health Care", "Other Consumer", "Student", "Tax", "Other" });
+            options.PossibleZeroOuts.AddRange(new[] { "Health Care", "Other Consumer", "Student", "Tax", "Other" });
             var d = GetItemNames2Portions(ExpenseGroupNames.DEBT, options);
             return d.ToDictionary(t => t.Item1, t => t.Item2);
         }
@@ -288,7 +288,7 @@ namespace NoFuture.Rand.Domus.Opes
         {
             options = (options ?? MyOptions) ?? new OpesOptions();
 
-            options.PossiableZeroOuts.AddRange(new[] { "Therapy", "Hospital",
+            options.PossibleZeroOuts.AddRange(new[] { "Therapy", "Hospital",
                 "Optical", "Dental", "Physician", "Supplements" });
             var d = GetItemNames2Portions(ExpenseGroupNames.HEALTH, options);
             return d.ToDictionary(t => t.Item1, t => t.Item2);

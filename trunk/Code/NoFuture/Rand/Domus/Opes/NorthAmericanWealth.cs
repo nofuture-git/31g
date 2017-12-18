@@ -489,7 +489,7 @@ namespace NoFuture.Rand.Domus.Opes
             throw new NotImplementedException();
         }
 
-        protected internal override void ResolveItems(OpesOptions options)
+        protected internal override void ResolveItems(OpesOptions options = null)
         {
             throw new NotImplementedException();
         }

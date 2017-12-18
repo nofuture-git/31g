@@ -62,7 +62,7 @@ namespace NoFuture.Rand.Domus.Opes
             };
         }
 
-        protected internal override void ResolveItems(OpesOptions options)
+        protected internal override void ResolveItems(OpesOptions options = null)
         {
             options = options ?? MyOptions;
 
@@ -86,6 +86,8 @@ namespace NoFuture.Rand.Domus.Opes
 
         public override List<Tuple<string, double>> GetGroupNames2Portions(OpesOptions options)
         {
+            options = options ?? MyOptions;
+            //deductions act differently than other items since they are calculated from income
             var grps = new List<Tuple<string, double>>
             {
                 new Tuple<string, double>(DeductionGroupNames.INSURANCE, 1),
@@ -93,12 +95,13 @@ namespace NoFuture.Rand.Domus.Opes
                 new Tuple<string, double>(DeductionGroupNames.GOVERNMENT, 1),
             };
 
-            if (options.GivenDirectly.All(x => !string.Equals(x.GetName(KindsOfNames.Group),
-                DeductionGroupNames.JUDGMENTS, StringComparison.OrdinalIgnoreCase)))
-            {
-                //TODO - enhance OpesOptions to pass this down
-                grps.Add(new Tuple<string, double>(DeductionGroupNames.JUDGMENTS, 0));
-            }
+            var assignedJudgementsDirectly = options.GivenDirectly.Any(x => x.AnyOfNameAs(DeductionGroupNames.JUDGMENTS) ||
+                x.AnyOfKindAndValue(KindsOfNames.Group, DeductionGroupNames.JUDGMENTS));
+
+            var optionsIncludeJudgement = options.IsPayingChildSupport || options.IsPayingSpousalSupport;
+
+            var judgements = assignedJudgementsDirectly || optionsIncludeJudgement ? 1 : 0;
+            grps.Add(new Tuple<string, double>(DeductionGroupNames.JUDGMENTS, judgements));
 
             return grps;
         }
@@ -107,7 +110,7 @@ namespace NoFuture.Rand.Domus.Opes
         {
             options = options ?? MyOptions;
 
-            options.PossiableZeroOuts.AddRange(new[]
+            options.PossibleZeroOuts.AddRange(new[]
             {
                 "Life", "Supplemental Life", "Dependent Life", "Accidental Death & Dismemberment",
                 "Short-term Disability", "Long-term Disability"
@@ -166,16 +169,15 @@ namespace NoFuture.Rand.Domus.Opes
                     .ToDictionary(t => t.Item1, t => t.Item2);
             }
 
-            var pPay = Pondus.GetExpectedAnnualSum(_employment.GetPayAt(options.StartDate)) ?? Pecuniam.Zero;
-            var pay = pPay == Pecuniam.Zero ? GetRandomYearlyIncome(options.StartDate).ToDouble() : pPay.ToDouble();
+            var pay = GetPay(options);
 
-            var fedTaxRate = NAmerUtil.Equations.FederalIncomeTaxRate.SolveForY(pay);
+            var fedTaxRate = AmericanEquations.FederalIncomeTaxRate.SolveForY(pay);
             var stateTaxRate = GetRandomValueFrom(fedTaxRate, 5);
 
             var fedTaxAmt = pay * fedTaxRate;
             var stateTaxAmt = pay * stateTaxRate;
-            var ficaTaxAmt = pay * NAmerUtil.FICA_DEDUCTION_TAX_RATE;
-            var medicareTaxAmt = pay * NAmerUtil.MEDICARE_DEDUCTION_TAX_RATE;
+            var ficaTaxAmt = pay * AmericanData.FICA_DEDUCTION_TAX_RATE;
+            var medicareTaxAmt = pay * AmericanData.MEDICARE_DEDUCTION_TAX_RATE;
 
             options.GivenDirectly.Add(
                 new Mereo("Federal tax", DeductionGroupNames.INSURANCE)
@@ -210,7 +212,7 @@ namespace NoFuture.Rand.Domus.Opes
         {
             options = options ?? MyOptions;
 
-            options.PossiableZeroOuts.AddRange(new[]
+            options.PossibleZeroOuts.AddRange(new[]
             {
                 "Profit Sharing", "Pension", "Health Savings Account", "Credit Union Loan", "Flexible Spending Account"
             });
@@ -222,8 +224,7 @@ namespace NoFuture.Rand.Domus.Opes
                     .ToDictionary(t => t.Item1, t => t.Item2);
             }
 
-            var pPay = Pondus.GetExpectedAnnualSum(_employment.GetPayAt(options.StartDate)) ?? Pecuniam.Zero;
-            var pay = pPay == Pecuniam.Zero ? GetRandomYearlyIncome(options.StartDate).ToDouble() : pPay.ToDouble();
+            var pay = GetPay(options);
 
             var retirementRate = Etx.DiscreteRange(new[] {0.01D, 0.02D, 0.03D, 0.04D, 0.05D});
             var retirementAmt = pay * retirementRate;
@@ -264,6 +265,15 @@ namespace NoFuture.Rand.Domus.Opes
             var d = GetItemNames2Portions(DeductionGroupNames.JUDGMENTS, tOptions);
 
             return d.ToDictionary(t => t.Item1, t => t.Item2);
+        }
+
+        private double GetPay(OpesOptions options)
+        {
+            options = options ?? MyOptions;
+
+            var pPay = Pondus.GetExpectedAnnualSum(_employment.GetPayAt(options.StartDate)) ?? Pecuniam.Zero;
+            var pay = pPay == Pecuniam.Zero ? GetRandomYearlyIncome(options.StartDate).ToDouble() : pPay.ToDouble();
+            return pay;
         }
         #endregion
     }

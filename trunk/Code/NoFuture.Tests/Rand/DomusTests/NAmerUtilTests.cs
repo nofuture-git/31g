@@ -62,13 +62,13 @@ namespace NoFuture.Rand.Tests
         public void TestSolvePercentHsGradByStateAndRace()
         {
             //test resolves to simple natl average given no input
-            var testResult = NAmerUtil.SolvePercentGradByStateAndRace(null, null);
+            var testResult = AmericanUtil.SolvePercentGradByStateAndRace(null, null);
 
             //test resolves to natl avg's when no state
             Assert.AreEqual(82.0, testResult);
-            testResult = NAmerUtil.SolvePercentGradByStateAndRace(null, NorthAmericanRace.Mixed);
+            testResult = AmericanUtil.SolvePercentGradByStateAndRace(null, NorthAmericanRace.Mixed);
             Assert.AreEqual(82.0, testResult);
-            testResult = NAmerUtil.SolvePercentGradByStateAndRace(null, NorthAmericanRace.AmericanIndian);
+            testResult = AmericanUtil.SolvePercentGradByStateAndRace(null, NorthAmericanRace.AmericanIndian);
             Assert.AreEqual(70.0, testResult);
 
             var testState = NoFuture.Rand.Gov.UsState.GetStateByPostalCode("CA");
@@ -78,19 +78,19 @@ namespace NoFuture.Rand.Tests
             //percent-highschool-grad="80.6"
             //asian="89.0" natl-percent="82.0"
             // 89 - 82 = 7
-            testResult = NAmerUtil.SolvePercentGradByStateAndRace(testState, NorthAmericanRace.Asian);
+            testResult = AmericanUtil.SolvePercentGradByStateAndRace(testState, NorthAmericanRace.Asian);
             Assert.AreEqual(87.6, testResult);
 
             //american-indian="70.0"
             // 70 - 82 = -12
-            testResult = NAmerUtil.SolvePercentGradByStateAndRace(testState, NorthAmericanRace.AmericanIndian);
+            testResult = AmericanUtil.SolvePercentGradByStateAndRace(testState, NorthAmericanRace.AmericanIndian);
             Assert.AreEqual(68.6, testResult);
 
             testState = NoFuture.Rand.Gov.UsState.GetStateByPostalCode("ID");
             Assert.IsNotNull(testState);
             Assert.IsNotNull(testState.GetStateData());
 
-            testResult = NAmerUtil.SolvePercentGradByStateAndRace(testState, NorthAmericanRace.Asian, OccidentalEdu.Bachelor | OccidentalEdu.Grad);
+            testResult = AmericanUtil.SolvePercentGradByStateAndRace(testState, NorthAmericanRace.Asian, OccidentalEdu.Bachelor | OccidentalEdu.Grad);
             //percent-college-grad="23.9"
             //
             //asian="54.0" natl-percent="30.0"
@@ -101,7 +101,7 @@ namespace NoFuture.Rand.Tests
         [TestMethod]
         public void TestHealthInsuranceCostPerPerson()
         {
-            var testSubject = NoFuture.Rand.Domus.NAmerUtil.Equations.HealthInsuranceCostPerPerson;
+            var testSubject = AmericanEquations.HealthInsuranceCostPerPerson;
             var testResult = testSubject.SolveForY(2015);
             Assert.AreEqual(10084.6675, testResult);
             System.Diagnostics.Debug.WriteLine(testSubject);
@@ -110,7 +110,7 @@ namespace NoFuture.Rand.Tests
         [TestMethod]
         public void TestFederalIncomeTaxRate()
         {
-            var testSubject = NoFuture.Rand.Domus.NAmerUtil.Equations.FederalIncomeTaxRate;
+            var testSubject = AmericanEquations.FederalIncomeTaxRate;
             var testResult = testSubject.SolveForY(115725D);
             Assert.AreEqual(0.27075D, testResult);
             System.Diagnostics.Debug.WriteLine(testSubject);

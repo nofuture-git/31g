@@ -64,12 +64,12 @@ namespace NoFuture.Rand.Domus
             if (amer != null && amer.Age < DF_MIN_AGE_ENTER_HS)
                 return;
 
-            var dob = amer?.BirthCert?.DateOfBirth ?? NAmerUtil.GetWorkingAdultBirthDate();
+            var dob = amer?.BirthCert?.DateOfBirth ?? AmericanUtil.GetWorkingAdultBirthDate();
 
             //determine where amer lived when they were 18
             var mother = amer?.BirthCert == null
-                ? NAmerUtil.SolveForParent(dob,
-                    NAmerUtil.Equations.FemaleAge2FirstMarriage,
+                ? AmericanUtil.SolveForParent(dob,
+                    AmericanEquations.FemaleAge2FirstMarriage,
                     Gender.Female) as NorthAmerican
                 : amer.GetMother() as NorthAmerican;
 
@@ -184,7 +184,7 @@ namespace NoFuture.Rand.Domus
             }
 
             //get a date of when amer would be grad'ing from hs
-            hsGradDt = GetRandomGraduationDate(dtAtAge18.AddYears(-4), NAmerUtil.Equations.YearsInHighSchool, true);
+            hsGradDt = GetRandomGraduationDate(dtAtAge18.AddYears(-4), AmericanEquations.YearsInHighSchool, true);
 
             //assign grad hs with grad date
             _highSchools.Add(new AmericanHighSchoolStudent(hs) {Graduation = hsGradDt});
@@ -235,7 +235,7 @@ namespace NoFuture.Rand.Domus
 
             //college grad
             //get a date for when amer would grad from college
-            var univGradDt = GetRandomGraduationDate(hsGradDt.Value, NAmerUtil.Equations.YearsInUndergradCollege);
+            var univGradDt = GetRandomGraduationDate(hsGradDt.Value, AmericanEquations.YearsInUndergradCollege);
 
             AddUniversity(univ, univGradDt);
 
@@ -245,7 +245,7 @@ namespace NoFuture.Rand.Domus
 
             if (Etx.TryBelowOrAt((int)postGradRate * 10, Etx.Dice.OneThousand))
             {
-                var postGradDt = GetRandomGraduationDate(univGradDt, NAmerUtil.Equations.YearsInPostgradCollege);
+                var postGradDt = GetRandomGraduationDate(univGradDt, AmericanEquations.YearsInPostgradCollege);
                 var postGradUniv = GetAmericanUniversity(homeState);
 
                 AddUniversity(postGradUniv, postGradDt);
@@ -298,8 +298,8 @@ namespace NoFuture.Rand.Domus
     
                 //consider doctorate as right-side second sigma of postgrad years
                 isDocGrad = numYearsPostGrad >
-                                NAmerUtil.Equations.YearsInPostgradCollege.Mean +
-                                NAmerUtil.Equations.YearsInPostgradCollege.StdDev;
+                            AmericanEquations.YearsInPostgradCollege.Mean +
+                            AmericanEquations.YearsInPostgradCollege.StdDev;
             }
 
             //assign flag and name based on the above

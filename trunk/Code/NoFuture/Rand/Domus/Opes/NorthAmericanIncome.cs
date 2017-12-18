@@ -123,7 +123,7 @@ namespace NoFuture.Rand.Domus.Opes
             };
         }
 
-        protected internal override void ResolveItems(OpesOptions options)
+        protected internal override void ResolveItems(OpesOptions options = null)
         {
             options = options ?? MyOptions;
 
@@ -175,7 +175,7 @@ namespace NoFuture.Rand.Domus.Opes
         protected internal Dictionary<string, double> GetSubitoIncomeNames2RandomRates(OpesOptions options)
         {
             options = (options ?? MyOptions) ?? new OpesOptions();
-            options.PossiableZeroOuts.AddRange(new[] { "Lottery Winnings", "Gambling Winnings", "Gifts" });
+            options.PossibleZeroOuts.AddRange(new[] { "Lottery Winnings", "Gambling Winnings", "Gifts" });
             var d = GetItemNames2Portions(IncomeGroupNames.SUBITO, options);
             return d.ToDictionary(t => t.Item1, t => t.Item2);
         }
@@ -190,7 +190,7 @@ namespace NoFuture.Rand.Domus.Opes
         protected internal Dictionary<string, double> GetSecuritiesIncomeNames2RandomRates(OpesOptions options)
         {
             options = (options ?? MyOptions) ?? new OpesOptions();
-            options.PossiableZeroOuts.AddRange(new []{ "Derivatives" });
+            options.PossibleZeroOuts.AddRange(new []{ "Derivatives" });
             var d = GetItemNames2Portions(IncomeGroupNames.SECURITIES, options);
             return d.ToDictionary(t => t.Item1, t => t.Item2);
         }
@@ -198,7 +198,7 @@ namespace NoFuture.Rand.Domus.Opes
         protected internal Dictionary<string, double> GetInstitutionalIncomeNames2RandomRates(OpesOptions options)
         {
             options = (options ?? MyOptions) ?? new OpesOptions();
-            options.PossiableZeroOuts.AddRange(new[]
+            options.PossibleZeroOuts.AddRange(new[]
             {
                 "Royalties", "Stipends", "Fellowships", "Partnerships",
                 "Trusts", "Money Market", "Profit Sharing", "Annuity",
@@ -295,7 +295,7 @@ namespace NoFuture.Rand.Domus.Opes
             var dt = options.StartDate;
             var numHouseholdMembers = options.TotalNumberOfHouseholdMembers;
             numHouseholdMembers = numHouseholdMembers <= 0 ? 1 : numHouseholdMembers;
-            var povertyLevel = NAmerUtil.Equations.GetFederalPovertyLevel(dt);
+            var povertyLevel = AmericanEquations.GetFederalPovertyLevel(dt);
 
             var payAtDt = GetEmploymentAt(dt);
             if(payAtDt == null || !payAtDt.Any())
@@ -396,7 +396,7 @@ namespace NoFuture.Rand.Domus.Opes
 
             age = age ?? Person?.GetAgeAt(dt);
 
-            var ageAtDt = age == null || age <= 0 ? NAmerUtil.AVG_AGE_AMERICAN : age.Value;
+            var ageAtDt = age == null || age <= 0 ? AmericanData.AVG_AGE_AMERICAN : age.Value;
 
             //get something randome near this value
             var randRate = GetRandomRateFromClassicHook(ageAtDt);

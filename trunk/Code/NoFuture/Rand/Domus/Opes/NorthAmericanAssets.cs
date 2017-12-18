@@ -158,7 +158,7 @@ namespace NoFuture.Rand.Domus.Opes
             };
         }
 
-        protected internal override void ResolveItems(OpesOptions options)
+        protected internal override void ResolveItems(OpesOptions options = null)
         {
             options = options ?? MyOptions;
             var stDt = options.StartDate == DateTime.MinValue ? GetYearNeg(-1) : options.StartDate;
@@ -367,7 +367,7 @@ namespace NoFuture.Rand.Domus.Opes
                 options.GivenDirectly.Add(
                     new Mereo(REAL_PROPERTY_HOME_OWNERSHIP, AssetGroupNames.REAL_PROPERTY) { ExpectedValue = Pecuniam.Zero });
             }
-            options.PossiableZeroOuts.AddRange(new []{ "Time Shares", "Land", "Mineral Rights" });
+            options.PossibleZeroOuts.AddRange(new []{ "Time Shares", "Land", "Mineral Rights" });
             var d = GetItemNames2Portions(AssetGroupNames.REAL_PROPERTY, options);
             return d.ToDictionary(t => t.Item1, t => t.Item2);
         }
@@ -375,7 +375,7 @@ namespace NoFuture.Rand.Domus.Opes
         protected internal virtual Dictionary<string, double> GetPersonalPropertyAssetNames2Rates(OpesOptions options)
         {
             options = (options ?? MyOptions) ?? new OpesOptions();
-            options.PossiableZeroOuts.AddRange(new[] { "Art", "Firearms", "Collections", "Antiques" });
+            options.PossibleZeroOuts.AddRange(new[] { "Art", "Firearms", "Collections", "Antiques" });
 
             //remove these for everyone except those who are way out in the country
             var livesInCountry = Person?.Address?.HomeCityArea is UsCityStateZip usCityState &&
@@ -396,7 +396,7 @@ namespace NoFuture.Rand.Domus.Opes
         protected internal Dictionary<string, double> GetInstitutionalAssetName2Rates(OpesOptions options)
         {
             options = (options ?? MyOptions) ?? new OpesOptions();
-            options.PossiableZeroOuts.AddRange(new[]
+            options.PossibleZeroOuts.AddRange(new[]
             {
                 "Certificate of Deposit", "Insurance Policies",
                 "Money Market", "Annuity",
@@ -414,7 +414,7 @@ namespace NoFuture.Rand.Domus.Opes
         {
             options = (options ?? MyOptions) ?? new OpesOptions();
             var tOptions = options.GetClone();
-            tOptions.PossiableZeroOuts.AddRange(new[] { "Derivatives" });
+            tOptions.PossibleZeroOuts.AddRange(new[] { "Derivatives" });
             var d = GetItemNames2Portions(AssetGroupNames.SECURITIES, tOptions);
             return d.ToDictionary(t => t.Item1, t => t.Item2);
         }

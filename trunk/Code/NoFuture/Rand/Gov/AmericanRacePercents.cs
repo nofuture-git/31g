@@ -60,7 +60,7 @@ namespace NoFuture.Rand.Gov
 
         public static Dictionary<string, double> GetNatlAvgAsDict()
         {
-            var tbl = NAmerUtil.Tables.NorthAmericanRaceAvgs;
+            var tbl = AmericanData.NorthAmericanRaceAvgs;
             return tbl.ToDictionary(k => k.Key.ToString(), k => tbl[k.Key]);
         }
     }

@@ -1,0 +1,240 @@
+﻿using System;
+using NoFuture.Rand.Core;
+using NoFuture.Rand.Data.Endo.Enums;
+using NoFuture.Util.Core;
+using NoFuture.Util.Core.Math;
+
+namespace NoFuture.Rand.Domus
+{
+
+    /// <summary>
+    /// Marriage Source [https://www.census.gov/population/socdemo/hh-fam/ms2.xls] (1947-2011)
+    /// Age of Birth Sources (1970-2014)
+    /// [http://www.cdc.gov/nchs/data/nvsr/nvsr51/nvsr51_01.pdf] (Table 1.) 
+    /// [http://www.cdc.gov/nchs/data/nvsr/nvsr64/nvsr64_12_tables.pdf] (Table I-1.)
+    /// </summary>
+    /// <remarks>
+    /// FemaleAge2*Child have had thier intercepts up'ed by 4.  The real data produces 
+    /// a condition where first born's are always before marriage.
+    /// Any <see cref="RLinearEquation"/> have a random Standard Dev between 0 and 1.0
+    /// </remarks>
+    public static class AmericanEquations
+    {
+
+        internal const int MIN_DOB_YEAR = 1914;
+        internal const int MAX_DOB_YEAR = 2055;
+
+        /// <summary>
+        /// The linear regressions are for the second half of 20th century and cannot 
+        /// be applied to date ranges beyond <see cref="MIN_DOB_YEAR"/> and <see cref="MAX_DOB_YEAR"/>
+        /// </summary>
+        /// <param name="dob"></param>
+        /// <returns></returns>
+        internal static DateTime ProtectAgainstDistantTimes(DateTime dob)
+        {
+            if (dob.Year < MIN_DOB_YEAR)
+                return new DateTime(MIN_DOB_YEAR, dob.Month, dob.Day);
+            if (dob.Year > MAX_DOB_YEAR)
+                return new DateTime(MAX_DOB_YEAR, dob.Month, dob.Day);
+            return dob;
+        }
+
+        /// <summary>
+        /// SolveForY using partial year value (e.g. 12/14/1979 is 1979.952791508)
+        /// </summary>
+        public static RLinearEquation MaleAge2FirstMarriage = new RLinearEquation
+        {
+            Intercept = -181.45,
+            Slope = 0.1056,
+            StdDev = Etx.RationalNumber(0, 1)
+        };
+
+        /// <summary>
+        /// SolveForY using partial year value (e.g. 6/15/1979 is 1979.45449250094)
+        /// </summary>
+        public static RLinearEquation FemaleAge2FirstMarriage = new RLinearEquation
+        {
+            Intercept = -209.41,
+            Slope = 0.1187,
+            StdDev = Etx.RationalNumber(0, 1)
+        };
+
+        /// <summary>
+        /// SolveForY using partial year value (e.g. 11/14/1989 is 1989.87065430903)
+        /// </summary>
+        public static RLinearEquation FemaleAge2FirstChild = new RLinearEquation
+        {
+            Intercept = -176.32,//-180.32
+            Slope = 0.1026,
+            StdDev = Etx.RationalNumber(0, 1)
+        };
+
+        /// <summary>
+        /// SolveForY using partial year value (e.g. 11/14/1989 is 1989.87065430903)
+        /// </summary>
+        public static RLinearEquation FemaleAge2SecondChild = new RLinearEquation
+        {
+            Intercept = -171.88,//-175.88
+            Slope = 0.1017,
+            StdDev = Etx.RationalNumber(0, 1)
+        };
+
+        /// <summary>
+        /// SolveForY using partial year value (e.g. 11/14/1989 is 1989.87065430903)
+        /// </summary>
+        public static RLinearEquation FemaleAge2ThirdChild = new RLinearEquation
+        {
+            Intercept = -125.45,//-129.45
+            Slope = 0.0792,
+            StdDev = Etx.RationalNumber(0, 1)
+        };
+
+        /// <summary>
+        /// SolveForY using partial year value (e.g. 11/14/1989 is 1989.87065430903)
+        /// </summary>
+        public static RLinearEquation FemaleAge2ForthChild = new RLinearEquation
+        {
+            Intercept = -74.855,//-78.855
+            Slope = 0.0545,
+            StdDev = Etx.RationalNumber(0, 1)
+        };
+
+        /// <summary>
+        /// Has no stat validity - just a guess
+        /// </summary>
+        public static ExponentialEquation Age2ProbWidowed = new ExponentialEquation
+        {
+            ConstantValue = Math.Pow(10, -13),
+            Power = 6.547
+        };
+
+        /// <summary>
+        /// https://en.wikipedia.org/wiki/Childfree#Statistics_and_research
+        /// </summary>
+        public static NaturalLogEquation FemaleYob2ProbChildless = new NaturalLogEquation
+        {
+            Intercept = -55.479,
+            Slope = 7.336
+        };
+
+        /// <summary>
+        /// Calculated as (&apos;National Health Expenditures (Amount in Billions)&apos; * 1000) / &apos;U.S. Population (Millions)) per year
+        /// https://www.cms.gov/Research-Statistics-Data-and-Systems/Statistics-Trends-and-Reports/NationalHealthExpendData/Downloads/NHEGDP15.zip
+        /// </summary>
+        public static SecondDegreePolynomial HealthInsuranceCostPerPerson = new SecondDegreePolynomial
+        {
+            SecondCoefficient = 3.8555,
+            Slope = -15145.0D,
+            Intercept = 14873062.18D
+        };
+
+        /// <summary>
+        /// https://www.irs.com/articles/2016-federal-tax-rates-personal-exemptions-and-standard-deductions
+        /// </summary>
+        public static SecondDegreePolynomial FederalIncomeTaxRate = new SecondDegreePolynomial
+        {
+            SecondCoefficient = -0.000000000004D,
+            Slope = 0.0000021,
+            Intercept = 0.0813D
+        };
+
+        /// <summary>
+        /// [http://www.hhs.gov/ash/oah/adolescent-health-topics/reproductive-health/teen-pregnancy/trends.html]
+        /// </summary>
+        /// <param name="race"></param>
+        /// <returns></returns>
+        public static RLinearEquation GetProbTeenPregnancyByRace(NorthAmericanRace race)
+        {
+            switch (race)
+            {
+                case NorthAmericanRace.Black:
+                    return new RLinearEquation
+                    {
+                        Intercept = 6.8045,
+                        Slope = -0.0034,
+                    };
+                case NorthAmericanRace.Hispanic:
+                    return new RLinearEquation
+                    {
+                        Intercept = 5.1231,
+                        Slope = -0.0025,
+                    };
+            }
+            return new RLinearEquation
+            {
+                Intercept = 2.1241,
+                Slope = -0.001,
+            };
+        }
+
+        /// <summary>
+        /// Means are <see cref="AVG_MAX_AGE_MALE"/> and <see cref="AVG_MAX_AGE_FEMALE"/>
+        /// StdDev are <see cref="STD_DEV_MALE_LIFE_EXPECTANCY"/> and <see cref="STD_DEV_FEMALE_LIFE_EXPECTANCY"/>
+        /// </summary>
+        /// <param name="mf"></param>
+        /// <returns></returns>
+        public static NormalDistEquation LifeExpectancy(Gender mf)
+        {
+            return mf == Gender.Male
+                ? new NormalDistEquation { Mean = AmericanData.AVG_MAX_AGE_MALE, StdDev = AmericanData.STD_DEV_MALE_LIFE_EXPECTANCY }
+                : new NormalDistEquation { Mean = AmericanData.AVG_MAX_AGE_FEMALE, StdDev = AmericanData.STD_DEV_FEMALE_LIFE_EXPECTANCY };
+        }
+
+        /// <summary>
+        /// Common knowledge values of 4 years in high school
+        /// </summary>
+        public static NormalDistEquation YearsInHighSchool = new NormalDistEquation { Mean = 4, StdDev = 0.25 };
+
+        /// <summary>
+        /// [https://nscresearchcenter.org/signaturereport11/] has weighted average where Mean is 5.469 and StdDev is 0.5145
+        /// however, these are current 21st century values not the averages for all post-war years.
+        /// </summary>
+        public static NormalDistEquation YearsInUndergradCollege = new NormalDistEquation { Mean = 4.469, StdDev = 0.5145 };
+
+        /// <summary>
+        /// Can't seem to find a straight answer on this cause post-grad can mean alot of different things
+        /// </summary>
+        public static NormalDistEquation YearsInPostgradCollege = new NormalDistEquation { Mean = 3.913, StdDev = 0.378 };
+
+        /// <summary>
+        /// TODO, this is the value for OH, need to get an averages for all data
+        /// </summary>
+        public static LinearEquation NatlAverageEarnings = new LinearEquation(-2046735.65519574, 1042.04539007091);
+
+        /// <summary>
+        /// This is an attempt to have a way to calculate the federal poverty level over a range of years.
+        /// The returned equation is solved-for-Y by number of members in the household.
+        /// https://aspe.hhs.gov/poverty-guidelines
+        /// </summary>
+        /// <param name="atDate"></param>
+        /// <returns></returns>
+        public static LinearEquation GetFederalPovertyLevel(DateTime? atDate)
+        {
+            var dt = atDate.GetValueOrDefault(DateTime.Today);
+            var estSlope =
+                new SecondDegreePolynomial { Intercept = 3532449.338, Slope = -3610.7, SecondCoefficient = 0.9229 }
+                .SolveForY(dt.ToDouble());
+
+            return new LinearEquation(7880, estSlope);
+        }
+
+        public static IEquation GetChildSupportEquation(DateTime? atDate, int numberOfChildren)
+        {
+            throw new NotImplementedException();
+
+        }
+
+        /// <summary>
+        /// This is an assumed graph for the age of an american.
+        /// Its asymetric where age 44 is 0.0, age 21 is 0.14 but 
+        /// age 67 (being likewise 23 years difference from 44) is 0.36 - reaches 1.0 at 80
+        /// </summary>
+        public static ThirdDegreePolynomial ClassicHook = new ThirdDegreePolynomial
+        {
+            Intercept = 0.205625,
+            Slope = 0.005986,
+            SecondCoefficient = -0.0005986,
+            ThirdCoefficient = 0.0000081
+        };
+    }
+}

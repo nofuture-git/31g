@@ -53,9 +53,9 @@ namespace NoFuture.Rand.Data.Sp
         /// <summary>
         /// The average estimated rate at which the 
         /// value of the real-estate is 
-        /// expected to grow (default is <see cref="NAmerUtil.AVG_GDP_GROWTH_RATE"/>).
+        /// expected to grow (default is <see cref="AmericanData.AVG_GDP_GROWTH_RATE"/>).
         /// </summary>
-        public double ExpectedAppreciationRate { get; set; } = NAmerUtil.AVG_GDP_GROWTH_RATE;
+        public double ExpectedAppreciationRate { get; set; } = AmericanData.AVG_GDP_GROWTH_RATE;
 
         /// <summary>
         /// The monthly mortgage payment.

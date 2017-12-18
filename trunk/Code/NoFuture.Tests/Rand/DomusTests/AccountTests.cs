@@ -15,7 +15,7 @@ namespace NoFuture.Rand.Tests.DomusTests
         [TestMethod]
         public void TestGetRandomBankAccount()
         {
-            var p = new NorthAmerican(NAmerUtil.GetWorkingAdultBirthDate(), Gender.Female);
+            var p = new NorthAmerican(AmericanUtil.GetWorkingAdultBirthDate(), Gender.Female);
             var testResult = CheckingAccount.GetRandomCheckingAcct(p);
 
             Assert.IsNotNull(testResult);
@@ -39,7 +39,7 @@ namespace NoFuture.Rand.Tests.DomusTests
         {
             var testSubject = new CheckingAccount(null, DateTime.Today.AddDays(-65),
                 new Tuple<ICreditCard, string>(
-                    CreditCard.GetRandomCreditCard(new NorthAmerican(NAmerUtil.GetWorkingAdultBirthDate(), Gender.Female)),
+                    CreditCard.GetRandomCreditCard(new NorthAmerican(AmericanUtil.GetWorkingAdultBirthDate(), Gender.Female)),
                     "8745"));
 
             Assert.IsTrue(testSubject.IsPin("8745"));

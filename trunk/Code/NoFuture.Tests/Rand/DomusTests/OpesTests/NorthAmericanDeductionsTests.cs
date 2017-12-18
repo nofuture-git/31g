@@ -145,5 +145,102 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             foreach (var p in testSubject.MyItems)
                 System.Diagnostics.Debug.WriteLine(p);
         }
+
+        [TestMethod]
+        public void TestDeductionsRatioToIncome()
+        {
+            var testInput = new NorthAmericanEmployment(DateTime.Today.AddYears(-1), null);
+            var annualIncome = 75000.ToPecuniam();
+
+            var options = new OpesOptions {SumTotal = annualIncome};
+
+            testInput.ResolveItems(options);
+
+            //check input is good
+            Assert.IsNotNull(testInput.MyItems);
+            Assert.AreNotEqual(0, testInput.MyItems.Count);
+
+            var diff = Math.Abs(testInput.TotalAnnualPay.ToDouble() - annualIncome.ToDouble());
+            System.Diagnostics.Debug.WriteLine(diff);
+            Assert.IsTrue(Math.Round(diff) == 0.0D);
+
+            var testSubject = new NorthAmericanDeductions(testInput);
+
+            testSubject.ResolveItems(null);
+
+            Assert.IsNotNull(testSubject.MyItems);
+            Assert.AreNotEqual(0, testSubject.MyItems.Count);
+
+            var totalDeductions = testSubject.TotalAnnualDeductions;
+            Assert.AreNotEqual(0.0D.ToPecuniam(), totalDeductions);
+            //expect deductions as a negative number
+            Assert.IsTrue(totalDeductions.ToDouble() < 0.0D);
+            System.Diagnostics.Debug.WriteLine(totalDeductions);
+
+            var ratio = Math.Abs(Math.Round(((annualIncome + totalDeductions) / annualIncome).ToDouble(), 2));
+            Assert.IsTrue(ratio < 1.0);
+            Assert.IsTrue(ratio > 0.5);
+            System.Diagnostics.Debug.WriteLine(totalDeductions);
+        }
+
+        [TestMethod]
+        public void TestDeductionsAllPresent()
+        {
+            var testInput = new NorthAmericanEmployment(DateTime.Today.AddYears(-1), null);
+            var annualIncome = 75000.ToPecuniam();
+
+            var options = new OpesOptions { SumTotal = annualIncome };
+
+            testInput.ResolveItems(options);
+
+            //check input is good
+            Assert.IsNotNull(testInput.MyItems);
+            Assert.AreNotEqual(0, testInput.MyItems.Count);
+
+            var diff = Math.Abs(testInput.TotalAnnualPay.ToDouble() - annualIncome.ToDouble());
+            System.Diagnostics.Debug.WriteLine(diff);
+            Assert.IsTrue(Math.Round(diff) == 0.0D);
+
+            var testSubject = new NorthAmericanDeductions(testInput);
+            System.Diagnostics.Debug.WriteLine(testSubject.MyOptions.SumTotal);
+            testSubject.ResolveItems(null);
+
+            var testResults = testSubject.GetDeductionsAt(DateTime.Today.AddDays(-182));
+            var allDeductionsItesm = WealthBaseTests.GetExpectedNamesFromXml("deduction");
+            Assert.IsNotNull(testResults);
+            Assert.IsNotNull(allDeductionsItesm);
+
+            Assert.AreEqual(allDeductionsItesm.Count, testResults.Length);
+        }
+
+        [TestMethod]
+        public void TestGetGroupNames2Portions()
+        {
+            var testInput = new NorthAmericanEmployment(null, null);
+            var testSubject = new NorthAmericanDeductions(testInput);
+
+            var testResults = testSubject.GetGroupNames2Portions(null);
+            
+            Assert.IsTrue(testResults.Any(t => t.Item1 == WealthBase.DeductionGroupNames.INSURANCE));
+            Assert.AreNotEqual(0, testResults.First(t => t.Item1 == WealthBase.DeductionGroupNames.INSURANCE).Item2);
+
+            Assert.IsTrue(testResults.Any(t => t.Item1 == WealthBase.DeductionGroupNames.EMPLOYMENT));
+            Assert.AreNotEqual(0, testResults.First(t => t.Item1 == WealthBase.DeductionGroupNames.EMPLOYMENT).Item2);
+
+            Assert.IsTrue(testResults.Any(t => t.Item1 == WealthBase.DeductionGroupNames.GOVERNMENT));
+            Assert.AreNotEqual(0, testResults.First(t => t.Item1 == WealthBase.DeductionGroupNames.GOVERNMENT).Item2);
+
+            Assert.IsTrue(testResults.Any(t => t.Item1 == WealthBase.DeductionGroupNames.JUDGMENTS));
+            Assert.AreEqual(0, testResults.First(t => t.Item1 == WealthBase.DeductionGroupNames.JUDGMENTS).Item2);
+
+            var testOptions = new OpesOptions();
+            testOptions.GivenDirectly.Add(new Mereo(WealthBase.DeductionGroupNames.JUDGMENTS) {ExpectedValue =  1000.ToPecuniam()});
+
+            testResults = testSubject.GetGroupNames2Portions(testOptions);
+            Assert.IsTrue(testResults.Any(t => t.Item1 == WealthBase.DeductionGroupNames.JUDGMENTS));
+            Assert.AreNotEqual(0, testResults.First(t => t.Item1 == WealthBase.DeductionGroupNames.JUDGMENTS).Item2);
+
+
+        }
     }
 }

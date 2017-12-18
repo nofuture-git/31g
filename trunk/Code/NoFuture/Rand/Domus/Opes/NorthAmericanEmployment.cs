@@ -130,7 +130,7 @@ namespace NoFuture.Rand.Domus.Opes
             };
         }
 
-        protected internal override void ResolveItems(OpesOptions options)
+        protected internal override void ResolveItems(OpesOptions options = null)
         {
             options = options ?? MyOptions;
             if (options.StartDate == DateTime.MinValue)
@@ -216,7 +216,7 @@ namespace NoFuture.Rand.Domus.Opes
 
             var numYears = endDt.Year - stDt.Year;
             numYears = numYears <= 0 ? 0 : numYears;
-            var maxAge = new[] {NAmerUtil.MAX_AGE_FEMALE, NAmerUtil.MAX_AGE_MALE}.Max();
+            var maxAge = new[] {AmericanData.MAX_AGE_FEMALE, AmericanData.MAX_AGE_MALE}.Max();
             maxAge -= UsState.AGE_OF_ADULT;
             if(numYears > maxAge)
                 throw new RahRowRagee($"the years of employment was calculated at {numYears} " +

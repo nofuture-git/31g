@@ -205,7 +205,7 @@ namespace NoFuture.Rand.Domus
         /// <returns></returns>
         public static NorthAmerican American()
         {
-            return new NorthAmerican(NAmerUtil.GetWorkingAdultBirthDate(), Etx.CoinToss ? Gender.Female : Gender.Male,
+            return new NorthAmerican(AmericanUtil.GetWorkingAdultBirthDate(), Etx.CoinToss ? Gender.Female : Gender.Male,
                 true, true);
         }
 

@@ -63,9 +63,9 @@ namespace NoFuture.Rand.Data.Sp
             foreach (var item in items)
             {
                 if (item?.My?.ExpectedValue == null ||
-                    !NAmerUtil.Tables.Interval2AnnualPayMultiplier.ContainsKey(item.My.Interval))
+                    !AmericanData.Interval2AnnualPayMultiplier.ContainsKey(item.My.Interval))
                     continue;
-                sum += item.My.ExpectedValue.Amount * NAmerUtil.Tables.Interval2AnnualPayMultiplier[item.My.Interval];
+                sum += item.My.ExpectedValue.Amount * AmericanData.Interval2AnnualPayMultiplier[item.My.Interval];
             }
             return new Pecuniam(sum);
         }

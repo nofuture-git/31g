@@ -156,7 +156,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             //and the remainder will be randomly allocated to one of the other items 
             var otherItems = testResult.Where(x => !(new[] { "Student", "Other Consumer" }.Contains(x.Key)))
                 .Select(t => t.Value).Sum();
-            Assert.AreEqual(0.1667D, otherItems);
+            Assert.IsTrue(0.1667D == otherItems || 0.1666D == otherItems);
 
             foreach (var u in testResult)
                 System.Diagnostics.Debug.WriteLine($"{u.Key} -> {u.Value}");
@@ -284,7 +284,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             testOptions.GivenDirectly.Add(new Mereo("Tax", WealthBase.ExpenseGroupNames.DEBT) { ExpectedValue = 1000D.ToPecuniam() });
             testOptions.GivenDirectly.Add(new Mereo("Other", WealthBase.ExpenseGroupNames.DEBT) { ExpectedValue = 1000D.ToPecuniam() });
 
-            testOptions.PossiableZeroOuts.AddRange(new []{ "Credit Card", "Health Care", "Other Consumer", "Student", "Tax", "Other" });
+            testOptions.PossibleZeroOuts.AddRange(new []{ "Credit Card", "Health Care", "Other Consumer", "Student", "Tax", "Other" });
 
             //the PossiableZeroOuts are only considered when they are not present in the GivenDirectly 
             // so the results are the same as if PossiableZeroOuts had nothing in it at all
@@ -305,7 +305,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             testOptions.StartDate = DateTime.Today;
             testOptions.GivenDirectly.Add(new Mereo("Credit Card", WealthBase.ExpenseGroupNames.DEBT) { ExpectedValue = 1000D.ToPecuniam() });
             testOptions.DiceRoll = (i, dice) => true;
-            testOptions.PossiableZeroOuts.AddRange(new[] { "Health Care", "Other Consumer", "Student", "Tax", "Other" });
+            testOptions.PossibleZeroOuts.AddRange(new[] { "Health Care", "Other Consumer", "Student", "Tax", "Other" });
             testOptions.SumTotal = 2000D.ToPecuniam(); //1000 above
 
             //it leaves one to receive the excess - in effect forcing the dice role to be false for at least one item in this case

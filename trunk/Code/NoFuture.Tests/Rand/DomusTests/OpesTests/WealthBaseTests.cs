@@ -40,7 +40,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         [TestMethod]
         public void TestGetRandomRent()
         {
-            var amer = new NorthAmerican(NAmerUtil.GetWorkingAdultBirthDate(), Gender.Female);
+            var amer = new NorthAmerican(AmericanUtil.GetWorkingAdultBirthDate(), Gender.Female);
             var testSubject = new NorthAmericanWealth(amer, new OpesOptions(){IsRenting = true});
             testSubject.AddRent();
             var rent = testSubject.HomeDebt.FirstOrDefault() as Rent;
@@ -52,7 +52,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         [TestMethod]
         public void TestGetRandomHomeLoan()
         {
-            var amer = new NorthAmerican(NAmerUtil.GetWorkingAdultBirthDate(), Gender.Female);
+            var amer = new NorthAmerican(AmericanUtil.GetWorkingAdultBirthDate(), Gender.Female);
             var testSubject = new NorthAmericanWealth(amer);
             testSubject.AddMortgage();
 
@@ -65,7 +65,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         [TestMethod]
         public void TestGetRandomCcDebt()
         {
-            var amer = new NorthAmerican(NAmerUtil.GetWorkingAdultBirthDate(), Gender.Female);
+            var amer = new NorthAmerican(AmericanUtil.GetWorkingAdultBirthDate(), Gender.Female);
             var testSubject = new NorthAmericanWealth(amer);
             testSubject.AddSingleCcDebt();
 
@@ -84,7 +84,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         [TestMethod]
         public void TestGetPaycheck()
         {
-            var amer = new NorthAmerican(NAmerUtil.GetWorkingAdultBirthDate(), Gender.Female);
+            var amer = new NorthAmerican(AmericanUtil.GetWorkingAdultBirthDate(), Gender.Female);
             var testSubject = new NorthAmericanWealth(amer);
             System.Diagnostics.Debug.WriteLine(string.Join(" ", amer.Age, amer.MaritialStatus, amer.Education, amer.Race));
 
@@ -97,7 +97,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         [TestMethod]
         public void TestGetRandomVehicle()
         {
-            var amer = new NorthAmerican(NAmerUtil.GetWorkingAdultBirthDate(), Gender.Female);
+            var amer = new NorthAmerican(AmericanUtil.GetWorkingAdultBirthDate(), Gender.Female);
             var testSubject = new NorthAmericanWealth(amer);
             System.Diagnostics.Debug.WriteLine(string.Join(" ", amer.Age, amer.MaritialStatus, amer.Education, amer.Race));
 
@@ -118,7 +118,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         [TestMethod]
         public void TestCreateRandomAmericanOpes()
         {
-            var amer = new NorthAmerican(NAmerUtil.GetWorkingAdultBirthDate(), Gender.Female);
+            var amer = new NorthAmerican(AmericanUtil.GetWorkingAdultBirthDate(), Gender.Female);
             var testSubject = new NorthAmericanWealth(amer);
             System.Diagnostics.Debug.WriteLine(string.Join(" ", amer.Age, amer.MaritialStatus, amer.Education, amer.Race));
 

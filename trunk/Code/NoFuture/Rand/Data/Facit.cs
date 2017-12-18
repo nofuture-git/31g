@@ -119,7 +119,7 @@ namespace NoFuture.Rand.Data
             for (var i = 0; i < 4; i++)
             {
                 bunchOfWords.Add(Etc.CapWords(Word(), ' '));
-                bunchOfWords.Add(Domus.NAmerUtil.GetAmericanFirstName(DateTime.Today,
+                bunchOfWords.Add(Domus.AmericanUtil.GetAmericanFirstName(DateTime.Today,
                     Etx.CoinToss ? Gender.Male : Gender.Female));
             }
             username = string.Join((Etx.CoinToss ? "." : "_"), Etx.DiscreteRange(bunchOfWords.ToArray()),
