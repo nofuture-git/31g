@@ -211,6 +211,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             Assert.IsNotNull(allDeductionsItesm);
 
             Assert.AreEqual(allDeductionsItesm.Count, testResults.Length);
+            System.Diagnostics.Debug.WriteLine(Pondus.GetExpectedAnnualSum(testResults));
         }
 
         [TestMethod]

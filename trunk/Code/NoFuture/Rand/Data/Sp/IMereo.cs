@@ -11,13 +11,30 @@ namespace NoFuture.Rand.Data.Sp
     /// </summary>
     public interface IMereo : IVoca
     {
+        /// <summary>
+        /// The time frame associated to this money entry
+        /// </summary>
         Interval Interval { get; set; }
+
         Classification Classification { get; set; }
+
         string Name { get; set; }
+
+        /// <summary>
+        /// Other names or common examples of this money entry item 
+        /// (e.g. Alimony is also known as Spousal Support)
+        /// </summary>
         List<string> ExempliGratia { get; }
-        List<string> Akas { get; }
-        string Instructions { get; set; }
-        string Definition { get; set; }
+
+        /// <summary>
+        /// The expected money worth
+        /// </summary>
         Pecuniam ExpectedValue { get; set; }
+
+        /// <summary>
+        /// Both assigns <see cref="Interval"/> to Annually and increases the
+        /// <see cref="ExpectedValue"/> to match.
+        /// </summary>
+        void AdjustToAnnualInterval();
     }
 }

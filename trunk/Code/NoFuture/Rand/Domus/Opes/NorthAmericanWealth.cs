@@ -105,6 +105,11 @@ namespace NoFuture.Rand.Domus.Opes
             AddBankingAccounts(stdDevAsPercent);
         }
 
+        public void CreateAmericanOpes(OpesOptions options)
+        {
+            
+        }
+
         /// <summary>
         /// Creates random checking and savings accounts with a history which is intertwined with 
         /// other history.

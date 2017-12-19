@@ -17,8 +17,6 @@ namespace NoFuture.Rand.Data.Sp
     public class Mereo : VocaBase, IMereo
     {
         private readonly List<string> _eg = new List<string>();
-        private readonly List<string> _aka = new List<string>();
-        private string _definition;
         private Pecuniam _expectedValue = Pecuniam.Zero;
         public Mereo()
         {
@@ -44,11 +42,11 @@ namespace NoFuture.Rand.Data.Sp
         public Mereo(IMereo mereo) : this((IVoca)mereo)
         {
             ExpectedValue = mereo.ExpectedValue;
-            //TODO - get the rest of it
+            Interval = mereo.Interval;
+            Classification = mereo.Classification;
+            foreach(var eg in mereo.ExempliGratia)
+                ExempliGratia.Add(eg);
         }
-
-        public string Src { get; set; }
-        public string Abbrev => GetName(KindsOfNames.Abbrev);
 
         public Interval Interval { get; set; }
         public Classification Classification { get; set; }
@@ -60,19 +58,30 @@ namespace NoFuture.Rand.Data.Sp
         }
 
         public List<string> ExempliGratia => _eg;
-        public List<string> Akas => _aka;
-        public string Instructions { get; set; }
-
-        public string Definition
-        {
-            get => _definition;
-            set => _definition = value;
-        }
 
         public Pecuniam ExpectedValue
         {
             get => _expectedValue ?? (_expectedValue = Pecuniam.Zero);
             set => _expectedValue = value;
+        }
+
+        public void AdjustToAnnualInterval()
+        {
+            if (Interval == Interval.Annually)
+                return;
+
+            var hasExpectedValue = ExpectedValue != null && ExpectedValue != Pecuniam.Zero;
+            var hasMultiplier = AmericanData.Interval2AnnualPayMultiplier.ContainsKey(Interval);
+
+            if (!hasExpectedValue || !hasMultiplier)
+            {
+                Interval = Interval.Annually;
+                return;
+            }
+
+            var multiplier = AmericanData.Interval2AnnualPayMultiplier[Interval];
+            ExpectedValue = (ExpectedValue.ToDouble() * multiplier).ToPecuniam();
+            Interval = Interval.Annually;
         }
 
         public override string ToString()

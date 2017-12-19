@@ -26,7 +26,9 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
                 NumberOfCreditCards = 3,
                 NumberOfVehicles = 2,
                 PossibleZeroOuts = {"abc", "xyz"},
-                IsRenting = true
+                IsRenting = true,
+                IsPayingChildSupport = true,
+                IsPayingSpousalSupport = true
             };
 
             testInput.ChildrenDobs.Add(DateTime.Today.AddYears(-2));
@@ -35,9 +37,6 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             testInput.GivenDirectly.Add(new Mereo("name01", "group00") { ExpectedValue = 1100.ToPecuniam() });
 
             var testResult = testInput.GetClone();
-
-            foreach(var d in NoFuture.Util.Core.NfReflect.GetAssignPropertiesErrors())
-                System.Diagnostics.Debug.WriteLine(d);
 
             Assert.IsNotNull(testResult);
             Assert.AreEqual(testInput.StartDate, testResult.StartDate);
@@ -48,6 +47,9 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             Assert.AreEqual(testInput.NumberOfCreditCards, testResult.NumberOfCreditCards);
             Assert.AreEqual(testInput.NumberOfVehicles, testResult.NumberOfVehicles);
             Assert.AreEqual(testInput.IsRenting, testResult.IsRenting);
+            Assert.AreEqual(testInput.IsPayingChildSupport, testResult.IsPayingChildSupport);
+            Assert.AreEqual(testInput.IsPayingSpousalSupport, testResult.IsPayingSpousalSupport);
+            Assert.IsTrue(testResult.IsPayingChildSupport);
 
             Assert.IsNotNull(testResult.PossibleZeroOuts);
             Assert.AreEqual(2, testResult.PossibleZeroOuts.Count);

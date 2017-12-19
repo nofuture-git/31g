@@ -732,7 +732,7 @@ namespace NoFuture.Rand.Domus.Opes
         }
 
         /// <summary>
-        /// Gets a rate, at random, using the <see cref="AmericanUtil.Equations.ClassicHook"/>
+        /// Gets a rate, at random, using the <see cref="AmericanEquations.ClassicHook"/>
         /// </summary>
         /// <param name="age">
         /// Optional, will use the Person&apos;s Age or the mean age of Americans.

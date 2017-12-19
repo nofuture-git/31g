@@ -127,7 +127,10 @@ namespace NoFuture.Rand.Domus.Opes
         {
             options = options ?? MyOptions;
 
-            var emply = GetRandomEmployment(Person?.Personality, Person?.Education?.EduFlag ?? OccidentalEdu.None);
+            var personality = Person?.Personality;
+            var eduFlag = Person?.Education?.EduFlag ?? OccidentalEdu.None;
+
+            var emply = GetRandomEmployment(options, personality, eduFlag);
             foreach (var emp in emply)
             {
                 AddEmployment(emp);
@@ -315,13 +318,16 @@ namespace NoFuture.Rand.Domus.Opes
         /// Gets a list of time ranges over for all the years of this income&apos;s start date (and then some). 
         /// Each block is assumed as a span of employment
         /// </summary>
+        /// <param name="options"></param>
         /// <param name="personality"></param>
         /// <returns></returns>
-        protected internal virtual List<Tuple<DateTime, DateTime?>> GetEmploymentRanges(IPersonality personality)
+        protected internal virtual List<Tuple<DateTime, DateTime?>> GetEmploymentRanges(OpesOptions options, IPersonality personality = null)
         {
+            options = options ?? MyOptions;
             var emply = new List<Tuple<DateTime, DateTime?>>();
-            //income always starts an even -3 years from the start of this year - employment almost never follows this
-            var sdt = MyOptions.StartDate;
+
+            //make it appear as if the start date is randomly before options start date
+            var sdt = options.StartDate;
             sdt = sdt == DateTime.MinValue
                 ? Etx.Date(-3, DateTime.Today, true).Date
                 : sdt.AddDays(Etx.IntNumber(0, 360) * -1);
@@ -351,17 +357,19 @@ namespace NoFuture.Rand.Domus.Opes
         /// <summary>
         /// Get an ordered list of employment for the last three years at random
         /// </summary>
+        /// <param name="options"></param>
         /// <param name="personality"></param>
         /// <param name="eduLevel"></param>
         /// <param name="emplyRanges">
         /// Optional, allows calling assembly to set this directly, defaults to <see cref="GetEmploymentRanges"/>
         /// </param>
         /// <returns></returns>
-        protected internal virtual List<IEmployment> GetRandomEmployment(IPersonality personality,
+        protected internal virtual List<IEmployment> GetRandomEmployment(OpesOptions options, IPersonality personality = null,
             OccidentalEdu eduLevel = OccidentalEdu.None, List<Tuple<DateTime, DateTime?>> emplyRanges = null)
         {
+            options = options ?? MyOptions;
             var empls = new HashSet<IEmployment>();
-            emplyRanges = emplyRanges ?? GetEmploymentRanges(personality);
+            emplyRanges = emplyRanges ?? GetEmploymentRanges(options, personality);
             var occ = StandardOccupationalClassification.RandomOccupation();
 
             //limit result to those which match the edu level
@@ -372,11 +380,16 @@ namespace NoFuture.Rand.Domus.Opes
             foreach (var range in emplyRanges)
             {
                 var emply = new NorthAmericanEmployment(Person, range.Item1, range.Item2) {Occupation = occ};
+                var cloneOptions = options.GetClone();
+                cloneOptions.StartDate = range.Item1;
+                cloneOptions.EndDate = range.Item2;
+
+                //test for switching careers
                 if (personality?.GetRandomActsSpontaneous() ?? false)
                 {
                     occ = StandardOccupationalClassification.RandomOccupation(filter);
                 }
-                emply.ResolveItems(null);
+                emply.ResolveItems(options);
                 empls.Add(emply);
             }
 

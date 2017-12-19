@@ -142,6 +142,9 @@ namespace NoFuture.Rand.Domus.Opes
             foreach (var me in GivenDirectly)
                 o.GivenDirectly.Add(new Mereo(me));
 
+            foreach(var ca in ChildrenDobs)
+                o.ChildrenDobs.Add(ca);
+
             return o;
         }
     }

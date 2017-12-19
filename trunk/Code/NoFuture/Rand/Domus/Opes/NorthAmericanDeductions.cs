@@ -306,6 +306,14 @@ namespace NoFuture.Rand.Domus.Opes
             var pay = pPay == Pecuniam.Zero ? GetRandomYearlyIncome(options.StartDate).ToDouble() : pPay.ToDouble();
             return pay;
         }
+
+        public override string ToString()
+        {
+            var t = new Tuple<string, string, DateTime?, DateTime?, Pecuniam>(_employment.Value?.ToString(), _employment.Occupation?.ToString(),
+                _employment.Inception, _employment.Terminus, Pondus.GetExpectedSum(MyItems));
+            return t.ToString();
+        }
+
         #endregion
     }
 }

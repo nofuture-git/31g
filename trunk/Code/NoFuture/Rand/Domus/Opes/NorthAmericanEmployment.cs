@@ -337,11 +337,18 @@ namespace NoFuture.Rand.Domus.Opes
             if (!(obj is IEmployment e))
                 return base.Equals(obj);
 
-            return e.Value != null 
-                   && Value != null
-                   && e.Value.Equals(Value)
-                   && e.Inception == Inception
-                   && e.Terminus == Terminus;
+            var termEquals = e.Inception == Inception
+                             && e.Terminus == Terminus;
+
+            //neither have a company assigned
+            if (Value == null && e.Value == null)
+                return termEquals;
+
+            //one-and-only-one has company assigned
+            if (Value == null ^ e.Value == null)
+                return false;
+
+            return Value.Equals(e.Value) && termEquals;
         }
 
         public override int GetHashCode()
@@ -353,7 +360,7 @@ namespace NoFuture.Rand.Domus.Opes
         public override string ToString()
         {
             var t = new Tuple<string, string, DateTime?, DateTime?, Pecuniam>(Value?.ToString(), Occupation?.ToString(),
-                Inception, Terminus, TotalAnnualPay);
+                Inception, Terminus, Pondus.GetExpectedSum(MyItems));
             return t.ToString();
         }
 
