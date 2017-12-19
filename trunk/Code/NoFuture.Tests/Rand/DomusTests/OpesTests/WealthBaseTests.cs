@@ -199,7 +199,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         }
 
         [TestMethod]
-        public void TestGetYearNeg3()
+        public void TestGetYearNeg()
         {
             var testSubject = new NorthAmericanIncome(null);
             var testResult = testSubject.GetYearNeg(-3);

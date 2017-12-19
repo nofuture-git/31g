@@ -58,7 +58,7 @@ namespace NoFuture.Rand.Domus.Opes
                 {DeductionGroupNames.EMPLOYMENT, GetEmploymentDeductionName2Rates},
                 {DeductionGroupNames.GOVERNMENT, GetGovernmentDeductionName2Rates},
                 {DeductionGroupNames.INSURANCE, GetInsuranceDeductionName2RandRates},
-                {DeductionGroupNames.JUDGMENTS, GetJudgementDeductionName2RandomRates}
+                {DeductionGroupNames.JUDGMENTS, GetJudgmentDeductionName2RandomRates}
             };
         }
 
@@ -95,13 +95,14 @@ namespace NoFuture.Rand.Domus.Opes
                 new Tuple<string, double>(DeductionGroupNames.GOVERNMENT, 1),
             };
 
-            var assignedJudgementsDirectly = options.GivenDirectly.Any(x => x.AnyOfNameAs(DeductionGroupNames.JUDGMENTS) ||
+            var assignedJudgmentsDirectly = options.GivenDirectly.Any(x =>
+                x.AnyOfNameAs(DeductionGroupNames.JUDGMENTS) ||
                 x.AnyOfKindAndValue(KindsOfNames.Group, DeductionGroupNames.JUDGMENTS));
 
-            var optionsIncludeJudgement = options.IsPayingChildSupport || options.IsPayingSpousalSupport;
+            var optionsIncludeJudgment = options.IsPayingChildSupport || options.IsPayingSpousalSupport;
 
-            var judgements = assignedJudgementsDirectly || optionsIncludeJudgement ? 1 : 0;
-            grps.Add(new Tuple<string, double>(DeductionGroupNames.JUDGMENTS, judgements));
+            var judgments = assignedJudgmentsDirectly || optionsIncludeJudgment ? 1 : 0;
+            grps.Add(new Tuple<string, double>(DeductionGroupNames.JUDGMENTS, judgments));
 
             return grps;
         }
@@ -258,12 +259,42 @@ namespace NoFuture.Rand.Domus.Opes
                 .ToDictionary(t => t.Item1, t => t.Item2);
         }
 
-        protected internal Dictionary<string, double> GetJudgementDeductionName2RandomRates(OpesOptions options)
+        protected internal Dictionary<string, double> GetJudgmentDeductionName2RandomRates(OpesOptions options)
         {
             options = options ?? MyOptions;
-            var tOptions = options.GetClone();
-            var d = GetItemNames2Portions(DeductionGroupNames.JUDGMENTS, tOptions);
+            const string CHILD_SUPPORT = "Child Support";
+            const string ALIMONY = "Alimony";
 
+            var pay = GetPay(options);
+            if (options.IsPayingChildSupport &&
+                !options.AnyGivenDirectlyOfNameAndGroup(CHILD_SUPPORT, DeductionGroupNames.JUDGMENTS))
+            {
+                var adjPay = AmericanEquations.GetInflationAdjustedAmount(pay, 2015, options.StartDate);
+                var adjMonthlyPay = adjPay / 12;
+                var childSupportEquation =
+                    AmericanEquations.GetChildSupportMonthlyCostEquation(options.ChildrenAges.Count);
+                var childSupport = Math.Round(childSupportEquation.SolveForY(adjMonthlyPay), 2);
+
+                //need to turn this back into annual amount
+                childSupport = childSupport * 12;
+                options.GivenDirectly.Add(
+                    new Mereo(CHILD_SUPPORT, DeductionGroupNames.JUDGMENTS)
+                    {
+                        ExpectedValue = childSupport.ToPecuniam()
+                    });
+            }
+
+            if (options.IsPayingSpousalSupport &&
+                !options.AnyGivenDirectlyOfNameAndGroup(ALIMONY, DeductionGroupNames.JUDGMENTS))
+            {
+                //this is technically computed as 0.25 * (diff in spousal income)
+                var randRate = Etx.RationalNumber(0.01, 0.25);
+                var spouseSupport = Math.Round(randRate * pay, 2);
+                options.GivenDirectly.Add(
+                    new Mereo(ALIMONY, DeductionGroupNames.JUDGMENTS) {ExpectedValue = spouseSupport.ToPecuniam()});
+            }
+
+            var d = GetItemNames2Portions(DeductionGroupNames.JUDGMENTS, options);
             return d.ToDictionary(t => t.Item1, t => t.Item2);
         }
 

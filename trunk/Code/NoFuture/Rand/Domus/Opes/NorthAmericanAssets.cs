@@ -179,7 +179,6 @@ namespace NoFuture.Rand.Domus.Opes
 
         public override List<Tuple<string, double>> GetGroupNames2Portions(OpesOptions options)
         {
-            const StringComparison OPT = StringComparison.OrdinalIgnoreCase;
             options = options ?? MyOptions;
 
             var amt = options.SumTotal == null || options.SumTotal == Pecuniam.Zero
@@ -187,21 +186,17 @@ namespace NoFuture.Rand.Domus.Opes
                 : options.SumTotal;
 
             var givenDirectly = new List<IMereo>();
-            var assignedRealEstateDirectly = options.GivenDirectly.Any(g =>
-                string.Equals(g.Name, REAL_PROPERTY_HOME_OWNERSHIP, OPT) && string.Equals(g.GetName(KindsOfNames.Group),
-                    AssetGroupNames.REAL_PROPERTY, OPT));
+            var assignedRealEstateDirectly =
+                options.AnyGivenDirectlyOfNameAndGroup(REAL_PROPERTY_HOME_OWNERSHIP, AssetGroupNames.REAL_PROPERTY);
 
-            var assignedVehicleDirectly = options.GivenDirectly.Any(g =>
-                string.Equals(g.Name, PERSONAL_PROPERTY_MOTOR_VEHICLES, OPT) && string.Equals(g.GetName(KindsOfNames.Group),
-                    AssetGroupNames.PERSONAL_PROPERTY, OPT));
+            var assignedVehicleDirectly = options.AnyGivenDirectlyOfNameAndGroup(PERSONAL_PROPERTY_MOTOR_VEHICLES,
+                AssetGroupNames.PERSONAL_PROPERTY);
 
-            var assignedCheckingDirectly = options.GivenDirectly.Any(g =>
-                string.Equals(g.Name, INSTITUTIONAL_CHECKING, OPT) && string.Equals(g.GetName(KindsOfNames.Group),
-                    AssetGroupNames.INSTITUTIONAL, OPT));
+            var assignedCheckingDirectly =
+                options.AnyGivenDirectlyOfNameAndGroup(INSTITUTIONAL_CHECKING, AssetGroupNames.INSTITUTIONAL);
 
-            var assignedSavingDirectly = options.GivenDirectly.Any(g =>
-                string.Equals(g.Name, INSTITUTIONAL_SAVINGS, OPT) && string.Equals(g.GetName(KindsOfNames.Group),
-                    AssetGroupNames.INSTITUTIONAL, OPT));
+            var assignedSavingDirectly =
+                options.AnyGivenDirectlyOfNameAndGroup(INSTITUTIONAL_SAVINGS, AssetGroupNames.INSTITUTIONAL);
 
             if (!options.IsRenting && !assignedRealEstateDirectly)
             {

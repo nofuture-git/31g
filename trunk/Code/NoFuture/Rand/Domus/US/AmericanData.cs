@@ -130,9 +130,15 @@ namespace NoFuture.Rand.Domus
         /// </summary>
         public const double PERCENT_AMERICANS_WITH_INSURANCE = 0.876D;
 
-        private static Dictionary<Interval, int> _interval2Multiplier;
+        /// <summary>
+        /// BLS average 1985-2017 Series Id: CUUR0000SA0L1E
+        /// https://data.bls.gov/pdq/SurveyOutputServlet
+        /// </summary>
+        public const double AVG_INFLATION_RATE = 0.027D;
 
         #endregion
+
+        private static Dictionary<Interval, int> _interval2Multiplier;
 
         #region tables
 

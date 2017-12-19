@@ -92,7 +92,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             var testOptions =
                 new OpesOptions { StartDate = DateTime.Today.AddYears(-1) };
 
-            var testResult = testSubject.GetJudgementDeductionName2RandomRates(testOptions);
+            var testResult = testSubject.GetJudgmentDeductionName2RandomRates(testOptions);
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0, testResult.Count);
 
@@ -239,8 +239,25 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             testResults = testSubject.GetGroupNames2Portions(testOptions);
             Assert.IsTrue(testResults.Any(t => t.Item1 == WealthBase.DeductionGroupNames.JUDGMENTS));
             Assert.AreNotEqual(0, testResults.First(t => t.Item1 == WealthBase.DeductionGroupNames.JUDGMENTS).Item2);
+        }
 
+        [TestMethod]
+        public void TestResolveItemsWithJudgements()
+        {
+            var testInput = new NorthAmericanEmployment(DateTime.Today.AddYears(-1), null);
+            var testSubject = new NorthAmericanDeductions(testInput);
 
+            var testOptions =
+                new OpesOptions() {StartDate = testInput.MyOptions.StartDate, IsPayingChildSupport = true};
+            testSubject.ResolveItems(testOptions);
+
+            Assert.IsNotNull(testSubject.MyItems);
+            Assert.AreNotEqual(0, testSubject.MyItems.Count);
+
+            var testResultItem = testSubject.MyItems.FirstOrDefault(x => x.My.Name == "Child Support");
+            Assert.IsNotNull(testResultItem);
+            Assert.AreNotEqual(0.ToPecuniam(), testResultItem.My.ExpectedValue);
+            System.Diagnostics.Debug.WriteLine(testResultItem.My.ExpectedValue);
         }
     }
 }

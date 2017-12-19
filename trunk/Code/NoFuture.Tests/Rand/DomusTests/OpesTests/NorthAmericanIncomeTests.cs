@@ -87,7 +87,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         {
             var testSubject = new NorthAmericanIncome(null);
             
-            var testResult = testSubject.GetJudgementIncomeNames2RandomRates(null);
+            var testResult = testSubject.GetJudgmentIncomeNames2RandomRates(null);
 
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0, testResult.Count);

@@ -115,7 +115,7 @@ namespace NoFuture.Rand.Domus.Opes
         {
             return new Dictionary<string, Func<OpesOptions, Dictionary<string, double>>>
             {
-                {IncomeGroupNames.JUDGMENTS, GetJudgementIncomeNames2RandomRates},
+                {IncomeGroupNames.JUDGMENTS, GetJudgmentIncomeNames2RandomRates},
                 {IncomeGroupNames.SUBITO, GetSubitoIncomeNames2RandomRates},
                 {IncomeGroupNames.REAL_PROPERTY,GetRealPropertyIncomeNames2RandomRates},
                 {IncomeGroupNames.SECURITIES, GetSecuritiesIncomeNames2RandomRates},
@@ -146,7 +146,12 @@ namespace NoFuture.Rand.Domus.Opes
                     cloneOptions.SumTotal = GetRandomExpectedIncomeAmount(range.Item1, Person?.GetAgeAt(range.Item1));
 
                 //there aren't ever random but calculated off gross and net income(s)
-                cloneOptions.GivenDirectly.Add(new Mereo(IncomeGroupNames.PUBLIC_BENEFITS){ExpectedValue = Pecuniam.Zero});
+                if(!cloneOptions.AnyGivenDirectlyOfName(IncomeGroupNames.PUBLIC_BENEFITS))
+                    cloneOptions.GivenDirectly.Add(new Mereo(IncomeGroupNames.PUBLIC_BENEFITS){ExpectedValue = Pecuniam.Zero});
+
+                //make the caller assign these directly
+                if(!cloneOptions.AnyGivenDirectlyOfName(IncomeGroupNames.JUDGMENTS))
+                    cloneOptions.GivenDirectly.Add(new Mereo(IncomeGroupNames.JUDGMENTS) { ExpectedValue = Pecuniam.Zero });
 
                 var items = GetItemsForRange(cloneOptions);
                 foreach (var item in items)
@@ -165,7 +170,7 @@ namespace NoFuture.Rand.Domus.Opes
             }
         }
 
-        protected internal Dictionary<string, double> GetJudgementIncomeNames2RandomRates(OpesOptions options)
+        protected internal Dictionary<string, double> GetJudgmentIncomeNames2RandomRates(OpesOptions options)
         {
             options = (options ?? MyOptions) ?? new OpesOptions();
             var d = GetItemNames2Portions(IncomeGroupNames.JUDGMENTS, options);

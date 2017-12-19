@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using NoFuture.Rand.Core;
+using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Data.Sp;
 using NoFuture.Rand.Data.Sp.Enums;
 using NoFuture.Shared.Core;
@@ -14,19 +15,27 @@ namespace NoFuture.Rand.Domus.Opes
     public class OpesOptions
     {
         private double _derivativeSlope;
-
+        
         public bool IsPayingChildSupport { get; set; }
-        public bool IsReceivingChildSupport { get; set; }
-
         public bool IsPayingSpousalSupport { get; set; }
-        public bool IsReceivingSpousalSupport { get; set; }
 
         public bool IsVehiclePaidOff { get; set; }
         public bool IsRenting { get; set; }
         public int NumberOfVehicles { get; set; }
         public int NumberOfCreditCards { get; set; }
         public int TotalNumberOfHouseholdMembers { get; set; }
-        public List<int> ChildrenAges { get; set; } = new List<int>();
+        public List<DateTime> ChildrenDobs { get; } = new List<DateTime>();
+
+        public List<int> ChildrenAges
+        {
+            get
+            {
+                var ages = new List<int>();
+                foreach(var dob in ChildrenDobs)
+                    ages.Add(Person.CalcAge(dob, DateTime.Today));
+                return ages;
+            }
+        }
 
         public bool HasCreditCards => NumberOfCreditCards > 0;
         public bool HasVehicles => NumberOfVehicles > 0;
@@ -84,6 +93,33 @@ namespace NoFuture.Rand.Domus.Opes
         /// possible into actual.
         /// </summary>
         public Func<int, Etx.Dice, bool> DiceRoll { get; set; } = Etx.TryBelowOrAt;
+
+
+        /// <summary>
+        /// Helper method to assert if any items have been added to <see cref="GivenDirectly"/>
+        /// by name and group
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="groupName"></param>
+        /// <returns></returns>
+        public bool AnyGivenDirectlyOfNameAndGroup(string name, string groupName)
+        {
+            const StringComparison OPT = StringComparison.OrdinalIgnoreCase;
+            return GivenDirectly.Any(g =>
+                string.Equals(g.Name, name, OPT) && string.Equals(g.GetName(KindsOfNames.Group), groupName, OPT));
+        }
+
+        /// <summary>
+        /// Helper method to assert if any items have been added to <see cref="GivenDirectly"/>
+        /// with the given name
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public bool AnyGivenDirectlyOfName(string name)
+        {
+            const StringComparison OPT = StringComparison.OrdinalIgnoreCase;
+            return GivenDirectly.Any(g => string.Equals(g.Name, name, OPT));
+        }
 
         /// <summary>
         /// Creates a new instance on the heap with the exact same property values as this instance.

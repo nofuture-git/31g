@@ -1,6 +1,11 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Data.Endo.Enums;
+using NoFuture.Rand.Data.Sp;
+using NoFuture.Shared.Core;
 using NoFuture.Util.Core;
 using NoFuture.Util.Core.Math;
 
@@ -168,8 +173,8 @@ namespace NoFuture.Rand.Domus
         }
 
         /// <summary>
-        /// Means are <see cref="AVG_MAX_AGE_MALE"/> and <see cref="AVG_MAX_AGE_FEMALE"/>
-        /// StdDev are <see cref="STD_DEV_MALE_LIFE_EXPECTANCY"/> and <see cref="STD_DEV_FEMALE_LIFE_EXPECTANCY"/>
+        /// Means are <see cref="AmericanData.AVG_MAX_AGE_MALE"/> and <see cref="AmericanData.AVG_MAX_AGE_FEMALE"/>
+        /// StdDev are <see cref="AmericanData.STD_DEV_MALE_LIFE_EXPECTANCY"/> and <see cref="AmericanData.STD_DEV_FEMALE_LIFE_EXPECTANCY"/>
         /// </summary>
         /// <param name="mf"></param>
         /// <returns></returns>
@@ -218,10 +223,22 @@ namespace NoFuture.Rand.Domus
             return new LinearEquation(7880, estSlope);
         }
 
-        public static IEquation GetChildSupportEquation(DateTime? atDate, int numberOfChildren)
+        /// <summary>
+        /// Gets an adjusted amount compounded for inflation from the <see cref="baseYear"/>
+        /// at the rate of <see cref="AmericanData.AVG_INFLATION_RATE"/>
+        /// </summary>
+        /// <param name="amount"></param>
+        /// <param name="baseYear"></param>
+        /// <param name="atDate"></param>
+        /// <returns></returns>
+        public static double GetInflationAdjustedAmount(double amount, int baseYear, DateTime? atDate = null)
         {
-            throw new NotImplementedException();
-
+            var dt = atDate.GetValueOrDefault(DateTime.Today);
+            if (baseYear == dt.Year)
+                return amount;
+            var years = (dt - new DateTime(baseYear, dt.Month, dt.Day)).TotalDays / Constants.DBL_TROPICAL_YEAR;
+            var inflationRate = years < 0 ? -1 * AmericanData.AVG_INFLATION_RATE : AmericanData.AVG_INFLATION_RATE;
+            return Math.Round(amount * Math.Pow(1 + inflationRate, years), 2);
         }
 
         /// <summary>
@@ -236,5 +253,61 @@ namespace NoFuture.Rand.Domus
             SecondCoefficient = -0.0005986,
             ThirdCoefficient = 0.0000081
         };
+
+        /// <summary>
+        /// Based on averages from four different states (viz. FL, NY, WA, KS)
+        /// http://www.kscourts.org/Rules-procedures-forms/Child-support-guidelines/2012_new/CSG%20AO%20261%20Clean%20Version%20032612.pdf
+        /// https://www.flsenate.gov/Laws/Statutes/2013/61.30
+        /// https://www.courts.wa.gov/forms/documents/WSCSS_Schedule2015.pdf
+        /// https://www.childsupport.ny.gov/dcse/pdfs/CSSA.pdf
+        /// </summary>
+        /// <param name="numberOfChildren"></param>
+        /// <returns>
+        /// Returns the equation to solve for monthly child support payments using monthly income.
+        /// </returns>
+        /// <remarks>
+        /// Dollar amounts are ~2015 dollars
+        /// </remarks>
+        public static SecondDegreePolynomial GetChildSupportMonthlyCostEquation(int numberOfChildren)
+        {
+            switch (numberOfChildren)
+            {
+                case 1:
+                    return new SecondDegreePolynomial
+                    {
+                        SecondCoefficient = -0.0000036,
+                        Slope = 0.1804442,
+                        Intercept = 49.7609758
+                    };
+                case 2:
+                    return new SecondDegreePolynomial
+                    {
+                        SecondCoefficient = -0.0000051,
+                        Slope = 0.2193660,
+                        Intercept = 30.5587561
+                    };
+                case 3:
+                    return new SecondDegreePolynomial
+                    {
+                        SecondCoefficient = -0.0000063,
+                        Slope = 0.2483648,
+                        Intercept = 14.8337182,
+                    };
+                case 4:
+                    return new SecondDegreePolynomial
+                    {
+                        SecondCoefficient = -0.0000069,
+                        Slope = 0.2637436,
+                        Intercept = 1.7419081
+                    };
+                default:
+                    return new SecondDegreePolynomial
+                    {
+                        SecondCoefficient = -0.0000077,
+                        Slope = 0.2848716,
+                        Intercept = -13.7394084
+                    };
+            }
+        }
     }
 }

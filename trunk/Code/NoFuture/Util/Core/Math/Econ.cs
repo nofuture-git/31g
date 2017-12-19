@@ -15,10 +15,24 @@ namespace NoFuture.Util.Core.Math
         public static decimal PerDiemInterest(this decimal balance, double annualInterestRate, double numberOfDays)
         {
             var pa = Convert.ToDouble(balance);
+            return Convert.ToDecimal(PerDiemInterest(pa, annualInterestRate, numberOfDays));
+        }
+
+        /// <summary>
+        /// Calc's value after compound, per diem, interest.
+        /// </summary>
+        /// <param name="balance"></param>
+        /// <param name="annualInterestRate"></param>
+        /// <param name="numberOfDays"></param>
+        /// <returns></returns>
+        public static double PerDiemInterest(this double balance, double annualInterestRate, double numberOfDays)
+        {
+            var pa = balance;
             var freq = Constants.TropicalYear;
             var calc = System.Math.Round(pa *
-                                         System.Math.Pow((1 + (annualInterestRate / freq.TotalDays)),numberOfDays), 2);
-            return Convert.ToDecimal(calc);
+                                         System.Math.Pow(1 + annualInterestRate / freq.TotalDays, numberOfDays), 2);
+            return calc;
         }
     }
 }
+
