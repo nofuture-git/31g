@@ -35,24 +35,24 @@ namespace NoFuture.Rand.Domus.Opes
         /// <param name="options"></param>
         public NorthAmericanEmployment(NorthAmerican american, OpesOptions options) : base(american, options)
         {
-            if(MyOptions.StartDate == DateTime.MinValue)
-                MyOptions.StartDate = GetYearNeg(-1);
+            if(MyOptions.Inception == DateTime.MinValue)
+                MyOptions.Inception = GetYearNeg(-1);
             MyOptions.Interval = Interval.Annually;
             Occupation = StandardOccupationalClassification.RandomOccupation();
         }
 
-        public NorthAmericanEmployment(NorthAmerican american, DateTime startDate, DateTime? endDate) : base(american)
+        public NorthAmericanEmployment(NorthAmerican american, DateTime inception, DateTime? terminus) : base(american)
         {
-            MyOptions.StartDate = startDate;
-            MyOptions.EndDate = endDate;
+            MyOptions.Inception = inception;
+            MyOptions.Terminus = terminus;
             MyOptions.Interval = Interval.Annually;
             Occupation = StandardOccupationalClassification.RandomOccupation();
         }
 
-        internal NorthAmericanEmployment(DateTime startDate, DateTime? endDate) : base(null)
+        internal NorthAmericanEmployment(DateTime inception, DateTime? terminus) : base(null)
         {
-            MyOptions.StartDate = startDate;
-            MyOptions.EndDate = endDate;
+            MyOptions.Inception = inception;
+            MyOptions.Terminus = terminus;
             MyOptions.Interval = Interval.Annually;
             Occupation = StandardOccupationalClassification.RandomOccupation();
         }
@@ -83,14 +83,14 @@ namespace NoFuture.Rand.Domus.Opes
 
         public virtual DateTime Inception
         {
-            get => MyOptions.StartDate;
-            set => MyOptions.StartDate = value;
+            get => MyOptions.Inception;
+            set => MyOptions.Inception = value;
         }
 
         public virtual DateTime? Terminus
         {
-            get => MyOptions.EndDate;
-            set => MyOptions.EndDate = value;
+            get => MyOptions.Terminus;
+            set => MyOptions.Terminus = value;
         }
 
         public Pecuniam TotalAnnualPay => Pondus.GetExpectedAnnualSum(CurrentPay).Abs;
@@ -133,18 +133,18 @@ namespace NoFuture.Rand.Domus.Opes
         protected internal override void ResolveItems(OpesOptions options = null)
         {
             options = options ?? MyOptions;
-            if (options.StartDate == DateTime.MinValue)
-                options.StartDate = GetYearNeg(-1);
+            if (options.Inception == DateTime.MinValue)
+                options.Inception = GetYearNeg(-1);
             var yearsOfService = GetYearsOfServiceInDates(options);
-            var isCurrentEmployee = MyOptions.EndDate == null;
+            var isCurrentEmployee = MyOptions.Terminus == null;
             for (var i = 0; i < yearsOfService.Count; i++)
             {
                 var range = yearsOfService[i];
                 if (i == yearsOfService.Count - 1 && isCurrentEmployee)
                     range = new Tuple<DateTime, DateTime?>(range.Item1, null);
                 var argOptions = options.GetClone();
-                argOptions.StartDate = range.Item1;
-                argOptions.EndDate = range.Item2;
+                argOptions.Inception = range.Item1;
+                argOptions.Terminus = range.Item2;
 
                 var items = GetItemsForRange(argOptions);
                 foreach(var item in items)
@@ -167,15 +167,15 @@ namespace NoFuture.Rand.Domus.Opes
             var ranges = new List<Tuple<DateTime, DateTime?>>();
 
             var yearsOfService = GetYearsOfService(options);
-            if (yearsOfService <= 0 || MyOptions.StartDate == DateTime.MinValue)
+            if (yearsOfService <= 0 || MyOptions.Inception == DateTime.MinValue)
                 return ranges;
 
             var employerFiscalYearEnd = Value?.FiscalYearEndDay ?? 1;
 
             //assume merit increases 90 days after fiscal year end
             var annualReviewDays = employerFiscalYearEnd + 90;
-            var maxEndDt = MyOptions.EndDate.GetValueOrDefault(DateTime.Today);
-            var prevDt = MyOptions.StartDate.Date;
+            var maxEndDt = MyOptions.Terminus.GetValueOrDefault(DateTime.Today);
+            var prevDt = MyOptions.Inception.Date;
             for (var i = 0; i <= yearsOfService; i++)
             {
                 var stDt = i == 0 ? prevDt : prevDt.AddDays(1);
@@ -207,12 +207,12 @@ namespace NoFuture.Rand.Domus.Opes
         protected internal virtual int GetYearsOfService(OpesOptions options)
         {
             options = options ?? MyOptions;
-            var hasStartDate = MyOptions.StartDate != DateTime.MinValue;
+            var hasStartDate = MyOptions.Inception != DateTime.MinValue;
             if (!hasStartDate)
                 return 0;
 
-            var stDt = MyOptions.StartDate;
-            var endDt = MyOptions.EndDate.GetValueOrDefault(DateTime.Today);
+            var stDt = MyOptions.Inception;
+            var endDt = MyOptions.Terminus.GetValueOrDefault(DateTime.Today);
 
             var numYears = endDt.Year - stDt.Year;
             numYears = numYears <= 0 ? 0 : numYears;
@@ -226,8 +226,7 @@ namespace NoFuture.Rand.Domus.Opes
         }
 
         /// <summary>
-        /// Produces a dictionary of income item names to random rates where the sum of 
-        /// all the rates equals 1
+        /// Produces the item names to rates for the Employment Pay (e.g. salary, tips, etc.)
         /// </summary>
         /// <returns></returns>
         protected internal virtual Dictionary<string, double> GetPayName2RandRates(OpesOptions options)
@@ -255,7 +254,7 @@ namespace NoFuture.Rand.Domus.Opes
             var sevrcRate =
                 !_isWages
                 && !_isTips
-                && MyOptions.EndDate.GetValueOrDefault(DateTime.Today) < DateTime.Today
+                && MyOptions.Terminus.GetValueOrDefault(DateTime.Today) < DateTime.Today
                 && Etx.TryBelowOrAt(7, Etx.Dice.OneHundred)
                     ? Etx.RandomValueInNormalDist(0.072, 0.0025)
                     : 0D;
@@ -281,7 +280,7 @@ namespace NoFuture.Rand.Domus.Opes
 
             if (options.SumTotal == null || options.SumTotal == Pecuniam.Zero)
             {
-                options.SumTotal = GetRandomYearlyIncome(options.StartDate);
+                options.SumTotal = GetRandomYearlyIncome(options.Inception);
                 options.Interval = Interval.Annually;
             }
 
@@ -317,14 +316,14 @@ namespace NoFuture.Rand.Domus.Opes
             if (item == null)
                 return false;
             var itemEndDt = item.Terminus;
-            var rangeStartDt = MyOptions.StartDate;
+            var rangeStartDt = MyOptions.Inception;
             
             //item ended before this instance even started
             if (itemEndDt != null && itemEndDt.Value < rangeStartDt)
                 return false;
 
             var itemStartDt = item.Inception;
-            var rangeEndDt = MyOptions.EndDate;
+            var rangeEndDt = MyOptions.Terminus;
 
             //instance ended before this item even started
             if (rangeEndDt != null && itemStartDt > rangeEndDt.Value)

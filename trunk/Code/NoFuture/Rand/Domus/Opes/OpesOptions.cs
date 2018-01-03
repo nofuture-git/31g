@@ -9,10 +9,13 @@ using NoFuture.Shared.Core;
 
 namespace NoFuture.Rand.Domus.Opes
 {
+    /// <inheritdoc />
     /// <summary>
-    /// A control object to exercise control over the randomness
+    /// A control object to exercise control over the randomness of 
+    /// the various types of Domus.Opes
     /// </summary>
-    public class OpesOptions
+    [Serializable]
+    public class OpesOptions : ITempore
     {
         private double _derivativeSlope;
         
@@ -41,8 +44,14 @@ namespace NoFuture.Rand.Domus.Opes
         public bool HasVehicles => NumberOfVehicles > 0;
         public bool HasChildren => ChildrenAges != null && ChildrenAges.Any();
 
-        public DateTime StartDate { get; set; }
-        public DateTime? EndDate { get; set; }
+        public DateTime Inception { get; set; }
+        public DateTime? Terminus { get; set; }
+        public bool IsInRange(DateTime dt)
+        {
+            var afterOrOnFromDt = Inception <= dt;
+            var beforeOrOnToDt = Terminus == null || Terminus.Value >= dt;
+            return afterOrOnFromDt && beforeOrOnToDt;
+        }
 
         /// <summary>
         /// The interval is passed to the created items

@@ -1,20 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using NoFuture.Rand.Data.Sp;
 
 namespace NoFuture.Rand.Domus.Opes
 {
+    /// <summary>
+    /// Expresses a single form of deductions associated to an employment in time
+    /// </summary>
     public interface IDeductions
     {
-
         /// <summary>
         /// List of the current deductions on this employment
         /// </summary>
         Pondus[] CurrentDeductions { get; }
-
 
         /// <summary>
         /// The monetary sum of all current deduction items

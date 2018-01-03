@@ -4,7 +4,7 @@ using NoFuture.Rand.Data.Sp;
 namespace NoFuture.Rand.Domus.Opes
 {
     /// <summary>
-    /// Represents personal assets 
+    /// Represents personal assets in time. 
     /// </summary>
     public interface IRebus
     {

@@ -33,7 +33,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             //what happens if its just a single item and no SumTotal?
             var testSubject = new NorthAmericanExpenses(null);
             var testOptions = new OpesOptions();
-            testOptions.StartDate = DateTime.Today;
+            testOptions.Inception = DateTime.Today;
             testOptions.GivenDirectly.Add(new Mereo("Student", WealthBase.ExpenseGroupNames.DEBT) { ExpectedValue = 9000.ToPecuniam() });
             var testResult = testSubject.GetDebtExpenseNames2RandomRates(testOptions);
 
@@ -53,7 +53,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             var testOptions = new OpesOptions();
 
             //so if we add another then their assigned rates will be their portion of the whole?
-            testOptions.StartDate = DateTime.Today;
+            testOptions.Inception = DateTime.Today;
             testOptions.GivenDirectly.Add(new Mereo("Student", WealthBase.ExpenseGroupNames.DEBT) { ExpectedValue = 9000.ToPecuniam() });
             testOptions.GivenDirectly.Add(new Mereo("Other Consumer", WealthBase.ExpenseGroupNames.DEBT) { ExpectedValue = 1000.ToPecuniam() });
             var testResult = testSubject.GetDebtExpenseNames2RandomRates(testOptions);
@@ -78,7 +78,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             var testOptions = new OpesOptions();
 
             //so now what happens if we do give a SumTotal which happens to exactly equal the GivenDirectly's sum?
-            testOptions.StartDate = DateTime.Today;
+            testOptions.Inception = DateTime.Today;
             testOptions.GivenDirectly.Add(new Mereo("Student", WealthBase.ExpenseGroupNames.DEBT) { ExpectedValue = 9000.ToPecuniam() });
             testOptions.GivenDirectly.Add(new Mereo("Other Consumer", WealthBase.ExpenseGroupNames.DEBT) { ExpectedValue = 1000.ToPecuniam() });
             testOptions.SumTotal = 10000.ToPecuniam();
@@ -105,7 +105,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             var testOptions = new OpesOptions();
 
             //so what happens if the sumtotal is actually less than the sum of the GivenDirectly's sum?
-            testOptions.StartDate = DateTime.Today;
+            testOptions.Inception = DateTime.Today;
             testOptions.GivenDirectly.Add(new Mereo("Student", WealthBase.ExpenseGroupNames.DEBT) { ExpectedValue = 9000.ToPecuniam() });
             testOptions.GivenDirectly.Add(new Mereo("Other Consumer", WealthBase.ExpenseGroupNames.DEBT) { ExpectedValue = 1000.ToPecuniam() });
             testOptions.SumTotal = 9000.ToPecuniam(); //1000 less
@@ -133,7 +133,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             var testOptions = new OpesOptions();
 
             //what about when the sumtotal is greater than the GivenDirectly's sum?
-            testOptions.StartDate = DateTime.Today;
+            testOptions.Inception = DateTime.Today;
             testOptions.GivenDirectly.Add(new Mereo("Student", WealthBase.ExpenseGroupNames.DEBT) { ExpectedValue = 9000.ToPecuniam() });
             testOptions.GivenDirectly.Add(new Mereo("Other Consumer", WealthBase.ExpenseGroupNames.DEBT) { ExpectedValue = 1000.ToPecuniam() });
 
@@ -169,7 +169,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             var testOptions = new OpesOptions();
 
             //so what happens if I give a sumtotal and no GivenDirectly's - does it matter?
-            testOptions.StartDate = DateTime.Today;
+            testOptions.Inception = DateTime.Today;
 
             testOptions.SumTotal = 10000.ToPecuniam();
 
@@ -192,7 +192,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             var testOptions = new OpesOptions();
 
             //so will it blow up if GivenDirectly's names are not found?
-            testOptions.StartDate = DateTime.Today;
+            testOptions.Inception = DateTime.Today;
             testOptions.GivenDirectly.Add(new Mereo("NotFound", "Somewhere") { ExpectedValue = 9000.ToPecuniam() });
             testOptions.GivenDirectly.Add(new Mereo("404", "Somewhere") { ExpectedValue = 1000.ToPecuniam() });
 
@@ -214,7 +214,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             var testOptions = new OpesOptions();
 
             //so how will it handle a case where GivenDirectly's are assigned zero
-            testOptions.StartDate = DateTime.Today;
+            testOptions.Inception = DateTime.Today;
             testOptions.GivenDirectly.Add(new Mereo("Student", WealthBase.ExpenseGroupNames.DEBT) { ExpectedValue = Pecuniam.Zero });
             testOptions.SumTotal = 12000.ToPecuniam();
 
@@ -240,7 +240,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             var testOptions = new OpesOptions();
 
             //how will it handle the case where I accidently zero'ed out everything?
-            testOptions.StartDate = DateTime.Today;
+            testOptions.Inception = DateTime.Today;
             testOptions.GivenDirectly.Add(new Mereo("Credit Card", WealthBase.ExpenseGroupNames.DEBT) { ExpectedValue = Pecuniam.Zero });
             testOptions.GivenDirectly.Add(new Mereo("Health Care", WealthBase.ExpenseGroupNames.DEBT) { ExpectedValue = Pecuniam.Zero });
             testOptions.GivenDirectly.Add(new Mereo("Other Consumer", WealthBase.ExpenseGroupNames.DEBT) { ExpectedValue = Pecuniam.Zero });
@@ -259,7 +259,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             var testOptions = new OpesOptions();
 
             //so what is going to happen if the only thing I give is a SumTotal of zero?
-            testOptions.StartDate = DateTime.Today;
+            testOptions.Inception = DateTime.Today;
             testOptions.SumTotal = Pecuniam.Zero;
 
             var testResult = testSubject.GetDebtExpenseNames2RandomRates(testOptions);
@@ -276,7 +276,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             var testOptions = new OpesOptions();
 
             //how do the PossiableZero outs play with explict values on GivenDirectly?
-            testOptions.StartDate = DateTime.Today;
+            testOptions.Inception = DateTime.Today;
             testOptions.GivenDirectly.Add(new Mereo("Credit Card", WealthBase.ExpenseGroupNames.DEBT) { ExpectedValue = 1000D.ToPecuniam() });
             testOptions.GivenDirectly.Add(new Mereo("Health Care", WealthBase.ExpenseGroupNames.DEBT) { ExpectedValue = 1000D.ToPecuniam() });
             testOptions.GivenDirectly.Add(new Mereo("Other Consumer", WealthBase.ExpenseGroupNames.DEBT) { ExpectedValue = 1000D.ToPecuniam() });
@@ -302,7 +302,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
 
             //what if the SumTotal exceeds the GivenDirectly's sum but all the other options are present in the PossiablyZeroOut's?
             // and it just so happens that they all, in fact do, get selected to be zero'ed out
-            testOptions.StartDate = DateTime.Today;
+            testOptions.Inception = DateTime.Today;
             testOptions.GivenDirectly.Add(new Mereo("Credit Card", WealthBase.ExpenseGroupNames.DEBT) { ExpectedValue = 1000D.ToPecuniam() });
             testOptions.DiceRoll = (i, dice) => true;
             testOptions.PossibleZeroOuts.AddRange(new[] { "Health Care", "Other Consumer", "Student", "Tax", "Other" });

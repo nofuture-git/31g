@@ -13,6 +13,7 @@ namespace NoFuture.Rand.Domus.Opes
     /// which attempt to take into account education level, race, region, age, gender and 
     /// marital status.
     /// </summary>
+    [Serializable]
     public class NorthAmericanFactors
     {
         /// <summary>

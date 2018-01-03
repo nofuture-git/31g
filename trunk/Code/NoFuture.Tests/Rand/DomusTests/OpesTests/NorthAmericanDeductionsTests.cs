@@ -16,7 +16,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             var testSubject = new NorthAmericanDeductions(testInput);
 
             var testOptions =
-                new OpesOptions() { StartDate = DateTime.Today.AddYears(-1) };
+                new OpesOptions() { Inception = DateTime.Today.AddYears(-1) };
             var testResult = testSubject.GetInsuranceDeductionName2RandRates(testOptions);
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0, testResult.Count);
@@ -42,7 +42,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             var testSubject = new NorthAmericanDeductions(testInput);
 
             var testOptions =
-                new OpesOptions { StartDate = DateTime.Today.AddYears(-1) };
+                new OpesOptions { Inception = DateTime.Today.AddYears(-1) };
             var testResult = testSubject.GetGovernmentDeductionName2Rates(testOptions);
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0, testResult.Count);
@@ -66,7 +66,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             var testSubject = new NorthAmericanDeductions(testInput);
 
             var testOptions =
-                new OpesOptions { StartDate = DateTime.Today.AddYears(-1) };
+                new OpesOptions { Inception = DateTime.Today.AddYears(-1) };
             var testResult = testSubject.GetEmploymentDeductionName2Rates(testOptions);
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0, testResult.Count);
@@ -90,7 +90,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             var testSubject = new NorthAmericanDeductions(testInput);
 
             var testOptions =
-                new OpesOptions { StartDate = DateTime.Today.AddYears(-1) };
+                new OpesOptions { Inception = DateTime.Today.AddYears(-1) };
 
             var testResult = testSubject.GetJudgmentDeductionName2RandomRates(testOptions);
             Assert.IsNotNull(testResult);
@@ -249,7 +249,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             var testSubject = new NorthAmericanDeductions(testInput);
 
             var testOptions =
-                new OpesOptions() {StartDate = testInput.MyOptions.StartDate, IsPayingChildSupport = true};
+                new OpesOptions() {Inception = testInput.MyOptions.Inception, IsPayingChildSupport = true};
             testSubject.ResolveItems(testOptions);
 
             Assert.IsNotNull(testSubject.MyItems);

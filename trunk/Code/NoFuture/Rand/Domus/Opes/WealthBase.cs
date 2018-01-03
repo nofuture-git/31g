@@ -15,6 +15,10 @@ using NoFuture.Util.Core.Math;
 
 namespace NoFuture.Rand.Domus.Opes
 {
+    /// <summary>
+    /// A base type on which Income, Expense, Assets, etc. is built.
+    /// </summary>
+    [Serializable]
     public abstract class WealthBase
     {
         #region constants
@@ -37,7 +41,7 @@ namespace NoFuture.Rand.Domus.Opes
         #region inner types
 
         /// <summary>
-        /// The four major divisions of wealth
+        /// The general concept or kind on which the idea of wealth is divided.
         /// </summary>
         public enum DomusOpesDivisions
         {
@@ -48,6 +52,9 @@ namespace NoFuture.Rand.Domus.Opes
             Assets
         }
 
+        /// <summary>
+        /// The group names of the Assets Division
+        /// </summary>
         internal static class AssetGroupNames
         {
             internal const string REAL_PROPERTY = "Real Property";
@@ -56,6 +63,9 @@ namespace NoFuture.Rand.Domus.Opes
             internal const string INSTITUTIONAL = "Institutional";
         }
 
+        /// <summary>
+        /// The group names of the Expense Division
+        /// </summary>
         internal static class ExpenseGroupNames
         {
             internal const string HOME = "Home";
@@ -68,6 +78,9 @@ namespace NoFuture.Rand.Domus.Opes
             internal const string HEALTH = "Health";
         }
 
+        /// <summary>
+        /// The group name of the Income Division
+        /// </summary>
         internal static class IncomeGroupNames
         {
             internal const string JUDGMENTS = "Judgments";
@@ -81,6 +94,9 @@ namespace NoFuture.Rand.Domus.Opes
             internal const string HEALTH = ExpenseGroupNames.HEALTH;
         }
 
+        /// <summary>
+        /// The group name of the Deductions Division
+        /// </summary>
         internal static class DeductionGroupNames
         {
             internal const string INSURANCE = "Insurance";
@@ -89,6 +105,9 @@ namespace NoFuture.Rand.Domus.Opes
             internal const string EMPLOYMENT = IncomeGroupNames.EMPLOYMENT;
         }
 
+        /// <summary>
+        /// The group name of the Employment Division
+        /// </summary>
         internal static class EmploymentGroupNames
         {
             internal const string PAY = "Pay";
@@ -123,8 +142,16 @@ namespace NoFuture.Rand.Domus.Opes
         #endregion
 
         #region properties
+
+        /// <summary>
+        /// An instance level which acts as a default 
+        /// for null ref&apos; passed into any given method.
+        /// </summary>
         protected internal OpesOptions MyOptions { get; set; }
 
+        /// <summary>
+        /// The credit score of <see cref="Person"/>
+        /// </summary>
         public CreditScore CreditScore { get; protected set; }
 
         /// <summary>
@@ -133,19 +160,42 @@ namespace NoFuture.Rand.Domus.Opes
         /// </summary>
         public NorthAmericanFactors Factors => _factors;
 
+        /// <summary>
+        /// The person who is associated to this wealth data.
+        /// </summary>
         protected internal virtual NorthAmerican Person => _amer;
 
+        /// <summary>
+        /// Determines which kind of wealth concept is 
+        /// at play here (e.g. expense, assets, income, etc.).
+        /// </summary>
         protected abstract DomusOpesDivisions Division { get; }
 
+        /// <summary>
+        /// The items which belong to this <see cref="Division"/>
+        /// </summary>
         protected internal abstract List<Pondus> MyItems { get; }
 
         #endregion
 
         #region methods
+        /// <summary>
+        /// Adds the <see cref="item"/> to <see cref="MyItems"/>
+        /// </summary>
+        /// <param name="item"></param>
         protected internal abstract void AddItem(Pondus item);
 
+        /// <summary>
+        /// Maps the <see cref="Division"/> groups names to a function which produces that group&apos;s item names and rate.
+        /// </summary>
+        /// <returns></returns>
         protected abstract Dictionary<string, Func<OpesOptions, Dictionary<string, double>>> GetItems2Functions();
 
+        /// <summary>
+        /// The general &quot;Do It&quot; function. Typically this would be invoked 
+        /// right after the ctor.
+        /// </summary>
+        /// <param name="options"></param>
         protected internal abstract void ResolveItems(OpesOptions options = null);
 
         /// <summary>
@@ -212,6 +262,12 @@ namespace NoFuture.Rand.Domus.Opes
                    AmericanEquations.NatlAverageEarnings;
         }
 
+        /// <summary>
+        /// Helper method to get only those on-going items from within <see cref="items"/>
+        /// (i.e. items whose end date is null)
+        /// </summary>
+        /// <param name="items"></param>
+        /// <returns></returns>
         protected internal virtual Pondus[] GetCurrent(List<Pondus> items)
         {
             if (items == null)
@@ -221,6 +277,13 @@ namespace NoFuture.Rand.Domus.Opes
             return o.ToArray();
         }
 
+        /// <summary>
+        /// Helper method to reduce <see cref="items"/> down to only 
+        /// those in range of <see cref="dt"/>
+        /// </summary>
+        /// <param name="dt"></param>
+        /// <param name="items"></param>
+        /// <returns></returns>
         protected internal virtual Pondus[] GetAt(DateTime? dt, List<Pondus> items)
         {
             if (items == null)
@@ -234,7 +297,7 @@ namespace NoFuture.Rand.Domus.Opes
 
         /// <summary>
         /// Gets the <see cref="IMereo"/> Income items
-        /// from <see cref="Data.TreeData.UsDomusOpes"/>
+        /// from <see cref="TreeData.UsDomusOpes"/>
         /// </summary>
         /// <returns></returns>
         public static IMereo[] GetIncomeItemNames()
@@ -245,7 +308,7 @@ namespace NoFuture.Rand.Domus.Opes
 
         /// <summary>
         /// Gets the <see cref="IMereo"/> Deduction items
-        /// from <see cref="Data.TreeData.UsDomusOpes"/>
+        /// (e.g. Fed Tax, Child Support, FICA, etc.) from <see cref="TreeData.UsDomusOpes"/>
         /// </summary>
         /// <returns></returns>
         public static IMereo[] GetDeductionItemNames()
@@ -256,7 +319,7 @@ namespace NoFuture.Rand.Domus.Opes
 
         /// <summary>
         /// Gets the <see cref="IMereo"/> Expense items 
-        /// (i.e. household budget) from <see cref="Data.TreeData.UsDomusOpes"/>
+        /// (i.e. household budget) from <see cref="TreeData.UsDomusOpes"/>
         /// </summary>
         /// <returns></returns>
         public static IMereo[] GetExpenseItemNames()
@@ -268,7 +331,7 @@ namespace NoFuture.Rand.Domus.Opes
         /// <summary>
         /// Gets the <see cref="IMereo"/> Expense items 
         /// (i.e. real and private property) 
-        /// from <see cref="Data.TreeData.UsDomusOpes"/>
+        /// from <see cref="TreeData.UsDomusOpes"/>
         /// </summary>
         /// <returns></returns>
         public static IMereo[] GetAssetItemNames()
@@ -278,9 +341,9 @@ namespace NoFuture.Rand.Domus.Opes
         }
 
         /// <summary>
-        /// Gets the <see cref="IMereo"/> Expense items 
-        /// (i.e. real and private property) 
-        /// from <see cref="Data.TreeData.UsDomusOpes"/>
+        /// Gets the <see cref="IMereo"/> Employment items 
+        /// (e.g. wage, salary, tips, etc.) 
+        /// from <see cref="TreeData.UsDomusOpes"/>
         /// </summary>
         /// <returns></returns>
         public static IMereo[] GetEmploymentItemNames()
@@ -318,6 +381,12 @@ namespace NoFuture.Rand.Domus.Opes
             return grpNames.Distinct().ToList();
         }
 
+        /// <summary>
+        /// Get the Domus Opes item names as a composite <see cref="IMereo"/>
+        /// which contains both the item name and its group name.
+        /// </summary>
+        /// <param name="division"></param>
+        /// <returns></returns>
         public static IMereo[] GetItemNames(DomusOpesDivisions division)
         {
             var grpNames = new List<IMereo>();
@@ -344,7 +413,9 @@ namespace NoFuture.Rand.Domus.Opes
         /// the given <see cref="options"/>
         /// </summary>
         /// <param name="options"></param>
-        /// <returns></returns>
+        /// <returns>
+        /// A set of item names to some percent where the sum of all the names is 1 (i.e. 100%).
+        /// </returns>
         public virtual List<Tuple<string, double>> GetGroupNames2Portions(OpesOptions options)
         {
             options = options ?? new OpesOptions();
@@ -360,7 +431,9 @@ namespace NoFuture.Rand.Domus.Opes
         /// </summary>
         /// <param name="groupName"></param>
         /// <param name="options"></param>
-        /// <returns></returns>
+        /// <returns>
+        /// A set of item names to some percent where the sum of all the names is 1 (i.e. 100%).
+        /// </returns>
         public virtual List<Tuple<string, double>> GetItemNames2Portions(string groupName,OpesOptions options)
         {
             options = options ?? new OpesOptions();
@@ -377,7 +450,9 @@ namespace NoFuture.Rand.Domus.Opes
         /// </summary>
         /// <param name="options"></param>
         /// <param name="itemNames"></param>
-        /// <returns></returns>
+        /// <returns>
+        /// A set of item names to some percent where the sum of all the names is 1 (i.e. 100%).
+        /// </returns>
         public static List<Tuple<string, double>> GetNames2Portions(OpesOptions options, string[] itemNames)
         {
             const StringComparison STR_OPT = StringComparison.OrdinalIgnoreCase;
@@ -574,12 +649,17 @@ namespace NoFuture.Rand.Domus.Opes
             return !string.IsNullOrWhiteSpace(itemName);
         }
 
-        public static bool IsCloseEnoughToOne(double testValue)
+        private static bool IsCloseEnoughToOne(double testValue)
         {
             var calcMapSumRemainder = 1 - Math.Abs(testValue);
             return calcMapSumRemainder <= 0.00001 && calcMapSumRemainder >= -0.00001;
         }
 
+        /// <summary>
+        /// Gets all Group-Item names at the given <see cref="xPath"/>
+        /// </summary>
+        /// <param name="xPath"></param>
+        /// <returns></returns>
         internal static IMereo[] GetDomusOpesItemNames(string xPath)
         {
             if (string.IsNullOrWhiteSpace(xPath))
@@ -759,7 +839,7 @@ namespace NoFuture.Rand.Domus.Opes
         }
 
         /// <summary>
-        /// Gets January 1st date from negative <see cref="back"/> years from this year&apos; January 1st
+        /// Gets January 1st date from negative <see cref="back"/> years from this year&apos;s January 1st
         /// </summary>
         /// <returns></returns>
         protected internal DateTime GetYearNeg(int back)
@@ -805,6 +885,11 @@ namespace NoFuture.Rand.Domus.Opes
             return datesOut;
         }
 
+        /// <summary>
+        /// The reusable\common parts of <see cref="ResolveItems"/> 
+        /// </summary>
+        /// <param name="options"></param>
+        /// <returns></returns>
         protected internal virtual Pondus[] GetItemsForRange(OpesOptions options = null)
         {
             options = options ?? MyOptions;
@@ -820,6 +905,12 @@ namespace NoFuture.Rand.Domus.Opes
             return itemsout.ToArray();
         }
 
+        /// <summary>
+        /// The reusable\common parts of <see cref="ResolveItems"/> 
+        /// </summary>
+        /// <param name="grp2Rate"></param>
+        /// <param name="options"></param>
+        /// <returns></returns>
         protected internal virtual Pondus[] GetItemsForRange(Tuple<string,double> grp2Rate, OpesOptions options = null)
         {
             options = options ?? MyOptions;
@@ -850,40 +941,24 @@ namespace NoFuture.Rand.Domus.Opes
             return itemsout.ToArray();
         }
 
+        /// <summary>
+        /// While <see cref="GetItemsForRange(OpesOptions)"/> deals with all the 
+        /// items of this <see cref="Division"/> this is concerned with one-item-at-a-time.
+        /// </summary>
+        /// <param name="itemName"></param>
+        /// <param name="grpName"></param>
+        /// <param name="options"></param>
+        /// <returns></returns>
         protected internal virtual Pondus GetPondusForItemAndGroup(string itemName, string grpName, OpesOptions options)
         {
             options = options ?? new OpesOptions();
             var p = new Pondus(itemName, options.Interval)
             {
-                Inception = options.StartDate,
-                Terminus = options.EndDate,
+                Inception = options.Inception,
+                Terminus = options.Terminus,
             };
             p.My.UpsertName(KindsOfNames.Group, grpName);
             return p;
-        }
-
-        protected internal double GetRandomValueFrom(double baseRate, double dividedby = 1)
-        {
-            if (baseRate == 0)
-                return 0;
-            var mean = baseRate / (dividedby == 0 ? 1 : dividedby);
-            var stdDev = Math.Round(mean * 0.155, 5);
-            return Etx.RandomValueInNormalDist(mean, stdDev);
-        }
-
-        protected internal double GetRandomEmployeeHealthInsCost(DateTime? atDate)
-        {
-            var totalCost = GetRandomHealthInsCost(atDate);
-            return totalCost * (1 - AmericanData.PERCENT_EMPLY_INS_COST_PAID_BY_EMPLOYER);
-        }
-
-        protected internal double GetRandomHealthInsCost(DateTime? atDate)
-        {
-            var dt = atDate.GetValueOrDefault(DateTime.Now);
-            var mean = AmericanEquations.HealthInsuranceCostPerPerson.SolveForY(dt.ToDouble());
-            var stdDev = Math.Round(mean * 0.155, 2);
-
-            return Etx.RandomValueInNormalDist(mean, stdDev);
         }
 
         #endregion

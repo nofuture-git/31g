@@ -3,7 +3,6 @@ using NoFuture.Rand.Data.Sp;
 
 namespace NoFuture.Rand.Domus.Opes
 {
-
     /// <summary>
     /// Expresses a personal income in time
     /// </summary>
@@ -23,7 +22,7 @@ namespace NoFuture.Rand.Domus.Opes
         /// </summary>
         /// <param name="dt"></param>
         /// <returns>
-        /// Its is an array since a person may have more than
+        /// This returns an array since a person may have more than
         /// one job at a single time.
         /// </returns>
         IEmployment[] GetEmploymentAt(DateTime? dt);

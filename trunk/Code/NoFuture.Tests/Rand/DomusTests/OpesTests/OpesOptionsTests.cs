@@ -18,7 +18,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         {
             var testInput = new OpesOptions
             {
-                StartDate = DateTime.Today.AddYears(-1),
+                Inception = DateTime.Today.AddYears(-1),
                 Interval = Interval.Daily,
                 DerivativeSlope = -0.33,
                 SumTotal = 88000.ToPecuniam(),
@@ -39,7 +39,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             var testResult = testInput.GetClone();
 
             Assert.IsNotNull(testResult);
-            Assert.AreEqual(testInput.StartDate, testResult.StartDate);
+            Assert.AreEqual(testInput.Inception, testResult.Inception);
             Assert.AreEqual(testInput.Interval, testResult.Interval);
             Assert.AreEqual(testInput.DerivativeSlope, testResult.DerivativeSlope);
             Assert.AreEqual(testInput.SumTotal, testResult.SumTotal);

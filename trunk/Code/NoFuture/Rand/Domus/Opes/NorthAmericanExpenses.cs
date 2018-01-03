@@ -6,14 +6,19 @@ using NoFuture.Rand.Data.Sp.Enums;
 
 namespace NoFuture.Rand.Domus.Opes
 {
+    /// <inheritdoc cref="IExpense" />
+    /// <inheritdoc cref="WealthBase" />
+    /// <summary>
+    /// </summary>
+    [Serializable]
     public class NorthAmericanExpenses : WealthBase, IExpense
     {
         private readonly HashSet<Pondus> _expenses = new HashSet<Pondus>();
 
         public NorthAmericanExpenses(NorthAmerican american, OpesOptions options = null) : base(american, options)
         {
-            if (MyOptions.StartDate == DateTime.MinValue)
-                MyOptions.StartDate = GetYearNeg(-1);
+            if (MyOptions.Inception == DateTime.MinValue)
+                MyOptions.Inception = GetYearNeg(-1);
         }
 
         public virtual Pondus[] CurrentExpectedExpenses => GetCurrent(MyItems);
@@ -64,20 +69,20 @@ namespace NoFuture.Rand.Domus.Opes
         protected internal override void ResolveItems(OpesOptions options = null)
         {
             options = options ?? MyOptions;
-            var stDt = options.StartDate == DateTime.MinValue ? GetYearNeg(-1) : options.StartDate;
+            var stDt = options.Inception == DateTime.MinValue ? GetYearNeg(-1) : options.Inception;
             var ranges = GetYearsInDates(stDt);
 
             if (options.SumTotal == null || options.SumTotal == Pecuniam.Zero)
             {
-                var randIncome = Math.Round(GetRandomYearlyIncome(MyOptions.StartDate).ToDouble() * 85);
+                var randIncome = Math.Round(GetRandomYearlyIncome(MyOptions.Inception).ToDouble() * 85);
                 options.SumTotal = randIncome.ToPecuniam();
             }
 
             foreach (var range in ranges)
             {
                 var cloneOptions = options.GetClone();
-                cloneOptions.StartDate = range.Item1;
-                cloneOptions.EndDate = range.Item2;
+                cloneOptions.Inception = range.Item1;
+                cloneOptions.Terminus = range.Item2;
                 cloneOptions.Interval = Interval.Annually;
 
                 var items = GetItemsForRange(cloneOptions);
@@ -87,7 +92,7 @@ namespace NoFuture.Rand.Domus.Opes
         }
 
         /// <summary>
-        /// Produces a dictionary of Expense-Home names to rates whose sum equals 1
+        /// Produces the item names to rates for the Home Expenses (e.g. rent)
         /// </summary>
         /// <param name="options"></param>
         /// <returns></returns>
@@ -127,7 +132,7 @@ namespace NoFuture.Rand.Domus.Opes
         }
 
         /// <summary>
-        /// Produces a dictionary of Expense-Utilities names to rates whose sum equals 1
+        /// Produces the item names to rates for the Utility Expenses (e.g. gas bill)
         /// </summary>
         /// <param name="options"></param>
         /// <returns></returns>
@@ -143,7 +148,7 @@ namespace NoFuture.Rand.Domus.Opes
         }
 
         /// <summary>
-        /// Produces a dictionary of Expense-Transportation names to rates whose sum equals 1
+        /// Produces the item names to rates for the Transportation Expenses (e.g. car payment, gas, etc.)
         /// </summary>
         /// <param name="options"></param>
         /// <returns></returns>
@@ -192,7 +197,7 @@ namespace NoFuture.Rand.Domus.Opes
         }
 
         /// <summary>
-        /// Produces a dictionary of Expense-Insurance names to rates whose sum equals 1
+        /// Produces the item names to rates for the Insurance Expenses (being paid for directly, not as a deduction)
         /// </summary>
         /// <param name="options"></param>
         /// <returns></returns>
@@ -216,7 +221,7 @@ namespace NoFuture.Rand.Domus.Opes
         }
 
         /// <summary>
-        /// Produces a dictionary of Expense-Personal names to rates whose sum equals 1
+        /// Produces the item names to rates for the Personal Expenses (e.g. groceries, subscriptions, etc.)
         /// </summary>
         /// <param name="options"></param>
         /// <returns></returns>
@@ -231,7 +236,8 @@ namespace NoFuture.Rand.Domus.Opes
         }
 
         /// <summary>
-        /// Produces a dictionary of Expense-Children names to rates whose sum equals 1
+        /// Produces the item names to rates for the Child Related Expenses (e.g. day-care), 
+        /// which are NOT included in groceries (e.g. diapers, food, clothes, etc.)
         /// </summary>
         /// <param name="options"></param>
         /// <returns></returns>
@@ -266,7 +272,7 @@ namespace NoFuture.Rand.Domus.Opes
         }
 
         /// <summary>
-        /// Produces a dictionary of Expense-Debt names to rates whose sum equals 1
+        /// Produces the item names to rates for the Personal Debt Expenses (e.g. credit card payments)
         /// </summary>
         /// <param name="options"></param>
         /// <returns></returns>
@@ -280,7 +286,7 @@ namespace NoFuture.Rand.Domus.Opes
         }
 
         /// <summary>
-        /// Produces a dictionary of Expense-Health names to rates whose sum is equal to 1
+        /// Produces the item names to rates for the Health Expenses (i.e. being paid out-of-pocket)
         /// </summary>
         /// <param name="options"></param>
         /// <returns></returns>

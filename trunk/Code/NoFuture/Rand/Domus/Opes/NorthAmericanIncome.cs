@@ -31,8 +31,8 @@ namespace NoFuture.Rand.Domus.Opes
             base(
                 american, options)
         {
-            if(MyOptions.StartDate == DateTime.MinValue)
-                MyOptions.StartDate = GetYearNeg(-1);
+            if(MyOptions.Inception == DateTime.MinValue)
+                MyOptions.Inception = GetYearNeg(-1);
         }
 
         #endregion
@@ -136,15 +136,15 @@ namespace NoFuture.Rand.Domus.Opes
                 AddEmployment(emp);
             }
 
-            var minDate = options.StartDate == DateTime.MinValue ? GetYearNeg(-1) : options.StartDate;
+            var minDate = options.Inception == DateTime.MinValue ? GetYearNeg(-1) : options.Inception;
             var ranges = GetYearsInDates(minDate);
 
             foreach (var range in ranges)
             {
                 var cloneOptions = options.GetClone();
                 cloneOptions.Interval = Interval.Annually;
-                cloneOptions.StartDate = range.Item1;
-                cloneOptions.EndDate = range.Item2;
+                cloneOptions.Inception = range.Item1;
+                cloneOptions.Terminus = range.Item2;
                 if(cloneOptions.SumTotal == null || cloneOptions.SumTotal == Pecuniam.Zero)
                     cloneOptions.SumTotal = GetRandomExpectedIncomeAmount(range.Item1, Person?.GetAgeAt(range.Item1));
 
@@ -173,6 +173,11 @@ namespace NoFuture.Rand.Domus.Opes
             }
         }
 
+        /// <summary>
+        /// Produces the item names to rates for the Judgement related forms of Income (e.g. alimony received)
+        /// </summary>
+        /// <param name="options"></param>
+        /// <returns></returns>
         protected internal Dictionary<string, double> GetJudgmentIncomeNames2RandomRates(OpesOptions options)
         {
             options = (options ?? MyOptions) ?? new OpesOptions();
@@ -180,6 +185,11 @@ namespace NoFuture.Rand.Domus.Opes
             return d.ToDictionary(t => t.Item1, t => t.Item2);
         }
 
+        /// <summary>
+        /// Produces the item names to rates for the Sudden, one-time forms of Income (e.g. lottery winnings)
+        /// </summary>
+        /// <param name="options"></param>
+        /// <returns></returns>
         protected internal Dictionary<string, double> GetSubitoIncomeNames2RandomRates(OpesOptions options)
         {
             options = (options ?? MyOptions) ?? new OpesOptions();
@@ -188,6 +198,11 @@ namespace NoFuture.Rand.Domus.Opes
             return d.ToDictionary(t => t.Item1, t => t.Item2);
         }
 
+        /// <summary>
+        /// Produces the item names to rates for the Income produced from Real Property (e.g. rental property)
+        /// </summary>
+        /// <param name="options"></param>
+        /// <returns></returns>
         protected internal Dictionary<string, double> GetRealPropertyIncomeNames2RandomRates(OpesOptions options)
         {
             options = (options ?? MyOptions) ?? new OpesOptions();
@@ -195,6 +210,11 @@ namespace NoFuture.Rand.Domus.Opes
             return d.ToDictionary(t => t.Item1, t => t.Item2);
         }
 
+        /// <summary>
+        /// Produces the item names to rates for the Income produced from Securities (e.g. dividends, capital-gains, etc.)
+        /// </summary>
+        /// <param name="options"></param>
+        /// <returns></returns>
         protected internal Dictionary<string, double> GetSecuritiesIncomeNames2RandomRates(OpesOptions options)
         {
             options = (options ?? MyOptions) ?? new OpesOptions();
@@ -203,6 +223,11 @@ namespace NoFuture.Rand.Domus.Opes
             return d.ToDictionary(t => t.Item1, t => t.Item2);
         }
 
+        /// <summary>
+        /// Produces the item names to rates for the Income produced from Institutional assets (e.g. interest, stipends, etc.)
+        /// </summary>
+        /// <param name="options"></param>
+        /// <returns></returns>
         protected internal Dictionary<string, double> GetInstitutionalIncomeNames2RandomRates(OpesOptions options)
         {
             options = (options ?? MyOptions) ?? new OpesOptions();
@@ -226,8 +251,8 @@ namespace NoFuture.Rand.Domus.Opes
         protected internal virtual Pondus[] GetPublicBenefitIncomeItemsForRange(OpesOptions options)
         {
             options = options ?? MyOptions;
-            var startDate = options.StartDate;
-            var endDate = options.EndDate;
+            var startDate = options.Inception;
+            var endDate = options.Terminus;
             var itemsout = new List<Pondus>();
             startDate = startDate == DateTime.MinValue ? GetYearNeg(-1) : startDate;
             var isPoor = IsBelowFedPovertyAt(options);
@@ -300,7 +325,7 @@ namespace NoFuture.Rand.Domus.Opes
         protected internal virtual bool IsBelowFedPovertyAt(OpesOptions options)
         {
             options = options ?? MyOptions;
-            var dt = options.StartDate;
+            var dt = options.Inception;
             var numHouseholdMembers = options.TotalNumberOfHouseholdMembers;
             numHouseholdMembers = numHouseholdMembers <= 0 ? 1 : numHouseholdMembers;
             var povertyLevel = AmericanEquations.GetFederalPovertyLevel(dt);
@@ -327,7 +352,7 @@ namespace NoFuture.Rand.Domus.Opes
             var emply = new List<Tuple<DateTime, DateTime?>>();
 
             //make it appear as if the start date is randomly before options start date
-            var sdt = options.StartDate;
+            var sdt = options.Inception;
             sdt = sdt == DateTime.MinValue
                 ? Etx.Date(-3, DateTime.Today, true).Date
                 : sdt.AddDays(Etx.IntNumber(0, 360) * -1);
@@ -381,8 +406,8 @@ namespace NoFuture.Rand.Domus.Opes
             {
                 var emply = new NorthAmericanEmployment(Person, range.Item1, range.Item2) {Occupation = occ};
                 var cloneOptions = options.GetClone();
-                cloneOptions.StartDate = range.Item1;
-                cloneOptions.EndDate = range.Item2;
+                cloneOptions.Inception = range.Item1;
+                cloneOptions.Terminus = range.Item2;
 
                 //test for switching careers
                 if (personality?.GetRandomActsSpontaneous() ?? false)

@@ -6,9 +6,15 @@ using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Data.Endo.Grps;
 using NoFuture.Rand.Data.Sp;
 using NoFuture.Rand.Data.Sp.Enums;
+using NoFuture.Util.Core;
 
 namespace NoFuture.Rand.Domus.Opes
 {
+    /// <inheritdoc cref="WealthBase"/>
+    /// <inheritdoc cref="IDeductions"/>
+    /// <summary>
+    /// </summary>
+    [Serializable]
     public class NorthAmericanDeductions : WealthBase, IDeductions
     {
         private readonly HashSet<Pondus> _deductions = new HashSet<Pondus>();
@@ -68,15 +74,15 @@ namespace NoFuture.Rand.Domus.Opes
 
             var ranges = _employment.MyItems.Any()
                 ? _employment.MyItems.Select(e => new Tuple<DateTime, DateTime?>(e.Inception, e.Terminus))
-                : GetYearsInDates(options.StartDate);
+                : GetYearsInDates(options.Inception);
 
             foreach (var range in ranges.Distinct())
             {
                 var cloneOptions = options.GetClone();
                 cloneOptions.Interval = Interval.Annually;
                
-                cloneOptions.StartDate = range.Item1;
-                cloneOptions.EndDate = range.Item2;
+                cloneOptions.Inception = range.Item1;
+                cloneOptions.Terminus = range.Item2;
 
                 var items = GetItemsForRange(cloneOptions);
                 foreach (var item in items)
@@ -107,6 +113,11 @@ namespace NoFuture.Rand.Domus.Opes
             return grps;
         }
 
+        /// <summary>
+        /// Produces the item names to rates for the Insurance Deductions
+        /// </summary>
+        /// <param name="options"></param>
+        /// <returns></returns>
         protected internal Dictionary<string, double> GetInsuranceDeductionName2RandRates(OpesOptions options)
         {
             options = options ?? MyOptions;
@@ -124,7 +135,7 @@ namespace NoFuture.Rand.Domus.Opes
                     .ToDictionary(t => t.Item1, t => t.Item2);
             }
 
-            var expectedHealthInsCost = GetRandomEmployeeHealthInsCost(options.StartDate);
+            var expectedHealthInsCost = GetRandomEmployeeHealthInsCost(options.Inception);
             var expectedDentalInsCost = GetRandomValueFrom(expectedHealthInsCost, 8);
             var expectedVisionInsCost = GetRandomValueFrom(expectedHealthInsCost, 13);
 
@@ -145,7 +156,7 @@ namespace NoFuture.Rand.Domus.Opes
                 {
                     ExpectedValue = expectedVisionInsCost.ToPecuniam()
                 });
-            var someRandRate = GetRandomRateFromClassicHook(Person?.GetAgeAt(options.StartDate));
+            var someRandRate = GetRandomRateFromClassicHook(Person?.GetAgeAt(options.Inception));
 
             //we will use to force the SumTotal to exceed current GivenDirectly's sum
             var currentTotal = expectedHealthInsCost + expectedDentalInsCost + expectedVisionInsCost;
@@ -159,6 +170,11 @@ namespace NoFuture.Rand.Domus.Opes
             return d.ToDictionary(t => t.Item1, t => t.Item2);
         }
 
+        /// <summary>
+        /// Produces the item names to rates for the Government Deductions (i.e. taxes)
+        /// </summary>
+        /// <param name="options"></param>
+        /// <returns></returns>
         protected internal Dictionary<string, double> GetGovernmentDeductionName2Rates(OpesOptions options)
         {
             options = options ?? MyOptions;
@@ -209,6 +225,11 @@ namespace NoFuture.Rand.Domus.Opes
                 .ToDictionary(t => t.Item1, t => t.Item2);
         }
 
+        /// <summary>
+        /// Produces the item names to rates for the Employment Deductions (e.g. 401K)
+        /// </summary>
+        /// <param name="options"></param>
+        /// <returns></returns>
         protected internal Dictionary<string, double> GetEmploymentDeductionName2Rates(OpesOptions options)
         {
             options = options ?? MyOptions;
@@ -245,7 +266,7 @@ namespace NoFuture.Rand.Domus.Opes
                 });
 
             //we need to have a SumTotal exceeding the current GivenDirectly's sum to have any of the others show up at random
-            var someRandRate = GetRandomRateFromClassicHook(Person?.GetAgeAt(options.StartDate));
+            var someRandRate = GetRandomRateFromClassicHook(Person?.GetAgeAt(options.Inception));
 
             //we will use to force the SumTotal to exceed current GivenDirectly's sum
             var currentTotal = retirementAmt + unionDuesAmt;
@@ -259,6 +280,11 @@ namespace NoFuture.Rand.Domus.Opes
                 .ToDictionary(t => t.Item1, t => t.Item2);
         }
 
+        /// <summary>
+        /// Produces the item names to rates for the Judgement Deductions (e.g. alimony paid-out)
+        /// </summary>
+        /// <param name="options"></param>
+        /// <returns></returns>
         protected internal Dictionary<string, double> GetJudgmentDeductionName2RandomRates(OpesOptions options)
         {
             options = options ?? MyOptions;
@@ -269,7 +295,7 @@ namespace NoFuture.Rand.Domus.Opes
             if (options.IsPayingChildSupport &&
                 !options.AnyGivenDirectlyOfNameAndGroup(CHILD_SUPPORT, DeductionGroupNames.JUDGMENTS))
             {
-                var adjPay = AmericanEquations.GetInflationAdjustedAmount(pay, 2015, options.StartDate);
+                var adjPay = AmericanEquations.GetInflationAdjustedAmount(pay, 2015, options.Inception);
                 var adjMonthlyPay = adjPay / 12;
                 var childSupportEquation =
                     AmericanEquations.GetChildSupportMonthlyCostEquation(options.ChildrenAges.Count);
@@ -302,8 +328,8 @@ namespace NoFuture.Rand.Domus.Opes
         {
             options = options ?? MyOptions;
 
-            var pPay = Pondus.GetExpectedAnnualSum(_employment.GetPayAt(options.StartDate)) ?? Pecuniam.Zero;
-            var pay = pPay == Pecuniam.Zero ? GetRandomYearlyIncome(options.StartDate).ToDouble() : pPay.ToDouble();
+            var pPay = Pondus.GetExpectedAnnualSum(_employment.GetPayAt(options.Inception)) ?? Pecuniam.Zero;
+            var pay = pPay == Pecuniam.Zero ? GetRandomYearlyIncome(options.Inception).ToDouble() : pPay.ToDouble();
             return pay;
         }
 
@@ -314,6 +340,30 @@ namespace NoFuture.Rand.Domus.Opes
             return t.ToString();
         }
 
+
+        private double GetRandomValueFrom(double baseRate, double dividedby = 1)
+        {
+            if (baseRate == 0)
+                return 0;
+            var mean = baseRate / (dividedby == 0 ? 1 : dividedby);
+            var stdDev = Math.Round(mean * 0.155, 5);
+            return Etx.RandomValueInNormalDist(mean, stdDev);
+        }
+
+        private double GetRandomEmployeeHealthInsCost(DateTime? atDate)
+        {
+            var totalCost = GetRandomHealthInsCost(atDate);
+            return totalCost * (1 - AmericanData.PERCENT_EMPLY_INS_COST_PAID_BY_EMPLOYER);
+        }
+
+        private double GetRandomHealthInsCost(DateTime? atDate)
+        {
+            var dt = atDate.GetValueOrDefault(DateTime.Now);
+            var mean = AmericanEquations.HealthInsuranceCostPerPerson.SolveForY(dt.ToDouble());
+            var stdDev = Math.Round(mean * 0.155, 2);
+
+            return Etx.RandomValueInNormalDist(mean, stdDev);
+        }
         #endregion
     }
 }

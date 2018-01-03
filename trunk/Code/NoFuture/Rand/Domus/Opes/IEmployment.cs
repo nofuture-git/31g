@@ -34,7 +34,7 @@ namespace NoFuture.Rand.Domus.Opes
         Pondus[] GetPayAt(DateTime? dt);
 
         /// <summary>
-        /// The monetary sum of all current income items
+        /// The monetary sum of of total annual employment income
         /// </summary>
         Pecuniam TotalAnnualPay { get; }
 
@@ -43,6 +43,9 @@ namespace NoFuture.Rand.Domus.Opes
         /// </summary>
         Pecuniam TotalAnnualNetPay { get; }
 
+        /// <summary>
+        /// The deductions associated to this employment
+        /// </summary>
         IDeductions Deductions { get; set; }
     }
 }
