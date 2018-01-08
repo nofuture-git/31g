@@ -6,7 +6,7 @@ namespace NoFuture.Rand.Gov
     [Serializable]
     public class DeathCert : VitalRecord
     {
-        public DeathCert(IPerson person) : base(person)
+        public DeathCert(string personFullName) : base(personFullName)
         {
         }
 

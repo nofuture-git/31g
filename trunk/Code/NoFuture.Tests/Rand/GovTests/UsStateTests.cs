@@ -5,6 +5,7 @@ using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Data.Endo;
 using NoFuture.Rand.Data.Endo.Enums;
+using NoFuture.Rand.Edu;
 using NoFuture.Rand.Gov.TheStates;
 
 namespace NoFuture.Rand.Tests
@@ -109,8 +110,7 @@ namespace NoFuture.Rand.Tests
         [TestMethod]
         public void TestGetUniversities()
         {
-            var testSubject = Gov.UsState.GetStateByPostalCode("AZ");
-            var testResults = testSubject.GetUniversities();
+            var testResults = AmericanUniversity.GetUniversitiesByState("Arizona");
 
             Assert.IsNotNull(testResults);
             Assert.IsTrue(testResults.Any());
@@ -121,8 +121,7 @@ namespace NoFuture.Rand.Tests
         [TestMethod]
         public void TestGetHighSchools()
         {
-            var testSubject = Gov.UsState.GetStateByPostalCode("AZ");
-            var testResults = testSubject.GetHighSchools();
+            var testResults = AmericanHighSchool.GetHighSchoolsByState("Arizona");
 
             Assert.IsNotNull(testResults);
             Assert.AreNotEqual(0, testResults.Length);
@@ -134,7 +133,7 @@ namespace NoFuture.Rand.Tests
         {
             var testStateName = "Maryland";
             var testState = Gov.UsState.GetStateByName(testStateName);
-            var testResult = testState.GetStateData();
+            var testResult = UsStateData.GetStateData(testState.ToString());
             Assert.IsNotNull(testResult);
             Assert.IsNotNull(testResult.AverageEarnings);
             Assert.AreNotEqual(0,testResult.EmploymentSectors.Count);

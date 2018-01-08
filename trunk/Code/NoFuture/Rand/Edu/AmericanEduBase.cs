@@ -10,6 +10,7 @@ namespace NoFuture.Rand.Edu
     public abstract class AmericanEduBase
     {
         public UsState State { get; set; }
+        public string StateName { get; set; }
         public string Name { get; set; }
 
         [EditorBrowsable(EditorBrowsableState.Never)]

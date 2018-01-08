@@ -262,7 +262,7 @@ namespace NoFuture.Rand.Domus.Opes
         protected internal virtual LinearEquation GetAvgEarningPerYear()
         {
             var ca = _amer?.Address?.HomeCityArea as UsCityStateZip;
-            return (ca?.AverageEarnings ?? ca?.State?.GetStateData()?.AverageEarnings) ??
+            return (ca?.AverageEarnings ?? UsStateData.GetStateData(ca?.State?.ToString())?.AverageEarnings) ??
                    AmericanEquations.NatlAverageEarnings;
         }
 

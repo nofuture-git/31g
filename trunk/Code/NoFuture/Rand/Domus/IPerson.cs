@@ -19,7 +19,7 @@ namespace NoFuture.Rand.Domus
         IEnumerable<Uri> NetUri { get; }
         Pneuma.Personality Personality { get; }
         IEducation Education { get; }
-        Spouse Spouse { get; }
+        IRelation Spouse { get; }
         MaritialStatus MaritialStatus { get; }
         IEnumerable<Child> Children { get; }
         IEnumerable<Tuple<KindsOfNames, Parent>> Parents { get; }

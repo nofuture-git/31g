@@ -53,7 +53,7 @@ namespace NoFuture.Rand.Domus
         public Personality Personality => _personality;
         public virtual IEducation Education => GetEducationAt(null);
         public ResidentAddress Address => GetAddressAt(null);
-        public Spouse Spouse => GetSpouseAt(null);
+        public IRelation Spouse => GetSpouseAt(null);
         public int Age => GetAgeAt(null);
         public MaritialStatus MaritialStatus => GetMaritalStatusAt(null);
         public IEnumerable<Child> Children => _children;
@@ -98,13 +98,6 @@ namespace NoFuture.Rand.Domus
             }
         }
 
-        #endregion
-
-        #region ctors
-        protected Person(DateTime dob)
-        {
-            _birthCert = new BirthCert(this) { DateOfBirth = dob };
-        }
         #endregion
 
         #region methods

@@ -10,6 +10,7 @@ using NoFuture.Rand.Data.Sp.Enums;
 using NoFuture.Rand.Domus;
 using NoFuture.Rand.Domus.Opes;
 using NoFuture.Rand.Domus.Pneuma;
+using NoFuture.Rand.Gov;
 using NoFuture.Rand.Gov.Fed;
 using NoFuture.Rand.Gov.Nhtsa;
 using NoFuture.Shared.Core;
@@ -516,6 +517,33 @@ namespace NoFuture.Rand.Data
             var dtd = dt.GetValueOrDefault(DateTime.Now);
             var accountId = new AccountId(Etx.GetRandomRChars(true));
             return new SavingsAccount(accountId, dtd);
+        }
+
+        /*
+         TODO static methods from Domus
+         */
+
+        /// <summary>
+        /// Generates a <see cref="DeathCert"/> at random based on the given <see cref="p"/>
+        /// </summary>
+        /// <param name="p"></param>
+        /// <param name="nullOnFutureDate">
+        /// Switch parameter to have null returned whenever the random date-of-death is 
+        /// in the future.  
+        /// </param>
+        /// <returns></returns>
+        public static DeathCert GetRandomDeathCert(IPerson p, bool nullOnFutureDate = true)
+        {
+            if (p?.BirthCert == null)
+                return null;
+
+            var deathDate = AmericanUtil.GetDeathDate(p.BirthCert.DateOfBirth, p.MyGender);
+
+            if (nullOnFutureDate && deathDate > DateTime.Now)
+                return null;
+
+            var manner = Etx.DiscreteRange(AmericanData.MannerOfDeathAvgs);
+            return new AmericanDeathCert(manner, string.Join(" ", p.FirstName, p.LastName)) { DateOfDeath = deathDate };
         }
     }
 }

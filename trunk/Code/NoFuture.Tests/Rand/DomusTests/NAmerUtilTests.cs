@@ -72,7 +72,7 @@ namespace NoFuture.Rand.Tests
             Assert.AreEqual(70.0, testResult);
 
             var testState = NoFuture.Rand.Gov.UsState.GetStateByPostalCode("CA");
-            var testStateData = testState.GetStateData();
+            var testStateData =  UsStateData.GetStateData(testState.ToString());
             Assert.IsNotNull(testStateData);
 
             //percent-highschool-grad="80.6"
@@ -88,7 +88,7 @@ namespace NoFuture.Rand.Tests
 
             testState = NoFuture.Rand.Gov.UsState.GetStateByPostalCode("ID");
             Assert.IsNotNull(testState);
-            Assert.IsNotNull(testState.GetStateData());
+            Assert.IsNotNull(UsStateData.GetStateData(testState.ToString()));
 
             testResult = AmericanUtil.SolvePercentGradByStateAndRace(testState, NorthAmericanRace.Asian, OccidentalEdu.Bachelor | OccidentalEdu.Grad);
             //percent-college-grad="23.9"

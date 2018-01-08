@@ -85,7 +85,7 @@ namespace NoFuture.Rand.Domus.Opes
             var usCityArea = amer?.Address?.HomeCityArea as UsCityStateZip;
             var edu = amer.Education?.EduFlag ?? (OccidentalEdu.HighSchool | OccidentalEdu.Grad);
             var race = amer.Race;
-            var region = usCityArea?.State?.GetStateData()?.Region ?? AmericanRegion.Midwest;
+            var region = UsStateData.GetStateData(usCityArea?.State?.ToString())?.Region ?? AmericanRegion.Midwest;
 
             HomeDebtFactor = GetFactor(FactorTables.HomeDebt, edu, race, region, amer.Age, amer.MyGender,
                 amer.MaritialStatus);

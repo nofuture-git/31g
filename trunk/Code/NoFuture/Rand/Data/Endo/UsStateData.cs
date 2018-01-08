@@ -26,8 +26,6 @@ namespace NoFuture.Rand.Data.Endo
 
         #region ctor
 
-        public UsStateData(UsState state) : this(state.ToString()) {  }
-
         public UsStateData(string name)
         {
             const string REGION = "region";
@@ -80,6 +78,19 @@ namespace NoFuture.Rand.Data.Endo
         #endregion
 
         #region methods
+
+
+        /// <summary>
+        /// Uses the data in <see cref="TreeData.UsStateData"/>
+        /// </summary>
+        /// <returns></returns>
+        public static UsStateData GetStateData(string stateName)
+        {
+            if (string.IsNullOrWhiteSpace(stateName))
+                return null;
+            return new UsStateData(stateName);
+        }
+
         protected void GetPropertyCrimeData()
         {
 

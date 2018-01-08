@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Xml;
 using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Data;
@@ -43,6 +45,7 @@ namespace NoFuture.Rand.Edu
             return _dfHs ?? (_dfHs = new AmericanHighSchool
             {
                 State = UsState.GetStateByPostalCode("DC"),
+                StateName = "",
                 Name = "G.E.D.",
                 RacePercents = AmericanRacePercents.GetNatlAvg(),
                 PostalCode = "20024",
@@ -50,6 +53,38 @@ namespace NoFuture.Rand.Edu
                 UrbanCentric = UrbanCentric.City | UrbanCentric.Large,
                 TotalStudents = -1
             });
+        }
+
+        /// <summary>
+        /// Uses the data in <see cref="TreeData.AmericanHighSchoolData"/>.
+        /// </summary>
+        public static AmericanHighSchool[] GetHighSchoolsByState(string stateName)
+        {
+
+            if(string.IsNullOrWhiteSpace(stateName))
+                return new AmericanHighSchool[] { };
+
+            if (TreeData.AmericanHighSchoolData == null)
+                return new AmericanHighSchool[] { };
+
+            var elements =
+                TreeData.AmericanHighSchoolData.SelectNodes($"//state[@name='{stateName}']//high-school");
+            if (elements == null || elements.Count <= 0)
+                return new AmericanHighSchool[] { };
+
+            var tempList = new List<AmericanHighSchool>();
+            foreach (var elem in elements)
+            {
+                if (TryParseXml(elem as XmlElement, out var hsOut))
+                {
+                    hsOut.StateName = stateName;
+                    tempList.Add(hsOut);
+                }
+            }
+            if (tempList.Count == 0)
+                return new AmericanHighSchool[] { };
+
+            return tempList.ToArray();
         }
 
         public static bool TryParseXml(XmlElement node, out AmericanHighSchool hs)

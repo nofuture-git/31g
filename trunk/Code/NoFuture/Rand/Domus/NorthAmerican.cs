@@ -40,12 +40,18 @@ namespace NoFuture.Rand.Domus
         /// </summary>
         /// <param name="dob"></param>
         /// <param name="myGender"></param>
-        public NorthAmerican(DateTime dob, Gender myGender) : base(dob)
+        public NorthAmerican(DateTime dob, Gender myGender)
         {
-            _birthCert = new AmericanBirthCert(this) { DateOfBirth = dob, BirthPlace = CityArea.American()};
+            var dobAddr = CityArea.American();
+            _birthCert = new AmericanBirthCert(FullName)
+            {
+                DateOfBirth = dob,
+                City = dobAddr.City,
+                State = dobAddr.State?.StateAbbrv
+            };
 
             //almost always returns null
-            _deathCert = AmericanDeathCert.GetRandomDeathCert(this);
+            _deathCert = Facit.GetRandomDeathCert(this);
             _myGender = myGender;
 
             var fname = _myGender != Gender.Unknown
@@ -117,8 +123,8 @@ namespace NoFuture.Rand.Domus
         {
             _mother = mother;
             _father = father;
-            _birthCert.Mother = _mother;
-            _birthCert.Father = _father;
+            _birthCert.MotherName = string.Join(" ", _mother?.FirstName, _mother?.LastName);
+            _birthCert.FatherName = string.Join(" ", _father?.FirstName, _father?.LastName);
             var nAmerMother = _mother as NorthAmerican;
             if (nAmerMother == null)
                 return;
@@ -129,7 +135,8 @@ namespace NoFuture.Rand.Domus
                              nAmerFather?.GetAddressAt(dob)?.HomeCityArea as UsCityStateZip ??
                              CityArea.American();
 
-            americanBirthCert.BirthPlace = birthPlace;
+            americanBirthCert.City = birthPlace.City;
+            americanBirthCert.State = birthPlace.State?.StateAbbrv;
             Race = nAmerMother.Race;
             AddEmailAddress();
         }
@@ -388,7 +395,12 @@ namespace NoFuture.Rand.Domus
             var dlFormats = amerCsz?.State.DriversLicenseFormats;
             if (dlFormats == null || !dlFormats.Any())
                 return null;
-            _dl = dlFormats[0].IssueNewLicense(this, dt);
+            _dl = dlFormats[0].IssueNewLicense(dt);
+            _dl.Dob = BirthCert.DateOfBirth;
+            _dl.FullLegalName = string.Join(" ", FirstName.ToUpper(), MiddleName.ToUpper(),
+                LastName.ToUpper());
+            _dl.Gender = MyGender;
+            _dl.PrincipalResidence = Address.ToString();
             return _dl;
         }
 
@@ -483,14 +495,18 @@ namespace NoFuture.Rand.Domus
 
             var myMother = (NorthAmerican) _mother;
             myMother.Race = Race;
-            BirthCert.Mother = _mother;
+            BirthCert.MotherName = string.Join(" ", _mother.FirstName, _mother.LastName);
 
             //add self as one of mother's children
             myMother._children.Add(new Child(this));
 
             //TODO reslove this using data from census.gov
-            ((AmericanBirthCert) BirthCert).BirthPlace =
-                myMother.GetAddressAt(_birthCert.DateOfBirth)?.HomeCityArea as UsCityStateZip;
+            var birthCity = myMother.GetAddressAt(_birthCert.DateOfBirth)?.HomeCityArea as UsCityStateZip;
+            if (birthCity != null)
+            {
+                ((AmericanBirthCert) BirthCert).City = birthCity.City;
+                ((AmericanBirthCert)BirthCert).State = birthCity.State.StateAbbrv;
+            }
 
             //resolve mother's spouse(s)
             var motherMaritalStatus = AmericanUtil.GetMaritialStatus(_mother.BirthCert.DateOfBirth, Gender.Female);
@@ -517,7 +533,7 @@ namespace NoFuture.Rand.Domus
             //mother will receive last name of spouse
             myFather.Race = Race;
             _father = myFather;
-            _birthCert.Father = _father;
+            _birthCert.FatherName = string.Join(" ", _father.FirstName, _father.LastName);
 
             //last name assigned from birth father
             if (_father != null)
@@ -562,7 +578,7 @@ namespace NoFuture.Rand.Domus
                 var d = Convert.ToInt32(Math.Round(GetAgeAt(null) * 0.15));
                 myMaritialStatus = MaritialStatus.Widowed;
                 spouse.DeathCert = spouse.DeathCert ??
-                                   new AmericanDeathCert(AmericanDeathCert.MannerOfDeath.Natural, spouse)
+                                   new AmericanDeathCert(AmericanDeathCert.MannerOfDeath.Natural, spouse.FullName)
                                    {
                                        DateOfDeath = Etx.Date(Etx.IntNumber(1, d)*-1, null)
                                    };
@@ -838,7 +854,7 @@ namespace NoFuture.Rand.Domus
                 if (_myGender == Gender.Female && DateTime.Now >= marriedOn)
                 {
                     if (LastName != null && !AnyOfKindOfName(KindsOfNames.Maiden))
-                        UpsertName(KindsOfNames.Maiden, BirthCert.Father?.LastName ?? LastName);
+                        UpsertName(KindsOfNames.Maiden, BirthCert.GetFatherLastName() ?? LastName);
 
                     LastName = spouse.LastName;
                 }

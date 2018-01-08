@@ -165,7 +165,7 @@ namespace NoFuture.Rand.Domus
 
             //get hs grad data for state amer lived in when 18
             var hsGradData =
-                homeCityArea.State.GetStateData()
+                UsStateData.GetStateData(homeCityArea.State.ToString())
                     .PercentOfGrads.FirstOrDefault(x => x.Item1 == (OccidentalEdu.HighSchool | OccidentalEdu.Grad));
 
             //determine prob. of having hs grad
@@ -203,7 +203,7 @@ namespace NoFuture.Rand.Domus
 
             //get college grad data for same state as hs
             var univGradData =
-                homeState.GetStateData()
+                UsStateData.GetStateData(homeState.ToString())
                     .PercentOfGrads.FirstOrDefault(x => x.Item1 == (OccidentalEdu.Bachelor | OccidentalEdu.Grad));
 
             var bachelorGradRate = univGradData?.Item2 ??
@@ -367,11 +367,10 @@ namespace NoFuture.Rand.Domus
             IUniversity univ = null;
             int pick = 0;
             //79 percent attend home state is a guess
-            if (Etx.TryBelowOrAt(79, Etx.Dice.OneHundred) && 
-                homeState != null && homeState.GetUniversities().Any())
+            if (Etx.TryBelowOrAt(79, Etx.Dice.OneHundred) && homeState != null)
             {
                 //pick a univ from the home state
-                var stateUnivs = homeState.GetUniversities();
+                var stateUnivs = AmericanUniversity.GetUniversitiesByState(homeState.GetType().Name);
                 if (!stateUnivs.Any())
                     return null;
                 pick = Etx.IntNumber(0, stateUnivs.Length - 1);
@@ -402,12 +401,13 @@ namespace NoFuture.Rand.Domus
 
         public static AmericanHighSchool GetAmericanHighSchool(UsCityStateZip hca)
         {
-            if (hca == null)
+            if (hca?.State == null)
                 return AmericanHighSchool.GetDefaultHs();
 
             //get all hs for the state
-            var hshs = hca.State?.GetHighSchools() ??
-                       UsState.GetStateByPostalCode(UsCityStateZip.DF_STATE_ABBREV).GetHighSchools();
+
+            var hshs = AmericanHighSchool.GetHighSchoolsByState(hca.State.GetType().Name) ??
+                       AmericanHighSchool.GetHighSchoolsByState(UsCityStateZip.DF_STATE_ABBREV);
 
             //first try city, then state, last natl
             var hs = hshs.FirstOrDefault(x => x.PostalCode == hca.AddressData?.PostalCode) ??

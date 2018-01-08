@@ -6,12 +6,12 @@ namespace NoFuture.Rand.Gov
     [Serializable]
     public abstract class VitalRecord : IVitalRecord
     {
-        protected VitalRecord(IPerson person)
+        protected VitalRecord(string personFullName)
         {
-            Value = person;
+            PersonFullName = personFullName;
         }
         public string Src { get; set; }
         public abstract string Abbrev { get; }
-        public IPerson Value { get; set; }
+        public string PersonFullName { get; set; }
     }
 }

@@ -433,16 +433,13 @@ namespace NoFuture.Rand.Domus
             p = edu >= OccidentalEdu.Bachelor ? AmericanUniversity.NatlGradRate() : AmericanHighSchool.NatlGradRate();
             var stateAvg = p.National;
             var natlAvg = p.National;
-            if (state?.GetStateData() != null)
+            var stateData = UsStateData.GetStateData(state?.ToString());
+            if (stateData?.PercentOfGrads != null && stateData.PercentOfGrads.Count > 0)
             {
-                var stateData = state.GetStateData();
-                if (stateData.PercentOfGrads != null && stateData.PercentOfGrads.Count > 0)
+                var f = stateData.PercentOfGrads.FirstOrDefault(x => x.Item1 == edu);
+                if (f != null)
                 {
-                    var f = stateData.PercentOfGrads.FirstOrDefault(x => x.Item1 == edu);
-                    if (f != null)
-                    {
-                        stateAvg = Math.Round(f.Item2, 1);
-                    }
+                    stateAvg = Math.Round(f.Item2, 1);
                 }
             }
 

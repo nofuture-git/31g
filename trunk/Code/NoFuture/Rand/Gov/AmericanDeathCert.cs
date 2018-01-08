@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using NoFuture.Rand.Core;
-using NoFuture.Rand.Domus;
 
 namespace NoFuture.Rand.Gov
 {
@@ -24,7 +22,7 @@ namespace NoFuture.Rand.Gov
             CouldNotBeDetermined
         }
 
-        public AmericanDeathCert(MannerOfDeath mannerOfDeath, IPerson person) : base(person)
+        public AmericanDeathCert(MannerOfDeath mannerOfDeath, string personFullNamen) : base(personFullNamen)
         {
             CauseOfDeath = new Stack<string>();
             Category = mannerOfDeath;
@@ -43,27 +41,5 @@ namespace NoFuture.Rand.Gov
             return string.Join(" ", base.ToString(), Category);
         }
 
-        /// <summary>
-        /// Generates a <see cref="DeathCert"/> at random based on the given <see cref="p"/>
-        /// </summary>
-        /// <param name="p"></param>
-        /// <param name="nullOnFutureDate">
-        /// Switch parameter to have null returned whenever the random date-of-death is 
-        /// in the future.  
-        /// </param>
-        /// <returns></returns>
-        public static DeathCert GetRandomDeathCert(IPerson p, bool nullOnFutureDate = true)
-        {
-            if (p?.BirthCert == null)
-                return null;
-
-            var deathDate = AmericanUtil.GetDeathDate(p.BirthCert.DateOfBirth, p.MyGender);
-
-            if (nullOnFutureDate && deathDate > DateTime.Now)
-                return null;
-
-            var manner = Etx.DiscreteRange(AmericanData.MannerOfDeathAvgs);
-            return new AmericanDeathCert(manner, p) {DateOfDeath = deathDate};
-        }
     }
 }

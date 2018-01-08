@@ -419,7 +419,7 @@ namespace NoFuture.Rand.Data.Endo
                         : UrbanCentric.City | UrbanCentric.Small;
                 }
             }
-            AverageEarnings = GetAvgEarningsPerYear(cityNode) ?? _myState?.GetStateData()?.AverageEarnings;
+            AverageEarnings = GetAvgEarningsPerYear(cityNode) ?? UsStateData.GetStateData(_myState.ToString())?.AverageEarnings;
             if(pickSuburbAtRandom)
                 GetSuburbCityName(cityNode);
         }

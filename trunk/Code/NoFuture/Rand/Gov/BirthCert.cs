@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using NoFuture.Rand.Domus;
 
 namespace NoFuture.Rand.Gov
@@ -6,15 +7,21 @@ namespace NoFuture.Rand.Gov
     [Serializable]
     public class BirthCert : VitalRecord
     {
-        public BirthCert(IPerson person)
-            : base(person)
+        public BirthCert(string personFullName)
+            : base(personFullName)
         {
         }
 
         public override string Abbrev => "Birth certificate";
-        public IPerson Mother { get; set; }
-        public IPerson Father { get; set; }
+        public virtual string MotherName { get; set; }
+        public virtual string FatherName { get; set; }
         public DateTime DateOfBirth { get; set; }
+
+        public string GetFatherLastName()
+        {
+            var fn = FatherName ?? "";
+            return fn.Split(' ').Last();
+        }
 
         public override string ToString()
         {

@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Xml;
 using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Data;
 using NoFuture.Rand.Data.Endo;
@@ -11,7 +13,6 @@ namespace NoFuture.Rand.Edu
     [Serializable]
     public class AmericanUniversity : AmericanEduBase, IUniversity
     {
-
         public const double DF_NATL_BACHELORS_AVG = 33.0;
 
         /// <summary>
@@ -46,6 +47,39 @@ namespace NoFuture.Rand.Edu
         public static AmericanRacePercents NatlGradRate()
         {
             return GetNatlGradRates(TreeData.AmericanUniversityData, DF_NATL_BACHELORS_AVG);
+        }
+
+        public static AmericanUniversity[] GetUniversitiesByState(string stateName)
+        {
+            if(string.IsNullOrWhiteSpace(stateName))
+                return new AmericanUniversity[] { };
+
+            //this will never pass so avoid the exception
+            if (TreeData.AmericanUniversityData == null)
+                return new AmericanUniversity[] { };
+
+            var elements =
+                TreeData.AmericanUniversityData.SelectSingleNode(
+                    $"//state[@name='{stateName.ToUpper()}']") ??
+                TreeData.AmericanUniversityData.SelectSingleNode($"//state[@name='{stateName}']");
+            if (elements == null || !elements.HasChildNodes)
+                return new AmericanUniversity[] { };
+
+            var tempList = new List<AmericanUniversity>();
+            foreach (var elem in elements)
+            {
+                AmericanUniversity univOut = null;
+                if (TryParseXml(elem as XmlElement, out univOut))
+                {
+                    univOut.StateName = stateName;
+                    tempList.Add(univOut);
+                }
+            }
+
+            if (tempList.Count == 0)
+                return new AmericanUniversity[] { };
+
+            return tempList.ToArray();
         }
 
         public static bool TryParseXml(System.Xml.XmlElement node, out AmericanUniversity univ)

@@ -1,11 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Xml;
 using NoFuture.Rand.Core;
-using NoFuture.Rand.Data;
-using NoFuture.Rand.Data.Endo;
-using NoFuture.Rand.Edu;
 using NoFuture.Rand.Gov.TheStates;
 using NoFuture.Util.Core;
 
@@ -22,9 +18,6 @@ namespace NoFuture.Rand.Gov
         #region fields
         protected readonly string _stateAbbrv;
         protected DriversLicense[] dlFormats;
-        protected AmericanUniversity[] universities;
-        protected AmericanHighSchool[] highSchools;
-        protected UsStateData myData;
         #endregion
 
         #region ctor
@@ -80,88 +73,6 @@ namespace NoFuture.Rand.Gov
             if (dlFormats == null || dlFormats.Length <= 0)
                 return false;
             return dlFormats.Any(dlf => dlf.Validate(dlnumber));
-        }
-
-        /// <summary>
-        /// Uses the data presented from <see cref="TreeData.AmericanUniversityData"/>.
-        /// </summary>
-        public virtual AmericanUniversity[] GetUniversities()
-        {
-            //only resolve this once per instance
-            if (universities != null && universities.Any())
-                return universities;
-
-            //this will never pass so avoid the exception
-            if (TreeData.AmericanUniversityData == null)
-                return new AmericanUniversity[] { };
-
-            var elements =
-                TreeData.AmericanUniversityData.SelectSingleNode(
-                    $"//state[@name='{GetType().Name.ToUpper()}']") ??
-                TreeData.AmericanUniversityData.SelectSingleNode($"//state[@name='{GetType().Name}']");
-            if (elements == null || !elements.HasChildNodes)
-                return new AmericanUniversity[] { };
-
-            var tempList = new List<AmericanUniversity>();
-            foreach (var elem in elements)
-            {
-                AmericanUniversity univOut = null;
-                if (AmericanUniversity.TryParseXml(elem as XmlElement, out univOut))
-                {
-                    univOut.State = this;
-                    tempList.Add(univOut);
-                }
-            }
-
-            if (tempList.Count == 0)
-                return new AmericanUniversity[] { };
-
-            universities = tempList.ToArray();
-            return universities;
-        }
-
-        /// <summary>
-        /// Uses the data in <see cref="TreeData.AmericanHighSchoolData"/>.
-        /// </summary>
-        public virtual AmericanHighSchool[] GetHighSchools()
-        {
-            //only resolve this once per instance
-            if (highSchools != null && highSchools.Any())
-                return highSchools;
-
-            if (TreeData.AmericanHighSchoolData == null)
-                return new AmericanHighSchool[] { };
-            var elements =
-                TreeData.AmericanHighSchoolData.SelectNodes($"//state[@name='{GetType().Name}']//high-school");
-            if (elements == null || elements.Count <= 0)
-                return new AmericanHighSchool[] { };
-
-            var tempList = new List<AmericanHighSchool>();
-            foreach (var elem in elements)
-            {
-                if (AmericanHighSchool.TryParseXml(elem as XmlElement, out var hsOut))
-                {
-                    hsOut.State = this;
-                    tempList.Add(hsOut);
-                }
-            }
-            if (tempList.Count == 0)
-                return new AmericanHighSchool[] { };
-
-            highSchools = tempList.ToArray();
-            return highSchools;
-        }
-
-        /// <summary>
-        /// Uses the data in <see cref="TreeData.UsStateData"/>
-        /// </summary>
-        /// <returns></returns>
-        public virtual UsStateData GetStateData()
-        {
-            if (myData != null)
-                return myData;
-            myData = new UsStateData(this);
-            return myData;
         }
 
         public override bool Equals(object obj)
