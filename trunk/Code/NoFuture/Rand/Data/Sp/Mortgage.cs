@@ -1,7 +1,6 @@
 ﻿using System;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Data.Sp.Cc;
-using NoFuture.Rand.Domus;
 using NoFuture.Shared.Core;
 using NoFuture.Util.Core.Math;
 
@@ -11,6 +10,11 @@ namespace NoFuture.Rand.Data.Sp
     public class Mortgage : SecuredFixedRateLoan
     {
         #region fields
+        /// <summary>
+        /// Src https://data.worldbank.org/indicator/NY.GDP.MKTP.KD 1960-2016
+        /// </summary>
+        public const double AVG_GDP_GROWTH_RATE = 0.031046655;
+
         private readonly int _termInYears;
         private float _minPayRate;
         private float _rate;
@@ -53,9 +57,9 @@ namespace NoFuture.Rand.Data.Sp
         /// <summary>
         /// The average estimated rate at which the 
         /// value of the real-estate is 
-        /// expected to grow (default is <see cref="AmericanData.AVG_GDP_GROWTH_RATE"/>).
+        /// expected to grow (default is <see cref="AVG_GDP_GROWTH_RATE"/>).
         /// </summary>
-        public double ExpectedAppreciationRate { get; set; } = AmericanData.AVG_GDP_GROWTH_RATE;
+        public double ExpectedAppreciationRate { get; set; } = AVG_GDP_GROWTH_RATE;
 
         /// <summary>
         /// The monthly mortgage payment.

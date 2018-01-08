@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using NoFuture.Rand.Com;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Data.Sp.Enums;
 
@@ -25,19 +24,10 @@ namespace NoFuture.Rand.Data.Sp
 
         public bool IsJointAcct { get; set; }
         public virtual Identifier Id { get; set; }
-        public FinancialFirm Bank { get; set; }
 
         #endregion
 
         #region methods
-
-        public override string ToString()
-        {
-            var s = string.Join(" ", GetType().Name, Bank, Id.ValueLastFour());
-            if (My?.ExpectedValue != null && My.ExpectedValue != Pecuniam.Zero)
-                s = string.Join(" ",s, base.ToString());
-            return s;
-        }
 
         public override Pecuniam GetValueAt(DateTime dt)
         {
@@ -103,8 +93,8 @@ namespace NoFuture.Rand.Data.Sp
                 if (amt.Amount < 0.01M)
                     break;
             }
-            fromAccount.Pop(dt, amt, Mereo.GetMereoById(fromAccount.Id), Pecuniam.Zero);
-            toAccount.Push(dt.AddMilliseconds(100), amt, Mereo.GetMereoById(toAccount.Id), Pecuniam.Zero);
+            fromAccount.Pop(dt, amt,null, Pecuniam.Zero);
+            toAccount.Push(dt.AddMilliseconds(100), amt, null, Pecuniam.Zero);
         }
 
         #endregion

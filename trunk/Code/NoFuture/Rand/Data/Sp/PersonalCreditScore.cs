@@ -1,6 +1,5 @@
 ﻿using System;
 using NoFuture.Rand.Core;
-using NoFuture.Rand.Domus;
 
 namespace NoFuture.Rand.Data.Sp
 {
@@ -19,26 +18,27 @@ namespace NoFuture.Rand.Data.Sp
         #endregion
 
         #region fields
-        private readonly NorthAmerican _american;
         internal readonly double FicoBaseValue;
         private string _ficoScore;
         #endregion
 
         #region ctor
-        public PersonalCreditScore(NorthAmerican american)
+        public PersonalCreditScore()
         {
             //need this to stay same for object lifecycle so repeated calls return same result.
             FicoBaseValue = Etx.RandomValueInNormalDist(AVG_AMERICAN_FICO_SCORE, STD_DEV_FICO_SCORE);
-            if (american == null)
-            {
-                return;
-            }
-            _american = american;
         }
         #endregion
 
         #region properties
         public override string Abbrev => "FICO";
+
+        //int GetAgeAt(DateTime? atTime)
+        public Func<DateTime?, int> GetAgeAt { get; set; }
+        public double ConscientiousnessZscore { get; set; }
+        public double OpennessZscore { get; set; }
+        //double GetUndisciplinedPenalty()
+        //double GetInconsistentPenalty()
 
         public override string Value
         {
@@ -103,18 +103,18 @@ namespace NoFuture.Rand.Data.Sp
         protected internal double GetAgePenalty(DateTime? dt)
         {
             Func<double, double> ageCalc = d => Math.Pow(Math.E, (d - 9.5)/-9.5);
-            return _american == null ? 0D : ageCalc(_american.GetAgeAt(dt)) * (STD_DEV_FICO_SCORE * -1);
+            return GetAgeAt == null ? 0D : ageCalc(GetAgeAt(dt)) * (STD_DEV_FICO_SCORE * -1);
         }
 
         protected internal double GetUndisciplinedPenalty()
         {
 
-            return _american?.Personality?.Conscientiousness?.Value?.Zscore * STD_DEV_FICO_SCORE ?? 0D;
+            return ConscientiousnessZscore * STD_DEV_FICO_SCORE;
         }
 
         protected internal double GetInconsistentPenalty()
         {
-            return _american?.Personality?.Openness?.Value?.Zscore * (STD_DEV_FICO_SCORE * -1) ?? 0D;
+            return OpennessZscore * (STD_DEV_FICO_SCORE * -1);
         }
         #endregion
     }

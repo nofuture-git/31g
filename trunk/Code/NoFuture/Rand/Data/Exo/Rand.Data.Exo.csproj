@@ -145,6 +145,10 @@
       <Project>{4e011849-d274-4f79-96af-549f67c46d80}</Project>
       <Name>Rand.Data.Source</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Sp\Rand.Data.Sp.csproj">
+      <Project>{193f1df6-f471-4164-b5bb-8752c306df7b}</Project>
+      <Name>Rand.Data.Sp</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

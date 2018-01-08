@@ -4,7 +4,6 @@ using System.Linq;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Data.Sp.Enums;
-using NoFuture.Rand.Domus;
 
 namespace NoFuture.Rand.Data.Sp
 {
@@ -63,9 +62,9 @@ namespace NoFuture.Rand.Data.Sp
             foreach (var item in items)
             {
                 if (item?.My?.ExpectedValue == null ||
-                    !AmericanData.Interval2AnnualPayMultiplier.ContainsKey(item.My.Interval))
+                    !Mereo.Interval2AnnualPayMultiplier.ContainsKey(item.My.Interval))
                     continue;
-                sum += item.My.ExpectedValue.Amount * AmericanData.Interval2AnnualPayMultiplier[item.My.Interval];
+                sum += item.My.ExpectedValue.Amount * Mereo.Interval2AnnualPayMultiplier[item.My.Interval];
             }
             return new Pecuniam(sum);
         }

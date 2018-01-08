@@ -2,10 +2,7 @@
 using System.Collections.Generic;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
-using NoFuture.Rand.Data.Sp.Cc;
 using NoFuture.Rand.Data.Sp.Enums;
-using NoFuture.Rand.Domus;
-using NoFuture.Rand.Gov.Nhtsa;
 
 namespace NoFuture.Rand.Data.Sp
 {
@@ -16,6 +13,7 @@ namespace NoFuture.Rand.Data.Sp
     [Serializable]
     public class Mereo : VocaBase, IMereo
     {
+        private static Dictionary<Interval, int> _interval2Multiplier;
         private readonly List<string> _eg = new List<string>();
         private Pecuniam _expectedValue = Pecuniam.Zero;
         public Mereo()
@@ -71,7 +69,7 @@ namespace NoFuture.Rand.Data.Sp
                 return;
 
             var hasExpectedValue = ExpectedValue != null && ExpectedValue != Pecuniam.Zero;
-            var hasMultiplier = AmericanData.Interval2AnnualPayMultiplier.ContainsKey(Interval);
+            var hasMultiplier = Interval2AnnualPayMultiplier.ContainsKey(Interval);
 
             if (!hasExpectedValue || !hasMultiplier)
             {
@@ -79,7 +77,7 @@ namespace NoFuture.Rand.Data.Sp
                 return;
             }
 
-            var multiplier = AmericanData.Interval2AnnualPayMultiplier[Interval];
+            var multiplier = Interval2AnnualPayMultiplier[Interval];
             ExpectedValue = (ExpectedValue.ToDouble() * multiplier).ToPecuniam();
             Interval = Interval.Annually;
         }
@@ -88,26 +86,34 @@ namespace NoFuture.Rand.Data.Sp
         {
             return new Tuple<string, string, Pecuniam>(Name, GetName(KindsOfNames.Group), ExpectedValue).ToString();
         }
-
-        public static IMereo GetMereoById(Identifier property, string prefix = null)
+        /// <summary>
+        /// A general table to align an interval to some annual multiplier
+        /// (e.g. Hourly means 52 weeks * 40 hours per week = 2080)
+        /// </summary>
+        public static Dictionary<Interval, int> Interval2AnnualPayMultiplier
         {
-            switch (property)
+            get
             {
-                case null:
-                    return new Mereo(prefix);
-                case ResidentAddress residenceLoan:
-                    return residenceLoan.IsLeased
-                        ? new Mereo(String.Join(" ", prefix, "Rent Payment"))
-                        : new Mereo(String.Join(" ", prefix, "Mortgage Payment"));
-                case Vin _:
-                    return new Mereo(String.Join(" ", prefix, "Vehicle Payment"));
-                case CreditCardNumber _:
-                    return new Mereo(String.Join(" ", prefix, "Cc Payment"));
-                case AccountId _:
-                    return new Mereo(String.Join(" ", prefix, "Bank Account Transfer"));
-            }
+                if (_interval2Multiplier != null)
+                    return _interval2Multiplier;
 
-            return new Mereo(prefix);
+                _interval2Multiplier = new Dictionary<Interval, int>
+                {
+                    {Interval.OnceOnly, 1},
+                    {Interval.Hourly, 2080},
+                    {Interval.Daily, 260},
+                    {Interval.Weekly, 52},
+                    {Interval.BiWeekly, 26},
+                    {Interval.SemiMonthly, 24},
+                    {Interval.Monthly, 12},
+                    {Interval.Quarterly, 4},
+                    {Interval.SemiAnnually, 2},
+                    {Interval.Annually, 1},
+                };
+
+                return _interval2Multiplier;
+            }
         }
+
     }
 }

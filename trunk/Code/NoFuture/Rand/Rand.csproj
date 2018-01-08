@@ -82,43 +82,9 @@
     <Compile Include="Data\Endo\Enums\ViolentCrime.cs" />
     <Compile Include="Data\Endo\Xml2XmlIdentifier.cs" />
     <Compile Include="Data\Endo\XRefGroup.cs" />
-    <Compile Include="Data\Sp\AccountId.cs" />
-    <Compile Include="Data\Sp\Cc\AmexCc.cs" />
-    <Compile Include="Data\Sp\CheckingAccount.cs" />
     <Compile Include="Com\CommercialFinancialData.cs" />
-    <Compile Include="Data\Sp\Enums\ClosedCondition.cs" />
-    <Compile Include="Data\Sp\Cc\CreditCardAccount.cs" />
-    <Compile Include="Data\Sp\Cc\CreditCardNumber.cs" />
-    <Compile Include="Data\Sp\Enums\CurrencyAbbrev.cs" />
-    <Compile Include="Data\Sp\DepositAccount.cs" />
-    <Compile Include="Data\Sp\Cc\DiscoverCc.cs" />
-    <Compile Include="Data\Sp\Enums\FormOfCredit.cs" />
-    <Compile Include="Data\Sp\Cc\MasterCardCc.cs" />
-    <Compile Include="Data\Sp\Enums\PastDue.cs" />
-    <Compile Include="Data\Sp\FixedRateLoan.cs" />
-    <Compile Include="Data\Sp\IAccount.cs" />
-    <Compile Include="Data\Sp\IAsset.cs" />
-    <Compile Include="Data\Sp\IBalance.cs" />
-    <Compile Include="Data\Sp\Cc\ICreditCard.cs" />
-    <Compile Include="Data\Sp\ILoan.cs" />
-    <Compile Include="Data\Sp\IReceivable.cs" />
-    <Compile Include="Data\Sp\ITradeLine.cs" />
-    <Compile Include="Data\Sp\ITransaction.cs" />
-    <Compile Include="Data\Sp\ITransactionable.cs" />
-    <Compile Include="Data\Sp\LoanBase.cs" />
-    <Compile Include="Data\Sp\Mortgage.cs" />
-    <Compile Include="Data\Sp\PecuniamExtensions.cs" />
-    <Compile Include="Data\Sp\PersonalCreditScore.cs" />
-    <Compile Include="Data\Sp\SavingsAccount.cs" />
-    <Compile Include="Data\Sp\Enums\SecurityIssueGroup.cs" />
-    <Compile Include="Data\Sp\Enums\SpStatus.cs" />
-    <Compile Include="Data\Sp\SecuredFixedRateLoan.cs" />
     <Compile Include="Com\AssetsSummary.cs" />
     <Compile Include="Com\IncomeSummary.cs" />
-    <Compile Include="Data\Sp\Cc\VisaCc.cs" />
-    <Compile Include="Data\Sp\TransactionComparer.cs" />
-    <Compile Include="Data\Sp\TransactionHistory.cs" />
-    <Compile Include="Data\Sp\VariableRateLoan.cs" />
     <Compile Include="Domus\US\AmericanData.cs" />
     <Compile Include="Domus\US\AmericanCollegeStudent.cs" />
     <Compile Include="Domus\US\AmericanHighSchoolStudent.cs" />
@@ -127,16 +93,12 @@
     <Compile Include="Domus\Opes\IDeductions.cs" />
     <Compile Include="Domus\Opes\IEmployment.cs" />
     <Compile Include="Domus\IStudent.cs" />
-    <Compile Include="Data\Sp\Mereo.cs" />
     <Compile Include="Domus\Opes\IExpense.cs" />
     <Compile Include="Domus\Opes\IRebus.cs" />
     <Compile Include="Domus\Opes\NorthAmericanAssets.cs" />
     <Compile Include="Domus\Opes\NorthAmericanDeductions.cs" />
     <Compile Include="Domus\Opes\NorthAmericanEmployment.cs" />
     <Compile Include="Domus\NorthAmericanStudent.cs" />
-    <Compile Include="Data\Sp\IMereo.cs" />
-    <Compile Include="Data\Sp\Enums\Interval.cs" />
-    <Compile Include="Data\Sp\Pondus.cs" />
     <Compile Include="Domus\Opes\NorthAmericanExpenses.cs" />
     <Compile Include="Domus\Opes\NorthAmericanFactors.cs" />
     <Compile Include="Domus\Opes\OpesOptions.cs" />
@@ -178,17 +140,7 @@
     <Compile Include="Com\Firm.cs" />
     <Compile Include="Com\FinancialFirm.cs" />
     <Compile Include="Data\Facit.cs" />
-    <Compile Include="Data\Sp\Balance.cs" />
-    <Compile Include="Data\Sp\Currency.cs" />
-    <Compile Include="Data\Sp\Transaction.cs" />
-    <Compile Include="Data\Sp\Cc\CreditCard.cs" />
-    <Compile Include="Data\Sp\CreditScore.cs" />
-    <Compile Include="Data\Sp\Cusip.cs" />
     <Compile Include="Com\FinancialData.cs" />
-    <Compile Include="Data\Sp\Receivable.cs" />
-    <Compile Include="Data\Sp\Rent.cs" />
-    <Compile Include="Data\Sp\Security.cs" />
-    <Compile Include="Data\Sp\TradeLine.cs" />
     <Compile Include="Data\Endo\Grps\ClassificationBase.cs" />
     <Compile Include="Data\Endo\Grps\StandardOccupationalClassification.cs" />
     <Compile Include="Data\Endo\StreetPo.cs" />
@@ -271,7 +223,6 @@
     <Compile Include="Gov\TheStates\Vermont.cs" />
     <Compile Include="Gov\TheStates\Virginia.cs" />
     <Compile Include="Gov\VitalRecord.cs" />
-    <Compile Include="Data\Sp\Pecuniam.cs" />
     <Compile Include="Edu\AmericanHighSchool.cs" />
     <Compile Include="Edu\AmericanUniversity.cs" />
     <Compile Include="Gov\DriversLicense.cs" />
@@ -300,6 +251,10 @@
     <ProjectReference Include="Data\Source\Rand.Data.Source.csproj">
       <Project>{4e011849-d274-4f79-96af-549f67c46d80}</Project>
       <Name>Rand.Data.Source</Name>
+    </ProjectReference>
+    <ProjectReference Include="Data\Sp\Rand.Data.Sp.csproj">
+      <Project>{193f1df6-f471-4164-b5bb-8752c306df7b}</Project>
+      <Name>Rand.Data.Sp</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

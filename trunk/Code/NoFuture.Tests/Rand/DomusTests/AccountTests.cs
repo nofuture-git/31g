@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NoFuture.Rand.Core.Enums;
+using NoFuture.Rand.Data;
 using NoFuture.Rand.Data.Endo;
 using NoFuture.Rand.Data.Endo.Enums;
 using NoFuture.Rand.Data.Sp;
@@ -16,7 +17,7 @@ namespace NoFuture.Rand.Tests.DomusTests
         public void TestGetRandomBankAccount()
         {
             var p = new NorthAmerican(AmericanUtil.GetWorkingAdultBirthDate(), Gender.Female);
-            var testResult = CheckingAccount.GetRandomCheckingAcct(p);
+            var testResult = Facit.GetRandomCheckingAcct(p);
 
             Assert.IsNotNull(testResult);
 
@@ -25,12 +26,10 @@ namespace NoFuture.Rand.Tests.DomusTests
             System.Diagnostics.Debug.WriteLine(testResult.Id.Value);
 
             
-            testResult = CheckingAccount.GetRandomCheckingAcct(p);
+            testResult = Facit.GetRandomCheckingAcct(p);
             Assert.IsNotNull(testResult.Id);
-            Assert.IsNotNull(testResult.Bank);
 
             System.Diagnostics.Debug.WriteLine(testResult.Id.Value);
-            System.Diagnostics.Debug.WriteLine(testResult.Bank.Name);
             
         }
 
@@ -39,7 +38,7 @@ namespace NoFuture.Rand.Tests.DomusTests
         {
             var testSubject = new CheckingAccount(null, DateTime.Today.AddDays(-65),
                 new Tuple<ICreditCard, string>(
-                    CreditCard.GetRandomCreditCard(new NorthAmerican(AmericanUtil.GetWorkingAdultBirthDate(), Gender.Female)),
+                    Facit.GetRandomCreditCard(new NorthAmerican(AmericanUtil.GetWorkingAdultBirthDate(), Gender.Female)),
                     "8745"));
 
             Assert.IsTrue(testSubject.IsPin("8745"));

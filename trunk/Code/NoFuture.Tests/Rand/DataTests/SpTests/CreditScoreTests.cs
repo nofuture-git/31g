@@ -17,7 +17,12 @@ namespace NoFuture.Rand.Tests
         {
             var testInput = new NorthAmerican(AmericanUtil.GetWorkingAdultBirthDate(), Gender.Female);
 
-            var testSubject = new Data.Sp.PersonalCreditScore(testInput);
+            var testSubject = new Data.Sp.PersonalCreditScore
+            {
+                GetAgeAt = testInput.GetAgeAt,
+                OpennessZscore = testInput.Personality?.Openness?.Value?.Zscore ?? 0D,
+                ConscientiousnessZscore = testInput.Personality?.Conscientiousness?.Value?.Zscore ?? 0D
+            };
 
             Debug.WriteLine($"test subject age {testInput.GetAgeAt(null)}");
 
@@ -41,7 +46,12 @@ namespace NoFuture.Rand.Tests
         {
             var testInput = new NorthAmerican(AmericanUtil.GetWorkingAdultBirthDate(), Gender.Female);
 
-            var testSubject = new Data.Sp.PersonalCreditScore(testInput);
+            var testSubject = new Data.Sp.PersonalCreditScore
+            {
+                GetAgeAt = testInput.GetAgeAt,
+                OpennessZscore = testInput.Personality?.Openness?.Value?.Zscore ?? 0D,
+                ConscientiousnessZscore = testInput.Personality?.Conscientiousness?.Value?.Zscore ?? 0D
+            };
             Debug.WriteLine(testSubject.GetScore(new DateTime(DateTime.Today.Year, 1, 1)));
             var testResult = testSubject.GetRandomInterestRate(new DateTime(DateTime.Today.Year, 1,1));
             Assert.IsTrue(testResult > 3.0D);
@@ -54,7 +64,12 @@ namespace NoFuture.Rand.Tests
         {
             var testInput = new NorthAmerican(AmericanUtil.GetWorkingAdultBirthDate(), Gender.Female);
 
-            var testSubject = new Data.Sp.PersonalCreditScore(testInput);
+            var testSubject = new Data.Sp.PersonalCreditScore()
+            {
+                GetAgeAt = testInput.GetAgeAt,
+                OpennessZscore = testInput.Personality?.Openness?.Value?.Zscore ?? 0D,
+                ConscientiousnessZscore = testInput.Personality?.Conscientiousness?.Value?.Zscore ?? 0D
+            };
             var testResult = testSubject.GetRandomMax(null);
             Debug.WriteLine(testResult);
         }

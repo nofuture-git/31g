@@ -1,6 +1,5 @@
 ﻿using System;
 using NoFuture.Rand.Core;
-using NoFuture.Rand.Domus;
 
 namespace NoFuture.Rand.Data.Sp
 {
@@ -26,13 +25,7 @@ namespace NoFuture.Rand.Data.Sp
             return Balance.GetCurrent(dt, InterestRate);
         }
 
-        public static SavingsAccount GetRandomSavingAcct(IPerson p, DateTime? dt = null)
-        {
-            var dtd = dt.GetValueOrDefault(DateTime.Now);
-            var accountId = new AccountId(Etx.GetRandomRChars(true));
-            var bank = Com.Bank.GetRandomBank(p?.Address?.HomeCityArea);
-            return new SavingsAccount(accountId,dtd) {Bank = bank};
-        }
+
         #endregion
     }
 }

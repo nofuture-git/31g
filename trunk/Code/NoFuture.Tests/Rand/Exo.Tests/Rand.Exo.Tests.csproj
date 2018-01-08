@@ -82,6 +82,10 @@
       <Project>{4e011849-d274-4f79-96af-549f67c46d80}</Project>
       <Name>Rand.Data.Source</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\NoFuture\Rand\Data\Sp\Rand.Data.Sp.csproj">
+      <Project>{193f1df6-f471-4164-b5bb-8752c306df7b}</Project>
+      <Name>Rand.Data.Sp</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\NoFuture\Rand\Rand.csproj">
       <Project>{71628e18-d27b-4f4e-b034-4b2ad4479e13}</Project>
       <Name>Rand</Name>

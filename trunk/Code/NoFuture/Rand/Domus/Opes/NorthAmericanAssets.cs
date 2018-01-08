@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
+using NoFuture.Rand.Data;
 using NoFuture.Rand.Data.Endo;
 using NoFuture.Rand.Data.Endo.Enums;
 using NoFuture.Rand.Data.Sp;
@@ -253,7 +254,7 @@ namespace NoFuture.Rand.Domus.Opes
                 var checkingAmt = amt == null || amt == Pecuniam.Zero
                     ? _randCheckingAcctAmt
                     : _checkingAccountRate * amt.ToDouble();
-                p = CheckingAccount.GetRandomCheckingAcct(Person, startDate, $"{Etx.IntNumber(1, 9999):0000}");
+                p = Facit.GetRandomCheckingAcct(Person, startDate, $"{Etx.IntNumber(1, 9999):0000}");
                 p.Push(startDate.AddDays(-1), checkingAmt.ToPecuniam());
                 p.My.ExpectedValue = checkingAmt.ToPecuniam();
             }
@@ -262,7 +263,7 @@ namespace NoFuture.Rand.Domus.Opes
                 var savingAmt = amt == null || amt == Pecuniam.Zero
                     ? _randSavingsAcctAmt
                     : _savingsAccountRate * amt.ToDouble();
-                p = SavingsAccount.GetRandomSavingAcct(Person, startDate);
+                p = Facit.GetRandomSavingAcct(Person, startDate);
                 p.Push(startDate.AddDays(-1), savingAmt.ToPecuniam());
                 p.My.ExpectedValue = savingAmt.ToPecuniam();
             }
@@ -301,7 +302,7 @@ namespace NoFuture.Rand.Domus.Opes
 
                 var termInYears = isMortgage ? 30 : 5;
 
-                p = SecuredFixedRateLoan.GetRandomLoanWithHistory(
+                p = Facit.GetRandomLoanWithHistory(
                     id,
                     remainingCost,
                     totalValue,

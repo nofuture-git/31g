@@ -5,7 +5,6 @@ using System.Text;
 using System.Text.RegularExpressions;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Data.Sp.Cc;
-using NoFuture.Rand.Domus;
 
 namespace NoFuture.Rand.Data.Sp
 {
@@ -67,37 +66,12 @@ namespace NoFuture.Rand.Data.Sp
             return hmac.ComputeHash(pinBuffer);
         }
 
-        internal static bool IsPossiablePin(string somestring)
+        public static bool IsPossiablePin(string somestring)
         {
             return !string.IsNullOrWhiteSpace(somestring) && Regex.IsMatch(somestring, "[0-9]{4}");
         }
 
-        /// <summary>
-        /// Creates a new random Checking Account
-        /// </summary>
-        /// <param name="p"></param>
-        /// <param name="dt">Date account was openned, default to now.</param>
-        /// <param name="debitPin">
-        /// Optional, when present and random instance of <see cref="DebitCard"/> is created with 
-        /// this as its PIN.
-        /// </param>
-        /// <returns></returns>
-        public static CheckingAccount GetRandomCheckingAcct(IPerson p, DateTime? dt = null, string debitPin = null)
-        {
-            var dtd = dt.GetValueOrDefault(DateTime.Now);
-            var accountId = new AccountId(Etx.GetRandomRChars(true));
-            var bank = Com.Bank.GetRandomBank(p?.Address?.HomeCityArea);
-            return IsPossiablePin(debitPin)
-                ? new CheckingAccount(accountId, dtd,
-                    new Tuple<ICreditCard, string>(CreditCard.GetRandomCreditCard(p), debitPin))
-                {
-                    Bank = bank
-                }
-                : new CheckingAccount(accountId, dtd)
-                {
-                    Bank = bank
-                };
-        }
+
         #endregion
     }
 }

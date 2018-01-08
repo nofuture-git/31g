@@ -138,7 +138,7 @@ namespace NoFuture.Rand.Domus
 
         #endregion
 
-        private static Dictionary<Interval, int> _interval2Multiplier;
+
 
         #region tables
 
@@ -170,34 +170,7 @@ namespace NoFuture.Rand.Domus
                 {AmericanDeathCert.MannerOfDeath.Natural, 92.591 }
             };
 
-        /// <summary>
-        /// A general table to align an interval to some annual multiplier
-        /// (e.g. Hourly means 52 weeks * 40 hours per week = 2080)
-        /// </summary>
-        public static Dictionary<Interval, int> Interval2AnnualPayMultiplier
-        {
-            get
-            {
-                if (_interval2Multiplier != null)
-                    return _interval2Multiplier;
 
-                _interval2Multiplier = new Dictionary<Interval, int>
-                {
-                    {Interval.OnceOnly, 1},
-                    {Interval.Hourly, 2080},
-                    {Interval.Daily, 260},
-                    {Interval.Weekly, 52},
-                    {Interval.BiWeekly, 26},
-                    {Interval.SemiMonthly, 24},
-                    {Interval.Monthly, 12},
-                    {Interval.Quarterly, 4},
-                    {Interval.SemiAnnually, 2},
-                    {Interval.Annually, 1},
-                };
-
-                return _interval2Multiplier;
-            }
-        }
 
         #endregion
     }

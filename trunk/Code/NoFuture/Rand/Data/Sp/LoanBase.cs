@@ -1,5 +1,4 @@
 ﻿using System;
-using NoFuture.Rand.Com;
 
 namespace NoFuture.Rand.Data.Sp
 {
@@ -22,7 +21,6 @@ namespace NoFuture.Rand.Data.Sp
             set => _minPaymentRate = value;
         }
         public virtual T Rate { get; set; }
-        public IFirm Lender { get; set; }
         #endregion
 
         #region methods

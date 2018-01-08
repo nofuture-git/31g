@@ -125,15 +125,19 @@ namespace NoFuture.Rand.Domus.Opes
             MyOptions = options ?? new OpesOptions();
             if (american == null)
             {
-                CreditScore = new PersonalCreditScore(null);
+                CreditScore = new PersonalCreditScore();
                 _factors = new NorthAmericanFactors(null);
                 return;
             }
             _amer = american;
             var usCityArea = _amer?.Address?.HomeCityArea as UsCityStateZip;
 
-            CreditScore = new PersonalCreditScore(american);
-
+            CreditScore = new PersonalCreditScore()
+            {
+                GetAgeAt = _amer.GetAgeAt,
+                OpennessZscore = _amer.Personality?.Openness?.Value?.Zscore ?? 0D,
+                ConscientiousnessZscore = _amer.Personality?.Conscientiousness?.Value?.Zscore ?? 0D
+            };
             //TODO this should be decided by calling assemlby
             MyOptions.IsRenting = GetIsLeaseResidence(usCityArea);
             _factors = new NorthAmericanFactors(_amer);

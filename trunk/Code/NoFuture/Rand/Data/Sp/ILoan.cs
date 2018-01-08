@@ -1,5 +1,4 @@
-﻿using NoFuture.Rand.Com;
-
+﻿
 namespace NoFuture.Rand.Data.Sp
 {
     /// <summary>
@@ -12,6 +11,5 @@ namespace NoFuture.Rand.Data.Sp
         /// </summary>
         float MinPaymentRate { get; set; }
 
-        IFirm Lender { get; set; }
     }
 }
