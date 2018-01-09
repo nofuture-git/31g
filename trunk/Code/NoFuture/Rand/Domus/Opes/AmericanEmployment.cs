@@ -5,17 +5,18 @@ using NoFuture.Rand.Core;
 using NoFuture.Rand.Data.Endo.Grps;
 using NoFuture.Rand.Data.Sp;
 using NoFuture.Rand.Data.Sp.Enums;
+using NoFuture.Rand.Domus.US;
 using NoFuture.Rand.Gov;
 using NoFuture.Shared.Core;
 
 namespace NoFuture.Rand.Domus.Opes
 {
-    /// <inheritdoc cref="IEmployment" />
+    /// <inheritdoc cref="ILaboris" />
     /// <inheritdoc cref="WealthBase" />
     /// <summary>
     /// </summary>
     [Serializable]
-    public class NorthAmericanEmployment : WealthBase, IEmployment
+    public class AmericanEmployment : WealthBase, ILaboris
     {
         #region fields
         private readonly HashSet<Pondus> _pay = new HashSet<Pondus>();
@@ -28,11 +29,11 @@ namespace NoFuture.Rand.Domus.Opes
         #region ctors
 
         /// <summary>
-        /// Creates a new instance of <see cref="NorthAmericanEmployment"/> at random.
+        /// Creates a new instance of <see cref="AmericanEmployment"/> at random.
         /// </summary>
         /// <param name="american"></param>
         /// <param name="options"></param>
-        public NorthAmericanEmployment(NorthAmerican american, OpesOptions options) : base(american, options)
+        public AmericanEmployment(American american, OpesOptions options) : base(american, options)
         {
             if(MyOptions.Inception == DateTime.MinValue)
                 MyOptions.Inception = GetYearNeg(-1);
@@ -40,7 +41,7 @@ namespace NoFuture.Rand.Domus.Opes
             Occupation = StandardOccupationalClassification.RandomOccupation();
         }
 
-        public NorthAmericanEmployment(NorthAmerican american, DateTime inception, DateTime? terminus) : base(american)
+        public AmericanEmployment(American american, DateTime inception, DateTime? terminus) : base(american)
         {
             MyOptions.Inception = inception;
             MyOptions.Terminus = terminus;
@@ -48,7 +49,7 @@ namespace NoFuture.Rand.Domus.Opes
             Occupation = StandardOccupationalClassification.RandomOccupation();
         }
 
-        internal NorthAmericanEmployment(DateTime inception, DateTime? terminus) : base(null)
+        internal AmericanEmployment(DateTime inception, DateTime? terminus) : base(null)
         {
             MyOptions.Inception = inception;
             MyOptions.Terminus = terminus;
@@ -77,7 +78,7 @@ namespace NoFuture.Rand.Domus.Opes
             }
         }
 
-        public IDeductions Deductions { get; set; }
+        public ITributum Deductions { get; set; }
 
         public virtual Pondus[] CurrentPay => GetPayAt(null);
 
@@ -151,7 +152,7 @@ namespace NoFuture.Rand.Domus.Opes
                     AddItem(item);
 
             }
-            var deductions = new NorthAmericanDeductions(this);
+            var deductions = new AmericanDeductions(this);
             deductions.ResolveItems(options);
             Deductions = deductions;
         }
@@ -333,7 +334,7 @@ namespace NoFuture.Rand.Domus.Opes
 
         public override bool Equals(object obj)
         {
-            if (!(obj is IEmployment e))
+            if (!(obj is ILaboris e))
                 return base.Equals(obj);
 
             var termEquals = e.Inception == Inception

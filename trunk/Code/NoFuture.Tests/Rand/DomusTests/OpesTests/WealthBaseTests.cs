@@ -10,6 +10,7 @@ using NoFuture.Rand.Data.Sp.Cc;
 using NoFuture.Rand.Data.Sp.Enums;
 using NoFuture.Rand.Domus;
 using NoFuture.Rand.Domus.Opes;
+using NoFuture.Rand.Domus.US;
 using NoFuture.Rand.Gov;
 
 namespace NoFuture.Rand.Tests.DomusTests.OpesTests
@@ -21,7 +22,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         [TestMethod]
         public void TestGetFactor()
         {
-            var testResult = NorthAmericanFactors.GetFactor(FactorTables.HomeDebt,
+            var testResult = AmericanFactors.GetFactor(FactorTables.HomeDebt,
                 (OccidentalEdu.Bachelor | OccidentalEdu.Grad), NorthAmericanRace.Asian, AmericanRegion.West, 38,
                 Gender.Male, MaritialStatus.Single);
             Assert.AreNotEqual(0.0D, testResult);
@@ -31,18 +32,18 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         [TestMethod]
         public void TestGetFactorBaseValue()
         {
-            var testResult = NorthAmericanFactors.GetFactorBaseValue(FactorTables.VehicleDebt);
+            var testResult = AmericanFactors.GetFactorBaseValue(FactorTables.VehicleDebt);
             Assert.AreEqual(10000.0D, testResult);
 
-            testResult = NorthAmericanFactors.GetFactorBaseValue(FactorTables.HomeEquity);
+            testResult = AmericanFactors.GetFactorBaseValue(FactorTables.HomeEquity);
             Assert.AreEqual(80000.0D, testResult);
         }
 
         [TestMethod]
         public void TestGetRandomRent()
         {
-            var amer = new NorthAmerican(UsState.GetWorkingAdultBirthDate(), Gender.Female);
-            var testSubject = new NorthAmericanWealth(amer, new OpesOptions(){IsRenting = true});
+            var amer = new American(UsState.GetWorkingAdultBirthDate(), Gender.Female);
+            var testSubject = new AmericanWealth(amer, new OpesOptions(){IsRenting = true});
             testSubject.AddRent();
             var rent = testSubject.HomeDebt.FirstOrDefault() as Rent;
             Assert.IsNotNull(rent);
@@ -53,8 +54,8 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         [TestMethod]
         public void TestGetRandomHomeLoan()
         {
-            var amer = new NorthAmerican(UsState.GetWorkingAdultBirthDate(), Gender.Female);
-            var testSubject = new NorthAmericanWealth(amer);
+            var amer = new American(UsState.GetWorkingAdultBirthDate(), Gender.Female);
+            var testSubject = new AmericanWealth(amer);
             testSubject.AddMortgage();
 
             var homeLoan = testSubject.HomeDebt.FirstOrDefault() as FixedRateLoan;
@@ -66,8 +67,8 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         [TestMethod]
         public void TestGetRandomCcDebt()
         {
-            var amer = new NorthAmerican(UsState.GetWorkingAdultBirthDate(), Gender.Female);
-            var testSubject = new NorthAmericanWealth(amer);
+            var amer = new American(UsState.GetWorkingAdultBirthDate(), Gender.Female);
+            var testSubject = new AmericanWealth(amer);
             testSubject.AddSingleCcDebt();
 
             Assert.IsTrue(testSubject.CreditCardDebt.Any());
@@ -85,8 +86,8 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         [TestMethod]
         public void TestGetPaycheck()
         {
-            var amer = new NorthAmerican(UsState.GetWorkingAdultBirthDate(), Gender.Female);
-            var testSubject = new NorthAmericanWealth(amer);
+            var amer = new American(UsState.GetWorkingAdultBirthDate(), Gender.Female);
+            var testSubject = new AmericanWealth(amer);
             System.Diagnostics.Debug.WriteLine(string.Join(" ", amer.Age, amer.MaritialStatus, amer.Education, amer.Race));
 
             var testResult = testSubject.GetRandomYearlyIncome(null, 1.0.ToPecuniam());
@@ -98,8 +99,8 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         [TestMethod]
         public void TestGetRandomVehicle()
         {
-            var amer = new NorthAmerican(UsState.GetWorkingAdultBirthDate(), Gender.Female);
-            var testSubject = new NorthAmericanWealth(amer);
+            var amer = new American(UsState.GetWorkingAdultBirthDate(), Gender.Female);
+            var testSubject = new AmericanWealth(amer);
             System.Diagnostics.Debug.WriteLine(string.Join(" ", amer.Age, amer.MaritialStatus, amer.Education, amer.Race));
 
             var testResult = testSubject.AddVehicleLoan();
@@ -119,8 +120,8 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         [TestMethod]
         public void TestCreateRandomAmericanOpes()
         {
-            var amer = new NorthAmerican(UsState.GetWorkingAdultBirthDate(), Gender.Female);
-            var testSubject = new NorthAmericanWealth(amer);
+            var amer = new American(UsState.GetWorkingAdultBirthDate(), Gender.Female);
+            var testSubject = new AmericanWealth(amer);
             System.Diagnostics.Debug.WriteLine(string.Join(" ", amer.Age, amer.MaritialStatus, amer.Education, amer.Race));
 
             testSubject.CreateRandomAmericanOpes();
@@ -132,9 +133,9 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         [TestMethod]
         public void TestGetXmlEduName()
         {
-            var testResult = NorthAmericanFactors.GetXmlEduName(OccidentalEdu.Bachelor);
+            var testResult = AmericanFactors.GetXmlEduName(OccidentalEdu.Bachelor);
             Assert.AreEqual("Associate",testResult);
-            testResult = NorthAmericanFactors.GetXmlEduName(OccidentalEdu.Bachelor | OccidentalEdu.Grad);
+            testResult = AmericanFactors.GetXmlEduName(OccidentalEdu.Bachelor | OccidentalEdu.Grad);
             Assert.AreEqual("Bachelor", testResult);
             System.Diagnostics.Debug.WriteLine(testResult);
         }
@@ -188,7 +189,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         [TestMethod]
         public void TestGetRandomRateFromClassicHook()
         {
-            var testSubject = new NorthAmericanIncome(null);
+            var testSubject = new AmericanIncome(null);
             var testResult = testSubject.GetRandomRateFromClassicHook();
 
             Assert.IsTrue(testResult >= 0D);
@@ -202,7 +203,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         [TestMethod]
         public void TestGetYearNeg()
         {
-            var testSubject = new NorthAmericanIncome(null);
+            var testSubject = new AmericanIncome(null);
             var testResult = testSubject.GetYearNeg(-3);
 
             System.Diagnostics.Debug.WriteLine(testResult);
@@ -215,7 +216,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             testInput.GivenDirectly.Add(new Mereo("Real Property"){ExpectedValue = 7800.ToPecuniam()});
             testInput.GivenDirectly.Add(new Mereo("Securities"){ExpectedValue = 1000.ToPecuniam()});
             testInput.SumTotal = 12000.ToPecuniam();
-            var testSubject = new NorthAmericanAssets(null, testInput);
+            var testSubject = new AmericanAssets(null, testInput);
             var testResult = testSubject.GetGroupNames2Portions(testInput);
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0, testResult.Count);
@@ -247,7 +248,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             testInput.GivenDirectly.Add(new Mereo("Annuity", grpName) { ExpectedValue = 1000.ToPecuniam() });
             testInput.SumTotal = 15000.ToPecuniam();
 
-            var testSubject = new NorthAmericanIncome(null, testInput);
+            var testSubject = new AmericanIncome(null, testInput);
 
             var testResults =
                 testSubject.GetItemNames2Portions(grpName, testInput);
@@ -264,7 +265,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             testInput.GivenDirectly.Add(new Mereo("Partnerships", grpName) { ExpectedValue = 7800.ToPecuniam() });
             testInput.GivenDirectly.Add(new Mereo("Fellowships", grpName) { ExpectedValue = 1000.ToPecuniam() });
             testInput.GivenDirectly.Add(new Mereo("Annuity", grpName) { ExpectedValue = 1000.ToPecuniam() });
-            testSubject = new NorthAmericanIncome(null, testInput);
+            testSubject = new AmericanIncome(null, testInput);
             testResults =
                 testSubject.GetItemNames2Portions(grpName, testInput);
 

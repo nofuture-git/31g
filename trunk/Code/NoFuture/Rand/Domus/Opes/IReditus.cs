@@ -9,23 +9,23 @@ namespace NoFuture.Rand.Domus.Opes
     public interface IReditus
     {
         /// <summary>
-        /// Returns the <see cref="IEmployment"/> right Now
+        /// Returns the <see cref="ILaboris"/> right Now
         /// </summary>
         /// <remarks>
         /// Its is an array since a person may have more than
         /// one job at a single time.
         /// </remarks>
-        IEmployment[] CurrentEmployment { get; }
+        ILaboris[] CurrentEmployment { get; }
 
         /// <summary>
-        /// Returns the <see cref="IEmployment"/> at the time of <see cref="dt"/>
+        /// Returns the <see cref="ILaboris"/> at the time of <see cref="dt"/>
         /// </summary>
         /// <param name="dt"></param>
         /// <returns>
         /// This returns an array since a person may have more than
         /// one job at a single time.
         /// </returns>
-        IEmployment[] GetEmploymentAt(DateTime? dt);
+        ILaboris[] GetEmploymentAt(DateTime? dt);
 
         /// <summary>
         /// Returns all non-employment forms of income right Now

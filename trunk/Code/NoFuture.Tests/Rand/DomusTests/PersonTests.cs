@@ -5,6 +5,7 @@ using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Data.Endo;
 using NoFuture.Rand.Data.Endo.Enums;
 using NoFuture.Rand.Domus;
+using NoFuture.Rand.Domus.US;
 using NoFuture.Rand.Edu;
 using NoFuture.Rand.Gov;
 using NoFuture.Util.Core;
@@ -21,7 +22,7 @@ namespace NoFuture.Rand.Tests
         public void AmericanTests()
         {
             var testDob = new DateTime(1974,5,6);
-            var testResult = new NorthAmerican(testDob, Gender.Female);
+            var testResult = new American(testDob, Gender.Female);
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(Gender.Unknown, testResult.MyGender);
             Assert.IsFalse(string.IsNullOrWhiteSpace(testResult.LastName));
@@ -32,7 +33,7 @@ namespace NoFuture.Rand.Tests
         [TestMethod]
         public void TestAmericanFull()
         {
-            var testResult = new NorthAmerican(DateTime.Now.AddYears(-36), Gender.Female, true, true);
+            var testResult = new American(DateTime.Now.AddYears(-36), Gender.Female, true, true);
             Assert.IsNotNull(testResult.GetMother());
             Assert.AreNotEqual(0, testResult.GetMother().GetChildrenAt(null));
         }
@@ -40,7 +41,7 @@ namespace NoFuture.Rand.Tests
         [TestMethod]
         public void NorthAmericanEduTests()
         {
-            var amer = new NorthAmerican(UsState.GetWorkingAdultBirthDate(), Gender.Female);
+            var amer = new American(UsState.GetWorkingAdultBirthDate(), Gender.Female);
             var testResult = amer.GetEducationByPerson();
 
             Assert.IsNotNull(testResult);
@@ -93,7 +94,7 @@ namespace NoFuture.Rand.Tests
         [TestMethod]
         public void NorthAmericanEduTestsChild()
         {
-            var amer = new NorthAmerican(DateTime.Now.AddYears(-9), Gender.Female);
+            var amer = new American(DateTime.Now.AddYears(-9), Gender.Female);
             var testResult = amer.GetEducationByPerson();
             Assert.IsNotNull(testResult);
             Assert.IsNotNull(testResult.HighSchool);
@@ -234,7 +235,7 @@ namespace NoFuture.Rand.Tests
         [TestMethod]
         public void TestNorthAmericanWithFamily()
         {
-            var testResult = new NoFuture.Rand.Domus.NorthAmerican(DateTime.Now.AddYears(-40), Gender.Female, true, false );
+            var testResult = new American(DateTime.Now.AddYears(-40), Gender.Female, true, false );
 
             Assert.IsNotNull(testResult.GetMother());
             Assert.IsNotNull(testResult.GetFather());
@@ -244,7 +245,7 @@ namespace NoFuture.Rand.Tests
         [TestMethod]
         public void TestResolveParents()
         {
-            var testResult = new NoFuture.Rand.Domus.NorthAmerican(DateTime.Now.AddYears(-40), Gender.Female);
+            var testResult = new American(DateTime.Now.AddYears(-40), Gender.Female);
             Assert.IsNull(testResult.GetMother());
             Assert.IsNull(testResult.GetFather());
             testResult.ResolveParents();
@@ -272,7 +273,7 @@ namespace NoFuture.Rand.Tests
         [TestMethod]
         public void TestGetMaritalStatus()
         {
-            var testSubject = new NoFuture.Rand.Domus.NorthAmerican(DateTime.Now.AddYears(-40), Gender.Female);
+            var testSubject = new American(DateTime.Now.AddYears(-40), Gender.Female);
 
             var testResult = testSubject.GetMaritalStatusAt(null);
 
@@ -290,11 +291,11 @@ namespace NoFuture.Rand.Tests
         [TestMethod]
         public void TestIsValidDobOfChild()
         {
-            var testPerson = new NorthAmerican(new DateTime(1955,6,20), Gender.Female, false, false);
+            var testPerson = new American(new DateTime(1955,6,20), Gender.Female, false, false);
 
-            testPerson._children.Add(new Child(new NorthAmerican(new DateTime(1976, 10, 2), Gender.Female, false, false)));
-            testPerson._children.Add(new Child(new NorthAmerican(new DateTime(1986, 3, 11), Gender.Female, false, false)));
-            testPerson._children.Add(new Child(new NorthAmerican(new DateTime(1982, 12, 30), Gender.Female, false, false)));
+            testPerson._children.Add(new Child(new American(new DateTime(1976, 10, 2), Gender.Female, false, false)));
+            testPerson._children.Add(new Child(new American(new DateTime(1986, 3, 11), Gender.Female, false, false)));
+            testPerson._children.Add(new Child(new American(new DateTime(1982, 12, 30), Gender.Female, false, false)));
 
             var testDob = new DateTime(1985, 9, 10);//conception ~ 12/4/1984
 
@@ -315,9 +316,9 @@ namespace NoFuture.Rand.Tests
             testResult = testPerson.IsValidDobOfChild(testDob);
             Assert.IsTrue(testResult);
 
-            testPerson = new NorthAmerican(new DateTime(1982,4,13), Gender.Female, false, false);
-            testPerson._children.Add(new Child(new NorthAmerican(new DateTime(2007, 8, 30), Gender.Male)));
-            testPerson._children.Add(new Child(new NorthAmerican(new DateTime(2009, 12, 20), Gender.Female)));
+            testPerson = new American(new DateTime(1982,4,13), Gender.Female, false, false);
+            testPerson._children.Add(new Child(new American(new DateTime(2007, 8, 30), Gender.Male)));
+            testPerson._children.Add(new Child(new American(new DateTime(2009, 12, 20), Gender.Female)));
 
             testDob = new DateTime(2009,3,6);
             Assert.IsFalse(testPerson.IsValidDobOfChild(testDob));
@@ -342,12 +343,12 @@ namespace NoFuture.Rand.Tests
                 DateTime.Now.Second);
 
 
-            var testPerson = new NorthAmerican(new DateTime((DateTime.Today.Year - 42), 6, 20), Gender.Female);
-            var firstSpouse = new NorthAmerican(new DateTime((DateTime.Today.Year - 46), 4, 4), Gender.Male);
+            var testPerson = new American(new DateTime((DateTime.Today.Year - 42), 6, 20), Gender.Female);
+            var firstSpouse = new American(new DateTime((DateTime.Today.Year - 46), 4, 4), Gender.Male);
 
             testPerson.AddSpouse(firstSpouse, firstMarriageDate, firstDivorceDate);
 
-            var secondSpouse = new NorthAmerican(new DateTime((DateTime.Today.Year - 43), 12, 16), Gender.Male);
+            var secondSpouse = new American(new DateTime((DateTime.Today.Year - 43), 12, 16), Gender.Male);
             testPerson.AddSpouse(secondSpouse, secondMarriageDate);
 
             //expect true when on day-of-wedding

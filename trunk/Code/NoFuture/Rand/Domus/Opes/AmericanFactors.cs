@@ -5,16 +5,17 @@ using NoFuture.Rand.Core;
 using NoFuture.Rand.Data;
 using NoFuture.Rand.Data.Endo;
 using NoFuture.Rand.Data.Endo.Enums;
+using NoFuture.Rand.Domus.US;
 
 namespace NoFuture.Rand.Domus.Opes
 {
     /// <summary>
-    /// Applies each of the <see cref="FactorTables"/> to the given <see cref="NorthAmerican"/>
+    /// Applies each of the <see cref="FactorTables"/> to the given <see cref="American"/>
     /// which attempt to take into account education level, race, region, age, gender and 
     /// marital status.
     /// </summary>
     [Serializable]
-    public class NorthAmericanFactors
+    public class AmericanFactors
     {
         /// <summary>
         /// Home Debt scalar factor above or below the national average(s)
@@ -65,7 +66,7 @@ namespace NoFuture.Rand.Domus.Opes
         /// Assigns the scalar factor values based on the given <see cref="american"/>
         /// </summary>
         /// <param name="american"></param>
-        public NorthAmericanFactors(NorthAmerican american)
+        public AmericanFactors(American american)
         {
             if (american == null)
             {

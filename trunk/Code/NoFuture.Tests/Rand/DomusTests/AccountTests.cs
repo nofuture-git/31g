@@ -7,6 +7,7 @@ using NoFuture.Rand.Data.Endo.Enums;
 using NoFuture.Rand.Data.Sp;
 using NoFuture.Rand.Data.Sp.Cc;
 using NoFuture.Rand.Domus;
+using NoFuture.Rand.Domus.US;
 using NoFuture.Rand.Gov;
 
 namespace NoFuture.Rand.Tests.DomusTests
@@ -17,7 +18,7 @@ namespace NoFuture.Rand.Tests.DomusTests
         [TestMethod]
         public void TestGetRandomBankAccount()
         {
-            var p = new NorthAmerican(UsState.GetWorkingAdultBirthDate(), Gender.Female);
+            var p = new American(UsState.GetWorkingAdultBirthDate(), Gender.Female);
             var testResult = AmericanUtil.GetRandomCheckingAcct(p);
 
             Assert.IsNotNull(testResult);
@@ -39,7 +40,7 @@ namespace NoFuture.Rand.Tests.DomusTests
         {
             var testSubject = new CheckingAccount(null, DateTime.Today.AddDays(-65),
                 new Tuple<ICreditCard, string>(
-                    AmericanUtil.GetRandomCreditCard(new NorthAmerican(UsState.GetWorkingAdultBirthDate(), Gender.Female)),
+                    AmericanUtil.GetRandomCreditCard(new American(UsState.GetWorkingAdultBirthDate(), Gender.Female)),
                     "8745"));
 
             Assert.IsTrue(testSubject.IsPin("8745"));

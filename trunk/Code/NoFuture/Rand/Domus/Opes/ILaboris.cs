@@ -8,7 +8,7 @@ namespace NoFuture.Rand.Domus.Opes
     /// <summary>
     /// Expresses a single form of personal employment in time
     /// </summary>
-    public interface IEmployment : ITempore
+    public interface ILaboris : ITempore
     {
         /// <summary>
         /// A flag to designate a person as the legal owner of the employing company.
@@ -55,6 +55,6 @@ namespace NoFuture.Rand.Domus.Opes
         /// <summary>
         /// The deductions associated to this employment
         /// </summary>
-        IDeductions Deductions { get; set; }
+        ITributum Deductions { get; set; }
     }
 }

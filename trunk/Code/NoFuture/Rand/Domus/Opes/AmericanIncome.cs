@@ -9,6 +9,7 @@ using NoFuture.Rand.Data.Sp;
 using NoFuture.Rand.Data.Sp.Cc;
 using NoFuture.Rand.Data.Sp.Enums;
 using NoFuture.Rand.Domus.Pneuma;
+using NoFuture.Rand.Domus.US;
 
 namespace NoFuture.Rand.Domus.Opes
 {
@@ -18,16 +19,16 @@ namespace NoFuture.Rand.Domus.Opes
     /// Represents the income (both employment and other) of a NorthAmerican over some span of time.
     /// </summary>
     [Serializable]
-    public class NorthAmericanIncome : WealthBase, IReditus
+    public class AmericanIncome : WealthBase, IReditus
     {
         #region fields
-        private readonly HashSet<IEmployment> _employment = new HashSet<IEmployment>();
+        private readonly HashSet<ILaboris> _employment = new HashSet<ILaboris>();
         private readonly HashSet<Pondus> _otherIncome = new HashSet<Pondus>();
         #endregion
 
         #region ctors
 
-        public NorthAmericanIncome(NorthAmerican american, OpesOptions options = null) :
+        public AmericanIncome(American american, OpesOptions options = null) :
             base(
                 american, options)
         {
@@ -41,7 +42,7 @@ namespace NoFuture.Rand.Domus.Opes
         /// <summary>
         /// Current employment - is array since can hold more than one job at a time.
         /// </summary>
-        public virtual IEmployment[] CurrentEmployment
+        public virtual ILaboris[] CurrentEmployment
         {
             get
             {
@@ -62,7 +63,7 @@ namespace NoFuture.Rand.Domus.Opes
         public virtual Pecuniam TotalAnnualExpectedGrossEmploymentIncome =>
             CurrentEmployment.Select(e => e.TotalAnnualPay).GetSum();
 
-        protected internal virtual List<IEmployment> Employment
+        protected internal virtual List<ILaboris> Employment
         {
             get
             {
@@ -87,7 +88,7 @@ namespace NoFuture.Rand.Domus.Opes
         #endregion
 
         #region methods
-        public virtual IEmployment[] GetEmploymentAt(DateTime? dt)
+        public virtual ILaboris[] GetEmploymentAt(DateTime? dt)
         {
             return dt == null
                 ? new[] {Employment.LastOrDefault()}
@@ -99,7 +100,7 @@ namespace NoFuture.Rand.Domus.Opes
             return GetAt(dt, MyItems);
         }
 
-        protected internal virtual void AddEmployment(IEmployment employment)
+        protected internal virtual void AddEmployment(ILaboris employment)
         {
             if (employment != null)
                 _employment.Add(employment);
@@ -389,11 +390,11 @@ namespace NoFuture.Rand.Domus.Opes
         /// Optional, allows calling assembly to set this directly, defaults to <see cref="GetEmploymentRanges"/>
         /// </param>
         /// <returns></returns>
-        protected internal virtual List<IEmployment> GetRandomEmployment(OpesOptions options, IPersonality personality = null,
+        protected internal virtual List<ILaboris> GetRandomEmployment(OpesOptions options, IPersonality personality = null,
             OccidentalEdu eduLevel = OccidentalEdu.None, List<Tuple<DateTime, DateTime?>> emplyRanges = null)
         {
             options = options ?? MyOptions;
-            var empls = new HashSet<IEmployment>();
+            var empls = new HashSet<ILaboris>();
             emplyRanges = emplyRanges ?? GetEmploymentRanges(options, personality);
             var occ = StandardOccupationalClassification.RandomOccupation();
 
@@ -404,7 +405,7 @@ namespace NoFuture.Rand.Domus.Opes
 
             foreach (var range in emplyRanges)
             {
-                var emply = new NorthAmericanEmployment(Person, range.Item1, range.Item2) {Occupation = occ};
+                var emply = new AmericanEmployment(Person, range.Item1, range.Item2) {Occupation = occ};
                 var cloneOptions = options.GetClone();
                 cloneOptions.Inception = range.Item1;
                 cloneOptions.Terminus = range.Item2;
@@ -425,7 +426,7 @@ namespace NoFuture.Rand.Domus.Opes
 
         /// <summary>
         /// Gets a money amount at random based on the age and either the 
-        /// employment history or location of the <see cref="NorthAmerican"/>
+        /// employment history or location of the <see cref="American"/>
         /// </summary>
         /// <param name="dt"></param>
         /// <param name="age">

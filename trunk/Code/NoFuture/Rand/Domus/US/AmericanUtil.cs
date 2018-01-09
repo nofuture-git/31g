@@ -12,6 +12,7 @@ using NoFuture.Rand.Data.Sp.Cc;
 using NoFuture.Rand.Data.Sp.Enums;
 using NoFuture.Rand.Domus.Opes;
 using NoFuture.Rand.Domus.Pneuma;
+using NoFuture.Rand.Domus.US;
 using NoFuture.Rand.Edu;
 using NoFuture.Rand.Gov;
 using NoFuture.Rand.Gov.Fed;
@@ -82,9 +83,9 @@ namespace NoFuture.Rand.Domus
             float baseInterestRate = 10.1F + RiskFreeInterestRate.DF_VALUE,
             float minPmtPercent = CreditCardAccount.DF_MIN_PMT_RATE)
         {
-            if (ccScore == null && p is NorthAmerican)
+            if (ccScore == null && p is American)
             {
-                var northAmerican = (NorthAmerican)p;
+                var northAmerican = (American)p;
                 ccScore = new PersonalCreditScore()
                 {
                     GetAgeAt = northAmerican.GetAgeAt,
@@ -290,7 +291,7 @@ namespace NoFuture.Rand.Domus
             var avgRent = totalYearlyRent ?? (double)Rent.GetAvgAmericanRentByYear(null).Amount;
             var randRent = new Pecuniam(
                 (decimal)
-                NorthAmericanFactors.GetRandomFactorValue(FactorTables.HomeDebt, homeDebtFactor,
+                AmericanFactors.GetRandomFactorValue(FactorTables.HomeDebt, homeDebtFactor,
                     stdDevAsPercent, avgRent));
             var randTerm = Etx.DiscreteRange(new[] { 24, 18, 12, 6 });
             var randDate = Etx.Date(0, DateTime.Today.AddDays(-2), true);
@@ -735,7 +736,7 @@ namespace NoFuture.Rand.Domus
             //move the adjusted child-dob date back by calc'ed years 
             var parentDob = dtPm.AddYears(Convert.ToInt32(Math.Round(avgAgeCouldMarry, 0))*-1);
 
-            var aParent = new NorthAmerican(parentDob, gender, false, false);
+            var aParent = new American(parentDob, gender, false, false);
             return aParent;
         }
 
@@ -763,7 +764,7 @@ namespace NoFuture.Rand.Domus
             var spouseDob = myDob.Value.AddYears(ageDiff).AddDays(Etx.IntNumber(1, 360) * Etx.PlusOrMinusOne);
 
             //define spouse
-            return new NorthAmerican(spouseDob, gender == Gender.Female ? Gender.Male : Gender.Female);
+            return new American(spouseDob, gender == Gender.Female ? Gender.Male : Gender.Female);
 
         }
 
@@ -904,7 +905,7 @@ namespace NoFuture.Rand.Domus
         /// </summary>
         /// <param name="thisPerson"></param>
         /// <param name="livesWithThisOne"></param>
-        public static void SetNAmerCohabitants(NorthAmerican thisPerson, NorthAmerican livesWithThisOne)
+        public static void SetNAmerCohabitants(American thisPerson, American livesWithThisOne)
         {
             if (thisPerson == null || livesWithThisOne == null)
                 return;
@@ -927,11 +928,11 @@ namespace NoFuture.Rand.Domus
         }
 
         /// <summary>
-        /// Utility method to dump all the spouse data on an instance of <see cref="NorthAmerican"/>
+        /// Utility method to dump all the spouse data on an instance of <see cref="American"/>
         /// </summary>
         /// <param name="nAmer"></param>
         /// <returns></returns>
-        public static List<Spouse> DumpAllSpouses(NorthAmerican nAmer)
+        public static List<Spouse> DumpAllSpouses(American nAmer)
         {
             return nAmer._spouses.ToList();
         }

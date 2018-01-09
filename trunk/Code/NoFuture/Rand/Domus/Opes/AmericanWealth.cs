@@ -7,15 +7,16 @@ using NoFuture.Rand.Data.Sp;
 using NoFuture.Rand.Data.Sp.Cc;
 using NoFuture.Rand.Data.Sp.Enums;
 using NoFuture.Rand.Domus.Pneuma;
+using NoFuture.Rand.Domus.US;
 
 namespace NoFuture.Rand.Domus.Opes
 {
     /// <summary>
-    /// For generating the financial state and history of a <see cref="NorthAmerican"/>
+    /// For generating the financial state and history of a <see cref="American"/>
     /// at random.
     /// </summary>
     [Serializable]
-    public class NorthAmericanWealth : WealthBase
+    public class AmericanWealth : WealthBase
     {
         #region constants
 
@@ -59,11 +60,11 @@ namespace NoFuture.Rand.Domus.Opes
         /// <param name="isRenting">
         /// Optional, force the generated instance as renting (instead of mortgage).
         /// </param>
-        public NorthAmericanWealth(NorthAmerican american): base(american)
+        public AmericanWealth(American american): base(american)
         {
         }
 
-        public NorthAmericanWealth(NorthAmerican american, OpesOptions options) : base(american, options)
+        public AmericanWealth(American american, OpesOptions options) : base(american, options)
         {
         }
         #endregion
@@ -129,11 +130,11 @@ namespace NoFuture.Rand.Domus.Opes
 
             //set up checking
             var checking = AmericanUtil.GetRandomCheckingAcct(Person,baseDate);
-            var randChecking = NorthAmericanFactors.GetRandomFactorValue(FactorTables.CheckingAccount, Factors.CheckingAcctFactor, stdDevAsPercent);
+            var randChecking = AmericanFactors.GetRandomFactorValue(FactorTables.CheckingAccount, Factors.CheckingAcctFactor, stdDevAsPercent);
             checking.Push(baseDate.AddDays(-1), randChecking.ToPecuniam(), new Mereo("Init Checking"), Pecuniam.Zero);
 
             //set up a savings
-            var randSavings = NorthAmericanFactors.GetRandomFactorValue(FactorTables.SavingsAccount, Factors.SavingsAcctFactor, stdDevAsPercent);
+            var randSavings = AmericanFactors.GetRandomFactorValue(FactorTables.SavingsAccount, Factors.SavingsAcctFactor, stdDevAsPercent);
             var savings = AmericanUtil.GetRandomSavingAcct(Person, baseDate);
             savings.Push(baseDate.AddDays(-1), randSavings.ToPecuniam(), new Mereo("Init Savings"), Pecuniam.Zero);
             var friCounter = 0;
@@ -235,7 +236,7 @@ namespace NoFuture.Rand.Domus.Opes
                 return;
 
             //get random total cc debt
-            var randCcValue = NorthAmericanFactors.GetRandomFactorValue(FactorTables.CreditCardDebt, Factors.CreditCardDebtFactor, stdDevAsPercent);
+            var randCcValue = AmericanFactors.GetRandomFactorValue(FactorTables.CreditCardDebt, Factors.CreditCardDebtFactor, stdDevAsPercent);
 
             //get number of cc's to divide total cc debt into
             var numOfCc = 1;
@@ -298,10 +299,10 @@ namespace NoFuture.Rand.Domus.Opes
         protected internal Pecuniam AddMortgage(double stdDevAsPercent = DF_STD_DEV_PERCENT)
         {
             //calc a rand amount of what is still owed
-            var randHouseDebt = NorthAmericanFactors.GetRandomFactorValue(FactorTables.HomeDebt, Factors.HomeDebtFactor, stdDevAsPercent);
+            var randHouseDebt = AmericanFactors.GetRandomFactorValue(FactorTables.HomeDebt, Factors.HomeDebtFactor, stdDevAsPercent);
 
             //calc rand amount of equity accrued
-            var randHouseEquity = NorthAmericanFactors.GetRandomFactorValue(FactorTables.HomeEquity, Factors.HomeEquityFactor, stdDevAsPercent);
+            var randHouseEquity = AmericanFactors.GetRandomFactorValue(FactorTables.HomeEquity, Factors.HomeEquityFactor, stdDevAsPercent);
             _homeEquity += randHouseEquity.ToPecuniam();
 
             //get rand interest rate weighted by score
@@ -400,14 +401,14 @@ namespace NoFuture.Rand.Domus.Opes
                 return Pecuniam.Zero;
 
             //calc a rand amount of what is still owed
-            var randCarDebt = NorthAmericanFactors.GetRandomFactorValue(FactorTables.VehicleDebt, Factors.VehicleDebtFactor, stdDevAsPercent);
+            var randCarDebt = AmericanFactors.GetRandomFactorValue(FactorTables.VehicleDebt, Factors.VehicleDebtFactor, stdDevAsPercent);
 
             //allow for car to be paid off
             if (Etx.TryBelowOrAt(23, Etx.Dice.OneHundred))
                 randCarDebt = 0.0D;
 
             //calc rand amount of equity
-            var randCarEquity = NorthAmericanFactors.GetRandomFactorValue(FactorTables.VehicleEquity, Factors.VehicleEquityFactor, stdDevAsPercent);
+            var randCarEquity = AmericanFactors.GetRandomFactorValue(FactorTables.VehicleEquity, Factors.VehicleEquityFactor, stdDevAsPercent);
 
             _vehicleEquity += randCarEquity.ToPecuniam();
 

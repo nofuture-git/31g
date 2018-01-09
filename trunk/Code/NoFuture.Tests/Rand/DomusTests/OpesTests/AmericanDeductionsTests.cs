@@ -7,13 +7,13 @@ using NoFuture.Rand.Domus.Opes;
 namespace NoFuture.Rand.Tests.DomusTests.OpesTests
 {
     [TestClass]
-    public class NorthAmericanDeductionsTests
+    public class AmericanDeductionsTests
     {
         [TestMethod]
         public void TestGetInsuranceDeductionName2RandRates()
         {
-            var testInput = new NorthAmericanEmployment(null, null);
-            var testSubject = new NorthAmericanDeductions(testInput);
+            var testInput = new AmericanEmployment(null, null);
+            var testSubject = new AmericanDeductions(testInput);
 
             var testOptions =
                 new OpesOptions() { Inception = DateTime.Today.AddYears(-1) };
@@ -38,8 +38,8 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         public void TestGetGovernmentDeductionName2Rates()
         {
 
-            var testInput = new NorthAmericanEmployment(null, null);
-            var testSubject = new NorthAmericanDeductions(testInput);
+            var testInput = new AmericanEmployment(null, null);
+            var testSubject = new AmericanDeductions(testInput);
 
             var testOptions =
                 new OpesOptions { Inception = DateTime.Today.AddYears(-1) };
@@ -62,8 +62,8 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         [TestMethod]
         public void TestGetEmploymentDeductionName2Rates()
         {
-            var testInput = new NorthAmericanEmployment(null, null);
-            var testSubject = new NorthAmericanDeductions(testInput);
+            var testInput = new AmericanEmployment(null, null);
+            var testSubject = new AmericanDeductions(testInput);
 
             var testOptions =
                 new OpesOptions { Inception = DateTime.Today.AddYears(-1) };
@@ -86,8 +86,8 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         [TestMethod]
         public void TestGetJudgementDeductionName2RandomRates()
         {
-            var testInput = new NorthAmericanEmployment(null, null);
-            var testSubject = new NorthAmericanDeductions(testInput);
+            var testInput = new AmericanEmployment(null, null);
+            var testSubject = new AmericanDeductions(testInput);
 
             var testOptions =
                 new OpesOptions { Inception = DateTime.Today.AddYears(-1) };
@@ -134,8 +134,8 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         [TestMethod]
         public void TestResolveItems()
         {
-            var testInput = new NorthAmericanEmployment(null, null);
-            var testSubject = new NorthAmericanDeductions(testInput);
+            var testInput = new AmericanEmployment(null, null);
+            var testSubject = new AmericanDeductions(testInput);
 
             testSubject.ResolveItems(null);
 
@@ -149,7 +149,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         [TestMethod]
         public void TestDeductionsRatioToIncome()
         {
-            var testInput = new NorthAmericanEmployment(DateTime.Today.AddYears(-1), null);
+            var testInput = new AmericanEmployment(DateTime.Today.AddYears(-1), null);
             var annualIncome = 75000.ToPecuniam();
 
             var options = new OpesOptions {SumTotal = annualIncome};
@@ -164,7 +164,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             System.Diagnostics.Debug.WriteLine(diff);
             Assert.IsTrue(Math.Round(diff) == 0.0D);
 
-            var testSubject = new NorthAmericanDeductions(testInput);
+            var testSubject = new AmericanDeductions(testInput);
 
             testSubject.ResolveItems(null);
 
@@ -186,7 +186,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         [TestMethod]
         public void TestDeductionsAllPresent()
         {
-            var testInput = new NorthAmericanEmployment(DateTime.Today.AddYears(-1), null);
+            var testInput = new AmericanEmployment(DateTime.Today.AddYears(-1), null);
             var annualIncome = 75000.ToPecuniam();
 
             var options = new OpesOptions { SumTotal = annualIncome };
@@ -201,7 +201,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             System.Diagnostics.Debug.WriteLine(diff);
             Assert.IsTrue(Math.Round(diff) == 0.0D);
 
-            var testSubject = new NorthAmericanDeductions(testInput);
+            var testSubject = new AmericanDeductions(testInput);
             System.Diagnostics.Debug.WriteLine(testSubject.MyOptions.SumTotal);
             testSubject.ResolveItems(null);
 
@@ -217,8 +217,8 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         [TestMethod]
         public void TestGetGroupNames2Portions()
         {
-            var testInput = new NorthAmericanEmployment(null, null);
-            var testSubject = new NorthAmericanDeductions(testInput);
+            var testInput = new AmericanEmployment(null, null);
+            var testSubject = new AmericanDeductions(testInput);
 
             var testResults = testSubject.GetGroupNames2Portions(null);
             
@@ -245,8 +245,8 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         [TestMethod]
         public void TestResolveItemsWithJudgements()
         {
-            var testInput = new NorthAmericanEmployment(DateTime.Today.AddYears(-1), null);
-            var testSubject = new NorthAmericanDeductions(testInput);
+            var testInput = new AmericanEmployment(DateTime.Today.AddYears(-1), null);
+            var testSubject = new AmericanDeductions(testInput);
 
             var testOptions =
                 new OpesOptions() {Inception = testInput.MyOptions.Inception, IsPayingChildSupport = true};

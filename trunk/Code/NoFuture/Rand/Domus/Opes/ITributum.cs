@@ -6,7 +6,7 @@ namespace NoFuture.Rand.Domus.Opes
     /// <summary>
     /// Expresses a single form of deductions associated to an employment in time
     /// </summary>
-    public interface IDeductions
+    public interface ITributum //Consequentia
     {
         /// <summary>
         /// List of the current deductions on this employment

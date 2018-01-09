@@ -6,6 +6,7 @@ using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Data.Endo;
 using NoFuture.Rand.Data.Endo.Enums;
 using NoFuture.Rand.Domus.Pneuma;
+using NoFuture.Rand.Domus.US;
 using NoFuture.Rand.Edu;
 using NoFuture.Rand.Gov;
 using NoFuture.Shared.Core;
@@ -194,21 +195,21 @@ namespace NoFuture.Rand.Domus
 
         #region static api
         /// <summary>
-        /// Returns a new <see cref="NorthAmerican"/> with all values selected at random.
+        /// Returns a new <see cref="US.American"/> with all values selected at random.
         /// </summary>
         /// <returns></returns>
-        public static NorthAmerican American()
+        public static American American()
         {
-            return new NorthAmerican(UsState.GetWorkingAdultBirthDate(), Etx.CoinToss ? Gender.Female : Gender.Male,
+            return new American(UsState.GetWorkingAdultBirthDate(), Etx.CoinToss ? Gender.Female : Gender.Male,
                 true, true);
         }
 
         /// <summary>
-        /// Returns a new <see cref="NorthAmerican"/> with all values select at random.
+        /// Returns a new <see cref="US.American"/> with all values select at random.
         /// The City, Providence and Postal Code are limited to the major Canadian cities.
         /// </summary>
         /// <returns></returns>
-        public static NorthAmerican Canadian()
+        public static American Canadian()
         {
             var canadian = American();
             var cpp = CityArea.Canadian();

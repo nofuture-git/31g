@@ -11,16 +11,16 @@ using NoFuture.Util.Core;
 namespace NoFuture.Rand.Domus.Opes
 {
     /// <inheritdoc cref="WealthBase"/>
-    /// <inheritdoc cref="IDeductions"/>
+    /// <inheritdoc cref="ITributum"/>
     /// <summary>
     /// </summary>
     [Serializable]
-    public class NorthAmericanDeductions : WealthBase, IDeductions
+    public class AmericanDeductions : WealthBase, ITributum
     {
         private readonly HashSet<Pondus> _deductions = new HashSet<Pondus>();
-        private readonly NorthAmericanEmployment _employment;
+        private readonly AmericanEmployment _employment;
 
-        internal NorthAmericanDeductions(NorthAmericanEmployment employment) : base(employment?.Person, employment?.MyOptions)
+        internal AmericanDeductions(AmericanEmployment employment) : base(employment?.Person, employment?.MyOptions)
         {
             _employment = employment ?? throw new ArgumentNullException(nameof(employment));
 

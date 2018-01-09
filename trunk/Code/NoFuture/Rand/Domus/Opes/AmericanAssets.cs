@@ -8,6 +8,7 @@ using NoFuture.Rand.Data.Endo;
 using NoFuture.Rand.Data.Endo.Enums;
 using NoFuture.Rand.Data.Sp;
 using NoFuture.Rand.Data.Sp.Enums;
+using NoFuture.Rand.Domus.US;
 
 namespace NoFuture.Rand.Domus.Opes
 {
@@ -17,7 +18,7 @@ namespace NoFuture.Rand.Domus.Opes
     /// Represents the assets of a North American over some span of time
     /// </summary>
     [Serializable]
-    public class NorthAmericanAssets : WealthBase, IRebus
+    public class AmericanAssets : WealthBase, IRebus
     {
         #region fields
 
@@ -49,37 +50,37 @@ namespace NoFuture.Rand.Domus.Opes
 
         #region ctors
 
-        public NorthAmericanAssets(NorthAmerican american, OpesOptions options, double stdDev = DF_STD_DEV_PERCENT) : base(
+        public AmericanAssets(American american, OpesOptions options, double stdDev = DF_STD_DEV_PERCENT) : base(
             american, options)
         {
             if (MyOptions.Inception == DateTime.MinValue)
                 MyOptions.Inception = GetYearNeg(-1);
 
-            _randCheckingAcctAmt = NorthAmericanFactors.GetRandomFactorValue(FactorTables.CheckingAccount,
+            _randCheckingAcctAmt = AmericanFactors.GetRandomFactorValue(FactorTables.CheckingAccount,
                 Factors.CheckingAcctFactor, stdDev);
-            _randSavingsAcctAmt = NorthAmericanFactors.GetRandomFactorValue(FactorTables.SavingsAccount,
+            _randSavingsAcctAmt = AmericanFactors.GetRandomFactorValue(FactorTables.SavingsAccount,
                 Factors.SavingsAcctFactor, stdDev);
 
-            _randHomeEquity = NorthAmericanFactors.GetRandomFactorValue(FactorTables.HomeEquity,
+            _randHomeEquity = AmericanFactors.GetRandomFactorValue(FactorTables.HomeEquity,
                 Factors.HomeEquityFactor,
                 DF_STD_DEV_PERCENT);
 
-            _randCarEquity = NorthAmericanFactors.GetRandomFactorValue(FactorTables.VehicleEquity,
+            _randCarEquity = AmericanFactors.GetRandomFactorValue(FactorTables.VehicleEquity,
                 Factors.VehicleEquityFactor, stdDev);
 
-            var randCcDebt = NorthAmericanFactors.GetRandomFactorValue(FactorTables.CreditCardDebt,
+            var randCcDebt = AmericanFactors.GetRandomFactorValue(FactorTables.CreditCardDebt,
                 Factors.CreditCardDebtFactor,
                 DF_STD_DEV_PERCENT);
 
-            _randHomeDebt = NorthAmericanFactors.GetRandomFactorValue(FactorTables.HomeDebt, Factors.HomeDebtFactor,
+            _randHomeDebt = AmericanFactors.GetRandomFactorValue(FactorTables.HomeDebt, Factors.HomeDebtFactor,
                 DF_STD_DEV_PERCENT);
 
-            _randCarDebt = NorthAmericanFactors.GetRandomFactorValue(FactorTables.VehicleDebt,
+            _randCarDebt = AmericanFactors.GetRandomFactorValue(FactorTables.VehicleDebt,
                 Factors.VehicleDebtFactor, stdDev);
 
             _totalEquity = _randCheckingAcctAmt + _randSavingsAcctAmt + _randHomeEquity + _randCarEquity;
 
-            var randNetWorth = NorthAmericanFactors.GetRandomFactorValue(FactorTables.NetWorth,
+            var randNetWorth = AmericanFactors.GetRandomFactorValue(FactorTables.NetWorth,
                 Factors.NetWorthFactor, stdDev);
 
             var allOtherAssetEquity = _totalEquity - randNetWorth;

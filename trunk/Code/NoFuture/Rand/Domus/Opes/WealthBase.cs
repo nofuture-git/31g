@@ -8,6 +8,7 @@ using NoFuture.Rand.Data;
 using NoFuture.Rand.Data.Endo;
 using NoFuture.Rand.Data.Endo.Enums;
 using NoFuture.Rand.Data.Sp;
+using NoFuture.Rand.Domus.US;
 using NoFuture.Rand.Gov.Fed;
 using NoFuture.Shared.Core;
 using NoFuture.Util.Core;
@@ -28,8 +29,8 @@ namespace NoFuture.Rand.Domus.Opes
 
         #region fields
         protected internal IComparer<ITempore> Comparer { get; } = new TemporeComparer();
-        private readonly NorthAmerican _amer;
-        private readonly NorthAmericanFactors _factors;
+        private readonly American _amer;
+        private readonly AmericanFactors _factors;
         private static IMereo[] _incomeItemNames;
         private static IMereo[] _deductionItemNames;
         private static IMereo[] _expenseItemNames;
@@ -116,17 +117,17 @@ namespace NoFuture.Rand.Domus.Opes
         #endregion
 
         #region ctors
-        protected WealthBase(NorthAmerican american) : this(american, new OpesOptions())
+        protected WealthBase(American american) : this(american, new OpesOptions())
         {
         }
 
-        protected WealthBase(NorthAmerican american, OpesOptions options)
+        protected WealthBase(American american, OpesOptions options)
         {
             MyOptions = options ?? new OpesOptions();
             if (american == null)
             {
                 CreditScore = new PersonalCreditScore();
-                _factors = new NorthAmericanFactors(null);
+                _factors = new AmericanFactors(null);
                 return;
             }
             _amer = american;
@@ -140,7 +141,7 @@ namespace NoFuture.Rand.Domus.Opes
             };
             //TODO this should be decided by calling assemlby
             MyOptions.IsRenting = GetIsLeaseResidence(usCityArea);
-            _factors = new NorthAmericanFactors(_amer);
+            _factors = new AmericanFactors(_amer);
 
         }
         #endregion
@@ -159,15 +160,15 @@ namespace NoFuture.Rand.Domus.Opes
         public CreditScore CreditScore { get; protected set; }
 
         /// <summary>
-        /// Exposes the calculated factors using the <see cref="NorthAmerican"/> passed into 
+        /// Exposes the calculated factors using the <see cref="American"/> passed into 
         /// the ctor.
         /// </summary>
-        public NorthAmericanFactors Factors => _factors;
+        public AmericanFactors Factors => _factors;
 
         /// <summary>
         /// The person who is associated to this wealth data.
         /// </summary>
-        protected internal virtual NorthAmerican Person => _amer;
+        protected internal virtual American Person => _amer;
 
         /// <summary>
         /// Determines which kind of wealth concept is 
@@ -685,7 +686,7 @@ namespace NoFuture.Rand.Domus.Opes
         }
 
         /// <summary>
-        /// Determine if the given <see cref="NorthAmerican"/> is renting or has a mortgage
+        /// Determine if the given <see cref="American"/> is renting or has a mortgage
         /// </summary>
         /// <param name="usCityArea"></param>
         /// <returns></returns>
