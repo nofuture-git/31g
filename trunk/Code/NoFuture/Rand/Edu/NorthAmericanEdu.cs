@@ -3,17 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
 using NoFuture.Rand.Core;
-using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Data;
 using NoFuture.Rand.Data.Endo;
 using NoFuture.Rand.Data.Endo.Enums;
-using NoFuture.Rand.Edu;
 using NoFuture.Rand.Gov;
 using NoFuture.Shared.Core;
 using NoFuture.Util.Core;
 using NoFuture.Util.Core.Math;
 
-namespace NoFuture.Rand.Domus
+namespace NoFuture.Rand.Edu
 {
     [Serializable]
     public class NorthAmericanEdu : IEducation
@@ -30,14 +28,14 @@ namespace NoFuture.Rand.Domus
         #endregion
 
         #region ctor
-        internal NorthAmericanEdu(Tuple<IHighSchool, DateTime?> assignHs)
+        public NorthAmericanEdu(Tuple<IHighSchool, DateTime?> assignHs)
         {
             if (assignHs?.Item1 is AmericanHighSchool)
                 AddHighSchool((AmericanHighSchool)assignHs.Item1, assignHs.Item2);
             AssignEduFlagAndLevel();
         }
 
-        internal NorthAmericanEdu(Tuple<IUniversity, DateTime?> assignUniv, Tuple<IHighSchool, DateTime?> assignHs)
+        public NorthAmericanEdu(Tuple<IUniversity, DateTime?> assignUniv, Tuple<IHighSchool, DateTime?> assignHs)
         {
             if (assignHs?.Item1 is AmericanHighSchool)
             {
@@ -52,7 +50,7 @@ namespace NoFuture.Rand.Domus
 
         public NorthAmericanEdu(DateTime? birthDate, UsCityStateZip homeCityArea)
         {
-            var dob = birthDate ?? AmericanUtil.GetWorkingAdultBirthDate();
+            var dob = birthDate ?? UsState.GetWorkingAdultBirthDate();
             var age = Etc.CalcAge(dob);
 
             if (age < DF_MIN_AGE_ENTER_HS)
@@ -166,7 +164,7 @@ namespace NoFuture.Rand.Domus
             }
 
             //get a date of when amer would be grad'ing from hs
-            hsGradDt = GetRandomGraduationDate(dtAtAge18.AddYears(-4), AmericanEquations.YearsInHighSchool, true);
+            hsGradDt = GetRandomGraduationDate(dtAtAge18.AddYears(-4), AmericanHighSchool.YearsInHighSchool, true);
 
             //assign grad hs with grad date
             _highSchools.Add(new AmericanHighSchoolStudent(hs) {Graduation = hsGradDt});
@@ -217,7 +215,7 @@ namespace NoFuture.Rand.Domus
 
             //college grad
             //get a date for when amer would grad from college
-            var univGradDt = GetRandomGraduationDate(hsGradDt.Value, AmericanEquations.YearsInUndergradCollege);
+            var univGradDt = GetRandomGraduationDate(hsGradDt.Value, AmericanUniversity.YearsInUndergradCollege);
 
             AddUniversity(univ, univGradDt);
 
@@ -227,7 +225,7 @@ namespace NoFuture.Rand.Domus
 
             if (Etx.TryBelowOrAt((int)postGradRate * 10, Etx.Dice.OneThousand))
             {
-                var postGradDt = GetRandomGraduationDate(univGradDt, AmericanEquations.YearsInPostgradCollege);
+                var postGradDt = GetRandomGraduationDate(univGradDt, AmericanUniversity.YearsInPostgradCollege);
                 var postGradUniv = GetAmericanUniversity(homeState);
 
                 AddUniversity(postGradUniv, postGradDt);
@@ -280,8 +278,8 @@ namespace NoFuture.Rand.Domus
     
                 //consider doctorate as right-side second sigma of postgrad years
                 isDocGrad = numYearsPostGrad >
-                            AmericanEquations.YearsInPostgradCollege.Mean +
-                            AmericanEquations.YearsInPostgradCollege.StdDev;
+                            AmericanUniversity.YearsInPostgradCollege.Mean +
+                            AmericanUniversity.YearsInPostgradCollege.StdDev;
             }
 
             //assign flag and name based on the above

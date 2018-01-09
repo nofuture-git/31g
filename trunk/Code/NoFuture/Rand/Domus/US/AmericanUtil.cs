@@ -542,20 +542,6 @@ namespace NoFuture.Rand.Domus
             return lnameNodes.ChildNodes[p].InnerText;
         }
 
-        /// <summary>
-        /// Returns a date being between <see cref="min"/> years ago today back to <see cref="max"/> years ago today.
-        /// </summary>
-        /// <remarks>
-        /// The age is limited to min,max of 18,67 - generate with family to get other age sets
-        /// </remarks>
-        public static DateTime GetWorkingAdultBirthDate(int min = 21, int max = 67)
-        {
-            if (min < UsState.AGE_OF_ADULT)
-                min = UsState.AGE_OF_ADULT;
-            if (max > 67)
-                max = 67;
-            return DateTime.Now.AddYears(-1 * Etx.MyRand.Next(min, max)).AddDays(Etx.IntNumber(1, 360));
-        }
 
         /// <summary>
         /// Gets a date of death based on the <see cref="Equations.LifeExpectancy"/>
@@ -673,7 +659,7 @@ namespace NoFuture.Rand.Domus
         {
             if (Etx.MyRand.NextDouble() <= AmericanData.PERCENT_UNMARRIED_WHOLE_LIFE)
                 return MaritialStatus.Single;
-            dob = dob ?? GetWorkingAdultBirthDate();
+            dob = dob ?? UsState.GetWorkingAdultBirthDate();
 
             dob = AmericanEquations.ProtectAgainstDistantTimes(dob.Value);
 
@@ -735,7 +721,7 @@ namespace NoFuture.Rand.Domus
                     : AmericanEquations.FemaleAge2FirstMarriage;
             }
 
-            childDob = childDob ?? GetWorkingAdultBirthDate();
+            childDob = childDob ?? UsState.GetWorkingAdultBirthDate();
 
             //move to a date 1 - 6 years prior the Person's dob
             var dtPm = childDob.Value.AddYears(-1 * Etx.IntNumber(1, 6)).AddDays(Etx.IntNumber(1, 360));
@@ -768,7 +754,7 @@ namespace NoFuture.Rand.Domus
             if (gender == Gender.Unknown)
                 return null;
 
-            myDob = myDob ?? GetWorkingAdultBirthDate();
+            myDob = myDob ?? UsState.GetWorkingAdultBirthDate();
 
             var ageDiff = Etx.IntNumber(0, maxAgeDiff);
             ageDiff = gender == Gender.Female ? ageDiff * -1 : ageDiff;
@@ -793,7 +779,7 @@ namespace NoFuture.Rand.Domus
             var vt = DateTime.Now;
             if (atDateTime != null)
                 vt = atDateTime.Value;
-            dob = dob ?? GetWorkingAdultBirthDate();
+            dob = dob ?? UsState.GetWorkingAdultBirthDate();
             dob = AmericanEquations.ProtectAgainstDistantTimes(dob.Value);
             var age = Etc.CalcAge(dob.Value, vt);
             var randV = Etx.IntNumber(1, 100);
@@ -832,7 +818,7 @@ namespace NoFuture.Rand.Domus
         public static double SolveForProbabilityChildless(DateTime? dob,
             OccidentalEdu educationLevel = OccidentalEdu.HighSchool | OccidentalEdu.Grad)
         {
-            dob = dob ?? GetWorkingAdultBirthDate();
+            dob = dob ?? UsState.GetWorkingAdultBirthDate();
             var eduAdditive = 0.0;
             if (educationLevel == (OccidentalEdu.Bachelor | OccidentalEdu.Grad))
                 eduAdditive = 0.09;
@@ -859,7 +845,7 @@ namespace NoFuture.Rand.Domus
         /// <returns></returns>
         public static DateTime? SolveForMarriageDate(DateTime? dob, Gender myGender)
         {
-            dob = dob ?? GetWorkingAdultBirthDate();
+            dob = dob ?? UsState.GetWorkingAdultBirthDate();
             dob = AmericanEquations.ProtectAgainstDistantTimes(dob.Value);
             var dt = DateTime.Now;
             var avgAgeMarriage = myGender == Gender.Female

@@ -60,19 +60,15 @@
     <Compile Include="Com\TickerComparer.cs" />
     <Compile Include="Com\TypeOfBank.cs" />
     <Compile Include="Domus\US\AmericanData.cs" />
-    <Compile Include="Edu\AmericanCollegeStudent.cs" />
-    <Compile Include="Edu\AmericanHighSchoolStudent.cs" />
     <Compile Include="Domus\US\AmericanEquations.cs" />
     <Compile Include="Domus\Opes\FactorTables.cs" />
     <Compile Include="Domus\Opes\IDeductions.cs" />
     <Compile Include="Domus\Opes\IEmployment.cs" />
-    <Compile Include="Edu\IStudent.cs" />
     <Compile Include="Domus\Opes\IExpense.cs" />
     <Compile Include="Domus\Opes\IRebus.cs" />
     <Compile Include="Domus\Opes\NorthAmericanAssets.cs" />
     <Compile Include="Domus\Opes\NorthAmericanDeductions.cs" />
     <Compile Include="Domus\Opes\NorthAmericanEmployment.cs" />
-    <Compile Include="Edu\NorthAmericanStudent.cs" />
     <Compile Include="Domus\Opes\NorthAmericanExpenses.cs" />
     <Compile Include="Domus\Opes\NorthAmericanFactors.cs" />
     <Compile Include="Domus\Opes\OpesOptions.cs" />
@@ -85,20 +81,16 @@
     <Compile Include="Domus\Pneuma\Neuroticism.cs" />
     <Compile Include="Domus\Pneuma\Openness.cs" />
     <Compile Include="Domus\Pneuma\Trait.cs" />
-    <Compile Include="Edu\IHighSchool.cs" />
-    <Compile Include="Edu\IUniversity.cs" />
     <Compile Include="Com\Firm.cs" />
     <Compile Include="Com\FinancialFirm.cs" />
     <Compile Include="Com\PublicCorporation.cs" />
     <Compile Include="Com\TickerSymbol.cs" />
     <Compile Include="Domus\Child.cs" />
-    <Compile Include="Edu\IEducation.cs" />
     <Compile Include="Domus\IPerson.cs" />
     <Compile Include="Domus\Opes\IReditus.cs" />
     <Compile Include="Domus\IRelation.cs" />
     <Compile Include="Domus\US\AmericanUtil.cs" />
     <Compile Include="Domus\NorthAmerican.cs" />
-    <Compile Include="Edu\NorthAmericanEdu.cs" />
     <Compile Include="Domus\Opes\NorthAmericanIncome.cs" />
     <Compile Include="Domus\Opes\NorthAmericanWealth.cs" />
     <Compile Include="Domus\Opes\WealthBase.cs" />
@@ -106,9 +98,6 @@
     <Compile Include="Domus\Pneuma\Personality.cs" />
     <Compile Include="Domus\ResidentAddress.cs" />
     <Compile Include="Domus\Spouse.cs" />
-    <Compile Include="Edu\AmericanEduBase.cs" />
-    <Compile Include="Edu\AmericanHighSchool.cs" />
-    <Compile Include="Edu\AmericanUniversity.cs" />
     <Compile Include="Domus\Person.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -136,6 +125,10 @@
     <ProjectReference Include="Data\Sp\Rand.Data.Sp.csproj">
       <Project>{193f1df6-f471-4164-b5bb-8752c306df7b}</Project>
       <Name>Rand.Data.Sp</Name>
+    </ProjectReference>
+    <ProjectReference Include="Edu\Rand.Edu.csproj">
+      <Project>{f3aa72f2-7e33-4a99-a10d-110dec5a8384}</Project>
+      <Name>Rand.Edu</Name>
     </ProjectReference>
     <ProjectReference Include="Gov\Rand.Gov.csproj">
       <Project>{bb60d20c-259f-4fb3-9ba3-58e859bd712d}</Project>

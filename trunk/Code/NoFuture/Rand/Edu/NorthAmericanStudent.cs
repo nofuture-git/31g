@@ -1,7 +1,7 @@
 ﻿using System;
 using NoFuture.Rand.Core;
 
-namespace NoFuture.Rand.Domus
+namespace NoFuture.Rand.Edu
 {
     [Serializable]
     public abstract class NorthAmericanStudent<T> : DiachronIdentifier, IStudent<T>

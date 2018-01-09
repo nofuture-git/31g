@@ -1,7 +1,6 @@
 ﻿using System;
-using NoFuture.Rand.Edu;
 
-namespace NoFuture.Rand.Domus
+namespace NoFuture.Rand.Edu
 {
     [Serializable]
     public class AmericanHighSchoolStudent : NorthAmericanStudent<AmericanHighSchool>

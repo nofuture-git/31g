@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Xml;
-using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Data;
-using NoFuture.Rand.Data.Endo;
 using NoFuture.Rand.Data.Endo.Enums;
 using NoFuture.Rand.Gov;
+using NoFuture.Util.Core.Math;
 
 namespace NoFuture.Rand.Edu
 {
@@ -30,6 +28,12 @@ namespace NoFuture.Rand.Edu
         {
             return Name;
         }
+
+
+        /// <summary>
+        /// Common knowledge values of 4 years in high school
+        /// </summary>
+        public static NormalDistEquation YearsInHighSchool = new NormalDistEquation { Mean = 4, StdDev = 0.25 };
 
         /// <summary>
         /// [http://nces.ed.gov/programs/coe/indicator_coi.asp]

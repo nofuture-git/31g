@@ -185,21 +185,7 @@ namespace NoFuture.Rand.Domus
                 : new NormalDistEquation { Mean = AmericanData.AVG_MAX_AGE_FEMALE, StdDev = AmericanData.STD_DEV_FEMALE_LIFE_EXPECTANCY };
         }
 
-        /// <summary>
-        /// Common knowledge values of 4 years in high school
-        /// </summary>
-        public static NormalDistEquation YearsInHighSchool = new NormalDistEquation { Mean = 4, StdDev = 0.25 };
 
-        /// <summary>
-        /// [https://nscresearchcenter.org/signaturereport11/] has weighted average where Mean is 5.469 and StdDev is 0.5145
-        /// however, these are current 21st century values not the averages for all post-war years.
-        /// </summary>
-        public static NormalDistEquation YearsInUndergradCollege = new NormalDistEquation { Mean = 4.469, StdDev = 0.5145 };
-
-        /// <summary>
-        /// Can't seem to find a straight answer on this cause post-grad can mean alot of different things
-        /// </summary>
-        public static NormalDistEquation YearsInPostgradCollege = new NormalDistEquation { Mean = 3.913, StdDev = 0.378 };
 
         /// <summary>
         /// TODO, this is the value for OH, need to get an averages for all data

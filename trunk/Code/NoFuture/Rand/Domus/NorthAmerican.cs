@@ -324,7 +324,7 @@ namespace NoFuture.Rand.Domus
 
         protected internal NorthAmericanEdu GetEducationByPerson()
         {
-            var dob = BirthCert?.DateOfBirth ?? AmericanUtil.GetWorkingAdultBirthDate();
+            var dob = BirthCert?.DateOfBirth ?? UsState.GetWorkingAdultBirthDate();
 
             //determine where amer lived when they were 18
             var mother = BirthCert == null

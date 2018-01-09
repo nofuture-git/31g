@@ -1,8 +1,7 @@
 ﻿using System;
 using NoFuture.Rand.Data.Endo.Enums;
-using NoFuture.Rand.Edu;
 
-namespace NoFuture.Rand.Domus
+namespace NoFuture.Rand.Edu
 {
     public interface IEducation
     {

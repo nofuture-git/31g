@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Gov.TheStates;
@@ -44,7 +45,7 @@ namespace NoFuture.Rand.Gov
             get
             {
                 if (dlFormats == null || dlFormats.Length <= 0)
-                    return string.Empty;
+                    return String.Empty;
                 return dlFormats[0].GetRandom();
             }
         }
@@ -57,9 +58,24 @@ namespace NoFuture.Rand.Gov
 
         #region methods
 
+        /// <summary>
+        /// Returns a date being between <see cref="min"/> years ago today back to <see cref="max"/> years ago today.
+        /// </summary>
+        /// <remarks>
+        /// The age is limited to min,max of 18,67 - generate with family to get other age sets
+        /// </remarks>
+        public static DateTime GetWorkingAdultBirthDate(int min = 21, int max = 67)
+        {
+            if (min < AGE_OF_ADULT)
+                min = AGE_OF_ADULT;
+            if (max > 67)
+                max = 67;
+            return DateTime.Now.AddYears(-1 * Etx.MyRand.Next(min, max)).AddDays(Etx.IntNumber(1, 360));
+        }
+
         public override string ToString()
         {
-            return string.Join(" ", Etc.DistillToWholeWords(GetType().Name));
+            return String.Join(" ", Etc.DistillToWholeWords(GetType().Name));
         }
 
         /// <summary>
@@ -80,8 +96,8 @@ namespace NoFuture.Rand.Gov
             var st = obj as UsState;
             if (st == null)
                 return false;
-            return string.Equals(st.StateAbbrv, StateAbbrv, StringComparison.OrdinalIgnoreCase) ||
-                   string.Equals(st.GetType().Name, GetType().Name, StringComparison.Ordinal);
+            return String.Equals(st.StateAbbrv, StateAbbrv, StringComparison.OrdinalIgnoreCase) ||
+                   String.Equals(st.GetType().Name, GetType().Name, StringComparison.Ordinal);
         }
         public override int GetHashCode()
         {
@@ -125,9 +141,9 @@ namespace NoFuture.Rand.Gov
 
             return
                 _theStates.FirstOrDefault(
-                    x => string.Equals(x.GetType().Name, fullStateName, StringComparison.OrdinalIgnoreCase)) ??
+                    x => String.Equals(x.GetType().Name, fullStateName, StringComparison.OrdinalIgnoreCase)) ??
                 _theStates.FirstOrDefault(
-                    x => string.Equals(x.ToString(), fullStateName, StringComparison.OrdinalIgnoreCase));
+                    x => String.Equals(x.ToString(), fullStateName, StringComparison.OrdinalIgnoreCase));
         }
 
         /// <summary>
@@ -136,7 +152,7 @@ namespace NoFuture.Rand.Gov
         /// <param name="lenth"></param>
         /// <param name="startAt"></param>
         /// <returns></returns>
-        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         internal static RcharNumeric[] Numerics(int lenth,int startAt = 0)
         {
             var someNumerics = new List<RcharNumeric>();
@@ -147,7 +163,7 @@ namespace NoFuture.Rand.Gov
             return someNumerics.ToArray();
         }
 
-        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         internal static void InitAllUsStates()
         {
             _theStates.Add(new Alabama());

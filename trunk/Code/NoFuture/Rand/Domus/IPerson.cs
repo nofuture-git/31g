@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Data.Endo.Enums;
+using NoFuture.Rand.Edu;
 using NoFuture.Rand.Gov;
 
 namespace NoFuture.Rand.Domus

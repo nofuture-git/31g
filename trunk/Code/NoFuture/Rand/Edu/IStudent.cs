@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NoFuture.Rand.Domus
+namespace NoFuture.Rand.Edu
 {
     public interface IStudent<T>
     {

@@ -5,6 +5,7 @@ using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Data.Endo;
 using NoFuture.Rand.Data.Endo.Enums;
 using NoFuture.Rand.Domus;
+using NoFuture.Rand.Gov;
 
 namespace NoFuture.Rand.Tests
 {
@@ -15,7 +16,7 @@ namespace NoFuture.Rand.Tests
         [TestMethod]
         public void TestGetScore()
         {
-            var testInput = new NorthAmerican(AmericanUtil.GetWorkingAdultBirthDate(), Gender.Female);
+            var testInput = new NorthAmerican(UsState.GetWorkingAdultBirthDate(), Gender.Female);
 
             var testSubject = new Data.Sp.PersonalCreditScore
             {
@@ -44,7 +45,7 @@ namespace NoFuture.Rand.Tests
         [TestMethod]
         public void TestGetRandomInterestRate()
         {
-            var testInput = new NorthAmerican(AmericanUtil.GetWorkingAdultBirthDate(), Gender.Female);
+            var testInput = new NorthAmerican(UsState.GetWorkingAdultBirthDate(), Gender.Female);
 
             var testSubject = new Data.Sp.PersonalCreditScore
             {
@@ -62,7 +63,7 @@ namespace NoFuture.Rand.Tests
         [TestMethod]
         public void TestGetRandomMax()
         {
-            var testInput = new NorthAmerican(AmericanUtil.GetWorkingAdultBirthDate(), Gender.Female);
+            var testInput = new NorthAmerican(UsState.GetWorkingAdultBirthDate(), Gender.Female);
 
             var testSubject = new Data.Sp.PersonalCreditScore()
             {

@@ -6,6 +6,7 @@ using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Data.Endo;
 using NoFuture.Rand.Data.Endo.Enums;
 using NoFuture.Rand.Domus.Pneuma;
+using NoFuture.Rand.Edu;
 using NoFuture.Rand.Gov;
 using NoFuture.Shared.Core;
 
@@ -198,7 +199,7 @@ namespace NoFuture.Rand.Domus
         /// <returns></returns>
         public static NorthAmerican American()
         {
-            return new NorthAmerican(AmericanUtil.GetWorkingAdultBirthDate(), Etx.CoinToss ? Gender.Female : Gender.Male,
+            return new NorthAmerican(UsState.GetWorkingAdultBirthDate(), Etx.CoinToss ? Gender.Female : Gender.Male,
                 true, true);
         }
 

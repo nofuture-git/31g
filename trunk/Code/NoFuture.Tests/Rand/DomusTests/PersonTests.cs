@@ -40,7 +40,7 @@ namespace NoFuture.Rand.Tests
         [TestMethod]
         public void NorthAmericanEduTests()
         {
-            var amer = new NorthAmerican(AmericanUtil.GetWorkingAdultBirthDate(), Gender.Female);
+            var amer = new NorthAmerican(UsState.GetWorkingAdultBirthDate(), Gender.Female);
             var testResult = amer.GetEducationByPerson();
 
             Assert.IsNotNull(testResult);
@@ -385,7 +385,7 @@ namespace NoFuture.Rand.Tests
         [TestMethod]
         public void TestDeathDate()
         {
-            var dob = AmericanUtil.GetWorkingAdultBirthDate();
+            var dob = UsState.GetWorkingAdultBirthDate();
             var testResult = AmericanUtil.GetDeathDate(dob, Gender.Female);
             Assert.AreNotEqual(dob, testResult);
             Debug.WriteLine("{0} - {1}", dob, testResult);

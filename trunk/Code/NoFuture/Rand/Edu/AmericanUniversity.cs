@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Xml;
-using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Data;
-using NoFuture.Rand.Data.Endo;
 using NoFuture.Rand.Data.Endo.Enums;
 using NoFuture.Rand.Gov;
+using NoFuture.Util.Core.Math;
 
 namespace NoFuture.Rand.Edu
 {
@@ -34,6 +32,18 @@ namespace NoFuture.Rand.Edu
         #endregion
 
         #region methods
+
+
+        /// <summary>
+        /// [https://nscresearchcenter.org/signaturereport11/] has weighted average where Mean is 5.469 and StdDev is 0.5145
+        /// however, these are current 21st century values not the averages for all post-war years.
+        /// </summary>
+        public static NormalDistEquation YearsInUndergradCollege = new NormalDistEquation { Mean = 4.469, StdDev = 0.5145 };
+
+        /// <summary>
+        /// Can't seem to find a straight answer on this cause post-grad can mean alot of different things
+        /// </summary>
+        public static NormalDistEquation YearsInPostgradCollege = new NormalDistEquation { Mean = 3.913, StdDev = 0.378 };
 
         public override string ToString()
         {
