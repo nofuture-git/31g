@@ -91,6 +91,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\NoFuture\Rand\Com\Rand.Com.csproj">
+      <Project>{47a161dd-d5d4-4e02-8161-9e311e50664e}</Project>
+      <Name>Rand.Com</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\NoFuture\Rand\Core\Rand.Core.csproj">
       <Project>{3c5df49d-ae94-431c-85a5-7f5b71ac777f}</Project>
       <Name>Rand.Core</Name>

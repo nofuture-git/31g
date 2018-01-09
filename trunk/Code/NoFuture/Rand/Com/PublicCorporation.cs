@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Xml;
 using NoFuture.Rand.Core.Enums;
+using NoFuture.Rand.Data;
 using NoFuture.Rand.Data.Endo;
-using NoFuture.Rand.Data.Sp;
 using NoFuture.Rand.Gov.Irs;
 using NoFuture.Rand.Gov.Sec;
 using NoFuture.Rand.Gov;
@@ -33,7 +33,7 @@ namespace NoFuture.Rand.Com
             }
             set => _tickerSymbols = value;
         }
-        public string UrlEncodedName => Uri.EscapeUriString(Cusip.GetSearchCompanyName(Name));
+        public string UrlEncodedName => Uri.EscapeUriString(Facit.GetSearchCompanyName(Name));
 
         public override void LoadXrefXmlData()
         {

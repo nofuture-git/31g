@@ -47,9 +47,9 @@ namespace NoFuture.Rand.Data.Exo.NfText
                 bank.BankType = TypeOfBankAbbrev3Enum[li.Chtr];
             var assets = new BankAssetsSummary { Src = FedLrgBnk.RELEASE_URL };
             if (decimal.TryParse(li.ConsolAssets.Replace(COMMA, string.Empty), out decimal conAssts))
-                assets.TotalAssets = new Pecuniam(conAssts * 1000);
+                assets.TotalAssets = conAssts * 1000;
             if (decimal.TryParse(li.DomesticAssets.Replace(COMMA, string.Empty), out decimal domAssts))
-                assets.DomesticAssets = new Pecuniam(domAssts * 1000);
+                assets.DomesticAssets = domAssts * 1000;
             if (int.TryParse(li.NumOfDomBranches.Replace(COMMA, string.Empty), out int domBranches))
                 assets.DomesticBranches = domBranches;
             if (int.TryParse(li.NumOfFgnBranches.Replace(COMMA, string.Empty), out int frnBranches))

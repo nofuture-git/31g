@@ -6,7 +6,6 @@ using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Data;
 using NoFuture.Rand.Data.Endo;
-using NoFuture.Rand.Data.Sp;
 using NoFuture.Rand.Gov.Fed;
 
 namespace NoFuture.Rand.Com
@@ -73,7 +72,7 @@ namespace NoFuture.Rand.Com
                 new Tuple<string, string>("B&t", "Bank & Trust"),
             };
 
-            var unfoldedName = Cusip.GetNameFull(abbrev);
+            var unfoldedName = Facit.GetNameFull(abbrev);
 
             foreach (var pair in bankNameReplacements)
             {

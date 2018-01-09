@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NoFuture.Rand.Data;
 using NoFuture.Rand.Data.Sp;
 using NoFuture.Rand.Data.Sp.Enums;
 using Dbg = System.Diagnostics.Debug;
@@ -91,30 +92,30 @@ namespace NoFuture.Rand.Tests
         [TestMethod]
         public void TestGetSearchCompanyName()
         {
-            var testResult = Cusip.GetSearchCompanyName("HNI Corporation");
+            var testResult = Facit.GetSearchCompanyName("HNI Corporation");
             Assert.AreEqual("HNI CORP", testResult);
-            testResult = Cusip.GetSearchCompanyName("ZION OIL & GAS INC.");
+            testResult = Facit.GetSearchCompanyName("ZION OIL & GAS INC.");
             Assert.AreEqual("ZION OIL & GAS INC", testResult);
-            testResult = Cusip.GetSearchCompanyName("The Saint Louis Glass Company");
+            testResult = Facit.GetSearchCompanyName("The Saint Louis Glass Company");
             Assert.AreEqual("ST LOUIS GLASS CO", testResult);
-            testResult = Cusip.GetSearchCompanyName("Twenty-Nine Palms, California");
+            testResult = Facit.GetSearchCompanyName("Twenty-Nine Palms, California");
             Assert.AreEqual("TWENTY NINE PALMS CALIF", testResult);
-            testResult = Cusip.GetSearchCompanyName("B/G Foods Company");
+            testResult = Facit.GetSearchCompanyName("B/G Foods Company");
             Assert.AreEqual("B G FOODS CO", testResult);
-            testResult = Cusip.GetSearchCompanyName("A. & C. Company Mortgage");
+            testResult = Facit.GetSearchCompanyName("A. & C. Company Mortgage");
             Assert.AreEqual("A & C CO MTG", testResult);
 
-            testResult = Cusip.GetSearchCompanyName("M&T Bank Corporation");
+            testResult = Facit.GetSearchCompanyName("M&T Bank Corporation");
             Assert.AreEqual("M&T BK CORP", testResult);
 
-            testResult = Cusip.GetSearchCompanyName("Parsons and Company Incorporated");
+            testResult = Facit.GetSearchCompanyName("Parsons and Company Incorporated");
             Assert.AreEqual("PARSONS & CO INC",testResult);
         }
 
         [TestMethod]
         public void TestGetNameFull()
         {
-            var testResult = Cusip.GetNameFull("BRAND BKG CO");
+            var testResult = Facit.GetNameFull("BRAND BKG CO");
             Assert.AreEqual("Brand Banking Company", testResult);
 
         }
