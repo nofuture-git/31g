@@ -225,44 +225,6 @@ namespace NoFuture.Rand.Gov.Nhtsa
             return null;
         }
 
-        /// <summary>
-        /// Generates a random VIN
-        /// </summary>
-        /// <param name="allowForOldModel">
-        /// Allow random to produce model years back to 1980
-        /// </param>
-        /// <param name="maxYear">
-        /// Allows calling api to specify a max allowable year of make.
-        /// </param>
-        /// <returns></returns>
-        public static Vin GetRandomVin(bool allowForOldModel = false, int? maxYear = null)
-        {
-            var wmiAndName = WorldManufacturerId.GetRandomManufacturerId();
-            var wmiOut = wmiAndName.Item1;
-
-            //when this is a digit it will allow for a much older make back to 1980
-            var yearBaseDeterminer = allowForOldModel && Etx.TryAboveOrAt(66, Etx.Dice.OneHundred)
-                ? DF_DIGIT
-                : GetRandomVinChar();
-
-            var vds = new VehicleDescription
-            {
-                Four = GetRandomVinChar(),
-                Five = GetRandomVinChar(),
-                Six = GetRandomVinChar(),
-                Seven = yearBaseDeterminer,
-                Eight = GetRandomVinChar()
-            };
-
-            var vis = VehicleIdSection.GetVehicleIdSection(char.IsNumber(vds.Seven.GetValueOrDefault()), maxYear);
-
-            var vin = new Vin {Wmi = wmiOut, Vds = vds, Vis = vis};
-
-            if (!string.IsNullOrWhiteSpace(wmiAndName.Item2))
-                vin.Description = wmiAndName.Item2;
-
-            return vin;
-        }
 
         public override bool Equals(object obj)
         {

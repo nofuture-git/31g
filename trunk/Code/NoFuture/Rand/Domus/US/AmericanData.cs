@@ -142,19 +142,7 @@ namespace NoFuture.Rand.Domus
 
         #region tables
 
-        /// <summary>
-        /// Based on <see cref="DataFiles.US_HIGH_SCHOOL_DATA_FILE"/>
-        /// </summary>
-        public static Dictionary<NorthAmericanRace, double> NorthAmericanRaceAvgs { get; } = new Dictionary<NorthAmericanRace, double>
-        {
-                {NorthAmericanRace.AmericanIndian, 1.0D },
-                {NorthAmericanRace.Asian, 6.0D },
-                {NorthAmericanRace.Hispanic, 18.0D },
-                {NorthAmericanRace.Black, 12.0D },
-                {NorthAmericanRace.White, 61.0D },
-                {NorthAmericanRace.Pacific, 1.0D },
-                {NorthAmericanRace.Mixed, 2.0D }
-            };
+
 
         /// <summary>
         /// src [https://www.cdc.gov/nchs/data/nvsr/nvsr65/nvsr65_04.pdf] Table B.

@@ -99,6 +99,10 @@
       <Project>{193f1df6-f471-4164-b5bb-8752c306df7b}</Project>
       <Name>Rand.Data.Sp</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\NoFuture\Rand\Gov\Rand.Gov.csproj">
+      <Project>{bb60d20c-259f-4fb3-9ba3-58e859bd712d}</Project>
+      <Name>Rand.Gov</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\NoFuture\Rand\Rand.csproj">
       <Project>{71628e18-d27b-4f4e-b034-4b2ad4479e13}</Project>
       <Name>Rand</Name>

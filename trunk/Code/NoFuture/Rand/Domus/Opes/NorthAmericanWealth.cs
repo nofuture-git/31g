@@ -421,7 +421,7 @@ namespace NoFuture.Rand.Domus.Opes
 
             //insure that the gen'ed history doesn't start before the year of make
             var maxYear = loan.Inception.Year;
-            var vin = Gov.Nhtsa.Vin.GetRandomVin(randCarDebt <= 2000.0D, maxYear);
+            var vin = Facit.GetRandomVin(randCarDebt <= 2000.0D, maxYear);
             loan.PropertyId = vin;
             loan.FormOfCredit = FormOfCredit.Installment;
             VehicleDebt.Add(loan);

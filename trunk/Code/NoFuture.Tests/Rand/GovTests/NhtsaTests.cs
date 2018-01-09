@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NoFuture.Rand.Data;
 using NoFuture.Rand.Gov.Nhtsa;
 
 namespace NoFuture.Rand.Tests
@@ -88,7 +89,7 @@ namespace NoFuture.Rand.Tests
         {
             for (var i = 0; i < 45; i++)
             {
-                var testResult = Vin.GetRandomVin();
+                var testResult = Facit.GetRandomVin();
                 Assert.IsNotNull(testResult);
                 var testResultYear = testResult.GetModelYearYyyy();
                 Assert.IsNotNull(testResultYear);
@@ -98,7 +99,7 @@ namespace NoFuture.Rand.Tests
 
             for (var i = 0; i < 45; i++)
             {
-                var byYearTestResult = Vin.GetRandomVin(true, 2014);
+                var byYearTestResult = Facit.GetRandomVin(true, 2014);
                 var testResultYear = byYearTestResult.GetModelYearYyyy();
                 Assert.IsNotNull(testResultYear);
                 Assert.IsTrue(testResultYear.Value <= 2014);
@@ -109,7 +110,7 @@ namespace NoFuture.Rand.Tests
         [TestMethod]
         public void TestGetRandoManufacturerId()
         {
-            var testResult = WorldManufacturerId.GetRandomManufacturerId();
+            var testResult = Facit.GetRandomManufacturerId();
             Assert.IsNotNull(testResult);
             System.Diagnostics.Debug.WriteLine(string.Join(" ", testResult.Item1, testResult.Item2));
             Assert.IsNotNull(testResult.Item1);

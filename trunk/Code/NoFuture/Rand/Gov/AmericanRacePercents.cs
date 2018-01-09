@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using NoFuture.Rand.Core.Enums;
-using NoFuture.Rand.Data.Endo;
 using NoFuture.Rand.Data.Endo.Enums;
-using NoFuture.Rand.Domus;
 
 namespace NoFuture.Rand.Gov
 {
@@ -60,8 +57,19 @@ namespace NoFuture.Rand.Gov
 
         public static Dictionary<string, double> GetNatlAvgAsDict()
         {
-            var tbl = AmericanData.NorthAmericanRaceAvgs;
+            var tbl = NorthAmericanRaceAvgs;
             return tbl.ToDictionary(k => k.Key.ToString(), k => tbl[k.Key]);
         }
+
+        public static Dictionary<NorthAmericanRace, double> NorthAmericanRaceAvgs { get; } = new Dictionary<NorthAmericanRace, double>
+        {
+            {NorthAmericanRace.AmericanIndian, 1.0D },
+            {NorthAmericanRace.Asian, 6.0D },
+            {NorthAmericanRace.Hispanic, 18.0D },
+            {NorthAmericanRace.Black, 12.0D },
+            {NorthAmericanRace.White, 61.0D },
+            {NorthAmericanRace.Pacific, 1.0D },
+            {NorthAmericanRace.Mixed, 2.0D }
+        };
     }
 }

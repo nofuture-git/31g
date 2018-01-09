@@ -73,18 +73,13 @@
     <Compile Include="Data\Endo\Grps\SocDetailedOccupation.cs" />
     <Compile Include="Data\Endo\Grps\SocMajorGroup.cs" />
     <Compile Include="Data\Endo\Grps\SocMinorGroup.cs" />
-    <Compile Include="Data\Endo\Enums\NorthAmericanRace.cs" />
     <Compile Include="Data\Endo\Enums\OccidentalEdu.cs" />
     <Compile Include="Data\Endo\Enums\PropertyCrime.cs" />
-    <Compile Include="Data\Endo\Enums\UrbanCentric.cs" />
     <Compile Include="Data\Endo\UsCityStateZip.cs" />
     <Compile Include="Data\Endo\UsStreetPo.cs" />
     <Compile Include="Data\Endo\Enums\ViolentCrime.cs" />
     <Compile Include="Data\Endo\Xml2XmlIdentifier.cs" />
     <Compile Include="Data\Endo\XRefGroup.cs" />
-    <Compile Include="Com\CommercialFinancialData.cs" />
-    <Compile Include="Com\AssetsSummary.cs" />
-    <Compile Include="Com\IncomeSummary.cs" />
     <Compile Include="Domus\US\AmericanData.cs" />
     <Compile Include="Domus\US\AmericanCollegeStudent.cs" />
     <Compile Include="Domus\US\AmericanHighSchoolStudent.cs" />
@@ -113,34 +108,9 @@
     <Compile Include="Domus\Pneuma\Trait.cs" />
     <Compile Include="Edu\IHighSchool.cs" />
     <Compile Include="Edu\IUniversity.cs" />
-    <Compile Include="Gov\Census\ComboMStatArea.cs" />
-    <Compile Include="Gov\Census\MStatArea.cs" />
-    <Compile Include="Gov\Fed\FdicNum.cs" />
-    <Compile Include="Gov\Fed\ResearchStatisticsSupervisionDiscount.cs" />
-    <Compile Include="Gov\Fed\RiskFreeInterestRate.cs" />
-    <Compile Include="Gov\Fed\RoutingTransitNumber.cs" />
-    <Compile Include="Gov\Irs\EmployerIdentificationNumber.cs" />
-    <Compile Include="Gov\Irs\IndividualTaxId.cs" />
-    <Compile Include="Gov\Irs\PreparerTaxIdNumber.cs" />
-    <Compile Include="Gov\Irs\TaxpayerIdentificationNumber.cs" />
-    <Compile Include="Gov\Nhtsa\VehicleDescription.cs" />
-    <Compile Include="Gov\Nhtsa\VehicleIdSection.cs" />
-    <Compile Include="Gov\Nhtsa\Vin.cs" />
-    <Compile Include="Gov\Nhtsa\VinPositionAttribute.cs" />
-    <Compile Include="Gov\Nhtsa\WorldManufacturerId.cs" />
-    <Compile Include="Gov\Sec\CentralIndexKey.cs" />
-    <Compile Include="Gov\Sec\Form10K.cs" />
-    <Compile Include="Gov\Sec\Form13Fhr.cs" />
-    <Compile Include="Gov\Sec\SecForm.cs" />
-    <Compile Include="Gov\TheStates\Alabama.cs" />
-    <Compile Include="Gov\TheStates\Alaska.cs" />
-    <Compile Include="Gov\AmericanBirthCert.cs" />
-    <Compile Include="Gov\AmericanDeathCert.cs" />
-    <Compile Include="Gov\AmericanRacePercents.cs" />
     <Compile Include="Com\Firm.cs" />
     <Compile Include="Com\FinancialFirm.cs" />
     <Compile Include="Data\Facit.cs" />
-    <Compile Include="Com\FinancialData.cs" />
     <Compile Include="Data\Endo\Grps\ClassificationBase.cs" />
     <Compile Include="Data\Endo\Grps\StandardOccupationalClassification.cs" />
     <Compile Include="Data\Endo\StreetPo.cs" />
@@ -171,68 +141,9 @@
     <Compile Include="Domus\ResidentAddress.cs" />
     <Compile Include="Domus\Spouse.cs" />
     <Compile Include="Edu\AmericanEduBase.cs" />
-    <Compile Include="Gov\TheStates\Arizona.cs" />
-    <Compile Include="Gov\TheStates\Arkansas.cs" />
-    <Compile Include="Gov\BirthCert.cs" />
-    <Compile Include="Gov\TheStates\California.cs" />
-    <Compile Include="Gov\TheStates\Colorado.cs" />
-    <Compile Include="Gov\TheStates\Connecticut.cs" />
-    <Compile Include="Gov\DeathCert.cs" />
-    <Compile Include="Gov\TheStates\Delaware.cs" />
-    <Compile Include="Gov\TheStates\DistrictOfColumbia.cs" />
-    <Compile Include="Gov\TheStates\Florida.cs" />
-    <Compile Include="Gov\TheStates\Georgia.cs" />
-    <Compile Include="Gov\GovernmentId.cs" />
-    <Compile Include="Gov\TheStates\Hawaii.cs" />
-    <Compile Include="Gov\TheStates\Idaho.cs" />
-    <Compile Include="Gov\TheStates\Illinois.cs" />
-    <Compile Include="Gov\TheStates\Indiana.cs" />
-    <Compile Include="Gov\TheStates\Iowa.cs" />
-    <Compile Include="Gov\IVitalRecord.cs" />
-    <Compile Include="Gov\TheStates\Kansas.cs" />
-    <Compile Include="Gov\TheStates\Kentucky.cs" />
-    <Compile Include="Gov\TheStates\Louisiana.cs" />
-    <Compile Include="Gov\TheStates\Maine.cs" />
-    <Compile Include="Gov\TheStates\Maryland.cs" />
-    <Compile Include="Gov\TheStates\Massachusetts.cs" />
-    <Compile Include="Gov\TheStates\Michigan.cs" />
-    <Compile Include="Gov\TheStates\Minnesota.cs" />
-    <Compile Include="Gov\TheStates\Mississippi.cs" />
-    <Compile Include="Gov\TheStates\Missouri.cs" />
-    <Compile Include="Gov\TheStates\Montana.cs" />
-    <Compile Include="Gov\NationCodes.cs" />
-    <Compile Include="Gov\TheStates\Nebraska.cs" />
-    <Compile Include="Gov\TheStates\Nevada.cs" />
-    <Compile Include="Gov\TheStates\NewHampshire.cs" />
-    <Compile Include="Gov\TheStates\NewJersey.cs" />
-    <Compile Include="Gov\TheStates\NewMexico.cs" />
-    <Compile Include="Gov\TheStates\NewYork.cs" />
-    <Compile Include="Gov\TheStates\NorthCarolina.cs" />
-    <Compile Include="Gov\TheStates\NorthDakota.cs" />
-    <Compile Include="Gov\TheStates\Ohio.cs" />
-    <Compile Include="Gov\TheStates\Oklahoma.cs" />
-    <Compile Include="Gov\TheStates\Oregon.cs" />
-    <Compile Include="Gov\TheStates\Pennsylvania.cs" />
-    <Compile Include="Gov\TheStates\RhodeIsland.cs" />
-    <Compile Include="Gov\TheStates\SouthCarolina.cs" />
-    <Compile Include="Gov\TheStates\SouthDakota.cs" />
-    <Compile Include="Gov\StateIssuedId.cs" />
-    <Compile Include="Gov\TheStates\Tennessee.cs" />
-    <Compile Include="Gov\TheStates\Texas.cs" />
-    <Compile Include="Gov\TheStates\Utah.cs" />
-    <Compile Include="Gov\TheStates\Vermont.cs" />
-    <Compile Include="Gov\TheStates\Virginia.cs" />
-    <Compile Include="Gov\VitalRecord.cs" />
     <Compile Include="Edu\AmericanHighSchool.cs" />
     <Compile Include="Edu\AmericanUniversity.cs" />
-    <Compile Include="Gov\DriversLicense.cs" />
-    <Compile Include="Gov\SocialSecurityNumber.cs" />
-    <Compile Include="Gov\UsState.cs" />
     <Compile Include="Domus\Person.cs" />
-    <Compile Include="Gov\TheStates\Washington.cs" />
-    <Compile Include="Gov\TheStates\WestVirginia.cs" />
-    <Compile Include="Gov\TheStates\Wisconsin.cs" />
-    <Compile Include="Gov\TheStates\Wyoming.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -255,6 +166,10 @@
     <ProjectReference Include="Data\Sp\Rand.Data.Sp.csproj">
       <Project>{193f1df6-f471-4164-b5bb-8752c306df7b}</Project>
       <Name>Rand.Data.Sp</Name>
+    </ProjectReference>
+    <ProjectReference Include="Gov\Rand.Gov.csproj">
+      <Project>{bb60d20c-259f-4fb3-9ba3-58e859bd712d}</Project>
+      <Name>Rand.Gov</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

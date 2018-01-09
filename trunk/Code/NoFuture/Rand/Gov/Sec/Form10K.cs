@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Text;
-using NoFuture.Rand.Com;
-using NoFuture.Rand.Data.Sp;
 
 namespace NoFuture.Rand.Gov.Sec
 {
@@ -12,9 +10,18 @@ namespace NoFuture.Rand.Gov.Sec
         public Form10K() : base(ABBREV) { }
         public override string Value { get; set; }
 
-        public int FiscalYear => FinancialData?.FiscalYear ?? 0;
-        public CommercialFinancialData FinancialData { get; set; }
+        public int FiscalYear { get; set; }
         public string Summary { get; set; }
+
+        public decimal Revenue { get; set; }
+        public decimal OperatingIncome { get; set; }
+        public decimal NetIncome { get; set; }
+
+        public decimal DomesticAssets { get; set; }
+        public decimal TotalAssets { get; set; }
+        public decimal TotalLiabilities { get; set; }
+
+        public int NumOfShares { get; set; }
 
         /// <summary>
         /// Returns the link to the SEC's interative version of the report.
@@ -30,7 +37,7 @@ namespace NoFuture.Rand.Gov.Sec
             }
         }
 
-        internal static Uri CtorInteractiveLink(string cik, string accessionNum)
+        public static Uri CtorInteractiveLink(string cik, string accessionNum)
         {
             var qry = new StringBuilder();
             qry.Append("?action=view&");

@@ -69,7 +69,7 @@ namespace NoFuture.Rand.Domus
             }
             _ssn = new SocialSecurityNumber();
             if (Race <= 0)
-                Race = Etx.DiscreteRange(AmericanData.NorthAmericanRaceAvgs);
+                Race = Etx.DiscreteRange(AmericanRacePercents.NorthAmericanRaceAvgs);
         }
 
         /// <summary>
@@ -103,7 +103,7 @@ namespace NoFuture.Rand.Domus
             
             Race = AmericanUtil.GetAmericanRace(csz?.ZipCode);
             if (Race <= 0)
-                Race = Etx.DiscreteRange(AmericanData.NorthAmericanRaceAvgs);
+                Race = Etx.DiscreteRange(AmericanRacePercents.NorthAmericanRaceAvgs);
 
             if (withWholeFamily)
                 ResolveFamilyState();
@@ -399,7 +399,7 @@ namespace NoFuture.Rand.Domus
             _dl.Dob = BirthCert.DateOfBirth;
             _dl.FullLegalName = string.Join(" ", FirstName.ToUpper(), MiddleName.ToUpper(),
                 LastName.ToUpper());
-            _dl.Gender = MyGender;
+            _dl.Gender = MyGender.ToString();
             _dl.PrincipalResidence = Address.ToString();
             return _dl;
         }

@@ -104,13 +104,6 @@ namespace NoFuture.Rand.Data.Exo
             if (myDynDataRslt == null || !myDynDataRslt.Any<dynamic>())
                 return false;
 
-            if (rptTenK.FinancialData == null)
-                rptTenK.FinancialData = new CommercialFinancialData
-                {
-                    AssetsSummary = new AssetsSummary(),
-                    IncomeSummary = new IncomeSummary()
-                };
-
             var xbrlDyn = myDynDataRslt.First<dynamic>();
             var cik = xbrlDyn.Cik;
             if (pc.CIK.Value != cik)
@@ -131,7 +124,7 @@ namespace NoFuture.Rand.Data.Exo
             var legalName = xbrlDyn.Name;
             pc.UpsertName(KindsOfNames.Legal, legalName);
 
-            rptTenK.FinancialData.NumOfShares = xbrlDyn.NumOfShares;
+            rptTenK.NumOfShares = xbrlDyn.NumOfShares;
             if (xbrlDyn.EndOfYear > 0)
                 pc.FiscalYearEndDay = xbrlDyn.EndOfYear;
 
@@ -139,54 +132,53 @@ namespace NoFuture.Rand.Data.Exo
             var rptVal = assets?.OrderByDescending(x => x.Item1).FirstOrDefault();
             if (rptVal != null)
             {
-                rptTenK.FinancialData.AssetsSummary.TotalAssets = new Pecuniam(rptVal.Item2);
-                rptTenK.FinancialData.FiscalYear = rptTenK.FinancialData.FiscalYear < rptVal.Item1
+                rptTenK.TotalAssets = rptVal.Item2;
+                rptTenK.FiscalYear = rptTenK.FiscalYear < rptVal.Item1
                     ? rptVal.Item1
-                    : rptTenK.FinancialData.FiscalYear;
+                    : rptTenK.FiscalYear;
             }
 
             var lias = xbrlDyn.Liabilities as List<Tuple<int, decimal>>;
             rptVal = lias?.OrderByDescending(x => x.Item1).FirstOrDefault();
             if (rptVal != null)
             {
-                rptTenK.FinancialData.AssetsSummary.TotalLiabilities = new Pecuniam(rptVal.Item2);
-                rptTenK.FinancialData.FiscalYear = rptTenK.FinancialData.FiscalYear < rptVal.Item1
+                rptTenK.TotalLiabilities = rptVal.Item2;
+                rptTenK.FiscalYear = rptTenK.FiscalYear < rptVal.Item1
                     ? rptVal.Item1
-                    : rptTenK.FinancialData.FiscalYear;
+                    : rptTenK.FiscalYear;
             }
 
             var nis = xbrlDyn.NetIncome as List<Tuple<int, decimal>>;
             rptVal = nis?.OrderByDescending(x => x.Item1).FirstOrDefault();
             if (rptVal != null)
             {
-                rptTenK.FinancialData.IncomeSummary.NetIncome = new Pecuniam(rptVal.Item2);
-                rptTenK.FinancialData.FiscalYear = rptTenK.FinancialData.FiscalYear < rptVal.Item1
+                rptTenK.NetIncome = rptVal.Item2;
+                rptTenK.FiscalYear = rptTenK.FiscalYear < rptVal.Item1
                     ? rptVal.Item1
-                    : rptTenK.FinancialData.FiscalYear;
+                    : rptTenK.FiscalYear;
             }
 
             var ois = xbrlDyn.OperatingIncome as List<Tuple<int, decimal>>;
             rptVal = ois?.OrderByDescending(x => x.Item1).FirstOrDefault();
             if (rptVal != null)
             {
-                rptTenK.FinancialData.IncomeSummary.OperatingIncome = new Pecuniam(rptVal.Item2);
-                rptTenK.FinancialData.FiscalYear = rptTenK.FinancialData.FiscalYear < rptVal.Item1
+                rptTenK.OperatingIncome = rptVal.Item2;
+                rptTenK.FiscalYear = rptTenK.FiscalYear < rptVal.Item1
                     ? rptVal.Item1
-                    : rptTenK.FinancialData.FiscalYear;
+                    : rptTenK.FiscalYear;
             }
 
             var revs = xbrlDyn.Revenue as List<Tuple<int, decimal>>;
             rptVal = revs?.OrderByDescending(x => x.Item1).FirstOrDefault();
             if (rptVal != null)
             {
-                rptTenK.FinancialData.IncomeSummary.Revenue = new Pecuniam(rptVal.Item2);
-                rptTenK.FinancialData.FiscalYear = rptTenK.FinancialData.FiscalYear < rptVal.Item1
+                rptTenK.Revenue = rptVal.Item2;
+                rptTenK.FiscalYear = rptTenK.FiscalYear < rptVal.Item1
                     ? rptVal.Item1
-                    : rptTenK.FinancialData.FiscalYear;
+                    : rptTenK.FiscalYear;
             }
 
-            rptTenK.FinancialData.IncomeSummary.Src = srcUri.ToString();
-            rptTenK.FinancialData.AssetsSummary.Src = srcUri.ToString();
+            rptTenK.Src = srcUri?.ToString();
 
             return true;
         }

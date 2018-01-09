@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NoFuture.Rand;
-using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Data.Exo;
-using NoFuture.Rand.Data.Sp;
 using NoFuture.Rand.Exo.Tests;
 using NoFuture.Rand.Gov.Sec;
 
@@ -53,17 +50,17 @@ namespace NoFuture.Tests.Rand
                     Form10K;
             Assert.IsNotNull(tenK2015);
 
-            Assert.AreEqual(42029009, tenK2015.FinancialData.NumOfShares);
+            Assert.AreEqual(42029009, tenK2015.NumOfShares);
 
-            Assert.AreEqual(new Pecuniam(1266835M), tenK2015.FinancialData.AssetsSummary.TotalAssets);
+            Assert.AreEqual(1266835M, tenK2015.TotalAssets);
 
-            Assert.AreEqual(new Pecuniam(731262M), tenK2015.FinancialData.AssetsSummary.TotalLiabilities);
+            Assert.AreEqual(731262M, tenK2015.TotalLiabilities);
 
-            Assert.AreEqual(new Pecuniam(71247M), tenK2015.FinancialData.IncomeSummary.NetIncome);
+            Assert.AreEqual(71247M, tenK2015.NetIncome);
 
-            Assert.AreEqual(new Pecuniam(97842M), tenK2015.FinancialData.IncomeSummary.OperatingIncome);
+            Assert.AreEqual(97842M, tenK2015.OperatingIncome);
 
-            Assert.AreEqual(new Pecuniam(2695680M), tenK2015.FinancialData.IncomeSummary.Revenue);
+            Assert.AreEqual(2695680M, tenK2015.Revenue);
 
         }
     }

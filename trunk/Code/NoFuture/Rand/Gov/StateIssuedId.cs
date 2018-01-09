@@ -1,7 +1,4 @@
 ﻿using System;
-using NoFuture.Rand.Core.Enums;
-using NoFuture.Rand.Data.Endo;
-using NoFuture.Rand.Data.Endo.Enums;
 
 namespace NoFuture.Rand.Gov
 {
@@ -15,12 +12,9 @@ namespace NoFuture.Rand.Gov
 
         public string FullLegalName { get; set; }
         public DateTime Dob { get; set; }
-        public Gender Gender { get; set; }
+        public string Gender { get; set; }
         public string PrincipalResidence { get; set; }
-
-        [Newtonsoft.Json.JsonIgnore]
         public byte[] FrontFacingPhoto { get; set; }
-        [Newtonsoft.Json.JsonIgnore]
         public byte[] Signature { get; set; }
 
     }
