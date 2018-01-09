@@ -335,11 +335,10 @@ namespace NoFuture.Rand.Domus.Opes
 
         public override string ToString()
         {
-            var t = new Tuple<string, string, DateTime?, DateTime?, Pecuniam>(_employment.Value?.ToString(), _employment.Occupation?.ToString(),
+            var t = new Tuple<string, string, DateTime?, DateTime?, Pecuniam>(_employment.EmployingCompanyName, _employment.Occupation?.ToString(),
                 _employment.Inception, _employment.Terminus, Pondus.GetExpectedSum(MyItems));
             return t.ToString();
         }
-
 
         private double GetRandomValueFrom(double baseRate, double dividedby = 1)
         {

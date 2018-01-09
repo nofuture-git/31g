@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using NoFuture.Rand.Com;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Data.Endo.Grps;
 using NoFuture.Rand.Data.Sp;
@@ -62,7 +61,8 @@ namespace NoFuture.Rand.Domus.Opes
         #region properties
         public virtual string Src { get; set; }
         public virtual string Abbrev => IncomeGroupNames.EMPLOYMENT;
-        public virtual IFirm Value { get; set; }
+        public virtual string EmployingCompanyName { get; set; }
+        public virtual int? FiscalYearEndDay { get; set; }
         public virtual bool IsOwner { get; set; }
         protected override DomusOpesDivisions Division => DomusOpesDivisions.Employment;
         public SocDetailedOccupation Occupation
@@ -170,7 +170,7 @@ namespace NoFuture.Rand.Domus.Opes
             if (yearsOfService <= 0 || MyOptions.Inception == DateTime.MinValue)
                 return ranges;
 
-            var employerFiscalYearEnd = Value?.FiscalYearEndDay ?? 1;
+            var employerFiscalYearEnd = FiscalYearEndDay ?? 1;
 
             //assume merit increases 90 days after fiscal year end
             var annualReviewDays = employerFiscalYearEnd + 90;
@@ -340,25 +340,26 @@ namespace NoFuture.Rand.Domus.Opes
                              && e.Terminus == Terminus;
 
             //neither have a company assigned
-            if (Value == null && e.Value == null)
+            if (EmployingCompanyName == null && e.EmployingCompanyName == null)
                 return termEquals;
 
             //one-and-only-one has company assigned
-            if (Value == null ^ e.Value == null)
+            if (EmployingCompanyName == null ^ e.EmployingCompanyName == null)
                 return false;
 
-            return Value.Equals(e.Value) && termEquals;
+
+            return (EmployingCompanyName ?? "").Equals(e.EmployingCompanyName) && termEquals;
         }
 
         public override int GetHashCode()
         {
-            return (Value?.GetHashCode() ?? 1) +
+            return (EmployingCompanyName?.GetHashCode() ?? 1) +
                    MyOptions?.GetHashCode() ?? 1;
         }
 
         public override string ToString()
         {
-            var t = new Tuple<string, string, DateTime?, DateTime?, Pecuniam>(Value?.ToString(), Occupation?.ToString(),
+            var t = new Tuple<string, string, DateTime?, DateTime?, Pecuniam>(EmployingCompanyName, Occupation?.ToString(),
                 Inception, Terminus, Pondus.GetExpectedSum(MyItems));
             return t.ToString();
         }

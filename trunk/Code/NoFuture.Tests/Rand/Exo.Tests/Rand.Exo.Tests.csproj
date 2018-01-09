@@ -98,10 +98,6 @@
       <Project>{bb60d20c-259f-4fb3-9ba3-58e859bd712d}</Project>
       <Name>Rand.Gov</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\NoFuture\Rand\Rand.csproj">
-      <Project>{71628e18-d27b-4f4e-b034-4b2ad4479e13}</Project>
-      <Name>Rand</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\..\NoFuture\Shared\Core\Shared.Core.csproj">
       <Project>{6eca48dc-fdb4-4660-9914-3b74d5975ff9}</Project>
       <Name>Shared.Core</Name>
