@@ -769,6 +769,25 @@ namespace NoFuture.Util.Core
             return valout > 100 ? 100 : valout;
         }
 
+
+        /// <summary>
+        /// Reuseable method to get the diffence, in years, between
+        /// <see cref="dob"/> and <see cref="atTime"/>
+        /// </summary>
+        /// <param name="dob"></param>
+        /// <param name="atTime"></param>
+        /// <returns>
+        /// The total number of days difference 
+        /// divided by <see cref="Constants.DBL_TROPICAL_YEAR"/>,
+        /// rounded off.
+        /// </returns>
+        public static int CalcAge(DateTime dob, DateTime? atTime = null )
+        {
+            var attTime = atTime.GetValueOrDefault(DateTime.Now);
+
+            return Convert.ToInt32(System.Math.Round((attTime - dob).TotalDays / Constants.DBL_TROPICAL_YEAR));
+        }
+
         /// <summary>
         /// To insure that a CSV files headers are all unique and simple, propertyesque, names.
         /// </summary>

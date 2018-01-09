@@ -41,7 +41,7 @@ namespace NoFuture.Rand.Tests
         public void NorthAmericanEduTests()
         {
             var amer = new NorthAmerican(AmericanUtil.GetWorkingAdultBirthDate(), Gender.Female);
-            var testResult = new NorthAmericanEdu(amer);
+            var testResult = amer.GetEducationByPerson();
 
             Assert.IsNotNull(testResult);
             Assert.IsNotNull(testResult.HighSchool);
@@ -80,8 +80,9 @@ namespace NoFuture.Rand.Tests
         [TestMethod]
         public void NorthAmericanEduTestsNullPerson()
         {
-            IPerson p = null;
-            var testResult = new NorthAmericanEdu(p);
+            DateTime? dob = null;
+            UsCityStateZip homeCityArea = null;
+            var testResult = new NorthAmericanEdu(dob, homeCityArea);
             Assert.IsNotNull(testResult);
             Assert.IsNotNull(testResult.HighSchool);
             Assert.IsNotNull(testResult.HighSchool.Item1);
@@ -93,7 +94,7 @@ namespace NoFuture.Rand.Tests
         public void NorthAmericanEduTestsChild()
         {
             var amer = new NorthAmerican(DateTime.Now.AddYears(-9), Gender.Female);
-            var testResult = new NorthAmericanEdu(amer);
+            var testResult = amer.GetEducationByPerson();
             Assert.IsNotNull(testResult);
             Assert.IsNotNull(testResult.HighSchool);
             Assert.IsNull(testResult.HighSchool.Item1);

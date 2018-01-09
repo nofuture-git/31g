@@ -50,34 +50,16 @@ namespace NoFuture.Rand.Domus
             AssignEduFlagAndLevel();
         }
 
-        /// <summary>
-        /// Instantiates a new instance of <see cref="IEducation"/> using <see cref="p"/>
-        /// </summary>
-        /// <param name="p">
-        /// Expected to be of type <see cref="NorthAmerican"/>
-        /// </param>
-        public NorthAmericanEdu(IPerson p)
+        public NorthAmericanEdu(DateTime? birthDate, UsCityStateZip homeCityArea)
         {
-            var amer = p as NorthAmerican;
+            var dob = birthDate ?? AmericanUtil.GetWorkingAdultBirthDate();
+            var age = Etc.CalcAge(dob);
 
-            //only deal with highschool and up
-            if (amer != null && amer.Age < DF_MIN_AGE_ENTER_HS)
+            if (age < DF_MIN_AGE_ENTER_HS)
                 return;
 
-            var dob = amer?.BirthCert?.DateOfBirth ?? AmericanUtil.GetWorkingAdultBirthDate();
-
-            //determine where amer lived when they were 18
-            var mother = amer?.BirthCert == null
-                ? AmericanUtil.SolveForParent(dob,
-                    AmericanEquations.FemaleAge2FirstMarriage,
-                    Gender.Female) as NorthAmerican
-                : amer.GetMother() as NorthAmerican;
-
             var dtAtAge18 = dob.AddYears(UsState.AGE_OF_ADULT);
-
-            var homeCityArea = mother?.GetAddressAt(dtAtAge18)?.HomeCityArea as UsCityStateZip ?? CityArea.American();
-
-            var isLegalAdult = amer?.IsLegalAdult(DateTime.Now) ?? true;
+            var isLegalAdult = age >= UsState.AGE_OF_ADULT;
             if (!AssignRandomHighSchool(homeCityArea, isLegalAdult, dtAtAge18, out var hsGradDt))
                 return;
 

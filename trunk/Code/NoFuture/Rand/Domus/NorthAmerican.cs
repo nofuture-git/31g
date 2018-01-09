@@ -292,8 +292,10 @@ namespace NoFuture.Rand.Domus
         /// <returns></returns>
         public override IEducation GetEducationAt(DateTime? dt)
         {
-            if(_edu == null)
-                _edu = new NorthAmericanEdu(this);
+            if (_edu == null)
+            {
+                _edu = GetEducationByPerson();
+            }
 
             if (dt == null)
                 return _edu;
@@ -318,6 +320,21 @@ namespace NoFuture.Rand.Domus
 
             return _edu;
 
+        }
+
+        protected internal NorthAmericanEdu GetEducationByPerson()
+        {
+            var dob = BirthCert?.DateOfBirth ?? AmericanUtil.GetWorkingAdultBirthDate();
+
+            //determine where amer lived when they were 18
+            var mother = BirthCert == null
+                ? AmericanUtil.SolveForParent(dob,
+                    AmericanEquations.FemaleAge2FirstMarriage,
+                    Gender.Female) as NorthAmerican
+                : GetMother() as NorthAmerican;
+            var dtAtAge18 = dob.AddYears(UsState.AGE_OF_ADULT);
+            var homeCityArea = mother?.GetAddressAt(dtAtAge18)?.HomeCityArea as UsCityStateZip ?? CityArea.American();
+            return new NorthAmericanEdu(dob, homeCityArea);
         }
 
         /// <summary>
@@ -563,7 +580,7 @@ namespace NoFuture.Rand.Domus
             var avgAgeMarriage = MyGender == Gender.Female
                 ? AmericanEquations.FemaleAge2FirstMarriage.SolveForY(equationDt.ToDouble())
                 : AmericanEquations.MaleAge2FirstMarriage.SolveForY(equationDt.ToDouble());
-            var currentAge = CalcAge(_birthCert.DateOfBirth, dt);
+            var currentAge = Etc.CalcAge(_birthCert.DateOfBirth, dt);
 
             //all other MaritialStatus imply at least one marriage in past
             var yearsMarried = currentAge - Convert.ToInt32(Math.Round(avgAgeMarriage));
@@ -706,7 +723,7 @@ namespace NoFuture.Rand.Domus
                 }  
             }
 
-            var myChildeAge = CalcAge(myChildDob, dt);
+            var myChildeAge = Etc.CalcAge(myChildDob, dt);
             var myChildGender = Etx.CoinToss ? Gender.Female : Gender.Male;
             var isChildAdult = myChildeAge >= GetMyHomeStatesAgeOfMajority();
 

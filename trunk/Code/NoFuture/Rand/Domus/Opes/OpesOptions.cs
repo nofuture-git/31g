@@ -35,7 +35,7 @@ namespace NoFuture.Rand.Domus.Opes
             {
                 var ages = new List<int>();
                 foreach(var dob in ChildrenDobs)
-                    ages.Add(Person.CalcAge(dob, DateTime.Today));
+                    ages.Add(Util.Core.Etc.CalcAge(dob, DateTime.Today));
                 return ages;
             }
         }

@@ -145,7 +145,7 @@ namespace NoFuture.Rand.Domus
             if (DeathCert != null && dt > DeathCert.DateOfDeath)
                 dt = DeathCert.DateOfDeath;
 
-            return CalcAge(BirthCert.DateOfBirth, dt);
+            return Util.Core.Etc.CalcAge(BirthCert.DateOfBirth, dt);
         }
 
         /// <summary>
@@ -217,21 +217,6 @@ namespace NoFuture.Rand.Domus
             return canadian;
         }
 
-        /// <summary>
-        /// Reuseable method to get the diffence, in years, between
-        /// <see cref="dob"/> and <see cref="atTime"/>
-        /// </summary>
-        /// <param name="dob"></param>
-        /// <param name="atTime"></param>
-        /// <returns>
-        /// The total number of days difference 
-        /// divided by <see cref="Constants.DBL_TROPICAL_YEAR"/>,
-        /// rounded off.
-        /// </returns>
-        public static int CalcAge(DateTime dob, DateTime atTime)
-        {
-            return Convert.ToInt32(Math.Round((atTime - dob).TotalDays / Constants.DBL_TROPICAL_YEAR));
-        }
 
         /// <summary>
         /// Helper method to throw an ex when the Birth Cert is 

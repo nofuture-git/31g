@@ -599,7 +599,7 @@ namespace NoFuture.Rand.Domus
 
             motherDob = AmericanEquations.ProtectAgainstDistantTimes(motherDob);
 
-            var motherAge = Person.CalcAge(motherDob, dt);
+            var motherAge = Etc.CalcAge(motherDob, dt);
 
             var meanAge = AmericanEquations.FemaleAge2FirstChild.SolveForY(motherDob.Year);
 
@@ -682,7 +682,7 @@ namespace NoFuture.Rand.Domus
                 : AmericanEquations.MaleAge2FirstMarriage.SolveForY(dob.Value.ToDouble());
 
             var cdt = DateTime.Now;
-            var currentAge = Person.CalcAge(dob.Value, cdt);
+            var currentAge = Etc.CalcAge(dob.Value, cdt);
 
             if (currentAge < avgAgeMarriage)
                 return MaritialStatus.Single;
@@ -795,7 +795,7 @@ namespace NoFuture.Rand.Domus
                 vt = atDateTime.Value;
             dob = dob ?? GetWorkingAdultBirthDate();
             dob = AmericanEquations.ProtectAgainstDistantTimes(dob.Value);
-            var age = Person.CalcAge(dob.Value, vt);
+            var age = Etc.CalcAge(dob.Value, vt);
             var randV = Etx.IntNumber(1, 100);
 
             var meanAge = Math.Round(AmericanEquations.FemaleAge2ForthChild.SolveForY(vt.Year));
@@ -865,7 +865,7 @@ namespace NoFuture.Rand.Domus
             var avgAgeMarriage = myGender == Gender.Female
                 ? AmericanEquations.FemaleAge2FirstMarriage.SolveForY(dob.Value.ToDouble())
                 : AmericanEquations.MaleAge2FirstMarriage.SolveForY(dob.Value.ToDouble());
-            var currentAge = Person.CalcAge(dob.Value, dt);
+            var currentAge = Etc.CalcAge(dob.Value, dt);
 
             //all other MaritialStatus imply at least one marriage in past
             var yearsMarried = currentAge - Convert.ToInt32(Math.Round(avgAgeMarriage));
