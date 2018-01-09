@@ -128,13 +128,13 @@ namespace NoFuture.Rand.Domus.Opes
             var baseDate = DateTime.Today.AddYears(-1);
 
             //set up checking
-            var checking = Facit.GetRandomCheckingAcct(Person,baseDate);
+            var checking = AmericanUtil.GetRandomCheckingAcct(Person,baseDate);
             var randChecking = NorthAmericanFactors.GetRandomFactorValue(FactorTables.CheckingAccount, Factors.CheckingAcctFactor, stdDevAsPercent);
             checking.Push(baseDate.AddDays(-1), randChecking.ToPecuniam(), new Mereo("Init Checking"), Pecuniam.Zero);
 
             //set up a savings
             var randSavings = NorthAmericanFactors.GetRandomFactorValue(FactorTables.SavingsAccount, Factors.SavingsAcctFactor, stdDevAsPercent);
-            var savings = Facit.GetRandomSavingAcct(Person, baseDate);
+            var savings = AmericanUtil.GetRandomSavingAcct(Person, baseDate);
             savings.Push(baseDate.AddDays(-1), randSavings.ToPecuniam(), new Mereo("Init Savings"), Pecuniam.Zero);
             var friCounter = 0;
             var historyTs = DateTime.Today - baseDate;
@@ -283,7 +283,7 @@ namespace NoFuture.Rand.Domus.Opes
 
             var homeDebtFactor = Factors.HomeDebtFactor;
 
-            var rent = Facit.GetRandomRentWithHistory(Person.Address, homeDebtFactor, Person.Personality, stdDevAsPercent);
+            var rent = AmericanUtil.GetRandomRentWithHistory(Person.Address, homeDebtFactor, Person.Personality, stdDevAsPercent);
             var randRent = rent.MonthlyPmt;
 
             HomeDebt.Add(rent);
@@ -310,7 +310,7 @@ namespace NoFuture.Rand.Domus.Opes
             var totalCost = new Pecuniam((decimal)(randHouseDebt + randHouseEquity));
 
             //create a loan on current residence
-            var loan = Facit.GetRandomLoanWithHistory(Person.Address, spCost, totalCost, (float) randRate,
+            var loan = AmericanUtil.GetRandomLoanWithHistory(Person.Address, spCost, totalCost, (float) randRate,
                 30, out var minPmt, Person.Personality);
             loan.FormOfCredit = FormOfCredit.Mortgage;
             HomeDebt.Add(loan);
@@ -325,7 +325,7 @@ namespace NoFuture.Rand.Domus.Opes
         protected internal void AddSingleCcDebt(double stdDevAsPercent = DF_STD_DEV_PERCENT)
         {
             //create random cc
-            var ccAcct = Facit.GetRandomCcAcct(Person, CreditScore);
+            var ccAcct = AmericanUtil.GetRandomCcAcct(Person, CreditScore);
 
             var pmtNote = new Mereo(ccAcct.Id.ToString());
 
@@ -416,7 +416,7 @@ namespace NoFuture.Rand.Domus.Opes
             var spCost = new Pecuniam((decimal)randCarDebt);
             var totalCost = new Pecuniam((decimal)(randCarDebt + randCarEquity));
 
-            var loan = Facit.GetRandomLoanWithHistory(new Gov.Nhtsa.Vin(), spCost, totalCost,
+            var loan = AmericanUtil.GetRandomLoanWithHistory(new Gov.Nhtsa.Vin(), spCost, totalCost,
                 (float) randRate, 5, out var minPmt, Person.Personality);
 
             //insure that the gen'ed history doesn't start before the year of make

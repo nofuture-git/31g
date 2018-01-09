@@ -5,9 +5,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
 using NoFuture.Rand.Core;
-using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Data.Endo.Enums;
-using NoFuture.Rand.Edu;
 using NoFuture.Rand.Gov;
 using NoFuture.Rand.Gov.Census;
 using NoFuture.Util.Core;
@@ -115,43 +113,7 @@ namespace NoFuture.Rand.Data.Endo
             return !zip2Wt.Any() ? DF_ZIPCODE_PREFIX : Etx.DiscreteRange(zip2Wt);
         }
 
-        /// <summary>
-        /// Returns a hashtable whose keys as American's call Race based on the given <see cref="zipCode"/>
-        /// </summary>
-        /// <param name="zipCode"></param>
-        public static AmericanRacePercents RandomAmericanRaceWithRespectToZip(string zipCode)
-        {
-            var pick = 0;
-            //if calling assembly passed in no-args then return all zeros
-            if (String.IsNullOrWhiteSpace(zipCode))
-                return AmericanRacePercents.GetNatlAvg();
 
-            //get the data for the given zip code
-            var zipStatElem = TreeData.AmericanHighSchoolData.SelectSingleNode($"//{ZIP_STAT}[@{VALUE}='{zipCode}']");
-
-            if (zipStatElem == null || !zipStatElem.HasChildNodes)
-            {
-                //try to find on the zip code prefix 
-                var zip3 = zipCode.Substring(0, 3);
-                var zipCodeElem =
-                    TreeData.AmericanHighSchoolData.SelectSingleNode($"//{ZIP_CODE_SINGULAR}[@{PREFIX}='{zip3}']");
-
-                if (zipCodeElem == null || !zipCodeElem.HasChildNodes)
-                    return AmericanRacePercents.GetNatlAvg();
-
-                pick = Etx.MyRand.Next(0, zipCodeElem.ChildNodes.Count - 1);
-
-                zipStatElem = zipCodeElem.ChildNodes[pick];
-                if (zipStatElem == null)
-                    return AmericanRacePercents.GetNatlAvg();
-            }
-
-            pick = Etx.MyRand.Next(0, zipStatElem.ChildNodes.Count - 1);
-            var hsNode = zipStatElem.ChildNodes[pick];
-            if (!AmericanHighSchool.TryParseXml(hsNode as XmlElement, out var hsOut))
-                return AmericanRacePercents.GetNatlAvg();
-            return hsOut.RacePercents;
-        }
 
         public override string ToString()
         {

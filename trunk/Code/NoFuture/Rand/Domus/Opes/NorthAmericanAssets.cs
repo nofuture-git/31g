@@ -254,7 +254,7 @@ namespace NoFuture.Rand.Domus.Opes
                 var checkingAmt = amt == null || amt == Pecuniam.Zero
                     ? _randCheckingAcctAmt
                     : _checkingAccountRate * amt.ToDouble();
-                p = Facit.GetRandomCheckingAcct(Person, startDate, $"{Etx.IntNumber(1, 9999):0000}");
+                p = AmericanUtil.GetRandomCheckingAcct(Person, startDate, $"{Etx.IntNumber(1, 9999):0000}");
                 p.Push(startDate.AddDays(-1), checkingAmt.ToPecuniam());
                 p.My.ExpectedValue = checkingAmt.ToPecuniam();
             }
@@ -263,7 +263,7 @@ namespace NoFuture.Rand.Domus.Opes
                 var savingAmt = amt == null || amt == Pecuniam.Zero
                     ? _randSavingsAcctAmt
                     : _savingsAccountRate * amt.ToDouble();
-                p = Facit.GetRandomSavingAcct(Person, startDate);
+                p = AmericanUtil.GetRandomSavingAcct(Person, startDate);
                 p.Push(startDate.AddDays(-1), savingAmt.ToPecuniam());
                 p.My.ExpectedValue = savingAmt.ToPecuniam();
             }
@@ -302,7 +302,7 @@ namespace NoFuture.Rand.Domus.Opes
 
                 var termInYears = isMortgage ? 30 : 5;
 
-                p = Facit.GetRandomLoanWithHistory(
+                p = AmericanUtil.GetRandomLoanWithHistory(
                     id,
                     remainingCost,
                     totalValue,

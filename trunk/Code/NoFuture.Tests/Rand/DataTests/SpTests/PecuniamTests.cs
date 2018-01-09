@@ -5,6 +5,7 @@ using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NoFuture.Rand.Data;
 using NoFuture.Rand.Data.Sp;
+using NoFuture.Rand.Domus;
 using NoFuture.Rand.Domus.Opes;
 
 namespace NoFuture.Rand.Tests
@@ -161,11 +162,11 @@ namespace NoFuture.Rand.Tests
             };
             for (var i = 0; i < 48; i++)
             {
-                testLoan.Push(startDate.AddMonths(i+1), new Pecuniam(95.52M), Facit.GetMereoById(null, "Vehicle Payment"), Pecuniam.Zero);
+                testLoan.Push(startDate.AddMonths(i+1), new Pecuniam(95.52M), AmericanUtil.GetMereoById(null, "Vehicle Payment"), Pecuniam.Zero);
             }
             var lastPmtDate = new DateTime(2017, 9, 15);
             var payoff = testLoan.GetValueAt(lastPmtDate);
-            testLoan.Push(lastPmtDate, payoff, Facit.GetMereoById(null, "payoff"), Pecuniam.Zero);
+            testLoan.Push(lastPmtDate, payoff, AmericanUtil.GetMereoById(null, "payoff"), Pecuniam.Zero);
             
             Assert.AreEqual(Pecuniam.Zero, testLoan.Value);
 
@@ -180,54 +181,54 @@ namespace NoFuture.Rand.Tests
             {
                 Rate = 0.08499f
             };
-            testLoan.Push(Convert.ToDateTime("2013-11-20 00:00:00.0000"), new Pecuniam(37.26M), Facit.GetMereoById(null, "Vehicle Payment"), Pecuniam.Zero);
-            testLoan.Push(Convert.ToDateTime("2013-12-25 00:00:00.0000"), new Pecuniam(37.26M), Facit.GetMereoById(null, "Vehicle Payment"), Pecuniam.Zero);
-            testLoan.Push(Convert.ToDateTime("2014-01-28 00:00:00.0000"), new Pecuniam(37.26M), Facit.GetMereoById(null, "Vehicle Payment"), Pecuniam.Zero);
-            testLoan.Push(Convert.ToDateTime("2014-02-21 00:00:00.0000"), new Pecuniam(37.26M), Facit.GetMereoById(null, "Vehicle Payment"), Pecuniam.Zero);
-            testLoan.Push(Convert.ToDateTime("2014-03-23 00:00:00.0000"), new Pecuniam(37.26M), Facit.GetMereoById(null, "Vehicle Payment"), Pecuniam.Zero);
-            testLoan.Push(Convert.ToDateTime("2014-04-20 00:00:00.0000"), new Pecuniam(37.26M), Facit.GetMereoById(null, "Vehicle Payment"), Pecuniam.Zero);
-            testLoan.Push(Convert.ToDateTime("2014-05-23 00:00:00.0000"), new Pecuniam(37.26M), Facit.GetMereoById(null, "Vehicle Payment"), Pecuniam.Zero);
-            testLoan.Push(Convert.ToDateTime("2014-06-24 00:00:00.0000"), new Pecuniam(37.26M), Facit.GetMereoById(null, "Vehicle Payment"), Pecuniam.Zero);
-            testLoan.Push(Convert.ToDateTime("2014-07-24 00:00:00.0000"), new Pecuniam(37.26M), Facit.GetMereoById(null, "Vehicle Payment"), Pecuniam.Zero);
-            testLoan.Push(Convert.ToDateTime("2014-08-27 00:00:00.0000"), new Pecuniam(37.26M), Facit.GetMereoById(null, "Vehicle Payment"), Pecuniam.Zero);
-            testLoan.Push(Convert.ToDateTime("2014-09-26 00:00:00.0000"), new Pecuniam(37.26M), Facit.GetMereoById(null, "Vehicle Payment"), Pecuniam.Zero);
-            testLoan.Push(Convert.ToDateTime("2014-10-23 00:00:00.0000"), new Pecuniam(37.26M), Facit.GetMereoById(null, "Vehicle Payment"), Pecuniam.Zero);
-            testLoan.Push(Convert.ToDateTime("2014-11-26 00:00:00.0000"), new Pecuniam(37.26M), Facit.GetMereoById(null, "Vehicle Payment"), Pecuniam.Zero);
-            testLoan.Push(Convert.ToDateTime("2014-12-21 00:00:00.0000"), new Pecuniam(37.26M), Facit.GetMereoById(null, "Vehicle Payment"), Pecuniam.Zero);
-            testLoan.Push(Convert.ToDateTime("2015-01-19 00:00:00.0000"), new Pecuniam(37.26M), Facit.GetMereoById(null, "Vehicle Payment"), Pecuniam.Zero);
-            testLoan.Push(Convert.ToDateTime("2015-02-25 00:00:00.0000"), new Pecuniam(37.26M), Facit.GetMereoById(null, "Vehicle Payment"), Pecuniam.Zero);
-            testLoan.Push(Convert.ToDateTime("2015-03-22 00:00:00.0000"), new Pecuniam(37.26M), Facit.GetMereoById(null, "Vehicle Payment"), Pecuniam.Zero);
-            testLoan.Push(Convert.ToDateTime("2015-04-21 00:00:00.0000"), new Pecuniam(37.26M), Facit.GetMereoById(null, "Vehicle Payment"), Pecuniam.Zero);
-            testLoan.Push(Convert.ToDateTime("2015-05-18 00:00:00.0000"), new Pecuniam(37.26M), Facit.GetMereoById(null, "Vehicle Payment"), Pecuniam.Zero);
-            testLoan.Push(Convert.ToDateTime("2015-06-19 00:00:00.0000"), new Pecuniam(37.26M), Facit.GetMereoById(null, "Vehicle Payment"), Pecuniam.Zero);
-            testLoan.Push(Convert.ToDateTime("2015-07-28 00:00:00.0000"), new Pecuniam(37.26M), Facit.GetMereoById(null, "Vehicle Payment"), Pecuniam.Zero);
-            testLoan.Push(Convert.ToDateTime("2015-08-27 00:00:00.0000"), new Pecuniam(37.26M), Facit.GetMereoById(null, "Vehicle Payment"), Pecuniam.Zero);
-            testLoan.Push(Convert.ToDateTime("2015-09-22 00:00:00.0000"), new Pecuniam(37.26M), Facit.GetMereoById(null, "Vehicle Payment"), Pecuniam.Zero);
-            testLoan.Push(Convert.ToDateTime("2015-10-22 00:00:00.0000"), new Pecuniam(37.26M), Facit.GetMereoById(null, "Vehicle Payment"), Pecuniam.Zero);
-            testLoan.Push(Convert.ToDateTime("2015-11-27 00:00:00.0000"), new Pecuniam(37.26M), Facit.GetMereoById(null, "Vehicle Payment"), Pecuniam.Zero);
-            testLoan.Push(Convert.ToDateTime("2015-12-24 00:00:00.0000"), new Pecuniam(37.26M), Facit.GetMereoById(null, "Vehicle Payment"), Pecuniam.Zero);
-            testLoan.Push(Convert.ToDateTime("2016-01-28 00:00:00.0000"), new Pecuniam(37.26M), Facit.GetMereoById(null, "Vehicle Payment"), Pecuniam.Zero);
-            testLoan.Push(Convert.ToDateTime("2016-02-25 00:00:00.0000"), new Pecuniam(37.26M), Facit.GetMereoById(null, "Vehicle Payment"), Pecuniam.Zero);
-            testLoan.Push(Convert.ToDateTime("2016-03-26 00:00:00.0000"), new Pecuniam(37.26M), Facit.GetMereoById(null, "Vehicle Payment"), Pecuniam.Zero);
-            testLoan.Push(Convert.ToDateTime("2016-04-27 00:00:00.0000"), new Pecuniam(37.26M), Facit.GetMereoById(null, "Vehicle Payment"), Pecuniam.Zero);
-            testLoan.Push(Convert.ToDateTime("2016-05-26 00:00:00.0000"), new Pecuniam(37.26M), Facit.GetMereoById(null, "Vehicle Payment"), Pecuniam.Zero);
-            testLoan.Push(Convert.ToDateTime("2016-06-28 00:00:00.0000"), new Pecuniam(37.26M), Facit.GetMereoById(null, "Vehicle Payment"), Pecuniam.Zero);
-            testLoan.Push(Convert.ToDateTime("2016-07-20 00:00:00.0000"), new Pecuniam(37.26M), Facit.GetMereoById(null, "Vehicle Payment"), Pecuniam.Zero);
-            testLoan.Push(Convert.ToDateTime("2016-08-27 00:00:00.0000"), new Pecuniam(37.26M), Facit.GetMereoById(null, "Vehicle Payment"), Pecuniam.Zero);
-            testLoan.Push(Convert.ToDateTime("2016-09-22 00:00:00.0000"), new Pecuniam(37.26M), Facit.GetMereoById(null, "Vehicle Payment"), Pecuniam.Zero);
-            testLoan.Push(Convert.ToDateTime("2016-10-23 00:00:00.0000"), new Pecuniam(37.26M), Facit.GetMereoById(null, "Vehicle Payment"), Pecuniam.Zero);
-            testLoan.Push(Convert.ToDateTime("2016-11-18 00:00:00.0000"), new Pecuniam(37.26M), Facit.GetMereoById(null, "Vehicle Payment"), Pecuniam.Zero);
-            testLoan.Push(Convert.ToDateTime("2016-12-20 00:00:00.0000"), new Pecuniam(37.26M), Facit.GetMereoById(null, "Vehicle Payment"), Pecuniam.Zero);
-            testLoan.Push(Convert.ToDateTime("2017-01-20 00:00:00.0000"), new Pecuniam(37.26M), Facit.GetMereoById(null, "Vehicle Payment"), Pecuniam.Zero);
-            testLoan.Push(Convert.ToDateTime("2017-02-28 00:00:00.0000"), new Pecuniam(37.26M), Facit.GetMereoById(null, "Vehicle Payment"), Pecuniam.Zero);
-            testLoan.Push(Convert.ToDateTime("2017-03-25 00:00:00.0000"), new Pecuniam(37.26M), Facit.GetMereoById(null, "Vehicle Payment"), Pecuniam.Zero);
-            testLoan.Push(Convert.ToDateTime("2017-04-18 00:00:00.0000"), new Pecuniam(37.26M), Facit.GetMereoById(null, "Vehicle Payment"), Pecuniam.Zero);
-            testLoan.Push(Convert.ToDateTime("2017-05-24 00:00:00.0000"), new Pecuniam(37.26M), Facit.GetMereoById(null, "Vehicle Payment"), Pecuniam.Zero);
-            testLoan.Push(Convert.ToDateTime("2017-06-21 00:00:00.0000"), new Pecuniam(37.26M), Facit.GetMereoById(null, "Vehicle Payment"), Pecuniam.Zero);
-            testLoan.Push(Convert.ToDateTime("2017-07-25 00:00:00.0000"), new Pecuniam(37.26M), Facit.GetMereoById(null, "Vehicle Payment"), Pecuniam.Zero);
-            testLoan.Push(Convert.ToDateTime("2017-08-20 00:00:00.0000"), new Pecuniam(37.26M), Facit.GetMereoById(null, "Vehicle Payment"), Pecuniam.Zero);
+            testLoan.Push(Convert.ToDateTime("2013-11-20 00:00:00.0000"), new Pecuniam(37.26M), AmericanUtil.GetMereoById(null, "Vehicle Payment"), Pecuniam.Zero);
+            testLoan.Push(Convert.ToDateTime("2013-12-25 00:00:00.0000"), new Pecuniam(37.26M), AmericanUtil.GetMereoById(null, "Vehicle Payment"), Pecuniam.Zero);
+            testLoan.Push(Convert.ToDateTime("2014-01-28 00:00:00.0000"), new Pecuniam(37.26M), AmericanUtil.GetMereoById(null, "Vehicle Payment"), Pecuniam.Zero);
+            testLoan.Push(Convert.ToDateTime("2014-02-21 00:00:00.0000"), new Pecuniam(37.26M), AmericanUtil.GetMereoById(null, "Vehicle Payment"), Pecuniam.Zero);
+            testLoan.Push(Convert.ToDateTime("2014-03-23 00:00:00.0000"), new Pecuniam(37.26M), AmericanUtil.GetMereoById(null, "Vehicle Payment"), Pecuniam.Zero);
+            testLoan.Push(Convert.ToDateTime("2014-04-20 00:00:00.0000"), new Pecuniam(37.26M), AmericanUtil.GetMereoById(null, "Vehicle Payment"), Pecuniam.Zero);
+            testLoan.Push(Convert.ToDateTime("2014-05-23 00:00:00.0000"), new Pecuniam(37.26M), AmericanUtil.GetMereoById(null, "Vehicle Payment"), Pecuniam.Zero);
+            testLoan.Push(Convert.ToDateTime("2014-06-24 00:00:00.0000"), new Pecuniam(37.26M), AmericanUtil.GetMereoById(null, "Vehicle Payment"), Pecuniam.Zero);
+            testLoan.Push(Convert.ToDateTime("2014-07-24 00:00:00.0000"), new Pecuniam(37.26M), AmericanUtil.GetMereoById(null, "Vehicle Payment"), Pecuniam.Zero);
+            testLoan.Push(Convert.ToDateTime("2014-08-27 00:00:00.0000"), new Pecuniam(37.26M), AmericanUtil.GetMereoById(null, "Vehicle Payment"), Pecuniam.Zero);
+            testLoan.Push(Convert.ToDateTime("2014-09-26 00:00:00.0000"), new Pecuniam(37.26M), AmericanUtil.GetMereoById(null, "Vehicle Payment"), Pecuniam.Zero);
+            testLoan.Push(Convert.ToDateTime("2014-10-23 00:00:00.0000"), new Pecuniam(37.26M), AmericanUtil.GetMereoById(null, "Vehicle Payment"), Pecuniam.Zero);
+            testLoan.Push(Convert.ToDateTime("2014-11-26 00:00:00.0000"), new Pecuniam(37.26M), AmericanUtil.GetMereoById(null, "Vehicle Payment"), Pecuniam.Zero);
+            testLoan.Push(Convert.ToDateTime("2014-12-21 00:00:00.0000"), new Pecuniam(37.26M), AmericanUtil.GetMereoById(null, "Vehicle Payment"), Pecuniam.Zero);
+            testLoan.Push(Convert.ToDateTime("2015-01-19 00:00:00.0000"), new Pecuniam(37.26M), AmericanUtil.GetMereoById(null, "Vehicle Payment"), Pecuniam.Zero);
+            testLoan.Push(Convert.ToDateTime("2015-02-25 00:00:00.0000"), new Pecuniam(37.26M), AmericanUtil.GetMereoById(null, "Vehicle Payment"), Pecuniam.Zero);
+            testLoan.Push(Convert.ToDateTime("2015-03-22 00:00:00.0000"), new Pecuniam(37.26M), AmericanUtil.GetMereoById(null, "Vehicle Payment"), Pecuniam.Zero);
+            testLoan.Push(Convert.ToDateTime("2015-04-21 00:00:00.0000"), new Pecuniam(37.26M), AmericanUtil.GetMereoById(null, "Vehicle Payment"), Pecuniam.Zero);
+            testLoan.Push(Convert.ToDateTime("2015-05-18 00:00:00.0000"), new Pecuniam(37.26M), AmericanUtil.GetMereoById(null, "Vehicle Payment"), Pecuniam.Zero);
+            testLoan.Push(Convert.ToDateTime("2015-06-19 00:00:00.0000"), new Pecuniam(37.26M), AmericanUtil.GetMereoById(null, "Vehicle Payment"), Pecuniam.Zero);
+            testLoan.Push(Convert.ToDateTime("2015-07-28 00:00:00.0000"), new Pecuniam(37.26M), AmericanUtil.GetMereoById(null, "Vehicle Payment"), Pecuniam.Zero);
+            testLoan.Push(Convert.ToDateTime("2015-08-27 00:00:00.0000"), new Pecuniam(37.26M), AmericanUtil.GetMereoById(null, "Vehicle Payment"), Pecuniam.Zero);
+            testLoan.Push(Convert.ToDateTime("2015-09-22 00:00:00.0000"), new Pecuniam(37.26M), AmericanUtil.GetMereoById(null, "Vehicle Payment"), Pecuniam.Zero);
+            testLoan.Push(Convert.ToDateTime("2015-10-22 00:00:00.0000"), new Pecuniam(37.26M), AmericanUtil.GetMereoById(null, "Vehicle Payment"), Pecuniam.Zero);
+            testLoan.Push(Convert.ToDateTime("2015-11-27 00:00:00.0000"), new Pecuniam(37.26M), AmericanUtil.GetMereoById(null, "Vehicle Payment"), Pecuniam.Zero);
+            testLoan.Push(Convert.ToDateTime("2015-12-24 00:00:00.0000"), new Pecuniam(37.26M), AmericanUtil.GetMereoById(null, "Vehicle Payment"), Pecuniam.Zero);
+            testLoan.Push(Convert.ToDateTime("2016-01-28 00:00:00.0000"), new Pecuniam(37.26M), AmericanUtil.GetMereoById(null, "Vehicle Payment"), Pecuniam.Zero);
+            testLoan.Push(Convert.ToDateTime("2016-02-25 00:00:00.0000"), new Pecuniam(37.26M), AmericanUtil.GetMereoById(null, "Vehicle Payment"), Pecuniam.Zero);
+            testLoan.Push(Convert.ToDateTime("2016-03-26 00:00:00.0000"), new Pecuniam(37.26M), AmericanUtil.GetMereoById(null, "Vehicle Payment"), Pecuniam.Zero);
+            testLoan.Push(Convert.ToDateTime("2016-04-27 00:00:00.0000"), new Pecuniam(37.26M), AmericanUtil.GetMereoById(null, "Vehicle Payment"), Pecuniam.Zero);
+            testLoan.Push(Convert.ToDateTime("2016-05-26 00:00:00.0000"), new Pecuniam(37.26M), AmericanUtil.GetMereoById(null, "Vehicle Payment"), Pecuniam.Zero);
+            testLoan.Push(Convert.ToDateTime("2016-06-28 00:00:00.0000"), new Pecuniam(37.26M), AmericanUtil.GetMereoById(null, "Vehicle Payment"), Pecuniam.Zero);
+            testLoan.Push(Convert.ToDateTime("2016-07-20 00:00:00.0000"), new Pecuniam(37.26M), AmericanUtil.GetMereoById(null, "Vehicle Payment"), Pecuniam.Zero);
+            testLoan.Push(Convert.ToDateTime("2016-08-27 00:00:00.0000"), new Pecuniam(37.26M), AmericanUtil.GetMereoById(null, "Vehicle Payment"), Pecuniam.Zero);
+            testLoan.Push(Convert.ToDateTime("2016-09-22 00:00:00.0000"), new Pecuniam(37.26M), AmericanUtil.GetMereoById(null, "Vehicle Payment"), Pecuniam.Zero);
+            testLoan.Push(Convert.ToDateTime("2016-10-23 00:00:00.0000"), new Pecuniam(37.26M), AmericanUtil.GetMereoById(null, "Vehicle Payment"), Pecuniam.Zero);
+            testLoan.Push(Convert.ToDateTime("2016-11-18 00:00:00.0000"), new Pecuniam(37.26M), AmericanUtil.GetMereoById(null, "Vehicle Payment"), Pecuniam.Zero);
+            testLoan.Push(Convert.ToDateTime("2016-12-20 00:00:00.0000"), new Pecuniam(37.26M), AmericanUtil.GetMereoById(null, "Vehicle Payment"), Pecuniam.Zero);
+            testLoan.Push(Convert.ToDateTime("2017-01-20 00:00:00.0000"), new Pecuniam(37.26M), AmericanUtil.GetMereoById(null, "Vehicle Payment"), Pecuniam.Zero);
+            testLoan.Push(Convert.ToDateTime("2017-02-28 00:00:00.0000"), new Pecuniam(37.26M), AmericanUtil.GetMereoById(null, "Vehicle Payment"), Pecuniam.Zero);
+            testLoan.Push(Convert.ToDateTime("2017-03-25 00:00:00.0000"), new Pecuniam(37.26M), AmericanUtil.GetMereoById(null, "Vehicle Payment"), Pecuniam.Zero);
+            testLoan.Push(Convert.ToDateTime("2017-04-18 00:00:00.0000"), new Pecuniam(37.26M), AmericanUtil.GetMereoById(null, "Vehicle Payment"), Pecuniam.Zero);
+            testLoan.Push(Convert.ToDateTime("2017-05-24 00:00:00.0000"), new Pecuniam(37.26M), AmericanUtil.GetMereoById(null, "Vehicle Payment"), Pecuniam.Zero);
+            testLoan.Push(Convert.ToDateTime("2017-06-21 00:00:00.0000"), new Pecuniam(37.26M), AmericanUtil.GetMereoById(null, "Vehicle Payment"), Pecuniam.Zero);
+            testLoan.Push(Convert.ToDateTime("2017-07-25 00:00:00.0000"), new Pecuniam(37.26M), AmericanUtil.GetMereoById(null, "Vehicle Payment"), Pecuniam.Zero);
+            testLoan.Push(Convert.ToDateTime("2017-08-20 00:00:00.0000"), new Pecuniam(37.26M), AmericanUtil.GetMereoById(null, "Vehicle Payment"), Pecuniam.Zero);
             var payoff = testLoan.GetValueAt(new DateTime(2017, 9, 21));
-            testLoan.Push(new DateTime(2017, 9, 21), payoff, Facit.GetMereoById(null, "payoff"), Pecuniam.Zero);
+            testLoan.Push(new DateTime(2017, 9, 21), payoff, AmericanUtil.GetMereoById(null, "payoff"), Pecuniam.Zero);
             payoff = testLoan.GetValueAt(new DateTime(2017, 9, 22));
 
             Debug.WriteLine(payoff);

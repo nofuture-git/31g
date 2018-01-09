@@ -3,6 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NoFuture.Rand.Data;
 using NoFuture.Rand.Data.Sp;
 using NoFuture.Rand.Data.Sp.Enums;
+using NoFuture.Rand.Domus;
 
 namespace NoFuture.Rand.Tests.DataTests.SpTests
 {
@@ -14,7 +15,7 @@ namespace NoFuture.Rand.Tests.DataTests.SpTests
         public void TestGetRandomLoanWithHistory()
         {
             Pecuniam minOut;
-            var testResult = Facit.GetRandomLoanWithHistory(null, new Pecuniam(8200.94M),
+            var testResult = AmericanUtil.GetRandomLoanWithHistory(null, new Pecuniam(8200.94M),
                 new Pecuniam(8200.94M + 3942.12M), 0.0557f, 5, out minOut);
             Assert.IsNotNull(testResult);
             Assert.IsTrue(testResult.MinPaymentRate > 0);
@@ -45,7 +46,7 @@ namespace NoFuture.Rand.Tests.DataTests.SpTests
         public void TestGetRandomLoan()
         {
             Pecuniam minOut;
-            var testResult = Facit.GetRandomLoan(null, new Pecuniam(8200.94M),
+            var testResult = AmericanUtil.GetRandomLoan(null, new Pecuniam(8200.94M),
                 new Pecuniam(8200.94M + 3942.12M), 0.0557f, 5, out minOut);
             Assert.IsNotNull(testResult);
             Assert.IsTrue(testResult.MinPaymentRate > 0);

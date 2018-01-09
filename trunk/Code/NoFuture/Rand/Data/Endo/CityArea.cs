@@ -11,14 +11,14 @@ namespace NoFuture.Rand.Data.Endo
     {
         #region constants
 
-        protected const string ZIP_CODE_SINGULAR = "zip-code";
-        protected const string ZIP_CODE_PLURAL = "zip-codes";
-        protected const string NAME = "name";
-        protected const string VALUE = "value";
-        protected const string PREFIX = "prefix";
-        protected const string MSA_CODE = "msa-code";
-        protected const string CBSA_CODE = "cbsa-code";
-        protected const string ZIP_STAT = "zip-stat";
+        public const string ZIP_CODE_SINGULAR = "zip-code";
+        public const string ZIP_CODE_PLURAL = "zip-codes";
+        public const string NAME = "name";
+        public const string VALUE = "value";
+        public const string PREFIX = "prefix";
+        public const string MSA_CODE = "msa-code";
+        public const string CBSA_CODE = "cbsa-code";
+        public const string ZIP_STAT = "zip-stat";
 
         #endregion
 

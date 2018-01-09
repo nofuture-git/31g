@@ -51,7 +51,7 @@ namespace NoFuture.Rand.Domus
             };
 
             //almost always returns null
-            _deathCert = Facit.GetRandomDeathCert(this);
+            _deathCert = AmericanUtil.GetRandomDeathCert(this);
             _myGender = myGender;
 
             var fname = _myGender != Gender.Unknown
@@ -891,7 +891,7 @@ namespace NoFuture.Rand.Domus
             if (GetAgeAt(null) > 10)
                 _netUris.Add(
                     new Uri("emailto:" +
-                            Facit.RandomEmailUri(new[]
+                            AmericanUtil.RandomEmailUri(new[]
                             {
                                 GetName(KindsOfNames.First), MiddleName,
                                 GetName(KindsOfNames.Surname)
