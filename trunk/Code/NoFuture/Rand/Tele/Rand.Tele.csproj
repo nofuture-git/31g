@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{3C5DF49D-AE94-431C-85A5-7F5B71AC777F}</ProjectGuid>
+    <ProjectGuid>{BF24172C-6472-4059-860F-46F7A9FC78DF}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NoFuture.Rand.Core</RootNamespace>
-    <AssemblyName>NoFuture.Rand.Core</AssemblyName>
+    <RootNamespace>Rand.Tele</RootNamespace>
+    <AssemblyName>Rand.Tele</AssemblyName>
     <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -36,35 +36,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Enums\Classification.cs" />
-    <Compile Include="IMine.cs" />
-    <Compile Include="TemporeComparer.cs" />
-    <Compile Include="DiachronIdentifier.cs" />
-    <Compile Include="Enums\KindsOfLabels.cs" />
-    <Compile Include="Enums\KindsOfNames.cs" />
-    <Compile Include="Etx.cs" />
-    <Compile Include="ICited.cs" />
-    <Compile Include="Identifier.cs" />
-    <Compile Include="IIdentifier.cs" />
-    <Compile Include="INumera.cs" />
-    <Compile Include="ITempore.cs" />
-    <Compile Include="IVoca.cs" />
-    <Compile Include="NamedIdentifier.cs" />
+    <Compile Include="Email.cs" />
+    <Compile Include="Net.cs" />
+    <Compile Include="NorthAmericanPhone.cs" />
+    <Compile Include="Phone.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Rchar.cs" />
-    <Compile Include="RcharAlphaNumeric.cs" />
-    <Compile Include="RcharLAlpha.cs" />
-    <Compile Include="RcharLimited.cs" />
-    <Compile Include="RcharNumeric.cs" />
-    <Compile Include="RcharUAlpha.cs" />
-    <Compile Include="RIdentifier.cs" />
-    <Compile Include="RIdentifierWithChkDigit.cs" />
-    <Compile Include="RLinearEquation.cs" />
-    <Compile Include="VocaBase.cs" />
-    <Compile Include="Xml2XmlIdentifier.cs" />
-    <Compile Include="XmlDocXrefIdentifier.cs" />
-    <Compile Include="XRefGroup.cs" />
-    <Compile Include="XrefIdentifier.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Shared\Core\Shared.Core.csproj">
@@ -75,9 +51,15 @@
       <Project>{349a1c91-ca14-4d04-946d-8b257a863ce0}</Project>
       <Name>Util.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Core\Rand.Core.csproj">
+      <Project>{3c5df49d-ae94-431c-85a5-7f5b71ac777f}</Project>
+      <Name>Rand.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="English_Words.xml" />
+    <EmbeddedResource Include="CA_AreaCode_Data.xml" />
+    <EmbeddedResource Include="US_AreaCode_Data.xml" />
+    <EmbeddedResource Include="webmailDomains.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -11,6 +11,7 @@ using NoFuture.Rand.Geo;
 using NoFuture.Rand.Gov;
 using NoFuture.Shared.Core;
 using NoFuture.Util.Core;
+using Rand.Tele;
 
 namespace NoFuture.Rand.Domus.US
 {
@@ -872,7 +873,7 @@ namespace NoFuture.Rand.Domus.US
             if (GetAgeAt(null) > 10)
                 _netUris.Add(
                     new Uri("emailto:" +
-                            Facit.RandomEmailUri(new[]
+                            Email.RandomEmailUri(new[]
                             {
                                 GetName(KindsOfNames.First), MiddleName,
                                 GetName(KindsOfNames.Surname)

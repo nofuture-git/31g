@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
+using System.Xml;
 using NoFuture.Util.Core.Math;
 
 namespace NoFuture.Rand.Core
@@ -15,6 +17,9 @@ namespace NoFuture.Rand.Core
     {
         #region Fields
         private static Random _myRand;
+        private static List<Tuple<string, double>> _enWords;
+        internal const string ENGLISH_WORDS = "English_Words.xml";
+
         #endregion
 
         public static Random MyRand
@@ -584,6 +589,69 @@ namespace NoFuture.Rand.Core
             }
 
             return rcharsOut.ToArray();
+        }
+
+        /// <summary>
+        /// Attempts to return a common english
+        /// </summary>
+        /// <returns></returns>
+        public static string Word()
+        {
+            var enWords = EnglishWords;
+            if (enWords == null || enWords.Count <= 0)
+                return Etx.Word(8);
+            var pick = Etx.IntNumber(0, enWords.Count - 1);
+            var enWord = enWords[pick]?.Item1;
+            return !String.IsNullOrWhiteSpace(enWord)
+                ? enWord
+                : Etx.Word(8);
+        }
+
+        /// <summary>
+        /// Loads the <see cref="DataFiles.ENGLISH_WORDS_DATA_FILE"/> data into a <see cref="XmlDocument"/> document.
+        /// </summary>
+        public static List<Tuple<string, double>> EnglishWords
+        {
+            get
+            {
+                const string WORD = "word";
+                const string LANG = "lang";
+                const string COUNT = "count";
+                try
+                {
+                    if (_enWords != null && _enWords.Count > 0)
+                        return _enWords;
+
+                    var enWordsXml = XmlDocXrefIdentifier.GetEmbeddedXmlDoc(ENGLISH_WORDS,
+                        Assembly.GetExecutingAssembly());
+                    var wordNodes = enWordsXml?.SelectNodes($"//{WORD}[@{LANG}='en']");
+                    if (wordNodes == null)
+                        return null;
+
+                    _enWords = new List<Tuple<string, double>>();
+                    foreach (var node in wordNodes)
+                    {
+                        var elem = node as XmlElement;
+                        var word = elem?.InnerText;
+                        if (string.IsNullOrWhiteSpace(word))
+                            continue;
+                        var countStr = elem.Attributes[COUNT]?.Value;
+                        if (string.IsNullOrWhiteSpace(countStr))
+                            continue;
+                        double count;
+                        if (!double.TryParse(countStr, out count))
+                            continue;
+                        _enWords.Add(new Tuple<string, double>(word, count));
+                    }
+                    return _enWords;
+                }
+                catch (Exception ex)//keep this contained
+                {
+                    System.Diagnostics.Debug.WriteLine(ex.Message);
+                    System.Diagnostics.Debug.WriteLine(ex.StackTrace);
+                }
+                return null;
+            }
         }
 
         #endregion

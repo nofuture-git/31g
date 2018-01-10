@@ -38,8 +38,6 @@
   <ItemGroup>
     <Compile Include="Endo\Enums\Gender.cs" />
     <Compile Include="Endo\Enums\MaritialStatus.cs" />
-    <Compile Include="Endo\NorthAmericanPhone.cs" />
-    <Compile Include="Endo\Phone.cs" />
     <Compile Include="Facit.cs" />
     <Compile Include="ListData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

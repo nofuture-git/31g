@@ -72,6 +72,10 @@
       <Project>{cc5df72f-e8e4-4341-a653-8dcee8dbe3ba}</Project>
       <Name>Rand.Org</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Tele\Rand.Tele.csproj">
+      <Project>{bf24172c-6472-4059-860f-46f7a9fc78df}</Project>
+      <Name>Rand.Tele</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
