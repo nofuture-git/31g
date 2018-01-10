@@ -6,6 +6,7 @@ using NoFuture.Rand.Core;
 using NoFuture.Rand.Data;
 using NoFuture.Rand.Data.Endo;
 using NoFuture.Rand.Data.Endo.Enums;
+using NoFuture.Rand.Geo;
 using NoFuture.Rand.Gov;
 using NoFuture.Shared.Core;
 using NoFuture.Util.Core;

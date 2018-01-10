@@ -8,6 +8,7 @@ using NoFuture.Rand.Data.Endo.Enums;
 using NoFuture.Rand.Domus.Pneuma;
 using NoFuture.Rand.Domus.US;
 using NoFuture.Rand.Edu;
+using NoFuture.Rand.Geo;
 using NoFuture.Rand.Gov;
 using NoFuture.Shared.Core;
 

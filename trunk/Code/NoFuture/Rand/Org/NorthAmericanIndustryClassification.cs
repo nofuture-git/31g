@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Xml;
 
 namespace NoFuture.Rand.Org
@@ -42,7 +43,7 @@ namespace NoFuture.Rand.Org
                 //return this a singleton
                 if (_superSectors != null)
                     return _superSectors;
-                var xml = GetEmbeddedXmlDoc(US_ECON_SECTOR_DATA_FILE);
+                var xml = GetEmbeddedXmlDoc(US_ECON_SECTOR_DATA_FILE, Assembly.GetExecutingAssembly());
                 if (xml == null)
                     return null;
 

@@ -3,6 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NoFuture.Rand.Data.Endo;
 using NoFuture.Rand.Data.Sp;
 using NoFuture.Rand.Domus;
+using NoFuture.Rand.Geo;
 
 namespace NoFuture.Rand.Tests.DataTests.SpTests
 {

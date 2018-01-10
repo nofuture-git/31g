@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<noFuture>
+  <rand>
+    <data>
+      <source>
+        <postal-codes>
+          <providence name="Newfoundland" abbreviation="NL">
+            <postal-code prefix="A1A">
+              <municipality>St. John's</municipality>
+            </postal-code>
+          </providence>
+          <providence name="Alberta" abbreviation="AB">
+            <postal-code prefix="T2A">
+              <municipality>Calgary</municipality>
+            </postal-code>
+            <postal-code prefix="T5A">
+              <municipality>Edmonton</municipality>
+            </postal-code>
+          </providence>
+          <providence name="British Columbia" abbreviation="BC">
+            <postal-code prefix="V6C">
+              <municipality>Vancouver</municipality>
+            </postal-code>
+          </providence>
+          <providence name="Manitoba" abbreviation="MB">
+            <postal-code prefix="R3T">
+              <municipality>Winnipeg</municipality>
+            </postal-code>
+          </providence>
+          <providence name="New Brunswick" abbreviation="NB">
+            <postal-code prefix="E3B">
+              <municipality>Fredericton</municipality>
+            </postal-code>
+          </providence>
+          <providence name="Northwest Territories" abbreviation="NT">
+            <postal-code prefix="XA0">
+              <municipality>Arctic Bay</municipality>
+            </postal-code>
+          </providence>
+          <providence name="Nova Scotia" abbreviation="NS">
+            <postal-code prefix="B2Z">
+              <municipality>Dartmouth</municipality>
+            </postal-code>
+          </providence>
+          <providence name="Nunavut" abbreviation="NU">
+            <postal-code prefix="X0G">
+              <municipality>Fort Liard</municipality>
+            </postal-code>
+          </providence>
+          <providence name="Ontario" abbreviation="ON">
+            <postal-code prefix="K2A">
+              <municipality>Ottawa</municipality>
+            </postal-code>
+            <postal-code prefix="L5M">
+              <municipality>Mississuaga</municipality>
+            </postal-code>
+            <postal-code prefix="M5A">
+              <municipality>Toronto</municipality>
+            </postal-code>
+            <postal-code prefix="N9A">
+              <municipality>Windsor</municipality>
+            </postal-code>
+            <postal-code prefix="P7A">
+              <municipality>Thunder Bay</municipality>
+            </postal-code>
+          </providence>
+          <providence name="Prince Edward Island" abbreviation="PE">
+            <postal-code prefix="C1A">
+              <municipality>Charlottetown</municipality>
+            </postal-code>
+          </providence>
+          <providence name="Quebec" abbreviation="QC">
+            <postal-code prefix="G1P">
+              <municipality>Quebec City</municipality>
+            </postal-code>
+            <postal-code prefix="H3A">
+              <municipality>Montreal</municipality>
+            </postal-code>
+            <postal-code prefix="J1H">
+              <municipality>Sherbrooke</municipality>
+            </postal-code>
+          </providence>
+          <providence name="Saskatchewan" abbreviation="SK">
+            <postal-code prefix="S7L">
+              <municipality>Saskatoon</municipality>
+            </postal-code>
+          </providence>
+          <providence name="Yukon" abbreviation="YT">
+            <postal-code prefix="Y1A">
+              <municipality>Whitehorse</municipality>
+            </postal-code>
+          </providence>
+        </postal-codes>
+      </source>
+    </data>
+  </rand>
+</noFuture>

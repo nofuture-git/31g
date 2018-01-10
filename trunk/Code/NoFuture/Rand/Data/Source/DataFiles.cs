@@ -15,7 +15,6 @@ namespace NoFuture.Rand.Data.Source
         public const string ECON_SECTOR_DATA_FILE = "US_EconSectors.xml";
         public const string US_UNIV_DATA_FILE = "US_Universities.xml";
         public const string US_FIRST_NAMES_DATA_FILE = "US_FirstNames.xml";
-        public const string US_STATE_DATA_FILE = "US_States.xml";
         public const string US_LAST_NAMES_DATA_FILE = "US_LastNames.xml";
         public const string US_HIGH_SCHOOL_DATA_FILE = "US_HighSchools.xml";
         public const string US_CITY_DATA_FILE = "US_City.xml";

@@ -11,6 +11,7 @@ using NoFuture.Rand.Data.Sp;
 using NoFuture.Rand.Data.Sp.Cc;
 using NoFuture.Rand.Data.Sp.Enums;
 using NoFuture.Rand.Domus.Pneuma;
+using NoFuture.Rand.Geo;
 using NoFuture.Rand.Gov;
 using NoFuture.Rand.Gov.Fed;
 using NoFuture.Rand.Gov.Nhtsa;

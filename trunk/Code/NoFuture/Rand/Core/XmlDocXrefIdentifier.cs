@@ -74,13 +74,12 @@ namespace NoFuture.Rand.Core
             return d + id;
         }
 
-        protected internal static XmlDocument GetEmbeddedXmlDoc(string xmlDataFileName)
+        public static XmlDocument GetEmbeddedXmlDoc(string xmlDataFileName, Assembly asm = null)
         {
             if (string.IsNullOrWhiteSpace(xmlDataFileName))
                 return null;
 
-            var asm = Assembly.GetExecutingAssembly();
-
+            asm = asm ?? Assembly.GetExecutingAssembly();
             var data = asm.GetManifestResourceStream($"{asm.GetName().Name}.{xmlDataFileName}");
             if (data == null)
                 return null;

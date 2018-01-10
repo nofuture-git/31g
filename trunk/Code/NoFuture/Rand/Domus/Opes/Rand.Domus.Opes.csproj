@@ -73,6 +73,10 @@
       <Project>{193f1df6-f471-4164-b5bb-8752c306df7b}</Project>
       <Name>Rand.Data.Sp</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Geo\Rand.Geo.csproj">
+      <Project>{924edbc5-1492-4574-97e9-a1d85635aa1c}</Project>
+      <Name>Rand.Geo</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Gov\Rand.Gov.csproj">
       <Project>{bb60d20c-259f-4fb3-9ba3-58e859bd712d}</Project>
       <Name>Rand.Gov</Name>

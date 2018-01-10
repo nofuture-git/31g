@@ -15,7 +15,6 @@ namespace NoFuture.Rand.Data
     {
         #region fields
         private static XmlDocument _usZipXml;
-        private static XmlDocument _usStateData;
         private static XmlDocument _caZipXml;
         private static XmlDocument _usAreaCodeXml;
         private static XmlDocument _caAreaCodeXml;
@@ -39,18 +38,7 @@ namespace NoFuture.Rand.Data
         #endregion
 
         #region methods
-        /// <summary>
-        /// Loads the <see cref="DataFiles.US_STATE_DATA_FILE"/> data into a <see cref="XmlDocument"/> document.
-        /// </summary>
-        public static XmlDocument UsStateData
-        {
-            get
-            {
-                if (_usStateData == null)
-                    GetXmlDataSource(DataFiles.US_STATE_DATA_FILE, ref _usStateData);
-                return _usStateData;
-            }
-        }
+
         /// <summary>
         /// Loads the <see cref="DataFiles.US_FIRST_NAMES_DATA_FILE"/> data into a <see cref="XmlDocument"/> document.
         /// </summary>

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Xml;
 using NoFuture.Rand.Core;
 
@@ -36,7 +37,7 @@ namespace NoFuture.Rand.Org
                 if(_majorGroups != null)
                     return _majorGroups;
 
-                var xml = GetEmbeddedXmlDoc(US_OCCUPATIONS_DATA_FILE);
+                var xml = GetEmbeddedXmlDoc(US_OCCUPATIONS_DATA_FILE, Assembly.GetExecutingAssembly());
                 if (xml == null)
                     return null;
 
@@ -69,7 +70,7 @@ namespace NoFuture.Rand.Org
         public static SocDetailedOccupation RandomOccupation(Predicate<SocDetailedOccupation> filterBy = null)
         {
             _soc2Prob = _soc2Prob == null || !_soc2Prob.Any()
-                ? GetProbTable(GetEmbeddedXmlDoc(US_OCCUPATIONS_PROB_TABLE), "occupations", "ID")
+                ? GetProbTable(GetEmbeddedXmlDoc(US_OCCUPATIONS_PROB_TABLE, Assembly.GetExecutingAssembly()), "occupations", "ID")
                 : _soc2Prob;
 
             if (!_socs.Any())

@@ -36,18 +36,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Endo\AddressData.cs" />
-    <Compile Include="Endo\CaCityProvidencePost.cs" />
-    <Compile Include="Endo\CityArea.cs" />
     <Compile Include="Endo\Enums\Gender.cs" />
     <Compile Include="Endo\Enums\MaritialStatus.cs" />
     <Compile Include="Endo\NorthAmericanPhone.cs" />
     <Compile Include="Endo\Phone.cs" />
-    <Compile Include="Endo\PostalAddress.cs" />
-    <Compile Include="Endo\StreetPo.cs" />
-    <Compile Include="Endo\UsCityStateZip.cs" />
-    <Compile Include="Endo\UsStateData.cs" />
-    <Compile Include="Endo\UsStreetPo.cs" />
     <Compile Include="Facit.cs" />
     <Compile Include="ListData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
