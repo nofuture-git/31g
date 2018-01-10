@@ -30,7 +30,6 @@ namespace NoFuture.Rand.Data
         private static XmlDocument _usZipProbTable;
         private static XmlDocument _usPersonalDebt;
         private static XmlDocument _usPersonalWealth;
-        private static XmlDocument _vinWmi;
         private static XmlDocument _usOccupations;
         private static XmlDocument _usBanks;
         private static XmlDocument _usDomusOpes;
@@ -253,19 +252,6 @@ namespace NoFuture.Rand.Data
                 if (_usPersonalWealth == null)
                     GetXmlDataSource(DataFiles.US_PERSON_WEALTH_DATA_FILE, ref _usPersonalWealth);
                 return _usPersonalWealth;
-            }
-        }
-
-        /// <summary>
-        /// Loads the <see cref="DataFiles.VIN_WMI_DATA_FILE"/> data into a <see cref="XmlDocument"/> document.
-        /// </summary>
-        public static XmlDocument VinWmi
-        {
-            get
-            {
-                if(_vinWmi == null)
-                    GetXmlDataSource(DataFiles.VIN_WMI_DATA_FILE, ref _vinWmi);
-                return _vinWmi;
             }
         }
 

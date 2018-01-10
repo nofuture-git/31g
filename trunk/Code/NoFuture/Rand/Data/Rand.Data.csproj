@@ -39,12 +39,8 @@
     <Compile Include="Endo\AddressData.cs" />
     <Compile Include="Endo\CaCityProvidencePost.cs" />
     <Compile Include="Endo\CityArea.cs" />
-    <Compile Include="Endo\Enums\AmericanRegion.cs" />
     <Compile Include="Endo\Enums\Gender.cs" />
     <Compile Include="Endo\Enums\MaritialStatus.cs" />
-    <Compile Include="Endo\Enums\OccidentalEdu.cs" />
-    <Compile Include="Endo\Enums\PropertyCrime.cs" />
-    <Compile Include="Endo\Enums\ViolentCrime.cs" />
     <Compile Include="Endo\Grps\ClassificationBase.cs" />
     <Compile Include="Endo\Grps\ClassificationOfInstructionalPrograms.cs" />
     <Compile Include="Endo\Grps\NaicsMarket.cs" />

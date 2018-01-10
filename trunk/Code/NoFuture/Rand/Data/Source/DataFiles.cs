@@ -23,7 +23,6 @@ namespace NoFuture.Rand.Data.Source
         public const string US_ZIP_PROB_TABLE_DATA_FILE = "US_Zip_ProbTable.xml";
         public const string US_PERSON_DEBT_DATA_FILE = "US_PersonalDebt.xml";
         public const string US_PERSON_WEALTH_DATA_FILE = "US_PersonalWealth.xml";
-        public const string VIN_WMI_DATA_FILE = "Vin_Wmi.xml";
         public const string ENGLISH_WORDS_DATA_FILE = "English_Words.xml";
         public const string WEBMAIL_DOMAINS = "webmailDomains.txt";
         public const string US_OCCUPATIONS = "US_Occupations.xml";

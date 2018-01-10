@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
+using System.Xml;
 using NoFuture.Rand.Core;
 using NoFuture.Util.Core;
 
@@ -56,6 +59,7 @@ namespace NoFuture.Rand.Gov.Nhtsa
         private const string AllZeros = "00000000000000000";
 
         private char? _chkDigit;
+        private const string VIN_WMI_DATA_FILE = "Vin_Wmi.xml";
         #endregion
 
         #region constants
@@ -80,7 +84,7 @@ namespace NoFuture.Rand.Gov.Nhtsa
             set
             {
                 var vinIn = value;
-                if (string.IsNullOrWhiteSpace(vinIn))
+                if (String.IsNullOrWhiteSpace(vinIn))
                 {
                     Wmi = new WorldManufacturerId();
                     Vds = new VehicleDescription();
@@ -208,9 +212,9 @@ namespace NoFuture.Rand.Gov.Nhtsa
 
             var baseYear = 0;
 
-            if (char.IsNumber(Vds.Seven.GetValueOrDefault()))
+            if (Char.IsNumber(Vds.Seven.GetValueOrDefault()))
                 baseYear = BASE_YEAR;
-            if (char.IsLetter(Vds.Seven.GetValueOrDefault()))
+            if (Char.IsLetter(Vds.Seven.GetValueOrDefault()))
                 baseYear = AMENDED_BASE_YEAR;
 
             if (baseYear == 0)
@@ -232,12 +236,143 @@ namespace NoFuture.Rand.Gov.Nhtsa
             if (vin == null)
                 return false;
 
-            return string.Equals(vin.ToString(), ToString(), StringComparison.OrdinalIgnoreCase);
+            return String.Equals(vin.ToString(), ToString(), StringComparison.OrdinalIgnoreCase);
         }
 
         public override int GetHashCode()
         {
             return ToString().GetHashCode();
+        }
+
+        internal static XmlDocument GetVinWmiData()
+        {
+            if (string.IsNullOrWhiteSpace(VIN_WMI_DATA_FILE))
+                return null;
+
+            var asm = Assembly.GetExecutingAssembly();
+
+            var data = asm.GetManifestResourceStream($"{asm.GetName().Name}.Nhtsa.{VIN_WMI_DATA_FILE}");
+            if (data == null)
+                return null;
+
+            var strmRdr = new StreamReader(data);
+            var xmlData = strmRdr.ReadToEnd();
+            var assignTo = new XmlDocument();
+            assignTo.LoadXml(xmlData);
+            return assignTo;
+        }
+
+        public static Tuple<WorldManufacturerId, string> GetRandomManufacturerId()
+        {
+            var df = new Tuple<WorldManufacturerId, string>(WorldManufacturerId.CreateRandomManufacturerId(), String.Empty);
+            var xml = GetVinWmiData();
+            if (xml == null)
+            {
+                return df;
+            }
+
+            //pick the kind of vehicle
+            var wmiOut = new WorldManufacturerId();
+            var xpath = "//vehicle-type";
+            var pick = Etx.IntNumber(1, 3);
+            switch (pick)
+            {
+                case 1:
+                    xpath += "[@name='car']/wmi";
+                    break;
+                case 2:
+                    xpath += "[@name='truck']/wmi";
+                    break;
+                case 3:
+                    xpath += "[@name='suv']/wmi";
+                    break;
+            }
+
+            // pick a manufacturer for vehicle type
+            var mfNodes = xml.SelectNodes(xpath);
+            if (mfNodes == null || mfNodes.Count <= 0)
+                return df;
+            pick = Etx.IntNumber(0, mfNodes.Count - 1);
+            var mfNode = mfNodes[pick];
+            if (mfNode == null)
+                return df;
+            var mfName = mfNode.Attributes?["id"]?.Value;
+            if (String.IsNullOrWhiteSpace(mfName))
+                return df;
+            xpath += $"[@id='{mfName}']";
+            var wmiNodes = xml.SelectNodes(xpath + "/add");
+            if (wmiNodes == null || wmiNodes.Count <= 0)
+                return df;
+            pick = Etx.IntNumber(0, wmiNodes.Count - 1);
+            var wmiNode = wmiNodes[pick];
+            if (wmiNode == null)
+                return df;
+            var wmiStr = wmiNode.Attributes?["value"]?.Value;
+            if (String.IsNullOrWhiteSpace(wmiStr) || wmiStr.Length != 3)
+                return df;
+            var wmiChars = wmiStr.ToCharArray();
+            wmiOut.Country = wmiChars[0];
+            wmiOut.RegionMaker = wmiChars[1];
+            wmiOut.VehicleType = wmiChars[2];
+
+            df = new Tuple<WorldManufacturerId, string>(wmiOut, String.Empty);
+
+            //pick a vehicle's common name
+            xpath += "/vehicle-names/add";
+            var vhNameNodes = xml.SelectNodes(xpath);
+            if (vhNameNodes == null || vhNameNodes.Count <= 0)
+                return df;
+
+            pick = Etx.IntNumber(0, vhNameNodes.Count - 1);
+            var vhNameNode = vhNameNodes[pick];
+            if (vhNameNode == null)
+                return df;
+
+            var vhName = vhNameNode.Attributes?["value"]?.Value;
+            if (String.IsNullOrWhiteSpace(vhName))
+                return df;
+
+            return new Tuple<WorldManufacturerId, string>(wmiOut, vhName);
+        }
+
+
+        /// <summary>
+        /// Generates a random VIN
+        /// </summary>
+        /// <param name="allowForOldModel">
+        /// Allow random to produce model years back to 1980
+        /// </param>
+        /// <param name="maxYear">
+        /// Allows calling api to specify a max allowable year of make.
+        /// </param>
+        /// <returns></returns>
+        public static Vin GetRandomVin(bool allowForOldModel = false, int? maxYear = null)
+        {
+            var wmiAndName = GetRandomManufacturerId();
+            var wmiOut = wmiAndName.Item1;
+
+            //when this is a digit it will allow for a much older make back to 1980
+            var yearBaseDeterminer = allowForOldModel && Etx.TryAboveOrAt(66, Etx.Dice.OneHundred)
+                ? Vin.DF_DIGIT
+                : Vin.GetRandomVinChar();
+
+            var vds = new VehicleDescription
+            {
+                Four = Vin.GetRandomVinChar(),
+                Five = Vin.GetRandomVinChar(),
+                Six = Vin.GetRandomVinChar(),
+                Seven = yearBaseDeterminer,
+                Eight = Vin.GetRandomVinChar()
+            };
+
+            var vis = VehicleIdSection.GetVehicleIdSection(Char.IsNumber(vds.Seven.GetValueOrDefault()), maxYear);
+
+            var vin = new Vin { Wmi = wmiOut, Vds = vds, Vis = vis };
+
+            if (!String.IsNullOrWhiteSpace(wmiAndName.Item2))
+                vin.Description = wmiAndName.Item2;
+
+            return vin;
         }
 
         #endregion

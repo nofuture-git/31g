@@ -1126,7 +1126,7 @@ namespace NoFuture.Rand.Domus.Opes
             if (property is Vin)
             {
                 var maxYear = loan.Inception.Year;
-                loan.PropertyId = Facit.GetRandomVin(remainingCost.ToDouble() <= 2000.0D, maxYear);
+                loan.PropertyId = Vin.GetRandomVin(remainingCost.ToDouble() <= 2000.0D, maxYear);
             }
 
             return loan;
