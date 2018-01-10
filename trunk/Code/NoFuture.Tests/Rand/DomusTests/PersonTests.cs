@@ -107,11 +107,11 @@ namespace NoFuture.Rand.Tests
         public void AmericanRaceTests()
         {
             const string TEST_ZIP = "92071";
-            var testResult = AmericanUtil.GetAmericanRace(TEST_ZIP);
+            var testResult = UsCityStateZip.GetAmericanRace(TEST_ZIP);
             Assert.AreNotEqual(string.Empty,testResult);
             Debug.WriteLine(testResult);
 
-            testResult = AmericanUtil.GetAmericanRace("68415");
+            testResult = UsCityStateZip.GetAmericanRace("68415");
             Assert.AreEqual(NorthAmericanRace.White, testResult);
         }
 

@@ -40,6 +40,21 @@ namespace NoFuture.Rand.Gov
                 _m, Mixed, _p, Pacific, _w, White);
         }
 
+        public bool IsEmpty()
+        {
+            var p = new [] 
+            {
+                AmericanIndian == 0.0D,
+                Asian == 0.0D,
+                Hispanic == 0.0D,
+                Black == 0.0D,
+                White == 0.0D,
+                Pacific == 0.0D,
+                Mixed == 0.0D
+            };
+            return p.All(x => x);
+        }
+
         public static AmericanRacePercents GetNatlAvg()
         {
             var dict = GetNatlAvgAsDict();

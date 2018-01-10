@@ -30,47 +30,6 @@ namespace NoFuture.Rand.Domus.US
     public static class AmericanUtil
     {
         /// <summary>
-        /// Returns a hashtable whose keys as American's call Race based on the given <see cref="zipCode"/>
-        /// </summary>
-        /// <param name="zipCode"></param>
-        public static AmericanRacePercents RandomAmericanRaceWithRespectToZip(string zipCode)
-        {
-            var pick = 0;
-            //if calling assembly passed in no-args then return all zeros
-            if (String.IsNullOrWhiteSpace(zipCode))
-                return AmericanRacePercents.GetNatlAvg();
-
-            //get the data for the given zip code
-            var zipStatElem =
-                TreeData.AmericanHighSchoolData.SelectSingleNode(
-                    $"//{CityArea.ZIP_STAT}[@{CityArea.VALUE}='{zipCode}']");
-
-            if (zipStatElem == null || !zipStatElem.HasChildNodes)
-            {
-                //try to find on the zip code prefix 
-                var zip3 = zipCode.Substring(0, 3);
-                var zipCodeElem =
-                    TreeData.AmericanHighSchoolData.SelectSingleNode(
-                        $"//{CityArea.ZIP_CODE_SINGULAR}[@{CityArea.PREFIX}='{zip3}']");
-
-                if (zipCodeElem == null || !zipCodeElem.HasChildNodes)
-                    return AmericanRacePercents.GetNatlAvg();
-
-                pick = Etx.MyRand.Next(0, zipCodeElem.ChildNodes.Count - 1);
-
-                zipStatElem = zipCodeElem.ChildNodes[pick];
-                if (zipStatElem == null)
-                    return AmericanRacePercents.GetNatlAvg();
-            }
-
-            pick = Etx.MyRand.Next(0, zipStatElem.ChildNodes.Count - 1);
-            var hsNode = zipStatElem.ChildNodes[pick];
-            if (!AmericanHighSchool.TryParseXml(hsNode as XmlElement, out var hsOut))
-                return AmericanRacePercents.GetNatlAvg();
-            return hsOut.RacePercents;
-        }
-
-        /// <summary>
         /// Generates a <see cref="DeathCert"/> at random based on the given <see cref="p"/>
         /// </summary>
         /// <param name="p"></param>
@@ -200,39 +159,6 @@ namespace NoFuture.Rand.Domus.US
             }
 
             return Etx.Date((int)Math.Round(meanAge), motherDob);
-
-        }
-
-        /// <summary>
-        /// Return a <see cref="NorthAmericanRace"/> randomly with weight based on <see cref="zipCode"/>.
-        /// </summary>
-        /// <param name="zipCode">Null to get natl averages.</param>
-        /// <returns>
-        /// Defaults to randomly to national averages
-        /// [http://kff.org/other/state-indicator/distribution-by-raceethnicity/]
-        /// </returns>
-        public static NorthAmericanRace GetAmericanRace(string zipCode)
-        {
-            var amRace = RandomAmericanRaceWithRespectToZip(zipCode);
-
-            var raceHashByZip = amRace != null
-                ? new Dictionary<string, double>
-                {
-                    {Enum.GetName(typeof(NorthAmericanRace), NorthAmericanRace.AmericanIndian), amRace.AmericanIndian},
-                    {Enum.GetName(typeof(NorthAmericanRace), NorthAmericanRace.Asian), amRace.Asian},
-                    {Enum.GetName(typeof(NorthAmericanRace), NorthAmericanRace.Black), amRace.Black},
-                    {Enum.GetName(typeof(NorthAmericanRace), NorthAmericanRace.Hispanic), amRace.Hispanic},
-                    {Enum.GetName(typeof(NorthAmericanRace), NorthAmericanRace.Mixed), amRace.Mixed},
-                    {Enum.GetName(typeof(NorthAmericanRace), NorthAmericanRace.Pacific), amRace.Pacific},
-                    {Enum.GetName(typeof(NorthAmericanRace), NorthAmericanRace.White), amRace.White}
-                }
-                : AmericanRacePercents.GetNatlAvgAsDict();
-
-            var randPick = Etx.DiscreteRange(raceHashByZip);
-
-            Enum.TryParse(randPick, out NorthAmericanRace pickOut);
-
-            return pickOut;
 
         }
 

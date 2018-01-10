@@ -20,7 +20,6 @@ namespace NoFuture.Rand.Edu
         public UrbanCentric UrbanCentric { get; set; }
         public double TotalTeachers { get; set; }
         public int TotalStudents { get; set; }
-        public AmericanRacePercents RacePercents { get; set; }
         #endregion
 
         #region methods
@@ -51,7 +50,6 @@ namespace NoFuture.Rand.Edu
                 State = UsState.GetStateByPostalCode("DC"),
                 StateName = "",
                 Name = "G.E.D.",
-                RacePercents = AmericanRacePercents.GetNatlAvg(),
                 PostalCode = "20024",
                 TotalTeachers = -1,
                 UrbanCentric = UrbanCentric.City | UrbanCentric.Large,
@@ -159,50 +157,6 @@ namespace NoFuture.Rand.Edu
                 {
                     if (int.TryParse(attr.Value, out var intOut))
                         hs.TotalStudents = intOut;
-                }
-
-                hs.RacePercents = new AmericanRacePercents();
-                attr = node.Attributes["american-indian"];
-                if (attr != null)
-                {
-                    if (double.TryParse(attr.Value, out var dblOut))
-                        hs.RacePercents.AmericanIndian = dblOut;
-                }
-                attr = node.Attributes["asian"];
-                if (attr != null)
-                {
-                    if (double.TryParse(attr.Value, out var dblOut))
-                        hs.RacePercents.Asian = dblOut;
-                }
-                attr = node.Attributes["hispanic"];
-                if (attr != null)
-                {
-                    if (double.TryParse(attr.Value, out var dblOut))
-                        hs.RacePercents.Hispanic = dblOut;
-                }
-                attr = node.Attributes["black"];
-                if (attr != null)
-                {
-                    if (double.TryParse(attr.Value, out var dblOut))
-                        hs.RacePercents.Black = dblOut;
-                }
-                attr = node.Attributes["white"];
-                if (attr != null)
-                {
-                    if (double.TryParse(attr.Value, out var dblOut))
-                        hs.RacePercents.White = dblOut;
-                }
-                attr = node.Attributes["pacific"];
-                if (attr != null)
-                {
-                    if (double.TryParse(attr.Value, out var dblOut))
-                        hs.RacePercents.Pacific = dblOut;
-                }
-                attr = node.Attributes["mixed-race"];
-                if (attr != null)
-                {
-                    if (double.TryParse(attr.Value, out var dblOut))
-                        hs.RacePercents.Mixed = dblOut;
                 }
 
                 if (node.ParentNode == null || node.ParentNode.LocalName != "zip-stat" ||

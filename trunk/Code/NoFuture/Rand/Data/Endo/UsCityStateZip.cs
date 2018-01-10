@@ -113,11 +113,9 @@ namespace NoFuture.Rand.Data.Endo
             return !zip2Wt.Any() ? DF_ZIPCODE_PREFIX : Etx.DiscreteRange(zip2Wt);
         }
 
-
-
         public override string ToString()
         {
-            return !string.IsNullOrWhiteSpace(data.PostalCodeSuffix)
+            return !String.IsNullOrWhiteSpace(data.PostalCodeSuffix)
                 ? $"{data.City}, {data.StateAbbrv} {data.PostalCode}-{data.PostalCodeSuffix}"
                 : $"{data.City}, {data.StateAbbrv} {data.PostalCode}";
         }
@@ -343,6 +341,139 @@ namespace NoFuture.Rand.Data.Endo
 
             var pick = Etx.IntNumber(0, matchedNodes.Count - 1);
             return matchedNodes[pick];
+        }
+
+        /// <summary>
+        /// Returns a hashtable whose keys as American's call Race based on the given <see cref="zipCode"/>
+        /// </summary>
+        /// <param name="zipCode"></param>
+        public static AmericanRacePercents RandomAmericanRaceWithRespectToZip(string zipCode)
+        {
+            var pick = 0;
+            //if calling assembly passed in no-args then return all zeros
+            if (String.IsNullOrWhiteSpace(zipCode))
+                return AmericanRacePercents.GetNatlAvg();
+
+            //get the data for the given zip code
+            var zipStatElem =
+                TreeData.AmericanZipCodeData.SelectSingleNode(
+                    $"//{ZIP_STAT}[@{VALUE}='{zipCode}']");
+
+            if (zipStatElem == null || !zipStatElem.HasChildNodes)
+            {
+                //try to find on the zip code prefix 
+                var zip3 = zipCode.Substring(0, 3);
+                var zipCodeElem =
+                    TreeData.AmericanZipCodeData.SelectSingleNode(
+                        $"//{ZIP_CODE_SINGULAR}[@{PREFIX}='{zip3}']");
+
+                if (zipCodeElem == null || !zipCodeElem.HasChildNodes)
+                    return AmericanRacePercents.GetNatlAvg();
+
+                pick = Etx.MyRand.Next(0, zipCodeElem.ChildNodes.Count - 1);
+
+                zipStatElem = zipCodeElem.ChildNodes[pick];
+                if (zipStatElem == null || zipStatElem.ChildNodes.Count == 0)
+                    return AmericanRacePercents.GetNatlAvg();
+            }
+
+            pick = Etx.MyRand.Next(0, zipStatElem.ChildNodes.Count - 1);
+            var arpNode = zipStatElem.ChildNodes[pick];
+            return !TryParseRacePercentsXmlNode(arpNode, out var arp) 
+                    ? AmericanRacePercents.GetNatlAvg() 
+                    : arp;
+        }
+
+
+        /// <summary>
+        /// Return a <see cref="NorthAmericanRace"/> randomly with weight based on <see cref="zipCode"/>.
+        /// </summary>
+        /// <param name="zipCode">Null to get natl averages.</param>
+        /// <returns>
+        /// Defaults to randomly to national averages
+        /// [http://kff.org/other/state-indicator/distribution-by-raceethnicity/]
+        /// </returns>
+        public static NorthAmericanRace GetAmericanRace(string zipCode)
+        {
+            var amRace = RandomAmericanRaceWithRespectToZip(zipCode);
+
+            var raceHashByZip = amRace != null
+                ? new Dictionary<string, double>
+                {
+                    {Enum.GetName(typeof(NorthAmericanRace), NorthAmericanRace.AmericanIndian), amRace.AmericanIndian},
+                    {Enum.GetName(typeof(NorthAmericanRace), NorthAmericanRace.Asian), amRace.Asian},
+                    {Enum.GetName(typeof(NorthAmericanRace), NorthAmericanRace.Black), amRace.Black},
+                    {Enum.GetName(typeof(NorthAmericanRace), NorthAmericanRace.Hispanic), amRace.Hispanic},
+                    {Enum.GetName(typeof(NorthAmericanRace), NorthAmericanRace.Mixed), amRace.Mixed},
+                    {Enum.GetName(typeof(NorthAmericanRace), NorthAmericanRace.Pacific), amRace.Pacific},
+                    {Enum.GetName(typeof(NorthAmericanRace), NorthAmericanRace.White), amRace.White}
+                }
+                : AmericanRacePercents.GetNatlAvgAsDict();
+
+            var randPick = Etx.DiscreteRange(raceHashByZip);
+
+            Enum.TryParse(randPick, out NorthAmericanRace pickOut);
+
+            return pickOut;
+
+        }
+
+        /// <summary>
+        /// Attempt to parse the race-percent-by-hs child node of a zip-stat.
+        /// </summary>
+        /// <param name="node"></param>
+        /// <param name="arp"></param>
+        /// <returns></returns>
+        internal static bool TryParseRacePercentsXmlNode(XmlNode node, out AmericanRacePercents arp)
+        {
+            arp = new AmericanRacePercents();
+            if (node?.Attributes == null)
+                return false;
+
+            var attr = node.Attributes["american-indian"];
+            if (attr != null)
+            {
+                if (double.TryParse(attr.Value, out var dblOut))
+                    arp.AmericanIndian = dblOut;
+            }
+            attr = node.Attributes["asian"];
+            if (attr != null)
+            {
+                if (double.TryParse(attr.Value, out var dblOut))
+                    arp.Asian = dblOut;
+            }
+            attr = node.Attributes["hispanic"];
+            if (attr != null)
+            {
+                if (double.TryParse(attr.Value, out var dblOut))
+                    arp.Hispanic = dblOut;
+            }
+            attr = node.Attributes["black"];
+            if (attr != null)
+            {
+                if (double.TryParse(attr.Value, out var dblOut))
+                    arp.Black = dblOut;
+            }
+            attr = node.Attributes["white"];
+            if (attr != null)
+            {
+                if (double.TryParse(attr.Value, out var dblOut))
+                    arp.White = dblOut;
+            }
+            attr = node.Attributes["pacific"];
+            if (attr != null)
+            {
+                if (double.TryParse(attr.Value, out var dblOut))
+                    arp.Pacific = dblOut;
+            }
+            attr = node.Attributes["mixed-race"];
+            if (attr != null)
+            {
+                if (double.TryParse(attr.Value, out var dblOut))
+                    arp.Mixed = dblOut;
+            }
+
+            return !arp.IsEmpty();
         }
 
         /// <summary>

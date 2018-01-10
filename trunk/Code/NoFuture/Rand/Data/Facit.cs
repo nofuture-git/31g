@@ -747,12 +747,6 @@ namespace NoFuture.Rand.Data
 
 
         /*
-         TODO static methods from Domus
-         */
-
-
-
-        /*
          TODO static methods from Gov
          */
 

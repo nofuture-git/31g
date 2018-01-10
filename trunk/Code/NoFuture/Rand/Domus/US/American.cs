@@ -96,7 +96,7 @@ namespace NoFuture.Rand.Domus.US
             if (!isSmallChild)
                 _phoneNumbers.Add(new Tuple<KindsOfLabels, NorthAmericanPhone>(KindsOfLabels.Mobile, Phone.American(abbrv)));
             
-            Race = AmericanUtil.GetAmericanRace(csz?.ZipCode);
+            Race = UsCityStateZip.GetAmericanRace(csz?.ZipCode);
             if (Race <= 0)
                 Race = Etx.DiscreteRange(AmericanRacePercents.NorthAmericanRaceAvgs);
 

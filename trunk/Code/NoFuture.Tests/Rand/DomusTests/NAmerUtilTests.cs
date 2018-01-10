@@ -30,7 +30,7 @@ namespace NoFuture.Rand.Tests
         public void AmericanRaceRatioByZipCodeTests()
         {
             const string TEST_ZIP = "92071";
-            var testResult = AmericanUtil.RandomAmericanRaceWithRespectToZip(TEST_ZIP);
+            var testResult = UsCityStateZip.RandomAmericanRaceWithRespectToZip(TEST_ZIP);
             Assert.IsNotNull(testResult);
             System.Diagnostics.Debug.WriteLine(testResult);
 
@@ -54,7 +54,7 @@ namespace NoFuture.Rand.Tests
             foreach (var t in testZipPrefix)
             {
                 System.Diagnostics.Debug.WriteLine(t);
-                testResult = AmericanUtil.RandomAmericanRaceWithRespectToZip(t);
+                testResult = UsCityStateZip.RandomAmericanRaceWithRespectToZip(t);
                 Assert.IsNotNull(testResult);
                 System.Diagnostics.Debug.WriteLine(testResult);
             }
