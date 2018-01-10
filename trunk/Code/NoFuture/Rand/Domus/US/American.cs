@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
+using NoFuture.Rand.Data;
 using NoFuture.Rand.Data.Endo;
 using NoFuture.Rand.Data.Endo.Enums;
 using NoFuture.Rand.Edu;
@@ -870,7 +871,7 @@ namespace NoFuture.Rand.Domus.US
             if (GetAgeAt(null) > 10)
                 _netUris.Add(
                     new Uri("emailto:" +
-                            AmericanUtil.RandomEmailUri(new[]
+                            Facit.RandomEmailUri(new[]
                             {
                                 GetName(KindsOfNames.First), MiddleName,
                                 GetName(KindsOfNames.Surname)

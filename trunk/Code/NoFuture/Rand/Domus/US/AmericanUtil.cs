@@ -7,21 +7,12 @@ using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Data;
 using NoFuture.Rand.Data.Endo;
 using NoFuture.Rand.Data.Endo.Enums;
-using NoFuture.Rand.Data.Sp;
-using NoFuture.Rand.Data.Sp.Cc;
-using NoFuture.Rand.Data.Sp.Enums;
-using NoFuture.Rand.Domus.Opes;
-using NoFuture.Rand.Domus.Pneuma;
-using NoFuture.Rand.Domus.US;
 using NoFuture.Rand.Edu;
 using NoFuture.Rand.Gov;
-using NoFuture.Rand.Gov.Fed;
-using NoFuture.Rand.Gov.Nhtsa;
-using NoFuture.Shared.Core;
 using NoFuture.Util.Core;
 using NoFuture.Util.Core.Math;
 
-namespace NoFuture.Rand.Domus
+namespace NoFuture.Rand.Domus.US
 {
     /// <summary>
     /// Catalog of static utility methods related to North American
@@ -38,84 +29,6 @@ namespace NoFuture.Rand.Domus
     /// </remarks>
     public static class AmericanUtil
     {
-        /*
-         TODO static factories pulled from NoFuture.Rand.Data.Sp
-         */
-
-        public static IMereo GetMereoById(Identifier property, string prefix = null)
-        {
-            switch (property)
-            {
-                case null:
-                    return new Mereo(prefix);
-                case ResidentAddress residenceLoan:
-                    return residenceLoan.IsLeased
-                        ? new Mereo(String.Join(" ", prefix, "Rent Payment"))
-                        : new Mereo(String.Join(" ", prefix, "Mortgage Payment"));
-                case Vin _:
-                    return new Mereo(String.Join(" ", prefix, "Vehicle Payment"));
-                case CreditCardNumber _:
-                    return new Mereo(String.Join(" ", prefix, "Cc Payment"));
-                case AccountId _:
-                    return new Mereo(String.Join(" ", prefix, "Bank Account Transfer"));
-            }
-
-            return new Mereo(prefix);
-        }
-
-
-
-
-        /// <summary>
-        /// Creates a random email address in a typical format
-        /// </summary>
-        /// <param name="names"></param>
-        /// <param name="isProfessional">
-        /// set this to true to have the username look unprofessional
-        /// </param>
-        /// <param name="usCommonOnly">
-        /// true uses <see cref="ListData.UsWebmailDomains"/>
-        /// false uses <see cref="ListData.WebmailDomains"/>
-        /// </param>
-        /// <returns></returns>
-        public static string RandomEmailUri(string[] names, bool isProfessional = true, bool usCommonOnly = true)
-        {
-            if (names == null || !names.Any())
-                return RandomEmailUri();
-
-            //get childish username
-            if (!isProfessional)
-            {
-                var shortWords = TreeData.EnglishWords.Where(x => x.Item1.Length <= 3).Select(x => x.Item1).ToArray();
-                var shortWordList = new List<string>();
-                for (var i = 0; i < 3; i++)
-                {
-                    var withUcase = Etc.CapWords(Etx.DiscreteRange(shortWords), ' ');
-                    shortWordList.Add(withUcase);
-                }
-                shortWordList.Add((Etx.CoinToss ? "_" : "") + Etx.IntNumber(100, 9999));
-                return RandomEmailUri(String.Join("", shortWordList), usCommonOnly);
-            }
-
-            var fname = names.First().ToLower();
-            var lname = names.Last().ToLower();
-            string mi = null;
-            if (names.Length > 2)
-            {
-                mi = names[1].ToLower();
-                mi = Etx.CoinToss ? mi.First().ToString() : mi;
-            }
-
-            var unParts = new List<string> { Etx.CoinToss ? fname : fname.First().ToString(), mi, lname };
-            var totalLength = unParts.Sum(x => x.Length);
-            if (totalLength <= 7)
-                return RandomEmailUri(String.Join(Etx.CoinToss ? "" : "_", String.Join(Etx.CoinToss ? "." : "_", unParts),
-                    Etx.IntNumber(100, 9999)), usCommonOnly);
-            return RandomEmailUri(totalLength > 20
-                ? String.Join(Etx.CoinToss ? "." : "_", unParts.Take(2))
-                : String.Join(Etx.CoinToss ? "." : "_", unParts), usCommonOnly);
-        }
-
         /// <summary>
         /// Returns a hashtable whose keys as American's call Race based on the given <see cref="zipCode"/>
         /// </summary>
@@ -128,14 +41,17 @@ namespace NoFuture.Rand.Domus
                 return AmericanRacePercents.GetNatlAvg();
 
             //get the data for the given zip code
-            var zipStatElem = TreeData.AmericanHighSchoolData.SelectSingleNode($"//{CityArea.ZIP_STAT}[@{CityArea.VALUE}='{zipCode}']");
+            var zipStatElem =
+                TreeData.AmericanHighSchoolData.SelectSingleNode(
+                    $"//{CityArea.ZIP_STAT}[@{CityArea.VALUE}='{zipCode}']");
 
             if (zipStatElem == null || !zipStatElem.HasChildNodes)
             {
                 //try to find on the zip code prefix 
                 var zip3 = zipCode.Substring(0, 3);
                 var zipCodeElem =
-                    TreeData.AmericanHighSchoolData.SelectSingleNode($"//{CityArea.ZIP_CODE_SINGULAR}[@{CityArea.PREFIX}='{zip3}']");
+                    TreeData.AmericanHighSchoolData.SelectSingleNode(
+                        $"//{CityArea.ZIP_CODE_SINGULAR}[@{CityArea.PREFIX}='{zip3}']");
 
                 if (zipCodeElem == null || !zipCodeElem.HasChildNodes)
                     return AmericanRacePercents.GetNatlAvg();
@@ -155,29 +71,6 @@ namespace NoFuture.Rand.Domus
         }
 
         /// <summary>
-        /// Creates a random email address 
-        /// </summary>
-        /// <returns></returns>
-        public static string RandomEmailUri(string username = "", bool usCommonOnly = false)
-        {
-            var host = Facit.RandomUriHost(false, usCommonOnly);
-            if (!String.IsNullOrWhiteSpace(username))
-                return String.Join("@", username, host);
-            var bunchOfWords = new List<string>();
-            for (var i = 0; i < 4; i++)
-            {
-                bunchOfWords.Add(Etc.CapWords(Facit.Word(), ' '));
-                bunchOfWords.Add(AmericanUtil.GetAmericanFirstName(DateTime.Today,
-                    Etx.CoinToss ? Gender.Male : Gender.Female));
-            }
-            username = String.Join((Etx.CoinToss ? "." : "_"), Etx.DiscreteRange(bunchOfWords.ToArray()),
-                Etx.DiscreteRange(bunchOfWords.ToArray()));
-            return String.Join("@", username, host);
-        }
-
-
-
-        /// <summary>
         /// Generates a <see cref="DeathCert"/> at random based on the given <see cref="p"/>
         /// </summary>
         /// <param name="p"></param>
@@ -191,7 +84,7 @@ namespace NoFuture.Rand.Domus
             if (p?.BirthCert == null)
                 return null;
 
-            var deathDate = AmericanUtil.GetDeathDate(p.BirthCert.DateOfBirth, p.MyGender);
+            var deathDate = UsState.GetDeathDate(p.BirthCert.DateOfBirth, p.MyGender.ToString());
 
             if (nullOnFutureDate && deathDate > DateTime.Now)
                 return null;
@@ -258,28 +151,6 @@ namespace NoFuture.Rand.Domus
             return lnameNodes.ChildNodes[p].InnerText;
         }
 
-
-        /// <summary>
-        /// Gets a date of death based on the <see cref="Equations.LifeExpectancy"/>
-        /// </summary>
-        /// <param name="dob"></param>
-        /// <param name="gender"></param>
-        /// <returns></returns>
-        public static DateTime GetDeathDate(DateTime dob, Gender gender)
-        {
-            var normDist = AmericanEquations.LifeExpectancy(gender.ToString());
-            var ageAtDeath = Etx.RandomValueInNormalDist(normDist.Mean, normDist.StdDev);
-            var years = (int)Math.Floor(ageAtDeath);
-            var days = (int)Math.Round((ageAtDeath - years)*Constants.DBL_TROPICAL_YEAR);
-
-            var deathDate =
-                dob.AddYears(years)
-                    .AddDays(days)
-                    .AddHours(Etx.IntNumber(0, 12))
-                    .AddMinutes(Etx.IntNumber(0, 59))
-                    .AddSeconds(Etx.IntNumber(0, 59));
-            return deathDate;
-        }
 
         /// <summary>
         /// Generates a random past date based on the <see cref="numberOfSiblings"/> and the Mother's Date of Birth.

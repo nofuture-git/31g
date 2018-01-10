@@ -3,6 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NoFuture.Rand.Data.Endo;
 using NoFuture.Rand.Data.Endo.Enums;
 using NoFuture.Rand.Domus;
+using NoFuture.Rand.Domus.US;
 using NoFuture.Rand.Gov;
 using NoFuture.Util.Core;
 

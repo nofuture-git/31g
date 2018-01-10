@@ -387,7 +387,7 @@ namespace NoFuture.Rand.Tests
         public void TestDeathDate()
         {
             var dob = UsState.GetWorkingAdultBirthDate();
-            var testResult = AmericanUtil.GetDeathDate(dob, Gender.Female);
+            var testResult = UsState.GetDeathDate(dob, Gender.Female.ToString());
             Assert.AreNotEqual(dob, testResult);
             Debug.WriteLine("{0} - {1}", dob, testResult);
 

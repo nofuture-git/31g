@@ -5,6 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Data;
 using NoFuture.Rand.Domus;
+using NoFuture.Rand.Domus.US;
 
 namespace NoFuture.Rand.Tests
 {
@@ -63,7 +64,7 @@ namespace NoFuture.Rand.Tests
         [TestMethod]
         public void TestRandomEmailUri()
         {
-            var testResult = AmericanUtil.RandomEmailUri();
+            var testResult = Facit.RandomEmailUri();
             Assert.IsNotNull(testResult);
             Assert.IsFalse(string.IsNullOrWhiteSpace(testResult));
             System.Diagnostics.Debug.WriteLine( new System.Uri("mailto:" + testResult));
@@ -270,12 +271,12 @@ namespace NoFuture.Rand.Tests
         [TestMethod]
         public void TestRandomEmailUriPersonal()
         {
-            var testResult = AmericanUtil.RandomEmailUri(new[] {"Robert", "Edward", "Lee"});
+            var testResult = Facit.RandomEmailUri(new[] {"Robert", "Edward", "Lee"});
             Assert.IsNotNull(testResult);
             Assert.IsTrue(testResult.Contains("lee"));
             System.Diagnostics.Debug.WriteLine(testResult);
 
-            testResult = AmericanUtil.RandomEmailUri(new[] { "Robert", "Edward", "Lee" }, false);
+            testResult = Facit.RandomEmailUri(new[] { "Robert", "Edward", "Lee" }, false);
             Assert.IsNotNull(testResult);
             System.Diagnostics.Debug.WriteLine(testResult);
         }
