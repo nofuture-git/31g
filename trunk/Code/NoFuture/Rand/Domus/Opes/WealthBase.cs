@@ -8,8 +8,12 @@ using NoFuture.Rand.Data;
 using NoFuture.Rand.Data.Endo;
 using NoFuture.Rand.Data.Endo.Enums;
 using NoFuture.Rand.Data.Sp;
-using NoFuture.Rand.Domus.US;
+using NoFuture.Rand.Data.Sp.Cc;
+using NoFuture.Rand.Data.Sp.Enums;
+using NoFuture.Rand.Domus.Pneuma;
+using NoFuture.Rand.Gov;
 using NoFuture.Rand.Gov.Fed;
+using NoFuture.Rand.Gov.Nhtsa;
 using NoFuture.Shared.Core;
 using NoFuture.Util.Core;
 using NoFuture.Util.Core.Math;
@@ -29,7 +33,6 @@ namespace NoFuture.Rand.Domus.Opes
 
         #region fields
         protected internal IComparer<ITempore> Comparer { get; } = new TemporeComparer();
-        private readonly American _amer;
         private readonly AmericanFactors _factors;
         private static IMereo[] _incomeItemNames;
         private static IMereo[] _deductionItemNames;
@@ -117,31 +120,20 @@ namespace NoFuture.Rand.Domus.Opes
         #endregion
 
         #region ctors
-        protected WealthBase(American american) : this(american, new OpesOptions())
-        {
-        }
-
-        protected WealthBase(American american, OpesOptions options)
+        protected WealthBase(OpesOptions options)
         {
             MyOptions = options ?? new OpesOptions();
-            if (american == null)
-            {
-                CreditScore = new PersonalCreditScore();
-                _factors = new AmericanFactors(null);
-                return;
-            }
-            _amer = american;
-            var usCityArea = _amer?.Address?.HomeCityArea as UsCityStateZip;
+            var usCityArea = MyOptions.GeoLocation as UsCityStateZip;
 
             CreditScore = new PersonalCreditScore()
             {
-                GetAgeAt = _amer.GetAgeAt,
-                OpennessZscore = _amer.Personality?.Openness?.Value?.Zscore ?? 0D,
-                ConscientiousnessZscore = _amer.Personality?.Conscientiousness?.Value?.Zscore ?? 0D
+                GetAgeAt = x => Etc.CalcAge(MyOptions.BirthDate, x),
+                OpennessZscore = MyOptions.Personality?.Openness?.Value?.Zscore ?? 0D,
+                ConscientiousnessZscore = MyOptions.Personality?.Conscientiousness?.Value?.Zscore ?? 0D
             };
             //TODO this should be decided by calling assemlby
             MyOptions.IsRenting = GetIsLeaseResidence(usCityArea);
-            _factors = new AmericanFactors(_amer);
+            _factors = new AmericanFactors(MyOptions);
 
         }
         #endregion
@@ -155,20 +147,15 @@ namespace NoFuture.Rand.Domus.Opes
         protected internal OpesOptions MyOptions { get; set; }
 
         /// <summary>
-        /// The credit score of <see cref="Person"/>
+        /// The credit score of <see cref="MyOptions"/>
         /// </summary>
         public CreditScore CreditScore { get; protected set; }
 
         /// <summary>
-        /// Exposes the calculated factors using the <see cref="American"/> passed into 
+        /// Exposes the calculated factors using the <see cref="MyOptions"/> passed into 
         /// the ctor.
         /// </summary>
         public AmericanFactors Factors => _factors;
-
-        /// <summary>
-        /// The person who is associated to this wealth data.
-        /// </summary>
-        protected internal virtual American Person => _amer;
 
         /// <summary>
         /// Determines which kind of wealth concept is 
@@ -262,7 +249,7 @@ namespace NoFuture.Rand.Domus.Opes
         /// </remarks>
         protected internal virtual LinearEquation GetAvgEarningPerYear()
         {
-            var ca = _amer?.Address?.HomeCityArea as UsCityStateZip;
+            var ca = MyOptions.GeoLocation as UsCityStateZip;
             return (ca?.AverageEarnings ?? UsStateData.GetStateData(ca?.State?.ToString())?.AverageEarnings) ??
                    AmericanEquations.NatlAverageEarnings;
         }
@@ -445,7 +432,7 @@ namespace NoFuture.Rand.Domus.Opes
 
             //get all the item names we are targeting
             var itemNames = GetItemNames(Division).Where(x =>
-                string.Equals(x.GetName(KindsOfNames.Group), groupName, StringComparison.OrdinalIgnoreCase)).ToArray();
+                String.Equals(x.GetName(KindsOfNames.Group), groupName, StringComparison.OrdinalIgnoreCase)).ToArray();
 
             return GetNames2Portions(options, itemNames.Select(k => k.Name).ToArray());
         }
@@ -472,7 +459,7 @@ namespace NoFuture.Rand.Domus.Opes
 
             //immediately reduce this to only the items present in 'itemNames'
             givenDirectlyItems = givenDirectlyItems.Where(gd =>
-                itemNames.Any(n => string.Equals(gd.Name, n, STR_OPT))).ToList();
+                itemNames.Any(n => String.Equals(gd.Name, n, STR_OPT))).ToList();
 
             //get the direct assign's total
             var givenDirectTotal = givenDirectlyItems
@@ -498,7 +485,7 @@ namespace NoFuture.Rand.Domus.Opes
             //filter zero out's down, likewise, to only what's actually in itemNames
             var possibleZeroOuts = options.PossibleZeroOuts.Distinct().ToList();
             possibleZeroOuts = possibleZeroOuts
-                .Where(p => itemNames.Any(i => string.Equals(p, i, STR_OPT))).ToList();
+                .Where(p => itemNames.Any(i => String.Equals(p, i, STR_OPT))).ToList();
 
             //zero outs will get applied just like any other ReassignRates
             var actualZeroOuts = new List<Tuple<string, double>>();
@@ -514,7 +501,7 @@ namespace NoFuture.Rand.Domus.Opes
                     //these predicates are filters
                     var isAlreadyPresent = actualZeroOuts.Any(z => z.Item1 == pzo);
                     var isInGivenDirectly = givenDirectlyItems.Any(x =>
-                        string.Equals(x.Name, pzo, STR_OPT));
+                        String.Equals(x.Name, pzo, STR_OPT));
                     
                     if (diceRoll && !isAlreadyPresent && !isInGivenDirectly)
                         actualZeroOuts.Add(new Tuple<string, double>(pzo, 0.0D));
@@ -559,7 +546,7 @@ namespace NoFuture.Rand.Domus.Opes
             foreach (var d in givenDirectlyItems)
             {
                 var dName = d.Name;
-                if (string.IsNullOrWhiteSpace(dName)
+                if (String.IsNullOrWhiteSpace(dName)
                     || d.ExpectedValue == null
                     || d.ExpectedValue == Pecuniam.Zero)
                     continue;
@@ -590,7 +577,7 @@ namespace NoFuture.Rand.Domus.Opes
                 //still need to add in the 0.0 items since calcMap has only the directly assigned values
                 foreach (var k in itemNames)
                 {
-                    if (calcMap.Any(t => string.Equals(t.Item1, k, STR_OPT)))
+                    if (calcMap.Any(t => String.Equals(t.Item1, k, STR_OPT)))
                         continue;
                     calcMap.Add(new Tuple<string, double>(k, 0.0D));
                 }
@@ -641,9 +628,9 @@ namespace NoFuture.Rand.Domus.Opes
             }
 
             mereo = new Mereo(itemName);
-            if (!string.IsNullOrWhiteSpace(abbrev))
+            if (!String.IsNullOrWhiteSpace(abbrev))
                 mereo.UpsertName(KindsOfNames.Abbrev, abbrev);
-            if (!string.IsNullOrWhiteSpace(groupName))
+            if (!String.IsNullOrWhiteSpace(groupName))
                 mereo.UpsertName(KindsOfNames.Group, groupName);
             if (egs.Any())
             {
@@ -651,7 +638,7 @@ namespace NoFuture.Rand.Domus.Opes
                     mereo.ExempliGratia.Add(eg);
             }
 
-            return !string.IsNullOrWhiteSpace(itemName);
+            return !String.IsNullOrWhiteSpace(itemName);
         }
 
         private static bool IsCloseEnoughToOne(double testValue)
@@ -667,7 +654,7 @@ namespace NoFuture.Rand.Domus.Opes
         /// <returns></returns>
         internal static IMereo[] GetDomusOpesItemNames(string xPath)
         {
-            if (string.IsNullOrWhiteSpace(xPath))
+            if (String.IsNullOrWhiteSpace(xPath))
                 return null;
 
             var xml = TreeData.UsDomusOpes;
@@ -700,13 +687,13 @@ namespace NoFuture.Rand.Domus.Opes
                 return true;
 
             var livesInDenseUrbanArea = usCityArea.Msa?.MsaType == (UrbanCentric.City | UrbanCentric.Large);
-            var isYoung = _amer.GetAgeAt(null) < 32;
+            var isYoung = Etc.CalcAge(MyOptions.BirthDate) < 32;
             var roll = 65;
             if (livesInDenseUrbanArea)
                 roll -= 23;
             //is scaled where 29 year-old loses 3 while 21 year-old loses 11
             if (isYoung)
-                roll -= 32 - _amer.GetAgeAt(null);
+                roll -= 32 - Etc.CalcAge(MyOptions.BirthDate);
             return Etx.TryBelowOrAt(roll, Etx.Dice.OneHundred);
         }
 
@@ -735,7 +722,7 @@ namespace NoFuture.Rand.Domus.Opes
 
             //first check that the reassign isn't already perfectly ordered and sum to 1
             var reassignHasEveryKey = names2Rates.All(kv =>
-                reassignNames2Rates.Any(rkv => string.Equals(rkv.Item1, kv.Key, StringComparison.OrdinalIgnoreCase)));
+                reassignNames2Rates.Any(rkv => String.Equals(rkv.Item1, kv.Key, StringComparison.OrdinalIgnoreCase)));
             var reassignIsSumOfOne = IsCloseEnoughToOne(Math.Round(reassignNames2Rates.Select(kv => kv.Item2).Sum(),
                 DF_ROUND_DECIMAL_PLACES-1));
 
@@ -827,9 +814,9 @@ namespace NoFuture.Rand.Domus.Opes
         {
             //we want age to have an effect on the randomness
             var hookEquation = AmericanEquations.ClassicHook;
-            age = age ?? Person?.Age;
+            age = age ?? MyOptions.CurrentAge;
 
-            var ageAtDt = age == null || age <= 0 
+            var ageAtDt = age <= 0 
                 ? AmericanData.AVG_AGE_AMERICAN 
                 : age.Value;
 
@@ -916,7 +903,7 @@ namespace NoFuture.Rand.Domus.Opes
         /// <param name="grp2Rate"></param>
         /// <param name="options"></param>
         /// <returns></returns>
-        protected internal virtual Pondus[] GetItemsForRange(Tuple<string,double> grp2Rate, OpesOptions options = null)
+        protected internal virtual Pondus[] GetItemsForRange(Tuple<string, double> grp2Rate, OpesOptions options = null)
         {
             options = options ?? MyOptions;
 
@@ -964,6 +951,296 @@ namespace NoFuture.Rand.Domus.Opes
             };
             p.My.UpsertName(KindsOfNames.Group, grpName);
             return p;
+        }
+
+
+        /// <summary>
+        /// Creates a new random Checking Account
+        /// </summary>
+        /// <param name="p"></param>
+        /// <param name="dt">Date account was openned, default to now.</param>
+        /// <param name="debitPin">
+        /// Optional, when present and random instance of <see cref="CheckingAccount.DebitCard"/> is created with 
+        /// this as its PIN.
+        /// </param>
+        /// <returns></returns>
+        public static CheckingAccount GetRandomCheckingAcct(IVoca p, DateTime? dt = null, string debitPin = null)
+        {
+            var dtd = dt.GetValueOrDefault(DateTime.Now);
+            var accountId = new AccountId(Etx.GetRandomRChars(true));
+            return CheckingAccount.IsPossiablePin(debitPin)
+                ? new CheckingAccount(accountId, dtd,
+                    new Tuple<ICreditCard, string>(GetRandomCreditCard(p), debitPin))
+                : new CheckingAccount(accountId, dtd);
+        }
+
+        public static SavingsAccount GetRandomSavingAcct(IVoca p, DateTime? dt = null)
+        {
+            var dtd = dt.GetValueOrDefault(DateTime.Now);
+            var accountId = new AccountId(Etx.GetRandomRChars(true));
+            return new SavingsAccount(accountId, dtd);
+        }
+
+        /// <summary>
+        /// Returs a new, randomly gen'ed, concrete instance of <see cref="ICreditCard"/>
+        /// </summary>
+        /// <param name="cardholder"></param>
+        /// <param name="opennedDate"></param>
+        /// <returns></returns>
+        public static ICreditCard GetRandomCreditCard(IVoca cardholder, DateTime? opennedDate = null)
+        {
+            var fk = Etx.IntNumber(0, 3);
+            var dt = opennedDate ?? Etx.Date(-3, null);
+
+            switch (fk)
+            {
+                case 0:
+                    return new MasterCardCc(cardholder, dt, dt.AddYears(3));
+                case 2:
+                    return new AmexCc(cardholder, dt, dt.AddYears(3));
+                case 3:
+                    return new DiscoverCc(cardholder, dt, dt.AddYears(3));
+                default:
+                    return new VisaCc(cardholder, dt, dt.AddYears(3));
+            }
+        }
+
+
+        /// <summary>
+        /// Factory method to generate a <see cref="Rent"/> instance at random with a payment history.
+        /// </summary>
+        /// <param name="property">The property identifier on which is being leased</param>
+        /// <param name="homeDebtFactor">The home debt factor based on the renter's age, gender, edu, etc.</param>
+        /// <param name="renterPersonality">Optional, used when creating a history of payments.</param>
+        /// <param name="stdDevAsPercent">Optional, the stdDev around the mean.</param>
+        /// <returns></returns>
+        public static Rent GetRandomRentWithHistory(Identifier property, double homeDebtFactor, IPersonality renterPersonality = null,
+            double stdDevAsPercent = WealthBase.DF_STD_DEV_PERCENT)
+        {
+            //create a rent object
+            renterPersonality = renterPersonality ?? new Personality();
+
+            var rent = GetRandomRent(property, homeDebtFactor, stdDevAsPercent);
+            var randDate = rent.SigningDate;
+            var randRent = rent.MonthlyPmt;
+            //create payment history until current
+            var firstPmt = rent.GetMinPayment(randDate);
+            rent.PayRent(randDate.AddDays(1), firstPmt, new Mereo(property.ToString()));
+
+            var rentDueDate = randDate.Month == 12
+                ? new DateTime(randDate.Year + 1, 1, 1)
+                : new DateTime(randDate.Year, randDate.Month + 1, 1);
+
+            while (rentDueDate < DateTime.Today)
+            {
+                var paidRentOn = rentDueDate;
+                //move the date rent was paid to some late-date when person acts irresponsible
+                if (renterPersonality.GetRandomActsIrresponsible())
+                    paidRentOn = paidRentOn.AddDays(Etx.IntNumber(5, 15));
+
+                rent.PayRent(paidRentOn, randRent, new Mereo(rent.Id.ToString()));
+                rentDueDate = rentDueDate.AddMonths(1);
+            }
+            return rent;
+        }
+
+        /// <summary>
+        /// Factory method to generate a <see cref="Rent"/> instance at random.
+        /// </summary>
+        /// <param name="property">The property identifier on which is being leased</param>
+        /// <param name="homeDebtFactor">The home debt factor based on the renter's age, gender, edu, etc.</param>
+        /// <param name="stdDevAsPercent">Optional, the stdDev around the mean.</param>
+        /// <param name="totalYearlyRent">
+        /// Optional, allows the calling assembly to specify this, default 
+        /// is calculated from <see cref="Rent.GetAvgAmericanRentByYear"/>
+        /// </param>
+        /// <returns></returns>
+        public static Rent GetRandomRent(Identifier property, double homeDebtFactor,
+            double stdDevAsPercent = WealthBase.DF_STD_DEV_PERCENT, double? totalYearlyRent = null)
+        {
+            var avgRent = totalYearlyRent ?? (double)Rent.GetAvgAmericanRentByYear(null).Amount;
+            var randRent = new Pecuniam(
+                (decimal)
+                AmericanFactors.GetRandomFactorValue(FactorTables.HomeDebt, homeDebtFactor,
+                    stdDevAsPercent, avgRent));
+            var randTerm = Etx.DiscreteRange(new[] { 24, 18, 12, 6 });
+            var randDate = Etx.Date(0, DateTime.Today.AddDays(-2), true);
+            var randDepositAmt = (int)Math.Round((randRent.Amount - randRent.Amount % 250) / 2);
+            var randDeposit = new Pecuniam(randDepositAmt);
+
+            var rent = new Rent(property, randDate, randTerm, randRent, randDeposit);
+            return rent;
+        }
+
+        /// <summary>
+        /// Same as its counterpart <see cref="GetRandomLoan"/> only it also produces a history of transactions.
+        /// </summary>
+        /// <param name="property">The property on which the loan is secured.</param>
+        /// <param name="remainingCost">The balance which currently remains.</param>
+        /// <param name="totalCost">
+        /// The original value of the loan, the difference between 
+        /// this and the <see cref="remainingCost"/> determines how much history is needed.
+        /// </param>
+        /// <param name="rate">The interest rate</param>
+        /// <param name="termInYears"></param>
+        /// <param name="minPmt"></param>
+        /// <param name="borrowerPersonality">Optional, used when creating a history of payments.</param>
+        /// <returns></returns>
+        public static SecuredFixedRateLoan GetRandomLoanWithHistory(Identifier property, Pecuniam remainingCost,
+            Pecuniam totalCost, float rate, int termInYears, out Pecuniam minPmt, IPersonality borrowerPersonality = null)
+        {
+
+            var loan = GetRandomLoan(property, remainingCost, totalCost, rate, termInYears, out minPmt);
+
+            var pmtNote = new Mereo(property.ToString());
+            //makes the fake history more colorful
+            borrowerPersonality = borrowerPersonality ?? new Personality();
+
+            var dtIncrement = loan.Inception.AddMonths(1);
+            while (loan.GetValueAt(dtIncrement) > remainingCost)
+            {
+                if (dtIncrement >= DateTime.Now)
+                    break;
+                var paidOnDate = dtIncrement;
+                if (borrowerPersonality.GetRandomActsIrresponsible())
+                    paidOnDate = paidOnDate.AddDays(Etx.IntNumber(5, 15));
+
+                //is this the payoff
+                var isPayoff = loan.GetValueAt(paidOnDate) <= minPmt;
+                if (isPayoff)
+                {
+                    minPmt = loan.GetValueAt(paidOnDate);
+                }
+
+                loan.Push(paidOnDate, minPmt, pmtNote, Pecuniam.Zero);
+                if (isPayoff)
+                {
+                    loan.Terminus = paidOnDate;
+                    loan.Closure = ClosedCondition.ClosedWithZeroBalance;
+                    break;
+                }
+                dtIncrement = dtIncrement.AddMonths(1);
+            }
+
+            //insure that the gen'ed history doesn't start before the year of make
+            if (property is Vin)
+            {
+                var maxYear = loan.Inception.Year;
+                loan.PropertyId = Facit.GetRandomVin(remainingCost.ToDouble() <= 2000.0D, maxYear);
+            }
+
+            return loan;
+        }
+
+        /// <summary>
+        /// Produces a random <see cref="SecuredFixedRateLoan"/>.
+        /// </summary>
+        /// <param name="property">The property on which the loan is secured.</param>
+        /// <param name="remainingCost">The balance which currently remains.</param>
+        /// <param name="totalCost">
+        /// The original value of the loan, the difference between 
+        /// this and the <see cref="remainingCost"/> determines how far in the past the loan would
+        /// have been openned.
+        /// </param>
+        /// <param name="rate">The interest rate</param>
+        /// <param name="termInYears"></param>
+        /// <param name="minPmt"></param>
+        /// <returns></returns>
+        public static SecuredFixedRateLoan GetRandomLoan(Identifier property, Pecuniam remainingCost,
+            Pecuniam totalCost, float rate, int termInYears, out Pecuniam minPmt)
+        {
+            var isMortgage = property is ResidentAddress;
+
+            //if no or nonsense values given, change to some default
+            if (totalCost == null || totalCost < Pecuniam.Zero)
+                totalCost = new Pecuniam(2000);
+            if (remainingCost == null || remainingCost < Pecuniam.Zero)
+                remainingCost = Pecuniam.Zero;
+
+            //remaining must always be less than the total 
+            if (remainingCost > totalCost)
+                totalCost = remainingCost + Pecuniam.GetRandPecuniam(1000, 3000);
+
+            //interest rate must be a positive number
+            rate = Math.Abs(rate);
+
+            //handle if caller passes in rate like 5.5 meaning they wanted 0.055
+            if (rate > 1)
+                rate = Convert.ToSingle(Math.Round(rate / 100, 4));
+
+            //calc the monthly payment
+            var fv = totalCost.Amount.PerDiemInterest(rate, Constants.TropicalYear.TotalDays * termInYears);
+            minPmt = new Pecuniam(Math.Round(fv / (termInYears * 12), 2));
+            var minPmtRate = fv == 0 ? CreditCardAccount.DF_MIN_PMT_RATE : (float)Math.Round(minPmt.Amount / fv, 6);
+
+            //given this value and rate - calc the timespan needed to have aquired this amount of equity
+            var firstOfYear = new DateTime(DateTime.Today.Year, 1, 1);
+            var loan = new SecuredFixedRateLoan(property, firstOfYear, minPmtRate, totalCost)
+            {
+                Rate = rate
+            };
+
+            var dtIncrement = firstOfYear.AddMonths(1);
+            while (loan.GetValueAt(dtIncrement) > remainingCost)
+            {
+                if (dtIncrement > DateTime.Now.AddYears(termInYears))
+                    break;
+                loan.Push(dtIncrement, minPmt);
+                dtIncrement = dtIncrement.AddMonths(1);
+            }
+
+            //repeat process from calc'ed past date to create a history
+            var calcPurchaseDt = DateTime.Today.AddDays(-1 * (dtIncrement - firstOfYear).Days);
+            loan = isMortgage
+                ? new Mortgage(property, calcPurchaseDt, rate, totalCost)
+                : new SecuredFixedRateLoan(property, calcPurchaseDt, minPmtRate, totalCost)
+                {
+                    Rate = rate
+                };
+
+            loan.FormOfCredit = property is ResidentAddress
+                ? FormOfCredit.Mortgage
+                : FormOfCredit.Installment;
+
+            return loan;
+        }
+
+
+        /// <summary>
+        /// Randomly gen's one of the concrete types of <see cref="CreditCardAccount"/>.
+        /// </summary>
+        /// <param name="p"></param>
+        /// <param name="ccScore">
+        /// Optional, if given then will generate an interest-rate and cc-max 
+        /// in accordance with the score.
+        /// </param>
+        /// <param name="baseInterestRate">
+        /// This is the lowest possiable interest rate for the random generators
+        /// </param>
+        /// <param name="minPmtPercent">
+        /// The value used to calc a minimum monthly payment
+        /// </param>
+        /// <returns></returns>
+        public static CreditCardAccount GetRandomCcAcct(OpesOptions p, CreditScore ccScore,
+            float baseInterestRate = 10.1F + RiskFreeInterestRate.DF_VALUE,
+            float minPmtPercent = CreditCardAccount.DF_MIN_PMT_RATE)
+        {
+            if (ccScore == null)
+            {
+
+                ccScore = new PersonalCreditScore()
+                {
+                    GetAgeAt = x => Etc.CalcAge(p.BirthDate, x),
+                    OpennessZscore = p.Personality?.Openness?.Value?.Zscore ?? 0D,
+                    ConscientiousnessZscore = p.Personality?.Conscientiousness?.Value?.Zscore ?? 0D
+                };
+            }
+
+            var cc = GetRandomCreditCard(p.PersonsName);
+            var max = ccScore.GetRandomMax(cc.CardHolderSince);
+            var randRate = ccScore.GetRandomInterestRate(cc.CardHolderSince, baseInterestRate) * 0.01;
+            var ccAcct = new CreditCardAccount(cc, minPmtPercent, max) { Rate = (float)randRate };
+            return ccAcct;
         }
 
         #endregion

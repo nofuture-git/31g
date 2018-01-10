@@ -12,7 +12,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         [TestMethod]
         public void TestGetInsuranceDeductionName2RandRates()
         {
-            var testInput = new AmericanEmployment(null, null);
+            var testInput = new AmericanEmployment(new OpesOptions());
             var testSubject = new AmericanDeductions(testInput);
 
             var testOptions =
@@ -38,7 +38,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         public void TestGetGovernmentDeductionName2Rates()
         {
 
-            var testInput = new AmericanEmployment(null, null);
+            var testInput = new AmericanEmployment(new OpesOptions());
             var testSubject = new AmericanDeductions(testInput);
 
             var testOptions =
@@ -62,7 +62,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         [TestMethod]
         public void TestGetEmploymentDeductionName2Rates()
         {
-            var testInput = new AmericanEmployment(null, null);
+            var testInput = new AmericanEmployment(new OpesOptions());
             var testSubject = new AmericanDeductions(testInput);
 
             var testOptions =
@@ -86,7 +86,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         [TestMethod]
         public void TestGetJudgementDeductionName2RandomRates()
         {
-            var testInput = new AmericanEmployment(null, null);
+            var testInput = new AmericanEmployment(new OpesOptions());
             var testSubject = new AmericanDeductions(testInput);
 
             var testOptions =
@@ -134,7 +134,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         [TestMethod]
         public void TestResolveItems()
         {
-            var testInput = new AmericanEmployment(null, null);
+            var testInput = new AmericanEmployment(new OpesOptions());
             var testSubject = new AmericanDeductions(testInput);
 
             testSubject.ResolveItems(null);
@@ -217,7 +217,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         [TestMethod]
         public void TestGetGroupNames2Portions()
         {
-            var testInput = new AmericanEmployment(null, null);
+            var testInput = new AmericanEmployment(new OpesOptions());
             var testSubject = new AmericanDeductions(testInput);
 
             var testResults = testSubject.GetGroupNames2Portions(null);

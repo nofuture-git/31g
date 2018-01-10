@@ -60,6 +60,7 @@
     <Compile Include="Endo\Grps\StandardOccupationalClassification.cs" />
     <Compile Include="Endo\NorthAmericanPhone.cs" />
     <Compile Include="Endo\Phone.cs" />
+    <Compile Include="Endo\ResidentAddress.cs" />
     <Compile Include="Endo\StreetPo.cs" />
     <Compile Include="Endo\UsCityStateZip.cs" />
     <Compile Include="Endo\UsStateData.cs" />

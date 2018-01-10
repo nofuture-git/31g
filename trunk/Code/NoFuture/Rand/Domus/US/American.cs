@@ -5,8 +5,6 @@ using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Data.Endo;
 using NoFuture.Rand.Data.Endo.Enums;
-using NoFuture.Rand.Data.Sp;
-using NoFuture.Rand.Domus.Opes;
 using NoFuture.Rand.Edu;
 using NoFuture.Rand.Gov;
 using NoFuture.Shared.Core;
@@ -27,7 +25,6 @@ namespace NoFuture.Rand.Domus.US
         internal readonly List<Tuple<KindsOfLabels, NorthAmericanPhone>> _phoneNumbers = 
             new List<Tuple<KindsOfLabels, NorthAmericanPhone>>();
         private SocialSecurityNumber _ssn;
-        protected internal AmericanWealth _opes;
         private DriversLicense _dl;
         private DeathCert _deathCert;
         #endregion
@@ -79,9 +76,7 @@ namespace NoFuture.Rand.Domus.US
         /// <param name="withWholeFamily">
         /// When set to true the ctor will assign parents, children and spouse at random.
         /// </param>
-        /// <param name="withFinanceData">
-        /// </param>
-        public American(DateTime dob, Gender myGender, bool withWholeFamily, bool withFinanceData):this(dob,myGender)
+        public American(DateTime dob, Gender myGender, bool withWholeFamily):this(dob,myGender)
         {
             var isDead = _deathCert != null;
             if (isDead)
@@ -106,8 +101,7 @@ namespace NoFuture.Rand.Domus.US
 
             if (withWholeFamily)
                 ResolveFamilyState();
-            if (withFinanceData)
-                ResolveFinancialState();
+
             AddEmailAddress();
         }
 
@@ -196,16 +190,6 @@ namespace NoFuture.Rand.Domus.US
         /// Get the <see cref="Gov.DriversLicense"/> at the current time.
         /// </summary>
         public DriversLicense DriversLicense => GetDriversLicenseAt(null);
-
-        /// <summary>
-        /// Get FICO credit score for the current time
-        /// </summary>
-        public CreditScore CreditScore => _opes?.CreditScore;
-
-        /// <summary>
-        /// Get a list of vehicles which currently have payments.
-        /// </summary>
-        public IList<IReceivable> Vehicles => _opes?.VehicleDebt;
 
         /// <summary>
         /// Helper method to get the middle name which is mostly a North American thing.
@@ -449,27 +433,6 @@ namespace NoFuture.Rand.Domus.US
         #endregion
 
         #region internal methods
-
-        /// <summary>
-        /// Instantiates new <see cref="AmericanWealth"/> for this instance
-        /// and assigns a ref likewise to current <see cref="Spouse"/>
-        /// </summary>
-        protected internal void ResolveFinancialState()
-        {
-            if (!IsLegalAdult(null))
-                return;
-            var sp = Spouse?.Est as American;
-            _opes = new AmericanWealth(this);
-            if (sp == null)
-            {
-                _opes.CreateRandomAmericanOpes();
-                return;
-            }
-            _opes.CreateRandomAmericanOpes(2);
-            sp._opes = _opes;
-            foreach (var ca in _opes.CheckingAccounts)
-                ca.IsJointAcct = true;
-        }
 
         /// <summary>
         /// Invokes <see cref="ResolveParents"/>, <see cref="ResolveSpouse"/> and <see cref="ResolveChildren"/>.

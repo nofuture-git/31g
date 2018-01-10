@@ -520,7 +520,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         public void TestResolveItems()
         {
             var testOptions = new OpesOptions {SumTotal = 10000.0D.ToPecuniam()};
-            var testSubject = new AmericanExpenses(null, testOptions);
+            var testSubject = new AmericanExpenses(testOptions);
 
             testSubject.ResolveItems(null);
 

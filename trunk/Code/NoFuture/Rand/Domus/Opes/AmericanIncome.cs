@@ -6,10 +6,10 @@ using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Data.Endo.Enums;
 using NoFuture.Rand.Data.Endo.Grps;
 using NoFuture.Rand.Data.Sp;
-using NoFuture.Rand.Data.Sp.Cc;
 using NoFuture.Rand.Data.Sp.Enums;
 using NoFuture.Rand.Domus.Pneuma;
-using NoFuture.Rand.Domus.US;
+using NoFuture.Rand.Gov;
+using NoFuture.Util.Core;
 
 namespace NoFuture.Rand.Domus.Opes
 {
@@ -28,9 +28,7 @@ namespace NoFuture.Rand.Domus.Opes
 
         #region ctors
 
-        public AmericanIncome(American american, OpesOptions options = null) :
-            base(
-                american, options)
+        public AmericanIncome( OpesOptions options = null) : base(options)
         {
             if(MyOptions.Inception == DateTime.MinValue)
                 MyOptions.Inception = GetYearNeg(-1);
@@ -128,8 +126,8 @@ namespace NoFuture.Rand.Domus.Opes
         {
             options = options ?? MyOptions;
 
-            var personality = Person?.Personality;
-            var eduFlag = Person?.Education?.EduFlag ?? OccidentalEdu.None;
+            var personality = options.Personality;
+            var eduFlag = options.EducationLevel ?? OccidentalEdu.None;
 
             var emply = GetRandomEmployment(options, personality, eduFlag);
             foreach (var emp in emply)
@@ -147,7 +145,7 @@ namespace NoFuture.Rand.Domus.Opes
                 cloneOptions.Inception = range.Item1;
                 cloneOptions.Terminus = range.Item2;
                 if(cloneOptions.SumTotal == null || cloneOptions.SumTotal == Pecuniam.Zero)
-                    cloneOptions.SumTotal = GetRandomExpectedIncomeAmount(range.Item1, Person?.GetAgeAt(range.Item1));
+                    cloneOptions.SumTotal = GetRandomExpectedIncomeAmount(range.Item1, Etc.CalcAge(cloneOptions.BirthDate));
 
                 //there aren't ever random but calculated off gross and net income(s)
                 if(!cloneOptions.AnyGivenDirectlyOfName(IncomeGroupNames.PUBLIC_BENEFITS))
@@ -405,7 +403,7 @@ namespace NoFuture.Rand.Domus.Opes
 
             foreach (var range in emplyRanges)
             {
-                var emply = new AmericanEmployment(Person, range.Item1, range.Item2) {Occupation = occ};
+                var emply = new AmericanEmployment(range.Item1, range.Item2) {Occupation = occ};
                 var cloneOptions = options.GetClone();
                 cloneOptions.Inception = range.Item1;
                 cloneOptions.Terminus = range.Item2;
@@ -426,7 +424,7 @@ namespace NoFuture.Rand.Domus.Opes
 
         /// <summary>
         /// Gets a money amount at random based on the age and either the 
-        /// employment history or location of the <see cref="American"/>
+        /// employment history or location of the opes options
         /// </summary>
         /// <param name="dt"></param>
         /// <param name="age">
@@ -438,9 +436,9 @@ namespace NoFuture.Rand.Domus.Opes
         {
             dt = dt ?? DateTime.Today;
 
-            age = age ?? Person?.GetAgeAt(dt);
+            age = age ?? Etc.CalcAge(MyOptions.BirthDate, dt);
 
-            var ageAtDt = age == null || age <= 0 ? AmericanData.AVG_AGE_AMERICAN : age.Value;
+            var ageAtDt = age <= 0 ? AmericanData.AVG_AGE_AMERICAN : age.Value;
 
             //get something randome near this value
             var randRate = GetRandomRateFromClassicHook(ageAtDt);

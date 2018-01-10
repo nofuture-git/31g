@@ -3,9 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
+using NoFuture.Rand.Data.Endo;
+using NoFuture.Rand.Data.Endo.Enums;
 using NoFuture.Rand.Data.Sp;
 using NoFuture.Rand.Data.Sp.Enums;
+using NoFuture.Rand.Domus.Pneuma;
+using NoFuture.Rand.Gov;
 using NoFuture.Shared.Core;
+using NoFuture.Util.Core;
 
 namespace NoFuture.Rand.Domus.Opes
 {
@@ -21,13 +26,41 @@ namespace NoFuture.Rand.Domus.Opes
         
         public bool IsPayingChildSupport { get; set; }
         public bool IsPayingSpousalSupport { get; set; }
-
         public bool IsVehiclePaidOff { get; set; }
         public bool IsRenting { get; set; }
+
         public int NumberOfVehicles { get; set; }
         public int NumberOfCreditCards { get; set; }
         public int TotalNumberOfHouseholdMembers { get; set; }
         public List<DateTime> ChildrenDobs { get; } = new List<DateTime>();
+
+        public IPersonality Personality { get; set; }
+        public CityArea GeoLocation { get; set; }
+        public DateTime BirthDate { get; set; }
+        public Gender Gender { get; set; }
+        public OccidentalEdu? EducationLevel { get; set; }
+        public NorthAmericanRace? Race { get; set; }
+        public MaritialStatus? MaritialStatus { get; set; }
+        public IVoca PersonsName { get; set; }
+
+        public int CurrentAge
+        {
+            get
+            {
+                if (BirthDate == DateTime.MinValue)
+                    return (int)Math.Round(AmericanData.AVG_AGE_AMERICAN);
+                return Etc.CalcAge(BirthDate);
+            }
+        }
+
+        public AmericanRegion UsCardinalRegion
+        {
+            get
+            {
+                var usCityArea = GeoLocation as UsCityStateZip;
+                return UsStateData.GetStateData(usCityArea?.State?.ToString())?.Region ?? AmericanRegion.Midwest;
+            }
+        }
 
         public List<int> ChildrenAges
         {
@@ -35,7 +68,7 @@ namespace NoFuture.Rand.Domus.Opes
             {
                 var ages = new List<int>();
                 foreach(var dob in ChildrenDobs)
-                    ages.Add(Util.Core.Etc.CalcAge(dob, DateTime.Today));
+                    ages.Add(Etc.CalcAge(dob, DateTime.Today));
                 return ages;
             }
         }

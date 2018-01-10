@@ -5,7 +5,6 @@ using NoFuture.Rand.Core;
 using NoFuture.Rand.Data.Endo.Grps;
 using NoFuture.Rand.Data.Sp;
 using NoFuture.Rand.Data.Sp.Enums;
-using NoFuture.Rand.Domus.US;
 using NoFuture.Rand.Gov;
 using NoFuture.Shared.Core;
 
@@ -31,20 +30,11 @@ namespace NoFuture.Rand.Domus.Opes
         /// <summary>
         /// Creates a new instance of <see cref="AmericanEmployment"/> at random.
         /// </summary>
-        /// <param name="american"></param>
         /// <param name="options"></param>
-        public AmericanEmployment(American american, OpesOptions options) : base(american, options)
+        public AmericanEmployment(OpesOptions options) : base(options)
         {
             if(MyOptions.Inception == DateTime.MinValue)
                 MyOptions.Inception = GetYearNeg(-1);
-            MyOptions.Interval = Interval.Annually;
-            Occupation = StandardOccupationalClassification.RandomOccupation();
-        }
-
-        public AmericanEmployment(American american, DateTime inception, DateTime? terminus) : base(american)
-        {
-            MyOptions.Inception = inception;
-            MyOptions.Terminus = terminus;
             MyOptions.Interval = Interval.Annually;
             Occupation = StandardOccupationalClassification.RandomOccupation();
         }

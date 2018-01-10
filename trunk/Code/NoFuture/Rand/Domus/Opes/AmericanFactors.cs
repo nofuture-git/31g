@@ -3,14 +3,12 @@ using System.Collections.Generic;
 using System.Xml;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Data;
-using NoFuture.Rand.Data.Endo;
 using NoFuture.Rand.Data.Endo.Enums;
-using NoFuture.Rand.Domus.US;
 
 namespace NoFuture.Rand.Domus.Opes
 {
     /// <summary>
-    /// Applies each of the <see cref="FactorTables"/> to the given <see cref="American"/>
+    /// Applies each of the <see cref="FactorTables"/> to the given <see cref="OpesOptions"/>
     /// which attempt to take into account education level, race, region, age, gender and 
     /// marital status.
     /// </summary>
@@ -63,12 +61,12 @@ namespace NoFuture.Rand.Domus.Opes
         public double SavingsAcctFactor { get; }
 
         /// <summary>
-        /// Assigns the scalar factor values based on the given <see cref="american"/>
+        /// Assigns the scalar factor values based on the given <see cref="options"/>
         /// </summary>
-        /// <param name="american"></param>
-        public AmericanFactors(American american)
+        /// <param name="options"></param>
+        public AmericanFactors(OpesOptions options)
         {
-            if (american == null)
+            if (options == null)
             {
                 HomeDebtFactor = 1;
                 VehicleDebtFactor = 1;
@@ -82,30 +80,31 @@ namespace NoFuture.Rand.Domus.Opes
                 return;
             }
 
-            var amer = american;
-            var usCityArea = amer?.Address?.HomeCityArea as UsCityStateZip;
-            var edu = amer.Education?.EduFlag ?? (OccidentalEdu.HighSchool | OccidentalEdu.Grad);
-            var race = amer.Race;
-            var region = UsStateData.GetStateData(usCityArea?.State?.ToString())?.Region ?? AmericanRegion.Midwest;
+            var edu = options.EducationLevel ?? (OccidentalEdu.HighSchool | OccidentalEdu.Grad);
+            var race = options.Race ?? NorthAmericanRace.White;
+            var region = options.UsCardinalRegion;
+            var age = options.CurrentAge;
+            var gender = options.Gender;
+            var maritalStatus = options.MaritialStatus ?? MaritialStatus.Single;
 
-            HomeDebtFactor = GetFactor(FactorTables.HomeDebt, edu, race, region, amer.Age, amer.MyGender,
-                amer.MaritialStatus);
-            VehicleDebtFactor = GetFactor(FactorTables.VehicleDebt, edu, race, region, amer.Age, amer.MyGender,
-                amer.MaritialStatus);
-            CreditCardDebtFactor = GetFactor(FactorTables.CreditCardDebt, edu, race, region, amer.Age, amer.MyGender,
-                amer.MaritialStatus);
-            SavingsAcctFactor = GetFactor(FactorTables.SavingsAccount, edu, race, region, amer.Age, amer.MyGender,
-                amer.MaritialStatus);
-            CheckingAcctFactor = GetFactor(FactorTables.CheckingAccount, edu, race, region, amer.Age, amer.MyGender,
-                amer.MaritialStatus);
-            NetWorthFactor = GetFactor(FactorTables.NetWorth, edu, race, region, amer.Age, amer.MyGender,
-                amer.MaritialStatus);
-            HomeEquityFactor = GetFactor(FactorTables.HomeEquity, edu, race, region, amer.Age, amer.MyGender,
-                amer.MaritialStatus);
-            VehicleEquityFactor = GetFactor(FactorTables.VehicleEquity, edu, race, region, amer.Age, amer.MyGender,
-                amer.MaritialStatus);
-            OtherDebtFactor = GetFactor(FactorTables.OtherDebt, edu, race, region, amer.Age, amer.MyGender,
-                amer.MaritialStatus);
+            HomeDebtFactor = GetFactor(FactorTables.HomeDebt, edu, race, region, age, gender,
+                maritalStatus);
+            VehicleDebtFactor = GetFactor(FactorTables.VehicleDebt, edu, race, region, age, gender,
+                maritalStatus);
+            CreditCardDebtFactor = GetFactor(FactorTables.CreditCardDebt, edu, race, region, age, gender,
+                maritalStatus);
+            SavingsAcctFactor = GetFactor(FactorTables.SavingsAccount, edu, race, region, age, gender,
+                maritalStatus);
+            CheckingAcctFactor = GetFactor(FactorTables.CheckingAccount, edu, race, region, age, gender,
+                maritalStatus);
+            NetWorthFactor = GetFactor(FactorTables.NetWorth, edu, race, region, age, gender,
+                maritalStatus);
+            HomeEquityFactor = GetFactor(FactorTables.HomeEquity, edu, race, region, age, gender,
+                maritalStatus);
+            VehicleEquityFactor = GetFactor(FactorTables.VehicleEquity, edu, race, region, age, gender,
+                maritalStatus);
+            OtherDebtFactor = GetFactor(FactorTables.OtherDebt, edu, race, region, age, gender,
+                maritalStatus);
         }
 
         /// <summary>

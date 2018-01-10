@@ -3,12 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
-using NoFuture.Rand.Data;
 using NoFuture.Rand.Data.Endo;
 using NoFuture.Rand.Data.Endo.Enums;
 using NoFuture.Rand.Data.Sp;
 using NoFuture.Rand.Data.Sp.Enums;
-using NoFuture.Rand.Domus.US;
 
 namespace NoFuture.Rand.Domus.Opes
 {
@@ -50,8 +48,7 @@ namespace NoFuture.Rand.Domus.Opes
 
         #region ctors
 
-        public AmericanAssets(American american, OpesOptions options, double stdDev = DF_STD_DEV_PERCENT) : base(
-            american, options)
+        public AmericanAssets(OpesOptions options, double stdDev = DF_STD_DEV_PERCENT) : base(options)
         {
             if (MyOptions.Inception == DateTime.MinValue)
                 MyOptions.Inception = GetYearNeg(-1);
@@ -255,7 +252,7 @@ namespace NoFuture.Rand.Domus.Opes
                 var checkingAmt = amt == null || amt == Pecuniam.Zero
                     ? _randCheckingAcctAmt
                     : _checkingAccountRate * amt.ToDouble();
-                p = AmericanUtil.GetRandomCheckingAcct(Person, startDate, $"{Etx.IntNumber(1, 9999):0000}");
+                p = GetRandomCheckingAcct(options.PersonsName, startDate, $"{Etx.IntNumber(1, 9999):0000}");
                 p.Push(startDate.AddDays(-1), checkingAmt.ToPecuniam());
                 p.My.ExpectedValue = checkingAmt.ToPecuniam();
             }
@@ -264,7 +261,7 @@ namespace NoFuture.Rand.Domus.Opes
                 var savingAmt = amt == null || amt == Pecuniam.Zero
                     ? _randSavingsAcctAmt
                     : _savingsAccountRate * amt.ToDouble();
-                p = AmericanUtil.GetRandomSavingAcct(Person, startDate);
+                p = GetRandomSavingAcct(options.PersonsName, startDate);
                 p.Push(startDate.AddDays(-1), savingAmt.ToPecuniam());
                 p.My.ExpectedValue = savingAmt.ToPecuniam();
             }
@@ -288,7 +285,7 @@ namespace NoFuture.Rand.Domus.Opes
                     (float) CreditScore.GetRandomInterestRate(null, baseRate) * 0.01f;
 
                 var id = isMortgage
-                    ? (Person?.Address ?? new ResidentAddress())
+                    ? new ResidentAddress()
                     : (Identifier) new Gov.Nhtsa.Vin();
 
                 var remainingCost = isMortgage
@@ -299,11 +296,11 @@ namespace NoFuture.Rand.Domus.Opes
                     ? (homeDebtAmt + homeEquityAmt).ToPecuniam()
                     : (carDebtAmt + carEquityAmt).ToPecuniam();
 
-                var buyer = Person?.Personality;
+                var buyer = options.Personality;
 
                 var termInYears = isMortgage ? 30 : 5;
 
-                p = AmericanUtil.GetRandomLoanWithHistory(
+                p = GetRandomLoanWithHistory(
                     id,
                     remainingCost,
                     totalValue,
@@ -369,7 +366,7 @@ namespace NoFuture.Rand.Domus.Opes
             options.PossibleZeroOuts.AddRange(new[] { "Art", "Firearms", "Collections", "Antiques" });
 
             //remove obvious rural related items for everyone except those who are way out in the country
-            var livesInCountry = Person?.Address?.HomeCityArea is UsCityStateZip usCityState &&
+            var livesInCountry = options.GeoLocation is UsCityStateZip usCityState &&
                                  usCityState.Msa?.MsaType >= UrbanCentric.Fringe;
             if (!livesInCountry)
             {

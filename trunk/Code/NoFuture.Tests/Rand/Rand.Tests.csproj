@@ -107,6 +107,10 @@
       <Project>{193f1df6-f471-4164-b5bb-8752c306df7b}</Project>
       <Name>Rand.Data.Sp</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\NoFuture\Rand\Domus\Pneuma\Rand.Domus.Pneuma.csproj">
+      <Project>{00c35283-af89-48a4-8035-8270d5302ce5}</Project>
+      <Name>Rand.Domus.Pneuma</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\NoFuture\Rand\Domus\Rand.Domus.csproj">
       <Project>{abb95017-a946-4b8b-902c-69fe01e99720}</Project>
       <Name>Rand.Domus</Name>

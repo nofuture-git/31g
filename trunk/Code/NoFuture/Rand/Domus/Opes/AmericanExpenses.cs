@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NoFuture.Rand.Data.Sp;
 using NoFuture.Rand.Data.Sp.Enums;
-using NoFuture.Rand.Domus.US;
+using NoFuture.Rand.Gov;
 
 namespace NoFuture.Rand.Domus.Opes
 {
@@ -16,7 +16,7 @@ namespace NoFuture.Rand.Domus.Opes
     {
         private readonly HashSet<Pondus> _expenses = new HashSet<Pondus>();
 
-        public AmericanExpenses(American american, OpesOptions options = null) : base(american, options)
+        public AmericanExpenses(OpesOptions options = null) : base(options)
         {
             if (MyOptions.Inception == DateTime.MinValue)
                 MyOptions.Inception = GetYearNeg(-1);

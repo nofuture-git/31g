@@ -201,7 +201,7 @@ namespace NoFuture.Rand.Domus
         public static American American()
         {
             return new American(UsState.GetWorkingAdultBirthDate(), Etx.CoinToss ? Gender.Female : Gender.Male,
-                true, true);
+                true);
         }
 
         /// <summary>

@@ -57,26 +57,12 @@
     <Compile Include="Opes\AmericanExpenses.cs" />
     <Compile Include="Opes\AmericanFactors.cs" />
     <Compile Include="Opes\AmericanIncome.cs" />
-    <Compile Include="Opes\AmericanWealth.cs" />
     <Compile Include="Opes\OpesOptions.cs" />
     <Compile Include="Opes\WealthBase.cs" />
     <Compile Include="Parent.cs" />
     <Compile Include="Person.cs" />
-    <Compile Include="Pneuma\Agreeableness.cs" />
-    <Compile Include="Pneuma\Conscientiousness.cs" />
-    <Compile Include="Pneuma\Dimension.cs" />
-    <Compile Include="Pneuma\Extraversion.cs" />
-    <Compile Include="Pneuma\IPersonality.cs" />
-    <Compile Include="Pneuma\ITrait.cs" />
-    <Compile Include="Pneuma\Neuroticism.cs" />
-    <Compile Include="Pneuma\Openness.cs" />
-    <Compile Include="Pneuma\Personality.cs" />
-    <Compile Include="Pneuma\Trait.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ResidentAddress.cs" />
     <Compile Include="Spouse.cs" />
-    <Compile Include="US\AmericanData.cs" />
-    <Compile Include="US\AmericanEquations.cs" />
     <Compile Include="US\AmericanUtil.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -107,6 +93,10 @@
     <ProjectReference Include="..\Gov\Rand.Gov.csproj">
       <Project>{bb60d20c-259f-4fb3-9ba3-58e859bd712d}</Project>
       <Name>Rand.Gov</Name>
+    </ProjectReference>
+    <ProjectReference Include="Pneuma\Rand.Domus.Pneuma.csproj">
+      <Project>{00c35283-af89-48a4-8035-8270d5302ce5}</Project>
+      <Name>Rand.Domus.Pneuma</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

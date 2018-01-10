@@ -6,6 +6,7 @@ using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Data.Endo.Grps;
 using NoFuture.Rand.Data.Sp;
 using NoFuture.Rand.Data.Sp.Enums;
+using NoFuture.Rand.Gov;
 using NoFuture.Util.Core;
 
 namespace NoFuture.Rand.Domus.Opes
@@ -20,7 +21,7 @@ namespace NoFuture.Rand.Domus.Opes
         private readonly HashSet<Pondus> _deductions = new HashSet<Pondus>();
         private readonly AmericanEmployment _employment;
 
-        internal AmericanDeductions(AmericanEmployment employment) : base(employment?.Person, employment?.MyOptions)
+        internal AmericanDeductions(AmericanEmployment employment) : base(employment?.MyOptions)
         {
             _employment = employment ?? throw new ArgumentNullException(nameof(employment));
 
@@ -156,7 +157,7 @@ namespace NoFuture.Rand.Domus.Opes
                 {
                     ExpectedValue = expectedVisionInsCost.ToPecuniam()
                 });
-            var someRandRate = GetRandomRateFromClassicHook(Person?.GetAgeAt(options.Inception));
+            var someRandRate = GetRandomRateFromClassicHook(options.CurrentAge);
 
             //we will use to force the SumTotal to exceed current GivenDirectly's sum
             var currentTotal = expectedHealthInsCost + expectedDentalInsCost + expectedVisionInsCost;
@@ -266,7 +267,7 @@ namespace NoFuture.Rand.Domus.Opes
                 });
 
             //we need to have a SumTotal exceeding the current GivenDirectly's sum to have any of the others show up at random
-            var someRandRate = GetRandomRateFromClassicHook(Person?.GetAgeAt(options.Inception));
+            var someRandRate = GetRandomRateFromClassicHook(options.CurrentAge);
 
             //we will use to force the SumTotal to exceed current GivenDirectly's sum
             var currentTotal = retirementAmt + unionDuesAmt;

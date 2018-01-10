@@ -40,94 +40,16 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         }
 
         [TestMethod]
-        public void TestGetRandomRent()
-        {
-            var amer = new American(UsState.GetWorkingAdultBirthDate(), Gender.Female);
-            var testSubject = new AmericanWealth(amer, new OpesOptions(){IsRenting = true});
-            testSubject.AddRent();
-            var rent = testSubject.HomeDebt.FirstOrDefault() as Rent;
-            Assert.IsNotNull(rent);
-
-            System.Diagnostics.Debug.WriteLine(rent.Balance.ToString());
-        }
-
-        [TestMethod]
-        public void TestGetRandomHomeLoan()
-        {
-            var amer = new American(UsState.GetWorkingAdultBirthDate(), Gender.Female);
-            var testSubject = new AmericanWealth(amer);
-            testSubject.AddMortgage();
-
-            var homeLoan = testSubject.HomeDebt.FirstOrDefault() as FixedRateLoan;
-            Assert.IsNotNull(homeLoan);
-
-            System.Diagnostics.Debug.WriteLine(homeLoan.Balance.ToString());
-        }
-
-        [TestMethod]
-        public void TestGetRandomCcDebt()
-        {
-            var amer = new American(UsState.GetWorkingAdultBirthDate(), Gender.Female);
-            var testSubject = new AmericanWealth(amer);
-            testSubject.AddSingleCcDebt();
-
-            Assert.IsTrue(testSubject.CreditCardDebt.Any());
-
-            var testResult = testSubject.CreditCardDebt.First() as CreditCardAccount;
-            Assert.IsNotNull(testResult);
-
-            System.Diagnostics.Debug.WriteLine(testResult.Cc.CardHolderSince);
-            System.Diagnostics.Debug.WriteLine(testResult.Max);
-
-            System.Diagnostics.Debug.WriteLine(testResult.Balance.ToString());
-
-        }
-
-        [TestMethod]
         public void TestGetPaycheck()
         {
             var amer = new American(UsState.GetWorkingAdultBirthDate(), Gender.Female);
-            var testSubject = new AmericanWealth(amer);
+            var testSubject = new AmericanIncome(new OpesOptions { IsRenting = true, Gender = Gender.Female, BirthDate = UsState.GetWorkingAdultBirthDate() });
             System.Diagnostics.Debug.WriteLine(string.Join(" ", amer.Age, amer.MaritialStatus, amer.Education, amer.Race));
 
             var testResult = testSubject.GetRandomYearlyIncome(null, 1.0.ToPecuniam());
             System.Diagnostics.Debug.WriteLine(testResult);
             Assert.IsNotNull(testResult);
             Assert.IsTrue(testResult.Amount > 0.0M);
-        }
-
-        [TestMethod]
-        public void TestGetRandomVehicle()
-        {
-            var amer = new American(UsState.GetWorkingAdultBirthDate(), Gender.Female);
-            var testSubject = new AmericanWealth(amer);
-            System.Diagnostics.Debug.WriteLine(string.Join(" ", amer.Age, amer.MaritialStatus, amer.Education, amer.Race));
-
-            var testResult = testSubject.AddVehicleLoan();
-            Assert.IsNotNull(testResult);
-
-            if (testSubject.VehicleDebt.Any())
-            {
-                
-                var testResultSfrl = testSubject.VehicleDebt.First() as NoFuture.Rand.Data.Sp.SecuredFixedRateLoan;
-
-                Assert.IsNotNull(testResultSfrl);
-
-                Assert.IsNotNull( testResultSfrl.PropertyId);
-            }
-        }
-
-        [TestMethod]
-        public void TestCreateRandomAmericanOpes()
-        {
-            var amer = new American(UsState.GetWorkingAdultBirthDate(), Gender.Female);
-            var testSubject = new AmericanWealth(amer);
-            System.Diagnostics.Debug.WriteLine(string.Join(" ", amer.Age, amer.MaritialStatus, amer.Education, amer.Race));
-
-            testSubject.CreateRandomAmericanOpes();
-
-            Assert.IsTrue(testSubject.HomeDebt.Any());
-
         }
 
         [TestMethod]
@@ -216,7 +138,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             testInput.GivenDirectly.Add(new Mereo("Real Property"){ExpectedValue = 7800.ToPecuniam()});
             testInput.GivenDirectly.Add(new Mereo("Securities"){ExpectedValue = 1000.ToPecuniam()});
             testInput.SumTotal = 12000.ToPecuniam();
-            var testSubject = new AmericanAssets(null, testInput);
+            var testSubject = new AmericanAssets(testInput);
             var testResult = testSubject.GetGroupNames2Portions(testInput);
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0, testResult.Count);
@@ -248,7 +170,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             testInput.GivenDirectly.Add(new Mereo("Annuity", grpName) { ExpectedValue = 1000.ToPecuniam() });
             testInput.SumTotal = 15000.ToPecuniam();
 
-            var testSubject = new AmericanIncome(null, testInput);
+            var testSubject = new AmericanIncome(testInput);
 
             var testResults =
                 testSubject.GetItemNames2Portions(grpName, testInput);
@@ -265,7 +187,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             testInput.GivenDirectly.Add(new Mereo("Partnerships", grpName) { ExpectedValue = 7800.ToPecuniam() });
             testInput.GivenDirectly.Add(new Mereo("Fellowships", grpName) { ExpectedValue = 1000.ToPecuniam() });
             testInput.GivenDirectly.Add(new Mereo("Annuity", grpName) { ExpectedValue = 1000.ToPecuniam() });
-            testSubject = new AmericanIncome(null, testInput);
+            testSubject = new AmericanIncome(testInput);
             testResults =
                 testSubject.GetItemNames2Portions(grpName, testInput);
 

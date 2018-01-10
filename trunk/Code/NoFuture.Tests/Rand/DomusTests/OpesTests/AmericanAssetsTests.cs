@@ -13,8 +13,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         [TestMethod]
         public void TestGetGroupPortionsFromByFactorTables()
         {
-            var testSubject = new AmericanAssets(null,
-                new OpesOptions() { IsRenting = false, NumberOfVehicles = 1, SumTotal = 75000.ToPecuniam() });
+            var testSubject = new AmericanAssets(new OpesOptions() { IsRenting = false, NumberOfVehicles = 1, SumTotal = 75000.ToPecuniam() });
 
             var testResult = testSubject.GetGroupNames2Portions(null);
 
@@ -29,7 +28,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         [TestMethod]
         public void TestGetRealPropertyName2RandomRates()
         {
-            var testSubject = new AmericanAssets(null, null);
+            var testSubject = new AmericanAssets(new OpesOptions());
 
             var testResult = testSubject.GetRealPropertyName2RandomRates(testSubject.MyOptions);
 
@@ -46,7 +45,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         [TestMethod]
         public void TestGetPersonalPropertyAssetNames2Rates()
         {
-            var testSubject = new AmericanAssets(null, null);
+            var testSubject = new AmericanAssets(new OpesOptions());
 
             var testResult = testSubject.GetPersonalPropertyAssetNames2Rates(testSubject.MyOptions);
 
@@ -63,7 +62,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         [TestMethod]
         public void TestGetInstitutionalAssetName2Rates()
         {
-            var testSubject = new AmericanAssets(null, null);
+            var testSubject = new AmericanAssets(new OpesOptions());
 
             var testResult = testSubject.GetInstitutionalAssetName2Rates(testSubject.MyOptions);
 
@@ -81,7 +80,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         [TestMethod]
         public void TestGetSecuritiesAssetNames2RandomRates()
         {
-            var testSubject = new AmericanAssets(null, null);
+            var testSubject = new AmericanAssets(new OpesOptions());
 
             var testResult = testSubject.GetSecuritiesAssetNames2RandomRates(testSubject.MyOptions);
 
@@ -127,7 +126,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         [TestMethod]
         public void TestResolveItems()
         {
-            var testSubject = new AmericanAssets(null, null);
+            var testSubject = new AmericanAssets(new OpesOptions());
 
             testSubject.ResolveItems(new OpesOptions(){Inception = new DateTime(DateTime.Today.Year, 1,1)});
 

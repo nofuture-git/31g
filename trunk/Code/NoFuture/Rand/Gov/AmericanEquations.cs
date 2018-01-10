@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Data.Endo.Enums;
-using NoFuture.Rand.Data.Sp;
 using NoFuture.Shared.Core;
 using NoFuture.Util.Core;
 using NoFuture.Util.Core.Math;
 
-namespace NoFuture.Rand.Domus
+namespace NoFuture.Rand.Gov
 {
 
     /// <summary>
@@ -19,7 +15,7 @@ namespace NoFuture.Rand.Domus
     /// [http://www.cdc.gov/nchs/data/nvsr/nvsr64/nvsr64_12_tables.pdf] (Table I-1.)
     /// </summary>
     /// <remarks>
-    /// FemaleAge2*Child have had thier intercepts up'ed by 4.  The real data produces 
+    /// FemaleAge2*Child have had thier intercepts up&apos;ed by 4.  The real data produces 
     /// a condition where first born's are always before marriage.
     /// Any <see cref="RLinearEquation"/> have a random Standard Dev between 0 and 1.0
     /// </remarks>
@@ -35,7 +31,7 @@ namespace NoFuture.Rand.Domus
         /// </summary>
         /// <param name="dob"></param>
         /// <returns></returns>
-        internal static DateTime ProtectAgainstDistantTimes(DateTime dob)
+        public static DateTime ProtectAgainstDistantTimes(DateTime dob)
         {
             if (dob.Year < MIN_DOB_YEAR)
                 return new DateTime(MIN_DOB_YEAR, dob.Month, dob.Day);
@@ -178,9 +174,9 @@ namespace NoFuture.Rand.Domus
         /// </summary>
         /// <param name="mf"></param>
         /// <returns></returns>
-        public static NormalDistEquation LifeExpectancy(Gender mf)
+        public static NormalDistEquation LifeExpectancy(string mf)
         {
-            return mf == Gender.Male
+            return string.Equals(mf, "Male", StringComparison.OrdinalIgnoreCase)
                 ? new NormalDistEquation { Mean = AmericanData.AVG_MAX_AGE_MALE, StdDev = AmericanData.STD_DEV_MALE_LIFE_EXPECTANCY }
                 : new NormalDistEquation { Mean = AmericanData.AVG_MAX_AGE_FEMALE, StdDev = AmericanData.STD_DEV_FEMALE_LIFE_EXPECTANCY };
         }

@@ -36,7 +36,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AmericanBirthCert.cs" />
+    <Compile Include="AmericanData.cs" />
     <Compile Include="AmericanDeathCert.cs" />
+    <Compile Include="AmericanEquations.cs" />
     <Compile Include="AmericanRacePercents.cs" />
     <Compile Include="BirthCert.cs" />
     <Compile Include="Census\ComboMStatArea.cs" />

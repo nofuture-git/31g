@@ -1,9 +1,6 @@
 ﻿using System.Collections.Generic;
-using NoFuture.Rand.Data.Endo.Enums;
-using NoFuture.Rand.Data.Sp.Enums;
-using NoFuture.Rand.Gov;
 
-namespace NoFuture.Rand.Domus
+namespace NoFuture.Rand.Gov
 {
     public static class AmericanData
     {
