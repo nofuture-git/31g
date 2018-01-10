@@ -82,7 +82,7 @@ namespace NoFuture.Rand.Domus.US
             var isDead = _deathCert != null;
             if (isDead)
                 return;
-            var homeAddr = ResidentAddress.GetRandomAmericanAddr();
+            var homeAddr = PostalAddress.GetRandomAmericanAddr();
             _addresses.Add(homeAddr);
             var csz = homeAddr.HomeCityArea as UsCityStateZip;
 
@@ -328,7 +328,7 @@ namespace NoFuture.Rand.Domus.US
         /// </summary>
         /// <param name="dt">Null for current time.</param>
         /// <param name="addr"></param>
-        public void AlignCohabitantsHomeDataAt(DateTime? dt, ResidentAddress addr)
+        public void AlignCohabitantsHomeDataAt(DateTime? dt, PostalAddress addr)
         {
             if (addr == null)
                 return;
@@ -371,7 +371,7 @@ namespace NoFuture.Rand.Domus.US
 
                 if (namerLivesWith.Address == null)
                     namerLivesWith.AddAddress(
-                        ResidentAddress.GetRandomAmericanAddr(Address.HomeCityArea.GetPostalCodePrefix()));
+                        PostalAddress.GetRandomAmericanAddr(Address.HomeCityArea.GetPostalCodePrefix()));
 
                 AmericanUtil.SetNAmerCohabitants(namerChild, namerLivesWith);
             }

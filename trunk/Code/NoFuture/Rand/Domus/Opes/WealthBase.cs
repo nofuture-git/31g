@@ -1149,7 +1149,7 @@ namespace NoFuture.Rand.Domus.Opes
         public static SecuredFixedRateLoan GetRandomLoan(Identifier property, Pecuniam remainingCost,
             Pecuniam totalCost, float rate, int termInYears, out Pecuniam minPmt)
         {
-            var isMortgage = property is ResidentAddress;
+            var isMortgage = property is PostalAddress;
 
             //if no or nonsense values given, change to some default
             if (totalCost == null || totalCost < Pecuniam.Zero)
@@ -1198,7 +1198,7 @@ namespace NoFuture.Rand.Domus.Opes
                     Rate = rate
                 };
 
-            loan.FormOfCredit = property is ResidentAddress
+            loan.FormOfCredit = property is PostalAddress
                 ? FormOfCredit.Mortgage
                 : FormOfCredit.Installment;
 

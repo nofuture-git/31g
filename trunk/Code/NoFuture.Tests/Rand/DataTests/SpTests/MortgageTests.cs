@@ -57,7 +57,7 @@ namespace NoFuture.Rand.Tests.DataTests.SpTests
             
             var purchasePrice = 393291.02;
             var rate = 0.02f;
-            var addr = new ResidentAddress();
+            var addr = new PostalAddress();
             var addrData = new AddressData
             {
                 AddressNumber = "123",

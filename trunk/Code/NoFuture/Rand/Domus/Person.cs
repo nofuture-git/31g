@@ -28,7 +28,7 @@ namespace NoFuture.Rand.Domus
         protected internal readonly HashSet<Child> _children = new HashSet<Child>();
         private readonly Personality _personality = new Personality();
         protected internal BirthCert _birthCert;
-        protected internal readonly List<ResidentAddress> _addresses = new List<ResidentAddress>();
+        protected internal readonly List<PostalAddress> _addresses = new List<PostalAddress>();
         protected internal Gender _myGender;
         protected internal List<Tuple<KindsOfNames, Parent>> _parents = new List<Tuple<KindsOfNames, Parent>>();
         #endregion
@@ -54,7 +54,7 @@ namespace NoFuture.Rand.Domus
         public virtual IEnumerable<Uri> NetUri => _netUris;
         public Personality Personality => _personality;
         public virtual IEducation Education => GetEducationAt(null);
-        public ResidentAddress Address => GetAddressAt(null);
+        public PostalAddress Address => GetAddressAt(null);
         public IRelation Spouse => GetSpouseAt(null);
         public int Age => GetAgeAt(null);
         public MaritialStatus MaritialStatus => GetMaritalStatusAt(null);
@@ -121,12 +121,12 @@ namespace NoFuture.Rand.Domus
         public abstract IEducation GetEducationAt(DateTime? dt);
 
         /// <summary>
-        /// Resolves the <see cref="ResidentAddress"/> which was current 
+        /// Resolves the <see cref="PostalAddress"/> which was current 
         /// at time <see cref="dt"/>
         /// </summary>
         /// <param name="dt">Null for the current time right now.</param>
         /// <returns></returns>
-        public virtual ResidentAddress GetAddressAt(DateTime? dt)
+        public virtual PostalAddress GetAddressAt(DateTime? dt)
         {
             //TODO enhance to have previous address
             return dt == null
@@ -167,7 +167,7 @@ namespace NoFuture.Rand.Domus
         /// this instance's history of addresses.
         /// </summary>
         /// <param name="addr"></param>
-        public void AddAddress(ResidentAddress addr)
+        public void AddAddress(PostalAddress addr)
         {
             if (addr == null)
                 return;
@@ -214,7 +214,7 @@ namespace NoFuture.Rand.Domus
             var canadian = American();
             var cpp = CityArea.Canadian();
             var str = canadian.GetAddressAt(null)?.HomeStreetPo;
-            canadian.AddAddress(new ResidentAddress { HomeCityArea = cpp, HomeStreetPo = str });
+            canadian.AddAddress(new PostalAddress { HomeCityArea = cpp, HomeStreetPo = str });
 
             return canadian;
         }

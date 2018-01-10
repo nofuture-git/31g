@@ -1,14 +1,13 @@
 ﻿using System;
 using NoFuture.Rand.Core;
-using NoFuture.Rand.Data.Endo;
 
-namespace NoFuture.Rand.Domus
+namespace NoFuture.Rand.Data.Endo
 {
     /// <summary>
     /// A composition type to contain a home address.
     /// </summary>
     [Serializable]
-    public class ResidentAddress : DiachronIdentifier
+    public class PostalAddress : DiachronIdentifier
     {
         public StreetPo HomeStreetPo { get; set; }
         public CityArea HomeCityArea { get; set; }
@@ -25,11 +24,11 @@ namespace NoFuture.Rand.Domus
         /// Helper factory method to create an american address in one call.
         /// </summary>
         /// <returns></returns>
-        public static ResidentAddress GetRandomAmericanAddr(string zipCodePrefix = null)
+        public static PostalAddress GetRandomAmericanAddr(string zipCodePrefix = null)
         {
             var csz = CityArea.American(zipCodePrefix);
             var homeAddr = StreetPo.American();
-            return new ResidentAddress { HomeStreetPo = homeAddr, HomeCityArea = csz };
+            return new PostalAddress { HomeStreetPo = homeAddr, HomeCityArea = csz };
         }
     }
 }

@@ -43,7 +43,7 @@
     <Compile Include="Endo\Enums\MaritialStatus.cs" />
     <Compile Include="Endo\NorthAmericanPhone.cs" />
     <Compile Include="Endo\Phone.cs" />
-    <Compile Include="Endo\ResidentAddress.cs" />
+    <Compile Include="Endo\PostalAddress.cs" />
     <Compile Include="Endo\StreetPo.cs" />
     <Compile Include="Endo\UsCityStateZip.cs" />
     <Compile Include="Endo\UsStateData.cs" />

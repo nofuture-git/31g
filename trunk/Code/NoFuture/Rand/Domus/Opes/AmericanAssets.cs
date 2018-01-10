@@ -285,7 +285,7 @@ namespace NoFuture.Rand.Domus.Opes
                     (float) CreditScore.GetRandomInterestRate(null, baseRate) * 0.01f;
 
                 var id = isMortgage
-                    ? new ResidentAddress()
+                    ? new PostalAddress()
                     : (Identifier) new Gov.Nhtsa.Vin();
 
                 var remainingCost = isMortgage

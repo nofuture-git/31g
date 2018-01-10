@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
+using NoFuture.Rand.Data.Endo;
 using NoFuture.Rand.Data.Endo.Enums;
 using NoFuture.Rand.Edu;
 using NoFuture.Rand.Gov;
@@ -24,7 +25,7 @@ namespace NoFuture.Rand.Domus
         MaritialStatus MaritialStatus { get; }
         IEnumerable<Child> Children { get; }
         IEnumerable<Tuple<KindsOfNames, Parent>> Parents { get; }
-        ResidentAddress Address { get; }
+        PostalAddress Address { get; }
 
         #endregion
 
