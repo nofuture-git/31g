@@ -145,6 +145,10 @@
       <Project>{cc5df72f-e8e4-4341-a653-8dcee8dbe3ba}</Project>
       <Name>Rand.Org</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Tele\Rand.Tele.csproj">
+      <Project>{bf24172c-6472-4059-860f-46f7a9fc78df}</Project>
+      <Name>Rand.Tele</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Rand.Data.csproj">
       <Project>{1741b2f9-4412-4363-9c46-67660bcea7ab}</Project>
       <Name>Rand.Data</Name>
