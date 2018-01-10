@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using NoFuture.Rand.Data.Endo.Grps;
+using NoFuture.Rand.Org;
 
 namespace NoFuture.Rand.Com
 {

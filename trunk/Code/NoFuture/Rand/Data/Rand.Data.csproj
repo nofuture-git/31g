@@ -41,19 +41,6 @@
     <Compile Include="Endo\CityArea.cs" />
     <Compile Include="Endo\Enums\Gender.cs" />
     <Compile Include="Endo\Enums\MaritialStatus.cs" />
-    <Compile Include="Endo\Grps\ClassificationBase.cs" />
-    <Compile Include="Endo\Grps\ClassificationOfInstructionalPrograms.cs" />
-    <Compile Include="Endo\Grps\NaicsMarket.cs" />
-    <Compile Include="Endo\Grps\NaicsPrimarySector.cs" />
-    <Compile Include="Endo\Grps\NaicsSector.cs" />
-    <Compile Include="Endo\Grps\NaicsSuperSector.cs" />
-    <Compile Include="Endo\Grps\NorthAmericanIndustryClassification.cs" />
-    <Compile Include="Endo\Grps\SocBoardGroup.cs" />
-    <Compile Include="Endo\Grps\SocDetailedOccupation.cs" />
-    <Compile Include="Endo\Grps\SocMajorGroup.cs" />
-    <Compile Include="Endo\Grps\SocMinorGroup.cs" />
-    <Compile Include="Endo\Grps\StandardIndustryClassification.cs" />
-    <Compile Include="Endo\Grps\StandardOccupationalClassification.cs" />
     <Compile Include="Endo\NorthAmericanPhone.cs" />
     <Compile Include="Endo\Phone.cs" />
     <Compile Include="Endo\ResidentAddress.cs" />
@@ -61,9 +48,6 @@
     <Compile Include="Endo\UsCityStateZip.cs" />
     <Compile Include="Endo\UsStateData.cs" />
     <Compile Include="Endo\UsStreetPo.cs" />
-    <Compile Include="Endo\Xml2XmlIdentifier.cs" />
-    <Compile Include="Endo\XmlDocXrefIdentifier.cs" />
-    <Compile Include="Endo\XRefGroup.cs" />
     <Compile Include="Facit.cs" />
     <Compile Include="ListData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -85,6 +69,10 @@
     <ProjectReference Include="..\Gov\Rand.Gov.csproj">
       <Project>{bb60d20c-259f-4fb3-9ba3-58e859bd712d}</Project>
       <Name>Rand.Gov</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Org\Rand.Org.csproj">
+      <Project>{cc5df72f-e8e4-4341-a653-8dcee8dbe3ba}</Project>
+      <Name>Rand.Org</Name>
     </ProjectReference>
     <ProjectReference Include="Source\Rand.Data.Source.csproj">
       <Project>{4e011849-d274-4f79-96af-549f67c46d80}</Project>

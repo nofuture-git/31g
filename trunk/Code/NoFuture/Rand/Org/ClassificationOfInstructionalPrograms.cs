@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NoFuture.Rand.Data.Endo.Grps
+namespace NoFuture.Rand.Org
 {
     /// <summary>
     /// The Classification of Instructional Programs (CIP) provides a taxonomic scheme 

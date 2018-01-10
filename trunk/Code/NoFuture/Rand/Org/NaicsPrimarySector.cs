@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NoFuture.Rand.Data.Endo.Grps
+namespace NoFuture.Rand.Org
 {
     /// <summary>
     /// This represents the primary grouping level of the NAICS 

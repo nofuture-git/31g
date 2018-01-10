@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Xml;
-using NoFuture.Rand.Core;
 using NoFuture.Util.Core;
 
-namespace NoFuture.Rand.Data.Endo
+namespace NoFuture.Rand.Core
 {
     [Serializable]
     public class XRefGroup : XmlDocXrefIdentifier
@@ -25,10 +24,11 @@ namespace NoFuture.Rand.Data.Endo
             {
                 if (_allXref != null)
                     return _allXref;
-                if (TreeData.XRefXml == null)
+                var xml = GetEmbeddedXmlDoc(XREF_XML_DATA_FILE);
+                if (xml == null)
                     return null;
 
-                var elems = TreeData.XRefXml.SelectNodes($"//{X_REF_GROUP}");
+                var elems = xml.SelectNodes($"//{X_REF_GROUP}");
                 if (elems == null || elems.Count <= 0)
                     return null;
 
@@ -74,9 +74,10 @@ namespace NoFuture.Rand.Data.Endo
                 return false;
             if(id == null)
                 return false;
-            if (TreeData.XRefXml == null)
+            var xml = GetEmbeddedXmlDoc(XREF_XML_DATA_FILE);
+            if (xml == null)
                 return false;
-            var xrefSrcNode = TreeData.XRefXml.SelectSingleNode($"//{SOURCE}");
+            var xrefSrcNode = xml.SelectSingleNode($"//{SOURCE}");
             if (xrefSrcNode == null)
                 return false;
 
@@ -89,11 +90,11 @@ namespace NoFuture.Rand.Data.Endo
             var xRefAddChildXPath = xRefAddXPath + $"/{ADD}[@{NAME}='Value']";
 
             //get the x-ref-group node
-            var xRefGroupNode = TreeData.XRefXml.SelectSingleNode(xRefGroupXPath) as XmlElement;
+            var xRefGroupNode = xml.SelectSingleNode(xRefGroupXPath) as XmlElement;
             if (xRefGroupNode == null)
             {
-                xRefGroupNode = TreeData.XRefXml.CreateElement(X_REF_GROUP);
-                var xRefGroupAttr = TreeData.XRefXml.CreateAttribute(DATA_TYPE);
+                xRefGroupNode = xml.CreateElement(X_REF_GROUP);
+                var xRefGroupAttr = xml.CreateAttribute(DATA_TYPE);
                 xRefGroupAttr.Value = xRefId.Item1.FullName;
                 xRefGroupNode.Attributes.Append(xRefGroupAttr);
                 
@@ -105,12 +106,12 @@ namespace NoFuture.Rand.Data.Endo
             }
 
             //get the x-data-reference node
-            var xDataReferenceNode = TreeData.XRefXml.SelectSingleNode(xDataReferenceXPath);
+            var xDataReferenceNode = xml.SelectSingleNode(xDataReferenceXPath);
             if (xDataReferenceNode == null)
             {
-                xDataReferenceNode = TreeData.XRefXml.CreateElement(X_DATA_REFERENCE);
-                var xRefNode = TreeData.XRefXml.CreateElement(X_REF);
-                var xRefIdNode = TreeData.XRefXml.CreateElement(X_REF_ID);
+                xDataReferenceNode = xml.CreateElement(X_DATA_REFERENCE);
+                var xRefNode = xml.CreateElement(X_REF);
+                var xRefIdNode = xml.CreateElement(X_REF_ID);
                 xRefIdNode.InnerText = xRefId.Item2;
                 xRefNode.AppendChild(xRefIdNode);
                 xDataReferenceNode.AppendChild(xRefNode);
@@ -118,36 +119,36 @@ namespace NoFuture.Rand.Data.Endo
             }
 
             //get the outer add node
-            var xrefAdd = TreeData.XRefXml.SelectSingleNode(xRefAddXPath) as XmlElement;
+            var xrefAdd = xml.SelectSingleNode(xRefAddXPath) as XmlElement;
             if (xrefAdd == null)
             {
-                xrefAdd = TreeData.XRefXml.CreateElement(ADD);
+                xrefAdd = xml.CreateElement(ADD);
                 if (!xDataReferenceNode.HasChildNodes)
                     xDataReferenceNode.AppendChild(xrefAdd);
                 else
                     xDataReferenceNode.InsertAfter(xrefAdd, xDataReferenceNode.LastChild);
             }
 
-            var xrefNameAttr = xrefAdd.Attributes[NAME] ?? TreeData.XRefXml.CreateAttribute(NAME);
+            var xrefNameAttr = xrefAdd.Attributes[NAME] ?? xml.CreateAttribute(NAME);
             xrefNameAttr.Value = simpleNameValuePair.Item1;
 
             if (xrefAdd.Attributes[NAME] == null)
                 xrefAdd.Attributes.Append(xrefNameAttr);
 
             //get the inner add node
-            var childNode = TreeData.XRefXml.SelectSingleNode(xRefAddChildXPath) as XmlElement;
+            var childNode = xml.SelectSingleNode(xRefAddChildXPath) as XmlElement;
             if (childNode == null)
             {
-                childNode = TreeData.XRefXml.CreateElement(ADD);
+                childNode = xml.CreateElement(ADD);
                 if (!xrefAdd.HasChildNodes)
                     xrefAdd.AppendChild(childNode);
                 else
                     xrefAdd.InsertAfter(childNode, xrefAdd.LastChild);
             }
 
-            var nameAttr = childNode.Attributes[NAME] ?? TreeData.XRefXml.CreateAttribute(NAME);
+            var nameAttr = childNode.Attributes[NAME] ?? xml.CreateAttribute(NAME);
             nameAttr.Value = "Value";
-            var valAttr = childNode.Attributes[VALUE] ?? TreeData.XRefXml.CreateAttribute(VALUE);
+            var valAttr = childNode.Attributes[VALUE] ?? xml.CreateAttribute(VALUE);
             valAttr.Value = simpleNameValuePair.Item2;
 
             if (childNode.Attributes[NAME] == null)
@@ -164,7 +165,7 @@ namespace NoFuture.Rand.Data.Endo
                 return null;
             if (string.IsNullOrWhiteSpace(xrefId))
                 return null;
-            var xrefXml = TreeData.XRefXml;
+            var xrefXml = GetEmbeddedXmlDoc(XREF_XML_DATA_FILE);
             return
                 xrefXml?.SelectNodes(
                     $"//{X_REF_GROUP}[@{DATA_TYPE}='{t.FullName}']//{X_REF_ID}[text()='{xrefId}']/../../{ADD}");

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
 using NoFuture.Rand.Data.Endo.Enums;
-using NoFuture.Rand.Data.Endo.Grps;
+using NoFuture.Rand.Org;
 using NoFuture.Util.Core.Math;
 
 namespace NoFuture.Rand.Data.Endo

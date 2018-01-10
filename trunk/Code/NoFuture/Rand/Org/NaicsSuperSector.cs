@@ -1,9 +1,9 @@
 ﻿using System;
 
-namespace NoFuture.Rand.Data.Endo.Grps
+namespace NoFuture.Rand.Org
 {
     [Serializable]
-    public class SocMajorGroup : ClassificationBase<SocMinorGroup>
+    public class NaicsSuperSector : ClassificationBase<NaicsPrimarySector>
     {
         public override string LocalName => "category";
     }

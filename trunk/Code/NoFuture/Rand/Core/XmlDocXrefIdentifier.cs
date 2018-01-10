@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Reflection;
 using System.Xml;
-using NoFuture.Rand.Core;
 
-namespace NoFuture.Rand.Data.Endo
+namespace NoFuture.Rand.Core
 {
     /// <summary>
     /// Type coupled to XML's ID attribute
@@ -70,6 +72,63 @@ namespace NoFuture.Rand.Data.Endo
             var d = LocalName?.GetHashCode() ?? 1;
             var id = Value?.GetHashCode() ?? 0;
             return d + id;
+        }
+
+        protected internal static XmlDocument GetEmbeddedXmlDoc(string xmlDataFileName)
+        {
+            if (string.IsNullOrWhiteSpace(xmlDataFileName))
+                return null;
+
+            var asm = Assembly.GetExecutingAssembly();
+
+            var data = asm.GetManifestResourceStream($"{asm.GetName().Name}.{xmlDataFileName}");
+            if (data == null)
+                return null;
+
+            var strmRdr = new StreamReader(data);
+            var xmlData = strmRdr.ReadToEnd();
+            var assignTo = new XmlDocument();
+            assignTo.LoadXml(xmlData);
+            return assignTo;
+        }
+
+        /// <summary>
+        /// Helper method to get a cumulative probability table from XML
+        /// </summary>
+        /// <param name="xml"></param>
+        /// <param name="parentNodeName"></param>
+        /// <param name="entryNodeName"></param>
+        /// <returns></returns>
+        public static Dictionary<string, double> GetProbTable(XmlDocument xml, string parentNodeName,
+            string entryNodeName)
+        {
+            const string WEIGHT = "prob";
+            var dictOut = new Dictionary<string, double>();
+            var elems = xml?.SelectSingleNode($"//{parentNodeName}");
+
+            if (elems == null || !elems.HasChildNodes)
+                return dictOut;
+
+            foreach (var node in elems.ChildNodes)
+            {
+                var elem = node as XmlElement;
+                if (elem == null)
+                    continue;
+                var key = elem.Attributes[entryNodeName]?.Value;
+                var strVal = elem.Attributes[WEIGHT]?.Value;
+
+                if (string.IsNullOrWhiteSpace(key) || string.IsNullOrWhiteSpace(strVal))
+                    continue;
+
+                if (!double.TryParse(strVal, out var val))
+                    continue;
+
+                if (dictOut.ContainsKey(key))
+                    dictOut[key] = val;
+                else
+                    dictOut.Add(key, val);
+            }
+            return dictOut;
         }
     }
 }

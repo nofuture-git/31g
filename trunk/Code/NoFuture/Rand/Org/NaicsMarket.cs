@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NoFuture.Rand.Data.Endo.Grps
+namespace NoFuture.Rand.Org
 {
     [Serializable]
     public class NaicsMarket : ClassificationBase<StandardIndustryClassification>

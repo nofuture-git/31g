@@ -9,10 +9,12 @@ namespace NoFuture.Rand.Core
     [Serializable]
     public abstract class XrefIdentifier : NamedIdentifier
     {
+        public const string XREF_XML_DATA_FILE = "XRef.xml";
         protected XrefIdentifier() { }
         protected XrefIdentifier(string localName) : base(localName) { }
         private readonly Dictionary<string, string> _refDict = new Dictionary<string, string>();
         public virtual Dictionary<string, string> ReferenceDictionary => _refDict;
         public virtual NamedIdentifier[] XrefIds { get; set; }
+
     }
 }

@@ -77,6 +77,10 @@
       <Project>{bb60d20c-259f-4fb3-9ba3-58e859bd712d}</Project>
       <Name>Rand.Gov</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Org\Rand.Org.csproj">
+      <Project>{cc5df72f-e8e4-4341-a653-8dcee8dbe3ba}</Project>
+      <Name>Rand.Org</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Pneuma\Rand.Domus.Pneuma.csproj">
       <Project>{00c35283-af89-48a4-8035-8270d5302ce5}</Project>
       <Name>Rand.Domus.Pneuma</Name>

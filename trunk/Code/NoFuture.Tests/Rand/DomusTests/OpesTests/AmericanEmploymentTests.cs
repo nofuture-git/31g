@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NoFuture.Rand.Data.Endo.Grps;
 using NoFuture.Rand.Domus.Opes;
+using NoFuture.Rand.Org;
 
 namespace NoFuture.Rand.Tests.DomusTests.OpesTests
 {

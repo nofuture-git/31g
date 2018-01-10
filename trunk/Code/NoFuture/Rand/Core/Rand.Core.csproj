@@ -33,6 +33,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Enums\Classification.cs" />
@@ -60,9 +61,16 @@
     <Compile Include="RIdentifierWithChkDigit.cs" />
     <Compile Include="RLinearEquation.cs" />
     <Compile Include="VocaBase.cs" />
+    <Compile Include="Xml2XmlIdentifier.cs" />
+    <Compile Include="XmlDocXrefIdentifier.cs" />
+    <Compile Include="XRefGroup.cs" />
     <Compile Include="XrefIdentifier.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Shared\Core\Shared.Core.csproj">
+      <Project>{6eca48dc-fdb4-4660-9914-3b74d5975ff9}</Project>
+      <Name>Shared.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Util\Core\Util.Core.csproj">
       <Project>{349a1c91-ca14-4d04-946d-8b257a863ce0}</Project>
       <Name>Util.Core</Name>

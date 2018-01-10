@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Xml;
 
-namespace NoFuture.Rand.Data.Endo.Grps
+namespace NoFuture.Rand.Org
 {
     /// <summary>
     /// The NAICS is a model of economic sector groupings used by the US Census Bureau 
@@ -17,6 +17,7 @@ namespace NoFuture.Rand.Data.Endo.Grps
     {
         #region fields
         private static NaicsSuperSector[] _superSectors;
+        private const string US_ECON_SECTOR_DATA_FILE = "US_EconSectors_Data.xml";
         #endregion
 
         #region properties
@@ -41,13 +42,13 @@ namespace NoFuture.Rand.Data.Endo.Grps
                 //return this a singleton
                 if (_superSectors != null)
                     return _superSectors;
-
-                if (TreeData.EconSectorData == null)
+                var xml = GetEmbeddedXmlDoc(US_ECON_SECTOR_DATA_FILE);
+                if (xml == null)
                     return null;
 
                 var ssOut = new NaicsSuperSector();
 
-                var ssElements = TreeData.EconSectorData.SelectNodes($"//{ssOut.LocalName}");
+                var ssElements = xml.SelectNodes($"//{ssOut.LocalName}");
                 if (ssElements == null || ssElements.Count == 0)
                     return null;
 

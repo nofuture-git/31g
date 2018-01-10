@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Xml;
-using NoFuture.Rand.Core;
 using NoFuture.Shared.Core;
 
-namespace NoFuture.Rand.Data.Endo
+namespace NoFuture.Rand.Core
 {
     [Serializable]
     public class Xml2XmlIdentifier : XmlDocXrefIdentifier
@@ -29,7 +28,7 @@ namespace NoFuture.Rand.Data.Endo
             if(string.IsNullOrWhiteSpace(nodeName))
                 throw new ArgumentNullException(nameof(nodeName));
 
-            TreeData.GetXmlDataSource(dataFileName, ref _dataFile);
+            _dataFile = GetEmbeddedXmlDoc(dataFileName);
 
             _nodeName = nodeName;
             _localName = X_DATA_REFERENCE;

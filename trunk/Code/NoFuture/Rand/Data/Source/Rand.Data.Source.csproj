@@ -58,7 +58,6 @@
     <EmbeddedResource Include="English_Words.xml" />
     <EmbeddedResource Include="US_AreaCode.xml" />
     <EmbeddedResource Include="US_City.xml" />
-    <EmbeddedResource Include="US_EconSectors.xml" />
     <EmbeddedResource Include="US_FirstNames.xml" />
     <EmbeddedResource Include="US_HighSchools.xml" />
     <EmbeddedResource Include="US_InsCompanyNames.xml" />
@@ -71,21 +70,14 @@
     <EmbeddedResource Include="US_Universities.xml" />
     <EmbeddedResource Include="US_Zip.xml" />
     <EmbeddedResource Include="US_Zip_ProbTable.xml" />
-    <EmbeddedResource Include="Vin_Wmi.xml" />
     <EmbeddedResource Include="webmailDomains.txt" />
     <EmbeddedResource Include="XRef.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="US_Occupations.xml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="US_Banks.xml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="US_DomusOpes.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="US_Occupations_ProbTable.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

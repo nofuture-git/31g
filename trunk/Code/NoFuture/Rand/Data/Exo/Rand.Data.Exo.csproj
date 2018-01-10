@@ -46,11 +46,7 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Web" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
@@ -129,10 +125,6 @@
       <Project>{4e81340f-409b-4ada-b038-bf3f76ffa81e}</Project>
       <Name>Tokens</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\Util\Core\Util.Core.csproj">
-      <Project>{349a1c91-ca14-4d04-946d-8b257a863ce0}</Project>
-      <Name>Util.Core</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Com\Rand.Com.csproj">
       <Project>{47a161dd-d5d4-4e02-8161-9e311e50664e}</Project>
       <Name>Rand.Com</Name>
@@ -145,13 +137,13 @@
       <Project>{bb60d20c-259f-4fb3-9ba3-58e859bd712d}</Project>
       <Name>Rand.Gov</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Org\Rand.Org.csproj">
+      <Project>{cc5df72f-e8e4-4341-a653-8dcee8dbe3ba}</Project>
+      <Name>Rand.Org</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Rand.Data.csproj">
       <Project>{1741b2f9-4412-4363-9c46-67660bcea7ab}</Project>
       <Name>Rand.Data</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Source\Rand.Data.Source.csproj">
-      <Project>{4e011849-d274-4f79-96af-549f67c46d80}</Project>
-      <Name>Rand.Data.Source</Name>
     </ProjectReference>
     <ProjectReference Include="..\Sp\Rand.Data.Sp.csproj">
       <Project>{193f1df6-f471-4164-b5bb-8752c306df7b}</Project>

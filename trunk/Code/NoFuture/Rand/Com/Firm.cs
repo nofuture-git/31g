@@ -2,7 +2,7 @@
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Data.Endo;
-using NoFuture.Rand.Data.Endo.Grps;
+using NoFuture.Rand.Org;
 
 namespace NoFuture.Rand.Com
 {

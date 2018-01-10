@@ -4,7 +4,7 @@ using System.Linq;
 using System.Xml;
 using NoFuture.Rand.Core;
 
-namespace NoFuture.Rand.Data.Endo.Grps
+namespace NoFuture.Rand.Org
 {
     /// <summary>
     /// The 2010 Standard Occupational Classification (SOC) system is used by 
@@ -24,6 +24,8 @@ namespace NoFuture.Rand.Data.Endo.Grps
         private static Dictionary<string, double> _soc2Prob = new Dictionary<string, double>();
         private static List<SocDetailedOccupation> _socs = new List<SocDetailedOccupation>();
         private static SocMajorGroup[] _majorGroups;
+        private const string US_OCCUPATIONS_DATA_FILE = "US_Occupations_Data.xml";
+        private const string US_OCCUPATIONS_PROB_TABLE = "US_Occupations_ProbTable.xml";
 
         public override string Abbrev => "SOC";
 
@@ -34,12 +36,13 @@ namespace NoFuture.Rand.Data.Endo.Grps
                 if(_majorGroups != null)
                     return _majorGroups;
 
-                if (TreeData.UsOccupations == null)
+                var xml = GetEmbeddedXmlDoc(US_OCCUPATIONS_DATA_FILE);
+                if (xml == null)
                     return null;
 
                 var ssOut = new SocMajorGroup();
 
-                var ssElements = TreeData.UsOccupations.SelectNodes($"//{ssOut.LocalName}");
+                var ssElements = xml.SelectNodes($"//{ssOut.LocalName}");
                 if (ssElements == null || ssElements.Count == 0)
                     return null;
 
@@ -66,7 +69,7 @@ namespace NoFuture.Rand.Data.Endo.Grps
         public static SocDetailedOccupation RandomOccupation(Predicate<SocDetailedOccupation> filterBy = null)
         {
             _soc2Prob = _soc2Prob == null || !_soc2Prob.Any()
-                ? TreeData.GetProbTable(TreeData.UsOccupationProbTable, "occupations", "ID")
+                ? GetProbTable(GetEmbeddedXmlDoc(US_OCCUPATIONS_PROB_TABLE), "occupations", "ID")
                 : _soc2Prob;
 
             if (!_socs.Any())
