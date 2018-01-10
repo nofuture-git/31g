@@ -62,10 +62,6 @@
       <Project>{3c5df49d-ae94-431c-85a5-7f5b71ac777f}</Project>
       <Name>Rand.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Data\Rand.Data.csproj">
-      <Project>{1741b2f9-4412-4363-9c46-67660bcea7ab}</Project>
-      <Name>Rand.Data</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Geo\Rand.Geo.csproj">
       <Project>{924edbc5-1492-4574-97e9-a1d85635aa1c}</Project>
       <Name>Rand.Geo</Name>
@@ -74,6 +70,10 @@
       <Project>{bb60d20c-259f-4fb3-9ba3-58e859bd712d}</Project>
       <Name>Rand.Gov</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="US_HighSchools_Data.xml" />
+    <EmbeddedResource Include="US_Universities_Data.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

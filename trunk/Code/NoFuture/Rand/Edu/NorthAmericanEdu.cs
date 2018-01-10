@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Xml;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Data;
@@ -360,7 +361,9 @@ namespace NoFuture.Rand.Edu
             else
             {
                 //pick a university from anywhere in the US
-                var allUnivs = TreeData.AmericanUniversityData.SelectNodes("//state");
+                var xml = Core.XmlDocXrefIdentifier.GetEmbeddedXmlDoc(AmericanEduBase.US_UNIVERSITY_DATA,
+                    Assembly.GetExecutingAssembly());
+                var allUnivs = xml?.SelectNodes("//state");
                 if (allUnivs == null)
                     return null;
                 AmericanUniversity univOut;

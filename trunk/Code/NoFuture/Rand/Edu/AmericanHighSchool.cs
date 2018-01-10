@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Xml;
-using NoFuture.Rand.Data;
 using NoFuture.Rand.Data.Endo.Enums;
 using NoFuture.Rand.Gov;
 using NoFuture.Util.Core.Math;
@@ -40,7 +40,9 @@ namespace NoFuture.Rand.Edu
         /// <returns></returns>
         public static AmericanRacePercents NatlGradRate()
         {
-            return GetNatlGradRates(TreeData.AmericanHighSchoolData, DF_NATL_AVG);
+            var xml = Core.XmlDocXrefIdentifier.GetEmbeddedXmlDoc(US_HIGH_SCHOOL_DATA,
+                Assembly.GetExecutingAssembly());
+            return GetNatlGradRates(xml, DF_NATL_AVG);
         }
 
         public static AmericanHighSchool GetDefaultHs()
@@ -58,19 +60,19 @@ namespace NoFuture.Rand.Edu
         }
 
         /// <summary>
-        /// Uses the data in <see cref="TreeData.AmericanHighSchoolData"/>.
+        /// Uses the data in american high school data file
         /// </summary>
         public static AmericanHighSchool[] GetHighSchoolsByState(string stateName)
         {
-
             if(string.IsNullOrWhiteSpace(stateName))
                 return new AmericanHighSchool[] { };
-
-            if (TreeData.AmericanHighSchoolData == null)
+            var xml = Core.XmlDocXrefIdentifier.GetEmbeddedXmlDoc(US_HIGH_SCHOOL_DATA,
+                Assembly.GetExecutingAssembly());
+            if (xml == null)
                 return new AmericanHighSchool[] { };
 
             var elements =
-                TreeData.AmericanHighSchoolData.SelectNodes($"//state[@name='{stateName}']//high-school");
+                xml.SelectNodes($"//state[@name='{stateName}']//high-school");
             if (elements == null || elements.Count <= 0)
                 return new AmericanHighSchool[] { };
 

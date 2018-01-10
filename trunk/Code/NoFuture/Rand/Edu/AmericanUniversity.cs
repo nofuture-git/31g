@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Xml;
-using NoFuture.Rand.Data;
 using NoFuture.Rand.Data.Endo.Enums;
 using NoFuture.Rand.Gov;
 using NoFuture.Util.Core.Math;
@@ -56,7 +56,9 @@ namespace NoFuture.Rand.Edu
         /// <returns></returns>
         public static AmericanRacePercents NatlGradRate()
         {
-            return GetNatlGradRates(TreeData.AmericanUniversityData, DF_NATL_BACHELORS_AVG);
+            var xml = Core.XmlDocXrefIdentifier.GetEmbeddedXmlDoc(US_UNIVERSITY_DATA,
+                Assembly.GetExecutingAssembly());
+            return GetNatlGradRates(xml, DF_NATL_BACHELORS_AVG);
         }
 
         public static AmericanUniversity[] GetUniversitiesByState(string stateName)
@@ -64,14 +66,16 @@ namespace NoFuture.Rand.Edu
             if(string.IsNullOrWhiteSpace(stateName))
                 return new AmericanUniversity[] { };
 
+            var xml = Core.XmlDocXrefIdentifier.GetEmbeddedXmlDoc(US_UNIVERSITY_DATA,
+                Assembly.GetExecutingAssembly());
             //this will never pass so avoid the exception
-            if (TreeData.AmericanUniversityData == null)
+            if (xml == null)
                 return new AmericanUniversity[] { };
 
             var elements =
-                TreeData.AmericanUniversityData.SelectSingleNode(
+                xml.SelectSingleNode(
                     $"//state[@name='{stateName.ToUpper()}']") ??
-                TreeData.AmericanUniversityData.SelectSingleNode($"//state[@name='{stateName}']");
+                xml.SelectSingleNode($"//state[@name='{stateName}']");
             if (elements == null || !elements.HasChildNodes)
                 return new AmericanUniversity[] { };
 
