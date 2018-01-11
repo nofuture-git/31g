@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Xml;
 using System.ComponentModel;
 using System.Reflection;
-using System.Xml;
 using NoFuture.Rand.Gov;
+using NoFuture.Rand.Data.Endo.Enums;
 
 namespace NoFuture.Rand.Edu
 {
@@ -76,6 +79,47 @@ namespace NoFuture.Rand.Edu
             p.Mixed = mixed;
 
             return p;
+        }
+
+
+        /// <summary>
+        /// Difference of national avg to race average added to state average.
+        /// </summary>
+        /// <param name="state"></param>
+        /// <param name="race"></param>
+        /// <param name="edu"></param>
+        /// <returns></returns>
+        public static double SolvePercentGradByStateAndRace(UsState state, NorthAmericanRace? race,
+            OccidentalEdu edu = OccidentalEdu.HighSchool | OccidentalEdu.Grad)
+        {
+            AmericanRacePercents p;
+            p = edu >= OccidentalEdu.Bachelor ? AmericanUniversity.NatlGradRate() : AmericanHighSchool.NatlGradRate();
+            var stateAvg = p.National;
+            var natlAvg = p.National;
+            var stateData = UsStateData.GetStateData(state?.ToString());
+            if (stateData?.PercentOfGrads != null && stateData.PercentOfGrads.Count > 0)
+            {
+                var f = stateData.PercentOfGrads.FirstOrDefault(x => x.Item1 == edu);
+                if (f != null)
+                {
+                    stateAvg = Math.Round(f.Item2, 1);
+                }
+            }
+
+            var raceNatlAvg = new Dictionary<NorthAmericanRace, double>
+            {
+                {NorthAmericanRace.AmericanIndian, p.AmericanIndian - natlAvg},
+                {NorthAmericanRace.Asian, p.Asian - natlAvg},
+                {NorthAmericanRace.Hispanic, p.Hispanic - natlAvg},
+                {NorthAmericanRace.Black, p.Black - natlAvg},
+                {NorthAmericanRace.White, p.White - natlAvg},
+                {NorthAmericanRace.Pacific, p.Pacific - natlAvg},
+                {NorthAmericanRace.Mixed, p.Mixed - natlAvg}
+            };
+            if (race == null || !raceNatlAvg.ContainsKey(race.Value))
+                return Math.Round(stateAvg, 1);
+
+            return Math.Round(stateAvg + raceNatlAvg[race.Value], 1);
         }
     }
 }

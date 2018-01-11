@@ -142,7 +142,6 @@ namespace NoFuture.Rand.Data.Sp
             return (10 - (sum%10))%10;
         }
 
-
         #endregion
     }
 }

@@ -6,7 +6,7 @@ using NoFuture.Rand.Domus;
 using NoFuture.Rand.Domus.US;
 using NoFuture.Rand.Geo;
 using NoFuture.Rand.Gov;
-using NoFuture.Util.Core;
+using NoFuture.Rand.Edu;
 
 namespace NoFuture.Rand.Tests
 {
@@ -65,13 +65,13 @@ namespace NoFuture.Rand.Tests
         public void TestSolvePercentHsGradByStateAndRace()
         {
             //test resolves to simple natl average given no input
-            var testResult = AmericanUtil.SolvePercentGradByStateAndRace(null, null);
+            var testResult = AmericanEduBase.SolvePercentGradByStateAndRace(null, null);
 
             //test resolves to natl avg's when no state
             Assert.AreEqual(82.0, testResult);
-            testResult = AmericanUtil.SolvePercentGradByStateAndRace(null, NorthAmericanRace.Mixed);
+            testResult = AmericanEduBase.SolvePercentGradByStateAndRace(null, NorthAmericanRace.Mixed);
             Assert.AreEqual(82.0, testResult);
-            testResult = AmericanUtil.SolvePercentGradByStateAndRace(null, NorthAmericanRace.AmericanIndian);
+            testResult = AmericanEduBase.SolvePercentGradByStateAndRace(null, NorthAmericanRace.AmericanIndian);
             Assert.AreEqual(70.0, testResult);
 
             var testState = NoFuture.Rand.Gov.UsState.GetStateByPostalCode("CA");
@@ -81,19 +81,19 @@ namespace NoFuture.Rand.Tests
             //percent-highschool-grad="80.6"
             //asian="89.0" natl-percent="82.0"
             // 89 - 82 = 7
-            testResult = AmericanUtil.SolvePercentGradByStateAndRace(testState, NorthAmericanRace.Asian);
+            testResult = AmericanEduBase.SolvePercentGradByStateAndRace(testState, NorthAmericanRace.Asian);
             Assert.AreEqual(87.6, testResult);
 
             //american-indian="70.0"
             // 70 - 82 = -12
-            testResult = AmericanUtil.SolvePercentGradByStateAndRace(testState, NorthAmericanRace.AmericanIndian);
+            testResult = AmericanEduBase.SolvePercentGradByStateAndRace(testState, NorthAmericanRace.AmericanIndian);
             Assert.AreEqual(68.6, testResult);
 
             testState = NoFuture.Rand.Gov.UsState.GetStateByPostalCode("ID");
             Assert.IsNotNull(testState);
             Assert.IsNotNull(UsStateData.GetStateData(testState.ToString()));
 
-            testResult = AmericanUtil.SolvePercentGradByStateAndRace(testState, NorthAmericanRace.Asian, OccidentalEdu.Bachelor | OccidentalEdu.Grad);
+            testResult = AmericanEduBase.SolvePercentGradByStateAndRace(testState, NorthAmericanRace.Asian, OccidentalEdu.Bachelor | OccidentalEdu.Grad);
             //percent-college-grad="23.9"
             //
             //asian="54.0" natl-percent="30.0"
