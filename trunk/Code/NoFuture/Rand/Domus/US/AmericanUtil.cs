@@ -11,6 +11,7 @@ using NoFuture.Rand.Edu;
 using NoFuture.Rand.Gov;
 using NoFuture.Util.Core;
 using NoFuture.Util.Core.Math;
+using System.Reflection;
 
 namespace NoFuture.Rand.Domus.US
 {
@@ -29,6 +30,9 @@ namespace NoFuture.Rand.Domus.US
     /// </remarks>
     public static class AmericanUtil
     {
+        internal const string US_FIRST_NAMES = "US_FirstNames.xml";
+        internal const string US_LAST_NAMES = "US_LastNames.xml";
+
         /// <summary>
         /// Generates a <see cref="DeathCert"/> at random based on the given <see cref="p"/>
         /// </summary>
@@ -60,7 +64,7 @@ namespace NoFuture.Rand.Domus.US
         public static string GetAmericanFirstName(DateTime? dateOfBirth, Gender gender)
         {
             var dt = dateOfBirth ?? DateTime.Today.AddYears(-18);
-            var xmlData = TreeData.AmericanFirstNamesData;
+            var xmlData = XmlDocXrefIdentifier.GetEmbeddedXmlDoc(US_FIRST_NAMES, Assembly.GetExecutingAssembly());
             
             if (xmlData == null)
             {
@@ -102,7 +106,7 @@ namespace NoFuture.Rand.Domus.US
         /// <returns></returns>
         public static string GetAmericanLastName()
         {
-            var xmlData = TreeData.AmericanLastNamesData;
+            var xmlData = XmlDocXrefIdentifier.GetEmbeddedXmlDoc(US_LAST_NAMES, Assembly.GetExecutingAssembly());
             var lnameNodes = xmlData.SelectSingleNode("//last-name");
             if (lnameNodes == null)
                 return "Doe";

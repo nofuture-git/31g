@@ -53,18 +53,11 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="US_FirstNames.xml" />
     <EmbeddedResource Include="US_InsCompanyNames.xml" />
-    <EmbeddedResource Include="US_LastNames.xml" />
-    <EmbeddedResource Include="US_PersonalDebt.xml" />
-    <EmbeddedResource Include="US_PersonalWealth.xml" />
     <EmbeddedResource Include="XRef.xml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="US_Banks.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="US_DomusOpes.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

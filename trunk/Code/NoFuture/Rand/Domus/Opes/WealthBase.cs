@@ -2,10 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
+using System.Reflection;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
-using NoFuture.Rand.Data;
-using NoFuture.Rand.Data.Endo;
 using NoFuture.Rand.Data.Endo.Enums;
 using NoFuture.Rand.Data.Sp;
 using NoFuture.Rand.Data.Sp.Cc;
@@ -30,6 +29,7 @@ namespace NoFuture.Rand.Domus.Opes
         #region constants
         public const double DF_STD_DEV_PERCENT = 0.0885D;
         protected internal const int DF_ROUND_DECIMAL_PLACES = 5;
+        internal const string US_DOMUS_OPES = "US_DomusOpes.xml";
         #endregion
 
         #region fields
@@ -658,7 +658,7 @@ namespace NoFuture.Rand.Domus.Opes
             if (String.IsNullOrWhiteSpace(xPath))
                 return null;
 
-            var xml = TreeData.UsDomusOpes;
+            var xml = Xml2XmlIdentifier.GetEmbeddedXmlDoc(US_DOMUS_OPES, Assembly.GetExecutingAssembly());
             var nodes = xml.SelectNodes(xPath);
             if (nodes == null || nodes.Count <= 0)
                 return null;

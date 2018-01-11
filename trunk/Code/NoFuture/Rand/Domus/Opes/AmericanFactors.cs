@@ -1,8 +1,8 @@
 ﻿using System;
+using System.Reflection;
 using System.Collections.Generic;
 using System.Xml;
 using NoFuture.Rand.Core;
-using NoFuture.Rand.Data;
 using NoFuture.Rand.Data.Endo.Enums;
 
 namespace NoFuture.Rand.Domus.Opes
@@ -15,6 +15,9 @@ namespace NoFuture.Rand.Domus.Opes
     [Serializable]
     public class AmericanFactors
     {
+        internal const string US_PERSONAL_DEBT = "US_PersonalDebt.xml";
+        internal const string US_PERSONAL_WEALTH = "US_PersonalWealth.xml";
+
         /// <summary>
         /// Home Debt scalar factor above or below the national average(s)
         /// </summary>
@@ -150,8 +153,8 @@ namespace NoFuture.Rand.Domus.Opes
         {
             var xmlDoc = tbl == FactorTables.CreditCardDebt || tbl == FactorTables.HomeDebt ||
                          tbl == FactorTables.VehicleDebt
-                ? TreeData.UsPersonalDebt
-                : TreeData.UsPersonalWealth;
+                ? Xml2XmlIdentifier.GetEmbeddedXmlDoc(US_PERSONAL_DEBT, Assembly.GetExecutingAssembly())
+                : Xml2XmlIdentifier.GetEmbeddedXmlDoc(US_PERSONAL_WEALTH, Assembly.GetExecutingAssembly());
             var tblName = Enum.GetName(typeof(FactorTables), tbl);
             var eduName = GetXmlEduName(edu);
             var raceName = Enum.GetName(typeof(NorthAmericanRace), race);
@@ -222,8 +225,8 @@ namespace NoFuture.Rand.Domus.Opes
         {
             var xmlDoc = tbl == FactorTables.CreditCardDebt || tbl == FactorTables.HomeDebt ||
                          tbl == FactorTables.VehicleDebt || tbl == FactorTables.OtherDebt
-                ? TreeData.UsPersonalDebt
-                : TreeData.UsPersonalWealth;
+                ? Xml2XmlIdentifier.GetEmbeddedXmlDoc(US_PERSONAL_DEBT, Assembly.GetExecutingAssembly())
+                : Xml2XmlIdentifier.GetEmbeddedXmlDoc(US_PERSONAL_WEALTH, Assembly.GetExecutingAssembly());
             var tblName = Enum.GetName(typeof(FactorTables), tbl);
             var tblXPath = $"//table[@name='{tblName}']";
             var tblNode = xmlDoc.SelectSingleNode(tblXPath) as XmlElement;

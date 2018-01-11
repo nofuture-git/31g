@@ -51,12 +51,14 @@
     <Compile Include="Fed\ResearchStatisticsSupervisionDiscount.cs" />
     <Compile Include="Fed\RiskFreeInterestRate.cs" />
     <Compile Include="Fed\RoutingTransitNumber.cs" />
+    <Compile Include="Gender.cs" />
     <Compile Include="GovernmentId.cs" />
     <Compile Include="Irs\EmployerIdentificationNumber.cs" />
     <Compile Include="Irs\IndividualTaxId.cs" />
     <Compile Include="Irs\PreparerTaxIdNumber.cs" />
     <Compile Include="Irs\TaxpayerIdentificationNumber.cs" />
     <Compile Include="IVitalRecord.cs" />
+    <Compile Include="MaritialStatus.cs" />
     <Compile Include="NationCodes.cs" />
     <Compile Include="Nhtsa\VehicleDescription.cs" />
     <Compile Include="Nhtsa\VehicleIdSection.cs" />

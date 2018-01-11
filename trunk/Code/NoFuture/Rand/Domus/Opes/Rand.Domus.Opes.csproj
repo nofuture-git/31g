@@ -65,10 +65,6 @@
       <Project>{3c5df49d-ae94-431c-85a5-7f5b71ac777f}</Project>
       <Name>Rand.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Data\Rand.Data.csproj">
-      <Project>{1741b2f9-4412-4363-9c46-67660bcea7ab}</Project>
-      <Name>Rand.Data</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Data\Sp\Rand.Data.Sp.csproj">
       <Project>{193f1df6-f471-4164-b5bb-8752c306df7b}</Project>
       <Name>Rand.Data.Sp</Name>
@@ -89,6 +85,15 @@
       <Project>{00c35283-af89-48a4-8035-8270d5302ce5}</Project>
       <Name>Rand.Domus.Pneuma</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="US_DomusOpes.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="US_PersonalDebt.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="US_PersonalWealth.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
