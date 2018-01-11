@@ -1,11 +1,10 @@
 ﻿using System;
+using System.Reflection;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
-using NoFuture.Rand.Data;
-using NoFuture.Rand.Data.Endo;
 using NoFuture.Rand.Geo;
 using NoFuture.Rand.Gov.Fed;
 
@@ -17,6 +16,7 @@ namespace NoFuture.Rand.Com
     [Serializable]
     public class Bank : FinancialFirm
     {
+        internal const string US_BANKS = "US_Banks.xml";
 
         #region properties
         public ResearchStatisticsSupervisionDiscount Rssd { get; set; }
@@ -73,7 +73,7 @@ namespace NoFuture.Rand.Com
                 new Tuple<string, string>("B&t", "Bank & Trust"),
             };
 
-            var unfoldedName = Facit.GetNameFull(abbrev);
+            var unfoldedName = GetNameFull(abbrev);
 
             foreach (var pair in bankNameReplacements)
             {
@@ -131,14 +131,14 @@ namespace NoFuture.Rand.Com
         }
 
         /// <summary>
-        /// Picks a single xml element at random from the <see cref="TreeData.UsBanks"/> 
+        /// Picks a single xml element at random from the US Banks data file 
         /// first attempting to match on <see cref="ca"/>, if given.
         /// </summary>
         /// <param name="ca"></param>
         /// <returns></returns>
         internal static XmlElement GetBankXmlElement(CityArea ca)
         {
-            var xml = TreeData.UsBanks;
+            var xml = XmlDocXrefIdentifier.GetEmbeddedXmlDoc(US_BANKS, Assembly.GetExecutingAssembly());
             if (xml == null)
                 return null;
             XmlElement bankXmlElem = null;

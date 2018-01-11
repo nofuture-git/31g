@@ -149,10 +149,6 @@
       <Project>{bf24172c-6472-4059-860f-46f7a9fc78df}</Project>
       <Name>Rand.Tele</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Rand.Data.csproj">
-      <Project>{1741b2f9-4412-4363-9c46-67660bcea7ab}</Project>
-      <Name>Rand.Data</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Sp\Rand.Data.Sp.csproj">
       <Project>{193f1df6-f471-4164-b5bb-8752c306df7b}</Project>
       <Name>Rand.Data.Sp</Name>

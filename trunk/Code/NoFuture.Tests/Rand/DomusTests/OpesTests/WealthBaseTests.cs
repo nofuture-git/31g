@@ -216,7 +216,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         public static List<Tuple<string, string>> GetExpectedNamesFromXml(string sectionName)
         {
             var grpsAndNames = new List<Tuple<string, string>>();
-            var srcXml = Rand.Data.TreeData.UsDomusOpes;
+            var srcXml = WealthBase.UsDomusOpesData;
             var incomeNode = srcXml.SelectSingleNode($"//{sectionName}");
 
             foreach (var grpNode in incomeNode.ChildNodes)

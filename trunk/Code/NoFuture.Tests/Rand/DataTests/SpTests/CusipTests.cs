@@ -92,30 +92,30 @@ namespace NoFuture.Rand.Tests
         [TestMethod]
         public void TestGetSearchCompanyName()
         {
-            var testResult = Facit.GetSearchCompanyName("HNI Corporation");
+            var testResult = Com.Firm.GetSearchCompanyName("HNI Corporation");
             Assert.AreEqual("HNI CORP", testResult);
-            testResult = Facit.GetSearchCompanyName("ZION OIL & GAS INC.");
+            testResult = Com.Firm.GetSearchCompanyName("ZION OIL & GAS INC.");
             Assert.AreEqual("ZION OIL & GAS INC", testResult);
-            testResult = Facit.GetSearchCompanyName("The Saint Louis Glass Company");
+            testResult = Com.Firm.GetSearchCompanyName("The Saint Louis Glass Company");
             Assert.AreEqual("ST LOUIS GLASS CO", testResult);
-            testResult = Facit.GetSearchCompanyName("Twenty-Nine Palms, California");
+            testResult = Com.Firm.GetSearchCompanyName("Twenty-Nine Palms, California");
             Assert.AreEqual("TWENTY NINE PALMS CALIF", testResult);
-            testResult = Facit.GetSearchCompanyName("B/G Foods Company");
+            testResult = Com.Firm.GetSearchCompanyName("B/G Foods Company");
             Assert.AreEqual("B G FOODS CO", testResult);
-            testResult = Facit.GetSearchCompanyName("A. & C. Company Mortgage");
+            testResult = Com.Firm.GetSearchCompanyName("A. & C. Company Mortgage");
             Assert.AreEqual("A & C CO MTG", testResult);
 
-            testResult = Facit.GetSearchCompanyName("M&T Bank Corporation");
+            testResult = Com.Firm.GetSearchCompanyName("M&T Bank Corporation");
             Assert.AreEqual("M&T BK CORP", testResult);
 
-            testResult = Facit.GetSearchCompanyName("Parsons and Company Incorporated");
+            testResult = Com.Firm.GetSearchCompanyName("Parsons and Company Incorporated");
             Assert.AreEqual("PARSONS & CO INC",testResult);
         }
 
         [TestMethod]
         public void TestGetNameFull()
         {
-            var testResult = Facit.GetNameFull("BRAND BKG CO");
+            var testResult = Com.Firm.GetNameFull("BRAND BKG CO");
             Assert.AreEqual("Brand Banking Company", testResult);
 
         }

@@ -60,7 +60,7 @@ namespace NoFuture.Rand.Data.Exo.NfXml
 
                 if (!string.IsNullOrWhiteSpace(CompanyName))
                 {
-                    var searchName = Facit.GetSearchCompanyName(CompanyName);
+                    var searchName = Com.Firm.GetSearchCompanyName(CompanyName);
                     searchName = Uri.EscapeUriString(searchName).Replace("&", "%26");
                     searchList.Add(CompanyName.ToCharArray().All(char.IsLetterOrDigit)
                         ? HttpUtility.UrlEncode($"COMPANY-NAME={searchName}")

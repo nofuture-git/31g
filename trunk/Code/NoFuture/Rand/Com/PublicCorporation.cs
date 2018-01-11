@@ -34,7 +34,7 @@ namespace NoFuture.Rand.Com
             }
             set => _tickerSymbols = value;
         }
-        public string UrlEncodedName => Uri.EscapeUriString(Facit.GetSearchCompanyName(Name));
+        public string UrlEncodedName => Uri.EscapeUriString(GetSearchCompanyName(Name));
 
         public override void LoadXrefXmlData()
         {

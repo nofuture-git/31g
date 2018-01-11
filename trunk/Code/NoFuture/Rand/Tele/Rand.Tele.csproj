@@ -7,8 +7,8 @@
     <ProjectGuid>{BF24172C-6472-4059-860F-46F7A9FC78DF}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Rand.Tele</RootNamespace>
-    <AssemblyName>Rand.Tele</AssemblyName>
+    <RootNamespace>NoFuture.Rand.Tele</RootNamespace>
+    <AssemblyName>NoFuture.Rand.Tele</AssemblyName>
     <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />

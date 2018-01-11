@@ -186,10 +186,6 @@
       <Project>{5b142ecb-4a49-427a-8086-b4e9c717d651}</Project>
       <Name>Rand.Data.Exo</Name>
     </ProjectReference>
-    <ProjectReference Include="..\NoFuture\Rand\Data\Source\Rand.Data.Source.csproj">
-      <Project>{4e011849-d274-4f79-96af-549f67c46d80}</Project>
-      <Name>Rand.Data.Source</Name>
-    </ProjectReference>
     <ProjectReference Include="..\NoFuture\Read\Ini\Read.csproj">
       <Project>{335212c4-7f96-4647-8d9b-f1a4e61b735b}</Project>
       <Name>Read</Name>

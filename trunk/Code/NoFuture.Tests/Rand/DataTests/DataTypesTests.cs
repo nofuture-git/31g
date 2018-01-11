@@ -18,7 +18,7 @@ namespace NoFuture.Rand.Tests
         [TestMethod]
         public void TestListData()
         {
-            var testResult = Data.ListData.WebmailDomains;
+            var testResult =  Tele.Net.WebmailDomains;
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0, testResult.Length);
         }
@@ -26,7 +26,7 @@ namespace NoFuture.Rand.Tests
         [TestMethod]
         public void TestEnglishWords()
         {
-            var testResult = Data.TreeData.EnglishWords;
+            var testResult = Core.Etx.EnglishWords;
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0,testResult.Count);
             var testResultItem = testResult.FirstOrDefault(x => x.Item1 == "it");

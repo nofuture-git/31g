@@ -169,6 +169,14 @@ namespace NoFuture.Rand.Domus.Opes
         /// </summary>
         protected internal abstract List<Pondus> MyItems { get; }
 
+        protected internal static XmlDocument UsDomusOpesData
+        {
+            get
+            {
+                return Xml2XmlIdentifier.GetEmbeddedXmlDoc(US_DOMUS_OPES, Assembly.GetExecutingAssembly());
+            }
+        }
+
         #endregion
 
         #region methods

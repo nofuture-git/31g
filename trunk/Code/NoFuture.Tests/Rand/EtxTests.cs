@@ -47,7 +47,7 @@ namespace NoFuture.Rand.Tests
         {
             for (var i = 0; i < 10; i++)
             {
-                var testResult = Net.RandomHttpUri();
+                var testResult = NoFuture.Rand.Tele.Net.RandomHttpUri();
                 Assert.IsNotNull(testResult);
                 Assert.IsFalse(string.IsNullOrWhiteSpace(testResult.ToString()));
                 System.Diagnostics.Debug.WriteLine(testResult);
@@ -55,7 +55,7 @@ namespace NoFuture.Rand.Tests
 
             for (var i = 0; i < 10; i++)
             {
-                var testResult = Net.RandomHttpUri(false, true);
+                var testResult = NoFuture.Rand.Tele.Net.RandomHttpUri(false, true);
                 Assert.IsNotNull(testResult);
                 Assert.IsFalse(string.IsNullOrWhiteSpace(testResult.ToString()));
                 System.Diagnostics.Debug.WriteLine(testResult);

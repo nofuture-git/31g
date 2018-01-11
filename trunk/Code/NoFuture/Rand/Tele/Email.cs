@@ -72,7 +72,7 @@ namespace Rand.Tele
         /// <returns></returns>
         public static string RandomEmailUri(string username = "", bool usCommonOnly = false)
         {
-            var host = Net.RandomUriHost(false, usCommonOnly);
+            var host = NoFuture.Rand.Tele.Net.RandomUriHost(false, usCommonOnly);
             if (!String.IsNullOrWhiteSpace(username))
                 return String.Join("@", username, host);
             var bunchOfWords = new List<string>();

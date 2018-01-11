@@ -82,14 +82,6 @@
       <Project>{5b142ecb-4a49-427a-8086-b4e9c717d651}</Project>
       <Name>Rand.Data.Exo</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\NoFuture\Rand\Data\Rand.Data.csproj">
-      <Project>{1741b2f9-4412-4363-9c46-67660bcea7ab}</Project>
-      <Name>Rand.Data</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\NoFuture\Rand\Data\Source\Rand.Data.Source.csproj">
-      <Project>{4e011849-d274-4f79-96af-549f67c46d80}</Project>
-      <Name>Rand.Data.Source</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\..\NoFuture\Rand\Data\Sp\Rand.Data.Sp.csproj">
       <Project>{193f1df6-f471-4164-b5bb-8752c306df7b}</Project>
       <Name>Rand.Data.Sp</Name>
