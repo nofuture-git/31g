@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
-using NoFuture.Rand.Data.Endo;
 using NoFuture.Rand.Geo;
 using NoFuture.Rand.Org;
+using NoFuture.Rand.Tele;
 using NoFuture.Util.Core;
 
 namespace NoFuture.Rand.Com

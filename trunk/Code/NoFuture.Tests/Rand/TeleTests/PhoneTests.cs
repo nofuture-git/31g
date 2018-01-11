@@ -1,5 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NoFuture.Rand.Data.Endo;
+using NoFuture.Rand.Tele;
 
 namespace NoFuture.Rand.Tests
 {

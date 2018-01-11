@@ -1,14 +1,10 @@
 ﻿using System;
 using System.Diagnostics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NoFuture.Rand.Core.Enums;
-using NoFuture.Rand.Data.Endo;
-using NoFuture.Rand.Data.Endo.Enums;
-using NoFuture.Rand.Domus;
 using NoFuture.Rand.Domus.US;
 using NoFuture.Rand.Gov;
 
-namespace NoFuture.Rand.Tests
+namespace NoFuture.Rand.Tests.DataTests.SpTests
 {
     [TestClass]
     public class CreditScoreTests

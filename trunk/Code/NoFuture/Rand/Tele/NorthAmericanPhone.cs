@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using NoFuture.Rand.Core;
 
-namespace NoFuture.Rand.Data.Endo
+namespace NoFuture.Rand.Tele
 {
     /// <summary>
     /// Telephone numbers in North America based on the  North American Numbering Plan

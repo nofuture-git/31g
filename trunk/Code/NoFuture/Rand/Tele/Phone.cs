@@ -3,7 +3,7 @@ using System.Reflection;
 using System.Xml;
 using NoFuture.Rand.Core;
 
-namespace NoFuture.Rand.Data.Endo
+namespace NoFuture.Rand.Tele
 {
     /// <summary>
     /// Base type to represent a telephone number

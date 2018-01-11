@@ -3,15 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
-using NoFuture.Rand.Data;
-using NoFuture.Rand.Data.Endo;
-using NoFuture.Rand.Data.Endo.Enums;
 using NoFuture.Rand.Edu;
 using NoFuture.Rand.Geo;
 using NoFuture.Rand.Gov;
+using NoFuture.Rand.Tele;
 using NoFuture.Shared.Core;
 using NoFuture.Util.Core;
-using Rand.Tele;
 
 namespace NoFuture.Rand.Domus.US
 {

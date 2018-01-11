@@ -3,7 +3,6 @@ using System.Linq;
 using System.Reflection;
 using System.Xml;
 using NoFuture.Rand.Core;
-using NoFuture.Rand.Data.Endo;
 using NoFuture.Rand.Gov;
 
 namespace NoFuture.Rand.Geo

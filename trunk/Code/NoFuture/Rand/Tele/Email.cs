@@ -1,20 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Xml;
 using NoFuture.Rand.Core;
-using NoFuture.Shared.Core;
 using NoFuture.Util.Core;
 
-namespace Rand.Tele
+namespace NoFuture.Rand.Tele
 {
     public class Email
     {
-
-
         /// <summary>
         /// Creates a random email address in a typical format
         /// </summary>

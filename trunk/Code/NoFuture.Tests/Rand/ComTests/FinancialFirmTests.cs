@@ -1,8 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NoFuture.Rand.Data.Endo;
 using NoFuture.Rand.Geo;
 
-namespace NoFuture.Rand.Tests
+namespace NoFuture.Rand.Tests.ComTests
 {
     [TestClass]
     public class FinancialFirmTests

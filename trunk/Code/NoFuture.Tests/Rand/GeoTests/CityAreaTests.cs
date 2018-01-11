@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NoFuture.Rand.Data.Endo;
 using NoFuture.Rand.Geo;
 
 namespace NoFuture.Rand.Tests

@@ -1,6 +1,6 @@
 using System;
 using NoFuture.Rand.Core;
-using NoFuture.Rand.Data.Endo.Enums;
+using NoFuture.Rand.Gov;
 using NoFuture.Shared.Core;
 using NoFuture.Util.Core;
 

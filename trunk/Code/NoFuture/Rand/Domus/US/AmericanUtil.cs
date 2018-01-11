@@ -4,14 +4,11 @@ using System.Linq;
 using System.Xml;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
-using NoFuture.Rand.Data;
-using NoFuture.Rand.Data.Endo;
-using NoFuture.Rand.Data.Endo.Enums;
-using NoFuture.Rand.Edu;
 using NoFuture.Rand.Gov;
 using NoFuture.Util.Core;
 using NoFuture.Util.Core.Math;
 using System.Reflection;
+using NoFuture.Rand.Tele;
 
 namespace NoFuture.Rand.Domus.US
 {

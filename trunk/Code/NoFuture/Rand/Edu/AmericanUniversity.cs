@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Reflection;
 using System.Xml;
-using NoFuture.Rand.Data.Endo.Enums;
 using NoFuture.Rand.Gov;
 using NoFuture.Util.Core.Math;
 

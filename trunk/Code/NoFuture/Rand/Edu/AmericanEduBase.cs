@@ -5,7 +5,6 @@ using System.Xml;
 using System.ComponentModel;
 using System.Reflection;
 using NoFuture.Rand.Gov;
-using NoFuture.Rand.Data.Endo.Enums;
 
 namespace NoFuture.Rand.Edu
 {

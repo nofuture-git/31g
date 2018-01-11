@@ -1,26 +1,12 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NoFuture.Rand.Data.Endo;
+﻿using System;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NoFuture.Rand.Geo;
 
-namespace NoFuture.Rand.Tests
+namespace NoFuture.Rand.Tests.GeoTests
 {
     [TestClass]
-    public class AddressTests
+    public class UsStreetPoTests
     {
-        [TestMethod]
-        public void AmericanTest()
-        {
-            var testResult = StreetPo.American();
-            Assert.IsNotNull(testResult);
-            Assert.IsFalse(string.IsNullOrWhiteSpace(testResult.PostBox));
-            Assert.IsFalse(string.IsNullOrWhiteSpace(testResult.StreetName));
-            Assert.IsFalse(string.IsNullOrWhiteSpace(testResult.StreetKind));
-
-            testResult.Data.SecondaryUnitDesignator = "UNIT DESG";
-            testResult.Data.SecondaryUnitId = "4451";
-
-            System.Diagnostics.Debug.WriteLine(testResult);
-        }
 
         [TestMethod]
         public void TryParseTests()
@@ -33,14 +19,14 @@ namespace NoFuture.Rand.Tests
             Assert.IsTrue(testResult);
             Assert.AreEqual("102", testResultOut.PostBox);
             Assert.AreEqual("MAIN", testResultOut.StreetName);
-            Assert.AreEqual("ST",testResultOut.StreetKind);
+            Assert.AreEqual("ST", testResultOut.StreetKind);
             Assert.AreEqual("APT 101", testResultOut.SecondaryUnit);
 
             testInput = "1356 EXECUTIVE DR STE 202";
             testResult = UsStreetPo.TryParse(testInput, out testResultOut);
             Assert.IsTrue(testResult);
-            Assert.AreEqual("1356",testResultOut.PostBox);
-            Assert.AreEqual("EXECUTIVE",testResultOut.StreetName);
+            Assert.AreEqual("1356", testResultOut.PostBox);
+            Assert.AreEqual("EXECUTIVE", testResultOut.StreetName);
             Assert.AreEqual("DR", testResultOut.StreetKind);
             Assert.AreEqual("STE 202", testResultOut.SecondaryUnit);
 

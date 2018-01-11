@@ -42,7 +42,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0, testResult.Count);
 
-            var testInput = new NoFuture.Rand.Domus.Pneuma.Personality();
+            var testInput = new Personality();
             testInput.Openness.Value = new Dimension(0.99, 0.10);
 
             testResult = testSubject.GetRandomEmployment(null, testInput);

@@ -1,5 +1,5 @@
 ﻿using System;
-using NoFuture.Rand.Data.Endo.Enums;
+using NoFuture.Rand.Gov;
 
 namespace NoFuture.Rand.Domus
 {

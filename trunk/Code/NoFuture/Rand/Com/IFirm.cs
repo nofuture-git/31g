@@ -1,8 +1,8 @@
 ﻿using System;
 using NoFuture.Rand.Core;
-using NoFuture.Rand.Data.Endo;
 using NoFuture.Rand.Geo;
 using NoFuture.Rand.Org;
+using NoFuture.Rand.Tele;
 
 namespace NoFuture.Rand.Com
 {

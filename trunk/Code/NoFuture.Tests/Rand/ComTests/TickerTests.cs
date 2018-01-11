@@ -2,7 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NoFuture.Rand.Com;
 
-namespace NoFuture.Rand.Tests
+namespace NoFuture.Rand.Tests.ComTests
 {
     [TestClass]
     public class TickerTests

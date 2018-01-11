@@ -6,7 +6,6 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
 using NoFuture.Rand.Core;
-using NoFuture.Rand.Data.Endo.Enums;
 using NoFuture.Rand.Gov;
 using NoFuture.Rand.Gov.Census;
 using NoFuture.Util.Core;

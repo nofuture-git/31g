@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using System.Xml;
-using NoFuture.Rand.Data.Endo.Enums;
-using NoFuture.Rand.Org;
 using NoFuture.Util.Core.Math;
 
 namespace NoFuture.Rand.Gov
@@ -68,7 +65,7 @@ namespace NoFuture.Rand.Gov
         /// <summary>
         /// BLS SMU series - see State2NaiscSuperSector.fsx
         /// </summary>
-        public List<Tuple<NaicsSuperSector, double>> EmploymentSectors { get; } = new List<Tuple<NaicsSuperSector, double>>();
+        public List<Tuple<string, double>> EmploymentSectors { get; } = new List<Tuple<string, double>>();
 
         /// <summary>
         /// https://en.wikipedia.org/wiki/List_of_U.S._states_by_educational_attainment
@@ -163,21 +160,22 @@ namespace NoFuture.Rand.Gov
             if (string.IsNullOrWhiteSpace(_stateName))
                 return;
             xml = xml ?? Core.XmlDocXrefIdentifier.GetEmbeddedXmlDoc(US_STATES_DATA, Assembly.GetExecutingAssembly());
-            if (xml == null)
+            var econDataNodes = xml?.SelectNodes($"//{STATE}[@{NAME}='{_stateName}']//{SECTOR}");
+            if (econDataNodes == null)
                 return;
-            for (var ssId = 10; ssId <= 90; ssId += 10)
+            for (var i = 0; i < econDataNodes.Count; i++)
             {
-                var emplyData =
-                    xml.SelectSingleNode($"//{STATE}[@{NAME}='{_stateName}']//{SECTOR}[@{CATEGORY_ID}='{ssId}']");
+                var emplyData = econDataNodes.Item(i) as XmlElement;
                 if (emplyData?.Attributes?[PERCENT_EMPLOYED]?.Value == null)
                     continue;
                 var strPercent = emplyData.Attributes[PERCENT_EMPLOYED].Value;
                 if (!double.TryParse(strPercent, out var percent))
                     continue;
-                var ss = NorthAmericanIndustryClassification.AllSectors.FirstOrDefault(x => x.Value == ssId.ToString());
-                if (ss == null)
+                var description = emplyData.Attributes[CATEGORY_ID]?.Value ?? "";
+                if (string.IsNullOrWhiteSpace(description))
                     continue;
-                EmploymentSectors.Add(new Tuple<NaicsSuperSector, double>(ss, percent));
+
+                EmploymentSectors.Add(new Tuple<string, double>(description, percent));
             }
         }
 

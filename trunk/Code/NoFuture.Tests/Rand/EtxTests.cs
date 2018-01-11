@@ -6,7 +6,7 @@ using NoFuture.Rand.Core;
 using NoFuture.Rand.Data;
 using NoFuture.Rand.Domus;
 using NoFuture.Rand.Domus.US;
-using Rand.Tele;
+using NoFuture.Rand.Tele;
 
 namespace NoFuture.Rand.Tests
 {
@@ -312,6 +312,19 @@ namespace NoFuture.Rand.Tests
             var totalTestRslt = runningCount.Sum();
             System.Diagnostics.Debug.WriteLine(totalTestRslt);
             Assert.IsTrue(totalTestRslt > 90);
+        }
+
+
+        [TestMethod]
+        public void TestEnglishWords()
+        {
+            var testResult = Core.Etx.EnglishWords;
+            Assert.IsNotNull(testResult);
+            Assert.AreNotEqual(0, testResult.Count);
+            var testResultItem = testResult.FirstOrDefault(x => x.Item1 == "it");
+            Assert.IsNotNull(testResultItem);
+
+            Assert.AreEqual(1386, testResultItem.Item2);
         }
     }
 }
