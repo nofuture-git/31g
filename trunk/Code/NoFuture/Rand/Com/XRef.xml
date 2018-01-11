@@ -1,0 +1,416 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<noFuture>
+  <rand>
+    <data>
+      <source>
+        <x-ref-group data-type="NoFuture.Rand.Com.Bank">
+          <x-data-reference>
+            <x-ref>
+              <x-ref-id>JPMORGAN CHASE BK NA</x-ref-id>
+            </x-ref>
+            <add name="CIK">
+              <add name="Value" value="0001327421" />
+            </add>
+            <add name="TickerSymbols">
+              <add name="Symbol" value="JPM" />
+              <add name="Exchange" value="NYSE" />
+            </add>
+            <add name="SIC">
+              <add name="Value" value="6021" />
+            </add>
+          </x-data-reference>
+          <x-data-reference>
+            <x-ref>
+              <x-ref-id>BANK OF AMER NA</x-ref-id>
+            </x-ref>
+            <add name="CIK">
+              <add name="Value" value="0000070858" />
+            </add>
+            <add name="TickerSymbols">
+              <add name="Symbol" value="BAC" />
+              <add name="Exchange" value="NYSE" />
+            </add>
+            <add name="SIC">
+              <add name="Value" value="6021" />
+            </add>
+          </x-data-reference>
+          <x-data-reference>
+            <x-ref>
+              <x-ref-id>WELLS FARGO BK NA</x-ref-id>
+            </x-ref>
+            <add name="CIK">
+              <add name="Value" value="0000072971" />
+            </add>
+            <add name="TickerSymbols">
+              <add name="Symbol" value="WFC" />
+              <add name="Exchange" value="NYSE" />
+            </add>
+            <add name="SIC">
+              <add name="Value" value="6021" />
+            </add>
+          </x-data-reference>
+          <x-data-reference>
+            <x-ref>
+              <x-ref-id>CITIBANK NA</x-ref-id>
+            </x-ref>
+            <add name="CIK">
+              <add name="Value" value="0000831001" />
+            </add>
+            <add name="TickerSymbols">
+              <add name="Symbol" value="C" />
+              <add name="Exchange" value="NYSE" />
+            </add>
+            <add name="SIC">
+              <add name="Value" value="6021" />
+            </add>
+          </x-data-reference>
+          <x-data-reference>
+            <x-ref>
+              <x-ref-id>U S BK NA</x-ref-id>
+            </x-ref>
+            <add name="CIK">
+              <add name="Value" value="0000036104" />
+            </add>
+            <add name="TickerSymbols">
+              <add name="Symbol" value="USB" />
+              <add name="Exchange" value="NYSE" />
+            </add>
+            <add name="SIC">
+              <add name="Value" value="6021" />
+            </add>
+          </x-data-reference>
+          <x-data-reference>
+            <x-ref>
+              <x-ref-id>PNC BK NA</x-ref-id>
+            </x-ref>
+            <add name="CIK">
+              <add name="Value" value="0000713676" />
+            </add>
+            <add name="TickerSymbols">
+              <add name="Symbol" value="PNC" />
+              <add name="Exchange" value="NYSE" />
+            </add>
+            <add name="SIC">
+              <add name="Value" value="6021" />
+            </add>
+          </x-data-reference>
+          <x-data-reference>
+            <x-ref>
+              <x-ref-id>BANK OF NY MELLON</x-ref-id>
+            </x-ref>
+            <add name="CIK">
+              <add name="Value" value="0001390777" />
+            </add>
+            <add name="TickerSymbols">
+              <add name="Symbol" value="BK" />
+              <add name="Exchange" value="NYSE" />
+            </add>
+            <add name="SIC">
+              <add name="Value" value="6022" />
+            </add>
+          </x-data-reference>
+          <x-data-reference>
+            <x-ref>
+              <x-ref-id>STATE STREET B&amp;TC</x-ref-id>
+            </x-ref>
+            <add name="CIK">
+              <add name="Value" value="0000093751" />
+            </add>
+            <add name="TickerSymbols">
+              <add name="Symbol" value="STT" />
+              <add name="Exchange" value="NYSE" />
+            </add>
+            <add name="SIC">
+              <add name="Value" value="6022" />
+            </add>
+          </x-data-reference>
+          <x-data-reference>
+            <x-ref>
+              <x-ref-id>CAPITAL ONE NA</x-ref-id>
+            </x-ref>
+            <add name="CIK">
+              <add name="Value" value="0000927628" />
+            </add>
+            <add name="TickerSymbols">
+              <add name="Symbol" value="COF" />
+              <add name="Exchange" value="NYSE" />
+            </add>
+            <add name="SIC">
+              <add name="Value" value="6021" />
+            </add>
+          </x-data-reference>
+          <x-data-reference>
+            <x-ref>
+              <x-ref-id>T D BK NA</x-ref-id>
+            </x-ref>
+            <add name="CIK">
+              <add name="Value" value="0000947263" />
+            </add>
+            <add name="TickerSymbols">
+              <add name="Symbol" value="TD" />
+              <add name="Exchange" value="NYSE" />
+            </add>
+            <add name="SIC">
+              <add name="Value" value="6029" />
+            </add>
+          </x-data-reference>
+          <x-data-reference>
+            <x-ref>
+              <x-ref-id>HSBC BK USA NA</x-ref-id>
+            </x-ref>
+            <add name="CIK">
+              <add name="Value" value="0001089113" />
+            </add>
+            <add name="TickerSymbols">
+              <add name="Symbol" value="HSBC" />
+              <add name="Exchange" value="NYSE" />
+            </add>
+            <add name="SIC">
+              <add name="Value" value="6035" />
+            </add>
+          </x-data-reference>
+          <x-data-reference>
+            <x-ref>
+              <x-ref-id>BRANCH BKG&amp;TC</x-ref-id>
+            </x-ref>
+            <add name="CIK">
+              <add name="Value" value="0000092230" />
+            </add>
+            <add name="TickerSymbols">
+              <add name="Symbol" value="BBT" />
+              <add name="Exchange" value="NYSE" />
+            </add>
+            <add name="SIC">
+              <add name="Value" value="6021" />
+            </add>
+          </x-data-reference>
+          <x-data-reference>
+            <x-ref>
+              <x-ref-id>SUNTRUST BK</x-ref-id>
+            </x-ref>
+            <add name="CIK">
+              <add name="Value" value="0000750556" />
+            </add>
+            <add name="TickerSymbols">
+              <add name="Symbol" value="STI" />
+              <add name="Exchange" value="NYSE" />
+            </add>
+            <add name="SIC">
+              <add name="Value" value="6021" />
+            </add>
+          </x-data-reference>
+          <x-data-reference>
+            <x-ref>
+              <x-ref-id>FIFTH THIRD BK</x-ref-id>
+            </x-ref>
+            <add name="CIK">
+              <add name="Value" value="0000035527" />
+            </add>
+            <add name="TickerSymbols">
+              <add name="Symbol" value="FITB" />
+              <add name="Exchange" value="NYSE" />
+            </add>
+            <add name="SIC">
+              <add name="Value" value="6022" />
+            </add>
+          </x-data-reference>
+          <x-data-reference>
+            <x-ref>
+              <x-ref-id>MORGAN STANLEY BK NA</x-ref-id>
+            </x-ref>
+            <add name="CIK">
+              <add name="Value" value="0000895421" />
+            </add>
+            <add name="TickerSymbols">
+              <add name="Symbol" value="MS" />
+              <add name="Exchange" value="NYSE" />
+            </add>
+            <add name="SIC">
+              <add name="Value" value="6211" />
+            </add>
+          </x-data-reference>
+          <x-data-reference>
+            <x-ref>
+              <x-ref-id>GOLDMAN SACHS BK USA</x-ref-id>
+            </x-ref>
+            <add name="CIK">
+              <add name="Value" value="0000886982" />
+            </add>
+            <add name="TickerSymbols">
+              <add name="Symbol" value="GS" />
+              <add name="Exchange" value="NYSE" />
+            </add>
+            <add name="SIC">
+              <add name="Value" value="6211" />
+            </add>
+          </x-data-reference>
+          <x-data-reference>
+            <x-ref>
+              <x-ref-id>REGIONS BK</x-ref-id>
+            </x-ref>
+            <add name="CIK">
+              <add name="Value" value="0001281761" />
+            </add>
+            <add name="TickerSymbols">
+              <add name="Symbol" value="RF" />
+              <add name="Exchange" value="NYSE" />
+            </add>
+            <add name="SIC">
+              <add name="Value" value="6021" />
+            </add>
+          </x-data-reference>
+          <x-data-reference>
+            <x-ref>
+              <x-ref-id>NORTHERN TC</x-ref-id>
+            </x-ref>
+            <add name="CIK">
+              <add name="Value" value="0000073124" />
+            </add>
+            <add name="TickerSymbols">
+              <add name="Symbol" value="NTRS" />
+              <add name="Exchange" value="NASDAQ" />
+            </add>
+            <add name="SIC">
+              <add name="Value" value="6022" />
+            </add>
+          </x-data-reference>
+          <x-data-reference>
+            <x-ref>
+              <x-ref-id>CITIZENS BK NA</x-ref-id>
+            </x-ref>
+            <add name="CIK">
+              <add name="Value" value="0000764156" />
+            </add>
+            <add name="TickerSymbols">
+              <add name="Symbol" value="CIWV" />
+              <add name="Exchange" value="OTCMKTS" />
+            </add>
+            <add name="SIC">
+              <add name="Value" value="6021" />
+            </add>
+          </x-data-reference>
+          <x-data-reference>
+            <x-ref>
+              <x-ref-id>MUFG UNION BK NA</x-ref-id>
+            </x-ref>
+            <add name="CIK">
+              <add name="Value" value="0001011659" />
+            </add>
+            <add name="TickerSymbols">
+              <add name="Symbol" value="UB" />
+              <add name="Exchange" value="NYSE" />
+            </add>
+            <add name="SIC">
+              <add name="Value" value="6021" />
+            </add>
+          </x-data-reference>
+          <x-data-reference>
+            <x-ref>
+              <x-ref-id>ALLY BK</x-ref-id>
+            </x-ref>
+            <add name="CIK">
+              <add name="Value" value="0000040729" />
+            </add>
+            <add name="TickerSymbols">
+              <add name="Symbol" value="ALLY" />
+              <add name="Exchange" value="NYSE" />
+            </add>
+            <add name="SIC">
+              <add name="Value" value="6172" />
+            </add>
+          </x-data-reference>
+          <x-data-reference>
+            <x-ref>
+              <x-ref-id>BMO HARRIS BK NA</x-ref-id>
+            </x-ref>
+            <add name="CIK">
+              <add name="Value" value="0000927971" />
+            </add>
+            <add name="TickerSymbols">
+              <add name="Symbol" value="BMO" />
+              <add name="Exchange" value="NYSE" />
+            </add>
+            <add name="SIC">
+              <add name="Value" value="6029" />
+            </add>
+          </x-data-reference>
+          <x-data-reference>
+            <x-ref>
+              <x-ref-id>MANUFACTURERS &amp; TRADERS TC</x-ref-id>
+            </x-ref>
+            <add name="CIK">
+              <add name="Value" value="0000036270" />
+            </add>
+            <add name="TickerSymbols">
+              <add name="Symbol" value="MTB" />
+              <add name="Exchange" value="NYSE" />
+            </add>
+            <add name="SIC">
+              <add name="Value" value="6022" />
+            </add>
+          </x-data-reference>
+          <x-data-reference>
+            <x-ref>
+              <x-ref-id>COMMERCE BK</x-ref-id>
+            </x-ref>
+            <add name="CIK">
+              <add name="Value" value="0000022356" />
+            </add>
+            <add name="TickerSymbols">
+              <add name="Symbol" value="CBSH" />
+              <add name="Exchange" value="NASDAQ" />
+            </add>
+            <add name="SIC">
+              <add name="Value" value="6022" />
+            </add>
+          </x-data-reference>
+          <x-data-reference>
+            <x-ref>
+              <x-ref-id>WASHINGTON FED NA</x-ref-id>
+            </x-ref>
+            <add name="CIK">
+              <add name="Value" value="0000936528" />
+            </add>
+            <add name="TickerSymbols">
+              <add name="Symbol" value="WAFD" />
+              <add name="Exchange" value="NASDAQ" />
+            </add>
+            <add name="SIC">
+              <add name="Value" value="6035" />
+            </add>
+          </x-data-reference>
+          <x-data-reference>
+            <x-ref>
+              <x-ref-id>BANC OF CA NA</x-ref-id>
+            </x-ref>
+            <add name="CIK">
+              <add name="Value" value="0001169770" />
+            </add>
+            <add name="TickerSymbols">
+              <add name="Symbol" value="BANC" />
+              <add name="Exchange" value="NYSE" />
+            </add>
+            <add name="SIC">
+              <add name="Value" value="6021" />
+            </add>
+          </x-data-reference>
+          <x-data-reference>
+            <x-ref>
+              <x-ref-id>BROADWAY NB</x-ref-id>
+            </x-ref>
+            <add name="CIK">
+              <add name="Value" value="0001001171" />
+            </add>
+            <add name="TickerSymbols">
+              <add name="Symbol" value="BYFC" />
+              <add name="Exchange" value="NASDAQ" />
+            </add>
+            <add name="SIC">
+              <add name="Value" value="6035" />
+            </add>
+          </x-data-reference>
+        </x-ref-group>
+      </source>
+    </data>
+  </rand>
+</noFuture>
