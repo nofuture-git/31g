@@ -19,7 +19,7 @@ namespace NoFuture.Rand.Core
         private static Random _myRand;
         private static List<Tuple<string, double>> _enWords;
         internal const string ENGLISH_WORDS = "English_Words.xml";
-
+        internal static XmlDocument EnWordsXml;
         #endregion
 
         public static Random MyRand
@@ -622,9 +622,9 @@ namespace NoFuture.Rand.Core
                     if (_enWords != null && _enWords.Count > 0)
                         return _enWords;
 
-                    var enWordsXml = XmlDocXrefIdentifier.GetEmbeddedXmlDoc(ENGLISH_WORDS,
+                    EnWordsXml = EnWordsXml ?? XmlDocXrefIdentifier.GetEmbeddedXmlDoc(ENGLISH_WORDS,
                         Assembly.GetExecutingAssembly());
-                    var wordNodes = enWordsXml?.SelectNodes($"//{WORD}[@{LANG}='en']");
+                    var wordNodes = EnWordsXml?.SelectNodes($"//{WORD}[@{LANG}='en']");
                     if (wordNodes == null)
                         return null;
 
@@ -638,8 +638,7 @@ namespace NoFuture.Rand.Core
                         var countStr = elem.Attributes[COUNT]?.Value;
                         if (string.IsNullOrWhiteSpace(countStr))
                             continue;
-                        double count;
-                        if (!double.TryParse(countStr, out count))
+                        if (!double.TryParse(countStr, out var count))
                             continue;
                         _enWords.Add(new Tuple<string, double>(word, count));
                     }

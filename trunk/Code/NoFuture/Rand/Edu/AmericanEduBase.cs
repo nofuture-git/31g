@@ -17,6 +17,8 @@ namespace NoFuture.Rand.Edu
 
         internal const string US_HIGH_SCHOOL_DATA = "US_HighSchools_Data.xml";
         internal const string US_UNIVERSITY_DATA = "US_Universities_Data.xml";
+        internal static XmlDocument HsXml;
+        internal static XmlDocument UnivXml;
 
         [EditorBrowsable(EditorBrowsableState.Never)]
         internal static AmericanRacePercents GetNatlGradRates(XmlDocument src, double avg)
@@ -38,8 +40,9 @@ namespace NoFuture.Rand.Edu
 
             double natlAvg, amerIndian, asian, hispanic, black, white, pacific, mixed;
             //read data from source
-            var xml = Core.XmlDocXrefIdentifier.GetEmbeddedXmlDoc(US_HIGH_SCHOOL_DATA, Assembly.GetExecutingAssembly());
-            if (xml == null)//TreeData.AmericanHighSchoolData
+            HsXml = HsXml ?? Core.XmlDocXrefIdentifier.GetEmbeddedXmlDoc(US_HIGH_SCHOOL_DATA,
+                         Assembly.GetExecutingAssembly());
+            if (HsXml == null)//TreeData.AmericanHighSchoolData
                 return p;
             var node = src.SelectSingleNode("//national/avg-graduation-rate");
             var elem = node as XmlElement;

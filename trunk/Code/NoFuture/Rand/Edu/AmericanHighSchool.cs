@@ -39,9 +39,9 @@ namespace NoFuture.Rand.Edu
         /// <returns></returns>
         public static AmericanRacePercents NatlGradRate()
         {
-            var xml = Core.XmlDocXrefIdentifier.GetEmbeddedXmlDoc(US_HIGH_SCHOOL_DATA,
+            HsXml = HsXml ?? Core.XmlDocXrefIdentifier.GetEmbeddedXmlDoc(US_HIGH_SCHOOL_DATA,
                 Assembly.GetExecutingAssembly());
-            return GetNatlGradRates(xml, DF_NATL_AVG);
+            return GetNatlGradRates(HsXml, DF_NATL_AVG);
         }
 
         public static AmericanHighSchool GetDefaultHs()
@@ -65,13 +65,13 @@ namespace NoFuture.Rand.Edu
         {
             if(string.IsNullOrWhiteSpace(stateName))
                 return new AmericanHighSchool[] { };
-            var xml = Core.XmlDocXrefIdentifier.GetEmbeddedXmlDoc(US_HIGH_SCHOOL_DATA,
+            HsXml = HsXml ?? Core.XmlDocXrefIdentifier.GetEmbeddedXmlDoc(US_HIGH_SCHOOL_DATA,
                 Assembly.GetExecutingAssembly());
-            if (xml == null)
+            if (HsXml == null)
                 return new AmericanHighSchool[] { };
 
             var elements =
-                xml.SelectNodes($"//state[@name='{stateName}']//high-school");
+                HsXml.SelectNodes($"//state[@name='{stateName}']//high-school");
             if (elements == null || elements.Count <= 0)
                 return new AmericanHighSchool[] { };
 

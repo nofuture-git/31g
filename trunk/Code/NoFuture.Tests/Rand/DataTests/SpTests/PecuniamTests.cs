@@ -4,9 +4,8 @@ using System.Diagnostics;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NoFuture.Rand.Data.Sp;
-using NoFuture.Rand.Domus.US;
 
-namespace NoFuture.Rand.Tests
+namespace NoFuture.Rand.Tests.DataTests.SpTests
 {
     [TestClass]
     public class PecuniamTests

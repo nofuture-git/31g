@@ -15,6 +15,7 @@ namespace NoFuture.Rand.Gov
         protected const string NAME = "name";
         protected const string CRIME = "crime";
         private const string US_STATES_DATA = "US_States_Data.xml";
+        internal static XmlDocument UsStateDataXml;
         #endregion
 
         #region fields
@@ -30,19 +31,21 @@ namespace NoFuture.Rand.Gov
                 return;
             //need to put the spaces back into state's name (NewYork as New York)
             _stateName = name;
-            var xml = Core.XmlDocXrefIdentifier.GetEmbeddedXmlDoc(US_STATES_DATA, Assembly.GetExecutingAssembly());
-            if (xml == null)
+            UsStateDataXml = UsStateDataXml ??
+                             Core.XmlDocXrefIdentifier.GetEmbeddedXmlDoc(US_STATES_DATA,
+                                 Assembly.GetExecutingAssembly());
+            if (UsStateDataXml == null)
                 return;
-            var myNameNode = xml.SelectSingleNode($"//{STATE}[@{NAME}='{_stateName}']") as XmlElement;
+            var myNameNode = UsStateDataXml.SelectSingleNode($"//{STATE}[@{NAME}='{_stateName}']") as XmlElement;
             if (myNameNode == null)
                 return;
             if (Enum.TryParse(myNameNode.Attributes[REGION].Value, out AmericanRegion reg))
                 Region = reg;
             AverageEarnings = GetAvgEarningsPerYear(myNameNode);
-            GetEmploymentSectorData(xml);
-            GetEduData(xml);
-            GetViolentCrimeData(xml);
-            GetPropertyCrimeData(xml);
+            GetEmploymentSectorData(UsStateDataXml);
+            GetEduData(UsStateDataXml);
+            GetViolentCrimeData(UsStateDataXml);
+            GetPropertyCrimeData(UsStateDataXml);
         }
         #endregion
 
@@ -94,7 +97,9 @@ namespace NoFuture.Rand.Gov
 
             if (string.IsNullOrWhiteSpace(_stateName))
                 return;
-            xml = xml ?? Core.XmlDocXrefIdentifier.GetEmbeddedXmlDoc(US_STATES_DATA, Assembly.GetExecutingAssembly());
+            xml = UsStateDataXml ??
+                             Core.XmlDocXrefIdentifier.GetEmbeddedXmlDoc(US_STATES_DATA,
+                                 Assembly.GetExecutingAssembly());
             if (xml == null)
                 return;
             
@@ -113,7 +118,9 @@ namespace NoFuture.Rand.Gov
         {
             if (string.IsNullOrWhiteSpace(_stateName))
                 return;
-            xml = xml ?? Core.XmlDocXrefIdentifier.GetEmbeddedXmlDoc(US_STATES_DATA, Assembly.GetExecutingAssembly());
+            xml = UsStateDataXml ??
+                  Core.XmlDocXrefIdentifier.GetEmbeddedXmlDoc(US_STATES_DATA,
+                      Assembly.GetExecutingAssembly());
             if (xml == null)
                 return;
 
@@ -135,7 +142,9 @@ namespace NoFuture.Rand.Gov
             const string PERCENT_COLLEGE_GRAD = "percent-college-grad";
             if (string.IsNullOrWhiteSpace(_stateName))
                 return;
-            xml = xml ?? Core.XmlDocXrefIdentifier.GetEmbeddedXmlDoc(US_STATES_DATA, Assembly.GetExecutingAssembly());
+            xml = UsStateDataXml ??
+                  Core.XmlDocXrefIdentifier.GetEmbeddedXmlDoc(US_STATES_DATA,
+                      Assembly.GetExecutingAssembly());
             if (xml == null)
                 return;
 
@@ -159,7 +168,9 @@ namespace NoFuture.Rand.Gov
             const string PERCENT_EMPLOYED = "percent-employed";
             if (string.IsNullOrWhiteSpace(_stateName))
                 return;
-            xml = xml ?? Core.XmlDocXrefIdentifier.GetEmbeddedXmlDoc(US_STATES_DATA, Assembly.GetExecutingAssembly());
+            xml = UsStateDataXml ??
+                  Core.XmlDocXrefIdentifier.GetEmbeddedXmlDoc(US_STATES_DATA,
+                      Assembly.GetExecutingAssembly());
             var econDataNodes = xml?.SelectNodes($"//{STATE}[@{NAME}='{_stateName}']//{SECTOR}");
             if (econDataNodes == null)
                 return;

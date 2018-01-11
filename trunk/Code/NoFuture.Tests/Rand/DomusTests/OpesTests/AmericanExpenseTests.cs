@@ -156,7 +156,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             //and the remainder will be randomly allocated to one of the other items 
             var otherItems = testResult.Where(x => !(new[] { "Student", "Other Consumer" }.Contains(x.Key)))
                 .Select(t => t.Value).Sum();
-            Assert.IsTrue(0.1667D == otherItems || 0.1666D == otherItems);
+            Assert.IsTrue(otherItems < 0.17D && otherItems > 0.15D);
 
             foreach (var u in testResult)
                 System.Diagnostics.Debug.WriteLine($"{u.Key} -> {u.Value}");

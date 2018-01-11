@@ -39,7 +39,7 @@ namespace NoFuture.Rand.Domus.Opes
         private static IMereo[] _expenseItemNames;
         private static IMereo[] _assetItemNames;
         private static IMereo[] _employmentItemNames;
-
+        internal static XmlDocument OpesXml;
         #endregion
 
         #region inner types
@@ -168,13 +168,10 @@ namespace NoFuture.Rand.Domus.Opes
         /// </summary>
         protected internal abstract List<Pondus> MyItems { get; }
 
-        protected internal static XmlDocument UsDomusOpesData
-        {
-            get
-            {
-                return Xml2XmlIdentifier.GetEmbeddedXmlDoc(US_DOMUS_OPES, Assembly.GetExecutingAssembly());
-            }
-        }
+        protected internal static XmlDocument UsDomusOpesData => OpesXml ?? (OpesXml =
+                                                                     XmlDocXrefIdentifier.GetEmbeddedXmlDoc(
+                                                                         US_DOMUS_OPES,
+                                                                         Assembly.GetExecutingAssembly()));
 
         #endregion
 
@@ -665,8 +662,9 @@ namespace NoFuture.Rand.Domus.Opes
             if (String.IsNullOrWhiteSpace(xPath))
                 return null;
 
-            var xml = Xml2XmlIdentifier.GetEmbeddedXmlDoc(US_DOMUS_OPES, Assembly.GetExecutingAssembly());
-            var nodes = xml.SelectNodes(xPath);
+            OpesXml = OpesXml ?? XmlDocXrefIdentifier.GetEmbeddedXmlDoc(US_DOMUS_OPES,
+                           Assembly.GetExecutingAssembly());
+            var nodes = OpesXml.SelectNodes(xPath);
             if (nodes == null || nodes.Count <= 0)
                 return null;
             var names = new List<IMereo>();
@@ -1100,7 +1098,7 @@ namespace NoFuture.Rand.Domus.Opes
 
             var loan = GetRandomLoan(property, remainingCost, totalCost, rate, termInYears, out minPmt);
 
-            var pmtNote = new Mereo(property.ToString());
+            var pmtNote = new Mereo(property?.ToString() ?? nameof(property));
             //makes the fake history more colorful
             borrowerPersonality = borrowerPersonality ?? new Personality();
 

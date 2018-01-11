@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Reflection;
+using System.Linq;
 using System.Xml;
 using NoFuture.Util.Core;
 
@@ -11,43 +11,13 @@ namespace NoFuture.Rand.Core
     public class XRefGroup : XmlDocXrefIdentifier
     {
         #region fields
-        private static XRefGroup[] _allXref;
+        internal static XmlDocument XrefXml;
         #endregion
 
         #region properties
         public string NodeName { get; set; }
         public XrefIdentifier[] XRefData { get; set; }
         public override string LocalName => X_REF_GROUP;
-        public static XRefGroup[] AllXrefGroups
-        {
-            get
-            {
-                if (_allXref != null)
-                    return _allXref;
-                var xml = GetEmbeddedXmlDoc(XREF_XML_DATA_FILE);
-                if (xml == null)
-                    return null;
-
-                var elems = xml.SelectNodes($"//{X_REF_GROUP}");
-                if (elems == null || elems.Count <= 0)
-                    return null;
-
-                var tempList = new List<XRefGroup>();
-                foreach (var node in elems)
-                {
-                    var elm = node as XmlElement;
-                    if (elm == null)
-                        continue;
-                    var xrefGrp = new XRefGroup();
-                    if (xrefGrp.TryThisParseXml(elm))
-                        tempList.Add(xrefGrp);
-                }
-
-                _allXref = tempList.ToArray();
-                return _allXref;
-            }
-        }
-
         #endregion
 
         #region ctor
@@ -74,10 +44,11 @@ namespace NoFuture.Rand.Core
                 return false;
             if(id == null)
                 return false;
-            var xml = GetEmbeddedXmlDoc(XREF_XML_DATA_FILE);
-            if (xml == null)
+            var asmOfId = xRefId.Item1.Assembly;
+            XrefXml = XrefXml ?? GetEmbeddedXmlDoc(XREF_XML_DATA_FILE, asmOfId);
+            if (XrefXml == null)
                 return false;
-            var xrefSrcNode = xml.SelectSingleNode($"//{SOURCE}");
+            var xrefSrcNode = XrefXml.SelectSingleNode($"//{SOURCE}");
             if (xrefSrcNode == null)
                 return false;
 
@@ -90,11 +61,11 @@ namespace NoFuture.Rand.Core
             var xRefAddChildXPath = xRefAddXPath + $"/{ADD}[@{NAME}='Value']";
 
             //get the x-ref-group node
-            var xRefGroupNode = xml.SelectSingleNode(xRefGroupXPath) as XmlElement;
+            var xRefGroupNode = XrefXml.SelectSingleNode(xRefGroupXPath) as XmlElement;
             if (xRefGroupNode == null)
             {
-                xRefGroupNode = xml.CreateElement(X_REF_GROUP);
-                var xRefGroupAttr = xml.CreateAttribute(DATA_TYPE);
+                xRefGroupNode = XrefXml.CreateElement(X_REF_GROUP);
+                var xRefGroupAttr = XrefXml.CreateAttribute(DATA_TYPE);
                 xRefGroupAttr.Value = xRefId.Item1.FullName;
                 xRefGroupNode.Attributes.Append(xRefGroupAttr);
                 
@@ -106,12 +77,12 @@ namespace NoFuture.Rand.Core
             }
 
             //get the x-data-reference node
-            var xDataReferenceNode = xml.SelectSingleNode(xDataReferenceXPath);
+            var xDataReferenceNode = XrefXml.SelectSingleNode(xDataReferenceXPath);
             if (xDataReferenceNode == null)
             {
-                xDataReferenceNode = xml.CreateElement(X_DATA_REFERENCE);
-                var xRefNode = xml.CreateElement(X_REF);
-                var xRefIdNode = xml.CreateElement(X_REF_ID);
+                xDataReferenceNode = XrefXml.CreateElement(X_DATA_REFERENCE);
+                var xRefNode = XrefXml.CreateElement(X_REF);
+                var xRefIdNode = XrefXml.CreateElement(X_REF_ID);
                 xRefIdNode.InnerText = xRefId.Item2;
                 xRefNode.AppendChild(xRefIdNode);
                 xDataReferenceNode.AppendChild(xRefNode);
@@ -119,36 +90,36 @@ namespace NoFuture.Rand.Core
             }
 
             //get the outer add node
-            var xrefAdd = xml.SelectSingleNode(xRefAddXPath) as XmlElement;
+            var xrefAdd = XrefXml.SelectSingleNode(xRefAddXPath) as XmlElement;
             if (xrefAdd == null)
             {
-                xrefAdd = xml.CreateElement(ADD);
+                xrefAdd = XrefXml.CreateElement(ADD);
                 if (!xDataReferenceNode.HasChildNodes)
                     xDataReferenceNode.AppendChild(xrefAdd);
                 else
                     xDataReferenceNode.InsertAfter(xrefAdd, xDataReferenceNode.LastChild);
             }
 
-            var xrefNameAttr = xrefAdd.Attributes[NAME] ?? xml.CreateAttribute(NAME);
+            var xrefNameAttr = xrefAdd.Attributes[NAME] ?? XrefXml.CreateAttribute(NAME);
             xrefNameAttr.Value = simpleNameValuePair.Item1;
 
             if (xrefAdd.Attributes[NAME] == null)
                 xrefAdd.Attributes.Append(xrefNameAttr);
 
             //get the inner add node
-            var childNode = xml.SelectSingleNode(xRefAddChildXPath) as XmlElement;
+            var childNode = XrefXml.SelectSingleNode(xRefAddChildXPath) as XmlElement;
             if (childNode == null)
             {
-                childNode = xml.CreateElement(ADD);
+                childNode = XrefXml.CreateElement(ADD);
                 if (!xrefAdd.HasChildNodes)
                     xrefAdd.AppendChild(childNode);
                 else
                     xrefAdd.InsertAfter(childNode, xrefAdd.LastChild);
             }
 
-            var nameAttr = childNode.Attributes[NAME] ?? xml.CreateAttribute(NAME);
+            var nameAttr = childNode.Attributes[NAME] ?? XrefXml.CreateAttribute(NAME);
             nameAttr.Value = "Value";
-            var valAttr = childNode.Attributes[VALUE] ?? xml.CreateAttribute(VALUE);
+            var valAttr = childNode.Attributes[VALUE] ?? XrefXml.CreateAttribute(VALUE);
             valAttr.Value = simpleNameValuePair.Item2;
 
             if (childNode.Attributes[NAME] == null)
@@ -165,15 +136,16 @@ namespace NoFuture.Rand.Core
                 return null;
             if (string.IsNullOrWhiteSpace(xrefId))
                 return null;
-            var xrefXml = GetEmbeddedXmlDoc(XREF_XML_DATA_FILE);
+            var asmOfT = t.Assembly;
+            XrefXml = XrefXml ?? GetEmbeddedXmlDoc(XREF_XML_DATA_FILE, asmOfT);
             return
-                xrefXml?.SelectNodes(
+                XrefXml?.SelectNodes(
                     $"//{X_REF_GROUP}[@{DATA_TYPE}='{t.FullName}']//{X_REF_ID}[text()='{xrefId}']/../../{ADD}");
         }
 
         /// <summary>
         /// Assigns property values on the <see cref="rtInstance"/> from 
-        /// the <see cref="TreeData.XRefXml"/> document.
+        /// the x-ref data source.
         /// </summary>
         /// <param name="elem"></param>
         /// <param name="rtInstance"></param>
@@ -211,7 +183,12 @@ namespace NoFuture.Rand.Core
                 if (string.IsNullOrWhiteSpace(enumerableTypeName))
                     return;
 
-                var enumerableType = Assembly.GetExecutingAssembly().GetType(enumerableTypeName);
+                var asm = AppDomain.CurrentDomain.GetAssemblies()
+                    .FirstOrDefault(a => a.GetType(enumerableTypeName) != null);
+                if (asm == null)
+                    return;
+
+                var enumerableType = asm.GetType(enumerableTypeName);
                 if (enumerableType == null)
                     return;
 

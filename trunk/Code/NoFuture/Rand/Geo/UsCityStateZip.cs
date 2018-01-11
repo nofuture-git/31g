@@ -93,11 +93,11 @@ namespace NoFuture.Rand.Geo
             {
                 if (_zipCodePrefix2Pop.Any())
                     return _zipCodePrefix2Pop;
-                var xml = XmlDocXrefIdentifier.GetEmbeddedXmlDoc(US_ZIP_PROB_TABLE,
+                UsZipProbXml = UsZipProbXml ?? XmlDocXrefIdentifier.GetEmbeddedXmlDoc(US_ZIP_PROB_TABLE,
                     Assembly.GetExecutingAssembly());
-                if (xml == null)
+                if (UsZipProbXml == null)
                     return null;
-                _zipCodePrefix2Pop = XmlDocXrefIdentifier.GetProbTable(xml, ZIP_CODE_PLURAL, PREFIX);
+                _zipCodePrefix2Pop = XmlDocXrefIdentifier.GetProbTable(UsZipProbXml, ZIP_CODE_PLURAL, PREFIX);
 
                 return _zipCodePrefix2Pop;
             }
@@ -295,8 +295,9 @@ namespace NoFuture.Rand.Geo
         /// <returns></returns>
         protected internal XmlNode GetCityXmlNode()
         {
-            var xml = XmlDocXrefIdentifier.GetEmbeddedXmlDoc(US_CITY_DATA, Assembly.GetExecutingAssembly());
-            if (xml == null)
+            UsCityXml = UsCityXml ??
+                        XmlDocXrefIdentifier.GetEmbeddedXmlDoc(US_CITY_DATA, Assembly.GetExecutingAssembly());
+            if (UsCityXml == null)
                 return null;
             string searchCrit;
             XmlNodeList matchedNodes = null;
@@ -308,13 +309,13 @@ namespace NoFuture.Rand.Geo
                 var usState = UsState.GetStateByPostalCode(data.StateAbbrv);
                 var cityName = FinesseCityName(data.City);
                 searchCrit = $"//state[@name='{usState}']/city[@name='{cityName}']";
-                matchedNodes = xml.SelectNodes(searchCrit);
+                matchedNodes = UsCityXml.SelectNodes(searchCrit);
 
                 //try again on place names
                 if (matchedNodes == null || matchedNodes.Count <= 0)
                 {
                     searchCrit = $"//state[@name='{usState}']//place[@name='{cityName}']/..";
-                    matchedNodes = xml.SelectNodes(searchCrit);
+                    matchedNodes = UsCityXml.SelectNodes(searchCrit);
                 }
             }
             //search by first 3 of Zip Code
@@ -322,7 +323,7 @@ namespace NoFuture.Rand.Geo
             {
                 var zipCodePrefix= data.PostalCode.Substring(0, 3);
                 searchCrit = $"//{ZIP_CODE_SINGULAR}[@{PREFIX}='{zipCodePrefix}']/..";
-                matchedNodes = xml.SelectNodes(searchCrit);
+                matchedNodes = UsCityXml.SelectNodes(searchCrit);
             }
             
             if (matchedNodes == null || matchedNodes.Count <= 0)
@@ -358,12 +359,13 @@ namespace NoFuture.Rand.Geo
             //if calling assembly passed in no-args then return all zeros
             if (String.IsNullOrWhiteSpace(zipCode))
                 return AmericanRacePercents.GetNatlAvg();
-            var xml = XmlDocXrefIdentifier.GetEmbeddedXmlDoc(US_ZIP_CODE_DATA, Assembly.GetExecutingAssembly());
-            if(xml == null)
+            UsZipCodeXml = UsZipCodeXml ??
+                           XmlDocXrefIdentifier.GetEmbeddedXmlDoc(US_ZIP_CODE_DATA, Assembly.GetExecutingAssembly());
+            if(UsZipCodeXml == null)
                 return AmericanRacePercents.GetNatlAvg();
             //get the data for the given zip code
             var zipStatElem =
-                xml.SelectSingleNode(
+                UsZipCodeXml.SelectSingleNode(
                     $"//{ZIP_STAT}[@{VALUE}='{zipCode}']");
 
             if (zipStatElem == null || !zipStatElem.HasChildNodes)
@@ -371,7 +373,7 @@ namespace NoFuture.Rand.Geo
                 //try to find on the zip code prefix 
                 var zip3 = zipCode.Substring(0, 3);
                 var zipCodeElem =
-                    xml.SelectSingleNode(
+                    UsZipCodeXml.SelectSingleNode(
                         $"//{ZIP_CODE_SINGULAR}[@{PREFIX}='{zip3}']");
 
                 if (zipCodeElem == null || !zipCodeElem.HasChildNodes)
@@ -519,7 +521,8 @@ namespace NoFuture.Rand.Geo
                         : UrbanCentric.City | UrbanCentric.Small;
                 }
             }
-            AverageEarnings = GetAvgEarningsPerYear(cityNode) ?? UsStateData.GetStateData(_myState.ToString())?.AverageEarnings;
+            AverageEarnings = GetAvgEarningsPerYear(cityNode) ??
+                              UsStateData.GetStateData(State.ToString())?.AverageEarnings;
             if(pickSuburbAtRandom)
                 GetSuburbCityName(cityNode);
         }

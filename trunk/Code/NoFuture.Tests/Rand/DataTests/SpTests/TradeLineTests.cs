@@ -2,7 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NoFuture.Rand.Data.Sp;
 
-namespace NoFuture.Rand.Tests.DomusTests
+namespace NoFuture.Rand.Tests.DataTests.SpTests
 {
     [TestClass]
     public class TradeLineTests

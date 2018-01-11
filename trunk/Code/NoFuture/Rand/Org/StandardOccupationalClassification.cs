@@ -27,6 +27,8 @@ namespace NoFuture.Rand.Org
         private static SocMajorGroup[] _majorGroups;
         private const string US_OCCUPATIONS_DATA_FILE = "US_Occupations_Data.xml";
         private const string US_OCCUPATIONS_PROB_TABLE = "US_Occupations_ProbTable.xml";
+        internal static XmlDocument UsOccupationDataXml;
+        internal static XmlDocument UsProbTableOccupationsXml;
 
         public override string Abbrev => "SOC";
 
@@ -37,13 +39,14 @@ namespace NoFuture.Rand.Org
                 if(_majorGroups != null)
                     return _majorGroups;
 
-                var xml = GetEmbeddedXmlDoc(US_OCCUPATIONS_DATA_FILE, Assembly.GetExecutingAssembly());
-                if (xml == null)
+                UsOccupationDataXml = UsOccupationDataXml ??
+                                      GetEmbeddedXmlDoc(US_OCCUPATIONS_DATA_FILE, Assembly.GetExecutingAssembly());
+                if (UsOccupationDataXml == null)
                     return null;
 
                 var ssOut = new SocMajorGroup();
 
-                var ssElements = xml.SelectNodes($"//{ssOut.LocalName}");
+                var ssElements = UsOccupationDataXml.SelectNodes($"//{ssOut.LocalName}");
                 if (ssElements == null || ssElements.Count == 0)
                     return null;
 
@@ -69,8 +72,10 @@ namespace NoFuture.Rand.Org
         /// <returns></returns>
         public static SocDetailedOccupation RandomOccupation(Predicate<SocDetailedOccupation> filterBy = null)
         {
+            UsProbTableOccupationsXml = UsOccupationDataXml ??
+                                        GetEmbeddedXmlDoc(US_OCCUPATIONS_PROB_TABLE, Assembly.GetExecutingAssembly());
             _soc2Prob = _soc2Prob == null || !_soc2Prob.Any()
-                ? GetProbTable(GetEmbeddedXmlDoc(US_OCCUPATIONS_PROB_TABLE, Assembly.GetExecutingAssembly()), "occupations", "ID")
+                ? GetProbTable(UsProbTableOccupationsXml, "occupations", "ID")
                 : _soc2Prob;
 
             if (!_socs.Any())

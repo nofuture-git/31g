@@ -1,7 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NoFuture.Rand.Gov.Fed;
 
-namespace NoFuture.Rand.Tests
+namespace NoFuture.Rand.Tests.GovTests
 {
     [TestClass]
     public class FedTests

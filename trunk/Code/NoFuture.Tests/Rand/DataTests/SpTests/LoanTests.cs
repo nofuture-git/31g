@@ -5,7 +5,7 @@ using NoFuture.Rand.Data.Sp.Enums;
 using NoFuture.Util.Core.Math;
 using Dbg = System.Diagnostics.Debug;
 
-namespace NoFuture.Rand.Tests.DomusTests
+namespace NoFuture.Rand.Tests.DataTests.SpTests
 {
     [TestClass]
     public class LoanTests

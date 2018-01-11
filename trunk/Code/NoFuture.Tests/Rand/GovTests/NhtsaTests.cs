@@ -2,7 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NoFuture.Rand.Gov.Nhtsa;
 
-namespace NoFuture.Rand.Tests
+namespace NoFuture.Rand.Tests.GovTests
 {
     [TestClass]
     public class NhtsaTests

@@ -18,6 +18,9 @@ namespace NoFuture.Rand.Domus.Opes
         internal const string US_PERSONAL_DEBT = "US_PersonalDebt.xml";
         internal const string US_PERSONAL_WEALTH = "US_PersonalWealth.xml";
 
+        internal static XmlDocument DebtXml;
+        internal static XmlDocument WealthXml;
+
         /// <summary>
         /// Home Debt scalar factor above or below the national average(s)
         /// </summary>
@@ -151,10 +154,14 @@ namespace NoFuture.Rand.Domus.Opes
         public static double GetFactor(FactorTables tbl, OccidentalEdu edu, NorthAmericanRace race,
             AmericanRegion region, int age, Gender gender, MaritialStatus maritialStatus)
         {
+            DebtXml = DebtXml ?? XmlDocXrefIdentifier.GetEmbeddedXmlDoc(US_PERSONAL_DEBT,
+                           Assembly.GetExecutingAssembly());
+            WealthXml = WealthXml ??
+                         XmlDocXrefIdentifier.GetEmbeddedXmlDoc(US_PERSONAL_WEALTH, Assembly.GetExecutingAssembly());
             var xmlDoc = tbl == FactorTables.CreditCardDebt || tbl == FactorTables.HomeDebt ||
                          tbl == FactorTables.VehicleDebt
-                ? Xml2XmlIdentifier.GetEmbeddedXmlDoc(US_PERSONAL_DEBT, Assembly.GetExecutingAssembly())
-                : Xml2XmlIdentifier.GetEmbeddedXmlDoc(US_PERSONAL_WEALTH, Assembly.GetExecutingAssembly());
+                ? DebtXml
+                : WealthXml;
             var tblName = Enum.GetName(typeof(FactorTables), tbl);
             var eduName = GetXmlEduName(edu);
             var raceName = Enum.GetName(typeof(NorthAmericanRace), race);
@@ -223,10 +230,16 @@ namespace NoFuture.Rand.Domus.Opes
         /// <returns></returns>
         public static double GetFactorBaseValue(FactorTables tbl)
         {
+            DebtXml = DebtXml ?? XmlDocXrefIdentifier.GetEmbeddedXmlDoc(US_PERSONAL_DEBT,
+                           Assembly.GetExecutingAssembly());
+            WealthXml = WealthXml ??
+                         XmlDocXrefIdentifier.GetEmbeddedXmlDoc(US_PERSONAL_WEALTH, Assembly.GetExecutingAssembly());
+
+
             var xmlDoc = tbl == FactorTables.CreditCardDebt || tbl == FactorTables.HomeDebt ||
                          tbl == FactorTables.VehicleDebt || tbl == FactorTables.OtherDebt
-                ? Xml2XmlIdentifier.GetEmbeddedXmlDoc(US_PERSONAL_DEBT, Assembly.GetExecutingAssembly())
-                : Xml2XmlIdentifier.GetEmbeddedXmlDoc(US_PERSONAL_WEALTH, Assembly.GetExecutingAssembly());
+                ? DebtXml
+                : WealthXml;
             var tblName = Enum.GetName(typeof(FactorTables), tbl);
             var tblXPath = $"//table[@name='{tblName}']";
             var tblNode = xmlDoc.SelectSingleNode(tblXPath) as XmlElement;

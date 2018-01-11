@@ -9,7 +9,7 @@ using NoFuture.Rand.Gov;
 using NoFuture.Util.Core;
 using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 
-namespace NoFuture.Rand.Tests
+namespace NoFuture.Rand.Tests.DomusTests
 {
     [TestClass]
     public class PersonTests

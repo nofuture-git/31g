@@ -1,7 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NoFuture.Rand.Tele;
 
-namespace NoFuture.Rand.Tests
+namespace NoFuture.Rand.Tests.TeleTests
 {
     [TestClass]
     public class PhoneTests

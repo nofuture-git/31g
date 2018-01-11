@@ -17,6 +17,8 @@ namespace NoFuture.Rand.Tele
 
         internal const string US_AREA_CODE_DATA = "US_AreaCode_Data.xml";
         internal const string CA_AREA_CODE_DATA = "CA_AreaCode_Data.xml";
+        internal static XmlDocument UsAreaCodeXml;
+        internal static XmlDocument CaAreaCodeXml;
 
         /// <summary>
         /// Gets a <see cref="NorthAmericanPhone"/> whose Area Code, Central Office and 
@@ -74,17 +76,21 @@ namespace NoFuture.Rand.Tele
 
             if(countryCode.ToLower() == "ca")
             {
-                var xml = XmlDocXrefIdentifier.GetEmbeddedXmlDoc(CA_AREA_CODE_DATA, Assembly.GetExecutingAssembly());
-                if (xml == null)
+                CaAreaCodeXml = CaAreaCodeXml ??
+                                XmlDocXrefIdentifier.GetEmbeddedXmlDoc(CA_AREA_CODE_DATA,
+                                    Assembly.GetExecutingAssembly());
+                if (CaAreaCodeXml == null)
                     return null;
-                state = xml.SelectSingleNode($"//{AREA_CODE_PLURAL}/{PROVIDENCE}[@{ABBREVIATION}='{stateCode}']");
+                state = CaAreaCodeXml.SelectSingleNode($"//{AREA_CODE_PLURAL}/{PROVIDENCE}[@{ABBREVIATION}='{stateCode}']");
             }
             else
             {
-                var xml = XmlDocXrefIdentifier.GetEmbeddedXmlDoc(US_AREA_CODE_DATA, Assembly.GetExecutingAssembly());
-                if (xml == null)
+                UsAreaCodeXml = UsAreaCodeXml ??
+                                XmlDocXrefIdentifier.GetEmbeddedXmlDoc(US_AREA_CODE_DATA,
+                                    Assembly.GetExecutingAssembly());
+                if (UsAreaCodeXml == null)
                     return null;
-                state = xml.SelectSingleNode($"//{AREA_CODE_PLURAL}/{STATE}[@{ABBREVIATION}='{stateCode}']");
+                state = UsAreaCodeXml.SelectSingleNode($"//{AREA_CODE_PLURAL}/{STATE}[@{ABBREVIATION}='{stateCode}']");
             }    
             
             if (state == null)

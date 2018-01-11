@@ -29,7 +29,8 @@ namespace NoFuture.Rand.Domus.US
     {
         internal const string US_FIRST_NAMES = "US_FirstNames.xml";
         internal const string US_LAST_NAMES = "US_LastNames.xml";
-
+        internal static XmlDocument FirstNamesXml;
+        internal static XmlDocument LastNamesXml;
         /// <summary>
         /// Generates a <see cref="DeathCert"/> at random based on the given <see cref="p"/>
         /// </summary>
@@ -61,18 +62,18 @@ namespace NoFuture.Rand.Domus.US
         public static string GetAmericanFirstName(DateTime? dateOfBirth, Gender gender)
         {
             var dt = dateOfBirth ?? DateTime.Today.AddYears(-18);
-            var xmlData = XmlDocXrefIdentifier.GetEmbeddedXmlDoc(US_FIRST_NAMES, Assembly.GetExecutingAssembly());
+            FirstNamesXml = FirstNamesXml ?? XmlDocXrefIdentifier.GetEmbeddedXmlDoc(US_FIRST_NAMES, Assembly.GetExecutingAssembly());
             
-            if (xmlData == null)
+            if (FirstNamesXml == null)
             {
                 return gender == Gender.Male ? "John" : "Jane";
             }
-            var firstNameNodes = xmlData.SelectNodes("//first-name");
+            var firstNameNodes = FirstNamesXml.SelectNodes("//first-name");
             if (firstNameNodes == null)
             {
                 return gender == Gender.Male ? "John" : "Jane";
             }
-            var decadeElem = xmlData.SelectSingleNode("//first-name[last()]");
+            var decadeElem = FirstNamesXml.SelectSingleNode("//first-name[last()]");
             foreach (var decadeNode in firstNameNodes)
             {
                 var decade = decadeNode as XmlElement;
@@ -103,8 +104,8 @@ namespace NoFuture.Rand.Domus.US
         /// <returns></returns>
         public static string GetAmericanLastName()
         {
-            var xmlData = XmlDocXrefIdentifier.GetEmbeddedXmlDoc(US_LAST_NAMES, Assembly.GetExecutingAssembly());
-            var lnameNodes = xmlData.SelectSingleNode("//last-name");
+            LastNamesXml = LastNamesXml ?? XmlDocXrefIdentifier.GetEmbeddedXmlDoc(US_LAST_NAMES, Assembly.GetExecutingAssembly());
+            var lnameNodes = LastNamesXml.SelectSingleNode("//last-name");
             if (lnameNodes == null)
                 return "Doe";
             var p = Etx.MyRand.Next(0, lnameNodes.ChildNodes.Count);

@@ -19,6 +19,7 @@ namespace NoFuture.Rand.Org
         #region fields
         private static NaicsSuperSector[] _superSectors;
         private const string US_ECON_SECTOR_DATA_FILE = "US_EconSectors_Data.xml";
+        internal static XmlDocument EconSectorXml;
         #endregion
 
         #region properties
@@ -43,13 +44,14 @@ namespace NoFuture.Rand.Org
                 //return this a singleton
                 if (_superSectors != null)
                     return _superSectors;
-                var xml = GetEmbeddedXmlDoc(US_ECON_SECTOR_DATA_FILE, Assembly.GetExecutingAssembly());
-                if (xml == null)
+                EconSectorXml = EconSectorXml ??
+                                GetEmbeddedXmlDoc(US_ECON_SECTOR_DATA_FILE, Assembly.GetExecutingAssembly());
+                if (EconSectorXml == null)
                     return null;
 
                 var ssOut = new NaicsSuperSector();
 
-                var ssElements = xml.SelectNodes($"//{ssOut.LocalName}");
+                var ssElements = EconSectorXml.SelectNodes($"//{ssOut.LocalName}");
                 if (ssElements == null || ssElements.Count == 0)
                     return null;
 

@@ -53,7 +53,7 @@ namespace NoFuture.Rand.Tele
 
                 var strmRdr = new StreamReader(data);
                 var webmailData = strmRdr.ReadToEnd();
-                if (!string.IsNullOrWhiteSpace(webmailData))
+                if (string.IsNullOrWhiteSpace(webmailData))
                     return null;
 
                 _webMaildomains = webmailData.Split(Constants.LF).ToArray();

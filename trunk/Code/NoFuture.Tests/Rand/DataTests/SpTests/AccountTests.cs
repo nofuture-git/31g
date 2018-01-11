@@ -6,7 +6,7 @@ using NoFuture.Rand.Domus.Opes;
 using NoFuture.Rand.Domus.US;
 using NoFuture.Rand.Gov;
 
-namespace NoFuture.Rand.Tests.DomusTests
+namespace NoFuture.Rand.Tests.DataTests.SpTests
 {
     [TestClass]
     public class AccountTests

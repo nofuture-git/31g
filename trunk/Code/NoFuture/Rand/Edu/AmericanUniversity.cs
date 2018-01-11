@@ -55,9 +55,9 @@ namespace NoFuture.Rand.Edu
         /// <returns></returns>
         public static AmericanRacePercents NatlGradRate()
         {
-            var xml = Core.XmlDocXrefIdentifier.GetEmbeddedXmlDoc(US_UNIVERSITY_DATA,
+            UnivXml = UnivXml ?? Core.XmlDocXrefIdentifier.GetEmbeddedXmlDoc(US_UNIVERSITY_DATA,
                 Assembly.GetExecutingAssembly());
-            return GetNatlGradRates(xml, DF_NATL_BACHELORS_AVG);
+            return GetNatlGradRates(UnivXml, DF_NATL_BACHELORS_AVG);
         }
 
         public static AmericanUniversity[] GetUniversitiesByState(string stateName)
@@ -65,16 +65,16 @@ namespace NoFuture.Rand.Edu
             if(string.IsNullOrWhiteSpace(stateName))
                 return new AmericanUniversity[] { };
 
-            var xml = Core.XmlDocXrefIdentifier.GetEmbeddedXmlDoc(US_UNIVERSITY_DATA,
+            UnivXml = UnivXml ?? Core.XmlDocXrefIdentifier.GetEmbeddedXmlDoc(US_UNIVERSITY_DATA,
                 Assembly.GetExecutingAssembly());
             //this will never pass so avoid the exception
-            if (xml == null)
+            if (UnivXml == null)
                 return new AmericanUniversity[] { };
 
             var elements =
-                xml.SelectSingleNode(
+                UnivXml.SelectSingleNode(
                     $"//state[@name='{stateName.ToUpper()}']") ??
-                xml.SelectSingleNode($"//state[@name='{stateName}']");
+                UnivXml.SelectSingleNode($"//state[@name='{stateName}']");
             if (elements == null || !elements.HasChildNodes)
                 return new AmericanUniversity[] { };
 

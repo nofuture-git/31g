@@ -1,10 +1,9 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NoFuture.Rand.Data;
 using NoFuture.Rand.Data.Sp;
 using NoFuture.Rand.Data.Sp.Enums;
 using Dbg = System.Diagnostics.Debug;
 
-namespace NoFuture.Rand.Tests
+namespace NoFuture.Rand.Tests.DataTests.SpTests
 {
     [TestClass]
     public class CusipTests

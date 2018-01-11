@@ -140,7 +140,10 @@ namespace NoFuture.Rand.Edu
             hsGradDt = null;
 
             if (homeCityArea == null)
+            {
+                _highSchools.Add(new AmericanHighSchoolStudent(AmericanHighSchool.GetDefaultHs()));
                 return false;
+            }
 
             //get hs grad data for state amer lived in when 18
             var hsGradData =
@@ -358,9 +361,10 @@ namespace NoFuture.Rand.Edu
             else
             {
                 //pick a university from anywhere in the US
-                var xml = Core.XmlDocXrefIdentifier.GetEmbeddedXmlDoc(AmericanEduBase.US_UNIVERSITY_DATA,
-                    Assembly.GetExecutingAssembly());
-                var allUnivs = xml?.SelectNodes("//state");
+                AmericanEduBase.UnivXml = AmericanEduBase.UnivXml ??
+                                           XmlDocXrefIdentifier.GetEmbeddedXmlDoc(AmericanEduBase.US_UNIVERSITY_DATA,
+                                               Assembly.GetExecutingAssembly());
+                var allUnivs = AmericanEduBase.UnivXml?.SelectNodes("//state");
                 if (allUnivs == null)
                     return null;
                 AmericanUniversity univOut;

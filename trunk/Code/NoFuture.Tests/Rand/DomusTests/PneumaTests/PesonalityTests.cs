@@ -1,7 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NoFuture.Rand.Domus.Pneuma;
 
-namespace NoFuture.Rand.Tests.PneumaTests
+namespace NoFuture.Rand.Tests.DomusTests.PneumaTests
 {
     [TestClass]
     public class PesonalityTests

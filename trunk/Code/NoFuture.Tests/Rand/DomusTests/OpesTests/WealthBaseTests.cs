@@ -32,7 +32,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             Assert.AreEqual(10000.0D, testResult);
 
             testResult = AmericanFactors.GetFactorBaseValue(FactorTables.HomeEquity);
-            Assert.AreEqual(80000.0D, testResult);
+            Assert.AreEqual(81000.0D, testResult);
         }
 
         [TestMethod]

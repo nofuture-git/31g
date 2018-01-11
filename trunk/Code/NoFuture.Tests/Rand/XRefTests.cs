@@ -13,33 +13,6 @@ namespace NoFuture.Rand.Tests
     {
 
         [TestMethod]
-        public void TestXref()
-        {
-            var testResults = XRefGroup.AllXrefGroups;
-            Assert.IsNotNull(testResults);
-
-            Assert.AreNotEqual(0, testResults.Length);
-
-            foreach (var t in testResults)
-            {
-                Assert.IsNotNull(t.XRefData);
-
-                foreach (var dc in t.XRefData)
-                {
-                    Assert.AreNotEqual(0, dc.ReferenceDictionary.Count);
-                    Assert.IsNotNull(dc.XrefIds);
-                    Assert.AreNotEqual(0, dc.XrefIds.Length);
-
-                    foreach (var dataFileXred in dc.XrefIds)
-                    {
-                        Assert.IsFalse(string.IsNullOrWhiteSpace(dataFileXred.LocalName));
-                        Assert.IsFalse(string.IsNullOrWhiteSpace(dataFileXred.Value));
-                    }
-                }
-            }
-        }
-
-        [TestMethod]
         public void TestXrefOnTypes()
         {
 

@@ -30,6 +30,10 @@ namespace NoFuture.Rand.Geo
 
         #region fields
         protected readonly AddressData data;
+        internal static XmlDocument UsZipCodeXml;
+        internal static XmlDocument CaPostCodeXml;
+        internal static XmlDocument UsZipProbXml;
+        internal static XmlDocument UsCityXml;
         #endregion
 
         #region ctor
@@ -92,11 +96,12 @@ namespace NoFuture.Rand.Geo
 
             //x-ref it to the zip code data
             var xpathString = $"//{ZIP_CODE_PLURAL}//{ZIP_CODE_SINGULAR}[@{PREFIX}='{zipCodePrefix}']";
-            var xml = XmlDocXrefIdentifier.GetEmbeddedXmlDoc(US_ZIP_CODE_DATA, Assembly.GetExecutingAssembly());
-            if (xml == null)
+            UsZipCodeXml = UsZipCodeXml ??
+                            XmlDocXrefIdentifier.GetEmbeddedXmlDoc(US_ZIP_CODE_DATA, Assembly.GetExecutingAssembly());
+            if (UsZipCodeXml == null)
                 return null;
             var randZipCode =
-                xml.SelectSingleNode(xpathString);
+                UsZipCodeXml.SelectSingleNode(xpathString);
             if (randZipCode?.ParentNode?.Attributes?[NAME] == null)
             {
                 ctz.City = UsCityStateZip.DF_CITY_NAME;
@@ -149,10 +154,11 @@ namespace NoFuture.Rand.Geo
             const string ABBREVIATION = "abbreviation";
 
             var ctz = new AddressData();
-            var xml = XmlDocXrefIdentifier.GetEmbeddedXmlDoc(CA_POST_CODE_DATA, Assembly.GetExecutingAssembly());
-            if (xml == null)
+            CaPostCodeXml = CaPostCodeXml ??
+                             XmlDocXrefIdentifier.GetEmbeddedXmlDoc(CA_POST_CODE_DATA, Assembly.GetExecutingAssembly());
+            if (CaPostCodeXml == null)
                 return null;
-            var postalCodes = xml.SelectNodes($"//{POSTAL_CODE}");
+            var postalCodes = CaPostCodeXml.SelectNodes($"//{POSTAL_CODE}");
             var dfReturn = new CaCityProvidencePost(ctz);
             if (postalCodes == null)
                 return dfReturn;

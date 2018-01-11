@@ -17,7 +17,7 @@ namespace NoFuture.Rand.Com
     public class Bank : FinancialFirm
     {
         internal const string US_BANKS = "US_Banks.xml";
-
+        internal static XmlDocument UsBanksXml;
         #region properties
         public ResearchStatisticsSupervisionDiscount Rssd { get; set; }
         public RoutingTransitNumber RoutingNumber { get; set; }
@@ -138,8 +138,8 @@ namespace NoFuture.Rand.Com
         /// <returns></returns>
         internal static XmlElement GetBankXmlElement(CityArea ca)
         {
-            var xml = XmlDocXrefIdentifier.GetEmbeddedXmlDoc(US_BANKS, Assembly.GetExecutingAssembly());
-            if (xml == null)
+            UsBanksXml = UsBanksXml ?? XmlDocXrefIdentifier.GetEmbeddedXmlDoc(US_BANKS, Assembly.GetExecutingAssembly());
+            if (UsBanksXml == null)
                 return null;
             XmlElement bankXmlElem = null;
             var pickFromList = new List<XmlElement>();
@@ -149,7 +149,7 @@ namespace NoFuture.Rand.Com
             {
                 var cityName = UsCityStateZip.FinesseCityName(ca.AddressData.City);
 
-                var nodes = xml.SelectNodes($"//com[@us-state='{ca.AddressData.StateAbbrv.ToUpper()}']");
+                var nodes = UsBanksXml.SelectNodes($"//com[@us-state='{ca.AddressData.StateAbbrv.ToUpper()}']");
                 if (nodes != null && nodes.Count > 0)
                 {
                     foreach (var node in nodes)
@@ -169,7 +169,7 @@ namespace NoFuture.Rand.Com
 
             if (!pickFromList.Any())
             {
-                var allNodes = xml.SelectNodes("//com");
+                var allNodes = UsBanksXml.SelectNodes("//com");
                 if (allNodes == null)
                     return null;
                 foreach (var node in allNodes)

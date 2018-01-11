@@ -3,7 +3,7 @@ using System.IO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NoFuture.Rand.Geo;
 
-namespace NoFuture.Rand.Tests
+namespace NoFuture.Rand.Tests.GeoTests
 {
     [TestClass]
     public class CityAreaTests
