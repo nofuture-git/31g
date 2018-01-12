@@ -36,12 +36,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AmericanAssets.cs" />
-    <Compile Include="AmericanDeductions.cs" />
-    <Compile Include="AmericanEmployment.cs" />
-    <Compile Include="AmericanExpenses.cs" />
-    <Compile Include="AmericanFactors.cs" />
-    <Compile Include="AmericanIncome.cs" />
+    <Compile Include="US\AmericanAssets.cs" />
+    <Compile Include="US\AmericanDeductions.cs" />
+    <Compile Include="US\AmericanEmployment.cs" />
+    <Compile Include="US\AmericanExpenses.cs" />
+    <Compile Include="US\AmericanFactors.cs" />
+    <Compile Include="US\AmericanIncome.cs" />
     <Compile Include="FactorTables.cs" />
     <Compile Include="IExpense.cs" />
     <Compile Include="ILaboris.cs" />

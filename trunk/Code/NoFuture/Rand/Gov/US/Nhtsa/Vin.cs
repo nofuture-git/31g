@@ -251,7 +251,7 @@ namespace NoFuture.Rand.Gov.Nhtsa
 
             var asm = Assembly.GetExecutingAssembly();
 
-            var data = asm.GetManifestResourceStream($"{asm.GetName().Name}.Nhtsa.{VIN_WMI_DATA_FILE}");
+            var data = asm.GetManifestResourceStream($"{asm.GetName().Name}.US.Nhtsa.{VIN_WMI_DATA_FILE}");
             if (data == null)
                 return null;
 

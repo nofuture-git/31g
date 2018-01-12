@@ -36,17 +36,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AmericanCollegeStudent.cs" />
-    <Compile Include="AmericanSchoolBase.cs" />
-    <Compile Include="AmericanHighSchool.cs" />
-    <Compile Include="AmericanHighSchoolStudent.cs" />
-    <Compile Include="AmericanUniversity.cs" />
+    <Compile Include="US\AmericanCollegeStudent.cs" />
+    <Compile Include="US\AmericanSchoolBase.cs" />
+    <Compile Include="US\AmericanHighSchool.cs" />
+    <Compile Include="US\AmericanHighSchoolStudent.cs" />
+    <Compile Include="US\AmericanUniversity.cs" />
     <Compile Include="IEducation.cs" />
     <Compile Include="IHighSchool.cs" />
     <Compile Include="IStudent.cs" />
     <Compile Include="IUniversity.cs" />
-    <Compile Include="AmericanEducation.cs" />
-    <Compile Include="AmericanStudentBase.cs" />
+    <Compile Include="US\AmericanEducation.cs" />
+    <Compile Include="US\AmericanStudentBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
