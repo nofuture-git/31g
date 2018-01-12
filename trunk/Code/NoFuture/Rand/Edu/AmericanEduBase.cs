@@ -40,10 +40,6 @@ namespace NoFuture.Rand.Edu
 
             double natlAvg, amerIndian, asian, hispanic, black, white, pacific, mixed;
             //read data from source
-            HsXml = HsXml ?? Core.XmlDocXrefIdentifier.GetEmbeddedXmlDoc(US_HIGH_SCHOOL_DATA,
-                         Assembly.GetExecutingAssembly());
-            if (HsXml == null)//TreeData.AmericanHighSchoolData
-                return p;
             var node = src.SelectSingleNode("//national/avg-graduation-rate");
             var elem = node as XmlElement;
             var attr = elem?.Attributes["natl-percent"]?.Value;

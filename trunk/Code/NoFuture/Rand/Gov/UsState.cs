@@ -171,7 +171,7 @@ namespace NoFuture.Rand.Gov
         }
 
         /// <summary>
-        /// Helper method to be used in the ctor of each state when assigning thier respective <see cref="DlFormats"/>.
+        /// Helper method to be used in the ctor of each state when assigning thier respective <see cref="DriversLicense"/>.
         /// </summary>
         /// <param name="lenth"></param>
         /// <param name="startAt"></param>

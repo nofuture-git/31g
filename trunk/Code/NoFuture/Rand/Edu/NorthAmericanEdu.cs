@@ -242,14 +242,14 @@ namespace NoFuture.Rand.Edu
         /// </summary>
         /// <param name="fromHere"></param>
         /// <param name="eq">Normal dist which determines (x) mentioned above.</param>
-        /// <param name="mayOnly">Force the random date to occur only in the month of May</param>
+        /// <param name="monthOfMayOnly">Force the random date to occur only in the month of May</param>
         /// <returns></returns>
-        public static DateTime GetRandomGraduationDate(DateTime fromHere, NormalDistEquation eq, bool mayOnly = false)
+        public static DateTime GetRandomGraduationDate(DateTime fromHere, NormalDistEquation eq, bool monthOfMayOnly = false)
         {
             var years = Etx.RandomValueInNormalDist(eq);
 
             var gradDt = fromHere.AddYears((int)Math.Round(years));
-            var validMonths = mayOnly ? new[] {5} : new[] {5, 12};
+            var validMonths = monthOfMayOnly ? new[] {5} : new[] {5, 12};
             while (!validMonths.Contains(gradDt.Month))
                 gradDt = gradDt.AddMonths(1);
             gradDt = new DateTime(gradDt.Year, gradDt.Month, Etx.IntNumber(12, 28));
@@ -367,16 +367,13 @@ namespace NoFuture.Rand.Edu
                 var allUnivs = AmericanEduBase.UnivXml?.SelectNodes("//state");
                 if (allUnivs == null)
                     return null;
-                AmericanUniversity univOut;
                 pick = Etx.IntNumber(0, allUnivs.Count - 1);
-                var randUnivXml = allUnivs[pick] as XmlElement;
-                if (randUnivXml == null || !randUnivXml.HasChildNodes)
+                if (!(allUnivs[pick] is XmlElement randUnivXml) || !randUnivXml.HasChildNodes)
                     return null;
                 pick = Etx.IntNumber(0, randUnivXml.ChildNodes.Count - 1);
-                var univXmlNode = randUnivXml.ChildNodes[pick] as XmlElement;
-                if (univXmlNode == null)
+                if (!(randUnivXml.ChildNodes[pick] is XmlElement univXmlNode))
                     return null;
-                if (AmericanUniversity.TryParseXml(univXmlNode, out univOut))
+                if (AmericanUniversity.TryParseXml(univXmlNode, out var univOut))
                 {
                     univ = univOut;
                 }

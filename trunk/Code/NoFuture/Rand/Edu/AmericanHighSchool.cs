@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Xml;
 using NoFuture.Rand.Gov;
+using NoFuture.Util.Core;
 using NoFuture.Util.Core.Math;
 
 namespace NoFuture.Rand.Edu
@@ -69,7 +70,7 @@ namespace NoFuture.Rand.Edu
                 Assembly.GetExecutingAssembly());
             if (HsXml == null)
                 return new AmericanHighSchool[] { };
-
+            stateName = string.Join(" ", Etc.DistillToWholeWords(stateName));
             var elements =
                 HsXml.SelectNodes($"//state[@name='{stateName}']//high-school");
             if (elements == null || elements.Count <= 0)
@@ -90,7 +91,7 @@ namespace NoFuture.Rand.Edu
             return tempList.ToArray();
         }
 
-        public static bool TryParseXml(XmlElement node, out AmericanHighSchool hs)
+        internal static bool TryParseXml(XmlElement node, out AmericanHighSchool hs)
         {
             try
             {

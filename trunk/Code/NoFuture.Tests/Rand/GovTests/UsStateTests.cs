@@ -106,27 +106,6 @@ namespace NoFuture.Rand.Tests.GovTests
         }
 
         [TestMethod]
-        public void TestGetUniversities()
-        {
-            var testResults = AmericanUniversity.GetUniversitiesByState("Arizona");
-
-            Assert.IsNotNull(testResults);
-            Assert.IsTrue(testResults.Any());
-            Assert.AreNotEqual(0, testResults.Length);
-            Assert.IsTrue(testResults.Any(univ => univ.Name == "Arizona State University"));
-        }
-
-        [TestMethod]
-        public void TestGetHighSchools()
-        {
-            var testResults = AmericanHighSchool.GetHighSchoolsByState("Arizona");
-
-            Assert.IsNotNull(testResults);
-            Assert.AreNotEqual(0, testResults.Length);
-            
-        }
-
-        [TestMethod]
         public void TestGetStateData()
         {
             var testStateName = "Maryland";

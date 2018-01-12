@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Xml;
 using NoFuture.Rand.Gov;
+using NoFuture.Util.Core;
 using NoFuture.Util.Core.Math;
 
 namespace NoFuture.Rand.Edu
@@ -70,7 +71,7 @@ namespace NoFuture.Rand.Edu
             //this will never pass so avoid the exception
             if (UnivXml == null)
                 return new AmericanUniversity[] { };
-
+            stateName = string.Join(" ", Etc.DistillToWholeWords(stateName));
             var elements =
                 UnivXml.SelectSingleNode(
                     $"//state[@name='{stateName.ToUpper()}']") ??
@@ -95,7 +96,7 @@ namespace NoFuture.Rand.Edu
             return tempList.ToArray();
         }
 
-        public static bool TryParseXml(System.Xml.XmlElement node, out AmericanUniversity univ)
+        internal static bool TryParseXml(XmlElement node, out AmericanUniversity univ)
         {
             try
             {
