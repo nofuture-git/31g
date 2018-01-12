@@ -82,8 +82,7 @@ namespace NoFuture.Rand.Edu
             var tempList = new List<AmericanUniversity>();
             foreach (var elem in elements)
             {
-                AmericanUniversity univOut = null;
-                if (TryParseXml(elem as XmlElement, out univOut))
+                if (TryParseXml(elem as XmlElement, out var univOut))
                 {
                     univOut.StateName = stateName;
                     tempList.Add(univOut);

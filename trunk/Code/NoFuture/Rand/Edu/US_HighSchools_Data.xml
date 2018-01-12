@@ -8,7 +8,7 @@
             <avg-graduation-rate natl-percent="82.0" american-indian="70.0" asian="89.0" hispanic="76.0" black="73.0" white="87.0" pacific="89.0" mixed-race="82.0" />
           </national>
           <states>
-            <state name="Alaska">
+            <state name="Alaska" abbreviation="AK">
               <zip-code prefix="995">
                 <zip-stat value="99504">
                   <high-school name="HIGHLAND TECH HIGH CHARTER SCHOOL" urban-centric="City-Large" teachers="11.55" total-students="224" />
@@ -117,7 +117,7 @@
                 </zip-stat>
               </zip-code>
             </state>
-            <state name="Alabama">
+            <state name="Alabama" abbreviation="AL">
               <zip-code prefix="350">
                 <zip-stat value="35007">
                   <high-school name="THOMPSON HIGH SCH" urban-centric="Suburb-Large" teachers="99.08" total-students="1762" />
@@ -1201,7 +1201,7 @@
                 </zip-stat>
               </zip-code>
             </state>
-            <state name="Arkansas">
+            <state name="Arkansas" abbreviation="AR">
               <zip-code prefix="716">
                 <zip-stat value="71603">
                   <high-school name="ARKANSAS CORRECTIONAL SCHOOL" urban-centric="City-Small" teachers="0.00" total-students="0" />
@@ -1870,7 +1870,7 @@
                 </zip-stat>
               </zip-code>
             </state>
-            <state name="Arizona">
+            <state name="Arizona" abbreviation="AZ">
               <zip-code prefix="850">
                 <zip-stat value="85032">
                   <high-school name="STUDENT CHOICE HIGH SCHOOL TATUM CAMPUS" urban-centric="City-Large" teachers="-1.00" total-students="25" />
@@ -2952,7 +2952,7 @@
                 </zip-stat>
               </zip-code>
             </state>
-            <state name="California">
+            <state name="California" abbreviation="CA">
               <zip-code prefix="900">
                 <zip-stat value="90011">
                   <high-school name="THOMAS JEFFERSON SENIOR HIGH" urban-centric="City-Large" teachers="88.03" total-students="1619" />
@@ -6515,7 +6515,7 @@
                 </zip-stat>
               </zip-code>
             </state>
-            <state name="Colorado">
+            <state name="Colorado" abbreviation="CO">
               <zip-code prefix="800">
                 <zip-stat value="80013">
                   <high-school name="RANGEVIEW HIGH SCHOOL" urban-centric="City-Large" teachers="93.74" total-students="2197" />
@@ -7250,7 +7250,7 @@
                 </zip-stat>
               </zip-code>
             </state>
-            <state name="Connecticut">
+            <state name="Connecticut" abbreviation="CT">
               <zip-code prefix="060">
                 <zip-stat value="06010">
                   <high-school name="BRISTOL CENTRAL HIGH SCHOOL" urban-centric="Suburb-Large" teachers="84.10" total-students="1317" />
@@ -7751,7 +7751,7 @@
                 </zip-stat>
               </zip-code>
             </state>
-            <state name="District Of Columbia">
+            <state name="District Of Columbia" abbreviation="DC">
               <zip-code prefix="200">
                 <zip-stat value="20011">
                   <high-school name="IDEAL ACADEMY PCS  PEABODY STREET CAMPUS HS" urban-centric="City-Large" teachers="-2.00" total-students="-2" />
@@ -7824,7 +7824,7 @@
               <zip-code prefix="204" />
               <zip-code prefix="205" />
             </state>
-            <state name="Delaware">
+            <state name="Delaware" abbreviation="DE">
               <zip-code prefix="197">
                 <zip-stat value="19720">
                   <high-school name="PENCADER BUSINESS AND FINANCE CHARTER HIGH SCHOOL" urban-centric="Suburb-Large" teachers="31.00" total-students="507" />
@@ -7922,7 +7922,7 @@
                 </zip-stat>
               </zip-code>
             </state>
-            <state name="Florida">
+            <state name="Florida" abbreviation="FL">
               <zip-code prefix="320">
                 <zip-stat value="32068">
                   <high-school name="MIDDLEBURG HIGH SCHOOL" urban-centric="Rural-Fringe" teachers="107.00" total-students="1729" />
@@ -9581,7 +9581,7 @@
                 </zip-stat>
               </zip-code>
             </state>
-            <state name="Georgia">
+            <state name="Georgia" abbreviation="GA">
               <zip-code prefix="300">
                 <zip-stat value="30043">
                   <high-school name="MOUNTAIN VIEW HIGH SCHOOL" urban-centric="Suburb-Large" teachers="100.60" total-students="1890" />
@@ -10668,7 +10668,7 @@
                 </zip-stat>
               </zip-code>
             </state>
-            <state name="Hawaii">
+            <state name="Hawaii" abbreviation="HI">
               <zip-code prefix="967">
                 <zip-stat value="96797">
                   <high-school name="WAIPAHU HIGH SCHOOL" urban-centric="Suburb-Large" teachers="142.00" total-students="2463" />
@@ -10825,7 +10825,7 @@
                 </zip-stat>
               </zip-code>
             </state>
-            <state name="Iowa">
+            <state name="Iowa" abbreviation="IA">
               <zip-code prefix="500">
                 <zip-stat value="50010">
                   <high-school name="AMES HIGH SCHOOL" urban-centric="City-Small" teachers="79.80" total-students="1375" />
@@ -11573,7 +11573,7 @@
                 </zip-stat>
               </zip-code>
             </state>
-            <state name="Idaho">
+            <state name="Idaho" abbreviation="ID">
               <zip-code prefix="832">
                 <zip-stat value="83201">
                   <high-school name="HIGHLAND HIGH SCHOOL" urban-centric="City-Small" teachers="64.38" total-students="1294" />
@@ -11916,7 +11916,7 @@
                 </zip-stat>
               </zip-code>
             </state>
-            <state name="Illinois">
+            <state name="Illinois" abbreviation="IL">
               <zip-code prefix="600">
                 <zip-stat value="60085">
                   <high-school name="WAUKEGAN HIGH SCHOOL" urban-centric="Suburb-Large" teachers="284.28" total-students="4293" />
@@ -13853,7 +13853,7 @@
                 </zip-stat>
               </zip-code>
             </state>
-            <state name="Indiana">
+            <state name="Indiana" abbreviation="IN">
               <zip-code prefix="460">
                 <zip-stat value="46032">
                   <high-school name="CARMEL HIGH SCHOOL" urban-centric="City-Small" teachers="234.90" total-students="4555" />
@@ -15140,7 +15140,7 @@
                 </zip-stat>
               </zip-code>
             </state>
-            <state name="Kansas">
+            <state name="Kansas" abbreviation="KS">
               <zip-code prefix="660">
                 <zip-stat value="66062">
                   <high-school name="BLUE VALLEY SOUTHWEST HIGH SCHOOL" urban-centric="Rural-Fringe" teachers="72.06" total-students="908" />
@@ -15940,7 +15940,7 @@
                 </zip-stat>
               </zip-code>
             </state>
-            <state name="Kentucky">
+            <state name="Kentucky" abbreviation="KY">
               <zip-code prefix="400">
                 <zip-stat value="40004">
                   <high-school name="NELSON COUNTY HIGH SCHOOL" urban-centric="Rural-Fringe" teachers="70.30" total-students="1431" />
@@ -16480,7 +16480,7 @@
                 </zip-stat>
               </zip-code>
             </state>
-            <state name="Louisiana">
+            <state name="Louisiana" abbreviation="LA">
               <zip-code prefix="700">
                 <zip-stat value="70072">
                   <high-school name="JOHN EHRET HIGH SCHOOL" urban-centric="Suburb-Large" teachers="92.00" total-students="1713" />
@@ -17218,7 +17218,7 @@
                 </zip-stat>
               </zip-code>
             </state>
-            <state name="Massachusetts">
+            <state name="Massachusetts" abbreviation="MA">
               <zip-code prefix="010">
                 <zip-stat value="01085">
                   <high-school name="WESTFIELD HIGH" urban-centric="Suburb-Large" teachers="97.98" total-students="1514" />
@@ -18102,7 +18102,7 @@
                 </zip-stat>
               </zip-code>
             </state>
-            <state name="Maryland">
+            <state name="Maryland" abbreviation="MD">
               <zip-code prefix="206">
                 <zip-stat value="20603">
                   <high-school name="WESTLAKE HIGH SCHOOL" urban-centric="Suburb-Small" teachers="94.40" total-students="1574" />
@@ -18643,7 +18643,7 @@
                 </zip-stat>
               </zip-code>
             </state>
-            <state name="Maine">
+            <state name="Maine" abbreviation="ME">
               <zip-code prefix="039">
                 <zip-stat value="03909">
                   <high-school name="YORK HIGH SCHOOL" urban-centric="Town-Fringe" teachers="52.05" total-students="609" />
@@ -18858,7 +18858,7 @@
                 </zip-stat>
               </zip-code>
             </state>
-            <state name="Michigan">
+            <state name="Michigan" abbreviation="MI">
               <zip-code prefix="480">
                 <zip-stat value="48044">
                   <high-school name="DAKOTA HIGH SCHOOL" urban-centric="Suburb-Large" teachers="124.10" total-students="2554" />
@@ -20940,7 +20940,7 @@
                 </zip-stat>
               </zip-code>
             </state>
-            <state name="Minnesota">
+            <state name="Minnesota" abbreviation="MN">
               <zip-code prefix="550">
                 <zip-stat value="55044">
                   <high-school name="LAKEVILLE NORTH HIGH" urban-centric="Suburb-Large" teachers="73.60" total-students="1784" />
@@ -22123,7 +22123,7 @@
                 </zip-stat>
               </zip-code>
             </state>
-            <state name="Missouri">
+            <state name="Missouri" abbreviation="MO">
               <zip-code prefix="630">
                 <zip-stat value="63021">
                   <high-school name="SOUTH HIGH" urban-centric="Suburb-Large" teachers="123.05" total-students="1899" />
@@ -23407,7 +23407,7 @@
                 </zip-stat>
               </zip-code>
             </state>
-            <state name="Mississippi">
+            <state name="Mississippi" abbreviation="MS">
               <zip-code prefix="386">
                 <zip-stat value="38654">
                   <high-school name="OLIVE BRANCH HIGH SCHOOL" urban-centric="Suburb-Large" teachers="64.64" total-students="1179" />
@@ -24009,7 +24009,7 @@
                 </zip-stat>
               </zip-code>
             </state>
-            <state name="Montana">
+            <state name="Montana" abbreviation="MT">
               <zip-code prefix="590">
                 <zip-stat value="59044">
                   <high-school name="LAUREL HIGH SCHOOL" urban-centric="Town-Fringe" teachers="41.84" total-students="631" />
@@ -24199,7 +24199,7 @@
                 </zip-stat>
               </zip-code>
             </state>
-            <state name="North Carolina">
+            <state name="North Carolina" abbreviation="NC">
               <zip-code prefix="270">
                 <zip-stat value="27030">
                   <high-school name="NORTH SURRY HIGH" urban-centric="Rural-Fringe" teachers="58.00" total-students="896" />
@@ -25604,7 +25604,7 @@
                 </zip-stat>
               </zip-code>
             </state>
-            <state name="North Dakota">
+            <state name="North Dakota" abbreviation="ND">
               <zip-code prefix="580">
                 <zip-stat value="58078">
                   <high-school name="WEST FARGO HIGH SCHOOL" urban-centric="Suburb-Midsize" teachers="105.33" total-students="1473" />
@@ -25853,7 +25853,7 @@
                 </zip-stat>
               </zip-code>
             </state>
-            <state name="Nebraska">
+            <state name="Nebraska" abbreviation="NE">
               <zip-code prefix="680">
                 <zip-stat value="68025">
                   <high-school name="FREMONT SENIOR HIGH SCHOOL" urban-centric="Town-Distant" teachers="76.45" total-students="1387" />
@@ -26388,7 +26388,7 @@
                 </zip-stat>
               </zip-code>
             </state>
-            <state name="New Hampshire">
+            <state name="New Hampshire" abbreviation="NH">
               <zip-code prefix="030">
                 <zip-stat value="03038">
                   <high-school name="PINKERTON ACADEMY" urban-centric="Suburb-Midsize" teachers="231.00" total-students="3113" />
@@ -26671,7 +26671,7 @@
                 </zip-stat>
               </zip-code>
             </state>
-            <state name="New Jersey">
+            <state name="New Jersey" abbreviation="NJ">
               <zip-code prefix="070">
                 <zip-stat value="07055">
                   <high-school name="PASSAIC HIGH" urban-centric="Suburb-Large" teachers="250.51" total-students="2598" />
@@ -27724,7 +27724,7 @@
                 </zip-stat>
               </zip-code>
             </state>
-            <state name="New Mexico">
+            <state name="New Mexico" abbreviation="NM">
               <zip-code prefix="870">
                 <zip-stat value="87031">
                   <high-school name="LOS LUNAS HIGH" urban-centric="Rural-Fringe" teachers="62.00" total-students="1275" />
@@ -28180,7 +28180,7 @@
                 </zip-stat>
               </zip-code>
             </state>
-            <state name="Nevada">
+            <state name="Nevada" abbreviation="NV">
               <zip-code prefix="890">
                 <zip-stat value="89031">
                   <high-school name="MOJAVE HIGH SCHOOL" urban-centric="Suburb-Large" teachers="86.00" total-students="2054" />
@@ -28485,7 +28485,7 @@
                 </zip-stat>
               </zip-code>
             </state>
-            <state name="New York">
+            <state name="New York" abbreviation="NY">
               <zip-code prefix="100">
                 <zip-stat value="10002">
                   <high-school name="NEW DESIGN HIGH SCHOOL" urban-centric="City-Large" teachers="34.00" total-students="422" />
@@ -31325,7 +31325,7 @@
                 </zip-stat>
               </zip-code>
             </state>
-            <state name="Ohio">
+            <state name="Ohio" abbreviation="OH">
               <zip-code prefix="430">
                 <zip-stat value="43055">
                   <high-school name="NEWARK DIGITAL ACADEMY" urban-centric="Suburb-Small" teachers="11.80" total-students="266" />
@@ -33931,7 +33931,7 @@
                 </zip-stat>
               </zip-code>
             </state>
-            <state name="Oklahoma">
+            <state name="Oklahoma" abbreviation="OK">
               <zip-code prefix="730">
                 <zip-stat value="73099">
                   <high-school name="YUKON HS" urban-centric="Suburb-Large" teachers="117.30" total-students="2195" />
@@ -34993,7 +34993,7 @@
                 </zip-stat>
               </zip-code>
             </state>
-            <state name="Oregon">
+            <state name="Oregon" abbreviation="OR">
               <zip-code prefix="970">
                 <zip-stat value="97007">
                   <high-school name="ALOHA HIGH SCHOOL" urban-centric="Suburb-Large" teachers="98.38" total-students="2067" />
@@ -35752,7 +35752,7 @@
                 </zip-stat>
               </zip-code>
             </state>
-            <state name="Pennsylvania">
+            <state name="Pennsylvania" abbreviation="PA">
               <zip-code prefix="150">
                 <zip-stat value="15068">
                   <high-school name="BURRELL HS" urban-centric="Suburb-Large" teachers="41.38" total-students="601" />
@@ -37812,7 +37812,7 @@
                 </zip-stat>
               </zip-code>
             </state>
-            <state name="Rhode Island">
+            <state name="Rhode Island" abbreviation="RI">
               <zip-code prefix="028">
                 <zip-stat value="02860">
                   <high-school name="SHEA HIGH SCHOOL" urban-centric="Suburb-Large" teachers="66.00" total-students="948" />
@@ -37943,7 +37943,7 @@
                 </zip-stat>
               </zip-code>
             </state>
-            <state name="South Carolina">
+            <state name="South Carolina" abbreviation="SC">
               <zip-code prefix="290">
                 <zip-stat value="29072">
                   <high-school name="LEXINGTON HIGH" urban-centric="Rural-Fringe" teachers="163.00" total-students="3108" />
@@ -38605,7 +38605,7 @@
                 </zip-stat>
               </zip-code>
             </state>
-            <state name="South Dakota">
+            <state name="South Dakota" abbreviation="SD">
               <zip-code prefix="570">
                 <zip-stat value="57006">
                   <high-school name="BROOKINGS HIGH SCHOOL - 01" urban-centric="Town-Remote" teachers="49.29" total-students="776" />
@@ -38897,7 +38897,7 @@
                 </zip-stat>
               </zip-code>
             </state>
-            <state name="Tennessee">
+            <state name="Tennessee" abbreviation="TN">
               <zip-code prefix="370">
                 <zip-stat value="37013">
                   <high-school name="ANTIOCH HIGH SCHOOL" urban-centric="Rural-Fringe" teachers="92.30" total-students="1941" />
@@ -39913,7 +39913,7 @@
                 </zip-stat>
               </zip-code>
             </state>
-            <state name="Texas">
+            <state name="Texas" abbreviation="TX">
               <zip-code prefix="750">
                 <zip-stat value="75052">
                   <high-school name="SO GRAND PRAIRIE H S" urban-centric="Suburb-Large" teachers="137.65" total-students="2309" />
@@ -43299,7 +43299,7 @@
                 </zip-stat>
               </zip-code>
             </state>
-            <state name="Utah">
+            <state name="Utah" abbreviation="UT">
               <zip-code prefix="840">
                 <zip-stat value="84015">
                   <high-school name="CLEARFIELD HIGH" urban-centric="City-Small" teachers="68.61" total-students="1612" />
@@ -43629,7 +43629,7 @@
                 </zip-stat>
               </zip-code>
             </state>
-            <state name="Virginia">
+            <state name="Virginia" abbreviation="VA">
               <zip-code prefix="201">
                 <zip-stat value="20147">
                   <high-school name="BROAD RUN HIGH" urban-centric="Suburb-Large" teachers="126.28" total-students="1785" />
@@ -44412,7 +44412,7 @@
                 </zip-stat>
               </zip-code>
             </state>
-            <state name="Vermont">
+            <state name="Vermont" abbreviation="VT">
               <zip-code prefix="050">
                 <zip-stat value="05001">
                   <high-school name="HARTFORD HIGH SCHOOL" urban-centric="Town-Remote" teachers="73.62" total-students="600" />
@@ -44583,7 +44583,7 @@
                 </zip-stat>
               </zip-code>
             </state>
-            <state name="Wisconsin">
+            <state name="Wisconsin" abbreviation="WI">
               <zip-code prefix="530">
                 <zip-stat value="53081">
                   <high-school name="SOUTH HIGH" urban-centric="City-Small" teachers="76.10" total-students="1153" />
@@ -45943,7 +45943,7 @@
                 </zip-stat>
               </zip-code>
             </state>
-            <state name="West Virginia">
+            <state name="West Virginia" abbreviation="WV">
               <zip-code prefix="247">
                 <zip-stat value="24740">
                   <high-school name="PRINCETON SENIOR HIGH SCHOOL" urban-centric="Town-Remote" teachers="62.00" total-students="1082" />
@@ -46236,7 +46236,7 @@
               </zip-code>
               <zip-code prefix="268" />
             </state>
-            <state name="Wyoming">
+            <state name="Wyoming" abbreviation="WY">
               <zip-code prefix="820">
                 <zip-stat value="82001">
                   <high-school name="EAST HIGH SCHOOL" urban-centric="City-Small" teachers="98.36" total-students="1301" />

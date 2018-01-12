@@ -2,9 +2,11 @@
 using System.Reflection;
 using System.Xml;
 using NoFuture.Rand.Core;
+using NoFuture.Util.Core;
 
 namespace NoFuture.Rand.Tele
 {
+    /// <inheritdoc />
     /// <summary>
     /// Base type to represent a telephone number
     /// </summary>
@@ -39,40 +41,49 @@ namespace NoFuture.Rand.Tele
         /// Gets a <see cref="NorthAmericanPhone"/> whose area code is pertinent 
         /// to the given US State.
         /// </summary>
-        /// <param name="stateCode">The two-character US Postal Code for the given State.</param>
+        /// <param name="state">Works with both the postal abbreviation and the full name</param>
         /// <returns></returns>
-        public static NorthAmericanPhone American(string stateCode)
+        public static NorthAmericanPhone American(string state)
         {
             return
                 new NorthAmericanPhone(
                     new Tuple<NorthAmericanPhone.PhoneCodes, string>(NorthAmericanPhone.PhoneCodes.AreaCode,
-                        GetAreaCode("us", stateCode)));
+                        GetRandomAreaCode("us", state)));
         }
 
         /// <summary>
         /// Gets a <see cref="NorthAmericanPhone"/> whose area code is pertinent 
         /// to the given Canadian Providence.
         /// </summary>
-        /// <param name="providenceCode">The two-character Canadian Postal Code for the given Providence.</param>
+        /// <param name="providence">Works with both the postal abbreviation and the full name</param>
         /// <returns></returns>
-        public static NorthAmericanPhone Canadian(string providenceCode)
+        public static NorthAmericanPhone Canadian(string providence)
         {
             return
                 new NorthAmericanPhone(
                     new Tuple<NorthAmericanPhone.PhoneCodes, string>(NorthAmericanPhone.PhoneCodes.AreaCode,
-                        GetAreaCode("ca", providenceCode)));
+                        GetRandomAreaCode("ca", providence)));
         }
 
         //same code only the resource changes
-        private static string GetAreaCode(string countryCode, string stateCode)
+        private static string GetRandomAreaCode(string countryCode, string stateQry)
         {
             const string AREA_CODE_PLURAL = "area-codes";
             const string STATE = "state";
             const string PROVIDENCE = "providence";
             const string ABBREVIATION = "abbreviation";
+            const string NAME = "name";
+
             XmlNode state;
             if (string.IsNullOrWhiteSpace(countryCode))
                 countryCode = "us";
+
+            var qryBy = stateQry.Length == 2 ? ABBREVIATION : NAME;
+
+            if (qryBy == NAME)
+            {
+                stateQry = string.Join(" ", Etc.DistillToWholeWords(stateQry));
+            }
 
             if(countryCode.ToLower() == "ca")
             {
@@ -81,7 +92,7 @@ namespace NoFuture.Rand.Tele
                                     Assembly.GetExecutingAssembly());
                 if (CaAreaCodeXml == null)
                     return null;
-                state = CaAreaCodeXml.SelectSingleNode($"//{AREA_CODE_PLURAL}/{PROVIDENCE}[@{ABBREVIATION}='{stateCode}']");
+                state = CaAreaCodeXml.SelectSingleNode($"//{AREA_CODE_PLURAL}/{PROVIDENCE}[@{qryBy}='{stateQry}']");
             }
             else
             {
@@ -90,7 +101,7 @@ namespace NoFuture.Rand.Tele
                                     Assembly.GetExecutingAssembly());
                 if (UsAreaCodeXml == null)
                     return null;
-                state = UsAreaCodeXml.SelectSingleNode($"//{AREA_CODE_PLURAL}/{STATE}[@{ABBREVIATION}='{stateCode}']");
+                state = UsAreaCodeXml.SelectSingleNode($"//{AREA_CODE_PLURAL}/{STATE}[@{qryBy}='{stateQry}']");
             }    
             
             if (state == null)

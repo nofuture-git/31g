@@ -112,8 +112,7 @@ namespace NoFuture.Rand.Tele
 
         public override bool Equals(object obj)
         {
-            var ph = obj as NorthAmericanPhone;
-            if (ph == null)
+            if (!(obj is NorthAmericanPhone ph))
                 return false;
 
             var p = new[]
