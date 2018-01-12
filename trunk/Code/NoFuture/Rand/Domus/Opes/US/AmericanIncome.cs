@@ -7,10 +7,11 @@ using NoFuture.Rand.Data.Sp;
 using NoFuture.Rand.Data.Sp.Enums;
 using NoFuture.Rand.Domus.Pneuma;
 using NoFuture.Rand.Gov;
+using NoFuture.Rand.Gov.US;
 using NoFuture.Rand.Org;
 using NoFuture.Util.Core;
 
-namespace NoFuture.Rand.Domus.Opes
+namespace NoFuture.Rand.Domus.Opes.US
 {
     /// <inheritdoc cref="IReditus" />
     /// <inheritdoc cref="WealthBase" />

@@ -4,7 +4,7 @@ using System.Reflection;
 using System.Xml;
 using NoFuture.Util.Core.Math;
 
-namespace NoFuture.Rand.Gov
+namespace NoFuture.Rand.Gov.US
 {
     [Serializable]
     public class UsStateData

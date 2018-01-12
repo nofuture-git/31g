@@ -1,7 +1,7 @@
 ﻿using System;
 using NoFuture.Rand.Core;
 
-namespace NoFuture.Rand.Gov.TheStates
+namespace NoFuture.Rand.Gov.US.TheStates
 {
     public class California : UsState
     {

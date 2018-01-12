@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NoFuture.Rand.Edu
+namespace NoFuture.Rand.Edu.US
 {
     [Serializable]
     public class AmericanCollegeStudent : AmericanStudentBase<AmericanUniversity>

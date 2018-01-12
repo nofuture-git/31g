@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NoFuture.Rand.Gov
+namespace NoFuture.Rand.Gov.US
 {
     /// <summary>
     /// See https://en.wikipedia.org/wiki/REAL_ID_Act#Data_requirements

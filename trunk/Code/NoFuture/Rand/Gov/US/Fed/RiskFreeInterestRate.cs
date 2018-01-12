@@ -1,7 +1,7 @@
 ﻿using System;
 using NoFuture.Rand.Core;
 
-namespace NoFuture.Rand.Gov.Fed
+namespace NoFuture.Rand.Gov.US.Fed
 {
     [Serializable]
     public class RiskFreeInterestRate : IIdentifier<float>

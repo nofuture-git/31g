@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace NoFuture.Rand.Gov
+namespace NoFuture.Rand.Gov.US
 {
     public static class AmericanData
     {
@@ -134,11 +134,7 @@ namespace NoFuture.Rand.Gov
 
         #endregion
 
-
-
         #region tables
-
-
 
         /// <summary>
         /// src [https://www.cdc.gov/nchs/data/nvsr/nvsr65/nvsr65_04.pdf] Table B.
@@ -153,8 +149,6 @@ namespace NoFuture.Rand.Gov
                 {AmericanDeathCert.MannerOfDeath.Homicide, 0.604 },
                 {AmericanDeathCert.MannerOfDeath.Natural, 92.591 }
             };
-
-
 
         #endregion
     }

@@ -1,7 +1,9 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NoFuture.Rand.Edu;
+using NoFuture.Rand.Edu.US;
 using NoFuture.Rand.Gov;
+using NoFuture.Rand.Gov.US;
 
 namespace NoFuture.Rand.Tests.EduTests
 {
@@ -22,7 +24,7 @@ namespace NoFuture.Rand.Tests.EduTests
             testResult = AmericanSchoolBase.SolvePercentGradByStateAndRace(null, NorthAmericanRace.AmericanIndian);
             Assert.AreEqual(70.0, testResult);
 
-            var testState = NoFuture.Rand.Gov.UsState.GetStateByPostalCode("CA");
+            var testState = UsState.GetStateByPostalCode("CA");
             var testStateData = UsStateData.GetStateData(testState.ToString());
             Assert.IsNotNull(testStateData);
 
@@ -37,7 +39,7 @@ namespace NoFuture.Rand.Tests.EduTests
             testResult = AmericanSchoolBase.SolvePercentGradByStateAndRace(testState, NorthAmericanRace.AmericanIndian);
             Assert.AreEqual(68.6, testResult);
 
-            testState = NoFuture.Rand.Gov.UsState.GetStateByPostalCode("ID");
+            testState = UsState.GetStateByPostalCode("ID");
             Assert.IsNotNull(testState);
             Assert.IsNotNull(UsStateData.GetStateData(testState.ToString()));
 

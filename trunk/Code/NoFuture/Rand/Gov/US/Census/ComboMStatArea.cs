@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NoFuture.Rand.Gov.Census
+namespace NoFuture.Rand.Gov.US.Census
 {
     [Serializable]
     public class ComboMStatArea : MStatArea

@@ -2,6 +2,7 @@
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NoFuture.Rand.Domus.Opes;
+using NoFuture.Rand.Domus.Opes.US;
 using NoFuture.Rand.Org;
 
 namespace NoFuture.Rand.Tests.DomusTests.OpesTests
@@ -13,7 +14,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         public void TestGetYearsOfServiceInDates()
         {
             //still employed
-            var testSubject = new Domus.Opes.AmericanEmployment(new DateTime(2011,10,5),null);
+            var testSubject = new AmericanEmployment(new DateTime(2011,10,5),null);
 
             var testResult = testSubject.GetYearsOfServiceInDates(null);
             Assert.IsNotNull(testResult);
@@ -24,7 +25,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
 
             Assert.AreEqual(6, testResult.Count);
 
-            testSubject = new Domus.Opes.AmericanEmployment(new DateTime(2013, 5, 16), new DateTime(2017,8,1));
+            testSubject = new AmericanEmployment(new DateTime(2013, 5, 16), new DateTime(2017,8,1));
             testResult = testSubject.GetYearsOfServiceInDates(null);
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0, testResult.Count);
@@ -39,7 +40,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         [TestMethod]
         public void TestGetPayName2RandRates()
         {
-            var testSubject = new Domus.Opes.AmericanEmployment(new DateTime(2011, 10, 5), null);
+            var testSubject = new AmericanEmployment(new DateTime(2011, 10, 5), null);
             testSubject.Occupation = StandardOccupationalClassification.GetById("41-2031");
             var testResult = testSubject.GetPayName2RandRates(testSubject.MyOptions);
 

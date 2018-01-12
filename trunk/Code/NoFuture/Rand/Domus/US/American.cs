@@ -4,8 +4,11 @@ using System.Linq;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Edu;
+using NoFuture.Rand.Edu.US;
 using NoFuture.Rand.Geo;
+using NoFuture.Rand.Geo.US;
 using NoFuture.Rand.Gov;
+using NoFuture.Rand.Gov.US;
 using NoFuture.Rand.Tele;
 using NoFuture.Shared.Core;
 using NoFuture.Util.Core;
@@ -187,7 +190,7 @@ namespace NoFuture.Rand.Domus.US
         public NorthAmericanRace Race { get; set; }
 
         /// <summary>
-        /// Get the <see cref="Gov.DriversLicense"/> at the current time.
+        /// Get the <see cref="Gov.US.DriversLicense"/> at the current time.
         /// </summary>
         public DriversLicense DriversLicense => GetDriversLicenseAt(null);
 
@@ -377,7 +380,7 @@ namespace NoFuture.Rand.Domus.US
         }
 
         /// <summary>
-        /// Resolves the <see cref="Gov.DriversLicense"/> which was 
+        /// Resolves the <see cref="Gov.US.DriversLicense"/> which was 
         /// current at <see cref="dt"/>
         /// </summary>
         /// <param name="dt">Null for the current time</param>

@@ -2,7 +2,7 @@
 using System.Text;
 using NoFuture.Rand.Core;
 
-namespace NoFuture.Rand.Gov.Nhtsa
+namespace NoFuture.Rand.Gov.US.Nhtsa
 {
     /// <summary>
     /// Represents the chars 10-17 of a VIN 

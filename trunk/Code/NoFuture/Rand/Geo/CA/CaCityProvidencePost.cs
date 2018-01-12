@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NoFuture.Rand.Geo
+namespace NoFuture.Rand.Geo.CA
 {
     /// <summary>
     /// Postal address for Canada

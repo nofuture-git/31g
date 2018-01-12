@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NoFuture.Rand.Gov.Irs
+namespace NoFuture.Rand.Gov.US.Irs
 {
     [Serializable]
     public class PreparerTaxIdNumber : TaxpayerIdentificationNumber

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text;
 
-namespace NoFuture.Rand.Gov.Sec
+namespace NoFuture.Rand.Gov.US.Sec
 {
     [Serializable]
     public class Form10K : SecForm

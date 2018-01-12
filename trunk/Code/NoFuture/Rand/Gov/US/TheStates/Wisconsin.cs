@@ -3,7 +3,7 @@ using System.Text;
 using NoFuture.Rand.Core;
 using NoFuture.Util.Core;
 
-namespace NoFuture.Rand.Gov.TheStates
+namespace NoFuture.Rand.Gov.US.TheStates
 {
     public class Wisconsin : UsState
     {

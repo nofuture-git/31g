@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Xml;
-using NoFuture.Rand.Gov.Sec;
+using NoFuture.Rand.Gov.US.Sec;
 using NoFuture.Shared.Core;
 
 namespace NoFuture.Rand.Data.Exo.NfXml

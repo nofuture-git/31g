@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NoFuture.Rand.Gov.Irs
+namespace NoFuture.Rand.Gov.US.Irs
 {
     /// <summary>
     /// http://www.irs.gov/Businesses/Small-Businesses-&amp;-Self-Employed/How-EINs-are-Assigned-and-Valid-EIN-Prefixes

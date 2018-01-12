@@ -3,6 +3,7 @@ using System.Diagnostics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NoFuture.Rand.Domus.US;
 using NoFuture.Rand.Gov;
+using NoFuture.Rand.Gov.US;
 
 namespace NoFuture.Rand.Tests.DataTests.SpTests
 {

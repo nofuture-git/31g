@@ -1,7 +1,9 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NoFuture.Rand.Domus.Opes;
+using NoFuture.Rand.Domus.Opes.US;
 using NoFuture.Rand.Gov;
+using NoFuture.Rand.Gov.US;
 
 namespace NoFuture.Rand.Tests.DomusTests.OpesTests
 {

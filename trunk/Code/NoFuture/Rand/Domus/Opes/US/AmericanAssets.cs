@@ -6,9 +6,12 @@ using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Data.Sp;
 using NoFuture.Rand.Data.Sp.Enums;
 using NoFuture.Rand.Geo;
+using NoFuture.Rand.Geo.US;
 using NoFuture.Rand.Gov;
+using NoFuture.Rand.Gov.US.Fed;
+using NoFuture.Rand.Gov.US.Nhtsa;
 
-namespace NoFuture.Rand.Domus.Opes
+namespace NoFuture.Rand.Domus.Opes.US
 {
     /// <inheritdoc cref="IRebus" />
     /// <inheritdoc cref="WealthBase" />
@@ -230,7 +233,7 @@ namespace NoFuture.Rand.Domus.Opes
         protected internal override Pondus GetPondusForItemAndGroup(string item, string grp, OpesOptions options)
         {
             const StringComparison OPT = StringComparison.OrdinalIgnoreCase;
-            const float FED_RATE = Gov.Fed.RiskFreeInterestRate.DF_VALUE;
+            const float FED_RATE = RiskFreeInterestRate.DF_VALUE;
 
             options = (options ?? MyOptions) ?? new OpesOptions();
 
@@ -286,7 +289,7 @@ namespace NoFuture.Rand.Domus.Opes
 
                 var id = isMortgage
                     ? new PostalAddress()
-                    : (Identifier) new Gov.Nhtsa.Vin();
+                    : (Identifier) new Vin();
 
                 var remainingCost = isMortgage
                     ? homeDebtAmt.ToPecuniam()

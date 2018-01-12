@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Xml;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
-using NoFuture.Rand.Gov.Irs;
-using NoFuture.Rand.Gov.Sec;
 using NoFuture.Rand.Gov;
+using NoFuture.Rand.Gov.US;
+using NoFuture.Rand.Gov.US.Irs;
+using NoFuture.Rand.Gov.US.Sec;
 
 namespace NoFuture.Rand.Com
 {

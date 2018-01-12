@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NoFuture.Rand.Gov.Nhtsa
+namespace NoFuture.Rand.Gov.US.Nhtsa
 {
     /// <summary>
     /// Is One based index

@@ -7,11 +7,12 @@ using System.Text.RegularExpressions;
 using System.Xml;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Gov;
-using NoFuture.Rand.Gov.Census;
+using NoFuture.Rand.Gov.US;
+using NoFuture.Rand.Gov.US.Census;
 using NoFuture.Util.Core;
 using NoFuture.Util.Core.Math;
 
-namespace NoFuture.Rand.Geo
+namespace NoFuture.Rand.Geo.US
 {
     /// <summary>
     /// A type to represent the typical City, State and ZIP code of a US Postal Address

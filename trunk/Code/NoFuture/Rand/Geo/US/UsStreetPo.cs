@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text.RegularExpressions;
 
-namespace NoFuture.Rand.Geo
+namespace NoFuture.Rand.Geo.US
 {
     [Serializable]
     public class UsStreetPo : StreetPo

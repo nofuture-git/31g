@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Xml;
-using NoFuture.Rand.Gov.Sec;
+using NoFuture.Rand.Gov.US.Sec;
 
 namespace NoFuture.Rand.Data.Exo.NfXml
 {

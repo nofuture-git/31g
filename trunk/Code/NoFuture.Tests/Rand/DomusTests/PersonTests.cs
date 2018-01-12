@@ -4,8 +4,11 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NoFuture.Rand.Domus;
 using NoFuture.Rand.Domus.US;
 using NoFuture.Rand.Edu;
+using NoFuture.Rand.Edu.US;
 using NoFuture.Rand.Geo;
+using NoFuture.Rand.Geo.US;
 using NoFuture.Rand.Gov;
+using NoFuture.Rand.Gov.US;
 using NoFuture.Util.Core;
 using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 

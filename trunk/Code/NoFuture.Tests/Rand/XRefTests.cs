@@ -4,7 +4,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NoFuture.Rand.Com;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
-using NoFuture.Rand.Gov.Fed;
+using NoFuture.Rand.Gov.US.Fed;
 
 namespace NoFuture.Rand.Tests
 {

@@ -3,7 +3,7 @@ using System.Linq;
 using System.Reflection;
 using NoFuture.Rand.Core;
 
-namespace NoFuture.Rand.Gov.Sec
+namespace NoFuture.Rand.Gov.US.Sec
 {
     [Serializable]
     public abstract class SecForm : Identifier

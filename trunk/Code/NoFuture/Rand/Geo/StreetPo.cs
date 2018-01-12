@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using NoFuture.Rand.Core;
+using NoFuture.Rand.Geo.US;
 
 namespace NoFuture.Rand.Geo
 {

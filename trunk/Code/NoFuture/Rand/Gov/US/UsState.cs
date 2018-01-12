@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using NoFuture.Rand.Core;
-using NoFuture.Rand.Gov.TheStates;
+using NoFuture.Rand.Gov.US.TheStates;
 using NoFuture.Shared.Core;
 using NoFuture.Util.Core;
 
-namespace NoFuture.Rand.Gov
+namespace NoFuture.Rand.Gov.US
 {
     [Serializable]
     public abstract class UsState

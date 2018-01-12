@@ -1,6 +1,6 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NoFuture.Rand.Gov.Nhtsa;
+using NoFuture.Rand.Gov.US.Nhtsa;
 
 namespace NoFuture.Rand.Tests.GovTests
 {

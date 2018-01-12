@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NoFuture.Rand.Gov.Sec
+namespace NoFuture.Rand.Gov.US.Sec
 {
     [Serializable]
     public class Form13Fhr : SecForm

@@ -3,7 +3,7 @@ using System.Linq;
 using NoFuture.Rand.Core;
 using NoFuture.Shared.Core;
 
-namespace NoFuture.Rand.Gov
+namespace NoFuture.Rand.Gov.US
 {
     [Serializable]
     public class DriversLicense : StateIssuedId

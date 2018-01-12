@@ -3,7 +3,7 @@ using System.Linq;
 using System.Text;
 using NoFuture.Rand.Core;
 
-namespace NoFuture.Rand.Gov.Fed
+namespace NoFuture.Rand.Gov.US.Fed
 {
     /// <summary>
     /// see [http://en.wikipedia.org/wiki/Routing_transit_number]

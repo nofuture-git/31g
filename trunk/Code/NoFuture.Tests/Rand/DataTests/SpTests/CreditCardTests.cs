@@ -6,6 +6,7 @@ using NoFuture.Rand.Data.Sp;
 using NoFuture.Rand.Data.Sp.Cc;
 using NoFuture.Rand.Domus.US;
 using NoFuture.Rand.Gov;
+using NoFuture.Rand.Gov.US;
 using NoFuture.Util.Core;
 
 namespace NoFuture.Rand.Tests.DataTests.SpTests

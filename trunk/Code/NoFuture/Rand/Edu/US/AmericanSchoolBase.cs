@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Xml;
-using System.ComponentModel;
 using NoFuture.Rand.Gov;
+using NoFuture.Rand.Gov.US;
 
-namespace NoFuture.Rand.Edu
+namespace NoFuture.Rand.Edu.US
 {
     [Serializable]
     public abstract class AmericanSchoolBase

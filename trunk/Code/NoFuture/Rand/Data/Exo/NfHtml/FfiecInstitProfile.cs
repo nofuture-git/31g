@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using NoFuture.Rand.Gov.Fed;
+using NoFuture.Rand.Gov.US.Fed;
 using NoFuture.Shared.Core;
 
 namespace NoFuture.Rand.Data.Exo.NfHtml

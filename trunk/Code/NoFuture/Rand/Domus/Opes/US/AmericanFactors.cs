@@ -1,11 +1,12 @@
 ﻿using System;
-using System.Reflection;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Xml;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Gov;
+using NoFuture.Rand.Gov.US;
 
-namespace NoFuture.Rand.Domus.Opes
+namespace NoFuture.Rand.Domus.Opes.US
 {
     /// <summary>
     /// Applies each of the <see cref="FactorTables"/> to the given <see cref="OpesOptions"/>

@@ -4,8 +4,9 @@ using System.Linq;
 using NoFuture.Rand.Data.Sp;
 using NoFuture.Rand.Data.Sp.Enums;
 using NoFuture.Rand.Gov;
+using NoFuture.Rand.Gov.US;
 
-namespace NoFuture.Rand.Domus.Opes
+namespace NoFuture.Rand.Domus.Opes.US
 {
     /// <inheritdoc cref="IExpense" />
     /// <inheritdoc cref="WealthBase" />

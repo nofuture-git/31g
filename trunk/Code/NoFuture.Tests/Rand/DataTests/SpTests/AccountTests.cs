@@ -5,6 +5,7 @@ using NoFuture.Rand.Data.Sp.Cc;
 using NoFuture.Rand.Domus.Opes;
 using NoFuture.Rand.Domus.US;
 using NoFuture.Rand.Gov;
+using NoFuture.Rand.Gov.US;
 
 namespace NoFuture.Rand.Tests.DataTests.SpTests
 {

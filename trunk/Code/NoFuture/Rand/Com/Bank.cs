@@ -6,7 +6,8 @@ using System.Xml;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Geo;
-using NoFuture.Rand.Gov.Fed;
+using NoFuture.Rand.Geo.US;
+using NoFuture.Rand.Gov.US.Fed;
 
 namespace NoFuture.Rand.Com
 {

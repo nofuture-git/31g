@@ -1,4 +1,4 @@
-﻿namespace NoFuture.Rand.Gov.TheStates
+﻿namespace NoFuture.Rand.Gov.US.TheStates
 {
     public class Pennsylvania : UsState
     {

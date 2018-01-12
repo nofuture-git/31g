@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using NoFuture.Rand.Data.Exo.NfXml;
+using NoFuture.Rand.Gov.US.Sec;
 using NoFuture.Tokens;
 using NoFuture.Tokens.ParseResults;
 
@@ -12,13 +13,13 @@ namespace NoFuture.Rand.Data.Exo.NfHtml
 {
     /// <summary>
     /// The uri to an individual XBRL xml file is embedded inside the
-    /// html from <see cref="Gov.Sec.SecForm.HtmlFormLink"/>
+    /// html from <see cref="SecForm.HtmlFormLink"/>
     /// </summary>
     public class SecGetXbrlUri : NfHtmlDynDataBase
     {
         public SecGetXbrlUri(Uri src):base(src) { }
 
-        public static Uri GetUri(Gov.Sec.SecForm secForm)
+        public static Uri GetUri(SecForm secForm)
         {
             return secForm?.HtmlFormLink;
         }

@@ -1,5 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NoFuture.Rand.Gov.Fed;
+using NoFuture.Rand.Gov.US.Fed;
 
 namespace NoFuture.Rand.Tests.GovTests
 {

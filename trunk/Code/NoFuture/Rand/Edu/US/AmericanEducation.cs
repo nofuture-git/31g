@@ -5,12 +5,14 @@ using System.Reflection;
 using System.Xml;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Geo;
+using NoFuture.Rand.Geo.US;
 using NoFuture.Rand.Gov;
+using NoFuture.Rand.Gov.US;
 using NoFuture.Shared.Core;
 using NoFuture.Util.Core;
 using NoFuture.Util.Core.Math;
 
-namespace NoFuture.Rand.Edu
+namespace NoFuture.Rand.Edu.US
 {
     [Serializable]
     public class AmericanEducation : IEducation

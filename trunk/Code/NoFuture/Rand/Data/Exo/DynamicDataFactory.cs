@@ -2,7 +2,6 @@
 using NoFuture.Rand.Data.Exo.NfHtml;
 using NoFuture.Rand.Data.Exo.NfText;
 using NoFuture.Rand.Data.Exo.NfXml;
-using NoFuture.Rand.Gov.Sec;
 
 namespace NoFuture.Rand.Data.Exo
 {

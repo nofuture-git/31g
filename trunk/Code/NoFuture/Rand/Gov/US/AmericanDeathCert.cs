@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace NoFuture.Rand.Gov
+namespace NoFuture.Rand.Gov.US
 {
     /// <summary>
     /// https://www.cdc.gov/nchs/data/dvs/death11-03final-acc.pdf

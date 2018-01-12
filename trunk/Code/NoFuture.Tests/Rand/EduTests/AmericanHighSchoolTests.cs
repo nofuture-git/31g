@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NoFuture.Rand.Edu;
+using NoFuture.Rand.Edu.US;
 
 namespace NoFuture.Rand.Tests.EduTests
 {

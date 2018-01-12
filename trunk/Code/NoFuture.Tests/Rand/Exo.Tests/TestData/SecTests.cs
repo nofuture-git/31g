@@ -4,7 +4,7 @@ using NoFuture.Rand.Com;
 using NoFuture.Rand.Data.Exo;
 using NoFuture.Rand.Data.Exo.NfXml;
 using NoFuture.Rand.Exo.Tests;
-using NoFuture.Rand.Gov.Sec;
+using NoFuture.Rand.Gov.US.Sec;
 
 namespace NoFuture.Tests.Rand
 {
@@ -145,7 +145,7 @@ namespace NoFuture.Tests.Rand
         [TestMethod]
         public void TestSecFormFactory()
         {
-            var testResult = NoFuture.Rand.Gov.Sec.SecForm.SecFormFactory("10-K");
+            var testResult = SecForm.SecFormFactory("10-K");
             Assert.IsNotNull(testResult);
             Assert.IsInstanceOfType(testResult, typeof(Form10K));
         }

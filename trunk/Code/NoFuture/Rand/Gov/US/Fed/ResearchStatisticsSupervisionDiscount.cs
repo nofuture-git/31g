@@ -1,7 +1,7 @@
 ﻿using System;
 using NoFuture.Rand.Core;
 
-namespace NoFuture.Rand.Gov.Fed
+namespace NoFuture.Rand.Gov.US.Fed
 {
     /// <summary>
     /// This is unique id assigned by the Fed to all financial institutions.

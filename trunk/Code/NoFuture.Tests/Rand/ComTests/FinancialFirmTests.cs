@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NoFuture.Rand.Geo;
+using NoFuture.Rand.Geo.US;
 
 namespace NoFuture.Rand.Tests.ComTests
 {

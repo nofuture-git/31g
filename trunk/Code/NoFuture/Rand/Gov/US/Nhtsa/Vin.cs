@@ -8,7 +8,7 @@ using System.Xml;
 using NoFuture.Rand.Core;
 using NoFuture.Util.Core;
 
-namespace NoFuture.Rand.Gov.Nhtsa
+namespace NoFuture.Rand.Gov.US.Nhtsa
 {
     /// <summary>
     /// Vehicle Identification Number
