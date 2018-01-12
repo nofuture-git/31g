@@ -60,10 +60,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="CA_Postal_Data.xml" />
-    <EmbeddedResource Include="US_City_Data.xml" />
-    <EmbeddedResource Include="US_Zip_Data.xml" />
-    <EmbeddedResource Include="US_Zip_ProbTable.xml" />
+    <EmbeddedResource Include="Data\CA_Postal_Data.xml" />
+    <EmbeddedResource Include="Data\US_City_Data.xml" />
+    <EmbeddedResource Include="Data\US_Zip_Data.xml" />
+    <EmbeddedResource Include="Data\US_Zip_ProbTable.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

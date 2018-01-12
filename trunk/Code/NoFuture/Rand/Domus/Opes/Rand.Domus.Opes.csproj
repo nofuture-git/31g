@@ -87,13 +87,14 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="US_DomusOpes.xml" />
+    <EmbeddedResource Include="Data\US_DomusOpes.xml" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="US_PersonalDebt.xml" />
+    <EmbeddedResource Include="Data\US_PersonalDebt.xml" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="US_PersonalWealth.xml" />
+    <EmbeddedResource Include="Data\US_PersonalWealth.xml" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

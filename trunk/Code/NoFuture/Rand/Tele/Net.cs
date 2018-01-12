@@ -47,7 +47,7 @@ namespace NoFuture.Rand.Tele
 
                 var asm = Assembly.GetExecutingAssembly();
 
-                var data = asm.GetManifestResourceStream($"{asm.GetName().Name}.{WEB_MAIL_DOMAINS}");
+                var data = asm.GetManifestResourceStream($"{asm.GetName().Name}.Data.{WEB_MAIL_DOMAINS}");
                 if (data == null)
                     return null;
 

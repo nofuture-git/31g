@@ -72,8 +72,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="US_HighSchools_Data.xml" />
-    <EmbeddedResource Include="US_Universities_Data.xml" />
+    <EmbeddedResource Include="Data\US_HighSchools_Data.xml" />
+    <EmbeddedResource Include="Data\US_Universities_Data.xml" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

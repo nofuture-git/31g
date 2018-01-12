@@ -80,7 +80,7 @@ namespace NoFuture.Rand.Core
                 return null;
 
             asm = asm ?? Assembly.GetExecutingAssembly();
-            var data = asm.GetManifestResourceStream($"{asm.GetName().Name}.{xmlDataFileName}");
+            var data = asm.GetManifestResourceStream($"{asm.GetName().Name}.Data.{xmlDataFileName}");
             if (data == null)
                 return null;
 

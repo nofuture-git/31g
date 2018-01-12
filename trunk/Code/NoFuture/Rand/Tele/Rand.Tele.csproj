@@ -57,9 +57,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="CA_AreaCode_Data.xml" />
-    <EmbeddedResource Include="US_AreaCode_Data.xml" />
-    <EmbeddedResource Include="webmailDomains.txt" />
+    <EmbeddedResource Include="Data\CA_AreaCode_Data.xml" />
+    <EmbeddedResource Include="Data\US_AreaCode_Data.xml" />
+    <EmbeddedResource Include="Data\webmailDomains.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

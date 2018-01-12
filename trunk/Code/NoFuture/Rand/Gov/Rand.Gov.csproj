@@ -149,7 +149,7 @@
     <EmbeddedResource Include="Nhtsa\Vin_Wmi.xml" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="US_States_Data.xml" />
+    <EmbeddedResource Include="Data\US_States_Data.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

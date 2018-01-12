@@ -81,10 +81,11 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="US_FirstNames.xml" />
+    <EmbeddedResource Include="Data\US_FirstNames.xml" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="US_LastNames.xml" />
+    <EmbeddedResource Include="Data\US_LastNames.xml" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
