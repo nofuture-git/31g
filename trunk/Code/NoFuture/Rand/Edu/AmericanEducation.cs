@@ -13,7 +13,7 @@ using NoFuture.Util.Core.Math;
 namespace NoFuture.Rand.Edu
 {
     [Serializable]
-    public class NorthAmericanEdu : IEducation
+    public class AmericanEducation : IEducation
     {
         #region fields
         private string _eduLevel;
@@ -27,14 +27,14 @@ namespace NoFuture.Rand.Edu
         #endregion
 
         #region ctor
-        public NorthAmericanEdu(Tuple<IHighSchool, DateTime?> assignHs)
+        public AmericanEducation(Tuple<IHighSchool, DateTime?> assignHs)
         {
             if (assignHs?.Item1 is AmericanHighSchool)
                 AddHighSchool((AmericanHighSchool)assignHs.Item1, assignHs.Item2);
             AssignEduFlagAndLevel();
         }
 
-        public NorthAmericanEdu(Tuple<IUniversity, DateTime?> assignUniv, Tuple<IHighSchool, DateTime?> assignHs)
+        public AmericanEducation(Tuple<IUniversity, DateTime?> assignUniv, Tuple<IHighSchool, DateTime?> assignHs)
         {
             if (assignHs?.Item1 is AmericanHighSchool)
             {
@@ -47,7 +47,7 @@ namespace NoFuture.Rand.Edu
             AssignEduFlagAndLevel();
         }
 
-        public NorthAmericanEdu(DateTime? birthDate, UsCityStateZip homeCityArea)
+        public AmericanEducation(DateTime? birthDate, UsCityStateZip homeCityArea)
         {
             var dob = birthDate ?? UsState.GetWorkingAdultBirthDate();
             var age = Etc.CalcAge(dob);
@@ -361,10 +361,10 @@ namespace NoFuture.Rand.Edu
             else
             {
                 //pick a university from anywhere in the US
-                AmericanEduBase.UnivXml = AmericanEduBase.UnivXml ??
-                                           XmlDocXrefIdentifier.GetEmbeddedXmlDoc(AmericanEduBase.US_UNIVERSITY_DATA,
+                AmericanSchoolBase.UnivXml = AmericanSchoolBase.UnivXml ??
+                                           XmlDocXrefIdentifier.GetEmbeddedXmlDoc(AmericanSchoolBase.US_UNIVERSITY_DATA,
                                                Assembly.GetExecutingAssembly());
-                var allUnivs = AmericanEduBase.UnivXml?.SelectNodes("//state");
+                var allUnivs = AmericanSchoolBase.UnivXml?.SelectNodes("//state");
                 if (allUnivs == null)
                     return null;
                 pick = Etx.IntNumber(0, allUnivs.Count - 1);

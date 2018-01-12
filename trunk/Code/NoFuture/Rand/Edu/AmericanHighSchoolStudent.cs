@@ -3,7 +3,7 @@
 namespace NoFuture.Rand.Edu
 {
     [Serializable]
-    public class AmericanHighSchoolStudent : NorthAmericanStudent<AmericanHighSchool>
+    public class AmericanHighSchoolStudent : AmericanStudentBase<AmericanHighSchool>
     {
         public override string Abbrev => "HS";
 

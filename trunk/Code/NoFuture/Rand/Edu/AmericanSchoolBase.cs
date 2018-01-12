@@ -3,13 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
 using System.ComponentModel;
-using System.Reflection;
 using NoFuture.Rand.Gov;
 
 namespace NoFuture.Rand.Edu
 {
     [Serializable]
-    public abstract class AmericanEduBase
+    public abstract class AmericanSchoolBase
     {
         public UsState State { get; set; }
         public string StateName { get; set; }

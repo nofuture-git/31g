@@ -3,7 +3,7 @@
 namespace NoFuture.Rand.Edu
 {
     [Serializable]
-    public class AmericanCollegeStudent : NorthAmericanStudent<AmericanUniversity>
+    public class AmericanCollegeStudent : AmericanStudentBase<AmericanUniversity>
     {
         public AmericanCollegeStudent(AmericanUniversity school) : base(school)
         {

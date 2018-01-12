@@ -4,19 +4,19 @@ using NoFuture.Rand.Core;
 namespace NoFuture.Rand.Edu
 {
     [Serializable]
-    public abstract class NorthAmericanStudent<T> : DiachronIdentifier, IStudent<T>
+    public abstract class AmericanStudentBase<T> : DiachronIdentifier, IStudent<T>
     {
         public T School { get; }
         public DateTime? Graduation { get; set; }
 
-        protected NorthAmericanStudent(T school)
+        protected AmericanStudentBase(T school)
         {
             School = school;
         }
 
         public override bool Equals(Identifier obj)
         {
-            var student = obj as NorthAmericanStudent<T>;
+            var student = obj as AmericanStudentBase<T>;
             if (student == null)
                 return base.Equals(obj);
 

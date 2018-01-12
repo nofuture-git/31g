@@ -290,14 +290,14 @@ namespace NoFuture.Rand.Domus.US
 
             if (hsGradDt < dt)
             {
-                return new NorthAmericanEdu(new Tuple<IHighSchool, DateTime?>(_edu?.HighSchool?.Item1, null));
+                return new AmericanEducation(new Tuple<IHighSchool, DateTime?>(_edu?.HighSchool?.Item1, null));
             }
 
             var univGradDt = _edu.College == null ? dt.Value.AddDays(-1) : _edu.College.Item2;
 
             if (univGradDt < dt)
             {
-                return new NorthAmericanEdu(new Tuple<IUniversity, DateTime?>(_edu?.College?.Item1, null),
+                return new AmericanEducation(new Tuple<IUniversity, DateTime?>(_edu?.College?.Item1, null),
                     new Tuple<IHighSchool, DateTime?>(_edu?.HighSchool?.Item1, _edu?.HighSchool?.Item2));
             }
 
@@ -305,7 +305,7 @@ namespace NoFuture.Rand.Domus.US
 
         }
 
-        protected internal NorthAmericanEdu GetEducationByPerson()
+        protected internal AmericanEducation GetEducationByPerson()
         {
             var dob = BirthCert?.DateOfBirth ?? UsState.GetWorkingAdultBirthDate();
 
@@ -317,7 +317,7 @@ namespace NoFuture.Rand.Domus.US
                 : GetMother() as American;
             var dtAtAge18 = dob.AddYears(UsState.AGE_OF_ADULT);
             var homeCityArea = mother?.GetAddressAt(dtAtAge18)?.HomeCityArea as UsCityStateZip ?? CityArea.American();
-            return new NorthAmericanEdu(dob, homeCityArea);
+            return new AmericanEducation(dob, homeCityArea);
         }
 
         /// <summary>

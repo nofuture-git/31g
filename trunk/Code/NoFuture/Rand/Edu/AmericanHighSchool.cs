@@ -9,7 +9,7 @@ using NoFuture.Util.Core.Math;
 namespace NoFuture.Rand.Edu
 {
     [Serializable]
-    public class AmericanHighSchool : AmericanEduBase, IHighSchool
+    public class AmericanHighSchool : AmericanSchoolBase, IHighSchool
     {
         public const float DF_NATL_AVG = 82.0f;
 

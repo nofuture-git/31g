@@ -37,7 +37,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AmericanCollegeStudent.cs" />
-    <Compile Include="AmericanEduBase.cs" />
+    <Compile Include="AmericanSchoolBase.cs" />
     <Compile Include="AmericanHighSchool.cs" />
     <Compile Include="AmericanHighSchoolStudent.cs" />
     <Compile Include="AmericanUniversity.cs" />
@@ -45,8 +45,8 @@
     <Compile Include="IHighSchool.cs" />
     <Compile Include="IStudent.cs" />
     <Compile Include="IUniversity.cs" />
-    <Compile Include="NorthAmericanEdu.cs" />
-    <Compile Include="NorthAmericanStudent.cs" />
+    <Compile Include="AmericanEducation.cs" />
+    <Compile Include="AmericanStudentBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

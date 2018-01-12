@@ -51,9 +51,9 @@ namespace NoFuture.Rand.Tests.DomusTests
         [TestMethod]
         public void TestGetAmericanUniversity()
         {
-            var testResult = NorthAmericanEdu.GetAmericanUniversity(null);
+            var testResult = AmericanEducation.GetAmericanUniversity(null);
             Assert.IsNotNull(testResult);
-            testResult = NorthAmericanEdu.GetAmericanUniversity(UsState.GetStateByPostalCode("AZ"));
+            testResult = AmericanEducation.GetAmericanUniversity(UsState.GetStateByPostalCode("AZ"));
             Assert.IsNotNull(testResult);
         }
 
@@ -70,7 +70,7 @@ namespace NoFuture.Rand.Tests.DomusTests
 
             var usHca = new UsCityStateZip(addrData);
             Assert.IsNotNull(usHca);
-            var hs = NorthAmericanEdu.GetAmericanHighSchool(usHca);
+            var hs = AmericanEducation.GetAmericanHighSchool(usHca);
             Assert.IsNotNull(hs);
             Assert.IsFalse(hs.Equals(AmericanHighSchool.GetDefaultHs()));
 
@@ -81,7 +81,7 @@ namespace NoFuture.Rand.Tests.DomusTests
         {
             DateTime? dob = null;
             UsCityStateZip homeCityArea = null;
-            var testResult = new NorthAmericanEdu(dob, homeCityArea);
+            var testResult = new AmericanEducation(dob, homeCityArea);
             Assert.IsNotNull(testResult);
             Assert.IsNotNull(testResult.HighSchool);
             Assert.IsNotNull(testResult.HighSchool.Item1);
