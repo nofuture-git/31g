@@ -61,19 +61,26 @@ namespace NoFuture.Rand.Edu.US
         }
 
         /// <summary>
-        /// Uses the data in american high school data file
+        /// Gets High Schools based on US State
         /// </summary>
-        public static AmericanHighSchool[] GetHighSchoolsByState(string stateName)
+        /// <param name="state">Either the name or the postal code.</param>
+        /// <returns></returns>
+        public static AmericanHighSchool[] GetHighSchoolsByState(string state)
         {
-            if(string.IsNullOrWhiteSpace(stateName))
+            if(string.IsNullOrWhiteSpace(state))
                 return new AmericanHighSchool[] { };
             HsXml = HsXml ?? Core.XmlDocXrefIdentifier.GetEmbeddedXmlDoc(US_HIGH_SCHOOL_DATA,
                 Assembly.GetExecutingAssembly());
             if (HsXml == null)
                 return new AmericanHighSchool[] { };
-            stateName = string.Join(" ", Etc.DistillToWholeWords(stateName));
+            var qryBy = "name";
+            if (state.Length == 2)
+                qryBy = "abbreviation";
+            else
+                state = string.Join(" ", Etc.DistillToWholeWords(state));
+
             var elements =
-                HsXml.SelectNodes($"//state[@name='{stateName}']//high-school");
+                HsXml.SelectNodes($"//state[@{qryBy}='{state}']//high-school");
             if (elements == null || elements.Count <= 0)
                 return new AmericanHighSchool[] { };
 
@@ -82,7 +89,7 @@ namespace NoFuture.Rand.Edu.US
             {
                 if (TryParseXml(elem as XmlElement, out var hsOut))
                 {
-                    hsOut.StateName = stateName;
+                    hsOut.StateName = state;
                     tempList.Add(hsOut);
                 }
             }

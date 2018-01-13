@@ -80,43 +80,6 @@ namespace NoFuture.Rand.Tests.DomusTests
         }
 
         [TestMethod]
-        public void NorthAmericanEduTestsNullPerson()
-        {
-            DateTime? dob = null;
-            UsCityStateZip homeCityArea = null;
-            var testResult = new AmericanEducation(dob, homeCityArea);
-            Assert.IsNotNull(testResult);
-            Assert.IsNotNull(testResult.HighSchool);
-            Assert.IsNotNull(testResult.HighSchool.Item1);
-            Debug.WriteLine(testResult.HighSchool);
-            Debug.WriteLine(testResult.College);
-        }
-
-        [TestMethod]
-        public void NorthAmericanEduTestsChild()
-        {
-            var amer = new American(DateTime.Now.AddYears(-9), Gender.Female);
-            var testResult = amer.GetEducationByPerson();
-            Assert.IsNotNull(testResult);
-            Assert.IsNotNull(testResult.HighSchool);
-            Assert.IsNull(testResult.HighSchool.Item1);
-            Assert.IsNotNull(testResult.College);
-            Assert.IsNull(testResult.College.Item1);
-        }
-
-        [TestMethod]
-        public void AmericanRaceTests()
-        {
-            const string TEST_ZIP = "92071";
-            var testResult = UsCityStateZip.GetAmericanRace(TEST_ZIP);
-            Assert.AreNotEqual(string.Empty,testResult);
-            Debug.WriteLine(testResult);
-
-            testResult = UsCityStateZip.GetAmericanRace("68415");
-            Assert.AreEqual(NorthAmericanRace.White, testResult);
-        }
-
-        [TestMethod]
         public void TestAmericanFemaleFirstName()
         {
             var testDob = new DateTime(1980, 10, 1);
@@ -254,21 +217,6 @@ namespace NoFuture.Rand.Tests.DomusTests
             Assert.IsNotNull(testResult.GetFather());
 
 
-        }
-
-        [TestMethod]
-        public void TestEquations()
-        {
-            var baseDob = new DateTime(2016,2,16,15,55,02);
-            for (var i = 0; i < 15; i++)
-            {
-                var dob = baseDob.AddYears((25 + i) * -1);
-                var marriageEq = AmericanEquations.FemaleAge2FirstMarriage.SolveForY(dob.ToDouble());
-                var firstBornEq = AmericanEquations.FemaleAge2FirstChild.SolveForY(dob.Year);
-
-                Debug.WriteLine($"dob: {dob};  marriageAge: {marriageEq}; firstBornAge: {firstBornEq};");
-
-            }
         }
 
         [TestMethod]

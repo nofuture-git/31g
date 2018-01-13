@@ -3,9 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NoFuture.Rand.Core;
-using NoFuture.Rand.Data;
-using NoFuture.Rand.Domus;
-using NoFuture.Rand.Domus.US;
 using NoFuture.Rand.Tele;
 
 namespace NoFuture.Rand.Tests

@@ -1,5 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NoFuture.Rand.Core.Enums;
+using NoFuture.Rand.Data.Sp;
 
 namespace NoFuture.Rand.Tests.DataTests.SpTests
 {
@@ -9,13 +11,13 @@ namespace NoFuture.Rand.Tests.DataTests.SpTests
         [TestMethod]
         public void TestEquals()
         {
-            var testSubject = new NoFuture.Rand.Data.Sp.Pondus("test")
+            var testSubject = new Pondus("test")
             {
                 Inception = DateTime.Today.AddYears(-1),
                 Terminus = DateTime.Today
             };
 
-            var testCompare = new NoFuture.Rand.Data.Sp.Pondus("test")
+            var testCompare = new Pondus("test")
             {
                 Inception = DateTime.Today.AddYears(-1),
                 Terminus = DateTime.Today
@@ -40,6 +42,20 @@ namespace NoFuture.Rand.Tests.DataTests.SpTests
 
             Assert.IsFalse(testSubject.Equals(testCompare));
 
+        }
+
+        [TestMethod]
+        public void TestCopyFrom()
+        {
+            var testSubject = new Pondus("TestCorporation");
+            testSubject.My.UpsertName(KindsOfNames.Group, "Company");
+
+            var testSubject2 = new Pondus(testSubject.My);
+            Assert.AreEqual(testSubject.My.Name, testSubject2.My.Name);
+            var groupName = testSubject2.My.GetName(KindsOfNames.Group);
+            Assert.IsNotNull(groupName);
+
+            Assert.AreEqual("Company", groupName);
         }
     }
 }

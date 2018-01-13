@@ -36,8 +36,21 @@ namespace NoFuture.Rand.Tests.DomusTests.PneumaTests
             {
                 Assert.IsTrue(testSubject.GetRandomActsIrresponsible());
             }
+        }
 
+        [TestMethod]
+        public void TestEquals()
+        {
+            var testSubject00 = new Personality();
+            var testSubject01 = new Personality();
 
+            testSubject01.Agreeableness.Value = testSubject00.Agreeableness.Value;
+            testSubject01.Conscientiousness.Value = testSubject00.Conscientiousness.Value;
+            testSubject01.Extraversion.Value = testSubject00.Extraversion.Value;
+            testSubject01.Neuroticism.Value = testSubject00.Neuroticism.Value;
+            testSubject01.Openness.Value = testSubject00.Openness.Value;
+
+            Assert.IsTrue(testSubject00.Equals(testSubject01));
         }
     }
 }

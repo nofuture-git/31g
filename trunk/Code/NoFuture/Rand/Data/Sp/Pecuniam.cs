@@ -59,12 +59,22 @@ namespace NoFuture.Rand.Data.Sp
             return Amount.GetHashCode();
         }
 
+        /// <summary>
+        /// Creates a random valued money amount between the <see cref="min"/> and <see cref="max"/>
+        /// </summary>
+        /// <param name="min"></param>
+        /// <param name="max"></param>
+        /// <param name="wholeNumbersOf">
+        /// used for producing random values in even decimal amounts (e.g. 100 produces
+        /// a random value which is evenly divisible by 100 with no remainder)
+        /// </param>
+        /// <returns></returns>
         public static Pecuniam GetRandPecuniam(int min = 3, int max = 999, int wholeNumbersOf = 0)
         {
             var num = (double)Etx.IntNumber(min, max);
 
             if (wholeNumbersOf >= 10)
-                num = num - (num % wholeNumbersOf);
+                num = num - num % wholeNumbersOf;
             else
             {
                 num = Etx.RationalNumber(min, max);

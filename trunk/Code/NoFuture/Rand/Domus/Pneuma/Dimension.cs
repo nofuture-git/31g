@@ -29,7 +29,7 @@ namespace NoFuture.Rand.Domus.Pneuma
             var z = obj as Dimension;
             if (z == null)
                 return false;
-            return Math.Abs(Zscore - z.Zscore) < 0.0000000;
+            return Math.Abs(Zscore - z.Zscore) <= 0.0000000;
         }
 
         public override string ToString()

@@ -1,55 +1,36 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NoFuture.Rand.Org;
 
 namespace NoFuture.Rand.Tests
 {
     [TestClass]
     public class IdentityTests
     {
-
         [TestMethod]
-        public void TestSuperSectors()
+        public void TestValueLastFour()
         {
-            var testResult = NorthAmericanIndustryClassification.AllSectors;
-            Assert.IsNotNull(testResult);
-            Assert.AreNotEqual(0,testResult.Length);
-            foreach (var ss in testResult)
-            {
-                Assert.IsInstanceOfType(ss, typeof(NaicsSuperSector));
-                System.Diagnostics.Debug.WriteLine($"{ss.Value} {ss.Description}");
-                foreach (var s in ss.Divisions)
-                {
-                    System.Diagnostics.Debug.WriteLine(s.Description);
-                }
-            }
+            var testSubject = new TestIdentifier {Value = "abcOP99"};
+            var testResult = testSubject.ValueLastFour();
+            Assert.AreEqual("XXXOP99", testResult);
         }
 
         [TestMethod]
-        public void TestSocMajorGroups()
+        public void TestEquals()
         {
-            var testResult = StandardOccupationalClassification.AllGroups;
-            Assert.IsNotNull(testResult);
-            Assert.AreNotEqual(0, testResult.Length);
-            foreach (var majorGrp in testResult)
-            {
-                Assert.IsInstanceOfType(majorGrp, typeof(SocMajorGroup));
-                System.Diagnostics.Debug.WriteLine($"{majorGrp.Value} {majorGrp.Description}");
-                foreach (var minorGrp in majorGrp.Divisions)
-                {
-                    System.Diagnostics.Debug.WriteLine($"\t\t{minorGrp.Description}");
-                    foreach (var boardGrp in minorGrp.Divisions)
-                    {
-                        foreach (var detailGrp in boardGrp.Divisions)
-                        {
-                            foreach (var cip in detailGrp.Divisions)
-                            {
-                                Assert.IsInstanceOfType(cip, typeof(ClassificationOfInstructionalPrograms));
-                                System.Diagnostics.Debug.WriteLine($"\t\t\t{cip.Description}");
-                            }
-                        }
-                    }
-                }
-            }
+            var testSubject = new TestIdentifier {Value = "8955662"};
+            var testInput = new TestIdentifier { Value = "8955662" };
+            Assert.IsTrue(testSubject.Equals(testInput));
         }
+
+        [TestMethod]
+        public void TestToString()
+        {
+            var testSubject = new TestIdentifier { Value = "my value" };
+            Assert.AreEqual("my value", testSubject.ToString());
+        }
+    }
+
+    public class TestIdentifier : Core.Identifier
+    {
+        public override string Abbrev => "test";
     }
 }

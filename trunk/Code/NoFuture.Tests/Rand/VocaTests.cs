@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NoFuture.Rand.Com;
+using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
-using NoFuture.Rand.Data.Sp;
 
 namespace NoFuture.Rand.Tests
 {
@@ -13,7 +12,7 @@ namespace NoFuture.Rand.Tests
         [TestMethod]
         public void TestUpsertName()
         {
-            var testSubject = new PublicCorporation();
+            var testSubject = new VocaBase();
             testSubject.Names.Add(new Tuple<KindsOfNames, string>(KindsOfNames.Legal, "TestCorporation"));
 
             testSubject.UpsertName(KindsOfNames.Legal, "OtherName");
@@ -38,7 +37,7 @@ namespace NoFuture.Rand.Tests
         [TestMethod]
         public void TestGetName()
         {
-            var testSubject = new PublicCorporation();
+            var testSubject = new VocaBase();
             testSubject.Names.Add(new Tuple<KindsOfNames, string>(KindsOfNames.Legal, "TestCorporation"));
 
             Assert.AreEqual("TestCorporation", testSubject.GetName(KindsOfNames.Legal));
@@ -47,7 +46,7 @@ namespace NoFuture.Rand.Tests
         [TestMethod]
         public void TestAnyOfKindOfName()
         {
-            var testSubject = new PublicCorporation();
+            var testSubject = new VocaBase();
             testSubject.Names.Add(new Tuple<KindsOfNames, string>(KindsOfNames.Former | KindsOfNames.Technical, "TechnicalName"));
             testSubject.Names.Add(new Tuple<KindsOfNames, string>(KindsOfNames.Legal, "TestCorporation"));
 
@@ -61,7 +60,7 @@ namespace NoFuture.Rand.Tests
         [TestMethod]
         public void TestAnyOfNameAs()
         {
-            var testSubject = new PublicCorporation();
+            var testSubject = new VocaBase();
             testSubject.Names.Add(new Tuple<KindsOfNames, string>(KindsOfNames.Former | KindsOfNames.Technical, "TechnicalName"));
             testSubject.Names.Add(new Tuple<KindsOfNames, string>(KindsOfNames.Legal, "TestCorporation"));
 
@@ -76,7 +75,7 @@ namespace NoFuture.Rand.Tests
         [TestMethod]
         public void TestAnyOfKindAndValue()
         {
-            var testSubject = new PublicCorporation();
+            var testSubject = new VocaBase();
             testSubject.Names.Add(new Tuple<KindsOfNames, string>(KindsOfNames.Former | KindsOfNames.Technical, "TechnicalName"));
             testSubject.Names.Add(new Tuple<KindsOfNames, string>(KindsOfNames.Legal, "TestCorporation"));
 
@@ -92,7 +91,7 @@ namespace NoFuture.Rand.Tests
         [TestMethod]
         public void TestRemoveNameByKind()
         {
-            var testSubject = new PublicCorporation();
+            var testSubject = new VocaBase();
             testSubject.Names.Add(new Tuple<KindsOfNames, string>(KindsOfNames.Legal | KindsOfNames.Technical, "TechnicalName"));
             testSubject.Names.Add(new Tuple<KindsOfNames, string>(KindsOfNames.Legal, "TestCorporation"));
 
@@ -108,7 +107,7 @@ namespace NoFuture.Rand.Tests
         [TestMethod]
         public void TestRemoveNameByValue()
         {
-            var testSubject = new PublicCorporation();
+            var testSubject = new VocaBase();
             testSubject.Names.Add(new Tuple<KindsOfNames, string>(KindsOfNames.Legal | KindsOfNames.Technical, "TestCorporation"));
             testSubject.Names.Add(new Tuple<KindsOfNames, string>(KindsOfNames.Legal, "TestCorporation"));
 
@@ -125,7 +124,7 @@ namespace NoFuture.Rand.Tests
         [TestMethod]
         public void TestRemoveNameByKindAndValue()
         {
-            var testSubject = new PublicCorporation();
+            var testSubject = new VocaBase();
             testSubject.Names.Add(new Tuple<KindsOfNames, string>(KindsOfNames.Legal | KindsOfNames.Technical, "TestCorporation"));
             testSubject.Names.Add(new Tuple<KindsOfNames, string>(KindsOfNames.Legal, "TestCorporation"));
 
@@ -140,11 +139,11 @@ namespace NoFuture.Rand.Tests
         [TestMethod]
         public void TestEquals()
         {
-            var testSubject = new PublicCorporation();
+            var testSubject = new VocaBase();
             testSubject.Names.Add(new Tuple<KindsOfNames, string>(KindsOfNames.Legal | KindsOfNames.Technical, "TestCorporation"));
             testSubject.Names.Add(new Tuple<KindsOfNames, string>(KindsOfNames.Legal, "TestCorporation"));
 
-            var testSubject2 = new PublicCorporation();
+            var testSubject2 = new VocaBase();
             testSubject2.Names.Add(new Tuple<KindsOfNames, string>(KindsOfNames.Legal | KindsOfNames.Technical, "TestCorporation"));
             testSubject2.Names.Add(new Tuple<KindsOfNames, string>(KindsOfNames.Legal, "TestCorporation"));
 
@@ -155,18 +154,5 @@ namespace NoFuture.Rand.Tests
             Assert.IsFalse(testSubject.Equals(testSubject2));
         }
 
-        [TestMethod]
-        public void TestCopyFrom()
-        {
-            var testSubject = new Pondus("TestCorporation");
-            testSubject.My.UpsertName(KindsOfNames.Group, "Company");
-
-            var testSubject2 = new Pondus(testSubject.My);
-            Assert.AreEqual(testSubject.My.Name, testSubject2.My.Name);
-            var groupName = testSubject2.My.GetName(KindsOfNames.Group);
-            Assert.IsNotNull(groupName);
-
-            Assert.AreEqual("Company", groupName);
-        }
     }
 }

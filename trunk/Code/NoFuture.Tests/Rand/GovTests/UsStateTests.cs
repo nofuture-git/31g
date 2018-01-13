@@ -2,7 +2,6 @@
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NoFuture.Rand.Core;
-using NoFuture.Rand.Edu;
 using NoFuture.Rand.Gov;
 using NoFuture.Rand.Gov.US;
 using NoFuture.Rand.Gov.US.TheStates;

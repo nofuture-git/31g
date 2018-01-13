@@ -62,9 +62,14 @@ namespace NoFuture.Rand.Edu.US
             return GetNatlGradRates(UnivXml, DF_NATL_BACHELORS_AVG);
         }
 
-        public static AmericanUniversity[] GetUniversitiesByState(string stateName)
+        /// <summary>
+        /// Gets the universities based on a US State
+        /// </summary>
+        /// <param name="state">Either the name or the postal code.</param>
+        /// <returns></returns>
+        public static AmericanUniversity[] GetUniversitiesByState(string state)
         {
-            if(string.IsNullOrWhiteSpace(stateName))
+            if(string.IsNullOrWhiteSpace(state))
                 return new AmericanUniversity[] { };
 
             UnivXml = UnivXml ?? Core.XmlDocXrefIdentifier.GetEmbeddedXmlDoc(US_UNIVERSITY_DATA,
@@ -72,11 +77,14 @@ namespace NoFuture.Rand.Edu.US
             //this will never pass so avoid the exception
             if (UnivXml == null)
                 return new AmericanUniversity[] { };
-            stateName = string.Join(" ", Etc.DistillToWholeWords(stateName));
+            var qryBy = "name";
+            if (state.Length == 2)
+                qryBy = "abbreviation";
+            else
+                state = string.Join(" ", Etc.DistillToWholeWords(state));
+
             var elements =
-                UnivXml.SelectSingleNode(
-                    $"//state[@name='{stateName.ToUpper()}']") ??
-                UnivXml.SelectSingleNode($"//state[@name='{stateName}']");
+                UnivXml.SelectSingleNode($"//state[@{qryBy}='{state}']");
             if (elements == null || !elements.HasChildNodes)
                 return new AmericanUniversity[] { };
 
@@ -85,7 +93,7 @@ namespace NoFuture.Rand.Edu.US
             {
                 if (TryParseXml(elem as XmlElement, out var univOut))
                 {
-                    univOut.StateName = stateName;
+                    univOut.StateName = state;
                     tempList.Add(univOut);
                 }
             }

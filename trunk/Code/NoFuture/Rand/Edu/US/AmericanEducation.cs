@@ -4,7 +4,6 @@ using System.Linq;
 using System.Reflection;
 using System.Xml;
 using NoFuture.Rand.Core;
-using NoFuture.Rand.Geo;
 using NoFuture.Rand.Geo.US;
 using NoFuture.Rand.Gov;
 using NoFuture.Rand.Gov.US;
@@ -343,15 +342,19 @@ namespace NoFuture.Rand.Edu.US
         /// <summary>
         /// Factory method to get an instance of <see cref="AmericanUniversity"/> at random.
         /// </summary>
-        /// <param name="homeState">Will likely be used but may be randomly ignored.</param>
+        /// <param name="homeState">
+        /// There is a 73 percent chance this will be used, otherwise the result is anywhere
+        /// in the nation
+        /// src [https://www.washingtonpost.com/blogs/govbeat/wp/2014/06/05/map-the-states-college-kids-cant-wait-to-leave]
+        /// </param>
         /// <returns></returns>
         public static AmericanUniversity GetAmericanUniversity(UsState homeState)
         {
             //pick a univ 
             IUniversity univ = null;
-            int pick = 0;
-            //79 percent attend home state is a guess
-            if (Etx.TryBelowOrAt(79, Etx.Dice.OneHundred) && homeState != null)
+            var pick = 0;
+            
+            if (Etx.TryBelowOrAt(73, Etx.Dice.OneHundred) && homeState != null)
             {
                 //pick a univ from the home state
                 var stateUnivs = AmericanUniversity.GetUniversitiesByState(homeState.GetType().Name);
@@ -389,7 +392,6 @@ namespace NoFuture.Rand.Edu.US
                 return AmericanHighSchool.GetDefaultHs();
 
             //get all hs for the state
-
             var hshs = AmericanHighSchool.GetHighSchoolsByState(hca.State.GetType().Name) ??
                        AmericanHighSchool.GetHighSchoolsByState(UsCityStateZip.DF_STATE_ABBREV);
 

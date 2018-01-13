@@ -37,17 +37,18 @@ namespace NoFuture.Rand.Domus.Pneuma
 
         public override bool Equals(object obj)
         {
-            var p = obj as IPersonality;
-            if (p == null)
+            if (!(obj is IPersonality p))
                 return false;
-            return new[]
+            var predicates = new[]
             {
                 p.Openness.Equals(Openness),
                 p.Conscientiousness.Equals(Conscientiousness),
                 p.Extraversion.Equals(Extraversion),
                 p.Agreeableness.Equals(Agreeableness),
                 p.Neuroticism.Equals(Neuroticism)
-            }.All(x => x);
+            };
+
+            return predicates.All(x => x);
         }
 
         public override int GetHashCode()

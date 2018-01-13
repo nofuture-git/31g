@@ -1,6 +1,4 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NoFuture.Rand.Edu;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NoFuture.Rand.Edu.US;
 
 namespace NoFuture.Rand.Tests.EduTests
@@ -26,6 +24,11 @@ namespace NoFuture.Rand.Tests.EduTests
             Assert.AreNotEqual(0, testResults.Length);
 
             testResults = AmericanHighSchool.GetHighSchoolsByState("NorthCarolina");
+
+            Assert.IsNotNull(testResults);
+            Assert.AreNotEqual(0, testResults.Length);
+
+            testResults = AmericanHighSchool.GetHighSchoolsByState("MO");
 
             Assert.IsNotNull(testResults);
             Assert.AreNotEqual(0, testResults.Length);

@@ -247,7 +247,8 @@ namespace NoFuture.Rand.Geo.US
             if (workingName == "Winston Salem")
                 return "Winston-Salem";
 
-            var isMcSomething = workingName.Split(' ').Any(p => p.ToLower().StartsWith("mc")) || name.ToLower().StartsWith("mc");
+            var isMcSomething = workingName.Split(' ').Any(p => p.ToLower().StartsWith("mc")) ||
+                                name.ToLower().StartsWith("mc");
 
             if (isMcSomething)
             {
@@ -291,7 +292,7 @@ namespace NoFuture.Rand.Geo.US
 
         /// <summary>
         /// Based on the <see cref="ZipCode"/> and <see cref="State"/> are 
-        /// assigned, picks a node, at random, from <see cref="TreeData.AmericanCityData"/>
+        /// assigned, picks a node, City node at random
         /// </summary>
         /// <returns></returns>
         protected internal XmlNode GetCityXmlNode()
@@ -307,15 +308,14 @@ namespace NoFuture.Rand.Geo.US
             if (!String.IsNullOrWhiteSpace(data.StateAbbrv) && !String.IsNullOrWhiteSpace(data.City) &&
                 UsState.GetStateByPostalCode(data.StateAbbrv) != null)
             {
-                var usState = UsState.GetStateByPostalCode(data.StateAbbrv);
                 var cityName = FinesseCityName(data.City);
-                searchCrit = $"//state[@name='{usState}']/city[@name='{cityName}']";
+                searchCrit = $"//state[@abbreviation='{data.StateAbbrv}']/city[@name='{cityName}']";
                 matchedNodes = UsCityXml.SelectNodes(searchCrit);
 
                 //try again on place names
                 if (matchedNodes == null || matchedNodes.Count <= 0)
                 {
-                    searchCrit = $"//state[@name='{usState}']//place[@name='{cityName}']/..";
+                    searchCrit = $"//state[@abbreviation='{data.StateAbbrv}']//place[@name='{cityName}']/..";
                     matchedNodes = UsCityXml.SelectNodes(searchCrit);
                 }
             }

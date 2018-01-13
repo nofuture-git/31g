@@ -23,16 +23,17 @@ namespace NoFuture.Rand.Tests.EduTests
             var testResults = AmericanUniversity.GetUniversitiesByState("Arizona");
 
             Assert.IsNotNull(testResults);
-            Assert.IsTrue(testResults.Any());
             Assert.AreNotEqual(0, testResults.Length);
             Assert.IsTrue(testResults.Any(univ => univ.Name == "Arizona State University"));
 
-            //test deals with nameing problems
+            //test deals with naming problems
             testResults = AmericanUniversity.GetUniversitiesByState("NewYork");
             Assert.IsNotNull(testResults);
-            Assert.IsTrue(testResults.Any());
             Assert.AreNotEqual(0, testResults.Length);
 
+            testResults = AmericanUniversity.GetUniversitiesByState("NC");
+            Assert.IsNotNull(testResults);
+            Assert.AreNotEqual(0, testResults.Length);
         }
     }
 }

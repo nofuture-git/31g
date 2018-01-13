@@ -7,8 +7,6 @@ namespace NoFuture.Rand.Tests.GovTests
     [TestClass]
     public class NhtsaTests
     {
-
-
         [TestMethod]
         public void TestVinNoValues()
         {

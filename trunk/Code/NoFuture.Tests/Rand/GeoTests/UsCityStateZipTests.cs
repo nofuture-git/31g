@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Diagnostics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NoFuture.Rand.Geo;
 using NoFuture.Rand.Geo.US;
+using NoFuture.Rand.Gov;
 
 namespace NoFuture.Rand.Tests.GeoTests
 {
@@ -53,6 +55,19 @@ namespace NoFuture.Rand.Tests.GeoTests
                 Assert.IsNotNull(testResult);
                 System.Diagnostics.Debug.WriteLine(testResult);
             }
+        }
+
+
+        [TestMethod]
+        public void AmericanRaceTests()
+        {
+            const string TEST_ZIP = "92071";
+            var testResult = UsCityStateZip.GetAmericanRace(TEST_ZIP);
+            Assert.AreNotEqual(string.Empty, testResult);
+            Debug.WriteLine(testResult);
+
+            testResult = UsCityStateZip.GetAmericanRace("68415");
+            Assert.AreEqual(NorthAmericanRace.White, testResult);
         }
     }
 }
