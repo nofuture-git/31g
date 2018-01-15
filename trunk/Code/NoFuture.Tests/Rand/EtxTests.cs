@@ -39,35 +39,6 @@ namespace NoFuture.Rand.Tests
             }
         }
 
-        [TestMethod]
-        public void TestRandomHttpUri()
-        {
-            for (var i = 0; i < 10; i++)
-            {
-                var testResult = NoFuture.Rand.Tele.Net.RandomHttpUri();
-                Assert.IsNotNull(testResult);
-                Assert.IsFalse(string.IsNullOrWhiteSpace(testResult.ToString()));
-                System.Diagnostics.Debug.WriteLine(testResult);
-            }
-
-            for (var i = 0; i < 10; i++)
-            {
-                var testResult = NoFuture.Rand.Tele.Net.RandomHttpUri(false, true);
-                Assert.IsNotNull(testResult);
-                Assert.IsFalse(string.IsNullOrWhiteSpace(testResult.ToString()));
-                System.Diagnostics.Debug.WriteLine(testResult);
-            }
-        }
-
-        [TestMethod]
-        public void TestRandomEmailUri()
-        {
-            var testResult = Email.RandomEmailUri();
-            Assert.IsNotNull(testResult);
-            Assert.IsFalse(string.IsNullOrWhiteSpace(testResult));
-            System.Diagnostics.Debug.WriteLine( new System.Uri("mailto:" + testResult));
-
-        }
 
         [TestMethod]
         public void TestRandomValueInNormalDist()
@@ -264,19 +235,6 @@ namespace NoFuture.Rand.Tests
             {
                 System.Diagnostics.Debug.WriteLine($"{testInput[i]} {testResult[i]}" );
             }
-        }
-
-        [TestMethod]
-        public void TestRandomEmailUriPersonal()
-        {
-            var testResult = Email.RandomEmailUri(new[] {"Robert", "Edward", "Lee"});
-            Assert.IsNotNull(testResult);
-            Assert.IsTrue(testResult.Contains("lee"));
-            System.Diagnostics.Debug.WriteLine(testResult);
-
-            testResult = Email.RandomEmailUri(new[] { "Robert", "Edward", "Lee" }, false);
-            Assert.IsNotNull(testResult);
-            System.Diagnostics.Debug.WriteLine(testResult);
         }
 
         [TestMethod]

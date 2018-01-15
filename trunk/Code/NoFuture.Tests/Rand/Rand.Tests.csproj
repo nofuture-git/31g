@@ -97,6 +97,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="GovTests\UsStateTests.cs" />
     <Compile Include="TeleTests\NetTests.cs" />
+    <Compile Include="TeleTests\EmailTests.cs" />
     <Compile Include="VocaTests.cs" />
     <Compile Include="XRefTests.cs" />
   </ItemGroup>

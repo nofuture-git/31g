@@ -11,9 +11,7 @@ namespace NoFuture.Rand.Tele
 {
     public class Net
     {
-
         #region fields
-
         internal const string WEB_MAIL_DOMAINS = "webmailDomains.txt";
         private static string[] _webMaildomains;
         #endregion

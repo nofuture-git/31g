@@ -6,38 +6,29 @@ using NoFuture.Util.Core;
 
 namespace NoFuture.Rand.Tele
 {
-    public class Email
+    [Serializable]
+    public class Email : Identifier
     {
+        public override string Abbrev => "Email";
+
+        public Uri ToUri()
+        {
+            return string.IsNullOrWhiteSpace(Value) ? null : new Uri($"emailto:{Value}");
+        }
+
         /// <summary>
         /// Creates a random email address in a typical format
         /// </summary>
         /// <param name="names"></param>
-        /// <param name="isProfessional">
-        /// set this to true to have the username look unprofessional
-        /// </param>
         /// <param name="usCommonOnly">
-        /// true uses <see cref="UsWebmailDomains"/>
-        /// false uses <see cref="WebmailDomains"/>
+        /// true uses <see cref="Net.UsWebmailDomains"/>
+        /// false uses <see cref="Net.WebmailDomains"/>
         /// </param>
         /// <returns></returns>
-        public static string RandomEmailUri(string[] names, bool isProfessional = true, bool usCommonOnly = true)
+        public static Email GetRandomEmail(bool usCommonOnly, params string[] names)
         {
             if (names == null || !names.Any())
-                return RandomEmailUri();
-
-            //get childish username
-            if (!isProfessional)
-            {
-                var shortWords = Etx.EnglishWords.Where(x => x.Item1.Length <= 3).Select(x => x.Item1).ToArray();
-                var shortWordList = new List<string>();
-                for (var i = 0; i < 3; i++)
-                {
-                    var withUcase = Etc.CapWords(Etx.DiscreteRange(shortWords), ' ');
-                    shortWordList.Add(withUcase);
-                }
-                shortWordList.Add((Etx.CoinToss ? "_" : "") + Etx.IntNumber(100, 9999));
-                return RandomEmailUri(String.Join("", shortWordList), usCommonOnly);
-            }
+                return GetRandomEmail(null);
 
             var fname = names.First().ToLower();
             var lname = names.Last().ToLower();
@@ -51,23 +42,35 @@ namespace NoFuture.Rand.Tele
             var unParts = new List<string> { Etx.CoinToss ? fname : fname.First().ToString(), mi, lname };
             var totalLength = unParts.Sum(x => x.Length);
             if (totalLength <= 7)
-                return RandomEmailUri(String.Join(Etx.CoinToss ? "" : "_", String.Join(Etx.CoinToss ? "." : "_", unParts),
+                return GetRandomEmail(String.Join(Etx.CoinToss ? "" : "_", String.Join(Etx.CoinToss ? "." : "_", unParts),
                     Etx.IntNumber(100, 9999)), usCommonOnly);
-            return RandomEmailUri(totalLength > 20
+            return GetRandomEmail(totalLength > 20
                 ? String.Join(Etx.CoinToss ? "." : "_", unParts.Take(2))
                 : String.Join(Etx.CoinToss ? "." : "_", unParts), usCommonOnly);
         }
 
+        public static Email GetChildishEmailAddress(bool usCommonOnly = true)
+        {
+            var shortWords = Etx.EnglishWords.Where(x => x.Item1.Length <= 3).Select(x => x.Item1).ToArray();
+            var shortWordList = new List<string>();
+            for (var i = 0; i < 3; i++)
+            {
+                var withUcase = Etc.CapWords(Etx.DiscreteRange(shortWords), ' ');
+                shortWordList.Add(withUcase);
+            }
+            shortWordList.Add((Etx.CoinToss ? "_" : "") + Etx.IntNumber(100, 9999));
+            return GetRandomEmail(String.Join("", shortWordList), usCommonOnly);
+        }
 
         /// <summary>
         /// Creates a random email address 
         /// </summary>
         /// <returns></returns>
-        public static string RandomEmailUri(string username = "", bool usCommonOnly = false)
+        public static Email GetRandomEmail(string username, bool usCommonOnly = false)
         {
-            var host = NoFuture.Rand.Tele.Net.RandomUriHost(false, usCommonOnly);
+            var host = Net.RandomUriHost(false, usCommonOnly);
             if (!String.IsNullOrWhiteSpace(username))
-                return String.Join("@", username, host);
+                return new Email {Value = String.Join("@", username, host)};
             var bunchOfWords = new List<string>();
             for (var i = 0; i < 4; i++)
             {
@@ -75,8 +78,9 @@ namespace NoFuture.Rand.Tele
             }
             username = String.Join((Etx.CoinToss ? "." : "_"), Etx.DiscreteRange(bunchOfWords.ToArray()),
                 Etx.DiscreteRange(bunchOfWords.ToArray()));
-            return String.Join("@", username, host);
+            return new Email {Value = String.Join("@", username, host)};
         }
+
 
     }
 }

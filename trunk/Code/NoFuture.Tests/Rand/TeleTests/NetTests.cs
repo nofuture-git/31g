@@ -51,5 +51,26 @@ namespace NoFuture.Rand.Tests.TeleTests
             Assert.IsNotNull(testResult.Query);
 
         }
+
+
+        [TestMethod]
+        public void TestRandomHttpUri_00()
+        {
+            for (var i = 0; i < 10; i++)
+            {
+                var testResult = NoFuture.Rand.Tele.Net.RandomHttpUri();
+                Assert.IsNotNull(testResult);
+                Assert.IsFalse(string.IsNullOrWhiteSpace(testResult.ToString()));
+                System.Diagnostics.Debug.WriteLine(testResult);
+            }
+
+            for (var i = 0; i < 10; i++)
+            {
+                var testResult = NoFuture.Rand.Tele.Net.RandomHttpUri(false, true);
+                Assert.IsNotNull(testResult);
+                Assert.IsFalse(string.IsNullOrWhiteSpace(testResult.ToString()));
+                System.Diagnostics.Debug.WriteLine(testResult);
+            }
+        }
     }
 }

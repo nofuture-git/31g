@@ -872,12 +872,8 @@ namespace NoFuture.Rand.Domus.US
         {
             if (GetAgeAt(null) > 10)
                 _netUris.Add(
-                    new Uri("emailto:" +
-                            Email.RandomEmailUri(new[]
-                            {
-                                GetName(KindsOfNames.First), MiddleName,
-                                GetName(KindsOfNames.Surname)
-                            }, GetAgeAt(null) >= UsState.AGE_OF_ADULT)));
+                    Email.GetRandomEmail(GetAgeAt(null) >= UsState.AGE_OF_ADULT, GetName(KindsOfNames.First),
+                        MiddleName, GetName(KindsOfNames.Surname)).ToUri());
         }
 
         //min. age a person could be married at
