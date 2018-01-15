@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NoFuture.Rand.Core;
 using NoFuture.Rand.Domus.US;
 using NoFuture.Rand.Gov;
 using NoFuture.Rand.Gov.US;
@@ -14,16 +15,7 @@ namespace NoFuture.Rand.Tests.DataTests.SpTests
         [TestMethod]
         public void TestGetScore()
         {
-            var testInput = new American(UsState.GetWorkingAdultBirthDate(), Gender.Female);
-
-            var testSubject = new Data.Sp.PersonalCreditScore
-            {
-                GetAgeAt = testInput.GetAgeAt,
-                OpennessZscore = testInput.Personality?.Openness?.Value?.Zscore ?? 0D,
-                ConscientiousnessZscore = testInput.Personality?.Conscientiousness?.Value?.Zscore ?? 0D
-            };
-
-            Debug.WriteLine($"test subject age {testInput.GetAgeAt(null)}");
+            var testSubject = new Data.Sp.PersonalCreditScore();
 
             var testAgeRstl = testSubject.GetAgePenalty(null);
             Debug.WriteLine($"age penalty {testAgeRstl}");
@@ -43,11 +35,10 @@ namespace NoFuture.Rand.Tests.DataTests.SpTests
         [TestMethod]
         public void TestGetRandomInterestRate()
         {
-            var testInput = new American(UsState.GetWorkingAdultBirthDate(), Gender.Female);
+            var testInput = new American(Etx.GetWorkingAdultBirthDate(), Gender.Female);
 
-            var testSubject = new Data.Sp.PersonalCreditScore
+            var testSubject = new Data.Sp.PersonalCreditScore(testInput.BirthCert.DateOfBirth)
             {
-                GetAgeAt = testInput.GetAgeAt,
                 OpennessZscore = testInput.Personality?.Openness?.Value?.Zscore ?? 0D,
                 ConscientiousnessZscore = testInput.Personality?.Conscientiousness?.Value?.Zscore ?? 0D
             };
@@ -61,11 +52,10 @@ namespace NoFuture.Rand.Tests.DataTests.SpTests
         [TestMethod]
         public void TestGetRandomMax()
         {
-            var testInput = new American(UsState.GetWorkingAdultBirthDate(), Gender.Female);
+            var testInput = new American(Etx.GetWorkingAdultBirthDate(), Gender.Female);
 
-            var testSubject = new Data.Sp.PersonalCreditScore()
+            var testSubject = new Data.Sp.PersonalCreditScore(testInput.BirthCert.DateOfBirth)
             {
-                GetAgeAt = testInput.GetAgeAt,
                 OpennessZscore = testInput.Personality?.Openness?.Value?.Zscore ?? 0D,
                 ConscientiousnessZscore = testInput.Personality?.Conscientiousness?.Value?.Zscore ?? 0D
             };

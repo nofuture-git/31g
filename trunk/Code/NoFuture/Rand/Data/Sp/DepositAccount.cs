@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using NoFuture.Rand.Core;
+using NoFuture.Rand.Data.Sp.Cc;
 using NoFuture.Rand.Data.Sp.Enums;
 
 namespace NoFuture.Rand.Data.Sp
@@ -95,6 +96,35 @@ namespace NoFuture.Rand.Data.Sp
             }
             fromAccount.Pop(dt, amt,null, Pecuniam.Zero);
             toAccount.Push(dt.AddMilliseconds(100), amt, null, Pecuniam.Zero);
+        }
+
+
+
+        /// <summary>
+        /// Creates a new random Checking Account
+        /// </summary>
+        /// <param name="p"></param>
+        /// <param name="dt">Date account was openned, default to now.</param>
+        /// <param name="debitPin">
+        /// Optional, when present and random instance of <see cref="CheckingAccount.DebitCard"/> is created with 
+        /// this as its PIN.
+        /// </param>
+        /// <returns></returns>
+        public static CheckingAccount GetRandomCheckingAcct(IVoca p, DateTime? dt = null, string debitPin = null)
+        {
+            var dtd = dt.GetValueOrDefault(DateTime.Now);
+            var accountId = new AccountId(Etx.GetRandomRChars(true));
+            return CheckingAccount.IsPossiablePin(debitPin)
+                ? new CheckingAccount(accountId, dtd,
+                    new Tuple<ICreditCard, string>(CreditCard.GetRandomCreditCard(p), debitPin))
+                : new CheckingAccount(accountId, dtd);
+        }
+
+        public static SavingsAccount GetRandomSavingAcct(IVoca p, DateTime? dt = null)
+        {
+            var dtd = dt.GetValueOrDefault(DateTime.Now);
+            var accountId = new AccountId(Etx.GetRandomRChars(true));
+            return new SavingsAccount(accountId, dtd);
         }
 
         #endregion

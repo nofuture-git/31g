@@ -50,7 +50,7 @@ namespace NoFuture.Rand.Edu.US
 
         public AmericanEducation(DateTime? birthDate, UsCityStateZip homeCityArea)
         {
-            var dob = birthDate ?? UsState.GetWorkingAdultBirthDate();
+            var dob = birthDate ?? Etx.GetWorkingAdultBirthDate();
             var age = Etc.CalcAge(dob);
 
             if (age < DF_MIN_AGE_ENTER_HS)

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NoFuture.Rand.Core;
 using NoFuture.Rand.Domus;
 using NoFuture.Rand.Domus.US;
 using NoFuture.Rand.Edu;
@@ -42,7 +43,7 @@ namespace NoFuture.Rand.Tests.DomusTests
         [TestMethod]
         public void NorthAmericanEduTests()
         {
-            var amer = new American(UsState.GetWorkingAdultBirthDate(), Gender.Female);
+            var amer = new American(Etx.GetWorkingAdultBirthDate(), Gender.Female);
             var testResult = amer.GetEducationByPerson();
 
             Assert.IsNotNull(testResult);
@@ -335,7 +336,7 @@ namespace NoFuture.Rand.Tests.DomusTests
         [TestMethod]
         public void TestDeathDate()
         {
-            var dob = UsState.GetWorkingAdultBirthDate();
+            var dob = Etx.GetWorkingAdultBirthDate();
             var testResult = UsState.GetDeathDate(dob, Gender.Female.ToString());
             Assert.AreNotEqual(dob, testResult);
             Debug.WriteLine("{0} - {1}", dob, testResult);

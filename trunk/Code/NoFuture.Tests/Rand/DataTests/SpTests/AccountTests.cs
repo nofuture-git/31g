@@ -1,8 +1,8 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NoFuture.Rand.Core;
 using NoFuture.Rand.Data.Sp;
 using NoFuture.Rand.Data.Sp.Cc;
-using NoFuture.Rand.Domus.Opes;
 using NoFuture.Rand.Domus.US;
 using NoFuture.Rand.Gov;
 using NoFuture.Rand.Gov.US;
@@ -15,8 +15,8 @@ namespace NoFuture.Rand.Tests.DataTests.SpTests
         [TestMethod]
         public void TestGetRandomBankAccount()
         {
-            var p = new American(UsState.GetWorkingAdultBirthDate(), Gender.Female);
-            var testResult = WealthBase.GetRandomCheckingAcct(p);
+            var p = new American(Etx.GetWorkingAdultBirthDate(), Gender.Female);
+            var testResult = DepositAccount.GetRandomCheckingAcct(p);
 
             Assert.IsNotNull(testResult);
 
@@ -25,7 +25,7 @@ namespace NoFuture.Rand.Tests.DataTests.SpTests
             System.Diagnostics.Debug.WriteLine(testResult.Id.Value);
 
             
-            testResult = WealthBase.GetRandomCheckingAcct(p);
+            testResult = DepositAccount.GetRandomCheckingAcct(p);
             Assert.IsNotNull(testResult.Id);
 
             System.Diagnostics.Debug.WriteLine(testResult.Id.Value);
@@ -37,7 +37,7 @@ namespace NoFuture.Rand.Tests.DataTests.SpTests
         {
             var testSubject = new CheckingAccount(null, DateTime.Today.AddDays(-65),
                 new Tuple<ICreditCard, string>(
-                    WealthBase.GetRandomCreditCard(new American(UsState.GetWorkingAdultBirthDate(), Gender.Female)),
+                    CreditCard.GetRandomCreditCard(new American(Etx.GetWorkingAdultBirthDate(), Gender.Female)),
                     "8745"));
 
             Assert.IsTrue(testSubject.IsPin("8745"));

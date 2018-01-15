@@ -255,7 +255,7 @@ namespace NoFuture.Rand.Domus.Opes.US
                 var checkingAmt = amt == null || amt == Pecuniam.Zero
                     ? _randCheckingAcctAmt
                     : _checkingAccountRate * amt.ToDouble();
-                p = GetRandomCheckingAcct(options.PersonsName, startDate, $"{Etx.IntNumber(1, 9999):0000}");
+                p = DepositAccount.GetRandomCheckingAcct(options.PersonsName, startDate, $"{Etx.IntNumber(1, 9999):0000}");
                 p.Push(startDate.AddDays(-1), checkingAmt.ToPecuniam());
                 p.My.ExpectedValue = checkingAmt.ToPecuniam();
             }
@@ -264,7 +264,7 @@ namespace NoFuture.Rand.Domus.Opes.US
                 var savingAmt = amt == null || amt == Pecuniam.Zero
                     ? _randSavingsAcctAmt
                     : _savingsAccountRate * amt.ToDouble();
-                p = GetRandomSavingAcct(options.PersonsName, startDate);
+                p = DepositAccount.GetRandomSavingAcct(options.PersonsName, startDate);
                 p.Push(startDate.AddDays(-1), savingAmt.ToPecuniam());
                 p.My.ExpectedValue = savingAmt.ToPecuniam();
             }
@@ -303,14 +303,18 @@ namespace NoFuture.Rand.Domus.Opes.US
 
                 var termInYears = isMortgage ? 30 : 5;
 
-                p = GetRandomLoanWithHistory(
+                Func<bool> irresp = (() => false);
+                if (buyer != null)
+                    irresp = buyer.GetRandomActsIrresponsible;
+
+                p = SecuredFixedRateLoan.GetRandomLoanWithHistory(
                     id,
                     remainingCost,
                     totalValue,
                     randRate,
                     termInYears,
                     out var outPayment,
-                    buyer);
+                    irresp);
 
                 if (isMortgage)
                 {

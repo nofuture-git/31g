@@ -310,7 +310,7 @@ namespace NoFuture.Rand.Domus.US
 
         protected internal AmericanEducation GetEducationByPerson()
         {
-            var dob = BirthCert?.DateOfBirth ?? UsState.GetWorkingAdultBirthDate();
+            var dob = BirthCert?.DateOfBirth ?? Etx.GetWorkingAdultBirthDate();
 
             //determine where amer lived when they were 18
             var mother = BirthCert == null

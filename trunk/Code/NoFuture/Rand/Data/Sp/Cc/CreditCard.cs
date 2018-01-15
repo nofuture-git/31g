@@ -28,9 +28,9 @@ namespace NoFuture.Rand.Data.Sp.Cc
             }
             if (cardholder != null)
             {
-                var fname = (cardholder.GetName(KindsOfNames.First) ?? string.Empty).ToUpper();
-                var lname = (cardholder.GetName(KindsOfNames.Surname) ?? string.Empty).ToUpper();
-                CardHolderName = string.Join(" ", fname, lname);
+                var fname = (cardholder.GetName(KindsOfNames.First) ?? String.Empty).ToUpper();
+                var lname = (cardholder.GetName(KindsOfNames.Surname) ?? String.Empty).ToUpper();
+                CardHolderName = String.Join(" ", fname, lname);
             }
             
             Cvv = $"{Etx.IntNumber(7, 999),3:D3}";
@@ -72,7 +72,32 @@ namespace NoFuture.Rand.Data.Sp.Cc
         /// <returns></returns>
         public override string ToString()
         {
-            return string.Join(" ", Number.ValueLastFour(), CardHolderName);
+            return String.Join(" ", Number.ValueLastFour(), CardHolderName);
+        }
+
+
+        /// <summary>
+        /// Returs a new, randomly gen'ed, concrete instance of <see cref="ICreditCard"/>
+        /// </summary>
+        /// <param name="cardholder"></param>
+        /// <param name="opennedDate"></param>
+        /// <returns></returns>
+        public static ICreditCard GetRandomCreditCard(IVoca cardholder, DateTime? opennedDate = null)
+        {
+            var fk = Etx.IntNumber(0, 3);
+            var dt = opennedDate ?? Etx.Date(-3, null);
+
+            switch (fk)
+            {
+                case 0:
+                    return new MasterCardCc(cardholder, dt, dt.AddYears(3));
+                case 2:
+                    return new AmexCc(cardholder, dt, dt.AddYears(3));
+                case 3:
+                    return new DiscoverCc(cardholder, dt, dt.AddYears(3));
+                default:
+                    return new VisaCc(cardholder, dt, dt.AddYears(3));
+            }
         }
 
         #endregion

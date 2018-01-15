@@ -1,5 +1,6 @@
 ﻿using System;
 using NoFuture.Rand.Core;
+using NoFuture.Util.Core;
 
 namespace NoFuture.Rand.Data.Sp
 {
@@ -20,13 +21,17 @@ namespace NoFuture.Rand.Data.Sp
         #region fields
         internal readonly double FicoBaseValue;
         private string _ficoScore;
+        private readonly DateTime _personsDob;
         #endregion
 
         #region ctor
-        public PersonalCreditScore()
+        public PersonalCreditScore(DateTime? personsBirthDate = null)
         {
             //need this to stay same for object lifecycle so repeated calls return same result.
             FicoBaseValue = Etx.RandomValueInNormalDist(AVG_AMERICAN_FICO_SCORE, STD_DEV_FICO_SCORE);
+            ConscientiousnessZscore = GetRandomZscore();
+            OpennessZscore = GetRandomZscore();
+            _personsDob = personsBirthDate ?? Etx.GetWorkingAdultBirthDate();
         }
         #endregion
 
@@ -34,11 +39,8 @@ namespace NoFuture.Rand.Data.Sp
         public override string Abbrev => "FICO";
 
         //int GetAgeAt(DateTime? atTime)
-        public Func<DateTime?, int> GetAgeAt { get; set; }
         public double ConscientiousnessZscore { get; set; }
         public double OpennessZscore { get; set; }
-        //double GetUndisciplinedPenalty()
-        //double GetInconsistentPenalty()
 
         public override string Value
         {
@@ -102,8 +104,7 @@ namespace NoFuture.Rand.Data.Sp
 
         protected internal double GetAgePenalty(DateTime? dt)
         {
-            Func<double, double> ageCalc = d => Math.Pow(Math.E, (d - 9.5)/-9.5);
-            return GetAgeAt == null ? 0D : ageCalc(GetAgeAt(dt)) * (STD_DEV_FICO_SCORE * -1);
+            return Math.Pow(Math.E, (Etc.CalcAge(_personsDob, dt) - 9.5) / -9.5) * (STD_DEV_FICO_SCORE * -1);
         }
 
         protected internal double GetUndisciplinedPenalty()
@@ -115,6 +116,12 @@ namespace NoFuture.Rand.Data.Sp
         protected internal double GetInconsistentPenalty()
         {
             return OpennessZscore * (STD_DEV_FICO_SCORE * -1);
+        }
+
+        private double GetRandomZscore()
+        {
+            var s = Etx.PlusOrMinusOne;
+            return s * Math.Round(Etx.MyRand.NextDouble(), 7);
         }
         #endregion
     }

@@ -59,20 +59,7 @@ namespace NoFuture.Rand.Gov.US
 
         #region methods
 
-        /// <summary>
-        /// Returns a date being between <see cref="min"/> years ago today back to <see cref="max"/> years ago today.
-        /// </summary>
-        /// <remarks>
-        /// The age is limited to min,max of 18,67 - generate with family to get other age sets
-        /// </remarks>
-        public static DateTime GetWorkingAdultBirthDate(int min = 21, int max = 67)
-        {
-            if (min < AGE_OF_ADULT)
-                min = AGE_OF_ADULT;
-            if (max > 67)
-                max = 67;
-            return DateTime.Now.AddYears(-1 * Etx.MyRand.Next(min, max)).AddDays(Etx.IntNumber(1, 360));
-        }
+
 
 
         /// <summary>

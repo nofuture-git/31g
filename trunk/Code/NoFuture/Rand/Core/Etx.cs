@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -23,7 +24,7 @@ namespace NoFuture.Rand.Core
         #endregion
 
         public static Random MyRand
-            => _myRand ?? (_myRand = new Random(Convert.ToInt32(string.Format("{0:ffffff}", DateTime.Now))));
+            => _myRand ?? (_myRand = new Random(Convert.ToInt32(String.Format("{0:ffffff}", DateTime.Now))));
 
         #region API
 
@@ -66,7 +67,7 @@ namespace NoFuture.Rand.Core
         /// <summary>
         /// A fifty-fifty probability.
         /// </summary>
-        public static bool CoinToss => MyRand.Next(0, int.MaxValue)%2 == 0;
+        public static bool CoinToss => MyRand.Next(0, Int32.MaxValue)%2 == 0;
 
         /// <summary>
         /// Same as its counterpart <see cref="CoinToss"/>
@@ -83,17 +84,17 @@ namespace NoFuture.Rand.Core
         /// <returns></returns>
         public static int IntNumber(int from, int to)
         {
-            if (from == to)
-                return from;
-            if (from <= to)
-                return MyRand.Next(from, to + 1);
+            if (@from == to)
+                return @from;
+            if (@from <= to)
+                return MyRand.Next(@from, to + 1);
 
             //passed in backwards is ok
-            var t = from;
-            from = to;
+            var t = @from;
+            @from = to;
             to = t;
 
-            return MyRand.Next(from, to + 1);
+            return MyRand.Next(@from, to + 1);
         }
 
         /// <summary>
@@ -104,7 +105,7 @@ namespace NoFuture.Rand.Core
         /// <returns></returns>
         public static double RationalNumber(int from, int to)
         {
-            var someInt = IntNumber(from, to-1);
+            var someInt = IntNumber(@from, to-1);
             return someInt + MyRand.NextDouble();
         }
 
@@ -118,13 +119,13 @@ namespace NoFuture.Rand.Core
         {
             const int FACTOR = 1000000;
             
-            var fromWholeNum = Convert.ToInt32(Math.Truncate(from));
+            var fromWholeNum = Convert.ToInt32(Math.Truncate(@from));
             var toWholeNum = Convert.ToInt32(Math.Truncate(to));
 
             if (fromWholeNum > 0 && toWholeNum > 0)
-                return RationalNumber(Convert.ToInt32(from), Convert.ToInt32(to));
+                return RationalNumber(Convert.ToInt32(@from), Convert.ToInt32(to));
 
-            var fromRationNum = Convert.ToInt32((from - fromWholeNum)* FACTOR);
+            var fromRationNum = Convert.ToInt32((@from - fromWholeNum)* FACTOR);
             var toRationNum = Convert.ToInt32((to - toWholeNum) * FACTOR);
 
             var rimex = IntNumber(fromRationNum, toRationNum);
@@ -510,7 +511,7 @@ namespace NoFuture.Rand.Core
             var minRand = eq.Mean - (eq.StdDev * sigma);
             var maxRand = eq.Mean + (eq.StdDev * sigma);
 
-            if (minRand < int.MinValue || maxRand > int.MaxValue)
+            if (minRand < Int32.MinValue || maxRand > Int32.MaxValue)
                 throw new ArgumentException("The random number generator is limited to int max 2^31 value.");
 
             for (var i = 0; i < 1024; i++)
@@ -633,12 +634,12 @@ namespace NoFuture.Rand.Core
                     {
                         var elem = node as XmlElement;
                         var word = elem?.InnerText;
-                        if (string.IsNullOrWhiteSpace(word))
+                        if (String.IsNullOrWhiteSpace(word))
                             continue;
                         var countStr = elem.Attributes[COUNT]?.Value;
-                        if (string.IsNullOrWhiteSpace(countStr))
+                        if (String.IsNullOrWhiteSpace(countStr))
                             continue;
-                        if (!double.TryParse(countStr, out var count))
+                        if (!Double.TryParse(countStr, out var count))
                             continue;
                         _enWords.Add(new Tuple<string, double>(word, count));
                     }
@@ -646,11 +647,29 @@ namespace NoFuture.Rand.Core
                 }
                 catch (Exception ex)//keep this contained
                 {
-                    System.Diagnostics.Debug.WriteLine(ex.Message);
-                    System.Diagnostics.Debug.WriteLine(ex.StackTrace);
+                    Debug.WriteLine(ex.Message);
+                    Debug.WriteLine(ex.StackTrace);
                 }
                 return null;
             }
+        }
+
+        /// <summary>
+        /// Returns a date being between <see cref="min"/> years ago today back to <see cref="max"/> years ago today.
+        /// </summary>
+        /// <remarks>
+        /// The age is limited to min,max of 18,67 - generate with family to get other age sets
+        /// </remarks>
+        public static DateTime GetWorkingAdultBirthDate(int min = 21, int max = 67, int ageOfAdult = 18)
+        {
+            if (ageOfAdult <= 14)
+                ageOfAdult = 18;
+
+            if (min < ageOfAdult)
+                min = ageOfAdult;
+            if (max > 67)
+                max = 67;
+            return DateTime.Now.AddYears(-1 * Etx.MyRand.Next(min, max)).AddDays(Etx.IntNumber(1, 360));
         }
 
         #endregion

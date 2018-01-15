@@ -175,7 +175,7 @@ namespace NoFuture.Rand.Domus.US
         {
             if (Etx.MyRand.NextDouble() <= AmericanData.PERCENT_UNMARRIED_WHOLE_LIFE)
                 return MaritialStatus.Single;
-            dob = dob ?? UsState.GetWorkingAdultBirthDate();
+            dob = dob ?? Etx.GetWorkingAdultBirthDate();
 
             dob = AmericanEquations.ProtectAgainstDistantTimes(dob.Value);
 
@@ -237,7 +237,7 @@ namespace NoFuture.Rand.Domus.US
                     : AmericanEquations.FemaleAge2FirstMarriage;
             }
 
-            childDob = childDob ?? UsState.GetWorkingAdultBirthDate();
+            childDob = childDob ?? Etx.GetWorkingAdultBirthDate();
 
             //move to a date 1 - 6 years prior the Person's dob
             var dtPm = childDob.Value.AddYears(-1 * Etx.IntNumber(1, 6)).AddDays(Etx.IntNumber(1, 360));
@@ -270,7 +270,7 @@ namespace NoFuture.Rand.Domus.US
             if (gender == Gender.Unknown)
                 return null;
 
-            myDob = myDob ?? UsState.GetWorkingAdultBirthDate();
+            myDob = myDob ?? Etx.GetWorkingAdultBirthDate();
 
             var ageDiff = Etx.IntNumber(0, maxAgeDiff);
             ageDiff = gender == Gender.Female ? ageDiff * -1 : ageDiff;
@@ -295,7 +295,7 @@ namespace NoFuture.Rand.Domus.US
             var vt = DateTime.Now;
             if (atDateTime != null)
                 vt = atDateTime.Value;
-            dob = dob ?? UsState.GetWorkingAdultBirthDate();
+            dob = dob ?? Etx.GetWorkingAdultBirthDate();
             dob = AmericanEquations.ProtectAgainstDistantTimes(dob.Value);
             var age = Etc.CalcAge(dob.Value, vt);
             var randV = Etx.IntNumber(1, 100);
@@ -334,7 +334,7 @@ namespace NoFuture.Rand.Domus.US
         public static double SolveForProbabilityChildless(DateTime? dob,
             OccidentalEdu educationLevel = OccidentalEdu.HighSchool | OccidentalEdu.Grad)
         {
-            dob = dob ?? UsState.GetWorkingAdultBirthDate();
+            dob = dob ?? Etx.GetWorkingAdultBirthDate();
             var eduAdditive = 0.0;
             if (educationLevel == (OccidentalEdu.Bachelor | OccidentalEdu.Grad))
                 eduAdditive = 0.09;
@@ -361,7 +361,7 @@ namespace NoFuture.Rand.Domus.US
         /// <returns></returns>
         public static DateTime? SolveForMarriageDate(DateTime? dob, Gender myGender)
         {
-            dob = dob ?? UsState.GetWorkingAdultBirthDate();
+            dob = dob ?? Etx.GetWorkingAdultBirthDate();
             dob = AmericanEquations.ProtectAgainstDistantTimes(dob.Value);
             var dt = DateTime.Now;
             var avgAgeMarriage = myGender == Gender.Female

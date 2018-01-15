@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Data.Sp;
 using NoFuture.Rand.Domus.Opes;
@@ -40,8 +41,8 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         [TestMethod]
         public void TestGetPaycheck()
         {
-            var amer = new American(UsState.GetWorkingAdultBirthDate(), Gender.Female);
-            var testSubject = new AmericanIncome(new OpesOptions { IsRenting = true, Gender = Gender.Female, BirthDate = UsState.GetWorkingAdultBirthDate() });
+            var amer = new American(Etx.GetWorkingAdultBirthDate(), Gender.Female);
+            var testSubject = new AmericanIncome(new OpesOptions { IsRenting = true, Gender = Gender.Female, BirthDate = Etx.GetWorkingAdultBirthDate() });
             System.Diagnostics.Debug.WriteLine(string.Join(" ", amer.Age, amer.MaritialStatus, amer.Education, amer.Race));
 
             var testResult = testSubject.GetRandomYearlyIncome(null, 1.0.ToPecuniam());

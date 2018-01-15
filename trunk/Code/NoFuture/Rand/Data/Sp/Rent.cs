@@ -137,7 +137,77 @@ namespace NoFuture.Rand.Data.Sp
         }
 
 
+        /// <summary>
+        /// Factory method to generate a <see cref="Rent"/> instance at random.
+        /// </summary>
+        /// <param name="property">The property identifier on which is being leased</param>
+        /// <param name="totalYearlyRent">
+        /// Optional, allows the calling assembly to specify this, default 
+        /// is calculated from <see cref="GetAvgAmericanRentByYear"/>
+        /// </param>
+        /// <returns></returns>
+        public static Rent GetRandomRent(Identifier property, double? totalYearlyRent = null)
+        {
+            var avgRent = totalYearlyRent ?? 0D;
+            var randRent = Pecuniam.Zero;
+            if (avgRent == 0D)
+            {
+                avgRent = (double) GetAvgAmericanRentByYear(null).Amount;
+                var stdOfAvgRent = avgRent * 0.43759;
+                var lower = (int) Math.Round(avgRent - (stdOfAvgRent * 3));
+                var upper = (int) Math.Round(avgRent + (stdOfAvgRent * 3));
+                randRent = Pecuniam.GetRandPecuniam(lower, upper, 100);
+            }
+            else
+            {
+                randRent = avgRent.ToPecuniam();
+            }
+            var randTerm = Etx.DiscreteRange(new[] { 24, 18, 12, 6 });
+            var randDate = Etx.Date(0, DateTime.Today.AddDays(-2), true);
+            var randDepositAmt = (int)Math.Round((randRent.Amount - randRent.Amount % 250) / 2);
+            var randDeposit = new Pecuniam(randDepositAmt);
 
+            var rent = new Rent(property, randDate, randTerm, randRent, randDeposit);
+            return rent;
+        }
+
+
+
+        /// <summary>
+        /// Factory method to generate a <see cref="Rent"/> instance at random with a payment history.
+        /// </summary>
+        /// <param name="property">The property identifier on which is being leased</param>
+        /// <param name="homeDebtFactor">The home debt factor based on the renter's age, gender, edu, etc.</param>
+        /// <param name="randomActsIrresponsible">Optional, used when creating a more colorful history of payments.</param>
+        /// <returns></returns>
+        public static Rent GetRandomRentWithHistory(Identifier property, double homeDebtFactor, Func<bool> randomActsIrresponsible = null)
+        {
+            //create a rent object
+            randomActsIrresponsible = randomActsIrresponsible ?? (() => false);
+
+            var rent = GetRandomRent(property);
+            var randDate = rent.SigningDate;
+            var randRent = rent.MonthlyPmt;
+            //create payment history until current
+            var firstPmt = rent.GetMinPayment(randDate);
+            rent.PayRent(randDate.AddDays(1), firstPmt, new Mereo(property.ToString()));
+
+            var rentDueDate = randDate.Month == 12
+                ? new DateTime(randDate.Year + 1, 1, 1)
+                : new DateTime(randDate.Year, randDate.Month + 1, 1);
+
+            while (rentDueDate < DateTime.Today)
+            {
+                var paidRentOn = rentDueDate;
+                //move the date rent was paid to some late-date when person acts irresponsible
+                if (randomActsIrresponsible())
+                    paidRentOn = paidRentOn.AddDays(Etx.IntNumber(5, 15));
+
+                rent.PayRent(paidRentOn, randRent, new Mereo(rent.Id.ToString()));
+                rentDueDate = rentDueDate.AddMonths(1);
+            }
+            return rent;
+        }
 
         /// <summary>
         /// http://www.deptofnumbers.com/rent/us/
