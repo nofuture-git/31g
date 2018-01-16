@@ -320,7 +320,7 @@ namespace NoFuture.Rand.Domus.US
                 : GetMother() as American;
             var dtAtAge18 = dob.AddYears(UsState.AGE_OF_ADULT);
             var homeCityArea = mother?.GetAddressAt(dtAtAge18)?.HomeCityArea as UsCityStateZip ?? CityArea.RandomAmericanCity();
-            return new AmericanEducation(dob, homeCityArea.PostalState, homeCityArea.ZipCode);
+            return AmericanEducation.RandomEducation(dob, homeCityArea.PostalState, homeCityArea.ZipCode);
         }
 
         /// <summary>

@@ -3,8 +3,6 @@ using System.Diagnostics;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NoFuture.Rand.Edu.US;
-using NoFuture.Rand.Geo;
-using NoFuture.Rand.Geo.US;
 using NoFuture.Util.Core.Math;
 
 namespace NoFuture.Rand.Tests.EduTests
@@ -13,12 +11,9 @@ namespace NoFuture.Rand.Tests.EduTests
     public class AmericanEducationTests
     {
         [TestMethod]
-        public void CtorNullArgs()
+        public void RandomEducationNullArgs()
         {
-            DateTime? dob = null;
-            string homeState = null;
-            string zipCode = null;
-            var testResult = new AmericanEducation(dob, homeState, zipCode);
+            var testResult = AmericanEducation.RandomEducation();
             Assert.IsNotNull(testResult);
             Assert.IsNotNull(testResult.HighSchool);
             Assert.IsNotNull(testResult.HighSchool.Item1);
@@ -27,16 +22,9 @@ namespace NoFuture.Rand.Tests.EduTests
         }
 
         [TestMethod]
-        public void CtorYoungChild()
+        public void RandomEducationYoungChild()
         {
-            var addr = new UsCityStateZip(new AddressData
-            {
-                City = "Daytona Beach",
-                StateAbbrv = "FL",
-                StateName = "Flordia",
-                PostalCode = "32162"
-            });
-            var testResult = new AmericanEducation(DateTime.Now.AddYears(-9), "FL", "32162");
+            var testResult = AmericanEducation.RandomEducation(DateTime.Now.AddYears(-9), "FL", "32162");
             Assert.IsNotNull(testResult);
             Assert.IsNotNull(testResult.HighSchool);
             Assert.IsNull(testResult.HighSchool.Item1);

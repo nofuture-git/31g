@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Xml;
+using NoFuture.Rand.Core;
 using NoFuture.Rand.Gov;
 using NoFuture.Rand.Gov.US;
 
@@ -87,14 +88,14 @@ namespace NoFuture.Rand.Edu.US
         /// <param name="race"></param>
         /// <param name="edu"></param>
         /// <returns></returns>
-        public static double SolvePercentGradByStateAndRace(UsState state, NorthAmericanRace? race,
+        public static double SolvePercentGradByStateAndRace(string state, NorthAmericanRace? race,
             OccidentalEdu edu = OccidentalEdu.HighSchool | OccidentalEdu.Grad)
         {
             AmericanRacePercents p;
             p = edu >= OccidentalEdu.Bachelor ? AmericanUniversity.NatlGradRate() : AmericanHighSchool.NatlGradRate();
             var stateAvg = p.National;
             var natlAvg = p.National;
-            var stateData = UsStateData.GetStateData(state?.ToString());
+            var stateData = UsStateData.GetStateData(state);
             if (stateData?.PercentOfGrads != null && stateData.PercentOfGrads.Count > 0)
             {
                 var f = stateData.PercentOfGrads.FirstOrDefault(x => x.Item1 == edu);
@@ -118,6 +119,47 @@ namespace NoFuture.Rand.Edu.US
                 return Math.Round(stateAvg, 1);
 
             return Math.Round(stateAvg + raceNatlAvg[race.Value], 1);
+        }
+
+        
+        /// <summary>
+        /// Helper method to get all US State abbreviations which are present in the data file.
+        /// </summary>
+        /// <returns></returns>
+        internal static string[] GetAllXmlStateAbbreviations(XmlDocument xmlDoc)
+        {
+            const string ABBREV = "abbreviation";
+            if (xmlDoc == null)
+                return new string[] { };
+            var allStateAbbrevs = new List<string>();
+            var stateNodes = xmlDoc.SelectNodes("//state");
+            if (stateNodes == null)
+                return new string[] { };
+
+            for (var i = 0; i <= stateNodes.Count; i++)
+            {
+                var snode = stateNodes.Item(i);
+                if (!(snode is XmlElement stateElem))
+                    continue;
+
+                if (!stateElem.HasAttributes)
+                    continue;
+                var abbrevAttr = stateElem.Attributes[ABBREV];
+                if (String.IsNullOrWhiteSpace(abbrevAttr?.Value))
+                    continue;
+                if (allStateAbbrevs.Contains(abbrevAttr.Value))
+                    continue;
+                allStateAbbrevs.Add(abbrevAttr.Value);
+            }
+            return allStateAbbrevs.ToArray();
+        }
+
+        internal static string GetRandomStateAbbrev(string[] stateAbbrev)
+        {
+            if (stateAbbrev == null || !stateAbbrev.Any())
+                return "NY";
+            var pickone = Etx.IntNumber(0, stateAbbrev.Length - 1);
+            return stateAbbrev[pickone];
         }
     }
 }

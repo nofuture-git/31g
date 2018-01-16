@@ -31,19 +31,19 @@ namespace NoFuture.Rand.Tests.EduTests
             //percent-highschool-grad="80.6"
             //asian="89.0" natl-percent="82.0"
             // 89 - 82 = 7
-            testResult = AmericanSchoolBase.SolvePercentGradByStateAndRace(testState, NorthAmericanRace.Asian);
+            testResult = AmericanSchoolBase.SolvePercentGradByStateAndRace(testState.ToString(), NorthAmericanRace.Asian);
             Assert.AreEqual(87.6, testResult);
 
             //american-indian="70.0"
             // 70 - 82 = -12
-            testResult = AmericanSchoolBase.SolvePercentGradByStateAndRace(testState, NorthAmericanRace.AmericanIndian);
+            testResult = AmericanSchoolBase.SolvePercentGradByStateAndRace(testState.ToString(), NorthAmericanRace.AmericanIndian);
             Assert.AreEqual(68.6, testResult);
 
             testState = UsState.GetStateByPostalCode("ID");
             Assert.IsNotNull(testState);
             Assert.IsNotNull(UsStateData.GetStateData(testState.ToString()));
 
-            testResult = AmericanSchoolBase.SolvePercentGradByStateAndRace(testState, NorthAmericanRace.Asian, OccidentalEdu.Bachelor | OccidentalEdu.Grad);
+            testResult = AmericanSchoolBase.SolvePercentGradByStateAndRace(testState.ToString(), NorthAmericanRace.Asian, OccidentalEdu.Bachelor | OccidentalEdu.Grad);
             //percent-college-grad="23.9"
             //
             //asian="54.0" natl-percent="30.0"

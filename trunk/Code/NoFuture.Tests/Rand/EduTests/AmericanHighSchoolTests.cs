@@ -51,6 +51,13 @@ namespace NoFuture.Rand.Tests.EduTests
             Assert.AreNotEqual(0, hs.Length);
 
             Assert.IsFalse(hs.All(h => h.Equals(AmericanHighSchool.GetDefaultHs())));
+
+            hs = AmericanHighSchool.GetHighSchoolsByZipCode(null);
+
+            Assert.IsNotNull(hs);
+            Assert.AreNotEqual(0, hs.Length);
+
+            Assert.IsFalse(hs.All(h => h.Equals(AmericanHighSchool.GetDefaultHs())));
         }
 
         [TestMethod]

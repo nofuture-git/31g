@@ -4,7 +4,6 @@ using System.Linq;
 using System.Reflection;
 using System.Xml;
 using NoFuture.Rand.Core;
-using NoFuture.Rand.Geo.US;
 using NoFuture.Rand.Gov;
 using NoFuture.Rand.Gov.US;
 using NoFuture.Util.Core;
@@ -18,7 +17,7 @@ namespace NoFuture.Rand.Edu.US
         public const float DF_NATL_AVG = 82.0f;
 
         private static AmericanHighSchool _dfHs;
-        private static string[] _allStateAbbrev;
+        private static string[] _allStateAbbreviations;
 
         #region properties
         public string PostalCode { get; set; }
@@ -79,7 +78,8 @@ namespace NoFuture.Rand.Edu.US
                 return new[] { GetDefaultHs() };
             if (String.IsNullOrWhiteSpace(state))
             {
-                state = GetRandomStateAbbrev();
+                _allStateAbbreviations = _allStateAbbreviations ?? GetAllXmlStateAbbreviations(HsXml);
+                state = GetRandomStateAbbrev(_allStateAbbreviations);
             }
 
             var qryBy = "name";
@@ -106,7 +106,7 @@ namespace NoFuture.Rand.Edu.US
             zipCode = zipCode ?? "";
             zipCode = new string(zipCode.ToCharArray().Where(char.IsDigit).ToArray());
             if (string.IsNullOrWhiteSpace(zipCode))
-                return new[] { GetDefaultHs() };
+                return GetHighSchoolsByState();
 
             HsXml = HsXml ?? XmlDocXrefIdentifier.GetEmbeddedXmlDoc(US_HIGH_SCHOOL_DATA,
                         Assembly.GetExecutingAssembly());
@@ -119,7 +119,7 @@ namespace NoFuture.Rand.Edu.US
 
             var elements = HsXml.SelectNodes(xpath);
             if(elements == null || elements.Count <= 0)
-                return new[] { GetDefaultHs() };
+                return GetHighSchoolsByState();
 
             return ParseHighSchoolsFromNodeList(elements);
         }
@@ -236,53 +236,6 @@ namespace NoFuture.Rand.Edu.US
                 hs = null;
                 return false;
             }
-        }
-
-        /// <summary>
-        /// Helper method to get all US State abbreviations which are present in the data file.
-        /// </summary>
-        /// <returns></returns>
-        internal static string[] GetAllHsXmlStateAbbreviations()
-        {
-            if (_allStateAbbrev != null && _allStateAbbrev.Any())
-                return _allStateAbbrev;
-            const string ABBREV = "abbreviation";
-            HsXml = HsXml ?? XmlDocXrefIdentifier.GetEmbeddedXmlDoc(US_HIGH_SCHOOL_DATA,
-                        Assembly.GetExecutingAssembly());
-            if (HsXml == null)
-                return new string[]{};
-            var allStateAbbrevs = new List<string>();
-            var stateNodes = HsXml.SelectNodes("//state");
-            if (stateNodes == null)
-                return new string[] { };
-
-            for (var i = 0; i <= stateNodes.Count; i++)
-            {
-                var snode = stateNodes.Item(i);
-                if (!(snode is XmlElement stateElem))
-                    continue;
-
-                if (!stateElem.HasAttributes)
-                    continue;
-                var abbrevAttr = stateElem.Attributes[ABBREV];
-                if (String.IsNullOrWhiteSpace(abbrevAttr?.Value))
-                    continue;
-                if (allStateAbbrevs.Contains(abbrevAttr.Value))
-                    continue;
-                allStateAbbrevs.Add(abbrevAttr.Value);
-            }
-
-            _allStateAbbrev = allStateAbbrevs.ToArray();
-            return _allStateAbbrev;
-        }
-
-        private static string GetRandomStateAbbrev()
-        {
-            var stateAbbrev = GetAllHsXmlStateAbbreviations();
-            if (!stateAbbrev.Any())
-                return UsCityStateZip.DF_STATE_ABBREV;
-            var pickone = Etx.IntNumber(0, stateAbbrev.Length - 1);
-            return stateAbbrev[pickone];
         }
 
         private static AmericanHighSchool[] ParseHighSchoolsFromNodeList(XmlNodeList elements)

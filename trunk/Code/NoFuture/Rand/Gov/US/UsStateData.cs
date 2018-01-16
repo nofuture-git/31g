@@ -29,8 +29,9 @@ namespace NoFuture.Rand.Gov.US
             const string REGION = "region";
             if (string.IsNullOrWhiteSpace(name))
                 return;
-            //need to put the spaces back into state's name (NewYork as New York)
-            _stateName = name;
+            var usState = UsState.GetState(name);
+            
+            _stateName = usState.ToString();
             UsStateDataXml = UsStateDataXml ??
                              Core.XmlDocXrefIdentifier.GetEmbeddedXmlDoc(US_STATES_DATA,
                                  Assembly.GetExecutingAssembly());

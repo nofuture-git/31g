@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using System.Xml;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Gov;
 using NoFuture.Rand.Gov.US;
@@ -12,6 +10,9 @@ using NoFuture.Util.Core.Math;
 
 namespace NoFuture.Rand.Edu.US
 {
+    /// <summary>
+    /// Represents the composite of personal education over time.
+    /// </summary>
     [Serializable]
     public class AmericanEducation : IEducation
     {
@@ -27,6 +28,8 @@ namespace NoFuture.Rand.Edu.US
         #endregion
 
         #region ctor
+        public AmericanEducation(){ }
+
         public AmericanEducation(Tuple<IHighSchool, DateTime?> assignHs)
         {
             if (assignHs?.Item1 is AmericanHighSchool)
@@ -47,24 +50,6 @@ namespace NoFuture.Rand.Edu.US
             AssignEduFlagAndLevel();
         }
 
-        public AmericanEducation(DateTime? birthDate, string homeState, string zipCode)
-        {
-            var dob = birthDate ?? Etx.GetWorkingAdultBirthDate();
-            var age = Etc.CalcAge(dob);
-
-            if (age < DF_MIN_AGE_ENTER_HS)
-                return;
-
-            var dtAtAge18 = dob.AddYears(UsState.AGE_OF_ADULT);
-            var isLegalAdult = age >= UsState.AGE_OF_ADULT;
-            if (!AssignRandomHighSchool(homeState, zipCode, isLegalAdult, dtAtAge18, out var hsGradDt))
-                return;
-
-            var usstate = UsState.GetState(homeState);
-
-            AssignRandomCollege(usstate.ToString(), hsGradDt);
-        }
-
         #endregion
 
         #region properties
@@ -77,7 +62,7 @@ namespace NoFuture.Rand.Edu.US
         public string EduLevel => _eduLevel;
 
         /// <summary>
-        /// Gets highest High School attended.
+        /// Gets last High School attended.
         /// </summary>
         public Tuple<IHighSchool, DateTime?> HighSchool
         {
@@ -91,7 +76,7 @@ namespace NoFuture.Rand.Edu.US
         }
 
         /// <summary>
-        /// Gets highest college attended
+        /// Gets last college attended
         /// </summary>
         public Tuple<IUniversity, DateTime?> College
         {
@@ -129,6 +114,34 @@ namespace NoFuture.Rand.Edu.US
         #region methods
 
         /// <summary>
+        /// Gets an education at random.
+        /// </summary>
+        /// <param name="birthDate"></param>
+        /// <param name="homeState"></param>
+        /// <param name="zipCode"></param>
+        /// <returns></returns>
+        [RandomFactory]
+        public static AmericanEducation RandomEducation(DateTime? birthDate = null, string homeState = null, string zipCode = null)
+        {
+            var edu = new AmericanEducation();
+            var dob = birthDate ?? Etx.GetWorkingAdultBirthDate();
+            var age = Etc.CalcAge(dob);
+
+            if (age < DF_MIN_AGE_ENTER_HS)
+                return edu;
+
+            var dtAtAge18 = dob.AddYears(UsState.AGE_OF_ADULT);
+            var isLegalAdult = age >= UsState.AGE_OF_ADULT;
+            if (!edu.AssignRandomHighSchool(homeState, zipCode, isLegalAdult, dtAtAge18, out var hsGradDt))
+                return edu;
+
+            var usstate = UsState.GetState(homeState);
+
+            edu.AssignRandomCollege(usstate?.ToString(), hsGradDt);
+            return edu;
+        }
+
+        /// <summary>
         /// Assigns a value to <see cref="HighSchool"/> at random based on the given inputs
         /// </summary>
         /// <param name="homeState"></param>
@@ -137,21 +150,15 @@ namespace NoFuture.Rand.Edu.US
         /// <param name="dtAtAge18"></param>
         /// <param name="hsGradDt"></param>
         /// <returns></returns>
-        public bool AssignRandomHighSchool(string homeState, string zipCode, bool isLegalAdult, DateTime dtAtAge18,
+        protected internal bool AssignRandomHighSchool(string homeState, string zipCode, bool isLegalAdult, DateTime dtAtAge18,
             out DateTime? hsGradDt)
         {
             hsGradDt = null;
 
-            if (string.IsNullOrWhiteSpace(homeState) && string.IsNullOrWhiteSpace(zipCode))
-            {
-                _highSchools.Add(new AmericanHighSchoolStudent(AmericanHighSchool.GetDefaultHs()));
-                return false;
-            }
-
             //get hs grad data for state amer lived in when 18
             var hsGradData =
-                UsStateData.GetStateData(homeState)
-                    .PercentOfGrads.FirstOrDefault(x => x.Item1 == (OccidentalEdu.HighSchool | OccidentalEdu.Grad));
+                UsStateData.GetStateData(homeState)?.PercentOfGrads
+                    .FirstOrDefault(x => x.Item1 == (OccidentalEdu.HighSchool | OccidentalEdu.Grad));
 
             //determine prob. of having hs grad
             var hsGradRate = hsGradData?.Item2 ?? AmericanHighSchool.DF_NATL_AVG;
@@ -184,7 +191,7 @@ namespace NoFuture.Rand.Edu.US
         /// </summary>
         /// <param name="homeState"></param>
         /// <param name="hsGradDt"></param>
-        public void AssignRandomCollege(string homeState, DateTime? hsGradDt)
+        protected internal void AssignRandomCollege(string homeState, DateTime? hsGradDt)
         {
             if (hsGradDt == null)
                 return;
@@ -353,45 +360,12 @@ namespace NoFuture.Rand.Edu.US
         /// src [https://www.washingtonpost.com/blogs/govbeat/wp/2014/06/05/map-the-states-college-kids-cant-wait-to-leave]
         /// </param>
         /// <returns></returns>
-        public static AmericanUniversity GetAmericanUniversity(string homeState)
+        internal static AmericanUniversity GetAmericanUniversity(string homeState)
         {
-            //pick a univ 
-            IUniversity univ = null;
-            var pick = 0;
-            
-            if (Etx.TryBelowOrAt(73, Etx.Dice.OneHundred) && homeState != null)
-            {
-                //pick a univ from the home state
-                var stateUnivs = AmericanUniversity.GetUniversitiesByState(homeState);
-                if (!stateUnivs.Any())
-                    return null;
-                pick = Etx.IntNumber(0, stateUnivs.Length - 1);
-                univ = stateUnivs[pick];
-            }
-            else
-            {
-                //pick a university from anywhere in the US
-                AmericanSchoolBase.UnivXml = AmericanSchoolBase.UnivXml ??
-                                           XmlDocXrefIdentifier.GetEmbeddedXmlDoc(AmericanSchoolBase.US_UNIVERSITY_DATA,
-                                               Assembly.GetExecutingAssembly());
-                var allUnivs = AmericanSchoolBase.UnivXml?.SelectNodes("//state");
-                if (allUnivs == null)
-                    return null;
-                pick = Etx.IntNumber(0, allUnivs.Count - 1);
-                if (!(allUnivs[pick] is XmlElement randUnivXml) || !randUnivXml.HasChildNodes)
-                    return null;
-                pick = Etx.IntNumber(0, randUnivXml.ChildNodes.Count - 1);
-                if (!(randUnivXml.ChildNodes[pick] is XmlElement univXmlNode))
-                    return null;
-                if (AmericanUniversity.TryParseXml(univXmlNode, out var univOut))
-                {
-                    univ = univOut;
-                }
-            }
-            return (AmericanUniversity)univ;
+            homeState = Etx.TryBelowOrAt(73, Etx.Dice.OneHundred) ? homeState : null;
+
+            return AmericanUniversity.RandomUniversity(homeState);
         }
-
-
         #endregion
     }
 }

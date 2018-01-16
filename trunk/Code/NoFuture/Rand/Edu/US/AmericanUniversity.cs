@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Xml;
+using NoFuture.Rand.Core;
 using NoFuture.Rand.Gov;
 using NoFuture.Rand.Gov.US;
 using NoFuture.Util.Core;
@@ -13,6 +15,7 @@ namespace NoFuture.Rand.Edu.US
     public class AmericanUniversity : AmericanSchoolBase, IUniversity
     {
         public const double DF_NATL_BACHELORS_AVG = 33.0;
+        private static string[] _allStateAbbreviations;
 
         /// <summary>
         /// src https://en.wikipedia.org/wiki/Educational_attainment_in_the_United_States
@@ -69,14 +72,18 @@ namespace NoFuture.Rand.Edu.US
         /// <returns></returns>
         public static AmericanUniversity[] GetUniversitiesByState(string state)
         {
-            if(string.IsNullOrWhiteSpace(state))
-                return new AmericanUniversity[] { };
-
             UnivXml = UnivXml ?? Core.XmlDocXrefIdentifier.GetEmbeddedXmlDoc(US_UNIVERSITY_DATA,
                 Assembly.GetExecutingAssembly());
             //this will never pass so avoid the exception
             if (UnivXml == null)
                 return new AmericanUniversity[] { };
+
+            if (String.IsNullOrWhiteSpace(state))
+            {
+                _allStateAbbreviations = _allStateAbbreviations ?? GetAllXmlStateAbbreviations(UnivXml);
+                state = GetRandomStateAbbrev(_allStateAbbreviations);
+            }
+
             var qryBy = "name";
             if (state.Length == 2)
                 qryBy = "abbreviation";
@@ -102,6 +109,53 @@ namespace NoFuture.Rand.Edu.US
                 return new AmericanUniversity[] { };
 
             return tempList.ToArray();
+        }
+
+        /// <summary>
+        /// Gets a university at random.
+        /// </summary>
+        /// <param name="state">
+        /// Optional, limits the randomness to a single US State.  
+        /// Use either the name or the postal code.
+        /// </param>
+        /// <returns></returns>
+        [RandomFactory]
+        public static AmericanUniversity RandomUniversity(string state = null)
+        {
+            IUniversity univ = null;
+            int pick;
+
+            //pick a univ from the home state
+            if (!string.IsNullOrWhiteSpace(state))
+            {
+                var stateUnivs = GetUniversitiesByState(state);
+                if (stateUnivs.Any())
+                {
+                    pick = Etx.IntNumber(0, stateUnivs.Length - 1);
+                    univ = stateUnivs[pick];
+                }
+            }
+
+            if (univ == null)
+            {
+                //pick a university from anywhere in the US
+                UnivXml = UnivXml ?? XmlDocXrefIdentifier.GetEmbeddedXmlDoc(US_UNIVERSITY_DATA,
+                              Assembly.GetExecutingAssembly());
+                var allUnivs = UnivXml?.SelectNodes("//state");
+                if (allUnivs == null)
+                    return null;
+                pick = Etx.IntNumber(0, allUnivs.Count - 1);
+                if (!(allUnivs[pick] is XmlElement randUnivXml) || !randUnivXml.HasChildNodes)
+                    return null;
+                pick = Etx.IntNumber(0, randUnivXml.ChildNodes.Count - 1);
+                if (!(randUnivXml.ChildNodes[pick] is XmlElement univXmlNode))
+                    return null;
+                if (TryParseXml(univXmlNode, out var univOut))
+                {
+                    univ = univOut;
+                }
+            }
+            return (AmericanUniversity)univ;
         }
 
         internal static bool TryParseXml(XmlElement node, out AmericanUniversity univ)
