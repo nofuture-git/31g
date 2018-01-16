@@ -53,34 +53,6 @@ namespace NoFuture.Rand.Tests.DomusTests
         }
 
         [TestMethod]
-        public void TestGetAmericanUniversity()
-        {
-            var testResult = AmericanEducation.GetAmericanUniversity(null);
-            Assert.IsNotNull(testResult);
-            testResult = AmericanEducation.GetAmericanUniversity(UsState.GetStateByPostalCode("AZ"));
-            Assert.IsNotNull(testResult);
-        }
-
-        [TestMethod]
-        public void TestGetAmericanHighSchool()
-        {
-            var addrData = new AddressData()
-            {
-                City = "Ellisville",
-                StateAbbrv = "IL",
-                StateName = "Illinois",
-                PostalCode = "62644"
-            };
-
-            var usHca = new UsCityStateZip(addrData);
-            Assert.IsNotNull(usHca);
-            var hs = AmericanEducation.GetAmericanHighSchool(usHca);
-            Assert.IsNotNull(hs);
-            Assert.IsFalse(hs.Equals(AmericanHighSchool.GetDefaultHs()));
-
-        }
-
-        [TestMethod]
         public void TestAmericanFemaleFirstName()
         {
             var testDob = new DateTime(1980, 10, 1);

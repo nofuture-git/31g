@@ -200,7 +200,7 @@ namespace NoFuture.Rand.Domus
         /// <returns></returns>
         public static American American()
         {
-            return new American(Etx.GetWorkingAdultBirthDate(), Etx.CoinToss ? Gender.Female : Gender.Male,
+            return new American(Etx.GetWorkingAdultBirthDate(), Etx.CoinToss() ? Gender.Female : Gender.Male,
                 true);
         }
 
@@ -212,7 +212,7 @@ namespace NoFuture.Rand.Domus
         public static American Canadian()
         {
             var canadian = American();
-            var cpp = CityArea.Canadian();
+            var cpp = CityArea.RandomCanadianCity();
             var str = canadian.GetAddressAt(null)?.HomeStreetPo;
             canadian.AddAddress(new PostalAddress { HomeCityArea = cpp, HomeStreetPo = str });
 

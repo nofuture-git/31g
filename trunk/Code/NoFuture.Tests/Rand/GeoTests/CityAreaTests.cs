@@ -13,7 +13,7 @@ namespace NoFuture.Rand.Tests.GeoTests
         [TestMethod]
         public void AmericanTest()
         {
-            var testResult = CityArea.American();
+            var testResult = CityArea.RandomAmericanCity();
             Assert.IsNotNull(testResult);
             Assert.IsFalse(string.IsNullOrWhiteSpace(testResult.City));
             Assert.IsFalse(string.IsNullOrWhiteSpace(testResult.ZipCode));
@@ -28,7 +28,7 @@ namespace NoFuture.Rand.Tests.GeoTests
         [TestMethod]
         public void CanadianTest()
         {
-            var testResult = CityArea.Canadian();
+            var testResult = CityArea.RandomCanadianCity();
             Assert.IsNotNull(testResult);
             Assert.IsFalse(string.IsNullOrWhiteSpace(testResult.City));
             Assert.IsFalse(string.IsNullOrWhiteSpace(testResult.PostalCode));

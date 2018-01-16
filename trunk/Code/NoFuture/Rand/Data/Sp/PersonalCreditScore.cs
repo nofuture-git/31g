@@ -120,7 +120,7 @@ namespace NoFuture.Rand.Data.Sp
 
         private double GetRandomZscore()
         {
-            var s = Etx.PlusOrMinusOne;
+            var s = Etx.PlusOrMinusOne();
             return s * Math.Round(Etx.MyRand.NextDouble(), 7);
         }
         #endregion

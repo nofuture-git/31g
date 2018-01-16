@@ -120,6 +120,19 @@ namespace NoFuture.Rand.Gov.US
         }
 
         /// <summary>
+        /// Gets the <see cref="UsState"/> by either postal abbreviation or full name
+        /// </summary>
+        /// <param name="state"></param>
+        /// <returns></returns>
+        public static UsState GetState(string state)
+        {
+            if (string.IsNullOrWhiteSpace(state))
+                return null;
+
+            return state.Length == 2 ? GetStateByPostalCode(state) : GetStateByName(state);
+        }
+
+        /// <summary>
         /// Gets the <see cref="UsState"/> type based on the <see cref="stateAbbrv"/> (e.g. California is 'CA')
         /// </summary>
         /// <param name="stateAbbrv"></param>

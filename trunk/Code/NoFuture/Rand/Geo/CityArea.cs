@@ -82,7 +82,8 @@ namespace NoFuture.Rand.Geo
         /// Ranking is by population totals sourced from
         /// https://www.census.gov/geo/maps-data/data/docs/rel/zcta_cbsa_rel_10.txt
         /// </remarks>
-        public static UsCityStateZip American(string zipCodePrefix = null)
+        [RandomFactory]
+        public static UsCityStateZip RandomAmericanCity(string zipCodePrefix = null)
         {
             const string HAS_HIGH_SCHOOL = "has-high-school";
             const string VALUE = "value";
@@ -142,12 +143,13 @@ namespace NoFuture.Rand.Geo
         }
 
         /// <summary>
-        /// Fetches, at random, a <see cref="Canadian"/> in which the values are only somewhat related.
+        /// Fetches, at random, a <see cref="RandomCanadianCity"/> in which the values are only somewhat related.
         /// The Providence and City are related while the only first three characters of the Postal Code are actually realted.
         /// The last three are always '4Z4'.
         /// </summary>
         /// <returns></returns>
-        public static CaCityProvidencePost Canadian()
+        [RandomFactory]
+        public static CaCityProvidencePost RandomCanadianCity()
         {
             const string POSTAL_CODE = "postal-code";
             const string DF_FIRST_THREE_CHARS = "M5A";

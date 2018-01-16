@@ -36,10 +36,10 @@ namespace NoFuture.Rand.Tests.GovTests
                 var dob = baseDob.AddYears((25 + i) * -1);
                 var marriageEq = AmericanEquations.FemaleAge2FirstMarriage.SolveForY(dob.ToDouble());
                 var firstBornEq = AmericanEquations.FemaleAge2FirstChild.SolveForY(dob.Year);
-
-                Assert.IsTrue(marriageEq > 23 && marriageEq <= 28);
-                Assert.IsTrue(firstBornEq > 25 && firstBornEq < 30);
                 Debug.WriteLine($"dob: {dob};  marriageAge: {marriageEq}; firstBornAge: {firstBornEq};");
+
+                Assert.IsTrue(marriageEq > 18 && marriageEq <= 38);
+                Assert.IsTrue(firstBornEq > 18 && firstBornEq < 38);
 
             }
         }

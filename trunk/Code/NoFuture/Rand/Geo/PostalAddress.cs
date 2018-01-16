@@ -26,7 +26,7 @@ namespace NoFuture.Rand.Geo
         /// <returns></returns>
         public static PostalAddress GetRandomAmericanAddr(string zipCodePrefix = null)
         {
-            var csz = CityArea.American(zipCodePrefix);
+            var csz = CityArea.RandomAmericanCity(zipCodePrefix);
             var homeAddr = StreetPo.American();
             return new PostalAddress { HomeStreetPo = homeAddr, HomeCityArea = csz };
         }

@@ -20,7 +20,7 @@ namespace NoFuture.Rand.Data.Sp.Cc
             if (expiryDate == null)
             {
                 ExpDate = Etx.Date(Etx.IntNumber(4, 6), null);
-                ExpDate = new DateTime(ExpDate.Year, ExpDate.Month, Etx.CoinToss ? 1 : 15);
+                ExpDate = new DateTime(ExpDate.Year, ExpDate.Month, Etx.CoinToss() ? 1 : 15);
             }
             else
             {

@@ -3,6 +3,7 @@ using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NoFuture.Rand.Edu;
 using NoFuture.Rand.Edu.US;
+using NoFuture.Rand.Gov.US;
 
 namespace NoFuture.Rand.Tests.EduTests
 {
@@ -34,6 +35,16 @@ namespace NoFuture.Rand.Tests.EduTests
             testResults = AmericanUniversity.GetUniversitiesByState("NC");
             Assert.IsNotNull(testResults);
             Assert.AreNotEqual(0, testResults.Length);
+        }
+
+
+        [TestMethod]
+        public void TestGetAmericanUniversity()
+        {
+            var testResult = AmericanEducation.GetAmericanUniversity(null);
+            Assert.IsNotNull(testResult);
+            testResult = AmericanEducation.GetAmericanUniversity("AZ");
+            Assert.IsNotNull(testResult);
         }
     }
 }

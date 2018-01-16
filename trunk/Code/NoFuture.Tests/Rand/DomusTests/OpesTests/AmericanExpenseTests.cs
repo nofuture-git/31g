@@ -405,7 +405,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         {
             var testSubject = new AmericanExpenses(null);
 
-            var testResult = testSubject.GetInsuranceExpenseNames2RandomRates(null);
+            var testResult = testSubject.GetInsuranceExpenseNames2RandomRates(new OpesOptions { IsRenting = false });
 
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0, testResult.Count);

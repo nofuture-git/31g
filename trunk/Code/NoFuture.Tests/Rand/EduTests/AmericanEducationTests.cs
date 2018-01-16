@@ -16,8 +16,9 @@ namespace NoFuture.Rand.Tests.EduTests
         public void CtorNullArgs()
         {
             DateTime? dob = null;
-            UsCityStateZip homeCityArea = null;
-            var testResult = new AmericanEducation(dob, homeCityArea);
+            string homeState = null;
+            string zipCode = null;
+            var testResult = new AmericanEducation(dob, homeState, zipCode);
             Assert.IsNotNull(testResult);
             Assert.IsNotNull(testResult.HighSchool);
             Assert.IsNotNull(testResult.HighSchool.Item1);
@@ -35,7 +36,7 @@ namespace NoFuture.Rand.Tests.EduTests
                 StateName = "Flordia",
                 PostalCode = "32162"
             });
-            var testResult = new AmericanEducation(DateTime.Now.AddYears(-9), addr);
+            var testResult = new AmericanEducation(DateTime.Now.AddYears(-9), "FL", "32162");
             Assert.IsNotNull(testResult);
             Assert.IsNotNull(testResult.HighSchool);
             Assert.IsNull(testResult.HighSchool.Item1);

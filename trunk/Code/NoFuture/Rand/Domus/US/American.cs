@@ -41,7 +41,7 @@ namespace NoFuture.Rand.Domus.US
         /// <param name="myGender"></param>
         public American(DateTime dob, Gender myGender)
         {
-            var dobAddr = CityArea.American();
+            var dobAddr = CityArea.RandomAmericanCity();
             _birthCert = new AmericanBirthCert(FullName)
             {
                 DateOfBirth = dob,
@@ -129,7 +129,7 @@ namespace NoFuture.Rand.Domus.US
 
             var birthPlace = nAmerMother.GetAddressAt(dob)?.HomeCityArea as UsCityStateZip ??
                              nAmerFather?.GetAddressAt(dob)?.HomeCityArea as UsCityStateZip ??
-                             CityArea.American();
+                             CityArea.RandomAmericanCity();
 
             americanBirthCert.City = birthPlace.City;
             americanBirthCert.State = birthPlace.State?.StateAbbrv;
@@ -319,8 +319,8 @@ namespace NoFuture.Rand.Domus.US
                     Gender.Female) as American
                 : GetMother() as American;
             var dtAtAge18 = dob.AddYears(UsState.AGE_OF_ADULT);
-            var homeCityArea = mother?.GetAddressAt(dtAtAge18)?.HomeCityArea as UsCityStateZip ?? CityArea.American();
-            return new AmericanEducation(dob, homeCityArea);
+            var homeCityArea = mother?.GetAddressAt(dtAtAge18)?.HomeCityArea as UsCityStateZip ?? CityArea.RandomAmericanCity();
+            return new AmericanEducation(dob, homeCityArea.PostalState, homeCityArea.ZipCode);
         }
 
         /// <summary>
@@ -689,7 +689,7 @@ namespace NoFuture.Rand.Domus.US
             }
 
             var myChildeAge = Etc.CalcAge(myChildDob, dt);
-            var myChildGender = Etx.CoinToss ? Gender.Female : Gender.Male;
+            var myChildGender = Etx.CoinToss() ? Gender.Female : Gender.Male;
             var isChildAdult = myChildeAge >= GetMyHomeStatesAgeOfMajority();
 
             //look for spouse at and around Dob

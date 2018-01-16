@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System.Linq;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NoFuture.Rand.Edu.US;
 
 namespace NoFuture.Rand.Tests.EduTests
@@ -16,7 +17,7 @@ namespace NoFuture.Rand.Tests.EduTests
 
 
         [TestMethod]
-        public void TestGetHighSchools()
+        public void TestGetHighSchoolsByState()
         {
             var testResults = AmericanHighSchool.GetHighSchoolsByState("Arizona");
 
@@ -33,6 +34,32 @@ namespace NoFuture.Rand.Tests.EduTests
             Assert.IsNotNull(testResults);
             Assert.AreNotEqual(0, testResults.Length);
 
+
+            testResults = AmericanHighSchool.GetHighSchoolsByState();
+            Assert.IsNotNull(testResults);
+            Assert.AreNotEqual(0, testResults.Length);
+
+        }
+
+
+        [TestMethod]
+        public void TestGetHighSchoolsByZipCode()
+        {
+            var hs = AmericanHighSchool.GetHighSchoolsByZipCode("62644");
+
+            Assert.IsNotNull(hs);
+            Assert.AreNotEqual(0, hs.Length);
+
+            Assert.IsFalse(hs.All(h => h.Equals(AmericanHighSchool.GetDefaultHs())));
+        }
+
+        [TestMethod]
+        public void TestRandomHighSchool()
+        {
+            var testResult = AmericanHighSchool.RandomHighSchool();
+            Assert.IsNotNull(testResult);
+            Assert.IsFalse(string.IsNullOrWhiteSpace(testResult.Name));
+            Assert.IsFalse(string.IsNullOrWhiteSpace(testResult.StateName));
         }
     }
 }

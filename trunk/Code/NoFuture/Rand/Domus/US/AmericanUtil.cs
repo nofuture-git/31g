@@ -276,7 +276,7 @@ namespace NoFuture.Rand.Domus.US
             ageDiff = gender == Gender.Female ? ageDiff * -1 : ageDiff;
 
             //randomize dob of spouse
-            var spouseDob = myDob.Value.AddYears(ageDiff).AddDays(Etx.IntNumber(1, 360) * Etx.PlusOrMinusOne);
+            var spouseDob = myDob.Value.AddYears(ageDiff).AddDays(Etx.IntNumber(1, 360) * Etx.PlusOrMinusOne());
 
             //define spouse
             return new American(spouseDob, gender == Gender.Female ? Gender.Male : Gender.Female);

@@ -37,17 +37,17 @@ namespace NoFuture.Rand.Tele
             if (names.Length > 2)
             {
                 mi = names[1].ToLower();
-                mi = Etx.CoinToss ? mi.First().ToString() : mi;
+                mi = Etx.CoinToss() ? mi.First().ToString() : mi;
             }
 
-            var unParts = new List<string> { Etx.CoinToss ? fname : fname.First().ToString(), mi, lname };
+            var unParts = new List<string> { Etx.CoinToss() ? fname : fname.First().ToString(), mi, lname };
             var totalLength = unParts.Sum(x => x.Length);
             if (totalLength <= 7)
-                return RandomEmail(String.Join(Etx.CoinToss ? "" : "_", String.Join(Etx.CoinToss ? "." : "_", unParts),
+                return RandomEmail(String.Join(Etx.CoinToss() ? "" : "_", String.Join(Etx.CoinToss() ? "." : "_", unParts),
                     Etx.IntNumber(100, 9999)), usCommonOnly);
             return RandomEmail(totalLength > 20
-                ? String.Join(Etx.CoinToss ? "." : "_", unParts.Take(2))
-                : String.Join(Etx.CoinToss ? "." : "_", unParts), usCommonOnly);
+                ? String.Join(Etx.CoinToss() ? "." : "_", unParts.Take(2))
+                : String.Join(Etx.CoinToss() ? "." : "_", unParts), usCommonOnly);
         }
 
         /// <summary>
@@ -65,7 +65,7 @@ namespace NoFuture.Rand.Tele
                 var withUcase = Etc.CapWords(Etx.DiscreteRange(shortWords), ' ');
                 shortWordList.Add(withUcase);
             }
-            shortWordList.Add((Etx.CoinToss ? "_" : "") + Etx.IntNumber(100, 9999));
+            shortWordList.Add((Etx.CoinToss() ? "_" : "") + Etx.IntNumber(100, 9999));
             return RandomEmail(String.Join("", shortWordList), usCommonOnly);
         }
 
@@ -84,7 +84,7 @@ namespace NoFuture.Rand.Tele
             {
                 bunchOfWords.Add(Etc.CapWords(Etx.Word(), ' '));
             }
-            username = String.Join((Etx.CoinToss ? "." : "_"), Etx.DiscreteRange(bunchOfWords.ToArray()),
+            username = String.Join((Etx.CoinToss() ? "." : "_"), Etx.DiscreteRange(bunchOfWords.ToArray()),
                 Etx.DiscreteRange(bunchOfWords.ToArray()));
             return new Email {Value = String.Join("@", username, host)};
         }

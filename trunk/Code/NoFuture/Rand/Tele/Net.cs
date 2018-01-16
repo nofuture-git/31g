@@ -124,7 +124,7 @@ namespace NoFuture.Rand.Tele
                 pathSeg.Add(Etx.Word());
             }
 
-            if (Etx.CoinToss)
+            if (Etx.CoinToss())
             {
                 pathSeg.Add(Etx.Word() + Etx.DiscreteRange(new[] { ".php", ".aspx", ".html", ".txt", ".asp" }));
             }
@@ -147,17 +147,17 @@ namespace NoFuture.Rand.Tele
                 var qryParam = new List<string>();
                 for (var j = 0; j < len; j++)
                 {
-                    if (Etx.CoinToss)
+                    if (Etx.CoinToss())
                     {
                         qryParam.Add(Etx.Word());
                         continue;
                     }
-                    if (Etx.CoinToss)
+                    if (Etx.CoinToss())
                     {
                         qryParam.Add(Etx.IntNumber(0, 99999).ToString());
                         continue;
                     }
-                    qryParam.Add(Etx.Consonant(Etx.CoinToss).ToString());
+                    qryParam.Add(Etx.Consonant(Etx.CoinToss()).ToString());
 
                 }
                 qry.Add(String.Join("_", qryParam) + "=" + Etx.SupriseMe());
