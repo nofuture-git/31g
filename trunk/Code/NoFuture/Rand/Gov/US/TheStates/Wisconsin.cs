@@ -16,17 +16,14 @@ namespace NoFuture.Rand.Gov.US.TheStates
             dlFormats = new[] {new DriversLicense(dl, this) };
         }
 
-        public override string RandomDriversLicense
+        public override string RandomDriversLicense()
         {
-            get
-            {
-                var dlVal = base.RandomDriversLicense;
-                var chkDigit = Etc.CalcLuhnCheckDigit(dlVal);
-                var dlOut = new StringBuilder();
-                dlOut.Append(dlVal);
-                dlOut.Append(chkDigit.ToString());
-                return dlOut.ToString();
-            }
+            var dlVal = base.RandomDriversLicense();
+            var chkDigit = Etc.CalcLuhnCheckDigit(dlVal);
+            var dlOut = new StringBuilder();
+            dlOut.Append(dlVal);
+            dlOut.Append(chkDigit.ToString());
+            return dlOut.ToString();
         }
 
         public override bool ValidDriversLicense(string dlnumber)

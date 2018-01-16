@@ -21,7 +21,7 @@ namespace NoFuture.Rand.Tests.GovTests
 
             Assert.AreEqual(testState,testResult.StateAbbrv);
 
-            var testDlResult = testResult.RandomDriversLicense;
+            var testDlResult = testResult.RandomDriversLicense();
             Assert.IsNotNull(testDlResult);
             System.Diagnostics.Debug.WriteLine(testDlResult);
 
@@ -37,7 +37,7 @@ namespace NoFuture.Rand.Tests.GovTests
 
             Assert.AreEqual(testState, testResult.StateAbbrv);
 
-            testDlResult = testResult.RandomDriversLicense;
+            testDlResult = testResult.RandomDriversLicense();
             Assert.IsNotNull(testDlResult);
             System.Diagnostics.Debug.WriteLine(testDlResult);
 
@@ -53,7 +53,7 @@ namespace NoFuture.Rand.Tests.GovTests
 
             Assert.AreEqual(testState, testResult.StateAbbrv);
 
-            testDlResult = testResult.RandomDriversLicense;
+            testDlResult = testResult.RandomDriversLicense();
             Assert.IsNotNull(testDlResult);
             System.Diagnostics.Debug.WriteLine(testDlResult);
 
@@ -68,7 +68,7 @@ namespace NoFuture.Rand.Tests.GovTests
 
             Assert.AreEqual(testState, testResult.StateAbbrv);
 
-            testDlResult = testResult.RandomDriversLicense;
+            testDlResult = testResult.RandomDriversLicense();
             Assert.IsNotNull(testDlResult);
             System.Diagnostics.Debug.WriteLine(testDlResult);
 
@@ -97,7 +97,7 @@ namespace NoFuture.Rand.Tests.GovTests
             foreach (var state in theStates)
             {
                 System.Diagnostics.Debug.WriteLine(state.StateAbbrv);
-                var randOut = state.RandomDriversLicense;
+                var randOut = state.RandomDriversLicense();
                 System.Diagnostics.Debug.WriteLine("{0} '{1}'", state.StateAbbrv, randOut);
                 var randIn = state.ValidDriversLicense(randOut);
 

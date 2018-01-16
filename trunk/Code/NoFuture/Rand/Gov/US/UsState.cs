@@ -44,15 +44,13 @@ namespace NoFuture.Rand.Gov.US
         /// This is always resolved on the first entry found in the <see cref="dlFormats"/>.
         /// </summary>
         [RandomFactory]
-        public virtual string RandomDriversLicense
+        public virtual string RandomDriversLicense()
         {
-            get
-            {
-                if (dlFormats == null || dlFormats.Length <= 0)
-                    return String.Empty;
-                return dlFormats[0].GetRandom();
-            }
+            if (dlFormats == null || dlFormats.Length <= 0)
+                return String.Empty;
+            return dlFormats[0].GetRandom();
         }
+
         /// <summary>
         /// Derived from [https://insurancelink.custhelp.com/app/answers/detail/a_id/1631/~/license-formats-for-individual-states]
         /// </summary>
