@@ -6,16 +6,11 @@ using System.Reflection;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Data.Sp;
-using NoFuture.Rand.Data.Sp.Cc;
-using NoFuture.Rand.Data.Sp.Enums;
 using NoFuture.Rand.Domus.Opes.US;
-using NoFuture.Rand.Domus.Pneuma;
-using NoFuture.Rand.Geo;
 using NoFuture.Rand.Geo.US;
 using NoFuture.Rand.Gov;
 using NoFuture.Rand.Gov.US;
 using NoFuture.Rand.Gov.US.Fed;
-using NoFuture.Rand.Gov.US.Nhtsa;
 using NoFuture.Shared.Core;
 using NoFuture.Util.Core;
 using NoFuture.Util.Core.Math;
@@ -296,7 +291,7 @@ namespace NoFuture.Rand.Domus.Opes
 
         /// <summary>
         /// Gets the <see cref="IMereo"/> Income items
-        /// from <see cref="TreeData.UsDomusOpes"/>
+        /// from US Domus Opes data file
         /// </summary>
         /// <returns></returns>
         public static IMereo[] GetIncomeItemNames()
@@ -307,7 +302,7 @@ namespace NoFuture.Rand.Domus.Opes
 
         /// <summary>
         /// Gets the <see cref="IMereo"/> Deduction items
-        /// (e.g. Fed Tax, Child Support, FICA, etc.) from <see cref="TreeData.UsDomusOpes"/>
+        /// (e.g. Fed Tax, Child Support, FICA, etc.) from US Domus Opes data file
         /// </summary>
         /// <returns></returns>
         public static IMereo[] GetDeductionItemNames()
@@ -318,7 +313,7 @@ namespace NoFuture.Rand.Domus.Opes
 
         /// <summary>
         /// Gets the <see cref="IMereo"/> Expense items 
-        /// (i.e. household budget) from <see cref="TreeData.UsDomusOpes"/>
+        /// (i.e. household budget) from US Domus Opes data file
         /// </summary>
         /// <returns></returns>
         public static IMereo[] GetExpenseItemNames()
@@ -330,7 +325,7 @@ namespace NoFuture.Rand.Domus.Opes
         /// <summary>
         /// Gets the <see cref="IMereo"/> Expense items 
         /// (i.e. real and private property) 
-        /// from <see cref="TreeData.UsDomusOpes"/>
+        /// from US Domus Opes data file
         /// </summary>
         /// <returns></returns>
         public static IMereo[] GetAssetItemNames()
@@ -342,7 +337,7 @@ namespace NoFuture.Rand.Domus.Opes
         /// <summary>
         /// Gets the <see cref="IMereo"/> Employment items 
         /// (e.g. wage, salary, tips, etc.) 
-        /// from <see cref="TreeData.UsDomusOpes"/>
+        /// from US Domus Opes data file
         /// </summary>
         /// <returns></returns>
         public static IMereo[] GetEmploymentItemNames()
@@ -597,7 +592,7 @@ namespace NoFuture.Rand.Domus.Opes
 
         /// <summary>
         /// Tries to parse a single &apos;mereo&apos; item
-        /// from the <see cref="Data.TreeData.UsDomusOpes"/> xml
+        /// from the US Domus Opes data file
         /// </summary>
         /// <param name="xmlNode"></param>
         /// <param name="mereo"></param>
@@ -681,7 +676,7 @@ namespace NoFuture.Rand.Domus.Opes
         }
 
         /// <summary>
-        /// Determine if the given <see cref="American"/> is renting or has a mortgage
+        /// Determine if the given <see cref="UsCityStateZip"/> is renting or has a mortgage
         /// </summary>
         /// <param name="usCityArea"></param>
         /// <returns></returns>

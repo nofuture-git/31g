@@ -24,26 +24,93 @@ namespace NoFuture.Rand.Domus.Opes
     public class OpesOptions : ITempore
     {
         private double _derivativeSlope;
-        
+
+        /// <summary>
+        /// A judgement related expense - this is too complicated 
+        /// to be determined randomly
+        /// </summary>
         public bool IsPayingChildSupport { get; set; }
+
+        /// <summary>
+        /// A judgement related expense - this is too complicated 
+        /// to be determined randomly
+        /// </summary>
         public bool IsPayingSpousalSupport { get; set; }
+
+        /// <summary>
+        /// Used to determine if a car payment is applicable - depends on 
+        /// <see cref="NumberOfVehicles"/> being greater than zero
+        /// </summary>
         public bool IsVehiclePaidOff { get; set; }
+
+        /// <summary>
+        /// Used to determine rent versus mortgage of the person to whom this wealth belongs
+        /// </summary>
         public bool IsRenting { get; set; }
 
+        /// <summary>
+        /// The total number of vehicles of the person to whom this wealth belongs
+        /// </summary>
         public int NumberOfVehicles { get; set; }
+
+        /// <summary>
+        /// The total number of credit cards to whom this wealth belongs
+        /// </summary>
         public int NumberOfCreditCards { get; set; }
+
+        /// <summary>
+        /// The total number of household members in which this person is also member
+        /// </summary>
         public int TotalNumberOfHouseholdMembers { get; set; }
+
+        /// <summary>
+        /// This person&apos;s children&apos;s birth dates to whom this wealth belongs
+        /// </summary>
         public List<DateTime> ChildrenDobs { get; } = new List<DateTime>();
 
+        /// <summary>
+        /// The personality of the person to whom this wealth belongs
+        /// </summary>
         public IPersonality Personality { get; set; }
+
+        /// <summary>
+        /// The home city-state of the person to whom this wealth belongs
+        /// </summary>
         public CityArea GeoLocation { get; set; }
+
+        /// <summary>
+        /// The birth date of the person to whom this wealth belongs
+        /// </summary>
         public DateTime BirthDate { get; set; }
+
+        /// <summary>
+        /// The gender of the person to whom this wealth belongs
+        /// </summary>
         public Gender Gender { get; set; }
+
+        /// <summary>
+        /// The education level of the person to whom this wealth belongs
+        /// </summary>
         public OccidentalEdu? EducationLevel { get; set; }
+
+        /// <summary>
+        /// The race of the person to whom this wealth belongs
+        /// </summary>
         public NorthAmericanRace? Race { get; set; }
+
+        /// <summary>
+        /// The marital status of the person to whom this wealth belongs
+        /// </summary>
         public MaritialStatus? MaritialStatus { get; set; }
+
+        /// <summary>
+        /// The name of the person to whom this wealth belongs
+        /// </summary>
         public IVoca PersonsName { get; set; }
 
+        /// <summary>
+        /// The current age of the person to whom this wealth belongs.
+        /// </summary>
         public int CurrentAge
         {
             get
@@ -54,6 +121,9 @@ namespace NoFuture.Rand.Domus.Opes
             }
         }
 
+        /// <summary>
+        /// Gets the major region of this instances <see cref="GeoLocation"/>
+        /// </summary>
         public AmericanRegion UsCardinalRegion
         {
             get
@@ -63,6 +133,10 @@ namespace NoFuture.Rand.Domus.Opes
             }
         }
 
+        /// <summary>
+        /// Gets the current age of all children based on 
+        /// the assigned Birth Dates present in <see cref="ChildrenDobs"/>
+        /// </summary>
         public List<int> ChildrenAges
         {
             get
@@ -74,8 +148,20 @@ namespace NoFuture.Rand.Domus.Opes
             }
         }
 
+        /// <summary>
+        /// Asserts that <see cref="NumberOfCreditCards"/> is greater than zero
+        /// </summary>
         public bool HasCreditCards => NumberOfCreditCards > 0;
+
+        /// <summary>
+        /// Asserts that <see cref="NumberOfVehicles"/> is greater than zero
+        /// </summary>
         public bool HasVehicles => NumberOfVehicles > 0;
+
+        /// <summary>
+        /// Asserts this instance of options has children based on 
+        /// the assigned birth dates 
+        /// </summary>
         public bool HasChildren => ChildrenAges != null && ChildrenAges.Any();
 
         public DateTime Inception { get; set; }
@@ -136,7 +222,6 @@ namespace NoFuture.Rand.Domus.Opes
         /// possible into actual.
         /// </summary>
         public Func<int, Etx.Dice, bool> DiceRoll { get; set; } = Etx.TryBelowOrAt;
-
 
         /// <summary>
         /// Helper method to assert if any items have been added to <see cref="GivenDirectly"/>
