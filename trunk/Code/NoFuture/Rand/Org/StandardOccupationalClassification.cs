@@ -70,6 +70,7 @@ namespace NoFuture.Rand.Org
         /// </summary>
         /// <param name="filterBy">Optional predicate to limit the choices by something (e.g. Degree required).</param>
         /// <returns></returns>
+        [RandomFactory]
         public static SocDetailedOccupation RandomOccupation(Predicate<SocDetailedOccupation> filterBy = null)
         {
             UsProbTableOccupationsXml = UsOccupationDataXml ??

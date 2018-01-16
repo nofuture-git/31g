@@ -262,7 +262,7 @@ namespace NoFuture.Rand.Gov.US.Nhtsa
             return assignTo;
         }
 
-        public static Tuple<WorldManufacturerId, string> GetRandomManufacturerId()
+        internal static Tuple<WorldManufacturerId, string> GetRandomManufacturerId()
         {
             var df = new Tuple<WorldManufacturerId, string>(WorldManufacturerId.CreateRandomManufacturerId(), String.Empty);
             var xml = GetVinWmiData();
@@ -346,6 +346,7 @@ namespace NoFuture.Rand.Gov.US.Nhtsa
         /// Allows calling api to specify a max allowable year of make.
         /// </param>
         /// <returns></returns>
+        [RandomFactory]
         public static Vin GetRandomVin(bool allowForOldModel = false, int? maxYear = null)
         {
             var wmiAndName = GetRandomManufacturerId();

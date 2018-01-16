@@ -66,7 +66,7 @@ namespace NoFuture.Rand.Domus.US
             {
                 MiddleName = AmericanUtil.GetAmericanFirstName(_birthCert.DateOfBirth, _myGender);
             }
-            _ssn = new SocialSecurityNumber();
+            _ssn = SocialSecurityNumber.RandomSsn();
             if (Race <= 0)
                 Race = Etx.DiscreteRange(AmericanRacePercents.NorthAmericanRaceAvgs);
         }
@@ -872,7 +872,7 @@ namespace NoFuture.Rand.Domus.US
         {
             if (GetAgeAt(null) > 10)
                 _netUris.Add(
-                    Email.GetRandomEmail(GetAgeAt(null) >= UsState.AGE_OF_ADULT, GetName(KindsOfNames.First),
+                    Email.RandomEmail(GetAgeAt(null) >= UsState.AGE_OF_ADULT, GetName(KindsOfNames.First),
                         MiddleName, GetName(KindsOfNames.Surname)).ToUri());
         }
 

@@ -9,6 +9,7 @@ using NoFuture.Shared.Core;
 
 namespace NoFuture.Rand.Tele
 {
+    [Serializable]
     public class Net
     {
         #region fields
@@ -76,6 +77,7 @@ namespace NoFuture.Rand.Tele
         /// Gets a random Uri host.
         /// </summary>
         /// <returns></returns>
+        [RandomFactory]
         public static string RandomUriHost(bool withSubDomain = true, bool usCommonOnly = false)
         {
             var webDomains = usCommonOnly ? UsWebmailDomains : WebmailDomains;
@@ -105,6 +107,7 @@ namespace NoFuture.Rand.Tele
         /// <param name="useHttps"></param>
         /// <param name="addQry"></param>
         /// <returns></returns>
+        [RandomFactory]
         public static Uri RandomHttpUri(bool useHttps = false, bool addQry = false)
         {
 

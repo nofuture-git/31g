@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using NoFuture.Rand.Core;
+using NoFuture.Shared.Core;
 
 namespace NoFuture.Rand.Gov.US
 {
@@ -41,5 +43,27 @@ namespace NoFuture.Rand.Gov.US
             return string.Join(" ", base.ToString(), Category);
         }
 
+        /// <summary>
+        /// Gets a date of death based on the <see cref="AmericanEquations.LifeExpectancy"/>
+        /// </summary>
+        /// <param name="dob"></param>
+        /// <param name="gender"></param>
+        /// <returns></returns>
+        [RandomFactory]
+        public static DateTime GetRandomDeathDate(DateTime dob, string gender)
+        {
+            var normDist = AmericanEquations.LifeExpectancy(gender);
+            var ageAtDeath = Etx.RandomValueInNormalDist(normDist.Mean, normDist.StdDev);
+            var years = (int)Math.Floor(ageAtDeath);
+            var days = (int)Math.Round((ageAtDeath - years) * Constants.DBL_TROPICAL_YEAR);
+
+            var deathDate =
+                dob.AddYears(years)
+                    .AddDays(days)
+                    .AddHours(Etx.IntNumber(0, 12))
+                    .AddMinutes(Etx.IntNumber(0, 59))
+                    .AddSeconds(Etx.IntNumber(0, 59));
+            return deathDate;
+        }
     }
 }

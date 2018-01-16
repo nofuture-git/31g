@@ -32,6 +32,7 @@ namespace NoFuture.Rand.Tele
         /// Subscriber number is of grammer [0-9][0-9][0-9][1-9]
         /// </remarks>
         /// <returns></returns>
+        [RandomFactory]
         public static NorthAmericanPhone American()
         {
             return new NorthAmericanPhone();
@@ -43,6 +44,7 @@ namespace NoFuture.Rand.Tele
         /// </summary>
         /// <param name="state">Works with both the postal abbreviation and the full name</param>
         /// <returns></returns>
+        [RandomFactory]
         public static NorthAmericanPhone American(string state)
         {
             return
@@ -57,6 +59,7 @@ namespace NoFuture.Rand.Tele
         /// </summary>
         /// <param name="providence">Works with both the postal abbreviation and the full name</param>
         /// <returns></returns>
+        [RandomFactory]
         public static NorthAmericanPhone Canadian(string providence)
         {
             return

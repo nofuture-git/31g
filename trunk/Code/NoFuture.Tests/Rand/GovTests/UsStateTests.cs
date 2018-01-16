@@ -128,5 +128,13 @@ namespace NoFuture.Rand.Tests.GovTests
             }
             
         }
+
+        [TestMethod]
+        public void TestRandomState()
+        {
+            var testResult = UsState.RandomUsState();
+            Assert.IsNotNull(testResult);
+
+        }
     }
 }

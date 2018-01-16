@@ -10,7 +10,7 @@ namespace NoFuture.Rand.Tests.TeleTests
         [TestMethod]
         public void TestRandomEmailUri_UsCommon()
         {
-            var testResult = Tele.Email.GetRandomEmail("booty", true);
+            var testResult = Tele.Email.RandomEmail("booty", true);
             Assert.IsNotNull(testResult);
             var testResultParts = testResult.Value.Split('@');
             Assert.AreEqual(2, testResultParts.Length);
@@ -23,12 +23,12 @@ namespace NoFuture.Rand.Tests.TeleTests
         [TestMethod]
         public void TestRandomEmailUriPersonal()
         {
-            var testResult = Email.GetRandomEmail(true, "Robert", "Edward", "Lee");
+            var testResult = Email.RandomEmail(true, "Robert", "Edward", "Lee");
             Assert.IsNotNull(testResult);
             Assert.IsTrue(testResult.Value.Contains("lee"));
             System.Diagnostics.Debug.WriteLine(testResult);
 
-            testResult = Email.GetRandomEmail(false, "Robert", "Edward", "Lee");
+            testResult = Email.RandomEmail(false, "Robert", "Edward", "Lee");
             Assert.IsNotNull(testResult);
             System.Diagnostics.Debug.WriteLine(testResult);
         }
@@ -36,7 +36,7 @@ namespace NoFuture.Rand.Tests.TeleTests
         [TestMethod]
         public void TestRandomEmailUri()
         {
-            var testResult = Email.GetRandomEmail(null);
+            var testResult = Email.RandomEmail(null);
             Assert.IsNotNull(testResult);
             Assert.IsFalse(string.IsNullOrWhiteSpace(testResult.Value));
             System.Diagnostics.Debug.WriteLine(testResult.ToUri());
@@ -46,7 +46,7 @@ namespace NoFuture.Rand.Tests.TeleTests
         [TestMethod]
         public void TestGetChildishRandomEmail()
         {
-            var testResult = Email.GetChildishEmailAddress();
+            var testResult = Email.RandomChildishEmailAddress();
             Assert.IsNotNull(testResult);
             Assert.IsFalse(string.IsNullOrWhiteSpace(testResult.Value));
             System.Diagnostics.Debug.WriteLine(testResult.ToString());

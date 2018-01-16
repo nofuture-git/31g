@@ -6,7 +6,6 @@ namespace NoFuture.Rand.Tests.GovTests
     [TestClass]
     public class FedTests
     {
-
         [TestMethod]
         public void TestRoutingTransitNumber()
         {

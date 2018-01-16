@@ -1,7 +1,9 @@
-﻿using NoFuture.Rand.Core;
+﻿using System;
+using NoFuture.Rand.Core;
 
 namespace NoFuture.Rand.Gov.US.TheStates
 {
+    [Serializable]
     public class Washington : UsState
     {
         public Washington() : base("WA")

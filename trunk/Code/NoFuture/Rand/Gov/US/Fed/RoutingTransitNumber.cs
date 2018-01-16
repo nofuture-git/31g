@@ -148,6 +148,7 @@ namespace NoFuture.Rand.Gov.US.Fed
         /// [https://en.wikipedia.org/wiki/Federal_Reserve_Bank#Assets]
         /// </summary>
         /// <returns></returns>
+        [RandomFactory]
         public static RoutingTransitNumber RandomRoutingNumber()
         {
             var f = new RoutingTransitNumber {FedDistrict = NEY_YORK};

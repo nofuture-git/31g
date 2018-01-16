@@ -25,10 +25,11 @@ namespace NoFuture.Rand.Tele
         /// false uses <see cref="Net.WebmailDomains"/>
         /// </param>
         /// <returns></returns>
-        public static Email GetRandomEmail(bool usCommonOnly, params string[] names)
+        [RandomFactory]
+        public static Email RandomEmail(bool usCommonOnly, params string[] names)
         {
             if (names == null || !names.Any())
-                return GetRandomEmail(null);
+                return RandomEmail(null);
 
             var fname = names.First().ToLower();
             var lname = names.Last().ToLower();
@@ -42,14 +43,20 @@ namespace NoFuture.Rand.Tele
             var unParts = new List<string> { Etx.CoinToss ? fname : fname.First().ToString(), mi, lname };
             var totalLength = unParts.Sum(x => x.Length);
             if (totalLength <= 7)
-                return GetRandomEmail(String.Join(Etx.CoinToss ? "" : "_", String.Join(Etx.CoinToss ? "." : "_", unParts),
+                return RandomEmail(String.Join(Etx.CoinToss ? "" : "_", String.Join(Etx.CoinToss ? "." : "_", unParts),
                     Etx.IntNumber(100, 9999)), usCommonOnly);
-            return GetRandomEmail(totalLength > 20
+            return RandomEmail(totalLength > 20
                 ? String.Join(Etx.CoinToss ? "." : "_", unParts.Take(2))
                 : String.Join(Etx.CoinToss ? "." : "_", unParts), usCommonOnly);
         }
 
-        public static Email GetChildishEmailAddress(bool usCommonOnly = true)
+        /// <summary>
+        /// Gets a randome email address that appears to be something a 12 year old would pick for a username
+        /// </summary>
+        /// <param name="usCommonOnly"></param>
+        /// <returns></returns>
+        [RandomFactory]
+        public static Email RandomChildishEmailAddress(bool usCommonOnly = true)
         {
             var shortWords = Etx.EnglishWords.Where(x => x.Item1.Length <= 3).Select(x => x.Item1).ToArray();
             var shortWordList = new List<string>();
@@ -59,14 +66,15 @@ namespace NoFuture.Rand.Tele
                 shortWordList.Add(withUcase);
             }
             shortWordList.Add((Etx.CoinToss ? "_" : "") + Etx.IntNumber(100, 9999));
-            return GetRandomEmail(String.Join("", shortWordList), usCommonOnly);
+            return RandomEmail(String.Join("", shortWordList), usCommonOnly);
         }
 
         /// <summary>
         /// Creates a random email address 
         /// </summary>
         /// <returns></returns>
-        public static Email GetRandomEmail(string username, bool usCommonOnly = false)
+        [RandomFactory]
+        public static Email RandomEmail(string username, bool usCommonOnly = false)
         {
             var host = Net.RandomUriHost(false, usCommonOnly);
             if (!String.IsNullOrWhiteSpace(username))

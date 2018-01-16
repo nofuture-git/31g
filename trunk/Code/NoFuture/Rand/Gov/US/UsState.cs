@@ -4,11 +4,13 @@ using System.ComponentModel;
 using System.Linq;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Gov.US.TheStates;
-using NoFuture.Shared.Core;
 using NoFuture.Util.Core;
 
 namespace NoFuture.Rand.Gov.US
 {
+    /// <summary>
+    /// A base type on which all the various US States extend
+    /// </summary>
     [Serializable]
     public abstract class UsState
     {
@@ -41,6 +43,7 @@ namespace NoFuture.Rand.Gov.US
         /// <summary>
         /// This is always resolved on the first entry found in the <see cref="dlFormats"/>.
         /// </summary>
+        [RandomFactory]
         public virtual string RandomDriversLicense
         {
             get
@@ -58,32 +61,6 @@ namespace NoFuture.Rand.Gov.US
         #endregion
 
         #region methods
-
-
-
-
-        /// <summary>
-        /// Gets a date of death based on the <see cref="Equations.LifeExpectancy"/>
-        /// </summary>
-        /// <param name="dob"></param>
-        /// <param name="gender"></param>
-        /// <returns></returns>
-        public static DateTime GetDeathDate(DateTime dob, string gender)
-        {
-            var normDist = AmericanEquations.LifeExpectancy(gender);
-            var ageAtDeath = Etx.RandomValueInNormalDist(normDist.Mean, normDist.StdDev);
-            var years = (int)Math.Floor(ageAtDeath);
-            var days = (int)Math.Round((ageAtDeath - years) * Constants.DBL_TROPICAL_YEAR);
-
-            var deathDate =
-                dob.AddYears(years)
-                    .AddDays(days)
-                    .AddHours(Etx.IntNumber(0, 12))
-                    .AddMinutes(Etx.IntNumber(0, 59))
-                    .AddSeconds(Etx.IntNumber(0, 59));
-            return deathDate;
-        }
-
         public override string ToString()
         {
             return String.Join(" ", Etc.DistillToWholeWords(GetType().Name));
@@ -119,6 +96,21 @@ namespace NoFuture.Rand.Gov.US
         #region static factories
         internal static readonly List<UsState> _theStates = new List<UsState>();//singleton
 
+        /// <summary>
+        /// Picks one of the US States at random
+        /// </summary>
+        /// <returns></returns>
+        [RandomFactory]
+        public static UsState RandomUsState()
+        {
+            var theStates = TheStates;
+            var pickone = Etx.IntNumber(0, theStates.Length - 1);
+            return theStates[pickone];
+        }
+
+        /// <summary>
+        /// An array of all the US States.
+        /// </summary>
         public static UsState[] TheStates
         {
             get
@@ -185,6 +177,7 @@ namespace NoFuture.Rand.Gov.US
             _theStates.Add(new Colorado());
             _theStates.Add(new Connecticut());
             _theStates.Add(new Delaware());
+            _theStates.Add(new DistrictOfColumbia());
             _theStates.Add(new Florida());
             _theStates.Add(new Georgia());
             _theStates.Add(new Hawaii());
@@ -224,7 +217,6 @@ namespace NoFuture.Rand.Gov.US
             _theStates.Add(new Vermont());
             _theStates.Add(new Virginia());
             _theStates.Add(new Washington());
-            _theStates.Add(new DistrictOfColumbia());
             _theStates.Add(new WestVirginia());
             _theStates.Add(new Wisconsin());
             _theStates.Add(new Wyoming());

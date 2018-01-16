@@ -5,6 +5,7 @@ using NoFuture.Util.Core;
 
 namespace NoFuture.Rand.Gov.US.TheStates
 {
+    [Serializable]
     public class NewYork : UsState
     {
         public NewYork() : base("NY")

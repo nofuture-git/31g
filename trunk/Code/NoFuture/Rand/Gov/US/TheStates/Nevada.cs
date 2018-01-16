@@ -1,5 +1,8 @@
-﻿namespace NoFuture.Rand.Gov.US.TheStates
+﻿using System;
+
+namespace NoFuture.Rand.Gov.US.TheStates
 {
+    [Serializable]
     public class Nevada : UsState
     {
         public Nevada() : base("NV")

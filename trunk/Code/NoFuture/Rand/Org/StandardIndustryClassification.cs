@@ -43,6 +43,7 @@ namespace NoFuture.Rand.Org
         /// which has sec results.
         /// </summary>
         /// <returns></returns>
+        [RandomFactory]
         public static StandardIndustryClassification RandomSic()
         {
             var secSics = AllSicWithSecResults;

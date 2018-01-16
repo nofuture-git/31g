@@ -3,6 +3,7 @@ using NoFuture.Rand.Core;
 
 namespace NoFuture.Rand.Gov.US.TheStates
 {
+    [Serializable]
     public class Kansas : UsState
     {
         public Kansas() : base("KS")

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using NoFuture.Rand.Core;
 using NoFuture.Shared.Core;
 
@@ -11,14 +12,6 @@ namespace NoFuture.Rand.Gov.US
 
         public SocialSecurityNumber()
         {
-            var areaNumber = Etx.MyRand.Next(1, 899);
-            if (areaNumber == 666)
-                areaNumber += 1;
-
-            AreaNumber = string.Format("{0:000}", areaNumber);
-            GroupNumber = string.Format("{0:00}", Etx.MyRand.Next(1, 99));
-            SerialNumber = string.Format("{0:0000}", Etx.MyRand.Next(1, 9999));
-            _value = string.Format("{0}-{1}-{2}", AreaNumber, GroupNumber, SerialNumber);
             var regexCatalog = new RegexCatalog();
             _regexPattern = regexCatalog.SSN;
 
@@ -52,13 +45,19 @@ namespace NoFuture.Rand.Gov.US
                 if(!Validate(value))
                     throw new RahRowRagee($"The value {value} does not match " +
                                           "the expect pattern of this id.");
-                var parts = value.Split('-');
-                AreaNumber = parts[0];
-                GroupNumber = parts[1];
-                SerialNumber = parts[2];
+                var v = value;
+                var nums = v.ToCharArray().Where(char.IsDigit);
+                AreaNumber = new string(nums.Take(3).ToArray());
+                GroupNumber = new string(nums.Skip(3).Take(2).ToArray());
+                SerialNumber = new string(nums.Skip(5).Take(4).ToArray());
                 _value = string.Join("-", AreaNumber, GroupNumber, SerialNumber);
             }
         }
+
+        /// <summary>
+        /// Gets just the numbers with no dash separators
+        /// </summary>
+        public string UnformattedValue => _value.Replace("-", "");
 
         /// <summary>
         /// Expected to match the classic format.
@@ -71,5 +70,23 @@ namespace NoFuture.Rand.Gov.US
                    System.Text.RegularExpressions.Regex.IsMatch(value, _regexPattern);
         }
 
+        [RandomFactory]
+        public static SocialSecurityNumber RandomSsn()
+        {
+            var areaNumber = Etx.MyRand.Next(1, 899);
+            if (areaNumber == 666)
+                areaNumber += 1;
+
+            var ssn = new SocialSecurityNumber
+            {
+                AreaNumber = $"{areaNumber:000}",
+                GroupNumber = $"{Etx.MyRand.Next(1, 99):00}",
+                SerialNumber = $"{Etx.MyRand.Next(1, 9999):0000}"
+            };
+
+            ssn.Value = $"{ssn.AreaNumber}-{ssn.GroupNumber}-{ssn.SerialNumber}";
+
+            return ssn;
+        }
     }
 }

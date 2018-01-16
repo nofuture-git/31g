@@ -84,17 +84,17 @@ namespace NoFuture.Rand.Core
         /// <returns></returns>
         public static int IntNumber(int from, int to)
         {
-            if (@from == to)
-                return @from;
-            if (@from <= to)
-                return MyRand.Next(@from, to + 1);
+            if (from == to)
+                return from;
+            if (from <= to)
+                return MyRand.Next(from, to + 1);
 
             //passed in backwards is ok
-            var t = @from;
-            @from = to;
+            var t = from;
+            from = to;
             to = t;
 
-            return MyRand.Next(@from, to + 1);
+            return MyRand.Next(from, to + 1);
         }
 
         /// <summary>
