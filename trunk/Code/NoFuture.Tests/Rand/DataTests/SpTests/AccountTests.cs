@@ -15,7 +15,7 @@ namespace NoFuture.Rand.Tests.DataTests.SpTests
         [TestMethod]
         public void TestGetRandomBankAccount()
         {
-            var p = new American(Etx.GetWorkingAdultBirthDate(), Gender.Female);
+            var p = new American(Etx.RandomAdultBirthDate(), Gender.Female);
             var testResult = DepositAccount.GetRandomCheckingAcct(p);
 
             Assert.IsNotNull(testResult);
@@ -37,7 +37,7 @@ namespace NoFuture.Rand.Tests.DataTests.SpTests
         {
             var testSubject = new CheckingAccount(null, DateTime.Today.AddDays(-65),
                 new Tuple<ICreditCard, string>(
-                    CreditCard.GetRandomCreditCard(new American(Etx.GetWorkingAdultBirthDate(), Gender.Female)),
+                    CreditCard.GetRandomCreditCard(new American(Etx.RandomAdultBirthDate(), Gender.Female)),
                     "8745"));
 
             Assert.IsTrue(testSubject.IsPin("8745"));

@@ -102,7 +102,7 @@ namespace NoFuture.Rand.Gov.US
         public static UsState RandomUsState()
         {
             var theStates = TheStates;
-            var pickone = Etx.IntNumber(0, theStates.Length - 1);
+            var pickone = Etx.RandomInteger(0, theStates.Length - 1);
             return theStates[pickone];
         }
 

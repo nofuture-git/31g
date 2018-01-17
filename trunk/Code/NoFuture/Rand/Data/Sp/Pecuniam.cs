@@ -71,13 +71,13 @@ namespace NoFuture.Rand.Data.Sp
         /// <returns></returns>
         public static Pecuniam GetRandPecuniam(int min = 3, int max = 999, int wholeNumbersOf = 0)
         {
-            var num = (double)Etx.IntNumber(min, max);
+            var num = (double)Etx.RandomInteger(min, max);
 
             if (wholeNumbersOf >= 10)
                 num = num - num % wholeNumbersOf;
             else
             {
-                num = Etx.RationalNumber(min, max);
+                num = Etx.RandomDouble(min, max);
             }
 
             return new Pecuniam((decimal)Math.Round(num, 2));

@@ -197,9 +197,10 @@ namespace NoFuture.Rand.Domus
         /// Returns a new <see cref="US.American"/> with all values selected at random.
         /// </summary>
         /// <returns></returns>
-        public static American American()
+        [RandomFactory]
+        public static American RandomAmerican()
         {
-            return new American(Etx.GetWorkingAdultBirthDate(), Etx.CoinToss() ? Gender.Female : Gender.Male,
+            return new American(Etx.RandomAdultBirthDate(), Etx.RandomCoinToss() ? Gender.Female : Gender.Male,
                 true);
         }
 
@@ -208,9 +209,10 @@ namespace NoFuture.Rand.Domus
         /// The City, Providence and Postal Code are limited to the major Canadian cities.
         /// </summary>
         /// <returns></returns>
-        public static American Canadian()
+        [RandomFactory]
+        public static American RandomCanadian()
         {
-            var canadian = American();
+            var canadian = RandomAmerican();
             var cpp = CityArea.RandomCanadianCity();
             var str = canadian.GetAddressAt(null)?.HomeStreetPo;
             canadian.AddAddress(new PostalAddress { HomeCityArea = cpp, HomeStreetPo = str });

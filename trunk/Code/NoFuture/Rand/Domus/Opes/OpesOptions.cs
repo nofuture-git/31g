@@ -221,7 +221,7 @@ namespace NoFuture.Rand.Domus.Opes
         /// Related to the names in <see cref="PossibleZeroOuts"/> - turns 
         /// possible into actual.
         /// </summary>
-        public Func<int, Etx.Dice, bool> DiceRoll { get; set; } = Etx.TryBelowOrAt;
+        public Func<int, Etx.Dice, bool> DiceRoll { get; set; } = Etx.RandomRollBelowOrAt;
 
         /// <summary>
         /// Helper method to assert if any items have been added to <see cref="GivenDirectly"/>

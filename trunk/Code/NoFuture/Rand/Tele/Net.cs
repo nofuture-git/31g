@@ -85,18 +85,18 @@ namespace NoFuture.Rand.Tele
 
             if (withSubDomain)
             {
-                var subdomain = Etx.DiscreteRange(Subdomains);
+                var subdomain = Etx.RandomPickOne(Subdomains);
                 host.Append(subdomain + ".");
             }
 
             if (webDomains != null)
             {
-                host.Append(webDomains[Etx.IntNumber(0, webDomains.Length - 1)]);
+                host.Append(webDomains[Etx.RandomInteger(0, webDomains.Length - 1)]);
             }
             else
             {
-                host.Append(Etx.Word());
-                host.Append(Etx.DiscreteRange(new[] { ".com", ".net", ".edu", ".org" }));
+                host.Append(Etx.RandomWord());
+                host.Append(Etx.RandomPickOne(new[] { ".com", ".net", ".edu", ".org" }));
             }
             return host.ToString();
         }
@@ -112,21 +112,21 @@ namespace NoFuture.Rand.Tele
         {
 
             var pathSeg = new List<string>();
-            var pathSegLen = Etx.IntNumber(0, 5);
+            var pathSegLen = Etx.RandomInteger(0, 5);
             for (var i = 0; i < pathSegLen; i++)
             {
-                Etx.DiscreteRange(new Dictionary<string, double>()
+                Etx.RandomPickOne(new Dictionary<string, double>()
                 {
-                    {Etx.Word(), 72},
-                    {Etx.Consonant(false).ToString(), 11},
-                    {Etx.IntNumber(1, 9999).ToString(), 17}
+                    {Etx.RandomWord(), 72},
+                    {Etx.RandomConsonant(false).ToString(), 11},
+                    {Etx.RandomInteger(1, 9999).ToString(), 17}
                 });
-                pathSeg.Add(Etx.Word());
+                pathSeg.Add(Etx.RandomWord());
             }
 
-            if (Etx.CoinToss())
+            if (Etx.RandomCoinToss())
             {
-                pathSeg.Add(Etx.Word() + Etx.DiscreteRange(new[] { ".php", ".aspx", ".html", ".txt", ".asp" }));
+                pathSeg.Add(Etx.RandomWord() + Etx.RandomPickOne(new[] { ".php", ".aspx", ".html", ".txt", ".asp" }));
             }
 
             var uri = new UriBuilder
@@ -140,27 +140,27 @@ namespace NoFuture.Rand.Tele
                 return uri.Uri;
 
             var qry = new List<string>();
-            var qryParms = Etx.IntNumber(1, 5);
+            var qryParms = Etx.RandomInteger(1, 5);
             for (var i = 0; i < qryParms; i++)
             {
-                var len = Etx.IntNumber(1, 4);
+                var len = Etx.RandomInteger(1, 4);
                 var qryParam = new List<string>();
                 for (var j = 0; j < len; j++)
                 {
-                    if (Etx.CoinToss())
+                    if (Etx.RandomCoinToss())
                     {
-                        qryParam.Add(Etx.Word());
+                        qryParam.Add(Etx.RandomWord());
                         continue;
                     }
-                    if (Etx.CoinToss())
+                    if (Etx.RandomCoinToss())
                     {
-                        qryParam.Add(Etx.IntNumber(0, 99999).ToString());
+                        qryParam.Add(Etx.RandomInteger(0, 99999).ToString());
                         continue;
                     }
-                    qryParam.Add(Etx.Consonant(Etx.CoinToss()).ToString());
+                    qryParam.Add(Etx.RandomConsonant(Etx.RandomCoinToss()).ToString());
 
                 }
-                qry.Add(String.Join("_", qryParam) + "=" + Etx.SupriseMe());
+                qry.Add(String.Join("_", qryParam) + "=" + Etx.RandomSuprise());
             }
 
             uri.Query = String.Join("&", qry);

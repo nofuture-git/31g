@@ -131,7 +131,7 @@ namespace NoFuture.Rand.Edu.US
                 var stateUnivs = GetUniversitiesByState(state);
                 if (stateUnivs.Any())
                 {
-                    pick = Etx.IntNumber(0, stateUnivs.Length - 1);
+                    pick = Etx.RandomInteger(0, stateUnivs.Length - 1);
                     univ = stateUnivs[pick];
                 }
             }
@@ -144,10 +144,10 @@ namespace NoFuture.Rand.Edu.US
                 var allUnivs = UnivXml?.SelectNodes("//state");
                 if (allUnivs == null)
                     return null;
-                pick = Etx.IntNumber(0, allUnivs.Count - 1);
+                pick = Etx.RandomInteger(0, allUnivs.Count - 1);
                 if (!(allUnivs[pick] is XmlElement randUnivXml) || !randUnivXml.HasChildNodes)
                     return null;
-                pick = Etx.IntNumber(0, randUnivXml.ChildNodes.Count - 1);
+                pick = Etx.RandomInteger(0, randUnivXml.ChildNodes.Count - 1);
                 if (!(randUnivXml.ChildNodes[pick] is XmlElement univXmlNode))
                     return null;
                 if (TryParseXml(univXmlNode, out var univOut))

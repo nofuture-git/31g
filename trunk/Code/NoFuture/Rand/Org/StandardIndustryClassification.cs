@@ -42,12 +42,19 @@ namespace NoFuture.Rand.Org
         /// Selects one <see cref="StandardIndustryClassification"/> at random
         /// which has sec results.
         /// </summary>
+        /// <param name="filterBy">
+        /// Optional param to filter by
+        /// </param>
         /// <returns></returns>
         [RandomFactory]
-        public static StandardIndustryClassification RandomSic()
+        public static StandardIndustryClassification RandomSic(Predicate<StandardIndustryClassification> filterBy = null)
         {
             var secSics = AllSicWithSecResults;
-            return secSics[Etx.IntNumber(0, secSics.Length - 1)];
+            if(filterBy == null)
+                return secSics[Etx.RandomInteger(0, secSics.Length - 1)];
+
+            secSics = secSics.Where(s => filterBy(s)).ToArray();
+            return !secSics.Any() ? null : secSics[Etx.RandomInteger(0, secSics.Length - 1)];
         }
 
         /// <summary>

@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Xml;
+using NoFuture.Rand.Core;
 
 namespace NoFuture.Rand.Org
 {
+    /// <inheritdoc />
     /// <summary>
     /// The NAICS is a model of economic sector groupings used by the US Census Bureau 
     /// which replaces the older Standard Industry Classification (SIC).  However,
@@ -31,7 +34,6 @@ namespace NoFuture.Rand.Org
         #endregion
 
         #region methods
-
 
         /// <summary>
         /// Helper method that parses all the data within the 'US_EconSectors.xml' into the 

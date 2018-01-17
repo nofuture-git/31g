@@ -158,7 +158,7 @@ namespace NoFuture.Rand.Edu.US
         {
             if (stateAbbrev == null || !stateAbbrev.Any())
                 return "NY";
-            var pickone = Etx.IntNumber(0, stateAbbrev.Length - 1);
+            var pickone = Etx.RandomInteger(0, stateAbbrev.Length - 1);
             return stateAbbrev[pickone];
         }
     }

@@ -26,7 +26,7 @@ namespace NoFuture.Rand.Gov.US
 
             return new DriversLicense(format, IssuingState)
             {
-                IssuedDate = issuedDate ?? Etx.Date(-5, DateTime.Today)
+                IssuedDate = issuedDate ?? Etx.RandomDate(-5, DateTime.Today)
 
             };
         }

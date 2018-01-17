@@ -22,5 +22,38 @@ namespace NoFuture.Rand.Tests.OrgTests
                 }
             }
         }
+
+        [TestMethod]
+        public void TestRandomMarket()
+        {
+            var testResult = NaicsMarket.RandomMarket();
+            Assert.IsNotNull(testResult);
+            System.Diagnostics.Debug.WriteLine(testResult.Description);
+        }
+
+        [TestMethod]
+        public void TestRandomSuperSector()
+        {
+            var testResult = NaicsSuperSector.RandomSuperSector();
+            Assert.IsNotNull(testResult);
+            System.Diagnostics.Debug.WriteLine(testResult.Description);
+        }
+
+        [TestMethod]
+        public void TestRandomPrimarySector()
+        {
+            var testResult = NaicsPrimarySector.RandomPrimarySector();
+            Assert.IsNotNull(testResult);
+            System.Diagnostics.Debug.WriteLine(testResult.Description);
+        }
+
+        [TestMethod]
+        public void TestRandomSector()
+        {
+            var testResult = NaicsSector.RandomSector();
+            Assert.IsNotNull(testResult);
+            System.Diagnostics.Debug.WriteLine(testResult.Description);
+        }
+
     }
 }

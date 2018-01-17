@@ -19,8 +19,8 @@ namespace NoFuture.Rand.Data.Sp.Cc
 
             if (expiryDate == null)
             {
-                ExpDate = Etx.Date(Etx.IntNumber(4, 6), null);
-                ExpDate = new DateTime(ExpDate.Year, ExpDate.Month, Etx.CoinToss() ? 1 : 15);
+                ExpDate = Etx.RandomDate(Etx.RandomInteger(4, 6), null);
+                ExpDate = new DateTime(ExpDate.Year, ExpDate.Month, Etx.RandomCoinToss() ? 1 : 15);
             }
             else
             {
@@ -33,7 +33,7 @@ namespace NoFuture.Rand.Data.Sp.Cc
                 CardHolderName = String.Join(" ", fname, lname);
             }
             
-            Cvv = $"{Etx.IntNumber(7, 999),3:D3}";
+            Cvv = $"{Etx.RandomInteger(7, 999),3:D3}";
             Number = GetRandomCardNumber();
         }
         #endregion
@@ -60,7 +60,7 @@ namespace NoFuture.Rand.Data.Sp.Cc
             {
                 prefixRChars.Add(new RcharLimited(i, prefixVal.ToString().ToCharArray()[i]));
             }
-            prefixRChars.AddRange(Etx.GetRandomRChars(true, CardNumLen - 1 - prefixValLen, prefixValLen));
+            prefixRChars.AddRange(Etx.RandomRChars(true, CardNumLen - 1 - prefixValLen, prefixValLen));
             return new CreditCardNumber(prefixRChars.ToArray());
         }
 
@@ -84,8 +84,8 @@ namespace NoFuture.Rand.Data.Sp.Cc
         /// <returns></returns>
         public static ICreditCard GetRandomCreditCard(IVoca cardholder, DateTime? opennedDate = null)
         {
-            var fk = Etx.IntNumber(0, 3);
-            var dt = opennedDate ?? Etx.Date(-3, null);
+            var fk = Etx.RandomInteger(0, 3);
+            var dt = opennedDate ?? Etx.RandomDate(-3, null);
 
             switch (fk)
             {

@@ -83,14 +83,14 @@ namespace NoFuture.Rand.Org
                 _socs.AddRange(AllGroups.SelectMany(g =>
                     g.Divisions.SelectMany(two => two.Divisions.SelectMany(three => three.Divisions))));
 
-            var pickOne = Etx.DiscreteRange(_soc2Prob) ?? DF_OCCUPATION;
+            var pickOne = Etx.RandomPickOne(_soc2Prob) ?? DF_OCCUPATION;
             if(filterBy == null)
                 return _socs.FirstOrDefault(s => s.Value == pickOne);
 
             var occ = _socs.FirstOrDefault(s => s.Value == pickOne);
             while (!filterBy(occ))
             {
-                pickOne = Etx.DiscreteRange(_soc2Prob) ?? DF_OCCUPATION;
+                pickOne = Etx.RandomPickOne(_soc2Prob) ?? DF_OCCUPATION;
                 occ = _socs.FirstOrDefault(s => s.Value == pickOne);
             }
             return occ;

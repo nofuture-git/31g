@@ -46,12 +46,12 @@ namespace NoFuture.Rand.Domus.US
             if (p?.BirthCert == null)
                 return null;
 
-            var deathDate = AmericanDeathCert.GetRandomDeathDate(p.BirthCert.DateOfBirth, p.MyGender.ToString());
+            var deathDate = AmericanDeathCert.RandomDeathDate(p.BirthCert.DateOfBirth, p.MyGender.ToString());
 
             if (nullOnFutureDate && deathDate > DateTime.Now)
                 return null;
 
-            var manner = Etx.DiscreteRange(AmericanData.MannerOfDeathAvgs);
+            var manner = Etx.RandomPickOne(AmericanData.MannerOfDeathAvgs);
             return new AmericanDeathCert(manner, String.Join(" ", p.FirstName, p.LastName)) { DateOfDeath = deathDate };
         }
 
@@ -161,7 +161,7 @@ namespace NoFuture.Rand.Domus.US
                     break;
             }
 
-            return Etx.Date((int)Math.Round(meanAge), motherDob);
+            return Etx.RandomDate((int)Math.Round(meanAge), motherDob);
 
         }
 
@@ -175,7 +175,7 @@ namespace NoFuture.Rand.Domus.US
         {
             if (Etx.MyRand.NextDouble() <= AmericanData.PERCENT_UNMARRIED_WHOLE_LIFE)
                 return MaritialStatus.Single;
-            dob = dob ?? Etx.GetWorkingAdultBirthDate();
+            dob = dob ?? Etx.RandomAdultBirthDate();
 
             dob = AmericanEquations.ProtectAgainstDistantTimes(dob.Value);
 
@@ -201,7 +201,7 @@ namespace NoFuture.Rand.Domus.US
 
             //have 'separated' (whatever it means) as low probablity
             if (df && currentAge < avgAgeMarriage + AmericanData.AVG_LENGTH_OF_MARRIAGE + AmericanData.YEARS_BEFORE_NEXT_MARRIAGE)
-                return Etx.TryBelowOrAt(64, Etx.Dice.OneThousand) ? MaritialStatus.Separated : MaritialStatus.Divorced;
+                return Etx.RandomRollBelowOrAt(64, Etx.Dice.OneThousand) ? MaritialStatus.Separated : MaritialStatus.Divorced;
 
             //have prob of never remarry
             if (df && gender == Gender.Male)
@@ -237,10 +237,10 @@ namespace NoFuture.Rand.Domus.US
                     : AmericanEquations.FemaleAge2FirstMarriage;
             }
 
-            childDob = childDob ?? Etx.GetWorkingAdultBirthDate();
+            childDob = childDob ?? Etx.RandomAdultBirthDate();
 
             //move to a date 1 - 6 years prior the Person's dob
-            var dtPm = childDob.Value.AddYears(-1 * Etx.IntNumber(1, 6)).AddDays(Etx.IntNumber(1, 360));
+            var dtPm = childDob.Value.AddYears(-1 * Etx.RandomInteger(1, 6)).AddDays(Etx.RandomInteger(1, 360));
 
             dtPm = AmericanEquations.ProtectAgainstDistantTimes(dtPm);
 
@@ -270,13 +270,13 @@ namespace NoFuture.Rand.Domus.US
             if (gender == Gender.Unknown)
                 return null;
 
-            myDob = myDob ?? Etx.GetWorkingAdultBirthDate();
+            myDob = myDob ?? Etx.RandomAdultBirthDate();
 
-            var ageDiff = Etx.IntNumber(0, maxAgeDiff);
+            var ageDiff = Etx.RandomInteger(0, maxAgeDiff);
             ageDiff = gender == Gender.Female ? ageDiff * -1 : ageDiff;
 
             //randomize dob of spouse
-            var spouseDob = myDob.Value.AddYears(ageDiff).AddDays(Etx.IntNumber(1, 360) * Etx.PlusOrMinusOne());
+            var spouseDob = myDob.Value.AddYears(ageDiff).AddDays(Etx.RandomInteger(1, 360) * Etx.RandomPlusOrMinus());
 
             //define spouse
             return new American(spouseDob, gender == Gender.Female ? Gender.Male : Gender.Female);
@@ -295,10 +295,10 @@ namespace NoFuture.Rand.Domus.US
             var vt = DateTime.Now;
             if (atDateTime != null)
                 vt = atDateTime.Value;
-            dob = dob ?? Etx.GetWorkingAdultBirthDate();
+            dob = dob ?? Etx.RandomAdultBirthDate();
             dob = AmericanEquations.ProtectAgainstDistantTimes(dob.Value);
             var age = Etc.CalcAge(dob.Value, vt);
-            var randV = Etx.IntNumber(1, 100);
+            var randV = Etx.RandomInteger(1, 100);
 
             var meanAge = Math.Round(AmericanEquations.FemaleAge2ForthChild.SolveForY(vt.Year));
 
@@ -334,7 +334,7 @@ namespace NoFuture.Rand.Domus.US
         public static double SolveForProbabilityChildless(DateTime? dob,
             OccidentalEdu educationLevel = OccidentalEdu.HighSchool | OccidentalEdu.Grad)
         {
-            dob = dob ?? Etx.GetWorkingAdultBirthDate();
+            dob = dob ?? Etx.RandomAdultBirthDate();
             var eduAdditive = 0.0;
             if (educationLevel == (OccidentalEdu.Bachelor | OccidentalEdu.Grad))
                 eduAdditive = 0.09;
@@ -361,7 +361,7 @@ namespace NoFuture.Rand.Domus.US
         /// <returns></returns>
         public static DateTime? SolveForMarriageDate(DateTime? dob, Gender myGender)
         {
-            dob = dob ?? Etx.GetWorkingAdultBirthDate();
+            dob = dob ?? Etx.RandomAdultBirthDate();
             dob = AmericanEquations.ProtectAgainstDistantTimes(dob.Value);
             var dt = DateTime.Now;
             var avgAgeMarriage = myGender == Gender.Female
@@ -372,7 +372,7 @@ namespace NoFuture.Rand.Domus.US
             //all other MaritialStatus imply at least one marriage in past
             var yearsMarried = currentAge - Convert.ToInt32(Math.Round(avgAgeMarriage));
 
-            return Etx.Date(-1*yearsMarried, dt);
+            return Etx.RandomDate(-1*yearsMarried, dt);
         }
 
         /// <summary>
@@ -397,7 +397,7 @@ namespace NoFuture.Rand.Domus.US
                 String.IsNullOrWhiteSpace(addrMatchTo.HomeCityArea?.GetPostalCodePrefix()))
                 return;
 
-            var mobilePhone = Phone.American(addrMatchTo.HomeCityArea.GetPostalCodePrefix());
+            var mobilePhone = Phone.RandomAmericanPhone(addrMatchTo.HomeCityArea.GetPostalCodePrefix());
             thisPerson._phoneNumbers.Add(new Tuple<KindsOfLabels, NorthAmericanPhone>(KindsOfLabels.Mobile,
                 mobilePhone));
         }

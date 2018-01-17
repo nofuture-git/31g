@@ -42,7 +42,7 @@ namespace NoFuture.Rand.Gov.US.Nhtsa
             //LA-L0 China
             //1A-10, 4A-40, 5A-50 US
             //3A-37 Mexico
-            var pick = Etx.IntNumber(1, 12);
+            var pick = Etx.RandomInteger(1, 12);
 
             switch (pick)
             {
@@ -76,7 +76,7 @@ namespace NoFuture.Rand.Gov.US.Nhtsa
 
             wmiOut.RegionMaker = Vin.GetRandomVinChar();
 
-            pick = Etx.IntNumber(1, 3);
+            pick = Etx.RandomInteger(1, 3);
             switch (pick)
             {
                 case 1:

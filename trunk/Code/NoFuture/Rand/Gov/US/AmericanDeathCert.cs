@@ -50,7 +50,7 @@ namespace NoFuture.Rand.Gov.US
         /// <param name="gender"></param>
         /// <returns></returns>
         [RandomFactory]
-        public static DateTime GetRandomDeathDate(DateTime dob, string gender)
+        public static DateTime RandomDeathDate(DateTime dob, string gender)
         {
             var normDist = AmericanEquations.LifeExpectancy(gender);
             var ageAtDeath = Etx.RandomValueInNormalDist(normDist.Mean, normDist.StdDev);
@@ -60,9 +60,9 @@ namespace NoFuture.Rand.Gov.US
             var deathDate =
                 dob.AddYears(years)
                     .AddDays(days)
-                    .AddHours(Etx.IntNumber(0, 12))
-                    .AddMinutes(Etx.IntNumber(0, 59))
-                    .AddSeconds(Etx.IntNumber(0, 59));
+                    .AddHours(Etx.RandomInteger(0, 12))
+                    .AddMinutes(Etx.RandomInteger(0, 59))
+                    .AddSeconds(Etx.RandomInteger(0, 59));
             return deathDate;
         }
     }

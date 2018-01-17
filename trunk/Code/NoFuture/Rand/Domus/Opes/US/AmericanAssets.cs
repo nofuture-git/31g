@@ -268,7 +268,7 @@ namespace NoFuture.Rand.Domus.Opes.US
                 var checkingAmt = amt == null || amt == Pecuniam.Zero
                     ? _randCheckingAcctAmt
                     : _checkingAccountRate * amt.ToDouble();
-                p = DepositAccount.GetRandomCheckingAcct(options.PersonsName, startDate, $"{Etx.IntNumber(1, 9999):0000}");
+                p = DepositAccount.GetRandomCheckingAcct(options.PersonsName, startDate, $"{Etx.RandomInteger(1, 9999):0000}");
                 p.Push(startDate.AddDays(-1), checkingAmt.ToPecuniam());
                 p.My.ExpectedValue = checkingAmt.ToPecuniam();
             }

@@ -19,6 +19,7 @@ namespace NoFuture.Rand.Com
     {
         internal const string US_BANKS = "US_Banks.xml";
         internal static XmlDocument UsBanksXml;
+
         #region properties
         public ResearchStatisticsSupervisionDiscount Rssd { get; set; }
         public RoutingTransitNumber RoutingNumber { get; set; }
@@ -103,7 +104,8 @@ namespace NoFuture.Rand.Com
         /// </summary>
         /// <param name="ca"></param>
         /// <returns></returns>
-        public static Bank GetRandomBank(CityArea ca)
+        [RandomFactory]
+        public static Bank RandomBank(CityArea ca)
         {
             var bank = new Bank();
             var bankXml = GetBankXmlElement(ca);
@@ -186,7 +188,7 @@ namespace NoFuture.Rand.Com
 
             if (pickFromList.Any())
             {
-                bankXmlElem = pickFromList[Etx.IntNumber(0, pickFromList.Count - 1)];
+                bankXmlElem = pickFromList[Etx.RandomInteger(0, pickFromList.Count - 1)];
             }
             return bankXmlElem;
         }

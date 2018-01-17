@@ -46,7 +46,7 @@ namespace NoFuture.Rand.Gov.US
         {
             Intercept = -181.45,
             Slope = 0.1056,
-            StdDev = Etx.RationalNumber(0, 1)
+            StdDev = Etx.RandomDouble(0, 1)
         };
 
         /// <summary>
@@ -56,7 +56,7 @@ namespace NoFuture.Rand.Gov.US
         {
             Intercept = -209.41,
             Slope = 0.1187,
-            StdDev = Etx.RationalNumber(0, 1)
+            StdDev = Etx.RandomDouble(0, 1)
         };
 
         /// <summary>
@@ -66,7 +66,7 @@ namespace NoFuture.Rand.Gov.US
         {
             Intercept = -176.32,//-180.32
             Slope = 0.1026,
-            StdDev = Etx.RationalNumber(0, 1)
+            StdDev = Etx.RandomDouble(0, 1)
         };
 
         /// <summary>
@@ -76,7 +76,7 @@ namespace NoFuture.Rand.Gov.US
         {
             Intercept = -171.88,//-175.88
             Slope = 0.1017,
-            StdDev = Etx.RationalNumber(0, 1)
+            StdDev = Etx.RandomDouble(0, 1)
         };
 
         /// <summary>
@@ -86,7 +86,7 @@ namespace NoFuture.Rand.Gov.US
         {
             Intercept = -125.45,//-129.45
             Slope = 0.0792,
-            StdDev = Etx.RationalNumber(0, 1)
+            StdDev = Etx.RandomDouble(0, 1)
         };
 
         /// <summary>
@@ -96,7 +96,7 @@ namespace NoFuture.Rand.Gov.US
         {
             Intercept = -74.855,//-78.855
             Slope = 0.0545,
-            StdDev = Etx.RationalNumber(0, 1)
+            StdDev = Etx.RandomDouble(0, 1)
         };
 
         /// <summary>

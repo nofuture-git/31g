@@ -31,7 +31,7 @@ namespace NoFuture.Rand.Data.Sp
             FicoBaseValue = Etx.RandomValueInNormalDist(AVG_AMERICAN_FICO_SCORE, STD_DEV_FICO_SCORE);
             ConscientiousnessZscore = GetRandomZscore();
             OpennessZscore = GetRandomZscore();
-            _personsDob = personsBirthDate ?? Etx.GetWorkingAdultBirthDate();
+            _personsDob = personsBirthDate ?? Etx.RandomAdultBirthDate();
         }
         #endregion
 
@@ -120,7 +120,7 @@ namespace NoFuture.Rand.Data.Sp
 
         private double GetRandomZscore()
         {
-            var s = Etx.PlusOrMinusOne();
+            var s = Etx.RandomPlusOrMinus();
             return s * Math.Round(Etx.MyRand.NextDouble(), 7);
         }
         #endregion

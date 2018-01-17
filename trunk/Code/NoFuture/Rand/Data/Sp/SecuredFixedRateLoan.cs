@@ -126,7 +126,7 @@ namespace NoFuture.Rand.Data.Sp
                     break;
                 var paidOnDate = dtIncrement;
                 if (randomActsIrresponsible())
-                    paidOnDate = paidOnDate.AddDays(Etx.IntNumber(5, 15));
+                    paidOnDate = paidOnDate.AddDays(Etx.RandomInteger(5, 15));
 
                 //is this the payoff
                 var isPayoff = loan.GetValueAt(paidOnDate) <= minPmt;

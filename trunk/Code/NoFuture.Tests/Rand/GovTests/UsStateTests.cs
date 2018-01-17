@@ -123,7 +123,7 @@ namespace NoFuture.Rand.Tests.GovTests
             System.Diagnostics.Debug.WriteLine(percentCollegeGrad);
             for (var i = 0; i < 100; i++)
             {
-                var attempt = Etx.TryAboveOrAt((int) Math.Round(percentCollegeGrad.Item2*2), Etx.Dice.OneHundred);
+                var attempt = Etx.RandomRollAboveOrAt((int) Math.Round(percentCollegeGrad.Item2*2), Etx.Dice.OneHundred);
                 System.Diagnostics.Debug.WriteLine(attempt);
             }
             

@@ -153,7 +153,7 @@ namespace NoFuture.Rand.Gov.US.Fed
         {
             var f = new RoutingTransitNumber {FedDistrict = NEY_YORK};
 
-            var roll = Etx.IntNumber(1, 100);
+            var roll = Etx.RandomInteger(1, 100);
             if (roll >= 57 && roll < 69)
                 f.FedDistrict = SAN_FRANCISCO;
             if (roll >= 69 && roll < 75)
@@ -178,13 +178,13 @@ namespace NoFuture.Rand.Gov.US.Fed
                 f.FedDistrict = MINNEAPOLIS;
 
             var rt = new StringBuilder();
-            rt.Append(Etx.IntNumber(0, 9));
-            rt.Append(Etx.IntNumber(0, 9));
+            rt.Append(Etx.RandomInteger(0, 9));
+            rt.Append(Etx.RandomInteger(0, 9));
             f.CheckProcCenter = rt.ToString();
             rt.Clear();
 
             for (var i = 0; i < 4; i++)
-                rt.Append(Etx.IntNumber(0, 9));
+                rt.Append(Etx.RandomInteger(0, 9));
             f.AbaInstitutionId = rt.ToString();
 
             rt.Clear();

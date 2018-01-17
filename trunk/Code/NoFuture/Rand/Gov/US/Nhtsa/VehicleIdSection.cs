@@ -48,16 +48,16 @@ namespace NoFuture.Rand.Gov.US.Nhtsa
             if (yy < Vin.BASE_YEAR)
                 yy = Vin.BASE_YEAR;
 
-            var pick = Etx.IntNumber(0, yy - Vin.AMENDED_BASE_YEAR); 
+            var pick = Etx.RandomInteger(0, yy - Vin.AMENDED_BASE_YEAR); 
 
             if (isLateModel)
-                pick = Etx.IntNumber(0, Vin.YearIdx.Length-1);
+                pick = Etx.RandomInteger(0, Vin.YearIdx.Length-1);
 
             var vis = new VehicleIdSection
             {
                 ModelYear = Vin.YearIdx[pick],
                 PlantCode = Vin.GetRandomVinChar(),
-                SequentialNumber = Etx.Chars(0x30, 0x39, 6)
+                SequentialNumber = Etx.RandomChars(0x30, 0x39, 6)
             };
 
             return vis;

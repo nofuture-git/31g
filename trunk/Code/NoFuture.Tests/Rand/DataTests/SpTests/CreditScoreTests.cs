@@ -35,7 +35,7 @@ namespace NoFuture.Rand.Tests.DataTests.SpTests
         [TestMethod]
         public void TestGetRandomInterestRate()
         {
-            var testInput = new American(Etx.GetWorkingAdultBirthDate(), Gender.Female);
+            var testInput = new American(Etx.RandomAdultBirthDate(), Gender.Female);
 
             var testSubject = new Data.Sp.PersonalCreditScore(testInput.BirthCert.DateOfBirth)
             {
@@ -52,7 +52,7 @@ namespace NoFuture.Rand.Tests.DataTests.SpTests
         [TestMethod]
         public void TestGetRandomMax()
         {
-            var testInput = new American(Etx.GetWorkingAdultBirthDate(), Gender.Female);
+            var testInput = new American(Etx.RandomAdultBirthDate(), Gender.Female);
 
             var testSubject = new Data.Sp.PersonalCreditScore(testInput.BirthCert.DateOfBirth)
             {

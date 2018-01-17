@@ -250,7 +250,7 @@ namespace NoFuture.Rand.Domus.Opes.US
 
             var pay = GetPay(options);
 
-            var retirementRate = Etx.DiscreteRange(new[] {0.01D, 0.02D, 0.03D, 0.04D, 0.05D});
+            var retirementRate = Etx.RandomPickOne(new[] {0.01D, 0.02D, 0.03D, 0.04D, 0.05D});
             var retirementAmt = pay * retirementRate;
             options.GivenDirectly.Add(
                 new Mereo("Registered Retirement Savings Plan", DeductionGroupNames.INSURANCE)
@@ -316,7 +316,7 @@ namespace NoFuture.Rand.Domus.Opes.US
                 !options.AnyGivenDirectlyOfNameAndGroup(ALIMONY, DeductionGroupNames.JUDGMENTS))
             {
                 //this is technically computed as 0.25 * (diff in spousal income)
-                var randRate = Etx.RationalNumber(0.01, 0.25);
+                var randRate = Etx.RandomDouble(0.01, 0.25);
                 var spouseSupport = Math.Round(randRate * pay, 2);
                 options.GivenDirectly.Add(
                     new Mereo(ALIMONY, DeductionGroupNames.JUDGMENTS) {ExpectedValue = spouseSupport.ToPecuniam()});

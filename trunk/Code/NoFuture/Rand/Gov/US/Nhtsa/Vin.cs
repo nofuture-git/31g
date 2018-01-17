@@ -126,7 +126,7 @@ namespace NoFuture.Rand.Gov.US.Nhtsa
 
         public static char GetRandomVinChar()
         {
-            var d = Etx.IntNumber(0, VinLetter2NumberValues.Count-1);
+            var d = Etx.RandomInteger(0, VinLetter2NumberValues.Count-1);
             var f = VinLetter2NumberValues.Select(x => x.Key).ToArray()[d];
             return f;
         }
@@ -274,7 +274,7 @@ namespace NoFuture.Rand.Gov.US.Nhtsa
             //pick the kind of vehicle
             var wmiOut = new WorldManufacturerId();
             var xpath = "//vehicle-type";
-            var pick = Etx.IntNumber(1, 3);
+            var pick = Etx.RandomInteger(1, 3);
             switch (pick)
             {
                 case 1:
@@ -292,7 +292,7 @@ namespace NoFuture.Rand.Gov.US.Nhtsa
             var mfNodes = xml.SelectNodes(xpath);
             if (mfNodes == null || mfNodes.Count <= 0)
                 return df;
-            pick = Etx.IntNumber(0, mfNodes.Count - 1);
+            pick = Etx.RandomInteger(0, mfNodes.Count - 1);
             var mfNode = mfNodes[pick];
             if (mfNode == null)
                 return df;
@@ -303,7 +303,7 @@ namespace NoFuture.Rand.Gov.US.Nhtsa
             var wmiNodes = xml.SelectNodes(xpath + "/add");
             if (wmiNodes == null || wmiNodes.Count <= 0)
                 return df;
-            pick = Etx.IntNumber(0, wmiNodes.Count - 1);
+            pick = Etx.RandomInteger(0, wmiNodes.Count - 1);
             var wmiNode = wmiNodes[pick];
             if (wmiNode == null)
                 return df;
@@ -323,7 +323,7 @@ namespace NoFuture.Rand.Gov.US.Nhtsa
             if (vhNameNodes == null || vhNameNodes.Count <= 0)
                 return df;
 
-            pick = Etx.IntNumber(0, vhNameNodes.Count - 1);
+            pick = Etx.RandomInteger(0, vhNameNodes.Count - 1);
             var vhNameNode = vhNameNodes[pick];
             if (vhNameNode == null)
                 return df;
@@ -347,23 +347,23 @@ namespace NoFuture.Rand.Gov.US.Nhtsa
         /// </param>
         /// <returns></returns>
         [RandomFactory]
-        public static Vin GetRandomVin(bool allowForOldModel = false, int? maxYear = null)
+        public static Vin RandomVin(bool allowForOldModel = false, int? maxYear = null)
         {
             var wmiAndName = GetRandomManufacturerId();
             var wmiOut = wmiAndName.Item1;
 
             //when this is a digit it will allow for a much older make back to 1980
-            var yearBaseDeterminer = allowForOldModel && Etx.TryAboveOrAt(66, Etx.Dice.OneHundred)
-                ? Vin.DF_DIGIT
-                : Vin.GetRandomVinChar();
+            var yearBaseDeterminer = allowForOldModel && Etx.RandomRollAboveOrAt(66, Etx.Dice.OneHundred)
+                ? DF_DIGIT
+                : GetRandomVinChar();
 
             var vds = new VehicleDescription
             {
-                Four = Vin.GetRandomVinChar(),
-                Five = Vin.GetRandomVinChar(),
-                Six = Vin.GetRandomVinChar(),
+                Four = GetRandomVinChar(),
+                Five = GetRandomVinChar(),
+                Six = GetRandomVinChar(),
                 Seven = yearBaseDeterminer,
-                Eight = Vin.GetRandomVinChar()
+                Eight = GetRandomVinChar()
             };
 
             var vis = VehicleIdSection.GetVehicleIdSection(Char.IsNumber(vds.Seven.GetValueOrDefault()), maxYear);

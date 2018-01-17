@@ -46,7 +46,7 @@ namespace NoFuture.Rand.Tests.TeleTests
         [TestMethod]
         public void TestGetChildishRandomEmail()
         {
-            var testResult = Email.RandomChildishEmailAddress();
+            var testResult = Email.RandomChildishEmail();
             Assert.IsNotNull(testResult);
             Assert.IsFalse(string.IsNullOrWhiteSpace(testResult.Value));
             System.Diagnostics.Debug.WriteLine(testResult.ToString());

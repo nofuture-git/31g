@@ -86,7 +86,7 @@ namespace NoFuture.Rand.Tests.GovTests
         {
             for (var i = 0; i < 45; i++)
             {
-                var testResult = Vin.GetRandomVin();
+                var testResult = Vin.RandomVin();
                 Assert.IsNotNull(testResult);
                 var testResultYear = testResult.GetModelYearYyyy();
                 Assert.IsNotNull(testResultYear);
@@ -96,7 +96,7 @@ namespace NoFuture.Rand.Tests.GovTests
 
             for (var i = 0; i < 45; i++)
             {
-                var byYearTestResult = Vin.GetRandomVin(true, 2014);
+                var byYearTestResult = Vin.RandomVin(true, 2014);
                 var testResultYear = byYearTestResult.GetModelYearYyyy();
                 Assert.IsNotNull(testResultYear);
                 Assert.IsTrue(testResultYear.Value <= 2014);

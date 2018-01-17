@@ -238,29 +238,29 @@ namespace NoFuture.Rand.Domus.Opes.US
         {
             options = options ?? MyOptions;
 
-            var bonusRate = Etx.TryBelowOrAt(1, Etx.Dice.Ten)
+            var bonusRate = Etx.RandomRollBelowOrAt(1, Etx.Dice.Ten)
                 ? Etx.RandomValueInNormalDist(0.02, 0.001)
                 : 0D;
-            var overtimeRate = _isWages && Etx.TryBelowOrAt(3, Etx.Dice.Ten)
+            var overtimeRate = _isWages && Etx.RandomRollBelowOrAt(3, Etx.Dice.Ten)
                 ? Etx.RandomValueInNormalDist(0.05, 0.009)
                 : 0D;
-            var shiftDiffRate = _isWages && Etx.TryBelowOrAt(3, Etx.Dice.Ten)
+            var shiftDiffRate = _isWages && Etx.RandomRollBelowOrAt(3, Etx.Dice.Ten)
                 ? Etx.RandomValueInNormalDist(0.03, 0.0076)
                 : 0D;
-            var selfEmplyRate = Etx.TryBelowOrAt(7, Etx.Dice.OneHundred)
+            var selfEmplyRate = Etx.RandomRollBelowOrAt(7, Etx.Dice.OneHundred)
                 ? Etx.RandomValueInNormalDist(0.072, 0.0088)
                 : 0D;
-            var emplrPaidRate = Etx.TryBelowOrAt(17, Etx.Dice.OneHundred)
+            var emplrPaidRate = Etx.RandomRollBelowOrAt(17, Etx.Dice.OneHundred)
                 ? Etx.RandomValueInNormalDist(0.012, 0.008)
                 : 0D;
-            var inKindRate = Etx.TryBelowOrAt(9, Etx.Dice.OneThousand)
+            var inKindRate = Etx.RandomRollBelowOrAt(9, Etx.Dice.OneThousand)
                 ? Etx.RandomValueInNormalDist(0.022, 0.0077)
                 : 0D;
             var sevrcRate =
                 !_isWages
                 && !_isTips
                 && MyOptions.Terminus.GetValueOrDefault(DateTime.Today) < DateTime.Today
-                && Etx.TryBelowOrAt(7, Etx.Dice.OneHundred)
+                && Etx.RandomRollBelowOrAt(7, Etx.Dice.OneHundred)
                     ? Etx.RandomValueInNormalDist(0.072, 0.0025)
                     : 0D;
 

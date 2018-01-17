@@ -37,17 +37,17 @@ namespace NoFuture.Rand.Tele
             if (names.Length > 2)
             {
                 mi = names[1].ToLower();
-                mi = Etx.CoinToss() ? mi.First().ToString() : mi;
+                mi = Etx.RandomCoinToss() ? mi.First().ToString() : mi;
             }
 
-            var unParts = new List<string> { Etx.CoinToss() ? fname : fname.First().ToString(), mi, lname };
+            var unParts = new List<string> { Etx.RandomCoinToss() ? fname : fname.First().ToString(), mi, lname };
             var totalLength = unParts.Sum(x => x.Length);
             if (totalLength <= 7)
-                return RandomEmail(String.Join(Etx.CoinToss() ? "" : "_", String.Join(Etx.CoinToss() ? "." : "_", unParts),
-                    Etx.IntNumber(100, 9999)), usCommonOnly);
+                return RandomEmail(String.Join(Etx.RandomCoinToss() ? "" : "_", String.Join(Etx.RandomCoinToss() ? "." : "_", unParts),
+                    Etx.RandomInteger(100, 9999)), usCommonOnly);
             return RandomEmail(totalLength > 20
-                ? String.Join(Etx.CoinToss() ? "." : "_", unParts.Take(2))
-                : String.Join(Etx.CoinToss() ? "." : "_", unParts), usCommonOnly);
+                ? String.Join(Etx.RandomCoinToss() ? "." : "_", unParts.Take(2))
+                : String.Join(Etx.RandomCoinToss() ? "." : "_", unParts), usCommonOnly);
         }
 
         /// <summary>
@@ -56,16 +56,16 @@ namespace NoFuture.Rand.Tele
         /// <param name="usCommonOnly"></param>
         /// <returns></returns>
         [RandomFactory]
-        public static Email RandomChildishEmailAddress(bool usCommonOnly = true)
+        public static Email RandomChildishEmail(bool usCommonOnly = true)
         {
             var shortWords = Etx.EnglishWords.Where(x => x.Item1.Length <= 3).Select(x => x.Item1).ToArray();
             var shortWordList = new List<string>();
             for (var i = 0; i < 3; i++)
             {
-                var withUcase = Etc.CapWords(Etx.DiscreteRange(shortWords), ' ');
+                var withUcase = Etc.CapWords(Etx.RandomPickOne(shortWords), ' ');
                 shortWordList.Add(withUcase);
             }
-            shortWordList.Add((Etx.CoinToss() ? "_" : "") + Etx.IntNumber(100, 9999));
+            shortWordList.Add((Etx.RandomCoinToss() ? "_" : "") + Etx.RandomInteger(100, 9999));
             return RandomEmail(String.Join("", shortWordList), usCommonOnly);
         }
 
@@ -82,10 +82,10 @@ namespace NoFuture.Rand.Tele
             var bunchOfWords = new List<string>();
             for (var i = 0; i < 4; i++)
             {
-                bunchOfWords.Add(Etc.CapWords(Etx.Word(), ' '));
+                bunchOfWords.Add(Etc.CapWords(Etx.RandomWord(), ' '));
             }
-            username = String.Join((Etx.CoinToss() ? "." : "_"), Etx.DiscreteRange(bunchOfWords.ToArray()),
-                Etx.DiscreteRange(bunchOfWords.ToArray()));
+            username = String.Join((Etx.RandomCoinToss() ? "." : "_"), Etx.RandomPickOne(bunchOfWords.ToArray()),
+                Etx.RandomPickOne(bunchOfWords.ToArray()));
             return new Email {Value = String.Join("@", username, host)};
         }
 

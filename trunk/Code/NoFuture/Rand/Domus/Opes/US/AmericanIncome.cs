@@ -367,8 +367,8 @@ namespace NoFuture.Rand.Domus.Opes.US
             //make it appear as if the start date is randomly before options start date
             var sdt = options.Inception;
             sdt = sdt == DateTime.MinValue
-                ? Etx.Date(-3, DateTime.Today, true).Date
-                : sdt.AddDays(Etx.IntNumber(0, 360) * -1);
+                ? Etx.RandomDate(-3, DateTime.Today, true).Date
+                : sdt.AddDays(Etx.RandomInteger(0, 360) * -1);
 
             if (personality == null)
             {
@@ -379,7 +379,7 @@ namespace NoFuture.Rand.Domus.Opes.US
             var lpDt = sdt;
             while (lpDt < DateTime.Today)
             {
-                var randDays = Etx.IntNumber(0, 21);
+                var randDays = Etx.RandomInteger(0, 21);
                 lpDt = lpDt.AddMonths(3).AddDays(randDays);
                 if (personality.GetRandomActsSpontaneous())
                 {
@@ -388,7 +388,7 @@ namespace NoFuture.Rand.Domus.Opes.US
                 }
             }
             if(!emply.Any())
-                emply.Add(new Tuple<DateTime, DateTime?>(Etx.Date(-4, DateTime.Today, true).Date, null));
+                emply.Add(new Tuple<DateTime, DateTime?>(Etx.RandomDate(-4, DateTime.Today, true).Date, null));
             return emply;
         }
 

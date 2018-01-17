@@ -12,7 +12,7 @@ namespace NoFuture.Rand.Data.Sp.Cc
         }
 
         protected override int CardNumLen => 15;
-        protected override int CardNumPrefix => Etx.CoinToss() ? 34 : 37;
+        protected override int CardNumPrefix => Etx.RandomCoinToss() ? 34 : 37;
         protected override string CcName => "AMEX";
     }
 }

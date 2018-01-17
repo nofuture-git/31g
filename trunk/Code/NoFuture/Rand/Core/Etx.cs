@@ -24,7 +24,7 @@ namespace NoFuture.Rand.Core
         #endregion
 
         public static Random MyRand
-            => _myRand ?? (_myRand = new Random(Convert.ToInt32(String.Format("{0:ffffff}", DateTime.Now))));
+            => _myRand ?? (_myRand = new Random(Convert.ToInt32($"{DateTime.Now:ffffff}")));
 
         #region API
 
@@ -47,7 +47,7 @@ namespace NoFuture.Rand.Core
         /// <param name="die"></param>
         /// <returns> </returns>
         [RandomFactory]
-        public static bool TryAboveOrAt(int v, Dice die)
+        public static bool RandomRollAboveOrAt(int v, Dice die)
         {
             Func<int, int, bool> op = (i, i1) => i >= i1;
             return TryRoll(v, die, op);
@@ -60,7 +60,7 @@ namespace NoFuture.Rand.Core
         /// <param name="die"></param>
         /// <returns></returns>
         [RandomFactory]
-        public static bool TryBelowOrAt(int v, Dice die)
+        public static bool RandomRollBelowOrAt(int v, Dice die)
         {
             Func<int, int, bool> op = (i, i1) => i <= i1;
             return TryRoll(v, die, op);
@@ -70,19 +70,19 @@ namespace NoFuture.Rand.Core
         /// A fifty-fifty probability.
         /// </summary>
         [RandomFactory]
-        public static bool CoinToss()
+        public static bool RandomCoinToss()
         {
             return MyRand.Next(0, Int32.MaxValue) % 2 == 0;
         }
 
         /// <summary>
-        /// Same as its counterpart <see cref="CoinToss"/>
+        /// Same as its counterpart <see cref="RandomCoinToss"/>
         /// only returning 1 for true and -1 for false.
         /// </summary>
         [RandomFactory]
-        public static int PlusOrMinusOne()
+        public static int RandomPlusOrMinus()
         {
-            return CoinToss() ? 1 : -1;
+            return RandomCoinToss() ? 1 : -1;
         }
 
         /// <summary>
@@ -93,7 +93,7 @@ namespace NoFuture.Rand.Core
         /// <param name="to">Inclusive</param>
         /// <returns></returns>
         [RandomFactory]
-        public static int IntNumber(int from, int to)
+        public static int RandomInteger(int from, int to)
         {
             if (from == to)
                 return from;
@@ -115,9 +115,9 @@ namespace NoFuture.Rand.Core
         /// <param name="to"></param>
         /// <returns></returns>
         [RandomFactory]
-        public static double RationalNumber(int from, int to)
+        public static double RandomDouble(int from, int to)
         {
-            var someInt = IntNumber(@from, to-1);
+            var someInt = RandomInteger(from, to-1);
             return someInt + MyRand.NextDouble();
         }
 
@@ -128,7 +128,7 @@ namespace NoFuture.Rand.Core
         /// <param name="to"></param>
         /// <returns></returns>
         [RandomFactory]
-        public static double RationalNumber(double from, double to)
+        public static double RandomDouble(double from, double to)
         {
             const int FACTOR = 1000000;
             
@@ -136,12 +136,12 @@ namespace NoFuture.Rand.Core
             var toWholeNum = Convert.ToInt32(Math.Truncate(to));
 
             if (fromWholeNum > 0 && toWholeNum > 0)
-                return RationalNumber(Convert.ToInt32(@from), Convert.ToInt32(to));
+                return RandomDouble(Convert.ToInt32(@from), Convert.ToInt32(to));
 
             var fromRationNum = Convert.ToInt32((@from - fromWholeNum)* FACTOR);
             var toRationNum = Convert.ToInt32((to - toWholeNum) * FACTOR);
 
-            var rimex = IntNumber(fromRationNum, toRationNum);
+            var rimex = RandomInteger(fromRationNum, toRationNum);
 
             return Math.Round((double)rimex / FACTOR, 8);
         }
@@ -153,7 +153,7 @@ namespace NoFuture.Rand.Core
         /// <param name="dim"></param>
         /// <returns></returns>
         [RandomFactory]
-        public static double[,] Matrix(int dim)
+        public static double[,] RandomMatrix(int dim)
         {
 
             var m = new double[dim, dim];
@@ -174,7 +174,7 @@ namespace NoFuture.Rand.Core
         /// <param name="tbl"></param>
         /// <returns></returns>
         [RandomFactory]
-        public static T DiscreteRange<T>(Dictionary<T, double> tbl)
+        public static T RandomPickOne<T>(Dictionary<T, double> tbl)
         {
             if (tbl == null)
                 return default(T);
@@ -212,13 +212,13 @@ namespace NoFuture.Rand.Core
         /// <param name="list"></param>
         /// <returns></returns>
         [RandomFactory]
-        public static T DiscreteRange<T>(T[] list)
+        public static T RandomPickOne<T>(T[] list)
         {
             if (list == null || list.Length < 0)
                 return default(T);
             if (list.Length == 1)
                 return list[0];
-            var pick = IntNumber(0, list.Length - 1);
+            var pick = RandomInteger(0, list.Length - 1);
             return list[pick];
         }
 
@@ -229,23 +229,23 @@ namespace NoFuture.Rand.Core
         /// </summary>
         /// <returns></returns>
         [RandomFactory]
-        public static string SupriseMe()
+        public static string RandomSuprise()
         {
-            var pick = IntNumber(0, 10);
+            var pick = RandomInteger(0, 10);
             switch (pick)
             {
                 case 0:
                     return Guid.NewGuid().ToString();
                 case 1:
-                    return IntNumber(0, 99999).ToString();
+                    return RandomInteger(0, 99999).ToString();
                 case 2:
                     return Convert.ToBase64String(Encoding.UTF8.GetBytes(Path.GetRandomFileName()));
                 case 3:
-                    return Word(IntNumber(5, 10));
+                    return RandomWord(RandomInteger(5, 10));
                 case 4:
-                    return Consonant(CoinToss()).ToString();
+                    return RandomConsonant(RandomCoinToss()).ToString();
                 default:
-                    return Vowel(CoinToss()).ToString();
+                    return RandomVowel(RandomCoinToss()).ToString();
 
             }
         }
@@ -257,7 +257,7 @@ namespace NoFuture.Rand.Core
         /// <param name="vals"></param>
         /// <returns></returns>
         [RandomFactory]
-        public static T[] RandShuffle<T>(T[] vals)
+        public static T[] RandomShuffle<T>(T[] vals)
         {
             if (vals == null || !vals.Any())
                 return vals;
@@ -289,7 +289,7 @@ namespace NoFuture.Rand.Core
 
             var someNums = new List<int>();
             for (var i = 0; i < numOfDiv; i++)
-                someNums.Add(IntNumber(1,99999));
+                someNums.Add(RandomInteger(1,99999));
 
             return someNums.Select(num => Math.Round((double) num/someNums.Sum(), 8)).ToArray();
         }
@@ -305,7 +305,7 @@ namespace NoFuture.Rand.Core
         /// </param>
         /// <returns></returns>
         [RandomFactory]
-        public static double[] DiminishingPortions(int numOfDiv, double derivativeSlope = -1.0D)
+        public static double[] RandomDiminishingPortions(int numOfDiv, double derivativeSlope = -1.0D)
         {
             numOfDiv = Math.Abs(numOfDiv);
             if (numOfDiv == 0 || numOfDiv == 1)
@@ -322,7 +322,7 @@ namespace NoFuture.Rand.Core
                 var u = (int) Math.Round(99999D / uDenom);
                 var l = (int) Math.Round(99999D / lDenom);
 
-                someNums.Add(IntNumber(l,u));
+                someNums.Add(RandomInteger(l,u));
             }
 
             var listOut = someNums.Select(num => Math.Round((double)num / someNums.Sum(), 8)).ToList();
@@ -341,7 +341,7 @@ namespace NoFuture.Rand.Core
         /// <param name="length"></param>
         /// <returns></returns>
         [RandomFactory]
-        public static string Chars(int asciiStart, int asciiEnd, int length)
+        public static string RandomChars(int asciiStart, int asciiEnd, int length)
         {
             var str = new StringBuilder();
             for (var i = 0; i < length; i++)
@@ -363,7 +363,7 @@ namespace NoFuture.Rand.Core
         /// </remarks>
         /// <returns></returns>
         [RandomFactory]
-        public static string Word(int length)
+        public static string RandomWord(int length)
         {
             var word = new StringBuilder();
 
@@ -371,10 +371,10 @@ namespace NoFuture.Rand.Core
             {
                 if (i == 0)
                 {
-                    word.Append(CoinToss() ? Vowel(true) : Consonant(true));
+                    word.Append(RandomCoinToss() ? RandomVowel(true) : RandomConsonant(true));
                     continue;
                 }
-                word.Append(MyRand.Next(1, 100) <= 60 ? Consonant(false) : Vowel(false));
+                word.Append(MyRand.Next(1, 100) <= 60 ? RandomConsonant(false) : RandomVowel(false));
             }
 
             return word.ToString();
@@ -388,7 +388,7 @@ namespace NoFuture.Rand.Core
         /// <param name="upperCase"></param>
         /// <returns></returns>
         [RandomFactory]
-        public static char Vowel(bool upperCase)
+        public static char RandomVowel(bool upperCase)
         {
             var p = MyRand.Next(1, 5);
             char sa;
@@ -423,7 +423,7 @@ namespace NoFuture.Rand.Core
         /// <param name="upperCase"></param>
         /// <returns></returns>
         [RandomFactory]
-        public static char Consonant(bool upperCase)
+        public static char RandomConsonant(bool upperCase)
         {
             var p = MyRand.Next(1, 21);
             char sa;
@@ -511,14 +511,14 @@ namespace NoFuture.Rand.Core
         /// </param>
         /// <returns></returns>
         [RandomFactory]
-        public static DateTime Date(int plusOrMinusYears, DateTime? fromThisDate, bool forceInPast = false, int maxDaysSpread = 360)
+        public static DateTime RandomDate(int plusOrMinusYears, DateTime? fromThisDate, bool forceInPast = false, int maxDaysSpread = 360)
         {
             var dt = DateTime.Now;
             if (fromThisDate != null)
                 dt = fromThisDate.Value;
             //plus or minus some random days
-            var pom = forceInPast ? -1 : PlusOrMinusOne();
-            var randomDaysNear = Etx.IntNumber(1, maxDaysSpread) * pom;
+            var pom = forceInPast ? -1 : RandomPlusOrMinus();
+            var randomDaysNear = RandomInteger(1, maxDaysSpread) * pom;
             return dt.AddYears(plusOrMinusYears).AddDays(randomDaysNear);
         }
 
@@ -543,13 +543,13 @@ namespace NoFuture.Rand.Core
             for (var i = 0; i < 1024; i++)
             {
                 //guess some value w/i 3 std dev's
-                var someValue = Etx.RationalNumber(minRand, maxRand);
+                var someValue = RandomDouble(minRand, maxRand);
 
                 //get the probability of that guess
                 var zscore = eq.GetZScoreFor(someValue);
 
                 //zscore
-                var attempt = Etx.RationalNumber(0, 5) * 0.1;
+                var attempt = RandomDouble(0, 5) * 0.1;
 
                 //try getting a value with that probability
                 var isGe = attempt >= zscore;
@@ -579,9 +579,9 @@ namespace NoFuture.Rand.Core
         /// </summary>
         /// <returns>The min length is 5 and the max is 15 </returns>
         [RandomFactory]
-        public static Rchar[] GetRandomRChars(bool numbersOnly = false, int? exactLen = null, int startAtIdx = 0)
+        public static Rchar[] RandomRChars(bool numbersOnly = false, int? exactLen = null, int startAtIdx = 0)
         {
-            var len = exactLen.GetValueOrDefault(IntNumber(5, 15));
+            var len = exactLen.GetValueOrDefault(RandomInteger(5, 15));
             var rcharsOut = new List<Rchar>();
 
             for (var i = startAtIdx; i < len + startAtIdx; i++)
@@ -592,7 +592,7 @@ namespace NoFuture.Rand.Core
                     continue;
                 }
 
-                var j = IntNumber(0, 6);
+                var j = RandomInteger(0, 6);
                 switch (j)
                 {
                     case 0:
@@ -609,7 +609,7 @@ namespace NoFuture.Rand.Core
                         rcharsOut.Add(new RcharNumeric(i));
                         break;
                     case 5:
-                        rcharsOut.Add(new RcharLimited(i, Consonant(true), Consonant(true), Consonant(true), Vowel(false)));
+                        rcharsOut.Add(new RcharLimited(i, RandomConsonant(true), RandomConsonant(true), RandomConsonant(true), RandomVowel(false)));
                         break;
                     case 6:
                         rcharsOut.Add(new RcharLimited(i, '-', '.', ' '));
@@ -625,16 +625,16 @@ namespace NoFuture.Rand.Core
         /// </summary>
         /// <returns></returns>
         [RandomFactory]
-        public static string Word()
+        public static string RandomWord()
         {
             var enWords = EnglishWords;
             if (enWords == null || enWords.Count <= 0)
-                return Etx.Word(8);
-            var pick = Etx.IntNumber(0, enWords.Count - 1);
+                return RandomWord(8);
+            var pick = RandomInteger(0, enWords.Count - 1);
             var enWord = enWords[pick]?.Item1;
             return !String.IsNullOrWhiteSpace(enWord)
                 ? enWord
-                : Etx.Word(8);
+                : RandomWord(8);
         }
 
         /// <summary>
@@ -690,7 +690,7 @@ namespace NoFuture.Rand.Core
         /// The age is limited to min,max of 18,67 - generate with family to get other age sets
         /// </remarks>
         [RandomFactory]
-        public static DateTime GetWorkingAdultBirthDate(int min = 21, int max = 67, int ageOfAdult = 18)
+        public static DateTime RandomAdultBirthDate(int min = 18, int max = 67, int ageOfAdult = 18)
         {
             if (ageOfAdult <= 14)
                 ageOfAdult = 18;
@@ -699,7 +699,35 @@ namespace NoFuture.Rand.Core
                 min = ageOfAdult;
             if (max > 67)
                 max = 67;
-            return DateTime.Now.AddYears(-1 * Etx.MyRand.Next(min, max)).AddDays(Etx.IntNumber(1, 360));
+            return DateTime.Now.AddYears(-1 * MyRand.Next(min, max)).AddDays(RandomInteger(1, 360));
+        }
+
+        /// <summary>
+        /// A discovery method to get a list of all the random factories present throughout the app domain.
+        /// </summary>
+        /// <returns></returns>
+        public static List<MethodInfo> ListRandomFactories()
+        {
+            var factories = new List<MethodInfo>();
+            var asms = AppDomain.CurrentDomain.GetAssemblies();
+            foreach (var asm in asms)
+            {
+                if (!asm.GetName().Name.StartsWith("NoFuture.Rand"))
+                    continue;
+
+                var d = asm.GetTypes().SelectMany(t => t.GetMethods().Where(m =>
+                    m.CustomAttributes.Any(ca => ca.AttributeType == typeof(RandomFactoryAttribute))));
+                foreach (var mi in d)
+                {
+
+                    if (factories.Any(n =>
+                        n.Name == mi.Name &&
+                        n.GetParameters().All(np => mi.GetParameters().Any(mip => np.Name == mip.Name))))
+                        continue;
+                    factories.Add(mi);
+                }
+            }
+            return factories;
         }
 
         #endregion
@@ -712,21 +740,21 @@ namespace NoFuture.Rand.Core
             switch (die)
             {
                 case Dice.Four:
-                    return v > 4 || op(IntNumber(1, 4), v);
+                    return v > 4 || op(RandomInteger(1, 4), v);
                 case Dice.Six:
-                    return v > 6 || op(IntNumber(1, 6), v);
+                    return v > 6 || op(RandomInteger(1, 6), v);
                 case Dice.Eight:
-                    return v > 8 || op(IntNumber(1, 8), v);
+                    return v > 8 || op(RandomInteger(1, 8), v);
                 case Dice.Ten:
-                    return v > 10 || op(IntNumber(1, 10), v);
+                    return v > 10 || op(RandomInteger(1, 10), v);
                 case Dice.Twelve:
-                    return v > 12 || op(IntNumber(1, 12), v);
+                    return v > 12 || op(RandomInteger(1, 12), v);
                 case Dice.Twenty:
-                    return v > 20 || op(IntNumber(1, 20), v);
+                    return v > 20 || op(RandomInteger(1, 20), v);
                 case Dice.OneHundred:
-                    return v > 100 || op(IntNumber(1, 100), v);
+                    return v > 100 || op(RandomInteger(1, 100), v);
                 case Dice.OneThousand:
-                    return v > 1000 || op(IntNumber(1, 1000), v);
+                    return v > 1000 || op(RandomInteger(1, 1000), v);
                 default:
                     throw new ArgumentOutOfRangeException(nameof(die), die, @"No implementation for this dice");
             }

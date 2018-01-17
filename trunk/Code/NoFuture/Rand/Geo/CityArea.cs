@@ -90,7 +90,7 @@ namespace NoFuture.Rand.Geo
             //set defaults
             var ctz = new AddressData
             {
-                PostalCode = $"{UsCityStateZip.DF_ZIPCODE_PREFIX}{Etx.IntNumber(1, 99):00}",
+                PostalCode = $"{UsCityStateZip.DF_ZIPCODE_PREFIX}{Etx.RandomInteger(1, 99):00}",
                 StateAbbrv = UsCityStateZip.DF_STATE_ABBREV
             };
 
@@ -122,7 +122,7 @@ namespace NoFuture.Rand.Geo
 
             if (!randZipCode.HasChildNodes)
             {
-                ctz.PostalCode = $"{zipCodePrefix}{Etx.IntNumber(1, 99):00}";
+                ctz.PostalCode = $"{zipCodePrefix}{Etx.RandomInteger(1, 99):00}";
             }
             else
             {
@@ -136,7 +136,7 @@ namespace NoFuture.Rand.Geo
                         .Select(x => x.Attributes[VALUE].Value).ToArray();
                 if (zipCodes.Length <= 0)
                     return new UsCityStateZip(ctz);
-                var pickNum = Etx.IntNumber(0, zipCodes.Length - 1);
+                var pickNum = Etx.RandomInteger(0, zipCodes.Length - 1);
                 ctz.PostalCode = zipCodes[pickNum];
             }
             return new UsCityStateZip(ctz);

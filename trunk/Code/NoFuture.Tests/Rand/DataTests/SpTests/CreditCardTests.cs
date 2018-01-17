@@ -19,7 +19,7 @@ namespace NoFuture.Rand.Tests.DataTests.SpTests
         {
             var testInput = new List<Rchar>();
             testInput.Add(new RcharLimited(0, 'U'));
-            testInput.AddRange(Etx.GetRandomRChars(true, 8, 1));
+            testInput.AddRange(Etx.RandomRChars(true, 8, 1));
             var testSubject = new CreditCardNumber(testInput.ToArray())
             {
                 CheckDigitFunc = Etc.CalcLuhnCheckDigit
@@ -38,7 +38,7 @@ namespace NoFuture.Rand.Tests.DataTests.SpTests
         [TestMethod]
         public void TestCreditCardCtor()
         {
-            var testInput = new American(Etx.GetWorkingAdultBirthDate(), Gender.Female);
+            var testInput = new American(Etx.RandomAdultBirthDate(), Gender.Female);
             var testSubject = new VisaCc(testInput, DateTime.Today, null);
 
             Assert.IsNotNull(testSubject.Number);
@@ -52,7 +52,7 @@ namespace NoFuture.Rand.Tests.DataTests.SpTests
         [TestMethod]
         public void TestMakePayment()
         {
-            var testInput = new American(Etx.GetWorkingAdultBirthDate(), Gender.Female);
+            var testInput = new American(Etx.RandomAdultBirthDate(), Gender.Female);
             var testSubject = new CreditCardAccount(new VisaCc(testInput, DateTime.Today.AddDays(-15), null), CreditCardAccount.DF_MIN_PMT_RATE, new Pecuniam(1800.0M));
             Assert.IsTrue(testSubject.Max == new Pecuniam(1800.0M));
 
@@ -61,7 +61,7 @@ namespace NoFuture.Rand.Tests.DataTests.SpTests
         [TestMethod]
         public void TestGetMinPayment()
         {
-            var testInput = new American(Etx.GetWorkingAdultBirthDate(), Gender.Female);
+            var testInput = new American(Etx.RandomAdultBirthDate(), Gender.Female);
             var testSubject = new CreditCardAccount(new VisaCc(testInput, new DateTime(2014,1,11), null), CreditCardAccount.DF_MIN_PMT_RATE, new Pecuniam(1800.0M));
 
             testSubject.Pop(new DateTime(2014, 1, 11), new Pecuniam(63.32M));

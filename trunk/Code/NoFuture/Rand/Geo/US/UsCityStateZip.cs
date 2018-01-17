@@ -115,7 +115,7 @@ namespace NoFuture.Rand.Geo.US
         {
             var zip2Wt = ZipCodePrefix2Population;
 
-            return !zip2Wt.Any() ? DF_ZIPCODE_PREFIX : Etx.DiscreteRange(zip2Wt);
+            return !zip2Wt.Any() ? DF_ZIPCODE_PREFIX : Etx.RandomPickOne(zip2Wt);
         }
 
         public override string ToString()
@@ -346,7 +346,7 @@ namespace NoFuture.Rand.Geo.US
                     return matchedElem;
             }
 
-            var pick = Etx.IntNumber(0, matchedNodes.Count - 1);
+            var pick = Etx.RandomInteger(0, matchedNodes.Count - 1);
             return matchedNodes[pick];
         }
 
@@ -420,7 +420,7 @@ namespace NoFuture.Rand.Geo.US
                 }
                 : AmericanRacePercents.GetNatlAvgAsDict();
 
-            var randPick = Etx.DiscreteRange(raceHashByZip);
+            var randPick = Etx.RandomPickOne(raceHashByZip);
 
             Enum.TryParse(randPick, out NorthAmericanRace pickOut);
 
@@ -564,7 +564,7 @@ namespace NoFuture.Rand.Geo.US
                 cityNode.ChildNodes.OfType<XmlElement>().Where(x => x.LocalName == PLACE && x.HasAttributes).ToList();
             if (!places.Any())
                 return;
-            var pick = Etx.IntNumber(0, places.Count - 1);
+            var pick = Etx.RandomInteger(0, places.Count - 1);
             var pickedPlace = places[pick];
             var suburbName = pickedPlace.GetAttribute(NAME);
             if (String.IsNullOrWhiteSpace(suburbName))

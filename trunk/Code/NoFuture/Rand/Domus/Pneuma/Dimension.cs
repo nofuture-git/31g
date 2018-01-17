@@ -30,7 +30,7 @@ namespace NoFuture.Rand.Domus.Pneuma
         [RandomFactory]
         public static double RandomZscore()
         {
-            var s = Etx.PlusOrMinusOne();
+            var s = Etx.RandomPlusOrMinus();
             return s * Math.Round(Etx.MyRand.NextDouble(), 7);
         }
 

@@ -9,7 +9,7 @@ namespace NoFuture.Rand.Tests.TeleTests
         [TestMethod]
         public void AmericanPhoneTests()
         {
-            var testResult = Phone.American();
+            var testResult = Phone.RandomAmericanPhone();
             Assert.IsNotNull(testResult);
             Assert.IsFalse(string.IsNullOrWhiteSpace(testResult.AreaCode));
             Assert.IsFalse(string.IsNullOrWhiteSpace(testResult.CentralOfficeCode));
@@ -30,13 +30,13 @@ namespace NoFuture.Rand.Tests.TeleTests
             const string TEST_STATE_WITH_MANY = "CA";
             const string TEST_STATE_WITH_ONE = "DC";
 
-            var testResult = Phone.American(TEST_STATE_WITH_MANY);
+            var testResult = Phone.RandomAmericanPhone(TEST_STATE_WITH_MANY);
             Assert.IsNotNull(testResult);
             Assert.IsNotNull(testResult.AreaCode);
 
             System.Diagnostics.Debug.WriteLine(testResult.AreaCode);
 
-            testResult = Phone.American(TEST_STATE_WITH_ONE);
+            testResult = Phone.RandomAmericanPhone(TEST_STATE_WITH_ONE);
             Assert.IsNotNull(testResult);
             Assert.IsNotNull(testResult.AreaCode);
 
@@ -50,13 +50,13 @@ namespace NoFuture.Rand.Tests.TeleTests
             const string TEST_STATE_WITH_MANY = "ON";
             const string TEST_STATE_WITH_ONE = "YT";
 
-            var testResult = Phone.Canadian(TEST_STATE_WITH_MANY);
+            var testResult = Phone.RandomCanadianPhone(TEST_STATE_WITH_MANY);
             Assert.IsNotNull(testResult);
             Assert.IsNotNull(testResult.AreaCode);
 
             System.Diagnostics.Debug.WriteLine(testResult.AreaCode);
 
-            testResult = Phone.Canadian(TEST_STATE_WITH_ONE);
+            testResult = Phone.RandomCanadianPhone(TEST_STATE_WITH_ONE);
             Assert.IsNotNull(testResult);
             Assert.IsNotNull(testResult.AreaCode);
 

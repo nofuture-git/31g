@@ -11,7 +11,7 @@ namespace NoFuture.Rand.Core
         {
             get
             {
-                var pickOne = Etx.CoinToss();
+                var pickOne = Etx.RandomCoinToss();
                 if(pickOne)
                     return (char) Etx.MyRand.Next(0x41, 0x5A);
 

@@ -113,7 +113,7 @@ namespace NoFuture.Rand.Data.Sp
         public static CheckingAccount GetRandomCheckingAcct(IVoca p, DateTime? dt = null, string debitPin = null)
         {
             var dtd = dt.GetValueOrDefault(DateTime.Now);
-            var accountId = new AccountId(Etx.GetRandomRChars(true));
+            var accountId = new AccountId(Etx.RandomRChars(true));
             return CheckingAccount.IsPossiablePin(debitPin)
                 ? new CheckingAccount(accountId, dtd,
                     new Tuple<ICreditCard, string>(CreditCard.GetRandomCreditCard(p), debitPin))
@@ -123,7 +123,7 @@ namespace NoFuture.Rand.Data.Sp
         public static SavingsAccount GetRandomSavingAcct(IVoca p, DateTime? dt = null)
         {
             var dtd = dt.GetValueOrDefault(DateTime.Now);
-            var accountId = new AccountId(Etx.GetRandomRChars(true));
+            var accountId = new AccountId(Etx.RandomRChars(true));
             return new SavingsAccount(accountId, dtd);
         }
 

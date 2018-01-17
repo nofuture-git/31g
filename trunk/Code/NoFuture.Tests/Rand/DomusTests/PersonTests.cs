@@ -43,7 +43,7 @@ namespace NoFuture.Rand.Tests.DomusTests
         [TestMethod]
         public void NorthAmericanEduTests()
         {
-            var amer = new American(Etx.GetWorkingAdultBirthDate(), Gender.Female);
+            var amer = new American(Etx.RandomAdultBirthDate(), Gender.Female);
             var testResult = amer.GetEducationByPerson();
 
             Assert.IsNotNull(testResult);
@@ -308,8 +308,8 @@ namespace NoFuture.Rand.Tests.DomusTests
         [TestMethod]
         public void TestDeathDate()
         {
-            var dob = Etx.GetWorkingAdultBirthDate();
-            var testResult = AmericanDeathCert.GetRandomDeathDate(dob, Gender.Female.ToString());
+            var dob = Etx.RandomAdultBirthDate();
+            var testResult = AmericanDeathCert.RandomDeathDate(dob, Gender.Female.ToString());
             Assert.AreNotEqual(dob, testResult);
             Debug.WriteLine("{0} - {1}", dob, testResult);
 
@@ -318,7 +318,7 @@ namespace NoFuture.Rand.Tests.DomusTests
         [TestMethod]
         public void TestGetNorthAmericanEdu()
         {
-            var testSubject = Person.American();
+            var testSubject = Person.RandomAmerican();
             var testEdu = testSubject.Education;
             Assert.IsNotNull(testEdu);
 

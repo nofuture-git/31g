@@ -124,7 +124,7 @@ namespace NoFuture.Rand.Edu.US
         public static AmericanEducation RandomEducation(DateTime? birthDate = null, string homeState = null, string zipCode = null)
         {
             var edu = new AmericanEducation();
-            var dob = birthDate ?? Etx.GetWorkingAdultBirthDate();
+            var dob = birthDate ?? Etx.RandomAdultBirthDate();
             var age = Etc.CalcAge(dob);
 
             if (age < DF_MIN_AGE_ENTER_HS)
@@ -167,10 +167,10 @@ namespace NoFuture.Rand.Edu.US
             var hss = AmericanHighSchool.GetHighSchoolsByZipCode(zipCode)
                       ?? AmericanHighSchool.GetHighSchoolsByState(homeState);
 
-            var hs = hss.Length > 1 ? hss[Etx.IntNumber(0,hss.Length-1)] : hss.First();
+            var hs = hss.Length > 1 ? hss[Etx.RandomInteger(0,hss.Length-1)] : hss.First();
 
             //still in hs or dropped out
-            if (!isLegalAdult || Etx.TryAboveOrAt((int)Math.Round(hsGradRate) + 1, Etx.Dice.OneHundred))
+            if (!isLegalAdult || Etx.RandomRollAboveOrAt((int)Math.Round(hsGradRate) + 1, Etx.Dice.OneHundred))
             {
                 //assign grad hs but no date
                 _highSchools.Add(new AmericanHighSchoolStudent(hs));
@@ -206,7 +206,7 @@ namespace NoFuture.Rand.Edu.US
                                    x => x.Key == (OccidentalEdu.Bachelor | OccidentalEdu.Grad)).Value;
 
             //roll for some college
-            if (Etx.TryAboveOrAt((int)Math.Round(bachelorGradRate * 2), Etx.Dice.OneHundred))
+            if (Etx.RandomRollAboveOrAt((int)Math.Round(bachelorGradRate * 2), Etx.Dice.OneHundred))
             {
                 AssignEduFlagAndLevel();
                 return;
@@ -220,7 +220,7 @@ namespace NoFuture.Rand.Edu.US
                 return;
             }
 
-            if (!Etx.TryBelowOrAt((int)Math.Round(bachelorGradRate * 10), Etx.Dice.OneThousand))
+            if (!Etx.RandomRollBelowOrAt((int)Math.Round(bachelorGradRate * 10), Etx.Dice.OneThousand))
             {
                 //dropped out of college
                 AddUniversity(univ, null);
@@ -238,7 +238,7 @@ namespace NoFuture.Rand.Edu.US
             var postGradRate = AmericanUniversity.DefaultNationalAvgs.First(
                                x => x.Key == (OccidentalEdu.Master | OccidentalEdu.Grad)).Value;
 
-            if (Etx.TryBelowOrAt((int)postGradRate * 10, Etx.Dice.OneThousand))
+            if (Etx.RandomRollBelowOrAt((int)postGradRate * 10, Etx.Dice.OneThousand))
             {
                 var postGradDt = GetRandomGraduationDate(univGradDt, AmericanUniversity.YearsInPostgradCollege);
                 var postGradUniv = GetAmericanUniversity(homeState);
@@ -265,7 +265,7 @@ namespace NoFuture.Rand.Edu.US
             var validMonths = monthOfMayOnly ? new[] {5} : new[] {5, 12};
             while (!validMonths.Contains(gradDt.Month))
                 gradDt = gradDt.AddMonths(1);
-            gradDt = new DateTime(gradDt.Year, gradDt.Month, Etx.IntNumber(12, 28));
+            gradDt = new DateTime(gradDt.Year, gradDt.Month, Etx.RandomInteger(12, 28));
             return gradDt;
         }
 
@@ -362,7 +362,7 @@ namespace NoFuture.Rand.Edu.US
         /// <returns></returns>
         internal static AmericanUniversity GetAmericanUniversity(string homeState)
         {
-            homeState = Etx.TryBelowOrAt(73, Etx.Dice.OneHundred) ? homeState : null;
+            homeState = Etx.RandomRollBelowOrAt(73, Etx.Dice.OneHundred) ? homeState : null;
 
             return AmericanUniversity.RandomUniversity(homeState);
         }

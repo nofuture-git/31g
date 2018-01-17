@@ -162,8 +162,8 @@ namespace NoFuture.Rand.Data.Sp
             {
                 randRent = avgRent.ToPecuniam();
             }
-            var randTerm = Etx.DiscreteRange(new[] { 24, 18, 12, 6 });
-            var randDate = Etx.Date(0, DateTime.Today.AddDays(-2), true);
+            var randTerm = Etx.RandomPickOne(new[] { 24, 18, 12, 6 });
+            var randDate = Etx.RandomDate(0, DateTime.Today.AddDays(-2), true);
             var randDepositAmt = (int)Math.Round((randRent.Amount - randRent.Amount % 250) / 2);
             var randDeposit = new Pecuniam(randDepositAmt);
 
@@ -201,7 +201,7 @@ namespace NoFuture.Rand.Data.Sp
                 var paidRentOn = rentDueDate;
                 //move the date rent was paid to some late-date when person acts irresponsible
                 if (randomActsIrresponsible())
-                    paidRentOn = paidRentOn.AddDays(Etx.IntNumber(5, 15));
+                    paidRentOn = paidRentOn.AddDays(Etx.RandomInteger(5, 15));
 
                 rent.PayRent(paidRentOn, randRent, new Mereo(rent.Id.ToString()));
                 rentDueDate = rentDueDate.AddMonths(1);

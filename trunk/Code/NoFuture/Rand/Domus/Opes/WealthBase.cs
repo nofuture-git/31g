@@ -471,7 +471,7 @@ namespace NoFuture.Rand.Domus.Opes
             var sumTotal = (options.SumTotal ?? Pecuniam.Zero).ToDouble();
 
             //get a random rate for all item names
-            var randPortions = Etx.DiminishingPortions(itemNames.Length, options.DerivativeSlope);
+            var randPortions = Etx.RandomDiminishingPortions(itemNames.Length, options.DerivativeSlope);
 
             //put this random rate together with each item name
             var randMap = itemNames
@@ -697,7 +697,7 @@ namespace NoFuture.Rand.Domus.Opes
             //is scaled where 29 year-old loses 3 while 21 year-old loses 11
             if (isYoung)
                 roll -= 32 - Etc.CalcAge(MyOptions.BirthDate);
-            return Etx.TryBelowOrAt(roll, Etx.Dice.OneHundred);
+            return Etx.RandomRollBelowOrAt(roll, Etx.Dice.OneHundred);
         }
 
         protected Pecuniam CalcValue(Pecuniam pecuniam, double d)
@@ -713,7 +713,7 @@ namespace NoFuture.Rand.Domus.Opes
         /// <param name="names2Rates"></param>
         /// <param name="reassignNames2Rates"></param>
         /// <param name="derivativeSlope">
-        /// Is passed into the <see cref="Etx.DiminishingPortions"/> - see its annotation.  Which entries
+        /// Is passed into the <see cref="Etx.RandomDiminishingPortions"/> - see its annotation.  Which entries
         /// receive the re-located rates is based on a diminishing probability.
         /// </param>
         /// <returns></returns>
@@ -767,7 +767,7 @@ namespace NoFuture.Rand.Domus.Opes
                 return names2Rates;
 
             //we don't wont to distribute the reassigned amount evenly
-            var diminishing = Etx.DiminishingPortions(idxNames.Count, derivativeSlope);
+            var diminishing = Etx.RandomDiminishingPortions(idxNames.Count, derivativeSlope);
             var idxName2DiminishingRate = new Dictionary<string, double>();
             for (var i = 0; i < idxNames.Count; i++)
             {
@@ -781,7 +781,7 @@ namespace NoFuture.Rand.Domus.Opes
             foreach (var relocate in positiveRelocateRates)
             {
                 //pick one of the items not given a direct assignment with bias
-                var randKey = Etx.DiscreteRange(idxName2DiminishingRate);
+                var randKey = Etx.RandomPickOne(idxName2DiminishingRate);
                 n2r[randKey] += relocate;
             }
 
@@ -789,7 +789,7 @@ namespace NoFuture.Rand.Domus.Opes
 
             while (totalNegative > 0.0D)
             {
-                var randKey = Etx.DiscreteRange(idxName2DiminishingRate);
+                var randKey = Etx.RandomPickOne(idxName2DiminishingRate);
                 var decrement = Math.Round(totalNegative * idxName2DiminishingRate[randKey], DF_ROUND_DECIMAL_PLACES);
                 if (Math.Abs(decrement) == 0.0D)
                     break;

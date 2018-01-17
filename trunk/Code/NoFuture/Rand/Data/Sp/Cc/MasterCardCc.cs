@@ -12,7 +12,7 @@ namespace NoFuture.Rand.Data.Sp.Cc
         }
 
         protected override int CardNumLen => 16;
-        protected override int CardNumPrefix => Etx.IntNumber(51, 55);
+        protected override int CardNumPrefix => Etx.RandomInteger(51, 55);
         protected override string CcName => "MC";
     }
 }

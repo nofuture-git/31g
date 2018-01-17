@@ -68,7 +68,7 @@ namespace NoFuture.Rand.Domus.US
             }
             _ssn = SocialSecurityNumber.RandomSsn();
             if (Race <= 0)
-                Race = Etx.DiscreteRange(AmericanRacePercents.NorthAmericanRaceAvgs);
+                Race = Etx.RandomPickOne(AmericanRacePercents.NorthAmericanRaceAvgs);
         }
 
         /// <summary>
@@ -90,17 +90,17 @@ namespace NoFuture.Rand.Domus.US
 
             var abbrv = csz?.PostalState;
 
-            if(Etx.TryAboveOrAt(6, Etx.Dice.Ten))
-                _phoneNumbers.Add(new Tuple<KindsOfLabels, NorthAmericanPhone>(KindsOfLabels.Home, Phone.American(abbrv)));
+            if(Etx.RandomRollAboveOrAt(6, Etx.Dice.Ten))
+                _phoneNumbers.Add(new Tuple<KindsOfLabels, NorthAmericanPhone>(KindsOfLabels.Home, Phone.RandomAmericanPhone(abbrv)));
 
             var isSmallChild = GetAgeAt(null) < 12;
 
             if (!isSmallChild)
-                _phoneNumbers.Add(new Tuple<KindsOfLabels, NorthAmericanPhone>(KindsOfLabels.Mobile, Phone.American(abbrv)));
+                _phoneNumbers.Add(new Tuple<KindsOfLabels, NorthAmericanPhone>(KindsOfLabels.Mobile, Phone.RandomAmericanPhone(abbrv)));
             
             Race = UsCityStateZip.GetAmericanRace(csz?.ZipCode);
             if (Race <= 0)
-                Race = Etx.DiscreteRange(AmericanRacePercents.NorthAmericanRaceAvgs);
+                Race = Etx.RandomPickOne(AmericanRacePercents.NorthAmericanRaceAvgs);
 
             if (withWholeFamily)
                 ResolveFamilyState();
@@ -310,7 +310,7 @@ namespace NoFuture.Rand.Domus.US
 
         protected internal AmericanEducation GetEducationByPerson()
         {
-            var dob = BirthCert?.DateOfBirth ?? Etx.GetWorkingAdultBirthDate();
+            var dob = BirthCert?.DateOfBirth ?? Etx.RandomAdultBirthDate();
 
             //determine where amer lived when they were 18
             var mother = BirthCert == null
@@ -362,7 +362,7 @@ namespace NoFuture.Rand.Domus.US
                     continue;
 
                 var livesWith = MyGender == Gender.Male &&
-                                Etx.TryAboveOrAt(AmericanData.PERCENT_DIVORCED_CHILDREN_LIVE_WITH_MOTHER+1,
+                                Etx.RandomRollAboveOrAt(AmericanData.PERCENT_DIVORCED_CHILDREN_LIVE_WITH_MOTHER+1,
                                     Etx.Dice.OneHundred)
                     ? namerChild.GetFather()
                     : namerChild.GetMother();
@@ -504,7 +504,7 @@ namespace NoFuture.Rand.Domus.US
             if (motherMaritalStatus == MaritialStatus.Single || myFather == null)
             {
                 //small percent of father unknown
-                if (Etx.TryAboveOrAt(98, Etx.Dice.OneHundred))
+                if (Etx.RandomRollAboveOrAt(98, Etx.Dice.OneHundred))
                     return;
                 _father =
                     _father ??
@@ -550,7 +550,7 @@ namespace NoFuture.Rand.Domus.US
             //all other MaritialStatus imply at least one marriage in past
             var yearsMarried = currentAge - Convert.ToInt32(Math.Round(avgAgeMarriage));
 
-            var marriedOn = Etx.Date(-1*yearsMarried, dt).Date.AddHours(12);
+            var marriedOn = Etx.RandomDate(-1*yearsMarried, dt).Date.AddHours(12);
 
             var spouse = (American)AmericanUtil.SolveForSpouse(_birthCert.DateOfBirth, MyGender);
 
@@ -562,7 +562,7 @@ namespace NoFuture.Rand.Domus.US
                 spouse.DeathCert = spouse.DeathCert ??
                                    new AmericanDeathCert(AmericanDeathCert.MannerOfDeath.Natural, spouse.FullName)
                                    {
-                                       DateOfDeath = Etx.Date(Etx.IntNumber(1, d)*-1, null)
+                                       DateOfDeath = Etx.RandomDate(Etx.RandomInteger(1, d)*-1, null)
                                    };
             }
 
@@ -575,7 +575,7 @@ namespace NoFuture.Rand.Domus.US
             else
             {
                 //take date of marriage and add avg length of marriage
-                var separatedDate = Etx.Date(AmericanData.AVG_LENGTH_OF_MARRIAGE, marriedOn);
+                var separatedDate = Etx.RandomDate(AmericanData.AVG_LENGTH_OF_MARRIAGE, marriedOn);
 
                 //reset date-range with separated date
                 AddSpouse(spouse, marriedOn, separatedDate);
@@ -592,7 +592,7 @@ namespace NoFuture.Rand.Domus.US
                 var secondSpouse = (American)AmericanUtil.SolveForSpouse(_birthCert.DateOfBirth, MyGender, ageSpread);
 
                 //random second marriage date
-                var remarriedOn = Etx.Date(Convert.ToInt32(Math.Round(AmericanData.YEARS_BEFORE_NEXT_MARRIAGE)),
+                var remarriedOn = Etx.RandomDate(Convert.ToInt32(Math.Round(AmericanData.YEARS_BEFORE_NEXT_MARRIAGE)),
                     separatedDate);
 
                 //add second date-range for resolution of children
@@ -623,7 +623,7 @@ namespace NoFuture.Rand.Domus.US
 
             //two extremes
             var teenPregEquation = AmericanEquations.GetProbTeenPregnancyByRace(Race);
-            var teenageAge = Etx.IntNumber(15, 19);
+            var teenageAge = Etx.RandomInteger(15, 19);
             var teenageYear = _birthCert.DateOfBirth.AddYears(teenageAge).Year;
             var propTeenagePreg = teenPregEquation.SolveForY(teenageYear);
 
@@ -637,7 +637,7 @@ namespace NoFuture.Rand.Domus.US
             //other extreme is teenage preg
             if (Etx.MyRand.NextDouble() <= propTeenagePreg)
             {
-                var teenPregChildDob = Etx.Date(teenageAge, _birthCert.DateOfBirth);
+                var teenPregChildDob = Etx.RandomDate(teenageAge, _birthCert.DateOfBirth);
                 AddChild(teenPregChildDob);
                 currentNumChildren += 1;
             }
@@ -689,7 +689,7 @@ namespace NoFuture.Rand.Domus.US
             }
 
             var myChildeAge = Etc.CalcAge(myChildDob, dt);
-            var myChildGender = Etx.CoinToss() ? Gender.Female : Gender.Male;
+            var myChildGender = Etx.RandomCoinToss() ? Gender.Female : Gender.Male;
             var isChildAdult = myChildeAge >= GetMyHomeStatesAgeOfMajority();
 
             //look for spouse at and around Dob
@@ -750,7 +750,7 @@ namespace NoFuture.Rand.Domus.US
             if (siblingsBdays.Any(x => DateTime.Compare(x.Date, childDob.Date) == 0))
             {
                 childDob = siblingsBdays.Last(x => DateTime.Compare(x.Date, childDob.Date) == 0);
-                minutesAfterChildDob = childDob.AddMinutes(Etx.IntNumber(2, 8)).AddSeconds(Etx.IntNumber(0, 59));
+                minutesAfterChildDob = childDob.AddMinutes(Etx.RandomInteger(2, 8)).AddSeconds(Etx.RandomInteger(0, 59));
                 return true;
             }
             minutesAfterChildDob = DateTime.MinValue;

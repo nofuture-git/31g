@@ -139,7 +139,7 @@ namespace NoFuture.Rand.Edu.US
             if (!hss.Any())
                 return GetDefaultHs();
 
-            var pickOne = Etx.IntNumber(0, hss.Length - 1);
+            var pickOne = Etx.RandomInteger(0, hss.Length - 1);
             return hss[pickOne];
         }
 
