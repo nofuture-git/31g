@@ -20,22 +20,23 @@ namespace NoFuture.Rand.Tests.EduTests
         public void TestGetHighSchoolsByState()
         {
             var testResults = AmericanHighSchool.GetHighSchoolsByState("Arizona");
-
+            System.Diagnostics.Debug.WriteLine("----");
             Assert.IsNotNull(testResults);
             Assert.AreNotEqual(0, testResults.Length);
 
             testResults = AmericanHighSchool.GetHighSchoolsByState("NorthCarolina");
-
+            System.Diagnostics.Debug.WriteLine("----");
             Assert.IsNotNull(testResults);
             Assert.AreNotEqual(0, testResults.Length);
 
             testResults = AmericanHighSchool.GetHighSchoolsByState("MO");
-
+            System.Diagnostics.Debug.WriteLine("----");
             Assert.IsNotNull(testResults);
             Assert.AreNotEqual(0, testResults.Length);
 
 
             testResults = AmericanHighSchool.GetHighSchoolsByState();
+            System.Diagnostics.Debug.WriteLine("----");
             Assert.IsNotNull(testResults);
             Assert.AreNotEqual(0, testResults.Length);
 

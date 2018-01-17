@@ -9,6 +9,7 @@ using NoFuture.Rand.Core;
 using NoFuture.Rand.Gov;
 using NoFuture.Rand.Gov.US;
 using NoFuture.Rand.Gov.US.Census;
+using NoFuture.Shared.Core;
 using NoFuture.Util.Core;
 using NoFuture.Util.Core.Math;
 
@@ -111,6 +112,7 @@ namespace NoFuture.Rand.Geo.US
         /// <summary>
         /// Selects a US Zip Code prefix at random taking into respect the population pertinent to that zip code prefix.
         /// </summary>
+        [RandomFactory]
         public static string RandomAmericanZipWithRespectToPop()
         {
             var zip2Wt = ZipCodePrefix2Population;
@@ -309,13 +311,15 @@ namespace NoFuture.Rand.Geo.US
                 UsState.GetStateByPostalCode(data.StateAbbrv) != null)
             {
                 var cityName = FinesseCityName(data.City);
-                searchCrit = $"//state[@abbreviation='{data.StateAbbrv}']/city[@name='{cityName}']";
+                searchCrit =
+                    $"//state[@abbreviation='{data.StateAbbrv}']/city[@name='{cityName.EscapeString(EscapeStringType.XML)}']";
                 matchedNodes = UsCityXml.SelectNodes(searchCrit);
 
                 //try again on place names
                 if (matchedNodes == null || matchedNodes.Count <= 0)
                 {
-                    searchCrit = $"//state[@abbreviation='{data.StateAbbrv}']//place[@name='{cityName}']/..";
+                    searchCrit =
+                        $"//state[@abbreviation='{data.StateAbbrv}']//place[@name='{cityName.EscapeString(EscapeStringType.XML)}']/..";
                     matchedNodes = UsCityXml.SelectNodes(searchCrit);
                 }
             }

@@ -121,7 +121,6 @@ namespace NoFuture.Rand.Edu.US
             return Math.Round(stateAvg + raceNatlAvg[race.Value], 1);
         }
 
-        
         /// <summary>
         /// Helper method to get all US State abbreviations which are present in the data file.
         /// </summary>

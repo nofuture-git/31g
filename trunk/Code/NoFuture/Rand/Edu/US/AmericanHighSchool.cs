@@ -6,6 +6,7 @@ using System.Xml;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Gov;
 using NoFuture.Rand.Gov.US;
+using NoFuture.Shared.Core;
 using NoFuture.Util.Core;
 using NoFuture.Util.Core.Math;
 
@@ -15,7 +16,6 @@ namespace NoFuture.Rand.Edu.US
     public class AmericanHighSchool : AmericanSchoolBase, IHighSchool
     {
         public const float DF_NATL_AVG = 82.0f;
-
         private static AmericanHighSchool _dfHs;
         private static string[] _allStateAbbreviations;
 
@@ -24,6 +24,11 @@ namespace NoFuture.Rand.Edu.US
         public UrbanCentric UrbanCentric { get; set; }
         public double TotalTeachers { get; set; }
         public int TotalStudents { get; set; }
+
+        /// <summary>
+        /// Common knowledge values of 4 years in high school
+        /// </summary>
+        public static NormalDistEquation YearsInHighSchool = new NormalDistEquation { Mean = 4, StdDev = 0.25 };
         #endregion
 
         #region methods
@@ -32,10 +37,31 @@ namespace NoFuture.Rand.Edu.US
             return Name;
         }
 
-        /// <summary>
-        /// Common knowledge values of 4 years in high school
-        /// </summary>
-        public static NormalDistEquation YearsInHighSchool = new NormalDistEquation { Mean = 4, StdDev = 0.25 };
+        public override bool Equals(object obj)
+        {
+            if (!(obj is AmericanHighSchool hs))
+                return false;
+
+            var opc = hs.PostalCode ?? "";
+            var pc = PostalCode ?? "";
+            var oName = hs.Name ?? "";
+            var name = Name ?? "";
+            var oStateName = hs.StateName ?? "";
+            var stateName = StateName ?? "";
+
+            return string.Equals(opc, pc, StringComparison.OrdinalIgnoreCase)
+                   && string.Equals(oName, name, StringComparison.OrdinalIgnoreCase)
+                   && string.Equals(oStateName, stateName, StringComparison.OrdinalIgnoreCase)
+                ;
+        }
+
+        public override int GetHashCode()
+        {
+            return Name?.GetHashCode() ?? 1 +
+                   PostalCode?.GetHashCode() ?? 1 +
+                   StateName?.GetHashCode() ?? 1
+                ;
+        }
 
         /// <summary>
         /// [http://nces.ed.gov/programs/coe/indicator_coi.asp]
@@ -53,7 +79,7 @@ namespace NoFuture.Rand.Edu.US
             return _dfHs ?? (_dfHs = new AmericanHighSchool
             {
                 State = UsState.GetStateByPostalCode("DC"),
-                StateName = "",
+                StateName = "DC",
                 Name = "G.E.D.",
                 PostalCode = "20024",
                 TotalTeachers = -1,
@@ -72,6 +98,7 @@ namespace NoFuture.Rand.Edu.US
         /// <returns></returns>
         public static AmericanHighSchool[] GetHighSchoolsByState(string state = null)
         {
+            System.Diagnostics.Debug.WriteLine($"{DateTime.Now:yyyy-MM-dd HH:mm:ss.fffff} Start GetHighSchoolsByState");
             HsXml = HsXml ?? XmlDocXrefIdentifier.GetEmbeddedXmlDoc(US_HIGH_SCHOOL_DATA,
                 Assembly.GetExecutingAssembly());
             if (HsXml == null)
@@ -82,16 +109,17 @@ namespace NoFuture.Rand.Edu.US
                 state = GetRandomStateAbbrev(_allStateAbbreviations);
             }
 
-            var qryBy = "name";
-            if (state.Length == 2)
-                qryBy = "abbreviation";
-            else
-                state = String.Join(" ", Etc.DistillToWholeWords(state));
+            //have this deal with if its a postal code or a full name
+            var usState = UsState.GetState(state);
+            if(usState == null)
+                return new[] { GetDefaultHs() };
 
             var elements =
-                HsXml.SelectNodes($"//state[@{qryBy}='{state}']//high-school");
+                HsXml.SelectNodes($"//state[@name='{usState}']//high-school");
 
-            return ParseHighSchoolsFromNodeList(elements);
+            var parsedList = ParseHighSchoolsFromNodeList(elements);
+            System.Diagnostics.Debug.WriteLine($"{DateTime.Now:yyyy-MM-dd HH:mm:ss.fffff} End GetHighSchoolsByState");
+            return parsedList;
         }
 
         /// <summary>
@@ -121,7 +149,8 @@ namespace NoFuture.Rand.Edu.US
             if(elements == null || elements.Count <= 0)
                 return GetHighSchoolsByState();
 
-            return ParseHighSchoolsFromNodeList(elements);
+            var parsedList = ParseHighSchoolsFromNodeList(elements);
+            return parsedList;
         }
 
         /// <summary>
@@ -221,7 +250,7 @@ namespace NoFuture.Rand.Edu.US
                     attr = zipStatNode.Attributes["value"];
                 hs.PostalCode = attr?.Value;
 
-                var xpath = $"//high-school[@name='{hs.Name}']/../../.. ";
+                var xpath = $"//high-school[@name='{hs.Name.EscapeString(EscapeStringType.XML)}']/../../.. ";
                 var stateNode = HsXml.SelectSingleNode(xpath);
                 if (stateNode?.Attributes != null)
                 {
@@ -231,8 +260,9 @@ namespace NoFuture.Rand.Edu.US
                 hs.Name = Etc.CapWords(hs.Name, ' ');
                 return true;
             }
-            catch
+            catch(Exception ex)
             {
+                System.Diagnostics.Debug.WriteLine($"{ex.Message}\n{ex.StackTrace}");
                 hs = null;
                 return false;
             }
@@ -240,7 +270,7 @@ namespace NoFuture.Rand.Edu.US
 
         private static AmericanHighSchool[] ParseHighSchoolsFromNodeList(XmlNodeList elements)
         {
-            if(elements == null || elements.Count <= 0)
+            if (elements == null || elements.Count <= 0)
                 return new[] { GetDefaultHs() };
 
             var tempList = new List<AmericanHighSchool>();

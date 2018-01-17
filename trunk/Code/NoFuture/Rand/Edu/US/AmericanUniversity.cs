@@ -54,6 +54,26 @@ namespace NoFuture.Rand.Edu.US
             return string.Join(" ", Name, CampusName);
         }
 
+        public override bool Equals(object obj)
+        {
+            if (!(obj is AmericanUniversity univ))
+                return false;
+
+            var isNameAndStateSame = string.Equals(univ.StateName, StateName, StringComparison.OrdinalIgnoreCase)
+                   && string.Equals(univ.Name, Name, StringComparison.OrdinalIgnoreCase);
+
+            var univCampus = univ.CampusName ?? "";
+            var myCampus = CampusName ?? "";
+            return isNameAndStateSame && string.Equals(univCampus, myCampus, StringComparison.CurrentCulture);
+        }
+
+        public override int GetHashCode()
+        {
+            return (Name?.GetHashCode() ?? 1) +
+                   (CampusName?.GetHashCode() ?? 1) +
+                   (StateName?.GetHashCode() ?? 1);
+        }
+
         /// <summary>
         /// [http://www.census.gov/prod/2012pubs/p20-566.pdf]
         /// </summary>
