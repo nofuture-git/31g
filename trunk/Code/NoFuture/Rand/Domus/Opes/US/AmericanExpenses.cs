@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using NoFuture.Rand.Core;
 using NoFuture.Rand.Data.Sp;
 using NoFuture.Rand.Data.Sp.Enums;
-using NoFuture.Rand.Gov;
 using NoFuture.Rand.Gov.US;
 
 namespace NoFuture.Rand.Domus.Opes.US
@@ -28,6 +28,19 @@ namespace NoFuture.Rand.Domus.Opes.US
         public virtual Pecuniam TotalAnnualExpectedExpenses => Pondus.GetExpectedAnnualSum(CurrentExpectedExpenses);
 
         protected override DomusOpesDivisions Division => DomusOpesDivisions.Expense;
+
+        /// <summary>
+        /// Gets expenses at random
+        /// </summary>
+        /// <param name="options"></param>
+        /// <returns></returns>
+        [RandomFactory]
+        public static AmericanExpenses RandomExpenses(OpesOptions options = null)
+        {
+            var exp = new AmericanExpenses(options);
+            exp.ResolveItems(options);
+            return exp;
+        }
 
         public virtual Pondus[] GetExpectedExpensesAt(DateTime? dt)
         {

@@ -137,5 +137,15 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             foreach (var item in testSubject.MyItems)
                 System.Diagnostics.Debug.WriteLine(item);
         }
+
+        [TestMethod]
+        public void TestRandomAssets()
+        {
+            var testSubject = AmericanAssets.RandomAssets(new OpesOptions { Inception = new DateTime(DateTime.Today.Year, 1, 1) });
+            Assert.IsNotNull(testSubject);
+
+            Assert.IsNotNull(testSubject.MyItems);
+            Assert.AreNotEqual(0, testSubject.MyItems.Count);
+        }
     }
 }

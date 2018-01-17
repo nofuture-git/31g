@@ -102,6 +102,19 @@ namespace NoFuture.Rand.Domus.Opes.US
 
         #region methods
 
+        /// <summary>
+        /// Gets employment (with deductions) at random
+        /// </summary>
+        /// <param name="options"></param>
+        /// <returns></returns>
+        [RandomFactory]
+        public static AmericanEmployment RandomEmployment(OpesOptions options = null)
+        {
+            var emply = new AmericanEmployment(options);
+            emply.ResolveItems(options);
+            return emply;
+        }
+
         public virtual bool IsInRange(DateTime dt)
         {
             var afterOrOnFromDt = Inception == null || Inception <= dt;

@@ -105,5 +105,15 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             System.Diagnostics.Debug.WriteLine(testTotalDeductions);
             System.Diagnostics.Debug.WriteLine(testNetIncome);
         }
+
+        [TestMethod]
+        public void TestRandomEmployment()
+        {
+            var testSubject = AmericanEmployment.RandomEmployment(new OpesOptions { Inception = new DateTime(DateTime.Today.Year, 1, 1) });
+            Assert.IsNotNull(testSubject);
+
+            Assert.IsNotNull(testSubject.MyItems);
+            Assert.AreNotEqual(0, testSubject.MyItems.Count);
+        }
     }
 }

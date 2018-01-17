@@ -28,7 +28,7 @@ namespace NoFuture.Rand.Domus.Opes.US
 
         #region ctors
 
-        public AmericanIncome( OpesOptions options = null) : base(options)
+        public AmericanIncome(OpesOptions options = null) : base(options)
         {
             if(MyOptions.Inception == DateTime.MinValue)
                 MyOptions.Inception = GetYearNeg(-1);
@@ -86,6 +86,20 @@ namespace NoFuture.Rand.Domus.Opes.US
         #endregion
 
         #region methods
+
+        /// <summary>
+        /// Get income at random
+        /// </summary>
+        /// <param name="options"></param>
+        /// <returns></returns>
+        [RandomFactory]
+        public static AmericanIncome RandomIncome(OpesOptions options)
+        {
+            var income = new AmericanIncome(options);
+            income.ResolveItems(options);
+            return income;
+        }
+
         public virtual ILaboris[] GetEmploymentAt(DateTime? dt)
         {
             return dt == null

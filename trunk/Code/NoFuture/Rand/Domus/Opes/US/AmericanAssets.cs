@@ -127,6 +127,19 @@ namespace NoFuture.Rand.Domus.Opes.US
 
         #region methods
 
+        /// <summary>
+        /// Gets assets at random
+        /// </summary>
+        /// <param name="options"></param>
+        /// <returns></returns>
+        [RandomFactory]
+        public static AmericanAssets RandomAssets(OpesOptions options = null)
+        {
+            var assets = new AmericanAssets(options);
+            assets.ResolveItems(options);
+            return assets;
+        }
+
         public Pondus[] GetAssetsAt(DateTime? dt)
         {
             return GetAt(dt, MyItems);
