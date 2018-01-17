@@ -8,7 +8,6 @@ using NoFuture.Rand.Domus.US;
 using NoFuture.Rand.Edu;
 using NoFuture.Rand.Geo;
 using NoFuture.Rand.Gov;
-using NoFuture.Rand.Gov.US;
 using NoFuture.Shared.Core;
 
 namespace NoFuture.Rand.Domus
@@ -26,7 +25,7 @@ namespace NoFuture.Rand.Domus
         protected internal IPerson _father;
         protected internal readonly List<Uri> _netUris = new List<Uri>();
         protected internal readonly HashSet<Child> _children = new HashSet<Child>();
-        private readonly Personality _personality = new Personality();
+        private readonly Personality _personality = Personality.RandomPersonality();
         protected internal BirthCert _birthCert;
         protected internal readonly List<PostalAddress> _addresses = new List<PostalAddress>();
         protected internal Gender _myGender;

@@ -198,8 +198,8 @@ namespace NoFuture.Rand.Edu.US
 
             //get college grad data for same state as hs
             var univGradData =
-                UsStateData.GetStateData(homeState)
-                    .PercentOfGrads.FirstOrDefault(x => x.Item1 == (OccidentalEdu.Bachelor | OccidentalEdu.Grad));
+                UsStateData.GetStateData(homeState)?.PercentOfGrads
+                    .FirstOrDefault(x => x.Item1 == (OccidentalEdu.Bachelor | OccidentalEdu.Grad));
 
             var bachelorGradRate = univGradData?.Item2 ??
                                AmericanUniversity.DefaultNationalAvgs.First(

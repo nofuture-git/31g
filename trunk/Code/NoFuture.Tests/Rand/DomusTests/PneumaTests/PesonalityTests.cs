@@ -20,7 +20,7 @@ namespace NoFuture.Rand.Tests.DomusTests.PneumaTests
         [TestMethod]
         public void TestGetRandomActsIrresponsible()
         {
-            var testSubject = new NoFuture.Rand.Domus.Pneuma.Personality();
+            var testSubject = Personality.RandomPersonality();
 
             testSubject.Conscientiousness.Value = new Dimension(0.99,0.10);
 
@@ -41,8 +41,8 @@ namespace NoFuture.Rand.Tests.DomusTests.PneumaTests
         [TestMethod]
         public void TestEquals()
         {
-            var testSubject00 = new Personality();
-            var testSubject01 = new Personality();
+            var testSubject00 = Personality.RandomPersonality();
+            var testSubject01 = Personality.RandomPersonality();
 
             testSubject01.Agreeableness.Value = testSubject00.Agreeableness.Value;
             testSubject01.Conscientiousness.Value = testSubject00.Conscientiousness.Value;

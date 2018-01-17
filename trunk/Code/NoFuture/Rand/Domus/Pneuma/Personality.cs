@@ -4,6 +4,19 @@ using NoFuture.Rand.Core;
 
 namespace NoFuture.Rand.Domus.Pneuma
 {
+    /// <inheritdoc />
+    /// <summary>
+    /// </summary>
+    /// <remarks>
+    /// example of reassigning individual traits
+    /// <![CDATA[
+    /// //all traits are generated with random z-scores
+    /// var personality = new Personality();
+    /// 
+    /// //a trait implements IIdentifier<Dimension> so its Value property is read-write
+    /// personality.Openness.Value = new Dimension(0.99); //open to anything and everything
+    /// ]]>
+    /// </remarks>
     [Serializable]
     public class Personality : IPersonality
     {
@@ -12,6 +25,16 @@ namespace NoFuture.Rand.Domus.Pneuma
         public Extraversion Extraversion { get; } = new Extraversion();
         public Agreeableness Agreeableness { get; } = new Agreeableness();
         public Neuroticism Neuroticism { get; } = new Neuroticism();
+
+        /// <summary>
+        /// Gets a personality at random
+        /// </summary>
+        /// <returns></returns>
+        [RandomFactory]
+        public static Personality RandomPersonality()
+        {
+            return new Personality();
+        }
 
         public override string ToString()
         {

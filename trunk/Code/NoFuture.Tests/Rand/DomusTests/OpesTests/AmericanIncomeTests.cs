@@ -20,7 +20,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             Assert.AreNotEqual(0, testResult.Count);
             Assert.IsNotNull(testResult[0]?.Item1);
 
-            var testInput = new Personality();
+            var testInput = Personality.RandomPersonality();
             testInput.Openness.Value = new Dimension(0.99, 0.10);
 
             testResult = testSubject.GetEmploymentRanges(null, testInput);
@@ -43,7 +43,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0, testResult.Count);
 
-            var testInput = new Personality();
+            var testInput = Personality.RandomPersonality();
             testInput.Openness.Value = new Dimension(0.99, 0.10);
 
             testResult = testSubject.GetRandomEmployment(null, testInput);

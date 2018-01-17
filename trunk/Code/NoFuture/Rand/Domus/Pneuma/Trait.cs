@@ -9,6 +9,11 @@ namespace NoFuture.Rand.Domus.Pneuma
         {
             Value = new Dimension();
         }
+
+        protected Trait(double zscore)
+        {
+            Value = new Dimension(zscore);
+        }
         public virtual string Src { get; set; }
         public abstract string Abbrev { get; }
         public Dimension Value { get; set; }
