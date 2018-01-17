@@ -33,7 +33,8 @@ namespace NoFuture.Rand.Data.Sp
         /// <param name="termInYears"></param>
         /// <param name="minPmt"></param>
         /// <returns></returns>
-        public static SecuredFixedRateLoan GetRandomLoan(Identifier property, Pecuniam remainingCost,
+        [RandomFactory]
+        public static SecuredFixedRateLoan RandomSecuredFixedRateLoan(Identifier property, Pecuniam remainingCost,
             Pecuniam totalCost, float rate, int termInYears, out Pecuniam minPmt)
         {
             //HACK - checking type-name as string to avoid adding a ref to Rand.Geo
@@ -48,7 +49,7 @@ namespace NoFuture.Rand.Data.Sp
 
             //remaining must always be less than the total 
             if (remainingCost > totalCost)
-                totalCost = remainingCost + Pecuniam.GetRandPecuniam(1000, 3000);
+                totalCost = remainingCost + Pecuniam.RandomPecuniam(1000, 3000);
 
             //interest rate must be a positive number
             rate = Math.Abs(rate);
@@ -95,7 +96,7 @@ namespace NoFuture.Rand.Data.Sp
         }
 
         /// <summary>
-        /// Same as its counterpart <see cref="GetRandomLoan"/> only it also produces a history of transactions.
+        /// Same as its counterpart <see cref="RandomSecuredFixedRateLoan"/> only it also produces a history of transactions.
         /// </summary>
         /// <param name="property">The property on which the loan is secured.</param>
         /// <param name="remainingCost">The balance which currently remains.</param>
@@ -108,11 +109,12 @@ namespace NoFuture.Rand.Data.Sp
         /// <param name="minPmt"></param>
         /// <param name="randomActsIrresponsible">Optional, used when creating a more colorful history of payments.</param>
         /// <returns></returns>
-        public static SecuredFixedRateLoan GetRandomLoanWithHistory(Identifier property, Pecuniam remainingCost,
+        [RandomFactory]
+        public static SecuredFixedRateLoan RandomSecuredFixedRateLoanWithHistory(Identifier property, Pecuniam remainingCost,
             Pecuniam totalCost, float rate, int termInYears, out Pecuniam minPmt, Func<bool> randomActsIrresponsible = null)
         {
 
-            var loan = GetRandomLoan(property, remainingCost, totalCost, rate, termInYears, out minPmt);
+            var loan = RandomSecuredFixedRateLoan(property, remainingCost, totalCost, rate, termInYears, out minPmt);
 
             var pmtNote = new Mereo(property?.ToString() ?? nameof(property));
 

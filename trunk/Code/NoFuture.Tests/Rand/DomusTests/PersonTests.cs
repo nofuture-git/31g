@@ -56,7 +56,7 @@ namespace NoFuture.Rand.Tests.DomusTests
         public void TestAmericanFemaleFirstName()
         {
             var testDob = new DateTime(1980, 10, 1);
-            var testResult = AmericanUtil.GetAmericanFirstName(testDob, Gender.Female);
+            var testResult = AmericanUtil.RandomAmericanFirstName(testDob, Gender.Female);
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0, testResult.Length);
             Debug.WriteLine(testResult);
@@ -66,7 +66,7 @@ namespace NoFuture.Rand.Tests.DomusTests
         public void TestAmericanMaleFirstName()
         {
             var testDob = new DateTime(1980, 10, 1);
-            var testResult = AmericanUtil.GetAmericanFirstName(testDob, Gender.Male);
+            var testResult = AmericanUtil.RandomAmericanFirstName(testDob, Gender.Male);
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0, testResult.Length);
             Debug.WriteLine(testResult);
@@ -75,7 +75,7 @@ namespace NoFuture.Rand.Tests.DomusTests
         [TestMethod]
         public void TestAmericanLastName()
         {
-            var testResult = AmericanUtil.GetAmericanLastName();
+            var testResult = AmericanUtil.RandomAmericanLastName();
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0, testResult.Length);
             Debug.WriteLine(testResult);
@@ -85,20 +85,20 @@ namespace NoFuture.Rand.Tests.DomusTests
         public void TestGetAmericanMaritialStatus()
         {
             //too young 
-            Assert.AreEqual(MaritialStatus.Single, AmericanUtil.GetMaritialStatus(DateTime.Today.AddYears(-16), Gender.Male));
-            Assert.AreEqual(MaritialStatus.Single, AmericanUtil.GetMaritialStatus(DateTime.Today.AddYears(-16), Gender.Female));
+            Assert.AreEqual(MaritialStatus.Single, AmericanUtil.RandomMaritialStatus(DateTime.Today.AddYears(-16), Gender.Male));
+            Assert.AreEqual(MaritialStatus.Single, AmericanUtil.RandomMaritialStatus(DateTime.Today.AddYears(-16), Gender.Female));
 
             //cannot test further since its is random...
-            Debug.WriteLine(AmericanUtil.GetMaritialStatus(new DateTime(1974, 11, 21), Gender.Male));
-            Debug.WriteLine(AmericanUtil.GetMaritialStatus(new DateTime(1962, 1, 31), Gender.Female));
-            Debug.WriteLine(AmericanUtil.GetMaritialStatus(new DateTime(1982, 1, 31), Gender.Female));
+            Debug.WriteLine(AmericanUtil.RandomMaritialStatus(new DateTime(1974, 11, 21), Gender.Male));
+            Debug.WriteLine(AmericanUtil.RandomMaritialStatus(new DateTime(1962, 1, 31), Gender.Female));
+            Debug.WriteLine(AmericanUtil.RandomMaritialStatus(new DateTime(1982, 1, 31), Gender.Female));
         }
 
         [TestMethod]
         public void TestSolveForParent()
         {
             DateTime testDob = new DateTime(1984,4,22);
-            var father = AmericanUtil.SolveForParent(testDob, AmericanEquations.MaleAge2FirstMarriage, Gender.Male);
+            var father = AmericanUtil.RandomParent(testDob, Gender.Male);
             Assert.IsNotNull(father);
             Assert.IsNotNull(father.BirthCert);
             Assert.IsTrue(father.BirthCert.DateOfBirth.Year < testDob.Year);
@@ -112,7 +112,7 @@ namespace NoFuture.Rand.Tests.DomusTests
         public void TestSolveForSpouse()
         {
             var testDob = new DateTime(1982, 8, 19);
-            var spouse = AmericanUtil.SolveForSpouse(testDob, Gender.Female);
+            var spouse = AmericanUtil.RandomSpouse(testDob, Gender.Female);
             Assert.IsNotNull(spouse);
             Assert.IsNotNull(spouse.FirstName);
 
@@ -135,7 +135,7 @@ namespace NoFuture.Rand.Tests.DomusTests
         [TestMethod]
         public void TestSolveForNumberOfChildren()
         {
-            var testResult = AmericanUtil.SolveForNumberOfChildren(new DateTime(1974, 8, 11), null);
+            var testResult = AmericanUtil.RandomNumberOfChildren(new DateTime(1974, 8, 11), null);
 
             Assert.IsTrue(-1 < testResult);
 
@@ -146,7 +146,7 @@ namespace NoFuture.Rand.Tests.DomusTests
             //averages, 18 year old never has children.
             for (var i = 0; i < 100; i++)
             {
-                testResult = AmericanUtil.SolveForNumberOfChildren(DateTime.Now.AddYears(-18).AddDays(-128), null);
+                testResult = AmericanUtil.RandomNumberOfChildren(DateTime.Now.AddYears(-18).AddDays(-128), null);
                 Assert.AreEqual(0,testResult);
             }
         }
@@ -156,13 +156,13 @@ namespace NoFuture.Rand.Tests.DomusTests
         {
             var inputDob = DateTime.Now.AddYears(-50);
 
-            var testResult = AmericanUtil.GetChildBirthDate(inputDob, 0, null);
+            var testResult = AmericanUtil.RandomChildBirthDate(inputDob, 0, null);
 
             Assert.IsNotNull(testResult);
 
             Debug.WriteLine(testResult);
 
-            testResult = AmericanUtil.GetChildBirthDate(inputDob, 1, null);
+            testResult = AmericanUtil.RandomChildBirthDate(inputDob, 1, null);
 
             Assert.IsNotNull(testResult);
 

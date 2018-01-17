@@ -32,6 +32,7 @@ namespace NoFuture.Rand.Domus.US
         internal const string US_LAST_NAMES = "US_LastNames.xml";
         internal static XmlDocument FirstNamesXml;
         internal static XmlDocument LastNamesXml;
+
         /// <summary>
         /// Generates a <see cref="DeathCert"/> at random based on the given <see cref="p"/>
         /// </summary>
@@ -60,7 +61,8 @@ namespace NoFuture.Rand.Domus.US
         /// using one of top 200 names for the given decade in which the DOB is a part.
         /// </summary>
         /// <returns></returns>
-        public static string GetAmericanFirstName(DateTime? dateOfBirth, Gender gender)
+        [RandomFactory]
+        public static string RandomAmericanFirstName(DateTime? dateOfBirth, Gender gender)
         {
             var dt = dateOfBirth ?? DateTime.Today.AddYears(-18);
             FirstNamesXml = FirstNamesXml ?? XmlDocXrefIdentifier.GetEmbeddedXmlDoc(US_FIRST_NAMES, Assembly.GetExecutingAssembly());
@@ -103,7 +105,8 @@ namespace NoFuture.Rand.Domus.US
         /// Return one of 500 selected lastnames - source is unknown.
         /// </summary>
         /// <returns></returns>
-        public static string GetAmericanLastName()
+        [RandomFactory]
+        public static string RandomAmericanLastName()
         {
             LastNamesXml = LastNamesXml ?? XmlDocXrefIdentifier.GetEmbeddedXmlDoc(US_LAST_NAMES, Assembly.GetExecutingAssembly());
             var lnameNodes = LastNamesXml.SelectSingleNode("//last-name");
@@ -121,7 +124,8 @@ namespace NoFuture.Rand.Domus.US
         /// <param name="numberOfSiblings">this should be the current number of children of the mother</param>
         /// <param name="atTime">Defaults to the current time</param>
         /// <returns></returns>
-        public static DateTime? GetChildBirthDate(DateTime motherDob, int numberOfSiblings, DateTime? atTime)
+        [RandomFactory]
+        public static DateTime? RandomChildBirthDate(DateTime motherDob, int numberOfSiblings, DateTime? atTime = null)
         {
             //put number of siblings in scope for equations
             if (numberOfSiblings <= 0)
@@ -171,7 +175,8 @@ namespace NoFuture.Rand.Domus.US
         /// <param name="dob"></param>
         /// <param name="gender"></param>
         /// <returns></returns>
-        public static MaritialStatus GetMaritialStatus(DateTime? dob, Gender gender)
+        [RandomFactory]
+        public static MaritialStatus RandomMaritialStatus(DateTime? dob, Gender gender)
         {
             if (Etx.MyRand.NextDouble() <= AmericanData.PERCENT_UNMARRIED_WHOLE_LIFE)
                 return MaritialStatus.Single;
@@ -221,18 +226,21 @@ namespace NoFuture.Rand.Domus.US
 
         /// <summary>
         /// Returns a new <see cref="IPerson"/> representing a 
-        /// parent of the specified <see cref="gender"/> having a realistic age 
+        /// parent of the specified <see cref="parentGender"/> having a realistic age 
         /// from the <see cref="childDob"/>.
         /// </summary>
         /// <param name="childDob"></param>
-        /// <param name="eq"></param>
-        /// <param name="gender"></param>
+        /// <param name="parentGender"></param>
+        /// <param name="age2FirstMarriageEq">
+        /// Optional, linear equation to solve for average age of first marriage
+        /// </param>
         /// <returns></returns>
-        public static IPerson SolveForParent(DateTime? childDob, LinearEquation eq, Gender gender)
+        [RandomFactory]
+        public static IPerson RandomParent(DateTime? childDob, Gender parentGender, LinearEquation age2FirstMarriageEq = null)
         {
-            if (eq == null)
+            if (age2FirstMarriageEq == null)
             {
-                eq = gender == Gender.Male
+                age2FirstMarriageEq = parentGender == Gender.Male
                     ? AmericanEquations.MaleAge2FirstMarriage
                     : AmericanEquations.FemaleAge2FirstMarriage;
             }
@@ -246,12 +254,12 @@ namespace NoFuture.Rand.Domus.US
 
             //calc the age of marriable person at this time
             var avgAgeCouldMarry =
-                eq.SolveForY(dtPm.ToDouble());
+                age2FirstMarriageEq.SolveForY(dtPm.ToDouble());
 
             //move the adjusted child-dob date back by calc'ed years 
             var parentDob = dtPm.AddYears(Convert.ToInt32(Math.Round(avgAgeCouldMarry, 0))*-1);
 
-            var aParent = new American(parentDob, gender, false);
+            var aParent = new American(parentDob, parentGender, false);
             return aParent;
         }
 
@@ -265,7 +273,8 @@ namespace NoFuture.Rand.Domus.US
         /// <param name="gender"></param>
         /// <param name="maxAgeDiff">Optional difference in age of spouse.</param>
         /// <returns>return null for <see cref="Gender.Unknown"/></returns>
-        public static IPerson SolveForSpouse(DateTime? myDob, Gender gender, int maxAgeDiff = 4)
+        [RandomFactory]
+        public static IPerson RandomSpouse(DateTime? myDob, Gender gender, int maxAgeDiff = 4)
         {
             if (gender == Gender.Unknown)
                 return null;
@@ -289,7 +298,8 @@ namespace NoFuture.Rand.Domus.US
         /// <param name="dob"></param>
         /// <param name="atDateTime">Optional, will default to current system time to calc Age</param>
         /// <returns></returns>
-        public static int SolveForNumberOfChildren(DateTime? dob, DateTime? atDateTime)
+        [RandomFactory]
+        public static int RandomNumberOfChildren(DateTime? dob, DateTime? atDateTime = null)
         {
             //average to be 2.5 
             var vt = DateTime.Now;
@@ -359,7 +369,8 @@ namespace NoFuture.Rand.Domus.US
         /// <param name="dob"></param>
         /// <param name="myGender"></param>
         /// <returns></returns>
-        public static DateTime? SolveForMarriageDate(DateTime? dob, Gender myGender)
+        [RandomFactory]
+        public static DateTime? RandomMarriageDate(DateTime? dob, Gender myGender)
         {
             dob = dob ?? Etx.RandomAdultBirthDate();
             dob = AmericanEquations.ProtectAgainstDistantTimes(dob.Value);

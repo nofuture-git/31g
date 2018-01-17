@@ -45,13 +45,13 @@ namespace NoFuture.Rand.Data.Sp.Cc
         public string Cvv { get; }
         public DateTime CardHolderSince { get; }
 
-        protected abstract int CardNumLen { get; }
-        protected abstract int CardNumPrefix { get; }
-        protected abstract string CcName { get; }
+        protected internal abstract int CardNumLen { get; }
+        protected internal abstract int CardNumPrefix { get; }
+        protected internal abstract string CcName { get; }
         #endregion
 
         #region methods
-        protected CreditCardNumber GetRandomCardNumber()
+        protected internal CreditCardNumber GetRandomCardNumber()
         {
             var prefixVal = CardNumPrefix;
             var prefixValLen = prefixVal.ToString().Length;
@@ -82,7 +82,8 @@ namespace NoFuture.Rand.Data.Sp.Cc
         /// <param name="cardholder"></param>
         /// <param name="opennedDate"></param>
         /// <returns></returns>
-        public static ICreditCard GetRandomCreditCard(IVoca cardholder, DateTime? opennedDate = null)
+        [RandomFactory]
+        public static ICreditCard RandomCreditCard(IVoca cardholder, DateTime? opennedDate = null)
         {
             var fk = Etx.RandomInteger(0, 3);
             var dt = opennedDate ?? Etx.RandomDate(-3, null);

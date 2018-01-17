@@ -58,6 +58,18 @@ namespace NoFuture.Rand.Data.Sp
         #endregion
 
         #region methods
+
+        /// <summary>
+        /// Gets a personal credit score at random
+        /// </summary>
+        /// <param name="birthDate"></param>
+        /// <returns></returns>
+        [RandomFactory]
+        public static PersonalCreditScore RandomCreditScore(DateTime? birthDate)
+        {
+            return new PersonalCreditScore(birthDate);
+        }
+
         /// <summary>
         /// Loosely based on paper from Boston Fed 
         /// [http://www.bostonfed.org/economic/wp/wp2007/wp0703.pdf]

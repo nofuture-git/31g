@@ -103,24 +103,32 @@ namespace NoFuture.Rand.Data.Sp
         /// <summary>
         /// Creates a new random Checking Account
         /// </summary>
-        /// <param name="p"></param>
+        /// <param name="personName"></param>
         /// <param name="dt">Date account was openned, default to now.</param>
         /// <param name="debitPin">
         /// Optional, when present and random instance of <see cref="CheckingAccount.DebitCard"/> is created with 
         /// this as its PIN.
         /// </param>
         /// <returns></returns>
-        public static CheckingAccount GetRandomCheckingAcct(IVoca p, DateTime? dt = null, string debitPin = null)
+        [RandomFactory]
+        public static CheckingAccount RandomCheckingAccount(IVoca personName, DateTime? dt = null, string debitPin = null)
         {
             var dtd = dt.GetValueOrDefault(DateTime.Now);
             var accountId = new AccountId(Etx.RandomRChars(true));
             return CheckingAccount.IsPossiablePin(debitPin)
                 ? new CheckingAccount(accountId, dtd,
-                    new Tuple<ICreditCard, string>(CreditCard.GetRandomCreditCard(p), debitPin))
+                    new Tuple<ICreditCard, string>(CreditCard.RandomCreditCard(personName), debitPin))
                 : new CheckingAccount(accountId, dtd);
         }
 
-        public static SavingsAccount GetRandomSavingAcct(IVoca p, DateTime? dt = null)
+        /// <summary>
+        /// Creates a new random Savings Account
+        /// </summary>
+        /// <param name="personName"></param>
+        /// <param name="dt"></param>
+        /// <returns></returns>
+        [RandomFactory]
+        public static SavingsAccount RandomSavingAccount(IVoca personName, DateTime? dt = null)
         {
             var dtd = dt.GetValueOrDefault(DateTime.Now);
             var accountId = new AccountId(Etx.RandomRChars(true));

@@ -11,8 +11,19 @@ namespace NoFuture.Rand.Data.Sp.Cc
         {
         }
 
-        protected override int CardNumLen => 16;
-        protected override int CardNumPrefix => Etx.RandomInteger(51, 55);
-        protected override string CcName => "MC";
+        protected internal override int CardNumLen => 16;
+        protected internal override int CardNumPrefix => Etx.RandomInteger(51, 55);
+        protected internal override string CcName => "MC";
+
+        /// <summary>
+        /// Gets a MasterCard credit card number at random
+        /// </summary>
+        /// <returns></returns>
+        [RandomFactory]
+        public static CreditCardNumber RandomMasterCardNumber()
+        {
+            var card = new MasterCardCc(null, null, null);
+            return card.GetRandomCardNumber();
+        }
     }
 }

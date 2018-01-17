@@ -39,16 +39,16 @@ namespace NoFuture.Rand.Tests.DataTests.SpTests
         [TestMethod]
         public void TestGetRandPecuniam()
         {
-            var testResult = Pecuniam.GetRandPecuniam();
+            var testResult = Pecuniam.RandomPecuniam();
             Assert.IsNotNull(testResult);
             Assert.IsFalse(testResult.Equals(Pecuniam.Zero));
 
-            testResult = Pecuniam.GetRandPecuniam(10000, 99999);
+            testResult = Pecuniam.RandomPecuniam(10000, 99999);
             Assert.IsNotNull(testResult);
             var testResultValue = testResult.Amount;
             Assert.IsTrue(testResultValue >= 10000M && testResultValue <= 99999M);
 
-            testResult = Pecuniam.GetRandPecuniam(10000, 99999, 100);
+            testResult = Pecuniam.RandomPecuniam(10000, 99999, 100);
             Assert.IsNotNull(testResult);
             testResultValue = testResult.Amount;
             Assert.IsTrue(testResultValue >= 10000M && testResultValue <= 99999M);

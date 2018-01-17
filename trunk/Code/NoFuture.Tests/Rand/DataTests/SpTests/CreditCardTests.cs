@@ -6,7 +6,6 @@ using NoFuture.Rand.Data.Sp;
 using NoFuture.Rand.Data.Sp.Cc;
 using NoFuture.Rand.Domus.US;
 using NoFuture.Rand.Gov;
-using NoFuture.Rand.Gov.US;
 using NoFuture.Util.Core;
 
 namespace NoFuture.Rand.Tests.DataTests.SpTests
@@ -107,6 +106,42 @@ namespace NoFuture.Rand.Tests.DataTests.SpTests
 
 
 
+        }
+
+        [TestMethod]
+        public void TestRandomMasterCardNumber()
+        {
+            var testResult = MasterCardCc.RandomMasterCardNumber();
+            Assert.IsNotNull(testResult);
+            Assert.IsNotNull(testResult.Value);
+            System.Diagnostics.Debug.WriteLine(testResult.ToString());
+        }
+
+        [TestMethod]
+        public void TestRandomVisaNumber()
+        {
+            var testResult = VisaCc.RandomVisaNumber();
+            Assert.IsNotNull(testResult);
+            Assert.IsNotNull(testResult.Value);
+            System.Diagnostics.Debug.WriteLine(testResult.ToString());
+        }
+
+        [TestMethod]
+        public void TestRandomDiscoverNumber()
+        {
+            var testResult = DiscoverCc.RandomDiscoverNumber();
+            Assert.IsNotNull(testResult);
+            Assert.IsNotNull(testResult.Value);
+            System.Diagnostics.Debug.WriteLine(testResult.ToString());
+        }
+
+        [TestMethod]
+        public void TestRandomAmexNumber()
+        {
+            var testResult = AmexCc.RandomAmexNumber();
+            Assert.IsNotNull(testResult);
+            Assert.IsNotNull(testResult.Value);
+            System.Diagnostics.Debug.WriteLine(testResult.ToString());
         }
     }
 }

@@ -69,7 +69,8 @@ namespace NoFuture.Rand.Data.Sp
         /// a random value which is evenly divisible by 100 with no remainder)
         /// </param>
         /// <returns></returns>
-        public static Pecuniam GetRandPecuniam(int min = 3, int max = 999, int wholeNumbersOf = 0)
+        [RandomFactory]
+        public static Pecuniam RandomPecuniam(int min = 3, int max = 999, int wholeNumbersOf = 0)
         {
             var num = (double)Etx.RandomInteger(min, max);
 

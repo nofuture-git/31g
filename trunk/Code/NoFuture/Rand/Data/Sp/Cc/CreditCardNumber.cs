@@ -20,5 +20,6 @@ namespace NoFuture.Rand.Data.Sp.Cc
             this.format = format;
         }
         public override string Abbrev => "CC Num";
+
     }
 }

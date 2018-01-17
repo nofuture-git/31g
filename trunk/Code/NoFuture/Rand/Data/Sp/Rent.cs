@@ -136,7 +136,6 @@ namespace NoFuture.Rand.Data.Sp
             return countOfMonths;
         }
 
-
         /// <summary>
         /// Factory method to generate a <see cref="Rent"/> instance at random.
         /// </summary>
@@ -146,7 +145,8 @@ namespace NoFuture.Rand.Data.Sp
         /// is calculated from <see cref="GetAvgAmericanRentByYear"/>
         /// </param>
         /// <returns></returns>
-        public static Rent GetRandomRent(Identifier property, double? totalYearlyRent = null)
+        [RandomFactory]
+        public static Rent RandomRent(Identifier property, double? totalYearlyRent = null)
         {
             var avgRent = totalYearlyRent ?? 0D;
             var randRent = Pecuniam.Zero;
@@ -156,7 +156,7 @@ namespace NoFuture.Rand.Data.Sp
                 var stdOfAvgRent = avgRent * 0.43759;
                 var lower = (int) Math.Round(avgRent - (stdOfAvgRent * 3));
                 var upper = (int) Math.Round(avgRent + (stdOfAvgRent * 3));
-                randRent = Pecuniam.GetRandPecuniam(lower, upper, 100);
+                randRent = Pecuniam.RandomPecuniam(lower, upper, 100);
             }
             else
             {
@@ -171,8 +171,6 @@ namespace NoFuture.Rand.Data.Sp
             return rent;
         }
 
-
-
         /// <summary>
         /// Factory method to generate a <see cref="Rent"/> instance at random with a payment history.
         /// </summary>
@@ -180,12 +178,13 @@ namespace NoFuture.Rand.Data.Sp
         /// <param name="homeDebtFactor">The home debt factor based on the renter's age, gender, edu, etc.</param>
         /// <param name="randomActsIrresponsible">Optional, used when creating a more colorful history of payments.</param>
         /// <returns></returns>
-        public static Rent GetRandomRentWithHistory(Identifier property, double homeDebtFactor, Func<bool> randomActsIrresponsible = null)
+        [RandomFactory]
+        public static Rent RandomRentWithHistory(Identifier property, double homeDebtFactor, Func<bool> randomActsIrresponsible = null)
         {
             //create a rent object
             randomActsIrresponsible = randomActsIrresponsible ?? (() => false);
 
-            var rent = GetRandomRent(property);
+            var rent = RandomRent(property);
             var randDate = rent.SigningDate;
             var randRent = rent.MonthlyPmt;
             //create payment history until current

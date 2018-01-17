@@ -111,7 +111,7 @@ namespace NoFuture.Rand.Data.Sp.Cc
         {
             var ccScore =  new PersonalCreditScore(personBirthDate);
 
-            var cc = CreditCard.GetRandomCreditCard(p);
+            var cc = CreditCard.RandomCreditCard(p);
             var max = ccScore.GetRandomMax(cc.CardHolderSince);
             var randRate = ccScore.GetRandomInterestRate(cc.CardHolderSince, baseInterestRate) * 0.01;
             var ccAcct = new CreditCardAccount(cc, minPmtPercent, max) { Rate = (float)randRate };
@@ -135,7 +135,7 @@ namespace NoFuture.Rand.Data.Sp.Cc
         {
             ccScore = ccScore ?? new PersonalCreditScore();
 
-            var cc = CreditCard.GetRandomCreditCard(p);
+            var cc = CreditCard.RandomCreditCard(p);
             var max = ccScore.GetRandomMax(cc.CardHolderSince);
             var randRate = ccScore.GetRandomInterestRate(cc.CardHolderSince, baseInterestRate) * 0.01;
             var ccAcct = new CreditCardAccount(cc, minPmtPercent, max) { Rate = (float)randRate };
