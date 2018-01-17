@@ -51,6 +51,16 @@ namespace NoFuture.Rand.Tele
         }
 
         /// <summary>
+        /// Creates a random email address in a typical format
+        /// </summary>
+        /// <returns></returns>
+        [RandomFactory]
+        public static Email RandomEmail()
+        {
+            return RandomEmail(true);
+        }
+
+        /// <summary>
         /// Gets a randome email address that appears to be something a 12 year old would pick for a username
         /// </summary>
         /// <param name="usCommonOnly"></param>

@@ -22,7 +22,7 @@ namespace NoFuture.Rand.Data.Sp
         public Pecuniam Deposit { get; }
         public int LeaseTermInMonths { get; }
         public Pecuniam MonthlyPmt { get; }
-        public DateTime LeaseExpiry { get; }
+        public DateTime? LeaseExpiry => Terminus;
         public Identifier Id { get; }
         public DateTime SigningDate => Inception;
 
@@ -47,7 +47,7 @@ namespace NoFuture.Rand.Data.Sp
                 _proRatedAmt = Pecuniam.Zero;
                 _dtOfFirstFullRentDue = signing;
             }
-            LeaseExpiry = _dtOfFirstFullRentDue.AddMonths(forMonths);
+            Terminus = _dtOfFirstFullRentDue.AddMonths(forMonths);
             var fullTermAmt = _proRatedAmt + new Pecuniam(monthlyRent.Amount*forMonths);
             Balance.AddTransaction(signing, fullTermAmt, new Mereo("Lease Signing"));
             FormOfCredit = FormOfCredit.None;
@@ -146,7 +146,7 @@ namespace NoFuture.Rand.Data.Sp
         /// </param>
         /// <returns></returns>
         [RandomFactory]
-        public static Rent RandomRent(Identifier property, double? totalYearlyRent = null)
+        public static Rent RandomRent(Identifier property = null, double? totalYearlyRent = null)
         {
             var avgRent = totalYearlyRent ?? 0D;
             var randRent = Pecuniam.Zero;
@@ -175,21 +175,26 @@ namespace NoFuture.Rand.Data.Sp
         /// Factory method to generate a <see cref="Rent"/> instance at random with a payment history.
         /// </summary>
         /// <param name="property">The property identifier on which is being leased</param>
-        /// <param name="homeDebtFactor">The home debt factor based on the renter's age, gender, edu, etc.</param>
+        /// <param name="totalYearlyRent">
+        /// Optional, allows the calling assembly to specify this, default 
+        /// is calculated from <see cref="GetAvgAmericanRentByYear"/>
+        /// </param>
         /// <param name="randomActsIrresponsible">Optional, used when creating a more colorful history of payments.</param>
         /// <returns></returns>
         [RandomFactory]
-        public static Rent RandomRentWithHistory(Identifier property, double homeDebtFactor, Func<bool> randomActsIrresponsible = null)
+        public static Rent RandomRentWithHistory(Identifier property = null, double? totalYearlyRent = null,
+            Func<bool> randomActsIrresponsible = null)
         {
             //create a rent object
             randomActsIrresponsible = randomActsIrresponsible ?? (() => false);
 
-            var rent = RandomRent(property);
+            var rent = RandomRent(property, totalYearlyRent);
             var randDate = rent.SigningDate;
             var randRent = rent.MonthlyPmt;
             //create payment history until current
             var firstPmt = rent.GetMinPayment(randDate);
-            rent.PayRent(randDate.AddDays(1), firstPmt, new Mereo(property.ToString()));
+            var note = property == null ? null : new Mereo(property.ToString());
+            rent.PayRent(randDate.AddDays(1), firstPmt, note);
 
             var rentDueDate = randDate.Month == 12
                 ? new DateTime(randDate.Year + 1, 1, 1)
@@ -202,7 +207,9 @@ namespace NoFuture.Rand.Data.Sp
                 if (randomActsIrresponsible())
                     paidRentOn = paidRentOn.AddDays(Etx.RandomInteger(5, 15));
 
-                rent.PayRent(paidRentOn, randRent, new Mereo(rent.Id.ToString()));
+                note = rent.Id != null ? new Mereo(rent.Id.ToString()) : null;
+
+                rent.PayRent(paidRentOn, randRent, note);
                 rentDueDate = rentDueDate.AddMonths(1);
             }
             return rent;

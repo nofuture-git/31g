@@ -54,17 +54,17 @@ namespace NoFuture.Rand.Domus.US
             _myGender = myGender;
 
             var fname = _myGender != Gender.Unknown
-                ? AmericanUtil.RandomAmericanFirstName(_birthCert.DateOfBirth, _myGender)
+                ? AmericanUtil.RandomAmericanFirstName(_myGender, _birthCert.DateOfBirth)
                 : "Pat";
 
             UpsertName(KindsOfNames.First, fname);
             var lname = AmericanUtil.RandomAmericanLastName();
             UpsertName(KindsOfNames.Surname, lname);
             
-            MiddleName = AmericanUtil.RandomAmericanFirstName(_birthCert.DateOfBirth, _myGender);
+            MiddleName = AmericanUtil.RandomAmericanFirstName(_myGender, _birthCert.DateOfBirth);
             while (string.Equals(fname, MiddleName, StringComparison.OrdinalIgnoreCase))
             {
-                MiddleName = AmericanUtil.RandomAmericanFirstName(_birthCert.DateOfBirth, _myGender);
+                MiddleName = AmericanUtil.RandomAmericanFirstName(_myGender, _birthCert.DateOfBirth);
             }
             _ssn = SocialSecurityNumber.RandomSsn();
             if (Race <= 0)
@@ -708,7 +708,7 @@ namespace NoFuture.Rand.Domus.US
             while (_children.Any(x => x.Est.FirstName == nAmerChild.FirstName))
             {
                 nAmerChild.UpsertName(KindsOfNames.First,
-                    AmericanUtil.RandomAmericanFirstName(myChildDob, nAmerChild.MyGender));
+                    AmericanUtil.RandomAmericanFirstName(nAmerChild.MyGender, myChildDob));
             }
 
             //child has ref to father, father needs ref to child

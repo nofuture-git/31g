@@ -57,12 +57,12 @@ namespace NoFuture.Rand.Domus.US
         }
 
         /// <summary>
-        /// Returns one entry at random selecting by <see cref="Person.MyGender"/> and <see cref="Person"/>
+        /// Returns one entry at random selecting by Gender
         /// using one of top 200 names for the given decade in which the DOB is a part.
         /// </summary>
         /// <returns></returns>
         [RandomFactory]
-        public static string RandomAmericanFirstName(DateTime? dateOfBirth, Gender gender)
+        public static string RandomAmericanFirstName(Gender gender, DateTime? dateOfBirth = null)
         {
             var dt = dateOfBirth ?? DateTime.Today.AddYears(-18);
             FirstNamesXml = FirstNamesXml ?? XmlDocXrefIdentifier.GetEmbeddedXmlDoc(US_FIRST_NAMES, Assembly.GetExecutingAssembly());
@@ -383,7 +383,11 @@ namespace NoFuture.Rand.Domus.US
             //all other MaritialStatus imply at least one marriage in past
             var yearsMarried = currentAge - Convert.ToInt32(Math.Round(avgAgeMarriage));
 
-            return Etx.RandomDate(-1*yearsMarried, dt);
+            var marriedOn = Etx.RandomDate(-1*yearsMarried, dt);
+
+            //zero-out the time
+            marriedOn = new DateTime(marriedOn.Year, marriedOn.Month, marriedOn.Day);
+            return marriedOn;
         }
 
         /// <summary>

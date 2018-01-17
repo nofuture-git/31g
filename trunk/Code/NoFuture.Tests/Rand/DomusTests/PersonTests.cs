@@ -56,7 +56,7 @@ namespace NoFuture.Rand.Tests.DomusTests
         public void TestAmericanFemaleFirstName()
         {
             var testDob = new DateTime(1980, 10, 1);
-            var testResult = AmericanUtil.RandomAmericanFirstName(testDob, Gender.Female);
+            var testResult = AmericanUtil.RandomAmericanFirstName(Gender.Female, testDob);
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0, testResult.Length);
             Debug.WriteLine(testResult);
@@ -66,7 +66,7 @@ namespace NoFuture.Rand.Tests.DomusTests
         public void TestAmericanMaleFirstName()
         {
             var testDob = new DateTime(1980, 10, 1);
-            var testResult = AmericanUtil.RandomAmericanFirstName(testDob, Gender.Male);
+            var testResult = AmericanUtil.RandomAmericanFirstName(Gender.Male, testDob);
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0, testResult.Length);
             Debug.WriteLine(testResult);

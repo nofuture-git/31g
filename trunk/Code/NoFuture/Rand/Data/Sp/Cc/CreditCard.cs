@@ -30,7 +30,9 @@ namespace NoFuture.Rand.Data.Sp.Cc
             {
                 var fname = (cardholder.GetName(KindsOfNames.First) ?? String.Empty).ToUpper();
                 var lname = (cardholder.GetName(KindsOfNames.Surname) ?? String.Empty).ToUpper();
-                CardHolderName = String.Join(" ", fname, lname);
+                CardHolderName = string.IsNullOrWhiteSpace(fname) && string.IsNullOrWhiteSpace(lname)
+                    ? (cardholder.GetName(KindsOfNames.Legal) ?? String.Empty).ToUpper()
+                    : String.Join(" ", fname, lname);
             }
             
             Cvv = $"{Etx.RandomInteger(7, 999),3:D3}";

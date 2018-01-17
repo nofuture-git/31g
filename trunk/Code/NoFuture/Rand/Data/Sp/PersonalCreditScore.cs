@@ -65,8 +65,9 @@ namespace NoFuture.Rand.Data.Sp
         /// <param name="birthDate"></param>
         /// <returns></returns>
         [RandomFactory]
-        public static PersonalCreditScore RandomCreditScore(DateTime? birthDate)
+        public static PersonalCreditScore RandomCreditScore(DateTime? birthDate = null)
         {
+            birthDate = birthDate ?? Etx.RandomAdultBirthDate();
             return new PersonalCreditScore(birthDate);
         }
 

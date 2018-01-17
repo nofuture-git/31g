@@ -147,5 +147,30 @@ namespace NoFuture.Rand.Tests.DataTests.SpTests
             Assert.IsTrue(testResult.Amount > 0);
             System.Diagnostics.Debug.WriteLine(testResult);
         }
+
+        [TestMethod]
+        public void TestRandomRent()
+        {
+            var testResult = Rent.RandomRent();
+            Assert.IsNotNull(testResult);
+            Assert.IsNotNull(testResult.MonthlyPmt);
+            Assert.AreNotEqual(Pecuniam.Zero, testResult.MonthlyPmt);
+            Assert.AreNotEqual(DateTime.MinValue, testResult.SigningDate);
+            System.Diagnostics.Debug.WriteLine(testResult);
+        }
+
+        [TestMethod]
+        public void TestRandomRentWithHistory()
+        {
+            var testResult = Rent.RandomRentWithHistory();
+            Assert.IsNotNull(testResult);
+            Assert.IsNotNull(testResult.MonthlyPmt);
+            Assert.AreNotEqual(Pecuniam.Zero, testResult.MonthlyPmt);
+            Assert.AreNotEqual(DateTime.MinValue, testResult.SigningDate);
+            Assert.IsNotNull(testResult.Balance);
+            var payments = testResult.Balance.GetTransactionsBetween(null, null);
+            Assert.IsNotNull(payments);
+            Assert.AreNotEqual(0, payments.Count);
+        }
     }
 }

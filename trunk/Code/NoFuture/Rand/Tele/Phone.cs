@@ -57,10 +57,13 @@ namespace NoFuture.Rand.Tele
         /// Gets a <see cref="NorthAmericanPhone"/> whose area code is pertinent 
         /// to the given Canadian Providence.
         /// </summary>
-        /// <param name="providence">Works with both the postal abbreviation and the full name</param>
+        /// <param name="providence">
+        /// Works with both the postal abbreviation and the full name.
+        /// Default is Ontario src [https://en.wikipedia.org/wiki/List_of_Canadian_provinces_and_territories_by_population]
+        /// </param>
         /// <returns></returns>
         [RandomFactory]
-        public static NorthAmericanPhone RandomCanadianPhone(string providence)
+        public static NorthAmericanPhone RandomCanadianPhone(string providence = "ON")
         {
             return
                 new NorthAmericanPhone(
