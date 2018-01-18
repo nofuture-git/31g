@@ -320,24 +320,22 @@ namespace NoFuture.Rand.Domus.Opes.US
                 if (buyer != null)
                     irresp = buyer.GetRandomActsIrresponsible;
 
-                p = SecuredFixedRateLoan.RandomSecuredFixedRateLoanWithHistory(
-                    id,
-                    remainingCost,
+                p = SecuredFixedRateLoan.RandomSecuredFixedRateLoanWithHistory(remainingCost,
                     totalValue,
                     randRate,
                     termInYears,
-                    out var outPayment,
-                    irresp);
+                    id, irresp);
 
+                var loan = (SecuredFixedRateLoan) p;
                 if (isMortgage)
                 {
                     p.My.ExpectedValue = homeEquityAmt.ToPecuniam();
-                    HousePayment = new Mereo(item, grp) {ExpectedValue = outPayment, Interval = Interval.Monthly};
+                    HousePayment = new Mereo(item, grp) {ExpectedValue = loan.MonthlyPayment, Interval = Interval.Monthly};
                 }
                 else
                 {
                     p.My.ExpectedValue = carEquityAmt.ToPecuniam();
-                    CarPayment = new Mereo(item, grp) {ExpectedValue = outPayment, Interval = Interval.Monthly};
+                    CarPayment = new Mereo(item, grp) {ExpectedValue = loan.MonthlyPayment, Interval = Interval.Monthly};
                 }
             }
             else

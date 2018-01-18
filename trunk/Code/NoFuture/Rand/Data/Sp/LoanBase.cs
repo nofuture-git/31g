@@ -5,25 +5,37 @@ namespace NoFuture.Rand.Data.Sp
     [Serializable]
     public abstract class LoanBase<T> : Pondus, ILoan
     {
-        private float _minPaymentRate;
+        protected float _minPaymentRate;
 
-        #region ctors
-        protected LoanBase(DateTime openedDate, float minPaymentRate):base(openedDate)
+        protected LoanBase(DateTime openedDate, float minPaymentRate, Pecuniam amount = null) :base(openedDate)
         {
+            if (amount != null && amount.Amount != 0)
+            {
+                Balance.AddTransaction(openedDate, amount.Abs, new Mereo("Initial Transaction"), Pecuniam.Zero);
+            }
+
             _minPaymentRate = minPaymentRate;
         }
-        #endregion
 
-        #region properties
+        /// <summary>
+        /// The rate at which the minimum payment is calculated
+        /// </summary>
         public virtual float MinPaymentRate
         {
             get => _minPaymentRate;
             set => _minPaymentRate = value;
         }
-        public virtual T Rate { get; set; }
-        #endregion
 
-        #region methods
+        /// <summary>
+        /// The borrowing rate for the loan.
+        /// </summary>
+        public virtual T Rate { get; set; }
+
+        /// <summary>
+        /// Gets the minimum payment based on the value at time <see cref="dt"/>
+        /// </summary>
+        /// <param name="dt"></param>
+        /// <returns></returns>
         public override Pecuniam GetMinPayment(DateTime dt)
         {
             var bal = GetValueAt(dt);
@@ -34,6 +46,5 @@ namespace NoFuture.Rand.Data.Sp
             return new Pecuniam(Math.Round(amt, 2)).Neg;
         }
 
-        #endregion
     }
 }

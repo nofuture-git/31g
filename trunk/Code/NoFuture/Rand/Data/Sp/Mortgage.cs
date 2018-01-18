@@ -1,7 +1,5 @@
 ﻿using System;
 using NoFuture.Rand.Core;
-using NoFuture.Rand.Data.Sp.Cc;
-using NoFuture.Shared.Core;
 using NoFuture.Util.Core.Math;
 
 namespace NoFuture.Rand.Data.Sp
@@ -14,11 +12,6 @@ namespace NoFuture.Rand.Data.Sp
         /// Src https://data.worldbank.org/indicator/NY.GDP.MKTP.KD 1960-2016
         /// </summary>
         public const double AVG_GDP_GROWTH_RATE = 0.031046655;
-
-        private readonly int _termInYears;
-        private float _minPayRate;
-        private float _rate;
-        private Pecuniam _monthlyPayment;
         #endregion
 
         #region ctors
@@ -32,22 +25,9 @@ namespace NoFuture.Rand.Data.Sp
         /// <param name="purchasePrice"></param>
         /// <param name="termInYears"></param>
         public Mortgage(Identifier property, DateTime openedDate, float rate, Pecuniam purchasePrice,
-            int termInYears = 30) : base(property, openedDate,
-            CreditCardAccount.DF_MIN_PMT_RATE, purchasePrice)
+            int termInYears = 30) : base(property, openedDate, purchasePrice, rate, termInYears)
         {
-            _rate = rate;
 
-            ValidateRate();
-
-            if (openedDate == DateTime.MinValue)
-                throw new ArgumentException($"The opened date {openedDate} is invalid");
-
-            if (purchasePrice == null || purchasePrice <= Pecuniam.Zero)
-                throw new ArgumentException($"The purchase price {purchasePrice} is invalid");
-
-            _termInYears = termInYears < 0 ? 30 : termInYears;
-
-            CalcFromRate();
         }
 
         #endregion
@@ -60,38 +40,6 @@ namespace NoFuture.Rand.Data.Sp
         /// expected to grow (default is <see cref="AVG_GDP_GROWTH_RATE"/>).
         /// </summary>
         public double ExpectedAppreciationRate { get; set; } = AVG_GDP_GROWTH_RATE;
-
-        /// <summary>
-        /// The monthly mortgage payment.
-        /// </summary>
-        public Pecuniam MonthlyPayment => _monthlyPayment;
-
-
-        /// <summary>
-        /// The borrowing rate for the mortgage.
-        /// </summary>
-        public override float Rate
-        {
-            get => _rate;
-            set
-            {
-                var temp = value;
-                var reCalc = Math.Abs(_rate - temp) > 0.00001;
-                _rate = temp;
-                ValidateRate();
-                if (reCalc)
-                    CalcFromRate();
-            }
-        }
-
-        /// <summary>
-        /// The minimum payment rate.
-        /// </summary>
-        public override float MinPaymentRate
-        {
-            get => _minPayRate;
-            set => _minPayRate = value;
-        }
 
         /// <summary>
         /// The original purchase price of the real-estate.
@@ -147,44 +95,6 @@ namespace NoFuture.Rand.Data.Sp
                 PurchasePrice.Abs.Amount.PerDiemInterest(ExpectedAppreciationRate,numDays);
 
             return marketValue.ToPecuniam();
-        }
-
-        /// <summary>
-        /// The future value of the mortgage note.
-        /// </summary>
-        /// <returns></returns>
-        protected internal virtual decimal GetFutureValue(double numOfDays)
-        {
-            ValidateRate();
-            var fv = PurchasePrice.Amount.PerDiemInterest(_rate, numOfDays);
-            return fv;
-        }
-
-        /// <summary>
-        /// Validates the rate is reasonable.
-        /// </summary>
-        protected internal void ValidateRate()
-        {
-            if (_rate > 1)
-                _rate = Convert.ToSingle(Math.Round(_rate / 100, 5));
-
-            if (_rate < 0f)
-                throw new ArgumentException($"The rate {_rate} is invalid");
-
-            if (_rate > 0.2f)
-                throw new ArgumentException($"The rate {_rate} is usury.");
-        }
-
-        /// <summary>
-        /// Helper method to (re)assign instance fields whenever a change in rate is noticed.
-        /// </summary>
-        protected internal void CalcFromRate()
-        {
-            var fv = GetFutureValue(Constants.TropicalYear.TotalDays * _termInYears);
-            _monthlyPayment = new Pecuniam(Math.Round(fv / (_termInYears * 12), 2));
-            _minPayRate = fv == 0
-                ? CreditCardAccount.DF_MIN_PMT_RATE
-                : (float) Math.Round(_monthlyPayment.Amount / fv, 6);
         }
         #endregion
     }

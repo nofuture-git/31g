@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NoFuture.Rand.Data;
 using NoFuture.Rand.Data.Sp;
 using NoFuture.Rand.Data.Sp.Enums;
-using NoFuture.Rand.Domus;
-using NoFuture.Rand.Domus.Opes;
 
 namespace NoFuture.Rand.Tests.DataTests.SpTests
 {
@@ -16,9 +13,8 @@ namespace NoFuture.Rand.Tests.DataTests.SpTests
         [TestMethod]
         public void TestGetRandomLoanWithHistory()
         {
-            Pecuniam minOut;
-            var testResult = SecuredFixedRateLoan.RandomSecuredFixedRateLoanWithHistory(null, new Pecuniam(8200.94M),
-                new Pecuniam(8200.94M + 3942.12M), 0.0557f, 5, out minOut);
+            var testResult = SecuredFixedRateLoan.RandomSecuredFixedRateLoanWithHistory(new Pecuniam(8200.94M),
+                new Pecuniam(8200.94M + 3942.12M), 0.0557f, 5, null);
             Assert.IsNotNull(testResult);
             Assert.IsTrue(testResult.MinPaymentRate > 0);
             Assert.IsTrue(testResult.Rate > 0);
@@ -38,7 +34,7 @@ namespace NoFuture.Rand.Tests.DataTests.SpTests
         [TestMethod]
         public void TestSecuredFixedRateLoan()
         {
-            var testResult = new SecuredFixedRateLoan(null, new DateTime(DateTime.Today.Year, 1, 1), 0.016667f, new Pecuniam(12143.06M));
+            var testResult = new SecuredFixedRateLoan(null, new DateTime(DateTime.Today.Year, 1, 1), new Pecuniam(12143.06M), 0.016667f, 5);
             Assert.IsNotNull(testResult);
             Assert.IsNotNull(testResult.Balance);
             Assert.IsFalse(testResult.Balance.IsEmpty);
@@ -47,14 +43,15 @@ namespace NoFuture.Rand.Tests.DataTests.SpTests
         [TestMethod]
         public void TestGetRandomLoan()
         {
-            Pecuniam minOut;
-            var testResult = SecuredFixedRateLoan.RandomSecuredFixedRateLoan(null, new Pecuniam(8200.94M),
-                new Pecuniam(8200.94M + 3942.12M), 0.0557f, 5, out minOut);
+            var testResult = SecuredFixedRateLoan.RandomSecuredFixedRateLoan(new Pecuniam(8200.94M),
+                new Pecuniam(8200.94M + 3942.12M), 0.0557f, 5, null);
             Assert.IsNotNull(testResult);
             Assert.IsTrue(testResult.MinPaymentRate > 0);
             Assert.IsTrue(testResult.Rate > 0);
             Assert.AreNotEqual(SpStatus.NoHistory, testResult.CurrentStatus);
             Assert.AreNotEqual(Pecuniam.Zero, testResult.Value);
+            var calcMinPayment = testResult.GetMinPayment(testResult.Inception.AddDays(30));
+            System.Diagnostics.Debug.WriteLine(calcMinPayment);
         }
 
 
