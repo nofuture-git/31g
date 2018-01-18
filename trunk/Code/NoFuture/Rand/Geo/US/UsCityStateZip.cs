@@ -113,7 +113,7 @@ namespace NoFuture.Rand.Geo.US
         /// Selects a US Zip Code prefix at random taking into respect the population pertinent to that zip code prefix.
         /// </summary>
         [RandomFactory]
-        public static string RandomAmericanZipWithRespectToPop()
+        public static string RandomAmericanPartialZipCode()
         {
             var zip2Wt = ZipCodePrefix2Population;
 

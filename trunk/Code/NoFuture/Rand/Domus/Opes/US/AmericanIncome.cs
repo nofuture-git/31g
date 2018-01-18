@@ -93,8 +93,9 @@ namespace NoFuture.Rand.Domus.Opes.US
         /// <param name="options"></param>
         /// <returns></returns>
         [RandomFactory]
-        public static AmericanIncome RandomIncome(OpesOptions options)
+        public static AmericanIncome RandomIncome(OpesOptions options = null)
         {
+            options = options ?? OpesOptions.RandomOpesOptions();
             var income = new AmericanIncome(options);
             income.ResolveItems(options);
             return income;

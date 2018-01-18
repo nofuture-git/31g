@@ -46,5 +46,19 @@ namespace NoFuture.Rand.Data.Sp
             return new Pecuniam(Math.Round(amt, 2)).Neg;
         }
 
+        /// <summary>
+        /// Helper method to put functionality in common vernacular 
+        /// - is the exact same as <see cref="ITransactionable.AddNegativeValue"/>
+        /// </summary>
+        /// <param name="dt"></param>
+        /// <param name="amount"></param>
+        /// <param name="note"></param>
+        public virtual void MakeAPayment(DateTime dt, Pecuniam amount, string note = null)
+        {
+            if (string.IsNullOrWhiteSpace(note))
+                AddNegativeValue(dt, amount);
+            else
+                AddNegativeValue(dt, amount, new Mereo(note));
+        }
     }
 }

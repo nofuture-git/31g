@@ -80,9 +80,16 @@ namespace NoFuture.Rand.Data.Sp
             return new Pecuniam(e - pd.Amount);
         }
 
-        public void PayRent(DateTime dt, Pecuniam amt, IMereo note = null)
+        /// <summary>
+        /// Helper method to put functionality in common vernacular 
+        /// - is the exact same as <see cref="ITransactionable.AddNegativeValue"/>
+        /// </summary>
+        /// <param name="dt"></param>
+        /// <param name="amount"></param>
+        /// <param name="note"></param>
+        public void PayRent(DateTime dt, Pecuniam amount, IMereo note = null)
         {
-            Balance.AddTransaction(dt, amt.Neg, note, Pecuniam.Zero);
+            AddNegativeValue(dt, amount, note, Pecuniam.Zero);
         }
 
         protected internal Pecuniam GetExpectedTotalRent(DateTime dt)

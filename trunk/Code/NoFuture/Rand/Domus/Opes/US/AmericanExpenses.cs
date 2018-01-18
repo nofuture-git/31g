@@ -37,6 +37,7 @@ namespace NoFuture.Rand.Domus.Opes.US
         [RandomFactory]
         public static AmericanExpenses RandomExpenses(OpesOptions options = null)
         {
+            options = options ?? OpesOptions.RandomOpesOptions();
             var exp = new AmericanExpenses(options);
             exp.ResolveItems(options);
             return exp;

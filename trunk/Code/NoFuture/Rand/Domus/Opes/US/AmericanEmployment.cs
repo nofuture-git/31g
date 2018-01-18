@@ -110,6 +110,7 @@ namespace NoFuture.Rand.Domus.Opes.US
         [RandomFactory]
         public static AmericanEmployment RandomEmployment(OpesOptions options = null)
         {
+            options = options ?? OpesOptions.RandomOpesOptions();
             var emply = new AmericanEmployment(options);
             emply.ResolveItems(options);
             return emply;

@@ -84,7 +84,7 @@ namespace NoFuture.Rand.Tests.DataTests.SpTests
             {
                 if (dtIncrement > DateTime.Now.AddYears(30))
                     break;
-                testSubject.Push(dtIncrement, monthlyPayment.ToPecuniam());
+                testSubject.AddNegativeValue(dtIncrement, monthlyPayment.ToPecuniam());
                 dtIncrement = dtIncrement.AddMonths(1);
             }
         }

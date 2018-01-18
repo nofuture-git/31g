@@ -151,7 +151,7 @@ namespace NoFuture.Rand.Data.Sp
             {
                 if (dtIncrement > DateTime.Now.AddYears(termInYears))
                     break;
-                loan.Push(dtIncrement, loan.MonthlyPayment);
+                loan.MakeAPayment(dtIncrement, loan.MonthlyPayment);
                 dtIncrement = dtIncrement.AddMonths(1);
             }
 
@@ -213,7 +213,7 @@ namespace NoFuture.Rand.Data.Sp
                     minPmt = loan.GetValueAt(paidOnDate);
                 }
 
-                loan.Push(paidOnDate, minPmt, pmtNote, Pecuniam.Zero);
+                loan.AddNegativeValue(paidOnDate, minPmt, pmtNote, Pecuniam.Zero);
                 if (isPayoff)
                 {
                     loan.Terminus = paidOnDate;

@@ -275,5 +275,38 @@ namespace NoFuture.Rand.Domus.Opes
 
             return o;
         }
+
+        /// <summary>
+        /// Creates a wealth options object at random
+        /// </summary>
+        /// <returns></returns>
+        [RandomFactory]
+        public static OpesOptions RandomOpesOptions(string firstName = null, string lastName = null)
+        {
+            var name = new VocaBase();
+            lastName = lastName ?? Etx.RandomWord();
+            firstName = firstName ?? Etx.RandomWord();
+            name.UpsertName(KindsOfNames.First, firstName);
+            name.UpsertName(KindsOfNames.Surname, lastName);
+
+            var opt = new OpesOptions
+            {
+                BirthDate = Etx.RandomAdultBirthDate(),
+                Gender = Etx.RandomCoinToss() ? Gender.Female : Gender.Male,
+                Inception = Etx.RandomDate(-1, null, true),
+                GeoLocation = CityArea.RandomAmericanCity(),
+                IsRenting = Etx.RandomCoinToss(),
+                Personality = Pneuma.Personality.RandomPersonality(),
+                Race = Etx.RandomPickOne(AmericanRacePercents.NorthAmericanRaceAvgs),
+                EducationLevel = OccidentalEdu.HighSchool | OccidentalEdu.Grad,
+                MaritialStatus = Etx.RandomCoinToss() ? Gov.MaritialStatus.Married : Gov.MaritialStatus.Single,
+                NumberOfCreditCards = Etx.RandomInteger(0, 3),
+                NumberOfVehicles = 1,
+                PersonsName = name,
+                Interval = Interval.Annually,
+                IsVehiclePaidOff = false
+            };
+            return opt;
+        }
     }
 }

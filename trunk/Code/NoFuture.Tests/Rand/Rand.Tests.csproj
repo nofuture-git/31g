@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="DataTests\SpTests\BalanceTests.cs" />
     <Compile Include="DataTests\SpTests\PersonalCreditScoreTests.cs" />
+    <Compile Include="DataTests\SpTests\DepositAccountTests.cs" />
     <Compile Include="DomusTests\PneumaTests\TraitTests.cs" />
     <Compile Include="DomusTests\PneumaTests\DimensionTests.cs" />
     <Compile Include="EduTests\AmericanSchoolBaseTests.cs" />

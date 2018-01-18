@@ -13,12 +13,12 @@ namespace NoFuture.Rand.Tests.GeoTests
         [TestMethod]
         public void RandomUsZipWithRespectToPopTest()
         {
-            var testResult = UsCityStateZip.RandomAmericanZipWithRespectToPop();
+            var testResult = UsCityStateZip.RandomAmericanPartialZipCode();
             Assert.IsNotNull(testResult);
 
             for (var i = 0; i < 100; i++)
             {
-                testResult = UsCityStateZip.RandomAmericanZipWithRespectToPop();
+                testResult = UsCityStateZip.RandomAmericanPartialZipCode();
                 Assert.IsNotNull(testResult);
                 System.Diagnostics.Debug.WriteLine(testResult);
             }

@@ -135,6 +135,7 @@ namespace NoFuture.Rand.Domus.Opes.US
         [RandomFactory]
         public static AmericanAssets RandomAssets(OpesOptions options = null)
         {
+            options = options ?? OpesOptions.RandomOpesOptions();
             var assets = new AmericanAssets(options);
             assets.ResolveItems(options);
             return assets;
@@ -167,20 +168,10 @@ namespace NoFuture.Rand.Domus.Opes.US
         protected internal override void ResolveItems(OpesOptions options = null)
         {
             options = options ?? MyOptions;
-            var stDt = options.Inception == DateTime.MinValue ? GetYearNeg(-1) : options.Inception;
-            var ranges = GetYearsInDates(stDt);
-
-            foreach (var range in ranges)
-            {
-                var cloneOptions = options.GetClone();
-                cloneOptions.Inception = range.Item1;
-                cloneOptions.Terminus = range.Item2;
-                cloneOptions.Interval = Interval.Annually;
-
-                var items = GetItemsForRange(cloneOptions);
-                foreach(var item in items)
-                    AddItem(item);
-            }
+            options.Interval = Interval.Annually;
+            var items = GetItemsForRange(options);
+            foreach (var item in items)
+                AddItem(item);
         }
 
         public override List<Tuple<string, double>> GetGroupNames2Portions(OpesOptions options)
@@ -269,7 +260,7 @@ namespace NoFuture.Rand.Domus.Opes.US
                     ? _randCheckingAcctAmt
                     : _checkingAccountRate * amt.ToDouble();
                 p = DepositAccount.RandomCheckingAccount(options.PersonsName, startDate, $"{Etx.RandomInteger(1, 9999):0000}");
-                p.Push(startDate.AddDays(-1), checkingAmt.ToPecuniam());
+                ((DepositAccount)p).Deposit(startDate.AddDays(-1), checkingAmt.ToPecuniam());
                 p.My.ExpectedValue = checkingAmt.ToPecuniam();
             }
             else if (isSavingsAccount)
@@ -278,7 +269,7 @@ namespace NoFuture.Rand.Domus.Opes.US
                     ? _randSavingsAcctAmt
                     : _savingsAccountRate * amt.ToDouble();
                 p = DepositAccount.RandomSavingAccount(options.PersonsName, startDate);
-                p.Push(startDate.AddDays(-1), savingAmt.ToPecuniam());
+                ((DepositAccount)p).Deposit(startDate.AddDays(-1), savingAmt.ToPecuniam());
                 p.My.ExpectedValue = savingAmt.ToPecuniam();
             }
             else if (isMortgage || isCarLoan)

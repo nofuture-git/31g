@@ -1,7 +1,4 @@
 ﻿using System;
-using NoFuture.Rand.Data.Sp.Cc;
-using NoFuture.Shared.Core;
-using NoFuture.Util.Core.Math;
 
 namespace NoFuture.Rand.Data.Sp
 {

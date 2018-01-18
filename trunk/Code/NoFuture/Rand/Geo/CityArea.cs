@@ -96,7 +96,7 @@ namespace NoFuture.Rand.Geo
 
             //pick a zip code prefix at random
             if (String.IsNullOrWhiteSpace(zipCodePrefix))
-                zipCodePrefix = UsCityStateZip.RandomAmericanZipWithRespectToPop() ?? UsCityStateZip.DF_ZIPCODE_PREFIX;
+                zipCodePrefix = UsCityStateZip.RandomAmericanPartialZipCode() ?? UsCityStateZip.DF_ZIPCODE_PREFIX;
 
             //x-ref it to the zip code data
             var xpathString = $"//{ZIP_CODE_PLURAL}//{ZIP_CODE_SINGULAR}[@{PREFIX}='{zipCodePrefix}']";

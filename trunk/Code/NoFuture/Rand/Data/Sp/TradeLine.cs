@@ -82,13 +82,13 @@ namespace NoFuture.Rand.Data.Sp
         }
 
         /// <summary>
-        /// Applied a negative valued transaction against the balance.
+        /// Applies a negative valued transaction against the balance.
         /// </summary>
         /// <param name="dt"></param>
         /// <param name="amt"></param>
         /// <param name="note"></param>
         /// <param name="fee"></param>
-        public virtual void Push(DateTime dt, Pecuniam amt, IMereo note = null, Pecuniam fee = null)
+        public virtual void AddNegativeValue(DateTime dt, Pecuniam amt, IMereo note = null, Pecuniam fee = null)
         {
             if (amt == Pecuniam.Zero)
                 return;
@@ -104,7 +104,7 @@ namespace NoFuture.Rand.Data.Sp
         /// <param name="note"></param>
         /// <param name="fee"></param>
         /// <returns></returns>
-        public virtual bool Pop(DateTime dt, Pecuniam val, IMereo note = null, Pecuniam fee = null)
+        public virtual bool AddPositiveValue(DateTime dt, Pecuniam val, IMereo note = null, Pecuniam fee = null)
         {
             if (val == Pecuniam.Zero)
                 return false;

@@ -42,28 +42,33 @@ namespace NoFuture.Rand.Data.Sp
         }
 
         /// <summary>
-        /// Helper method to copy the debit transactions within any of <see cref="receivables"/>
-        /// whose <see cref="ITransaction.AtTime"/> is on the <see cref="dt"/>.
+        /// Helper method to put functionality in common vernacular 
+        /// - is the exact same as <see cref="ITransactionable.AddNegativeValue"/>
         /// </summary>
-        /// <param name="dt">Defaults to today, ranges between 00:00:00.000 and 23:59:59.999 hours</param>
-        /// <param name="receivables"></param>
-        public void AddDebitTransactionsByDate(DateTime? dt, IList<IReceivable> receivables)
+        /// <param name="dt"></param>
+        /// <param name="amount"></param>
+        /// <param name="note"></param>
+        public virtual void Withdraw(DateTime dt, Pecuniam amount, string note = null)
         {
-            if (receivables == null || receivables.Count <= 0)
-                return;
+            if(string.IsNullOrWhiteSpace(note))
+                AddNegativeValue(dt,amount);
+            else
+                AddNegativeValue(dt, amount, new Mereo(note));
+        }
 
-            var stDt = dt.GetValueOrDefault(DateTime.Now).Date;
-            var endDt = dt.GetValueOrDefault(DateTime.Now).Date.AddDays(1).AddMilliseconds(-1);
-
-            if (Terminus != null && stDt > Terminus.Value.Date)
-                return;
-
-            var trans = receivables.SelectMany(x => x.Balance.GetTransactionsBetween(stDt, endDt, true));
-
-            foreach (var t in trans)
-            {
-                Pop(t.AtTime.AddMilliseconds(1), t.Cash, t.Description, Pecuniam.Zero);
-            }
+        /// <summary>
+        /// Helper method to put functionality in common vernacular 
+        /// - is the exact same as <see cref="ITransactionable.AddPositiveValue"/>
+        /// </summary>
+        /// <param name="dt"></param>
+        /// <param name="amount"></param>
+        /// <param name="note"></param>
+        public virtual void Deposit(DateTime dt, Pecuniam amount, string note = null)
+        {
+            if (string.IsNullOrWhiteSpace(note))
+                AddPositiveValue(dt, amount);
+            else
+                AddPositiveValue(dt, amount, new Mereo(note));
         }
 
         /// <summary>
@@ -94,11 +99,9 @@ namespace NoFuture.Rand.Data.Sp
                 if (amt.Amount < 0.01M)
                     break;
             }
-            fromAccount.Pop(dt, amt,null, Pecuniam.Zero);
-            toAccount.Push(dt.AddMilliseconds(100), amt, null, Pecuniam.Zero);
+            fromAccount.Withdraw(dt, amt);
+            toAccount.Deposit(dt.AddMilliseconds(100), amt);
         }
-
-
 
         /// <summary>
         /// Creates a new random Checking Account

@@ -72,14 +72,14 @@ namespace NoFuture.Rand.Data.Sp.Cc
         /// the purchase amount <see cref="val"/>
         /// will not cause the total balance to exceed <see cref="Max"/>.
         /// </returns>
-        public override bool Pop(DateTime dt, Pecuniam val, IMereo note = null, Pecuniam fee = null)
+        public override bool AddPositiveValue(DateTime dt, Pecuniam val, IMereo note = null, Pecuniam fee = null)
         {
             if (dt > Cc.ExpDate)
                 return false;
             var cBal = GetValueAt(dt);
             if (cBal >= Max || cBal + val >= Max)
                 return false;
-            return base.Pop(dt, val, note, fee);
+            return base.AddPositiveValue(dt, val, note, fee);
         }
 
         /// <summary>
@@ -90,56 +90,6 @@ namespace NoFuture.Rand.Data.Sp.Cc
         public override string ToString()
         {
             return Cc?.ToString() ?? base.ToString();
-        }
-
-        /// <summary>
-        /// Randomly gen&apos;s one of the concrete types of <see cref="CreditCardAccount"/>.
-        /// </summary>
-        /// <param name="p">Card holders name</param>
-        /// <param name="personBirthDate">
-        /// Optional, will generate a working adults birth date if missing
-        /// </param>
-        /// <param name="baseInterestRate">
-        /// This is the lowest possiable interest rate for the random generators
-        /// </param>
-        /// <param name="minPmtPercent">
-        /// The value used to calc a minimum monthly payment
-        /// </param>
-        /// <returns></returns>
-        public static CreditCardAccount GetRandomCcAcct(IVoca p, DateTime? personBirthDate,
-            float baseInterestRate = 10.1F + 1.5F, float minPmtPercent = DF_MIN_PMT_RATE)
-        {
-            var ccScore =  new PersonalCreditScore(personBirthDate);
-
-            var cc = CreditCard.RandomCreditCard(p);
-            var max = ccScore.GetRandomMax(cc.CardHolderSince);
-            var randRate = ccScore.GetRandomInterestRate(cc.CardHolderSince, baseInterestRate) * 0.01;
-            var ccAcct = new CreditCardAccount(cc, minPmtPercent, max) { Rate = (float)randRate };
-            return ccAcct;
-        }
-
-        /// <summary>
-        /// Randomly gen&apos;s one of the concrete types of <see cref="CreditCardAccount"/>.
-        /// </summary>
-        /// <param name="p">Card holders name</param>
-        /// <param name="ccScore"></param>
-        /// <param name="baseInterestRate">
-        /// This is the lowest possiable interest rate for the random generators
-        /// </param>
-        /// <param name="minPmtPercent">
-        /// The value used to calc a minimum monthly payment
-        /// </param>
-        /// <returns></returns>
-        public static CreditCardAccount GetRandomCcAcct(IVoca p, PersonalCreditScore ccScore = null,
-            float baseInterestRate = 10.1F + 1.5F, float minPmtPercent = DF_MIN_PMT_RATE)
-        {
-            ccScore = ccScore ?? new PersonalCreditScore();
-
-            var cc = CreditCard.RandomCreditCard(p);
-            var max = ccScore.GetRandomMax(cc.CardHolderSince);
-            var randRate = ccScore.GetRandomInterestRate(cc.CardHolderSince, baseInterestRate) * 0.01;
-            var ccAcct = new CreditCardAccount(cc, minPmtPercent, max) { Rate = (float)randRate };
-            return ccAcct;
         }
 
         #endregion
