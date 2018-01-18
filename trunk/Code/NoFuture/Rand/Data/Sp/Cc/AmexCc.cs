@@ -13,7 +13,7 @@ namespace NoFuture.Rand.Data.Sp.Cc
 
         protected internal override int CardNumLen => 15;
         protected internal override int CardNumPrefix => Etx.RandomCoinToss() ? 34 : 37;
-        protected internal override string CcName => "AMEX";
+        public override string CcName => "AMEX";
 
         /// <summary>
         /// Gets a Amex credit card number at random

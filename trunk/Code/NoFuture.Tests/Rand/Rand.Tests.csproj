@@ -83,6 +83,7 @@
     <Compile Include="ComTests\FinancialFirmTests.cs" />
     <Compile Include="GovTests\AmericanEquationsTests.cs" />
     <Compile Include="GovTests\SocialSecurityNumberTests.cs" />
+    <Compile Include="GovTests\DriversLicenseTests.cs" />
     <Compile Include="IdentityTests.cs" />
     <Compile Include="GovTests\NhtsaTests.cs" />
     <Compile Include="DomusTests\OpesTests\WealthBaseTests.cs" />

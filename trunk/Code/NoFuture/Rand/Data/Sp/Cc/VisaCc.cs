@@ -13,7 +13,7 @@ namespace NoFuture.Rand.Data.Sp.Cc
 
         protected internal override int CardNumLen => 16;
         protected internal override int CardNumPrefix => 4;
-        protected internal override string CcName => "VISA";
+        public override string CcName => "VISA";
 
         /// <summary>
         /// Gets a Visa credit card number at random

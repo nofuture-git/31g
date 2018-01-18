@@ -12,5 +12,6 @@ namespace NoFuture.Rand.Data.Sp.Cc
         string CardHolderName { get; }
         string Cvv { get; }
         DateTime CardHolderSince { get; }
+        string CcName { get; }
     }
 }

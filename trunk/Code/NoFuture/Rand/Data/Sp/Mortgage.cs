@@ -11,7 +11,7 @@ namespace NoFuture.Rand.Data.Sp
         /// <summary>
         /// Src https://data.worldbank.org/indicator/NY.GDP.MKTP.KD 1960-2016
         /// </summary>
-        public const double AVG_GDP_GROWTH_RATE = 0.031046655;
+        public const float AVG_GDP_GROWTH_RATE = 0.031046655f;
         #endregion
 
         #region ctors
@@ -39,7 +39,7 @@ namespace NoFuture.Rand.Data.Sp
         /// value of the real-estate is 
         /// expected to grow (default is <see cref="AVG_GDP_GROWTH_RATE"/>).
         /// </summary>
-        public double ExpectedAppreciationRate { get; set; } = AVG_GDP_GROWTH_RATE;
+        public float ExpectedAppreciationRate { get; set; } = AVG_GDP_GROWTH_RATE;
 
         /// <summary>
         /// The original purchase price of the real-estate.

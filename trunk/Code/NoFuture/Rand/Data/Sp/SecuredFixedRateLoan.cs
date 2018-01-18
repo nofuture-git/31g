@@ -120,8 +120,9 @@ namespace NoFuture.Rand.Data.Sp
         /// <param name="property">The property on which the loan is secured.</param>
         /// <returns></returns>
         [RandomFactory]
-        public static SecuredFixedRateLoan RandomSecuredFixedRateLoan(Pecuniam remainingCost, Pecuniam totalCost,
-            float rate, int termInYears, Identifier property = null)
+        public static SecuredFixedRateLoan RandomSecuredFixedRateLoan(Pecuniam remainingCost = null,
+            Pecuniam totalCost = null,
+            float rate = Mortgage.AVG_GDP_GROWTH_RATE, int termInYears = 5, Identifier property = null)
         {
             //HACK - checking type-name as string to avoid adding a ref to Rand.Geo
             var isMortgage = String.Equals(property?.GetType()?.Name ?? "", "PostalAddress",
@@ -129,13 +130,17 @@ namespace NoFuture.Rand.Data.Sp
 
             //if no or nonsense values given, change to some default
             if (totalCost == null || totalCost < Pecuniam.Zero)
-                totalCost = new Pecuniam(2000);
+                totalCost = Pecuniam.RandomPecuniam(1000, 100000, 100);
             if (remainingCost == null || remainingCost < Pecuniam.Zero)
                 remainingCost = Pecuniam.Zero;
 
             //remaining must always be less than the total 
             if (remainingCost > totalCost)
-                totalCost = remainingCost + Pecuniam.RandomPecuniam(1000, 3000);
+                totalCost = remainingCost + Pecuniam.RandomPecuniam(1000, 10000);
+
+            termInYears = Math.Abs(termInYears);
+            if (termInYears == 0)
+                termInYears = 5;
 
             //given this value and rate - calc the timespan needed to have aquired this amount of equity
             var firstOfYear = new DateTime(DateTime.Today.Year, 1, 1);
@@ -178,8 +183,9 @@ namespace NoFuture.Rand.Data.Sp
         /// <param name="randomActsIrresponsible">Optional, used when creating a more colorful history of payments.</param>
         /// <returns></returns>
         [RandomFactory]
-        public static SecuredFixedRateLoan RandomSecuredFixedRateLoanWithHistory(Pecuniam remainingCost,
-            Pecuniam totalCost, float rate, int termInYears, Identifier property = null,
+        public static SecuredFixedRateLoan RandomSecuredFixedRateLoanWithHistory(Pecuniam remainingCost = null,
+            Pecuniam totalCost = null, float rate = Mortgage.AVG_GDP_GROWTH_RATE, int termInYears = 5,
+            Identifier property = null,
             Func<bool> randomActsIrresponsible = null)
         {
             var loan = RandomSecuredFixedRateLoan(remainingCost, totalCost, rate, termInYears, property);
@@ -187,7 +193,9 @@ namespace NoFuture.Rand.Data.Sp
             var pmtNote = new Mereo(property?.ToString() ?? nameof(property));
 
             //makes the fake history more colorful
-            randomActsIrresponsible = randomActsIrresponsible ?? (() => false);
+            var score = Etx.RandomDouble();
+            randomActsIrresponsible =
+                randomActsIrresponsible ?? (() => Etx.RandomValueInNormalDist(score, 0.33334D) > 0);
 
             var dtIncrement = loan.Inception.AddMonths(1);
             while (loan.GetValueAt(dtIncrement) > remainingCost)

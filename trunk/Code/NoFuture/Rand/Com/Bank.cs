@@ -105,9 +105,10 @@ namespace NoFuture.Rand.Com
         /// <param name="ca"></param>
         /// <returns></returns>
         [RandomFactory]
-        public static Bank RandomBank(CityArea ca)
+        public static Bank RandomBank(CityArea ca = null)
         {
             var bank = new Bank();
+            ca = ca ?? CityArea.RandomAmericanCity();
             var bankXml = GetBankXmlElement(ca);
             if (bankXml == null)
                 return bank;

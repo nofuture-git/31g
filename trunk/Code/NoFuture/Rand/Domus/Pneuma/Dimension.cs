@@ -20,18 +20,7 @@ namespace NoFuture.Rand.Domus.Pneuma
 
         public Dimension()
         {
-            Zscore = RandomZscore();
-        }
-
-        /// <summary>
-        /// Gets a dimension z-score at random
-        /// </summary>
-        /// <returns></returns>
-        [RandomFactory]
-        public static double RandomZscore()
-        {
-            var s = Etx.RandomPlusOrMinus();
-            return s * Math.Round(Etx.MyRand.NextDouble(), 7);
+            Zscore = Etx.RandomDouble();
         }
 
         public override int GetHashCode()
@@ -53,6 +42,6 @@ namespace NoFuture.Rand.Domus.Pneuma
         }
 
         public double Zscore { get; }
-        public double StdDev { get; } = 0.125D;
+        public double StdDev { get; } = 0.33334D;
     }
 }

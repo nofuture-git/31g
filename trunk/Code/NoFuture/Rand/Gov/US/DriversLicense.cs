@@ -12,11 +12,13 @@ namespace NoFuture.Rand.Gov.US
         public DriversLicense(Rchar[] format)
         {
             this.format = format;
+            IssuedDate = Etx.RandomDate(-5, DateTime.Today);
         }
 
         public DriversLicense(Rchar[] format, UsState issuingState):this(format)
         {
             IssuingState = issuingState;
+            IssuedDate = Etx.RandomDate(-5, DateTime.Today);
         }
 
         public DriversLicense IssueNewLicense(DateTime? issuedDate = null)
@@ -31,9 +33,26 @@ namespace NoFuture.Rand.Gov.US
             };
         }
 
+        /// <summary>
+        /// Gets a drivers license number at random
+        /// </summary>
+        /// <param name="state"></param>
+        /// <returns></returns>
+        [RandomFactory]
+        public static string RandomDriversLicense(string state = null)
+        {
+            var usState = UsState.GetState(state);
+            usState = usState ?? UsState.RandomUsState();
+
+            var formats = usState.DriversLicenseFormats;
+            var format = formats.Length == 1 ? formats.First() : formats[Etx.RandomInteger(0, formats.Length - 1)];
+
+            return format.ToString();
+        }
+
         public override string ToString()
         {
-            return string.Join(" ",this.IssuingState,
+            return string.Join(" ",IssuingState.StateAbbrv,
                 base.ToString());
         }
 

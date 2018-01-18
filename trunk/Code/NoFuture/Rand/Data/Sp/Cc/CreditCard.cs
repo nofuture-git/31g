@@ -49,7 +49,7 @@ namespace NoFuture.Rand.Data.Sp.Cc
 
         protected internal abstract int CardNumLen { get; }
         protected internal abstract int CardNumPrefix { get; }
-        protected internal abstract string CcName { get; }
+        public abstract string CcName { get; }
         #endregion
 
         #region methods
@@ -63,7 +63,7 @@ namespace NoFuture.Rand.Data.Sp.Cc
                 prefixRChars.Add(new RcharLimited(i, prefixVal.ToString().ToCharArray()[i]));
             }
             prefixRChars.AddRange(Etx.RandomRChars(true, CardNumLen - 1 - prefixValLen, prefixValLen));
-            return new CreditCardNumber(prefixRChars.ToArray());
+            return new CreditCardNumber(prefixRChars.ToArray(), CcName);
         }
 
 
@@ -79,7 +79,7 @@ namespace NoFuture.Rand.Data.Sp.Cc
 
 
         /// <summary>
-        /// Returs a new, randomly gen'ed, concrete instance of <see cref="ICreditCard"/>
+        /// Returs a new, randomly gen&apos;ed, concrete instance of <see cref="ICreditCard"/>
         /// </summary>
         /// <param name="cardholder"></param>
         /// <param name="opennedDate"></param>
@@ -101,6 +101,20 @@ namespace NoFuture.Rand.Data.Sp.Cc
                 default:
                     return new VisaCc(cardholder, dt, dt.AddYears(3));
             }
+        }
+
+        /// <summary>
+        /// Returs a new, randomly gen&apos;ed, concrete instance of <see cref="ICreditCard"/>
+        /// </summary>
+        /// <param name="cardholder"></param>
+        /// <param name="opennedDate"></param>
+        /// <returns></returns>
+        [RandomFactory]
+        public static ICreditCard RandomCreditCard(string cardholder = null, DateTime? opennedDate = null)
+        {
+            var voca = new VocaBase();
+            voca.UpsertName(KindsOfNames.Legal, cardholder ?? "");
+            return RandomCreditCard(voca, opennedDate);
         }
 
         #endregion

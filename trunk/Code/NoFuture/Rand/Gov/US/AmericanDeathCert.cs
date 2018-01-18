@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using NoFuture.Rand.Core;
 using NoFuture.Shared.Core;
+using NoFuture.Util.Core;
 
 namespace NoFuture.Rand.Gov.US
 {
@@ -46,12 +47,14 @@ namespace NoFuture.Rand.Gov.US
         /// <summary>
         /// Gets a date of death based on the <see cref="AmericanEquations.LifeExpectancy"/>
         /// </summary>
-        /// <param name="dob"></param>
+        /// <param name="birthDate"></param>
         /// <param name="gender"></param>
         /// <returns></returns>
         [RandomFactory]
-        public static DateTime RandomDeathDate(DateTime dob, string gender)
+        public static DateTime RandomDeathDate(DateTime? birthDate = null, string gender = null)
         {
+            var dob = birthDate ?? Etx.RandomAdultBirthDate();
+            gender = gender ?? (Etx.RandomCoinToss() ? "Female" : "Male");
             var normDist = AmericanEquations.LifeExpectancy(gender);
             var ageAtDeath = Etx.RandomValueInNormalDist(normDist.Mean, normDist.StdDev);
             var years = (int)Math.Floor(ageAtDeath);

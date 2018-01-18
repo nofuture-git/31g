@@ -57,7 +57,7 @@ namespace NoFuture.Rand.Gov.US.Nhtsa
             {
                 ModelYear = Vin.YearIdx[pick],
                 PlantCode = Vin.GetRandomVinChar(),
-                SequentialNumber = Etx.RandomChars(0x30, 0x39, 6)
+                SequentialNumber = new string(Etx.RandomChars(0x30, 0x39, 6))
             };
 
             return vis;

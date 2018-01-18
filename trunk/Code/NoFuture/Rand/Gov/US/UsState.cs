@@ -41,17 +41,6 @@ namespace NoFuture.Rand.Gov.US
         public string StateAbbrv => _stateAbbrv;
 
         /// <summary>
-        /// This is always resolved on the first entry found in the <see cref="dlFormats"/>.
-        /// </summary>
-        [RandomFactory]
-        public virtual string RandomDriversLicense()
-        {
-            if (dlFormats == null || dlFormats.Length <= 0)
-                return String.Empty;
-            return dlFormats[0].GetRandom();
-        }
-
-        /// <summary>
         /// Derived from [https://insurancelink.custhelp.com/app/answers/detail/a_id/1631/~/license-formats-for-individual-states]
         /// </summary>
         public virtual DriversLicense[] DriversLicenseFormats => dlFormats;
@@ -59,6 +48,17 @@ namespace NoFuture.Rand.Gov.US
         #endregion
 
         #region methods
+
+        /// <summary>
+        /// This is always resolved on the first entry found in the <see cref="dlFormats"/>.
+        /// </summary>
+        public virtual string GetRandomDriversLicense()
+        {
+            if (dlFormats == null || dlFormats.Length <= 0)
+                return String.Empty;
+            return dlFormats[0].GetRandom();
+        }
+
         public override string ToString()
         {
             return String.Join(" ", Etc.DistillToWholeWords(GetType().Name));

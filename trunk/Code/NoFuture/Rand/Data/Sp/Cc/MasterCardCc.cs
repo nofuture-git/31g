@@ -13,7 +13,7 @@ namespace NoFuture.Rand.Data.Sp.Cc
 
         protected internal override int CardNumLen => 16;
         protected internal override int CardNumPrefix => Etx.RandomInteger(51, 55);
-        protected internal override string CcName => "MC";
+        public override string CcName => "MC";
 
         /// <summary>
         /// Gets a MasterCard credit card number at random

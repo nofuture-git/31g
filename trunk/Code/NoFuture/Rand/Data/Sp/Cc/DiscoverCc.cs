@@ -13,7 +13,7 @@ namespace NoFuture.Rand.Data.Sp.Cc
 
         protected internal override int CardNumLen => 16;
         protected internal override int CardNumPrefix => 6011;
-        protected internal override string CcName => "DC";
+        public override string CcName => "DC";
 
         /// <summary>
         /// Gets a Discover credit card number at random

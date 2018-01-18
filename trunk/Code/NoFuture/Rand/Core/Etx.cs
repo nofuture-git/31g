@@ -93,19 +93,25 @@ namespace NoFuture.Rand.Core
         /// <param name="to">Inclusive</param>
         /// <returns></returns>
         [RandomFactory]
-        public static int RandomInteger(int from, int to)
+        public static int RandomInteger(int? from = null, int? to = null)
         {
-            if (from == to)
-                return from;
-            if (from <= to)
-                return MyRand.Next(from, to + 1);
+            if (from == null && to == null)
+                return MyRand.Next();
+
+            var rangeStart = from ?? Int32.MinValue;
+            var rangeEnd = to ?? Int32.MaxValue;
+
+            if (rangeStart == rangeEnd)
+                return rangeStart;
+            if (rangeStart <= rangeEnd)
+                return MyRand.Next(rangeStart, rangeEnd + 1);
 
             //passed in backwards is ok
-            var t = from;
-            from = to;
-            to = t;
+            var t = rangeStart;
+            rangeStart = rangeEnd;
+            rangeEnd = t;
 
-            return MyRand.Next(from, to + 1);
+            return MyRand.Next(rangeStart, rangeEnd + 1);
         }
 
         /// <summary>
@@ -136,9 +142,9 @@ namespace NoFuture.Rand.Core
             var toWholeNum = Convert.ToInt32(Math.Truncate(to));
 
             if (fromWholeNum > 0 && toWholeNum > 0)
-                return RandomDouble(Convert.ToInt32(@from), Convert.ToInt32(to));
+                return RandomDouble(Convert.ToInt32(from), Convert.ToInt32(to));
 
-            var fromRationNum = Convert.ToInt32((@from - fromWholeNum)* FACTOR);
+            var fromRationNum = Convert.ToInt32((from - fromWholeNum)* FACTOR);
             var toRationNum = Convert.ToInt32((to - toWholeNum) * FACTOR);
 
             var rimex = RandomInteger(fromRationNum, toRationNum);
@@ -147,15 +153,27 @@ namespace NoFuture.Rand.Core
         }
 
         /// <summary>
-        /// Returns a square matrix of dimension size <see cref="dim"/>
-        /// have all random, less-than 1, double values.
+        /// Get a random double on the interval (-1 &gt;= x &gt;= 1)
         /// </summary>
-        /// <param name="dim"></param>
         /// <returns></returns>
         [RandomFactory]
-        public static double[,] RandomMatrix(int dim)
+        public static double RandomDouble()
         {
+            var s = RandomPlusOrMinus();
+            return s * Math.Round(MyRand.NextDouble(), 7);
 
+        }
+
+        /// <summary>
+        /// Returns a square matrix of dimension size <see cref="dimension"/>
+        /// have all random, less-than 1, double values.
+        /// </summary>
+        /// <param name="dimension"></param>
+        /// <returns></returns>
+        [RandomFactory]
+        public static double[,] RandomMatrix(int? dimension = null)
+        {
+            var dim = dimension ?? RandomInteger(4, 16);
             var m = new double[dim, dim];
             for (var i = 0; i < dim; i++)
             {
@@ -244,6 +262,10 @@ namespace NoFuture.Rand.Core
                     return RandomWord(RandomInteger(5, 10));
                 case 4:
                     return RandomConsonant(RandomCoinToss()).ToString();
+                case 5:
+                    return RandomWord();
+                case 6:
+                    return $"{RandomDate():yyyy-MM-dd HH:mm:ss.ffff}";
                 default:
                     return RandomVowel(RandomCoinToss()).ToString();
 
@@ -275,13 +297,14 @@ namespace NoFuture.Rand.Core
 
         /// <summary>
         /// Produces an array of percents whose sum is 1 
-        /// where the number of percents therein is <see cref="numOfDiv"/>
+        /// where the number of percents therein is <see cref="numberOfDivisions"/>
         /// </summary>
-        /// <param name="numOfDiv"></param>
+        /// <param name="numberOfDivisions"></param>
         /// <returns></returns>
         [RandomFactory]
-        public static double[] RandomPortions(int numOfDiv)
+        public static double[] RandomPortions(int? numberOfDivisions = null)
         {
+            var numOfDiv = numberOfDivisions ?? RandomInteger(4, 16);
             numOfDiv = Math.Abs(numOfDiv);
             var df = new[] {1.0D};
             if (numOfDiv == 0 || numOfDiv == 1)
@@ -298,15 +321,16 @@ namespace NoFuture.Rand.Core
         /// Like its counterpart <see cref="RandomPortions"/> being ordered and 
         /// having an exponential drop-off within the first 3 to 4 entries.
         /// </summary>
-        /// <param name="numOfDiv"></param>
+        /// <param name="numberOfDivisions"></param>
         /// <param name="derivativeSlope">
         /// Controls &apos;speed&apos; of the exponential drop-off - the closer to zero
         /// it gets the faster it drops off
         /// </param>
         /// <returns></returns>
         [RandomFactory]
-        public static double[] RandomDiminishingPortions(int numOfDiv, double derivativeSlope = -1.0D)
+        public static double[] RandomDiminishingPortions(int? numberOfDivisions = null, double derivativeSlope = -1.0D)
         {
+            var numOfDiv = numberOfDivisions ?? RandomInteger(4, 16);
             numOfDiv = Math.Abs(numOfDiv);
             if (numOfDiv == 0 || numOfDiv == 1)
                 return new[] { 1.0D };
@@ -341,14 +365,17 @@ namespace NoFuture.Rand.Core
         /// <param name="length"></param>
         /// <returns></returns>
         [RandomFactory]
-        public static string RandomChars(int asciiStart, int asciiEnd, int length)
+        public static char[] RandomChars(int? asciiStart = null, int? asciiEnd = null, int? length = null)
         {
+            var s = asciiStart ?? 0x21;
+            var e = asciiEnd ?? 0x7E;
+            var len = length ?? RandomInteger(4, 16);
             var str = new StringBuilder();
-            for (var i = 0; i < length; i++)
+            for (var i = 0; i < len; i++)
             {
-                str.Append(Convert.ToChar(MyRand.Next(asciiStart, asciiEnd)));
+                str.Append(Convert.ToChar(MyRand.Next(s, e)));
             }
-            return str.ToString();
+            return str.ToString().ToCharArray();
         }
 
         /// <summary>
@@ -374,7 +401,7 @@ namespace NoFuture.Rand.Core
                     word.Append(RandomCoinToss() ? RandomVowel(true) : RandomConsonant(true));
                     continue;
                 }
-                word.Append(MyRand.Next(1, 100) <= 60 ? RandomConsonant(false) : RandomVowel(false));
+                word.Append(MyRand.Next(1, 100) <= 60 ? RandomConsonant() : RandomVowel());
             }
 
             return word.ToString();
@@ -388,7 +415,7 @@ namespace NoFuture.Rand.Core
         /// <param name="upperCase"></param>
         /// <returns></returns>
         [RandomFactory]
-        public static char RandomVowel(bool upperCase)
+        public static char RandomVowel(bool upperCase = false)
         {
             var p = MyRand.Next(1, 5);
             char sa;
@@ -423,7 +450,7 @@ namespace NoFuture.Rand.Core
         /// <param name="upperCase"></param>
         /// <returns></returns>
         [RandomFactory]
-        public static char RandomConsonant(bool upperCase)
+        public static char RandomConsonant(bool upperCase = false)
         {
             var p = MyRand.Next(1, 21);
             char sa;
@@ -511,15 +538,16 @@ namespace NoFuture.Rand.Core
         /// </param>
         /// <returns></returns>
         [RandomFactory]
-        public static DateTime RandomDate(int plusOrMinusYears, DateTime? fromThisDate, bool forceInPast = false, int maxDaysSpread = 360)
+        public static DateTime RandomDate(int? plusOrMinusYears = null, DateTime? fromThisDate = null, bool forceInPast = false, int maxDaysSpread = 360)
         {
+            var pmYears = plusOrMinusYears ??  RandomPlusOrMinus() * RandomInteger(0, 5);
             var dt = DateTime.Now;
             if (fromThisDate != null)
                 dt = fromThisDate.Value;
             //plus or minus some random days
             var pom = forceInPast ? -1 : RandomPlusOrMinus();
             var randomDaysNear = RandomInteger(1, maxDaysSpread) * pom;
-            return dt.AddYears(plusOrMinusYears).AddDays(randomDaysNear);
+            return dt.AddYears(pmYears).AddDays(randomDaysNear);
         }
 
         /// <summary>

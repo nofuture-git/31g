@@ -76,7 +76,7 @@ namespace NoFuture.Rand.Gov.US.Nhtsa
         public char? CheckDigit => _chkDigit;
         public VehicleIdSection Vis { get; set; }
         public string Description { get; set; }
-        public bool IsNhtsaValid { get; set; }
+        public bool IsNhtsaValidated { get; set; }
 
         public override string Value
         {
@@ -169,7 +169,8 @@ namespace NoFuture.Rand.Gov.US.Nhtsa
 
             var cd = workingSum%11;
 
-            return cd == 10 ? 'X' : Convert.ToChar(cd + 0x30);
+            _chkDigit = cd == 10 ? 'X' : Convert.ToChar(cd + 0x30);
+            return _chkDigit.Value;
         }
 
         public override string ToString()
@@ -372,6 +373,8 @@ namespace NoFuture.Rand.Gov.US.Nhtsa
 
             if (!String.IsNullOrWhiteSpace(wmiAndName.Item2))
                 vin.Description = wmiAndName.Item2;
+
+            vin.GetCheckDigit();
 
             return vin;
         }

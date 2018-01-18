@@ -14,7 +14,7 @@ namespace NoFuture.Rand.Tests.DataTests.SpTests
         public void TestGetRandomLoanWithHistory()
         {
             var testResult = SecuredFixedRateLoan.RandomSecuredFixedRateLoanWithHistory(new Pecuniam(8200.94M),
-                new Pecuniam(8200.94M + 3942.12M), 0.0557f, 5, null);
+                new Pecuniam(8200.94M + 3942.12M), 0.0557f);
             Assert.IsNotNull(testResult);
             Assert.IsTrue(testResult.MinPaymentRate > 0);
             Assert.IsTrue(testResult.Rate > 0);
