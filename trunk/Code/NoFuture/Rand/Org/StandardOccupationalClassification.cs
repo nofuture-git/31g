@@ -88,10 +88,12 @@ namespace NoFuture.Rand.Org
                 return _socs.FirstOrDefault(s => s.Value == pickOne);
 
             var occ = _socs.FirstOrDefault(s => s.Value == pickOne);
-            while (!filterBy(occ))
+            for (var i = 0; i < 64; i++)
             {
                 pickOne = Etx.RandomPickOne(_soc2Prob) ?? DF_OCCUPATION;
                 occ = _socs.FirstOrDefault(s => s.Value == pickOne);
+                if (filterBy(occ))
+                    return occ;
             }
             return occ;
         }

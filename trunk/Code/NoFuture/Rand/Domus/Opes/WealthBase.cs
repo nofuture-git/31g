@@ -146,7 +146,7 @@ namespace NoFuture.Rand.Domus.Opes
         /// <summary>
         /// The credit score of <see cref="MyOptions"/>
         /// </summary>
-        public CreditScore CreditScore { get; protected set; }
+        protected CreditScore CreditScore { get; set; }
 
         /// <summary>
         /// Exposes the calculated factors using the <see cref="MyOptions"/> passed into 

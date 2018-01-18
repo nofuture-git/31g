@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Data.Sp.Cc;
 using NoFuture.Rand.Data.Sp.Enums;
@@ -17,6 +15,7 @@ namespace NoFuture.Rand.Data.Sp
 
         protected DepositAccount(DateTime dateOpenned) : base(dateOpenned)
         {
+            DueFrequency = TimeSpan.Zero;
         }
 
         #endregion

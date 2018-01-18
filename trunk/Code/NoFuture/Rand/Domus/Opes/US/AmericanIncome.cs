@@ -376,17 +376,18 @@ namespace NoFuture.Rand.Domus.Opes.US
                 emply.Add(new Tuple<DateTime, DateTime?>(sdt, null));
                 return emply;
             }
-
+            var tenure = AmericanEmployment.RandomEmploymentTenure(options);
             var lpDt = sdt;
             while (lpDt < DateTime.Today)
             {
                 var randDays = Etx.RandomInteger(0, 21);
                 lpDt = lpDt.AddMonths(3).AddDays(randDays);
-                if (personality.GetRandomActsSpontaneous())
-                {
-                    emply.Add(new Tuple<DateTime, DateTime?>(sdt, lpDt < DateTime.Today ? new DateTime?(lpDt) : null));
-                    sdt = lpDt;
-                }
+
+                if (lpDt <= sdt.Add(tenure))
+                    continue;
+                emply.Add(new Tuple<DateTime, DateTime?>(sdt, lpDt < DateTime.Today ? new DateTime?(lpDt) : null));
+                sdt = lpDt;
+                tenure = AmericanEmployment.RandomEmploymentTenure(options);
             }
             if(!emply.Any())
                 emply.Add(new Tuple<DateTime, DateTime?>(Etx.RandomDate(-4, DateTime.Today, true).Date, null));
@@ -409,12 +410,13 @@ namespace NoFuture.Rand.Domus.Opes.US
             options = options ?? MyOptions;
             var empls = new HashSet<ILaboris>();
             emplyRanges = emplyRanges ?? GetEmploymentRanges(options, personality);
-            var occ = StandardOccupationalClassification.RandomOccupation();
 
             //limit result to those which match the edu level
-            Predicate<SocDetailedOccupation> filter = s => true;
+            Predicate<SocDetailedOccupation> filter = null;
             if (eduLevel < (OccidentalEdu.Bachelor | OccidentalEdu.Grad))
                 filter = s => !StandardOccupationalClassification.IsDegreeRequired(s);
+
+            var occ = StandardOccupationalClassification.RandomOccupation(filter);
 
             foreach (var range in emplyRanges)
             {
@@ -422,12 +424,6 @@ namespace NoFuture.Rand.Domus.Opes.US
                 var cloneOptions = options.GetClone();
                 cloneOptions.Inception = range.Item1;
                 cloneOptions.Terminus = range.Item2;
-
-                //test for switching careers
-                if (personality?.GetRandomActsSpontaneous() ?? false)
-                {
-                    occ = StandardOccupationalClassification.RandomOccupation(filter);
-                }
                 emply.ResolveItems(options);
                 empls.Add(emply);
             }

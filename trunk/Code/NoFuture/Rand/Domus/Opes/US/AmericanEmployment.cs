@@ -116,6 +116,18 @@ namespace NoFuture.Rand.Domus.Opes.US
             return emply;
         }
 
+        /// <summary>
+        /// Gets a random number of years of tenure
+        /// </summary>
+        /// <param name="options"></param>
+        /// <returns></returns>
+        [RandomFactory]
+        public static TimeSpan RandomEmploymentTenure(OpesOptions options = null)
+        {
+            //TODO - use[https://www.bls.gov/news.release/tenure.nr0.htm]
+            return new TimeSpan(Etx.RandomInteger(745, 1855), 0, 0);
+        }
+
         public virtual bool IsInRange(DateTime dt)
         {
             var afterOrOnFromDt = Inception == null || Inception <= dt;

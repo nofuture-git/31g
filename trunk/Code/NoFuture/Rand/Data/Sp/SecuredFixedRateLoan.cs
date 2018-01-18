@@ -190,7 +190,6 @@ namespace NoFuture.Rand.Data.Sp
         {
             var loan = RandomSecuredFixedRateLoan(remainingCost, totalCost, rate, termInYears, property);
             var minPmt = loan.MonthlyPayment;
-            var pmtNote = new Mereo(property?.ToString() ?? nameof(property));
 
             //makes the fake history more colorful
             var score = Etx.RandomDouble();
@@ -213,7 +212,7 @@ namespace NoFuture.Rand.Data.Sp
                     minPmt = loan.GetValueAt(paidOnDate);
                 }
 
-                loan.AddNegativeValue(paidOnDate, minPmt, pmtNote, Pecuniam.Zero);
+                loan.MakeAPayment(paidOnDate, minPmt);
                 if (isPayoff)
                 {
                     loan.Terminus = paidOnDate;
