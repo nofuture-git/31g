@@ -1,4 +1,5 @@
 ﻿using System;
+using NoFuture.Rand.Core;
 
 namespace NoFuture.Rand.Data.Sp
 {
@@ -9,13 +10,13 @@ namespace NoFuture.Rand.Data.Sp
     public class Transaction : ITransaction
     {
         #region ctor
-        public Transaction(DateTime atTime, Pecuniam amt, IMereo description = null)
+        public Transaction(DateTime atTime, Pecuniam amt, IVoca description = null)
         {
             AtTime = atTime;
             Cash = amt;
             Description = description;
         }
-        public Transaction(DateTime atTime, Pecuniam amt, Pecuniam fee, IMereo description = null)
+        public Transaction(DateTime atTime, Pecuniam amt, Pecuniam fee, IVoca description = null)
         {
             AtTime = atTime;
             Cash = amt;
@@ -29,7 +30,7 @@ namespace NoFuture.Rand.Data.Sp
         public DateTime AtTime { get; }
         public Pecuniam Cash { get; }
         public Pecuniam Fee { get; }
-        public IMereo Description { get; }
+        public IVoca Description { get; }
         #endregion
 
         #region overrides

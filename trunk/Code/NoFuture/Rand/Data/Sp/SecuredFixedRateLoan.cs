@@ -125,7 +125,7 @@ namespace NoFuture.Rand.Data.Sp
             float rate = Mortgage.AVG_GDP_GROWTH_RATE, int termInYears = 5, Identifier property = null)
         {
             //HACK - checking type-name as string to avoid adding a ref to Rand.Geo
-            var isMortgage = String.Equals(property?.GetType()?.Name ?? "", "PostalAddress",
+            var isMortgage = String.Equals(property?.GetType().Name ?? "", "PostalAddress",
                 StringComparison.OrdinalIgnoreCase);
 
             //if no or nonsense values given, change to some default

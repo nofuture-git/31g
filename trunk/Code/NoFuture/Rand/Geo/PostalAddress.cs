@@ -24,10 +24,11 @@ namespace NoFuture.Rand.Geo
         /// Helper factory method to create an american address in one call.
         /// </summary>
         /// <returns></returns>
-        public static PostalAddress GetRandomAmericanAddr(string zipCodePrefix = null)
+        [RandomFactory]
+        public static PostalAddress RandomAmericanAddress(string zipCodePrefix = null)
         {
             var csz = CityArea.RandomAmericanCity(zipCodePrefix);
-            var homeAddr = StreetPo.American();
+            var homeAddr = StreetPo.RandomAmericanStreet();
             return new PostalAddress { HomeStreetPo = homeAddr, HomeCityArea = csz };
         }
     }

@@ -53,7 +53,7 @@ namespace NoFuture.Rand.Data.Sp
             if(string.IsNullOrWhiteSpace(note))
                 AddNegativeValue(dt,amount);
             else
-                AddNegativeValue(dt, amount, new Mereo(note));
+                AddNegativeValue(dt, amount, new VocaBase(note));
         }
 
         /// <summary>
@@ -68,7 +68,7 @@ namespace NoFuture.Rand.Data.Sp
             if (string.IsNullOrWhiteSpace(note))
                 AddPositiveValue(dt, amount);
             else
-                AddPositiveValue(dt, amount, new Mereo(note));
+                AddPositiveValue(dt, amount, new VocaBase(note));
         }
 
         /// <summary>

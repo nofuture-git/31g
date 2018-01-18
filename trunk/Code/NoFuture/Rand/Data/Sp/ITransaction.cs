@@ -1,4 +1,5 @@
 ﻿using System;
+using NoFuture.Rand.Core;
 
 namespace NoFuture.Rand.Data.Sp
 {
@@ -11,6 +12,6 @@ namespace NoFuture.Rand.Data.Sp
         DateTime AtTime { get; }
         Pecuniam Cash { get; }
         Pecuniam Fee { get; }
-        IMereo Description { get; }
+        IVoca Description { get; }
     }
 }

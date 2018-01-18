@@ -18,18 +18,14 @@ namespace NoFuture.Rand.Data.Sp
         private Pecuniam _expectedValue = Pecuniam.Zero;
         public Mereo()
         {
-            
         }
 
-        public Mereo(string name)
+        public Mereo(string name):base(name)
         {
-            Names.Add(new Tuple<KindsOfNames, string>(KindsOfNames.Legal, name));
         }
 
-        public Mereo(string name, string groupName)
+        public Mereo(string name, string groupName):base(name, groupName)
         {
-            Names.Add(new Tuple<KindsOfNames, string>(KindsOfNames.Legal, name));
-            Names.Add(new Tuple<KindsOfNames, string>(KindsOfNames.Group, groupName));
         }
 
         public Mereo(IVoca names)
@@ -84,7 +80,7 @@ namespace NoFuture.Rand.Data.Sp
 
         public override string ToString()
         {
-            return new Tuple<string, string, Pecuniam>(Name, GetName(KindsOfNames.Group), ExpectedValue).ToString();
+            return new Tuple<string, string>(Name, GetName(KindsOfNames.Group)).ToString();
         }
         /// <summary>
         /// A general table to align an interval to some annual multiplier

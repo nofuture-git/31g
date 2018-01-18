@@ -9,7 +9,7 @@ namespace NoFuture.Rand.Tests.GeoTests
         [TestMethod]
         public void AmericanTest()
         {
-            var testResult = StreetPo.American();
+            var testResult = StreetPo.RandomAmericanStreet();
             Assert.IsNotNull(testResult);
             Assert.IsFalse(string.IsNullOrWhiteSpace(testResult.PostBox));
             Assert.IsFalse(string.IsNullOrWhiteSpace(testResult.StreetName));

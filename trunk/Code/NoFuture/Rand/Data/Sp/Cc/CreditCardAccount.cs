@@ -72,7 +72,7 @@ namespace NoFuture.Rand.Data.Sp.Cc
         /// the purchase amount <see cref="val"/>
         /// will not cause the total balance to exceed <see cref="Max"/>.
         /// </returns>
-        public override bool AddPositiveValue(DateTime dt, Pecuniam val, IMereo note = null, Pecuniam fee = null)
+        public override bool AddPositiveValue(DateTime dt, Pecuniam val, IVoca note = null, Pecuniam fee = null)
         {
             if (dt > Cc.ExpDate)
                 return false;

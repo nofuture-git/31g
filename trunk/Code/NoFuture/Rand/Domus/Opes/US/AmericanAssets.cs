@@ -292,8 +292,8 @@ namespace NoFuture.Rand.Domus.Opes.US
                     (float) CreditScore.GetRandomInterestRate(null, baseRate) * 0.01f;
 
                 var id = isMortgage
-                    ? new PostalAddress()
-                    : (Identifier) new Vin();
+                    ? (Identifier) PostalAddress.RandomAmericanAddress()
+                    : Vin.RandomVin();
 
                 var remainingCost = isMortgage
                     ? homeDebtAmt.ToPecuniam()

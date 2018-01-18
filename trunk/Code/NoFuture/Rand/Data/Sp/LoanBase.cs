@@ -1,4 +1,5 @@
 ﻿using System;
+using NoFuture.Rand.Core;
 
 namespace NoFuture.Rand.Data.Sp
 {
@@ -53,12 +54,12 @@ namespace NoFuture.Rand.Data.Sp
         /// <param name="dt"></param>
         /// <param name="amount"></param>
         /// <param name="note"></param>
-        public virtual void MakeAPayment(DateTime dt, Pecuniam amount, string note = null)
+        public virtual void MakeAPayment(DateTime dt, Pecuniam amount, IVoca note = null)
         {
-            if (string.IsNullOrWhiteSpace(note))
+            if (note == null)
                 AddNegativeValue(dt, amount);
             else
-                AddNegativeValue(dt, amount, new Mereo(note));
+                AddNegativeValue(dt, amount, note);
         }
     }
 }

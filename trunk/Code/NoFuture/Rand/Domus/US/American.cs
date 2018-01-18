@@ -84,7 +84,7 @@ namespace NoFuture.Rand.Domus.US
             var isDead = _deathCert != null;
             if (isDead)
                 return;
-            var homeAddr = PostalAddress.GetRandomAmericanAddr();
+            var homeAddr = PostalAddress.RandomAmericanAddress();
             _addresses.Add(homeAddr);
             var csz = homeAddr.HomeCityArea as UsCityStateZip;
 
@@ -372,7 +372,7 @@ namespace NoFuture.Rand.Domus.US
 
                 if (namerLivesWith.Address == null)
                     namerLivesWith.AddAddress(
-                        PostalAddress.GetRandomAmericanAddr(Address.HomeCityArea.GetPostalCodePrefix()));
+                        PostalAddress.RandomAmericanAddress(Address.HomeCityArea.GetPostalCodePrefix()));
 
                 AmericanUtil.SetNAmerCohabitants(namerChild, namerLivesWith);
             }

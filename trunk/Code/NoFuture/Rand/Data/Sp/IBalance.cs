@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using NoFuture.Rand.Core;
 
 namespace NoFuture.Rand.Data.Sp
 {
@@ -18,7 +19,7 @@ namespace NoFuture.Rand.Data.Sp
         /// <param name="amnt"></param>
         /// <param name="note"></param>
         /// <param name="fee"></param>
-        Guid AddTransaction(DateTime dt, Pecuniam amnt, IMereo note = null, Pecuniam fee = null);
+        Guid AddTransaction(DateTime dt, Pecuniam amnt, IVoca note = null, Pecuniam fee = null);
 
         /// <summary>
         /// Gets transactions which occured on or after <see cref="from"/> up to the <see cref="to"/>

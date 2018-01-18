@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using NoFuture.Rand.Core;
 
 namespace NoFuture.Rand.Data.Sp
 {
@@ -34,7 +35,7 @@ namespace NoFuture.Rand.Data.Sp
 
         #endregion
 
-        public Guid AddTransaction(DateTime dt, Pecuniam amnt, IMereo note = null, Pecuniam fee = null)
+        public Guid AddTransaction(DateTime dt, Pecuniam amnt, IVoca note = null, Pecuniam fee = null)
         {
             if (amnt == null)
                 return Guid.Empty;

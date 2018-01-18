@@ -1,4 +1,5 @@
 ﻿using System;
+using NoFuture.Rand.Core;
 
 namespace NoFuture.Rand.Data.Sp
 {
@@ -9,7 +10,7 @@ namespace NoFuture.Rand.Data.Sp
     /// </summary>
     public interface ITransactionable
     {
-        void AddNegativeValue(DateTime dt, Pecuniam amt, IMereo note = null, Pecuniam fee = null);
-        bool AddPositiveValue(DateTime dt, Pecuniam amt, IMereo note = null, Pecuniam fee = null);
+        void AddNegativeValue(DateTime dt, Pecuniam amt, IVoca note = null, Pecuniam fee = null);
+        bool AddPositiveValue(DateTime dt, Pecuniam amt, IVoca note = null, Pecuniam fee = null);
     }
 }

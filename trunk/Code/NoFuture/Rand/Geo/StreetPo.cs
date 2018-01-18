@@ -49,7 +49,8 @@ namespace NoFuture.Rand.Geo
         /// The street type is limited to ten choices or empty.
         /// The street name is one of top twenty in the United States.
         /// </remarks>
-        public static UsStreetPo American()
+        [RandomFactory]
+        public static UsStreetPo RandomAmericanStreet()
         {
             var addressData = new AddressData();
             var pickOne = Etx.MyRand.Next(0, 10);

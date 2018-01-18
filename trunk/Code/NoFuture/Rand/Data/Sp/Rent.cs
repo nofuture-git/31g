@@ -87,7 +87,7 @@ namespace NoFuture.Rand.Data.Sp
         /// <param name="dt"></param>
         /// <param name="amount"></param>
         /// <param name="note"></param>
-        public void PayRent(DateTime dt, Pecuniam amount, IMereo note = null)
+        public void PayRent(DateTime dt, Pecuniam amount, IVoca note = null)
         {
             AddNegativeValue(dt, amount, note, Pecuniam.Zero);
         }

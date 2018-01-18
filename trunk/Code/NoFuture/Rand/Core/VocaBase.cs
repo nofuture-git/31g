@@ -14,6 +14,22 @@ namespace NoFuture.Rand.Core
     {
         protected internal List<Tuple<KindsOfNames, string>> Names { get; } = new List<Tuple<KindsOfNames, string>>();
 
+        public VocaBase()
+        {
+
+        }
+
+        public VocaBase(string name)
+        {
+            Names.Add(new Tuple<KindsOfNames, string>(KindsOfNames.Legal, name));
+        }
+
+        public VocaBase(string name, string groupName)
+        {
+            Names.Add(new Tuple<KindsOfNames, string>(KindsOfNames.Legal, name));
+            Names.Add(new Tuple<KindsOfNames, string>(KindsOfNames.Group, groupName));
+        }
+
         public int CountOfNames => Names.Count;
 
         public virtual void UpsertName(KindsOfNames k, string name)
