@@ -4,14 +4,31 @@ using NoFuture.Rand.Data.Sp.Enums;
 
 namespace NoFuture.Rand.Data.Sp
 {
+    /// <inheritdoc cref="ITransactionable" />
+    /// <inheritdoc cref="ITempore" />
     /// <summary>
     /// Represents the item reported to a Credit Bureau
     /// </summary>
     public interface ITradeLine : ITempore, ITransactionable
     {
-        FormOfCredit FormOfCredit { get; set; }
+        /// <summary>
+        /// The kind of credit associated to this tradeline, if any.
+        /// </summary>
+        FormOfCredit? FormOfCredit { get; set; }
+
+        /// <summary>
+        /// The complete history of the tradeline.
+        /// </summary>
         IBalance Balance { get; }
-        TimeSpan DueFrequency { get; set; }
-        ClosedCondition Closure { get; set; }
+
+        /// <summary>
+        /// The recurring frequency of activity of the tradeline, if any.
+        /// </summary>
+        TimeSpan? DueFrequency { get; set; }
+
+        /// <summary>
+        /// The condition on which the tradeline was closed, if any.
+        /// </summary>
+        ClosedCondition? Closure { get; set; }
     }
 }

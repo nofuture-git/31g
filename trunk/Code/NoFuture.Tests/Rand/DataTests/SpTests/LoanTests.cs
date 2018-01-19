@@ -114,7 +114,7 @@ namespace NoFuture.Rand.Tests.DataTests.SpTests
             testSubject = new FixedRateLoan(DateTime.Now.AddYears(-3).Date, 0.0125F);
             testSubject.Balance.AddTransaction(DateTime.Now.AddDays(-365), new Pecuniam(8000.0M));
 
-            testSubject.Balance.AddTransaction(DateTime.Now.AddDays(-180 - testSubject.DueFrequency.TotalDays),
+            testSubject.Balance.AddTransaction(DateTime.Now.AddDays(-180 - testSubject.DueFrequency.Value.TotalDays),
                     new Pecuniam(-461.0M));
 
             var dt = DateTime.Now;
@@ -122,43 +122,43 @@ namespace NoFuture.Rand.Tests.DataTests.SpTests
             testResult = testSubject.GetDelinquency(dt);
             Assert.AreEqual(PastDue.HundredAndEighty, testResult);
 
-            testSubject.Balance.AddTransaction(DateTime.Now.AddDays(-179 - testSubject.DueFrequency.TotalDays),
+            testSubject.Balance.AddTransaction(DateTime.Now.AddDays(-179 - testSubject.DueFrequency.Value.TotalDays),
                     new Pecuniam(-461.0M));
 
             testResult = testSubject.GetDelinquency(dt);
             Assert.AreEqual(PastDue.Ninety, testResult);
 
-            testSubject.Balance.AddTransaction(DateTime.Now.AddDays(-90 - testSubject.DueFrequency.TotalDays),
+            testSubject.Balance.AddTransaction(DateTime.Now.AddDays(-90 - testSubject.DueFrequency.Value.TotalDays),
                     new Pecuniam(-461.0M));
 
             testResult = testSubject.GetDelinquency(dt);
             Assert.AreEqual(PastDue.Ninety, testResult);
 
-            testSubject.Balance.AddTransaction(DateTime.Now.AddDays(-89 - testSubject.DueFrequency.TotalDays),
+            testSubject.Balance.AddTransaction(DateTime.Now.AddDays(-89 - testSubject.DueFrequency.Value.TotalDays),
                     new Pecuniam(-461.0M));
 
             testResult = testSubject.GetDelinquency(dt);
             Assert.AreEqual(PastDue.Sixty, testResult);
 
-            testSubject.Balance.AddTransaction(DateTime.Now.AddDays(-60 - testSubject.DueFrequency.TotalDays),
+            testSubject.Balance.AddTransaction(DateTime.Now.AddDays(-60 - testSubject.DueFrequency.Value.TotalDays),
                     new Pecuniam(-461.0M));
 
             testResult = testSubject.GetDelinquency(dt);
             Assert.AreEqual(PastDue.Sixty, testResult);
 
-            testSubject.Balance.AddTransaction(DateTime.Now.AddDays(-59 - testSubject.DueFrequency.TotalDays),
+            testSubject.Balance.AddTransaction(DateTime.Now.AddDays(-59 - testSubject.DueFrequency.Value.TotalDays),
                     new Pecuniam(-461.0M));
 
             testResult = testSubject.GetDelinquency(dt);
             Assert.AreEqual(PastDue.Thirty, testResult);
 
-            testSubject.Balance.AddTransaction(DateTime.Now.AddDays(-30 - testSubject.DueFrequency.TotalDays),
+            testSubject.Balance.AddTransaction(DateTime.Now.AddDays(-30 - testSubject.DueFrequency.Value.TotalDays),
                     new Pecuniam(-461.0M));
 
             testResult = testSubject.GetDelinquency(dt);
             Assert.AreEqual(PastDue.Thirty, testResult);
 
-            testSubject.Balance.AddTransaction(DateTime.Now.AddDays(-29 - testSubject.DueFrequency.TotalDays),
+            testSubject.Balance.AddTransaction(DateTime.Now.AddDays(-29 - testSubject.DueFrequency.Value.TotalDays),
                     new Pecuniam(-461.0M));
 
             testResult = testSubject.GetDelinquency(dt);

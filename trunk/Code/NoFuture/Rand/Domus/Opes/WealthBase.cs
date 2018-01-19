@@ -258,7 +258,7 @@ namespace NoFuture.Rand.Domus.Opes
 
         /// <summary>
         /// Helper method to get only those on-going items from within <see cref="items"/>
-        /// (i.e. items whose end date is null)
+        /// (i.e. items whose end date is null and whose expected value is not zero).
         /// </summary>
         /// <param name="items"></param>
         /// <returns></returns>
@@ -266,7 +266,7 @@ namespace NoFuture.Rand.Domus.Opes
         {
             if (items == null)
                 return null;
-            var o = items.Where(x => x.Terminus == null).ToList();
+            var o = items.Where(x => x.Terminus == null && x.My.ExpectedValue != Pecuniam.Zero).ToList();
             o.Sort(Comparer);
             return o.ToArray();
         }

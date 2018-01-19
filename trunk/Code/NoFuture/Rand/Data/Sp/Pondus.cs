@@ -7,6 +7,7 @@ using NoFuture.Rand.Data.Sp.Enums;
 
 namespace NoFuture.Rand.Data.Sp
 {
+    /// <inheritdoc cref="Receivable" />
     /// <summary>
     /// A composition type to bind a time and a name to expected and actual money
     /// </summary>

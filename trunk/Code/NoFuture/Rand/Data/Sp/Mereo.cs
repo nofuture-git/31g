@@ -80,7 +80,8 @@ namespace NoFuture.Rand.Data.Sp
 
         public override string ToString()
         {
-            return new Tuple<string, string>(Name, GetName(KindsOfNames.Group)).ToString();
+            return new Tuple<string, string, Pecuniam, Interval>(Name, GetName(KindsOfNames.Group), ExpectedValue,
+                Interval).ToString();
         }
         /// <summary>
         /// A general table to align an interval to some annual multiplier

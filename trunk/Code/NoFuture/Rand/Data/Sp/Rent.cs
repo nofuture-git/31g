@@ -50,11 +50,12 @@ namespace NoFuture.Rand.Data.Sp
             Terminus = _dtOfFirstFullRentDue.AddMonths(forMonths);
             var fullTermAmt = _proRatedAmt + new Pecuniam(monthlyRent.Amount*forMonths);
             Balance.AddTransaction(signing, fullTermAmt, new Mereo("Lease Signing"));
-            FormOfCredit = FormOfCredit.None;
             LeaseTermInMonths = forMonths;
             Deposit = deposit;
             MonthlyPmt = monthlyRent;
             Id = property;
+            DueFrequency = DefaultDueFrequency;
+            FormOfCredit = Enums.FormOfCredit.None;
 
         }
         #endregion

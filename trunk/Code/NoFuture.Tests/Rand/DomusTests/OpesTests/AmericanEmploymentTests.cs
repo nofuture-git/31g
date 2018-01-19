@@ -23,8 +23,6 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             foreach(var r in testResult)
                 System.Diagnostics.Debug.WriteLine(r);
 
-            Assert.AreEqual(6, testResult.Count);
-
             testSubject = new AmericanEmployment(new DateTime(2013, 5, 16), new DateTime(2017,8,1));
             testResult = testSubject.GetYearsOfServiceInDates(null);
             Assert.IsNotNull(testResult);
@@ -33,7 +31,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             foreach (var r in testResult)
                 System.Diagnostics.Debug.WriteLine(r);
 
-            Assert.AreEqual(4, testResult.Count);
+            Assert.AreEqual(5, testResult.Count);
 
         }
 

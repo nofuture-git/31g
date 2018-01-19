@@ -18,6 +18,7 @@ namespace NoFuture.Rand.Tests.DataTests.SpTests
             Assert.IsNotNull(testResult);
             Assert.IsTrue(testResult.MinPaymentRate > 0);
             Assert.IsTrue(testResult.Rate > 0);
+            Assert.IsNotNull(testResult.CurrentStatus);
             Assert.AreNotEqual(SpStatus.NoHistory, testResult.CurrentStatus);
             Assert.AreNotEqual(Pecuniam.Zero, testResult.Value);
             Debug.WriteLine("MinPaymentRate     : {0}", testResult.MinPaymentRate);

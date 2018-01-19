@@ -14,7 +14,8 @@ namespace NoFuture.Rand.Data.Sp
             {
                 Balance.AddTransaction(openedDate, amount.Abs, new Mereo("Initial Transaction"), Pecuniam.Zero);
             }
-
+            FormOfCredit = Enums.FormOfCredit.Installment;
+            DueFrequency = DefaultDueFrequency;
             _minPaymentRate = minPaymentRate;
         }
 

@@ -28,7 +28,8 @@ namespace NoFuture.Rand.Domus.Opes
         ILaboris[] GetEmploymentAt(DateTime? dt);
 
         /// <summary>
-        /// Returns all non-employment forms of income right Now
+        /// Returns all non-employment forms of income for the current time which have 
+        /// a non-zero value
         /// </summary>
         Pondus[] CurrentExpectedOtherIncome { get; }
 

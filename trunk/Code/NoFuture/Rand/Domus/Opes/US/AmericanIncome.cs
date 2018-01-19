@@ -355,12 +355,13 @@ namespace NoFuture.Rand.Domus.Opes.US
 
         /// <summary>
         /// Gets a list of time ranges over for all the years of this income&apos;s start date (and then some). 
-        /// Each block is assumed as a span of employment
+        /// Each block is assumed as a span of employment at one single employer.
         /// </summary>
         /// <param name="options"></param>
         /// <param name="personality"></param>
         /// <returns></returns>
-        protected internal virtual List<Tuple<DateTime, DateTime?>> GetEmploymentRanges(OpesOptions options, IPersonality personality = null)
+        protected internal virtual List<Tuple<DateTime, DateTime?>> GetEmploymentRanges(OpesOptions options,
+            IPersonality personality = null)
         {
             options = options ?? MyOptions;
             var emply = new List<Tuple<DateTime, DateTime?>>();
@@ -371,11 +372,7 @@ namespace NoFuture.Rand.Domus.Opes.US
                 ? Etx.RandomDate(-3, DateTime.Today, true).Date
                 : sdt.AddDays(Etx.RandomInteger(0, 360) * -1);
 
-            if (personality == null)
-            {
-                emply.Add(new Tuple<DateTime, DateTime?>(sdt, null));
-                return emply;
-            }
+            //TODO - tie this together with personality
             var tenure = AmericanEmployment.RandomEmploymentTenure(options);
             var lpDt = sdt;
             while (lpDt < DateTime.Today)
@@ -389,7 +386,7 @@ namespace NoFuture.Rand.Domus.Opes.US
                 sdt = lpDt;
                 tenure = AmericanEmployment.RandomEmploymentTenure(options);
             }
-            if(!emply.Any())
+            if (!emply.Any())
                 emply.Add(new Tuple<DateTime, DateTime?>(Etx.RandomDate(-4, DateTime.Today, true).Date, null));
             return emply;
         }

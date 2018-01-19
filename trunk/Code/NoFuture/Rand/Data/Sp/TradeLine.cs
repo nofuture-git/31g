@@ -4,8 +4,8 @@ using NoFuture.Rand.Data.Sp.Enums;
 
 namespace NoFuture.Rand.Data.Sp
 {
+    /// <inheritdoc />
     /// <summary>
-    /// Represents the item reported to a Credit Bureau
     /// </summary>
     [Serializable]
     public class TradeLine : ITradeLine
@@ -19,7 +19,7 @@ namespace NoFuture.Rand.Data.Sp
         private readonly Balance _balance = new Balance();
         private DateTime _openDate;
         private DateTime? _closeDate;
-        private TimeSpan _dueFrequency = DefaultDueFrequency;
+        private TimeSpan? _dueFrequency;
         #endregion
 
         public TradeLine(){ }
@@ -30,10 +30,10 @@ namespace NoFuture.Rand.Data.Sp
         }
 
         #region properties
-        public FormOfCredit FormOfCredit { get; set; }
+        public FormOfCredit? FormOfCredit { get; set; }
         public IBalance Balance => _balance;
 
-        public TimeSpan DueFrequency
+        public TimeSpan? DueFrequency
         {
             get => _dueFrequency;
             set => _dueFrequency = value;
@@ -51,7 +51,7 @@ namespace NoFuture.Rand.Data.Sp
             set => _closeDate = value;
         }
 
-        public ClosedCondition Closure { get; set; }
+        public ClosedCondition? Closure { get; set; }
 
         #endregion
 

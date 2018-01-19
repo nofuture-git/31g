@@ -101,6 +101,31 @@ namespace NoFuture.Util.Core
         }
 
         /// <summary>
+        /// Helper method to transform a timespan into years
+        /// </summary>
+        /// <param name="ts"></param>
+        /// <returns></returns>
+        public static double ToYears(this TimeSpan ts)
+        {
+            if (ts == TimeSpan.MinValue)
+                return 0D;
+
+            var tr = Constants.TropicalYear;
+            //if (ts == tr)
+            //    return 1D;
+
+            return ts.TotalMilliseconds / tr.TotalMilliseconds;
+
+            //var rslt = ts.Days / (double) tr.Days;
+            //rslt += ts.Hours / (double) tr.Hours / tr.Days;
+            //rslt += ts.Minutes / (double) tr.Minutes / tr.Hours / tr.Days;
+            //rslt += ts.Seconds / (double)tr.Seconds / tr.Minutes / tr.Hours / tr.Days;
+            //rslt += ts.Milliseconds / (double)tr.Milliseconds / tr.Seconds / tr.Minutes / tr.Hours / tr.Days;
+
+            //return rslt;
+        }
+
+        /// <summary>
         /// Returns a date as a rational number (e.g. 2016.684476658052) 
         /// where day of year is divided by <see cref="Constants.DBL_TROPICAL_YEAR"/>
         /// </summary>

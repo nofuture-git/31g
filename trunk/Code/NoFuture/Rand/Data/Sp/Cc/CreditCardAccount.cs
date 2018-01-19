@@ -24,7 +24,7 @@ namespace NoFuture.Rand.Data.Sp.Cc
         {
             Cc = cc;
             _ccMax = ccMax ?? new Pecuniam(1000);
-            FormOfCredit = FormOfCredit.Revolving;
+            FormOfCredit = Enums.FormOfCredit.Revolving;
             DueFrequency = new TimeSpan(30, 0, 0, 0);
         }
         #endregion

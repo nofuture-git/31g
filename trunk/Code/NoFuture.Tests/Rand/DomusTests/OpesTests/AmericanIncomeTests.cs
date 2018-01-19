@@ -20,19 +20,6 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             Assert.AreNotEqual(0, testResult.Count);
             Assert.IsNotNull(testResult[0]?.Item1);
 
-            var testInput = Personality.RandomPersonality();
-            testInput.Openness.Value = new Dimension(0.99, 0.10);
-
-            testResult = testSubject.GetEmploymentRanges(null, testInput);
-            Assert.IsNotNull(testResult);
-            Assert.IsTrue(testResult.Count > 1);
-            Assert.IsNotNull(testResult[0]?.Item2);
-
-            foreach (var tuple in testResult)
-            {
-                System.Diagnostics.Debug.WriteLine(tuple);
-            }
-
         }
 
         [TestMethod]
@@ -42,17 +29,6 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             var testResult = testSubject.GetRandomEmployment(null, null);
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0, testResult.Count);
-
-            var testInput = Personality.RandomPersonality();
-            testInput.Openness.Value = new Dimension(0.99, 0.10);
-
-            testResult = testSubject.GetRandomEmployment(null, testInput);
-            Assert.IsNotNull(testResult);
-            Assert.IsTrue(testResult.Count > 1);
-            foreach (var emply in testResult)
-            {
-                System.Diagnostics.Debug.WriteLine(emply);
-            }
         }
 
         [TestMethod]

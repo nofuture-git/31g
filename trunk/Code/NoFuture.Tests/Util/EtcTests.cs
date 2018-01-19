@@ -352,5 +352,21 @@ namespace NoFuture.Tests.Util
             Assert.AreEqual("Roy",testResult[0]);
             
         }
+
+        [TestMethod]
+        public void TestToYears()
+        {
+            var testInput = new TimeSpan(365, 0, 0, 0);
+
+            var testResult = testInput.ToYears();
+            Assert.AreNotEqual(0D, testResult);
+            Assert.IsTrue(testResult < 1D);
+
+            testInput = Constants.TropicalYear;
+            testResult = testInput.ToYears();
+            Assert.AreEqual(1D, testResult);
+            System.Diagnostics.Debug.Write(testResult);
+
+        }
     }
 }

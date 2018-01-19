@@ -4,10 +4,7 @@ using System.Linq;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Data.Sp;
 using NoFuture.Rand.Data.Sp.Enums;
-using NoFuture.Rand.Gov;
-using NoFuture.Rand.Gov.US;
 using NoFuture.Rand.Org;
-using NoFuture.Shared.Core;
 
 namespace NoFuture.Rand.Domus.Opes.US
 {
@@ -71,7 +68,7 @@ namespace NoFuture.Rand.Domus.Opes.US
 
         public ITributum Deductions { get; set; }
 
-        public virtual Pondus[] CurrentPay => GetPayAt(null);
+        public virtual Pondus[] CurrentPay => GetCurrent(MyItems);
 
         public virtual DateTime Inception
         {
@@ -125,7 +122,7 @@ namespace NoFuture.Rand.Domus.Opes.US
         public static TimeSpan RandomEmploymentTenure(OpesOptions options = null)
         {
             //TODO - use[https://www.bls.gov/news.release/tenure.nr0.htm]
-            return new TimeSpan(Etx.RandomInteger(745, 1855), 0, 0);
+            return new TimeSpan(Etx.RandomInteger(745, 1855), 0, 0, 0);
         }
 
         public virtual bool IsInRange(DateTime dt)
@@ -184,63 +181,43 @@ namespace NoFuture.Rand.Domus.Opes.US
             options = options ?? MyOptions;
             var ranges = new List<Tuple<DateTime, DateTime?>>();
 
-            var yearsOfService = GetYearsOfService(options);
-            if (yearsOfService <= 0 || MyOptions.Inception == DateTime.MinValue)
+            var stDt = options.Inception.Date;
+
+            stDt = stDt == DateTime.MinValue 
+                ? DateTime.Today.AddDays(-1 * RandomEmploymentTenure().TotalDays) 
+                : stDt;
+
+            var tenure = options.Terminus == null
+                ? DateTime.Today - options.Inception
+                : options.Terminus.Value - options.Inception;
+
+            if (tenure == TimeSpan.Zero || options.Inception == DateTime.MinValue)
                 return ranges;
 
             var employerFiscalYearEnd = FiscalYearEndDay ?? 1;
 
             //assume merit increases 90 days after fiscal year end
             var annualReviewDays = employerFiscalYearEnd + 90;
-            var maxEndDt = MyOptions.Terminus.GetValueOrDefault(DateTime.Today);
-            var prevDt = MyOptions.Inception.Date;
-            for (var i = 0; i <= yearsOfService; i++)
+            var mark = stDt;
+            for (var i = 0; i < tenure.TotalDays; i++)
             {
-                var stDt = i == 0 ? prevDt : prevDt.AddDays(1);
-                var endDt = new DateTime(stDt.AddYears(1).Year, 1, 1).AddDays(annualReviewDays);
-                while((endDt - stDt).Days < 360)
-                    endDt = new DateTime(endDt.AddYears(1).Year, 1, 1).AddDays(annualReviewDays);
+                if (i + 1 >= tenure.TotalDays)
+                {
+                    ranges.Add(new Tuple<DateTime, DateTime?>(mark, options.Terminus));
+                    break;
+                }
 
-                //determine if we have past the end date
-                var isPastMax = endDt > maxEndDt;
-
-                var endDt2 = isPastMax ? maxEndDt : endDt;
-
-                var dtRng = new Tuple<DateTime, DateTime?>(stDt, endDt2);
+                if (stDt.DayOfYear != annualReviewDays)
+                {
+                    stDt = stDt.AddDays(1);
+                    continue;
+                }
                 
-                ranges.Add(dtRng);
-
-                if (isPastMax)
-                    return ranges;
-
-                prevDt = endDt;
+                ranges.Add(new Tuple<DateTime, DateTime?>(mark, stDt));
+                stDt = stDt.AddDays(1);
+                mark = stDt;
             }
             return ranges;
-        }
-
-        /// <summary>
-        /// Determines the number of years of employment
-        /// </summary>
-        /// <returns></returns>
-        protected internal virtual int GetYearsOfService(OpesOptions options)
-        {
-            options = options ?? MyOptions;
-            var hasStartDate = MyOptions.Inception != DateTime.MinValue;
-            if (!hasStartDate)
-                return 0;
-
-            var stDt = MyOptions.Inception;
-            var endDt = MyOptions.Terminus.GetValueOrDefault(DateTime.Today);
-
-            var numYears = endDt.Year - stDt.Year;
-            numYears = numYears <= 0 ? 0 : numYears;
-            var maxAge = new[] {AmericanData.MAX_AGE_FEMALE, AmericanData.MAX_AGE_MALE}.Max();
-            maxAge -= UsState.AGE_OF_ADULT;
-            if(numYears > maxAge)
-                throw new RahRowRagee($"the years of employment was calculated at {numYears} " +
-                                      $"but the absolute max number of working years for an american is {maxAge} - " +
-                                      "check your date ranges and try again");
-            return numYears;
         }
 
         /// <summary>

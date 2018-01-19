@@ -15,8 +15,16 @@ namespace NoFuture.Rand.Data.Sp
         #endregion
 
         #region properties
-        //public virtual ITradeLine TradeLine => _tl;
-        public SpStatus CurrentStatus => GetStatus(DateTime.Now);
+
+        public SpStatus? CurrentStatus
+        {
+            get
+            {
+                if (DueFrequency == null)
+                    return null;
+                return GetStatus(DateTime.Now);
+            }
+        }
         public PastDue? CurrentDelinquency => GetDelinquency(DateTime.Now);
         public virtual Pecuniam Value => Balance.GetCurrent(DateTime.Now, 0f);
 
@@ -29,7 +37,7 @@ namespace NoFuture.Rand.Data.Sp
                 return null;
 
             //30 days past due when last payment was normal billing cycle plus 30 days
-            var billingCycleDays = DueFrequency.TotalDays;
+            var billingCycleDays = (DueFrequency ?? DefaultDueFrequency).TotalDays;
 
             var justLate = new Tuple<DateTime, DateTime>(dt.AddDays(-29 - billingCycleDays),
                 dt.AddDays(billingCycleDays*-1));
@@ -86,7 +94,8 @@ namespace NoFuture.Rand.Data.Sp
 
             var lastPayment =
                 Balance.GetDebitSum(
-                    new Tuple<DateTime, DateTime>(ddt.AddDays(DueFrequency.TotalDays*-1), ddt));
+                    new Tuple<DateTime, DateTime>(ddt.AddDays((DueFrequency ?? DefaultDueFrequency).TotalDays * -1),
+                        ddt));
 
             return lastPayment.Abs < GetMinPayment(ddt).Abs
                 ? SpStatus.Late

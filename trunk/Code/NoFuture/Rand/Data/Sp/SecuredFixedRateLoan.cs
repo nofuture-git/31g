@@ -159,12 +159,7 @@ namespace NoFuture.Rand.Data.Sp
             var calcPurchaseDt = DateTime.Today.AddDays(-1 * (dtIncrement - firstOfYear).Days);
             loan = isMortgage
                     ? new Mortgage(property, calcPurchaseDt, rate, totalCost, termInYears)
-                    : new SecuredFixedRateLoan(property, calcPurchaseDt, totalCost, rate, termInYears)
-                ;
-
-            loan.FormOfCredit = isMortgage
-                ? FormOfCredit.Mortgage
-                : FormOfCredit.Installment;
+                    : new SecuredFixedRateLoan(property, calcPurchaseDt, totalCost, rate, termInYears);
 
             return loan;
         }

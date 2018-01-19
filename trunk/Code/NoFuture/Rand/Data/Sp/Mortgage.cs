@@ -27,7 +27,7 @@ namespace NoFuture.Rand.Data.Sp
         public Mortgage(Identifier property, DateTime openedDate, float rate, Pecuniam purchasePrice,
             int termInYears = 30) : base(property, openedDate, purchasePrice, rate, termInYears)
         {
-
+            FormOfCredit = Enums.FormOfCredit.Mortgage;
         }
 
         #endregion

@@ -16,6 +16,7 @@ namespace NoFuture.Rand.Data.Sp
         protected DepositAccount(DateTime dateOpenned) : base(dateOpenned)
         {
             DueFrequency = TimeSpan.Zero;
+            FormOfCredit = Enums.FormOfCredit.None;
         }
 
         #endregion
