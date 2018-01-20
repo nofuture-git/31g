@@ -51,7 +51,7 @@ namespace NoFuture.Rand.Domus.Opes.US
         public virtual string Src { get; set; }
         public virtual string Abbrev => IncomeGroupNames.EMPLOYMENT;
         public virtual string EmployingCompanyName { get; set; }
-        public virtual int? FiscalYearEndDay { get; set; }
+        public virtual int FiscalYearEndDay { get; set; } = 1;
         public virtual bool IsOwner { get; set; }
         protected override DomusOpesDivisions Division => DomusOpesDivisions.Employment;
         public SocDetailedOccupation Occupation
@@ -127,7 +127,7 @@ namespace NoFuture.Rand.Domus.Opes.US
 
         public virtual bool IsInRange(DateTime dt)
         {
-            var afterOrOnFromDt = Inception == null || Inception <= dt;
+            var afterOrOnFromDt = Inception <= dt;
             var beforeOrOnToDt = Terminus == null || Terminus.Value >= dt;
             return afterOrOnFromDt && beforeOrOnToDt;
         }
@@ -152,6 +152,13 @@ namespace NoFuture.Rand.Domus.Opes.US
                 options.Inception = GetYearNeg(-1);
             var yearsOfService = GetYearsOfServiceInDates(options);
             var isCurrentEmployee = MyOptions.Terminus == null;
+
+            if (options.SumTotal == null || options.SumTotal == Pecuniam.Zero)
+            {
+                options.SumTotal = GetRandomYearlyIncome(options.Inception);
+                options.Interval = Interval.Annually;
+            }
+
             for (var i = 0; i < yearsOfService.Count; i++)
             {
                 var range = yearsOfService[i];
@@ -194,10 +201,8 @@ namespace NoFuture.Rand.Domus.Opes.US
             if (tenure == TimeSpan.Zero || options.Inception == DateTime.MinValue)
                 return ranges;
 
-            var employerFiscalYearEnd = FiscalYearEndDay ?? 1;
-
             //assume merit increases 90 days after fiscal year end
-            var annualReviewDays = employerFiscalYearEnd + 90;
+            var annualReviewDays = FiscalYearEndDay + 90;
             var mark = stDt;
             for (var i = 0; i < tenure.TotalDays; i++)
             {
@@ -226,8 +231,6 @@ namespace NoFuture.Rand.Domus.Opes.US
         /// <returns></returns>
         protected internal virtual Dictionary<string, double> GetPayName2RandRates(OpesOptions options)
         {
-            options = options ?? MyOptions;
-
             var bonusRate = Etx.RandomRollBelowOrAt(1, Etx.Dice.Ten)
                 ? Etx.RandomValueInNormalDist(0.02, 0.001)
                 : 0D;
@@ -272,12 +275,6 @@ namespace NoFuture.Rand.Domus.Opes.US
             var salaryRate = !_isWages
                 ? 1D - sumOfRate
                 : 0D;
-
-            if (options.SumTotal == null || options.SumTotal == Pecuniam.Zero)
-            {
-                options.SumTotal = GetRandomYearlyIncome(options.Inception);
-                options.Interval = Interval.Annually;
-            }
 
             var incomeName2Rate = new Dictionary<string, double>
             {

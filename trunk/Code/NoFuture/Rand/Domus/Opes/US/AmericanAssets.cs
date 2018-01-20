@@ -203,7 +203,7 @@ namespace NoFuture.Rand.Domus.Opes.US
                 });
             }
 
-            if (MyOptions.HasVehicles && !assignedVehicleDirectly)
+            if (MyOptions.NumberOfVehicles > 0 && !assignedVehicleDirectly)
             {
                 givenDirectly.Add(new Mereo(PERSONAL_PROPERTY_MOTOR_VEHICLES, AssetGroupNames.PERSONAL_PROPERTY)
                 {
@@ -375,7 +375,7 @@ namespace NoFuture.Rand.Domus.Opes.US
             options.PossibleZeroOuts.AddRange(new[] { "Art", "Firearms", "Collections", "Antiques" });
 
             //remove obvious rural related items for everyone except those who are way out in the country
-            var livesInCountry = options.GeoLocation is UsCityStateZip usCityState &&
+            var livesInCountry = options.HomeLocation is UsCityStateZip usCityState &&
                                  usCityState.Msa?.MsaType >= UrbanCentric.Fringe;
             if (!livesInCountry)
             {

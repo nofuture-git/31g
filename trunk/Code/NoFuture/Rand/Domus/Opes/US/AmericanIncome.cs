@@ -340,7 +340,8 @@ namespace NoFuture.Rand.Domus.Opes.US
         {
             options = options ?? MyOptions;
             var dt = options.Inception;
-            var numHouseholdMembers = options.TotalNumberOfHouseholdMembers;
+            var numHouseholdMembers =
+                1 + (options.MaritialStatus == MaritialStatus.Married ? 1 : 0) + options.ChildrenDobs?.Count ?? 0;
             numHouseholdMembers = numHouseholdMembers <= 0 ? 1 : numHouseholdMembers;
             var povertyLevel = AmericanEquations.GetFederalPovertyLevel(dt);
 

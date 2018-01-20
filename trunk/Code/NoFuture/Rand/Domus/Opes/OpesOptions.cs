@@ -15,15 +15,16 @@ using NoFuture.Util.Core;
 
 namespace NoFuture.Rand.Domus.Opes
 {
-    /// <inheritdoc />
+    /// <inheritdoc cref="OpesPortions" />
+    /// <inheritdoc cref="ITempore" />
     /// <summary>
     /// A control object to exercise control over the randomness of 
     /// the various types of Domus.Opes
     /// </summary>
     [Serializable]
-    public class OpesOptions : ITempore
+    public class OpesOptions : OpesPortions, ITempore
     {
-        private double _derivativeSlope;
+        #region properties
 
         /// <summary>
         /// A judgement related expense - this is too complicated 
@@ -38,8 +39,7 @@ namespace NoFuture.Rand.Domus.Opes
         public bool IsPayingSpousalSupport { get; set; }
 
         /// <summary>
-        /// Used to determine if a car payment is applicable - depends on 
-        /// <see cref="NumberOfVehicles"/> being greater than zero
+        /// Used to determine if a car payment is applicable.
         /// </summary>
         public bool IsVehiclePaidOff { get; set; }
 
@@ -59,11 +59,6 @@ namespace NoFuture.Rand.Domus.Opes
         public int NumberOfCreditCards { get; set; }
 
         /// <summary>
-        /// The total number of household members in which this person is also member
-        /// </summary>
-        public int TotalNumberOfHouseholdMembers { get; set; }
-
-        /// <summary>
         /// This person&apos;s children&apos;s birth dates to whom this wealth belongs
         /// </summary>
         public List<DateTime> ChildrenDobs { get; } = new List<DateTime>();
@@ -76,7 +71,7 @@ namespace NoFuture.Rand.Domus.Opes
         /// <summary>
         /// The home city-state of the person to whom this wealth belongs
         /// </summary>
-        public CityArea GeoLocation { get; set; }
+        public CityArea HomeLocation { get; set; }
 
         /// <summary>
         /// The birth date of the person to whom this wealth belongs
@@ -108,64 +103,48 @@ namespace NoFuture.Rand.Domus.Opes
         /// </summary>
         public IVoca PersonsName { get; set; }
 
+        public DateTime Inception { get; set; }
+        public DateTime? Terminus { get; set; }
+
+        /// <summary>
+        /// The interval is passed to the created items
+        /// </summary>
+        public Interval Interval { get; set; }
+
+        #endregion
+
+        #region methods
         /// <summary>
         /// The current age of the person to whom this wealth belongs.
         /// </summary>
-        public int CurrentAge
+        public int GetCurrentAge()
         {
-            get
-            {
-                if (BirthDate == DateTime.MinValue)
-                    return (int)Math.Round(AmericanData.AVG_AGE_AMERICAN);
-                return Etc.CalcAge(BirthDate);
-            }
+            if (BirthDate == DateTime.MinValue)
+                return (int) Math.Round(AmericanData.AVG_AGE_AMERICAN);
+            return Etc.CalcAge(BirthDate);
         }
 
         /// <summary>
-        /// Gets the major region of this instances <see cref="GeoLocation"/>
+        /// Gets the major region of this instances <see cref="HomeLocation"/>
         /// </summary>
-        public AmericanRegion UsCardinalRegion
+        public AmericanRegion GetUsCardinalRegion()
         {
-            get
-            {
-                var usCityArea = GeoLocation as UsCityStateZip;
-                return UsStateData.GetStateData(usCityArea?.State?.ToString())?.Region ?? AmericanRegion.Midwest;
-            }
+            var usCityArea = HomeLocation as UsCityStateZip;
+            return UsStateData.GetStateData(usCityArea?.State?.ToString())?.Region ?? AmericanRegion.Midwest;
         }
 
         /// <summary>
         /// Gets the current age of all children based on 
         /// the assigned Birth Dates present in <see cref="ChildrenDobs"/>
         /// </summary>
-        public List<int> ChildrenAges
+        public List<int> GetChildrenAges()
         {
-            get
-            {
-                var ages = new List<int>();
-                foreach(var dob in ChildrenDobs)
-                    ages.Add(Etc.CalcAge(dob, DateTime.Today));
-                return ages;
-            }
+            var ages = new List<int>();
+            foreach (var dob in ChildrenDobs)
+                ages.Add(Etc.CalcAge(dob, DateTime.Today));
+            return ages;
         }
 
-        /// <summary>
-        /// Asserts that <see cref="NumberOfCreditCards"/> is greater than zero
-        /// </summary>
-        public bool HasCreditCards => NumberOfCreditCards > 0;
-
-        /// <summary>
-        /// Asserts that <see cref="NumberOfVehicles"/> is greater than zero
-        /// </summary>
-        public bool HasVehicles => NumberOfVehicles > 0;
-
-        /// <summary>
-        /// Asserts this instance of options has children based on 
-        /// the assigned birth dates 
-        /// </summary>
-        public bool HasChildren => ChildrenAges != null && ChildrenAges.Any();
-
-        public DateTime Inception { get; set; }
-        public DateTime? Terminus { get; set; }
         public bool IsInRange(DateTime dt)
         {
             var afterOrOnFromDt = Inception <= dt;
@@ -174,57 +153,7 @@ namespace NoFuture.Rand.Domus.Opes
         }
 
         /// <summary>
-        /// The interval is passed to the created items
-        /// </summary>
-        public Interval Interval { get; set; }
-
-        /// <summary>
-        /// Optional, settings this removes the randomness of the overall
-        /// sum of all items in a group.  Each items value maybe random 
-        /// but those random values will all add up to this value if its
-        /// assigned.
-        /// </summary>
-        public Pecuniam SumTotal { get; set; }
-
-        /// <summary>
-        /// The means to assign an items value directly; thereby, removing
-        /// all the randomness of its value.
-        /// </summary>
-        public List<IMereo> GivenDirectly { get; } = new List<IMereo>();
-
-        /// <summary>
-        /// By default, every item will get &apos;something&apos; - add item
-        /// names to this to have them assigned to zero at random.
-        /// </summary>
-        public List<string> PossibleZeroOuts { get; } = new List<string>();
-
-        /// <summary>
-        /// Controls the diminishing rates, the closer to zero the faster 
-        /// the rates diminish (e.g. -0.2 will have probably over 75 % in the first 
-        /// item with the second item having almost all the rest of it and everything
-        /// else just getting a tiny sprinkle - values greater than -1.0 tend to flatten
-        /// it out).
-        /// </summary>
-        public double DerivativeSlope
-        {
-            get
-            {
-                if (_derivativeSlope <= 0.0001 && _derivativeSlope >= -0.0001)
-                    _derivativeSlope = -1.0D;
-
-                return _derivativeSlope;
-            }
-            set => _derivativeSlope = value;
-        }
-
-        /// <summary>
-        /// Related to the names in <see cref="PossibleZeroOuts"/> - turns 
-        /// possible into actual.
-        /// </summary>
-        public Func<int, Etx.Dice, bool> DiceRoll { get; set; } = Etx.RandomRollBelowOrAt;
-
-        /// <summary>
-        /// Helper method to assert if any items have been added to <see cref="GivenDirectly"/>
+        /// Helper method to assert if any items have been added to <see cref="OpesPortions.GivenDirectly"/>
         /// by name and group
         /// </summary>
         /// <param name="name"></param>
@@ -238,7 +167,7 @@ namespace NoFuture.Rand.Domus.Opes
         }
 
         /// <summary>
-        /// Helper method to assert if any items have been added to <see cref="GivenDirectly"/>
+        /// Helper method to assert if any items have been added to <see cref="OpesPortions.GivenDirectly"/>
         /// with the given name
         /// </summary>
         /// <param name="name"></param>
@@ -273,6 +202,10 @@ namespace NoFuture.Rand.Domus.Opes
             foreach(var ca in ChildrenDobs)
                 o.ChildrenDobs.Add(ca);
 
+            o.DerivativeSlope = DerivativeSlope;
+            o.SumTotal = SumTotal == null ? null : new Pecuniam(SumTotal.Amount);
+            o.DiceRoll = DiceRoll;
+
             return o;
         }
 
@@ -294,7 +227,7 @@ namespace NoFuture.Rand.Domus.Opes
                 BirthDate = Etx.RandomAdultBirthDate(),
                 Gender = Etx.RandomCoinToss() ? Gender.Female : Gender.Male,
                 Inception = Etx.RandomDate(-1, null, true),
-                GeoLocation = CityArea.RandomAmericanCity(),
+                HomeLocation = CityArea.RandomAmericanCity(),
                 IsRenting = Etx.RandomCoinToss(),
                 Personality = Pneuma.Personality.RandomPersonality(),
                 Race = Etx.RandomPickOne(AmericanRacePercents.NorthAmericanRaceAvgs),
@@ -308,5 +241,7 @@ namespace NoFuture.Rand.Domus.Opes
             };
             return opt;
         }
+
+        #endregion
     }
 }

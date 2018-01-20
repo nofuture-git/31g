@@ -50,8 +50,8 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             Assert.IsNotNull(testResult.PossibleZeroOuts);
             Assert.AreEqual(2, testResult.PossibleZeroOuts.Count);
 
-            Assert.IsNotNull(testResult.ChildrenAges);
-            Assert.AreEqual(2, testResult.ChildrenAges.Count);
+            Assert.IsNotNull(testResult.GetChildrenAges());
+            Assert.AreEqual(2, testResult.GetChildrenAges().Count);
 
             Assert.IsNotNull(testResult.GivenDirectly);
             Assert.AreEqual(2, testResult.GivenDirectly.Count);

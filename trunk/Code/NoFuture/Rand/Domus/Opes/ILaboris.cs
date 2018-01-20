@@ -23,7 +23,7 @@ namespace NoFuture.Rand.Domus.Opes
         /// <summary>
         /// The day on which the employing company&apos;s fiscal year ends
         /// </summary>
-        int? FiscalYearEndDay { get; set; }
+        int FiscalYearEndDay { get; set; }
 
         /// <summary>
         /// The occupation associated to this term of employment

@@ -89,8 +89,8 @@ namespace NoFuture.Rand.Domus.Opes.US
 
             var edu = options.EducationLevel ?? (OccidentalEdu.HighSchool | OccidentalEdu.Grad);
             var race = options.Race ?? NorthAmericanRace.White;
-            var region = options.UsCardinalRegion;
-            var age = options.CurrentAge;
+            var region = options.GetUsCardinalRegion();
+            var age = options.GetCurrentAge();
             var gender = options.Gender;
             var maritalStatus = options.MaritialStatus ?? MaritialStatus.Single;
 

@@ -178,7 +178,7 @@ namespace NoFuture.Rand.Domus.Opes.US
             //focus most-of-it on Loan Payments or fuel
             options.DerivativeSlope = -0.33D;
 
-            if (options.HasVehicles)
+            if (options.NumberOfVehicles > 0)
             {
                 if (options.IsVehiclePaidOff)
                     options.GivenDirectly.Add(
@@ -229,7 +229,7 @@ namespace NoFuture.Rand.Domus.Opes.US
                     ? new Mereo("Home", ExpenseGroupNames.INSURANCE) { ExpectedValue = Pecuniam.Zero }
                     : new Mereo("Renters", ExpenseGroupNames.INSURANCE) { ExpectedValue = Pecuniam.Zero });
 
-            if (options.HasVehicles)
+            if (options.NumberOfVehicles > 0)
                 options.GivenDirectly.Add(new Mereo("Vehicle", ExpenseGroupNames.INSURANCE) { ExpectedValue = Pecuniam.Zero });
 
             var d = GetItemNames2Portions(ExpenseGroupNames.INSURANCE, options);
@@ -262,7 +262,7 @@ namespace NoFuture.Rand.Domus.Opes.US
             options = (options ?? MyOptions) ?? new OpesOptions();
 
             //when children are young we want to reflect that
-            if (MyOptions.HasChildren && MyOptions.ChildrenAges.All(x => x < AmericanData.AVG_AGE_CHILD_ENTER_SCHOOL))
+            if (MyOptions.GetChildrenAges().All(x => x < AmericanData.AVG_AGE_CHILD_ENTER_SCHOOL))
             {
                 options.GivenDirectly.Add(
                     new Mereo("Transportation", ExpenseGroupNames.CHILDREN) { ExpectedValue = Pecuniam.Zero });

@@ -5,7 +5,6 @@ using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Data.Sp;
 using NoFuture.Rand.Data.Sp.Enums;
-using NoFuture.Rand.Gov;
 using NoFuture.Rand.Gov.US;
 using NoFuture.Rand.Org;
 using NoFuture.Util.Core;
@@ -30,7 +29,7 @@ namespace NoFuture.Rand.Domus.Opes.US
 
         #region properties
 
-        public virtual Pondus[] CurrentDeductions => GetDeductionsAt(null);
+        public virtual Pondus[] CurrentDeductions => GetCurrent(MyItems);
         public Pecuniam TotalAnnualDeductions => Pondus.GetExpectedAnnualSum(CurrentDeductions).Neg;
         public virtual Pondus[] GetDeductionsAt(DateTime? dt)
         {
@@ -158,7 +157,7 @@ namespace NoFuture.Rand.Domus.Opes.US
                 {
                     ExpectedValue = expectedVisionInsCost.ToPecuniam()
                 });
-            var someRandRate = GetRandomRateFromClassicHook(options.CurrentAge);
+            var someRandRate = GetRandomRateFromClassicHook(options.GetCurrentAge());
 
             //we will use to force the SumTotal to exceed current GivenDirectly's sum
             var currentTotal = expectedHealthInsCost + expectedDentalInsCost + expectedVisionInsCost;
@@ -268,7 +267,7 @@ namespace NoFuture.Rand.Domus.Opes.US
                 });
 
             //we need to have a SumTotal exceeding the current GivenDirectly's sum to have any of the others show up at random
-            var someRandRate = GetRandomRateFromClassicHook(options.CurrentAge);
+            var someRandRate = GetRandomRateFromClassicHook(options.GetCurrentAge());
 
             //we will use to force the SumTotal to exceed current GivenDirectly's sum
             var currentTotal = retirementAmt + unionDuesAmt;
@@ -300,7 +299,7 @@ namespace NoFuture.Rand.Domus.Opes.US
                 var adjPay = AmericanEquations.GetInflationAdjustedAmount(pay, 2015, options.Inception);
                 var adjMonthlyPay = adjPay / 12;
                 var childSupportEquation =
-                    AmericanEquations.GetChildSupportMonthlyCostEquation(options.ChildrenAges.Count);
+                    AmericanEquations.GetChildSupportMonthlyCostEquation(options.GetChildrenAges().Count);
                 var childSupport = Math.Round(childSupportEquation.SolveForY(adjMonthlyPay), 2);
 
                 //need to turn this back into annual amount

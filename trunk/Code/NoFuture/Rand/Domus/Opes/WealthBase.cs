@@ -121,7 +121,7 @@ namespace NoFuture.Rand.Domus.Opes
         protected WealthBase(OpesOptions options)
         {
             MyOptions = options ?? new OpesOptions();
-            var usCityArea = MyOptions.GeoLocation as UsCityStateZip;
+            var usCityArea = MyOptions.HomeLocation as UsCityStateZip;
 
             CreditScore = new PersonalCreditScore(MyOptions.BirthDate)
             {
@@ -251,7 +251,7 @@ namespace NoFuture.Rand.Domus.Opes
         /// </remarks>
         protected internal virtual LinearEquation GetAvgEarningPerYear()
         {
-            var ca = MyOptions.GeoLocation as UsCityStateZip;
+            var ca = MyOptions.HomeLocation as UsCityStateZip;
             return (ca?.AverageEarnings ?? UsStateData.GetStateData(ca?.State?.ToString())?.AverageEarnings) ??
                    AmericanEquations.NatlAverageEarnings;
         }
@@ -428,7 +428,7 @@ namespace NoFuture.Rand.Domus.Opes
         /// <returns>
         /// A set of item names to some percent where the sum of all the names is 1 (i.e. 100%).
         /// </returns>
-        public virtual List<Tuple<string, double>> GetItemNames2Portions(string groupName,OpesOptions options)
+        public virtual List<Tuple<string, double>> GetItemNames2Portions(string groupName, OpesOptions options)
         {
             options = options ?? new OpesOptions();
 
@@ -440,28 +440,75 @@ namespace NoFuture.Rand.Domus.Opes
         }
 
         /// <summary>
-        /// General form of its counterparts <see cref="GetGroupNames2Portions"/> and <see cref="GetItemNames2Portions"/>
+        /// The capital method to get random portions for a list of names.
         /// </summary>
-        /// <param name="options"></param>
-        /// <param name="itemNames"></param>
+        /// <param name="options">
+        /// The options which control the randomness of the generated rates for each of the <see cref="itemOrGroupNames"/>
+        /// </param>
+        /// <param name="itemOrGroupNames">
+        /// These are the names with which a random portion is supposed to be generated.
+        /// </param>
         /// <returns>
-        /// A set of item names to some percent where the sum of all the names is 1 (i.e. 100%).
+        /// A set of item names to some percent where the sum of all the name&apos;s portion is 1 (i.e. 100%).
         /// </returns>
-        public static List<Tuple<string, double>> GetNames2Portions(OpesOptions options, string[] itemNames)
+        /// <remarks>
+        /// FAQ
+        /// Q: What happens if no names are given?
+        /// A: An ArgumentNullException is thrown.
+        /// 
+        /// Q: What happens if you just invoke it with no options whatsoever?
+        /// A: Then every item-name gets a truly random value - the sum of which equals 1.
+        /// 
+        /// Q: How does SumTotal work with GivenDirectly?
+        /// A: They are related by relation of the SumTotal to the actual total of all the GivenDirectly&apos;s ExpectedValue.
+        ///    The only time it matters is when SumTotal exceeds the actual total; furthermore, SumTotal has no use
+        ///    when the GivenDirectly is empty since we are getting random portions and not random values.
+        ///    
+        /// Q: So what happens when there are GivenDirectly values and no SumTotal?
+        /// A: Then its just doing the math and nothing is random.
+        /// 
+        /// Q: What happens if SumTotal is less-than GivenDirectly's actual total.
+        /// A: Then SumTotal is just reassigned to the actual total and it again just doing the math - nothing random.
+        /// 
+        /// Q: What about when SumTotal exceeds actual total?
+        /// A: Then the excess amount is what is used to generate random portions for the other item-names.
+        /// 
+        /// Q: What if there are no items in GivenDirectly?
+        /// A: It just resorts back to all item-names having a random portion.
+        /// 
+        /// Q: What happens when the item-names don&apos;t match the names present in GivenDirectly?
+        /// A: The output is always tied to the item-names - any GivenDirectly not found in the item-names is ignored.
+        /// 
+        /// Q: Can GivenDirectly be assigned an ExpectedValue of zero?
+        /// A: Yes, and that is their main purpose to selectively remove randomness for certian item-names - recall 
+        ///    that the function wants to assign some portion to every item-name, no matter how small.
+        /// 
+        /// Q: What happens if I force every item to be zero using GivenDirectly?
+        /// A: An exception is thrown - the function cannot satisfy portions whose sum is equal to both zero and one.
+        /// 
+        /// Q: How do the PossiableZero outs play with explict values on GivenDirectly?
+        /// A: The PossiableZeroOuts are only considered when they are not present in the GivenDirectly.
+        /// 
+        /// Q: What if the SumTotal exceeds the GivenDirectly's sum but all the other item-names are present 
+        ///    in the PossiablyZeroOut&apos;s and it just so happens that they all, in fact do, get selected to be zero-ed out?
+        /// A: It leaves one to receive the excess - in effect forcing the dice role to be false for at least 
+        ///    one of the PossiablyZeroOuts in this case no matter the odds.
+        /// </remarks>
+        public static List<Tuple<string, double>> GetNames2Portions(OpesPortions options, string[] itemOrGroupNames)
         {
             const StringComparison STR_OPT = StringComparison.OrdinalIgnoreCase;
 
             //make this required
-            if (itemNames == null || !itemNames.Any())
-                throw new ArgumentNullException(nameof(itemNames));
+            if (itemOrGroupNames == null || !itemOrGroupNames.Any())
+                throw new ArgumentNullException(nameof(itemOrGroupNames));
 
-            options = options ?? new OpesOptions();
+            options = options ?? new OpesPortions();
 
             var givenDirectlyItems = options.GivenDirectly ?? new List<IMereo>();
 
             //immediately reduce this to only the items present in 'itemNames'
             givenDirectlyItems = givenDirectlyItems.Where(gd =>
-                itemNames.Any(n => String.Equals(gd.Name, n, STR_OPT))).ToList();
+                itemOrGroupNames.Any(n => String.Equals(gd.Name, n, STR_OPT))).ToList();
 
             //get the direct assign's total
             var givenDirectTotal = givenDirectlyItems
@@ -471,10 +518,10 @@ namespace NoFuture.Rand.Domus.Opes
             var sumTotal = (options.SumTotal ?? Pecuniam.Zero).ToDouble();
 
             //get a random rate for all item names
-            var randPortions = Etx.RandomDiminishingPortions(itemNames.Length, options.DerivativeSlope);
+            var randPortions = Etx.RandomDiminishingPortions(itemOrGroupNames.Length, options.DerivativeSlope);
 
             //put this random rate together with each item name
-            var randMap = itemNames
+            var randMap = itemOrGroupNames
                 .Zip(randPortions, (n, v) => new Tuple<string, double>(n, v)).ToList();
 
             //convert it to a dictionary
@@ -487,7 +534,7 @@ namespace NoFuture.Rand.Domus.Opes
             //filter zero out's down, likewise, to only what's actually in itemNames
             var possibleZeroOuts = options.PossibleZeroOuts.Distinct().ToList();
             possibleZeroOuts = possibleZeroOuts
-                .Where(p => itemNames.Any(i => String.Equals(p, i, STR_OPT))).ToList();
+                .Where(p => itemOrGroupNames.Any(i => String.Equals(p, i, STR_OPT))).ToList();
 
             //zero outs will get applied just like any other ReassignRates
             var actualZeroOuts = new List<Tuple<string, double>>();
@@ -521,7 +568,7 @@ namespace NoFuture.Rand.Domus.Opes
             if (actualZeroOuts.Any())
             {
                 //make one last check that we aren't zero'ing out everything
-                if (actualZeroOuts.Count == itemNames.Length)
+                if (actualZeroOuts.Count == itemOrGroupNames.Length)
                     throw new RahRowRagee("A sum total of 1 cannot be perserved when " +
                                           "all items have been directly assigned to 0.");
 
@@ -561,7 +608,7 @@ namespace NoFuture.Rand.Domus.Opes
             var calcMap = new List<Tuple<string, double>>();
 
             //get the item sum as a ratio of the total
-            foreach (var k in itemNames)
+            foreach (var k in itemOrGroupNames)
             {
                 //we only want to reassign when value was explicity given in options
                 if (!calcDict.ContainsKey(k))
@@ -577,7 +624,7 @@ namespace NoFuture.Rand.Domus.Opes
             if (IsCloseEnoughToOne(Math.Round(calcMap.Select(t => t.Item2).Sum(), DF_ROUND_DECIMAL_PLACES)))
             {
                 //still need to add in the 0.0 items since calcMap has only the directly assigned values
-                foreach (var k in itemNames)
+                foreach (var k in itemOrGroupNames)
                 {
                     if (calcMap.Any(t => String.Equals(t.Item1, k, STR_OPT)))
                         continue;
@@ -817,7 +864,7 @@ namespace NoFuture.Rand.Domus.Opes
         {
             //we want age to have an effect on the randomness
             var hookEquation = AmericanEquations.ClassicHook;
-            age = age ?? MyOptions.CurrentAge;
+            age = age ?? MyOptions.GetCurrentAge();
 
             var ageAtDt = age <= 0 
                 ? AmericanData.AVG_AGE_AMERICAN 
