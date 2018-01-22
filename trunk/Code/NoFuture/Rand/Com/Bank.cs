@@ -120,7 +120,7 @@ namespace NoFuture.Rand.Com
             var rssd = bankXml.GetAttribute("rssd");
 
             bank.BusinessAddress = new Tuple<UsStreetPo, UsCityStateZip>(null,
-                new UsCityStateZip(new AddressData {City = city, StateAbbrv = state}));
+                new UsCityStateZip(new AddressData {City = city, StateAbbrev = state}));
             bank.Rssd = new ResearchStatisticsSupervisionDiscount {Value = rssd};
             bank.UpsertName(KindsOfNames.Legal, name);
             bank.UpsertName(KindsOfNames.Abbrev, abbrev);
@@ -149,11 +149,11 @@ namespace NoFuture.Rand.Com
             var pickFromList = new List<XmlElement>();
 
             if (!string.IsNullOrWhiteSpace(ca?.AddressData?.City) &&
-                !string.IsNullOrWhiteSpace(ca.AddressData?.StateAbbrv))
+                !string.IsNullOrWhiteSpace(ca.AddressData?.StateAbbrev))
             {
                 var cityName = UsCityStateZip.FinesseCityName(ca.AddressData.City);
 
-                var nodes = UsBanksXml.SelectNodes($"//com[@us-state='{ca.AddressData.StateAbbrv.ToUpper()}']");
+                var nodes = UsBanksXml.SelectNodes($"//com[@us-state='{ca.AddressData.StateAbbrev.ToUpper()}']");
                 if (nodes != null && nodes.Count > 0)
                 {
                     foreach (var node in nodes)

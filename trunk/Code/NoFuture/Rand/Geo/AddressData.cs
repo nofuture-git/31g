@@ -35,7 +35,7 @@ namespace NoFuture.Rand.Geo
             }
             set => _city = value;
         }
-        public string StateAbbrv { get; set; }
+        public string StateAbbrev { get; set; }
         public string StateName { get; set; }
         public string PostalCode { get; set; }
         public string PostalCodeSuffix { get; set; }
@@ -58,7 +58,7 @@ namespace NoFuture.Rand.Geo
                 string.Equals(ad.SecondaryUnitId, SecondaryUnitId, StringComparison.OrdinalIgnoreCase),
                 string.Equals(ad.MajorMetro, MajorMetro, StringComparison.OrdinalIgnoreCase),
                 string.Equals(ad.City, City, StringComparison.OrdinalIgnoreCase),
-                string.Equals(ad.StateAbbrv, StateAbbrv, StringComparison.OrdinalIgnoreCase),
+                string.Equals(ad.StateAbbrev, StateAbbrev, StringComparison.OrdinalIgnoreCase),
                 string.Equals(ad.StateName, StateName, StringComparison.OrdinalIgnoreCase),
                 string.Equals(ad.PostalCode, PostalCode, StringComparison.OrdinalIgnoreCase),
                 string.Equals(ad.PostalCodeSuffix, PostalCodeSuffix, StringComparison.OrdinalIgnoreCase),
@@ -79,7 +79,7 @@ namespace NoFuture.Rand.Geo
                    (SecondaryUnitId?.ToLower().GetHashCode() ?? 0) +
                    (MajorMetro?.ToLower().GetHashCode() ?? 0) +
                    (City?.ToLower().GetHashCode() ?? 0) +
-                   (StateAbbrv?.ToLower().GetHashCode() ?? 0) +
+                   (StateAbbrev?.ToLower().GetHashCode() ?? 0) +
                    (StateName?.ToLower().GetHashCode() ?? 0) +
                    (PostalCode?.ToLower().GetHashCode() ?? 0) +
                    (PostalCodeSuffix?.ToLower().GetHashCode() ?? 0) +

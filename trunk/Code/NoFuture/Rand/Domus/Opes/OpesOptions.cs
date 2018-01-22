@@ -130,7 +130,7 @@ namespace NoFuture.Rand.Domus.Opes
         public AmericanRegion GetUsCardinalRegion()
         {
             var usCityArea = HomeLocation as UsCityStateZip;
-            return UsStateData.GetStateData(usCityArea?.State?.ToString())?.Region ?? AmericanRegion.Midwest;
+            return UsStateData.GetStateData(usCityArea?.StateName)?.Region ?? AmericanRegion.Midwest;
         }
 
         /// <summary>

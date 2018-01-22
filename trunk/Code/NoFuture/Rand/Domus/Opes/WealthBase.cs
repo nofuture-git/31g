@@ -252,7 +252,7 @@ namespace NoFuture.Rand.Domus.Opes
         protected internal virtual LinearEquation GetAvgEarningPerYear()
         {
             var ca = MyOptions.HomeLocation as UsCityStateZip;
-            return (ca?.AverageEarnings ?? UsStateData.GetStateData(ca?.State?.ToString())?.AverageEarnings) ??
+            return (ca?.AverageEarnings ?? UsStateData.GetStateData(ca?.StateName)?.AverageEarnings) ??
                    AmericanEquations.NatlAverageEarnings;
         }
 
@@ -460,7 +460,7 @@ namespace NoFuture.Rand.Domus.Opes
         /// A: Then every item-name gets a truly random value - the sum of which equals 1.
         /// 
         /// Q: How does SumTotal work with GivenDirectly?
-        /// A: They are related by relation of the SumTotal to the actual total of all the GivenDirectly&apos;s ExpectedValue.
+        /// A: By relation of the SumTotal to the actual total of all the GivenDirectly&apos;s ExpectedValue.
         ///    The only time it matters is when SumTotal exceeds the actual total; furthermore, SumTotal has no use
         ///    when the GivenDirectly is empty since we are getting random portions and not random values.
         ///    
@@ -471,7 +471,8 @@ namespace NoFuture.Rand.Domus.Opes
         /// A: Then SumTotal is just reassigned to the actual total and it again just doing the math - nothing random.
         /// 
         /// Q: What about when SumTotal exceeds actual total?
-        /// A: Then the excess amount is what is used to generate random portions for the other item-names.
+        /// A: Then the excess amount is what is used to generate random portions for the other item-names not present 
+        ///    in GivenDirectly.
         /// 
         /// Q: What if there are no items in GivenDirectly?
         /// A: It just resorts back to all item-names having a random portion.

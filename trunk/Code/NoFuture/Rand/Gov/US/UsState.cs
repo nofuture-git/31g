@@ -20,14 +20,14 @@ namespace NoFuture.Rand.Gov.US
         #endregion
 
         #region fields
-        protected readonly string _stateAbbrv;
+        protected readonly string _stateAbbrev;
         protected DriversLicense[] dlFormats;
         #endregion
 
         #region ctor
         protected UsState(string stateAbbrv)
         {
-            _stateAbbrv = stateAbbrv;
+            _stateAbbrev = stateAbbrv;
         }
         #endregion
 
@@ -38,7 +38,7 @@ namespace NoFuture.Rand.Gov.US
         /// <summary>
         /// The two letter postal code abbreviation
         /// </summary>
-        public string StateAbbrv => _stateAbbrv;
+        public string StateAbbrev => _stateAbbrev;
 
         /// <summary>
         /// Derived from [https://insurancelink.custhelp.com/app/answers/detail/a_id/1631/~/license-formats-for-individual-states]
@@ -82,7 +82,7 @@ namespace NoFuture.Rand.Gov.US
             var st = obj as UsState;
             if (st == null)
                 return false;
-            return String.Equals(st.StateAbbrv, StateAbbrv, StringComparison.OrdinalIgnoreCase) ||
+            return String.Equals(st.StateAbbrev, StateAbbrev, StringComparison.OrdinalIgnoreCase) ||
                    String.Equals(st.GetType().Name, GetType().Name, StringComparison.Ordinal);
         }
         public override int GetHashCode()
@@ -140,7 +140,7 @@ namespace NoFuture.Rand.Gov.US
         {
             if (_theStates.Count <= 0)
                 InitAllUsStates();
-            return _theStates.FirstOrDefault(s => s.StateAbbrv == stateAbbrv);
+            return _theStates.FirstOrDefault(s => s.StateAbbrev == stateAbbrv);
         }
 
         /// <summary>

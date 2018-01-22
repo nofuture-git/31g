@@ -11,15 +11,15 @@ namespace NoFuture.Rand.Tests.ComTests
         [TestMethod]
         public void TestGetRandomBank()
         {
-            var testInput = new UsCityStateZip(new AddressData {City = "New York City", StateAbbrv = "NY"});
+            var testInput = new UsCityStateZip(new AddressData {City = "New York City", StateAbbrev = "NY"});
             var testResult = NoFuture.Rand.Com.Bank.RandomBank(testInput);
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual("",testResult.Name);
             Assert.IsNotNull(testResult.BusinessAddress);
             Assert.IsNotNull(testResult.BusinessAddress.Item2);
             Assert.AreEqual("New York City",testResult.BusinessAddress.Item2.City);
-            Assert.IsNotNull(testResult.BusinessAddress.Item2.State);
-            Assert.AreEqual("NY", testResult.BusinessAddress.Item2.State.StateAbbrv);
+            Assert.IsNotNull(testResult.BusinessAddress.Item2.StateName);
+            Assert.AreEqual("NY", testResult.BusinessAddress.Item2.StateAbbrev);
             System.Diagnostics.Debug.WriteLine(testResult.Name);
 
             testResult = NoFuture.Rand.Com.Bank.RandomBank(null);
@@ -27,7 +27,6 @@ namespace NoFuture.Rand.Tests.ComTests
             Assert.AreNotEqual("", testResult.Name);
             Assert.IsNotNull(testResult.BusinessAddress);
             Assert.IsNotNull(testResult.BusinessAddress.Item2);
-            Assert.IsNotNull(testResult.BusinessAddress.Item2.State);
             System.Diagnostics.Debug.WriteLine(testResult.Name);
         }
     }

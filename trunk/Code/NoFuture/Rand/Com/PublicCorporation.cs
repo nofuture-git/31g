@@ -21,7 +21,7 @@ namespace NoFuture.Rand.Com
         public EmployerIdentificationNumber EIN { get; set; }
         public CentralIndexKey CIK { get; set; }
         public List<SecForm> SecReports => _secReports;
-        public UsState UsStateOfIncorporation { get; set; }
+        public string UsStateOfIncorporation { get; set; }
         public Uri[] WebDomains { get; set; }
         public List<TickerSymbol> TickerSymbols
         {

@@ -52,7 +52,7 @@ namespace NoFuture.Rand.Gov.US
 
         public override string ToString()
         {
-            return string.Join(" ",IssuingState.StateAbbrv,
+            return string.Join(" ",IssuingState.StateAbbrev,
                 base.ToString());
         }
 

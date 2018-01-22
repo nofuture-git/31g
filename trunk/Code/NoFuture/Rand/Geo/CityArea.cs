@@ -91,7 +91,7 @@ namespace NoFuture.Rand.Geo
             var ctz = new AddressData
             {
                 PostalCode = $"{UsCityStateZip.DF_ZIPCODE_PREFIX}{Etx.RandomInteger(1, 99):00}",
-                StateAbbrv = UsCityStateZip.DF_STATE_ABBREV
+                StateAbbrev = UsCityStateZip.DF_STATE_ABBREV
             };
 
             //pick a zip code prefix at random
@@ -117,7 +117,7 @@ namespace NoFuture.Rand.Geo
             var nfState = UsState.GetStateByName(ctz.StateName) ??
                           UsState.GetStateByPostalCode(UsCityStateZip.DF_STATE_ABBREV);
 
-            ctz.StateAbbrv = nfState.StateAbbrv ?? UsCityStateZip.DF_STATE_ABBREV;
+            ctz.StateAbbrev = nfState.StateAbbrev ?? UsCityStateZip.DF_STATE_ABBREV;
             ctz.PostalCodeSuffix = $"{Etx.MyRand.Next(1, 9999):0000}";
 
             if (!randZipCode.HasChildNodes)
@@ -178,7 +178,7 @@ namespace NoFuture.Rand.Geo
             if (providenceElem == null)
                 return dfReturn;
 
-            ctz.StateAbbrv = providenceElem.GetAttribute(ABBREVIATION);
+            ctz.StateAbbrev = providenceElem.GetAttribute(ABBREVIATION);
             ctz.StateName = providenceElem.GetAttribute(NAME);
             
             var postalPrefix = randPostalCode.GetAttribute(PREFIX);

@@ -17,11 +17,11 @@ namespace NoFuture.Rand.Tests.GeoTests
             Assert.IsNotNull(testResult);
             Assert.IsFalse(string.IsNullOrWhiteSpace(testResult.City));
             Assert.IsFalse(string.IsNullOrWhiteSpace(testResult.ZipCode));
-            Assert.IsFalse(string.IsNullOrWhiteSpace(testResult.PostalState));
+            Assert.IsFalse(string.IsNullOrWhiteSpace(testResult.StateAbbrev));
             Assert.IsFalse(string.IsNullOrWhiteSpace(testResult.PostalCodeAddonFour));
 
             System.Diagnostics.Debug.WriteLine(testResult.City);
-            System.Diagnostics.Debug.WriteLine(testResult.PostalState);
+            System.Diagnostics.Debug.WriteLine(testResult.StateAbbrev);
             System.Diagnostics.Debug.WriteLine(testResult.ZipCode);
         }
 
@@ -72,16 +72,16 @@ namespace NoFuture.Rand.Tests.GeoTests
                 var testResult = UsCityStateZip.TryParse(testAddr, out var testResultOut, true);
                 Assert.IsTrue(testResult);
                 Assert.AreNotEqual(string.Empty,testResultOut.City);
-                Assert.AreNotEqual(string.Empty, testResultOut.PostalState);
+                Assert.AreNotEqual(string.Empty, testResultOut.StateAbbrev);
                 Assert.AreNotEqual(string.Empty, testResultOut.ZipCode);
             }
 
             var anotherTest = UsCityStateZip.TryParse("EL CAMPO, TX", out var usCityStateZip, false);
             Assert.IsTrue(anotherTest);
             Assert.AreEqual("El Campo", usCityStateZip.City);
-            Assert.AreEqual("TX", usCityStateZip.State.StateAbbrv);
+            Assert.AreEqual("TX", usCityStateZip.StateAbbrev);
             Console.WriteLine(usCityStateZip.City);
-            Console.WriteLine(usCityStateZip.PostalState);
+            Console.WriteLine(usCityStateZip.StateAbbrev);
         }
 
         [TestMethod]
@@ -100,7 +100,7 @@ namespace NoFuture.Rand.Tests.GeoTests
                     PostalCode = postalCode,
                     City = city,
                     StreetName = streetName,
-                    StateAbbrv = stateAbbrv,
+                    StateAbbrev = stateAbbrv,
                     StreetType = streetType
                 });
 
@@ -113,7 +113,7 @@ namespace NoFuture.Rand.Tests.GeoTests
                     PostalCode = postalCode,
                     City = city,
                     StreetName = streetName,
-                    StateAbbrv = stateAbbrv,
+                    StateAbbrev = stateAbbrv,
                     StreetType = streetType
                 });
 
@@ -128,7 +128,7 @@ namespace NoFuture.Rand.Tests.GeoTests
         [TestMethod]
         public void TestUsCityStateZipCtor()
         {
-            var addrData = new AddressData {StateAbbrv = "NV", PostalCode = "89421"};
+            var addrData = new AddressData {StateAbbrev = "NV", PostalCode = "89421"};
             var testResult = new UsCityStateZip(addrData);
             Assert.AreNotEqual("New York City", testResult.City);
             System.Diagnostics.Debug.WriteLine(testResult.City);
@@ -137,7 +137,7 @@ namespace NoFuture.Rand.Tests.GeoTests
         [TestMethod]
         public void TestUsCityStateZipCtorPickWithMsa()
         {
-            var addrData = new AddressData { StateAbbrv = "FL", PostalCode = "32701" };
+            var addrData = new AddressData { StateAbbrev = "FL", PostalCode = "32701" };
             var testResult = new UsCityStateZip(addrData);
             Assert.AreNotEqual("New York City", testResult.City);
             Assert.IsNotNull(testResult.Msa);
@@ -146,7 +146,7 @@ namespace NoFuture.Rand.Tests.GeoTests
         [TestMethod]
         public void TestUsCityStateZipCtorPickSuburb()
         {
-            var addrData = new AddressData { StateAbbrv = "FL", PostalCode = "32101" };
+            var addrData = new AddressData { StateAbbrev = "FL", PostalCode = "32101" };
             var testResult = new UsCityStateZip(addrData);
             Assert.AreNotEqual("New York City", testResult.City);
             Assert.IsNotNull(testResult.Msa);
@@ -156,13 +156,13 @@ namespace NoFuture.Rand.Tests.GeoTests
         [TestMethod]
         public void TestUsCityStateZipCtorStateAndCityOnly()
         {
-            var addrData = new AddressData {StateAbbrv = "NC", City = "CHARLOTTE"};
+            var addrData = new AddressData {StateAbbrev = "NC", City = "CHARLOTTE"};
             var testResult = new UsCityStateZip(addrData);
             Assert.AreNotEqual("New York City", testResult.City);
             Assert.IsNotNull(testResult.Msa);
             System.Diagnostics.Debug.WriteLine(testResult.City);
 
-            addrData = new AddressData { StateAbbrv = "CA", City = "Westhaven-Moonstone" };
+            addrData = new AddressData { StateAbbrev = "CA", City = "Westhaven-Moonstone" };
             testResult = new UsCityStateZip(addrData);
             Assert.IsNotNull(testResult.Msa);
         }
@@ -183,11 +183,11 @@ namespace NoFuture.Rand.Tests.GeoTests
         {
             var addrData = new AddressData();
             UsCityStateZip.GetState("OKLAHOMA CITY, OK", addrData);
-            Assert.IsNotNull(addrData.StateAbbrv);
-            Assert.AreEqual("OK", addrData.StateAbbrv);
+            Assert.IsNotNull(addrData.StateAbbrev);
+            Assert.AreEqual("OK", addrData.StateAbbrev);
             UsCityStateZip.GetState("Washington DC 20006", addrData);
-            Assert.IsNotNull(addrData.StateAbbrv);
-            Assert.AreEqual("DC", addrData.StateAbbrv);
+            Assert.IsNotNull(addrData.StateAbbrev);
+            Assert.AreEqual("DC", addrData.StateAbbrev);
         }
 
         [TestMethod]
@@ -198,17 +198,17 @@ namespace NoFuture.Rand.Tests.GeoTests
             UsCityStateZip.GetState(ln, addrData);
             UsCityStateZip.GetCity(ln, addrData);
             Assert.IsNotNull(addrData.City);
-            Assert.AreEqual("TX", addrData.StateAbbrv);
+            Assert.AreEqual("TX", addrData.StateAbbrev);
             Assert.AreEqual("EL CAMPO", addrData.City);
-            System.Diagnostics.Debug.WriteLine($"{addrData.City} {addrData.StateAbbrv}");
+            System.Diagnostics.Debug.WriteLine($"{addrData.City} {addrData.StateAbbrev}");
             ln = "Washington DC 20006";
             UsCityStateZip.GetZipCode(ln, addrData);
             UsCityStateZip.GetState(ln, addrData);
             UsCityStateZip.GetCity(ln, addrData);
             Assert.IsNotNull(addrData.City);
-            Assert.AreEqual("DC",addrData.StateAbbrv);
+            Assert.AreEqual("DC",addrData.StateAbbrev);
             Assert.AreEqual("Washington", addrData.City);
-            System.Diagnostics.Debug.WriteLine($"{addrData.City} {addrData.StateAbbrv}");
+            System.Diagnostics.Debug.WriteLine($"{addrData.City} {addrData.StateAbbrev}");
         }
 
         [TestMethod]

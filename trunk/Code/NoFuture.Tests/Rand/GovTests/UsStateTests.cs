@@ -19,7 +19,7 @@ namespace NoFuture.Rand.Tests.GovTests
             Assert.IsNotNull(testResult);
             Assert.IsInstanceOfType(testResult, typeof(Arizona));
 
-            Assert.AreEqual(testState,testResult.StateAbbrv);
+            Assert.AreEqual(testState,testResult.StateAbbrev);
 
             var testDlResult = testResult.GetRandomDriversLicense();
             Assert.IsNotNull(testDlResult);
@@ -35,7 +35,7 @@ namespace NoFuture.Rand.Tests.GovTests
             Assert.IsNotNull(testResult);
             Assert.IsInstanceOfType(testResult, typeof(Arkansas));
 
-            Assert.AreEqual(testState, testResult.StateAbbrv);
+            Assert.AreEqual(testState, testResult.StateAbbrev);
 
             testDlResult = testResult.GetRandomDriversLicense();
             Assert.IsNotNull(testDlResult);
@@ -51,7 +51,7 @@ namespace NoFuture.Rand.Tests.GovTests
             Assert.IsNotNull(testResult);
             Assert.IsInstanceOfType(testResult, typeof(California));
 
-            Assert.AreEqual(testState, testResult.StateAbbrv);
+            Assert.AreEqual(testState, testResult.StateAbbrev);
 
             testDlResult = testResult.GetRandomDriversLicense();
             Assert.IsNotNull(testDlResult);
@@ -66,7 +66,7 @@ namespace NoFuture.Rand.Tests.GovTests
             Assert.IsNotNull(testResult);
             Assert.IsInstanceOfType(testResult, typeof(Connecticut));
 
-            Assert.AreEqual(testState, testResult.StateAbbrv);
+            Assert.AreEqual(testState, testResult.StateAbbrev);
 
             testDlResult = testResult.GetRandomDriversLicense();
             Assert.IsNotNull(testDlResult);
@@ -96,9 +96,9 @@ namespace NoFuture.Rand.Tests.GovTests
 
             foreach (var state in theStates)
             {
-                System.Diagnostics.Debug.WriteLine(state.StateAbbrv);
+                System.Diagnostics.Debug.WriteLine(state.StateAbbrev);
                 var randOut = state.GetRandomDriversLicense();
-                System.Diagnostics.Debug.WriteLine("{0} '{1}'", state.StateAbbrv, randOut);
+                System.Diagnostics.Debug.WriteLine("{0} '{1}'", state.StateAbbrev, randOut);
                 var randIn = state.ValidDriversLicense(randOut);
 
                 Assert.IsTrue(randIn);

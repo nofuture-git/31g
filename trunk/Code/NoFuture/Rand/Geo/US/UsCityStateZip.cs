@@ -45,7 +45,7 @@ namespace NoFuture.Rand.Geo.US
         #region ctor
 
         /// <summary>
-        /// Creates a new instance by query of the <see cref="TreeData.AmericanCityData"/>
+        /// Creates a new instance by query of the AmericanCityData
         /// </summary>
         /// <param name="d">
         /// The criteria which on this this instance is situated.
@@ -66,15 +66,8 @@ namespace NoFuture.Rand.Geo.US
 
         #region properties
 
-        /// <summary>
-        /// The two letter code used by the USPS (e.g. California is CA)
-        /// </summary>
-        public string PostalState => data.StateAbbrv;
-
-        public UsState State => _myState ??
-                                (_myState =
-                                    UsState.GetStateByPostalCode(data.StateAbbrv));
-
+        public string StateName => data.StateName ?? UsState.GetState(data.StateAbbrev)?.ToString();
+        public string StateAbbrev => data.StateAbbrev ?? UsState.GetState(data.StateName)?.StateAbbrev;
         public string City => data.City;
         public string ZipCode => data.PostalCode;
 
@@ -123,8 +116,8 @@ namespace NoFuture.Rand.Geo.US
         public override string ToString()
         {
             return !String.IsNullOrWhiteSpace(data.PostalCodeSuffix)
-                ? $"{data.City}, {data.StateAbbrv} {data.PostalCode}-{data.PostalCodeSuffix}"
-                : $"{data.City}, {data.StateAbbrv} {data.PostalCode}";
+                ? $"{data.City}, {data.StateAbbrev} {data.PostalCode}-{data.PostalCodeSuffix}"
+                : $"{data.City}, {data.StateAbbrev} {data.PostalCode}";
         }
 
         /// <summary>
@@ -154,7 +147,7 @@ namespace NoFuture.Rand.Geo.US
             {
                 PostalCode = String.Empty,
                 PostalCodeSuffix = String.Empty,
-                StateAbbrv = String.Empty,
+                StateAbbrev = String.Empty,
                 City = String.Empty
             };
             GetZipCode(lastLine, addrData);
@@ -175,10 +168,10 @@ namespace NoFuture.Rand.Geo.US
                 city = city.Replace(addrData.PostalCode, String.Empty);
             if (!String.IsNullOrEmpty(addrData.PostalCodeSuffix))
                 city = city.Replace($"-{addrData.PostalCodeSuffix}", String.Empty);
-            if (!String.IsNullOrEmpty(addrData.StateAbbrv) && city.Contains(" " + addrData.StateAbbrv))
-                city = city.Replace(" " + addrData.StateAbbrv, String.Empty);
-            if (!String.IsNullOrEmpty(addrData.StateAbbrv) && city.Contains("," + addrData.StateAbbrv))
-                city = city.Replace("," + addrData.StateAbbrv, String.Empty);
+            if (!String.IsNullOrEmpty(addrData.StateAbbrev) && city.Contains(" " + addrData.StateAbbrev))
+                city = city.Replace(" " + addrData.StateAbbrev, String.Empty);
+            if (!String.IsNullOrEmpty(addrData.StateAbbrev) && city.Contains("," + addrData.StateAbbrev))
+                city = city.Replace("," + addrData.StateAbbrev, String.Empty);
 
             city = city.Replace(",", String.Empty).Trim();
 
@@ -201,7 +194,7 @@ namespace NoFuture.Rand.Geo.US
                 ? matches.Groups[0].Captures[0].Value
                 : String.Empty;
 
-            addrData.StateAbbrv = state.Trim();
+            addrData.StateAbbrev = state.Trim();
         }
 
         internal static void GetZipCode(string lastLine, AddressData addrData)
@@ -293,7 +286,7 @@ namespace NoFuture.Rand.Geo.US
         }
 
         /// <summary>
-        /// Based on the <see cref="ZipCode"/> and <see cref="State"/> are 
+        /// Based on the <see cref="ZipCode"/> and <see cref="StateName"/> are 
         /// assigned, picks a node, City node at random
         /// </summary>
         /// <returns></returns>
@@ -307,19 +300,19 @@ namespace NoFuture.Rand.Geo.US
             XmlNodeList matchedNodes = null;
 
             //search by city-state
-            if (!String.IsNullOrWhiteSpace(data.StateAbbrv) && !String.IsNullOrWhiteSpace(data.City) &&
-                UsState.GetStateByPostalCode(data.StateAbbrv) != null)
+            if (!String.IsNullOrWhiteSpace(data.StateAbbrev) && !String.IsNullOrWhiteSpace(data.City) &&
+                UsState.GetStateByPostalCode(data.StateAbbrev) != null)
             {
                 var cityName = FinesseCityName(data.City);
                 searchCrit =
-                    $"//state[@abbreviation='{data.StateAbbrv}']/city[@name='{cityName.EscapeString(EscapeStringType.XML)}']";
+                    $"//state[@abbreviation='{data.StateAbbrev}']/city[@name='{cityName.EscapeString(EscapeStringType.XML)}']";
                 matchedNodes = UsCityXml.SelectNodes(searchCrit);
 
                 //try again on place names
                 if (matchedNodes == null || matchedNodes.Count <= 0)
                 {
                     searchCrit =
-                        $"//state[@abbreviation='{data.StateAbbrv}']//place[@name='{cityName.EscapeString(EscapeStringType.XML)}']/..";
+                        $"//state[@abbreviation='{data.StateAbbrev}']//place[@name='{cityName.EscapeString(EscapeStringType.XML)}']/..";
                     matchedNodes = UsCityXml.SelectNodes(searchCrit);
                 }
             }
@@ -527,7 +520,7 @@ namespace NoFuture.Rand.Geo.US
                 }
             }
             AverageEarnings = GetAvgEarningsPerYear(cityNode) ??
-                              UsStateData.GetStateData(State.ToString())?.AverageEarnings;
+                              UsStateData.GetStateData(StateName)?.AverageEarnings;
             if(pickSuburbAtRandom)
                 GetSuburbCityName(cityNode);
         }

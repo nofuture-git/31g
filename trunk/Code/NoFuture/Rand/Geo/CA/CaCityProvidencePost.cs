@@ -9,7 +9,7 @@ namespace NoFuture.Rand.Geo.CA
     public class CaCityProvidencePost : CityArea
     {
         public CaCityProvidencePost(AddressData d) : base(d) { }
-        public string ProvidenceAbbrv => data.StateAbbrv;
+        public string ProvidenceAbbrv => data.StateAbbrev;
         public string Providence => data.StateName;
         public string City => data.City;
         public string PostalCode => data.PostalCode;

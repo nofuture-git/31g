@@ -46,7 +46,7 @@ namespace NoFuture.Rand.Domus.US
             {
                 DateOfBirth = dob,
                 City = dobAddr.City,
-                State = dobAddr.State?.StateAbbrv
+                State = dobAddr.StateAbbrev
             };
 
             //almost always returns null
@@ -88,7 +88,7 @@ namespace NoFuture.Rand.Domus.US
             _addresses.Add(homeAddr);
             var csz = homeAddr.HomeCityArea as UsCityStateZip;
 
-            var abbrv = csz?.PostalState;
+            var abbrv = csz?.StateAbbrev;
 
             if(Etx.RandomRollAboveOrAt(6, Etx.Dice.Ten))
                 _phoneNumbers.Add(new Tuple<KindsOfLabels, NorthAmericanPhone>(KindsOfLabels.Home, Phone.RandomAmericanPhone(abbrv)));
@@ -132,7 +132,7 @@ namespace NoFuture.Rand.Domus.US
                              CityArea.RandomAmericanCity();
 
             americanBirthCert.City = birthPlace.City;
-            americanBirthCert.State = birthPlace.State?.StateAbbrv;
+            americanBirthCert.State = birthPlace.StateAbbrev;
             Race = nAmerMother.Race;
             AddEmailAddress();
         }
@@ -319,7 +319,7 @@ namespace NoFuture.Rand.Domus.US
                 : GetMother() as American;
             var dtAtAge18 = dob.AddYears(UsState.AGE_OF_ADULT);
             var homeCityArea = mother?.GetAddressAt(dtAtAge18)?.HomeCityArea as UsCityStateZip ?? CityArea.RandomAmericanCity();
-            return AmericanEducation.RandomEducation(dob, homeCityArea.PostalState, homeCityArea.ZipCode);
+            return AmericanEducation.RandomEducation(dob, homeCityArea.StateAbbrev, homeCityArea.ZipCode);
         }
 
         /// <summary>
@@ -394,7 +394,7 @@ namespace NoFuture.Rand.Domus.US
 
             var csz = GetAddressAt(dt)?.HomeCityArea;
             var amerCsz = csz as UsCityStateZip;
-            var dlFormats = amerCsz?.State.DriversLicenseFormats;
+            var dlFormats = UsState.GetState(amerCsz?.StateName)?.DriversLicenseFormats;
             if (dlFormats == null || !dlFormats.Any())
                 return null;
             _dl = dlFormats[0].IssueNewLicense(dt);
@@ -485,7 +485,7 @@ namespace NoFuture.Rand.Domus.US
             if (birthCity != null)
             {
                 ((AmericanBirthCert) BirthCert).City = birthCity.City;
-                ((AmericanBirthCert)BirthCert).State = birthCity.State.StateAbbrv;
+                ((AmericanBirthCert)BirthCert).State = birthCity.StateAbbrev;
             }
 
             //resolve mother's spouse(s)
@@ -878,7 +878,7 @@ namespace NoFuture.Rand.Domus.US
         {
             if (GetAddressAt(null) == null)
                 return UsState.AGE_OF_ADULT;
-            var myHomeState = UsState.GetStateByPostalCode(GetAddressAt(null)?.HomeCityArea?.AddressData?.StateAbbrv);
+            var myHomeState = UsState.GetStateByPostalCode(GetAddressAt(null)?.HomeCityArea?.AddressData?.StateAbbrev);
             return myHomeState?.AgeOfMajority ?? UsState.AGE_OF_ADULT;
         }
         #endregion
