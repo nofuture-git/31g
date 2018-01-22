@@ -90,7 +90,7 @@ namespace NoFuture.Rand.Domus.Opes.US
 
             if (options.SumTotal == null || options.SumTotal == Pecuniam.Zero)
             {
-                var randIncome = Math.Round(GetRandomYearlyIncome(MyOptions.Inception).ToDouble() * 85);
+                var randIncome = Math.Round(GetRandomYearlyIncome(options.Inception).ToDouble() * 85);
                 options.SumTotal = randIncome.ToPecuniam();
             }
 
@@ -262,7 +262,7 @@ namespace NoFuture.Rand.Domus.Opes.US
             options = (options ?? MyOptions) ?? new OpesOptions();
 
             //when children are young we want to reflect that
-            if (MyOptions.GetChildrenAges().All(x => x < AmericanData.AVG_AGE_CHILD_ENTER_SCHOOL))
+            if (options.GetChildrenAges().All(x => x < AmericanData.AVG_AGE_CHILD_ENTER_SCHOOL))
             {
                 options.GivenDirectly.Add(
                     new Mereo("Transportation", ExpenseGroupNames.CHILDREN) { ExpectedValue = Pecuniam.Zero });

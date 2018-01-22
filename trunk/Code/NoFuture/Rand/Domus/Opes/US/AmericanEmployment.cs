@@ -246,7 +246,7 @@ namespace NoFuture.Rand.Domus.Opes.US
             var sevrcRate =
                 !_isWages
                 && !_isTips
-                && MyOptions.Terminus.GetValueOrDefault(DateTime.Today) < DateTime.Today
+                && options.Terminus.GetValueOrDefault(DateTime.Today) < DateTime.Today
                 && Etx.RandomRollBelowOrAt(7, Etx.Dice.OneHundred)
                     ? Etx.RandomValueInNormalDist(0.072, 0.0025)
                     : 0D;

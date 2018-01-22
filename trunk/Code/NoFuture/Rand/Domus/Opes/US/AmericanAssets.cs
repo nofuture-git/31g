@@ -203,7 +203,7 @@ namespace NoFuture.Rand.Domus.Opes.US
                 });
             }
 
-            if (MyOptions.NumberOfVehicles > 0 && !assignedVehicleDirectly)
+            if (options.NumberOfVehicles > 0 && !assignedVehicleDirectly)
             {
                 givenDirectly.Add(new Mereo(PERSONAL_PROPERTY_MOTOR_VEHICLES, AssetGroupNames.PERSONAL_PROPERTY)
                 {
