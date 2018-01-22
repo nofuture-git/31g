@@ -30,9 +30,6 @@ namespace NoFuture.Rand.Tests.TeleTests
 
             testResult = Tele.Net.RandomUriHost();
             Assert.IsNotNull(testResult);
-            var testResultParts = testResult.Split('.');
-            Assert.AreEqual(3, testResultParts.Length);
-            System.Diagnostics.Debug.WriteLine(testResult);
 
         }
 

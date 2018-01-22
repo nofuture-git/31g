@@ -4,43 +4,28 @@ using NoFuture.Rand.Core;
 using NoFuture.Rand.Gov;
 using NoFuture.Rand.Gov.US;
 using NoFuture.Shared.Core;
+using NoFuture.Util.Core;
 
 namespace NoFuture.Rand.Domus.Opes.US
 {
     public class AmericanFactorOptions
     {
-        private int _age;
-
-        public AmericanFactorOptions()
-        {
-            EducationLevel = (OccidentalEdu.HighSchool | OccidentalEdu.Grad);
-            Race = Etx.RandomPickOne(AmericanRacePercents.NorthAmericanRaceAvgs);
-            Region = Etx.RandomPickOne(new[]
-                {AmericanRegion.Midwest, AmericanRegion.Northeast, AmericanRegion.South, AmericanRegion.West});
-            Age = (int) Math.Round(AmericanData.AVG_AGE_AMERICAN);
-            Gender = Etx.RandomCoinToss() ? Gender.Male : Gender.Female;
-        }
-
         public OccidentalEdu EducationLevel { get; set; }
 
         public NorthAmericanRace Race { get; set; }
 
         public AmericanRegion Region { get; set; }
 
-        public int Age
-        {
-            get
-            {
-                if (_age <= 0)
-                    _age = (int) Math.Round(AmericanData.AVG_AGE_AMERICAN);
-                return _age;
-            }
-            set => _age = value;
-        }
+        public DateTime BirthDate { get; set; }
 
         public Gender Gender { get; set; }
 
         public MaritialStatus MaritialStatus { get; set; }
+
+        public int GetAge()
+        {
+            return Etc.CalcAge(BirthDate);
+        }
 
         public AmericanFactorOptions GetClone()
         {
@@ -53,6 +38,20 @@ namespace NoFuture.Rand.Domus.Opes.US
                 p.SetValue(o, gVal);
             }
             return o;
+        }
+
+        [RandomFactory]
+        public static AmericanFactorOptions RandomFactorOptions()
+        {
+            return new AmericanFactorOptions
+            {
+                EducationLevel = (OccidentalEdu.HighSchool | OccidentalEdu.Grad),
+                Race = Etx.RandomPickOne(AmericanRacePercents.NorthAmericanRaceAvgs),
+                Region = Etx.RandomPickOne(new[]
+                    {AmericanRegion.Midwest, AmericanRegion.Northeast, AmericanRegion.South, AmericanRegion.West}),
+                Gender = Etx.RandomCoinToss() ? Gender.Male : Gender.Female,
+                BirthDate = Etx.RandomAdultBirthDate()
+            };
         }
     }
 }

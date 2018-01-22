@@ -42,8 +42,9 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         public void TestGetPaycheck()
         {
             var amer = new American(Etx.RandomAdultBirthDate(), Gender.Female);
-            var options = new OpesOptions {IsRenting = true, BirthDate = Etx.RandomAdultBirthDate()};
+            var options = new OpesOptions {IsRenting = true};
             options.FactorOptions.Gender = Gender.Female;
+            options.FactorOptions.BirthDate = Etx.RandomAdultBirthDate();
             var testSubject = new AmericanIncome(options);
 
             System.Diagnostics.Debug.WriteLine(string.Join(" ", amer.Age, amer.MaritialStatus, amer.Education, amer.Race));

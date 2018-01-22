@@ -71,7 +71,7 @@ namespace NoFuture.Rand.Domus.Opes.US
 
         protected internal override void ResolveItems(OpesOptions options)
         {
-            options = options ?? MyOptions;
+            options = options ?? new OpesOptions();
 
             var ranges = _employment.MyItems.Any()
                 ? _employment.MyItems.Select(e => new Tuple<DateTime, DateTime?>(e.Inception, e.Terminus))
@@ -93,7 +93,7 @@ namespace NoFuture.Rand.Domus.Opes.US
 
         public override List<Tuple<string, double>> GetGroupNames2Portions(OpesOptions options)
         {
-            options = options ?? MyOptions;
+            options = options ?? new OpesOptions();
             //deductions act differently than other items since they are calculated from income
             var grps = new List<Tuple<string, double>>
             {
@@ -121,7 +121,7 @@ namespace NoFuture.Rand.Domus.Opes.US
         /// <returns></returns>
         protected internal Dictionary<string, double> GetInsuranceDeductionName2RandRates(OpesOptions options)
         {
-            options = options ?? MyOptions;
+            options = options ?? new OpesOptions();
 
             options.PossibleZeroOuts.AddRange(new[]
             {
@@ -157,7 +157,7 @@ namespace NoFuture.Rand.Domus.Opes.US
                 {
                     ExpectedValue = expectedVisionInsCost.ToPecuniam()
                 });
-            var someRandRate = GetRandomRateFromClassicHook(options.FactorOptions.Age);
+            var someRandRate = GetRandomRateFromClassicHook(options.FactorOptions.GetAge());
 
             //we will use to force the SumTotal to exceed current GivenDirectly's sum
             var currentTotal = expectedHealthInsCost + expectedDentalInsCost + expectedVisionInsCost;
@@ -178,7 +178,7 @@ namespace NoFuture.Rand.Domus.Opes.US
         /// <returns></returns>
         protected internal Dictionary<string, double> GetGovernmentDeductionName2Rates(OpesOptions options)
         {
-            options = options ?? MyOptions;
+            options = options ?? new OpesOptions();
 
             //if the caller has assign values themselves - then just use those and leave
             if (options.GivenDirectly.Any())
@@ -233,7 +233,7 @@ namespace NoFuture.Rand.Domus.Opes.US
         /// <returns></returns>
         protected internal Dictionary<string, double> GetEmploymentDeductionName2Rates(OpesOptions options)
         {
-            options = options ?? MyOptions;
+            options = options ?? new OpesOptions();
 
             options.PossibleZeroOuts.AddRange(new[]
             {
@@ -267,7 +267,7 @@ namespace NoFuture.Rand.Domus.Opes.US
                 });
 
             //we need to have a SumTotal exceeding the current GivenDirectly's sum to have any of the others show up at random
-            var someRandRate = GetRandomRateFromClassicHook(options.FactorOptions.Age);
+            var someRandRate = GetRandomRateFromClassicHook(options.FactorOptions.GetAge());
 
             //we will use to force the SumTotal to exceed current GivenDirectly's sum
             var currentTotal = retirementAmt + unionDuesAmt;
@@ -288,7 +288,7 @@ namespace NoFuture.Rand.Domus.Opes.US
         /// <returns></returns>
         protected internal Dictionary<string, double> GetJudgmentDeductionName2RandomRates(OpesOptions options)
         {
-            options = options ?? MyOptions;
+            options = options ?? new OpesOptions();
             const string CHILD_SUPPORT = "Child Support";
             const string ALIMONY = "Alimony";
 
@@ -327,7 +327,7 @@ namespace NoFuture.Rand.Domus.Opes.US
 
         private double GetPay(OpesOptions options)
         {
-            options = options ?? MyOptions;
+            options = options ?? new OpesOptions();
 
             var pPay = Pondus.GetExpectedAnnualSum(_employment.GetPayAt(options.Inception)) ?? Pecuniam.Zero;
             var pay = pPay == Pecuniam.Zero ? GetRandomYearlyIncome(options.Inception).ToDouble() : pPay.ToDouble();

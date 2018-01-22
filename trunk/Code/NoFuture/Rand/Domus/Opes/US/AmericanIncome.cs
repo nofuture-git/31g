@@ -139,7 +139,7 @@ namespace NoFuture.Rand.Domus.Opes.US
 
         protected internal override void ResolveItems(OpesOptions options)
         {
-            options = options ?? MyOptions;
+            options = options ?? new OpesOptions();
 
             var personality = options.Personality;
             var eduFlag = options.FactorOptions.EducationLevel;
@@ -160,7 +160,7 @@ namespace NoFuture.Rand.Domus.Opes.US
                 cloneOptions.Inception = range.Item1;
                 cloneOptions.Terminus = range.Item2;
                 if(cloneOptions.SumTotal == null || cloneOptions.SumTotal == Pecuniam.Zero)
-                    cloneOptions.SumTotal = GetRandomExpectedIncomeAmount(range.Item1, Etc.CalcAge(cloneOptions.BirthDate));
+                    cloneOptions.SumTotal = GetRandomExpectedIncomeAmount(range.Item1, Etc.CalcAge(cloneOptions.FactorOptions.BirthDate));
 
                 //there aren't ever random but calculated off gross and net income(s)
                 if(!cloneOptions.AnyGivenDirectlyOfName(IncomeGroupNames.PUBLIC_BENEFITS))
@@ -194,7 +194,7 @@ namespace NoFuture.Rand.Domus.Opes.US
         /// <returns></returns>
         protected internal Dictionary<string, double> GetJudgmentIncomeNames2RandomRates(OpesOptions options)
         {
-            options = (options ?? MyOptions) ?? new OpesOptions();
+            options = options ?? new OpesOptions();
             var d = GetItemNames2Portions(IncomeGroupNames.JUDGMENTS, options);
             return d.ToDictionary(t => t.Item1, t => t.Item2);
         }
@@ -206,7 +206,7 @@ namespace NoFuture.Rand.Domus.Opes.US
         /// <returns></returns>
         protected internal Dictionary<string, double> GetSubitoIncomeNames2RandomRates(OpesOptions options)
         {
-            options = (options ?? MyOptions) ?? new OpesOptions();
+            options = options ?? new OpesOptions();
             options.PossibleZeroOuts.AddRange(new[] { "Lottery Winnings", "Gambling Winnings", "Gifts" });
             var d = GetItemNames2Portions(IncomeGroupNames.SUBITO, options);
             return d.ToDictionary(t => t.Item1, t => t.Item2);
@@ -219,7 +219,7 @@ namespace NoFuture.Rand.Domus.Opes.US
         /// <returns></returns>
         protected internal Dictionary<string, double> GetRealPropertyIncomeNames2RandomRates(OpesOptions options)
         {
-            options = (options ?? MyOptions) ?? new OpesOptions();
+            options = options ?? new OpesOptions();
             var d = GetItemNames2Portions(IncomeGroupNames.REAL_PROPERTY, options);
             return d.ToDictionary(t => t.Item1, t => t.Item2);
         }
@@ -231,7 +231,7 @@ namespace NoFuture.Rand.Domus.Opes.US
         /// <returns></returns>
         protected internal Dictionary<string, double> GetSecuritiesIncomeNames2RandomRates(OpesOptions options)
         {
-            options = (options ?? MyOptions) ?? new OpesOptions();
+            options = options ?? new OpesOptions();
             options.PossibleZeroOuts.AddRange(new []{ "Derivatives" });
             var d = GetItemNames2Portions(IncomeGroupNames.SECURITIES, options);
             return d.ToDictionary(t => t.Item1, t => t.Item2);
@@ -244,7 +244,7 @@ namespace NoFuture.Rand.Domus.Opes.US
         /// <returns></returns>
         protected internal Dictionary<string, double> GetInstitutionalIncomeNames2RandomRates(OpesOptions options)
         {
-            options = (options ?? MyOptions) ?? new OpesOptions();
+            options = options ?? new OpesOptions();
             options.PossibleZeroOuts.AddRange(new[]
             {
                 "Royalties", "Stipends", "Fellowships", "Partnerships",
@@ -264,7 +264,7 @@ namespace NoFuture.Rand.Domus.Opes.US
         /// <returns></returns>
         protected internal virtual Pondus[] GetPublicBenefitIncomeItemsForRange(OpesOptions options)
         {
-            options = options ?? MyOptions;
+            options = options ?? new OpesOptions();
             var startDate = options.Inception;
             var endDate = options.Terminus;
             var itemsout = new List<Pondus>();
@@ -338,7 +338,7 @@ namespace NoFuture.Rand.Domus.Opes.US
         /// <returns></returns>
         protected internal virtual bool IsBelowFedPovertyAt(OpesOptions options)
         {
-            options = options ?? MyOptions;
+            options = options ?? new OpesOptions();
             var dt = options.Inception;
             var numHouseholdMembers =
                 1 + (options.FactorOptions.MaritialStatus == MaritialStatus.Married ? 1 : 0) + options.ChildrenDobs?.Count ?? 0;
@@ -364,7 +364,7 @@ namespace NoFuture.Rand.Domus.Opes.US
         protected internal virtual List<Tuple<DateTime, DateTime?>> GetEmploymentRanges(OpesOptions options,
             IPersonality personality = null)
         {
-            options = options ?? MyOptions;
+            options = options ?? new OpesOptions();
             var emply = new List<Tuple<DateTime, DateTime?>>();
 
             //make it appear as if the start date is randomly before options start date
@@ -405,7 +405,7 @@ namespace NoFuture.Rand.Domus.Opes.US
         protected internal virtual List<ILaboris> GetRandomEmployment(OpesOptions options, IPersonality personality = null,
             OccidentalEdu eduLevel = OccidentalEdu.None, List<Tuple<DateTime, DateTime?>> emplyRanges = null)
         {
-            options = options ?? MyOptions;
+            options = options ?? new OpesOptions();
             var empls = new HashSet<ILaboris>();
             emplyRanges = emplyRanges ?? GetEmploymentRanges(options, personality);
 
@@ -418,7 +418,7 @@ namespace NoFuture.Rand.Domus.Opes.US
 
             foreach (var range in emplyRanges)
             {
-                var emply = new AmericanEmployment(range.Item1, range.Item2) {Occupation = occ};
+                var emply = new AmericanEmployment() {Occupation = occ};
                 var cloneOptions = options.GetClone();
                 cloneOptions.Inception = range.Item1;
                 cloneOptions.Terminus = range.Item2;
@@ -445,7 +445,7 @@ namespace NoFuture.Rand.Domus.Opes.US
         {
             dt = dt ?? DateTime.Today;
 
-            age = age ?? Etc.CalcAge(MyOptions.BirthDate, dt);
+            age = age ?? Etc.CalcAge(MyOptions.FactorOptions.BirthDate, dt);
 
             var ageAtDt = age <= 0 ? AmericanData.AVG_AGE_AMERICAN : age.Value;
 

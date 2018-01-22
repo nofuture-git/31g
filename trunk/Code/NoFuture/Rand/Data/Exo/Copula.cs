@@ -337,7 +337,7 @@ namespace NoFuture.Rand.Data.Exo
                 bizAddr.City = pr.BizAddrCity;
 
             if (!String.IsNullOrWhiteSpace(pr.BizAddrState))
-                bizAddr.StateAbbrv = pr.BizAddrState;
+                bizAddr.StateAbbrev = pr.BizAddrState;
 
             if (!String.IsNullOrWhiteSpace(pr.BizPostalCode))
                 bizAddr.PostalCode = pr.BizPostalCode;
@@ -358,7 +358,7 @@ namespace NoFuture.Rand.Data.Exo
                 mailAddr.City = pr.MailAddrCity;
 
             if (!String.IsNullOrWhiteSpace(pr.MailAddrState))
-                mailAddr.StateAbbrv = pr.MailAddrState;
+                mailAddr.StateAbbrev = pr.MailAddrState;
 
             if (!String.IsNullOrWhiteSpace(pr.MailPostalCode))
                 mailAddr.PostalCode = pr.MailPostalCode;

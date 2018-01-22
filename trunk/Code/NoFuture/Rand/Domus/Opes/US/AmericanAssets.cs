@@ -22,7 +22,6 @@ namespace NoFuture.Rand.Domus.Opes.US
     public class AmericanAssets : WealthBase, IRebus
     {
         #region fields
-
         internal const string REAL_PROPERTY_HOME_OWNERSHIP = "Home Ownership";
         internal const string PERSONAL_PROPERTY_MOTOR_VEHICLES = "Motor Vehicles";
         internal const string INSTITUTIONAL_CHECKING = "Checking";
@@ -30,73 +29,29 @@ namespace NoFuture.Rand.Domus.Opes.US
 
         private readonly HashSet<Pondus> _assets = new HashSet<Pondus>();
 
-        private readonly double _randCheckingAcctAmt;
-        private readonly double _randSavingsAcctAmt;
-        private readonly double _randHomeEquity;
-        private readonly double _randCarEquity;
-
-        private readonly double _randHomeDebt;
-        private readonly double _randCarDebt;
-
-        private readonly double _totalEquity;
-
-        private readonly double _checkingAccountRate;
-        private readonly double _savingsAccountRate;
-        private readonly double _homeEquityRate;
-        private readonly double _carEquityRate;
-        private readonly double _homeDebtRate;
-        private readonly double _carDebtRate;
+        private bool _factorsSet;
+        private double _randCheckingAcctAmt;
+        private double _randSavingsAcctAmt;
+        private double _randHomeEquity;
+        private double _randCarEquity;
+        private double _randHomeDebt;
+        private double _randCarDebt;
+        private double _totalEquity;
+        private double _checkingAccountRate;
+        private double _savingsAccountRate;
+        private double _homeEquityRate;
+        private double _carEquityRate;
+        private double _homeDebtRate;
+        private double _carDebtRate;
 
         #endregion
 
         #region ctors
 
-        public AmericanAssets(OpesOptions options, double stdDev = DF_STD_DEV_PERCENT) : base(options)
+        public AmericanAssets(OpesOptions options) : base(options)
         {
             if (options.Inception == DateTime.MinValue)
                 options.Inception = GetYearNeg(-1);
-
-            _randCheckingAcctAmt = AmericanFactors.GetRandomFactorValue(FactorTables.CheckingAccount,
-                Factors.CheckingAcctFactor, stdDev);
-            _randSavingsAcctAmt = AmericanFactors.GetRandomFactorValue(FactorTables.SavingsAccount,
-                Factors.SavingsAcctFactor, stdDev);
-
-            _randHomeEquity = AmericanFactors.GetRandomFactorValue(FactorTables.HomeEquity,
-                Factors.HomeEquityFactor,
-                DF_STD_DEV_PERCENT);
-
-            _randCarEquity = AmericanFactors.GetRandomFactorValue(FactorTables.VehicleEquity,
-                Factors.VehicleEquityFactor, stdDev);
-
-            var randCcDebt = AmericanFactors.GetRandomFactorValue(FactorTables.CreditCardDebt,
-                Factors.CreditCardDebtFactor,
-                DF_STD_DEV_PERCENT);
-
-            _randHomeDebt = AmericanFactors.GetRandomFactorValue(FactorTables.HomeDebt, Factors.HomeDebtFactor,
-                DF_STD_DEV_PERCENT);
-
-            _randCarDebt = AmericanFactors.GetRandomFactorValue(FactorTables.VehicleDebt,
-                Factors.VehicleDebtFactor, stdDev);
-
-            _totalEquity = _randCheckingAcctAmt + _randSavingsAcctAmt + _randHomeEquity + _randCarEquity;
-
-            var randNetWorth = AmericanFactors.GetRandomFactorValue(FactorTables.NetWorth,
-                Factors.NetWorthFactor, stdDev);
-
-            var allOtherAssetEquity = _totalEquity - randNetWorth;
-
-            _totalEquity += allOtherAssetEquity;
-            if (_totalEquity == 0.0D)
-                _totalEquity = 1.0D;
-            _homeEquityRate = Math.Round(_randHomeEquity / _totalEquity, DF_ROUND_DECIMAL_PLACES);
-            _carEquityRate = Math.Round(_randCarEquity / _totalEquity, DF_ROUND_DECIMAL_PLACES);
-            _checkingAccountRate = Math.Round(_randCheckingAcctAmt / _totalEquity, DF_ROUND_DECIMAL_PLACES);
-            _savingsAccountRate = Math.Round(_randSavingsAcctAmt / _totalEquity, DF_ROUND_DECIMAL_PLACES);
-
-            var totalDebt = _randHomeDebt + _randCarDebt + randCcDebt;
-            _homeDebtRate = Math.Round(_randHomeDebt / totalDebt, DF_ROUND_DECIMAL_PLACES);
-            _carDebtRate = Math.Round(_randCarDebt / totalDebt, DF_ROUND_DECIMAL_PLACES);
-            
         }
 
         #endregion
@@ -167,7 +122,8 @@ namespace NoFuture.Rand.Domus.Opes.US
 
         protected internal override void ResolveItems(OpesOptions options)
         {
-            options = options ?? MyOptions;
+            options = options ?? new OpesOptions();
+            AssignFactorValues(options.FactorOptions);
             options.Interval = Interval.Annually;
             var items = GetItemsForRange(options);
             foreach (var item in items)
@@ -176,7 +132,7 @@ namespace NoFuture.Rand.Domus.Opes.US
 
         public override List<Tuple<string, double>> GetGroupNames2Portions(OpesOptions options)
         {
-            options = options ?? MyOptions;
+            options = options ?? new OpesOptions();
 
             var amt = options.SumTotal == null || options.SumTotal == Pecuniam.Zero
                 ? _totalEquity.ToPecuniam()
@@ -239,7 +195,7 @@ namespace NoFuture.Rand.Domus.Opes.US
             const StringComparison OPT = StringComparison.OrdinalIgnoreCase;
             const float FED_RATE = RiskFreeInterestRate.DF_VALUE;
 
-            options = (options ?? MyOptions) ?? new OpesOptions();
+            options = options ?? new OpesOptions();
 
             var startDate = options.Inception;
             var amt = options.SumTotal;
@@ -350,7 +306,7 @@ namespace NoFuture.Rand.Domus.Opes.US
         /// <returns></returns>
         protected internal virtual Dictionary<string, double> GetRealPropertyName2RandomRates(OpesOptions options)
         {
-            options = (options ?? MyOptions) ?? new OpesOptions();
+            options = options ?? new OpesOptions();
 
             options.DerivativeSlope = -0.2D;
 
@@ -371,7 +327,7 @@ namespace NoFuture.Rand.Domus.Opes.US
         /// <returns></returns>
         protected internal virtual Dictionary<string, double> GetPersonalPropertyAssetNames2Rates(OpesOptions options)
         {
-            options = (options ?? MyOptions) ?? new OpesOptions();
+            options = options ?? new OpesOptions();
             options.PossibleZeroOuts.AddRange(new[] { "Art", "Firearms", "Collections", "Antiques" });
 
             //remove obvious rural related items for everyone except those who are way out in the country
@@ -397,7 +353,7 @@ namespace NoFuture.Rand.Domus.Opes.US
         /// <returns></returns>
         protected internal Dictionary<string, double> GetInstitutionalAssetName2Rates(OpesOptions options)
         {
-            options = (options ?? MyOptions) ?? new OpesOptions();
+            options = options ?? new OpesOptions();
             options.PossibleZeroOuts.AddRange(new[]
             {
                 "Certificate of Deposit", "Insurance Policies",
@@ -419,11 +375,61 @@ namespace NoFuture.Rand.Domus.Opes.US
         /// <returns></returns>
         protected internal Dictionary<string, double> GetSecuritiesAssetNames2RandomRates(OpesOptions options)
         {
-            options = (options ?? MyOptions) ?? new OpesOptions();
+            options = options ?? new OpesOptions();
             var tOptions = options.GetClone();
             tOptions.PossibleZeroOuts.AddRange(new[] { "Derivatives" });
             var d = GetItemNames2Portions(AssetGroupNames.SECURITIES, tOptions);
             return d.ToDictionary(t => t.Item1, t => t.Item2);
+        }
+
+        protected internal void AssignFactorValues(AmericanFactorOptions factorOptions, double stdDev = DF_STD_DEV_PERCENT)
+        {
+            if (_factorsSet)
+                return;
+            var factors = new AmericanFactors(MyOptions.FactorOptions);
+
+            _randCheckingAcctAmt = AmericanFactors.GetRandomFactorValue(FactorTables.CheckingAccount,
+                factors.CheckingAcctFactor, stdDev);
+            _randSavingsAcctAmt = AmericanFactors.GetRandomFactorValue(FactorTables.SavingsAccount,
+                factors.SavingsAcctFactor, stdDev);
+
+            _randHomeEquity = AmericanFactors.GetRandomFactorValue(FactorTables.HomeEquity,
+                factors.HomeEquityFactor,
+                DF_STD_DEV_PERCENT);
+
+            _randCarEquity = AmericanFactors.GetRandomFactorValue(FactorTables.VehicleEquity,
+                factors.VehicleEquityFactor, stdDev);
+
+            var randCcDebt = AmericanFactors.GetRandomFactorValue(FactorTables.CreditCardDebt,
+                factors.CreditCardDebtFactor,
+                DF_STD_DEV_PERCENT);
+
+            _randHomeDebt = AmericanFactors.GetRandomFactorValue(FactorTables.HomeDebt, factors.HomeDebtFactor,
+                DF_STD_DEV_PERCENT);
+
+            _randCarDebt = AmericanFactors.GetRandomFactorValue(FactorTables.VehicleDebt,
+                factors.VehicleDebtFactor, stdDev);
+
+            _totalEquity = _randCheckingAcctAmt + _randSavingsAcctAmt + _randHomeEquity + _randCarEquity;
+
+            var randNetWorth = AmericanFactors.GetRandomFactorValue(FactorTables.NetWorth,
+                factors.NetWorthFactor, stdDev);
+
+            var allOtherAssetEquity = _totalEquity - randNetWorth;
+
+            _totalEquity += allOtherAssetEquity;
+            if (_totalEquity == 0.0D)
+                _totalEquity = 1.0D;
+            _homeEquityRate = Math.Round(_randHomeEquity / _totalEquity, DF_ROUND_DECIMAL_PLACES);
+            _carEquityRate = Math.Round(_randCarEquity / _totalEquity, DF_ROUND_DECIMAL_PLACES);
+            _checkingAccountRate = Math.Round(_randCheckingAcctAmt / _totalEquity, DF_ROUND_DECIMAL_PLACES);
+            _savingsAccountRate = Math.Round(_randSavingsAcctAmt / _totalEquity, DF_ROUND_DECIMAL_PLACES);
+
+            var totalDebt = _randHomeDebt + _randCarDebt + randCcDebt;
+            _homeDebtRate = Math.Round(_randHomeDebt / totalDebt, DF_ROUND_DECIMAL_PLACES);
+            _carDebtRate = Math.Round(_randCarDebt / totalDebt, DF_ROUND_DECIMAL_PLACES);
+
+            _factorsSet = true;
         }
 
         #endregion

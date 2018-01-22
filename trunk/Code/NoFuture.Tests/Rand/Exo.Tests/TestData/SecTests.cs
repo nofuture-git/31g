@@ -45,11 +45,11 @@ namespace NoFuture.Tests.Rand
             //Assert.AreEqual("GLEN STREET", testResultOut.MailingAddress.Item1.StreetName);
 
             Assert.AreEqual("GLENS FALLS", testResultOut.BusinessAddress.Item2.City);
-            Assert.AreEqual("NY", testResultOut.BusinessAddress.Item2.PostalState);
+            Assert.AreEqual("NY", testResultOut.BusinessAddress.Item2.StateAbbrev);
             Assert.AreEqual("12801", testResultOut.BusinessAddress.Item2.ZipCode);
 
             Assert.AreEqual("GLENS FALLS", testResultOut.MailingAddress.Item2.City);
-            Assert.AreEqual("NY", testResultOut.MailingAddress.Item2.PostalState);
+            Assert.AreEqual("NY", testResultOut.MailingAddress.Item2.StateAbbrev);
             Assert.AreEqual("12801", testResultOut.MailingAddress.Item2.ZipCode);
 
             Assert.IsNotNull(testResultOut.Phone);

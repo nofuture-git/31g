@@ -9,6 +9,7 @@ using NoFuture.Rand.Domus.Opes.US;
 using NoFuture.Rand.Domus.Pneuma;
 using NoFuture.Rand.Geo;
 using NoFuture.Rand.Geo.US;
+using NoFuture.Rand.Gov;
 using NoFuture.Rand.Gov.US;
 using NoFuture.Shared.Core;
 using NoFuture.Util.Core;
@@ -32,7 +33,7 @@ namespace NoFuture.Rand.Domus.Opes
 
         public OpesOptions(AmericanFactorOptions factorOptions = null)
         {
-            _factorOptions = factorOptions ?? new AmericanFactorOptions();
+            _factorOptions = factorOptions ?? AmericanFactorOptions.RandomFactorOptions();
         }
 
         /// <summary>
@@ -89,23 +90,7 @@ namespace NoFuture.Rand.Domus.Opes
                 if (!(_cityArea is UsCityStateZip usCityArea))
                     return;
                 FactorOptions.Region =
-                    UsStateData.GetStateData(usCityArea?.StateName)?.Region ?? AmericanRegion.Midwest;
-            }
-        }
-
-        /// <summary>
-        /// The birth date of the person to whom this wealth belongs
-        /// </summary>
-        public DateTime BirthDate
-        {
-            get => _birthDate;
-            set
-            {
-                FactorOptions.Age = (value == DateTime.MinValue)
-                    ? (int) Math.Round(AmericanData.AVG_AGE_AMERICAN)
-                    : Etc.CalcAge(value);
-
-                _birthDate = value;
+                    UsStateData.GetStateData(usCityArea.StateName)?.Region ?? AmericanRegion.Midwest;
             }
         }
 
@@ -221,7 +206,6 @@ namespace NoFuture.Rand.Domus.Opes
 
             var opt = new OpesOptions
             {
-                BirthDate = Etx.RandomAdultBirthDate(),
                 Inception = Etx.RandomDate(-1, null, true),
                 HomeLocation = CityArea.RandomAmericanCity(),
                 IsRenting = Etx.RandomCoinToss(),

@@ -31,7 +31,7 @@ namespace NoFuture.Rand.Domus.Opes
 
         #region fields
         protected internal IComparer<ITempore> Comparer { get; } = new TemporeComparer();
-        private readonly AmericanFactors _factors;
+
         private static IMereo[] _incomeItemNames;
         private static IMereo[] _deductionItemNames;
         private static IMereo[] _expenseItemNames;
@@ -121,17 +121,12 @@ namespace NoFuture.Rand.Domus.Opes
         protected WealthBase(OpesOptions options)
         {
             MyOptions = options ?? new OpesOptions();
-            var usCityArea = MyOptions.HomeLocation as UsCityStateZip;
 
-            CreditScore = new PersonalCreditScore(MyOptions.BirthDate)
+            CreditScore = new PersonalCreditScore(MyOptions.FactorOptions.BirthDate)
             {
                 OpennessZscore = MyOptions.Personality?.Openness?.Value?.Zscore ?? 0D,
                 ConscientiousnessZscore = MyOptions.Personality?.Conscientiousness?.Value?.Zscore ?? 0D
             };
-            //TODO this should be decided by calling assemlby
-            MyOptions.IsRenting = GetIsLeaseResidence(usCityArea);
-            _factors = new AmericanFactors(MyOptions.FactorOptions);
-
         }
         #endregion
 
@@ -148,11 +143,7 @@ namespace NoFuture.Rand.Domus.Opes
         /// </summary>
         protected CreditScore CreditScore { get; set; }
 
-        /// <summary>
-        /// Exposes the calculated factors using the <see cref="MyOptions"/> passed into 
-        /// the ctor.
-        /// </summary>
-        public AmericanFactors Factors => _factors;
+
 
         /// <summary>
         /// Determines which kind of wealth concept is 
@@ -225,7 +216,7 @@ namespace NoFuture.Rand.Domus.Opes
             if (baseValue <= 0)
                 return Pecuniam.Zero;
 
-            factorCalc = factorCalc ?? (d => d * _factors.NetWorthFactor);
+            factorCalc = factorCalc ?? (d => d * 1);
 
             var factorValue = factorCalc(baseValue);
 
@@ -724,27 +715,22 @@ namespace NoFuture.Rand.Domus.Opes
         }
 
         /// <summary>
-        /// Determine if the given <see cref="UsCityStateZip"/> is renting or has a mortgage
+        /// Weights the probability that a person will lease when they are young, living in a dense urban area or both.
         /// </summary>
-        /// <param name="usCityArea"></param>
+        /// <param name="msaType"></param>
+        /// <param name="age"></param>
         /// <returns></returns>
-        protected internal bool GetIsLeaseResidence(UsCityStateZip usCityArea)
+        protected internal bool GetIsLeaseResidence(UrbanCentric msaType, int age)
         {
-            if (usCityArea == null)
-                return true;
 
-            var cannotGetFinanced = CreditScore.GetRandomInterestRate(null, RiskFreeInterestRate.DF_VALUE) > 8.5;
-            if (cannotGetFinanced)
-                return true;
-
-            var livesInDenseUrbanArea = usCityArea.Msa?.MsaType == (UrbanCentric.City | UrbanCentric.Large);
-            var isYoung = Etc.CalcAge(MyOptions.BirthDate) < 32;
+            var livesInDenseUrbanArea = msaType == (UrbanCentric.City | UrbanCentric.Large);
+            var isYoung = age < 32;
             var roll = 65;
             if (livesInDenseUrbanArea)
                 roll -= 23;
             //is scaled where 29 year-old loses 3 while 21 year-old loses 11
             if (isYoung)
-                roll -= 32 - Etc.CalcAge(MyOptions.BirthDate);
+                roll -= 32 - age;
             return Etx.RandomRollBelowOrAt(roll, Etx.Dice.OneHundred);
         }
 
@@ -865,7 +851,7 @@ namespace NoFuture.Rand.Domus.Opes
         {
             //we want age to have an effect on the randomness
             var hookEquation = AmericanEquations.ClassicHook;
-            age = age ?? MyOptions.FactorOptions.Age;
+            age = age ?? (int)Math.Round(AmericanData.AVG_AGE_AMERICAN);
 
             var ageAtDt = age <= 0 
                 ? AmericanData.AVG_AGE_AMERICAN 
@@ -933,9 +919,9 @@ namespace NoFuture.Rand.Domus.Opes
         /// </summary>
         /// <param name="options"></param>
         /// <returns></returns>
-        protected internal virtual Pondus[] GetItemsForRange(OpesOptions options = null)
+        protected internal virtual Pondus[] GetItemsForRange(OpesOptions options)
         {
-            options = options ?? MyOptions;
+            options = options ?? new OpesOptions();
 
             var itemsout = new List<Pondus>();
 
@@ -954,9 +940,9 @@ namespace NoFuture.Rand.Domus.Opes
         /// <param name="grp2Rate"></param>
         /// <param name="options"></param>
         /// <returns></returns>
-        protected internal virtual Pondus[] GetItemsForRange(Tuple<string, double> grp2Rate, OpesOptions options = null)
+        protected internal virtual Pondus[] GetItemsForRange(Tuple<string, double> grp2Rate, OpesOptions options)
         {
-            options = options ?? MyOptions;
+            options = options ?? new OpesOptions();
 
             var itemsout = new List<Pondus>();
 

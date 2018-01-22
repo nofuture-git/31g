@@ -150,10 +150,10 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         [TestMethod]
         public void TestDeductionsRatioToIncome()
         {
-            var testInput = new AmericanEmployment(DateTime.Today.AddYears(-1), null);
+            var testInput = new AmericanEmployment();
             var annualIncome = 75000.ToPecuniam();
 
-            var options = new OpesOptions {SumTotal = annualIncome};
+            var options = new OpesOptions {SumTotal = annualIncome, Inception = DateTime.Today.AddYears(-1)};
 
             testInput.ResolveItems(options);
 
@@ -187,10 +187,10 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         [TestMethod]
         public void TestDeductionsAllPresent()
         {
-            var testInput = new AmericanEmployment(DateTime.Today.AddYears(-1), null);
+            var testInput = new AmericanEmployment();
             var annualIncome = 75000.ToPecuniam();
 
-            var options = new OpesOptions { SumTotal = annualIncome };
+            var options = new OpesOptions { SumTotal = annualIncome, Inception = DateTime.Today.AddYears(-1) };
 
             testInput.ResolveItems(options);
 
@@ -246,7 +246,11 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         [TestMethod]
         public void TestResolveItemsWithJudgements()
         {
-            var testInput = new AmericanEmployment(DateTime.Today.AddYears(-1), null);
+            var testInput = new AmericanEmployment();
+            var options = new OpesOptions { SumTotal = 75000D.ToPecuniam(), Inception = DateTime.Today.AddYears(-1) };
+
+            testInput.ResolveItems(options);
+
             var testSubject = new AmericanDeductions(testInput);
 
             var testOptions =

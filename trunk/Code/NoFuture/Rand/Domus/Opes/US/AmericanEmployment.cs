@@ -21,6 +21,8 @@ namespace NoFuture.Rand.Domus.Opes.US
         private bool _isWages;
         private bool _isTips;
         private bool _isCommission;
+        private DateTime _startDate;
+        private DateTime? _endDate;
         #endregion
 
         #region ctors
@@ -37,10 +39,8 @@ namespace NoFuture.Rand.Domus.Opes.US
             Occupation = StandardOccupationalClassification.RandomOccupation();
         }
 
-        internal AmericanEmployment(DateTime inception, DateTime? terminus) : base(null)
+        public AmericanEmployment() : base(null)
         {
-            MyOptions.Inception = inception;
-            MyOptions.Terminus = terminus;
             MyOptions.Interval = Interval.Annually;
             Occupation = StandardOccupationalClassification.RandomOccupation();
         }
@@ -72,14 +72,14 @@ namespace NoFuture.Rand.Domus.Opes.US
 
         public virtual DateTime Inception
         {
-            get => MyOptions.Inception;
-            set => MyOptions.Inception = value;
+            get => _startDate;
+            set => _startDate = value;
         }
 
         public virtual DateTime? Terminus
         {
-            get => MyOptions.Terminus;
-            set => MyOptions.Terminus = value;
+            get => _endDate;
+            set => _endDate = value;
         }
 
         public Pecuniam TotalAnnualPay => Pondus.GetExpectedAnnualSum(CurrentPay).Abs;
@@ -109,6 +109,8 @@ namespace NoFuture.Rand.Domus.Opes.US
         {
             options = options ?? OpesOptions.RandomOpesOptions();
             var emply = new AmericanEmployment(options);
+            emply.Inception = options.Inception;
+            emply.Terminus = options.Terminus;
             emply.ResolveItems(options);
             return emply;
         }
@@ -147,7 +149,7 @@ namespace NoFuture.Rand.Domus.Opes.US
 
         protected internal override void ResolveItems(OpesOptions options)
         {
-            options = options ?? MyOptions;
+            options = options ?? new OpesOptions();
             if (options.Inception == DateTime.MinValue)
                 options.Inception = GetYearNeg(-1);
             var yearsOfService = GetYearsOfServiceInDates(options);
@@ -179,7 +181,7 @@ namespace NoFuture.Rand.Domus.Opes.US
         /// <returns></returns>
         protected internal virtual List<Tuple<DateTime, DateTime?>> GetYearsOfServiceInDates(OpesOptions options)
         {
-            options = options ?? MyOptions;
+            options = options ?? new OpesOptions();
             var ranges = new List<Tuple<DateTime, DateTime?>>();
 
             var stDt = options.Inception.Date;

@@ -84,7 +84,7 @@ namespace NoFuture.Rand.Domus.Opes.US
 
         protected internal override void ResolveItems(OpesOptions options)
         {
-            options = options ?? MyOptions;
+            options = options ?? new OpesOptions();
             var stDt = options.Inception == DateTime.MinValue ? GetYearNeg(-1) : options.Inception;
             var ranges = GetYearsInDates(stDt);
 
@@ -114,7 +114,7 @@ namespace NoFuture.Rand.Domus.Opes.US
         /// <returns></returns>
         protected internal virtual Dictionary<string, double> GetHomeExpenseNames2RandomRates(OpesOptions options)
         {
-            options = (options ?? MyOptions) ?? new OpesOptions();
+            options = options ?? new OpesOptions();
 
             //TODO - integrate ability to have multiple mortgages in options
             options.GivenDirectly.Add(new Mereo("Other Lein", ExpenseGroupNames.HOME) { ExpectedValue = Pecuniam.Zero });
@@ -154,7 +154,7 @@ namespace NoFuture.Rand.Domus.Opes.US
         /// <returns></returns>
         protected internal Dictionary<string, double> GetUtilityExpenseNames2RandomRates(OpesOptions options)
         {
-            options = (options ?? MyOptions) ?? new OpesOptions();
+            options = options ?? new OpesOptions();
 
             if (options.IsRenting)
                 options.PossibleZeroOuts.AddRange(new[] { "Gas", "Water", "Sewer", "Trash" });
@@ -171,7 +171,7 @@ namespace NoFuture.Rand.Domus.Opes.US
         protected internal virtual Dictionary<string, double> GetTransportationExpenseNames2RandomRates(
             OpesOptions options)
         {
-            options = (options ?? MyOptions) ?? new OpesOptions();
+            options = options ?? new OpesOptions();
 
             options.PossibleZeroOuts.AddRange(new[] { "Parking", "Registration Fees" });
 
@@ -219,7 +219,7 @@ namespace NoFuture.Rand.Domus.Opes.US
         /// <returns></returns>
         protected internal virtual Dictionary<string, double> GetInsuranceExpenseNames2RandomRates(OpesOptions options)
         {
-            options = (options ?? MyOptions) ?? new OpesOptions();
+            options = options ?? new OpesOptions();
 
             options.PossibleZeroOuts.AddRange(new[] { "Pet", "Vision",
                 "Dental", "Health", "Disability", "Life" });
@@ -243,7 +243,7 @@ namespace NoFuture.Rand.Domus.Opes.US
         /// <returns></returns>
         protected internal Dictionary<string, double> GetPersonalExpenseNames2RandomRates(OpesOptions options)
         {
-            options = (options ?? MyOptions) ?? new OpesOptions();
+            options = options ?? new OpesOptions();
 
             options.PossibleZeroOuts.AddRange(new[] { "Dues", "Subscriptions",
                 "Gifts", "Vice", "Clothing" });
@@ -259,7 +259,7 @@ namespace NoFuture.Rand.Domus.Opes.US
         /// <returns></returns>
         protected internal Dictionary<string, double> GetChildrenExpenseNames2RandomRates(OpesOptions options)
         {
-            options = (options ?? MyOptions) ?? new OpesOptions();
+            options = options ?? new OpesOptions();
 
             //when children are young we want to reflect that
             if (options.GetChildrenAges().All(x => x < AmericanData.AVG_AGE_CHILD_ENTER_SCHOOL))
@@ -294,7 +294,7 @@ namespace NoFuture.Rand.Domus.Opes.US
         /// <returns></returns>
         protected internal Dictionary<string, double> GetDebtExpenseNames2RandomRates(OpesOptions options)
         {
-            options = (options ?? MyOptions) ?? new OpesOptions();
+            options = options ?? new OpesOptions();
 
             options.PossibleZeroOuts.AddRange(new[] { "Health Care", "Other Consumer", "Student", "Tax", "Other" });
             var d = GetItemNames2Portions(ExpenseGroupNames.DEBT, options);
@@ -308,7 +308,7 @@ namespace NoFuture.Rand.Domus.Opes.US
         /// <returns></returns>
         protected internal Dictionary<string, double> GetHealthExpenseNames2RandomRates(OpesOptions options)
         {
-            options = (options ?? MyOptions) ?? new OpesOptions();
+            options = options ?? new OpesOptions();
 
             options.PossibleZeroOuts.AddRange(new[] { "Therapy", "Hospital",
                 "Optical", "Dental", "Physician", "Supplements" });

@@ -9,7 +9,7 @@ using NoFuture.Rand.Gov.US;
 namespace NoFuture.Rand.Domus.Opes.US
 {
     /// <summary>
-    /// Applies each of the <see cref="FactorTables"/> to the given <see cref="OpesOptions"/>
+    /// Applies each of the <see cref="FactorTables"/> to the given <see cref="AmericanFactorOptions"/>
     /// which attempt to take into account education level, race, region, age, gender and 
     /// marital status.
     /// </summary>
@@ -90,7 +90,7 @@ namespace NoFuture.Rand.Domus.Opes.US
             var edu = options.EducationLevel;
             var race = options.Race;
             var region = options.Region;
-            var age = options.Age;
+            var age = options.GetAge();
             var gender = options.Gender;
             var maritalStatus = options.MaritialStatus;
 

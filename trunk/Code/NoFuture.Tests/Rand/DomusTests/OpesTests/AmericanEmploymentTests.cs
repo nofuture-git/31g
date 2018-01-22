@@ -14,17 +14,17 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         public void TestGetYearsOfServiceInDates()
         {
             //still employed
-            var testSubject = new AmericanEmployment(new DateTime(2011,10,5),null);
+            var testSubject = new AmericanEmployment();
 
-            var testResult = testSubject.GetYearsOfServiceInDates(null);
+            var testResult = testSubject.GetYearsOfServiceInDates(new OpesOptions{Inception = new DateTime(2011, 10, 5) });
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0, testResult.Count);
 
             foreach(var r in testResult)
                 System.Diagnostics.Debug.WriteLine(r);
 
-            testSubject = new AmericanEmployment(new DateTime(2013, 5, 16), new DateTime(2017,8,1));
-            testResult = testSubject.GetYearsOfServiceInDates(null);
+            testSubject = new AmericanEmployment();
+            testResult = testSubject.GetYearsOfServiceInDates(new OpesOptions(){Inception = new DateTime(2013, 5, 16), Terminus = new DateTime(2017, 8, 1) });
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0, testResult.Count);
 
@@ -38,9 +38,9 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         [TestMethod]
         public void TestGetPayName2RandRates()
         {
-            var testSubject = new AmericanEmployment(new DateTime(2011, 10, 5), null);
+            var testSubject = new AmericanEmployment();
             testSubject.Occupation = StandardOccupationalClassification.GetById("41-2031");
-            var testResult = testSubject.GetPayName2RandRates(testSubject.MyOptions);
+            var testResult = testSubject.GetPayName2RandRates(new OpesOptions(){Inception = new DateTime(2011, 10, 5) });
 
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0, testResult.Count);
