@@ -117,33 +117,7 @@ namespace NoFuture.Rand.Domus.Opes
 
         #endregion
 
-        #region ctors
-        protected WealthBase(OpesOptions options)
-        {
-            MyOptions = options ?? new OpesOptions();
-
-            CreditScore = new PersonalCreditScore(MyOptions.FactorOptions.BirthDate)
-            {
-                OpennessZscore = MyOptions.Personality?.Openness?.Value?.Zscore ?? 0D,
-                ConscientiousnessZscore = MyOptions.Personality?.Conscientiousness?.Value?.Zscore ?? 0D
-            };
-        }
-        #endregion
-
         #region properties
-
-        /// <summary>
-        /// An instance level which acts as a default 
-        /// for null ref&apos; passed into any given method.
-        /// </summary>
-        protected internal OpesOptions MyOptions { get; set; }
-
-        /// <summary>
-        /// The credit score of <see cref="MyOptions"/>
-        /// </summary>
-        protected CreditScore CreditScore { get; set; }
-
-
 
         /// <summary>
         /// Determines which kind of wealth concept is 
@@ -193,32 +167,29 @@ namespace NoFuture.Rand.Domus.Opes
         /// <param name="min">
         /// Optional, absolute minimum value where results should always be this value or higher.
         /// </param>
-        /// <param name="factorCalc">
-        /// Optional, allows calling assembly to control the base value around which 
-        /// the random value is generated
+        /// <param name="options">
         /// </param>
         /// <param name="stdDevInUsd">
         /// Optional, a randomizes the calculated value around a mean.
         /// </param>
         /// <returns></returns>
-        public Pecuniam GetRandomYearlyIncome(DateTime? dt = null, Pecuniam min = null,
-            Func<double, double> factorCalc = null,
+        public Pecuniam GetRandomYearlyIncome(DateTime? dt = null, OpesOptions options = null, Pecuniam min = null,
             double stdDevInUsd = 2000)
         {
             if (min == null)
                 min = Pecuniam.Zero;
 
             //get linear eq for earning 
-            var eq = GetAvgEarningPerYear();
+            var eq = GetAvgEarningPerYear(options);
             if (eq == null)
                 return Pecuniam.Zero;
             var baseValue = Math.Round(eq.SolveForY(dt.GetValueOrDefault(DateTime.Today).ToDouble()), 2);
             if (baseValue <= 0)
                 return Pecuniam.Zero;
 
-            factorCalc = factorCalc ?? (d => d * 1);
+            var netWorth = new AmericanFactors(options?.FactorOptions).NetWorthFactor;
 
-            var factorValue = factorCalc(baseValue);
+            var factorValue = baseValue * netWorth;
 
             baseValue = Math.Round(factorValue, 2);
 
@@ -240,9 +211,9 @@ namespace NoFuture.Rand.Domus.Opes
         /// <remarks>
         /// compiled data from BEA
         /// </remarks>
-        protected internal virtual LinearEquation GetAvgEarningPerYear()
+        protected internal virtual LinearEquation GetAvgEarningPerYear(OpesOptions options)
         {
-            var ca = MyOptions.HomeLocation as UsCityStateZip;
+            var ca = options?.HomeLocation as UsCityStateZip;
             return (ca?.AverageEarnings ?? UsStateData.GetStateData(ca?.StateName)?.AverageEarnings) ??
                    AmericanEquations.NatlAverageEarnings;
         }

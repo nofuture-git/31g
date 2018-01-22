@@ -26,16 +26,6 @@ namespace NoFuture.Rand.Domus.Opes.US
         private readonly HashSet<Pondus> _otherIncome = new HashSet<Pondus>();
         #endregion
 
-        #region ctors
-
-        public AmericanIncome(OpesOptions options = null) : base(options)
-        {
-            if(MyOptions.Inception == DateTime.MinValue)
-                MyOptions.Inception = GetYearNeg(-1);
-        }
-
-        #endregion
-
         #region properties
         /// <summary>
         /// Current employment - is array since can hold more than one job at a time.
@@ -96,7 +86,7 @@ namespace NoFuture.Rand.Domus.Opes.US
         public static AmericanIncome RandomIncome(OpesOptions options = null)
         {
             options = options ?? OpesOptions.RandomOpesOptions();
-            var income = new AmericanIncome(options);
+            var income = new AmericanIncome();
             income.ResolveItems(options);
             return income;
         }
@@ -160,7 +150,7 @@ namespace NoFuture.Rand.Domus.Opes.US
                 cloneOptions.Inception = range.Item1;
                 cloneOptions.Terminus = range.Item2;
                 if(cloneOptions.SumTotal == null || cloneOptions.SumTotal == Pecuniam.Zero)
-                    cloneOptions.SumTotal = GetRandomExpectedIncomeAmount(range.Item1, Etc.CalcAge(cloneOptions.FactorOptions.BirthDate));
+                    cloneOptions.SumTotal = GetRandomExpectedIncomeAmount(cloneOptions);
 
                 //there aren't ever random but calculated off gross and net income(s)
                 if(!cloneOptions.AnyGivenDirectlyOfName(IncomeGroupNames.PUBLIC_BENEFITS))
@@ -435,19 +425,17 @@ namespace NoFuture.Rand.Domus.Opes.US
         /// Gets a money amount at random based on the age and either the 
         /// employment history or location of the opes options
         /// </summary>
-        /// <param name="dt"></param>
-        /// <param name="age">
-        /// Optional, allows for some control over the randomness, it rises 
-        /// quickly after age 50
-        /// </param>
+        /// <param name="options"></param>
         /// <returns></returns>
-        protected internal virtual Pecuniam GetRandomExpectedIncomeAmount(DateTime? dt, int? age = null)
+        protected internal virtual Pecuniam GetRandomExpectedIncomeAmount(OpesOptions options)
         {
-            dt = dt ?? DateTime.Today;
+            options = options ?? new OpesOptions();
 
-            age = age ?? Etc.CalcAge(MyOptions.FactorOptions.BirthDate, dt);
+            var dt = options.Inception == DateTime.MinValue ? DateTime.Today : options.Inception;
 
-            var ageAtDt = age <= 0 ? AmericanData.AVG_AGE_AMERICAN : age.Value;
+            var age = options.FactorOptions.GetAge();
+
+            var ageAtDt = age <= 0 ? AmericanData.AVG_AGE_AMERICAN : age;
 
             //get something randome near this value
             var randRate = GetRandomRateFromClassicHook(ageAtDt);
@@ -459,7 +447,7 @@ namespace NoFuture.Rand.Domus.Opes.US
             //get some base to calc the product 
             var someBase = Employment.Any() 
                            ? GetExpectedAnnualEmplyGrossIncome(dt) 
-                           : GetRandomYearlyIncome(dt);
+                           : GetRandomYearlyIncome(dt, options);
 
             var randAmt = someBase.ToDouble() * randRate;
             return randAmt.ToPecuniam();

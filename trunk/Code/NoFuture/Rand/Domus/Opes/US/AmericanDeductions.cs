@@ -21,7 +21,7 @@ namespace NoFuture.Rand.Domus.Opes.US
         private readonly HashSet<Pondus> _deductions = new HashSet<Pondus>();
         private readonly AmericanEmployment _employment;
 
-        internal AmericanDeductions(AmericanEmployment employment) : base(employment?.MyOptions)
+        internal AmericanDeductions(AmericanEmployment employment)
         {
             _employment = employment ?? throw new ArgumentNullException(nameof(employment));
 
@@ -330,7 +330,7 @@ namespace NoFuture.Rand.Domus.Opes.US
             options = options ?? new OpesOptions();
 
             var pPay = Pondus.GetExpectedAnnualSum(_employment.GetPayAt(options.Inception)) ?? Pecuniam.Zero;
-            var pay = pPay == Pecuniam.Zero ? GetRandomYearlyIncome(options.Inception).ToDouble() : pPay.ToDouble();
+            var pay = pPay == Pecuniam.Zero ? GetRandomYearlyIncome(options.Inception, options).ToDouble() : pPay.ToDouble();
             return pay;
         }
 

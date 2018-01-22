@@ -14,7 +14,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         [TestMethod]
         public void TestGetEmploymentRanges()
         {
-            var testSubject = new AmericanIncome(null);
+            var testSubject = new AmericanIncome();
             var testResult = testSubject.GetEmploymentRanges(null);
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0, testResult.Count);
@@ -25,7 +25,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         [TestMethod]
         public void TestResolveEmployment()
         {
-            var testSubject = new AmericanIncome(null);
+            var testSubject = new AmericanIncome();
             var testResult = testSubject.GetRandomEmployment(null, null);
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0, testResult.Count);
@@ -35,12 +35,9 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         public void TestGetRandomIncomeAmount()
         {
             //no args test
-            var testSubject = new AmericanIncome(null);
+            var testSubject = new AmericanIncome();
             var testResult = testSubject.GetRandomExpectedIncomeAmount(null);
 
-            Assert.IsNotNull(testResult);
-
-            testResult = testSubject.GetRandomExpectedIncomeAmount(null, 69);
             Assert.IsNotNull(testResult);
             Assert.IsFalse(testResult == Pecuniam.Zero);
             System.Diagnostics.Debug.WriteLine(testResult);
@@ -49,7 +46,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         [TestMethod]
         public void TestGetIncomeYearsInDates()
         {
-            var testSubject = new AmericanIncome(null);
+            var testSubject = new AmericanIncome();
             var testResult = testSubject.GetYearsInDates(testSubject.GetYearNeg(-3));
 
             Assert.IsNotNull(testResult);
@@ -62,7 +59,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         [TestMethod]
         public void TestGetJudgementIncomeNames2RandomRates()
         {
-            var testSubject = new AmericanIncome(null);
+            var testSubject = new AmericanIncome();
             
             var testResult = testSubject.GetJudgmentIncomeNames2RandomRates(null);
 
@@ -79,7 +76,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         [TestMethod]
         public void TestGetSubitoIncomeNames2RandomRates()
         {
-            var testSubject = new AmericanIncome(null);
+            var testSubject = new AmericanIncome();
 
             var testResult = testSubject.GetSubitoIncomeNames2RandomRates(null);
 
@@ -96,7 +93,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         [TestMethod]
         public void TestGetRealPropertyIncomeNames2RandomRates()
         {
-            var testSubject = new AmericanIncome(null);
+            var testSubject = new AmericanIncome();
 
             var testResult = testSubject.GetRealPropertyIncomeNames2RandomRates(null);
 
@@ -113,7 +110,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         [TestMethod]
         public void TestGetSecuritiesIncomeNames2RandomRates()
         {
-            var testSubject = new AmericanIncome(null);
+            var testSubject = new AmericanIncome();
 
             var testResult = testSubject.GetSecuritiesIncomeNames2RandomRates(null);
 
@@ -130,7 +127,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         [TestMethod]
         public void TestGetInstitutionalIncomeNames2RandomRates()
         {
-            var testSubject = new AmericanIncome(null);
+            var testSubject = new AmericanIncome();
 
             var testResult = testSubject.GetInstitutionalIncomeNames2RandomRates(null);
 
@@ -175,7 +172,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         [TestMethod]
         public void TestResolveItems()
         {
-            var testSubject = new AmericanIncome(null);
+            var testSubject = new AmericanIncome();
 
             testSubject.ResolveItems(null);
 

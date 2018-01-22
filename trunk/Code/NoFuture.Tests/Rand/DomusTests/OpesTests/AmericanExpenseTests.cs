@@ -17,7 +17,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         public void TestGetDebtExpenseNames2RandRates_NoOptions()
         {
             //what happens if you just invoke it with no options whatsoever?
-            var testSubject = new AmericanExpenses(null);
+            var testSubject = new AmericanExpenses();
             var testResult = testSubject.GetDebtExpenseNames2RandomRates((OpesOptions)null);
 
             Assert.IsNotNull(testResult);
@@ -32,7 +32,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         public void TestGetDebtExpenseNames2RandRates_SingleGivenDirectly()
         {
             //what happens if its just a single item and no SumTotal?
-            var testSubject = new AmericanExpenses(null);
+            var testSubject = new AmericanExpenses();
             var testOptions = new OpesOptions();
             testOptions.Inception = DateTime.Today;
             testOptions.GivenDirectly.Add(new Mereo("Student", WealthBase.ExpenseGroupNames.DEBT) { ExpectedValue = 9000.ToPecuniam() });
@@ -50,7 +50,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         [TestMethod]
         public void TestGetDebtExpenseNames2RandRates_TwoGivenDirectly()
         {
-            var testSubject = new AmericanExpenses(null);
+            var testSubject = new AmericanExpenses();
             var testOptions = new OpesOptions();
 
             //so if we add another then their assigned rates will be their portion of the whole?
@@ -75,7 +75,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         [TestMethod]
         public void TestGetDebtExpenseNames2RandRates_TwoGivenDirectlyAndSumWhichEquals()
         {
-            var testSubject = new AmericanExpenses(null);
+            var testSubject = new AmericanExpenses();
             var testOptions = new OpesOptions();
 
             //so now what happens if we do give a SumTotal which happens to exactly equal the GivenDirectly's sum?
@@ -102,7 +102,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         [TestMethod]
         public void TestGetDebtExpenseNames2RandRates_TwoGivenDirectlyAndSumWhichLt()
         {
-            var testSubject = new AmericanExpenses(null);
+            var testSubject = new AmericanExpenses();
             var testOptions = new OpesOptions();
 
             //so what happens if the sumtotal is actually less than the sum of the GivenDirectly's sum?
@@ -130,7 +130,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         [TestMethod]
         public void TestGetDebtExpenseNames2RandRates_TwoGivenDirectlyAndSumWhichGt()
         {
-            var testSubject = new AmericanExpenses(null);
+            var testSubject = new AmericanExpenses();
             var testOptions = new OpesOptions();
 
             //what about when the sumtotal is greater than the GivenDirectly's sum?
@@ -166,7 +166,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         [TestMethod]
         public void TestGetDebtExpenseNames2RandRates_JustSumTotal()
         {
-            var testSubject = new AmericanExpenses(null);
+            var testSubject = new AmericanExpenses();
             var testOptions = new OpesOptions();
 
             //so what happens if I give a sumtotal and no GivenDirectly's - does it matter?
@@ -189,7 +189,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         [TestMethod]
         public void TestGetDebtExpenseNames2RandRates_UnmatchedNames()
         {
-            var testSubject = new AmericanExpenses(null);
+            var testSubject = new AmericanExpenses();
             var testOptions = new OpesOptions();
 
             //so will it blow up if GivenDirectly's names are not found?
@@ -211,7 +211,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         [TestMethod]
         public void TestGetDebtExpenseNames2RandRates_GivenDirectlyValueOfZero()
         {
-            var testSubject = new AmericanExpenses(null);
+            var testSubject = new AmericanExpenses();
             var testOptions = new OpesOptions();
 
             //so how will it handle a case where GivenDirectly's are assigned zero
@@ -237,7 +237,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         [ExpectedException(typeof(RahRowRagee))]
         public void TestGetDebtExpenseNames2RandRates_EverythingZeroOut()
         {
-            var testSubject = new AmericanExpenses(null);
+            var testSubject = new AmericanExpenses();
             var testOptions = new OpesOptions();
 
             //how will it handle the case where I accidently zero'ed out everything?
@@ -256,7 +256,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         [TestMethod]
         public void TestGetDebtExpenseNames2RandRates_SumTotalIsZero()
         {
-            var testSubject = new AmericanExpenses(null);
+            var testSubject = new AmericanExpenses();
             var testOptions = new OpesOptions();
 
             //so what is going to happen if the only thing I give is a SumTotal of zero?
@@ -273,7 +273,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         [TestMethod]
         public void TestGetDebtExpenseNames2RandRates_GivenDirectlyOverlapZeroOuts()
         {
-            var testSubject = new AmericanExpenses(null);
+            var testSubject = new AmericanExpenses();
             var testOptions = new OpesOptions();
 
             //how do the PossiableZero outs play with explict values on GivenDirectly?
@@ -298,7 +298,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         [TestMethod]
         public void TestGetDebtExpenseNames2RandRates_SumTotalExceedsAndZeroOuts()
         {
-            var testSubject = new AmericanExpenses(null);
+            var testSubject = new AmericanExpenses();
             var testOptions = new OpesOptions();
 
             //what if the SumTotal exceeds the GivenDirectly's sum but all the other options are present in the PossiablyZeroOut's?
@@ -321,7 +321,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         [TestMethod]
         public void TestGetHomeExpenseNames2RandomRates()
         {
-            var testSubject = new AmericanExpenses(null);
+            var testSubject = new AmericanExpenses();
 
             var testResult = testSubject.GetHomeExpenseNames2RandomRates(null);
 
@@ -351,7 +351,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         [TestMethod]
         public void TestGetUtilityExpenseNames2RandomRates()
         {
-            var testSubject = new AmericanExpenses(null);
+            var testSubject = new AmericanExpenses();
 
             var testResult = testSubject.GetUtilityExpenseNames2RandomRates(null);
 
@@ -368,9 +368,9 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         [TestMethod]
         public void TestGetTransportationExpenseNames2RandomRates()
         {
-            var testSubject = new AmericanExpenses(null);
+            var testSubject = new AmericanExpenses();
 
-            var testResult = testSubject.GetTransportationExpenseNames2RandomRates(null);
+            var testResult = testSubject.GetTransportationExpenseNames2RandomRates(new OpesOptions(){NumberOfVehicles = 0});
 
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0, testResult.Count);
@@ -403,7 +403,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         [TestMethod]
         public void TestGetInsuranceExpenseNames2RandomRates()
         {
-            var testSubject = new AmericanExpenses(null);
+            var testSubject = new AmericanExpenses();
 
             var testResult = testSubject.GetInsuranceExpenseNames2RandomRates(new OpesOptions { IsRenting = false });
 
@@ -439,7 +439,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         [TestMethod]
         public void TestGetPersonalExpenseNames2RandomRates()
         {
-            var testSubject = new AmericanExpenses(null);
+            var testSubject = new AmericanExpenses();
 
             var testResult = testSubject.GetPersonalExpenseNames2RandomRates(null);
 
@@ -457,7 +457,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         [TestMethod]
         public void TestGetChildrenExpenseNames2RandomRates()
         {
-            var testSubject = new AmericanExpenses(null);
+            var testSubject = new AmericanExpenses();
 
             var testResult = testSubject.GetChildrenExpenseNames2RandomRates(null);
 
@@ -474,7 +474,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         [TestMethod]
         public void TestGetHealthExpenseNames2RandomRates()
         {
-            var testSubject = new AmericanExpenses(null);
+            var testSubject = new AmericanExpenses();
 
             var testResult = testSubject.GetHealthExpenseNames2RandomRates(null);
 
@@ -521,9 +521,9 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         public void TestResolveItems()
         {
             var testOptions = new OpesOptions {SumTotal = 10000.0D.ToPecuniam()};
-            var testSubject = new AmericanExpenses(testOptions);
+            var testSubject = new AmericanExpenses();
 
-            testSubject.ResolveItems(null);
+            testSubject.ResolveItems(testOptions);
 
             Assert.IsNotNull(testSubject.MyItems);
             Assert.AreNotEqual(0, testSubject.MyItems.Count);

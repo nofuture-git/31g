@@ -46,16 +46,6 @@ namespace NoFuture.Rand.Domus.Opes.US
 
         #endregion
 
-        #region ctors
-
-        public AmericanAssets(OpesOptions options) : base(options)
-        {
-            if (options.Inception == DateTime.MinValue)
-                options.Inception = GetYearNeg(-1);
-        }
-
-        #endregion
-
         #region properties
 
         public Pondus[] CurrentAssets => GetCurrent(MyItems);
@@ -91,7 +81,7 @@ namespace NoFuture.Rand.Domus.Opes.US
         public static AmericanAssets RandomAssets(OpesOptions options = null)
         {
             options = options ?? OpesOptions.RandomOpesOptions();
-            var assets = new AmericanAssets(options);
+            var assets = new AmericanAssets();
             assets.ResolveItems(options);
             return assets;
         }
@@ -185,7 +175,7 @@ namespace NoFuture.Rand.Domus.Opes.US
             {
                 options.DerivativeSlope = -0.2D;
                 options.GivenDirectly.AddRange(givenDirectly);
-                MyOptions = options;
+                //MyOptions = options;
             }
             return base.GetGroupNames2Portions(options);
         }
@@ -244,8 +234,12 @@ namespace NoFuture.Rand.Domus.Opes.US
                     : _carEquityRate * amt.ToDouble();
 
                 var baseRate = isMortgage ? FED_RATE : FED_RATE + 3.2;
-                var randRate =
-                    (float) CreditScore.GetRandomInterestRate(null, baseRate) * 0.01f;
+                var creditScore = new PersonalCreditScore(options.FactorOptions.BirthDate)
+                {
+                    OpennessZscore = options.Personality?.Openness?.Value?.Zscore ?? 0D,
+                    ConscientiousnessZscore = options.Personality?.Conscientiousness?.Value?.Zscore ?? 0D
+                };
+                var randRate = (float) creditScore.GetRandomInterestRate(null, baseRate) * 0.01f;
 
                 var id = isMortgage
                     ? (Identifier) PostalAddress.RandomAmericanAddress()
@@ -386,7 +380,7 @@ namespace NoFuture.Rand.Domus.Opes.US
         {
             if (_factorsSet)
                 return;
-            var factors = new AmericanFactors(MyOptions.FactorOptions);
+            var factors = new AmericanFactors(factorOptions);
 
             _randCheckingAcctAmt = AmericanFactors.GetRandomFactorValue(FactorTables.CheckingAccount,
                 factors.CheckingAcctFactor, stdDev);

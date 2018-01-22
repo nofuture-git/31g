@@ -80,7 +80,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         [TestMethod]
         public void TestResolveItems()
         {
-            var testSubject = new AmericanEmployment(new OpesOptions());
+            var testSubject = new AmericanEmployment();
 
             testSubject.ResolveItems(null);
 

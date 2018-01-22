@@ -17,12 +17,6 @@ namespace NoFuture.Rand.Domus.Opes.US
     {
         private readonly HashSet<Pondus> _expenses = new HashSet<Pondus>();
 
-        public AmericanExpenses(OpesOptions options = null) : base(options)
-        {
-            if (MyOptions.Inception == DateTime.MinValue)
-                MyOptions.Inception = GetYearNeg(-1);
-        }
-
         public virtual Pondus[] CurrentExpectedExpenses => GetCurrent(MyItems);
 
         public virtual Pecuniam TotalAnnualExpectedExpenses => Pondus.GetExpectedAnnualSum(CurrentExpectedExpenses);
@@ -38,7 +32,7 @@ namespace NoFuture.Rand.Domus.Opes.US
         public static AmericanExpenses RandomExpenses(OpesOptions options = null)
         {
             options = options ?? OpesOptions.RandomOpesOptions();
-            var exp = new AmericanExpenses(options);
+            var exp = new AmericanExpenses();
             exp.ResolveItems(options);
             return exp;
         }
@@ -90,7 +84,7 @@ namespace NoFuture.Rand.Domus.Opes.US
 
             if (options.SumTotal == null || options.SumTotal == Pecuniam.Zero)
             {
-                var randIncome = Math.Round(GetRandomYearlyIncome(options.Inception).ToDouble() * 85);
+                var randIncome = Math.Round(GetRandomYearlyIncome(options.Inception, options).ToDouble() * 85);
                 options.SumTotal = randIncome.ToPecuniam();
             }
 

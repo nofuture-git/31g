@@ -45,11 +45,11 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             var options = new OpesOptions {IsRenting = true};
             options.FactorOptions.Gender = Gender.Female;
             options.FactorOptions.BirthDate = Etx.RandomAdultBirthDate();
-            var testSubject = new AmericanIncome(options);
+            var testSubject = new AmericanIncome();
 
             System.Diagnostics.Debug.WriteLine(string.Join(" ", amer.Age, amer.MaritialStatus, amer.Education, amer.Race));
 
-            var testResult = testSubject.GetRandomYearlyIncome(null, 1.0.ToPecuniam());
+            var testResult = testSubject.GetRandomYearlyIncome(null, options, 1.0.ToPecuniam());
             System.Diagnostics.Debug.WriteLine(testResult);
             Assert.IsNotNull(testResult);
             Assert.IsTrue(testResult.Amount > 0.0M);
@@ -114,7 +114,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         [TestMethod]
         public void TestGetRandomRateFromClassicHook()
         {
-            var testSubject = new AmericanIncome(null);
+            var testSubject = new AmericanIncome();
             var testResult = testSubject.GetRandomRateFromClassicHook();
 
             Assert.IsTrue(testResult >= 0D);
@@ -128,7 +128,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         [TestMethod]
         public void TestGetYearNeg()
         {
-            var testSubject = new AmericanIncome(null);
+            var testSubject = new AmericanIncome();
             var testResult = testSubject.GetYearNeg(-3);
 
             System.Diagnostics.Debug.WriteLine(testResult);
@@ -141,7 +141,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             testInput.GivenDirectly.Add(new Mereo("Real Property"){ExpectedValue = 7800.ToPecuniam()});
             testInput.GivenDirectly.Add(new Mereo("Securities"){ExpectedValue = 1000.ToPecuniam()});
             testInput.SumTotal = 12000.ToPecuniam();
-            var testSubject = new AmericanAssets(testInput);
+            var testSubject = new AmericanAssets();
             var testResult = testSubject.GetGroupNames2Portions(testInput);
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0, testResult.Count);
@@ -173,7 +173,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             testInput.GivenDirectly.Add(new Mereo("Annuity", grpName) { ExpectedValue = 1000.ToPecuniam() });
             testInput.SumTotal = 15000.ToPecuniam();
 
-            var testSubject = new AmericanIncome(testInput);
+            var testSubject = new AmericanIncome();
 
             var testResults =
                 testSubject.GetItemNames2Portions(grpName, testInput);
@@ -190,7 +190,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             testInput.GivenDirectly.Add(new Mereo("Partnerships", grpName) { ExpectedValue = 7800.ToPecuniam() });
             testInput.GivenDirectly.Add(new Mereo("Fellowships", grpName) { ExpectedValue = 1000.ToPecuniam() });
             testInput.GivenDirectly.Add(new Mereo("Annuity", grpName) { ExpectedValue = 1000.ToPecuniam() });
-            testSubject = new AmericanIncome(testInput);
+            testSubject = new AmericanIncome();
             testResults =
                 testSubject.GetItemNames2Portions(grpName, testInput);
 

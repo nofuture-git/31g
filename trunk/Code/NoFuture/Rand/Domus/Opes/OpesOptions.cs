@@ -25,7 +25,6 @@ namespace NoFuture.Rand.Domus.Opes
     [Serializable]
     public class OpesOptions : OpesPortions, ITempore
     {
-        private DateTime _birthDate;
         private readonly AmericanFactorOptions _factorOptions;
         private CityArea _cityArea;
 

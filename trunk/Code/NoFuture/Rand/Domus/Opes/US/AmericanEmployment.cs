@@ -27,21 +27,8 @@ namespace NoFuture.Rand.Domus.Opes.US
 
         #region ctors
 
-        /// <summary>
-        /// Creates a new instance of <see cref="AmericanEmployment"/> at random.
-        /// </summary>
-        /// <param name="options"></param>
-        public AmericanEmployment(OpesOptions options) : base(options)
+        public AmericanEmployment()
         {
-            if(MyOptions.Inception == DateTime.MinValue)
-                MyOptions.Inception = GetYearNeg(-1);
-            MyOptions.Interval = Interval.Annually;
-            Occupation = StandardOccupationalClassification.RandomOccupation();
-        }
-
-        public AmericanEmployment() : base(null)
-        {
-            MyOptions.Interval = Interval.Annually;
             Occupation = StandardOccupationalClassification.RandomOccupation();
         }
 
@@ -108,9 +95,11 @@ namespace NoFuture.Rand.Domus.Opes.US
         public static AmericanEmployment RandomEmployment(OpesOptions options = null)
         {
             options = options ?? OpesOptions.RandomOpesOptions();
-            var emply = new AmericanEmployment(options);
-            emply.Inception = options.Inception;
-            emply.Terminus = options.Terminus;
+            var emply = new AmericanEmployment
+            {
+                Inception = options.Inception,
+                Terminus = options.Terminus
+            };
             emply.ResolveItems(options);
             return emply;
         }
@@ -153,7 +142,7 @@ namespace NoFuture.Rand.Domus.Opes.US
             if (options.Inception == DateTime.MinValue)
                 options.Inception = GetYearNeg(-1);
             var yearsOfService = GetYearsOfServiceInDates(options);
-            var isCurrentEmployee = MyOptions.Terminus == null;
+            var isCurrentEmployee = options.Terminus == null;
 
             for (var i = 0; i < yearsOfService.Count; i++)
             {
@@ -275,7 +264,7 @@ namespace NoFuture.Rand.Domus.Opes.US
             //TODO - why is there here in the middle of something else?
             if (options.SumTotal == null || options.SumTotal == Pecuniam.Zero)
             {
-                options.SumTotal = GetRandomYearlyIncome(options.Inception);
+                options.SumTotal = GetRandomYearlyIncome(options.Inception, options);
                 options.Interval = Interval.Annually;
             }
 
@@ -311,14 +300,14 @@ namespace NoFuture.Rand.Domus.Opes.US
             if (item == null)
                 return false;
             var itemEndDt = item.Terminus;
-            var rangeStartDt = MyOptions.Inception;
+            var rangeStartDt = Inception;
             
             //item ended before this instance even started
             if (itemEndDt != null && itemEndDt.Value < rangeStartDt)
                 return false;
 
             var itemStartDt = item.Inception;
-            var rangeEndDt = MyOptions.Terminus;
+            var rangeEndDt = Terminus;
 
             //instance ended before this item even started
             if (rangeEndDt != null && itemStartDt > rangeEndDt.Value)
@@ -349,7 +338,8 @@ namespace NoFuture.Rand.Domus.Opes.US
         public override int GetHashCode()
         {
             return (EmployingCompanyName?.GetHashCode() ?? 1) +
-                   MyOptions?.GetHashCode() ?? 1;
+                   Inception.GetHashCode() +
+                   Terminus?.GetHashCode() ?? 1;
         }
 
         public override string ToString()

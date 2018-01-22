@@ -13,7 +13,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         [TestMethod]
         public void TestGetInsuranceDeductionName2RandRates()
         {
-            var testInput = new AmericanEmployment(new OpesOptions());
+            var testInput = new AmericanEmployment();
             var testSubject = new AmericanDeductions(testInput);
 
             var testOptions =
@@ -39,7 +39,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         public void TestGetGovernmentDeductionName2Rates()
         {
 
-            var testInput = new AmericanEmployment(new OpesOptions());
+            var testInput = new AmericanEmployment();
             var testSubject = new AmericanDeductions(testInput);
 
             var testOptions =
@@ -63,7 +63,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         [TestMethod]
         public void TestGetEmploymentDeductionName2Rates()
         {
-            var testInput = new AmericanEmployment(new OpesOptions());
+            var testInput = new AmericanEmployment();
             var testSubject = new AmericanDeductions(testInput);
 
             var testOptions =
@@ -87,7 +87,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         [TestMethod]
         public void TestGetJudgementDeductionName2RandomRates()
         {
-            var testInput = new AmericanEmployment(new OpesOptions());
+            var testInput = new AmericanEmployment();
             var testSubject = new AmericanDeductions(testInput);
 
             var testOptions =
@@ -135,7 +135,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         [TestMethod]
         public void TestResolveItems()
         {
-            var testInput = new AmericanEmployment(new OpesOptions());
+            var testInput = new AmericanEmployment();
             var testSubject = new AmericanDeductions(testInput);
 
             testSubject.ResolveItems(null);
@@ -203,7 +203,6 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             Assert.IsTrue(Math.Round(diff) == 0.0D);
 
             var testSubject = new AmericanDeductions(testInput);
-            System.Diagnostics.Debug.WriteLine(testSubject.MyOptions.SumTotal);
             testSubject.ResolveItems(null);
 
             var testResults = testSubject.GetDeductionsAt(DateTime.Today.AddDays(-182));
@@ -218,7 +217,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         [TestMethod]
         public void TestGetGroupNames2Portions()
         {
-            var testInput = new AmericanEmployment(new OpesOptions());
+            var testInput = new AmericanEmployment();
             var testSubject = new AmericanDeductions(testInput);
 
             var testResults = testSubject.GetGroupNames2Portions(null);
@@ -253,9 +252,8 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
 
             var testSubject = new AmericanDeductions(testInput);
 
-            var testOptions =
-                new OpesOptions() {Inception = testInput.MyOptions.Inception, IsPayingChildSupport = true};
-            testSubject.ResolveItems(testOptions);
+            options.IsPayingChildSupport = true;
+            testSubject.ResolveItems(options);
 
             Assert.IsNotNull(testSubject.MyItems);
             Assert.AreNotEqual(0, testSubject.MyItems.Count);
