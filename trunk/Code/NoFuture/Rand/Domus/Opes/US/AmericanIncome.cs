@@ -142,7 +142,7 @@ namespace NoFuture.Rand.Domus.Opes.US
             options = options ?? MyOptions;
 
             var personality = options.Personality;
-            var eduFlag = options.EducationLevel ?? OccidentalEdu.None;
+            var eduFlag = options.FactorOptions.EducationLevel;
 
             var emply = GetRandomEmployment(options, personality, eduFlag);
             foreach (var emp in emply)
@@ -341,7 +341,7 @@ namespace NoFuture.Rand.Domus.Opes.US
             options = options ?? MyOptions;
             var dt = options.Inception;
             var numHouseholdMembers =
-                1 + (options.MaritialStatus == MaritialStatus.Married ? 1 : 0) + options.ChildrenDobs?.Count ?? 0;
+                1 + (options.FactorOptions.MaritialStatus == MaritialStatus.Married ? 1 : 0) + options.ChildrenDobs?.Count ?? 0;
             numHouseholdMembers = numHouseholdMembers <= 0 ? 1 : numHouseholdMembers;
             var povertyLevel = AmericanEquations.GetFederalPovertyLevel(dt);
 

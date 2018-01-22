@@ -5,10 +5,10 @@ using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Data.Sp;
 using NoFuture.Rand.Data.Sp.Enums;
+using NoFuture.Rand.Domus.Opes.US;
 using NoFuture.Rand.Domus.Pneuma;
 using NoFuture.Rand.Geo;
 using NoFuture.Rand.Geo.US;
-using NoFuture.Rand.Gov;
 using NoFuture.Rand.Gov.US;
 using NoFuture.Shared.Core;
 using NoFuture.Util.Core;
@@ -24,7 +24,16 @@ namespace NoFuture.Rand.Domus.Opes
     [Serializable]
     public class OpesOptions : OpesPortions, ITempore
     {
+        private DateTime _birthDate;
+        private readonly AmericanFactorOptions _factorOptions;
+        private CityArea _cityArea;
+
         #region properties
+
+        public OpesOptions(AmericanFactorOptions factorOptions = null)
+        {
+            _factorOptions = factorOptions ?? new AmericanFactorOptions();
+        }
 
         /// <summary>
         /// A judgement related expense - this is too complicated 
@@ -71,32 +80,39 @@ namespace NoFuture.Rand.Domus.Opes
         /// <summary>
         /// The home city-state of the person to whom this wealth belongs
         /// </summary>
-        public CityArea HomeLocation { get; set; }
+        public CityArea HomeLocation
+        {
+            get => _cityArea;
+            set
+            {
+                _cityArea = value;
+                if (!(_cityArea is UsCityStateZip usCityArea))
+                    return;
+                FactorOptions.Region =
+                    UsStateData.GetStateData(usCityArea?.StateName)?.Region ?? AmericanRegion.Midwest;
+            }
+        }
 
         /// <summary>
         /// The birth date of the person to whom this wealth belongs
         /// </summary>
-        public DateTime BirthDate { get; set; }
+        public DateTime BirthDate
+        {
+            get => _birthDate;
+            set
+            {
+                FactorOptions.Age = (value == DateTime.MinValue)
+                    ? (int) Math.Round(AmericanData.AVG_AGE_AMERICAN)
+                    : Etc.CalcAge(value);
+
+                _birthDate = value;
+            }
+        }
 
         /// <summary>
-        /// The gender of the person to whom this wealth belongs
+        /// The options related to the american factor multipliers
         /// </summary>
-        public Gender Gender { get; set; }
-
-        /// <summary>
-        /// The education level of the person to whom this wealth belongs
-        /// </summary>
-        public OccidentalEdu? EducationLevel { get; set; }
-
-        /// <summary>
-        /// The race of the person to whom this wealth belongs
-        /// </summary>
-        public NorthAmericanRace? Race { get; set; }
-
-        /// <summary>
-        /// The marital status of the person to whom this wealth belongs
-        /// </summary>
-        public MaritialStatus? MaritialStatus { get; set; }
+        public AmericanFactorOptions FactorOptions => _factorOptions;
 
         /// <summary>
         /// The name of the person to whom this wealth belongs
@@ -114,24 +130,6 @@ namespace NoFuture.Rand.Domus.Opes
         #endregion
 
         #region methods
-        /// <summary>
-        /// The current age of the person to whom this wealth belongs.
-        /// </summary>
-        public int GetCurrentAge()
-        {
-            if (BirthDate == DateTime.MinValue)
-                return (int) Math.Round(AmericanData.AVG_AGE_AMERICAN);
-            return Etc.CalcAge(BirthDate);
-        }
-
-        /// <summary>
-        /// Gets the major region of this instances <see cref="HomeLocation"/>
-        /// </summary>
-        public AmericanRegion GetUsCardinalRegion()
-        {
-            var usCityArea = HomeLocation as UsCityStateZip;
-            return UsStateData.GetStateData(usCityArea?.StateName)?.Region ?? AmericanRegion.Midwest;
-        }
 
         /// <summary>
         /// Gets the current age of all children based on 
@@ -184,7 +182,7 @@ namespace NoFuture.Rand.Domus.Opes
         /// <returns></returns>
         public OpesOptions GetClone()
         {
-            var o = new OpesOptions();
+            var o = new OpesOptions(FactorOptions.GetClone());
 
             var pi = GetType().GetProperties(NfConfig.DefaultFlags).Where(p => p.CanWrite).ToList();
             foreach (var p in pi)
@@ -205,7 +203,6 @@ namespace NoFuture.Rand.Domus.Opes
             o.DerivativeSlope = DerivativeSlope;
             o.SumTotal = SumTotal == null ? null : new Pecuniam(SumTotal.Amount);
             o.DiceRoll = DiceRoll;
-
             return o;
         }
 
@@ -225,14 +222,10 @@ namespace NoFuture.Rand.Domus.Opes
             var opt = new OpesOptions
             {
                 BirthDate = Etx.RandomAdultBirthDate(),
-                Gender = Etx.RandomCoinToss() ? Gender.Female : Gender.Male,
                 Inception = Etx.RandomDate(-1, null, true),
                 HomeLocation = CityArea.RandomAmericanCity(),
                 IsRenting = Etx.RandomCoinToss(),
                 Personality = Pneuma.Personality.RandomPersonality(),
-                Race = Etx.RandomPickOne(AmericanRacePercents.NorthAmericanRaceAvgs),
-                EducationLevel = OccidentalEdu.HighSchool | OccidentalEdu.Grad,
-                MaritialStatus = Etx.RandomCoinToss() ? Gov.MaritialStatus.Married : Gov.MaritialStatus.Single,
                 NumberOfCreditCards = Etx.RandomInteger(0, 3),
                 NumberOfVehicles = 1,
                 PersonsName = name,

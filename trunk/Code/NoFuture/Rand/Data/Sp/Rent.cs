@@ -144,6 +144,11 @@ namespace NoFuture.Rand.Data.Sp
             return countOfMonths;
         }
 
+        public override string ToString()
+        {
+            return new Tuple<Pecuniam, DateTime, DateTime?>(MonthlyPmt, Inception, Terminus).ToString();
+        }
+
         /// <summary>
         /// Factory method to generate a <see cref="Rent"/> instance at random.
         /// </summary>

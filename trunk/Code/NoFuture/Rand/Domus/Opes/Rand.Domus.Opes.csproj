@@ -41,6 +41,7 @@
     <Compile Include="US\AmericanDeductions.cs" />
     <Compile Include="US\AmericanEmployment.cs" />
     <Compile Include="US\AmericanExpenses.cs" />
+    <Compile Include="US\AmericanFactorOptions.cs" />
     <Compile Include="US\AmericanFactors.cs" />
     <Compile Include="US\AmericanIncome.cs" />
     <Compile Include="FactorTables.cs" />

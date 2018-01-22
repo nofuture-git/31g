@@ -353,7 +353,7 @@ namespace NoFuture.Rand.Domus.Opes.US
         public override string ToString()
         {
             var t = new Tuple<string, string, DateTime?, DateTime?, Pecuniam>(EmployingCompanyName, Occupation?.ToString(),
-                Inception, Terminus, Pondus.GetExpectedSum(MyItems));
+                Inception, Terminus, Pondus.GetExpectedSum(GetCurrent(MyItems)));
             return t.ToString();
         }
 

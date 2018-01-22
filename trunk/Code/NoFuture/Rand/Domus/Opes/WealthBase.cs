@@ -130,7 +130,7 @@ namespace NoFuture.Rand.Domus.Opes
             };
             //TODO this should be decided by calling assemlby
             MyOptions.IsRenting = GetIsLeaseResidence(usCityArea);
-            _factors = new AmericanFactors(MyOptions);
+            _factors = new AmericanFactors(MyOptions.FactorOptions);
 
         }
         #endregion
@@ -865,7 +865,7 @@ namespace NoFuture.Rand.Domus.Opes
         {
             //we want age to have an effect on the randomness
             var hookEquation = AmericanEquations.ClassicHook;
-            age = age ?? MyOptions.GetCurrentAge();
+            age = age ?? MyOptions.FactorOptions.Age;
 
             var ageAtDt = age <= 0 
                 ? AmericanData.AVG_AGE_AMERICAN 

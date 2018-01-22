@@ -71,7 +71,7 @@ namespace NoFuture.Rand.Domus.Opes.US
         /// Assigns the scalar factor values based on the given <see cref="options"/>
         /// </summary>
         /// <param name="options"></param>
-        public AmericanFactors(OpesOptions options)
+        public AmericanFactors(AmericanFactorOptions options)
         {
             if (options == null)
             {
@@ -87,12 +87,12 @@ namespace NoFuture.Rand.Domus.Opes.US
                 return;
             }
 
-            var edu = options.EducationLevel ?? (OccidentalEdu.HighSchool | OccidentalEdu.Grad);
-            var race = options.Race ?? NorthAmericanRace.White;
-            var region = options.GetUsCardinalRegion();
-            var age = options.GetCurrentAge();
+            var edu = options.EducationLevel;
+            var race = options.Race;
+            var region = options.Region;
+            var age = options.Age;
             var gender = options.Gender;
-            var maritalStatus = options.MaritialStatus ?? MaritialStatus.Single;
+            var maritalStatus = options.MaritialStatus;
 
             HomeDebtFactor = GetFactor(FactorTables.HomeDebt, edu, race, region, age, gender,
                 maritalStatus);

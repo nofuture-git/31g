@@ -157,7 +157,7 @@ namespace NoFuture.Rand.Domus.Opes.US
                 {
                     ExpectedValue = expectedVisionInsCost.ToPecuniam()
                 });
-            var someRandRate = GetRandomRateFromClassicHook(options.GetCurrentAge());
+            var someRandRate = GetRandomRateFromClassicHook(options.FactorOptions.Age);
 
             //we will use to force the SumTotal to exceed current GivenDirectly's sum
             var currentTotal = expectedHealthInsCost + expectedDentalInsCost + expectedVisionInsCost;
@@ -267,7 +267,7 @@ namespace NoFuture.Rand.Domus.Opes.US
                 });
 
             //we need to have a SumTotal exceeding the current GivenDirectly's sum to have any of the others show up at random
-            var someRandRate = GetRandomRateFromClassicHook(options.GetCurrentAge());
+            var someRandRate = GetRandomRateFromClassicHook(options.FactorOptions.Age);
 
             //we will use to force the SumTotal to exceed current GivenDirectly's sum
             var currentTotal = retirementAmt + unionDuesAmt;
