@@ -145,19 +145,13 @@ namespace NoFuture.Rand.Domus.Opes.US
             };
         }
 
-        protected internal override void ResolveItems(OpesOptions options = null)
+        protected internal override void ResolveItems(OpesOptions options)
         {
             options = options ?? MyOptions;
             if (options.Inception == DateTime.MinValue)
                 options.Inception = GetYearNeg(-1);
             var yearsOfService = GetYearsOfServiceInDates(options);
             var isCurrentEmployee = MyOptions.Terminus == null;
-
-            if (options.SumTotal == null || options.SumTotal == Pecuniam.Zero)
-            {
-                options.SumTotal = GetRandomYearlyIncome(options.Inception);
-                options.Interval = Interval.Annually;
-            }
 
             for (var i = 0; i < yearsOfService.Count; i++)
             {
@@ -275,6 +269,13 @@ namespace NoFuture.Rand.Domus.Opes.US
             var salaryRate = !_isWages
                 ? 1D - sumOfRate
                 : 0D;
+
+            //TODO - why is there here in the middle of something else?
+            if (options.SumTotal == null || options.SumTotal == Pecuniam.Zero)
+            {
+                options.SumTotal = GetRandomYearlyIncome(options.Inception);
+                options.Interval = Interval.Annually;
+            }
 
             var incomeName2Rate = new Dictionary<string, double>
             {

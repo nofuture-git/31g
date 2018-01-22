@@ -53,8 +53,8 @@ namespace NoFuture.Rand.Domus.Opes.US
 
         public AmericanAssets(OpesOptions options, double stdDev = DF_STD_DEV_PERCENT) : base(options)
         {
-            if (MyOptions.Inception == DateTime.MinValue)
-                MyOptions.Inception = GetYearNeg(-1);
+            if (options.Inception == DateTime.MinValue)
+                options.Inception = GetYearNeg(-1);
 
             _randCheckingAcctAmt = AmericanFactors.GetRandomFactorValue(FactorTables.CheckingAccount,
                 Factors.CheckingAcctFactor, stdDev);
@@ -165,7 +165,7 @@ namespace NoFuture.Rand.Domus.Opes.US
             };
         }
 
-        protected internal override void ResolveItems(OpesOptions options = null)
+        protected internal override void ResolveItems(OpesOptions options)
         {
             options = options ?? MyOptions;
             options.Interval = Interval.Annually;

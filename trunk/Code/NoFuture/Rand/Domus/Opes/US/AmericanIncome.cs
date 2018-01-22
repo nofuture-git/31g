@@ -137,7 +137,7 @@ namespace NoFuture.Rand.Domus.Opes.US
             };
         }
 
-        protected internal override void ResolveItems(OpesOptions options = null)
+        protected internal override void ResolveItems(OpesOptions options)
         {
             options = options ?? MyOptions;
 

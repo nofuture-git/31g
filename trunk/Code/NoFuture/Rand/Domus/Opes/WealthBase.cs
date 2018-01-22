@@ -190,7 +190,7 @@ namespace NoFuture.Rand.Domus.Opes
         /// right after the ctor.
         /// </summary>
         /// <param name="options"></param>
-        protected internal abstract void ResolveItems(OpesOptions options = null);
+        protected internal abstract void ResolveItems(OpesOptions options);
 
         /// <summary>
         /// Calculate a yearly income at random.

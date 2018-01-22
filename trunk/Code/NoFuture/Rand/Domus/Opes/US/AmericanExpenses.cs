@@ -82,7 +82,7 @@ namespace NoFuture.Rand.Domus.Opes.US
             };
         }
 
-        protected internal override void ResolveItems(OpesOptions options = null)
+        protected internal override void ResolveItems(OpesOptions options)
         {
             options = options ?? MyOptions;
             var stDt = options.Inception == DateTime.MinValue ? GetYearNeg(-1) : options.Inception;
